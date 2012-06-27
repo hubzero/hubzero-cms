@@ -212,7 +212,7 @@ class RegisterController extends Hubzero_Controller
 
 				$eview = new JView( array('name'=>'emails','layout'=>'update') );
 				$eview->option = $this->_option;
-				$eview->hubShortName = $this->jconfig->getValue('config.sitename');
+				$eview->sitename = $this->jconfig->getValue('config.sitename');
 				$eview->xprofile = $target_xprofile;
 				$eview->baseURL = $this->baseURL;
 				$message = $eview->loadTemplate();
@@ -228,7 +228,7 @@ class RegisterController extends Hubzero_Controller
 
 			$eaview = new JView( array('name'=>'emails','layout'=>'adminupdate') );
 			$eaview->option = $this->_option;
-			$eaview->hubShortName = $this->jconfig->getValue('config.sitename');
+			$eaview->sitename = $this->jconfig->getValue('config.sitename');
 			$eaview->xprofile = $target_xprofile;
 			$eaview->baseURL = $this->baseURL;
 			$message = $eaview->loadTemplate();
@@ -249,7 +249,7 @@ class RegisterController extends Hubzero_Controller
 
 				$eview = new JView( array('name'=>'emails','layout'=>'updateproxy') );
 				$eview->option = $this->_option;
-				$eview->hubShortName = $this->jconfig->getValue('config.sitename');
+				$eview->sitename = $this->jconfig->getValue('config.sitename');
 				$eview->xprofile = $target_profile;
 				$eview->baseURL = $this->baseURL;
 				$message = $eview->loadTemplate();
@@ -266,7 +266,7 @@ class RegisterController extends Hubzero_Controller
 
 			$eaview = new JView( array('name'=>'emails','layout'=>'adminupdateproxy') );
 			$eaview->option = $this->_option;
-			$eaview->hubShortName = $this->jconfig->getValue('config.sitename');
+			$eaview->sitename = $this->jconfig->getValue('config.sitename');
 			$eaview->xprofile = $target_xprofile;
 			$eaview->baseURL = $this->baseURL;
 			$message = $eaview->loadTemplate();
@@ -287,7 +287,7 @@ class RegisterController extends Hubzero_Controller
 		$view = new JView( array('name'=>'update') );
 		$view->option = $this->_option;
 		$view->title = JText::_('COM_REGISTER_UPDATE');
-		$view->hubShortName = $this->jconfig->getValue('config.sitename');
+		$view->sitename = $this->jconfig->getValue('config.sitename');
 		$view->xprofile = $target_xprofile;
 		$view->self = $self;
 		if ($this->getError()) {
@@ -426,11 +426,11 @@ class RegisterController extends Hubzero_Controller
 		$view = new JView( array('name'=>'proxycreate') );
 		$view->option = $this->_option;
 		$view->title = JText::_('COM_REGISTER_PROXY_CREATE');
-		$view->hubShortName = $this->jconfig->getValue('config.sitename');
+		$view->sitename = $this->jconfig->getValue('config.sitename');
 		$view->target_juser = $target_juser;
 		$view->target_xprofile = $target_xprofile;
 		$view->xprofile = $xprofile;
-		$view->hubLongURL = $this->baseURL;
+		$view->live_site = $this->baseURL;
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
@@ -594,7 +594,7 @@ class RegisterController extends Hubzero_Controller
 
 				$eview = new JView( array('name'=>'emails','layout'=>'update') );
 				$eview->option = $this->_option;
-				$eview->hubShortName = $this->jconfig->getValue('config.sitename');
+				$eview->sitename = $this->jconfig->getValue('config.sitename');
 				$eview->xprofile = $xprofile;
 				$eview->baseURL = $this->baseURL;
 				$message = $eview->loadTemplate();
@@ -612,7 +612,7 @@ class RegisterController extends Hubzero_Controller
 
 				$eaview = new JView( array('name'=>'emails','layout'=>'adminupdate') );
 				$eaview->option = $this->_option;
-				$eaview->hubShortName = $this->jconfig->getValue('config.sitename');
+				$eaview->sitename = $this->jconfig->getValue('config.sitename');
 				$eaview->xprofile  = $xprofile;
 				$eaview->baseURL = $this->baseURL;
 				$message = $eaview->loadTemplate();
@@ -634,7 +634,7 @@ class RegisterController extends Hubzero_Controller
 				$view = new JView( array('name'=>'update') );
 				$view->option = $this->_option;
 				$view->title = JText::_('COM_REGISTER_UPDATE');
-				$view->hubShortName = $this->jconfig->getValue('config.sitename');
+				$view->sitename = $this->jconfig->getValue('config.sitename');
 				$view->xprofile = $xprofile;
 				$view->self = true;
 				$view->updateEmail = $updateEmail;
@@ -820,7 +820,7 @@ class RegisterController extends Hubzero_Controller
 
 						$eview = new JView( array('name'=>'emails','layout'=>'create') );
 						$eview->option = $this->_option;
-						$eview->hubShortName = $this->jconfig->getValue('config.sitename');
+						$eview->sitename = $this->jconfig->getValue('config.sitename');
 						$eview->xprofile = $xprofile;
 						$eview->baseURL = $this->baseURL;
 						$eview->xregistration = $xregistration;
@@ -840,7 +840,7 @@ class RegisterController extends Hubzero_Controller
 
 					$eaview = new JView( array('name'=>'emails','layout'=>'admincreate') );
 					$eaview->option = $this->_option;
-					$eaview->hubShortName = $this->jconfig->getValue('config.sitename');
+					$eaview->sitename= $this->jconfig->getValue('config.sitename');
 					$eaview->xprofile = $xprofile;
 					$eaview->baseURL = $this->baseURL;
 					$message = $eaview->loadTemplate();
@@ -853,7 +853,7 @@ class RegisterController extends Hubzero_Controller
 					$view = new JView( array('name'=>'create') );
 					$view->option = $this->_option;
 					$view->title = JText::_('COM_REGISTER_CREATE_ACCOUNT');
-					$view->hubShortName = $this->jconfig->getValue('config.sitename');
+					$view->sitename = $this->jconfig->getValue('config.sitename');
 					$view->xprofile = $xprofile;
 					
 					if ($this->getError()) {
@@ -924,7 +924,7 @@ class RegisterController extends Hubzero_Controller
 		$view = new JView( array('name'=>'registration', 'layout'=>'raceethnic') );
 		$view->option = $this->_option;
 		$view->title = JText::_('COM_REGISTER_SELECT_METHOD');
-		$view->hubShortName = $this->jconfig->getValue('config.sitename');
+		$view->sitename = $this->jconfig->getValue('config.sitename');
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
@@ -995,7 +995,7 @@ class RegisterController extends Hubzero_Controller
 		$view->option = $this->_option;
 		$view->task = $task;
 		$view->title = JText::_('COM_REGISTER');
-		$view->hubShortName = $this->jconfig->getValue('config.sitename');
+		$view->sitename = $this->jconfig->getValue('config.sitename');
 
 		$username = JRequest::getVar('username',$this->juser->get('username'),'get');
 		$view->self = ($this->juser->get('username') == $username);
@@ -1214,7 +1214,7 @@ class RegisterController extends Hubzero_Controller
 
 			$eview = new JView( array('name'=>'emails','layout'=>'confirm') );
 			$eview->option = $this->_option;
-			$eview->hubShortName = $this->jconfig->getValue('config.sitename');
+			$eview->sitename = $this->jconfig->getValue('config.sitename');
 			$eview->login = $login;
 			$eview->baseURL = $this->baseURL;
 			$eview->confirm = $confirm;
@@ -1340,7 +1340,7 @@ class RegisterController extends Hubzero_Controller
 
 						$eview = new JView( array('name'=>'emails','layout'=>'confirm') );
 						$eview->option = $this->_option;
-						$eview->hubShortName = $this->jconfig->getValue('config.sitename');
+						$eview->sitename = $this->jconfig->getValue('config.sitename');
 						$eview->login = $login;
 						$eview->baseURL = $this->baseURL;
 						$eview->confirm = $confirm;
@@ -1458,7 +1458,7 @@ class RegisterController extends Hubzero_Controller
 		$view->login = $xprofile->get('username');
 		$view->email = $xprofile->get('email');
 		$view->code = $code;
-		$view->hubShortName = $this->jconfig->getValue('config.sitename');
+		$view->sitename = $this->jconfig->getValue('config.sitename');
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
 		}
@@ -1511,7 +1511,7 @@ class RegisterController extends Hubzero_Controller
 			$view->title = JText::_('COM_REGISTER_UNCONFIRMED');
 			$view->email = $xprofile->get('email');
 			$view->return = $return;
-			$view->hubShortName = $this->jconfig->getValue('config.sitename');
+			$view->sitename = $this->jconfig->getValue('config.sitename');
 			if ($this->getError()) {
 				$view->setError( $this->getError() );
 			}

@@ -183,20 +183,66 @@ class plgUserXusers extends JPlugin
 	{
 		ximport('Hubzero_User_Profile');
 		ximport('Hubzero_User_Password');
-		
-		$xhub =& Hubzero_Factory::getHub();
-		$hubHomeDir = $xhub->getCfg('hubHomeDir');
 
 		$xprofile = Hubzero_User_Profile::getInstance($user['id']);
 
 		if (!is_object($xprofile)) {
 						
+			$params =& JComponentHelper::getParams('com_members');
+		
+			$hubHomeDir = trim($params->get('hubHomeDir'),'/');
+		
+			if (empty($hubHomeDir)) {
+				// @FIXME: this is legacy joomla, should be replaced with correct solution
+				JLoader::register('JTableComponent', JPATH_LIBRARIES.DS.'joomla'.DS.'database'.DS.'table'.DS.'component.php');
+				
+				// try to deduce a viable home directory based on sitename or live_site
+				$jconfig = JFactory::getConfig();
+				$sitename = strtolower($jconfig->getValue('config.sitename'));
+				$sitename = preg_replace('/^http[s]{0,1}:\/\//','',$sitename,1);
+				$sitename = trim($sitename,'/ ');
+				$sitename_e = explode('.', $sitename, 2);
+				if (isset($sitename_e[1])) {
+					$sitename = $sitename_e[0];
+				}
+				if (!preg_match("/^[a-zA-Z]+[\-_0-9a-zA-Z\.]+$/i", $sitename)) {
+					$sitename = '';
+				}
+				if (empty($sitename)) {
+					$sitename = strtolower(JURI::base());
+					$sitename = preg_replace('/^http[s]{0,1}:\/\//','',$sitename,1);
+					$sitename = trim($sitename,'/ ');
+					$sitename_e = explode('.', $sitename, 2);
+					if (isset($sitename_e[1])) {
+						$sitename = $sitename_e[0];
+					}
+					if (!preg_match("/^[a-zA-Z]+[\-_0-9a-zA-Z\.]+$/i", $sitename)) {
+						$sitename = '';
+					}
+				}
+				
+				$hubHomeDir = DS . 'home';
+
+				if (!empty($sitename)) {
+					$hubHomeDir .= DS . $sitename;
+				}		
+
+				if (!empty($hubHomeDir)) {
+					$db = JFactory::getDBO();
+					$component = new JTableComponent($db);
+					$component->loadByOption('com_members');
+					$params->set('hubHomeDir',$hubHomeDir);
+					$component->params = $params->toString();
+					$component->store();
+				}
+			}
+			
 			$xprofile = new Hubzero_User_Profile();
 			
 			$xprofile->set('gidNumber', '3000');
 			$xprofile->set('gid','public');
 			$xprofile->set('uidNumber', $user['id']);
-			$xprofile->set('homeDirectory', $hubHomeDir . '/' . $user['username']);
+			$xprofile->set('homeDirectory', $hubHomeDir . DS . $user['username']);
 			$xprofile->set('loginShell', '/bin/bash');
 			$xprofile->set('ftpShell', '/usr/lib/sftp-server');
 			$xprofile->set('name', $user['name']);

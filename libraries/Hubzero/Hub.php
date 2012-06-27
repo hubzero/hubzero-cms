@@ -61,25 +61,15 @@ class Hubzero_Hub
 	public function loadConfig()
 	{
 		$registry =& JFactory::getConfig();
+
 		$file = JPATH_CONFIGURATION . DS . 'hubconfiguration.php';
 
-		if (file_exists($file))
+		if (file_exists($file)) {
 			include_once($file);
-
-		if ( class_exists('HubConfig') )
-		{
-			$config = new HubConfig();
-			$registry->loadObject($config, 'xhub');
 		}
 
-		$file = JPATH_CONFIGURATION . DS . 'hubconfiguration-local.php';
-
-		if (file_exists($file))
-			include_once($file);
-
-		if ( class_exists('HubConfigOverride') )
-		{
-			$config = new HubConfigOverride();
+		if ( class_exists('HubConfig') ) {
+			$config = new HubConfig();
 			$registry->loadObject($config, 'xhub');
 		}
 	}
