@@ -500,9 +500,13 @@ class XRouter extends JRouter
 			$segments	= explode('/', $route);
 
 			if ($segments[0] == 'search') {   // @FIXME: search component should probably be configurable
-
-				$xhub = Hubzero_Factory::getHub();
-				$segments[0] = $xhub->getCfg('search','ysearch');
+				$plugin = JPluginHelper::getPlugin( 'system', 'xhub' );
+				$param = new JParameter( $plugin->params );
+				$search = $param->get('search','ysearch');
+				if (empty($search)) {
+					$search = 'ysearch';
+				}
+				$segments[0] = $search;
 			}
 
 			$file = JPATH_BASE.DS.'components'.DS.'com_'.$segments[0].DS.$segments[0].".php";

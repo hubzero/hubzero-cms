@@ -33,5 +33,12 @@ HUBzero is a registered trademark of Purdue University.
 	<files>
 		<filename plugin="xhub">xhub.php</filename>
 	</files>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="search" type="text" size="25" default="ysearch" label="Search Component" description="The name of the component to default searches to."/>
+			</fieldset>
+		</fields>
+	</config>
 </install>
 
