@@ -36,7 +36,7 @@ $groups = $this->groups;
 ?>
 <div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : '';?>>
 <?php if ($groups && count($groups) > 0) { ?>
-	<ul class="compactlist">
+	<ul class="compactlist mygroups">
 <?php
 	$i = 0;
 	foreach ($groups as $group)

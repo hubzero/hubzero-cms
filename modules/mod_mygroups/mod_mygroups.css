@@ -62,3 +62,7 @@
 	div.draggable .compactlist .group { 
 		background: url("/modules/mod_mygroups/images/group.png") 0.7em 1em no-repeat; 
 	}
+	ul.mygroups {
+		max-height:350px;
+		overflow-y:scroll;
+	}
