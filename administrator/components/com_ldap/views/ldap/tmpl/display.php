@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2012 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2012 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -34,4 +34,9 @@ JToolBarHelper::title(JText::_('LDAP Configuration'), 'addedit.png');
 JToolBarHelper::preferences('com_ldap', '550');
 
 ?>
-<p>Insert awesome new features here...</p>
+Import old HubConfig LDAP configuration...
+<form action="index.php" method="post" name="adminForm">
+	<input type="hidden" name="option" value="com_ldap" />
+	<input type="hidden" name="task" value="importHubConfig" />
+	<input type="submit" value="ImportHubConfig" />
+</form>
