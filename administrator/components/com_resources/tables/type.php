@@ -29,201 +29,186 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'ResourcesType'
- * 
- * Long description (if any) ...
+ * Table class for resource type
  */
 class ResourcesType extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id       		= NULL;  // @var int(11) Primary key
+	var $id       		= NULL;
 
 	/**
-	 * Description for 'alias'
+	 * varchar(100)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $alias	  		= NULL;	 // @var varchar(100)
+	var $alias	  		= NULL;
 
 	/**
-	 * Description for 'type'
+	 * varchar(250)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $type     		= NULL;  // @var varchar(250)
+	var $type     		= NULL;
 
 	/**
-	 * Description for 'category'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $category		= NULL;  // @var int(11)
+	var $category		= NULL;
 
 	/**
-	 * Description for 'description'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $description 	= NULL;  // @var text
+	var $description 	= NULL;
 
 	/**
-	 * Description for 'contributable'
+	 * int(2)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $contributable 	= NULL;  // @var int(2)
+	var $contributable 	= NULL;
 
 	/**
-	 * Description for 'customFields'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $customFields 	= NULL;  // @var text
+	var $customFields 	= NULL;
 
 	/**
-	 * Description for 'params'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $params 		= NULL;  // @var text
-
-	//-----------
+	var $params 		= NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__resource_types', 'id', $db );
+		parent::__construct('#__resource_types', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->type ) == '') {
-			$this->setError( JText::_('Your resource type must contain text.') );
+		if (trim($this->type) == '') 
+		{
+			$this->setError(JText::_('Your resource type must contain text.'));
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'getMajorTypes'
+	 * Get all the major types
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     integer Return description (if any) ...
+	 * @return     array
 	 */
 	public function getMajorTypes()
 	{
-		return $this->getTypes( 27 );
+		return $this->getTypes(27);
 	}
 
 	/**
-	 * Short description for 'getAllCount'
+	 * Get a count of all records for a specific category (optional)
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     integer
 	 */
-	public function getAllCount( $filters=array() )
+	public function getAllCount($filters=array())
 	{
 		$query = "SELECT count(*) FROM $this->_tbl";
-		if (isset($filters['category']) && $filters['category'] != 0) {
-			$query .= " WHERE category=".$filters['category'];
+		if (isset($filters['category']) && $filters['category'] != 0) 
+		{
+			$query .= " WHERE category=" . $filters['category'];
 		}
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getAllTypes'
+	 * Get all records for a specific category (optional)
+	 * Different from the method below in that it adds limit for paging
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     array
 	 */
-	public function getAllTypes( $filters=array() )
+	public function getAllTypes($filters=array())
 	{
 		$query  = "SELECT * FROM $this->_tbl ";
-		if (isset($filters['category']) && $filters['category'] != 0) {
-			$query .= "WHERE category=".$filters['category']." ";
+		if (isset($filters['category']) && $filters['category'] != 0) 
+		{
+			$query .= "WHERE category=" . $filters['category'] . " ";
 		}
-		$query .= "ORDER BY ".$filters['sort']." ".$filters['sort_Dir']." ";
-		$query .= "LIMIT ".$filters['start'].",".$filters['limit'];
+		$query .= "ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'] . " ";
+		$query .= "LIMIT " . $filters['start'] . "," . $filters['limit'];
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'getTypes'
+	 * Get all records for a specific category
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $cat Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $cat Category ID
+	 * @return     array
 	 */
-	public function getTypes( $cat='0' )
+	public function getTypes($cat='0')
 	{
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE category=".$cat." ORDER BY type" );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE category=" . $cat . " ORDER BY type");
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'checkUsage'
+	 * Check if a type is being used
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $id Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $id Record ID
+	 * @return     integer
 	 */
-	public function checkUsage( $id=NULL )
+	public function checkUsage($id=NULL)
 	{
-		if (!$id) {
+		if (!$id) 
+		{
 			$id = $this->id;
 		}
-		if (!$id) {
+		if (!$id) 
+		{
 			return false;
 		}
 
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'resource.php' );
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
 
-		$r = new ResourcesResource( $this->_db );
+		$r = new ResourcesResource($this->_db);
 
-		$this->_db->setQuery( "SELECT count(*) FROM $r->_tbl WHERE type=".$id." OR logical_type=".$id );
+		$this->_db->setQuery("SELECT count(*) FROM $r->_tbl WHERE type=" . $id . " OR logical_type=" . $id);
 		return $this->_db->loadResult();
 	}
-	
+
 	/**
-	 * Short description for 'getNeighbor'
+	 * Get all the roles associated with a specific type
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $move Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $type_id Type ID
+	 * @return     array
 	 */
 	public function getRolesForType($type_id=null)
 	{
@@ -248,14 +233,12 @@ class ResourcesType extends JTable
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
-	
+
 	/**
-	 * Short description for 'getNeighbor'
+	 * Delete a record
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $move Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $oid Record ID
+	 * @return     boolean True on success
 	 */
 	public function delete($oid=null)
 	{
@@ -263,16 +246,16 @@ class ResourcesType extends JTable
 		{
 			$oid = $this->id;
 		}
-		
+
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'role.type.php');
-		
+
 		$rt = new ResourcesContributorRoleType($this->_db);
 		if (!$rt->deleteForType($oid))
 		{
 			$this->setError($rt->getError());
 			return false;
 		}
-		
+
 		return parent::delete($oid);
 	}
 }

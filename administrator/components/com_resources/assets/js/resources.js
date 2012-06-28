@@ -47,7 +47,7 @@ HUB.Resources = {
 		
 		var selectedr = $('authrole').selectedIndex;
 		var selectedRole = $('authrole').options[selectedr].value;
-		var selectedId = authid.value;
+		var selectedId = authid.value.split(' ').join('_');
 
 		// create the LI element and attach it to the UL
 		var newlistitem = new Element('li',{
@@ -60,6 +60,13 @@ HUB.Resources = {
 			update:'author_' + selectedId
 		}).request();
 		myAjax.addEvent('onComplete', function(){
+			var id = selectedId;
+			if ($$('#author_' + selectedId + ' .authid')) {
+				$$('#author_' + selectedId + ' .authid').each(function(el){
+					id = $(el).value;
+				});
+			}
+			$('author_' + selectedId).setProperty('id', 'author_' + id);
 			// re-apply the sorting script so the new LIst item becoems sortable
 			authsorts.reinitialize();
 

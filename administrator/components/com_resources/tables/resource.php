@@ -29,303 +29,300 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'ResourcesResource'
- * 
- * Long description (if any) ...
+ * Table class for resources
  */
 class ResourcesResource extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id               = NULL;  // @var int(11) Primary key
+	var $id               = NULL;
 
 	/**
-	 * Description for 'title'
-	 * 
-	 * @var unknown
-	 */
-	var $title            = NULL;  // @var varchar(250)
-
-	/**
-	 * Description for 'type'
-	 * 
-	 * @var unknown
-	 */
-	var $type             = NULL;  // @var int(11)
-
-	/**
-	 * Description for 'logical_type'
-	 * 
-	 * @var unknown
-	 */
-	var $logical_type     = NULL;  // @var int(11)
-
-	/**
-	 * Description for 'introtext'
-	 * 
-	 * @var unknown
-	 */
-	var $introtext        = NULL;  // @var text
-
-	/**
-	 * Description for 'fulltext'
-	 * 
-	 * @var unknown
-	 */
-	var $fulltext         = NULL;  // @var text
-
-	/**
-	 * Description for 'footertext'
-	 * 
-	 * @var unknown
-	 */
-	var $footertext       = NULL;  // @var text
-
-	/**
-	 * Description for 'created'
-	 * 
-	 * @var unknown
-	 */
-	var $created          = NULL;  // @var datetime(0000-00-00 00:00:00)
-
-	/**
-	 * Description for 'created_by'
-	 * 
-	 * @var unknown
-	 */
-	var $created_by       = NULL;  // @var int(11)
-
-	/**
-	 * Description for 'modified'
-	 * 
-	 * @var unknown
-	 */
-	var $modified         = NULL;  // @var boolean
-
-	/**
-	 * Description for 'modified_by'
-	 * 
-	 * @var unknown
-	 */
-	var $modified_by      = NULL;  // @var int(11)
-
-	/**
-	 * Description for 'published'
-	 * 
-	 * @var unknown
-	 */
-	var $published        = NULL;  // @var int(1)
-
-	/**
-	 * Description for 'publish_up'
-	 * 
-	 * @var unknown
-	 */
-	var $publish_up       = NULL;  // @var datetime(0000-00-00 00:00:00)
-
-	/**
-	 * Description for 'publish_down'
-	 * 
-	 * @var unknown
-	 */
-	var $publish_down     = NULL;  // @var datetime(0000-00-00 00:00:00)
-
-	/**
-	 * Description for 'access'
-	 * 
-	 * @var unknown
-	 */
-	var $access           = NULL;  // @var int(11)
-
-	/**
-	 * Description for 'hits'
-	 * 
-	 * @var unknown
-	 */
-	var $hits             = NULL;  // @var int(11)
-
-	/**
-	 * Description for 'path'
-	 * 
-	 * @var unknown
-	 */
-	var $path             = NULL;  // @var varchar(200)
-
-	/**
-	 * Description for 'checked_out'
-	 * 
-	 * @var unknown
-	 */
-	var $checked_out      = NULL;  // @var int(11)
-
-	/**
-	 * Description for 'checked_out_time'
-	 * 
-	 * @var unknown
-	 */
-	var $checked_out_time = NULL;  // @var datetime(0000-00-00 00:00:00)
-
-	/**
-	 * Description for 'standalone'
-	 * 
-	 * @var unknown
-	 */
-	var $standalone       = NULL;  // @var int(1)
-
-	/**
-	 * Description for 'group_owner'
-	 * 
-	 * @var unknown
-	 */
-	var $group_owner      = NULL;  // @var varchar(250)
-
-	/**
-	 * Description for 'group_access'
+	 * varchar(250)
 	 * 
 	 * @var string
 	 */
-	var $group_access     = NULL;  // @var text
+	var $title            = NULL;
 
 	/**
-	 * Description for 'rating'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $rating           = NULL;  // @var decimal(2,1)
+	var $type             = NULL;
 
 	/**
-	 * Description for 'times_rated'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $times_rated      = NULL;  // @var int(11)
+	var $logical_type     = NULL;
 
 	/**
-	 * Description for 'params'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $params           = NULL;  // @var text
+	var $introtext        = NULL;
 
 	/**
-	 * Description for 'attribs'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $attribs          = NULL;  // @var text
+	var $fulltext         = NULL;
 
 	/**
-	 * Description for 'alias'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $alias            = NULL;  // @var varchar(100)
+	var $footertext       = NULL;
 
 	/**
-	 * Description for 'ranking'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $ranking          = NULL;  // @var float
-
-	//-----------
+	var $created          = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * int(11)
 	 * 
-	 * Long description (if any) ...
+	 * @var integer
+	 */
+	var $created_by       = NULL;
+
+	/**
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @var string
+	 */
+	var $modified         = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $modified_by      = NULL;
+
+	/**
+	 * int(1)
+	 * 
+	 * @var integer
+	 */
+	var $published        = NULL;
+
+	/**
+	 * datetime(0000-00-00 00:00:00)
+	 * 
+	 * @var string
+	 */
+	var $publish_up       = NULL;
+
+	/**
+	 * datetime(0000-00-00 00:00:00)
+	 * 
+	 * @var string
+	 */
+	var $publish_down     = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $access           = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $hits             = NULL;
+
+	/**
+	 * varchar(200)
+	 * 
+	 * @var string
+	 */
+	var $path             = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $checked_out      = NULL;
+
+	/**
+	 * datetime(0000-00-00 00:00:00)
+	 * 
+	 * @var string
+	 */
+	var $checked_out_time = NULL;
+
+	/**
+	 * int(1)
+	 * 
+	 * @var integer
+	 */
+	var $standalone       = NULL;
+
+	/**
+	 * varchar(250)
+	 * 
+	 * @var string
+	 */
+	var $group_owner      = NULL;
+
+	/**
+	 * text
+	 * 
+	 * @var string
+	 */
+	var $group_access     = NULL;
+
+	/**
+	 * decimal(2,1)
+	 * 
+	 * @var integer
+	 */
+	var $rating           = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $times_rated      = NULL;
+
+	/**
+	 * text
+	 * 
+	 * @var string
+	 */
+	var $params           = NULL;
+
+	/**
+	 * text
+	 * 
+	 * @var string
+	 */
+	var $attribs          = NULL;
+
+	/**
+	 * varchar(100)
+	 * 
+	 * @var string
+	 */
+	var $alias            = NULL;
+
+	/**
+	 * float
+	 * 
+	 * @var integer
+	 */
+	var $ranking          = NULL;
+
+	/**
+	 * Constructor
+	 * 
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__resources', 'id', $db );
+		parent::__construct('#__resources', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'loadAlias'
+	 * Load a record by alias and bind to $this
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $oid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string $oid Resource alias
+	 * @return     boolean True on success
 	 */
-	public function loadAlias( $oid=NULL )
+	public function loadAlias($oid=NULL)
 	{
-		if ($oid === NULL) {
+		if ($oid === NULL) 
+		{
 			return false;
 		}
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE alias='$oid'" );
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE alias='$oid'");
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->title ) == '') {
-			$this->setError( 'Your Resource must contain a title.' );
+		if (trim($this->title) == '') 
+		{
+			$this->setError('Your Resource must contain a title.');
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'getTypeTitle'
+	 * Get the title of a resource type
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $which Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      integer $which Get type or logical type
+	 * @return     string
 	 */
 	public function getTypeTitle($which=0)
 	{
-		if ($which) {
+		if ($which) 
+		{
 			$type = $this->logical_type;
-		} else {
+		} 
+		else 
+		{
 			$type = $this->type;
 		}
-		$this->_db->setQuery( "SELECT type FROM #__resource_types WHERE id=".$type );
+		$this->_db->setQuery("SELECT type FROM #__resource_types WHERE id=" . $type);
 		$title = $this->_db->loadResult();
 		return ($title) ? $title : '';
 	}
 
 	/**
-	 * Short description for 'getGroups'
+	 * Get the groups allowed to access a resource
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     array Return description (if any) ...
+	 * @return     array
 	 */
 	public function getGroups()
 	{
-		if ($this->group_access != '') {
+		if ($this->group_access != '') 
+		{
 			$this->group_access = trim($this->group_access);
-			$this->group_access = substr($this->group_access,1,(strlen($this->group_access)-2));
-			$allowedgroups = preg_split('#;#',$this->group_access);
-		} else {
+			$this->group_access = substr($this->group_access, 1, (strlen($this->group_access)-2));
+			$allowedgroups = explode(';', $this->group_access);
+		} 
+		else 
+		{
 			$allowedgroups = array();
 		}
 
-		if (!empty($this->group_owner)) {
+		if (!empty($this->group_owner)) 
+		{
 			$allowedgroups[] = $this->group_owner;
 		}
 
@@ -333,15 +330,13 @@ class ResourcesResource extends JTable
 	}
 
 	/**
-	 * Short description for 'calculateRating'
-	 * 
-	 * Long description (if any) ...
+	 * Calculate the rating for a resource
 	 * 
 	 * @return     void
 	 */
 	public function calculateRating()
 	{
-		$this->_db->setQuery( "SELECT rating FROM #__resource_ratings WHERE resource_id='$this->id'" );
+		$this->_db->setQuery("SELECT rating FROM #__resource_ratings WHERE resource_id='$this->id'");
 		$ratings = $this->_db->loadObjectList();
 
 		$totalcount = count($ratings);
@@ -365,144 +360,161 @@ class ResourcesResource extends JTable
 	}
 
 	/**
-	 * Short description for 'updateRating'
+	 * Update the rating for a record
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     void
+	 * @return     boolean True on success
 	 */
 	public function updateRating()
 	{
-		$this->_db->setQuery( "UPDATE $this->_tbl SET rating='$this->rating', times_rated='$this->times_rated' WHERE id='$this->id'" );
-		if (!$this->_db->query()) {
-			echo $this->_db->getErrorMsg();
-			exit;
+		$this->_db->setQuery("UPDATE $this->_tbl SET rating='$this->rating', times_rated='$this->times_rated' WHERE id='$this->id'");
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
 		}
+		return true;
 	}
 
 	/**
-	 * Short description for 'deleteExistence'
+	 * Delete records associated with a resource
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $id Parameter description (if any) ...
-	 * @return     void
+	 * @param      integer $id Resource ID
+	 * @return     boolean True on success
 	 */
-	public function deleteExistence( $id=NULL )
+	public function deleteExistence($id=NULL)
 	{
-		if (!$id) {
+		if (!$id) 
+		{
 			$id = $this->id;
 		}
 
 		// Delete child associations
-		$this->_db->setQuery( "DELETE FROM #__resource_assoc WHERE child_id=".$id );
-		if (!$this->_db->query()) {
-			echo $this->_db->getErrorMsg();
-			exit;
+		$this->_db->setQuery("DELETE FROM #__resource_assoc WHERE child_id=" . $id);
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
 		}
 		// Delete parent associations
-		$this->_db->setQuery( "DELETE FROM #__resource_assoc WHERE parent_id=".$id );
-		if (!$this->_db->query()) {
-			echo $this->_db->getErrorMsg();
-			exit;
+		$this->_db->setQuery("DELETE FROM #__resource_assoc WHERE parent_id=" . $id);
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
 		}
 		// Delete tag associations
-		$this->_db->setQuery( "DELETE FROM #__tags_object WHERE tbl='resources' AND objectid=".$id );
-		if (!$this->_db->query()) {
-			echo $this->_db->getErrorMsg();
-			exit;
+		$this->_db->setQuery("DELETE FROM #__tags_object WHERE tbl='resources' AND objectid=" . $id);
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
 		}
 		// Delete ratings
-		$this->_db->setQuery( "DELETE FROM #__resource_ratings WHERE resource_id=".$id );
-		if (!$this->_db->query()) {
-			echo $this->_db->getErrorMsg();
-			exit;
+		$this->_db->setQuery("DELETE FROM #__resource_ratings WHERE resource_id=" . $id);
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
 		}
+		return true;
 	}
 
 	/**
-	 * Short description for 'buildQuery'
+	 * Build a query from filters
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     string SQL
 	 */
-	public function buildQuery( $filters=array() )
+	public function buildQuery($filters=array())
 	{
 		$juser =& JFactory::getUser();
-		$now = date( 'Y-m-d H:i:s', time() );
+		$now = date('Y-m-d H:i:s', time());
 
 		$query  = "";
-		if (isset($filters['tag']) && $filters['tag'] != '') {
+		if (isset($filters['tag']) && $filters['tag'] != '') 
+		{
 			$query .= "FROM #__tags_object AS RTA ";
 			$query .= "INNER JOIN #__tags AS TA ON RTA.tagid = TA.id AND RTA.tbl='resources', $this->_tbl AS C ";
-		} else {
+		} 
+		else 
+		{
 			$query .= "FROM $this->_tbl AS C ";
 		}
 		$query .= "LEFT JOIN #__resource_types AS t ON C.type=t.id ";
 		$query .= "LEFT JOIN #__resource_types AS lt ON C.logical_type=lt.id ";
 		$query .= "WHERE C.published=1 AND C.standalone=1 ";
-		if (isset($filters['type']) && $filters['type'] != '') {
-			if ($filters['type'] == 'nontools') {
+		if (isset($filters['type']) && $filters['type'] != '') 
+		{
+			if ($filters['type'] == 'nontools') 
+			{
 				$query .= "AND C.type!=7 ";
-			} else {
-				if ($filters['type'] == 'tools') {
+			} 
+			else 
+			{
+				if ($filters['type'] == 'tools') 
+				{
 					$filters['type'] = 7;
 				}
-				$query .= "AND C.type=".$filters['type']." ";
+				$query .= "AND C.type=" . $filters['type'] . " ";
 			}
-		} else {
+		} 
+		else 
+		{
 			$query .= "AND C.type!=8 ";
 		}
 		if (isset($filters['minranking']) && $filters['minranking'] != '' && $filters['minranking'] > 0) {
-			$query .= "AND C.ranking > ".$filters['minranking']." ";
+			$query .= "AND C.ranking > " . $filters['minranking'] . " ";
 		}
-		$query .= "AND (C.publish_up = '0000-00-00 00:00:00' OR C.publish_up <= '".$now."') ";
-		$query .= "AND (C.publish_down = '0000-00-00 00:00:00' OR C.publish_down >= '".$now."') AND ";
-		if (isset($filters['access']) && $filters['access'] == 'public') {
+		$query .= "AND (C.publish_up = '0000-00-00 00:00:00' OR C.publish_up <= '" . $now . "') ";
+		$query .= "AND (C.publish_down = '0000-00-00 00:00:00' OR C.publish_down >= '" . $now . "') AND ";
+		if (isset($filters['access']) && $filters['access'] == 'public') 
+		{
 			$query .= "(C.access=0 OR C.access=3) ";
-		} else if (!$juser->get('guest')) {
+		} 
+		else if (!$juser->get('guest')) 
+		{
 			ximport('Hubzero_User_Profile');
 			$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
 			$xgroups = (is_object($profile)) ? $profile->getGroups('all') : array();
-			if ($xgroups != '') {
+			if ($xgroups != '') 
+			{
 				$usersgroups = $this->getUsersGroups($xgroups);
-				if (count($usersgroups) > 1) {
-					$groups = implode("','",$usersgroups);
-				} else {
+				if (count($usersgroups) > 1) 
+				{
+					$groups = implode("','", $usersgroups);
+				} 
+				else 
+				{
 					$groups = count($usersgroups) ? $usersgroups[0] : '';
 				}
-				$query .= "(C.access=0 OR C.access=1 OR C.access=3 OR (C.access=4 AND (C.group_owner IN ('".$groups."') ";
+				$query .= "(C.access=0 OR C.access=1 OR C.access=3 OR (C.access=4 AND (C.group_owner IN ('" . $groups . "') ";
 				foreach ($usersgroups as $group)
 				{
-					$query .= " OR C.group_access LIKE '%;".$group.";%'";
+					$query .= " OR C.group_access LIKE '%;" . $group . ";%'";
 				}
 				$query .= "))) ";
-			} else {
+			} 
+			else 
+			{
 				$query .= "(C.access=0 OR C.access=1 OR C.access=3) ";
 			}
-		} else {
+		} 
+		else 
+		{
 			$query .= "(C.access=0 OR C.access=3) ";
 		}
-		if (isset($filters['tag']) && $filters['tag'] != '') {
-			include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'tags.php' );
-			$tagging = new ResourcesTags( $this->_db );
+		if (isset($filters['tag']) && $filters['tag'] != '') 
+		{
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
+			$tagging = new ResourcesTags($this->_db);
 			$tags = $tagging->_parse_tags($filters['tag']);
 
-			$query .= "AND RTA.objectid=C.id AND (TA.tag IN (";
-			$tquery = '';
-			foreach ($tags as $tagg)
-			{
-				$tquery .= "'".$tagg."',";
-			}
-			$tquery = substr($tquery,0,strlen($tquery) - 1);
-			$query .= $tquery.") OR TA.alias IN (".$tquery;
-			$query .= "))";
-			$query .= " GROUP BY C.id HAVING uniques=".count($tags);
+			$query .= "AND RTA.objectid=C.id AND (TA.tag IN ('" . implode("','", $tags) . ") OR TA.alias IN ('" . implode("','", $tags) . "))";
+			$query .= " GROUP BY C.id HAVING uniques=" . count($tags);
 		}
 		$query .= " ORDER BY ";
-		if (isset($filters['sortby'])) {
+		if (isset($filters['sortby'])) 
+		{
 			switch ($filters['sortby'])
 			{
 				case 'date':
@@ -520,20 +532,20 @@ class ResourcesResource extends JTable
 	}
 
 	/**
-	 * Short description for 'getUsersGroups'
+	 * Get a list of group aliases for a user where group membership is confirmed
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $groups Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      array $groups User's groups
+	 * @return     array
 	 */
 	public function getUsersGroups($groups)
 	{
 		$arr = array();
-		if (!empty($groups)) {
+		if (!empty($groups)) 
+		{
 			foreach ($groups as $group)
 			{
-				if ($group->regconfirmed) {
+				if ($group->regconfirmed) 
+				{
 					$arr[] = $group->cn;
 				}
 			}
@@ -542,101 +554,110 @@ class ResourcesResource extends JTable
 	}
 
 	/**
-	 * Short description for 'getCount'
+	 * Get a record count
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
+	 * @param      array $filters Filters to build query from
 	 * @param      boolean $admin Parameter description (if any) ...
 	 * @return     object Return description (if any) ...
 	 */
-	public function getCount( $filters=array(), $admin=false )
+	public function getCount($filters=array(), $admin=false)
 	{
-		$query = $this->buildQuery( $filters, $admin );
+		$query = $this->buildQuery($filters, $admin);
 
 		$sql  = "SELECT C.id";
-		$sql .= (isset($filters['tag']) && $filters['tag'] != '') ? ", TA.tag, COUNT(DISTINCT TA.tag) AS uniques ".$query : " ".$query;
+		$sql .= (isset($filters['tag']) && $filters['tag'] != '') ? ", TA.tag, COUNT(DISTINCT TA.tag) AS uniques " . $query : " " . $query;
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'getRecords'
+	 * Get records
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
+	 * @param      array $filters Filters to build query from
 	 * @param      boolean $admin Parameter description (if any) ...
 	 * @return     object Return description (if any) ...
 	 */
-	public function getRecords( $filters=array(), $admin=false )
+	public function getRecords($filters=array(), $admin=false)
 	{
 		$sql  = "SELECT C.id, C.title, C.type, C.introtext, C.fulltext, C.created, C.created_by, C.modified, C.published, C.publish_up, C.standalone, C.access, C.hits, C.rating, C.times_rated, C.params, C.alias, C.ranking, t.type AS typetitle, lt.type AS logicaltitle";
 		$sql .= (isset($filters['tag']) && $filters['tag'] != '') ? ", TA.tag, COUNT(DISTINCT TA.tag) AS uniques " : " ";
-		$sql .= $this->buildQuery( $filters, $admin );
+		$sql .= $this->buildQuery($filters, $admin);
 		$sql .= (isset($filters['limit']) && $filters['limit'] > 0) ? " LIMIT " . $filters['start'] . ", " . $filters['limit'] : "";
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'buildPluginQuery'
+	 * Build a query based off of filters
+	 * Used by plugins only
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     string SQL
 	 */
-	public function buildPluginQuery( $filters=array() )
+	public function buildPluginQuery($filters=array())
 	{
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
 
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'type.php' );
-		$rt = new ResourcesType( $database );
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
+		$rt = new ResourcesType($database);
 
-		if (isset($filters['search']) && $filters['search'] != '') {
+		if (isset($filters['search']) && $filters['search'] != '') 
+		{
 			$searchquery = $filters['search'];
 			$phrases = $searchquery->searchPhrases;
 		}
-		if (isset($filters['select']) && $filters['select'] == 'count') {
-			if (isset($filters['tags'])) {
+		if (isset($filters['select']) && $filters['select'] == 'count') 
+		{
+			if (isset($filters['tags'])) 
+			{
 				$query = "SELECT count(f.id) FROM (SELECT r.id, COUNT(DISTINCT t.tagid) AS uniques ";
-			} else {
+			} 
+			else 
+			{
 				$query = "SELECT count(DISTINCT r.id) ";
 			}
-		} else {
+		} 
+		else 
+		{
 			$query = "SELECT DISTINCT r.id, r.title, r.alias, r.introtext AS itext, r.fulltext AS ftext, r.published AS state, r.created, r.created_by, r.modified, r.publish_up, r.params, 
-					CONCAT( 'index.php?option=com_resources&id=', r.id ) AS href, 'resources' AS section, rt.type AS area, r.type AS category, r.rating, r.times_rated, r.ranking, r.access ";
-			if (isset($filters['tags'])) {
+					CONCAT('index.php?option=com_resources&id=', r.id) AS href, 'resources' AS section, rt.type AS area, r.type AS category, r.rating, r.times_rated, r.ranking, r.access ";
+			if (isset($filters['tags'])) 
+			{
 				$query .= ", COUNT(DISTINCT t.tagid) AS uniques ";
 			}
-			if (isset($filters['search']) && $filters['search'] != '') {
-				if (!empty($phrases)) {
-					$exactphrase = addslashes('"'.$phrases[0].'"');
+			if (isset($filters['search']) && $filters['search'] != '') 
+			{
+				if (!empty($phrases)) 
+				{
+					$exactphrase = addslashes('"' . $phrases[0] . '"');
 					$query .= ", ("
 							//. "  MATCH(r.introtext,r.fulltext) AGAINST ('$exactphrase' IN BOOLEAN MODE) + r.ranking +"
 							. "  MATCH(r.introtext,r.fulltext) AGAINST ('$exactphrase' IN BOOLEAN MODE) +"
 							. "  MATCH(au.givenName,au.surname) AGAINST ('$exactphrase' IN BOOLEAN MODE) +"
 							. "  MATCH(r.title) AGAINST ('$exactphrase' IN BOOLEAN MODE)"
-							. " ) AS relevance ";
-				} else {
+							. ") AS relevance ";
+				} 
+				else 
+				{
 					$words = array();
-					if (count($searchquery->searchWords) > 0) {
+					if (count($searchquery->searchWords) > 0) 
+					{
 						$ws = $searchquery->searchWords;
 						foreach ($ws as $w)
 						{
-							if (strlen($w) > 2) {
+							if (strlen($w) > 2) 
+							{
 								$words[] = $w;
 							}
 						}
 					}
-					$text = implode(' +',$words);
+					$text = implode(' +', $words);
 					$text = addslashes($text);
 
-					$text2 = str_replace('+','',$text);
+					$text2 = str_replace('+', '', $text);
 
 					$query .= ", ("
 							//. "  MATCH(r.introtext,r.fulltext) AGAINST ('+$text -\"$text2\"') + r.ranking +"
@@ -649,61 +670,72 @@ class ResourcesResource extends JTable
 							//. "  CASE WHEN (LOWER(r.title) LIKE '%$text2%' AND LOWER(r.title) NOT LIKE '%lecture%') THEN 10 ELSE 0 END"
 							. "  CASE WHEN (LOWER(r.title) LIKE '%$text2%' AND r.type=6) THEN 50 ELSE 0 END"
 							//. "  CASE WHEN (SELECT COUNT(*) FROM #__resource_assoc AS ras WHERE ras.child_id=r.id) > 0 THEN -95 ELSE 0 END"
-							. " ) AS relevance ";
+							. ") AS relevance ";
 				}
 			}
-			if (isset($filters['sortby']) && ($filters['sortby'] == 'usage' || $filters['sortby'] == 'users')) {
+			if (isset($filters['sortby']) && ($filters['sortby'] == 'usage' || $filters['sortby'] == 'users')) 
+			{
 				$query .= ", (SELECT rs.users FROM #__resource_stats AS rs WHERE rs.resid=r.id AND rs.period=14 ORDER BY rs.datetime DESC LIMIT 1) AS users ";
 			}
-			if (isset($filters['sortby']) && $filters['sortby'] == 'jobs') {
+			if (isset($filters['sortby']) && $filters['sortby'] == 'jobs') 
+			{
 				$query .= ", (SELECT rs.jobs FROM #__resource_stats AS rs WHERE rs.resid=r.id AND rs.period=14 ORDER BY rs.datetime DESC LIMIT 1) AS jobs ";
 			}
 		}
 		$query .= "FROM $this->_tbl AS r ";
-		$query .= "LEFT JOIN ".$rt->getTableName()." AS rt ON r.type=rt.id ";
-		if (isset($filters['search']) && $filters['search'] != '') {
+		$query .= "LEFT JOIN " . $rt->getTableName() . " AS rt ON r.type=rt.id ";
+		if (isset($filters['search']) && $filters['search'] != '') 
+		{
 			$query .= "LEFT JOIN #__author_assoc AS aus ON aus.subid=r.id AND aus.subtable='resources' 
 						LEFT JOIN #__xprofiles AS au ON aus.authorid=au.uidNumber ";
 		}
-		if (isset($filters['author'])) {
-			//$query .= ", #__author_assoc AS aa ";
+		if (isset($filters['author'])) 
+		{
 			$query .= "LEFT JOIN #__author_assoc AS aa ON aa.subid=r.id AND aa.subtable='resources' ";
 		}
-		if (isset($filters['favorite'])) {
+		if (isset($filters['favorite'])) 
+		{
 			$query .= ", #__xfavorites AS xf ";
 		}
-		if (isset($filters['tag'])) {
+		if (isset($filters['tag'])) 
+		{
 			$query .= ", #__tags_object AS t, #__tags AS tg ";
 		}
-		if (isset($filters['tags'])) {
+		if (isset($filters['tags'])) 
+		{
 			$query .= ", #__tags_object AS t ";
-			//$query .= " INNER JOIN #__tags AS tg ON (t.tagid = tg.id)";
 		}
 		$query .= "WHERE r.standalone=1 ";
-		if ($juser->get('guest') || (isset($filters['authorized']) && !$filters['authorized'])) {
+		if ($juser->get('guest') || (isset($filters['authorized']) && !$filters['authorized'])) 
+		{
 			$query .= "AND r.published=1 ";
 		}
-		if (isset($filters['author'])) {
-			$query .= "AND (aa.authorid='". $filters['author'] ."') "; // "' OR r.created_by=". $filters['author'] .") "; - SS - globalHub #622 - Mourad was the creator of a bunch of resources he was not listed as a contributor to in jos_author_assoc, making his profile page look wildly incorrect
-
+		if (isset($filters['author'])) 
+		{
+			$query .= "AND (aa.authorid='" . $filters['author'] . "') "; // "' OR r.created_by=". $filters['author'] .") "; - SS - globalHub #622 - Mourad was the creator of a bunch of resources he was not listed as a contributor to in jos_author_assoc, making his profile page look wildly incorrect
 		}
-		if (isset($filters['favorite'])) {
-			$query .= "AND xf.uid='". $filters['favorite'] ."' AND r.id=xf.oid AND xf.tbl='resources' ";
+		if (isset($filters['favorite'])) 
+		{
+			$query .= "AND xf.uid='" . $filters['favorite'] . "' AND r.id=xf.oid AND xf.tbl='resources' ";
 		}
 		if (isset($filters['tag'])) {
-			$query .= "AND t.objectid=r.id AND t.tbl='resources' AND t.tagid=tg.id AND (tg.tag='".$filters['tag']."' OR tg.alias='".$filters['tag']."') ";
+			$query .= "AND t.objectid=r.id AND t.tbl='resources' AND t.tagid=tg.id AND (tg.tag='" . $filters['tag'] . "' OR tg.alias='" . $filters['tag'] . "') ";
 		}
-		if (isset($filters['tags'])) {
-			$ids = implode(',',$filters['tags']);
-			$query .= "AND t.objectid=r.id AND t.tbl='resources' AND t.tagid IN (".$ids.") ";
+		if (isset($filters['tags'])) 
+		{
+			$ids = implode(',', $filters['tags']);
+			$query .= "AND t.objectid=r.id AND t.tbl='resources' AND t.tagid IN (" . $ids . ") ";
 		}
-		if (isset($filters['type']) && $filters['type'] != '') {
-			$query .= "AND r.type=".$filters['type']." ";
+		if (isset($filters['type']) && $filters['type'] != '') 
+		{
+			$query .= "AND r.type=" . $filters['type'] . " ";
 		}
 
-		if (isset($filters['group']) && $filters['group'] != '') {
-			$query .= "AND (r.group_owner='".$filters['group']."' OR r.group_access LIKE '%;".$filters['group'].";%') ";
-			if (!$filters['authorized']) {
+		if (isset($filters['group']) && $filters['group'] != '') 
+		{
+			$query .= "AND (r.group_owner='" . $filters['group'] . "' OR r.group_access LIKE '%;" . $filters['group'] . ";%') ";
+			if (!$filters['authorized']) 
+			{
 				switch ($filters['access'])
 				{
 					case 'public':    $query .= "AND r.access = 0 ";  break;
@@ -712,7 +744,9 @@ class ResourcesResource extends JTable
 					case 'all':
 					default:          $query .= "AND r.access != 4 "; break;
 				}
-			} else {
+			} 
+			else 
+			{
 				switch ($filters['access'])
 				{
 					case 'public':    $query .= "AND r.access = 0 ";  break;
@@ -722,88 +756,111 @@ class ResourcesResource extends JTable
 					default:          $query .= ""; break;
 				}
 			}
-		} else {
-			if (!$juser->get('guest')) {
-				if (!isset($filters['usergroups'])) {
+		} 
+		else 
+		{
+			if (!$juser->get('guest')) 
+			{
+				if (!isset($filters['usergroups'])) 
+				{
 					ximport('Hubzero_User_Profile');
 					$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
 					$xgroups = $profile->getGroups('all');
-				} else {
+				} 
+				else 
+				{
 					$xgroups = $filters['usergroups'];
 				}
-				if (isset($filters['author'])) {
+				if (isset($filters['author'])) 
+				{
 					//$query .= "AND (r.access=0 OR r.access=1 OR r.access=3) ";
-				} else if ($xgroups != '') {
+				} 
+				else if ($xgroups != '') 
+				{
 					$usersgroups = $this->getUsersGroups($xgroups);
-					if (count($usersgroups) > 1) {
-						$groups = implode("','",$usersgroups);
-					} else {
+					if (count($usersgroups) > 1) 
+					{
+						$groups = implode("','", $usersgroups);
+					} 
+					else 
+					{
 						$groups = count($usersgroups) ? $usersgroups[0] : '';
 					}
-					$query .= "AND (r.access=0 OR r.access=1 OR r.access=3 OR (r.access=4 AND (r.group_owner IN ('".$groups."') ";
-					/*foreach ($usersgroups as $group)
-					{
-						$query .= " OR r.group_access LIKE '%;".$group.";%'";
-					}*/
-					$query .= " OR r.created_by=".$juser->get('id');
+					$query .= "AND (r.access=0 OR r.access=1 OR r.access=3 OR (r.access=4 AND (r.group_owner IN ('" . $groups . "') ";
+					$query .= " OR r.created_by=" . $juser->get('id');
 					$query .= "))) ";
-				} else {
+				} 
+				else 
+				{
 					$query .= "AND (r.access=0 OR r.access=1 OR r.access=3) ";
 				}
-			} else {
+			} 
+			else 
+			{
 				$query .= "AND (r.access=0 OR r.access=3) ";
 			}
 		}
 
-		if (isset($filters['now'])) {
-			$query .= "AND (r.publish_up = '0000-00-00 00:00:00' OR r.publish_up <= '".$filters['now']."') ";
-			$query .= "AND (r.publish_down = '0000-00-00 00:00:00' OR r.publish_down >= '".$filters['now']."') ";
+		if (isset($filters['now'])) 
+		{
+			$query .= "AND (r.publish_up = '0000-00-00 00:00:00' OR r.publish_up <= '" . $filters['now'] . "') ";
+			$query .= "AND (r.publish_down = '0000-00-00 00:00:00' OR r.publish_down >= '" . $filters['now'] . "') ";
 		}
-		if (isset($filters['startdate'])) {
-			$query .= "AND r.publish_up > '".$filters['startdate']."' ";
+		if (isset($filters['startdate'])) 
+		{
+			$query .= "AND r.publish_up > '" . $filters['startdate'] . "' ";
 		}
-		if (isset($filters['enddate'])) {
-			$query .= "AND r.publish_up < '".$filters['enddate']."' ";
+		if (isset($filters['enddate'])) 
+		{
+			$query .= "AND r.publish_up < '" . $filters['enddate'] . "' ";
 		}
 
-		if (isset($filters['search']) && $filters['search'] != '') {
-			if (!empty($phrases)) {
-				$exactphrase = addslashes('"'.$phrases[0].'"');
-				$query .= "AND ( (MATCH(r.title) AGAINST ('$exactphrase' IN BOOLEAN MODE) > 0) OR"
+		if (isset($filters['search']) && $filters['search'] != '') 
+		{
+			if (!empty($phrases)) 
+			{
+				$exactphrase = addslashes('"' . $phrases[0] . '"');
+				$query .= "AND ((MATCH(r.title) AGAINST ('$exactphrase' IN BOOLEAN MODE) > 0) OR"
 						 . " (MATCH(au.givenName,au.surname) AGAINST ('$exactphrase' IN BOOLEAN MODE) > 0) OR "
-						 . " (MATCH(r.introtext,r.fulltext) AGAINST ('$exactphrase' IN BOOLEAN MODE) > 0) ) ";
-
-			} else {
+						 . " (MATCH(r.introtext,r.fulltext) AGAINST ('$exactphrase' IN BOOLEAN MODE) > 0)) ";
+			} 
+			else 
+			{
 				$words = array();
-				if (count($searchquery->searchWords) > 0) {
+				if (count($searchquery->searchWords) > 0) 
+				{
 					$ws = $searchquery->searchWords;
 					foreach ($ws as $w)
 					{
-						if (strlen($w) > 2) {
+						if (strlen($w) > 2) 
+						{
 							$words[] = $w;
 						}
 					}
 				}
-				$text = implode(' +',$words);
-				//$text = implode(' ',$searchquery->searchWords);
+				$text = implode(' +', $words);
 				$text = addslashes($text);
-				$text2 = str_replace('+','',$text);
+				$text2 = str_replace('+', '', $text);
 
-				$query .= "AND ( (MATCH(r.title) AGAINST ('+$text -\"$text2\"') > 0) OR"
+				$query .= "AND ((MATCH(r.title) AGAINST ('+$text -\"$text2\"') > 0) OR"
 						 . " (MATCH(au.givenName,au.surname) AGAINST ('+$text -\"$text2\"') > 0) OR "
-						 . " (MATCH(r.introtext,r.fulltext) AGAINST ('+$text -\"$text2\"') > 0) ) ";
-
+						 . " (MATCH(r.introtext,r.fulltext) AGAINST ('+$text -\"$text2\"') > 0)) ";
 			}
-			if (isset($filters['limit']) && $filters['limit'] != 'all') {
+			if (isset($filters['limit']) && $filters['limit'] != 'all') 
+			{
 				$query .= "GROUP BY r.id ";
 			}
 		}
-		if (isset($filters['tags'])) {
-			$query .= " GROUP BY r.id HAVING uniques=".count($filters['tags'])." ";
+		if (isset($filters['tags'])) 
+		{
+			$query .= " GROUP BY r.id HAVING uniques=" . count($filters['tags']) . " ";
 		}
-		if (isset($filters['select']) && $filters['select'] != 'count') {
-			if (isset($filters['sortby'])) {
-				if (isset($filters['groupby'])) {
+		if (isset($filters['select']) && $filters['select'] != 'count') 
+		{
+			if (isset($filters['sortby'])) 
+			{
+				if (isset($filters['groupby'])) 
+				{
 					$query .= "GROUP BY r.id ";
 				}
 				$query .= "ORDER BY ";
@@ -819,26 +876,28 @@ class ResourcesResource extends JTable
 					case 'jobs':   $query .= "jobs DESC";              break;
 				}
 			}
-			if (isset($filters['limit']) && $filters['limit'] != 'all') {
-				$query .= " LIMIT ".$filters['limitstart'].",".$filters['limit'];
+			if (isset($filters['limit']) && $filters['limit'] != 'all') 
+			{
+				$query .= " LIMIT " . $filters['limitstart'] . "," . $filters['limit'];
 			}
 		}
-		if (isset($filters['select']) && $filters['select'] == 'count') {
-			if (isset($filters['tags'])) {
+		if (isset($filters['select']) && $filters['select'] == 'count') 
+		{
+			if (isset($filters['tags'])) 
+			{
 				$query .= ") AS f";
 			}
 		}
-//echo '<!-- '.$query.' -->';
+
 		return $query;
 	}
 
 	/**
-	 * Short description for 'getItemCount'
+	 * Get record count
+	 * Used by admin interface
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     integer
 	 */
 	public function getItemCount($filters=array())
 	{
@@ -868,12 +927,11 @@ class ResourcesResource extends JTable
 	}
 
 	/**
-	 * Short description for 'getItems'
+	 * Get records
+	 * Used by admin interface
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     array
 	 */
 	public function getItems($filters=array())
 	{
@@ -919,12 +977,11 @@ class ResourcesResource extends JTable
 	}
 
 	/**
-	 * Short description for 'getItemChildrenCount'
+	 * Get a record count of child resources
+	 * Used by admin interface
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     integer
 	 */
 	public function getItemChildrenCount($filters=array())
 	{
@@ -962,12 +1019,11 @@ class ResourcesResource extends JTable
 	}
 
 	/**
-	 * Short description for 'getItemChildren'
+	 * Get records of child resources
+	 * Used by admin interface
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     array
 	 */
 	public function getItemChildren($filters=array())
 	{

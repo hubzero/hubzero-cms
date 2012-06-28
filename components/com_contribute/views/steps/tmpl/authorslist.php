@@ -98,7 +98,11 @@ if ($this->contributors) {
 
 		<table class="list" summary="<?php echo JText::_('A list of authors on this resource'); ?>">
 			<tfoot>
-				<td></td>
+				<td>
+					<span class="caption">
+						<?php echo JText::_('Changes to organization or role must be saved to take affect.'); ?>
+					</span>
+				</td>
 				<td>
 					<input type="submit" value="<?php echo JText::_('Save Changes'); ?>"/>
 				</td>
@@ -122,11 +126,12 @@ if ($this->contributors) {
 ?>
 				<tr>
 					<td width="100%">
-						<?php echo $this->escape($name); ?>
-						<?php echo ($contributor->org) ? ' <span class="caption">(' . $this->escape($contributor->org) . ')</span>' : ''; ?>
+						<?php echo $this->escape($name); ?><br />
+						<input type="text" name="authors[<?php echo $contributor->authorid; ?>][organization]" size="35" value="<?php echo $this->escape(stripslashes($contributor->org)); ?>" placeholder="<?php echo JText::_('Organization'); ?>" />
+						<?php //echo ($contributor->org) ? ' <span class="caption">(' . $this->escape($contributor->org) . ')</span>' : ''; ?>
 					</td>
 					<td>
-						<select name="authors[<?php echo $contributor->id; ?>]" id="role-<?php echo $contributor->id; ?>">
+						<select name="authors[<?php echo $contributor->authorid; ?>][role]" id="role-<?php echo $contributor->authorid; ?>">
 							<option value=""<?php if ($contributor->role == '') { echo ' selected="selected"'; }?>><?php echo JText::_('Author'); ?></option>
 <?php 
 					if ($this->roles)
@@ -143,20 +148,20 @@ if ($this->contributors) {
 					</td>
 					<td class="u"><?php
 					if ($i > 0 || ($i+0 > 0)) {
-					    echo '<a href="index.php?option=com_contribute&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$contributor->id.'&amp;task=orderupc" class="order up" title="'.JText::_('COM_CONTRIBUTE_MOVE_UP').'"><span>'.JText::_('COM_CONTRIBUTE_MOVE_UP').'</span></a>';
+					    echo '<a href="index.php?option=com_contribute&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$contributor->authorid.'&amp;task=orderupc" class="order up" title="'.JText::_('COM_CONTRIBUTE_MOVE_UP').'"><span>'.JText::_('COM_CONTRIBUTE_MOVE_UP').'</span></a>';
 			  		} else {
 			  		    echo '&nbsp;';
 					}
 					?></td>
 					<td class="d"><?php
 					if ($i < $n-1 || $i+0 < $n-1) {
-						echo '<a href="index.php?option=com_contribute&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$contributor->id.'&amp;task=orderdownc" class="order down" title="'.JText::_('COM_CONTRIBUTE_MOVE_DOWN').'"><span>'.JText::_('COM_CONTRIBUTE_MOVE_DOWN').'</span></a>';
+						echo '<a href="index.php?option=com_contribute&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$contributor->authorid.'&amp;task=orderdownc" class="order down" title="'.JText::_('COM_CONTRIBUTE_MOVE_DOWN').'"><span>'.JText::_('COM_CONTRIBUTE_MOVE_DOWN').'</span></a>';
 			  		} else {
 			  		    echo '&nbsp;';
 					}
 					?></td>
 					<td class="t">
-						<a href="index.php?option=<?php echo $this->option; ?>&amp;task=removeauthor&amp;tmpl=component&amp;id=<?php echo $contributor->id; ?>&amp;pid=<?php echo $this->id; ?>">
+						<a href="index.php?option=<?php echo $this->option; ?>&amp;task=removeauthor&amp;tmpl=component&amp;id=<?php echo $contributor->authorid; ?>&amp;pid=<?php echo $this->id; ?>">
 							<span><img src="/components/<?php echo $this->option; ?>/images/trash.gif" alt="<?php echo JText::_('COM_CONTRIBUTE_DELETE'); ?>" /></span>
 						</a>
 					</td>

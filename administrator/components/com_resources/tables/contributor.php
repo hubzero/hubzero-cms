@@ -145,7 +145,14 @@ class ResourcesContributor extends JTable
 			$subtable = $this->subtable;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE subid=" . $subid . " AND subtable='$subtable' AND authorid=" . $authorid);
+		if (is_numeric($authorid))
+		{
+			$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE subid=" . $subid . " AND subtable='$subtable' AND authorid=" . $authorid);
+		}
+		else 
+		{
+			$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE subid=" . $subid . " AND subtable='$subtable' AND authorid < 0 AND name='" . $authorid . "'");
+		}
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			return $this->bind($result);
@@ -206,7 +213,14 @@ class ResourcesContributor extends JTable
 			$subtable = $this->subtable;
 		}
 
-		$query = "DELETE FROM $this->_tbl WHERE subtable='$subtable' AND subid=" . $subid . " AND authorid=" . $authorid;
+		//if (is_numeric($authorid))
+		//{
+			$query = "DELETE FROM $this->_tbl WHERE subtable='$subtable' AND subid=" . $subid . " AND authorid=" . $authorid;
+		/*} 
+		else 
+		{
+			$query = "DELETE FROM $this->_tbl WHERE subtable='$subtable' AND subid=" . $subid . " AND authorid=0 AND name='" . $authorid . "'";
+		}*/
 
 		$this->_db->setQuery($query);
 		if (!$this->_db->query()) 
@@ -224,7 +238,8 @@ class ResourcesContributor extends JTable
 	 */
 	public function createAssociation()
 	{
-		$query = "INSERT INTO $this->_tbl (subtable, subid, authorid, ordering, role, name, organization) VALUES('$this->subtable', $this->subid, $this->authorid, $this->ordering, '$this->role', '$this->name', '$this->organization')";
+		$query = "INSERT INTO $this->_tbl (subtable, subid, authorid, ordering, role, name, organization) 
+					VALUES('$this->subtable', $this->subid, $this->authorid, $this->ordering, '$this->role', '$this->name', '$this->organization')";
 		$this->_db->setQuery($query);
 		if (!$this->_db->query()) 
 		{
@@ -241,7 +256,9 @@ class ResourcesContributor extends JTable
 	 */
 	public function updateAssociation()
 	{
-		$query = "UPDATE $this->_tbl SET ordering=$this->ordering, role='$this->role', name='$this->name', organization='$this->organization' WHERE subtable='$this->subtable' AND subid=$this->subid AND authorid=$this->authorid";
+		$query = "UPDATE $this->_tbl 
+					SET ordering=$this->ordering, role='$this->role', name='$this->name', organization='$this->organization' 
+					WHERE subtable='$this->subtable' AND subid=$this->subid AND authorid=$this->authorid";
 		$this->_db->setQuery($query);
 		if (!$this->_db->query()) 
 		{
@@ -337,6 +354,39 @@ class ResourcesContributor extends JTable
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
+	}
+
+	/**
+	 * Get the last ID
+	 * 
+	 * @return     integer
+	 */
+	public function getLastUserId()
+	{
+		$this->_db->setQuery("SELECT authorid FROM $this->_tbl ORDER BY authorid ASC LIMIT 1");
+		return $this->_db->loadResult();
+	}
+
+	/**
+	 * Get the user ID for a name
+	 * 
+	 * @param      string $name Name to look up
+	 * @return     integer
+	 */
+	public function getUserId($name)
+	{
+		$this->_db->setQuery("SELECT authorid FROM $this->_tbl WHERE name='$name' AND authorid < 0 LIMIT 1");
+		$uid = $this->_db->loadResult();
+		if (!$uid || $uid > 0)
+		{
+			$uid = $this->getLastUserId();
+			if ($uid > 0)
+			{
+				$uid = 0;
+			}
+			$uid--;
+		}
+		return $uid;
 	}
 }
 

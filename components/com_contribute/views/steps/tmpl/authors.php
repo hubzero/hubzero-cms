@@ -98,7 +98,7 @@ $accesses = array('Public','Registered','Special','Protected','Private');
 			</p>
 <?php } else { ?>
 			<p class="information">
-				Once you have joined one or more groups you may restrict access to this contribution to one of your groups.
+				<?php echo JText::_('Once you have joined one or more groups you may restrict access to this contribution to one of your groups.'); ?>
 			</p>
 <?php } ?>
 		</fieldset><div class="clear"></div>
@@ -113,7 +113,7 @@ $accesses = array('Public','Registered','Special','Protected','Private');
 		<fieldset>
 			<legend><?php echo JText::_('COM_CONTRIBUTE_AUTHORS_AUTHORS'); ?></legend>
 			<div class="field-wrap">
-				<iframe width="100%" height="400" frameborder="0" name="authors" id="authors" src="index.php?option=<?php echo $this->option; ?>&amp;task=authors&amp;id=<?php echo $this->id; ?>&amp;tmpl=component"></iframe>
+				<iframe width="100%" height="400" frameborder="0" name="authors" id="authors" scrolling="auto" src="/index.php?option=<?php echo $this->option; ?>&amp;task=authors&amp;id=<?php echo $this->id; ?>&amp;tmpl=component"></iframe>
 			</div>
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="task" value="<?php echo $this->task; ?>" />

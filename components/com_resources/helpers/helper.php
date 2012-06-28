@@ -211,13 +211,7 @@ class ResourcesHelper extends JObject
 	 */
 	public function getCons()
 	{
-		/*$sql = "SELECT n.uidNumber AS id, n.name AS name, n.givenName AS firstname, n.middleName AS middlename, n.surname AS lastname, n.organization AS org, a.role"
-			 . "\n FROM #__xprofiles AS n"
-			 . "\n JOIN #__author_assoc AS a ON n.uidNumber=a.authorid"
-			 . "\n WHERE a.subtable = 'resources'"
-			 . "\n AND a.subid=". $this->_id 
-			 . "\n ORDER BY ordering, surname, givenName, middleName";*/
-		$sql = "SELECT n.uidNumber AS id, 
+		/*$sql = "SELECT n.uidNumber AS id, 
 				a.name AS name, 
 				n.name AS xname,
 				n.givenName AS firstname, 
@@ -232,16 +226,26 @@ class ResourcesHelper extends JObject
 				AND a.subtable='resources' 
 				AND a.subid=".$this->_id." 
 				ORDER BY ordering, surname, givenName, middleName";
+		*/
+		$sql = "SELECT a.authorid, a.name, a.organization AS org, a.role, n.uidNumber AS id, n.givenName AS firstname, n.middleName AS middlename, n.surname AS lastname, n.organization AS xorg
+				FROM #__author_assoc AS a 
+				LEFT JOIN #__xprofiles AS n ON n.uidNumber=a.authorid
+				WHERE a.subtable='resources' 
+				AND a.subid=" . $this->_id . " 
+				ORDER BY ordering, surname, givenName, middleName";
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		$cons = $this->_db->loadObjectList();
-		if ($cons) {
+		if ($cons) 
+		{
 			foreach ($cons as $k => $c)
 			{
-				if (!$cons[$k]->name) {
+				if (!$cons[$k]->name) 
+				{
 					$cons[$k]->name = $cons[$k]->xname;
 				}
-				if (trim($cons[$k]->org) == '') {
+				if (trim($cons[$k]->org) == '') 
+				{
 					$cons[$k]->org = $cons[$k]->xorg;
 				}
 			}
@@ -298,7 +302,14 @@ class ResourcesHelper extends JObject
 				}
 
 				$name = str_replace( '"', '&quot;', $name );
-				$link  = '<a href="'.JRoute::_('index.php?option=com_members&amp;id='.$contributor->id).'" rel="contributor" title="View the profile of '.$name.'">'.$name.'</a>';
+				if ($contributor->id)
+				{
+					$link  = '<a href="'.JRoute::_('index.php?option=com_members&amp;id='.$contributor->id).'" rel="contributor" title="View the profile of '.$name.'">'.$name.'</a>';
+				}
+				else 
+				{
+					$link  = $name;
+				}
 				$link .= ($contributor->role) ? ' ('.$contributor->role.')' : '';
 
 				if ($newstyle) {
@@ -399,7 +410,14 @@ class ResourcesHelper extends JObject
 				}
 
 				$name = str_replace( '"', '&quot;', $name );
-				$link  = '<a href="'.JRoute::_('index.php?option=com_members&amp;id='.$contributor->id).'" rel="contributor" title="View the profile of '.$name.'">'.$name.'</a>';
+				if ($contributor->id)
+				{
+					$link  = '<a href="'.JRoute::_('index.php?option=com_members&amp;id='.$contributor->id).'" rel="contributor" title="View the profile of '.$name.'">'.$name.'</a>';
+				}
+				else 
+				{
+					$link  = $name;
+				}
 				//$link .= ($contributor->role) ? ' <span class="user-badges"><span>'.$contributor->role.'</span></span>' : '';
 
 				if ($newstyle) {

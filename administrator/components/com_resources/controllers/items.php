@@ -629,7 +629,7 @@ class ResourcesControllerItems extends Hubzero_Controller
 
 		// Push some needed styles to the tmeplate
 		$document =& JFactory::getDocument();
-		$document->addStyleSheet('components/' . $this->_option . '/resources.css');
+		$document->addStyleSheet('components/' . $this->_option . '/assets/css/resources.css');
 
 		// Incoming resource ID
 		$id = JRequest::getVar('id', array(0));
@@ -769,25 +769,25 @@ class ResourcesControllerItems extends Hubzero_Controller
 
 			// Get all contributors linked to this resource
 			$ma = new MembersAssociation($this->database);
-			$sql = "SELECT n.uidNumber AS id, a.name, n.givenName, n.middleName, n.surname, a.role, a.organization  
-					FROM $mp->_tbl AS n, $ma->_tbl AS a  
+			$sql = "SELECT n.uidNumber AS id, a.authorid, a.name, n.givenName, n.middleName, n.surname, a.role, a.organization  
+					FROM $ma->_tbl AS a  
+					LEFT JOIN $mp->_tbl AS n ON n.uidNumber=a.authorid 
 					WHERE a.subtable='resources'
-					AND a.subid=".$this->view->row->id." 
-					AND n.uidNumber=a.authorid
+					AND a.subid=" . $this->view->row->id . " 
 					ORDER BY a.ordering";
 			$this->database->setQuery($sql);
 			$authnames = $this->database->loadObjectList();
 
 			// Build <select> of contributors
 			$authorslist = new JView(array(
-				'name' => $this->_controller, 
+				'name'   => $this->_controller, 
 				'layout' => 'authors'
 			));
 			$authorslist->authnames = $authnames;
-			$authorslist->attribs = $this->view->attribs;
-			$authorslist->option = $this->_option;
-			$authorslist->roles = $rt->getRolesForType($this->view->row->type);
-			
+			$authorslist->attribs   = $this->view->attribs;
+			$authorslist->option    = $this->_option;
+			$authorslist->roles     = $rt->getRolesForType($this->view->row->type);
+
 			$this->view->lists['authors'] = $authorslist->loadTemplate(); //ResourcesHtml::selectAuthors($members, $authnames, $this->view->attribs, $this->_option);
 
 			// Get the tags on this item
@@ -1006,8 +1006,8 @@ class ResourcesControllerItems extends Hubzero_Controller
 		//{
 			include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'contributor.php');
 
-			$authorsNew = preg_split('#,#', $authorsNewstr);
-			$authorsOld = preg_split('#,#', $authorsOldstr);
+			$authorsNew = explode(',', $authorsNewstr);
+			$authorsOld = explode(',', $authorsOldstr);
 
 			// We have either a new ordering or new authors or both
 			if ($authorsNewstr)
@@ -1015,20 +1015,32 @@ class ResourcesControllerItems extends Hubzero_Controller
 				for ($i=0, $n=count($authorsNew); $i < $n; $i++)
 				{
 					$rc = new ResourcesContributor($this->database);
-					$rc->subtable = 'resources';
-					$rc->subid = $row->id;
-					$rc->authorid = $authorsNew[$i];
-					$rc->ordering = $i;
-					$rc->role = trim(JRequest::getVar($authorsNew[$i].'_role', ''));
-					$rc->name = trim(JRequest::getVar($authorsNew[$i].'_name', ''));
+					$rc->subtable     = 'resources';
+					$rc->subid        = $row->id;
+					if (is_numeric($authorsNew[$i]))
+					{
+						$rc->authorid     = $authorsNew[$i];
+					}
+					else 
+					{
+						$rc->authorid = $rc->getUserId($authorsNew[$i]);
+					}
+					$rc->ordering     = $i;
+					$rc->role         = trim(JRequest::getVar($authorsNew[$i] . '_role', ''));
+					$rc->name         = trim(JRequest::getVar($authorsNew[$i] . '_name', ''));
 					$rc->organization = trim(JRequest::getVar($authorsNew[$i] . '_organization', ''));
+
+					$authorsNew[$i] = $rc->authorid;
+
 					if (in_array($authorsNew[$i], $authorsOld))
 					{
+						//echo 'update: ' . $rc->authorid . ', ' . $rc->role . ', ' . $rc->name . ', ' . $rc->organization . '<br />';
 						// Updating record
 						$rc->updateAssociation();
 					}
 					else
 					{
+						//echo 'create: ' . $rc->authorid . ', ' . $rc->role . ', ' . $rc->name . ', ' . $rc->organization . '<br />';
 						// New record
 						$rc->createAssociation();
 					}
@@ -1687,26 +1699,39 @@ class ResourcesControllerItems extends Hubzero_Controller
 	 */
 	public function authorTask()
 	{
-		$this->view->id = JRequest::getInt('u', 0);
+		$this->view->id   = JRequest::getVar('u', '');
 		$this->view->role = JRequest::getVar('role', '');
 		$rid = JRequest::getInt('rid', 0);
 
-		// Get the member's info
-		ximport('Hubzero_User_Profile');
-		$profile = new Hubzero_User_Profile();
-		$profile->load($this->view->id);
+		if (is_numeric($this->view->id))
+		{
+			// Get the member's info
+			ximport('Hubzero_User_Profile');
+			$profile = new Hubzero_User_Profile();
+			$profile->load($this->view->id);
 
-		if (!$profile->get('name'))
-		{
-			$this->view->name  = $profile->get('givenName') . ' ';
-			$this->view->name .= ($profile->get('middleName')) ? $profile->get('middleName') . ' ' : '';
-			$this->view->name .= $profile->get('surname');
+			if (!$profile->get('name'))
+			{
+				$this->view->name  = $profile->get('givenName') . ' ';
+				$this->view->name .= ($profile->get('middleName')) ? $profile->get('middleName') . ' ' : '';
+				$this->view->name .= $profile->get('surname');
+			}
+			else
+			{
+				$this->view->name  = $profile->get('name');
+			}
+			$this->view->org = $profile->get('organization');
 		}
-		else
+		else 
 		{
-			$this->view->name  = $profile->get('name');
+			include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'contributor.php');
+
+			$rcc = new ResourcesContributor($this->database);
+
+			$this->view->org  = '';
+			$this->view->name = str_Replace('_', ' ', $this->view->id);
+			$this->view->id   = $rcc->getUserId($this->view->name);
 		}
-		$this->view->org = $profile->get('organization');
 
 		$row = new ResourcesResource($this->database);
 		$row->load($rid);

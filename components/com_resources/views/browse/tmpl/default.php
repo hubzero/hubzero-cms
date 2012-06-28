@@ -93,7 +93,9 @@ $sortbys['title'] = JText::_('COM_RESOURCES_TITLE');
 ?>
 					</select>
 				</label>
-				<input type="submit" value="<?php echo JText::_('COM_RESOURCES_GO'); ?>" />
+				<p class="submit">
+					<input type="submit" value="<?php echo JText::_('COM_RESOURCES_GO'); ?>" />
+				</p>
 			</fieldset>
 		</div><!-- / .aside -->
 		<div class="subject">

@@ -74,14 +74,14 @@ if ($this->authnames != NULL)
 			$name .= $authname->surname;
 		}
 
-		$authIDs[] = $authname->id;
+		$authIDs[] = $authname->authorid;
 
-		$org = ($authname->organization) ? $this->escape($authname->organization) : $this->attribs->get($authname->id, '');
+		$org = ($authname->organization) ? $this->escape($authname->organization) : $this->attribs->get($authname->authorid, '');
 ?>
-	<li id="author_<?php echo $authname->id; ?>">
+	<li id="author_<?php echo $authname->authorid; ?>">
 		<span class="handle"><?php echo JText::_('DRAG HERE'); ?></span> 
-		<?php echo $this->escape(stripslashes($name)); ?> (<?php echo $authname->id; ?>) [ <a href="#" onclick="HUB.Resources.removeAuthor(this);return false;"><?php echo JText::_('remove'); ?></a> ]
-		<br /><?php echo JText::_('Affiliation'); ?>: <input type="text" name="<?php echo $authname->id; ?>_organization" value="<?php echo $org; ?>" />
+		<?php echo $this->escape(stripslashes($name)); ?> (<?php echo $authname->authorid; ?>) [ <a href="#" onclick="HUB.Resources.removeAuthor(this);return false;"><?php echo JText::_('remove'); ?></a> ]
+		<br /><?php echo JText::_('Affiliation'); ?>: <input type="text" name="<?php echo $authname->authorid; ?>_organization" value="<?php echo $org; ?>" />
 		
 		<select name="<?php echo $authname->id; ?>_role">
 			<option value=""<?php if ($authname->role == '') { echo ' selected="selected"'; }?>><?php echo JText::_('Author'); ?></option>
@@ -97,12 +97,12 @@ if ($this->authnames != NULL)
 	}
 ?>
 		</select>
-		<input type="hidden" name="<?php echo $authname->id; ?>_name" value="<?php echo $this->escape($name); ?>" />
+		<input type="hidden" name="<?php echo $authname->authorid; ?>_name" value="<?php echo $this->escape($name); ?>" />
 	</li>
 <?php
 	}
 }
 ?>
 </ul>
-<input type="hidden" name="old_authors" id="old_authors" value="<?php echo implode(',',$authIDs); ?>" />
-<input type="hidden" name="new_authors" id="new_authors" value="<?php echo implode(',',$authIDs); ?>" />
+<input type="hidden" name="old_authors" id="old_authors" value="<?php echo implode(',', $authIDs); ?>" />
+<input type="hidden" name="new_authors" id="new_authors" value="<?php echo implode(',', $authIDs); ?>" />

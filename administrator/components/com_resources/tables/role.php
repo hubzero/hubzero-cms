@@ -29,77 +29,73 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'ResourcesContributorRole'
- * 
- * Long description (if any) ...
+ * Table class for resource contributor role
  */
 class ResourcesContributorRole extends JTable
 {
 	/**
-	 * Description for 'subid'
+	 * int(11) Primary Key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id    = NULL;  // @var int(11) Primary Key
+	var $id    = NULL;
 
 	/**
-	 * Description for 'authorid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $alias = NULL;  // @var int(11) Primary Key
+	var $alias = NULL;
 
 	/**
-	 * Description for 'ordering'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $title = NULL;  // @var int(11)
+	var $title = NULL;
 
 	/**
-	 * Description for 'role'
+	 * varchar(50)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $state  = NULL;  // @var varchar(50)
+	var $state  = NULL;
 
 	/**
-	 * Description for 'created'
+	 * datetime (0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $created    = NULL;  // @var datetime (0000-00-00 00:00:00)
+	var $created    = NULL;
 
 	/**
-	 * Description for 'created_by'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $created_by = NULL;  // @var int(11)
+	var $created_by = NULL;
 
 	/**
-	 * Description for 'modified'
+	 * datetime (0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $modified   = NULL;  // @var datetime (0000-00-00 00:00:00)
+	var $modified   = NULL;
 
 	/**
-	 * Description for 'modified_by'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $modified_by = NULL;  // @var int(11)
+	var $modified_by = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
 	public function __construct(&$db)
@@ -108,16 +104,14 @@ class ResourcesContributorRole extends JTable
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->title = trim($this->title);
-		
+
 		if (!$this->title) 
 		{
 			$this->setError(JText::_('Please provide a title.'));
@@ -146,12 +140,10 @@ class ResourcesContributorRole extends JTable
 	}
 
 	/**
-	 * Short description for 'loadAlias'
+	 * Load a record and bind to $this
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $oid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      mixed $oid String (alias) or integer (ID)
+	 * @return     boolean True on success
 	 */
 	public function load($oid=NULL)
 	{
@@ -164,7 +156,7 @@ class ResourcesContributorRole extends JTable
 		{
 			return parent::load($oid);
 		}
-		
+
 		$oid = trim($oid);
 		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE alias='$oid'");
 		if ($result = $this->_db->loadAssoc()) 
@@ -179,30 +171,24 @@ class ResourcesContributorRole extends JTable
 	}
 
 	/**
-	 * Short description for 'getCount'
+	 * Get a record count
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $subid Parameter description (if any) ...
-	 * @param      unknown $subtable Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     integer
 	 */
 	public function getCount($filters=array())
 	{
 		$query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
-		
+
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getCount'
+	 * Get records
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $subid Parameter description (if any) ...
-	 * @param      unknown $subtable Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     array
 	 */
 	public function getRecords($filters=array())
 	{
@@ -222,18 +208,16 @@ class ResourcesContributorRole extends JTable
 		{
 			$query .= ' LIMIT ' . $filters['start'] . ',' . $filters['limit'];
 		}
-		
+
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
-	
+
 	/**
-	 * Short description for 'buildQuery'
+	 * Build a query from filters
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     string SQL
 	 */
 	protected function _buildQuery($filters=array())
 	{
@@ -249,7 +233,7 @@ class ResourcesContributorRole extends JTable
 			$where[] = "(LOWER(r.title) LIKE '%" . strtolower($filters['search']) . "%' 
 				OR LOWER(r.alias) LIKE '%" . strtolower($filters['search']) . "%')";
 		}
-		
+
 		if (count($where) > 0)
 		{
 			$query .= " WHERE ";
@@ -260,12 +244,10 @@ class ResourcesContributorRole extends JTable
 	}
 
 	/**
-	 * Short description for 'getNeighbor'
+	 * Get all the roles associated with a type
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $move Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $type_id Type ID
+	 * @return     array
 	 */
 	public function getRolesForType($type_id=null)
 	{
@@ -274,25 +256,23 @@ class ResourcesContributorRole extends JTable
 			$this->setError(JText::_('Missing argument'));
 			return false;
 		}
-		
+
 		$type_id = intval($type_id);
-		
+
 		$query = "SELECT r.id, r.title, r.alias 
 					FROM $this->_tbl AS r
 					JOIN #__author_role_types AS rt ON r.id=rt.role_id AND rt.type_id=$type_id
 					ORDER BY r.title ASC";
-		
+
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
-	
+
 	/**
-	 * Short description for 'getNeighbor'
+	 * Get all the types associated with a role
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $move Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $role_id Role ID
+	 * @return     array
 	 */
 	public function getTypesForRole($role_id=null)
 	{
@@ -300,32 +280,31 @@ class ResourcesContributorRole extends JTable
 		{
 			$role_id = $this->id;
 		}
-		
+
 		if (!$role_id) 
 		{
 			$this->setError(JText::_('Missing argument'));
 			return false;
 		}
-		
+
 		$role_id = intval($role_id);
-		
+
 		$query = "SELECT r.id, r.type, r.alias 
 					FROM #__resource_types AS r
 					LEFT JOIN #__author_role_types AS rt ON r.id=rt.type_id
 					WHERE rt.role_id=$role_id
 					ORDER BY r.type ASC";
-		
+
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
-	
+
 	/**
-	 * Short description for 'getNeighbor'
+	 * Associated types with a role
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $move Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $role_id Role ID
+	 * @param      array   $current Current types associated
+	 * @return     boolean True on success
 	 */
 	public function setTypesForRole($role_id=null, $current=null)
 	{
@@ -333,21 +312,19 @@ class ResourcesContributorRole extends JTable
 		{
 			$role_id = $this->id;
 		}
-		
+
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'role.type.php');
-		
+
 		$rt = new ResourcesContributorRoleType($this->_db);
-		
+
 		return $rt->setTypesForRole($role_id, $current);
 	}
-	
+
 	/**
-	 * Short description for 'getNeighbor'
+	 * Delete a record
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $move Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $oid Record to delete
+	 * @return     boolean True on success
 	 */
 	public function delete($oid=null)
 	{
@@ -355,16 +332,16 @@ class ResourcesContributorRole extends JTable
 		{
 			$oid = $this->id;
 		}
-		
+
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'role.type.php');
-		
+
 		$rt = new ResourcesContributorRoleType($this->_db);
 		if (!$rt->deleteForRole($oid))
 		{
 			$this->setError($rt->getError());
 			return false;
 		}
-		
+
 		return parent::delete($oid);
 	}
 }

@@ -48,4 +48,5 @@ defined('_JEXEC') or die('Restricted access');
 	}
 ?>
 		</select>
+		<input type="hidden" class="authid" name="<?php echo $this->id; ?>authid" value="<?php echo $this->id; ?>" />
 		<input type="hidden" name="<?php echo $this->id; ?>_name" value="<?php echo $this->escape(stripslashes($this->name)); ?>" />
