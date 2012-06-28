@@ -2,11 +2,11 @@
 
 <!--
 @package        hubzero-cms
-@file           plugins/system/xhub.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@file           plugins/system/hubzero.xml
+@copyright      Copyright 2005-2012 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2012 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -28,13 +28,17 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <install version="1.5" type="plugin" group="system">
-	<name>System - xHUB</name>
-	<description>Enables xhub support</description>
+	<name>System - HUBzero</name>
+	<description>Enables HUBzero support</description>
 	<files>
-		<filename plugin="xhub">xhub.php</filename>
+		<filename plugin="hubzero">hubzero.php</filename>
 	</files>
-	<params>
-		<param name="search" type="text" size="25" default="ysearch" label="Search Component" description="The name of the component to default searches to."/>
-	</params>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="search" type="text" size="25" default="ysearch" label="Search Component" description="The name of the component to default searches to."/>
+			</fieldset>
+		</fields>
+	</config>
 </install>
 

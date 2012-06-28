@@ -22,7 +22,7 @@
  *
  * HUBzero is a registered trademark of Purdue University.
  *
- * @package	  HUBzero
+ * @package   HUBzero
  * @package   hubzero-cms
  * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
@@ -32,4 +32,4 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-include_once(JPATH_ROOT . DS . 'plugins' . DS . 'system' . DS . 'xhub' . DS . 'xhub.php');
+include_once(JPATH_ROOT . DS . 'plugins' . DS . 'system' . DS . 'hubzero' . DS . 'hubzero.php');

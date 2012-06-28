@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2012 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -22,10 +22,10 @@
  *
  * HUBzero is a registered trademark of Purdue University.
  *
- * @package	  HUBzero
+ * @package   HUBzero
  * @package   hubzero-cms
- * @author	  Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @copyright Copyright 2005-2012 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -43,8 +43,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 function ximport($path) {
 	if (substr(strtolower($path),0,7) == 'hubzero') {
 		return JLoader::import('.' . str_replace('_', '.', $path), JPATH_ROOT . DS . 'libraries');
-	} else {
-		return JLoader::import('.' . $path, JPATH_PLUGINS . DS . "xhub" . DS . "xlibraries");
 	}
 }
 
@@ -53,7 +51,7 @@ ximport('Hubzero_Factory');
 jimport('joomla.application.router');
 
 /**
- * Class to create and parse routes for XHub application
+ * Class to create and parse routes for HUBzero application
  */
 
 class XRouter extends JRouter
@@ -500,7 +498,7 @@ class XRouter extends JRouter
 			$segments	= explode('/', $route);
 
 			if ($segments[0] == 'search') {   // @FIXME: search component should probably be configurable
-				$plugin = JPluginHelper::getPlugin( 'system', 'xhub' );
+				$plugin = JPluginHelper::getPlugin( 'system', 'hubzero' );
 				$param = new JParameter( $plugin->params );
 				$search = $param->get('search','ysearch');
 				if (empty($search)) {
@@ -1136,7 +1134,7 @@ jimport('joomla.event.plugin');
  * 
  * Long description (if any) ...
  */
-class plgSystemXhub extends JPlugin
+class plgSystemHubzero extends JPlugin
 {
 	/**
 	 * Constructor
@@ -1148,7 +1146,7 @@ class plgSystemXhub extends JPlugin
 	 * @param object $subject The object to observe
 	 * @since 1.5
 	 */
-	function plgSystemXhub(& $subject) 
+	function plgSystemHubzero(& $subject) 
 	{
 		parent::__construct($subject, NULL);
 	}
