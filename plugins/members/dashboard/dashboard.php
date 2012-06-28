@@ -217,7 +217,7 @@ class plgMembersDashboard extends JPlugin
 			$mymods[$i] = explode(',', $mymods[$i]);
 		}*/
 		$mymods = $this->_processList($myhub->prefs);
-
+		
 		$usermods = array();
 		foreach ($mymods as $ky => $arr)
 		{
@@ -235,6 +235,9 @@ class plgMembersDashboard extends JPlugin
 				$allmods = array_merge($allmods, $mymods[$i]);
 			}
 		}
+		
+		//check to see if we have any 
+		$mymods = $this->_resolveDeletedModules($this->modules, $mymods);
 
 		// The number of columns
 		$cols = 3;
@@ -715,6 +718,52 @@ class plgMembersDashboard extends JPlugin
 		}
 
 		return $string;
+	}
+	
+	
+	private function _resolveDeletedModules( $hub_modules, $user_modules )
+	{
+		//get the id's foreach module for the 'myhub/dashboard' position
+		$modules = array();
+		foreach($hub_modules as $hub_module)
+		{
+			$modules[] = $hub_module->id;
+		}
+		
+		//loop through each column of modules then through each module in each colum to see if that module id exists in available modules
+		//if doesnt exist unset from user module prefs
+		$prefs = "";
+		foreach($user_modules as $column => $user_module)
+		{
+			foreach($user_module as $k => $v)
+			{
+				if(!in_array($v, $modules))
+				{
+					unset($user_modules[$column][$k]);
+				}
+				else
+				{
+					$prefs .= $v . ",";
+				}
+			}
+			$prefs .= ";";
+		}
+		
+		//we need to rewrite the user myhub prefs
+		$myhub = new MyhubPrefs($this->database);
+		$myhub->load($this->member->get('uidNumber'));
+		$myhub->prefs = rtrim(str_replace(",;", ";", $prefs), ";");
+		$myhub->modified = date("Y-m-d H:i:s");
+		if (!$myhub->check()) 
+		{
+			$this->setError($myhub->getError());
+		}
+		if (!$myhub->store()) 
+		{
+			$this->setError($myhub->getError());
+		}
+		
+		return $user_modules;
 	}
 
 	/**
