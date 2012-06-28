@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Helper class for getting a user's IP, etc.
@@ -70,19 +70,19 @@ class Hubzero_Environment
 	 */
 	public function ipAddress()
 	{
-		if (Hubzero_Environment::server('REMOTE_ADDR') && Hubzero_Environment::server('HTTP_CLIENT_IP')) 
+		if (self::server('REMOTE_ADDR') && self::server('HTTP_CLIENT_IP')) 
 		{
 			$ip_address = JRequest::getVar('HTTP_CLIENT_IP', '', 'server');
 		} 
-		elseif (Hubzero_Environment::server('REMOTE_ADDR')) 
+		elseif (self::server('REMOTE_ADDR')) 
 		{
 			$ip_address = JRequest::getVar('REMOTE_ADDR', '', 'server');
 		} 
-		elseif (Hubzero_Environment::server('HTTP_CLIENT_IP')) 
+		elseif (self::server('HTTP_CLIENT_IP')) 
 		{
 			$ip_address = JRequest::getVar('HTTP_CLIENT_IP', '', 'server');
 		} 
-		elseif (Hubzero_Environment::server('HTTP_X_FORWARDED_FOR')) 
+		elseif (self::server('HTTP_X_FORWARDED_FOR')) 
 		{
 			$ip_address = JRequest::getVar('HTTP_X_FORWARDED_FOR', '', 'server');
 		}
@@ -99,7 +99,7 @@ class Hubzero_Environment
 			$ip_address = end($x);
 		}
 
-		if (!Hubzero_Environment::validIp($ip_address)) 
+		if (!self::validIp($ip_address)) 
 		{
 			$ip_address = '0.0.0.0';
 		}

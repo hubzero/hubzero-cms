@@ -29,82 +29,73 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-//
-// Hubzero_Log Logging Class
-//
-// A work in progress. 
-//
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Description for ''HUBZERO_LOG_EMERG''
+ * Emergency message
  */
 define('HUBZERO_LOG_EMERG', 1);
 
 /**
- * Description for ''HUBZERO_LOG_ALERT''
+ * Alert message
  */
 define('HUBZERO_LOG_ALERT', 2);
 
 /**
- * Description for ''HUBZERO_LOG_CRIT''
+ * Critical message
  */
 define('HUBZERO_LOG_CRIT',  4);
 
 /**
- * Description for ''HUBZERO_LOG_ERR''
+ * Error message
  */
 define('HUBZERO_LOG_ERR',   8);
 
 /**
- * Description for ''HUBZERO_LOG_WARNING''
+ * Waring message
  */
 define('HUBZERO_LOG_WARNING', 16);
 
 /**
- * Description for ''HUBZERO_LOG_NOTICE''
+ * Notice message
  */
 define('HUBZERO_LOG_NOTICE', 32);
 
 /**
- * Description for ''HUBZERO_LOG_INFO''
+ * Info message
  */
 define('HUBZERO_LOG_INFO', 64);
 
 /**
- * Description for ''HUBZERO_LOG_DEBUG''
+ * Debug message
  */
 define('HUBZERO_LOG_DEBUG', 128);
 
 /**
- * Description for ''HUBZERO_LOG_AUTH''
+ * Authorization message
  */
 define('HUBZERO_LOG_AUTH', 256);
 
-include_once(JPATH_ROOT.DS.'libraries'.DS.'Hubzero'.DS.'Log'.DS.'FileHandler.php');
+include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'Log' . DS . 'FileHandler.php');
 
 /**
- * Short description for 'Hubzero_Log'
+ * Hubzero_Log Logging Class
  * 
- * Long description (if any) ...
+ * A work in progress. 
  */
 class Hubzero_Log
 {
-
 	/**
-	 * Description for '_handler'
+	 * Container for message types
 	 * 
 	 * @var array
 	 */
 	var $_handler = array();
 
 	/**
-	 * Short description for 'getSimpleTrace'
+	 * Get a simple stacktrace
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     mixed Return description (if any) ...
+	 * @return     string
 	 */
 	public function getSimpleTrace()
 	{
@@ -112,22 +103,22 @@ class Hubzero_Log
 
 		foreach ($backtrace as $file)
 		{
-			$filename = (!empty($file['file'])) ? basename( $file['file'] ) : 'unknown';
-			$line     = (!empty($file['line'])) ? $file['line'] : 'unknown';
+			$filename = (!empty($file['file'])) ? basename($file['file']) : 'unknown';
+			$line     = (!empty($file['line'])) ? $file['line']           : 'unknown';
 
-			if ($filename == 'Log.php') {// supress the trace through the xlog class
+			if ($filename == 'Log.php') 
+			{
+				// supress the trace through the xlog class
 				continue;
 			}
 
 			$files[] = "($filename:$line)";
 		}
-		return " [" . implode(',', $files) . "]";
+		return ' [' . implode(',', $files) . ']';
 	}
 
 	/**
-	 * Short description for '__construct'
-	 * 
-	 * Long description (if any) ...
+	 * Constructor
 	 * 
 	 * @return     void
 	 */
@@ -137,24 +128,24 @@ class Hubzero_Log
 	}
 
 	/**
-	 * Short description for 'detach'
+	 * Unset an array of messages for a specific type
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $priority Parameter description (if any) ...
-	 * @param      unknown $handler Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $priority Message type
+	 * @param      array   $handler  Message types container
+	 * @return     boolean True on success
 	 */
 	public function detach($priority, $handler)
 	{
-		if (!is_array($this->_handler[$priority]) ) {
+		if (!is_array($this->_handler[$priority])) 
+		{
 			return false;
 		}
 
-		$index = array_search( $handler, $this->_hander[$priority] );
+		$index = array_search($handler, $this->_hander[$priority]);
 
-		if ($index !== false) {
-			unset( $this->_handler[$priority][$index] );
+		if ($index !== false) 
+		{
+			unset($this->_handler[$priority][$index]);
 			return true;
 		}
 
@@ -162,13 +153,11 @@ class Hubzero_Log
 	}
 
 	/**
-	 * Short description for 'attach'
+	 * Set an array of messages for a specific type
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $priority Parameter description (if any) ...
-	 * @param      unknown $handler Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      integer $priority Message type
+	 * @param      array   $handler  Message types container
+	 * @return     void
 	 */
 	public function attach($priority, $handler)
 	{
@@ -177,13 +166,11 @@ class Hubzero_Log
 	}
 
 	/**
-	 * Short description for 'log'
+	 * Log a message
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $priority Parameter description (if any) ...
-	 * @param      unknown $message Parameter description (if any) ...
-	 * @param      boolean $trace Parameter description (if any) ...
+	 * @param      integer $priority Priority level
+	 * @param      string  $message  Message to log
+	 * @param      boolean $trace    Log the stacktrace?
 	 * @return     void
 	 */
 	public function log($priority, $message, $trace = false)
@@ -195,12 +182,10 @@ class Hubzero_Log
 	}
 
 	/**
-	 * Short description for 'logEmergency'
+	 * Log an emergency message
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $message Parameter description (if any) ...
-	 * @param      boolean $trace Parameter description (if any) ...
+	 * @param      string  $message Message to log
+	 * @param      boolean $trace   Log the stacktrace?
 	 * @return     void
 	 */
 	public function logEmergency($message, $trace = false)
@@ -209,12 +194,10 @@ class Hubzero_Log
 	}
 
 	/**
-	 * Short description for 'logAlert'
+	 * Log an alert message
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $message Parameter description (if any) ...
-	 * @param      boolean $trace Parameter description (if any) ...
+	 * @param      string  $message Message to log
+	 * @param      boolean $trace   Log the stacktrace?
 	 * @return     void
 	 */
 	public function logAlert($message, $trace = false)
@@ -223,12 +206,10 @@ class Hubzero_Log
 	}
 
 	/**
-	 * Short description for 'logCrit'
+	 * Log a critical message
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $message Parameter description (if any) ...
-	 * @param      boolean $trace Parameter description (if any) ...
+	 * @param      string  $message Message to log
+	 * @param      boolean $trace   Log the stacktrace?
 	 * @return     void
 	 */
 	public function logCrit($message, $trace = false)
@@ -237,12 +218,10 @@ class Hubzero_Log
 	}
 
 	/**
-	 * Short description for 'logError'
+	 * Log an error message
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $message Parameter description (if any) ...
-	 * @param      boolean $trace Parameter description (if any) ...
+	 * @param      string  $message Message to log
+	 * @param      boolean $trace   Log the stacktrace?
 	 * @return     void
 	 */
 	public function logError($message, $trace = false)
@@ -251,12 +230,10 @@ class Hubzero_Log
 	}
 
 	/**
-	 * Short description for 'logWarning'
+	 * Log a warning message
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $message Parameter description (if any) ...
-	 * @param      boolean $trace Parameter description (if any) ...
+	 * @param      string  $message Message to log
+	 * @param      boolean $trace   Log the stacktrace?
 	 * @return     void
 	 */
 	public function logWarning($message, $trace = false)
@@ -265,12 +242,10 @@ class Hubzero_Log
 	}
 
 	/**
-	 * Short description for 'logNotice'
+	 * Log a notice message
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $messsage Parameter description (if any) ...
-	 * @param      boolean $trace Parameter description (if any) ...
+	 * @param      string  $message Message to log
+	 * @param      boolean $trace   Log the stacktrace?
 	 * @return     void
 	 */
 	public function logNotice($messsage, $trace = false)
@@ -279,12 +254,10 @@ class Hubzero_Log
 	}
 
 	/**
-	 * Short description for 'logInfo'
+	 * Log info
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $message Parameter description (if any) ...
-	 * @param      boolean $trace Parameter description (if any) ...
+	 * @param      string  $message Message to log
+	 * @param      boolean $trace   Log the stacktrace?
 	 * @return     void
 	 */
 	public function logInfo($message, $trace = false)
@@ -293,12 +266,10 @@ class Hubzero_Log
 	}
 
 	/**
-	 * Short description for 'logDebug'
+	 * Log a debug message
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $message Parameter description (if any) ...
-	 * @param      boolean $trace Parameter description (if any) ...
+	 * @param      string  $message Message to log
+	 * @param      boolean $trace   Log the stacktrace?
 	 * @return     void
 	 */
 	public function logDebug($message, $trace = false)
@@ -307,12 +278,10 @@ class Hubzero_Log
 	}
 
 	/**
-	 * Short description for 'logAuth'
+	 * Log an authorization message
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $message Parameter description (if any) ...
-	 * @param      boolean $trace Parameter description (if any) ...
+	 * @param      string  $message Message to log
+	 * @param      boolean $trace   Log the stacktrace?
 	 * @return     void
 	 */
 	public function logAuth($message, $trace = false)

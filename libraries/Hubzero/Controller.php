@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * @see JView
@@ -37,9 +37,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 jimport('joomla.application.component.view');
 
 /**
- * @package		HUBzero                                  CMS
- * @author		Shawn                                     Rice <zooley@purdue.edu>
- * @copyright	Copyright                               2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
+ * @package		HUBzero CMS
+ * @author		Shawn Rice <zooley@purdue.edu>
+ * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  */
 class Hubzero_Controller extends JObject
@@ -221,10 +221,7 @@ class Hubzero_Controller extends JObject
 			return JError::raiseError(404, JText::sprintf('JLIB_APPLICATION_ERROR_TASK_NOT_FOUND', $this->_task));
 		}
 
-		//$this->_controller = JRequest::getCmd('controller', '');
 		// Attempt to parse the controller name from the class name
-		//if ((ucfirst($this->_name) . 'Controller') != get_class($this)
-		// && preg_match('/' . ucfirst($this->_name) . 'Controller(.*)/i', get_class($this), $r))
 		if ((ucfirst($this->_name) . 'Controller') != get_class($this)
 		 && preg_match('/(\w)Controller(.*)/i', get_class($this), $r))
 		{
@@ -242,13 +239,13 @@ class Hubzero_Controller extends JObject
 		{
 			$this->view = new JView(array(
 				'base_path' => $this->_basePath,
-				'name' => $doTask
+				'name'      => $doTask
 			));
 		}
 
 		// Set some commonly used vars
-		$this->view->option = $this->_option;
-		$this->view->task = $doTask;
+		$this->view->option     = $this->_option;
+		$this->view->task       = $doTask;
 		$this->view->controller = $this->_controller;
 
 		// Record the actual task being fired
@@ -276,7 +273,7 @@ class Hubzero_Controller extends JObject
 			$config['layout'] = $layout;
 		}
 		$this->view = new JView($config);
-		
+
 		// Set some commonly used vars
 		$this->view->option = $this->_option;
 		$this->view->task = $name;
@@ -292,10 +289,6 @@ class Hubzero_Controller extends JObject
 	 */
 	public function registerTask($task, $method)
 	{
-		/*if (in_array(strtolower($method), $this->_methods)) 
-		{
-			$this->_taskMap[strtolower($task)] = $method;
-		}*/
 		if (in_array(strtolower($method), $this->_taskMap))
 		{
 			$this->_taskMap[strtolower($task)] = $method;
@@ -407,7 +400,6 @@ class Hubzero_Controller extends JObject
 		{
 			$option = 'com_' . $option;
 		}
-		//$stylesheet = ($stylesheet) ? $stylesheet : $this->_name;
 
 		Hubzero_Document::addComponentStylesheet($option, $stylesheet);
 	}

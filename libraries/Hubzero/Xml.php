@@ -31,56 +31,49 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-//define('XML_ERROR_NONE', 0);
-
 /**
- * Description for ''XML_ERROR_DEPTH''
+ * Error message type for depth
  */
 define('XML_ERROR_DEPTH', 1);
 
 /**
- * Description for ''XML_ERROR_STATE_MISMATCH''
+ * Error message type for state mismatch
  */
 define('XML_ERROR_STATE_MISMATCH', 2);
 
 /**
- * Description for ''XML_ERROR_CTRL_CHAR''
+ * Error message type for ctrl char
  */
 define('XML_ERROR_CTRL_CHAR', 3);
 //define('XML_ERROR_SYNTAX', 4);
 
 /**
- * Description for ''XML_ERROR_UTF8''
+ * Error message type for UTF8
  */
 define('XML_ERROR_UTF8', 5);
 
 /**
- * Short description for 'Hubzero_Xml'
- * 
- * Long description (if any) ...
+ * Hubzero class for encoding and decoding XML
  */
 class Hubzero_Xml
 {
-
 	/**
-	 * Short description for 'encode'
+	 * Encode a variable into XML
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $mixed Parameter description (if any) ...
-	 * @param      string $tag Parameter description (if any) ...
-	 * @param      string $attributes Parameter description (if any) ...
-	 * @param      number $depth Parameter description (if any) ...
-	 * @param      boolean $show_declaration Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      mixed   $mixed            Data to encode (array/object)
+	 * @param      string  $tag              Root tag name
+	 * @param      string  $attributes       Attributes to add
+	 * @param      number  $depth            Depth to encode to
+	 * @param      boolean $show_declaration Show XML doctype declaration
+	 * @return     string XML
 	 */
-	function encode($mixed, $tag='root', $attributes='', $depth = 1, $show_declaration = true)
+	public function encode($mixed, $tag='root', $attributes='', $depth = 1, $show_declaration = true)
 	{
 		$declaration = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
 
-		$indent = ($depth > 1) ? str_repeat("\t",$depth-1) : '';
+		$indent = ($depth > 1) ? str_repeat("\t", $depth-1) : '';
 
-	    $xml = ($show_declaration) ? $indent . $declaration . "\n" : '';
+		$xml = ($show_declaration) ? $indent . $declaration . "\n" : '';
 
 		$element_type = gettype($mixed);
 
@@ -102,19 +95,31 @@ class Hubzero_Xml
 
 		$sp = (!empty($attributes)) ? ' ' : '';
 
-		if (in_array($element_type,array('object','a-array')))
+		if (in_array($element_type, array('object','a-array')))
+		{
 			$xml_element_type = 'object';
-		else if (in_array($element_type,array('double','integer')))
+		}
+		else if (in_array($element_type, array('double','integer')))
+		{
 			$xml_element_type = 'number';
-		else if (in_array($element_type,array('array','boolean','string')))
+		}
+		else if (in_array($element_type, array('array','boolean','string')))
+		{
 			$xml_element_type = $element_type;
+		}
 		else if ($element_type == 'NULL')
+		{
 			$xml_element_type = 'null';
+		}
 		else
+		{
 			$xml_element_type = '';
+		}
 
 		if (!empty($xml_element_type))
+		{
 			$attributes .= $sp . 'type="' . $xml_element_type . '"';
+		}
 
 		$sp = (!empty($attributes)) ? ' ' : '';
 
@@ -164,6 +169,7 @@ class Hubzero_Xml
 					$vname = $key;
 				}
 
+				/* !!Where's this method?! */
 				$xml .= self::encode_var($value, $vname, $vattributes, $depth+1, false);
 			}
 
@@ -181,51 +187,51 @@ class Hubzero_Xml
 			}
 			else
 			{
-	       		$xml .= htmlspecialchars($mixed, ENT_QUOTES);
+				$xml .= htmlspecialchars($mixed, ENT_QUOTES);
 			}
 		}
 
 		$xml .= "</$tag>";
 
 		if ($depth > 1)
+		{
 			echo "\n";
+		}
 
 		self::last_error(XML_ERROR_NONE);
 	    return $xml;
 	}
 
 	/**
-	 * Short description for 'last_error'
+	 * Set the last error
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $id Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param      integer $id Error number
+	 * @return     integer 
 	 */
-	function last_error($id)
+	public function last_error($id)
 	{
 		static $last_error = 0;
 
 		if (isset($id))
+		{
 			$last_error = $id;
+		}
 
 		return $last_error;
 	}
 
 	/**
-	 * Short description for 'decode'
+	 * Parse XML and return as array or object
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $xml Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      string $xml XML
+	 * @return     mixed Array or object
 	 */
-	function decode($xml)
+	public function decode($xml)
 	{
 		$p = xml_parser_create();
 
-	    xml_parser_set_option($p, XML_OPTION_CASE_FOLDING, 0);
-	    xml_parser_set_option($p, XML_OPTION_SKIP_WHITE,   1);
+		xml_parser_set_option($p, XML_OPTION_CASE_FOLDING, 0);
+		xml_parser_set_option($p, XML_OPTION_SKIP_WHITE,   1);
 		xml_parse_into_struct($p, $xml, $vals, $index);
 		xml_parser_free($p);
 
@@ -235,7 +241,7 @@ class Hubzero_Xml
 
 		$obj = null;
 
-		for($i = 0; $i < $count; $i++)
+		for ($i = 0; $i < $count; $i++)
 		{
 			$v = $vals[$i];
 
@@ -245,18 +251,22 @@ class Hubzero_Xml
 				{
 					if (is_null($obj))
 					{
-						array_push($stack,array(null,$obj));
+						array_push($stack, array(null,$obj));
 					}
 					else if (is_array($obj) || is_object($obj))
 					{
-						array_push($stack,array($v['tag'],$obj));
+						array_push($stack, array($v['tag'],$obj));
 					}
 					else
 					{
 						if ($fatal)
+						{
 							die('invalid container');
+						}
 						else
+						{
 							return false;
+						}
 					}
 
 					$obj = new stdClass();
@@ -265,11 +275,11 @@ class Hubzero_Xml
 				{
 					if (is_null($obj))
 					{
-						array_push($stack,array(null,$obj));
+						array_push($stack, array(null,$obj));
 					}
 					else if (is_array($obj) || is_object($obj))
 					{
-						array_push($stack,array($v['tag'],$obj));
+						array_push($stack, array($v['tag'],$obj));
 					}
 					else
 					{
@@ -369,7 +379,9 @@ class Hubzero_Xml
 				$obj = $prev[1];
 			}
 			else
+			{
 				die('unknown parse part');
+			}
 
 		}
 

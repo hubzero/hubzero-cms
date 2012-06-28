@@ -29,20 +29,16 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Hubzero_Hub'
- * 
- * Long description (if any) ...
+ * Hubzero class for hub configuration
  */
 class Hubzero_Hub
 {
-
 	/**
-	 * Short description for '__construct'
-	 * 
-	 * Long description (if any) ...
+	 * Constructor
+	 * Loads configuration file if found
 	 * 
 	 * @return     void
 	 */
@@ -52,9 +48,7 @@ class Hubzero_Hub
 	}
 
 	/**
-	 * Short description for 'loadConfig'
-	 * 
-	 * Long description (if any) ...
+	 * Load the configuration file
 	 * 
 	 * @return     void
 	 */
@@ -65,25 +59,29 @@ class Hubzero_Hub
 		$file = JPATH_CONFIGURATION . DS . 'hubconfiguration.php';
 
 		if (file_exists($file)) {
+		{
 			include_once($file);
+		}
+		if (class_exists('HubConfig'))
 		}
 
 		if ( class_exists('HubConfig') ) {
 			$config = new HubConfig();
+		{
+		}
+		if (class_exists('HubConfigOverride'))
 			$registry->loadObject($config, 'xhub');
 		}
 	}
 
 	/**
-	 * Short description for 'getCfg'
+	 * Get a hub configuration
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $varname Parameter description (if any) ...
-	 * @param      string $default Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string $varname Property to get
+	 * @param      string $default Default value if not found
+	 * @return     string
 	 */
-	public function getCfg( $varname, $default = '' )
+	public function getCfg($varname, $default = '')
 	{
 		$config = &JFactory::getConfig();
 
@@ -93,33 +91,26 @@ class Hubzero_Hub
 	}
 
 	/**
-	 * Short description for 'redirect'
+	 * Redirect page, giving a proper 301 if permanent
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      mixed $url Parameter description (if any) ...
-	 * @param      boolean $permanent Parameter description (if any) ...
+	 * @param      string  $url       URL to redirect to
+	 * @param      boolean $permanent Page permanently moved?
 	 * @return     void
 	 */
 	public function redirect($url, $permanent = false)
 	{
 		// check for relative internal links
-
-		if (preg_match( '#^index[2]?.php#', $url ))
+		if (preg_match('#^index[2]?.php#', $url))
 		{
 			$url = JURI::base() . $url;
 		}
 
 		// Strip out any line breaks
-
 		$url = preg_split("/[\r\n]/", $url);
 		$url = $url[0];
 
-		/*
-		 * If the headers have been sent, then we cannot send an additional location header
-		 * so we will output a javascript redirect statement.
-		 */
-
+		// If the headers have been sent, then we cannot send an additional location header
+		// so we will output a javascript redirect statement.
 		if (headers_sent())
 		{
 			echo "<script>document.location.href='$url';</script>\n";
@@ -127,11 +118,12 @@ class Hubzero_Hub
 		else
 		{
 			//@ob_end_clean(); // clear output buffer
-
 			if ($permanent)
-				header( 'HTTP/1.1 301 Moved Permanently' );
+			{
+				header('HTTP/1.1 301 Moved Permanently');
+			}
 
-			header( 'Location: ' . $url );
+			header('Location: ' . $url);
 		}
 
 		exit(0);

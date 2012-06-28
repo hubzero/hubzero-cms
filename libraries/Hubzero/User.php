@@ -29,39 +29,35 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Hubzero_User'
- * 
- * Long description (if any) ...
+ * Hubzero class for user information
  */
 class Hubzero_User
 {
-
 	/**
-	 * Description for '_profile'
+	 * Container for Hubzero_User_Profile object
 	 * 
 	 * @var object
 	 */
 	private $_profile = null;
 
 	/**
-	 * Description for '_user'
+	 * Container for JUser object
 	 * 
 	 * @var object
 	 */
 	private $_user = null;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
+	 * Loads a user, defaults to current user
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $user Parameter description (if any) ...
+	 * @param      mixed $user Username or ID to load
 	 * @return     void
 	 */
-	function __construct($user = null)
+	public function __construct($user = null)
 	{
 		if (!is_null($user))
 		{
@@ -70,28 +66,25 @@ class Hubzero_User
 	}
 
 	/**
-	 * Short description for 'getInstance'
+	 * Load a user
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $user Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      mixed $user Username or ID to load
+	 * @return     object Hubzero_User
 	 */
-	function getInstance($user)
+	public function getInstance($user)
 	{
 		$instance = new Hubzero_User($user);
 
 		if ($instance->_user == null)
+		{
 			return null;
+		}
 
 		return $instance;
-
 	}
 
 	/**
-	 * Short description for '_load_profile'
-	 * 
-	 * Long description (if any) ...
+	 * Load a user's profile
 	 * 
 	 * @return     void
 	 */
@@ -101,14 +94,12 @@ class Hubzero_User
 	}
 
 	/**
-	 * Short description for 'comparePassword'
+	 * Compare a password against the profile password
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $password Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string $password Password to compare
+	 * @return     boolean True if passwords are the same, false if not
 	 */
-	function comparePassword($password) // @TODO: PASSWORD, deprecated?
+	public function comparePassword($password) // @TODO: PASSWORD, deprecated?
 	{
 		if (is_null($this->_profile))
 		{
@@ -136,15 +127,12 @@ class Hubzero_User
 	}
 
 	/**
-	 * Short description for 'getUserId'
+	 * Get the user's ID
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     mixed Return description (if any) ...
+	 * @return     integer
 	 */
-	function getUserId()
+	public function getUserId()
 	{
 		return $this->_user->get('id');
 	}
-
 }

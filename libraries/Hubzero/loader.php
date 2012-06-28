@@ -32,15 +32,19 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'ximport'
+ * Include a Hubzero library class
  * 
- * Long description (if any) ...
- * 
- * @param  string $path Parameter description (if any) ...
- * @return string Return description (if any) ...
+ * @param  string $path Name of the class to include (equates to path)
+ * @return boolean True on success
  */
-function ximport($path) {
-    if (substr(strtolower($path),0,7) == 'hubzero') {
-        return JLoader::import('.' . str_replace('_', '.', $path), JPATH_ROOT . DS . 'libraries');
-    }
+function ximport($path) 
+{
+	if (substr(strtolower($path),0,7) == 'hubzero') 
+	{
+		return JLoader::import('.' . str_replace('_', '.', $path), JPATH_ROOT . DS . 'libraries');
+	} 
+	else 
+	{
+		return JLoader::import('.' . $path, JPATH_PLUGINS . DS . 'xhub' . DS . 'xlibraries');
+	}
 }

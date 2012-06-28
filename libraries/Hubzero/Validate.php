@@ -30,23 +30,18 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Hubzero_Validate'
- * 
- * Long description (if any) ...
+ * Hubzero helper class for input validation
  */
 class Hubzero_Validate
 {
-
 	/**
-	 * Short description for 'is_any_integer'
+	 * Is value an integer?
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $x Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      unknown $x Value to check
+	 * @return     boolean True if valid, false if invalid
 	 */
 	static public function is_any_integer($x)
 	{
@@ -54,12 +49,10 @@ class Hubzero_Validate
 	}
 
 	/**
-	 * Short description for 'is_positive_integer'
+	 * Is value a positive integer?
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $x Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param      integer $x Value to check
+	 * @return     boolean True if valid, false if invalid
 	 */
 	static public function is_positive_integer($x)
 	{
@@ -67,12 +60,10 @@ class Hubzero_Validate
 	}
 
 	/**
-	 * Short description for 'is_nonnegative_integer'
+	 * Is value a non-negative integer?
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $x Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param      integer $x Value to check
+	 * @return     boolean True if valid, false if invalid
 	 */
 	static public function is_nonnegative_integer($x)
 	{
@@ -80,12 +71,10 @@ class Hubzero_Validate
 	}
 
 	/**
-	 * Short description for 'is_nonpositive_integer'
+	 * Is value a non-positive integer?
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $x Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param      integer $x Value to check
+	 * @return     boolean True if valid, false if invalid
 	 */
 	static public function is_nonpositive_integer($x)
 	{
@@ -93,12 +82,10 @@ class Hubzero_Validate
 	}
 
 	/**
-	 * Short description for 'is_negative_integer'
+	 * Is value a negative integer?
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $x Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param      integer $x Value to check
+	 * @return     boolean True if valid, false if invalid
 	 */
 	static public function is_negative_integer($x)
 	{
@@ -106,193 +93,182 @@ class Hubzero_Validate
 	}
 
 	/**
-	 * Short description for 'is_reserved_username'
+	 * Check if a username is a reserved name
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $x Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string $x Username to check
+	 * @return     boolean True if valid, false if invalid
 	 */
 	static public function is_reserved_username($x)
 	{
 		$reserved_users = array(
-			"adm",
-			"alfred",
-			"apache",
-			"backup",
-			"bin",
-			"canna",
-			"condor",
-			"condor-util",
-			"daemon",
-			"debian-exim",
-			"exim",
-			"ftp",
-			"games",
-			"ganglia",
-			"gnats",
-			"gopher",
-			"halt",
-			"ibrix",
-			"invigosh",
-			"irc",
-			"ldap",
-			"list",
-			"lp",
-			"mail",
-			"mailnull",
-			"man",
-			"nagios",
-			"netdump",
-			"news",
-			"nfsnobody",
-			"noaccess",
-			"nobody",
-			"nscd",
-			"ntp",
-			"operator",
-			"openldap",
-			"pcap",
-			"postgres",
-			"proxy",
-			"pvm",
-			"root",
-			"rpc",
-			"rpcuser",
-			"rpm",
-			"sag",
-			"shutdown",
-			"smmsp",
-			"sshd",
-			"statd",
-			"sync",
-			"sys",
-			"uucp",
-			"vcsa",
-			"www",
-			"www-data",
-			 "xfs"
-			);
+			'adm',
+			'alfred',
+			'apache',
+			'backup',
+			'bin',
+			'canna',
+			'condor',
+			'condor-util',
+			'daemon',
+			'debian-exim',
+			'exim',
+			'ftp',
+			'games',
+			'ganglia',
+			'gnats',
+			'gopher',
+			'halt',
+			'ibrix',
+			'invigosh',
+			'irc',
+			'ldap',
+			'list',
+			'lp',
+			'mail',
+			'mailnull',
+			'man',
+			'nagios',
+			'netdump',
+			'news',
+			'nfsnobody',
+			'noaccess',
+			'nobody',
+			'nscd',
+			'ntp',
+			'operator',
+			'openldap',
+			'pcap',
+			'postgres',
+			'proxy',
+			'pvm',
+			'root',
+			'rpc',
+			'rpcuser',
+			'rpm',
+			'sag',
+			'shutdown',
+			'smmsp',
+			'sshd',
+			'statd',
+			'sync',
+			'sys',
+			'uucp',
+			'vcsa',
+			'www',
+			'www-data',
+			'xfs'
+		);
 
 		if (in_array(strtolower($x), $reserved_users))
+		{
 			return true;
+		}
 
 		return false;
 	}
 
 	/**
-	 * Short description for 'validlogin'
+	 * Validate login
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $login Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param      string $login Username to validate
+	 * @return     boolean True if valid, false if invalid
 	 */
 	public function validlogin($login)
 	{
-		if (preg_match("#^[0-9a-zA-Z]+[_0-9a-zA-Z]*$#i", $login)) {
-			if (Hubzero_Validate::is_positive_integer($login)) {
-				return(0);
-			} else {
-				return(1);
+		if (preg_match("#^[0-9a-zA-Z]+[_0-9a-zA-Z]*$#i", $login)) 
+		{
+			if (Hubzero_Validate::is_positive_integer($login)) 
+			{
+				return false;
+			} 
+			else 
+			{
+				return true;
 			}
-		} else {
-			return(0);
 		}
+		return false;
 	}
 
 	/**
-	 * Short description for 'validpassword'
+	 * Validate password
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $password Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string $password Password to validate
+	 * @return     boolean True if valid, false if invalid
 	 */
 	public function validpassword($password)
 	{
-		if (preg_match("#^[_\`\~\!\@\#\$\%\^\&\*\(\)\=\+\{\}\:\;\"\'\<\>\,\.\?\/0-9a-zA-Z-]+$#i", $password)) {
+		if (preg_match("#^[_\`\~\!\@\#\$\%\^\&\*\(\)\=\+\{\}\:\;\"\'\<\>\,\.\?\/0-9a-zA-Z-]+$#i", $password)) 
+		{
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	/**
-	 * Short description for 'validemail'
+	 * Validate email address
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $email Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string $email Address to validate
+	 * @return     boolean True if valid, false if invalid
 	 */
 	public function validemail($email)
 	{
-		if (preg_match("#^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$#i", $email)) {
+		if (preg_match("#^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$#i", $email)) 
+		{
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	/**
-	 * Short description for 'validurl'
+	 * Validate URL
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $url Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param      string $url URL to validate
+	 * @return     boolean True if valid, false if invalid
 	 */
 	public function validurl($url)
 	{
-		if (preg_match("#^[_\`\~\!\@\#\$\%\^\&\*\(\)\=\+\{\}\:\;\"\'\<\>\,\.\?\/0-9a-zA-Z-]*$#i", $url)) {
-			return(1);
-		} else {
-			return(0);
+		if (preg_match("#^[_\`\~\!\@\#\$\%\^\&\*\(\)\=\+\{\}\:\;\"\'\<\>\,\.\?\/0-9a-zA-Z-]*$#i", $url)) 
+		{
+			return true;
 		}
+		return false;
 	}
 
 	/**
-	 * Short description for 'validphone'
+	 * Validate phone number
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $phone Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param      string $phone Phone number to validate
+	 * @return     boolean True if valid, false if invalid
 	 */
 	public function validphone($phone)
 	{
-		if (preg_match("#^[\ \#\*\+\:\,\.0-9-]*$#i", $phone)) {
-			return(1);
-		} else {
-			return(0);
-		}
+		if (preg_match("#^[\ \#\*\+\:\,\.0-9-]*$#i", $phone)) 
+		{
+			return true;
+		} 
+		return false;
 	}
 
 	/**
-	 * Short description for 'validtext'
+	 * Validate text
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $text Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param      string $text Text to validate
+	 * @return     boolean True if valid, false if invalid
 	 */
 	public function validtext($text)
 	{
-		if (!strchr($text, "	")) {
-			return(1);
-		} else {
-			return(0);
-		}
+		if (!strchr($text, "	")) 
+		{
+			return true;
+		} 
+		return false;
 	}
 
 	/**
-	 * Short description for 'validateOrgType'
+	 * Validate the organization type
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $org Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string $org Organization type
+	 * @return     boolean True if organization is an allowed type
 	 */
 	public function validateOrgType($org)
     {
@@ -311,10 +287,11 @@ class Hubzero_Validate
 			'unemployed'
 		);
 
-		if (in_array($org,$orgtypes))
-            return true;
-
-        return false;
-    }
+		if (in_array($org, $orgtypes))
+		{
+			return true;
+		}
+		return false;
+	}
 }
 

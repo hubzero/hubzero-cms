@@ -29,32 +29,27 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Hubzero_Toolbox'
- * 
- * Long description (if any) ...
+ * Hubzero helper class for misc. functions
  */
 class Hubzero_Toolbox
 {
-
 	/**
-	 * Short description for 'send_email'
+	 * Send an email
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $email Parameter description (if any) ...
-	 * @param      unknown $subject Parameter description (if any) ...
-	 * @param      unknown $message Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param      string $email   Address to email
+	 * @param      string $subject Message subject
+	 * @param      string $message Message contents
+	 * @return     integer 1 on success, 0 on failure
 	 */
 	public function send_email($email, $subject, $message)
 	{
 		$jconfig =& JFactory::getConfig();
 
 		$contact_email = $jconfig->getValue('config.mailfrom');
-		$contact_name = $jconfig->getValue('config.sitename') . ' Administrator';
+		$contact_name  = $jconfig->getValue('config.sitename') . ' Administrator';
 
 		$args = "-f '" . $contact_email . "'";
 		$headers = "MIME-Version: 1.0\n";
@@ -65,7 +60,8 @@ class Hubzero_Toolbox
 		$headers .= "X-MSMail-Priority: High\n";
 		$headers .= "X-Mailer: " . $jconfig->getValue('config.sitename') . "\n";
 
-		if (mail($email, $subject, $message, $headers, $args)) {
+		if (mail($email, $subject, $message, $headers, $args)) 
+		{
 			return(1);
 		}
 
@@ -73,30 +69,33 @@ class Hubzero_Toolbox
 	}
 
 	/**
-	 * Short description for 'thisurl'
+	 * Get the URL for this page
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $cutgetvars Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      integer $cutgetvars Strip querystring?
+	 * @return     string
 	 */
 	public function thisurl($cutgetvars = 0)
 	{
-		if (!empty($_SERVER['REDIRECT_URL'])) {
+		if (!empty($_SERVER['REDIRECT_URL'])) 
+		{
 			$thisurl = $_SERVER['REDIRECT_URL'];
-		} else {
-			$thisurl = substr($_SERVER['REQUEST_URI'], strrpos($_SERVER['REQUEST_URI'], "/") + 1);
+		} 
+		else 
+		{
+			$thisurl = substr($_SERVER['REQUEST_URI'], strrpos($_SERVER['REQUEST_URI'], '/') + 1);
 		}
 
-		if ($cutgetvars) {
-			$pvar = strpos($thisurl, "?");
+		if ($cutgetvars) 
+		{
+			$pvar = strpos($thisurl, '?');
 
-			if ($pvar) {
+			if ($pvar) 
+			{
 				$thisurl = substr($thisurl, 0, $pvar);
 			}
 		}
 
-		return($thisurl);
+		return $thisurl;
 	}
 
 	/**
@@ -149,9 +148,9 @@ class Hubzero_Toolbox
 		{
 			$x = $y + $x;
 		}
-		
+
 		$text = strtr($text, $x);
-		
+
 		return $text;
 	}
 }

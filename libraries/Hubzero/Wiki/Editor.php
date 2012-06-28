@@ -35,9 +35,7 @@ defined('JPATH_BASE') or die();
 jimport('joomla.event.dispatcher');
 
 /**
- * Short description for 'Hubzero_Wiki_Editor'
- * 
- * Long description (if any) ...
+ * Hubzero helper class for retrieving the current wiki editor
  */
 class Hubzero_Wiki_Editor extends JObservable
 {
@@ -63,9 +61,10 @@ class Hubzero_Wiki_Editor extends JObservable
 	 */
 	public function __construct($editor = '')
 	{
-		if (!$editor) {
+		if (!$editor) 
+		{
 			$database =& JFactory::getDBO();
-			$database->setQuery( "SELECT element FROM #__plugins WHERE folder='hubzero' AND published=1 AND element LIKE 'wikieditor%' ORDER BY published DESC LIMIT 1" );
+			$database->setQuery("SELECT element FROM #__plugins WHERE folder='hubzero' AND published=1 AND element LIKE 'wikieditor%' ORDER BY published DESC LIMIT 1");
 			$editor = $database->loadResult();
 		}
 		$this->_name = $editor;
@@ -86,13 +85,15 @@ class Hubzero_Wiki_Editor extends JObservable
 	{
 		static $instances;
 
-		if (!isset($instances)) {
+		if (!isset($instances)) 
+		{
 			$instances = array();
 		}
 
 		$signature = serialize($editor);
 
-		if (empty($instances[$signature])) {
+		if (empty($instances[$signature])) 
+		{
 			$instances[$signature] = new Hubzero_Wiki_Editor($editor);
 		}
 
@@ -105,22 +106,27 @@ class Hubzero_Wiki_Editor extends JObservable
 	public function initialise()
 	{
 		// Check if editor is already loaded
-		if (is_null(($this->_editor))) {
+		if (is_null(($this->_editor))) 
+		{
 			return;
 		}
 
-		$args['event'] = 'onInitEditor';
+		$args = array(
+			'event' => 'onInitEditor'
+		);
 
 		$return = '';
 		$results[] = $this->_editor->update($args);
 		foreach ($results as $result)
 		{
-			if (trim($result)) {
+			if (trim($result)) 
+			{
 				$return = $result;
 			}
 		}
 
-		if ($return) {
+		if ($return) 
+		{
 			$document =& JFactory::getDocument();
 			$document->addCustomTag($return);
 		}
@@ -141,33 +147,38 @@ class Hubzero_Wiki_Editor extends JObservable
 	public function display($name, $id, $html, $cls, $col, $row, $params = array())
 	{
 		// Return a standard textarea if no editor is found
-		if (!$this->_name) {
-			return '<textarea name="'.$name.'" id="'.$id.'" cols="'.$col.'" rows="'.$row.'" class="'.$cls.'">'.$html.'</textarea>'."\n";
+		if (!$this->_name) 
+		{
+			return '<textarea name="' . $name . '" id="' . $id . '" cols="' . $col . '" rows="' . $row . '" class="' . $cls . '">' . $html . '</textarea>' . "\n";
 		}
 
 		$this->_loadEditor($params);
 
 		// Check if editor is already loaded
-		if (is_null(($this->_editor))) {
+		if (is_null(($this->_editor))) 
+		{
 			return;
 		}
 
 		// Initialize variables
 		$return = null;
 
-		$args['name']    = $name;
-		$args['id']      = $id;
-		$args['content'] = $html;
-		$args['cls']     = $cls;
-		$args['col']     = $col;
-		$args['row']     = $row;
-		$args['event']   = 'onDisplayEditor';
+		$args = array(
+			'name'    => $name,
+			'id'      => $id,
+			'content' => $html,
+			'cls'     => $cls,
+			'col'     => $col,
+			'row'     => $row,
+			'event'   => 'onDisplayEditor'
+		);
 
 		$results[] = $this->_editor->update($args);
 
 		foreach ($results as $result)
 		{
-			if (trim($result)) {
+			if (trim($result)) 
+			{
 				$return .= $result;
 			}
 		}
@@ -179,12 +190,13 @@ class Hubzero_Wiki_Editor extends JObservable
 	 *
 	 * @param	string	The name of the editor control
 	 */
-	public function save( $editor )
+	public function save($editor)
 	{
 		$this->_loadEditor();
 
 		// Check if editor is already loaded
-		if (is_null(($this->_editor))) {
+		if (is_null(($this->_editor))) 
+		{
 			return;
 		}
 
@@ -195,7 +207,8 @@ class Hubzero_Wiki_Editor extends JObservable
 		$results[] = $this->_editor->update($args);
 		foreach ($results as $result)
 		{
-			if (trim($result)) {
+			if (trim($result)) 
+			{
 				$return .= $result;
 			}
 		}
@@ -207,7 +220,7 @@ class Hubzero_Wiki_Editor extends JObservable
 	 *
 	 * @param	string	The name of the editor control
 	 */
-	public function getContent( $editor )
+	public function getContent($editor)
 	{
 		$this->_loadEditor();
 
@@ -231,19 +244,22 @@ class Hubzero_Wiki_Editor extends JObservable
 	 * @param	string	The name of the editor control
 	 * @param	string	The contents of the text area
 	 */
-	public function setContent( $editor, $html )
+	public function setContent($editor, $html)
 	{
 		$this->_loadEditor();
 
-		$args['name'] = $editor;
-		$args['html'] = $html;
-		$args['event'] = 'onSetEditorContent';
+		$args = array(
+			'name'  => $editor,
+			'html'  => $html,
+			'event' => 'onSetEditorContent'
+		);
 
 		$return = '';
 		$results[] = $this->_editor->update($args);
 		foreach ($results as $result)
 		{
-			if (trim($result)) {
+			if (trim($result)) 
+			{
 				$return .= $result;
 			}
 		}
@@ -260,7 +276,8 @@ class Hubzero_Wiki_Editor extends JObservable
 	private function _loadEditor($config = array())
 	{
 		// Check if editor is already loaded
-		if (!is_null(($this->_editor))) {
+		if (!is_null(($this->_editor))) 
+		{
 			return;
 		}
 
@@ -268,10 +285,11 @@ class Hubzero_Wiki_Editor extends JObservable
 
 		// Build the path to the needed editor plugin
 		$name = JFilterInput::clean($this->_name, 'cmd');
-		$path = JPATH_SITE.DS.'plugins'.DS.'hubzero'.DS.$name.'.php';
+		$path = JPATH_SITE . DS . 'plugins' . DS . 'hubzero' . DS . $name . '.php';
 
-		if (!JFile::exists($path)) {
-			JError::raiseWarning( 500, JText::_('Cannot load the editor') );
+		if (!JFile::exists($path)) 
+		{
+			JError::raiseWarning(500, JText::_('Cannot load the editor'));
 			return false;
 		}
 
@@ -291,8 +309,9 @@ class Hubzero_Wiki_Editor extends JObservable
 		$plugin->params = $params;
 
 		// Build editor plugin classname
-		$name = 'plgHubzero'.$this->_name;
-		if ($this->_editor = new $name($this, (array)$plugin)) {
+		$name = 'plgHubzero' . $this->_name;
+		if ($this->_editor = new $name($this, (array)$plugin)) 
+		{
 			// Load plugin parameters
 			$this->initialise();
 		}

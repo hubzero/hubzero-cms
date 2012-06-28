@@ -38,49 +38,50 @@ defined('_JEXEC') or die( 'Restricted access' );
  */
 class Hubzero_Email_Token
 {
-
 	/**
 	 * Description for 'mailTokenTicket'
 	 */
-    const emailTokenTicket = 1;
+	const emailTokenTicket = 1;
 
 	/**
 	 * Description for 'mailTokenGroupThread'
 	 */
-    const emailTokenGroupThread = 2;
+	const emailTokenGroupThread = 2;
 
 	/**
 	 * Description for '_currentVersion'
 	 * 
 	 * @var string
 	 */
-    private $_currentVersion;
+	private $_currentVersion;
 
 	/**
 	 * Description for '_iv'
 	 * 
 	 * @var unknown
 	 */
-    private $_iv;
+	private $_iv;
 
 	/**
 	 * Description for '_key'
 	 * 
 	 * @var unknown
 	 */
-    private $_key;
+	private $_key;
 
 	/**
 	 * Description for '_blocksize'
 	 * 
 	 * @var number
 	 */
-    private $_blocksize;
+	private $_blocksize;
 
-    /**
-     * Read encryption configuration from config file
-     */
-    public function __construct()
+	/**
+	 * Read encryption configuration from config file
+	 *
+	 * @return void
+	 */
+	public function __construct()
 	{
 		$config = JFactory::getConfig();
 		
@@ -94,49 +95,58 @@ class Hubzero_Email_Token
 	
 		$xhub = new HubConfig();
 
-		if(empty($config))
-			throw new Exception("Class Hubzero_Email_Token: failed JFactory::getConfig() call");
+		if (empty($config))
+		{
+			throw new Exception('Class Hubzero_Email_Token: failed JFactory::getConfig() call');
+		}
 
-		if(empty($xhub))
-			throw new Exception("Class Hubzero_Email_Token: failed Hubzero::getHub() call");
+		if (empty($xhub))
+		{
+			throw new Exception('Class Hubzero_Email_Token: failed Hubzero::getHub() call');
+		}
 
 		//**** Get current token version
 		$this->_currentVersion = $xhub->email_token_current_version;
 
-		if(empty($this->_currentVersion))
-			throw new Exception("Class Hubzero_Email_Token: config.email_token_current_version not found in config file");
+		if (empty($this->_currentVersion))
+		{
+			throw new Exception('Class Hubzero_Email_Token: config.email_token_current_version not found in config file');
+		}
 
 		//**** Grab the encryption info for that version
 		$prop = 'email_token_encryption_info_v' . $this->_currentVersion;
 		$encryption_info = $xhub->$prop;
 
-		if(empty($encryption_info))
-		throw new Exception("Class Hubzero_Email_Token: config.email_token_encryption_info_vX not found for version: " . $tokenVersion);
+		if (empty($encryption_info))
+		{
+			throw new Exception('Class Hubzero_Email_Token: config.email_token_encryption_info_vX not found for version: ' . $tokenVersion);
+		}
 
 		//**** Encryption info is comma delimited (key, iv) in this configuraiton value
-		$keyArray = explode(",", $encryption_info);
+		$keyArray = explode(',', $encryption_info);
 
-		if(count($keyArray) <> 2)
-			throw new Exception("Class Hubzero_Email_Token: config.email_token_encryption_info_v" . $tokenVersion . " cannot be split" );
+		if (count($keyArray) <> 2)
+		{
+			throw new Exception('Class Hubzero_Email_Token: config.email_token_encryption_info_v' . $tokenVersion . ' cannot be split');
+		}
 
 		$this->_key = $keyArray[0];
-		$this->_iv = $keyArray[1];
+		$this->_iv  = $keyArray[1];
 		$this->_blocksize = 8; // in bytes
-
 	}
 
-
-    /**
-     *
-     * @param  int    $version
-     * @param  int    $action 
-     * @param  int    $userid 
-     * @param  int    $id     
-     * @return string - base 16 string representing token
-     */
-    public function buildEmailToken($version, $action, $userid, $id)
+	/**
+	 * Build a unique email token
+	 * 
+	 * @param  int    $version
+	 * @param  int    $action 
+	 * @param  int    $userid 
+	 * @param  int    $id     
+	 * @return string - base 16 string representing token
+	 */
+	public function buildEmailToken($version, $action, $userid, $id)
 	{
-        $rv = '';
+		$rv = '';
 
 		$binaryString = pack("NNN", $userid, $id, intval(time()));
 
@@ -155,7 +165,7 @@ class Hubzero_Email_Token
 		$binaryString .= str_repeat(chr($pad), $pad);
 
 		//**** Do the encryption
-		$cipher = mcrypt_module_open(MCRYPT_RIJNDAEL_128,'','cbc','');
+		$cipher = mcrypt_module_open(MCRYPT_RIJNDAEL_128, '', 'cbc', '');
 		mcrypt_generic_init($cipher, $this->_key, $this->_iv);
 		$encrypted = mcrypt_generic($cipher, $binaryString);
 		mcrypt_generic_deinit($cipher);
@@ -164,7 +174,6 @@ class Hubzero_Email_Token
 		$rv = bin2hex(pack("C", $version)) . bin2hex(pack("C", $action)) .  bin2hex($encrypted);
 
 		return $rv;
- 	}
-	
+	}
 }
 

@@ -29,170 +29,235 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-
+/**
+ * Helper class for image manipulation
+ */
 class Hubzero_Image
-{   
+{
+	/**
+	 * Path to image
+	 *
+	 * @var string
+	 */
 	private $source 		= NULL;
+	
+	/**
+	 * Manipulated image data
+	 *
+	 * @var string
+	 */
 	private $resource 		= NULL;
+	
+	/**
+	 * Image type (png, gif, jpg)
+	 *
+	 * @var string
+	 */
 	private $image_type 	= IMAGETYPE_PNG;
+	
+	/**
+	 * EXIF image data
+	 *
+	 * @var string
+	 */
 	private $exif_data 		= NULL;
+	
+	/**
+	 * Configuration options
+	 *
+	 * @var array
+	 */
 	private $config			= array();
+	
+	/**
+	 * Container for error messages
+	 *
+	 * @var array
+	 */
 	private $errors 		= array();
-	
-	//-----
-	
-	public function __construct( $image_source = null, $config = array() )
+
+	/**
+	 * Constructor
+	 * 
+	 * @param      string $image_source Path to image
+	 * @param      array  $config       Optional configurations
+	 * @return     void
+	 */
+	public function __construct($image_source = null, $config = array())
 	{
 		$this->source = $image_source;
 		$this->config = $config;
-		
-		if(!$this->checkPackageRequirements('gd'))
+
+		if (!$this->checkPackageRequirements('gd'))
 		{
 			return $this->errors;
 		}
 
-		if(!is_null($this->source) && is_file($this->source))
-		{   
+		if (!is_null($this->source) && is_file($this->source))
+		{
 			$this->openImage();
 		}
 	}
-	
-	//-----
-	
+
+	/**
+	 * Get an array of error messages
+	 * 
+	 * @return     array
+	 */
 	public function getErrors()
 	{
 		return $this->errors;
 	}
-	
-	//-----
-	
+
+	/**
+	 * Set the image type
+	 * 
+	 * @param      string $type Image type to set
+	 * @return     void
+	 */
 	public function setImageType($type)
 	{
-		if($type)
+		if ($type)
 		{
 			$this->image_type = $type;
 		}
-		
-		if($this->image_type == IMAGETYPE_PNG)
+
+		if ($this->image_type == IMAGETYPE_PNG)
 		{
 			imagesavealpha($this->resource, true);
 			imagealphablending($this->resource, false);
 		}
 	}
-	
-	//-----
-	
-	private function checkPackageRequirements( $package = '' )
+
+	/**
+	 * Check if a required package is installed
+	 * 
+	 * @param      integer $package Package name
+	 * @return     boolean True on success
+	 */
+	private function checkPackageRequirements($package = '')
 	{
-		if($package == '')
+		if ($package == '')
+		{
 			return false;
-		
+		}
+
 		$installed_exts = get_loaded_extensions();
-		if(!in_array($package, $installed_exts))
-		{   
+		if (!in_array($package, $installed_exts))
+		{
 			$this->errors[] = "[ERROR] You are missing the required PHP package {$package}.";
 			return false;
 		}
-		
+
 		return true;
 	}
-	
-	//-----
-	
+
+	/**
+	 * Open an image and get it's type (png, jpg, gif)
+	 * 
+	 * @return     void
+	 */
 	private function openImage()
 	{
 		$image_atts = getimagesize($this->source);
-		
-		switch( $image_atts['mime'] )
-		{   
+
+		switch ($image_atts['mime'])
+		{
 			case 'image/jpeg':
 				$this->image_type = IMAGETYPE_JPEG;
-				$this->resource = imagecreatefromjpeg($this->source);
-				break;
+				$this->resource   = imagecreatefromjpeg($this->source);
+			break;
 			case 'image/gif':
 				$this->image_type = IMAGETYPE_GIF;
-				$this->resource = imagecreatefromgif($this->source);
-				break;
+				$this->resource   = imagecreatefromgif($this->source);
+			break;
 			case 'image/png':
 				$this->image_type = IMAGETYPE_PNG;
-				$this->resource = imagecreatefrompng($this->source);
-				break;
+				$this->resource   = imagecreatefrompng($this->source);
+			break;
 		}
-		
-		if($this->image_type == IMAGETYPE_PNG)
+
+		if ($this->image_type == IMAGETYPE_PNG)
 		{
 			imagesavealpha($this->resource, true);
 			imagealphablending($this->resource, false);
-		} 
-		
-		if(isset($this->config['auto_rotate']) && $this->config['auto_rotate'] == true)
+		}
+
+		if (isset($this->config['auto_rotate']) && $this->config['auto_rotate'] == true)
 		{
 			$this->autoRotate();
 		}
 	}
-	
-	
-	/*----------------------------------------------------
-		Image Rotation
-	----------------------------------------------------*/
-	
+
+	/**
+	 * Image Rotation
+	 * 
+	 * @return     void
+	 */
 	public function autoRotate()
 	{
-		if(!$this->checkPackageRequirements('exif'))
-		{                
-			$this->errors[] = "You need the PHP exif library installed to rotate image based on Exif Orientation value.";
+		if (!$this->checkPackageRequirements('exif'))
+		{
+			$this->errors[] = 'You need the PHP exif library installed to rotate image based on Exif Orientation value.';
 			return false;
 		}
-		
-		if($this->image_type == IMAGETYPE_JPEG)
+
+		if ($this->image_type == IMAGETYPE_JPEG)
 		{
 			$this->exif_data = exif_read_data($this->source);
-			if(isset($this->exif_data['Orientation']))
+			if (isset($this->exif_data['Orientation']))
 			{
-				switch($this->exif_data['Orientation'])
-				{  
-					case 2:		$this->flip(true, false);						break;
-					case 3:		$this->rotate(180);								break;
-					case 4:		$this->flip(false, true);						break;
-					case 5:		$this->rotate(270); 
-								$this->flip(true, false);						break;
-					case 6:		$this->rotate(270);								break;
-					case 7:		$this-rotate(90);
-								$this->flip(true, false);						break;
-					case 8:		$this->rotate(90);								break;
+				switch ($this->exif_data['Orientation'])
+				{
+					case 2: $this->flip(true, false); break;
+					case 3: $this->rotate(180);       break;
+					case 4: $this->flip(false, true); break;
+					case 5: $this->rotate(270); 
+							$this->flip(true, false); break;
+					case 6: $this->rotate(270);       break;
+					case 7: $this-rotate(90);
+							$this->flip(true, false); break;
+					case 8: $this->rotate(90);        break;
 				}
 			}
 		}
 	}
-	
-	//-----  
-	
-	public function rotate( $rotation = 0, $background = 0 )
+
+	/**
+	 * Image Flip
+	 * 
+	 * @param      integer $rotation   Degrees to rotate
+	 * @param      integer $background Point to rotate from
+	 * @return     void
+	 */
+	public function rotate($rotation = 0, $background = 0)
 	{
 		$resource = imagerotate($this->resource, $rotation, $background);
 		imagedestroy($this->resource);
 		$this->resource = $resource;
-	} 
-	 
-	
-	/*----------------------------------------------------
-		Image Flip
-	----------------------------------------------------*/
+	}
 
-	public function flip( $flip_horizontal, $flip_vertical = false )
+	/**
+	 * Image Flip
+	 * 
+	 * @param      boolean $flip_horizontal Flip the image horizontally?
+	 * @param      boolean $flip_vertical   Flip the image vertically?
+	 * @return     void
+	 */
+	public function flip($flip_horizontal, $flip_vertical = false)
 	{
 		$resource = $this->resource;
 		$width = imagesx($resource);
 		$height = imagesy($resource);
 		$new_resource = imagecreatetruecolor($width, $height);
-		
-        for ($x=0 ; $x<$width ; $x++)
+
+		for ($x=0 ; $x<$width ; $x++)
 		{
 			for ($y=0 ; $y<$height ; $y++)
 			{
-				if($flip_horizontal && $flip_vertical) 
+				if ($flip_horizontal && $flip_vertical) 
 				{
 					imagecopy($new_resource, $resource, $width-$x-1, $height-$y-1, $x, $y, 1, 1);
 				}
@@ -209,68 +274,75 @@ class Hubzero_Image
 
 		$this->resource = $new_resource;
 		imagedestroy($resource);
-		
 	}
-	
-	
-	/*----------------------------------------------------
-		Image Crop
-	----------------------------------------------------*/
-	
-	public function crop( $top, $right = 0, $bottom = 0, $left = 0)
+
+	/**
+	 * Image Crop
+	 * 
+	 * @param      integer $top    Top point to crop from
+	 * @param      integer $right  Right point to crop from
+	 * @param      integer $bottom Bottom point to crop from
+	 * @param      integer $left   Left point to crop from
+	 * @return     void
+	 */
+	public function crop($top, $right = 0, $bottom = 0, $left = 0)
 	{
-		$width  = imagesx($this->resource);
-		$height  = imagesy($this->resource);
-		$new_width = $width - ($left + $right);
+		$width      = imagesx($this->resource);
+		$height     = imagesy($this->resource);
+		$new_width  = $width - ($left + $right);
 		$new_height = $height - ($top + $bottom);
-		
-		$resource = imagecreatetruecolor( $new_width, $new_height );
-		imagecopy($resource, $this->resource, 0, 0, $left, $top, $new_width, $new_height );
+
+		$resource = imagecreatetruecolor($new_width, $new_height);
+		imagecopy($resource, $this->resource, 0, 0, $left, $top, $new_width, $new_height);
 
 		imagedestroy($this->resource);
 		$this->resource = $resource;
-	}   
-	
-	
-	/*----------------------------------------------------
-		Image Resize
-	----------------------------------------------------*/
-	
-	public function resize( $new_dimension, $use_height = false, $squared = false, $resample = true )
+	}
+
+	/**
+	 * Image Resize
+	 * 
+	 * @param      integer $new_dimension Size to resize image to
+	 * @param      boolean $use_height    Use the height as the baseline? (uses width by default)
+	 * @param      boolean $squared       Make the image square?
+	 * @param      boolean $resample      Resample the image?
+	 * @return     void
+	 */
+	public function resize($new_dimension, $use_height = false, $squared = false, $resample = true)
 	{
-		$percent 	= false;
-		$width 		= imagesx( $this->resource );
-		$height 	= imagesy( $this->resource );
-		$w 			= $width;
-		$h 			= $height;
-		$x 			= 0;
-		$y 			= 0;
-		
-		if( ($new_dimension > $width && !$use_height) || ($new_dimension > $height && $use_height) )
+		$percent = false;
+		$width   = imagesx($this->resource);
+		$height  = imagesy($this->resource);
+		$w       = $width;
+		$h       = $height;
+		$x       = 0;
+		$y       = 0;
+
+		if (($new_dimension > $width && !$use_height) || ($new_dimension > $height && $use_height))
 		{
 			return;
 		}
 
-		if( $new_dimension < 1 )
+		if ($new_dimension < 1)
 		{
 			$percent = $new_dimension;
 		}
-		elseif( substr($new_dimension, -1) == '%' )
+		elseif (substr($new_dimension, -1) == '%')
 		{
 			$percent = (substr($new_dimension, 0, -1) / 100);
 		}
 
-		if( $percent !== false )
-		{    
+		if ($percent !== false)
+		{
 			$new_dimension = $use_height ? ($height * $percent) : ($width * $percent);
 			$new_dimension = round($new_dimension);
 		}
 
-		if( $squared )
+		if ($squared)
 		{
 			$new_w = $new_dimension;
 			$new_h = $new_dimension;
-			if( !$use_height )
+			if (!$use_height)
 			{
 				$x = ceil(($width - $height) / 2);
 				$w = $height;
@@ -285,7 +357,7 @@ class Hubzero_Image
 		}
 		else
 		{
-			if( !$use_height )
+			if (!$use_height)
 			{
 				$new_w = $new_dimension;
 				$new_h = floor($height * ($new_w / $width));
@@ -296,10 +368,10 @@ class Hubzero_Image
 				$new_w = floor($width * ($new_h / $height));
 			}
 		}
-		
+
 		$resource = imagecreatetruecolor($new_w,$new_h);
-		
-		if( $resample )
+
+		if ($resample)
 		{
 			imagecopyresampled($resource, $this->resource, 0, 0, $x, $y, $new_w, $new_h, $w, $h);
 		}
@@ -307,49 +379,53 @@ class Hubzero_Image
 		{
 			imagecopyresized($resource, $this->resource, 0, 0, $x, $y, $new_w, $new_h, $w, $h);
 		}
-		
+
 		imagedestroy($this->resource);
 		$this->resource = $resource;
 	}
-	
-	
-	/*----------------------------------------------------
-		Image Geo Location Data
-	----------------------------------------------------*/
-	
+
+	/**
+	 * Image Geo Location Data
+	 * 
+	 * @return     void
+	 */
 	public function getGeoLocation()
 	{
 		
-		if(!$this->checkPackageRequirements('exif'))
+		if (!$this->checkPackageRequirements('exif'))
 		{                
 			$this->errors[] = "You need the PHP exif library installed to rotate image based on Exif Orientation value.";
 			return false;
 		}
-		
+
 		$this->exif_data = exif_read_data($this->source);
-		
-		if(isset($this->exif_data['GPSLatitude']))
+
+		if (isset($this->exif_data['GPSLatitude']))
 		{
-			$lat = $this->exif_data['GPSLatitude'];
-			$lat_dir = $this->exif_data['GPSLatitudeRef'];
-			$long = $this->exif_data['GPSLongitude'];
+			$lat      = $this->exif_data['GPSLatitude'];
+			$lat_dir  = $this->exif_data['GPSLatitudeRef'];
+			$long     = $this->exif_data['GPSLongitude'];
 			$long_dir = $this->exif_data['GPSLongitudeRef'];
-		
-			$latitude = $this->geo_single_fracs2dec($lat);
+
+			$latitude  = $this->geo_single_fracs2dec($lat);
 			$longitude = $this->geo_single_fracs2dec($long);
-			$latitude_formatted = $this->geo_pretty_fracs2dec($lat) . $lat_dir;
+			$latitude_formatted  = $this->geo_pretty_fracs2dec($lat) . $lat_dir;
 			$longitude_formatted = $this->geo_pretty_fracs2dec($long) . $long_dir;
-		
+
 			if ($lat_dir == 'S') 
+			{
 				$latitude *= -1; 
-		
+			}
+
 			if ($long_dir == 'W') 
+			{
 				$longitude *= -1;
-			
+			}
+
 			$geo = array(
-				'latitude' => $latitude,
+				'latitude'  => $latitude,
 				'longitude' => $longitude,
-				'latitude_formatted' => $latitude_formatted,
+				'latitude_formatted'  => $latitude_formatted,
 				'longitude_formatted' => $longitude_formatted
 			);
 		}
@@ -357,87 +433,107 @@ class Hubzero_Image
 		{
 			$geo = array();
 		}
-		
+
 		return $geo;
 	}
-	
-	//-----
-	
+
+	/**
+	 * Convert a fraction to decimal
+	 * 
+	 * @param      string $str Fraction to convert
+	 * @return     integer
+	 */
 	private function geo_frac2dec($str) 
 	{
-		list( $n, $d ) = explode( '/', $str );
-		
-		if ( !empty($d) )
+		list($n, $d) = explode('/', $str);
+
+		if (!empty($d))
+		{
 			return $n / $d;
-			
+		}
+
 		return $str;
 	}
-	
-	//-----
-	
+
+	/**
+	 * Convert fractions to decimals with formatting
+	 * 
+	 * @param      array $fracs Fractions to convert
+	 * @return     string
+	 */
 	private function geo_pretty_fracs2dec($fracs) 
 	{
 		return	$this->geo_frac2dec($fracs[0]) . '&deg; ' . $this->geo_frac2dec($fracs[1]) . '&prime; ' . $this->geo_frac2dec($fracs[2]) . '&Prime; ';
 	}
-	
-	//-----
-	
+
+	/**
+	 * Convert fractions to decimals
+	 * 
+	 * @param      array $fracs Fractions to convert
+	 * @return     integer
+	 */
 	private function geo_single_fracs2dec($fracs) 
 	{
 		return	$this->geo_frac2dec($fracs[0]) + $this->geo_frac2dec($fracs[1]) / 60 + $this->geo_frac2dec($fracs[2]) / 3600;
 	}
-	
-	
-	/*----------------------------------------------------
-		Image Output
-	----------------------------------------------------*/
-	
+
+	/**
+	 * Display an image
+	 * 
+	 * @return     void
+	 */
 	public function display()
 	{
 		$image_atts = getimagesize($this->source);
 		header('Content-type: ' . $image_atts['mime']);
 		$this->output(null); 
 	}
-	    
-	//-----
-	
-	public function save( $save_path = null, $make_paths = false )
+
+	/**
+	 * Save an image
+	 * 
+	 * @param      string  $save_path  Path to save image
+	 * @param      boolean $make_paths Allow for path generation?
+	 * @return     void
+	 */
+	public function save($save_path = null, $make_paths = false)
 	{
-		$path = $this->source;    
-		
-		if(!is_null($save_path))
-		{   
+		$path = $this->source;
+
+		if (!is_null($save_path))
+		{
 			$info = pathinfo($save_path);
-			
-			if($make_paths)
+
+			if ($make_paths)
 			{
 				JFolder::create($info['dirname'], 0770);
 			}
-			
-			if(!is_dir($info['dirname']) && $make_paths == false)
+
+			if (!is_dir($info['dirname']) && $make_paths == false)
 			{
-				$this->errors[] = "You must supply a valid path or allow save function to create recursive path";
+				$this->errors[] = 'You must supply a valid path or allow save function to create recursive path';
 				return;
 			}
-			
+
 			$path = $save_path;
 		} 
-		
+
 		$this->output($path);
-	}   
-	
-	//-----
-	
-	private function output( $save_path )
-	{
-		switch($this->image_type)
-		{
-			case IMAGETYPE_PNG:		imagepng($this->resource, $save_path);		break;
-			case IMAGETYPE_GIF:		imagegif($this->resource, $save_path);		break;
-			case IMAGETYPE_JPEG:	imagejpeg($this->resource, $save_path);		break;
-		}
-		//exit();
 	}
 
-	//-----
+	/**
+	 * Generate an image and save to a location
+	 * 
+	 * @param      string $save_path Path to save image
+	 * @return     void
+	 */
+	private function output($save_path)
+	{
+		switch ($this->image_type)
+		{
+			case IMAGETYPE_PNG:  imagepng($this->resource, $save_path);  break;
+			case IMAGETYPE_GIF:  imagegif($this->resource, $save_path);  break;
+			case IMAGETYPE_JPEG: imagejpeg($this->resource, $save_path); break;
+		}
+	}
 }	

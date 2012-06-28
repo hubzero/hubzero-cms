@@ -35,9 +35,7 @@ defined('JPATH_BASE') or die();
 jimport('joomla.event.dispatcher');
 
 /**
- * Short description for 'Hubzero_Wiki_Parser'
- * 
- * Long description (if any) ...
+ * Hubzero helper class for retrieving wiki parser
  */
 class Hubzero_Wiki_Parser extends JObservable
 {
@@ -63,9 +61,10 @@ class Hubzero_Wiki_Parser extends JObservable
 	 */
 	public function __construct($parser = '')
 	{
-		if (!$parser) {
+		if (!$parser) 
+		{
 			$database =& JFactory::getDBO();
-			$database->setQuery( "SELECT element FROM #__plugins WHERE folder='hubzero' AND published=1 AND element LIKE 'wikiparser%' ORDER BY published DESC LIMIT 1" );
+			$database->setQuery("SELECT element FROM #__plugins WHERE folder='hubzero' AND published=1 AND element LIKE 'wikiparser%' ORDER BY published DESC LIMIT 1");
 			$parser = $database->loadResult();
 		}
 		$this->_name = $parser;
@@ -86,13 +85,15 @@ class Hubzero_Wiki_Parser extends JObservable
 	{
 		static $instances;
 
-		if (!isset($instances)) {
+		if (!isset($instances)) 
+		{
 			$instances = array();
 		}
 
 		$signature = serialize($parser);
 
-		if (empty($instances[$signature])) {
+		if (empty($instances[$signature])) 
+		{
 			$instances[$signature] = new Hubzero_Wiki_Parser($parser);
 		}
 
@@ -105,19 +106,23 @@ class Hubzero_Wiki_Parser extends JObservable
 	public function initialise($config=array(), $getnew=false)
 	{
 		// Check if parser is already loaded
-		if (is_null($this->_parser)) {
+		if (is_null($this->_parser)) 
+		{
 			return;
 		}
 
-		$args['config'] = $config;
-		$args['getnew'] = $getnew;
-		$args['event'] = 'onGetWikiParser';
+		$args = array(
+			'config' => $config,
+			'getnew' => $getnew,
+			'event'  => 'onGetWikiParser'
+		);
 
 		$return = '';
 		$results[] = $this->_parser->update($args); //$this->_parser->onGetWikiParser($config, $getnew);
 		foreach ($results as $result)
 		{
-			if (is_object($result)) {
+			if (is_object($result)) 
+			{
 				$return = $result;
 			}
 		}
@@ -134,31 +139,36 @@ class Hubzero_Wiki_Parser extends JObservable
 	 */
 	public function parse($text, $config, $fullparse=true, $getnew=false, $params=array())
 	{
-		if (!$this->_name) {
+		if (!$this->_name) 
+		{
 			return nl2br($text);
 		}
 
 		$this->_loadParser($params, $config, $getnew);
 
 		// Check if parser is already loaded
-		if (is_null($this->_parser)) {
+		if (is_null($this->_parser)) 
+		{
 			return nl2br($text);
 		}
 
 		// Initialize variables
 		$return = null;
 
-		$args['text']      = $text;
-		$args['config']    = $config;
-		$args['fullparse'] = $fullparse;
-		$args['getnew']    = $getnew;
-		$args['event']     = 'onWikiParseText';
+		$args = array(
+			'text'      => $text,
+			'config'    => $config,
+			'fullparse' => $fullparse,
+			'getnew'    => $getnew,
+			'event'     => 'onWikiParseText'
+		);
 
 		$results[] = $this->_parser->update($args);
 
 		foreach ($results as $result)
 		{
-			if (trim($result)) {
+			if (trim($result)) 
+			{
 				$return .= $result;
 			}
 		}
@@ -177,7 +187,8 @@ class Hubzero_Wiki_Parser extends JObservable
 	private function _loadParser($config=array(), $pconfig=array(), $getnew=false)
 	{
 		// Check if editor is already loaded
-		if (!$getnew && !is_null($this->_parser)) {
+		if (!$getnew && !is_null($this->_parser)) 
+		{
 			return;
 		}
 
@@ -185,10 +196,11 @@ class Hubzero_Wiki_Parser extends JObservable
 
 		// Build the path to the needed parser plugin
 		$name = JFilterInput::clean($this->_name, 'cmd');
-		$path = JPATH_SITE.DS.'plugins'.DS.'hubzero'.DS.$name.'.php';
+		$path = JPATH_SITE . DS . 'plugins' . DS . 'hubzero' . DS . $name . '.php';
 
-		if (!JFile::exists($path)) {
-			JError::raiseWarning( 500, JText::_('Cannot load the parser') );
+		if (!JFile::exists($path)) 
+		{
+			JError::raiseWarning(500, JText::_('Cannot load the parser'));
 			return false;
 		}
 
@@ -209,8 +221,9 @@ class Hubzero_Wiki_Parser extends JObservable
 		$plugin->params->loadArray($config);
 
 		// Build parser plugin classname
-		$name = 'plgHubzero'.$this->_name;
-		if ($this->_parser = new $name($this, (array)$plugin)) {
+		$name = 'plgHubzero' . $this->_name;
+		if ($this->_parser = new $name($this, (array)$plugin)) 
+		{
 			// Load plugin parameters
 			$this->initialise($pconfig, $getnew);
 		}
