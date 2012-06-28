@@ -82,8 +82,17 @@ class Hubzero_Email_Token
      */
     public function __construct()
 	{
-		$xhub =& Hubzero_Factory::getHub();
 		$config = JFactory::getConfig();
+		
+		$file = '/etc/hubmail_gw.conf';
+
+		if (file_exists($file)) {
+			include_once($file);
+		}
+		else
+			throw new Exception("/etc/hubmail_gw.conf file does not exist");
+	
+		$xhub = new HubConfig();
 
 		if(empty($config))
 			throw new Exception("Class Hubzero_Email_Token: failed JFactory::getConfig() call");
@@ -92,13 +101,14 @@ class Hubzero_Email_Token
 			throw new Exception("Class Hubzero_Email_Token: failed Hubzero::getHub() call");
 
 		//**** Get current token version
-		$this->_currentVersion = $xhub->getCfg('config.email_token_current_version', '');
+		$this->_currentVersion = $xhub->email_token_current_version;
 
 		if(empty($this->_currentVersion))
 			throw new Exception("Class Hubzero_Email_Token: config.email_token_current_version not found in config file");
 
 		//**** Grab the encryption info for that version
-		$encryption_info = $xhub->getCfg('config.email_token_encryption_info_v' . $this->_currentVersion, '');
+		$prop = 'email_token_encryption_info_v' . $this->_currentVersion;
+		$encryption_info = $xhub->$prop;
 
 		if(empty($encryption_info))
 		throw new Exception("Class Hubzero_Email_Token: config.email_token_encryption_info_vX not found for version: " . $tokenVersion);
