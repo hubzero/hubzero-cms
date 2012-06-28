@@ -42,8 +42,5 @@ defined('_JEXEC') or die('Restricted access');
 function ximport($path) {
     if (substr(strtolower($path),0,7) == 'hubzero') {
         return JLoader::import('.' . str_replace('_', '.', $path), JPATH_ROOT . DS . 'libraries');
-    } else {
-        return JLoader::import('.' . $path, JPATH_PLUGINS . DS . "xhub" . DS . "xlibraries
-");
     }
 }

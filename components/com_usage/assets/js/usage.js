@@ -62,7 +62,7 @@ HUB.Usage = {
 	
 	loadOFC: function() {
 		p = $('period').value;
-		swfobject.embedSWF("/plugins/xhub/xlibraries/ofc/open-flash-chart.swf", "chart", "600", "350", "9.0.0", "expressInstall.swf", {"data-file":"/usage/chart/"+p+"/?no_html=1"});
+		swfobject.embedSWF("/libraries/ofc/open-flash-chart.swf", "chart", "600", "350", "9.0.0", "expressInstall.swf", {"data-file":"/usage/chart/"+p+"/?no_html=1"});
 	}
 }
 

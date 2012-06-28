@@ -214,7 +214,7 @@ defined('_JEXEC') or die( 'Restricted access' );
  * @author		Tomasz Wegrzanowski
  * @author		Brion Vibber
  * @copyright   Copyright 2003 Tomasz Wegrzanowski
- * @file		plugins/xlibrary/xlibraries/wiki/math/math.php
+ * @file		plugins/hubzero/wikiparser/math/math.php
  *
  * Javascript - Flash Player Version Detection
  *

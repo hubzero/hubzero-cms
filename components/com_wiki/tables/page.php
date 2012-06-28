@@ -556,7 +556,6 @@ class WikiPage extends JTable
 		//$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
 
-		//include_once( JPATH_ROOT.DS.'plugins'.DS.'xhub'.DS.'xlibraries'.DS.'wiki'.DS.'revision.php' );
 		//$wr = new WikiPageRevision( $database );
 		if (isset($filters['search']) && $filters['search'] != '') {
 			$searchquery = $filters['search'];
