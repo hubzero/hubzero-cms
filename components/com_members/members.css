@@ -489,6 +489,10 @@ iframe {
 	background:#FFF;
 	font-size:12px;
 	border-bottom:1px solid #efefef;
+	overflow:hidden;
+	}
+#modules-dock ul li label {
+	float:left;
 	}
 #modules-dock ul li input {
 	float:right;
