@@ -943,7 +943,10 @@ HUB.Plugins.Autocomplete = {
 		var styles = document.createElement('link');
 		styles.type = 'text/css';
 		styles.rel = 'stylesheet';
-		styles.href = '/plugins/hubzero/autocompleter/autocompleter.css';
+		styles.href = $('#plgAutocompleterCss').val();
+		if (!styles.href) {
+			styles.href = '/plugins/hubzero/autocompleter/autocompleter.css';
+		}
 		head.appendChild(styles);
 		
 		$('.autocomplete').each(function(i, input) {

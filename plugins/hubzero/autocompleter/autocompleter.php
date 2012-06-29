@@ -93,7 +93,6 @@ class plgHubzeroAutocompleter extends JPlugin
 			$document = JFactory::getDocument();
 			if (JPluginHelper::isEnabled('system', 'jquery'))
 			{
-				//$document->addScript(DS.'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.jquery.js');
 				$scripts .= '<script src="' . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.jquery.js"></script>';
 			}
 			else 
@@ -101,11 +100,23 @@ class plgHubzeroAutocompleter extends JPlugin
 				$scripts .= '<script src="' . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'textboxlist.js"></script>';
 				$scripts .= '<script src="' . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'observer.js"></script>';
 				$scripts .= '<script src="' . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.js"></script>';
-				//$document->addScript(DS.'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'textboxlist.js');
-				//$document->addScript(DS.'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'observer.js');
-				//$document->addScript(DS.'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.js');
 			}
-			//$document->addStyleSheet(DS.'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.css');
+
+			$scripts .= '<input type="hidden" name="plgAutocompleterCss" id="plgAutocompleterCss" value="';
+
+			$app =& JFactory::getApplication();
+			$templatecss = DS . 'templates' . DS . $app->getTemplate() . DS . 'html' . DS . 'plg_hubzero_autocompleter' . DS . 'autocompleter.css';
+			$plugincss = DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.css';
+			if (file_exists(JPATH_SITE . $templatecss)) 
+			{
+				$scripts .= $templatecss . '?v=' . filemtime(JPATH_SITE . $templatecss);
+			} 
+			else 
+			{
+				$scripts .= $plugincss . '?v=' . filemtime(JPATH_SITE . $plugincss);
+			}
+
+			$scripts .= '" />';
 
 			$this->_pushscripts = false;
 		}
