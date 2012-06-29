@@ -55,21 +55,29 @@ class Hubzero_Hub
 	public function loadConfig()
 	{
 		$registry =& JFactory::getConfig();
-
 		$file = JPATH_CONFIGURATION . DS . 'hubconfiguration.php';
 
-		if (file_exists($file)) {
+		if (file_exists($file))
 		{
 			include_once($file);
 		}
+
 		if (class_exists('HubConfig'))
+		{
+			$config = new HubConfig();
+			$registry->loadObject($config, 'xhub');
 		}
 
-		if ( class_exists('HubConfig') ) {
-			$config = new HubConfig();
+		$file = JPATH_CONFIGURATION . DS . 'hubconfiguration-local.php';
+
+		if (file_exists($file))
 		{
+			include_once($file);
 		}
+
 		if (class_exists('HubConfigOverride'))
+		{
+			$config = new HubConfigOverride();
 			$registry->loadObject($config, 'xhub');
 		}
 	}
@@ -144,14 +152,18 @@ class Hubzero_Hub
 		$template = $app->getTemplate();
 		$file = $view . '.html.php';
 
-		$templatefile = DS . "templates" . DS . $template . DS . "html" . DS . $component . DS . $file;
+		$templatefile = DS . 'templates' . DS . $template . DS . 'html' . DS . $component . DS . $file;
 
-		$componentfile = DS . "components" . DS . $component . DS . $file;
+		$componentfile = DS . 'components' . DS . $component . DS . $file;
 
 		if (file_exists(JPATH_SITE . $templatefile))
+		{
 			return JPATH_SITE . $templatefile;
+		}
 		else
+		{
 			return JPATH_SITE . $componentfile;
+		}
 	}
 }
 
