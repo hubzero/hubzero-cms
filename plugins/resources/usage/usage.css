@@ -1,0 +1,344 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_usage/usage.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	plg_resources_usage CSS
+	-- -- -- -- -- -- --
+
+*/
+
+/* Sections */
+	#sub-menu {
+		margin-bottom: -1px;
+	}
+/* Data tables */
+	#usage-section table {
+		border-collapse: collapse;
+		margin: 1em 0 2.5em 0;
+		padding: 0;
+		border-top: none;
+		border-bottom: 2px solid #eee;
+		font-size: 90%;
+	}
+	#usage-section th {
+		font-weight: bold;
+	}
+	#usage-section caption {
+		text-align: left;
+		margin-bottom: 1em;
+		padding-bottom: 0;
+	}
+	#usage-section thead {
+		border-top: none;
+		border-bottom: 2px solid #ccc;
+	}
+	#usage-section thead th,
+	#usage-section thead td { 
+		padding: 0.5em 1em;
+		vertical-align: top;
+		border-top: none;
+		white-space: normal;
+		background-color: #f6f6f1;
+	}
+	#usage-section .group {
+		background-image: none;
+	}
+	#usage-section tbody th,
+	#usage-section tbody td { 
+		padding: 0.5em 1em 0.5em 1em;
+		border-bottom: 1px solid #eee;
+	}
+	#usage-section tbody th {
+		text-align: left;
+	}
+	#usage-section tbody td {
+		text-align: right;
+	}
+	#usage-section .textual-data {
+		text-align: left;
+	}
+	#usage-section .numerical-data {
+		text-align: right;
+	}
+	#usage-section .centered {
+		text-align: center;
+	}
+	#usage-section .summary {
+		background-color: #edf3f1;
+		border-top: 2px solid #ccc;
+	}
+	#usage-section .summary .highlight {
+		background-color: #d1dedc;
+	}
+	#usage-section .summary .group {
+		background-color: #e1eae8;
+		background-image: none;
+	}
+	#usage-section .summary .increase {
+		background-color: #dce6d3;
+	}
+	#usage-section .summary .decrease {
+		background-color: #e8dbd3;
+	}
+/* Footnotes */
+	.footnotes {
+		font-size: 90%;
+		text-align: left;
+	}
+	.footnotes hr {
+		margin: 4em 0 1.5em;
+		width: 200px;
+		text-align: left;
+		border-color: #ccc;
+	}
+/* Filters */
+	.com_usage fieldset.filters {
+		margin: 2em 0 2em 0;
+		padding: 1em;
+		background: #F5F7F2;
+		border-top: 1px solid #DEE4CD;
+		border-bottom: 1px solid #DEE4CD;
+	}
+	.com_usage fieldset.filters label {
+		font-weight: bold;
+		margin-left: 0.5em;
+		margin-right: 0.5em;
+	}
+/* Sub sub menu */
+	#sub-sub-menu ul {
+		margin: 0 -15px;
+		padding: 0.7em 15px;
+		list-style: none;
+		border: none;
+		border-bottom: 1px solid #ddd;
+	}
+	#sub-sub-menu li {
+		margin: 0 0 0 20px;
+		padding: 0;
+		border: none;
+		display: inline;
+	}
+	#sub-sub-menu .active a {
+		color: #333;
+		border: none;
+	}
+/* Sparklines */
+	.sparkline { 
+		width: 680px;
+		height: 200px;
+		margin: 0.2em 0 0 0;
+		color: #c7c7c7;
+		border-bottom: 1px solid #e3e3e3;
+	}
+	.sparkline .index { 
+		position: relative;
+		float: left; 
+		width: 4px; 
+		height: 100%; 
+	}
+	.sparkline .index .count { 
+		display: block; 
+		position: absolute; 
+		bottom: 0; 
+		left: 0; 
+		width: 100%; 
+		height: 0; 
+		background: #888;
+		overflow: hidden; 
+		text-indent: -9999px;
+	}
+/* Sparkline lists */
+	.sparklist li { 
+		padding: 0.4em 0; 
+	}
+	
+	#usage-section .usage-stats-overview {
+		border-top: 1px solid #dfdfdf;
+		border-bottom: none;
+		margin: 1em 0;
+		width: 100%;
+		text-align: left;
+		font-size: 1em;
+		border-collapse: collapse;
+		background: #fff;
+	}
+	#usage-section .usage-stats-overview thead th {
+		color: #aaa;
+		font-weight: normal;
+		border-left: 1px solid #dfdfdf;
+		border-right: 1px solid #dfdfdf;
+		border-bottom: none;
+		padding: 5px 10px;
+	}
+	#usage-section .usage-stats-overview tbody td {
+		padding: 5px 10px 15px 10px;
+		font-size: 2.5em;
+		font-weight: normal;
+		border-left: 1px solid #dfdfdf;
+		border-right: 1px solid #dfdfdf;
+		color: #777;
+		border-bottom: 1px solid #dfdfdf;
+		text-align: left;
+	}
+	#usage-section .usage-stats-overview tbody td.block {
+		padding-bottom: 10px;
+	}
+	#usage-section .usage-stats-overview tbody td.block,
+	#usage-section .usage-stats-overview tbody td.block a {
+		color: #999; /*#b18fbc; purple*/
+	}
+	#usage-section .pie-chart th span {
+		display: inline-block; 
+		width: 12px; 
+		height: 12px; 
+		margin: 0.2em 0.8em 0 0;
+		text-indent: -555em;
+	}
+	#u-placeholder-wrapper {
+		padding-top: 1em;
+	}
+	#usage-section .usage-stats-overview tbody td a {
+		border: none;
+	}
+	#usage-section .usage-stats-overview tbody td a:hover {
+		color: #000;
+		text-decoration: none;
+		border: none;
+	}
+	#usage-section .usage-stats-overview tbody td span {
+		color: #aaa;
+		font-size: 14px;
+		line-height: 14px;
+		font-weight: normal;
+		margin: 0 1.5em 0 0;
+		padding: 0;
+		display: block;
+	}
+	#u-users-placeholder,
+	#u-runs-placeholder {
+		margin-top: 1em;
+	}
+	#u-overview-wrapper {
+		position: relative;
+		/*margin-top: -6px;*/
+		margin-top: 1.2em;
+	}
+	#u-placeholder-wrapper {
+	}
+	#usage-section .legend table {
+		width: auto;
+	}
+	#usage-section .legend table,
+	#usage-section .legend table tr td,
+	#usage-section .legend table tr th,
+	#usage-section .legend table tr {
+		background: transparent;
+		border: none;
+		padding: 0;
+	}
+	#usage-section .legend table tr td.legendLabel {
+		padding-left: 0.2em;
+		padding-right: 1em;
+		text-align: left;
+	}
+	#usage-section tr.active {
+		background-color: #EEEEE9;
+	}
+	.com_resources .section h3#plg-usage-header {
+		display: none !important;
+	}
+	.pie-total {
+		position: absolute;
+		top: 45%;
+		left: 50%;
+		margin-left: -1em;
+		font-size: 2.5em;
+		text-align: center;
+	}
+	.pie-total span {
+		color: #aaa;
+		font-size: 12px;
+		font-weight: normal;
+		margin: 1em 0 0 0;
+		padding: 0;
+		display: block;
+	}
+	#choices .container {
+		margin: 1.618em 0;
+		background-color: transparent;
+		border: 2px solid #f7f7f7;
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		border-radius: 0.25em;
+		padding: 1.618em;
+		position: relative;
+		cursor: pointer;
+	}
+	#choices .container.selected {
+		background-color: #f3f3f3; /*#f7f7f7;*/
+	}
+	#choices .container.selected:after {
+		content: "";
+		position: absolute;
+		left: 50%;
+		bottom: -1.818em;
+		height: 2em;
+		width: 6px;
+		background: #f3f3f3;
+	}
+	#choices .container strong {
+		font-weight: normal;
+		font-size: 2em;
+		line-height: 1;
+		color: #999;
+	}
+	#set-selection {
+		color: #999;
+		text-align: right;
+		margin: -1.5em 0 0 0;
+	}
+	#set-selection a {
+		font-size: 85%;
+		display: inline-block;
+		padding: 0.1em 0.5em;
+		margin: 0 0.3em;
+		border: 1px solid #efefef;
+	}
+	#set-selection a.selected {
+		background: #f3f3f3;
+		color: #999;
+	}
+	#u-instructions {
+		color: #999;
+		font-size: 85%;
+		margin: 1em 0 0 0;
+	}
+	#u-runs-placeholder .xAxis {
+		display: none;
+	}
+	#u-tooltip {
+		padding: 0.4em 0.8em;
+		-webkit-border-radius: 3px;
+		-moz-border-radius: 3px;
+		border-radius: 3px;
+		border: 1px solid #fff;
+		background: -webkit-gradient(linear, left top, left bottom, from(#666666), to(#000000));
+		background: -webkit-linear-gradient(#666666, #000000);
+		background: -moz-linear-gradient(center top, #666666 0%, #000000 100%);
+		background: -moz-gradient(center top, #666666 0%, #000000 100%);
+		background: -o-linear-gradient(#666666, #000000);
+		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#666666,endColorstr=#000000);
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#666666, endColorstr=#000000)";
+		color: #fff;
+		-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+		-moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+		opacity: 0.8;
+	}
