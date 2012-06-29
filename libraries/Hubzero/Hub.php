@@ -37,68 +37,6 @@ defined('_JEXEC') or die('Restricted access');
 class Hubzero_Hub
 {
 	/**
-	 * Constructor
-	 * Loads configuration file if found
-	 * 
-	 * @return     void
-	 */
-	public function __construct()
-	{
-		$this->loadConfig();
-	}
-
-	/**
-	 * Load the configuration file
-	 * 
-	 * @return     void
-	 */
-	public function loadConfig()
-	{
-		$registry =& JFactory::getConfig();
-		$file = JPATH_CONFIGURATION . DS . 'hubconfiguration.php';
-
-		if (file_exists($file))
-		{
-			include_once($file);
-		}
-
-		if (class_exists('HubConfig'))
-		{
-			$config = new HubConfig();
-			$registry->loadObject($config, 'xhub');
-		}
-
-		$file = JPATH_CONFIGURATION . DS . 'hubconfiguration-local.php';
-
-		if (file_exists($file))
-		{
-			include_once($file);
-		}
-
-		if (class_exists('HubConfigOverride'))
-		{
-			$config = new HubConfigOverride();
-			$registry->loadObject($config, 'xhub');
-		}
-	}
-
-	/**
-	 * Get a hub configuration
-	 * 
-	 * @param      string $varname Property to get
-	 * @param      string $default Default value if not found
-	 * @return     string
-	 */
-	public function getCfg($varname, $default = '')
-	{
-		$config = &JFactory::getConfig();
-
-		$value = $config->getValue('xhub.' . $varname, $default);
-
-		return $value;
-	}
-
-	/**
 	 * Redirect page, giving a proper 301 if permanent
 	 * 
 	 * @param      string  $url       URL to redirect to
