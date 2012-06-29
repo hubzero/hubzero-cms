@@ -29,122 +29,122 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'WikiMacro'
- * 
- * Long description (if any) ...
+ * Base class for wiki macros
+ * Should be extended
  */
 class WikiMacro
 {
-
 	/**
-	 * Description for '_name'
+	 * Name of the macro
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	protected $_name  = NULL;
 
 	/**
-	 * Description for '_data'
+	 * Container for internal data
 	 * 
 	 * @var array
 	 */
 	protected $_data  = array();
 
 	/**
-	 * Description for '_db'
+	 * JDatabase
 	 * 
-	 * @var unknown
+	 * @var object
 	 */
 	protected $_db    = NULL;
 
 	/**
-	 * Description for '_error'
+	 * Container for errors
 	 * 
 	 * @var unknown
 	 */
 	protected $_error = NULL;
 
 	/**
-	 * Description for 'thisInstance'
+	 * Instance of a macro
 	 * 
 	 * @var object
 	 */
 	static protected $thisInstance = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $config Parameter description (if any) ...
+	 * @param      array $config Configuration options
 	 * @return     void
 	 */
-	public function __construct( $config=array() )
+	public function __construct($config=array())
 	{
 		$this->_db =& JFactory::getDBO();
 
 		$this->args = '';
 
 		// Set the controller name
-		if (empty( $this->_name )) {
-			if (isset($config['name'])) {
+		if (empty($this->_name)) 
+		{
+			if (isset($config['name'])) 
+			{
 				$this->_name = $config['name'];
-			} else {
+			} 
+			else 
+			{
 				$r = null;
-				if (!preg_match('/(.*)Macro/i', get_class($this), $r)) {
-					echo "Controller::__construct() : Can't get or parse class name.";
+				if (!preg_match('/(.*)Macro/i', get_class($this), $r)) 
+				{
+					echo 'Controller::__construct() : Can\'t get or parse class name.';
 				}
-				$this->_name = strtolower( $r[1] );
+				$this->_name = strtolower($r[1]);
 			}
 		}
 	}
 
 	/**
-	 * Short description for '__set'
+	 * Set a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
 	public function __set($property, $value)
 	{
-		$this->_data[$property] = $value;
+		$this->attributes[$property] = $value;
 	}
 
 	/**
-	 * Short description for '__get'
+	 * Get a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->_data[$property])) {
-			return $this->_data[$property];
+		if (isset($this->attributes[$property])) 
+		{
+			return $this->attributes[$property];
 		}
 	}
 
 	/**
-	 * Short description for 'getInstance'
+	 * Get an instance of this macro, creating it if not found
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $config Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $config Configuration parameters
+	 * @return     object 
 	 */
-	static public function getInstance( $config=array() )
+	static public function getInstance($config=array())
 	{
-		if (self::$thisInstance == null) {
-			if (isset($config['name'])) {
+		if (self::$thisInstance == null) 
+		{
+			if (isset($config['name'])) 
+			{
 				$name = $config['name'];
-			} else {
+			} 
+			else 
+			{
 				$name = get_class();
 			}
 			self::$thisInstance = new $name();
@@ -153,9 +153,8 @@ class WikiMacro
 	}
 
 	/**
-	 * Short description for 'render'
-	 * 
-	 * Long description (if any) ...
+	 * Render macro output
+	 * this should be overriden by extended classes
 	 * 
 	 * @return     void
 	 */
@@ -165,11 +164,10 @@ class WikiMacro
 	}
 
 	/**
-	 * Short description for 'description'
+	 * Returns description of macro, use, and accepted arguments
+	 * this should be overriden by extended classes
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     string Return description (if any) ...
+	 * @return     string
 	 */
 	public function description()
 	{

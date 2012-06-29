@@ -29,88 +29,82 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'WikiPageMath'
- * 
- * Long description (if any) ...
+ * Table class for wiki math conversions
  */
 class WikiPageMath extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id               = NULL;  // @var int(11) Primary key
+	var $id               = NULL;
 
 	/**
-	 * Description for 'inputhash'
+	 * varbinary(16)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $inputhash        = NULL;  // @var varbinary(16)
+	var $inputhash        = NULL;
 
 	/**
-	 * Description for 'outputhash'
+	 * varbinary(16)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $outputhash       = NULL;  // @var varbinary(16)
+	var $outputhash       = NULL;
 
 	/**
-	 * Description for 'conservativeness'
+	 * tinyint
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $conservativeness = NULL;  // @var tinyint
+	var $conservativeness = NULL;
 
 	/**
-	 * Description for 'html'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $html             = NULL;  // @var text
+	var $html             = NULL;
 
 	/**
-	 * Description for 'mathml'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $mathml           = NULL;  // @var text
-
-	//-----------
+	var $mathml           = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__wiki_math', 'id', $db );
+		parent::__construct('#__wiki_math', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'loadByInput'
+	 * Load a record by inputhash and bind to $this
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $inputhash Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string $inputhash Hash to load
+	 * @return     boolean True on success
 	 */
-	public function loadByInput( $inputhash )
+	public function loadByInput($inputhash)
 	{
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE inputhash='".addslashes($inputhash)."' LIMIT 1" );
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE inputhash='" . addslashes($inputhash) . "' LIMIT 1");
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
