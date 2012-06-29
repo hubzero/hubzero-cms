@@ -861,7 +861,7 @@ class Hubzero_User_Profile extends JObject
 			return false;
 		}
 
-		$conn = &Hubzero_Factory::getPLDC();
+		$conn = Hubzero_Factory::getPLDC();
 		$ldap_params = JComponentHelper::getParams('com_ldap');
 		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
 		
