@@ -1291,6 +1291,10 @@
 	.view:hover:before {
 		color: #000;
 	}
+	.member:before,
+	.user:before {
+		content: "U";
+	}
 	/* Checked out */
 	.checkedout:before {
 		content: "(";
