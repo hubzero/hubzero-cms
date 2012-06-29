@@ -95,29 +95,6 @@ class Hubzero_Factory
 	}
 
 	/**
-	 * Get a Hubzero_Hub object
-	 * 
-	 * @return     mixed Object if instances is set, null if not
-	 */
-	public static function &getHub()
-	{
-		static $instances;
-
-		if (!isset($instances))
-		{
-			$instances[0] = null;
-		}
-
-		if (!is_object($instances[0]))
-		{
-			ximport('Hubzero_Hub');
-			$instances[0] = new Hubzero_Hub();
-		}
-
-		return $instances[0];
-	}
-
-	/**
 	 * Get a component factory
 	 * 
 	 * @param      string $component Component name

@@ -174,8 +174,6 @@ class CitationFormat
 	public function formatCitation( $citation , $highlight = NULL, $include_coins = true, $config )
 	{
 		//get hub specific details
-		ximport('Hubzero_Hub');
-		$hub = new Hubzero_Hub();
 		$jconfig = JFactory::getConfig();
 		$hub_name = $jconfig->getValue('config.sitename');
 		$hub_url = rtrim(JURI::base(),'/');
