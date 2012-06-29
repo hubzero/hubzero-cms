@@ -171,7 +171,6 @@ class Wishlist extends JTable
 			return false;
 		}
 
-		$xhub =& Hubzero_Factory::getHub();
 		$jconfig = JFactory::getConfig();
 		$sitename = $jconfig->getValue('config.sitename');
 		

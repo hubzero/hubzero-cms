@@ -213,7 +213,6 @@ class ToolsController extends Hubzero_Controller
 		// Push some CSS to the template
 		$this->_getStyles();
 
-		$xhub  =& Hubzero_Factory::getHub();
 		//$model =& $this->getModel();
 		include_once( JPATH_COMPONENT.DS.'models'.DS.'tools.php' );
 		$model = new ToolsModelTools();
@@ -488,7 +487,6 @@ class ToolsController extends Hubzero_Controller
 		}
 
 		// Needed objects
-		$xhub =& Hubzero_Factory::getHub();
 		$url = JRequest::getVar('REQUEST_URI','none','server');
 		$xlog =& Hubzero_Factory::getLogger();
 
@@ -673,7 +671,6 @@ class ToolsController extends Hubzero_Controller
 		// Build and display the HTML
 		//$this->session( $app, $authorized, $output, $toolname );
 		//$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&app='.$toolname.'&task=session&sess='.$sess);
-		$xhub =& Hubzero_Factory::getHub();
 		$app = JFactory::getApplication();
 		$app->redirect( JRoute::_('index.php?option='.$this->_option.'&app='.$toolname.'&task=session&sess='.$sess.'&return='.$rtrn),true);
 	}
@@ -1570,7 +1567,6 @@ class ToolsController extends Hubzero_Controller
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.toolgroup.php' );
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_contribtool'.DS.'contribtool.version.php' );
 
-		$xhub =& Hubzero_Factory::getHub();
 		$xlog =& Hubzero_Factory::getLogger();
 
 		// Ensure we have a tool

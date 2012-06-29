@@ -142,7 +142,6 @@ function toolsParseRoute($segments)
 				}
 			break;
 			case 'report':
-				$xhub =& Hubzero_Factory::getHub();
 				$app->redirect(JRoute::_('index.php?option=com_support&task=tickets&find=group:app-' . $segments[0]),true);
 			break;
 			case 'forge.png':

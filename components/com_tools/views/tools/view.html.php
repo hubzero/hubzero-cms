@@ -52,7 +52,6 @@ class ToolsViewTools extends JView
 	{
 		ximport('Hubzero_Document');
 
-		$xhub  = & Hubzero_Factory::getHub();
 		$model = & $this->getModel();
 
 		// Get some vars to fill in text

@@ -121,7 +121,6 @@ class XRouter extends JRouter
 
 		if (!$juser->get('guest'))
 		{
-			$xhub =& Hubzero_Factory::getHub();
 			$session =& JFactory::getSession();
 			$registration_incomplete = $session->get('registration.incomplete');
 

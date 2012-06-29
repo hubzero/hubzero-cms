@@ -31,7 +31,6 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 	/* Intro */
-	$xhub =& Hubzero_Factory::getHub();
 	$jconfig = JFactory::getConfig();
 	$sitename = $jconfig->getValue('config.sitename');
 	

@@ -33,7 +33,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 	/* Employer Dashboard View */
 
 	// load some classes
-	$xhub =& Hubzero_Factory::getHub();
 	$jconfig = JFactory::getConfig();
 	$sitename = $jconfig->getValue('config.sitename');
 

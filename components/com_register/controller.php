@@ -60,7 +60,6 @@ class RegisterController extends Hubzero_Controller
 		}
 
 		// Make sure we're using a secure connection        
-		$xhub = &Hubzero_Factory::getHub();
 
 		if ( !isset( $_SERVER['HTTPS'] ) || $_SERVER['HTTPS'] == 'off' )
 		{
@@ -116,7 +115,6 @@ class RegisterController extends Hubzero_Controller
 		}
 
 		$xprofile =& Hubzero_Factory::getProfile();
-		$xhub  =& Hubzero_Factory::getHub();
 		$jsession =& JFactory::getSession();
 
 		// Get the return URL
@@ -365,7 +363,6 @@ class RegisterController extends Hubzero_Controller
 		}
 
 		$xprofile =& Hubzero_Factory::getProfile();
-		$xhub  =& Hubzero_Factory::getHub();
 
 		// Get some settings
 		$jconfig =& JFactory::getConfig();
@@ -485,7 +482,6 @@ class RegisterController extends Hubzero_Controller
 		$xregistration = new Hubzero_Registration();
 
 		$xprofile    =& Hubzero_Factory::getProfile();
-		$xhub     =& Hubzero_Factory::getHub();
 		$jsession =& JFactory::getSession();
 
 		$hzal = Hubzero_Auth_Link::find_by_id( $this->juser->get('auth_link_id'));
@@ -778,7 +774,6 @@ class RegisterController extends Hubzero_Controller
 					*/
 
 					// Get some settings
-					$xhub =& Hubzero_Factory::getHub();
 					$params =& JComponentHelper::getParams('com_members');
 					$hubHomeDir = rtrim($params->get('hubHomeDir'),'/');
 					
@@ -1393,8 +1388,6 @@ class RegisterController extends Hubzero_Controller
 	{
 		$app = JFactory::getApplication();
 		
-		$xhub = &Hubzero_Factory::getHub();
-
 		// Add the CSS to the template
 		$this->_getStyles();
 
@@ -1595,7 +1588,6 @@ class RegisterController extends Hubzero_Controller
 	private function _cookie_check()
 	{
 		$app = JFactory::getApplication();
-		$xhub =& Hubzero_Factory::getHub();
 		$jsession =& JFactory::getSession();
 		$jcookie = $jsession->getName();
 

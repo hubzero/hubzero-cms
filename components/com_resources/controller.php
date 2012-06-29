@@ -2177,7 +2177,6 @@ class ResourcesController extends Hubzero_Controller
 	protected function citation()
 	{
 		$database =& JFactory::getDBO();
-		$xhub =& Hubzero_Factory::getHub();
 		
 		// Get contribtool params
 		$tconfig =& JComponentHelper::getParams( 'com_contribtool' );

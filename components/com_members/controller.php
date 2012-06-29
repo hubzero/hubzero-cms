@@ -966,7 +966,6 @@ class MembersController extends Hubzero_Controller
 		if ($request !== null && !empty($resourcemessage)) 
 		{
 			$juri =& JURI::getInstance();
-			$xhub =& Hubzero_Factory::getHub();
 			$jconfig = JFactory::getConfig();
 			$sitename = $jconfig->getValue('config.sitename');
 			$live_site = rtrim(JURI::base(),'/');

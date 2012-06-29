@@ -52,7 +52,6 @@ class ToolsViewImage extends JView
     {
     	ximport('Hubzero_Document');
 
-    	$xhub  = & Hubzero_Factory::getHub();
 		$image = JPATH_SITE . Hubzero_Document::getComponentImage('com_projects', 'forge.png', 1);
 
 		if (is_readable($image)) {

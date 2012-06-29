@@ -901,7 +901,6 @@ class GroupsController extends Hubzero_Controller
 		$reason = new GroupsReason( $this->database );
 		$reason->deleteReason( $this->juser->get('id'), $group->get('gidNumber') );
 
-		$xhub =& Hubzero_Factory::getHub();
 		$jconfig =& JFactory::getConfig();
 
 		// Email subject
@@ -1049,7 +1048,6 @@ class GroupsController extends Hubzero_Controller
 			}
 		}
 
-		$xhub =& Hubzero_Factory::getHub();
 		$jconfig =& JFactory::getConfig();
 
 		// E-mail subject
@@ -1224,7 +1222,6 @@ class GroupsController extends Hubzero_Controller
 			$this->setError( $log->getError() );
 		}
 
-		$xhub =& Hubzero_Factory::getHub();
 		$jconfig =& JFactory::getConfig();
 
 		// E-mail subject
@@ -1462,7 +1459,6 @@ class GroupsController extends Hubzero_Controller
 		}
 
 		// Get some needed objects
-		$xhub =& Hubzero_Factory::getHub();
 		$jconfig =& JFactory::getConfig();
 
 		// Build the e-mail message
@@ -1774,7 +1770,6 @@ class GroupsController extends Hubzero_Controller
 		// Get and set some vars
 		$date = date( 'Y-m-d H:i:s', time());
 
-		//$xhub =& Hubzero_Factory::getHub();
 		$jconfig =& JFactory::getConfig();
 
 		// Build the "from" info for e-mails
@@ -1877,7 +1872,6 @@ class GroupsController extends Hubzero_Controller
 			$this->setError( $log->getError() );
 		}
 
-		$xhub =& Hubzero_Factory::getHub();
 		$jconfig =& JFactory::getConfig();
 
 		// Get the managers' e-mails
@@ -2134,7 +2128,6 @@ class GroupsController extends Hubzero_Controller
 		}
 
 		// Get and set some vars
-		$xhub =& Hubzero_Factory::getHub();
 		$jconfig =& JFactory::getConfig();
 
 		// Build the "from" info for e-mails

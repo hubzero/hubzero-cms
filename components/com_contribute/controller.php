@@ -311,7 +311,6 @@ class ContributeController extends Hubzero_Controller
 	 */
 	protected function step_compose($row=null)
 	{
-		$xhub = Hubzero_Factory::getHub();
 		$app = JFactory::getApplication();
 
 		$type = JRequest::getVar('type', '');

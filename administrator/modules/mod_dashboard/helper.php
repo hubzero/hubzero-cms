@@ -116,7 +116,6 @@ class modDashboard
 		$mosConfig_bankAccounts = 0;
 		$database =& JFactory::getDBO();
 
-		$xhub =& Hubzero_Factory::getHub();
 		$jconfig = JFactory::getConfig();
 		$upconfig =& JComponentHelper::getParams('com_members');
 		$banking =  $upconfig->get('bankAccounts');

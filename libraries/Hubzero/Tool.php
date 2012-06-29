@@ -267,7 +267,6 @@ class Hubzero_Tool
 	 */
 	public function toArray()
 	{
-		$xhub = &Hubzero_Factory::getHub();
 		$result = array();
 
 		if (true)

@@ -78,7 +78,6 @@ class compareusers extends XImportHelperScript
 	private function _compareusers($mode = 0)
 	{
 		$mycount = 0;
-		$xhub = &Hubzero_Factory::getHub();
 		$conn = &Hubzero_Factory::getPLDC();
 		$db = &JFactory::getDBO();
 

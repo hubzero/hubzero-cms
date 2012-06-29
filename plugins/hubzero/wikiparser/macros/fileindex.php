@@ -85,8 +85,6 @@ class FileIndexMacro extends WikiMacro
 				$config->set('filepath', $this->filepath);
 			}
 
-			$xhub =& Hubzero_Factory::getHub();
-
 			// Build and return the link
 			$html = '<ul>';
 			foreach ($rows as $row)

@@ -126,7 +126,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 	} else {
 		// get launch button
 		$helper->getFirstChild();
-		$xhub =& Hubzero_Factory::getHub();
 
 		switch ($resource->type)
 		{

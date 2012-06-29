@@ -892,7 +892,6 @@ class ContribtoolController extends JObject
 		$objA = new ToolAuthor( $database);
 
 		// Get hub config
-		$xhub =& Hubzero_Factory::getHub();
 		$jconfig =& JFactory::getConfig();
 		$live_site = rtrim(JURI::base(),'/');
 		$sitename = $jconfig.getValue('config.sitename');

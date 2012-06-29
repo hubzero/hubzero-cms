@@ -165,7 +165,6 @@ class Hubzero_Factory
 		static $instances;
 
 		$debug = 0;
-		$xhub =& Hubzero_Factory::getHub();
 		
 		$ldap_params = JComponentHelper::getParams('com_ldap');
 

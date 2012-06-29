@@ -127,7 +127,6 @@ if ($this->admin && !$this->getError()) {
 	} else if ($this->wishlist->description) {
 		$html  = '<p>'.$this->wishlist->description.'<p>';
 	} else {
-		$xhub =& Hubzero_Factory::getHub();	
 		$html  = '<p>'.JText::_('HELP_US_IMPROVE').' '.$sitename.' '.JText::_('HELP_IMPROVE_BY_IDEAS').'</p>';
 	}				
 			

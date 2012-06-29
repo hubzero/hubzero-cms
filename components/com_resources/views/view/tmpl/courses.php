@@ -126,7 +126,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 	} else {
 		// get launch button
 		$helper->getFirstChild();
-		$xhub =& Hubzero_Factory::getHub();
 
 		switch ($resource->type)
 		{
@@ -313,8 +312,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 			if ($schildren) {
 				//$html .= ResourcesHtml::writeResultsTable( $database, $resource, $schildren, $option );
 				$o = 'even';
-
-				//$xhub =& Hubzero_Factory::getHub();
 
 				$html .= '<a name="series"></a>'."\n";
 				$html .= '<table class="child-listing" summary="'.JText::_('A table of resources associated to this resource').'">'."\n";

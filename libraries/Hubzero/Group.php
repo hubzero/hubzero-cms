@@ -332,7 +332,6 @@ class Hubzero_Group
 	 */
 	public function toArray($format = 'mysql', $legacy = null, $deltaonly = false)
 	{
-		$xhub = &Hubzero_Factory::getHub();
 		$result = array();
 
 		$ldap_params = JComponentHelper::getParams('com_ldap');
@@ -572,10 +571,9 @@ class Hubzero_Group
 	 */
 	function _ldap_create_ou($ou = null)
 	{
-		$xhub = &Hubzero_Factory::getHub();
 		$conn = &Hubzero_Factory::getPLDC();
 
-		if (empty($conn) || empty($xhub)) {
+		if (empty($conn)) {
 			return false;
 		}
 
@@ -612,10 +610,9 @@ class Hubzero_Group
 	 */
 	function _ldap_create($cn = null, $data = array(), $legacy = false, $verbose = false, $dryrun = false)
 	{
-		$xhub = &Hubzero_Factory::getHub();
 		$conn = &Hubzero_Factory::getPLDC();
 
-		if (empty($conn) || empty($xhub)) {
+		if (empty($conn)) {
 			return false;
 		}
 
@@ -1037,7 +1034,6 @@ class Hubzero_Group
 	private function _ldap_conn_exists()
 	{
 		$conn = &Hubzero_Factory::getPLDC();
-		$xhub = &Hubzero_Factory::getHub();
 
 		if (empty($conn))
 		{
@@ -1062,7 +1058,6 @@ class Hubzero_Group
 	private function _ldap_ou_exists($ou = null)
 	{
 		$conn = &Hubzero_Factory::getPLDC();
-		$xhub = &Hubzero_Factory::getHub();
 
 		if (empty($conn))
 		{
@@ -1109,7 +1104,6 @@ class Hubzero_Group
 	private function _ldap_hubgroup_exists()
 	{
 		$conn = &Hubzero_Factory::getPLDC();
-		$xhub = &Hubzero_Factory::getHub();
 
 		if (empty($conn))
 		{
@@ -1160,7 +1154,6 @@ class Hubzero_Group
 	private function _ldap_posixgroup_exists()
 	{
 		$conn = &Hubzero_Factory::getPLDC();
-		$xhub = &Hubzero_Factory::getHub();
 
 		if (empty($conn))
 			return false;
@@ -1275,11 +1268,10 @@ class Hubzero_Group
 	 */
 	private function _ldap_update($cn = null, $info = null, $legacy = false, $all = false, $verbose = false, $dryrun = false)
 	{
-		$xhub = &Hubzero_Factory::getHub();
 		$conn = &Hubzero_Factory::getPLDC();
 		$errno = 0;
 
-		if (empty($conn) || empty($xhub))
+		if (empty($conn))
 			return false;
 
 		if (empty($info)) {
@@ -1675,12 +1667,11 @@ class Hubzero_Group
 	private function _ldap_delete($cn = null, $legacy = false, $verbose = false, $dryrun = false)
 	{
 		$conn = &Hubzero_Factory::getPLDC();
-		$xhub = &Hubzero_Factory::getHub();
 		
 		$ldap_params = JComponentHelper::getParams('com_ldap');
 		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
 		
-		if (empty($conn) || empty($xhub)) {
+		if (empty($conn)) {
 			return false;
 		}
 
@@ -2167,7 +2158,6 @@ class Hubzero_Group
 		}
 
 		if ($storage == 'ldap') {
-			$xhub = &Hubzero_Factory::getHub();
 			$conn = &Hubzero_Factory::getPLDC();
 
 			$ldap_params = JComponentHelper::getParams('com_ldap');
@@ -2585,10 +2575,9 @@ class Hubzero_Group
 	 */
 	private function _ldap_read($cn, $legacy)
 	{
-		$xhub = &Hubzero_Factory::getHub();
 		$conn = &Hubzero_Factory::getPLDC();
 
-		if (empty($conn) || empty($xhub)) {
+		if (empty($conn)) {
 			return false;
 		}
 
@@ -2635,10 +2624,9 @@ class Hubzero_Group
 	 */
 	private function _ldap_exists($cn, $legacy = false)
 	{
-		$xhub = &Hubzero_Factory::getHub();
 		$conn = &Hubzero_Factory::getPLDC();
 
-		if (empty($conn) || empty($xhub)) {
+		if (empty($conn)) {
 			return false;
 		}
 
@@ -2725,10 +2713,9 @@ class Hubzero_Group
 	 */
 	public function importSQLfromLDAP($extended = false, $replace = false, $update = false, $legacy = false, $verbose = false, $dryrun = false)
 	{
-	    $xhub = &Hubzero_Factory::getHub();
         $conn = &Hubzero_Factory::getPLDC();
 
-        if (empty($conn) || empty($xhub)) {
+        if (empty($conn)) {
             return false;
         }
 
@@ -2855,10 +2842,9 @@ class Hubzero_Group
 	 */
 	public function exportSQLtoLDAP($extended = false, $replace = false, $update = false, $legacy = false, $verbose = false, $dryrun = false)
 	{
-	    $xhub = &Hubzero_Factory::getHub();
         $conn = &Hubzero_Factory::getPLDC();
 
-        if (empty($conn) || empty($xhub)) {
+        if (empty($conn)) {
             return false;
         }
 

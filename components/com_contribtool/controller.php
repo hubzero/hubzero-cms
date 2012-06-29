@@ -813,7 +813,6 @@ class ContribtoolController extends JObject
 		$xprofile    	=& Hubzero_Factory::getProfile();
 		$juser     	=& JFactory::getUser();
 		$database 	=& JFactory::getDBO();
-		$xhub      	=& Hubzero_Factory::getHub();
 
 		// get admin priviliges
 		$this->authorize_admin();
@@ -993,7 +992,6 @@ class ContribtoolController extends JObject
 	{
 		$database =& JFactory::getDBO();
 		$juser    =& JFactory::getUser();
-		$xhub      =& Hubzero_Factory::getHub();
 
 		// get admin priviliges
 		$this->authorize_admin();
@@ -1641,7 +1639,6 @@ class ContribtoolController extends JObject
 	{
 		ximport('Hubzero_Group');
 
-		$xhub 		=& Hubzero_Factory::getHub();
 		$juser     	=& JFactory::getUser();
 		$database 	=& JFactory::getDBO();
 		$jconfig 	=& JFactory::getConfig();
@@ -2257,7 +2254,6 @@ class ContribtoolController extends JObject
 		$database =& JFactory::getDBO();
 
 	    $juser     =& JFactory::getUser();
-		$xhub      =& Hubzero_Factory::getHub();
 
 		// get admin priviliges
 		$this->authorize_admin();
@@ -2334,7 +2330,6 @@ class ContribtoolController extends JObject
 	protected function licenseTool($toolname)
 	{
 		$token = md5(uniqid());
-		$xhub   =& Hubzero_Factory::getHub();
 		$scriptdir = JPATH_COMPONENT . DS . 'scripts';
 
 		$fname = '/tmp/license'.$toolname.$token.'txt';
@@ -2370,7 +2365,6 @@ class ContribtoolController extends JObject
 			return false;
 		}
 
-		$xhub   =& Hubzero_Factory::getHub();
 		$database =& JFactory::getDBO();
 		
 		$ldap_params = JComponentHelper::getParams('com_ldap');	
@@ -2419,7 +2413,6 @@ class ContribtoolController extends JObject
 		}
 
 		$database =& JFactory::getDBO();
-		$xhub   =& Hubzero_Factory::getHub();
 		$scriptdir = JPATH_COMPONENT . DS . 'scripts';
 
 		// Create a Tool object
@@ -2479,7 +2472,6 @@ class ContribtoolController extends JObject
 		}
 
 		$database =& JFactory::getDBO();
-		$xhub   =& Hubzero_Factory::getHub();
 		$scriptdir = JPATH_COMPONENT . DS . 'scripts';
 
 		//$tarball_path = $this->rconfig->get('uploadpath');
@@ -2663,7 +2655,6 @@ class ContribtoolController extends JObject
 	{
 		$database 		=& JFactory::getDBO();
 		$now 			= date( 'Y-m-d H:i:s' );
-		$xhub 			=& Hubzero_Factory::getHub();
 		$app 			=& JFactory::getApplication();
 		$jconfig =& JFactory::getConfig();
 		$sitename = $jconfig->getValue('config.sitename');		
@@ -3007,7 +2998,6 @@ class ContribtoolController extends JObject
 
 		$database 	=& JFactory::getDBO();
 		$juser  	=& JFactory::getUser();
-		$xhub      	=& Hubzero_Factory::getHub();
 
 		// get admin priviliges
 		$this->authorize_admin();
@@ -3257,7 +3247,6 @@ class ContribtoolController extends JObject
 	{
 	    $database 	=& JFactory::getDBO();
 		$juser  	=& JFactory::getUser();
-		$xhub      	=& Hubzero_Factory::getHub();
 
 		// get admin priviliges
 		$this->authorize_admin();

@@ -51,8 +51,6 @@ $live_site = rtrim(JURI::base(),'/');
 							$feed = DS.$feed;
 						}
 						
-						ximport("Hubzero_Hub");
-						$xhub = new Hubzero_Hub();
 						$feed = $live_site.$feed;
 					}
 					$feed = str_replace('https:://','http://',$feed);

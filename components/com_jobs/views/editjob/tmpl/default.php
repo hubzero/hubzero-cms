@@ -33,7 +33,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 	/* Post New Job / Edit Job Form */
 
 	// load some classes
-	$xhub =& Hubzero_Factory::getHub();
 	$jconfig = JFactory::getConfig();
 	$sitename = $jconfig->getValue('config.sitename');
 	$juser 	  =& JFactory::getUser();

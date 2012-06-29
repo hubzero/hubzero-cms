@@ -193,7 +193,6 @@ class plgMembersProfile extends JPlugin
 			if ($check)
 			{
 				$session->set('registration.incomplete', 0);
-				$xhub =& Hubzero_Factory::getHub();
 				$app->redirect($_SERVER['REQUEST_URI'],true);	
 			}  
 			else

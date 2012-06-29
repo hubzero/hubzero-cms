@@ -134,7 +134,6 @@ class WishlistOwner extends JTable
 					}
 
 					// send email to added user
-					$xhub =& Hubzero_Factory::getHub();
 					$jconfig =& JFactory::getConfig();
 					$admin_email = $jconfig->getValue('config.mailfrom');
 

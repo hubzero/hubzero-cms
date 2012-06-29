@@ -52,7 +52,6 @@ class ToolsViewCSS extends JView
     {
     	ximport('Hubzero_Document');
 
-    	$xhub  = & Hubzero_Factory::getHub();
 		$image = JPATH_SITE . Hubzero_Document::getComponentStylesheet('com_tools', 'site_css.cs');
 
 		if (is_readable($image)) {

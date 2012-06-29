@@ -57,7 +57,6 @@ class Hubzero_User_Profile_Helper
 
 		if ($storage == 'ldap')
 		{
-			$xhub = &Hubzero_Factory::getHub();
 			$conn = &Hubzero_Factory::getPLDC();
 
 			$ldap_params = JComponentHelper::getParams('com_ldap');

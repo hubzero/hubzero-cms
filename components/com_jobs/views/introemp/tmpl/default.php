@@ -32,7 +32,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 	/* Mini-login screen for employers */
 
-	$xhub =& Hubzero_Factory::getHub();
 	$jconfig = JFactory::getConfig();
 	$sitename = $jconfig->getValue('config.sitename');
 	// get some configs

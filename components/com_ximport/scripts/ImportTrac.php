@@ -55,7 +55,6 @@ class ImportTrac extends XImportHelperScript
 	 */
 	public function run()
 	{
-		$xhub = &Hubzero_Factory::getHub();
 	    $conn = &Hubzero_Factory::getPLDC();
 		$db   = &JFactory::getDBO();
 

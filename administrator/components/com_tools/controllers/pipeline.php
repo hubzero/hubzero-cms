@@ -271,8 +271,6 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		$objV = new ToolVersion($this->database);
 		$objA = new ToolAuthor($this->database);
 
-		// Get hub config
-		$xhub =& Hubzero_Factory::getHub();
 		$jconfig =& JFactory::getConfig();
 		$live_site = rtrim(JURI::base(),'/');
 		$sitename 	= $jconfig->getValue('config.sitename');

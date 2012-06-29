@@ -1507,8 +1507,6 @@ class EventsController extends Hubzero_Controller
 		$category = new EventsCategory( $this->database );
 		$category->updateCount( $event->catid );
 
-		// Get the HUB configuration
-		//$xhub =& Hubzero_Factory::getHub();
 		$jconfig =& JFactory::getConfig();
 
 		// E-mail subject line

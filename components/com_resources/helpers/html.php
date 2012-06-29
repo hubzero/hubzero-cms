@@ -1117,7 +1117,6 @@ class ResourcesHtml
 	 */
 	public function about($database, $show_edit, $usersgroups, $resource, $helper, $config, $sections, $thistool, $curtool, $alltools, $revision, $params, $attribs, $option, $fsize)
 	{
-		$xhub =& Hubzero_Factory::getHub();
 		$live_site = rtrim(JURI::base(),'/');
 		
 		//if ($resource->type != 31 || $resource->type != 2 || !$thistool) {

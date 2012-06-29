@@ -737,7 +737,6 @@ class SupportControllerTickets extends Hubzero_Controller
 		$hub     = array('email' => $reporter['email'], 'name' => $from);
 
 		// Parse comments for attachments
-		$xhub =& Hubzero_Factory::getHub();
 		$attach = new SupportAttachment($this->database);
 		$attach->webpath = $live_site . $this->config->get('webpath') . DS . $row->id;
 		$attach->uppath  = JPATH_ROOT . $this->config->get('webpath') . DS . $row->id;
@@ -1301,7 +1300,6 @@ class SupportControllerTickets extends Hubzero_Controller
 		// Fetch results
 		$rows = $obj->getTickets($filters, true);
 
-		$xhub =& Hubzero_Factory::getHub();
 		$config =& JFactory::getConfig();
 		$live_site = rtrim(JURI::base(),'/');
 		$sitename = $config->getValue('config.sitename');
@@ -1351,7 +1349,6 @@ class SupportControllerTickets extends Hubzero_Controller
 	 */
 	public function updateTask()
 	{
-		$xhub =& Hubzero_Factory::getHub();
 		$live_site = rtrim(JURI::base(),'/');
 		
 		// Make sure we are still logged in
@@ -1534,7 +1531,6 @@ class SupportControllerTickets extends Hubzero_Controller
 				// otherwise, we're only recording a changelog
 				if ($comment || $row->owner != $old->owner) 
 				{
-					$xhub =& Hubzero_Factory::getHub();
 					$jconfig =& JFactory::getConfig();
 
 					// Parse comments for attachments

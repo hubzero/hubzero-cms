@@ -320,7 +320,6 @@ class ContribtoolHtml
 	public function getNumofTools($status, $toolnum='')
 	{
 		// get hub parameters
-		$xhub =& Hubzero_Factory::getHub();
 		$jconfig = JFactory::getConfig();
 		$sitename = $jconfig->getValue('config.sitename');
 
@@ -648,7 +647,6 @@ class ContribtoolHtml
 	public function writeWhatNext ($status, $config, $option, $title, $par='', $step2='', $step4='', $step5addon='')
 	{
 		// get configs
-		$xhub 			=& Hubzero_Factory::getHub();
 		$config =& JFactory::getConfig();
 		$sitename = $config->getValue('config.sitename');
 		$live_site = rtrim(JURI::base(),'/');
@@ -1053,7 +1051,6 @@ class ContribtoolHtml
 	 */
 	public function writeToolForm($option, $title, $admin, $juser, $defaults, $error, $id, $task, $config, $editversion='dev')
 	{
-		$xhub =& Hubzero_Factory::getHub();
 		$jconfig = JFactory::getConfig();
 		$sitename = $jconfig->getValue('config.sitename');
 
@@ -1492,8 +1489,6 @@ class ContribtoolHtml
 		ContribtoolHtml::writeApproval(JText::_('CONFIRM_VERSION'));
 		}
 
-		$xhub =& Hubzero_Factory::getHub();
-
 		$rconfig =& JComponentHelper::getParams( 'com_resources' );
 		$hubDOIpath = $rconfig->get('doi');
 
@@ -1658,7 +1653,6 @@ class ContribtoolHtml
 		$testpath = 'index.php?option=com_tools'.a.'task=invoke&app='.$status['toolname'].a.'version=test';
 
 		// get configs
-		$xhub 			=& Hubzero_Factory::getHub();
 		$jconfig = JFactory::getConfig();
 		$sitename = $jconfig->getValue('config.sitename');
 		$live_site = rtrim(JURI::base(),'/');
@@ -2091,7 +2085,6 @@ class ContribtoolHtml
         <?php	
 
 		$dev = ($version=='dev') ? 1: 0;
-		$xhub =& Hubzero_Factory::getHub();
 		$jconfig = JFactory::getConfig();
 		$sitename = $jconfig->getValue('config.sitename');
 		
@@ -2344,7 +2337,6 @@ if($tagname!='screenshots' and $tagname!='bio') {
 	{
 
 		$juser =& JFactory::getUser();
-		$xhub =& Hubzero_Factory::getHub();
 		$jconfig = JFactory::getConfig();
 		$sitename = $jconfig->getValue('config.sitename');
 		$license = '/legal/license';

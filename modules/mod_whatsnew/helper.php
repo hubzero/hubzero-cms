@@ -198,7 +198,6 @@ class modWhatsNew
 			}
 			if (substr($this->feedlink, 0, 1) == '/')
 			{
-				$xhub =& Hubzero_Factory::getHub();
 				$this->feedlink = $live_site . $this->feedlink;
 			}
 		}

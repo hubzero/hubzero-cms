@@ -1272,7 +1272,6 @@ class WishlistController extends JObject
 
 		else if ($new_assignee) {
 				// Build e-mail components
-				$xhub =& Hubzero_Factory::getHub();
 				$jconfig =& JFactory::getConfig();
 				$admin_email = $jconfig->getValue('config.mailfrom');
 
@@ -1597,7 +1596,6 @@ class WishlistController extends JObject
 		// send message about a new wish
 		if(!$wishid) {
 			// Build e-mail components
-			$xhub =& Hubzero_Factory::getHub();
 			$jconfig =& JFactory::getConfig();
 			$admin_email = $jconfig->getValue('config.mailfrom');
 
@@ -1770,7 +1768,6 @@ class WishlistController extends JObject
 
 				if($changed) {
 					// Build e-mail components
-					$xhub =& Hubzero_Factory::getHub();
 					$jconfig =& JFactory::getConfig();
 					$admin_email = $jconfig->getValue('config.mailfrom');
 
@@ -2016,7 +2013,6 @@ class WishlistController extends JObject
 					}
 
 					// send message about transferred wish
-					$xhub =& Hubzero_Factory::getHub();
 					$jconfig =& JFactory::getConfig();
 					$admin_email = $jconfig->getValue('config.mailfrom');
 
@@ -2605,7 +2601,6 @@ class WishlistController extends JObject
 				$objWish->load($wishid);
 
 				// Build e-mail components
-				$xhub =& Hubzero_Factory::getHub();
 				$jconfig =& JFactory::getConfig();
 				$admin_email = $jconfig->getValue('config.mailfrom');
 
@@ -2971,7 +2966,6 @@ class WishlistController extends JObject
 			if ($comments) {
 
 				// Parse comment text for attachment tags
-				$xhub =& Hubzero_Factory::getHub();
 
 				if(!$skipattachments) {
 				$webpath = $this->getWebPath($parentid);

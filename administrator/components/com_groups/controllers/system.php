@@ -49,8 +49,6 @@ class GroupsControllerSystem extends Hubzero_Controller
 		$app =& JFactory::getApplication();
 		$config = JFactory::getConfig();
 
-		$xhub = &Hubzero_Factory::getHub();
-
 		$ldap_params = JComponentHelper::getParams('com_ldap');
 		
 		$this->view->ldapBaseDN = $ldap_params->get('ldap_basedn','');

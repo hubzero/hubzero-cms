@@ -855,7 +855,6 @@ class plgGroupsMembers extends JPlugin
 			return false;
 		}
 
-		$xhub = Hubzero_Factory::getHub();
 		$app->redirect(JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&task=invite&return=members'),true);
 	}
 
@@ -1185,7 +1184,6 @@ class plgGroupsMembers extends JPlugin
 			$this->setError('An error occurred while trying to add the member role. Please try again.');
 		}
 
-		$xhub = Hubzero_Factory::getHub();
 		$app->redirect(JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=members'),true);
 	}
 
@@ -1224,7 +1222,6 @@ class plgGroupsMembers extends JPlugin
 			$this->setError('An error occurred while trying to remove the member role. Please try again.');
 		}
 
-		$xhub = Hubzero_Factory::getHub();
 		$app->redirect(JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=members'),true);
 	}
 
@@ -1319,7 +1316,6 @@ class plgGroupsMembers extends JPlugin
 
 		if ($no_html == 0) 
 		{
-			$xhub = Hubzero_Factory::getHub();
 			$app->redirect(JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=members'),true);
 		}
 	}
@@ -1357,7 +1353,6 @@ class plgGroupsMembers extends JPlugin
 			$this->setError('An error occurred while trying to remove the members role. Please try again.');
 		}
 
-		$xhub = Hubzero_Factory::getHub();
 		$app->redirect(JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=members'),true);
 	}
 

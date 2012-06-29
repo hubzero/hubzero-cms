@@ -68,7 +68,6 @@ class plgAuthenticationPUCAS extends JPlugin
 			phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas', false);
 		}
 
-		$xhub = Hubzero_Factory::getHub();
 		$service = rtrim(JURI::base(),'/');
 
 		if (empty($service))
@@ -162,7 +161,6 @@ class plgAuthenticationPUCAS extends JPlugin
 			phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas', false);
 		}
 
-		$xhub = Hubzero_Factory::getHub();
 		$servive = rtrim(JURI::base(),'/');
 		
 		if (empty($service))

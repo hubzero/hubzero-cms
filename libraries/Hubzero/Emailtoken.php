@@ -102,7 +102,7 @@ class Hubzero_Email_Token
 
 		if (empty($xhub))
 		{
-			throw new Exception('Class Hubzero_Email_Token: failed Hubzero::getHub() call');
+			throw new Exception('Class Hubzero_Email_Token: failed HubConfig class load');
 		}
 
 		//**** Get current token version

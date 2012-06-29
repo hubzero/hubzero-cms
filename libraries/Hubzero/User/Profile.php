@@ -483,7 +483,6 @@ class Hubzero_User_Profile extends JObject
 	 */
 	private function _ldap_get_user($username = null)
 	{
-		$xhub = &Hubzero_Factory::getHub();
 		$conn = &Hubzero_Factory::getPLDC();
 
 		if ( empty($username))
@@ -707,7 +706,6 @@ class Hubzero_User_Profile extends JObject
 			'vip' => 'principal_investigator');
 
 		$db = & JFactory::getDBO();
-		$xhub = &Hubzero_Factory::getHub();
 
 		$query = "SELECT * FROM #__author WHERE id=" . $db->Quote($authorid);
 
@@ -863,7 +861,6 @@ class Hubzero_User_Profile extends JObject
 			return false;
 		}
 
-		$xhub = &Hubzero_Factory::getHub();
 		$conn = &Hubzero_Factory::getPLDC();
 		$ldap_params = JComponentHelper::getParams('com_ldap');
 		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
@@ -919,7 +916,6 @@ class Hubzero_User_Profile extends JObject
 	private function _mysql_create()
 	{
 		$db = &JFactory::getDBO();
-		$xhub = &Hubzero_Factory::getHub();
 
 		$modifiedDate = gmdate('Y-m-d H:i:s');
 
@@ -1042,7 +1038,6 @@ class Hubzero_User_Profile extends JObject
 	 */
 	private function _ldap_update()
 	{
-		$xhub = &Hubzero_Factory::getHub();
 		$conn = &Hubzero_Factory::getPLDC();
 		$errno = 0;
 
@@ -1831,7 +1826,6 @@ class Hubzero_User_Profile extends JObject
 	 */
 	private function _ldap_delete($uid)
 	{
-		$xhub =& Hubzero_Factory::getHub();
 		$conn =& Hubzero_Factory::getPLDC();
 
 		$ldap_params = JComponentHelper::getParams('com_ldap');

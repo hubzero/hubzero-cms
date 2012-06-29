@@ -616,7 +616,6 @@ class Hubzero_Registration
 		}
 
 		$registration = $this->_registration;
-		$xhub =& Hubzero_Factory::getHub();
 
 		if ($task == 'proxy')
 			$task = 'proxycreate'; 

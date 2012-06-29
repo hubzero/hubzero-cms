@@ -201,7 +201,6 @@ class Hubzero_User_Password
 	 */
 	public function toArray($format = 'mysql')
 	{
-		$xhub = &Hubzero_Factory::getHub();
 		$result = array();
 		$ldap_params = JComponentHelper::getParams('com_ldap');
 		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
@@ -508,12 +507,11 @@ class Hubzero_User_Password
 	 */
 	private function _ldap_read($instance = null)
 	{
-		$xhub = &Hubzero_Factory::getHub();
 		$conn = &Hubzero_Factory::getPLDC();
 		$ldap_params = JComponentHelper::getParams('com_ldap');
 		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
 		
-		if (empty($conn) || empty($xhub) || empty($instance)) {
+		if (empty($conn) || empty($instance)) {
 			return false;
 		}
 	
@@ -590,11 +588,10 @@ class Hubzero_User_Password
 	 */
 	private function _ldap_update($all = false)
 	{
-		$xhub = &Hubzero_Factory::getHub();
 		$conn = &Hubzero_Factory::getPLDC();
 		$errno = 0;
 
-		if (empty($conn) || empty($xhub)) {
+		if (empty($conn)) {
 			return false;
 		}
 
@@ -819,7 +816,6 @@ class Hubzero_User_Password
 	private function _ldap_delete()
 	{
 		$conn = & Hubzero_Factory::getPLDC();
-		$xhub = & Hubzero_Factory::getHub();
 		
 		$ldap_params = JComponentHelper::getParams('com_ldap');
 		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
@@ -830,7 +826,7 @@ class Hubzero_User_Password
 		// at best we could delete some/all of the password fields but even
 		// that is questionable
 
-		if (empty($conn) || empty($xhub)) {
+		if (empty($conn)) {
 			return false;
 		}
 
