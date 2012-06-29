@@ -124,6 +124,10 @@ class modBillboards
 			// Push some CSS to the template
 			ximport('Hubzero_Document');
 			Hubzero_Document::addModuleStylesheet('mod_billboards');
+			if(!JPluginHelper::isEnabled('system', 'jquery'))
+			{
+				$jdocument->addScript('https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js');
+			}
 			$jdocument->addScript('/modules/mod_billboards/mod_billboards.js');
 		}
 
@@ -179,22 +183,13 @@ class modBillboards
 
 		// Add the javascript ready function with variables based on this specific billboard
 		// Pause: true - means the billbaord stops scrolling on hover
-		$js = '
-			if (!HUB) {
-				var HUB = {};
-			}
+		if(!JPluginHelper::isEnabled('system', 'jquery'))
+		{
+			$js = '
+				var $jQ = jQuery.noConflict();
 
-			if (!jq) {
-				var jq = $;
-			}
-
-			HUB.Billboards = {
-				jQuery: jq,
-
-				initialize: function() {
-					var $ = this.jQuery;
-
-					$(\'#' . $this->collection . '\').cycle({
+				$jQ(document).ready(function() {
+					$jQ(\'#' . $this->collection . '\').cycle({
 						fx: "' . $transition . '",
 						timeout: ' . $timeout .',
 						pager: ' . $js_pager . ',
@@ -204,12 +199,42 @@ class modBillboards
 						slideResize: 0,
 						pause: true
 					});
+				});';
+		}
+		else
+		{
+			$js = '
+				if (!HUB) {
+					var HUB = {};
 				}
-			}
 
-			jQuery(document).ready(function($){
-				HUB.Billboards.initialize();
-			});';
+				if (!jq) {
+					var jq = $;
+				}
+
+				HUB.Billboards = {
+					jQuery: jq,
+
+					initialize: function() {
+						var $ = this.jQuery;
+
+						$(\'#' . $this->collection . '\').cycle({
+							fx: "' . $transition . '",
+							timeout: ' . $timeout .',
+							pager: ' . $js_pager . ',
+							speed: ' . $speed . ',
+							random: ' . $random . ',
+							cleartypeNoBg: true,
+							slideResize: 0,
+							pause: true
+						});
+					}
+				}
+
+				jQuery(document).ready(function($){
+					HUB.Billboards.initialize();
+				});';
+		}
 
 		$jdocument->addScriptDeclaration($js);
 	}
