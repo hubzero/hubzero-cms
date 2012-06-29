@@ -61,40 +61,6 @@ class Hubzero_Factory
 	}
 
 	/**
-	 * Load a list of arrays into the site config
-	 * 
-	 * @param      array  &$arraylist List of arrays
-	 * @param      string $namespace  Namespace to load into
-	 * @return     boolean True if list successfully loaded
-	 */
-	public static function loadArrayList(&$arraylist, $namespace = null)
-	{
-		$config = &JFactory::getConfig();
-		// If namespace is not set, get the default namespace
-
-		if ($namespace == null)
-		{
-			$namespace = $config->_defaultNameSpace;
-		}
-
-		if (!isset($config->_registry[$namespace])) 
-		{
-			// If namespace does not exist, make it and load the data
-			$config->makeNameSpace($namespace);
-		}
-
-		foreach ($arraylist as $array)
-		{
-			// Load the variables into the registry's default namespace.
-			$k = $array['var'];
-			$v = $array['value'];
-			$config->_registry[$namespace]['data']->$array['var'] = $array['value'];
-		}
-
-		return true;
-	}
-
-	/**
 	 * Get an LDAP connection
 	 * 
 	 * @param      integer $primary Parameter description (if any) ...
