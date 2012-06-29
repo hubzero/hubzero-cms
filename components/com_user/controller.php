@@ -231,7 +231,16 @@ class UserController extends JController
 				$return	= JRoute::_('index.php?option=com_user');
 			}
 
-			$mainframe->redirect( $return );
+			// If no_html is set, return json response
+			if(JRequest::getInt('no_html', 0))
+			{
+				echo json_encode( array("success" => true, "redirect" => $return) );
+				exit;
+			}
+			else
+			{
+				$mainframe->redirect( $return );
+			}
 		}
 		else
 		{
@@ -243,8 +252,17 @@ class UserController extends JController
 			if (isset($freturn))
 				$return = $freturn;
 
-			// Redirect to a login form
-			$mainframe->redirect( $return );
+			// If no_html is set, return json response
+			if(JRequest::getInt('no_html', 0))
+			{
+				echo json_encode( array("error" => JError::getError(), "freturn" => $return) );
+				exit;
+			}
+			else
+			{
+				// Redirect to a login form
+				$mainframe->redirect( $return );
+			}
 		}
 	}
 
