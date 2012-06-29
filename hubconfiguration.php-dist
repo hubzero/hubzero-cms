@@ -1,21 +1,5 @@
 <?php
 class HubConfig {
-    var $hubLDAPMasterHost = 'ldap://127.0.0.1';
-    var $hubLDAPSlaveHosts = '';
-    var $hubLDAPBaseDN = 'BASE_DN';
-    var $hubLDAPNegotiateTLS = '0';
-    var $hubLDAPSearchUserDN = '';
-    var $hubLDAPSearchUserPW = '';
-    var $hubLDAPAcctMgrDN = 'cn=admin,BASE_DN';
-    var $hubLDAPAcctMgrPW = 'LDAP_ADMIN_PASSWORD';
-    var $ipDBDriver = 'mysql';
-    var $ipDBHost = 'db.nanohub.org';
-    var $ipDBPort = '';
-    var $ipDBUsername = 'geodb';
-    var $ipDBPassword = '';
-    var $ipDBDatabase = 'network';
-    var $ipDBPrefix = '';
-    var $hubHomeDir = '/home/myhub';
     var $forgeRepoURL = 'https://myhub-fqdn';
     var $svn_user = 'hubrepo';
     var $svn_password = 'hubrepo-password';
