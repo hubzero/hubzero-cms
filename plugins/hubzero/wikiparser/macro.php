@@ -112,7 +112,7 @@ class WikiMacro
 	 */
 	public function __set($property, $value)
 	{
-		$this->attributes[$property] = $value;
+		$this->_data[$property] = $value;
 	}
 
 	/**
@@ -123,9 +123,9 @@ class WikiMacro
 	 */
 	public function __get($property)
 	{
-		if (isset($this->attributes[$property])) 
+		if (isset($this->_data[$property])) 
 		{
-			return $this->attributes[$property];
+			return $this->_data[$property];
 		}
 	}
 
