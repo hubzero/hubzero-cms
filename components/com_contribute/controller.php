@@ -312,11 +312,12 @@ class ContributeController extends Hubzero_Controller
 	protected function step_compose($row=null)
 	{
 		$xhub = Hubzero_Factory::getHub();
+		$app = JFactory::getApplication();
 
 		$type = JRequest::getVar('type', '');
 
 		if ($type == '7') {
-			$xhub->redirect(JRoute::_('index.php?option=com_contribtool&task=create'));
+			$app->redirect(JRoute::_('index.php?option=com_contribtool&task=create'), true);
 		}
 
 		$step = $this->step;

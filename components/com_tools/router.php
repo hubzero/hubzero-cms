@@ -81,6 +81,8 @@ function toolsBuildRoute(&$query)
  */
 function toolsParseRoute($segments)
 {
+	$app = JFactory::getApplication();
+	
 	$vars = array();
 
 	if (empty($segments)) {
@@ -141,7 +143,7 @@ function toolsParseRoute($segments)
 			break;
 			case 'report':
 				$xhub =& Hubzero_Factory::getHub();
-				$xhub->redirect(JRoute::_('index.php?option=com_support&task=tickets&find=group:app-' . $segments[0]));
+				$app->redirect(JRoute::_('index.php?option=com_support&task=tickets&find=group:app-' . $segments[0]),true);
 			break;
 			case 'forge.png':
 				$vars['task'] = 'image';

@@ -115,6 +115,8 @@ class plgMembersProfile extends JPlugin
 	 */
 	private function view()
 	{
+		$app = JFactory::getApplication();
+		
 		// Load some needed libraries
 		ximport('Hubzero_Registration');
 
@@ -192,7 +194,7 @@ class plgMembersProfile extends JPlugin
 			{
 				$session->set('registration.incomplete', 0);
 				$xhub =& Hubzero_Factory::getHub();
-				$xhub->redirect($_SERVER['REQUEST_URI']);	
+				$app->redirect($_SERVER['REQUEST_URI'],true);	
 			}  
 			else
 			{

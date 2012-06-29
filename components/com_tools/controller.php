@@ -674,7 +674,8 @@ class ToolsController extends Hubzero_Controller
 		//$this->session( $app, $authorized, $output, $toolname );
 		//$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&app='.$toolname.'&task=session&sess='.$sess);
 		$xhub =& Hubzero_Factory::getHub();
-		$xhub->redirect( JRoute::_('index.php?option='.$this->_option.'&app='.$toolname.'&task=session&sess='.$sess.'&return='.$rtrn) );
+		$app = JFactory::getApplication();
+		$app->redirect( JRoute::_('index.php?option='.$this->_option.'&app='.$toolname.'&task=session&sess='.$sess.'&return='.$rtrn),true);
 	}
 
 	/**

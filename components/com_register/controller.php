@@ -50,6 +50,7 @@ class RegisterController extends Hubzero_Controller
 	 */
 	public function execute()
 	{
+		$app = JFactory::getApplication();
 		$this->jconfig = JFactory::getConfig();
 
 		$juri =& JURI::getInstance();
@@ -63,7 +64,7 @@ class RegisterController extends Hubzero_Controller
 
 		if ( !isset( $_SERVER['HTTPS'] ) || $_SERVER['HTTPS'] == 'off' )
 		{
-			$xhub->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
+			$app->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'],true);
 			die('insecure connection and redirection failed');
 		}
 
@@ -108,6 +109,8 @@ class RegisterController extends Hubzero_Controller
 	 */
 	protected function edit()
 	{
+		$app = JFactory::getApplication();
+		
 		if ($this->juser->get('guest')) {
 			return JError::raiseError(500, JText::_('COM_REGISTER_ERROR_GUEST_SESSION_EDITING'));
 		}
@@ -244,7 +247,7 @@ class RegisterController extends Hubzero_Controller
 			if (!$updateEmail) {
 				// Redirect
 				$jsession->clear('session.return');
-				$xhub->redirect($return);
+				$app->redirect($return,true);
 			}
 		} else {
 			if ($updateEmail) {
@@ -282,7 +285,7 @@ class RegisterController extends Hubzero_Controller
 			if (!$updateEmail) {
 				// Redirect
 				$jsession->clear('session.return');
-				$xhub->redirect($return);
+				$app->redirect($return,true);
 			}
 		}
 
@@ -451,7 +454,9 @@ class RegisterController extends Hubzero_Controller
 	protected function update()
 	{
 		ximport('Hubzero_Auth_Link');
-
+		
+		$app = JFactory::getApplication();
+		
 		$force = false;
 		$updateEmail = false;
 
@@ -514,9 +519,9 @@ class RegisterController extends Hubzero_Controller
 		if (!$force && $check && JRequest::getMethod() == 'GET') {
 			$jsession->set('registration.incomplete', false);
 			if ($_SERVER['REQUEST_URI'] == '/register/update')
-				$xhub->redirect('/');
+				$app->redirect('/',true);
 			else
-				$xhub->redirect($_SERVER['REQUEST_URI']);
+				$app->redirect($_SERVER['REQUEST_URI'],true);
 			return(true);
 		}
 
@@ -631,9 +636,9 @@ class RegisterController extends Hubzero_Controller
 			if (!$updateEmail) {
 				$suri = JRequest::getVar('REQUEST_URI','/','server');
 				if ($suri == '/register/update')
-					$xhub->redirect('/');
+					$app->redirect('/',true);
 				else
-					$xhub->redirect($suri);
+					$app->redirect($suri,true);
 			} else {
 
 				// Instantiate a new view
@@ -1259,6 +1264,8 @@ class RegisterController extends Hubzero_Controller
 	 */
 	protected function change()
 	{
+		$app = JFactory::getApplication();
+		
 		// Add the CSS to the template
 		$this->_getStyles();
 
@@ -1312,7 +1319,7 @@ class RegisterController extends Hubzero_Controller
 				// Check if the email address was actually changed
 				if ($pemail == $email) {
 					// Addresses are the same! Redirect
-					$xhub->redirect($return);
+					$app->redirect($return,true);
 				} else {
 					// New email submitted - attempt to save it
 					$xprofile =& Hubzero_User_Profile::getInstance($login);
@@ -1384,6 +1391,8 @@ class RegisterController extends Hubzero_Controller
 	 */
 	protected function confirm()
 	{
+		$app = JFactory::getApplication();
+		
 		$xhub = &Hubzero_Factory::getHub();
 
 		// Add the CSS to the template
@@ -1453,7 +1462,7 @@ class RegisterController extends Hubzero_Controller
                 $myreturn = ($r) ? $r : JRoute::_('index.php?option=com_members&task=myaccount');
             }
 
-	        $xhub->redirect($myreturn);
+	        $app->redirect($myreturn,true);
 		} else {
 			$this->setError(JText::_('COM_REGISTER_ERROR_INVALID_CONFIRMATION'));
 		}
@@ -1585,6 +1594,7 @@ class RegisterController extends Hubzero_Controller
 	 */
 	private function _cookie_check()
 	{
+		$app = JFactory::getApplication();
 		$xhub =& Hubzero_Factory::getHub();
 		$jsession =& JFactory::getSession();
 		$jcookie = $jsession->getName();
@@ -1593,7 +1603,7 @@ class RegisterController extends Hubzero_Controller
 			if (JRequest::getVar('cookie', '', 'get') != 'no') {
 				$juri = JURI::getInstance();
 				$juri->setVar('cookie','no');
-				return $xhub->redirect($juri->toString());
+				return $app->redirect($juri->toString(),true);
 			}
 
 			$view = new JView( array('name'=>'error') );
@@ -1606,7 +1616,7 @@ class RegisterController extends Hubzero_Controller
 			$juri = JURI::getInstance();
 			$juri->delVar('cookie');
 
-			return $xhub->redirect($juri->toString());
+			return $app->redirect($juri->toString(),true);
 		}
 
 		return true;

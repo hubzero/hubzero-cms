@@ -830,6 +830,8 @@ class GroupsController extends Hubzero_Controller
 	 */
 	protected function cancel()
 	{
+		$app = JFactory::getApplication();
+		
 		$return = strtolower(trim(JRequest::getVar( 'return', '', 'get' )));
 
 		// Build the title
@@ -934,9 +936,9 @@ class GroupsController extends Hubzero_Controller
 
 		// Action Complete. Redirect to appropriate page
 		if ($return == 'browse') {
-			$xhub->redirect(JRoute::_('index.php?option='.$this->_option));
+			$app->redirect(JRoute::_('index.php?option='.$this->_option),true);
 		} else {
-			$xhub->redirect(JRoute::_('index.php?option='.$this->_option.'&gid='. $group->get('cn')));
+			$app->redirect(JRoute::_('index.php?option='.$this->_option.'&gid='. $group->get('cn')),true);
 		}
 	}
 
@@ -949,7 +951,8 @@ class GroupsController extends Hubzero_Controller
 	 */
 	protected function confirm()
 	{
-
+		$app = JFactory::getApplication();
+		
 		// Check if they're logged in	
 		if ($this->juser->get('guest')) {
 			$this->login( $this->_title );
@@ -1081,7 +1084,7 @@ class GroupsController extends Hubzero_Controller
 		}
 
 		// Push through to the groups listing
-		$xhub->redirect(JRoute::_('index.php?option='.$this->_option.'&gid='. $group->get('cn')));
+		$app->redirect(JRoute::_('index.php?option='.$this->_option.'&gid='. $group->get('cn')),true);
 	}
 
 	/**
@@ -1093,6 +1096,8 @@ class GroupsController extends Hubzero_Controller
 	 */
 	protected function accept()
 	{
+		$app = JFactory::getApplication();
+		
 		$return = strtolower(trim(JRequest::getVar( 'return', '', 'get' )));
 
 		// Build the title
@@ -1251,9 +1256,9 @@ class GroupsController extends Hubzero_Controller
 
 		// Action Complete. Redirect to appropriate page
 		if ($return == 'browse') {
-			$xhub->redirect(JRoute::_('index.php?option='.$this->_option));
+			$app->redirect(JRoute::_('index.php?option='.$this->_option),true);
 		} else {
-			$xhub->redirect(JRoute::_('index.php?option='.$this->_option.'&gid='. $group->get('cn')));
+			$app->redirect(JRoute::_('index.php?option='.$this->_option.'&gid='. $group->get('cn')),true);
 		}
 	}
 
@@ -1918,6 +1923,8 @@ class GroupsController extends Hubzero_Controller
 	 */
 	protected function invite()
 	{
+		$app = JFactory::getApplication();
+		
 		// Check if they're logged in
 		if ($this->juser->get('guest')) {
 			$this->login( $title );
@@ -2178,7 +2185,7 @@ class GroupsController extends Hubzero_Controller
 
 		// Do we need to redirect?
 		if ($return == 'members') {
-			$xhub->redirect( JRoute::_('index.php?option='.$this->_option.'&gid='. $group->get('cn').'&active=members') );
+			$app->redirect( JRoute::_('index.php?option='.$this->_option.'&gid='. $group->get('cn').'&active=members'),true);
 		}
 
 		// Push all invitees together

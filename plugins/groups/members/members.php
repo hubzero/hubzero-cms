@@ -848,13 +848,15 @@ class plgGroupsMembers extends JPlugin
 	 */
 	private function add()
 	{
+		$app = JFactory::getApplication();
+		
 		if ($this->authorized != 'manager' && $this->authorized != 'admin') 
 		{
 			return false;
 		}
 
 		$xhub = Hubzero_Factory::getHub();
-		$xhub->redirect(JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&task=invite&return=members'));
+		$app->redirect(JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&task=invite&return=members'),true);
 	}
 
 	/**
@@ -1160,6 +1162,8 @@ class plgGroupsMembers extends JPlugin
 	 */
 	private function addrole()
 	{
+		$app = JFactory::getApplication();
+		
 		if ($this->membership_control == 0) 
 		{
 			return false;
@@ -1182,7 +1186,7 @@ class plgGroupsMembers extends JPlugin
 		}
 
 		$xhub = Hubzero_Factory::getHub();
-		$xhub->redirect(JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=members'));
+		$app->redirect(JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=members'),true);
 	}
 
 	/**
@@ -1192,6 +1196,8 @@ class plgGroupsMembers extends JPlugin
 	 */
 	private function removerole()
 	{
+		$app = JFactory::getApplication();
+		
 		if ($this->membership_control == 0) 
 		{
 			return false;
@@ -1219,7 +1225,7 @@ class plgGroupsMembers extends JPlugin
 		}
 
 		$xhub = Hubzero_Factory::getHub();
-		$xhub->redirect(JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=members'));
+		$app->redirect(JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=members'),true);
 	}
 
 	/**
@@ -1288,6 +1294,8 @@ class plgGroupsMembers extends JPlugin
 	 */
 	private function submitrole()
 	{
+		$app = JFactory::getApplication();
+		
 		if ($this->membership_control == 0) 
 		{
 			return false;
@@ -1312,7 +1320,7 @@ class plgGroupsMembers extends JPlugin
 		if ($no_html == 0) 
 		{
 			$xhub = Hubzero_Factory::getHub();
-			$xhub->redirect(JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=members'));
+			$app->redirect(JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=members'),true);
 		}
 	}
 
@@ -1323,6 +1331,8 @@ class plgGroupsMembers extends JPlugin
 	 */
 	private function deleterole()
 	{
+		$app = JFactory::getApplication();
+		
 		if ($this->membership_control == 0) 
 		{
 			return false;
@@ -1348,7 +1358,7 @@ class plgGroupsMembers extends JPlugin
 		}
 
 		$xhub = Hubzero_Factory::getHub();
-		$xhub->redirect(JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=members'));
+		$app->redirect(JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=members'),true);
 	}
 
 	/**
