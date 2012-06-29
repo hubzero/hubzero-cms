@@ -36,43 +36,6 @@ defined('_JEXEC') or die('Restricted access');
  */
 class Hubzero_Hub
 {
-	/**
-	 * Redirect page, giving a proper 301 if permanent
-	 * 
-	 * @param      string  $url       URL to redirect to
-	 * @param      boolean $permanent Page permanently moved?
-	 * @return     void
-	 */
-	public function redirect($url, $permanent = false)
-	{
-		// check for relative internal links
-		if (preg_match('#^index[2]?.php#', $url))
-		{
-			$url = JURI::base() . $url;
-		}
 
-		// Strip out any line breaks
-		$url = preg_split("/[\r\n]/", $url);
-		$url = $url[0];
-
-		// If the headers have been sent, then we cannot send an additional location header
-		// so we will output a javascript redirect statement.
-		if (headers_sent())
-		{
-			echo "<script>document.location.href='$url';</script>\n";
-		}
-		else
-		{
-			//@ob_end_clean(); // clear output buffer
-			if ($permanent)
-			{
-				header('HTTP/1.1 301 Moved Permanently');
-			}
-
-			header('Location: ' . $url);
-		}
-
-		exit(0);
-	}
 }
 
