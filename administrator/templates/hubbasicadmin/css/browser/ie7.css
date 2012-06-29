@@ -27,6 +27,9 @@
 		padding: 0.18em 0.618em 0.618em 0.618em;
 	}
 /* Main Menu */
+	#header {
+		z-index: 888;
+	}
 	#header .user-options {
 		z-index: 900;
 	}
