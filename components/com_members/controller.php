@@ -1016,7 +1016,7 @@ class MembersController extends Hubzero_Controller
 			$message .= $url . "\r\n";
 
 			// Get the administrator's email address
-			$emailadmin = $xhub->getCfg('hubSupportEmail');
+			$emailadmin = $jconfig->getValue('config.mailfrom');
 
 			// Send an e-mail to admin
 			if (!Hubzero_Toolbox::send_email($emailadmin, $subject, $message)) 
