@@ -66,7 +66,7 @@ class Hubzero_Factory
 	 * @param      integer $primary Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	public static function &getLDC($primary = 0)
+	public static function getLDC($primary = 0)
 	{
 		static $instances;
 
@@ -76,8 +76,8 @@ class Hubzero_Factory
 
 		$acctman   = $ldap_params->get('ldap_managerdn','cn=admin');
 		$acctmanPW = $ldap_params->get('ldap_managerpw','');
-		$aldap     = $ldap_params->get('ldap_primary', 'ldap://localhost');
-		$pldap     = $ldap_params->get('ldap_secondary', '');
+		$pldap     = $ldap_params->get('ldap_primary', 'ldap://localhost');
+		$aldap     = $ldap_params->get('ldap_secondary', '');
 		
 		if ($debug) 
 		{
@@ -288,7 +288,7 @@ class Hubzero_Factory
 	 * 
 	 * @return     object
 	 */
-	public static function &getPLDC()
+	public static function getPLDC()
 	{
 		static $instances;
 
