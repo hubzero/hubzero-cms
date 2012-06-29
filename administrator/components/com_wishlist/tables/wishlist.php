@@ -172,9 +172,7 @@ class Wishlist extends JTable
 		}
 
 		$xhub =& Hubzero_Factory::getHub();
-		$jconfig = JFactory::getConfig();
-		$sitename = $jconfig->getValue('config.sitename');
-
+		$hubShortName = $xhub->getCfg('hubShortName');
 		$juser =& JFactory::getUser();
 
 		$this->created     = date('Y-m-d H:i:s');
@@ -187,7 +185,7 @@ class Wishlist extends JTable
 		switch ($category)
 		{
 			case 'general':
-				$this->title = $title ? $title : $sitename;
+				$this->title = $title ? $title : $hubShortName;
 
 				if (!$this->store()) 
 				{
@@ -442,6 +440,83 @@ class Wishlist extends JTable
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
+	}
+
+	/**
+	 * Build a query from filters
+	 * 
+	 * @param      array $filters Filters to build query from
+	 * @return     string SQL
+	 */
+	public function buildQuery($filters=array())
+	{
+		$sql = "FROM $this->_tbl AS m LEFT JOIN #__users AS u ON m.created_by=u.id ";
+
+		$w = array();
+		if (isset($filters['category']) && $filters['category']) 
+		{
+			$w[] = "m.category=" . $filters['category'];
+		}
+		if (isset($filters['referenceid']) && $filters['referenceid']) 
+		{
+			$w[] = "m.referenceid=" . $filters['referenceid'];
+		}
+		if (isset($filters['state'])) 
+		{
+			$w[] = "m.state=" . $filters['state'];
+		}
+		if (isset($filters['search']) && $filters['search'] != '') 
+		{
+			$w[] = "m.title LIKE '%" . $filters['search'] . "%'";
+		}
+
+		$sql .= (count($w) > 0) ? "WHERE " : "";
+		$sql .= implode(" AND ", $w);
+
+		if (!isset($filters['sort']) || !$filters['sort']) 
+		{
+			$filters['sort'] = 'title';
+		}
+		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+		{
+			$filters['sort_Dir'] = 'ASC';
+		}
+		$sql .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+		if (isset($filters['limit']) && $filters['limit'] != '') 
+		{
+			$sql .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+		}
+
+		return $sql;
+	}
+
+	/**
+	 * Get a record count
+	 * 
+	 * @param      array $filters Filters to build query from
+	 * @return     integer
+	 */
+	public function getCount($filters=array())
+	{
+		$filters['limit'] = '';
+		$query = "SELECT count(*) " . $this->buildQuery($filters);
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadResult();
+	}
+
+	/**
+	 * Get records
+	 * 
+	 * @param      array $filters Filters to build query from
+	 * @return     array
+	 */
+	public function getRecords($filters=array())
+	{
+		$query = "SELECT m.*, u.name, (SELECT COUNT(*) FROM #__wishlist_item AS w WHERE w.wishlist = m.id) AS wishes " . $this->buildQuery($filters);
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
 	}
 }
 

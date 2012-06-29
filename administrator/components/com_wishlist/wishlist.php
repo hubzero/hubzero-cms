@@ -67,10 +67,10 @@ include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'wish.rank.php');
 include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'wish.attachment.php');
 include_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'wishlist.php');
 
-$controllerName = JRequest::getCmd('controller', 'wishes');
+$controllerName = JRequest::getCmd('controller', 'lists');
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
 {
-	$controllerName = 'wishes';
+	$controllerName = 'lists';
 }
 require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'WishlistController' . ucfirst($controllerName);

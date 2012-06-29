@@ -503,6 +503,13 @@ class Wish extends JTable
 			$sql .= " AND (RTA.objectid=ws.id AND (RTA.tbl='wishlist') AND (TA.tag IN ('" . implode("','", $tags) . "') OR TA.raw_tag IN ('" . implode("','", $tags) . "')))";
 			$sql .= " GROUP BY ws.id ";
 		}
+		if ($fullinfo && isset($filters['search']) && $filters['search']) 
+		{
+			$tagging = new WishTags($this->_db);
+			$tags = $tagging->_parse_tags($filters['tag']);
+
+			$sql .= " AND (LOWER(ws.subject) LIKE '%" . strtolower($filters['search']) . "%' OR LOWER(ws.about) LIKE '%" . strtolower($filters['search']) . "%')";
+		}
 
 		$sql .= "\n ORDER BY " . $sort;
 		$sql .= (isset($filters['limit']) && $filters['limit'] > 0) ? " LIMIT " . $filters['start'] . ", " . $filters['limit'] : "";
