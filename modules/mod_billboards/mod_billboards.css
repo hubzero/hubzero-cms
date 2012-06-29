@@ -28,7 +28,7 @@
 
 /* Standard Pager Styling */
 	.slider .pager {
-		z-index:999;
+		z-index:500;
 		position:absolute;
 		top:20px;
 		right:20px;
