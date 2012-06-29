@@ -29,22 +29,17 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'TagMacro'
- * 
- * Long description (if any) ...
+ * Wiki macro class for dipslaying a tag
  */
 class TagMacro extends WikiMacro
 {
-
 	/**
-	 * Short description for 'description'
+	 * Returns description of macro, use, and accepted arguments
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     mixed Return description (if any) ...
+	 * @return     array
 	 */
 	public function description()
 	{
@@ -55,31 +50,34 @@ class TagMacro extends WikiMacro
 	}
 
 	/**
-	 * Short description for 'render'
+	 * Generate macro output
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     string Return description (if any) ...
+	 * @return     string
 	 */
 	public function render()
 	{
 		$tag = $this->args;
 
-		if ($tag) {
+		if ($tag) 
+		{
 			// Perform query
-			$this->_db->setQuery( "SELECT raw_tag FROM #__tags WHERE tag='".$tag."' OR alias='".$tag."' LIMIT 1" );
+			$this->_db->setQuery("SELECT raw_tag FROM #__tags WHERE tag='" . $tag . "' OR alias='" . $tag . "' LIMIT 1");
 			$a = $this->_db->loadResult();
 
 			// Did we get a result from the database?
-			if ($a) {
+			if ($a) 
+			{
 				// Build and return the link
-				return '<a href="'.JRoute::_( 'index.php?option=com_tags&tag='.$tag ).'">'.stripslashes($a).'</a>';
-				//return '['.JRoute::_( 'index.php?option=com_tags&amp;tag='.$tag ).' '.stripslashes($a).']';
-			} else {
+				return '<a href="' . JRoute::_('index.php?option=com_tags&tag=' . $tag) . '">' . stripslashes($a) . '</a>';
+			} 
+			else 
+			{
 				// Return error message
-				return '('.$tag.' not found)';
+				return '(' . $tag . ' not found)';
 			}
-		} else {
+		} 
+		else 
+		{
 			return '';
 		}
 	}

@@ -29,20 +29,18 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'ParentsMacro'
- * 
- * Long description (if any) ...
+ * Wiki macro class for displaying a tree of page parents
  */
 class ParentsMacro extends WikiMacro
 {
 	/**
-     * Returns a description of how to use the macro
-     *
-     * @return string
-     */
+	 * Returns a description of how to use the macro
+	 *
+	 * @return string
+	 */
 	public function description()
 	{
 		$txt = array();
@@ -57,10 +55,10 @@ class ParentsMacro extends WikiMacro
 	}
 
 	/**
-     * Renders the macro
-     *
-     * @return string
-     */
+	 * Generate macro output
+	 * 
+	 * @return     string
+	 */
 	public function render()
 	{
 		$depth = 1;
@@ -68,7 +66,7 @@ class ParentsMacro extends WikiMacro
 
 		if ($this->args)
 		{
-			$args = preg_split('#,#', $this->args);
+			$args = explode(',', $this->args);
 			if (is_array($args))
 			{
 				foreach ($args as $arg)
@@ -126,11 +124,11 @@ class ParentsMacro extends WikiMacro
 	}
 
 	/**
-     * Build a tree of parents
-     *
-     * @param  array  $rows An array of objects
-     * @return string
-     */
+	 * Build a tree of parents
+	 *
+	 * @param  array  $rows An array of objects
+	 * @return string
+	 */
 	private function _buildTree($rows)
 	{
 		$html = '';
@@ -152,7 +150,7 @@ class ParentsMacro extends WikiMacro
 			$html .= ($row->title) ? stripslashes($row->title) : $row->pagename;
 			$html .= '</a>';
 			$html .= $this->_buildTree($rows);
-			$html .= '</li>'."\n";
+			$html .= '</li>' . "\n";
 			$html .= '</ul>';
 		}
 
@@ -160,14 +158,14 @@ class ParentsMacro extends WikiMacro
 	}
 
 	/**
-     * Build a tree of parents
-     *
-     * @param  integer $depth How far back to look for ancestors
+	 * Build a tree of parents
+	 *
+	 * @param  integer $depth How far back to look for ancestors
 	 * @param  string  $scope The URI path to traverse
-     * @return array  
-     */
+	 * @return array  
+	 */
 	private function _fetchPointer($depth, $scope)
-    {
+	{
 		$uri = explode('/', $scope);
 
 		$pages = array();
@@ -191,14 +189,14 @@ class ParentsMacro extends WikiMacro
 			}
 			array_pop($subscope);
 
-            // fetch the pointer to the current uri part
-            $pointer = $this->_getPageByAlias($uriPart, implode('/', $subscope));
+			// fetch the pointer to the current uri part
+			$pointer = $this->_getPageByAlias($uriPart, implode('/', $subscope));
 
-            // if the page was not found then return null
+			// if the page was not found then return null
 			if (null == $pointer)
 			{
 				return $pages;
-            }
+			}
 
 			//set the parent id to the current pointer to traverse down the tree
 			$pages[] = $pointer;
@@ -212,22 +210,17 @@ class ParentsMacro extends WikiMacro
     }
 
 	/**
-     * Retrieve a wiki page by 
-     *
-     * @param  integer $depth How far back to look for ancestors
+	 * Retrieve a wiki page by alias
+	 *
+	 * @param  integer $depth How far back to look for ancestors
 	 * @param  string  $scope The URI path to traverse
-     * @return array  
-     */
-    private function _getPageByAlias($alias, $scope)
-    {
-		// Build the SQL
-		/*$sql = "SELECT id, title, pagename, scope FROM #__wiki_page WHERE `pagename`='" . $alias . "' AND `scope`='" . $scope . "' AND `group`='" . $this->domain . "' LIMIT 1";
-
-		// Perform query
-		$this->_db->setQuery($sql);
-		$page = $this->_db->loadObject();*/
-		if (!class_exists('WikiPage') && is_file(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'page.php')) {
-			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'page.php');
+	 * @return array  
+	 */
+	private function _getPageByAlias($alias, $scope)
+	{
+		if (!class_exists('WikiPage') && is_file(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php')) 
+		{
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
 		}
 
 		$page = new WikiPage($this->_db);

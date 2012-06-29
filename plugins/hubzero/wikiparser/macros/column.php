@@ -29,40 +29,44 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'DivMacro'
- * 
- * Long description (if any) ...
+ * Wiki macro class for creating columns
  */
 class ColumnMacro extends WikiMacro
 {
+	/**
+	 * Number of columns to dipslay
+	 * 
+	 * @var integer
+	 */
 	protected static $_columns = 0;
-	
+
+	/**
+	 * Indicator of where we are in the column count
+	 * 
+	 * @var integer
+	 */
 	protected static $_cursor = 0;
 
 	/**
-	 * Short description for 'description'
+	 * Returns description of macro, use, and accepted arguments
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     mixed Return description (if any) ...
+	 * @return     array
 	 */
 	public function description()
 	{
 		$txt = array();
-		$txt['wiki'] = "Allows content to be split into columns. This macro must first start with a declaration of the number of columns you want to use: `Column(3)`. Then you must use the macro twice to indicate where a column starts and ends: `Column(start)` and `Column(end)`. Attributes may be applied by separating name/value pairs with a comma. Example: Column(start, class=myclass)";
-		$txt['html'] = "<p>Allows content to be split into columns. This macro must first start with a declaration of the number of columns you want to use: <code>[[Column(3)]]</code> Then you must use the macro twice to indicate where a column starts and ends:</p><p><code>[[Column(start)]]<br />content<br />[[Column(end)]]</code></p><p>Attributes may be applied by separating name/value pairs with a comma. Example: <code>[[Column(start, class=myclass)]]</code>";
+		$txt['wiki'] = 'Allows content to be split into columns. This macro must first start with a declaration of the number of columns you want to use: `Column(3)`. Then you must use the macro twice to indicate where a column starts and ends: `Column(start)` and `Column(end)`. Attributes may be applied by separating name/value pairs with a comma. Example: Column(start, class=myclass)';
+		$txt['html'] = '<p>Allows content to be split into columns. This macro must first start with a declaration of the number of columns you want to use: <code>[[Column(3)]]</code> Then you must use the macro twice to indicate where a column starts and ends:</p><p><code>[[Column(start)]]<br />content<br />[[Column(end)]]</code></p><p>Attributes may be applied by separating name/value pairs with a comma. Example: <code>[[Column(start, class=myclass)]]</code>';
 		return $txt['html'];
 	}
 
 	/**
-	 * Short description for 'render'
+	 * Generate macro output
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     string Return description (if any) ...
+	 * @return     string
 	 */
 	public function render()
 	{
@@ -118,10 +122,10 @@ class ColumnMacro extends WikiMacro
 					$val = trim(end($a));
 					$val = trim($val, '"');
 					$val = trim($val, "'");
-					
+
 					$key = htmlentities($key, ENT_COMPAT, 'UTF-8');
 					$val = htmlentities($val, ENT_COMPAT, 'UTF-8');
-					
+
 					if ($key == 'class')
 					{
 						$cls[] = $val;
@@ -134,7 +138,7 @@ class ColumnMacro extends WikiMacro
 
 			$div  = '<div class="' . implode(' ', $cls) . '"';
 			$div .= (!empty($atts)) ? ' ' . implode(' ', $atts) . '>' : '>';
-		} 
+		}
 		elseif (trim($text) == 'end') 
 		{
 			$div  = '</div>';

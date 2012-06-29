@@ -29,22 +29,17 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'RandomPageMacro'
- * 
- * Long description (if any) ...
+ * Wiki macro class for displaying a random page
  */
 class RandomPageMacro extends WikiMacro
 {
-
 	/**
-	 * Short description for 'description'
+	 * Returns description of macro, use, and accepted arguments
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     mixed Return description (if any) ...
+	 * @return     array
 	 */
 	public function description()
 	{
@@ -55,25 +50,23 @@ class RandomPageMacro extends WikiMacro
 	}
 
 	/**
-	 * Short description for 'render'
+	 * Generate macro output
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     mixed Return description (if any) ...
+	 * @return     string
 	 */
 	public function render()
 	{
 		// Perform query
-		$this->_db->setQuery( "SELECT pagename, scope, title FROM #__wiki_page ORDER BY rand() LIMIT 1" );
+		$this->_db->setQuery("SELECT pagename, scope, title FROM #__wiki_page ORDER BY rand() LIMIT 1");
 		$a = $this->_db->loadRow();
 
 		// Did we get a result from the database?
-		if ($a) {
+		if ($a) 
+		{
 			$title = ($a[2]) ? stripslashes($a[2]) : $a[0];
 
 			// Build and return the link
-			//return '['.JRoute::_('index.php?option='.$this->option.a.'scope='.$a[1].a.'pagename='.$a[0]).' '.$title.']';
-			return '<a href="'.JRoute::_('index.php?option='.$this->option.'&scope='.$a[1].'&pagename='.$a[0]).'">'.$title.'</a>';
+			return '<a href="' . JRoute::_('index.php?option=' . $this->option . '&scope=' . $a[1] . '&pagename=' . $a[0]) . '">' . $title . '</a>';
 		}
 	}
 }

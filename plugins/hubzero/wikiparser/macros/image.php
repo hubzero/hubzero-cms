@@ -36,7 +36,6 @@ defined('_JEXEC') or die( 'Restricted access' );
  */
 class ImageMacro extends WikiMacro
 {
-
 	/**
 	 * Returns description of macro, use, and accepted arguments
 	 * 
@@ -370,10 +369,10 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 			$link .= $scope . DS;
 		}
 		$link .= $this->pagename . DS . 'Image:' . $file;
-		
+
 		return JRoute::_($link);
 	}
-	
+
 	/**
 	 * Generates HTML to embed an <img>
 	 * 
@@ -384,7 +383,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 	private function _embed($file, $attr=array())
 	{
 		$attr['alt'] = (isset($attr['alt'])) ? htmlentities($attr['alt'], ENT_COMPAT, 'UTF-8') : $attr['desc'];
-				
+
 		if (count($attr['style']) > 0) 
 		{
 			$s = array();

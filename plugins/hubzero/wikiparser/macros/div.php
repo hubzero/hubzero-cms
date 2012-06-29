@@ -29,70 +29,68 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'DivMacro'
- * 
- * Long description (if any) ...
+ * Wiki macro class for wrapping content in a div
  */
 class DivMacro extends WikiMacro
 {
-
 	/**
-	 * Short description for 'description'
+	 * Returns description of macro, use, and accepted arguments
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     mixed Return description (if any) ...
+	 * @return     array
 	 */
 	public function description()
 	{
 		$txt = array();
-		$txt['wiki'] = "Allows content to be wrapped in a `div` tag. This macro must be used twice: `Div(start)` to indicate where to create the opening `div` tag and `Div(end)` to indicate where to close the resulting `div` tag. Attributes may be applied by separating name/value pairs with a comma. Example: Div(start, class=myclass)";
-		$txt['html'] = "<p>Allows content to be wrapped in a <code>&lt;div&gt;</code> tag. This macro must be used twice: <code>[[Div(start)]]</code> to indicate where to create the opening <code>&lt;div&gt;</code> tag and <code>[[Div(end)]]</code> to indicate where to close the resulting <code>&lt;div&gt;</code> tag. Attributes may be applied by separating name/value pairs with a comma. Example: <code>[[Div(start, class=myclass)]]</code>";
+		$txt['wiki'] = 'Allows content to be wrapped in a `div` tag. This macro must be used twice: `Div(start)` to indicate where to create the opening `div` tag and `Div(end)` to indicate where to close the resulting `div` tag. Attributes may be applied by separating name/value pairs with a comma. Example: Div(start, class=myclass)';
+		$txt['html'] = '<p>Allows content to be wrapped in a <code>&lt;div&gt;</code> tag. This macro must be used twice: <code>[[Div(start)]]</code> to indicate where to create the opening <code>&lt;div&gt;</code> tag and <code>[[Div(end)]]</code> to indicate where to close the resulting <code>&lt;div&gt;</code> tag. Attributes may be applied by separating name/value pairs with a comma. Example: <code>[[Div(start, class=myclass)]]</code>';
 		return $txt['html'];
 	}
 
 	/**
-	 * Short description for 'render'
+	 * Generate macro output
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     string Return description (if any) ...
+	 * @return     string
 	 */
 	public function render()
 	{
 		$et = $this->args;
 
-		if (!$et) {
+		if (!$et) 
+		{
 			return '';
 		}
 
 		$attribs = explode(',', $et);
 		$text = array_shift($attribs);
 
-		if (trim($text) == 'start') {
+		if (trim($text) == 'start') 
+		{
 			$atts = array();
-			if (!empty($attribs) && count($attribs) > 0) {
+			if (!empty($attribs) && count($attribs) > 0) 
+			{
 				foreach ($attribs as $a)
 				{
-					$a = preg_split('/=/',$a);
+					$a = explode('=', $a);
 					$key = trim($a[0]);
 					$val = trim(end($a));
 					$val = trim($val, '"');
 					$val = trim($val, "'");
-					
+
 					$key = htmlentities($key, ENT_COMPAT, 'UTF-8');
 					$val = htmlentities($val, ENT_COMPAT, 'UTF-8');
 
-					$atts[] = $key.'="'.$val.'"';
+					$atts[] = $key . '="' . $val . '"';
 				}
 			}
 
 			$div  = '<div';
-			$div .= (!empty($atts)) ? ' '.implode(' ',$atts).'>' : '>';
-		} elseif (trim($text) == 'end') {
+			$div .= (!empty($atts)) ? ' ' . implode(' ', $atts) . '>' : '>';
+		} 
+		elseif (trim($text) == 'end') 
+		{
 			$div  = '</div>';
 		}
 

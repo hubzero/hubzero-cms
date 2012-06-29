@@ -29,22 +29,17 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'ContributorMacro'
- * 
- * Long description (if any) ...
+ * Wiki macro class for linking contributor
  */
 class ContributorMacro extends WikiMacro
 {
-
 	/**
-	 * Short description for 'description'
+	 * Returns description of macro, use, and accepted arguments
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     mixed Return description (if any) ...
+	 * @return     array
 	 */
 	public function description()
 	{
@@ -55,84 +50,101 @@ class ContributorMacro extends WikiMacro
 	}
 
 	/**
-	 * Short description for 'render'
+	 * Generate macro output
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     mixed Return description (if any) ...
+	 * @return     string
 	 */
 	public function render()
 	{
 		$et = $this->args;
 
-		if (!$et) {
+		if (!$et) 
+		{
 			return '';
 		}
 		$id = 0;
 		// Is it numeric?
-		if (is_numeric($et)) {
+		if (is_numeric($et)) 
+		{
 			// Yes, then get contributor by ID
 			$id = intval($et);
 			$sql = "SELECT uidNumber, givenName, middleName, surname, name FROM #__xprofiles WHERE uidNumber=".$id;
 			// Perform query
-			$this->_db->setQuery( $sql );
+			$this->_db->setQuery($sql);
 			$a = $this->_db->loadRow();
 
 			// Did we get a result from the database?
-			if ($a) {
+			if ($a) 
+			{
 				$id = ($id) ? $id : $a[0];
 				// Build and return the link
-				if ($a[4] != '') {
+				if ($a[4] != '') 
+				{
 					$name = $a[4];
-				} else {
-					$name  = $a[1].' ';
-					$name .= ($a[2]) ? $a[2].' ' : '';
-					$name .= $a[3].' ';
+				} 
+				else 
+				{
+					$name  = $a[1] . ' ';
+					$name .= ($a[2]) ? $a[2] . ' ' : '';
+					$name .= $a[3] . ' ';
 				}
 			}
-		} else {
+		} 
+		else 
+		{
 			// No, it could be username or name
 			$n = trim($et);
 			// Is there a space in it inidcating name ("First Last")?
-			if (!strpos($n,' ')) {
+			if (!strpos($n,' ')) 
+			{
 				// No, then we must have a username
 				// Get user's name
 				$cuser =& JUser::getInstance($n);
-				if (is_object($cuser)) {
+				if (is_object($cuser)) 
+				{
 					$name = $cuser->get('name');
-					$id = $cuser->get('id');
-				} else {
-					return '(contributor:'.$et.' not found)';
+					$id   = $cuser->get('id');
+				} 
+				else 
+				{
+					return '(contributor:' . $et . ' not found)';
 				}
 			} else {
 				$bits = explode(' ',$n);
-				$sql = "SELECT uidNumber, givenName, middleName, surname, name FROM #__xprofiles WHERE givenName='".$bits[0]."' AND surname='".end($bits)."'";
+				$sql = "SELECT uidNumber, givenName, middleName, surname, name FROM #__xprofiles WHERE givenName='" . $bits[0] . "' AND surname='" . end($bits) . "'";
 				// Perform query
-				$this->_db->setQuery( $sql );
+				$this->_db->setQuery($sql);
 				$a = $this->_db->loadRow();
 
 				// Did we get a result from the database?
-				if ($a) {
+				if ($a) 
+				{
 					$id = ($id) ? $id : $a[0];
 					// Build and return the link
-					if ($a[4] != '') {
+					if ($a[4] != '') 
+					{
 						$name = $a[4];
-					} else {
-						$name  = $a[1].' ';
-						$name .= ($a[2]) ? $a[2].' ' : '';
-						$name .= $a[3].' ';
+					} 
+					else 
+					{
+						$name  = $a[1] . ' ';
+						$name .= ($a[2]) ? $a[2] . ' ' : '';
+						$name .= $a[3] . ' ';
 					}
 				}
 			}
 		}
 
 		// Did we get a result from the database?
-		if ($name && $id) {
-			return '<a href="'.JRoute::_( 'index.php?option=com_members&id='.$id ).'">'.$name.'</a>';
-			//return '['.JRoute::_( 'index.php?option=com_members&id='.$id ).' '.$name.']';
-		} else {
+		if ($name && $id) 
+		{
+			return '<a href="' . JRoute::_('index.php?option=com_members&id=' . $id) . '">' . $name . '</a>';
+			//return '['.JRoute::_('index.php?option=com_members&id='.$id).' '.$name.']';
+		} 
+		else 
+		{
 			// Return error message
-			return '(contributor:'.$et.' not found)';
+			return '(contributor:' . $et . ' not found)';
 		}
 	}
 }

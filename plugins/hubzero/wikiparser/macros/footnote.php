@@ -29,22 +29,17 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'FootNoteMacro'
- * 
- * Long description (if any) ...
+ * Wiki macro class for linking footnotes
  */
 class FootNoteMacro extends WikiMacro
 {
-
 	/**
-	 * Short description for 'description'
+	 * Returns description of macro, use, and accepted arguments
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     mixed Return description (if any) ...
+	 * @return     array
 	 */
 	public function description()
 	{
@@ -55,66 +50,65 @@ class FootNoteMacro extends WikiMacro
 	}
 
 	/**
-	 * Short description for 'render'
+	 * Generate macro output
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     string Return description (if any) ...
+	 * @return     string
 	 */
 	public function render()
 	{
 		static $wm;
-		
-		if (!is_object($wm)) {
+
+		if (!is_object($wm)) 
+		{
 			$wm = new stdClass();
 			$wm->footnotes = array();
 			$wm->footnotes_notes = array();
 		}
-		
+
 		$note = $this->args;
 
-		//$wm =& WikiMacro::getInstance();
-
-		$fn = $wm->footnotes;
+		$fn    = $wm->footnotes;
 		$notes = $wm->footnotes_notes;
-		//$nc = $wm->footnotes_count;
-		if ($note) {
+
+		if ($note) 
+		{
 			// Build and return the link
-			if (!isset($notes)) {
+			if (!isset($notes)) 
+			{
 				$notes = array();
 			}
-			if (!isset($fn)) {
+			if (!isset($fn)) 
+			{
 				$fn = array();
 			}
 
-			$p = new WikiParser( 'Footnotes', $this->option, $this->scope, $this->pagename, $this->pageid, $this->filepath, $this->domain );
+			$p = new WikiParser('Footnotes', $this->option, $this->scope, $this->pagename, $this->pageid, $this->filepath, $this->domain);
 
 			$note = $p->parse(trim($note));
 
 			$wm->footnotes_count++;
 
-			if (in_array($note,$notes)) {
+			if (in_array($note,$notes)) 
+			{
 				$i = array_search($note, $notes) + 1;
 				$k = $wm->footnotes_count;
-				//return '<sup><a name="fndef-'.$k.'"></a>['.JRoute::_('index.php?option='.$this->option.a.'scope='.$this->scope.a.'pagename='.$this->pagename).'#fnref-'.$i.' &#91;'.$i.'&#93;]</sup>';
-				return '<sup><a name="fndef-'.$k.'"></a><a href="'.JRoute::_('index.php?option='.$this->option.'&scope='.$this->scope.'&pagename='.$this->pagename).'#fnref-'.$i.'">&#91;'.$i.'&#93;</a></sup>';
+
+				return '<sup><a name="fndef-' . $k . '"></a><a href="'.JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->scope . '&pagename=' . $this->pagename) . '#fnref-' . $i . '">&#91;' . $i . '&#93;</a></sup>';
 			}
 
-			//$i = $wm->footnotes_count;
 			$i = count($fn) + 1;
 			$notes[] = $note;
-			$fn[] = '<li><a name="fnref-'.$i.'"></a>'.$note.'</li>';
-			//$fn[] = ' # <a name="fnref-'.$i.'"></a>'.$note;
+			$fn[] = '<li><a name="fnref-' . $i . '"></a>' . $note . '</li>';
 
 			$wm->footnotes_notes = $notes;
 			$wm->footnotes = $fn;
 
-			//return '<sup><a name="fndef-'.$i.'"></a>['.JRoute::_('index.php?option='.$this->option.a.'scope='.$this->scope.a.'pagename='.$this->pagename).'#fnref-'.$i.' &#91;'.$i.'&#93;]</sup>';
-			//return '^[[Anchor(fndef-'.$i.'")]]['.JRoute::_('index.php?option='.$this->option.a.'scope='.$this->scope.a.'pagename='.$this->pagename).'#fnref-'.$i.' '.$i.']^';
-			return '<sup><a name="fndef-'.$i.'"></a><a href="'.JRoute::_('index.php?option='.$this->option.'&scope='.$this->scope.'&pagename='.$this->pagename).'#fnref-'.$i.'">&#91;'.$i.'&#93;</a></sup>';
-		} else {
+			return '<sup><a name="fndef-' . $i . '"></a><a href="' . JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->scope . '&pagename=' . $this->pagename).'#fnref-' . $i . '">&#91;' . $i . '&#93;</a></sup>';
+		} 
+		else 
+		{
 			$html  = '<ol class="footnotes">';
-			$html .= implode("\n",$wm->footnotes);
+			$html .= implode("\n", $wm->footnotes);
 			$html .= '</ol>';
 			
 			$wm = null;

@@ -29,46 +29,40 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'AnchorMacro'
- * 
- * Long description (if any) ...
+ * Wiki macro class for anchors
  */
 class AnchorMacro extends WikiMacro
 {
-
 	/**
-	 * Short description for 'description'
+	 * Returns description of macro, use, and accepted arguments
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     mixed Return description (if any) ...
+	 * @return     array
 	 */
 	public function description()
 	{
 		$txt = array();
-		$txt['wiki'] = "Inserts an anchor into a page.";
-		$txt['html'] = "<p>Inserts an anchor into a page.</p>";
+		$txt['wiki'] = 'Inserts an anchor into a page.';
+		$txt['html'] = '<p>Inserts an anchor into a page.</p>';
 		return $txt['html'];
 	}
 
 	/**
-	 * Short description for 'render'
+	 * Generate macro output
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     string Return description (if any) ...
+	 * @return     string
 	 */
 	public function render()
 	{
 		$name = $this->args;
 
 		// Did we get a result from the database?
-		if ($name) {
+		if ($name) 
+		{
 			// Build and return the link
-			return '<a name="'.urlencode($name).'"></a>';
+			return '<a name="' . urlencode($name) . '"></a>';
 		}
 	}
 }

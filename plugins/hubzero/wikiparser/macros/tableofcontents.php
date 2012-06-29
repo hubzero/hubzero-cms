@@ -29,22 +29,17 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'TableOfContentsMacro'
- * 
- * Long description (if any) ...
+ * Wiki macro class for displaying a table of contents for a page
  */
 class TableOfContentsMacro extends WikiMacro
 {
-
 	/**
-	 * Short description for 'description'
+	 * Returns description of macro, use, and accepted arguments
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     mixed Return description (if any) ...
+	 * @return     array
 	 */
 	public function description()
 	{
@@ -55,15 +50,13 @@ class TableOfContentsMacro extends WikiMacro
 	}
 
 	/**
-	 * Short description for 'render'
+	 * Generate macro output
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     string Return description (if any) ...
+	 * @return     string
 	 */
 	public function render()
 	{
-		return 'MACRO'.$this->uniqPrefix.'[[TableOfContents]]';
+		return 'MACRO' . $this->uniqPrefix . '[[TableOfContents]]';
 	}
 }
 

@@ -36,7 +36,6 @@ defined('_JEXEC') or die( 'Restricted access' );
  */
 class FileMacro extends WikiMacro
 {
-
 	/**
 	 * Returns description of macro, use, and accepted arguments
 	 * 

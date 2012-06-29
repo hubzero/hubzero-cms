@@ -1,44 +1,45 @@
 <?php
 /**
- * @package		HUBzero                                  CMS
- * @author		Shawn                                     Rice <zooley@purdue.edu>
- * @copyright	Copyright                               2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
- *                                                    
- *                                                    Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- *                                                    All rights reserved.
- *                                                    
- *                                                    This program is free software; you can redistribute it and/or
- *                                                    modify it under the terms of the GNU General Public License,
- *                                                    version 2 as published by the Free Software Foundation.
- *                                                    
- *                                                    This program is distributed in the hope that it will be useful,
- *                                                    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *                                                    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *                                                    GNU General Public License for more details.
- *                                                    
- *                                                    You should have received a copy of the GNU General Public License
- *                                                    along with this program; if not, write to the Free Software
- *                                                    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * HUBzero CMS
+ *
+ * Copyright 2005-2011 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'TwitterMacro'
- * 
- * Long description (if any) ...
+ * Wiki macro class for dipslaying a twitter feed
  */
 class TwitterMacro extends WikiMacro
 {
-
 	/**
-	 * Short description for 'description'
+	 * Returns description of macro, use, and accepted arguments
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     mixed Return description (if any) ...
+	 * @return     array
 	 */
 	public function description()
 	{
@@ -70,11 +71,9 @@ class TwitterMacro extends WikiMacro
 	}
 
 	/**
-	 * Short description for 'render'
+	 * Generate macro output
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     string Return description (if any) ...
+	 * @return     string
 	 */
 	public function render()
 	{
@@ -84,26 +83,29 @@ class TwitterMacro extends WikiMacro
 		//get the type of twitter feed based on the first arg
 		$start = substr($args[0], 0, 1);
 
-		//if
-		if($start != "@" && $start != "#") {
+		if ($start != '@' && $start != '#') 
+		{
 			return "(Please enter a valid Twitter Username or trend)";
 		}
 
-		if($start == "@") {
-			$type = "user";
+		if ($start == '@') 
+		{
+			$type = 'user';
 			$username = $args[0];
-			$trend = "";
-		} else if ($start == "#") {
-			$type = "trend";
-			$username = "";
+			$trend = '';
+		} 
+		else if ($start == "#") 
+		{
+			$type = 'trend';
+			$username = '';
 			$trend = $args[0];
 		}
 
 		//set default for num tweets
 		$num_tweets = 3;
 
-		//
-		if(is_numeric(trim($args[1]))) {
+		if (is_numeric(trim($args[1]))) 
+		{
 			$num_tweets = $args[1];
 		}
 
@@ -111,7 +113,7 @@ class TwitterMacro extends WikiMacro
 
 		$doc =& JFactory::getDocument();
 		$doc->addStyleSheet('/plugins/hubzero/wikiparser/macros/macro-assets/twitter/twitter.css');
-		
+
 		if (JPluginHelper::isEnabled('system', 'jquery'))
 		{
 			$doc->addScript('/plugins/hubzero/wikiparser/macros/macro-assets/twitter/twitter.jquery.js');
@@ -144,7 +146,6 @@ class TwitterMacro extends WikiMacro
 			");
 		}
 
-		return "<div id=\"twitter{$uniqid}\" class=\"twitter_feed_container\">Loading Twitter Feed....</div>";
+		return '<div id="twitter' . $uniqid . '" class="twitter_feed_container">Loading Twitter Feed....</div>';
 	}
 }
-?>

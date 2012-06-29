@@ -29,22 +29,17 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'ChildrenMacro'
- * 
- * Long description (if any) ...
+ * Wiki macro class for listing children of a page
  */
 class ChildrenMacro extends WikiMacro
 {
-
 	/**
-	 * Short description for 'description'
+	 * Returns description of macro, use, and accepted arguments
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     mixed Return description (if any) ...
+	 * @return     array
 	 */
 	public function description()
 	{
@@ -62,93 +57,101 @@ class ChildrenMacro extends WikiMacro
 	}
 
 	/**
-	 * Short description for 'render'
+	 * Generate macro output
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     integer Return description (if any) ...
+	 * @return     string
 	 */
 	public function render()
 	{
 		$depth = 1;
 		$description = 0;
 
-		if ($this->args) {
-			$args = preg_split('#,#', $this->args);
-			if (is_array($args)) {
+		if ($this->args) 
+		{
+			$args = explode(',', $this->args);
+			if (is_array($args)) 
+			{
 				foreach ($args as $arg)
 				{
 					$arg = trim($arg);
-					if (substr($arg, 0, 6) == 'depth=') {
-		                $bits = preg_split('#=#', $arg);
+					if (substr($arg, 0, 6) == 'depth=') 
+					{
+						$bits = preg_split('#=#', $arg);
 						$depth = intval(trim(end($bits)));
-		                continue;
+						continue;
 					}
-					if (substr($arg, 0, 12) == 'description=') {
-		                $bits = preg_split('#=#', $arg);
+					if (substr($arg, 0, 12) == 'description=') 
+					{
+						$bits = preg_split('#=#', $arg);
 						$description = intval(trim(end($bits)));
-		                continue;
+						continue;
 					}
 				}
-			} else {
+			} 
+			else 
+			{
 				$arg = trim($args);
-				if (substr($arg, 0, 6) == 'depth=') {
-	                $bits = preg_split('#=#', $arg);
+				if (substr($arg, 0, 6) == 'depth=') 
+				{
+					$bits = preg_split('#=#', $arg);
 					$depth = intval(trim(end($bits)));
 				}
-				if (substr($arg, 0, 12) == 'description=') {
-	                $bits = preg_split('#=#', $arg);
+				if (substr($arg, 0, 12) == 'description=') 
+				{
+					$bits = preg_split('#=#', $arg);
 					$description = intval(trim(end($bits)));
 				}
 			}
 		}
 
-		$scope = ($this->scope) ? $this->scope.DS.$this->pagename : $this->pagename;
+		$scope = ($this->scope) ? $this->scope . DS . $this->pagename : $this->pagename;
 
-		return $this->listChildren( 1, $depth, $scope );
+		return $this->listChildren(1, $depth, $scope);
 	}
 
 	/**
-	 * Short description for 'listChildren'
+	 * List children of a page
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $currentDepth Parameter description (if any) ...
-	 * @param      unknown $targetDepth Parameter description (if any) ...
-	 * @param      string $scope Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      integer $currentDepth How far down the tree we are
+	 * @param      integer $targetDepth  How far down the tree to go
+	 * @param      string  $scope        Page scope
+	 * @return     string HMTL
 	 */
-	private function listChildren( $currentDepth, $targetDepth, $scope='' )
+	private function listChildren($currentDepth, $targetDepth, $scope='')
 	{
 		$html = '';
 
-		if ($currentDepth > $targetDepth) {
+		if ($currentDepth > $targetDepth) 
+		{
 			return $html;
 		}
 
-		$rows = $this->getchildren( $scope );
+		$rows = $this->getchildren($scope);
 
-		if ($rows) {
+		if ($rows) 
+		{
 			$html = '<ul>';
 			foreach ($rows as $row)
 			{
 				$title = ($row->title) ? $row->title : $row->pagename;
 
-				$url  = substr($this->option,4,strlen($this->option)).DS;
-				$url .= ($row->scope) ? $row->scope.DS : '';
+				$url  = substr($this->option, 4, strlen($this->option)) . DS;
+				$url .= ($row->scope) ? $row->scope . DS : '';
 				$url .= $row->pagename;
 
 				/*$html .= ' * ['.$url;
 				$html .= ($row->title) ? ' '.stripslashes($row->title) : ' '.$row->pagename;
 				$html .= ']'."\n";*/
-				$html .= '<li><a href="'.$url.'">';
+				$html .= '<li><a href="' . $url . '">';
 				$html .= ($row->title) ? stripslashes($row->title) : $row->pagename;
 				$html .= '</a>';
-				$html .= $this->listChildren( $currentDepth+1, $targetDepth, $row->scope.DS.$row->pagename );
+				$html .= $this->listChildren($currentDepth + 1, $targetDepth, $row->scope . DS . $row->pagename);
 				$html .= '</li>'."\n";
 			}
 			$html .= '</ul>';
-		} elseif ($currentDepth == 1) {
+		} 
+		elseif ($currentDepth == 1) 
+		{
 			// Return error message
 			//return '(TitleIndex('.$et.') failed)';
 			return '<p>(No sub-pages to display)</p>';
@@ -158,20 +161,18 @@ class ChildrenMacro extends WikiMacro
 	}
 
 	/**
-	 * Short description for 'getChildren'
+	 * Get the children of a page
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $scope Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      string $scope Page scope
+	 * @return     array
 	 */
 	private function getChildren($scope)
 	{
 		// Get all pages
-		$sql = "SELECT * FROM #__wiki_page WHERE scope='".$scope."' AND `group`='".$this->domain."' ORDER BY pagename ASC";
+		$sql = "SELECT * FROM #__wiki_page WHERE scope='" . $scope . "' AND `group`='" . $this->domain . "' ORDER BY pagename ASC";
 
 		// Perform query
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
 }

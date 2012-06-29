@@ -29,22 +29,17 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'TitleIndexMacro'
- * 
- * Long description (if any) ...
+ * Wiki macro class for displaying a list of pages
  */
 class TitleIndexMacro extends WikiMacro
 {
-
 	/**
-	 * Short description for 'description'
+	 * Returns description of macro, use, and accepted arguments
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     mixed Return description (if any) ...
+	 * @return     array
 	 */
 	public function description()
 	{
@@ -55,27 +50,30 @@ class TitleIndexMacro extends WikiMacro
 	}
 
 	/**
-	 * Short description for 'render'
+	 * Generate macro output
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     string Return description (if any) ...
+	 * @return     string
 	 */
 	public function render()
 	{
 		$et = $this->args;
 
 		$sort = '';
-		if ($et) {
+		if ($et) 
+		{
 			$et = strip_tags($et);
 
-			if (strstr($et, ',')) {
+			if (strstr($et, ',')) 
+			{
 				$attribs = explode(',', $et);
 				$et = trim($attribs[0]);
 				$sort = strtolower(trim($attribs[1]));
 			}
 
-			if (strtolower($et) == 'sort=modified' || strtolower($et) == 'sort=created' || strtolower($et) == 'sort=title') {
+			if (strtolower($et) == 'sort=modified' 
+			 || strtolower($et) == 'sort=created' 
+			 || strtolower($et) == 'sort=title') 
+			{
 				$sort = $et;
 				$et = '';
 			}
@@ -94,18 +92,27 @@ class TitleIndexMacro extends WikiMacro
 			break;
 		}
 
-		if ($et) {
+		if ($et) 
+		{
 			// Get pages with a prefix
-			if ($this->domain) {
-				$sql .= "LOWER(p.pagename) LIKE '".strtolower($et)."%' AND p.`group`='".$this->domain."'";
-			} else {
-				$sql .= "LOWER(p.pagename) LIKE '".strtolower($et)."%'";
+			if ($this->domain) 
+			{
+				$sql .= "LOWER(p.pagename) LIKE '" . strtolower($et) . "%' AND p.`group`='" . $this->domain . "'";
+			} 
+			else 
+			{
+				$sql .= "LOWER(p.pagename) LIKE '" . strtolower($et) . "%'";
 			}
-		} else {
+		} 
+		else 
+		{
 			// Get all pages
-			if ($this->domain) {
-				$sql .= "p.`group`='".$this->domain."'";
-			} else {
+			if ($this->domain) 
+			{
+				$sql .= "p.`group`='" . $this->domain . "'";
+			} 
+			else 
+			{
 				$sql .= "p.`group`=''";
 			}
 		}
@@ -122,40 +129,40 @@ class TitleIndexMacro extends WikiMacro
 				$sql .= " GROUP BY v.pageid ORDER BY `title` ASC, `pagename` ASC";
 			break;
 		}
-//echo '<!-- '.$sql.' -->';
+
 		// Perform query
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		$rows = $this->_db->loadObjectList();
-//echo '<!-- '.count($rows).' -->';
+
 		// Did we get a result from the database?
-		if ($rows) {
+		if ($rows) 
+		{
 			// Build and return the link
 			$html = '<ul>';
 			foreach ($rows as $row)
 			{
-				if ($row->pagename == $this->pagename) {
+				if ($row->pagename == $this->pagename) 
+				{
 					continue;
 				}
 				$title = ($row->title) ? $row->title : $row->pagename;
-				//$html .= '<li><a href="'.$this->scope.'/'.$row->pagename.'">'.$title.'</a></li>';
-				$url  = substr($this->option,4,strlen($this->option)).DS;
-				$url .= ($row->scope) ? $row->scope.DS : '';
+
+				$url  = substr($this->option, 4, strlen($this->option)) . DS;
+				$url .= ($row->scope) ? $row->scope . DS : '';
 				$url .= $row->pagename;
 
-				/*$html .= ' * ['.$url;
-				$html .= ($row->title) ? ' '.stripslashes($row->title) : ' '.$row->pagename;
-				$html .= ']'."\n";*/
-				$html .= '<li><a href="'.$url.'">';
+				$html .= '<li><a href="' . $url . '">';
 				$html .= ($row->title) ? stripslashes($row->title) : $row->pagename;
-				$html .= '</a></li>'."\n";
+				$html .= '</a></li>' . "\n";
 			}
 			$html .= '</ul>';
 
 			return $html;
-		} else {
+		} 
+		else 
+		{
 			// Return error message
-			//return '(TitleIndex('.$et.') failed)';
-			return '(No '.$et.' pages to display)';
+			return '(No ' . $et . ' pages to display)';
 		}
 	}
 }

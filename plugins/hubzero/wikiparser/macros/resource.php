@@ -29,22 +29,17 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'ResourceMacro'
- * 
- * Long description (if any) ...
+ * Wiki macro class that will insert a linked title to a resource
  */
 class ResourceMacro extends WikiMacro
 {
-
 	/**
-	 * Short description for 'description'
+	 * Returns description of macro, use, and accepted arguments
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     mixed Return description (if any) ...
+	 * @return     array
 	 */
 	public function description()
 	{
@@ -55,103 +50,118 @@ class ResourceMacro extends WikiMacro
 	}
 
 	/**
-	 * Short description for 'render'
+	 * Generate macro output
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     mixed Return description (if any) ...
+	 * @return     string
 	 */
 	public function render()
 	{
 		$et = $this->args;
 
-		if (!$et) {
+		if (!$et) 
+		{
 			return '';
 		}
 
-		$p = preg_split('#,#', $et);
+		$p = explode(',', $et);
 		$resource = array_shift($p);
 
 		$nolink = false;
 		$scrnshts = false;
 		$num = 1;
-		$p = explode(' ',end($p));
+		$p = explode(' ', end($p));
 		foreach ($p as $a)
 		{
 			$a = trim($a);
 
-			if (substr($a,0,11) == 'screenshots') {
+			if (substr($a,0,11) == 'screenshots') 
+			{
 				$bits = explode('=', $a);
 				$num = intval(end($bits));
 				$scrnshts = true;
-			} elseif ($a == 'nolink') {
+			} 
+			elseif ($a == 'nolink') 
+			{
 				$nolink = true;
 			}
 		}
 
 		// Is it numeric?
-		if (is_numeric($resource)) {
+		if (is_numeric($resource)) 
+		{
 			// Yes, then get resource by ID
 			$id = intval($resource);
-			$sql = "SELECT id, title, alias FROM #__resources WHERE id=".$id;
-		} else {
+			$sql = "SELECT id, title, alias FROM #__resources WHERE id=" . $id;
+		} 
+		else 
+		{
 			// No, get resource by alias
-			$sql = "SELECT id, title, alias FROM #__resources WHERE alias='".trim($resource)."'";
+			$sql = "SELECT id, title, alias FROM #__resources WHERE alias='" . trim($resource) . "'";
 		}
 
 		// Perform query
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		$r = $this->_db->loadRow();
 
 		// Did we get a result from the database?
-		if ($r) {
-			if ($scrnshts && $r[2]) {
-				return $this->screenshots( $r[2], $num );
+		if ($r) 
+		{
+			if ($scrnshts && $r[2]) 
+			{
+				return $this->screenshots($r[2], $num);
 			}
 
 			// Build and return the link
-			if ($r[2]) {
-				$link = 'index.php?option=com_resources&amp;alias='.$r[2];
-			} else {
-				$link = 'index.php?option=com_resources&amp;id='.$id;
+			if ($r[2]) 
+			{
+				$link = 'index.php?option=com_resources&amp;alias=' . $r[2];
+			} 
+			else 
+			{
+				$link = 'index.php?option=com_resources&amp;id=' . $id;
 			}
 
-			if ($nolink) {
+			if ($nolink) 
+			{
 				return stripslashes($r[1]);
-			} else {
-				//return '['.JRoute::_( $link ).' '.stripslashes($r[1]).']';
-				return '<a href="'.JRoute::_( $link ).'">'.stripslashes($r[1]).'</a>';
+			} 
+			else 
+			{
+				return '<a href="' . JRoute::_($link) . '">' . stripslashes($r[1]) . '</a>';
 			}
-		} else {
+		} 
+		else 
+		{
 			// Return error message
-			return '(Resource('.$et.') failed)';
+			return '(Resource(' . $et . ') failed)';
 		}
 	}
 
 	/**
-	 * Short description for 'screenshots'
+	 * Get a list of screenshots
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $alias Parameter description (if any) ...
-	 * @param      integer $num Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string  $alias Resource alias
+	 * @param      integer $num   Number of screenshots to show
+	 * @return     string 
 	 */
-	public function screenshots( $alias, $num=1 )
+	public function screenshots($alias, $num=1)
 	{
-		$config =& JComponentHelper::getParams( 'com_resources' );
-		$path = $config->get('toolpath');
+		$config =& JComponentHelper::getParams('com_resources');
+		$path = DS . trim($config->get('toolpath', '/site/tools'), DS);
 
 		$alias = strtolower($alias);
-		$d = @dir(JPATH_ROOT.$path.DS.$alias);
+		$d = @dir(JPATH_ROOT . $path . DS . $alias);
 		$images = array();
 
-		if ($d) {
+		if ($d) 
+		{
 			while (false !== ($entry = $d->read()))
 			{
 				$img_file = $entry;
-				if (is_file(JPATH_ROOT.$path.DS.$alias.DS.$img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
-					if (preg_match("#bmp|gif|jpg|png|swf#i", $img_file )) {
+				if (is_file(JPATH_ROOT . $path . DS . $alias . DS . $img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') 
+				{
+					if (preg_match("#bmp|gif|jpg|png|swf#i", $img_file)) 
+					{
 						$images[] = $img_file;
 					}
 				}
@@ -162,18 +172,20 @@ class ResourceMacro extends WikiMacro
 
 		$html = '';
 
-		if (count($images) > 0) {
+		if (count($images) > 0) 
+		{
 			$k = 0;
 			for ($i=0, $n=count($images); $i < $n; $i++)
 			{
 				$tn = $this->thumbnail($images[$i]);
-				$type = explode('.',$images[$i]);
+				$type = explode('.', $images[$i]);
 
-				if (is_file(JPATH_ROOT.$path.DS.$alias.DS.$tn) && $k < $num) {
+				if (is_file(JPATH_ROOT . $path . DS . $alias . DS . $tn) && $k < $num) 
+				{
 					$k++;
 
-					$html .= '<a rel="lightbox" href="'.$path.DS.$alias.DS.$images[$i].'" title="Screenshot #'.$k.'">';
-					$html .= '<img src="'.$path.DS.$alias.DS.$tn.'" alt="Screenshot #'.$k.'" /></a>'.n;
+					$html .= '<a rel="lightbox" href="' . $path . DS . $alias . DS . $images[$i].'" title="Screenshot #' . $k . '">';
+					$html .= '<img src="' . $path . DS . $alias . DS . $tn . '" alt="Screenshot #' . $k . '" /></a>';
 				}
 			}
 		}
@@ -182,21 +194,19 @@ class ResourceMacro extends WikiMacro
 	}
 
 	/**
-	 * Short description for 'thumbnail'
+	 * Generate a thumbnail name from a picture name
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $pic Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string $pic Picture name
+	 * @return     string
 	 */
 	public function thumbnail($pic)
 	{
-		$pic = explode('.',$pic);
+		$pic = explode('.', $pic);
 		$n = count($pic);
 		$pic[$n-2] .= '-tn';
 		$end = array_pop($pic);
 		$pic[] = 'gif';
-		$tn = implode('.',$pic);
+		$tn = implode('.', $pic);
 		return $tn;
 	}
 }

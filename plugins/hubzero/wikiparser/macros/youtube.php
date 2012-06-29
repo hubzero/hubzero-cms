@@ -29,22 +29,17 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'YoutubeMacro'
- * 
- * Long description (if any) ...
+ * Wiki macro class for displaying a youtube video
  */
 class YoutubeMacro extends WikiMacro
 {
-
 	/**
-	 * Short description for 'description'
+	 * Returns description of macro, use, and accepted arguments
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     mixed Return description (if any) ...
+	 * @return     array
 	 */
 	public function description()
 	{
@@ -66,11 +61,9 @@ class YoutubeMacro extends WikiMacro
 	}
 
 	/**
-	 * Short description for 'render'
+	 * Generate macro output
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     string Return description (if any) ...
+	 * @return     string
 	 */
 	public function render()
 	{
@@ -78,55 +71,61 @@ class YoutubeMacro extends WikiMacro
 		$content = $this->args;
 
 		//declare the partial youtube embed url
-		$youtube_url = "https://www.youtube.com/embed/";
+		$youtube_url = 'https://www.youtube.com/embed/';
 
 		//defaults 
 		$default_width = 640;
 		$default_height = 380;
 
 		// args will be null if the macro is called without parenthesis.
-		if (!$content) {
+		if (!$content) 
+		{
 			return '';
 		}
-		
+
 		//split up the args
-		$args = array_map("trim", explode(",", $content));
-		$url = $args[0];
-		//$width = (is_numeric($args[1])) ? $args[1] : $default_width;
-		$width = (isset($args[1]) && $args[1] != "") ? $args[1] : $default_width;
-		$height = (isset($args[2]) && $args[2] != "") ? $args[2] : $default_height;
+		$args = array_map('trim', explode(',', $content));
+		$url  = $args[0];
+
+		$width  = (isset($args[1]) && $args[1] != '') ? $args[1] : $default_width;
+		$height = (isset($args[2]) && $args[2] != '') ? $args[2] : $default_height;
 
 		//check is user entered full youtube url or just Video Id
-		if (strstr($url,'http')) {
+		if (strstr($url, 'http')) 
+		{
 			//split the string into two parts 
 			//uri and query string
-			$full_url_parts = explode("?", $url);
+			$full_url_parts = explode('?', $url);
 
 			//split apart any key=>value pairs in query string
-			$query_string_parts = explode("%26%2338%3B",urlencode($full_url_parts[1]));
+			$query_string_parts = explode("%26%2338%3B", urlencode($full_url_parts[1]));
 
 			//foreach query string parts
 			//explode at equals sign
 			//check to see if v is the first part and if it is set the second part to the video id
-			foreach($query_string_parts as $qsp) {
-				$pairs_parts = explode("%3D",$qsp);
-				if($pairs_parts[0] == 'v') {
+			foreach ($query_string_parts as $qsp) 
+			{
+				$pairs_parts = explode("%3D", $qsp);
+				if ($pairs_parts[0] == 'v') 
+				{
 					$video_id = $pairs_parts[1];
 					break;
 				}
 			}
-		} else {
+		} 
+		else 
+		{
 			$video_id = $url;
 		}
 
 		//append to the youtube url
 		$youtube_url .= $video_id;
-		
+
 		//add wmode to url so that lightboxes appear over embedded videos
-		$youtube_url .= "?wmode=transparent";
-		
+		$youtube_url .= '?wmode=transparent';
+
 		//return the emdeded youtube video
-		return "<iframe src=\"{$youtube_url}\" width=\"{$width}\" height=\"{$height}\"></iframe>";
+		return '<iframe src="' . $youtube_url . '" width="' . $width . '" height="' . $height . '"></iframe>';
 	}
 }
 ?>

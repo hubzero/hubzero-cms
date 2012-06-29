@@ -29,22 +29,17 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'FileIndexMacro'
- * 
- * Long description (if any) ...
+ * Wiki macro class for listing files
  */
 class FileIndexMacro extends WikiMacro
 {
-
 	/**
-	 * Short description for 'description'
+	 * Returns description of macro, use, and accepted arguments
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     mixed Return description (if any) ...
+	 * @return     array
 	 */
 	public function description()
 	{
@@ -55,35 +50,38 @@ class FileIndexMacro extends WikiMacro
 	}
 
 	/**
-	 * Short description for 'render'
+	 * Generate macro output
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     string Return description (if any) ...
+	 * @return     string
 	 */
 	public function render()
 	{
 		$et = $this->args;
-		$live_site = rtrim(JURI::base(),'/');
+		$live_site = rtrim(JURI::base(), '/');
 
 		// What pages are we getting?
-		if ($et) {
+		if ($et) 
+		{
 			$et = strip_tags($et);
 			// Get pages with a prefix
-			$sql  = "SELECT * FROM #__wiki_attachments WHERE LOWER(filename) LIKE '".strtolower($et)."%' AND pageid='".$this->pageid."' ORDER BY filename ASC";
-		} else {
+			$sql  = "SELECT * FROM #__wiki_attachments WHERE LOWER(filename) LIKE '" . strtolower($et) . "%' AND pageid='" . $this->pageid . "' ORDER BY filename ASC";
+		} 
+		else 
+		{
 			// Get all pages
-			$sql  = "SELECT * FROM #__wiki_attachments WHERE pageid='".$this->pageid."' ORDER BY filename ASC";
+			$sql  = "SELECT * FROM #__wiki_attachments WHERE pageid='" . $this->pageid . "' ORDER BY filename ASC";
 		}
 
 		// Perform query
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		$rows = $this->_db->loadObjectList();
 
 		// Did we get a result from the database?
-		if ($rows) {
-			$config = JComponentHelper::getParams( 'com_wiki' );
-			if ($this->filepath != '') {
+		if ($rows) 
+		{
+			$config = JComponentHelper::getParams('com_wiki');
+			if ($this->filepath != '') 
+			{
 				$config->set('filepath', $this->filepath);
 			}
 
@@ -93,23 +91,24 @@ class FileIndexMacro extends WikiMacro
 			$html = '<ul>';
 			foreach ($rows as $row)
 			{
-				//$html .= '<li><a href="'.$this->scope.'/'.$row->pagename.'">'.$title.'</a></li>';
-				$link = $live_site.$config->get('filepath').DS.$this->pageid.DS.$row->filename;
+				$link = $live_site . DS . trim($config->get('filepath', '/site/wiki'), DS) . DS . $this->pageid . DS . $row->filename;
 
 				/*$html .= ' * ['.$url;
 				$html .= ($row->title) ? ' '.stripslashes($row->title) : ' '.$row->pagename;
 				$html .= ']'."\n";*/
-				$html .= '<li><a href="'.JRoute::_($link).'">'.$row->filename;
-				$html .= ($row->description) ? '<br /><span>'.stripslashes($row->description).'</span>' : '';
-				$html .= '</a></li>'."\n";
+				$html .= '<li><a href="' . JRoute::_($link) . '">' . $row->filename;
+				$html .= ($row->description) ? '<br /><span>' . stripslashes($row->description) . '</span>' : '';
+				$html .= '</a></li>' . "\n";
 			}
 			$html .= '</ul>';
 
 			return $html;
-		} else {
+		} 
+		else 
+		{
 			// Return error message
 			//return '(TitleIndex('.$et.') failed)';
-			return '(No '.$et.' files to display)';
+			return '(No ' . $et . ' files to display)';
 		}
 	}
 }

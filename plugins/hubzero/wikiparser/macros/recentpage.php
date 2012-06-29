@@ -29,22 +29,17 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'RecentPageMacro'
- * 
- * Long description (if any) ...
+ * Wiki macro class for displaying a link to a recently created or updated page page.
  */
 class RecentPageMacro extends WikiMacro
 {
-
 	/**
-	 * Short description for 'description'
+	 * Returns description of macro, use, and accepted arguments
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     mixed Return description (if any) ...
+	 * @return     array
 	 */
 	public function description()
 	{
@@ -56,11 +51,9 @@ class RecentPageMacro extends WikiMacro
 	}
 
 	/**
-	 * Short description for 'render'
+	 * Generate macro output
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     string Return description (if any) ...
+	 * @return     string
 	 */
 	public function render()
 	{
@@ -68,20 +61,26 @@ class RecentPageMacro extends WikiMacro
 		$cls = '';
 		$limitstart = 0;
 
-		if ($this->args) {
+		if ($this->args) 
+		{
 			$args = explode(',', $this->args);
-			if (isset($args[0])) {
+			if (isset($args[0])) 
+			{
 				$args[0] = intval($args[0]);
-				if ($args[0]) {
+				if ($args[0]) 
+				{
 					$limit = $args[0];
 				}
 			}
-			if (isset($args[1])) {
+			if (isset($args[1])) 
+			{
 				$cls = $args[1];
 			}
-			if (isset($args[2])) {
+			if (isset($args[2])) 
+			{
 				$args[2] = intval($args[2]);
-				if ($args[2]) {
+				if ($args[2]) 
+				{
 					$limitstart = $args[2];
 				}
 			}
@@ -90,77 +89,93 @@ class RecentPageMacro extends WikiMacro
 		$query = "SELECT f.pageid, f.title, f.pagename, f.scope, f.GROUP, f.access, f.created_by, f.created, f.pagehtml, MAX(f.version) AS version FROM (
 					SELECT v.pageid, w.title, w.pagename, w.scope, w.group, w.access, v.version, v.created_by, v.created, v.pagehtml
 					FROM #__wiki_page AS w, #__wiki_version AS v
-					WHERE w.id=v.pageid AND v.approved=1 AND w.group='".$this->domain."' AND w.scope='".$this->scope."' AND w.access!=1
+					WHERE w.id=v.pageid AND v.approved=1 AND w.group='" . $this->domain . "' AND w.scope='" . $this->scope . "' AND w.access!=1
 					ORDER BY created DESC
 					) AS f GROUP BY pageid ORDER BY created DESC
 					LIMIT $limitstart, $limit";
 
 		// Perform query
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		$rows = $this->_db->loadObjectList();
 
 		$html = '';
 
 		// Did we get a result from the database?
-		if ($rows) {
+		if ($rows) 
+		{
+			$dateFormat = '%d %b %Y';
+			$tz = 0;
+			if (version_compare(JVERSION, '1.6', 'ge'))
+			{
+				$dateFormat = 'd M Y';
+				$tz = true;
+			}
+
 			foreach ($rows as $row)
 			{
-				if ($row->version > 1) {
+				if ($row->version > 1) 
+				{
 					$t = JText::_('Updated');
-				} else {
+				} 
+				else 
+				{
 					$t = JText::_('Created');
 				}
 				$html .= '<div';
-				if ($cls) {
-					$html .= ' class="'.$cls.'"';
+				if ($cls) 
+				{
+					$html .= ' class="' . $cls . '"';
 				}
-				$html .= '>'."\n";
-				$html .= "\t".'<h3><a href="'.JRoute::_('index.php?option='.$this->option.'&pagename='.$row->pagename.'&scope='.$row->scope).'">'.stripslashes($row->title).'</a></h3>'."\n";
-				$html .= "\t".'<p class="modified-date">'.$t.' on '.JHTML::_('date', $row->created, "%d %b. %Y").'</p>'."\n";
+				$html .= '>' . "\n";
+				$html .= "\t" . '<h3><a href="' . JRoute::_('index.php?option=' . $this->option . '&pagename=' . $row->pagename . '&scope=' . $row->scope) . '">' . stripslashes($row->title) . '</a></h3>' . "\n";
+				$html .= "\t" . '<p class="modified-date">' . $t . ' on ' . JHTML::_('date', $row->created, $dateFormat, $tz) . '</p>' . "\n";
 				$html .= $this->_shortenText($row->pagehtml);
-				$html .= "\t".'<p><a href="'.JRoute::_('index.php?option='.$this->option.'&pagename='.$row->pagename.'&scope='.$row->scope).'">Read more &rsaquo;</a></p>'."\n";
-				$html .= '</div>'."\n";
+				$html .= "\t" . '<p><a href="' . JRoute::_('index.php?option=' . $this->option . '&pagename=' . $row->pagename . '&scope=' . $row->scope) . '">Read more &rsaquo;</a></p>' . "\n";
+				$html .= '</div>' . "\n";
 			}
 
-		} else {
-			$html .= '<p class="warning">No results found.</p>'."\n";
+		} 
+		else 
+		{
+			$html .= '<p class="warning">No results found.</p>' . "\n";
 		}
 
 		return $html;
 	}
 
 	/**
-	 * Short description for '_shortenText'
+	 * Shorten a string to a max length, preserving whole words
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $text Parameter description (if any) ...
-	 * @param      integer $chars Parameter description (if any) ...
-	 * @param      integer $p Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string  $text      String to shorten
+	 * @param      integer $chars     Max length to allow
+	 * @param      integer $p         Wrap content in a paragraph tag?
+	 * @return     string 
 	 */
 	private function _shortenText($text, $chars=300, $p=1)
 	{
 		$text = strip_tags($text);
-		$text = str_replace("\n",' ',$text);
-		$text = str_replace("\r",' ',$text);
-		$text = str_replace("\t",' ',$text);
-		$text = str_replace('   ',' ',$text);
+		$text = str_replace("\n", ' ', $text);
+		$text = str_replace("\r", ' ', $text);
+		$text = str_replace("\t", ' ', $text);
+		$text = str_replace('   ', ' ', $text);
 		$text = trim($text);
 
-		if (strlen($text) > $chars) {
-			$text = $text.' ';
-			$text = substr($text,0,$chars);
-			$text = substr($text,0,strrpos($text,' '));
-			$text = $text.' &#8230;';
+		if (strlen($text) > $chars) 
+		{
+			$text = $text . ' ';
+			$text = substr($text, 0, $chars);
+			$text = substr($text, 0, strrpos($text, ' '));
+			$text = $text . ' &#8230;';
 		}
 
-		if ($text == '') {
+		if ($text == '') 
+		{
 			$text = '&#8230;';
 		}
 
-		if ($p) {
-			$text = '<p>'.$text.'</p>';
+		if ($p) 
+		{
+			$text = '<p>' . $text . '</p>';
 		}
 
 		return $text;

@@ -29,22 +29,17 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'MacrolistMacro'
- * 
- * Long description (if any) ...
+ * Wiki macro class for displaying all available macros and their documentation
  */
 class MacrolistMacro extends WikiMacro
 {
-
 	/**
-	 * Short description for 'description'
+	 * Returns description of macro, use, and accepted arguments
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     mixed Return description (if any) ...
+	 * @return     array
 	 */
 	public function description()
 	{
@@ -55,11 +50,9 @@ class MacrolistMacro extends WikiMacro
 	}
 
 	/**
-	 * Short description for 'render'
+	 * Generate macro output
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     string Return description (if any) ...
+	 * @return     string
 	 */
 	public function render()
 	{
@@ -69,12 +62,15 @@ class MacrolistMacro extends WikiMacro
 
 		$macros = array();
 
-		if ($d) {
+		if ($d) 
+		{
 			while (false !== ($entry = $d->read()))
 			{
 				$img_file = $entry;
-				if (is_file($path.DS.$entry) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
-					if (preg_match("#php#i", $entry )) {
+				if (is_file($path . DS . $entry) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') 
+				{
+					if (preg_match("#php#i", $entry)) 
+					{
 						$macros[] = $entry;
 					}
 				}
@@ -83,26 +79,28 @@ class MacrolistMacro extends WikiMacro
 			$d->close();
 		}
 
-		//$m = array();
-		$txt = '<dl>'."\n";
-
+		$m = array();
 		foreach ($macros as $f)
 		{
-			include_once($path.DS.$f);
+			include_once($path . DS . $f);
 
-			$f = str_replace('.php','',$f);
+			$f = str_replace('.php', '', $f);
 
-			$macroname = ucfirst($f).'Macro';
+			$macroname = ucfirst($f) . 'Macro';
 
-			if (class_exists($macroname)) {
+			if (class_exists($macroname)) 
+			{
 				$macro = new $macroname();
 
-				//$m[$macroname] = $macro->description();
 				$macroname = substr($macroname, 0, (strlen($macroname) - 5));
-				$txt .= '<dt><a name="'.strtolower($macroname).'"></a><code>&#91;&#91;'.$macroname.'(args)&#93;&#93;</code></dt><dd>'.$macro->description().'</dd>'."\n";
+				$m[strtolower($macroname)] = '<dt><a name="' . strtolower($macroname) . '"></a><code>&#91;&#91;' . $macroname . '(args)&#93;&#93;</code></dt><dd>' . $macro->description() . '</dd>';
 			}
 		}
-		$txt .= '</dl>'."\n";
+		asort($m);
+
+		$txt  = '<dl>' . "\n";
+		$txt .= implode("\n", $m);
+		$txt .= '</dl>' . "\n";
 
 		return $txt;
 	}
