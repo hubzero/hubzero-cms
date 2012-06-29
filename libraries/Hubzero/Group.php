@@ -735,7 +735,7 @@ class Hubzero_Group
 
 			$db->setQuery($query);
 
-			$result = $db->loadResult();
+			$result = $db->query();
 
 			if ($result === false && $db->getErrorNum() == 1062) {
 				$query = "SELECT gidNumber FROM #__xgroups WHERE cn=" . $db->Quote($cn) . ";";
