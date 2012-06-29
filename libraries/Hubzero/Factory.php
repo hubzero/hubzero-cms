@@ -95,43 +95,6 @@ class Hubzero_Factory
 	}
 
 	/**
-	 * Get a component factory
-	 * 
-	 * @param      string $component Component name
-	 * @return     object
-	 */
-	public static function &getComponentFactory($component)
-	{
-		static $instances;
-
-		if (!isset($instances[$component]) || !is_object($instances[$component]))
-		{
-			ximport('Hubzero_Component_Factory');
-
-			$file = JPATH_SITE . '/administrator/components/com_' . $component . '/factory.php';
-			$factoryclass = 'Hubzero_' . $component . '_Factory';
-
-			if (file_exists($file))
-			{
-				include_once($file);
-			}
-
-			if (class_exists($factoryclass))
-			{
-				$factory = new $factoryclass($component);
-			}
-			else
-			{
-				$factory = new Hubzero_Component_Factory($component);
-			}
-
-			$instances[$component] = $factory;
-		}
-
-		return $instances[$component];
-	}
-
-	/**
 	 * Get an LDAP connection
 	 * 
 	 * @param      integer $primary Parameter description (if any) ...
