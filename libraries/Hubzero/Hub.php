@@ -74,34 +74,5 @@ class Hubzero_Hub
 
 		exit(0);
 	}
-
-	/**
-	 * Short description for 'getComponentViewFilename'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $component Parameter description (if any) ...
-	 * @param      string $view Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	public function getComponentViewFilename($component, $view)
-	{
-		$app =& JFactory::getApplication();
-		$template = $app->getTemplate();
-		$file = $view . '.html.php';
-
-		$templatefile = DS . 'templates' . DS . $template . DS . 'html' . DS . $component . DS . $file;
-
-		$componentfile = DS . 'components' . DS . $component . DS . $file;
-
-		if (file_exists(JPATH_SITE . $templatefile))
-		{
-			return JPATH_SITE . $templatefile;
-		}
-		else
-		{
-			return JPATH_SITE . $componentfile;
-		}
-	}
 }
 
