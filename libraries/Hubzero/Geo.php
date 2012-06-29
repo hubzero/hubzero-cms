@@ -41,24 +41,24 @@ class Hubzero_Geo
 	 * 
 	 * @return     mixed JDatabase object upon success, null if error
 	 */
-	public function getGODBO()
+	public function getGeoDBO()
 	{
 		static $instance;
 
 		if (!is_object($instance)) 
 		{
-			$xhub =& Hubzero_Factory::getHub();
+			$geodb_params = JComponentHelper::getParams('com_geodb');
 
 			$options = array();
-			$options['driver']   = $xhub->getCfg('ipDBDriver');
-			$options['host']     = $xhub->getCfg('ipDBHost');
-			$options['port']     = $xhub->getCfg('ipDBPort');
-			$options['user']     = $xhub->getCfg('ipDBUsername');
-			$options['password'] = $xhub->getCfg('ipDBPassword');
-			$options['database'] = $xhub->getCfg('ipDBDatabase');
-			$options['prefix']   = $xhub->getCfg('ipDBPrefix');
+			$options['driver']   = $geodb_params->get('driver','mysql');
+			$options['host']     = $geodb_params->get('host','localhost');
+			$options['port']     = $geodb_params->get('port','');
+			$options['user']     = $geodb_params->get('user','');
+			$options['password'] = $geodb_params->get('password','');
+			$options['database'] = $geodb_params->get('database','');
+			$options['prefix']   = $geodb_params->get('prefix','');
 
-			if (!($options['user'] = $xhub->getCfg('ipDBUsername')))
+			if (empty($options['database']) || empty($options['user']) || empty($options['password']))
 			{
 				return null;
 			}
@@ -83,7 +83,7 @@ class Hubzero_Geo
 	{
 		$countries = array();
 
-		if (!($gdb = Hubzero_Geo::getGODBO()))
+		if (!($gdb = Hubzero_Geo::getGeoDBO()))
 		{
 			return $countries;
 		}
@@ -117,7 +117,7 @@ class Hubzero_Geo
 	 */
 	public function getCountriesByContinent($continent='')
 	{
-		if (!$continent || !($gdb = Hubzero_Geo::getGODBO())) 
+		if (!$continent || !($gdb = Hubzero_Geo::getGeoDBO())) 
 		{
 			return array();
 		}
@@ -137,7 +137,7 @@ class Hubzero_Geo
 		$name = '';
 		if ($code) 
 		{
-			if (!($gdb = Hubzero_Geo::getGODBO()))
+			if (!($gdb = Hubzero_Geo::getGeoDBO()))
 			{
 				return $name;
 			}
@@ -159,7 +159,7 @@ class Hubzero_Geo
 		$country = '';
 		if ($ip) 
 		{
-			if (!($gdb = Hubzero_Geo::getGODBO()))
+			if (!($gdb = Hubzero_Geo::getGeoDBO()))
 			{
 				return $country;
 			}
@@ -182,7 +182,7 @@ class Hubzero_Geo
 		$d1nation = false;
 		if ($country) 
 		{
-			if (!($gdb = Hubzero_Geo::getGODBO()))
+			if (!($gdb = Hubzero_Geo::getGeoDBO()))
 			{
 				return $d1nation;
 			}
@@ -208,7 +208,7 @@ class Hubzero_Geo
 		$e1nation = false;
 		if ($country) 
 		{
-			if (!($gdb = Hubzero_Geo::getGODBO()))
+			if (!($gdb = Hubzero_Geo::getGeoDBO()))
 			{
 				return $e1nation;
 			}
@@ -235,7 +235,7 @@ class Hubzero_Geo
 		$iplocation = false;
 		if ($ip && $location) 
 		{
-			if (!($gdb = Hubzero_Geo::getGODBO()))
+			if (!($gdb = Hubzero_Geo::getGeoDBO()))
 			{
 				return $iplocation;
 			}
