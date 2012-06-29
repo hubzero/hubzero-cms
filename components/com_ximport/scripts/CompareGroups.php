@@ -56,10 +56,11 @@ class CompareGroups extends XImportHelperScript
 	public function run()
 	{
 		$xhub = &Hubzero_Factory::getHub();
-           $conn = &Hubzero_Factory::getPLDC();
+        $conn = &Hubzero_Factory::getPLDC();
 		$db   = &JFactory::getDBO();
-
-           $hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
+		
+		$ldap_params = JComponentHelper::getParams('com_ldap');
+		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
 
            $dn = 'ou=licenses,' . $hubLDAPBaseDN;
            $filter = '(&(objectclass=*)(hasSubordinates=FALSE))';

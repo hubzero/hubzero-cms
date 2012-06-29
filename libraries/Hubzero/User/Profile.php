@@ -491,9 +491,10 @@ class Hubzero_User_Profile extends JObject
 			$this->setError("missing username");
 			return false;
 		}
-
-		$hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
-
+		
+		$ldap_params = JComponentHelper::getParams('com_ldap');
+		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
+		
 		if (empty($hubLDAPBaseDN))
 		{
 			$this->setError("hubLDAPBaseDN variable not configured");
@@ -864,9 +865,9 @@ class Hubzero_User_Profile extends JObject
 
 		$xhub = &Hubzero_Factory::getHub();
 		$conn = &Hubzero_Factory::getPLDC();
-
-		$hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
-
+		$ldap_params = JComponentHelper::getParams('com_ldap');
+		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
+		
 		if (empty($hubLDAPBaseDN))
 		{
 			$this->setError("hubLDAPBaseDN variable not configured");
@@ -1045,8 +1046,9 @@ class Hubzero_User_Profile extends JObject
 		$conn = &Hubzero_Factory::getPLDC();
 		$errno = 0;
 
-		$hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
-
+		$ldap_params = JComponentHelper::getParams('com_ldap');
+		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
+		
 		if (empty($hubLDAPBaseDN))
 		{
 			$this->setError("hubLDAPBaseDN variable not configured");
@@ -1832,8 +1834,9 @@ class Hubzero_User_Profile extends JObject
 		$xhub =& Hubzero_Factory::getHub();
 		$conn =& Hubzero_Factory::getPLDC();
 
-		$hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
-
+		$ldap_params = JComponentHelper::getParams('com_ldap');
+		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
+		
 		if (empty($hubLDAPBaseDN))
 		{
 			$this->setError("hubLDAPBaseDN variable not configured");

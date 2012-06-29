@@ -60,7 +60,8 @@ class Hubzero_User_Profile_Helper
 			$xhub = &Hubzero_Factory::getHub();
 			$conn = &Hubzero_Factory::getPLDC();
 
-			$hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
+			$ldap_params = JComponentHelper::getParams('com_ldap');
+			$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
 
 			$dn = 'ou=users,' . $hubLDAPBaseDN;
 			$filter = '(objectclass=posixAccount)';

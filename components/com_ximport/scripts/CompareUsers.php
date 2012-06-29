@@ -82,7 +82,8 @@ class compareusers extends XImportHelperScript
 		$conn = &Hubzero_Factory::getPLDC();
 		$db = &JFactory::getDBO();
 
-	    $hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
+		$ldap_params = JComponentHelper::getParams('com_ldap');
+		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
 
 	    $dn = 'ou=users,' . $hubLDAPBaseDN;
 	    //$filter = '(&(objectclass=*)(hasSubordinates=FALSE)(uidNumber=12434))';

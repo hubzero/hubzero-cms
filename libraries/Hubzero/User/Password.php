@@ -203,7 +203,8 @@ class Hubzero_User_Password
 	{
 		$xhub = &Hubzero_Factory::getHub();
 		$result = array();
-		$hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
+		$ldap_params = JComponentHelper::getParams('com_ldap');
+		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
 
 		if ($format == 'mysql') {
 			foreach (self::$_propertyattrmap as $key=>$value) {
@@ -509,17 +510,19 @@ class Hubzero_User_Password
 	{
 		$xhub = &Hubzero_Factory::getHub();
 		$conn = &Hubzero_Factory::getPLDC();
-	
+		$ldap_params = JComponentHelper::getParams('com_ldap');
+		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
+		
 		if (empty($conn) || empty($xhub) || empty($instance)) {
 			return false;
 		}
 	
 		if (is_numeric($instance) && $instance > 0) {
-			$dn = "ou=users," .  $xhub->getCfg('hubLDAPBaseDN');
+			$dn = "ou=users," .  $hubLDAPBaseDN;
 			$filter = '(uidNumber=' . $instance . ')';
 		}
 		else {
-			$dn = "uid=" . $instance . ",ou=users," .  $xhub->getCfg('hubLDAPBaseDN');
+			$dn = "uid=" . $instance . ",ou=users," .  $hubLDAPBaseDN;
 			$filter = '(objectclass=*)';
 		}
 	
@@ -599,7 +602,8 @@ class Hubzero_User_Password
 			return false;
 		}
 
-		$hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
+		$ldap_params = JComponentHelper::getParams('com_ldap');
+		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
 
 		$pwinfo = $this->toArray('ldap');
 
@@ -816,7 +820,10 @@ class Hubzero_User_Password
 	{
 		$conn = & Hubzero_Factory::getPLDC();
 		$xhub = & Hubzero_Factory::getHub();
-
+		
+		$ldap_params = JComponentHelper::getParams('com_ldap');
+		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
+		
 		return false;
 
 		// WARNING: THIS WOULD BE BAD, it would delete the ldap account record
@@ -831,7 +838,7 @@ class Hubzero_User_Password
 			return false;
 		}
 
-		$dn = "uidNumber=" . $this->user_id . ",ou=users," . $xhub->getCfg('hubLDAPBaseDN');
+		$dn = "uidNumber=" . $this->user_id . ",ou=users," . $hubLDAPBaseDN;
 
 		if (!@ldap_delete($conn, $dn)) {
 			return false;

@@ -334,8 +334,10 @@ class Hubzero_Group
 	{
 		$xhub = &Hubzero_Factory::getHub();
 		$result = array();
-		$hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
 
+		$ldap_params = JComponentHelper::getParams('com_ldap');
+		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
+		
 		if ($format == 'mysql') {
 			$cvars = get_class_vars(__CLASS__);
 
@@ -580,8 +582,9 @@ class Hubzero_Group
 		if (empty($ou))
 			$ou = "groups";
 
-		$hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
-
+		$ldap_params = JComponentHelper::getParams('com_ldap');
+		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
+		
 		$dn = "ou=$ou," . $hubLDAPBaseDN;
 
 		$attr["objectclass"][0] = "organizationalUnit";
@@ -616,8 +619,9 @@ class Hubzero_Group
 			return false;
 		}
 
-		$hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
-
+		$ldap_params = JComponentHelper::getParams('com_ldap');
+		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
+		
 		if (empty($cn))
 			return false;
 
@@ -1068,8 +1072,9 @@ class Hubzero_Group
 		if (empty($ou))
 			$ou = "groups";
 
-		$hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
-
+		$ldap_params = JComponentHelper::getParams('com_ldap');
+		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
+		
 		$dn = "ou=$ou," . $hubLDAPBaseDN;
 
 		$filter = '(objectclass=organizationalUnit)';
@@ -1112,8 +1117,9 @@ class Hubzero_Group
 			return $result;
 		}
 
-		$hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
-
+		$ldap_params = JComponentHelper::getParams('com_ldap');
+		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
+		
 		$dn = "ou=groups," . $hubLDAPBaseDN;
 
 		$filter = '(objectclass=hubGroup)';
@@ -1159,8 +1165,9 @@ class Hubzero_Group
 		if (empty($conn))
 			return false;
 
-		$hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
-
+		$ldap_params = JComponentHelper::getParams('com_ldap');
+		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
+		
 		$dn = "ou=groups," . $hubLDAPBaseDN;
 
 		$filter = '(objectclass=posixGroup)';
@@ -1282,8 +1289,9 @@ class Hubzero_Group
 		if (empty($cn))
 			return false;
 
-		$hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
-
+		$ldap_params = JComponentHelper::getParams('com_ldap');
+		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
+		
 		$currentinfo = self::_ldap_read($cn,$legacy);
 
 		if ($currentinfo == false)
@@ -1668,7 +1676,10 @@ class Hubzero_Group
 	{
 		$conn = &Hubzero_Factory::getPLDC();
 		$xhub = &Hubzero_Factory::getHub();
-
+		
+		$ldap_params = JComponentHelper::getParams('com_ldap');
+		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
+		
 		if (empty($conn) || empty($xhub)) {
 			return false;
 		}
@@ -1678,10 +1689,10 @@ class Hubzero_Group
 		}
 
 		if ($legacy) {
-			$dn = "gid=" . $cn . ",ou=groups," . $xhub->getCfg('hubLDAPBaseDN');
+			$dn = "gid=" . $cn . ",ou=groups," . $hubLDAPBaseDN;
 		}
 		else {
-			$dn = "cn=" . $cn . ",ou=groups," . $xhub->getCfg('hubLDAPBaseDN');
+			$dn = "cn=" . $cn . ",ou=groups," . $hubLDAPBaseDN;
 		}
 
 		if ($verbose) {
@@ -2159,8 +2170,9 @@ class Hubzero_Group
 			$xhub = &Hubzero_Factory::getHub();
 			$conn = &Hubzero_Factory::getPLDC();
 
-			$hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
-
+			$ldap_params = JComponentHelper::getParams('com_ldap');
+			$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
+			
 			$dn = 'ou=groups,' . $hubLDAPBaseDN;
 			$filter = '(objectclass=hubGroup)';
 
@@ -2584,8 +2596,9 @@ class Hubzero_Group
 			return false;
 		}
 
-		$hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
-
+		$ldap_params = JComponentHelper::getParams('com_ldap');
+		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
+		
 		if (is_numeric($cn))
 			$filter = "(&(objectClass=posixGroup)(gidNumber=$cn))";
 		else
@@ -2633,8 +2646,9 @@ class Hubzero_Group
 			return false;
 		}
 
-		$hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
-
+		$ldap_params = JComponentHelper::getParams('com_ldap');
+		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
+		
 		if ($legacy) {
 			$oc = '(objectclass=hubGroup)';
 		}
@@ -2718,8 +2732,9 @@ class Hubzero_Group
             return false;
         }
 
-        $hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
-
+		$ldap_params = JComponentHelper::getParams('com_ldap');
+		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
+        
         $dn = 'ou=groups,' . $hubLDAPBaseDN;
 
 		if ($legacy) {
@@ -2847,8 +2862,9 @@ class Hubzero_Group
             return false;
         }
 
-        $hubLDAPBaseDN = $xhub->getCfg('hubLDAPBaseDN');
-
+		$ldap_params = JComponentHelper::getParams('com_ldap');
+		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
+        
 		$db = &JFactory::getDBO();
 
         $query = "SELECT cn FROM #__xgroups;";

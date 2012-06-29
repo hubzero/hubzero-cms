@@ -166,11 +166,14 @@ class Hubzero_Factory
 
 		$debug = 0;
 		$xhub =& Hubzero_Factory::getHub();
-		$acctman   = $xhub->getCfg('hubLDAPAcctMgrDN');
-		$acctmanPW = $xhub->getCfg('hubLDAPAcctMgrPW');
-		$aldap     = $xhub->getCfg('hubLDAPSlaveHosts');
-		$pldap     = $xhub->getCfg('hubLDAPMasterHost');
+		
+		$ldap_params = JComponentHelper::getParams('com_ldap');
 
+		$acctman   = $ldap_params->get('ldap_managerdn','cn=admin');
+		$acctmanPW = $ldap_params->get('ldap_managerpw','');
+		$aldap     = $ldap_params->get('ldap_primary', 'ldap://localhost');
+		$pldap     = $ldap_params->get('ldap_secondary', '');
+		
 		if ($debug) 
 		{
 			$xlog =& Hubzero_Factory::getLogger();
@@ -185,7 +188,7 @@ class Hubzero_Factory
 		{
 			if (empty($instances[1]))
 			{
-				$negotiate_tls = $xhub->getCfg('hubLDAPNegotiateTLS','0');
+				$negotiate_tls = $ldap_params->get('ldap_tls', 0);
 				$port          = '389';
 				$use_ldapV3    = 1;
 				$no_referrals  = 1;
@@ -316,7 +319,7 @@ class Hubzero_Factory
 		{
 			if (empty($instances[0]))
 			{
-				$negotiate_tls = $xhub->getCfg('hubLDAPNegotiateTLS','0');
+				$negotiate_tls = $ldap_params->get('ldap_tls', 0);
 				$port          = '389';
 				$use_ldapV3    = 1;
 				$no_referrals  = 1;
