@@ -388,5 +388,93 @@ class ResourcesContributor extends JTable
 		}
 		return $uid;
 	}
+
+	/**
+	 * Build a query from filters
+	 * 
+	 * @param      array $filters Filters to build query from
+	 * @return     string SQL
+	 */
+	public function buildQuery($filters=array())
+	{
+		$sql = "FROM $this->_tbl AS m ";
+
+		$w = array();
+		$w[] = "m.subtable='resources'";
+		if (isset($filters['subid']) && $filters['subid']) 
+		{
+			$w[] = "m.subid=" . $filters['subid'];
+		}
+		if (isset($filters['state'])) 
+		{
+			$w[] = "m.state=" . $filters['state'];
+		}
+		if (isset($filters['search']) && $filters['search'] != '') 
+		{
+			$w[] = "m.name LIKE '%" . $filters['search'] . "%'";
+		}
+
+		$sql .= (count($w) > 0) ? "WHERE " : "";
+		$sql .= implode(" AND ", $w);
+
+		if (!isset($filters['sort']) || !$filters['sort']) 
+		{
+			$filters['sort'] = 'title';
+		}
+		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+		{
+			$filters['sort_Dir'] = 'ASC';
+		}
+		$sql .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+		if (isset($filters['limit']) && $filters['limit'] != '') 
+		{
+			$sql .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+		}
+
+		return $sql;
+	}
+
+	/**
+	 * Get a record count
+	 * 
+	 * @param      array $filters Filters to build query from
+	 * @return     integer
+	 */
+	public function getAuthorCount($filters=array())
+	{
+		$filters['limit'] = '';
+		$query = "SELECT count(DISTINCT m.authorid) " . $this->buildQuery($filters);
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadResult();
+	}
+
+	/**
+	 * Get records
+	 * 
+	 * @param      array $filters Filters to build query from
+	 * @return     array
+	 */
+	public function getAuthorRecords($filters=array())
+	{
+		$query = "SELECT DISTINCT m.authorid, m.name, (SELECT COUNT(DISTINCT w.subid) FROM $this->_tbl AS w WHERE w.authorid = m.authorid) AS resources " . $this->buildQuery($filters);
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
+
+	/**
+	 * Get records for a specific author
+	 * 
+	 * @param      integer $authorid Author ID
+	 * @return     array
+	 */
+	public function getRecordsForAuthor($authorid)
+	{
+		$query = "SELECT * FROM $this->_tbl WHERE authorid='" . $authorid . "'";
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
 }
 

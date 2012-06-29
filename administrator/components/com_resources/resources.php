@@ -97,6 +97,11 @@ JSubMenuHelper::addEntry(
 	$controllerName == 'licenses'
 );
 JSubMenuHelper::addEntry(
+	JText::_('Authors'),
+	'index.php?option=' . $option . '&controller=authors',
+	$controllerName == 'authors'
+);
+JSubMenuHelper::addEntry(
 	JText::_('Roles'),
 	'index.php?option=' . $option . '&controller=roles',
 	$controllerName == 'roles'

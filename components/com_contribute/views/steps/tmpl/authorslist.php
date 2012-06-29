@@ -100,7 +100,7 @@ if ($this->contributors) {
 			<tfoot>
 				<td>
 					<span class="caption">
-						<?php echo JText::_('Changes to organization or role must be saved to take affect.'); ?>
+						<?php echo JText::_('Changes to organization or role must be saved to take effect.'); ?>
 					</span>
 				</td>
 				<td>
