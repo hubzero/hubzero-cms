@@ -1848,7 +1848,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		category (optional) default: Tools
 		summary  (optional) default: first 75 characters of report
 		report
-		email    (optional) default: $xhub->getCfg('hubSupportEmail')
+		email    (optional) default: supportemail
 		name     (optional) default: Automated Error Report
 		os       (optional)
 		browser  (optional)
