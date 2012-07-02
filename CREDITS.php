@@ -13,6 +13,7 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+/*
 ?>
 
 -------------------- Joomla! 1.5 Credits ---------------------

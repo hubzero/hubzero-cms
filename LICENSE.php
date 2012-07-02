@@ -1,3 +1,4 @@
+<?php defined( '_JEXEC' ) or die( 'Restricted access' ); /* ?>
 GNU GENERAL PUBLIC LICENSE
 				Version 2, June 1991
 

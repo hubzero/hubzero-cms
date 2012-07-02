@@ -1,4 +1,4 @@
-#<?php exit('no access'); ?>
+#<?php exit('no access');/* ?>
 #!/bin/bash
 
 # Run me through bash to start a MySQL client without having to punch in the information from configuration.php

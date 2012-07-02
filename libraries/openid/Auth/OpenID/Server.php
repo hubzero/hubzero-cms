@@ -375,8 +375,7 @@ class Auth_OpenID_CheckAuthRequest extends Auth_OpenID_Request {
         foreach ($required_keys as $k) {
             if (!$message->getArg(Auth_OpenID_OPENID_NS, $k)) {
                 return new Auth_OpenID_ServerError($message,
-                    sprintf("%s request missing required parameter %s from \
-                            query", "check_authentication", $k));
+                    sprintf("%s request missing required parameter %s from query", "check_authentication", $k));
             }
         }
 
@@ -1167,9 +1166,7 @@ class Auth_OpenID_CheckIDRequest extends Auth_OpenID_Request {
 
         if ($this->immediate) {
             return new Auth_OpenID_ServerError(null,
-                                               "Cancel is not an appropriate \
-                                               response to immediate mode \
-                                               requests.");
+                                               "Cancel is not an appropriate response to immediate mode requests.");
         }
 
         $response = new Auth_OpenID_Message(

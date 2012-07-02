@@ -188,9 +188,7 @@ else
 				<label>
 					<input type="radio" class="option" name="privacy" value="1"<?php if ($this->group->get('privacy') == 1) { echo ' checked="checked"'; } ?> /> 
 					<strong><?php echo JText::_('GROUPS_ACCESS_HIDDEN'); ?></strong> <br /><span class="indent">Group can not be found through searches and only viewable by group members.</span>
-				</label>$params = $params = &JComponentHelper::getParams('com_groups');
-
-$allowEmailResponses = $params->get('email_comment_processing');
+				</label>
 			</fieldset>
 			
 			

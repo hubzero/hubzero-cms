@@ -413,7 +413,7 @@ class sections_html
 			<?php echo JText::_( 'DESCALLITEMSWITHINCAT' ); ?>
 			<br />
 			<?php echo JText::_( 'to the new Section created.' ); ?>
-			</td>.
+			</td>
 		</tr>
 		</table>
 		<br /><br />

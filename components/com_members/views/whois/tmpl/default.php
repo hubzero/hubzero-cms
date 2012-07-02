@@ -54,7 +54,7 @@ defined('_JEXEC') or die('Restricted access');
 				(proxyUidNumber) fields, as well as the logical search Proxy Confirmed 
 				(proxyConfirmed) in the members directory.  You may specify the field to search 
 				or allow the field to be chosen based on your input.  Wild-card characters 
-				'*' and '?' may be used.  The operators '&lt=' and '&gt=' are 
+				'*' and '?' may be used.  The operators '&lt;=' and '&gt;=' are 
 				replaced by '-=' and '+=', respectively, to avoid HTML problems.
 			</p>
 			<p>

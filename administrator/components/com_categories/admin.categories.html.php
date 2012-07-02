@@ -473,7 +473,7 @@ class categories_html
 			<?php echo JText::_( 'and all the items within the category (also listed)' ); ?>
 			<br />
 			<?php echo JText::_( 'to the selected Section' ); ?>.
-			</td>.
+			</td>
 		</tr>
 		</table>
 		<br /><br />
@@ -558,7 +558,7 @@ class categories_html
 			<?php echo JText::_( 'to the selected Section' ); ?>
 			<br />
 			<?php echo JText::_( 'NOTE: IF SAME SECTION' ); ?>.
-			</td>.
+			</td>
 		</tr>
 		</table>
 		<br /><br />

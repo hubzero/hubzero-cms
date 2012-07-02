@@ -460,7 +460,7 @@ class TagsControllerTags extends Hubzero_Controller
 	{
 		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
 
-		$app = JFactor::getApplication();
+		$app = JFactory::getApplication();
 
 		// Set the mime encoding for the document
 		$jdoc =& JFactory::getDocument();

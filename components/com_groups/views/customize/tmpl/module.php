@@ -122,7 +122,7 @@ if($type) {
 					<?php } ?>
 				<?php } ?>
 			</ul>
-		</fieldet>
+		</fieldset>
 	<?php } else { ?>
 		<fieldset>
 			<h3><?php echo $form_title; ?></h3>

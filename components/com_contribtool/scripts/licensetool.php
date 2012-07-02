@@ -1,5 +1,5 @@
 #!/bin/sh
-#<?php die('Restricted access');?>
+#<?php die('Restricted access');/*?>
 #
 # @package      hubzero-cms
 # @file         components/com_contribtool/scripts/licensetool.php

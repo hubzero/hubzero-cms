@@ -128,7 +128,7 @@ RewriteRule ^(.*) /index.php<br />
  <li><b>Configure the Custom Errors</b><br/><br/>
 	<span class="disabled">NOTE: in the example below, mambo is installed in the virtual directory mambo</span>
 	<p>Using the Internet Services Manager, right-click the directory in which mambo is installed.<br />
-	Select properties >> Custom Error<br />
+	Select properties &gt;&gt; Custom Error<br />
 	set the 404 to URL:/mambo/index.php<br />
 	set the 405 to URL:/mambo/index.php</p></li>
 </ol>

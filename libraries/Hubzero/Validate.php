@@ -242,7 +242,7 @@ class Hubzero_Validate
 	 */
 	public function validphone($phone)
 	{
-		if (preg_match("#^[\ \#\*\+\:\,\.0-9-]*$#i", $phone)) 
+		if (preg_match('#^[\ \#\*\+\:\,\.0-9-]*$#i', $phone)) 
 		{
 			return true;
 		} 
