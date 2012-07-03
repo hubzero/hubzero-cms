@@ -161,7 +161,7 @@ class plgAuthenticationPUCAS extends JPlugin
 			phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas', false);
 		}
 
-		$servive = rtrim(JURI::base(),'/');
+		$service = rtrim(JURI::base(),'/');
 		
 		if (empty($service))
 		{
