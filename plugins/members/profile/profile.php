@@ -193,7 +193,7 @@ class plgMembersProfile extends JPlugin
 			if ($check)
 			{
 				$session->set('registration.incomplete', 0);
-				$app->redirect($_SERVER['REQUEST_URI'],true);	
+				$app->redirect($_SERVER['REQUEST_URI']);	
 			}  
 			else
 			{
