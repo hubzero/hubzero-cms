@@ -598,7 +598,7 @@
 		margin: 1em 0 1.5em 0;
 		padding: 0;
 	}
-	#primary-document a {
+	#primary-document a, #primary-document .link_disabled {
 		display: block;
 		zoom: 1; /* zoom and *display = ie7 hack for display:inline-block */
 		vertical-align: baseline;
@@ -682,6 +682,7 @@
 		background: -o-linear-gradient(#aaaaaa, #444444);
 		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#aaaaaa,endColorstr=#444444);
 		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#aaaaaa, endColorstr=#444444)";
+		width: 204px;
 	}
 	#primary-document_pop {
 		display: none;
