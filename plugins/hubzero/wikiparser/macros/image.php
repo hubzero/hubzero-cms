@@ -410,7 +410,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 
 		$html  = '<span class="figure">';
 
-		$img = '<img src="' . $this->_link($file) . '" ' . implode(' ', $attribs) . '" />';
+		$img = '<img src="' . $this->_link($file) . '" ' . implode(' ', $attribs) . ' />';
 
 		if ($attr['href'] == 'none') 
 		{
