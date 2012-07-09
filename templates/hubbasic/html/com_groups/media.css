@@ -5,39 +5,11 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-iframe {
-	border: 1px solid #ccc;
-	margin: 0;
-	padding: 0;
-}
-
-#file_browser { 
-	background:#efefef;
-	border:0px;
-}
+@import url('/components/com_groups/assets/css/media.css');
 
 body#file_list {
 	background:#FFF;
-}
-
-#file_list {
-	background-color:#fff;
-}
-
-#file_list table {
-	border:0px;
-}
-
-#file_list table tbody td {
-	border-bottom:1px solid #efefef;
-}
-
-#file_list #filelist p {
-	margin-left:1em;
-}
-
-p.error, 
-p.passed,
-p.warning {
-	margin-top:0px;
-}
+	}
+.qq-upload-drop-area {
+	height:20px;
+	}
