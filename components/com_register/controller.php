@@ -1399,25 +1399,25 @@ class RegisterController extends Hubzero_Controller
 
 		// Set the page title
 		$this->_buildTitle();
-
-		// Check if the user is logged in
-		if ($this->juser->get('guest')) {
-			// Instantiate a new view
-			$view = new JView( array('name'=>'login') );
-			$view->option = $this->_option;
-			$view->title = JText::_('COM_REGISTER_CONFIRM');
-			$view->setError( JText::_('COM_REGISTER_ERROR_LOGIN_TO_CONFIRM') );
-			$view->display();
-			return;
-		}
-
-		$xprofile =& Hubzero_Factory::getProfile();
-
+		
 		// Incoming
 		$code = JRequest::getVar( 'confirm', false );
 		if (!$code) {
 			$code = JRequest::getVar( 'code', false );
 		}
+
+		// Check if the user is logged in
+		if ($this->juser->get('guest')) 
+		{
+			//send to login form with return to confirm
+			$return = base64_encode(JRoute::_('index.php?option='.$this->option.'&task='.$this->_task.'&confirm='.$code));
+			$this->_message = "Please login in so we can confirm your account.";
+			$this->_messageType = "Warning";
+			$this->_redirect = JRoute::_('index.php?option=com_login&return=' . $return);
+			return;
+		}
+
+		$xprofile =& Hubzero_Factory::getProfile();
 
 		$email_confirmed = $xprofile->get('emailConfirmed');
 
