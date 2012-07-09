@@ -221,6 +221,184 @@ class GroupsControllerManage extends Hubzero_Controller
 			echo $out;
 		}
 	}
+	
+	
+	public function pagesTask()
+	{
+		// Incoming
+		$gid = JRequest::getVar('gid', '');
+
+		// Ensure we have a group ID
+		if (!$gid)
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('COM_GROUPS_MISSING_ID'),
+				'error'
+			);
+			return;
+		}
+
+		// Load the group page
+		$group = new Hubzero_Group();
+		$group->read($gid);
+
+		$this->gid = $gid;
+		$this->group = $group;
+		
+		$action = JRequest::getVar('action','');
+
+		$this->action = $action;
+		$this->authorized = 'admin';
+		
+		// Do we need to perform any actions?
+		$out = '';
+		if ($action)
+		{
+			$action = strtolower(trim($action));
+			$action = str_replace(' ', '', $action);
+
+			// Perform the action
+			if (in_array($action, $this->_taskMap))
+			{
+				$action .= 'Task';
+				$this->$action();
+			}
+
+			// Did the action return anything? (HTML)
+			if ($this->output != '')
+			{
+				$out = $this->output;
+			}
+		}
+		
+		//get the group pages
+		$db =& JFactory::getDBO();
+		$gp = new GroupPages($db);
+		$pages = $gp->getPages( $group->get('gidNumber'), false );
+		
+		// Output HTML
+		if ($out == '')
+		{
+			$this->view->group      = $group;
+			$this->view->authorized = 'admin';
+            $this->view->pages		= $pages;
+			// Set any errors
+			if ($this->getError())
+			{
+				foreach ($this->getErrors() as $error)
+				{
+					$this->view->setError($error);
+				}
+			}
+
+			// Output the HTML
+			$this->view->display();
+		}
+		else
+		{
+			echo $out;
+		}
+	}
+	
+	public function newpageTask()
+	{
+		$this->editpageTask();
+	}
+	
+	public function editpageTask()
+	{
+		JRequest::setVar('hidemainmenu', 1);
+
+		$this->view->setLayout('page');
+		// Incoming
+		$gid = JRequest::getVar('gid', '');
+		$p = JRequest::getVar('page', '');
+		
+		//check to make sure we have an id if were editing
+		if(!$p && $this->task == 'editpage')
+		{
+			return;
+		}
+		
+		//load group page data
+		$db =& JFactory::getDBO();
+		$page = new GroupPages($db);
+		$page->load($p);
+		
+		// Load the group page
+		$group = new Hubzero_Group();
+		$group->read($gid);
+
+		$this->gid = $gid;
+		$this->view->group = $group;
+		$this->view->page = $page;
+		
+		// Set any errors
+		if ($this->getError())
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
+		}
+
+		// Output the HTML
+		$this->view->display();
+	}
+	
+	public function savepageTask()
+	{
+		//load the request vars
+		$page = JRequest::getVar('page', array());
+		
+		//instatiate group page object for saving
+		$db =& JFactory::getDBO();
+		$Gpage = new GroupPages($db);
+		
+		// Load the group page
+		$gid = JRequest::getVar('gid','');
+		$group = new Hubzero_Group();
+		$group->read($gid);
+		
+		//new page
+		if(!$page['id'])
+		{
+			$high = $Gpage->getHighestPageOrder($group->get('gidNumber'));
+			$page['porder'] = ($high + 1);
+		}
+		
+		//check to see if user supplied url
+		if(isset($page['url']) && $page['url'] != '')
+		{
+			$page['url'] = strtolower(str_replace(" ","_",trim($page['url'])));
+		}
+		else
+		{
+			$page['url'] = strtolower(str_replace(" ","_",trim($page['title'])));
+		}
+		
+		//remove unwanted chars
+		$invalid_chrs = array("?","!",">","<",",",".",";",":","`","~","@","#","$","%","^","&","*","(",")","-","=","+","/","\/","|","{","}","[","]");
+		$page['url'] = str_replace("'","",$page['url']);
+		$page['url'] = str_replace('"','',$page['url']);
+		$page['url'] = str_replace($invalid_chrs,"",$page['url']);
+		
+		//save page
+		if($Gpage->save($page))
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=pages&gid=' . $gid
+			);
+		}
+	}
+	
+	public function cancelpageTask()
+	{
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=pages&gid=' . JRequest::getVar('gid','')
+		);
+	}
 
 	/**
 	 * Create a new ticket

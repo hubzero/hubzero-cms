@@ -83,12 +83,13 @@ class plgGroupsCalendar extends JPlugin
 	 */
 	public function onGroup($group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null)
 	{
-		$return = 'html';
+		$returnhtml = true;
 		$active = 'calendar';
 
 		// The output array we're returning
 		$arr = array(
-			'html'=>''
+			'html'=>'',
+			'metadata'=>''
 		);
 
 		//get this area details
@@ -99,30 +100,30 @@ class plgGroupsCalendar extends JPlugin
 		{
 			if (!in_array($this_area['name'], $areas)) 
 			{
-				return;
+				$returnhtml = false;
 			}
 		}
+		
+		//Create user object
+		$juser =& JFactory::getUser();
 
+		//get the group members
+		$members = $group->get('members');
+
+		// Set some variables so other functions have access
+		$this->juser = $juser;
+		$this->authorized = $authorized;
+		$this->members = $members;
+		$this->group = $group;
+		$this->option = $option;
+		$this->action = $action;
+		
 		//if we want to return content
-		if ($return == 'html') 
+		if ($returnhtml) 
 		{
 			//set group members plugin access level
 			$group_plugin_acl = $access[$active];
-
-			//Create user object
-			$juser =& JFactory::getUser();
-
-			//get the group members
-			$members = $group->get('members');
-
-			// Set some variables so other functions have access
-			$this->juser = $juser;
-			$this->authorized = $authorized;
-			$this->members = $members;
-			$this->group = $group;
-			$this->option = $option;
-			$this->action = $action;
-
+			
 			//if set to nobody make sure cant access
 			if ($group_plugin_acl == 'nobody') 
 			{
@@ -152,20 +153,16 @@ class plgGroupsCalendar extends JPlugin
 			//push styles to the view
 			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('groups','calendar');
-
-			//get the document
-			$document =& JFactory::getDocument();
-
-			//include the javascript file
-			if (is_file(JPATH_ROOT . DS . 'plugins' . DS . 'groups' . DS . 'calendar' . DS . 'calendar.js')) 
+			Hubzero_Document::addPluginScript('groups','calendar');
+			
+			//check to see if we need to include the mootools datepicker
+			if (!JPluginHelper::isEnabled('system', 'jquery'))
 			{
-				$document->addScript('plugins' . DS . 'groups' . DS . 'calendar' . DS . 'calendar.js');
-			}
-
-			//include javascript for pop up calendar
-			if (is_file(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'js' . DS . 'calendar.rc4.js')) 
-			{
-				$document->addScript('components' . DS . 'com_events' . DS . 'js' . DS . 'calendar.rc4.js');
+				$document =& JFactory::getDocument();
+				if (is_file(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'js' . DS . 'calendar.rc4.js')) 
+				{
+					$document->addScript('components' . DS . 'com_events' . DS . 'js' . DS . 'calendar.rc4.js');
+				}
 			}
 
 			//get the month and year posted through month/year picker
@@ -190,7 +187,19 @@ class plgGroupsCalendar extends JPlugin
 				default:        $arr['html'] = $this->display($this->month, $this->year); break;
 			}
 		}
-
+		
+		//get count of all future group events
+		$arr['metadata']['count'] = $this->getAllFutureEvents();
+		
+		//get the upcoming events
+		$upcoming_events = $this->getUpcomingEvents();
+		if($upcoming_events > 0)
+		{
+			$title = $this->group->get('description')." has {$upcoming_events} events this month.";
+			$link = JRoute::_('index.php?option=com_groups&gid='.$this->group->get('cn').'&active=calendar');
+			$arr['metadata']['alert'] = "<a class=\"alrt\" href=\"{$link}\"><span><h5>Calendar Alert</h5>{$title}</span></a>";
+		}
+		
 		// Return the output
 		return $arr;
 	}
@@ -264,6 +273,23 @@ class plgGroupsCalendar extends JPlugin
 		$events = $db->loadAssocList();
 
 		return $events;
+	}
+	
+	
+	private function getAllFutureEvents()
+	{
+		$db =& JFactory::getDBO();
+		$sql = "SELECT COUNT(*) FROM #__xgroups_events WHERE gidNumber=".$this->group->get('gidNumber')." AND active=1 AND (start >='".date("Y-m-d H:i:s")."' OR end >='".date("Y-m-d H:i:s")."')";
+		$db->setQuery($sql);
+		return $db->loadResult();
+	}
+	
+	private function getUpcomingEvents()
+	{
+		$db =& JFactory::getDBO();
+		$sql = "SELECT COUNT(*) FROM #__xgroups_events WHERE gidNumber=".$this->group->get('gidNumber')." AND active=1 AND start >= '".date("Y-m-01 00:00:00")."' AND start <= '".date("Y-m-t 23:59:59")."'";
+		$db->setQuery($sql);
+		return $db->loadResult();
 	}
 
 	/**

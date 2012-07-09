@@ -47,6 +47,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="nobody">Disabled/Off</option>
 		</param>
 		<param type="spacer" />
+		<param name="stamp_logo" type="text" size="5" default="/plugins/groups/messages/mail-send.png" label="Message Stamp Image" description="" />
 		<param name="display_limit" type="text" size="5" default="50" label="Display Limit" description="Number of items to return"/>
 	</params>
 </install>

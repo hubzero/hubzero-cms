@@ -157,26 +157,38 @@ foreach ($letters as $letter)
 if ($this->groups) {
 	foreach ($this->groups as $group)
 	{
+		//
+		$g = Hubzero_Group::getInstance($group->gidNumber);
+		$invitees = $g->get('invitees');
+		$applicants = $g->get('applicants');
+		$members = $g->get('members');
+		$managers = $g->get('managers');
+		
+		//get status
 		$status = '';
-		if ($this->authorized) {
-			if ($group->manager && $group->published) {
-				$status = 'manager';
-			} else {
-				if (!$group->published) {
-					$status = 'new';
-				} else {
-					if ($group->registered) {
-						if ($group->regconfirmed) {
-							$status = 'member';
-						} else {
-							$status = 'pending';
-						}
-					} else {
-						if ($group->regconfirmed) {
-							$status = 'invitee';
-						}
-					}
-				}
+		
+		//determine group status
+		if($g->get('published') && in_array($juser->get('id'), $managers))
+		{
+			$status = 'manager';
+		}
+		elseif($g->get('published') && in_array($juser->get('id'), $members))
+		{
+			$status = 'member';
+		}
+		elseif($g->get('published') && in_array($juser->get('id'), $invitees))
+		{
+			$status = 'invitee';
+		}
+		elseif($g->get('published') && in_array($juser->get('id'), $applicants))
+		{
+			$status = 'pending';
+		}
+		else
+		{
+			if(!$g->get('published'))
+			{
+				$status = 'new';
 			}
 		}
 ?>

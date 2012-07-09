@@ -152,6 +152,7 @@ class plgGroupsMessages extends JPlugin
 			//push styles to the view
 			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('groups','messages');
+            Hubzero_Document::addPluginScript('groups','messages');
 
 			// Load some needed libraries
 			ximport('Hubzero_Message');
@@ -334,6 +335,7 @@ class plgGroupsMessages extends JPlugin
 		$view->option = $this->_option;
 		$view->group = $this->group;
 		$view->authorized = $this->authorized;
+		$view->params = $this->params;
 
 		$view->member_roles = $member_roles;
 		$view->members = $members;

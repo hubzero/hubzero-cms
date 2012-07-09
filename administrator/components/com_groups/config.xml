@@ -73,6 +73,20 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
+		
+		<param type="spacer" /> 
+		<param name="intro_mygroups" type="list" default="1" label="Show My Groups" description="Display list of my groups on group landing page?">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="intro_interestinggroups" type="list" default="1" label="Show Interesting Groups" description="Display list of groups having matching tags as the user on the group landing page?">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="intro_populargroups" type="list" default="1" label="Show Popular Groups" description="Display list of popular groups on group landing page?">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
         
 	</params>
 </config>

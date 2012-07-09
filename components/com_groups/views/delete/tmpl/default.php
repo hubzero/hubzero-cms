@@ -37,7 +37,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li class="last"><a class="group" href="<?php echo JRoute::_('index.php?option='.$this->option); ?>"><?php echo JText::_('GROUPS_ALL_GROUPS'); ?></a></li>
+		<li class="last"><a class="group" href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn')); ?>"><?php echo JText::_('Back to Group'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 
@@ -49,17 +49,26 @@ defined('_JEXEC') or die( 'Restricted access' );
 	?>
 	<form action="index.php" method="post" id="hubForm">
 		<div class="explaination">
+			<p><strong>Are you sure you want to delete?</strong></p>
+			<p>Deleting a group will permanently remove the group and all data associated with that group.</p>
+			<p>&nbsp;</p>
+			
+			<p><strong>Alternative to deleting</strong></p>
+			<p>You could set the group join policy to closed to restrict further membership activity and set the discoverability to hidden so the group is hidden to the world but still there later if you decide you want to use the group again.</p>
+			<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=edit'); ?>">&raquo; Click here to edit group settings</a></p>
+			<!--
 			<div class="admin-options">
 				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=view'); ?>"><?php echo JText::_('GROUPS_VIEW_GROUP'); ?></a></p>
 				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=edit'); ?>"><?php echo JText::_('GROUPS_EDIT_GROUP'); ?></a></p>
 				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=customize'); ?>"><?php echo JText::_('GROUPS_CUSTOMIZE_GROUP'); ?></a></p>
 				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=invite'); ?>"><?php echo JText::_('GROUPS_INVITE_USERS'); ?></a></p>
 			</div>
+			-->
 		</div>
 		<fieldset>
 			<h3><?php echo JText::_('GROUPS_DELETE_HEADER'); ?></h3>
 
-	 		<p class="warning"><?php echo JText::sprintf('GROUPS_DELETE_WARNING',$this->group->get('description')).'<br /><br />'.$this->log; ?></p>
+	 		<p class="warning" style="margin-top:2em"><?php echo JText::sprintf('GROUPS_DELETE_WARNING',$this->group->get('description')).'<br /><br />'.$this->log; ?></p>
 
 			<label>
 				<?php echo JText::_('GROUPS_DELETE_MESSAGE'); ?>

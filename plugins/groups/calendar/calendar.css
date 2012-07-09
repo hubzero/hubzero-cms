@@ -212,6 +212,7 @@
 	#hubForm #event_end_time {
 		width: 15%;
 		}
+	/* Mootools Datepicker */
 	button.mini-cal { 
 		display: inline; 
 		cursor: pointer; 
@@ -283,4 +284,108 @@
 		}
 	.mini-cal table tbody tr td.hilite { 
 		background-color: #eeeeee; 
+		}
+		
+	/* jQuery Datepicker */
+	.ui-datepicker {
+		background-color: #FFF; 
+		border:3px solid #444;
+		padding:10px;
+		}
+	.ui-datepicker-header {
+		position:relative;
+		height:30px;
+		}
+	.ui-datepicker-header .ui-datepicker-prev {
+		position:absolute;
+		top:0;
+		left:0;
+		z-index:556;
+		color:#999;
+		font-size:0.9em;
+		border-bottom:none;
+		}
+	.ui-datepicker-header .ui-datepicker-next {
+		position:absolute;
+		top:0;
+		right:0;
+		z-index:557;
+		color:#999;
+		font-size:0.9em;
+		border-bottom:none;
+		}
+	.ui-datepicker-header .ui-datepicker-prev:before {
+		content:"\00ab";
+		padding-right:2px;
+		}	
+	.ui-datepicker-header .ui-datepicker-next:after {
+		content:"\00bb";
+		padding-left:2px;
+		}
+	.ui-datepicker-header .ui-datepicker-prev:hover span,
+	.ui-datepicker-header .ui-datepicker-next:hover span {
+		color:#333;
+		cursor:pointer;
+		}
+	.ui-datepicker-title {
+		position:absolute;
+		top:0;
+		left:0;
+		width:100%;
+		text-align:center;
+		z-index:555;
+		font-weight:bold;
+		font-size:1.2em;
+		color:#444;
+		}	
+	.ui-datepicker-calendar {
+		border:none;
+		border-collapse:separate;
+		}
+	.ui-datepicker-calendar thead th:first-child {
+		border-left:1px solid #aaa;
+		}
+	.ui-datepicker-calendar thead th:last-child {
+		border-right:1px solid #aaa;
+		}
+	.ui-datepicker-calendar thead th {
+		background:#ccc;
+		border-top:1px solid #aaa;
+		border-bottom:1px solid #aaa;
+		}
+	.ui-datepicker-calendar tbody td {
+		text-align:center;
+		border-bottom:1px solid #ccc;
+		border-right:1px solid #ccc;
+		}
+	.ui-datepicker-calendar tbody td a {
+		color:#555;
+		border:none;
+		}
+	.ui-datepicker-calendar tbody tr td:hover,
+	.ui-datepicker-calendar tbody tr:nth-child(even) td:hover {
+		background:#000;
+		}
+	.ui-datepicker-calendar tbody tr td:hover a,
+	.ui-datepicker-calendar tbody tr:nth-child(even) td:hover a {
+		color:#FFF;
+		}
+	.ui-datepicker-calendar tbody tr td:first-child {
+		border-left:1px solid #ccc;
+		}
+	.ui-datepicker-calendar .ui-datepicker-today {
+		background:#1f4e8e;
+		}
+	.ui-datepicker-calendar	.ui-datepicker-current-day {
+		background:#555;
+		}
+	.ui-datepicker-calendar	.ui-datepicker-today a,
+	.ui-datepicker-calendar	.ui-datepicker-current-day a {
+		color:#FFF;
+		font-weight:bold;
+		}
+	.ui-datepicker-calendar .ui-datepicker-unselectable,
+	.ui-datepicker-calendar .ui-datepicker-unselectable:hover {
+		background:#efefef;
+		color:#aaa;
 		}

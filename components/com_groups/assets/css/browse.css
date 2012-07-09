@@ -4,9 +4,16 @@
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
-
-	.com_groups .clearfix::after {
-		clear: none;
+.com_groups #useroptions {
+	margin:0;
+	overflow:hidden;
+	}
+.com_groups #useroptions li {
+	float:right;
+	margin:0;
+	}
+.com_groups .clearfix::after {
+	clear: none;
 	}
 .com_groups .container {
 	margin: 1em 0;
@@ -27,7 +34,7 @@
 .com_groups .container-block h3 {
 	margin: 0 -15px 1em -15px;
 	padding: 0.5em 0.7em;
-	background: #f8f8f8 url("images/light-stripes.png");
+	background: #f8f8f8 url("/components/com_groups/assets/img/light-stripes.png");
 	border-bottom: 2px solid #e9e9e9;
 	font-size: 135%;
 	}
@@ -60,7 +67,7 @@
 .com_groups .entry-search input {
 	width: 95%;
 	border: 1px solid #A8A8A8;
-	background: #fff url("../img/search.png") 5px 50% no-repeat;
+	background: #fff url("/components/com_groups/assets/img/search.png") 5px 50% no-repeat;
 	padding: 5px 5px 5px 20px;
 	}
 .com_groups .entry-search-submit {
@@ -117,7 +124,7 @@
 	padding: 0 0 0 0;
 	margin: 0.2em 0;
 	padding: 0 0 0 15px;
-	background: url("../img/bullets_small.png") no-repeat 0px -730px; 
+	background: url("/components/com_groups/assets/img/bullets_small.png") no-repeat 0px -730px; 
 	}
 .com_groups .aside .container a.active {
 	color: #777;
@@ -134,7 +141,7 @@
 /* caption */
 .com_groups .entries caption {
 	font-size: 115%;
-	background: #f8f8f8 url("../img/light-stripes.png");
+	background: #f8f8f8 url("/components/com_groups/assets/img/light-stripes.png");
 	border: 2px solid #e9e9e9;
 	border-bottom: 1px solid #e9e9e9;
 	margin-right: -2px; /* Fix 2px issue */
@@ -182,7 +189,7 @@
 	background-image: none;
 	}
 .com_groups .entries tbody tr.private .entry-title {
-	background: transparent url("../img/lock.png") 0 0 no-repeat;
+	background: transparent url("/components/com_groups/assets/img/lock.png") 0 0 no-repeat;
 	padding-left: 20px;
 	}
 .com_groups .entries tbody tr.me {
@@ -201,7 +208,7 @@
 	}
 
 .com_groups .groups tbody th {
-	background: url("../img/group.png") right 15px no-repeat;
+	background: url("/components/com_groups/assets/img/group.png") right 15px no-repeat;
 	}
 .com_groups .entries .entry-id {
 	display: none;
@@ -238,16 +245,16 @@
 	}
 /* Table row */
 .groups tbody tr.pending {
-	background: #ffe url("../img/light-stripes.png");
+	background: #ffe url("/components/com_groups/assets/img/light-stripes.png");
 	}
 .groups tbody tr.member {
-	background: #F3FDF0 url("../img/light-stripes.png");
+	background: #F3FDF0 url("/components/com_groups/assets/img/light-stripes.png");
 	}
 .groups tbody tr.manager {
-	background: #FFF2EF url("../img/light-stripes.png");
+	background: #FFF2EF url("/components/com_groups/assets/img/light-stripes.png");
 	}
 .groups tbody tr.invitee {
-	background: #F9F9F9 url("../img/light-stripes.png");
+	background: #F9F9F9 url("/components/com_groups/assets/img/light-stripes.png");
 	}
 /* Join Policies */
 .groups tbody .join-policy {

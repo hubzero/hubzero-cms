@@ -29,7 +29,7 @@ HUBzero is a registered trademark of Purdue University.
 
 <extension version="1.7" type="plugin" group="groups">
 	<name>Groups - Messages</name>
-	<author>Shawn Rice</author>
+	<author>Chris Smoak</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>Display a group's messages</description>
@@ -48,8 +48,8 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="members">Only Group Members</option>
 					<option value="nobody">Disabled/Off</option>
 				</field>
-				<field type="spacer" />
-				<field name="display_limit" type="text" size="5" default="50" label="Display Limit" description="Number of items to return"/>
+				<field name="display_limit" type="text" size="5" default="50" label="Display Limit" description="Number of items to return"/> 
+				<field name="stamp_logo" type="text" size="5" default="/plugins/groups/messages/mail-send.png" label="Message Stamp Image" description="" />
 			</fieldset>
 		</fields>
 	</config>

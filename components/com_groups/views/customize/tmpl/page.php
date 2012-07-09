@@ -72,7 +72,9 @@ $lid = $this->group->get('gidNumber');
 	<h2><?php echo $form_title; ?></h2>
 </div>
 <div id="content-header-extra">
-	<p class="manage"><a href="<?php echo JRoute::_($base_link); ?>">Back to Manage Pages</a></p>
+	<ul id="useroptions">
+		<li><a href="<?php echo JRoute::_($base_link); ?>">Back to Manage Pages</a></li>
+	</ul>
 </div>
 
 <div class="main section">
@@ -94,13 +96,17 @@ $lid = $this->group->get('gidNumber');
 		<label>Page Title: <span class="required">Required</span>
 			<input type="text" name="page[title]" value="<?php echo $title; ?>" />
 		</label>
+		<label>Page URL: <span class="optional">Optional</span>
+			<input type="text" name="page[url]" value="<?php echo $url; ?>" />
+			<span class="hint">Page URL's can only contain alphanumeric characters and underscores. Spaces will be removed.</span>
+		</label>
 		<label for="page[content]">Page Content: <span class="optional">Optional</span>
 			<?php
 				ximport('Hubzero_Wiki_Editor');
 				$editor =& Hubzero_Wiki_Editor::getInstance();
 				echo $editor->display('page[content]', 'page[content]', stripslashes($content), '', '50', '15');
 			?>
-			<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
+			<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> &amp; <a class="popup" href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiMacros'); ?>">Wiki Macros</a> is allowed.</span>
 		</label>
 		<label>Page Privacy: <span class="required">Required</span>
 			<?php
@@ -119,7 +125,6 @@ $lid = $this->group->get('gidNumber');
 		</label>
 		<input type="hidden" name="page[id]" value="<?php echo $id; ?>" />
 		<input type="hidden" name="page[gid]" value="<?php echo $gid; ?>" />
-		<input type="hidden" name="page[url]" value="<?php echo $url; ?>" />
 		<input type="hidden" name="page[porder]" value="<?php echo $order; ?>" />
 		<input type="hidden" name="page[active]" value="<?php echo $active; ?>" />
 		<input type="hidden" name="page[new]" value="<?php echo $new; ?>" />

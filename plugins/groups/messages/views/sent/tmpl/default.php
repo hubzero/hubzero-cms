@@ -37,8 +37,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 <div class="subject">
 	<ul class="entries-menu">
 		<li><a class="active" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->get('cn').'&active=messages'); ?>"><span><?php echo JText::_('PLG_GROUPS_MESSAGES_SENT'); ?></span></a></li>
-		<?php if($this->authorized == 'admin' || $this->authorized == 'manager') { ?>
-			<li><a href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->get('cn').'&active=messages&task=new'); ?>"><span><?php echo JText::_('PLG_GROUPS_MESSAGES_SEND'); ?></span></a></li>
+		<?php if($this->authorized == 'manager') { ?>
+			<li><a id="new-group-message" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->get('cn').'&active=messages&task=new'); ?>"><span><?php echo JText::_('PLG_GROUPS_MESSAGES_SEND'); ?></span></a></li>
 		<?php } ?>
 	</ul>
 	<br class="clear" />

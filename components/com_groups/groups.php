@@ -31,37 +31,46 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+//debug ?
 $config = JFactory::getConfig();
-
-if ($config->getValue('config.debug')) {
+if ($config->getValue('config.debug')) 
+{
 	error_reporting(E_ALL);
 	@ini_set('display_errors','1');
 }
 
-jimport('joomla.application.component.view');
+//import needed joomla libs
 jimport('joomla.filesystem.folder');
-ximport('Hubzero_View_Helper_Html');
+jimport('joomla.application.component.view');
+
+//import needed HUBzero libs
+ximport('Hubzero_Group');
+ximport('Hubzero_Group_Helper');
+ximport('Hubzero_Group_InviteEmail');
 ximport('Hubzero_User_Helper');
+ximport('Hubzero_User_Profile');
+ximport('Hubzero_View_Helper_Html');
 ximport('Hubzero_Plugin_Params');
 
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'tables'.DS.'tags.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'tables'.DS.'log.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'tables'.DS.'reason.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'tables'.DS.'pages.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'tables'.DS.'modules.php' );
-
-require_once( JPATH_ROOT.DS.'components'.DS.$option.DS.'controllers'.DS.'groups.php' );
-
-JHTML::addIncludePath(JPATH_COMPONENT.DS.'helpers');
-
+//acl stuff
 $jacl =& JFactory::getACL();
 $jacl->addACL( $option, 'manage', 'users', 'super administrator' );
 $jacl->addACL( $option, 'manage', 'users', 'administrator' );
 $jacl->addACL( $option, 'manage', 'users', 'manager' );
 
-// Instantiate controller
-$controller = new GroupsController();
+//require needed files
+require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . $option . DS . 'tables' . DS . 'tags.php' );
+require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . $option . DS . 'tables' . DS . 'log.php' );
+require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . $option . DS . 'tables' . DS . 'reason.php' );
+require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . $option . DS . 'tables' . DS . 'pages.php' );
+
+//build controller path and name
+$controllerName = JRequest::getCmd('controller', 'groups');
+require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = ucfirst($controllerName)."Controller";
+
+// Instantiate controller and execute
+$controller = new $controllerName();
 $controller->execute();
-//$option = "com_groups"; // @FIXME: WTF do I have to set this back?
 $controller->redirect();
 

@@ -5,70 +5,222 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+
 /* Introduction page */
-	#introduction {
-		/*margin: 0 -45px 3em -45px;*/
-		margin:0 -15px 3em -15px;
-		padding: 25px 45px 25px 120px;
-		background: #fbf8ea url("../img/groups-large.gif") 45px 25px no-repeat;
-		border-top: 2px solid #e7dac4;
-		border-bottom: 2px solid #e7dac4;
-		color: #7c7266;
-		}
-	#introduction .aside,
-	#introduction .subject {
-		margin-top: 0;
-		margin-bottom: 0;
-		padding-top: 0;
-		padding-bottom: 0;
-		background: transparent;
-		border: none;
-		}
-	#introduction h3 {
-		margin-top: 0;
-		color: #7c7266;
-		}
-	#introduction .columns {
-		border: none;
-		}
-	#introduction ul,
-	#introduction li {
-		list-style: none;
-		margin: 1em 0;
-		padding: 0;
-		}
-	#introduction li {
-		margin: 0;
-		padding: 0 0 0 15px;
-		background: transparent url("../img/arrow.gif") 0 50% no-repeat;
-		}
-	.com_groups .first h2 { 
-		font-weight: normal;
-		margin: 0;
-		padding: 0.5em 0 0 0;
-		line-height: 1em;
-		border: none;
-		border-top: 2px solid #e0e0d7;
-		}
-	.com_groups .four {
-		border-top: 1px solid #e0e0d7;
-		margin-bottom: 3em;
-		}
-	.com_groups .three {
-		border-top: 1px solid #e0e0d7;
-		margin-top: -1px;
-		}
-	.com_groups .big {
-		height: 3em;
-		}
-	.com_groups .four {
-		margin-bottom: 3em;
-		}
-	.columns form.search { 
-		border: 1px solid #fff; 
-		background-position: 0 1em;
-		}
-	.com_groups .browse a {
-		font-weight: bold;
-		font-size: 1.2em;
-		}
+.com_groups #useroptions {
+	margin:0;
+	overflow:hidden;
+	display:none;
+	}
+.com_groups #useroptions li {
+	float:right;
+	margin:0;
+	}
+#introduction {
+	margin:0 -15px 3em -15px;
+	padding: 25px 45px 25px 120px;
+	background: #fbf8ea url("/components/com_groups/assets/img/groups-large.gif") 45px 25px no-repeat;
+	border-top: 2px solid #e7dac4;
+	border-bottom: 2px solid #e7dac4;
+	color: #7c7266;
+	}
+#introduction .aside,
+#introduction .subject {
+	margin-top: 0;
+	margin-bottom: 0;
+	padding-top: 0;
+	padding-bottom: 0;
+	background: transparent;
+	border: none;
+	}
+#introduction h3 {
+	margin-top: 0;
+	color: #7c7266;
+	}
+#introduction .columns {
+	border: none;
+	}
+#introduction ul,
+#introduction li {
+	list-style: none;
+	margin: 1em 0;
+	padding: 0;
+	}
+#introduction li {
+	margin:0;
+	padding:0 0 0 5px;
+	}
+#introduction li:before {
+	content:'›';
+	font-size:18px;
+	line-height:18px;
+	padding-right:5px;
+	}
+/* Create New Button */
+#introduction li.new:before {
+	content: '';
+	padding:0;
+	}	
+#introduction li.new {
+	background:none;
+	padding:0;
+	margin:25px 0 0 5px;
+	}
+#introduction li.new a {
+	padding:10px 25px;
+	background-color:#444;
+	border:1px solid #222;
+	color:#FFF;
+	font-size:1.1em;
+	font-weight:400;
+	background-image:none;
+	background-image: -webkit-linear-gradient(top, #555, #333);
+	background-image: -moz-linear-gradient(top, #555, #333);
+	background-image: -o-linear-gradient(top, #555, #333);
+	background-image: -ms-linear-gradient(top, #555, #333);
+	background-image:linear-gradient(top, #555, #333);
+	-webkit-border-radius:5px;
+	-moz-border-radius:5px;
+	border-radius:5px;
+	-webkit-box-shadow:inset 0 1px 0px #666;
+	-moz-box-shadow:inset 0 1px 0px #666;
+	box-shadow:inset 0 1px 0px #666;
+	}	
+#introduction li.new a:hover {
+	background-image: -webkit-linear-gradient(top, #666, #444);
+	background-image: -moz-linear-gradient(top, #666, #444);
+	background-image: -o-linear-gradient(top, #666, #444);
+	background-image: -ms-linear-gradient(top, #666, #444);
+	background-image:linear-gradient(top, #666, #444);
+	}
+#introduction li.new a:active {
+	-webkit-box-shadow:inset 0 1px 2px #111;
+	-moz-box-shadow:inset 0 1px 2px #111;
+	box-shadow:inset 0 1px 2px #111;
+	}
+
+/* Four Columns */
+.com_groups .four {
+	border-top: 1px solid #e0e0d7;
+	margin-bottom: 3em;
+	}
+.com_groups .first h2 {
+	font-weight: normal;
+	margin: 0;
+	padding: 0.5em 0 0 0;
+	line-height: 1em;
+	border: none;
+	border-top: 2px solid #e0e0d7;
+	}
+.com_groups .three,
+.com_groups .four {
+	margin-right: 0;
+	padding-right: 5%;
+	}
+.com_groups .four .third,
+.com_groups .fourth {
+	padding-right: 0;
+	}
+.com_groups .browse a {
+	font-weight: bold;
+	font-size: 1.2em;
+	} 
+
+/* Group Listings */
+.group-list {
+	overflow:hidden;
+	margin:10px 0 0 0;
+	}
+.group-list .logo {
+	float:left;
+	max-width:30px;
+	padding:3px;
+	}
+.group-list .logo img {
+	width:100%;
+	border-radius:1px;
+	-webkit-border-radius:1px;
+	-moz-border-radius:1px;
+	-webkit-box-shadow:0 0 1px #000;
+	-moz-box-shadow:0 0 1px #000;
+	box-shadow:0 0 1px #000;
+	}
+.group-list .details {
+	}
+.group-list .details-w-logo {
+	margin-left:45px;
+	}
+.group-list .details h3,
+.group-list .details-w-logo h3 {
+	margin:0;
+	}
+.group-list .status {
+	font-size: 10px;
+	line-height:10px;
+	font-weight: bold;
+	display: inline-block;
+	background-color: #6a0;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	margin: 3px 0 0 0;
+	padding: 2px 4px 3px 4px;
+	color: #fff;
+	white-space: nowrap;
+	}
+.group-list .manager {
+	background-color: #ff1177;
+	}	
+
+/* Group Member Invite Popup */
+.fancybox-wrap {
+	background:#FFF;
+	border:5px solid #000;
+	}
+.fancybox-close {
+	right:-15px;
+	top:-15px;
+	}
+.fancybox-inner .header {
+	background:#efefef;
+	padding:10px;
+	border-bottom:1px solid #ccc; 
+	border-top:1px solid #ccc; 
+	overflow:hidden;
+	}
+.fancybox-inner h2 {
+	margin:0;
+	text-shadow:0 1px 0 #FFF;
+	color:#444;
+	line-height:1em;
+	font-size:18px;
+	float:left;
+	}
+.fancybox-inner p {
+	float:left;
+	border-bottom:1px solid #efefef;
+	margin:0;
+	font-style:italic;
+	color:#777;
+	padding:2px 0 0 10px;
+	}
+.fancybox-inner ul {
+	list-style:none;
+	margin:1em;
+	}
+.fancybox-inner ul li {
+	border-bottom:1px solid #ccc;
+	margin:0;
+	padding:6px;
+	}
+.fancybox-inner ul li:hover {
+	background:#eee;
+	}
+.fancybox-inner ul li:last-child {
+	border-bottom:none;
+	}
+.fancybox-inner ul li a {
+	float:right;
+	font-size:0.9em;
+	line-height:1.5em;
+	}

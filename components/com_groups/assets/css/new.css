@@ -4,22 +4,97 @@
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
+
+@import url("/media/system/css/fontcons.css"); 
+
+.com_groups .group {
+	position:relative;
+	background-image:none;
+	}
+.com_groups .group:before {
+	content:'\f042';
+	font-family:'Fontcons';
+	font-size:16px;
+	color:#777;
+	width:20px;
+	height:20px;
+	position:absolute;
+	top:0;
+	left:0;
+	}
+
 #asset_browser {
 	margin-top:7px;
 	-webkit-box-shadow:0 0 2px #444;
 	-moz-box-shadow:0 0 2px #444;
 	box-shadow:0 0 2px #444;
-	background:#efefef url('../img/file_manager.png') no-repeat 97% 3%;
+	background:#efefef;
 	padding:2%;
 	width:96%;
-}
-
+	position:absolute;
+	top:2px;
+	}
+#asset_browser:before {
+	content:'\f005';
+	position:absolute;
+	top:8px;
+	right:8px;
+	font-family:'Fontcons';
+	font-size:16px;
+	color:#444;
+	width:20px;
+	height:20px;
+	}
 #asset_browser p:first-child {
 	margin-top:0px;
-}
-
+	}
 iframe {
 	border:0px;
 	margin: 0;
 	padding: 0;
-}
+	}
+
+.com_groups #useroptions {
+	margin:0;
+	overflow:hidden;
+	}
+.com_groups #useroptions li {
+	float:right;
+	margin:0;
+	}
+
+#hubForm .group_cn_label input  {
+	width:75%;
+	display:block;
+	}
+.group_cn_label {
+	position:relative;
+	}
+.available,
+.not-available {
+	position:absolute;
+	color:#1f8a11;
+	width:20%;
+	top:47%;
+	right:0;
+	font-weight:bold;
+	padding-left:15px;
+	}
+.not-available {
+	color:#8a1111;
+	}
+.available:before,
+.not-available:before {
+	content:'\f058';
+	font-family:'Fontcons';
+	position:absolute;
+	top:6%;
+	left:0;
+	width:15px;
+	height:15px;
+	color:#1f8a11;
+	}
+.not-available:before {
+	content:'\f057';
+	color:#8a1111;
+	}

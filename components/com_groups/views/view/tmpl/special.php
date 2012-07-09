@@ -1,25 +1,25 @@
 <?php
 /**
- * @package		HUBzero                                  CMS
- * @author		Christopher                               Smoak <csmoak@purdue.edu>
- * @copyright	Copyright                               2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
+ * @package		HUBzero CMS
+ * @author		Christopher Smoak <csmoak@purdue.edu>
+ * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  *                                                    
- *                                                    Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- *                                                    All rights reserved.
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *                                                    
- *                                                    This program is free software; you can redistribute it and/or
- *                                                    modify it under the terms of the GNU General Public License,
- *                                                    version 2 as published by the Free Software Foundation.
- *                                                    
- *                                                    This program is distributed in the hope that it will be useful,
- *                                                    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *                                                    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *                                                    GNU General Public License for more details.
- *                                                    
- *                                                    You should have received a copy of the GNU General Public License
- *                                                    along with this program; if not, write to the Free Software
- *                                                    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.  
  */
 
 // Check to ensure this file is included in Joomla!
@@ -35,6 +35,10 @@ $links = array(
 	'/answers' => 'Questions &amp; Answers',
 	'/citations' => 'Citations'
 );
+
+//get site config
+$config =& JFactory::getConfig(); 
+
 $no_html = JRequest::getVar("no_html", 0);
 if(!$no_html) {
 ?>
@@ -42,33 +46,25 @@ if(!$no_html) {
 	<div id="special-group-container">
 		<div class="three columns first">
 			<h1>
-				<a href="/" title="nanohub.org">nanohub.org</a>
+				<a href="/" title="<?php echo $config->getValue('sitename'); ?> Home"><?php echo $config->getValue('sitename'); ?></a>
 			</h1>
 			<p class="intro">
-				You are currently viewing “<?php echo $this->group->get('description'); ?>” group powered by nanoHUB.org. 
-				Premier nanotechnology centers around the world have partnered with nanoHUB.org to showcase their research.  
-				The group areas for these partners have their own URL and additional capabilities not found in our standard groups.
+				You are currently viewing “<?php echo $this->group->get('description'); ?>” group powered by <?php echo $config->getValue('sitename'); ?>. The group areas for these partners have their own URL and additional capabilities not found in our standard groups.
 			</p>
 			
 			<h2>Interested in Becoming a Partner?</h2>
 			<p>
-				Use nanoHUB.org to create a web presence for your center. <a href="/about/contact">Contact us</a> to get more details about establishing a partnership.
+				Use <?php echo $config->getValue('sitename'); ?> to create a web presence for your center. <a href="/about/contact">Contact us</a> to get more details about establishing a partnership.
 			</p>
 		</div>
 		<div class="three columns second">
-			<h2>What is nanoHUB.org?</h2>
-			<p>
-				nanoHUB is a rich, web-based resource for research, education and collaboration in nanotechnology. 
-				nanoHUB hosts over 1600 resources which will help you learn about nanotechnology. 
-				Most importantly, the nanoHUB offers simulation tools which you can access from your web browser, so you can not only learn about but also simulate nanotechnology devices.
-			</p>
-			<div class="usage">
-				<a href="/usage" title="nanoHUB.org Usage" class="usage_inner" rel="external"></a>
-			</div>
+			<h2>What is <?php echo $config->getValue('sitename'); ?>?</h2>
+			<p>This web site is a resource for research, education and collaboration in your science area. It hosts various resources which will help you learn about your science area, including Online Presentations, Courses, Learning Modules, Animations, Teaching Materials, and more. These resources come from contributors in our scientific community, and are used by visitors from all over the world.</p>
+			<p>Most importantly, <?php echo $config->getValue('sitename'); ?> offers simulation tools which you can access from your web browser, so you can not only learn about but also simulate your science area.</p>
 		</div>
 		<div class="three columns third">
-			<h2>Explore other nanoHUB.org Content!</h2>
-			<ul class="nanohub-menu">
+			<h2>Explore other <?php echo $config->getValue('sitename'); ?> Content!</h2>
+			<ul class="site-menu">
 				<?php foreach($links as $link => $name) { ?>
 					<li><a href="<?php echo $link; ?>"><?php echo $name; ?></a></li>
 				<?php } ?>

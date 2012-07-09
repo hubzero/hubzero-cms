@@ -71,10 +71,10 @@ function submitbutton(pressbutton)
 		<label for="filter-type"><?php echo JText::_('COM_GROUPS_TYPE'); ?>:</label> 
 		<select name="type" id="filter-type">
 			<option value="all"<?php echo ($this->filters['type'][0] == 'all') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Type...'); ?></option>
-			<option value="hub"<?php echo ($this->filters['type'][0] == 'hub') ? ' selected="selected"' : ''; ?>>hub</option>
-			<option value="system"<?php echo ($this->filters['type'][0] == 'system') ? ' selected="selected"' : ''; ?>>system</option>
-			<option value="project"<?php echo ($this->filters['type'][0] == 'project') ? ' selected="selected"' : ''; ?>>project</option>
-			<option value="partner"<?php echo ($this->filters['type'][0] == 'partner') ? ' selected="selected"' : ''; ?>>partner</option>
+			<option value="hub"<?php echo ($this->filters['type'][0] == 'hub') ? ' selected="selected"' : ''; ?>>Hub</option>
+			<option value="system"<?php echo ($this->filters['type'][0] == 'system') ? ' selected="selected"' : ''; ?>>System</option>
+			<option value="project"<?php echo ($this->filters['type'][0] == 'project') ? ' selected="selected"' : ''; ?>>Project</option>
+			<option value="partner"<?php echo ($this->filters['type'][0] == 'partner') ? ' selected="selected"' : ''; ?>>Partner</option>
 		</select>
 		
 		<label for="filter-privacy"><?php echo JText::_('Privacy'); ?>:</label> 
@@ -103,14 +103,17 @@ function submitbutton(pressbutton)
 		 	<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th scope="col"><?php echo JText::_('COM_GROUPS_ID'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_GROUPS_CN'); ?></th>
+				<!--<th scope="col"><?php echo JText::_('COM_GROUPS_CN'); ?></th>-->
 				<th scope="col"><?php echo JText::_('COM_GROUPS_NAME'); ?></th>
 				<th scope="col"><?php echo JText::_('COM_GROUPS_TYPE'); ?></th>
 				<th scope="col"><?php echo JText::_('COM_GROUPS_PUBLISHED'); ?></th>
+				<!--
 				<th scope="col"><?php echo JText::_('COM_GROUPS_APPLICANTS'); ?></th>
 				<th scope="col"><?php echo JText::_('COM_GROUPS_INVITEES'); ?></th>
 				<th scope="col"><?php echo JText::_('COM_GROUPS_MANAGERS'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_GROUPS_TOTAL_MEMBERS'); ?></th>
+				-->
+				<th scope="col"><?php echo JText::_('Members'); ?></th>
+				<th scope="col"><?php echo JText::_('Manage'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -137,10 +140,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 
 	switch ($row->type)
 	{
-		case '0': $type = 'system';  break;
-		case '1': $type = 'hub';     break;
-		case '2': $type = 'project'; break;
-		case '3': $type = 'partner'; break;
+		case '0': $type = 'System';  break;
+		case '1': $type = 'Hub';     break;
+		case '2': $type = 'Project'; break;
+		case '3': $type = 'Partner'; break;
 	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
@@ -150,6 +153,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td>
 					<?php echo $this->escape($row->gidNumber); ?>
 				</td>
+				<!--
 				<td>
 <?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<? echo $row->cn; ?>">
@@ -159,14 +163,16 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $this->escape($row->cn); ?>
 <?php } ?>
 				</td>
+				-->
 				<td>
 <?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<? echo $row->cn; ?>">
 						<?php echo $this->escape(stripslashes($row->description)); ?>
 					</a>
+					 (<?php echo $this->escape($row->cn); ?>)
 <?php } else { ?>
 					<span>
-						<?php echo $this->escape(stripslashes($row->description)); ?>
+						<?php echo $this->escape(stripslashes($row->description)); ?> (<?php echo $this->escape($row->cn); ?>)
 					</span>
 <?php } ?>
 				</td>
@@ -190,6 +196,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php } ?>
 <?php } ?>
 				</td>
+				<!--
 				<td>
 <?php if ($canDo->get('core.manage')) { ?>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;gid=<?php echo $row->cn; ?>">
@@ -217,14 +224,15 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $managers; ?>
 <?php } ?>
 				</td>
+				-->
 				<td>
-<?php if ($canDo->get('core.manage')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;gid=<?php echo $row->cn; ?>">
-						<?php echo $members; ?>
-					</a>
-<?php } else { ?>
 					<?php echo $members; ?>
-<?php } ?>
+				</td>
+				<td>
+					<?php if ($canDo->get('core.manage')) { ?>
+						<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;gid=<?php echo $row->cn; ?>">Membership</a> | 
+						<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=pages&amp;gid=<?php echo $row->cn; ?>">Group Pages</a>
+					<?php } ?>
 				</td>
 			</tr>
 <?php

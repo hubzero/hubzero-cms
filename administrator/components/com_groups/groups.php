@@ -62,10 +62,13 @@ else
 
 // Include scripts
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'groups.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'log.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'reason.php');
-ximport('Hubzero_User_Helper');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'log.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'reason.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'pages.php');
+
+//Hubzero Libraries
 ximport('Hubzero_Group');
+ximport('Hubzero_User_Helper');
 
 $controllerName = JRequest::getCmd('controller', 'manage');
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))

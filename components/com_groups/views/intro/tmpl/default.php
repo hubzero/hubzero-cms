@@ -52,8 +52,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<div class="aside">
 		<h3>Questions?</h3>
 		<ul>
-			<li><a href="/kb/groups/faq">Groups FAQ</a></li>
-			<li><a href="/kb/groups/guide">Group Guidelines</a></li>
+			<li>
+				<a href="/kb/groups/faq">Groups FAQ</a>
+			</li>
+			<li>
+				<a href="/kb/groups/guide">Group Guidelines</a>
+			</li>
+			<li class="new">
+				<a class="add" href="<?php echo JRoute::_('index.php?option='.$option.'&task=new'); ?>"><?php echo JText::_('Create User Group'); ?></a>
+			</li>
 		</ul>
 	</div><!-- / .aside -->
 	<div class="subject">
@@ -71,6 +78,34 @@ defined('_JEXEC') or die( 'Restricted access' );
 </div><!-- / #introduction.section -->
 
 <div class="section">
+	<?php if(isset($this->mygroups['invitees']) && count($this->mygroups['invitees']) > 0) : ?>
+		<div class="invites">
+			<div class="header">
+				<h2>Group Invites</h2>
+				<p>Below is a list of your current group invites.</p>
+			</div>
+			<ul>
+				<?php foreach($this->mygroups['invitees'] as $invite) : ?>
+					<li><?php echo $invite->description; ?><a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$invite->cn.'&task=accept'); ?>">Accept Invite</a></li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+	<?php endif; ?>
+		
+	<?php if(isset($this->mygroups['applicants']) && count($this->mygroups['applicants']) > 0) : ?>
+		<div class="requests">
+			<div class="header">
+				<h2>Group Requests</h2>
+				<p>Below is a list of your pending group requests.</p>
+			</div>
+			<ul>
+				<?php foreach($this->mygroups['applicants'] as $applicant) : ?>
+					<li><?php echo $applicant->description; ?><a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$applicant->cn.'&task=cancel'); ?>">Cancel Request</a></li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+	<?php endif; ?>
+	
 	
 	<div class="four columns first">
 		<h2>Find a group</h2>
@@ -98,63 +133,47 @@ defined('_JEXEC') or die( 'Restricted access' );
 		</div><!-- / .two columns second -->
 	</div><!-- / .four columns second third fourth -->
 	<div class="clear"></div>
+	
+	<?php if(!$this->user->get("guest")) : ?>
+		<?php if($this->config->get("intro_mygroups", 1)) : ?>
+			<div class="clearfix">
+				<div class="four columns first">
+					<h2><?php echo JText::_('COM_GROUPS_MY_GROUPS'); ?></h2>
+				</div><!-- / .four columns first -->
+				<div class="four columns second third fourth">
+					<div class="clearfix top">
+						<?php echo Hubzero_Group_Helper::listGroups(JText::_('COM_GROUPS_MY_GROUPS'),$this->config,$this->mygroups['members'],2,true,true,0); ?>
+					</div>
+				</div><!-- / .four columns second third fourth -->
+			</div><!-- /.clearfix -->
+		<?php endif; ?>
+	<?php endif; ?>
 
-<?php
-$groups = $this->groups;
-if ($groups) {
-	ximport('Hubzero_Wiki_Parser');
-	$p =& Hubzero_Wiki_Parser::getInstance();
-	$config = $this->config;
-?>
-	<div class="four columns first">
-		<h2>Popular groups</h2>
-	</div><!-- / .four columns first -->
-<?php
-	$i = 1;
-	foreach ($groups as $group)
-	{
-		$wikiconfig = array(
-			'option'   => $option,
-			'scope'    => $group->cn.DS.'wiki',
-			'pagename' => 'group',
-			'pageid'   => $group->gidNumber,
-			'filepath' => $config->get('uploadpath'),
-			'domain'   => $group->cn
-		);
+	<?php if(!$this->user->get("guest")) : ?>
+		<?php if($this->config->get("intro_interestinggroups", 1)) : ?>
+			<div class="clearfix">
+				<div class="four columns first">
+					<h2><?php echo JText::_('COM_GROUPS_INTERESTING_GROUPS'); ?></h2>
+				</div><!-- / .four columns first -->
+				<div class="four columns second third fourth">
+					<div class="clearfix top">
+						<?php echo Hubzero_Group_Helper::listGroups(JText::_('COM_GROUPS_INTERESTING_GROUPS'),$this->config,$this->interestinggroups,2,true,false,150); ?>
+					</div>
+				</div><!-- / .four columns second third fourth -->
+			</div><!-- /.clearfix -->
+		<?php endif; ?>
+	<?php endif; ?>
 
-		//$p = new WikiParser( $group->cn, $option, $group->cn.DS.'wiki', 'group', $group->gidNumber, $config->get('uploadpath') );
-
-		switch ($i)
-		{
-			case 1: $cls = 'second'; break;
-			case 2: $cls = 'third'; break;
-			case 3: $cls = 'fourth'; break;
-		}
-
-		$public_desc = '(No public description available.)';
-		if ($group->public_desc) {
-			$public_desc = $p->parse( "\n".stripslashes($group->public_desc), $wikiconfig, true, true );
-			$public_desc = strip_tags($public_desc);
-			$UrlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
-			$public_desc = preg_replace("/$UrlPtrn/", '', $public_desc);
-			$public_desc = Hubzero_View_Helper_Html::shortenText($public_desc, 300, 0);
-		}
-?>
-	<div class="four columns <?php echo $cls; ?>">
-		<div class="group">
-			<h3><a href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$group->cn); ?>"><?php echo stripslashes($group->description); ?></a></h3>
-			<!-- <p><?php echo $group->members; ?> Members</p> -->
-			<p><?php echo $public_desc; ?></p>
-			<p><a href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$group->cn); ?>">Learn more &rsaquo;</a></p>
-		</div>
-	</div><!-- / .four columns second -->
-<?php
-		$i++;
-	}
-?>
-	<div class="clear"></div>
-<?php
-}
-?>
-
+	<?php if($this->config->get("intro_populargroups", 1)) : ?>
+		<div class="clearfix">
+			<div class="four columns first">
+				<h2><?php echo JText::_('COM_GROUPS_POPULAR_GROUPS'); ?></h2>
+			</div><!-- / .four columns first -->
+			<div class="four columns second third fourth">
+				<div class="clearfix top">
+					<?php echo Hubzero_Group_Helper::listGroups(JText::_('COM_GROUPS_POPULAR_GROUPS'),$this->config,$this->populargroups,2,true,false,150); ?>
+				</div>
+			</div><!-- / .four columns second third fourth -->
+		</div><!-- /.clearfix -->
+	<?php endif; ?>
 </div><!-- / .section -->

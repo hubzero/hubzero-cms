@@ -51,11 +51,40 @@ HUB.Groups = {
 		//special groups
 		HUB.Groups.specialGroups();
 		
-		//
+		//scrolling asset browser
 		HUB.Groups.scrollingAssetBrowser();
+		
+		//group availablity checker
+		HUB.Groups.groupIdAvailability();
+		
+		//group menu alert fixer
+		HUB.Groups.groupMenuFix();
 	},
 	
-	//----
+	//-----
+	
+	groupMenuFix: function()
+	{
+		$("#page_menu li").each(function(index){
+			var meta = $(this).find(".meta"),
+				metawidth = meta.outerWidth(true),
+				alrt = $(this).find(".alrt");
+			
+			if(alrt.length)
+			{
+				if(metawidth > 20)
+				{
+					alrt.css("right", 33+(metawidth-20));
+				}
+				else if(metawidth < 20 && metawidth != 0)
+				{
+					alrt.css("right", 33-(20-metawidth));
+				}
+			} 
+		});
+	},
+	
+	//-----
 	
 	membershipNotifications: function()
 	{
@@ -74,7 +103,7 @@ HUB.Groups = {
 		if(requests.length) 
 		{
 			requests.addClass("hide");
-			content += "<hr />" + requests.html();
+			content += requests.html();
 		}
 		
 		if(content != "") 
@@ -84,6 +113,7 @@ HUB.Groups = {
 					autoSize:false,
 					width: 600,
 					height: 'auto',
+					padding:0,
 					content: content,
 					beforeload: function() {
 						invites.toggleClass("hide");
@@ -258,30 +288,19 @@ HUB.Groups = {
 		
 		var topBox = $("#top_box"),
 			bottomBox = $("#bottom_box"),
-			assetBox = $("#asset_browser");
+			assetBox = $("#asset_browser"),
+			max = 0;
 
-		if(assetBox.length)
-		{   
-			var element = $(document);
-			min = (topBox.length != 0) ? (topBox.offset().top) : 0;
-			max = (bottomBox.length != 0) ? bottomBox.offset().top+bottomBox.outerHeight(true)-assetBox.outerHeight(true)-min : 0;
-			margin = 0;
+		if(assetBox.length && topBox.length && bottomBox.length)
+		{
+			max = (bottomBox.position().top + bottomBox.outerHeight(true)) - assetBox.outerHeight(true);
 			
-			//margin-top of asset-browser, not sure why .outerheight(true) is calculating right
-			max -= 7;
-			
-			if(element.scrollTop() > max) 
+			if( $(document).scrollTop() > 0 && $(document).scrollTop() < max)
 			{
-				margin = (max-element.scrollTop());
+				assetBox.stop().animate({
+					"top": $(document).scrollTop()
+				});
 			}
-			
-			assetBox.css({
-				'position':'fixed',
-				'z-index':'999',
-				'width': assetBox.width() + 'px',
-				'padding': '0px',
-				'margin-top': margin
-			});
 		}
 	},
 
@@ -289,7 +308,61 @@ HUB.Groups = {
 	
 	specialGroups: function()
 	{
+		var $ = this.jQuery;
 		
+		$("#special-group-tab").on("click", function(event){
+			$("#special-group-pane").slideToggle('slow', function() {
+				$("#special-group-tab").toggleClass('active');
+			});
+			event.preventDefault();
+		});
+		
+		var wh = $(window).height(),
+			ph = $("#page_container").height();
+		if(ph < wh)
+		{
+			//$("#page_container").css("height", wh);
+			//$("#page_container_inner").css("height", wh);
+		}
+	},
+	
+	//-----
+	
+	groupIdAvailability: function()
+	{
+		var $ = this.jQuery; 
+		$("#group_cn_field")
+			.on("keydown", function(event) {
+				$('.available, .not-available').remove();
+			})
+			.on("keyup", function(event) { 
+				$.ajax({
+					url: 'index.php?option=com_groups&task=groupavailability&no_html=1',
+					data: { 'group' : $(this).val() },
+					success: function(data) {
+						var availability = jQuery.parseJSON(data);
+						if(availability)
+						{
+							if(availability.available)
+							{
+								if(!$('.available').length)
+								{
+									$("#group_cn_field").after('<span class="available">Group Available</span>');
+								}
+								$('.not-available').remove();
+							}
+							else
+							{
+								$(".available").remove();
+								if(!$('.not-available').length)
+								{
+									$("#group_cn_field").after('<span class="not-available">Group Not Available</span>');
+								}
+							}
+						}
+					}
+				});
+			});
 	}
 }
 

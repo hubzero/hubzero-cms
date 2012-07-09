@@ -31,13 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//directory id - use temp for new groups
-if ($this->group->get('gidNumber')) {
-	$lid = $this->group->get('gidNumber');
-} else {
-	$lid = time().rand(0,10000);
-}
-
 //tag editor
 JPluginHelper::importPlugin( 'hubzero' );
 $dispatcher =& JDispatcher::getInstance();
@@ -96,7 +89,7 @@ else
 		<div class="explaination">
 			<div id="asset_browser">
 				<p><strong><?php echo JText::_('Upload files or images:'); ?></strong></p>
-				<iframe width="100%" height="300" name="filer" id="filer" src="index.php?option=<?php echo $this->option; ?>&amp;no_html=1&amp;task=media&amp;listdir=<?php echo $lid; ?>"></iframe>
+				<iframe width="100%" height="300" name="filer" id="filer" src="index.php?option=<?php echo $this->option; ?>&amp;no_html=1&amp;task=media&amp;listdir=<?php echo $this->lid; ?>"></iframe>
 			</div><!-- / .asset_browser -->
 		</div>
 		<fieldset id="top_box">
@@ -104,9 +97,9 @@ else
 <?php if ($this->task != 'new') { ?>
 			<input name="cn" type="hidden" value="<?php echo $this->group->get('cn'); ?>" />
 <?php } else { ?>
-			<label>
+			<label class="group_cn_label">
 				<?php echo JText::_('GROUPS_ID'); ?> <span class="required"><?php echo JText::_('GROUPS_REQUIRED'); ?></span>
-				<input name="cn" type="text" size="35" value="<?php echo $this->group->get('cn'); ?>" /> 
+				<input name="cn" id="group_cn_field" type="text" size="35" value="<?php echo $this->group->get('cn'); ?>" autocomplete="off" /> 
 				<span class="hint"><?php echo JText::_('GROUPS_ID_HINT'); ?></span>
 			</label>
 <?php } ?>
@@ -175,8 +168,13 @@ else
 			</fieldset>
 		</fieldset>
 		<div class="clear"></div>
-               
-		<fieldset>
+		
+		<?php
+			$params = &JComponentHelper::getParams('com_groups');
+			$allowEmailResponses = $params->get('email_member_groupsidcussionemail_autosignup');
+		?>
+		
+		<fieldset <?php if(!$allowEmailResponses) { echo 'id="bottom_box"'; } ?>>
 			<h3><?php echo JText::_('Discoverability Settings'); ?></h3>
 			<p><?php echo JText::_('GROUPS_ACCESS_EXPLANATION'); ?></p>
 			<fieldset>
@@ -190,58 +188,29 @@ else
 					<strong><?php echo JText::_('GROUPS_ACCESS_HIDDEN'); ?></strong> <br /><span class="indent">Group can not be found through searches and only viewable by group members.</span>
 				</label>
 			</fieldset>
-			
-			
-			<!-- 
-			<fieldset>
-				<legend><?php echo JText::_('Content Privacy'); ?> <span class="required"><?php echo JText::_('GROUPS_REQUIRED'); ?></span></legend>
-				<p><?php echo JText::_('GROUPS_PRIVACY_HINT'); ?></p>
-		$params = $params = &JComponentHelper::getParams('com_groups');
-
-$allowEmailResponses = $params->get('email_comment_processing');		<label>
-					<input type="radio" class="option" name="access" value="0"<?php if ($this->group->get('access') == 0) { echo ' checked="checked"'; } ?> /> 
-					<strong><?php echo JText::_('GROUPS_ACCESS_PUBLIC'); ?></strong> <span class="indent"><?php echo JText::_('GROUPS_ACCESS_PUBLIC_EXPLANATION'); ?></span>
-				</label>
-				<label>
-			GROUPS_ACCESS_EXPLANATION		<input type="radio" class="option" name="access" value="3"<?php if ($this->group->get('access') == 3) { echo ' checked="checked"'; } ?> /> 
-					<strong><?php echo JText::_('GROUPS_ACCESS_PROTECTED'); ?></strong> <span class="indent"><?php echo JText::_('GROUPS_ACCESS_PROTECTED_EXPLANATION'); ?></span>
-				</label>
-				<label>
-					<input type="radio" class="option" name="access" value="4"<?php if ($this->group->get('access') == 4) { echo ' checked="checked"'; } ?> /> 
-					<strong><?php echo JText::_('GROUPS_ACCESS_PRIVATE'); ?></strong> <span class="indent"><?php echo JText::_('GROUPS_ACCESS_PRIVATE_EXPLANATION'); ?></span>
-				</label>
-			</fieldset>
-			-->
-	
-			
 		</fieldset>
 
-		<?php 
-		$params = $params = &JComponentHelper::getParams('com_groups');
-		$allowEmailResponses = $params->get('email_member_groupsidcussionemail_autosignup');
-		if ($allowEmailResponses) {
-		?>
-		
-		<fieldset id="bottom_box">
-		<h3><?php echo JText::_('GROUPS_SETTINGS'); ?></h3>
-		<p><?php echo JText::_('GROUP_LEVEL_CONFIGURATION_OPTIONS'); ?></p>
-			<fieldset>
-				<legend><?php echo JText::_('GROUPS_SETTING_EMAIL'); ?></legend>
-				<label>
-					<input type="checkbox" class="option" name="discussion_email_autosubscribe" value="1"
-						<?php if ($this->group->get('discussion_email_autosubscribe') == 1) { echo ' checked="checked"'; } ?> /> 
-					<strong><?php echo JText::_('GROUPS_SETTING_AUTO_SUBSCRIBE_NEW_USERS_TO_FORUM_EMAIL'); ?></strong> <br />
-					<span class="indent">
-						<?php echo JText::_('GROUPS_SETTING_AUTO_SUBSCRIBE_NEW_USERS_TO_FORUM_EMAIL_NOTE'); ?>
-					</span>
-				</label>
-			</fieldset>
-		</fieldset>                
-		<?php }?>
+		<?php if ($allowEmailResponses) : ?>
+			<fieldset id="bottom_box">
+			<h3><?php echo JText::_('GROUPS_SETTINGS'); ?></h3>
+			<p><?php echo JText::_('GROUP_LEVEL_CONFIGURATION_OPTIONS'); ?></p>
+				<fieldset>
+					<legend><?php echo JText::_('GROUPS_SETTING_EMAIL'); ?></legend>
+					<label>
+						<input type="checkbox" class="option" name="discussion_email_autosubscribe" value="1"
+							<?php if ($this->group->get('discussion_email_autosubscribe') == 1) { echo ' checked="checked"'; } ?> /> 
+						<strong><?php echo JText::_('GROUPS_SETTING_AUTO_SUBSCRIBE_NEW_USERS_TO_FORUM_EMAIL'); ?></strong> <br />
+						<span class="indent">
+							<?php echo JText::_('GROUPS_SETTING_AUTO_SUBSCRIBE_NEW_USERS_TO_FORUM_EMAIL_NOTE'); ?>
+						</span>
+					</label>
+				</fieldset>
+			</fieldset>                
+		<?php endif; ?>
 		
 		<div class="clear"></div>
 		<input type="hidden" name="published" value="<?php echo $this->group->get('published'); ?>" />
-		<input type="hidden" name="lid" value="<?php echo $lid; ?>" />
+		<input type="hidden" name="lid" value="<?php echo $this->lid; ?>" />
 		<input type="hidden" name="gidNumber" value="<?php echo $this->group->get('gidNumber'); ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="task" value="save" />

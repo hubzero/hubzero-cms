@@ -33,7 +33,7 @@ HUB.Plugins.GroupCalendar = {
 	
 	datePicker: function()
 	{
-		var $ = this.JQuery;
+		var $ = this.jQuery;
 		
 		//hide helpers
 		$('.cal-date-help').hide();
@@ -49,7 +49,7 @@ HUB.Plugins.GroupCalendar = {
 	
 	calendarPopup: function()
 	{
-		var $ = this.JQuery;
+		var $ = this.jQuery;
 		
 		$(".calendar-row .event")
 			.on("mouseover", function(event){
@@ -79,7 +79,7 @@ HUB.Plugins.GroupCalendar = {
 	
 	repositionCalendarPopup: function(popup)
 	{
-		var $ = this.JQuery;
+		var $ = this.jQuery;
 		
 		var threshold = 10,
 			marginTop = 0,
@@ -114,7 +114,7 @@ HUB.Plugins.GroupCalendar = {
 	
 	hideCalendarPopup: function()
 	{
-		var $ = this.JQuery;
+		var $ = this.jQuery;
 		
 		$(".calendar-row a.active").each(function(i, el) {
 			$(el).removeClass("active");

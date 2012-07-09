@@ -48,13 +48,14 @@ $app =& JFactory::getApplication();
 		<?php } else { ?>
 			<link rel="stylesheet" type="text/css" href="<?php echo $component_css; ?>" />
 		<?php } ?>
+		
+		<?php if (JPluginHelper::isEnabled('system', 'jquery')) : ?>
+			<script src="/media/system/js/jquery.js"></script>
+			<script src="/media/system/js/jquery.fileuploader.js"></script>
+			<script src="/components/com_groups/assets/js/groups.fileupload.jquery.js"></script>
+		<?php endif; ?>
 	</head>
 	<body id="file_browser">
-		<?php
-			foreach($this->notifications as $notification) {
-				echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
-			}
-		?>
 		<form action="index.php" id="adminForm" method="post" enctype="multipart/form-data">
 			<fieldset>
 				<div id="themanager" class="manager">
@@ -62,9 +63,17 @@ $app =& JFactory::getApplication();
 				</div>
 			</fieldset>
 			<fieldset>
-				<p><input type="file" name="upload" id="upload" /></p>
-				<p><input type="submit" value="<?php echo JText::_('UPLOAD'); ?>" /></p>
-				
+				<?php if (JPluginHelper::isEnabled('system', 'jquery')) : ?>
+					<div id="ajax-uploader" data-action="index.php?option=com_groups&amp;task=ajaxupload&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1">
+						<noscript>
+							<p><input type="file" name="upload" id="upload" /></p>
+							<p><input type="submit" value="<?php echo JText::_('UPLOAD'); ?>" /></p>
+						</noscript>
+					</div>
+				<?php else : ?>
+					<p><input type="file" name="upload" id="upload" /></p>
+					<p><input type="submit" value="<?php echo JText::_('UPLOAD'); ?>" /></p>
+				<?php endif; ?>
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="listdir" id="listdir" value="<?php echo $this->listdir; ?>" />
 				<input type="hidden" name="task" value="upload" />

@@ -140,7 +140,7 @@ $levels = array(
 					<img src="<?php echo $default_logo; ?>" alt="<?php echo $this->group->get('cn') ?>" >
 					<?php for($i=0; $i<count($this->hub_group_plugins); $i++) { ?>
 						<?php if ($this->hub_group_plugins[$i]['display_menu_tab']) { ?>
-							<li>
+							<li class="group_access_control_<?php echo strtolower($this->hub_group_plugins[$i]['title']); ?>">
 								<input type="hidden" name="group_plugin[<?php echo $i; ?>][name]" value="<?php echo $this->hub_group_plugins[$i]['name']; ?>">
 								<span class="menu_item_title"><?php echo $this->hub_group_plugins[$i]['title']; ?></span>
 								<select name="group_plugin[<?php echo $i; ?>][access]">

@@ -84,12 +84,13 @@ class plgGroupsMembers extends JPlugin
 	 */
 	public function onGroup($group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null)
 	{
-		$return = 'html';
+		$returnhtml = true;
 		$active = 'members';
 
 		// The output array we're returning
 		$arr = array(
-			'html'=>''
+			'html'=>'',
+			'metadata'=>''
 		);
 
 		//get this area details
@@ -100,7 +101,7 @@ class plgGroupsMembers extends JPlugin
 		{
 			if (!in_array($this_area['name'], $areas)) 
 			{
-				return;
+				$returnhtml = false;
 			}
 		}
 
@@ -112,7 +113,7 @@ class plgGroupsMembers extends JPlugin
 		$this->_name = substr($option, 4, strlen($option));
 
 		// Only perform the following if this is the active tab/plugin
-		if ($return == 'html') 
+		if ($returnhtml) 
 		{
 			//set group members plugin access level
 			$group_plugin_acl = $access[$active];
@@ -153,14 +154,9 @@ class plgGroupsMembers extends JPlugin
 			$document =& JFactory::getDocument();
 			$document->setTitle(JText::_(strtoupper($this->_name)).': '.$this->group->description.': '.JText::_('PLG_GROUPS_MEMBERS'));
 
-			// Push some scripts to the template
-			if (is_file(JPATH_ROOT . DS . 'plugins' . DS . 'groups' . DS . 'members' . DS . 'members.js')) 
-			{
-				$document->addScript('plugins' . DS . 'groups' . DS . 'members' . DS . 'members.js');
-			}
-
 			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('groups', 'members');
+			Hubzero_Document::addPluginScript('groups', 'members');
 
 			$paramsClass = 'JParameter';
 			if (version_compare(JVERSION, '1.6', 'ge'))
@@ -273,7 +269,7 @@ class plgGroupsMembers extends JPlugin
 				//callback to check if user is system user
 				function isSystemUser($user) 
 				{
-					return ($user < 1000) ? false : true;
+					return (is_numeric($user) && $user < 1000) ? false : true;
 				}
 
 				//if we dont want to display system users
@@ -300,40 +296,18 @@ class plgGroupsMembers extends JPlugin
 
 				$arr['html'] = $view->loadTemplate();
 			}
-		} 
-		else 
+		}
+		
+		//return metadata
+		$arr['metadata']['count'] = count($group->get('members'));
+		
+		//do we have any pending requests
+		$pending = $group->get("applicants");
+		if(count($pending) > 0)
 		{
-			$members = $group->get('members');
-
-			// Build the HTML meant for the "profile" tab's metadata overview
-			$arr['metadata'] = '<a href="'.JRoute::_('index.php?option='.$option.'&gid='.$group->cn.'&active=members').'">'.JText::sprintf('PLG_GROUPS_MEMBERS_COUNT',count($members)).'</a>';
-
-			$database =& JFactory::getDBO();
-
-			$xlog = new XGroupLog($database);
-			$logs = $xlog->getLogs($group->get('gidNumber'));
-
-			ximport('Hubzero_Plugin_View');
-			$view = new Hubzero_Plugin_View(
-				array(
-					'folder'  => 'groups',
-					'element' => 'members',
-					'name'    => 'dashboard'
-				)
-			);
-			$view->option = $this->_option;
-			$view->group = $this->group;
-			$view->authorized = $this->authorized;
-			$view->logs = $logs;
-			if ($this->getError()) 
-			{
-				foreach ($this->getErrors() as $error)
-				{
-					$view->setError($error);
-				}
-			}
-
-			$arr['dashboard'] = $view->loadTemplate();
+			$title = $this->group->get('description')." has <strong>".count($pending)."</strong> pending membership request.";
+			$link = JRoute::_('index.php?option=com_groups&gid='.$this->group->get('cn').'&active=members&filter=pending');
+			$arr['metadata']['alert'] = "<a class=\"alrt\" href=\"{$link}\"><span><h5>Member Alert</h5>{$title}</span></a>";
 		}
 
 		// Return the output
