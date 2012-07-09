@@ -257,6 +257,7 @@ qq.FileUploaderBasic = function(o){
         button: null,
         multiple: true,
         maxConnections: 3,
+		showDrop: false,
         // validation        
         allowedExtensions: [],               
         sizeLimit: 0,   
@@ -564,13 +565,20 @@ qq.extend(qq.FileUploader.prototype, {
                 qq.removeClass(dropArea, self._classes.dropActive);  
             },
             onDrop: function(e){
-                dropArea.style.display = 'none';
+				if(self._options.showDrop == 'false' || self._options.showDrop === false)
+                {
+					dropArea.style.display = 'none';
+				}
                 qq.removeClass(dropArea, self._classes.dropActive);
                 self._uploadFileList(e.dataTransfer.files);    
             }
         });
-                
-        dropArea.style.display = 'none';
+        
+		//added to always show drop if wanted
+        if(this._options.showDrop == 'false' || this._options.showDrop === false)
+		{
+        	dropArea.style.display = 'none';
+    	}
 
         qq.attach(document, 'dragenter', function(e){     
             if (!dz._isValidFileDrag(e)) return; 
@@ -582,8 +590,11 @@ qq.extend(qq.FileUploader.prototype, {
             
             var relatedTarget = document.elementFromPoint(e.clientX, e.clientY);
             // only fire when leaving document out
-            if ( ! relatedTarget || relatedTarget.nodeName == "HTML"){               
-                dropArea.style.display = 'none';                                            
+            if ( ! relatedTarget || relatedTarget.nodeName == "HTML"){
+				if(self._options.showDrop == 'false' || self._options.showDrop === false)
+                {
+					dropArea.style.display = 'none';
+				}                                            
             }
         });                
     },
