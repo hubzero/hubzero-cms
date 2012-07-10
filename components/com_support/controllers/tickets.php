@@ -440,7 +440,8 @@ class SupportControllerTickets extends Hubzero_Controller
 			ximport('Hubzero_User_Profile');
 			$profile = new Hubzero_User_Profile();
 			$profile->load($this->juser->get('id'));
-			if ($profile->get('emailConfirmed') == 1) 
+			$emailConfirmed = $profile->get('emailConfirmed');
+			if (($emailConfirmed == 1) || ($emailConfirmed == 3)) 
 			{
 				return true;
 			}
@@ -564,19 +565,21 @@ class SupportControllerTickets extends Hubzero_Controller
 		$ip = Hubzero_Environment::ipAddress();
 		$hostname = gethostbyaddr(JRequest::getVar('REMOTE_ADDR','','server'));
 
-		// Check CAPTCHA
-		$validcaptchas = $dispatcher->trigger('onValidateCaptcha');
-		if (count($validcaptchas) > 0)
+		if (!$verified)
 		{
-			foreach ($validcaptchas as $validcaptcha)
+			// Check CAPTCHA
+			$validcaptchas = $dispatcher->trigger('onValidateCaptcha');
+			if (count($validcaptchas) > 0)
 			{
-				if (!$validcaptcha)
+				foreach ($validcaptchas as $validcaptcha)
 				{
-					$this->setError(JText::_('Error: Invalid CAPTCHA response.'));
+					if (!$validcaptcha)
+					{
+						$this->setError(JText::_('Error: Invalid CAPTCHA response.'));
+					}
 				}
 			}
 		}
-
 		// Are they verified?
 		if (!$verified)
 		{
