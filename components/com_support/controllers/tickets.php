@@ -634,7 +634,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		$source_country = 'unknown';
 
 		ximport('Hubzero_Geo');
-		$gdb =& Hubzero_Geo::getGODBO();
+		$gdb =& Hubzero_Geo::getGeoDBO();
 		if (is_object($gdb)) 
 		{
 			$gdb->setQuery("SELECT countrySHORT, countryLONG, ipREGION, ipCITY FROM ipcitylatlong WHERE INET_ATON('$ip') BETWEEN ipFROM and ipTO");
