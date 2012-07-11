@@ -93,7 +93,7 @@ class Hubzero_Email_Token
 		else
 			throw new Exception("/etc/hubmail_gw.conf file does not exist");
 	
-		$xhub = new HubConfig();
+		$xhub = JFactory::getConfig("/etc/hubmail_gw.conf");
 
 		if (empty($config))
 		{
