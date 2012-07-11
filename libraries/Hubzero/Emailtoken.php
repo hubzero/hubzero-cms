@@ -93,33 +93,38 @@ class Hubzero_Email_Token
 		else
 			throw new Exception("/etc/hubmail_gw.conf file does not exist");
 	
-		$xhub = JFactory::getConfig("/etc/hubmail_gw.conf");
+		// HubmailConfig is defined here
+		include_once('/etc/hubmail_gw.conf');
 
 		if (empty($config))
 		{
 			throw new Exception('Class Hubzero_Email_Token: failed JFactory::getConfig() call');
 		}
 
-		if (empty($xhub))
+		if (!class_exists('HubmailConfig'))
 		{
-			throw new Exception('Class Hubzero_Email_Token: failed HubConfig class load');
+			throw new Exception('Class HubmailConfig not loaded');
+		}
+		else
+		{
+			$HubmailConfig1 = new HubmailConfig();
 		}
 
 		//**** Get current token version
-		$this->_currentVersion = $xhub->email_token_current_version;
+		$this->_currentVersion = $HubmailConfig1->email_token_current_version;
 
 		if (empty($this->_currentVersion))
 		{
-			throw new Exception('Class Hubzero_Email_Token: config.email_token_current_version not found in config file');
+			throw new Exception('Class HubmailConfig->email_token_current_version not found in config file');
 		}
 
 		//**** Grab the encryption info for that version
 		$prop = 'email_token_encryption_info_v' . $this->_currentVersion;
-		$encryption_info = $xhub->$prop;
+		$encryption_info = $HubmailConfig1->$prop;
 
 		if (empty($encryption_info))
 		{
-			throw new Exception('Class Hubzero_Email_Token: config.email_token_encryption_info_vX not found for version: ' . $tokenVersion);
+			throw new Exception('Class HubmailConfig->email_token_encryption_info_vX not found for version: ' . $this->_currentVersion);
 		}
 
 		//**** Encryption info is comma delimited (key, iv) in this configuraiton value
