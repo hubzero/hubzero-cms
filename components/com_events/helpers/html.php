@@ -434,7 +434,11 @@ class EventsHtml
 			"14"    => "(UTC +14:00) Kiribati",
 		);
 
-		return $timezones[$tz];
+		if(array_key_exists($tz, $timezones)) {
+			return $timezones[$tz];	
+		}
+		return('(timezone n/a)');
+		
 	}
 
 	/**
