@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2011-2012 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright Copyright 2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2011-2012 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -169,8 +169,7 @@ class Hubzero_Xml
 					$vname = $key;
 				}
 
-				/* !!Where's this method?! */
-				$xml .= self::encode_var($value, $vname, $vattributes, $depth+1, false);
+				$xml .= self::encode($value, $vname, $vattributes, $depth+1, false);
 			}
 
 			$xml .= $indent;
@@ -195,7 +194,7 @@ class Hubzero_Xml
 
 		if ($depth > 1)
 		{
-			echo "\n";
+			$xml .= "\n";
 		}
 
 		self::last_error(XML_ERROR_NONE);
