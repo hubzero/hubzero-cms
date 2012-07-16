@@ -466,7 +466,7 @@ class Hubzero_Group_Helper
 					else
 					{
 						//menu item meta data vars
-						$metadata = $sections[$k]['metadata'];
+						$metadata = (isset($sections[$k]['metadata'])) ? $sections[$k]['metadata'] : array();
 						$meta_count = (isset($metadata['count']) && $metadata['count'] != '') ? $metadata['count'] : '';
 						$meta_alert = (isset($metadata['alert']) && $metadata['alert'] != '') ? $metadata['alert'] : '';
 
