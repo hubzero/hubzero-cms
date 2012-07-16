@@ -29,24 +29,20 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Hubzero_Module_Helper Class
- *    Helper Class to render and display modules as needed.  
- **/
-
+ * Helper Class to render and display modules as needed.
+ */
 class Hubzero_Module_Helper
 {
-
 	/**
-	 * Short description for 'displayModules'
+	 * Render modules for a position
+	 * Alias method for renderModules()
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $position Parameter description (if any) ...
-	 * @param      unknown $style Parameter description (if any) ...
-	 * @return     void
+	 * @param      string  $position Position to render modules for
+	 * @param      integer $style    Module style (deprecated?)
+	 * @return     string HTML
 	 */
 	public static function displayModules($position, $style=-2)
 	{
@@ -54,12 +50,11 @@ class Hubzero_Module_Helper
 	}
 
 	/**
-	 * Short description for 'displayModule'
+	 * Render a specific module
+	 * Alias method for renderModule()
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $name Parameter description (if any) ...
-	 * @param      unknown $style Parameter description (if any) ...
+	 * @param      string  $name  Module name
+	 * @param      integer $style Module style (deprecated?)
 	 * @return     void
 	 */
 	public static function displayModule($name, $style=-1)
@@ -68,79 +63,72 @@ class Hubzero_Module_Helper
 	}
 
 	/**
-	 * Short description for 'renderModule'
+	 * Render a specific module
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $name Parameter description (if any) ...
-	 * @param      unknown $style Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string  $name  Module name
+	 * @param      integer $style Module style (deprecated?)
+	 * @return     string HTML
 	 */
 	public static function renderModule($name, $style=-1)
 	{
 		$module = JModuleHelper::getModule($name);
-		$params	= array('style'=>$style);
+		$params = array('style' => $style);
 		$contents = JModuleHelper::renderModule($module, $params);
 
-		return($contents);
+		return $contents;
 	}
 
 	/**
-	 * Short description for 'renderModules'
+	 * Render modules for a position
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $position Parameter description (if any) ...
-	 * @param      unknown $style Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string  $position Position to render modules for
+	 * @param      integer $style    Module style (deprecated?)
+	 * @return     string HTML
 	 */
-	public static function renderModules( $position, $style=-2 )
+	public static function renderModules($position, $style=-2)
 	{
-		if (!defined('_JEXEC')) {
-			ob_start();
-			mosLoadModules($position,$style);
-			$result = ob_get_contents();
-			ob_end_clean();
-			return $result;
-		}
-
 		$document = &JFactory::getDocument();
 		$renderer = $document->loadRenderer('module');
-		$params	  = array('style'=>$style);
+		$params   = array('style' => $style);
 
 		$contents = '';
 		foreach (JModuleHelper::getModules($position) as $mod)
 		{
-			if ($mod->showtitle != 0) {
-				$contents .= "<h3>" . $mod->title . "</h3>";
+			if ($mod->showtitle != 0) 
+			{
+				$contents .= '<h3>' . stripslashes($mod->title) . '</h3>';
 			}
-			$contents .= $renderer->render($mod,$params);
+			$contents .= $renderer->render($mod, $params);
 		}
 
 		return $contents;
 	}
-	
-	//----------
-	
-	public function getParams( $id )
+
+	/**
+	 * Get the parameters for a module
+	 * 
+	 * @param      integer $id Module ID
+	 * @return     object
+	 */
+	public function getParams($id)
 	{
 		//database object
 		$db =& JFactory::getDBO();
-		
+
 		//select module params based on name passed in
-		$sql = "SELECT params FROM #__modules WHERE id='".$id."' AND published=1";
-		$db->setQuery( $sql );
+		$sql = "SELECT params FROM #__modules WHERE id='" . $id . "' AND published=1";
+		$db->setQuery($sql);
 		$params = $db->loadResult();
-		
+
 		$paramsClass = 'JParameter';
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
 			$paramsClass = 'JRegistry';
 		}
-		
+
 		//parse params
-		$mparams = new $paramsClass( $params );
-		
+		$mparams = new $paramsClass($params);
+
 		//return params
 		return $mparams;
 	}

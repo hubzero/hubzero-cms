@@ -29,20 +29,16 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-include_once(JPATH_ROOT.DS.'libraries'.DS.'Hubzero'.DS.'Document'.DS.'Feed'.DS.'Enclosure.php');
-include_once(JPATH_ROOT.DS.'libraries'.DS.'Hubzero'.DS.'Document'.DS.'Feed'.DS.'Image.php');
-include_once(JPATH_ROOT.DS.'libraries'.DS.'Hubzero'.DS.'Document'.DS.'Feed'.DS.'Item.php');
-include_once(JPATH_ROOT.DS.'libraries'.DS.'Hubzero'.DS.'Document'.DS.'Feed'.DS.'ItunesOwner.php');
+include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'Document' . DS . 'Feed' . DS . 'Enclosure.php');
+include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'Document' . DS . 'Feed' . DS . 'Image.php');
+include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'Document' . DS . 'Feed' . DS . 'Item.php');
+include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'Document' . DS . 'Feed' . DS . 'ItunesOwner.php');
 
 /**
  * Hubzero_Document_Feed class, provides an easy interface to parse and display any feed document
- *
- * @author Johan Janssens <johan.janssens@joomla.org>
- * @author Shawn Rice <zooley@purdue.edu>
  */
-
 class Hubzero_Document_Feed extends JDocument
 {
 	/**
@@ -53,7 +49,7 @@ class Hubzero_Document_Feed extends JDocument
 	 * @var		string
 	 * @access	public
 	 */
-	 var $syndicationURL = "";
+	 var $syndicationURL = '';
 
 	 /**
 	 * Image feed element
@@ -73,7 +69,7 @@ class Hubzero_Document_Feed extends JDocument
 	 * @var		string
 	 * @access	public
 	 */
-	 var $copyright = "";
+	 var $copyright = '';
 
 	 /**
 	 * Published date feed element
@@ -83,7 +79,7 @@ class Hubzero_Document_Feed extends JDocument
 	 * @var		string
 	 * @access	public
 	 */
-	 var $pubDate = "";
+	 var $pubDate = '';
 
 	 /**
 	 * Lastbuild date feed element
@@ -93,7 +89,7 @@ class Hubzero_Document_Feed extends JDocument
 	 * @var		string
 	 * @access	public
 	 */
-	 var $lastBuildDate = "";
+	 var $lastBuildDate = '';
 
 	 /**
 	 * Editor feed element
@@ -103,7 +99,7 @@ class Hubzero_Document_Feed extends JDocument
 	 * @var		string
 	 * @access	public
 	 */
-	 var $editor = "";
+	 var $editor = '';
 
 	/**
 	 * Docs feed element
@@ -111,7 +107,7 @@ class Hubzero_Document_Feed extends JDocument
 	 * @var		string
 	 * @access	public
 	 */
-	 var $docs = "";
+	 var $docs = '';
 
 	 /**
 	 * Editor email feed element
@@ -121,7 +117,7 @@ class Hubzero_Document_Feed extends JDocument
 	 * @var		string
 	 * @access	public
 	 */
-	 var $editorEmail = "";
+	 var $editorEmail = '';
 
 	/**
 	 * Webmaster email feed element
@@ -131,7 +127,7 @@ class Hubzero_Document_Feed extends JDocument
 	 * @var		string
 	 * @access	public
 	 */
-	 var $webmaster = "";
+	 var $webmaster = '';
 
 	/**
 	 * Category feed element
@@ -141,7 +137,7 @@ class Hubzero_Document_Feed extends JDocument
 	 * @var		string
 	 * @access	public
 	 */
-	 var $category = "";
+	 var $category = '';
 
 	/**
 	 * TTL feed attribute
@@ -151,7 +147,7 @@ class Hubzero_Document_Feed extends JDocument
 	 * @var		string
 	 * @access	public
 	 */
-	 var $ttl = "";
+	 var $ttl = '';
 
 	/**
 	 * Rating feed element
@@ -161,7 +157,7 @@ class Hubzero_Document_Feed extends JDocument
 	 * @var		string
 	 * @access	public
 	 */
-	 var $rating = "";
+	 var $rating = '';
 
 	/**
 	 * Skiphours feed element
@@ -171,7 +167,7 @@ class Hubzero_Document_Feed extends JDocument
 	 * @var		string
 	 * @access	public
 	 */
-	 var $skipHours = "";
+	 var $skipHours = '';
 
 	/**
 	 * Skipdays feed element
@@ -181,7 +177,7 @@ class Hubzero_Document_Feed extends JDocument
 	 * @var		string
 	 * @access	public
 	 */
-	 var $skipDays = "";
+	 var $skipDays = '';
 
 	/**
 	 * The feed items collection
@@ -198,14 +194,14 @@ class Hubzero_Document_Feed extends JDocument
 	 * 
 	 * @var string
 	 */
-	var $itunes_summary = "";
+	var $itunes_summary = '';
 
 	/**
 	 * Description for 'itunes_category'
 	 * 
 	 * @var string
 	 */
-	var $itunes_category = "";
+	var $itunes_category = '';
 
 	/**
 	 * Description for 'itunes_subcategories'
@@ -226,21 +222,21 @@ class Hubzero_Document_Feed extends JDocument
 	 * 
 	 * @var string
 	 */
-	var $itunes_explicit = "no";
+	var $itunes_explicit = 'no';
 
 	/**
 	 * Description for 'itunes_keywords'
 	 * 
 	 * @var string
 	 */
-	var $itunes_keywords = "";
+	var $itunes_keywords = '';
 
 	/**
 	 * Description for 'itunes_author'
 	 * 
 	 * @var string
 	 */
-	var $itunes_author = "";
+	var $itunes_author = '';
 
 	/**
 	 * Description for 'itunes_image'
@@ -271,7 +267,7 @@ class Hubzero_Document_Feed extends JDocument
 	 * @param array		$params		Associative array of attributes
 	 * @return 	The rendered data
 	 */
-	public function render( $cache = false, $params = array())
+	public function render($cache = false, $params = array())
 	{
 		global $option;
 
@@ -281,29 +277,31 @@ class Hubzero_Document_Feed extends JDocument
 		/*
 		 * Cache TODO In later release
 		 */
-		$cache		= 0;
+		$cache      = 0;
 		$cache_time = 3600;
-		$cache_path = JPATH_BASE.DS.'cache';
+		$cache_path = JPATH_BASE . DS . 'cache';
 
 		// set filename for rss feeds
-		$file = strtolower( str_replace( '.', '', $type ) );
-		$file = $cache_path.DS.$file.'_'.$option.'.xml';
+		$file = strtolower(str_replace('.', '', $type));
+		$file = $cache_path . DS . $file . '_' . $option . '.xml';
 
 		// Instantiate feed renderer and set the mime encoding
 		$renderer =& $this->loadXRenderer(($type) ? $type : 'Rss');
-		if (!is_a($renderer, 'JDocumentRenderer')) {
+		if (!is_a($renderer, 'JDocumentRenderer')) 
+		{
 			JError::raiseError(404, JText::_('Resource Not Found'));
 		}
 		$this->setMimeEncoding($renderer->getContentType());
 
 		//output
 		// Generate prolog
-		$data  = "<?xml version=\"1.0\" encoding=\"".$this->_charset."\"?>\n";
-		$data .= "<!-- generator=\"".$this->getGenerator()."\" -->\n";
+		$data  = '<?xml version="1.0" encoding="' . $this->_charset . '"?>' . "\n";
+		$data .= '<!-- generator="' . $this->getGenerator() . '" -->' . "\n";
 
 		 // Generate stylesheet links
-		foreach ($this->_styleSheets as $src => $attr ) {
-			$data .= "<?xml-stylesheet href=\"$src\" type=\"".$attr['mime']."\"?>\n";
+		foreach ($this->_styleSheets as $src => $attr) 
+		{
+			$data .= '<?xml-stylesheet href="' . $src . '" type="' . $attr['mime'] . '"?>' . "\n";
 		}
 
 		// Render the feed
@@ -321,21 +319,26 @@ class Hubzero_Document_Feed extends JDocument
 	* @return	object
 	* @since 1.5
 	*/
-	public function &loadXRenderer( $type )
+	public function &loadXRenderer($type)
 	{
-		$null	= null;
-		$class	= 'Hubzero_Document_Renderer_'.ucfirst(strtolower($type));
+		$null  = null;
+		$class = 'Hubzero_Document_Renderer_' . ucfirst(strtolower($type));
 
-		if (!class_exists( $class )) {
-			$path = dirname(__FILE__).DS.'Renderer'.DS.$type.'.php';
-			if (file_exists($path)) {
+		if (!class_exists($class)) 
+		{
+			$path = dirname(__FILE__) . DS . 'Renderer' . DS . $type . '.php';
+			if (file_exists($path)) 
+			{
 				require_once($path);
-			} else {
-				JError::raiseError(500,JText::_('Unable to load renderer class'));
+			} 
+			else 
+			{
+				JError::raiseError(500, JText::_('Unable to load renderer class'));
 			}
 		}
 
-		if (!class_exists( $class )) {
+		if (!class_exists($class)) 
+		{
 			return $null;
 		}
 
@@ -349,7 +352,7 @@ class Hubzero_Document_Feed extends JDocument
 	 * @param object Hubzero_Document_Feed_Item $item The feeditem to add to the feed.
 	 * @access public
 	 */
-	public function addItem( &$item )
+	public function addItem(&$item)
 	{
 		$item->source = $this->link;
 		$this->items[] = $item;

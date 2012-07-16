@@ -29,104 +29,90 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Hubzero_Message_Action'
- * 
- * Long description (if any) ...
+ * Table class for message actions
  */
 class Hubzero_Message_Action extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id          = NULL;  // @var int(11) Primary key
-
-/**
- * Description for 'class'
- * 
- * @var unknown
- */
-	var $class       = NULL;  // @var varchar(20)
+	var $id          = NULL;
 
 	/**
-	 * Description for 'element'
+	 * varchar(20)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $element     = NULL;  // @var int(11)
+	var $class       = NULL;
 
 	/**
-	 * Description for 'description'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $description = NULL;  // @var text
-
-	//-----------
+	var $element     = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * text
 	 * 
-	 * Long description (if any) ...
+	 * @var string
+	 */
+	var $description = NULL;
+
+	/**
+	 * Constructor
 	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__xmessage_action', 'id', $db );
+		parent::__construct('#__xmessage_action', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->element ) == '') {
-			$this->setError( JText::_('Please provide an element.') );
+		$this->element = intval($this->element);
+		if (!$this->element) 
+		{
+			$this->setError(JText::_('Please provide an element.'));
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'getActionItems'
+	 * Get records for specific type, element, component, and user
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $type Parameter description (if any) ...
-	 * @param      unknown $component Parameter description (if any) ...
-	 * @param      unknown $element Parameter description (if any) ...
-	 * @param      unknown $uid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      string  $type      Action type
+	 * @param      string  $component Component name
+	 * @param      integer $element   ID of element that needs action
+	 * @param      integer $uid       User ID
+	 * @return     mixed False if errors, array on success
 	 */
-	public function getActionItems( $type=null, $component=null, $element=null, $uid=null )
+	public function getActionItems($type=null, $component=null, $element=null, $uid=null)
 	{
-		if (!$uid) {
-			return false;
-		}
-		if (!$type) {
-			return false;
-		}
-		if (!$component) {
+		if (!$component) 
+		{
 			$component = $this->class;
 		}
-		if (!$component) {
-			return false;
-		}
-		if (!$element) {
+		if (!$element) 
+		{
 			$element = $this->element;
 		}
-		if (!$element) {
+		if (!$component || !$element || !$uid || !$type) 
+		{
+			$this->setError(JText::_('Missing argument.'));
 			return false;
 		}
 
@@ -134,7 +120,7 @@ class Hubzero_Message_Action extends JTable
 				FROM #__xmessage_recipient AS r, $this->_tbl AS a, #__xmessage AS m
 				WHERE m.id=r.mid AND r.actionid = a.id AND m.type='$type' AND r.uid='$uid' AND a.class='$component' AND a.element='$element'";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadResultArray();
 	}
 }

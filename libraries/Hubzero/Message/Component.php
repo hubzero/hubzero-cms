@@ -29,125 +29,118 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Hubzero_Message_Component'
- * 
- * Long description (if any) ...
+ * Table class for message component list
+ * These are action items that are message-able 
  */
 class Hubzero_Message_Component extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id        = NULL;  // @var int(11) Primary key
+	var $id        = NULL;
 
 	/**
-	 * Description for 'component'
+	 * varchar(50)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $component = NULL;  // @var varchar(50)
+	var $component = NULL;
 
 	/**
-	 * Description for 'action'
+	 * varchar(100)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $action    = NULL;  // @var varchar(100)
+	var $action    = NULL;
 
 	/**
-	 * Description for 'title'
+	 * varchar(255)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $title     = NULL;  // @var varchar(255)
-
-	//-----------
+	var $title     = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__xmessage_component', 'id', $db );
+		parent::__construct('#__xmessage_component', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->component ) == '') {
-			$this->setError( JText::_('Please provide a component.') );
+		$this->component = trim($this->component);
+		if (!$this->component) 
+		{
+			$this->setError(JText::_('Please provide a component.'));
 			return false;
 		}
-		if (trim( $this->action ) == '') {
-			$this->setError( JText::_('Please provide an action.') );
+		$this->action = trim($this->action);
+		if (!$this->action) 
+		{
+			$this->setError(JText::_('Please provide an action.'));
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'getRecords'
+	 * Get a record count based on filters passed
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     integer
 	 */
 	public function getCount($filters = array())
 	{
-		$query  = "SELECT COUNT(*)";
-		$query .= $this->_buildQuery($filters);
-		
-		$this->_db->setQuery( $query );
-		return $this->_db->loadObjectList();
-	}
-	
-	/**
-	 * Short description for 'getRecords'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     object Return description (if any) ...
-	 */
-	public function getRecords($filters = array())
-	{
-		$query  = "SELECT x.*, c.name";
-		$query .= $this->_buildQuery($filters);
-		
+		$query  = "SELECT COUNT(*)" . $this->_buildQuery($filters);
+
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
-	
+
+	/**
+	 * Get records based on filters passed
+	 * 
+	 * @param      array $filters Filters to build query from
+	 * @return     array
+	 */
+	public function getRecords($filters = array())
+	{
+		$query  = "SELECT x.*, c.name" . $this->_buildQuery($filters);
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
+
 	/**
 	 * Builds a query string based on filters passed
 	 * 
+	 * @param      array $filters Filters to build query from
 	 * @return     string SQL
 	 */
 	protected function _buildQuery($filters = array())
 	{
 		$query  = " FROM $this->_tbl AS x";
-		
+
 		$where = array();
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
 			$query .= ", #__extensions AS c";
-			
+
 			$where[] = "x.component = c.element";
 			$where[] = "c.type = 'component'";
 			if (isset($filters['component']) && $filters['component'])
@@ -158,7 +151,7 @@ class Hubzero_Message_Component extends JTable
 		else 
 		{
 			$query .= ", #__components AS c";
-			
+
 			$where[] = "x.component = c.option";
 			$where[] = "c.parent = 0";
 			if (isset($filters['component']) && $filters['component'])
@@ -166,7 +159,7 @@ class Hubzero_Message_Component extends JTable
 				$where[] = "c.option = '" . $filters['component'] . "'";
 			}
 		}
-		
+
 		$query .= " WHERE " . implode(" AND ", $where);
 		if (!isset($filters['sort']) || !$filters['sort'])
 		{
@@ -177,16 +170,14 @@ class Hubzero_Message_Component extends JTable
 			$filters['sort_Dir'] = 'DESC';
 		}
 		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'] . ", x.action DESC";
-		
+
 		return $query;
 	}
 
 	/**
-	 * Short description for 'getComponents'
+	 * Get all records
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     object Return description (if any) ...
+	 * @return     array
 	 */
 	public function getComponents()
 	{
@@ -194,7 +185,7 @@ class Hubzero_Message_Component extends JTable
 					FROM $this->_tbl AS x
 					ORDER BY x.component ASC";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadResultArray();
 	}
 }

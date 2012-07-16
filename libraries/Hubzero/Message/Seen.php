@@ -29,132 +29,140 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Hubzero_Message_Seen'
- * 
- * Long description (if any) ...
+ * Table class for recording if a user has viewed a message
  */
 class Hubzero_Message_Seen extends JTable
 {
-
 	/**
-	 * Description for 'mid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $mid      = NULL;  // @var int(11)
+	var $mid      = NULL;
 
 	/**
-	 * Description for 'uid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $uid      = NULL;  // @var int(11)
+	var $uid      = NULL;
 
 	/**
-	 * Description for 'whenseen'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $whenseen = NULL;  // @var datetime(0000-00-00 00:00:00)
-
-	//-----------
+	var $whenseen = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__xmessage_seen', 'uid', $db );
+		parent::__construct('#__xmessage_seen', 'uid', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->mid ) == '') {
-			$this->setError( JText::_('Please provide a message ID.') );
+		$this->mid = intval($this->mid);
+		if (!$this->mid) 
+		{
+			$this->setError(JText::_('Please provide a message ID.'));
 			return false;
 		}
-		if (trim( $this->uid ) == '') {
-			$this->setError( JText::_('Please provide a user ID.') );
+		$this->uid = intval($this->uid);
+		if (!$this->uid) 
+		{
+			$this->setError(JText::_('Please provide a user ID.'));
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'loadRecord'
+	 * Load a record by message ID and user ID and bind to $this
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $mid Parameter description (if any) ...
-	 * @param      unknown $uid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $mid Message ID
+	 * @param      integer $uid User ID
+	 * @return     boolean True on success
 	 */
-	public function loadRecord( $mid=NULL, $uid=NULL )
+	public function loadRecord($mid=NULL, $uid=NULL)
 	{
-		if (!$mid) {
+		if (!$mid) 
+		{
 			$mid = $this->mid;
 		}
-		if (!$uid) {
+		if (!$uid) 
+		{
 			$uid = $this->uid;
 		}
-		if (!$mid || !$uid) {
+		if (!$mid || !$uid) 
+		{
 			return false;
 		}
 
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE mid='$mid' AND uid='$uid'" );
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE mid='$mid' AND uid='$uid'");
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
 
 	/**
-	 * Short description for 'store'
+	 * Save a record
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      boolean $new Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      boolean $new Create a new record? (updates by default)
+	 * @return     boolean True on success, false on errors
 	 */
-	public function store( $new=false )
+	public function store($new=false)
 	{
-		if (!$new) {
-			$this->_db->setQuery( "UPDATE $this->_tbl SET whenseen='$this->whenseen' WHERE mid='$this->mid' AND uid='$this->uid'");
-			if ($this->_db->query()) {
+		if (!$new) 
+		{
+			$this->_db->setQuery("UPDATE $this->_tbl SET whenseen='$this->whenseen' WHERE mid='$this->mid' AND uid='$this->uid'");
+			if ($this->_db->query()) 
+			{
 				$ret = true;
-			} else {
+			} 
+			else 
+			{
 				$ret = false;
 			}
-		} else {
-			//$ret = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key );
-			$this->_db->setQuery( "INSERT INTO $this->_tbl (mid, uid, whenseen) VALUES ('$this->mid', '$this->uid', '$this->whenseen')");
-			if ($this->_db->query()) {
+		} 
+		else 
+		{
+			$this->_db->setQuery("INSERT INTO $this->_tbl (mid, uid, whenseen) VALUES ('$this->mid', '$this->uid', '$this->whenseen')");
+			if ($this->_db->query()) 
+			{
 				$ret = true;
-			} else {
+			} 
+			else 
+			{
 				$ret = false;
 			}
 		}
-		if (!$ret) {
-			$this->setError( strtolower(get_class( $this )).'::store failed <br />' . $this->_db->getErrorMsg() );
+		if (!$ret) 
+		{
+			$this->setError(strtolower(get_class($this)) . '::store failed <br />' . $this->_db->getErrorMsg());
 			return false;
-		} else {
+		} 
+		else 
+		{
 			return true;
 		}
 	}

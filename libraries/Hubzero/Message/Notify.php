@@ -29,92 +29,83 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Hubzero_Message_Notify'
- * 
- * Long description (if any) ...
+ * Table class for message notification
  */
 class Hubzero_Message_Notify extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id       = NULL;  // @var int(11) Primary key
+	var $id       = NULL;
 
 	/**
-	 * Description for 'uid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $uid      = NULL;  // @var int(11)
+	var $uid      = NULL;
 
 	/**
-	 * Description for 'method'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $method   = NULL;  // @var text
+	var $method   = NULL;
 
 	/**
-	 * Description for 'type'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $type     = NULL;  // @var text
+	var $type     = NULL;
 
 	/**
-	 * Description for 'priority'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $priority = NULL;  // @var int(11)
-
-	//-----------
+	var $priority = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__xmessage_notify', 'id', $db );
+		parent::__construct('#__xmessage_notify', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->uid ) == '') {
-			$this->setError( JText::_('Please provide a user ID.') );
+		$this->uid = intval($this->uid);
+		if (!$this->uid) 
+		{
+			$this->setError(JText::_('Please provide a user ID.'));
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'getRecords'
+	 * Get records for a user
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $uid Parameter description (if any) ...
-	 * @param      unknown $type Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $uid  User ID
+	 * @param      string  $type Record type
+	 * @return     mixed False if errors, array on success
 	 */
-	public function getRecords( $uid=null, $type=null )
+	public function getRecords($uid=null, $type=null)
 	{
 		if (!$uid) {
 			$uid = $this->uid;
@@ -122,7 +113,8 @@ class Hubzero_Message_Notify extends JTable
 		if (!$uid) {
 			return false;
 		}
-		if (!$type) {
+		if (!$type) 
+		{
 			$type = $this->type;
 		}
 
@@ -130,33 +122,35 @@ class Hubzero_Message_Notify extends JTable
 		$query .= ($type) ? " AND `type`='$type'" : "";
 		$query .= " ORDER BY `priority` ASC";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'clearAll'
+	 * Clear all entries for a user
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $uid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $uid  User ID
+	 * @return     boolean True on success
 	 */
-	public function clearAll( $uid=null )
+	public function clearAll($uid=null)
 	{
-		if (!$uid) {
+		if (!$uid) 
+		{
 			$uid = $this->uid;
 		}
-		if (!$uid) {
+		if (!$uid) 
+		{
 			return false;
 		}
 
 		$query  = "DELETE FROM $this->_tbl WHERE `uid`='$uid'";
 
-		$this->_db->setQuery( $query );
-		if (!$this->_db->query()) {
+		$this->_db->setQuery($query);
+		if (!$this->_db->query()) 
+		{
 			return false;
 		}
+		return true;
 	}
 }
 

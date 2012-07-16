@@ -29,219 +29,216 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Hubzero_Message_Recipient'
- * 
- * Long description (if any) ...
+ * Table class for recipient of message
  */
 class Hubzero_Message_Recipient extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id       = NULL;  // @var int(11) Primary key
+	var $id       = NULL;
 
 	/**
-	 * Description for 'mid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $mid      = NULL;  // @var int(11)
+	var $mid      = NULL;
 
 	/**
-	 * Description for 'uid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $uid      = NULL;  // @var int(11)
+	var $uid      = NULL;
 
 	/**
-	 * Description for 'created'
+	 * datetime (0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $created  = NULL;  // @var datetime (0000-00-00 00:00:00)
+	var $created  = NULL;
 
 	/**
-	 * Description for 'expires'
+	 * datetime (0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $expires  = NULL;  // @var datetime (0000-00-00 00:00:00)
+	var $expires  = NULL;
 
 	/**
-	 * Description for 'actionid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $actionid = NULL;  // @var int(11)
+	var $actionid = NULL;
 
 	/**
-	 * Description for 'state'
+	 * tinyint(2)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $state    = NULL;  // @var tinyint(2)
-
-	//-----------
+	var $state    = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__xmessage_recipient', 'id', $db );
+		parent::__construct('#__xmessage_recipient', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->mid ) == '') {
-			$this->setError( JText::_('Please provide a message ID.') );
+		$this->mid = intval($this->mid);
+		if (!$this->mid) 
+		{
+			$this->setError(JText::_('Please provide a message ID.'));
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'loadRecord'
+	 * Load a record by message ID and user ID and bind to $this
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $mid Parameter description (if any) ...
-	 * @param      unknown $uid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $mid Message ID
+	 * @param      integer $uid User ID
+	 * @return     boolean True on success
 	 */
-	public function loadRecord( $mid=NULL, $uid=NULL )
+	public function loadRecord($mid=NULL, $uid=NULL)
 	{
-		if (!$mid) {
+		if (!$mid) 
+		{
 			$mid = $this->mid;
 		}
-		if (!$uid) {
+		if (!$uid) 
+		{
 			$uid = $this->uid;
 		}
-		if (!$mid || !$uid) {
+		if (!$mid || !$uid) 
+		{
 			return false;
 		}
 
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE mid='$mid' AND uid='$uid'" );
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE mid='$mid' AND uid='$uid'");
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
 
 	/**
-	 * Short description for 'buildQuery'
+	 * Builds a query string based on filters passed
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $uid Parameter description (if any) ...
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array $filters Filters to build query from
+	 * @return     string SQL
 	 */
-	private function buildQuery( $uid, $filters=array() )
+	private function buildQuery($uid, $filters=array())
 	{
 		$query  = "FROM #__xmessage AS m LEFT JOIN #__xmessage_seen AS s ON s.mid=m.id AND s.uid='$uid', $this->_tbl AS r 
 					WHERE r.uid='$uid' 
 					AND r.mid=m.id ";
-		if (isset($filters['state'])) {
-			$query .= "AND r.state='".$filters['state']."'";
+		if (isset($filters['state'])) 
+		{
+			$query .= "AND r.state='" . $filters['state'] . "'";
 		}
-		if (isset($filters['filter']) && $filters['filter'] != '') {
-			$query .= "AND m.component='".$filters['filter']."'";
+		if (isset($filters['filter']) && $filters['filter'] != '') 
+		{
+			$query .= "AND m.component='" . $filters['filter'] . "'";
 		}
-		if (isset($filters['limit']) && $filters['limit'] != 0) {
+		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		{
 			$query .= " ORDER BY importance DESC, created DESC";
-			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
+			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
 		return $query;
 	}
 
 	/**
-	 * Short description for 'getMessages'
+	 * Get records for a user based on filters passed
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $uid Parameter description (if any) ...
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $uid     User ID
+	 * @param      array   $filters Filters to build query from
+	 * @return     mixed False if errors, array on success
 	 */
-	public function getMessages( $uid=null, $filters=array() )
+	public function getMessages($uid=null, $filters=array())
 	{
-		if (!$uid) {
+		if (!$uid) 
+		{
 			$uid = $this->uid;
 		}
-		if (!$uid) {
+		if (!$uid) 
+		{
 			return false;
 		}
 
 		$query = "SELECT m.*, s.whenseen, r.expires, r.actionid, r.state,
-		 			(CASE WHEN r.actionid > 0 AND s.whenseen IS NULL THEN 1 ELSE 0 END) AS importance ".$this->buildQuery( $uid, $filters );
+		 			(CASE WHEN r.actionid > 0 AND s.whenseen IS NULL THEN 1 ELSE 0 END) AS importance " . $this->buildQuery($uid, $filters);
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'getMessagesCount'
+	 * Get a record count for a user based on filters passed
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $uid Parameter description (if any) ...
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $uid     User ID
+	 * @param      array   $filters Filters to build query from
+	 * @return     mixed False if errors, integer on success
 	 */
-	public function getMessagesCount( $uid=null, $filters=array() )
+	public function getMessagesCount($uid=null, $filters=array())
 	{
-		if (!$uid) {
+		if (!$uid) 
+		{
 			$uid = $this->uid;
 		}
-		if (!$uid) {
+		if (!$uid) 
+		{
 			return false;
 		}
 
 		$filters['limit'] = 0;
 
-		$query = "SELECT COUNT(*) ".$this->buildQuery( $uid, $filters );
+		$query = "SELECT COUNT(*) " . $this->buildQuery($uid, $filters);
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getUnreadMessages'
+	 * Get a list of unread messages for a user
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $uid Parameter description (if any) ...
-	 * @param      unknown $limit Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $uid   User ID
+	 * @param      unknown $limit Number of records to return
+	 * @return     mixed False if errors, array on success
 	 */
-	public function getUnreadMessages( $uid=null, $limit=null )
+	public function getUnreadMessages($uid=null, $limit=null)
 	{
-		if (!$uid) {
+		if (!$uid) 
+		{
 			$uid = $this->uid;
 		}
-		if (!$uid) {
+		if (!$uid) 
+		{
 			return false;
 		}
 
@@ -251,58 +248,59 @@ class Hubzero_Message_Recipient extends JTable
 		$query .= " ORDER BY created DESC";
 		$query .= ($limit) ? " LIMIT $limit" : "";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'deleteTrash'
+	 * Delete all messages marked as trash for a user
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $uid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $uid User ID
+	 * @return     boolean True on success
 	 */
-	public function deleteTrash( $uid=null )
+	public function deleteTrash($uid=null)
 	{
-		if (!$uid) {
+		if (!$uid) 
+		{
 			$uid = $this->uid;
 		}
-		if (!$uid) {
+		if (!$uid) 
+		{
 			return false;
 		}
 
 		$query = "DELETE FROM $this->_tbl WHERE uid='$uid' AND state='2'";
 
-		$this->_db->setQuery( $query );
-		if (!$this->_db->query()) {
-			$this->setError( $this->_db->getError() );
+		$this->_db->setQuery($query);
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getError());
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'setState'
+	 * Set the state of multiple messages
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $state Parameter description (if any) ...
-	 * @param      array $ids Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $state State to set
+	 * @param      array   $ids   List of message IDs
+	 * @return     boolean True on success
 	 */
-	public function setState( $state=0, $ids=array() )
+	public function setState($state=0, $ids=array())
 	{
-		if (count($ids) <= 0) {
+		if (count($ids) <= 0) 
+		{
 			return false;
 		}
 
-		$ids = implode(',',$ids);
+		$ids = implode(',', $ids);
 		$query = "UPDATE $this->_tbl SET state='$state' WHERE id IN ($ids)";
 
-		$this->_db->setQuery( $query );
-		if (!$this->_db->query()) {
-			$this->setError( $this->_db->getError() );
+		$this->_db->setQuery($query);
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getError());
 			return false;
 		}
 		return true;
