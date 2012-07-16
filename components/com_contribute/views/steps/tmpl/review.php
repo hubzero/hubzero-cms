@@ -44,6 +44,15 @@ $params->merge( $rparams );
 </div><!-- / #content-header -->
 
 <div class="main section">
+<?php
+	$view = new JView( array('name'=>'steps','layout'=>'steps') );
+	$view->option = $this->option;
+	$view->step = $this->step;
+	$view->steps = $this->steps;
+	$view->id = $this->id;
+	$view->progress = $this->progress;
+	$view->display();
+?>
 <?php if ($this->getError()) { ?>
 	<p class="warning"><?php echo $this->getError(); ?></p>
 <?php } ?>
