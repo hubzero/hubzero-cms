@@ -319,13 +319,16 @@ class ResourcesHelper extends JObject
 						$orgsln_s 	.= trim($contributor->org).' ';
 						$k = $i;
 						$i++;
+						
+						$link_s = $link;
+						$link .= '<sup>'. $k .'</sup>';
+						$names_s[] = $link_s;
 					} else {
-						$k = array_search(trim($contributor->org), $orgs) + 1;
+						//$k = array_search(trim($contributor->org), $orgs) + 1;
+						$link_s = $link;
+						$link .= '';
+						$names_s[] = $link_s;
 					}
-					$link_s = $link;
-					$link .= '<sup>'. $k .'</sup>';
-					$names_s[] = $link_s;
-
 				} else {
 					$orgs[trim($contributor->org)][] = $link;
 				}
