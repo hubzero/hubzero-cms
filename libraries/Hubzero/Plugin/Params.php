@@ -29,153 +29,155 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-//----------------------------------------------------------
-// Extended database class
-//----------------------------------------------------------
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Hubzero_Plugin_Params'
- * 
- * Long description (if any) ...
+ * Table class for custom plugin parameters
  */
 class Hubzero_Plugin_Params extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id        = NULL;  // @var int(11) Primary key
+	var $id        = NULL;
 
 	/**
-	 * Description for 'object_id'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $object_id = NULL;  // @var int(11)
+	var $object_id = NULL;
 
 	/**
-	 * Description for 'folder'
+	 * varchar(100)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $folder    = NULL;  // @var varchar(100)
+	var $folder    = NULL;
 
 	/**
-	 * Description for 'element'
+	 * varchar(100)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $element   = NULL;  // @var varchar(100)
+	var $element   = NULL;
 
 	/**
-	 * Description for 'params'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $params    = NULL;  // @var text
-
-	//-----------
+	var $params    = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__plugin_params', 'id', $db );
+		parent::__construct('#__plugin_params', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->object_id ) == '') {
-			$this->setError( JText::_('Entry must have an object ID') );
+		$this->object_id = intval($this->object_id);
+		if (!$this->object_id) 
+		{
+			$this->setError(JText::_('Entry must have an object ID'));
 			return false;
 		}
-		if (trim( $this->folder ) == '') {
-			$this->setError( JText::_('Entry must have a folder') );
+
+		$this->folder = trim($this->folder);
+		if (!$this->folder) 
+		{
+			$this->setError(JText::_('Entry must have a folder'));
 			return false;
 		}
-		if (trim( $this->element ) == '') {
-			$this->setError( JText::_('Entry must have an element') );
+
+		$this->element = trim($this->element);
+		if (!$this->element) 
+		{
+			$this->setError(JText::_('Entry must have an element'));
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'loadPlugin'
+	 * Load a record and binf to $this
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $oid Parameter description (if any) ...
-	 * @param      unknown $folder Parameter description (if any) ...
-	 * @param      unknown $element Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $oid     Object ID (eg, group ID)
+	 * @param      string  $folder  Plugin folder
+	 * @param      string  $element Plugin name
+	 * @return     boolean True on success
 	 */
-	public function loadPlugin( $oid=null, $folder=null, $element=NULL )
+	public function loadPlugin($oid=null, $folder=null, $element=NULL)
 	{
-		if (!$oid) {
+		if (!$oid) 
+		{
 			$oid = $this->object_id;
 		}
-		if (!$folder) {
+		if (!$folder) 
+		{
 			$folder = $this->folder;
 		}
-		if (!$element) {
+		if (!$element) 
+		{
 			$element = $this->element;
 		}
-		if (!$oid || !$element || !$folder) {
+		if (!$oid || !$element || !$folder) 
+		{
 			return false;
 		}
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE object_id='$oid' AND folder='$folder' AND element='$element' LIMIT 1" );
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE object_id='$oid' AND folder='$folder' AND element='$element' LIMIT 1");
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
 
 	/**
-	 * Short description for 'getCustomParams'
+	 * Get the custom parameters for a plugin
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $oid Parameter description (if any) ...
-	 * @param      unknown $folder Parameter description (if any) ...
-	 * @param      unknown $element Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $oid     Object ID (eg, group ID)
+	 * @param      string  $folder  Plugin folder
+	 * @param      string  $element Plugin name
+	 * @return     object
 	 */
-	public function getCustomParams( $oid=null, $folder=null, $element=null )
+	public function getCustomParams($oid=null, $folder=null, $element=null)
 	{
-		if (!$oid) {
+		if (!$oid) 
+		{
 			$oid = $this->object_id;
 		}
-		if (!$folder) {
+		if (!$folder) 
+		{
 			$folder = $this->folder;
 		}
-		if (!$element) {
+		if (!$element) 
+		{
 			$element = $this->element;
 		}
-		if (!$oid || !$folder || !$element) {
+		if (!$oid || !$folder || !$element) 
+		{
 			return null;
 		}
 
-		$this->_db->setQuery( "SELECT params FROM $this->_tbl WHERE object_id=$oid AND folder='$folder' AND element='$element' LIMIT 1" );
+		$this->_db->setQuery("SELECT params FROM $this->_tbl WHERE object_id=$oid AND folder='$folder' AND element='$element' LIMIT 1");
 		$result = $this->_db->loadResult();
 
 		$paramsClass = 'JParameter';
@@ -184,28 +186,29 @@ class Hubzero_Plugin_Params extends JTable
 			$paramsClass = 'JRegistry';
 		}
 
-		$params = new $paramsClass( $result );
+		$params = new $paramsClass($result);
 		return $params;
 	}
 
 	/**
-	 * Short description for 'getDefaultParams'
+	 * Get the default parameters for a plugin
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $folder Parameter description (if any) ...
-	 * @param      unknown $element Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      string  $folder  Plugin folder
+	 * @param      string  $element Plugin name
+	 * @return     object
 	 */
-	public function getDefaultParams( $folder=null, $element=null )
+	public function getDefaultParams($folder=null, $element=null)
 	{
-		if (!$folder) {
+		if (!$folder) 
+		{
 			$folder = $this->folder;
 		}
-		if (!$element) {
+		if (!$element) 
+		{
 			$element = $this->element;
 		}
-		if (!$folder || !$element) {
+		if (!$folder || !$element) 
+		{
 			return null;
 		}
 
@@ -215,26 +218,25 @@ class Hubzero_Plugin_Params extends JTable
 			$paramsClass = 'JRegistry';
 		}
 
-		$plugin = JPluginHelper::getPlugin( $folder, $element );
-		$params = new $paramsClass( $plugin->params );
+		$plugin = JPluginHelper::getPlugin($folder, $element);
+		$params = new $paramsClass($plugin->params);
 		return $params;
 	}
 
 	/**
-	 * Short description for 'getParams'
+	 * Get the parameters for a plugin
+	 * Merges default params and custom params (take precedence)
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $oid Parameter description (if any) ...
-	 * @param      unknown $folder Parameter description (if any) ...
-	 * @param      unknown $element Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $oid     Object ID (eg, group ID)
+	 * @param      string  $folder  Plugin folder
+	 * @param      string  $element Plugin name
+	 * @return     object
 	 */
-	public function getParams( $oid=null, $folder=null, $element=null )
+	public function getParams($oid=null, $folder=null, $element=null)
 	{
-		$rparams = $this->getCustomParams( $oid, $folder, $element );
-		$params = $this->getDefaultParams( $folder, $element );
-		$params->merge( $rparams );
+		$rparams = $this->getCustomParams($oid, $folder, $element);
+		$params = $this->getDefaultParams($folder, $element);
+		$params->merge($rparams);
 		return $params;
 	}
 }

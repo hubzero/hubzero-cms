@@ -29,71 +29,36 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Hubzero_Bank_Config'
- * 
- * Long description (if any) ...
+ * Class for getting and setting user point configuration
  */
 class Hubzero_Bank_Config extends JObject
 {
-
 	/**
-	 * Description for '_db'
+	 * JDatabase
 	 * 
 	 * @var object
 	 */
 	var $_db = NULL;
 
 	/**
-	 * Short description for 'set'
+	 * Constructor
+	 * Loads points configuration
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function set( $property, $value=NULL )
-	{
-		$this->$property = $value;
-	}
-
-	/**
-	 * Short description for 'get'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $default Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
-	 */
-	public function get( $property, $default=NULL )
-	{
-		if (isset($this->$property)) {
-			return $this->$property;
-		}
-		return $default;
-	}
-
-	/**
-	 * Short description for '__construct'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
-	 * @return     void
-	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
 		$this->_db = $db;
 
-		$this->_db->setQuery( "SELECT * FROM #__users_points_config" );
+		$this->_db->setQuery("SELECT * FROM #__users_points_config");
 		$pc = $this->_db->loadObjectList();
 		foreach ($pc as $p)
 		{
-			$this->set($p->alias,$p->points);
+			$this->set($p->alias, $p->points);
 		}
 	}
 }

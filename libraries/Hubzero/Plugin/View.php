@@ -28,17 +28,10 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Base class for a Joomla View
- *
- * Class holding methods for displaying presentation data.
- *
- * @abstract                 
- * @package		Joomla.Framework
- * @subpackage	Application   
- * @since		1.5               
+ * Base class for a plugin View
  */
 class Hubzero_Plugin_View extends JObject
 {
@@ -98,7 +91,7 @@ class Hubzero_Plugin_View extends JObject
 	*/
 	var $_path = array(
 		'template' => array(),
-		'helper' => array()
+		'helper'   => array()
 	);
 
 	/**
@@ -118,95 +111,107 @@ class Hubzero_Plugin_View extends JObject
 	var $_output = null;
 
 	/**
-     * Callback for escaping.
-     *
-     * @var    string 
-     * @access private
-     */
-    var $_escape = 'htmlspecialchars';
+	 * Callback for escaping.
+	 *
+	 * @var	string 
+	 * @access private
+	 */
+	var $_escape = 'htmlspecialchars';
 
 	 /**
-     * Charset to use in escaping mechanisms; defaults to urf8 (UTF-8)
-     *
-     * @var    string 
-     * @access private
-     */
-    var $_charset = 'UTF-8';
+	 * Charset to use in escaping mechanisms; defaults to urf8 (UTF-8)
+	 *
+	 * @var	string 
+	 * @access private
+	 */
+	var $_charset = 'UTF-8';
 
 	/**
 	 * Constructor
 	 *
-	 * @access	protected
+	 * @return   void
 	 */
-	function __construct($config = array())
+	public function __construct($config = array())
 	{
 		//set the view name
-		if (empty( $this->_folder ))
+		if (empty($this->_folder))
 		{
-			if (array_key_exists('folder', $config))  {
+			if (array_key_exists('folder', $config))
+			{
 				$this->_folder = $config['folder'];
-			} else {
+			} 
+			else 
+			{
 				$this->_folder = $this->getFolder();
 			}
 		}
 
 		//set the view name
-		if (empty( $this->_element ))
+		if (empty($this->_element))
 		{
-			if (array_key_exists('element', $config))  {
+			if (array_key_exists('element', $config))
+			{
 				$this->_element = $config['element'];
-			} else {
+			} 
+			else 
+			{
 				$this->_element = $this->getElement();
 			}
 		}
 
 		//set the view name
-		if (empty( $this->_name ))
+		if (empty($this->_name))
 		{
-			if (array_key_exists('name', $config))  {
+			if (array_key_exists('name', $config))
+			{
 				$this->_name = $config['name'];
-			} else {
+			} 
+			else 
+			{
 				$this->_name = $this->getName();
 			}
 		}
 
 		 // set the charset (used by the variable escaping functions)
-        if (array_key_exists('charset', $config)) {
-            $this->_charset = $config['charset'];
-        }
+		if (array_key_exists('charset', $config)) 
+		{
+			$this->_charset = $config['charset'];
+		}
 
 		 // user-defined escaping callback
-        if (array_key_exists('escape', $config)) {
-            $this->setEscape($config['escape']);
-        }
+		if (array_key_exists('escape', $config)) 
+		{
+			$this->setEscape($config['escape']);
+		}
 
 		// Set a base path for use by the view
-		if (array_key_exists('base_path', $config)) {
+		if (array_key_exists('base_path', $config)) 
+		{
 			$this->_basePath = $config['base_path'];
-		} else {
-			$this->_basePath = JPATH_PLUGINS.DS.$this->_folder.DS.$this->_element;
+		} 
+		else 
+		{
+			$this->_basePath = JPATH_PLUGINS . DS . $this->_folder . DS . $this->_element;
 		}
 
 		// set the default template search path
-		if (array_key_exists('template_path', $config)) {
+		if (array_key_exists('template_path', $config)) 
+		{
 			// user-defined dirs
 			$this->_setPath('template', $config['template_path']);
-		} else {
-			$this->_setPath('template', $this->_basePath.DS.'views'.DS.$this->getName().DS.'tmpl');
+		} 
+		else 
+		{
+			$this->_setPath('template', $this->_basePath . DS . 'views' . DS . $this->getName() . DS . 'tmpl');
 		}
 
-		// set the default helper search path
-		/*if (array_key_exists('helper_path', $config)) {
-			// user-defined dirs
-			$this->_setPath('helper', $config['helper_path']);
-		} else {
-			$this->_setPath('helper', $this->_basePath.DS.'helpers');
-		}*/
-
 		// set the layout
-		if (array_key_exists('layout', $config)) {
+		if (array_key_exists('layout', $config)) 
+		{
 			$this->setLayout($config['layout']);
-		} else {
+		} 
+		else 
+		{
 			$this->setLayout('default');
 		}
 
@@ -216,16 +221,16 @@ class Hubzero_Plugin_View extends JObject
 	/**
 	* Execute and display a template script.
 	*
-	* @param string $tpl The name of the template file to parse;
-	* automatically searches through the template paths.
-	*
-	* @throws object An JError object.
-	* @see fetch()
+	* @param   string $tpl The name of the template file to parse; automatically searches through the template paths.
+	* @throws  object An JError object.
+	* @see     fetch()
+	* @return  void
 	*/
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
 		$result = $this->loadTemplate($tpl);
-		if (JError::isError($result)) {
+		if (JError::isError($result)) 
+		{
 			return $result;
 		}
 
@@ -265,10 +270,9 @@ class Hubzero_Plugin_View extends JObject
 	*
 	* </code>
 	*
-	* @access public
 	* @return bool True on success, false on failure.
 	*/
-	function assign()
+	public function assign()
 	{
 		// get the arguments; there may be 1 or 2.
 		$arg0 = @func_get_arg(0);
@@ -280,7 +284,8 @@ class Hubzero_Plugin_View extends JObject
 			// assign public properties
 			foreach (get_object_vars($arg0) as $key => $val)
 			{
-				if (substr($key, 0, 1) != '_') {
+				if (substr($key, 0, 1) != '_') 
+				{
 					$this->$key = $val;
 				}
 			}
@@ -292,7 +297,8 @@ class Hubzero_Plugin_View extends JObject
 		{
 			foreach ($arg0 as $key => $val)
 			{
-				if (substr($key, 0, 1) != '_') {
+				if (substr($key, 0, 1) != '_') 
+				{
 					$this->$key = $val;
 				}
 			}
@@ -330,15 +336,12 @@ class Hubzero_Plugin_View extends JObject
 	* $view->ref =& $var1;
 	* </code>
 	*
-	* @access public
 	*
 	* @param string $key The name for the reference in the view.
 	* @param mixed &$val The referenced variable.
-	*
 	* @return bool True on success, false on failure.
 	*/
-
-	function assignRef($key, &$val)
+	public function assignRef($key, &$val)
 	{
 		if (is_string($key) && substr($key, 0, 1) != '_')
 		{
@@ -350,86 +353,44 @@ class Hubzero_Plugin_View extends JObject
 	}
 
 	/**
-     * Escapes a value for output in a view script.
-     *
-     * If escaping mechanism is one of htmlspecialchars or htmlentities, uses
-     * {@link $_encoding} setting.
-     *
-     * @param  mixed $var The output to escape.
-     * @return mixed The escaped value.
-     */
-    function escape($var)
-    {
-        if (in_array($this->_escape, array('htmlspecialchars', 'htmlentities'))) {
-            return call_user_func($this->_escape, $var, ENT_COMPAT, $this->_charset);
-        }
+	 * Escapes a value for output in a view script.
+	 *
+	 * If escaping mechanism is one of htmlspecialchars or htmlentities, uses
+	 * {@link $_encoding} setting.
+	 *
+	 * @param  mixed $var The output to escape.
+	 * @return mixed The escaped value.
+	 */
+	public function escape($var)
+	{
+		if (in_array($this->_escape, array('htmlspecialchars', 'htmlentities'))) 
+		{
+			return call_user_func($this->_escape, $var, ENT_COMPAT, $this->_charset);
+		}
 
-        return call_user_func($this->_escape, $var);
-    }
+		return call_user_func($this->_escape, $var);
+	}
 
 	/**
 	 * Method to get data from a registered model or a property of the view
 	 *
-	 * @access	public
 	 * @param	string	The name of the method to call on the model, or the property to get
 	 * @param	string	The name of the model to reference, or the default value [optional]
 	 * @return mixed	The return value of the method
 	 */
-	function &get( $property, $default = null )
+	public function &get($property, $default = null)
 	{
-
-		// If $model is null we use the default model
-		/*if (is_null($default)) {
-			$model = $this->_defaultModel;
-		} else {
-			$model = strtolower( $default );
-		}
-
-		// First check to make sure the model requested exists
-		if (isset( $this->_models[$model] ))
-		{
-			// Model exists, lets build the method name
-			$method = 'get'.ucfirst($property);
-
-			// Does the method exist?
-			if (method_exists($this->_models[$model], $method))
-			{
-				// The method exists, lets call it and return what we get
-                $result = $this->_models[$model]->$method();
-                return $result;
-			}
-
-		}*/
-
 		// degrade to JObject::get
-		$result = parent::get( $property, $default );
+		$result = parent::get($property, $default);
 		return $result;
-
 	}
-
-	/**
-	 * Method to get the model object
-	 *
-	 * @access	public
-	 * @param	string	$name	The name of the model (optional)
-	 * @return	mixed			JModel object
-	 */
-	/*function &getModel( $name = null )
-	{
-		if ($name === null) {
-			$name = $this->_defaultModel;
-		}
-		return $this->_models[strtolower( $name )];
-	}*/
 
 	/**
 	* Get the layout.
 	*
-	* @access public
 	* @return string The layout name
 	*/
-
-	function getLayout()
+	public function getLayout()
 	{
 		return $this->_layout;
 	}
@@ -440,15 +401,13 @@ class Hubzero_Plugin_View extends JObject
 	 * The model name by default parsed using the classname, or it can be set
 	 * by passing a $config['name'] in the class constructor
 	 *
-	 * @access	public
-	 * @return	string The name of the model
-	 * @since	1.5
+	 * @return    string The name of the model
 	 */
-	function getName()
+	public function getName()
 	{
 		$name = $this->_name;
 
-		if (empty( $name ))
+		if (empty($name))
 		{
 			$r = null;
 			if (!preg_match('/View((view)*(.*(view)?.*))$/i', get_class($this), $r)) {
@@ -460,45 +419,19 @@ class Hubzero_Plugin_View extends JObject
 											"This causes problems when extracting the classname from the name of your objects view. " .
 											"Avoid Object names with the substring 'view'.");
 			}
-			$name = strtolower( $r[3] );
+			$name = strtolower($r[3]);
 		}
 
 		return $name;
 	}
 
 	/**
-	 * Method to add a model to the view.  We support a multiple model single
-	 * view system by which models are referenced by classname.  A caveat to the
-	 * classname referencing is that any classname prepended by JModel will be
-	 * referenced by the name without JModel, eg. JModelCategory is just
-	 * Category.
-	 *
-	 * @access	public
-	 * @param	object	$model		The model to add to the view.
-	 * @param	boolean	$default	Is this the default model?
-	 * @return	object				The added model
-	 */
-	/*function &setModel( &$model, $default = false )
-	{
-		$name = strtolower($model->getName());
-		$this->_models[$name] = &$model;
-
-		if ($default) {
-			$this->_defaultModel = $name;
-		}
-		return $model;
-	}*/
-
-	/**
 	* Sets the layout name to use
 	*
-	* @access	public
-	* @param	string $template The template name.
-	* @return	string Previous value
-	* @since	1.5
+	* @param     string $template The template name.
+	* @return    string Previous value
 	*/
-
-	function setLayout($layout)
+	public function setLayout($layout)
 	{
 		$previous = $this->_layout;
 		$this->_layout = $layout;
@@ -508,61 +441,48 @@ class Hubzero_Plugin_View extends JObject
 	/**
 	 * Allows a different extension for the layout files to be used
 	 *
-	 * @access	public
-	 * @param	string	The extension
-	 * @return	string	Previous value
-	 * @since	1.5
+	 * @param     string $value The extension
+	 * @return    string Previous value
 	 */
-	function setLayoutExt( $value )
+	public function setLayoutExt($value)
 	{
 		$previous = $this->_layoutExt;
-		if ($value = preg_replace( '#[^A-Za-z0-9]#', '', trim( $value ) )) {
+		if ($value = preg_replace('#[^A-Za-z0-9]#', '', trim($value))) 
+		{
 			$this->_layoutExt = $value;
 		}
 		return $previous;
 	}
 
 	 /**
-     * Sets the _escape() callback.
-     *
-     * @param mixed $spec The callback for _escape() to use.
-     */
-    function setEscape($spec)
-    {
-        $this->_escape = $spec;
-    }
+	 * Sets the _escape() callback.
+	 *
+	 * @param    mixed $spec The callback for _escape() to use.
+	 * @return   void
+	 */
+	public function setEscape($spec)
+	{
+		$this->_escape = $spec;
+	}
 
 	/**
 	 * Adds to the stack of view script paths in LIFO order.
 	 *
-	 * @param string|array The directory (-ies) to add.
-	 * @return void
+	 * @param    string|array $path The directory (-ies) to add.
+	 * @return   void
 	 */
-	function addTemplatePath($path)
+	public function addTemplatePath($path)
 	{
 		$this->_addPath('template', $path);
 	}
 
 	/**
-	 * Adds to the stack of helper script paths in LIFO order.
-	 *
-	 * @param string|array The directory (-ies) to add.
-	 * @return void
-	 */
-	/*function addHelperPath($path)
-	{
-		$this->_addPath('helper', $path);
-	}*/
-
-	/**
 	 * Load a template file -- first look in the templates folder for an override
 	 *
-	 * @access	public
-	 * @param string $tpl The name of the template source file ...
-	 * automatically searches the template paths and compiles as needed.
+	 * @param  string $tpl The name of the template source file. Automatically searches the template paths and compiles as needed.
 	 * @return string The output of the the template script.
 	 */
-	function loadTemplate( $tpl = null)
+	public function loadTemplate($tpl = null)
 	{
 		global $mainframe, $option;
 
@@ -570,14 +490,14 @@ class Hubzero_Plugin_View extends JObject
 		$this->_output = null;
 
 		//create the template file name based on the layout
-		$file = isset($tpl) ? $this->_layout.'_'.$tpl : $this->_layout;
+		$file = isset($tpl) ? $this->_layout . '_' . $tpl : $this->_layout;
 		// clean the file name
 		$file = preg_replace('/[^A-Z0-9_\.-]/i', '', $file);
 		$tpl  = preg_replace('/[^A-Z0-9_\.-]/i', '', $tpl);
 
 		// load the template script
 		jimport('joomla.filesystem.path');
-		$filetofind	= $this->_createFileName('template', array('name' => $file));
+		$filetofind = $this->_createFileName('template', array('name' => $file));
 		$this->_template = JPath::find($this->_path['template'], $filetofind);
 
 		if ($this->_template != false)
@@ -587,7 +507,8 @@ class Hubzero_Plugin_View extends JObject
 			unset($file);
 
 			// never allow a 'this' property
-			if (isset($this->this)) {
+			if (isset($this->this)) 
+			{
 				unset($this->this);
 			}
 
@@ -604,44 +525,19 @@ class Hubzero_Plugin_View extends JObject
 
 			return $this->_output;
 		}
-		else {
-			return JError::raiseError( 500, 'Layout "' . $file . '" not found' );
+		else 
+		{
+			return JError::raiseError(500, 'Layout "' . $file . '" not found');
 		}
 	}
 
 	/**
-	 * Load a helper file
-	 *
-	 * @access	public
-	 * @param string $tpl The name of the helper source file ...
-	 * automatically searches the helper paths and compiles as needed.
-	 * @return boolean Returns true if the file was loaded
-	 */
-	/*function loadHelper( $hlp = null)
-	{
-		// clean the file name
-		$file = preg_replace('/[^A-Z0-9_\.-]/i', '', $hlp);
-
-		// load the template script
-		jimport('joomla.filesystem.path');
-		$helper = JPath::find($this->_path['helper'], $this->_createFileName('helper', array('name' => $file)));
-
-		if ($helper != false)
-		{
-			// include the requested template filename in the local scope
-			include_once $helper;
-		}
-	}*/
-
-	/**
 	* Sets an entire array of search paths for templates or resources.
 	*
-	* @access protected
 	* @param string $type The type of path to set, typically 'template'.
-	* @param string|array $path The new set of search paths.  If null or
-	* false, resets to the current directory only.
+	* @param string|array $path The new set of search paths.  If null or false, resets to the current directory only.
 	*/
-	function _setPath($type, $path)
+	protected function _setPath($type, $path)
 	{
 		global $mainframe;
 
@@ -656,12 +552,12 @@ class Hubzero_Plugin_View extends JObject
 		{
 			case 'template':
 			{
-				$option = 'plg_'.$this->_folder.'_'.$this->_element;
+				$option = 'plg_' . $this->_folder . '_' . $this->_element;
 				// set the alternative template search dir
 				if (isset($mainframe))
 				{
 					$option = preg_replace('/[^A-Z0-9_\.-]/i', '', $option);
-					$fallback = JPATH_BASE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.$option.DS.$this->getName();
+					$fallback = JPATH_BASE . DS . 'templates' . DS . $mainframe->getTemplate() . DS . 'html' . DS . $option . DS . $this->getName();
 					$this->_addPath('template', $fallback);
 				}
 			}	break;
@@ -671,10 +567,9 @@ class Hubzero_Plugin_View extends JObject
 	/**
 	* Adds to the search path for templates and resources.
 	*
-	* @access protected
 	* @param string|array $path The directory or stream to search.
 	*/
-	function _addPath($type, $path)
+	protected function _addPath($type, $path)
 	{
 		// just force to array
 		settype($path, 'array');
@@ -686,7 +581,8 @@ class Hubzero_Plugin_View extends JObject
 			$dir = trim($dir);
 
 			// add trailing separators as needed
-			if (substr($dir, -1) != DIRECTORY_SEPARATOR) {
+			if (substr($dir, -1) != DIRECTORY_SEPARATOR) 
+			{
 				// directory
 				$dir .= DIRECTORY_SEPARATOR;
 			}
@@ -699,25 +595,23 @@ class Hubzero_Plugin_View extends JObject
 	/**
 	 * Create the filename for a resource
 	 *
-	 * @access private
-	 * @param string 	$type  The resource type to create the filename for
-	 * @param array 	$parts An associative array of filename information
-	 * @return string The filename
-	 * @since 1.5
+	 * @param     string $type  The resource type to create the filename for
+	 * @param     array  $parts An associative array of filename information
+	 * @return    string The filename
 	 */
-	function _createFileName($type, $parts = array())
+	private function _createFileName($type, $parts = array())
 	{
 		$filename = '';
 
 		switch($type)
 		{
-			case 'template' :
-				$filename = strtolower($parts['name']).'.'.$this->_layoutExt;
-				break;
+			case 'template':
+				$filename = strtolower($parts['name']) . '.' . $this->_layoutExt;
+			break;
 
-			default :
-				$filename = strtolower($parts['name']).'.php';
-				break;
+			default:
+				$filename = strtolower($parts['name']) . '.php';
+			break;
 		}
 		return $filename;
 	}

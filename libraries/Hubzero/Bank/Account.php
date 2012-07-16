@@ -29,77 +29,69 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Hubzero_Bank_Account'
- * 
- * Long description (if any) ...
+ * Table class for bank accounts
  */
 class Hubzero_Bank_Account extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id       = NULL;  // @var int(11) Primary key
+	var $id       = NULL;
 
 	/**
-	 * Description for 'uid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $uid      = NULL;  // @var int(11)
+	var $uid      = NULL;
 
 	/**
-	 * Description for 'balance'
+	 * decimal(11,2)
 	 * 
-	 * @var unknown
+	 * @var number
 	 */
-	var $balance  = NULL;  // @var decimal(11,2)
+	var $balance  = NULL;
 
 	/**
-	 * Description for 'earnings'
+	 * decimal(11,2)
 	 * 
-	 * @var unknown
+	 * @var number
 	 */
-	var $earnings = NULL;  // @var decimal(11,2)
+	var $earnings = NULL;
 
 	/**
-	 * Description for 'credit'
+	 * decimal(11,2)
 	 * 
-	 * @var unknown
+	 * @var number
 	 */
-	var $credit   = NULL;  // @var decimal(11,2)
-
-	//-----------
+	var $credit   = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__users_points', 'id', $db );
+		parent::__construct('#__users_points', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->uid ) == '') {
-			$this->setError( JText::_('Entry must have a user ID.') );
+		if (trim($this->uid) == '') 
+		{
+			$this->setError(JText::_('Entry must have a user ID.'));
 			return false;
 		}
 
@@ -107,23 +99,25 @@ class Hubzero_Bank_Account extends JTable
 	}
 
 	/**
-	 * Short description for 'load_uid'
+	 * Load a record based on user ID and bind results to $this
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $oid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $oid User ID
+	 * @return     boolean True on success
 	 */
-	public function load_uid( $oid=NULL )
+	public function load_uid($oid=NULL)
 	{
-		if ($oid === NULL) {
+		if ($oid === NULL) 
+		{
 			return false;
 		}
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE uid='$oid'" );
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE uid='$oid'");
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}

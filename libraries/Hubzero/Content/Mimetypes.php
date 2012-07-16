@@ -1,49 +1,45 @@
 <?php
 /**
- * @package		HUBzero                                  CMS
- * @author		Shawn                                     Rice <zooley@purdue.edu> based on work by Robert Widdick
- * @copyright	Copyright                               2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
+ * @package		HUBzero CMS
+ * @author		Shawn Rice <zooley@purdue.edu> based on work by Robert Widdick
+ * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
- *                                                    
- *                                                    Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- *                                                    All rights reserved.
- *                                                    
- *                                                    This program is free software; you can redistribute it and/or
- *                                                    modify it under the terms of the GNU General Public License,
- *                                                    version 2 as published by the Free Software Foundation.
- *                                                    
- *                                                    This program is distributed in the hope that it will be useful,
- *                                                    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *                                                    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *                                                    GNU General Public License for more details.
- *                                                    
- *                                                    You should have received a copy of the GNU General Public License
- *                                                    along with this program; if not, write to the Free Software
- *                                                    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * 
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Hubzero_Content_Mimetypes'
- * 
- * Long description (if any) ...
+ * Hubzero class for determining the mimetype of a file
  */
 class Hubzero_Content_Mimetypes
 {
-	# Define some private variables
-
-
 	/**
-	 * Description for 'mimeTypes'
+	 * Define some private variables
 	 * 
 	 * @var array
 	 */
 	private $mimeTypes;
 
 	/**
-	* @desc   Initiate variables and include mime types
+	* Initiate variables and include mime types
+	* 
 	* @return Nothing
 	*/
 	public function __construct()
@@ -759,72 +755,91 @@ class Hubzero_Content_Mimetypes
 		'ppsx'		=> 'application/vnd.openxmlformats-officedocument.presentationml.slideshow',
 		'potx'		=> 'application/vnd.openxmlformats-officedocument.presentationml.template',
 		'xltx' 		=> 'application/vnd.openxmlformats-officedocument.spreadsheetml.template',
-
 		'dmg'		=> 'application/x-apple-diskimage'
 		);
 	}
 
 	/**
-	* @desc    Free up some memory
-	* @param   None
-	* @returns Nothing
-	*/
+	 * Free up some memory
+	 * 
+	 * @return void
+	 */
 	public function __destruct()
 	{
 		unset($this);
 	}
 
 	/**
-	* @desc   Retrieve the corresponding MIME type, if one exists
-	* @param  String $file File Name (relative location such as "image_test.jpg" or full "http://site.com/path/to/image_test.jpg")
-	* @return String $MIMEType - The type of the file passed in the argument
-	*/
+	 * Retrieve the corresponding MIME type, if one exists
+	 * 
+	 * @param  String $file File Name (relative location such as "image_test.jpg" or full "http://site.com/path/to/image_test.jpg")
+	 * @return String $MIMEType - The type of the file passed in the argument
+	 */
 	public function getMimeType($file = NULL)
 	{
-		if (is_file($file)) {
-			$extension = $this->getExtension($file);
+		if (is_file($file)) 
+		{
+			$extension = $this->_getExtension($file);
 			/**
 			* Attempts to retrieve file info from FINFO
 			* If FINFO functions are not available then try to retrieve MIME type from pre-defined MIMEs
 			* If MIME type doesn't exist, then try (as a last resort) to use the (deprecated) mime_content_type function
 			* If all else fails, just return application/octet-stream
 			*/
-			if (!function_exists("finfo_open") || in_array($extension, array('docx', 'pptx', 'xlsx'))) {
-				if (array_key_exists($extension, $this->mimeTypes)) {
+			if (!function_exists('finfo_open') || in_array($extension, array('docx', 'pptx', 'xlsx'))) 
+			{
+				if (array_key_exists($extension, $this->mimeTypes)) 
+				{
 					return $this->mimeTypes[$extension];
-				} else {
-					if (function_exists("mime_content_type")) {
+				} 
+				else 
+				{
+					if (function_exists('mime_content_type')) 
+					{
 						$type = mime_content_type($file);
-						return !empty($type) ? $type : "application/octet-stream";
-					} else {
-						return "application/octet-stream";
+						return !empty($type) ? $type : 'application/octet-stream';
+					} 
+					else 
+					{
+						return 'application/octet-stream';
 					}
 				}
-			} else {
+			} 
+			else 
+			{
 				$finfo = finfo_open(FILEINFO_MIME);
 				$MIMEType = finfo_file($finfo, $file);
 				finfo_close($finfo);
 				return $MIMEType;
 			}
-		} else {
-			$extension = $this->getExtension($file);
-			if (array_key_exists($extension, $this->mimeTypes)) {
+		} 
+		else 
+		{
+			$extension = $this->_getExtension($file);
+			if (array_key_exists($extension, $this->mimeTypes)) 
+			{
 				return $this->mimeTypes[$extension];
 			}
 		}
-		return "##INVALID_FILE##";
+		return '##INVALID_FILE##';
 	}
 
 	/**
-	* @desc   Gets the file extension from a string
-	* @param  String $file The full file name
-	* @return String $ext The file extension
-	*/
-	private function getExtension($file = NULL)
+	 * Gets the file extension from a string
+	 *
+	 * @param  String $file The full file name
+	 * @return String $ext The file extension
+	 */
+	private function _getExtension($file = NULL)
 	{
-		if (!is_null($file)) {
+		if (!is_null($file)) 
+		{
 			$ext = strtolower(array_pop(explode('.', $file)));
 			return $ext;
-		} else return "##INVALID_FILE##";
+		} 
+		else 
+		{
+			return '##INVALID_FILE##';
+		}
 	}
 }

@@ -29,318 +29,329 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Hubzero_Bank_Transaction'
- * 
- * Long description (if any) ...
+ * Table class for bak transactions
  */
 class Hubzero_Bank_Transaction extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id          = NULL;  // @var int(11) Primary key
+	var $id          = NULL;
 
 	/**
-	 * Description for 'uid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $uid         = NULL;  // @var int(11)
+	var $uid         = NULL;
 
 	/**
-	 * Description for 'type'
+	 * varchar(20)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $type        = NULL;  // @var varchar(20)
+	var $type        = NULL;
 
 	/**
-	 * Description for 'category'
+	 * varchar(50)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $category    = NULL;  // @var varchar(50)
+	var $category    = NULL;
 
 	/**
-	 * Description for 'referenceid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $referenceid = NULL;  // @var int(11)
+	var $referenceid = NULL;
 
 	/**
-	 * Description for 'amount'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $amount      = NULL;  // @var int(11)
+	var $amount      = NULL;
 
 	/**
-	 * Description for 'description'
+	 * varchar(250)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $description = NULL;  // @var varchar(250)
+	var $description = NULL;
 
 	/**
-	 * Description for 'created'
+	 * datetime
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $created     = NULL;  // @var datetime
+	var $created     = NULL;
 
 	/**
-	 * Description for 'balance'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $balance     = NULL;  // @var int(11)
-
-	//-----------
+	var $balance     = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__users_transactions', 'id', $db );
+		parent::__construct('#__users_transactions', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->uid ) == '') {
-			$this->_error = 'Entry must have a user ID.';
+		if (trim($this->uid) == '') 
+		{
+			$this->setError('Entry must have a user ID.');
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'history'
+	 * Get a history of transactions for a user
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      mixed $limit Parameter description (if any) ...
-	 * @param      string $uid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $limit Number of records to return
+	 * @param      integer $uid   User ID
+	 * @return     mixed False if errors, array on success
 	 */
-	public function history( $limit=50, $uid=null )
+	public function history($limit=50, $uid=null)
 	{
-		if ($uid == null) {
+		if ($uid == null) 
+		{
 			$uid = $this->uid;
 		}
-		if ($uid == null) {
+		if ($uid == null) 
+		{
 			return false;
 		}
+
 		$lmt = "";
-		if ($limit > 0) {
-			$lmt .= " LIMIT ".$limit;
+		if ($limit > 0) 
+		{
+			$lmt .= " LIMIT " . $limit;
 		}
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE uid=".$uid." ORDER BY created DESC, id DESC".$lmt );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE uid=" . $uid . " ORDER BY created DESC, id DESC" . $lmt);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'deleteRecords'
+	 * Delete records for a given category, type, and reference combination
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $category Parameter description (if any) ...
-	 * @param      string $type Parameter description (if any) ...
-	 * @param      string $referenceid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string  $category    Transaction category (royalties, etc)
+	 * @param      string  $type        Transaction type (deposit, withdraw, etc)
+	 * @param      integer $referenceid Reference ID (resource ID, etc)
+	 * @return     boolean False if errors, True on success
 	 */
-	public function deleteRecords( $category=null, $type=null, $referenceid=null )
+	public function deleteRecords($category=null, $type=null, $referenceid=null)
 	{
-		if ($referenceid == null) {
+		if ($referenceid == null) 
+		{
 			$referenceid = $this->referenceid;
 		}
-		if ($referenceid == null) {
+		if ($referenceid == null) 
+		{
 			return false;
 		}
-		if ($type == null) {
+		if ($type == null) 
+		{
 			$type = $this->type;
 		}
-		if ($category == null) {
+		if ($category == null) 
+		{
 			$category = $this->category;
 		}
 
-		$query = "DELETE FROM $this->_tbl WHERE category='".$category."' AND type='".$type."' AND referenceid=".$referenceid;
+		$query = "DELETE FROM $this->_tbl WHERE category='" . $category . "' AND type='" . $type . "' AND referenceid=" . $referenceid;
 
-		$this->_db->setQuery( $query );
-		if (!$this->_db->query()) {
-			$err = $this->_db->getErrorMsg();
-			die( $err );
+		$this->_db->setQuery($query);
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
 		}
+		return true;
 	}
 
 	/**
-	 * Short description for 'getTransactions'
+	 * Get a list of transactions of a certain type for a reference item and, optionally, user
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $category Parameter description (if any) ...
-	 * @param      string $type Parameter description (if any) ...
-	 * @param      string $referenceid Parameter description (if any) ...
-	 * @param      string $uid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      string  $category    Transaction category (royalties, etc)
+	 * @param      string  $type        Transaction type (deposit, withdraw, etc)
+	 * @param      integer $referenceid Reference ID (resource ID, etc)
+	 * @param      integer $uid   User ID
+	 * @return     mixed False if errors, array on success
 	 */
-	public function getTransactions( $category=null, $type=null, $referenceid=null, $uid=null )
+	public function getTransactions($category=null, $type=null, $referenceid=null, $uid=null)
 	{
-		if ($referenceid == null) {
+		if ($referenceid == null) 
+		{
 			$referenceid = $this->referenceid;
 		}
-		if ($referenceid == null) {
+		if ($referenceid == null) 
+		{
 			return false;
 		}
-		if ($type == null) {
+		if ($type == null) 
+		{
 			$type = $this->type;
 		}
-		if ($category == null) {
+		if ($category == null) 
+		{
 			$category = $this->category;
 		}
-		$query = "SELECT amount, SUM(amount) as sum, count(*) as total FROM $this->_tbl WHERE category='".$category."' AND type='".$type."' AND referenceid=".$referenceid;
-		if ($uid) {
-			$query .= " AND uid=".$uid;
+		$query = "SELECT amount, SUM(amount) as sum, count(*) as total FROM $this->_tbl WHERE category='" . $category . "' AND type='" . $type . "' AND referenceid=" . $referenceid;
+		if ($uid) 
+		{
+			$query .= " AND uid=" . $uid;
 		}
 		$query .= " GROUP BY referenceid";
-		$this->_db->setQuery( $query );
-		return $this->_db->loadObjectList();
 
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'getAmount'
+	 * Get get the transaction amount for a category, type, reference item and, optionally, user
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $category Parameter description (if any) ...
-	 * @param      string $type Parameter description (if any) ...
-	 * @param      string $referenceid Parameter description (if any) ...
-	 * @param      string $uid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      string  $category    Transaction category (royalties, etc)
+	 * @param      string  $type        Transaction type (deposit, withdraw, etc)
+	 * @param      integer $referenceid Reference ID (resource ID, etc)
+	 * @param      integer $uid         User ID
+	 * @return     mixed False if errors, integer on success
 	 */
-	public function getAmount( $category=null, $type=null, $referenceid=null, $uid=null )
+	public function getAmount($category=null, $type=null, $referenceid=null, $uid=null)
 	{
-		if ($referenceid == null) {
+		if ($referenceid == null) 
+		{
 			$referenceid = $this->referenceid;
 		}
-		if ($referenceid == null) {
+		if ($referenceid == null) 
+		{
 			return false;
 		}
-		if ($type == null) {
+		if ($type == null) 
+		{
 			$type = $this->type;
 		}
-		if ($category == null) {
+		if ($category == null) 
+		{
 			$category = $this->category;
 		}
 
-		$query = "SELECT amount FROM $this->_tbl WHERE category='".$category."' AND type='".$type."' AND referenceid=".$referenceid;
-		if ($uid) {
-			$query .= " AND uid=".$uid;
+		$query = "SELECT amount FROM $this->_tbl WHERE category='" . $category . "' AND type='" . $type . "' AND referenceid=" . $referenceid;
+		if ($uid) 
+		{
+			$query .= " AND uid=" . $uid;
 		}
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getTotals'
+	 * Get a point total/average for a combination of category, type, user, etc.
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $category Parameter description (if any) ...
-	 * @param      string $type Parameter description (if any) ...
-	 * @param      string $referenceid Parameter description (if any) ...
-	 * @param      integer $royalty Parameter description (if any) ...
-	 * @param      string $action Parameter description (if any) ...
-	 * @param      unknown $uid Parameter description (if any) ...
-	 * @param      integer $allusers Parameter description (if any) ...
-	 * @param      string $when Parameter description (if any) ...
-	 * @param      integer $calc Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param      string  $category    Transaction category (royalties, etc)
+	 * @param      string  $type        Transaction type (deposit, withdraw, etc)
+	 * @param      integer $referenceid Reference ID (resource ID, etc)
+	 * @param      integer $royalty     If getting royalties
+	 * @param      string  $action      Action to filter by (asked, answered, misc)
+	 * @param      integer $uid         User ID
+	 * @param      integer $allusers    Get total for all users?
+	 * @param      string  $when        Datetime filter
+	 * @param      integer $calc        How total is calculated (record sum, avg, record count)
+	 * @return     integer
 	 */
-	public function getTotals( $category=null, $type=null, $referenceid=null, $royalty=0, $action=null, $uid=null, $allusers = 0, $when=null, $calc=0 )
+	public function getTotals($category=null, $type=null, $referenceid=null, $royalty=0, $action=null, $uid=null, $allusers = 0, $when=null, $calc=0)
 	{
-		if ($referenceid == null) {
+		if ($referenceid == null) 
+		{
 			$referenceid = $this->referenceid;
 		}
-		if ($type == null) {
+		if ($type == null) 
+		{
 			$type = $this->type;
 		}
-		if ($category == null) {
+		if ($category == null) 
+		{
 			$category = $this->category;
 		}
 
-		if ($uid == null) {
+		if ($uid == null) 
+		{
 			$juser =& JFactory::getUser();
 			$uid = $juser->get('id');
 		}
 
 		$query = "SELECT ";
-		if ($calc==0) {
+		if ($calc == 0) 
+		{
 			$query .= " SUM(amount)";
-		} else if ($calc==1) {
+		} 
+		else if ($calc == 1) 
+		{
 			// average
 			$query .= " AVG(amount)";
-		} else if ($calc==2) {
+		} 
+		else if ($calc == 2) 
+		{
 			// num of transactions
 			$query .= " COUNT(*)";
 		}
-		$query .= " FROM $this->_tbl WHERE type='".$type."' ";
-		if ($category) {
-			$query .= " AND category='".$category."' ";
+		$query .= " FROM $this->_tbl WHERE type='" . $type . "' ";
+		if ($category) 
+		{
+			$query .= " AND category='" . $category . "' ";
 		}
-		if ($referenceid) {
-			$query .= "AND referenceid=".$referenceid;
+		if ($referenceid) 
+		{
+			$query .= " AND referenceid=" . $referenceid;
 		}
-		if ($royalty) {
+		if ($royalty) 
+		{
 			$query .= " AND description like 'Royalty payment%' ";
 		}
-		if ($action=='asked') {
+		if ($action == 'asked') 
+		{
 			$query .= " AND description like '%posting question%' ";
-		} else if ($action=='answered') {
+		} 
+		else if ($action == 'answered') 
+		{
 			$query .= " AND (description like '%answering question%' OR description like 'Answer for question%' OR description like 'Answered question%') ";
-		} else if ($action=='misc') {
+		} 
+		else if ($action == 'misc') 
+		{
 			$query .= " AND (description NOT LIKE '%posting question%' AND description NOT LIKE '%answering question%' 
-			AND description NOT LIKE 'Answer for question%' AND description NOT LIKE 'Answered question%') ";
+							AND description NOT LIKE 'Answer for question%' AND description NOT LIKE 'Answered question%') ";
 		}
-		if (!$allusers) {
+		if (!$allusers) 
+		{
 			$query .= " AND uid=$uid ";
 		}
-		if ($when) {
-			$query .= " AND created LIKE '".$when."%' ";
+		if ($when) 
+		{
+			$query .= " AND created LIKE '" . $when . "%' ";
 		}
 
-		$this->_db->setQuery( $query );
-		/*$results = $this->_db->loadObjectList();
-		
-		$total = 0;
-		if($results) {
-			foreach($results as $result) {
-			 $total = $total + $result->amount;
-			}
-		}
-		*/
-		//return $total;
-		$total =  $this->_db->loadResult();
+		$this->_db->setQuery($query);
+		$total = $this->_db->loadResult();
 		return $total ? $total : 0;
 	}
 }

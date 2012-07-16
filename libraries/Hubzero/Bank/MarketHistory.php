@@ -29,131 +29,130 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-//----------------------------------------------------------
-// Market History class:
-// Logs batch transactions, royalty distributions and other big transactions
-//----------------------------------------------------------
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Hubzero_Bank_MarketHistory'
- * 
- * Long description (if any) ...
+ * Market History class:
+ * Logs batch transactions, royalty distributions and other big transactions
  */
 class Hubzero_Bank_MarketHistory extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id          	= NULL;  // @var int(11) Primary key
+	var $id          	= NULL;
 
 	/**
-	 * Description for 'itemid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $itemid      	= NULL;  // @var int(11)
+	var $itemid      	= NULL;
 
 	/**
-	 * Description for 'category'
+	 * varchar(50)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $category    	= NULL;  // @var varchar(50)
+	var $category    	= NULL;
 
 	/**
-	 * Description for 'market_value'
+	 * decimal(11,2)
 	 * 
-	 * @var unknown
+	 * @var number
 	 */
-	var $market_value	= NULL;  // @var decimal(11,2)
+	var $market_value	= NULL;
 
 	/**
-	 * Description for 'date'
+	 * datetime
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $date      		= NULL;  // @var datetime
+	var $date      		= NULL;
 
 	/**
-	 * Description for 'action'
+	 * varchar(50)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $action	 		= NULL;  // @var varchar(50)
+	var $action	 		= NULL;
 
 	/**
-	 * Description for 'log'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $log    		= NULL;  // @var text
-
-	//-----------
+	var $log    		= NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__market_history', 'id', $db );
+		parent::__construct('#__market_history', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'getRecord'
+	 * Get the ID of a record matching the data passed
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      mixed $itemid Parameter description (if any) ...
-	 * @param      string $action Parameter description (if any) ...
-	 * @param      string $category Parameter description (if any) ...
-	 * @param      string $created Parameter description (if any) ...
-	 * @param      string $log Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      mixed  $itemid   Integer
+	 * @param      string $action   Transaction type
+	 * @param      string $category Transaction category
+	 * @param      string $created  Transaction date
+	 * @param      string $log      Transaction log
+	 * @return     integer
 	 */
 	public function getRecord($itemid=0, $action='', $category='', $created='', $log = '')
 	{
-		if ($itemid === NULL) {
+		if ($itemid === NULL) 
+		{
 			$itemid = $this->itemid;
 		}
-		if ($action === NULL) {
+		if ($action === NULL) 
+		{
 			$action = $this->action;
 		}
-		if ($category === NULL) {
+		if ($category === NULL) 
+		{
 			$category = $this->category;
 		}
 
-		$sql = "SELECT id FROM #__market_history WHERE ";
-		if ($itemid) {
-			$sql.= " itemid='".$itemid."'";
-		} else {
-			$sql.= " 1=1";
+		$sql = "SELECT id FROM $this->_tbl";
+
+		$where = array();
+		if ($itemid) 
+		{
+			$where[] = " itemid='" . $itemid . "'";
 		}
-		if ($action) {
-			$sql.= " AND action='".$action."'";
+		if ($action) 
+		{
+			$where[] = " AND action='" . $action . "'";
 		}
-		if ($category) {
-			$sql.= " AND category='".$category."'";
+		if ($category) 
+		{
+			$where[] = " AND category='" . $category . "'";
 		}
-		if ($created) {
-			$sql.= " AND date LIKE '".$created."%'";
+		if ($created) 
+		{
+			$where[] = "`date` LIKE '" . $created . "%'";
 		}
-		if ($log) {
-			$sql.= " AND log='".$log."'";
+		if ($log) 
+		{
+			$where[] = "log='" . $log . "'";
+		}
+		if (count($where) > 0)
+		{
+			$sql .= " WHERE " . implode(" AND ", $where);
 		}
 
-		$sql.= " LIMIT 1";
+		$sql .= " LIMIT 1";
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
 	}
 }
