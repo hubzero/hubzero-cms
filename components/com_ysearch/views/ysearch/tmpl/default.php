@@ -52,14 +52,14 @@ $show_weight = array_key_exists('show_weight', $_GET);
 					<?php if ($this->plugin): ?>
 						<a href="/ysearch/?terms=<?php echo $this->url_terms; ?>">All Categories (<?php echo $this->results->get_total_count(); ?>)</a>
 					<?php else: ?>
-						All Categories (<?php echo $this->results->get_total_count(); ?>)
+						<strong>All Categories (<?php echo $this->results->get_total_count(); ?>)</strong>
 					<?php endif; ?>
 				</li>
 			<?php foreach ($this->results->get_result_counts() as $cat=>$def): ?>
 				<?php if ($def['count']): ?>
 					<li>
 						<?php if ($this->plugin == $cat && !$this->section): ?>
-							<?php echo $def['friendly_name']; ?> (<?php echo $def['count']; ?>)
+							<strong><?php echo $def['friendly_name']; ?> (<?php echo $def['count']; ?>)</strong>
 						<?php else: ?> 
 							<a href="/ysearch/?terms=<?php echo $cat . ':' . $this->url_terms ?>"><?php echo $def['friendly_name']; ?> (<?php echo $def['count']; ?>)</a>
 						<?php endif; ?>
@@ -74,7 +74,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 								?>
 									<li><a href="/ysearch/?terms=<?php echo $cat . ':' . $section_key . ':' . $this->url_terms ?>"><?php echo $sdef['name']; ?> (<?php echo $sdef['count']; ?>)</a></li>
 								<?php else: ?>
-									<li><?php echo $sdef['name']; ?> (<?php echo $sdef['count']; ?>)</li>
+									<li><strong><?php echo $sdef['name']; ?> (<?php echo $sdef['count']; ?>)</strong></li>
 								<?php endif; ?>
 							<?php endforeach; ?>
 							</ul>
