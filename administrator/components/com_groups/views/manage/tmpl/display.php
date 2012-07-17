@@ -49,6 +49,8 @@ if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList('delete', 'delete');
 }
+
+JHTML::_('behavior.tooltip');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -103,17 +105,12 @@ function submitbutton(pressbutton)
 		 	<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th scope="col"><?php echo JText::_('COM_GROUPS_ID'); ?></th>
-				<!--<th scope="col"><?php echo JText::_('COM_GROUPS_CN'); ?></th>-->
 				<th scope="col"><?php echo JText::_('COM_GROUPS_NAME'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_GROUPS_CN'); ?></th>
 				<th scope="col"><?php echo JText::_('COM_GROUPS_TYPE'); ?></th>
 				<th scope="col"><?php echo JText::_('COM_GROUPS_PUBLISHED'); ?></th>
-				<!--
-				<th scope="col"><?php echo JText::_('COM_GROUPS_APPLICANTS'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_GROUPS_INVITEES'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_GROUPS_MANAGERS'); ?></th>
-				-->
-				<th scope="col"><?php echo JText::_('Members'); ?></th>
-				<th scope="col"><?php echo JText::_('Manage'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_GROUPS_MEMBERS'); ?></th>
+				<th scope="col"><?php echo JText::_('Pages'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -133,11 +130,6 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	//$group->cn = $row->cn;
 	$group->read($row->gidNumber);
 
-	$applicants = count($group->get('applicants'));
-	$invitees   = count($group->get('invitees'));
-	$managers   = count($group->get('managers'));
-	$members    = count($group->get('members'));
-
 	switch ($row->type)
 	{
 		case '0': $type = 'System';  break;
@@ -145,6 +137,15 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		case '2': $type = 'Project'; break;
 		case '3': $type = 'Partner'; break;
 	}
+
+	$members = count($group->get('members'));
+
+	$tip  = '<table><tbody>';
+	$tip .= '<tr><th>' . JText::_('COM_GROUPS_MEMBERS') . '</th><td>' . $members . '</td></tr>';
+	$tip .= '<tr><th>' . JText::_('COM_GROUPS_MANAGERS') . '</th><td>' . count($group->get('managers')) . '</td></tr>';
+	$tip .= '<tr><th>' . JText::_('COM_GROUPS_APPLICANTS') . '</th><td>' . count($group->get('applicants')) . '</td></tr>';
+	$tip .= '<tr><th>' . JText::_('COM_GROUPS_INVITEES') . '</th><td>' . count($group->get('invitees')) . '</td></tr>';
+	$tip .= '</tbody></table>';
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
@@ -153,7 +154,17 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td>
 					<?php echo $this->escape($row->gidNumber); ?>
 				</td>
-				<!--
+				<td>
+<?php if ($canDo->get('core.edit')) { ?>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<? echo $row->cn; ?>">
+						<?php echo $this->escape(stripslashes($row->description)); ?>
+					</a>
+<?php } else { ?>
+					<span>
+						<?php echo $this->escape(stripslashes($row->description)); ?>
+					</span>
+<?php } ?>
+				</td>
 				<td>
 <?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<? echo $row->cn; ?>">
@@ -161,19 +172,6 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					</a>
 <?php } else { ?>
 					<?php echo $this->escape($row->cn); ?>
-<?php } ?>
-				</td>
-				-->
-				<td>
-<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<? echo $row->cn; ?>">
-						<?php echo $this->escape(stripslashes($row->description)); ?>
-					</a>
-					 (<?php echo $this->escape($row->cn); ?>)
-<?php } else { ?>
-					<span>
-						<?php echo $this->escape(stripslashes($row->description)); ?> (<?php echo $this->escape($row->cn); ?>)
-					</span>
 <?php } ?>
 				</td>
 				<td>
@@ -196,42 +194,20 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php } ?>
 <?php } ?>
 				</td>
-				<!--
 				<td>
 <?php if ($canDo->get('core.manage')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;gid=<?php echo $row->cn; ?>">
-						<?php echo $applicants; ?>
+					<a class="glyph member hasTip" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;gid=<?php echo $row->cn; ?>" title="<?php echo JText::_('Manage membership') . '::' . $tip; ?>">
+						<?php echo $members; ?>
 					</a>
 <?php } else { ?>
-					<?php echo $applicants; ?>
+					<span class="glyph member" title="<?php echo JText::_('Manage membership') . '::' . $tip; ?>">
+						<?php echo $members; ?>
+					</span>
 <?php } ?>
-				</td>
-				<td>
-<?php if ($canDo->get('core.manage')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;gid=<?php echo $row->cn; ?>">
-						<?php echo $invitees; ?>
-					</a>
-<?php } else { ?>
-					<?php echo $invitees; ?>
-<?php } ?>
-				</td>
-				<td>
-<?php if ($canDo->get('core.manage')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;gid=<?php echo $row->cn; ?>">
-						<?php echo $managers; ?>
-					</a>
-<?php } else { ?>
-					<?php echo $managers; ?>
-<?php } ?>
-				</td>
-				-->
-				<td>
-					<?php echo $members; ?>
 				</td>
 				<td>
 					<?php if ($canDo->get('core.manage')) { ?>
-						<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;gid=<?php echo $row->cn; ?>">Membership</a> | 
-						<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=pages&amp;gid=<?php echo $row->cn; ?>">Group Pages</a>
+						<a href="index.php?option=<?php echo $this->option ?>&amp;controller=pages&amp;gid=<?php echo $row->cn; ?>">Group Pages</a>
 					<?php } ?>
 				</td>
 			</tr>

@@ -29,131 +29,121 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-//----------------------------------------------------------
-// Extended database class
-//----------------------------------------------------------
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'GroupsReason'
- * 
- * Long description (if any) ...
+ * Table class for group membership reason
  */
 class GroupsReason extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id       = NULL;  // @var int(11) Primary key
+	var $id       = NULL;
 
 	/**
-	 * Description for 'uidNumber'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $uidNumber = NULL;  // @var int(11)
+	var $uidNumber = NULL;
 
 	/**
-	 * Description for 'gidNumber'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $gidNumber      = NULL;  // @var int(11)
+	var $gidNumber = NULL;
 
 	/**
-	 * Description for 'reason'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $reason   = NULL;  // @var text
+	var $reason   = NULL;
 
 	/**
-	 * Description for 'date'
+	 * datetime
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $date     = NULL;  // @var datetime
-
-	//-----------
+	var $date     = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__xgroups_reasons', 'id', $db );
+		parent::__construct('#__xgroups_reasons', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'loadReason'
+	 * Load a record based on group ID and user ID and bind to $this
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $uid Parameter description (if any) ...
-	 * @param      unknown $gid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $uid User ID
+	 * @param      integer $gid Group ID
+	 * @return     boolean True on success
 	 */
-	public function loadReason( $uid, $gid )
+	public function loadReason($uid, $gid)
 	{
-		if ($uid === NULL || $gid === NULL) {
+		if ($uid === NULL || $gid === NULL) 
+		{
 			return false;
 		}
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE uidNumber='$uid' AND gidNumber='$gid' LIMIT 1" );
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE uidNumber='$uid' AND gidNumber='$gid' LIMIT 1");
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
 
 	/**
-	 * Short description for 'deleteReason'
+	 * Delete an entry based on group ID and user ID
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $uid Parameter description (if any) ...
-	 * @param      unknown $gid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $uid User ID
+	 * @param      integer $gid Group ID
+	 * @return     boolean True on success
 	 */
-	public function deleteReason( $uid, $gid )
+	public function deleteReason($uid, $gid)
 	{
-		if ($uid === NULL || $gid === NULL) {
+		if ($uid === NULL || $gid === NULL) 
+		{
 			return false;
 		}
-		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE uidNumber='$uid' AND gidNumber='$gid'" );
-		if (!$this->_db->query()) {
-			$err = $this->_db->getErrorMsg();
-			die( $err );
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE uidNumber='$uid' AND gidNumber='$gid'");
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->gidNumber ) == '') {
-			$this->setError( JText::_('GROUPS_REASON_MUST_HAVE_GROUPID') );
+		if (trim($this->gidNumber) == '') 
+		{
+			$this->setError(JText::_('GROUPS_REASON_MUST_HAVE_GROUPID'));
 			return false;
 		}
 
-		if (trim( $this->uidNumber ) == '') {
-			$this->setError( JText::_('GROUPS_REASON_MUST_HAVE_USERNAME') );
+		if (trim($this->uidNumber) == '') 
+		{
+			$this->setError(JText::_('GROUPS_REASON_MUST_HAVE_USERNAME'));
 			return false;
 		}
 

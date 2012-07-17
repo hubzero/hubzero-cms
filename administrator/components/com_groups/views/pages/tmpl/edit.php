@@ -30,56 +30,63 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$text = ($this->task == 'editpage' ? JText::_('Edit Page') : JText::_('New Page'));
+$canDo = GroupsHelper::getActions('group');
+
+$text = ($this->task == 'edit' ? JText::_('Edit Page') : JText::_('New Page'));
 
 JToolBarHelper::title(JText::_('COM_GROUPS').': <small><small>[ ' . $text . ' ]</small></small>', 'groups.png');
-JToolBarHelper::save('savepage');
-JToolBarHelper::cancel('cancelpage');
+if ($canDo->get('core.edit')) 
+{
+	JToolBarHelper::save();
+}
+JToolBarHelper::cancel();
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-100">
 		<fieldset class="adminform">
-			<legend>Group Page</legend>
+			<legend><span><?php echo JText::_('Group Page'); ?></span></legend>
+
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
-			<input type="hidden" name="task" value="savepage" />
+			<input type="hidden" name="task" value="save" />
 			<input type="hidden" name="page[id]" value="<?php echo $this->page->id; ?>" />
 			<input type="hidden" name="page[gid]" value="<?php echo $this->group->get('gidNumber'); ?>" />
+
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<td class="key"><label for="title"><?php echo JText::_('Title'); ?>:</label></td>
+						<td class="key"><label for="field-title"><?php echo JText::_('Title'); ?>:</label></td>
 						<td>
-							<input type="text" name="page[title]" value="<?php echo $this->page->title; ?>" />
+							<input type="text" name="page[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->page->title)); ?>" />
 						</td>
 					</tr>
 					<tr>
-						<td class="key"><label for="url"><?php echo JText::_('URL'); ?>:</label></td>
+						<td class="key"><label for="field-url"><?php echo JText::_('URL'); ?>:</label></td>
 						<td>
-							<input type="text" name="page[url]" value="<?php echo $this->page->url; ?>" />
+							<input type="text" name="page[url]" id="field-url" value="<?php echo $this->escape(stripslashes($this->page->url)); ?>" />
 						</td>
 					</tr>
 					<tr>
-						<td class="key"><label for="content"><?php echo JText::_('Content'); ?>:</label></td>
+						<td class="key"><label for="field-content"><?php echo JText::_('Content'); ?>:</label></td>
 						<td>
-							<textarea name="page[content]" rows="10" columns="10"><?php echo $this->page->content; ?></textarea>
+							<textarea name="page[content]" id="field-content" rows="10" columns="10"><?php echo $this->escape(stripslashes($this->page->content)); ?></textarea>
 						</td>
 					</tr>
 					<tr>
 						<td class="key"><label for="content"><?php echo JText::_('Active'); ?>:</label></td>
 						<td>
-							<input type="radio" name="page[active]" value="1" <?php if($this->page->active) { echo 'checked="checked"'; } ?> /> <font color="green">Yes</font>
-							<input type="radio" name="page[active]" value="0" <?php if(!$this->page->active) { echo 'checked="checked"'; } ?> /> <font color="red">No</font>
+							<input type="radio" name="page[active]" id="field-active_yes" value="1" <?php if ($this->page->active) { echo 'checked="checked"'; } ?> /> <label for="field-active_yes"><?php echo JText::_('Yes'); ?></label>
+							<input type="radio" name="page[active]" id="field-active_no" value="0" <?php if (!$this->page->active) { echo 'checked="checked"'; } ?> /> <label for="field-active_no"><?php echo JText::_('No'); ?></label>
 						</td>
 					</tr>
 					<tr>
-						<td class="key"><label for="content"><?php echo JText::_('Privacy'); ?>:</label></td>
+						<td class="key"><label for="field-privacy"><?php echo JText::_('Privacy'); ?>:</label></td>
 						<td>
-							<select name="page[privacy]" id="">
-								<option value="default" <?php if($this->page->privacy == 'default') { echo 'selected="selected"'; } ?>>Inherit Overview Tabs Privacy</option>
-								<option value="members" <?php if($this->page->privacy == 'members') { echo 'selected="selected"'; } ?>>Members Only</option>
+							<select name="page[privacy]" id="field-privacy">
+								<option value="default" <?php if ($this->page->privacy == 'default') { echo 'selected="selected"'; } ?>><?php echo JText::_('Inherit Overview Tabs Privacy'); ?></option>
+								<option value="members" <?php if ($this->page->privacy == 'members') { echo 'selected="selected"'; } ?>><?php echo JText::_('Members Only'); ?></option>
 							</select>
 						</td>
 					</tr>
@@ -87,4 +94,6 @@ JToolBarHelper::cancel('cancelpage');
 			</table>
 		</fieldset>
 	</div>
+
+	<?php echo JHTML::_('form.token'); ?>
 </form>

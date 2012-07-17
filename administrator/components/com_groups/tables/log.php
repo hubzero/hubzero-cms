@@ -29,100 +29,89 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-//----------------------------------------------------------
-// Extended database class
-//----------------------------------------------------------
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'XGroupLog'
- * 
- * Long description (if any) ...
+ * Table class for logging group actions
  */
 class XGroupLog extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id        = NULL;  // @var int(11) Primary key
+	var $id        = NULL;
 
 	/**
-	 * Description for 'gid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $gid       = NULL;  // @var int(11)
+	var $gid       = NULL;
 
 	/**
-	 * Description for 'timestamp'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $timestamp = NULL;  // @var datetime(0000-00-00 00:00:00)
+	var $timestamp = NULL;
 
 	/**
-	 * Description for 'uid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $uid       = NULL;  // @var int(11)
+	var $uid       = NULL;
 
 	/**
-	 * Description for 'action'
+	 * varchar(50)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $action    = NULL;  // @var varchar(50)
+	var $action    = NULL;
 
 	/**
-	 * Description for 'comments'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $comments  = NULL;  // @var text
+	var $comments  = NULL;
 
 	/**
-	 * Description for 'actorid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $actorid   = NULL;  // @var int(11)
-
-	//-----------
+	var $actorid   = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__xgroups_log', 'id', $db );
+		parent::__construct('#__xgroups_log', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->gid ) == '') {
-			$this->setError( JText::_('GROUPS_LOGS_MUST_HAVE_GROUP_ID') );
+		if (trim($this->gid) == '') 
+		{
+			$this->setError(JText::_('GROUPS_LOGS_MUST_HAVE_GROUP_ID'));
 			return false;
 		}
 
-		if (trim( $this->uid ) == '') {
-			$this->setError( JText::_('GROUPS_LOGS_MUST_HAVE_USER_ID') );
+		if (trim($this->uid) == '') 
+		{
+			$this->setError(JText::_('GROUPS_LOGS_MUST_HAVE_USER_ID'));
 			return false;
 		}
 
@@ -130,114 +119,124 @@ class XGroupLog extends JTable
 	}
 
 	/**
-	 * Short description for 'getLogs'
+	 * Get logs for a group
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $gid Parameter description (if any) ...
-	 * @param      mixed $limit Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $gid   Group ID
+	 * @param      integer $limit Number of records to return
+	 * @return     array
 	 */
-	public function getLogs( $gid=null, $limit=5 )
+	public function getLogs($gid=null, $limit=5)
 	{
-		if (!$gid) {
+		if (!$gid) 
+		{
 			$gid = $this->gid;
 		}
-		if (!$gid) {
+		if (!$gid) 
+		{
 			return null;
 		}
 
 		$query = "SELECT * FROM $this->_tbl WHERE gid=$gid ORDER BY `timestamp` DESC";
-		if ($limit) {
-			$query .= " LIMIT ".$limit;
+		if ($limit) 
+		{
+			$query .= " LIMIT " . $limit;
 		}
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'getLog'
+	 * Get a log for a group and bind to $this
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $gid Parameter description (if any) ...
-	 * @param      string $which Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $gid   Group ID
+	 * @param      string  $which Log to get [first or last (default)]
+	 * @return     boolean True on success
 	 */
-	public function getLog( $gid=null, $which='first' )
+	public function getLog($gid=null, $which='first')
 	{
-		if (!$gid) {
+		if (!$gid) 
+		{
 			$gid = $this->gid;
 		}
-		if (!$gid) {
+		if (!$gid) 
+		{
 			return null;
 		}
 
 		$query = "SELECT * FROM $this->_tbl WHERE gid=$gid ";
-		if ($which == 'first') {
+		if ($which == 'first') 
+		{
 			$query .= "ORDER BY `timestamp` ASC LIMIT 1";
-		} else {
+		} 
+		else 
+		{
 			$query .= "ORDER BY `timestamp` DESC LIMIT 1";
 		}
 
-		$this->_db->setQuery( $query );
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery($query);
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
 
 	/**
-	 * Short description for 'deleteLogs'
+	 * Delete logs for a group
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $gid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $gid    Group ID
+	 * @return     boolean True on success
 	 */
-	public function deleteLogs( $gid=null )
+	public function deleteLogs($gid=null)
 	{
-		if (!$gid) {
+		if (!$gid) 
+		{
 			$gid = $this->gid;
 		}
-		if (!$gid) {
-			return null;
-		}
-
-		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE gid=".$gid );
-		if (!$this->_db->query()) {
-			$this->setError( $this->_db->getErrorMsg() );
+		if (!$gid) 
+		{
 			return false;
 		}
+
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE gid=" . $gid);
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		return true;
 	}
 
 	/**
-	 * Short description for 'logCount'
+	 * Get a record count of logs for a group
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $gid Parameter description (if any) ...
-	 * @param      string $action Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $gid    Group ID
+	 * @param      string  $action Action to filters results by
+	 * @return     integer
 	 */
-	public function logCount( $gid=null, $action='' )
+	public function logCount($gid=null, $action='')
 	{
-		if (!$gid) {
+		if (!$gid) 
+		{
 			$gid = $this->gid;
 		}
-		if (!$gid) {
+		if (!$gid) 
+		{
 			return null;
 		}
 
 		$query = "SELECT COUNT(*) FROM $this->_tbl WHERE gid=$gid";
-		if ($action) {
+		if ($action) 
+		{
 			$query .= " AND action='$action'";
 		}
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 }
