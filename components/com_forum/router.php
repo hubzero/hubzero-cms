@@ -1,8 +1,8 @@
 <?php
 /**
- * @package		HUBzero                                  CMS
- * @author		Shawn                                     Rice <zooley@purdue.edu>
- * @copyright	Copyright                               2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
+ * @package		HUBzero CMS
+ * @author		Shawn Rice <zooley@purdue.edu>
+ * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  * 
  * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
@@ -23,12 +23,10 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'ForumBuildRoute'
- * 
- * Long description (if any) ...
+ * Turn querystring parameters into an SEF route
  * 
  * @param  array &$query Parameter description (if any) ...
  * @return array Return description (if any) ...
@@ -37,57 +35,71 @@ function ForumBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (!empty($query['section'])) {
-        $segments[] = $query['section'];
-        unset($query['section']);
-    }
-	if (!empty($query['category'])) {
-        $segments[] = $query['category'];
-        unset($query['category']);
-    }
-	if (!empty($query['thread'])) {
-        $segments[] = $query['thread'];
-        unset($query['thread']);
-    }
-	if (!empty($query['post'])) {
+	if (!empty($query['section'])) 
+	{
+		$segments[] = $query['section'];
+		unset($query['section']);
+	}
+	if (!empty($query['category'])) 
+	{
+		$segments[] = $query['category'];
+		unset($query['category']);
+	}
+	if (!empty($query['thread'])) 
+	{
+		$segments[] = $query['thread'];
+		unset($query['thread']);
+	}
+	if (!empty($query['post'])) 
+	{
 		$segments[] = $query['post'];
 		unset($query['post']);
 	}
-	if (!empty($query['task'])) {
+	if (!empty($query['task'])) 
+	{
 		$segments[] = $query['task'];
 		unset($query['task']);
 	}
-	if (!empty($query['file'])) {
+	if (!empty($query['file'])) 
+	{
 		$segments[] = $query['file'];
 		unset($query['file']);
 	}
 
-    return $segments;
+	return $segments;
 }
 
 /**
- * Short description for 'ForumParseRoute'
- * 
- * Long description (if any) ...
+ * Parse a SEF route
  * 
  * @param  array $segments Parameter description (if any) ...
  * @return array Return description (if any) ...
  */
 function ForumParseRoute($segments)
 {
-    $vars = array();
+	$vars = array();
 
-	if (empty($segments)) {
+	if (empty($segments)) 
+	{
 		return $vars;
 	}
 
-    if (isset($segments[0])) {
+	if (isset($segments[0])) 
+	{
 		$vars['controller'] = 'sections';
 		$vars['task'] = 'display';
 		$vars['section'] = $segments[0];
+
+		if ($segments[0] == 'latest.rss')
+		{
+			$vars['controller'] = 'threads';
+			$vars['task'] = 'latest';
+			return $vars;
+		}
 	}
 
-	if (isset($segments[1])) {
+	if (isset($segments[1])) 
+	{
 		switch ($segments[1])
 		{
 			case 'new':
@@ -110,21 +122,22 @@ function ForumParseRoute($segments)
 		}
 	}
 	
-	if (isset($segments[2])) {
+	if (isset($segments[2])) 
+	{
 		switch ($segments[2])
 		{
 			case 'new':
 				$vars['task'] = $segments[2];
 				$vars['controller'] = 'threads';
 			break;
-			
+
 			case 'edit':
 			case 'save':
 			case 'delete':
 				$vars['task'] = $segments[2];
 				$vars['controller'] = 'categories';
 			break;
-			
+
 			default:
 				$vars['controller'] = 'threads';
 				$vars['task'] = 'display';
@@ -133,21 +146,22 @@ function ForumParseRoute($segments)
 		}
 	}
 	
-	if (isset($segments[3])) {
+	if (isset($segments[3])) 
+	{
 		switch ($segments[3])
 		{
 			case 'new':
 				$vars['task'] = $segments[3];
 				$vars['controller'] = 'threads';
 			break;
-			
+
 			case 'edit':
 			case 'save':
 			case 'delete':
 				$vars['task'] = $segments[3];
 				$vars['controller'] = 'threads';
 			break;
-			
+
 			default:
 				$vars['controller'] = 'threads';
 				$vars['task'] = 'display';
@@ -155,11 +169,12 @@ function ForumParseRoute($segments)
 			break;
 		}
 	}
-	
-	if (isset($segments[4])) {
+
+	if (isset($segments[4])) 
+	{
 		$vars['task'] = 'download';
 		$vars['file'] = $segments[4];
 	}
 
-    return $vars;
+	return $vars;
 }

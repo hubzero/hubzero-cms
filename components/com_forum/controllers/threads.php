@@ -28,12 +28,24 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Controller');
 
 /**
- * Short description for 'ForumController'
- * 
- * Long description (if any) ...
+ * Forum controller class for threads
  */
 class ForumControllerThreads extends Hubzero_Controller
 {
+	/**
+	 * Execute a task
+	 *
+	 * @return	void
+	 */
+	public function execute()
+	{
+		$this->registerTask('latest', 'feed');
+		$this->registerTask('latest', 'feed.rss');
+		$this->registerTask('latest', 'latest.rss');
+
+		parent::execute();
+	}
+
 	/**
 	 * Method to set the document path
 	 *
@@ -73,7 +85,7 @@ class ForumControllerThreads extends Hubzero_Controller
 			);
 		}
 	}
-	
+
 	/**
 	 * Method to build and set the document title
 	 *
@@ -99,11 +111,9 @@ class ForumControllerThreads extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'topic'
+	 * Display a thread
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function displayTask()
 	{
@@ -111,7 +121,6 @@ class ForumControllerThreads extends Hubzero_Controller
 
 		// Incoming
 		$this->view->filters = array();
-		//$filters['authorized'] = $this->authorized;
 		$this->view->filters['limit']  = JRequest::getInt('limit', 25);
 		$this->view->filters['start']  = JRequest::getInt('limitstart', 0);
 		$this->view->filters['section'] = JRequest::getVar('section', '');
@@ -119,13 +128,6 @@ class ForumControllerThreads extends Hubzero_Controller
 		$this->view->filters['parent'] = JRequest::getInt('thread', 0);
 		$this->view->filters['state']  = 1;
 
-		/*if ($this->view->filters['parent'] == 0) 
-		{
-			$this->view->_name = 'threads';
-			$this->threadsTask();
-			return;
-		}*/
-		
 		$this->view->section = new ForumSection($this->database);
 		$this->view->section->loadByAlias($this->view->filters['section'], 0);
 
@@ -158,11 +160,11 @@ class ForumControllerThreads extends Hubzero_Controller
 		// Record the hit
 		//$this->view->forum->hit();
 		$this->view->participants = $this->view->post->getParticipants($this->view->filters);
-		
+
 		// Get attachments
 		$this->view->attach = new ForumAttachment($this->database);
 		$this->view->attachments = $this->view->attach->getAttachments($this->view->post->id);
-		
+
 		// Get tags on this article
 		$this->view->tModel = new ForumTags($this->database);
 		$this->view->tags = $this->view->tModel->get_tag_cloud(0, 0, $this->view->post->id);
@@ -185,51 +187,204 @@ class ForumControllerThreads extends Hubzero_Controller
 
 		// Push CSS to the template
 		$this->_getStyles();
-		
+
 		// Push scripts to the template
 		$this->_getScripts();
-	
+
 		// Set the page title
 		$this->_buildTitle();
-		
+
 		// Set the pathway
 		$this->_buildPathway();
-		
+
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
-		
+
 		$this->view->display();
 	}
 
 	/**
-	 * Short description for 'addTopic'
+	 * Show a form for creating a new entry
 	 * 
-	 * Long description (if any) ...
+	 * @return     void
+	 */
+	public function latestTask()
+	{
+		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
+		ximport('Hubzero_Group');
+		ximport('Hubzero_View_Helper_Html');
+
+		$app =& JFactory::getApplication();
+
+		// Set the mime encoding for the document
+		$jdoc =& JFactory::getDocument();
+		$jdoc->setMimeEncoding('application/rss+xml');
+
+		// Start a new feed object
+		$doc = new JDocumentFeed;
+		$doc->link = JRoute::_('index.php?option=' . $this->_option);
+
+		// Get configuration
+		$jconfig = JFactory::getConfig();
+
+		// Paging variables
+		$start = JRequest::getInt('limitstart', 0);
+		$limit = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
+
+		// Build some basic RSS document information
+		$doc->title  = $jconfig->getValue('config.sitename') . ' - ' . JText::_('COM_FORUM_RSS_TITLE');
+		$doc->description = JText::sprintf('COM_FORUM_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'));
+		$doc->copyright   = JText::sprintf('COM_FORUM_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
+		$doc->category    = JText::_('COM_FORUM_RSS_CATEGORY');
+
+		// get all forum posts on site forum
+		$this->database->setQuery("SELECT f.* FROM #__forum_posts f WHERE f.group_id='0' AND f.state='1'");
+		$site_forum = $this->database->loadAssocList();
+
+		// get any group posts
+		$this->database->setQuery("SELECT f.* FROM #__forum_posts f WHERE f.group_id<>'0' AND f.state='1'");
+		$group_forum = $this->database->loadAssocList();
+
+		// make sure that the group for each forum post has the right privacy setting
+		foreach ($group_forum as $k => $gf) 
+		{
+			$group = Hubzero_Group::getInstance($gf['group_id']);
+			if (is_object($group)) 
+			{
+				$forum_access = $group->getPluginAccess('forum');
+
+				if ($forum_access == 'nobody' 
+				 || ($forum_access == 'registered' && $this->juser->get('guest')) 
+				 || ($forum_access == 'members' && !in_array($this->juser->get('id'), $group->get('members')))) 
+				{
+					unset($group_forum[$k]);
+				}
+			} 
+			else 
+			{
+				unset($group_forum[$k]);
+			}
+		}
+
+		//based on param decide what to include
+		switch ($this->config->get('forum', 'both')) 
+		{
+			case 'site':  $rows = $site_forum;  break;
+			case 'group': $rows = $group_forum; break;
+			case 'both':  
+			default:
+				$rows = array_merge($site_forum, $group_forum);
+			break;
+		}
+
+		$categories = array();
+		$ids = array();
+		foreach ($rows as $post)
+		{
+			$ids[] = $post['category_id'];
+		}
+		$this->database->setQuery("SELECT c.id, c.alias, s.alias as section FROM #__forum_categories c LEFT JOIN #__forum_sections as s ON s.id=c.section_id WHERE c.id IN (" . implode(',', $ids) . ") AND c.state='1'");
+		$cats = $this->database->loadObjectList();
+		if ($cats)
+		{
+			foreach ($cats as $category)
+			{
+				$categories[$category->id] = $category;
+			}
+		}
+
+		//function to sort by created date
+		function sortbydate($a, $b)
+		{
+			$d1 = date("Y-m-d H:i:s", strtotime($a['created']));
+			$d2 = date("Y-m-d H:i:s", strtotime($b['created']));
+			
+			return ($d1 > $d2) ? -1 : 1;
+		}
+
+		//sort using function above - date desc
+		usort($rows, 'sortbydate');
+
+		// Start outputing results if any found
+		if (count($rows) > 0) 
+		{
+			foreach ($rows as $row)
+			{
+				// Prepare the title
+				$title = strip_tags(stripslashes($row['title']));
+				$title = html_entity_decode($title);
+
+				// Get URL
+				if ($row['group_id'] == 0) 
+				{
+					$link = 'index.php?option=com_forum&section=' . $categories[$row['category_id']]->section . '&category=' . $categories[$row['category_id']]->alias . '&thread=' . ($row['parent'] ? $row['parent'] : $row['id']);
+				} 
+				else 
+				{
+					$group = Hubzero_Group::getInstance($row['group_id']);
+					$link = 'index.php?option=com_groups&gid=' . $group->get('cn') . '&active=forum&scope=' .  $categories[$row['category_id']]->section . '/' . $categories[$row['category_id']]->alias . '/' . ($row['parent'] ? $row['parent'] : $row['id']);
+				}
+				$link = JRoute::_($link);
+				$link = DS . ltrim($link, DS);
+
+				// Get description
+				$description = stripslashes($row['comment']);
+				$description = Hubzero_View_Helper_Html::shortenText($description, 300, 0, 0);
+
+				// Get author
+				$juser =& JUser::getInstance($row['created_by']);
+				$author = stripslashes($juser->get('name'));
+
+				// Get date
+				@$date = ($row->created ? date('r', strtotime($row->created)) : '');
+
+				// Load individual item creator class
+				$item = new JFeedItem();
+				$item->title       = $title;
+				$item->link        = $link;
+				$item->description = $description;
+				$item->date        = $date;
+				$item->category    = ($row['group_id'] == 0) ? JText::_('Site-Wide Forum') : stripslashes($group->get('description'));
+				$item->author      = $author;
+
+				// Loads item info into rss array
+				$doc->addItem($item);
+			}
+		}
+
+		// Output the feed
+		echo $doc->render();
+	}
+
+	/**
+	 * Show a form for creating a new entry
 	 * 
 	 * @return     void
 	 */
 	public function newTask()
 	{
-		$this->view->setLayout('edit');
 		$this->editTask();
 	}
 
 	/**
-	 * Short description for 'editTopic'
+	 * Show a form for editing an entry
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function editTask($post=null)
 	{
+		$this->view->setLayout('edit');
+
 		$id = JRequest::getInt('thread', 0);
 		$category = JRequest::getVar('category', '');
 		$section = JRequest::getVar('section', '');
-		
+
 		if ($this->juser->get('guest')) 
 		{
 			$return = JRoute::_('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category . '&task=new');
@@ -240,7 +395,7 @@ class ForumControllerThreads extends Hubzero_Controller
 			$this->setRedirect(JRoute::_('index.php?option=com_login&return=' . base64_encode($return)));
 			return;
 		}
-		
+
 		$this->view->section = new ForumSection($this->database);
 		$this->view->section->loadByAlias($section, 0);
 
@@ -257,9 +412,9 @@ class ForumControllerThreads extends Hubzero_Controller
 			$this->view->post = new ForumPost($this->database);
 			$this->view->post->load($id);
 		}
-		
+
 		$this->_authorize('thread', $id);
-		
+
 		if (!$id) 
 		{
 			$this->view->post->created_by = $this->juser->get('id');
@@ -269,7 +424,7 @@ class ForumControllerThreads extends Hubzero_Controller
 			$this->setRedirect(JRoute::_('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category));
 			return;
 		}
-		
+
 		$this->view->sections = $this->view->section->getRecords(array(
 			'state' => 1,
 			'group' => 0
@@ -285,7 +440,7 @@ class ForumControllerThreads extends Hubzero_Controller
 			$default->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($default->title));
 			$this->view->sections[] = $default;
 		}
-		
+
 		$cModel = new ForumCategory($this->database);
 		foreach ($this->view->sections as $key => $sect)
 		{
@@ -304,10 +459,10 @@ class ForumControllerThreads extends Hubzero_Controller
 
 		// Push CSS to the template
 		$this->_getStyles();
-		
+
 		// Set the page title
 		$this->_buildTitle();
-		
+
 		// Set the pathway
 		$this->_buildPathway();
 
@@ -317,18 +472,19 @@ class ForumControllerThreads extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
-		
+
 		$this->view->display();
 	}
 
 	/**
-	 * Short description for 'saveTopic'
+	 * Save an entry
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function saveTask()
 	{
@@ -339,13 +495,13 @@ class ForumControllerThreads extends Hubzero_Controller
 			);
 			return;
 		}
-		
+
 		// Incoming
 		$section = JRequest::getVar('section', '');
-		
+
 		$fields = JRequest::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
-		
+
 		$assetType = 'thread';
 		if ($fields['parent'])
 		{
@@ -372,16 +528,14 @@ class ForumControllerThreads extends Hubzero_Controller
 		if (!$model->bind($fields)) 
 		{
 			$this->addComponentMessage($model->getError(), 'error');
-			$this->view->setLayout('edit');
 			$this->editTask($model);
 			return;
 		}
-		
+
 		// Check content
 		if (!$model->check()) 
 		{
 			$this->addComponentMessage($model->getError(), 'error');
-			$this->view->setLayout('edit');
 			$this->editTask($model);
 			return;
 		}
@@ -393,11 +547,11 @@ class ForumControllerThreads extends Hubzero_Controller
 			$this->editTask($model);
 			return;
 		}
-		
+
 		$parent = ($model->parent) ? $model->parent : $model->id;
-		
+
 		$this->uploadTask($parent, $model->id);
-		
+
 		if ($fields['id'])
 		{
 			if ($old->category_id != $fields['category_id'])
@@ -405,14 +559,14 @@ class ForumControllerThreads extends Hubzero_Controller
 				$model->updateReplies(array('category_id' => $fields['category_id']), $model->id);
 			}
 		}
-		
+
 		$category = new ForumCategory($this->database);
 		$category->load(intval($model->category_id));
-		
+
 		$tags = JRequest::getVar('tags', '', 'post');
 		$tagger = new ForumTags($this->database);
 		$tagger->tag_object($this->juser->get('id'), $model->id, $tags, 1);
-		
+
 		// Determine message
 		if (!$fields['id'])
 		{
@@ -429,7 +583,7 @@ class ForumControllerThreads extends Hubzero_Controller
 		{
 			$message = ($model->modified_by) ? JText::_('COM_FORUM_POST_EDITED') : JText::_('COM_FORUM_POST_ADDED');
 		}
-		
+
 		// Set the redirect
 		$this->setRedirect(
 			JRoute::_('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category->alias . '&thread=' . $parent . '#c' . $model->id),
@@ -439,17 +593,15 @@ class ForumControllerThreads extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'deleteTopic'
+	 * Delete an entry
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function deleteTask()
 	{
-		$section = JRequest::getVar('section', '');
+		$section  = JRequest::getVar('section', '');
 		$category = JRequest::getVar('category', '');
-		
+
 		// Is the user logged in?
 		if ($this->juser->get('guest')) 
 		{
@@ -463,11 +615,11 @@ class ForumControllerThreads extends Hubzero_Controller
 
 		// Incoming
 		$id = JRequest::getInt('thread', 0);
-		
+
 		// Load the post
 		$model = new ForumPost($this->database);
 		$model->load($id);
-		
+
 		// Make the sure the category exist
 		if (!$model->id) 
 		{
@@ -478,7 +630,7 @@ class ForumControllerThreads extends Hubzero_Controller
 			);
 			return;
 		}
-		
+
 		// Check if user is authorized to delete entries
 		$this->_authorize('thread', $id);
 		if (!$this->config->get('access-delete-thread'))
@@ -741,10 +893,10 @@ class ForumControllerThreads extends Hubzero_Controller
 			// Create database entry
 			$row = new ForumAttachment($this->database);
 			$row->bind(array(
-				'id' => 0,
-				'parent' => $listdir,
-				'post_id' => $post_id,
-				'filename' => $file['name'],
+				'id'          => 0,
+				'parent'      => $listdir,
+				'post_id'     => $post_id,
+				'filename'    => $file['name'],
 				'description' => $description
 			));
 			if (!$row->check()) 
@@ -757,13 +909,11 @@ class ForumControllerThreads extends Hubzero_Controller
 			}
 		}
 	}
-	
+
 	/**
-	 * Short description for '_authorize'
+	 * Set access permissions for a user
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     string Return description (if any) ...
+	 * @return     void
 	 */
 	protected function _authorize($assetType='component', $assetId=null)
 	{
@@ -778,13 +928,13 @@ class ForumControllerThreads extends Hubzero_Controller
 					$asset .= ($assetType != 'component') ? '.' . $assetType : '';
 					$asset .= ($assetId) ? '.' . $assetId : '';
 				}
-				
+
 				$at = '';
 				if ($assetType != 'component')
 				{
 					$at .= '.' . $assetType;
 				}
-				
+
 				// Admin
 				$this->config->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
 				$this->config->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
