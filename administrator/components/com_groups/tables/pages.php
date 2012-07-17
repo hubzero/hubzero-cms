@@ -154,7 +154,7 @@ Class GroupPages extends JTable
 	{
 		$sql = "SELECT porder from $this->_tbl WHERE gid='$gid' ORDER BY porder DESC LIMIT 1";
 		$this->_db->setQuery($sql);
-		return $this->_db->loadResult()
+		return $this->_db->loadResult();
 	}
 
 	/**
