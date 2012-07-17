@@ -176,7 +176,7 @@ class modWhatsNew
 	public function run()
 	{
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_whatsnew' . DS . 'helpers' . DS . 'period.php');
-		$live_site = rtrim(JURI::base(),'/');
+		$live_site = rtrim(JURI::base(), '/');
 		
 		// Get some initial parameters
 		$count        = intval($this->params->get('limit', 5));
@@ -191,14 +191,12 @@ class modWhatsNew
 		if ($this->feed)
 		{
 			$this->feedlink = JRoute::_('index.php?option=com_whatsnew&task=feed.rss&period=' . $this->period);
+			$this->feedlink = DS . trim($this->feedlink, DS);
+			$this->feedlink = $live_site . $this->feedlink;
 			if (substr($this->feedlink, 0, 5) == 'https')
 			{
 				$this->feedlink = ltrim($this->feedlink, 'https');
 				$this->feedlink = 'http' . $this->feedlink;
-			}
-			if (substr($this->feedlink, 0, 1) == '/')
-			{
-				$this->feedlink = $live_site . $this->feedlink;
 			}
 		}
 
