@@ -81,6 +81,7 @@ class modHubMenuHelper
 			$menu->addSeparator();
 			$menu->addChild(new JMenuNode(JText::_('LDAP'), 'index.php?option=com_ldap', 'class:ldap'));
 			$menu->addChild(new JMenuNode(JText::_('Geo DB'), 'index.php?option=com_geodb', 'class:geo'));
+			$menu->addChild(new JMenuNode(JText::_('APC'), 'index.php?option=com_apc', 'class:apc'));
 			$menu->addChild(new JMenuNode(JText::_('Scripts'), 'index.php?option=com_ximport', 'class:scripts'));
 			$menu->getParent();
 		$menu->addSeparator();
