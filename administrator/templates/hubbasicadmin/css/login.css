@@ -705,22 +705,22 @@
 		line-height: 16px;
 		display: inline-block;
 		left: 0.61803399em;
-		font-family: icons;
-		margin-top: -0.25em;
+		font-family: 'Fontcons';
+		margin-top: 0.1em;
 	}
 	p.message:before,
 	#system-message dd.message:before {
-		content: "2";
+		content: "\2714";
 	}
 	p.error:before,
 	#system-message dd.error:before {
-		content: "D";
+		content: "\f094";
 	}
 	p.warning:before,
 	#system-message dd.warning:before {
-		content: "!";
+		content: "\26A0";
 	}
 	p.info:before,
 	#system-message dd.info:before {
-		content: "i";
+		content: "\f05a";
 	}

@@ -101,7 +101,7 @@
 	kbd,
 	samp {
 		font-family: monospace,sans-serif;
-		}
+	}
 	body,
 	select,
 	input,
@@ -296,27 +296,27 @@
 	.small {
 		font-size: 0.8034441847541164em;
 		line-height: 2;
-		}
+	}
 	.important{
 		font-size: 1.30769em;
-		}
+	}
 	blockquote{
 		padding-left: 2.992em;
 		color: #b6abab;
 		page-break-inside: avoid;
-		}
+	}
 	blockquote p:last-child{
 		margin-bottom: 0;
-		}
+	}
 	.ampersand{
 		font-family: Baskerville,"Goudy Old Style","Palatino","Book Antiqua",serif;
 		font-size: 110%;
 		font-style: italic;
-		}
+	}
 	mark{
 		background: none;
 		font-weight: 700;
-		}
+	}
 	dd {
 		margin: 0 0 0.61803399em 1.61803399em;
 	}
@@ -737,20 +737,19 @@
 		font-weight: bold;
 		text-shadow: 0px -1px 1px rgba(0, 0, 0, 0.6);
 		line-height: 1;
-		position:relative;
-		z-index:1;
+		position: relative;
+		z-index: 1;
 		margin: 0;
 		padding: 16px 35px 21px 20px;
 		display: block;
 		cursor: pointer;
 	}
 	#header .user-options .logout:after {
-		content: "";
 		position: absolute;
-		top: 11px;
+		top: 17px;
 		right: 20px;
-		font-family: icons;
-		content: "Q"; /* Power icon */
+		font-family: 'Fontcons';
+		content: "\f011";
 	}
 	#header .user-options li:hover a,
 	#header .user-options li:focus a,
@@ -1217,11 +1216,11 @@
 	a.state:visited,
 	.state {
 		position: relative;
-	    z-index: 1;
-	    overflow: hidden;
-	    list-style: none;
-	    padding: 0;
-	    margin: 0;
+		z-index: 1;
+		overflow: hidden;
+		list-style: none;
+		padding: 0;
+		margin: 0;
 		display: inline-block;
 		height: 16px;
 		width: 16px;
@@ -1232,10 +1231,10 @@
 	.state:before {
 		font-size: 16px;
 		line-height: 16px;
-		font-family: icons;
+		font-family: 'Fontcons';
 		display: inline-block;
 		position: absolute;
-		top: -40%;
+		bottom: 0;
 		left: 0;
 	}
 	.state:hover,
@@ -1250,7 +1249,7 @@
 	.state.yes:before,
 	.state.publish:before,
 	.state.published:before {
-		content: "3";
+		content: "\2714";
 		font-size: 16px;
 	}
 	.state.yes:hover:before,
@@ -1262,7 +1261,7 @@
 	.state.no:before,
 	.state.unpublish:before,
 	.state.unpublished:before {
-		content: "d";
+		content: "\2298";
 	}
 	.no:hover:before,
 	.unpublish:hover:before,
@@ -1271,21 +1270,21 @@
 	}
 	/* Trash */
 	.trash:before {
-		content: "#";
+		content: "\f014";
 	}
 	.trash:hover:before {
 		color: #7F913C;
 	}
 	.state.add:before,
 	.state.new:before {
-		content: "&";
+		content: "\2295";
 	}
 	.state.add:hover:before,
 	.state.new:hover:before {
 		color: #7F913C;
 	}
 	.view:before {
-		content: "E";
+		content: "\f06e";
 		top: -20%;
 	}
 	.view:hover:before {
@@ -1293,46 +1292,46 @@
 	}
 	.member:before,
 	.user:before {
-		content: "U";
+		content: "\f007";
 	}
 	/* Checked out */
 	.checkedout:before {
-		content: "(";
+		content: "\f023";
 		color: #999;
 		font-size: 16px;
 		line-height: 16px;
-		font-family: icons;
+		font-family: 'Fontcons';
 	}
 	.checkedout:hover:before {
 		color: #333;
 	}
 	/* Default */
 	.default:before {
-		content: "S";
+		content: "\2605";
 	}
 	.default:hover:before {
 		color: #F8D201;
 	}
 	/* Delete */
 	.delete:before {
-		content: "*";
+		content: "\2716";
 	}
 	/* Attachment */
 	.attachment:before {
-		content: "A";
+		content: "\f092";
 	}
 	/* Menu */
 	.menulist:before {
-		content: "l";
+		content: "\f03a";
 	}
 	a.menulist:hover:before {
 		color: #000;
 	}
 	.uparrow:before {
-		content: "{";
+		content: "\2191";
 	}
 	.downarrow:before {
-		content: "}";
+		content: "\2193";
 	}
 	.uparrow:hover:before,
 	.downarrow:hover:before {
@@ -1341,37 +1340,35 @@
 	
 	/* Link icons */
 	.glyph:before {
-		font-family: icons;
 		position: relative;
-	    z-index: 1;
-	    overflow: hidden;
-	    padding: 0;
-	    margin: 0;
+		z-index: 1;
+		overflow: hidden;
+		padding: 0;
+		margin: 0;
 		display: inline-block;
 		height: 16px;
 		width: 16px;
-		font-family: icons;
+		font-family: 'Fontcons';
 		font-size: 16px;
-		line-height: 6px;
 		color: #666;
 		text-decoration: none;
 		border: none;
 	}
 	.glyph.group:before {
-		content: "g";
+		content: "\f042";
 		font-size: 19px;
 	}
 	.glyph.thread:before {
-		content: "q";
+		content: "\f086";
 	}
 	.glyph.comment:before {
-		content: "w";
+		content: "\f075";
 	}
 	.glyph.category:before {
-		content: "o";
+		content: "\f07b";
 	}
 	.glyph.tag:before {
-		content: "z";
+		content: "\f02b";
 	}
 	
 	.level,
@@ -1395,7 +1392,7 @@
 		white-space: nowrap;
 	}
 	.com_users .smallsub a:before {
-		font-family: icons;
+		font-family: 'Fontcons';
 		border: 1px solid #D4D5AA;
 		padding: 5px;
 		max-width: 400px;
@@ -1480,12 +1477,12 @@
 		color: #999;
 	}
 	.toolbar-box .header:before {
-		font-family: icons;	
-		font-size: 1.5em;
+		font-family: 'Fontcons';	
+		font-size: 1.6em;
 		position: absolute;
-		top: 0.2em;
+		top: 0.55em;
 		left: 0.5em;
-		content: "b";
+		content: "\f02f";
 	}
 	.toolbar-box a {
 		color: #666;
@@ -1551,18 +1548,18 @@
 		text-indent: 0;
 	}
 	.toolbar-box table a span:before {
-		font-family: icons;	
+		font-family: 'Fontcons';	
 		font-size: 24px;
 		position: absolute;
-		top: -7px;
+		top: 2px;
 		left: 2px;
-		content: "6";
+		content: "\2588";
 		color: #666;
 		text-decoration: none;
 	}
 	.toolbar-box table a span:after {
 		font-size: 16px;
-		font-family: 'icons';
+		font-family: 'Fontcons';
 		content: "";
 		position: absolute;
 		right: 2px;
@@ -1696,7 +1693,7 @@
 		background: #999;
 		border: none;
 		display: inline-block;
-		white-space:nowrap;
+		white-space: nowrap;
 		line-height: 1em !important;
 		-moz-border-radius: 0 3px 3px 0; 
 		-webkit-border-radius: 0 3px 3px 0; 
@@ -1708,22 +1705,21 @@
 	}
 	.tags li,
 	.tags li a {
-		
 	}
 	.tags a:before {
 		content: "";
-		position:absolute;
+		position: absolute;
 		bottom: 0;
-		left:-1.5em;
-		border-width:0.825em;
-		border-style:solid;
-		border-color:transparent #999 transparent transparent; 
-	    display:block; 
-	    width:0;
+		left: -1.5em;
+		border-width: 0.825em;
+		border-style: solid;
+		border-color: transparent #999 transparent transparent; 
+		display: block; 
+		width: 0;
 	}
 	.tags a:after {
 		content: "";
-		position:absolute;
+		position: absolute;
 		background: #fff;
 		width: 0.35em;
 		height: 0.35em;
@@ -1744,7 +1740,7 @@
 		color: #fff;
 	}
 	.tags a:hover:before {
-		border-color:transparent #000 transparent transparent; 
+		border-color: transparent #000 transparent transparent; 
 	}
 /* Access 
 	.access,
@@ -2080,8 +2076,8 @@
 		position: absolute;
 		right: 1.618em;
 		top: 0;
-		content: "[";
-		font-family: 'icons';
+		content: "\2190";
+		font-family: 'Fontcons';
 	}
 	.panel h3.jpane-toggler-down {
 		-webkit-border-radius: 0.27em 0.27em 0 0;
@@ -2089,7 +2085,7 @@
 		border-radius: 0.27em 0.27em 0 0;
 	}
 	.panel h3.jpane-toggler-down:after {
-		content: "}";
+		content: "\2193";
 	}
 	.panel h3:hover {
 		background: #fff;
@@ -2461,12 +2457,12 @@
 	div.selector span:after {
 		content: "";
 		position: absolute;
-		right:8px;
-		border-width:0 4px 4px 4px;
-		border-style:solid;
+		right: 8px;
+		border-width: 0 4px 4px 4px;
+		border-style: solid;
 		border-color: transparent transparent #858585 transparent;
 		top: 0.61803399em;
-		background:transparent;
+		background: transparent;
 	}
 	div.selector.disabled span {
 		color: #bbb;
@@ -2554,9 +2550,8 @@
 	}
 /* Link types */
 	a[href^="mailto:"]:before {
-		font-family: icons;
-		/*content: "✉";*/
-		content: "M";
+		font-family: 'Fontcons';
+		content: "\2709";
 		margin-right: 0.4em;
 	}
 /* Notifications */
@@ -2664,27 +2659,24 @@
 		line-height: 16px;
 		display: inline-block;
 		left: 0.61803399em;
-		font-family: icons;
-		margin-top: -0.25em;
+		font-family: 'Fontcons';
+		margin-top: 0.1em;
 	}
 	p.message:before,
 	#system-message dd.message:before {
-		/*content: "✔";*/
-		content: "2";
+		content: "\2714";
 	}
 	p.error:before,
 	#system-message dd.error:before {
-		/*content: "!"; /*"⊗";*/
-		content: "D";
+		content: "\f094";
 	}
 	p.warning:before,
 	#system-message dd.warning:before {
-		/*content: "⚠";*/
-		content: "!";
+		content: "\26A0";
 	}
 	p.info:before,
 	#system-message dd.info:before {
-		content: "i";
+		content: "\f05a";
 	}
 /* Paramlist */
 	.paramlist label {
@@ -2694,6 +2686,11 @@
 	.paramlist .element-container {
 		padding-bottom: 1em;
 	}
+@media only screen and (min-width: 319px) and (max-width: 320px) {
+	.main-navigation ul#menu li {
+		float: none;
+	}
+}
 /* Print */
 @media print{
 	*{
