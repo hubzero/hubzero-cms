@@ -29,12 +29,12 @@ HUBzero is a registered trademark of Purdue University.
 
 <install type="component" version="1.5">
 	<name>sef</name>
-	<author>W.H.Welch</author>
+	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>Allows Search Engine Friendly URLS for apache and IIS, returns proper 404 status code for missing content, provides logging of 404 errors, and creation of special "shortcut" URLs that allow the user to redirection to the new URL.</description>
-  	<installfile></installfile> 
-  	<uninstallfile></uninstallfile> 
+	<description>Allows Search Engine Friendly URLS for apache and IIS, returns proper 404 status code for missing content, provides logging of 404 errors, and creation of special "shortcut" URLs that allow the user to redirection to the new URL. Based on component by W.H.Welch</description>
+	<installfile></installfile> 
+	<uninstallfile></uninstallfile> 
 	<files>
 		<filename>index.html</filename>
 	</files>
@@ -48,8 +48,8 @@ HUBzero is a registered trademark of Purdue University.
 			<filename>sef.class.php</filename>
 			<filename>toolbar.sef.html.php</filename>
 			<filename>toolbar.sef.php</filename>
-               <filename>images/up.png</filename>
-               <filename>images/down.png</filename>
+			<filename>images/up.png</filename>
+			<filename>images/down.png</filename>
 			<filename>config.xml</filename>
 		</files>
 	</administration>

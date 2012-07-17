@@ -28,6 +28,7 @@ HUBzero is a registered trademark of Purdue University.
 
 <install type="component" version="1.5">
 	<name>YSearch</name>
+	<author>HUBzero</author>
 	<description>Configure search settings</description>
 	<files>
 		<filename>controller.php</filename>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
-@package        hubzero-cms
-@file           administrator/components/com_tags/tags.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
-@license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+@package		hubzero-cms
+@file		   administrator/components/com_tags/tags.xml
+@copyright	  Copyright 2005-2011 Purdue University. All rights reserved.
+@license		http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
 Copyright 2005-2011 Purdue University. All rights reserved.
 
@@ -29,7 +29,7 @@ HUBzero is a registered trademark of Purdue University.
 
 <install type="component" version="1.5">
 	<name>Tags</name>
-	<author>Shawn Rice</author>
+	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<files>
@@ -42,12 +42,12 @@ HUBzero is a registered trademark of Purdue University.
 		<filename>controller.php</filename>
 		<filename>index.html</filename>
 		<filename>router.php</filename>
-    		<filename>views/index.html</filename>
-    		<filename>views/intro/tmpl/default.php</filename>
-    		<filename>views/intro/tmpl/default.xml</filename>
-   		<filename>views/intro/tmpl/index.html</filename>
+			<filename>views/index.html</filename>
+			<filename>views/intro/tmpl/default.php</filename>
+			<filename>views/intro/tmpl/default.xml</filename>
+		<filename>views/intro/tmpl/index.html</filename>
 		<filename>images/tagnav-sprite.gif</filename>
- 		<filename>images/tagnav-sprite2.gif</filename>
+		<filename>images/tagnav-sprite2.gif</filename>
 		<filename>images/tags-large.gif</filename>
 	</files>
 	<languages>
@@ -64,7 +64,7 @@ HUBzero is a registered trademark of Purdue University.
 		<menu>Tags</menu>
 		<submenu>
 			<menu link="option=com_tags&amp;task=new">New Tag</menu>
-	  	</submenu>
+		</submenu>
 		<languages folder="admin">
 			<language tag="en-GB">en-GB.com_tags.ini</language>
 			<language tag="en-GB">en-GB.com_tags.menu.ini</language>
@@ -79,4 +79,3 @@ HUBzero is a registered trademark of Purdue University.
 		</files>
 	</administration>
 </install>
-

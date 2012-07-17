@@ -29,6 +29,7 @@ HUBzero is a registered trademark of Purdue University.
 
 <install type="component">
 	<name>WhatsNew</name>
+	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<files>
@@ -44,10 +45,9 @@ HUBzero is a registered trademark of Purdue University.
 		<language tag="en-GB">en-GB.com_whatsnew.ini</language>
 	</languages>
 	<administration>
-          <files>
-               <filename>whatsnew.xml</filename>
-               <filename>index.html</filename>
-          </files>
-     </administration>
+		  <files>
+			   <filename>whatsnew.xml</filename>
+			   <filename>index.html</filename>
+		  </files>
+	 </administration>
 </install>
-

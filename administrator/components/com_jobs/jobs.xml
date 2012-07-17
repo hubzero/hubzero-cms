@@ -2,7 +2,7 @@
 
 <!--
 @package		hubzero-cms
-@file		   administrator/components/com_tools/tools.xml
+@file		   administrator/components/com_jobs/jobs.xml
 @copyright	  Copyright 2005-2011 Purdue University. All rights reserved.
 @license		http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -28,51 +28,44 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <install type="component" version="1.5">
-	<name>Tools</name>
+	<name>Jobs</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<description>Manage job postings and job seekers</description>
 	<files>
 		<filename>router.php</filename>
+		<filename>jobs.css</filename>
+		<filename>jobs.php</filename>
+		<filename>jobs.js</filename>
+		<filename>jobs.jquery.js</filename>
 		<filename>controller.php</filename>
 		<filename>index.html</filename>
-		<filename>mw</filename>
-		<filename>mw.class.php</filename>
-		<filename>tools.css</filename>
-		<filename>mw.html.php</filename>
-		<filename>tools.php</filename>
-		<filename>tools.js</filename>
-		<filename>mw.utils.php</filename>
-		<filename>SignedVncViewer-20070502-01.jar</filename>
-		<filename>VncViewer-20070502-01.jar</filename>
-		<filename>images/close-light.gif</filename>
-		<filename>images/corner.png</filename>
-		<filename>images/folder.gif</filename>
-		<filename>images/trash.gif</filename>
 	</files>
 	<languages>
-		<language tag="en-GB">en-GB.com_tools.ini</language>
+		<language tag="en-GB">en-GB.com_jobs.ini</language>
 	</languages>
-	<installfile>
-		<filename>install.tools.php</filename>
-	</installfile>
-	<uninstallfile>
-		<filename>uninstall.tools.php</filename>
-	</uninstallfile>
+	<install>
+		<sql>
+			<file charset="utf8" driver="mysql">install.sql</file>
+		</sql>
+	</install>
+	<uninstall>
+	</uninstall>
 	<administration>
-		<menu>Tools</menu>
+		<menu>Jobs</menu>
 		<files>
-			<filename>index.html</filename>
-			<filename>admin.controller.php</filename>
-			<filename>admin.tools.html.php</filename>
-			<filename>admin.tools.php</filename>
+			<filename>jobs.sql</filename>
+			<filename>controllers/categories.php</filename>
+			<filename>controllers/jobs.php</filename>
+			<filename>controllers/types.php</filename>
+			<filename>helpers/html.php</filename>
+			<filename>helpers/jobs.php</filename>
+			<filename>images/admin.gif</filename>
+			<filename>jobs.php</filename>
+			<filename>access.xml</filename>
 			<filename>config.xml</filename>
-			<filename>tools.config.php</filename>
-			<filename>toolbar.tools.html.php</filename>
-			<filename>toolbar.tools.php</filename>
+			<filename>index.html</filename>
 		</files>
-		<languages folder="admin">
-			<language tag="en-GB">en-GB.com_tools.ini</language>
-		</languages>
 	</administration>
 </install>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
-@package        hubzero-cms
-@file           administrator/components/com_kb/kb.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
-@license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+@package		hubzero-cms
+@file		   administrator/components/com_kb/kb.xml
+@copyright	  Copyright 2005-2011 Purdue University. All rights reserved.
+@license		http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
 Copyright 2005-2011 Purdue University. All rights reserved.
 
@@ -29,13 +29,13 @@ HUBzero is a registered trademark of Purdue University.
 
 <install type="component" version="1.5">
 	<name>Kb</name>
-	<author>Shawn Rice</author>
+	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>Manage a knowledgebase</description>
 	<files>
 		<filename>router.php</filename>
-	    <filename>controller.php</filename>
+		<filename>controller.php</filename>
 		<filename>kb.css</filename>
 		<filename>kb.php</filename>
 		<filename>kb.html.php</filename>
@@ -48,24 +48,16 @@ HUBzero is a registered trademark of Purdue University.
 		<language tag="en-GB">en-GB.com_kb.ini</language>
 	</languages>
 	<install>
-	    <sql>
-	        <file charset="utf8" driver="mysql">install.sql</file>
-	    </sql>
+		<sql>
+			<file charset="utf8" driver="mysql">install.sql</file>
+		</sql>
 	</install>
 	<uninstall>
 	</uninstall>
-	<install>
-	</install>
-	<installfile>
-		<filename></filename>
-	</installfile>
-	<uninstallfile>
-		<filename></filename>
-	</uninstallfile>
 	<administration>
 		<menu>Knowledgebase</menu>
 		<files>
-		    <filename>controller.php</filename>
+			<filename>controller.php</filename>
 			<filename>kb.html.php</filename>
 			<filename>kb.php</filename>
 			<filename>tables/kb.article.php</filename>
@@ -87,8 +79,8 @@ HUBzero is a registered trademark of Purdue University.
 			<language tag="en-GB">en-GB.com_kb.menu.ini</language>
 		</languages>
 	</administration>
-    <params>
-        <param name="uploadpath" type="text" menu="hide" default="/site/kb" label="Upload path" description="File path for uploads" />
+	<params>
+		<param name="uploadpath" type="text" menu="hide" default="/site/kb" label="Upload path" description="File path for uploads" />
 		<param name="show_authors" type="list" default="1" label="Authors" description="Show/Hide the authors of posts">
 			<option value="0">Hide</option>
 			<option value="1">Show</option>
@@ -118,6 +110,5 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="2">Modified</option>
 			<option value="3">Published</option>
 		</param>
-    </params>
+	</params>
 </install>
-

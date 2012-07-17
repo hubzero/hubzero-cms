@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           administrator/components/com_userpoints/userpoints.xml
+@file           administrator/components/com_services/services.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -28,37 +28,38 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <install type="component" version="1.5">
-	<name>Userpoints</name>
+	<name>Services</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<description>Manage services</description>
 	<files>
 	</files>
+	<languages>
+		<language tag="en-GB">en-GB.com_services.ini</language>
+	</languages>
 	<install>
+		<sql>
+			<file charset="utf8" driver="mysql">install.sql</file>
+		</sql>
 	</install>
 	<uninstall>
 	</uninstall>
-	<installfile>
-		<filename>install.tags.php</filename>
-	</installfile>
-	<uninstallfile>
-		<filename>uninstall.tags.php</filename>
-	</uninstallfile>
 	<administration>
-		<menu>Manage Points</menu>
+		<menu>Resources</menu>
 		<submenu>
-			<menu task="summary">Summary</menu>
+			<menu task="viewtypes">Types</menu>
+			<menu task="orphans">Orphans</menu>
+			<menu task="browse">Resources</menu>
 		</submenu>
+		<languages folder="admin">
+			<language tag="en-GB">en-GB.com_services.ini</language>
+		</languages>
 		<files>
-			<filename>admin.userpoints.html.php</filename>
-			<filename>admin.userpoints.php</filename>
-			<filename>admin.controller.php</filename>
-			<filename>toolbar.userpoints.html.php</filename>
-			<filename>toolbar.userpoints.php</filename>
-			<filename>userpoints.xml</filename>
-			<filename>cron.php</filename>
+			<filename>services.xml</filename>
+			<filename>config.xml</filename>
 			<filename>index.html</filename>
+			<filename>services.php</filename>
 		</files>
 	</administration>
 </install>
-
