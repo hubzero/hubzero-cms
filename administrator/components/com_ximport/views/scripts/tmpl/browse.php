@@ -30,17 +30,27 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-?>
-<div id="content-header" class="full">
-	<h2><?php echo JText::_('XImport'); ?></h2>
-</div><!-- / #content-header -->
 
-<div class="main section">
+JToolBarHelper::title(JText::_('Scripts'), 'scripts.png');
+?>
+<script type="text/javascript">
+function submitbutton(pressbutton) 
+{
+	var form = document.adminForm;
+	if (pressbutton == 'cancel') {
+		submitform(pressbutton);
+		return;
+	}
+	// do field validation
+	submitform(pressbutton);
+}
+</script>
+
+<div id="adminForm">
 <?php
 if ($this->paths) {
 ?>
-	<table summary="Available scripts">
-		<caption>Available scripts</caption>
+	<table class="adminlist" summary="Available scripts">
 		<thead>
 			<tr>
 				<th scope"col">Script</th>
@@ -65,15 +75,19 @@ if ($this->paths) {
 		$totalRuns = '0';
 		$args = null;
 
-		if (isset($this->log[$scriptName])) {
-			$lastRun = $this->log[$scriptName]['lastRun'];
+		if (isset($this->log[$scriptName])) 
+		{
+			$lastRun   = $this->log[$scriptName]['lastRun'];
 			$totalRuns = $this->log[$scriptName]['totalRuns'];
 		}
 
 		include_once($path);
-		if (class_exists($scriptName)) {
+
+		if (class_exists($scriptName)) 
+		{
 			$job = new $scriptName();
-			if ($job instanceof XImportHelperScript) {
+			if ($job instanceof XImportHelperScript) 
+			{
 				$description = $job->getDescription();
 				$form = true;
 				$args = $job->getOptions();
@@ -129,7 +143,8 @@ if ($this->paths) {
 	echo '<p class="warning">'. JText::_('No scripts found.') .'</p>';
 }
 ?>
-		</div><!-- / .subject -->
-		<div class="clear"></div>
-	</form>
-</div><!-- / .main section -->
+	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+	<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
+	<input type="hidden" name="boxchecked" value="0" />
+</div>

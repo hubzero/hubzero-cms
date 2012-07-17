@@ -60,37 +60,13 @@ class XImportControllerScripts extends Hubzero_Controller
 			return;
 		}
 
-		$this->_log = JPATH_ROOT . DS . 'components' . DS . 'com_ximport' . DS . 'logs' . DS . 'runs.log';
+		$jconfig =& JFactory::getConfig();
+
+		$this->_log = $jconfig->getValue('config.log_path') . DS . 'ximport.php';
 
 		$this->registerTask('__default', 'browse');
 
 		parent::execute();
-	}
-
-	/**
-	 * Method to set the document path
-	 *
-	 * @return	void
-	 */
-	protected function _buildPathway()
-	{
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
-
-		if (count($pathway->getPathWay()) <= 0) 
-		{
-			$pathway->addItem(
-				JText::_('XImport'),
-				'index.php?option=' . $this->_option
-			);
-		}
-		if ($this->_task) 
-		{
-			$pathway->addItem(
-				JText::_(ucfirst($this->_task)),
-				'index.php?option=' . $this->_option . '&task=' . $this->_task
-			);
-		}
 	}
 
 	/**
@@ -100,9 +76,7 @@ class XImportControllerScripts extends Hubzero_Controller
 	 */
 	public function browseTask()
 	{
-		$this->_buildPathway();
-
-		$this->view->path  = JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'scripts';
+		$this->view->path  = JPATH_COMPONENT . DS . 'scripts';
 		$this->view->paths = $this->_scanDirectory($this->view->path);
 		$this->view->log   = $this->_readLog();
 
@@ -134,7 +108,7 @@ class XImportControllerScripts extends Hubzero_Controller
 		}
 
 		// Build the path to the script file
-		$path = JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'scripts' . DS . $this->view->script . '.php';
+		$path = JPATH_COMPONENT . DS . 'scripts' . DS . $this->view->script . '.php';
 
 		// Check for the script file
 		if (is_file($path)) 
@@ -162,8 +136,6 @@ class XImportControllerScripts extends Hubzero_Controller
 				}
 			}
 		}
-
-		$this->_buildPathway();
 
 		// Display the view
 		if ($this->getError()) 
@@ -300,5 +272,17 @@ class XImportControllerScripts extends Hubzero_Controller
 				}
 			}
 		}
+	}
+
+	/**
+	 * Cancels a task and redirects to listing
+	 * 
+	 * @return     void
+	 */
+	public function cancelTask()
+	{
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+		);
 	}
 }

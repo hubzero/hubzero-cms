@@ -31,38 +31,42 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * Turn querystring parameters into an SEF route
- * 
- * @param  array &$query Query string values
- * @return array Segments to build SEF route
- */
-function ximportBuildRoute(&$query)
+error_reporting(E_ALL);
+@ini_set('display_errors','1');
+
+// Authorization check
+if (version_compare(JVERSION, '1.6', 'lt'))
 {
-	$segments = array();
+	$jacl = JFactory::getACL();
+	$jacl->addACL($option, 'manage', 'users', 'super administrator');
+	$jacl->addACL($option, 'manage', 'users', 'administrator');
+	$jacl->addACL($option, 'manage', 'users', 'manager');
 
-	return $segments;
+	$user = JFactory::getUser();
+	if (!$user->authorize($option, 'manage'))
+	{
+		$app = JFactory::getApplication();
+		$app->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
+	}
 }
-
-/**
- * Parse a SEF route
- * 
- * @param  array $segments Exploded route segments
- * @return array
- */
-function ximportParseRoute($segments)
+else 
 {
-	$vars = array();
-
-	if (empty($segments)) 
+	if (!JFactory::getUser()->authorise('core.manage', $option)) 
 	{
-		return $vars;
+		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 	}
-
-	if (isset($segments[0])) 
-	{
-		$vars['task'] = $segments[0];
-	}
-
-	return $vars;
 }
+include_once(JPATH_COMPONENT. DS . 'helpers' . DS . 'script.php');
+
+$controllerName = JRequest::getCmd('controller', 'scripts');
+if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+{
+	$controllerName = 'scripts';
+}
+require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = 'XImportController' . ucfirst(strtolower($controllerName));
+
+// Instantiate controller
+$controller = new $controllerName();
+$controller->execute();
+$controller->redirect();
