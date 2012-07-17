@@ -38,7 +38,7 @@ if ($this->filters['orphans']) {
 	$ttle = JText::_('COM_KB_ARTICLES');
 }
 
-JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('COM_KB') . '</a> <span class="sep">&rsaquo;</span> <span>' . $ttle . '</span>', 'generic.png');
+JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('COM_KB') . '</a> <span class="sep">&rsaquo;</span> <span>' . $ttle . '</span>', 'kb.png');
 if ($canDo->get('core.edit.state')) 
 {
 	JToolBarHelper::publishList();

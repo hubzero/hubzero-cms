@@ -31,7 +31,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 $text = ( $this->task == 'editpage' ? JText::_( 'EDIT' ) : JText::_( 'NEW' ) );
 
-JToolBarHelper::title( '<a href="index.php?option=com_events">'.JText::_( 'EVENTS_PAGE' ).'</a>: <small><small>[ '. $text.' ]</small></small>', 'user.png' );
+JToolBarHelper::title( '<a href="index.php?option=com_events">'.JText::_( 'EVENTS_PAGE' ).'</a>: <small><small>[ '. $text.' ]</small></small>', 'event.png' );
 JToolBarHelper::save('savepage');
 JToolBarHelper::cancel('cancelpage');
 
@@ -54,9 +54,9 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm">
 	<h2><?php echo stripslashes($this->event->title); ?></h2>
-	<div class="col width-60">
+	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('PAGE'); ?></legend>
+			<legend><span><?php echo JText::_('PAGE'); ?></span></legend>
 			
 			<input type="hidden" name="event" value="<?php echo $this->event->id; ?>" />
 			<input type="hidden" name="id" value="<?php echo $this->page->id; ?>" />
@@ -67,12 +67,12 @@ function submitbutton(pressbutton)
 				<tbody>
 					<tr>
 						<td class="key"><label for="title"><?php echo JText::_('TITLE'); ?>:</label></td>
-						<td><input type="text" name="title" id="title" value="<?php echo htmlentities(stripslashes($this->page->title), ENT_QUOTES); ?>" size="50" /></td>
+						<td><input type="text" name="title" id="title" value="<?php echo $this->escape(stripslashes($this->page->title)); ?>" size="50" /></td>
 					</tr>
 					<tr>
 						<td class="key"><label for="alias"><?php echo JText::_('ALIAS'); ?>:</label></td>
 						<td>
-							<input type="text" name="alias" id="alias" value="<?php echo stripslashes($this->page->alias); ?>" size="50" />
+							<input type="text" name="alias" id="alias" value="<?php echo $this->escape(stripslashes($this->page->alias)); ?>" size="50" />
 							<br /><span>A short identifier for this page. Ex: "agenda". Alpha-numeric characters only. No spaces.</span>
 						</td>
 					</tr>
@@ -86,7 +86,7 @@ function submitbutton(pressbutton)
 			</table>
 		</fieldset>
 	</div>
-	<div class="col width-40">
+	<div class="col width-40 fltrt">
 		<table>
 			<tbody>
 				<tr>

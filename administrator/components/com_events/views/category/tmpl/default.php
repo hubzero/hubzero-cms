@@ -28,9 +28,10 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-$text = ($this->task == 'editcat') ? JText::_( 'EDIT' ) : JText::_( 'NEW' );
-JToolBarHelper::title( JText::_( 'EVENT' ).': <small><small>[ '. $text.' '.JText::_('EVENTS_CAL_LANG_EVENT_CATEGORY').' ]</small></small>', 'addedit.png' );
+defined('_JEXEC') or die('Restricted access');
+
+$text = ($this->task == 'editcat') ? JText::_('EDIT') : JText::_('NEW');
+JToolBarHelper::title(JText::_('EVENT').': <small><small>[ '. $text.' '.JText::_('EVENTS_CAL_LANG_EVENT_CATEGORY').' ]</small></small>', 'event.png');
 JToolBarHelper::spacer();
 JToolBarHelper::save('savecat');
 JToolBarHelper::spacer();
@@ -48,7 +49,7 @@ $editor =& JFactory::getEditor();
 function submitbutton(pressbutton, section) 
 {
 	if (pressbutton == 'cancelcat') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 	
@@ -62,16 +63,16 @@ function submitbutton(pressbutton, section)
 
 <form action="index.php" method="post" name="adminForm">
 	<fieldset class="adminform">
-	<legend><?php echo $this->row->name; ?></legend>
+	<legend><span><?php echo $this->escape(stripslashes($this->row->name)); ?></span></legend>
 
 	<table class="admintable">
 	 <tr>
 	  <td class="key"><?php echo JText::_('EVENTS_CAL_LANG_CATEGORY_TITLE'); ?>:</td>
-	  <td colspan="2"><input type="text" name="title" value="<?php echo $this->row->title; ?>" size="50" maxlength="50" title="A short name to appear in menus" /></td>
+	  <td colspan="2"><input type="text" name="title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" size="50" maxlength="50" title="A short name to appear in menus" /></td>
 	 </tr>
 	 <tr>
 	  <td class="key"><?php echo JText::_('EVENTS_CAL_LANG_CATEGORY_NAME'); ?>:</td>
-	  <td colspan="2"><input type="text" name="name" value="<?php echo $this->row->name; ?>" size="50" maxlength="255" title="A long name to be displayed in headings" /></td>
+	  <td colspan="2"><input type="text" name="name" value="<?php echo $this->escape(stripslashes($this->row->name)); ?>" size="50" maxlength="255" title="A long name to be displayed in headings" /></td>
 	 </tr>
 	 <tr>
 	  <td class="key"><?php echo JText::_('EVENTS_CAL_LANG_CATEGORY_IMAGE'); ?>:</td>
@@ -79,7 +80,7 @@ function submitbutton(pressbutton, section)
 	  <td rowspan="4">
 		<script type="text/javascript">
 			if (document.forms[0].image.options.value!=''){
-			  jsimg='../images/stories/' + getSelectedValue( 'adminForm', 'image' );
+			  jsimg='../images/stories/' + getSelectedValue('adminForm', 'image');
 			} else {
 			  jsimg='../images/M_images/blank.png';
 			}
@@ -101,7 +102,7 @@ function submitbutton(pressbutton, section)
 	 </tr>
 	 <tr>
 	  <td class="key" style="vertical-align: top;"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_DESCRIPTION'); ?>:</td>
-	  <td colspan="2"><?php echo $editor->display('description', $this->row->description, 'auto', 'auto', '45', '10', false); ?></td>
+	  <td colspan="2"><?php echo $editor->display('description', stripslashes($this->row->description), 'auto', 'auto', '45', '10', false); ?></td>
 	 </tr>
 	</table>
 
@@ -112,5 +113,5 @@ function submitbutton(pressbutton, section)
 	<input type="hidden" name="task" value="savecat" />
 	</fieldset>
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

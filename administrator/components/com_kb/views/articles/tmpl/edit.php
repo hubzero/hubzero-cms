@@ -34,7 +34,7 @@ $canDo = KbHelper::getActions('article');
 
 $text = ($this->task == 'edit' ? JText::_('COM_KB_EDIT') : JText::_('COM_KB_NEW'));
 
-JToolBarHelper::title(JText::_('COM_KB') . ': ' . JText::_('COM_KB_ARTICLE') . ': <small><small>[ ' . $text . ' ]</small></small>', 'generic.png');
+JToolBarHelper::title(JText::_('COM_KB') . ': ' . JText::_('COM_KB_ARTICLE') . ': <small><small>[ ' . $text . ' ]</small></small>', 'kb.png');
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::save();

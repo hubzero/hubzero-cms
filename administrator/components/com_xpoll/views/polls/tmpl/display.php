@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = XPollHelper::getActions('component');
 
-JToolBarHelper::title(JText::_('XPOLL_MANAGER'), 'addedit.png');
+JToolBarHelper::title(JText::_('XPOLL_MANAGER'), 'poll.png');
 if ($canDo->get('core.edit.state')) 
 {
 	JToolBarHelper::publishList();

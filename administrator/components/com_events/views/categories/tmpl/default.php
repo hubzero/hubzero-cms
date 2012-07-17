@@ -28,8 +28,9 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-JToolBarHelper::title( JText::_( 'EVENTS_MANAGER').': <small><small>[ '.JText::_('EVENTS_CAL_LANG_EVENT_CATEGORIES').' ]</small></small>', 'addedit.png' );
+defined('_JEXEC') or die('Restricted access');
+
+JToolBarHelper::title(JText::_('EVENTS_MANAGER').': <small><small>[ '.JText::_('EVENTS_CAL_LANG_EVENT_CATEGORIES').' ]</small></small>', 'event.png');
 JToolBarHelper::publishList('publishcat');
 JToolBarHelper::unpublishList('unpublishcat');
 JToolBarHelper::spacer();
@@ -43,15 +44,15 @@ JToolBarHelper::deleteList('','removecat',JText::_('DELETE_CATEGORY'));
 	<table class="adminlist">
 	 <thead>
 	  <tr>
-	   <th>#</th>
-	   <th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
-	   <th><?php echo JText::_('EVENTS_CAL_LANG_CATEGORY_NAME'); ?></th>
-	   <th><?php echo JText::_('EVENTS_CAL_LANG_CATEGORY_NUM_RECORDS'); ?></th>
-	   <th><?php echo JText::_('EVENTS_CAL_LANG_CATEGORY_NUM_CHECKEDOUT'); ?></th>
-	   <th><?php echo JText::_('EVENTS_E_PUBLISHING'); ?></th>
-	   <th><?php echo JText::_('EVENTS_CAL_LANG_EVENT_CHECKEDOUT'); ?></th>
-	   <th><?php echo JText::_('EVENTS_CAL_LANG_EVENT_ACCESS'); ?></th>
-	   <th colspan="2"><?php echo JText::_('EVENTS_CAL_LANG_CATEGORY_REORDER'); ?></th>
+	   <th scope="col">#</th>
+	   <th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
+	   <th scope="col"><?php echo JText::_('EVENTS_CAL_LANG_CATEGORY_NAME'); ?></th>
+	   <th scope="col"><?php echo JText::_('EVENTS_CAL_LANG_CATEGORY_NUM_RECORDS'); ?></th>
+	   <th scope="col"><?php echo JText::_('EVENTS_CAL_LANG_CATEGORY_NUM_CHECKEDOUT'); ?></th>
+	   <th scope="col"><?php echo JText::_('EVENTS_E_PUBLISHING'); ?></th>
+	   <th scope="col"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_CHECKEDOUT'); ?></th>
+	   <th scope="col"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_ACCESS'); ?></th>
+	   <th scope="col" colspan="2"><?php echo JText::_('EVENTS_CAL_LANG_CATEGORY_REORDER'); ?></th>
 	  </tr>
 	 </thead>
 	 <tfoot>
@@ -62,16 +63,16 @@ JToolBarHelper::deleteList('','removecat',JText::_('DELETE_CATEGORY'));
 	 <tbody>
 	<?php
 	$k = 0;
-	for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
+	for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	{
 		$row = &$this->rows[$i];
 		$class = $row->published ? 'published' : 'unpublished';
 		$alt = $row->published ? 'Published' : 'Unpublished';
 		$task = $row->published ? 'unpublishcat' : 'publishcat';
 
-		if ( $row->groupname == 'Public' ) {
+		if ($row->groupname == 'Public') {
 			$color_access = 'style="color: green;"';
-		} else if ( $row->groupname == 'Special' ) {
+		} else if ($row->groupname == 'Special') {
 			$color_access = 'style="color: red;"';
 		} else {
 			$color_access = 'style="color: black;"';
@@ -119,5 +120,5 @@ JToolBarHelper::deleteList('','removecat',JText::_('DELETE_CATEGORY'));
 	<input type="hidden" name="chosen" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

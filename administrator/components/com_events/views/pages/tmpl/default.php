@@ -28,11 +28,12 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-JToolBarHelper::title( '<a href="index.php?option=com_events">'.JText::_( 'EVENTS' ).'</a>: <small><small>[ '.JText::_('PAGES').' ]</small></small>', 'addedit.png' );
-JToolBarHelper::addNew( 'addpage', JText::_('ADD_PAGE'));
-JToolBarHelper::editList( 'editpage' );
-JToolBarHelper::deleteList( '', 'removepage', JText::_('REMOVE_PAGE') );
+defined('_JEXEC') or die('Restricted access');
+
+JToolBarHelper::title('<a href="index.php?option=com_events">'.JText::_('EVENTS').'</a>: <small><small>[ '.JText::_('PAGES').' ]</small></small>', 'edit.png');
+JToolBarHelper::addNew('addpage', JText::_('ADD_PAGE'));
+JToolBarHelper::editList('editpage');
+JToolBarHelper::deleteList('', 'removepage', JText::_('REMOVE_PAGE'));
 
 ?>
 <script type="text/javascript">
@@ -40,22 +41,20 @@ function submitbutton(pressbutton)
 {
 	var form = document.getElementById('adminForm');
 	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 	// do field validation
-	submitform( pressbutton );
+	submitform(pressbutton);
 }
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<h2><?php echo stripslashes($this->event->title); ?></h2>
 	
-	<fieldset id="filter">
-		<label>
-			<?php echo JText::_('SEARCH'); ?>: 
-			<input type="text" name="search" value="<?php echo $this->filters['search']; ?>" />
-		</label>
+	<fieldset id="filter-bar">
+		<label for="filter_search"><?php echo JText::_('SEARCH'); ?>:</label>
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" />
 		
 		<input type="submit" value="<?php echo JText::_('GO'); ?>" />
 	</fieldset>
@@ -63,7 +62,7 @@ function submitbutton(pressbutton)
 	<table class="adminlist" summary="<?php echo JText::_('TABLE_SUMMARY'); ?>">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th><?php echo JText::_('ID'); ?></th>
 				<th><?php echo JText::_('TITLE'); ?></th>
 				<th colspan="3"><?php echo JText::_('REORDER'); ?></th>
@@ -79,7 +78,7 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $k = 0;
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
+for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
 ?>
@@ -87,8 +86,8 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				<td><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked);" /></td>
 				<td><?php echo $row->id; ?></td>
 				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=editpage&amp;id[]=<? echo $row->id; ?>&amp;event=<?php echo $this->event->id; ?>"><?php echo stripslashes($row->title).' ('.stripslashes($row->alias).')'; ?></a></td>
-				<td><?php echo $this->pageNav->orderUpIcon( $i, ($row->position == @$rows[$i-1]->position), 'orderuppage' ); ?></td>
-				<td><?php echo $this->pageNav->orderDownIcon( $i, $n, ($row->position == @$rows[$i+1]->position), 'orderdownpage' ); ?></td>
+				<td><?php echo $this->pageNav->orderUpIcon($i, ($row->position == @$rows[$i-1]->position), 'orderuppage'); ?></td>
+				<td><?php echo $this->pageNav->orderDownIcon($i, $n, ($row->position == @$rows[$i+1]->position), 'orderdownpage'); ?></td>
 				<td><?php echo $row->ordering; ?></td>
 			</tr>
 <?php
@@ -103,5 +102,5 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

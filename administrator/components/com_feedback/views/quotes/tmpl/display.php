@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = FeedbackHelper::getActions('quote');
 
-JToolBarHelper::title(JText::_('Success Story Manager'), 'addedit.png');
+JToolBarHelper::title(JText::_('Success Story Manager'), 'feedback.png');
 if ($canDo->get('core.admin')) 
 {
 	JToolBarHelper::preferences($this->option, '550');

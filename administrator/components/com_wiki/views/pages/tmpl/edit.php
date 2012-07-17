@@ -6,7 +6,7 @@ $canDo = WikiHelper::getActions('page');
 
 $text = ($this->task == 'editpage' ? JText::_('EDIT') : JText::_('NEW'));
 
-JToolBarHelper::title(JText::_('Wiki') . ': ' . JText::_('Page').': <small><small>[ ' . $text . ' ]</small></small>', 'addedit.png');
+JToolBarHelper::title(JText::_('Wiki') . ': ' . JText::_('Page').': <small><small>[ ' . $text . ' ]</small></small>', 'wiki.png');
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::save();

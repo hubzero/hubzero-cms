@@ -4,7 +4,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = WikiHelper::getActions('page');
 
-JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">'.JText::_('Wiki') . '</a>: ' . JText::_('Page Revisions'), 'addedit.png');
+JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">'.JText::_('Wiki') . '</a>: ' . JText::_('Page Revisions'), 'wiki.png');
 if ($canDo->get('core.create')) 
 {
 	JToolBarHelper::addNew();

@@ -1,17 +1,17 @@
 <?php
 // No direct access
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-$text = ($this->task == 'edit') ? JText::_( 'EDIT' ) : JText::_( 'NEW' );
-JToolBarHelper::title( JText::_( 'EVENT' ).': <small><small>[ '. $text.' ]</small></small>', 'addedit.png' );
+$text = ($this->task == 'edit') ? JText::_('EDIT') : JText::_('NEW');
+JToolBarHelper::title(JText::_('EVENT').': <small><small>[ '. $text.' ]</small></small>', 'event.png');
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
 $editor =& JFactory::getEditor();
 
 ximport('Hubzero_User_Profile');
-$xprofilec =& Hubzero_User_Profile::getInstance( $this->row->created_by );
-$xprofilem =& Hubzero_User_Profile::getInstance( $this->row->modified_by );
+$xprofilec =& Hubzero_User_Profile::getInstance($this->row->created_by);
+$xprofilem =& Hubzero_User_Profile::getInstance($this->row->modified_by);
 $userm = is_object($xprofilem) ? $xprofilem->get('name') : '';
 $userc = is_object($xprofilec) ? $xprofilec->get('name') : '';
 
@@ -21,7 +21,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$paramsClass = 'JRegistry';
 }
 
-$params =& new $paramsClass( $this->row->params, JPATH_ROOT.DS.'administrator'.DS.'components'.DS.$this->option.DS.'events.xml' );
+$params =& new $paramsClass($this->row->params, JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->option . DS . 'events.xml');
 ?>
 <script type="text/javascript" src="../components/<?php echo $option; ?>/js/calendar.rc4.js"></script>
 <script type="text/javascript">
@@ -294,7 +294,7 @@ var HUB = {};
 			</table>
 		</fieldset>
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('REGISTRATION_FIELDS'); ?></legend>
+			<legend><span><?php echo JText::_('REGISTRATION_FIELDS'); ?></span></legend>
 			<?php echo $params->render(); ?>
 		</fieldset>
 	</div><div class="clr"></div>
@@ -305,5 +305,5 @@ var HUB = {};
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="images" value="" />
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

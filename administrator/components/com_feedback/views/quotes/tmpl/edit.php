@@ -34,7 +34,7 @@ $canDo = FeedbackHelper::getActions('quote');
 
 $text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
 
-JToolBarHelper::title(JText::_('Success Story') . ': <small><small>[ ' . $text . ' ]</small></small>', 'addedit.png');
+JToolBarHelper::title(JText::_('Success Story') . ': <small><small>[ ' . $text . ' ]</small></small>', 'feedback.png');
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::save();

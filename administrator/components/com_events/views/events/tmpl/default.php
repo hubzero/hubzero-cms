@@ -28,10 +28,11 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-JToolBarHelper::title( JText::_( 'EVENTS_MANAGER' ), 'addedit.png' );
-JToolBarHelper::addNew( 'addpage', 'Add Page');
-JToolBarHelper::custom('viewList', 'assign', JText::_( 'VIEW_RESPONDENTS' ), JText::_( 'VIEW_RESPONDENTS' ), true, false);
+defined('_JEXEC') or die('Restricted access');
+
+JToolBarHelper::title(JText::_('EVENTS_MANAGER'), 'event.png');
+JToolBarHelper::addNew('addpage', 'Add Page');
+JToolBarHelper::custom('viewList', 'assign', JText::_('VIEW_RESPONDENTS'), JText::_('VIEW_RESPONDENTS'), true, false);
 JToolBarHelper::spacer();
 JToolBarHelper::publishList();
 JToolBarHelper::unpublishList();
@@ -47,13 +48,11 @@ JHTML::_('behavior.tooltip');
 
 <form action="index.php?option=<?php echo $this->option; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label>
-			<?php echo JText::_('EVENTS_SEARCH'); ?>:
-			<input type="text" name="search" value="<?php echo htmlentities($this->filters['search'], ENT_COMPAT, 'UTF-8'); ?>" />
-		</label>
-	
+		<label for="filter_search"><?php echo JText::_('EVENTS_SEARCH'); ?>:</label>
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" />
+
 		<?php echo $this->clist; ?>
-		
+
 		<input type="submit" name="submitsearch" value="<?php echo JText::_('GO'); ?>" />
 	</fieldset>
 	<div class="clr"></div>
@@ -61,17 +60,17 @@ JHTML::_('behavior.tooltip');
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><?php echo JText::_('EVENTS_CAL_LANG_EVENT_ID'); ?></th>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows ); ?>);" /></th>
-				<th><?php echo JText::_('EVENTS_CAL_LANG_EVENT_TITLE'); ?></th>
-				<th><?php echo JText::_('EVENTS_CAL_LANG_EVENT_CATEGORY'); ?></th>
-				<th><?php echo JText::_('EVENTS_CAL_LANG_EVENT_REPEAT'); ?></th>
-				<th><?php echo JText::_('EVENTS_CAL_LANG_EVENT_STATE'); ?></th>
-				<th><?php echo JText::_('EVENTS_CAL_LANG_EVENT_ANNOUNCEMENT'); ?></th>
-				<th><?php echo JText::_('EVENTS_CAL_LANG_EVENT_TIMESHEET'); ?></th>
-				<th><?php echo JText::_('EVENTS_CAL_LANG_EVENT_CHECKEDOUT'); ?></th>
-				<th><?php echo JText::_('EVENTS_CAL_LANG_EVENT_ACCESS'); ?></th>
-				<th><?php echo JText::_('Pages'); ?></th>
+				<th scope="col"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_ID'); ?></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
+				<th scope="col"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_TITLE'); ?></th>
+				<th scope="col"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_CATEGORY'); ?></th>
+				<th scope="col"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_REPEAT'); ?></th>
+				<th scope="col"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_STATE'); ?></th>
+				<th scope="col"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_ANNOUNCEMENT'); ?></th>
+				<th scope="col"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_TIMESHEET'); ?></th>
+				<th scope="col"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_CHECKEDOUT'); ?></th>
+				<th scope="col"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_ACCESS'); ?></th>
+				<th scope="col"><?php echo JText::_('Pages'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -83,8 +82,8 @@ JHTML::_('behavior.tooltip');
 <?php
 $k = 0;
 $database =& JFactory::getDBO();
-$p = new EventsPage( $database );
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
+$p = new EventsPage($database);
+for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 $row = &$this->rows[$i];
 ?>
@@ -96,8 +95,8 @@ $row = &$this->rows[$i];
 				} else {
 					?><input type="checkbox" id="cb<?php echo $i;?>" name="id[]" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" /><?php 
 				} ?></td>
-				<td><a href="index.php?option=<?php echo $this->option; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>"><?php echo stripslashes($row->title); ?></a></td>
-				<td><?php echo $row->category; ?></td>
+				<td><a href="index.php?option=<?php echo $this->option; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>"><?php echo $this->escape(stripslashes($row->title)); ?></a></td>
+				<td><?php echo $this->escape($row->category); ?></td>
 
 <td><?php
 	if ($row->reccurtype > 0) {
@@ -143,21 +142,20 @@ $row = &$this->rows[$i];
 		}
 	}
 ?></td>
-
 				<td><?php
-	$now = date( "Y-m-d h:i:s" );
+	$now = date("Y-m-d h:i:s");
 	if ($now <= $row->publish_up && $row->state == "1") {
 		$img = 'publish_y.png';
-		$alt = JText::_( 'Pending' );
+		$alt = JText::_('Pending');
 	} else if (($now <= $row->publish_down || $row->publish_down == "0000-00-00 00:00:00") && $row->state == "1") {
 		$img = 'publish_g.png';
-		$alt = JText::_( 'Published' );
+		$alt = JText::_('Published');
 	} else if ($now > $row->publish_down && $row->state == "1") {
 		$img = 'publish_r.png';
-		$alt = JText::_( 'Expired' );
+		$alt = JText::_('Expired');
 	} elseif ($row->state == "0") {
 		$img = 'publish_x.png';
-		$alt = JText::_( 'Unpublished' );
+		$alt = JText::_('Unpublished');
 	}
 
 	$times = '';
@@ -180,7 +178,7 @@ $row = &$this->rows[$i];
 
 	if ($times) {
         ?>
-			<a class="state <?php echo $row->state ? 'unpublish' : 'publish' ?> hasTip" href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i;?>','<?php echo $row->state ? 'unpublish' : 'publish' ?>')" title="<?php echo JText::_( 'Publish Information' );?>::<?php echo $times; ?>">
+			<a class="state <?php echo $row->state ? 'unpublish' : 'publish' ?> hasTip" href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i;?>','<?php echo $row->state ? 'unpublish' : 'publish' ?>')" title="<?php echo JText::_('Publish Information');?>::<?php echo $times; ?>">
 				<img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" />
 			</a><?php
 	}
@@ -199,11 +197,11 @@ $row = &$this->rows[$i];
 				<td style="white-space: nowrap;"><?php echo $times; ?></td>
 				<td><?php
 				if ($row->checked_out) {
-					echo $row->editor;
+					echo $this->escape($row->editor);
 				} else {
 					echo '&nbsp;';
 				} ?></td>
-				<td><?php echo $row->groupname;?></td>
+				<td><?php echo $row->groupname; ?></td>
 				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=pages&amp;id[]=<? echo $row->id; ?>"><?php echo $pages; ?> <?php echo JText::_('Pages'); ?></a></td>
 			</tr>
 <?php
@@ -218,5 +216,5 @@ $k = 1 - $k;
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

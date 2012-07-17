@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = KbHelper::getActions('category');
 
-JToolBarHelper::title(JText::_('COM_KB'), 'generic.png');
+JToolBarHelper::title(JText::_('COM_KB'), 'kb.png');
 if ($canDo->get('core.admin')) 
 {
 	JToolBarHelper::preferences($this->option, '550');

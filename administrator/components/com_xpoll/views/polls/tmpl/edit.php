@@ -6,7 +6,7 @@ $canDo = XPollHelper::getActions('component');
 
 $text = ($this->task == 'edit' ? JText::_('EDIT_XPOLL') : JText::_('NEW_XPOLL'));
 
-JToolBarHelper::title(JText::_('XPOLL_MANAGER') . ': <small><small>[ ' . $text . ' ]</small></small>', 'addedit.png');
+JToolBarHelper::title(JText::_('XPOLL_MANAGER') . ': <small><small>[ ' . $text . ' ]</small></small>', 'poll.png');
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::save();

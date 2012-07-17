@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Resources') . '</a>: <small><small>[' . JText::_('Plugins') . ']</small></small>', 'addedit.png');
+JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Cron') . '</a>: <small><small>[' . JText::_('Plugins') . ']</small></small>', 'cron.png');
 
 if ($this->html)
 {

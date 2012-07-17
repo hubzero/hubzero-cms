@@ -4,7 +4,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $text = ( $this->task == 'edit' ? JText::_( 'EDIT' ) : JText::_( 'NEW' ) );
 
-JToolBarHelper::title( JText::_('COM_TOOLS').': <small><small>[ '. $text.' ]</small></small>', 'config.png' );
+JToolBarHelper::title( JText::_('COM_TOOLS').': <small><small>[ '. $text.' ]</small></small>', 'tools.png' );
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 ?>

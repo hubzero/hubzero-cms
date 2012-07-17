@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = WikiHelper::getActions('page');
 
-JToolBarHelper::title(JText::_('Wiki'), 'addedit.png');
+JToolBarHelper::title(JText::_('Wiki'), 'wiki.png');
 if ($canDo->get('core.admin')) 
 {
 	JToolBarHelper::preferences($this->option, '550');

@@ -29,7 +29,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-JToolBarHelper::title( JText::_( 'Usage Manager' ), 'addedit.png' );
+JToolBarHelper::title( JText::_( 'Usage Manager' ), 'usage.png' );
 JToolBarHelper::preferences('com_usage', '550');
 
 ?>
