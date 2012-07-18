@@ -115,10 +115,7 @@ class MwHosttype extends JTable
 	 */
 	public function store($insert=null, $updateNulls=false)
 	{
-		$xlog = &Hubzero_Factory::getLogger();
 		$k = $this->_tbl_key;
-		if ($this->_tbl != "#__session")
-			$xlog->logDebug($this->_tbl . " store()");
 
 		if ($insert)
 		{
