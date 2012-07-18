@@ -1,8 +1,8 @@
 <?php
 /**
-* @version		$Id: CHANGELOG.php 22381 2011-11-14 01:18:53Z dextercowley $
+* @version		$Id: CHANGELOG.php 22952 2012-03-27 00:40:16Z dextercowley $
 * @package		Joomla
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
+* @copyright	Copyright (C) 2005 - 2012 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
 * Joomla! is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -37,13 +37,15 @@ $ -> Language fix or change
 - -> Removed
 ! -> Note
 
+-------------------- 1.5.26 Stable Release [27-March-2012] ------------------
+
 -------------------- 1.5.25 Stable Release [14-November-2011] ------------------
 
 -------------------- 1.5.24 Stable Release [17-October-2011] ------------------
 
 30-Sept-2011 Jean-Marie Simonet
  +$ Adding ka-GE installation language
- 
+
 19-Apri-2011 Andrew Eddie
  # Fixed [#21622] 303 redirections cause page subresources to be reloaded on WebKit browsers (Nicholas Dionysopoulos).
 

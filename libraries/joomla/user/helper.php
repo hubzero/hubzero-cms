@@ -3,7 +3,7 @@
 * @version		$Id:helper.php 6961 2007-03-15 16:06:53Z tcp $
 * @package		Joomla.Framework
 * @subpackage	User
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
+* @copyright	Copyright (C) 2005 - 2012 Open Source Matters. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
 * Joomla! is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -272,14 +272,16 @@ class JUserHelper
 	}
 
 	/**
-	 * Generate a random password
+	 * Generate a random password on PHP4
+	 * The password is not truely random, but the best we can do for PHP4.
+	 * To get a stronger random number, use PHP5.
 	 *
 	 * @static
 	 * @param	int		$length	Length of the password to generate
 	 * @return	string			Random Password
-	 * @since	1.5
+	 * @since	1.5.26
 	 */
-	function genRandomPassword($length = 8)
+	function genRandomPasswordPHP4($length = 8)
 	{
 		$salt = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 		$len = strlen($salt);
@@ -290,6 +292,59 @@ class JUserHelper
 		}
 
 		return $makepass;
+	}
+
+	/**
+	 * Generate a random password
+	 * This method is secure.
+	 *
+	 * @static
+	 * @param	int		$length	Length of the password to generate
+	 * @return	string			Random Password
+	 * @since	1.5.26
+	 */
+	function genRandomPasswordPHP5($length = 8)
+	{
+		$salt = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+		$base = strlen($salt);
+		$makepass = '';
+
+		/*
+		 * Start with a cryptographic strength random string, then convert it to
+		 * a string with the numeric base of the salt.
+		 * Shift the base conversion on each character so the character
+		 * distribution is even, and randomize the start shift so it's not
+		 * predictable.
+		 */
+		jimport('joomla.crypt.crypt');
+		$random = JCrypt::genRandomBytes($length + 1);
+		$shift = ord($random[0]);
+
+		for ($i = 1; $i <= $length; ++$i)
+		{
+			$makepass .= $salt[($shift + ord($random[$i])) % $base];
+			$shift += ord($random[$i]);
+		}
+
+		return $makepass;
+	}
+
+	/**
+	 * Generate a random password
+	 *
+	 * @static
+	 * @param	int		$length	Length of the password to generate
+	 * @return	string			Random Password
+	 * @since	1.5
+	 */
+	function genRandomPassword($length = 8)
+	{
+		if (version_compare(PHP_VERSION, '5.0.0', '<')) {
+			return $makepass = JUserHelper::genRandomPasswordPHP4($length);
+		}
+		else {
+			return $makepass = JUserHelper::genRandomPasswordPHP5($length);
+		}
 	}
 
 	/**
