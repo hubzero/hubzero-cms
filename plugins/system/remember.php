@@ -63,8 +63,7 @@ class plgSystemRemember extends JPlugin
                 // Since we're decoding, no UA validity check is required.
 				$key = JUtility::getHash(@$_SERVER['HTTP_USER_AGENT']);
 
-				//$crypt = new JSimpleCrypt($key);
-				$crypt = new JSimpleCrypt();
+				$crypt = new JSimpleCrypt($key);
 				$str = $crypt->decrypt($str);
                 $cookieData = @unserialize($str);
                 // Deserialized cookie could be any object structure, so make sure the 
