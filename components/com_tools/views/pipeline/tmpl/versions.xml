@@ -19,14 +19,14 @@
 -->
 
 <metadata>
-	<layout title="Standard File List Layout">
+	<layout title="Tool Development Versions">
 		<message>
-			<![CDATA[STANDARD FILE LIST LAYOUT DESC]]>
+			<![CDATA[Tool Development Versions]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard File List Layout</name>
-		<description>STANDARD FILE LIST LAYOUT DESC</description>
+		<name>Tool Development Versions</name>
+		<description>Tool Development Versions</description>
 		<params>
 		</params>
 	</state>

@@ -30,32 +30,18 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-if (JFactory::getConfig()->getValue('config.debug')) 
-{
-	error_reporting(E_ALL);
-	@ini_set('display_errors','1');
-}
-
-if (version_compare(JVERSION, '1.6', 'lt'))
-{
-	$jacl =& JFactory::getACL();
-	$jacl->addACL($option, 'manage', 'users', 'super administrator');
-	$jacl->addACL($option, 'manage', 'users', 'administrator');
-	$jacl->addACL($option, 'manage', 'users', 'manager');
-}
-
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'utils.php');
-
-$controllerName = JRequest::getCmd('controller', 'tools');
-if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
-{
-	$controllerName = 'tools';
-}
-require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = 'ToolsController' . ucfirst($controllerName);
-
-// Instantiate controller
-$controller = new $controllerName();
-$controller->execute();
-$controller->redirect();
+?>
+<div id="output">
+<?php if ($this->getError()) { ?>
+	<p class="error">
+		<strong><?php echo JText::_('NOTICE_PROBLEMS'); ?></strong><br />
+		<?php echo implode('<br />* ', $this->getErrors()); ?>
+	</p>
+<?php } ?>
+<?php if ($this->messages && !empty($this->messages)) { ?>
+	<p class="passed">
+		<strong><?php echo JText::_('NOTICE_OK_ACTIONS'); ?></strong><br />
+		<?php echo implode('<br />* ', $this->messages); ?>
+	</p>
+<?php } ?>
+</div>

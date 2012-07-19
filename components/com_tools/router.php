@@ -43,28 +43,32 @@ function toolsBuildRoute(&$query)
 {
 	$segments = array();
 
-	/*if (!empty($query['invoke'])) {
-		$segments[] = 'invoke';
-		$segments[] = $query['invoke'];
-		unset($query['invoke']);
-	}*/
-	if (!empty($query['app'])) {
+	if (!empty($query['controller'])) 
+	{
+		unset($query['controller']);
+	}
+	if (!empty($query['app'])) 
+	{
 		$segments[] = $query['app'];
 		unset($query['app']);
 	}
-	if (!empty($query['task'])) {
+	if (!empty($query['task'])) 
+	{
 		$segments[] = $query['task'];
 		unset($query['task']);
 	}
-	if (!empty($query['version'])) {
+	if (!empty($query['version'])) 
+	{
 		$segments[] = $query['version'];
 		unset($query['version']);
 	}
-	if (isset($query['sess'])) {
+	if (isset($query['sess'])) 
+	{
 		$segments[] = $query['sess'];
 		unset($query['sess']);
 	}
-	if (isset($query['return']) && $query['return'] == '') {
+	if (isset($query['return']) && $query['return'] == '') 
+	{
 		unset($query['return']);
 	}
 
@@ -81,99 +85,161 @@ function toolsBuildRoute(&$query)
  */
 function toolsParseRoute($segments)
 {
-	$app = JFactory::getApplication();
-	
 	$vars = array();
 
-	if (empty($segments)) {
+	if (empty($segments)) 
+	{
 		return $vars;
 	}
 
-	if (isset($segments[0])) {
+	if (isset($segments[0])) 
+	{
 		switch ($segments[0])
 		{
+			case 'pipeline':
+			case 'create':
+				$vars['task'] = $segments[0];
+				$vars['controller'] = 'pipeline';
+			break;
+			
 			case 'login':
 			case 'accessdenied':
 			case 'quotaexceeded':
+			case 'rename':
+				$vars['task'] = $segments[0];
+				$vars['controller'] = 'sessions';
+			break;
+			
+			case 'images':
+				$vars['task'] = $segments[0];
+				$vars['controller'] = 'tools';
+			break;
+			
+			case 'diskusage':
 			case 'storageexceeded':
 			case 'storage':
-			case 'rename':
-			case 'diskusage':
-			case 'purge':
-			//case 'share':
-			//case 'unshare':
-			//case 'invoke':
-			//case 'view':
-			//case 'stop':
-			case 'images':
-			case 'listfiles':
-			case 'download':
+			case 'filelist':
 			case 'deletefolder':
 			case 'deletefile':
+			case 'purge':
 				$vars['task'] = $segments[0];
+				$vars['controller'] = 'storage';
 			break;
 
 			default:
+				// This is an alias
+				// /tools/mytool => /resources/mytool
 				$vars['option'] = 'com_resources';
 				$vars['alias'] = $segments[0];
 			break;
 		}
 	}
-	if (isset($segments[1])) {
+
+	if (isset($segments[1])) 
+	{
 		switch ($segments[1])
 		{
+			case 'publish':
+			case 'install':
+			case 'retire':
+			case 'addrepo':
+				$vars['option'] = 'com_tools';
+				$vars['controller'] = 'admin';
+				$vars['app'] = $segments[0];
+				$vars['task'] = $segments[1];
+			break;
+
+			// Pipeline controller
+			case 'register':
+			case 'edit':
+			case 'save':
+			case 'update':
+			case 'message':
+			case 'cancel':
+			case 'create':
+			case 'versions':
+			case 'saveversion':
+			case 'finalizeversion':
+			case 'license':
+			case 'savelicense':
+			case 'finalize':
+			case 'releasenotes':
+			case 'savenotes':
+			case 'start':
+			case 'wiki':
+			case 'status':
+				$vars['option'] = 'com_tools';
+				$vars['controller'] = 'pipeline';
+				$vars['app'] = $segments[0];
+				$vars['task'] = $segments[1];
+			break;
+
+			// Resource controller
+			case 'preview':
+			case 'resource':
+				$vars['option'] = 'com_tools';
+				$vars['controller'] = 'resource';
+				$vars['app'] = $segments[0];
+				if ($segments[1] == 'preview')
+				{
+					$vars['task'] = $segments[1];
+				}
+			break;
+
+			// Sessions controller
 			case 'invoke':
 				$vars['option'] = 'com_tools';
+				$vars['controller'] = 'sessions';
 				$vars['app'] = $segments[0];
 				$vars['task'] = $segments[1];
 				if (isset($segments[2])) {
 					$vars['version'] = $segments[2];
 				}
 			break;
+
 			case 'session':
 			case 'share':
 			case 'unshare':
 			case 'stop':
 				$vars['option'] = 'com_tools';
+				$vars['controller'] = 'sessions';
 				$vars['app'] = $segments[0];
-				$vars['task'] = $segments[1];
-				if (isset($segments[2])) {
+				if ($segments[1] == 'session')
+				{
+					$vars['task'] = 'view';
+				}
+				else
+				{
+					$vars['task'] = $segments[1];
+				}
+				if (isset($segments[2])) 
+				{
 					$vars['sess'] = $segments[2];
 				}
 			break;
+
+			// Tools controller
 			case 'report':
-				$app->redirect(JRoute::_('index.php?option=com_support&task=tickets&find=group:app-' . $segments[0]),true);
+				$xhub =& Hubzero_Factory::getHub();
+				$xhub->redirect(JRoute::_('index.php?option=com_support&task=tickets&find=group:app-' . $segments[0]));
 			break;
+
 			case 'forge.png':
 				$vars['task'] = 'image';
+				$vars['controller'] = 'tools';
 			break;
+
 			case 'site_css.cs':
+			case 'site_css.css':
 				$vars['task'] = 'css';
+				$vars['controller'] = 'tools';
 			break;
+
 			default:
 				$vars['sess'] = $segments[1];
 			break;
 		}
-		/*switch ($segments[1]) 
-		{
-			case 'accessdenied':
-			case 'share':
-			case 'unshare':
-			case 'invoke':
-			case 'view':
-			case 'stop':
-				$vars['option'] = 'com_tools';
-				$vars['task'] = $segments[1];
-			break;
-			
-			default:
-				$vars['option'] = 'com_resources';
-				$vars['alias'] = $segments[0];
-			break;
-		}*/
 	}
 
 	return $vars;
 }
-
-?>

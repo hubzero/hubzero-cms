@@ -19,14 +19,14 @@
 -->
 
 <metadata>
-	<layout title="Standard File List Layout">
+	<layout title="Standard Storage Manager Layout">
 		<message>
-			<![CDATA[STANDARD FILE LIST LAYOUT DESC]]>
+			<![CDATA[STANDARD STORAGE MANAGER LAYOUT DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard File List Layout</name>
-		<description>STANDARD FILE LIST LAYOUT DESC</description>
+		<name>Standard Storage Manager Layout</name>
+		<description>STANDARD STORAGE MANAGER LAYOUT DESC</description>
 		<params>
 		</params>
 	</state>

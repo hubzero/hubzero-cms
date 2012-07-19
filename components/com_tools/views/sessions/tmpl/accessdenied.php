@@ -29,33 +29,20 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die( 'Restricted access' );
+?>
+<div id="error-wrap">
+	<div id="error-box" class="code-403">
+		<h2><?php echo JText::_('COM_TOOLS_ACCESSDENIED'); ?></h2>
+<?php if ($this->getError()) { ?>
+		<p class="error-reasons"><?php echo $this->getError(); ?></p>
+<?php } ?>
 
-if (JFactory::getConfig()->getValue('config.debug')) 
-{
-	error_reporting(E_ALL);
-	@ini_set('display_errors','1');
-}
-
-if (version_compare(JVERSION, '1.6', 'lt'))
-{
-	$jacl =& JFactory::getACL();
-	$jacl->addACL($option, 'manage', 'users', 'super administrator');
-	$jacl->addACL($option, 'manage', 'users', 'administrator');
-	$jacl->addACL($option, 'manage', 'users', 'manager');
-}
-
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'utils.php');
-
-$controllerName = JRequest::getCmd('controller', 'tools');
-if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
-{
-	$controllerName = 'tools';
-}
-require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = 'ToolsController' . ucfirst($controllerName);
-
-// Instantiate controller
-$controller = new $controllerName();
-$controller->execute();
-$controller->redirect();
+		<p>The majority of tools are Open Source and freely available to the public. However, this particular tool has restricted access.</p>
+		<h3>How do I fix this?</h3>
+		<ul>
+			<li>If you feel that you should be able to access this tool, please <a href="<?php echo JRoute::_('index.php?option=com_support&controller=tickets&task=new'); ?>">contact us</a>, and we will check the permissions on your account.</li>
+			<li>You might also try <a href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">browsing through other tools</a> on this site, to see if there is another freely available tool that would work just as well for you.</li>
+		</ul>
+	</div><!-- / #error-box -->
+</div><!-- / #error-wrap -->

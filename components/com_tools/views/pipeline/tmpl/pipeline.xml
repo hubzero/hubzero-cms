@@ -19,14 +19,14 @@
 -->
 
 <metadata>
-	<layout title="Standard File List Layout">
+	<layout title="Tool Development Pipeline">
 		<message>
-			<![CDATA[STANDARD FILE LIST LAYOUT DESC]]>
+			<![CDATA[Tool Development Pipeline]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard File List Layout</name>
-		<description>STANDARD FILE LIST LAYOUT DESC</description>
+		<name>Tool Development Pipeline</name>
+		<description>Tool Development Pipeline</description>
 		<params>
 		</params>
 	</state>

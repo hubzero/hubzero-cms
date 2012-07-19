@@ -29,33 +29,15 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die( 'Restricted access' );
+?>
+<div class="explaination">
+	<h4><?php echo JText::_('AUTHORS_NO_LOGIN'); ?></h4>
+	<p><?php echo JText::_('AUTHORS_NO_LOGIN_EXPLANATION'); ?></p>
+</div>
+<fieldset>
+	<h3><?php echo JText::_('AUTHORS_AUTHORS'); ?></h3>
 
-if (JFactory::getConfig()->getValue('config.debug')) 
-{
-	error_reporting(E_ALL);
-	@ini_set('display_errors','1');
-}
+	<iframe name="authors" id="authors" src="index.php?option=<?php echo $this->option; ?>&amp;controller=authors&amp;rid=<?php echo $this->row->id; ?>&amp;tmpl=component&amp;version=<?php echo $this->version; ?>" width="100%" height="400" frameborder="0"></iframe>
 
-if (version_compare(JVERSION, '1.6', 'lt'))
-{
-	$jacl =& JFactory::getACL();
-	$jacl->addACL($option, 'manage', 'users', 'super administrator');
-	$jacl->addACL($option, 'manage', 'users', 'administrator');
-	$jacl->addACL($option, 'manage', 'users', 'manager');
-}
-
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'utils.php');
-
-$controllerName = JRequest::getCmd('controller', 'tools');
-if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
-{
-	$controllerName = 'tools';
-}
-require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = 'ToolsController' . ucfirst($controllerName);
-
-// Instantiate controller
-$controller = new $controllerName();
-$controller->execute();
-$controller->redirect();
+</fieldset><div class="clear"></div>
