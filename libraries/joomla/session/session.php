@@ -447,6 +447,15 @@ class JSession extends JObject
 		session_cache_limiter('none');
 		session_start();
 
+		/* BEGIN: HUBzero Extension to regenerate session id if passed a session id that no longer exists */
+		if ($_SESSION === array())
+		{
+			session_destroy();
+			session_id( $this->_createId() );
+			session_start();
+		}
+		/* END: HUBzero Extension to regenerate session id if passed a session id that no longer exists */
+		
 		// Send modified header for IE 6.0 Security Policy
 		header('P3P: CP="NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM"');
 
