@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           components/com_contribute/views/thanks/tmpl/default.xml
+@file           components/com_contribute/views/steps/tmpl/attachments.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Submit Contribution Thanks Layout">
+	<layout title="List attachments">
 		<message>
-			<![CDATA[STANDARD SUBMIT CONTRIBUTION THANKS DESC]]>
+			<![CDATA[List attachments]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Submit Contribution Thanks Layout</name>
-		<description>STANDARD SUBMIT CONTRIBUTION THANKS DESC</description>
+		<name>List attachments</name>
+		<description>List attachments</description>
 		<params>
 		</params>
 	</state>

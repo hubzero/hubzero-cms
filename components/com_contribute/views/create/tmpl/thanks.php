@@ -31,16 +31,34 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<div id="content-header" class="full">
+<div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
+</div><!-- / #content-header -->
+
+<div id="content-header-extra">
+	<p>
+		<a class="add" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=start'); ?>">
+			<?php echo JText::_('New submission'); ?>
+		</a>
+	</p>
 </div><!-- / #content-header -->
 
 <div class="main section">
 <?php if ($this->getError()) { ?>
 	<p class="warning"><?php echo $this->getError(); ?></p>
 <?php } ?>
-<?php
-ximport('Hubzero_Module_Helper');
-Hubzero_Module_Helper::displayModules('force_mod');
-?>
+<?php if ($this->config->get('autoapprove') == 1) { ?>
+		<p class="passed">Thank you for your contribution! You may view your contribution <a href="<?php echo JRoute::_('index.php?option=com_resources&id='.$this->resource->id); ?>">here</a>.</p>
+<?php } else { ?>
+		<p class="passed">Thank you for your contribution! All contributions must undergo a review process. If accepted, you will be notified when it is available from our <a href="<?php echo JRoute::_('index.php?option=com_resources'); ?>">resources</a>.</p>
+<?php } ?>
+	<p>Contribution submitted:</p>
+	<p>
+		<strong>Title:</strong> <?php echo stripslashes($this->resource->title); ?><br />
+		<strong>ID#:</strong> <?php echo $this->resource->id; ?><br />
+	</p>
+	<p class="adminoptions">
+		<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=start'); ?>">Start a new submission</a> or 
+		<a href="<?php echo JRoute::_('index.php?option='.$this->option); ?>">Return to start</a>
+	</p>
 </div><!-- / .main section -->

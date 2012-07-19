@@ -42,7 +42,7 @@ if (count($matches) > 0)
 {
 	foreach ($matches as $match)
 	{
-		$data[$match[1]] = ContributeController::_txtUnpee($match[2]);
+		$data[$match[1]] = ContributeControllerCreate::_txtUnpee($match[2]);
 	}
 }
 
@@ -54,8 +54,16 @@ include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'model
 $elements = new ResourcesElements($data, $type->customFields);
 $fields = $elements->render();
 ?>
-<div id="content-header" class="full">
+<div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
+</div><!-- / #content-header -->
+
+<div id="content-header-extra">
+	<p>
+		<a class="add" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=start'); ?>">
+			<?php echo JText::_('New submission'); ?>
+		</a>
+	</p>
 </div><!-- / #content-header -->
 
 <div class="main section">
@@ -65,13 +73,14 @@ $view->option = $this->option;
 $view->step = $this->step;
 $view->steps = $this->steps;
 $view->id = $this->id;
+$view->resource = $this->row;
 $view->progress = $this->progress;
 $view->display();
 ?>
 <?php if ($this->getError()) { ?>
 	<p class="warning"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option); ?>" method="post" id="hubForm" accept-charset="utf-8">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=start&step=' . $this->next_step . '&id=' . $this->id); ?>" method="post" id="hubForm" accept-charset="utf-8">
 		<div class="explaination">
 			<p><?php echo JText::_('COM_CONTRIBUTE_COMPOSE_EXPLANATION'); ?></p>
 
@@ -87,7 +96,7 @@ $view->display();
 
 			<label for="field-fulltext">
 				<?php echo JText::_('COM_CONTRIBUTE_COMPOSE_ABSTRACT'); ?>:
-				<textarea name="fulltext" id="field-fulltext" cols="50" rows="20"><?php echo ContributeController::_txtUnpee(stripslashes($this->row->fulltext)); ?></textarea>
+				<textarea name="fulltext" id="field-fulltext" cols="50" rows="20"><?php echo ContributeControllerCreate::_txtUnpee(stripslashes($this->row->fulltext)); ?></textarea>
 			</label>
 		</fieldset><div class="clear"></div>
 <?php if ($fields) { ?>

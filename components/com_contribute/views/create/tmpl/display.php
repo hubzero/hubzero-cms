@@ -77,18 +77,18 @@ if (!$juser->get('guest')) {
 
 <?php if (!$juser->get('guest')) { ?>
 	<div class="four columns first">
-		<h2>In Progress</h2>
+		<h2><?php echo JText::_('In Progress'); ?></h2>
 	</div><!-- / .four columns first -->
 	<div class="four columns second third fourth">
 <?php
 		if ($submissions) {
 ?>
-		<table id="submissions" summary="Contributions in progress">
+		<table id="submissions" summary="<?php echo JText::_('Contributions in progress'); ?>">
 			<thead>
 				<tr>
-					<th>Title</th>
-					<th colspan="3">Associations</th>
-					<th colspan="2">Status</th>
+					<th scope="col"><?php echo JText::_('Title'); ?></th>
+					<th scope="col" colspan="3"><?php echo JText::_('Associations'); ?></th>
+					<th scope="col" colspan="2"><?php echo JText::_('Status'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -116,8 +116,8 @@ if (!$juser->get('guest')) {
 ?>
 				<tr class="<?php echo $cls; ?>">
 					<td><?php if ($submission->published == 2) { ?><a href="<?php echo JRoute::_('index.php?option=com_contribute&step=1&id='.$submission->id); ?>"><?php } ?><?php echo stripslashes($submission->title); ?><?php if ($submission->published == 2) { ?></a><?php } ?><br /><span class="type"><?php echo stripslashes($submission->typetitle); ?></span></td>
-					<td><?php if ($submission->published == 2) { ?><a href="<?php echo JRoute::_('index.php?option=com_contribute&step=2&id='.$submission->id); ?>"><?php } ?><?php echo count($attachments); ?> attachment(s)<?php if ($submission->published == 2) { ?></a><?php } ?></td>
-					<td><?php if ($submission->published == 2) { ?><a href="<?php echo JRoute::_('index.php?option=com_contribute&step=3&id='.$submission->id); ?>"><?php } ?><?php echo count($authors); ?> author(s)<?php if ($submission->published == 2) { ?></a><?php } ?></td>
+					<td><?php if ($submission->published == 2) { ?><a href="<?php echo JRoute::_('index.php?option=com_contribute&step=2&id='.$submission->id); ?>"><?php } ?><?php echo $attachments; ?> attachment(s)<?php if ($submission->published == 2) { ?></a><?php } ?></td>
+					<td><?php if ($submission->published == 2) { ?><a href="<?php echo JRoute::_('index.php?option=com_contribute&step=3&id='.$submission->id); ?>"><?php } ?><?php echo $authors; ?> author(s)<?php if ($submission->published == 2) { ?></a><?php } ?></td>
 					<td><?php if ($submission->published == 2) { ?><a href="<?php echo JRoute::_('index.php?option=com_contribute&step=4&id='.$submission->id); ?>"><?php } ?><?php echo count($tags); ?> tag(s)<?php if ($submission->published == 2) { ?></a><?php } ?></td>
 					<td>
 						<span class="<?php echo $state; ?> status"><?php echo $state; ?></span>

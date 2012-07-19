@@ -29,16 +29,78 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
+$attachments = array();
+$authors = array();
+$tags = array();
+$state = 'draft';
+if ($this->resource->id)
+{
+	$database =& JFactory::getDBO();
+	$ra = new ResourcesAssoc($database);
+	$rc = new ResourcesContributor($database);
+	$rt = new ResourcesTags($database);
+
+	switch ($this->resource->published)
+	{
+		case 1: $state = 'published';  break;  // published
+		case 2: $state = 'draft';      break;  // draft
+		case 3: $state = 'pending';    break;  // pending
+	}
+
+	$attachments = $ra->getCount($this->resource->id);
+
+	$authors = $rc->getCount($this->resource->id, 'resources');
+
+	$tags = $rt->getTags($this->resource->id);
+}
+?>
+<div class="meta-container">
+	<table class="meta" summary="<?php echo JText::_('Metadata for this entry'); ?>">
+		<thead>
+			<tr>
+				<th scope="col"><?php echo JText::_('Type'); ?></th>
+				<th scope="col"><?php echo JText::_('Title'); ?></th>
+				<th scope="col" colspan="3"><?php echo JText::_('Associations'); ?></th>
+				<th scope="col"><?php echo JText::_('Status'); ?></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>
+					<?php echo ($this->resource->getTypeTitle()) ? $this->escape(stripslashes($this->resource->getTypeTitle())) : JText::_('(none)'); ?>
+				</td>
+				<td>
+					<?php echo ($this->resource->title) ? $this->escape(Hubzero_View_Helper_Html::shortenText(stripslashes($this->resource->title), 150, 0)) : JText::_('(none)'); ?>
+				</td>
+				<td>
+					<?php echo $attachments; ?> attachment(s)
+				</td>
+				<td>
+					<?php echo $authors; ?> author(s)
+				</td>
+				<td>
+					<?php echo count($tags); ?> tag(s)
+				</td>
+				<td>
+					<span class="<?php echo $state; ?> status"><?php echo $state; ?></span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<ol id="steps">
+	<li id="start">
+		<a href="<?php echo ($this->progress['submitted'] == 1) ? JRoute::_('index.php?option=com_resources&id=' . $this->id) : JRoute::_('index.php?option=' . $this->option); ?>">
+			<?php echo JText::_('COM_CONTRIBUTE_START'); ?>
+		</a>
+	</li>
+<?php
 $laststep = (count($this->steps) - 1);
 
-$html  = '<ol id="steps">'."\n";
-if ($this->progress['submitted'] == 1) {
-	$html .= "\t".'<li id="start"><a href="'. JRoute::_('index.php?option=com_resources&id='.$this->id) .'">'.JText::_('COM_CONTRIBUTE_START').'</a></li>'."\n";
-} else {
-	$html .= "\t".'<li id="start"><a href="'. JRoute::_('index.php?option='.$this->option) .'">'.JText::_('COM_CONTRIBUTE_START').'</a></li>'."\n";
-}
+$html  = '';
 for ($i=1, $n=count( $this->steps ); $i < $n; $i++)
 {
 	$html .= "\t".'<li';
@@ -72,7 +134,7 @@ if ($this->progress['submitted'] != 1) {
 	}
 	$html .= '</li>'."\n";
 }
-$html .= '</ol>'."\n";
-$html .= '<div class="clear"></div>'."\n";
-
 echo $html;
+?>
+</ol>
+<div class="clear"></div>

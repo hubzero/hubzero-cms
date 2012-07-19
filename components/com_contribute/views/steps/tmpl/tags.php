@@ -31,8 +31,16 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<div id="content-header" class="full">
+<div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
+</div><!-- / #content-header -->
+
+<div id="content-header-extra">
+	<p>
+		<a class="add" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=start'); ?>">
+			<?php echo JText::_('New submission'); ?>
+		</a>
+	</p>
 </div><!-- / #content-header -->
 
 <div class="main section">
@@ -42,6 +50,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$view->step = $this->step;
 	$view->steps = $this->steps;
 	$view->id = $this->id;
+	$view->resource = $this->row;
 	$view->progress = $this->progress;
 	$view->display();
 ?>

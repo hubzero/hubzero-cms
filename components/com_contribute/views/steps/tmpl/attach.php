@@ -31,8 +31,16 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<div id="content-header" class="full">
+<div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
+</div><!-- / #content-header -->
+
+<div id="content-header-extra">
+	<p>
+		<a class="add" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=start'); ?>">
+			<?php echo JText::_('New submission'); ?>
+		</a>
+	</p>
 </div><!-- / #content-header -->
 
 <div class="main section">
@@ -42,13 +50,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$view->step = $this->step;
 	$view->steps = $this->steps;
 	$view->id = $this->id;
+	$view->resource = $this->row;
 	$view->progress = $this->progress;
 	$view->display();
 ?>
 <?php if ($this->getError()) { ?>
 	<p class="warning"><?php echo $this->getError(); ?></p>
 <?php } ?>
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option); ?>" method="get" id="hubForm">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=start&step=' . $this->next_step . '&id=' . $this->id); ?>" method="post" id="hubForm">
 		<div class="explaination">
 			<h4><?php echo JText::_('COM_CONTRIBUTE_ATTACH_WHAT_ARE_ATTACHMENTS'); ?></h4>
 			<p><?php echo JText::_('COM_CONTRIBUTE_ATTACH_EXPLANATION'); ?></p>
@@ -59,9 +68,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<fieldset>
 			<legend><?php echo JText::_('COM_CONTRIBUTE_ATTACH_ATTACHMENTS'); ?></legend>
 			<div class="field-wrap">
-				<iframe width="100%" height="280" frameborder="0" name="attaches" id="attaches" src="index.php?option=<?php echo $this->option; ?>&amp;task=attach&amp;id=<?php echo $this->id; ?>&amp;tmpl=component"></iframe>
+				<iframe width="100%" height="280" frameborder="0" name="attaches" id="attaches" src="index.php?option=<?php echo $this->option; ?>&amp;controller=attachments&amp;id=<?php echo $this->id; ?>&amp;tmpl=component"></iframe>
 			</div>
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 			<input type="hidden" name="step" value="<?php echo $this->next_step; ?>" />
 			<input type="hidden" name="id" value="<?php echo $this->id; ?>" />

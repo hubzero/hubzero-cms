@@ -236,7 +236,7 @@ class ResourcesHelper extends JObject
 
 		$this->_db->setQuery($sql);
 		$cons = $this->_db->loadObjectList();
-		if ($cons) 
+		/*if ($cons) 
 		{
 			foreach ($cons as $k => $c)
 			{
@@ -249,7 +249,7 @@ class ResourcesHelper extends JObject
 					$cons[$k]->org = $cons[$k]->xorg;
 				}
 			}
-		}
+		}*/
 		$this->_contributors = $cons;
 	}
 

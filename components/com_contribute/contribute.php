@@ -47,9 +47,17 @@ require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_r
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'contributor.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'controller.php');
 
 // Instantiate controller
-$controller = new ContributeController();
+$controllerName = JRequest::getCmd('controller', 'create');
+if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+{
+	$controllerName = 'create';
+}
+require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = 'ContributeController' . ucfirst(strtolower($controllerName));
+
+// Instantiate controller
+$controller = new $controllerName();
 $controller->execute();
 $controller->redirect();

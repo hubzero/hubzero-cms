@@ -190,10 +190,10 @@ HUB.Contribute = {
 	initialize: function() {
 		var $ = this.jQuery;
 		
-		if ($('#license-preview')) {
+		if ($('#license-preview').length > 0) {
 			$('#license-preview').css({'display':'block'});
 		}
-		if ($('#license')) {
+		if ($('#license').length > 0) {
 			if ($('#license').val() == 'custom') {
 				$('#license-text').css({'display':'inline-block'});
 				$('#license-preview').css({'display':'none'});
@@ -216,13 +216,22 @@ HUB.Contribute = {
 			});
 		}
 		
+		/*if ($('#authors').length > 0) {
+			console.log($('#authors').parent());
+			var container = $('#authors').parent();
+			var src = $('#authors').attr('src').replace('tmpl=component', 'no_html=1');
+			$.get(src, {}, function(data){
+				container.html(data);
+			});
+		}*/
+		
 		$('.ftitle').editable({
 			type:'text',
 			submit:'save',
 			cancel:'cancel',
 			editClass:'resultItem',
 			onSubmit: function() {
-				$.get('index.php?option=com_contribute&task=rename&no_html=1&id='+$('#pid').val()+'&name='+content.current);
+				$.get('index.php?option=com_contribute&controller=attachments&task=rename&no_html=1&id='+$('#pid').val()+'&name='+content.current);
 			}
 		});
 		//new eip($$('.ftitle'), 'index.php', {option: 'com_contribute', task: 'rename', no_html: 1});

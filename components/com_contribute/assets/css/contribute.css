@@ -20,7 +20,7 @@
 	#introduction {
 		margin: 0 -15px 3em -15px;
 		padding: 25px 15px 25px 120px;
-		background: #fbf8ea url("/components/com_contribute/images/contribute-large.gif") 30px 25px no-repeat;
+		background: #fbf8ea url("/components/com_contribute/assets/img/contribute-large.gif") 30px 25px no-repeat;
 		border-top: 2px solid #e7dac4;
 		border-bottom: 2px solid #e7dac4;
 		color: #7c7266;
@@ -225,10 +225,10 @@
 		padding: 0;
 	}
 	.up {
-		background: url("/components/com_contribute/images/order_up.gif") 0 0 no-repeat;
+		background: url("/components/com_contribute/assets/img/order_up.gif") 0 0 no-repeat;
 	}
 	.down {
-		background: url("/components/com_contribute/images/order_down.gif") 0 0 no-repeat;
+		background: url("/components/com_contribute/assets/img/order_down.gif") 0 0 no-repeat;
 	}
 	.order:hover {
 		border: none;

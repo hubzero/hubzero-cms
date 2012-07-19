@@ -29,15 +29,33 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 ?>
-<div id="content-header" class="full">
+<div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 </div><!-- / #content-header -->
 
+<div id="content-header-extra">
+	<p>
+		<a class="add" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=start'); ?>">
+			<?php echo JText::_('New submission'); ?>
+		</a>
+	</p>
+</div><!-- / #content-header -->
+
 <div class="main section">
+<?php
+	$view = new JView(array('name'=>'steps','layout'=>'steps'));
+	$view->option   = $this->option;
+	$view->step     = $this->step;
+	$view->steps    = $this->steps;
+	$view->id       = $this->id;
+	$view->resource = $this->row;
+	$view->progress = $this->progress;
+	$view->display();
+?>
 <?php if ($this->getError()) { ?>
-	<p class="warning"><?php echo $this->getError(); ?></p>
+	<p class="warning"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
 	<form name="hubForm" id="hubForm" method="post" action="index.php" class="contrib">
 		<div class="explaination">

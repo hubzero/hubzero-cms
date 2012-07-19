@@ -39,8 +39,16 @@ $rparams = new JParameter( $this->resource->params );
 $params = $this->config;
 $params->merge( $rparams );
 ?>
-<div id="content-header" class="full">
+<div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
+</div><!-- / #content-header -->
+
+<div id="content-header-extra">
+	<p>
+		<a class="add" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=start'); ?>">
+			<?php echo JText::_('New submission'); ?>
+		</a>
+	</p>
 </div><!-- / #content-header -->
 
 <div class="main section">
@@ -50,6 +58,7 @@ $params->merge( $rparams );
 	$view->step = $this->step;
 	$view->steps = $this->steps;
 	$view->id = $this->id;
+	$view->resource = $this->resource;
 	$view->progress = $this->progress;
 	$view->display();
 ?>

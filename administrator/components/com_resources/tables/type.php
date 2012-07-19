@@ -115,7 +115,22 @@ class ResourcesType extends JTable
 			$this->setError(JText::_('Your resource type must contain text.'));
 			return false;
 		}
+		if (!$this->alias)
+		{
+			$this->alias = $this->type;
+		}
+		$this->alias = $this->normalize($this->alias);
 		return true;
+	}
+
+	/**
+	 * Strip disallowed characters and make lowercase
+	 * 
+	 * @return     string
+	 */
+	public function normalize($txt)
+	{
+		return preg_replace("/[^a-zA-Z0-9]/", '', strtolower($txt));
 	}
 
 	/**

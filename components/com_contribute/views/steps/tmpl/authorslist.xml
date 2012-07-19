@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Contribute Step Authors List Layout">
+	<layout title="List authors">
 		<message>
-			<![CDATA[STANDARD CONTRIBUTE STEP AUTHORS LIST DESC]]>
+			<![CDATA[List authors]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Contribute Step Authors List Layout</name>
-		<description>STANDARD CONTRIBUTE STEP AUTHORS LIST DESC</description>
+		<name>List authors</name>
+		<description>List authors</description>
 		<params>
 		</params>
 	</state>

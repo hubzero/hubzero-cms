@@ -48,7 +48,7 @@ defined('_JEXEC') or die('Restricted access');
 			</fieldset>
 		</form>
 <?php if ($this->getError()) { ?>
-		<p class="error"><?php echo $this->getError(); ?></p>
+		<p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
 		<?php
 		$out = '';

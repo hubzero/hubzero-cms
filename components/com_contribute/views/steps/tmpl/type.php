@@ -33,8 +33,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $jconfig =& JFactory::getConfig();
 ?>
-<div id="content-header" class="full">
+<div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
+</div><!-- / #content-header -->
+
+<div id="content-header-extra">
+	<p>
+		<a class="main-page" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+			<?php echo JText::_('Main page'); ?>
+		</a>
+	</p>
 </div><!-- / #content-header -->
 
 <?php if ($this->getError()) { ?>
