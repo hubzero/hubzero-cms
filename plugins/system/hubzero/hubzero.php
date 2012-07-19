@@ -32,20 +32,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-/**
- * Short description for 'ximport'
- * 
- * Long description (if any) ...
- * 
- * @param  string $path Parameter description (if any) ...
- * @return string Return description (if any) ...
- */
-function ximport($path) {
-	if (substr(strtolower($path),0,7) == 'hubzero') {
-		return JLoader::import('.' . str_replace('_', '.', $path), JPATH_ROOT . DS . 'libraries');
-	}
-}
-
+JLoader::import('Hubzero.loader');
 ximport('Hubzero_Factory');
 
 jimport('joomla.application.router');
@@ -1181,6 +1168,7 @@ class plgSystemHubzero extends JPlugin
 
 		// Get routing mode
 		$options['mode'] = $app->getCfg('sef');
+		
 		if($app->getCfg('sef_rewrite')) {
 			$options['mode'] = 2;
 		}
@@ -1190,69 +1178,123 @@ class plgSystemHubzero extends JPlugin
 			$router = new XRouter($options);
 			$router->setMode($app->getCfg('sef'));
 		}
+		
+		// Get the user object
+		$user =& JFactory::getUser();
 
 		// Get the session object
 		$session =& JFactory::getSession();
-		$sid = $session->getId();
-		$start = $session->get('session.timer.start');
-		$now = $session->get('session.timer.now');
-		$last = $session->get('session.timer.last');
 
-		$sname = $session->getName();
-
-		$lifetime = $app->getCfg('lifetime') * 60;
-		$expired = ($now - $last) >= $lifetime;
-		$newsession = ($start == $now) && ($start == $last);
-		$knownsession = !empty($_COOKIE[$sname]) && $_COOKIE[$sname] == $sid;
-
-		$myuser = $session->get('user');
-		$jid = (is_object($myuser)) ? $myuser->get('id') : '0';
-
-		if (empty($jid))
+		if ($session->isNew())
 		{
-			apache_note('userid','-');
-			apache_note('auth','-');
-		}
-		else
-		{
-			apache_note('userid',$jid);
-			apache_note('auth','session');
-		}
-
-		apache_note('jsession',$sid);
-
-		if ( empty($jid) )
-		{
-			ximport('Hubzero_Log');
+			// Transfer tracking cookie data to session
+			
 			jimport('joomla.utilities.utility');
+			jimport('joomla.utilities.simplecrypt');
 			jimport('joomla.user.helper');
-			$hash = JUtility::getHash('XHUB_REMEMBER');
-			$username = '-';
+					
+			$hash = JUtility::getHash( JFactory::getApplication()->getName().':tracker');
+							
+			$crypt = new JSimpleCrypt();
+	
 			if ($str = JRequest::getString($hash, '', 'cookie', JREQUEST_ALLOWRAW | JREQUEST_NOTRIM))
 			{
-				jimport('joomla.utilities.simplecrypt');
-
-				//Create the encryption key, apply extra hardening using the user agent string
-				$key = JUtility::getHash(@$_SERVER['HTTP_USER_AGENT']);
-
-				//$crypt = new JSimpleCrypt($key);
-				$crypt = new JSimpleCrypt();
-				$str = $crypt->decrypt($str);
-				$user = @unserialize($str);
-				// We should store userid not username in cookie, will save us a database query here
-				$username = $user['username'];
-
-				if ($id = JUserHelper::getUserId($username)) {
-					$myuser = JUser::getInstance($id);
-					if (is_object($myuser))
-					{
-						apache_note('userid',$myuser->get('id'));
-						apache_note('auth','cookie');
-						$authlog = Hubzero_Factory::getAuthLogger();
-						$authlog->logAuth( $username . ' ' . $_SERVER['REMOTE_ADDR'] . ' detect');
-					}
+				$sstr = $crypt->decrypt($str);
+				$tracker = @unserialize($sstr);
+					
+				if ($tracker === false) // old tracking cookies encrypted with UA which is too short term for a tracking cookie
+				{
+					//Create the encryption key, apply extra hardening using the user agent string
+					$key = JUtility::getHash(@$_SERVER['HTTP_USER_AGENT']);
+					$crypt = new JSimpleCrypt($key);
+					$sstr = $crypt->decrypt($str);
+					$tracker = @unserialize($sstr);
 				}
 			}
+	
+			if (!is_array($tracker))
+			{
+				$tracker = array();
+			}
+				
+			if (empty($tracker['user_id']))
+			{
+				$session->clear('tracker.user_id');
+			}
+			else
+			{
+				$session->set('tracker.user_id', $tracker['user_id']);
+			}
+			
+			if (empty($tracker['username']))
+			{
+				$session->clear('tracker.username');
+			}
+			else
+			{
+				$session->set('tracker.username', $tracker['username']);
+			}
+
+			if (empty($tracker['sid']))
+			{
+				$session->clear('tracker.psid');
+			}
+			else
+			{
+				$session->set('tracker.psid', $tracker['sid']);
+			}
+			
+			$session->set('tracker.sid', $session->getId());
+				
+			if (empty($tracker['ssid']))
+			{
+				$session->set('tracker.ssid', $session->getId());
+			}
+			else
+			{
+				$session->set('tracker.ssid', $tracker['ssid']);
+			}
+				
+			if (empty($tracker['rsid']))
+			{
+				$session->set('tracker.rsid', $session->getId());
+			}
+			else 
+			{
+				$session->set('tracker.rsid', $tracker['rsid']);
+			}
+				
+			// log tracking cookie detection to auth log
+			ximport('Hubzero_Log');
+			$username = (empty($tracker['username'])) ? '-' : $tracker['username'];
+			$user_id = (empty($tracker['user_id'])) ? 0 : $tracker['user_id'];
+			Hubzero_Factory::getAuthLogger()->logAuth( $username . ' ' . $_SERVER['REMOTE_ADDR'] . ' detect');
+	
+			// set new tracking cookie with current data
+			$tracker = array();
+			$tracker['user_id'] = $session->get('tracker.user_id');
+			$tracker['username'] = $session->get('tracker.username');
+			$tracker['sid']  = $session->get('tracker.sid');
+			$tracker['rsid'] = $session->get('tracker.rsid');
+			$tracker['ssid'] = $session->get('tracker.ssid');
+			$cookie = $crypt->encrypt(serialize($tracker));
+			$lifetime = time() + 365*24*60*60;
+			setcookie($hash, $cookie, $lifetime, '/');
+		}
+		
+		// all page loads set apache log data
+		
+		apache_note('jsession', $session->getId());
+		
+		if ($user->get('id') != 0)
+		{
+			apache_note('auth','session');
+			apache_note('userid', $user->get('id'));
+		}
+		else if (!empty($tracker['user_id']))
+		{
+			apache_note('auth','cookie');
+			apache_note('userid', $tracker['user_id']);
 		}
 	}
 

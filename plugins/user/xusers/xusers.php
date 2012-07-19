@@ -95,34 +95,72 @@ class plgUserXusers extends JPlugin
 			return JError::raiseWarning('SOME_ERROR_CODE', JText::_('E_JOOMLA_USER_PLUGIN_FAILED'));
 		}
 
-		$authlog = Hubzero_Factory::getAuthLogger();
+		// log login to auth log
+		Hubzero_Factory::getAuthLogger()->logAuth($juser->get('id') . ' [' . $juser->get('username') . '] ' . $_SERVER['REMOTE_ADDR'] . ' login');
+		
+		// correct apache log data
+		apache_note('auth','login');
 
-		if ($juser->get('id') == '0') {
-			$authlog->logAuth($juser->get('id') . ' ' . $_SERVER['REMOTE_ADDR'] . 'auth');
-			apache_note('auth','auth');
-
+		// update session tracking with new data
+		$session = &JFactory::getSession();
+		
+		$session->set('tracker.user_id', $juser->get('id'));
+		
+		$session->set('tracker.username', $juser->get('username'));
+		
+		if ($session->get('tracker.sid') == '')
+		{
+			$session->set('tracker.sid', $session->getId());
 		}
-		else {
-			$authlog->logAuth($juser->get('id') . ' [' . $juser->get('username') . '] ' . $_SERVER['REMOTE_ADDR'] . ' login');
-			apache_note('auth','login');
+
+		$session->set('tracker.psid', $session->get('tracker.sid'));
+					
+		if ($session->get('tracker.rsid') == '')
+		{
+			$session->set('tracker.rsid', $session->getId());
 		}
-
-		// drop a hub cookie
-
+		
+		if ( ($session->get('tracker.user_id') != $juser->get('id')) || ($session->get('tracker.ssid') == '') )
+		{
+			$session->set('tracker.ssid', $session->getId());
+		}
+		
+		if (empty($user['type']))
+		{
+			$session->clear('session.authenticator');
+		}
+		else
+		{
+			$session->set('session.authenticator', $user['type']);
+		}
+		
+		if (isset($options['silent']) && $options['silent'])
+		{
+			$session->set('session.source','cookie');
+		}
+		else
+		{
+			$session->set('session.source','user');
+		}
+		
+		// update tracking data with changes related to login		
 		jimport('joomla.utilities.simplecrypt');
 		jimport('joomla.utilities.utility');
-
-		//Create the encryption key, apply extra hardening using the user agent string
-
-		$key = JUtility::getHash(@$_SERVER['HTTP_USER_AGENT']);
-
-		$crypt = new JSimpleCrypt($key);
-		$ruser['username'] = $juser->get('username');
-		$ruser['id'] = $juser->get('id');
-		$rcookie = $crypt->encrypt(serialize($ruser));
+		
+		$hash = JUtility::getHash( JFactory::getApplication()->getName().':tracker');
+		
+		$crypt = new JSimpleCrypt();
+		
+		$tracker = array();
+		$tracker['user_id'] = $session->get('tracker.user_id');
+		$tracker['username'] = $session->get('tracker.username');
+		$tracker['sid']  = $session->getId();
+		$tracker['rsid'] = $session->get('tracker.rsid', $tracker['sid']);
+		$tracker['ssid'] = $session->get('tracker.ssid', $tracker['sid']);
+		$cookie = $crypt->encrypt(serialize($tracker));
 		$lifetime = time() + 365*24*60*60;
-		setcookie(JUtility::getHash('XHUB_REMEMBER'), $rcookie, $lifetime, '/');
-
+		setcookie($hash, $cookie, $lifetime, '/');
+		
 		/* Mark registration as incomplete so it gets checked on next page load */
 
 		$username = $juser->get('username');

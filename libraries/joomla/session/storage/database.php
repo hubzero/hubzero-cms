@@ -88,16 +88,103 @@ class JSessionStorageDatabase extends JSessionStorage
 
 		$session = & JTable::getInstance('session');
 
-		$session->data = $session_data;
+		// START: HUBzero Session Optimization when using database handler
+		// All session updates/inserts have been deferred to this handler so we
+		// need to pull extra data for the table out of the session object
+		/*
+		if ($session->load($id)) {
+			$session->data = $session_data;
+			$session->store();
+		} else {
+			// if load failed then we assume that it is because
+			// the session doesn't exist in the database
+			// therefore we use insert instead of store
+			$app = &JFactory::getApplication();
+			$session->data = $session_data;
+			$session->insert($id, $app->getClientId());
+		}
+		*/
+
+		$client_id = isset($_SESSION['__default']['session.client_id']) ? (int)$_SESSION['__default']['session.client_id'] : 'NULL';
+
+		$session->username   = null; // set to null so we don't overwrite
 		$session->session_id = $id;
-		$session->guest 	= null; // set to null so we don't overwrite
-		$session->username = null; // set to null so we don't overwrite
-		$session->gid 		= null; // set to null so we don't overwrite
-				
+		$session->guest      = null; // set to null so we don't overwrite
+		$session->userid     = null; // set to null so we don't overwrite
+		$session->usertype   = null; // set to null so we don't overwrite
+		$session->gid        = null; // set to null so we don't overwrite
+		$session->client_id  = null; // set to null so we don't overwrite
+		$session->data       = $session_data;
+		
+		if (!empty($_SESSION['__default']['user']))
+		{
+			$user = $_SESSION['__default']['user'];
+			
+			$session->username   = $user->username;
+			$session->guest      = $user->guest;
+			$session->userid     = (int) $user->id;
+			$session->usertype   = $user->usertype;
+			$session->gid        = $user->gid;
+		}
+		
 		if (!$session->update())
 		{
-			$session->insert($id, JFactory::getApplication()->getClientId());
+			$session->insert($id, $client_id);
+		
+			$db = JFactory::getDBO();
+			
+			$ip   = (!empty($_SERVER['REMOTE_ADDR'])) ? $db->Quote($_SERVER['REMOTE_ADDR']) : 'NULL';
+
+			$psid = 'NULL';
+			
+			if (!empty($_SESSION['__default']['tracker.psid'])) 
+			{
+				if ($_SESSION['__default']['tracker.psid'] != $id)
+				{
+					$psid = $db->Quote($_SESSION['__default']['tracker.psid']);					
+				}
+			}
+			
+			$source = (!empty($_SESSION['__default']['session.source'])) ? $db->Quote($_SESSION['__default']['session.source']) : 'NULL';
+			
+			if (empty($user->id))
+			{
+				if (!empty($_SESSION['__default']['tracker.user_id']))
+				{
+					$user_id = $_SESSION['__default']['tracker.user_id'];
+					$source = $db->Quote('tracking'); 
+				}
+				else
+				{
+					$user_id = null;
+				}
+			}
+			else
+			{
+				$user_id = (int) $user->id;
+			}
+			
+			$rsid = (!empty($_SESSION['__default']['tracker.rsid'])) ? $db->Quote($_SESSION['__default']['tracker.rsid']) : 'NULL';
+			$ssid = (!empty($_SESSION['__default']['tracker.ssid'])) ? $db->Quote($_SESSION['__default']['tracker.ssid']) : 'NULL';
+			$user_id = (!empty($user_id)) ? (int) $user_id : 'NULL';
+
+			$authenticator = (!empty($_SESSION['__default']['session.authenticator'])) ? $db->Quote($_SESSION['__default']['session.authenticator']) : 'NULL';
+						
+			$db->setQuery("INSERT INTO #__session_log (clientid, session_id, psid, rsid, ssid, user_id, authenticator, source, ip, created) VALUES (" .
+							$client_id . ", " .
+							$db->Quote($id) . ", " .
+							$psid . ", " .
+							$rsid . ", " .
+							$ssid . ", " .
+							$user_id . ", " .
+							$authenticator . ", " .
+							$source . ", " .
+							$ip . ", " .
+							"NOW());");
+			
+			$db->query();
 		}
+		// END: HUBzero Session Optimization when using database handler
 
 		return true;
 	}
