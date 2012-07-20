@@ -111,7 +111,7 @@ WYKIWYG.converter = function() {
 			{
 				patterns: 'br',
 				type: 'void',
-				replacement: '\n'
+				replacement: '[[br]]\n'
 			},
 			{
 				patterns: 'h([1-6])',
@@ -561,6 +561,7 @@ WYKIWYG.converter = function() {
 
 			// Do hard breaks:
 			text = text.replace(/  +\n/g," <br />\n");
+			text = text.replace(/\[\[br\]\]/gi,"<br />");
 
 			return text;
 		}
@@ -1459,7 +1460,7 @@ WYKIWYG.converter = function() {
 				function ($0,$1,$2) { 
 					text = $0.substring(1,$0.length); 
 					while (text.length>0 && text.charAt(text.length-1)=='.') {
-						text = text.substring(0,s.length-1);
+						text = text.substring(0,text.length-1);
 					}
 					return " " + text.link(text); 
 				}
