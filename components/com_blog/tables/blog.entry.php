@@ -474,14 +474,18 @@ class BlogEntry extends JTable
 		{
 			switch ($filters['state'])
 			{
-				case 'public':
-					$query .= " AND m.state=1 AND u.public=1 ";
+				case 'all':
+					$query .= " AND m.state>=0";
 				break;
 				case 'registered':
 					$query .= " AND m.state>0";
 				break;
 				case 'private':
 					$query .= " AND m.state=0";
+				break;
+				case 'public':
+				default:
+					$query .= " AND m.state=1 AND u.public=1 ";
 				break;
 			}
 		}

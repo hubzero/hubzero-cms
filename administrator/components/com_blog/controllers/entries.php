@@ -272,7 +272,7 @@ class BlogControllerEntries extends Hubzero_Controller
 	 * 
 	 * @return     void
 	 */
-	public function removeTask()
+	public function deleteTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');

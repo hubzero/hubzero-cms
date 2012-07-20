@@ -179,15 +179,14 @@ class BlogControllerEntries extends Hubzero_Controller
 		$this->view->filters['group_id'] = 0;
 		$this->view->filters['search']   = JRequest::getVar('search', '');
 
-		if ($this->juser->get('guest')) 
+		$this->view->filters['state'] = 'public';
+		if (!$this->juser->get('guest')) 
 		{
-			$this->view->filters['state'] = 'public';
-		} 
-		else 
-		{
-			if (!$this->view->config->get('access-manage-component')) 
+			$this->view->filters['state'] = 'registered';
+
+			if ($this->view->config->get('access-manage-component')) 
 			{
-				$this->view->filters['state'] = 'registered';
+				$this->view->filters['state'] = 'all';
 			}
 		}
 
@@ -338,7 +337,7 @@ class BlogControllerEntries extends Hubzero_Controller
 
 		// Check authorization
 		if (($this->view->row->state == 2 && $this->juser->get('guest')) 
-		 || ($this->view->row->state == 0 && !$this->view->config->get('access-view-entry'))) 
+		 || ($this->view->row->state == 0 && !$this->view->config->get('access-manage-component'))) 
 		{
 			JError::raiseError(403, JText::_('COM_BLOG_NOT_AUTH'));
 			return;
@@ -560,11 +559,9 @@ class BlogControllerEntries extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for '_delete'
+	 * Mark an entry as deleted
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function deleteTask()
 	{
@@ -638,32 +635,6 @@ class BlogControllerEntries extends Hubzero_Controller
 		{
 			$this->setError($entry->getError());
 		}
-		// Delete all comments on an entry
-		/*if (!$entry->deleteComments($id)) 
-		{
-			$this->setError($entry->getError());
-			return $this->_browse();
-		}
-
-		// Delete all associated content
-		if (!$entry->deleteTags($id)) 
-		{
-			$this->setError($entry->getError());
-			return $this->_browse();
-		}
-
-		// Delete all associated content
-		if (!$entry->deleteFiles($id)) 
-		{
-			$this->setError($entry->getError());
-			return $this->_browse();
-		}
-
-		// Delete the entry itself
-		if (!$entry->delete($id)) 
-		{
-			$this->setError($entry->getError());
-		}*/
 
 		// Return the topics list
 		$this->setRedirect(
