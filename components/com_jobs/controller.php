@@ -1586,7 +1586,7 @@ class JobsController extends Hubzero_Controller
 		
 		// Get JS
 		$document =& JFactory::getDocument();
-		$document->addScript('components' . DS . $this->_option . DS . 'js' . DS . 'calendar.rc4.js');
+		//$document->addScript('components' . DS . $this->_option . DS . 'js' . DS . 'calendar.rc4.js');
 		$document->addStyleSheet('components' . DS . 'com_events' . DS . 'calendar.css');	
 
 		$jt = new JobType($database);
