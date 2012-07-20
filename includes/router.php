@@ -74,6 +74,125 @@ class JRouterSite extends JRouter
 
 		$vars += parent::parse($uri);
 
+		/* START: HUBzero Extensions Follow to force registration and email confirmation */
+		$juser = &JFactory::getUser();
+
+		if (!$juser->get('guest'))
+		{
+			$session =& JFactory::getSession();
+			$registration_incomplete = $session->get('registration.incomplete');
+
+			if ($registration_incomplete)
+			{
+				if (($vars['option'] == 'com_user'))
+				{
+					if (($vars['view'] == 'logout') || ($vars['task'] == 'logout'))
+						return $vars;
+				}
+
+				if ($vars['option'] == 'com_register') // register component can be accessed with incomplete registration
+				{
+					return $vars;
+				}
+
+				if ($uri->getPath() != 'legal/terms')
+				{
+					$vars = array();
+
+					if ($juser->get('tmp_user')) // joomla tmp users
+					{
+						$vars['option'] = 'com_register';
+						$vars['task']	= 'create';
+						$vars['act']	= '';
+					}
+					else if (substr($juser->get('email'), -8) == '@invalid') // force auth_link users to registration update page
+					{
+						$vars['option'] = 'com_register';
+						$vars['task']	= 'update';
+						$vars['act']	= '';
+					}
+					else // otherwise, send to profile to fill in missing info
+					{
+						$vars['option'] = 'com_members';
+						$vars['id']		= $juser->get("id");
+						$vars['active'] = 'profile';
+					}
+
+					$this->setVars($vars);
+					JRequest::set($vars, 'get', true );  // overwrite existing
+					return $vars;
+				}
+			}
+
+			$xprofile = &Hubzero_Factory::getProfile();
+
+			if (is_object($xprofile) && ($xprofile->get('emailConfirmed') != 1) && ($xprofile->get('emailConfirmed') != 3))
+			{
+				if ($vars['option'] == 'com_user')
+				{
+					if (($vars['view'] == 'logout') || ($vars['task'] == 'logout'))
+						return $vars;
+				}
+				else if ($uri->getPath() == 'legal/terms')
+				{
+					return $vars;
+				}
+				else if ($vars['option'] == 'com_register')
+				{
+					if (!empty($vars['task']))
+						if ( ($vars['task'] == 'unconfirmed') || ($vars['task'] == 'change') || ($vars['task'] == 'resend') || ($vars['task'] == 'confirm') )
+						return $vars;
+				}
+
+				$vars = array();
+				$vars['option'] = 'com_register';
+				$vars['task'] = 'unconfirmed';
+
+				$this->setVars($vars);
+				JRequest::set($vars, 'get', true ); // overwrite existing
+
+				return $vars;
+			}
+
+			$badpassword = $session->get('badpassword',false);
+			$expiredpassword = $session->get('expiredpassword',false);
+
+			if ($badpassword || $expiredpassword) {
+				if ($vars['option'] == 'com_members' && $vars['task'] == 'changepassword') {
+					return $vars;
+				}
+
+				if ($vars['option'] == 'com_user' && $vars['view'] == 'logout') {
+					return $vars;
+				}
+
+				if ($vars['option'] == 'com_support' && $vars['task'] == 'save') {
+					return $vars;
+				}
+
+				// @FIXME: should double check shadowFlag here in case password gets chanegd
+				// out of band.
+
+				// @FIXME: should we clear POST and GET data
+
+				$vars = array();
+				$vars['option'] = 'com_members';
+				$vars['task'] = 'changepassword';
+
+				if ($badpassword) {
+					$vars['message'] = "Your password does not meet current site requirements. Please change your password now.";
+				}
+
+				if ($expiredpassword) {
+					$vars['message'] = "Your password has expired. Please change your password now.";
+				}
+
+				$this->setVars($vars);
+				JRequest::set($vars, 'get', true ); // overwrite existing
+			}
+		}
+		/* END: HUBzero Extensions Follow to force registration and email confirmation */
+
 		return $vars;
 	}
 
@@ -107,6 +226,18 @@ class JRouterSite extends JRouter
 
 		//Add basepath to the uri
 		$uri->setPath(JURI::base(true).'/'.$route);
+
+		/* START: HUBzero Extension for SEF Groups */
+		if (!empty($_SERVER['REWROTE_FROM']))
+		{
+			if (stripos($uri->toString(), $_SERVER['REWROTE_TO']->getPath()) !== false)
+			{
+				$uri->setPath(str_replace($_SERVER['REWROTE_TO']->getPath(),'',$uri->getPath()));
+				$uri->setHost($_SERVER['REWROTE_FROM']->getHost());
+				$uri->setScheme($_SERVER['REWROTE_FROM']->getScheme());
+			}
+		}
+		/* END: HUBzero Extension for SEF Groups */
 
 		return $uri;
 	}
@@ -159,6 +290,51 @@ class JRouterSite extends JRouter
 	function _parseSefRoute(&$uri)
 	{
 		$vars   = array();
+	
+		/* START: HUBzero Extension for SEF Groups */
+		$app = JFactory::getApplication();
+
+		if ($app->getCfg('sef_groups'))
+		{
+			$servername = rtrim(JURI::base(),'/');
+
+			$serveruri = JURI::getInstance($servername);
+			$sfqdn = $serveruri->getHost();
+			$rfqdn = $uri->getHost();
+
+			if ($rfqdn != $sfqdn)
+			{
+				list($rhostname, $rdomainname) = explode('.', $rfqdn, 2);
+				list($shostname, $sdomainname) = explode('.', $sfqdn, 2);
+
+				if ( ($rdomainname == $sdomainname) || ($rdomain = $sfqdn))
+				{
+					ximport('Hubzero_Group');
+					$suri = JURI::getInstance();
+					$group = Hubzero_Group::getInstance($rhostname);
+
+					if (!empty($group) && ($group->type == 3)) // only special groups get internal redirection abilities
+					{
+						$_SERVER['REWROTE_FROM'] = clone($suri);
+						$uri->setHost($sfqdn);
+						$uri->setPath('groups/'.$rhostname.'/'.$uri->getPath());
+						$suri->setHost($sfqdn);
+						$suri->setPath('/groups/'.$rhostname.'/'.$suri->getPath());
+						$_SERVER['HTTP_HOST'] = $suri->getHost();
+						$_SERVER['SERVER_NAME'] = $suri->getHost();
+						$_SERVER['SCRIPT_URI'] = $suri->toString(array('scheme','host','port','path'));
+						$_SERVER['REDIRECT_SCRIPT_URI'] = $suri->toString(array('scheme','host','port','path'));
+						$_SERVER['REDIRECT_SCRIPT_URL'] = $suri->getPath();
+						$_SERVER['REDIRECT_URL'] = $suri->getPath();
+						$_SERVER['SCRIPT_URL'] = $suri->getPath();
+						$_SERVER['REQUEST_URI'] = $suri->toString(array('path','query','fragment'));
+						$suri->setPath('/groups/'.$rhostname);
+						$_SERVER['REWROTE_TO'] = clone($suri);
+					}
+				}
+			}
+		}
+		/* END: HUBzero Extension for SEF Groups */
 
 		$menu  =& JSite::getMenu(true);
 		$route = $uri->getPath();
@@ -213,6 +389,25 @@ class JRouterSite extends JRouter
 
 				if($lenght > 0 && strpos($route.'/', $item->route.'/') === 0 && $item->type != 'menulink')
 				{
+					/* START: HUBzero Extension to handle external url menu items differently */
+					if ($item->type == 'url') {
+
+						// If menu route exactly matches url route,
+						// redirect (if necessary) to menu link
+						if (trim($item->route,"/") == trim($route,"/")) {
+							if (trim($item->route,"/") != trim($item->link,"/")) {
+								$app->redirect($item->link);
+							}
+						}
+
+						// Pass local URLs through, but record Itemid
+						if (strpos($item->route, "://") === false) {
+							$vars['Itemid'] = $item->id;
+							break;
+						}
+					}
+					/* END: HUBzero Extension to handle external url menu items differently */
+
 					$route   = substr($route, $lenght);
 
 					$vars['Itemid'] = $item->id;
@@ -222,10 +417,55 @@ class JRouterSite extends JRouter
 			}
 		}
 
+		/* START: HUBzero Extension to parse com_content component specially */
+		if (empty($vars['option'])) {
+			$vars = $this->_parseContentRoute(explode('/',ltrim($route,"/")));
+			if (!empty($vars['option'])) {
+				$route = false;
+			}
+		}
+		/* END: HUBzero Extension to parse com_content component specially */
+
+		/* START: HUBzero Extension to route based on unprefixed component name (if other routing fails to match) */
+		if (empty($vars['option']))
+		{
+			$segments	= explode('/', $route);
+
+			if ($segments[0] == 'search') {   // @FIXME: search component should probably be configurable
+				$plugin = JPluginHelper::getPlugin( 'system', 'hubzero' );
+				$param = new JParameter( $plugin->params );
+				$search = $param->get('search','ysearch');
+				if (empty($search)) {
+					$search = 'ysearch';
+				}
+				$segments[0] = $search;
+			}
+
+			$file = JPATH_BASE.DS.'components'.DS.'com_'.$segments[0].DS.$segments[0].".php";
+
+			if (file_exists($file))
+			{
+				$vars['option'] = 'com_'.$segments[0];
+
+				if (!isset($vars['Itemid'])) {
+					$vars['Itemid'] = null;
+				}
+
+				$route = preg_replace('/^' . $segments[0]. '/', '', $route);
+			}
+		}
+		/* END: HUBzero Extension to route based on unprefixed component name (if other routing fails to match) */
+
 		// Set the active menu item
 		if ( isset($vars['Itemid']) ) {
 			$menu->setActive(  $vars['Itemid'] );
 		}
+		
+		/* START: HUBzero Extension to do ???? */
+		if (empty($vars['Itemid'])) {
+			$vars['Itemid'] =  '-1';
+		}
+		/* END: HUBzero Extension to do ???? */
 
 		//Set the variables
 		$this->setVars($vars);
@@ -248,7 +488,14 @@ class JRouterSite extends JRouter
 			{
 				if ($component != "com_search") { // Cheap fix on searches
 					//decode the route segments
+					/* START: HUBzero Extension: don't do : to - conversion except in com_content */
+					/*
 					$segments = $this->_decodeSegments($segments);
+					 */
+					if ($component == "com_content") { 
+						$segments = $this->_decodeSegments($segments);
+					}
+					/* END: HUBzero Extension: don't do : to - conversion except in com_content */
 				}
 				else { // fix up search for URL
 					$total = count($segments);
@@ -267,11 +514,43 @@ class JRouterSite extends JRouter
 		}
 		else
 		{
+			/* START: HUBzero Extension to check redirection table if otherwise unable to match URL to content */
+			if (!isset($vars['option'])) {
+				jimport('joomla.juri');
+				$db =& JFactory::getDBO();
+				$sql = "SELECT * FROM #__redirection WHERE oldurl=" . $db->Quote($route);
+				$db->setQuery($sql);
+				$row = $db->loadObject();
+
+				if (!empty($row))
+				{
+					$myuri = JURI::getInstance( $row->newurl );
+					$vars = $myuri->getQuery(true);
+
+					if ( isset($vars['Itemid']) ) {
+						$menu->setActive(  $vars['Itemid'] );
+					}
+				}
+			}
+			/* END: HUBzero Extension to check redirection table if otherwise unable to match URL to content */
 			//Set active menu item
 			if($item =& $menu->getActive()) {
 				$vars = $item->query;
 			}
 		}
+
+		/* START: HUBzero Extension to pass common query parameters to apache (for logging) */
+		if (!empty($vars['option']))
+			apache_note('component',$vars['option']);
+		if (!empty($vars['view']))
+			apache_note('view',$vars['view']);
+		if (!empty($vars['task']))
+			apache_note('task',$vars['task']);
+		if (!empty($vars['action']))
+			apache_note('action',$vars['action']);
+		if (!empty($vars['id']))
+			apache_note('action',$vars['id']);
+		/* END: HUBzero Extension to pass common query parameters to apache (for logging) */
 
 		return $vars;
 	}
@@ -289,6 +568,28 @@ class JRouterSite extends JRouter
 		$query = $uri->getQuery(true);
 
 		if(!isset($query['option'])) {
+			/* START: HUBzero Extension to handle section, category, alias routing of com_content pages */
+			$parts = $this->_buildContentRoute($query);
+
+			if (empty($parts)) {
+				return;
+			}
+
+			$query['option'] = 'com_content';
+			$parts = $this->_encodeSegments($parts);
+			$result	= implode('/', $parts);
+			$tmp	= ($result != "") ? '/'.$result : '';
+			//$tmp = 'component/'.substr($query['option'], 4).'/'.$tmp;
+			$route .= '/'.$tmp;
+
+			// Unset unneeded query information
+			unset($query['Itemid']);
+			unset($query['option']);
+
+			//Set query again in the URI
+			$uri->setQuery($query);
+			$uri->setPath($route);
+			/* END: HUBzero Extension to handle section, category, alias routing of com_content pages */
 			return;
 		}
 
@@ -312,7 +613,14 @@ class JRouterSite extends JRouter
 
 			// encode the route segments
 			if ($component != "com_search") { // Cheep fix on searches
+				/* START: HUBzero Extension to fix joomla break ':' in urls in com_wiki/com_topics (others?) */
+				/*
 				$parts = $this->_encodeSegments($parts);
+				 */
+				if ($component == "com_content") {
+					$parts = $this->_encodeSegments($parts);
+				}
+				/* END: HUBzero Extension to fix joomla break ':' in urls in com_wiki/com_topics (others?) */
 			}
 			else { // fix up search for URL
 				$total = count($parts);
@@ -335,13 +643,23 @@ class JRouterSite extends JRouter
 			$item = $menu->getItem($query['Itemid']);
 
 			if (is_object($item) && $query['option'] == $item->component) {
+				/* START: HUBzero Extension to fix ???? */
+				/*
 				$tmp = !empty($tmp) ? $item->route.'/'.$tmp : $item->route;
+				*/
+				$tmp = $item->route.$tmp;
+				/* END: HUBzero Extension to fix ???? */
 				$built = true;
 			}
 		}
 
 		if(!$built) {
+			/* START: HUBzero Extension to strip 'component' from url */
+			/*
 			$tmp = 'component/'.substr($query['option'], 4).'/'.$tmp;
+			*/
+			$tmp = substr($query['option'], 4).'/'.$tmp;
+			/* END: HUBzero Extension to strip 'component' from url */
 		}
 
 		$route .= '/'.$tmp;
@@ -451,5 +769,268 @@ class JRouterSite extends JRouter
 		}
 
 		return $uri;
+	}
+	
+	/**
+	 * Short description for '_buildContentRoute'
+	 *
+	 * Long description (if any) ...
+	 *
+	 * @param	   array &$query Parameter description (if any) ...
+	 * @return	   array Return description (if any) ...
+	 */
+	function _buildContentRoute(&$query)
+	{
+		$segments = array();
+
+		if (!empty($query['view']) && $query['view'] != 'article')
+			return $segments;
+
+		if (empty($query['id']))
+		{
+			$section = empty($query['section']) ? '' : $query['section'];
+			$category = empty($query['category']) ? '' : $query['category'];
+			$alias = empty($query['alias']) ? '' : $query['alias'];
+
+			if (!empty($section))
+				$segments[] = $section;
+
+			if (!empty($category) && $category != $section)
+				$segments[] = $category;
+
+			if (!empty($alias) && $alias != $category)
+				$segments[] = $alias;
+
+			return($segments);
+		}
+
+		$db =& JFactory::getDBO();
+		$id = intval($query['id']);
+
+		$sql = "SELECT #__sections.alias AS section, #__categories.alias AS category, #__content.alias AS alias FROM jos_sections, jos_categories, jos_content WHERE #__content.id='" . $id . "' AND #__content.sectionid=#__sections.id AND #__content.catid=#__categories.id LIMIT 1;";
+		$db->setQuery($sql);
+		$row =& $db->loadObject();
+
+		if (!empty($row))
+		{
+			$segments[] = $row->section;
+
+			if ($row->category != $row->section)
+				$segments[] = $row->category;
+
+			if ($row->alias != $row->category)
+				$segments[] = $row->alias;
+
+			unset($query['view']);
+			unset($query['id']);
+			unset($query['catid']);
+
+			return $segments;
+		}
+		else {
+			$sql = "SELECT #__content.alias AS alias FROM jos_content WHERE #__content.id='" . $id . "' AND #__content.sectionid=0 AND #__content.catid=0 LIMIT 1;";
+			$db->setQuery($sql);
+			$row =& $db->loadObject();
+
+			if (!empty($row)) {
+				$segments[] = $row->alias;
+				unset($query['view']);
+				unset($query['id']);
+				return $segments;
+			}
+		}
+
+		$segments[] = 'content';
+		$segments[] = $id;
+		unset($query['view']);
+		unset($query['id']);
+		return $segments;
+	}
+
+	/**
+	 * Short description for '_parseContentRoute'
+	 *
+	 * Long description (if any) ...
+	 *
+	 * @param	   array &$segments Parameter description (if any) ...
+	 * @return	   array Return description (if any) ...
+	 */
+	function _parseContentRoute(&$segments)
+	{
+		$view = 'article';
+		$menu =& JFactory::getApplication()->getMenu(true);
+		$item =& $menu->getActive();
+		$db = & JFactory::getDBO();
+		$count = count($segments);
+
+		if (($count == 1) && (is_numeric($segments[0])))
+		{
+			$vars['option'] = 'com_content';
+			return $vars;
+		}
+
+		if (empty($segments) || empty($segments[0]))
+		{
+			return array();
+
+			if (empty($item->query['view']) || $item->query['view'] != 'article')
+				return array();
+
+			$section = empty($item->query['section']) ? '' : $item->query['section'];
+			$category = empty($item->query['category']) ? '' : $item->query['category'];
+			$alias = empty($item->query['alias']) ? '' : $item->query['alias'];
+
+			if (empty($section) && !empty($category))
+				$section = $category;
+			else if (!empty($section) && empty($category))
+				$category = $section;
+
+			if (empty($alias) && !empty($category))
+				$alias = $category;
+
+			if (!empty($alias)) {
+
+				$query = "SELECT #__content.id from `#__content`, `#__categories`, `#__sections` WHERE " .
+						"#__content.alias='" . mysql_real_escape_string($alias) . "' AND ";
+
+				if (!empty($category))
+					$query .= "#__content.catid=#__categories.id AND " . "#__categories.alias='" . mysql_real_escape_string($category) . "' AND " .
+					"#__content.sectionid=#__sections.id AND " . "#__sections.alias='" . mysql_real_escape_string($section) . "'";
+				else
+					$query .= "#__content.catid=0 AND #__content.sectionid=0";
+
+				$query .= " AND #__content.state='1' LIMIT 1;";
+
+				$db->setQuery($query);
+				$row =& $db->loadResult();
+				$vars['id'] = $row;
+			}
+
+			return $vars;
+		}
+
+		if (!empty($id) || empty($segments[0]))
+			array_shift($segments);
+
+		//decode the route segments
+		//$segments = $this->_decodeSegments($segments);
+		$count = count($segments);
+
+		if ($count > 3) {
+			//echo "XRouter::_parseContentRoute(): Too many component segments<br>";
+			return array();
+		}
+
+		$query = "SELECT `#__content`.id,`#__content`.alias,`#__content`.catid,`#__categories`.alias,`#__content`.sectionid,`#__sections`.alias " .
+				"FROM `#__content`,`#__categories`,`#__sections` " .
+				"WHERE `#__content`.catid=`#__categories`.id AND `#__content`.sectionid=`#__sections`.id ";
+
+		$segments = array_map('mysql_real_escape_string', $segments);
+		if ($count == 3)
+		{
+			if (is_numeric($segments[2]))
+				$query .= " AND #__content.id='" . $segments[2] . "' ";
+			else
+				$query .= " AND #__content.alias='" . $segments[2] . "' ";
+
+			if (is_numeric($segments[1]))
+				$query .= " AND #__content.catid='" . $segments[1] . "' ";
+			else
+				$query .= " AND #__categories.alias='" . $segments[1] . "' ";
+
+			if (is_numeric($segments[0]))
+				$query .= " AND #__content.sectionid='" . $segments[0] . "' ";
+			else
+				$query .= " AND #__sections.alias='" . $segments[0] . "' ";
+
+			$query .= " AND #__content.state='1' LIMIT 1;";
+		}
+		else if ($count == 2)
+		{
+			if (!empty($id)) {
+				$query = "SELECT #__content.id from `#__content`, `#__categories`, `#__sections` WHERE " .
+						"#__content.alias='" . $segments[1] . "' AND " .
+						"#__content.catid=#__categories.id AND " .
+						"#__categories.alias='" . $segments[0] . "' AND " .
+						"#__categories.section=#__sections.id AND " .
+						"#__sections.id=(SELECT sectionid FROM `#__content` WHERE id='" . $id . "') AND #__content.state='1' LIMIT 1;";
+			} else {
+				$query = "SELECT #__content.id from `#__content`, `#__categories`, `#__sections` WHERE " .
+						"#__content.alias='" . $segments[1] . "' AND " .
+						"#__content.catid=#__categories.id AND " .
+						"#__categories.alias='" . $segments[0] . "' AND " .
+						"#__categories.section=#__sections.id AND " .
+						"#__sections.alias='" . $segments[0] . "' AND #__content.state='1' LIMIT 1;";
+			}
+		}
+		else if ($count == 1 && 0)
+		{
+			$query = "SELECT #__content.id from `#__content`, `#__categories`, `#__sections` WHERE " .
+					"#__content.alias='" . $segments[0] . "' AND " .
+					"#__content.catid=(SELECT catid FROM `#__content` WHERE id='" . $id ."') AND #__content.state='1' LIMIT 1;";
+		}
+		else if ($count == 1)
+		{
+			$page = $segments[0];
+			$category = $segments[0];
+			$section = $segments[0];
+
+			$query = "SELECT #__content.id from `#__content`, `#__categories`, `#__sections` WHERE " .
+					"#__content.alias='" . $page . "' AND " .
+					"(" .
+					"(#__content.catid=#__categories.id AND " . "#__categories.alias='" . $category . "' AND " .
+					"#__content.sectionid=#__sections.id AND " . "#__sections.alias='" . $section . "')" .
+					" OR " .
+					"(#__content.catid=0 AND #__content.sectionid=0) " .
+					") AND #__content.state='1' LIMIT 1;";
+
+		}
+		else if ($count == 0)
+		{
+			$page = '';
+			$category = '';
+			$section = '';
+
+			$routesegments = explode('/', $item->route);
+			$rcount = count($routesegments);
+			//echo "routesegments = "; print_r($routesegments); echo "<br>";
+			if ($rcount > 2) {
+				$section = $routesegments[$rcount-3];
+				$category = $routesegments[$rcount-2];
+				$page = $routesegments[$rcount-1];
+			}
+			if ($rcount > 1) {
+				$section = $routesegments[$rcount-2];
+				$category = $routesegments[$rcount-1];
+				$page = $category;
+			}
+			else if ($rcount > 0) {
+				$section = $routesegments[$rcount-1];
+				$category = $section;
+				$page = $category;
+			}
+
+			$query = "SELECT #__content.id from `#__content`, `#__categories`, `#__sections` WHERE " .
+					"#__content.alias='" . $page . "' AND " .
+					"#__content.catid=#__categories.id AND " .
+					"#__categories.alias='" . $category . "' AND " .
+					"#__categories.section=#__sections.id AND " .
+					"#__sections.alias='" . $section . "' AND #__content.state='1' LIMIT 1;";
+		}
+
+		$db->setQuery($query);
+		$row = $db->loadResult();
+
+		if (!empty($row))
+		{
+			$segments = array();
+			$vars['option'] = 'com_content';
+			$vars['id'] = $row;
+			$vars['view'] = 'article';
+			$item->query['view'] = 'article';
+			return $vars;
+		}
+
+		return array();
 	}
 }
