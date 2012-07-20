@@ -29,32 +29,23 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.php');
-
-//----------------------------------------------------------
-// Answers Tagging class
-//----------------------------------------------------------
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
 
 /**
- * Short description for 'AnswersTags'
- * 
- * Long description (if any) ...
+ * Answers Tagging class
  */
 class AnswersTags extends TagsHandler
 {
-
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $db Parameter description (if any) ...
-	 * @param      array $config Parameter description (if any) ...
+	 * @param      object $db     JDatabase
+	 * @param      array  $config Optional configurations
 	 * @return     void
 	 */
-	public function __construct( $db, $config=array() )
+	public function __construct($db, $config=array())
 	{
 		$this->_db  = $db;
 		$this->_tbl = 'answers';
