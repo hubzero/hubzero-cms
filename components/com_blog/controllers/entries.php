@@ -156,9 +156,7 @@ class BlogControllerEntries extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for '_browse'
-	 * 
-	 * Long description (if any) ...
+	 * Display a list of entries
 	 * 
 	 * @return     void
 	 */
@@ -944,13 +942,13 @@ class BlogControllerEntries extends Hubzero_Controller
 
 		// Build some basic RSS document information
 		$jconfig =& JFactory::getConfig();
-		$doc->title  = $jconfig->getValue('config.sitename').' - '.JText::_(strtoupper($this->_option));
-		$doc->title .= ($year) ? ': '.$year : '';
-		$doc->title .= ($month) ? ': '.sprintf("%02d",$month) : '';
-		$doc->title .= ($entry->title) ? ': '.stripslashes($entry->title) : '';
+		$doc->title  = $jconfig->getValue('config.sitename') . ' - ' . JText::_(strtoupper($this->_option));
+		$doc->title .= ($year) ? ': ' . $year : '';
+		$doc->title .= ($month) ? ': ' . sprintf("%02d",$month) : '';
+		$doc->title .= ($entry->title) ? ': ' . stripslashes($entry->title) : '';
 		$doc->title .= ': '.JText::_('Comments');
 
-		$doc->description = JText::sprintf('COM_BLOG_COMMENTS_RSS_DESCRIPTION',$jconfig->getValue('config.sitename'), stripslashes($entry->title));
+		$doc->description = JText::sprintf('COM_BLOG_COMMENTS_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'), stripslashes($entry->title));
 		$doc->copyright = JText::sprintf('COM_BLOG_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
 		//$doc->category = JText::_('COM_BLOG_RSS_CATEGORY');
 
@@ -975,7 +973,7 @@ class BlogControllerEntries extends Hubzero_Controller
 		foreach ($rows as $row)
 		{
 			// URL link to article
-			$link = JRoute::_('index.php?option='.$this->_option.'&task='.JHTML::_('date',$entry->publish_up, '%Y', 0).'/'.JHTML::_('date',$entry->publish_up, '%m', 0).'/'.$entry->alias.'#c'.$row->id);
+			$link = JRoute::_('index.php?option=' . $this->_option . '&task=' . JHTML::_('date', $entry->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $entry->publish_up, $this->monthFormat, $this->tz) . '/' . $entry->alias . '#c' . $row->id);
 
 			$author = JText::_('COM_BLOG_ANONYMOUS');
 			if (!$row->anonymous) 
@@ -985,18 +983,18 @@ class BlogControllerEntries extends Hubzero_Controller
 			}
 
 			// Prepare the title
-			$title = JText::sprintf('Comment by %s', $author).' @ '.JHTML::_('date',$row->created, '%I:%M %p', 0).' on '.JHTML::_('date',$row->created, '%d %b, %Y', 0);
+			$title = JText::sprintf('Comment by %s', $author) . ' @ ' . JHTML::_('date', $row->created, $this->timeFormat, $this->tz) . ' on ' . JHTML::_('date', $row->created, $this->dateFormat, $this->tz);
 
 			// Strip html from feed item description text
-			if ($row->reports) {
+			if ($row->reports) 
+			{
 				$description = JText::_('COM_BLOG_COMMENT_REPORTED_AS_ABUSIVE');
-			} else {
+			} 
+			else 
+			{
 				$description = $p->parse(stripslashes($row->content), $wikiconfig);
 			}
 			$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($description));
-			/*if ($this->config->get('feed_entries') == 'partial') {
-				$description = Hubzero_View_Helper_Html::shortenText($description, 300, 0);
-			}*/
 
 			@$date = ($row->created ? date('r', strtotime($row->created)) : '');
 
@@ -1013,31 +1011,33 @@ class BlogControllerEntries extends Hubzero_Controller
 			$doc->addItem($item);
 
 			// Check for any replies
-			if ($row->replies) {
+			if ($row->replies) 
+			{
 				foreach ($row->replies as $reply)
 				{
 					// URL link to article
-					$link = JRoute::_('index.php?option='.$this->_option.'&task='.JHTML::_('date',$entry->publish_up, '%Y', 0).'/'.JHTML::_('date',$entry->publish_up, '%m', 0).'/'.$entry->alias.'#c'.$reply->id);
+					$link = JRoute::_('index.php?option=' . $this->_option . '&task=' . JHTML::_('date', $entry->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date',$entry->publish_up, $this->monthFormat, $this->tz) . '/' . $entry->alias . '#c' . $reply->id);
 
 					$author = JText::_('COM_BLOG_ANONYMOUS');
-					if (!$reply->anonymous) {
+					if (!$reply->anonymous) 
+					{
 						$cuser =& JUser::getInstance($reply->created_by);
 						$author = $cuser->get('name');
 					}
 
 					// Prepare the title
-					$title = JText::sprintf('Reply to comment #%s by %s', $row->id, $author).' @ '.JHTML::_('date',$reply->created, '%I:%M %p', 0).' on '.JHTML::_('date',$reply->created, '%d %b, %Y', 0);
+					$title = JText::sprintf('Reply to comment #%s by %s', $row->id, $author) . ' @ ' . JHTML::_('date', $reply->created, $this->timeFormat, $this->tz) . ' on ' . JHTML::_('date', $reply->created, $this->dateFormat, $this->tz);
 
 					// Strip html from feed item description text
-					if ($reply->reports) {
+					if ($reply->reports) 
+					{
 						$description = JText::_('COM_BLOG_COMMENT_REPORTED_AS_ABUSIVE');
-					} else {
+					} 
+					else 
+					{
 						$description = (is_object($p)) ? $p->parse(stripslashes($reply->content)) : nl2br(stripslashes($reply->content));
 					}
 					$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($description));
-					/*if ($this->config->get('feed_entries') == 'partial') {
-						$description = Hubzero_View_Helper_Html::shortenText($description, 300, 0);
-					}*/
 
 					@$date = ($reply->created ? date('r', strtotime($reply->created)) : '');
 
@@ -1053,31 +1053,33 @@ class BlogControllerEntries extends Hubzero_Controller
 					// Loads item info into rss array
 					$doc->addItem($item);
 
-					if ($reply->replies) {
+					if ($reply->replies) 
+					{
 						foreach ($reply->replies as $response)
 						{
 							// URL link to article
-							$link = JRoute::_('index.php?option='.$this->_option.'&task='.JHTML::_('date',$entry->publish_up, '%Y', 0).'/'.JHTML::_('date',$entry->publish_up, '%m', 0).'/'.$entry->alias.'#c'.$response->id);
+							$link = JRoute::_('index.php?option=' . $this->_option . '&task=' . JHTML::_('date', $entry->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $entry->publish_up, $this->monthFormat, $this->tz) . '/' . $entry->alias . '#c' . $response->id);
 
 							$author = JText::_('COM_BLOG_ANONYMOUS');
-							if (!$response->anonymous) {
+							if (!$response->anonymous) 
+							{
 								$cuser =& JUser::getInstance($response->created_by);
 								$author = $cuser->get('name');
 							}
 
 							// Prepare the title
-							$title = JText::sprintf('Reply to comment #%s by %s', $reply->id, $author).' @ '.JHTML::_('date',$response->created, '%I:%M %p', 0).' on '.JHTML::_('date',$response->created, '%d %b, %Y', 0);
+							$title = JText::sprintf('Reply to comment #%s by %s', $reply->id, $author) . ' @ ' . JHTML::_('date', $response->created, $this->timeFormat, $this->tz) . ' on ' . JHTML::_('date', $response->created, $this->dateFormat, $this->tz);
 
 							// Strip html from feed item description text
-							if ($response->reports) {
+							if ($response->reports) 
+							{
 								$description = JText::_('COM_BLOG_COMMENT_REPORTED_AS_ABUSIVE');
-							} else {
+							} 
+							else 
+							{
 								$description = (is_object($p)) ? $p->parse(stripslashes($response->content)) : nl2br(stripslashes($response->content));
 							}
 							$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($description));
-							/*if ($this->config->get('feed_entries') == 'partial') {
-								$description = Hubzero_View_Helper_Html::shortenText($description, 300, 0);
-							}*/
 
 							@$date = ($response->created ? date('r', strtotime($response->created)) : '');
 
