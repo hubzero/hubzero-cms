@@ -2678,15 +2678,16 @@ class MembersController extends Hubzero_Controller
 		//if we are on the blog
 		if($tab == 'blog') 
 		{
+			// @FIXME Check still needs to occur for non-public entries
 			//authorize checks
-			if($authorized != "admin") 
+			/*if($authorized != "admin") 
 			{
 				if($this->juser->get('id') != $member->get("uidNumber")) 
 				{
 					JError::raiseError( 403, JText::_('You are not authorized to download the file: ').' '.$file );
 					return;
 				}
-			}
+			}*/
 			
 			$paramsClass = 'JParameter';
 			if (version_compare(JVERSION, '1.6', 'ge'))
