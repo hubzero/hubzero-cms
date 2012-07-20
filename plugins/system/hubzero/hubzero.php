@@ -32,10 +32,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-JLoader::import('Hubzero.loader');
-
-ximport('Hubzero_Factory');
-
 jimport('joomla.event.plugin');
 
 /**
@@ -174,7 +170,7 @@ class plgSystemHubzero extends JPlugin
 			}
 				
 			// log tracking cookie detection to auth log
-			ximport('Hubzero_Log');
+			
 			$username = (empty($tracker['username'])) ? '-' : $tracker['username'];
 			$user_id = (empty($tracker['user_id'])) ? 0 : $tracker['user_id'];
 			Hubzero_Factory::getAuthLogger()->logAuth( $username . ' ' . $_SERVER['REMOTE_ADDR'] . ' detect');
@@ -217,12 +213,9 @@ class plgSystemHubzero extends JPlugin
 	 */
 	function onLoginFailure($response)
 	{
-		$authlog = Hubzero_Factory::getAuthLogger();
-		$authlog->logAuth( $_POST['username'] . ' ' . $_SERVER['REMOTE_ADDR'] . ' invalid');
+		Hubzero_Factory::getAuthLogger()->logAuth( $_POST['username'] . ' ' . $_SERVER['REMOTE_ADDR'] . ' invalid');
 		apache_note('auth','invalid');
 
 		return true;
 	}
 }
-
-?>
