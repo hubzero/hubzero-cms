@@ -184,3 +184,17 @@ function jexit($message = 0) {
 function jimport( $path ) {
 	return JLoader::import($path);
 }
+
+/**
+ * Intelligent HUBzero file importer
+ *
+ * @access public
+ * @param string $path A underscore syntax path
+ */
+function ximport($path)
+{
+	if (substr(strtolower($path),0,7) == 'hubzero')
+	{
+		return JLoader::import('.' . str_replace('_', '.', $path), JPATH_ROOT . DS . 'libraries');
+	}
+}
