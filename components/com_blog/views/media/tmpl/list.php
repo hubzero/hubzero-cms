@@ -114,7 +114,7 @@ foreach ($this->docs as $name => $doc)
 {
 	$ext = JFile::getExt($doc);
 
-	$iconfile = DS . 'components' . DS . $this->option . DS . 'assets' . DS . 'img' . DS . 'icons' . DS . substr($doc_name, 0, (strlen($doc_name) - (strlen($ext) + 1))) . '.png';
+	$iconfile = DS . 'components' . DS . $this->option . DS . 'assets' . DS . 'img' . DS . 'icons' . DS . substr($doc, 0, (strlen($doc) - (strlen($ext) + 1))) . '.png';
 
 	if (file_exists(JPATH_ROOT . $iconfile)) 
 	{
