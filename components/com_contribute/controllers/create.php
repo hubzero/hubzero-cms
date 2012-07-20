@@ -1199,7 +1199,7 @@ class ContributeControllerCreate extends Hubzero_Controller
 		}
 
 		// Output HTML
-		$this->view->setLayout('name', 'thanks');
+		$this->setView($this->_controller, 'thanks');
 		$this->view->title    = $this->_title;
 		$this->view->config   = $this->config;
 		$this->view->resource = $resource;

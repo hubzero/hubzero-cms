@@ -31,8 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$attachments = array();
-$authors = array();
+$attachments = 0;
+$authors = 0;
 $tags = array();
 $state = 'draft';
 if ($this->resource->id)
