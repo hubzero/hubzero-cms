@@ -190,8 +190,15 @@ class Hubzero_User_Profile_Helper
 		$thumb = '';
 		if (!$anonymous && $member->get('picture')) 
 		{
-			$thumb .= DS . trim($config->get('webpath'), DS);
+			$thumb .= DS . trim($config->get('webpath', '/site/members'), DS);
 			$thumb .= DS . Hubzero_User_Profile_Helper::niceidformat($member->get('uidNumber'));
+
+			$thumbAlt = $thumb . DS . ltrim($member->get('picture'), DS);
+			if ($thumbit)
+			{
+				$thumbAlt = $thumb . DS . 'thumb.png';
+			}
+
 			$thumb .= DS . ltrim($member->get('picture'), DS);
 
 			if ($thumbit)
@@ -200,13 +207,17 @@ class Hubzero_User_Profile_Helper
 			}
 		}
 
-		$dfthumb = DS . trim($config->get('defaultpic'), DS);
+		$dfthumb = DS . trim($config->get('defaultpic', '/components/com_members/images/profile.gif'), DS);
 		if ($thumbit)
 		{
 			$dfthumb = Hubzero_User_Profile_Helper::thumbit($dfthumb);
 		}
 
-		if ($thumb && is_file(JPATH_ROOT . $thumb)) 
+		if (is_file(JPATH_ROOT . $thumbAlt)) 
+		{
+			return $thumbAlt;
+		} 
+		else if ($thumb && is_file(JPATH_ROOT . $thumb)) 
 		{
 			return $thumb;
 		} 
@@ -217,23 +228,18 @@ class Hubzero_User_Profile_Helper
 	}
 
 	/**
-	 * Short description for 'thumbit'
+	 * Generate a thumbnail file name format
+	 * example.jpg -> example_thumb.jpg
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $thumb Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string $thumb Filename to get thumbnail of
+	 * @return     string
 	 */
 	public function thumbit($thumb)
 	{
-		$image = explode('.',$thumb);
-		$n = count($image);
-		$image[$n-2] .= '_thumb';
-		$end = array_pop($image);
-		$image[] = $end;
-		$thumb = implode('.',$image);
+		jimport('joomla.filesystem.file');
+		$ext = JFile::getExt($thumb);
 
-		return $thumb;
+		return JFile::stripExt($thumb) . '_thumb.' . $ext;
 	}
 
 	/**
