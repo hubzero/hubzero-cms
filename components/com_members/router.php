@@ -89,7 +89,6 @@ function membersParseRoute($segments)
 	{
 		switch ($segments[0])
 		{
-			case 'whois':
 			case 'activity':
 			case 'autocomplete':
 			case 'myaccount': 
@@ -129,6 +128,18 @@ function membersParseRoute($segments)
 		if (in_array($segments[1], $userTasks)) 
 		{
 			$vars['task'] = $segments[1];
+			$mediaTasks = array(
+				'deleteimg', 
+				'upload', 
+				'ajaxupload', 
+				'doajaxupload', 
+				'ajaxuploadsave', 
+				'getfileatts'
+			);
+			if (in_array($segments[1], $mediaTasks)) 
+			{
+				$vars['controller'] = 'media';
+			}
 		} 
 		else 
 		{
@@ -146,6 +157,15 @@ function membersParseRoute($segments)
 				}
 			}
 		}
+	}
+
+	$file = array_pop(explode('/', $_SERVER['REQUEST_URI']));
+
+	if (substr(strtolower($file), 0, 5) == 'image' 
+	 || substr(strtolower($file), 0, 4) == 'file') 
+	{
+		$vars['task'] = 'download';
+		$vars['controller'] = 'media';
 	}
 
 	return $vars;

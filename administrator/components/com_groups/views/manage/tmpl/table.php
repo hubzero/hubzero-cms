@@ -142,10 +142,10 @@ if ($this->groupusers) {
 			//$html .= (count($groupusers) == 1) ? ' checked="checked"': '';
 			$html .= ' /> ';
 		}
-		$html .= '<a href="'.JRoute::_('index.php?option=com_members&id='.$u->get('id')).'">'.$this->escape($u->get('name')).'</a>';
+		$html .= '<a href="index.php?option=com_members&controller=members&task=edit&id[]='.$u->get('id').'">'.$this->escape($u->get('name')).'</a>';
 		$html .= '</td>'."\n";
 		if ($this->authorized == 'admin') {
-			$login = '<a href="index.php?option=com_whois&amp;task=view&amp;username='. $u->get('username').'">'.$this->escape($u->get('username')).'</a>';
+			$login = '<a href="index.php?option=com_members&controller=members&task=edit&id[]='. $u->get('id').'">'.$this->escape($u->get('username')).'</a>';
 		} else {
 			$login = $this->escape($u->get('username'));
 		}

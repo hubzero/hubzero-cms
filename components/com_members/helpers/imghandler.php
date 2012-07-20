@@ -29,20 +29,13 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-//----------------------------------------------------------
-// Image manipulation class
-//----------------------------------------------------------
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'MembersImgHandler'
- * 
- * Long description (if any) ...
+ * Image manipulation class
  */
 class MembersImgHandler extends JObject
 {
-
 	/**
 	 * Description for 'path'
 	 * 
@@ -114,11 +107,9 @@ class MembersImgHandler extends JObject
 	var $_MEMORY_TO_ALLOCATE = '100M';
 
 	/**
-	 * Short description for 'process'
+	 * Process an image
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if no errors
 	 */
 	public function process()
 	{
@@ -129,22 +120,25 @@ class MembersImgHandler extends JObject
 		$color = $this->color;
 
 		// Make sure that the requested file is actually an image
-		if (!$image) {
-			$this->setError( JText::_('No image set.') );
+		if (!$image) 
+		{
+			$this->setError(JText::_('No image set.'));
 			return false;
 		}
 
 		// Make sure that the requested file is actually an image
-		if (!$docRoot) {
-			$this->setError( JText::_('No image path set.') );
+		if (!$docRoot) 
+		{
+			$this->setError(JText::_('No image path set.'));
 			return false;
 		}
 
 		// Strip the possible trailing slash off the document root
 		//$docRoot = preg_replace('/\/$/', '', $docRoot);
 
-		if (!is_file($docRoot . $image)) {
-			$this->setError( JText::_('File/path not found.') );
+		if (!is_file($docRoot . $image)) 
+		{
+			$this->setError(JText::_('File/path not found.'));
 			return false;
 		}
 
@@ -153,8 +147,9 @@ class MembersImgHandler extends JObject
 		$mime = $size['mime'];
 
 		// Make sure that the requested file is actually an image
-		if (substr($mime, 0, 6) != 'image/') {
-			$this->setError( JText::_('File is not an image.') );
+		if (substr($mime, 0, 6) != 'image/') 
+		{
+			$this->setError(JText::_('File is not an image.'));
 			return false;
 		}
 
@@ -164,13 +159,17 @@ class MembersImgHandler extends JObject
 		$maxWidth = $this->maxWidth;
 		$maxHeight = $this->maxHeight;
 
-		if ($maxWidth >= $width && $maxHeight >= $height) {
+		if ($maxWidth >= $width && $maxHeight >= $height) 
+		{
 			return true;
 		}
 
-		if ($color) {
+		if ($color) 
+		{
 			$color = preg_replace('/[^0-9a-fA-F]/', '', (string) $color);
-		} else {
+		} 
+		else 
+		{
 			$color = FALSE;
 		}
 
@@ -178,18 +177,23 @@ class MembersImgHandler extends JObject
 		$offsetX = 0;
 		$offsetY = 0;
 
-		if ($cropratio) {
+		if ($cropratio) 
+		{
 			$cropRatio = explode(':', (string) $cropratio);
-			if (count($cropRatio) == 2) {
+			if (count($cropRatio) == 2) 
+			{
 				$ratioComputed = $width / $height;
 				$cropRatioComputed = (float) $cropRatio[0] / (float) $cropRatio[1];
 
-				if ($ratioComputed < $cropRatioComputed) {
+				if ($ratioComputed < $cropRatioComputed) 
+				{
 					// Image is too tall so we will crop the top and bottom
 					$origHeight	= $height;
 					$height	= $width / $cropRatioComputed;
 					$offsetY = ($origHeight - $height) / 2;
-				} else if ($ratioComputed > $cropRatioComputed) {
+				} 
+				else if ($ratioComputed > $cropRatioComputed) 
+				{
 					// Image is too wide so we will crop off the left and right sides
 					$origWidth = $width;
 					$width = $height * $cropRatioComputed;
@@ -203,14 +207,17 @@ class MembersImgHandler extends JObject
 		$xRatio	= $maxWidth / $width;
 		$yRatio	= $maxHeight / $height;
 
-		if ($xRatio * $height < $maxHeight) {
+		if ($xRatio * $height < $maxHeight) 
+		{
 			// Resize the image based on width
 			$tnHeight = ceil($xRatio * $height);
 			$tnWidth  = $maxWidth;
-		} else {
+		} 
+		else 
+		{
 			// Resize the image based on height
 			$tnWidth  = ceil($yRatio * $width);
-		 	$tnHeight = $maxHeight;
+			$tnHeight = $maxHeight;
 		}
 
 		// Before we actually do any crazy resizing of the image, we want to make sure that we
@@ -219,8 +226,9 @@ class MembersImgHandler extends JObject
 
 		// We store our cached image filenames as a hash of the dimensions and the original filename
 		$resizedImageSource	= $tnWidth . 'x' . $tnHeight . 'x' . $quality;
-		if ($cropratio) {
-			$resizedImageSource	.= 'x' . (string) $cropratio;
+		if ($cropratio) 
+		{
+			$resizedImageSource .= 'x' . (string) $cropratio;
 		}
 		$resizedImageSource .= '-' . $image;
 
@@ -265,25 +273,34 @@ class MembersImgHandler extends JObject
 		// Read in the original image
 		$src = $creationFunction($docRoot . $image);
 
-		if (in_array($size['mime'], array('image/gif', 'image/png'))) {
-			if (!$color) {
+		if (in_array($size['mime'], array('image/gif', 'image/png'))) 
+		{
+			if (!$color) 
+			{
 				// If this is a GIF or a PNG, we need to set up transparency
 				imagealphablending($dst, false);
 				imagesavealpha($dst, true);
-			} else {
+			} 
+			else 
+			{
 				// Fill the background with the specified color for matting purposes
-				if ($color[0] == '#') {
+				if ($color[0] == '#') 
+				{
 					$color = substr($color, 1);
 				}
 
 				$background	= FALSE;
 
-				if (strlen($color) == 6) {
+				if (strlen($color) == 6) 
+				{
 					$background	= imagecolorallocate($dst, hexdec($color[0].$color[1]), hexdec($color[2].$color[3]), hexdec($color[4].$color[5]));
-				} else if (strlen($color) == 3) {
+				} 
+				else if (strlen($color) == 3) 
+				{
 					$background	= imagecolorallocate($dst, hexdec($color[0].$color[0]), hexdec($color[1].$color[1]), hexdec($color[2].$color[2]));
 				}
-				if ($background) {
+				if ($background) 
+				{
 					imagefill($dst, 0, 0, $background);
 				}
 			}
@@ -292,10 +309,11 @@ class MembersImgHandler extends JObject
 		// Resample the original image into the resized canvas we set up earlier
 		ImageCopyResampled($dst, $src, 0, 0, $offsetX, $offsetY, $tnWidth, $tnHeight, $width, $height);
 
-		if ($doSharpen) {
+		if ($doSharpen) 
+		{
 			// Sharpen the image based on two things:
-			//	(1) the difference between the original size and the final size
-			//	(2) the final size
+			//  (1) the difference between the original size and the final size
+			//  (2) the final size
 			$sharpness = $this->findSharp($width, $tnWidth);
 
 			$sharpenMatrix = array(
@@ -305,7 +323,8 @@ class MembersImgHandler extends JObject
 			);
 			$divisor = $sharpness;
 			$offset  = 0;
-			if (function_exists('imageconvolution')) {
+			if (function_exists('imageconvolution')) 
+			{
 				imageconvolution($dst, $sharpenMatrix, $divisor, $offset);
 			}
 		}
@@ -315,22 +334,28 @@ class MembersImgHandler extends JObject
 
 		// Yes - remove it
 		$overwrite = $this->overwrite;
-		if ($overwrite) {
+		if ($overwrite) 
+		{
 			$outputName = $this->outputName;
-			if ($outputName) {
+			if ($outputName) 
+			{
 				$image = $outputName;
 			}
 
 			jimport('joomla.filesystem.file');
-			if (file_exists($resized)) {
-				if (file_exists($docRoot.$image)) {
-					if (!JFile::delete($docRoot.$image)) {
-						$this->setError( JText::_('UNABLE_TO_DELETE_FILE') );
+			if (file_exists($resized)) 
+			{
+				if (file_exists($docRoot . $image)) 
+				{
+					if (!JFile::delete($docRoot . $image)) 
+					{
+						$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
 						return false;
 					}
 				}
-				if (!JFile::move($resized, $docRoot.$image)) {
-					$this->setError( JText::_('UNABLE_TO_DELETE_FILE') );
+				if (!JFile::move($resized, $docRoot . $image)) 
+				{
+					$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
 					return false;
 				}
 			}
@@ -340,42 +365,39 @@ class MembersImgHandler extends JObject
 	}
 
 	/**
-	 * Short description for 'createThumbName'
+	 * Create a thumbnail name
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $image Parameter description (if any) ...
-	 * @param      string $tn Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string $image Image name
+	 * @param      string $tn    Thumbnail prefix
+	 * @return     string
 	 */
-	public function createThumbName( $image=null, $tn='_thumb' )
+	public function createThumbName($image=null, $tn='_thumb')
 	{
-		if (!$image) {
+		if (!$image) 
+		{
 			$image = $this->image;
 		}
-		if (!$image) {
-			$this->setError( JText::_('No image set.') );
+		if (!$image) 
+		{
+			$this->setError(JText::_('No image set.'));
 			return false;
 		}
 
-		$image = explode('.',$image);
-		$n = count($image);
-		$image[$n-2] .= $tn;
-		$end = array_pop($image);
-		$image[] = $end;
-		$thumb = implode('.',$image);
+		jimport('joomla.filesystem.file');
+		$ext = JFile::getExt($thumb);
 
-		return $thumb;
+		return JFile::stripExt($thumb) . $tn . '.' . $ext;
 	}
 
 	/**
-	 * Short description for 'findSharp'
+	 * Sharpen the image based on two things:
 	 * 
-	 * Long description (if any) ...
+	 * (1) the difference between the original size and the final size
+	 * (2) the final size
 	 * 
-	 * @param      number $orig Parameter description (if any) ...
-	 * @param      number $final Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param      number $orig  Original size
+	 * @param      number $final Final size
+	 * @return     integer
 	 */
 	private function findSharp($orig, $final)
 	{

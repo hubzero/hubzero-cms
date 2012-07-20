@@ -206,7 +206,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		}
 	}
 
-	$lnk = 'index.php?option=com_whois&amp;query=uid%3D' . $row->login;
+	$lnk = JRoute::_('index.php?option=com_members&id=' . $row->login);
 	$targetuser = null;
 	if ($row->login) 
 	{

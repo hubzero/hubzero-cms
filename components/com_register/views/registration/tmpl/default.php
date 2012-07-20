@@ -73,9 +73,9 @@ defined('_JEXEC') or die('Restricted access');
 			$html .= 'and paste and send to that person. This email will provide them a random initial password ';
 			$html .= 'and their email confirmation link, and you may add any other information about contributed ';
 			$html .= 'resources or the reason for their account you deem appropriate.</p>'."\n";
-			$html .= "\t".'<h4>What if I need to find the contents of the email to the user again?</h4>'."\n";
-			$html .= "\t".'<p>You can retrieve the same email template and contents at any time from the user\'s ';
-			$html .= '<a href="'.JRoute::_('index.php?option=com_members&task=whois').'">whois page</a>, under their confirmation email.</p>'."\n";
+			//$html .= "\t".'<h4>What if I need to find the contents of the email to the user again?</h4>'."\n";
+			//$html .= "\t".'<p>You can retrieve the same email template and contents at any time from the user\'s ';
+			//$html .= '<a href="'.JRoute::_('index.php?option=com_members&task=whois').'">whois page</a>, under their confirmation email.</p>'."\n";
 			$html .= '</div>'."\n";
 		break;
 

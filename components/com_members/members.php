@@ -51,13 +51,20 @@ include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $optio
 include_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'imghandler.php'); 
 include_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'tags.php');
 include_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
-include_once(JPATH_COMPONENT . DS . 'controller.php');
 ximport('Hubzero_User_Profile');
 ximport('Hubzero_View_Helper_Html');
 ximport('Hubzero_Plugin_Params');
 
+$controllerName = JRequest::getCmd('controller', 'profiles');
+if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+{
+	$controllerName = 'profiles';
+}
+require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = 'MembersController' . ucfirst(strtolower($controllerName));
+
 // Instantiate controller
-$controller = new MembersController();
+$controller = new $controllerName();
 $controller->execute();
 $controller->redirect();
 

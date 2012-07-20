@@ -29,81 +29,74 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-if (!defined("n")) {
+if (!defined('n')) 
+{
+	/**
+	 * Description for '"t"'
+	 */
+	define('t', "\t");
 
-/**
- * Description for '"t"'
- */
-	define("t","\t");
+	/**
+	 * Description for '"n"'
+	 */
+	define('n', "\n");
 
-/**
- * Description for '"n"'
- */
-	define("n","\n");
+	/**
+	 * Description for '"br"'
+	 */
+	define('br', "<br />");
 
-/**
- * Description for '"br"'
- */
-	define("br","<br />");
+	/**
+	 * Description for '"sp"'
+	 */
+	define('sp', "&#160;");
 
-/**
- * Description for '"sp"'
- */
-	define("sp","&#160;");
-
-/**
- * Description for '"a"'
- */
-	define("a","&amp;");
+	/**
+	 * Description for '"a"'
+	 */
+	define('a', "&amp;");
 }
 
 /**
- * Short description for 'MembersHtml'
- * 
- * Long description (if any) ...
+ * Members helper class for various HTML output
  */
 class MembersHtml
 {
-
 	/**
-	 * Short description for 'selectAccess'
+	 * Generate a select list for access levels
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $name Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
-	 * @param      string $class Parameter description (if any) ...
-	 * @param      string $id Parameter description (if any) ...
+	 * @param      string  $name  Select name
+	 * @param      integer $value Value to preselect
+	 * @param      string  $class Class to add to the element
+	 * @param      string  $id    Select ID
 	 * @return     string Return description (if any) ...
 	 */
 	public function selectAccess($name, $value, $class='', $id='')
 	{
-		$arr = array( JText::_('Public'), JText::_('Registered users'), JText::_('Private') );
+		$arr = array(JText::_('Public'), JText::_('Registered users'), JText::_('Private'));
 
-		$html  = '<select name="'.$name.'"';
-		$html .= ($id) ? ' id="'.$id.'"' : '';
-		$html .= ($class) ? ' class="'.$class.'"' : '';
-		$html .= '>'."\n";
+		$html  = '<select name="' . $name . '"';
+		$html .= ($id)    ? ' id="' . $id . '"'       : '';
+		$html .= ($class) ? ' class="' . $class . '"' : '';
+		$html .= '>' . "\n";
 		foreach ($arr as $k => $v)
 		{
 			$selected = ($k == $value)
 					  ? ' selected="selected"'
 					  : '';
-			$html .= ' <option value="'.$k.'"'.$selected.'>'.$v.'</option>'."\n";
+			$html .= ' <option value="' . $k . '"' . $selected . '>' . $v . '</option>' . "\n";
 		}
-		$html .= '</select>'."\n";
+		$html .= '</select>' . "\n";
 		return $html;
 	}
 
 	/**
-	 * Short description for 'propercase_singleresponse'
+	 * Output a response for a single option field
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $response Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $response Normalized response code
+	 * @return     string 
 	 */
 	public function propercase_singleresponse($response)
 	{
@@ -113,36 +106,43 @@ class MembersHtml
 			case '':        $html .= JText::_('n/a');               break;
 			case 'no':      $html .= JText::_('None');              break;
 			case 'refused': $html .= JText::_('Declined Response'); break;
-			default:        $html .= htmlentities(ucfirst($response),ENT_COMPAT,'UTF-8');       break;
+			default:        $html .= htmlentities(ucfirst($response), ENT_COMPAT, 'UTF-8'); break;
 		}
 		return $html;
 	}
 
 	/**
-	 * Short description for 'propercase_multiresponse'
+	 * Output a response for a multi-option field
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $response_array Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array $response_array Response codes
+	 * @return     string
 	 */
 	public function propercase_multiresponse($response_array)
 	{
 		$html = '';
-		if (count($response_array) == 0) {
+		if (count($response_array) == 0) 
+		{
 			$html .= JText::_('n/a');
-		} else {
+		} 
+		else 
+		{
 			for ($i = 0; $i < count($response_array); $i++)
 			{
-				if ($i > 0) {
+				if ($i > 0) 
+				{
 					$html .= ', ';
 				}
-				if ($response_array[$i] == 'no') {
+				if ($response_array[$i] == 'no') 
+				{
 					$html .= JText::_('None');
-				} elseif ($response_array[$i] == 'refused') {
+				} 
+				elseif ($response_array[$i] == 'refused') 
+				{
 					$html .= JText::_('Declined Response');
-				} else {
-					$html .= htmlentities(ucfirst($response_array[$i]),ENT_COMPAT,'UTF-8');
+				} 
+				else 
+				{
+					$html .= htmlentities(ucfirst($response_array[$i]), ENT_COMPAT, 'UTF-8');
 				}
 			}
 		}
@@ -150,61 +150,62 @@ class MembersHtml
 	}
 
 	/**
-	 * Short description for 'obfuscate'
+	 * Obfuscate an email address
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $email Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $email Email address
+	 * @return     string 
 	 */
-	public function obfuscate( $email )
+	public function obfuscate($email)
 	{
 		$length = strlen($email);
 		$obfuscatedEmail = '';
 		for ($i = 0; $i < $length; $i++)
 		{
-			$obfuscatedEmail .= '&#'. ord($email[$i]) .';';
+			$obfuscatedEmail .= '&#' . ord($email[$i]) . ';';
 		}
 
 		return $obfuscatedEmail;
 	}
 
 	/**
-	 * Short description for 'date2epoch'
+	 * Transform a date to an epoch
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $datestr Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string $datestr Datetime (0000-00-00 00:00:00)
+	 * @return     integer
 	 */
 	public function date2epoch($datestr)
 	{
-		if (empty($datestr)) {
+		if (empty($datestr)) 
+		{
 			return null;
 		}
 		list ($date, $time) = explode(' ', $datestr);
 		list ($y, $m, $d) = explode('-', $date);
 		list ($h, $i, $s) = explode(':', $time);
-		return(mktime($h, $i, $s, $m, $d, $y));
+		return (mktime($h, $i, $s, $m, $d, $y));
 	}
 
 	/**
-	 * Short description for 'valformat'
+	 * Format a value
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      number $value Parameter description (if any) ...
-	 * @param      integer $format Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      number  $value  Value to format
+	 * @param      integer $format Format to apply
+	 * @return     mixed
 	 */
 	public function valformat($value, $format)
 	{
-		if ($format == 1) {
+		if ($format == 1) 
+		{
 			return(number_format($value));
-		} elseif ($format == 2 || $format == 3) {
-			if ($format == 2) {
+		} 
+		elseif ($format == 2 || $format == 3) 
+		{
+			if ($format == 2) 
+			{
 				$min = round($value / 60);
-			} else {
+			} 
+			else 
+			{
 				$min = floor($value / 60);
 				$sec = $value - ($min * 60);
 			}
@@ -212,19 +213,29 @@ class MembersHtml
 			$min -= ($hr * 60);
 			$day = floor($hr / 24);
 			$hr -= ($day * 24);
-			if ($day == 1) {
-				$day = "1 day, ";
-			} elseif ($day > 1) {
-				$day = number_format($day) . " days, ";
-			} else {
-				$day = "";
+			if ($day == 1) 
+			{
+				$day = '1 day, ';
+			} 
+			elseif ($day > 1) 
+			{
+				$day = number_format($day) . ' days, ';
+			} 
+			else 
+			{
+				$day = '';
 			}
-			if ($format == 2) {
+			if ($format == 2) 
+			{
 				return(sprintf("%s%d:%02d", $day, $hr, $min));
-			} else {
+			} 
+			else 
+			{
 				return(sprintf("%s%d:%02d:%02d", $day, $hr, $min, $sec));
 			}
-		} else {
+		} 
+		else 
+		{
 			return($value);
 		}
 	}
