@@ -345,12 +345,14 @@ class ResourcesHelper extends JObject
 			} else if ($newstyle) {
 				if (count($names) > 0) {
 					$html = '<p>'.ucfirst(JText::_('By')).' ';
-					$html .= count($orgs) > 1  ? implode( ', ', $names ) : implode( ', ', $names_s )  ;
+					//$html .= count($orgs) > 1  ? implode( ', ', $names ) : implode( ', ', $names_s );
+					$html .= count($contributors) > 1 ? implode( ', ', $names ) : implode( ', ', $names_s );
 					$html .= '</p>';
 				}
 				if ($showorgs && count($orgs) > 0) {
 					$html .= '<p class="orgs">';
-					$html .= count($orgs) > 1 ? $orgsln : $orgsln_s;
+					//$html .= count($orgs) > 1 ? $orgsln : $orgsln_s;
+					$html .= count($contributors) > 1 ? $orgsln : $orgsln_s;
 					$html .= '</p>';
 				}
 			} else {
