@@ -476,7 +476,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 		$format = JRequest::getVar('format', 'apa');
 
 		//include citations format class
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'citations.format.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
 
 		//new citations format object
 		$cf = new CitationFormat();
@@ -496,7 +496,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 	public function gettemplatekeysTask()
 	{
 		// include citations format class
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'citations.format.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
 
 		// new citations format object
 		$cf = new CitationFormat();

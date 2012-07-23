@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 //helper lib
 ximport('Hubzero_View_Helper_Html');
@@ -46,13 +46,13 @@ $batch_download = $this->config->get("citation_batch_download", 1);
 $coins = $this->config->get("citation_coins", 1);
 
 //do we want to number li items
-if($label == "none") {
+if ($label == "none") {
 	$citations_label_class = "no-label";
-} elseif($label == "number") {
+} elseif ($label == "number") {
 	$citations_label_class = "number-label";
-} elseif($label == "type") {
+} elseif ($label == "type") {
 	$citations_label_class = "type-label";
-} elseif($label == "both") {
+} elseif ($label == "both") {
 	$citations_label_class = "both-label";
 }
 ?>
@@ -70,7 +70,7 @@ if($label == "none") {
 	?>
 	
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>" id="citeform" method="post">
-		<div class="aside <?php if($batch_download) { echo " withBatchDownload"; } ?>">
+		<div class="aside <?php if ($batch_download) { echo " withBatchDownload"; } ?>">
 			<fieldset>
 				<label>
 					<?php echo JText::_('SORT_BY'); ?>
@@ -188,7 +188,7 @@ if($label == "none") {
 				<input type="hidden" name="task" value="browse" />
 			</fieldset>
 			
-			<?php if($batch_download) : ?>
+			<?php if ($batch_download) : ?>
 				<fieldset id="download-batch">
 					<strong><?php echo JText::_('Export Multiple Citations'); ?></strong>
 					<p><?php echo JText::_('Check the citations that you would like to have exported.'); ?></p>
@@ -201,17 +201,17 @@ if($label == "none") {
 			<?php endif; ?>
 		</div><!-- / .aside -->
 		<div class="subject">
-			<?php if(count($this->citations) > 0) : ?>
+			<?php if (count($this->citations) > 0) : ?>
 				<?php
 					$formatter = new CitationFormat();
-					$formatter->setTemplate( $template );
+					$formatter->setTemplate($template);
 
 					$counter = 1;
 				?>
 				<table class="citations">
 					<thead>
 						<tr>
-							<?php if($batch_download) : ?>
+							<?php if ($batch_download) : ?>
 								<th class="batch">
 									<input type="checkbox" class="checkall-download" />
 								</th>
@@ -222,18 +222,18 @@ if($label == "none") {
 					<tbody>
 						<?php foreach($this->citations as $cite) : ?>
 							<tr>
-								<?php if($batch_download) : ?>
+								<?php if ($batch_download) : ?>
 									<td class="batch">
 										<input type="checkbox" class="download-marker" name="download_marker[]" value="<?php echo $cite->id; ?>" />
 									</td>
 								<?php endif; ?>
 								
-								<?php if($label != "none") : ?>
+								<?php if ($label != "none") : ?>
 									<td class="citation-label <?php echo $citations_label_class; ?>">
 										<?php 
 											$type = "";
 											foreach($this->types as $t) {
-												if($t['id'] == $cite->type) {
+												if ($t['id'] == $cite->type) {
 													$type = $t['type_title'];
 												}
 											}
@@ -256,27 +256,27 @@ if($label == "none") {
 									</td>
 								<?php endif; ?>
 								<td class="citation-container">
-									<?php echo $formatter->formatCitation( $cite, $this->filters['search'], $coins, $this->config ); ?>
+									<?php echo $formatter->formatCitation($cite, $this->filters['search'], $coins, $this->config); ?>
 								
-									<?php if($rollover == "yes" && $cite->abstract != "") : ?>
+									<?php if ($rollover == "yes" && $cite->abstract != "") : ?>
 										<div class="citation-notes">
 											<?php
 												$cs = new CitationsSponsor($this->database);
 												$sponsors = $cs->getCitationSponsor($cite->id);
 												$final = "";
-												if($sponsors)
+												if ($sponsors)
 												{
 													foreach($sponsors as $s)
 													{
 														$sp = $cs->getSponsor($s);
-														if($sp)
+														if ($sp)
 														{
 															$final .= '<a rel="external" href="'.$sp[0]['link'].'">'.$sp[0]['sponsor'].'</a>, ';
 														}
 													}
 												}
 											?>
-											<?php if($final != '' && $this->config->get("citation_sponsors", "yes") == 'yes') : ?>
+											<?php if ($final != '' && $this->config->get("citation_sponsors", "yes") == 'yes') : ?>
 												<?php $final = substr($final, 0, -2); ?>
 												<p class="sponsor">Abstract courtesy of <?php echo $final; ?></p>
 											<?php endif; ?>
@@ -286,15 +286,15 @@ if($label == "none") {
 								</td>
 							</tr>
 							<tr>
-								<td colspan="<?php if($label == "none") { echo 2; } else { echo 3; }; ?>" class="citation-details">
-									<?php echo $formatter->citationDetails( $cite, $this->database, $this->config, $this->openurl ); ?>
+								<td colspan="<?php if ($label == "none") { echo 2; } else { echo 3; }; ?>" class="citation-details">
+									<?php echo $formatter->citationDetails($cite, $this->database, $this->config, $this->openurl); ?>
 								
-									<?php if($this->config->get("citation_show_badges","no") == "yes") : ?>
-										<?php echo $formatter->citationBadges( $cite, $this->database ); ?>
+									<?php if ($this->config->get("citation_show_badges","no") == "yes") : ?>
+										<?php echo $formatter->citationBadges($cite, $this->database); ?>
 									<?php endif; ?>
 
-									<?php if($this->config->get("citation_show_tags","no") == "yes") : ?>
-										<?php echo $formatter->citationTags( $cite, $this->database ); ?>
+									<?php if ($this->config->get("citation_show_tags","no") == "yes") : ?>
+										<?php echo $formatter->citationTags($cite, $this->database); ?>
 									<?php endif; ?>
 								</td>
 							</tr>

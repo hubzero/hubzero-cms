@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           components/com_citations/views/intro/tmpl/default.xml
+@file           components/com_citations/views/edit/tmpl/default.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Citations Layout">
+	<layout title="Edit Citation">
 		<message>
-			<![CDATA[STANDARD CITATIONS DESC]]>
+			<![CDATA[Edit Citation]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Citations Layout</name>
-		<description>STANDARD CITATIONS DESC</description>
+		<name>Edit Citation</name>
+		<description>Edit Citation</description>
 		<params>
 		</params>
 	</state>

@@ -86,7 +86,7 @@ class plgCitationBibtex extends JPlugin
 		}
 
 		//include bibtex file 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'BibTex.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'BibTex.php');
 
 		//create bibtex object
 		$bibtex = new Structures_BibTex();

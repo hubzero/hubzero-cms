@@ -78,6 +78,25 @@ function CitationsParseRoute($segments)
 	if (isset($segments[0])) 
 	{
 		$vars['task'] = $segments[0];
+		switch ($vars['task'])
+		{
+			case 'import':
+				$vars['controller'] = 'import';
+				$vars['task'] = 'display';
+			break;
+
+			case 'import_upload':
+			case 'import_review':
+			case 'import_save':
+			case 'import_saved': 
+				$vars['controller'] = 'import';
+				$vars['task'] = str_replace('import_', '', $vars['task']);
+			break;
+
+			default:
+				$vars['controller'] = 'citations';
+			break;
+		}
 	}
 	if (isset($segments[1])) 
 	{

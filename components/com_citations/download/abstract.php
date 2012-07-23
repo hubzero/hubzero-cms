@@ -29,36 +29,31 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'CitationsDownloadAbstract'
- * 
- * Long description (if any) ...
+ * Abstract class for citations download
  */
 abstract class CitationsDownloadAbstract
 {
-
 	/**
-	 * Description for '_mime'
+	 * Mime type
 	 * 
 	 * @var string
 	 */
 	protected $_mime = '';
 
 	/**
-	 * Description for '_extension'
+	 * File extension
 	 * 
 	 * @var string
 	 */
 	protected $_extension = '';
 
 	/**
-	 * Short description for 'setMimeType'
+	 * Set the mime type
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $mime Parameter description (if any) ...
+	 * @param      string $mime Value to set
 	 * @return     void
 	 */
 	public function setMimeType($mime)
@@ -67,11 +62,9 @@ abstract class CitationsDownloadAbstract
 	}
 
 	/**
-	 * Short description for 'getMimeType'
+	 * Get the mime type
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     string Return description (if any) ...
+	 * @return     string
 	 */
 	public function getMimeType()
 	{
@@ -79,11 +72,9 @@ abstract class CitationsDownloadAbstract
 	}
 
 	/**
-	 * Short description for 'setExtension'
+	 * Set the file extension
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $ext Parameter description (if any) ...
+	 * @param      string $ext Value to set
 	 * @return     void
 	 */
 	public function setExtension($ext)
@@ -92,11 +83,9 @@ abstract class CitationsDownloadAbstract
 	}
 
 	/**
-	 * Short description for 'getExtension'
+	 * Get the file extension
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     string Return description (if any) ...
+	 * @return     string
 	 */
 	public function getExtension()
 	{
@@ -104,11 +93,9 @@ abstract class CitationsDownloadAbstract
 	}
 
 	/**
-	 * Short description for 'format'
+	 * Format the file
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     string Return description (if any) ...
+	 * @return     string
 	 */
 	public function format()
 	{

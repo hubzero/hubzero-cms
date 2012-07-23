@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 //helper lib
 ximport('Hubzero_View_Helper_Html');
@@ -72,7 +72,7 @@ if($label == "none") {
 	<?php if(count($this->citations) > 0) : ?>
 		<?php
 			$formatter = new CitationFormat();
-			$formatter->setTemplate( $template );
+			$formatter->setTemplate($template);
 
 			$counter = 1;
 		?>
@@ -112,7 +112,7 @@ if($label == "none") {
 							</td>
 						<?php endif; ?>
 						<td class="citation-container">
-							<?php echo $formatter->formatCitation( $cite, $this->filters['search'], false, $this->config ); ?>
+							<?php echo $formatter->formatCitation($cite, $this->filters['search'], false, $this->config); ?>
 						
 							<?php if($rollover == "yes" && $cite->abstract != "") : ?>
 								<div class="citation-notes"><p><?php echo nl2br($cite->abstract); ?></p></div>
@@ -121,14 +121,14 @@ if($label == "none") {
 					</tr>
 					<tr>
 						<td colspan="<?php if($label == "none") { echo 2; } else { echo 3; }; ?>" class="citation-details">
-							<?php echo $formatter->citationDetails( $cite, $this->database, $this->config, $this->openurl ); ?>
+							<?php echo $formatter->citationDetails($cite, $this->database, $this->config, $this->openurl); ?>
 						
 							<?php if($this->config->get("citation_show_badges","no") == "yes") : ?>
-								<?php echo $formatter->citationBadges( $cite, $this->database ); ?>
+								<?php echo $formatter->citationBadges($cite, $this->database); ?>
 							<?php endif; ?>
 							
 							<?php if($this->config->get("citation_show_tags","no") == "yes") : ?>
-								<?php echo $formatter->citationTags( $cite, $this->database ); ?>
+								<?php echo $formatter->citationTags($cite, $this->database); ?>
 							<?php endif; ?>
 						</td>
 					</tr>

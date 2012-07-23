@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die( 'Restricted access');
 ?>
 <div id="content-header" class="full">
 	<h2><?php echo $this->title; ?></h2>
@@ -45,10 +45,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<div class="aside">
 		<h3>Help</h3>
 		<ul>
-			<?php if($this->allow_import == 1 || ($this->allow_import == 2 && $this->isAdmin)) : ?>
+			<?php if ($this->allow_import == 1 || ($this->allow_import == 2 && $this->isAdmin)) : ?>
 				<li><a href="<?php echo JRoute::_('index.php?option='.$option.'&task=add'); ?>">Submit a citation</a></li>
 			<?php endif; ?>
-			<?php if($this->allow_bulk_import == 1 || ($this->allow_bulk_import == 2 && $this->isAdmin)) : ?>
+			<?php if ($this->allow_bulk_import == 1 || ($this->allow_bulk_import == 2 && $this->isAdmin)) : ?>
 				<li><a href="<?php echo JRoute::_('index.php?option='.$option.'&task=import'); ?>">Import citations</a></li>
 			<?php endif; ?>	
 		</ul>
@@ -161,7 +161,7 @@ $tabcnt = 0;
 $colorx = 0;
 $maxval = 0;
 
-array_multisort( $data_arr['hits'], SORT_NUMERIC, SORT_DESC, $data_arr['text'] );
+array_multisort( $data_arr['hits'], SORT_NUMERIC, SORT_DESC, $data_arr['text']);
 
 foreach ($data_arr['hits'] as $hits)
 {
@@ -169,15 +169,15 @@ foreach ($data_arr['hits'] as $hits)
 		$maxval = $hits;
 	}
 }
-$sumval = array_sum( $data_arr['hits'] );
+$sumval = array_sum( $data_arr['hits']);
 
 for ($i=0, $n=count($data_arr['text']); $i < $n; $i++)
 {
 	$text =& $data_arr['text'][$i];
 	$hits =& $data_arr['hits'][$i];
 	if ($maxval > 0 && $sumval > 0) {
-		$width = ceil( $hits*$polls_graphwidth/$maxval );
-		$percent = round( 100*$hits/$sumval, 1 );
+		$width = ceil( $hits*$polls_graphwidth/$maxval);
+		$percent = round( 100*$hits/$sumval, 1);
 	} else {
 		$width = 0;
 		$percent = 0;

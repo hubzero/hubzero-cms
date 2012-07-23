@@ -29,104 +29,101 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-include_once(JPATH_ROOT.DS.'components'.DS.'com_citations'.DS.'download'.DS.'abstract.php');
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'download' . DS . 'abstract.php');
 
 /**
- * Short description for 'CitationsDownloadBibtex'
- * 
- * Long description (if any) ...
+ * Citations download class for BibText format
  */
 class CitationsDownloadBibtex extends CitationsDownloadAbstract
 {
-
 	/**
-	 * Description for '_mime'
+	 * Mime type
 	 * 
 	 * @var string
 	 */
 	protected $_mime = 'application/x-bibtex';
 
 	/**
-	 * Description for '_extension'
+	 * File extension
 	 * 
 	 * @var string
 	 */
 	protected $_extension = 'bib';
 
 	/**
-	 * Short description for 'format'
+	 * Format the file
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      object $row Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      object $row Record to format
+	 * @return     string
 	 */
 	public function format($row)
-	{   
-		//get fields to not include for all citations
-		$config = JComponentHelper::getParams("com_citations");
-		$exclude = $config->get("citation_download_exclude","");
-		if(strpos($exclude,",") !== false)
+	{
+		// get fields to not include for all citations
+		$config = JComponentHelper::getParams('com_citations');
+		$exclude = $config->get('citation_download_exclude', '');
+		if (strpos($exclude, ',') !== false)
 		{
-			$exclude = str_replace(',',"\n",$exclude);
+			$exclude = str_replace(',', "\n", $exclude);
 		}
-		$exclude = array_values(array_filter(array_map("trim", explode("\n", $exclude))));
-		
+		$exclude = array_values(array_filter(array_map('trim', explode("\n", $exclude))));
+
 		$paramsClass = 'JParameter';
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
 			$paramsClass = 'JRegistry';
 		}
-		
+
 		//get fields to not include for specific citation
-		$cparams = new $paramsClass( $row->params );
-		$citation_exclude = $cparams->get("exclude","");
-		if(strpos($citation_exclude,",") !== false)
+		$cparams = new $paramsClass($row->params);
+		$citation_exclude = $cparams->get('exclude', '');
+		if (strpos($citation_exclude, ',') !== false)
 		{
-			$citation_exclude = str_replace(',',"\n",$citation_exclude);
+			$citation_exclude = str_replace(',', "\n", $citation_exclude);
 		}
-		$citation_exclude = array_values(array_filter(array_map("trim", explode("\n", $citation_exclude))));
-		
+		$citation_exclude = array_values(array_filter(array_map('trim', explode("\n", $citation_exclude))));
+
 		//merge overall exclude and specific exclude
 		$exclude = array_values(array_unique(array_merge($exclude, $citation_exclude)));
-		
-		include_once(JPATH_ROOT.DS.'components'.DS.'com_citations'.DS.'BibTex.php');
+
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'BibTex.php');
 		$bibtex = new Structures_BibTex();
 
 		$addarray = array();
 
 		//get all the citation types
 		$db =& JFactory::getDBO();
-		$ct = new CitationsType( $db );
+		$ct = new CitationsType($db);
 		$types = $ct->getType();
 
 		//find the right title
-		$type = "";
-		foreach($types as $t) {
-			if($t['id'] == $row->type) {
+		$type = '';
+		foreach ($types as $t) 
+		{
+			if ($t['id'] == $row->type) 
+			{
 				$type = $t['type'];
 			}
 		}
-		$type = ($type != "") ? $type : "Generic";
+		$type = ($type != '') ? $type : 'Generic';
 
 		$addarray['type']    = $type;
 		$addarray['cite']    = $row->cite;
 		$addarray['title']   = $row->title;
 		$addarray['address'] = $row->address;
-		$auths = explode(';',$row->author);
-		for ($i=0, $n=count( $auths ); $i < $n; $i++)
+		$auths = explode(';', $row->author);
+		for ($i=0, $n=count($auths); $i < $n; $i++)
 		{
 			$author = trim($auths[$i]);
-			$author_arr = explode(',',$author);
-			$author_arr = array_map('trim',$author_arr);
+			$author_arr = explode(',', $author);
+			$author_arr = array_map('trim', $author_arr);
 
 			$addarray['author'][$i]['first'] = (isset($author_arr[1])) ? $author_arr[1] : '';
 			$addarray['author'][$i]['last']  = (isset($author_arr[0])) ? $author_arr[0] : '';
 
-			$addarray['author'][$i]['first'] = preg_replace('/\{\{\d+\}\}/',"", $addarray['author'][$i]['first']);
-			$addarray['author'][$i]['last'] = preg_replace('/\{\{\d+\}\}/',"", $addarray['author'][$i]['last']);
+			$addarray['author'][$i]['first'] = preg_replace('/\{\{\d+\}\}/', '', $addarray['author'][$i]['first']);
+			$addarray['author'][$i]['last']  = preg_replace('/\{\{\d+\}\}/', '', $addarray['author'][$i]['last']);
 		}
 
 		$addarray['booktitle']    = $row->booktitle;
@@ -150,26 +147,29 @@ class CitationsDownloadBibtex extends CitationsDownloadAbstract
 		$addarray['url']          = $row->url;
 		$addarray['volume']       = $row->volume;
 		$addarray['year']         = $row->year;
-		if ($row->journal != '') {
+		if ($row->journal != '') 
+		{
 			$addarray['issn']     = $row->isbn;
-		} else {
+		} 
+		else 
+		{
 			$addarray['isbn']     = $row->isbn;
 		}
 		$addarray['doi']          = $row->doi;
 
-		$addarray['language'] 			  = $row->language;
-		$addarray['accession_number'] 	  = $row->accession_number;
-		$addarray['short_title'] 		  = html_entity_decode($row->short_title);
-		$addarray['author_address'] 	  = $row->author_address;
-		$addarray['keywords'] 			  = str_replace("\r\n",", ",$row->keywords);
-		$addarray['abstract'] 			  = $row->abstract;
-		$addarray['call_number'] 	      = $row->call_number;
-		$addarray['label'] 			      = $row->label;
-		$addarray['research_notes'] 	  = $row->research_notes;
-        
-		foreach($addarray as $k => $v)
+		$addarray['language']         = $row->language;
+		$addarray['accession_number'] = $row->accession_number;
+		$addarray['short_title']      = html_entity_decode($row->short_title);
+		$addarray['author_address']   = $row->author_address;
+		$addarray['keywords']         = str_replace("\r\n", ', ', $row->keywords);
+		$addarray['abstract']         = $row->abstract;
+		$addarray['call_number']      = $row->call_number;
+		$addarray['label']            = $row->label;
+		$addarray['research_notes']   = $row->research_notes;
+
+		foreach ($addarray as $k => $v)
 		{
-			if(in_array($k, $exclude))
+			if (in_array($k, $exclude))
 			{
 				unset($addarray[$k]);
 			}

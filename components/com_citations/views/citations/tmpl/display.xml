@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           components/com_citations/views/browse/tmpl/default.xml
+@file           components/com_citations/views/intro/tmpl/default.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Browse Citations Layout">
+	<layout title="Citations landing page">
 		<message>
-			<![CDATA[STANDARD BROWSE CITATIONS DESC]]>
+			<![CDATA[Citations landing page]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Browse Citations Layout</name>
-		<description>STANDARD BROWSE CITATIONS DESC</description>
+		<name>Citations landing page</name>
+		<description>Citations landing page</description>
 		<params>
 		</params>
 	</state>

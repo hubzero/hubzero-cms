@@ -53,12 +53,19 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'author.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'secondary.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'tags.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'type.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'citations.format.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'citations.download.php');
-require_once(JPATH_COMPONENT . DS . 'controller.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'format.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'download.php');
+
+$controllerName = JRequest::getCmd('controller', 'citations');
+if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+{
+	$controllerName = 'citations';
+}
+require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = 'CitationsController' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller
-$controller = new CitationsController();
+$controller = new $controllerName();
 $controller->execute();
 $controller->redirect();
 

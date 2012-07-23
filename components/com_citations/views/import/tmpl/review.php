@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 //database object
 $database =& JFactory::getDBO();
@@ -59,7 +59,7 @@ $no_show = array("errors","duplicate");
 		<li><a href="#">Step 3<span>Browse uploaded citations</span></a></li>
 	</ul><!-- / #steps -->
 	
-	<form method="post" action="index.php">
+	<form method="post" action="<?php echo JRoute::_('index.php?option='. $this->option . '&task=import_save'); ?>">
 		<?php if($citations_require_attention) : ?>
 			<table class="upload-list require-action">
 				<thead>
@@ -73,19 +73,19 @@ $no_show = array("errors","duplicate");
 					<?php foreach($citations_require_attention as $c) : ?>
 						<?php
 							//load the duplicate citation
-							$cc = new CitationsCitation( $database );
+							$cc = new CitationsCitation($database);
 							$cc->load($c['duplicate']);
 							
 							//get the type
-							$ct = new CitationsType( $database );
-							$type = $ct->getType( $cc->type );
+							$ct = new CitationsType($database);
+							$type = $ct->getType($cc->type);
 							$type_title = $type[0]['type_title'];
 
 							//get citations tags
-							$th = new TagsHandler( $database );
+							$th = new TagsHandler($database);
 							$th->_tbl = "citations";
-							$tags = $th->get_tag_string( $cc->id, 0, 0, NULL, 0, "" );
-							$badges = $th->get_tag_string( $cc->id, 0, 0, NULL, 0, "badges" );
+							$tags = $th->get_tag_string($cc->id, 0, 0, NULL, 0, "");
+							$badges = $th->get_tag_string($cc->id, 0, 0, NULL, 0, "badges");
 						?>
 						<tr>
 							<!--<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>-->
@@ -229,7 +229,7 @@ $no_show = array("errors","duplicate");
 			<input type="submit" name="submit" value="Submit Imported Citations" />
 		</p>
 		
-		<input type="hidden" name="option" value="com_citations" />
+		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="task" value="import_save" />
 	</form>
 </div><!-- / .section -->

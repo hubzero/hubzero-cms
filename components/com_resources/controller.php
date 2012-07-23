@@ -2283,7 +2283,7 @@ class ResourcesController extends Hubzero_Controller
 
 			case 'bibtex':
 			default:
-				include_once( JPATH_ROOT.DS.'components'.DS.'com_citations'.DS.'BibTex.php' );
+				include_once( JPATH_ROOT.DS.'components'.DS.'com_citations'.DS.'helpers' . DS . 'BibTex.php' );
 
 				$bibtex = new Structures_BibTex();
 				$addarray = array();

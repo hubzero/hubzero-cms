@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 $allow_tags = $this->config->get("citation_allow_tags","no");
 $allow_badges = $this->config->get("citation_allow_badges","no");
@@ -47,11 +47,11 @@ foreach($this->badges as $badge) {
 	$b[] = $badge->raw_tag;
 }
 
-JPluginHelper::importPlugin( 'hubzero' );
+JPluginHelper::importPlugin('hubzero');
 $dispatcher =& JDispatcher::getInstance();
 
-$tags_list = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','', implode(",",$t))) );
-$badges_list = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'badges', 'actags1','', implode(",",$b))) );
+$tags_list = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags','', implode(",",$t))));
+$badges_list = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'badges', 'actags1','', implode(",",$b))));
 
 ?>
 <div id="content-header" class="full">
@@ -292,13 +292,13 @@ $badges_list = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'bad
 			</div>
 		</fieldset><div class="clear"></div>
 		
-		<?php if($allow_tags == "yes" || $allow_badges == "yes") : ?>
+		<?php if ($allow_tags == "yes" || $allow_badges == "yes") : ?>
 			<div class="explaination">
 				<p><?php echo JText::_(''); ?></p>
 			</div>
 			<fieldset>
 				<h3><?php echo $fieldset_label; ?></h3>
-				<?php if($allow_tags == "yes") : ?>
+				<?php if ($allow_tags == "yes") : ?>
 					<label>
 						Tags: <span class="optional">Optional</span>
 						<?php 
@@ -312,7 +312,7 @@ $badges_list = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'bad
 					</label>
 				<?php endif; ?>
 				
-				<?php if($allow_badges == "yes") : ?>
+				<?php if ($allow_badges == "yes") : ?>
 					<label class="badges">
 						Badges: <span class="optional">Optional</span>
 						<?php 

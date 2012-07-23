@@ -29,16 +29,13 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'CitationsDownload'
- * 
- * Long description (if any) ...
+ * Citations class for downloading a citation of a specific file type
  */
 class CitationsDownload
 {
-
 	/**
 	 * Description for '_format'
 	 * 
@@ -221,20 +218,20 @@ class CitationsDownload
 	}
 
 	/**
-	 * Short description for 'formatReference'
+	 * Format a record
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $reference Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      object $reference Record to format
+	 * @return     string
 	 */
 	public function formatReference($reference=null)
 	{
-		if (!$reference) {
+		if (!$reference) 
+		{
 			$reference = $this->getReference();
 		}
 
-		if (!$reference || (!is_array($reference) && !is_object($reference))) {
+		if (!$reference || (!is_array($reference) && !is_object($reference))) 
+		{
 			return '';
 		}
 
@@ -242,28 +239,34 @@ class CitationsDownload
 
 		$formatter = $this->getFormatter($format);
 
-		if (!$formatter || !is_object($formatter)) {
-			$cls = 'CitationsDownload'.$format;
+		if (!$formatter || !is_object($formatter)) 
+		{
+			$cls = 'CitationsDownload' . $format;
 
-			if (is_file(JPATH_ROOT.DS.'components'.DS.'com_citations'.DS.'download'.DS.strtolower($format).'.php')) {
-				include_once(JPATH_ROOT.DS.'components'.DS.'com_citations'.DS.'download'.DS.strtolower($format).'.php');
+			if (is_file(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'download' . DS . strtolower($format) . '.php')) 
+			{
+				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'download' . DS . strtolower($format) . '.php');
 			}
-			if (!class_exists($cls)) {
-				JError::raiseError( 500, JText::_('Download format unavailable.') );
+			if (!class_exists($cls)) 
+			{
+				JError::raiseError(500, JText::_('Download format unavailable.'));
 				return;
 			}
 
 			$formatter = new $cls();
 
-			if (!$formatter instanceof CitationsDownloadAbstract) {
-				JError::raiseError( 500, JText::_('Invalid download formatter specified.') );
+			if (!$formatter instanceof CitationsDownloadAbstract) 
+			{
+				JError::raiseError(500, JText::_('Invalid download formatter specified.'));
 				return;
 			}
 
 			$this->setFormatter($formatter, $format);
 			$this->setExtension($formatter->getExtension());
 			$this->setMimeType($formatter->getMimeType());
-		} else {
+		} 
+		else 
+		{
 			$this->setExtension($formatter->getExtension());
 			$this->setMimeType($formatter->getMimeType());
 		}

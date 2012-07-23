@@ -1650,7 +1650,7 @@ class ResourcesHtml
 	 */
 	public function citation($option, $cite, $id, $citations, $type, $rev='')
 	{
-		include_once(JPATH_ROOT.DS.'components'.DS.'com_citations'.DS.'helpers'.DS.'citations.format.php');
+		include_once(JPATH_ROOT.DS.'components'.DS.'com_citations'.DS.'helpers'.DS.'format.php');
 
 		$html  = '<p>'.JText::_('COM_RESOURCES_CITATION_INSTRUCTIONS').'</p>'."\n";
 		$html .= $citations;

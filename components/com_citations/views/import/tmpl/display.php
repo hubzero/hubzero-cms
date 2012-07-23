@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 ?>
 <div id="content-header" class="full">
@@ -38,19 +38,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <div id="import" class="section">
 	
-	<?php
-		foreach($this->messages as $message) {
-			echo "<p class=\"{$message['type']}\">" . $message['message'] . "</p>";
-		}
-	?>
+<?php foreach ($this->messages as $message) { ?>
+	<p class="<?php echo $message['type']; ?>"><?php echo $message['message']; ?></p>
+<?php } ?>
 	
 	<ul id="steps">
 		<li><a href="/citations/import" class="active">Step 1<span>Upload citations file</span></a></li>
 		<li><a href="/citations/import_review" class="">Step 2<span>Preview imported citations</span></a></li>
 		<li><a href="#">Step 3<span>Browse uploaded citations</span></a></li>
 	</ul><!-- / #steps -->
-	
-	<form id="hubForm" enctype="multipart/form-data" method="post" action="index.php">
+
+	<form id="hubForm" enctype="multipart/form-data" method="post" action="<?php echo JRoute::_('index.php?option='. $this->option . '&task=import_upload'); ?>">
 		<p class="explaination">
 			<strong><u>Accepted file types</u></strong><br />
 			<?php echo implode($this->accepted_files, "<br />"); ?>
@@ -67,7 +65,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<input type="submit" name="submit" value="Upload" />
 		</p>
 		
-		<input type="hidden" name="option" value="com_citations" />
+		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="task" value="import_upload" />
 	</form>
 </div><!-- / .section -->
