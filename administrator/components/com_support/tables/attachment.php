@@ -146,7 +146,7 @@ class SupportAttachment extends JTable
 			$sef = JRoute::_('index.php?option=com_support&task=download&id=' . $id . '&file=' . $a[0]);
 			$url = $juri->base() . trim($sef, DS);
 
-			if (preg_match("/bmp|gif|jpg|jpe|jpeg|tif|tiff|png/i", $a[0])) 
+			if (preg_match("/bmp|gif|jpg|jpe|jpeg|png/i", $a[0])) 
 			{
 				$size = getimagesize($this->uppath . DS . $a[0]);
 				if ($size[0] > 400) 
