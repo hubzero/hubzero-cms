@@ -28,9 +28,7 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Controller');
 
 /**
- * Short description for 'ForumController'
- * 
- * Long description (if any) ...
+ * Controller class for forum categories
  */
 class ForumControllerCategories extends Hubzero_Controller
 {
@@ -66,7 +64,7 @@ class ForumControllerCategories extends Hubzero_Controller
 			);
 		}
 	}
-	
+
 	/**
 	 * Method to build and set the document title
 	 *
@@ -88,9 +86,7 @@ class ForumControllerCategories extends Hubzero_Controller
 	}
 	
 	/**
-	 * Short description for 'topics'
-	 * 
-	 * Long description (if any) ...
+	 * Display a list of threads for a category
 	 * 
 	 * @return     void
 	 */
@@ -109,21 +105,21 @@ class ForumControllerCategories extends Hubzero_Controller
 		$this->view->filters['group']    = 0;
 		$this->view->filters['state']    = 1;
 		$this->view->filters['parent']   = 0;
-		
+
 		$this->view->section = new ForumSection($this->database);
 		$this->view->section->loadByAlias($this->view->filters['section'], 0);
-		
+
 		$this->view->category = new ForumCategory($this->database);
 		$this->view->category->loadByAlias($this->view->filters['category'], $this->view->section->id, 0);
 		$this->view->filters['category_id'] = $this->view->category->id;
-		
+
 		if (!$this->view->category->id)
 		{
 			$this->view->category->title = JText::_('Discussions');
 			$this->view->category->alias = str_replace(' ', '-', $this->view->category->title);
 			$this->view->category->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($this->view->category->title));
 		}
-		
+
 		// Initiate a forum object
 		$this->view->forum = new ForumPost($this->database);
 
@@ -132,7 +128,7 @@ class ForumControllerCategories extends Hubzero_Controller
 
 		// Get records
 		$this->view->rows = $this->view->forum->getRecords($this->view->filters);
-		
+
 		// Get the last post
 		$this->view->lastpost = $this->view->forum->getLastActivity(0, $this->view->category->id);
 
@@ -152,31 +148,32 @@ class ForumControllerCategories extends Hubzero_Controller
 
 		// Push CSS to the tmeplate
 		$this->_getStyles();
-		
+
 		// Push scripts to the template
-		$this->_getScripts();
+		$this->_getScripts('assets/js/' . $this->_name);
 	
 		// Set the page title
 		$this->_buildTitle();
-		
+
 		// Set the pathway
 		$this->_buildPathway();
 
 		$this->view->notifications = $this->getComponentMessage();
-		
+
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
-		
+
 		$this->view->display();
 	}
-	
+
 	/**
-	 * Short description for 'topics'
-	 * 
-	 * Long description (if any) ...
+	 * Search threads and display a list of results
 	 * 
 	 * @return     void
 	 */
@@ -191,12 +188,12 @@ class ForumControllerCategories extends Hubzero_Controller
 		$this->view->filters['start']  = JRequest::getInt('limitstart', 0);
 		$this->view->filters['search'] = JRequest::getVar('q', '');
 		$this->view->filters['group']  = 0;
-		
+
 		$this->view->section = new ForumSection($this->database);
 		$this->view->section->title = JText::_('Posts');
 		$this->view->section->alias = str_replace(' ', '-', $this->view->section->title);
 		$this->view->section->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($this->view->section->title));
-		
+
 		// Get all sections
 		$sections = $this->view->section->getRecords(array(
 			'state' => 1, 
@@ -208,12 +205,12 @@ class ForumControllerCategories extends Hubzero_Controller
 			$s[$section->id] = $section;
 		}
 		$this->view->sections = $s;
-		
+
 		$this->view->category = new ForumCategory($this->database);
 		$this->view->category->title = JText::_('Search');
 		$this->view->category->alias = str_replace(' ', '-', $this->view->category->title);
 		$this->view->category->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($this->view->category->title));
-		
+
 		// Get all categories
 		$categories = $this->view->category->getRecords(array(
 			'state' => 1, 
@@ -225,7 +222,7 @@ class ForumControllerCategories extends Hubzero_Controller
 			$c[$category->id] = $category;
 		}
 		$this->view->categories = $c;
-		
+
 		// Initiate a forum object
 		$this->view->forum = new ForumPost($this->database);
 
@@ -251,49 +248,49 @@ class ForumControllerCategories extends Hubzero_Controller
 
 		// Push CSS to the tmeplate
 		$this->_getStyles();
-		
+
 		// Push scripts to the template
-		$this->_getScripts();
-	
+		$this->_getScripts('assets/js/' . $this->_name);
+
 		// Set the page title
 		$this->_buildTitle();
-		
+
 		// Set the pathway
 		$this->_buildPathway();
 
 		$this->view->notifications = $this->getComponentMessage();
-		
+
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
-		
+
 		$this->view->display();
 	}
 	
 	/**
-	 * Short description for 'addTopic'
-	 * 
-	 * Long description (if any) ...
+	 * Show a form for creating an entry
 	 * 
 	 * @return     void
 	 */
 	public function newTask()
 	{
-		$this->view->setLayout('edit');
 		$this->editTask();
 	}
 
 	/**
-	 * Short description for 'editTopic'
+	 * Show a form for editing an entry
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function editTask($model=null)
 	{
+		$this->view->setLayout('edit');
+
 		$category = JRequest::getVar('category', '');
 		$section = JRequest::getVar('section', '');
 		
@@ -353,40 +350,41 @@ class ForumControllerCategories extends Hubzero_Controller
 
 		// Push CSS to the template
 		$this->_getStyles();
-		
+
 		$this->view->config = $this->config;
 		$this->view->notifications = $this->getComponentMessage();
 
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
-		
+
 		$this->view->display();
 	}
-	
+
 	/**
-	 * Short description for 'saveTopic'
+	 * Save an entry
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function saveTask()
 	{
 		$fields = JRequest::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
-		
+
 		$model = new ForumCategory($this->database);
 		if (!$model->bind($fields))
 		{
 			$this->addComponentMessage($model->getError(), 'error');
-			$this->view->setLayout('edit');
+			
 			$this->editTask($model);
 			return;
 		}
-		
+
 		$this->_authorize('category', $model->id);
 		if (!$this->config->get('access-edit-category'))
 		{
@@ -396,20 +394,19 @@ class ForumControllerCategories extends Hubzero_Controller
 			);
 		}
 		$model->closed = (isset($fields['closed']) && $fields['closed']) ? 1 : 0;
+
 		// Check content
 		if (!$model->check()) 
 		{
 			$this->addComponentMessage($model->getError(), 'error');
-			$this->view->setLayout('edit');
 			$this->editTask($model);
 			return;
 		}
-		
+
 		// Store new content
 		if (!$model->store()) 
 		{
 			$this->addComponentMessage($model->getError(), 'error');
-			$this->view->setLayout('edit');
 			$this->editTask($model);
 			return;
 		}
@@ -419,13 +416,11 @@ class ForumControllerCategories extends Hubzero_Controller
 			JRoute::_('index.php?option=' . $this->_option)
 		);
 	}
-	
+
 	/**
-	 * Short description for 'deleteTopic'
+	 * Delete a category
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function deleteTask()
 	{
@@ -451,7 +446,7 @@ class ForumControllerCategories extends Hubzero_Controller
 			);
 			return;
 		}
-		
+
 		// Load the section
 		$section = JRequest::getVar('section', '');
 		$sModel = new ForumSection($this->database);
@@ -460,7 +455,7 @@ class ForumControllerCategories extends Hubzero_Controller
 		// Load the category
 		$model = new ForumCategory($this->database);
 		$model->loadByAlias($category, $sModel->id, 0);
-		
+
 		// Make the sure the category exist
 		if (!$model->id) 
 		{
@@ -471,7 +466,7 @@ class ForumControllerCategories extends Hubzero_Controller
 			);
 			return;
 		}
-		
+
 		// Check if user is authorized to delete entries
 		$this->_authorize('category', $model->id);
 		if (!$this->config->get('access-delete-category')) 
@@ -483,14 +478,14 @@ class ForumControllerCategories extends Hubzero_Controller
 			);
 			return;
 		}
-		
+
 		// Set all the threads/posts in all the categories to "deleted"
 		$tModel = new ForumPost($this->database);
 		if (!$tModel->setStateByCategory($model->id, 2))  /* 0 = unpublished, 1 = published, 2 = deleted */
 		{
 			$this->setError($tModel->getError());
 		}
-		
+
 		// Set the category to "deleted"
 		$model->state = 2;  /* 0 = unpublished, 1 = published, 2 = deleted */
 		if (!$model->store()) 
@@ -510,13 +505,11 @@ class ForumControllerCategories extends Hubzero_Controller
 			'message'
 		);
 	}
-	
+
 	/**
-	 * Short description for '_authorize'
+	 * Set the authorization level for the user
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     string Return description (if any) ...
+	 * @return     void
 	 */
 	protected function _authorize($assetType='component', $assetId=null)
 	{
@@ -531,13 +524,13 @@ class ForumControllerCategories extends Hubzero_Controller
 					$asset .= ($assetType != 'component') ? '.' . $assetType : '';
 					$asset .= ($assetId) ? '.' . $assetId : '';
 				}
-				
+
 				$at = '';
 				if ($assetType != 'component')
 				{
 					$at .= '.' . $assetType;
 				}
-				
+
 				// Admin
 				$this->config->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
 				$this->config->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));

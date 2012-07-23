@@ -189,7 +189,7 @@ class ForumControllerThreads extends Hubzero_Controller
 		$this->_getStyles();
 
 		// Push scripts to the template
-		$this->_getScripts();
+		$this->_getScripts('assets/js/' . $this->_name);
 
 		// Set the page title
 		$this->_buildTitle();

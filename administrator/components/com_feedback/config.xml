@@ -29,7 +29,7 @@ HUBzero is a registered trademark of Purdue University.
 
 <config>
 	<params>
-		<param name="defaultpic" type="text" menu="hide" default="/components/com_feedback/images/contributor.gif" label="Default picture" description="Default placeholder image for user pictures" />
+		<param name="defaultpic" type="text" menu="hide" default="/components/com_feedback/assets/img/contributor.gif" label="Default picture" description="Default placeholder image for user pictures" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="uploadpath" type="text" menu="hide" default="/site/quotes" label="Upload path" description="File path for pictures" />
 		<param name="maxAllowed" type="text" menu="hide" default="40000000" label="Max upload" description="Maximum upload file size" />

@@ -219,8 +219,8 @@ class FeedbackControllerMedia extends Hubzero_Controller
 
 		// Output form with error messages
 		$this->view->title = $this->_title;
-		$this->view->webpath = $this->config->get('uploadpath');
-		$this->view->default_picture = $this->config->get('defaultpic');
+		$this->view->webpath = $this->config->get('uploadpath', '/site/quotes');
+		$this->view->default_picture = $this->config->get('defaultpic', '/components/com_feedback/assets/img/contributor.gif');
 		$this->view->path = $dir;
 		$this->view->file = $file;
 		$this->view->file_path = $path;

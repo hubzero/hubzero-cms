@@ -28,14 +28,19 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Controller');
 
 /**
- * Sections controller for forums
+ * Controller class for forum sections
  */
 class ForumControllerSections extends Hubzero_Controller
 {
+	/**
+	 * Display a list of sections and their categories
+	 * 
+	 * @return     void
+	 */
 	public function displayTask()
 	{
 		$this->view->title = JText::_('Discussion Forum');
-		
+
 		// Incoming
 		$this->view->filters = array();
 		$this->view->filters['authorized'] = 1;
@@ -43,18 +48,18 @@ class ForumControllerSections extends Hubzero_Controller
 		$this->view->filters['search'] = JRequest::getVar('q', '');
 		$this->view->filters['section_id'] = 0;
 		$this->view->filters['state'] = 1;
-		
+
 		// Flag to indicate if a section is being put into edit mode
 		$this->view->edit = JRequest::getVar('section', '');
-		
+
 		$sModel = new ForumSection($this->database);
 		$this->view->sections = $sModel->getRecords(array(
 			'state' => 1, 
 			'group' => $this->view->filters['group']
 		));
-		
+
 		$model = new ForumCategory($this->database);
-		
+
 		// Check if there are uncategorized posts
 		// This should mean legacy data
 		if (($posts = $model->getPostCount(0, 0)) || !$this->view->sections || !count($this->view->sections))
@@ -69,7 +74,7 @@ class ForumControllerSections extends Hubzero_Controller
 			{
 				$dSection->store();
 			}
-			
+
 			// Create a default category
 			$dCategory = new ForumCategory($this->database);
 			$dCategory->title = JText::_('Discussions');
@@ -82,20 +87,20 @@ class ForumControllerSections extends Hubzero_Controller
 			{
 				$dCategory->store();
 			}
-			
+
 			if ($posts)
 			{
 				// Update all the uncategorized posts to the new default
 				$tModel = new ForumPost($this->database);
 				$tModel->updateCategory(0, $dCategory->id, 0);
 			}
-			
+
 			$this->view->sections = $sModel->getRecords(array(
 				'state' => 1, 
 				'group' => $this->view->filters['group']
 			));
 		}
-		
+
 		//if (!$this->view->sections || count($this->view->sections) <= 0)
 		//{
 			/*$default = new ForumSection($this->database);
@@ -114,18 +119,18 @@ class ForumControllerSections extends Hubzero_Controller
 			$sections = array($default);
 		}
 		$this->view->sections = $sections;*/
-		
+
 		//$model = new ForumCategory($this->database);
-		
+
 		$this->view->stats = new stdClass;
 		$this->view->stats->categories = 0;
 		$this->view->stats->threads = 0;
 		$this->view->stats->posts = 0;
-		
+
 		foreach ($this->view->sections as $key => $section)
 		{
 			$this->view->filters['section_id'] = $section->id;
-			
+
 			$this->view->sections[$key]->categories = $model->getRecords($this->view->filters);
 			/*if ($this->view->sections[0]->id == 0 && !$this->view->sections[$key]->categories)
 			{
@@ -142,7 +147,7 @@ class ForumControllerSections extends Hubzero_Controller
 				
 				$this->view->sections[0]->categories = array($default);
 			}*/
-			
+
 			$this->view->stats->categories += count($this->view->sections[$key]->categories);
 			if ($this->view->sections[$key]->categories)
 			{
@@ -168,25 +173,28 @@ class ForumControllerSections extends Hubzero_Controller
 		$this->_getStyles();
 		
 		// Push scripts to the template
-		$this->_getScripts();
-	
+		$this->_getScripts('assets/js/' . $this->_name);
+
 		// Set the page title
 		$this->_buildTitle();
-		
+
 		// Set the pathway
 		$this->_buildPathway();
-		
+
 		$this->view->notifications = $this->getComponentMessage();
-		
+
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
-		
+
 		$this->view->display();
 	}
-	
+
 	/**
 	 * Saves a section and redirects to main page afterward
 	 * 
@@ -197,7 +205,7 @@ class ForumControllerSections extends Hubzero_Controller
 		// Incoming posted data
 		$fields = JRequest::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
-		
+
 		// Instantiate a new table row and bind the incoming data
 		$model = new ForumSection($this->database);
 		if (!$model->bind($fields))
@@ -207,7 +215,7 @@ class ForumControllerSections extends Hubzero_Controller
 			);
 			return;
 		}
-		
+
 		// Check content
 		if ($model->check()) 
 		{
@@ -241,11 +249,11 @@ class ForumControllerSections extends Hubzero_Controller
 
 		// Incoming
 		$alias = JRequest::getVar('section', '');
-		
+
 		// Load the section
 		$model = new ForumSection($this->database);
 		$model->loadByAlias($alias, 0);
-		
+
 		// Make the sure the section exist
 		if (!$model->id) 
 		{
@@ -256,7 +264,7 @@ class ForumControllerSections extends Hubzero_Controller
 			);
 			return;
 		}
-		
+
 		// Check if user is authorized to delete entries
 		$this->_authorize('section', $model->id);
 		if (!$this->config->get('access-delete-section')) 
@@ -283,14 +291,14 @@ class ForumControllerSections extends Hubzero_Controller
 			{
 				$cats[] = $category->id;
 			}
-			
+
 			// Set all the threads/posts in all the categories to "deleted"
 			$tModel = new ForumPost($this->database);
 			if (!$tModel->setStateByCategory($cats, 2))  /* 0 = unpublished, 1 = published, 2 = deleted */
 			{
 				$this->setError($tModel->getError());
 			}
-			
+
 			// Set all the categories to "deleted"
 			if (!$cModel->setStateBySection($model->id, 2))  /* 0 = unpublished, 1 = published, 2 = deleted */
 			{
@@ -317,13 +325,11 @@ class ForumControllerSections extends Hubzero_Controller
 			'message'
 		);
 	}
-	
+
 	/**
-	 * Short description for '_authorize'
+	 * Set the authorization level for the user
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     string Return description (if any) ...
+	 * @return     void
 	 */
 	protected function _authorize($assetType='component', $assetId=null)
 	{
@@ -338,13 +344,13 @@ class ForumControllerSections extends Hubzero_Controller
 					$asset .= ($assetType != 'component') ? '.' . $assetType : '';
 					$asset .= ($assetId) ? '.' . $assetId : '';
 				}
-				
+
 				$at = '';
 				if ($assetType != 'component')
 				{
 					$at .= '.' . $assetType;
 				}
-				
+
 				// Admin
 				$this->config->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
 				$this->config->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
