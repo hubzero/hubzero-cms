@@ -614,7 +614,7 @@ class WikiParser
 
 		$cls = 'wiki';
 
-		$bits = explode('/',$href);
+		$bits = explode('/', $href);
 
 		$database =& JFactory::getDBO();
 		$p = new WikiPage($database);
@@ -689,11 +689,11 @@ class WikiParser
 	{
 		$href = $matches[2];
 		$title = (isset($matches[3])) ? $matches[3] : '';
-		if (!$title) 
+		/*if (!$title) 
 		{
 			$this->linknumber++;
 			$title = "[{$this->linknumber}]";
-		}
+		}*/
 		$newwindow = false;
 
 		$cls = 'int-link';
@@ -710,6 +710,10 @@ class WikiParser
 		if (preg_match("/$UrlPtn/", $href)) 
 		{
 			$cls = 'ext-link';
+		}
+		if (!$title) 
+		{
+			$title = $href;
 		}
 
 		$l = sprintf(
@@ -793,7 +797,7 @@ class WikiParser
 			do {
 				$old = $text;
 				$text = strtr($text, $this->shelf);
-			 } while ($text != $old);
+			} while ($text != $old);
 		}
 
 		$text = preg_replace_callback('/<pre><\/pre>/i', array(&$this, 'handle_restore_pre'), $text);
@@ -808,9 +812,14 @@ class WikiParser
 
 	/**
 	 * Adds a count to first level PRE blocks 
-	 * Enables handling of nested blocks
+	 * Enables handling of nested blocks by appending a first level indicator
+	  * {{{1
+	 *    {{{
+	 *       ...
+	 *    }}}
+	 * 1}}}
 	 * 
-	 * @param      array $matches Code block matches
+	 * @param      array $matches Strings that matched the strating pre block syntax
 	 * @return     string
 	 */
 	private function handle_pre_up($matches)
@@ -827,12 +836,16 @@ class WikiParser
 	}
 
 	/**
-	 * Short description for 'handle_pre_down'
+	 * Counter for closing pre blocks
+	 * This helps us find nested pre blocks by prepending a first level indicator
+	 * {{{1
+	 *    {{{
+	 *       ...
+	 *    }}}
+	 * 1}}}
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $matches Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      array $matches Strings that matched the closing pre block syntax
+	 * @return     string
 	 */
 	private function handle_pre_down($matches)
 	{
@@ -850,12 +863,12 @@ class WikiParser
 	}
 
 	/**
-	 * Short description for 'handle_save_pre'
+	 * Pushes pre blocks to an internal array and replaces the content
+	 * with empty <pre> tags. This is to ensure the content isn't parsed
+	 * any further.
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $matches Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      array $matches String matching pre syntax
+	 * @return     string
 	 */
 	private function handle_save_pre($matches)
 	{
@@ -873,26 +886,24 @@ class WikiParser
 	}
 
 	/**
-	 * Short description for 'handle_save_code'
+	 * Pushes code blocks to an internal array and replaces the content
+	 * with empty <code> tags. This is to ensure the content isn't parsed
+	 * any further.
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $matches Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array $matches String matching code syntax
+	 * @return     string 
 	 */
 	private function handle_save_code($matches)
 	{
-		array_push($this->codes,$matches[1]);
+		array_push($this->codes, $matches[1]);
 		return '<code></code>';
 	}
 
 	/**
-	 * Short description for 'handle_restore_pre'
+	 * Restores <pre></pre> blocks to their actual content
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $matches Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      array $matches Parameter description (if any) ...
+	 * @return     string
 	 */
 	private function handle_restore_pre($matches)
 	{
@@ -904,8 +915,8 @@ class WikiParser
 		}
 
 		$t = trim($txt);
-		$t = str_replace("\n",'',$t);
-		if (substr($t,0,6) == '#!html') 
+		$t = str_replace("\n", '', $t);
+		if (substr($t, 0, 6) == '#!html') 
 		{
 			$txt = $this->cleanXss($txt);
 			return preg_replace('/#!html/', '', $txt, 1);
@@ -917,12 +928,10 @@ class WikiParser
 	}
 
 	/**
-	 * Short description for 'handle_restore_code'
-	 * 
-	 * Long description (if any) ...
+	 * Restores <code></code> blocks to their actual content
 	 * 
 	 * @param      unknown $matches Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @return     string 
 	 */
 	private function handle_restore_code($matches)
 	{

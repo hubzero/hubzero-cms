@@ -79,13 +79,13 @@ class FileMacro extends WikiMacro
 	public function render()
 	{
 		$content = $this->args;
-		
+
 		// args will be null if the macro is called without parenthesis.
 		if (!$content) 
 		{
 			return '';
 		}
-		
+
 		// Parse arguments
         // We expect the 1st argument to be a filename
 		$args   = explode(',', $content);
@@ -94,7 +94,7 @@ class FileMacro extends WikiMacro
 		$size   = '/[0-9+](%|px)?$/';
 		$attrs  = '/(alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap)=(.+)/';
 		$quoted = "/(?:[\"'])(.*)(?:[\"'])$/";
-		
+
 		// Collected attributes
 		$attr   = array();
 		$attr['href']  = '';
@@ -111,10 +111,10 @@ class FileMacro extends WikiMacro
 				if ($matches[0])
 				{
 					$attr['width'] = $arg;
-	                continue;
+					continue;
 				}
 			}
-			
+
 			if (is_numeric($arg))
 			{
 				$attr['width'] = $arg;
@@ -123,14 +123,14 @@ class FileMacro extends WikiMacro
 			// Links images by default
 			if ($arg == 'nolink') 
 			{
-                $attr['href'] = 'none';
-                continue;
+				$attr['href'] = 'none';
+				continue;
 			}
 			// Check for a specific link given
 			if (substr($arg, 0, 5) == 'link=') 
 			{
 				$attr['href'] = 'none';
-                $bits = explode('=', $arg);
+				$bits = explode('=', $arg);
 				$val = trim(end($bits));
 				if ($val) 
 				{
@@ -142,7 +142,7 @@ class FileMacro extends WikiMacro
 						$attr['rel']  = 'external';
 					}
 				}
-                continue;
+				continue;
 			}
 			// Check for alignment, no key given
 			// e.g., [[File(myfile.jpg, left)]]
@@ -154,7 +154,7 @@ class FileMacro extends WikiMacro
 
 			// Look for any other attributes
 			preg_match($attrs, $arg, $matches);
-			
+
 			if ($matches) 
 			{
 				$key = strtolower($matches[1]);
@@ -186,7 +186,6 @@ class FileMacro extends WikiMacro
 				{
 					$attr[$key] = $val;
 				}
-				//$attr[$key] = $val;
 			}
 		}
 
@@ -219,6 +218,8 @@ class FileMacro extends WikiMacro
 				{
 					$attr['desc'] = ($attach->description) ? stripslashes($attach->description) : $attach->filename;
 				}
+				$attr['created'] = $attach->created;
+				$attr['created_by'] = $attach->created_by;
 
 				$ret = true;
 			}
@@ -226,17 +227,28 @@ class FileMacro extends WikiMacro
 		// Check for file existence
 		else if (file_exists($this->_path($file)) || file_exists($this->_path($file, true))) 
 		{
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'attachment.php');
+
+			// Get resource by ID
+			$attach = new WikiPageAttachment($this->_db);
+			$attach->load($file, $this->pageid);
+			if ($attach->filename)
+			{
+				$attr['created'] = $attach->created;
+				$attr['created_by'] = $attach->created_by;
+			}
+
 			$attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : $file;
-			
+
 			$ret = true;
 		} 
-		
+
 		// Does the file exist?
 		if ($ret)
 		{
 			jimport('joomla.filesystem.file');
 			//$attr['desc'] = htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8');
-			
+
 			// Return HTML
 			return $this->_embed($file, $attr);
 		}	
@@ -246,7 +258,7 @@ class FileMacro extends WikiMacro
 			return '(file:' . $file . ' not found)';
 		}
 	}
-	
+
 	/**
 	 * Generate an absolute path to a file stored on the system
 	 * Assumes $file is relative path but, if $file starts with / then assumes absolute
@@ -275,7 +287,7 @@ class FileMacro extends WikiMacro
 						break;
 					}
 				}
-				
+
 				if ($nid)
 				{
 					$this->config->set('filepath', str_replace($nid, $id, $this->config->get('filepath')));
@@ -285,10 +297,10 @@ class FileMacro extends WikiMacro
 			$path .= ($this->pageid) ? DS . $this->pageid : '';
 			$path .= DS . $file;
 		}
-		
+
 		return $path;
 	}
-	
+
 	/**
 	 * Generate a link to a file
 	 * If $file starts with (http|https|mailto|ftp|gopher|feed|news|file), then it's an external URL and returned
@@ -303,9 +315,9 @@ class FileMacro extends WikiMacro
 		{
 			return $file;
 		}
-		
+
 		$file = trim($file, DS);
-		
+
 		$link  = DS . substr($this->option, 4, strlen($this->option)) . DS;
 		if ($this->scope) 
 		{
@@ -319,10 +331,10 @@ class FileMacro extends WikiMacro
 			$type = 'Image';
 		}
 		$link .= $this->pagename . DS . $type . ':' . $file;
-		
+
 		return JRoute::_($link);
 	}
-	
+
 	/**
 	 * Generates HTML to either embed a file or link to file for download
 	 * 
@@ -333,7 +345,7 @@ class FileMacro extends WikiMacro
 	private function _embed($file, $attr=array())
 	{
 		$ext = strtolower(JFile::getExt($file));
-		
+
 		switch ($ext)
 		{
 			case 'cdf':
@@ -355,16 +367,16 @@ class FileMacro extends WikiMacro
 					$attr['alt']  = (isset($attr['alt'])) ? $attr['alt'] : '';
 					$attr['alt'] .= '<a class="attachment" rel="internal" href="' . $attr['href'] . '" title="' . htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8') . '">' . $attr['desc'] . '</a>';
 				}
-				
-				$uri = JURI::getInstance();
-				
-				$html  = '<script type="text/javascript" src="' . $uri->getScheme() . '://www.wolfram.com/cdf-player/plugin/v2.1/cdfplugin.js"></script>' . "\n";
+
+				$juri = JURI::getInstance();
+
+				$html  = '<script type="text/javascript" src="' . $juri->getScheme() . '://www.wolfram.com/cdf-player/plugin/v2.1/cdfplugin.js"></script>' . "\n";
 				$html .= '<script type="text/javascript">' . "\n";
 				$html .= "\t" . 'var cdf = new cdfplugin();' . "\n";
 				$html .= "\t" . 'var defaultContent = "' . addslashes($attr['alt']) . '"' . "\n";
-			    $html .= "\t" . 'if (defaultContent != "") {' . "\n";
-			    $html .= "\t\t" . 'cdf.setDefaultContent(defaultContent);' . "\n";
-			    $html .= "\t" . '}' . "\n";
+				$html .= "\t" . 'if (defaultContent != "") {' . "\n";
+				$html .= "\t\t" . 'cdf.setDefaultContent(defaultContent);' . "\n";
+				$html .= "\t" . '}' . "\n";
 				$html .= "\t" . 'cdf.embed(\'' . $attr['href'] . '\', ' . intval($attr['width']) . ', ' . intval($attr['height']) . ');' . "\n";
 				$html .= '</script>' . "\n";
 				$html .= '<noscript>' . "\n";
@@ -372,10 +384,10 @@ class FileMacro extends WikiMacro
 				$html .= $attr['alt'];
 				$html .= '</noscript>' . "\n";
 			break;
-			
+
 			default:
 				$attr['alt'] = (isset($attr['alt'])) ? htmlentities($attr['alt'], ENT_COMPAT, 'UTF-8') : $attr['desc'];
-				
+
 				if (in_array($ext, $this->imgs)) 
 				{
 					if (count($attr['style']) > 0) 
@@ -424,12 +436,37 @@ class FileMacro extends WikiMacro
 				{
 					$attr['href'] = (isset($attr['href']) && $attr['href'] != '') ? $attr['href'] : $this->_link($file);
 					$attr['rel']  = (isset($attr['rel']))  ? $attr['rel']  : 'internal';
-					
+
+					$size = null;
+					if (file_exists($this->_path($file))) 
+					{
+						$size = filesize($this->_path($file));
+					} 
+					else if (file_exists($this->_path($file, true)))
+					{
+						$size = filesize($this->_path($file, true));
+					}
+
 					$html = '<a class="attachment" rel="' . $attr['rel'] . '" href="' . $attr['href'] . '" title="' . $attr['alt'] . '">' . $attr['desc'] . '</a>';
+					if ($size !== null)
+					{
+						ximport('Hubzero_View_Helper_Html');
+						$html .= ' (<span class="file-atts">' . Hubzero_View_Helper_Html::formatSize($size);
+						if (isset($attr['created_by']))
+						{
+							$user = JUser::getInstance($attr['created_by']);
+							$html .= ', ' . JText::sprintf('uploaded by %s ', stripslashes($user->get('name')));
+						}
+						if (isset($attr['created']))
+						{
+							$html .= ' ' . Hubzero_View_Helper_Html::timeAgo($attr['created']);
+						}
+						$html .= '</span>)';
+					}
 				}
 			break;
 		}
-		
+
 		return $html;
 	}
 }
