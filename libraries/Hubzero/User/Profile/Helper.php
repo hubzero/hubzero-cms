@@ -208,7 +208,7 @@ class Hubzero_User_Profile_Helper
 			}
 		}
 
-		$dfthumb = DS . trim($config->get('defaultpic', '/components/com_members/images/profile.gif'), DS);
+		$dfthumb = DS . trim($config->get('defaultpic', '/components/com_members/assets/img/profile.gif'), DS);
 		if ($thumbit)
 		{
 			$dfthumb = Hubzero_User_Profile_Helper::thumbit($dfthumb);
