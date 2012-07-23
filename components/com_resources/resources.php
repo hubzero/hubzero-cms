@@ -49,21 +49,29 @@ require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $optio
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'type.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'assoc.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'review.php');
-//require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'tool.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'doi.php');
+
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_contribtool' . DS . 'contribtool.tool.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_contribtool' . DS . 'contribtool.version.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_contribtool' . DS . 'contribtool.author.php');
+
 require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'usage.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'tags.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'html.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'helper.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'controller.php');
 
 ximport('Hubzero_View_Helper_Html');
 
+$controllerName = JRequest::getCmd('controller', 'resources');
+if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+{
+	$controllerName = 'resources';
+}
+require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = 'ResourcesController' . ucfirst(strtolower($controllerName));
+
 // Instantiate controller
-$controller = new ResourcesController();
+$controller = new $controllerName();
 $controller->execute();
 $controller->redirect();
 

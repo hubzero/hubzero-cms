@@ -644,7 +644,7 @@ class plgGroupsResources extends JPlugin
 	{
 		// Push some CSS and JS to the tmeplate that may be needed
 		$document =& JFactory::getDocument();
-		$document->addScript('components' . DS . 'com_resources' . DS . 'resources.js');
+		$document->addScript('components' . DS . 'com_resources' . DS . 'assets' . DS . 'css' . DS . 'resources.js');
 
 		ximport('Hubzero_Document');
 		Hubzero_Document::addComponentStylesheet('com_resources');

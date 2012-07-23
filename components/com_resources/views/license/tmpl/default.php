@@ -44,7 +44,7 @@ if ($this->no_html) {
 		<?php if (is_file(JPATH_ROOT.DS.'templates'.DS. $app->getTemplate() .DS.'html'.DS.$this->option.DS.'members.css')) { ?>
 		<link rel="stylesheet" href="/templates/<?php echo $app->getTemplate(); ?>/html/<?php echo $this->option; ?>/resources.css" type="text/css" />
 		<?php } else { ?>
-		<link rel="stylesheet" href="/components/<?php echo $this->option; ?>'/resources.css" type="text/css" />
+		<link rel="stylesheet" href="/components/<?php echo $this->option; ?>'/assets/css/resources.css" type="text/css" />
 		<?php } ?>
 	</head>
 	<body id="resource-license">
