@@ -693,3 +693,24 @@
 		background: -moz-linear-gradient(top,  #bf404f,  #f16c7c);
 		filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#bf404f', endColorstr='#f16c7c');
 	}
+/* Figures */
+	.com_blog .figure img {
+		margin: 0.5em;
+		padding: 0;
+		background: transparent;
+		text-align: center;
+	}
+	.com_blog .figure {
+		display: inline-block;
+		background: #fff;
+		border: 1px solid #eaeaea;
+	}
+	.com_blog .figure a {
+		border: none;
+	}
+	.com_blog .figcaption {
+		display: block;
+		margin: 0;
+		padding: 0.5em;
+		background: #efefef;
+	}
