@@ -188,6 +188,7 @@ class Hubzero_User_Profile_Helper
 		$config =& JComponentHelper::getParams('com_members');
 
 		$thumb = '';
+		$thumbAlt = '';
 		if (!$anonymous && $member->get('picture')) 
 		{
 			$thumb .= DS . trim($config->get('webpath', '/site/members'), DS);
