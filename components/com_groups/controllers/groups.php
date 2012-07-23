@@ -525,6 +525,7 @@ class GroupsController extends Hubzero_Controller
 		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
 
 		// Run through the master list of groups and mark the user's status in that group
+		$view->authorized = $this->_authorize();
 		if ($view->authorized && $view->groups) 
 		{
 			$view->groups = $this->getGroups( $view->groups );
