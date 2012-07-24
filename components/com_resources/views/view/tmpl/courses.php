@@ -79,7 +79,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			if ($sl) {
 				$link = $sl;
 			} else {
-				$link = JRoute::_('index.php?option=com_tags'.a.'tag='.$tag->tag);
+				$link = JRoute::_('index.php?option=com_tags'.'&tag='.$tag->tag);
 			}
 
 			$xtra = '<p class="supported"><a href="'.$link.'">'.$tag->raw_tag.'</a></p>';
@@ -143,16 +143,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 				if ($ccount > 0) {
 					$html .= ResourcesHtml::primary_child( $option, $resource, '', '' );
 				}
-				$feeds .= t.t.'<p>'."\n";
-				$feeds .= t.t.t.'<a class="feed" id="resource-audio-feed" href="'. $live_site .'/resources/'.$resource->id.'/feed.rss?format=audio">'.JText::_('Audio podcast').'</a><br />'."\n";
-				$feeds .= t.t.t.'<a class="feed" id="resource-video-feed" href="'. $live_site .'/resources/'.$resource->id.'/feed.rss?format=video">'.JText::_('Video podcast').'</a><br />'."\n";
-				$feeds .= t.t.t.'<a class="feed" id="resource-slides-feed" href="'. $live_site .'/resources/'.$resource->id.'/feed.rss?format=slides">'.JText::_('Slides/Notes podcast').'</a>'."\n";
-				$feeds .= t.t.'</p>'."\n";
+				$feeds .= "\t\t".'<p>'."\n";
+				$feeds .= "\t\t\t".'<a class="feed" id="resource-audio-feed" href="'. $live_site .'/resources/'.$resource->id.'/feed.rss?format=audio">'.JText::_('Audio podcast').'</a><br />'."\n";
+				$feeds .= "\t\t\t".'<a class="feed" id="resource-video-feed" href="'. $live_site .'/resources/'.$resource->id.'/feed.rss?format=video">'.JText::_('Video podcast').'</a><br />'."\n";
+				$feeds .= "\t\t\t".'<a class="feed" id="resource-slides-feed" href="'. $live_site .'/resources/'.$resource->id.'/feed.rss?format=slides">'.JText::_('Slides/Notes podcast').'</a>'."\n";
+				$feeds .= "\t\t".'</p>'."\n";
 			break;
 
 			case 8:
-				$feeds .= t.t.'<p><a class="feed" id="resource-audio-feed" href="'. $live_site .'/resources/'.$resource->id.'/feed.rss?format=audio">'.JText::_('Audio podcast').'</a><br />'."\n";
-				$feeds .= t.t.'<a class="feed" id="resource-video-feed" href="'. $live_site .'/resources/'.$resource->id.'/feed.rss?format=video">'.JText::_('Video podcast').'</a></p>'."\n";
+				$feeds .= "\t\t".'<p><a class="feed" id="resource-audio-feed" href="'. $live_site .'/resources/'.$resource->id.'/feed.rss?format=audio">'.JText::_('Audio podcast').'</a><br />'."\n";
+				$feeds .= "\t\t".'<a class="feed" id="resource-video-feed" href="'. $live_site .'/resources/'.$resource->id.'/feed.rss?format=video">'.JText::_('Video podcast').'</a></p>'."\n";
 				// do nothing
 			break;
 
@@ -247,9 +247,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 			// View more link?			
 			if ($supdocs > 0 && $otherdocs > 0) {
-				$supln .= ' <li class="otherdocs"><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$resource->id.a.'active=supportingdocs').'" title="'.JText::_('View All').' '.$realdocs.' '.JText::_('Supporting Documents').' ">'.$otherdocs.' '.JText::_('more').' &rsaquo;</a></li>'."\n";
+				$supln .= ' <li class="otherdocs"><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$resource->id.'&active=supportingdocs').'" title="'.JText::_('View All').' '.$realdocs.' '.JText::_('Supporting Documents').' ">'.$otherdocs.' '.JText::_('more').' &rsaquo;</a></li>'."\n";
 			} else if (!$supdocs && $realdocs > 0 && $tab != 'play' && is_object($helper->firstChild)) {
-				$html .= t.t.'<p class="supdocs"><span class="viewalldocs"><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$resource->id.a.'active=supportingdocs').'">'.JText::_('Additional materials available').' ('.$realdocs.')</a></span></p>'."\n";
+				$html .= "\t\t".'<p class="supdocs"><span class="viewalldocs"><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$resource->id.'&active=supportingdocs').'">'.JText::_('Additional materials available').' ('.$realdocs.')</a></span></p>'."\n";
 			}
 
 			$supln .= '</ul>'."\n";
@@ -258,7 +258,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 		// Show icons of other available formats
 		if ($supdocs) {
-			$html .= t.t.t.$supdocs."\n";
+			$html .= "\t\t\t".$supdocs."\n";
 		}
 
 		$html .= $feeds ? $feeds : '';
@@ -315,23 +315,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 				$html .= '<a name="series"></a>'."\n";
 				$html .= '<table class="child-listing" summary="'.JText::_('A table of resources associated to this resource').'">'."\n";
-				$html .= t.'<colgroup class="lecture_name"></colgroup>' . "\n";
-				$html .= t.'<colgroup class="lecture_online"></colgroup>' . "\n";
-				$html .= t.'<colgroup class="lecture_video"></colgroup>' . "\n";
-				$html .= t.'<colgroup class="lecture_notes"></colgroup>' . "\n";
-				$html .= t.'<colgroup class="lecture_supp"></colgroup>' . "\n";
-				$html .= t.'<colgroup class="lecture_exercises"></colgroup>' . "\n";
-				$html .= t.'<thead>'."\n";
-				$html .= t.t.'<tr>'."\n";
-				$html .= t.t.t.'<th>'.JText::_('Lecture Number/Topic').'</th>'."\n";
-				$html .= t.t.t.'<th width="12%">'.JText::_('Online Lecture').'</th>'."\n";
-				$html .= t.t.t.'<th>'.JText::_('Video').'</th>'."\n";
-				$html .= t.t.t.'<th>'.JText::_('Lecture Notes').'</th>'."\n";
-				$html .= t.t.t.'<th>'.JText::_('Supplemental Material').'</th>'."\n";
-				$html .= t.t.t.'<th>'.JText::_('Suggested Exercises').'</th>'."\n";
-				$html .= t.t.'</tr>'."\n";
-				$html .= t.'</thead>'."\n";
-				$html .= t.' <tbody>'."\n";
+				$html .= "\t".'<colgroup class="lecture_name"></colgroup>' . "\n";
+				$html .= "\t".'<colgroup class="lecture_online"></colgroup>' . "\n";
+				$html .= "\t".'<colgroup class="lecture_video"></colgroup>' . "\n";
+				$html .= "\t".'<colgroup class="lecture_notes"></colgroup>' . "\n";
+				$html .= "\t".'<colgroup class="lecture_supp"></colgroup>' . "\n";
+				$html .= "\t".'<colgroup class="lecture_exercises"></colgroup>' . "\n";
+				$html .= "\t".'<thead>'."\n";
+				$html .= "\t\t".'<tr>'."\n";
+				$html .= "\t\t\t".'<th>'.JText::_('Lecture Number/Topic').'</th>'."\n";
+				$html .= "\t\t\t".'<th width="12%">'.JText::_('Online Lecture').'</th>'."\n";
+				$html .= "\t\t\t".'<th>'.JText::_('Video').'</th>'."\n";
+				$html .= "\t\t\t".'<th>'.JText::_('Lecture Notes').'</th>'."\n";
+				$html .= "\t\t\t".'<th>'.JText::_('Supplemental Material').'</th>'."\n";
+				$html .= "\t\t\t".'<th>'.JText::_('Suggested Exercises').'</th>'."\n";
+				$html .= "\t\t".'</tr>'."\n";
+				$html .= "\t".'</thead>'."\n";
+				$html .= "\t".' <tbody>'."\n";
 				
 				$paramsClass = 'JParameter';
 				if (version_compare(JVERSION, '1.6', 'ge'))
@@ -351,8 +351,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 					$o = ($o == 'odd') ? 'even' : 'odd';
 
-					$html .= t.t.'<tr class="'.$o.'">'."\n";
-					$html .= t.t.t.'<td>';
+					$html .= "\t\t".'<tr class="'.$o.'">'."\n";
+					$html .= "\t\t\t".'<td>';
 					if ($child->standalone == 1) {
 						$html .= '<a href="'.JRoute::_('index.php?option='.$option.'&id='.$child->id).'"';
 						if ($link_action == 1) {
@@ -410,21 +410,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 						}
 
 						if($hubpresenter) {
-							$html .= t.t.t.'<td>'.$hubpresenter.'<br>'.$breeze.'</td>'."\n";
+							$html .= "\t\t\t".'<td>'.$hubpresenter.'<br>'.$breeze.'</td>'."\n";
 						} else {
-							$html .= t.t.t.'<td>'.$breeze.'</td>'."\n";
+							$html .= "\t\t\t".'<td>'.$breeze.'</td>'."\n";
 						}
-						$html .= t.t.t.'<td>'.$videoi.'</td>'."\n";
-						$html .= t.t.t.'<td>'.$pdf.'</td>'."\n";
-						$html .= t.t.t.'<td>'.$supp.'</td>'."\n";
-						$html .= t.t.t.'<td>'.$exercises.'</td>'."\n";
+						$html .= "\t\t\t".'<td>'.$videoi.'</td>'."\n";
+						$html .= "\t\t\t".'<td>'.$pdf.'</td>'."\n";
+						$html .= "\t\t\t".'<td>'.$supp.'</td>'."\n";
+						$html .= "\t\t\t".'<td>'.$exercises.'</td>'."\n";
 					} else {
-						//$html .= t.t.t.'<td colspan="5">'.JText::_('Currently unavilable').'</td>'."\n";
-						$html .= t.t.t.'<td colspan="5"> </td>'."\n";
+						//$html .= "\t\t\t".'<td colspan="5">'.JText::_('Currently unavilable').'</td>'."\n";
+						$html .= "\t\t\t".'<td colspan="5"> </td>'."\n";
 					}
-					$html .= t.t.'</tr>'."\n";
+					$html .= "\t\t".'</tr>'."\n";
 				}
-				$html .= t.'</tbody>'."\n";
+				$html .= "\t".'</tbody>'."\n";
 				$html .= '</table>'."\n";
 			}
 		}

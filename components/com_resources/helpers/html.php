@@ -39,13 +39,11 @@ include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpe
 class ResourcesHtml
 {
 	/**
-	 * Short description for 'encode_html'
+	 * Encode some basic characters
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $str Parameter description (if any) ...
-	 * @param      integer $quotes Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string  $str    Text to convert
+	 * @param      integer $quotes Include quotes?
+	 * @return     string
 	 */
 	public function encode_html($str, $quotes=1)
 	{
@@ -64,23 +62,22 @@ class ResourcesHtml
 	}
 
 	/**
-	 * Short description for 'cleanText'
+	 * Clean text of potential XSS and other unwanted items such as
+	 * HTML comments and javascript. Also shortens text.
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $text Parameter description (if any) ...
-	 * @param      integer $desclen Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string  $text    Text to clean
+	 * @param      integer $desclen Length to shorten to
+	 * @return     string
 	 */
 	public function cleanText($text, $desclen=300)
 	{
 		$elipse = false;
 
-		$text = preg_replace("'<script[^>]*>.*?</script>'si", "", $text);
+		$text = preg_replace("'<script[^>]*>.*?</script>'si", '', $text);
 		$text = str_replace('{mosimage}', '', $text);
 		$text = str_replace("\n", ' ', $text);
 		$text = str_replace("\r", ' ', $text);
-		$text = preg_replace('/<a\s+.*href=["\']([^"\']+)["\'][^>]*>([^<]*)<\/a>/i','\\2', $text);
+		$text = preg_replace('/<a\s+.*href=["\']([^"\']+)["\'][^>]*>([^<]*)<\/a>/i', '\\2', $text);
 		$text = preg_replace('/<!--.+?-->/', '', $text);
 		$text = preg_replace('/{.+?}/', '', $text);
 		$text = strip_tags($text);
@@ -93,123 +90,83 @@ class ResourcesHtml
 	}
 
 	/**
-	 * Short description for 'error'
+	 * Display an element with warning class
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $msg Parameter description (if any) ...
-	 * @param      string $tag Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	public function error($msg, $tag='p')
-	{
-		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>' . "\n";
-	}
-
-	/**
-	 * Short description for 'warning'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $msg Parameter description (if any) ...
-	 * @param      string $tag Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $msg Message to display
+	 * @param      string $tag HTML element
+	 * @return     string HTML
 	 */
 	public function warning($msg, $tag='p')
 	{
-		return '<'.$tag.' class="warning">'.$msg.'</'.$tag.'>' . "\n";
+		return '<' . $tag . ' class="warning">' . $msg . '</' . $tag . '>' . "\n";
 	}
 
 	/**
-	 * Short description for 'passed'
+	 * Display an element with archive class
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $msg Parameter description (if any) ...
-	 * @param      string $tag Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	public function passed($msg, $tag='p')
-	{
-		return '<'.$tag.' class="passed">'.$msg.'</'.$tag.'>' . "\n";
-	}
-
-	/**
-	 * Short description for 'archive'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $msg Parameter description (if any) ...
-	 * @param      string $tag Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $msg Message to display
+	 * @param      string $tag HTML element
+	 * @return     string HTML
 	 */
 	public function archive($msg, $tag='p')
 	{
-		return '<'.$tag.' class="archive">'.$msg.'</'.$tag.'>' . "\n";
+		return '<' . $tag . ' class="archive">' . $msg . '</' . $tag . '>' . "\n";
 	}
 
 	/**
-	 * Short description for 'alert'
+	 * Display a javascript alert
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $msg Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $msg Message to display
+	 * @return     string HTML
 	 */
 	public function alert($msg)
 	{
-		return "<script type=\"text/javascript\"> alert('".$msg."'); window.history.go(-1); </script>\n";
+		return "<script type=\"text/javascript\"> alert('" . $msg . "'); window.history.go(-1); </script>\n";
 	}
 
 	/**
-	 * Short description for 'hed'
+	 * Generate an HTML header
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $level Parameter description (if any) ...
-	 * @param      string $txt Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $level Header level 1-6
+	 * @param      string $txt   Header text
+	 * @return     string HTML
 	 */
 	public function hed($level, $txt)
 	{
-		return '<h'.$level.'>'.$txt.'</h'.$level.'>';
+		return '<h' . $level . '>' . $txt . '</h' . $level . '>';
 	}
 
 	/**
-	 * Short description for 'formSelect'
+	 * Generate a select form
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $name Parameter description (if any) ...
-	 * @param      array $array Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
-	 * @param      string $class Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $name  Field name
+	 * @param      array  $array Data to populate select with
+	 * @param      mixed  $value Value to select
+	 * @param      string $class Class to add
+	 * @return     string HTML
 	 */
 	public function formSelect($name, $array, $value, $class='')
 	{
-		$out  = '<select name="'.$name.'" id="'.$name.'"';
-		$out .= ($class) ? ' class="'.$class.'">'."\n" : '>' . "\n";
+		$out  = '<select name="' . $name . '" id="' . $name . '"';
+		$out .= ($class) ? ' class="' . $class . '">' . "\n" : '>' . "\n";
 		foreach ($array as $avalue => $alabel)
 		{
 			$selected = ($avalue == $value || $alabel == $value)
 					  ? ' selected="selected"'
 					  : '';
-			$out .= ' <option value="'.$avalue.'"'.$selected.'>'.$alabel.'</option>' . "\n";
+			$out .= ' <option value="' . $avalue . '"' . $selected . '>' . $alabel . '</option>' . "\n";
 		}
 		$out .= '</select>' . "\n";
 		return $out;
 	}
 
 	/**
-	 * Short description for 'tableRow'
+	 * Draw a table row
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $h Parameter description (if any) ...
-	 * @param      string $c Parameter description (if any) ...
-	 * @param      string $s Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $h Header cell
+	 * @param      string $c Cell content
+	 * @param      string $s Secondary cell content
+	 * @return     string HTML
 	 */
 	public function tableRow($h, $c='', $s='')
 	{
@@ -230,17 +187,15 @@ class ResourcesHtml
 	}
 
 	/**
-	 * Short description for 'adminIcon'
+	 * Display an edit link
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $id Parameter description (if any) ...
-	 * @param      integer $published Parameter description (if any) ...
-	 * @param      unknown $show_edit Parameter description (if any) ...
-	 * @param      integer $created_by Parameter description (if any) ...
-	 * @param      unknown $type Parameter description (if any) ...
-	 * @param      string $r_type Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      integer $id         Resource ID
+	 * @param      integer $published  Resource published date
+	 * @param      integer $show_edit  Show edit controls?
+	 * @param      integer $created_by Resource creator ID
+	 * @param      integer $type       Link type
+	 * @param      string  $r_type     Resource type ID
+	 * @return     string HTML
 	 */
 	public function adminIcon($id, $published, $show_edit, $created_by=0, $type, $r_type)
 	{
@@ -280,13 +235,11 @@ class ResourcesHtml
 	}
 
 	/**
-	 * Short description for 'parseTag'
+	 * Extract content wrapped in <nb: tags
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $text Parameter description (if any) ...
-	 * @param      string $tag Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $text Text t extract from
+	 * @param      string $tag  Tag to extract <nb:tag></nb:tag>
+	 * @return     string 
 	 */
 	public function parseTag($text, $tag)
 	{
@@ -305,12 +258,11 @@ class ResourcesHtml
 	}
 
 	/**
-	 * Short description for 'niceidformat'
+	 * Format an ID by prefixing 0s.
+	 * This is used for directory naming
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $someid Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param      integer $someid ID to format
+	 * @return     string
 	 */
 	public function niceidformat($someid)
 	{
@@ -319,24 +271,26 @@ class ResourcesHtml
 	}
 
 	/**
-	 * Short description for 'build_path'
+	 * Build the path to resources files from the creating date
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $date Parameter description (if any) ...
-	 * @param      unknown $id Parameter description (if any) ...
-	 * @param      string $base Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string  $date Timestamp (0000-00-00 00:00:00)
+	 * @param      integer $id   Resource ID
+	 * @param      string  $base Base path to prepend
+	 * @return     string
 	 */
 	public function build_path($date='', $id, $base)
 	{
-		if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs)) {
+		if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs)) 
+		{
 			$date = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
 		}
-		if ($date) {
+		if ($date) 
+		{
 			$dir_year  = date('Y', $date);
 			$dir_month = date('m', $date);
-		} else {
+		} 
+		else 
+		{
 			$dir_year  = date('Y');
 			$dir_month = date('m');
 		}
@@ -346,37 +300,33 @@ class ResourcesHtml
 	}
 
 	/**
-	 * Short description for 'screenshots'
+	 * Display a list of screenshots for a tool
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $id Parameter description (if any) ...
-	 * @param      unknown $created Parameter description (if any) ...
-	 * @param      string $upath Parameter description (if any) ...
-	 * @param      string $wpath Parameter description (if any) ...
-	 * @param      mixed $versionid Parameter description (if any) ...
-	 * @param      array $sinfo Parameter description (if any) ...
-	 * @param      mixed $slidebar Parameter description (if any) ...
-	 * @param      string $path Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      integer $id        Tool ID
+	 * @param      string  $created   Created date
+	 * @param      string  $upath     Upload path
+	 * @param      string  $wpath     Web path for display
+	 * @param      integer $versionid Version ID
+	 * @param      array   $sinfo     Screenshots information
+	 * @param      integer $slidebar  Display slidebar?
+	 * @param      string  $path      Path
+	 * @return     string HTML
 	 */
 	public function screenshots($id, $created, $upath, $wpath, $versionid=0, $sinfo=array(), $slidebar=0, $path='')
 	{
 		$path = self::build_path($created, $id, '');
-		//$path = DS.self::niceidformat($id);
 
 		// Get contribtool parameters
 		$tconfig =& JComponentHelper::getParams('com_contribtool');
 		$allowversions = $tconfig->get('screenshot_edit');
 
-		if ($versionid && $allowversions) {
+		if ($versionid && $allowversions) 
+		{
 			// Add version directory
-			$path .= DS.$versionid;
+			$path .= DS . $versionid;
 		}
 
-		$d = @dir(JPATH_ROOT.$upath.$path);
-
-		//echo JPATH_ROOT.$upath.$path;
+		$d = @dir(JPATH_ROOT . $upath . $path);
 
 		$images = array();
 		$tns = array();
@@ -384,15 +334,21 @@ class ResourcesHtml
 		$ordering = array();
 		$html = '';
 
-		if ($d) {
+		if ($d) 
+		{
 			while (false !== ($entry = $d->read()))
 			{
 				$img_file = $entry;
-				if (is_file(JPATH_ROOT.$upath.$path . DS . $img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
-					if (preg_match("#bmp|gif|jpg|png|swf|mov#i", $img_file)) {
+				if (is_file(JPATH_ROOT . $upath . $path . DS . $img_file) 
+				 && substr($entry, 0, 1) != '.' 
+				 && strtolower($entry) !== 'index.html') 
+				{
+					if (preg_match("#bmp|gif|jpg|png|swf|mov#i", $img_file)) 
+					{
 						$images[] = $img_file;
 					}
-					if (preg_match("#-tn#i", $img_file)) {
+					if (preg_match("/-tn/i", $img_file)) 
+					{
 						$tns[] = $img_file;
 					}
 					$images = array_diff($images, $tns);
@@ -403,18 +359,21 @@ class ResourcesHtml
 		}
 
 		$b = 0;
-		if ($images) {
+		if ($images) 
+		{
 			foreach ($images as $ima)
 			{
 				$new = array();
 				$new['img'] = $ima;
-				$new['type'] = explode('.',$new['img']);
+				$new['type'] = explode('.', $new['img']);
 
 				// get title and ordering info from the database, if available
-				if (count($sinfo) > 0) {
+				if (count($sinfo) > 0) 
+				{
 					foreach ($sinfo as $si)
 					{
-						if ($si->filename == $ima) {
+						if ($si->filename == $ima) 
+						{
 							$new['title'] = stripslashes($si->title);
 							$new['title'] = preg_replace('/"((.)*?)"/i', "&#147;\\1&#148;", $new['title']);
 							$new['ordering'] = $si->ordering;
@@ -428,12 +387,15 @@ class ResourcesHtml
 			}
 		}
 
-		if (count($sinfo) > 0)  {
+		if (count($sinfo) > 0)
+		{
 			// Sort by ordering
 			array_multisort($ordering, $all);
-		} else {
+		} 
+		else 
+		{
 			// Sort by name
-			sort ($all);
+			sort($all);
 		}
 		$images = $all;
 
@@ -443,149 +405,141 @@ class ResourcesHtml
 		for ($i=0, $n=count($images); $i < $n; $i++)
 		{
 			$tn = self::thumbnail($images[$i]['img']);
-			$els .=  ($slidebar && $i==0) ? '<div class="showcase-pane">'."\n" : '';
+			$els .=  ($slidebar && $i==0) ? '<div class="showcase-pane">' . "\n" : '';
 
-			if (is_file(JPATH_ROOT.$upath.$path . DS . $tn)) {
-				if (strtolower(end($images[$i]['type'])) == 'swf' || strtolower(end($images[$i]['type'])) == 'mov') {
+			if (is_file(JPATH_ROOT . $upath . $path . DS . $tn)) 
+			{
+				if (strtolower(end($images[$i]['type'])) == 'swf' || strtolower(end($images[$i]['type'])) == 'mov') 
+				{
 					$g++;
-					$title = (isset($images[$i]['title']) && $images[$i]['title']!='') ? $images[$i]['title'] : JText::_('DEMO').' #'.$g;
+					$title = (isset($images[$i]['title']) && $images[$i]['title']!='') ? $images[$i]['title'] : JText::_('DEMO') . ' #' . $g;
 					$els .= $slidebar ? '' : '<li>';
-					$els .= ' <a class="popup" href="'.$wpath.$path . DS . $images[$i]['img'].'" title="'.$title.'">';
-					$els .= '<img src="'.$wpath.$path . DS . $tn.'" alt="'.$title.'" class="thumbima" /></a>';
+					$els .= ' <a class="popup" href="' . $wpath . $path . DS . $images[$i]['img'] . '" title="' . $title . '">';
+					$els .= '<img src="' . $wpath . $path . DS . $tn . '" alt="' . $title . '" class="thumbima" /></a>';
 					$els .= $slidebar ? '' : '</li>' . "\n";
-				} else {
+				} 
+				else 
+				{
 					$k++;
-					$title = (isset($images[$i]['title']) && $images[$i]['title']!='')  ? $images[$i]['title']: JText::_('SCREENSHOT').' #'.$k;
+					$title = (isset($images[$i]['title']) && $images[$i]['title']!='')  ? $images[$i]['title']: JText::_('SCREENSHOT') . ' #' . $k;
 					$els .= $slidebar ? '' : '<li>';
-					$els .= ' <a rel="lightbox" href="'.$wpath.$path . DS . $images[$i]['img'].'" title="'.$title.'">';
-					$els .= '<img src="'.$wpath.$path . DS . $tn.'" alt="'.$title.'" class="thumbima" /></a>';
+					$els .= ' <a rel="lightbox" href="' . $wpath . $path . DS . $images[$i]['img'] . '" title="' . $title . '">';
+					$els .= '<img src="' . $wpath . $path . DS . $tn . '" alt="' . $title . '" class="thumbima" /></a>';
 					$els .= $slidebar ? '' : '</li>' . "\n";
 				}
 			}
-			$els .=  ($slidebar && $i == ($n - 1)) ? '</div>'."\n" : '';
+			$els .=  ($slidebar && $i == ($n - 1)) ? '</div>' . "\n" : '';
 		}
 
-		if ($els) {
-			$html .= $slidebar ? '<div id="showcase">'."\n" : '';
-			$html .= $slidebar ? '  <div id="showcase-prev" ></div>'."\n" : '';
-			$html .= $slidebar ? '  <div id="showcase-window">'."\n" : '';
+		if ($els) 
+		{
+			$html .= $slidebar ? '<div id="showcase">' . "\n" : '';
+			$html .= $slidebar ? '  <div id="showcase-prev" ></div>' . "\n" : '';
+			$html .= $slidebar ? '  <div id="showcase-window">' . "\n" : '';
 			$html .= $slidebar ? '' : '<ul class="screenshots">' . "\n";
 			$html .= $els;
 			$html .= $slidebar ? '' : '</ul>' . "\n";
-			$html .= $slidebar ? '  </div>'."\n" : '';
-			$html .= $slidebar ? '  <div id="showcase-next" ></div>'."\n" : '';
-			$html .= $slidebar ? '</div>'."\n" : '';
+			$html .= $slidebar ? '  </div>' . "\n" : '';
+			$html .= $slidebar ? '  <div id="showcase-next" ></div>' . "\n" : '';
+			$html .= $slidebar ? '</div>' . "\n" : '';
 		}
 
 		return $html;
 	}
 
 	/**
-	 * Short description for 'thumbnail'
+	 * Generate a thumbnail name from a file name
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $pic Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string $pic File name
+	 * @return     string
 	 */
 	public function thumbnail($pic)
 	{
-		$pic = explode('.',$pic);
-		$n = count($pic);
-		$pic[$n-2] .= '-tn';
-		$end = array_pop($pic);
-		$pic[] = 'gif';
-		$tn = implode('.',$pic);
-		return $tn;
+		jimport('joomla.filesystem.file');
+		return JFile::stripExt($pic) . '-tn.gif';
 	}
 
 	/**
-	 * Short description for 'skillLevelCircle'
+	 * Display a list of skill levels
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $levels Parameter description (if any) ...
-	 * @param      integer $sel Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array   $levels List of levels
+	 * @param      integer $sel    Selected level
+	 * @return     string HTML
 	 */
 	public function skillLevelCircle($levels = array(), $sel = 0)
 	{
-		$html = '';
-		$html.= '<ul class="audiencelevel">' . "\n";
+		$html = '<ul class="audiencelevel">' . "\n";
 		foreach ($levels as $key => $value)
 		{
-			$class = $key != $sel ? ' isoff' : '';
-			$class = $key != $sel && $key == 'level0' ? '_isoff' : $class;
-			$html .= t."\t\t".' <li class="'.$key.$class.'"><span>&nbsp;</span></li>' . "\n";
+			$class = ($key != $sel) ? ' isoff' : '';
+			$class = ($key != $sel && $key == 'level0') ? '_isoff' : $class;
+			$html .= "\t".' <li class="' . $key . $class . '"><span>&nbsp;</span></li>' . "\n";
 		}
-		$html.= t."\t\t".'</ul>' . "\n";
+		$html .= '</ul>' . "\n";
 		return $html;
 	}
 
 	/**
-	 * Short description for 'skillLevelTable'
+	 * Display a table of skill levels
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $labels Parameter description (if any) ...
-	 * @param      string $audiencelink Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array  $labels       Skill levels
+	 * @param      string $audiencelink Link to learn more about skill levels
+	 * @return     string HTML
 	 */
 	public function skillLevelTable($labels = array(), $audiencelink)
 	{
-		$html  = '';
-		$html .= t.'<table class="skillset" summary="'.JText::_('Resource Audience Skill Rating Table').'">' . "\n";
-		$html .= "\t\t".'<thead>' . "\n";
-		$html .= t."\t\t".'<tr>' . "\n";
-		$html .= t."\t\t".'<td colspan = "2" class="combtd">'.JText::_('Difficulty Level').'</td>' . "\n";
-		$html .= t."\t\t".'<td>'.JText::_('Target Audience').'</td>' . "\n";
-		$html .= t."\t\t".'</tr>' . "\n";
-		$html .= "\t\t".'</thead>' . "\n";
-		$html .= "\t\t".'<tbody>' . "\n";
+		$html  = '<table class="skillset" summary="' . JText::_('Resource Audience Skill Rating Table') . '">' . "\n";
+		$html .= "\t".'<thead>' . "\n";
+		$html .= "\t\t".'<tr>' . "\n";
+		$html .= "\t\t".'<td colspan = "2" class="combtd">' . JText::_('Difficulty Level') . '</td>' . "\n";
+		$html .= "\t\t".'<td>' . JText::_('Target Audience') . '</td>' . "\n";
+		$html .= "\t\t".'</tr>' . "\n";
+		$html .= "\t".'</thead>' . "\n";
+		$html .= "\t". '<tbody>' . "\n";
 		foreach ($labels as $key => $label)
 		{
 			$ul = self::skillLevelCircle($labels, $key);
-			$html .= self::tableRow($ul,$label['title'],$label['desc']);
+			$html .= self::tableRow($ul, $label['title'], $label['desc']);
 		}
-		$html .= "\t\t".'</tbody>' . "\n";
-		$html .= t.'</table>' . "\n";
-		$html .= t.'<p class="learnmore"><a href="'.$audiencelink.'">'.JText::_('Learn more').' &rsaquo;</a></p>' . "\n";
+		$html .= "\t" . '</tbody>' . "\n";
+		$html .= '</table>' . "\n";
+		$html .= '<p class="learnmore"><a href="' . $audiencelink . '">'.JText::_('Learn more') . ' &rsaquo;</a></p>' . "\n";
 		return $html;
 	}
 
 	/**
-	 * Short description for 'showSkillLevel'
+	 * Show skill levels
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      mixed $audience Parameter description (if any) ...
-	 * @param      integer $showtips Parameter description (if any) ...
-	 * @param      integer $numlevels Parameter description (if any) ...
-	 * @param      string $audiencelink Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array   $audience     Audiences
+	 * @param      integer $showtips     Show tips?
+	 * @param      integer $numlevels    Number of levels to dipslay
+	 * @param      string  $audiencelink Link to learn more about skill levels
+	 * @return     string HTML
 	 */
 	public function showSkillLevel($audience, $showtips = 1, $numlevels = 4, $audiencelink = '')
 	{
-		$html 		= '';
-		$levels 	= array();
-		$labels 	= array();
-		$selected 	= array();
-		$txtlabel 	= '';
+		$html     = '';
+		$levels   = array();
+		$labels   = array();
+		$selected = array();
+		$txtlabel = '';
 
-		if ($audience && count($audience) > 0) {
+		if ($audience && count($audience) > 0) 
+		{
 			$audience = $audience[0];
-			$html .= "\t\t".'<div class="showscale">' . "\n";
+			$html .= "\t\t" . '<div class="showscale">' . "\n";
 
 			for ($i = 0, $n = $numlevels; $i <= $n; $i++)
 			{
-				$lb = 'label'.$i;
-				$lv = 'level'.$i;
-				$ds = 'desc'.$i;
-				$levels[$lv] 		  	 = $audience->$lv;
-				$labels[$lv]['title']    = $audience->$lb;
-				$labels[$lv]['desc']     = $audience->$ds;
-				if ($audience->$lv) {
-					$selected[]			 = $lv;
+				$lb = 'label' . $i;
+				$lv = 'level' . $i;
+				$ds = 'desc' . $i;
+				$levels[$lv] = $audience->$lv;
+				$labels[$lv]['title'] = $audience->$lb;
+				$labels[$lv]['desc']  = $audience->$ds;
+				if ($audience->$lv) 
+				{
+					$selected[] = $lv;
 				}
 			}
 
@@ -594,76 +548,82 @@ class ResourcesHtml
 			// colored circles
 			foreach ($levels as $key => $value)
 			{
-				$class = !$value ? ' isoff' : '';
-				$class = !$value && $key == 'level0' ? '_isoff' : $class;
-				$html .= ' <li class="'.$key.$class.'"><span>&nbsp;</span></li>' . "\n";
+				$class = (!$value) ? ' isoff' : '';
+				$class = (!$value && $key == 'level0') ? '_isoff' : $class;
+				$html .= ' <li class="' . $key . $class . '"><span>&nbsp;</span></li>' . "\n";
 			}
 
 			// figure out text label
-			if (count($selected) == 1) {
+			if (count($selected) == 1) 
+			{
 				$txtlabel = $labels[$selected[0]]['title'];
-			} else if (count($selected) > 1) {
+			} 
+			else if (count($selected) > 1) 
+			{
 				$first 	    = array_shift($selected);
 				$first		= $labels[$first]['title'];
 				$firstbits  = explode("-", $first);
 				$first 	    = array_shift($firstbits);
 
-				$last 		= end($selected);
-				$last		= $labels[$last]['title'];
-				$lastbits  	= explode("-", $last);
-				$last	   	= end($lastbits);
+				$last     = end($selected);
+				$last     = $labels[$last]['title'];
+				$lastbits = explode("-", $last);
+				$last     = end($lastbits);
 
-				$txtlabel  	= $first.'-'.$last;
-			} else {
+				$txtlabel = $first . '-' . $last;
+			} 
+			else 
+			{
 				$txtlabel = JText::_('Tool Audience Unrated');
 			}
 
-			$html.= ' <li class="txtlabel">'.$txtlabel.'</li>' . "\n";
-			$html.= '</ul>' . "\n";
-			$html .= "\t\t".'</div>' . "\n";
+			$html .= ' <li class="txtlabel">' . $txtlabel . '</li>' . "\n";
+			$html .= '</ul>' . "\n";
+			$html .= "\t\t" . '</div>' . "\n";
 
 			// pop-up with explanation
-			if ($showtips) {
-				$html .= "\t\t".'<div class="explainscale">' . "\n";
+			if ($showtips) 
+			{
+				$html .= "\t\t" . '<div class="explainscale">' . "\n";
 				$html .= self::skillLevelTable($labels, $audiencelink);
-				$html .= "\t\t".'</div>' . "\n";
+				$html .= "\t\t" . '</div>' . "\n";
 			}
 
-			return Hubzero_View_Helper_Html::div($html, 'usagescale');
+			return '<div class="usagescale">' . $html . '</div>';
 		}
 
 		return $html;
 	}
 
 	/**
-	 * Short description for 'metadata'
+	 * Write metadata information for a resource
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      object $params Parameter description (if any) ...
-	 * @param      unknown $ranking Parameter description (if any) ...
-	 * @param      string $statshtml Parameter description (if any) ...
-	 * @param      string $id Parameter description (if any) ...
-	 * @param      array $sections Parameter description (if any) ...
-	 * @param      string $xtra Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      object  $params    Resource params
+	 * @param      integer $ranking   Resource ranking
+	 * @param      string  $statshtml Usage data to append
+	 * @param      integer $id        Resource ID
+	 * @param      array   $sections  Active plugins' names
+	 * @param      string  $xtra      Extra content to append
+	 * @return     string HTML
 	 */
 	public function metadata($params, $ranking, $statshtml, $id, $sections, $xtra='')
 	{
 		$html = '';
-		if ($params->get('show_ranking')) {
+		if ($params->get('show_ranking')) 
+		{
 			$rank = round($ranking, 1);
 
 			$r = (10*$rank);
-			if (intval($r) < 10) {
-				$r = '0'.$r;
+			if (intval($r) < 10) 
+			{
+				$r = '0' . $r;
 			}
 
 			$html .= '<dl class="rankinfo">' . "\n";
-			$html .= "\t".'<dt class="ranking"><span class="rank-'.$r.'">This resource has a</span> '.number_format($rank,1).' Ranking</dt>' . "\n";
+			$html .= "\t".'<dt class="ranking"><span class="rank-' . $r . '">This resource has a</span> ' . number_format($rank, 1) . ' Ranking</dt>' . "\n";
 			$html .= "\t".'<dd>' . "\n";
 			$html .= "\t\t".'<p>' . "\n";
-			$html .= "\t\t\t".'Ranking is calculated from a formula comprised of <a href="'.JRoute::_('index.php?option=com_resources&id='.$id.'&active=reviews').'">user reviews</a> and usage statistics. <a href="about/ranking/">Learn more &rsaquo;</a>' . "\n";
+			$html .= "\t\t\t".'Ranking is calculated from a formula comprised of <a href="' . JRoute::_('index.php?option=com_resources&id=' . $id . '&active=reviews') . '">user reviews</a> and usage statistics. <a href="about/ranking/">Learn more &rsaquo;</a>' . "\n";
 			$html .= "\t\t".'</p>' . "\n";
 			$html .= "\t\t".'<div>' . "\n";
 			$html .= $statshtml;
@@ -682,9 +642,9 @@ class ResourcesHtml
 	}
 
 	/**
-	 * Short description for 'supportingDocuments'
-	 * 
-	 * Long description (if any) ...
+	 * ===MARKED FOR DEPRECATION===
+	 *
+	 * Write a header and container for supporting documents
 	 * 
 	 * @param      string $content Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -698,12 +658,10 @@ class ResourcesHtml
 	}
 
 	/**
-	 * Short description for 'license'
+	 * Display a link to the license associated with this resource
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $license Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array $license License name
+	 * @return     string HTML
 	 */
 	public function license($license)
 	{
@@ -740,21 +698,15 @@ class ResourcesHtml
 		return $html;
 	}
 
-	//-------------------------------------------------------------
-	// Sections
-	//-------------------------------------------------------------
-
 	/**
-	 * Short description for 'sections'
+	 * Display resource sub view content
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $sections Parameter description (if any) ...
-	 * @param      array $cats Parameter description (if any) ...
-	 * @param      string $active Parameter description (if any) ...
-	 * @param      string $h Parameter description (if any) ...
-	 * @param      string $c Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array  $sections Active plugins' content
+	 * @param      array  $cats     Active plugins' names
+	 * @param      string $active   Current plugin name
+	 * @param      string $h        Hide class
+	 * @param      string $c        Extra classes
+	 * @return     string HTML
 	 */
 	public function sections($sections, $cats, $active='about', $h, $c)
 	{
@@ -784,16 +736,14 @@ class ResourcesHtml
 	}
 
 	/**
-	 * Short description for 'tabs'
+	 * Output tab controls for resource plugins (sub views)
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $option Parameter description (if any) ...
-	 * @param      string $id Parameter description (if any) ...
-	 * @param      array $cats Parameter description (if any) ...
-	 * @param      string $active Parameter description (if any) ...
-	 * @param      string $alias Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $option Component name
+	 * @param      string $id     Resource ID
+	 * @param      array  $cats   Active plugins' names
+	 * @param      string $active Current plugin name
+	 * @param      string $alias  Resource alias
+	 * @return     string HTML
 	 */
 	public function tabs($option, $id, $cats, $active='about', $alias='')
 	{
@@ -839,34 +789,32 @@ class ResourcesHtml
 	}
 
 	/**
-	 * Short description for 'title'
+	 * Generate resource title
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $option Parameter description (if any) ...
-	 * @param      mixed $resource Parameter description (if any) ...
-	 * @param      object $params Parameter description (if any) ...
-	 * @param      unknown $show_edit Parameter description (if any) ...
-	 * @param      unknown $config Parameter description (if any) ...
-	 * @param      integer $show_posted Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string  $option      Component name
+	 * @param      object  $resource    ResourcesResource
+	 * @param      object  $params      Resource config
+	 * @param      integer $show_edit   Show edit controls?
+	 * @param      object  $config      Component config
+	 * @param      integer $show_posted Show published date
+	 * @return     string HTML
 	 */
 	public function title($option, $resource, $params, $show_edit, $config=null, $show_posted=1)
 	{
 		$mode = JRequest::getWord('mode', '');
-		
+
 		$txt = '';
-		
+
 		if ($mode != 'preview')
 		{
 			switch ($resource->published)
 			{
 				case 1: $txt .= ''; break;
-				case 2: $txt .= '<span>['.JText::_('COM_RESOURCES_DRAFT_EXTERNAL').']</span> '; break;
-				case 3: $txt .= '<span>['.JText::_('COM_RESOURCES_PENDING').']</span> '; break;
-				case 4: $txt .= '<span>['.JText::_('COM_RESOURCES_DELETED').']</span> '; break;
-				case 5: $txt .= '<span>['.JText::_('COM_RESOURCES_DRAFT_INTERNAL').']</span> '; break;
-				case 0; $txt .= '<span>['.JText::_('COM_RESOURCES_UNPUBLISHED').']</span> '; break;
+				case 2: $txt .= '<span>[' . JText::_('COM_RESOURCES_DRAFT_EXTERNAL') . ']</span> '; break;
+				case 3: $txt .= '<span>[' . JText::_('COM_RESOURCES_PENDING') . ']</span> ';        break;
+				case 4: $txt .= '<span>[' . JText::_('COM_RESOURCES_DELETED') . ']</span> ';        break;
+				case 5: $txt .= '<span>[' . JText::_('COM_RESOURCES_DRAFT_INTERNAL') . ']</span> '; break;
+				case 0; $txt .= '<span>[' . JText::_('COM_RESOURCES_UNPUBLISHED') . ']</span> ';    break;
 			}
 		}
 
@@ -887,54 +835,27 @@ class ResourcesHtml
 				case 2: $thedate = $resource->modified; break;
 				case 3: $thedate = $resource->publish_up; break;
 			}
-			
+
 			$typenorm = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($resource->getTypeTitle()));
-			
+
 			$html .= '<p>' . JText::_('COM_RESOURCES_POSTED') . ' ';
 			$html .= ($thedate) ? JHTML::_('date', $thedate, '%d %b %Y') . ' ' : '';
 			$html .= JText::_('COM_RESOURCES_IN') . ' <a href="' . JRoute::_('index.php?option=' . $option . '&type=' . $typenorm) . '">' . $resource->getTypeTitle() . '</a></p>' . "\n";
 		}
-		
-		$html .= '<input type="hidden" name="rid" id="rid" value="' . $resource->id .'" />' . "\n";
 
-		/*$supported = null;
-		if ($resource->type == 7) {
-			$database =& JFactory::getDBO();
-			$rt = new ResourcesTags($database);
-			$supported = $rt->checkTagUsage($config->get('supportedtag'), $resource->id);
-		}
-		
-		if ($supported) {
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
-			$tag = new TagsTag($database);
-			$tag->loadTag($config->get('supportedtag'));
-			
-			$sl = $config->get('supportedlink');
-			if ($sl) {
-				$link = $sl;
-			} else {
-				$link = JRoute::_('index.php?option=com_tags'.a.'tag='.$tag->tag);
-			}
-			
-			$html  = '<div id="content-header">' . $html . '</div>';
-			$html .= '<div id="content-header-extra"><p class="supported"><a href="'.$link.'">'.$tag->raw_tag.'</a></p></div>';
-		} else {*/
-			$html = '<div id="content-header" class="full">' . $html . '</div>';
-		//}
+		$html .= '<input type="hidden" name="rid" id="rid" value="' . $resource->id . '" />' . "\n";
 
-		return $html;
+		return '<div id="content-header" class="full">' . $html . '</div>';
 	}
 
 	/**
-	 * Short description for 'citationCOins'
+	 * Generate COins microformat
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      object $cite Parameter description (if any) ...
-	 * @param      mixed $resource Parameter description (if any) ...
-	 * @param      object $config Parameter description (if any) ...
-	 * @param      object $helper Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      object $cite     Resource citation data
+	 * @param      object $resource ResourcesResource
+	 * @param      object $config   Component config
+	 * @param      object $helper   ResourcesHelper
+	 * @return     string HTML
 	 */
 	public function citationCOins($cite, $resource, $config, $helper)
 	{
@@ -943,9 +864,7 @@ class ResourcesHtml
 			return '';
 		}
 
-		$html  = '<span ';
-		$html .= ' class="Z3988"';
-		$html .= ' title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal';
+		$html  = '<span class="Z3988" title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal';
 
 		// Get contribtool params
 		$tconfig =& JComponentHelper::getParams('com_contribtool');
@@ -962,8 +881,8 @@ class ResourcesHtml
 		}*/
 
 		$html .= isset($resource->doi)
-			? '&amp;rft_id=info%3Adoi%2F'.urlencode($resource->doi)
-			: '&amp;rfr_id=info%3Asid%2Fnanohub.org%3AnanoHUB';
+				? '&amp;rft_id=info%3Adoi%2F'.urlencode($resource->doi)
+				: '&amp;rfr_id=info%3Asid%2Fnanohub.org%3AnanoHUB';
 		$html .= '&amp;rft.genre=article';
 		$html .= '&amp;rft.atitle=' . urlencode($cite->title);
 		$html .= '&amp;rft.date=' . urlencode($cite->year);
@@ -984,10 +903,10 @@ class ResourcesHtml
 			{
 				if ($author_array[$i]->lastname || $author_array[$i]->firstname) 
 				{
-					$name = stripslashes($author_array[$i]->firstname) .' ';
+					$name = stripslashes($author_array[$i]->firstname) . ' ';
 					if ($author_array[$i]->middlename != NULL) 
 					{
-						$name .= stripslashes($author_array[$i]->middlename) .' ';
+						$name .= stripslashes($author_array[$i]->middlename) . ' ';
 					}
 					$name .= stripslashes($author_array[$i]->lastname);
 				} 
@@ -1011,9 +930,7 @@ class ResourcesHtml
 	}
 
 	/**
-	 * Short description for 'about'
-	 * 
-	 * Long description (if any) ...
+	 * ===MARKED FOR DEPRECATION===
 	 * 
 	 * @param      unknown $database Parameter description (if any) ...
 	 * @param      integer $show_edit Parameter description (if any) ...
@@ -1385,8 +1302,8 @@ class ResourcesHtml
 			if ($revision == 'dev') 
 			{
 				$html .= "\t\t\t".'<tr class="devversion">' . "\n";
-				$html .= "\t\t\t\t".'<th>'.JText::_('COM_RESOURCES_VERSION').'</th>' . "\n";
-				$html .= "\t\t\t\t".'<td>'.$versiontext.'</td>' . "\n";
+				$html .= "\t\t\t\t".'<th>' . JText::_('COM_RESOURCES_VERSION') . '</th>' . "\n";
+				$html .= "\t\t\t\t".'<td>' . $versiontext . '</td>' . "\n";
 				$html .= "\t\t\t".'</tr>' . "\n";
 			} 
 			else 
@@ -1421,7 +1338,7 @@ class ResourcesHtml
 		if ($resource->access == 3 && (!in_array($resource->group_owner, $usersgroups) || $show_edit=0)) 
 		{
 			// Protected - only show the introtext
-			$html .= self::tableRow('',$introtext);
+			$html .= self::tableRow('', $introtext);
 		} 
 		else 
 		{
@@ -1545,39 +1462,10 @@ class ResourcesHtml
 				$helper->getTagCloud($show_edit);
 
 				$juser =& JFactory::getUser();
-				$frm = '';
-				/*if (!$juser->get('guest') && !isset($resource->tagform)) {
-					$rt = new ResourcesTags($database);
-					$usertags = $rt->get_tag_string($resource->id, 0, 0, $juser->get('id'), 0, 0);
-					
-					$document =& JFactory::getDocument();
-					$document->setMetaData('keywords',$rt->get_tag_string($resource->id, 0, 0, null, 0, 0));
-					
-					JPluginHelper::importPlugin('hubzero');
-					$dispatcher =& JDispatcher::getInstance();
-					
-					$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags','',$usertags)));
-					
-					$frm .= '<form method="post" id="tagForm" action="'.JRoute::_('index.php?option=' . $option . '&id=' . $resource->id).'">' . "\n";
-					$frm .= "\t".'<fieldset>' . "\n";
-					$frm .= "\t\t".'<label class="tag">' . "\n";
-					$frm .= "\t\t\t".JText::_('Your tags').': ' . "\n";
-					if (count($tf) > 0) {
-						$frm .= $tf[0];
-					} else {
-						//$frm .= "\t\t\t".'<textarea name="tags" id="tags-men" rows="6" cols="35">'. $usertags .'</textarea>' . "\n";
-						$frm .= "\t\t\t".'<input type="text" name="tags" id="tags-men" size="30" value="'. $usertags .'" />' . "\n";
-					}
-					$frm .= "\t\t".'</label>' . "\n";
-					$frm .= "\t\t".'<input type="submit" value="'.JText::_('COM_RESOURCES_SAVE').'"/>' . "\n";
-					$frm .= "\t\t".'<input type="hidden" name="task" value="savetags" />' . "\n";
-					$frm .= "\t".'</fieldset>' . "\n";
-					$frm .= '</form>' . "\n";
-				}*/
 
 				if ($helper->tagCloud) 
 				{
-					$html .= self::tableRow(JText::_('COM_RESOURCES_TAGS'), $helper->tagCloud . $frm);
+					$html .= self::tableRow(JText::_('COM_RESOURCES_TAGS'), $helper->tagCloud);
 				}
 			}
 		}
@@ -1591,17 +1479,15 @@ class ResourcesHtml
 	}
 
 	/**
-	 * Short description for 'citation'
+	 * Generate a citation for a resource
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $option Parameter description (if any) ...
-	 * @param      unknown $cite Parameter description (if any) ...
-	 * @param      string $id Parameter description (if any) ...
-	 * @param      string $citations Parameter description (if any) ...
-	 * @param      unknown $type Parameter description (if any) ...
-	 * @param      string $rev Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string  $option    Component name
+	 * @param      object  $cite      Citation data
+	 * @param      string  $id        Resource ID
+	 * @param      string  $citations Citations to prepend
+	 * @param      integer $type      Resource type
+	 * @param      string  $rev       Tool revision
+	 * @return     string HTML
 	 */
 	public function citation($option, $cite, $id, $citations, $type, $rev='')
 	{
@@ -1617,8 +1503,8 @@ class ResourcesHtml
 			if ($rev != 'dev') 
 			{
 				$html .= "\t\t" . '<p class="details">' . "\n";
-				$html .= "\t\t\t" . '<a href="index.php?option=' . $option . '&task=citation&id=' . $id . '&format=bibtex&no_html=1&rev=' . $rev . '" title="'.JText::_('COM_RESOURCES_DOWNLOAD_BIBTEX_FORMAT') . '">BibTex</a> <span>|</span> ' . "\n";
-				$html .= "\t\t\t" . '<a href="index.php?option=' . $option . '&task=citation&id=' . $id . '&format=endnote&no_html=1&rev=' . $rev . '" title="'.JText::_('COM_RESOURCES_DOWNLOAD_ENDNOTE_FORMAT') . '">EndNote</a>' . "\n";
+				$html .= "\t\t\t" . '<a href="index.php?option=' . $option . '&task=citation&id=' . $id . '&format=bibtex&no_html=1&rev=' . $rev . '" title="' . JText::_('COM_RESOURCES_DOWNLOAD_BIBTEX_FORMAT') . '">BibTex</a> <span>|</span> ' . "\n";
+				$html .= "\t\t\t" . '<a href="index.php?option=' . $option . '&task=citation&id=' . $id . '&format=endnote&no_html=1&rev=' . $rev . '" title="' . JText::_('COM_RESOURCES_DOWNLOAD_ENDNOTE_FORMAT') . '">EndNote</a>' . "\n";
 				$html .= "\t\t" . '</p>' . "\n";
 			}
 			$html .= "\t" . '</li>' . "\n";
@@ -1637,12 +1523,10 @@ class ResourcesHtml
 	}
 
 	/**
-	 * Short description for 'getRatingClass'
+	 * Get the classname for a rating value
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $rating Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      integer $rating Rating (out of 5 total)
+	 * @return     string 
 	 */
 	public function getRatingClass($rating=0)
 	{
@@ -1684,7 +1568,7 @@ class ResourcesHtml
 	public function writeChildren($config, $option, $database, $resource, $children, $live_site, $id=0, $active=0, $pid=0, $fsize=0)
 	{
 	    $juser =& JFactory::getUser();
-		$out = '';
+		$out   = '';
 		$blorp = '';
 		if ($children != NULL) 
 		{
@@ -1707,10 +1591,13 @@ class ResourcesHtml
 
 					$class = '';
 					$action = '';
-					if ($child->standalone == 1) {
+					if ($child->standalone == 1) 
+					{
 						$liclass = ' class="html"';
 						$title = stripslashes($child->title);
-					} else {
+					} 
+					else 
+					{
 						$rt = new ResourcesType($database);
 						$rt->load($child->type);
 						$tparams = new $paramsClass($rt->params);
@@ -1720,9 +1607,12 @@ class ResourcesHtml
 						$ltparams = new $paramsClass($lt->params);
 
 						// Check the link action by child's type
-						if ($child->logicaltype) {
+						if ($child->logicaltype) 
+						{
 							$rtLinkAction = $ltparams->get('linkAction', 'extension');
-						} else {
+						} 
+						else 
+						{
 							$rtLinkAction = $tparams->get('linkAction', 'extension');
 						}
 
@@ -1822,7 +1712,8 @@ class ResourcesHtml
 
 					// user guide 
 					//$guide = 0;
-					if (strtolower($title) !=  preg_replace('/user guide/', '', strtolower($title))) {
+					if (strtolower($title) !=  preg_replace('/user guide/', '', strtolower($title))) 
+					{
 						$liclass = ' class="guide"';
 						//$guide = 1;
 					}
@@ -1838,19 +1729,19 @@ class ResourcesHtml
 				}
 			}
 			$out .= '</ul>' . "\n";
-		} else {
+		} 
+		else 
+		{
 			$out .= '<p>[ none ]</p>';
 		}
 		return $out;
 	}
 
 	/**
-	 * Short description for 'getFileExtension'
+	 * Get the extension of a file
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $url Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $url File path/name
+	 * @return     string
 	 */
 	public function getFileExtension($url)
 	{
@@ -1859,78 +1750,70 @@ class ResourcesHtml
 	}
 
 	/**
-	 * Short description for 'processPath'
+	 * Determine the final URL for the primary resource child
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $option Parameter description (if any) ...
-	 * @param      object $item Parameter description (if any) ...
-	 * @param      string $pid Parameter description (if any) ...
-	 * @param      mixed $action Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string  $option Component name
+	 * @param      object  $item   Child resource
+	 * @param      integer $pid    Parent resource ID
+	 * @param      integer $action Action
+	 * @return     string
 	 */
-	public function processPath($option, $item, $pid='', $action='')
+	public function processPath($option, $item, $pid=0, $action=0)
 	{
-		$id = $item->id;
-		$access = $item->access;
-		$type = $item->type;
-		$standalone = $item->standalone;
-		$path = $item->path;
-
 		$database =& JFactory::getDBO();
-	    $juser =& JFactory::getUser();
+		$juser =& JFactory::getUser();
 
 		$rt = new ResourcesType($database);
-		$rt->load($type);
-	 	$type = $rt->alias;
+		$rt->load($item->type);
+		$type = $rt->alias;
 
-		if ($standalone == 1) 
+		if ($item->standalone == 1) 
 		{
-			$url = JRoute::_('index.php?option=' . $option . '&id=' .  $id);
+			$url = JRoute::_('index.php?option=' . $option . '&id=' .  $item->id);
 		} 
 		else 
 		{
 			switch ($type)
 			{
 				case 'ilink':
-					if ($path) 
+					if ($item->path) 
 					{
 						// internal link, not a resource
-						$url = $path;
+						$url = $item->path;
 					} 
 					else 
 					{
 						// internal link but a resource
-						$url = JRoute::_('index.php?option=' . $option . '&id=' .  $id);
+						$url = JRoute::_('index.php?option=' . $option . '&id=' .  $item->id);
 					}
 				break;
 
 				case 'video':
-					$url = JRoute::_('index.php?option=' . $option . '&id=' . $pid . '&resid=' . $id . '&task=video');
+					$url = JRoute::_('index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=video');
 				break;
 
 				case 'hubpresenter':
-					$url = JRoute::_('index.php?option=' . $option . '&id=' . $pid . '&resid=' . $id . '&task=watch');
+					$url = JRoute::_('index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=watch');
 				break;
 
 				case 'breeze':
-					$url = JRoute::_('index.php?option=' . $option . '&id=' . $pid . '&resid=' . $id . '&task=play');
+					$url = JRoute::_('index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=play');
 				break;
 
 				default:
 					if ($action == 2) 
 					{
-						$url = JRoute::_('index.php?option=' . $option . '&id=' . $pid . '&resid=' . $id . '&task=play');
+						$url = JRoute::_('index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=play');
 					} 
 					else 
 					{
-						if (strstr($path, 'http') || substr($path, 0, 3) == 'mms') 
+						if (strstr($item->path, 'http') || substr($item->path, 0, 3) == 'mms') 
 						{
-							$url = $path;
+							$url = $item->path;
 						} 
 						else 
 						{
-							$url = JRoute::_('index.php?option=' . $option . '&id=' . $id . '&task=download&file=' . basename($path));
+							$url = JRoute::_('index.php?option=' . $option . '&id=' . $item->id . '&task=download&file=' . basename($item->path));
 						}
 					}
 				break;
@@ -1940,15 +1823,15 @@ class ResourcesHtml
 	}
 
 	/**
-	 * Short description for 'primary_child'
+	 * Display the primary child
+	 * For most resources, this will be the first child of a standalone resource
+	 * Tools are the only exception in which case the button launches a tool session
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $option Parameter description (if any) ...
-	 * @param      mixed $resource Parameter description (if any) ...
-	 * @param      object $firstChild Parameter description (if any) ...
-	 * @param      string $xact Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $option     Component name
+	 * @param      object $resource   ResourcesResource
+	 * @param      object $firstChild First resource child
+	 * @param      string $xact       Extra parameters to add
+	 * @return     string 
 	 */
 	public function primary_child($option, $resource, $firstChild, $xact='')
 	{
@@ -2069,7 +1952,7 @@ class ResourcesHtml
 
 			case 4:
 				// write primary button and downloads for a Learning Module
-				$html .= self::primaryButton('', JRoute::_('index.php?option=com_resources&id='.$resource->id.'&task=play'), 'Start learning module');
+				$html .= self::primaryButton('', JRoute::_('index.php?option=com_resources&id=' . $resource->id . '&task=play'), 'Start learning module');
 			break;
 
 			case 6:
@@ -2081,7 +1964,7 @@ class ResourcesHtml
 				$mesg .= $resource->type == 6 ? 'Course Lectures' : '';
 				$mesg .= $resource->type == 2 ? 'Workshop ' : '';
 				$mesg .= $resource->type == 6 ? '' : 'Series';
-				$html .= self::primaryButton('download', JRoute::_('index.php?option=com_resources&id='.$resource->id).'#series', $mesg, '', $mesg, '');
+				$html .= self::primaryButton('download', JRoute::_('index.php?option=com_resources&id=' . $resource->id) . '#series', $mesg, '', $mesg, '');
 			break;
 
 			default:
@@ -2095,10 +1978,10 @@ class ResourcesHtml
 				$firstChild->title = str_replace('&amp;', '&', $firstChild->title);
 				$firstChild->title = str_replace('&', '&amp;', $firstChild->title);
 
-				$mesg = '';
-				$class = '';
+				$mesg   = '';
+				$class  = '';
 				$action = '';
-				$xtra = '';
+				$xtra   = '';
 
 				$lt = new ResourcesType($database);
 				$lt->load($firstChild->logicaltype);
@@ -2196,7 +2079,6 @@ class ResourcesHtml
 					// first child is for registered users only and the visitor is not logged in
 					$pop  = '<p class="warning">This resource requires you to log in before you can proceed with the download.</p>' . "\n";
 					$html .= self::primaryButton($class . ' disabled', JRoute::_('index.php?option=com_login'), $mesg, '', '', '', '', $pop);
-					//$html .= t.'<p class="warning" style="clear: none;">You must <a href="'.JRoute::_('index.php?option=com_login').'">log in</a> before you can download.</p>' . "\n";
 				} 
 				else 
 				{
@@ -2277,19 +2159,17 @@ class ResourcesHtml
 	}
 
 	/**
-	 * Short description for 'primaryButton'
+	 * Generate the primary resources button
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $class Parameter description (if any) ...
-	 * @param      string $href Parameter description (if any) ...
-	 * @param      string $msg Parameter description (if any) ...
-	 * @param      string $xtra Parameter description (if any) ...
-	 * @param      string $title Parameter description (if any) ...
-	 * @param      string $action Parameter description (if any) ...
-	 * @param      boolean $disabled Parameter description (if any) ...
-	 * @param      string $pop Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string  $class    Class to add
+	 * @param      string  $href     Link url
+	 * @param      string  $msg      Link text
+	 * @param      string  $xtra     Extra parameters to add (deprecated)
+	 * @param      string  $title    Link title
+	 * @param      string  $action   Link action
+	 * @param      boolean $disabled Is the button disable?
+	 * @param      string  $pop      Pop-up content
+	 * @return     string
 	 */
 	public function primaryButton($class, $href, $msg, $xtra='', $title='', $action='', $disabled=false, $pop = '')
 	{
@@ -2326,14 +2206,12 @@ class ResourcesHtml
 	}
 
 	/**
-	 * Short description for 'getFileAttribs'
+	 * Display the file type and size for a file
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $path Parameter description (if any) ...
-	 * @param      string $base_path Parameter description (if any) ...
-	 * @param      integer $fsize Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string  $path      File path
+	 * @param      string  $base_path Path to prepend
+	 * @param      integer $fsize     Format the filesize?
+	 * @return     string
 	 */
 	public function getFileAttribs($path, $base_path='', $fsize=0)
 	{
@@ -2413,15 +2291,13 @@ class ResourcesHtml
 	}
 
 	/**
-	 * Short description for 'writeResults'
+	 * Write a list of database results
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$database Parameter description (if any) ...
-	 * @param      array &$lines Parameter description (if any) ...
-	 * @param      integer $show_edit Parameter description (if any) ...
-	 * @param      integer $show_date Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      object &$database  JDatabase
+	 * @param      array  &$lines     Database results
+	 * @param      integer $show_edit Show edit controls?
+	 * @param      integer $show_date Date to display
+	 * @return     string HTML
 	 */
 	public function writeResults(&$database, &$lines, $show_edit=0, $show_date=3)
 	{

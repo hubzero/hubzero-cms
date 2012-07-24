@@ -79,7 +79,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			if ($sl) {
 				$link = $sl;
 			} else {
-				$link = JRoute::_('index.php?option=com_tags'.a.'tag='.$tag->tag);
+				$link = JRoute::_('index.php?option=com_tags'.'&tag='.$tag->tag);
 			}
 
 			$xtra = '<p class="supported"><a href="'.$link.'">'.$tag->raw_tag.'</a></p>';
@@ -143,16 +143,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 				if ($ccount > 0) {
 					$html .= ResourcesHtml::primary_child( $option, $resource, '', '' );
 				}
-				$feeds .= t.t.'<p>'."\n";
-				$feeds .= t.t.t.'<a class="feed" id="resource-audio-feed" href="'. $live_site .'/resources/'.$resource->id.'/feed.rss?format=audio">'.JText::_('Audio podcast').'</a><br />'."\n";
-				$feeds .= t.t.t.'<a class="feed" id="resource-video-feed" href="'. $live_site .'/resources/'.$resource->id.'/feed.rss?format=video">'.JText::_('Video podcast').'</a><br />'."\n";
-				$feeds .= t.t.t.'<a class="feed" id="resource-slides-feed" href="'. $live_site .'/resources/'.$resource->id.'/feed.rss?format=slides">'.JText::_('Slides/Notes podcast').'</a>'."\n";
-				$feeds .= t.t.'</p>'."\n";
+				$feeds .= "\t\t".'<p>'."\n";
+				$feeds .= "\t\t\t".'<a class="feed" id="resource-audio-feed" href="'. $live_site .'/resources/'.$resource->id.'/feed.rss?format=audio">'.JText::_('Audio podcast').'</a><br />'."\n";
+				$feeds .= "\t\t\t".'<a class="feed" id="resource-video-feed" href="'. $live_site .'/resources/'.$resource->id.'/feed.rss?format=video">'.JText::_('Video podcast').'</a><br />'."\n";
+				$feeds .= "\t\t\t".'<a class="feed" id="resource-slides-feed" href="'. $live_site .'/resources/'.$resource->id.'/feed.rss?format=slides">'.JText::_('Slides/Notes podcast').'</a>'."\n";
+				$feeds .= "\t\t".'</p>'."\n";
 			break;
 
 			case 8:
-				$feeds .= t.t.'<p><a class="feed" id="resource-audio-feed" href="'. $live_site .'/resources/'.$resource->id.'/feed.rss?format=audio">'.JText::_('Audio podcast').'</a><br />'."\n";
-				$feeds .= t.t.'<a class="feed" id="resource-video-feed" href="'. $live_site .'/resources/'.$resource->id.'/feed.rss?format=video">'.JText::_('Video podcast').'</a></p>'."\n";
+				$feeds .= "\t\t".'<p><a class="feed" id="resource-audio-feed" href="'. $live_site .'/resources/'.$resource->id.'/feed.rss?format=audio">'.JText::_('Audio podcast').'</a><br />'."\n";
+				$feeds .= "\t\t".'<a class="feed" id="resource-video-feed" href="'. $live_site .'/resources/'.$resource->id.'/feed.rss?format=video">'.JText::_('Video podcast').'</a></p>'."\n";
 				// do nothing
 			break;
 
@@ -247,9 +247,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 			// View more link?			
 			if ($supdocs > 0 && $otherdocs > 0) {
-				$supln .= ' <li class="otherdocs"><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$resource->id.a.'active=supportingdocs').'" title="'.JText::_('View All').' '.$realdocs.' '.JText::_('Supporting Documents').' ">'.$otherdocs.' '.JText::_('more').' &rsaquo;</a></li>'."\n";
+				$supln .= ' <li class="otherdocs"><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$resource->id.'&active=supportingdocs').'" title="'.JText::_('View All').' '.$realdocs.' '.JText::_('Supporting Documents').' ">'.$otherdocs.' '.JText::_('more').' &rsaquo;</a></li>'."\n";
 			} else if (!$supdocs && $realdocs > 0 && $tab != 'play' && is_object($helper->firstChild)) {
-				$html .= t.t.'<p class="supdocs"><span class="viewalldocs"><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$resource->id.a.'active=supportingdocs').'">'.JText::_('Additional materials available').' ('.$realdocs.')</a></span></p>'."\n";
+				$html .= "\t\t".'<p class="supdocs"><span class="viewalldocs"><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$resource->id.'&active=supportingdocs').'">'.JText::_('Additional materials available').' ('.$realdocs.')</a></span></p>'."\n";
 			}
 
 			$supln .= '</ul>'."\n";
@@ -258,7 +258,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 		// Show icons of other available formats
 		if ($supdocs) {
-			$html .= t.t.t.$supdocs."\n";
+			$html .= "\t\t\t" . $supdocs."\n";
 		}
 
 		$html .= $feeds ? $feeds : '';
@@ -339,24 +339,24 @@ defined('_JEXEC') or die( 'Restricted access' );
 				$paging = str_replace('&&','&',$paging);
 				$paging = str_replace('&amp;&amp;','&amp;',$paging);
 
-				$html .= t.'<a name="series"></a>'."\n";
+				$html .= "\t".'<a name="series"></a>'."\n";
 				$html .= '<h3>'. JText::_('In This Series') .'</h3>'."\n";
 				$html .= '<form method="get" action="'.JRoute::_($url).'">'."\n";
-				$html .= t.'<div class="aside">'."\n";
-				$html .= t.t.'<fieldset class="controls">'."\n";
-				$html .= t.t.t.'<label>'."\n";
-				$html .= t.t.t.t.JText::_('COM_RESOURCES_SORT_BY').':'."\n";
-				$html .= t.t.t.t.ResourcesHtml::formSelect('sortby', $sortbys, $filters['sortby'], '')."\n";
-				$html .= t.t.t.'</label>'."\n";
-				$html .= t.t.t.'<input type="submit" value="'.JText::_('COM_RESOURCES_GO').'" />'."\n";
-				$html .= t.t.'</fieldset>'."\n";
-				$html .= t.'</div><!-- / .aside -->'."\n";
-				$html .= t.'<div class="subject">'."\n";
+				$html .= "\t".'<div class="aside">'."\n";
+				$html .= "\t\t".'<fieldset class="controls">'."\n";
+				$html .= "\t\t\t".'<label>'."\n";
+				$html .= "\t\t\t\t".JText::_('COM_RESOURCES_SORT_BY').':'."\n";
+				$html .= "\t\t\t\t".ResourcesHtml::formSelect('sortby', $sortbys, $filters['sortby'], '')."\n";
+				$html .= "\t\t\t".'</label>'."\n";
+				$html .= "\t\t\t".'<input type="submit" value="'.JText::_('COM_RESOURCES_GO').'" />'."\n";
+				$html .= "\t\t".'</fieldset>'."\n";
+				$html .= "\t".'</div><!-- / .aside -->'."\n";
+				$html .= "\t".'<div class="subject">'."\n";
 				$html .= ResourcesHtml::writeResults( $database, $children, $authorized );
-				$html .= t.'<div class="clear"></div><!-- / .clear -->'."\n";
+				$html .= "\t".'<div class="clear"></div><!-- / .clear -->'."\n";
 				$html .= $paging;
-				$html .= t.'</div><!-- / .subject -->'."\n";
-				$html .= t.'<div class="clear"></div><!-- / .clear -->'."\n";
+				$html .= "\t".'</div><!-- / .subject -->'."\n";
+				$html .= "\t".'<div class="clear"></div><!-- / .clear -->'."\n";
 				$html .= '</form>'."\n";
 			}
 		}

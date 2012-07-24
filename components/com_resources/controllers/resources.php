@@ -1975,7 +1975,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		// Ensure we have a trigger
 		if (!$trigger) 
 		{
-			echo ResourcesHtml::error(JText::_('COM_RESOURCES_NO_TRIGGER_FOUND'));
+			echo '<p class="error">' . JText::_('COM_RESOURCES_NO_TRIGGER_FOUND') . '</p>';
 			return;
 		}
 
