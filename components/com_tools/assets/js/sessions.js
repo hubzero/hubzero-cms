@@ -428,8 +428,9 @@ HUB.Mw = {
 					$('app-footer').setStyle('width', w.toString() + 'px');
 				}
 			}
-			
-			$('app-size').setHTML(w.toString()+' x '+h.toString());
+			if ($('app-size')) {
+				$('app-size').setHTML(w.toString()+' x '+h.toString());
+			}
 
 			app.style.width = w.toString() + 'px';
 			app.style.height = h.toString() + 'px';
@@ -459,9 +460,9 @@ HUB.Mw = {
 		if (appwrap) {
 			var appfooter = $('app-footer');
 			var footermenu = new Element('ul', {}).injectInside(appfooter);
-			var app = $('theapp');
+			var app = document.getElementById('theapp'); //$('theapp');
 			
-			if (!app.hasClass('no-popout')) {
+			if (app.className.indexOf('no-popout') == -1) {
 				var newwindow = $('app-btn-newwindow');
 				if (!newwindow) {
 					var li = new Element('li', {});
@@ -481,7 +482,7 @@ HUB.Mw = {
 				}
 			}
 			
-			if (!app.hasClass('no-refresh')) {
+			if (app.className.indexOf('no-refresh') == -1) {
 				var refresh = $('app-btn-refresh');
 				if (!refresh) {
 					var li = new Element('li', {});
@@ -501,7 +502,7 @@ HUB.Mw = {
 				}
 			}
 			
-			if (!app.hasClass('no-resize')) {
+			if (app.className.indexOf('no-resize') == -1) {
 				var resizehandle = $('app-btn-resizehandle');
 				if (!resizehandle) {
 					var app = document.getElementById('theapp');
