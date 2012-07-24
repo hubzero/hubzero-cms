@@ -29,14 +29,15 @@ HUBzero is a registered trademark of Purdue University.
 
 <install type="module" version="1.5">
 	<name>Events Calendar</name>
+	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>Displays a calendar with days that have events linked. Requires events component.</description>
 	<files>
 		<filename module="mod_events_cal">mod_events_cal.php</filename>
 		<filename>index.html</filename>
-        <filename>tmpl/index.html</filename>
-        <filename>tmpl/default.php</filename>
+		<filename>tmpl/index.html</filename>
+		<filename>tmpl/default.php</filename>
 		<filename>mod_events_cal.css</filename>
 	</files>
 	<params>

@@ -29,7 +29,7 @@ HUBzero is a registered trademark of Purdue University.
 
 <install type="module" version="1.5">
 	<name>Billboards</name>
-	<author>Sam Wilson</author>
+	<author>HUBzero</author>
 	<creationDate>November 2011</creationDate>
 	<version>1.0</version>
 	<description>Rotate through billboards of content</description>
