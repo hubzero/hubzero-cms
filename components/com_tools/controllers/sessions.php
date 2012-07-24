@@ -144,7 +144,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 	 * 
 	 * @return     void
 	 */
-	public function loginTask($rtrn)
+	public function loginTask($rtrn='')
 	{
 		if (!$rtrn) 
 		{
