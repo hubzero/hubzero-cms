@@ -100,27 +100,10 @@ $helper = new ResourcesHelper($this->resource->id, $database);
 		<span style="float:left;width:100px;"><input type="button" value="&lt; <?php echo ucfirst(JText::_('PREVIOUS')); ?>" class="returntoedit" /></span>
 		<span style="float:right;width:100px;"><input type="submit" value="<?php echo ucfirst(JText::_('CONTRIBTOOL_STEP_FINALIZE')); ?> &gt;" /></span>
 	</div>
-    <div class="clear"></div>
- </form>
-<?php
+	<div class="clear"></div>
+</form>
 
-$cats = array();
-$sections = array();
-
-include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'usage.php' );
-
-$body = ResourcesHtml::about( $database, 0, $this->usersgroups, $this->resource, $helper, $this->config, array(), null, null, null, null, $params, $attribs, 'com_resources', 0 );
-
-$cat = array();
-$cat['about'] = JText::_('ABOUT');
-array_unshift($cats, $cat);
-array_unshift($sections, array('html'=>$body,'metadata'=>''));
-
-//$html  = '<h1 id="preview-header">'.JText::_('REVIEW_PREVIEW').'</h1>'.n;
-//$html .= '<div id="preview-pane">'.n;
-//$html .= ResourcesHtml::title( 'com_resources', $resource, $params, false );
-//$html .= ResourcesHtml::tabs( 'com_resources', $rid, $cats, 'about' );
-$html .= ResourcesHtml::sections( $sections, $cats, 'about', 'hide', 'main' );
-//$html .= '</div><!-- / #preview-pane -->'.n;
-
-echo $html;
+<h1 id="preview-header"><?php echo JText::_('Preview'); ?></h1>
+<div id="preview-pane">
+	<iframe id="preview-frame" name="preview-frame" width="100%" frameborder="0" src="<?php echo JRoute::_('index.php?option=com_resources&id=' . $this->resource->id . '&tmpl=component&mode=preview'); ?>"></iframe>
+</div>
