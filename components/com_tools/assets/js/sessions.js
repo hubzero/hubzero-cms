@@ -161,18 +161,6 @@ if (!HUB) {
 // we use document.getElementById instead.
 //-------------------------------------------------------------
 HUB.Mw = {
-	// Helper function used to load the proper applet (signed or unsigned).
-	loadApplet: function() {
-		// For now, we just load the unsigned applet.
-		// Someday, the loadApplet() function will examine
-		// the Mambo session table to decide which applet to load.
-		if ($('signedapplet').value == '1') {
-			loadSignedApplet();
-		} else {
-			loadUnsignedApplet();
-		}
-	},
-
 	addParam: function(obj,name,value) {
 		var p = document.createElement("param");
 		p.name = name;
@@ -183,6 +171,10 @@ HUB.Mw = {
 	loadApplet: function(jar, w, h, port, pass, connect_value, ro, msie) {
 		var app = document.getElementById("theapp");
 		var par = app.parentNode;
+		
+		if (!par) {
+			return;
+		}
 		par.removeChild(app);
 		
 		if (msie) {
@@ -209,14 +201,14 @@ HUB.Mw = {
 				HUB.Mw.addParam(newapp, "forceProxy", "yes");
 			}
 		} else {
-			var appletDiv = document.createElement("div");
+			var newapp = document.createElement("div");
 			var signed;
 			if (jar.indexOf('Signed') >= 0) {
 				signed = 'Yes';
 			} else {
 				signed = 'No';
 			}
-			appletDiv.innerHTML = '<applet id="theapp" code="VncViewer.class" archive="'+jar+'" width="'+w+'" height="'+h+'" MAYSCRIPT>' +
+			newapp.innerHTML = '<applet id="theapp" code="VncViewer.class" archive="'+jar+'" width="'+w+'" height="'+h+'" MAYSCRIPT>' +
 				'<param name="PORT" value="'+port+'"> ' +
 				'<param name="ENCPASSWORD" value="'+pass+'"> ' +
 				'<param name="CONNECT" value="'+connect_value+'"> ' +
@@ -607,6 +599,11 @@ function connectingTool()
 function forceSize(w,h)
 {
 	HUB.Mw.forceSize(w,h);
+}
+
+function loadApplet(jar, w, h, port, pass, connect_value, ro, msie)
+{
+	HUB.Mw.loadApplet(jar, w, h, port, pass, connect_value, ro, msie);
 }
 
 //-------------------------------------------------------------
