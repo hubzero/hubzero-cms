@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Wiki Page Does Not Exist Layout">
+	<layout title="Page Does Not Exist">
 		<message>
-			<![CDATA[STANDARD WIKI PAGE DOES NOT EXIST LAYOUT DESC]]>
+			<![CDATA[Page Does Not Exist]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Wiki Page Does Not Exist Layout</name>
-		<description>STANDARD WIKI PAGE DOES NOT EXIST LAYOUT DESC</description>
+		<name>Page Does Not Exist</name>
+		<description>Page Does Not Exist</description>
 		<params>
 		</params>
 	</state>

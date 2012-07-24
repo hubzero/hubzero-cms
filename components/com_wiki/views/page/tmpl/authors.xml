@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Wiki Page Author List">
+	<layout title="Author List">
 		<message>
-			<![CDATA[Wiki Page Author List]]>
+			<![CDATA[Author List]]>
 		</message>
 	</layout>
 	<state>
-		<name>Wiki Page Author List</name>
-		<description>Wiki Page Author List</description>
+		<name>Author List</name>
+		<description>Author List</description>
 		<params>
 		</params>
 	</state>

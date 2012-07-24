@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Wiki Page Delete Layout">
+	<layout title="Delete page confirmation form">
 		<message>
-			<![CDATA[STANDARD WIKI PAGE DELETE LAYOUT DESC]]>
+			<![CDATA[Delete page confirmation form]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Wiki Page Delete Layout</name>
-		<description>STANDARD WIKI PAGE DELETE LAYOUT DESC</description>
+		<name>Delete page confirmation form</name>
+		<description>Delete page confirmation form</description>
 		<params>
 		</params>
 	</state>

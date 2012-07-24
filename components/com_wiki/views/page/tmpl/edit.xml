@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Wiki Page Edit Layout">
+	<layout title="Edit page form">
 		<message>
-			<![CDATA[STANDARD WIKI PAGE EDIT LAYOUT DESC]]>
+			<![CDATA[Edit page form]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Wiki Page Edit Layout</name>
-		<description>STANDARD WIKI PAGE EDIT LAYOUT DESC</description>
+		<name>Edit page form</name>
+		<description>Edit page form</description>
 		<params>
 		</params>
 	</state>

@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Wiki Page No Such Revision Layout">
+	<layout title="No Such Revision">
 		<message>
-			<![CDATA[STANDARD WIKI PAGE NO SUCH REVISION LAYOUT DESC]]>
+			<![CDATA[No Such Revision]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Wiki Page No Such Revision Layout</name>
-		<description>STANDARD WIKI PAGE NO SUCH REVISION LAYOUT DESC</description>
+		<name>No Such Revision</name>
+		<description>No Such Revision</description>
 		<params>
 		</params>
 	</state>

@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Report Problems Thanks Layout">
+	<layout title=" Report Problems Thanks">
 		<message>
-			<![CDATA[STANDARD REPORT PROBLEMS THANKS LAYOUT DESC]]>
+			<![CDATA[Report Problems Thanks]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Report Problems Thanks Layout</name>
-		<description>STANDARD REPORT PROBLEMS THANKS LAYOUT DESC</description>
+		<name>Report Problems Thanks</name>
+		<description>Report Problems Thanks</description>
 		<params>
 		</params>
 	</state>
