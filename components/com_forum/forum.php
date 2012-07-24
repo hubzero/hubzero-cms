@@ -25,9 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$config = JFactory::getConfig();
-
-if ($config->getValue('config.debug')) 
+if (JFactory::getConfig()->getValue('config.debug')) 
 {
 	error_reporting(E_ALL);
 	@ini_set('display_errors','1');
@@ -50,7 +48,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS 
 require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'models' . DS . 'pagination.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'models' . DS . 'tags.php');
 
-$controllerName = JRequest::getCmd('controller', 'sections');
+$controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'sections'));
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'sections';
@@ -59,7 +57,6 @@ require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php
 $controllerName = 'ForumController' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller
-//$controller = new ForumController();
 $controller = new $controllerName();
 $controller->execute();
 $controller->redirect();

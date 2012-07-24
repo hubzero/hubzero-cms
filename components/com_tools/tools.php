@@ -47,7 +47,7 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'utils.php');
 
-$controllerName = JRequest::getCmd('controller', 'tools');
+$controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'tools'));
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'tools';

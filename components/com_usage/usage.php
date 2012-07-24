@@ -51,7 +51,7 @@ ximport('Hubzero_View_Helper_Html');
 // Include scripts
 require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'helper.php');
 
-$controllerName = JRequest::getCmd('controller', 'results');
+$controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'results'));
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'results';

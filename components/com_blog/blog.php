@@ -52,7 +52,7 @@ require_once(JPATH_COMPONENT.DS.'tables'.DS.'blog.comment.php');
 require_once(JPATH_COMPONENT.DS.'helpers'.DS.'blog.member.php');
 require_once(JPATH_COMPONENT.DS.'helpers'.DS.'blog.tags.php');
 
-$controllerName = JRequest::getCmd('controller', 'entries');
+$controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'entries'));
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'entries';

@@ -59,7 +59,7 @@ include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' .
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'setup.php');
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'tags.php');
 
-$controllerName = JRequest::getCmd('controller', 'page');
+$controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'page'));
 if (!file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'page';

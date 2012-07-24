@@ -41,7 +41,7 @@ include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $optio
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'selectedquotes.php');
 ximport('Hubzero_View_Helper_Html');
 
-$controllerName = JRequest::getCmd('controller', 'feedback');
+$controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'feedback'));
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'feedback';

@@ -50,7 +50,7 @@ require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $optio
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'date.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'menu.php');
 
-$controllerName = JRequest::getCmd('controller', 'polls');
+$controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'polls'));
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'polls';

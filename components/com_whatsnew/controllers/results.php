@@ -57,8 +57,16 @@ class WhatsnewControllerResults extends Hubzero_Controller
 	 */
 	public function displayTask()
 	{
+		$menu = JSite::getMenu()->getActive();
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+		$menu->param = new $paramsClass($menu->params);
+
 		// Incoming
-		$this->view->period = JRequest::getVar('period', 'month');
+		$this->view->period = JRequest::getVar('period', $menu->param->get('period', 'month'));
 
 		// Get configuration
 		$jconfig = JFactory::getConfig();
@@ -80,7 +88,7 @@ class WhatsnewControllerResults extends Hubzero_Controller
 		if ($this->view->period != NULL) 
 		{
 			$searchstring = strtolower($this->view->period);
-			foreach ($areas as $c=>$t)
+			foreach ($areas as $c => $t)
 			{
 				$regexp = '/' . $c . ':/';
 				if (strpos($searchstring, $c . ':') !== false) 

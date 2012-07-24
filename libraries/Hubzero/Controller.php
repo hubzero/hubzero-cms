@@ -190,7 +190,8 @@ class Hubzero_Controller extends JObject
 	 */
 	public function __get($property)
 	{
-		if (isset($this->_data[$property])) {
+		if (isset($this->_data[$property])) 
+		{
 			return $this->_data[$property];
 		}
 	}
@@ -203,7 +204,7 @@ class Hubzero_Controller extends JObject
 	public function execute()
 	{
 		// Incoming task
-		$this->_task = strtolower(JRequest::getWord('task', ''));
+		$this->_task = strtolower(JRequest::getWord('task', JRequest::getWord('layout', '')));
 
 		// Check if the task is in the taskMap
 		if (isset($this->_taskMap[$this->_task]))
@@ -230,8 +231,8 @@ class Hubzero_Controller extends JObject
 			// Instantiate a view with layout the same name as the task
 			$this->view = new JView(array(
 				'base_path' => $this->_basePath,
-				'name' => $this->_controller,
-				'layout' => preg_replace('/[^A-Z0-9_]/i', '', $doTask)
+				'name'      => $this->_controller,
+				'layout'    => preg_replace('/[^A-Z0-9_]/i', '', $doTask)
 			));
 		}
 		// No controller name found - single controller component

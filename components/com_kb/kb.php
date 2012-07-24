@@ -54,7 +54,7 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'article.php')
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'category.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'vote.php');
 
-$controllerName = JRequest::getCmd('controller', 'articles');
+$controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'articles'));
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'articles';

@@ -50,7 +50,7 @@ jimport('joomla.application.component.helper');
 ximport('Hubzero_View_Helper_Html');
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'period.php');
 
-$controllerName = JRequest::getCmd('controller', 'results');
+$controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'results'));
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'results';

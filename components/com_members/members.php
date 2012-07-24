@@ -55,7 +55,7 @@ ximport('Hubzero_User_Profile');
 ximport('Hubzero_View_Helper_Html');
 ximport('Hubzero_Plugin_Params');
 
-$controllerName = JRequest::getCmd('controller', 'profiles');
+$controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'profiles'));
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'profiles';

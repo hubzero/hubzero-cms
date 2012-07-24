@@ -50,7 +50,7 @@ ximport('Hubzero_View_Helper_Html');
 include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'html' . DS . 'select.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'handler.php');
 
-$controllerName = JRequest::getCmd('controller', 'tags');
+$controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'tags'));
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'tags';

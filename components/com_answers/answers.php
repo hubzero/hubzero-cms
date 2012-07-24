@@ -58,7 +58,7 @@ ximport('Hubzero_View_Helper_Html');
 ximport('Hubzero_Filter');
 ximport('Hubzero_Comment');
 
-$controllerName = JRequest::getCmd('controller', 'questions');
+$controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'questions'));
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'questions';

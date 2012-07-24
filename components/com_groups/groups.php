@@ -29,14 +29,20 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-//debug ?
-$config = JFactory::getConfig();
-if ($config->getValue('config.debug')) 
+if (JFactory::getConfig()->getValue('config.debug')) 
 {
 	error_reporting(E_ALL);
 	@ini_set('display_errors','1');
+}
+
+if (version_compare(JVERSION, '1.6', 'lt'))
+{
+	$jacl = JFactory::getACL();
+	$jacl->addACL($option, 'manage', 'users', 'super administrator');
+	$jacl->addACL($option, 'manage', 'users', 'administrator');
+	$jacl->addACL($option, 'manage', 'users', 'manager');
 }
 
 //import needed joomla libs
@@ -52,22 +58,20 @@ ximport('Hubzero_User_Profile');
 ximport('Hubzero_View_Helper_Html');
 ximport('Hubzero_Plugin_Params');
 
-//acl stuff
-$jacl =& JFactory::getACL();
-$jacl->addACL( $option, 'manage', 'users', 'super administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'administrator' );
-$jacl->addACL( $option, 'manage', 'users', 'manager' );
-
 //require needed files
-require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . $option . DS . 'tables' . DS . 'tags.php' );
-require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . $option . DS . 'tables' . DS . 'log.php' );
-require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . $option . DS . 'tables' . DS . 'reason.php' );
-require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . $option . DS . 'tables' . DS . 'pages.php' );
+require_once(JPATH_ADMINISTRATOR . DS . 'components' . DS . $option . DS . 'tables' . DS . 'tags.php');
+require_once(JPATH_ADMINISTRATOR . DS . 'components' . DS . $option . DS . 'tables' . DS . 'log.php');
+require_once(JPATH_ADMINISTRATOR . DS . 'components' . DS . $option . DS . 'tables' . DS . 'reason.php');
+require_once(JPATH_ADMINISTRATOR . DS . 'components' . DS . $option . DS . 'tables' . DS . 'pages.php');
 
 //build controller path and name
-$controllerName = JRequest::getCmd('controller', 'groups');
+$controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'groups'));
+if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+{
+	$controllerName = 'groups';
+}
 require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = ucfirst($controllerName)."Controller";
+$controllerName = ucfirst(strtolower($controllerName)) . 'Controller';
 
 // Instantiate controller and execute
 $controller = new $controllerName();
