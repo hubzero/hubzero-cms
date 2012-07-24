@@ -144,9 +144,26 @@ class modLatestDiscussions extends JObject
 
 		$categories = array();
 		$ids = array();
+		$threads = array();
 		foreach ($posts as $post)
 		{
+			if ($post->parent == 0)
+			{
+				$threads[$post->id] = $post->title;
+			}
+			else 
+			{
+				$threads[$post->parent] = (isset($threads[$post->parent])) ? $threads[$post->parent] : '';
+			}
 			$ids[] = $post['category_id'];
+		}
+		foreach ($threads as $k => $thread)
+		{
+			if (!trim($thread) && $k)
+			{
+				$database->setQuery("SELECT f.title FROM #__forum_posts f WHERE f.id=" . $k);
+				$threads[$k] = $database->loadResult();
+			}
 		}
 		$database->setQuery("SELECT c.id, c.alias, s.alias as section FROM #__forum_categories c LEFT JOIN #__forum_sections as s ON s.id=c.section_id WHERE c.id IN (" . implode(',', $ids) . ") AND c.state='1'");
 		$cats = $database->loadObjectList();
@@ -171,6 +188,7 @@ class modLatestDiscussions extends JObject
 		usort($posts, "sortbydate");
 
 		//set posts to view
+		$this->threads = $threads;
 		$this->posts = $posts;
 		$this->categories = $categories;
 

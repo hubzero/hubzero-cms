@@ -49,7 +49,7 @@ $c = 0;
 					?>
 					<li>
 						<h4>
-							<a href="<?php echo JRoute::_($url); ?>" title=""><?php echo $post['title']; ?></a>
+							<a href="<?php echo JRoute::_($url); ?>" title=""><?php echo ($post['parent'] && isset($this->threads[$post['parent']])) ? stripslashes($this->threads[$post['parent']]) : stripslashes($post['title']); ?></a>
 						</h4>
 						<span class="discussion-author">
 							<?php 
