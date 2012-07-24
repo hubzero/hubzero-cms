@@ -98,7 +98,7 @@ class FootNoteMacro extends WikiMacro
 
 			$i = count($fn) + 1;
 			$notes[] = $note;
-			$fn[] = '<li><a name="fnref-' . $i . '"></a>' . $note . '</li>';
+			$fn[] = '<li><p><a name="fnref-' . $i . '"></a>' . substr($note, 3) . '</li>';
 
 			$wm->footnotes_notes = $notes;
 			$wm->footnotes = $fn;
