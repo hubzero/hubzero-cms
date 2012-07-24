@@ -29,92 +29,89 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.php');
-
-//----------------------------------------------------------
-//  Resources Tagging class
-//----------------------------------------------------------
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
 
 /**
- * Short description for 'ResourcesTags'
- * 
- * Long description (if any) ...
+ * Resources Tagging class
  */
 class ResourcesTags extends TagsHandler
 {
-
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $db Parameter description (if any) ...
-	 * @param      array $config Parameter description (if any) ...
+	 * @param      object $db     JDatabase
+	 * @param      array  $config Optional configurations
 	 * @return     void
 	 */
-	public function __construct( $db, $config=array() )
+	public function __construct($db, $config=array())
 	{
 		$this->_db  = $db;
 		$this->_tbl = 'resources';
 	}
 
 	/**
-	 * Short description for 'getTags'
+	 * Get tags on a resource
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $id Parameter description (if any) ...
-	 * @param      mixed $tagger_id Parameter description (if any) ...
-	 * @param      mixed $strength Parameter description (if any) ...
-	 * @param      integer $admin Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $id        Resource ID
+	 * @param      integer $tagger_id Tagger ID
+	 * @param      integer $strength  Tag strength
+	 * @param      integer $admin     Admin flag
+	 * @return     array
 	 */
 	public function getTags($id, $tagger_id=0, $strength=0, $admin=0)
 	{
-		$sql = "SELECT DISTINCT t.* FROM $this->_tag_tbl AS t, $this->_obj_tbl AS rt WHERE rt.objectid=$id AND rt.tbl='$this->_tbl' AND rt.tagid=t.id";
-		if ($admin == 1) {
-			$sql .= "";
-		} else {
-			$sql .= " AND t.admin=0";
+		$sql = "SELECT DISTINCT t.* FROM $this->_tag_tbl AS t, $this->_obj_tbl AS rt WHERE ";
+
+		$where = array();
+		$where[] = "rt.objectid=$id";
+		$where[] = "rt.tbl='$this->_tbl'";
+		$where[] = "rt.tagid=t.id";
+		if ($admin != 1) 
+		{
+			$where[] = "t.admin=0";
 		}
-		if ($tagger_id != 0) {
-			$sql .= " AND rt.taggerid=".$tagger_id;
+		if ($tagger_id != 0) 
+		{
+			$where[] = "rt.taggerid=" . $tagger_id;
 		}
-		if ($strength) {
-			$sql .= " AND rt.strength=".$strength;
+		if ($strength) 
+		{
+			$where[] = "rt.strength=" . $strength;
 		}
-		$sql .= " ORDER BY t.raw_tag";
-		$this->_db->setQuery( $sql );
+
+		$sql .= implode(" AND ", $where) . " ORDER BY t.raw_tag";
+
+		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'get_tags_with_objects'
+	 * Get all tags with a resource association
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $id Parameter description (if any) ...
-	 * @param      mixed $type Parameter description (if any) ...
-	 * @param      string $tag Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      integer $id   Resource ID
+	 * @param      integer $type Resource type (optional)
+	 * @param      string  $tag  Parameter description (if any) ...
+	 * @return     array
 	 */
 	public function get_tags_with_objects($id=0, $type=0, $tag='')
 	{
 		$juser =& JFactory::getUser();
-		$now  = date( 'Y-m-d H:i:s', time() );
+		$now = date('Y-m-d H:i:s', time());
 
-		$this->_db->setQuery( "SELECT objectid FROM $this->_tag_tbl AS t, $this->_obj_tbl AS o WHERE o.tagid=t.id AND t.tag='$tag' AND o.tbl='$this->_tbl'" );
+		$this->_db->setQuery("SELECT objectid FROM $this->_tag_tbl AS t, $this->_obj_tbl AS o WHERE o.tagid=t.id AND t.tag='$tag' AND o.tbl='$this->_tbl'");
 		$objs = $this->_db->loadObjectList();
+
 		$ids = '';
-		if ($objs) {
+		if ($objs) 
+		{
 			$s = array();
 			foreach ($objs as $obj)
 			{
 				$s[] = $obj->objectid;
 			}
-			$ids = implode(",",$s);
+			$ids = implode(',', $s);
 		}
 
 		$sql = "SELECT t.id, t.tag, t.raw_tag, r.id AS rid, 0 AS ucount, NULL AS rids 
@@ -127,52 +124,66 @@ class ResourcesTags extends TagsHandler
 				AND r.standalone=1
 				AND (r.publish_up = '0000-00-00 00:00:00' OR r.publish_up <= '$now') 
 				AND (r.publish_down = '0000-00-00 00:00:00' OR r.publish_down >= '$now') ";
-		if ($type) {
-			$sql .= "AND r.type=".$type." ";
+		if ($type) 
+		{
+			$sql .= "AND r.type=" . $type . " ";
 		}
-		/*$sql .= (!$juser->get('guest'))     
-			  ? "AND (r.access=0 OR r.access=1) " 
-			  : "AND r.access=0 ";*/
-		if (!$juser->get('guest')) {
+
+		if (!$juser->get('guest')) 
+		{
 			ximport('Hubzero_User_Helper');
 			$xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
-			if ($xgroups != '') {
+			if ($xgroups != '') 
+			{
 				$usersgroups = $this->getUsersGroups($xgroups);
-				if (count($usersgroups) > 1) {
-					$groups = implode("','",$usersgroups);
-				} else {
+				if (count($usersgroups) > 1) 
+				{
+					$groups = implode("','", $usersgroups);
+				} 
+				else 
+				{
 					$groups = count($usersgroups) ? $usersgroups[0] : '';
 				}
-				$sql .= "AND (r.access=0 OR r.access=1 OR r.access=3 OR (r.access=4 AND (r.group_owner IN ('".$groups."') ";
+				$sql .= "AND (r.access=0 OR r.access=1 OR r.access=3 OR (r.access=4 AND (r.group_owner IN ('" . $groups . "') ";
 				foreach ($usersgroups as $group)
 				{
-					$sql .= " OR r.group_access LIKE '%;".$group.";%'";
+					$sql .= " OR r.group_access LIKE '%;" . $group . ";%'";
 				}
 				$sql .= "))) ";
-			} else {
+			} 
+			else 
+			{
 				$sql .= "AND (r.access=0 OR r.access=1 OR r.access=3) ";
 			}
-		} else {
+		} 
+		else 
+		{
 			$sql .= "AND (r.access=0 OR r.access=3) ";
 		}
-		if ($ids) {
+		if ($ids) 
+		{
 			$sql .= "AND o.objectid IN ($ids) ";
 		}
 		$sql .= "ORDER BY t.raw_tag ASC";
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		$results = $this->_db->loadObjectList();
 
 		$rows = array();
-		if ($results) {
+		if ($results) 
+		{
 			foreach ($results as $result)
 			{
-				if (!isset($rows[$result->id])) {
+				if (!isset($rows[$result->id])) 
+				{
 					$rows[$result->id] = $result;
 					$rows[$result->id]->ucount++;
 					$rows[$result->id]->rids = array($result->rid);
-				} else {
-					if (!in_array($result->rid,$rows[$result->id]->rids)) {
+				} 
+				else 
+				{
+					if (!in_array($result->rid, $rows[$result->id]->rids)) 
+					{
 						$rows[$result->id]->ucount++;
 						$rows[$result->id]->rids[] = $result->rid;
 					}
@@ -183,20 +194,20 @@ class ResourcesTags extends TagsHandler
 	}
 
 	/**
-	 * Short description for 'getUsersGroups'
+	 * Push group alias into array for easier searching
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $groups Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      array $groups User's gorups
+	 * @return     array
 	 */
 	public function getUsersGroups($groups)
 	{
 		$arr = array();
-		if (!empty($groups)) {
+		if (!empty($groups)) 
+		{
 			foreach ($groups as $group)
 			{
-				if ($group->regconfirmed) {
+				if ($group->regconfirmed) 
+				{
 					$arr[] = $group->cn;
 				}
 			}
@@ -205,28 +216,30 @@ class ResourcesTags extends TagsHandler
 	}
 
 	/**
-	 * Short description for 'get_objects_on_tag'
+	 * Get all resources associated with a tag
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $tag Parameter description (if any) ...
-	 * @param      mixed $id Parameter description (if any) ...
-	 * @param      mixed $type Parameter description (if any) ...
-	 * @param      string $sortby Parameter description (if any) ...
-	 * @param      string $tag2 Parameter description (if any) ...
-	 * @param      array $filterby Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string  $tag      Tag to find data for
+	 * @param      integer $id       Resource ID
+	 * @param      integer $type     Resource type
+	 * @param      string  $sortby   Sort data by
+	 * @param      string  $tag2     Secondary tag
+	 * @param      array   $filterby Extra, optional filters
+	 * @return     array
 	 */
-	public function get_objects_on_tag( $tag='', $id=0, $type=0, $sortby='title', $tag2='', $filterby=array() )
+	public function get_objects_on_tag($tag='', $id=0, $type=0, $sortby='title', $tag2='', $filterby=array())
 	{
 		$juser =& JFactory::getUser();
-		$now  = date( 'Y-m-d H:i:s', time() );
+		$now  = date('Y-m-d H:i:s', time());
 
-		if ($tag || $tag2) {
+		if ($tag || $tag2) 
+		{
 			$query  = "SELECT C.id, TA.tag, COUNT(DISTINCT TA.tag) AS uniques, ";
-			if ($type == 7) {
+			if ($type == 7) 
+			{
 				$query.= "TV.title ";
-			} else {
+			} 
+			else 
+			{
 				$query.= "C.title ";
 			}
 			switch ($sortby)
@@ -239,26 +252,30 @@ class ResourcesTags extends TagsHandler
 				break;
 			}
 			$query .= "FROM #__resources AS C ";
-			if ($id) {
-				$query .= "INNER JOIN #__resource_assoc AS RA ON (RA.child_id = C.id AND RA.parent_id=".$id.")";
+			if ($id) 
+			{
+				$query .= "INNER JOIN #__resource_assoc AS RA ON (RA.child_id = C.id AND RA.parent_id=" . $id . ")";
 			}
-			if ($type == 7) {
-				//$query .= " JOIN #__tool AS TL ON C.alias=TL.toolname JOIN #__tool_version as TV on TV.toolid=TL.id AND TV.state=1 AND TV.revision = (SELECT MAX(revision) FROM #__tool_version as TV WHERE TV.toolid=TL.id AND TV.state=1 GROUP BY TV.toolid) ";
-				if (!empty($filterby)) {
+			if ($type == 7) 
+			{
+				if (!empty($filterby)) 
+				{
 					$query .= " LEFT JOIN #__resource_taxonomy_audience AS TTA ON C.id=TTA.rid ";
 				}
 				$query .= ", #__tool_version as TV ";
 			}
-			/*if ($id) {
-				$query .= "INNER JOIN #__resource_assoc AS RA ON (RA.child_id = C.id AND RA.parent_id=".$id.")";
-			}*/
 			$query .= ", $this->_obj_tbl AS RTA INNER JOIN #__tags AS TA ON (RTA.tagid = TA.id) ";
-		} else {
+		} 
+		else 
+		{
 			$query  = "SELECT C.id,  ";
-			if ($type == 7) {
-				$query.= "TV.title ";
-			} else {
-				$query.= "C.title ";
+			if ($type == 7) 
+			{
+				$query .= "TV.title ";
+			} 
+			else 
+			{
+				$query .= "C.title ";
 			}
 			switch ($sortby)
 			{
@@ -270,11 +287,14 @@ class ResourcesTags extends TagsHandler
 				break;
 			}
 			$query .= "FROM #__resources AS C ";
-			if ($id) {
-				$query .= "INNER JOIN #__resource_assoc AS RA ON (RA.child_id = C.id AND RA.parent_id=".$id.")";
+			if ($id) 
+			{
+				$query .= "INNER JOIN #__resource_assoc AS RA ON (RA.child_id = C.id AND RA.parent_id=" . $id . ")";
 			}
-			if ($type == 7) {
-				if (!empty($filterby)) {
+			if ($type == 7) 
+			{
+				if (!empty($filterby)) 
+				{
 					$query .= " LEFT JOIN #__resource_taxonomy_audience AS TTA ON C.id=TTA.rid ";
 				}
 				$query .= ", #__tool_version as TV ";
@@ -282,64 +302,78 @@ class ResourcesTags extends TagsHandler
 		}
 
 		$query .= "WHERE C.published=1 AND C.standalone=1 ";
-		if ($type) {
-			$query .= "AND C.type=".$type." ";
+		if ($type) 
+		{
+			$query .= "AND C.type=" . $type . " ";
 		}
-		if ($type == 7) {
+		if ($type == 7) 
+		{
 			$query .= " AND TV.toolname=C.alias AND TV.state=1 AND TV.revision = (SELECT MAX(revision) FROM #__tool_version as TV WHERE TV.toolname=C.alias AND TV.state=1 GROUP BY TV.toolid) ";
 		}
-		if (!empty($filterby) && $type == 7) {
+		if (!empty($filterby) && $type == 7) 
+		{
 			$fquery = " AND ((";
-			for ($i=0, $n=count( $filterby ); $i < $n; $i++)
+			for ($i=0, $n=count($filterby); $i < $n; $i++)
 			{
-				$fquery .= " TTA.".$filterby[$i]." = '1'";
+				$fquery .= " TTA." . $filterby[$i] . " = '1'";
 				$fquery .= ($i + 1) == $n ? "" : " OR ";
 			}
 			$fquery .= ") OR (";
-			for ($i=0, $n=count( $filterby ); $i < $n; $i++)
+			for ($i=0, $n=count($filterby); $i < $n; $i++)
 			{
-				$fquery .= " TTA.".$filterby[$i]." IS NULL";
+				$fquery .= " TTA." . $filterby[$i] . " IS NULL";
 				$fquery .= ($i + 1) == $n ? "" : " OR ";
 			}
 			$fquery .= "))";
 			$query .= $fquery;
 		}
-		$query .= "AND (C.publish_up = '0000-00-00 00:00:00' OR C.publish_up <= '".$now."') ";
-		$query .= "AND (C.publish_down = '0000-00-00 00:00:00' OR C.publish_down >= '".$now."') AND ";
-		/*$query .= (!$juser->get('guest'))     
-			   ? "(C.access=0 OR C.access=1) " 
-			   : "(C.access=0) ";*/
-		if (!$juser->get('guest')) {
+		$query .= "AND (C.publish_up = '0000-00-00 00:00:00' OR C.publish_up <= '" . $now . "') ";
+		$query .= "AND (C.publish_down = '0000-00-00 00:00:00' OR C.publish_down >= '" . $now . "') AND ";
+
+		if (!$juser->get('guest')) 
+		{
 			ximport('Hubzero_User_Helper');
 			$xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
-			if ($xgroups != '') {
+			if ($xgroups != '') 
+			{
 				$usersgroups = $this->getUsersGroups($xgroups);
-				if (count($usersgroups) > 1) {
-					$groups = implode("','",$usersgroups);
-				} else {
+				if (count($usersgroups) > 1) 
+				{
+					$groups = implode("','", $usersgroups);
+				} 
+				else 
+				{
 					$groups = count($usersgroups) ? $usersgroups[0] : '';
 				}
-				$query .= "(C.access=0 OR C.access=1 OR C.access=3 OR (C.access=4 AND (C.group_owner IN ('".$groups."') ";
+				$query .= "(C.access=0 OR C.access=1 OR C.access=3 OR (C.access=4 AND (C.group_owner IN ('" . $groups . "') ";
 				foreach ($usersgroups as $group)
 				{
-					$query .= " OR C.group_access LIKE '%;".$group.";%'";
+					$query .= " OR C.group_access LIKE '%;" . $group . ";%'";
 				}
 				$query .= "))) ";
 			} else {
 				$query .= "(C.access=0 OR C.access=1 OR C.access=3) ";
 			}
-		} else {
+		} 
+		else 
+		{
 			$query .= "(C.access=0 OR C.access=3) ";
 		}
-		if ($tag || $tag2) {
-			if ($tag && !$tag2) {
-				$query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_tbl' AND (TA.tag IN ('".$tag."'))";
+		if ($tag || $tag2) 
+		{
+			if ($tag && !$tag2) 
+			{
+				$query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_tbl' AND (TA.tag IN ('" . $tag . "'))";
 				$query .= " GROUP BY C.id HAVING uniques=1";
-			} else if ($tag2 && !$tag) {
-				$query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_tbl' AND (TA.tag IN ('".$tag2."'))";
+			} 
+			else if ($tag2 && !$tag) 
+			{
+				$query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_tbl' AND (TA.tag IN ('" . $tag2 . "'))";
 				$query .= " GROUP BY C.id HAVING uniques=1";
-			} else if ($tag && $tag2) {
-				$query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_tbl' AND (TA.tag IN ('".$tag."','".$tag2."'))";
+			} 
+			else if ($tag && $tag2) 
+			{
+				$query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_tbl' AND (TA.tag IN ('" . $tag . "','" . $tag2 . "'))";
 				$query .= " GROUP BY C.id HAVING uniques=2";
 			}
 		}
@@ -362,78 +396,61 @@ class ResourcesTags extends TagsHandler
 				$sort = "title ASC";
 			break;
 		}
-		$query .= " ORDER BY ".$sort.", publish_up";
-		//echo '<!-- '.$query.' -->';
-		$this->_db->setQuery( $query );
-		$rows = $this->_db->loadObjectList();
+		$query .= " ORDER BY " . $sort . ", publish_up";
 
-		/*if ($rows) {
-			if (!empty($filterby) && $type == 7) {
-				$results = array();
-				foreach ($rows as $key => $row)
-				{
-					$inc = false;
-					for ($i=0, $n=count( $filterby ); $i < $n; $i++) 
-					{
-						if (isset($row->$filterby[$i]) && $row->$filterby[$i] == 1) {
-							$inc = true;
-						}
-					}
-					if ($inc) {
-						$results[] = $row;
-					}
-				}
-				$rows = $results;
-			}
-		}*/
-
-		return $rows;
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'checkTagUsage'
+	 * Check if a tag is being used
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $tag Parameter description (if any) ...
-	 * @param      mixed $id Parameter description (if any) ...
-	 * @param      string $alias Parameter description (if any) ...
+	 * @param      string  $tag   Tag
+	 * @param      integer $id    Resource ID
+	 * @param      string  $alias Resource alias
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function checkTagUsage( $tag, $id=0, $alias='' )
+	public function checkTagUsage($tag, $id=0, $alias='')
 	{
-		if (!$id && !$alias) {
+		if (!$id && !$alias) 
+		{
 			return false;
 		}
-		if ($id) {
-			$query = "SELECT COUNT(*) FROM $this->_obj_tbl AS ta, $this->_tag_tbl AS t WHERE ta.tagid=t.id AND t.tag='".$tag."' AND ta.tbl='resources' AND ta.objectid=".$id;
+		if ($id) 
+		{
+			$query = "SELECT COUNT(*) 
+						FROM $this->_obj_tbl AS ta, $this->_tag_tbl AS t 
+						WHERE ta.tagid=t.id 
+						AND t.tag='" . $tag . "' 
+						AND ta.tbl='resources' 
+						AND ta.objectid=" . $id;
 		}
-		if (!$id && $alias) {
+		if (!$id && $alias) 
+		{
 			$query = "SELECT COUNT(*) 
 						FROM $this->_obj_tbl AS ta, $this->_tag_tbl AS t, #__resources AS r 
 						WHERE ta.tagid=t.id 
-						AND t.tag='".$tag."' 
+						AND t.tag='" . $tag . "' 
 						AND ta.tbl='resources' 
 						AND ta.objectid=r.id 
-						AND r.alias='".$alias."'";
+						AND r.alias='" . $alias . "'";
 		}
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getTagUsage'
+	 * Get a singular field, such as ID, for all items with a specific tag
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $tag Parameter description (if any) ...
-	 * @param      string $rtrn Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      string $tag  Tag to get data for
+	 * @param      string $rtrn Field to return
+	 * @return     array
 	 */
-	public function getTagUsage( $tag, $rtrn='id' )
+	public function getTagUsage($tag, $rtrn='id')
 	{
-		if (!$tag) {
+		if (!$tag) 
+		{
 			return array();
 		}
 
@@ -444,7 +461,7 @@ class ResourcesTags extends TagsHandler
 					AND ta.tbl='resources' 
 					AND ta.objectid=r.id";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadResultArray();
 	}
 }

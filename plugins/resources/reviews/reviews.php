@@ -702,7 +702,7 @@ class PlgResourcesReviewsHelper extends JObject
 			// Editing a review, do some prep work
 			$review->comment = str_replace('<br />', '', $review->comment);
 
-			$RE = new ResourceExtended($resource->id, $database);
+			$RE = new ResourcesHelper($resource->id, $database);
 			$RE->getTagsForEditing($review->user_id);
 			$review->tags = ($RE->tagsForEditing) ? $RE->tagsForEditing : '';
 		}

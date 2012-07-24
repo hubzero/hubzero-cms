@@ -29,50 +29,43 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-//----------------------------------------------------------
-// Base class for resource usage
-//----------------------------------------------------------
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'ResourcesUsage'
- * 
- * Long description (if any) ...
+ * Base class for resource usage
  */
 class ResourcesUsage
 {
-
 	/**
-	 * Description for '_db'
+	 * JDatabase
 	 * 
 	 * @var object
 	 */
 	var $_db      = NULL;
 
 	/**
-	 * Description for '_resid'
+	 * Resource ID
 	 * 
 	 * @var string
 	 */
 	var $_resid   = NULL;
 
 	/**
-	 * Description for '_type'
+	 * Resource type
 	 * 
 	 * @var unknown
 	 */
 	var $_type    = NULL;
 
 	/**
-	 * Description for 'rating'
+	 * Resource rating
 	 * 
 	 * @var string
 	 */
 	var $rating   = NULL;
 
 	/**
-	 * Description for 'users'
+	 * Number of users
 	 * 
 	 * @var string
 	 */
@@ -81,38 +74,50 @@ class ResourcesUsage
 	/**
 	 * Description for 'datetime'
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $datetime = NULL;
 
 	/**
-	 * Description for 'cites'
+	 * Number of citations
 	 * 
-	 * @var string
+	 * @var integer
 	 */
 	var $cites    = NULL;
 
 	/**
-	 * Description for 'lastcite'
+	 * Last citation date
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $lastcite = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Date format
 	 * 
-	 * Long description (if any) ...
+	 * @var string
+	 */
+	var $dateFormat = NULL;
+
+	/**
+	 * Time zone flag
 	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
-	 * @param      unknown $resid Parameter description (if any) ...
-	 * @param      unknown $type Parameter description (if any) ...
-	 * @param      integer $rating Parameter description (if any) ...
-	 * @param      integer $cites Parameter description (if any) ...
-	 * @param      string $lastcite Parameter description (if any) ...
+	 * @var string
+	 */
+	var $tz = NULL;
+
+	/**
+	 * Constructor
+	 * 
+	 * @param      object  &$db      JDatabase
+	 * @param      integer $resid    Resource ID
+	 * @param      integer $type     Resource type
+	 * @param      integer $rating   Resource rating
+	 * @param      integer $cites    Number of citations
+	 * @param      string  $lastcite Last citation date
 	 * @return     void
 	 */
-	public function __construct( &$db, $resid, $type, $rating=0, $cites=0, $lastcite='' )
+	public function __construct(&$db, $resid, $type, $rating=0, $cites=0, $lastcite='')
 	{
 		$this->_db = $db;
 		$this->_resid   = $resid;
@@ -120,41 +125,51 @@ class ResourcesUsage
 		$this->rating   = $rating;
 		$this->cites    = $cites;
 		$this->lastcite = $lastcite;
+
+		$this->dateFormat = '%d %b %Y';
+		$this->tz = 0;
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$this->dateFormat = 'd M Y';
+			$this->tz = true;
+		}
 	}
 
 	/**
-	 * Short description for 'fetch'
+	 * Fetch data for a particular time range
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $disp Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      string $disp Data time range ti display
+	 * @return     array
 	 */
-	public function fetch( $disp )
+	public function fetch($disp)
 	{
 		switch (strtoupper($disp))
 		{
 			case 'CURR':
 				$period  = 1;
 				$caption = JText::_('Current Month');
-				break;
+			break;
+
 			case 'LAST':
 				$period  = 2;
 				$caption = JText::_('Last Month');
-				break;
+			break;
+
 			case 'YEAR':
 				$period  = 12;
 				$caption = JText::_('Last 12 Months');
-				break;
+			break;
+
 			case 'ALL':
+			default:
 				$period  = 14;
 				$caption = JText::_('Total');
-				break;
+			break;
 		}
 
-		$sql = "SELECT * FROM #__resource_stats WHERE resid=".$this->_resid." AND period=".$period." ORDER BY datetime DESC LIMIT 1";
+		$sql = "SELECT * FROM #__resource_stats WHERE resid=" . $this->_resid . " AND period=" . (int) $period . " ORDER BY datetime DESC LIMIT 1";
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		$result = $this->_db->loadObjectList();
 
 		$this->process($result);
@@ -163,98 +178,95 @@ class ResourcesUsage
 	}
 
 	/**
-	 * Short description for 'display'
+	 * Display formatted results for a given time range
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $disp Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string $disp Time range [curr, last, year, all]
+	 * @return     string
 	 */
-	public function display( $disp )
+	public function display($disp)
 	{
-		return true;
+		return '';
 	}
 
 	/**
-	 * Short description for 'display_substats'
+	 * Display a table for ancillary data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     string Return description (if any) ...
+	 * @return     string HTML
 	 */
 	public function display_substats()
 	{
-		$cls = $this->getRatingClass($this->rating);
-
-		$html  = '<table class="usagestats" summary="Review and Citation statistics for this resource">'."\n";
-		$html .= ' <caption>Reviews &amp; Citations</caption>'."\n";
-		$html .= ' <tfoot>'."\n";
-		$html .= '  <tr>'."\n";
+		$html  = '<table class="usagestats" summary="Review and Citation statistics for this resource">' . "\n";
+		$html .= ' <caption>Reviews &amp; Citations</caption>' . "\n";
+		$html .= ' <tfoot>' . "\n";
+		$html .= '  <tr>' . "\n";
 		$html .= '   <td colspan="2">Google/IEEE';
-		if ($this->lastcite) {
-			$html .= ': updated '.JHTML::_('date', $this->lastcite, '%d %b, %Y');
+		if ($this->lastcite) 
+		{
+			$html .= ': updated '.JHTML::_('date', $this->lastcite, $this->dateFormat, $this->tz);
 		}
-		$html .= '</td>'."\n";
-		$html .= '  </tr>'."\n";
-		$html .= ' </tfoot>'."\n";
-		$html .= ' <tbody>'."\n";
-		$html .= '  <tr>'."\n";
-		$html .= '   <th scope="row"><abbr title="Average">Avg.</abbr> Review:</th>'."\n";
-		$html .= '   <td><span class="avgrating'.$cls.'"><span>'.$this->rating.' out of 5 stars</span></span></td>'."\n";
-		$html .= '  </tr>'."\n";
-		$html .= '  <tr>'."\n";
-		$html .= '   <th scope="row">Citations:</th>'."\n";
-		$html .= '   <td>'.$this->cites.'</td>'."\n";
-		$html .= '  </tr>'."\n";
-		$html .= ' </tbody>'."\n";
-		$html .= '</table>'."\n";
+		$html .= '</td>' . "\n";
+		$html .= '  </tr>' . "\n";
+		$html .= ' </tfoot>' . "\n";
+		$html .= ' <tbody>' . "\n";
+		$html .= '  <tr>' . "\n";
+		$html .= '   <th scope="row"><abbr title="Average">Avg.</abbr> Review:</th>' . "\n";
+		$html .= '   <td><span class="avgrating' . $this->getRatingClass($this->rating) . '"><span>' . $this->rating . ' out of 5 stars</span></span></td>' . "\n";
+		$html .= '  </tr>' . "\n";
+		$html .= '  <tr>' . "\n";
+		$html .= '   <th scope="row">Citations:</th>' . "\n";
+		$html .= '   <td>' . $this->cites . '</td>' . "\n";
+		$html .= '  </tr>' . "\n";
+		$html .= ' </tbody>' . "\n";
+		$html .= '</table>' . "\n";
 		return $html;
 	}
 
 	/**
-	 * Short description for 'process'
+	 * Push database results to $this for internal use
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $results Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      array &$result Database records
+	 * @return     boolean False if errors, true on success
 	 */
-	public function process( $results )
+	public function process($results)
 	{
 		return true;
 	}
 
 	/**
-	 * Short description for 'valfmt'
-	 * 
-	 * Long description (if any) ...
+	 * Format a value
 	 * 
 	 * @param      mixed $val Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @return     mixed
 	 */
 	public function valfmt($val)
 	{
-		if ($val != 'unavailable') {
-			if ($val <= 60) {
-				$val = ceil($val).' secs';
-			} else if ($val > 60 && $val <= 3600) {
-				$val = ceil($val/60).' mins';
-			} else if ($val > 3600 && $val <= 86400) {
-				$val = ceil($val/3600).' hours';
-			} else {
-				$val = ceil($val/84600).' days';
+		if ($val != 'unavailable') 
+		{
+			if ($val <= 60) 
+			{
+				$val = ceil($val) . ' secs';
+			} 
+			else if ($val > 60 && $val <= 3600) 
+			{
+				$val = ceil($val/60) . ' mins';
+			} 
+			else if ($val > 3600 && $val <= 86400) 
+			{
+				$val = ceil($val/3600) . ' hours';
+			} 
+			else 
+			{
+				$val = ceil($val/84600) . ' days';
 			}
 		}
 		return $val;
 	}
 
 	/**
-	 * Short description for 'getRatingClass'
+	 * Get the classname for a rating value
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $rating Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      integer $rating Rating (out of 5 total)
+	 * @return     string 
 	 */
 	public function getRatingClass($rating=0)
 	{
@@ -277,131 +289,125 @@ class ResourcesUsage
 	}
 }
 
-//----------------------------------------------------------
-// Extended resource stats class (Tools)
-//----------------------------------------------------------
-
 /**
- * Short description for 'class'
- * 
- * Long description (if any) ...
+ * Extended resource stats class (Tools)
  */
 class ToolStats extends ResourcesUsage
 {
-
 	/**
-	 * Description for 'jobs'
+	 * Number of jobs
 	 * 
 	 * @var string
 	 */
 	var $jobs     = 'unavailable';
 
 	/**
-	 * Description for 'avg_wall'
+	 * Average wall time
 	 * 
 	 * @var string
 	 */
 	var $avg_wall = 'unavailable';
 
 	/**
-	 * Description for 'tot_wall'
+	 * Total wall time
 	 * 
 	 * @var string
 	 */
 	var $tot_wall = 'unavailable';
 
 	/**
-	 * Description for 'avg_cpu'
+	 * Average CPU time
 	 * 
 	 * @var mixed
 	 */
 	var $avg_cpu  = 'unavailable';
 
 	/**
-	 * Description for 'tot_cpu'
+	 * Total CPU time
 	 * 
 	 * @var mixed
 	 */
 	var $tot_cpu  = 'unavailable';
 
 	/**
-	 * Description for 'avg_exec'
+	 * Average execution time
 	 * 
 	 * @var string
 	 */
 	var $avg_exec = 'unavailable';
 
 	/**
-	 * Description for 'tot_exec'
+	 * Total execution time
 	 * 
 	 * @var string
 	 */
 	var $tot_exec = 'unavailable';
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
-	 * @param      unknown $resid Parameter description (if any) ...
-	 * @param      unknown $type Parameter description (if any) ...
-	 * @param      integer $rating Parameter description (if any) ...
-	 * @param      integer $cites Parameter description (if any) ...
-	 * @param      string $lastcite Parameter description (if any) ...
+	 * @param      object  &$db      JDatabase
+	 * @param      integer $resid    Resource ID
+	 * @param      integer $type     Resource type
+	 * @param      integer $rating   Resource rating
+	 * @param      integer $cites    Number of citations
+	 * @param      string  $lastcite Last citation date
 	 * @return     void
 	 */
-	public function __construct( &$db, $resid, $type, $rating=0, $cites=0, $lastcite='' )
+	public function __construct(&$db, $resid, $type, $rating=0, $cites=0, $lastcite='')
 	{
-		parent::__construct( $db, $resid, $type, $rating, $cites, $lastcite );
+		parent::__construct($db, $resid, $type, $rating, $cites, $lastcite);
 	}
 
 	/**
-	 * Short description for 'display'
+	 * Display formatted results for a given time range
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $disp Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $disp Time range [curr, last, year, all]
+	 * @return     string
 	 */
-	public function display( $disp='ALL' )
+	public function display($disp='ALL')
 	{
 		list($caption, $period) = $this->fetch($disp);
 
 		$html = '';
-		if ($this->users != 'unavailable' && $this->jobs != 'unavailable' && $this->avg_exec != 'unavailable') {
-			$html .= '<table class="usagestats" summary="'.JText::_('Statistics for this resource').'">'."\n";
-			$html .= ' <caption>'.JText::_('Usage Stats').'</caption>'."\n";
-			$html .= ' <tfoot>'."\n";
-			$html .= '  <tr>'."\n";
-			$html .= '   <td colspan="2">'.$caption;
-			if ($this->datetime) {
-				$html .= ': '.JText::_('updated').' '.JHTML::_('date', $this->datetime, '%d %b, %Y');
+		if ($this->users != 'unavailable' && $this->jobs != 'unavailable' && $this->avg_exec != 'unavailable') 
+		{
+			$html .= '<table class="usagestats" summary="' . JText::_('Statistics for this resource') . '">' . "\n";
+			$html .= ' <caption>' . JText::_('Usage Stats') . '</caption>' . "\n";
+			$html .= ' <tfoot>' . "\n";
+			$html .= '  <tr>' . "\n";
+			$html .= '   <td colspan="2">' . $caption;
+			if ($this->datetime) 
+			{
+				$html .= ': ' . JText::_('updated') . ' ' . JHTML::_('date', $this->datetime, $this->dateFormat, $this->tz);
 			}
-			$html .= '</td>'."\n";
-			$html .= '  </tr>'."\n";
-			$html .= ' </tfoot>'."\n";
-			$html .= ' <tbody>'."\n";
-			if ($this->users != 'unavailable') {
-				$html .= '  <tr>'."\n";
-				$html .= '   <th scope="row">'.JText::_('Users').':</th>'."\n";
-				$html .= '   <td>'.$this->users.'</td>'."\n";
-				$html .= '  </tr>'."\n";
+			$html .= '</td>' . "\n";
+			$html .= '  </tr>' . "\n";
+			$html .= ' </tfoot>' . "\n";
+			$html .= ' <tbody>' . "\n";
+			if ($this->users != 'unavailable') 
+			{
+				$html .= '  <tr>' . "\n";
+				$html .= '   <th scope="row">'.JText::_('Users').':</th>' . "\n";
+				$html .= '   <td>' . $this->users . '</td>' . "\n";
+				$html .= '  </tr>' . "\n";
 			}
-			if ($this->jobs != 'unavailable') {
-				$html .= '  <tr>'."\n";
-				$html .= '   <th scope="row">'.JText::_('Jobs').':</th>'."\n";
-				$html .= '   <td>'.$this->jobs.'</td>'."\n";
-				$html .= '  </tr>'."\n";
+			if ($this->jobs != 'unavailable') 
+			{
+				$html .= '  <tr>' . "\n";
+				$html .= '   <th scope="row">'.JText::_('Jobs').':</th>' . "\n";
+				$html .= '   <td>' . $this->jobs . '</td>' . "\n";
+				$html .= '  </tr>' . "\n";
 			}
-			if ($this->avg_exec != 'unavailable') {
-				$html .= '  <tr>'."\n";
-				$html .= '   <th scope="row"><abbr title="Average">Avg.</abbr> <abbr title="execution">exec.</abbr> time:</th>'."\n";
-				$html .= '   <td>'.$this->valfmt($this->avg_exec).'</td>'."\n";
-				$html .= '  </tr>'."\n";
+			if ($this->avg_exec != 'unavailable') 
+			{
+				$html .= '  <tr>' . "\n";
+				$html .= '   <th scope="row"><abbr title="Average">Avg.</abbr> <abbr title="execution">exec.</abbr> time:</th>' . "\n";
+				$html .= '   <td>' . $this->valfmt($this->avg_exec) . '</td>' . "\n";
+				$html .= '  </tr>' . "\n";
 			}
-			$html .= ' </tbody>'."\n";
-			$html .= '</table>'."\n";
+			$html .= ' </tbody>' . "\n";
+			$html .= '</table>' . "\n";
 		}
 		$html .= $this->display_substats();
 
@@ -409,16 +415,15 @@ class ToolStats extends ResourcesUsage
 	}
 
 	/**
-	 * Short description for 'process'
+	 * Push database results to $this for internal use
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array &$result Parameter description (if any) ...
-	 * @return     void
+	 * @param      array &$result Database records
+	 * @return     boolean False if errors, true on success
 	 */
-	public function process( &$result )
+	public function process(&$result)
 	{
-		if ($result) {
+		if ($result) 
+		{
 			foreach ($result as $row)
 			{
 				$this->users    = $row->users;
@@ -430,128 +435,133 @@ class ToolStats extends ResourcesUsage
 				$this->datetime = $row->datetime;
 
 				// Changed by Swaroop on 06/25/2007: Avg. exec. time = Avg. wall time
-				if ($this->avg_cpu == 0) {
+				if ($this->avg_cpu == 0) 
+				{
 					$this->avg_exec = $this->avg_wall;
-				} else {
+				} 
+				else 
+				{
 			    	$this->avg_exec = $this->avg_cpu;
 				}
 				# $this->avg_exec = $this->avg_wall;
 
-				if ($this->tot_cpu == 0) {
+				if ($this->tot_cpu == 0) 
+				{
 					$this->tot_exec = $this->tot_wall;
-				} else {
+				} 
+				else 
+				{
 					$this->tot_exec = $this->tot_cpu;
 				}
 			}
+			return true;
 		}
+		return false;
 	}
 }
 
-//----------------------------------------------------------
-// Extended resource stats class (And More)
-//----------------------------------------------------------
-
 /**
- * Short description for 'AndmoreStats'
- * 
- * Long description (if any) ...
+ * Extended resource stats class (And More)
  */
 class AndmoreStats extends ResourcesUsage
 {
-
 	/**
-	 * Description for 'views'
+	 * Number of views
 	 * 
 	 * @var string
 	 */
 	var $views    = 'unavailable';
 
 	/**
-	 * Description for 'avg_view'
+	 * Average view time
 	 * 
 	 * @var string
 	 */
 	var $avg_view = 'unavailable';
 
 	/**
-	 * Description for 'tot_view'
+	 * Total views
 	 * 
 	 * @var string
 	 */
 	var $tot_view = 'unavailable';
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
-	 * @param      unknown $resid Parameter description (if any) ...
-	 * @param      unknown $type Parameter description (if any) ...
-	 * @param      integer $rating Parameter description (if any) ...
-	 * @param      integer $cites Parameter description (if any) ...
-	 * @param      string $lastcite Parameter description (if any) ...
+	 * @param      object  &$db      JDatabase
+	 * @param      integer $resid    Resource ID
+	 * @param      integer $type     Resource type
+	 * @param      integer $rating   Resource rating
+	 * @param      integer $cites    Number of citations
+	 * @param      string  $lastcite Last citation date
 	 * @return     void
 	 */
-	public function __construct( &$db, $resid, $type, $rating=0, $cites=0, $lastcite='' )
+	public function __construct(&$db, $resid, $type, $rating=0, $cites=0, $lastcite='')
 	{
-		parent::__construct( $db, $resid, $type, $rating, $cites, $lastcite );
+		parent::__construct($db, $resid, $type, $rating, $cites, $lastcite);
 	}
 
 	/**
-	 * Short description for 'display'
+	 * Display formatted results for a given time range
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $disp Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $disp Time range [curr, last, year, all]
+	 * @return     string
 	 */
-	public function display( $disp='ALL' )
+	public function display($disp='ALL')
 	{
 		list($caption, $period) = $this->fetch($disp);
 
-		if ($this->_type == 1) {
+		if ($this->_type == 1) 
+		{
 			$vlabel  = JText::_('Views');
 			$avlabel = JText::_('Avg. view time');
-		} else {
+		} 
+		else 
+		{
 			$vlabel = JText::_('Downloads');
 			$avlabel = JText::_('Avg. downloads');
 		}
 
 		$html = '';
-		if ($this->users != 'unavailable' && $this->avg_view != 'unavailable') {
-			$html .= '<table class="usagestats" summary="'.JText::_('Statistics for this resource').'">'."\n";
-			$html .= ' <caption>'.JText::_('Usage Stats').'</caption>'."\n";
-			$html .= ' <tfoot>'."\n";
-			$html .= '  <tr>'."\n";
-			$html .= '   <td colspan="2">'.$caption;
-			if ($this->datetime) {
-				$html .= ': '.JText::_('updated').' '.JHTML::_('date', $this->datetime, '%d %b, %Y');
+		if ($this->users != 'unavailable' && $this->avg_view != 'unavailable') 
+		{
+			$html .= '<table class="usagestats" summary="' . JText::_('Statistics for this resource') . '">' . "\n";
+			$html .= ' <caption>'.JText::_('Usage Stats') . '</caption>' . "\n";
+			$html .= ' <tfoot>' . "\n";
+			$html .= '  <tr>' . "\n";
+			$html .= '   <td colspan="2">' . $caption;
+			if ($this->datetime) 
+			{
+				$html .= ': ' . JText::_('updated') . ' ' . JHTML::_('date', $this->datetime, $this->dateFormat, $this->tz);
 			}
-			$html .= '</td>'."\n";
-			$html .= '  </tr>'."\n";
-			$html .= ' </tfoot>'."\n";
-			$html .= ' <tbody>'."\n";
-			if ($this->users != 'unavailable') {
-				$html .= '  <tr>'."\n";
-				$html .= '   <th scope="row">'.JText::_('Users').':</th>'."\n";
-				$html .= '   <td>'.$this->users.'</td>'."\n";
-				$html .= '  </tr>'."\n";
+			$html .= '</td>' . "\n";
+			$html .= '  </tr>' . "\n";
+			$html .= ' </tfoot>' . "\n";
+			$html .= ' <tbody>' . "\n";
+			if ($this->users != 'unavailable') 
+			{
+				$html .= '  <tr>' . "\n";
+				$html .= '   <th scope="row">'.JText::_('Users').':</th>' . "\n";
+				$html .= '   <td>'.$this->users.'</td>' . "\n";
+				$html .= '  </tr>' . "\n";
 			}
-			/*if ($this->views != 'unavailable') {
-				$html .= '  <tr>'."\n";
-				$html .= '   <th scope="row">'.$vlabel.':</th>'."\n";
-				$html .= '   <td>'.$this->views.'</td>'."\n";
-				$html .= '  </tr>'."\n";
+			/*if ($this->views != 'unavailable') 
+			{
+				$html .= '  <tr>' . "\n";
+				$html .= '   <th scope="row">'.$vlabel.':</th>' . "\n";
+				$html .= '   <td>'.$this->views.'</td>' . "\n";
+				$html .= '  </tr>' . "\n";
 			}
-			if ($this->avg_view != 'unavailable') {
-				$html .= '  <tr>'."\n";
-				$html .= '   <th scope="row">'.$avlabel.':</th>'."\n";
-				$html .= '   <td>'.$this->valfmt($this->avg_view).'</td>'."\n";
-				$html .= '  </tr>'."\n";
+			if ($this->avg_view != 'unavailable') 
+			{
+				$html .= '  <tr>' . "\n";
+				$html .= '   <th scope="row">'.$avlabel.':</th>' . "\n";
+				$html .= '   <td>'.$this->valfmt($this->avg_view).'</td>' . "\n";
+				$html .= '  </tr>' . "\n";
 			}*/
-			$html .= ' </tbody>'."\n";
-			$html .= '</table>'."\n";
+			$html .= ' </tbody>' . "\n";
+			$html .= '</table>' . "\n";
 		}
 		$html .= $this->display_substats();
 
@@ -559,31 +569,36 @@ class AndmoreStats extends ResourcesUsage
 	}
 
 	/**
-	 * Short description for 'process'
+	 * Push database results to $this for internal use
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array &$result Parameter description (if any) ...
+	 * @param      array &$result Database results
 	 * @return     void
 	 */
-	public function process( &$result )
+	public function process(&$result)
 	{
-		if ($result) {
+		if ($result) 
+		{
 			foreach ($result as $row)
 			{
 				$this->users    = $row->users;
 				$this->views    = $row->jobs;
 				$this->datetime = $row->datetime;
 
-				if ($row->avg_cpu == 0) {
+				if ($row->avg_cpu == 0) 
+				{
 					$this->avg_view = $row->avg_wall;
-				} else {
+				} 
+				else 
+				{
 					$this->avg_view = $row->avg_cpu;
 				}
 
-				if ($row->tot_cpu == 0) {
+				if ($row->tot_cpu == 0) 
+				{
 					$this->tot_view = $row->tot_wall;
-				} else {
+				} 
+				else 
+				{
 					$this->tot_view = $row->tot_cpu;
 				}
 			}

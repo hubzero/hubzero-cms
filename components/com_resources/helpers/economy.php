@@ -29,75 +29,61 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-//----------------------------------------------------------
-// Resources Economy class:
-// Stores economy funtions for resources
-//----------------------------------------------------------
+defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Bank');
 
 /**
- * Short description for 'ResourcesEconomy'
- * 
- * Long description (if any) ...
+ * Resources Economy class:
+ * Stores economy funtions for resources
  */
 class ResourcesEconomy extends JObject
 {
-
 	/**
-	 * Description for '_db'
+	 * JDatabase
 	 * 
 	 * @var object
 	 */
-	var $_db = NULL;  // Database
-
-	//-----------
+	var $_db = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db)
+	public function __construct(&$db)
 	{
 		$this->_db = $db;
 	}
 
 	/**
-	 * Short description for 'getCons'
+	 * Get all contributors of all resources
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     object Return description (if any) ...
+	 * @return     array
 	 */
 	public function getCons()
 	{
 		// get all eligible resource contributors
-		$sql = "SELECT DISTINCT aa.authorid, SUM(r.ranking) as ranking FROM jos_author_assoc AS aa "
-			."\n LEFT JOIN jos_resources AS r ON r.id=aa.subid "
-			."\n WHERE aa.authorid > 0 AND r.published=1 AND r.standalone=1 GROUP BY aa.authorid ";
+		$sql = "SELECT DISTINCT aa.authorid, SUM(r.ranking) as ranking FROM #__author_assoc AS aa "
+			. " LEFT JOIN #__resources AS r ON r.id=aa.subid "
+			. " WHERE aa.authorid > 0 AND r.published=1 AND r.standalone=1 GROUP BY aa.authorid ";
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'distribute_points'
+	 * Calculate royalties for a contributor and distribute
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      object $con Parameter description (if any) ...
-	 * @param      string $type Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      object $con  ResourcesContributor
+	 * @param      string $type Point calculation type
+	 * @return     boolean False if errors, true on success
 	 */
 	public function distribute_points($con, $type='royalty')
 	{
-		if (!is_object($con)) {
+		if (!is_object($con)) 
+		{
 			return false;
 		}
 		$cat = 'resource';
@@ -105,62 +91,51 @@ class ResourcesEconomy extends JObject
 		$points = round($con->ranking);
 
 		// Get qualifying users
-		$juser =& JUser::getInstance( $con->authorid );
+		$juser =& JUser::getInstance($con->authorid);
 
 		// Reward review author
-		if (is_object($juser) && $juser->get('id')) {
-			$BTL = new Hubzero_Bank_Teller( $this->_db , $juser->get('id') );
+		if (is_object($juser) && $juser->get('id')) 
+		{
+			$BTL = new Hubzero_Bank_Teller($this->_db , $juser->get('id'));
 
-			if (intval($points) > 0) {
-				$msg = ($type=='royalty') ? 'Royalty payment for your resource contributions' : '';
+			if (intval($points) > 0) 
+			{
+				$msg = ($type == 'royalty') ? JText::_('Royalty payment for your resource contributions') : '';
 				$BTL->deposit($points, $msg, $cat, 0);
 			}
 		}
+		return true;
 	}
 }
 
-//----------------------------------------------------------
-// Reviews Economy class:
-// Stores economy funtions for reviews on resources
-//----------------------------------------------------------
-
 /**
- * Short description for 'class'
- * 
- * Long description (if any) ...
+ * Reviews Economy class:
+ * Stores economy funtions for reviews on resources
  */
 class ReviewsEconomy extends JObject
 {
-
 	/**
-	 * Description for '_db'
+	 * JDatabase
 	 * 
 	 * @var object
 	 */
-	var $_db = NULL;  // Database
-
-	//-----------
+	var $_db = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db)
+	public function __construct(&$db)
 	{
 		$this->_db = $db;
-
 	}
 
 	/**
-	 * Short description for 'getReviews'
+	 * Get all reviews for resources
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     array Return description (if any) ...
+	 * @return     array
 	 */
 	public function getReviews()
 	{
@@ -170,14 +145,16 @@ class ReviewsEconomy extends JObject
 			."\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='yes' AND v.category='review' AND v.referenceid=r.id) AS helpful, "
 			."\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='no' AND v.category='review' AND v.referenceid=r.id) AS nothelpful "
 			."\n FROM #__resource_ratings AS r";
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		$result = $this->_db->loadObjectList();
 		$reviews = array();
-		if ($result) {
+		if ($result) 
+		{
 			foreach ($result as $r)
 			{
 				// item is not abusive, got at least 3 votes, more positive than negative
-				if (!$r->reports && (($r->helpful + $r->nothelpful) >=3) && ($r->helpful > $r->nothelpful) ) {
+				if (!$r->reports && (($r->helpful + $r->nothelpful) >=3) && ($r->helpful > $r->nothelpful)) 
+				{
 					$reviews[] = $r;
 				}
 			}
@@ -186,49 +163,46 @@ class ReviewsEconomy extends JObject
 	}
 
 	/**
-	 * Short description for 'calculate_marketvalue'
+	 * Calculate the market value for a review
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      object $review Parameter description (if any) ...
-	 * @param      string $type Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      object $review ResourcesReview
+	 * @param      string $type   Point calculation type
+	 * @return     mixed False if errors, integer on success
 	 */
 	public function calculate_marketvalue($review, $type='royalty')
 	{
-		if (!is_object($review)) {
+		if (!is_object($review)) 
+		{
 			return false;
 		}
 
 		// Get point values for actions
-		$BC = new Hubzero_Bank_Config( $this->_db );
-		$p_R  = $BC->get('reviewvote') ? $BC->get('reviewvote') : 2;
-		//$positive_co = 2;
+		$BC = new Hubzero_Bank_Config($this->_db);
+
+		$p_R = $BC->get('reviewvote') ? $BC->get('reviewvote') : 2;
 
 		$calc = 0;
-		if (isset($review->helpful) && isset($review->nothelpful)) {
+		if (isset($review->helpful) && isset($review->nothelpful)) 
+		{
 			$calc += ($review->helpful) * $p_R;
-			//$calc += ($review->helpful) * $p_R * $positive_co;
-			//$calc += ($review->nothelpful)*$p_R;
 		}
 
-		($calc) ? $calc = $calc : $calc ='0';
+		$calc = ($calc) ? $calc : 0;
 
 		return $calc;
 	}
 
 	/**
-	 * Short description for 'distribute_points'
+	 * Calculate royalties for a review and distribute
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      mixed $review Parameter description (if any) ...
-	 * @param      string $type Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      object $review ResourcesReview
+	 * @param      string $type   Point calculation type
+	 * @return     boolean False if errors, true on success
 	 */
 	public function distribute_points($review, $type='royalty')
 	{
-		if (!is_object($review)) {
+		if (!is_object($review)) 
+		{
 			return false;
 		}
 		$cat = 'review';
@@ -236,17 +210,22 @@ class ReviewsEconomy extends JObject
 		$points = $this->calculate_marketvalue($review, $type);
 
 		// Get qualifying users
-		$juser =& JUser::getInstance( $review->author );
+		$juser =& JUser::getInstance($review->author);
 
 		// Reward review author
-		if (is_object($juser)) {
-			$BTL = new Hubzero_Bank_Teller( $this->_db , $juser->get('id') );
+		if (is_object($juser)) 
+		{
+			$BTL = new Hubzero_Bank_Teller($this->_db , $juser->get('id'));
 
-			if (intval($points) > 0) {
-				$msg = ($type=='royalty') ? 'Royalty payment for posting a review on resource #'.$review->rid : 'Commission for posting a review on resource #'.$review->rid;
+			if (intval($points) > 0) 
+			{
+				$msg = ($type=='royalty') 
+					 ? JText::sprintf('Royalty payment for posting a review on resource #%s', $review->rid) 
+					 : JText::sprintf('Commission for posting a review on resource #%s', $review->rid);
 				$BTL->deposit($points, $msg, $cat, $review->id);
 			}
 		}
+		return true;
 	}
 }
 

@@ -29,51 +29,44 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-//----------------------------------------------------------
-// Information retrieval for items/info linked to a resource
-//----------------------------------------------------------
+include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'screenshot.php');
 
 /**
- * Short description for 'ResourcesHelper'
- * 
- * Long description (if any) ...
+ * Information retrieval for items/info linked to a resource
  */
 class ResourcesHelper extends JObject
 {
-
 	/**
-	 * Description for '_id'
+	 * Resource ID
 	 * 
 	 * @var mixed
 	 */
 	private $_id = 0;
 
 	/**
-	 * Description for '_db'
+	 * JDatabase
 	 * 
 	 * @var object
 	 */
 	private $_db = NULL;
 
 	/**
-	 * Description for '_data'
+	 * Container for properties
 	 * 
 	 * @var array
 	 */
 	private $_data = array();
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $id Parameter description (if any) ...
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      integer $id Resource ID
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( $id, &$db )
+	public function __construct($id, &$db)
 	{
 		$this->_id = $id;
 		$this->_db =& $db;
@@ -85,12 +78,10 @@ class ResourcesHelper extends JObject
 	}
 
 	/**
-	 * Short description for '__set'
+	 * Set a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
+	 * @param      string $property Name of property to set
+	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
 	public function __set($property, $value)
@@ -99,70 +90,69 @@ class ResourcesHelper extends JObject
 	}
 
 	/**
-	 * Short description for '__get'
+	 * Get a property
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string $property Name of property to retrieve
+	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->_data[$property])) {
+		if (isset($this->_data[$property])) 
+		{
 			return $this->_data[$property];
 		}
 	}
 
-	//----------------------------------------------------------
-	// Contributors
-	//----------------------------------------------------------
-
 	/**
-	 * Short description for 'getUnlinkedContributors'
+	 * Get a list of contributors without linking names
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      boolean $incSubmitter Parameter description (if any) ...
+	 * @param      boolean $incSubmitter Include submitters?
 	 * @return     void
 	 */
 	public function getUnlinkedContributors($incSubmitter=false)
 	{
-		if (!isset($this->_contributors)) {
+		if (!isset($this->_contributors)) 
+		{
 			$this->getCons();
 		}
 		$contributors = $this->_contributors;
 
 		$html = '';
-		if ($contributors != '') {
+		if ($contributors != '') 
+		{
 			$names = array();
 			foreach ($contributors as $contributor)
 			{
-				if ($incSubmitter == false && $contributor->role == 'submitter') {
+				if ($incSubmitter == false && $contributor->role == 'submitter') 
+				{
 					continue;
 				}
-				if ($contributor->lastname || $contributor->firstname) {
-					$name = stripslashes($contributor->firstname) .' ';
-					if ($contributor->middlename != NULL) {
-						$name .= stripslashes($contributor->middlename) .' ';
+				if ($contributor->lastname || $contributor->firstname) 
+				{
+					$name = stripslashes($contributor->firstname) . ' ';
+					if ($contributor->middlename != NULL) 
+					{
+						$name .= stripslashes($contributor->middlename) . ' ';
 					}
 					$name .= stripslashes($contributor->lastname);
-				} else {
+				} 
+				else 
+				{
 					$name = $contributor->name;
 				}
-				$name = str_replace( '"', '&quot;', $name );
+				$name = str_replace('"', '&quot;', $name);
 				$names[] = $name;
 			}
-			if (count($names) > 0) {
-				$html = implode( '; ', $names );
+			if (count($names) > 0) 
+			{
+				$html = implode('; ', $names);
 			}
 		}
 		$this->ul_contributors = $html;
 	}
 
 	/**
-	 * Short description for 'getToolAuthors'
-	 * 
-	 * Long description (if any) ...
+	 * Get a list of authors for a tool
 	 * 
 	 * @param      string $toolname Parameter description (if any) ...
 	 * @param      string $revision Parameter description (if any) ...
@@ -174,69 +164,21 @@ class ResourcesHelper extends JObject
 		{
 		$sql = "SELECT n.uidNumber AS id, t.name AS name, n.name AS xname,  n.organization AS xorg, n.givenName AS firstname, n.middleName AS middlename, n.surname AS lastname, t.organization AS org, t.*, NULL as role"
 			 . "\n FROM #__tool_authors AS t, #__xprofiles AS n "
-			 . "\n WHERE n.uidNumber=t.uid AND t.toolname='".$toolname."'"
-			 . "\n AND t.revision='".$revision."'"
+			 . "\n WHERE n.uidNumber=t.uid AND t.toolname='" . $toolname . "'"
+			 . "\n AND t.revision='" . $revision . "'"
 			 . "\n ORDER BY t.ordering";
 		}
 		else
 		{
 		$sql = "SELECT n.uidNumber AS id, t.name AS name, n.name AS xname, n.organization AS xorg, n.givenName AS firstname, n.middleName AS middlename, n.surname AS lastname, t.organization AS org, t.*, NULL as role"
 			 . "\n FROM #__tool_authors AS t, #__xprofiles AS n, #__tool_version AS v "
-			 . "\n WHERE n.uidNumber=t.uid AND t.toolname='".$toolname."' AND v.id=t.version_id and v.state<>3"
-			 . "\n AND t.revision='".$revision."'"
+			 . "\n WHERE n.uidNumber=t.uid AND t.toolname='" . $toolname . "' AND v.id=t.version_id and v.state<>3"
+			 . "\n AND t.revision='" . $revision . "'"
 			 . "\n ORDER BY t.ordering";
 		}
-		$this->_db->setQuery( $sql );
-		$cons = $this->_db->loadObjectList();
-		if ($cons) {
-			foreach ($cons as $k => $c)
-			{
-				if (!$cons[$k]->name) {
-					$cons[$k]->name = $cons[$k]->xname;
-				}
-				if (trim($cons[$k]->org) == '') {
-					$cons[$k]->org = $cons[$k]->xorg;
-				}
-			}
-		}
-		$this->_contributors = $cons;
-	}
-
-	/**
-	 * Short description for 'getCons'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     void
-	 */
-	public function getCons()
-	{
-		/*$sql = "SELECT n.uidNumber AS id, 
-				a.name AS name, 
-				n.name AS xname,
-				n.givenName AS firstname, 
-				n.middleName AS middlename, 
-				n.surname AS lastname, 
-				a.organization AS org, 
-				n.organization AS xorg, 
-				a.role
-				FROM #__xprofiles AS n, 
-				#__author_assoc AS a 
-				WHERE n.uidNumber=a.authorid 
-				AND a.subtable='resources' 
-				AND a.subid=".$this->_id." 
-				ORDER BY ordering, surname, givenName, middleName";
-		*/
-		$sql = "SELECT a.authorid, a.name, a.organization AS org, a.role, n.uidNumber AS id, n.givenName AS firstname, n.middleName AS middlename, n.surname AS lastname, n.organization AS xorg
-				FROM #__author_assoc AS a 
-				LEFT JOIN #__xprofiles AS n ON n.uidNumber=a.authorid
-				WHERE a.subtable='resources' 
-				AND a.subid=" . $this->_id . " 
-				ORDER BY ordering, surname, givenName, middleName";
-
 		$this->_db->setQuery($sql);
 		$cons = $this->_db->loadObjectList();
-		/*if ($cons) 
+		if ($cons) 
 		{
 			foreach ($cons as $k => $c)
 			{
@@ -249,27 +191,47 @@ class ResourcesHelper extends JObject
 					$cons[$k]->org = $cons[$k]->xorg;
 				}
 			}
-		}*/
+		}
 		$this->_contributors = $cons;
 	}
 
 	/**
-	 * Short description for 'getContributors'
+	 * Get contributors
 	 * 
-	 * Long description (if any) ...
+	 * @return     void
+	 */
+	public function getCons()
+	{
+		$sql = "SELECT a.authorid, a.name, a.organization AS org, a.role, n.uidNumber AS id, n.givenName AS firstname, n.middleName AS middlename, n.surname AS lastname, n.organization AS xorg
+				FROM #__author_assoc AS a 
+				LEFT JOIN #__xprofiles AS n ON n.uidNumber=a.authorid
+				WHERE a.subtable='resources' 
+				AND a.subid=" . $this->_id . " 
+				ORDER BY ordering, surname, givenName, middleName";
+
+		$this->_db->setQuery($sql);
+		$cons = $this->_db->loadObjectList();
+
+		$this->_contributors = $cons;
+	}
+
+	/**
+	 * Get a list of contributors
 	 * 
-	 * @param      boolean $showorgs Parameter description (if any) ...
-	 * @param      integer $newstyle Parameter description (if any) ...
+	 * @param      boolean $showorgs Show organizations?
+	 * @param      integer $newstyle Use new style formatting?
 	 * @return     void
 	 */
 	public function getContributors($showorgs=false, $newstyle=0)
 	{
-		if (!isset($this->_contributors) && !$this->_contributors) {
+		if (!isset($this->_contributors) && !$this->_contributors) 
+		{
 			$this->getCons();
 		}
 		$contributors = $this->_contributors;
 
-		if ($contributors != '') {
+		if ($contributors != '') 
+		{
 			$html = '';
 			$names = array();
 			$orgs = array();
@@ -281,108 +243,132 @@ class ResourcesHelper extends JObject
 
 			foreach ($contributors as $contributor)
 			{
-				if (strtolower($contributor->role) == 'submitter') {
+				if (strtolower($contributor->role) == 'submitter') 
+				{
 					continue;
 				}
-				
+
 				// Build the user's name and link to their profile
-				if ($contributor->name) {
+				if ($contributor->name) 
+				{
 					$name = $contributor->name;
-				} else if ($contributor->lastname || $contributor->firstname) {
-					$name = stripslashes($contributor->firstname) .' ';
-					if ($contributor->middlename != NULL) {
-						$name .= stripslashes($contributor->middlename) .' ';
+				} 
+				else if ($contributor->lastname || $contributor->firstname) 
+				{
+					$name = stripslashes($contributor->firstname) . ' ';
+					if ($contributor->middlename != NULL) 
+					{
+						$name .= stripslashes($contributor->middlename) . ' ';
 					}
 					$name .= stripslashes($contributor->lastname);
-				} else {
+				} 
+				else 
+				{
 					$name = $contributor->xname;
 				}
-				if (!$contributor->org) {
+				if (!$contributor->org) 
+				{
 					$contributor->org = $contributor->xorg;
 				}
 
-				$name = str_replace( '"', '&quot;', $name );
+				$name = str_replace('"', '&quot;', $name);
 				if ($contributor->id)
 				{
-					$link  = '<a href="'.JRoute::_('index.php?option=com_members&amp;id='.$contributor->id).'" rel="contributor" title="View the profile of '.$name.'">'.$name.'</a>';
+					$link  = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $contributor->id) . '" rel="contributor" title="View the profile of ' . $name . '">' . $name . '</a>';
 				}
 				else 
 				{
 					$link  = $name;
 				}
-				$link .= ($contributor->role) ? ' ('.$contributor->role.')' : '';
+				$link .= ($contributor->role) ? ' (' . $contributor->role . ')' : '';
 
-				if ($newstyle) {
-					if (trim($contributor->org) != '' && !in_array(trim($contributor->org), $orgs)) {
+				if ($newstyle) 
+				{
+					if (trim($contributor->org) != '' && !in_array(trim($contributor->org), $orgs)) 
+					{
 						$orgs[$i-1] = trim($contributor->org);
-						$orgsln 	.= $i. '. ' .trim($contributor->org).' ';
-						$orgsln_s 	.= trim($contributor->org).' ';
+						$orgsln   .= $i . '. ' . trim($contributor->org) . ' ';
+						$orgsln_s .= trim($contributor->org) . ' ';
 						$k = $i;
 						$i++;
-						
+
 						$link_s = $link;
-						$link .= '<sup>'. $k .'</sup>';
+						$link .= '<sup>' . $k . '</sup>';
 						$names_s[] = $link_s;
-					} else {
+					} 
+					else 
+					{
 						//$k = array_search(trim($contributor->org), $orgs) + 1;
 						$link_s = $link;
 						$link .= '';
 						$names_s[] = $link_s;
 					}
-				} else {
+				} 
+				else 
+				{
 					$orgs[trim($contributor->org)][] = $link;
 				}
 
 				$names[] = $link;
 			}
 
-			if ($showorgs && !$newstyle) {
-				foreach ($orgs as $org=>$links)
+			if ($showorgs && !$newstyle) 
+			{
+				foreach ($orgs as $org => $links)
 				{
-					$orgs[$org] = implode( ', ', $links ).'<br />'.$org;
+					$orgs[$org] = implode(', ', $links) . '<br />' . $org;
 				}
-				$html .= implode( '<br /><br />', $orgs );
-			} else if ($newstyle) {
-				if (count($names) > 0) {
+				$html .= implode('<br /><br />', $orgs);
+			} 
+			else if ($newstyle) 
+			{
+				if (count($names) > 0) 
+				{
 					$html = '<p>'.ucfirst(JText::_('By')).' ';
-					//$html .= count($orgs) > 1  ? implode( ', ', $names ) : implode( ', ', $names_s );
-					$html .= count($contributors) > 1 ? implode( ', ', $names ) : implode( ', ', $names_s );
+					//$html .= count($orgs) > 1  ? implode(', ', $names) : implode(', ', $names_s);
+					$html .= count($contributors) > 1 ? implode(', ', $names) : implode(', ', $names_s);
 					$html .= '</p>';
 				}
-				if ($showorgs && count($orgs) > 0) {
+				if ($showorgs && count($orgs) > 0) 
+				{
 					$html .= '<p class="orgs">';
 					//$html .= count($orgs) > 1 ? $orgsln : $orgsln_s;
 					$html .= count($contributors) > 1 ? $orgsln : $orgsln_s;
 					$html .= '</p>';
 				}
-			} else {
-				if (count($names) > 0) {
-					$html = implode( ', ', $names );
+			} 
+			else 
+			{
+				if (count($names) > 0) 
+				{
+					$html = implode(', ', $names);
 				}
 			}
-		} else {
+		} 
+		else 
+		{
 			$html = '';
 		}
 		$this->contributors = $html;
 	}
-	
+
 	/**
-	 * Short description for 'getSubmitters'
+	 * Get a list of submitters
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      boolean $showorgs Parameter description (if any) ...
-	 * @param      integer $newstyle Parameter description (if any) ...
+	 * @param      boolean $showorgs Show organizations?
+	 * @param      integer $newstyle Use new style formatting?
 	 * @return     void
 	 */
 	public function getSubmitters($showorgs=false, $newstyle=0, $badges=0)
 	{
-		if (!isset($this->_contributors) && !$this->_contributors) {
+		if (!isset($this->_contributors) && !$this->_contributors) 
+		{
 			$this->getCons();
 		}
 		$contributors = $this->_contributors;
 
-		if ($contributors != '') {
+		if ($contributors != '') 
+		{
 			$html = '';
 			$names = array();
 			$orgs = array();
@@ -394,100 +380,123 @@ class ResourcesHelper extends JObject
 
 			foreach ($contributors as $contributor)
 			{
-				if (strtolower($contributor->role) != 'submitter') {
+				if (strtolower($contributor->role) != 'submitter') 
+				{
 					continue;
 				}
-				
+
 				// Build the user's name and link to their profile
-				if ($contributor->name) {
+				if ($contributor->name) 
+				{
 					$name = $contributor->name;
-				} else if ($contributor->lastname || $contributor->firstname) {
-					$name = stripslashes($contributor->firstname) .' ';
-					if ($contributor->middlename != NULL) {
-						$name .= stripslashes($contributor->middlename) .' ';
+				} 
+				else if ($contributor->lastname || $contributor->firstname) 
+				{
+					$name = stripslashes($contributor->firstname) . ' ';
+					if ($contributor->middlename != NULL) 
+					{
+						$name .= stripslashes($contributor->middlename) . ' ';
 					}
 					$name .= stripslashes($contributor->lastname);
-				} else {
+				} 
+				else 
+				{
 					$name = $contributor->xname;
 				}
-				if (!$contributor->org) {
+				if (!$contributor->org) 
+				{
 					$contributor->org = $contributor->xorg;
 				}
 
-				$name = str_replace( '"', '&quot;', $name );
+				$name = str_replace('"', '&quot;', $name);
 				if ($contributor->id)
 				{
-					$link  = '<a href="'.JRoute::_('index.php?option=com_members&amp;id='.$contributor->id).'" rel="contributor" title="View the profile of '.$name.'">'.$name.'</a>';
+					$link  = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $contributor->id) . '" rel="contributor" title="View the profile of ' . $name . '">' . $name . '</a>';
 				}
 				else 
 				{
 					$link  = $name;
 				}
-				//$link .= ($contributor->role) ? ' <span class="user-badges"><span>'.$contributor->role.'</span></span>' : '';
 
-				if ($newstyle) {
-					if ($badges) {
+				if ($newstyle) 
+				{
+					if ($badges) 
+					{
 						$xuser =& JUser::getInstance($contributor->id);
-						if (is_object($xuser) && $xuser->get('name')) {
+						if (is_object($xuser) && $xuser->get('name')) 
+						{
 							$types = array(23 => 'manager', 24 => 'administrator', 25 => 'super administrator', 21 => 'publisher', 20 => 'editor');
-							if (isset($types[$xuser->gid])) {
+							if (isset($types[$xuser->gid])) 
+							{
 								$link .= ' <ul class="badges"><li>' . str_replace(' ', '-', $types[$xuser->gid]) . '</li></ul>';
 							}
 						}
 					}
-					
-					if (trim($contributor->org) != '' && !in_array(trim($contributor->org), $orgs)) {
+
+					if (trim($contributor->org) != '' && !in_array(trim($contributor->org), $orgs)) 
+					{
 						$orgs[$i-1] = trim($contributor->org);
-						$orgsln 	.= $i. '. ' .trim($contributor->org).' ';
+						$orgsln 	.= $i . '. ' . trim($contributor->org) . ' ';
 						$orgsln_s 	.= trim($contributor->org).' ';
 						$k = $i;
 						$i++;
-					} else {
+					} 
+					else 
+					{
 						$k = array_search(trim($contributor->org), $orgs) + 1;
 					}
 					$link_s = $link;
-					$link .= '<sup>'. $k .'</sup>';
+					$link .= '<sup>' . $k . '</sup>';
 					$names_s[] = $link_s;
-
-				} else {
+				} 
+				else 
+				{
 					$orgs[trim($contributor->org)][] = $link;
 				}
 
 				$names[] = $link;
 			}
 
-			if ($showorgs && !$newstyle) {
-				foreach ($orgs as $org=>$links)
+			if ($showorgs && !$newstyle) 
+			{
+				foreach ($orgs as $org => $links)
 				{
-					$orgs[$org] = implode( ', ', $links ).'<br />'.$org;
+					$orgs[$org] = implode(', ', $links) . '<br />' . $org;
 				}
-				$html .= implode( '<br /><br />', $orgs );
-			} else if ($newstyle) {
-				if (count($names) > 0) {
+				$html .= implode('<br /><br />', $orgs);
+			} 
+			else if ($newstyle) 
+			{
+				if (count($names) > 0) 
+				{
 					$html  = '<p>';
-					$html .= count($orgs) > 1  ? implode( ', ', $names ) : implode( ', ', $names_s )  ;
+					$html .= count($orgs) > 1  ? implode(', ', $names) : implode(', ', $names_s);
 					$html .= '</p>';
 				}
-				if ($showorgs && count($orgs) > 0) {
+				if ($showorgs && count($orgs) > 0) 
+				{
 					$html .= '<p class="orgs">';
 					$html .= count($orgs) > 1 ? $orgsln : $orgsln_s;
 					$html .= '</p>';
 				}
-			} else {
-				if (count($names) > 0) {
-					$html = implode( ', ', $names );
+			} 
+			else 
+			{
+				if (count($names) > 0) 
+				{
+					$html = implode(', ', $names);
 				}
 			}
-		} else {
+		} 
+		else 
+		{
 			$html = '';
 		}
 		$this->contributors = $html;
 	}
 
 	/**
-	 * Short description for 'getContributorIDs'
-	 * 
-	 * Long description (if any) ...
+	 * Get the IDs of all the contributors of a resource
 	 * 
 	 * @return     void
 	 */
@@ -495,21 +504,25 @@ class ResourcesHelper extends JObject
 	{
 		$cons = array();
 
-		if (isset($this->_data['_contributors'])) {
+		if (isset($this->_data['_contributors'])) 
+		{
 			$contributors = $this->_contributors;
-		} else {
+		} 
+		else 
+		{
 			$sql = "SELECT n.uidNumber AS id"
 				 . "\n FROM #__xprofiles AS n"
 				 . "\n JOIN #__author_assoc AS a ON n.uidNumber=a.authorid"
 				 . "\n WHERE a.subtable = 'resources'"
-				 . "\n AND a.subid=". $this->_id
+				 . "\n AND a.subid=" . $this->_id
 				 . "\n ORDER BY ordering, surname, givenName, middleName";
 
-			$this->_db->setQuery( $sql );
+			$this->_db->setQuery($sql);
 			$contributors = $this->_db->loadObjectList();
 		}
 
-		if ($contributors) {
+		if ($contributors) 
+		{
 			foreach ($contributors as $con)
 			{
 				$cons[] = $con->id;
@@ -518,45 +531,38 @@ class ResourcesHelper extends JObject
 		$this->contributorIDs = $cons;
 	}
 
-	//----------------------------------------------------------
-	// Citations
-	//----------------------------------------------------------
-
 	/**
-	 * Short description for 'getCitations'
+	 * Get citations on a resource
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean False if errors
 	 */
 	public function getCitations()
 	{
-		if (!$this->_id) {
+		if (!$this->_id) 
+		{
 			return false;
 		}
 
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_citations'.DS.'tables'.DS.'citation.php' );
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_citations'.DS.'tables'.DS.'association.php' );
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_citations'.DS.'tables'.DS.'author.php' );
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_citations'.DS.'tables'.DS.'secondary.php' );
-		$database =& JFactory::getDBO();
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php');
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
 
-		$cc = new CitationsCitation( $database );
+		$cc = new CitationsCitation($this->_db);
 
-		$this->citations = $cc->getCitations( 'resource', $this->_id );
+		$this->citations = $cc->getCitations('resource', $this->_id);
 	}
 
 	/**
-	 * Short description for 'getCitationsCount'
-	 * 
-	 * Long description (if any) ...
+	 * Get a count of citations on a resource
 	 * 
 	 * @return     void
 	 */
 	public function getCitationsCount()
 	{
 		$citations = $this->citations;
-		if (!$citations) {
+		if (!$citations) 
+		{
 			$citations = $this->getCitations();
 		}
 
@@ -564,120 +570,104 @@ class ResourcesHelper extends JObject
 	}
 
 	/**
-	 * Short description for 'getLastCitationDate'
+	 * Get the last citation's date
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean False if errors
 	 */
 	public function getLastCitationDate()
 	{
-		if ($this->_id) {
+		if ($this->_id) 
+		{
 			return false;
 		}
 
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_citations'.DS.'tables'.DS.'citation.php' );
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_citations'.DS.'tables'.DS.'association.php' );
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_citations'.DS.'tables'.DS.'author.php' );
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_citations'.DS.'tables'.DS.'secondary.php' );
-		$database =& JFactory::getDBO();
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php');
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
 
-		$cc = new CitationsCitation( $database );
+		$cc = new CitationsCitation($this->_db);
 
-		$this->lastCitationDate = $cc->getLastCitationDate( 'resource', $this->_id );
+		$this->lastCitationDate = $cc->getLastCitationDate('resource', $this->_id);
 	}
 
-	//----------------------------------------------------------
-	// Tags
-	//----------------------------------------------------------
-
 	/**
-	 * Short description for 'getTags'
+	 * Get tags on this resource
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $tagger_id Parameter description (if any) ...
-	 * @param      integer $strength Parameter description (if any) ...
-	 * @param      integer $admin Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $tagger_id Tagger ID
+	 * @param      integer $strength  Tag strength
+	 * @param      integer $admin     Include admin tags?
+	 * @return     mixed False if errors, array on success
 	 */
 	public function getTags($tagger_id=0, $strength=0, $admin=0)
 	{
-		if ($this->_id == 0) {
+		if ($this->_id == 0) 
+		{
 			return false;
 		}
 
-		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'tags.php' );
-        $database =& JFactory::getDBO();
-		$rt = new ResourcesTags( $database );
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
+
+		$rt = new ResourcesTags($this->_db);
 		$this->tags = $rt->get_tags_on_object($this->_id, 0, 0, $tagger_id, $strength, $admin);
 		return $this->tags;
 	}
 
 	/**
-	 * Short description for 'getTagsForEditing'
+	 * Get a comma-separated list of tags for a resource
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $tagger_id Parameter description (if any) ...
-	 * @param      integer $strength Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $tagger_id Tagger ID
+	 * @param      integer $strength  Tag strength
+	 * @return     boolean False if errors, string on success
 	 */
-	public function getTagsForEditing( $tagger_id=0, $strength=0 )
+	public function getTagsForEditing($tagger_id=0, $strength=0)
 	{
-		if ($this->_id == 0) {
+		if ($this->_id == 0) 
+		{
 			return false;
 		}
 
-		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'tags.php' );
-		$database =& JFactory::getDBO();
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
 
-		$rt = new ResourcesTags( $database );
-		$this->tagsForEditing = $rt->get_tag_string( $this->_id, 0, 0, $tagger_id, $strength, 0 );
+		$rt = new ResourcesTags($this->_db);
+		$this->tagsForEditing = $rt->get_tag_string($this->_id, 0, 0, $tagger_id, $strength, 0);
 		return $this->tagsForEditing;
 	}
 
 	/**
-	 * Short description for 'getTagCloud'
+	 * Get a tag cloud for this resource
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $admin Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $admin Include admin tags?
+	 * @return     boolean False if errors, string on success
 	 */
-	public function getTagCloud( $admin=0 )
+	public function getTagCloud($admin=0)
 	{
-		if ($this->_id == 0) {
+		if ($this->_id == 0) 
+		{
 			return false;
 		}
 
-		include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'tags.php' );
-		$database =& JFactory::getDBO();
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
 
-		$rt = new ResourcesTags( $database );
+		$rt = new ResourcesTags($this->_db);
 		$this->tagCloud = $rt->get_tag_cloud(0, $admin, $this->_id);
 		return $this->tagCloud;
 	}
 
-	//----------------------------------------------------------
-	// Children, parents, etc.
-	//----------------------------------------------------------
-
 	/**
-	 * Short description for 'getChildren'
+	 * Get the children of a resource
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $id Parameter description (if any) ...
-	 * @param      mixed $limit Parameter description (if any) ...
-	 * @param      string $standalone Parameter description (if any) ...
-	 * @param      mixed $excludeFirstChild Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $id                Optional resource ID (uses internal ID if none passeD)
+	 * @param      integer $limit             Number of results to return
+	 * @param      string  $standalone        Include standalone children?
+	 * @param      integer $excludeFirstChild Exclude first child from results?
+	 * @return     array
 	 */
-	public function getChildren( $id='', $limit=0, $standalone='all', $excludeFirstChild = 0 )
+	public function getChildren($id=0, $limit=0, $standalone='all', $excludeFirstChild = 0)
 	{
 		$children = '';
-		if (!$id) {
+		if (!$id) 
+		{
 			$id = $this->_id;
 		}
 		$sql = "SELECT r.id, r.title, r.introtext, r.type, r.logical_type AS logicaltype, r.created, r.created_by, 
@@ -686,7 +676,7 @@ class ResourcesHelper extends JObject
 			 . "\n FROM #__resource_types AS rt, #__resources AS r"
 			 . "\n JOIN #__resource_assoc AS a ON r.id=a.child_id"
 			 . "\n LEFT JOIN #__resource_types AS t ON r.logical_type=t.id"
-			 . "\n WHERE r.published=1 AND a.parent_id=".$id." AND r.type=rt.id";
+			 . "\n WHERE r.published=1 AND a.parent_id=" . $id . " AND r.type=rt.id";
 		switch ($standalone)
 		{
 			case 'no': $sql .= " AND r.standalone=0"; break;
@@ -695,51 +685,47 @@ class ResourcesHelper extends JObject
 			default: $sql .= ""; break;
 		}
 		$sql .= "\n ORDER BY a.ordering, a.grouping";
-		if ($limit != 0 or $excludeFirstChild) {
+		if ($limit != 0 or $excludeFirstChild) 
+		{
 			$sql .= $excludeFirstChild ? " LIMIT $excludeFirstChild, 100" : " LIMIT  ".$limit;
 		}
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		$children = $this->_db->loadObjectList();
 
-		if ($limit != 0) {
+		if ($limit != 0) 
+		{
 			return (isset($children[0])) ? $children[0] : NULL;
-		} else {
+		} 
+		else 
+		{
 			$this->children = $children;
 		}
 	}
 
 	/**
-	 * Short description for 'getStandaloneCount'
+	 * Get a count of standalone children
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Optional filters to apply
+	 * @return     integer
 	 */
-	public function getStandaloneCount( $filters )
+	public function getStandaloneCount($filters)
 	{
-		//$rt = new ResourcesType( $database );
-		//$ra = new ResourcesAssoc( $database );
-		//$rr = new ResourcesResource( $database );
-
 		$sql = "SELECT COUNT(*)"
 			 . " FROM #__resource_types AS rt, #__resources AS r"
 			 . " JOIN #__resource_assoc AS a ON r.id=a.child_id"
 			 . " LEFT JOIN #__resource_types AS t ON r.logical_type=t.id"
-			 . " WHERE r.published=1 AND a.parent_id=".$filters['id']." AND r.standalone=1 AND r.type=rt.id";
-		$this->_db->setQuery( $sql );
+			 . " WHERE r.published=1 AND a.parent_id=" . $filters['id'] . " AND r.standalone=1 AND r.type=rt.id";
+		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getStandaloneChildren'
+	 * Get all standalone children
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Optional filters to apply
+	 * @return     array
 	 */
-	public function getStandaloneChildren( $filters )
+	public function getStandaloneChildren($filters)
 	{
 		$sql = "SELECT r.id, r.title, r.alias, r.introtext, r.fulltext, r.type, r.logical_type AS logicaltype, r.created, r.created_by, 
 						r.published, r.publish_up, r.path, r.access, r.standalone, r.rating, r.times_rated, r.attribs, r.ranking,
@@ -748,9 +734,10 @@ class ResourcesHelper extends JObject
 			 . "\n FROM #__resource_types AS rt, #__resources AS r"
 			 . "\n JOIN #__resource_assoc AS a ON r.id=a.child_id"
 			 . "\n LEFT JOIN #__resource_types AS t ON r.logical_type=t.id"
-			 . "\n WHERE r.published=1 AND a.parent_id=".$filters['id']." AND r.standalone=1 AND r.type=rt.id";
-		if (isset($filters['year']) && $filters['year'] > 0) {
-			$sql .= " AND r.publish_up >= '".$filters['year']."-01-01 00:00:00' AND r.publish_up <= '".$filters['year']."-12-31 23:59:59'";
+			 . "\n WHERE r.published=1 AND a.parent_id=" . $filters['id'] . " AND r.standalone=1 AND r.type=rt.id";
+		if (isset($filters['year']) && $filters['year'] > 0) 
+		{
+			$sql .= " AND r.publish_up >= '" . $filters['year'] . "-01-01 00:00:00' AND r.publish_up <= '" . $filters['year'] . "-12-31 23:59:59'";
 		}
 		$sql .= " ORDER BY ";
 		switch ($filters['sortby'])
@@ -762,40 +749,41 @@ class ResourcesHelper extends JObject
 			case 'ranking':  $sql .= "r.ranking DESC"; break;
 			case 'author':   $sql .= "author"; break;
 		}
-		if (isset($filters['limit']) && $filters['limit'] != '' && $filters['limit'] != 0) {
-			$sql .= " LIMIT ".$filters['start'].",".$filters['limit']." ";
+		if (isset($filters['limit']) && $filters['limit'] != '' && $filters['limit'] != 0) 
+		{
+			$sql .= " LIMIT " . $filters['start'] . "," . $filters['limit'] . " ";
 		}
-		//echo '<!-- '.$sql.' -->';
-		$this->_db->setQuery( $sql );
+
+		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'getFirstChild'
-	 * 
-	 * Long description (if any) ...
+	 * Get the first child resource
 	 * 
 	 * @return     void
 	 */
 	public function getFirstChild()
 	{
-		if ($this->children) {
+		if ($this->children) 
+		{
 			$this->firstChild = $this->children[0];
-		} else {
-			$this->firstChild = $this->getChildren('',1);
+		} 
+		else 
+		{
+			$this->firstChild = $this->getChildren('', 1);
 		}
 	}
 
 	/**
-	 * Short description for 'getParents'
+	 * Get all parents of a resource
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean False if errors, true on success
 	 */
 	public function getParents()
 	{
-		if ($this->_id == 0) {
+		if ($this->_id == 0) 
+		{
 			return false;
 		}
 
@@ -805,413 +793,34 @@ class ResourcesHelper extends JObject
 				FROM #__resource_types AS rt, #__resources AS r 
 				JOIN #__resource_assoc AS a ON r.id=a.parent_id 
 				LEFT JOIN #__resource_types AS t ON r.logical_type=t.id 
-				WHERE r.published=1 AND a.child_id=".$this->_id." AND r.type=rt.id AND r.type!=8 
+				WHERE r.published=1 AND a.child_id=" . $this->_id . " AND r.type=rt.id AND r.type!=8 
 				ORDER BY a.ordering, a.grouping";
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		$parents = $this->_db->loadObjectList();
 
 		$this->parents = $parents;
+
+		return true;
 	}
 
-	//----------------------------------------------------------
-	// Reviews
-	//----------------------------------------------------------
-
 	/**
-	 * Short description for 'getReviews'
+	 * Get the reviews for a resource
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean False if errors, true on success
 	 */
 	public function getReviews()
 	{
-		if ($this->_id == 0) {
+		if ($this->_id == 0) 
+		{
 			return false;
 		}
 
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'review.php' );
-		$database =& JFactory::getDBO();
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'review.php');
 
-		$rr = new ResourcesReview( $database );
+		$rr = new ResourcesReview($this->_db);
 
-		$this->reviews = $rr->getRatings( $this->_id );
-	}
+		$this->reviews = $rr->getRatings($this->_id);
 
-	/**
-	 * Short description for 'countQuestions'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     integer Return description (if any) ...
-	 */
-	public function countQuestions()
-	{
-		return 0;
+		return true;
 	}
 }
-	//----------------------------------------------------------
-	// For storing screenshots information
-	//----------------------------------------------------------
-
-/**
- * Short description for 'class'
- * 
- * Long description (if any) ...
- */
-	class ResourceScreenshot extends  JTable
-	{
-
-	/**
-	 * Description for 'id'
-	 * 
-	 * @var integer
-	 */
-		var $id      	   = NULL;  // @var int (primary key)
-
-	/**
-	 * Description for 'versionid'
-	 * 
-	 * @var unknown
-	 */
-		var $versionid     = NULL;  // @var int
-
-	/**
-	 * Description for 'title'
-	 * 
-	 * @var unknown
-	 */
-		var $title         = NULL;  // @var string (127)
-
-	/**
-	 * Description for 'ordering'
-	 * 
-	 * @var unknown
-	 */
-		var $ordering      = NULL;  // @var int (11)
-
-	/**
-	 * Description for 'filename'
-	 * 
-	 * @var string
-	 */
-		var $filename 	   = NULL;  // @var string (100)
-
-	/**
-	 * Description for 'resourceid'
-	 * 
-	 * @var unknown
-	 */
-		var $resourceid    = NULL;  // @var int
-
-		//-----------
-
-	/**
-	 * Short description for '__construct'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
-	 * @return     void
-	 */
-		public function __construct( &$db )
-		{
-			parent::__construct( '#__screenshots', 'id', $db );
-		}
-
-	/**
-	 * Short description for 'check'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
-	 */
-		public function check()
-		{
-			if (trim( $this->filename ) == '') {
-				$this->setError( 'Missing filename');
-				return false;
-			}
-
-			return true;
-		}
-
-	/**
-	 * Short description for 'loadFromFilename'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $filename Parameter description (if any) ...
-	 * @param      string $rid Parameter description (if any) ...
-	 * @param      string $versionid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
-	 */
-		public function loadFromFilename( $filename, $rid=NULL, $versionid=NULL)
-		{
-			if ($filename===NULL) {
-				return false;
-			}
-			if ($rid===NULL) {
-				return false;
-			}
-
-			$query = "SELECT * FROM $this->_tbl as s WHERE s.filename='".$filename."' AND s.resourceid= '".$rid."'";
-			if($versionid)  {
-			$query.= " AND s.versionid= '".$versionid."' LIMIT 1";
-			}
-
-			$this->_db->setQuery( $query );
-			if ($result = $this->_db->loadAssoc()) {
-				return $this->bind( $result );
-			} else {
-				$this->setError( $this->_db->getErrorMsg() );
-				return false;
-			}
-		}
-		//-----------
-
-	/**
-	 * Short description for 'getScreenshot'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $filename Parameter description (if any) ...
-	 * @param      string $rid Parameter description (if any) ...
-	 * @param      string $versionid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
-	 */
-		public function getScreenshot( $filename, $rid=NULL, $versionid=NULL)
-		{
-			if ($filename===NULL) {
-				return false;
-			}
-			if ($rid===NULL) {
-				return false;
-			}
-
-			$query = "SELECT * FROM $this->_tbl as s WHERE s.filename='".$filename."' AND s.resourceid= '".$rid."'";
-			if($versionid)  {
-			$query.= " AND s.versionid= '".$versionid."'";
-			}
-			$query.= " LIMIT 1";
-
-			$this->_db->setQuery( $query );
-			return $this->_db->loadObjectList();
-		}
-
-	/**
-	 * Short description for 'getLastOrdering'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $rid Parameter description (if any) ...
-	 * @param      string $versionid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
-	 */
-		public function getLastOrdering($rid=NULL, $versionid=NULL) {
-
-			if ($rid===NULL) {
-				return false;
-			}
-			$query = "SELECT ordering FROM $this->_tbl as s WHERE s.resourceid= '".$rid."'";
-			if($versionid)  {
-			$query.= " AND s.versionid= '".$versionid."' ";
-			}
-			$query.= "ORDER BY s.ordering DESC LIMIT 1";
-
-			$this->_db->setQuery( $query );
-			return $this->_db->loadResult();
-
-		}
-		//-----------
-
-	/**
-	 * Short description for 'saveScreenshot'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $filename Parameter description (if any) ...
-	 * @param      string $rid Parameter description (if any) ...
-	 * @param      mixed $versionid Parameter description (if any) ...
-	 * @param      mixed $ordering Parameter description (if any) ...
-	 * @param      boolean $new Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
-	 */
-		public function saveScreenshot( $filename, $rid=NULL, $versionid=0, $ordering = 0, $new=false )
-		{
-			if ($filename===NULL) {
-				return false;
-			}
-			if ($rid===NULL) {
-				return false;
-			}
-			if (!$new) {
-				$this->_db->setQuery( "UPDATE $this->_tbl SET ordering=".$ordering." WHERE filename='".$filename."' AND resourceid='".$rid."' AND versionid='".$versionid."'");
-				if ($this->_db->query()) {
-					$ret = true;
-				} else {
-					$ret = false;
-				}
-			} else {
-				$this->ordering = $ordering;
-				$this->resourceid = $rid;
-				$this->versionid = $versionid;
-				$this->filename= $filename;
-				$ret = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key );
-			}
-			if (!$ret) {
-				$this->setError( strtolower(get_class( $this )).'::store failed <br />' . $this->_db->getErrorMsg() );
-				return false;
-			} else {
-				return true;
-			}
-		}
-
-	/**
-	 * Short description for 'deleteScreenshot'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $filename Parameter description (if any) ...
-	 * @param      string $rid Parameter description (if any) ...
-	 * @param      string $versionid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
-	 */
-		public function deleteScreenshot($filename, $rid=NULL, $versionid=NULL) {
-			if ($filename===NULL) {
-				return false;
-			}
-			if ($rid===NULL) {
-				return false;
-			}
-
-			$query = "DELETE FROM $this->_tbl WHERE filename='".$filename."' AND resourceid= '".$rid."'";
-			if($versionid)  {
-			$query.= " AND versionid= '".$versionid."' LIMIT 1";
-			}
-			$this->_db->setQuery( $query );
-			$this->_db->query();
-		}
-
-	/**
-	 * Short description for 'getScreenshots'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $rid Parameter description (if any) ...
-	 * @param      string $versionid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
-	 */
-		public function getScreenshots( $rid=NULL, $versionid=NULL)
-		{
-			if ($rid===NULL) {
-				return false;
-			}
-
-			$query = "SELECT * FROM $this->_tbl as s WHERE s.resourceid= '".$rid."'";
-			if($versionid)  {
-			$query.= " AND s.versionid= '".$versionid."' ";
-			}
-			$query.= "ORDER BY s.ordering ASC";
-
-			$this->_db->setQuery( $query );
-			return $this->_db->loadObjectList();
-		}
-
-	/**
-	 * Short description for 'getFiles'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $rid Parameter description (if any) ...
-	 * @param      string $versionid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
-	 */
-		public function getFiles( $rid=NULL, $versionid=NULL)
-		{
-			if ($rid===NULL) {
-				return false;
-			}
-
-			$query = "SELECT filename FROM $this->_tbl as s WHERE s.resourceid= '".$rid."'";
-			if($versionid)  {
-			$query.= " AND s.versionid= '".$versionid."' ";
-			}
-			$query.= "ORDER BY s.ordering ASC";
-
-			$this->_db->setQuery( $query );
-			return $this->_db->loadObjectList();
-		}
-
-	/**
-	 * Short description for 'updateFiles'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $rid Parameter description (if any) ...
-	 * @param      string $devid Parameter description (if any) ...
-	 * @param      string $currentid Parameter description (if any) ...
-	 * @param      integer $copy Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
-	 */
-		public function updateFiles( $rid=NULL, $devid=NULL, $currentid=NULL, $copy=0)
-		{
-			if ($rid===NULL or $devid===NULL or $currentid===NULL) {
-				return false;
-			}
-
-			if($copy) {
-
-				$ss = $this->getScreenshots( $rid, $devid);
-
-				if($ss) {
-					foreach($ss as $s) {
-						$this->id = 0;
-						$this->versionid = $currentid;
-						$this->filename = 'new.gif';
-						$this->resourceid = $rid;
-						if (!$this->store()) {
-							$this->_error = $this->getError();
-							return false;
-						}
-						$this->checkin();
-						$newid = $this->id;
-
-						$query = "UPDATE $this->_tbl as t1, $this->_tbl as t2 ";
-						$query.= "SET t2.versionid='".$currentid."', t2.title=t1.title, t2.filename=t1.filename, t2.ordering=t1.ordering, t2.resourceid=t1.resourceid";
-						$query.= " WHERE t1.id = '".$s->id."' ";
-						$query.= " AND t2.id ='".$newid."'";
-						$this->_db->setQuery( $query );
-						$this->_db->query();
-
-					}
-				}
-
-			}
-			else {
-
-				$query = "UPDATE $this->_tbl SET versionid='".$currentid."' WHERE ";
-				$query.= " versionid = '".$devid."' ";
-				$query.= " AND resourceid='".$rid."'";
-				$this->_db->setQuery( $query );
-				if($this->_db->query()) { return true; }
-				else {
-					return false;
-				}
-			}
-
-		}
-
-	}
-
-// For backwards compatibility
-
-/**
- * Short description for 'ResourceExtended'
- * 
- * Long description (if any) ...
- */
-class ResourceExtended extends ResourcesHelper
-{
-}
-
