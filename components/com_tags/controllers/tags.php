@@ -947,7 +947,7 @@ class TagsControllerTags extends Hubzero_Controller
 				'index.php?option=' . $this->_option
 			);
 		}
-		if ($this->_task && $this->_task != 'view') 
+		if ($this->_task && $this->_task != 'view' && $this->_task != 'display') 
 		{
 			$pathway->addItem(
 				JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
@@ -980,7 +980,7 @@ class TagsControllerTags extends Hubzero_Controller
 	protected function _buildTitle($tags=null)
 	{
 		$this->view->title = JText::_(strtoupper($this->_option));
-		if ($this->_task && $this->_task != 'view') 
+		if ($this->_task && $this->_task != 'view' && $this->_task != 'display') 
 		{
 			$this->view->title .= ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		}
