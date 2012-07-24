@@ -1199,7 +1199,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 	 * 
 	 * @return     void
 	 */
-	protected function deleteq()
+	public function deleteqTask()
 	{
 		// Login required
 		if ($this->juser->get('guest')) 
@@ -1245,7 +1245,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		// Store new content
 		if (!$question->store()) 
 		{
-			JError::raiseError(500, $row->getError());
+			JError::raiseError(500, $question->getError());
 			return;
 		}
 
@@ -1331,7 +1331,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 
 		// Redirect to the question
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&task=question&id=' . $id . '&note=1')
+			JRoute::_('index.php?option=' . $this->_option)
 		);
 	}
 

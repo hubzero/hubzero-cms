@@ -203,8 +203,8 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 						<?php echo JText::_('COM_ANSWERS_REPORT_ABUSE'); ?>
 					</a>
 				</span>
-			<?php //if ($this->question->created_by == $this->juser->get('username') && $this->question->state == 0) { ?>
-			<?php if ($this->question->state == 0) { ?>
+			<?php if ($this->question->created_by == $this->juser->get('username') && $this->question->state == 0) { ?>
+			<?php //if ($this->question->state == 0) { ?>
 				<span>
 					<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=delete&id=' . $this->question->id); ?>" title="<?php echo JText::_('COM_ANSWERS_DELETE_QUESTION'); ?>">
 						<?php echo JText::_('COM_ANSWERS_DELETE'); ?>
