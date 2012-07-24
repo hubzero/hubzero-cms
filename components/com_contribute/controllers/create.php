@@ -56,8 +56,7 @@ class ContributeControllerCreate extends Hubzero_Controller
 		$this->registerTask('remove', 'delete');
 
 		// Load the com_resources component config
-		$config =& JComponentHelper::getParams('com_resources');
-		$this->config = $config;
+		$this->config = JComponentHelper::getParams('com_resources');
 
 		// Get the task at hand
 		$task = JRequest::getVar('task', '');
@@ -228,6 +227,16 @@ class ContributeControllerCreate extends Hubzero_Controller
 		$preprocess = 'step_' . strtolower($steps[$pre]) . '_process';
 		$activestep = 'step_' . strtolower($steps[$step]);
 
+		// Set the layout to the current step
+		$this->setView('steps', strtolower($steps[$step]));
+
+		// assign some commonly used vars
+		$this->view->config   = $this->config;
+		$this->view->database = $this->database;
+		$this->view->title    = $this->_title;
+		$this->view->step     = $this->step;
+		$this->view->steps    = $this->steps;
+
 		// Is it a POST and the step field was set?
 		// If so, it means we're at least past step 1
 		if (isset($_POST['step'])) 
@@ -242,15 +251,6 @@ class ContributeControllerCreate extends Hubzero_Controller
 			// Check the progress
 			$this->_checkProgress(JRequest::getInt('id', 0));
 
-			// Set the layout to the current step
-			$this->setView('steps', strtolower($steps[$step]));
-
-			// assign some commonly used vars
-			$this->view->config   = $this->config;
-			$this->view->database = $this->database;
-			$this->view->title    = $this->_title;
-			$this->view->step     = $this->step;
-			$this->view->steps    = $this->steps;
 			$this->view->progress = $this->progress;
 
 			// Call current step
@@ -767,6 +767,7 @@ class ContributeControllerCreate extends Hubzero_Controller
 		if ($this->getError())
 		{
 			$this->step--;
+			$this->view->setLayout('compose');
 			$this->step_compose($row);
 			return;
 		}
@@ -776,6 +777,7 @@ class ContributeControllerCreate extends Hubzero_Controller
 		{
 			$this->setError(JText::_('Error: Failed to store changes.'));
 			$this->step--;
+			$this->view->setLayout('compose');
 			$this->step_compose($row);
 			return;
 		}
@@ -1504,7 +1506,7 @@ class ContributeControllerCreate extends Hubzero_Controller
 		}
 
 		// Get the configured upload path
-		$base = DS . trim($this->rconfig->get('uploadpath', '/site/resources'), DS);
+		$base = DS . trim($this->config->get('uploadpath', '/site/resources'), DS);
 
 		// Make sure the path doesn't end with a slash
 		$listdir = DS . trim($listdir, DS);
