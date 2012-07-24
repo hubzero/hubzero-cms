@@ -197,7 +197,7 @@ switch ($this->level)
 			ximport('Hubzero_User_Helper');
 			$xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
 			// Get the groups the user has access to
-			$usersgroups = ResourcesController::getUsersGroups($xgroups);
+			$usersgroups = ResourcesControllerResources::getUsersGroups($xgroups);
 		} else {
 			$usersgroups = array();
 		}
