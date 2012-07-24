@@ -214,15 +214,15 @@ class Hubzero_User_Profile_Helper
 			$dfthumb = Hubzero_User_Profile_Helper::thumbit($dfthumb);
 		}
 
-		if (is_file(JPATH_ROOT . $thumbAlt)) 
+		if (file_exists(JPATH_ROOT . $thumbAlt)) 
 		{
 			return $thumbAlt;
 		} 
-		else if ($thumb && is_file(JPATH_ROOT . $thumb)) 
+		else if ($thumb && file_exists(JPATH_ROOT . $thumb)) 
 		{
 			return $thumb;
 		} 
-		else if (is_file(JPATH_ROOT . $dfthumb)) 
+		else if (file_exists(JPATH_ROOT . $dfthumb)) 
 		{
 			return $dfthumb;
 		}
