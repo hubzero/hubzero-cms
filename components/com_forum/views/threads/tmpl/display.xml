@@ -37,6 +37,9 @@ HUBzero is a registered trademark of Purdue University.
 		<name>Thread</name>
 		<description>Thread</description>
 		<params>
+			<param name="section" type="text" label="Section alias" description="Enter a section alias" />
+			<param name="category" type="text" label="Category alias" description="Enter a category alias" />
+			<param name="thread" type="text" label="Thread alias" description="Enter a thread alias" />
 		</params>
 	</state>
 </metadata>

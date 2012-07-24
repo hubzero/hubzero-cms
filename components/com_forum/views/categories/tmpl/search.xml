@@ -37,6 +37,7 @@ HUBzero is a registered trademark of Purdue University.
 		<name>Search Threads</name>
 		<description>Search Threads</description>
 		<params>
+			<param name="q" type="text" label="Search text" description="Enter text to search for" />
 		</params>
 	</state>
 </metadata>
