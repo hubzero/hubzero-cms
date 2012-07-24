@@ -37,6 +37,7 @@ HUBzero is a registered trademark of Purdue University.
 		<name>Blog entry</name>
 		<description>Blog entry</description>
 		<params>
+			<param name="alias" type="text" label="Entry alias" description="Enter an entry alias" />
 		</params>
 	</state>
 </metadata>

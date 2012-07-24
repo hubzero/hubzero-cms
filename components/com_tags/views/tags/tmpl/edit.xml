@@ -37,6 +37,7 @@ HUBzero is a registered trademark of Purdue University.
 		<name>Edit Tag</name>
 		<description>Edit Tag</description>
 		<params>
+			<param name="id" type="text" label="Tag ID" description="Enter a tag ID" />
 		</params>
 	</state>
 </metadata>

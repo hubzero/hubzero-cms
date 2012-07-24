@@ -28,15 +28,16 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Search Layout">
+	<layout title="Display results">
 		<message>
-			<![CDATA[STANDARD SEARCH LAYOUT DESC]]>
+			<![CDATA[Display results]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Search Layout</name>
-		<description>STANDARD SEARCH LAYOUT DESC</description>
+		<name>Display results</name>
+		<description>Display results</description>
 		<params>
+			<param name="period" type="text" label="Cat/Period" description="Enter a category and period with a colon inbetween" />
 		</params>
 	</state>
 </metadata>
