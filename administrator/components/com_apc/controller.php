@@ -187,10 +187,10 @@ class ApcController extends Hubzero_Controller
 			apc_delete($MYREQUEST['DU']);
 		}
 
-		if(!function_exists('apc_cache_info') || !($this->cache = @apc_cache_info($cache_mode)))
+		if (!function_exists('apc_cache_info') || !($this->cache = @apc_cache_info($cache_mode)))
 		{
-			echo "No cache info available.  APC does not appear to be running.";
-			exit;
+			echo '<p class="error">' . JText::_('No cache info available. APC does not appear to be running.') . '</p>';
+			return;
 		}
 
 		// Avoid division by 0 errors on a cache clear
