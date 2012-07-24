@@ -45,8 +45,7 @@ class SupportControllerIndex extends Hubzero_Controller
 	 */
 	protected function _buildPathway()
 	{
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
+		$pathway =& JFactory::getApplication()->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0) 
 		{
@@ -79,7 +78,7 @@ class SupportControllerIndex extends Hubzero_Controller
 	{
 		// Set the page title
 		$this->_buildTitle();
-		
+
 		$this->view->title = $this->_title;
 
 		// Set the pathway
@@ -91,7 +90,10 @@ class SupportControllerIndex extends Hubzero_Controller
 		// Output HTML
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 		$this->view->display();
 	}

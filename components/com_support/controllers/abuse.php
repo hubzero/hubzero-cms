@@ -48,11 +48,14 @@ class SupportControllerAbuse extends Hubzero_Controller
 		// Login required
 		if ($this->juser->get('guest')) 
 		{
-			$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller));
-			$this->_redirect = JRoute::_('index.php?option=com_login&return=' . $return);
+			$return = base64_encode(JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller), 'server'));
+			$this->setRedirect(
+				JRoute::_('index.php?option=com_login&return=' . $return)
+			);
 			return;
 		}
 
+		$this->view->setLayout('display');
 		$this->view->juser = $this->juser;
 
 		// Incoming
@@ -118,7 +121,10 @@ class SupportControllerAbuse extends Hubzero_Controller
 		// Output HTML
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 		$this->view->display();
 	}
@@ -131,7 +137,7 @@ class SupportControllerAbuse extends Hubzero_Controller
 	public function saveTask()
 	{
 		$email = 0; // turn off
-		
+
 		// Incoming
 		$this->view->cat = JRequest::getVar('category', '');
 		$this->view->refid = JRequest::getInt('referenceid', 0);
@@ -144,8 +150,10 @@ class SupportControllerAbuse extends Hubzero_Controller
 		$row = new ReportAbuse($this->database);
 		if (!$row->bind($incoming)) 
 		{
-			echo SupportHtml::alert($row->getError());
-			exit();
+			JRequest::setVar('referenceid', $this->view->refid);
+			$this->setError($row->getError());
+			$this->displayTask();
+			return;
 		}
 
 		ximport('Hubzero_Filter');
@@ -158,15 +166,18 @@ class SupportControllerAbuse extends Hubzero_Controller
 		// Check content
 		if (!$row->check()) 
 		{
-			echo SupportHtml::alert($row->getError());
-			exit();
+			JRequest::setVar('referenceid', $this->view->refid);
+			$this->setError($row->getError());
+			$this->displayTask();
+			return;
 		}
 
 		// Store new content
 		if (!$row->store()) 
 		{
+			JRequest::setVar('referenceid', $this->view->refid);
 			$this->setError($row->getError());
-			$this->displayTask($row);
+			$this->displayTask();
 			return;
 		}
 
@@ -223,7 +234,10 @@ class SupportControllerAbuse extends Hubzero_Controller
 		// Output HTML
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 		$this->view->display();
 	}

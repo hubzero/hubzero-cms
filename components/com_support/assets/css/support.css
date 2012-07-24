@@ -17,7 +17,7 @@
 	#introduction {
 		margin: 0 -15px 3em -15px;
 		padding: 25px 15px 25px 120px;
-		background: #fbf8ea url("/components/com_support/images/support-large.gif") 30px 25px no-repeat;
+		background: #fbf8ea url("/components/com_support/assets/img/support-large.gif") 30px 25px no-repeat;
 		border-top: 2px solid #e7dac4;
 		border-bottom: 2px solid #e7dac4;
 		color: #7c7266;
@@ -47,7 +47,7 @@
 	#introduction li {
 		margin: 0;
 		padding: 0 0 0 15px;
-		background: transparent url("/components/com_support/images/arrow.gif") 0 50% no-repeat;
+		background: transparent url("/components/com_support/assets/img/arrow.gif") 0 50% no-repeat;
 	}
 /* Four Columns */
 	.com_support .four {
@@ -96,11 +96,11 @@
 	}
 	.columns .ticket { 
 		padding-left: 23px; 
-		background: url("/components/com_support/images/fc-ticket.gif") 0 0em no-repeat; 
+		background: url("/components/com_support/assets/img/fc-ticket.gif") 0 0em no-repeat; 
 	}
 	.columns .idea { 
 		padding-left: 23px; 
-		background: url("/components/com_support/images/fc-idea.gif") 0 0em no-repeat; 
+		background: url("/components/com_support/assets/img/fc-idea.gif") 0 0em no-repeat; 
 	}
 	#hubForm label#fbBotcheck-label {
 		display: none;
@@ -222,7 +222,7 @@
 		margin-top: 0;
 	}
 	#ticket-details caption {
-		background: url("/components/com_support/images/information.gif") 0 1em no-repeat;
+		background: url("/components/com_support/assets/img/information.gif") 0 1em no-repeat;
 		margin: 0;
 		padding: 1em 0 0 0;
 		padding-left: 20px;
@@ -306,7 +306,7 @@
 		margin: 0;
 		padding: 0 0 0 20px;
 		font-size: 90%;
-		background: url("/components/com_support/images/tag_orange.png") 0 0.2em no-repeat;
+		background: url("/components/com_support/assets/img/tag_orange.png") 0 0.2em no-repeat;
 	}
 	.ticket .ticket-tags .tags li {
 		margin: 0;
@@ -323,12 +323,12 @@
 		padding: 0.5em;
 		text-align: center;
 		border: 5px solid #fff; 
-		background: #fff url("/components/com_support/images/light-stripes.png");
+		background: #fff url("/components/com_support/assets/img/light-stripes.png");
 	}
 	.ticket-status .open {
 		color: #c00;
 		border-color: #EFCCC2; 
-		background: #FFF2EF url("/components/com_support/images/light-stripes.png");
+		background: #FFF2EF url("/components/com_support/assets/img/light-stripes.png");
 	}
 	.ticket-status .closed {
 		color: #000;
@@ -418,14 +418,14 @@
 	}
 	/* Private comments */
 	ol.comments .private .comment-content {
-		background: #fdfbf8 url("/components/com_support/images/light-stripes.png");
+		background: #fdfbf8 url("/components/com_support/assets/img/light-stripes.png");
 		border-color: #f9f2ec;
 	}
 	ol.comments .private .comment-anchor {
 		border-color: transparent #f9f2ec transparent transparent;
 	}
 	ol.comments .private p.comment-title {
-		background: url("/components/com_support/images/lock.png") right top no-repeat;
+		background: url("/components/com_support/assets/img/lock.png") right top no-repeat;
 	}
 	/* Details (date, time) */
 	ol.comments span.comment-details {
@@ -451,7 +451,7 @@
 		margin: 0 0 0.5em 0;
 		font-size: 90%;
 		color: #aaa;
-		background: url("/components/com_support/images/page_edit.png") 10px 0.4em no-repeat;
+		background: url("/components/com_support/assets/img/page_edit.png") 10px 0.4em no-repeat;
 		list-style: none;
 	}
 	ol.comments .changelog li {
@@ -472,7 +472,7 @@
 		padding: 0.2em 0.2em 0.2em 30px;
 		margin: 0;
 		font-size: 90%;
-		background: url("/components/com_support/images/email.png") 10px 0.2em no-repeat;
+		background: url("/components/com_support/assets/img/email.png") 10px 0.2em no-repeat;
 	}
 	ol.comments ul.emaillog,
 	ol.comments .changelog ul.email-out-log {
@@ -480,7 +480,7 @@
 		padding: 0.2em 0.2em 0.2em 38px;
 		margin: 0;
 		font-size: 90%;
-		background: url("/components/com_support/images/email-out.png") 10px 0.2em no-repeat;
+		background: url("/components/com_support/assets/img/email-out.png") 10px 0.2em no-repeat;
 	}
 	ol.comments ul.emaillog,
 	ol.comments .changelog ul.email-in-log {
@@ -488,7 +488,7 @@
 		padding: 0.2em 0.2em 0.2em 38px;
 		margin: 0;
 		font-size: 90%;
-		background: url("/components/com_support/images/email-in.png") 10px 0.2em no-repeat;
+		background: url("/components/com_support/assets/img/email-in.png") 10px 0.2em no-repeat;
 	}
 	ol.comments .emaillog li {
 		padding: 0.1em;
@@ -502,7 +502,7 @@
 		padding: 10px;
 		z-index: 13000;
 		text-align: left;
-		background: url("/components/com_support/images/overlay.png") top left;
+		background: url("/components/com_support/assets/img/overlay.png") top left;
 	}
 	.img-tip #keyword-guide {
 		color: #888;
@@ -520,7 +520,7 @@
 		margin: 1em 0 3em 0;
 		text-align: left;
 		border: 1px solid #EFCCC2; 
-		background: #FFF2EF url("/components/com_support/images/stophand.gif") 10px 10px no-repeat;
+		background: #FFF2EF url("/components/com_support/assets/img/stophand.gif") 10px 10px no-repeat;
 	}
 	.abuseitem h4 {
 		margin: 0;
@@ -657,7 +657,7 @@
 		padding-left: 10px;
 	}
 	#content-header-extra .ticket { 
-		background: url("/components/com_support/images/note.png") 0 0 no-repeat; 
+		background: url("/components/com_support/assets/img/note.png") 0 0 no-repeat; 
 		padding-left: 20px; 
 	}
 /* Comment form */
@@ -772,6 +772,6 @@
 		text-align: right;
 	}
 	#commentform.private fieldset {	
-		background: #fdfbf8 url("/components/com_support/images/light-stripes.png");
+		background: #fdfbf8 url("/components/com_support/assets/img/light-stripes.png");
 		border-color: #f9f2ec;
 	}

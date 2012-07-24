@@ -31,17 +31,18 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$config = JFactory::getConfig();
-if ($config->getValue('config.debug')) 
+if (JFactory::getConfig()->getValue('config.debug')) 
 {
 	error_reporting(E_ALL);
 	@ini_set('display_errors','1');
 }
 
-$jacl =& JFactory::getACL();
-$jacl->addACL($option, 'manage', 'users', 'super administrator');
-$jacl->addACL($option, 'manage', 'users', 'administrator');
-//$jacl->addACL($option, 'manage', 'users', 'manager');
+if (version_compare(JVERSION, '1.6', 'lt'))
+{
+	$jacl = JFactory::getACL();
+	$jacl->addACL($option, 'manage', 'users', 'super administrator');
+	$jacl->addACL($option, 'manage', 'users', 'administrator');
+}
 
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'ticket.php');
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'comment.php');
@@ -54,7 +55,7 @@ include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $optio
 include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'tags.php');
 include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'html.php');
 
-$controllerName = JRequest::getCmd('controller', 'index');
+$controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'index'));
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'index';

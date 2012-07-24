@@ -43,10 +43,10 @@ class SupportControllerTickets extends Hubzero_Controller
 	public function execute()
 	{
 		$this->acl = SupportACL::getACL();
-		
+
 		parent::execute();
 	}
-	
+
 	/**
 	 * Method to set the document path
 	 * 
@@ -55,14 +55,13 @@ class SupportControllerTickets extends Hubzero_Controller
 	 */
 	protected function _buildPathway($ticket=null)
 	{
-		$app =& JFactory::getApplication();
-		$pathway =& $app->getPathway();
+		$pathway =& JFactory::getApplication()->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
 				JText::_(strtoupper($this->_name)),
-				'index.php?option='.$this->_option . '&controller=index'
+				'index.php?option=' . $this->_option . '&controller=index'
 			);
 		}
 		if (count($pathway->getPathWay()) == 1  && $this->_task) 
@@ -131,8 +130,10 @@ class SupportControllerTickets extends Hubzero_Controller
 		// Check authorization
 		if ($this->juser->get('guest')) 
 		{
-			$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task));
-			$this->_redirect = JRoute::_('index.php?option=com_login&return=' . $return);
+			$return = base64_encode(JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task), 'server'));
+			$this->setRedirect(
+				JRoute::_('index.php?option=com_login&return=' . $return)
+			);
 			return;
 		}
 
@@ -161,8 +162,8 @@ class SupportControllerTickets extends Hubzero_Controller
 
 		/*if (!$this->view->group && trim($this->config->get('group'))) 
 		{
-            $this->view->group = trim($this->config->get('group'));
-        }*/
+			$this->view->group = trim($this->config->get('group'));
+		}*/
 
 		$this->view->sort = JRequest::getVar('sort', 'name');
 
@@ -323,8 +324,10 @@ class SupportControllerTickets extends Hubzero_Controller
 	{
 		if ($this->juser->get('guest')) 
 		{
-			$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task));
-			$this->_redirect = JRoute::_('index.php?option=com_login&return=' . $return);
+			$return = base64_encode(JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task), 'server'));
+			$this->setRedirect(
+				JRoute::_('index.php?option=com_login&return=' . $return)
+			);
 			return;
 		}
 
@@ -366,14 +369,17 @@ class SupportControllerTickets extends Hubzero_Controller
 		$this->_getStyles();
 
 		// Get some needed scripts
-		$this->_getScripts();
+		$this->_getScripts('assets/js/' . $this->_name);
 
 		$this->view->acl = $this->acl;
 
 		// Output HTML
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 		$this->view->display();
 	}
@@ -405,7 +411,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		JPluginHelper::importPlugin('support');
 		$dispatcher =& JDispatcher::getInstance();
 		$this->view->captchas = $dispatcher->trigger('onGetComponentCaptcha');
-		
+
 		// Set page title
 		$this->_buildTitle();
 
@@ -423,11 +429,14 @@ class SupportControllerTickets extends Hubzero_Controller
 		$this->view->file_types = $this->config->get('file_ext');
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 		$this->view->display();
 	}
-	
+
 	/**
 	 * Checks if the current user session has a verified account
 	 * 
@@ -489,8 +498,8 @@ class SupportControllerTickets extends Hubzero_Controller
 	 */
 	public function saveTask()
 	{
-		$live_site = rtrim(JURI::base(),'/');
-		
+		$live_site = rtrim(JURI::base(), '/');
+
 		// Get plugins
 		JPluginHelper::importPlugin('support');
 		$dispatcher =& JDispatcher::getInstance();
@@ -807,11 +816,14 @@ class SupportControllerTickets extends Hubzero_Controller
 		$this->view->no_html = $no_html;
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 		$this->view->display();
 	}
-	
+
 	/**
 	 * Attempts to detect if some text is spam
 	 * Checks for blacklisted IPs, bad words, and overuse of links
@@ -1263,14 +1275,17 @@ class SupportControllerTickets extends Hubzero_Controller
 		$this->_getStyles();
 
 		// Get some needed scripts
-		$this->_getScripts();
+		$this->_getScripts('assets/js/' . $this->_name);
 
 		$this->view->acl = $this->acl;
 
 		// Output HTML
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 		$this->view->display();
 	}
@@ -1788,7 +1803,9 @@ class SupportControllerTickets extends Hubzero_Controller
 		}
 
 		// Display the ticket with changes, new comment
-		$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=ticket&id=' . $id);
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=ticket&id=' . $id)
+		);
 	}
 
 	/**
@@ -1804,7 +1821,9 @@ class SupportControllerTickets extends Hubzero_Controller
 		// Check for an ID
 		if (!$id) 
 		{
-			$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=tickets');
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=tickets')
+			);
 			return;
 		}
 
@@ -1821,7 +1840,9 @@ class SupportControllerTickets extends Hubzero_Controller
 		$ticket->delete($id);
 
 		// Output messsage and redirect
-		$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=tickets');
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=tickets')
+		);
 	}
 
 	/**
@@ -2056,8 +2077,10 @@ class SupportControllerTickets extends Hubzero_Controller
 		// Check logged in status
 		if ($this->juser->get('guest')) 
 		{
-			$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task));
-			$this->_redirect = JRoute::_('index.php?option=com_login&return=' . $return);
+			$return = base64_encode(JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task), 'server'));
+			$this->setRedirect(
+				JRoute::_('index.php?option=com_login&return=' . $return)
+			);
 			return;
 		}
 
@@ -2577,9 +2600,21 @@ class SupportControllerTickets extends Hubzero_Controller
 		}
 
 		// Check if they're a site admin (from Joomla)
-		if ($this->juser->authorize($this->_option, 'manage')) 
+		if (version_compare(JVERSION, '1.6', 'lt'))
 		{
-			return 'admin';
+			if ($this->juser->authorize($this->_option, 'manage')) 
+			{
+				return 'admin';
+			}
+		}
+		else 
+		{
+			$this->config->set('access-admin-component', $this->juser->authorise('core.admin', null));
+			$this->config->set('access-manage-component', $this->juser->authorise('core.manage', null));
+			if ($this->config->get('access-admin-component') || $this->config->get('access-manage-component'))
+			{
+				return 'admin';
+			}
 		}
 
 		// Was a specific group set in the config?
