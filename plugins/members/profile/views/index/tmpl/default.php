@@ -123,7 +123,8 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							window.bonus_amount = '.$incrOpts->getAwardPerField().';
 						</script>';
 			echo $increm;
-			JFactory::getDocument()->addScript('/components/com_members/assets/js/incremental.js');
+			ximport('Hubzero_Document');
+			Hubzero_Document::addComponentScript('assets/js/incremental');
 		}
 	?>
 	
