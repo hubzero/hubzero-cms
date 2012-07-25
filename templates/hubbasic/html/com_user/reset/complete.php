@@ -6,7 +6,7 @@
 
 <form action="<?php echo JRoute::_( 'index.php?option=com_user&task=completereset' ); ?>" method="post" class="josForm form-validate" name="hubForm" id="hubForm">
 	<fieldset>
-		<h3><?php echo JText::_('New Password'); ?></h3>
+		<legend><?php echo JText::_('New Password'); ?></legend>
 		
 		<p><?php echo JText::_('RESET_PASSWORD_COMPLETE_DESCRIPTION'); ?></p>
 

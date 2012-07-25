@@ -14,7 +14,7 @@
 		</p>
 	</div>
 	<fieldset>
-		<h3>Recover Username(s)</h3>
+		<legend>Recover Username(s)</legend>
 
 		<label for="email" class="hasTip" title="<?php echo JText::_('REMIND_USERNAME_EMAIL_TIP_TITLE'); ?>::<?php echo JText::_('REMIND_USERNAME_EMAIL_TIP_TEXT'); ?>"><?php echo JText::_('Email Address'); ?>:</label>
 		<input id="email" name="email" type="text" size="36" class="required validate-email" />

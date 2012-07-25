@@ -5,11 +5,6 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-/* Core stylesheets */
-	@import url("/media/system/css/reset.css"); /* Mass reset */
-	@import url("/media/system/css/columns.css"); /* Flexible columns */
-	@import url("/media/system/css/notifications.css"); /* Notifications */
-
 /* Body */
 	body {
 		margin: 0;
@@ -112,14 +107,24 @@
 		border-left: 5px solid #ddd;
 		font-size: 110%;
 		white-space: pre;
-		/* begin css 3 or browser specific rules - do not remove!
-		see: http://forums.techguy.org/archive/index.php/t-249849.html */
 		white-space: pre-wrap;
 		word-wrap: break-word;
 		white-space: -moz-pre-wrap;
 		white-space: -pre-wrap;
 		white-space: -o-pre-wrap;
-		/* end css 3 or browser specific rules */
+		background-color: #fff; 
+		background-image: -webkit-linear-gradient(#eee 1px, transparent 1px),
+						  -webkit-linear-gradient(0deg, transparent 1em, #eee 1em, #eee 1.1em, transparent 1.1em);
+		background-image: -moz-linear-gradient(#eee 1px, transparent 1px),
+						  -moz-linear-gradient(0deg, transparent 1em, #eee 1em, #eee 1.1em, transparent 1.1em);
+		background-image: -ms-linear-gradient(#eee 1px, transparent 1px),
+						  -ms-linear-gradient(0deg, transparent 1em, #eee 1em, #eee 1.1em, transparent 1.1em);
+		background-image: -o-linear-gradient(#eee 1px, transparent 1px),
+						  -o-linear-gradient(0deg, transparent 1em, #eee 1em, #eee 1.1em, transparent 1.1em);
+		background-image: linear-gradient(#eee 1px, transparent 1px),
+						  linear-gradient(0deg, transparent 1em, #eee 1em, #eee 1.1em, transparent 1.1em);
+		background-size: 100% 1.95em;
+		background-position: 0 -1px;
 	}
 	code,
 	tt {
@@ -612,7 +617,6 @@
 		text-shadow: 0px 1px 1px #fff;
 	}
 	#nav ul.menu ul li a {
-		font-size: 95%;
 		padding: 3px 10px;
 		color: #666;
 		font-weight: normal;
@@ -647,7 +651,7 @@
 		-webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.4);
 		-moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.4);
 		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.4);
-		width: 153px;
+		width: 170px;
 		-webkit-border-radius: 0 0 3px 3px;
 		-moz-border-radius: 0 0 3px 3px;
 		-o-border-radius: 0 0 3px 3px;
@@ -1135,18 +1139,21 @@
 		position: relative;
 	}
 	#hubForm fieldset {
-		padding: 0 2% 1.75em 23%;
 		border: none;
-		float: left;
-		width: 45%;
-		margin: 0.5em 0 0.5em 0;
+		padding: 0em 0px 1.5em 0px;
+		margin: 0.7em 240px 1.7em 0;
 		color: #827f6a;
 		background: #f7f6ed;
 		border: 5px solid #eeede0;
 	}
+	#hubForm .explaination + fieldset {
+		margin-right: 0px;
+	}
 	#hubForm legend {
 		font-weight: bold;
-		white-space:normal;
+		white-space: normal;
+		margin: 0 1.5em;
+		padding: 0 1em;
 	}
 	#hubForm fieldset fieldset legend {
 		font-weight: normal;
@@ -1163,7 +1170,7 @@
 	}
 	#hubForm label {
 		display: block;
-		padding-top: 1.5em;
+		padding: 1.5em 1.5em 0 1.5em;
 	}
 	#hubForm input, 
 	#hubForm select, 
@@ -1172,8 +1179,8 @@
 		width: 100%;
 	}
 	#hubForm fieldset fieldset {
-		margin: 1.75em 0 1.75em 0;
-		padding: 0 1em 1.75em 1em;
+		margin: 1.5em;
+		padding: 0 0 1.5em 0;
 		border: 1px solid #e9e7d6;
 		float: none;
 		width: auto;
@@ -1204,21 +1211,53 @@
 		margin-left: 1.75em;
 	}
 	#hubForm .group {
-		position: relative;
-		margin-left: -3em;
-		padding: 0 0 1.5em 5em;
-		overflow: hidden;
-		top: 1.5em;
-		left: 1.5em;
-		background-image: none;
-	}
-	#hubForm .group label {
+		margin: 0 1.5em;
+		background: none;
 		padding: 0;
+	}
+	#hubForm .field-wrap,
+	#hubForm p {
+		margin: 1.5em 1.5em 0 1.5em;
+	}
+	#hubForm legend + .group label{
+		padding-top: 0.5em;
+	}
+	#hubForm legend + .group p {
+		margin-top: 0.5em;
+	}
+	#hubForm label + input {
+		margin-left: 1.5em;
+		margin-right: 1.5em;
+		width: 92.5%;
+	}
+	#hubForm .group label,
+	#hubForm .group p {
+		padding-left: 0;
+		padding-right: 0;
 		float: left;
-		width: 50%;
+		width: 47.5%;
+		margin-left: 5%;
+	}
+	#hubForm .group p {
+		margin-right: 0;
 	}
 	#hubForm .group label:first-child {
-		margin: 0 2em 0 -3.5em;
+		margin-left: 0;
+	}
+	#hubForm .threeup label {
+		width: 30%;
+	}
+	#hubForm .group:after {
+		content: ".";
+		display: block;
+		height: 0;
+		clear: both;
+		visibility: hidden;
+	}
+	#hubForm .group .options label {
+		display: inline;
+		float: none;
+		width: auto;
 	}
 	#hubForm fieldset .group fieldset {
 		padding: 0;
@@ -1239,27 +1278,6 @@
 	}
 	#hubForm fieldset .top {
 		padding-top: 1em;
-	}
-	#hubForm .threeup {
-		margin-left: -1.5%;
-		margin-right: -3%;
-		padding: 0 0 1.5em 0;
-		left: 0;
-		margin-top: 0;
-		margin-bottom: 0.5em;
-	}
-	#hubForm .threeup label {
-		padding: 0;
-		float: left;
-		width: 30%;
-		margin-left: 0;
-		margin-right: 0;
-		padding-left: 1.5%;
-		padding-right: 1.5%;
-	}
-	#hubForm .threeup label:first-child {
-		margin-left: 0;
-		margin-right: 0;
 	}
 	#hubForm .group label .error,
 	#hubForm .group label .warning {
@@ -1286,14 +1304,14 @@
 	}
 	#hubForm legend,
 	#hubForm h3 {
-		position: absolute;
+		/*position: absolute;
 		padding-top: 1.25em;
 		left: 1em;
 		margin: 0;
+		width: 16%;*/
 		color: #878783;
 		font-size: 1em;
 		line-height: 1.3em;
-		width: 16%;
 	}
 	#hubForm fieldset fieldset legend {
 		position: inherit;
@@ -1304,7 +1322,9 @@
 	#hubForm .explaination {
 		position: relative;
 		float: right;
-		width: 28%;
+		min-height: 10px;
+		width: 210px;
+		margin-left: 30px;
 	}
 	#hubForm .explaination a:hover {
 		color: #222;
@@ -1383,6 +1403,11 @@
 	#hubForm table input,
 	#hubForm table select {
 		width: auto;
+	}
+	.com_contribute #hubForm .text_area {
+		margin-right: 1.5em;
+		margin-left: 1.5em;
+		width: 94%;
 	}
 /* Paging */
 	.list-footer {
@@ -1470,6 +1495,7 @@
 	}
 
 /* Tooltips */
+	.tooltip,
 	.tool-tip {
 		color: #fff;
 		width: 200px;
@@ -1489,7 +1515,22 @@
 		padding: 4px 8px 8px;
 		background: url("../images/bubble.png") bottom right;
 	}
-
+	.tooltip {
+		width: 184px;
+		-webkit-border-radius: 0.27em;
+		-moz-border-radius: 0.27em;
+		-o-border-radius: 0.27em;
+		border-radius: 0.27em;
+		background: url("../images/bubble.png") bottom right;
+		padding: 8px;
+		font-size: 90%;
+	}
+	.tooltip-title {
+		display: block;
+		font-weight: 500;
+		font-size: 13px;
+		color: #9FD4FF;
+	}
 /* Lightbox */
 	#lbCenter, 
 	#lbBottomContainer {

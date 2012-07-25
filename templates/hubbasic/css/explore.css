@@ -1,34 +1,98 @@
-/**
- * @package     hubzero-cms
- * @file        templates/hubbasic/css/home.css
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- */
-
-	.heading {
-		border-bottom: none;
-	}
 	#content .three,
 	#content .four {
 		border: none;
 		border-top: 1px solid #e0e0d7;
 		position: relative;
 	}
-	#content .four,
-	#content .three {
+	#content .four {
 		margin-right: 0;
 		padding-right: 5%;
+		border-top: 1px solid #e0e0d7;
 	}
-	#content .four .third,
 	#content .fourth {
 		padding-right: 0;
 	}
-	#content .firstset .four {
-		margin-bottom: 0;
+	#content .four div:before,
+	#content .four div:after {
+		content: "";
+		display: block;
+		position: absolute;
+		left: 0;
+		top: 0.7em;
+		width: 18px;
+		height: 18px;
+		font-size: 18px;
+		font-family: 'Fontcons';
+		color: #aaa;
 	}
-	#content .four .three {
-		margin-top: -1px;
-		margin-bottom: 2em;
+	#content .four div {
+		background: none;
+	}
+	#content .four div {
+		padding-left: 25px;
+	}
+	#content .firstset .four div {
+		padding-left: 0;
+	}
+	#content .four .columns div {
+		padding-left: 25px;
+	}
+	#content .four div.wiki:before {
+		content: "\f072";
+	}
+	#content .four div.presentation:before {
+		content: "\f040";
+	}
+	#content .four div.quote:before {
+		content: "\275D";
+	}
+	#content .four div.tag:before {
+		content: "\f02c";
+	}
+	#content .four div.feedback:before {
+		content: "\f086";
+	}
+	#content .four div.note:before {
+		content: "\f075";
+	}
+	#content .four div.answer:before {
+		content: "\f059";
+	}
+	#content .four div.forum:before {
+		content: "\f086";
+	}
+	#content .four div.member:before {
+		content: "\f007";
+	}
+	#content .four div.group:before {
+		content: "\f042";
+	}
+	#content .four div.contribute:before {
+		content: "\f01b";
+	}
+	#content .four div.tool:before {
+		content: "\2692";
+	}
+	#content .four div.donate:before {
+		content: "\f04d";
+	}
+	#content .four div.workshop:before {
+		content: "\273D";
+	}
+	#content .four div.poll:before {
+		content: "\f080";
+	}
+	#content .four div.event:before {
+		content: "\f073";
+	}
+	#content .four div.cart:before {
+		content: "\f04d";
+	}
+	#content .four div.new:before {
+		content: "\273D";
+	}
+	#content .firstset .three {
+		border: none;
 	}
 	#content .first h2 { 
 		font-weight: normal;
@@ -36,19 +100,68 @@
 		padding: 0.5em 0 0 0;
 		line-height: 1em;
 		border: none;
-		border-top: 2px solid #e0e0d7;
-	}
+	}	
 	#content .columns h3 { 
-		color: #000; 
-		margin-top: 1em;
-		padding-top: 0em;
-		text-transform: uppercase;
+		margin: 0 0 1em 0; 
+		padding: 0.6em 0 0.6em 0;
+		display: block;
+		border-bottom: 1px solid #dadada;
+		line-height: 1.4em;
+		color: #565656;
 	}
 	#content .columns h3 a { 
-		color: #000; 
-		border-bottom: none;
-	}
+		border: none;
+		color: #565656;
+		}
 	#content ul {
 		list-style: none;
 		margin-left: 0;
-	}
+		}
+	#content .four {
+		margin-bottom: 2em;
+		}
+	#content .firstset .four {
+		margin-bottom: 0;
+		}
+	#content .four .three {
+		margin-top: -1px;
+		margin-bottom: 2em;
+		}
+/* Learn more */
+	p.learnmore {
+		background-color: #e0e0d7;
+		border: none;
+		color: #fff;
+		display: block;
+		margin: 0 0 2em 0;
+		float: left;
+		font-size: 0.85em;
+		padding: 4px;
+		text-shadow: 0 0 1px #ab9f98;
+		text-transform: none;
+		/* Rounded corners */
+		-moz-border-radius: 4px;
+		-webkit-border-radius: 4px;
+		-khtml-border-radius: 4px;
+		border-radius: 4px;
+		}
+	p.learnmore a {
+		background-color: #6699cc;
+		color: #fff;
+		cursor: pointer;
+		display: block;
+		padding: 5px 12px;
+		border: 1px outset #e3dad3;
+		/* Rounded corners */
+		-moz-border-radius: 2px;
+		-webkit-border-radius: 2px;
+		-khtml-border-radius: 2px;
+		border-radius: 2px;
+		}
+	p.learnmore a span {
+		display: none;
+		}
+	p.learnmore a:hover {
+		background-color: #ff6600;
+		border-color: #ff6600;
+		}

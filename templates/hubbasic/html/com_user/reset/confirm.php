@@ -6,7 +6,7 @@
 
 <form action="<?php echo JRoute::_( 'index.php?option=com_user&task=confirmreset' ); ?>" method="post" class="josForm form-validate" name="hubForm" id="hubForm">
 	<fieldset>
-		<h3><?php echo JText::_('Email New Password'); ?></h3>
+		<legend><?php echo JText::_('Email New Password'); ?></legend>
 			
 		<p><?php echo JText::_('RESET_PASSWORD_CONFIRM_DESCRIPTION'); ?></p>
 		<label for="username" class="hasTip" title="<?php echo JText::_('RESET_PASSWORD_USERNAME_TIP_TITLE'); ?>::<?php echo JText::_('RESET_PASSWORD_USERNAME_TIP_TEXT'); ?>"><?php echo JText::_('User Name'); ?>:</label>
