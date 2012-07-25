@@ -59,19 +59,17 @@ class Hubzero_Tool_VersionHelper
 
             $db->setQuery($query);
 
-            $result = $db->query();
-
+            $result = $db->loadResultArray();
+            
             if ($result === false)
             {
                 return false;
             }
 
-            while ($row = mysql_fetch_row($result))
+            foreach($result as $row)
             {
-                call_user_func($func, $row[0]);
+                call_user_func($func, $row);
             }
-
-            mysql_free_result($result);
         }
 
         return true;

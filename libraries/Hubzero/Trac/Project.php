@@ -357,7 +357,7 @@ class Hubzero_Trac_Project
 				return false;
 			}
 
-			$affected = mysql_affected_rows($db->_resource);
+			$affected = $db->getAffectedRows();
 
 			if ($affected < 1) {
 				$this->create();
@@ -370,7 +370,7 @@ class Hubzero_Trac_Project
 					return false;
 				}
 
-				$affected = mysql_affected_rows($db->_resource);
+				$affected = $db->getAffectedRows();
 
 				if ($affected < 1) {
 					return false;

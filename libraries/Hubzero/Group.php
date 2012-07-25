@@ -1476,7 +1476,7 @@ class Hubzero_Group
 				return false;
 			}
 
-			$affected = mysql_affected_rows($db->_resource);
+			$affected = $db->getAffectedRows();
 
 			if ($affected < 1) {
 				return false;
@@ -2193,17 +2193,15 @@ class Hubzero_Group
 
 			$db->setQuery($query);
 
-			$result = $db->query();
+			$result = $db->loadResultArray();
 
 			if ($result === false) {
 				return false;
 			}
 
-			while ($row = mysql_fetch_row($result)) {
-				call_user_func($func, $row[0]);
+			foreach($result as $row) {
+				call_user_func($func, $row);
 			}
-
-			mysql_free_result($result);
 		}
 
 		return true;
@@ -2857,30 +2855,30 @@ class Hubzero_Group
 
         $db->setQuery($query);
 
-        $result = $db->query();
+        $result = $db->loadResultArray();
 
         if ($result === false) {
             return false;
         }
 
-        while ($row = mysql_fetch_row($result)) {
+        foreach($result as $row) {
 
 			if ($verbose)
-				echo "PROCESSING GROUP: " . $row[0] . "<br>";
+				echo "PROCESSING GROUP: " . $row . "<br>";
 
-    		$dhzg = self::getInstance($row[0],'mysql');
+    		$dhzg = self::getInstance($row,'mysql');
 
 			if ($dhzg === false) {
 
 				if ($verbose)
-					echo "Unable to read SQL data for group: " . $row[0] . "<br>";
+					echo "Unable to read SQL data for group: " . $row . "<br>";
 
 				continue;
 			}
 
 			if ($replace) {
-            	self::_ldap_delete($row[0],false,$verbose,$dryrun);
-	            self::_ldap_delete($row[0],true,$verbose,$dryrun);
+            	self::_ldap_delete($row,false,$verbose,$dryrun);
+	            self::_ldap_delete($row,true,$verbose,$dryrun);
 			}
 
 			$data = $dhzg->toArray('ldap',$legacy);
@@ -2899,20 +2897,18 @@ class Hubzero_Group
 				}
 			}
 
-			$exists = self::_ldap_exists($row[0],$legacy);
+			$exists = self::_ldap_exists($row,$legacy);
 
 			if (!$exists)
-				self::_ldap_create($row[0],$info,$legacy,$verbose,$dryrun);
+				self::_ldap_create($row,$info,$legacy,$verbose,$dryrun);
 
 			if (!$exists || $update)
 			{
-				$myresult = self::_ldap_update($row[0],$info,$legacy,$replace,$verbose,$dryrun);
+				$myresult = self::_ldap_update($row,$info,$legacy,$replace,$verbose,$dryrun);
 			}
 			else
-				self::_ldap_create($row[0],$info,$legacy,$verbose,$dryrun);
+				self::_ldap_create($row,$info,$legacy,$verbose,$dryrun);
         }
-
-        mysql_free_result($result);
     }
 
 	//----

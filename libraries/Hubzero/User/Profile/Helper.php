@@ -94,7 +94,7 @@ class Hubzero_User_Profile_Helper
 
 			$db->setQuery($query);
 
-			$result = $db->query();
+			$result = $db->loadResultArray();
 
 			if ($result === false)
 			{
@@ -102,10 +102,8 @@ class Hubzero_User_Profile_Helper
 				return false;
 			}
 
-			while ($row = mysql_fetch_row( $result ))
-				$func($row[0]);
-
-			mysql_free_result( $result );
+			foreach($result as $row)
+				$func($row);
 		}
 
 		return true;

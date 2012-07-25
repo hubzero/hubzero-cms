@@ -24,7 +24,7 @@ defined('JPATH_BASE') or die();
  */
 class JDatabaseMySQL extends JDatabase
 {
-        var $timer = 0;
+	var $timer = 0;
 
 	/**
 	 * The database driver name
