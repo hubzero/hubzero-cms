@@ -907,19 +907,32 @@ class ResourcesControllerItems extends Hubzero_Controller
 
 			foreach ($nbtag as $tagname => $tagcontent)
 			{
-				$content = null;
+				$f = '';
+
+				$row->fulltext .= "\n" . '<nb:' . $tagname . '>';
 				if (is_array($tagcontent))
 				{
-					$content = $tagcontent;
-					$tagcontent = trim(array_shift($content));
-				}
-				$row->fulltext .= "\n".'<nb:'.$tagname.'>';
-				$row->fulltext .= trim($tagcontent);
-				if (is_array($content))
-				{
-					foreach ($content as $key => $val)
+					$c = count($tagcontent);
+					$num = 0;
+					foreach ($tagcontent as $key => $val)
 					{
+						if (trim($val))
+						{
+							$num++;
+						}
 						$row->fulltext .= '<' . $key . '>' . trim($val) . '</' . $key . '>';
+					}
+					if ($c == $num)
+					{
+						$f = 'found';
+					}
+				}
+				else 
+				{
+					$f = trim($tagcontent);
+					if ($f)
+					{
+						$row->fulltext .= trim($tagcontent);
 					}
 				}
 				$row->fulltext .= '</nb:' . $tagname . '>' . "\n";

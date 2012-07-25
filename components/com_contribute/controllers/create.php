@@ -679,6 +679,7 @@ class ContributeControllerCreate extends Hubzero_Controller
 		$row->modified_by  = $this->juser->get('id');
 
 		$row->introtext = (trim($row->fulltext)) ? Hubzero_View_Helper_Html::shortenText(trim($row->fulltext), 500, 0) : trim($row->fulltext);
+		$row->fulltext  = $this->_txtAutoP(trim($row->fulltext), 1);
 
 		// Get custom areas, add wrapper tags, and compile into fulltext
 		$type = new ResourcesType($this->database);
@@ -745,14 +746,14 @@ class ContributeControllerCreate extends Hubzero_Controller
 			}
 		}
 
-		$row->title = preg_replace('/\s+/', ' ',$row->title);
+		$row->title = preg_replace('/\s+/', ' ', $row->title);
 		$row->title = $this->_txtClean($row->title);
 
 		// Strip any scripting there may be
 		if (trim($row->fulltext)) 
 		{
 			$row->fulltext   = $this->_txtClean($row->fulltext);
-			//$row->fulltext   = $this->_txtAutoP($row->fulltext,1);
+			//$row->fulltext   = $this->_txtAutoP($row->fulltext, 1);
 			$row->footertext = $this->_txtClean($row->footertext);
 			//$row->introtext  = Hubzero_View_Helper_Html::shortenText($row->fulltext, 500, 0);
 		}
@@ -767,6 +768,7 @@ class ContributeControllerCreate extends Hubzero_Controller
 		if ($this->getError())
 		{
 			$this->step--;
+			$this->view->step = $this->step;
 			$this->view->setLayout('compose');
 			$this->step_compose($row);
 			return;
@@ -777,6 +779,7 @@ class ContributeControllerCreate extends Hubzero_Controller
 		{
 			$this->setError(JText::_('Error: Failed to store changes.'));
 			$this->step--;
+			$this->view->step = $this->step;
 			$this->view->setLayout('compose');
 			$this->step_compose($row);
 			return;
@@ -843,6 +846,7 @@ class ContributeControllerCreate extends Hubzero_Controller
 		{
 			$this->setError(JText::_('Please select a group to restrict access to.'));
 			$this->step--;
+			$this->view->step = $this->step;
 			$this->view->setLayout('authors');
 			$this->step_authors();
 			return;
@@ -853,6 +857,7 @@ class ContributeControllerCreate extends Hubzero_Controller
 		{
 			$this->setError($row->getError());
 			$this->step--;
+			$this->view->step = $this->step;
 			$this->view->setLayout('authors');
 			$this->step_authors();
 			return;
@@ -863,6 +868,7 @@ class ContributeControllerCreate extends Hubzero_Controller
 		{
 			$this->setError(JText::_('Error: Failed to store changes.'));
 			$this->step--;
+			$this->view->step = $this->step;
 			$this->view->setLayout('authors');
 			$this->step_authors();
 			return;
