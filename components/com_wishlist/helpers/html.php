@@ -29,9 +29,10 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-if (!defined('n')) {
+if (!defined('n')) 
+{
 
 /**
  * Description for ''t''
@@ -65,20 +66,15 @@ if (!defined('n')) {
 }
 
 /**
- * Short description for 'WishlistHtml'
- * 
- * Long description (if any) ...
+ * Wishlist helper class for misc. HTML
  */
 class WishlistHtml
 {
-
 	/**
-	 * Short description for 'txt_unpee'
+	 * Remove paragraph tags and break tags
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $pee Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string $pee Text to unparagraph
+	 * @return     string
 	 */
 	public function txt_unpee($pee)
 	{
@@ -92,115 +88,117 @@ class WishlistHtml
 	}
 
 	/**
-	 * Short description for 'cleanText'
+	 * Clean text of potential XSS and other unwanted items such as
+	 * HTML comments and javascrip"\t". Also shortens tex"\t".
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $text Parameter description (if any) ...
-	 * @param      integer $desclen Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string  $text    Text to clean
+	 * @param      integer $desclen Length to shorten to
+	 * @return     string
 	 */
 	public function cleanText($text, $desclen=300)
 	{
 		$elipse = false;
 
-		$text = preg_replace( "'<script[^>]*>.*?</script>'si", "", $text );
-		$text = str_replace( '{mosimage}', '', $text );
-		$text = str_replace( "\n", ' ', $text );
-		$text = str_replace( "\r", ' ', $text );
-		$text = preg_replace( '/<a\s+.*href=["\']([^"\']+)["\'][^>]*>([^<]*)<\/a>/i','\\2', $text );
-		$text = preg_replace( '/<!--.+?-->/', '', $text);
-		$text = preg_replace( '/{.+?}/', '', $text);
-		$text = strip_tags( $text );
-		if (strlen($text) > $desclen) $elipse = true;
-		$text = substr( $text, 0, $desclen );
-		if ($elipse) $text .= '...';
+		$text = preg_replace("'<script[^>]*>.*?</script>'si", "", $text);
+		$text = str_replace('{mosimage}', '', $text);
+		$text = str_replace("\n", ' ', $text);
+		$text = str_replace("\r", ' ', $text);
+		$text = preg_replace('/<a\s+.*href=["\']([^"\']+)["\'][^>]*>([^<]*)<\/a>/i','\\2', $text);
+		$text = preg_replace('/<!--.+?-->/', '', $text);
+		$text = preg_replace('/{.+?}/', '', $text);
+		$text = strip_tags($text);
+		if (strlen($text) > $desclen) 
+		{
+			$elipse = true;
+		}
+		$text = substr($text, 0, $desclen);
+		if ($elipse) 
+		{
+			$text .= '...';
+		}
 		$text = trim($text);
 
 		return $text;
 	}
 
 	/**
-	 * Short description for 'formSelect'
+	 * Generate a select form
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $name Parameter description (if any) ...
-	 * @param      array $array Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
-	 * @param      string $class Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $name  Field name
+	 * @param      array  $array Data to populate select with
+	 * @param      mixed  $value Value to select
+	 * @param      string $class Class to add
+	 * @return     string HTML
 	 */
 	public function formSelect($name, $array, $value, $class='')
 	{
-		$out  = '<select name="'.$name.'" id="'.$name.'"';
-		$out .= ($class) ? ' class="'.$class.'">'.n : '>'.n;
+		$out  = '<select name="' . $name . '" id="' . $name . '"';
+		$out .= ($class) ? ' class="' . $class . '">' . "\n" : '>' . "\n";
 		foreach ($array as $avalue => $alabel)
 		{
 			$selected = ($avalue == $value || $alabel == $value)
 					  ? ' selected="selected"'
 					  : '';
-			$out .= ' <option value="'.$avalue.'"'.$selected.'>'.$alabel.'</option>'.n;
+			$out .= ' <option value="' . $avalue . '"' . $selected . '>' . $alabel . '</option>' . "\n";
 		}
-		$out .= '</select>'.n;
+		$out .= '</select>' . "\n";
 		return $out;
 	}
 
 	/**
-	 * Short description for 'tableRow'
+	 * Draw a table row
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $h Parameter description (if any) ...
-	 * @param      string $c Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $h Header cell
+	 * @param      string $c Cell content
+	 * @return     string HTML
 	 */
 	public function tableRow($h,$c='')
 	{
-		$html  = t.'  <tr>'.n;
-		$html .= t.'   <th>'.$h.'</th>'.n;
-		$html .= t.'   <td>';
+		$html  = '  <tr>' . "\n";
+		$html .= '   <th>' . $h . '</th>' . "\n";
+		$html .= '   <td>';
 		$html .= ($c) ? $c : '&nbsp;';
-		$html .= '</td>'.n;
-		$html .= t.'  </tr>'.n;
+		$html .= '</td>' . "\n";
+		$html .= '  </tr>' . "\n";
 
 		return $html;
 	}
 
 	/**
-	 * Short description for 'convertVote'
+	 * Convert a numerical vote value to a readable text value
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $rawnum Parameter description (if any) ...
-	 * @param      string $category Parameter description (if any) ...
-	 * @param      string $output Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      integer $rawnum   Vote value
+	 * @param      string  $category Vote type
+	 * @param      string  $output   Value to append to
+	 * @return     string 
 	 */
 	public function convertVote($rawnum, $category, $output='')
 	{
 		$rawnum = round($rawnum);
-		if ($category == 'importance') {
+		if ($category == 'importance') 
+		{
 			switch ($rawnum)
 			{
-				case '0': $output = JText::_('RUBBISH');     break;
-				case '1': $output = JText::_('MAYBE');       break;
-				case '2': $output = JText::_('INTERESTING'); break;
-				case '3': $output = JText::_('GOODIDEA');    break;
-				case '4': $output = JText::_('IMPORTANT');   break;
-				case '5': $output = JText::_('CRITICAL');    break;
+				case 0: $output = JText::_('RUBBISH');     break;
+				case 1: $output = JText::_('MAYBE');       break;
+				case 2: $output = JText::_('INTERESTING'); break;
+				case 3: $output = JText::_('GOODIDEA');    break;
+				case 4: $output = JText::_('IMPORTANT');   break;
+				case 5: $output = JText::_('CRITICAL');    break;
 			}
-		} else if ($category == 'effort') {
+		} 
+		else if ($category == 'effort') 
+		{
 			switch ($rawnum)
 			{
-				case '0': $output = JText::_('TWOMONTHS');   break;
-				case '1': $output = JText::_('TWOWEEKS');    break;
-				case '2': $output = JText::_('ONEWEEK');     break;
-				case '3': $output = JText::_('TWODAYS');     break;
-				case '4': $output = JText::_('ONEDAY');      break;
-				case '5': $output = JText::_('FOURHOURS');   break;
-				case '6': $output = JText::_('don\'t know'); break;
-				case '7': $output = JText::_('N/A');         break;
+				case 0: $output = JText::_('TWOMONTHS');   break;
+				case 1: $output = JText::_('TWOWEEKS');    break;
+				case 2: $output = JText::_('ONEWEEK');     break;
+				case 3: $output = JText::_('TWODAYS');     break;
+				case 4: $output = JText::_('ONEDAY');      break;
+				case 5: $output = JText::_('FOURHOURS');   break;
+				case 6: $output = JText::_('don\'t know'); break;
+				case 7: $output = JText::_('N/A');         break;
 			}
 		}
 
@@ -208,144 +206,171 @@ class WishlistHtml
 	}
 
 	/**
-	 * Short description for 'rankingForm'
+	 * Display a form for setting the ranking of a wish
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $option Parameter description (if any) ...
-	 * @param      mixed $wishlist Parameter description (if any) ...
-	 * @param      string $task Parameter description (if any) ...
-	 * @param      mixed $myvote Parameter description (if any) ...
-	 * @param      integer $admin Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string  $option   Component name
+	 * @param      object  $wishlist Current wishlist
+	 * @param      string  $task     Component task
+	 * @param      object  $myvote   User's ote
+	 * @param      integer $admin    User is admin?
+	 * @return     string HTML
 	 */
 	public function rankingForm($option, $wishlist, $task, $myvote, $admin)
 	{
-		$importance = array(''=>JText::_('SELECT_IMP'),'0.0'=>'0 -'.JText::_('RUBBISH'),'1'=>'1 - '.JText::_('MAYBE'),'2'=>'2 - '.JText::_('INTERESTING'),
-		'3'=>'3 - '.JText::_('GOODIDEA'), '4'=>'4 - '.JText::_('IMPORTANT'), '5'=>'5 - '.JText::_('CRITICAL'));
-		$effort = array(''=>JText::_('SELECT_EFFORT'),'5'=>JText::_('FOURHOURS'),'4'=>JText::_('ONEDAY'),
-		'3'=>JText::_('TWODAYS'),'2'=>JText::_('ONEWEEK'),'1'=>JText::_('TWOWEEKS'),'0.0'=>JText::_('TWOMONTHS'), '6'=>JText::_('don\'t know'));
+		$importance = array(
+			''    => JText::_('SELECT_IMP'),
+			'0.0' => '0 -' . JText::_('RUBBISH'),
+			'1'   => '1 - ' . JText::_('MAYBE'),
+			'2'   => '2 - ' . JText::_('INTERESTING'),
+			'3'   => '3 - ' . JText::_('GOODIDEA'), 
+			'4'   => '4 - ' . JText::_('IMPORTANT'), 
+			'5'   => '5 - ' . JText::_('CRITICAL')
+		);
+		$effort = array(
+			''    => JText::_('SELECT_EFFORT'),
+			'5'   => JText::_('FOURHOURS'),
+			'4'   => JText::_('ONEDAY'),
+			'3'   => JText::_('TWODAYS'),
+			'2'   => JText::_('ONEWEEK'),
+			'1'   => JText::_('TWOWEEKS'),
+			'0.0' => JText::_('TWOMONTHS'), 
+			'6'   => JText::_('don\'t know')
+		);
 
-		$html  = '<form method="post" action="index.php?option='.$option.'" class="rankingform" id="rankForm">'.n;
-		$html .= t.'<fieldset>'.n;
-		$html .= t.t.'<label>'.n;
-		$html .= t.t.t.WishlistHtml::formSelect('importance', $importance, $myvote->myvote_imp, 'rankchoices');
-		$html .= t.t.'</label>'.n;
-		if ($admin == 2) {
-			$html .= t.t.'<label>'.n;
-			$html .= t.t.t.WishlistHtml::formSelect('effort', $effort, $myvote->myvote_effort, 'rankchoices');
-			$html .= t.t.'</label>'.n;
-		} else {
-			$html .= t.t.'<input type="hidden" name="effort" value="6" />'.n;
+		$html  = '<form method="post" action="index.php?option=' . $option . '" class="rankingform" id="rankForm">' . "\n";
+		$html .= "\t".'<fieldset>' . "\n";
+		$html .= "\t\t".'<label>' . "\n";
+		$html .= "\t\t\t".WishlistHtml::formSelect('importance', $importance, $myvote->myvote_imp, 'rankchoices');
+		$html .= "\t\t".'</label>' . "\n";
+		if ($admin == 2) 
+		{
+			$html .= "\t\t".'<label>' . "\n";
+			$html .= "\t\t\t".WishlistHtml::formSelect('effort', $effort, $myvote->myvote_effort, 'rankchoices');
+			$html .= "\t\t".'</label>' . "\n";
+		} 
+		else 
+		{
+			$html .= "\t\t".'<input type="hidden" name="effort" value="6" />' . "\n";
 		}
-		$html .= t.t.'<input type="hidden" name="task" value="'.$task.'" />'.n;
-		$html .= t.t.'<input type="hidden" name="category" value="'.$wishlist->category.'" />'.n;
-		$html .= t.t.'<input type="hidden" name="rid" value="'.$wishlist->referenceid.'" />'.n;
-		$html .= t.t.'<input type="hidden" name="wishid" value="'.$myvote->id.'" />'.n;
-		$html .= t.t.'<input type="submit"  value="'.JText::_('SAVE').'" />';
-		$html .= t.'</fieldset>'.n;
-		$html .= '</form>'.n;
+		$html .= "\t\t".'<input type="hidden" name="task" value="' . $task . '" />' . "\n";
+		$html .= "\t\t".'<input type="hidden" name="category" value="' . $wishlist->category . '" />' . "\n";
+		$html .= "\t\t".'<input type="hidden" name="rid" value="' . $wishlist->referenceid . '" />' . "\n";
+		$html .= "\t\t".'<input type="hidden" name="wishid" value="' . $myvote->id . '" />' . "\n";
+		$html .= "\t\t".'<input type="submit"  value="' . JText::_('SAVE') . '" />';
+		$html .= "\t".'</fieldset>' . "\n";
+		$html .= '</form>' . "\n";
 
 		return $html;
 	}
-	//-----------
 
 	/**
-	 * Short description for 'browseForm'
+	 * Display a form for browsing wishes
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $option Parameter description (if any) ...
-	 * @param      array $filters Parameter description (if any) ...
-	 * @param      integer $admin Parameter description (if any) ...
-	 * @param      unknown $id Parameter description (if any) ...
-	 * @param      unknown $total Parameter description (if any) ...
-	 * @param      object $wishlist Parameter description (if any) ...
-	 * @param      unknown $pageNav Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string  $option   Component name
+	 * @param      array   $filters  Search filters
+	 * @param      integer $admin    User is admin?
+	 * @param      integer $id       An... id? @NOTE: What is the purpose of this?
+	 * @param      integer $total    Record total
+	 * @param      object  $wishlist Current wishlist
+	 * @param      object  $pageNav  Pagination
+	 * @return     string HTML
 	 */
 	public function browseForm($option, $filters, $admin, $id, $total, $wishlist, $pageNav)
 	{
 		$sortbys = array();
-		if ($admin) {
+		if ($admin) 
+		{
 			$sortbys['ranking']=JText::_('RANKING');
 		}
 		$sortbys['date'] = JText::_('DATE');
 		$sortbys['feedback'] = JText::_('FEEDBACK');
 
-		if ($wishlist->banking) {
-			$sortbys['bonus']=JText::_('BONUS_AND_POPULARITY');
+		if ($wishlist->banking) 
+		{
+			$sortbys['bonus'] = JText::_('BONUS_AND_POPULARITY');
 		}
-		$filterbys = array('all'=>JText::_('ALL_WISHES_ON_THIS_LIST'),'open'=>JText::_('ACTIVE'),'granted'=>JText::_('GRANTED'), 'accepted'=>JText::_('WISH_STATUS_ACCEPTED'), 'rejected'=>JText::_('WISH_STATUS_REJECTED'));
+		$filterbys = array(
+			'all'      => JText::_('ALL_WISHES_ON_THIS_LIST'),
+			'open'     => JText::_('ACTIVE'),
+			'granted'  => JText::_('GRANTED'), 
+			'accepted' => JText::_('WISH_STATUS_ACCEPTED'), 
+			'rejected' => JText::_('WISH_STATUS_REJECTED')
+		);
 
-		if ($admin == 1 or $admin == 2) { // a few extra options
+		if ($admin == 1 or $admin == 2) 
+		{ // a few extra options
 			$filterbys['private'] = JText::_('PRIVATE');
 			$filterbys['public'] = JText::_('PUBLIC');
-			if ($admin == 2) {
+			if ($admin == 2) 
+			{
 				$filterbys['mine'] = JText::_('MSG_ASSIGNED_TO_ME');
 			}
 		}
-		$html = '';
-		$html .= t.t.'<fieldset>'.n;
-		$html .= t.t.'<label class="tagdisplay">'.JText::_('WISH_FIND_BY_TAGS').': '.n;
+		$html  = '<fieldset>' . "\n";
+		$html .= "\t" . '<label class="tagdisplay">' . JText::_('WISH_FIND_BY_TAGS') . ': ' . "\n";
 
-		JPluginHelper::importPlugin( 'hubzero' );
+		JPluginHelper::importPlugin('hubzero');
 		$dispatcher =& JDispatcher::getInstance();
-		$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$filters['tag'])) );
+		$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $filters['tag'])));
 
-		if (count($tf) > 0) {
+		if (count($tf) > 0) 
+		{
 			$html .= $tf[0];
-		} else {
-			$html .= t.t.t.'<input type="text" name="tags" id="tags-men" value="'.$filters['tag'].'" />'.n;
+		} 
+		else 
+		{
+			$html .= "\t\t" . '<input type="text" name="tags" id="tags-men" value="' . $filters['tag'] . '" />' . "\n";
 		}
-		$html .= '</label>';
-		$html .= t.t.t.'<label >'.JText::_('SHOW').': '.n;
+		$html .= "\t" . '</label>' . "\n";
+		$html .= "\t" . '<label>' . JText::_('SHOW') . ': ' . "\n";
 		$html .= WishlistHtml::formSelect('filterby', $filterbys, $filters['filterby'], '', '');
-		$html .= t.t.t.'</label>'.n;
-		$html .= t.t.t.' &nbsp; <label> '.JText::_('SORTBY').':'.n;
+		$html .= "\t" . '</label>' . "\n";
+		$html .= "\t" . ' &nbsp; <label> ' . JText::_('SORTBY') . ':' . "\n";
 		$html .= WishlistHtml::formSelect('sortby', $sortbys, $filters['sortby'], '', '');
-		$html .= t.t.t.'</label>'.n;
-		$html .= t.t.'<input type="hidden" name="newsearch" value="1" />'.n;
-		$html .= t.t.t.'<input type="submit" value="'.JText::_('GO').'" />'.n;
-		$html .= t.t.'</fieldset>'.n;
+		$html .= "\t" . '</label>' . "\n";
+		$html .= "\t" . '<input type="hidden" name="newsearch" value="1" />' . "\n";
+		$html .= "\t" . '<input type="submit" value="' . JText::_('GO') . '" />' . "\n";
+		$html .= '</fieldset>' . "\n";
 
 		return $html;
 	}
 
 	/**
-	 * Short description for 'nicetime'
+	 * Convert a timestamp to a more human readable string such as "3 days ago"
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $date Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      string $date Timestamp
+	 * @return     string
 	 */
 	public function nicetime($date)
 	{
-		if (empty($date)) {
-			return "No date provided";
+		if (empty($date)) 
+		{
+			return JText::_('No date provided');
 		}
 
-		$periods = array("second", "minute", "hour", "day", "week", "month", "year", "decade");
-		$lengths = array("60","60","24","7","4.35","12","10");
+		$periods = array('second', 'minute', 'hour', 'day', 'week', 'month', 'year', 'decade');
+		$lengths = array('60', '60', '24', '7', '4.35', '12', '10');
 
 		$now = time();
 		$unix_date = strtotime($date);
 
 		   // check validity of date
-		if (empty($unix_date)) {
-			return "Bad date";
+		if (empty($unix_date)) 
+		{
+			return JText::_('Bad date');
 		}
 
 		// is it future date or past date
-		if ($now > $unix_date) {
+		if ($now > $unix_date) 
+		{
 			$difference = $now - $unix_date;
-			$tense = "ago";
+			$tense = 'ago';
 
-		} else {
+		} 
+		else 
+		{
 			$difference = $unix_date - $now;
-			//$tense = "from now";
-			$tense = "";
+			$tense = '';
 		}
 
 		for ($j = 0; $difference >= $lengths[$j] && $j < count($lengths)-1; $j++)
@@ -355,8 +380,9 @@ class WishlistHtml
 
 		$difference = round($difference);
 
-		if ($difference != 1) {
-			$periods[$j].= "s";
+		if ($difference != 1) 
+		{
+			$periods[$j] .= 's';
 		}
 
 		return "$difference $periods[$j] {$tense}";

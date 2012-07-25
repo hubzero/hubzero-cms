@@ -64,7 +64,7 @@ include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $optio
 include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'economy.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'html.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'tags.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'controller.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'controllers' . DS . 'wishlist.php');
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
 

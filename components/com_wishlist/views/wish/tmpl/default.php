@@ -639,12 +639,23 @@ if ($this->wishlist && $this->wish) {
 					
 						<label>
 						<?php 
-						$document =& JFactory::getDocument();
-						$document->addScript('components'.DS.'com_wishlist'.DS.'observer.js');
-						$document->addScript('components'.DS.'com_wishlist'.DS.'autocompleter.js');
-						$document->addStyleSheet('components'.DS.'com_wishlist'.DS.'autocompleter.css');
+						if (!JPluginHelper::isEnabled('system', 'jquery'))
+						{
+							$document =& JFactory::getDocument();
+							$document->addScript('/components/com_wishlist/assets/js/observer.js');
+							$document->addScript('/components/com_wishlist/assets/js/autocompleter.js');
+							$document->addStyleSheet('/components/com_wishlist/assets/js/autocompleter.css');
+						}
 						?>
-							<input type="text" name="group" value="<?php if ($this->wishlist->category=='group') { echo $this->wishlist->cn; } ?>" id="acgroup" class="secondary_option" />
+							<?php 
+							/*JPluginHelper::importPlugin('hubzero');
+							$dispatcher =& JDispatcher::getInstance();
+						$gc = $dispatcher->trigger('onGetMultiEntry', array(array('groups', 'ticket[group]', 'acgroup', '', ($this->wishlist->category=='group' ? $this->wishlist->cn : ''), '', 'ticketowner')));
+						if (count($gc) > 0) {
+							echo $gc[0];
+						} else {*/ ?>
+							<input type="text" name="group" value="<?php if ($this->wishlist->category=='group') { echo $this->wishlist->cn; } ?>" id="acgroup" class="secondary_option" autocomplete="off" />
+						<?php //} ?>
 						</label>
 			<?php } ?>
 						<fieldset>
@@ -884,7 +895,7 @@ if ($this->wishlist && $this->wish) {
 				</p>
 				<fieldset>
 		<?php 
-		if ($this->wish->action=='editplan') {						
+		if ($this->wish->action=='editplan') {
 			$document =& JFactory::getDocument();
 			$document->addScript('components'.DS.'com_events'.DS.'js'.DS.'calendar.rc4.js');
 			$document->addScript('components'.DS.'com_events'.DS.'js'.DS.'events.js');

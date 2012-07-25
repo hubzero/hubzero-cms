@@ -127,8 +127,7 @@ class plgResourcesWishlist extends JPlugin
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'wish.rank.php');
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'wish.attachment.php');
 		ximport('Hubzero_View_Helper_Html');
-		require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'controller.php');
-		//require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'html.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'controllers' . DS . 'wishlist.php');
 
 		// Configure controller
 		WishlistController::setVar('_option', $option);
