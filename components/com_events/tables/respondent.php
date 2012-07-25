@@ -366,7 +366,7 @@ class EventsRespondent extends JTable
 				break;
 				case 'search':
 					if (!empty($val)) {
-						$this->filters[] = 'concat(first_name, \' \', last_name) LIKE \'%'.mysql_real_escape_string($val).'%\'';
+						$this->filters[] = 'concat(first_name, \' \', last_name) LIKE \'%'.$this->_db->getEscaped($val).'%\'';
 						$this->searchTerms = htmlentities($val);
 					}
 				break;

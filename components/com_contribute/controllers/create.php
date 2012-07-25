@@ -434,7 +434,7 @@ class ContributeControllerCreate extends Hubzero_Controller
 			{
 				return array();
 			}
-			$labels = '\'' . implode('\', \'', array_map('mysql_real_escape_string', $labels)) . '\'';
+			$labels = '\'' . implode('\', \'', array_map(array($this->database, 'getEscaped'), $labels)) . '\'';
 		}
 
 		$this->database->setQuery(

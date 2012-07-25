@@ -109,12 +109,14 @@ class plgYSearchResources extends YSearchPlugin
 	{
 		$dbg = isset($_GET['dbg']);
 
+		$database = JFactory::getDBO();
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
 			$user =& JFactory::getUser();
-			$groups = array_map('mysql_real_escape_string', $authz->get_group_ids());
-			$viewlevels	= implode(',', $user->getAuthorisedViewLevels());
-			
+
+			$groups = array_map(array($database, 'getEscaped'), $authz->get_group_names());
+			$viewlevels = implode(',', $user->getAuthorisedViewLevels());
+
 			if ($groups)
 			{
 				$group_list = '(\'' . join('\', \'', $groups) . '\')';
@@ -137,7 +139,7 @@ class plgYSearchResources extends YSearchPlugin
 			}
 			else
 			{
-				$groups = array_map('mysql_real_escape_string', $authz->get_group_names());
+				$groups = array_map(array($database, 'getEscaped'), $authz->get_group_names());
 				if ($groups)
 				{
 					$group_list = '(\'' . join('\', \'', $groups) . '\')';

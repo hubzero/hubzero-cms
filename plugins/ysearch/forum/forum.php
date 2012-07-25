@@ -78,15 +78,15 @@ class plgYSearchForum extends YSearchPlugin
 			}
 			else 
 			{
-				$viewlevels	= implode(',', $juser->getAuthorisedViewLevels());
+				$viewlevels = implode(',', $juser->getAuthorisedViewLevels());
 
 				if ($gids)
 				{
-					$addtl_where[] = '(f.access IN ('.$viewlevels.') OR ((f.access = 4 OR f.access = 5) AND f.group_id IN (0,' . join(',', $gids) . ')))';
+					$addtl_where[] = '(f.access IN (' . $viewlevels . ') OR ((f.access = 4 OR f.access = 5) AND f.group_id IN (0,' . join(',', $gids) . ')))';
 				}
 				else 
 				{
-					$addtl_where[] = '(f.access IN ('.$viewlevels.'))';
+					$addtl_where[] = '(f.access IN (' . $viewlevels . '))';
 				}
 			}
 		}
@@ -98,7 +98,7 @@ class plgYSearchForum extends YSearchPlugin
 			}
 			elseif ($juser->get('usertype') != 'Super Administrator')
 			{
-				$groups = array_map('mysql_real_escape_string', $authz->get_group_ids());
+				$groups = array_map('intval', $authz->get_group_ids());
 				if ($groups)
 				{
 					$addtl_where[] = '(f.access = 0 OR f.access = 1 OR ((f.access = 3 OR f.access = 4) AND f.group_id IN (0,' . join(',', $groups) . ')))';
@@ -109,7 +109,7 @@ class plgYSearchForum extends YSearchPlugin
 				}
 			}
 		}
-//concat('/groups/', g.cn, concat('/forum/', coalesce(concat(s.alias, '/', coalesce(concat(c.alias, '/'), ''))), CASE WHEN f.parent > 0 THEN f.parent ELSE f.id END))
+
 		$rows = new YSearchResultSQL(
 			"SELECT 
 				f.title,

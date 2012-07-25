@@ -113,7 +113,7 @@ class UsageHelper
 
 		// Look up top list information...
 		$topname = '';
-		$sql = "SELECT name, valfmt, size FROM tops WHERE top='" . mysql_escape_string($top) . "'";
+		$sql = "SELECT name, valfmt, size FROM tops WHERE top='" . $db->getEscaped($top) . "'";
 		$db->setQuery($sql);
 		$result = $db->loadRow();
 		if ($result) 
@@ -157,10 +157,10 @@ class UsageHelper
 				$sql = "SELECT topvals.name, topvals.value 
 						FROM tops, topvals 
 						WHERE tops.top = topvals.top 
-						AND topvals.hub = '" . mysql_escape_string($hub) . "' 
-						AND tops.top = '" . mysql_escape_string($top) . "' 
-						AND topvals.datetime = '" . mysql_escape_string($dt) . "' 
-						AND topvals.period = '" . mysql_escape_string($period[$pidx]["key"]) . "' 
+						AND topvals.hub = '" . $db->getEscaped($hub) . "' 
+						AND tops.top = '" . $db->getEscaped($top) . "' 
+						AND topvals.datetime = '" . $db->getEscaped($dt) . "' 
+						AND topvals.period = '" . $db->getEscaped($period[$pidx]["key"]) . "' 
 						AND topvals.rank = '0'";
 				$db->setQuery($sql);
 				$results = $db->loadObjectList();
@@ -190,10 +190,10 @@ class UsageHelper
 				$sql = "SELECT topvals.rank, topvals.name, topvals.value 
 						FROM tops, topvals 
 						WHERE tops.top = topvals.top 
-						AND topvals.hub = '" . mysql_escape_string($hub) . "' 
-						AND tops.top = '" . mysql_escape_string($top) . "' 
-						AND datetime = '" . mysql_escape_string($dt) . "' 
-						AND topvals.period = '" . mysql_escape_string($period[$pidx]["key"]) . "' 
+						AND topvals.hub = '" . $db->getEscaped($hub) . "' 
+						AND tops.top = '" . $db->getEscaped($top) . "' 
+						AND datetime = '" . $db->getEscaped($dt) . "' 
+						AND topvals.period = '" . $db->getEscaped($period[$pidx]["key"]) . "' 
 						AND topvals.rank > '0' 
 						ORDER BY topvals.rank, topvals.name";
 				$db->setQuery($sql);
@@ -311,8 +311,8 @@ class UsageHelper
 	{
 		$sql = "SELECT COUNT(datetime) 
 				FROM totalvals 
-				WHERE datetime LIKE '" . mysql_escape_string($yearmonth) . "-%' 
-				AND period = '" . mysql_escape_string($period) . "'";
+				WHERE datetime LIKE '" . $db->getEscaped($yearmonth) . "-%' 
+				AND period = '" . $db->getEscaped($period) . "'";
 		$db->setQuery($sql);
 		$result = $db->loadResult();
 		if ($result && $result > 0) 
@@ -333,7 +333,7 @@ class UsageHelper
 	{
 		$sql = "SELECT COUNT(datetime) 
 				FROM classvals 
-				WHERE datetime LIKE '" . mysql_escape_string($yearmonth) . "-%'";
+				WHERE datetime LIKE '" . $db->getEscaped($yearmonth) . "-%'";
 		$db->setQuery($sql);
 		$result = $db->loadResult();
 		if ($result && $result > 0) 
@@ -354,7 +354,7 @@ class UsageHelper
 	{
 		$sql = "SELECT COUNT(datetime)
 				FROM regionvals 
-				WHERE datetime LIKE '" . mysql_escape_string($yearmonth) . "-%'";
+				WHERE datetime LIKE '" . $db->getEscaped($yearmonth) . "-%'";
 		$db->setQuery($sql);
 		$result = $db->loadResult();
 		if ($result && $result > 0) 

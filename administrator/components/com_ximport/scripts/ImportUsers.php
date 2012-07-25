@@ -29,72 +29,71 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_User_Profile');
 
 /**
- * Short description for 'ImportUsers'
- * 
- * Long description (if any) ...
+ * Script for importing users
  */
 class ImportUsers extends XImportHelperScript
 {
-
 	/**
-	 * Description for '_description'
+	 * Description
 	 * 
 	 * @var string
 	 */
 	protected $_description = 'Import user profiles from LDAP.';
 
 	/**
-	 * Short description for 'run'
+	 * Run the script
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean 
 	 */
 	public function run()
 	{
-        echo "import users...<br />";
+		echo 'import users...<br />';
 
-        $query = "SELECT username FROM #__users;";
+		$query = "SELECT username FROM #__users;";
 
-        $this->_db->setQuery($query);
+		$this->_db->setQuery($query);
 
-        $result = $this->_db->query();
+		$result = $this->_db->query();
 
-        if ($result === false)
-        {
-            echo 'Error retrieving data from juser table: ' . $this->_db->getErrorMsg();
-            return false;
-        }
+		if ($result === false)
+		{
+			echo 'Error retrieving data from juser table: ' . $this->_db->getErrorMsg();
+			return false;
+		}
 
-        while ($row = mysql_fetch_assoc( $result ))
-            $this->_importUser($row['username']);
+		foreach ($result as $row)
+		{
+			$this->_importUser($row['username']);
+		}
 
-        mysql_free_result( $result );
+		return true;
 	}
 
 	/**
-	 * Short description for '_importUser'
+	 * Create a profile from user account
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $name Parameter description (if any) ...
+	 * @param      string $name Username
 	 * @return     void
 	 */
 	private function _importUser($name)
 	{
 		$profile = new Hubzero_User_Profile();
-    	$profile->load($name,'ldap');
+		$profile->load($name, 'ldap');
 
-    	$result = $profile->create('mysql');
+		$result = $profile->create('mysql');
 
-    	if ($result === false)
-            	echo "Error importing $name<br />";
-    	else
-            	echo "Imported $name<br />";
+		if ($result === false)
+		{
+			echo "Error importing $name<br />";
+		}
+		else
+		{
+			echo "Imported $name<br />";
+		}
 	}
 }

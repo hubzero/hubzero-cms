@@ -29,31 +29,26 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_User_Profile');
 
 /**
- * Short description for 'FixNames'
- * 
- * Long description (if any) ...
+ * Script for fixing names
  */
 class FixNames extends XImportHelperScript
 {
-
 	/**
-	 * Description for '_description'
+	 * Description
 	 * 
 	 * @var string
 	 */
 	protected $_description = 'Import givenName/middleName/surname from name.';
 
 	/**
-	 * Short description for 'run'
+	 * Run the script
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean 
 	 */
 	public function run()
 	{
@@ -71,20 +66,18 @@ class FixNames extends XImportHelperScript
 			return false;
 		}
 
-		while ($row = mysql_fetch_assoc( $result ))
+		foreach ($result as $row)
 		{
 			$this->_fixName($row['uidNumber']);
 		}
 
-		mysql_free_result( $result );
+		return true;
 	}
 
 	/**
-	 * Short description for '_fixName'
+	 * Break apart a name into it's respective fields
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $name Parameter description (if any) ...
+	 * @param      string $name User's name
 	 * @return     void
 	 */
 	private function _fixName($name)
@@ -92,21 +85,23 @@ class FixNames extends XImportHelperScript
 		$xprofile = new Hubzero_User_Profile();
 
 		if ($xprofile->load($name) === false)
-			 echo "Error loading $name\n";
+		{
+			echo "Error loading $name\n";
+		}
 		else
 		{
-			$firstname = $xprofile->get('givenName');
+			$firstname  = $xprofile->get('givenName');
 			$middlename = $xprofile->get('middleName');
-			$lastname = $xprofile->get('surname');
-			$name = $xprofile->get('name');
-			$username = $xprofile->get('username');
+			$lastname   = $xprofile->get('surname');
+			$name       = $xprofile->get('name');
+			$username   = $xprofile->get('username');
 
-			if ( empty($firstname) && empty($middlename) && empty($surname) && empty($name))
+			if (empty($firstname) && empty($middlename) && empty($surname) && empty($name))
 			{
 				$name = $username;
 				$firstname = $username;
 			}
-			else if ( empty($firstname) && empty($middlename) && empty($surname) )
+			else if (empty($firstname) && empty($middlename) && empty($surname))
 			{
 				$words = explode(' ', $name);
 				$count = count($words);
@@ -118,35 +113,38 @@ class FixNames extends XImportHelperScript
 				else if ($count == 2)
 				{
 					$firstname = $words[0];
-					$lastname = $words[1];
+					$lastname  = $words[1];
 				}
 				else if ($count == 3)
 				{
-					$firstname = $words[0];
+					$firstname  = $words[0];
 					$middlename = $words[1];
-					$lastname = $words[2];
+					$lastname   = $words[2];
 				}
 				else
 				{
-					$firstname = $words[0];
-					$lastname = $words[$count-1];
+					$firstname  = $words[0];
+					$lastname   = $words[$count-1];
 					$middlename = $words[1];
 
-					for($i = 2; $i < $count-1; $i++)
-						$middlename .= ' ' .$words[$i];
+					for ($i = 2; $i < $count-1; $i++)
+					{
+						$middlename .= ' ' . $words[$i];
+					}
 				}
 
 				// TODO:
 				// if firstname all caps, and lastname isn't, switch them
 				// reparse names with " de , del ,  in them
-        		}
+			}
 
 			$xprofile->set('name', $name);
 			$xprofile->set('givenName', $firstname);
 			$xprofile->set('middleName', $middlename);
 			$xprofile->set('surname', $lastname);
 			$xprofile->update();
-			echo "saved $name as [$firstname] [$middlename] [$lastname] <br>\n";
+
+			echo "saved $name as [$firstname] [$middlename] [$lastname] <br />\n";
 		}
 	}
 }

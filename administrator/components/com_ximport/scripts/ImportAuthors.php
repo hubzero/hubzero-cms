@@ -29,38 +29,33 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_User_Profile');
 
 /**
- * Short description for 'ImportAuthors'
- * 
- * Long description (if any) ...
+ * Script for importing authors
  */
 class ImportAuthors extends XImportHelperScript
 {
-
 	/**
-	 * Description for '_description'
+	 * Description
 	 * 
 	 * @var string
 	 */
 	protected $_description = 'Import user profiles from LDAP.';
 
 	/**
-	 * Description for '_options'
+	 * Options
 	 * 
 	 * @var array
 	 */
 	protected $_options = array(array('override' => '1'));
 
 	/**
-	 * Short description for 'run'
+	 * Run the script
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean 
 	 */
 	public function run()
 	{
@@ -98,39 +93,39 @@ class ImportAuthors extends XImportHelperScript
 
 		echo 'importing authors...<br />';
 
-                $query = "SELECT * FROM #__author;";
+		$query = "SELECT * FROM #__author;";
 
-                $this->_db->setQuery($query);
+		$this->_db->setQuery($query);
 
-                $result = $this->_db->query();
+		$result = $this->_db->query();
 
-                if ($result === false)
-                {
-                    echo 'Error retrieving data from xprofiles table: ' . $this->_db->getErrorMsg();
-                    return false;
-                }
+		if ($result === false)
+		{
+			echo 'Error retrieving data from xprofiles table: ' . $this->_db->getErrorMsg();
+			return false;
+		}
 
-                while ($row = mysql_fetch_assoc( $result ))
-                    $this->_importAuthor($row, $override);
-
-                mysql_free_result( $result );
+		foreach ($result as $row)
+		{
+			$this->_importAuthor($row, $override);
+		}
 
 		return true;
 	}
 
 	/**
-	 * Short description for '_importAuthor'
+	 * Convert an author into a user account with profile
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      mixed $row Parameter description (if any) ...
-	 * @param      boolean $override Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      array   $row      Associated array of author info
+	 * @param      boolean $override Force data push
+	 * @return     void
 	 */
 	private function _importAuthor($row = null, $override = false)
 	{
 		if ($row == 0)
+		{
 			return;
+		}
 
 		if (!is_array($row))
 		{
@@ -140,45 +135,67 @@ class ImportAuthors extends XImportHelperScript
 			$row = $this->_db->loadAssoc();
 		}
 
-		$xprofile = Hubzero_User_Profile::getInstance( $row['id'] );
+		$xprofile = Hubzero_User_Profile::getInstance($row['id']);
 
 		if (!is_object($xprofile))
 		{
-			echo 'Failed to load profile for ' . $row['id'] . "<br>\n";
+			echo 'Failed to load profile for ' . $row['id'] . "<br />\n";
 			return;
 		}
 
-		$xprofile->setParam('show_bio','1');
-		$xprofile->setParam('show_url','1');
-		$xprofile->setParam('show_picture','1');
-		$xprofile->setParam('show_organization','1');
+		$xprofile->setParam('show_bio', '1');
+		$xprofile->setParam('show_url', '1');
+		$xprofile->setParam('show_picture', '1');
+		$xprofile->setParam('show_organization', '1');
 		$xprofile->update();
 
 		if (($xprofile->get('givenName') == '' || $override) && !empty($row['firstname']))
+		{
 			$xprofile->set('givenName', $row['firstname']);
+		}
 		if (($xprofile->get('middleName') == '' || $override) && !empty($row['middlename']))
+		{
 			$xprofile->set('middlename', $row['middlename']);
+		}
 		if (($xprofile->get('surname') == '' || $override) && !empty($row['lastname']))
+		{
 			$xprofile->set('surname', $row['lastname']);
+		}
 		if (($xprofile->get('organization') == '' || $override) && !empty($row['org']))
+		{
 			$xprofile->set('organization', $row['org']);
+		}
 		if (($xprofile->get('bio') == '' || $override) && !empty($row['bio']))
+		{
 			$xprofile->set('bio', $row['bio']);
+		}
 		if (($xprofile->get('url') == '' || $override) && !empty($row['url']))
+		{
 			$xprofile->set('url', $row['url']);
+		}
 		if (($xprofile->get('picture') == '' || $override) && !empty($row['picture']))
+		{
 			$xprofile->set('picture', $row['picture']);
+		}
 		if (($xprofile->get('vip') == '' || $override) && !empty($row['principal_investigator']))
+		{
 			$xprofile->set('vip', $row['principal_investigator']);
+		}
 		if (($xprofile->get('name') == '' || $override) && !(empty($row['firstname']) && empty($row['middlename']) && empty($row['lastname'])))
 		{
 			$name = '';
 			if (!empty($row['firstname']))
+			{
 				$name .= $row['firstname'];
+			}
 			if (!empty($row['middlename']))
+			{
 				$name .= ' ' . $row['middlename'];
+			}
 			if (!empty($row['lastname']))
+			{
 				$name .= ' ' . $row['lastname'];
+			}
 
 			$name = trim($name);
 
@@ -194,9 +211,13 @@ class ImportAuthors extends XImportHelperScript
 		$result = $xprofile->update();
 
 		if ($result)
-			echo 'Imported author data into profile for user ' . $xprofile->get('name') . '(' . $xprofile->get('uidNumber') . ')' . '<br>';
+		{
+			echo 'Imported author data into profile for user ' . $xprofile->get('name') . '(' . $xprofile->get('uidNumber') . ')' . '<br />';
+		}
 		else
-			echo 'Failed to import author data into profile for user ' . $xprofile->get('name') . '(' . $xprofile->get('uidNumber') . ')' . '<br>';
+		{
+			echo 'Failed to import author data into profile for user ' . $xprofile->get('name') . '(' . $xprofile->get('uidNumber') . ')' . '<br />';
+		}
 
 		return;
 	}

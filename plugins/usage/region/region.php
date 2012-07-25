@@ -48,7 +48,7 @@ class plgUsageRegion extends JPlugin
 	public function plgUsageRegion(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
-		
+
 		$this->loadLanguage();
 	}
 
@@ -92,7 +92,7 @@ class plgUsageRegion extends JPlugin
 
 		// Look up region list information...
 		$regionname = '';
-		$sql = "SELECT name, valfmt, size FROM regions WHERE region = '" . mysql_escape_string($region) . "'";
+		$sql = "SELECT name, valfmt, size FROM regions WHERE region = '" . $db->Quote($region) . "'";
 		$db->setQuery($sql);
 		$result = $db->loadRow();
 		if ($result) 
@@ -133,7 +133,7 @@ class plgUsageRegion extends JPlugin
 			{
 				// Calculate the total value for this regionlist...
 				$regionlistset = array();
-				$sql = "SELECT regionvals.name, regionvals.value FROM regions, regionvals WHERE regions.region = regionvals.region AND regionvals.hub = '" . mysql_escape_string($hub) . "' AND regions.region = '" . mysql_escape_string($region) . "' AND regionvals.datetime = '" . mysql_escape_string($dt) . "' AND regionvals.period = '" . mysql_escape_string($period[$pidx]["key"]) . "' AND regionvals.rank = '0'";
+				$sql = "SELECT regionvals.name, regionvals.value FROM regions, regionvals WHERE regions.region = regionvals.region AND regionvals.hub = '" . $db->Quote($hub) . "' AND regions.region = '" . $db->Quote($region) . "' AND regionvals.datetime = '" . $db->Quote($dt) . "' AND regionvals.period = '" . $db->Quote($period[$pidx]["key"]) . "' AND regionvals.rank = '0'";
 				$db->setQuery($sql);
 				$results = $db->loadObjectList();
 				if ($results) 
@@ -159,7 +159,7 @@ class plgUsageRegion extends JPlugin
 
 				// Calculate the region values for the regionlist...
 				$rank = 1;
-				$sql = "SELECT regionvals.rank, regionvals.name, regionvals.value FROM regions, regionvals WHERE regions.region = regionvals.region AND regionvals.hub = '" . mysql_escape_string($hub) . "' AND regions.region = '" . mysql_escape_string($region) . "' AND datetime = '" . mysql_escape_string($dt) . "' AND regionvals.period = '" . mysql_escape_string($period[$pidx]["key"]) . "' AND regionvals.rank > '0' ORDER BY regionvals.rank, regionvals.name";
+				$sql = "SELECT regionvals.rank, regionvals.name, regionvals.value FROM regions, regionvals WHERE regions.region = regionvals.region AND regionvals.hub = '" . $db->Quote($hub) . "' AND regions.region = '" . $db->Quote($region) . "' AND datetime = '" . $db->Quote($dt) . "' AND regionvals.period = '" . $db->Quote($period[$pidx]["key"]) . "' AND regionvals.rank > '0' ORDER BY regionvals.rank, regionvals.name";
 				$db->setQuery($sql);
 				$results = $db->loadObjectList();
 				if ($results) 
