@@ -542,7 +542,7 @@ class plgUsageTools extends JPlugin
 	{
 		$database =& JFactory::getDBO();
 
-		$sql = "SELECT COUNT(datetime) FROM #__stats_topvals WHERE LEFT(datetime,7) = '" . mysql_escape_string($yearmonth) . "' AND period = '" . mysql_escape_string($period) . "'";
+		$sql = "SELECT COUNT(datetime) FROM #__stats_topvals WHERE LEFT(datetime,7) = " . $db->Quote($yearmonth) . " AND period = " . $db->Quote($period);
 		$database->setQuery($sql);
 		$result = $database->loadResult();
 

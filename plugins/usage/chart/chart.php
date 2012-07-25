@@ -76,7 +76,7 @@ class plgUsageChart extends JPlugin
 	 */
 	private function check_for_data(&$db, $yearmonth, $period)
 	{
-		$sql = "SELECT COUNT(datetime) FROM totalvals WHERE datetime LIKE '" . mysql_escape_string($yearmonth) . "-%' AND period = '" . mysql_escape_string($period) . "'";
+		$sql = "SELECT COUNT(datetime) FROM totalvals WHERE datetime LIKE '" . $db->getEscaped($yearmonth) . "-%' AND period = " . $db->Quote($period);
 		$db->setQuery($sql);
 		$result = $db->loadResult();
 

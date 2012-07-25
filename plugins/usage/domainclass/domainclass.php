@@ -92,7 +92,7 @@ class plgUsageDomainclass extends JPlugin
 
 		// Look up class list information...
 		$classname = '';
-		$sql = "SELECT name, valfmt, size FROM classes WHERE class = '" . mysql_escape_string($class) . "'";
+		$sql = "SELECT name, valfmt, size FROM classes WHERE class = " . $db->Quote($class);
 		$db->setQuery($sql);
 		$result = $db->loadRow();
 		if ($result) 
@@ -133,7 +133,7 @@ class plgUsageDomainclass extends JPlugin
 			{
 				// Calculate the total value for this classlist...
 				$classlistset = array();
-				$sql = "SELECT classvals.name, classvals.value FROM classes, classvals WHERE classes.class = classvals.class AND classvals.hub = '" . mysql_escape_string($hub) . "' AND classes.class = '" . mysql_escape_string($class) . "' AND classvals.datetime = '" . mysql_escape_string($dt) . "' AND classvals.period = '" . mysql_escape_string($period[$pidx]["key"]) . "' AND classvals.rank = '0'";
+				$sql = "SELECT classvals.name, classvals.value FROM classes, classvals WHERE classes.class = classvals.class AND classvals.hub = " . $db->Quote($hub) . " AND classes.class = " . $db->Quote($class) . " AND classvals.datetime = " . $db->Quote($dt) . " AND classvals.period = " . $db->Quote($period[$pidx]["key"]) . " AND classvals.rank = '0'";
 				$db->setQuery($sql);
 				$results = $db->loadObjectList();
 				if ($results) 
@@ -159,7 +159,7 @@ class plgUsageDomainclass extends JPlugin
 
 				// Calculate the class values for the classlist...
 				$rank = 1;
-				$sql = "SELECT classvals.rank, classvals.name, classvals.value FROM classes, classvals WHERE classes.class = classvals.class AND classvals.hub = '" . mysql_escape_string($hub) . "' AND classes.class = '" . mysql_escape_string($class) . "' AND datetime = '" . mysql_escape_string($dt) . "' AND classvals.period = '" . mysql_escape_string($period[$pidx]["key"]) . "' AND classvals.rank > '0' ORDER BY classvals.rank, classvals.name";
+				$sql = "SELECT classvals.rank, classvals.name, classvals.value FROM classes, classvals WHERE classes.class = classvals.class AND classvals.hub = '" . $db->Quote($hub) . " AND classes.class = " . $db->Quote($class) . " AND datetime = " . $db->Quote($dt) . " AND classvals.period = " . $db->Quote($period[$pidx]["key"]) . " AND classvals.rank > '0' ORDER BY classvals.rank, classvals.name";
 				$db->setQuery($sql);
 				$results = $db->loadObjectList();
 				if ($results) 
