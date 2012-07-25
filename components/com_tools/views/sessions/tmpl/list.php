@@ -32,6 +32,16 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $juser =& JFactory::getUser();
+
+$newSession = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->option . '&task=invoke&app=' . $this->toolname . '&version='. $this->version), 'server');
+if (strstr($newSession, '?'))
+{
+	$newSession .= '&amp;newinstance=1';
+}
+else 
+{
+	$newSession .= '?newinstance=1';
+}
 ?>
 <div id="content-header" class="full">
 	<h2><?php echo JText::_('My Sessions'); ?></h2>
@@ -53,7 +63,7 @@ $juser =& JFactory::getUser();
 		<tfoot>
 			<tr>
 				<td colspan="4">
-					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=invoke&app=' . $this->toolname . '&version='. $this->version . '&newinstance=1');?>">
+					<a href="<?php echo $newSession; ?>">
 						<?php echo JText::_('Start new session'); ?>
 					</a>
 				</td>
