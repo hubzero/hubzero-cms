@@ -940,7 +940,7 @@ class JRouterSite extends JRouter
 			if (is_numeric($segments[0]))
 				$query .= " AND #__content.sectionid=" . $db->Quote($segments[0]) . " ";
 			else
-				$query .= " AND #__sections.alias='" . $db->Quote($segments[0]) . " ";
+				$query .= " AND #__sections.alias=" . $db->Quote($segments[0]) . " ";
 
 			$query .= " AND #__content.state='1' LIMIT 1;";
 		}
