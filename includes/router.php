@@ -891,11 +891,11 @@ class JRouterSite extends JRouter
 			if (!empty($alias)) {
 
 				$query = "SELECT #__content.id from `#__content`, `#__categories`, `#__sections` WHERE " .
-						"#__content.alias='" . mysql_real_escape_string($alias) . "' AND ";
+						"#__content.alias=" . $db->Quote($alias) . " AND ";
 
 				if (!empty($category))
-					$query .= "#__content.catid=#__categories.id AND " . "#__categories.alias='" . mysql_real_escape_string($category) . "' AND " .
-					"#__content.sectionid=#__sections.id AND " . "#__sections.alias='" . mysql_real_escape_string($section) . "'";
+					$query .= "#__content.catid=#__categories.id AND " . "#__categories.alias=" . $db->Quote($category) . " AND " .
+					"#__content.sectionid=#__sections.id AND " . "#__sections.alias=" . $db->Quote($section) . "";
 				else
 					$query .= "#__content.catid=0 AND #__content.sectionid=0";
 
@@ -925,23 +925,22 @@ class JRouterSite extends JRouter
 				"FROM `#__content`,`#__categories`,`#__sections` " .
 				"WHERE `#__content`.catid=`#__categories`.id AND `#__content`.sectionid=`#__sections`.id ";
 
-		$segments = array_map('mysql_real_escape_string', $segments);
 		if ($count == 3)
 		{
 			if (is_numeric($segments[2]))
-				$query .= " AND #__content.id='" . $segments[2] . "' ";
+				$query .= " AND #__content.id=" . $db->Quote($segments[2]) . " ";
 			else
-				$query .= " AND #__content.alias='" . $segments[2] . "' ";
+				$query .= " AND #__content.alias=" . $db->Quote($segments[2]) . " ";
 
 			if (is_numeric($segments[1]))
-				$query .= " AND #__content.catid='" . $segments[1] . "' ";
+				$query .= " AND #__content.catid=" . $db->Quote($segments[1]) . " ";
 			else
-				$query .= " AND #__categories.alias='" . $segments[1] . "' ";
+				$query .= " AND #__categories.alias=" . $db->Quote($segments[1]) . " ";
 
 			if (is_numeric($segments[0]))
-				$query .= " AND #__content.sectionid='" . $segments[0] . "' ";
+				$query .= " AND #__content.sectionid=" . $db->Quote($segments[0]) . " ";
 			else
-				$query .= " AND #__sections.alias='" . $segments[0] . "' ";
+				$query .= " AND #__sections.alias='" . $db->Quote($segments[0]) . " ";
 
 			$query .= " AND #__content.state='1' LIMIT 1;";
 		}
@@ -949,24 +948,24 @@ class JRouterSite extends JRouter
 		{
 			if (!empty($id)) {
 				$query = "SELECT #__content.id from `#__content`, `#__categories`, `#__sections` WHERE " .
-						"#__content.alias='" . $segments[1] . "' AND " .
+						"#__content.alias=" . $db->Quote($segments[1]) . " AND " .
 						"#__content.catid=#__categories.id AND " .
-						"#__categories.alias='" . $segments[0] . "' AND " .
+						"#__categories.alias=" . $db->Quote($segments[0]) . " AND " .
 						"#__categories.section=#__sections.id AND " .
 						"#__sections.id=(SELECT sectionid FROM `#__content` WHERE id='" . $id . "') AND #__content.state='1' LIMIT 1;";
 			} else {
 				$query = "SELECT #__content.id from `#__content`, `#__categories`, `#__sections` WHERE " .
-						"#__content.alias='" . $segments[1] . "' AND " .
+						"#__content.alias=" . $db->Quote($segments[1]) . " AND " .
 						"#__content.catid=#__categories.id AND " .
-						"#__categories.alias='" . $segments[0] . "' AND " .
+						"#__categories.alias=" . $db->Quote($segments[0]) . " AND " .
 						"#__categories.section=#__sections.id AND " .
-						"#__sections.alias='" . $segments[0] . "' AND #__content.state='1' LIMIT 1;";
+						"#__sections.alias=" . $db->Quote($segments[0]) . " AND #__content.state='1' LIMIT 1;";
 			}
 		}
 		else if ($count == 1 && 0)
 		{
 			$query = "SELECT #__content.id from `#__content`, `#__categories`, `#__sections` WHERE " .
-					"#__content.alias='" . $segments[0] . "' AND " .
+					"#__content.alias=" . $db->Quote($segments[0]) . " AND " .
 					"#__content.catid=(SELECT catid FROM `#__content` WHERE id='" . $id ."') AND #__content.state='1' LIMIT 1;";
 		}
 		else if ($count == 1)
@@ -976,10 +975,10 @@ class JRouterSite extends JRouter
 			$section = $segments[0];
 
 			$query = "SELECT #__content.id from `#__content`, `#__categories`, `#__sections` WHERE " .
-					"#__content.alias='" . $page . "' AND " .
+					"#__content.alias=" . $db->Quote($page) . " AND " .
 					"(" .
-					"(#__content.catid=#__categories.id AND " . "#__categories.alias='" . $category . "' AND " .
-					"#__content.sectionid=#__sections.id AND " . "#__sections.alias='" . $section . "')" .
+					"(#__content.catid=#__categories.id AND " . "#__categories.alias=" . $db->Quote($category) . " AND " .
+					"#__content.sectionid=#__sections.id AND " . "#__sections.alias=" . $db->Quote($section) . ")" .
 					" OR " .
 					"(#__content.catid=0 AND #__content.sectionid=0) " .
 					") AND #__content.state='1' LIMIT 1;";
@@ -1011,11 +1010,11 @@ class JRouterSite extends JRouter
 			}
 
 			$query = "SELECT #__content.id from `#__content`, `#__categories`, `#__sections` WHERE " .
-					"#__content.alias='" . $page . "' AND " .
+					"#__content.alias=" . $db->Quote($page) . " AND " .
 					"#__content.catid=#__categories.id AND " .
-					"#__categories.alias='" . $category . "' AND " .
+					"#__categories.alias=" . $db->Quote($category) . " AND " .
 					"#__categories.section=#__sections.id AND " .
-					"#__sections.alias='" . $section . "' AND #__content.state='1' LIMIT 1;";
+					"#__sections.alias=" . $db->Quote($section) . " AND #__content.state='1' LIMIT 1;";
 		}
 
 		$db->setQuery($query);
