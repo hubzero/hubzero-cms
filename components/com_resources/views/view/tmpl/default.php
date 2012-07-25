@@ -246,9 +246,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 			// View more link?			
 			if ($supdocs > 0 && $otherdocs > 0) {
-				$supln .= ' <li class="otherdocs"><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$resource->id.a.'active=supportingdocs').'" title="'.JText::_('View All').' '.$realdocs.' '.JText::_('Supporting Documents').' ">'.$otherdocs.' '.JText::_('more').' &rsaquo;</a></li>'."\n";
+				$supln .= ' <li class="otherdocs"><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$resource->id.'&active=supportingdocs').'" title="'.JText::_('View All').' '.$realdocs.' '.JText::_('Supporting Documents').' ">'.$otherdocs.' '.JText::_('more').' &rsaquo;</a></li>'."\n";
 			} else if (!$supdocs && $realdocs > 0 && $tab != 'play' && is_object($helper->firstChild)) {
-				$html .= "\t\t".'<p class="supdocs"><span class="viewalldocs"><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$resource->id.a.'active=supportingdocs').'">'.JText::_('Additional materials available').' ('.$realdocs.')</a></span></p>'."\n";
+				$html .= "\t\t".'<p class="supdocs"><span class="viewalldocs"><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$resource->id.'&active=supportingdocs').'">'.JText::_('Additional materials available').' ('.$realdocs.')</a></span></p>'."\n";
 			}
 
 			$supln .= '</ul>'."\n";
