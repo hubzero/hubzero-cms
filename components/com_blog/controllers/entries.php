@@ -87,7 +87,7 @@ class BlogControllerEntries extends Hubzero_Controller
 				'index.php?option=' . $this->_option
 			);
 		}
-		if ($this->_task) 
+		if ($this->_task && $this->_task != 'display') 
 		{
 			if ($this->_task != 'entry' && $this->_task != 'savecomment' && $this->_task != 'deletecomment') 
 			{
@@ -130,7 +130,7 @@ class BlogControllerEntries extends Hubzero_Controller
 	protected function _buildTitle()
 	{
 		$this->_title = ($this->config->get('title')) ? $this->config->get('title') : JText::_(strtoupper($this->_option));
-		if ($this->_task) 
+		if ($this->_task && $this->_task != 'display') 
 		{
 			if ($this->_task != 'entry' && $this->_task != 'savecomment' && $this->_task != 'deletecomment') 
 			{
