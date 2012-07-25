@@ -81,9 +81,15 @@ class ResourcesHtml
 		$text = preg_replace('/<!--.+?-->/', '', $text);
 		$text = preg_replace('/{.+?}/', '', $text);
 		$text = strip_tags($text);
-		if (strlen($text) > $desclen) $elipse = true;
+		if (strlen($text) > $desclen) 
+		{
+			$elipse = true;
+		}
 		$text = substr($text, 0, $desclen);
-		if ($elipse) $text .= '&#8230;';
+		if ($elipse) 
+		{
+			$text .= '&#8230;';
+		}
 		$text = trim($text);
 
 		return $text;

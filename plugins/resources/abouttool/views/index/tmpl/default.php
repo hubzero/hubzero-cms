@@ -120,7 +120,7 @@ if (preg_match("/([\<])([^\>]{1,})*([\>])/i", $maintext)) {
 <div class="subject abouttab">
 <?php
 // Screenshots
-$ss = new ResourceScreenshot($this->database);
+$ss = new ResourcesScreenshot($this->database);
 $shots = ResourcesHtml::screenshots($this->resource->id, $this->resource->created, $this->config->get('uploadpath'), $this->config->get('uploadpath'), $this->resource->versionid, $ss->getScreenshots($this->resource->id, $this->resource->versionid), 1);
 if ($shots) {
 ?>
