@@ -103,7 +103,7 @@ class plgResourcesWishlist extends JPlugin
 				$rtrn = 'metadata';
 			}
 		}
-		if (!$resource->_type->_params->get('plg_citations')) 
+		if (!$resource->_type->_params->get('plg_wishlist')) 
 		{
 			return $arr;
 		}
