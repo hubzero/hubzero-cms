@@ -65,10 +65,10 @@ class ResourcesElementRadio extends ResourcesElement
 	public function fetchElement($name, $value, &$element, $control_name)
 	{
 		$label = $element->label ? $element->label : $element->name;
-		
+
 		$html = array();
 		$html[] = '<fieldset>';
-		
+
 		$output = '<legend id="'.$control_name.$name.'-lgd"';
 		if (isset($element->description) && $element->description) 
 		{
@@ -81,9 +81,9 @@ class ResourcesElementRadio extends ResourcesElement
 		$output .= JText::_($label);
 		$output .= (isset($element->required) && $element->required) ? ' <span class="required">'.JText::_('Required').'</span>' : '';
 		$output .= '</legend>';
-		
+
 		$html[] = $output;
-		
+
 		$k = 0;
 		foreach ($element->options as $option)
 		{
@@ -102,18 +102,18 @@ class ResourcesElementRadio extends ResourcesElement
 			} else {
 				$sel .= ($option->value == $value ? ' checked="checked"' : '');
 			}
-			
+
 			$html[] = '<label for="'. $control_name . '-' . $name . $option->value . '">';
 			$html[] = '<input class="option" type="radio" name="' . $control_name . '[' . $name . ']" id="'. $control_name . '-' . $name . $option->value . '" value="' . $option->value . '"' . $sel . ' />';
 			$html[] = JText::_($option->label) . '</label>';
-			
+
 			$k++;
 		}
 		$html[] = '</fieldset>';
 
 		return implode("\n", $html);
 	}
-	
+
 	/**
 	 * Return any options this element may have
 	 *
@@ -126,9 +126,9 @@ class ResourcesElementRadio extends ResourcesElement
 	public function fetchOptions($name, $value, &$element, $control_name)
 	{
 		$html = array();
-		
+
 		$k = 0;
-		
+
 		$html[] = '<table class="admintable" id="'.$name.'">';
 		$html[] = '<tfoot>';
 		$html[] = '<tr>';
@@ -147,7 +147,7 @@ class ResourcesElementRadio extends ResourcesElement
 		}
 		$html[] = '</tbody>';
 		$html[] = '</table>';
-		
+
 		return implode("\n", $html);
 	}
 }

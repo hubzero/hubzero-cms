@@ -34,17 +34,12 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Controller');
 
 /**
- * Short description for 'ResourcesController'
- * 
- * Long description (if any) ...
+ * Resources controller class
  */
 class ResourcesControllerResources extends Hubzero_Controller
 {
-
 	/**
-	 * Short description for 'execute'
-	 * 
-	 * Long description (if any) ...
+	 * Execute a task
 	 * 
 	 * @return     void
 	 */
@@ -87,7 +82,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 			case 'plugin':     $this->plugin();     break;
 			case 'savetags':   $this->savetags();   break;
 
-			case 'selectpresentation':	$this->selectPresentation(); 	break;
+			case 'selectpresentation': $this->selectPresentation(); break;
 
 			default: $this->intro(); break;
 		}
@@ -323,11 +318,9 @@ class ResourcesControllerResources extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'browsetags'
+	 * Browse resources by tags
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	protected function browsetags()
 	{
@@ -634,9 +627,8 @@ class ResourcesControllerResources extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'play'
-	 * 
-	 * Long description (if any) ...
+	 * 'play' a resource
+	 * This displays a Breeze presentation, iframe, Google doc viewer, etc.
 	 * 
 	 * @return     void
 	 */
@@ -712,7 +704,10 @@ class ResourcesControllerResources extends Hubzero_Controller
 			// Output HTML
 			if ($this->getError()) 
 			{
-				$view->setError($this->getError());
+				foreach ($this->getErrors() as $error)
+				{
+					$view->setError($error);
+				}
 			}
 			$view->display();
 		} 
@@ -724,30 +719,28 @@ class ResourcesControllerResources extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'selectPresentation'
+	 * Select a presentation
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	protected function selectPresentation()
 	{
-		$presentation = JRequest::getVar("presentation", 0);
+		$presentation = JRequest::getVar('presentation', 0);
 
 		$helper = new ResourcesHelper($presentation, $this->database);
 		$helper->getFirstChild();
 		$resid = $helper->firstChild->id;
 
-		$this->_redirect = JRoute::_('index.php?option=com_resources&id=' . $presentation . '&task=watch&resid=' . $resid . '&tmpl=component');
+		$this->setRedirect(
+			JRoute::_('index.php?option=com_resources&id=' . $presentation . '&task=watch&resid=' . $resid . '&tmpl=component')
+		);
 		return;
 	}
 
 	/**
-	 * Short description for 'preWatch'
+	 * Perform a some setup needed for presenter()
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     array Return description (if any) ...
+	 * @return     array
 	 */
 	protected function preWatch()
 	{
@@ -758,8 +751,8 @@ class ResourcesControllerResources extends Hubzero_Controller
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'presenter' . DS . 'lib' . DS . 'helper.php');
 
 		//get the presentation id
-		//$id = JRequest::getVar("id","");
-		$resid = JRequest::getVar("resid","");
+		//$id = JRequest::getVar('id', '');
+		$resid = JRequest::getVar('resid', '');
 		if (!$resid) 
 		{
 			$this->setError(JText::_('Unable to find presentation.'));
@@ -812,11 +805,11 @@ class ResourcesControllerResources extends Hubzero_Controller
 			$media = JFolder::files($media_path, '.mp4|.webm|.ogv|.m4v|.mp3', false, false);
 			foreach ($media as $m) 
 			{
-				$ext[] = array_pop(explode(".",$m));
+				$ext[] = array_pop(explode('.', $m));
 			}
 
 			//if we dont have all the necessary media formats
-			if ((in_array("mp4", $ext) && count($ext) < 3) || (in_array("mp3", $ext) && count($ext) < 2)) 
+			if ((in_array('mp4', $ext) && count($ext) < 3) || (in_array('mp3', $ext) && count($ext) < 2)) 
 			{
 				$this->setError(JText::_('Missing necessary media formats for video or audio.'));
 			}
@@ -843,7 +836,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 
 			//make sure for each of the slide videos we have all three formats
 			//and has a backup image for the slide
-			foreach($slide_video as $k => $v) 
+			foreach ($slide_video as $k => $v) 
 			{
 				if (count($v) < 3) 
 				{
@@ -866,9 +859,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'watch'
-	 * 
-	 * Long description (if any) ...
+	 * Display presenter
 	 * 
 	 * @return     void
 	 */
@@ -878,18 +869,18 @@ class ResourcesControllerResources extends Hubzero_Controller
 		$jdoc =& JFactory::getDocument();
 
 		//add the HUBpresenter stylesheet
-		$jdoc->addStyleSheet("/components/com_resources/presenter/css/app.css");
+		$jdoc->addStyleSheet("/components/" . $this->_option . "/presenter/css/app.css");
 
 		//add the HUBpresenter required javascript files
 		$jdoc->addScript("https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js");
 		$jdoc->addScript("https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js");
-		$jdoc->addScript("/components/com_resources/presenter/js/jquery.easing.js");
-		$jdoc->addScript("/components/com_resources/presenter/js/flash.detect.js");
-		$jdoc->addScript("/components/com_resources/presenter/js/jquery.scrollto.js");
-		$jdoc->addScript("/components/com_resources/presenter/js/jquery.touch-punch.js");
-		$jdoc->addScript("/components/com_resources/presenter/js/jquery.hotkeys.js");
-		$jdoc->addScript("/components/com_resources/presenter/js/flowplayer.js");
-		$jdoc->addScript("/components/com_resources/presenter/js/app.js");
+		$jdoc->addScript("/components/" . $this->_option . "/presenter/js/jquery.easing.js");
+		$jdoc->addScript("/components/" . $this->_option . "/presenter/js/flash.detect.js");
+		$jdoc->addScript("/components/" . $this->_option . "/presenter/js/jquery.scrollto.js");
+		$jdoc->addScript("/components/" . $this->_option . "/presenter/js/jquery.touch-punch.js");
+		$jdoc->addScript("/components/" . $this->_option . "/presenter/js/jquery.hotkeys.js");
+		$jdoc->addScript("/components/" . $this->_option . "/presenter/js/flowplayer.js");
+		$jdoc->addScript("/components/" . $this->_option . "/presenter/js/app.js");
 
 		//do we have javascript?
 		$js = JRequest::getVar("tmpl", "");
@@ -915,14 +906,14 @@ class ResourcesControllerResources extends Hubzero_Controller
 			{
 				// Instantiate a new view
 				$view = new JView(array('name'=>'view', 'layout'=>'watch'));
-				$view->option = $this->_option;
-				$view->config = $this->config;
+				$view->option   = $this->_option;
+				$view->config   = $this->config;
 				$view->database = $this->database;
 				$view->manifest = $manifest;
 				$view->content_folder = $content_folder;
-				$view->pid = $this->_id;
-				$view->resid = JRequest::getVar("resid", "");
-				$view->doc = $jdoc;
+				$view->pid      = $this->_id;
+				$view->resid    = JRequest::getVar('resid', '');
+				$view->doc      = $jdoc;
 
 				// Output HTML
 				if ($this->getError()) 
@@ -942,9 +933,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'video'
-	 * 
-	 * Long description (if any) ...
+	 * Display an HTML5 video
 	 * 
 	 * @return     void
 	 */
@@ -958,14 +947,14 @@ class ResourcesControllerResources extends Hubzero_Controller
 		$jdoc->_scripts = array();
 
 		//add the HUBpresenter stylesheet
-		$jdoc->addStyleSheet("/components/com_resources/assets/css/resources.css");
+		$jdoc->addStyleSheet("/components/" . $this->_option . "/assets/css/resources.css");
 
 		//add the required javascript files
 		$jdoc->addScript("https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js");
 		$jdoc->addScript("https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js");
-		$jdoc->addScript("/components/com_resources/presenter/js/flowplayer.js");
-		$jdoc->addScript("/components/com_resources/video/js/video.js");
-		$jdoc->addStyleSheet("/components/com_resources/video/css/video.css");
+		$jdoc->addScript("/components/" . $this->_option . "/presenter/js/flowplayer.js");
+		$jdoc->addScript("/components/" . $this->_option . "/video/js/video.js");
+		$jdoc->addStyleSheet("/components/" . $this->_option . "/video/css/video.css");
 
 		//load resource
 		$activechild = new ResourcesResource($this->database);
@@ -987,7 +976,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 
 		//build the rest of the resource path and combine with base
 		$path = ResourcesHtml::build_path($activechild->created, $activechild->id, '');
-		$path =  $base . $path;
+		$path = $base . $path;
 
 		//get the videos
 		$videos = JFolder::files(JPATH_ROOT . DS . $path, '.mp4|.MP4|.ogv|.OGV|.webm|.WEBM');
@@ -995,17 +984,20 @@ class ResourcesControllerResources extends Hubzero_Controller
 		$subs = JFolder::files(JPATH_ROOT . DS . $path, '.srt|.SRT');
 
 		// Instantiate a new view
-		$view = new JView(array('name'=>'view', 'layout'=>'video'));
-		$view->option = $this->_option;
-		$view->config = $this->config;
+		$view = new JView(array(
+			'name'   => 'view', 
+			'layout' => 'video'
+		));
+		$view->option   = $this->_option;
+		$view->config   = $this->config;
 		$view->database = $this->database;
 
-		$view->path = $path;
-		$view->videos = $videos;
-		$view->subs = $subs;
+		$view->path     = $path;
+		$view->videos   = $videos;
+		$view->subs     = $subs;
 
-		$view->width = $width;
-		$view->height = $height;
+		$view->width    = $width;
+		$view->height   = $height;
 
 		// Output HTML
 		if ($this->getError()) 
@@ -1019,11 +1011,9 @@ class ResourcesControllerResources extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'view'
+	 * View a resource
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	protected function view()
 	{
@@ -1111,15 +1101,15 @@ class ResourcesControllerResources extends Hubzero_Controller
 			);
 			$pathway->addItem(
 				stripslashes($group->get('description')),
-				JRoute::_('index.php?option=com_groups&gid='.$resource->group_owner)
-				);
+				JRoute::_('index.php?option=com_groups&gid=' . $resource->group_owner)
+			);
 			$pathway->addItem(
 				'Resources',
-				JRoute::_('index.php?option=com_groups&gid='.$resource->group_owner.'&active=resources')
+				JRoute::_('index.php?option=com_groups&gid=' . $resource->group_owner . '&active=resources')
 			);
 			$pathway->addItem(
 				$resource->getTypeTitle(),
-				JRoute::_('index.php?option=com_groups&gid='.$resource->group_owner.'&active=resources&area='.$typenorm)
+				JRoute::_('index.php?option=com_groups&gid=' . $resource->group_owner . '&active=resources&area=' . $typenorm)
 			);
 		} 
 		else 
@@ -1127,7 +1117,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 			$pathway =& $app->getPathway();
 			$pathway->addItem(
 				$resource->getTypeTitle(),
-				JRoute::_('index.php?option=' . $this->_option.'&type='.$typenorm)
+				JRoute::_('index.php?option=' . $this->_option . '&type=' . $typenorm)
 			);
 		}
 
@@ -1508,11 +1498,9 @@ class ResourcesControllerResources extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'feed'
+	 * Display an RSS feed
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	protected function feed()
 	{
@@ -1535,7 +1523,9 @@ class ResourcesControllerResources extends Hubzero_Controller
 		// Ensure we have an ID or alias to work with
 		if (!$id && !$alias) 
 		{
-			$this->_redirect = JRoute::_('index.php?option=' . $this->_option);
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option)
+			);
 			return;
 		}
 
@@ -2165,9 +2155,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'sourcecode'
-	 * 
-	 * Long description (if any) ...
+	 * Download source code for a tool
 	 * 
 	 * @return     void
 	 */
@@ -2231,9 +2219,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'license'
-	 * 
-	 * Long description (if any) ...
+	 * Display a license for a resource
 	 * 
 	 * @return     void
 	 */
@@ -2260,12 +2246,12 @@ class ResourcesControllerResources extends Hubzero_Controller
 		{
 			$row = new ResourcesResource($this->database);
 			$row->load($resource);
-			
+
 			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'license.php');
 
 			$rt = new ResourcesLicense($this->database);
 			$rt->load('custom' . $resource);
-			
+
 			$row->license = stripslashes($rt->text);
 		}
 
@@ -2297,15 +2283,16 @@ class ResourcesControllerResources extends Hubzero_Controller
 		// Output HTML
 		if ($this->getError()) 
 		{
-			$view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$view->setError($error);
+			}
 		}
 		$view->display();
 	}
 
 	/**
-	 * Short description for 'citation'
-	 * 
-	 * Long description (if any) ...
+	 * Download a citation for a resource
 	 * 
 	 * @return     void
 	 */
@@ -2370,7 +2357,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		}
 
 		// Build the URL for this resource
-		$sef = JRoute::_('index.php?option=' . $this->_option.'&id='.$row->id);
+		$sef = JRoute::_('index.php?option=' . $this->_option . '&id=' . $row->id);
 
 		$juri =& JURI::getInstance();
 		$url = $juri->base() . ltrim($sef, DS);
@@ -2384,35 +2371,38 @@ class ResourcesControllerResources extends Hubzero_Controller
 				{
 					case 'misc':
 					default:
-						$doc .= "%0 ".JText::_('COM_RESOURCES_GENERIC')."\r\n";
+						$doc .= "%0 " . JText::_('COM_RESOURCES_GENERIC') . "\r\n";
 						break; // generic
 				}
 				$doc .= "%D " . JHTML::_('date', $thedate, '%Y') . "\r\n";
 				$doc .= "%T " . trim(stripslashes($row->title)) . "\r\n";
 
-				$author_array = explode(";", $row->author);
+				$author_array = explode(';', $row->author);
 				foreach($author_array as $auth)
 				{
 					$auth = preg_replace('/{{(.*?)}}/s', '', $auth);
-					if (!strstr($auth,',')) {
-						$bits = explode(' ',$auth);
-						$n = array_pop($bits).', ';
-						$bits = array_map('trim',$bits);
-						$auth = $n.trim(implode(' ',$bits));
+					if (!strstr($auth, ',')) 
+					{
+						$bits = explode(' ', $auth);
+						$n = array_pop($bits) . ', ';
+						$bits = array_map('trim', $bits);
+						$auth = $n . trim(implode(' ', $bits));
 					}
 					$doc .= "%A " . trim($auth) . "\r\n";
 				}
 				$doc .= "%U " . $url . "\r\n";
-				if ($thedate) {
+				if ($thedate) 
+				{
 					$doc .= "%8 " . JHTML::_('date', $thedate, '%b') . "\r\n";
 				}
 				//$doc .= "\r\n";
-				if ($handle) {
+				if ($handle) 
+				{
 					$doc .= "%1 " .'doi:'.  $handle;
 					$doc .= "\r\n";
 				}
 
-				$file = 'resource'.$id.'.enw';
+				$file = 'resource' . $id . '.enw';
 				$mime = 'application/x-endnote-refer';
 			break;
 
@@ -2422,10 +2412,10 @@ class ResourcesControllerResources extends Hubzero_Controller
 
 				$bibtex = new Structures_BibTex();
 				$addarray = array();
-				$addarray['type']    = 'misc';
-				$addarray['cite']    = $this->_config['sitename'].$row->id;
-				$addarray['title']   = stripslashes($row->title);
-				$auths = explode(';',$row->author);
+				$addarray['type']  = 'misc';
+				$addarray['cite']  = $this->_config['sitename'] . $row->id;
+				$addarray['title'] = stripslashes($row->title);
+				$auths = explode(';', $row->author);
 				for ($i=0, $n=count($auths); $i < $n; $i++)
 				{
 					$author = trim($auths[$i]);
@@ -2475,14 +2465,12 @@ class ResourcesControllerResources extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'serveup'
+	 * Serve up a file
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      boolean $inline Parameter description (if any) ...
-	 * @param      string $p Parameter description (if any) ...
-	 * @param      string $f Parameter description (if any) ...
-	 * @param      string $mime Parameter description (if any) ...
+	 * @param      boolean $inline Disposition
+	 * @param      string  $p      File path
+	 * @param      string  $f      File name
+	 * @param      string  $mime   Mimetype
 	 * @return     void
 	 */
 	protected function serveup($inline = false, $p, $f, $mime)
@@ -2515,24 +2503,22 @@ class ResourcesControllerResources extends Hubzero_Controller
 
 		// No encoding - we aren't using compression... (RFC1945)
 
-		$this->readfile_chunked($p.$f);
+		$this->readfile_chunked($p . $f);
 		// The caller MUST 'die();'
 	}
 
 	/**
-	 * Short description for 'readfile_chunked'
-	 * 
-	 * Long description (if any) ...
+	 * Read file contents
 	 * 
 	 * @param      unknown $filename Parameter description (if any) ...
 	 * @param      boolean $retbytes Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	protected function readfile_chunked($filename,$retbytes=true)
+	protected function readfile_chunked($filename, $retbytes=true)
 	{
 		$chunksize = 1*(1024*1024); // How many bytes per chunk
 		$buffer = '';
-		$cnt =0;
+		$cnt = 0;
 		$handle = fopen($filename, 'rb');
 		if ($handle === false) 
 		{
@@ -2558,7 +2544,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 	/**
 	 * Save tags on a resource
 	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	protected function savetags()
 	{
@@ -2601,9 +2587,21 @@ class ResourcesControllerResources extends Hubzero_Controller
 		}
 
 		// Check if they're a site admin (from Joomla)
-		if ($this->juser->authorize($this->_option, 'manage'))
+		if (version_compare(JVERSION, '1.6', 'lt'))
 		{
-			return true;
+			if ($this->juser->authorize($this->_option, 'manage')) 
+			{
+				return true;
+			}
+		}
+		else 
+		{
+			$this->config->set('access-admin-component', $this->juser->authorise('core.admin', null));
+			$this->config->set('access-manage-component', $this->juser->authorise('core.manage', null));
+			if ($this->config->get('access-admin-component') || $this->config->get('access-manage-component'))
+			{
+				return true;
+			}
 		}
 
 		// Check if they're the resource creator
@@ -2630,7 +2628,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 	 *
 	 * @param      object $resource ResourcesResource
 	 * @param      object $juser    JUser (optional)
-	 *  @return     boolean True if user has access to a group-owned resource
+	 * @return     boolean True if user has access to a group-owned resource
 	 */
 	private function checkGroupAccess($resource, $juser=null)
 	{
@@ -2642,9 +2640,21 @@ class ResourcesControllerResources extends Hubzero_Controller
 		if (!$juser->get('guest')) 
 		{
 			// Check if they're a site admin (from Joomla)
-			if ($juser->authorize($this->_option, 'manage')) 
+			if (version_compare(JVERSION, '1.6', 'lt'))
 			{
-				return false;
+				if ($juser->authorize($this->_option, 'manage')) 
+				{
+					return false;
+				}
+			}
+			else 
+			{
+				$this->config->set('access-admin-component', $juser->authorise('core.admin', null));
+				$this->config->set('access-manage-component', $juser->authorise('core.manage', null));
+				if ($this->config->get('access-admin-component') || $this->config->get('access-manage-component'))
+				{
+					return true;
+				}
 			}
 
 			ximport('Hubzero_User_Helper');
@@ -2709,12 +2719,10 @@ class ResourcesControllerResources extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'getUsersGroups'
+	 * Push group aliases into an array for easier searching
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $groups Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      array $groups Users' groups
+	 * @return     array
 	 */
 	public function getUsersGroups($groups)
 	{
@@ -2774,7 +2782,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 	/**
 	 * Check if a user has access to a tool
 	 * 
-	 * @param      unknown $toolid Parameter description (if any) ...
+	 * @param      integer $toolid Tool ID
 	 * @return     boolean True if user has access, false if not
 	 */
 	private function check_toolaccess($toolid)

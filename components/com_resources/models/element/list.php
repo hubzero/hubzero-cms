@@ -65,7 +65,7 @@ class ResourcesElementList extends ResourcesElement
 
 		return JHTML::_('select.genericlist',  $options, $control_name.'['.$name.']', $class, 'value', 'text', $value, $control_name.'-'.$name);
 	}
-	
+
 	/**
 	 * Return any options this element may have
 	 *
@@ -78,9 +78,9 @@ class ResourcesElementList extends ResourcesElement
 	public function fetchOptions($name, $value, &$element, $control_name)
 	{
 		$html = array();
-		
+
 		$k = 0;
-		
+
 		$html[] = '<table class="admintable" id="'.$name.'">';
 		$html[] = '<caption>' . JText::_('Lists include blank "Select..." option unless made a required field') . '</caption>';
 		$html[] = '<tfoot>';
@@ -100,7 +100,7 @@ class ResourcesElementList extends ResourcesElement
 		}
 		$html[] = '</tbody>';
 		$html[] = '</table>';
-		
+
 		return implode("\n", $html);
 	}
 }

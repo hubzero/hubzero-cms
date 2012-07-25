@@ -1,20 +1,32 @@
 <?php
 /**
- * @package     Joomla.Platform
- * @subpackage  Registry
+ * @package		HUBzero CMS
+ * @author		Shawn Rice <zooley@purdue.edu>
+ * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
+ * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  *
- * @copyright   Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+// Check to ensure this file is within the rest of the framework
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Abstract Format for JRegistry
- *
- * @package     Joomla.Platform
- * @subpackage  Registry
- * @since       11.1
+ * Abstract Format for resources elements
  */
 abstract class ResourcesElementsFormat
 {
@@ -23,11 +35,7 @@ abstract class ResourcesElementsFormat
 	 * if it doesn't already exist.
 	 *
 	 * @param   string  $type  The format to load
-	 *
 	 * @return  object  Registry format handler
-	 *
-	 * @since   11.1
-	 * @throws  JException
 	 */
 	public static function getInstance($type)
 	{
@@ -70,10 +78,7 @@ abstract class ResourcesElementsFormat
 	 *
 	 * @param   object  $object   Data Source Object.
 	 * @param   array   $options  An array of options for the formatter.
-	 *
 	 * @return  string  Formatted string.
-	 *
-	 * @since   11.1
 	 */
 	abstract public function objectToString($object, $options = null);
 
@@ -82,10 +87,7 @@ abstract class ResourcesElementsFormat
 	 *
 	 * @param   string  $data     Formatted string
 	 * @param   array   $options  An array of options for the formatter.
-	 *
 	 * @return  object  Data Object
-	 *
-	 * @since   11.1
 	 */
 	abstract public function stringToObject($data, $options = null);
 }

@@ -36,7 +36,7 @@ class ResourcesElementGeo extends ResourcesElement
 	* @var		string
 	*/
 	protected $_name = 'Geo Location';
-	
+
 	/**
 	* Flag for if JS has been pushed to document or not
 	*
@@ -96,25 +96,25 @@ class ResourcesElementGeo extends ResourcesElement
 			$document->addScript('/components/com_resources/models/element/' . $script . '.js');
 			$this->_script = true;
 		}
-		
+
 		$size  = (isset($element->size)  ? 'size="' . $element->size . '"'               : '');
 		$class = (isset($element->class) ? 'class="geolocation ' . $element->class . '"' : 'class="geolocation"');
-		
+
 		$address = $this->_getValue('value', $value);
 		$lat = $this->_getValue('lat', $value);
 		$lat = (trim($lat)) ? $lat : '0.0';
 		$lng = $this->_getValue('lng', $value);
 		$lng = (trim($lng)) ? $lng : '0.0';
-		
+
 		$value = preg_replace('/<lat>(.*?)<\/lat>/i', '', $value);
 		$value = preg_replace('/<lng>(.*?)<\/lng>/i', '', $value);
-		
+
 		/*
-         * Required to avoid a cycle of encoding &
-         * html_entity_decode was used in place of htmlspecialchars_decode because
-         * htmlspecialchars_decode is not compatible with PHP 4
-         */
-        $value = htmlspecialchars(html_entity_decode($value, ENT_QUOTES), ENT_QUOTES);
+		 * Required to avoid a cycle of encoding &
+		 * html_entity_decode was used in place of htmlspecialchars_decode because
+		 * htmlspecialchars_decode is not compatible with PHP 4
+		 */
+		$value = htmlspecialchars(html_entity_decode($value, ENT_QUOTES), ENT_QUOTES);
 
 		$html  = '<input type="text" name="' . $control_name . '[' . $name . '][value]" id="' . $control_name . '-' . $name . '" value="' . $address . '" ' . $class . ' ' . $size . ' />';
 		$html .= '<input type="hidden" name="' . $control_name . '[' . $name . '][lat]" id="' . $control_name . '-' . $name . '-lat" value="' . $lat . '" />';
@@ -122,7 +122,7 @@ class ResourcesElementGeo extends ResourcesElement
 
 		return $html;
 	}
-	
+
 	/**
 	 * Return a value from tag wrappers
 	 *
@@ -136,7 +136,7 @@ class ResourcesElementGeo extends ResourcesElement
 		preg_match($pattern, $text, $matches);
 		return (isset($matches[1]) ? $matches[1] : '');
 	}
-	
+
 	/**
 	 * Display a value
 	 *
@@ -145,8 +145,6 @@ class ResourcesElementGeo extends ResourcesElement
 	 */
 	public function display($value)
 	{
-		//$value = preg_replace('/<lat>(.*?)<\/lat>/i', '', $value);
-		//$value = preg_replace('/<lng>(.*?)<\/lng>/i', '', $value);
 		return trim($this->_getValue('value', $value));
 	}
 }

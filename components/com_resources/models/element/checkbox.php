@@ -64,9 +64,9 @@ class ResourcesElementCheckbox extends ResourcesElement
 	public function fetchElement($name, $value, &$element, $control_name)
 	{
 		$label = $element->label ? $element->label : $element->name;
-		
+
 		$values = array();
-		
+
 		$pattern = "/<\d>(.*?)<\/\d>/i";
 		preg_match_all($pattern, $value, $matches);
 		if ($matches)
@@ -82,7 +82,7 @@ class ResourcesElementCheckbox extends ResourcesElement
 
 		$html = array();
 		$html[] = '<fieldset>';
-		
+
 		$output = '<legend id="'.$control_name.$name.'-lgd"';
 		if (isset($element->description) && $element->description) 
 		{
@@ -95,7 +95,7 @@ class ResourcesElementCheckbox extends ResourcesElement
 		$output .= JText::_($label);
 		$output .= (isset($element->required) && $element->required) ? ' <span class="required">'.JText::_('Required').'</span>' : '';
 		$output .= '</legend>';
-		
+
 		$html[] = $output;
 		$k = 0;
 		foreach ($element->options as $option)
@@ -126,7 +126,7 @@ class ResourcesElementCheckbox extends ResourcesElement
 
 		return implode("\n", $html);
 	}
-	
+
 	/**
 	 * Return any options this element may have
 	 *
@@ -139,9 +139,9 @@ class ResourcesElementCheckbox extends ResourcesElement
 	public function fetchOptions($name, $value, &$element, $control_name)
 	{
 		$html = array();
-		
+
 		$k = 0;
-		
+
 		$html[] = '<table class="admintable" id="'.$name.'">';
 		$html[] = '<tfoot>';
 		$html[] = '<tr>';
@@ -160,10 +160,10 @@ class ResourcesElementCheckbox extends ResourcesElement
 		}
 		$html[] = '</tbody>';
 		$html[] = '</table>';
-		
+
 		return implode("\n", $html);
 	}
-	
+
 	/**
 	 * Display the language for a language code
 	 *
@@ -180,7 +180,6 @@ class ResourcesElementCheckbox extends ResourcesElement
 		preg_match_all($pattern, $value, $matches);
 		if ($matches)
 		{
-			//print_r($matches[1]);
 			foreach ($matches[1] as $match)
 			{
 				$pattern = "/<\d>$match<\/\d>/i";
@@ -189,9 +188,8 @@ class ResourcesElementCheckbox extends ResourcesElement
 			}
 		}
 
-		//$values[] = (trim($value)) ? '<li>' . $value . '</li>' : '';
 		$values[] = '</ul>';
-		
+
 		return implode("\n", $values);
 	}
 }

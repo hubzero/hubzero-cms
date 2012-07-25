@@ -1,47 +1,57 @@
 <?php
 /**
- * @package     Joomla.Platform
- * @subpackage  Registry
+ * @package		HUBzero CMS
+ * @author		Shawn Rice <zooley@purdue.edu>
+ * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
+ * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  *
- * @copyright   Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+// Check to ensure this file is within the rest of the framework
 defined('_JEXEC') or die('Restricted access');
 
 include_once(dirname(__FILE__) . DS . 'format.php');
 include_once(dirname(__FILE__) . DS . 'element.php');
 
 /**
- * JRegistry class
+ * Resources elements class
+ * Used for rendering custom resources fields
  *
- * @package     Joomla.Platform
- * @subpackage  Registry
- * @since       11.1
  */
 class ResourcesElements
 {
 	/**
 	 * @var    string  The raw params string
-	 * @since  11.1
 	 */
 	protected $_raw = null;
 	
 	/**
 	 * @var    object  The XML params element
-	 * @since  11.1
 	 */
 	protected $_schema = null;
 	
 	/**
 	* @var    array  Loaded elements
-	* @since  11.1
 	*/
 	protected $_elements = array();
 
 	/**
 	* @var    array  Directories, where element types can be stored
-	* @since  11.1
 	*/
 	protected $_elementPath = array();
 	
@@ -49,7 +59,6 @@ class ResourcesElements
 	 * Registry Object
 	 *
 	 * @var    object
-	 * @since  11.1
 	 */
 	protected $data;
 
@@ -57,17 +66,14 @@ class ResourcesElements
 	 * Constructor
 	 *
 	 * @param   mixed  $data  The data to bind to the new JRegistry object.
-	 *
 	 * @return  void
-	 *
-	 * @since   11.1
 	 */
 	public function __construct($data = null, $setup = null)
 	{
 		$this->_elementPath[] = dirname(__FILE__) . DS . 'element';
-		
+
 		$this->_raw = $data;
-		
+
 		// Instantiate the internal data object.
 		$this->data = new stdClass;
 
@@ -91,8 +97,6 @@ class ResourcesElements
 	 * Magic function to clone the registry object.
 	 *
 	 * @return  JRegistry
-	 *
-	 * @since   11.1
 	 */
 	public function __clone()
 	{
@@ -103,8 +107,6 @@ class ResourcesElements
 	 * Magic function to render this object as a string using default args of toString method.
 	 *
 	 * @return  string
-	 *
-	 * @since   11.1
 	 */
 	public function __toString()
 	{
@@ -116,10 +118,7 @@ class ResourcesElements
 	 *
 	 * @param   string  $key      The name of the parameter.
 	 * @param   string  $default  An optional value for the parameter.
-	 *
 	 * @return  string  The value set, or the default if the value was not previously set (or null).
-	 *
-	 * @since   11.1
 	 */
 	public function def($key, $default = '')
 	{
@@ -132,10 +131,7 @@ class ResourcesElements
 	 * Check if a registry path exists.
 	 *
 	 * @param   string  $path  Registry path (e.g. joomla.content.showauthor)
-	 *
 	 * @return  boolean
-	 *
-	 * @since   11.1
 	 */
 	public function exists($path)
 	{
@@ -172,10 +168,7 @@ class ResourcesElements
 	 *
 	 * @param   string  $path     Registry path (e.g. joomla.content.showauthor)
 	 * @param   mixed   $default  Optional default value, returned if the internal value is null.
-	 *
 	 * @return  mixed  Value of entry or null
-	 *
-	 * @since   11.1
 	 */
 	public function get($path, $default = null)
 	{
@@ -222,10 +215,7 @@ class ResourcesElements
 	 * <pre>$registry = JRegistry::getInstance($id);</pre>
 	 *
 	 * @param   string  $id  An ID for the registry instance
-	 *
 	 * @return  object  The JRegistry object.
-	 *
-	 * @since   11.1
 	 */
 	public static function getInstance($id)
 	{
@@ -248,10 +238,7 @@ class ResourcesElements
 	 * Load a associative array of values into the default namespace
 	 *
 	 * @param   array  $array  Associative array of value to load
-	 *
 	 * @return  boolean  True on success
-	 *
-	 * @since   11.1
 	 */
 	public function loadArray($array)
 	{
@@ -264,10 +251,7 @@ class ResourcesElements
 	 * Load the public variables of the object into the default namespace.
 	 *
 	 * @param   object  $object  The object holding the publics to load
-	 *
 	 * @return  boolean  True on success
-	 *
-	 * @since   11.1
 	 */
 	public function loadObject($object)
 	{
@@ -282,10 +266,7 @@ class ResourcesElements
 	 * @param   string  $file     Path to file to load
 	 * @param   string  $format   Format of the file [optional: defaults to JSON]
 	 * @param   mixed   $options  Options used by the formatter
-	 *
 	 * @return  boolean  True on success
-	 *
-	 * @since   11.1
 	 */
 	public function loadFile($file, $format = 'JSON', $options = array())
 	{
@@ -302,10 +283,7 @@ class ResourcesElements
 	 * @param   string  $data     String to load into the registry
 	 * @param   string  $format   Format of the string
 	 * @param   mixed   $options  Options used by the formatter
-	 *
 	 * @return  boolean  True on success
-	 *
-	 * @since   11.1
 	 */
 	public function loadString($data, $format = 'JSON', $options = array())
 	{
@@ -317,16 +295,12 @@ class ResourcesElements
 
 		return true;
 	}
-	
+
 	/**
 	 * Loads an XML setup file and parses it.
 	 *
 	 * @param   string  A path to the XML setup file.
-	 *
 	 * @return  object
-	 *
-	 * @deprecated  12.1
-	 * @since   11.1
 	 */
 	public function loadSetup($setup, $group = '_default')
 	{
@@ -380,10 +354,7 @@ class ResourcesElements
 	 * Merge a JRegistry object into this one
 	 *
 	 * @param   object  &$source  Source JRegistry object to merge.
-	 *
 	 * @return  boolean  True on success
-	 *
-	 * @since   11.1
 	 */
 	public function merge(&$source)
 	{
@@ -407,10 +378,7 @@ class ResourcesElements
 	 *
 	 * @param   string  $path   Registry Path (e.g. joomla.content.showauthor)
 	 * @param   mixed   $value  Value of entry
-	 *
 	 * @return  mixed  The value of the that has been set.
-	 *
-	 * @since   11.1
 	 */
 	public function set($path, $value)
 	{
@@ -443,8 +411,6 @@ class ResourcesElements
 	 * Transforms a namespace to an array
 	 *
 	 * @return  array  An associative array holding the namespace data
-	 *
-	 * @since   11.1
 	 */
 	public function toArray()
 	{
@@ -455,8 +421,6 @@ class ResourcesElements
 	 * Transforms a namespace to an object
 	 *
 	 * @return  object   An an object holding the namespace data
-	 *
-	 * @since   11.1
 	 */
 	public function toObject()
 	{
@@ -468,10 +432,7 @@ class ResourcesElements
 	 *
 	 * @param   string  $format   Format to return the string in
 	 * @param   mixed   $options  Parameters used by the formatter, see formatters for more info
-	 *
 	 * @return  string   Namespace in string format
-	 *
-	 * @since   11.1
 	 */
 	public function toString($format = 'JSON', $options = array())
 	{
@@ -486,10 +447,7 @@ class ResourcesElements
 	 *
 	 * @param   object  &$parent  The parent object on which to attach the data values.
 	 * @param   mixed   $data     An array or object of data to bind to the parent object.
-	 *
 	 * @return  void
-	 *
-	 * @since   11.1
 	 */
 	protected function bindData(&$parent, $data)
 	{
@@ -516,15 +474,12 @@ class ResourcesElements
 			}
 		}
 	}
-	
+
 	/**
 	 * Method to determine if an array is an associative array.
 	 *
 	 * @param   array  $array  An array to test.
-	 *
 	 * @return  boolean  True if the array is an associative array.
-	 *
-	 * @since   11.1
 	 */
 	public function isAssociative($array)
 	{
@@ -543,10 +498,7 @@ class ResourcesElements
 	 * Method to recursively convert an object of data to an array.
 	 *
 	 * @param   object  $data  An object of data to return as an array.
-	 *
 	 * @return  array  Array representation of the input object.
-	 *
-	 * @since   11.1
 	 */
 	protected function asArray($data)
 	{
@@ -566,17 +518,13 @@ class ResourcesElements
 
 		return $array;
 	}
-	
+
 	/**
 	 * Render the form control.
 	 *
 	 * @param   string  $name   An optional name of the HTML form control. The default is 'params' if not supplied.
 	 * @param   string  $group  An optional group to render.  The default group is used if not supplied.
-	 *
 	 * @return  string  HTML
-	 *
-	 * @deprecated  12.1
-	 * @since   11.1
 	 */
 	public function render($name = 'nbtag', $group = '_default')
 	{
@@ -610,7 +558,7 @@ class ResourcesElements
 
 		return implode(PHP_EOL, $html);
 	}
-	
+
 	/**
 	 * Render an element value.
 	 *
@@ -644,17 +592,13 @@ class ResourcesElements
 
 		return $element->display($value);
 	}
-	
+
 	/**
 	 * Render all parameters to an array.
 	 *
 	 * @param   string  $name   An optional name of the HTML form control. The default is 'params' if not supplied.
 	 * @param   string  $group  An optional group to render.  The default group is used if not supplied.
-	 *
 	 * @return  array
-	 *
-	 * @deprecated  12.1
-	 * @since   11.1
 	 */
 	public function renderToArray($name = 'nbtag', $group = '_default')
 	{
@@ -670,12 +614,11 @@ class ResourcesElements
 		}
 		return $results;
 	}
-	
+
 	/**
 	 * Return the schema
 	 *
 	 * @param   string  $group  An optional group to render.  The default group is used if not supplied.
-	 *
 	 * @return  object
 	 */
 	public function getSchema($group = '_default')
@@ -686,17 +629,13 @@ class ResourcesElements
 		}
 		return $this->_schema[$group];
 	}
-	
+
 	/**
 	 * Render all parameters.
 	 *
 	 * @param   string  $name   An optional name of the HTML form control. The default is 'params' if not supplied.
 	 * @param   string  $group  An optional group to render.  The default group is used if not supplied.
-	 *
 	 * @return  array  An array of all parameters, each as array of the label, the form element and the tooltip.
-	 *
-	 * @deprecated  12.1
-	 * @since   11.1
 	 */
 	public function getElements($name = 'nbtag', $group = '_default')
 	{
@@ -719,18 +658,12 @@ class ResourcesElements
 	 * @param   object  $node          A parameter XML element.
 	 * @param   string  $control_name  An optional name of the HTML form control. The default is 'params' if not supplied.
 	 * @param   string  $group         An optional group to render.  The default group is used if not supplied.
-	 *
 	 * @return  array  Any array of the label, the form element and the tooltip.
-	 *
-	 * @deprecated  12.1
-	 * @since   11.1
 	 */
 	public function getElement(&$node, $control_name = 'nbtag', $group = '_default')
 	{
 		// Get the type of the parameter.
 		$type = $node->type;
-		
-		//$node->default = '';
 
 		$element = $this->loadElement($type);
 
@@ -753,25 +686,19 @@ class ResourcesElements
 
 		return $element->render($node, $value, $control_name);
 	}
-	
+
 	/**
 	 * Render a parameter type.
 	 *
 	 * @param   object  $node          A parameter XML element.
 	 * @param   string  $control_name  An optional name of the HTML form control. The default is 'params' if not supplied.
 	 * @param   string  $group         An optional group to render.  The default group is used if not supplied.
-	 *
 	 * @return  array  Any array of the label, the form element and the tooltip.
-	 *
-	 * @deprecated  12.1
-	 * @since   11.1
 	 */
 	public function getElementOptions($name, &$node, $control_name = 'nbtag', $group = '_default')
 	{
 		// Get the type of the parameter.
 		$type = $node->type;
-		
-		//$node->default = '';
 
 		$element = $this->loadElement($type);
 
@@ -794,17 +721,13 @@ class ResourcesElements
 
 		return $element->fetchOptions($name, $value, $node, $control_name);
 	}
-	
+
 	/**
 	 * Loads an element type.
 	 *
 	 * @param   string   The element type.
 	 * @param   boolean  False (default) to reuse parameter elements; true to load the parameter element type again.
-	 *
 	 * @return  object
-	 *
-	 * @deprecated  12.1
-	 * @since   11.1
 	 */
 	public function loadElement($type, $new = false)
 	{

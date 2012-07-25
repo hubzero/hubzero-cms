@@ -1,20 +1,32 @@
 <?php
 /**
- * @package     Joomla.Platform
- * @subpackage  Registry
+ * @package		HUBzero CMS
+ * @author		Shawn Rice <zooley@purdue.edu>
+ * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
+ * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  *
- * @copyright   Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+// Check to ensure this file is within the rest of the framework
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * PHP class format handler for JRegistry
- *
- * @package     Joomla.Platform
- * @subpackage  Registry
- * @since       11.1
+ * PHP class format handler for ResourcesElementsFormat
  */
 class ResourcesElementsFormatPHP extends ResourcesElementsFormat
 {
@@ -24,10 +36,7 @@ class ResourcesElementsFormatPHP extends ResourcesElementsFormat
 	 *
 	 * @param   object  $object  Data Source Object
 	 * @param   array   $params  Parameters used by the formatter
-	 *
 	 * @return  string  Config class formatted string
-	 *
-	 * @since   11.1
 	 */
 	public function objectToString($object, $params = array())
 	{
@@ -35,19 +44,23 @@ class ResourcesElementsFormatPHP extends ResourcesElementsFormat
 		$vars = '';
 		foreach (get_object_vars($object) as $k => $v)
 		{
-			if (is_scalar($v)) {
+			if (is_scalar($v)) 
+			{
 				$vars .= "\tpublic $". $k . " = '" . addcslashes($v, '\\\'') . "';\n";
-			} else if (is_array($v)) {
+			} 
+			else if (is_array($v)) 
+			{
 				$vars .= "\tpublic $". $k . " = " . $this->getArrayString($v) . ";\n";
 			}
 		}
 
-		$str = "<?php\nclass ".$params['class']." {\n";
+		$str = "<?php\nclass " . $params['class'] . " {\n";
 		$str .= $vars;
 		$str .= "}";
 
 		// Use the closing tag if it not set to false in parameters.
-		if (!isset($params['closingtag']) || $params['closingtag'] !== false) {
+		if (!isset($params['closingtag']) || $params['closingtag'] !== false) 
+		{
 			$str .= "\n?>";
 		}
 
@@ -59,12 +72,9 @@ class ResourcesElementsFormatPHP extends ResourcesElementsFormat
 	 *
 	 * @param   string  $data     PHP Class formatted string to convert.
 	 * @param   array   $options  Options used by the formatter.
-	 *
 	 * @return  object   Data object.
-	 *
-	 * @since   11.1
 	 */
-	function stringToObject($data, $options = array())
+	public function stringToObject($data, $options = array())
 	{
 		return true;
 	}
@@ -73,10 +83,7 @@ class ResourcesElementsFormatPHP extends ResourcesElementsFormat
 	 * Method to get an array as an exported string.
 	 *
 	 * @param   array  $a  The array to get as a string.
-	 *
 	 * @return  array
-	 *
-	 * @since   11.1
 	 */
 	protected function getArrayString($a)
 	{
@@ -85,11 +92,14 @@ class ResourcesElementsFormatPHP extends ResourcesElementsFormat
 		foreach ($a as $k => $v)
 		{
 			$s .= ($i) ? ', ' : '';
-			$s .= '"'.$k.'" => ';
-			if (is_array($v)) {
+			$s .= '"' . $k . '" => ';
+			if (is_array($v)) 
+			{
 				$s .= $this->getArrayString($v);
-			} else {
-				$s .= '"'.addslashes($v).'"';
+			} 
+			else 
+			{
+				$s .= '"' . addslashes($v) . '"';
 			}
 			$i++;
 		}

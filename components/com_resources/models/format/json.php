@@ -1,20 +1,32 @@
 <?php
 /**
- * @package     Joomla.Platform
- * @subpackage  Registry
+ * @package		HUBzero CMS
+ * @author		Shawn Rice <zooley@purdue.edu>
+ * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
+ * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  *
- * @copyright   Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+// Check to ensure this file is within the rest of the framework
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * JSON format handler for JRegistry.
- *
- * @package     Joomla.Platform
- * @subpackage  Registry
- * @since       11.1
+ * JSON format handler for ResourcesElementsFormat
  */
 class ResourcesElementsFormatJSON extends ResourcesElementsFormat
 {
@@ -23,10 +35,7 @@ class ResourcesElementsFormatJSON extends ResourcesElementsFormat
 	 *
 	 * @param   object  $object   Data source object.
 	 * @param   array   $options  Options used by the formatter.
-	 *
 	 * @return  string  JSON formatted string.
-	 *
-	 * @since   11.1
 	 */
 	public function objectToString($object, $options = array())
 	{
@@ -40,15 +49,13 @@ class ResourcesElementsFormatJSON extends ResourcesElementsFormat
 	 *
 	 * @param   string  $data     JSON formatted string to convert.
 	 * @param   array   $options  Options used by the formatter.
-	 *
 	 * @return  object   Data object.
-	 *
-	 * @since   11.1
 	 */
 	public function stringToObject($data, $options = array('processSections' => false))
 	{
 		// Fix legacy API.
-		if (is_bool($options)) {
+		if (is_bool($options)) 
+		{
 			$options = array('processSections' => $options);
 
 			// Deprecation warning.
@@ -56,10 +63,13 @@ class ResourcesElementsFormatJSON extends ResourcesElementsFormat
 		}
 
 		$data = trim($data);
-		if ((substr($data, 0, 1) != '{') && (substr($data, -1, 1) != '}')) {
+		if ((substr($data, 0, 1) != '{') && (substr($data, -1, 1) != '}')) 
+		{
 			$ini = ResourcesElementsFormat::getInstance('INI');
 			$obj = $ini->stringToObject($data, $options);
-		} else {
+		} 
+		else 
+		{
 			$obj = json_decode($data);
 		}
 		return $obj;

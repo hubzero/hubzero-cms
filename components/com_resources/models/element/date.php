@@ -100,9 +100,9 @@ class ResourcesElementDate extends ResourcesElement
 		if ($c > 1)
 		{
 			$html[] = '<fieldset>';
-			
+
 			$label = $element->label ? $element->label : $element->name;
-			
+
 			$output = '<legend id="'.$control_name.$name.'-lgd"';
 			if (isset($element->description) && $element->description) 
 			{
@@ -122,7 +122,7 @@ class ResourcesElementDate extends ResourcesElement
 		if (isset($element->year) && $element->year)
 		{
 			$year = $this->_getValue('year', $value);
-			
+
 			// Get the year range
 			// 0 = start
 			// 1 = end
@@ -154,17 +154,17 @@ class ResourcesElementDate extends ResourcesElement
 			{
 				$options[] = JHTML::_('select.option', $i, $i);
 			}
-			
+
 			$options = array_reverse($options);
 			array_unshift($options, JHTML::_('select.option', '0', JText::_('Year...')));
-			
+
 			$html[] = JHTML::_('select.genericlist', $options, $control_name.'['.$name.'][year]', 'class="option"', 'value', 'text', $year, $control_name . '-' . $name . '-year');
 		}
-		
+
 		if (isset($element->month) && $element->month)
 		{
 			$month = $this->_getValue('month', $value);
-			
+
 			// Build the list of years
 			$options = array(
 				JHTML::_('select.option', '0', JText::_('Month...'))
@@ -178,11 +178,11 @@ class ResourcesElementDate extends ResourcesElement
 
 			$html[] = JHTML::_('select.genericlist', $options, $control_name.'['.$name.'][month]', 'class="option"', 'value', 'text', $month, $control_name . '-' . $name . '-month');
 		}
-		
+
 		if (isset($element->day) && $element->day)
 		{
 			$day = $this->_getValue('day', $value);
-			
+
 			// Build the list of years
 			$options = array(
 				JHTML::_('select.option', '0', JText::_('Day...'))
@@ -196,15 +196,21 @@ class ResourcesElementDate extends ResourcesElement
 			
 			$html[] = JHTML::_('select.genericlist', $options, $control_name.'['.$name.'][day]', 'class="option"', 'value', 'text', $day, $control_name . '-' . $name . '-day');
 		}
-		
+
 		if ($c > 1)
 		{
 			$html[] = '</fieldset>';
 		}
-		
+
 		return implode("\n", $html);
 	}
-	
+
+	/**
+	 * Return month text based on numerical value (1-12)
+	 *
+	 * @param   integer  $month Month numerical value
+	 * @return  string
+	 */
 	private function _getMonth($month)
 	{
 		switch ($month)
@@ -225,7 +231,7 @@ class ResourcesElementDate extends ResourcesElement
 		}
 		return $monthname;
 	}
-	
+
 	/**
 	 * Return a value from tag wrappers
 	 *
@@ -239,7 +245,7 @@ class ResourcesElementDate extends ResourcesElement
 		preg_match($pattern, $text, $matches);
 		return (isset($matches[1]) ? $matches[1] : '');
 	}
-	
+
 	/**
 	 * Display a value
 	 *
@@ -248,10 +254,10 @@ class ResourcesElementDate extends ResourcesElement
 	 */
 	public function display($value)
 	{
-		$year = intval($this->_getValue('year', $value));
+		$year  = intval($this->_getValue('year', $value));
 		$month = intval($this->_getValue('month', $value));
-		$day = intval($this->_getValue('day', $value));
-		
+		$day   = intval($this->_getValue('day', $value));
+
 		$html = '';
 		if ($day && $day != 0)
 		{
@@ -267,7 +273,7 @@ class ResourcesElementDate extends ResourcesElement
 		}
 		return $html;
 	}
-	
+
 	/**
 	 * Return any options this element may have
 	 *
@@ -280,13 +286,13 @@ class ResourcesElementDate extends ResourcesElement
 	public function fetchOptions($name, $value, &$element, $control_name)
 	{
 		$html = array();
-		
+
 		if (count($element->options) < 1)
 		{
 			$opt = new stdClass;
 			$opt->label = '1950';
 			$opt->value = '1950';
-			
+
 			$element->options[] = $opt;
 		}
 		if (count($element->options) < 2)
@@ -297,9 +303,9 @@ class ResourcesElementDate extends ResourcesElement
 			
 			$element->options[] = $opt;
 		}
-		
+
 		$k = 0;
-		
+
 		$html[] = '<table class="admintable" id="'.$name.'">';
 		$html[] = '<tbody>';
 		$html[] = '<tr>';
@@ -323,7 +329,7 @@ class ResourcesElementDate extends ResourcesElement
 		$html[] = '</tr>';
 		$html[] = '</tbody>';
 		$html[] = '</table>';
-		
+
 		return implode("\n", $html);
 	}
 }

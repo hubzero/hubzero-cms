@@ -57,10 +57,10 @@ class ResourcesElementHidden extends ResourcesElement
 			{
 				break;
 			}
-			
-			$val	= $option->value;
-			$text	= $option->label;
-			
+
+			$val  = $option->value;
+			$text = $option->label;
+
 			$k++;
 		}
 
@@ -81,7 +81,7 @@ class ResourcesElementHidden extends ResourcesElement
 	{
 		return '';
 	}
-	
+
 	/**
 	 * Return any options this element may have
 	 *
@@ -93,14 +93,8 @@ class ResourcesElementHidden extends ResourcesElement
 	 */
 	public function fetchOptions($name, $value, &$element, $control_name)
 	{
-		/*$html = array();
-		$html[] = '<label for="'. $control_name . '-' . $name . '-value">' . JText::_('Value') . '</label>';
-		$html[] = '<input type="text" size="35" name="' . $control_name . '[' . $name . '][value]" id="'. $control_name . '-' . $name . '-value" value="' . $value . '" />';
-		
-		return implode("\n", $html);*/
-		
 		$k = 0;
-		
+
 		$html[] = '<table class="admintable" id="'.$name.'">';
 		$html[] = '<tbody>';
 		foreach ($element->options as $option)
@@ -119,10 +113,10 @@ class ResourcesElementHidden extends ResourcesElement
 		}
 		$html[] = '</tbody>';
 		$html[] = '</table>';
-		
+
 		return implode("\n", $html);
 	}
-	
+
 	/**
 	 * Display the language for a language code
 	 *

@@ -36,18 +36,16 @@ class ResourcesElement extends JObject
 	* This has to be set in the final
 	* renderer classes.
 	*
-	* @access	protected
-	* @var		string
+	* @var string
 	*/
-	protected	$_name = null;
+	protected $_name = null;
 
 	/**
 	* Reference to the object that instantiated the element
 	*
-	* @access	protected
-	* @var		object
+	* @var object
 	*/
-	protected	$_parent = null;
+	protected $_parent = null;
 
 	/**
 	 * Constructor
@@ -62,8 +60,8 @@ class ResourcesElement extends JObject
 	/**
 	* Get the element name
 	*
-	* @access	public
-	* @return	string	type of the parameter
+	* @access public
+	* @return string type of the parameter
 	*/
 	public function getName() 
 	{
