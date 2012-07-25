@@ -957,11 +957,11 @@ class GroupsController extends Hubzero_Controller
 		// Action Complete. Redirect to appropriate page
 		if ($return == 'browse') 
 		{
-			$app->redirect(JRoute::_('index.php?option='.$this->_option),true);
+			$app->redirect(JRoute::_('index.php?option='.$this->_option));
 		} 
 		else 
 		{
-			$app->redirect(JRoute::_('index.php?option='.$this->_option.'&gid='. $group->get('cn')),true);
+			$app->redirect(JRoute::_('index.php?option='.$this->_option.'&gid='. $group->get('cn')));
 		}
 	}
 
@@ -1301,11 +1301,11 @@ class GroupsController extends Hubzero_Controller
 		// Action Complete. Redirect to appropriate page
 		if ($return == 'browse') 
 		{
-			$app->redirect(JRoute::_('index.php?option='.$this->_option),true);
+			$app->redirect( JRoute::_('index.php?option='.$this->_option) );
 		} 
 		else 
 		{
-			$app->redirect(JRoute::_('index.php?option='.$this->_option.'&gid='. $group->get('cn')),true);
+			$app->redirect( JRoute::_('index.php?option='.$this->_option.'&gid='. $group->get('cn')) );
 		}
 	}
 
