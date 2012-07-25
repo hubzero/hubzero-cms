@@ -34,18 +34,14 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Controller');
 
 /**
- * Short description for 'WikiController'
- * 
- * Long description (if any) ...
+ * Wiki controller class for comments
  */
 class WikiControllerComments extends Hubzero_Controller
 {
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $config Parameter description (if any) ...
+	 * @param      array $config Optional configurations
 	 * @return     void
 	 */
 	public function __construct($config=array())
@@ -74,9 +70,7 @@ class WikiControllerComments extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'execute'
-	 * 
-	 * Long description (if any) ...
+	 * Execute a task
 	 * 
 	 * @return     void
 	 */
@@ -122,9 +116,7 @@ class WikiControllerComments extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'comments'
-	 * 
-	 * Long description (if any) ...
+	 * Display comments for a wiki page
 	 * 
 	 * @return     void
 	 */

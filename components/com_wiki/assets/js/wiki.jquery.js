@@ -138,7 +138,7 @@ HUB.Wiki = {
 		}
 		
 		var mode = $('#params_mode');
-		if (mode) {
+		if (mode.length > 0) {
 			mode.bind('change', HUB.Wiki.checkMode);
 		}
 		
@@ -182,26 +182,28 @@ HUB.Wiki = {
 	},
 
 	checkMode: function() {
-		var $ = this.jQuery;
-		
+		var $ = HUB.Wiki.jQuery;
+
 		var mode = $('#params_mode');
-		if (mode.val() != 'knol') {
-			$($('#params_authors').parent()).addClass('hide');
-			$($('#params_hide_authors').parent()).addClass('hide');
-			$($('#params_allow_changes').parent()).addClass('hide');
-			$($('#params_allow_comments').parent()).addClass('hide');
-		} else {
-			if ($($('#params_authors').parent()).hasClass('hide')) {
-				$($('#params_authors').parent()).removeClass('hide');
-			}
-			if ($($('#params_hide_authors').parent()).hasClass('hide')) {
-				$($('#params_hide_authors').parent()).removeClass('hide');
-			}
-			if ($($('#params_allow_changes').parent()).hasClass('hide')) {
-				$($('#params_allow_changes').parent()).removeClass('hide');
-			}
-			if ($($('#params_allow_comments').parent()).hasClass('hide')) {
-				$($('#params_allow_comments').parent()).removeClass('hide');
+		if (mode.length > 0) {
+			if (mode.val() != 'knol') {
+				$($('#params_authors').parent()).addClass('hide');
+				$($('#params_hide_authors').parent()).addClass('hide');
+				$($('#params_allow_changes').parent()).addClass('hide');
+				$($('#params_allow_comments').parent()).addClass('hide');
+			} else {
+				if ($($('#params_authors').parent()).hasClass('hide')) {
+					$($('#params_authors').parent()).removeClass('hide');
+				}
+				if ($($('#params_hide_authors').parent()).hasClass('hide')) {
+					$($('#params_hide_authors').parent()).removeClass('hide');
+				}
+				if ($($('#params_allow_changes').parent()).hasClass('hide')) {
+					$($('#params_allow_changes').parent()).removeClass('hide');
+				}
+				if ($($('#params_allow_comments').parent()).hasClass('hide')) {
+					$($('#params_allow_comments').parent()).removeClass('hide');
+				}
 			}
 		}
 	}

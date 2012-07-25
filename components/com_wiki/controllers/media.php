@@ -34,36 +34,32 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Controller');
 
 /**
- * Short description for 'WikiController'
- * 
- * Long description (if any) ...
+ * Wiki controller class for media
  */
 class WikiControllerMedia extends Hubzero_Controller
 {
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $config Parameter description (if any) ...
+	 * @param      array $config Optional configurations
 	 * @return     void
 	 */
 	public function __construct($config=array())
 	{
 		$this->_base_path = JPATH_ROOT . DS . 'components' . DS . 'com_wiki';
-		
+
 		$this->_sub = false;
 		if (isset($config['sub'])) 
 		{
 			$this->_sub = $config['sub'];
 		}
-		
+
 		$this->_group = false;
 		if (isset($config['group'])) 
 		{
 			$this->_group = $config['group'];
 		}
-		
+
 		/*$this->_access = false;
 		if (isset($config['access'])) 
 		{
@@ -74,9 +70,7 @@ class WikiControllerMedia extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'execute'
-	 * 
-	 * Long description (if any) ...
+	 * Execute a task
 	 * 
 	 * @return     void
 	 */

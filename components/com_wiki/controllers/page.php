@@ -34,36 +34,32 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Controller');
 
 /**
- * Short description for 'WikiController'
- * 
- * Long description (if any) ...
+ * Wiki controller class for pages
  */
 class WikiControllerPage extends Hubzero_Controller
 {
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $config Parameter description (if any) ...
+	 * @param      array $config Optional configurations
 	 * @return     void
 	 */
 	public function __construct($config=array())
 	{
 		$this->_base_path = JPATH_ROOT . DS . 'components' . DS . 'com_wiki';
-		
+
 		$this->_sub = false;
 		if (isset($config['sub'])) 
 		{
 			$this->_sub = $config['sub'];
 		}
-		
+
 		$this->_group = false;
 		if (isset($config['group'])) 
 		{
 			$this->_group = $config['group'];
 		}
-		
+
 		/*$this->_access = false;
 		if (isset($config['access'])) 
 		{
@@ -74,9 +70,7 @@ class WikiControllerPage extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'execute'
-	 * 
-	 * Long description (if any) ...
+	 * Execute a task
 	 * 
 	 * @return     void
 	 */
@@ -119,11 +113,9 @@ class WikiControllerPage extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'view'
+	 * Display a page
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function displayTask()
 	{
@@ -138,14 +130,14 @@ class WikiControllerPage extends Hubzero_Controller
 			$this->_getStyles();
 		}
 		// Include any Scripts
-		$this->_getScripts('wiki', 'com_wiki');
+		$this->_getScripts('assets/js/wiki', 'com_wiki');
 
 		// Prep the pagename for display 
 		$this->view->title = $this->page->getTitle();
 
 		// Set the page's <title> tag
 		$document =& JFactory::getDocument();
-		$document->setTitle(JText::_(strtoupper($this->_name)).': '.$this->view->title);
+		$document->setTitle(JText::_(strtoupper($this->_name)) . ': ' . $this->view->title);
 
 		// Set the pathway
 		$pathway =& JFactory::getApplication()->getPathway();
@@ -278,11 +270,9 @@ class WikiControllerPage extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'edit'
+	 * Show a form for creating an entry
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function newTask()
 	{
@@ -290,11 +280,9 @@ class WikiControllerPage extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'edit'
+	 * Show a form for editing an entry
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function editTask()
 	{
@@ -408,7 +396,7 @@ class WikiControllerPage extends Hubzero_Controller
 			$this->_getStyles();
 		}
 		// Include any Scripts
-		$this->_getScripts('wiki', 'com_wiki');
+		$this->_getScripts('assets/js/wiki', 'com_wiki');
 		if (JPluginHelper::isEnabled('system', 'jquery')) 
 		{
 			$document =& JFactory::getDocument();
@@ -819,7 +807,7 @@ class WikiControllerPage extends Hubzero_Controller
 
 				// Set the page's <title> tag
 				$document =& JFactory::getDocument();
-				$document->setTitle(JText::_(strtoupper($this->_name)).': '.$this->view->title.': '.JText::_(strtoupper($this->_task)));
+				$document->setTitle(JText::_(strtoupper($this->_name)) . ': ' . $this->view->title . ': ' . JText::_(strtoupper($this->_task)));
 
 				// Set the pathway
 				$pathway =& JFactory::getApplication()->getPathway();
@@ -860,7 +848,7 @@ class WikiControllerPage extends Hubzero_Controller
 	}
 
 	/**
-	 * show a form to rename a page
+	 * Show a form to rename a page
 	 * 
 	 * @return     void
 	 */
@@ -906,7 +894,7 @@ class WikiControllerPage extends Hubzero_Controller
 
 		// Set the page's <title> tag
 		$document =& JFactory::getDocument();
-		$document->setTitle(JText::_(strtoupper($this->_name)).': '.$this->page->title.': '.JText::_('RENAME'));
+		$document->setTitle(JText::_(strtoupper($this->_name)) . ': ' . $this->page->title . ': ' . JText::_('RENAME'));
 
 		// Set the pathway
 		$pathway =& JFactory::getApplication()->getPathway();
@@ -919,11 +907,11 @@ class WikiControllerPage extends Hubzero_Controller
 		}
 		$pathway->addItem(
 			$this->view->title,
-			'index.php?option='.$this->_option.'&scope='.$this->page->scope.'&pagename='.$this->pagename
+			'index.php?option=' . $this->_option . '&scope=' . $this->page->scope . '&pagename=' . $this->pagename
 		);
 		$pathway->addItem(
 			JText::_(strtoupper('RENAME')),
-			'index.php?option='.$this->_option.'&scope='.$this->page->scope.'&pagename='.$this->pagename.'&task='.$this->_task
+			'index.php?option=' . $this->_option . '&scope=' . $this->page->scope . '&pagename=' . $this->pagename . '&task=' . $this->_task
 		);
 
 		$this->view->message = $this->_message;

@@ -224,7 +224,7 @@ if ($this->config->get('access-edit')) {
 				</select>
 			</label>
 <?php 	} else { ?>
-			<input type="hidden" name="params[mode]" value="<?php echo $mode; ?>" />
+			<input type="hidden" name="params[mode]" id="params_mode" value="<?php echo $mode; ?>" />
 <?php 	} ?>
 	
 			<label<?php echo $cls; ?> for="params_authors">
