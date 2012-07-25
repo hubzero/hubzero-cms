@@ -104,7 +104,7 @@ $view->display();
 			<p><?php echo JText::_('COM_CONTRIBUTE_COMPOSE_CUSTOM_FIELDS_EXPLANATION'); ?></p>
 		</div>
 		<fieldset>
-			<h3><?php echo JText::_('COM_CONTRIBUTE_COMPOSE_DETAILS'); ?></h3>
+			<legend><?php echo JText::_('COM_CONTRIBUTE_COMPOSE_DETAILS'); ?></legend>
 			<?php 
 			echo $fields;
 			?>

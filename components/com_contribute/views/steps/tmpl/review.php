@@ -174,7 +174,7 @@ if ($this->progress['submitted'] == 1) {
 			in our <a href="<?php echo JRoute::_('index.php?option=com_resources'); ?>">resources</a> and at the top of our <a href="<?php echo JRoute::_('index.php?option=com_whatsnew'); ?>">What's New</a> listing.</p>
 		</div>
 		<fieldset>
-			<h3>Authorization</h3>
+			<legend>Authorization</legend>
 			
 			<label for="authorization">
 				<input class="option" type="checkbox" name="authorization" id="authorization" value="1" /> <span class="required">required</span> 
