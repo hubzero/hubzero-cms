@@ -29,159 +29,153 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'EventsCategory'
- * 
- * Long description (if any) ...
+ * Events table class for category
  */
 class EventsCategory extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary Key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $id               = NULL;
 
 	/**
-	 * Description for 'parent_id'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $parent_id        = NULL;
 
 	/**
-	 * Description for 'title'
+	 * varchar(255)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $title            = NULL;
 
 	/**
-	 * Description for 'name'
+	 * varchar(255)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $name             = NULL;
 
 	/**
-	 * Description for 'alias'
+	 * varchar(255)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $alias            = NULL;
 
 	/**
-	 * Description for 'image'
+	 * varchar(255)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $image            = NULL;
 
 	/**
-	 * Description for 'section'
+	 * varchar(50)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $section          = NULL;
 
 	/**
-	 * Description for 'image_position'
+	 * varchar(30)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $image_position   = NULL;
 
 	/**
-	 * Description for 'description'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $description      = NULL;
 
 	/**
-	 * Description for 'published'
+	 * int(1)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $published        = NULL;
 
 	/**
-	 * Description for 'checked_out'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $checked_out      = NULL;
 
 	/**
-	 * Description for 'checked_out_time'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $checked_out_time = NULL;
 
 	/**
-	 * Description for 'editor'
+	 * varchar(50)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $editor           = NULL;
 
 	/**
-	 * Description for 'ordering'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $ordering         = NULL;
 
 	/**
-	 * Description for 'access'
+	 * int(3)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $access           = NULL;
 
 	/**
-	 * Description for 'count'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $count            = NULL;
 
 	/**
-	 * Description for 'params'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $params           = NULL;
 
 	/**
-	 * Short description for '__construct'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * Constructor
+	 *
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__categories', 'id', $db );
+		parent::__construct('#__categories', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		// check for valid name
-		if (trim( $this->title ) == '') {
+		if (trim($this->title) == '') 
+		{
 			$this->_error = JText::_('EVENTS_CATEGORY_MUST_HAVE_TITLE');
 			return false;
 		}
@@ -189,70 +183,66 @@ class EventsCategory extends JTable
 	}
 
 	/**
-	 * Short description for 'updateCount'
+	 * Update the count of an entry
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $oid Parameter description (if any) ...
+	 * @param      integer $oid Category ID
 	 * @return     void
 	 */
-	public function updateCount( $oid=NULL )
+	public function updateCount($oid=NULL)
 	{
-		if ($oid == NULL) {
+		if ($oid == NULL) 
+		{
 			$oid = $this->id;
 		}
-		$this->_db->setQuery( "UPDATE $this->_tbl SET count = count-1 WHERE id = '$oid'" );
+		$this->_db->setQuery("UPDATE $this->_tbl SET count = count-1 WHERE id = '$oid'");
 		$this->_db->query();
 	}
 
 	/**
-	 * Short description for 'publish'
+	 * Set en entry to unpublished
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $oid Parameter description (if any) ...
+	 * @param      integer $oid Category ID
 	 * @return     void
 	 */
-	public function publish( $oid=NULL )
+	public function publish($oid=NULL)
 	{
-		if (!$oid) {
+		if (!$oid) 
+		{
 			$oid = $this->id;
 		}
-		$this->_db->setQuery( "UPDATE $this->_tbl SET published=1 WHERE id=$oid" );
+		$this->_db->setQuery("UPDATE $this->_tbl SET published=1 WHERE id=$oid");
 		$this->_db->query();
 	}
 
 	/**
-	 * Short description for 'unpublish'
+	 * Set an entry to published
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $oid Parameter description (if any) ...
+	 * @param      integer $oid Category ID
 	 * @return     void
 	 */
-	public function unpublish( $oid=NULL )
+	public function unpublish($oid=NULL)
 	{
-		if (!$oid) {
+		if (!$oid) 
+		{
 			$oid = $this->id;
 		}
-		$this->_db->setQuery( "UPDATE $this->_tbl SET published=0 WHERE id=$oid" );
+		$this->_db->setQuery("UPDATE $this->_tbl SET published=0 WHERE id=$oid");
 		$this->_db->query();
 	}
 
 	/**
-	 * Short description for 'getCategoryCount'
+	 * Get a count of categories in a section
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $section Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $section Section ID
+	 * @return     integer
 	 */
-	public function getCategoryCount( $section=NULL )
+	public function getCategoryCount($section=NULL)
 	{
-		if (!$section) {
+		if (!$section) 
+		{
 			$section = $this->section;
 		}
-		$this->_db->setQuery( "SELECT COUNT(*) FROM $this->_tbl WHERE section='$section'" );
+		$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE section='$section'");
 		return $this->_db->loadResult();
 	}
 }

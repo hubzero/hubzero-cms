@@ -17,19 +17,19 @@
 	.com_events .section {
 		padding: 0;
 		border-top: 1px solid #EFEFEF;
-		}
+	}
 	.com_events .main {
 		border: none;
-		}
+	}
 	.below {
 		margin: 2em 0 0 0;
 		padding-top: 1em;
-		}
+	}
 	.com_events .aside {
 		float: right;
 		width: 214px;
 		padding-top: 1em;
-		}
+	}
 	.com_events .subject {
 		margin: 1em 0;
 		margin-right: 235px;
@@ -37,15 +37,15 @@
 		background: #F7F7F7;
 		border-top: 1px solid #E3E3E3;
 		border-bottom: 1px solid #E3E3E3;
-		}
+	}
 	.com_events .main .subject {
 		border: none;
 		background: transparent;
 		padding: 0;
-		}
+	}
 	.com_events .main {
 		padding-top: 2em;
-		}
+	}
 /* Date navigation */
 	#event-categories,
 	.calendarwrap {
@@ -53,18 +53,18 @@
 		padding: 1em;
 		border: 1px solid #d4d4cd;
 		margin: 0 0 1em 0;
-		}
+	}
 	#event-categories fieldset {
 		background: transparent;
 		border: none;
 		padding: 0;
 		margin: 0;
-		}
+	}
 	.ecalendar {
 		border: none;
 		position: relative;
 		z-index: 1;
-		}
+	}
 	.ecalendar caption,
 	.datenav, .aside .datenav {
 		padding: 0;
@@ -72,14 +72,14 @@
 		color: #555;
 		font-weight: bold;
 		margin: 0;
-		}
+	}
 	.ecalendar caption {
 		caption-side: top;
 		border: none;
-		}
+	}
 	.ecalendar caption a,
 	.datenav a {
-		background: transparent url("/components/com_events/images/calendar-next.png") no-repeat;
+		background: transparent url("/components/com_events/assets/img/calendar-next.png") no-repeat;
 		margin-right: 1em;
 		padding: 15px 0 0 15px;
 		overflow: hidden;
@@ -87,16 +87,16 @@
 		height: 0;
 		width: 0;
 		border: none;
-		}
+	}
 	.ecalendar caption a:first-child,
 	.datenav a:first-child {
-		background-image: url("/components/com_events/images/calendar-previous.png");
-		}
+		background-image: url("/components/com_events/assets/img/calendar-previous.png");
+	}
 	.ecalendar caption a:hover,
 	.datenav a:hover {
 		background-position: left bottom;
 		border: none;
-		}
+	}
 	.ecalendar th {
 		padding: 1.25em 0 0 0;
 		text-align: center;
@@ -105,7 +105,7 @@
 		font-weight: normal;
 		color: #aa9;
 		border: none;
-		}
+	}
 	.ecalendar td {
 		padding: 0.4em 0;
 		border: 1px solid #d4d4cd;
@@ -113,7 +113,7 @@
 		text-align: center;
 		color: #aa9;
 		font-size: 0.9em;
-		}
+	}
 	.ecalendar td a {
 		display: block;
 		margin: 0;
@@ -122,25 +122,25 @@
 		text-decoration: none;
 		text-align: center;
 		border:none;
-		}
+	}
 	.ecalendar td a:hover {
 		border: none;
 		color: #000;
-		}
+	}
 	.ecalendar .selected td,
 	.ecalendar .selected {
 		background-color: #000;
 		color: #fff;
 		border-color: #333;
-		}
+	}
 	.ecalendar .selected td a,
 	.ecalendar .selected a {
 		color: #fff;
-		}
+	}
 	.ecalendar .selected td a:hover,
 	.ecalendar .selected a:hover {
 		color: #fff;
-		}
+	}
 	.ecalendar .today {
 		background: #fff;
 		border: 1px solid #887;
@@ -148,13 +148,13 @@
 		width: 100%;
 		float: right;
 		color: #222;
-		}
+	}
 	.ecalendar .today a {
 		color: #000;
-		}
+	}
 	.ecalendar .today a:hover {
 		color: #f60;
-		}
+	}
 /* Events listing */
 	.com_events ul.events {
     	list-style-type: none !important;
@@ -162,15 +162,15 @@
 		padding-left: 0;
 		border-bottom: 1px solid #ddd;
 		list-style: none;
-		}
+	}
 	.com_events ul.events li {
 		list-style: none;
-		}
+	}
 	.com_events ul.events li ul.events {
 		margin: -1px 0 0 0;
 		padding: 0;
 		border-bottom: none;
-		}
+	}
 	.com_events ul.events > li {
     	clear: left;
     	margin: 0 !important;
@@ -178,16 +178,16 @@
     	border-top: 1px solid #ddd;
 		background: none;
 		list-style: none;
-		}
+	}
 	.com_events ul.events > li ul.events li {
 		clear: none;
-		}
+	}
 	.com_events ul.events li li {
     	margin-left:  20px;
-		}
+	}
 	.com_events ul.events div.ewrap {
 		margin: 0 0 0 170px;
-		}
+	}
 	.com_events ul.events dl.event-details {
     	float: left;
     	margin: 1.1em 20px 2em 0 !important;
@@ -196,95 +196,95 @@
     	color: #777;
     	font-size: 11px;
     	text-align: right;
-		}
+	}
 	.com_events ul.events dl.event-details dt {
 		font-weight: bold;
 		color: #777;
 		font-size: 12px;
 		padding: 0;
 		margin: 1.1em 0 0 0;
-		}
+	}
 	.com_events ul.events dl.event-details dt:first-child {
 		margin: 0;
-		}
+	}
 	.com_events ul.events dl.event-details dd.starttime {
 		padding-bottom: 0;
 		margin: 0;
-		}
+	}
 	.com_events ul.events dl.event-details dd.endtime {
 		margin: 0;
 		padding: 0;
-		}
+	}
 	.com_events ul.events .title {
 		color: #777;
 		font-size: 12px;
 		font-weight: bold;
-		}
+	}
 /* Search results */
 	.results .event {
 		background-image: none;
-		}
+	}
 	.results .event p {
 		margin-left: 4em;
-		}
+	}
 	.results .event .title {
 		text-indent: 0em;
-		}
+	}
 	.results .event .event-date {
-	    text-align: center;
+		text-align: center;
 		float: left;
-	    width: 3em;
+		width: 3em;
 		display: block;
 		margin-left: 0;
-		}
+	}
 	.results .event .event-date span {
-	    display: block;
-	    float: left;
-	    width: 100%;
-		}
+		display: block;
+		float: left;
+		width: 100%;
+	}
 	.results .event .event-date span.year {
-	    background: #ccc;
-	    border: 1px solid #ccc;
-	    color: #fff;
-	    text-transform: uppercase;
-	    line-height: 1.1em;
+		background: #ccc;
+		border: 1px solid #ccc;
+		color: #fff;
+		text-transform: uppercase;
+		line-height: 1.1em;
 		font-size: 85%;
 		font-weight: bold;
-	    text-align: center;
-		}
+		text-align: center;
+	}
 	.results .event .event-date span.month {
-	    background: #D51007;
-	    border: 1px solid #D51007;
-	    color: #fff;
-	    text-transform: uppercase;
-	    line-height: 1.1em;
+		background: #D51007;
+		border: 1px solid #D51007;
+		color: #fff;
+		text-transform: uppercase;
+		line-height: 1.1em;
 		font-size: 85%;
 		font-weight: bold;
-	    text-align: center;
-		}
+		text-align: center;
+	}
 	.results .event .event-date span.day {
-	    background: #fff;
-	    border: 1px solid #ccc;
-	    border-top: none;
-	    color: #000;
+		background: #fff;
+		border: 1px solid #ccc;
+		border-top: none;
+		color: #000;
 		font-size: 120%;
-	    line-height: 1.4em;
-	    font-weight: bold;
-	    letter-spacing: -0.1em;
-		}
+		line-height: 1.4em;
+		font-weight: bold;
+		letter-spacing: -0.1em;
+	}
 /* Misc. */
 	.com_events .last a {
 		padding-left: 20px;
-		background: url("/components/com_events/images/date_add.png") 0 0 no-repeat;
-		}
+		background: url("/components/com_events/assets/img/date_add.png") 0 0 no-repeat;
+	}
 /* (sub) Tabs */
 	.com_events .main h3 {
 		margin: 0 0 1.5em 0;
 		padding: 0;
-		}
+	}
 	.com_events .noaside {
 		padding-top: 2em;
-		}
+	}
 	#sub-sub-menu {
 		height: 1.75em;
 		padding: 0 15px;
@@ -292,14 +292,14 @@
 		background: none;
 		border: none;
 		border-bottom: 1px solid #bbb;
-		}
+	}
 	#sub-sub-menu ul {
 		background: none;
 		border: none;
 		height: auto;
 		padding: 0;
 		margin: 0 0 -1px 0;
-		}
+	}
 	#sub-sub-menu li {
 		padding: 0;
 		float: left;
@@ -307,64 +307,63 @@
 		margin: 0;
 		background-image: none;
 		border: none;
-		}
+	}
 	#sub-sub-menu li a {
 		background: #eee;
 		padding: 0.4em 1em;
 		line-height: 1em;
 		border: 1px solid #bbb;
-		/* Rounded corners */
 		-moz-border-radius-topright: 5px;
 		-moz-border-radius-topleft: 5px;
 		-webkit-border-top-right-radius: 5px;
 		-webkit-border-top-left-radius: 5px;
-		-khtml-border-radius-topright: 5px;	
-		-khtml-border-radius-topleft: 5px;
+		-ms-border-radius-topright: 5px;
+		-ms-border-radius-topleft: 5px;
 		border-top-right-radius: 5px;
 		border-top-left-radius: 5px;
-		}
+	}
 	#sub-sub-menu li a:hover {
 		color: #fff;
 		background-color: #999;
 		border-color: #333;
-		}
+	}
 	#sub-sub-menu li a span {
 		background: none;
 		height: auto;
 		padding: 0;
-		}
+	}
 	#sub-sub-menu li.active {
-		}
+	}
 	#sub-sub-menu li.active a {
 		color: #333;
 		background-color: #fff;
 		border-color: #999;
 		border-bottom: 1px solid #fff;
-		}
+	}
 /* IE 7 hacks */
 	html>body .ecalendar .today {
 		*width: 13%;
-		}
+	}
 	html>body .ecalendar caption a:hover,
 	html>body .datenav a:hover {
 		*background-position: 0 -15px;
-		}
+	}
 /* IE 6 hacks */
 	* html .com_events ul.events li {
 		background-image: none;
 		border-top: 1px solid #ddd;
-		}
+	}
 	* html .ecalendar .today {
 		width: 13%;
-		}
+	}
 	* html .ecalendar caption a.prv,
 	* html .datenav a.prv {
-		background-image: url("/components/com_events/images/calendar-previous.png");
-		}
+		background-image: url("/components/com_events/assets/img/calendar-previous.png");
+	}
 	* html .ecalendar caption a:hover,
 	* html .datenav a:hover {
 		background-position: 0 -15px;
-		}
+	}
 	* html .com_events ul.events div.ewrap { 
 		height: 6em;
-		}
+	}

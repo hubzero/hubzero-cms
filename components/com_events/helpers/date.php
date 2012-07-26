@@ -29,81 +29,79 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'EventsDate'
- * 
- * Long description (if any) ...
+ * Events helper class for a date
  */
 class EventsDate
 {
-
 	/**
-	 * Description for 'year'
+	 * Year
 	 * 
 	 * @var number
 	 */
 	var $year   = NULL;
 
 	/**
-	 * Description for 'month'
+	 * Month
 	 * 
 	 * @var number
 	 */
 	var $month  = NULL;
 
 	/**
-	 * Description for 'day'
+	 * Day
 	 * 
 	 * @var unknown
 	 */
 	var $day    = NULL;
 
 	/**
-	 * Description for 'hour'
+	 * Hour
 	 * 
 	 * @var integer
 	 */
 	var $hour   = NULL;
 
 	/**
-	 * Description for 'minute'
+	 * Minute
 	 * 
 	 * @var integer
 	 */
 	var $minute = NULL;
 
 	/**
-	 * Description for 'second'
+	 * Second
 	 * 
 	 * @var integer
 	 */
 	var $second = NULL;
 
 	/**
-	 * Short description for 'EventsDate'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $datetime Parameter description (if any) ...
+	 * @param      string $datetime Timestamp (0000-00-00 00:00:00)
 	 * @return     void
 	 */
-    public function EventsDate( $datetime='' )
+    public function EventsDate($datetime='')
 	{
-		if (preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/",$datetime,$regs)) {
-			$this->setDate( $regs[1], $regs[2], $regs[3] );
-			$this->hour   = intval( $regs[4] );
-			$this->minute = intval( $regs[5] );
-			$this->second = intval( $regs[6] );
+		if (preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $datetime, $regs)) 
+		{
+			$this->setDate($regs[1], $regs[2], $regs[3]);
+			$this->hour   = intval($regs[4]);
+			$this->minute = intval($regs[5]);
+			$this->second = intval($regs[6]);
 
-			$this->month = max( 1, $this->month );
-			$this->month = min( 12, $this->month );
+			$this->month = max(1, $this->month);
+			$this->month = min(12, $this->month);
 
-			$this->day = max( 1, $this->day );
-			$this->day = min( $this->daysInMonth(), $this->day );
-		} else {
-			$this->setDate( date( "Y" ), date( "m" ), date( "d" ) );
+			$this->day = max(1, $this->day);
+			$this->day = min($this->daysInMonth(), $this->day);
+		} 
+		else 
+		{
+			$this->setDate(date("Y"), date("m"), date("d"));
 			$this->hour   = 0;
 			$this->minute = 0;
 			$this->second = 0;
@@ -111,122 +109,111 @@ class EventsDate
 	}
 
 	/**
-	 * Short description for 'setDate'
+	 * Set the date
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $year Parameter description (if any) ...
-	 * @param      integer $month Parameter description (if any) ...
-	 * @param      integer $day Parameter description (if any) ...
+	 * @param      integer $year  Year
+	 * @param      integer $month Month
+	 * @param      integer $day   Day
 	 * @return     void
 	 */
-	public function setDate( $year=0, $month=0, $day=0 )
+	public function setDate($year=0, $month=0, $day=0)
 	{
-		$this->year  = intval( $year );
-		$this->month = intval( $month );
-		$this->day   = intval( $day );
+		$this->year  = intval($year);
+		$this->month = intval($month);
+		$this->day   = intval($day);
 
-		$this->month = max( 1, $this->month );
-		$this->month = min( 12, $this->month );
+		$this->month = max(1, $this->month);
+		$this->month = min(12, $this->month);
 
-		$this->day = max( 1, $this->day );
-		$this->day = min( $this->daysInMonth(), $this->day );
+		$this->day = max(1, $this->day);
+		$this->day = min($this->daysInMonth(), $this->day);
     }
 
 	/**
-	 * Short description for 'getYear'
+	 * Get the year
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      boolean $asString Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      boolean $asString Return as string?
+	 * @return     mixed Integer unless $asString is true (string)
 	 */
-	public function getYear( $asString=false )
+	public function getYear($asString=false)
 	{
-		return $asString ? sprintf( "%04d", $this->year ) : $this->year;
+		return $asString ? sprintf("%04d", $this->year) : $this->year;
     }
 
 	/**
-	 * Short description for 'getMonth'
+	 * Get the month
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      boolean $asString Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      boolean $asString Return as string?
+	 * @return     mixed Integer unless $asString is true (string)
 	 */
-	public function getMonth( $asString=false )
+	public function getMonth($asString=false)
 	{
-		return $asString ? sprintf( "%02d", $this->month ) : $this->month;
+		return $asString ? sprintf("%02d", $this->month) : $this->month;
     }
 
 	/**
-	 * Short description for 'getDay'
+	 * Get the day
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      boolean $asString Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      boolean $asString Return as string?
+	 * @return     mixed Integer unless $asString is true (string)
 	 */
-	public function getDay( $asString=false )
+	public function getDay($asString=false)
 	{
-		return $asString ? sprintf( "%02d", $this->day ) : $this->day;
+		return $asString ? sprintf("%02d", $this->day) : $this->day;
     }
 
 	/**
-	 * Short description for 'get12hrTime'
+	 * Get the 12 hour time (am/pm)
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     mixed Return description (if any) ...
+	 * @return     string
 	 */
-	public function get12hrTime( )
+	public function get12hrTime()
 	{
 		$hour=$this->hour;
-		if ($hour > 12) {
+		if ($hour > 12) 
+		{
 			$hour -= 12;
-		} elseif ($hour == 0) {
+		} 
+		elseif ($hour == 0) 
+		{
 			$hour = 12;
 		}
 		$time = sprintf("%d:%02d", $hour, $this->minute);
-		return ($this->hour >= 12) ? $time.'pm' : $time.'am';
+		return ($this->hour >= 12) ? $time . 'pm' : $time . 'am';
 	}
 
 	/**
-	 * Short description for 'get24hrTime'
+	 * Get the 24 hour time
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     mixed Return description (if any) ...
+	 * @return     string
 	 */
-	public function get24hrTime( )
+	public function get24hrTime()
 	{
 		return sprintf("%02d:%02d", $this->hour, $this->minute);
 	}
 
 	/**
-	 * Short description for 'toDateURL'
+	 * Generate a URL from the date data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $task Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $task Task to perform
+	 * @return     string 
 	 */
 	public function toDateURL($task='')
 	{
 		switch ($task)
 		{
 			case 'year':
-				$url = 'year=' . $this->getYear( 1 );
+				$url = 'year=' . $this->getYear(1);
 				break;
 			case 'month':
-				$url = 'year=' . $this->getYear( 1 ) . '&amp;month=' . $this->getMonth( 1 );
+				$url = 'year=' . $this->getYear(1) . '&amp;month=' . $this->getMonth(1);
 				break;
 			case 'week':
-				$url = 'year=' . $this->getYear( 1 ) . '&amp;month=' . $this->getMonth( 1 ) . '&amp;day=' . $this->getDay( 1 ) .'&amp;task=week';
+				$url = 'year=' . $this->getYear(1) . '&amp;month=' . $this->getMonth(1) . '&amp;day=' . $this->getDay(1) . '&amp;task=week';
 				break;
 			case 'day':
 			default:
-				$url = 'year=' . $this->getYear( 1 ) . '&amp;month=' . $this->getMonth( 1 ) . '&amp;day=' . $this->getDay( 1 );
+				$url = 'year=' . $this->getYear(1) . '&amp;month=' . $this->getMonth(1) . '&amp;day=' . $this->getDay(1);
 				break;
 		}
 
@@ -234,70 +221,87 @@ class EventsDate
     }
 
 	/**
-	 * Short description for 'daysInMonth'
+	 * Calculate the number of days in the month
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $month Parameter description (if any) ...
-	 * @param      integer $year Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param      integer $month Month
+	 * @param      integer $year  Year
+	 * @return     integer 
 	 */
-	public function daysInMonth( $month=0, $year=0 )
+	public function daysInMonth($month=0, $year=0)
 	{
-		$month = intval( $month );
-		$year = intval( $year );
-		if (!$month) {
-			if (isset( $this )) {
+		$month = intval($month);
+		$year = intval($year);
+		if (!$month) 
+		{
+			if (isset($this)) 
+			{
 				$month = $this->month;
-			} else {
-				$month = date( "m" );
+			} 
+			else 
+			{
+				$month = date("m");
 			}
 		}
-		if (!$year) {
-			if (isset( $this )) {
+		if (!$year) 
+		{
+			if (isset($this)) 
+			{
 				$year = $this->year;
-			} else {
-				$year = date( "Y" );
+			} 
+			else 
+			{
+				$year = date("Y");
 			}
 		}
-		if ($month == 2) {
-			if (($year % 4 == 0 && $year % 100 != 0) || $year % 400 == 0) {
+		if ($month == 2) 
+		{
+			if (($year % 4 == 0 && $year % 100 != 0) || $year % 400 == 0) 
+			{
 				return 29;
-			} else {
+			} 
+			else 
+			{
 				return 28;
 			}
-		} else if ($month == 4 || $month == 6 || $month == 9 || $month == 11) {
+		} 
+		else if ($month == 4 || $month == 6 || $month == 9 || $month == 11) 
+		{
 			return 30;
-		} else {
+		} 
+		else 
+		{
 			return 31;
 		}
 	}
 
 	/**
-	 * Short description for 'addMonths'
+	 * Add months to the date
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $n Parameter description (if any) ...
+	 * @param      integer $n Number of months to add
 	 * @return     void
 	 */
-	public function addMonths( $n=0 )
+	public function addMonths($n=0)
 	{
-		$an = abs( $n );
-		$years = floor( $an / 12 );
+		$an = abs($n);
+		$years = floor($an / 12);
 		$months = $an % 12;
 
-		if ($n < 0) {
+		if ($n < 0) 
+		{
 			$this->year -= $years;
 			$this->month -= $months;
-			if ($this->month < 1) {
+			if ($this->month < 1) 
+			{
 				$this->year--;
 				$this->month = 12 - $this->month;
 			}
-		} else {
+		} 
+		else 
+		{
 			$this->year += $years;
 			$this->month += $months;
-			if ($this->month > 12) {
+			if ($this->month > 12) 
+			{
 				$this->year++;
 				$this->month -= 12;
 			}
@@ -305,107 +309,123 @@ class EventsDate
 	}
 
 	/**
-	 * Short description for 'addDays'
+	 * Add days to the date
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $n Parameter description (if any) ...
+	 * @param      integer $n Number of days to add
 	 * @return     void
 	 */
-	public function addDays( $n=0 )
+	public function addDays($n=0)
 	{
 		$days = $this->toDays();
-		$this->fromDays( $days + $n );
+		$this->fromDays($days + $n);
 	}
 
 	/**
-	 * Short description for 'toDays'
+	 * Calculate the number of days until a date
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $day Parameter description (if any) ...
-	 * @param      number $month Parameter description (if any) ...
-	 * @param      number $year Parameter description (if any) ...
-	 * @return     number Return description (if any) ...
+	 * @param      integer $day   Day
+	 * @param      number  $month Month
+	 * @param      number  $year  Year
+	 * @return     number 
 	 */
-	public function toDays( $day=0, $month=0, $year=0)
+	public function toDays($day=0, $month=0, $year=0)
 	{
-		if (!$day) {
-			if (isset( $this )) {
+		if (!$day) 
+		{
+			if (isset($this)) 
+			{
 				$day = $this->day;
-			} else {
-				$day = date( "d" );
+			} 
+			else 
+			{
+				$day = date("d");
 			}
 		}
-		if (!$month) {
-			if (isset( $this )) {
+		if (!$month) 
+		{
+			if (isset($this)) 
+			{
 				$month = $this->month;
-			} else {
-				$month = date( "m" );
+			} 
+			else 
+			{
+				$month = date("m");
 			}
 		}
-		if (!$year) {
-			if (isset( $this )) {
+		if (!$year) 
+		{
+			if (isset($this)) 
+			{
 				$year = $this->year;
-			} else {
-				$year = date( "Y" );
+			} 
+			else 
+			{
+				$year = date("Y");
 			}
 		}
 
-		$century = floor( $year / 100 );
+		$century = floor($year / 100);
 		$year = $year % 100;
 
-		if($month > 2) {
+		if ($month > 2) 
+		{
 			$month -= 3;
-		} else {
+		} 
+		else 
+		{
 			$month += 9;
-			if ($year) {
+			if ($year) 
+			{
 				$year--;
-			} else {
+			} 
+			else 
+			{
 				$year = 99;
-				$century --;
+				$century--;
 			}
 		}
 
-		return ( floor( (146097 * $century) / 4 ) + floor( (1461 * $year) / 4 ) + floor( (153 * $month + 2) / 5 ) + $day + 1721119);
+		return (floor((146097 * $century) / 4) + floor((1461 * $year) / 4) + floor((153 * $month + 2) / 5) + $day + 1721119);
 	}
 
 	/**
-	 * Short description for 'fromDays'
+	 * Calculate the date from the number of days passed
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      number $days Parameter description (if any) ...
+	 * @param      number $days Number of days
 	 * @return     void
 	 */
-	public function fromDays( $days )
+	public function fromDays($days)
 	{
 		$days -= 1721119;
-		$century = floor( ( 4 * $days - 1) /  146097 );
-		$days    = floor( 4 * $days - 1 - 146097 * $century );
-		$day     = floor( $days /  4 );
+		$century = floor((4 * $days - 1) /  146097);
+		$days    = floor(4 * $days - 1 - 146097 * $century);
+		$day     = floor($days /  4);
 
-		$year    = floor( ( 4 * $day +  3) /  1461 );
-		$day     = floor( 4 * $day +  3 -  1461 * $year );
-		$day     = floor( ($day +  4) /  4 );
+		$year    = floor((4 * $day +  3) /  1461);
+		$day     = floor(4 * $day +  3 -  1461 * $year);
+		$day     = floor(($day +  4) /  4);
 
-		$month   = floor( ( 5 * $day -  3) /  153 );
-		$day     = floor( 5 * $day -  3 -  153 * $month );
-		$day     = floor( ($day +  5) /  5 );
+		$month   = floor((5 * $day -  3) /  153);
+		$day     = floor(5 * $day -  3 -  153 * $month);
+		$day     = floor(($day +  5) /  5);
 
-		if ($month < 10) {
+		if ($month < 10) 
+		{
 			$month +=3;
-		} else {
+		} 
+		else 
+		{
 			$month -=9;
-			if ($year++ == 99) {
+			if ($year++ == 99) 
+			{
 				$year = 0;
 				$century++;
 			}
 		}
 
-		$this->day = $day;
+		$this->day   = $day;
 		$this->month = $month;
-		$this->year = $century*100 + $year;
+		$this->year  = $century*100 + $year;
 	}
 }
 

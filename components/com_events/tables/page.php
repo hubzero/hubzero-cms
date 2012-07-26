@@ -28,298 +28,302 @@
  */
 
 // No direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'EventsPage'
- * 
- * Long description (if any) ...
+ * Table class for event pages
  */
 class EventsPage extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id          = NULL;  // int(11)
+	var $id          = NULL;
 
 	/**
-	 * Description for 'event_id'
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $event_id    = NULL;
+
+	/**
+	 * string(100)
 	 * 
 	 * @var string
 	 */
-	var $event_id    = NULL;  // int(11)
+	var $alias       = NULL;
 
 	/**
-	 * Description for 'alias'
-	 * 
-	 * @var unknown
-	 */
-	var $alias       = NULL;  // string(100)
-
-	/**
-	 * Description for 'title'
-	 * 
-	 * @var unknown
-	 */
-	var $title       = NULL;  // string(250)
-
-	/**
-	 * Description for 'pagetext'
-	 * 
-	 * @var unknown
-	 */
-	var $pagetext    = NULL;  // text
-
-	/**
-	 * Description for 'created'
-	 * 
-	 * @var unknown
-	 */
-	var $created     = NULL;  // datetime(0000-00-00 00:00:00)
-
-	/**
-	 * Description for 'created_by'
-	 * 
-	 * @var unknown
-	 */
-	var $created_by  = NULL;  // int(11)
-
-	/**
-	 * Description for 'modified'
-	 * 
-	 * @var unknown
-	 */
-	var $modified    = NULL;  // datetime(0000-00-00 00:00:00)
-
-	/**
-	 * Description for 'modified_by'
-	 * 
-	 * @var unknown
-	 */
-	var $modified_by = NULL;  // int(11)
-
-	/**
-	 * Description for 'ordering'
+	 * string(250)
 	 * 
 	 * @var string
 	 */
-	var $ordering    = NULL;  // int(11)
+	var $title       = NULL;
 
 	/**
-	 * Description for 'params'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $params      = NULL;  // text
-
-	//-----------
+	var $pagetext    = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * Long description (if any) ...
+	 * @var string
+	 */
+	var $created     = NULL;
+
+	/**
+	 * int(11)
 	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @var integer
+	 */
+	var $created_by  = NULL;
+
+	/**
+	 * datetime(0000-00-00 00:00:00)
+	 * 
+	 * @var string
+	 */
+	var $modified    = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var itneger
+	 */
+	var $modified_by = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $ordering    = NULL;
+
+	/**
+	 * text
+	 * 
+	 * @var string
+	 */
+	var $params      = NULL;
+
+	/**
+	 * Constructor
+	 *
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__events_pages', 'id', $db );
+		parent::__construct('#__events_pages', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->alias ) == '') {
-			$this->setError( JText::_('You must enter an alias.') );
+		if (trim($this->alias) == '') 
+		{
+			$this->setError(JText::_('You must enter an alias.'));
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'loadFromAlias'
+	 * Load the first page by alias and bind to $this
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $alias Parameter description (if any) ...
-	 * @param      unknown $event_id Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string  $alias    Page alias
+	 * @param      integer $event_id Event ID
+	 * @return     boolean True on success, false if errors
 	 */
-	public function loadFromAlias( $alias=NULL, $event_id=NULL )
+	public function loadFromAlias($alias=NULL, $event_id=NULL)
 	{
-		if ($alias === NULL) {
+		if ($alias === NULL) 
+		{
 			return false;
 		}
-		if ($event_id === NULL) {
+		if ($event_id === NULL) 
+		{
 			return false;
 		}
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE alias='$alias' AND event_id='$event_id'" );
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE alias='$alias' AND event_id='$event_id'");
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
 
 	/**
-	 * Short description for 'loadFromEvent'
+	 * Load the first page associated with an event and bind to $this
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $event_id Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $event_id Event ID
+	 * @return     boolean True on success, false if errors
 	 */
-	public function loadFromEvent( $event_id=NULL )
+	public function loadFromEvent($event_id=NULL)
 	{
-		if ($event_id === NULL) {
+		if ($event_id === NULL) 
+		{
 			return false;
 		}
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE event_id='$event_id' ORDER BY ordering ASC LIMIT 1" );
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE event_id='$event_id' ORDER BY ordering ASC LIMIT 1");
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
 
 	/**
-	 * Short description for 'loadPages'
+	 * Get all pages for an event
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $event_id Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $event_id Event ID
+	 * @return     array
 	 */
-	public function loadPages( $event_id=NULL )
+	public function loadPages($event_id=NULL)
 	{
-		if ($event_id === NULL) {
+		if ($event_id === NULL) 
+		{
 			return false;
 		}
-		$this->_db->setQuery( "SELECT title, alias, id FROM $this->_tbl WHERE event_id='$event_id' ORDER BY ordering ASC" );
+		$this->_db->setQuery("SELECT title, alias, id FROM $this->_tbl WHERE event_id='$event_id' ORDER BY ordering ASC");
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'deletePages'
+	 * Delete all pages for an event
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $event_id Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $event_id Event ID
+	 * @return     boolean True on success, false if errors
 	 */
-	public function deletePages( $event_id=NULL )
+	public function deletePages($event_id=NULL)
 	{
-		if ($event_id === NULL) {
+		if ($event_id === NULL) 
+		{
 			return false;
 		}
-		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE event_id='$event_id'" );
-		return $this->_db->loadObjectList();
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE event_id='$event_id'");
+		if (!$this->_db->query())
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		return true;
 	}
 
 	/**
-	 * Short description for 'getNeighbor'
+	 * Get the next entry in the ordering
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $move Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string $move Direction to look for neighbor
+	 * @return     boolean True on success, false if errors
 	 */
-	public function getNeighbor( $move )
+	public function getNeighbor($move)
 	{
 		switch ($move)
 		{
 			case 'orderup':
 			case 'orderuppage':
-				$sql = "SELECT * FROM $this->_tbl WHERE event_id=".$this->event_id." AND ordering < ".$this->ordering." ORDER BY ordering DESC LIMIT 1";
-				break;
+				$sql = "SELECT * FROM $this->_tbl WHERE event_id=" . $this->event_id . " AND ordering < " . $this->ordering . " ORDER BY ordering DESC LIMIT 1";
+			break;
 
 			case 'orderdown':
 			case 'orderdownpage':
-				$sql = "SELECT * FROM $this->_tbl WHERE event_id=".$this->event_id." AND ordering > ".$this->ordering." ORDER BY ordering LIMIT 1";
-				break;
+				$sql = "SELECT * FROM $this->_tbl WHERE event_id=" . $this->event_id . " AND ordering > " . $this->ordering . " ORDER BY ordering LIMIT 1";
+			break;
 		}
-		$this->_db->setQuery( $sql );
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery($sql);
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
 
 	/**
-	 * Short description for 'buildQuery'
+	 * Build a query based off of filters passed
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array $filters Filters to construct query from
+	 * @return     string SQL
 	 */
 	public function buildQuery($filters)
 	{
-		if (isset($filters['limit']) && $filters['limit'] != 0) {
+		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		{
 			$query = "SELECT t.*, NULL as position";
-		} else {
+		} 
+		else 
+		{
 			$query = "SELECT count(*)";
 		}
 		$query .= " FROM $this->_tbl AS t";
-		if (isset($filters['event_id']) && $filters['event_id'] != '') {
-			$query .= " WHERE t.event_id='".$filters['event_id']."'";
+		if (isset($filters['event_id']) && $filters['event_id'] != '') 
+		{
+			$query .= " WHERE t.event_id='" . $filters['event_id'] . "'";
 		}
-		if (isset($filters['search']) && $filters['search'] != '') {
-			if (isset($filters['event_id']) && $filters['event_id'] != '') {
+		if (isset($filters['search']) && $filters['search'] != '') 
+		{
+			if (isset($filters['event_id']) && $filters['event_id'] != '') 
+			{
 				$query .= " AND ";
-			} else {
+			} 
+			else 
+			{
 				$query .= " WHERE ";
 			}
-			$query .= "LOWER( t.title ) LIKE '%".$filters['search']."%'";
+			$query .= "LOWER(t.title) LIKE '%" . $filters['search'] . "%'";
 		}
-		if (isset($filters['limit']) && $filters['limit'] != 0) {
-			$query .= " ORDER BY t.ordering ASC LIMIT ".$filters['start'].",".$filters['limit'];
+		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		{
+			$query .= " ORDER BY t.ordering ASC LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
 
 		return $query;
 	}
 
 	/**
-	 * Short description for 'getCount'
+	 * Get a record count
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to construct query from
+	 * @return     integer
 	 */
-	public function getCount( $filters=array() )
+	public function getCount($filters=array())
 	{
 		$filters['limit'] = 0;
 
-		$this->_db->setQuery( $this->buildQuery( $filters ) );
+		$this->_db->setQuery($this->buildQuery($filters));
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getRecords'
+	 * Get records
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to construct query from
+	 * @return     array
 	 */
-	public function getRecords( $filters=array() )
+	public function getRecords($filters=array())
 	{
-		$this->_db->setQuery( $this->buildQuery( $filters ) );
+		$this->_db->setQuery($this->buildQuery($filters));
 		return $this->_db->loadObjectList();
 	}
 }

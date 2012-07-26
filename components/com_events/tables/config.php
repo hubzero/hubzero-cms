@@ -29,55 +29,49 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'EventsConfig'
- * 
- * Long description (if any) ...
+ * Events table class for configuration
  */
 class EventsConfig extends JTable
 {
-
 	/**
-	 * Description for 'param'
+	 * varchar(100)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $param = NULL;
 
 	/**
-	 * Description for 'value'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $value = NULL;
 
 	/**
-	 * Short description for '__construct'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * Constructor
+	 *
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__events_config', 'param', $db );
+		parent::__construct('#__events_config', 'param', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		// check for valid name
-		if (trim( $this->param ) == '') {
-			$this->setError( JText::_('EVENTS_BLANK_CONFIG_PARAMETER') );
+		if (trim($this->param) == '') 
+		{
+			$this->setError(JText::_('EVENTS_BLANK_CONFIG_PARAMETER'));
 			return false;
 		}
 		return true;
@@ -85,63 +79,56 @@ class EventsConfig extends JTable
 }
 
 /**
- * Short description for 'class'
- * 
- * Long description (if any) ...
+ * Events class for getting all configurations
  */
 class EventsConfigs
 {
-
 	/**
-	 * Description for '_tbl'
+	 * Table name
 	 * 
 	 * @var string
 	 */
 	private $_tbl   = NULL;
 
 	/**
-	 * Description for '_db'
+	 * JDatavase
 	 * 
 	 * @var object
 	 */
 	private $_db    = NULL;
 
 	/**
-	 * Description for '_data'
+	 * Container for data
 	 * 
 	 * @var array
 	 */
 	private $_data  = array();
 
 	/**
-	 * Description for '_error'
+	 * Container for error messages
 	 * 
 	 * @var unknown
 	 */
 	private $_error = NULL;
 
 	/**
-	 * Short description for '__construct'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * Constructor
+	 *
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
 		$this->_tbl = '#__events_config';
-		$this->_db = $db;
+		$this->_db  = $db;
 	}
 
 	/**
-	 * Short description for '__set'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
-	 * @return     void
+	 * Method to set an overloaded variable to the component
+	 *
+	 * @param	string	$property	Name of overloaded variable to add
+	 * @param	mixed	$value 		Value of the overloaded variable
+	 * @return	void
 	 */
 	public function __set($property, $value)
 	{
@@ -149,40 +136,40 @@ class EventsConfigs
 	}
 
 	/**
-	 * Short description for '__get'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $property Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * Method to get an overloaded variable of the component
+	 *
+	 * @param	string	$property	Name of overloaded variable to retrieve
+	 * @return	mixed 	Value of the overloaded variable
 	 */
 	public function __get($property)
 	{
-		if (isset($this->_data[$property])) {
+		if (isset($this->_data[$property])) 
+		{
 			return $this->_data[$property];
 		}
 	}
 
 	/**
-	 * Short description for 'load'
-	 * 
-	 * Long description (if any) ...
+	 * Get all configurations and populate $this
 	 * 
 	 * @return     void
 	 */
 	public function load()
 	{
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl" );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl");
 		$configs = $this->_db->loadObjectList();
 
-		if (empty($configs) || count($configs) <= 0) {
-			if ($this->loadDefaults()) {
-				$this->_db->setQuery( "SELECT * FROM $this->_tbl" );
+		if (empty($configs) || count($configs) <= 0) 
+		{
+			if ($this->loadDefaults()) 
+			{
+				$this->_db->setQuery("SELECT * FROM $this->_tbl");
 				$configs = $this->_db->loadObjectList();
 			}
 		}
 
-		if (!empty($configs)) {
+		if (!empty($configs)) 
+		{
 			foreach ($configs as $config)
 			{
 				$b = $config->param;
@@ -191,7 +178,8 @@ class EventsConfigs
 		}
 
 		$fields = array();
-		if (trim($this->fields) != '') {
+		if (trim($this->fields) != '') 
+		{
 			$fs = explode("\n", trim($this->fields));
 			foreach ($fs as $f)
 			{
@@ -202,36 +190,35 @@ class EventsConfigs
 	}
 
 	/**
-	 * Short description for 'loadDefaults'
+	 * Set the default configuration values
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True on success, false on errors
 	 */
 	public function loadDefaults()
 	{
 		$config = array(
-				'adminmail'=>'',
-				'adminlevel'=>'0',
-				'starday'=>'0',
-				'mailview'=>'NO',
-				'byview'=>'NO',
-				'hitsview'=>'NO',
-				'repeatview'=>'NO',
-				'dateformat'=>'0',
-				'calUseStdTime'=>'NO',
-				'navbarcolor'=>'',
-				'startview'=>'month',
-				'calEventListRowsPpg'=>'30',
-				'calSimpleEventForm'=>'NO',
-				'defColor'=>'',
-				'calForceCatColorEventForm'=>'NO',
-				'fields'=>''
-			);
-		foreach ($config as $p=>$v)
+			'adminmail' => '',
+			'adminlevel' => '0',
+			'starday' => '0',
+			'mailview' => 'NO',
+			'byview' => 'NO',
+			'hitsview' => 'NO',
+			'repeatview' => 'NO',
+			'dateformat' => '0',
+			'calUseStdTime' => 'NO',
+			'navbarcolor' => '',
+			'startview' => 'month',
+			'calEventListRowsPpg' => '30',
+			'calSimpleEventForm' => 'NO',
+			'defColor' => '',
+			'calForceCatColorEventForm' => 'NO',
+			'fields' => ''
+		);
+		foreach ($config as $p => $v)
 		{
-			$this->_db->setQuery( "INSERT INTO $this->_tbl (param, value) VALUES ('$p', '$v')" );
-			if (!$this->_db->query()) {
+			$this->_db->setQuery("INSERT INTO $this->_tbl (param, value) VALUES ('$p', '$v')");
+			if (!$this->_db->query()) 
+			{
 				return false;
 			}
 		}
@@ -239,18 +226,19 @@ class EventsConfigs
 	}
 
 	/**
-	 * Short description for 'getCfg'
+	 * Get a configuration value
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $f Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $f Property name
+	 * @return     string 
 	 */
-	public function getCfg( $f='' )
+	public function getCfg($f='')
 	{
-		if ($f) {
+		if ($f) 
+		{
 			return $this->$f;
-		} else {
+		} 
+		else 
+		{
 			return NULL;
 		}
 	}

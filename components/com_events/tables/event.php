@@ -29,395 +29,382 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'EventsEvent'
- * 
- * Long description (if any) ...
+ * Events table class for an event
  */
 class EventsEvent extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(12) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $id               = NULL;
 
 	/**
-	 * Description for 'sid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $sid              = NULL;
 
 	/**
-	 * Description for 'catid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $catid            = NULL;
 
 	/**
-	 * Description for 'title'
+	 * varchar(255)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $title            = NULL;
 
 	/**
-	 * Description for 'content'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $content          = NULL;
 
 	/**
-	 * Description for 'contact_info'
+	 * varchar(120)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $contact_info     = NULL;
 
 	/**
-	 * Description for 'adresse_info'
+	 * varchar(120)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $adresse_info     = NULL;
 
 	/**
-	 * Description for 'extra_info'
+	 * varchar(240)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $extra_info       = NULL;
 
 	/**
-	 * Description for 'color_bar'
+	 * varchar(8)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $color_bar        = NULL;
 
 	/**
-	 * Description for 'useCatColor'
+	 * int(1)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $useCatColor      = NULL;
 
 	/**
-	 * Description for 'state'
+	 * int(3)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $state            = NULL;
 
 	/**
-	 * Description for 'mask'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $mask             = NULL;
 
 	/**
-	 * Description for 'created'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $created          = NULL;
 
 	/**
-	 * Description for 'created_by'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $created_by       = NULL;
 
 	/**
-	 * Description for 'created_by_alias'
+	 * varchar(100)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $created_by_alias = NULL;
 
 	/**
-	 * Description for 'modified'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $modified         = NULL;
 
 	/**
-	 * Description for 'modified_by'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $modified_by      = NULL;
 
 	/**
-	 * Description for 'checked_out'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $checked_out      = NULL;
 
 	/**
-	 * Description for 'checked_out_time'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $checked_out_time = NULL;
 
 	/**
-	 * Description for 'publish_up'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $publish_up       = NULL;
 
 	/**
-	 * Description for 'time_zone'
+	 * varchar(5)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $time_zone        = NULL;
+
 	/**
-	 * Description for 'publish_down'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $publish_down     = NULL;
 
 	/**
-	 * Description for 'images'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $images           = NULL;
 
 	/**
-	 * Description for 'reccurtype'
+	 * varchar(1)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $reccurtype       = NULL;
 
 	/**
-	 * Description for 'reccurday'
+	 * varchar(4)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $reccurday        = NULL;
 
 	/**
-	 * Description for 'reccurweekdays'
+	 * varchar(20)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $reccurweekdays   = NULL;
 
 	/**
-	 * Description for 'reccurweeks'
+	 * varchar(10)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $reccurweeks      = NULL;
 
 	/**
-	 * Description for 'approved'
+	 * int(1)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $approved         = NULL;
 
 	/**
-	 * Description for 'announcement'
+	 * int(1)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $announcement     = NULL;
 
 	/**
-	 * Description for 'ordering'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $ordering         = NULL;
 
 	/**
-	 * Description for 'archived'
+	 * int(1)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $archived         = NULL;
 
 	/**
-	 * Description for 'access'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $access           = NULL;
 
 	/**
-	 * Description for 'hits'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $hits             = NULL;
 
 	/**
-	 * Description for 'registerby'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $registerby       = NULL;
 
 	/**
-	 * Description for 'params'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $params           = NULL;
 
 	/**
-	 * Description for 'restricted'
+	 * varchar(100)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $restricted       = NULL;
 
 	/**
-	 * Description for 'email'
+	 * varchar(255)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $email            = NULL;
 
 	/**
-	 * Short description for '__construct'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * Constructor
+	 *
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__events', 'id', $db );
+		parent::__construct('#__events', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->title ) == '') {
-			$this->setError( JText::_('EVENTS_MUST_HAVE_TITLE') );
+		if (trim($this->title) == '') 
+		{
+			$this->setError(JText::_('EVENTS_MUST_HAVE_TITLE'));
 			return false;
 		}
-		if (trim( $this->catid ) == '' || trim( $this->catid ) == 0) {
-			$this->setError( JText::_('EVENTS_MUST_HAVE_CATEGORY') );
+		if (trim($this->catid) == '' || trim($this->catid) == 0) 
+		{
+			$this->setError(JText::_('EVENTS_MUST_HAVE_CATEGORY'));
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'hit'
+	 * Increase event hit count
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $oid Parameter description (if any) ...
+	 * @param      integer $oid Event ID
 	 * @return     void
 	 */
-	public function hit( $oid=NULL )
+	public function hit($oid=NULL)
 	{
 		$k = $this->_tbl_key;
-		if ($oid !== NULL) {
-			$this->$k = intval( $oid );
+		if ($oid !== NULL) 
+		{
+			$this->$k = intval($oid);
 		}
-		$this->_db->setQuery( "UPDATE $this->_tbl SET hits=(hits+1) WHERE id=$this->id" );
+		$this->_db->setQuery("UPDATE $this->_tbl SET hits=(hits+1) WHERE id=$this->id");
 		$this->_db->query();
 	}
 
 	/**
-	 * Short description for 'publish'
+	 * Set an event to published
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $oid Parameter description (if any) ...
+	 * @param      integer $oid Event ID
 	 * @return     void
 	 */
-	public function publish( $oid=NULL )
+	public function publish($oid=NULL)
 	{
-		if (!$oid) {
+		if (!$oid) 
+		{
 			$oid = $this->id;
 		}
-		$this->_db->setQuery( "UPDATE $this->_tbl SET state=1 WHERE id=$oid" );
+		$this->_db->setQuery("UPDATE $this->_tbl SET state=1 WHERE id=$oid");
 		$this->_db->query();
 	}
 
 	/**
-	 * Short description for 'unpublish'
+	 * Set an event to unpublished
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $oid Parameter description (if any) ...
+	 * @param      integer $oid Event ID
 	 * @return     void
 	 */
-	public function unpublish( $oid=NULL )
+	public function unpublish($oid=NULL)
 	{
-		if (!$oid) {
+		if (!$oid) 
+		{
 			$oid = $this->id;
 		}
-		$this->_db->setQuery( "UPDATE $this->_tbl SET state=0 WHERE id=$oid" );
+		$this->_db->setQuery("UPDATE $this->_tbl SET state=0 WHERE id=$oid");
 		$this->_db->query();
 	}
 
 	/**
-	 * Short description for 'getFirst'
+	 * Get the newest event date
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     object Return description (if any) ...
+	 * @return     string
 	 */
 	public function getFirst()
 	{
-		$this->_db->setQuery( "SELECT publish_up FROM $this->_tbl ORDER BY publish_up ASC LIMIT 1" );
+		$this->_db->setQuery("SELECT publish_up FROM $this->_tbl ORDER BY publish_up ASC LIMIT 1");
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getLast'
+	 * Get the oldest event date
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     object Return description (if any) ...
+	 * @return     string
 	 */
 	public function getLast()
 	{
-		$this->_db->setQuery( "SELECT publish_down FROM $this->_tbl ORDER BY publish_down DESC LIMIT 1" );
+		$this->_db->setQuery("SELECT publish_down FROM $this->_tbl ORDER BY publish_down DESC LIMIT 1");
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getEvents'
+	 * Get events for a date range
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $period Parameter description (if any) ...
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      string $period  Date range [month, year, week, day]
+	 * @param      array  $filters Extra filters to apply to query
+	 * @return     array
 	 */
-	public function getEvents( $period='month', $filters=array() )
+	public function getEvents($period='month', $filters=array())
 	{
 		$gid = (isset($filters['gid'])) ? $filters['gid'] : 0;
 
@@ -433,12 +420,12 @@ class EventsEvent extends JTable
 						WHERE $this->_tbl.catid = b.id 
 						AND b.access <= $gid 
 						AND $this->_tbl.access <= $gid 
-						AND ( ((publish_up >= '$select_date%' AND publish_up <= '$select_date_fin%') 
+						AND (((publish_up >= '$select_date%' AND publish_up <= '$select_date_fin%') 
 							OR (publish_down >= '$select_date%' AND publish_down <= '$select_date_fin%') 
 							OR (publish_up >= '$select_date%' AND publish_down <= '$select_date_fin%') 
 							OR (publish_up <= '$select_date%' AND publish_down >= '$select_date_fin%')) 
 							AND $this->_tbl.state = '1'";
-				$sql .= ($filters['category'] != 0) ? " AND b.id=".$filters['category'] : "";
+				$sql .= ($filters['category'] != 0) ? " AND b.id=" . $filters['category'] : "";
 				$sql .= ") ORDER BY publish_up ASC";
 			break;
 
@@ -449,7 +436,7 @@ class EventsEvent extends JTable
 						WHERE $this->_tbl.catid = b.id AND b.access <= $gid AND $this->_tbl.access <= $gid
 						AND publish_up LIKE '$year%' AND (publish_down >= '$year%' OR publish_down = '0000-00-00 00:00:00')
 						AND $this->_tbl.state = '1'";
-				$sql .= ($filters['category'] != 0) ? " AND b.id=".$filters['category'] : "";
+				$sql .= ($filters['category'] != 0) ? " AND b.id=" . $filters['category'] : "";
 				$sql .= " ORDER BY publish_up ASC";
 				//$sql .= " LIMIT ".$filters['start'].", ".$filters['limit'];
 			break;
@@ -475,48 +462,46 @@ class EventsEvent extends JTable
 							OR (publish_down >= '$select_date 00:00:00' AND publish_down <= '$select_date 23:59:59') 
 							OR (publish_up <= '$select_date 00:00:00' AND publish_down >= '$select_date 23:59:59') 
 							OR (publish_up >= '$select_date 00:00:00' AND publish_down <= '$select_date 23:59:59')";
-				$sql .= ($filters['category'] != 0) ? " AND b.id=".$filters['category'] : "";
+				$sql .= ($filters['category'] != 0) ? " AND b.id=" . $filters['category'] : "";
 				$sql .= ") AND $this->_tbl.state = '1' ORDER BY publish_up ASC";
 			break;
 		}
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'getCount'
+	 * Get a record count
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to construct query from
+	 * @return     integer
 	 */
-	public function getCount( $filters=array() )
+	public function getCount($filters=array())
 	{
 		$query = "SELECT count(*) FROM $this->_tbl AS a";
 		$where = array();
-		if ($filters['catid'] > 0) {
-			$where[] = "a.catid='".$filters['catid']."'";
+		if ($filters['catid'] > 0) 
+		{
+			$where[] = "a.catid='" . $filters['catid'] . "'";
 		}
-		if ($filters['search']) {
+		if ($filters['search']) 
+		{
 			$where[] = "LOWER(a.title) LIKE '%".$filters['search']."%'";
 		}
-		$query .= (count( $where )) ? " WHERE ".implode( ' AND ', $where ) : "";
+		$query .= (count($where)) ? " WHERE " . implode(' AND ', $where) : "";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getRecords'
+	 * Get records
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to construct query from
+	 * @return     array
 	 */
-	public function getRecords( $filters=array() )
+	public function getRecords($filters=array())
 	{
 		$query = "SELECT a.*, cc.name AS category, u.name AS editor, g.name AS groupname 
 				FROM $this->_tbl AS a 
@@ -525,18 +510,20 @@ class EventsEvent extends JTable
 				#__categories AS cc";
 
 		$where = array();
-		if ($filters['catid'] > 0) {
-			$where[] = "a.catid='".$filters['catid']."'";
+		if ($filters['catid'] > 0) 
+		{
+			$where[] = "a.catid='" . $filters['catid'] . "'";
 		}
-		if ($filters['search']) {
-			$where[] = "LOWER(a.title) LIKE '%".$filters['search']."%'";
+		if ($filters['search']) 
+		{
+			$where[] = "LOWER(a.title) LIKE '%" . $filters['search'] . "%'";
 		}
 		$where[] = "a.catid=cc.id";
 
-		$query .= (count( $where )) ? " WHERE ".implode( ' AND ', $where ) : "";
-		$query .= " ORDER BY a.publish_up DESC LIMIT ".$filters['start'].",".$filters['limit'];
+		$query .= (count($where)) ? " WHERE " . implode(' AND ', $where) : "";
+		$query .= " ORDER BY a.publish_up DESC LIMIT " . $filters['start'] . "," . $filters['limit'];
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 }

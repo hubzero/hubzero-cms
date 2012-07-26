@@ -28,7 +28,7 @@
  */
 
 // No direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Short description for 'EventsRespondent'
@@ -37,7 +37,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  */
 class EventsRespondent extends JTable
 {
-
 	/**
 	 * Description for 'id'
 	 * 
@@ -266,11 +265,14 @@ class EventsRespondent extends JTable
 	public static function getRacialIdentification($resp_id)
 	{
 		$dbh =& JFactory::getDBO();
-		if (is_array($resp_id)) {
-			$dbh->setQuery('SELECT respondent_id, group_concat(concat(race, coalesce(concat(\'(\', tribal_affiliation, \')\'), \'\')) separator \', \') AS identification FROM #__events_respondent_race_rel WHERE respondent_id IN ('. implode(', ', array_map('intval', $resp_id)) . ') GROUP BY respondent_id');
+		if (is_array($resp_id)) 
+		{
+			$dbh->setQuery('SELECT respondent_id, group_concat(concat(race, coalesce(concat(\'(\', tribal_affiliation, \')\'), \'\')) separator \', \') AS identification FROM #__events_respondent_race_rel WHERE respondent_id IN (' . implode(', ', array_map('intval', $resp_id)) . ') GROUP BY respondent_id');
 			return $dbh->loadAssocList('respondent_id');
-		} else {
-			$dbh->setQuery('SELECT group_concat(concat(race, coalesce(concat(\'(\', tribal_affiliation, \')\'), \'\')) separator \', \') FROM #__events_respondent_race_rel WHERE respondent_id = '.intval($resp_id).' GROUP BY respondent_id');
+		} 
+		else 
+		{
+			$dbh->setQuery('SELECT group_concat(concat(race, coalesce(concat(\'(\', tribal_affiliation, \')\'), \'\')) separator \', \') FROM #__events_respondent_race_rel WHERE respondent_id = ' . intval($resp_id) . ' GROUP BY respondent_id');
 			return $dbh->loadResult();
 		}
 	}
@@ -326,29 +328,42 @@ class EventsRespondent extends JTable
 	{
 		parent::__construct('#__events_respondents', 'id', JFactory::getDBO());
 
-		if (array_key_exists('sortby', $filters)) {
-			if (preg_match('/(registered|name|special|id)(?:\ (ASC|DESC))?/', $filters['sortby'], $match)) {
-				if ($match[1] == 'name') {
-					$this->order_desc = 'name '.$match[2];
+		if (array_key_exists('sortby', $filters)) 
+		{
+			if (preg_match('/(registered|name|special|id)(?:\ (ASC|DESC))?/', $filters['sortby'], $match)) 
+			{
+				if ($match[1] == 'name') 
+				{
+					$this->order_desc = 'name ' . $match[2];
 					$this->order = ' ORDER BY last_name, first_name';
-				} else if ($match[1] == 'special') {
-					$this->order_desc = 'special '.$match[2];
-					$this->order = ' ORDER BY CASE WHEN disability_needs OR dietary_needs IS NOT NULL THEN 1 WHEN comment IS NOT NULL THEN 2 ELSE 3 END '.$match[2];
-				} else {
+				} 
+				else if ($match[1] == 'special') 
+				{
+					$this->order_desc = 'special ' . $match[2];
+					$this->order = ' ORDER BY CASE WHEN disability_needs OR dietary_needs IS NOT NULL THEN 1 WHEN comment IS NOT NULL THEN 2 ELSE 3 END ' . $match[2];
+				} 
+				else 
+				{
 					$this->order_desc = $filters['sortby'];
 					$this->order = ' ORDER BY ' . $filters['sortby'];
 				}
 				unset($filters['sortby']);
-			} else {
-				throw new Exception('Invalid sorting criterium: '.$filters['sortby']);
+			} 
+			else 
+			{
+				throw new Exception('Invalid sorting criterium: ' . $filters['sortby']);
 			}
 		}
 
-		if (array_key_exists('limit', $filters)) {
-			$this->limit = intval($filters['limit']);
+		if (array_key_exists('limit', $filters)) 
+		{
+			$this->limit  = intval($filters['limit']);
 			$this->offset = array_key_exists('offset', $filters) ? intval($filters['offset']) : 0;
 
-			if (array_key_exists('offset', $filters)) unset($filters['offset']);
+			if (array_key_exists('offset', $filters)) 
+			{
+				unset($filters['offset']);
+			}
 			unset($filters['limit']);
 		}
 
@@ -358,15 +373,16 @@ class EventsRespondent extends JTable
 			{
 				case 'id':
 					$this->filters[] = (is_array($val))
-						? 'event_id IN ('.implode(', ', array_map('intval', $val)).')'
-						: 'event_id = '.intval($val);
+						? 'event_id IN (' . implode(', ', array_map('intval', $val)) . ')'
+						: 'event_id = ' . intval($val);
 				break;
 				case 'respondent_id':
-					$this->filters[] = 'id = '.intval($val);
+					$this->filters[] = 'id = ' . intval($val);
 				break;
 				case 'search':
-					if (!empty($val)) {
-						$this->filters[] = 'concat(first_name, \' \', last_name) LIKE \'%'.$this->_db->getEscaped($val).'%\'';
+					if (!empty($val)) 
+					{
+						$this->filters[] = 'concat(first_name, \' \', last_name) LIKE \'%' . $this->_db->getEscaped($val) . '%\'';
 						$this->searchTerms = htmlentities($val);
 					}
 				break;
@@ -389,8 +405,8 @@ class EventsRespondent extends JTable
 	public function fetch($bounded = true)
 	{
 		$this->_db->setQuery(
-			'SELECT '.($bounded ? '*' : 'COUNT(*)')." FROM $this->_tbl WHERE ".$this->filters.$this->order.
-				($bounded && $this->limit != 0 ? ' LIMIT '.$this->offset.', '.$this->limit : '')
+			'SELECT ' . ($bounded ? '*' : 'COUNT(*)') . " FROM $this->_tbl WHERE " . $this->filters . $this->order . 
+				($bounded && $this->limit != 0 ? ' LIMIT ' . $this->offset . ', ' . $this->limit : '')
 		);
 		return $bounded ? $this->_db->loadObjectList() : $this->_db->loadResult();
 	}
@@ -427,12 +443,13 @@ class EventsRespondent extends JTable
 	 * @param      unknown $event_id Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function deleteRespondents( $event_id=NULL )
+	public function deleteRespondents($event_id=NULL)
 	{
-		if ($event_id === NULL) {
+		if ($event_id === NULL) 
+		{
 			return false;
 		}
-		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE event_id='$event_id'" );
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE event_id='$event_id'");
 		return $this->_db->loadObjectList();
 	}
 }
