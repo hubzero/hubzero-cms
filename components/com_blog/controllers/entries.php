@@ -457,8 +457,13 @@ class BlogControllerEntries extends Hubzero_Controller
 	{
 		if ($this->juser->get('guest')) 
 		{
-			$this->setError(JText::_('COM_BLOG_LOGIN_NOTICE'));
-			return $this->_login();
+			$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
+			$this->setRedirect(
+				JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn)),
+				JText::_('COM_BLOG_LOGIN_NOTICE'),
+				'warning'
+			);
+			return;
 		}
 
 		$this->view->setLayout('edit');
@@ -514,8 +519,13 @@ class BlogControllerEntries extends Hubzero_Controller
 	{
 		if ($this->juser->get('guest')) 
 		{
-			$this->setError(JText::_('COM_BLOG_LOGIN_NOTICE'));
-			return $this->_login();
+			$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
+			$this->setRedirect(
+				JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn)),
+				JText::_('COM_BLOG_LOGIN_NOTICE'),
+				'warning'
+			);
+			return;
 		}
 
 		$entry = JRequest::getVar('entry', array(), 'post');

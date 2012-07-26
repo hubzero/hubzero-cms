@@ -34,9 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Controller');
 
 /**
- * Short description for 'BlogController'
- * 
- * Long description (if any) ...
+ * Blog controller class for media
  */
 class BlogControllerMedia extends Hubzero_Controller
 {
