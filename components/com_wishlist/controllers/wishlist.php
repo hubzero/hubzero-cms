@@ -445,7 +445,7 @@ class WishlistController extends JObject
 			$pathway->addItem(JText::_('Resources'), 'index.php?option=com_resources');
 			$pathway->addItem(ucfirst(JText::_($wishlist->resource->typetitle)), JRoute::_('index.php?option=com_resources&type='.$typenorm));
 			$pathway->addItem(stripslashes($wishlist->resource->title),JRoute::_('index.php?option=com_resources&id='.$wishlist->referenceid));
-			$pathway->addItem(JText::_(strtoupper($this->_name)), 'index.php?option=' . $this->_option . '&task=wishlist&category='.$wishlist->category.'&rid='.$wishlist->referenceid);
+			$pathway->addItem(JText::_(strtoupper($this->_name)), 'index.php?option=' . $this->_option . '&task=wishlist&category=' . $wishlist->category . '&rid='.$wishlist->referenceid);
 		}
 		else 
 		{
@@ -459,7 +459,7 @@ class WishlistController extends JObject
 			} 
 			else 
 			{
-				$pathway->addItem($title, 'index.php?option=' . $this->_option . '&task=wishlist&category='.$wishlist->category.'&rid='.$wishlist->referenceid);
+				$pathway->addItem($title, 'index.php?option=' . $this->_option . '&task=wishlist&category=' . $wishlist->category . '&rid='.$wishlist->referenceid);
 			}
 		}
 	}
@@ -1056,7 +1056,7 @@ class WishlistController extends JObject
 			$this->listid = $listid;
 			$this->rank($listid);
 
-			$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&task=wishlist&category='.$wishlist->category.'&rid='.$wishlist->referenceid).'?saved=1';
+			$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&task=wishlist&category=' . $wishlist->category . '&rid='.$wishlist->referenceid).'?saved=1';
 			return;
 		}
 
@@ -1111,7 +1111,7 @@ class WishlistController extends JObject
 		$this->listid = $listid;
 		$this->rank($listid);
 
-		$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&task=wishlist&category='.$wishlist->category.'&rid='.$wishlist->referenceid).'?saved=1';
+		$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&task=wishlist&category=' . $wishlist->category . '&rid='.$wishlist->referenceid).'?saved=1';
 	}
 
 	/**
@@ -1385,7 +1385,7 @@ class WishlistController extends JObject
 			$message .= r.n.r.n;
 
 			$message .= '----------------------------'.r.n;
-			$url = $live_site.JRoute::_('index.php?option=' . $this->_option . '&task=wish&category='.$wishlist->category.'&rid='.$wishlist->referenceid.'&wishid=' . $wishid);
+			$url = $live_site.JRoute::_('index.php?option=' . $this->_option . '&task=wish&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid . '&wishid=' . $wishid);
 			$message  .= JText::_('GO_TO').' '.$url.' '.JText::_('TO_VIEW_YOUR_ASSIGNED_WISH').'.';
 
 			JPluginHelper::importPlugin('xmessage');
@@ -1397,7 +1397,7 @@ class WishlistController extends JObject
 			}
 		}
 
-		$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&task=wish&category='.$wishlist->category.'&rid='.$wishlist->referenceid.'&wishid=' . $wishid).'#plan';
+		$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&task=wish&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid . '&wishid=' . $wishid) . '#plan';
 	}
 
 	/**
@@ -1484,8 +1484,8 @@ class WishlistController extends JObject
 
 		// Set the pathway
 		$this->_taskpath = $wishid
-							? 'index.php?option=' . $this->_option . '&task=editwish&category='.$category.'&rid=' . $refid . '&wishid='.$wishid
-							: 'index.php?option=' . $this->_option . '&task=add&category='.$category.'&rid='.$refid;
+							? 'index.php?option=' . $this->_option . '&task=editwish&category=' . $category . '&rid=' . $refid . '&wishid=' . $wishid
+							: 'index.php?option=' . $this->_option . '&task=add&category=' . $category . '&rid=' . $refid;
 		$this->_taskname = $wishid
 							? JText::_('COM_WISHLIST_EDITWISH')
 							: JText::_('COM_WISHLIST_ADD');
@@ -1534,7 +1534,7 @@ class WishlistController extends JObject
 
 		// Get URL to page explaining virtual economy
 		$aconfig =& JComponentHelper::getParams('com_answers');
-		$infolink = $aconfig->get('infolink') ? $aconfig->get('infolink') : '/kb/points/';
+		$infolink = $aconfig->get('infolink', '/kb/points/');
 
 		// Get tags on this wish
 		$tagging = new WishTags($database);
@@ -1642,8 +1642,8 @@ class WishlistController extends JObject
 		{
 			// Set the pathway
 			$this->_taskpath = $wishid
-							? 'index.php?option=' . $this->_option . '&task=editwish&category='.$wishlist->category.'&rid='.$wishlist->referenceid.'&wishid='.$wishid
-							: 'index.php?option=' . $this->_option . '&task=add&category='.$wishlist->category.'&rid='.$wishlist->referenceid;
+							? 'index.php?option=' . $this->_option . '&task=editwish&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid . '&wishid='.$wishid
+							: 'index.php?option=' . $this->_option . '&task=add&category=' . $wishlist->category . '&rid='.$wishlist->referenceid;
 			$this->_taskname = $wishid
 								? JText::_('COM_WISHLIST_EDITWISH')
 								: JText::_('COM_WISHLIST_ADD');
@@ -1733,16 +1733,21 @@ class WishlistController extends JObject
 			$objOwner = new WishlistOwner($database);
 			$owners   = $objOwner->get_owners($wishlist->id, $this->admingroup , $wishlist);
 
-			$message  = '----------------------------'.r.n;
-			$message .= JText::_('WISH').' #'.$row->id.', '.$wishlist->title.' '.JText::_('WISHLIST').r.n;
-			$message .= JText::_('WISH_DETAILS_SUMMARY').': '.stripslashes($row->subject).r.n;
+			$message  = '----------------------------'."\r\n";
+			$message .= JText::_('WISH').' #'.$row->id.', '.$wishlist->title.' '.JText::_('WISHLIST')."\r\n";
+			$message .= JText::_('WISH_DETAILS_SUMMARY').': '.stripslashes($row->subject)."\r\n";
 			$message .= JText::_('PROPOSED_ON').' '.JHTML::_('date',$row->proposed, '%d %b, %Y');
 			$message .= ' '.JText::_('BY').' '.$name.' ';
 			$message .= $row->anonymous ? '' : '('.$login.')';
-			$message .= r.n.r.n;
+			$message .= "\r\n";
+			$message .= '----------------------------'."\r\n\r\n";
+			if (!$wishid)
+			{
+				$message .= $row->about;
+				$message .= "\r\n\r\n";
+			}
 
-			$message .= '----------------------------'.r.n;
-			$url = $live_site.JRoute::_('index.php?option=' . $this->_option . '&task=wish&category='.$wishlist->category.'&rid='.$wishlist->referenceid.'&wishid='.$row->id);
+			$url = $live_site.JRoute::_('index.php?option=' . $this->_option . '&task=wish&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid . '&wishid='.$row->id);
 			$message .= JText::_('GO_TO').' '.$url.' '.JText::_('TO_VIEW_THIS_WISH').'.';
 
 			JPluginHelper::importPlugin('xmessage');
@@ -1758,32 +1763,30 @@ class WishlistController extends JObject
 		{
 			// put the  amount on hold
 			$BTL = new Hubzero_Bank_Teller($database, $juser->get('id'));
-			$BTL->hold($reward, JText::_('BANKING_HOLD').' #'.$row->id.' '.JText::_('FOR').' '.$wishlist->title, 'wish', $row->id);
+			$BTL->hold($reward, JText::_('BANKING_HOLD') . ' #' . $row->id . ' ' . JText::_('FOR') . ' ' . $wishlist->title, 'wish', $row->id);
 		}
 
 		$saved = $wishid ? 2 : 3;
-		$this->_redirect =JRoute::_('index.php?option=' . $this->_option . '&task=wish&category='.$wishlist->category.'&rid='.$wishlist->referenceid.'&wishid='.$id).'?saved='.$saved;
+		$this->_redirect =JRoute::_('index.php?option=' . $this->_option . '&task=wish&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid . '&wishid=' . $id) . '?saved=' . $saved;
 	}
 
 	/**
-	 * Short description for 'editwish'
+	 * Show a form for editing a wish
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function editwish()
 	{
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
 		$live_site = rtrim(JURI::base(), '/');
-		
-		$wishid  = JRequest::getInt('wishid', 0);
-		$id  	= JRequest::getInt('id', 0);
+
+		$wishid = JRequest::getInt('wishid', 0);
+		$id     = JRequest::getInt('id', 0);
 		$refid  = JRequest::getInt('rid', 0);
-		$cat   	= JRequest::getVar('category', '');
+		$cat    = JRequest::getVar('category', '');
 		$status = JRequest::getVar('status', '');
-		$vid 	= JRequest::getInt('vid', 0);
+		$vid    = JRequest::getInt('vid', 0);
 
 		$obj = new Wishlist($database);
 		$objWish = new Wish($database);
@@ -1815,8 +1818,8 @@ class WishlistController extends JObject
 				$this->_buildTitle();
 
 				// Set the pathway
-				$this->_taskpath  = 'index.php?option=' . $this->_option . '&task=editwish&category='.$wishlist->category.'&rid='.$wishlist->referenceid.'&wishid='.$wishid;
-				$this->_taskname = JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task));
+				$this->_taskpath = 'index.php?option=' . $this->_option . '&task=editwish&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid . '&wishid=' . $wishid;
+				$this->_taskname = JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 				$this->_buildPathway($wishlist);
 				$this->login();
 				return;
@@ -1895,13 +1898,13 @@ class WishlistController extends JObject
 					$admin_email = $jconfig->getValue('config.mailfrom');
 
 					// to wish author
-					$subject1 = JText::_(strtoupper($this->_name)).', '.JText::_('YOUR_WISH').' #'.$wishid.' is '.$status;
+					$subject1 = JText::_(strtoupper($this->_name)) . ', ' . JText::_('YOUR_WISH') . ' #' . $wishid . ' is ' . $status;
 
 					// to wish assignee
-					$subject2 = JText::_(strtoupper($this->_name)).', '.JText::_('WISH').' #'.$wishid.' '.JText::_('HAS_BEEN').' '.JText::_('MSG_ASSIGNED_TO_YOU');
+					$subject2 = JText::_(strtoupper($this->_name)) . ', ' . JText::_('WISH') . ' #' . $wishid . ' ' . JText::_('HAS_BEEN') . ' ' . JText::_('MSG_ASSIGNED_TO_YOU');
 
 					$from = array();
-					$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name));
+					$from['name']  = $jconfig->getValue('config.sitename') . ' ' . JText::_(strtoupper($this->_name));
 					$from['email'] = $jconfig->getValue('config.mailfrom');
 
 					$name = JText::_('UNKNOWN');
@@ -1917,23 +1920,23 @@ class WishlistController extends JObject
 						$name = JText::_('ANONYMOUS');
 					}
 
-					$message  = '----------------------------'.r.n;
-					$message .= JText::_('WISH').' #'.$objWish->id.', '.$wishlist->title.' '.JText::_('WISHLIST').r.n;
-					$message .= JText::_('WISH_DETAILS_SUMMARY').': '.stripslashes($objWish->subject).r.n;
+					$message  = '----------------------------'."\r\n";
+					$message .= JText::_('WISH').' #'.$objWish->id.', '.$wishlist->title.' '.JText::_('WISHLIST')."\r\n";
+					$message .= JText::_('WISH_DETAILS_SUMMARY').': '.stripslashes($objWish->subject)."\r\n";
 					$message .= JText::_('PROPOSED_ON').' '.JHTML::_('date',$objWish->proposed, '%d %b, %Y');
 					$message .= ' '.JText::_('BY').' '.$name.' ';
 					$message .= $objWish->anonymous ? '' : '('.$login.')';
-					$message .= r.n.r.n;
+					$message .= "\r\n\r\n";
 
-					$message .= '----------------------------'.r.n;
+					$message .= '----------------------------'."\r\n";
 					$as_mes = $message;
 					if ($status!='pending') 
 					{
-						$message .= JText::_('YOUR_WISH').' '.JText::_('HAS_BEEN').' '.$status.' '.JText::_('BY_LIST_ADMINS').'.'.r.n;
+						$message .= JText::_('YOUR_WISH').' '.JText::_('HAS_BEEN').' '.$status.' '.JText::_('BY_LIST_ADMINS').'.'."\r\n";
 					}
 					else 
 					{
-						$message .= JText::_('MSG_WISH_STATUS_CHANGED_TO').' '.$status.' '.JText::_('BY_LIST_ADMINS').'.'.r.n;
+						$message .= JText::_('MSG_WISH_STATUS_CHANGED_TO').' '.$status.' '.JText::_('BY_LIST_ADMINS').'.'."\r\n";
 					}
 					$url = $live_site.JRoute::_('index.php?option=' . $this->_option . '&task=wish&category=' . $cat . '&rid=' . $refid . '&wishid=' . $wishid);
 					$message .= JText::_('GO_TO').' '.$url.' '.JText::_('TO_VIEW_YOUR_WISH').'.';
@@ -2325,7 +2328,7 @@ class WishlistController extends JObject
 		$BTL = new Hubzero_Bank_Teller($database, $juser->get('id'));
 		$BTL->hold($amount, JText::_('BANKING_HOLD').' #'.$wishid.' '.JText::_('FOR').' '.$wishlist->title, 'wish', $wishid);
 
-		$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&task=wish&category='.$wishlist->category.'&rid='.$wishlist->referenceid.'&wishid=' . $wishid);
+		$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&task=wish&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid . '&wishid=' . $wishid);
 
 	}
 
@@ -2551,7 +2554,7 @@ class WishlistController extends JObject
 			$this->rank($wishlist->id);
 		}
 
-		$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&task=wish&category='.$wishlist->category.'&rid='.$wishlist->referenceid.'&wishid=' . $wishid);
+		$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&task=wish&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid . '&wishid=' . $wishid);
 
 	}
 
@@ -2868,7 +2871,7 @@ class WishlistController extends JObject
 				$message .= "\r\n";
 
 				$message .= '----------------------------' . "\r\n";
-				$url = $live_site.JRoute::_('index.php?option=' . $this->_option . '&task=wish&category='.$wishlist->category.'&rid='.$wishlist->referenceid.'&wishid=' . $wishid);
+				$url = $live_site.JRoute::_('index.php?option=' . $this->_option . '&task=wish&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid . '&wishid=' . $wishid);
 				$message .= JText::_('GO_TO').' '.$url.' '.JText::_('TO_VIEW_THIS_WISH').'.';
 
 				JPluginHelper::importPlugin('xmessage');
@@ -2931,7 +2934,7 @@ class WishlistController extends JObject
 			} // -- end if success
 		} // -- end if id & category
 
-		$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&task=wish&category='.$wishlist->category.'&rid='.$wishlist->referenceid.'&wishid=' . $wishid);
+		$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&task=wish&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid . '&wishid=' . $wishid);
 	}
 
 	/**
@@ -3123,11 +3126,11 @@ class WishlistController extends JObject
 		{
 			if ($page == 'wishlist') 
 			{
-				$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&task=wishlist&category='.$wishlist->category.'&rid='.$wishlist->referenceid.'&filterby='.$filters['filterby'].'&sortby='.$filters['sortby'].'&limitstart='.$filters['start'].'&limit='.$filters['limit'].'&tags='.$filters['tag']);
+				$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&task=wishlist&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid . '&filterby='.$filters['filterby'].'&sortby='.$filters['sortby'].'&limitstart='.$filters['start'].'&limit='.$filters['limit'].'&tags='.$filters['tag']);
 			}
 			else 
 			{
-				$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&task=wish&category='.$wishlist->category.'&rid='.$wishlist->referenceid.'&wishid='.$id.'&filterby='.$filters['filterby'].'&sortby='.$filters['sortby'].'&limitstart='.$filters['start'].'&limit='.$filters['limit'].'&tags='.$filters['tag']);
+				$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&task=wish&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid . '&wishid=' . $id . '&filterby='.$filters['filterby'].'&sortby='.$filters['sortby'].'&limitstart='.$filters['start'].'&limit='.$filters['limit'].'&tags='.$filters['tag']);
 			}
 		}
 	}
