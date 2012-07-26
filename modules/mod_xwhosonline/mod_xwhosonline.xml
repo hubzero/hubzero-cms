@@ -29,7 +29,7 @@ HUBzero is a registered trademark of Purdue University.
 
 <install type="module" version="1.5">
 	<name>Extended Who is Online</name>
-	<author>Mambo Project</author>
+	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>The Who's Online module displays the number of anonymous (that is, Guest) users and Registered users, (those that are logged in) that are currently accessing the web site.</description>
@@ -40,14 +40,14 @@ HUBzero is a registered trademark of Purdue University.
 		<filename>tmpl/default.php</filename>
 	</files>
 	<params>
-	  <param name="online" type="radio" default="0" label="Show details" description="Display who is online details">
-		<option value="1">Yes</option>
-		<option value="0">No</option>
-	  </param>
-	  <param name="users" type="radio" default="0" label="Show users" description="Display online users">
-		<option value="1">Yes</option>
-		<option value="0">No</option>
-	  </param>
-	  <param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
+		<param name="online" type="radio" default="0" label="Show details" description="Display who is online details">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param name="users" type="radio" default="0" label="Show users" description="Display online users">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
 	</params>
 </install>

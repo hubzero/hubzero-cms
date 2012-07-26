@@ -29,7 +29,7 @@ HUBzero is a registered trademark of Purdue University.
 
 <install type="module" version="1.5">
 	<name>My Wishes</name>
-	<author>snowwitje</author>
+	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>This module will display a list of open wishes submitted by/ assigned to the user</description>
@@ -46,6 +46,6 @@ HUBzero is a registered trademark of Purdue University.
 	</params>
 	<languages>
 		<language tag="en-GB">en-GB.mod_mywishes.ini</language>
-        </languages>
+	</languages>
 </install>
 

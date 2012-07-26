@@ -29,16 +29,16 @@ HUBzero is a registered trademark of Purdue University.
 
 <install type="module" version="1.5">
 	<name>XPoll</name>
-	<author>Shawn Rice</author>
+	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>This module compliments the XPolls component. It is used to display the configured polls. The module differs from other modules in as much as the Component supports linking between Menu Items and Polls. This means that the module shows only those Polls, which are configured for a certain Menu Item.</description>
 	<files>
-	<filename module="mod_xpoll">mod_xpoll.php</filename>
-        <filename>tmpl/default.php</filename>
-        <filename>tmpl/index.html</filename>
-        <filename>index.html</filename>
-	   <filename>mod_xpoll.css</filename>
+		<filename module="mod_xpoll">mod_xpoll.php</filename>
+		<filename>tmpl/default.php</filename>
+		<filename>tmpl/index.html</filename>
+		<filename>index.html</filename>
+		<filename>mod_xpoll.css</filename>
 	</files>
 	<params>
 		<param name="formid" type="text" default="" label="Module ID" description="A CSS ID to be applied to the module, this allows individual module styling" />
@@ -49,8 +49,8 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">No caching</option>
 		</param>
 	</params>
-        <languages>
-               <language tag="en-GB">en-GB.mod_xpoll.ini</language>
-        </languages>
+	<languages>
+		<language tag="en-GB">en-GB.mod_xpoll.ini</language>
+	</languages>
 </install>
 

@@ -29,7 +29,7 @@ HUBzero is a registered trademark of Purdue University.
 
 <install type="module" version="1.5">
 	<name>Wish Voters</name>
-	<author>Alissa Nedossekina</author>
+	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>This module will display a list of most active wish voters</description>

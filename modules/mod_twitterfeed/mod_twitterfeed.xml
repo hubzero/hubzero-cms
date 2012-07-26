@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           modules/mod_twitterfeed/mod_twitterfeed.xml
+@file           modules/mod_toptags/mod_toptags.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -28,31 +28,28 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <install type="module" version="1.5">
-    <name>Twitter Feed</name>
-    <author>Christopher Smoak</author>   
-  	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<name>Twitter Feed</name>
+	<author>HUBzero</author>
+	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license> 
-    <authorEmail>csmoak@purdue.edu</authorEmail>   
-    <version>1.0.0</version>
-    <description>Loads the Twitter feed of the specified Twitter ID</description>  
-    
-    <files>    
-        <filename module="mod_twitterfeed">mod_twitterfeed.php</filename>
-		<filename>mod_twitterfeed.css</filename>  
-        <filename>index.html</filename>  
-        <filename>tmpl/default.php</filename>  
-        <filename>tmpl/index.html</filename>  
-    </files>  
-      
-    <languages>
-        <language tag="en-GB">en-GB.mod_twitterfeed.ini</language>  
-    </languages>  
-      
-    <params> 
-	 	<param name="moduleTitle" type="text" default="GET VIRTUAL HIGHLIGHTS ON SITE ARTICLES" label="Module Title Text" description="The title of the module block." />
-		<param name="twitterID" type="text" default="" label="Twitter ID" description="The Twitter ID of the Twitter account to be displayed." /> 
-        <param name="tweetcount" type="text" default="3" label="Tweet Count" description="The number of latest Tweets to display." /> 
- 		<param name="displayLink" type="list" default="yes" label="Display Link To Twitter" description="To display link to Twitter account page.">
+	<authorEmail>csmoak@purdue.edu</authorEmail>
+	<version>1.0.0</version>
+	<description>Loads the Twitter feed of the specified Twitter ID</description>
+	<files>	
+		<filename module="mod_twitterfeed">mod_twitterfeed.php</filename>
+		<filename>mod_twitterfeed.css</filename>
+		<filename>index.html</filename>
+		<filename>tmpl/default.php</filename>
+		<filename>tmpl/index.html</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.mod_twitterfeed.ini</language>
+	</languages>
+	<params>
+		<param name="moduleTitle" type="text" default="GET VIRTUAL HIGHLIGHTS ON SITE ARTICLES" label="Module Title Text" description="The title of the module block." />
+		<param name="twitterID" type="text" default="" label="Twitter ID" description="The Twitter ID of the Twitter account to be displayed." />
+		<param name="tweetcount" type="text" default="3" label="Tweet Count" description="The number of latest Tweets to display." />
+		<param name="displayLink" type="list" default="yes" label="Display Link To Twitter" description="To display link to Twitter account page.">
 			<option value="yes">Yes</option>
 			<option value="no">No</option>
 		</param>
@@ -60,5 +57,5 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="yes">Yes</option>
 			<option value="no">No</option>
 		</param>
-    </params>  
+	</params>
 </install>
