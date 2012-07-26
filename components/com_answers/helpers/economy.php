@@ -29,51 +29,38 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-//----------------------------------------------------------
-// Answers Economy class:
-// Stores economy funtions for com_answers
-//----------------------------------------------------------
+defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Bank');
 
 /**
- * Short description for 'AnswersEconomy'
- * 
- * Long description (if any) ...
+ * Answers Economy class:
+ * Stores economy funtions for com_answers
  */
 class AnswersEconomy extends JObject
 {
-
 	/**
-	 * Description for '_db'
+	 * Database
 	 * 
 	 * @var object
 	 */
-	var $_db = NULL;  // Database
-
-	//-----------
+	var $_db = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db)
+	public function __construct(&$db)
 	{
 		$this->_db = $db;
 	}
 
 	/**
-	 * Short description for 'getQuestions'
+	 * Get questions
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     object Return description (if any) ...
+	 * @return     array
 	 */
 	public function getQuestions()
 	{
@@ -81,35 +68,35 @@ class AnswersEconomy extends JObject
 		$sql = "SELECT q.id, q.created_by AS q_owner, a.created_by AS a_owner
 				FROM #__answers_questions AS q LEFT JOIN #__answers_responses AS a ON q.id=a.qid AND a.state=1
 				WHERE q.state=1";
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'calculate_marketvalue'
+	 * Calculate the market value
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $id Parameter description (if any) ...
-	 * @param      string $type Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $id   Question ID
+	 * @param      string  $type Transaction type
+	 * @return     mixed 
 	 */
 	public function calculate_marketvalue($id, $type='regular')
 	{
-		if ($id === NULL) {
+		if ($id === NULL) 
+		{
 			$id = $this->qid;
 		}
-		if ($id === NULL) {
+		if ($id === NULL) 
+		{
 			return false;
 		}
 
-		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'question.php' );
-		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'response.php' );
-		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'log.php' );
-		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'questionslog.php' );
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'question.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'response.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'log.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'questionslog.php');
 
 		// Get point values for actions
-		$BC = new Hubzero_Bank_Config( $this->_db );
+		$BC = new Hubzero_Bank_Config($this->_db);
 		$p_Q  = $BC->get('ask');
 		$p_A  = $BC->get('answer');
 		$p_R  = $BC->get('answervote');
@@ -119,16 +106,18 @@ class AnswersEconomy extends JObject
 		$calc = 0;
 
 		// Get actons and sum up
-		$ar = new AnswersResponse( $this->_db );
-		$result = $ar->getActions( $id );
+		$ar = new AnswersResponse($this->_db);
+		$result = $ar->getActions($id);
 
-		if ($type != 'royalty') {
-			$calc += $p_Q;  // ! this is different from version before code migration !			
+		if ($type != 'royalty') 
+		{
+			$calc += $p_Q;  // ! this is different from version before code migration !
 			$calc += (count($result))*$p_A;
 		}
 
 		// Calculate as if there is at leat one answer
-		if ($type == 'maxaward' && count($result)==0) {
+		if ($type == 'maxaward' && count($result)==0) 
+		{
 			$calc += $p_A;
 		}
 
@@ -136,55 +125,57 @@ class AnswersEconomy extends JObject
 		{
 			$calc += ($result[$i]->helpful)*$p_R;
 			$calc += ($result[$i]->nothelpful)*$p_R;
-			if ($result[$i]->state == 1 && $type != 'royalty') {
+			if ($result[$i]->state == 1 && $type != 'royalty') 
+			{
 				$accepted = 1;
 			}
 		}
 
-		if (isset($accepted) or $type=='maxaward') {
+		if (isset($accepted) or $type == 'maxaward') 
+		{
 			$calc += $p_A_accepted;
 		}
 
 		// Add question votes
-		$aq = new AnswersQuestion( $this->_db );
-		$aq->load( $id );
-		if ($aq->state != 2) {
+		$aq = new AnswersQuestion($this->_db);
+		$aq->load($id);
+		if ($aq->state != 2) 
+		{
 			$calc += $aq->helpful * $p_RQ;
 		}
 
-		($calc) ? $calc = $calc : $calc ='0';
+		$calc = ($calc) ? $calc : '0';
 
 		return $calc;
 	}
 
 	/**
-	 * Short description for 'distribute_points'
+	 * Distribute points
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $qid Parameter description (if any) ...
-	 * @param      unknown $Q_owner Parameter description (if any) ...
-	 * @param      unknown $BA_owner Parameter description (if any) ...
-	 * @param      string $type Parameter description (if any) ...
+	 * @param      integer $qid      Question ID
+	 * @param      integer $Q_owner  Question owner
+	 * @param      integer $BA_owner Account owner
+	 * @param      string  $type     Transaction type
 	 * @return     void
 	 */
 	public function distribute_points($qid, $Q_owner, $BA_owner, $type)
 	{
 		$juser =& JFactory::getUser();
 
-		if ($qid === NULL) {
+		if ($qid === NULL) 
+		{
 			$qid = $this->qid;
 		}
 		$cat = 'answers';
-		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'question.php' );
-		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'response.php' );
-		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'log.php' );
-		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_answers'.DS.'tables'.DS.'questionslog.php' );
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'question.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'response.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'log.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'questionslog.php');
 
 		$points = $this->calculate_marketvalue($qid, $type);
 
-		$BT = new Hubzero_Bank_Transaction( $this->_db );
-		$reward = $BT->getAmount( $cat, 'hold', $qid );
+		$BT = new Hubzero_Bank_Transaction($this->_db);
+		$reward = $BT->getAmount($cat, 'hold', $qid);
 		$reward = ($reward) ? $reward : '0';
 		$share = $points/3;
 
@@ -192,39 +183,47 @@ class AnswersEconomy extends JObject
 		$A_owner_share  = 0;
 
 		// Calculate commissions for other answers
-		$ar = new AnswersResponse( $this->_db );
-		$result = $ar->getActions( $qid );
+		$ar = new AnswersResponse($this->_db);
+		$result = $ar->getActions($qid);
 
 		$n = count($result);
 		$eligible = array();
 
-		if ($n > 1 ) {
+		if ($n > 1) 
+		{
 			// More than one answer found
 			for ($i=0; $i < $n; $i++)
 			{
 				// Check if a regular answer has a good rating (at least 50% of positive votes)
 				if (($result[$i]->helpful + $result[$i]->nothelpful) >= 3
 				 && ($result[$i]->helpful >= $result[$i]->nothelpful)
-				 && $result[$i]->state=='0' ) {
+				 && $result[$i]->state=='0') 
+				{
 					$eligible[] = $result[$i]->created_by;
 				}
 			}
-			if (count($eligible) > 0) {
+			if (count($eligible) > 0) 
+			{
 				// We have eligible answers
 				$A_owner_share = $share/$n;
-			} else {
+			} 
+			else 
+			{
 				// Best A owner gets remaining thrid
 				$BA_owner_share += $share;
 			}
-		} else {
+		} 
+		else 
+		{
 			// Best A owner gets remaining 3rd
 			$BA_owner_share += $share;
 		}
 
 		// Reward asker
-		$q_user =& JUser::getInstance( $Q_owner );
-		if (is_object($q_user) && $q_user->get('id')) {
-			$BTL_Q = new Hubzero_Bank_Teller( $this->_db , $q_user->get('id') );
+		$q_user =& JUser::getInstance($Q_owner);
+		if (is_object($q_user) && $q_user->get('id')) 
+		{
+			$BTL_Q = new Hubzero_Bank_Teller($this->_db , $q_user->get('id'));
 			//$BTL_Q->deposit($Q_owner_share, 'Commission for posting a question', $cat, $qid);
 			// Separate comission and reward payment
 			// Remove credit
@@ -232,58 +231,67 @@ class AnswersEconomy extends JObject
 			$adjusted = $credit - $reward;
 			$BTL_Q->credit_adjustment($adjusted);
 
-			if (intval($share) > 0) {
-				$share_msg = ($type=='royalty') ? 'Royalty payment for posting question #'.$qid : 'Commission for posting question #'.$qid;
+			if (intval($share) > 0) 
+			{
+				$share_msg = ($type=='royalty') ? JText::sprintf('Royalty payment for posting question #%s', $qid) : JText::sprintf('Commission for posting question #%s', $qid);
 				$BTL_Q->deposit($share, $share_msg, $cat, $qid);
 			}
 			// withdraw reward amount
-			if ($reward) {
-				$BTL_Q->withdraw($reward, 'Reward payment for your question #'.$qid, $cat, $qid);
+			if ($reward) 
+			{
+				$BTL_Q->withdraw($reward, JText::sprintf('Reward payment for your question #%s', $qid), $cat, $qid);
 			}
 		}
 
 		// Reward others
-		//$ba_user =& JUser::getInstance( $BA_owner );
+		//$ba_user =& JUser::getInstance($BA_owner);
 		ximport('Hubzero_User_Profile');
-		$ba_user = Hubzero_User_Profile::getInstance($BA_owner );
+		$ba_user = Hubzero_User_Profile::getInstance($BA_owner);
 		if (is_object($ba_user) && $ba_user->get('id')) 
 		{
 			// Reward other responders
-			if (count($eligible) > 0) {
+			if (count($eligible) > 0) 
+			{
 				foreach ($eligible as $e)
 				{
-					$auser = Hubzero_User_Profile::getInstance( $e );
-					if (is_object($auser) && $auser->get('id') && is_object($ba_user) && $ba_user->get('id') && $ba_user->get('id') != $auser->get('id')) {
-						$BTL_A = new Hubzero_Bank_Teller( $this->_db , $auser->get('id') );
-						if (intval($A_owner_share) > 0) {
-							$A_owner_share_msg = ($type=='royalty') ? 'Royalty payment for answering question #'.$qid : 'Answered question #'.$qid.' that was recently closed';
+					$auser = Hubzero_User_Profile::getInstance($e);
+					if (is_object($auser) && $auser->get('id') && is_object($ba_user) && $ba_user->get('id') && $ba_user->get('id') != $auser->get('id')) 
+					{
+						$BTL_A = new Hubzero_Bank_Teller($this->_db , $auser->get('id'));
+						if (intval($A_owner_share) > 0) 
+						{
+							$A_owner_share_msg = ($type=='royalty') ? JText::sprintf('Royalty payment for answering question #%s', $qid) : JText::sprintf('Answered question #%s that was recently closed', $qid);
 							$BTL_A->deposit($A_owner_share, $A_owner_share_msg , $cat, $qid);
 						}
 					}
 					// is best answer eligible for extra points?
-					if (is_object($auser) && $auser->get('id') &&  is_object($ba_user) && $ba_user->get('id') && ($ba_user->get('id') == $auser->get('id'))) {
+					if (is_object($auser) && $auser->get('id') &&  is_object($ba_user) && $ba_user->get('id') && ($ba_user->get('id') == $auser->get('id'))) 
+					{
 						$ba_extra = 1;
 					}
 				}
 			}
-			
-			// Reward best answer
-			$BTL_BA = new Hubzero_Bank_Teller( $this->_db , $ba_user->get('id') );
 
-			if (isset($ba_extra)) {
+			// Reward best answer
+			$BTL_BA = new Hubzero_Bank_Teller($this->_db , $ba_user->get('id'));
+
+			if (isset($ba_extra)) 
+			{
 				$BA_owner_share += $A_owner_share;
 			}
 
-			if (intval($BA_owner_share) > 0) {
-				$BA_owner_share_msg = ($type=='royalty') ? 'Royalty payment for answering question #'.$qid : 'Answer for question #'.$qid.' was accepted';
+			if (intval($BA_owner_share) > 0) 
+			{
+				$BA_owner_share_msg = ($type=='royalty') ? JText::sprintf('Royalty payment for answering question #%s', $qid) : JText::sprintf('Answer for question #%s was accepted', $qid);
 				$BTL_BA->deposit($BA_owner_share, $BA_owner_share_msg, $cat, $qid);
 			}
 		}
 
 		// Remove hold if exists
-		if ($reward) {
-			$BT = new Hubzero_Bank_Transaction( $this->_db  );
-			$BT->deleteRecords( 'answers', 'hold', $qid );
+		if ($reward) 
+		{
+			$BT = new Hubzero_Bank_Transaction($this->_db);
+			$BT->deleteRecords('answers', 'hold', $qid);
 		}
 	}
 }
