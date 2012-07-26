@@ -29,95 +29,24 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-//----------------------------------------------------------
-// Blog helper class
-//----------------------------------------------------------
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'BlogHelperMember'
- * 
- * Long description (if any) ...
+ * Blog helper class for members
  */
 class BlogHelperMember
 {
-
 	/**
-	 * Short description for 'getMemberPhoto'
+	 * Get user's profile picture
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      mixed $member Parameter description (if any) ...
-	 * @param      integer $anonymous Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      object  $member    Hubzero_User_Profile
+	 * @param      integer $anonymous Anonymous user?
+	 * @return     string 
 	 */
-	public function getMemberPhoto( $member, $anonymous=0 )
+	public function getMemberPhoto($member, $anonymous=0)
 	{
-		$config =& JComponentHelper::getParams( 'com_members' );
+		ximport('Hubzero_User_Profile_Helper');
 
-		if (!$anonymous && $member->get('picture')) {
-			$thumb  = $config->get('webpath');
-			if (substr($thumb, 0, 1) != DS) {
-				$thumb = DS.$thumb;
-			}
-			if (substr($thumb, -1, 1) == DS) {
-				$thumb = substr($thumb, 0, (strlen($thumb) - 1));
-			}
-			$thumb .= DS.BlogHelperMember::niceidformat($member->get('uidNumber')).DS.$member->get('picture');
-
-			$thumb = BlogHelperMember::thumbit($thumb);
-		} else {
-			$thumb = '';
-		}
-
-		$dfthumb = $config->get('defaultpic');
-		if (substr($dfthumb, 0, 1) != DS) {
-			$dfthumb = DS.$dfthumb;
-		}
-		$dfthumb = BlogHelperMember::thumbit($dfthumb);
-
-		if ($thumb && is_file(JPATH_ROOT.$thumb)) {
-			return $thumb;
-		} else if (is_file(JPATH_ROOT.$dfthumb)) {
-			return $dfthumb;
-		}
-	}
-
-	/**
-	 * Short description for 'thumbit'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $thumb Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
-	 */
-	public function thumbit($thumb)
-	{
-		$image = explode('.',$thumb);
-		$n = count($image);
-		$image[$n-2] .= '_thumb';
-		$end = array_pop($image);
-		$image[] = $end;
-		$thumb = implode('.',$image);
-
-		return $thumb;
-	}
-
-	/**
-	 * Short description for 'niceidformat'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $someid Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
-	 */
-	public function niceidformat($someid)
-	{
-		while (strlen($someid) < 5)
-		{
-			$someid = 0 . "$someid";
-		}
-		return $someid;
+		return Hubzero_User_Profile_Helper::getMemberPhoto($member, $anonymous);
 	}
 }
