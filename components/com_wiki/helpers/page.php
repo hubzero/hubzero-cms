@@ -27,15 +27,15 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-
+/**
+ * Wiki helper class for determining page authorization
+ */
 class WikiHelperPage
 {
 	/**
-	 * Short description for 'getPage'
-	 * 
-	 * Long description (if any) ...
+	 * Get the current page
 	 * 
 	 * @return     void
 	 */

@@ -29,63 +29,63 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'WikiSetup'
- * 
- * Long description (if any) ...
+ * Wiki helper class for initial setup
  */
 class WikiSetup
 {
-
 	/**
-	 * Short description for 'initialize'
+	 * Load a wiki with default content
+	 * This is largely Help pages
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $option Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $option Component name
+	 * @return     string 
 	 */
-	public function initialize( $option )
+	public function initialize($option)
 	{
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
 
 		$pages = WikiSetup::defaultPages();
 
-		if (count($pages) <= 0) {
+		if (count($pages) <= 0) 
+		{
 			return JText::_('No default pages found');
 		}
 
-		foreach ($pages as $f=>$c)
+		foreach ($pages as $f => $c)
 		{
-			$f = str_replace('_',':',$f);
+			$f = str_replace('_', ':', $f);
 
 			// Instantiate a new page
-			$page = new WikiPage( $database );
+			$page = new WikiPage($database);
 			$page->pagename = $f;
-			$page->params = 'mode=wiki'.n;
+			$page->params = 'mode=wiki' . "\n";
 
 			// Check content
-			if (!$page->check()) {
-				echo WikiHtml::alert( $page->getError() );
-				exit();
+			if (!$page->check()) 
+			{
+				JError::raiseWarning(500, $page->getError());
+				return;
 			}
 			// Store content
-			if (!$page->store()) {
-				echo WikiHtml::alert( $page->getError() );
-				exit();
+			if (!$page->store()) 
+			{
+				JError::raiseWarning(500, $page->getError());
+				return;
 			}
 			// Ensure we have a page ID
-			if (!$page->id) {
+			if (!$page->id) 
+			{
 				$page->id = $database->insertid();
 			}
 
 			// Instantiate a new revision
-			$revision = new WikiPageRevision( $database );
+			$revision = new WikiPageRevision($database);
 			$revision->pageid     = $page->id;
-			$revision->created    = date( 'Y-m-d H:i:s', time() );
+			$revision->created    = date('Y-m-d H:i:s', time());
 			$revision->created_by = $juser->get('id');
 			$revision->minor_edit = 0;
 			$revision->version    = 1;
@@ -93,18 +93,20 @@ class WikiSetup
 			$revision->approved   = 1;
 
 			// Transform the wikitext to HTML
-			$p = new WikiParser( $page->pagename, $option, $page->scope, $page->pagename );
-			$revision->pagehtml = $p->parse( $revision->pagetext );
+			$p = new WikiParser($page->pagename, $option, $page->scope, $page->pagename);
+			$revision->pagehtml = $p->parse($revision->pagetext);
 
 			// Check content
-			if (!$revision->check()) {
-				echo WikiHtml::alert( $revision->getError() );
-				exit();
+			if (!$revision->check()) 
+			{
+				JError::raiseWarning(500, $revision->getError());
+				return;
 			}
 			// Store content
-			if (!$revision->store()) {
-				echo WikiHtml::alert( $revision->getError() );
-				exit();
+			if (!$revision->store()) 
+			{
+				JError::raiseWarning(500, $revision->getError());
+				return;
 			}
 		}
 
@@ -112,28 +114,31 @@ class WikiSetup
 	}
 
 	/**
-	 * Short description for 'defaultPages'
+	 * Get an associative list of default pages and their content
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     array Return description (if any) ...
+	 * @return     array
 	 */
 	public function defaultPages()
 	{
 		$path = dirname(__FILE__);
-		$d = @dir($path.DS.'default');
+		$d = @dir($path . DS . 'default');
 		$pages = array();
 
-		if ($d) {
+		if ($d) 
+		{
 			jimport('joomla.filesystem.file');
 
 			while (false !== ($entry = $d->read()))
 			{
 				$file = $entry;
-				if (is_file($path.DS.'default'.DS.$file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') {
-					if (preg_match("#txt#i", $file )) {
-						$name = substr($file,0,(strlen($file) - 4));
-						$pages[$name] = JFile::read( $path.DS.'default'.DS.$file );
+				if (is_file($path . DS . 'default' . DS . $file) 
+				 && substr($entry, 0, 1) != '.' 
+				 && strtolower($entry) !== 'index.html') 
+				{
+					if (preg_match("#txt#i", $file)) 
+					{
+						$name = substr($file, 0, (strlen($file) - 4));
+						$pages[$name] = JFile::read($path . DS . 'default' . DS . $file);
 					}
 				}
 			}

@@ -33,36 +33,35 @@ defined('_JEXEC') or die('Restricted access');
 
 if (!defined('n')) 
 {
+	/**
+	 * Shortcut constant for tabs
+	 */
+	define('t', "\t");
 
-/**
- * Description for ''t''
- */
-	define('t',"\t");
+	/**
+	 * Shortcut constant for new lines
+	 */
+	define('n', "\n");
 
-/**
- * Description for ''n''
- */
-	define('n',"\n");
+	/**
+	 * Shortcut constant for line returns
+	 */
+	define('r', "\r");
 
-/**
- * Description for ''r''
- */
-	define('r',"\r");
+	/**
+	 * Shortcut constant for break tags
+	 */
+	define('br', '<br />');
 
-/**
- * Description for ''br''
- */
-	define('br','<br />');
+	/**
+	 * Shortcut constant for space character
+	 */
+	define('sp', '&#160;');
 
-/**
- * Description for ''sp''
- */
-	define('sp','&#160;');
-
-/**
- * Description for ''a''
- */
-	define('a','&amp;');
+	/**
+	 * Shortcut constant for ampersand
+	 */
+	define('a', '&amp;');
 }
 
 /**

@@ -77,10 +77,10 @@ class plgMembersResume extends JPlugin
 	 */
 	public function &onMembersAreas($user, $member)
 	{
-		//default areas returned to nothing
+		// default areas returned to nothing
 		$areas = array();
 
-		//if this is the logged in user show them
+		// if this is the logged in user show them
 		if ($user->get('id') == $member->get('uidNumber') || $this->isEmployer($user, $member))
 		{
 			$areas['resume'] = ucfirst(JText::_('Resume'));
@@ -90,46 +90,59 @@ class plgMembersResume extends JPlugin
 	}
 
 	/**
-	 * Short description for 'isEmployer'
+	 * Check if a user has employer authorization
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      mixed $member Parameter description (if any) ...
-	 * @param      string $authorized Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param      object $user       JUser
+	 * @param      object $member     Hubzero_User_PRofile
+	 * @return     integer 1 = authorized, 0 = not
 	 */
-	public function isEmployer($user='', $member='')
+	public function isEmployer($user=null, $member=null)
 	{
 		$database =& JFactory::getDBO();
 		$employer = new Employer($database);
 		$juser =& JFactory::getUser();
-		
+
 		// Check if they're a site admin (from Joomla)
-		if ($juser->authorize('com_members', 'manage')) {
-			return 1;
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			if ($this->juser->authorise('core.admin', $this->_option . '.component'))
+			{
+				return 1;
+			}
 		}
-		
+		else 
+		{
+			if ($juser->authorize('com_members', 'manage')) 
+			{
+				return 1;
+			}
+		}
+
 		// determine who is veiwing the page
 		$emp = 0;
 		$emp = $employer->isEmployer($juser->get('id'));
-		
+
 		// check if they belong to a dedicated admin group
-		if ($this->config->get('admingroup')) {
+		if ($this->config->get('admingroup')) 
+		{
 			ximport('Hubzero_User_Profile');
 
 			$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
 			$ugs = $profile->getGroups('all');
-			if ($ugs && count($ugs) > 0) {
+			if ($ugs && count($ugs) > 0) 
+			{
 				foreach ($ugs as $ug)
 				{
-					if ($ug->cn == $this->config->get('admingroup')) {
+					if ($ug->cn == $this->config->get('admingroup')) 
+					{
 						$emp = 1;
 					}
 				}
 			}
 		}
 
-		if ($member) {
+		if ($member) 
+		{
 			$my =  $member->get('uidNumber') == $juser->get('id') ? 1 : 0;
 			$emp = $my && $emp ? 0 : $emp;
 		}
@@ -138,27 +151,28 @@ class plgMembersResume extends JPlugin
 	}
 
 	/**
-	 * Short description for 'isAdmin'
+	 * Check if the user is part of the administration group
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $admin Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param      integer $admin Var to set
+	 * @return     integer 1 = authorized, 0 = not
 	 */
 	public function isAdmin($admin = 0)
 	{
 		$juser =& JFactory::getUser();
 
 		// check if they belong to a dedicated admin group
-		if ($this->config->get('admingroup')) {
+		if ($this->config->get('admingroup')) 
+		{
 			ximport('Hubzero_User_Profile');
 
-			//$ugs = Hubzero_User_Helper::getGroups($juser->get('id'));
 			$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
 			$ugs = $profile->getGroups('all');
-			if ($ugs && count($ugs) > 0) {
-				foreach ($ugs as $ug) {
-					if ($ug->cn == $this->config->get('admingroup')) {
+			if ($ugs && count($ugs) > 0) 
+			{
+				foreach ($ugs as $ug) 
+				{
+					if ($ug->cn == $this->config->get('admingroup')) 
+					{
 						$admin = 1;
 					}
 				}
@@ -196,16 +210,15 @@ class plgMembersResume extends JPlugin
 		}
 
 		$document =& JFactory::getDocument();
-		if (is_file('components' . DS . 'com_jobs' . DS . 'jobs.js')) 
-		{
-			//$document->addScript('components' . DS . 'com_jobs' . DS . 'jobs.js');
-		}
+		/*ximport('Hubzero_Document');
+		Hubzero_Document::addComponentScript('com_jobs');
+		*/
 
 		// The output array we're returning
 		$arr = array(
-			'html'=>'',
-			'metadata'=>'',
-			'searchresult'=>''
+			'html' => '',
+			'metadata' => '',
+			'searchresult' => ''
 		);
 
 		// Do we need to return any data?
@@ -245,7 +258,7 @@ class plgMembersResume extends JPlugin
 		} 
 		else if ($emp) 
 		{
-			//$arr['metadata'] = '<p class="resume"><a href="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=resume').'">'.ucfirst(JText::_('Resume')).'</a></p>' . "\n";
+			//$arr['metadata'] = '<p class="resume"><a href="'.JRoute::_('index.php?option='.$option . '&id='.$member->get('uidNumber') . '&active=resume').'">'.ucfirst(JText::_('Resume')).'</a></p>' . "\n";
 			$arr['metadata'] = "";
 		}
 
@@ -253,26 +266,24 @@ class plgMembersResume extends JPlugin
 	}
 
 	/**
-	 * Short description for 'save'
+	 * Save data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $database Parameter description (if any) ...
-	 * @param      unknown $option Parameter description (if any) ...
-	 * @param      object $member Parameter description (if any) ...
-	 * @param      string $task Parameter description (if any) ...
-	 * @param      unknown $emp Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      object  $database JDatabase
+	 * @param      string  $option   Component name
+	 * @param      object  $member   Hubzero_User_PRofile
+	 * @param      string  $task     Task to perform
+	 * @param      integer $emp      Is user employer?
+	 * @return     string
 	 */
 	public function save($database, $option, $member, $task, $emp)
 	{
 		$lookingfor = JRequest::getVar('lookingfor','');
-		$tagline = JRequest::getVar('tagline','');
-		$active = JRequest::getInt('activeres', 0);
-		$author = JRequest::getInt('author', 0);
-		$title = JRequest::getVar('title','');
+		$tagline    = JRequest::getVar('tagline','');
+		$active     = JRequest::getInt('activeres', 0);
+		$author     = JRequest::getInt('author', 0);
+		$title      = JRequest::getVar('title','');
 
-		if ($task=='saveprefs') 
+		if ($task == 'saveprefs') 
 		{
 			$js = new JobSeeker ($database);
 
@@ -297,7 +308,7 @@ class plgMembersResume extends JPlugin
 				exit();
 			}
 		}
-		else if ($task=='savetitle' && $author && $title) 
+		else if ($task == 'savetitle' && $author && $title) 
 		{
 			$resume = new Resume ($database);
 			if ($resume->load($author)) 
@@ -315,22 +326,20 @@ class plgMembersResume extends JPlugin
 	}
 
 	/**
-	 * Short description for 'activate'
+	 * Set a user as being a 'job seeker'
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $database Parameter description (if any) ...
-	 * @param      unknown $option Parameter description (if any) ...
-	 * @param      object $member Parameter description (if any) ...
-	 * @param      unknown $emp Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      object  $database JDatabase
+	 * @param      string  $option   Component name
+	 * @param      object  $member   Hubzero_User_PRofile
+	 * @param      integer $emp      Is user employer?
+	 * @return     string
 	 */
 	public function activate($database, $option, $member, $emp)
 	{
 		// are we activating or disactivating?
 		$active = JRequest::getInt('on', 0);
 
-		$js = new JobSeeker ($database);
+		$js = new JobSeeker($database);
 
 		if (!$js->load($member->get('uidNumber'))) 
 		{
@@ -350,7 +359,6 @@ class plgMembersResume extends JPlugin
 			}
 
 			return $this->view($database, $option, $member, $emp);
-
 		}
 		else 
 		{
@@ -360,56 +368,30 @@ class plgMembersResume extends JPlugin
 	}
 
 	/**
-	 * Short description for 'getThumb'
+	 * Get a user's thumbnail profile image
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $uid Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      integer $uid User ID
+	 * @return     string 
 	 */
 	public function getThumb($uid)
 	{
-		// do we have a thumb image for the user?
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'imghandler.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'profile.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'association.php');
+		ximport('Hubzero_User_Profile_Helper');
 
-		$profile = new Hubzero_User_Profile();
-		$profile->load($uid);
-		$thumb = '';
+		$profile = Hubzero_User_Profile::getInstance($uid);
 
-		$config =& JComponentHelper::getParams('com_members');
-		$ih = new MembersImgHandler();
-		ximport('Hubzero_View_Helper_Html');
-		$dir = Hubzero_View_Helper_Html::niceidformat($uid);
-		$path = JPATH_ROOT . DS . trim($config->get('webpath'), DS) . DS . $dir;
-
-		if ($profile->get('picture')) 
-		{
-			$curthumb = $ih->createThumbName($profile->get('picture'));
-			if (file_exists($path . DS . $curthumb)) 
-			{
-				$thumb = $config->get('webpath') . DS . $dir . DS . $curthumb;
-			}
-		}
-
-		$thumb = $thumb ? $thumb : DS.'components' . DS . 'com_members' . DS . 'images' . DS . 'profile_thumb.gif';
-
-		return $thumb;
+		return Hubzero_User_Profile_Helper::getMemberPhoto($profile);
 	}
 
 	/**
-	 * Short description for 'view'
+	 * View user's resumes
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $database Parameter description (if any) ...
-	 * @param      string $option Parameter description (if any) ...
-	 * @param      mixed $member Parameter description (if any) ...
-	 * @param      string $emp Parameter description (if any) ...
+	 * @param      object  $database  JDatabase
+	 * @param      string  $option    Component name
+	 * @param      object  $member    Hubzero_Profile
+	 * @param      integer $emp       Is user employer?
 	 * @param      integer $edittitle Parameter description (if any) ...
-	 * @param      mixed $editpref Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      integer $editpref  Parameter description (if any) ...
+	 * @return     string
 	 */
 	public function view($database, $option, $member, $emp, $edittitle = 0, $editpref = 0)
 	{
@@ -467,41 +449,42 @@ class plgMembersResume extends JPlugin
 
 		// get seeker stats
 		$jobstats = new JobStats($database);
-		$stats = $jobstats->getStats ($member->get('uidNumber'), 'seeker');
+		$stats = $jobstats->getStats($member->get('uidNumber'), 'seeker');
 
 		$out = '<div class="aside">' . "\n";
 		if ($self) 
 		{
-			$out .= '<p>'.JText::_('PLG_RESUME_HUB_OFFERS').'</p>' . "\n";
+			$out .= '<p>' . JText::_('PLG_RESUME_HUB_OFFERS') . '</p>' . "\n";
 		}
 		else 
 		{
-			$out .= t.'<p>'.JText::_('PLG_RESUME_NOTICE_YOU_ARE_EMPLOYER').'</p>' . "\n";
+			$out .= '<p>' . JText::_('PLG_RESUME_NOTICE_YOU_ARE_EMPLOYER') . '</p>' . "\n";
 		}
 		$hd = JText::_('View Jobs');
-		$hd .= $this->config->get('industry') ? ' '.JText::_('IN').' '.$this->config->get('industry') : '';
-		$out .= t.'<a href="'.JRoute::_('index.php?option=com_jobs').'" class="minimenu">'.$hd.'</a>' . "\n";
-		if ($self && $js->active) {
+		$hd .= $this->config->get('industry') ? ' ' . JText::_('IN') . ' ' . $this->config->get('industry') : '';
+		$out .= '<a href="' . JRoute::_('index.php?option=com_jobs') . '" class="minimenu">' . $hd . '</a>' . "\n";
+		if ($self && $js->active) 
+		{
 			$out .= '<ul class="jobstats">' . "\n";
-			$out .= '<li class="statstitle">'.JText::_('PLG_RESUME_YOUR_STATS').'</li>' . "\n";
+			$out .= '<li class="statstitle">' . JText::_('PLG_RESUME_YOUR_STATS') . '</li>' . "\n";
 			$out .= '<li>';
-			$out .= '<span>'.$stats['totalviewed'].'</span>' . "\n";
+			$out .= '<span>' . $stats['totalviewed'] . '</span>' . "\n";
 			$out .= JText::_('PLG_RESUME_TOTAL_VIEWED') . "\n";
 			$out .= '</li>' . "\n";
 			$out .= '<li>';
-			$out .= '<span>'.$stats['viewed_thismonth'].'</span>' . "\n";
+			$out .= '<span>' . $stats['viewed_thismonth'] . '</span>' . "\n";
 			$out .= JText::_('PLG_RESUME_VIEWED_PAST_30_DAYS') . "\n";
 			$out .= '</li>' . "\n";
 			$out .= '<li>';
-			$out .= '<span>'.$stats['viewed_thisweek'].'</span>' . "\n";
+			$out .= '<span>'.$stats['viewed_thisweek'] . '</span>' . "\n";
 			$out .= JText::_('PLG_RESUME_VIEWED_PAST_7_DAYS') . "\n";
 			$out .= '</li>' . "\n";
 			$out .= '<li>';
-			$out .= '<span>'.$stats['viewed_today'].'</span>' . "\n";
+			$out .= '<span>' . $stats['viewed_today'] . '</span>' . "\n";
 			$out .= JText::_('PLG_RESUME_VIEWED_PAST_24_HOURS') . "\n";
 			$out .= '</li>' . "\n";
 			$out .= '<li>';
-			$out .= '<span>'.$stats['shortlisted'].'</span>' . "\n";
+			$out .= '<span>' . $stats['shortlisted'] . '</span>' . "\n";
 			$out .= JText::_('PLG_RESUME_PROFILE_SHORTLISTED') . "\n";
 			$out .= '</li>' . "\n";
 			$out .= '</ul>' . "\n";
@@ -510,7 +493,7 @@ class plgMembersResume extends JPlugin
 		$out .= '<div class="subject">' . "\n";
 		if ($self && $file) 
 		{
-			$out .= '<div id="prefs" class="'.$class1.'">' . "\n";
+			$out .= '<div id="prefs" class="' . $class1 . '">' . "\n";
 			$out .= ' <p>' . "\n";
 			if ($js->active && $file) 
 			{
@@ -521,14 +504,14 @@ class plgMembersResume extends JPlugin
 				$out .= JText::_('PLG_RESUME_PROFILE_NOT_INCLUDED');
 			}
 			if (!$editpref) {
-				$out .= ' <span class="includeme"><a href="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=resume'.a.'action=activate').a.'on=';
+				$out .= ' <span class="includeme"><a href="'.JRoute::_('index.php?option=' . $option . '&id=' . $member->get('uidNumber') . '&active=resume&action=activate') . '&on=';
 				if ($js->active && $file) 
 				{
-					$out .= '0">[-] '.JText::_('PLG_RESUME_ACTION_HIDE');
+					$out .= '0">[-] ' . JText::_('PLG_RESUME_ACTION_HIDE');
 				}
 				else if ($file) 
 				{
-					$out .= '1">[+] '.JText::_('PLG_RESUME_ACTION_INCLUDE');
+					$out .= '1">[+] ' . JText::_('PLG_RESUME_ACTION_INCLUDE');
 				}
 				$out .= '</a>.</span>' . "\n";
 				$out .= ' </p>' . "\n";
@@ -536,43 +519,43 @@ class plgMembersResume extends JPlugin
 			else 
 			{
 				$out .= ' </p>' . "\n";
-				$out .= ' <form id="prefsForm" method="post" action="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=resume').'" >' . "\n";
-				$out .= t.'<fieldset>' . "\n";
-				$out .= t.t.'<legend>' . "\n";
+				$out .= ' <form id="prefsForm" method="post" action="' . JRoute::_('index.php?option=' . $option . '&id=' . $member->get('uidNumber') . '&active=resume') . '" >' . "\n";
+				$out .= "\t" . '<fieldset>' . "\n";
+				$out .= "\t\t" . '<legend>' . "\n";
 				$out .= $editpref==1 ? JText::_('PLG_RESUME_ACTION_INCLUDE_WITH_INFO') :  JText::_('PLG_RESUME_ACTION_EDIT_PREFS');
-				$out .= t.t.'</legend>' . "\n";
-				$out .= t.t.t.'<label class="spacious">' . "\n";
-				$out .= t.t.t.t.JText::_('PLG_RESUME_PERSONAL_TAGLINE') . "\n";
-				$out .= t.t.t.t.'<span class="selectgroup">' . "\n";
-				$out .= t.t.t.t.'<textarea name="tagline" id="tagline-men" rows="6" cols="35">'. stripslashes($js->tagline).'</textarea>' . "\n";
-        		$out .= t.t.t.'<span class="counter"><span id="counter_number_tagline"></span> '.JText::_('chars left').'</span>' . "\n";
-				$out .= t.t.t.t.'</span>' . "\n";
-				$out .= t.t.t.'</label>' . "\n";
-				$out .= t.t.t.'<label class="spacious">' . "\n";
-				$out .= t.t.t.t.JText::_('PLG_RESUME_LOOKING_FOR') . "\n";
-				$out .= t.t.t.t.'<span class="selectgroup">' . "\n";
-				$out .= t.t.t.t.'<textarea name="lookingfor" id="lookingfor-men" rows="6" cols="35">'.stripslashes($js->lookingfor).'</textarea>' . "\n";
-				$out .= t.t.t.'<span class="counter"><span id="counter_number_lookingfor"></span> '.JText::_('PLG_RESUME_CHARS_LEFT').'</span>' . "\n";
-				$out .= t.t.t.t.'</span>' . "\n";
-        		$out .= t.t.t.'</label>' . "\n";
-				$out .= t.t.t.'<label>' . "\n";
-				$out .= t.t.t.t.JText::_('PLG_RESUME_WEBSITE') . "\n";
-				$out .= t.t.t.t.'<span class="selectgroup">' . "\n";
-				$out .= t.t.t.t.'<input type="text" class="inputtxt" maxlength="190" name="url" value="';
+				$out .= "\t\t" . '</legend>' . "\n";
+				$out .= "\t\t\t" . '<label class="spacious">' . "\n";
+				$out .= "\t\t\t\t" . JText::_('PLG_RESUME_PERSONAL_TAGLINE') . "\n";
+				$out .= "\t\t\t\t" . '<span class="selectgroup">' . "\n";
+				$out .= "\t\t\t\t" . '<textarea name="tagline" id="tagline-men" rows="6" cols="35">' . stripslashes($js->tagline) . '</textarea>' . "\n";
+        		$out .= "\t\t\t" . '<span class="counter"><span id="counter_number_tagline"></span> ' . JText::_('chars left') . '</span>' . "\n";
+				$out .= "\t\t\t\t" . '</span>' . "\n";
+				$out .= "\t\t\t" . '</label>' . "\n";
+				$out .= "\t\t\t" . '<label class="spacious">' . "\n";
+				$out .= "\t\t\t\t" . JText::_('PLG_RESUME_LOOKING_FOR') . "\n";
+				$out .= "\t\t\t\t" . '<span class="selectgroup">' . "\n";
+				$out .= "\t\t\t\t" . '<textarea name="lookingfor" id="lookingfor-men" rows="6" cols="35">' . stripslashes($js->lookingfor) . '</textarea>' . "\n";
+				$out .= "\t\t\t" . '<span class="counter"><span id="counter_number_lookingfor"></span> ' . JText::_('PLG_RESUME_CHARS_LEFT') . '</span>' . "\n";
+				$out .= "\t\t\t\t" . '</span>' . "\n";
+        		$out .= "\t\t\t" . '</label>' . "\n";
+				$out .= "\t\t\t" . '<label>' . "\n";
+				$out .= "\t\t\t\t" . JText::_('PLG_RESUME_WEBSITE') . "\n";
+				$out .= "\t\t\t\t" . '<span class="selectgroup">' . "\n";
+				$out .= "\t\t\t\t" . '<input type="text" class="inputtxt" maxlength="190" name="url" value="';
 				$out .= $js->url ? $js->url : $member->get('url');
 				$out .= '" /> ';
-				$out .= t.t.t.t.'</span>' . "\n";
-        		$out .= t.t.t.'</label>' . "\n";
-				$out .= t.t.t.'<label>' . "\n";
-				$out .= t.t.t.t.JText::_('PLG_RESUME_LINKEDIN') . "\n";
-				$out .= t.t.t.t.'<span class="selectgroup">' . "\n";
-				$out .= t.t.t.t.'<input type="text" class="inputtxt" maxlength="190" name="linkedin" value="'.$js->linkedin.'" /> ';
-				$out .= t.t.t.t.'</span>' . "\n";
-        		$out .= t.t.t.'</label>' . "\n";
-				$out .= t.t.'<label class="cats">'.JText::_('PLG_RESUME_POSITION_SOUGHT').': ' . "\n";
-				$out .= t.t.'</label>' . "\n";
+				$out .= "\t\t\t\t" . '</span>' . "\n";
+        		$out .= "\t\t\t" . '</label>' . "\n";
+				$out .= "\t\t\t" . '<label>' . "\n";
+				$out .= "\t\t\t\t" . JText::_('PLG_RESUME_LINKEDIN') . "\n";
+				$out .= "\t\t\t\t" . '<span class="selectgroup">' . "\n";
+				$out .= "\t\t\t\t" . '<input type="text" class="inputtxt" maxlength="190" name="linkedin" value="' . $js->linkedin . '" /> ';
+				$out .= "\t\t\t\t" . '</span>' . "\n";
+        		$out .= "\t\t\t" . '</label>' . "\n";
+				$out .= "\t\t" . '<label class="cats">' . JText::_('PLG_RESUME_POSITION_SOUGHT') . ': ' . "\n";
+				$out .= "\t\t" . '</label>' . "\n";
 
-				// get job types			
+				// get job types
 				$types = $jt->getTypes();
 				$types[0] = JText::_('TYPE_ANY');
 
@@ -580,29 +563,29 @@ class plgMembersResume extends JPlugin
 				$cats = $jc->getCats();
 				$cats[0] = JText::_('CATEGORY_ANY');
 
-				$out .= t.t.'<div class="selectgroup catssel">' . "\n";
-				$out .= t.t.'<label>' . "\n";
+				$out .= "\t\t" . '<div class="selectgroup catssel">' . "\n";
+				$out .= "\t\t" . '<label>' . "\n";
 				$out .= $this->formSelect('sought_type', $types, $js->sought_type, '', '');
-				$out .= t.t.'</label>' . "\n";
-				$out .= t.t.'<label>' . "\n";
+				$out .= "\t\t" . '</label>' . "\n";
+				$out .= "\t\t" . '<label>' . "\n";
 				$out .= $this->formSelect('sought_cid', $cats, $js->sought_cid, '', '');
-				$out .= t.t.'</label>' . "\n";
-				$out .= t.t.'</div>' . "\n";
+				$out .= "\t\t" . '</label>' . "\n";
+				$out .= "\t\t" . '</div>' . "\n";
 				$out .= '<div class="clear"></div>' . "\n";
-				$out .= t.t.t.t.'<div class="submitblock">' . "\n";
-				$out .= t.t.t.t.'<span class="selectgroup">' . "\n";
-				$out .= t.t.t.t.'<input type="submit" value="';
+				$out .= "\t\t\t\t" . '<div class="submitblock">' . "\n";
+				$out .= "\t\t\t\t" . '<span class="selectgroup">' . "\n";
+				$out .= "\t\t\t\t" . '<input type="submit" value="';
 				$out .= $editpref==1 ? JText::_('ACTION_SAVE_AND_INCLUDE') : JText::_('ACTION_SAVE') ;
 				$out .= '" /> <span class="cancelaction">';
-				$out .= '<a href="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=resume').'">';
+				$out .= '<a href="'.JRoute::_('index.php?option=' . $option . '&id=' . $member->get('uidNumber') . '&active=resume') . '">';
 				$out .= JText::_('CANCEL').'</a></span>' . "\n";
-				$out .= t.t.t.t.'</span>' . "\n";
-				$out .= t.t.t.t.'</div>' . "\n";
-				$out .= t.t.'<input type="hidden" name="activeres" value="';
+				$out .= "\t\t\t\t" . '</span>' . "\n";
+				$out .= "\t\t\t\t" . '</div>' . "\n";
+				$out .= "\t\t" . '<input type="hidden" name="activeres" value="';
 				$out .= $editpref==1 ? 1 : $js->active;
 				$out .='" />' . "\n";
-				$out .= t.t.'<input type="hidden" name="action" value="saveprefs" />' . "\n";
-				$out .= t.' </fieldset>' . "\n";
+				$out .= "\t\t" . '<input type="hidden" name="action" value="saveprefs" />' . "\n";
+				$out .= "\t" . ' </fieldset>' . "\n";
 				$out .= ' </form>' . "\n";
 			}
 
@@ -617,7 +600,7 @@ class plgMembersResume extends JPlugin
 
 			if (!$seeker or count($seeker)==0) 
 			{
-				$out .= t.t.'<p class="error">'.JText::_('PLG_RESUME_ERROR_RETRIEVING_PROFILE').'</p>' . "\n";
+				$out .= "\t\t" . '<p class="error">'.JText::_('PLG_RESUME_ERROR_RETRIEVING_PROFILE').'</p>' . "\n";
 			}
 			else 
 			{
@@ -629,47 +612,47 @@ class plgMembersResume extends JPlugin
 		if ($resume->id  && $file && $self) 
 		{
 			$out .= '<table class="list">' . "\n";
-			$out .= t.'<thead>' . "\n";
-			$out .= t.t.'<tr>' . "\n";
-			$out .= t.t.t.'<th class="col halfwidth">'.ucfirst(JText::_('PLG_RESUME_RESUME')).'</th>' . "\n";
-			$out .= t.t.t.'<th class="col">'.JText::_('PLG_RESUME_LAST_UPDATED').'</th>' . "\n";
-			$out .= $self ? t.t.t.t.'<th scope="col">'.JText::_('PLG_RESUME_OPTIONS').'</th>'.n : '';
-			$out .= t.t.'</tr>' . "\n";
-			$out .= t.'</thead>' . "\n";
-			$out .= t.'<tbody>' . "\n";
-			$out .= t.t.'<tr>' . "\n";
-			$out .= t.t.t.'<td>';
+			$out .= "\t" . '<thead>' . "\n";
+			$out .= "\t\t" . '<tr>' . "\n";
+			$out .= "\t\t\t" . '<th class="col halfwidth">'.ucfirst(JText::_('PLG_RESUME_RESUME')).'</th>' . "\n";
+			$out .= "\t\t\t" . '<th class="col">'.JText::_('PLG_RESUME_LAST_UPDATED').'</th>' . "\n";
+			$out .= $self ? "\t\t\t\t" . '<th scope="col">'.JText::_('PLG_RESUME_OPTIONS').'</th>'.n : '';
+			$out .= "\t\t" . '</tr>' . "\n";
+			$out .= "\t" . '</thead>' . "\n";
+			$out .= "\t" . '<tbody>' . "\n";
+			$out .= "\t\t" . '<tr>' . "\n";
+			$out .= "\t\t\t" . '<td>';
 			$title = $resume->title ?  stripslashes($resume->title) : $resume->filename;
 			$default_title = $member->get('firstname') ? $member->get('firstname').' '.$member->get('lastname').' '.ucfirst(JText::_('Resume')) : $member->get('name').' '.ucfirst(JText::_('Resume'));
 			if ($edittitle && $self) 
 			{
-				$out .= '<form id="editTitleForm" method="post" action="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=resume'.a.'action=savetitle').'" >' . "\n";
-				$out .= t.'<fieldset>' . "\n";
-				$out .= t.t.t.'<label class="resume">' . "\n";
-				$out .= t.t.t.t.' <input type="text" name="title" value="'.$title.'" class="gettitle" maxlength="40" />' . "\n";
-				$out .= t.t.t.t.'<input type="hidden" name="author" value="'.$member->get('uidNumber').'" />' . "\n";
-				$out .= t.t.t.t.'<input type="submit" value="'.JText::_('ACTION_SAVE').'" />' . "\n";
-				$out .= t.t.t.'</label>' . "\n";
-				$out .= t.'</fieldset>' . "\n";
+				$out .= '<form id="editTitleForm" method="post" action="'.JRoute::_('index.php?option='.$option . '&id='.$member->get('uidNumber') . '&active=resume&action=savetitle').'" >' . "\n";
+				$out .= "\t" . '<fieldset>' . "\n";
+				$out .= "\t\t\t" . '<label class="resume">' . "\n";
+				$out .= "\t\t\t\t" . ' <input type="text" name="title" value="'.$title.'" class="gettitle" maxlength="40" />' . "\n";
+				$out .= "\t\t\t\t" . '<input type="hidden" name="author" value="'.$member->get('uidNumber').'" />' . "\n";
+				$out .= "\t\t\t\t" . '<input type="submit" value="'.JText::_('ACTION_SAVE').'" />' . "\n";
+				$out .= "\t\t\t" . '</label>' . "\n";
+				$out .= "\t" . '</fieldset>' . "\n";
 				$out .= '</form>' . "\n";
 			}
 			else 
 			{
-				$out .='<a class="resume" href="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=resume'.a.'action=download').'"> ';
+				$out .='<a class="resume" href="'.JRoute::_('index.php?option='.$option . '&id='.$member->get('uidNumber') . '&active=resume&action=download').'"> ';
 				$out .= $title;
 				$out .= '</a>';
 				//$out .= ' <span class="filename">('.$resume->filename.')</span>';
 			}
 
 			$out .= '</td>' . "\n";
-			$out .= t.t.t.'<td>'.JHTML::_('date',$resume->created, '%d %b %Y').'</td>' . "\n";
+			$out .= "\t\t\t" . '<td>'.JHTML::_('date',$resume->created, '%d %b %Y').'</td>' . "\n";
 			//if (!$emp) {
-			$out .= t.t.t.'<td><a class="trash" href="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=resume'.a.'action=deleteresume').'" title="'.JText::_('ACTION_DELETE_THIS_RESUME').'">'.JText::_('ACTION_DELETE').'</a> ';
-			//$out .= '<a class="edittitle" href="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=resume'.a.'action=edittitle').'" title="'.JText::_('Edit resume title').'">'.JText::_('Edit title').'</a>';
+			$out .= "\t\t\t" . '<td><a class="trash" href="'.JRoute::_('index.php?option='.$option . '&id='.$member->get('uidNumber') . '&active=resume&action=deleteresume') . '" title="' . JText::_('ACTION_DELETE_THIS_RESUME') . '">' . JText::_('ACTION_DELETE') . '</a> ';
+			//$out .= '<a class="edittitle" href="'.JRoute::_('index.php?option='.$option . '&id='.$member->get('uidNumber') . '&active=resume&action=edittitle').'" title="'.JText::_('Edit resume title').'">'.JText::_('Edit title').'</a>';
 			$out .= '</td>' . "\n";
 			//}
-			$out .= t.t.'</tr>' . "\n";
-			$out .= t.'</tbody>' . "\n";
+			$out .= "\t\t" . '</tr>' . "\n";
+			$out .= "\t" . '</tbody>' . "\n";
 			$out .= '</table>' . "\n";
 		}
 		else if (!$js->active) 
@@ -681,26 +664,26 @@ class plgMembersResume extends JPlugin
 
 		if ($self) 
 		{
-			$out .= ' <form class="addResumeForm" method="post" action="'.JRoute::_('index.php?option='.$option.a.'id='.$member->get('uidNumber').a.'active=resume').'" enctype="multipart/form-data">' . "\n";
-			$out .= t.'<fieldset>' . "\n";
-			$out .= t.t.'<legend>' . "\n";
-			$out .= ($resume->id && $file) ? JText::_('ACTION_UPLOAD_NEW_RESUME').' <span>('.JText::_('PLS_RESUME_WILL_BE_REPLACED').')</span>'.n :  JText::_('ACTION_UPLOAD_A_RESUME') . "\n";
-			$out .= t.t.'</legend>' . "\n";
-			$out .= t.t.'<div>' . "\n";
-			$out .= t.t.t.'<label>' . "\n";
-			$out .= t.t.t.t.JText::_('ACTION_ATTACH_FILE') . "\n";
-			$out .= t.t.t.t.'<input type="file" name="uploadres" id="uploadres" />' . "\n";
-			$out .= t.t.t.'</label>' . "\n";
-			//$out .= t.t.t.'<label>' . "\n";	
+			$out .= ' <form class="addResumeForm" method="post" action="'.JRoute::_('index.php?option=' . $option . '&id=' . $member->get('uidNumber') . '&active=resume') . '" enctype="multipart/form-data">' . "\n";
+			$out .= "\t" . '<fieldset>' . "\n";
+			$out .= "\t\t" . '<legend>' . "\n";
+			$out .= ($resume->id && $file) ? JText::_('ACTION_UPLOAD_NEW_RESUME') . ' <span>(' . JText::_('PLS_RESUME_WILL_BE_REPLACED') . ')</span>' . "\n" :  JText::_('ACTION_UPLOAD_A_RESUME') . "\n";
+			$out .= "\t\t" . '</legend>' . "\n";
+			$out .= "\t\t" . '<div>' . "\n";
+			$out .= "\t\t\t" . '<label>' . "\n";
+			$out .= "\t\t\t\t" . JText::_('ACTION_ATTACH_FILE') . "\n";
+			$out .= "\t\t\t\t" . '<input type="file" name="uploadres" id="uploadres" />' . "\n";
+			$out .= "\t\t\t" . '</label>' . "\n";
+			//$out .= "\t\t\t" . '<label>' . "\n";	
 			//$out .= t.t.t.t.JText::_('Resume Title:') . "\n";	
-			//$out .= t.t.t.t.' <input type="text" name="title" value="" class="gettitle" />' . "\n";	
-			//$out .= t.t.t.'</label>' . "\n";	
-			$out .= t.t.'</div>' . "\n";
-			$out .= t.t.'<input type="hidden" name="action" value="uploadresume" />' . "\n";
-			$out .= t.t.'<input type="hidden" name="path" value="'.$path.'" />' . "\n";
-			$out .= t.t.'<input type="hidden" name="emp" value="'.$emp.'" />' . "\n";
-			$out .= t.t.'<input type="submit" value="'.JText::_('ACTION_UPLOAD').'" />' . "\n";
-			$out .= t.'</fieldset>' . "\n";
+			//$out .= "\t\t\t\t" . ' <input type="text" name="title" value="" class="gettitle" />' . "\n";	
+			//$out .= "\t\t\t" . '</label>' . "\n";	
+			$out .= "\t\t" . '</div>' . "\n";
+			$out .= "\t\t" . '<input type="hidden" name="action" value="uploadresume" />' . "\n";
+			$out .= "\t\t" . '<input type="hidden" name="path" value="' . $path . '" />' . "\n";
+			$out .= "\t\t" . '<input type="hidden" name="emp" value="' . $emp . '" />' . "\n";
+			$out .= "\t\t" . '<input type="submit" value="' . JText::_('ACTION_UPLOAD') . '" />' . "\n";
+			$out .= "\t" . '</fieldset>' . "\n";
 			$out .= '</form>' . "\n";
 		}
 
@@ -709,18 +692,16 @@ class plgMembersResume extends JPlugin
 	}
 
 	/**
-	 * Short description for 'showSeeker'
+	 * Show information for job seekers
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      mixed $seeker Parameter description (if any) ...
-	 * @param      unknown $emp Parameter description (if any) ...
-	 * @param      unknown $admin Parameter description (if any) ...
-	 * @param      string $option Parameter description (if any) ...
-	 * @param      mixed $list Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      object  $seeker JobSeeker
+	 * @param      integer $emp    Is user employer?
+	 * @param      integer $admin  IS administrator?
+	 * @param      string  $option Component name
+	 * @param      mixed   $list   Parameter description (if any) ...
+	 * @return     string 
 	 */
-	function showSeeker($seeker, $emp, $admin, $option, $list=0)
+	public function showSeeker($seeker, $emp, $admin, $option, $list=0)
 	{
 		$database =& JFactory::getDBO();
 		$jt = new JobType($database);
@@ -733,53 +714,53 @@ class plgMembersResume extends JPlugin
 		$jobcat = $jc->getCat($seeker->sought_cid, strtolower(JText::_('CATEGORY_ANY')));
 
 		//$title = $seeker->title ?  $seeker->title : $seeker->filename;
-		$title = JText::_('ACTION_DOWNLOAD').' '.$seeker->name.' '.ucfirst(JText::_('PLG_RESUME_RESUME'));
+		$title = JText::_('ACTION_DOWNLOAD') . ' ' . $seeker->name . ' ' . ucfirst(JText::_('PLG_RESUME_RESUME'));
 
 		$path = $this->build_path($seeker->uid);
 
-		$resume = is_file(JPATH_ROOT.$path . DS . $seeker->filename) ? $path . DS . $seeker->filename : '';
+		$resume = is_file(JPATH_ROOT . $path . DS . $seeker->filename) ? $path . DS . $seeker->filename : '';
 
 		// write info about job search
 		$out .= '<div class="aboutme';
 		$out .= $seeker->mine && $list ? ' mine' : '';
 		$out .= isset($seeker->shortlisted) && $seeker->shortlisted ? ' shortlisted' : '';
 		$out .= '">' . "\n";
-		$out .= '<div class="thumb"><img src="'.$thumb.'" alt="'.$seeker->name.'" /></div>' . "\n";
+		$out .= '<div class="thumb"><img src="' . $thumb . '" alt="' . $seeker->name . '" /></div>' . "\n";
 		$out .= '<div class="aboutlb">';
-		$out .= $list ? '<a href="'.JRoute::_('index.php?option='.$option.a.'id='.$seeker->uid.a.'active=resume').'" class="profilelink">' : '';
+		$out .= $list ? '<a href="' . JRoute::_('index.php?option=' . $option . '&id=' . $seeker->uid . '&active=resume') . '" class="profilelink">' : '';
 		$out .= $seeker->name;
 		$out .= $list ? '</a>' : '';
 		//$out .= $seeker->countryresident ? ', '.htmlentities(getcountry($seeker->countryresident)).n : '' . "\n";
-		$out .= $seeker->countryresident ? ', <span class="wherefrom">'.htmlentities($seeker->countryresident).'</span>'.n : '' . "\n";
-		$out .= '<blockquote> <p>'.stripslashes($seeker->tagline).'</p></blockquote>' . "\n";
+		$out .= $seeker->countryresident ? ', <span class="wherefrom">' . htmlentities($seeker->countryresident) . '</span>' . "\n" : '' . "\n";
+		$out .= '<blockquote><p>' . stripslashes($seeker->tagline) . '</p></blockquote>' . "\n";
 		//if ($emp or $admin) {
 			// show resume link & status
 			/*
 			$out .= '<span class="abouttext">';
-			$out .= $resume ? '<a href="'.JRoute::_('index.php?option='.$option.a.'id='.$seeker->uid.a.'active=resume'.a.'action=download').'" class="resume" title="'.$title.'">'.JText::_('Download Resume').'</a> <span class="mini">'.JText::_('Last update').': '.$this->nicetime($seeker->created).'</span>' : '<span class="unavail">'.JText::_('Download Resume').'</span>';
+			$out .= $resume ? '<a href="'.JRoute::_('index.php?option='.$option . '&id='.$seeker->uid . '&active=resume&action=download').'" class="resume" title="'.$title.'">'.JText::_('Download Resume').'</a> <span class="mini">'.JText::_('Last update').': '.$this->nicetime($seeker->created).'</span>' : '<span class="unavail">'.JText::_('Download Resume').'</span>';
 			$out .= '</span>' . "\n";
 			*/
 		//}
 		$out .= '</div>' . "\n";
-		$out .= '<div class="lookingforlb">'.JText::_('PLG_RESUME_LOOKING_FOR') . "\n";
+		$out .= '<div class="lookingforlb">' . JText::_('PLG_RESUME_LOOKING_FOR') . "\n";
 		$out .= '<span class="jobprefs">';
 		$out .= $jobtype ? $jobtype : ' ';
-		$out .= $jobcat ? ' &bull; '.$jobcat : '';
+		$out .= $jobcat ? ' &bull; ' . $jobcat : '';
 		$out .= '</span>' . "\n";
-		$out .= '<span class="abouttext">'.stripslashes($seeker->lookingfor).'</span></div>' . "\n";
+		$out .= '<span class="abouttext">' . stripslashes($seeker->lookingfor) . '</span></div>' . "\n";
 
 		if ($seeker->mine) 
 		{
-			$out .= '<span class="editbt"><a href="'.JRoute::_('index.php?option='.$option.a.'id='.$seeker->uid.a.'active=resume'.a.'action=editprefs').'" title="'.JText::_('ACTION_EDIT_MY_PROFILE').'">&nbsp;</a></span>' . "\n";
+			$out .= '<span class="editbt"><a href="' . JRoute::_('index.php?option=' . $option . '&id=' . $seeker->uid . '&active=resume&action=editprefs') . '" title="'.JText::_('ACTION_EDIT_MY_PROFILE') . '">&nbsp;</a></span>' . "\n";
 		}
 		else if ($emp or $admin) 
 		{
-			$out .= '<span id ="o'.$seeker->uid.'"><a href="';
-			$out .= JRoute::_('index.php?option=com_jobs'.a.'oid='.$seeker->uid.a.'task=shortlist').'" class="favvit" title="';
+			$out .= '<span id ="o' . $seeker->uid . '"><a href="';
+			$out .= JRoute::_('index.php?option=com_jobs&oid=' . $seeker->uid . '&task=shortlist') . '" class="favvit" title="';
 			$out .= isset($seeker->shortlisted) && $seeker->shortlisted ? JText::_('ACTION_REMOVE_FROM_SHORTLIST') : JText::_('ACTION_ADD_TO_SHORTLIST');
-			$out .='" >';
+			$out .= '" >';
 			$out .= isset($seeker->shortlisted) && $seeker->shortlisted ? JText::_('ACTION_REMOVE_FROM_SHORTLIST') : JText::_('ACTION_ADD_TO_SHORTLIST');
-			$out .='</a></span>' . "\n";
+			$out .= '</a></span>' . "\n";
 		}
 			/*
 			$out .= '<span class="abouttext sticktobot">';
@@ -790,10 +771,10 @@ class plgMembersResume extends JPlugin
 		$out .= '<span class="indented">';
 		if ($resume) 
 		{
-			$out .= '<a href="'.JRoute::_('index.php?option='.$option.a.'id='.$seeker->uid.a.'active=resume'.a.'action=download').'" class="resume getit" title="'.$title.'">'.ucfirst(JText::_('PLG_RESUME_RESUME')).'</a> <span class="mini">'.JText::_('PLG_RESUME_LAST_UPDATE').': '.$this->nicetime($seeker->created).'</span>  ' . "\n";
+			$out .= '<a href="' . JRoute::_('index.php?option=' . $option . '&id=' . $seeker->uid . '&active=resume&action=download') . '" class="resume getit" title="' . $title . '">' . ucfirst(JText::_('PLG_RESUME_RESUME')) . '</a> <span class="mini">' . JText::_('PLG_RESUME_LAST_UPDATE') . ': ' . $this->nicetime($seeker->created) . '</span>  ' . "\n";
 			//$out .= $seeker->url ? '<a href="'.$seeker->url.'" class="web" title="'.JText::_('Member website').'">'.$seeker->url.'</a>' : '';
-			$out .= $seeker->url ? '<span class="mini"> | </span> <span class="mini"><a href="'.$seeker->url.'" class="web" rel="external" title="'.JText::_('PLG_RESUME_MEMBER_WEBSITE').': '.$seeker->url.'">'.JText::_('PLG_RESUME_WEBSITE').'</a></span>' : '';
-			$out .= $seeker->linkedin ? '<span class="mini"> | </span> <span class="mini"><a href="'.$seeker->linkedin.'" class="linkedin" rel="external" title="'.JText::_('PLG_RESUME_MEMBER_LINKEDIN').'">'.JText::_('PLG_RESUME_LINKEDIN').'</a></span>' : '';
+			$out .= $seeker->url ? '<span class="mini"> | </span> <span class="mini"><a href="' . $seeker->url . '" class="web" rel="external" title="' . JText::_('PLG_RESUME_MEMBER_WEBSITE') . ': ' . $seeker->url . '">' . JText::_('PLG_RESUME_WEBSITE') . '</a></span>' : '';
+			$out .= $seeker->linkedin ? '<span class="mini"> | </span> <span class="mini"><a href="' . $seeker->linkedin . '" class="linkedin" rel="external" title="' . JText::_('PLG_RESUME_MEMBER_LINKEDIN') . '">' . JText::_('PLG_RESUME_LINKEDIN') . '</a></span>' : '';
 		}
 		else 
 		{
@@ -801,18 +782,16 @@ class plgMembersResume extends JPlugin
 		}
 
 		$out .= '</span>' . "\n";
-		$out .='</div>' . "\n";
+		$out .= '</div>' . "\n";
 
 		return $out;
 	}
 
 	/**
-	 * Short description for 'build_path'
+	 * Build the path for uploading a resume to
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $uid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $uid User ID
+	 * @return     mixed False if errors, string otherwise
 	 */
 	public function build_path($uid)
 	{
@@ -839,14 +818,12 @@ class plgMembersResume extends JPlugin
 	}
 
 	/**
-	 * Short description for 'upload'
+	 * Upload a resume
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $database Parameter description (if any) ...
-	 * @param      unknown $option Parameter description (if any) ...
-	 * @param      mixed $member Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      object $database JDatabase
+	 * @param      string $option   Component name
+	 * @param      object $member   Hubzero_User_PRofile
+	 * @return     string
 	 */
 	public function upload($database, $option, $member)
 	{
@@ -870,26 +847,26 @@ class plgMembersResume extends JPlugin
 
 		// Incoming
 		$title = JRequest::getVar('title', '');
-		$default_title = $member->get('firstname') ? $member->get('firstname').' '.$member->get('lastname').' '.ucfirst(JText::_('PLG_RESUME_RESUME')) : $member->get('name').' '.ucfirst(JText::_('PLG_RESUME_RESUME'));
+		$default_title = $member->get('firstname') ? $member->get('firstname') . ' ' . $member->get('lastname') . ' ' . ucfirst(JText::_('PLG_RESUME_RESUME')) : $member->get('name') . ' ' . ucfirst(JText::_('PLG_RESUME_RESUME'));
 		$path = JPATH_ROOT.$path;
 
-		// Replace file title with user name		
+		// Replace file title with user name
 		$file_ext = substr($file['name'], strripos($file['name'], '.'));
-		$file['name'] = $member->get('firstname') ? $member->get('firstname').' '.$member->get('lastname').' '.ucfirst(JText::_('PLG_RESUME_RESUME')) : $member->get('name').' '.ucfirst(JText::_('PLG_RESUME_RESUME'));
+		$file['name']  = $member->get('firstname') ? $member->get('firstname') . ' ' . $member->get('lastname') . ' ' . ucfirst(JText::_('PLG_RESUME_RESUME')) : $member->get('name') . ' ' . ucfirst(JText::_('PLG_RESUME_RESUME'));
 		$file['name'] .= $file_ext;
 
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
 		$file['name'] = JFile::makeSafe($file['name']);
-		$file['name'] = str_replace(' ','_',$file['name']);
+		$file['name'] = str_replace(' ', '_', $file['name']);
 
 		$row = new Resume($database);
 
 		if (!$row->load($member->get('uidNumber'))) 
 		{
 				$row = new Resume($database);
-				$row->id = 0;
-				$row->uid = $member->get('uidNumber');
+				$row->id   = 0;
+				$row->uid  = $member->get('uidNumber');
 				$row->main = 1;
 		}
 		else if (file_exists($path . DS . $row->filename)) // remove prev file first
@@ -912,7 +889,7 @@ class plgMembersResume extends JPlugin
 			$title = htmlspecialchars($title);
 			$row->created = date('Y-m-d H:i:s', time());
 			$row->filename = $file['name'];
-			$row->title = $title ? $title : $default_title ;
+			$row->title = $title ? $title : $default_title;
 
 			if (!$row->check()) 
 			{
@@ -927,15 +904,13 @@ class plgMembersResume extends JPlugin
 	}
 
 	/**
-	 * Short description for 'deleteresume'
+	 * Delete a resume
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $database Parameter description (if any) ...
-	 * @param      unknown $option Parameter description (if any) ...
-	 * @param      object $member Parameter description (if any) ...
-	 * @param      unknown $emp Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      object  $database JDatabase
+	 * @param      string  $option   Component name
+	 * @param      object  $member   Hubzero_User_PRofile
+	 * @param      integer $emp      Is user employer?
+	 * @return     string
 	 */
 	protected function deleteresume($database, $option, $member, $emp)
 	{
@@ -978,22 +953,20 @@ class plgMembersResume extends JPlugin
 				if (!$js->store()) 
 				{
 					$this->setError($js->getError());
-				}	
+				}
 			}
 		}
-		
+
 		// Push through to the main view
 		return $this->view($database, $option, $member, $emp);
 	}
 
 	/**
-	 * Short description for 'onMembersShortlist'
-	 * 
-	 * Long description (if any) ...
+	 * Show a shortlist
 	 * 
 	 * @return     void
 	 */
-	function onMembersShortlist()
+	public function onMembersShortlist()
 	{
 		$oid = JRequest::getInt('oid', 0);
 
@@ -1004,15 +977,13 @@ class plgMembersResume extends JPlugin
 	}
 
 	/**
-	 * Short description for 'shortlist'
+	 * Retrieve a shortlist for a user
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $oid Parameter description (if any) ...
-	 * @param      integer $ajax Parameter description (if any) ...
+	 * @param      integer $oid  List ID
+	 * @param      integer $ajax Being displayed via AJAX?
 	 * @return     void
 	 */
-	function shortlist($oid, $ajax=0)
+	protected function shortlist($oid, $ajax=0)
 	{
 		$juser =& JFactory::getUser();
 		if (!$juser->get('guest')) 
@@ -1024,9 +995,9 @@ class plgMembersResume extends JPlugin
 
 			if (!$shortlist->id) 
 			{
-				$shortlist->emp = $juser->get('id');
-				$shortlist->seeker = $oid;
-				$shortlist->added = date('Y-m-d H:i:s');
+				$shortlist->emp      = $juser->get('id');
+				$shortlist->seeker   = $oid;
+				$shortlist->added    = date('Y-m-d H:i:s');
 				$shortlist->category = 'resume';
 				$shortlist->check();
 				$shortlist->store();
@@ -1047,12 +1018,10 @@ class plgMembersResume extends JPlugin
 	}
 
 	/**
-	 * Short description for 'alert'
+	 * Return javascript to generate an alert prompt
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $msg Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $msg Message to show
+	 * @return     string HTML
 	 */
 	public function alert($msg)
 	{
@@ -1060,38 +1029,34 @@ class plgMembersResume extends JPlugin
 	}
 
 	/**
-	 * Short description for 'formSelect'
+	 * Generate a select form
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $name Parameter description (if any) ...
-	 * @param      array $array Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
-	 * @param      string $class Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $name  Field name
+	 * @param      array  $array Data to populate select with
+	 * @param      mixed  $value Value to select
+	 * @param      string $class Class to add
+	 * @return     string HTML
 	 */
 	public function formSelect($name, $array, $value, $class='')
 	{
-		$out  = '<select name="'.$name.'" id="'.$name.'"';
-		$out .= ($class) ? ' class="'.$class.'">'."\n" : '>'."\n";
+		$out  = '<select name="' . $name . '" id="' . $name . '"';
+		$out .= ($class) ? ' class="' . $class . '">' . "\n" : '>' . "\n";
 		foreach ($array as $avalue => $alabel)
 		{
-		 	$selected = ($avalue == $value || $alabel == $value)
-					  ? ' selected="selected" '
+			$selected = ($avalue == $value || $alabel == $value)
+					  ? ' selected="selected"'
 					  : '';
-			$out .= ' <option value="'.$avalue.'"'.$selected.'>'.$alabel.'</option>'."\n";
+			$out .= ' <option value="' . $avalue . '"' . $selected . '>' . $alabel . '</option>' . "\n";
 		}
-		$out .= '</select>'."\n";
+		$out .= '</select>' . "\n";
 		return $out;
 	}
 
 	/**
-	 * Short description for 'nicetime'
+	 * Convert a timestamp to a more human readable string such as "3 days ago"
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $date Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      string $date Timestamp
+	 * @return     string
 	 */
 	public function nicetime($date)
 	{
@@ -1100,8 +1065,8 @@ class plgMembersResume extends JPlugin
 			return 'No date provided';
 		}
 
-		$periods = array("second", "minute", "hour", "day", "week", "month", "year", "decade");
-		$lengths = array("60", "60", "24", "7", "4.35", "12", "10");
+		$periods = array('second', 'minute', 'hour', 'day', 'week', 'month', 'year', 'decade');
+		$lengths = array('60', '60', '24', '7', '4.35', '12', '10');
 
 		$now = time();
 		$unix_date = strtotime($date);
@@ -1109,7 +1074,7 @@ class plgMembersResume extends JPlugin
 		// check validity of date
 		if (empty($unix_date)) 
 		{
-			return 'Bad date';
+			return JText::_('Bad date');
 		}
 
 		// is it future date or past date
