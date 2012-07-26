@@ -406,7 +406,7 @@ class WikiControllerPage extends Hubzero_Controller
 		// Prep the pagename for display 
 		// e.g. "MainPage" becomes "Main Page"
 		$this->view->title = $this->page->getTitle();
-		$this->view->title = ($this->view->title) ? $this->view->title : JText::_('NEW') . ' ' . JText::_(strtoupper($this->_name));
+		$this->view->title = ($this->view->title) ? $this->view->title : JText::_('NEW') . ' ' . JText::_('page');
 
 		// Set the page's <title> tag
 		$document =& JFactory::getDocument();
