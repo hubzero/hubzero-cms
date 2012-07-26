@@ -65,10 +65,17 @@ include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $optio
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'type.php');
 
 require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'html.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'controller.php');
+
+$controllerName = JRequest::getCmd('controller', 'jobs');
+if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+{
+	$controllerName = 'jobs';
+}
+require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = 'JobsController' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller
-$controller = new JobsController();
+$controller = new $controllerName();
 $controller->execute();
 $controller->redirect();
 

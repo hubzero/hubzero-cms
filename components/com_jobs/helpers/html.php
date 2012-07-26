@@ -29,56 +29,51 @@
  */
 
 // No direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-if (!defined('n')) {
+if (!defined('n')) 
+{
+	/**
+	 * Shortcut constant for tabs
+	 */
+	define('t', "\t");
 
-/**
- * Description for ''t''
- */
-	define('t',"\t");
+	/**
+	 * Shortcut constant for new lines
+	 */
+	define('n', "\n");
 
-/**
- * Description for ''n''
- */
-	define('n',"\n");
+	/**
+	 * Shortcut constant for line returns
+	 */
+	define('r', "\r");
 
-/**
- * Description for ''r''
- */
-	define('r',"\r");
+	/**
+	 * Shortcut constant for break tags
+	 */
+	define('br', '<br />');
 
-/**
- * Description for ''br''
- */
-	define('br','<br />');
+	/**
+	 * Shortcut constant for space character
+	 */
+	define('sp', '&#160;');
 
-/**
- * Description for ''sp''
- */
-	define('sp','&#160;');
-
-/**
- * Description for ''a''
- */
-	define('a','&amp;');
+	/**
+	 * Shortcut constant for ampersand
+	 */
+	define('a', '&amp;');
 }
 
 /**
- * Short description for 'JobsHtml'
- * 
- * Long description (if any) ...
+ * Jobs helper class for misc. HTML
  */
 class JobsHtml
 {
-
 	/**
-	 * Short description for 'txt_unpee'
+	 * Remove paragraph tags and break tags
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $pee Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string $pee Text to unparagraph
+	 * @return     string
 	 */
 	public function txt_unpee($pee)
 	{
@@ -92,111 +87,110 @@ class JobsHtml
 	}
 
 	/**
-	 * Short description for 'confirmscreen'
+	 * Return a confirmation screen
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $returnurl Parameter description (if any) ...
-	 * @param      string $actionurl Parameter description (if any) ...
-	 * @param      string $action Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $returnurl URL to return to if they press 'no'
+	 * @param      string $actionurl URL to go to if they press 'yes'
+	 * @param      string $action    Action the confirmation is for
+	 * @return     string HTML
 	 */
 	public function confirmscreen($returnurl, $actionurl, $action='cancelsubscription')
 	{
-		$html  = '<div class="confirmwrap">'.n;
-		$html .= t.'<div class="confirmscreen">'.n;
-		$html .= t.'<p class="warning">'.JText::_('CONFIRM_ARE_YOU_SURE').' ';
-		if ($action=='cancelsubscription') {
+		$html  = '<div class="confirmwrap">' . "\n";
+		$html .= "\t" . '<div class="confirmscreen">' . "\n";
+		$html .= "\t" . '<p class="warning">' . JText::_('CONFIRM_ARE_YOU_SURE') . ' ';
+		if ($action == 'cancelsubscription') 
+		{
 			$html .= strtolower(JText::_('SUBSCRIPTION_CANCEL_THIS'));
-		} else if ($action=='withdrawapp') {
+		} 
+		else if ($action == 'withdrawapp') 
+		{
 			$html .=  JText::_('APPLICATION_WITHDRAW');
-		} else {
+		} 
+		else 
+		{
 			$html .= JText::_('ACTION_PERFORM_THIS');
 		}
 		$yes  = strtoupper(JText::_('YES'));
-		$yes .= $action=='cancelsubscription' ? ', '.JText::_('ACTION_CANCEL_IT') : '';
-		$yes .= $action=='withdrawapp' ? ', '.JText::_('ACTION_WITHDRAW') : '';
+		$yes .= $action == 'cancelsubscription' ? ', ' . JText::_('ACTION_CANCEL_IT') : '';
+		$yes .= $action == 'withdrawapp'        ? ', ' . JText::_('ACTION_WITHDRAW')  : '';
 
 		$no  = strtoupper(JText::_('NO'));
-		$no .= $action=='cancelsubscription' ? ', '.JText::_('ACTION_DO_NOT_CANCEL') : '';
-		$no .= $action=='withdrawapp' ? ', '.JText::_('ACTION_DO_NOT_WITHDRAW') : '';
+		$no .= $action == 'cancelsubscription' ? ', ' . JText::_('ACTION_DO_NOT_CANCEL')   : '';
+		$no .= $action == 'withdrawapp'        ? ', ' . JText::_('ACTION_DO_NOT_WITHDRAW') : '';
 
-		$html .= '?</p>'.n;
-		$html .= t.'<p><span class="yes"><a href="'.$actionurl.'">'.$yes.'</a></span> <span class="no"><a href="'.$returnurl.'">'.$no.'</a></span></p>';
-		$html .= t.'</div>'.n;
-		$html .= '</div>'.n;
+		$html .= '?</p>' . "\n";
+		$html .= "\t" . '<p><span class="yes"><a href="' . $actionurl . '">' . $yes . '</a></span> <span class="no"><a href="' . $returnurl . '">' . $no . '</a></span></p>';
+		$html .= "\t" . '</div>' . "\n";
+		$html .= '</div>' . "\n";
 
 		return $html;
 	}
 
 	/**
-	 * Short description for 'formSelect'
+	 * Generate a select form
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $name Parameter description (if any) ...
-	 * @param      array $array Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
-	 * @param      string $class Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $name  Field name
+	 * @param      array  $array Data to populate select with
+	 * @param      mixed  $value Value to select
+	 * @param      string $class Class to add
+	 * @return     string HTML
 	 */
 	public function formSelect($name, $array, $value, $class='')
 	{
-		$out  = '<select name="'.$name.'" id="'.$name.'"';
-		$out .= ($class) ? ' class="'.$class.'">'.n : '>'.n;
+		$out  = '<select name="' . $name . '" id="' . $name . '"';
+		$out .= ($class) ? ' class="' . $class . '">' . "\n" : '>' . "\n";
 		foreach ($array as $avalue => $alabel)
 		{
 			$selected = ($avalue == $value || $alabel == $value)
 					  ? ' selected="selected"'
 					  : '';
-			$out .= ' <option value="'.$avalue.'"'.$selected.'>'.$alabel.'</option>'.n;
+			$out .= ' <option value="' . $avalue . '"' . $selected . '>' . $alabel . '</option>' . "\n";
 		}
-		$out .= '</select>'.n;
+		$out .= '</select>' . "\n";
 		return $out;
 	}
 
 	/**
-	 * Short description for 'wikiHelp'
+	 * Returns a wiki syntax reference table
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     string Return description (if any) ...
+	 * @return     string HTML
 	 */
 	public function wikiHelp()
 	{
-		$out  = '<table class="wiki-reference" summary="Wiki Syntax Reference">'.n;
-		$out .= '<caption>Wiki Syntax Reference</caption>'.n;
-		$out .= '	<tbody>'.n;
-		$out .= '		<tr>'.n;
-		$out .= '			<td>\'\'\'bold\'\'\'</td>'.n;
-		$out .= '			<td><b>bold</b></td>'.n;
-		$out .= '		</tr>'.n;
-		$out .= '		<tr>'.n;
-		$out .= '			<td>\'\'italic\'\'</td>'.n;
-		$out .= '			<td><i>italic</i></td>'.n;
-		$out .= '		</tr>'.n;
-		$out .= '		<tr>'.n;
-		$out .= '			<td>__underline__</td>'.n;
-		$out .= '			<td><span style="text-decoration:underline;">underline</span></td>'.n;
-		$out .= '		</tr>'.n;
-		$out .= '		<tr>'.n;
-		$out .= '			<td>{{{monospace}}}</td>'.n;
-		$out .= '			<td><code>monospace</code></td>'.n;
-		$out .= '		</tr>'.n;
-		$out .= '		<tr>'.n;
-		$out .= '			<td>~~strike-through~~</td>'.n;
-		$out .= '		<td><del>strike-through</del></td>'.n;
-		$out .= '		</tr>'.n;
-		$out .= '		<tr>'.n;
-		$out .= '			<td>^superscript^</td>'.n;
-		$out .= '			<td><sup>superscript</sup></td>'.n;
-		$out .= '		</tr>'.n;
-		$out .= '		<tr>'.n;
-		$out .= '			<td>,,subscript,,</td>'.n;
-		$out .= '			<td><sub>subscript</sub></td>'.n;
-		$out .= '		</tr>'.n;
-		$out .= '	</tbody>'.n;
-		$out .= '</table>'.n;
+		$out  = '<table class="wiki-reference" summary="Wiki Syntax Reference">' . "\n";
+		$out .= '<caption>Wiki Syntax Reference</caption>' . "\n";
+		$out .= '	<tbody>' . "\n";
+		$out .= '		<tr>' . "\n";
+		$out .= '			<td>\'\'\'bold\'\'\'</td>' . "\n";
+		$out .= '			<td><b>bold</b></td>' . "\n";
+		$out .= '		</tr>' . "\n";
+		$out .= '		<tr>' . "\n";
+		$out .= '			<td>\'\'italic\'\'</td>' . "\n";
+		$out .= '			<td><i>italic</i></td>' . "\n";
+		$out .= '		</tr>' . "\n";
+		$out .= '		<tr>' . "\n";
+		$out .= '			<td>__underline__</td>' . "\n";
+		$out .= '			<td><span style="text-decoration:underline;">underline</span></td>' . "\n";
+		$out .= '		</tr>' . "\n";
+		$out .= '		<tr>' . "\n";
+		$out .= '			<td>{{{monospace}}}</td>' . "\n";
+		$out .= '			<td><code>monospace</code></td>' . "\n";
+		$out .= '		</tr>' . "\n";
+		$out .= '		<tr>' . "\n";
+		$out .= '			<td>~~strike-through~~</td>' . "\n";
+		$out .= '		<td><del>strike-through</del></td>' . "\n";
+		$out .= '		</tr>' . "\n";
+		$out .= '		<tr>' . "\n";
+		$out .= '			<td>^superscript^</td>' . "\n";
+		$out .= '			<td><sup>superscript</sup></td>' . "\n";
+		$out .= '		</tr>' . "\n";
+		$out .= '		<tr>' . "\n";
+		$out .= '			<td>,,subscript,,</td>' . "\n";
+		$out .= '			<td><sub>subscript</sub></td>' . "\n";
+		$out .= '		</tr>' . "\n";
+		$out .= '	</tbody>' . "\n";
+		$out .= '</table>' . "\n";
 
 		return $out;
 	}

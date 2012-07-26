@@ -1,32 +1,44 @@
-/* Calendar: a Javascript class for Mootools that adds accessible and unobtrusive date pickers to your form elements <http://electricprism.com/aeron/calendar> */
-/* Default CSS for Calendar (navigation: 1), Copyright (c) 2007 Aeron Glemann <http://electricprism.com/aeron>, MIT Style License. */
+/**
+ * @package     hubzero-cms
+ * @file        components/com_jobs/assets/css/calendar.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
 
-input.calendar,
-select.calendar {
-	width: 99px;
-}
+/*
 
-button.calendar {
-	background: url("images/calendar-icon.gif");
-	border: 0;
-	cursor: pointer;
-	/*float: left;*/display: inline;
-	height: 20px;
-	margin-right: 6px;
-	width: 20px;
-}
-button.calendar:hover,
-button.calendar.active {
-	background-position: 0 20px;
-}
+	-- -- -- -- -- -- --
+	calendar CSS
+	-- -- -- -- -- -- --
 
-div.calendar {
-	background: url("images/calendar.png");
-	height: 195px;
-	padding: 0 6px;
-	text-align: center;
-	width: 147px;
-}	
+*/
+
+	input.calendar,
+	select.calendar {
+		width: 99px;
+	}
+
+	button.calendar {
+		background: url("/components/com_jobs/assets/img/calendar-icon.gif");
+		border: 0;
+		cursor: pointer;
+		/*float: left;*/display: inline;
+		height: 20px;
+		margin-right: 6px;
+		width: 20px;
+	}
+	button.calendar:hover,
+	button.calendar.active {
+		background-position: 0 20px;
+	}
+
+	div.calendar {
+		background: url("/components/com_jobs/assets/img/calendar.png");
+		height: 195px;
+		padding: 0 6px;
+		text-align: center;
+		width: 147px;
+	}
 	div.calendar div {
 		background: none !important;
 		cursor: move;
@@ -55,11 +67,11 @@ div.calendar {
 		border: none;
 	}
 	div.calendar caption a.prev {
-		background-image: url("images/calendar-prev.gif");
+		background-image: url("/components/com_jobs/assets/img/calendar-prev.gif");
 		left: 0;
 	}
 	div.calendar caption a.next {
-		background-image: url("images/calendar-next.gif");
+		background-image: url("/components/com_jobs/assets/img/calendar-next.gif");
 		right: 0;
 	}
 	div.calendar caption a:hover {
@@ -97,16 +109,13 @@ div.calendar {
 		height: 21px;
 		text-align: center;
 		width: 21px;
-		/*padding-right: 0;
-		padding-bottom: 0;
-		padding-left: 0;*/
 		padding: 0;
 		line-height: 22px;
 		overflow: hidden;
 	}
 	div.calendar th { height: 14px; line-height: 11px;}
 	div.calendar td {
-		background: url("images/calendar-td.gif");
+		background: url("/components/com_jobs/assets/img/calendar-td.gif");
 		color: #FFF;
 		font-size: 11px;
 	}
@@ -114,20 +123,20 @@ div.calendar {
 		color: #999;
 	}
 	div.calendar td.valid {
-		background: url("images/calendar-valid.gif");
+		background: url("/components/com_jobs/assets/img/calendar-valid.gif");
 		color: #0597DB;
 		cursor: pointer;
 	}
 	div.calendar td.hilite {
-		background: url("images/calendar-hilite.gif");
+		background: url("/components/com_jobs/assets/img/calendar-hilite.gif");
 	}
 	div.calendar td.inactive {
-		background: url("images/calendar-td.gif") 0 100%;
+		background: url("/components/com_jobs/assets/img/calendar-td.gif") 0 100%;
 		color: #FFF;
 	}
 	div.calendar td.active,
 	div.calendar td.hover {
-		background: url("images/calendar-valid.gif") 0 100%;
+		background: url("/components/com_jobs/assets/img/calendar-valid.gif") 0 100%;
 		color: #FFF;
 		cursor: pointer;
 	}
