@@ -213,7 +213,7 @@ class plgUsageTools extends JPlugin
 	{
 		$html = '';
 
-		$sql = 'SELECT COUNT(DISTINCT c.id) FROM #__resources r, #__citations c, #__citations_assoc ca WHERE r.id = ca.oid AND ca.cid = c.id AND ca.table = "resource" AND r.type = "7" AND r.standalone = "1" AND c.published = "1"';
+		$sql = 'SELECT COUNT(DISTINCT c.id) FROM #__resources r, #__citations c, #__citations_assoc ca WHERE r.id = ca.oid AND ca.cid = c.id AND ca.tbl = "resource" AND r.type = "7" AND r.standalone = "1" AND c.published = "1"';
 		$database->setQuery($sql);
 		$result = $database->loadResult();
 
@@ -236,7 +236,7 @@ class plgUsageTools extends JPlugin
 		}
 
 		$count = 1;
-		$sql = 'SELECT DISTINCT r.id, r.title, r.published, COUNT(c.id) AS citations FROM #__resources r, #__citations c, #__citations_assoc ca WHERE r.id = ca.oid AND ca.cid = c.id AND ca.table = "resource" AND r.type = "7" AND r.standalone = "1" AND c.published = "1" GROUP BY r.id ORDER BY citations DESC';
+		$sql = 'SELECT DISTINCT r.id, r.title, r.published, COUNT(c.id) AS citations FROM #__resources r, #__citations c, #__citations_assoc ca WHERE r.id = ca.oid AND ca.cid = c.id AND ca.tbl = "resource" AND r.type = "7" AND r.standalone = "1" AND c.published = "1" GROUP BY r.id ORDER BY citations DESC';
 		$database->setQuery($sql);
 		$results = $database->loadObjectList();
 

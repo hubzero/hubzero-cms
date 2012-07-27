@@ -813,7 +813,7 @@ class CitationsCitation extends JTable
 		$sql = "SELECT DISTINCT c.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string 
 				FROM $this->_tbl AS c 
 				LEFT JOIN #__citations_secondary as CS ON c.id=CS.cid, $ca->_tbl AS a 
-				WHERE c.published=1 AND a.table='".$tbl."' AND a.oid='".$oid."' AND a.cid=c.id 
+				WHERE c.published=1 AND a.tbl='".$tbl."' AND a.oid='".$oid."' AND a.cid=c.id 
 				ORDER BY affiliated ASC, year DESC";
 
 		$this->_db->setQuery( $sql );
@@ -835,7 +835,7 @@ class CitationsCitation extends JTable
 
 		$sql = "SELECT c.created "
 			 . "\n FROM $this->_tbl AS c, $ca->_tbl AS a"
-			 . "\n WHERE c.published=1 AND a.table='".$tbl."' AND a.oid='".$oid."' AND a.cid=c.id"
+			 . "\n WHERE c.published=1 AND a.tbl='".$tbl."' AND a.oid='".$oid."' AND a.cid=c.id"
 			 . "\n ORDER BY created DESC LIMIT 1";
 
 		$this->_db->setQuery( $sql );

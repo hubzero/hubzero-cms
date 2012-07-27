@@ -341,14 +341,14 @@ class plgMembersUsage extends JPlugin
 		{
 			$sql = 'SELECT COUNT(DISTINCT (c.id)) 
 			FROM #__citations c, #__citations_assoc ca, #__author_assoc aa, #__resources r 
-					WHERE c.id = ca.cid AND r.id = ca.oid AND r.id = aa.subid AND  aa.subtable = "resources" AND ca.table = "resource" AND r.published = "1" 
+					WHERE c.id = ca.cid AND r.id = ca.oid AND r.id = aa.subid AND  aa.subtable = "resources" AND ca.tbl = "resource" AND r.published = "1" 
 					AND r.standalone = "1" AND aa.authorid = "' . $authorid . '" AND aa.role = ""';
 		} 
 		else 
 		{
 			$sql = 'SELECT COUNT(DISTINCT (c.id)) AS citations 
 					FROM #__resources r, #__citations c, #__citations_assoc ca 
-					WHERE r.id = ca.oid AND ca.cid = c.id AND ca.table = "resource" AND standalone = "1" AND r.id = "' . $resid . '"';
+					WHERE r.id = ca.oid AND ca.cid = c.id AND ca.tbl = "resource" AND standalone = "1" AND r.id = "' . $resid . '"';
 		}
 
 		$database->setQuery($sql);

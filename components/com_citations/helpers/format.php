@@ -495,7 +495,7 @@ class CitationFormat
 				$rrs = array();
 				foreach ($assocs as $rid)
 				{
-					if ($rid->table == 'resource') 
+					if ($rid->tbl == 'resource') 
 					{
 						$database->setQuery("SELECT published FROM #__resources WHERE id=" . $rid->oid);
 						$state = $database->loadResult();
@@ -518,7 +518,7 @@ class CitationFormat
 			} 
 			else 
 			{
-				if ($assocs[0]->table == 'resource') 
+				if ($assocs[0]->tbl == 'resource') 
 				{
 					$database->setQuery("SELECT published FROM #__resources WHERE id=" . $assocs[0]->oid);
 					$state = $database->loadResult();

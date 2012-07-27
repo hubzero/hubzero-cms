@@ -69,7 +69,7 @@ class CitationsAssociation extends JTable
 	 * 
 	 * @var integer
 	 */
-	var $table = NULL;
+	var $tbl = NULL;
 
 	/**
 	 * Constructor
@@ -131,7 +131,7 @@ class CitationsAssociation extends JTable
 		}
 		if (isset($filters['table']) && $filters['table'] != '') 
 		{
-			$ands[] = "r.table='" . $filters['table'] . "'";
+			$ands[] = "r.tbl='" . $filters['table'] . "'";
 		}
 		if (count($ands) > 0) 
 		{
