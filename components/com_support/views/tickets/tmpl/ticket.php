@@ -33,6 +33,16 @@ defined('_JEXEC') or die('Restricted access');
 $juser =& JFactory::getUser();
 //$database =& JFactory::getDBO();
 
+$dateFormat = '%d %b %Y';
+$timeFormat = '%I:%M %p';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M Y';
+	$timeFormat = 'H:i p';
+	$tz = true;
+}
+
 JPluginHelper::importPlugin('hubzero');
 $dispatcher =& JDispatcher::getInstance();
 
@@ -120,8 +130,8 @@ $fstring = urlencode(trim($this->filters['_find']));
 				<p class="ticket-title">
 					<strong><?php echo $name; ?></strong> 
 					<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=ticket&id='.$this->row->id); ?>" title="<?php echo JText::_('COM_SUPPORT_PERMALINK'); ?>">@ 
-						<span class="time"><?php echo JHTML::_('date',$this->row->created, '%I:%M %p', 0); ?></span> on 
-						<span class="date"><?php echo JHTML::_('date',$this->row->created, '%d %b, %Y', 0); ?></span>
+						<span class="time"><?php echo JHTML::_('date',$this->row->created, $timeFormat, $tz); ?></span> on 
+						<span class="date"><?php echo JHTML::_('date',$this->row->created, $dateFormat, $tz); ?></span>
 					</a>
 				</p><!-- / .ticket-title -->
 				<p><?php echo preg_replace('/  /', ' &nbsp;', $this->row->report); ?></p>
@@ -211,8 +221,8 @@ $fstring = urlencode(trim($this->filters['_find']));
 					<p class="comment-title">
 						<strong><?php echo $name; ?></strong>
 						<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=ticket&id='.$this->row->id.'#c'.$comment->id); ?>" title="<?php echo JText::_('COM_SUPPORT_PERMALINK'); ?>">@ 
-							<span class="time"><?php echo JHTML::_('date',$comment->created, '%I:%M %p', 0); ?></span> on 
-							<span class="date"><?php echo JHTML::_('date',$comment->created, '%d %b, %Y', 0); ?></span>
+							<span class="time"><?php echo JHTML::_('date', $comment->created, $timeFormat, $tz); ?></span> on 
+							<span class="date"><?php echo JHTML::_('date', $comment->created, $dateFormat, $tz); ?></span>
 						</a>
 					</p>
 <?php 
@@ -236,7 +246,7 @@ $fstring = urlencode(trim($this->filters['_find']));
 									{
 										if ($type == 'changes')
 										{
-											echo '<li>' . JText::_('ticket_changed_from', $items['field'], $items['before'], $items['after']) . '</li>';
+											echo '<li>' . JText::sprintf('%s changed from "%s" to "%s"', $items['field'], $items['before'], $items['after']) . '</li>';
 										}
 										else 
 										{
@@ -304,7 +314,7 @@ $fstring = urlencode(trim($this->filters['_find']));
 				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 				<input type="hidden" name="task" value="update" />
 				<input type="hidden" name="username" value="<?php echo $juser->get('username'); ?>" />
-				<input type="hidden" name="find" value="<?php echo htmlentities(urldecode($fstring), ENT_QUOTES); ?>" />
+				<input type="hidden" name="find" value="<?php echo $this->escape(urldecode($fstring)); ?>" />
 <?php if (!$this->acl->check('create', 'private_comments')) { ?>
 				<input type="hidden" name="access" value="0" />
 <?php } ?>
@@ -376,7 +386,7 @@ $fstring = urlencode(trim($this->filters['_find']));
 								$selected = ($anode->alias == $this->row->resolved)
 										  ? ' selected="selected"'
 										  : '';
-								$html .= "\t".'<option value="'.$anode->alias.'"'.$selected.'>'.stripslashes($anode->title).'</option>'."\n";
+								$html .= "\t".'<option value="'.$anode->alias.'"'.$selected.'>'.$this->escape(stripslashes($anode->title)).'</option>'."\n";
 							}
 						}
 						$html .= "\t".'</optgroup>'."\n";
@@ -413,9 +423,9 @@ $fstring = urlencode(trim($this->filters['_find']));
 								$message->message = str_replace('{sitename}',$jconfig->getValue('config.sitename'),$message->message);
 								$message->message = str_replace('{siteemail}',$jconfig->getValue('config.mailfrom'),$message->message);
 
-								$o .= "\t".'<option value="m'.$message->id.'">'.stripslashes($message->title).'</option>'."\n";
+								$o .= "\t".'<option value="m'.$message->id.'">'.$this->escape(stripslashes($message->title)).'</option>'."\n";
 
-								$hi[] = '<input type="hidden" name="m'.$message->id.'" id="m'.$message->id.'" value="'.htmlentities(stripslashes($message->message), ENT_QUOTES).'" />'."\n";
+								$hi[] = '<input type="hidden" name="m'.$message->id.'" id="m'.$message->id.'" value="'.$this->escape(stripslashes($message->message)).'" />'."\n";
 							}
 							$o .= '</select>'."\n";
 							$hi = implode("\n",$hi);

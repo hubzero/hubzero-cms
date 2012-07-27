@@ -342,7 +342,7 @@ if ($this->row->id) {
 										{
 											if ($type == 'changes')
 											{
-												echo '<li>' . JText::_('ticket_changed_from', $items['field'], $items['before'], $items['after']) . '</li>';
+												echo '<li>' . JText::sprintf('%s changed from "%s" to "%s"', $items['field'], $items['before'], $items['after']) . '</li>';
 											}
 											else 
 											{

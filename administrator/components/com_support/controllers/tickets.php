@@ -341,61 +341,66 @@ class SupportControllerTickets extends Hubzero_Controller
 			}
 
 			// Compare fields to find out what has changed for this ticket and build a changelog
-			$changelog = array();
+			$log = array(
+				'changes'       => array(),
+				'notifications' => array()
+			);
 
 			// Did the tags change?
 			if ($tags != $oldtags)
 			{
 				$oldtags = (trim($oldtags) == '') ? JText::_('BLANK') : $oldtags;
-				$changelog[] = '<li><strong>' . JText::_('TICKET_FIELD_TAGS').'</strong> ' . JText::_('TICKET_CHANGED_FROM').' <em>'.$oldtags.'</em> to <em>'.$tags.'</em></li>';
+				$log['changes'][] = array(
+					'field'  => JText::_('TICKET_FIELD_TAGS'),
+					'before' => $oldtags,
+					'after'  => $tags
+				);
 			}
 			// Did group change?
 			if ($row->group != $old->group)
 			{
-				$changelog[] = '<li><strong>' . JText::_('TICKET_FIELD_GROUP').'</strong> ' . JText::_('TICKET_CHANGED_FROM').' <em>'.$old->group.'</em> to <em>'.$row->group.'</em></li>';
+				$log['changes'][] = array(
+					'field'  => JText::_('TICKET_FIELD_GROUP'),
+					'before' => $old->group,
+					'after'  => $row->group
+				);
 			}
 			// Did severity change?
 			if ($row->severity != $old->severity)
 			{
-				$changelog[] = '<li><strong>'.JText::_('TICKET_FIELD_SEVERITY').'</strong> '.JText::_('TICKET_CHANGED_FROM').' <em>'.$old->severity.'</em> to <em>'.$row->severity.'</em></li>';
+				$log['changes'][] = array(
+					'field'  => JText::_('TICKET_FIELD_SEVERITY'),
+					'before' => $old->severity,
+					'after'  => $row->severity
+				);
 			}
 			// Did owner change?
 			if ($row->owner != $old->owner)
 			{
-				if ($old->owner == '')
-				{
-					$changelog[] = '<li><strong>'.JText::_('TICKET_FIELD_OWNER').'</strong> '.JText::_('TICKET_SET_TO').' <em>'.$row->owner.'</em></li>';
-				}
-				else
-				{
-					$changelog[] = '<li><strong>'.JText::_('TICKET_FIELD_OWNER').'</strong> '.JText::_('TICKET_CHANGED_FROM').' <em>'.$old->owner.'</em> to <em>'.$row->owner.'</em></li>';
-				}
+				$log['changes'][] = array(
+					'field'  => JText::_('TICKET_FIELD_OWNER'),
+					'before' => $old->owner,
+					'after'  => $row->owner
+				);
 			}
 			// Did the resolution change?
 			if ($row->resolved != $old->resolved)
 			{
-				if ($old->resolved == '')
-				{
-					$changelog[] = '<li><strong>'.JText::_('TICKET_FIELD_RESOLUTION').'</strong> '.JText::_('TICKET_SET_TO').' <em>'.$row->resolved.'</em></li>';
-				}
-				else
-				{
-					// This will happen if someone is reopening a closed ticket
-					$row->resolved = ($row->resolved) ? $row->resolved : '[unresolved]';
-					$changelog[] = '<li><strong>'.JText::_('TICKET_FIELD_RESOLUTION').'</strong> '.JText::_('TICKET_CHANGED_FROM').' <em>'.$old->resolved.'</em> to <em>'.$row->resolved.'</em></li>';
-				}
+				$row->resolved = ($row->resolved) ? $row->resolved : '[unresolved]';
+				$log['changes'][] = array(
+					'field'  => JText::_('TICKET_FIELD_RESOLUTION'),
+					'before' => $old->resolved,
+					'after'  => $row->resolved
+				);
 			}
 			// Did the status change?
 			if ($row->status != $old->status)
 			{
-				$changelog[] = '<li><strong>'.JText::_('TICKET_FIELD_STATUS').'</strong> '.JText::_('TICKET_CHANGED_FROM').' <em>'.SupportHtml::getStatus($old->status).'</em> to <em>'.SupportHtml::getStatus($row->status).'</em></li>';
-			}
-
-			// Were there any changes?
-			$log = implode("\n", $changelog);
-			if ($log != '')
-			{
-				$log = '<ul class="changelog">' . "\n" . $log . '</ul>'."\n";
+				$log['changes'][] = array(
+					'field'  => JText::_('TICKET_FIELD_STATUS'),
+					'before' => SupportHtml::getStatus($old->status),
+					'after'  => SupportHtml::getStatus($row->status)
+				);
 			}
 
 			$attachment = $this->uploadTask($row->id);
@@ -408,7 +413,7 @@ class SupportControllerTickets extends Hubzero_Controller
 			$rowc->comment    = str_replace('<br>', '<br />', $rowc->comment);
 			$rowc->created    = date('Y-m-d H:i:s', time());
 			$rowc->created_by = JRequest::getVar('username', '');
-			$rowc->changelog  = $log;
+			$rowc->changelog  = json_encode($log);
 			$rowc->access     = JRequest::getInt('access', 0);
 
 			if ($rowc->check())
@@ -539,13 +544,16 @@ class SupportControllerTickets extends Hubzero_Controller
 								}
 								else
 								{
-									$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_SUBMITTER').' - '.$row->email.'</li>';
+									$log['notifications'][] = array(
+										'role'    => JText::_('COMMENT_SEND_EMAIL_SUBMITTER'),
+										'name'    => $row->name,
+										'address' => $row->email
+									);
 								}
 							}
 							else if ($row->email && SupportUtilities::checkValidEmail($row->email))
 							{
 								$emails[] = $row->email;
-								//$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_SUBMITTER').' - '.$row->email.'</li>';
 							}
 						}
 					}
@@ -564,7 +572,11 @@ class SupportControllerTickets extends Hubzero_Controller
 							}
 							else
 							{
-								$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_OWNER').' - '.$juser->get('email').'</li>';
+								$log['notifications'][] = array(
+									'role'    => JText::_('COMMENT_SEND_EMAIL_OWNER'),
+									'name'    => $juser->get('name'),
+									'address' => $juser->get('email')
+								);
 							}
 						}
 					}
@@ -611,7 +623,11 @@ class SupportControllerTickets extends Hubzero_Controller
 								else 
 								{
 									// Add to log
-									$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_CC').' - '.$acc.'</li>';
+									$log['notifications'][] = array(
+										'role'    => JText::_('COMMENT_SEND_EMAIL_CC'),
+										'name'    => $juser->get('name'),
+										'address' => $juser->get('email')
+									);
 								}
 							}
 							// Make sure it's a valid e-mail address
@@ -635,20 +651,27 @@ class SupportControllerTickets extends Hubzero_Controller
 						{
 							if (strtolower($row->email) == $email)
 							{
-								$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_SUBMITTER').' - '.$row->email.'</li>';
+								$log['notifications'][] = array(
+									'role'    => JText::_('COMMENT_SEND_EMAIL_SUBMITTER'),
+									'name'    => $row->name,
+									'address' => $row->email
+								);
 							}
 							else 
 							{
-								$emaillog[] = '<li>' . JText::_('TICKET_EMAILED_CC') . ' - ' . $email . '</li>';
+								$log['notifications'][] = array(
+									'role'    => JText::_('COMMENT_SEND_EMAIL_CC'),
+									'name'    => JText::_('[none]'),
+									'address' => $email
+								);
 							}
 						}
 					}
 
 					// Were there any changes?
-					$elog = implode("\n", $emaillog);
-					if ($elog != '')
+					if (count($log['notifications']) > 0) 
 					{
-						$rowc->changelog .= '<ul class="emaillog">' . "\n" . $elog . '</ul>' . "\n";
+						$rowc->changelog = json_encode($log);
 
 						// Save the data
 						if (!$rowc->store())
