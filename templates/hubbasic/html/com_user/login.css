@@ -6,10 +6,13 @@
  */
 
 /* Container styles */
-.com_user#content {
+#content {
 	background: #F4F4F4 url("images/background_noise.png");
 }
-.com_user #content-header h2 {
+#content-header h2 {
+	display: none;
+}
+#content-wrap h3 {
 	display: none;
 }
 #authentication {
@@ -61,6 +64,9 @@ p.callToAction {
 /* External auth providers */
 #authentication #providers h3 {
 	margin-top: 0;
+}
+#authentication.multiAuth #providers h3 {
+	display: inline-block;
 }
 #authentication #providers ul {
 	margin: 20px 0 0 0;
@@ -117,6 +123,7 @@ p.callToAction {
 	display: none;
 }
 #authentication.multiAuth #credentials-hub-inner h3 {
+	display: inline-block;
 	margin-top: 0;
 	margin-bottom: 20px;
 }
