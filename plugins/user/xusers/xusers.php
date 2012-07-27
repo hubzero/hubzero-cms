@@ -370,7 +370,22 @@ class plgUserXusers extends JPlugin
 		$authlog->logAuth($user['username'] . ' ' . $_SERVER['REMOTE_ADDR'] . ' logout');
 		
 		apache_note('auth','logout');
-		
+
+		// If this is a temporary user created during the auth_link process (ex: username is a negative number)
+		// and they're logging out (i.e. they didn't finish the process to create a full account),
+		// then delete the temp account
+		if(is_numeric($user['username']) && $user['username'] < 0)
+		{
+			$juser = &JFactory::getUser($user['id']);
+
+			// Further check to make sure this was an abandoned auth_link account
+			if(substr($juser->email, -8) == '@invalid')
+			{
+				// Delete the user
+				$juser->delete();
+			}
+		}
+
 		return true;
 	}
 }
