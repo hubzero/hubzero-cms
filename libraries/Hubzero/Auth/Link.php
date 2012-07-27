@@ -450,11 +450,6 @@ class Hubzero_Auth_Link
 	 */
 	public function delete()
     {
-        if (!isset($this->toolname) && !isset($this->id))
-        {
-            return false;
-        }
-
         $db = JFactory::getDBO();
 
         if (empty($db))
@@ -623,6 +618,42 @@ class Hubzero_Auth_Link
 
         echo $message . ' in ' . $caller['file'] . ' on line ' . $caller['line'] . "\n";
     }
+
+	/**
+	 * Return array of linked accounts associated with a given user id
+	 * Also include auth domain name for easy display of domain name
+	 * 
+	 * @param      int $user_id - id of user to return accounts for
+	 * @return     array Return - array of auth link entries for the given user_id
+	 */
+	public function find_by_user_id($user_id = null)
+	{
+		if(empty($user_id))
+		{
+			return false;
+		}
+
+		$db = JFactory::getDBO();
+
+		if(empty($db))
+		{
+			return false;
+		}
+
+		$sql  = "SELECT l.*, d.authenticator as auth_domain_name FROM #__auth_link as l, #__auth_domain as d";
+		$sql .= " WHERE l.auth_domain_id = d.id AND l.user_id = " . $db->Quote($user_id);
+
+		$db->setQuery($sql);
+
+		$result = $db->loadAssocList();
+
+		if(empty($result))
+		{
+			return false;
+		}
+
+		return $result;
+	}
 
 	/**
 	 * Short description for 'delete_by_user_id'
