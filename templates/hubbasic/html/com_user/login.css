@@ -1,0 +1,204 @@
+/**
+ * @package     hubzero-cms
+ * @file        templates/hubname/html/com_user/user.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/* Container styles */
+.com_user#content {
+	background: #F4F4F4 url("images/background_noise.png");
+}
+.com_user #content-header h2 {
+	display: none;
+}
+#authentication {
+	overflow: hidden;
+	padding: 25px 25px 10px 25px;
+	margin: 35px auto;
+	border: 1px solid #C5C3C3;
+	width: 300px;
+	box-shadow: 2px 2px 2px #aaa;
+	font-family: 'Cabin', sans-serif;
+	background: #fff;
+}
+#authentication.multiAuth {
+	width: 600px;
+}
+#authentication.multiAuth #inner:before {
+	content: "or";
+	font-size: 20px;
+	padding: 10px;
+	font-style: italic;
+	position: absolute;
+	left: 48.3%;
+	top: 42%;
+	background: #FFF;
+	z-index: 500;
+}
+#authentication.multiAuth #inner {
+	background: url('images/line.png') 50% 50% repeat-y;
+	overflow: hidden;
+}
+#error-response {
+	display: none;
+	margin: 0 0 10px 0;
+	border: 1px solid #EFCCC2;
+	color: #CC0000;
+	background: #FFF2EF url("../../images/icons/error.gif") 10px 10px no-repeat;
+	padding: 10px 30px;
+	border-radius: 4px;
+}
+#authentication .two {
+	width: 50%;
+	margin: 0;
+	width: 300px;
+}
+p.callToAction {
+	text-align: center;
+}
+
+/* External auth providers */
+#authentication #providers h3 {
+	margin-top: 0;
+}
+#authentication #providers ul {
+	margin: 20px 0 0 0;
+	padding: 0;
+}
+#authentication #providers li {
+	list-style: none;
+	padding-left: 0;
+	padding-top: 0;
+	margin: 0 0 20px 0;
+	height: 50px;
+	width: 250px;
+}
+#authentication #providers li a {
+	border-bottom: none;
+	display: block;
+	height: 50px;
+	width: 250px;
+}
+#authentication #providers li#facebook a { background: url('images/facebook_login_button.png') 0 0 no-repeat; }
+#authentication #providers li#facebook:hover a { background: url('images/facebook_login_button.png') 0 -50px no-repeat; }
+#authentication #providers li#facebook:active a { background: url('images/facebook_login_button.png') 0 -100px no-repeat; }
+
+#authentication #providers li#linkedin a { background: url('images/linkedin_login_button.png') 0 0 no-repeat; }
+#authentication #providers li#linkedin:hover a { background: url('images/linkedin_login_button.png') 0 -50px no-repeat; }
+#authentication #providers li#linkedin:active a { background: url('images/linkedin_login_button.png') 0 -100px no-repeat; }
+
+#authentication #providers li#google a { background: url('images/google_login_button.png') 0 0 no-repeat; }
+#authentication #providers li#google:hover a { background: url('images/google_login_button.png') 0 -50px no-repeat; }
+#authentication #providers li#google:active a { background: url('images/google_login_button.png') 0 -100px no-repeat; }
+
+#authentication #providers li#pucas a { background: url('images/pucas_login_button.png') 0 0 no-repeat; }
+#authentication #providers li#pucas:hover a { background: url('images/pucas_login_button.png') 0 -50px no-repeat; }
+#authentication #providers li#pucas:active a { background: url('images/pucas_login_button.png') 0 -100px no-repeat; }
+
+/* Hub credentials section */
+#authentication #credentials-hub-inner .labelInputPair label {
+	display: none;
+}
+#authentication.multiAuth #credentials-hub-inner {
+	padding-left: 50px;
+}
+#authentication.multiAuth #credentials-hub {
+	opacity: .5;
+}
+#authentication.multiAuth #credentials-hub:hover {
+	-webkit-transition: all ease-in-out 0.2s;
+	-moz-transition: all ease-in-out 0.2s;
+	-o-transition: all ease-in-out 0.2s;
+	transition: all ease-in-out 0.2s;
+	opacity: 1;
+}
+#authentication.singleAuth #credentials-hub-inner h3 {
+	display: none;
+}
+#authentication.multiAuth #credentials-hub-inner h3 {
+	margin-top: 0;
+	margin-bottom: 20px;
+}
+#authentication #credentials-hub-inner div.labelInputPair {
+	position: relative;
+}
+#authentication #credentials-hub-inner a.forgots {
+	position: absolute;
+	right: 10px;
+	padding-top: 9px;
+	border-bottom: none;
+	text-decoration: none;
+	opacity: .6;
+	font-size: 11px;
+}
+#authentication #credentials-hub-inner a.forgots:hover {
+	opacity: 1;
+}
+#authentication #credentials-hub div.submission {
+	margin-top: 5px;
+}
+#authentication #credentials-hub #login-submit {
+	margin-top: 15px;
+}
+#authentication #credentials-hub #remember-me-label {
+	vertical-align: middle;
+}
+#authentication #credentials-hub input[type="text"],
+#authentication #credentials-hub input[type="password"] {
+	margin: 0;
+	margin-bottom: 10px;
+	padding: 10px 100px 10px 30px;
+	border-radius: 4px;
+	border: 1px solid #C5C3C3;
+	background-color: #F0F0F0;
+	background-repeat: no-repeat;
+	background-position: 7px 9px;
+	width: 100%;
+	outline: none;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+#authentication #credentials-hub input[type="text"]:focus,
+#authentication #credentials-hub input[type="password"]:focus {
+	background-color: #FFF;
+}
+#authentication #credentials-hub input[type="text"] {
+	background-image: url('images/user.png');
+}
+#authentication #credentials-hub input[type="password"] {
+	background-image: url('images/padlock.png');
+}
+#authentication #credentials-hub input[type="submit"] {
+	width: 100%;
+	border: 1px solid #888;
+	border-radius: 4px;
+	background: #C5C3C3;
+	color: #fff;
+	font-weight: bold;
+	font-size: 14px;
+	padding: 12px;
+	-webkit-transition: all ease-in-out 0.1s;
+	-moz-transition: all ease-in-out 0.1s;
+	-o-transition: all ease-in-out 0.1s;
+	transition: all ease-in-out 0.1s;
+	background: #333;
+	background: -webkit-gradient(linear, left top, left bottom, from(#666666), to(#333333));
+	background: -webkit-linear-gradient(#666666, #333333);
+	background: -moz-linear-gradient(center top, #666 0%, #333 100%);
+	background: -moz-gradient(center top, #666 0%, #333 100%);
+	background: -o-linear-gradient(#666, #333);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#666666,endColorstr=#333333);
+	-ms-filter:"progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#666666, endColorstr=#333333)";
+}
+#authentication #credentials-hub input[type="submit"]:hover {
+	-webkit-box-shadow: inset 2px 3px 10px #999;
+	-moz-box-shadow: inset 2px 3px 10px #999;
+	box-shadow: inset 2px 3px 10px #999;
+}
+#authentication #credentials-hub input[type="submit"]:active {
+	-webkit-box-shadow: inset 1px 2px 3px #111;
+	-moz-box-shadow: inset 1px 2px 3px #111;
+	box-shadow: inset 0 2px 2px #111;
+}

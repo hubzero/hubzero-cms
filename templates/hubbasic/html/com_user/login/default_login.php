@@ -1,98 +1,165 @@
-<?php defined('_JEXEC') or die('Restricted access'); ?>
-<?php if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == 'off'):
-		JFactory::getApplication()->redirect('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-		JError::raiseError(403, 'Forbidden: SSL is required to view this resource');
-endif; ?>
-<?php if(JPluginHelper::isEnabled('authentication', 'openid')) :
-		$lang = &JFactory::getLanguage();
-		$lang->load('plg_authentication_openid', JPATH_ADMINISTRATOR);
-		$langScript =   'var JLanguage = {};'.
-						' JLanguage.WHAT_IS_OPENID = \''.JText::_('WHAT_IS_OPENID').'\';'.
-						' JLanguage.LOGIN_WITH_OPENID = \''.JText::_('LOGIN_WITH_OPENID').'\';'.
-						' JLanguage.NORMAL_LOGIN = \''.JText::_('NORMAL_LOGIN').'\';'.
-						' var comlogin = 1;';
-		$document = &JFactory::getDocument();
-		$document->addScriptDeclaration($langScript);
-		JHTML::_('script', 'openid.js');
-endif; ?>
-
 <?php
-$jconfig =& JFactory::getConfig();
-$sitename = $jconfig->getValue('config.sitename');
-echo $this->params->get('type');
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2011 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Sam Wilson <samwilson@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die( 'Restricted access' );
+
+// @FIXME: most of this shouldn't go here, but this is where Nick wants it for now...
+
+// Get and add the js and extra css to the page
+$document    = &JFactory::getDocument();
+$app         = JFactory::getApplication();
+$template    = DS."templates".DS.$app->getTemplate().DS."html".DS."com_user";
+$media       = DS."media".DS."system";
+$js          = $template.DS."login.jquery.js";
+$css         = $template.DS."login.css";
+$uniform_js  = $media.DS."js".DS."jquery.uniform.js";
+$uniform_css = $media.DS."css".DS."uniform.css";
+if(file_exists(JPATH_BASE . $js))
+{
+	$document->addScript($js);
+}
+if(file_exists(JPATH_BASE . $css))
+{
+	$document->addStyleSheet($css);
+}
+if(file_exists(JPATH_BASE . $uniform_js))
+{
+	$document->addScript($uniform_js);
+}
+if(file_exists(JPATH_BASE . $uniform_css))
+{
+	$document->addStyleSheet($uniform_css);
+}
+
+// If we have a return set with an authenticator in it, we're linking an existing account
+// Parse the return to retrive the authenticator, and remove it from the list below
+if($return = JRequest::getVar('return', null))
+{
+	$return = base64_decode($return);
+	$query  = parse_url($return);
+	$query  = $query['query'];
+	$query  = explode('&', $query);
+	$auth   = '';
+	foreach($query as $q)
+	{
+		$n = explode('=', $q);
+		if($n[0] == 'authenticator')
+		{
+			$auth = $n[1];
+		}
+	}
+}
+
+// Figure out whether or not any of our third party auth plugins are turned on 
+// Don't include the 'hubzero' plugin, or the $auth plugin as described above
+$multiAuth      = false;
+$plugins        = JPluginHelper::getPlugin('authentication');
+$authenticators = array();
+
+foreach($plugins as $p)
+{
+	if($p->name != 'hubzero' && $p->name != $auth)
+	{
+		$authenticators[] = $p->name;
+		$multiAuth = true;
+	}
+}
+
+// Set the return if we have it...
+$return = (base64_decode($this->return) != '/members/myaccount') ? "&return={$this->return}" : '';
+
+// Check for error messages (regular message queue)
+if (!empty($error_message))
+{
+	echo '<p class="error">'. $error_message . '</p>';
+}
+
 ?>
 
-	<form action="<?php echo JRoute::_('index.php', true, $this->params->get('usesecure')); ?>"  method="post" name="com-login" id="hubForm<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>" >
-		<div class="explaination">
-		<?php
-				$usersConfig = &JComponentHelper::getParams('com_users');
-				if ($usersConfig->get('allowUserRegistration')) : 
-		?>
-			<h4>No account?</h4>
-			<p><a href="<?php echo JRoute::_('index.php?option=com_register'); ?>"><?php echo JText::_('REGISTER'); ?></a>. It's free!</p>
-
-			<h4>Is this really free?</h4>
-			<p>Yes! Use of <?php echo $sitename; ?> resources and tools is <em>free</em> for registered users. There are no hidden costs or fees.</p>
-
-			<h4>Why is registration required for parts of <?php echo $sitename; ?>?</h4>
-			<p>Our sponsors ask us who uses <?php echo $sitename; ?> and what they use it for. Registration
-			helps us answer these questions. Usage statistics also focus our attention on improvements, making the
-			<?php echo $sitename; ?> experience better for <em>you</em>.</p>
-		<?php endif; ?>
-
+<div id="authentication" class="<?php echo ($multiAuth) ? 'multiAuth' : 'singleAuth'; ?>">
+	<div id="error-response"></div>
+	<div id="inner" class="<?php echo ($multiAuth) ? 'multiAuth' : 'singleAuth'; ?>">
+		<?php if($multiAuth) { // only display if we have third part auth plugins enabled ?>
+			<div id="providers" class="two columns first">
+				<h3>Sign in with your:</h2>
+				<ul>
+					<?php 
+						foreach($authenticators as $a)
+						{
+					?>
+							<li id="<?php echo $a; ?>" class="entry">
+								<a id="<?php echo $a; ?>-button" class="" href="<?php echo JRoute::_('index.php?option=com_user&view=login&authenticator=' . $a . $return); ?>"></a>
+							</li>
+					<?php
+						}
+					?>
+				</ul>
+			</div>
+		<?php } // close if - check if any authentication plugins are enabled ?>
+		<div id="credentials-hub" class="<?php echo ($multiAuth) ? 'two columns second' : 'singleAuth'; ?>">
+			<div id="credentials-hub-inner">
+				<h3><?php echo ($multiAuth) ? 'Your local hub account:' : 'Sign In:'; ?></h2>
+				<form action="<?php echo JRoute::_('index.php', true, $this->params->get('usesecure')); ?>" method="post" id="login_form">
+					<div class="labelInputPair">
+						<label for="username"><?php echo JText::_('Username'); ?>:</label>
+						<a class="forgots" href="<?php echo JRoute::_('index.php?option=com_user&view=remind'); ?>"><?php echo JText::_('Lost username?');?></a>
+						<input tabindex="1" type="text" name="username" id="username" placeholder="username<?php //echo JText::_('username'); ?>" />
+					</div>
+					<div class="labelInputPair">
+						<label for="password"><?php echo JText::_('Password'); ?>:</label>
+						<a class="forgots" href="<?php echo JRoute::_('index.php?option=com_user&view=reset'); ?>"><?php echo JText::_('Forgot password?'); ?></a>
+						<input tabindex="2" type="password" name="passwd" id="password" placeholder="password<?php //echo JText::_('password'); ?>" />
+					</div>
+					<div class="submission">
+					<?php if(JPluginHelper::isEnabled('system', 'remember')) : ?>
+						<input type="checkbox" class="option" name="remember" id="remember" value="yes" alt="Remember Me" checked="checked" />
+						<label for="remember" id="remember-me-label"><?php echo JText::_('Keep me logged in?'); ?></label>
+					<?php endif; ?>
+					<input type="submit" value="Login" id="login-submit"/>
+					</div>
+					<div class="clear"></div>
+					<input type="hidden" name="option" value="com_user" />
+					<input type="hidden" name="task" value="login" />
+					<input type="hidden" name="return" value="<?php echo $this->return; ?>" />
+					<input type="hidden" name="freturn" value="<?php echo $this->freturn; ?>" />
+					<?php echo JHTML::_('form.token'); ?>
+				</form>
+			</div>
 		</div>
-		<fieldset>
-		<?php if ($this->params->get('description_login')) : ?>
-			<legend class="componentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>"><?php echo $this->params->get('description_login_text'); ?></legend>
-		<?php // echo $this->image; ?>
-		<?php endif; ?>
-
-			<label for="username">
-				<?php echo JText::_('Username'); ?>:
-				<input name="username" id="username" type="text" tabindex="1" class="inputbox" alt="username" size="18" />
-			</label>
-
-			<p class="hint">
-				<a href="<?php echo JRoute::_('index.php?option=com_user&view=remind'); ?>"><?php echo JText::_('FORGOT_YOUR_USERNAME'); ?></a>
-			</p>
-
-			<label for="passwd">
-				<?php echo JText::_('_PASSWORD'); ?>:
-				<input type="password" tabindex="2" name="passwd" id="passwd" />
-			</label>
-
-			<p class="hint">
-				<a href="<?php echo JRoute::_('index.php?option=com_user&view=reset'); ?>">
-				<?php echo JText::_('FORGOT_YOUR_PASSWORD'); ?></a>
-			</p>
-
-		<?php if(JPluginHelper::isEnabled('system', 'remember')) : ?>
-			<label for="remember">
-				<input type="checkbox" class="option" name="remember" id="remember" value="yes" alt="Remember Me" />
-				<?php echo JText::_('Remember me'); ?>
-			</label>
-		<?php endif; ?>
-
-			<input type="hidden" name="option" value="com_user" />
-			<input type="hidden" name="task" value="login" />
-			<input type="hidden" name="freturn" value="<?php echo  base64_encode( $_SERVER['REQUEST_URI']); ?>" />
-			<input type="hidden" name="return" value="<?php echo $this->return; ?>" />
-			<?php echo JHTML::_('form.token'); ?>
-		</fieldset>
-		<div class="clear"></div>
-
-		<p class="submit">
-			<input type="submit" name="Submit" class="button" value="<?php echo JText::_('LOGIN'); ?>" />
-		</p>
-	</form>
-
-<?php
-		if (!empty($this->error_message))
-		{
-			echo '<p class="error">'. $this->error_message . '</p>';
-		}
-		if (!empty($this->login_attempts) && $this->login_attempts >= 2)
-		{
-			echo '<p class="hint">Having trouble logging in? <a href="support/report_problems/">Report problems to Support</a>.</p>';
-		}
-?>
+		<?php if(!$multiAuth) { ?>
+			<p class="callToAction">Don't have an account? <a href="/register">Create one.</a></p>
+		<?php } ?>
+	</div>
+	<div class="clear"></div>
+	<?php if($multiAuth) { ?>
+		<p class="callToAction">Or, you can <a href="/register">create a local account.</a></p>
+	<?php } ?>
+</div>
