@@ -257,11 +257,11 @@ class Hubzero_Tool_Version
     private $description = null;        // description			jos_tool_version
 
 	/**
-	 * Description for 'fulltext'
+	 * Description for 'fulltxt'
 	 * 
 	 * @var unknown
 	 */
-    private $fulltext = null;           //					    jos_tool_version
+    private $fulltxt = null;           //					    jos_tool_version
 
 	/**
 	 * Description for 'version'
