@@ -39,7 +39,7 @@ class ContentHelper
 			$row->introtext	= $text;
 		} else
 		{
-			list($row->introtext, $row->fulltext) = preg_split($pattern, $text, 2);
+			list($row->introtext, $row->fulltxt) = preg_split($pattern, $text, 2);
 		}
 
 		// Filter settings
@@ -74,11 +74,11 @@ class ContentHelper
 					break;
 			}
 			$row->introtext	= $filter->clean( $row->introtext );
-			$row->fulltext	= $filter->clean( $row->fulltext );
+			$row->fulltxt	= $filter->clean( $row->fulltxt );
 		} elseif(empty($filterGroups) && $gid != '25') { // no default filtering for super admin (gid=25)
 			$filter = new JFilterInput( array(), array(), 1, 1 );
 			$row->introtext	= $filter->clean( $row->introtext );
-			$row->fulltext	= $filter->clean( $row->fulltext );
+			$row->fulltxt	= $filter->clean( $row->fulltxt );
 		}
 		return true;
 	}

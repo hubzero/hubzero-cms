@@ -263,9 +263,9 @@ class ContentViewArticle extends ContentView
 		$pathway =& $mainframe->getPathWay();
 		$pathway->addItem($title, '');
 
-		// Unify the introtext and fulltext fields and separated the fields by the {readmore} tag
-		if (JString::strlen($article->fulltext) > 1) {
-			$article->text = $article->introtext."<hr id=\"system-readmore\" />".$article->fulltext;
+		// Unify the introtext and fulltxt fields and separated the fields by the {readmore} tag
+		if (JString::strlen($article->fulltxt) > 1) {
+			$article->text = $article->introtext."<hr id=\"system-readmore\" />".$article->fulltxt;
 		} else {
 			$article->text = $article->introtext;
 		}
