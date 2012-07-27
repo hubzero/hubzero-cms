@@ -166,7 +166,7 @@ class WikiControllerPage extends Hubzero_Controller
 			return;
 		}
 		
-		if ($this->page->group && !$this->_group)
+		if ($this->page->group_cn && !$this->_group)
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_groups&scope=' . $this->page->scope . '&pagename=' . $this->page->pagename)
@@ -181,7 +181,7 @@ class WikiControllerPage extends Hubzero_Controller
 			return;
 		}
 
-		if ($this->page->scope && !$this->page->group) 
+		if ($this->page->scope && !$this->page->group_cn) 
 		{
 			$bits = explode('/', $this->page->scope);
 			$s = array();
@@ -234,7 +234,7 @@ class WikiControllerPage extends Hubzero_Controller
 			'pagename' => $this->page->pagename,
 			'pageid'   => $this->page->id,
 			'filepath' => '',
-			'domain'   => $this->page->group
+			'domain'   => $this->page->group_cn
 		);
 
 		ximport('Hubzero_Wiki_Parser');
@@ -374,7 +374,7 @@ class WikiControllerPage extends Hubzero_Controller
 			//$this->page->scope = $this->scope;
 			if ($this->_group) 
 			{
-				$this->page->group = $this->_group;
+				$this->page->group_cn = $this->_group;
 			}
 
 			if ($ischild && $this->page->pagename) 
@@ -526,7 +526,7 @@ class WikiControllerPage extends Hubzero_Controller
 		$this->page->pagename = trim(JRequest::getVar('pagename', '', 'post'));
 		$this->page->scope    = trim(JRequest::getVar('scope', '', 'post'));
 		$this->page->access   = (isset($page['access'])) ? intval($page['access']) : 0;
-		$this->page->group    = (isset($page['group']))  ? trim($page['group'])    : '';
+		$this->page->group_cn    = (isset($page['group']))  ? trim($page['group'])    : '';
 		$this->page->state    = (isset($page['state']))  ? intval($page['state'])  : 0;
 		
 		// Get parameters

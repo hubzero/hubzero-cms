@@ -67,7 +67,7 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr>
 						<td class="key"><label><?php echo JText::_('Group'); ?>:</label></td>
-						<td><input type="text" name="page[group]" id="pagegroup" size="30" maxlength="255" value="<?php echo stripslashes($this->row->group); ?>" /></td>
+						<td><input type="text" name="page[group]" id="pagegroup" size="30" maxlength="255" value="<?php echo stripslashes($this->row->group_cn); ?>" /></td>
 					</tr>
 				</tbody>
 			</table>

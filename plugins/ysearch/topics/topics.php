@@ -104,7 +104,7 @@ class plgYSearchTopics extends YSearchPlugin
 				wp.title,
 				wv.pagetext AS description,
 				CASE 
-					WHEN wp.group THEN concat('index.php?option=com_groups&scope=', wp.scope, '&pagename=', wp.pagename)
+					WHEN wp.group_cn THEN concat('index.php?option=com_groups&scope=', wp.scope, '&pagename=', wp.pagename)
 					ELSE concat('index.php?option=com_topics&scope=', wp.scope, '&pagename=', wp.pagename)
 				END AS link,
 				$weight AS weight,
@@ -113,7 +113,7 @@ class plgYSearchTopics extends YSearchPlugin
 			FROM jos_wiki_version wv
 			INNER JOIN jos_wiki_page wp 
 				ON wp.id = wv.pageid
-			LEFT JOIN jos_xgroups xg ON xg.cn = wp.group
+			LEFT JOIN jos_xgroups xg ON xg.cn = wp.group_cn
 			WHERE
 				$authorization AND
 				$weight > 0 AND 

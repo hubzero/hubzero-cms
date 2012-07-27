@@ -264,7 +264,7 @@ class plgGroupsUsage extends JPlugin
 		}
 		$database =& JFactory::getDBO();
 
-		$database->setQuery("SELECT COUNT(*) FROM #__wiki_page AS p WHERE p.scope='" . $gid . DS . 'wiki' . "' AND p.group='" . $gid . "'");
+		$database->setQuery("SELECT COUNT(*) FROM #__wiki_page AS p WHERE p.scope='" . $gid . DS . 'wiki' . "' AND p.group_cn='" . $gid . "'");
 		return $database->loadResult();
 	}
 
@@ -283,7 +283,7 @@ class plgGroupsUsage extends JPlugin
 		}
 		$database =& JFactory::getDBO();
 
-		$database->setQuery("SELECT id FROM #__wiki_page AS p WHERE p.scope='" . $gid . DS . 'wiki' . "' AND p.group='" . $gid . "'");
+		$database->setQuery("SELECT id FROM #__wiki_page AS p WHERE p.scope='" . $gid . DS . 'wiki' . "' AND p.group_cn='" . $gid . "'");
 		$pageids = $database->loadObjectList();
 		if ($pageids) 
 		{

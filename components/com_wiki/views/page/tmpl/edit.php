@@ -272,7 +272,7 @@ if ($this->config->get('access-edit')) {
 			<input type="hidden" name="page[access]" value="<?php echo $this->escape($this->page->access); ?>" />
 <?php } ?>
 
-			<input type="hidden" name="page[group]" value="<?php echo $this->escape($this->page->group); ?>" />
+			<input type="hidden" name="page[group]" value="<?php echo $this->escape($this->page->group_cn); ?>" />
 
 <?php if ($this->config->get('access-manage')) { ?>
 			<label for="state">
@@ -330,7 +330,7 @@ if ($this->config->get('access-edit')) {
 		<input type="hidden" name="task" value="save" />
 
 <?php if ($this->sub) { ?>
-		<input type="hidden" name="gid" value="<?php echo $this->page->group; ?>" />
+		<input type="hidden" name="gid" value="<?php echo $this->page->group_cn; ?>" />
 		<input type="hidden" name="active" value="<?php echo $this->sub; ?>" />
 <?php } ?>
 

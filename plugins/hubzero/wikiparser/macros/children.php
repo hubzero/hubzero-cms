@@ -169,7 +169,7 @@ class ChildrenMacro extends WikiMacro
 	private function getChildren($scope)
 	{
 		// Get all pages
-		$sql = "SELECT * FROM #__wiki_page WHERE scope='" . $scope . "' AND `group`='" . $this->domain . "' ORDER BY pagename ASC";
+		$sql = "SELECT * FROM #__wiki_page WHERE scope='" . $scope . "' AND `group_cn`='" . $this->domain . "' ORDER BY pagename ASC";
 
 		// Perform query
 		$this->_db->setQuery($sql);

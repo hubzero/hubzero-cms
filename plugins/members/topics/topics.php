@@ -298,10 +298,10 @@ class plgMembersTopics extends JPlugin
 		//}
 
 		$f_count = "SELECT COUNT(*) ";
-		$f_fields = "SELECT f.id, f.pagetext AS text, 'topics' AS section, 'index.php?option=' AS href, d.scope, d.group, d.access, d.title, d.pagename, d.created ";
+		$f_fields = "SELECT f.id, f.pagetext AS text, 'topics' AS section, 'index.php?option=' AS href, d.scope, d.group_cn, d.access, d.title, d.pagename, d.created ";
 		$f_from = "FROM #__wiki_version AS f, 
 						(
-							SELECT v.pageid, v.created, w.title, w.pagename, w.scope, w.group, w.access, MAX(v.version) AS version
+							SELECT v.pageid, v.created, w.title, w.pagename, w.scope, w.group_cn, w.access, MAX(v.version) AS version
 							FROM #__wiki_page AS w, #__wiki_version AS v, #__xfavorites AS x
 							WHERE w.id=v.pageid AND v.approved=1 AND x.uid='" . $uidNumber . "' AND w.id=x.oid AND x.tbl='topics' $access
 							GROUP BY pageid
@@ -327,7 +327,7 @@ class plgMembersTopics extends JPlugin
 
 				foreach ($rows as $key => $row)
 				{
-					if ($row->group != '' && $row->scope != '') 
+					if ($row->group_cn != '' && $row->scope != '') 
 					{
 						$rows[$key]->href = JRoute::_('index.php?option=com_groups&scope=' . $row->scope . '&pagename=' . $row->pagename);
 					} 

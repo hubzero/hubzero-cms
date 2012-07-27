@@ -186,7 +186,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 					<span class="group">
-						<span><?php echo $this->escape($row->group); ?></span>
+						<span><?php echo $this->escape($row->group_cn); ?></span>
 					</span>
 				</td>
 <?php if ($row->revisions > 0) { ?>

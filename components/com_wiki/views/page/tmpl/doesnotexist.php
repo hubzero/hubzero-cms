@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<div id="<?php echo ($this->page->group) ? 'sub-content-header' : 'content-header'; ?>" class="full">
+<div id="<?php echo ($this->page->group_cn) ? 'sub-content-header' : 'content-header'; ?>" class="full">
 	<h2><?php echo $this->escape($this->title); ?></h2>
 </div><!-- /#content-header -->
 

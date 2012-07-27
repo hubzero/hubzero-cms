@@ -61,7 +61,7 @@ class PageNameMacro extends WikiMacro
 		switch (trim($et))
 		{
 			case 'title':
-				$sql = "SELECT title FROM #__wiki_page WHERE pagename='" . $this->pagename . "' AND `group`='" . $this->domain . "' AND scope='" . $this->scope . "'";
+				$sql = "SELECT title FROM #__wiki_page WHERE pagename='" . $this->pagename . "' AND `group_cn`='" . $this->domain . "' AND scope='" . $this->scope . "'";
 				// Perform query
 				$this->_db->setQuery($sql);
 				return stripslashes($this->_db->loadResult());

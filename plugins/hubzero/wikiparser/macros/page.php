@@ -116,7 +116,7 @@ class PageMacro extends WikiMacro
 		else 
 		{
 			// Build and return the link
-			if ($g->group != '' && $g->scope != '') 
+			if ($g->group_cn != '' && $g->scope != '') 
 			{
 				$link = 'index.php?option=com_groups&scope=' . $g->scope . '&pagename=' . $g->pagename;
 			} 

@@ -45,7 +45,7 @@ function submitbutton(pressbutton)
 				<th>(ID) Pagename</th>
 				<td>(<?php echo $this->page->id; ?>) <?php echo $this->escape(stripslashes($this->page->pagename)); ?></td>
 				<th>Group</th>
-				<td><?php echo $this->escape(stripslashes($this->page->group)); ?></td>
+				<td><?php echo $this->escape(stripslashes($this->page->group_cn)); ?></td>
 			</tr>
 			<tr>
 		</tbody>

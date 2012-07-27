@@ -143,7 +143,7 @@ class WikiControllerMedia extends Hubzero_Controller
 		$this->config = WikiHelperPage::authorize($this->config, $this->page);
 
 		// Check if the page is group restricted and the user is authorized
-		if ($this->page->group != '' && $this->page->access != 0 && !$this->config->get('access-view')) 
+		if ($this->page->group_cn != '' && $this->page->access != 0 && !$this->config->get('access-view')) 
 		{
 			if ($this->_sub) 
 			{

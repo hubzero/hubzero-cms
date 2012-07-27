@@ -121,7 +121,7 @@ class WikiPage extends JTable
 	 *
 	 * @var	string
 	 */
-	public $group = NULL;
+	public $group_cn = NULL;
 
 	/**
 	 * Published state
@@ -309,7 +309,7 @@ class WikiPage extends JTable
 	 */
 	public function getTemplates()
 	{
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE `pagename` LIKE 'Template:%' AND `group`='$this->group' ORDER BY `pagename`");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE `pagename` LIKE 'Template:%' AND `group_cn`='$this->group_cn' ORDER BY `pagename`");
 		return $this->_db->loadObjectList();
 	}
 
@@ -472,7 +472,7 @@ class WikiPage extends JTable
 	 */
 	public function getGroups($filters=array())
 	{
-		$query = "SELECT DISTINCT g.gidNumber, g.cn, g.description FROM #__xgroups AS g, #__wiki_page AS w WHERE w.group=g.cn ORDER BY g.cn";
+		$query = "SELECT DISTINCT g.gidNumber, g.cn, g.description FROM #__xgroups AS g, #__wiki_page AS w WHERE w.group_cn=g.cn ORDER BY g.cn";
 		
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
@@ -526,7 +526,7 @@ class WikiPage extends JTable
 		}
 		if (isset($filters['group']) && $filters['group'] != '') 
 		{
-			$where[] = "t.`group`='" . $filters['group'] . "'";
+			$where[] = "t.`group_cn`='" . $filters['group'] . "'";
 		}
 		if (count($where) > 0)
 		{
@@ -535,7 +535,7 @@ class WikiPage extends JTable
 		if (isset($filters['sortby']) && $filters['sortby'] != '') {
 			$query .= " ORDER BY t.".$filters['sortby'];
 		} else {
-			$query .= " ORDER BY t.id ASC GROUP BY `t.group`";
+			$query .= " ORDER BY t.id ASC GROUP BY `t.group_cn`";
 		}
 		if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all') {
 			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
@@ -569,7 +569,7 @@ class WikiPage extends JTable
 			}
 		} else {
 			$query = "SELECT v.pageid AS id, w.title, w.pagename AS alias, v.pagehtml AS itext, NULL AS ftext, w.state, v.created, v.created AS modified, v.created AS publish_up, w.params, 
-					CONCAT( 'index.php?option=com_topics&pagename=', w.pagename ) AS href, 'topics' AS `section`, w.`group` AS area, w.scope AS category, w.rating, w.times_rated, w.ranking, w.access, w.hits ";
+					CONCAT( 'index.php?option=com_topics&pagename=', w.pagename ) AS href, 'topics' AS `section`, w.`group_cn` AS area, w.scope AS category, w.rating, w.times_rated, w.ranking, w.access, w.hits ";
 			if (isset($filters['tags'])) {
 				$query .= ", COUNT(DISTINCT t.tagid) AS uniques ";
 			}
@@ -610,7 +610,7 @@ class WikiPage extends JTable
 				}
 			}
 		}
-		$query .= "FROM $this->_tbl AS w LEFT JOIN #__wiki_version AS v ON w.id=v.pageid LEFT JOIN #__xgroups AS g ON g.cn=w.group";
+		$query .= "FROM $this->_tbl AS w LEFT JOIN #__wiki_version AS v ON w.id=v.pageid LEFT JOIN #__xgroups AS g ON g.cn=w.group_cn";
 		if (isset($filters['tags'])) 
 		{
 			$query .= ", #__tags_object AS t ";
@@ -619,7 +619,7 @@ class WikiPage extends JTable
 		$where = array();
 		//$where[] = "w.id=v.pageid";
 		$where[] = "v.approved=1";
-		$where[] = "(w.group='' OR g.access<>4)";
+		$where[] = "(w.group_cn='' OR g.access<>4)";
 		$where[] = "w.state<2";
 
 		if (isset($filters['author'])) 
@@ -698,7 +698,7 @@ class WikiPage extends JTable
 						}
 					}
 
-					$where[] = "(w.access!=1 OR (w.access=1 AND (w.group IN ('" . implode("','", $groups) . "') OR w.created_by='" . $juser->get('id') . "')))";
+					$where[] = "(w.access!=1 OR (w.access=1 AND (w.group_cn IN ('" . implode("','", $groups) . "') OR w.created_by='" . $juser->get('id') . "')))";
 				}
 			} 
 			else 

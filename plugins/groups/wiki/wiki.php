@@ -312,7 +312,7 @@ class plgGroupsWiki extends JPlugin
 			return array();
 		}
 		$database =& JFactory::getDBO();
-		$database->setQuery("SELECT id FROM #__wiki_page AS p WHERE p.group='" . $gid . "'");
+		$database->setQuery("SELECT id FROM #__wiki_page AS p WHERE p.group_cn='" . $gid . "'");
 		return $database->loadObjectList();
 	}
 }

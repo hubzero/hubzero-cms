@@ -80,7 +80,7 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr>
 						<td class="key"><?php echo JText::_('Group'); ?>:</td>
-						<td><?php echo $this->escape(stripslashes($this->page->group)); ?></td>
+						<td><?php echo $this->escape(stripslashes($this->page->group_cn)); ?></td>
 					</tr>
 					<tr>
 						<td class="key"><label><?php echo JText::_('Edit summary'); ?>:</label></td>

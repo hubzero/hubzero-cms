@@ -497,7 +497,7 @@ class modSpotlight extends JObject
 				{
 					return $row->id;
 				}
-				$url = ($row->group && $row->scope) ? 'groups' . DS . $row->scope . DS . $row->pagename : 'topics' . DS . $row->pagename;
+				$url = ($row->group_cn && $row->scope) ? 'groups' . DS . $row->scope . DS . $row->pagename : 'topics' . DS . $row->pagename;
 
 				$thumb = trim($this->params->get('default_topicpic', '/modules/mod_spotlight/default.gif'));
 				$out .= '<span class="spotlight-img"><a href="' . JRoute::_('index.php?option=com_topics&pagename=' . $row->pagename) . '"><img width="30" height="30" src="' . $thumb.'" alt="'.htmlentities(stripslashes($row->title)) . '" /></a></span>'."\n";

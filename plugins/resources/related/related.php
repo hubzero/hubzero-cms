@@ -84,7 +84,7 @@ class plgResourcesRelated extends JPlugin
 		$database =& JFactory::getDBO();
 
 		// Build the query that checks topic pages
-		$sql1 = "SELECT v.id, v.pageid, MAX(v.version) AS version, w.title, w.pagename AS alias, v.pagetext AS introtext, NULL AS type, NULL AS published, NULL AS publish_up, w.scope, w.rating, w.times_rated, w.ranking, 'Topic' AS section, w.`group`  
+		$sql1 = "SELECT v.id, v.pageid, MAX(v.version) AS version, w.title, w.pagename AS alias, v.pagetext AS introtext, NULL AS type, NULL AS published, NULL AS publish_up, w.scope, w.rating, w.times_rated, w.ranking, 'Topic' AS section, w.`group_cn`  
 				FROM #__wiki_page AS w, #__wiki_version AS v
 				WHERE w.id=v.pageid AND v.approved=1 AND (v.pagetext LIKE '%[[Resource(".$resource->id . ")]]%' OR v.pagetext LIKE '%[[Resource(" . $resource->id . ",%' OR v.pagetext LIKE '%[/resources/" . $resource->id . " %'";
 		$sql1 .= ($resource->alias) ? " OR v.pagetext LIKE '%[[Resource(" . $resource->alias . "%') " : ") ";
@@ -111,7 +111,7 @@ class plgResourcesRelated extends JPlugin
 				}
 				$g = "'" . implode("','", $groups) . "'";
 
-				$sql1 .= "AND (w.access!=1 OR (w.access=1 AND (w.group IN ($g) OR w.created_by='" . $juser->get('id') . "'))) ";
+				$sql1 .= "AND (w.access!=1 OR (w.access=1 AND (w.group_cn IN ($g) OR w.created_by='" . $juser->get('id') . "'))) ";
 			}
 		} 
 		else 

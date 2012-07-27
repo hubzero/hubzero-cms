@@ -44,7 +44,7 @@ if (count($this->comments) > 0) {
 		'pagename' => $this->page->pagename,
 		'pageid'   => $this->page->id,
 		'filepath' => '',
-		'domain'   => $this->page->group
+		'domain'   => $this->page->group_cn
 	);
 	ximport('Hubzero_Wiki_Parser');
 	$parser =& Hubzero_Wiki_Parser::getInstance();

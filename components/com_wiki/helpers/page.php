@@ -126,10 +126,10 @@ class WikiHelperPage
 		}
 
 		// Is a group set?
-		if (trim($page->group)) 
+		if (trim($page->group_cn)) 
 		{
 			ximport('Hubzero_Group');
-			$group = Hubzero_Group::getInstance($page->group);
+			$group = Hubzero_Group::getInstance($page->group_cn);
 
 			// Is this a group manager?
 			if ($group->is_member_of('managers', $juser->get('id'))) 
