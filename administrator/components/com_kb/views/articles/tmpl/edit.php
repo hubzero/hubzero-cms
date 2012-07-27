@@ -99,8 +99,8 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr>
 						<td colspan="2">
-							<label for="field-fulltext"><?php echo JText::_('COM_KB_BODY'); ?>: *</label><br />
-							<?php echo $editor->display('fields[fulltext]', $this->escape(stripslashes($this->row->fulltext)), '', '', '60', '30'); ?>
+							<label for="field-fulltxt"><?php echo JText::_('COM_KB_BODY'); ?>: *</label><br />
+							<?php echo $editor->display('fields[fulltxt]', $this->escape(stripslashes($this->row->fulltxt)), '', '', '60', '30'); ?>
 						</td>
 					</tr>
 					<tr>

@@ -986,8 +986,8 @@ class ResourcesHtml
 
 		// Prepare/parse text
 		$introtext = stripslashes($resource->introtext);
-		$maintext  = ($resource->fulltext)
-				   ? stripslashes($resource->fulltext)
+		$maintext  = ($resource->fulltxt)
+				   ? stripslashes($resource->fulltxt)
 				   : stripslashes($resource->introtext);
 
 		$maintext = stripslashes($maintext);

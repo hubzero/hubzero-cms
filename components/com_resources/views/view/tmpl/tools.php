@@ -131,7 +131,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 	// Display "at a glance"
 	$html .= '<p class="ataglance">';
-	$introtext = $resource->introtext ? Hubzero_View_Helper_Html::shortenText(stripslashes($resource->introtext), 255, 0) : Hubzero_View_Helper_Html::shortenText(stripslashes($resource->fulltext), 255, 0);
+	$introtext = $resource->introtext ? Hubzero_View_Helper_Html::shortenText(stripslashes($resource->introtext), 255, 0) : Hubzero_View_Helper_Html::shortenText(stripslashes($resource->fulltxt), 255, 0);
 	$html .= $introtext;
 	//$html .= ' <a href="">'.JText::_('Learn more').' &rsaquo;</a>';
 	//$html .= JText::_('in') . ' <a href="' . JRoute::_('index.php?option=' . $option . '&type=' . $resource->_type->alias). '">' . $resource->_type->type . '</a>';

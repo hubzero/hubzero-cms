@@ -116,9 +116,9 @@ class ToolsControllerResource extends Hubzero_Controller
 		$row = new ResourcesResource($this->database);
 		$row->loadAlias($alias);
 		$row->alias = ($row->alias) ? $row->alias : $alias;
-		if (!$status['fulltext']) 
+		if (!$status['fulltxt']) 
 		{ 
-			$status['fulltext'] = $row->fulltext;
+			$status['fulltxt'] = $row->fulltxt;
 		}
 
 		// process first step
@@ -133,19 +133,19 @@ class ToolsControllerResource extends Hubzero_Controller
 				return;
 			}
 
-			$body = $this->txtClean($_POST['fulltext']);
+			$body = $this->txtClean($_POST['fulltxt']);
 			if (preg_match("/([\<])([^\>]{1,})*([\>])/i", $body)) 
 			{
 				// Do nothing
-				$status['fulltext'] = trim(stripslashes($body));
+				$status['fulltxt'] = trim(stripslashes($body));
 			} 
 			else 
 			{
 				// Wiki format will be used
-				$status['fulltext'] = JRequest::getVar('fulltext', $status['fulltext'], 'post');
+				$status['fulltxt'] = JRequest::getVar('fulltxt', $status['fulltxt'], 'post');
 			}
 
-			// Get custom areas, add wrapper tags, and compile into fulltext
+			// Get custom areas, add wrapper tags, and compile into fulltxt
 			$type = new ResourcesType($this->database);
 			$type->load($row->type);
 
@@ -165,7 +165,7 @@ class ToolsControllerResource extends Hubzero_Controller
 			{
 				$f = '';
 
-				$status['fulltext'] .= "\n" . '<nb:' . $tagname . '>';
+				$status['fulltxt'] .= "\n" . '<nb:' . $tagname . '>';
 				if (is_array($tagcontent))
 				{
 					$c = count($tagcontent);
@@ -176,7 +176,7 @@ class ToolsControllerResource extends Hubzero_Controller
 						{
 							$num++;
 						}
-						$status['fulltext'] .= '<' . $key . '>' . trim($val) . '</' . $key . '>';
+						$status['fulltxt'] .= '<' . $key . '>' . trim($val) . '</' . $key . '>';
 					}
 					if ($c == $num)
 					{
@@ -188,10 +188,10 @@ class ToolsControllerResource extends Hubzero_Controller
 					$f = trim($tagcontent);
 					if ($f)
 					{
-						$status['fulltext'] .= trim($tagcontent);
+						$status['fulltxt'] .= trim($tagcontent);
 					}
 				}
-				$status['fulltext'] .= '</nb:' . $tagname . '>' . "\n";
+				$status['fulltxt'] .= '</nb:' . $tagname . '>' . "\n";
 
 				if (!$f && isset($fields[$tagname]) && $fields[$tagname]->required) 
 				{
@@ -211,7 +211,7 @@ class ToolsControllerResource extends Hubzero_Controller
 			}
 
 			ximport('Hubzero_View_Helper_Html');
-			$hztv->fulltext    = $objV->fulltext    = $status['fulltext'];
+			$hztv->fulltxt    = $objV->fulltxt    = $status['fulltxt'];
 			$hztv->description = $objV->description = Hubzero_View_Helper_Html::shortenText(JRequest::getVar('description', $status['description'], 'post'), 500, 0);
 			$hztv->title       = $objV->title       = Hubzero_View_Helper_Html::shortenText(preg_replace('/\s+/', ' ', JRequest::getVar('title', $status['title'], 'post')), 500, 0);
 
@@ -425,7 +425,7 @@ class ToolsControllerResource extends Hubzero_Controller
 		$resource->load($rid);
 		if (count($status) > 0) 
 		{
-			$resource->fulltext    = addslashes($status['fulltext']);
+			$resource->fulltxt    = addslashes($status['fulltxt']);
 			$resource->introtext   = $status['description'];
 			$resource->title       = preg_replace('/\s+/', ' ', $status['title']);
 			$resource->modified    = date("Y-m-d H:i:s");

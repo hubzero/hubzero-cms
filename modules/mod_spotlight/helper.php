@@ -611,7 +611,7 @@ class modSpotlight extends JObject
 					}
 					else
 					{
-						$out .= ': '.Hubzero_View_Helper_Html::shortenText($this->_encodeHtml(strip_tags($row->fulltext)), $txtLength, 0);
+						$out .= ': '.Hubzero_View_Helper_Html::shortenText($this->_encodeHtml(strip_tags($row->fulltxt)), $txtLength, 0);
 					}
 				}
 				if ($tbl == 'itunes')

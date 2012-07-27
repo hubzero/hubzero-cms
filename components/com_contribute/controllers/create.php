@@ -678,10 +678,10 @@ class ContributeControllerCreate extends Hubzero_Controller
 		$row->modified     = date('Y-m-d H:i:s');
 		$row->modified_by  = $this->juser->get('id');
 
-		$row->introtext = (trim($row->fulltext)) ? Hubzero_View_Helper_Html::shortenText(trim($row->fulltext), 500, 0) : trim($row->fulltext);
-		$row->fulltext  = $this->_txtAutoP(trim($row->fulltext), 1);
+		$row->introtext = (trim($row->fulltxt)) ? Hubzero_View_Helper_Html::shortenText(trim($row->fulltxt), 500, 0) : trim($row->fulltxt);
+		$row->fulltxt  = $this->_txtAutoP(trim($row->fulltxt), 1);
 
-		// Get custom areas, add wrapper tags, and compile into fulltext
+		// Get custom areas, add wrapper tags, and compile into fulltxt
 		$type = new ResourcesType($this->database);
 		$type->load($row->type);
 
@@ -701,7 +701,7 @@ class ContributeControllerCreate extends Hubzero_Controller
 		{
 			$f = '';
 
-			$row->fulltext .= "\n" . '<nb:' . $tagname . '>';
+			$row->fulltxt .= "\n" . '<nb:' . $tagname . '>';
 			if (is_array($tagcontent))
 			{
 				$c = count($tagcontent);
@@ -712,7 +712,7 @@ class ContributeControllerCreate extends Hubzero_Controller
 					{
 						$num++;
 					}
-					$row->fulltext .= '<' . $key . '>' . trim($val) . '</' . $key . '>';
+					$row->fulltxt .= '<' . $key . '>' . trim($val) . '</' . $key . '>';
 				}
 				if ($c == $num)
 				{
@@ -724,10 +724,10 @@ class ContributeControllerCreate extends Hubzero_Controller
 				$f = trim($tagcontent);
 				if ($f)
 				{
-					$row->fulltext .= (isset($fields[$tagname]) && $fields[$tagname]->type == 'textarea') ? $this->_txtAutoP(trim($tagcontent), 1) : trim($tagcontent);
+					$row->fulltxt .= (isset($fields[$tagname]) && $fields[$tagname]->type == 'textarea') ? $this->_txtAutoP(trim($tagcontent), 1) : trim($tagcontent);
 				}
 			}
-			$row->fulltext .= '</nb:' . $tagname . '>' . "\n";
+			$row->fulltxt .= '</nb:' . $tagname . '>' . "\n";
 
 			if (!$f && isset($fields[$tagname]) && $fields[$tagname]->required) 
 			{
@@ -750,12 +750,12 @@ class ContributeControllerCreate extends Hubzero_Controller
 		$row->title = $this->_txtClean($row->title);
 
 		// Strip any scripting there may be
-		if (trim($row->fulltext)) 
+		if (trim($row->fulltxt)) 
 		{
-			$row->fulltext   = $this->_txtClean($row->fulltext);
-			//$row->fulltext   = $this->_txtAutoP($row->fulltext, 1);
+			$row->fulltxt   = $this->_txtClean($row->fulltxt);
+			//$row->fulltxt   = $this->_txtAutoP($row->fulltxt, 1);
 			$row->footertext = $this->_txtClean($row->footertext);
-			//$row->introtext  = Hubzero_View_Helper_Html::shortenText($row->fulltext, 500, 0);
+			//$row->introtext  = Hubzero_View_Helper_Html::shortenText($row->fulltxt, 500, 0);
 		}
 
 		// Check content

@@ -126,8 +126,8 @@ class plgResourcesSponsors extends Hubzero_Plugin
 		
 		$names = array('sponsor', 'sponsors', 'sponsordata', 'sponsorsdata', 'sponsoredby');
 
-		$maintext  = ($resource->fulltext)
-				   ? stripslashes($resource->fulltext)
+		$maintext  = ($resource->fulltxt)
+				   ? stripslashes($resource->fulltxt)
 				   : stripslashes($resource->introtext);
 
 		if (!empty($fields)) 
@@ -141,7 +141,7 @@ class plgResourcesSponsors extends Hubzero_Plugin
 					$maintext = str_replace('<nb:' . $fields[$i][0] . '>' . end($fields[$i]) . '</nb:' . $fields[$i][0] . '>', '', $maintext);
 				}
 			}
-			$resource->fulltext = trim($maintext);
+			$resource->fulltxt = trim($maintext);
 		}*/
 		require_once(JPATH_ROOT . DS . 'plugins' . DS . 'resources' . DS . 'sponsors' . DS . 'tables' . DS . 'sponsor.php');
 		//$format = $this->params->get('format', '{journal}@{sponsor}');

@@ -727,7 +727,7 @@ class ResourcesHelper extends JObject
 	 */
 	public function getStandaloneChildren($filters)
 	{
-		$sql = "SELECT r.id, r.title, r.alias, r.introtext, r.fulltext, r.type, r.logical_type AS logicaltype, r.created, r.created_by, 
+		$sql = "SELECT r.id, r.title, r.alias, r.introtext, r.fulltxt, r.type, r.logical_type AS logicaltype, r.created, r.created_by, 
 						r.published, r.publish_up, r.path, r.access, r.standalone, r.rating, r.times_rated, r.attribs, r.ranking,
 						r.params, t.type AS logicaltitle, rt.type AS typetitle, a.grouping, 
 						(SELECT n.surname FROM #__xprofiles AS n, #__author_assoc AS aa WHERE n.uidNumber=aa.authorid AND aa.subtable='resources' AND aa.subid=r.id ORDER BY ordering LIMIT 1) AS author"

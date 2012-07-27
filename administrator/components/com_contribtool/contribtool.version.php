@@ -86,11 +86,11 @@ class ToolVersion extends  JTable
 	var $description   = NULL;  // @var text
 
 	/**
-	 * Description for 'fulltext'
+	 * Description for 'fulltxt'
 	 * 
 	 * @var unknown
 	 */
-	var $fulltext      = NULL;  // @var text
+	var $fulltxt      = NULL;  // @var text
 
 	/**
 	 * Description for 'toolaccess'
@@ -675,7 +675,7 @@ class ToolVersion extends  JTable
 				$resource->license 		 = $curtool->license;
 				$resource->title         = stripslashes($curtool->title);
 				$resource->introtext     = stripslashes($curtool->description);
-				$resource->fulltext      = $curtool->fulltext;
+				$resource->fulltxt      = $curtool->fulltxt;
 				$resource->toolsource    = ($curtool->codeaccess=='@OPEN') ? 1: 0;
 				$resource->doi 			 = isset($curtool->doi) ? $curtool->doi : '';
 				$resource->doi_label 	 = $curtool->doi_label;
@@ -693,7 +693,7 @@ class ToolVersion extends  JTable
 			$resource->license 		 = ($revision && $thistool) ? $thistool->license  : '';
 			$resource->title         = ($revision && $thistool) ? stripslashes($thistool->title) : $resource->title;
 			$resource->introtext     = ($revision && $thistool && isset($thistool->description)) ? stripslashes($thistool->description) : $resource->introtext;
-			$resource->fulltext      = ($revision && $thistool && isset($thistool->fulltext)) ? $thistool->fulltext : $resource->fulltext;
+			$resource->fulltxt      = ($revision && $thistool && isset($thistool->fulltxt)) ? $thistool->fulltxt : $resource->fulltxt;
 			$resource->toolsource    = ($thistool && isset($thistool->codeaccess) && $thistool->codeaccess=='@OPEN') ? 1: 0;
 			$resource->doi 			 = ($thistool && isset($thistool->doi)) ? $thistool->doi : '';
 			$resource->doi_label 	 = ($thistool && isset($thistool->doi_label)) ? $thistool->doi_label : 0;
@@ -708,7 +708,7 @@ class ToolVersion extends  JTable
 			$resource->license 		 = '';
 			$resource->title         = $resource->title;
 			$resource->introtext     = $resource->introtext;
-			$resource->fulltext      = $resource->fulltext;
+			$resource->fulltxt      = $resource->fulltxt;
 			$resource->toolsource    = 0;
 			$resource->doi 			 = '';
 			$resource->doi_label 	 = 0;

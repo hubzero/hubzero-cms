@@ -31,13 +31,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$this->row->fulltext = ($this->row->fulltext) ? stripslashes($this->row->fulltext): stripslashes($this->row->introtext);
+$this->row->fulltxt = ($this->row->fulltxt) ? stripslashes($this->row->fulltxt): stripslashes($this->row->introtext);
 
 $type = new ResourcesType( $this->database );
 $type->load( $this->row->type );
 
 $data = array();
-preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->row->fulltext, $matches, PREG_SET_ORDER);
+preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->row->fulltxt, $matches, PREG_SET_ORDER);
 if (count($matches) > 0) 
 {
 	foreach ($matches as $match)
@@ -46,8 +46,8 @@ if (count($matches) > 0)
 	}
 }
 
-$this->row->fulltext = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $this->row->fulltext);
-$this->row->fulltext = trim($this->row->fulltext);
+$this->row->fulltxt = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $this->row->fulltxt);
+$this->row->fulltxt = trim($this->row->fulltxt);
 
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
 
@@ -94,9 +94,9 @@ $view->display();
 				<input type="text" name="title" id="field-title" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
 			</label>
 
-			<label for="field-fulltext">
+			<label for="field-fulltxt">
 				<?php echo JText::_('COM_CONTRIBUTE_COMPOSE_ABSTRACT'); ?>:
-				<textarea name="fulltext" id="field-fulltext" cols="50" rows="20"><?php echo ContributeControllerCreate::_txtUnpee(stripslashes($this->row->fulltext)); ?></textarea>
+				<textarea name="fulltxt" id="field-fulltxt" cols="50" rows="20"><?php echo ContributeControllerCreate::_txtUnpee(stripslashes($this->row->fulltxt)); ?></textarea>
 			</label>
 		</fieldset><div class="clear"></div>
 <?php if ($fields) { ?>

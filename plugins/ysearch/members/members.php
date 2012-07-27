@@ -224,9 +224,9 @@ class plgYSearchMembers extends YSearchPlugin
 					END AS title,
 					CASE 
 						WHEN aa.subtable = 'resources' THEN
-							concat(coalesce(r.introtext, ''), coalesce(r.`fulltext`, '')) 
+							concat(coalesce(r.introtext, ''), coalesce(r.`fulltxt`, '')) 
 						ELSE
-							concat(coalesce(c.introtext, ''), coalesce(c.`fulltext`, ''))
+							concat(coalesce(c.introtext, ''), coalesce(c.`fulltxt`, ''))
 					END AS description,
 					CASE
 						WHEN aa.subtable = 'resources' THEN

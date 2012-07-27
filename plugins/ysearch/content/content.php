@@ -46,16 +46,16 @@ class plgYSearchContent extends YSearchPlugin
 	public static function onYSearch($request, &$results)
 	{
 		$terms = $request->get_term_ar();
-		$weight = 'match(c.title, c.introtext, c.`fulltext`) against (\'' . join(' ', $terms['stemmed']) . '\')';
+		$weight = 'match(c.title, c.introtext, c.`fulltxt`) against (\'' . join(' ', $terms['stemmed']) . '\')';
 
 		$addtl_where = array();
 		foreach ($terms['mandatory'] as $mand)
 		{
-			$addtl_where[] = "(c.title LIKE '%$mand%' OR c.introtext LIKE '%$mand%' OR c.`fulltext` LIKE '%$mand%')";
+			$addtl_where[] = "(c.title LIKE '%$mand%' OR c.introtext LIKE '%$mand%' OR c.`fulltxt` LIKE '%$mand%')";
 		}
 		foreach ($terms['forbidden'] as $forb)
 		{
-			$addtl_where[] = "(c.title NOT LIKE '%$forb%' AND c.introtext NOT LIKE '%$forb%' AND c.`fulltext` NOT LIKE '%$forb%')";
+			$addtl_where[] = "(c.title NOT LIKE '%$forb%' AND c.introtext NOT LIKE '%$forb%' AND c.`fulltxt` NOT LIKE '%$forb%')";
 		}
 
 		$user =& JFactory::getUser();
@@ -79,7 +79,7 @@ class plgYSearchContent extends YSearchPlugin
 		{
 			$query = "SELECT 
 				c.title,
-				concat(coalesce(c.introtext, ''), coalesce(c.`fulltext`, '')) AS description,
+				concat(coalesce(c.introtext, ''), coalesce(c.`fulltxt`, '')) AS description,
 				CASE
 					WHEN s.name OR ca.name OR c.alias THEN 
 						concat(
@@ -110,7 +110,7 @@ class plgYSearchContent extends YSearchPlugin
 		{
 			$query = "SELECT 
 				c.title,
-				concat(coalesce(c.introtext, ''), coalesce(c.`fulltext`, '')) AS description,
+				concat(coalesce(c.introtext, ''), coalesce(c.`fulltxt`, '')) AS description,
 				CASE
 					WHEN ca.alias OR c.alias THEN 
 						concat(

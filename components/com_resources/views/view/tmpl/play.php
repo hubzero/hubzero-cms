@@ -122,7 +122,7 @@ if ($this->resource->type == 4) {
 		if (!$this->activechild->path) {
 			// Output just text
 			$html .= '<h3>'.stripslashes($this->activechild->title).'</h3>';
-			$html .= stripslashes($this->activechild->fulltext);
+			$html .= stripslashes($this->activechild->fulltxt);
 		} else {
 			// Output content in iFrame
 			$html .= '<iframe src="'.$this->activechild->path.'" width="97%" height="500" name="lm_resource" frameborder="0" bgcolor="white"></iframe>'."\n";

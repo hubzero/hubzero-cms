@@ -49,7 +49,7 @@ if ($this->row->standalone == 1) {
 	$type->load($this->row->type);
 
 	$data = array();
-	preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->row->fulltext, $matches, PREG_SET_ORDER);
+	preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->row->fulltxt, $matches, PREG_SET_ORDER);
 	if (count($matches) > 0) 
 	{
 		foreach ($matches as $match)
@@ -57,9 +57,9 @@ if ($this->row->standalone == 1) {
 			$data[$match[1]] = stripslashes($match[2]);
 		}
 	}
-	$this->row->fulltext = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $this->row->fulltext);
-	$this->row->fulltext = trim($this->row->fulltext);
-	$this->row->fulltext = ($this->row->fulltext) ? trim(stripslashes($this->row->fulltext)): trim(stripslashes($this->row->introtext));
+	$this->row->fulltxt = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $this->row->fulltxt);
+	$this->row->fulltxt = trim($this->row->fulltxt);
+	$this->row->fulltxt = ($this->row->fulltxt) ? trim(stripslashes($this->row->fulltxt)): trim(stripslashes($this->row->introtext));
 
 	include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
 }
@@ -152,14 +152,14 @@ function doFileoptions()
 					//}
 				} else if(act == '3') {
 					text = '<img class="contentimg" src="<?php echo $this->rconfig->get('uploadpath').DS; ?>' + filepath + '" alt="image" />';
-					document.forms['adminForm'].elements['fulltext'].focus();
-					document.forms['adminForm'].elements['fulltext'].value  += text;
-					document.forms['adminForm'].elements['fulltext'].focus();
+					document.forms['adminForm'].elements['fulltxt'].focus();
+					document.forms['adminForm'].elements['fulltxt'].value  += text;
+					document.forms['adminForm'].elements['fulltxt'].focus();
 				} else if(act == '4') {
 					text = '<a href="<?php echo $this->rconfig->get('uploadpath').DS; ?>' + filepath + '">' + filepath + '</a>';
-					document.forms['adminForm'].elements['fulltext'].focus();
-					document.forms['adminForm'].elements['fulltext'].value  += text;
-					document.forms['adminForm'].elements['fulltext'].focus();
+					document.forms['adminForm'].elements['fulltxt'].focus();
+					document.forms['adminForm'].elements['fulltxt'].value  += text;
+					document.forms['adminForm'].elements['fulltxt'].focus();
 				}
 			}
 		}
@@ -238,7 +238,7 @@ function popratings()
 					<td colspan="4">
 						<label>Main Text: (optional)</label><br />
 						<?php
-						echo $editor->display('fulltext', $this->escape(stripslashes($this->row->fulltext)), '100%', '300px', '45', '10', false);
+						echo $editor->display('fulltxt', $this->escape(stripslashes($this->row->fulltxt)), '100%', '300px', '45', '10', false);
 						?>
 					</td>
 				</tr>

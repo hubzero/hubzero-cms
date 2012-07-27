@@ -33,13 +33,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $database = JFactory::getDBO();
 
-$this->status['fulltext'] = stripslashes($this->status['fulltext']);
+$this->status['fulltxt'] = stripslashes($this->status['fulltxt']);
 
 $type = new ResourcesType($database);
 $type->load(7);
 
 $data = array();
-preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->status['fulltext'], $matches, PREG_SET_ORDER);
+preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->status['fulltxt'], $matches, PREG_SET_ORDER);
 if (count($matches) > 0) 
 {
 	foreach ($matches as $match)
@@ -48,8 +48,8 @@ if (count($matches) > 0)
 	}
 }
 
-$this->status['fulltext'] = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $this->status['fulltext']);
-$this->status['fulltext'] = trim($this->status['fulltext']);
+$this->status['fulltxt'] = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $this->status['fulltxt']);
+$this->status['fulltxt'] = trim($this->status['fulltxt']);
 
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
 
@@ -76,9 +76,9 @@ $fields = $elements->render();
 			<?php echo JText::_('COMPOSE_AT_A_GLANCE'); ?>: <span class="required"><?php echo JText::_('REQUIRED'); ?></span>
 			<input type="text" name="description" id="field-description" maxlength="256" value="<?php echo $this->escape(stripslashes($this->status['description'])); ?>" />
 		</label>
-		<label for="field-fulltext">
+		<label for="field-fulltxt">
 			<?php echo JText::_('COMPOSE_ABSTRACT'); ?>:
-			<textarea name="fulltext" id="field-fulltext" cols="50" rows="20"><?php echo $this->escape(stripslashes($this->status['fulltext'])); ?></textarea>
+			<textarea name="fulltxt" id="field-fulltxt" cols="50" rows="20"><?php echo $this->escape(stripslashes($this->status['fulltxt'])); ?></textarea>
 			<span class="hint"><a href="/wiki/Help:WikiFormatting"><?php echo JText::_('WIKI_FORMATTING'); ?></a> <?php echo JText::_('COMPOSE_TIP_ALLOWED'); ?>.</span>
 		</label>
 	</fieldset><div class="clear"></div>

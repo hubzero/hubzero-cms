@@ -304,7 +304,7 @@ class plgTagsResources extends JPlugin
 		} 
 		else 
 		{
-			$query = "SELECT DISTINCT r.id, r.title, r.alias, r.introtext AS itext, r.fulltext AS ftext, r.published AS state, r.created, r.created_by, r.modified, r.publish_up, r.publish_down,  
+			$query = "SELECT DISTINCT r.id, r.title, r.alias, r.introtext AS itext, r.fulltxt AS ftext, r.published AS state, r.created, r.created_by, r.modified, r.publish_up, r.publish_down,  
 					CONCAT('index.php?option=com_resources&id=', r.id) AS href, 'resources' AS section ";
 			if (isset($filters['tags'])) 
 			{

@@ -504,7 +504,7 @@ class Tool extends JTable
 	{
 		$juser =& JFactory::getUser();
 		$query  = "SELECT t.id, t.toolname, t.published, t.state, t.priority, t.registered, t.registered_by, t.ticketid, t.state_changed, r.id as rid, g.cn as devgroup";
-		$query .= ", r.created as rcreated, r.modified as rmodified, r.fulltext as rfulltext";
+		$query .= ", r.created as rcreated, r.modified as rmodified, r.fulltxt as rfulltxt";
 		/*$query .= ", (SELECT COUNT(*) FROM #__support_comments AS sc LEFT JOIN #__tool_statusviews AS v ON v.ticketid=sc.ticket WHERE sc.ticket=t.ticketid AND
 		 (UNIX_TIMESTAMP(sc.created)-UNIX_TIMESTAMP(t.state_changed))>=10 AND sc.access=0 AND sc.comment!='' AND sc.created_by!='".$juser->get('username')."'
 		 AND (UNIX_TIMESTAMP(v.viewed)-UNIX_TIMESTAMP(sc.created))<= v.elapsed AND v.uid=".$juser->get('id').") AS comments ";*/
@@ -644,8 +644,8 @@ class Tool extends JTable
 		$status = array(
 			'resourceid'    => isset($toolinfo[0]->rid) ? $toolinfo[0]->rid : 0,
 			'resource_created' => isset($toolinfo[0]->rcreated) ? $toolinfo[0]->rcreated : '',
-			'resource_modified' => (isset($toolinfo[0]->rmodified) && $toolinfo[0]->rmodified !='0000-00-00 00:00:00' && $version[0]->fulltext != '') ? 1 : 0,
-			'fulltext'      => isset($version[0]->fulltext) ? $version[0]->fulltext : $toolinfo[0]->rfulltext,
+			'resource_modified' => (isset($toolinfo[0]->rmodified) && $toolinfo[0]->rmodified !='0000-00-00 00:00:00' && $version[0]->fulltxt != '') ? 1 : 0,
+			'fulltxt'      => isset($version[0]->fulltxt) ? $version[0]->fulltxt : $toolinfo[0]->rfulltxt,
 			'toolname'      => isset($toolinfo[0]->toolname) ? $toolinfo[0]->toolname : '',
 			'toolid'        => isset($toolinfo[0]->id) ? $toolinfo[0]->id : 0,
 			'title'         => isset($version[0]->title) ? $version[0]->title : '',

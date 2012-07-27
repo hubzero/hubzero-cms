@@ -112,7 +112,7 @@ class plgTagsKb extends JPlugin
 
 		// Build the query
 		$e_count = "SELECT COUNT(f.id) FROM (SELECT e.id, COUNT(DISTINCT t.tagid) AS uniques";
-		$e_fields = "SELECT e.id, e.title, e.alias, e.fulltext AS itext, e.fulltext AS ftext, e.state, e.created, e.created_by, e.modified, e.created AS publish_up, 
+		$e_fields = "SELECT e.id, e.title, e.alias, e.fulltxt AS itext, e.fulltxt AS ftext, e.state, e.created, e.created_by, e.modified, e.created AS publish_up, 
 					NULL AS publish_down, CONCAT('index.php?option=com_kb&section=&category=&alias=', e.alias) AS href, 'kb' AS section, COUNT(DISTINCT t.tagid) AS uniques, 
 					NULL AS params, e.helpful AS rcount, cc.alias AS data1, c.alias AS data2, NULL AS data3 ";
 		$e_from  = " FROM #__faq AS e

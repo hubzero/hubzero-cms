@@ -62,7 +62,7 @@ class KbArticle extends JTable
 	 * 
 	 * @var string
 	 */
-	var $fulltext     = NULL;
+	var $fulltxt     = NULL;
 
 	/**
 	 * datetime (0000-00-00 00:00:00)
@@ -550,13 +550,13 @@ class KbArticle extends JTable
 		{
 			/*$w[] = "(
 					m.title LIKE '%".$filters['search']."%' 
-					OR m.fulltext LIKE '%".$filters['search']."%' 
+					OR m.fulltxt LIKE '%".$filters['search']."%' 
 					OR t.raw_tag LIKE '%".$filters['search']."%' 
 					OR t.tag LIKE '%".$filters['search']."%'
 			)";*/
 			$w[] = "(
 					m.title LIKE '%" . $filters['search'] . "%' 
-					OR m.fulltext LIKE '%" . $filters['search'] . "%' 
+					OR m.fulltxt LIKE '%" . $filters['search'] . "%' 
 				)";
 		}
 

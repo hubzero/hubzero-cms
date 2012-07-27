@@ -76,7 +76,7 @@ class ResourcesResource extends JTable
 	 * 
 	 * @var string
 	 */
-	var $fulltext         = NULL;
+	var $fulltxt         = NULL;
 
 	/**
 	 * text
@@ -580,7 +580,7 @@ class ResourcesResource extends JTable
 	 */
 	public function getRecords($filters=array(), $admin=false)
 	{
-		$sql  = "SELECT C.id, C.title, C.type, C.introtext, C.fulltext, C.created, C.created_by, C.modified, C.published, C.publish_up, C.standalone, C.access, C.hits, C.rating, C.times_rated, C.params, C.alias, C.ranking, t.type AS typetitle, lt.type AS logicaltitle";
+		$sql  = "SELECT C.id, C.title, C.type, C.introtext, C.fulltxt, C.created, C.created_by, C.modified, C.published, C.publish_up, C.standalone, C.access, C.hits, C.rating, C.times_rated, C.params, C.alias, C.ranking, t.type AS typetitle, lt.type AS logicaltitle";
 		$sql .= (isset($filters['tag']) && $filters['tag'] != '') ? ", TA.tag, COUNT(DISTINCT TA.tag) AS uniques " : " ";
 		$sql .= $this->buildQuery($filters, $admin);
 		$sql .= (isset($filters['limit']) && $filters['limit'] > 0) ? " LIMIT " . $filters['start'] . ", " . $filters['limit'] : "";
@@ -622,7 +622,7 @@ class ResourcesResource extends JTable
 		} 
 		else 
 		{
-			$query = "SELECT DISTINCT r.id, r.title, r.alias, r.introtext AS itext, r.fulltext AS ftext, r.published AS state, r.created, r.created_by, r.modified, r.publish_up, r.params, 
+			$query = "SELECT DISTINCT r.id, r.title, r.alias, r.introtext AS itext, r.fulltxt AS ftext, r.published AS state, r.created, r.created_by, r.modified, r.publish_up, r.params, 
 					CONCAT('index.php?option=com_resources&id=', r.id) AS href, 'resources' AS section, rt.type AS area, r.type AS category, r.rating, r.times_rated, r.ranking, r.access ";
 			if (isset($filters['tags'])) 
 			{
@@ -634,8 +634,8 @@ class ResourcesResource extends JTable
 				{
 					$exactphrase = addslashes('"' . $phrases[0] . '"');
 					$query .= ", ("
-							//. "  MATCH(r.introtext,r.fulltext) AGAINST ('$exactphrase' IN BOOLEAN MODE) + r.ranking +"
-							. "  MATCH(r.introtext,r.fulltext) AGAINST ('$exactphrase' IN BOOLEAN MODE) +"
+							//. "  MATCH(r.introtext,r.fulltxt) AGAINST ('$exactphrase' IN BOOLEAN MODE) + r.ranking +"
+							. "  MATCH(r.introtext,r.fulltxt) AGAINST ('$exactphrase' IN BOOLEAN MODE) +"
 							. "  MATCH(au.givenName,au.surname) AGAINST ('$exactphrase' IN BOOLEAN MODE) +"
 							. "  MATCH(r.title) AGAINST ('$exactphrase' IN BOOLEAN MODE)"
 							. ") AS relevance ";
@@ -660,8 +660,8 @@ class ResourcesResource extends JTable
 					$text2 = str_replace('+', '', $text);
 
 					$query .= ", ("
-							//. "  MATCH(r.introtext,r.fulltext) AGAINST ('+$text -\"$text2\"') + r.ranking +"
-							. "  MATCH(r.introtext,r.fulltext) AGAINST ('+$text -\"$text2\"') +"
+							//. "  MATCH(r.introtext,r.fulltxt) AGAINST ('+$text -\"$text2\"') + r.ranking +"
+							. "  MATCH(r.introtext,r.fulltxt) AGAINST ('+$text -\"$text2\"') +"
 							. "  MATCH(au.givenName,au.surname) AGAINST ('+$text -\"$text2\"') +"
 							. "  MATCH(r.title) AGAINST ('+$text -\"$text2\"') + "
 							//. "  CASE WHEN LOWER(r.title) LIKE '%$text2%' THEN 5 ELSE 0 END +"
@@ -822,7 +822,7 @@ class ResourcesResource extends JTable
 				$exactphrase = addslashes('"' . $phrases[0] . '"');
 				$query .= "AND ((MATCH(r.title) AGAINST ('$exactphrase' IN BOOLEAN MODE) > 0) OR"
 						 . " (MATCH(au.givenName,au.surname) AGAINST ('$exactphrase' IN BOOLEAN MODE) > 0) OR "
-						 . " (MATCH(r.introtext,r.fulltext) AGAINST ('$exactphrase' IN BOOLEAN MODE) > 0)) ";
+						 . " (MATCH(r.introtext,r.fulltxt) AGAINST ('$exactphrase' IN BOOLEAN MODE) > 0)) ";
 			} 
 			else 
 			{
@@ -844,7 +844,7 @@ class ResourcesResource extends JTable
 
 				$query .= "AND ((MATCH(r.title) AGAINST ('+$text -\"$text2\"') > 0) OR"
 						 . " (MATCH(au.givenName,au.surname) AGAINST ('+$text -\"$text2\"') > 0) OR "
-						 . " (MATCH(r.introtext,r.fulltext) AGAINST ('+$text -\"$text2\"') > 0)) ";
+						 . " (MATCH(r.introtext,r.fulltxt) AGAINST ('+$text -\"$text2\"') > 0)) ";
 			}
 			if (isset($filters['limit']) && $filters['limit'] != 'all') 
 			{

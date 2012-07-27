@@ -107,7 +107,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 			<div class="container-block">
 				<h3><?php echo $this->escape(stripslashes($this->article->title)); ?></h3>
 				<div class="entry-content">
-					<?php echo stripslashes($this->article->fulltext); ?>
+					<?php echo stripslashes($this->article->fulltxt); ?>
 				</div>
 <?php 
 		if (count($this->tags) > 0) {

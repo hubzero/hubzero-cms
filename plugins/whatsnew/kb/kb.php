@@ -100,7 +100,7 @@ class plgWhatsnewKb extends JPlugin
 			. " f.id, "
 			. " f.title, "
 			. " 'kb' AS section, NULL AS subsection, "
-			. " f.fulltext AS text,"
+			. " f.fulltxt AS text,"
 			. " CONCAT('index.php?option=com_kb&task=article&id=', f.id) AS href";
 
 		$f_from = " FROM #__faq AS f";

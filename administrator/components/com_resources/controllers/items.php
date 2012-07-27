@@ -886,7 +886,7 @@ class ResourcesControllerItems extends Hubzero_Controller
 			$row->attribs = implode("\n", $txta);
 		}
 
-		// Get custom areas, add wrappers, and compile into fulltext
+		// Get custom areas, add wrappers, and compile into fulltxt
 		if (isset($_POST['nbtag']))
 		{
 			$type = new ResourcesType($this->database);
@@ -909,7 +909,7 @@ class ResourcesControllerItems extends Hubzero_Controller
 			{
 				$f = '';
 
-				$row->fulltext .= "\n" . '<nb:' . $tagname . '>';
+				$row->fulltxt .= "\n" . '<nb:' . $tagname . '>';
 				if (is_array($tagcontent))
 				{
 					$c = count($tagcontent);
@@ -920,7 +920,7 @@ class ResourcesControllerItems extends Hubzero_Controller
 						{
 							$num++;
 						}
-						$row->fulltext .= '<' . $key . '>' . trim($val) . '</' . $key . '>';
+						$row->fulltxt .= '<' . $key . '>' . trim($val) . '</' . $key . '>';
 					}
 					if ($c == $num)
 					{
@@ -932,10 +932,10 @@ class ResourcesControllerItems extends Hubzero_Controller
 					$f = trim($tagcontent);
 					if ($f)
 					{
-						$row->fulltext .= trim($tagcontent);
+						$row->fulltxt .= trim($tagcontent);
 					}
 				}
-				$row->fulltext .= '</nb:' . $tagname . '>' . "\n";
+				$row->fulltxt .= '</nb:' . $tagname . '>' . "\n";
 
 				if (!$tagcontent && isset($fields[$tagname]) && $fields[$tagname]->required) 
 				{
@@ -958,7 +958,7 @@ class ResourcesControllerItems extends Hubzero_Controller
 
 		// Code cleaner for xhtml transitional compliance
 		$row->introtext = str_replace('<br>', '<br />', $row->introtext);
-		$row->fulltext  = str_replace('<br>', '<br />', $row->fulltext);
+		$row->fulltxt  = str_replace('<br>', '<br />', $row->fulltxt);
 
 		// Check content
 		if (!$row->check())

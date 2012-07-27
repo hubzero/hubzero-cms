@@ -55,15 +55,15 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 }
 
 $this->resource->introtext = stripslashes($this->resource->introtext);
-$this->resource->fulltext = stripslashes($this->resource->fulltext);
-$this->resource->fulltext = ($this->resource->fulltext) ? trim($this->resource->fulltext) : trim($this->resource->introtext);
+$this->resource->fulltxt = stripslashes($this->resource->fulltxt);
+$this->resource->fulltxt = ($this->resource->fulltxt) ? trim($this->resource->fulltxt) : trim($this->resource->introtext);
 
 // Parse for <nb:field> tags
 $type = new ResourcesType($this->database);
 $type->load($this->resource->type);
 
 $data = array();
-preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->resource->fulltext, $matches, PREG_SET_ORDER);
+preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->resource->fulltxt, $matches, PREG_SET_ORDER);
 if (count($matches) > 0) 
 {
 	foreach ($matches as $match)
@@ -71,8 +71,8 @@ if (count($matches) > 0)
 		$data[$match[1]] = $match[2];
 	}
 }
-$this->resource->fulltext = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $this->resource->fulltext);
-$this->resource->fulltext = trim($this->resource->fulltext);
+$this->resource->fulltxt = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $this->resource->fulltxt);
+$this->resource->fulltxt = trim($this->resource->fulltxt);
 
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
 $elements = new ResourcesElements($data, $type->customFields);
@@ -85,9 +85,9 @@ if ($this->resource->introtext)
 	$document->setDescription(ResourcesHtml::encode_html(strip_tags($this->resource->introtext)));
 }
 
-// Check if there's anything left in the fulltext after removing custom fields
+// Check if there's anything left in the fulltxt after removing custom fields
 // If not, set it to the introtext
-$maintext = $this->resource->fulltext;
+$maintext = $this->resource->fulltxt;
 $maintext = preg_replace('/&(?!(?i:\#((x([\dA-F]){1,5})|(104857[0-5]|10485[0-6]\d|1048[0-4]\d\d|104[0-7]\d{3}|10[0-3]\d{4}|0?\d{1,6}))|([A-Za-z\d.]{2,31}));)/i',"&amp;",$maintext);
 $maintext = str_replace('<blink>', '', $maintext);
 $maintext = str_replace('</blink>', '', $maintext);

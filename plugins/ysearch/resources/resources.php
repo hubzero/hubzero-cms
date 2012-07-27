@@ -184,27 +184,27 @@ class plgYSearchResources extends YSearchPlugin
 			}
 		}
 
-		$weight = $terms['stemmed'] ? 'match(r.title, r.introtext, r.`fulltext`) against (\'' . join(' ', $terms['stemmed']) . '\')' : '0';
+		$weight = $terms['stemmed'] ? 'match(r.title, r.introtext, r.`fulltxt`) against (\'' . join(' ', $terms['stemmed']) . '\')' : '0';
 		foreach ($quoted_terms as $term)
 		{
-			$weight .= " + (CASE WHEN r.title LIKE '%$term%' OR r.introtext LIKE '%$term%' OR r.`fulltext` LIKE '%$term%' THEN 1 ELSE 0 END)";
+			$weight .= " + (CASE WHEN r.title LIKE '%$term%' OR r.introtext LIKE '%$term%' OR r.`fulltxt` LIKE '%$term%' THEN 1 ELSE 0 END)";
 		}
 
 		$addtl_where = array();
 		foreach ($terms['mandatory'] as $mand)
 		{
-			$addtl_where[] = "(r.title LIKE '%$mand%' OR r.introtext LIKE '%$mand%' OR r.`fulltext` LIKE '%$mand%')";
+			$addtl_where[] = "(r.title LIKE '%$mand%' OR r.introtext LIKE '%$mand%' OR r.`fulltxt` LIKE '%$mand%')";
 		}
 		foreach ($terms['forbidden'] as $forb)
 		{
-			$addtl_where[] = "(r.title NOT LIKE '%$forb%' AND r.introtext NOT LIKE '%$forb%' AND r.`fulltext` NOT LIKE '%$forb%')";
+			$addtl_where[] = "(r.title NOT LIKE '%$forb%' AND r.introtext NOT LIKE '%$forb%' AND r.`fulltxt` NOT LIKE '%$forb%')";
 		}
 
 		$sql = new YSearchResultSQL(
 			"SELECT
 				r.id,
 				r.title,
-				coalesce(r.`fulltext`, r.introtext, '') AS description,
+				coalesce(r.`fulltxt`, r.introtext, '') AS description,
 				concat('/resources/', coalesce(case when r.alias = '' then null else r.alias end, r.id)) AS link,
 				$weight AS weight,
 				r.publish_up AS date,
@@ -236,7 +236,7 @@ class plgYSearchResources extends YSearchPlugin
 		$placed = array();
 		if (!$quoted_terms)
 		{
-			// Find ids of tagged resources that did not match regular fulltext searching
+			// Find ids of tagged resources that did not match regular fulltxt searching
 			foreach ($assoc as $row)
 			{
 				$id = (int)$row->get('id');
@@ -246,14 +246,14 @@ class plgYSearchResources extends YSearchPlugin
 					unset($tag_map[$id]);
 				}
 			}
-			// Fill in tagged resources that did not match on fulltext
+			// Fill in tagged resources that did not match on fulltxt
 			if ($tag_map)
 			{
 				$sql = new YSearchResultSQL(
 					"SELECT
 						r.id,
 						r.title,
-						coalesce(r.`fulltext`, r.introtext, '') AS description,
+						coalesce(r.`fulltxt`, r.introtext, '') AS description,
 						concat('/resources/', coalesce(case when r.alias = '' then null else r.alias end, r.id)) AS link,
 						r.publish_up AS date,
 						0.5 as weight,

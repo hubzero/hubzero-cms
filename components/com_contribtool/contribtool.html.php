@@ -2131,7 +2131,7 @@ class ContribtoolHtml
 				</label>
 				<label>
 					<?php echo JText::_('COMPOSE_ABSTRACT'); ?>:
-					<textarea name="fulltext" cols="50" rows="20"><?php echo stripslashes($status['fulltext']); ?></textarea>
+					<textarea name="fulltxt" cols="50" rows="20"><?php echo stripslashes($status['fulltxt']); ?></textarea>
                     <span class="hint"><a href="/topics/Help:WikiFormatting"><?php echo JText::_('WIKI_FORMATTING'); ?></a> <?php echo JText::_('COMPOSE_TIP_ALLOWED'); ?>.</span>
 				</label>
 			</fieldset><div class="clear"></div>

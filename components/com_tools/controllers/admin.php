@@ -666,7 +666,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 			$new_hztv->released      = date('Y-m-d H:i:s');
 			$new_hztv->released_by   = $this->juser->get('username');
 			$new_hztv->license       = $status['license'];
-			$new_hztv->fulltext      = $status['fulltext'];
+			$new_hztv->fulltxt      = $status['fulltxt'];
 			$new_hztv->exportControl = $exportmap[strtoupper($status['exec'])];
 			$new_hztv->owner         = $hztv_dev->owner;
 			$new_hztv->member        = $hztv_dev->member;

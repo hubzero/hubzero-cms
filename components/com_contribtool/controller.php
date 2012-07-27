@@ -2154,7 +2154,7 @@ class ContribtoolController extends JObject
 		$resource = new ResourcesResource( $database );
 		$resource->load( $rid);
 		if(count($status) > 0) {
-		$resource->fulltext = addslashes($status['fulltext']);
+		$resource->fulltxt = addslashes($status['fulltxt']);
 		$resource->introtext = $status['description'];
 		$resource->title = preg_replace('/\s+/', ' ',$status['title']);
 		$resource->modified = date( "Y-m-d H:i:s" );
@@ -2867,7 +2867,7 @@ class ContribtoolController extends JObject
 			$binditems = array('id'=>0, 'toolname'=>$status['toolname'], 'instance'=>$newtool, 'toolid'=>$this->_toolid, 'state'=>1, 'title'=>$status['title'],
 				'version'=>$status['version'], 'revision'=>$status['revision'], 'description'=>$status['description'], 'toolaccess'=>$status['exec'], 'codeaccess'=>$status['code'],
 				'wikiaccess'=>$status['wiki'], 'vnc_geometry'=>$status['vncGeometry'], 'vnc_command'=>$invoke, 'mw'=>$status['mw'],
-				'released'=>$now, 'released_by'=>$juser->get('username'), 'license'=>$status['license'], 'fulltext'=>$status['fulltext']);
+				'released'=>$now, 'released_by'=>$juser->get('username'), 'license'=>$status['license'], 'fulltxt'=>$status['fulltxt']);
 
 			$new_hztv = Hubzero_Tool_Version::createInstance($status['toolname'],$newtool);
 			$new_hztv->toolname = $status['toolname'];
@@ -2894,7 +2894,7 @@ class ContribtoolController extends JObject
 			$new_hztv->released = $now;
 			$new_hztv->released_by = $juser->get('username');
 			$new_hztv->license = $status['license'];
-			$new_hztv->fulltext = $status['fulltext'];
+			$new_hztv->fulltxt = $status['fulltxt'];
 			$new_hztv->exportControl = $exportmap[$status['exec']];
 			$new_hztv->owner = $hztv_dev->owner;
 			$new_hztv->member = $hztv_dev->member;
@@ -3030,7 +3030,7 @@ class ContribtoolController extends JObject
 		// get resource information
 		$row = new ResourcesResource( $database );
 		$row->load( $rid );
-		if(!$status['fulltext'])  { $status['fulltext'] = $row->fulltext; }
+		if(!$status['fulltxt'])  { $status['fulltxt'] = $row->fulltxt; }
 
 		// process first step
 		if($nextstep==3 && isset($_POST['nbtag'])) {
@@ -3042,27 +3042,27 @@ class ContribtoolController extends JObject
 					return;
 			}
 
-			$body = $this->txt_clean($_POST['fulltext']);
+			$body = $this->txt_clean($_POST['fulltxt']);
 			if (preg_match("/([\<])([^\>]{1,})*([\>])/i", $body )) {
 				// Do nothing
-				$status['fulltext'] = trim(stripslashes($body));
+				$status['fulltxt'] = trim(stripslashes($body));
 			} else {
 				// Wiki format will be used
-				$status['fulltext'] = JRequest::getVar( 'fulltext', $status['fulltext'], 'post');
+				$status['fulltxt'] = JRequest::getVar( 'fulltxt', $status['fulltxt'], 'post');
 
 			}
 
-			// Get custom areas, add wrapper tags, and compile into fulltext
+			// Get custom areas, add wrapper tags, and compile into fulltxt
 			$nbtag = $_POST['nbtag'];
 			$nbtag = array_map('trim',$nbtag);
 			foreach ($nbtag as $tagname=>$tagcontent)
 			{
 				if ($tagcontent != '') {
-					$status['fulltext'] .= '<nb:'.$tagname.'>'.$tagcontent.'</nb:'.$tagname.'>';
+					$status['fulltxt'] .= '<nb:'.$tagname.'>'.$tagcontent.'</nb:'.$tagname.'>';
 				}
 			}
 
-			$hztv->fulltext = $objV->fulltext   = $status['fulltext'];
+			$hztv->fulltxt = $objV->fulltxt   = $status['fulltxt'];
 			$hztv->description = $objV->description  = $this->txt_shorten(JRequest::getVar( 'description', $status['description'], 'post'));
 			$hztv->title = $objV->title  = $this->txt_shorten(preg_replace('/\s+/', ' ',JRequest::getVar( 'title', $status['title'], 'post')));
 
@@ -3102,14 +3102,14 @@ class ContribtoolController extends JObject
 			$nbtag = strtolower(trim($nbtag));
 			$nbtag = str_replace(' ','', $nbtag);
 			// explore the text and pull out all matches
-			$allnbtags[$nbtag] = ContribtoolHtml::parseTag($status['fulltext'], $nbtag);
+			$allnbtags[$nbtag] = ContribtoolHtml::parseTag($status['fulltxt'], $nbtag);
 			// clean the original text of any matches
-			$status['fulltext']  = str_replace('<nb:'.$nbtag.'>'.$allnbtags[$nbtag].'</nb:'.$nbtag.'>','',$status['fulltext']);
+			$status['fulltxt']  = str_replace('<nb:'.$nbtag.'>'.$allnbtags[$nbtag].'</nb:'.$nbtag.'>','',$status['fulltxt']);
 		}
-		$status['fulltext'] = trim(stripslashes($status['fulltext']));
+		$status['fulltxt'] = trim(stripslashes($status['fulltxt']));
 		/*
-		$status['fulltext'] = preg_replace('/<br\\s*?\/??>/i', "", $status['fulltext']);
-		$status['fulltext'] = ContribtoolHtml::txt_unpee($status['fulltext']);
+		$status['fulltxt'] = preg_replace('/<br\\s*?\/??>/i', "", $status['fulltxt']);
+		$status['fulltxt'] = ContribtoolHtml::txt_unpee($status['fulltxt']);
 		*/
 
 		// get authors
