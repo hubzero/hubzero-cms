@@ -632,9 +632,9 @@ class RegisterController extends Hubzero_Controller
 			if (!$updateEmail) {
 				$suri = JRequest::getVar('REQUEST_URI','/','server');
 				if ($suri == '/register/update')
-					$app->redirect('/',true);
+					$app->redirect('/members/myaccount');
 				else
-					$app->redirect($suri,true);
+					$app->redirect($suri);
 			} else {
 
 				// Instantiate a new view
