@@ -446,7 +446,11 @@
 	#toolbar li#usermessages a:hover {
 		text-decoration: underline;
 	}
-	#toolbar li#login a, 
+	#toolbar li#login a {
+		background: url("../images/layout/toolbar_button.png") 0 0 no-repeat;
+		margin: 6px 1px 0 1px;
+		width: 207px;
+	}
 	#toolbar li#logout a { 
 		background: url("../images/layout/toolbar_button.png") 0 0 no-repeat;
 		margin: 6px 1px 0 4px;
