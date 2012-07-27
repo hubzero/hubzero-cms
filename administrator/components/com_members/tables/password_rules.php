@@ -78,7 +78,7 @@ class MembersPasswordRules extends JTable
 	 * 
 	 * @var char(32)
 	 */
-	var $group = null;
+	var $grp = null;
 
 	/**
 	 * Ordering
@@ -173,7 +173,7 @@ class MembersPasswordRules extends JTable
 							'description' => 'Passwords must contain at least 1 letter',
 							'enabled'     => '0',
 							'failuremsg'  => 'Passwords must contain at least 1 letter',
-							'group'       => 'hub',
+							'grp'         => 'hub',
 							'ordering'    => '1',
 							'rule'        => 'minClassCharacters',
 							'value'       => '1');
@@ -182,7 +182,7 @@ class MembersPasswordRules extends JTable
 							'description' => 'Passwords must contain at least 1 number or punctuation mark',
 							'enabled'     => '0',
 							'failuremsg'  => 'Passwords must contain at least 1 number or punctuation mark',
-							'group'       => 'hub',
+							'grp'         => 'hub',
 							'ordering'    => '2',
 							'rule'        => 'minClassCharacters',
 							'value'       => '1');
@@ -191,7 +191,7 @@ class MembersPasswordRules extends JTable
 							'description' => 'Passwords must be at least 8 characters long',
 							'enabled'     => '0',
 							'failuremsg'  => 'Passwords must be at least 8 characters long',
-							'group'       => 'hub',
+							'grp'         => 'hub',
 							'ordering'    => '3',
 							'rule'        => 'minPasswordLength',
 							'value'       => '8');
@@ -200,7 +200,7 @@ class MembersPasswordRules extends JTable
 							'description' => 'Passwords must be no longer than 16 characters',
 							'enabled'     => '0',
 							'failuremsg'  => 'Passwords must be no longer than 16 characters',
-							'group'       => 'hub',
+							'grp'         => 'hub',
 							'ordering'    => '4',
 							'rule'        => 'maxPasswordLength',
 							'value'       => '16');
@@ -209,7 +209,7 @@ class MembersPasswordRules extends JTable
 							'description' => 'Passwords must contain more than 4 unique characters',
 							'enabled'     => '0',
 							'failuremsg'  => 'Passwords must contain more than 4 unique characters',
-							'group'       => 'hub',
+							'grp'         => 'hub',
 							'ordering'    => '5',
 							'rule'        => 'minUniqueCharacters',
 							'value'       => '5');
@@ -218,7 +218,7 @@ class MembersPasswordRules extends JTable
 							'description' => 'Passwords must not contain easily guessed words',
 							'enabled'     => '0',
 							'failuremsg'  => 'Passwords must not contain easily guessed words',
-							'group'       => 'hub',
+							'grp'         => 'hub',
 							'ordering'    => '6',
 							'rule'        => 'notBlacklisted',
 							'value'       => '');
@@ -227,7 +227,7 @@ class MembersPasswordRules extends JTable
 							'description' => 'Passwords must not contain your name or parts of your name',
 							'enabled'     => '0',
 							'failuremsg'  => 'Passwords must not contain your name or parts of your name',
-							'group'       => 'hub',
+							'grp'         => 'hub',
 							'ordering'    => '7',
 							'rule'        => 'notNameBased',
 							'value'       => '');
@@ -236,7 +236,7 @@ class MembersPasswordRules extends JTable
 							'description' => 'Passwords must not contain your username',
 							'enabled'     => '0',
 							'failuremsg'  => 'Passwords must not contain your username',
-							'group'       => 'hub',
+							'grp'         => 'hub',
 							'ordering'    => '8',
 							'rule'        => 'notUsernameBased',
 							'value'       => '');
@@ -245,7 +245,7 @@ class MembersPasswordRules extends JTable
 							'description' => 'New passwords must be different than the previous password (re-use of the same password will not be allowed for one (1) year)',
 							'enabled'     => '0',
 							'failuremsg'  => 'New passwords must be different than the previous password (re-use of the same password will not be allowed for one (1) year)',
-							'group'       => 'hub',
+							'grp'         => 'hub',
 							'ordering'    => '9',
 							'rule'        => 'notReused',
 							'value'       => '365');
@@ -254,7 +254,7 @@ class MembersPasswordRules extends JTable
 							'description' => 'Passwords must be changed at least every 120 days',
 							'enabled'     => '0',
 							'failuremsg'  => 'Passwords must be changed at least every 120 days',
-							'group'       => 'hub',
+							'grp'         => 'hub',
 							'ordering'    => '10',
 							'rule'        => 'notStale',
 							'value'       => '120');

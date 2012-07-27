@@ -48,7 +48,7 @@ class Hubzero_Password_Rule
 			$group = $db->Quote($group);
 		}
 
-		$query = "SELECT id,rule,class,value,description,failuremsg FROM " . "#__password_rule WHERE `group` LIKE $group";
+		$query = "SELECT id,rule,class,value,description,failuremsg FROM " . "#__password_rule WHERE `grp` LIKE $group";
 
 		if ($all == false) {
 			$query .= " AND enabled='1'";
