@@ -1,0 +1,212 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/time/tasks/tasks.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*----------------------------------
+	Edit, Delete, and view buttons
+------------------------------------*/
+#plg_time_tasks .modifiers {
+	float: right;
+	width: 50px;
+	height: 20px;
+	}
+#plg_time_tasks .modifiers .view {
+	background: url("/components/com_time/images/eye.png") 0 0 no-repeat;
+	padding-left: 20px;
+	}
+#plg_time_tasks .edit,
+#plg_time_tasks .delete,
+#plg_time_tasks .add,
+#plg_time_tasks .view {
+	padding-top: 3px;
+	border-bottom: none;
+	}
+#plg_time_tasks tr .edit,
+#plg_time_tasks tr .delete,
+#plg_time_tasks tr .view {
+	visibility: hidden;
+	opacity: .4;
+	}
+#plg_time_tasks tr:hover .edit,
+#plg_time_tasks tr:hover .delete,
+#plg_time_tasks tr:hover .view {
+	visibility: visible;
+	}
+#plg_time_tasks tr .edit:hover,
+#plg_time_tasks tr .delete:hover,
+#plg_time_tasks tr .view:hover {
+	opacity: 1;
+	}
+#plg_time_tasks tr .edit {
+	padding-right: 10px;
+	}
+
+/*-------------------------
+	Tables
+-------------------------*/
+#plg_time_tasks tbody tr:hover {
+	background-color: #EFEFEF;
+	color: #333;
+	}
+#plg_time_tasks table thead td {
+	font-weight: bold;
+	border-bottom: 2px solid #EFEFEF;
+	}
+#plg_time_tasks .entries tbody td.no_tasks {
+	text-align: center;
+	}
+#plg_time_tasks .entries tbody tr.inactive {
+	color: #999;
+	background: #F8F8F8 url('/components/com_time/images/light-stripes.png') 0 0 repeat;
+	}
+#plg_time_tasks .entries tbody td.inactive,
+#plg_time_tasks .entries tbody td.active {
+	width: 15px;
+	padding: 5px;
+	background-position: 10px 11px;
+	background-repeat: no-repeat;
+	}
+#plg_time_tasks .entries tbody td.inactive {
+	background-image: url('/components/com_time/images/inactive.png');
+	}
+#plg_time_tasks .entries tbody td.active {
+	background-image: url('/components/com_time/images/active.png');
+	}
+#plg_time_tasks .entries tbody td.inactive a,
+#plg_time_tasks .entries tbody td.active a {
+	display: block;
+	height: 16px;
+	width: 16px;
+	margin-top: 6px;
+	margin-left: 6px;
+	border-bottom: none;
+	}
+
+/*-------------------------
+	Filters
+-------------------------*/
+#plg_time_tasks .filters {
+	background: url('/components/com_time/images/filter.png') no-repeat 3px 0;
+	border: 2px solid transparent;
+	width: 21px;
+	height: 16px;
+	float: left;
+	position: relative;
+	margin-right: 2px;
+	}
+#plg_time_tasks .filters:hover {
+	height: 16px;
+	width: 21px;
+	background: #F1F1F1 url('/components/com_time/images/filter.png') no-repeat 3px 0;
+	border: 2px solid #E9E9E9;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+	-webkit-border-top-left-radius: 3px;
+	-webkit-border-top-right-radius: 3px;
+	-moz-border-radius-topleft: 3px;
+	-moz-border-radius-topright: 3px;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+	}
+#plg_time_tasks .filters-fix {
+	position: absolute;
+	top: 14px;
+	left: 0px;
+	height: 10px;
+	width: 21px;
+	z-index: 999;
+	visibility: hidden;
+	background: #F1F1F1;
+	}
+#plg_time_tasks .filters-inner {
+	position: absolute;
+	top: 17px;
+	left: -2px;
+	height: 50px;
+	width: 200px;
+	padding: 15px;
+	z-index: 888;
+	visibility: hidden;
+	background: #F1F1F1;
+	border: 2px solid #E9E9E9;
+	overflow: hidden;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+	-webkit-border-bottom-left-radius: 3px;
+	-webkit-border-bottom-right-radius: 3px;
+	-webkit-border-top-right-radius: 3px;
+	-moz-border-radius-bottomleft: 3px;
+	-moz-border-radius-bottomright: 3px;
+	-moz-border-radius-topright: 3px;
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
+	border-top-right-radius: 3px;
+	-webkit-box-shadow: 3px 3px 3px #AAA;
+	}
+#plg_time_tasks .filters:hover .filters-inner,
+#plg_time_tasks .filters:hover .filters-fix,
+#plg_time_tasks .filters .filters-inner:hover {
+	visibility: visible;
+	}
+#plg_time_tasks #applied-filters {
+	border: 1px dotted #C5C3C3;
+	padding: 5px;
+	margin: 0 0 10px 0;
+	opacity: .8;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	-o-border-radius: 3px;
+	border-radius: 3px;
+	}
+#plg_time_tasks #applied-filters:hover {
+	opacity: 1;
+	}
+#plg_time_tasks #applied-filters ul.filters-list {
+	margin: 3px 0 0 0;
+	overflow: hidden;
+	}
+#plg_time_tasks #applied-filters p {
+	float: left;
+	margin: 6px 10px 0 5px;
+	}
+#plg_time_tasks #applied-filters .filters-list li {
+	float: left;
+	list-style: none;
+	margin: 0 10px 5px 0;
+	padding: 2px 5px;
+	background: #FFF6D3;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	-o-border-radius: 6px;
+	border-radius: 6px;
+	border: 1px solid #DFD5AF;
+	}
+#plg_time_tasks #applied-filters .filters-list li a.filters-x {
+	padding-right: 5px;
+	border-bottom: none;
+	}
+
+/* --------------------------
+	Edit task Page
+----------------------------- */
+#plg_time_tasks .title {
+	font-size: 14px;
+	text-align: center;
+	font-weight: bold;
+	}
+#plg_time_tasks .outer-container {
+	border: 2px dotted #C5C3C3;
+	padding: 10px 10px 0 10px;
+	}
+#plg_time_tasks .grouping {
+	margin-bottom: 20px;
+	}
+#plg_time_tasks .outer-container label {
+	font-size: 12px;
+	font-weight: bold;
+	}
