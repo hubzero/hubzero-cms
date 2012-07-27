@@ -115,6 +115,7 @@
 	}
 	#page_menu li .dashboard:before { content: "\f009"; }
 	#page_menu li .profile:before { content: "\f007"; }
+	#page_menu li .account:before { content:"\f085"; }
 	#page_menu li .contributions:before { content:" \f02d"; }
 	#page_menu li .groups:before { content: "\f042"; }
 	#page_menu li .points:before { content: "\f006"; }
