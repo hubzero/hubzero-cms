@@ -82,7 +82,7 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr>
 						<td class="key"><label for="field-group"><?php echo JText::_('PASSWORD_RULES_GROUP'); ?>:</label></td>
-						<td><input type="text" name="fields[group]" id="field-group" value="<?php echo $this->escape(stripslashes($this->row->group)); ?>" /></td>
+						<td><input type="text" name="fields[group]" id="field-group" value="<?php echo $this->escape(stripslashes($this->row->grp)); ?>" /></td>
 					</tr>
 					<tr>
 						<td class="key"><label for="field-class"><?php echo JText::_('PASSWORD_RULES_CLASS'); ?>:</label></td>
