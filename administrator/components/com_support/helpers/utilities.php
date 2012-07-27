@@ -58,7 +58,7 @@ class SupportUtilities
 
 			if ($replyto)
 			{
-				$headers .= 'Reply-To: ' . $replyto['name'] .' <'. $replyto['email'] . ">\n";
+				$headers .= 'Reply-To: ' . $from['name'] .' <'. $replyto . ">\n";
 			}
 			else
 			{
