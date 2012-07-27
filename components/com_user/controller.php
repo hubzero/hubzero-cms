@@ -266,6 +266,52 @@ class UserController extends JController
 		}
 	}
 
+	function link()
+	{
+		global $mainframe;
+		$user =& JFactory::getUser();
+
+		// First, they should already be logged in, so check for that
+		if($user->get('guest'))
+		{
+			JError::raiseError( 403, JText::_( 'You must be logged in to perform this function' ));
+			return;
+		}
+
+		$authenticator = JRequest::getVar('authenticator', '', 'method');
+
+		// If a specific authenticator is specified try to call the link method for that plugin
+		if (!empty($authenticator)) {
+			JPluginHelper::importPlugin('authentication');
+
+			$plugin = JPluginHelper::getPlugin('authentication', $authenticator);
+
+			$className = 'plg'.$plugin->type.$plugin->name;
+
+			if (class_exists($className)) {
+				if (method_exists($className,'link')) {
+
+					$myplugin = new $className($this,(array)$plugin);
+
+					$myplugin->link($credentials, $options);
+				} else {
+					// No Link method is availble
+					$mainframe->redirect(JRoute::_('index.php?option=com_members&id=' . $user->get('id') . '&active=account'),
+						'Linked accounts are not currently available for this provider.',
+						'error');
+				}
+			}
+		} else {
+			// No authenticator provided...
+			JError::raiseError( 400, JText::_( 'Missing authenticator' ));
+			return;
+		}
+
+		// Success!  Redict with message
+		$mainframe->redirect(JRoute::_('index.php?option=com_members&id=' . $user->get('id') . '&active=account'),
+			'Your account has been successfully linked!');
+	}
+
 	function logout()
 	{
 		global $mainframe;
