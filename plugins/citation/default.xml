@@ -29,7 +29,7 @@ HUBzero is a registered trademark of Purdue University.
 
 <install version="1.5" type="plugin" group="groups">
 	<name>Citation - Default</name>
-	<author>Christopher Smoak</author>
+	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>Imports Text File data - sends off to other plugins</description>
