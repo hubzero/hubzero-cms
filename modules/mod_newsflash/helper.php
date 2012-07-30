@@ -26,7 +26,7 @@ class modNewsFlashHelper
 
 		$item->text 	= $item->introtext;
 		$item->groups 	= '';
-		$item->readmore = (trim($item->fulltxt) != '');
+		$item->readmore = (trim($item->fulltext) != '');
 		$item->metadesc = '';
 		$item->metakey 	= '';
 		$item->created 	= '';

@@ -368,7 +368,7 @@ class ContentModelArticle extends JModel
 		if ($tagPos == 0)	{
 			$article->introtext	= $text;
 		} else 	{
-			list($article->introtext, $article->fulltxt) = preg_split($pattern, $text, 2);
+			list($article->introtext, $article->fulltext) = preg_split($pattern, $text, 2);
 		}
 
 		// Filter settings
@@ -403,11 +403,11 @@ class ContentModelArticle extends JModel
 					break;
 			}
 			$article->introtext	= $filter->clean( $article->introtext );
-			$article->fulltxt	= $filter->clean( $article->fulltxt );
+			$article->fulltext	= $filter->clean( $article->fulltext );
 		} elseif(empty($filterGroups)) {
 			$filter = new JFilterInput(array(), array(), 1, 1);
 			$article->introtext = $filter->clean( $article->introtext );
-			$article->fulltxt = $filter->clean( $article->fulltxt );
+			$article->fulltext = $filter->clean( $article->fulltext );
 		}
 
 		// Make sure the article table is valid
@@ -584,10 +584,10 @@ class ContentModelArticle extends JModel
 		$params->set('popup', $pop);
 
 		// Are we showing introtext with the article
-		if (!$params->get('show_intro') && !empty($this->_article->fulltxt)) {
-			$this->_article->text = $this->_article->fulltxt;
+		if (!$params->get('show_intro') && !empty($this->_article->fulltext)) {
+			$this->_article->text = $this->_article->fulltext;
 		} else {
-			$this->_article->text = $this->_article->introtext . chr(13).chr(13) . $this->_article->fulltxt;
+			$this->_article->text = $this->_article->introtext . chr(13).chr(13) . $this->_article->fulltext;
 		}
 
 		// Set the article object's parameters

@@ -414,11 +414,11 @@ class ContentController extends JController
 		$lists['state'] = JHTML::_('select.booleanlist', 'state', '', $row->state);
 
 		/*
-		 * We need to unify the introtext and fulltxt fields and have the
+		 * We need to unify the introtext and fulltext fields and have the
 		 * fields separated by the {readmore} tag, so lets do that now.
 		 */
-		if (JString::strlen($row->fulltxt) > 1) {
-			$row->text = $row->introtext . "<hr id=\"system-readmore\" />" . $row->fulltxt;
+		if (JString::strlen($row->fulltext) > 1) {
+			$row->text = $row->introtext . "<hr id=\"system-readmore\" />" . $row->fulltext;
 		} else {
 			$row->text = $row->introtext;
 		}
@@ -1160,7 +1160,7 @@ class ContentController extends JController
 			$row->alias						= $item->alias;
 			$row->title_alias				= $item->title_alias;
 			$row->introtext					= $item->introtext;
-			$row->fulltxt					= $item->fulltxt;
+			$row->fulltext					= $item->fulltext;
 			$row->state						= $item->state;
 			$row->mask						= $item->mask;
 			$row->created					= $item->created;

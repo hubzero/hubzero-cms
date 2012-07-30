@@ -185,7 +185,7 @@ class plgXMLRPCBloggerServices
 		$query = 'SELECT a.title AS title,'
 		. ' a.created AS created,'
 		. ' a.introtext AS introtext,'
-		. ' a.fulltxt AS ftext,'
+		. ' a.fulltext AS ftext,'
 		. ' a.id AS id,'
 		. ' a.created_by AS created_by'
 		. ' FROM #__content AS a'
@@ -263,7 +263,7 @@ class plgXMLRPCBloggerServices
 
 		$item->title	 	= plgXMLRPCBloggerHelper::getPostTitle($content);
 		$item->introtext	= plgXMLRPCBloggerHelper::getPostIntroText($content);
-		$item->fulltxt		= plgXMLRPCBloggerHelper::getPostFullTxt($content);
+		$item->fulltext		= plgXMLRPCBloggerHelper::getPostFullText($content);
 
 		$item->catid	 	= $blogid;
 		$item->sectionid 	= $cat->section;
@@ -327,7 +327,7 @@ class plgXMLRPCBloggerServices
 
 		$item->title	 = plgXMLRPCBloggerHelper::getPostTitle($content);
 		$item->introtext = plgXMLRPCBloggerHelper::getPostIntroText($content);
-		$item->fulltxt  = plgXMLRPCBloggerHelper::getPostFullTxt($content);
+		$item->fulltext  = plgXMLRPCBloggerHelper::getPostFullText($content);
 
 		if (!$item->check()) {
 			return new xmlrpcresp(0, $xmlrpcerruser+1, JText::_('Post check failed') );
@@ -428,7 +428,7 @@ class plgXMLRPCBloggerServices
 		$query = 'SELECT a.title AS title,'
 		. ' a.created AS created,'
 		. ' a.introtext AS introtext,'
-		. ' a.fulltxt AS ftext,'
+		. ' a.fulltext AS ftext,'
 		. ' a.id AS id,'
 		. ' a.created_by AS created_by'
 		. ' FROM #__content AS a'
@@ -544,17 +544,17 @@ class plgXMLRPCBloggerHelper
 		return plgXMLRPCBloggerHelper::removePostData($content); //substr($string, 0, strpos($string, '<more_text>'));
 	}
 
-	function getPostFullTxt($content)
+	function getPostFullText($content)
 	{
 		$match = array();
 		if ( preg_match('/<more_text>(.+?)<\/more_text>/is', $content, $match) )
 		{
-			$fulltxt = $match[0];
-			$fulltxt = preg_replace('/<more_text>/si', '', $fulltxt);
-			$fulltxt = preg_replace('/<\/more_text>/si', '', $fulltxt);
+			$fulltext = $match[0];
+			$fulltext = preg_replace('/<more_text>/si', '', $fulltext);
+			$fulltext = preg_replace('/<\/more_text>/si', '', $fulltext);
 		}
 
-		return $fulltxt;
+		return $fulltext;
 	}
 
 	function removePostData($content)

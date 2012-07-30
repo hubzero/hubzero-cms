@@ -53,7 +53,7 @@ class ContentViewCategory extends JView
 			$link = JRoute::_(ContentHelperRoute::getArticleRoute($row->slug, $row->catslug, $row->sectionid));
 
 			// strip html from feed item description text
-			$description	= ($params->get('feed_summary', 0) ? $row->introtext.$row->fulltxt : $row->introtext);
+			$description	= ($params->get('feed_summary', 0) ? $row->introtext.$row->fulltext : $row->introtext);
 			$author			= $row->created_by_alias ? $row->created_by_alias : $row->author;
 
 			// load individual item creator class

@@ -101,7 +101,7 @@ class plgWhatsnewContent extends JPlugin
 			$c_fields = " SELECT "
 				. " c.id,"
 				. " c.title, c.alias, "
-				. " CONCAT(c.introtext, c.fulltxt) AS text,"
+				. " CONCAT(c.introtext, c.fulltext) AS text,"
 				. " CONCAT('index.php?option=com_content&task=view&id=', c.id) AS href, u.alias AS fsection, b.alias AS category,"
 				. " 'content' AS section, NULL AS subsection";
 			$c_from = " FROM #__content AS c"
@@ -113,7 +113,7 @@ class plgWhatsnewContent extends JPlugin
 			$c_fields = " SELECT "
 				. " c.id,"
 				. " c.title, c.alias, "
-				. " CONCAT(c.introtext, c.fulltxt) AS text,"
+				. " CONCAT(c.introtext, c.fulltext) AS text,"
 				. " CONCAT('index.php?option=com_content&task=view&id=', c.id) AS href, NULL AS fsection, b.alias AS category,"
 				. " 'content' AS section, NULL AS subsection";
 			$c_from = " FROM #__content AS c"

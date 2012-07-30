@@ -36,7 +36,7 @@ class JTableContent extends JTable
 	/** @var string */
 	var $introtext			= null;
 	/** @var string */
-	var $fulltxt			= null;
+	var $fulltext			= null;
 	/** @var int */
 	var $state				= null;
 	/** @var int The id of the category section*/
@@ -108,7 +108,7 @@ class JTableContent extends JTable
 		// specific filters
 		$filter = & JFilterInput::getInstance( null, null, 1, 1 );
 		$this->introtext = trim( $filter->clean( $this->introtext ) );
-		$this->fulltxt =  trim( $filter->clean( $this->fulltxt ) );
+		$this->fulltext =  trim( $filter->clean( $this->fulltext ) );
 		*/
 
 
@@ -127,11 +127,11 @@ class JTableContent extends JTable
 			$this->alias = $datenow->toFormat("%Y-%m-%d-%H-%M-%S");
 		}
 
-		if (trim( str_replace( '&nbsp;', '', $this->fulltxt ) ) == '') {
-			$this->fulltxt = '';
+		if (trim( str_replace( '&nbsp;', '', $this->fulltext ) ) == '') {
+			$this->fulltext = '';
 		}
 
-		if(empty($this->introtext) && empty($this->fulltxt)) {
+		if(empty($this->introtext) && empty($this->fulltext)) {
 			$this->setError(JText::_('Article must have some text'));
 			return false;
 		}
