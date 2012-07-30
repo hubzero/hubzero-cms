@@ -1365,7 +1365,10 @@ class EventsControllerEvents extends Hubzero_Controller
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'calendar.css');
 
 		$this->_getScripts('assets/js/' . $this->_name);
-		$this->_getScripts('assets/js/calendar.rc4');
+		if (!JPluginHelper::isEnabled('system', 'jquery'))
+		{
+			$this->_getScripts('assets/js/calendar.rc4');
+		}
 
 		// We need at least one category before we can proceed
 		$cat = new EventsCategory($this->database);
