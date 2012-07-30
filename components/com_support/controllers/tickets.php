@@ -1279,6 +1279,17 @@ class SupportControllerTickets extends Hubzero_Controller
 
 		$this->view->acl = $this->acl;
 
+		if ($this->getComponentMessage()) 
+		{
+			foreach ($this->getComponentMessage() as $error)
+			{
+				if ($error['type'] == 'error')
+				{
+					$this->view->setError($error['message']);
+				}
+			}
+		}
+
 		// Output HTML
 		if ($this->getError()) 
 		{
@@ -1824,6 +1835,15 @@ class SupportControllerTickets extends Hubzero_Controller
 		}
 
 		// Display the ticket with changes, new comment
+		if ($this->getError())
+		{
+			/*$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=ticket&id=' . $id),
+				$this->getError(),
+				'error'
+			);*/
+			$this->addComponentMessage($this->getError(), 'error');
+		}
 		$this->setRedirect(
 			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=ticket&id=' . $id)
 		);
