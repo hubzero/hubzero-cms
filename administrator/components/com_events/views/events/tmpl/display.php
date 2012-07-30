@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 JToolBarHelper::title(JText::_('EVENTS_MANAGER'), 'event.png');
 JToolBarHelper::addNew('addpage', 'Add Page');
-JToolBarHelper::custom('viewList', 'assign', JText::_('VIEW_RESPONDENTS'), JText::_('VIEW_RESPONDENTS'), true, false);
+JToolBarHelper::custom('respondents', 'assign', JText::_('VIEW_RESPONDENTS'), JText::_('VIEW_RESPONDENTS'), true, false);
 JToolBarHelper::spacer();
 JToolBarHelper::publishList();
 JToolBarHelper::unpublishList();
@@ -95,7 +95,7 @@ $row = &$this->rows[$i];
 				} else {
 					?><input type="checkbox" id="cb<?php echo $i;?>" name="id[]" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" /><?php 
 				} ?></td>
-				<td><a href="index.php?option=<?php echo $this->option; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>"><?php echo $this->escape(stripslashes($row->title)); ?></a></td>
+				<td><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>"><?php echo $this->escape(stripslashes($row->title)); ?></a></td>
 				<td><?php echo $this->escape($row->category); ?></td>
 
 <td><?php
@@ -202,7 +202,7 @@ $row = &$this->rows[$i];
 					echo '&nbsp;';
 				} ?></td>
 				<td><?php echo $row->groupname; ?></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=pages&amp;id[]=<? echo $row->id; ?>"><?php echo $pages; ?> <?php echo JText::_('Pages'); ?></a></td>
+				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=pages&amp;id[]=<? echo $row->id; ?>"><?php echo $pages; ?> <?php echo JText::_('Pages'); ?></a></td>
 			</tr>
 <?php
 $k = 1 - $k;
@@ -213,6 +213,7 @@ $k = 1 - $k;
 	</table>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 

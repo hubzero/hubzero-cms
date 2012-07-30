@@ -31,9 +31,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 JToolBarHelper::title('<a href="index.php?option=com_events">'.JText::_('EVENTS').'</a>: <small><small>[ '.JText::_('PAGES').' ]</small></small>', 'edit.png');
-JToolBarHelper::addNew('addpage', JText::_('ADD_PAGE'));
-JToolBarHelper::editList('editpage');
-JToolBarHelper::deleteList('', 'removepage', JText::_('REMOVE_PAGE'));
+JToolBarHelper::addNew();
+JToolBarHelper::editList();
+JToolBarHelper::deleteList();
 
 ?>
 <script type="text/javascript">
@@ -85,7 +85,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 			<tr class="<?php echo "row$k"; ?>">
 				<td><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked);" /></td>
 				<td><?php echo $row->id; ?></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;task=editpage&amp;id[]=<? echo $row->id; ?>&amp;event=<?php echo $this->event->id; ?>"><?php echo stripslashes($row->title).' ('.stripslashes($row->alias).')'; ?></a></td>
+				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=editpage&amp;id[]=<? echo $row->id; ?>&amp;event=<?php echo $this->event->id; ?>"><?php echo stripslashes($row->title).' ('.stripslashes($row->alias).')'; ?></a></td>
 				<td><?php echo $this->pageNav->orderUpIcon($i, ($row->position == @$rows[$i-1]->position), 'orderuppage'); ?></td>
 				<td><?php echo $this->pageNav->orderDownIcon($i, $n, ($row->position == @$rows[$i+1]->position), 'orderdownpage'); ?></td>
 				<td><?php echo $row->ordering; ?></td>
@@ -99,6 +99,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 
 	<input type="hidden" name="event" value="<?php echo $this->event->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 

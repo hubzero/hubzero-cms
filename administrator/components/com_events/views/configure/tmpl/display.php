@@ -209,8 +209,9 @@ JToolBarHelper::cancel('cancelconfig');
 		</table>
 	</fieldset>
 
-	<input type="hidden" name="task" value="saveconfig" />
+	<input type="hidden" name="task" value="save" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>

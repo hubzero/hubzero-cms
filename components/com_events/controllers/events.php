@@ -436,6 +436,8 @@ class EventsControllerEvents extends Hubzero_Controller
 		// Build the pathway
 		$this->_buildPathway();
 
+		$this->_getScripts('assets/js/' . $this->_name);
+
 		// Output HTML
 		$view = new JView(array(
 			'name'   => 'browse',
@@ -848,6 +850,10 @@ class EventsControllerEvents extends Hubzero_Controller
 		$view = new JView(array(
 			'name' => 'details'
 		));
+		if (JRequest::getVar('no_html', 0))
+		{
+			$view->setLayout('modal');
+		}
 		$view->option = $this->_option;
 		$view->title = JText::_(strtoupper($this->_name)) . ': ' . JText::_(strtoupper($this->_name) . '_' . strtoupper($this->_task));
 		$view->task = $this->_task;

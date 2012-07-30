@@ -31,12 +31,12 @@
 defined('_JEXEC') or die('Restricted access');
 
 JToolBarHelper::title(JText::_('EVENTS_MANAGER').': <small><small>[ '.JText::_('EVENTS_CAL_LANG_EVENT_CATEGORIES').' ]</small></small>', 'event.png');
-JToolBarHelper::publishList('publishcat');
-JToolBarHelper::unpublishList('unpublishcat');
+JToolBarHelper::publishList();
+JToolBarHelper::unpublishList();
 JToolBarHelper::spacer();
-JToolBarHelper::addNew('newcat');
-JToolBarHelper::editList('editcat');
-JToolBarHelper::deleteList('','removecat',JText::_('DELETE_CATEGORY'));
+JToolBarHelper::addNew();
+JToolBarHelper::editList();
+JToolBarHelper::deleteList();
 
 ?>
 
@@ -68,7 +68,7 @@ JToolBarHelper::deleteList('','removecat',JText::_('DELETE_CATEGORY'));
 		$row = &$this->rows[$i];
 		$class = $row->published ? 'published' : 'unpublished';
 		$alt = $row->published ? 'Published' : 'Unpublished';
-		$task = $row->published ? 'unpublishcat' : 'publishcat';
+		$task = $row->published ? 'unpublish' : 'publish';
 
 		if ($row->groupname == 'Public') {
 			$color_access = 'style="color: green;"';
@@ -86,7 +86,7 @@ JToolBarHelper::deleteList('','removecat',JText::_('DELETE_CATEGORY'));
 		} else {
 			?><input type="checkbox" id="cb<?php echo $i;?>" name="id[]" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" /><?php 
 		} ?></td>
-	   <td width="35%"><a href="index.php?option=<?php echo $this->option; ?>&amp;task=editcat&amp;id=<?php echo $row->id;?>"><?php echo "$row->name ($row->title)"; ?></a></td>
+	   <td width="35%"><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id;?>"><?php echo "$row->name ($row->title)"; ?></a></td>
  	   <td><?php echo $row->num; ?></td>
 	   <td><?php echo $row->checked_out; ?></td>
 	   <td><a class="state <?php echo $class;?>" href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i;?>','<?php echo $task;?>')"><span><?php echo $alt; ?></span></a></td>
@@ -115,6 +115,7 @@ JToolBarHelper::deleteList('','removecat',JText::_('DELETE_CATEGORY'));
 	</table>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="section" value="<?php echo $this->section; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="chosen" value="" />

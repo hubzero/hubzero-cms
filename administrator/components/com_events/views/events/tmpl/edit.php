@@ -21,7 +21,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$paramsClass = 'JRegistry';
 }
 
-$params =& new $paramsClass($this->row->params, JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->option . DS . 'events.xml');
+$params = new $paramsClass($this->row->params, JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->option . DS . 'events.xml');
 ?>
 <script type="text/javascript" src="../components/<?php echo $option; ?>/js/calendar.rc4.js"></script>
 <script type="text/javascript">
@@ -43,7 +43,7 @@ var HUB = {};
 				<tbody>
 					<tr>
 						<td class="key"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_TITLE'); ?>: *</td>
-						<td><input type="text" name="title" size="45" maxlength="250" value="<?php echo htmlentities(stripslashes($this->row->title), ENT_COMPAT, 'UTF-8'); ?>" /></td>
+						<td><input type="text" name="title" size="45" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" /></td>
 					</tr>
 					<tr>
 						<td class="key"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_CATEGORY'); ?>:</th>
@@ -55,15 +55,15 @@ var HUB = {};
 					</tr>
 					<tr>
 						<td class="key"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_ADRESSE'); ?>:</td>
-						<td><input type="text" name="adresse_info" size="45" maxlength="120" value="<?php echo htmlentities(stripslashes($this->row->adresse_info), ENT_COMPAT, 'UTF-8'); ?>" /></td>
+						<td><input type="text" name="adresse_info" size="45" maxlength="120" value="<?php echo $this->escape(stripslashes($this->row->adresse_info)); ?>" /></td>
 					</tr>
 					<tr>
 						<td class="key"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_CONTACT'); ?>:</td>
-						<td><input type="text" name="contact_info" size="45" maxlength="120" value="<?php echo htmlentities(stripslashes($this->row->contact_info), ENT_COMPAT, 'UTF-8'); ?>" /></td>
+						<td><input type="text" name="contact_info" size="45" maxlength="120" value="<?php echo $this->escape(stripslashes($this->row->contact_info)); ?>" /></td>
 					</tr>
 					<tr>
 						<td class="key"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_EXTRA'); ?>:</td>
-						<td><input type="text" name="extra_info" size="45" maxlength="240" value="<?php echo htmlentities(stripslashes($this->row->extra_info), ENT_COMPAT, 'UTF-8'); ?>" /></td>
+						<td><input type="text" name="extra_info" size="45" maxlength="240" value="<?php echo $this->escape(stripslashes($this->row->extra_info)); ?>" /></td>
 					</tr>
 					<?php
 					foreach ($this->fields as $field) 
@@ -300,6 +300,7 @@ var HUB = {};
 	</div><div class="clr"></div>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="sid" value="<?php echo $this->row->sid; ?>" />
 	<input type="hidden" name="task" value="" />

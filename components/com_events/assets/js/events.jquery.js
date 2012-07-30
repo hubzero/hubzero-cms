@@ -35,10 +35,53 @@ HUB.Events = {
 	
 	form: '',
 	
+	addEvent: function() {
+		var $ = HUB.Events.jQuery;
+
+		$('#sub-sub-menu a').on('click', function(e){
+			e.preventDefault();
+			
+			$.fancybox.open($(this).attr('href'), {
+				type: 'ajax',
+				width: '80%',
+				height: '80%',
+				maxWidth: '900',
+				maxHeight: '700',
+				autoSize: false,
+				fitToView: true,
+				afterShow: function() {
+					HUB.Events.addEvent();
+				}
+			});
+		});
+	},
+	
 	initialize: function() {
 		var $ = this.jQuery;
 		
 		HUB.Events.form = $('#hubForm');
+		
+		$('.title a').fancybox({
+			type: 'ajax',
+			width: '80%',
+			height: '80%',
+			maxWidth: '900',
+			maxHeight: '700',
+			autoSize: false,
+			fitToView: true,
+			beforeLoad: function() {
+				href = $(this).attr('href');
+				if (href.indexOf('?') == -1) {
+					href += '?no_html=1';
+				} else {
+					href += '&no_html=1';
+				}
+				$(this).attr('href', href);
+			},
+			afterShow: function() {
+				HUB.Events.addEvent();
+			}
+		});
 		
 		if ($('#event-id') && $('#event-id').val() != '0') {
 			$('#publish_up').datepicker({

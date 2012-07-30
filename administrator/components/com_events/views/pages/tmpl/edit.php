@@ -32,8 +32,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 $text = ( $this->task == 'editpage' ? JText::_( 'EDIT' ) : JText::_( 'NEW' ) );
 
 JToolBarHelper::title( '<a href="index.php?option=com_events">'.JText::_( 'EVENTS_PAGE' ).'</a>: <small><small>[ '. $text.' ]</small></small>', 'event.png' );
-JToolBarHelper::save('savepage');
-JToolBarHelper::cancel('cancelpage');
+JToolBarHelper::save();
+JToolBarHelper::cancel();
 
 jimport('joomla.html.editor');
 $editor =& JEditor::getInstance();
@@ -61,7 +61,8 @@ function submitbutton(pressbutton)
 			<input type="hidden" name="event" value="<?php echo $this->event->id; ?>" />
 			<input type="hidden" name="id" value="<?php echo $this->page->id; ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="task" value="savepage" />
+			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+			<input type="hidden" name="task" value="save" />
 			
 			<table class="admintable">
 				<tbody>
@@ -79,7 +80,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<td colspan="2">
 							<label for="pagetext"><?php echo JText::_('PAGE_TEXT'); ?>:</label><br />
-							<?php echo $editor->display('pagetext', htmlentities(stripslashes($this->page->pagetext)), '100%', '350px', '40', '10'); ?>
+							<?php echo $editor->display('pagetext', $this->escape(stripslashes($this->page->pagetext)), '100%', '350px', '40', '10'); ?>
 						</td>
 					</tr>
 				</tbody>

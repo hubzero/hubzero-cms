@@ -33,10 +33,10 @@ defined('_JEXEC') or die('Restricted access');
 $text = ($this->task == 'editcat') ? JText::_('EDIT') : JText::_('NEW');
 JToolBarHelper::title(JText::_('EVENT').': <small><small>[ '. $text.' '.JText::_('EVENTS_CAL_LANG_EVENT_CATEGORY').' ]</small></small>', 'event.png');
 JToolBarHelper::spacer();
-JToolBarHelper::save('savecat');
+JToolBarHelper::save();
 JToolBarHelper::spacer();
 JToolBarHelper::media_manager();
-JToolBarHelper::cancel('cancelcat');
+JToolBarHelper::cancel();
 
 if ($this->row->image == '') {
 	$this->row->image = 'blank.png';
@@ -107,6 +107,7 @@ function submitbutton(pressbutton, section)
 	</table>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="section" value="<?php echo $this->row->section; ?>" />
 	<input type="hidden" name="oldtitle" value="<?php echo $this->row->title ; ?>" />
 	<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />

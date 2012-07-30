@@ -66,25 +66,33 @@ require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS 
 require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'page.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'respondent.php');
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
-require_once(JPATH_COMPONENT . DS . 'controller.php');
+
+$controllerName = JRequest::getCmd('controller', 'events');
+if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+{
+	$controllerName = 'events';
+}
 
 JSubMenuHelper::addEntry(
 	JText::_('Events'),
-	'index.php?option=com_events',
-	$task == ''
+	'index.php?option=com_events&controller=events',
+	$controllerName == 'events'
 );
 JSubMenuHelper::addEntry(
 	JText::_('Categories'),
-	'index.php?option=com_events&task=cats',
-	$task == 'cats'
+	'index.php?option=com_events&controller=categories',
+	$controllerName == 'categories'
 );
 JSubMenuHelper::addEntry(
 	JText::_('Config'),
-	'index.php?option=com_events&task=config',
-	$task == 'config'
+	'index.php?option=com_events&controller=configure',
+	$controllerName == 'configure'
 );
 
+require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = 'EventsController' . ucfirst($controllerName);
+
 // Instantiate controller
-$controller = new EventsController();
+$controller = new $controllerName();
 $controller->execute();
 $controller->redirect();
