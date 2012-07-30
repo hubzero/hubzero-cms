@@ -839,7 +839,7 @@ WYKIWYG.converter = function() {
 				default: cls.push('first'); break;
 			}
 			
-			var result = '<div' + (cls.length > 0 ? ' class="' + cls.join(' ') + '"' : '') + (a.length > 0 ? ' ' + a.join(' ') : '') + '>' + _RunBlockGamut(content) + '</div>';
+			var result = '<div' + (cls.length > 0 ? ' class="' + cls.join(' ') + '"' : '') + (a.length > 0 ? ' ' + a.join(' ') : '') + '>' + _RunBlockGamut(content) + '</div>' + "\n\n";
 			if (columns.current == columns.count) {
 				result += "\n\n~K" + (g_html_blocks.push('<div class="clear"><!-- columns --></div>')-1) + "K\n\n"; //'<div class="clear">\n<!-- columns -->\n</div>';
 			}
@@ -1656,7 +1656,7 @@ WYKIWYG.converter = function() {
 		// Otherwise, the link processor would transform macro syntax.
 		// Ex: [[Macro()]] -> [<a href="Macro()">Macro()</a>]
 		text = _DoDivs(text);
-		//text = _DoColumns(text);
+		text = _DoColumns(text);
 		
 		text = _StripMacros(text);
 
