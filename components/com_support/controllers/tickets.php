@@ -422,10 +422,37 @@ class SupportControllerTickets extends Hubzero_Controller
 		$this->_getStyles();
 
 		// Output HTML
+		$this->view->verified   = $this->_isVerified();
+		if ($this->view->verified && $this->acl->check('update', 'tickets') > 0) 
+		{
+			$this->view->lists = array();
+			if (trim($this->config->get('group'))) 
+			{
+				$this->view->lists['owner'] = $this->_userSelectGroup(
+					'problem[owner]',
+					'', 
+					1, 
+					'', 
+					trim($this->config->get('group'))
+				);
+			} 
+			else 
+			{
+				$this->view->lists['owner'] = $this->_userSelect(
+					'problem[owner]', 
+					'', 
+					1
+				);
+			}
+			$this->view->lists['severities'] = SupportUtilities::getSeverities($this->config->get('severities'));
+			// Get resolutions
+			$sr = new SupportResolution($this->database);
+			$this->view->lists['resolutions'] = $sr->getResolutions();
+		}
+		$this->view->acl        = $this->acl;
 		$this->view->title      = $this->_title;
 		$this->view->reporter   = $this->_getUser();
 		$this->view->problem    = $problem;
-		$this->view->verified   = $this->_isVerified();
 		$this->view->file_types = $this->config->get('file_ext');
 		if ($this->getError()) 
 		{
@@ -512,13 +539,13 @@ class SupportControllerTickets extends Hubzero_Controller
 		$verified = JRequest::getInt('verified', 0);
 		$reporter = array_map('trim', $_POST['reporter']);
 		$problem  = array_map('trim', $_POST['problem']);
-		
+
 		// Normally calling JRequest::getVar calls _cleanVar, but b/c of the way this page processes the posts
- 		// (with array square brackets in the html names) against the $_POST collection, we explicitly
+		// (with array square brackets in the html names) against the $_POST collection, we explicitly
 		// call the clean_var function on these arrays after fetching them
 		$reporter = array_map(array('JRequest', '_cleanVar'), $reporter);
 		$problem  = array_map(array('JRequest', '_cleanVar'), $problem);
-		
+
 		// Reporter login can only be for authenticated users -- ignore any form submitted login names
 		$reporterLogin = $this->_getUser();
 		$reporter['login'] = $reporterLogin['login'];
@@ -670,8 +697,8 @@ class SupportControllerTickets extends Hubzero_Controller
 		}
 
 		$tool = $this->_getTool($problem['referer']);
-		$groupID = JRequest::getVar("group", "");
-		if($groupID) 
+		$groupID = JRequest::getVar('group', '');
+		if ($groupID) 
 		{
 			$group = $groupID;
 		}
@@ -690,12 +717,12 @@ class SupportControllerTickets extends Hubzero_Controller
 		$data['status']    = 0;
 		$data['created']   = date("Y-m-d H:i:s");
 		$data['login']     = $reporter['login'];
-		$data['severity']  = 'normal';
-		$data['owner']     = NULL;
+		$data['severity']  = (isset($problem['severity'])) ? $problem['severity'] : 'normal';
+		$data['owner']     = (isset($problem['owner'])) ? $problem['owner'] : null;
 		$data['category']  = (isset($problem['topic'])) ? $problem['topic'] : '';
 		$data['summary']   = htmlentities($problem['short'], ENT_COMPAT, 'UTF-8');
 		$data['report']    = htmlentities($problem['long'], ENT_COMPAT, 'UTF-8');
-		$data['resolved']  = NULL;
+		$data['resolved']  = (isset($problem['resolved'])) ? $problem['resolved'] : null;
 		$data['email']     = $reporter['email'];
 		$data['name']      = $reporter['name'];
 		$data['os']        = $problem['os'] . ' ' . $problem['osver'];
@@ -734,6 +761,13 @@ class SupportControllerTickets extends Hubzero_Controller
 		$attachment = $this->uploadTask($row->id);
 		$row->report .= ($attachment) ? "\n\n" . $attachment : '';
 		$problem['long'] .= ($attachment) ? "\n\n" . $attachment : '';
+
+		$tags = trim(JRequest::getVar('tags', '', 'post'));
+		if ($tags)
+		{
+			$st = new SupportTags($this->database);
+			$st->tag_object($this->juser->get('id'), $row->id, $tags, 0, true);
+		}
 
 		// Save the data
 		if (!$row->store()) 

@@ -189,6 +189,75 @@ $group = JRequest::getVar("group", "");
 				
 			</label>
 		</fieldset><div class="clear"></div>
+<?php if ($this->verified && $this->acl->check('update', 'tickets') > 0) { ?>
+		<fieldset>
+			<legend><?php echo JText::_('Details'); ?></legend>
+	
+			<label>
+				<?php echo JText::_('COMMENT_TAGS'); ?>:<br />
+				<?php 
+				JPluginHelper::importPlugin('hubzero');
+				$dispatcher =& JDispatcher::getInstance();
+			$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags', '', '')));
+
+			if (count($tf) > 0) {
+				echo $tf[0];
+			} else { ?>
+				<input type="text" name="tags" id="tags" value="" size="35" />
+			<?php } ?>
+			</label>
+	
+			<div class="group">
+				<label>
+					<?php echo JText::_('COMMENT_GROUP'); ?>:
+					<?php 
+					
+				$gc = $dispatcher->trigger('onGetSingleEntryWithSelect', array(array('groups', 'problem[group]', 'acgroup', '', '', '', 'ticketowner')));
+				if (count($gc) > 0) {
+					echo $gc[0];
+				} else { ?>
+					<input type="text" name="group" value="" id="acgroup" value="" autocomplete="off" />
+				<?php } ?>
+				</label>
+
+				<label>
+					<?php echo JText::_('COMMENT_OWNER'); ?>:
+					<?php echo $this->lists['owner']; ?>
+				</label>
+			</div>
+			<div class="clear"></div>
+	
+			<div class="group">
+				<label for="ticket-field-severity">
+					<?php echo JText::_('COMMENT_SEVERITY'); ?>
+					<?php echo SupportHtml::selectArray('problem[severity]', $this->lists['severities'], 'normal'); ?>
+				</label>
+			
+				<label for="ticket-field-status">
+					<?php echo JText::_('COMMENT_STATUS'); ?>
+					<select name="problem[resolved]" id="ticket-field-status">
+						<option value=""><?php echo JText::_('COMMENT_OPT_OPEN'); ?></option>
+						<option value="1"><?php echo JText::_('COMMENT_OPT_WAITING'); ?></option>
+						<optgroup label="<?php echo JText::_('Closed'); ?>">
+							<option value="noresolution"><?php echo JText::_('COMMENT_OPT_CLOSED'); ?></option>
+<?php
+			if (isset($this->lists['resolutions']) && $this->lists['resolutions']!='') 
+			{
+				foreach ($this->lists['resolutions'] as $anode) 
+				{
+?>
+							<option value="<?php echo $this->escape($anode->alias); ?>"><?php echo $this->escape(stripslashes($anode->title)); ?></option>
+<?php
+				}
+			}
+?>
+						</optgroup>
+					</select>
+				</label>
+			</div>
+			
+		</fieldset>
+<?php } ?>
 <?php if (!$this->verified) { ?>
 		<div class="explaination">
 			<p><?php echo JText::_('COM_SUPPORT_MATH_EXPLANATION'); ?></p>

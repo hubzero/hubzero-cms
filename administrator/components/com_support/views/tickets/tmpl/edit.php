@@ -375,31 +375,93 @@ if ($this->row->id) {
  	<div class="col width-70 fltlft">
 <?php if (!$this->row->id) { ?>
 		<fieldset>
-		<input type="hidden" name="summary" id="summary" value="<?php echo $this->row->summary; ?>" size="50" />
+			<input type="hidden" name="summary" id="summary" value="<?php echo $this->row->summary; ?>" size="50" />
 		
-		<table class="admintable">
-			<tbody>
-				<tr>
-					<td class="key"><label for="login">Login:</label></td>
-					<td><input type="text" name="login" id="login" value="<?php echo $this->escape(trim($this->row->login)); ?>" size="50" /></td>
-				</tr>
-				<tr>
-					<td class="key"><label for="name">Name:</label></td>
-					<td><input type="text" name="name" id="name" value="<?php echo $this->escape(trim($this->row->name)); ?>" size="50" /></td>
-				</tr>
-				<tr>
-					<td class="key"><label for="email">E-mail:</label></td>
-	 				<td><input type="text" name="email" id="email" value="<?php echo $this->row->email; ?>" size="50" /></td>
-				</tr>
- 				<tr>
-					<td class="key" style="vertical-align:top;"><label for="report">Description:</label></td>
-					<td><textarea name="report" id="report" cols="75" rows="15"><?php echo $this->escape(trim($this->row->report)); ?></textarea></td>
-				</tr>
-			</tbody>
-		</table>
-		<input type="hidden" name="section" value="1" />
-		<input type="hidden" name="uas" value="<?php echo JRequest::getVar('HTTP_USER_AGENT','','server'); ?>" />
-		<input type="hidden" name="severity" value="normal" />
+			<table class="admintable">
+				<tbody>
+					<tr>
+						<td class="key"><label for="login">Login:</label></td>
+						<td colspan="3"><input type="text" name="login" id="login" value="<?php echo $this->escape(trim($this->row->login)); ?>" size="50" /></td>
+					</tr>
+					<tr>
+						<td class="key"><label for="name">Name:</label></td>
+						<td colspan="3"><input type="text" name="name" id="name" value="<?php echo $this->escape(trim($this->row->name)); ?>" size="50" /></td>
+					</tr>
+					<tr>
+						<td class="key"><label for="email">E-mail:</label></td>
+		 				<td colspan="3"><input type="text" name="email" id="email" value="<?php echo $this->row->email; ?>" size="50" /></td>
+					</tr>
+	 				<tr>
+						<td class="key" style="vertical-align:top;"><label for="report">Description:</label></td>
+						<td colspan="3"><textarea name="report" id="report" cols="75" rows="15"><?php echo $this->escape(trim($this->row->report)); ?></textarea></td>
+					</tr>
+					<tr>
+						<td class="key" style="vertical-align:top;"><label for="ticket-field-tags"><?php echo JText::_('COMMENT_TAGS'); ?></label></td>
+						<td colspan="3">
+							<?php 
+							$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->lists['tags'])) );
+
+							if (count($tf) > 0) {
+								echo $tf[0];
+							} else { ?>
+								<input type="text" name="tags" id="tags" value="<?php echo $this->escape($this->lists['tags']); ?>" />
+							<?php } ?>
+						</td>
+					</tr>
+					<tr>
+						<td class="key"><label for="ticket-field-group"><?php echo JText::_('COMMENT_GROUP'); ?>:</label></td>
+						<td>
+							<?php 
+							$gc = $dispatcher->trigger( 'onGetSingleEntryWithSelect', array(array('groups', 'group', 'acgroup','','','','owner')) );
+							if (count($gc) > 0) {
+								echo $gc[0];
+							} else { ?>
+							<input type="text" name="group" value="" id="acgroup" value="" size="30" autocomplete="off" />
+							<?php } ?>
+						</td>
+						<td class="key"><label><?php echo JText::_('COMMENT_OWNER'); ?></label>
+						<td>
+							<?php echo $this->lists['owner']; ?>
+						</td>
+					</tr>
+					<tr>
+						<td class="key"><label for="ticket-field-severity"><?php echo JText::_('COMMENT_SEVERITY'); ?></label>
+						<td>
+							<select name="severity" id="ticket-field-severity">
+								<option value="critical"><?php echo JText::_('SEVERITY_CRITICAL'); ?></option>
+								<option value="major"><?php echo JText::_('SEVERITY_MAJOR'); ?></option>
+								<option value="normal"><?php echo JText::_('SEVERITY_NORMAL'); ?></option>
+								<option value="minor"><?php echo JText::_('SEVERITY_MINOR'); ?></option>
+								<option value="trivial"><?php echo JText::_('SEVERITY_TRIVIAL'); ?></option>
+							</select>
+						</td>
+						<td class="key"><label for="ticket-field-status"><?php echo JText::_('COMMENT_STATUS'); ?></label>
+						<td>
+							<select name="resolved" id="ticket-field-status">
+								<option value=""><?php echo JText::_('COMMENT_OPT_OPEN'); ?></option>
+								<option value="1"><?php echo JText::_('COMMENT_OPT_WAITING'); ?></option>
+								<optgroup label="<?php echo JText::_('Closed'); ?>">
+									<option value="noresolution"><?php echo JText::_('COMMENT_OPT_CLOSED'); ?></option>
+<?php
+							if (isset($this->lists['resolutions']) && $this->lists['resolutions']!='') 
+							{
+								foreach ($this->lists['resolutions'] as $anode) 
+								{
+?>
+									<option value="<?php echo $this->escape($anode->alias); ?>"><?php echo $this->escape(stripslashes($anode->title)); ?></option>
+<?php
+								}
+							}
+?>
+								</optgroup>
+							</select>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<input type="hidden" name="section" value="1" />
+			<input type="hidden" name="uas" value="<?php echo JRequest::getVar('HTTP_USER_AGENT', '', 'server'); ?>" />
+			<input type="hidden" name="severity" value="normal" />
 <?php } else { ?>
 		<fieldset>
 			<legend><span><a name="comments"></a><?php echo JText::_('TICKET_DETAILS'); ?></span></legend>
