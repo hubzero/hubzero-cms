@@ -407,6 +407,21 @@ class WikiParser
 		$append = '';
 		$p = new WikiPage($database);
 		$p->pagename = $name;
+		
+		$bits = explode('/',$name);
+		if (count($bits) > 1) {
+			$p->pagename = array_pop($bits);
+			$p->scope = implode('/',$bits);
+		} else {
+			$p->pagename = end($bits);
+			$p->scope = $this->scope;
+		}
+		$p->getID();
+		if (!$p->id && substr($name,0,1) != '?') {
+			$cls .= ' missing';
+			//$append = '?';
+		}
+		
 		$p->getID();
 		if (!$p->id && substr($name, 0, 1) != '?') 
 		{
