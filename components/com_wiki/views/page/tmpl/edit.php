@@ -136,6 +136,28 @@ if ($this->page->id && !$this->config->get('access-modify')) {
 <?php } else { ?>
 		<input type="hidden" name="page[title]" id="title" value="<?php echo $this->escape($this->page->title); ?>" />
 <?php } ?>
+		<label for="parent">
+			<?php echo JText::_('Parent page'); ?>:
+			<select name="scope" id="parent">
+				<option value=""><?php echo JText::_('[ none ]'); ?></option>
+<?php
+	if ($this->tree) 
+	{
+		foreach ($this->tree as $item) 
+		{
+			if ($this->page->pagename == $item->pagename)
+			{
+				continue;
+			}
+?>
+				<option value="<?php echo $this->escape(stripslashes($item->scope)); ?>"<?php if ($this->page->scope == $item->scope) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($item->scopeName)); ?></option>
+<?php
+		}
+	}
+?>
+			</select>
+		</label>
+		
 		<label for="templates">
 			<?php echo JText::_('Template'); ?>:
 			<select name="tplate" id="templates">
@@ -318,7 +340,6 @@ if ($this->config->get('access-edit')) {
 		<input type="hidden" name="page[id]" value="<?php echo $this->page->id; ?>" />
 		<input type="hidden" name="lid" value="<?php echo $lid; ?>" />
 		<input type="hidden" name="pagename" value="<?php echo $this->escape($this->page->pagename); ?>" />
-		<input type="hidden" name="scope" value="<?php echo $this->escape($this->page->scope); ?>" />
 		
 		<input type="hidden" name="revision[id]" value="<?php echo $this->revision->id; ?>" />
 		<input type="hidden" name="revision[pageid]" value="<?php echo $this->page->id; ?>" />

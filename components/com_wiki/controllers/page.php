@@ -474,6 +474,31 @@ class WikiControllerPage extends Hubzero_Controller
 		$this->view->config = $this->config;
 		$this->view->revision = $this->revision;
 
+		// Pull a tree of pages in this wiki
+		$items = $this->page->getPages(array(
+			'group'  => $this->_group,
+			'sortby' => 'pagename ASC, scope ASC'
+		));
+		if ($items)
+		{
+			foreach ($items as $k => $branch)
+			{
+				// Since these will be parent pages, we need to add the item's pagename to the scope
+				$branch->scope = ($branch->scope) ? $branch->scope . '/' . $branch->pagename : $branch->pagename;
+				$branch->scopeName = $branch->scope;
+				// Strip the group name from the beginning of the scope for display.
+				if ($this->_group)
+				{
+					$branch->scopeName = substr($branch->scope, strlen($this->_group . '/wiki/'));
+				}
+				// Push the item to the tree
+				$tree[$branch->scope] = $branch;
+			}
+			$items = $tree;
+			ksort($items);
+		}
+		$this->view->tree = $items;
+
 		$this->view->tplate = trim(JRequest::getVar('tplate', ''));
 
 		if ($this->getError()) 
@@ -485,6 +510,28 @@ class WikiControllerPage extends Hubzero_Controller
 		}
 
 		$this->view->display();
+	}
+
+	public static function treeRecurse($id, $children, $maxlevel=9999, $level=0)
+	{
+		$list = array();
+		if (@$children[$id] && $level <= $maxlevel)
+		{
+			foreach ($children[$id] as $v)
+			{
+				$id = $v->pagename;
+
+				$list[$id] = $v;
+				$list[$id]['children'] = array();
+				if (isset($children[$id]) && count($children[$id]) > 0)
+				{
+					$list[$id]->children = self::treeRecurse($id, $children, $maxlevel, $level+1);
+				}
+				//$list[$id]['children'] = @$children[$id];
+				//$list = self::treeRecurse($id, $children, $maxlevel, $level+1);
+			}
+		}
+		return $list;
 	}
 
 	/**

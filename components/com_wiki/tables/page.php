@@ -514,31 +514,46 @@ class WikiPage extends JTable
 	 */
 	public function buildQuery($filters)
 	{
-		if (isset($filters['count']) && $filters['count']) {
+		if (isset($filters['count']) && $filters['count']) 
+		{
 			$query = "SELECT count(*)";
-		} else {
+		} 
+		else 
+		{
 			$query = "SELECT t.*, (SELECT COUNT(*) FROM #__wiki_version AS tt WHERE tt.pageid=t.id) AS revisions";
 		}
 		$query .= " FROM $this->_tbl AS t";
 		$where = array();
-		if ($filters['search']) {
-			$where[] = "(LOWER( t.pagename ) LIKE '%".$filters['search']."%' OR LOWER( t.title ) LIKE '%".$filters['search']."%')";
-		}
-		if (isset($filters['group']) && $filters['group'] != '') 
+		if (isset($filters['search']) && $filters['search']) 
 		{
-			$where[] = "t.`group_cn`='" . $filters['group'] . "'";
+			$where[] = "(LOWER( t.pagename ) LIKE '%" . $filters['search'] . "%' OR LOWER( t.title ) LIKE '%" . $filters['search'] . "%')";
+		}
+		if (isset($filters['group'])) // && $filters['group'] != '' 
+		{
+			if ($filters['group'] != '')
+			{
+				$where[] = "t.`group_cn`='" . $filters['group'] . "'";
+			}
+			else 
+			{
+				$where[] = "(t.`group_cn`='' OR t.`group_cn` IS NULL)";
+			}
 		}
 		if (count($where) > 0)
 		{
 			$query .= " WHERE " . implode(' AND ', $where);
 		}
-		if (isset($filters['sortby']) && $filters['sortby'] != '') {
-			$query .= " ORDER BY t.".$filters['sortby'];
-		} else {
+		if (isset($filters['sortby']) && $filters['sortby'] != '') 
+		{
+			$query .= " ORDER BY t." . $filters['sortby'];
+		} 
+		else 
+		{
 			$query .= " ORDER BY t.id ASC GROUP BY `t.group_cn`";
 		}
-		if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all') {
-			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
+		if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all') 
+		{
+			$query .= " LIMIT  ". $filters['start'] . "," . $filters['limit'];
 		}
 
 		return $query;
@@ -553,36 +568,46 @@ class WikiPage extends JTable
 	 */
 	public function buildPluginQuery($filters=array())
 	{
-		//$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
 
-		//$wr = new WikiPageRevision( $database );
-		if (isset($filters['search']) && $filters['search'] != '') {
+		if (isset($filters['search']) && $filters['search'] != '') 
+		{
 			$searchquery = $filters['search'];
 			$phrases = $searchquery->searchPhrases;
 		}
-		if (isset($filters['select']) && $filters['select'] == 'count') {
-			if (isset($filters['tags'])) {
+		if (isset($filters['select']) && $filters['select'] == 'count') 
+		{
+			if (isset($filters['tags'])) 
+			{
 				$query = "SELECT COUNT(f.id) FROM (SELECT v.pageid AS id, COUNT(DISTINCT t.tagid) AS uniques ";
-			} else {
+			} 
+			else 
+			{
 				$query = "SELECT COUNT(*) FROM (SELECT COUNT(DISTINCT v.pageid) ";
 			}
-		} else {
+		} 
+		else 
+		{
 			$query = "SELECT v.pageid AS id, w.title, w.pagename AS alias, v.pagehtml AS itext, NULL AS ftext, w.state, v.created, v.created AS modified, v.created AS publish_up, w.params, 
 					CONCAT( 'index.php?option=com_topics&pagename=', w.pagename ) AS href, 'topics' AS `section`, w.`group_cn` AS area, w.scope AS category, w.rating, w.times_rated, w.ranking, w.access, w.hits ";
-			if (isset($filters['tags'])) {
+			if (isset($filters['tags'])) 
+			{
 				$query .= ", COUNT(DISTINCT t.tagid) AS uniques ";
 			}
-			if (isset($filters['search']) && $filters['search'] != '') {
-				if (!empty($phrases)) {
-					$exactphrase = addslashes('"'.$phrases[0].'"');
-					$text3 = preg_replace("/[^a-zA-Z0-9]/", "", strtolower($searchquery->searchText));
+			if (isset($filters['search']) && $filters['search'] != '') 
+			{
+				if (!empty($phrases)) 
+				{
+					$exactphrase = addslashes('"' . $phrases[0] . '"');
+					$text3 = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($searchquery->searchText));
 					$query .= ", ("
 							. "  MATCH(v.pagetext) AGAINST ('$exactphrase' IN BOOLEAN MODE) +"
 							. "  MATCH(w.title) AGAINST ('$exactphrase' IN BOOLEAN MODE) +"
 							. "  CASE WHEN LOWER(w.pagename) LIKE '%$text3%' THEN 10 ELSE 0 END"
 							. " ) AS relevance ";
-				} else {
+				} 
+				else 
+				{
 					/*$words = array();
 					if (count($searchquery->searchWords) > 0) {
 						$ws = $searchquery->searchWords;
@@ -594,12 +619,12 @@ class WikiPage extends JTable
 						}
 					}
 					$text = implode(' +',$words);*/
-					$text = implode(' +',$searchquery->searchWords);
+					$text = implode(' +', $searchquery->searchWords);
 					$text = addslashes($text);
 					//$text2 = str_replace('+','',$text);
 					//$text3 = str_replace(' ','',$text2);
-					$text2 = preg_replace("/[^a-zA-Z0-9\s]/", "", strtolower($searchquery->searchText));
-					$text3 = preg_replace("/[^a-zA-Z0-9]/", "", strtolower($searchquery->searchText));
+					$text2 = preg_replace("/[^a-zA-Z0-9\s]/", '', strtolower($searchquery->searchText));
+					$text3 = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($searchquery->searchText));
 
 					$query .= ", ("
 							. "  MATCH(v.pagetext) AGAINST ('+$text -\"$text2\"') +"
@@ -644,8 +669,8 @@ class WikiPage extends JTable
 				$text = implode(' +', $searchquery->searchWords);
 				$text = addslashes($text);
 
-				$text2 = preg_replace("/[^a-zA-Z0-9\s]/", "", strtolower($searchquery->searchText));
-				$text3 = preg_replace("/[^a-zA-Z0-9]/", "", strtolower($searchquery->searchText));
+				$text2 = preg_replace("/[^a-zA-Z0-9\s]/", '', strtolower($searchquery->searchText));
+				$text3 = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($searchquery->searchText));
 
 				$where[] = "( ( MATCH(w.title) AGAINST ('+$text -\"$text2\"') > 0) OR ( MATCH(v.pagetext) AGAINST ('+$text -\"$text2\"') > 0) )";
 			}
@@ -756,52 +781,45 @@ class WikiPage extends JTable
 	}
 
 	/**
-	 * Short description for 'getMetrics'
+	 * Get page metrics 
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @return     array
 	 */
-	public function getMetrics($filters=array())
+	public function getMetrics()
 	{
-		$this->_db->setQuery("SELECT visitors, visits FROM #__wiki_page_metrics WHERE pageid = ".$this->id);
+		$this->_db->setQuery("SELECT visitors, visits FROM #__wiki_page_metrics WHERE pageid = " . $this->id);
 		$vals = $this->_db->loadObjectList();
 		$stats = array(
 			'visitors' => 0,
-			'visits' => 0
+			'visits'   => 0
 		);
 		if ($vals)
 		{
 			foreach ($vals as $val)
 			{
 				$stats['visitors'] = $val->visitors;
-				$stats['visits'] = $val->visits;
+				$stats['visits']   = $val->visits;
 			}
 		}
 		return $stats;
 	}
 
 	/**
-	 * Short description for 'normalize'
+	 * Strip unwanted characters
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $txt Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $txt Text to normalize
+	 * @return     string
 	 */
 	public function normalize($txt)
 	{
-		return preg_replace("/[^\:a-zA-Z0-9]/", "", $txt);
+		return preg_replace("/[^\:a-zA-Z0-9]/", '', $txt);
 	}
 
 	/**
-	 * Short description for 'normalize'
+	 * Get the page title
+	 * If title isn't set, it will split the camelcase pagename into a spaced title
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $txt Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @return     string
 	 */
 	public function getTitle()
 	{
