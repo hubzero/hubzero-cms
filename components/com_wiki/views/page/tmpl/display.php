@@ -91,7 +91,9 @@ if (!$mode || ($mode && $mode != 'static')) {
 	$first = $this->page->getRevision(1);
 ?>
 <div class="main section">
-		<?php echo $this->revision->pagehtml; ?>
+		<div class="wikipage">
+			<?php echo $this->revision->pagehtml; ?>
+		</div>
 		<p class="timestamp">
 			<?php echo JText::_('WIKI_PAGE_CREATED').' '.JHTML::_('date',$first->created, '%d %b %Y').', '.JText::_('WIKI_PAGE_LAST_MODIFIED').' '.JHTML::_('date',$this->revision->created, '%d %b %Y'); ?>
 			<?php if ($stats = $this->page->getMetrics()) { ?>

@@ -151,28 +151,77 @@ class WikiPage extends JTable
 	public function load($oid=NULL, $scope='')
 	{
 		$s = "";
-		if ($oid !== NULL && !is_numeric($oid)) {
+		if ($oid !== NULL && !is_numeric($oid)) 
+		{
 			$this->_tbl_key = 'pagename';
 			$s = "AND scope='$scope'";
 		}
 		$k = $this->_tbl_key;
-		if ($oid !== NULL) {
+		if ($oid !== NULL) 
+		{
 			$this->$k = $oid;
 		}
 		$oid = $this->$k;
-		if ($oid === NULL) {
+		if ($oid === NULL) 
+		{
 			return false;
 		}
 
 		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE $this->_tbl_key='$oid' $s");
-		if ($result = $this->_db->loadAssoc()) {
+		if ($result = $this->_db->loadAssoc()) 
+		{
 			$res = $this->bind($result);
 			if ($res)
 			{
 				$this->title = ($this->title) ? $this->title : $this->_splitPagename($this->pagename);
 			}
 			return $res;
-		} else {
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+	}
+
+	/**
+	 * Loads a database record into the current object
+	 *
+	 * @param 	integer 	$oid
+	 * @param 	string 		$scope
+	 * @return 	boolean		True if data successfully loaded into object
+	 */
+	public function loadByTitle($oid=NULL, $scope='')
+	{
+		$s = "";
+		if ($oid !== NULL && !is_numeric($oid)) 
+		{
+			$this->_tbl_key = 'title';
+			$s = "AND scope='$scope'";
+		}
+		$k = $this->_tbl_key;
+		if ($oid !== NULL) 
+		{
+			$this->$k = $oid;
+		}
+		$oid = $this->$k;
+		if ($oid === NULL) 
+		{
+			return false;
+		}
+
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE $this->_tbl_key='$oid' $s");
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			$res = $this->bind($result);
+			if ($res)
+			{
+				$this->title = ($this->title) ? $this->title : $this->_splitPagename($this->pagename);
+			}
+			return $res;
+		} 
+		else 
+		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
@@ -199,7 +248,7 @@ class WikiPage extends JTable
 	 */
 	public function getID()
 	{
-		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE pagename='". $this->pagename ."' AND scope='".$this->scope."'");
+		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE pagename='" . $this->pagename . "' AND scope='" . $this->scope . "'");
 		$this->id = $this->_db->loadResult();
 		return $this->id;
 	}
@@ -211,11 +260,11 @@ class WikiPage extends JTable
 	 */
 	public function exist()
 	{
-		if ($this->id !== NULL) {
+		if ($this->id !== NULL) 
+		{
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	/**
@@ -412,41 +461,48 @@ class WikiPage extends JTable
 	 */
 	public function deleteBits($id=NULL)
 	{
-		if (!$id) {
+		if (!$id) 
+		{
 			$id = $this->id;
 		}
-		if (!$id) {
+		if (!$id) 
+		{
 			$this->setError(JText::_('Missing page ID'));
 			return false;
 		}
 
 		// Delete the page's version history
-		$this->_db->setQuery("DELETE FROM #__wiki_version WHERE pageid='".$id."'");
-		if (!$this->_db->query()) {
+		$this->_db->setQuery("DELETE FROM #__wiki_version WHERE pageid='" . $id . "'");
+		if (!$this->_db->query()) 
+		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		// Delete the page's tags
-		$this->_db->setQuery("DELETE FROM #__tags_object WHERE tbl='wiki' AND objectid='".$id."'");
-		if (!$this->_db->query()) {
+		$this->_db->setQuery("DELETE FROM #__tags_object WHERE tbl='wiki' AND objectid='" . $id . "'");
+		if (!$this->_db->query()) 
+		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		// Delete the page's comments
-		$this->_db->setQuery("DELETE FROM #__wiki_comments WHERE pageid='".$id."'");
-		if (!$this->_db->query()) {
+		$this->_db->setQuery("DELETE FROM #__wiki_comments WHERE pageid='" . $id . "'");
+		if (!$this->_db->query()) 
+		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		// Delete the page's attachments
-		$this->_db->setQuery("DELETE FROM #__wiki_attachments WHERE pageid='".$id."'");
-		if (!$this->_db->query()) {
+		$this->_db->setQuery("DELETE FROM #__wiki_attachments WHERE pageid='" . $id . "'");
+		if (!$this->_db->query()) 
+		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		// Delete the page's authors
-		$this->_db->setQuery("DELETE FROM #__wiki_page_author WHERE page_id='".$id."'");
-		if (!$this->_db->query()) {
+		$this->_db->setQuery("DELETE FROM #__wiki_page_author WHERE page_id='" . $id . "'");
+		if (!$this->_db->query()) 
+		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}

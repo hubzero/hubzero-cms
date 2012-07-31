@@ -405,23 +405,22 @@ class WikiParser
 		$database =& JFactory::getDBO();
 		$cls = 'wiki';
 		$append = '';
+
 		$p = new WikiPage($database);
 		$p->pagename = $name;
-		
+
 		$bits = explode('/',$name);
-		if (count($bits) > 1) {
+		if (count($bits) > 1) 
+		{
 			$p->pagename = array_pop($bits);
-			$p->scope = implode('/',$bits);
-		} else {
+			$p->scope = implode('/', $bits);
+		} 
+		else 
+		{
 			$p->pagename = end($bits);
 			$p->scope = $this->scope;
 		}
-		$p->getID();
-		if (!$p->id && substr($name,0,1) != '?') {
-			$cls .= ' missing';
-			//$append = '?';
-		}
-		
+
 		$p->getID();
 		if (!$p->id && substr($name, 0, 1) != '?') 
 		{
@@ -633,21 +632,38 @@ class WikiParser
 
 		$database =& JFactory::getDBO();
 		$p = new WikiPage($database);
-		if (count($bits) > 1) 
+		if ($namespace == 'wiki:')
 		{
-			$p->pagename = array_pop($bits);
-			$p->scope = implode('/', $bits);
-		} 
+			if (substr($href, 0, strlen('&#8220;')) == '&#8220;')
+			{
+				$title = substr($matches[1], strlen('[wiki:&#8220;'));
+				$title = substr($title, 0, -strlen('&#8221;]'));
+				$href = '#';
+			}
+			$p->loadByTitle($title);
+			if ($p->id) 
+			{
+				$href = $p->pagename;
+			}
+		}
 		else 
 		{
-			$p->pagename = end($bits);
-			$p->scope = $this->scope;
+			if (count($bits) > 1) 
+			{
+				$p->pagename = array_pop($bits);
+				$p->scope = implode('/', $bits);
+			} 
+			else 
+			{
+				$p->pagename = end($bits);
+				$p->scope = $this->scope;
+			}
+			if (trim(strtolower($namespace)) == 'help:') 
+			{
+				$p->pagename = 'Help:' . $p->pagename;
+			}
+			$p->getID();
 		}
-		if (trim(strtolower($namespace)) == 'help:') 
-		{
-			$p->pagename = 'Help:' . $p->pagename;
-		}
-		$p->getID();
 
 		if (!$p->id) 
 		{
@@ -889,9 +905,13 @@ class WikiParser
 	{
 		$t = trim($matches[1]);
 		$t = str_replace("\n", '', $t);
-		if (substr($t,0,6) == '#!wiki') 
+		if (substr($t, 0, 6) == '#!wiki') 
 		{
 			return '{admonition}' . $matches[1] . '{/admonition}';
+		} 
+		else if (substr($t, 0, strlen('#!comment')) == '#!comment') 
+		{
+			return '<!-- ' . $matches[1] . ' -->';
 		} 
 		else 
 		{
@@ -1483,8 +1503,8 @@ class WikiParser
 			'/\'/', 											 //  single opening
 			'/(\S)\"(?=\s|' . $pnc . '|<|$)/',						 //  double closing
 			'/"/',												 //  double opening
-			'/\b([A-Z][A-Z0-9]{2,})\b(?:[(]([^)]*)[)])/',		 //  3+ uppercase acronym
-			'/(?<=\s|^|[>(;-])([A-Z]{3,})([a-z]*)(?=\s|' . $pnc . '|<|$)/',  //  3+ uppercase
+			//'/\b([A-Z][A-Z0-9]{2,})\b(?:[(]([^)]*)[)])/',		 //  3+ uppercase acronym
+			//'/(?<=\s|^|[>(;-])([A-Z]{3,})([a-z]*)(?=\s|' . $pnc . '|<|$)/',  //  3+ uppercase
 			'/([^.]?)\.{3}/',									 //  ellipsis
 			'/(\s?)--(\s?)/',									 //  em dash
 			'/\s-(?:\s|$)/',									 //  en dash
@@ -1503,8 +1523,8 @@ class WikiParser
 			$txt_quote_single_open,              //  single opening
 			'$1' . $txt_quote_double_close,      //  double closing
 			$txt_quote_double_open,              //  double opening
-			'<acronym title="$2">$1</acronym>',  //  3+ uppercase acronym
-			'<span class="caps">$1</span>$2',    //  3+ uppercase
+			//'<acronym title="$2">$1</acronym>',  //  3+ uppercase acronym
+			//'<span class="caps">$1</span>$2',    //  3+ uppercase
 			'$1' . $txt_ellipsis,                //  ellipsis
 			'$1' . $txt_emdash . '$2',           //  em dash
 			' ' . $txt_endash . ' ',             //  en dash
@@ -2345,10 +2365,15 @@ class WikiParser
 					$output .= $this->nextItem($pref);
 				}
 
+				$listOpened = false;
 				while ($prefixLength > $commonPrefixLength)
 				{
 					$char = trim($pref);
-					$output .= $this->openList($char);
+					if (!$listOpened)
+					{
+						$output .= $this->openList($char);
+						$listOpened = true;
+					}
 					$i++;
 					$openlist[$i] = $char;
 					if (';' == $char) 
