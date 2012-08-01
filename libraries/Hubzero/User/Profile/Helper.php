@@ -48,63 +48,24 @@ class Hubzero_User_Profile_Helper
 	 * @param      string $storage Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	public function iterate_profiles($func, $storage)
+	public function iterate_profiles($func)
 	{
 		$db = &JFactory::getDBO();
 
-		if (!empty($storage) && !in_array($storage,array('mysql','ldap')))
+		$query = "SELECT uidNumber FROM #__xprofiles;";
+
+		$db->setQuery($query);
+
+		$result = $db->loadResultArray();
+
+		if ($result === false)
+		{
+			$this->setError('Error retrieving data from xprofiles table: ' . $db->getErrorMsg());
 			return false;
-
-		if ($storage == 'ldap')
-		{
-			$conn = &Hubzero_Factory::getPLDC();
-
-			$ldap_params = JComponentHelper::getParams('com_ldap');
-			$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
-
-			$dn = 'ou=users,' . $hubLDAPBaseDN;
-			$filter = '(objectclass=posixAccount)';
-
-			$attributes[] = 'uid';
-
-			$sr = @ldap_search($conn, $dn, $filter, $attributes, 0, 0, 0);
-
-			if ($sr === false)
-				return false;
-
-			$count = @ldap_count_entries($conn, $sr);
-
-			if ($count === false)
-				return false;
-
-			$entry = @ldap_first_entry($conn, $sr);
-
-			do
-			{
-				$attributes = ldap_get_attributes($conn, $entry);
-				$func($attributes['uid'][0]);
-				$entry = @ldap_next_entry($conn, $entry);
-			}
-			while($entry !== false);
 		}
 
-		if ($storage == 'mysql')
-		{
-			$query = "SELECT uidNumber FROM #__xprofiles;";
-
-			$db->setQuery($query);
-
-			$result = $db->loadResultArray();
-
-			if ($result === false)
-			{
-				$this->setError('Error retrieving data from xprofiles table: ' . $db->getErrorMsg());
-				return false;
-			}
-
-			foreach($result as $row)
-				$func($row);
-		}
+		foreach($result as $row)
+			$func($row);
 
 		return true;
 	}
