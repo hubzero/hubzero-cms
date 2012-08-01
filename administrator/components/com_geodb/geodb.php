@@ -63,7 +63,7 @@ else
 $controllerName = JRequest::getCmd('controller', 'geodb');
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
 {
-	$controllerName = 'ldap';
+	$controllerName = 'geodb';
 }
 require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'GeodbController' . ucfirst($controllerName);

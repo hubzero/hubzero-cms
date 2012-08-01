@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Controller');
 
 /**
- * Controller class for ldap
+ * Controller class for Geodb
  */
 class GeodbControllerGeodb extends Hubzero_Controller
 {
