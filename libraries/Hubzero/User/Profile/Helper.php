@@ -71,42 +71,6 @@ class Hubzero_User_Profile_Helper
 	}
 
 	/**
-	 * Short description for 'delete_profile'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $user Parameter description (if any) ...
-	 * @param      string $storage Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
-	 */
-	public function delete_profile($user, $storage)
-	{
-		if (!empty($storage) && !in_array($storage,array('mysql','ldap')))
-			return false;
-
-		$mconfig = & JComponentHelper::getParams( 'com_members' );
-		$ldapProfileMirror = $mconfig->get('ldapProfileMirror');
-
-		if (empty($storage))
-			$storage = ($ldapProfileMirror) ? 'all' : 'mysql';
-
-		ximport('Hubzero_User_Profile');
-		$profile = new Hubzero_User_Profile();
-
-		if ($storage == 'mysql' || $storage == 'all')
-		{
-			$profile->load($user,'mysql');
-			$profile->delete('mysql');
-		}
-
-		if ($storage == 'ldap' || $storage == 'all')
-		{
-			$profile->load($user,'ldap');
-			$profile->delete('ldap');
-		}
-	}
-
-	/**
 	 * Short description for 'find_by_email'
 	 * 
 	 * Long description (if any) ...
