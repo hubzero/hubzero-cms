@@ -100,14 +100,14 @@
 	.six.sixth:before,
 	.six.sixth:after {
 		content: "";
-	    display: table;
+		display: table;
 	}
 	.two.second:after,
 	.three.third:after,
 	.four.fourth:after,
 	.five.fifth:after,
 	.six.sixth:after {
-	    clear: both;
+		clear: both;
 	}
 	/* For IE 6/7 (trigger hasLayout) */
 	.two.second,
@@ -115,7 +115,7 @@
 	.four.fourth,
 	.five.fifth
 	.six.sixth {
-	    zoom: 1;
+		zoom: 1;
 	}
 	.clearfix:after {
 		content: "."; 

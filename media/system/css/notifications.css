@@ -6,226 +6,303 @@
  */
 
 /* Environment */
-#system-environment {
-	display: block;
-	margin: 0;
-	padding: 0;
-	border: none;
-}
-#system-environment p {
-	border: none;
-	display: block;
-	margin: 0;
-	padding: 0;
-	height: 5px;
-	color: #ffffc0;
-	overflow: hidden;
-	zoom: 1;
-	background: #fff;
-	background-image: -webkit-gradient(linear, 0 0, 100% 100%,
-										color-stop(.25, rgba(255, 255, 255, .075)), color-stop(.25, transparent),
-										color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .075)),
-										color-stop(.75, rgba(255, 255, 255, .075)), color-stop(.75, transparent),
-										to(transparent));
-	background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
-									transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
-									transparent 75%, transparent);
-	background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
-									transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
-									transparent 75%, transparent);
-	background-image: -ms-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
-									transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
-									transparent 75%, transparent);
-	background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
-									transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
-									transparent 75%, transparent);
-	background-image: linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
-									transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
-									transparent 75%, transparent);
-	-webkit-background-size: 30px 30px;
-	-moz-background-size: 30px 30px;
-	background-size: 30px 30px; /* Controls the size of the stripes */
-}
-#system-environment p.production {
-	background-color: #84A7DB;
-	color: #e8f1fe;
-	border-color: #6685b2;
-}
-#system-environment p.stage {
-	background-color: #619926;
-	color: #e9ffae;
-	border-color: #3f7704;
-}
-#system-environment p.testing {
-	background-color: #cea638;
-	color: #ffffc0;
-	border-color: #ac8416;
-}
-#system-environment p.development {
-	background-color: #ba4a3b;
-	color: #ffd2c3;
-	border-color: #982819;
-}
+	#system-environment {
+		display: block;
+		margin: 0;
+		padding: 0;
+		border: none;
+	}
+	#system-environment p {
+		border: none;
+		display: block;
+		margin: 0;
+		padding: 0;
+		height: 5px;
+		color: #ffffc0;
+		overflow: hidden;
+		zoom: 1;
+		background: #fff;
+		background-image: -webkit-gradient(linear, 0 0, 100% 100%,
+											color-stop(.25, rgba(255, 255, 255, .075)), color-stop(.25, transparent),
+											color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .075)),
+											color-stop(.75, rgba(255, 255, 255, .075)), color-stop(.75, transparent),
+											to(transparent));
+		background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
+										transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
+										transparent 75%, transparent);
+		background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
+										transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
+										transparent 75%, transparent);
+		background-image: -ms-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
+										transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
+										transparent 75%, transparent);
+		background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
+										transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
+										transparent 75%, transparent);
+		background-image: linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
+										transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
+										transparent 75%, transparent);
+		-webkit-background-size: 30px 30px;
+		-moz-background-size: 30px 30px;
+		background-size: 30px 30px; /* Controls the size of the stripes */
+	}
+	#system-environment p.production {
+		background-color: #84A7DB;
+		color: #e8f1fe;
+		border-color: #6685b2;
+	}
+	#system-environment p.stage {
+		background-color: #619926;
+		color: #e9ffae;
+		border-color: #3f7704;
+	}
+	#system-environment p.testing {
+		background-color: #cea638;
+		color: #ffffc0;
+		border-color: #ac8416;
+	}
+	#system-environment p.development {
+		background-color: #ba4a3b;
+		color: #ffd2c3;
+		border-color: #982819;
+	}
 
-/* Notifications */
-.archive,
-.help,
-.info,
-.information,
-.alert,
-.warning,
-.failed,
-.error,
-.passed,
-.locked,
-.timed,
-.flagged { 
-	margin: 1em 0;
-	padding: 10px 10px 10px 30px; 
-}
-.help,
-.info,
-.information { 
-	border: 1px solid #C2D6EF; 
-	color: #4379CA !important;
-}
-.help { 
-	background: #f6efff url("/media/system/images/help.png") 10px 10px no-repeat;
-	border: 1px solid #d7c2ef; 
-	color: #8a42cd !important;
-}
-.info,
-.information { 
-	background: #EFF7FF url("/media/system/images/information.png") 10px 10px no-repeat;
-}
-.help a,
-.info a {
-	color: blue !important;
-	border-bottom: 1px solid blue;
-}
-.help a:hover,
-.info a:hover,
-.information a:hover {
-	color: #000;
-	border-bottom: 1px solid #000;
-}
-.alert,
-.warning { 
-	border: 1px solid #EFEAC2; 
-	color: #CC6633 !important;
-	background: #FFFDEF url("/media/system/images/warning.png") 10px 10px no-repeat;
-}
-.failed,
-.error { 
-	border: 1px solid #EFCCC2; 
-	color: #CC0000 !important;
-	background: #FFF2EF url("/media/system/images/error.png") 10px 10px no-repeat; 
-}
-.passed { 
-	border: 1px solid #CDDECA; 
-	color: #7AAB69 !important;
-	background: #F3FDF0 url("/media/system/images/accept.png") 10px 10px no-repeat; 
-}
-.archive { 
-	border: 1px solid #ccc; 
-	color: #777;
-	background: #efefef url("/media/system/images/archive.png") 10px 10px no-repeat;
-}
-.locked { 
-	border: 1px solid #EFEAC2; 
-	color: #CC6633 !important;
-	background: #FFFDEF url("/media/system/images/lock.png") 10px 10px no-repeat;
-}
-.timed { 
-	border: 1px solid #e9dab3; 
-	color: #ad733f !important;
-	background: #f5efe2 url("/media/system/images/hourglass.png") 10px 10px no-repeat;
-}
-.flagged { 
-	border: 1px solid #EFCCC2; 
-	color: #CC0000 !important;
-	background: #FFF2EF url("/media/system/images/flag.png") 10px 10px no-repeat;
-}
-.archive h4,
-.passed h4,
-.failed h4,
-.help h4,
-.info h4,
-.information h4,
-.warning h4,
-.error h4,
-.timed h4,
-.flagged h4 { 
-	margin-top: 0;
-	padding-top: 0;
-}
-.failed h4,
-.error h4 {
-	color: #CC0000 !important;
-}
-.help h4 {
-	color: #8a42cd !important;
-}
-.info h4,
-.information h4 {
-	color: #4379CA !important;
-}
-.warning h4 {
-	color: #CC6633 !important;
-}
-.passed h4 {
-	color: #360 !important;
-}
+	#system-message {
+		margin: 0 1.61803399em 1.61803399em 1.61803399em;
+		margin: 0 0 1.61803399em 0;
+	}
+	#system-message ul,
+	#system-message li {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	#system-message a {
+		color: #fff;
+		font-weight: 700;
+	}
+	#system-message dt {
+		display: none;
+	}
 
-/* System Messages */
-#system-message {
-	margin: 0;
-	padding: 1em 0 0 0;
-}
-#system-message dt {
-	margin: 0;
-	padding: 10px 0 0 30px;
-	font-weight: bold;
-	border: 1px solid #C2D6EF; 
-	color: #4379CA; 
-	background: #EFF7FF url("/media/system/images/information.png") 10px 10px no-repeat;
-	border-bottom: none;
-}
-#system-message dd {
-	margin: 0;
-	padding: 0 10px 10px 30px;
-	border: 1px solid #C2D6EF;
-	border-top: none;
-	color: #4379CA;
-	background: #EFF7FF;
-}
-#system-message dd ul,
-#system-message dd ul li {
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
+/* System messages */
+	.help,
+	.info,
+	.warning,
+	.error,
+	.passed,
+	#system-message dd {
+		margin: 0;
+		padding: 0.61803399em 0.61803399em 0.61803399em 2.31803399em;
+		color: #ffffc0;
+		position: relative;
+		overflow: hidden;
+		zoom: 1;
+		background: #fff;
+		border: 0.27em solid #eee;
+		-webkit-border-radius: 0.27em;
+		-moz-border-radius: 0.27em;
+		border-radius: 0.27em;
+		text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+		z-index: 1;
+		background-image: -webkit-gradient(linear, 0 0, 100% 100%,
+											color-stop(.25, rgba(255, 255, 255, .075)), color-stop(.25, transparent),
+											color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .075)),
+											color-stop(.75, rgba(255, 255, 255, .075)), color-stop(.75, transparent),
+											to(transparent));
+		background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
+										transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
+										transparent 75%, transparent);
+		background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
+										transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
+										transparent 75%, transparent);
+		background-image: -ms-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
+										transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
+										transparent 75%, transparent);
+		background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
+										transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
+										transparent 75%, transparent);
+		background-image: linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%,
+										transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%,
+										transparent 75%, transparent);
+		-webkit-background-size: 30px 30px;
+		-moz-background-size: 30px 30px;
+		-ms-background-size: 30px 30px;
+		-o-background-size: 30px 30px;
+		background-size: 30px 30px; /* Controls the size of the stripes */
+	}
+	.help,
+	.info,
+	.warning,
+	.error,
+	.passed {
+		margin: 1em 0;
+	}
+	.help h4,
+	.info h4,
+	.warning h4,
+	.error h4,
+	.passed h4,
+	.help h3,
+	.info h3,
+	.warning h3,
+	.error h3,
+	.passed h3 {
+		color: #fff !important;
+	}
+	.help a,
+	.info a,
+	.warning a,
+	.error a,
+	.passed a {
+		color: #fff !important;
+		border-bottom: 1px dotted #eee !important;
+	}
+	.help a:hover,
+	.info a:hover,
+	.warning a:hover,
+	.error a:hover,
+	.passed a:hover {
+		color: #fff !important;
+		border-bottom: 1px solid #fff !important;
+	}
+	#system-message dd {
+		margin: 0;
+	}
 
-/* Errors */
-#system-message dt.error {
-	color: #CC0000;
-	background: #FFF2EF url("/media/system/images/error.png") 10px 10px no-repeat;
-	border-color: #EFCCC2; 
-}
-#system-message dd.error {
-	color: #CC0000;
-	background: #FFF2EF;
-	border-color: #EFCCC2;
-}
+	.passed,
+	#system-message dd.message {
+		background-color: #619926;
+		color: #e9ffae !important;
+		border-color: #3f7704;
+	}
+	.info,
+	#system-message dd.info {
+		background-color: #84A7DB;
+		color: #e8f1fe !important;
+		border-color: #6685b2;
+	}
+	.help,
+	#system-message dd.help {
+		background-color: #a284db;
+		color: #f3eefe !important;
+		border-color: #8066b2;
+	}
+	.warning,
+	#system-message dd.warning {
+		background-color: #cea638;
+		color: #ffffc0 !important;
+		border-color: #ac8416;
+	}
+	.error,
+	#system-message dd.error {
+		background-color: #ba4a3b;
+		color: #ffd2c3 !important;
+		border-color: #982819;
+	}
+	.help:before,
+	.info:before,
+	.warning:before,
+	.error:before,
+	.passed:before,
+	#system-message dd:before {
+		content: "";
+		position: absolute;
+		top: 0.81803399em;
+		width: 16px;
+		height: 16px;
+		font-size: 16px;
+		line-height: 16px;
+		display: inline-block;
+		left: 0.61803399em;
+		font-family: 'Fontcons';
+		margin-top: -0.25em;
+	}
+	.passed:before,
+	#system-message dd.message:before {
+		content: "\2714";
+	}
+	.help:before,
+	#system-message dd.help:before {
+		content: "\f059";
+		left: 0.71803399em;
+	}
+	.error:before,
+	#system-message dd.error:before {
+		content: "\f094";
+	}
+	.warning:before,
+	#system-message dd.warning:before {
+		content: "\26A0";
+	}
+	.info:before,
+	#system-message dd.info:before {
+		content: "\f05a";
+		left: 0.71803399em;
+	}
 
-/* Warnings */
-#system-message dt.warning {
-	border-color: #EFEAC2;
-	color: #CC6633; 
-	background: #FFFDEF url("/media/system/images/warning.png") 10px 10px no-repeat;
-}
-#system-message dd.warning {
-	border-color: #EFEAC2; 
-	color: #CC6633; 
-	background: #FFFDEF;
+/* IE 7 and older */
+	.help,
+	#system-message dd.help { 
+		*background-image: url("/media/system/images/help.png");
+		*background-position: 10px 10px;
+		*background-repeat: no-repeat;
+	}
+	.info,
+	#system-message dd.info { 
+		*background-image: url("/media/system/images/information.png");
+		*background-position: 10px 10px;
+		*background-repeat: no-repeat;
+	}
+	.warning,
+	#system-message dd.warning { 
+		*background-image: url("/media/system/images/warning.png");
+		*background-position: 10px 10px;
+		*background-repeat: no-repeat;
+	}
+	.error,
+	#system-message dd.error { 
+		*background-image: url("/media/system/images/error.png");
+		*background-position: 10px 10px;
+		*background-repeat: no-repeat;
+	}
+	.passed,
+	#system-message dd.passed { 
+		*background-image: url("/media/system/images/accept.png");
+		*background-position: 10px 10px;
+		*background-repeat: no-repeat;
+	}
+
+/* Firefox 3.4 and older */
+@-moz-document url-prefix() {
+	html.firefox3 .help,
+	html.firefox3 #system-message dd.help { 
+		background-image: url("/media/system/images/help.png");
+		background-position: 10px 10px;
+		background-repeat: no-repeat;
+	}
+	html.firefox3 .info,
+	html.firefox3 #system-message dd.info { 
+		background-image: url("/media/system/images/information.png");
+		background-position: 10px 10px;
+		background-repeat: no-repeat;
+	}
+	html.firefox3 .warning,
+	html.firefox3 #system-message dd.warning { 
+		background-image: url("/media/system/images/warning.png");
+		background-position: 10px 10px;
+		background-repeat: no-repeat;
+	}
+	html.firefox3 .error,
+	html.firefox3 #system-message dd.error { 
+		background-image: url("/media/system/images/error.png");
+		background-position: 10px 10px;
+		background-repeat: no-repeat;
+	}
+	html.firefox3 .passed,
+	html.firefox3 #system-message dd.passed { 
+		background-image: url("/media/system/images/accept.png");
+		background-position: 10px 10px;
+		background-repeat: no-repeat;
+	}
 }
