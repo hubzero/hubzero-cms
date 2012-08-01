@@ -45,22 +45,6 @@ class GroupsControllerSystem extends Hubzero_Controller
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app =& JFactory::getApplication();
-		$config = JFactory::getConfig();
-
-		$ldap_params = JComponentHelper::getParams('com_ldap');
-		
-		$this->view->ldapBaseDN = $ldap_params->get('ldap_basedn','');
-		$this->view->ldapURI = $ldap_params->get('ldap_primary', 'ldap://localhost');
-		$this->view->ldapTLS = $ldap_params->get('ldap_tls',0);
-		$this->view->ldapSearchUserDN = $ldap_params->get('ldap_searchdn','cn=search');
-		$this->view->ldapSearchUserPW = $ldap_params->get('ldap_searchpw','');
-		$this->view->ldapAcctMgrDN = $ldap_params->get('ldap_managerdn','cn=acctmgr');
-		$this->view->ldapAcctMgrPW = $ldap_params->get('ldap_managerpw','');
-
-		$this->view->conn = &Hubzero_Factory::getPLDC();
-
 		$this->view->status = Hubzero_Group::status();
 
 		// Set any errors
