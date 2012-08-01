@@ -143,8 +143,8 @@ HUB.TagBrowser = {
 		var type = $('#pretype').val();
 		var k = $('#preinput2').val();
 		var p = null;
-		$("#level-1 .open").each(function(el) {
-			p = el.attr('id');
+		$("#level-1 .open").each(function(i, el) {
+			p = $(el).attr('id');
 		});
 		var i = p.replace('col1_', '');
 		i = (i == 'all') ? '' : i;
