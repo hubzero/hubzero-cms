@@ -92,7 +92,7 @@ class Hubzero_User_Helper
 	{
 		$db =& JFactory::getDBO();
 
-		if (empty($domain) || ($domain == 'hzldap') || ($domain == 'hubzero'))
+		if (empty($domain) || ($domain == 'hubzero'))
 			return false;
 
 		$query = 'SELECT domain_id FROM #__xdomains WHERE ' .
@@ -121,7 +121,7 @@ class Hubzero_User_Helper
 	{
 		$db =& JFactory::getDBO();
 
-		if (empty($domain) || ($domain == 'hzldap') || ($domain == 'hubzero'))
+		if (empty($domain) || ($domain == 'hubzero'))
 			return $domain_username;
 
 		$query = 'SELECT uidNumber FROM #__xdomain_users,#__xdomains WHERE ' .
@@ -204,7 +204,7 @@ class Hubzero_User_Helper
 	{
 		$db =& JFactory::getDBO();
 
-		if (empty($domain) || ($domain == 'hzldap') || ($domain == 'hubzero'))
+		if (empty($domain) || ($domain == 'hubzero'))
 			return false;
 
 		$query = 'SELECT domain_id FROM #__xdomains WHERE ' .
