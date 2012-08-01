@@ -591,22 +591,15 @@ class ToolVersion extends  JTable
 	 * @param      string $toolid Parameter description (if any) ...
 	 * @param      array &$versions Parameter description (if any) ...
 	 * @param      string $toolname Parameter description (if any) ...
-	 * @param      boolean $ldap Parameter description (if any) ...
 	 * @param      integer $exclude_dev Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
-	public function getToolVersions($toolid, &$versions, $toolname='', $ldap=false, $exclude_dev = 0)
+	public function getToolVersions($toolid, &$versions, $toolname='', $exclude_dev = 0)
 	{
 		ximport('Hubzero_Tool');
 		$xlog =& Hubzero_Factory::getLogger();
 
 		$objA = new ToolAuthor($this->_db);
-
-		if ($ldap) 
-		{
-			$xlog->logDebug("getToolVersions(): ldap read DEPRECATED.");
-			$ldap = false;
-		}
 
 		$query  = "SELECT v.*, d.* ";
 		$query .= "FROM #__tool_version as v LEFT JOIN #__doi_mapping as d ON d.alias = v.toolname AND d.local_revision=v.revision ";
@@ -656,18 +649,11 @@ class ToolVersion extends  JTable
 	 * @param      string $version Parameter description (if any) ...
 	 * @param      string $toolname Parameter description (if any) ...
 	 * @param      string $instance Parameter description (if any) ...
-	 * @param      boolean $ldap Parameter description (if any) ...
 	 * @return     object Return description (if any) ...
 	 */
-	public function getVersionInfo($id, $version='', $toolname='', $instance='', $ldap=false)
+	public function getVersionInfo($id, $version='', $toolname='', $instance='')
 	{
 		$xlog =& Hubzero_Factory::getLogger();
-
-		if ($ldap) 
-		{
-			$xlog->logDebug("getVersionInfo() ldap read DEPRECATED");
-			$ldap = false;
-		}
 
 		// data comes from mysql
 		$juser  =& JFactory::getUser();
@@ -829,20 +815,14 @@ class ToolVersion extends  JTable
 	 * @param      array &$tool Parameter description (if any) ...
 	 * @param      array &$err Parameter description (if any) ...
 	 * @param      string $id Parameter description (if any) ...
-	 * @param      boolean $ldap Parameter description (if any) ...
 	 * @param      object $config Parameter description (if any) ...
 	 * @param      integer $checker Parameter description (if any) ...
 	 * @param      integer $result Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
-	public function validToolReg(&$tool, &$err, $id, $ldap, $config, $checker=0, $result=1)
+	public function validToolReg(&$tool, &$err, $id, $config, $checker=0, $result=1)
 	{
-	    	$xlog =& Hubzero_Factory::getLogger();
-
-		if ($ldap) {
-		    	$xlog->logDebug("validToolReg() ldap read DEPRECATED");
-			$ldap = false;
-		}
+	    $xlog =& Hubzero_Factory::getLogger();
 
 		$tgObj = new ToolGroup($this->_db);
 
@@ -897,7 +877,7 @@ class ToolVersion extends  JTable
 		}
 
 		if ($tool['version']) {
-			$this->validVersion($tool['toolname'], $tool['version'], $error_v, $ldap, 0);
+			$this->validVersion($tool['toolname'], $tool['version'], $error_v, 0);
 			if($error_v) { $err['version'] = $error_v; }
 		}
 
@@ -955,12 +935,11 @@ class ToolVersion extends  JTable
 	 * @param      unknown $toolname Parameter description (if any) ...
 	 * @param      unknown $newversion Parameter description (if any) ...
 	 * @param      unknown &$error Parameter description (if any) ...
-	 * @param      integer $ldap Parameter description (if any) ...
 	 * @param      integer $required Parameter description (if any) ...
 	 * @param      integer $result Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
-	public function validVersion($toolname, $newversion, &$error, $ldap=0, $required=1, $result=1)
+	public function validVersion($toolname, $newversion, &$error, $required=1, $result=1)
 	{
 		$toolhelper = new ContribtoolHelper();
 
@@ -976,7 +955,7 @@ class ToolVersion extends  JTable
 		}
 		else if ($required) 
 		{
-			$this->getToolVersions('', $versions, $toolname, $ldap, 1);
+			$this->getToolVersions('', $versions, $toolname, 1);
 
 			if ($versions) 
 			{

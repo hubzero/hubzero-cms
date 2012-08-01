@@ -81,8 +81,6 @@ class ToolsControllerResource extends Hubzero_Controller
 	{
 		ximport('Hubzero_Tool_Version');
 
-		$ldap = $this->config->get('ldap_read', 0);
-
 		// Incoming
 		$alias   = JRequest::getVar('app', '');
 		$version = JRequest::getVar('editversion', 'dev');
@@ -110,7 +108,7 @@ class ToolsControllerResource extends Hubzero_Controller
 		$nextstep = $step + 1;
 
 		// get tool version (dev or current) information
-		$obj->getToolStatus($this->_toolid, $this->_option, $status, $version, $ldap);
+		$obj->getToolStatus($this->_toolid, $this->_option, $status, $version);
 
 		// get resource information
 		$row = new ResourcesResource($this->database);
@@ -223,7 +221,7 @@ class ToolsControllerResource extends Hubzero_Controller
 			else 
 			{
 				// get updated tool status
-				$obj->getToolStatus($this->_toolid, $this->_option, $status, $version, $ldap);
+				$obj->getToolStatus($this->_toolid, $this->_option, $status, $version);
 			}
 
 			if ($version == 'dev') 
@@ -517,8 +515,6 @@ class ToolsControllerResource extends Hubzero_Controller
 	 */
 	public function previewTask()
 	{
-		$ldap = $this->config->get('ldap_read', 0);
-
 		// Incoming
 		$alias   = JRequest::getVar('app', '');
 		$version = JRequest::getVar('editversion', 'dev');
@@ -545,7 +541,7 @@ class ToolsControllerResource extends Hubzero_Controller
 		}
 
 		// Get tool version (dev or current) information
-		$obj->getToolStatus($this->_toolid, $this->_option, $status, $version, $ldap);
+		$obj->getToolStatus($this->_toolid, $this->_option, $status, $version);
 
 		// Instantiate our tag object
 		$tagcloud = new ResourcesTags($this->database);
@@ -585,7 +581,7 @@ class ToolsControllerResource extends Hubzero_Controller
 		// Get updated version
 		$objV = new ToolVersion($this->database);
 
-		$thistool = $objV->getVersionInfo('', $version, $resource->alias, '', $ldap);
+		$thistool = $objV->getVersionInfo('', $version, $resource->alias, '');
 		$thistool = $thistool ? $thistool[0] : '';
 
 		// Replace resource info with requested version

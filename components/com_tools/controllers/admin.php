@@ -152,8 +152,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 			$this->_toolid, 
 			$this->_option, 
 			$status, 
-			'dev', 
-			$this->config->get('ldap_read', 0)
+			'dev'
 		);
 		// Check for a status
 		if (count($status) <= 0) 
@@ -224,8 +223,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 			$this->_toolid, 
 			$this->_option, 
 			$status, 
-			'dev', 
-			$this->config->get('ldap_read', 0)
+			'dev'
 		);
 		// Check for a status
 		if (count($status) <= 0) 
@@ -308,15 +306,12 @@ class ToolsControllerAdmin extends Hubzero_Controller
 			return;
 		}
 
-		$ldap = $this->config->get('ldap_read', 0);
-
 		// Get the tool status
 		$obj->getToolStatus(
 			$this->_toolid, 
 			$this->_option, 
 			$status, 
-			'dev', 
-			$ldap
+			'dev' 
 		);
 		// Check for a status
 		if (count($status) <= 0) 
@@ -336,19 +331,6 @@ class ToolsControllerAdmin extends Hubzero_Controller
 		else 
 		{
 			$this->setMessage(JText::_('NOTICE_UNPUBLISHED_PREV_VERSIONS'));
-
-			if ($ldap) 
-			{
-				$hzt = Hubzero_Tool::getInstance($this->_toolid);
-				if (is_object($hzt) && $hzt->unpublishAllVersions('ldap')) 
-				{
-					$this->setMessage(JText::_('NOTICE_UNPUBLISHED_PREV_VERSIONS_LDAP'));
-				}
-				else 
-				{
-					$this->setError(JText::_('ERR_FAILED_TO_UNPUBLISH_PREV_VERSIONS_LDAP'));
-				}
-			}
 		}
 
 		// Set errors to view
@@ -399,15 +381,12 @@ class ToolsControllerAdmin extends Hubzero_Controller
 			return;
 		}
 
-		$ldap_read = $this->config->get('ldap_read', 0);
-
 		// Get the tool status
 		$obj->getToolStatus(
 			$this->_toolid, 
 			$this->_option, 
 			$status, 
-			'dev', 
-			$ldap_read
+			'dev' 
 		);
 		// Check for a status
 		if (count($status) <= 0) 
@@ -422,7 +401,6 @@ class ToolsControllerAdmin extends Hubzero_Controller
 		$xlog->logDebug("publish(): checkpoint 1:$result");
 
 		// get config
-		$ldap_save = $this->config->get('ldap_save', 0);
 
 		// Create a Tool Version object
 		$objV = new ToolVersion($this->database);
@@ -430,7 +408,6 @@ class ToolsControllerAdmin extends Hubzero_Controller
 			$this->_toolid, 
 			$tools, 
 			'', 
-			$ldap_read, 
 			1
 		);
 
@@ -619,9 +596,6 @@ class ToolsControllerAdmin extends Hubzero_Controller
 			}
 		}
 
-		$xlog->logDebug("publish(): checkpoint 5:$result, running ldap stuff");
-		// ldap actions
-
 		if ($result)
 		{
 			$invokedir = rtrim($this->config->get('invokescript_dir', DS . 'apps'), "\\/");
@@ -792,15 +766,13 @@ class ToolsControllerAdmin extends Hubzero_Controller
 			return false;
 		}
 
-		$ldap = $this->config->get('ldap_read', 0);
-
 		$tarball_path = $this->config->get('sourcecodePath');
 
 		$xlog->logDebug("finalizeTool(): checkpoint 2");
 
 		// Create a Tool object
 		$obj = new Tool($this->database);
-		$obj->getToolStatus($this->_toolid, $this->_option, $status, 'dev', $ldap);
+		$obj->getToolStatus($this->_toolid, $this->_option, $status, 'dev');
 
 		if (count($status) > 0) 
 		{

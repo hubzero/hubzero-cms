@@ -212,8 +212,6 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			$this->_msg = JRequest::getVar('msg', '', 'post');
 		}
 
-		$ldap = $this->config->get('ldap_read', 0);
-
 		// check access rights
 		if (!$this->_checkAccess($this->_toolid)) 
 		{
@@ -222,7 +220,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		}
 
 		// get tool status
-		$obj->getToolStatus($this->_toolid, $this->_option, $status, 'dev', $ldap);
+		$obj->getToolStatus($this->_toolid, $this->_option, $status, 'dev');
 
 		if (!$status) 
 		{
@@ -358,8 +356,6 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			$this->_error = JRequest::getVar('error', '');
 		}
 
-		$ldap = $this->config->get('ldap_read', 0);
-
 		// check access rights
 		if (!$this->_checkAccess($this->_toolid)) 
 		{
@@ -369,7 +365,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 
 		// Create a Tool Version object
 		$objV = new ToolVersion($this->database);
-		$objV->getToolVersions($this->_toolid, $versions, '', $ldap);
+		$objV->getToolVersions($this->_toolid, $versions, '');
 
 		// add the CSS and JS
 		$this->_getStyles($this->_option, 'assets/css/' . $this->_controller . '.css');
@@ -473,8 +469,6 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			$this->_error = JRequest::getVar('error', '');
 		}
 
-		$ldap = $this->config->get('ldap_read', 0);
-
 		// check access rights
 		if (!$this->_checkAccess($this->_toolid)) 
 		{
@@ -483,7 +477,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		}
 
 		// get tool status
-		$obj->getToolStatus($this->_toolid, $this->_option, $status, 'dev', $ldap);
+		$obj->getToolStatus($this->_toolid, $this->_option, $status, 'dev');
 
 		if (!$status) 
 		{
@@ -562,8 +556,6 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			$this->_error = JRequest::getVar('error', '');
 		}
 
-		$ldap = $this->config->get('ldap_read', 0);
-
 		// check access rights
 		if (!$this->_checkAccess($this->_toolid)) 
 		{
@@ -572,7 +564,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		}
 
 		// Create a Tool object
-		$obj->getToolStatus($this->_toolid, $this->_option, $status, 'dev', $ldap);
+		$obj->getToolStatus($this->_toolid, $this->_option, $status, 'dev');
 
 		if (!$status) 
 		{
@@ -946,7 +938,6 @@ class ToolsControllerPipeline extends Hubzero_Controller
 
 		$today = date('Y-m-d H:i:s', time());
 
-		$ldap_save    = $this->config->get('ldap_save', 0);
 		$group_prefix = $this->config->get('group_prefix', 'app-');
 		$dev_suffix   = $this->config->get('dev_suffix', '_dev');
 
@@ -1246,13 +1237,11 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			return false;
 		}
 
-		$ldap = 0;
-
 		// Create a Tool object
 		if (empty($toolinfo)) 
 		{
 			$obj = new Tool($this->database);
-			$obj->getToolStatus($this->_toolid, $this->_option, $toolinfo, 'dev', $ldap);
+			$obj->getToolStatus($this->_toolid, $this->_option, $toolinfo, 'dev');
 		}
 
 		if (!empty($toolinfo)) 
