@@ -63,10 +63,9 @@ class Hubzero_Factory
 	/**
 	 * Get an LDAP connection
 	 * 
-	 * @param      integer $primary Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	public static function getLDC($primary = 0)
+	public static function getPLDC()
 	{
 		static $instances;
 
@@ -77,227 +76,143 @@ class Hubzero_Factory
 		$acctman   = $ldap_params->get('ldap_managerdn','cn=admin');
 		$acctmanPW = $ldap_params->get('ldap_managerpw','');
 		$pldap     = $ldap_params->get('ldap_primary', 'ldap://localhost');
-		$aldap     = $ldap_params->get('ldap_secondary', '');
 		
 		if ($debug) 
 		{
 			$xlog =& Hubzero_Factory::getLogger();
 		}
 
-		if (empty($primary) && empty($aldap))
+		if (empty($instances[1]))
 		{
-			$primary = 1;
-		}
+			$negotiate_tls = $ldap_params->get('ldap_tls', 0);
+			$port          = '389';
+			$use_ldapV3    = 1;
+			$no_referrals  = 1;
 
-		if (!empty($primary))
-		{
-			if (empty($instances[1]))
+			if (!is_numeric($port))
 			{
-				$negotiate_tls = $ldap_params->get('ldap_tls', 0);
-				$port          = '389';
-				$use_ldapV3    = 1;
-				$no_referrals  = 1;
+				$port = '389';
 
-				if (!is_numeric($port))
+				$pattern = "/^\s*(ldap[s]{0,1}:\/\/|)([^:]*)(\:(\d+)|)\s*$/";
+
+				if (preg_match($pattern, $pldap, $matches))
 				{
-					$port = '389';
+					$pldap = $matches[2];
 
-					$pattern = "/^\s*(ldap[s]{0,1}:\/\/|)([^:]*)(\:(\d+)|)\s*$/";
-
-					if (preg_match($pattern, $pldap, $matches))
+					if ($matches[1] == 'ldaps://')
 					{
-						$pldap = $matches[2];
-
-						if ($matches[1] == 'ldaps://')
-						{
-							$negotiate_tls = false;
-						}
-
-						if (isset($matches[4]) && is_numeric($matches[4]))
-						{
-							$port = $matches[4];
-						}
-					}
-				}
-
-				$instances[1] = @ldap_connect($pldap, $port);
-
-				if ($instances[1] == false)
-				{
-					if ($debug) $xlog->logDebug("getLDC($primary): ldap_connect($pldap,$port) failed. [" . posix_getpid() . "] " . ldap_error($instances[1]));
-					return false;
-				}
-
-				if ($debug) 
-				{
-					$xlog->logDebug("getLDC($primary): ldap_connect($pldap,$port) success. ");
-				}
-
-				if ($use_ldapV3)
-				{
-					if (@ldap_set_option($instances[1], LDAP_OPT_PROTOCOL_VERSION, 3) == false)
-					{
-						if ($debug) 
-						{
-							$xlog->logDebug("getLDC($primary): ldap_set_option(LDAP_OPT_PROTOCOL_VERSION, 3) failed: " . ldap_error($instances[1]));
-						}
-						return false;
+						$negotiate_tls = false;
 					}
 
-					if ($debug) 
+					if (isset($matches[4]) && is_numeric($matches[4]))
 					{
-						$xlog->logDebug("getLDC($primary): ldap_set_option(LDAP_OPT_PROTOCOL_VERSION, 3) success.");
+						$port = $matches[4];
 					}
-				}
-
-				if (@ldap_set_option($instances[1], LDAP_OPT_RESTART, 1) == false)
-				{
-					if ($debug) 
-					{
-						$xlog->logDebug("getLDC($primary): ldap_set_option(LDAP_OPT_RESTART, 1) failed: " . ldap_error($instances[1]));
-					}
-					return false;
-				}
-
-				if ($debug) 
-				{
-					$xlog->logDebug("getLDC($primary): ldap_set_option(LDAP_OPT_RESTART, 1) success.");
-				}
-
-				if ($use_ldapV3 && !@ldap_set_option($_ldc, LDAP_OPT_REFERRALS, $no_referrals ? false : true))
-				{
-					if ($debug) 
-					{
-						$xlog->logDebug("getLDC($primary): ldap_set_option(LDAP_OPT_REFERRALS, " . ($no_referrals ? 'false' : 'true') . ") failed: " . ldap_error($instances[1]));
-					}
-					return false;
-				}
-
-				if ($debug) 
-				{
-					$xlog->logDebug("getLDC($primary): ldap_set_option(LDAP_OPT_REFERRALS, " . ($no_referrals ? 'false' : 'true')  . ") success.");
-				}
-
-				if ($use_ldapV3 && $negotiate_tls)
-				{
-					if (!@ldap_start_tls($instances[1]))
-					{
-						if ($debug) 
-						{
-							$xlog->logDebug("getLDC($primary): ldap_start_tls() failed: " . ldap_error($instances[1]));
-						}
-						return false;
-					}
-
-					if ($debug) 
-					{
-						$xlog->logDebug("getLDC($primary): ldap_start_tls() success.");
-					}
-				}
-
-				if (@ldap_bind($instances[1], $acctman, $acctmanPW) == false)
-				{
-					$err     = ldap_errno($instances[1]);
-					$errstr  = ldap_error($instances[1]);
-					$errstr2 = ldap_err2str($err);
-					if ($debug) 
-					{
-						$xlog->logDebug("getLDC($primary): ldap_bind() failed. [" . posix_getpid() . "] " .  $errstr);
-					}
-					return false;
-				}
-
-				if ($debug) 
-				{
-					$xlog->logDebug("getLDC($primary): ldap_bind() success.");
-				}
-
-				if (empty($instances[0]))
-				{
-					$instances[0] = $instances[1];
 				}
 			}
 
-			return $instances[1];
-		}
-		else
-		{
+			$instances[1] = @ldap_connect($pldap, $port);
+
+			if ($instances[1] == false)
+			{
+				if ($debug) 
+				{
+					$xlog->logDebug("getPLDC(): ldap_connect($pldap,$port) failed. [" . posix_getpid() . "] " . ldap_error($instances[1]));
+				}
+				return false;
+			}
+
+			if ($debug) 
+			{
+				$xlog->logDebug("getPLDC(): ldap_connect($pldap,$port) success. ");
+			}
+
+			if ($use_ldapV3)
+			{
+				if (@ldap_set_option($instances[1], LDAP_OPT_PROTOCOL_VERSION, 3) == false)
+				{
+					if ($debug) 
+					{
+						$xlog->logDebug("getPLDC(): ldap_set_option(LDAP_OPT_PROTOCOL_VERSION, 3) failed: " . ldap_error($instances[1]));
+					}
+					return false;
+				}
+
+				if ($debug) 
+				{
+					$xlog->logDebug("getPLDC(): ldap_set_option(LDAP_OPT_PROTOCOL_VERSION, 3) success.");
+				}
+			}
+
+			if (@ldap_set_option($instances[1], LDAP_OPT_RESTART, 1) == false)
+			{
+				if ($debug) 
+				{
+					$xlog->logDebug("getPLDC(): ldap_set_option(LDAP_OPT_RESTART, 1) failed: " . ldap_error($instances[1]));
+				}
+				return false;
+			}
+
+			if ($debug) 
+			{
+				$xlog->logDebug("getPLDC(): ldap_set_option(LDAP_OPT_RESTART, 1) success.");
+			}
+
+			if ($use_ldapV3 && !@ldap_set_option($_ldc, LDAP_OPT_REFERRALS, $no_referrals ? false : true))
+			{
+				if ($debug) 
+				{
+					$xlog->logDebug("getPLDC(): ldap_set_option(LDAP_OPT_REFERRALS, " . ($no_referrals ? 'false' : 'true') . ") failed: " . ldap_error($instances[1]));
+				}
+				return false;
+			}
+
+			if ($debug) 
+			{
+				$xlog->logDebug("getPLDC(): ldap_set_option(LDAP_OPT_REFERRALS, " . ($no_referrals ? 'false' : 'true')  . ") success.");
+			}
+
+			if ($use_ldapV3 && $negotiate_tls)
+			{
+				if (!@ldap_start_tls($instances[1]))
+				{
+					if ($debug) 
+					{
+						$xlog->logDebug("getPLDC(): ldap_start_tls() failed: " . ldap_error($instances[1]));
+					}
+					return false;
+				}
+
+				if ($debug) 
+				{
+					$xlog->logDebug("getPLDC(): ldap_start_tls() success.");
+				}
+			}
+
+			if (@ldap_bind($instances[1], $acctman, $acctmanPW) == false)
+			{
+				$err     = ldap_errno($instances[1]);
+				$errstr  = ldap_error($instances[1]);
+				$errstr2 = ldap_err2str($err);
+				if ($debug) 
+				{
+					$xlog->logDebug("getPLDC(): ldap_bind() failed. [" . posix_getpid() . "] " .  $errstr);
+				}
+				return false;
+			}
+
+			if ($debug) 
+			{
+				$xlog->logDebug("getPLDC(): ldap_bind() success.");
+			}
+
 			if (empty($instances[0]))
 			{
-				$negotiate_tls = $ldap_params->get('ldap_tls', 0);
-				$port          = '389';
-				$use_ldapV3    = 1;
-				$no_referrals  = 1;
-
-				$instances[0] = @ldap_connect($aldap);
-
-				if ($instances[0] == false)
-				{
-					if ($debug) 
-					{
-						$xlog->logDebug("getLDC($primary): ldap_connect($aldap) failed. " . ldap_error($instances[0]));
-					}
-
-					return false;
-				}
-
-				if ($debug) 
-				{
-					$xlog->logDebug("getLDC($primary): ldap_connect($aldap) success. ");
-				}
-
-				if (@ldap_set_option($instances[0], LDAP_OPT_PROTOCOL_VERSION, 3) == false)
-				{
-					@ldap_close($instances[0]);
-					$instances[0] = false;
-					if ($debug) 
-					{
-						$xlog->logDebug("getLDC($primary): ldap_set_option(protocol v3) failed: " . ldap_error($instances[0]));
-					}
-					return $instances[0];
-				}
-
-				if ($debug) 
-				{
-					$xlog->logDebug("getLDC($primary): ldap_set_option(protocol v3) success.");
-				}
-
-				if (@ldap_bind($instances[0], $acctman, $acctmanPW) == false)
-				{
-					if ($debug) 
-					{
-						$xlog->logDebug("getLDC($primary): ldap_bind failed: " . ldap_error($instances[0]));
-					}
-					@ldap_close($instances[0]);
-					$instances[0] = false;
-					return $instances[0];
-				}
-
-				if ($debug) 
-				{
-					$xlog->logDebug("getLDC($primary): ldap_bind() success.");
-				}
+				$instances[0] = $instances[1];
 			}
-
-			return $instances[0];
-		}
-	}
-
-	/**
-	 * Get the LDAP connection
-	 * 
-	 * @return     object
-	 */
-	public static function getPLDC()
-	{
-		static $instances;
-
-		if (empty($instances[0]))
-		{
-			$instances[0] = &Hubzero_Factory::getLDC(1);
 		}
 
-		return $instances[0];
+		return $instances[1];
 	}
 
 	/**
