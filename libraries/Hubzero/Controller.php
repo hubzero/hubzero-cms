@@ -390,9 +390,10 @@ class Hubzero_Controller extends JObject
 	 *
 	 * @param	string	$option 	Component name to load stylesheet from
 	 * @param	string	$script 	Name of the stylesheet to load
+	 * @param	boolean	$system 	Pull contents from shared /media/system folder
 	 * @return	void
 	 */
-	protected function _getStyles($option='', $stylesheet='')
+	protected function _getStyles($option='', $stylesheet='', $system=false)
 	{
 		ximport('Hubzero_Document');
 
@@ -402,7 +403,14 @@ class Hubzero_Controller extends JObject
 			$option = 'com_' . $option;
 		}
 
-		Hubzero_Document::addComponentStylesheet($option, $stylesheet);
+		if ($system)
+		{
+			Hubzero_Document::addSystemStylesheet($stylesheet);
+		}
+		else 
+		{
+			Hubzero_Document::addComponentStylesheet($option, $stylesheet);
+		}
 	}
 
 	/**
@@ -411,9 +419,10 @@ class Hubzero_Controller extends JObject
 	 *
 	 * @param	string	$script 	Name of the script to load
 	 * @param	string	$option 	Component name to load script from
+	 * @param	boolean	$system 	Pull contents from shared /media/system folder
 	 * @return	void
 	 */
-	protected function _getScripts($script='', $option='')
+	protected function _getScripts($script='', $option='', $system=false)
 	{
 		ximport('Hubzero_Document');
 
@@ -424,7 +433,14 @@ class Hubzero_Controller extends JObject
 		}
 		$script = ($script) ? $script : $this->_name;
 
-		Hubzero_Document::addComponentScript($option, $script);
+		if ($system)
+		{
+			Hubzero_Document::addSystemScript($script);
+		}
+		else 
+		{
+			Hubzero_Document::addComponentScript($option, $script);
+		}
 	}
 
 	/**
@@ -434,8 +450,7 @@ class Hubzero_Controller extends JObject
 	 */
 	protected function _buildPathway()
 	{
-		$app = JFactory::getApplication();
-		$pathway = $app->getPathway();
+		$pathway = JFactory::getApplication()->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0)
 		{
@@ -482,10 +497,20 @@ class Hubzero_Controller extends JObject
 			return false;
 		}
 
-		// Check if they're a site admin (from Joomla)
-		if ($this->juser->authorize($this->_option, 'manage'))
+		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
-			return true;
+			if ($this->juser->authorise('core.admin', $this->_option))
+			{
+				return true;
+			}
+		}
+		else 
+		{
+			// Check if they're a site admin (from Joomla)
+			if ($this->juser->authorize($this->_option, 'manage'))
+			{
+				return true;
+			}
 		}
 
 		return false;
