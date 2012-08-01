@@ -228,7 +228,7 @@ class Hubzero_Trac_Project
 
 			$db->setQuery($query);
 
-			$result = $db->loadResult();
+			$result = $db->query();
 
 			if ($result === false && $db->getErrorNum() == 1062) {
 				$query = "SELECT id FROM #__trac_project WHERE name=" . $db->Quote($this->name) . ";";
