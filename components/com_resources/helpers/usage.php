@@ -273,17 +273,23 @@ class ResourcesUsage
 		switch ($rating)
 		{
 			case 0.5: $class = ' half-stars';      break;
-			case 1:   $class = ' one-stars';       break;
+			case 1:
+			case 1.0: $class = ' one-stars';       break;
 			case 1.5: $class = ' onehalf-stars';   break;
-			case 2:   $class = ' two-stars';       break;
+			case 2:
+			case 2.0: $class = ' two-stars';       break;
 			case 2.5: $class = ' twohalf-stars';   break;
-			case 3:   $class = ' three-stars';     break;
+			case 3:
+			case 3.0: $class = ' three-stars';     break;
 			case 3.5: $class = ' threehalf-stars'; break;
-			case 4:   $class = ' four-stars';      break;
+			case 4:
+			case 4.0: $class = ' four-stars';      break;
 			case 4.5: $class = ' fourhalf-stars';  break;
-			case 5:   $class = ' five-stars';      break;
+			case 5:
+			case 5.0: $class = ' five-stars';      break;
 			case 0:
-			default:  $class = ' no-stars';      break;
+			case 0.0:
+			default:  $class = ' no-stars';        break;
 		}
 		return $class;
 	}
@@ -543,7 +549,7 @@ class AndmoreStats extends ResourcesUsage
 			{
 				$html .= '  <tr>' . "\n";
 				$html .= '   <th scope="row">'.JText::_('Users').':</th>' . "\n";
-				$html .= '   <td>'.$this->users.'</td>' . "\n";
+				$html .= '   <td>' . $this->users . '</td>' . "\n";
 				$html .= '  </tr>' . "\n";
 			}
 			/*if ($this->views != 'unavailable') 
