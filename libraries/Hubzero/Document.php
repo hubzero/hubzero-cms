@@ -90,7 +90,7 @@ class Hubzero_Document
 	}
 
 	/**
-	 * Adds a linked script to the page
+	 * Adds a linked script from a component to the page
 	 *
 	 * @param   string  $component  URL to the linked script
 	 * @param	string  $script     Script name (optional, uses module name if left blank)
@@ -113,6 +113,86 @@ class Hubzero_Document
 		}
 
 		$base = DS . 'components' . DS . $component;
+
+		$url = $base . DS . $script . '.js';
+		$urlAlt = '';
+		if (JPluginHelper::isEnabled('system', 'jquery'))
+		{
+			if (file_exists(JPATH_SITE . $base . DS . $script . '.jquery.js')) 
+			{
+				$urlAlt .= $base . DS . $script . '.jquery.js';
+			}
+		}
+
+		if ($urlAlt && file_exists(JPATH_SITE . $urlAlt)) 
+		{
+			$jdocument->addScript($urlAlt . '?v=' . filemtime(JPATH_SITE . $urlAlt), $type, $defer, $async);
+		} 
+		else if (file_exists(JPATH_SITE . $url)) 
+		{
+			$jdocument->addScript($url . '?v=' . filemtime(JPATH_SITE . $url), $type, $defer, $async);
+		}
+	}
+
+	/**
+	 * Adds a linked stylesheet from the system to the page
+	 *
+	 * @param	string  $stylesheet Stylesheet name
+	 * @param	string  $type       Mime encoding type
+	 * @param	string  $media      Media type that this stylesheet applies to
+	 * @param	string  $attribs    Attributes to add to the link
+	 * @return  void
+	 */
+	public static function addSystemStylesheet($stylesheet, $type = 'text/css', $media = null, $attribs = array())
+	{
+		if (!$stylesheet)
+		{
+			return;
+		}
+
+		$mainframe =& JFactory::getApplication();
+
+		$jdocument = &JFactory::getDocument();
+
+		$template  = $mainframe->getTemplate();
+
+		$templatecss = DS . 'templates' . DS . $template . DS . 'html' . DS . 'system' . DS . 'css' . DS . $stylesheet;
+
+		$systemcss = DS . 'media' . DS . 'system' . DS . 'css' . DS . $stylesheet;
+
+		if (file_exists(JPATH_SITE . $templatecss)) 
+		{
+			$jdocument->addStyleSheet($templatecss . '?v=' . filemtime(JPATH_SITE . $templatecss), $type, $media, $attribs);
+		} 
+		else 
+		{
+			$jdocument->addStyleSheet($systemcss . '?v=' . filemtime(JPATH_SITE . $systemcss), $type, $media, $attribs);
+		}
+	}
+
+	/**
+	 * Adds a linked script from the system to the page
+	 *
+	 * @param	string  $script     Script name (optional, uses module name if left blank)
+	 * @param   string  $type       Type of script. Defaults to 'text/javascript'
+	 * @param   bool    $defer      Adds the defer attribute.
+	 * @param   bool    $async      Adds the async attribute.
+	 * @return  void
+	 */
+	public static function addSystemScript($script, $type = 'text/javascript', $defer = false, $async = false)
+	{
+		if (!$script)
+		{
+			return;
+		}
+
+		$mainframe = JFactory::getApplication();
+
+		$jdocument = JFactory::getDocument();
+
+		$template  = $mainframe->getTemplate();
+
+		$base = DS . 'media' . DS . 'system' . DS . 'js';
 
 		$url = $base . DS . $script . '.js';
 		$urlAlt = '';
