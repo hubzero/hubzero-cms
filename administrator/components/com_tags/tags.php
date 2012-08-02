@@ -69,7 +69,12 @@ if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '
 JSubMenuHelper::addEntry(
 	JText::_('Tags'),
 	'index.php?option=com_tags',
-	true
+	($controllerName == 'entries')
+);
+JSubMenuHelper::addEntry(
+	JText::_('Relationships'),
+	'index.php?option=com_tags&controller=relationships',
+	($controllerName == 'relationships')
 );
 JSubMenuHelper::addEntry(
 	JText::_('Plugins'),
