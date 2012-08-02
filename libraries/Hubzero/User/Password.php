@@ -202,7 +202,7 @@ class Hubzero_User_Password
 	public function toArray($format = 'mysql')
 	{
 		$result = array();
-		$ldap_params = JComponentHelper::getParams('com_ldap');
+		$ldap_params = JComponentHelper::getParams('com_system');
 		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
 
 		if ($format == 'mysql') {
@@ -508,7 +508,7 @@ class Hubzero_User_Password
 	private function _ldap_read($instance = null)
 	{
 		$conn = &Hubzero_Factory::getPLDC();
-		$ldap_params = JComponentHelper::getParams('com_ldap');
+		$ldap_params = JComponentHelper::getParams('com_system');
 		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
 		
 		if (empty($conn) || empty($instance)) {
@@ -599,7 +599,7 @@ class Hubzero_User_Password
 			return false;
 		}
 
-		$ldap_params = JComponentHelper::getParams('com_ldap');
+		$ldap_params = JComponentHelper::getParams('com_system');
 		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
 
 		$pwinfo = $this->toArray('ldap');
@@ -817,7 +817,7 @@ class Hubzero_User_Password
 	{
 		$conn = & Hubzero_Factory::getPLDC();
 		
-		$ldap_params = JComponentHelper::getParams('com_ldap');
+		$ldap_params = JComponentHelper::getParams('com_system');
 		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
 		
 		return false;

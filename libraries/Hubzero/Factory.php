@@ -71,7 +71,7 @@ class Hubzero_Factory
 
 		$debug = 0;
 		
-		$ldap_params = JComponentHelper::getParams('com_ldap');
+		$ldap_params = JComponentHelper::getParams('com_system');
 
 		$acctman   = $ldap_params->get('ldap_managerdn','cn=admin');
 		$acctmanPW = $ldap_params->get('ldap_managerpw','');

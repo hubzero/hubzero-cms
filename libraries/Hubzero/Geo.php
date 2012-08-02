@@ -47,16 +47,16 @@ class Hubzero_Geo
 
 		if (!is_object($instance)) 
 		{
-			$geodb_params = JComponentHelper::getParams('com_geodb');
+			$geodb_params = JComponentHelper::getParams('com_system');
 
 			$options = array();
-			$options['driver']   = $geodb_params->get('driver','mysql');
-			$options['host']     = $geodb_params->get('host','localhost');
-			$options['port']     = $geodb_params->get('port','');
-			$options['user']     = $geodb_params->get('user','');
-			$options['password'] = $geodb_params->get('password','');
-			$options['database'] = $geodb_params->get('database','');
-			$options['prefix']   = $geodb_params->get('prefix','');
+			$options['driver']   = $geodb_params->get('geodb_driver', 'mysql');
+			$options['host']     = $geodb_params->get('geodb_host', 'localhost');
+			$options['port']     = $geodb_params->get('geodb_port', '');
+			$options['user']     = $geodb_params->get('geodb_user', '');
+			$options['password'] = $geodb_params->get('geodb_password', '');
+			$options['database'] = $geodb_params->get('geodb_database', '');
+			$options['prefix']   = $geodb_params->get('geodb_prefix', '');
 
 			if (empty($options['database']) || empty($options['user']) || empty($options['password']))
 			{

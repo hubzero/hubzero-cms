@@ -2367,7 +2367,7 @@ class ContribtoolController extends JObject
 
 		$database =& JFactory::getDBO();
 		
-		$ldap_params = JComponentHelper::getParams('com_ldap');	
+		$ldap_params = JComponentHelper::getParams('com_system');	
 		$pw = $ldap_params->get('ldap_searchpw','');
 
 		$scriptdirparam =& JComponentHelper::getParams( 'com_contribtool' );

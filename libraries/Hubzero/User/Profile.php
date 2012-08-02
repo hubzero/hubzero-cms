@@ -491,7 +491,7 @@ class Hubzero_User_Profile extends JObject
 			return false;
 		}
 		
-		$ldap_params = JComponentHelper::getParams('com_ldap');
+		$ldap_params = JComponentHelper::getParams('com_system');
 		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
 		
 		if (empty($hubLDAPBaseDN))
@@ -862,7 +862,7 @@ class Hubzero_User_Profile extends JObject
 		}
 
 		$conn = Hubzero_Factory::getPLDC();
-		$ldap_params = JComponentHelper::getParams('com_ldap');
+		$ldap_params = JComponentHelper::getParams('com_system');
 		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
 		
 		if (empty($hubLDAPBaseDN))
@@ -1041,7 +1041,7 @@ class Hubzero_User_Profile extends JObject
 		$conn = &Hubzero_Factory::getPLDC();
 		$errno = 0;
 
-		$ldap_params = JComponentHelper::getParams('com_ldap');
+		$ldap_params = JComponentHelper::getParams('com_system');
 		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
 		
 		if (empty($hubLDAPBaseDN))
@@ -1828,7 +1828,7 @@ class Hubzero_User_Profile extends JObject
 	{
 		$conn =& Hubzero_Factory::getPLDC();
 
-		$ldap_params = JComponentHelper::getParams('com_ldap');
+		$ldap_params = JComponentHelper::getParams('com_system');
 		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
 		
 		if (empty($hubLDAPBaseDN))
