@@ -236,7 +236,7 @@ class MembersControllerProfiles extends Hubzero_Controller
 		if ($this->view->filters['show'] == 'contributors') 
 		{
 			$this->view->title = JText::_('CONTRIBUTORS');
-			$this->view->filters['sortby'] = JRequest::getVar('sortby', 'rcount DESC');
+			$this->view->filters['sortby'] = JRequest::getVar('sortby', 'contributions');
 		} 
 		else 
 		{
