@@ -91,20 +91,20 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 
 		<label<?php if ($this->task == 'save' && !$this->entry->title) { echo ' class="fieldWithErrors"'; } ?>>
 			<?php echo JText::_('PLG_GROUPS_BLOG_TITLE'); ?>
-			<input type="text" name="entry[title]" size="35" value="<?php echo htmlentities(stripslashes($this->entry->title),ENT_COMPAT,'UTF-8'); ?>" />
+			<input type="text" name="entry[title]" size="35" value="<?php echo $this->escape(stripslashes($this->entry->title)); ?>" />
 		</label>
 		<?php if ($this->task == 'save' && !$this->entry->title) { ?>
 			<p class="error"><?php echo JText::_('PLG_GROUPS_BLOG_ERROR_PROVIDE_TITLE'); ?></p>
 		<?php } ?>
 		
-		<label>
+		<label for="entry_content">
 			<?php echo JText::_('PLG_GROUPS_BLOG_FIELD_CONTENT'); ?>
-			<?php echo $editor->display('entry[content]', 'entry_content', htmlentities(stripslashes($this->entry->content),ENT_COMPAT,'UTF-8'), '', '40', '35'); ?>
-			<span class="hint"><a href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiFormatting'); ?>" class="popup">Wiki formatting</a> is allowed.</span>
+			<?php echo $editor->display('entry[content]', 'entry_content', $this->escape(stripslashes($this->entry->content)), '', '40', '35'); ?>
+			<span class="hint"><a href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>" class="popup">Wiki formatting</a> is allowed.</span>
 		</label>
 		<?php if ($this->task == 'save' && !$this->entry->content) { ?>
 			<p class="error"><?php echo JText::_('PLG_GROUPS_BLOG_ERROR_PROVIDE_CONTENT'); ?></p>
-		<?php } ?>			
+		<?php } ?>
 
 		<label>
 			<?php echo JText::_('PLG_GROUPS_BLOG_FIELD_TAGS'); ?>

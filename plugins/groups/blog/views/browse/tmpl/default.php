@@ -47,11 +47,33 @@ $wikiconfig = array(
 $p =& Hubzero_Wiki_Parser::getInstance();
 ?>
 <a name="blog"></a>
-<h3 class="heading"><?php echo JText::_('PLG_GROUPS_BLOG'); ?></h3>
+<h3 class="heading">
+	<?php echo JText::_('PLG_GROUPS_BLOG'); ?>
+</h3>
+
+<ul class="blog-options">
+	<li>
+		Blog Actions
+	</li>
+<?php if ($this->canpost) { ?>
+	<li>
+		<a class="add" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=new'); ?>">
+			<?php echo JText::_('New entry'); ?>
+		</a>
+	</li>
+<?php } ?>
+<?php if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
+	<li>
+		<a class="config" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=settings'); ?>" title="<?php echo JText::_('Edit Settings'); ?>">
+			<?php echo JText::_('Settings'); ?>
+		</a>
+	</li>
+<?php } ?>
+</ul>
 
 <div class="main section">
 	<div class="aside">
-		<?php if($this->config->get('feeds_enabled') || $this->canpost || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
+		<?php if($this->config->get('feeds_enabled')) { ?>
 			<div class="container">
 				<h4>Blog Actions</h4>
 				<?php
@@ -74,22 +96,6 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 						echo "<p class=\"feed\"><a href=\"{$feed}\">".JText::_('Subscribe RSS')."</a></p>";
 					}
 				?>
-			
-				<?php if ($this->canpost) { ?>
-					<p class="add">
-						<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=new'); ?>">
-							<?php echo JText::_('New entry'); ?>
-						</a>
-					</p>
-				<?php } ?>
-			
-				<?php if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
-					<p class="config">
-						<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=settings'); ?>" title="<?php echo JText::_('Edit Settings'); ?>">
-							<?php echo JText::_('Settings'); ?>
-						</a>
-					</p>
-				<?php } ?>
 			</div>
 		<?php } ?>
 		
@@ -150,7 +156,7 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 				<?php if ($this->popular) { ?>
 					<?php foreach ($this->popular as $row) { ?>
 						<li>
-							<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias); ?>">
+							<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$row->publish_up, $this->monthFormat, $this->tz).'/'.$row->alias); ?>">
 								<?php echo stripslashes($row->title); ?>
 							</a>
 						</li>
@@ -165,7 +171,7 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 				<?php if ($this->recent) { ?>
 					<?php foreach ($this->recent as $row) { ?>
 						<li>
-							<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias); ?>">
+							<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date', $row->publish_up, $this->monthFormat, $this->tz).'/'.$row->alias); ?>">
 								<?php echo stripslashes($row->title); ?>
 							</a>
 						</li>
@@ -180,78 +186,106 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 		<div class="container data-entry">
 			<input class="entry-search-submit" type="submit" value="Search" />
 			<fieldset class="entry-search">
-				<legend>Search for articles</legend>				
+				<legend>Search for articles</legend>
 				<label for="entry-search-field">Enter keyword or phrase</label>
-				<input type="text" name="search" id="entry-search-field" value="<?php echo htmlentities(utf8_encode(stripslashes($this->search)),ENT_COMPAT,'UTF-8'); ?>" />
+				<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape(utf8_encode(stripslashes($this->search))); ?>" />
 			</fieldset>
 		</div><!-- / .container -->
 		<div class="container">
-			<table class="entries">
-				<caption><?php echo JText::_('Blog Entries'); ?></caption>
-				<tbody>
-					<?php if($this->rows) { ?>
-						<?php foreach ($this->rows as $row) { ?>
-							<tr>
-								<?php 
-									switch ($row->state)
-									{
-										case 1:
-											$state = JText::_('Public');
-											$cls = "public";
-											break;
-										case 2:
-											$state = JText::_('Registered members');
-											$cls = "registered";
-											break;
-										case 0:
-										default:
-											$state = JText::_('Private');
-											$cls = "private";
-											break;
-									}
-								?>
-								<td id="e<?php echo $row->id; ?>" class="<?php echo $cls; ?>">
-									<dl class="entry-meta">
-										<dt class="date"><?php echo JHTML::_('date',$row->publish_up, '%d %b, %Y', 0); ?></dt>
-										<dd class="time"><?php echo JHTML::_('date',$row->publish_up, '%I:%M %p', 0); ?></dd>
+		<?php if ($this->rows) { ?>
+			<ol class="blog-entries">
+<?php 
+			$cls = 'even';
+			foreach ($this->rows as $row)
+			{
+				$cls = ($cls == 'even') ? 'odd' : 'even';
+				
+				switch ($row->state)
+				{
+					case 1:
+						$state = JText::_('Public');
+						$cls = "public";
+						break;
+					case 2:
+						$state = JText::_('Registered members');
+						$cls = "registered";
+						break;
+					case 0:
+					default:
+						$state = JText::_('Private');
+						$cls = "private";
+						break;
+				}
+?>
+				<li class="entry <?php echo $cls; ?>" id="e<?php echo $row->id; ?>">
+					<h4 class="entry-title">
+						<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date', $row->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $row->publish_up, $this->monthFormat, $this->tz) . '/' . $row->alias); ?>">
+							<?php echo $this->escape(stripslashes($row->title)); ?>
+						</a>
+<?php if ($this->juser->get('id') == $row->created_by || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
+						<a class="edit" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=edit&entry='.$row->id); ?>" title="<?php echo JText::_('Edit'); ?>">
+							<?php echo JText::_('Edit'); ?>
+						</a>
+						<a class="delete" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=delete&entry='.$row->id); ?>" title="<?php echo JText::_('Delete'); ?>">
+							<?php echo JText::_('Delete'); ?>
+						</a>
+<?php } ?>
+					</h4>
+					<dl class="entry-meta">
+						<dt>
+							<span>
+								<?php echo JText::sprintf('Entry #%s', $row->id); ?>
+							</span>
+						</dt>
+						<dd class="date">
+							<time datetime="<?php echo $row->publish_up; ?>">
+								<?php echo JHTML::_('date', $row->publish_up, $this->dateFormat, $this->tz); ?>
+							</time>
+						</dd>
+						<dd class="time">
+							<time datetime="<?php echo $row->publish_up; ?>">
+								<?php echo JHTML::_('date', $row->publish_up, $this->timeFormat, $this->tz); ?>
+							</time>
+						</dd>
+						<dd class="author">
+							<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->created_by); ?>">
+								<?php echo $this->escape(stripslashes($row->name)); ?>
+							</a>
+						</dd>
+<?php if ($row->allow_comments == 1) { ?>
+						<dd class="comments">
+							<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date', $row->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $row->publish_up, $this->monthFormat, $this->tz) . '/' . $row->alias . '#comments'); ?>">
+								<?php echo JText::sprintf('PLG_GROUPS_BLOG_NUM_COMMENTS', $row->comments); ?>
+							</a>
+						</dd>
+<?php } else { ?>
+						<dd class="comments">
+							<span>
+								<?php echo JText::_('PLG_GROUPS_BLOG_COMMENTS_OFF'); ?>
+							</span>
+						</dd>
+<?php } ?>
+<?php if ($this->juser->get('id') == $row->created_by || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
+						<dd class="state <?php echo $cls; ?>">
+							<?php echo $state; ?>
+						</dd>
+<?php } ?>
+					</dl>
+					<div class="entry-content">
+						<p>
+							<?php 
+							$content = plgGroupsBlog::stripWiki($row->content);
+							echo Hubzero_View_Helper_Html::shortenText($content, 300, 0);
+							?> 
+						</p>
+					</div>
+				</li>
+	<?php } ?>
+			</ol>
+<?php } else { ?>
+			<p>Currently there are no blog entries.</p>
+<?php } ?>
 
-										<?php if ($row->allow_comments == 1) { ?>
-											<dd class="comments"><a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias.'#comments'); ?>"><?php echo JText::sprintf('PLG_GROUPS_BLOG_NUM_COMMENTS', $row->comments); ?></a></dd>
-										<?php } else { ?>
-											<dd class="comments"><?php echo JText::_('PLG_GROUPS_BLOG_COMMENTS_OFF'); ?></dd>
-										<?php } ?>
-										<dd class="state"><?php echo $state; ?></dd>
-									</dl>
-
-									<h4 class="entry-title">
-										<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias); ?>"><?php echo stripslashes($row->title); ?></a>
-
-										<?php if ($this->juser->get('id') == $row->created_by || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
-											<a class="edit" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=edit&entry='.$row->id); ?>" title="<?php echo JText::_('Edit'); ?>"><?php echo JText::_('Edit'); ?></a>
-											<a class="delete" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=delete&entry='.$row->id); ?>" title="<?php echo JText::_('Delete'); ?>"><?php echo JText::_('Delete'); ?></a>
-										<?php } ?>
-									</h4>
-									<div class="entry-content">
-										<p class="entry-author">Posted by <cite><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by); ?>"><?php echo stripslashes($row->name); ?></a></cite></p>
-										<p>
-											<?php 
-												$content = plgGroupsBlog::stripWiki($row->content);
-												echo Hubzero_View_Helper_Html::shortenText($content, 300, 0);
-												//echo $p->parse( "\n".stripslashes($content), $wikiconfig, true, true );
-											?> 
-											<a class="readmore" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias); ?>" title="<?php echo JText::sprintf('PLG_GROUPS_BLOG_READMORE', strip_tags(stripslashes($row->title))) ?>">Continue reading &rarr;</a>
-										</p>
-									</div>
-								</td>
-							</tr>
-						<?php } ?>
-					<?php } else { ?>
-						<tr>
-							<td class="no-entries">Currently there are no blog entries.</td>
-						</tr>
-					<?php } ?>
-				</tbody>
-			</table>
 			<?php echo $this->pagenavhtml; ?>
 		</div>
 	</div><!-- / .subject -->

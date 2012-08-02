@@ -245,6 +245,13 @@ class plgGroupsBlog extends JPlugin
 		$view->config     = $this->params;
 		$view->authorized = $this->authorized;
 
+		$view->dateFormat  = $this->dateFormat;
+		$view->timeFormat  = $this->timeFormat;
+		$view->yearFormat  = $this->yearFormat;
+		$view->monthFormat = $this->monthFormat;
+		$view->dayFormat   = $this->dayFormat;
+		$view->tz          = $this->tz;
+
 		// Filters for returning results
 		$filters = array();
 		$filters['limit']      = JRequest::getInt('limit', 25);
@@ -566,6 +573,13 @@ class plgGroupsBlog extends JPlugin
 		$view->authorized = $this->authorized;
 		$view->juser = $this->juser;
 
+		$view->dateFormat  = $this->dateFormat;
+		$view->timeFormat  = $this->timeFormat;
+		$view->yearFormat  = $this->yearFormat;
+		$view->monthFormat = $this->monthFormat;
+		$view->dayFormat   = $this->dayFormat;
+		$view->tz          = $this->tz;
+
 		if (isset($this->entry) && is_object($this->entry)) 
 		{
 			$view->row = $this->entry;
@@ -621,7 +635,7 @@ class plgGroupsBlog extends JPlugin
 				$plugin = JPluginHelper::getPlugin('members', 'blog');
 				$params = new $paramsClass($plugin->params);
 				$path = $params->get('uploadpath');
-				$path = str_replace('{{uid}}', BlogHelperMember::niceidformat($view->row->created_by), $path);
+				$path = str_replace('{{uid}}', Hubzero_View_Helper_Html::niceidformat($view->row->created_by), $path);
 			} 
 			else 
 			{
@@ -768,6 +782,13 @@ class plgGroupsBlog extends JPlugin
 		$view->task = $this->action;
 		$view->config = $this->params;
 		$view->authorized = $this->authorized;
+
+		$view->dateFormat  = $this->dateFormat;
+		$view->timeFormat  = $this->timeFormat;
+		$view->yearFormat  = $this->yearFormat;
+		$view->monthFormat = $this->monthFormat;
+		$view->dayFormat   = $this->dayFormat;
+		$view->tz          = $this->tz;
 
 		$id = JRequest::getInt('entry', 0);
 
@@ -959,6 +980,14 @@ class plgGroupsBlog extends JPlugin
 			$view->config = $this->params;
 			$view->entry = $entry;
 			$view->authorized = $this->authorized;
+			
+			$view->dateFormat  = $this->dateFormat;
+			$view->timeFormat  = $this->timeFormat;
+			$view->yearFormat  = $this->yearFormat;
+			$view->monthFormat = $this->monthFormat;
+			$view->dayFormat   = $this->dayFormat;
+			$view->tz          = $this->tz;
+			
 			if ($this->getError()) 
 			{
 				foreach ($this->getErrors() as $error)
@@ -1128,6 +1157,14 @@ class plgGroupsBlog extends JPlugin
 		$view->settings->loadPlugin($this->group->gidNumber, 'groups', 'blog');
 		$view->authorized = $this->authorized;
 		$view->message    = (isset($this->message)) ? $this->message : '';
+		
+		$view->dateFormat  = $this->dateFormat;
+		$view->timeFormat  = $this->timeFormat;
+		$view->yearFormat  = $this->yearFormat;
+		$view->monthFormat = $this->monthFormat;
+		$view->dayFormat   = $this->dayFormat;
+		$view->tz          = $this->tz;
+		
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)

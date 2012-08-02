@@ -53,6 +53,8 @@ class plgSupportBlog extends JPlugin
 			return null;
 		}
 
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'blog.entry.php');
+
 		$query  = "SELECT rc.id, rc.entry_id, rc.content as `text`, rc.created_by as author, NULL as subject, rc.anonymous as anon, 'blog' AS parent_category 
 					FROM #__blog_comments AS rc 
 					WHERE rc.id=" . $refid;
@@ -79,7 +81,7 @@ class plgSupportBlog extends JPlugin
 				$entry = new BlogEntry($database);
 				$entry->load($rows[$key]->entry_id);
 
-				$rows[$key]->href = JRoute::_('index.php?option=com_members&id=' . $entry->created_by . '&active=blog&task=' . JHTML::_('date', $entry->publish_up, $yearFormat, 0) . '/' . JHTML::_('date', $entry->publish_up, $monthFormat, 0) . '/' . $entry->alias . '#c' . $rows[$key]->id);
+				$rows[$key]->href = JRoute::_('index.php?option=com_members&id=' . $entry->created_by . '&active=blog&task=' . JHTML::_('date', $entry->publish_up, $yearFormat, $tz) . '/' . JHTML::_('date', $entry->publish_up, $monthFormat, $tz) . '/' . $entry->alias . '#c' . $rows[$key]->id);
 			}
 		}
 		return $rows;

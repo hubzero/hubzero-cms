@@ -37,29 +37,34 @@ ximport('Hubzero_Wiki_Editor');
 $editor =& Hubzero_Wiki_Editor::getInstance();
 ?>
 <a name="blog"></a>
-<h3 class="heading"><?php echo JText::_('PLG_GROUPS_BLOG'); ?></h3>
+<h3 class="heading">
+	<?php echo JText::_('PLG_GROUPS_BLOG'); ?>
+</h3>
+
+<?php if ($this->canpost || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
+	<ul class="blog-options">
+		<li>
+			Blog Actions
+		</li>
+	<?php if ($this->canpost) { ?>
+		<li>
+			<a class="add" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=new'); ?>">
+				<?php echo JText::_('New entry'); ?>
+			</a>
+		</li>
+	<?php } ?>
+	<?php if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
+		<li>
+			<a class="config" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=settings'); ?>" title="<?php echo JText::_('Edit Settings'); ?>">
+				<?php echo JText::_('Settings'); ?>
+			</a>
+		</li>
+	<?php } ?>
+	</ul>
+<?php } ?>
+
 <div class="main section">
 	<div class="aside">
-		<?php if($this->canpost || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
-			<div class="container">
-				<h4>Blog Actions</h4>
-				<?php if ($this->canpost) { ?>
-					<p class="add">
-						<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=new'); ?>">
-							<?php echo JText::_('New entry'); ?>
-						</a>
-					</p>
-				<?php } ?>
-				<?php if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
-					<p class="config">
-						<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=settings'); ?>" title="<?php echo JText::_('Edit Settings'); ?>">
-							<?php echo JText::_('Settings'); ?>
-						</a>
-					</p>
-				<?php } ?>
-			</div>
-		<?php } ?>
-		
 		<div class="blog-popular-entries">
 			<h4><?php echo JText::_('Popular Entries'); ?></h4>
 			<ol>
@@ -93,14 +98,41 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 	
 	<div class="subject">
 		<div class="entry" id="e<?php echo $this->row->id; ?>">
+			<h2 class="entry-title">
+				<?php echo stripslashes($this->row->title); ?>
+			</h2>
+
 			<dl class="entry-meta">
-				<dt class="date"><?php echo JHTML::_('date',$this->row->publish_up, '%d %b, %Y', 0); ?></dt>
-				<dd class="time"><?php echo JHTML::_('date',$this->row->publish_up, '%I:%M %p', 0); ?></dd>
-				<?php if ($this->row->allow_comments == 1) { ?>
-					<dd class="comments"><a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias.'#comments'); ?>"><?php echo JText::sprintf('PLG_GROUPS_BLOG_NUM_COMMENTS', $this->comment_total); ?></a></dd>
-				<?php } else { ?>
-					<dd class="comments"><?php echo JText::_('PLG_GROUPS_BLOG_COMMENTS_OFF'); ?></dd>
-				<?php } ?>
+				<dt>
+					<span>
+						<?php echo JText::sprintf('Entry #%s', $this->row->id); ?>
+					</span>
+				</dt>
+				<dd class="date">
+					<time datetime="<?php echo $this->row->publish_up; ?>">
+						<?php echo JHTML::_('date', $this->row->publish_up, $this->dateFormat, $this->tz); ?>
+					</time>
+				</dd>
+				<dd class="time">
+					<time datetime="<?php echo $this->row->publish_up; ?>">
+						<?php echo JHTML::_('date', $this->row->publish_up, $this->timeFormat, $this->tz); ?>
+					</time>
+				</dd>
+			<?php if ($this->row->allow_comments == 1) { ?>
+				<dd class="comments">
+					<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date', $this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date', $this->row->publish_up, $this->yearFormat, $this->tz).'/'.$this->row->alias.'#comments'); ?>">
+						<?php echo JText::sprintf('PLG_GROUPS_BLOG_NUM_COMMENTS', $this->comment_total); ?>
+					</a>
+				</dd>
+			<?php } else { ?>
+				<dd class="comments">
+					<span>
+						<?php echo JText::_('PLG_GROUPS_BLOG_COMMENTS_OFF'); ?>
+					</span>
+				</dd>
+			<?php } ?>
+			<?php if ($this->juser->get('id') == $this->row->created_by || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
+				<dd class="state">
 				<?php 
 					switch ($this->row->state)
 					{
@@ -115,25 +147,50 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 							$state = JText::_('Private');
 							break;
 					}
+					echo $state;
 				?>
-				<dd class="state"><?php echo $state; ?></dd>
-        	</dl>
-			
-			<h2 class="entry-title">
-				<?php echo stripslashes($this->row->title); ?>
-				
-				<?php if ($this->juser->get('id') == $this->row->created_by || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
-					<a class="edit" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=edit&entry='.$this->row->id); ?>" title="<?php echo JText::_('Edit'); ?>"><?php echo JText::_('Edit'); ?></a>
-					<a class="delete" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=delete&entry='.$this->row->id); ?>" title="<?php echo JText::_('Delete'); ?>"><?php echo JText::_('Delete'); ?></a>
-				<?php } ?>
-			</h2>
-			
-			<?php $creator =& JUser::getInstance( $this->row->created_by ); ?>
-			<p class="entry-author">Posted by <cite><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->row->created_by); ?>"><?php echo stripslashes($creator->get('name')); ?></a></cite></p>
+				</dd>
+				<dd class="entry-options">
+					<a class="edit" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=edit&entry='.$this->row->id); ?>" title="<?php echo JText::_('Edit'); ?>">
+						<span><?php echo JText::_('Edit'); ?></span>
+					</a>
+					<a class="delete" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=delete&entry='.$this->row->id); ?>" title="<?php echo JText::_('Delete'); ?>">
+						<span><?php echo JText::_('Delete'); ?></span>
+					</a>
+				</dd>
+			<?php } ?>
+			</dl>
+
 			<div class="entry-content">
 				<?php echo $this->row->content; ?>
 				<?php echo $this->tags; ?>
 			</div>
+
+			<?php 
+			$author = new Hubzero_User_Profile();
+			$author->load($this->row->created_by);
+			if (is_object($author) && $author->get('name')) 
+			{
+			?>
+			<div class="entry-author">
+				<h3><?php echo JText::_('About the author'); ?></h3>
+				<p class="entry-author-photo"><img src="<?php echo BlogHelperMember::getMemberPhoto($author, 0); ?>" alt="" /></p>
+				<div class="entry-author-content">
+					<h4>
+						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->row->created_by); ?>">
+							<?php echo stripslashes($author->get('name')); ?>
+						</a>
+					</h4>
+				<?php if ($author->get('bio')) { ?>
+					<p class="entry-author-bio">
+						<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($author->get('bio')), 300, 0); ?>
+					</p>
+				<?php } ?>
+				</div>
+			</div>
+			<?php
+			}
+			?>
 		</div>
 	</div><!-- /.subject -->
 </div>
@@ -163,9 +220,9 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 		?>
 
 		<div class="aside">
-			<p class="add">
-				<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias.'#post-comment'); ?>">
-					Add a comment
+			<p>
+				<a class="add" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias.'#post-comment'); ?>">
+					<?php echo JText::_('Add a comment'); ?>
 				</a>
 			</p>
 		</div><!-- / .aside -->

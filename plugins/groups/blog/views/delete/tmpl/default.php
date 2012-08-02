@@ -41,7 +41,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php } ?>
 		</div>
 		<fieldset>
-			<h3><?php echo JText::_('PLG_GROUPS_BLOG_DELETE_HEADER'); ?></h3>
+			<legend><?php echo JText::_('PLG_GROUPS_BLOG_DELETE_HEADER'); ?></legend>
 
 	 		<p class="warning"><?php echo JText::sprintf('PLG_GROUPS_BLOG_DELETE_WARNING',$this->entry->title); ?></p>
 

@@ -42,7 +42,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<p>Privacy settings can be set for individual posts when creating/editing them.</p>
 		</div>
 		<fieldset>
-			<h3><?php echo JText::_('Blog Settings'); ?></h3>
+			<legend><?php echo JText::_('Blog Settings'); ?></legend>
 
 			<label>
 				Who can post to this blog?

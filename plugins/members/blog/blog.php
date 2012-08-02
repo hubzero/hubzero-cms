@@ -207,6 +207,13 @@ class plgMembersBlog extends JPlugin
 		$view->config = $this->params;
 		//$view->authorized = $this->authorized;
 		
+		$view->dateFormat  = $this->dateFormat;
+		$view->timeFormat  = $this->timeFormat;
+		$view->yearFormat  = $this->yearFormat;
+		$view->monthFormat = $this->monthFormat;
+		$view->dayFormat   = $this->dayFormat;
+		$view->tz          = $this->tz;
+		
 		// Filters for returning results
 		$filters = array();
 		$filters['limit'] = JRequest::getInt('limit', 25);
@@ -364,7 +371,7 @@ class plgMembersBlog extends JPlugin
 			$p =& Hubzero_Wiki_Parser::getInstance();
 			
 			$path = $this->params->get('uploadpath');
-			$path = str_replace('{{uid}}',BlogHelperMember::niceidformat($this->member->get('uidNumber')), $path);
+			$path = str_replace('{{uid}}', Hubzero_View_Helper_Html::niceidformat($this->member->get('uidNumber')), $path);
 			
 			foreach ($rows as $row)
 			{
@@ -495,6 +502,13 @@ class plgMembersBlog extends JPlugin
 		$view->config = $this->params;
 		//$view->authorized = $this->authorized;
 
+		$view->dateFormat  = $this->dateFormat;
+		$view->timeFormat  = $this->timeFormat;
+		$view->yearFormat  = $this->yearFormat;
+		$view->monthFormat = $this->monthFormat;
+		$view->dayFormat   = $this->dayFormat;
+		$view->tz          = $this->tz;
+
 		if (isset($this->entry) && is_object($this->entry)) 
 		{
 			$view->row = $this->entry;
@@ -536,11 +550,11 @@ class plgMembersBlog extends JPlugin
 		if ($view->row->content) 
 		{
 			$path = $this->params->get('uploadpath');
-			$path = str_replace('{{uid}}',BlogHelperMember::niceidformat($this->member->get('uidNumber')), $path);
+			$path = str_replace('{{uid}}', Hubzero_View_Helper_Html::niceidformat($this->member->get('uidNumber')), $path);
 
 			$wikiconfig = array(
 				'option'   => $this->option,
-				'scope'    => BlogHelperMember::niceidformat($this->member->get('uidNumber')) . DS . 'blog',
+				'scope'    => Hubzero_View_Helper_Html::niceidformat($this->member->get('uidNumber')) . DS . 'blog',
 				'pagename' => $view->row->alias,
 				'pageid'   => 0,
 				'filepath' => $path,
@@ -657,6 +671,13 @@ class plgMembersBlog extends JPlugin
 		$view->member = $this->member;
 		$view->task = $this->task;
 		$view->config = $this->params;
+
+		$view->dateFormat  = $this->dateFormat;
+		$view->timeFormat  = $this->timeFormat;
+		$view->yearFormat  = $this->yearFormat;
+		$view->monthFormat = $this->monthFormat;
+		$view->dayFormat   = $this->dayFormat;
+		$view->tz          = $this->tz;
 
 		$id = JRequest::getInt('entry', 0);
 
@@ -836,6 +857,14 @@ class plgMembersBlog extends JPlugin
 			$view->config = $this->params;
 			$view->entry  = $entry;
 			$view->authorized = true;
+			
+			$view->dateFormat  = $this->dateFormat;
+			$view->timeFormat  = $this->timeFormat;
+			$view->yearFormat  = $this->yearFormat;
+			$view->monthFormat = $this->monthFormat;
+			$view->dayFormat   = $this->dayFormat;
+			$view->tz          = $this->tz;
+			
 			if ($this->getError()) 
 			{
 				foreach ($this->getErrors() as $error)
@@ -1041,6 +1070,14 @@ class plgMembersBlog extends JPlugin
 		$view->settings = new Hubzero_Plugin_Params($this->database);
 		$view->settings->loadPlugin($this->member->get('uidNumber'), 'members', 'blog');
 		//$view->authorized = $this->authorized;
+
+		$view->dateFormat  = $this->dateFormat;
+		$view->timeFormat  = $this->timeFormat;
+		$view->yearFormat  = $this->yearFormat;
+		$view->monthFormat = $this->monthFormat;
+		$view->dayFormat   = $this->dayFormat;
+		$view->tz          = $this->tz;
+
 		$view->message  = (isset($this->message)) ? $this->message : '';
 		if ($this->getError()) 
 		{

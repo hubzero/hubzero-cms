@@ -33,10 +33,28 @@ $juser =& JFactory::getUser();
 $live_site = rtrim(JURI::base(),'/');
 
 ?>
+
+<?php if ($juser->get('id') == $this->member->get('uidNumber')) : ?>
+<ul class="blog-options">
+	<li>
+		Blog Actions
+	</li>
+	<li>
+		<a class="add" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->member->get('uidNumber').'&active=blog&task=new'); ?>">
+			<?php echo JText::_('New entry'); ?>
+		</a>
+	</li>
+	<li>
+		<a class="config" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->member->get('uidNumber').'&active=blog&task=settings'); ?>" title="<?php echo JText::_('Edit Settings'); ?>">
+			<?php echo JText::_('Settings'); ?>
+		</a>
+	</li>
+</ul>
+<?php endif; ?>
+
 <div class="aside">
-	<?php if ($juser->get('id') == $this->member->get('uidNumber') || $this->config->get('feeds_enabled')) : ?>
 		<div class="container">
-			<h4>Manage Blog</h4>
+			<h4>Options</h4>
 			<p class="starter">
 				<span class="starter-point"></span>
 			</p>
@@ -61,20 +79,7 @@ $live_site = rtrim(JURI::base(),'/');
 				</a>
 			</p>
 			<?php endif; ?>
-			<?php if ($juser->get('id') == $this->member->get('uidNumber')) : ?>
-				<p class="add">
-					<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->member->get('uidNumber').'&active=blog&task=new'); ?>">
-						<?php echo JText::_('New entry'); ?>
-					</a>
-				</p>
-				<p class="config">
-					<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->member->get('uidNumber').'&active=blog&task=settings'); ?>" title="<?php echo JText::_('Edit Settings'); ?>">
-					<?php echo JText::_('Settings'); ?>
-					</a>
-				</p>
-			<?php endif; ?>
 		</div>
-	<?php endif; ?>
 	
 	<div class="container">
 		<h4>Search Entries</h4>
@@ -168,89 +173,98 @@ $live_site = rtrim(JURI::base(),'/');
 	<?php endif; ?>
 	
 	<div class="container">
-		<table class="entries">
-			<caption>Blog Entries <span>(<?php echo count($this->rows); ?>)</span></caption>
-			<tbody>
-				<?php if($this->rows) : ?>
-					<?php foreach($this->rows as $row) : ?>
-						<?php
-							switch ($row->state) 
-							{
-								case 1:
-									$cls = ' public';
-								break;
-								case 2:
-									$cls = ' registered';
-								break;
-								case 0:
-								default:
-									$cls = ' private';
-								break;
-							}
-						?>
-						<tr class="<?php echo $cls; ?>" id="e<?php echo $row->id; ?>">
-							<td>
-								<h4 class="entry-title">
-									<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias); ?>">
-										<?php echo stripslashes($row->title); ?>
-									</a>
-									<?php if ($juser->get('id') == $row->created_by) : ?>
-										<a class="edit" href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task=edit&entry='.$row->id); ?>" title="<?php echo JText::_('Edit'); ?>">
-											<?php echo JText::_('Edit'); ?>
-										</a>
-										<a class="delete" href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task=delete&entry='.$row->id); ?>" title="<?php echo JText::_('Delete'); ?>">
-											<?php echo JText::_('Delete'); ?>
-										</a>
-									<?php endif; ?>
-								</h4>
-								<div class="entry-details">
-									<span class="date">
-										<?php echo JHTML::_('date',$row->publish_up, '%d %b, %Y', 0); ?> @ <?php echo JHTML::_('date',$row->publish_up, '%I:%M %p', 0); ?>
-									</span>
-									
-									<span class="comments">
-										<?php if ($row->allow_comments == 1) : ?>
-											<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias.'#comments'); ?>"><?php echo JText::sprintf('PLG_MEMBERS_BLOG_NUM_COMMENTS', $row->comments); ?></a>	
-										<?php else: ?>
-											<?php echo JText::_('PLG_MEMBERS_BLOG_COMMENTS_OFF'); ?>
-										<?php endif; ?>
-									</span>
-									
-									<?php if ($juser->get('id') == $row->created_by) : ?>
-										<span class="state">
-											<?php
-												switch ($row->state) 
-												{
-													case 1:
-														echo JText::_('Public');
-													break;
-													case 2:
-														echo JText::_('Registered members');
-													break;
-													case 0:
-													default:
-														echo JText::_('Private');
-													break;
-												}
-											?>
-										</span>
-									<?php endif; ?>
-								</div>
-								<div class="entry-content">
-									<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($row->content), 300, 0); ?> <a class="readmore" href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias); ?>" title="<?php echo JText::sprintf('PLG_MEMBERS_BLOG_READMORE', strip_tags(stripslashes($row->title))) ?>">Continue reading &rarr;</a>
-								</div>
-							</td>
-						</tr>
-					<?php endforeach; ?>
-				<?php else: ?>
-					<tr>
-						<td>
-							<p class="warning"><?php echo JText::_('No Blog entries found.'); ?></p>
-						</td>
-					</tr>
-				<?php endif; ?>
-			</tbody>
-		</table>
+	<?php if ($this->rows) { ?>
+		<ol class="blog-entries">
+<?php 
+		$cls = 'even';
+		foreach ($this->rows as $row)
+		{
+			$cls = ($cls == 'even') ? 'odd' : 'even';
+
+			switch ($row->state)
+			{
+				case 1:
+					$state = JText::_('Public');
+					$cls = "public";
+					break;
+				case 2:
+					$state = JText::_('Registered members');
+					$cls = "registered";
+					break;
+				case 0:
+				default:
+					$state = JText::_('Private');
+					$cls = "private";
+					break;
+			}
+?>
+			<li class="entry <?php echo $cls; ?>" id="e<?php echo $row->id; ?>">
+				<h4 class="entry-title">
+					<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task='.JHTML::_('date', $row->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $row->publish_up, $this->monthFormat, $this->tz) . '/' . $row->alias); ?>">
+						<?php echo $this->escape(stripslashes($row->title)); ?>
+					</a>
+<?php if ($juser->get('id') == $row->created_by || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
+					<a class="edit" href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task=edit&entry='.$row->id); ?>" title="<?php echo JText::_('Edit'); ?>">
+						<?php echo JText::_('Edit'); ?>
+					</a>
+					<a class="delete" href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task=delete&entry='.$row->id); ?>" title="<?php echo JText::_('Delete'); ?>">
+						<?php echo JText::_('Delete'); ?>
+					</a>
+<?php } ?>
+				</h4>
+				<dl class="entry-meta">
+					<dt>
+						<span>
+							<?php echo JText::sprintf('Entry #%s', $row->id); ?>
+						</span>
+					</dt>
+					<dd class="date">
+						<time datetime="<?php echo $row->publish_up; ?>">
+							<?php echo JHTML::_('date', $row->publish_up, $this->dateFormat, $this->tz); ?>
+						</time>
+					</dd>
+					<dd class="time">
+						<time datetime="<?php echo $row->publish_up; ?>">
+							<?php echo JHTML::_('date', $row->publish_up, $this->timeFormat, $this->tz); ?>
+						</time>
+					</dd>
+					<dd class="author">
+						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->created_by); ?>">
+							<?php echo $this->escape(stripslashes($row->name)); ?>
+						</a>
+					</dd>
+<?php if ($row->allow_comments == 1) { ?>
+					<dd class="comments">
+						<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task='.JHTML::_('date', $row->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $row->publish_up, $this->monthFormat, $this->tz) . '/' . $row->alias . '#comments'); ?>">
+							<?php echo JText::sprintf('PLG_MEMBERS_BLOG_NUM_COMMENTS', $row->comments); ?>
+						</a>
+					</dd>
+<?php } else { ?>
+					<dd class="comments">
+						<span>
+							<?php echo JText::_('PLG_MEMBERS_BLOG_COMMENTS_OFF'); ?>
+						</span>
+					</dd>
+<?php } ?>
+<?php if ($juser->get('id') == $row->created_by) { ?>
+					<dd class="state <?php echo $cls; ?>">
+						<?php echo $state; ?>
+					</dd>
+<?php } ?>
+				</dl>
+				<div class="entry-content">
+					<p>
+						<?php 
+						echo Hubzero_View_Helper_Html::shortenText(stripslashes($row->content), 300, 0);
+						?> 
+					</p>
+				</div>
+			</li>
+<?php } ?>
+		</ol>
+<?php } else { ?>
+		<p>Currently there are no blog entries.</p>
+<?php } ?>
 		<?php echo $this->pagenavhtml; ?>
 	</div>
 </div><!-- / .subject -->
