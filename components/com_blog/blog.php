@@ -47,10 +47,10 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 
 ximport('Hubzero_View_Helper_Html');
 
-require_once(JPATH_COMPONENT.DS.'tables'.DS.'blog.entry.php');
-require_once(JPATH_COMPONENT.DS.'tables'.DS.'blog.comment.php');
-require_once(JPATH_COMPONENT.DS.'helpers'.DS.'blog.member.php');
-require_once(JPATH_COMPONENT.DS.'helpers'.DS.'blog.tags.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'blog.entry.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'blog.comment.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'blog.member.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'blog.tags.php');
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'entries'));
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))

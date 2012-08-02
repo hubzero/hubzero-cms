@@ -244,11 +244,12 @@ class BlogControllerMedia extends Hubzero_Controller
 		switch ($scope)
 		{
 			case 'member':
+				ximport('Hubzero_View_Helper_Html');
 				jimport('joomla.plugin.plugin');
 				$plugin = JPluginHelper::getPlugin('members', 'blog');
 				$params = new $paramClass($plugin->params);
 				$p = $params->get('uploadpath');
-				$p = str_replace('{{uid}}', BlogHelperMember::niceidformat($id), $p);
+				$p = str_replace('{{uid}}', Hubzero_View_Helper_Html::niceidformat($id), $p);
 			break;
 
 			case 'group':
