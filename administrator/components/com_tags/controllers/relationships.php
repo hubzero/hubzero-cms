@@ -34,12 +34,12 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Controller');
 
 /**
- * Tags controller class for managing entries
+ * Tags controller class for managing raltionships between tags
  */
 class TagsControllerRelationships extends Hubzero_Controller
 {
 	/**
-	 * List all tags
+	 * Show a form for looking up a tag's relationships
 	 * 
 	 * @return     void
 	 */
@@ -61,7 +61,7 @@ class TagsControllerRelationships extends Hubzero_Controller
 	}
 
 	/**
-	 * Implicit
+	 * Show a form for managing focus areas
 	 * 
 	 * @return     void
 	 */
@@ -83,7 +83,8 @@ class TagsControllerRelationships extends Hubzero_Controller
 	}
 
 	/**
-	 * Implicit
+	 * Implicit relationship lookup
+	 * Generates data in JSON format
 	 * 
 	 * @return     void
 	 */
@@ -96,7 +97,7 @@ class TagsControllerRelationships extends Hubzero_Controller
 		$id = null;
 		$descr = '';
 
-		$rv = $this->get_tag($this->database, $tag);
+		$rv = $this->get_tag($tag);
 		$nodes[] = array(
 			'id'      => $rv['id'], 
 			'tag'     => $rv['tag'], 
@@ -117,7 +118,7 @@ class TagsControllerRelationships extends Hubzero_Controller
 			$idx_map = array($rv['id'] => $t_idx);
 			$follow = array();
 			$max_weight = null;
-			foreach ($this->database->loadAssocList() as $idx=>$row)
+			foreach ($this->database->loadAssocList() as $idx => $row)
 			{
 				if (is_null($max_weight))
 				{
@@ -143,25 +144,33 @@ class TagsControllerRelationships extends Hubzero_Controller
 					'SELECT t.id, t.tag, t.raw_tag, count(t.id) AS count FROM #__tags_object to1
 					LEFT JOIN #__tags_object to2 ON to2.tbl = to1.tbl AND to2.objectid = to1.objectid
 					INNER JOIN #__tags t ON t.id = to2.tagid
-					WHERE to1.tagid = '.$tag_id.' AND t.id != '.$tag_id.' AND to1.label IS NULL 
+					WHERE to1.tagid = ' . $tag_id . ' AND t.id != ' . $tag_id . ' AND to1.label IS NULL 
 					GROUP BY t.id, t.tag, t.raw_tag
 					ORDER BY count DESC
 					LIMIT 10'
 				);
-				foreach ($this->database->loadAssocList() as $inner_idx=>$row)
+				foreach ($this->database->loadAssocList() as $inner_idx => $row)
 				{
 					$max_weight = max($max_weight, $row['count']);
 					if ($row['count'] == 1)
+					{
 						break;
+					}
 					if (isset($idx_map[$row['id']]))
+					{
 						$target_idx = $idx_map[$row['id']];
+					}
 					else
 					{
 						$nodes[] = $row;
 						$target_idx = ++$t_idx;
 						$idx_map[$row['id']] = $t_idx;
 					}
-					$links[] = array('source' => $idx, 'target' => $target_idx, 'value' => $row['count']);
+					$links[] = array(
+						'source' => $idx, 
+						'target' => $target_idx, 
+						'value'  => $row['count']
+					);
 				}
 				foreach ($links as &$link)
 					$link['value'] /= $max_weight;
@@ -175,7 +184,8 @@ class TagsControllerRelationships extends Hubzero_Controller
 	}
 
 	/**
-	 * Implicit
+	 * Hierarchical relationship lookup
+	 * Generates data in JSON format
 	 * 
 	 * @return     void
 	 */
@@ -188,7 +198,7 @@ class TagsControllerRelationships extends Hubzero_Controller
 		$id = null;
 		$descr = '';
 
-		$rv = $this->get_tag($this->database, $tag);
+		$rv = $this->get_tag($tag);
 		$nodes[] = array(
 			'id'      => $rv['id'], 
 			'tag'     => $rv['tag'], 
@@ -266,7 +276,8 @@ class TagsControllerRelationships extends Hubzero_Controller
 	}
 
 	/**
-	 * Implicit
+	 * Tag suggester for autocompletion
+	 * Generates data in JSON format
 	 * 
 	 * @return     void
 	 */
@@ -297,9 +308,6 @@ class TagsControllerRelationships extends Hubzero_Controller
 			{
 				$suggestions = array_slice($suggestions, 0, (int)$_GET['limit']);
 			}
-			$re = '/(' . preg_quote($_GET['term']) . ')/i';
-		#	foreach ($suggestions as &$tag)
-		#		$tag = preg_replace($re, '<span class="highlight">$1</span>', $tag);
 		}
 		header('Content-type: application/octet-stream'); 
 		echo json_encode($suggestions);
@@ -307,7 +315,7 @@ class TagsControllerRelationships extends Hubzero_Controller
 	}
 
 	/**
-	 * Implicit
+	 * Update a tag's relationships
 	 * 
 	 * @return     void
 	 */
@@ -316,7 +324,7 @@ class TagsControllerRelationships extends Hubzero_Controller
 		if (isset($_POST['tag']) && ($tid = (int)$_POST['tag']))
 		{
 			$this->database->execute('UPDATE #__tags SET description = ' . $this->database->quote($_POST['description']) . ' WHERE id = ' . $tid);
-			$tag = $this->get_tag($this->database, $tid);
+			$tag = $this->get_tag($tid);
 			$preload = $tag['raw_tag'];
 			$normalize = create_function('$a', 'return preg_replace(\'/[^-_a-z0-9]/\', \'\', strtolower($a));'); 
 			// reconcile post data with what we already know about a tag's relationships
@@ -353,7 +361,7 @@ class TagsControllerRelationships extends Hubzero_Controller
 						// otherwise we need to add a new relationship
 						else
 						{
-							$n_tag = $this->get_tag($this->database, $n_tag, false);
+							$n_tag = $this->get_tag($n_tag, false);
 							$this->database->execute(sprintf($sql[0], $tid, $n_tag['id']));
 						}
 					}
@@ -361,7 +369,7 @@ class TagsControllerRelationships extends Hubzero_Controller
 				// any tags that have not be unset were deleted on the form, so we need to reflect that in the database
 				foreach ($ex as $e_tag=>$_v)
 				{
-					$e_tag = $this->get_tag($this->database, $e_tag, false);
+					$e_tag = $this->get_tag($e_tag, false);
 					$this->database->execute(sprintf($sql[1], $tid, $e_tag['id']));
 				}
 			}
@@ -371,7 +379,7 @@ class TagsControllerRelationships extends Hubzero_Controller
 	}
 
 	/**
-	 * Implicit
+	 * Delete a tag and its relationships
 	 * 
 	 * @return     void
 	 */
@@ -379,7 +387,7 @@ class TagsControllerRelationships extends Hubzero_Controller
 	{
 		if (isset($_POST['tag']) && ($tid = (int)$_POST['tag']))
 		{
-			$tag = $this->get_tag($this->database, $tid, false);
+			$tag = $this->get_tag($tid, false);
 			if (isset($_POST['really']) && $_POST['really'] === 'on')
 			{
 				if (isset($_POST['do_merge']) && $_POST['do_merge'] === 'on')
@@ -388,18 +396,18 @@ class TagsControllerRelationships extends Hubzero_Controller
 					{
 						JError::raiseError(404, 'Merge target not found');
 					}
-					$this->database->setQuery('SELECT id FROM #__tags WHERE tag = \''.preg_replace('/[^-_a-z0-9]/', '', strtolower(trim($_POST['merge_tag']))).'\'');
+					$this->database->setQuery('SELECT id FROM #__tags WHERE tag = \'' . preg_replace('/[^-_a-z0-9]/', '', strtolower(trim($_POST['merge_tag']))) . '\'');
 					if (!($merge_id = $this->database->loadResult()))
 					{
 						JError::raiseError(404, 'Merge target not found');
 					}
-					$this->database->execute('UPDATE #__tags_object SET tagid = '.$merge_id.' WHERE tagid = '.$tid);
+					$this->database->execute('UPDATE #__tags_object SET tagid = ' . $merge_id . ' WHERE tagid = ' . $tid);
 				}
 				else
 				{
-					$this->database->execute('DELETE FROM #__tags_object WHERE tagid = '.$tid);
+					$this->database->execute('DELETE FROM #__tags_object WHERE tagid = ' . $tid);
 				}
-				$this->database->execute('DELETE FROM #__tags WHERE id = '.$tid);
+				$this->database->execute('DELETE FROM #__tags WHERE id = ' . $tid);
 			}
 			else
 			{
@@ -411,7 +419,7 @@ class TagsControllerRelationships extends Hubzero_Controller
 	}
 
 	/**
-	 * Implicit
+	 * Update focus areas
 	 * 
 	 * @return     void
 	 */
@@ -423,44 +431,44 @@ class TagsControllerRelationships extends Hubzero_Controller
 
 		// rebuilding from the form data is easier than finding and resolving differences
 		$this->database->execute('TRUNCATE TABLE #__focus_area_resource_type_rel');
-		foreach ($existing as $id=>$fa)
+		foreach ($existing as $id => $fa)
 		{
 			// no form field == deleted
-			if (!isset($_POST['name-'.$id]))
+			if (!isset($_POST['name-' . $id]))
 			{
-				$this->database->execute('DELETE FROM #__focus_areas WHERE id = '.$id);
+				$this->database->execute('DELETE FROM #__focus_areas WHERE id = ' . $id);
 				continue;
 			}
-			$new_tag = $this->get_tag($this->database, $_POST['name-'.$id], false);
+			$new_tag = $this->get_tag($_POST['name-' . $id], false);
 			$this->database->execute('UPDATE #__focus_areas SET 
-				mandatory_depth = '.($_POST['mandatory-'.$id] === 'mandatory' ? 1 : ($_POST['mandatory-'.$id] === 'depth' ? (int)$_POST['mandatory-depth-'.$id] : 'NULL')).', 
-				multiple_depth = '. ($_POST['multiple-'.$id]  === 'multiple'  ? 1 : ($_POST['multiple-'.$id]  === 'depth' ? (int)$_POST['multiple-depth-'.$id]  : 'NULL')).', 
-				tag_id = '.$new_tag['id'].' 
-				WHERE id = '.$id
+				mandatory_depth = ' . ($_POST['mandatory-' . $id] === 'mandatory' ? 1 : ($_POST['mandatory-' . $id] === 'depth' ? (int)$_POST['mandatory-depth-' . $id] : 'NULL')) . ', 
+				multiple_depth = ' . ($_POST['multiple-' . $id]  === 'multiple'  ? 1 : ($_POST['multiple-' . $id]  === 'depth' ? (int)$_POST['multiple-depth-' . $id]  : 'NULL')) . ', 
+				tag_id = ' . $new_tag['id'].' 
+				WHERE id = ' . $id
 			);
 			foreach ($_POST['types-'.$id] as $type_id)
 			{
-				$this->database->execute('INSERT INTO #__focus_area_resource_type_rel(focus_area_id, resource_type_id) VALUES ('.$id.', '.((int)$type_id).')');
+				$this->database->execute('INSERT INTO #__focus_area_resource_type_rel(focus_area_id, resource_type_id) VALUES (' . $id . ', ' . ((int)$type_id) . ')');
 			}
 		}
 
-		for ($idx = 1; isset($_POST['name-new-'.$idx]); ++$idx)
+		for ($idx = 1; isset($_POST['name-new-' . $idx]); ++$idx)
 		{
-			if (!trim($_POST['name-new-'.$idx]))
+			if (!trim($_POST['name-new-' . $idx]))
 			{
 				continue;
 			}
-			$tag = $this->get_tag($this->database, $_POST['name-new-'.$idx], false);
+			$tag = $this->get_tag($_POST['name-new-' . $idx], false);
 
-			$this->database->execute('INSERT INTO #__focus_areas(mandatory_depth, multiple_depth, tag_id) VALUES ('.
-				($_POST['mandatory-new-'.$idx] === 'mandatory' ? 1 : ($_POST['mandatory-new-'.$idx] === 'depth' ? (int)$_POST['mandatory-depth-new-'.$idx] : 'NULL')).', '.
-				($_POST['multiple-new-'.$idx]  === 'multiple'  ? 1 : ($_POST['multiple-new-'.$idx]  === 'depth' ? (int)$_POST['multiple-depth-new-'.$idx]  : 'NULL')).', '.
-				$tag['id'].')' 
+			$this->database->execute('INSERT INTO #__focus_areas(mandatory_depth, multiple_depth, tag_id) VALUES (' .
+				($_POST['mandatory-new-' . $idx] === 'mandatory' ? 1 : ($_POST['mandatory-new-' . $idx] === 'depth' ? (int)$_POST['mandatory-depth-new-' . $idx] : 'NULL')) . ', ' .
+				($_POST['multiple-new-' . $idx]  === 'multiple'  ? 1 : ($_POST['multiple-new-' . $idx]  === 'depth' ? (int)$_POST['multiple-depth-new-' . $idx]  : 'NULL')) . ', ' .
+				$tag['id'] . ')' 
 			);
 			$id = $this->database->insertid();
-			foreach ($_POST['types-new-'.$idx] as $type_id)
+			foreach ($_POST['types-new-' . $idx] as $type_id)
 			{
-				$this->database->execute('INSERT INTO #__focus_area_resource_type_rel(focus_area_id, resource_type_id) VALUES ('.$id.', '.((int)$type_id).')');
+				$this->database->execute('INSERT INTO #__focus_area_resource_type_rel(focus_area_id, resource_type_id) VALUES (' . $id . ', ' . ((int)$type_id) . ')');
 			}
 		}
 
@@ -481,16 +489,16 @@ class TagsControllerRelationships extends Hubzero_Controller
 	}
 
 	/**
-	 * Cancel a task (redirects to default task)
+	 * Get data for a tag
 	 *
 	 * @return     void
 	 */
-	public function get_tag($dbh, $tag_str, $detailed = true)
+	public function get_tag($tag_str, $detailed = true)
 	{
 		$this->database->setQuery(
 			is_int($tag_str) 
-				? 'SELECT DISTINCT t.id, tag, raw_tag, description, COUNT(to1.id) AS count FROM #__tags t LEFT JOIN #__tags_object to1 ON to1.tagid = t.id WHERE t.id = '.$tag_str.' GROUP BY t.id, tag, raw_tag, description'
-				: 'SELECT DISTINCT t.id, tag, raw_tag, description, COUNT(to1.id) AS count FROM #__tags t LEFT JOIN #__tags_object to1 ON to1.tagid = t.id WHERE tag = '.$this->database->quote($tag_str).' OR raw_tag = '.$this->database->quote($tag_str).' GROUP BY t.id, tag, raw_tag, description'
+				? 'SELECT DISTINCT t.id, tag, raw_tag, description, COUNT(to1.id) AS count FROM #__tags t LEFT JOIN #__tags_object to1 ON to1.tagid = t.id WHERE t.id = ' . $tag_str . ' GROUP BY t.id, tag, raw_tag, description'
+				: 'SELECT DISTINCT t.id, tag, raw_tag, description, COUNT(to1.id) AS count FROM #__tags t LEFT JOIN #__tags_object to1 ON to1.tagid = t.id WHERE tag = ' . $this->database->quote($tag_str) . ' OR raw_tag = ' . $this->database->quote($tag_str) . ' GROUP BY t.id, tag, raw_tag, description'
 		);
 		if (($tag = $this->database->loadAssoc()))
 		{
@@ -511,7 +519,7 @@ class TagsControllerRelationships extends Hubzero_Controller
 				'SELECT DISTINCT t.raw_tag
 				FROM #__tags_object to1  
 				INNER JOIN #__tags t ON t.id = to1.tagid 
-				WHERE to1.tbl = \'tags\' AND to1.label = \'label\' AND to1.objectid = '.$tag['id']
+				WHERE to1.tbl = \'tags\' AND to1.label = \'label\' AND to1.objectid = ' . $tag['id']
 			);
 			$rv['labeled'] = $this->database->loadResultArray();
 
@@ -519,7 +527,7 @@ class TagsControllerRelationships extends Hubzero_Controller
 				'SELECT DISTINCT t.raw_tag
 				FROM #__tags_object to1  
 				INNER JOIN #__tags t ON t.id = to1.objectid 
-				WHERE to1.tbl = \'tags\' AND to1.label = \'label\' AND to1.tagid = '.$tag['id']
+				WHERE to1.tbl = \'tags\' AND to1.label = \'label\' AND to1.tagid = ' . $tag['id']
 			);
 			$rv['labels'] = $this->database->loadResultArray();
 
@@ -527,7 +535,7 @@ class TagsControllerRelationships extends Hubzero_Controller
 				'SELECT DISTINCT t.raw_tag
 				FROM #__tags_object to1  
 				INNER JOIN #__tags t ON t.id = to1.tagid 
-				WHERE to1.tbl = \'tags\' AND to1.label = \'parent\' AND to1.objectid = '.$tag['id']
+				WHERE to1.tbl = \'tags\' AND to1.label = \'parent\' AND to1.objectid = ' . $tag['id']
 			);
 			$rv['parents'] = $this->database->loadResultArray();
 
@@ -535,7 +543,7 @@ class TagsControllerRelationships extends Hubzero_Controller
 				'SELECT DISTINCT t.raw_tag
 				FROM #__tags_object to1  
 				INNER JOIN #__tags t ON t.id = to1.objectid 
-				WHERE to1.tbl = \'tags\' AND to1.label = \'parent\' AND to1.tagid = '.$tag['id']
+				WHERE to1.tbl = \'tags\' AND to1.label = \'parent\' AND to1.tagid = ' . $tag['id']
 			);
 			$rv['children'] = $this->database->loadResultArray();
 			$rv['description'] = stripslashes($rv['description']);
@@ -543,18 +551,18 @@ class TagsControllerRelationships extends Hubzero_Controller
 			return $rv;
 		}
 		$norm_tag = preg_replace('/[^-_a-z0-9]/', '', strtolower($tag_str));
-		$this->database->execute('INSERT INTO #__tags(tag, raw_tag) VALUES(\''.$norm_tag.'\', '.$this->database->quote($tag_str).')');
+		$this->database->execute('INSERT INTO #__tags(tag, raw_tag) VALUES(\'' . $norm_tag . '\', ' . $this->database->quote($tag_str) . ')');
 		$id = $this->database->insertid();
 		return array(
-			'id' => $id,
-			'tag' => $norm_tag,
-			'raw_tag' => $tag_str,
+			'id'          => $id,
+			'tag'         => $norm_tag,
+			'raw_tag'     => $tag_str,
 			'description' => '',
-			'new' => true,
-			'labeled' => array(),
-			'labels' => array(),
-			'parents' => array(),
-			'children' => array()
+			'new'         => true,
+			'labeled'     => array(),
+			'labels'      => array(),
+			'parents'     => array(),
+			'children'    => array()
 		);
 	}
 }
