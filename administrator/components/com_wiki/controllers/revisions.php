@@ -39,6 +39,19 @@ ximport('Hubzero_Controller');
 class WikiControllerRevisions extends Hubzero_Controller
 {
 	/**
+	 * Execute a task
+	 * 
+	 * @return     void
+	 */
+	public function execute()
+	{
+		define('WIKI_SUBPAGE_SEPARATOR', $this->config->get('subpage_separator', '/'));
+		define('WIKI_MAX_PAGENAME_LENGTH', $this->config->get('max_pagename_length', 100));
+
+		parent::execute();
+	}
+
+	/**
 	 * Display all revisions for a page in the wiki(s)
 	 * 
 	 * @return     void
