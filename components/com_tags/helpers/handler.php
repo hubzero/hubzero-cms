@@ -29,93 +29,83 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-//----------------------------------------------------------
-//  Base Tagging class
-//  
-//  Generally, direct use is rare (and discouraged). It will 
-//  typically be extended by another component, such as 
-//  ResourcesTags or AnswersTags.
-//----------------------------------------------------------
-
-require_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tables'.DS.'tag.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tables'.DS.'object.php' );
-require_once( JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'tables'.DS.'group.php' );
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'tag.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'object.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'group.php');
 
 /**
- * Short description for 'TagsHandler'
- * 
- * Long description (if any) ...
+ * Tag helper class for adding/removing/displaying tags on objects
+ *
+ * Generally, direct use is rare (and discouraged). It will 
+ * typically be extended by another component, such as 
+ * ResourcesTags or AnswersTags.
  */
 class TagsHandler extends JObject
 {
-
 	/**
-	 * Description for '_db'
+	 * Database
 	 * 
 	 * @var unknown
 	 */
-	public $_db  = NULL;  // Database
+	public $_db  = NULL;
 
 	/**
-	 * Description for '_tbl'
+	 * Object type, used for linking objects (such as resources) to tags
 	 * 
 	 * @var string
 	 */
-	public $_tbl = 'tags';  // Secondary tag table, used for linking objects (such as resources) to tags
+	public $_tbl = 'tags';
 
 	/**
-	 * Description for '_oid'
+	 * The object to be tagged
 	 * 
 	 * @var unknown
 	 */
-	public $_oid = NULL;  // The object to be tagged
+	public $_oid = NULL;  // 
 
 	/**
-	 * Description for '_tag_tbl'
+	 * The primary tag table
 	 * 
 	 * @var string
 	 */
-	public $_tag_tbl = '#__tags';  // The primary tag table
+	public $_tag_tbl = '#__tags';
 
 	/**
-	 * Description for '_obj_tbl'
+	 * Tag/object mapping table
 	 * 
 	 * @var string
 	 */
 	public $_obj_tbl = '#__tags_object';
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $db Parameter description (if any) ...
-	 * @param      array $config Parameter description (if any) ...
+	 * @param      object $db     JDatabase
+	 * @param      array  $config Configuration options
 	 * @return     void
 	 */
-	public function __construct( $db, $config=array() )
+	public function __construct($db, $config=array())
 	{
 		$this->_db = $db;
 	}
 
 	/**
-	 * Short description for 'get_tags_on_object'
+	 * Get all the tags on an object
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $object_id Parameter description (if any) ...
-	 * @param      integer $offset Parameter description (if any) ...
-	 * @param      integer $limit Parameter description (if any) ...
-	 * @param      unknown $tagger_id Parameter description (if any) ...
-	 * @param      integer $strength Parameter description (if any) ...
-	 * @param      integer $admin Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      integer $object_id Object ID
+	 * @param      integer $offset    Record offset
+	 * @param      integer $limit     Record limit
+	 * @param      integer $tagger_id Tagger ID (set this if you want to restrict tags only added by a specific user)
+	 * @param      integer $strength  Tag strength (set this if you want to restrict tags by strength)
+	 * @param      integer $admin     Has admin access?
+	 * @return     array 
 	 */
 	public function get_tags_on_object($object_id, $offset=0, $limit=10, $tagger_id=NULL, $strength=0, $admin=0)
 	{
-		if (!isset($object_id)) {
+		if (!isset($object_id)) 
+		{
 			$this->setError('get_tags_on_object argument missing');
 			return array();
 		}
@@ -127,32 +117,37 @@ class TagsHandler extends JObject
 		$to->taggerid = $tagger_id;
 
 		$tags = $to->getTagsOnObject($object_id, $this->_tbl, $admin, $offset, $limit);
-		if (!$tags) {
-			$this->setError( $to->getError() );
+		if (!$tags) 
+		{
+			$this->setError($to->getError());
 			return array();
 		}
 		return $tags;
 	}
 
 	/**
-	 * Short description for 'safe_tag'
+	 * Add a tag to an object
+	 * This will:
+	 * 1) First, check if the tag already exists
+	 *    a) if not, creates a database entry for the tag
+	 * 2) Adds a reference linking tag with object
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $tagger_id Parameter description (if any) ...
-	 * @param      unknown $object_id Parameter description (if any) ...
-	 * @param      unknown $tag Parameter description (if any) ...
-	 * @param      integer $strength Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $tagger_id Tagger ID
+	 * @param      integer $object_id Object ID
+	 * @param      string  $tag       Tag
+	 * @param      integer $strength  Tag strength
+	 * @return     boolean True on success, false if errors
 	 */
 	public function safe_tag($tagger_id, $object_id, $tag, $strength=1)
 	{
-		if (!isset($tagger_id) || !isset($object_id) || !isset($tag)) {
+		if (!isset($tagger_id) || !isset($object_id) || !isset($tag)) 
+		{
 			$this->setError('safe_tag argument missing');
 			return false;
 		}
 
-		if ($this->normalize_tag($tag) === '0') {
+		if ($this->normalize_tag($tag) === '0') 
+		{
 			return true;
 		}
 
@@ -163,25 +158,30 @@ class TagsHandler extends JObject
 		// First see if the tag exists.
 		$t = new TagsTag($this->_db);
 		$t->loadTag($this->normalize_tag($tag));
-		if (!$t->id) {
+		if (!$t->id) 
+		{
 			// Add new tag! 
 			$t->tag = $this->normalize_tag($tag);
 			$t->raw_tag = addslashes($tag);
-			//$t->created = date( 'Y-m-d H:i:s', time() );
-			//$t->created_by = $tagger_id;
-			if (!$t->store()) {
-				$this->setError( $t->getError() );
+
+			if (!$t->store()) 
+			{
+				$this->setError($t->getError());
 				return false;
 			}
-			if (!$t->id) {
+			if (!$t->id) 
+			{
 				return false;
 			}
 			$to->tagid = $t->id;
-		} else {
+		} 
+		else 
+		{
 			$to->tagid = $t->id;
 
 			// Check if the object has already been tagged
-			if ($to->getCountForObject() > 0) {
+			if ($to->getCountForObject() > 0) 
+			{
 				return true;
 			}
 		}
@@ -189,10 +189,11 @@ class TagsHandler extends JObject
 		// Add an entry linking the tag to the object it was used on
 		$to->strength = $strength;
 		$to->taggerid = $tagger_id;
-		$to->taggedon = date( 'Y-m-d H:i:s', time() );
-		//$to->state = 1;
-		if (!$to->store()) {
-			$this->setError( $to->getError() );
+		$to->taggedon = date('Y-m-d H:i:s', time());
+
+		if (!$to->store()) 
+		{
+			$this->setError($to->getError());
 			return false;
 		}
 
@@ -200,36 +201,44 @@ class TagsHandler extends JObject
 	}
 
 	/**
-	 * Short description for 'tag_object'
+	 * Tag an object
+	 * This will get a list of old tags on object and will 
+	 * 1) add any new tags not in the old list 
+	 * 2) remove any tags in the old list not found in the new list
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $tagger_id Parameter description (if any) ...
-	 * @param      unknown $object_id Parameter description (if any) ...
-	 * @param      unknown $tag_string Parameter description (if any) ...
-	 * @param      unknown $strength Parameter description (if any) ...
-	 * @param      boolean $admin Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $tagger_id  Tagger ID
+	 * @param      integer $object_id  Object ID
+	 * @param      string  $tag_string String of comma-separated tags
+	 * @param      integer $strength   Tag strength
+	 * @param      boolean $admin      Has admin access?
+	 * @return     boolean True on success, false if errors
 	 */
 	public function tag_object($tagger_id, $object_id, $tag_string, $strength, $admin=false)
 	{
 		$tagArray  = $this->_parse_tags($tag_string);   // array of normalized tags
-		$tagArray2 = $this->_parse_tags($tag_string,1); // array of normalized => raw tags
-		if ($admin) {
+		$tagArray2 = $this->_parse_tags($tag_string, 1); // array of normalized => raw tags
+		if ($admin) 
+		{
 			$oldTags = $this->get_tags_on_object($object_id, 0, 0, 0, 0, 1); // tags currently assigned to an object
-		} else {
+		} 
+		else 
+		{
 			$oldTags = $this->get_tags_on_object($object_id, 0, 0, $tagger_id, 0, 0); // tags currently assigned to an object
 		}
 
 		$preserveTags = array();
 
-		if (count($oldTags) > 0) {
+		if (count($oldTags) > 0) 
+		{
 			foreach ($oldTags as $tagItem)
 			{
-				if (!in_array($tagItem['tag'], $tagArray)) {
+				if (!in_array($tagItem['tag'], $tagArray)) 
+				{
 					// We need to delete old tags that don't appear in the new parsed string.
 					$this->remove_tag($tagger_id, $object_id, $tagItem['tag'], $admin);
-				} else {
+				} 
+				else 
+				{
 					// We need to preserve old tags that appear (to save timestamps)
 					$preserveTags[] = $tagItem['tag'];
 				}
@@ -240,8 +249,10 @@ class TagsHandler extends JObject
 		foreach ($newTags as $tag)
 		{
 			$tag = trim($tag);
-			if ($tag != '') {
-				if (get_magic_quotes_gpc()) {
+			if ($tag != '') 
+			{
+				if (get_magic_quotes_gpc()) 
+				{
 					$tag = addslashes($tag);
 				}
 				$thistag = $tagArray2[$tag];
@@ -252,82 +263,83 @@ class TagsHandler extends JObject
 	}
 
 	/**
-	 * Short description for 'remove_tag'
+	 * Remove a tag on an object
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $tagger_id Parameter description (if any) ...
-	 * @param      unknown $object_id Parameter description (if any) ...
-	 * @param      unknown $tag Parameter description (if any) ...
-	 * @param      unknown $admin Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $tagger_id Tagger ID
+	 * @param      integer $object_id Object ID
+	 * @param      string  $tag       Tag to remove
+	 * @param      integer $admin     Has admin access?
+	 * @return     boolean True on success, false if errors
 	 */
 	public function remove_tag($tagger_id, $object_id, $tag, $admin)
 	{
-		if (!isset($object_id) || !isset($tag)) {
+		if (!isset($object_id) || !isset($tag)) 
+		{
 			$this->setError('remove_tag argument missing');
 			return false;
 		}
 
 		$tag_id = $this->get_tag_id($tag);
-		if (!$tag_id) {
+		if (!$tag_id) 
+		{
 			return false;
 		}
 
 		$to = new TagsObject($this->_db);
-		if (!$to->deleteObjects( $tag_id, $this->_tbl, $object_id, $tagger_id, $admin )) {
-			$this->setError( $to->getError() );
+		if (!$to->deleteObjects($tag_id, $this->_tbl, $object_id, $tagger_id, $admin)) 
+		{
+			$this->setError($to->getError());
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'remove_all_tags'
+	 * Remove all tags on an object
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $object_id Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $object_id Object ID
+	 * @return     boolean True on success, false if errors
 	 */
 	public function remove_all_tags($object_id)
 	{
-		if ($object_id > 0) {
+		if ($object_id > 0) 
+		{
 			$to = new TagsObject($this->_db);
-			if (!$to->removeAllTags( $this->_tbl, $object_id )) {
-				$this->setError( $to->getError() );
+			if (!$to->removeAllTags($this->_tbl, $object_id)) 
+			{
+				$this->setError($to->getError());
 				return false;
 			}
 			return true;
-		} else {
+		} 
+		else 
+		{
 			return false;
 		}
 	}
 
 	/**
-	 * Short description for 'normalize_tag'
+	 * Normalize a tag
+	 * Strips spaces, punctuation, makes lowercase, and allows only alpha-numeric chars
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $tag Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $tag Raw tag
+	 * @return     string Normalized tag
 	 */
 	public function normalize_tag($tag)
 	{
-		return strtolower(preg_replace("/[^a-zA-Z0-9]/", "", $tag));
+		return strtolower(preg_replace("/[^a-zA-Z0-9]/", '', $tag));
 	}
 
 	/**
-	 * Short description for 'get_tag_id'
+	 * Get the ID of a normalized tag
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $tag Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      string $tag Normalized tag
+	 * @return     mixed False if errors, integer on success
 	 */
 	public function get_tag_id($tag)
 	{
-		if (!isset($tag)) {
+		if (!isset($tag)) 
+		{
 			$this->setError('get_tag_id argument missing');
 			return false;
 		}
@@ -338,16 +350,15 @@ class TagsHandler extends JObject
 	}
 
 	/**
-	 * Short description for 'get_raw_tag_id'
+	 * Get the ID of a raw tag
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $tag Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string $tag Raw tag
+	 * @return     mixed False if errors, integer on success
 	 */
 	public function get_raw_tag_id($tag)
 	{
-		if (!isset($tag)) {
+		if (!isset($tag)) 
+		{
 			$this->setError('get_raw_tag_id argument missing');
 			return false;
 		}
@@ -355,67 +366,58 @@ class TagsHandler extends JObject
 	}
 
 	/**
-	 * Short description for 'count_tags'
+	 * Get a count of tags
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $admin Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $admin     Show admin tags?
+	 * @return     integer
 	 */
 	public function count_tags($admin=0)
 	{
 		$filters = array();
 		$filters['by'] = 'user';
-		if ($admin) {
+		if ($admin) 
+		{
 			$filters['by'] = 'all';
 		}
 		$t = new TagsTag($this->_db);
-		return $t->getCount( $filters );
+		return $t->getCount($filters);
 	}
 
 	/**
-	 * Short description for 'get_tag_cloud'
+	 * Get a tag cloud for an object
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $showsizes Parameter description (if any) ...
-	 * @param      integer $admin Parameter description (if any) ...
-	 * @param      unknown $objectid Parameter description (if any) ...
+	 * @param      integer $showsizes Show tag size based on use?
+	 * @param      integer $admin     Show admin tags?
+	 * @param      integer $objectid  Object ID
 	 * @return     mixed Return description (if any) ...
 	 */
 	public function get_tag_cloud($showsizes=0, $admin=0, $objectid=NULL)
 	{
-		// find all tags
-		/*if ($admin) {
-			$state = 2;
-		} else {
-			$state = 1;
-		}*/
-		$t = new TagsTag( $this->_db );
+		$t = new TagsTag($this->_db);
 		$tags = $t->getCloud($this->_tbl, $admin, $objectid);
 
 		return $this->buildCloud($tags, 'alpha', $showsizes);
 	}
 
 	/**
-	 * Short description for 'buildCloud'
+	 * Build a tag cloud
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $tags Parameter description (if any) ...
-	 * @param      string $sort Parameter description (if any) ...
-	 * @param      integer $showsizes Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array   $tags      List of tags
+	 * @param      string  $sort      How to sort tags?
+	 * @param      integer $showsizes Show tag size based on use?
+	 * @return     string HTML
 	 */
 	public function buildCloud($tags, $sort='alpha', $showsizes=0)
 	{
 		$html = '';
 
-		if ($tags && count($tags) > 0) {
+		if ($tags && count($tags) > 0) 
+		{
 			$min_font_size = 1;
 			$max_font_size = 1.8;
 
-			if ($showsizes) {
+			if ($showsizes) 
+			{
 				$retarr = array();
 				foreach ($tags as $tag)
 				{
@@ -428,14 +430,15 @@ class TagsHandler extends JObject
 
 				// For ever additional tagged object from min to max, we add $step to the font size.
 				$spread = $max_qty - $min_qty;
-				if (0 == $spread) { // Divide by zero
+				if (0 == $spread) 
+				{ // Divide by zero
 					$spread = 1;
 				}
 				$step = ($max_font_size - $min_font_size)/($spread);
 			}
 
 			// build HTML
-			$html .= '<ol class="tags">'."\n";
+			$html .= '<ol class="tags">' . "\n";
 			$tll = array();
 			foreach ($tags as $tag)
 			{
@@ -451,86 +454,95 @@ class TagsHandler extends JObject
 				}
 
 				$tag->raw_tag = stripslashes($tag->raw_tag);
-				$tag->raw_tag = str_replace( '&amp;', '&', $tag->raw_tag );
-				$tag->raw_tag = str_replace( '&', '&amp;', $tag->raw_tag );
-				if ($showsizes == 1) {
+				$tag->raw_tag = str_replace('&amp;', '&', $tag->raw_tag);
+				$tag->raw_tag = str_replace('&', '&amp;', $tag->raw_tag);
+				if ($showsizes == 1) 
+				{
 					$size = $min_font_size + ($tag->count - $min_qty) * $step;
-					$tll[$tag->tag] = "\t".'<li'.$class.'><span style="font-size: '. round($size,1) .'em"><a href="'.JRoute::_('index.php?option=com_tags&amp;tag='.$tag->tag).'">'.stripslashes($tag->raw_tag).' <span>' . $tag->count . '</span></a></span></li>'."\n";
-				} elseif ($showsizes == 2) {
-					$tll[$tag->tag] = "\t".'<li'.$class.'><a href="javascript:void(0);" onclick="addtag(\''.$tag->tag.'\');">'.stripslashes($tag->raw_tag).' <span>' . $tag->count . '</span></a></li>'."\n";
-				} else {
-					$tll[$tag->tag] = "\t".'<li'.$class.'><a href="'.JRoute::_('index.php?option=com_tags&amp;tag='.$tag->tag).'">'.stripslashes($tag->raw_tag).' <span>' . $tag->count . '</span></a></li>'."\n";
+					$tll[$tag->tag] = "\t".'<li' . $class . '><span style="font-size: ' . round($size, 1) . 'em"><a href="' . JRoute::_('index.php?option=com_tags&tag=' . $tag->tag) . '">' . stripslashes($tag->raw_tag) . ' <span>' . $tag->count . '</span></a></span></li>' . "\n";
+				} 
+				elseif ($showsizes == 2) 
+				{
+					$tll[$tag->tag] = "\t".'<li' . $class . '><a href="javascript:void(0);" onclick="addtag(\'' . $tag->tag . '\');">' . stripslashes($tag->raw_tag) . ' <span>' . $tag->count . '</span></a></li>' . "\n";
+				} 
+				else 
+				{
+					$tll[$tag->tag] = "\t".'<li' . $class . '><a href="' . JRoute::_('index.php?option=com_tags&tag=' . $tag->tag) . '">' . stripslashes($tag->raw_tag) . ' <span>' . $tag->count . '</span></a></li>' . "\n";
 				}
 			}
-			if ($sort == 'alpha') {
+			if ($sort == 'alpha') 
+			{
 				ksort($tll);
-				$html .= implode('',$tll);
+				$html .= implode('', $tll);
 			}
-			$html .= '</ol>'."\n";
+			$html .= '</ol>' . "\n";
 		}
 
 		return $html;
 	}
 
 	/**
-	 * Short description for 'get_tag_string'
+	 * Return a list of tags for an object as a comma-separated string
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $oid Parameter description (if any) ...
-	 * @param      integer $offset Parameter description (if any) ...
-	 * @param      integer $limit Parameter description (if any) ...
-	 * @param      unknown $tagger_id Parameter description (if any) ...
-	 * @param      integer $strength Parameter description (if any) ...
-	 * @param      integer $admin Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      integer $oid       Object ID
+	 * @param      integer $offset    Record offset
+	 * @param      integer $limit     Number to return
+	 * @param      integer $tagger_id Tagger ID
+	 * @param      integer $strength  Tag strength
+	 * @param      integer $admin     Admin tags?
+	 * @return     string
 	 */
-	public function get_tag_string( $oid, $offset=0, $limit=0, $tagger_id=NULL, $strength=0, $admin=0 )
+	public function get_tag_string($oid, $offset=0, $limit=0, $tagger_id=NULL, $strength=0, $admin=0)
 	{
-		$tags = $this->get_tags_on_object( $oid, $offset, $limit, $tagger_id, $strength, $admin );
+		$tags = $this->get_tags_on_object($oid, $offset, $limit, $tagger_id, $strength, $admin);
 
-		if ($tags && count($tags) > 0) {
+		if ($tags && count($tags) > 0) 
+		{
 			$tagarray = array();
 			foreach ($tags as $tag)
 			{
 				$tagarray[] = $tag['raw_tag'];
 			}
-			$tags = implode( ', ', $tagarray );
-		} else {
-			$tags = (is_array($tags)) ? implode('',$tags) : '';
+			$tags = implode(', ', $tagarray);
+		} 
+		else 
+		{
+			$tags = (is_array($tags)) ? implode('', $tags) : '';
 		}
 		return $tags;
 	}
 
 	/**
-	 * Short description for '_parse_tags'
+	 * Turn a comma-separated string of tags into an array of normalized tags
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $tag_string Parameter description (if any) ...
-	 * @param      integer $keep Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      string  $tag_string Comma-separated string of tags
+	 * @param      integer $keep       Use normalized tag as array key
+	 * @return     array
 	 */
-	public function _parse_tags( $tag_string, $keep=0 )
+	public function _parse_tags($tag_string, $keep=0)
 	{
 		$newwords = array();
 
 		// If the tag string is empty, return the empty set.
-		if ($tag_string == '') {
+		if ($tag_string == '') 
+		{
 			return $newwords;
 		}
 
 		// Perform tag parsing
 		$tag_string = trim($tag_string);
-		$raw_tags = explode(',',$tag_string);
+		$raw_tags = explode(',', $tag_string);
 
 		foreach ($raw_tags as $raw_tag)
 		{
 			$raw_tag = trim($raw_tag);
 			$nrm_tag = $this->normalize_tag($raw_tag);
-			if ($keep != 0) {
+			if ($keep != 0) 
+			{
 				$newwords[$nrm_tag] = $raw_tag;
-			} else {
+			} 
+			else 
+			{
 				$newwords[] = $nrm_tag;
 			}
 		}
