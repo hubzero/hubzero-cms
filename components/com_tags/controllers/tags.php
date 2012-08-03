@@ -60,7 +60,6 @@ class TagsControllerTags extends Hubzero_Controller
 	public function displayTask()
 	{
 		// Instantiate a new view
-		//$this->view->title = JText::_(strtoupper($this->_option));
 		$this->view->showsizes = 0;
 		$this->view->config = $this->config;
 
@@ -68,19 +67,12 @@ class TagsControllerTags extends Hubzero_Controller
 		$this->view->min_font_size = 1;
 		$this->view->max_font_size = 1.8;
 
-		// Check authorization
-		//$this->view->authorized = $this->_authorize();
-
 		// Find all tags
 		$t = new TagsTag($this->database);
 
 		$this->view->tags = $t->getTopTags(100);
 
 		$this->view->newtags = $t->getRecentTags(25);
-
-		// Load plugins
-		//JPluginHelper::importPlugin('tags');
-		//$dispatcher =& JDispatcher::getInstance();
 
 		// Trigger the functions that return the areas we'll be using
 		$this->view->categories = array();
@@ -120,6 +112,7 @@ class TagsControllerTags extends Hubzero_Controller
 		$this->_buildPathway(null);
 
 		// Push some styles to the template
+		$this->_getStyles('', 'introduction.css', true); // component, stylesheet name, look in media system dir
 		$this->_getStyles();
 
 		// Output HTML

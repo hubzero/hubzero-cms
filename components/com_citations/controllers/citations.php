@@ -62,6 +62,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 		$this->view->setLayout('display');
 
 		// Push some styles to the template
+		$this->_getStyles('', 'introduction.css', true); // component, stylesheet name, look in media system dir
 		$this->_getStyles();
 		$this->_getStyles('com_usage');
 

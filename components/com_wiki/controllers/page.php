@@ -127,6 +127,10 @@ class WikiControllerPage extends Hubzero_Controller
 		if (!$this->_sub)
 		{
 			// Include any CSS
+			if ($this->page->pagename == 'MainPage')
+			{
+				$this->_getStyles('', 'introduction.css', true); // component, stylesheet name, look in media system dir
+			}
 			$this->_getStyles();
 		}
 		// Include any Scripts

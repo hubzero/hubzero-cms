@@ -14,15 +14,21 @@
 */
 
 /* Intro */
+	#introduction:after {
+		content: "\275D";
+	}
 	#introduction {
-		margin: 0 -15px 3em -15px;
+		/*margin: 0 -15px 3em -15px;
 		padding: 25px 15px 25px 120px;
 		background: #fbf8ea url("/components/com_citations/assets/img/citations-large.gif") 30px 25px no-repeat;
 		border-top: 2px solid #e7dac4;
 		border-bottom: 2px solid #e7dac4;
-		color: #7c7266;
+		color: #7c7266;*/
+		*background-image: url("/components/com_citations/assets/img/citations-large.gif");
+		*background-position: 30px 25px;
+		*background-repeat: no-repeat;
 	}
-	#introduction .aside,
+/*	#introduction .aside,
 	#introduction .subject {
 		margin-top: 0;
 		margin-bottom: 0;
@@ -49,7 +55,7 @@
 		padding: 0 0 0 15px;
 		background: transparent url("/components/com_citations/assets/img/arrow.gif") 0 50% no-repeat;
 	}
-/* Four Columns */
+/* Four Columns 
 	.com_citations .four {
 		border-top: 1px solid #e0e0d7;
 		margin-bottom: 3em;

@@ -13,6 +13,16 @@
 
 */
 
+/* Introduction page */
+	#introduction:after {
+		content: "\f072";
+	}
+/* [!] HACKS - IE 7 and older */
+	#introduction {
+		*background-image: url("/components/com_wiki/assets/img/topics-large.gif");
+		*background-position: 30px 25px;
+		*background-repeat: no-repeat;
+	}
 /* Sections */
 	.com_wiki .main {
 		border-top: 1px solid #fff;
@@ -530,9 +540,7 @@
 		margin: 0;
 		padding: 0.2em;
 	}
-	/*.tocnumber {
-		display: none;
-	}*/
+
 /* Diffs */
 	.diff-versions {
 		margin: 0;
@@ -704,111 +712,12 @@
 	div.admon-warning { 
 		background-image: url("/components/com_wiki/assets/img/admon-warning.png"); 
 	}
-/* Introduction page */
-	#introduction {
-		margin: 0 -15px 3em -15px;
-		padding: 25px 15px 25px 120px;
-		background: #fbf8ea url("/components/com_wiki/assets/img/topics-large.gif") 30px 25px no-repeat;
-		border-top: 2px solid #e7dac4;
-		border-bottom: 2px solid #e7dac4;
-		color: #7c7266;
-	}
-	#introduction .aside,
-	#introduction .subject {
-		margin-top: 0;
-		margin-bottom: 0;
-		padding-top: 0;
-		padding-bottom: 0;
-		background: transparent;
-		border: none;
-	}
-	#introduction h3 {
-		margin-top: 0;
-		color: #7c7266;
-	}
-	#introduction .columns {
-		border: none;
-	}
-	#introduction ul,
-	#introduction li {
-		list-style: none;
-		margin: 1em 0;
-		padding: 0;
-	}
-	#introduction li {
-		margin: 0;
-		padding: 0 0 0 15px;
-		background: transparent url("/components/com_wiki/assets/img/bullets/arrow.gif") 0 50% no-repeat;
-	}
-/* Four Columns */
-	.com_wiki .four {
-		border-top: 1px solid #e0e0d7;
-		margin-bottom: 3em;
-	}
-	.com_wiki .four h3 { 
-		color: #000; 
-		margin-top: 1em; 
-		padding-top: 0em;
-		line-height: 1.5em;
-	}
-	.com_wiki .four h3 a { 
-		color: #000; 
-		border-bottom: none; 
-	}
-	.com_wiki .four ul {
-		margin: 1em 0;
-	}
-	.com_wiki .four li {
-		margin: 1em 0;
-	}
-	.com_wiki .first h2 { 
-		font-weight: normal;
-		margin: 0;
-		padding: 0.5em 0 0 0;
-		line-height: 1em;
-		border: none;
-		border-top: 2px solid #e0e0d7;
-	}
-	.com_wiki .second {
-	}
-	.com_wiki .third {
-	}
-	.com_wiki .fourth { 
-		border-right: none;
-	}
-	.com_wiki .big {
-		height: 3em;
-	}
-	.com_wiki .four {
-		margin-bottom: 3em;
-	}
-	.com_wiki .browse a {
-		font-weight: bold;
-		font-size: 1.2em;
-	}
-	.com_wiki .browse .wiki {
-		background: none;
-		padding-left: 0;
-	}
+
 	.com_wiki .wiki .modified-date {
 		color: #aaa;
 		font-size: 90%;
 	}
-	.com_wiki .three,
-	.com_wiki .four {
-		border: none;
-		border-top: 1px solid #e0e0d7;
-		position: relative;
-	}
-	.com_wiki .three,
-	.com_wiki .four {
-		margin-right: 0;
-		padding-right: 5%;
-	}
-	.com_wiki .four .third,
-	.com_wiki .fourth {
-		padding-right: 0;
-	}
+
 /* Wiki pages */
 	.wikipage {
 		margin: 0;

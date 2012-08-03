@@ -542,8 +542,8 @@
 	}
 	#nav ul.menu {
 		position: relative;
-		/*z-index: 597;*/
 		float: left;
+		*z-index: 597; /* [!] HACKS - IE 7 and older, needed to get the menu to appear over #content */
 	}
 	#nav ul.menu li {
 		float: left;
@@ -1035,7 +1035,7 @@
 		border: none;
 	}
 
-/* Large Icons */
+/* Large Icons 
 	.columns .animation { padding-left: 23px; background: url("../images/icons/fc-animation.gif") 0 0em no-repeat; }
 	.columns .download { padding-left: 23px; background: url("../images/icons/fc-download.gif") 0 0em no-repeat; }
 	.columns .course { padding-left: 23px; background: url("../images/icons/fc-course.gif") 0 0em no-repeat; }
@@ -1062,7 +1062,7 @@
 	.columns .contribute { padding-left: 23px; background: url("../images/icons/fc-contribute.gif") 0 0em no-repeat; }
 	.columns .search { padding-left: 28px; background: url("../images/icons/fc-search.gif") 0 0.2em no-repeat; }
 	.columns .browse { padding-left: 28px; background: url("../images/icons/fc-browse.gif") 0 0.2em no-repeat; }
-	.columns .quote { padding-left: 28px; background: url("../images/quoteopen.gif") 0.2em 0.2em no-repeat; }
+	.columns .quote { padding-left: 28px; background: url("../images/quoteopen.gif") 0.2em 0.2em no-repeat; }*/
 
 /* self-clearing floats */
 	#help-pane:after,
@@ -1781,24 +1781,30 @@
 		background: #F0EBD6;
 	}
 
-/* 5 star Reviews */	
+/* 5 star Reviews */
 	.avgrating {
-		padding-left: 70px;
+		padding-left: 0;
 	}
 	.avgrating span {
-		display: none;
+		padding-left: 1em;
 	}
-	.no-star        { background: url("../images/stars/stars.gif") 0 0 no-repeat; }
-	.half-star      { background: url("../images/stars/stars.gif") 0 -40px no-repeat; }
-	.one-star       { background: url("../images/stars/stars.gif") 0 -80px no-repeat; }
-	.onehalf-star   { background: url("../images/stars/stars.gif") 0 -120px no-repeat; }
-	.two-star       { background: url("../images/stars/stars.gif") 0 -160px no-repeat; }
-	.twohalf-star   { background: url("../images/stars/stars.gif") 0 -200px no-repeat; }
-	.three-star     { background: url("../images/stars/stars.gif") 0 -240px no-repeat; }
-	.threehalf-star { background: url("../images/stars/stars.gif") 0 -280px no-repeat; }
-	.four-star      { background: url("../images/stars/stars.gif") 0 -320px no-repeat; }
-	.fourhalf-star  { background: url("../images/stars/stars.gif") 0 -360px no-repeat; }
-	.five-star      { background: url("../images/stars/stars.gif") 0 -400px no-repeat; }
+	.avgrating:before {
+		font-family: 'Fontcons';
+		font-size: 12px;
+		line-height: 12px;
+	}
+
+	.no-stars:before        { content: "\2606\2606\2606\2606\2606"; }
+	.half-stars:before      { content: "\f089\2606\2606\2606\2606"; }
+	.one-stars:before       { content: "\2605\2606\2606\2606\2606"; }
+	.onehalf-stars:before   { content: "\2605\f089\2606\2606\2606"; }
+	.two-stars:before       { content: "\2605\2605\2606\2606\2606"; }
+	.twohalf-stars:before   { content: "\2605\2605\f089\2606\2606"; }
+	.three-stars:before     { content: "\2605\2605\2605\2606\2606"; }
+	.threehalf-stars:before { content: "\2605\2605\2605\f089\2606"; }
+	.four-stars:before      { content: "\2605\2605\2605\2605\2606"; }
+	.fourhalf-stars:before  { content: "\2605\2605\2605\2605\f089"; }
+	.five-stars:before      { content: "\2605\2605\2605\2605\2605"; }
 
 /* File types */
 	.pdf { background: url("../images/icons/16x16/pdf.png") 0 0 no-repeat; padding-left: 25px; }
@@ -1850,7 +1856,7 @@
 	.newsfeed,
 	.rss { background: url("../images/icons/feed.png") 0 0 no-repeat; padding-left: 20px; }
 
-/* Metadata */
+/* Metadata 
 	.metadata {
 		border: 1px dashed #bbb;
 		margin: 0 0 1.5em 0;
@@ -1858,39 +1864,46 @@
 	}
 	.metadata p {
 		margin: 0.2em 0;
-		padding: 0 0 0 20px;
+		padding: 0;
 		font-size: 90%;
 	}
-	.metadata .review {
-		background: url("../images/stars/1.gif") -52px 50% no-repeat;
+	.metadata p:before {
+		font-family: 'Fontcons';
+		font-size: 12px;
+		line-height: 12px;
+		margin-right: 0.2em;
 	}
-	.metadata .citation {
-		background: url("../images/icons/cite.gif") 0 50% no-repeat;
+	.metadata p.review:before {
+		content: "\2605";
 	}
-	.metadata .usage { 
-		background: url("../images/icons/stats.gif") 0 50% no-repeat;
+	.metadata p.citation:before {
+		content: "\275D";
 	}
-	.metadata .answer { 
-		background: url("../images/icons/qanda.gif") 0 50% no-repeat;
+	.metadata p.usage:before { 
+		content: "\f080";
 	}
-	.metadata .topics { 
-		background: url("../images/icons/topic.gif") 0 50% no-repeat;
+	.metadata p.answer:before { 
+		content: "\f086";
 	}
-	.metadata .groups { 
-		background: url("../images/icons/group.gif") 0 50% no-repeat;
+	.metadata p.wiki:before,
+	.metadata p.topics:before { 
+		content: "\f072";
 	}
-	.metadata .resources { 
-		background: url("../images/icons/resource.gif") 0 50% no-repeat;
+	.metadata p.groups:before { 
+		content: "\f086";
 	}
-	.metadata .favorite {
-		background: url("../images/icons/favorite.gif") 0 50% no-repeat;
+	.metadata p.resources:before { 
+		content: "\270D";
 	}
-	.metadata .points {
-		background: url("../images/icons/point.gif") 0 50% no-repeat;
+	.metadata p.favorite:before {
+		content: "\2665";
 	}
-	.metadata .messages { 
-		background: url("../images/icons/message.gif") 0 50% no-repeat;
+	.metadata p.points:before {
+		content: "\f006";
 	}
+	.metadata p.messages:before { 
+		content: "\2709";
+	}*/
 /* Results */
 	/* Category headers */
 	.category-header {

@@ -13,85 +13,8 @@
 
 */
 /* Intro */
-	#introduction {
-		margin: 0 -15px 3em -15px;
-		padding: 25px 15px 25px 120px;
-		background: #fbf8ea url("/components/com_tags/assets/img/tags-large.gif") 30px 25px no-repeat;
-		border-top: 2px solid #e7dac4;
-		border-bottom: 2px solid #e7dac4;
-		color: #7c7266;
-	}
-	#introduction .aside,
-	#introduction .subject {
-		margin-top: 0;
-		margin-bottom: 0;
-		padding-top: 0;
-		padding-bottom: 0;
-		background: transparent;
-		border: none;
-	}
-	#introduction h3 {
-		margin-top: 0;
-		color: #7c7266;
-	}
-	#introduction .columns {
-		border: none;
-	}
-	#introduction ul,
-	#introduction li {
-		list-style: none;
-		margin: 1em 0;
-		padding: 0;
-	}
-	#introduction li {
-		margin: 0;
-		padding: 0 0 0 15px;
-		background: transparent url("/components/com_tags/assets/img/arrow.gif") 0 50% no-repeat;
-	}
-/* Four Columns */
-	.com_tags .four {
-		border-top: 1px solid #e0e0d7;
-		margin-bottom: 3em;
-	}
-	.com_tags .four h3 { 
-		color: #000; 
-		margin-top: 1em; 
-		padding-top: 0em;
-	}
-	.com_tags .four h3 a { 
-		color: #000; 
-		border-bottom: none; 
-	}
-	.com_tags .four ul {
-		margin: 1em 0;
-	}
-	.com_tags .four li {
-		margin: 1em 0;
-	}
-	.com_tags .first h2 { 
-		font-weight: normal;
-		margin: 0;
-		padding: 0.5em 0 0 0;
-		line-height: 1em;
-		border: none;
-		border-top: 2px solid #e0e0d7;
-	}
-	.com_tags .fourth { 
-		border-right: none;
-	}
-	.com_tags .big {
-		height: 3em;
-	}
-	.com_tags .four {
-		margin-bottom: 3em;
-	}
-	.com_tags .browse a {
-		font-weight: bold;
-		font-size: 1.2em;
-	}
-	.com_tags form.search {
-		background-position: 0 0.9em;
-		border: 1px solid #fff;
+	#introduction:after {
+		content: "\f02c";
 	}
 /* Misc */
 	.main {
@@ -434,7 +357,14 @@
 		font-size: 14px;
 		text-align: center;
 	}
-/* IE 6 hacks */	
+
+/* [!] HACKS - IE 7 and older */
+	#introduction {
+		*background-image: url("/components/com_tags/assets/img/tags-large.gif");
+		*background-position: 30px 25px;
+		*background-repeat: no-repeat;
+	}
+/* [!] HACKS - IE 6 
 	* html .category-header small {
 		right: 310px;
 	}
@@ -443,4 +373,4 @@
 	}
 	* html .results .stats { 
 		position: relative;
-	}
+	}*/

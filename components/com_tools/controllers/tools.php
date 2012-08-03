@@ -66,48 +66,45 @@ class ToolsControllerTools extends Hubzero_Controller
 	}
 
 	/**
-	 * Build the breadcrumbs
-	 * 
-	 * @param      unknown $session Parameter description (if any) ...
-	 * @return     void
+	 * Method to build and set the document title
+	 *
+	 * @return	void
 	 */
-	/*protected function _buildPathway($session=null)
+	protected function _buildTitle($title=null)
+	{
+		$this->_title = ($title) ? $title : JText::_(strtoupper($this->_option));
+		if ($this->_task && $this->_task != 'display') 
+		{
+			$this->_title .= ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
+		}
+		$document =& JFactory::getDocument();
+		$document->setTitle($this->_title);
+	}
+
+	/**
+	 * Method to set the document path
+	 *
+	 * @return	void
+	 */
+	protected function _buildPathway()
 	{
 		$pathway =& JFactory::getApplication()->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option)),
+				$title,
 				'index.php?option=' . $this->_option
 			);
 		}
-		if ($this->_task && $this->_task != 'tools') 
+		if ($this->_task && $this->_task != 'display') 
 		{
 			$pathway->addItem(
 				JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&task=' . $this->_task
 			);
 		}
-	}*/
-
-	/**
-	 * Build the page title
-	 * 
-	 * @param      unknown $session Parameter description (if any) ...
-	 * @return     void
-	 */
-	/*protected function _buildTitle($default = null)
-	{
-		$this->_title = ($default) ? $default : JText::_(strtoupper($this->_option));
-		if ($this->_task) 
-		{
-			$this->_title .= ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
-		}
-
-		$document =& JFactory::getDocument();
-		$document->setTitle($this->_title);
-	}*/
+	}
 
 	/**
 	 * Display the landing page
@@ -143,6 +140,7 @@ class ToolsControllerTools extends Hubzero_Controller
 		$this->_buildPathway();
 
 		// Push some styles to the template
+		$this->_getStyles('', 'introduction.css', true); // component, stylesheet name, look in media system dir
 		$this->_getStyles($this->_option, 'tools.css');
 
 		if ($this->getError()) 
@@ -176,9 +174,7 @@ class ToolsControllerTools extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'css'
-	 * 
-	 * Long description (if any) ...
+	 * Display CSS
 	 * 
 	 * @return     void
 	 */

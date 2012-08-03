@@ -13,94 +13,52 @@
 
 */
 
+
 /* Intro */
-	#introduction {
-		margin: 0 -15px 3em -15px;
-		padding: 25px 15px 25px 120px;
-		background: #fbf8ea url("/components/com_support/assets/img/support-large.gif") 30px 25px no-repeat;
-		border-top: 2px solid #e7dac4;
-		border-bottom: 2px solid #e7dac4;
-		color: #7c7266;
+	#introduction:after {
+		content: "\f055";
 	}
-	#introduction .aside,
-	#introduction .subject {
-		margin-top: 0;
-		margin-bottom: 0;
-		padding-top: 0;
-		padding-bottom: 0;
-		background: transparent;
-		border: none;
+	.com_support .four div {
+		padding-left: 23px;
 	}
-	#introduction h3 {
-		margin-top: 0;
-		color: #7c7266;
+	.com_support .four div:before {
+		content: "";
+		display: block;
+		position: absolute;
+		left: 0;
+		top: 0.75em;
+		width: 20px;
+		height: 20px;
+		font-size: 20px;
+		font-family: 'Fontcons';
+		color: #aaa;
 	}
-	#introduction .columns {
-		border: none;
+	.com_support .four div.note:before {
+		content: "\f01f";
 	}
-	#introduction ul,
-	#introduction li {
-		list-style: none;
-		margin: 1em 0;
-		padding: 0;
+	.com_support .four div.presentation:before {
+		content: "\270D";
 	}
-	#introduction li {
-		margin: 0;
-		padding: 0 0 0 15px;
-		background: transparent url("/components/com_support/assets/img/arrow.gif") 0 50% no-repeat;
+	.com_support .four div.tag:before {
+		content: "\f02c";
 	}
-/* Four Columns */
-	.com_support .four {
-		border-top: 1px solid #e0e0d7;
-		margin-bottom: 3em;
+	.com_support .four div.search:before {
+		content: "\f002";
 	}
-	.com_support .four h3 { 
-		color: #000; 
-		margin-top: 1em; 
-		padding-top: 0em;
+	.com_support .four div.feedback:before {
+		content: "\f075";
 	}
-	.com_support .four h3 a { 
-		color: #000; 
-		border-bottom: none; 
+	.com_support .four div.series:before {
+		content: "\f02d";
 	}
-	.com_support .four ul {
-		margin: 1em 0;
+	.com_support .four div.idea:before {
+		content: "\f078";
 	}
-	.com_support .four li {
-		margin: 1em 0;
+	.com_support .four div.wiki:before {
+		content: "\f072";
 	}
-	.com_support .first h2 { 
-		font-weight: normal;
-		margin: 0;
-		padding: 0.5em 0 0 0;
-		line-height: 1em;
-		border: none;
-		border-top: 2px solid #e0e0d7;
-	}
-	.com_support .fourth { 
-		border-right: none;
-	}
-	.com_support .big {
-		height: 3em;
-	}
-	.com_support .four {
-		margin-bottom: 3em;
-	}
-	.com_support .browse a {
-		font-weight: bold;
-		font-size: 1.2em;
-	}
-	.com_support form.search {
-		background-position: 0 0.9em;
-		border: 1px solid #fff;
-	}
-	.columns .ticket { 
-		padding-left: 23px; 
-		background: url("/components/com_support/assets/img/fc-ticket.gif") 0 0em no-repeat; 
-	}
-	.columns .idea { 
-		padding-left: 23px; 
-		background: url("/components/com_support/assets/img/fc-idea.gif") 0 0em no-repeat; 
+	.com_support .four div.ticket:before {
+		content: "\f02a";
 	}
 	#hubForm label#fbBotcheck-label {
 		display: none;
@@ -232,6 +190,7 @@
 		color: #555;
 		font-size: 90%;
 		width: 100%;
+		text-align: left;
 	}
 	#ticket-details tbody {
 		margin: 0;
@@ -253,15 +212,15 @@
 	}
 	/* Member photo */
 	.ticket p.ticket-member-photo {
-	    float: left;
-	    margin: 0;
-	    padding: 0 20px 0 0;
-	    width: 50px;
+		float: left;
+		margin: 0;
+		padding: 0 20px 0 0;
+		width: 50px;
 		height: 50px;
 		overflow: hidden;
-	    color: #777;
-	    font-size: 11px;
-	    text-align: right;
+		color: #777;
+		font-size: 11px;
+		text-align: right;
 		position: relative;
 	}
 	.ticket .ticket-anchor {
@@ -359,15 +318,15 @@
 	/* Options */
 	/* Member photo */
 	ol.comments p.comment-member-photo {
-	    float: left;
-	    margin: 0;
-	    padding: 0 20px 0 0;
-	    width: 50px;
+		float: left;
+		margin: 0;
+		padding: 0 20px 0 0;
+		width: 50px;
 		height: 50px;
 		overflow: hidden;
-	    color: #777;
-	    font-size: 11px;
-	    text-align: right;
+		color: #777;
+		font-size: 11px;
+		text-align: right;
 		position: relative;
 	}
 	ol.comments .comment-anchor {
@@ -446,14 +405,18 @@
 	}
 /* Changelog */
 	ol.comments .changelog ul {
+		list-style: none;
 		border-top: 1px solid #ddd;
 		padding: 0.2em 0.2em 0.2em 30px;
 		margin: 0 0 0.5em 0;
 		font-size: 90%;
 		color: #aaa;
-		background: url("/components/com_support/assets/img/page_edit.png") 10px 0.4em no-repeat;
 		list-style: none;
 	}
+	ol.comments .changelog ul.changes {
+		background: url("/components/com_support/assets/img/page_edit.png") 10px 0.4em no-repeat;
+	}
+	ol.comments .emaillog li,
 	ol.comments .changelog li {
 		padding: 0.1em;
 		margin: 0;
@@ -466,34 +429,15 @@
 		margin-left: 70px;
 	}
 /* Email log */
-	ol.comments ul.emaillog,
-	ol.comments .changelog ul.emaillog {
-		border-top: 1px solid #ddd;
-		padding: 0.2em 0.2em 0.2em 30px;
-		margin: 0;
-		font-size: 90%;
-		background: url("/components/com_support/assets/img/email.png") 10px 0.2em no-repeat;
+	ol.comments .changelog .emaillog,
+	ol.comments .changelog ul.notifications {
+		background: url("/components/com_support/assets/img/email.png") 10px 0.4em no-repeat;
 	}
-	ol.comments ul.emaillog,
 	ol.comments .changelog ul.email-out-log {
-		border-top: 1px solid #ddd;
-		padding: 0.2em 0.2em 0.2em 38px;
-		margin: 0;
-		font-size: 90%;
 		background: url("/components/com_support/assets/img/email-out.png") 10px 0.2em no-repeat;
 	}
-	ol.comments ul.emaillog,
 	ol.comments .changelog ul.email-in-log {
-		border-top: 1px solid #ddd;
-		padding: 0.2em 0.2em 0.2em 38px;
-		margin: 0;
-		font-size: 90%;
 		background: url("/components/com_support/assets/img/email-in.png") 10px 0.2em no-repeat;
-	}
-	ol.comments .emaillog li {
-		padding: 0.1em;
-		margin: 0;
-		background-image: none;
 	}
 /* Tooltips */
 	.img-tip {
@@ -774,4 +718,14 @@
 	#commentform.private fieldset {	
 		background: #fdfbf8 url("/components/com_support/assets/img/light-stripes.png");
 		border-color: #f9f2ec;
+	}
+
+/* [!] HACKS - IE 7 and older */
+	#introduction {
+		*background-image: url("/components/com_support/assets/img/support-large.gif");
+		*background-position: 30px 25px;
+		*background-repeat: no-repeat;
+	}
+	.com_support .four div {
+		*padding-left: 0;
 	}

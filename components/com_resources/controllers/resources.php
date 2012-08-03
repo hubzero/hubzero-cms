@@ -175,6 +175,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 	protected function intro()
 	{
 		// Push some styles to the template
+		$this->_getStyles('', 'introduction.css', true); // component, stylesheet name, look in media system dir
 		$this->_getStyles();
 
 		// Push some scripts to the template
