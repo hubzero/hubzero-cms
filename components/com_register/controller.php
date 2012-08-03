@@ -417,7 +417,7 @@ class RegisterController extends Hubzero_Controller
 		
 		// Did we successully create/update an account?
 		if (!$result) {
-			// @FIXME: Should delete partially created records on failure (don't forget LDAP)
+			// @FIXME: Should delete partially created records on failure
 			$view = new JView( array('name'=>'error') );
 			$view->title = JText::_('COM_REGISTER_PROXY_CREATE');
 			$view->setError( JText::sprintf('COM_REGISTER_ERROR_CREATING_ACCOUNT'/*, $hubMonitorEmail*/) );
