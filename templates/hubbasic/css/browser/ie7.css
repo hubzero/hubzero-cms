@@ -69,6 +69,12 @@
 	#top {
 		zoom: 1.0;
 	}
+	#tab a { 
+		background-position: right 10px;
+	}
+	#tab a:hover {
+		background-position: right -36px;
+	}
 /* Nav */
 	#nav {
 		border-bottom: 1px solid #bdbbb7;
