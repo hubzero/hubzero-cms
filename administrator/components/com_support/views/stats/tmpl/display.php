@@ -33,6 +33,9 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 JToolBarHelper::title( JText::_( 'Support' ).': <small><small>[ '.JText::_( 'Ticket Stats' ).' ]</small></small>', 'support.png' );
+
+JToolBarHelper::spacer();
+JToolBarHelper::help('stats.html', true);
 ?>
 <form action="index.php" method="get" name="adminForm" id="adminForm" enctype="multipart/form-data">
 <div id="ticket-stats">

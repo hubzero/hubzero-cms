@@ -41,6 +41,8 @@ if ($canDo->get('core.edit'))
 	JToolBarHelper::save();
 }
 JToolBarHelper::cancel();
+JToolBarHelper::spacer();
+JToolBarHelper::help('edit.html', true);
 
 jimport('joomla.html.editor');
 $editor =& JEditor::getInstance();
