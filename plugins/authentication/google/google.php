@@ -295,11 +295,24 @@ class plgAuthenticationGoogle extends JPlugin
 			// Make sure we use something unique and consistent here!
 			$username = $user_profile['email'];
 
-			// Create the hubzero auth link
-			$hzal = Hubzero_Auth_Link::find_or_create('authentication', 'google', null, $username);
-			$hzal->user_id = $juser->get('id');
-			$hzal->email   = $user_profile['email'];
-			$hzal->update();
+			$hzad = Hubzero_Auth_Domain::getInstance('authentication', 'google', '');
+
+			// Create the link
+			if(Hubzero_Auth_Link::getInstance($hzad->id, $username))
+			{
+				// This google account is already linked to another hub account
+				$mainframe->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'), 
+					'This google account appears to already be linked to a hub account', 
+					'error');
+			}
+			else
+			{
+				// Create the hubzero auth link
+				$hzal = Hubzero_Auth_Link::find_or_create('authentication', 'google', null, $username);
+				$hzal->user_id = $juser->get('id');
+				$hzal->email   = $user_profile['email'];
+				$hzal->update();
+			}
 		}
 		else
 		{

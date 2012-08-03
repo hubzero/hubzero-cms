@@ -317,11 +317,23 @@ class plgAuthenticationFacebook extends JPlugin
 			// Get unique username
 			$username = $user_profile['id'];
 
+			$hzad = Hubzero_Auth_Domain::getInstance('authentication', 'facebook', '');
+
 			// Create the link
-			$hzal = Hubzero_Auth_Link::find_or_create('authentication', 'facebook', null, $username);
-			$hzal->user_id = $juser->get('id');
-			$hzal->email   = $user_profile['email'];
-			$hzal->update();
+			if(Hubzero_Auth_Link::getInstance($hzad->id, $username))
+			{
+				// This facebook account is already linked to another hub account
+				$mainframe->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'), 
+					'This facebook account appears to already be linked to a hub account', 
+					'error');
+			}
+			else
+			{
+				$hzal = Hubzero_Auth_Link::find_or_create('authentication', 'facebook', null, $username);
+				$hzal->user_id = $juser->get('id');
+				$hzal->email   = $user_profile['email'];
+				$hzal->update();
+			}
 		}
 		else
 		{

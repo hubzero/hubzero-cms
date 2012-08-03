@@ -297,9 +297,22 @@ class plgAuthenticationLinkedIn extends JPlugin
 			$li_id      = $profile->{'id'};
 			$username   = (string) $li_id; // (make sure this is unique)
 
-			$hzal = Hubzero_Auth_Link::find_or_create('authentication', 'linkedin', null, $username);
-			$hzal->user_id = $juser->get('id');
-			$hzal->update();
+			$hzad = Hubzero_Auth_Domain::getInstance('authentication', 'linkedin', '');
+
+			// Create the link
+			if(Hubzero_Auth_Link::getInstance($hzad->id, $username))
+			{
+				// This linkedin account is already linked to another hub account
+				$mainframe->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'), 
+					'This linkedin account appears to already be linked to a hub account', 
+					'error');
+			}
+			else
+			{
+				$hzal = Hubzero_Auth_Link::find_or_create('authentication', 'linkedin', null, $username);
+				$hzal->user_id = $juser->get('id');
+				$hzal->update();
+			}
 		}
 		else // no authorization
 		{
