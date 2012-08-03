@@ -93,6 +93,12 @@ foreach($plugins as $p)
 	}
 }
 
+// Override $multiAuth if authenticator is set to hubzero
+if(JRequest::getWord('authenticator') == 'hubzero')
+{
+	$multiAuth = false;
+}
+
 // Set the return if we have it...
 $return = (base64_decode($this->return) != '/members/myaccount') ? "&return={$this->return}" : '';
 

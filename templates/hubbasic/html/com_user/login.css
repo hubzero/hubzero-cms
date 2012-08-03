@@ -24,9 +24,11 @@
 	box-shadow: 2px 2px 2px #aaa;
 	font-family: 'Cabin', sans-serif;
 	background: #fff;
+	position: relative;
 }
 #authentication.multiAuth {
 	width: 600px;
+	position: relative;
 }
 #authentication.multiAuth #inner:before {
 	content: "or";
@@ -34,8 +36,8 @@
 	padding: 10px;
 	font-style: italic;
 	position: absolute;
-	left: 48.3%;
-	top: 42%;
+	left: 305px;
+	top: 130px;
 	background: #FFF;
 	z-index: 500;
 }
