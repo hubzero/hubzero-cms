@@ -27,7 +27,7 @@ HUB.User = {
 		var login_button = $('#login-submit');
 		var username     = $('#username');
 		var password     = $('#password');
-		var error        = $('#error-response');
+		var error        = $('#authentication .error');
 		var hcredentials = $('#credentials-hub');
 
 		$('input:checkbox').uniform();

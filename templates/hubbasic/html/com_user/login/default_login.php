@@ -111,7 +111,7 @@ if (!empty($error_message))
 ?>
 
 <div id="authentication" class="<?php echo ($multiAuth) ? 'multiAuth' : 'singleAuth'; ?>">
-	<div id="error-response"></div>
+	<div class="error"></div>
 	<div id="inner" class="<?php echo ($multiAuth) ? 'multiAuth' : 'singleAuth'; ?>">
 		<?php if($multiAuth) { // only display if we have third part auth plugins enabled ?>
 			<div id="providers" class="two columns first">

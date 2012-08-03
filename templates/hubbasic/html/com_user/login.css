@@ -45,14 +45,9 @@
 	background: url('images/line.png') 50% 50% repeat-y;
 	overflow: hidden;
 }
-#error-response {
+#authentication .error {
 	display: none;
-	margin: 0 0 10px 0;
-	border: 1px solid #EFCCC2;
-	color: #CC0000;
-	background: #FFF2EF url("../../images/icons/error.gif") 10px 10px no-repeat;
-	padding: 10px 30px;
-	border-radius: 4px;
+	margin-top: 0;
 }
 #authentication .two {
 	width: 50%;
