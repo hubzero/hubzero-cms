@@ -281,7 +281,7 @@ class TagsTag extends JTable
 		} 
 		else 
 		{
-			$query = "SELECT t.id, t.tag, t.raw_tag, t.alias, t.admin, (SELECT COUNT(*) FROM #__tags_object AS tt WHERE tt.tagid=t.id) AS total";
+			$query = "SELECT t.id, t.tag, t.raw_tag, t.alias, t.admin, (SELECT COUNT(*) FROM #__tags_object AS tt WHERE tt.tagid=t.id) AS total, (SELECT COUNT(*) FROM #__tags_substitute AS s WHERE s.tag_id=t.id) AS substitutes";
 		}
 		$query .= " FROM $this->_tbl AS t";
 		if ($filters['search']) 

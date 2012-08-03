@@ -92,6 +92,7 @@ function submitbutton(pressbutton)
 				<th scope="col"><?php echo JText::_('ALIAS'); ?></th>
 				<th scope="col"><?php echo JText::_('ADMIN'); ?></th>
 				<th scope="col"><?php echo JText::_('NUMBER_TAGGED'); ?></th>
+				<th scope="col"><?php echo JText::_('Substitutions'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -114,7 +115,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		$check = '<span class="check">' . strToLower(JText::_('ADMIN')) . '</span>';
 	}
 
-	$total = $to->getCount($row->id);
+	//$total = $to->getCount($row->id);
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
@@ -159,7 +160,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $check; ?>
 				</td>
 				<td>
-					<?php echo $total; ?>
+					<?php echo $row->total; ?>
+				</td>
+				<td>
+					<?php echo $row->substitutes; ?>
 				</td>
 			</tr>
 <?php

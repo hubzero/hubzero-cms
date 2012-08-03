@@ -103,7 +103,10 @@ if ($this->getError())
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
+		<h4><?php echo JText::_('Normalization'); ?></h4>
 		<p><?php echo JText::_('NORMALIZED_EXPLANATION'); ?></p>
+		<h4><?php echo JText::_('Substitutions'); ?></h4>
+		<p><?php echo JText::_('Enter a comma-separated list of tags you wish this tag to be substituted for. For example: If you enter "h20, aqua" for the tag "water", any time someone enters "h20" or "aqua" it will result in a tag of "water".'); ?></p>
 	</div>
 	<div class="clr"></div>
 
