@@ -611,9 +611,11 @@ class TagsTag extends JTable
 
 		$raw_tags = explode(',', trim($tag_string));
 
+		$tags = array();
 		foreach ($raw_tags as $raw_tag)
 		{
 			$nrm = $this->normalize($raw_tag);
+			$tags[] = $nrm;
 
 			if (isset($subs[$nrm]))
 			{
@@ -628,6 +630,30 @@ class TagsTag extends JTable
 				if (!$sub->store())
 				{
 					$this->setError($sub->getError());
+				}
+			}
+		}
+
+		$sql = "SELECT t.id FROM $this->_tbl AS t WHERE t.tag IN ('" . implode("','", $tags) . "')";
+		$this->_db->setQuery($sql);
+
+		if (($ids = $this->_db->loadObjectList()))
+		{
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'object.php');
+
+			$to = new TagsObject($this->_db);
+
+			foreach ($ids as $id)
+			{
+				if ($tag_id != $id->id) 
+				{
+					// Get all the associations to this tag
+					// Loop through the associations and link them to a different tag
+					$to->moveObjects($id->id, $tag_id);
+
+					// Delete the tag
+					$tag = new TagsTag($this->_db);
+					$tag->delete($id->id);
 				}
 			}
 		}
