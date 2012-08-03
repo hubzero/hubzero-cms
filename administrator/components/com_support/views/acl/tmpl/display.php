@@ -46,6 +46,23 @@ function submitbutton(pressbutton)
 	// do field validation
 	submitform(pressbutton);
 }
+
+/**
+* Toggles the check state of a group of boxes
+*
+* Checkboxes must have an id attribute in the form cb0, cb1...
+* @param The number of box to 'check'
+* @param An alternative field name
+*/
+function checkAllOptions() 
+{
+	var f = document.adminForm;
+	var c = f.toggleOpt.checked;
+	console.log(f.toggle);
+	$$('.chk').each(function(el){
+		el.checked = c;
+	});
+}
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
@@ -91,28 +108,29 @@ function submitbutton(pressbutton)
 						<option value="user"><?php echo JText::_('user'); ?></option>
 						<option value="group"><?php echo JText::_('group'); ?></option>
 					</select>
+					<input type="checkbox" name="toggleOpt" value="" onclick="checkAllOptions();" /> <abbr title="<?php echo JText::_('Check all options'); ?>"><?php echo JText::_('All'); ?></abbr>
 				</td>
 				<td>
 					<input type="hidden" name="map[tickets][id]" value="0" />
 					<input type="hidden" name="map[tickets][aro_id]" value="0" />
 					<input type="hidden" name="map[tickets][aco_id]" value="1" />
 					<input type="hidden" name="map[tickets][action_create]" value="1" />
-					<input type="checkbox" name="map[tickets][action_read]" value="1" />
+					<input type="checkbox" class="chk" name="map[tickets][action_read]" value="1" />
 				</td>
 				<td>
-					<input type="checkbox" name="map[tickets][action_update]" value="1" />
+					<input type="checkbox" class="chk" name="map[tickets][action_update]" value="1" />
 				</td>
 				<td>
-					<input type="checkbox" name="map[tickets][action_delete]" value="1" />
+					<input type="checkbox" class="chk" name="map[tickets][action_delete]" value="1" />
 				</td>
 				<td>
 					<input type="hidden" name="map[comments][id]" value="0" />
 					<input type="hidden" name="map[comments][aro_id]" value="0" />
 					<input type="hidden" name="map[comments][aco_id]" value="2" />
-					<input type="checkbox" name="map[comments][action_create]" value="1" />
+					<input type="checkbox" class="chk" name="map[comments][action_create]" value="1" />
 				</td>
 				<td>
-					<input type="checkbox" name="map[comments][action_read]" value="1" />
+					<input type="checkbox" class="chk" name="map[comments][action_read]" value="1" />
 					<input type="hidden" name="map[comments][action_update]" value="0" />
 					<input type="hidden" name="map[comments][action_delete]" value="0" />
 				</td>
@@ -120,10 +138,10 @@ function submitbutton(pressbutton)
 					<input type="hidden" name="map[private_comments][id]" value="0" />
 					<input type="hidden" name="map[private_comments][aro_id]" value="0" />
 					<input type="hidden" name="map[private_comments][aco_id]" value="3" />
-					<input type="checkbox" name="map[private_comments][action_create]" value="1" />
+					<input type="checkbox" class="chk" name="map[private_comments][action_create]" value="1" />
 				</td>
 				<td>
-					<input type="checkbox" name="map[private_comments][action_read]" value="1" />
+					<input type="checkbox" class="chk" name="map[private_comments][action_read]" value="1" />
 					<input type="hidden" name="map[private_comments][action_update]" value="0" />
 					<input type="hidden" name="map[private_comments][action_delete]" value="0" />
 				</td>
