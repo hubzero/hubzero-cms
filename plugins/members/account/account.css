@@ -1,0 +1,286 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/members/account/account.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- -- -- --
+	Members Account plugin CSS
+	-- -- -- -- -- -- -- -- --
+
+*/
+
+/* General */
+#members-account-section .sub-section h4 {
+	background: #747474;
+	float: right;
+	width: 100%;
+	margin: 0;
+	padding: 0.8em 0;
+	color: #ECECEC;
+	text-indent: 2em;
+	font-weight: bold;
+	opacity: .9;
+	-webkit-border-radius: 6px 6px 0 0;
+	-moz-border-radius: 6px 6px 0 0;
+	-o-border-radius: 6px 6px 0 0;
+	border-radius: 6px 6px 0 0;
+	-webkit-box-shadow: 1px 0 2px #BFBF9A;
+}
+#members-account-section .sub-section-content {
+	padding: 10px 25px 15px 25px;
+	margin: 0 0 15px 0;
+	overflow: hidden;
+	border: 1px solid #999;
+	background-color: #F4F4F4;
+	-webkit-border-radius: 0 0 6px 6px;
+	-moz-border-radius: 0 0 6px 6px;
+	-o-border-radius: 0 0 6px 6px;
+	border-radius: 0 0 6px 6px;
+	-webkit-box-shadow: 1px 1px 2px #BFBF9A;
+}
+#page_notifications {
+	margin: 0;
+}
+#members-account-section #section-edit-errors {
+	display: none;
+}
+#members-account-section fieldset {
+	border: 1px solid #999;
+	background-color: #F4F4F4;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	-o-border-radius: 6px;
+	border-radius: 6px;
+	-webkit-box-shadow: 1px 1px 2px #BFBF9A;
+}
+#members-account-section fieldset legend {
+	background: #747474;
+	float: right;
+	width: 100%;
+	border-bottom: 1px solid #E5E5E5;
+	-webkit-border-radius: 6px 6px 0 0;
+	-moz-border-radius: 6px 6px 0 0;
+	-o-border-radius: 6px 6px 0 0;
+	border-radius: 6px 6px 0 0;
+	-webkit-box-shadow: 1px 0 2px #BFBF9A;
+	margin: 0 0px 1em 0px;
+	padding: 0.8em 0;
+	color: #ECECEC;
+	text-indent: 2em;
+	font-weight: bold;
+}
+#members-account-section fieldset div.fieldset-grouping {
+	margin: 20px 50px;
+}
+
+/* Inputs/Buttons */
+#members-account-section input[type=text],
+#members-account-section input[type=password],
+#members-account-section textarea,
+#members-account-section select { 
+	margin: 0;
+	padding: 7px;
+	border-radius: 3px;
+	border: 1px solid #c5c3c3;
+	background: #FFF;
+	width: 100%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+#members-account-section input[type=text]:focus,
+#members-account-section input[type=password]:focus,
+#members-account-section textarea:focus,
+#members-account-section select:focus {
+	border: 1px solid #7589ef;
+	-webkit-box-shadow: 0 0 2px #aaa;
+	-moz-box-shadow: 0 0 2px #aaa;
+	box-shadow: 0 0 2px #aaa;
+	outline: none;
+}
+#members-account-section input[type=submit],
+#members-account-section #token-button {
+	background: #065EFF;
+	color: white;
+	border: 1px solid #0441B0;
+	border-radius: 3px;
+	color: #FFF;
+	font-weight: bold;
+	font-size: 12px;
+	padding: 7px 20px;
+}
+#members-account-section input[type=submit]:hover,
+#members-account-section #token-button:hover {
+	cursor: pointer;
+	-webkit-box-shadow: inset 0 1px 2px #F2F2F2;
+	-moz-box-shadow: inset 0 1px 2px #F2F2F2;
+	box-shadow: inset 0 1px 2px #F2F2F2;
+}
+#members-account-section input[type=submit]:active,
+#members-account-section #token-button:active {
+	-webkit-box-shadow: inset 0 1px 2px #444;
+	-moz-box-shadow: inset 0 1px 2px #444;
+	box-shadow: inset 0 1px 2px #444;
+}
+#members-account-section p.submit {
+	text-align: center;
+}
+#members-account-section .cancel {
+	font-size: 11px;
+	padding: 7px 20px;
+	background: #FFF;
+	border: 1px solid #CCC;
+	border-radius: 3px;
+	color: #444;
+}
+#members-account-section .cancel:hover {
+	cursor: pointer;
+	-webkit-box-shadow: inset 0 1px 2px #F2F2F2;
+	-moz-box-shadow: inset 0 1px 2px #F2F2F2;
+	box-shadow: inset 0 1px 2px #F2F2F2;
+}
+#members-account-section .cancel:active {
+	-webkit-box-shadow: inset 0 1px 2px #444;
+	-moz-box-shadow: inset 0 1px 2px #444;
+	box-shadow: inset 0 1px 2px #444;
+}
+#members-account-section #token-button {
+	font: -webkit-small-control;
+	float: left;
+	text-align: center;
+	margin-right: 15px;
+	padding: 7px 20px;
+}
+#members-account-section #cancel-button {
+	font: -webkit-small-control;
+	float: left;
+	text-align: center;
+	padding: 7px 20px;
+	font-size: 11px;
+}
+
+/* --------------------
+   Password
+   -------------------- */
+#members-account-section #oldpass {
+	margin-bottom: 15px;
+}
+#members-account-section #newpass1,
+#members-account-section #newpass2 {
+	margin-bottom: 15px;
+}
+#members-account-section label.side-by-side {
+	display: block;
+	width: 49%;
+	float: left;
+}
+#members-account-section label.pad-right {
+	padding-right: 2%;
+}
+#members-account-section div#passrules-container {
+	width: 39%;
+	display: block;
+	float: left;
+}
+#members-account-section div#passrules-container.setlocal {
+	width: 37%;
+	margin-right: 2%;
+	margin-bottom: 20px;
+}
+#members-account-section div#passrules-subcontainer {
+	margin: 10px;
+	padding: 10px;
+	border: 1px solid #c5c3c3;
+	background: #FFF;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	-o-border-radius: 6px;
+	border-radius: 6px;
+	-webkit-box-shadow: 1px 1px 2px #BFBF9A;
+}
+#members-account-section div#password-group.split-left {
+	width: 59%;
+	margin-right: 2%;
+	display: block;
+	float: left;
+}
+#members-account-section ul#passrules {
+	list-style: none;
+	margin: 0 0 0 5px;
+}
+#members-account-section ul#passrules li.error {
+	font-weight: bold;
+}
+#members-account-section ul#passrules li.passed {
+	text-decoration: line-through;
+}
+
+/* --------------------
+   Linked accounts
+   -------------------- */
+#members-account-section .account-group {
+	border: 1px solid #999;
+	background-color: #FFF;
+	display: block;
+	float: left;
+	overflow: hidden;
+	padding: 2px;
+	margin-right: 15px;
+	margin-bottom: 15px;
+	min-height: 40px;
+	min-width: 250px;
+	position: relative;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	-o-border-radius: 4px;
+	border-radius: 4px;
+	-webkit-box-shadow: 2px 2px 3px #BFBF9A;
+}
+#members-account-section .account-group:hover {
+	-webkit-box-shadow: inset 0 1px 2px #F2F2F2;
+	-moz-box-shadow: inset 0 1px 2px #F2F2F2;
+	box-shadow: inset 0 1px 2px #F2F2F2;
+}
+#members-account-section .account-group.active {
+	
+}
+#members-account-section .account-group.inactive {
+	opacity: .6;
+	background: url('/plugins/members/account/images/light-stripes.png') 0 0 repeat;
+}
+#members-account-section .account-group.inactive:hover {
+	opacity: .9;
+}
+#members-account-section .account-group .x {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	margin: 0;
+	padding: 0;
+	line-height: 6px;
+}
+#members-account-section .account-group .x a {
+	border-bottom: none;
+}
+#members-account-section .auth_link_icon {
+	width: 50px;
+	height: 50px;
+	float: left;
+	margin: 10px;
+}
+#members-account-section #facebook {
+	background: transparent url('/plugins/members/account/images/facebook_icon.png') 0 0 no-repeat;
+}
+#members-account-section #google {
+	background: transparent url('/plugins/members/account/images/google_icon.png') 0 0 no-repeat;
+}
+#members-account-section #linkedin {
+	background: transparent url('/plugins/members/account/images/linkedin_icon.png') 0 0 no-repeat;
+}
+#members-account-section #pucas {
+	background: transparent url('/plugins/members/account/images/pucas_icon.png') 0 0 no-repeat;
+}
