@@ -28,22 +28,23 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title( JText::_( 'Support' ).' <small><small>[ '.JText::_('ACL').' ]</small></small>', 'support.png' );
+JToolBarHelper::title(JText::_('Support').' <small><small>[ '.JText::_('ACL').' ]</small></small>', 'support.png');
 JToolBarHelper::deleteList();
-
+JToolBarHelper::spacer();
+JToolBarHelper::help('acl.html', true);
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 	// do field validation
-	submitform( pressbutton );
+	submitform(pressbutton);
 }
 </script>
 
@@ -61,7 +62,7 @@ function submitbutton(pressbutton)
 				<th> </th>
 			</tr>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th><?php echo JText::_('SUPPORT_COL_ID'); ?></th>
 				<th><?php echo JText::_('Object'); ?></th>
 				<th><?php echo JText::_('Model'); ?></th>
@@ -134,7 +135,7 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $k = 0;
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
+for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
 
@@ -144,7 +145,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	LEFT JOIN #__support_acl_acos AS c ON m.aco_id=c.id 
 	WHERE r.foreign_key=$row->foreign_key AND r.model='$row->model'
 	ORDER BY aro_foreign_key, aro_model";
-	$this->database->setQuery( $sql );
+	$this->database->setQuery($sql);
 	$lines = $this->database->loadObjectList();
 
 	$data = array();
@@ -181,11 +182,11 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				<td style="text-align:center;">
 					<?php 
 					$cimg = 'publish_x.png';
-					$calt = JText::_( 'no' );
+					$calt = JText::_('no');
 					$cls = 'unpublish';
 					if ($data['tickets']['read']) {
 						$cimg = 'publish_g.png';
-						$calt = JText::_( 'yes' );
+						$calt = JText::_('yes');
 						$cls = 'publish';
 					}
 					?>
@@ -196,11 +197,11 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				<td style="text-align:center;">
 					<?php 
 					$cimg = 'publish_x.png';
-					$calt = JText::_( 'no' );
+					$calt = JText::_('no');
 					$cls = 'unpublish';
 					if ($data['tickets']['update']) {
 						$cimg = 'publish_g.png';
-						$calt = JText::_( 'yes' );
+						$calt = JText::_('yes');
 						$cls = 'publish';
 					}
 					?>
@@ -211,11 +212,11 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				<td style="text-align:center;">
 					<?php 
 					$cimg = 'publish_x.png';
-					$calt = JText::_( 'no' );
+					$calt = JText::_('no');
 					$cls = 'unpublish';
 					if ($data['tickets']['delete']) {
 						$cimg = 'publish_g.png';
-						$calt = JText::_( 'yes' );
+						$calt = JText::_('yes');
 						$cls = 'publish';
 					}
 					?>
@@ -227,11 +228,11 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				<td style="text-align:center;">
 					<?php 
 					$cimg = 'publish_x.png';
-					$calt = JText::_( 'no' );
+					$calt = JText::_('no');
 					$cls = 'unpublish';
 					if ($data['comments']['create']) {
 						$cimg = 'publish_g.png';
-						$calt = JText::_( 'yes' );
+						$calt = JText::_('yes');
 						$cls = 'publish';
 					}
 					?>
@@ -242,10 +243,10 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				<td style="text-align:center;">
 					<?php 
 					$cimg = 'publish_x.png';
-					$calt = JText::_( 'no' );
+					$calt = JText::_('no');
 					if ($data['comments']['read']) {
 						$cimg = 'publish_g.png';
-						$calt = JText::_( 'yes' );
+						$calt = JText::_('yes');
 						$cls = 'publish';
 					}
 					?>
@@ -257,11 +258,11 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				<td style="text-align:center;">
 					<?php 
 					$cimg = 'publish_x.png';
-					$calt = JText::_( 'no' );
+					$calt = JText::_('no');
 					$cls = 'unpublish';
 					if ($data['private_comments']['create']) {
 						$cimg = 'publish_g.png';
-						$calt = JText::_( 'yes' );
+						$calt = JText::_('yes');
 						$cls = 'publish';
 					}
 					?>
@@ -272,11 +273,11 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				<td style="text-align:center;">
 					<?php 
 					$cimg = 'publish_x.png';
-					$calt = JText::_( 'no' );
+					$calt = JText::_('no');
 					$cls = 'unpublish';
 					if ($data['private_comments']['read']) {
 						$cimg = 'publish_g.png';
-						$calt = JText::_( 'yes' );
+						$calt = JText::_('yes');
 						$cls = 'publish';
 					}
 					?>
@@ -298,5 +299,5 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

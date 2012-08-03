@@ -34,6 +34,8 @@ $text = ( $this->task == 'edit' ? JText::_( 'Edit' ) : JText::_( 'New' ) );
 JToolBarHelper::title( JText::_( 'Support' ).': <small><small>[ '. $text.' ]</small></small>', 'support.png' );
 JToolBarHelper::save();
 JToolBarHelper::cancel();
+JToolBarHelper::spacer();
+JToolBarHelper::help('messages.html', true);
 
 $jconfig =& JFactory::getConfig();
 

@@ -34,7 +34,8 @@ JToolBarHelper::title( JText::_( 'Support' ).': <small><small>[ '.JText::_( 'Tic
 JToolBarHelper::addNew();
 JToolBarHelper::editList();
 JToolBarHelper::deleteList();
-
+JToolBarHelper::spacer();
+JToolBarHelper::help('messages.html', true);
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
