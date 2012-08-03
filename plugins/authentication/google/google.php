@@ -75,7 +75,7 @@ class plgAuthenticationGoogle extends JPlugin
 
 	/**
 	 * Method to call when redirected back from google after authentication
-	 * Grab the return URL if set and handle denial of app privileges from facebook
+	 * Grab the return URL if set and handle denial of app privileges from google
 	 *
 	 * @access	public
 	 * @param   object	$credentials
