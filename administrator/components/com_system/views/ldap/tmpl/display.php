@@ -41,3 +41,38 @@ JToolBarHelper::preferences($this->option, '550');
 	<input type="hidden" name="task" value="importHubConfig" />
 	<input type="submit" value="ImportHubConfig" />
 </form>
+
+<br />
+<p class="error">Seriously! Don't try the following commands unless you want to irreperably break your LDAP. This is a work in progress.</p>
+
+<p>Export Groups to LDAP...</p>
+<form action="index.php" method="post" name="adminForm">
+	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+	<input type="hidden" name="task" value="exportGroups" />
+	<input type="submit" value="exportGroups" />
+</form>
+
+<p>Export Users to LDAP...</p>
+<form action="index.php" method="post" name="adminForm">
+	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+	<input type="hidden" name="task" value="exportUsers" />
+	<input type="submit" value="exportUsers" />
+</form>
+
+<p>Delete exported LDAP Group Entries...</p>
+<form action="index.php" method="post" name="adminForm">
+	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+	<input type="hidden" name="task" value="deleteGroups" />
+	<input type="submit" value="deleteGroups" />
+</form>
+
+<p>Delete exported LDAP User Entries...</p>
+<form action="index.php" method="post" name="adminForm">
+	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+	<input type="hidden" name="task" value="deleteUsers" />
+	<input type="submit" value="deleteUsers" />
+</form>
