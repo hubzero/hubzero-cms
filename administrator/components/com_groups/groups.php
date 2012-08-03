@@ -81,11 +81,6 @@ JSubMenuHelper::addEntry(
 	'index.php?option=' .  $option . '&controller=manage', 
 	$controllerName == 'manage'
 );
-JSubMenuHelper::addEntry(
-	JText::_('System'), 
-	'index.php?option=' .  $option . '&controller=system', 
-	$controllerName == 'system'
-);
 
 require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'GroupsController' . ucfirst($controllerName);
