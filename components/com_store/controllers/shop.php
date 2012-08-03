@@ -185,7 +185,7 @@ class StoreControllerShop extends Hubzero_Controller
 		$this->view->rows = $obj->getItems('retrieve', $this->view->filters, $this->config);
 
 		// Push some styles to the template
-		$this->_getStyles($this->_option, 'assets/css/store.css');
+		$this->_getStyles();
 
 		// Push some scripts to the template
 		$this->_getScripts('assets/js/store', $this->_option);
@@ -228,7 +228,7 @@ class StoreControllerShop extends Hubzero_Controller
 		$this->view->setLayout('cart');
 
 		// Push some styles to the template
-		$this->_getStyles($this->_option, 'assets/css/store.css');
+		$this->_getStyles();
 
 		// Push some scripts to the template
 		$this->_getScripts('assets/js/store', $this->_option);
@@ -369,7 +369,7 @@ class StoreControllerShop extends Hubzero_Controller
 		}
 
 		// Push some styles to the template
-		$this->_getStyles($this->_option, 'assets/css/store.css');
+		$this->_getStyles();
 
 		// Push some scripts to the template
 		$this->_getScripts('assets/js/store', $this->_option);
@@ -439,7 +439,7 @@ class StoreControllerShop extends Hubzero_Controller
 	public function finalizeTask()
 	{
 		// Push some styles to the template
-		$this->_getStyles($this->_option, 'assets/css/store.css');
+		$this->_getStyles();
 
 		// Push some scripts to the template
 		$this->_getScripts('assets/js/store', $this->_option);
@@ -621,7 +621,7 @@ class StoreControllerShop extends Hubzero_Controller
 		}
 
 		// Push some styles to the template
-		$this->_getStyles($this->_option, 'assets/css/store.css');
+		$this->_getStyles();
 
 		// Push some scripts to the template
 		$this->_getScripts('assets/js/store', $this->_option);
