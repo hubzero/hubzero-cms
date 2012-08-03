@@ -73,7 +73,7 @@ if ($this->getError())
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="item-form">
-	<div class="col width-50 fltlft">
+	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('DETAILS'); ?></span></legend>
 			<table class="admintable">
@@ -94,11 +94,15 @@ if ($this->getError())
 						<th class="key" style="vertical-align:top;"><label><?php echo JText::_('DESCRIPTION'); ?>:</label></th>
 						<td><?php echo $editor->display('description', stripslashes($this->tag->description), '360px', '200px', '50', '10'); ?></td>
 					</tr>
+					<tr>
+						<th class="key" style="vertical-align:top;"><label><?php echo JText::_('Substitute for'); ?>:</label></th>
+						<td><?php echo $editor->display('substitutions', stripslashes($this->tag->getSubstitutions($this->tag->id, true)), '360px', '200px', '50', '10'); ?></td>
+					</tr>
 				</tbody>
 			</table>
 		</fieldset>
 	</div>
-	<div class="col width-50 fltrt">
+	<div class="col width-40 fltrt">
 		<p><?php echo JText::_('NORMALIZED_EXPLANATION'); ?></p>
 	</div>
 	<div class="clr"></div>

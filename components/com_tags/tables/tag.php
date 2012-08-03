@@ -103,19 +103,33 @@ class TagsTag extends JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE raw_tag='$oid' OR tag='$oid' OR alias='$oid' LIMIT 1");
-		$this->id = $this->_db->loadResult();
+		$oid = $this->normalize($oid);
 
-		return $this->load($this->id);
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE tag='$oid' OR alias='$oid' LIMIT 1"); //raw_tag='$oid' OR 
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->_db->setQuery("SELECT t.* FROM $this->_tbl AS t JOIN #__tags_substitute AS s ON s.tag_id=t.id WHERE s.tag='$oid' LIMIT 1");
+			if ($result = $this->_db->loadAssoc()) 
+			{
+				return $this->bind($result);
+			} 
+			else 
+			{
+				$this->setError($this->_db->getErrorMsg());
+				return false;
+			}
+		}
 	}
 
 	/**
-	 * Short description for 'delete'
+	 * Delete a tag and associated content
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $oid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $oid Tag ID
+	 * @return     boolean True on success, false if errors
 	 */
 	public function delete($oid=null)
 	{
@@ -126,6 +140,14 @@ class TagsTag extends JTable
 		}
 
 		$query = 'DELETE FROM #__tags_object WHERE tagid = ' . $this->_db->Quote($this->$k);
+		$this->_db->setQuery($query);
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+
+		$query = 'DELETE FROM #__tags_substitute WHERE tag_id = ' . $this->_db->Quote($this->$k);
 		$this->_db->setQuery($query);
 		if (!$this->_db->query()) 
 		{
@@ -533,6 +555,84 @@ class TagsTag extends JTable
 		{
 			return null;
 		}
+	}
+
+	/**
+	 * Get all the substitutions for this tag
+	 * 
+	 * @param      integer $tag_id   Tag ID
+	 * @param      boolean $asString Return results as string?
+	 * @param      integer $offset   Record offset
+	 * @param      integer $limit    Number of records to return (returns all if less than 1)
+	 * @return     mixed Array by default, string if $asString is set to true
+	 */
+	public function getSubstitutions($tag_id=null, $asString=false, $offset=0, $limit=0)
+	{
+		if (!$tag_id) 
+		{
+			$tag_id = $this->id;
+		}
+
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'substitute.php');
+
+		$subs = new TagsSubstitute($this->_db);
+		if ($asString)
+		{
+			return $subs->getRecordString($tag_id, $offset, $limit);
+		}
+		return $subs->getRecords($tag_id, $offset, $limit);
+	}
+
+	/**
+	 * Get all the substitutions for this tag
+	 * 
+	 * @param      integer $tag_id   Tag ID
+	 * @param      boolean $asString Return results as string?
+	 * @param      integer $offset   Record offset
+	 * @param      integer $limit    Number of records to return (returns all if less than 1)
+	 * @return     mixed Array by default, string if $asString is set to true
+	 */
+	public function saveSubstitutions($tag_string='', $tag_id=null)
+	{
+		if (!$tag_id) 
+		{
+			$tag_id = $this->id;
+		}
+		if (!$tag_id) 
+		{
+			$this->setError(JText::_('Missing argument.'));
+			return false;
+		}
+
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'substitute.php');
+
+		$ts = new TagsSubstitute($this->_db);
+		$subs = $ts->getRecords($tag_id);
+
+		$raw_tags = explode(',', trim($tag_string));
+
+		foreach ($raw_tags as $raw_tag)
+		{
+			$nrm = $this->normalize($raw_tag);
+
+			if (isset($subs[$nrm]))
+			{
+				continue; // Substitution already exists
+			}
+
+			$sub = new TagsSubstitute($this->_db);
+			$sub->raw_tag = trim($raw_tag);
+			$sub->tag_id  = $tag_id;
+			if ($sub->check())
+			{
+				if (!$sub->store())
+				{
+					$this->setError($sub->getError());
+				}
+			}
+		}
+
+		return true;
 	}
 }
 

@@ -1036,7 +1036,16 @@ class ContributeControllerCreate extends Hubzero_Controller
 			}
 		}
 
-		$this->database->execute('DELETE FROM #__tags_object WHERE tbl = \'resources\' AND objectid = ' . $id);
+		$tags = array();
+		foreach ($push as $tag) 
+		{
+			$tags[] = $tag[0];
+		}
+		$tags = implode(', ', $tags);
+		
+		$rt = new ResourcesTags($this->database);
+		$rt->tag_object($this->juser->get('id'), $id, $tags, 1, 1);
+		/*$this->database->execute('DELETE FROM #__tags_object WHERE tbl = \'resources\' AND objectid = ' . $id);
 		foreach ($push as $tag) 
 		{
 			$this->database->setQuery('SELECT id FROM #__tags WHERE tag = ' . $this->database->quote($tag[1]));
@@ -1046,7 +1055,7 @@ class ContributeControllerCreate extends Hubzero_Controller
 				$tid = $this->database->insertid();
 			}
 			$this->database->execute('INSERT INTO #__tags_object(tbl, objectid, tagid, label) VALUES (\'resources\', ' . $id . ', ' . $tid . ', ' . ($tag[2] ? $this->database->quote($tag[2]) : 'NULL') . ')');
-		}
+		}*/
 	}
 
 	/**

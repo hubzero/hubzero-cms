@@ -186,10 +186,6 @@ class TagsControllerEntries extends Hubzero_Controller
 		}
 
 		$row->admin = JRequest::getInt('admin', 0);
-		$row->raw_tag = trim($row->raw_tag);
-
-		$t = new TagsHandler($this->database);
-		$row->tag = $t->normalize_tag($row->raw_tag);
 
 		// Check content
 		if (!$row->check()) 
@@ -218,6 +214,10 @@ class TagsControllerEntries extends Hubzero_Controller
 			return;
 		}
 
+		// Save substitutions
+		$row->saveSubstitutions(JRequest::getVar('substitutions', ''));
+
+		// Redirect to main listing
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
 			JText::_('TAG_SAVED')
