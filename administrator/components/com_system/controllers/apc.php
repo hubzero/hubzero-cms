@@ -199,7 +199,7 @@ class SystemControllerApc extends Hubzero_Controller
 		if (!$this->cache['num_hits'])
 		{
 			$this->cache['num_hits'] = 1;
-			$time++;
+			$this->time++;
 		}
 
 		// Make a few things available to everyone

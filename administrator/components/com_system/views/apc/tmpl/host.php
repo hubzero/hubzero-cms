@@ -37,6 +37,16 @@ $time = $this->time;
 
 ?>
 
+<div role="navigation" class="sub-navigation">
+	<ul id="subsubmenu">
+		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" class="active">Host</a></li> 
+		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=system">System</a></li>
+		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=user">User</a></li> 
+		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=dircache">Directory</a></li>
+		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=version">Version</a></li>
+	</ul>
+</div>
+
 <script type="text/javascript">
 window.addEvent('domready', function() {
 	var clrcache = $('clearcache');
@@ -205,7 +215,7 @@ window.addEvent('domready', function() {
 
 	if ($freeseg > 1)
 	{
-		$frag = sprintf("%.2f%% (%s out of %s in %d fragments)", ($fragsize/$freetotal)*100,ApcHTML::bsize($fragsize),ApcHTML::bsize($freetotal),$freeseg);
+		$frag = sprintf("%.2f%% (%s out of %s in %d fragments)", ($fragsize/$freetotal)*100,SystemHtml::bsize($fragsize),SystemHtml::bsize($freetotal),$freeseg);
 	}
 	else
 	{
@@ -215,7 +225,7 @@ window.addEvent('domready', function() {
 	if ($this->graphics_avail)
 	{
 		$size='width='.(2*GRAPH_SIZE+150).' height='.(GRAPH_SIZE+10);
-		echo "<img alt=\"\" $size src=\"index.php?option={$this->option}&controller={$this->controller}&task=mkimage&IMG=3&time=$time\">";
+		echo "<img alt=\"\" $size src=\"index.php?option={$this->option}&controller={$this->controller}&task=mkimage&IMG=3&time=$time\" />";
 	}
 	echo "</br>Fragmentation: $frag";
 	echo "</td>";

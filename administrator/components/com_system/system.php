@@ -57,6 +57,7 @@ else
 	}
 }
 // Include scripts
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'system.php');
 
 $controllerName = JRequest::getCmd('controller', 'scripts');

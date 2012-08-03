@@ -34,6 +34,16 @@ defined('_JEXEC') or die('Restricted access');
 JToolBarHelper::title(JText::_('APC Version Information'), 'config.png');
 ?>
 
+<div role="navigation" class="sub-navigation">
+	<ul id="subsubmenu">
+		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>">Host</a></li> 
+		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=system">System</a></li>
+		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=user">User</a></li> 
+		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=dircache">Directory</a></li>
+		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=version" class="active">Version</a></li>
+	</ul>
+</div>
+
 <div class="content">
 	<div class="info">
 	<h2>APC Version Information</h2>
