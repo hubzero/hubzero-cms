@@ -161,11 +161,14 @@ class ToolsControllerAdmin extends Hubzero_Controller
 			return;
 		}
 		
+		$ldap_params = JComponentHelper::getParams('com_system');
+		$pw = $ldap_params->get('ldap_searchpw','');
+		
 		$command  = DS . trim($this->config->get('addreposcript_dir', '/usr/bin'), DS);
 		$command .= DS . 'addrepo ' . $status['toolname'];
 		$command .= ' -title "' . $status['title'] . '"';
 		$command .= ' -description "' . $status['description'] . '"';
-		$command .= ' -password "' . Hubzero_Factory::getHub()->getCfg('hubLDAPSearchUserPW') . '"';
+		$command .= ' -password "' . $pw . '"';
 		$command .= ' -hubdir ' . JPATH_ROOT;
 
 		$this->_invokeScript($command, JText::_('NOTICE_PROJECT_AREA_CREATED'));

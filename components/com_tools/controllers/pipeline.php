@@ -1246,9 +1246,9 @@ class ToolsControllerPipeline extends Hubzero_Controller
 
 		if (!empty($toolinfo)) 
 		{
-			$xhub =& Hubzero_Factory::getHub();
-			$pw = $xhub->getCfg('hubLDAPSearchUserPW');
-
+            $ldap_params = JComponentHelper::getParams('com_system');
+            $pw = $ldap_params->get('ldap_searchpw','');
+                
 			$scriptdir = DS . trim($this->config->get('addreposcript_dir', '/usr/bin'), DS);
 
 			$command = $scriptdir . DS . 'addrepo ' . $toolinfo['toolname'] . ' -title "' . $toolinfo['title'] . '" -description "' . $toolinfo['description'] . '" -password "' . $pw . '"' . " -hubdir " . JPATH_ROOT;
