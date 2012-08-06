@@ -247,7 +247,7 @@ class GroupsController extends Hubzero_Controller
 			if ($this->gid) 
 			{
 				$group = new Hubzero_Group();
-				$group->select($this->gid);
+				$group->read($this->gid);
 
 				$pathway->addItem(
 					stripslashes($group->get('description')),
@@ -310,7 +310,7 @@ class GroupsController extends Hubzero_Controller
 		if ($this->gid) 
 		{
 			$group = new Hubzero_Group();
-			$group->select($this->gid);
+			$group->read($this->gid);
 
 			$this->_title = JText::_('GROUP') . ': ' . stripslashes($group->get('description'));
 		}
@@ -1301,7 +1301,7 @@ class GroupsController extends Hubzero_Controller
 			}
 
 			// Load the group
-			$group->select($this->gid);
+			$group->read($this->gid);
 
 			// Ensure we found the group info
 			if (!$group) 
@@ -1412,7 +1412,7 @@ class GroupsController extends Hubzero_Controller
 			$this->_task = 'edit';
 
 			// Load the group
-			$group->select($g_gidNumber);
+			$group->read($g_gidNumber);
 		}
 
 		// Check for any missing info
