@@ -474,8 +474,7 @@ class GroupsControllerManage extends Hubzero_Controller
 			foreach ($ids as $id)
 			{
 				// Load the group page
-				$group = new Hubzero_Group();
-				$group->read($id);
+				$group = Hubzero_Group::getInstance($id);
 
 				// Ensure we found the group info
 				if (!$group)
@@ -525,7 +524,7 @@ class GroupsControllerManage extends Hubzero_Controller
 				// Delete group
 				if (!$group->delete())
 				{
-					JError::raiseError(500, $group->getError());
+					JError::raiseError(500, 'Unable to delete group');
 					return;
 				}
 			}
