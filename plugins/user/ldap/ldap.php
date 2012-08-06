@@ -32,6 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.event.plugin');
+jimport('Hubzero.Ldap');
 
 /**
  * User plugin for hub users
@@ -83,7 +84,7 @@ class plgUserLdap extends JPlugin
 	 * @param boolean true if user was succesfully stored in the database
 	 * @param string message
 	 */
-	public function onAfterStoreUser($group)
+	public function onAfterStoreGroup($group)
 	{
 		Hubzero_Ldap::syncGroup($group->cn);
 	}
@@ -95,8 +96,7 @@ class plgUserLdap extends JPlugin
 	 * @param boolean true if user was succesfully stored in the database
 	 * @param string message
 	 */
-	public function onAfterDeleteUser($group)
+	public function onAfterDeleteGroup($group)
 	{
-		Hubzero_Ldap::syncUser($group->cn);
 	}	
 }
