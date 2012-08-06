@@ -367,7 +367,7 @@ class Hubzero_Ldap
 
 		$entry = @ldap_search($conn, $dn, $filter, $reqattr, 0, 1, 0);
 		
-		$count = ldap_count_entries($conn, $entry);
+		$count = ($entry) ? ldap_count_entries($conn, $entry) : 0;
 
 		/* If there was a database entry, but there was no ldap entry, create the ldap entry */
 
@@ -396,7 +396,7 @@ class Hubzero_Ldap
 
 		$ldapinfo = null;
 			
-		$count = ldap_count_entries($conn, $entry);
+		$count = ($entry) ? ldap_count_entries($conn, $entry) : 0;
 
 		if ($count > 0)
 		{
@@ -459,7 +459,7 @@ class Hubzero_Ldap
 				}
 				else
 				{
-					$entry[$key] = array($dbinfo[$key]);
+					$entry[$key] = $dbinfo[$key];
 				}
 			}
 		}
