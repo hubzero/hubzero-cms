@@ -1106,7 +1106,9 @@ class ToolsControllerPipeline extends Hubzero_Controller
 
 		if (empty($gid))
 		{
-			$hzg = Hubzero_Group::createInstance($group_prefix . $tool['toolname']);
+			$hzg = new Hubzero_Group();
+			$hzg->cn =  $group_prefix . $toolname;
+			$hzg->create();
 		}
 		else
 		{
