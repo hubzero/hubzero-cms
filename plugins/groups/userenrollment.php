@@ -59,7 +59,7 @@ class plgGroupsUserEnrollment extends Hubzero_Plugin
 
 		
 		$group = new Hubzero_Group();
-		$group->select( $gidNumber );
+		$group->read( $gidNumber );
 		$discussion_email_autosubscribe = $group->get('discussion_email_autosubscribe');
 
 $xlog->logDebug('$discussion_email_autosubscribe' . $discussion_email_autosubscribe);	
