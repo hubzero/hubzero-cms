@@ -143,7 +143,7 @@ class ToolGroup extends  JTable
 		$group = new Hubzero_Group();
 
 		if(Hubzero_Group::exists($devgroup)) {
-			$group->select($devgroup);
+			$group->read($devgroup);
 			$existing_members = ContribtoolHelper::transform(Tool::getToolDevelopers($toolid), 'uidNumber');
 			$group->set('members',$existing_members);
 			$group->set('managers',$existing_managers);
