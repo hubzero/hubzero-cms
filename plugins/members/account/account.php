@@ -106,25 +106,29 @@ class plgMembersAccount extends Hubzero_Plugin
 			'metadata'=>''
 		);
 
+		// Imports (needed for view and metadata)
+		ximport('Hubzero_User_Password');
+
+		// Initialize a few things (needed for view and metadata)
+		$this->member = $member;
+
 		// Build the final HTML
 		if ($returnhtml)
 		{
-			// Import a few things
+			// Import a few things (just needed for views)
 			ximport('Hubzero_Document');
 			ximport('Hubzero_Plugin_View');
 			ximport('Hubzero_Auth_Link');
 			ximport('Hubzero_Auth_Domain');
-			ximport('Hubzero_User_Password');
 
 			// Add stylesheet
 			Hubzero_Document::addPluginStylesheet('members', 'account');
 			Hubzero_Document::addPluginScript('members', 'account');
 
-			// Initialize variables
+			// Initialize variables (just needed for views)
 			$action       = JRequest::getWord('action', 'view');
 			$this->user   = $user;
 			$this->option = $option;
-			$this->member = $member;
 
 			switch ($action)
 			{
@@ -143,6 +147,34 @@ class plgMembersAccount extends Hubzero_Plugin
 
 				// Default
 				default:             $arr['html'] = $this->_view();         break;
+			}
+		}
+
+		// Build the HTML for the account metadat portion
+		if($returnmeta)
+		{
+			// Make sure only I can see this
+			if($member->get('uidNumber') == $user->get("id"))
+			{
+				// Make sure a password is set and information has been found about it
+				if($passinfo = $this->getPassInfo())
+				{
+					// If that password is within the warning or expiration period...
+					if($passinfo['diff'] <= $passinfo['warning'] && $passinfo['diff'] > 0)
+					{
+						$title = 'Your password expires in ' . $passinfo['diff'] . ' days!';
+						$link  = JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=account#password');
+
+						$arr['metadata']['alert'] = '<a class="alrt" href="' . $link . '"><span><h5>Password Expiration</h5>' . $title . '</span></a>';
+					}
+					else if($passinfo['diff'] < 0)
+					{
+						$title = 'Your password has expired!';
+						$link  = JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=account#password');
+
+						$arr['metadata']['alert'] = '<a class="alrt" href="' . $link . '"><span><h5>Password Expiration</h5>' . $title . '</span></a>';
+					}
+				}
 			}
 		}
 
@@ -232,6 +264,9 @@ class plgMembersAccount extends Hubzero_Plugin
 			// No password has been set...
 			$view->passtype = 'set';
 		}
+
+		// Get password expiration information
+		$view->passinfo = $this->getPassInfo();
 
 		// Get the ssh key if it exists
 		$view->key = $this->readKey();
@@ -640,6 +675,47 @@ class plgMembersAccount extends Hubzero_Plugin
 			JText::_('PLG_MEMBERS_ACCOUNT_UNLINKED'),
 			'passed'
 		);
+	}
+
+	/**
+	 * Get information about the password expiration
+	 * 
+	 * @return array - password expiration information
+	 */
+	private function getPassInfo()
+	{
+		$hzup = Hubzero_User_Password::getInstance($this->member->get('uidNumber'));
+
+		if(empty($hzup->passhash))
+		{
+			return false;
+		}
+
+		$chgtime = time();
+		$chgtime = intval($chgtime / 86400);
+		$diff    = ($hzup->shadowLastChange + $hzup->shadowMax) - $chgtime;
+
+		if($diff > $hzup->shadowWarning)
+		{
+			$message_style = 'info';
+		}
+		else if($diff <= $hzup->shadowWarning && $diff > 0)
+		{
+			$message_style = 'warning';
+		}
+		else
+		{
+			$message_style = 'error';
+		}
+
+		if(!empty($hzup->passhash))
+		{
+			return array("diff" => $diff, "warning" => $hzup->shadowWarning, "max" => $hzup->shadowMax, "message_style" => $message_style);
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	/**

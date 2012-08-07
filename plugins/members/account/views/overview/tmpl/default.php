@@ -92,6 +92,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		</div><!-- / .sub-section-content -->
 	</div><!-- / .sub-section -->
 <?php } // close linked accounts subsection check ?>
+	<a name="password"></a>
 	<div class="sub-section">
 		<h4><?php 
 			if($this->passtype == 'changelocal')
@@ -112,6 +113,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 {
 ?>
 			<form action="index.php" method="post" data-section-registation="password" data-section-profile="password">
+				<p class="<?php echo $this->passinfo['message_style']; ?>">
+					Passwords are good for <?php echo $this->passinfo['max']; ?> days. 
+					Your password will expire in <?php echo $this->passinfo['diff']; ?> days.
+				</p>
 				<p class="error" id="section-edit-errors"></p>
 				<div id="password-group"<?php echo (count($this->password_rules) > 0) ? ' class="split-left"' : ""; ?>>
 					<label>
