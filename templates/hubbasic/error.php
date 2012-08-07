@@ -115,7 +115,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 		$rows = $recipient->getUnreadMessages( $juser->get('id'), 0 );
 ?>
 					<li id="logout"><a href="<?php echo JRoute::_('index.php?option=com_logout'); ?>"><span><?php echo JText::_('Logout'); ?></span></a></li>
-					<li id="myaccount"><a href="<?php echo JRoute::_('index.php?option=com_members&task=myaccount'); ?>"><span><?php echo JText::_('My Account'); ?></span></a></li>
+					<li id="myaccount"><a href="<?php echo JRoute::_('index.php?option=com_members&task=myaccount'); ?>"><span><?php echo JText::_('My Dashboard'); ?></span></a></li>
 					<li id="username"><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=profile'); ?>"><?php echo $juser->get('name'); ?> (<?php echo $juser->get('username'); ?>)</a></li>
 					<li id="usermessages"><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=messages&task=inbox'); ?>"><?php echo count($rows); ?> New Messages</a></li>
 <?php } else { ?>
