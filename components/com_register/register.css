@@ -61,3 +61,161 @@
 	p.hint.notok {
 		color: #900;
 	}
+
+/* Linked accounts */
+	#link-existing {
+		margin-top: 15px;
+	}
+	#link-existing .important {
+		font-weight: bold;
+		font-style: italic;
+		font-size: 14px;
+	}
+	#link-existing .options {
+		position: relative;
+		background: #FFFFEB;
+		border: 1px dotted #999;
+		color: #999;
+		padding: 0;
+		margin-bottom: 10px;
+		-webkit-border-radius: 4px;
+		-moz-border-radius: 4px;
+		-o-border-radius: 4px;
+		border-radius: 4px;
+	}
+	#link-existing .options:hover {
+		border: 1px solid #888;
+		color: #666;
+	}
+	#link-existing .options .clickable:before {
+		content: "";
+		position: absolute;
+		left: 15px;
+		top: 15px;
+		width: 25px;
+		height: 25px;
+		font-size: 20px;
+		font-family: 'Fontcons';
+		color: #999;
+		-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+		filter: alpha(opacity=100);
+		opacity: 1;
+		background: none;
+	}
+	#link-existing .options .clickable:hover:before {
+		color: #666;
+	}
+	#link-existing #option1-link-existing .clickable:before {
+		content: "\26d3";
+	}
+	#link-existing #option2-create-new .clickable:before {
+		content: "\2295";
+	}
+	#link-existing div.clickable {
+		cursor: pointer;
+		font-size: 14px;
+		height: 35px;
+		padding: 15px 0 0 45px;
+	}
+	#link-existing div.clickable:hover {
+		color: #666;
+	}
+	#link-existing .inner {
+		padding: 0px 60px;
+		margin-bottom: 10px;
+	}
+	#link-existing #account-suggestions {
+		border: 1px dotted #999;
+		overflow: hidden;
+		padding: 15px 0 0 15px;
+		background: #FFFFDA url('/plugins/members/account/images/light-stripes.png') 0 0 repeat;
+		-webkit-border-radius: 4px;
+		-moz-border-radius: 4px;
+		-o-border-radius: 4px;
+		border-radius: 4px;
+	}
+	#link-existing .account-group {
+		border: 1px solid #999;
+		background-color: #FFF;
+		display: block;
+		float: left;
+		overflow: hidden;
+		padding: 2px;
+		margin-right: 15px;
+		margin-bottom: 15px;
+		min-height: 40px;
+		min-width: 250px;
+		position: relative;
+		-webkit-box-shadow: 2px 2px 3px #BFBF9A;
+	}
+	#link-existing .account-group:hover {
+		-webkit-box-shadow: inset 0 1px 2px #F2F2F2;
+		-moz-box-shadow: inset 0 1px 2px #F2F2F2;
+		box-shadow: inset 0 1px 2px #F2F2F2;
+	}
+	#link-existing .auth_link_icon {
+		width: 50px;
+		height: 50px;
+		float: left;
+		margin: 5px;
+	}
+	#link-existing #facebook {
+		background: transparent url('/plugins/members/account/images/facebook_icon.png') 0 0 no-repeat;
+	}
+	#link-existing #google {
+		background: transparent url('/plugins/members/account/images/google_icon.png') 0 0 no-repeat;
+	}
+	#link-existing #linkedin {
+		background: transparent url('/plugins/members/account/images/linkedin_icon.png') 0 0 no-repeat;
+	}
+	#link-existing #pucas {
+		background: transparent url('/plugins/members/account/images/pucas_icon.png') 0 0 no-repeat;
+	}
+	#link-existing .user-icon,
+	#link-existing .email-icon {
+		padding-left: 18px;
+		position: relative;
+	}
+	#link-existing .user-icon:before,
+	#link-existing .email-icon:before {
+		content: "";
+		position: absolute;
+		left: 0px;
+		top: -2px;
+		width: 15px;
+		height: 15px;
+		font-size: 15px;
+		font-family: 'Fontcons';
+		color: #999;
+		-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+		filter: alpha(opacity=90);
+		opacity: .9;
+		background: none;
+	}
+	#link-existing .user-icon:before {
+		content: "\f007";
+	}
+	#link-existing .email-icon:before {
+		content: "\2709";
+	}
+	#link-existing #other-links a {
+		padding-left: 10px;
+		margin-left: 10px;
+		position: relative;
+		border-bottom: none;
+	}
+	#link-existing #other-links a:before {
+		content: "\203A";
+		position: absolute;
+		left: 0px;
+		top: -4px;
+		width: 10px;
+		height: 10px;
+		font-size: 10px;
+		font-family: 'Fontcons';
+		color: #999;
+		-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+		filter: alpha(opacity=90);
+		opacity: .9;
+		background: none;
+	}
