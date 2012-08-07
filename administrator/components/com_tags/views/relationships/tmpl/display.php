@@ -68,7 +68,7 @@ $doc->addScript('/plugins/hubzero/autocompleter/autocompleter.jquery.js');
 $doc->addStyleSheet('/administrator/components/' . $this->option . '/assets/css/tag_graph.css');
 
 //JToolBarHelper::title(JText::_('Tag Management'));
-JToolBarHelper::custom('meta', 'edit', ' ', 'Focus Areas', false);
+//JToolBarHelper::custom('meta', 'edit', ' ', 'Focus Areas', false);
 ?>
 <form id="tag-sel" action="" method="get">
 	<fieldset class="adminform">

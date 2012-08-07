@@ -35,7 +35,9 @@ $canDo = TagsHelper::getActions();
 JToolBarHelper::title(JText::_('TAGS') . ': <small><small>[ ' . JText::_('Focus Areas') . ' ]</small></small>', 'tags.png');
 //JToolBarHelper::cancel();
 
-JToolBarHelper::custom('index', 'edit', ' ', 'Tag Relationships', false);
+//JToolBarHelper::custom('index', 'edit', ' ', 'Tag Relationships', false);
+JToolBarHelper::spacer();
+JToolBarHelper::help('focusareas.html', true);
 
 $doc =& JFactory::getDocument();
 
