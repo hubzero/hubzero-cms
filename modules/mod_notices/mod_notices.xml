@@ -49,6 +49,10 @@ HUBzero is a registered trademark of Purdue University.
 		</param>
 		<param name="moduleid" type="text" default="" label="Module ID" description="An ID to be applied to the css of the module container, this allows individual module styling" />
 		<param name="message" type="textarea" rows="5" cols="40" default="" label="Message" description="The message to be displayed" />
+		<param name="allowClose" type="radio" default="0" label="Allow closing" description="Allow the notice to be closed by the user">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
 	</params>
 	<languages>
 		<language tag="en-GB">en-GB.mod_notices.ini</language>

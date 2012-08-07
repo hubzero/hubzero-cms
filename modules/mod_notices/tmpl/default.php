@@ -23,10 +23,28 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 if ($this->publish) { ?>
-<div id="<?php echo $this->moduleid; ?>" class="<?php echo $this->alertlevel; ?>">
-	<p><?php echo stripslashes($this->message); ?></p>
+<div id="<?php echo $this->moduleid; ?>" class="modnotices <?php echo $this->alertlevel; ?>">
+	<p>
+		<?php echo stripslashes($this->message); ?>
+<?php 
+	$page = JRequest::getVar('REQUEST_URI', '', 'server');
+	if ($page && $this->params->get('allowClose', 1)) 
+	{
+		ximport('Hubzero_Document');
+		Hubzero_Document::addModuleScript('mod_notices');
+
+		$page .= (strstr($page, '?')) ? '&' : '?';
+		$page .= $this->moduleid . '=close';
+?>
+		<a class="close" href="<?php echo $page; ?>" data-duration="<?php echo $this->days_left; ?>" title="<?php echo JText::_('Close this notice'); ?>">
+			<span><?php echo JText::_('close'); ?></span>
+		</a>
+<?php 
+	} 
+?>
+	</p>
 </div>
 <?php } ?>

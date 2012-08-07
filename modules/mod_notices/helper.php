@@ -230,8 +230,36 @@ class modNotices extends JObject
 			}
 		}
 
+		$hide = '';
+		if ($this->publish && $this->params->get('allowClose', 1))
+		{
+			// Figure out days left
+
+			// make a unix timestamp for the given date
+			$the_countdown_date = $this->_mkt($stop);
+
+			// get current unix timestamp
+			$now = time() + (JFactory::getConfig()->getValue('config.offset') * 60 * 60);
+
+			$difference = $the_countdown_date - $now;
+			if ($difference < 0) 
+			{
+				$difference = 0;
+			}
+
+			$this->days_left = floor($difference/60/60/24);
+
+			$expires = $now + 60*60*24*$this->days_left;
+
+			if ($hide = JRequest::getVar($this->params->get('moduleid', 'sitenotice'), '', 'get'))
+			{
+				setcookie($this->params->get('moduleid', 'sitenotice'), 'closed', $expires);
+			}
+			$hide = JRequest::getVar($this->params->get('moduleid', 'sitenotice'), '', 'cookie');
+		}
+
 		// Only do something if the module's time frame hasn't expired
-		if ($this->publish) 
+		if ($this->publish && !$hide) 
 		{
 			ximport('Hubzero_Document');
 			Hubzero_Document::addModuleStylesheet($this->module->module);

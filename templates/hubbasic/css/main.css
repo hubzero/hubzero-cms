@@ -247,32 +247,6 @@
 		margin: 0 1em 1em 0;
 	}
 
-/* Site notices, warnings, errors */
-	#sitenotice {
-		padding: 10px 10px 10px 30px; 
-		margin: 0;
-		text-align: left;
-	}
-	#sitenotice p { 
-		margin: 0; 
-		padding: 0; 
-	}
-	.low { 
-		border: 1px solid #C2D6EF; 
-		color: #4379CA; 
-		background: #EFF7FF url("../images/icons/information.png") 10px 10px no-repeat;
-	}
-	.medium {
-		border: 1px solid #EFEAC2; 
-		color: #CC6633; 
-		background: #FFFDEF url("../images/icons/warning.gif") 10px 10px no-repeat; 
-	}
-	.high {
-		border: 1px solid #EFCCC2; 
-		color: #CC0000;
-		background: #FFF2EF url("../images/icons/error.gif") 10px 10px no-repeat; 
-	}
-
 /* Header */
 	#header {
 		margin: 0;
