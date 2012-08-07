@@ -375,7 +375,9 @@ class TagsControllerEntries extends Hubzero_Controller
 					$mtag = $tag_exist;
 				}
 
+				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'substitute.php');
 				$to = new TagsObject($this->database);
+				$ts = new TagsSubstitute($this->database);
 
 				foreach ($ids as $id)
 				{
@@ -385,8 +387,24 @@ class TagsControllerEntries extends Hubzero_Controller
 						// Loop through the associations and link them to a different tag
 						$to->moveObjects($id, $mtag);
 
-						// Delete the tag
+						// Get all the substitutions to this tag
+						// Loop through the records and link them to a different tag
 						$tag = new TagsTag($this->database);
+						$tag->load($id);
+
+						$sub = new TagsSubstitute($this->database);
+						$sub->raw_tag = trim($tag->raw_tag);
+						$sub->tag_id  = $mtag;
+						if ($sub->check())
+						{
+							if (!$sub->store())
+							{
+								$this->setError($sub->getError());
+							}
+						}
+						$ts->moveSubstitutes($id, $mtag);
+
+						// Delete the tag
 						$tag->delete($id);
 					}
 				}

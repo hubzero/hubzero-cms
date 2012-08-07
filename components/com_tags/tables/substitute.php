@@ -240,5 +240,87 @@ class TagsSubstitute extends JTable
 		}
 		return implode(', ', $subs);
 	}
+
+	/**
+	 * Move all references to one tag to another tag
+	 * 
+	 * @param      integer $oldtagid ID of tag to be moved
+	 * @param      integer $newtagid ID of tag to move to
+	 * @return     boolean True if records changed
+	 */
+	public function moveSubstitutes($oldtagid=null, $newtagid=null)
+	{
+		if (!$oldtagid) 
+		{
+			$oldtagid = $this->tag_id;
+		}
+		if (!$oldtagid) 
+		{
+			return false;
+		}
+		if (!$newtagid) 
+		{
+			return false;
+		}
+
+		$this->_db->setQuery("UPDATE $this->_tbl SET tag_id='$newtagid' WHERE tag_id='$oldtagid'");
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		return $this->cleanUp($newtagid);
+	}
+
+	/**
+	 * Clean up duplicate references
+	 * 
+	 * @param      integer $tag_id ID of tag to clean up
+	 * @return     boolean True on success, false if errors
+	 */
+	public function cleanUp($tag_id=null)
+	{
+		if (!$tag_id) 
+		{
+			$tag_id = $this->tag_id;
+		}
+		if (!$tag_id) 
+		{
+			$this->setError(JText::_('Missing argument.'));
+			return false;
+		}
+
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE tag_id='$tag_id' ORDER BY id ASC");
+
+		if (($subs = $this->_db->loadObjectList()))
+		{
+			$tags = array();
+			foreach ($subs as $sub)
+			{
+				if (!isset($tags[$sub->tag]))
+				{
+					// Item isn't in collection yet, so add it
+					$tags[$sub->tag] = $sub->id;
+				}
+				else 
+				{
+					// Item tag *is* in collection.
+					if ($tags[$sub->tag] == $sub->id)
+					{
+						// Really this shouldn't happen
+						continue;
+					}
+					else 
+					{
+						// Duplcate tag with a different ID!
+						// We don't need duplicates.
+						$this->delete($sub->id);
+					}
+				}
+			}
+		}
+
+		return true;
+	}
 }
 
