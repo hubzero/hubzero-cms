@@ -61,7 +61,8 @@ class plgUserLdap extends JPlugin
 	 */
 	public function onAfterStoreUser($user, $isnew, $succes, $msg)
 	{
-		Hubzero_Ldap::syncUser($user->id);
+		Hubzero_Factory::getLogger()->logDebug("plgUserLdap::onAfterStoreUser(" . $user['id'] . ")");
+		Hubzero_Ldap::syncUser($user['id']);
 	}
 
 	/**
@@ -73,30 +74,73 @@ class plgUserLdap extends JPlugin
 	 */
 	public function onAfterDeleteUser($user, $succes, $msg)
 	{
-		Hubzero_Ldap::syncUser($user->id);
+		Hubzero_Factory::getLogger()->logDebug("plgUserLdap::onAfterDeleteUser(" . $user['id'] . ")");
+		Hubzero_Ldap::syncUser($user['id']);
+	}
+	
+	/**
+	 * Method is called after user data is stored in the database
+	 *
+	 * @param object holds the new profile data (Hubzero_User_Profile)
+	 */
+	public function onAfterStoreProfile($user)
+	{
+		Hubzero_Factory::getLogger()->logDebug("plgUserLdap::onAfterStoreProfile(" . $user->get('uidNumber') . ")");
+		Hubzero_Ldap::syncUser($user->get('uidNumber'));
+	}
+
+	/**
+	 * Method is called after user data is deleted from the database
+	 *
+	 * @param object holds the new profile data (Hubzero_User_Profile)
+	 */
+	public function onAfterDeleteProfile($user)
+	{
+		Hubzero_Factory::getLogger()->logDebug("plgUserLdap::onAfterDeleteProfile(" . $user->get('uidNumber') . ")");
+		Hubzero_Ldap::syncUser($user->get('uidNumber'));
+	}
+	
+	/**
+	 * Method is called after password data is stored in the database
+	 *
+	 * @param object holds the new password data (Hubzero_User_Password)
+	 */
+	public function onAfterStorePassword($user)
+	{
+		Hubzero_Factory::getLogger()->logDebug("plgUserLdap::onAfterStoreUser(" . $user->user_id . ")");
+		Hubzero_Ldap::syncUser($user->user_id);
+	}
+
+	/**
+	 * Method is called after password data is deleted from the database
+	 *
+	 * @param object holds the new password data (Hubzero_User_Password)
+	 */
+	public function onAfterDeletePassword($user)
+	{
+		Hubzero_Factory::getLogger()->logDebug("plgUserLdap::onAfterDeleteUser(" . $user->user_id . ")");
+		Hubzero_Ldap::syncUser($user->user_id);
 	}
 	
 	/**
 	 * Method is called after group data is stored in the database
 	 *
-	 * @param array holds the new user data
-	 * @param boolean true if a new user is stored
-	 * @param boolean true if user was succesfully stored in the database
-	 * @param string message
+	 * @param object holds the new group data (Hubzero_Group)
 	 */
 	public function onAfterStoreGroup($group)
 	{
+		Hubzero_Factory::getLogger()->logDebug("plgUserLdap::onAfterStoreGroup(" . $group->cn . ")");
 		Hubzero_Ldap::syncGroup($group->cn);
 	}
 	
 	/**
-	 * Method is called after user data is deleted from the database
+	 * Method is called after group data is deleted from the database
 	 *
-	 * @param array holds the user data
-	 * @param boolean true if user was succesfully stored in the database
-	 * @param string message
+	 * @param object holds the new group data (Hubzero_Group)
 	 */
 	public function onAfterDeleteGroup($group)
 	{
+		Hubzero_Factory::getLogger()->logDebug("onAfterDeleteGroup($group)");
+		Hubzero_Ldap::syncGroup($group->cn);
 	}	
 }
