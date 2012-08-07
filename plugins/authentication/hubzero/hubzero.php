@@ -102,6 +102,22 @@ class plgAuthenticationHubzero extends JPlugin
 				$response->fullname = $user->name;
 				$response->status = JAUTHENTICATE_STATUS_SUCCESS;
 				$response->error_message = '';
+
+				// Check validity and age of password
+				ximport('Hubzero_Password_Rule');
+				ximport('Hubzero_User_Password');
+				$password_rules = Hubzero_Password_Rule::getRules();
+				$msg = Hubzero_Password_Rule::validate($credentials['password'], $password_rules, $credentials['username']);
+				if(is_array($msg) && !empty($msg[0]))
+				{
+					$session =& JFactory::getSession();
+					$session->set('badpassword', '1');
+				}
+				if(Hubzero_User_Password::isPasswordExpired($credentials['username']))
+				{
+					$session =& JFactory::getSession();
+					$session->set('expiredpassword', '1');
+				}
 			} else {
 				
 				$response->status = JAUTHENTICATE_STATUS_FAILURE;
