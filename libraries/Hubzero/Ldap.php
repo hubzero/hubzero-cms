@@ -184,7 +184,7 @@ class Hubzero_Ldap
 	
 		$db->setQuery($query);
 		$dbinfo = $db->loadAssoc();
-	
+		
 		if (!empty($dbinfo))
 		{
 			$query = "SELECT host FROM #__xprofiles_host WHERE uidNumber = " . $db->Quote($dbinfo['uidNumber']) . ";";
@@ -210,7 +210,8 @@ class Hubzero_Ldap
 				'shadowMin','shadowMax','shadowWarning','shadowInactive','shadowExpire','shadowFlag', 'host');
 	
 		$entry = @ldap_search($conn, $dn, $filter, $reqattr, 0, 1, 0);
-		$count = ldap_count_entries($conn, $entry);
+		
+		$count = ($entry) ? ldap_count_entries($conn, $entry) : 0;
 			
 		/* If there was a database entry, but there was no ldap entry, create the ldap entry */
 	
@@ -241,15 +242,13 @@ class Hubzero_Ldap
 	
 		$ldapinfo = null;
 			
-		$count = ldap_count_entries($conn, $entry);
-	
 		if ($count > 0)
 		{
 			$firstentry = ldap_first_entry($conn, $entry);
 	
 			$attr = ldap_get_attributes($conn, $firstentry);
-	
-			if (!empty($attr) && $attr['count'] > 0)
+
+			if (!empty($attr))
 			{
 				foreach ($reqattr as $key)
 				{
@@ -273,7 +272,7 @@ class Hubzero_Ldap
 				}
 			}
 		}
-	
+		
 		/* If there was no database entry, and there was no ldap entry, nothing to do */
 	
 		if (empty($dbinfo) && empty($ldapinfo))
@@ -304,11 +303,13 @@ class Hubzero_Ldap
 				}
 				else
 				{
-					$entry[$key] = array($dbinfo[$key]);
+					$entry[$key] = is_array($dbinfo[$key]) ? $dbinfo[$key] : array($dbinfo[$key]);
 				}
 			}
 		}
 	
+		$dn = "uid=" . $ldapinfo['uid'] . ",ou=users," . $hubLDAPBaseDN;
+		
 		return @ldap_modify($conn, $dn, $entry);
 	}
 	
