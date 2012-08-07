@@ -1136,8 +1136,10 @@ class Hubzero_User_Password
 		// Get config values for min, max, and warning
 		$config =& JComponentHelper::getParams('com_members');
 		$shadowMin     = $config->get('shadowMin', '0');
-		$shadowMax     = $config->get('shadowMax', '120');
+		$shadowMax     = $config->get('shadowMax', null);
 		$shadowWarning = $config->get('shadowWarning', '7');
+
+		$shadowMax = ($shadowMax == '') ? null : $shadowMax;
 
 		$hzup = self::getInstance($user);
 		
