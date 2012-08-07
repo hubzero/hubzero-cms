@@ -113,10 +113,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 {
 ?>
 			<form action="index.php" method="post" data-section-registation="password" data-section-profile="password">
-				<p class="<?php echo $this->passinfo['message_style']; ?>">
-					Passwords are good for <?php echo $this->passinfo['max']; ?> days. 
-					Your password will expire in <?php echo $this->passinfo['diff']; ?> days.
-				</p>
+				<?php if(is_array($this->passinfo)) { ?>
+					<p class="<?php echo $this->passinfo['message_style']; ?>">
+						Passwords are good for <?php echo $this->passinfo['max']; ?> days. 
+						Your password will expire in <?php echo $this->passinfo['diff']; ?> days.
+					</p>
+				<?php } // close if is array passinfo ?>
 				<p class="error" id="section-edit-errors"></p>
 				<div id="password-group"<?php echo (count($this->password_rules) > 0) ? ' class="split-left"' : ""; ?>>
 					<label>

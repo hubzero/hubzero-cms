@@ -686,7 +686,8 @@ class plgMembersAccount extends Hubzero_Plugin
 	{
 		$hzup = Hubzero_User_Password::getInstance($this->member->get('uidNumber'));
 
-		if(empty($hzup->passhash))
+		// Check to see if password expiration is even enforced
+		if(empty($hzup->passhash) || $hzup->shadowMax === NULL)
 		{
 			return false;
 		}
@@ -708,14 +709,7 @@ class plgMembersAccount extends Hubzero_Plugin
 			$message_style = 'error';
 		}
 
-		if(!empty($hzup->passhash))
-		{
-			return array("diff" => $diff, "warning" => $hzup->shadowWarning, "max" => $hzup->shadowMax, "message_style" => $message_style);
-		}
-		else
-		{
-			return false;
-		}
+		return array("diff" => $diff, "warning" => $hzup->shadowWarning, "max" => $hzup->shadowMax, "message_style" => $message_style);
 	}
 
 	/**
