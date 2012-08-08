@@ -65,6 +65,8 @@ HUB.Groups = {
 	
 	groupMenuFix: function()
 	{
+		var $ = this.jQuery;
+
 		$("#page_menu li").each(function(index){
 			var meta = $(this).find(".meta"),
 				metawidth = meta.outerWidth(true),
