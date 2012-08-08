@@ -190,7 +190,7 @@ class plgAuthenticationLinkedIn extends JPlugin
 			$linkedin_client->setTokenAccess($jsession->get('linkedin.oauth.access'));
 
 			// Get the linked in profile
-			$profile = $linkedin_client->profile('~:(id,first-name,last-name)');
+			$profile = $linkedin_client->profile('~:(id,first-name,last-name,email-address)');
 			$profile = $profile['linkedin'];
 
 			// Parse the profile XML
@@ -204,7 +204,7 @@ class plgAuthenticationLinkedIn extends JPlugin
 			$username   = (string) $li_id; // (make sure this is unique)
 
 			$hzal = Hubzero_Auth_Link::find_or_create('authentication', 'linkedin', null, $username);
-			//$hzal->email         = $profile->{'email'}; // not currently available
+			$hzal->email = (string) $profile->{'email-address'};
 
 			// Set response variables
 			$response->auth_link = $hzal;
@@ -287,7 +287,7 @@ class plgAuthenticationLinkedIn extends JPlugin
 			$linkedin_client->setTokenAccess($jsession->get('linkedin.oauth.access'));
 
 			// Get the linked in profile
-			$profile = $linkedin_client->profile('~:(id,first-name,last-name)');
+			$profile = $linkedin_client->profile('~:(id,first-name,last-name,email-address)');
 			$profile = $profile['linkedin'];
 
 			// Parse the profile XML
@@ -311,6 +311,7 @@ class plgAuthenticationLinkedIn extends JPlugin
 			{
 				$hzal = Hubzero_Auth_Link::find_or_create('authentication', 'linkedin', null, $username);
 				$hzal->user_id = $juser->get('id');
+				$hzal->email = (string) $profile->{'email-address'};
 				$hzal->update();
 			}
 		}
