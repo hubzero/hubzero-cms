@@ -310,6 +310,11 @@ class TagsTag extends JTable
 				$query .= " ORDER BY t." . $filters['sortby'];
 			}
 		} 
+		if (isset($filters['sort']) && $filters['sort'] != '' && (!isset($filters['count']) || !$filters['count'])) 
+		{
+			$filters['sort_Dir'] = (isset($filters['sort_Dir']) && $filters['sort_Dir']) ? $filters['sort_Dir'] : "ASC";
+			$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+		}
 		else 
 		{
 			$query .= " ORDER BY t.raw_tag ASC";

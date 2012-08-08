@@ -73,6 +73,16 @@ class TagsControllerEntries extends Hubzero_Controller
 			'filterby', 
 			'all'
 		));
+		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.sort', 
+			'filter_order', 
+			'raw_tag'
+		));
+		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.sortdir', 
+			'filter_order_Dir', 
+			'ASC'
+		));
 
 		$t = new TagsTag($this->database);
 

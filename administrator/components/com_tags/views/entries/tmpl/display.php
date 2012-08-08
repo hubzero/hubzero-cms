@@ -87,12 +87,12 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo JText::_('RAW_TAG'); ?></th>
-				<th scope="col"><?php echo JText::_('TAG'); ?></th>
-				<th scope="col"><?php echo JText::_('ALIAS'); ?></th>
-				<th scope="col"><?php echo JText::_('ADMIN'); ?></th>
-				<th scope="col"><?php echo JText::_('NUMBER_TAGGED'); ?></th>
-				<th scope="col"><?php echo JText::_('Substitutions'); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('RAW_TAG'), 'raw_tag', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('TAG'), 'tag', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('ALIAS'), 'alias', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('ADMIN'), 'admin', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('NUMBER_TAGGED'), 'total', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('Substitutions'), 'substitutes', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -177,6 +177,8 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 	<input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 	
 	<?php echo JHTML::_('form.token'); ?>
 </form>
