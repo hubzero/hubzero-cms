@@ -31,11 +31,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$app = JFactory::getApplication();
+
+// Make sure we're using a secure connection
+if (!isset( $_SERVER['HTTPS'] ) || $_SERVER['HTTPS'] == 'off')
+{
+	$app->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+	die('insecure connection and redirection failed');
+}
+
 // @FIXME: most of this shouldn't go here, but this is where Nick wants it for now...
 
 // Get and add the js and extra css to the page
 $document    = &JFactory::getDocument();
-$app         = JFactory::getApplication();
 $template    = DS."templates".DS.$app->getTemplate().DS."html".DS."com_user";
 $media       = DS."media".DS."system";
 $js          = $template.DS."login.jquery.js";
@@ -61,6 +69,7 @@ if(file_exists(JPATH_BASE . $uniform_css))
 
 // If we have a return set with an authenticator in it, we're linking an existing account
 // Parse the return to retrive the authenticator, and remove it from the list below
+$auth = '';
 if($return = JRequest::getVar('return', null))
 {
 	$return = base64_decode($return);

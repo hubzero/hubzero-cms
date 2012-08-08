@@ -115,6 +115,15 @@ class plgMembersAccount extends Hubzero_Plugin
 		// Build the final HTML
 		if ($returnhtml)
 		{
+			// Make sure we're using a secure connection
+			$app = JFactory::getApplication();
+
+			if (!isset( $_SERVER['HTTPS'] ) || $_SERVER['HTTPS'] == 'off')
+			{
+				$app->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+				die('insecure connection and redirection failed');
+			}
+
 			// Import a few things (just needed for views)
 			ximport('Hubzero_Document');
 			ximport('Hubzero_Plugin_View');

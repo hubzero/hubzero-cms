@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+	$juser =& JFactory::getUser();
+
 	ximport('Hubzero_User_Helper');
 	ximport('Hubzero_Environment');
 	ximport('Hubzero_Geo');
@@ -42,8 +44,6 @@ defined('_JEXEC') or die('Restricted access');
 
 	switch ($this->task) {
 		case 'update':
-			$juser =& JFactory::getUser();
-
 			// If this is an auth_link account update, add additional information at the top of the page
 			if (is_object($juser) && array_key_exists('auth_link_id', $juser) && is_numeric($juser->get('username')) && $juser->get('username') < 0) {
 				// Import a few things
