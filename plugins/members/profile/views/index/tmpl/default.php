@@ -194,46 +194,48 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 			</li>
 		<?php endif; ?>
 		
-		<?php if($isUser) : ?>   
-			<li class="profile-password section hidden">
-				<div class="section-content">
-					<div class="key"><?php echo JText::_('Password'); ?></div>
-					<div class="value">***************</div>
-					<br class="clear" />
-					<div class="section-edit-container">
-						<!--
-						<div class="edit-profile-title"><h2>Change Password</h2></div>
-						<a href="#" class="edit-profile-close">&times;</a>
-						-->
-						<div class="section-edit-content">
-							<form action="index.php" method="post" data-section-registation="password" data-section-profile="password">
-								<span class="section-edit-errors"></span>
-								<label>Current Password 
-									<input type="password" name="oldpass" id="password" class="input-text" />
-								</label>
-								<label class="side-by-side">
-									New Password <input type="password" name="newpass" id="newpass" class="input-text" />
-								</label>
-								<label class="side-by-side no-padding-right">
-									Confirm New Password <input type="password" name="newpass2" id="newpass2" class="input-text" />
-								</label>
-								<input type="hidden" name="change" value="1" />
-								<input type="submit" class="section-edit-submit" value="Save" /> 
-								<input type="reset" class="section-edit-cancel" value="Cancel" /> 
-								<input type="hidden" name="option" value="com_members" />
-								<input type="hidden" name="id" value="<?php echo $this->profile->get("uidNumber"); ?>" />
-								<input type="hidden" name="task" value="changepassword" />
-								<input type="hidden" name="no_html" value="1" />
-							</form>
+		<?php if(!JPluginHelper::isEnabled('members', 'account')) : ?>
+			<?php if($isUser) : ?>
+				<li class="profile-password section hidden">
+					<div class="section-content">
+						<div class="key"><?php echo JText::_('Password'); ?></div>
+						<div class="value">***************</div>
+						<br class="clear" />
+						<div class="section-edit-container">
+							<!--
+							<div class="edit-profile-title"><h2>Change Password</h2></div>
+							<a href="#" class="edit-profile-close">&times;</a>
+							-->
+							<div class="section-edit-content">
+								<form action="index.php" method="post" data-section-registation="password" data-section-profile="password">
+									<span class="section-edit-errors"></span>
+									<label>Current Password 
+										<input type="password" name="oldpass" id="password" class="input-text" />
+									</label>
+									<label class="side-by-side">
+										New Password <input type="password" name="newpass" id="newpass" class="input-text" />
+									</label>
+									<label class="side-by-side no-padding-right">
+										Confirm New Password <input type="password" name="newpass2" id="newpass2" class="input-text" />
+									</label>
+									<input type="hidden" name="change" value="1" />
+									<input type="submit" class="section-edit-submit" value="Save" /> 
+									<input type="reset" class="section-edit-cancel" value="Cancel" /> 
+									<input type="hidden" name="option" value="com_members" />
+									<input type="hidden" name="id" value="<?php echo $this->profile->get("uidNumber"); ?>" />
+									<input type="hidden" name="task" value="changepassword" />
+									<input type="hidden" name="no_html" value="1" />
+								</form>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="section-edit">
-					<a class="edit-profile-section" href="#">Edit</a>
-				</div>
-			</li>
+					<div class="section-edit">
+						<a class="edit-profile-section" href="#">Edit</a>
+					</div>
+				</li>
+			<?php endif; ?>
 		<?php endif; ?>
-			
+
 		<?php if ($this->registration->Organization != REG_HIDE) : ?>
 			<?php if ($this->params->get('access_org') == 0 
 					|| ($this->params->get('access_org') == 1 && $loggedin) 
