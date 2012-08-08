@@ -212,6 +212,14 @@
 	list-style: none;
 	margin: 0 0 0 5px;
 }
+#members-account-section ul#passrules li {
+	margin: 5px 0;
+	padding: 2px 2px 2px 20px;
+}
+#members-account-section ul#passrules li:before {
+	left: 4px;
+	top: 7px;
+}
 #members-account-section ul#passrules li.error {
 	font-weight: bold;
 }
