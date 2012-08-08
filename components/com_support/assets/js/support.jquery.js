@@ -23,7 +23,7 @@ HUB.Support = {
 	jQuery: jq,
 	
 	getMessage: function() {
-		var $ = this.jQuery;
+		var $ = HUB.Support.jQuery;
 		
 		var id = $('#messages');
 		if (id.val() != 'mc') {
