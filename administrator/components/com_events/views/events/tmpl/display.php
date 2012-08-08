@@ -178,7 +178,7 @@ $row = &$this->rows[$i];
 
 	if ($times) {
         ?>
-			<a class="state <?php echo $row->state ? 'unpublish' : 'publish' ?> hasTip" href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i;?>','<?php echo $row->state ? 'unpublish' : 'publish' ?>')" title="<?php echo JText::_('Publish Information');?>::<?php echo $times; ?>">
+			<a class="state <?php echo $row->state ? 'publish' : 'unpublish' ?> hasTip" href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i;?>','<?php echo $row->state ? 'unpublish' : 'publish' ?>')" title="<?php echo JText::_('Publish Information');?>::<?php echo $times; ?>">
 				<img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" />
 			</a><?php
 	}
