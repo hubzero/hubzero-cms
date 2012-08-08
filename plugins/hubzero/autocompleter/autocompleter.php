@@ -90,8 +90,37 @@ class plgHubzeroAutocompleter extends JPlugin
 		// Push some needed scripts and stylings to the template but ensure we do it only once
 		if ($this->_pushscripts) 
 		{
-			$document = JFactory::getDocument();
+			$jq = false;
+			// Is jQuery enabled?
 			if (JPluginHelper::isEnabled('system', 'jquery'))
+			{
+				// Are we on the admin side?
+				if (JFactory::getApplication()->isAdmin())
+				{
+					// Check if jquery is enabled for the admin side
+					$plg = JPluginHelper::getPlugin('system', 'jquery');
+					if ($plg->params)
+					{
+						$paramsClass = 'JRegistry';
+						if (version_compare(JVERSION, '1.6', 'lt'))
+						{
+							$paramsClass = 'JParameter';
+						}
+						$plg->params = new JParameter($plg->params);
+						if ($plg->params->get('noconflictAdmin', 0))
+						{
+							$js = true;
+						}
+					}
+				}
+				else 
+				{
+					$jq = true;
+				}
+			}
+			$document = JFactory::getDocument();
+			//if (JPluginHelper::isEnabled('system', 'jquery'))
+			if ($jq)
 			{
 				$scripts .= '<script src="' . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.jquery.js"></script>';
 			}
