@@ -102,6 +102,9 @@
 		-o-box-shadow: 0 0 2px rgba(0, 0, 0, 0.4), 0 0 0 0.618em rgba(0, 0, 0, 0.035);
 		box-shadow: 0 0 2px rgba(0, 0, 0, 0.4), 0 1px 4px rgba(0, 0, 0, .1);
 	}
+	#app-content {
+		position: relative;
+	}
 	#app {
 		margin: 0 0 -1px;
 		padding: 0;
@@ -308,10 +311,11 @@
 	.ui-resizable-handle {
 		position: absolute;
 		right: 0;
-		bottom: 0;
+		bottom: -32px;
 		display: block;
-		height: 2.75em;
-		width: 7.5em;
+		height: 30px;
+		width: 90px;
+		background-image: none;
 	}
 /* Disk usage */
 	#diskusage { 
