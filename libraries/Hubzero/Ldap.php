@@ -11,8 +11,8 @@ class Hubzero_Ldap
 			return $conn;
 		}
 	
-		$ldap_params = JComponentHelper::getParams('com_ldap');
-	
+		$ldap_params = JComponentHelper::getParams('com_system');
+
 		$acctman   = $ldap_params->get('ldap_managerdn','cn=admin');
 		$acctmanPW = $ldap_params->get('ldap_managerpw','');
 		$pldap     = $ldap_params->get('ldap_primary', 'ldap://localhost');
@@ -134,7 +134,7 @@ class Hubzero_Ldap
 			
 			if ($debug)
 			{
-				Hubzero_Factory::getLogger()->logDebug("getLDO(): ldap_bind() failed. [" . posix_getpid() . "] " .  $errstr);
+				Hubzero_Factory::getLogger()->logDebug("getLDO(): ldap_bind($acctman) failed. [" . posix_getpid() . "] " .  $errstr);
 			}
 			
 			$conn = false;	
@@ -157,14 +157,14 @@ class Hubzero_Ldap
 		{
 			return false;
 		}
-	
+		
 		$conn = self::getLDO();
 	
 		if (empty($conn))
 		{
 			return false;
 		}
-	
+		
 		$query = "SELECT u.id AS uidNumber, u.username AS uid, u.name AS cn, " .
 				" p.gidNumber, p.homeDirectory, p.loginShell, " .
 				" pwd.passhash AS userPassword, pwd.shadowLastChange, pwd.shadowMin, pwd.shadowMax, pwd.shadowWarning, " .
@@ -191,8 +191,8 @@ class Hubzero_Ldap
 			$db->setQuery($query);
 			$dbinfo['host'] = $db->loadResultArray();
 		}
-	
-		$ldap_params = JComponentHelper::getParams('com_ldap');
+
+		$ldap_params = JComponentHelper::getParams('com_system');
 		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
 	
 		if (is_numeric($user) && $user >= 0)
@@ -211,14 +211,14 @@ class Hubzero_Ldap
 	
 		$entry = @ldap_search($conn, $dn, $filter, $reqattr, 0, 1, 0);
 		
-		$count = ($entry) ? ldap_count_entries($conn, $entry) : 0;
+		$count = ($entry) ? @ldap_count_entries($conn, $entry) : 0;
 			
 		/* If there was a database entry, but there was no ldap entry, create the ldap entry */
 	
 		if (!empty($dbinfo) && ($count <= 0))
 		{
 			$dn = "uid=" . $dbinfo['uid'] . ",ou=users," . $hubLDAPBaseDN;
-				
+			
 			$entry = array();
 			$entry['objectclass'][] = 'top';
 			$entry['objectclass'][] = 'account';  // MUST uid
@@ -236,7 +236,17 @@ class Hubzero_Ldap
 					$entry[$key] = $value;
 				}
 			}
+
+			if (empty($entry['uid']) || empty($entry['cn']) || empty($entry['gidNumber']))
+			{
+				return false;
+			}
 				
+			if (empty($entry['homeDirectory']) || empty($entry['uidNumber']))
+			{
+				return false;
+			}
+			
 			return @ldap_add($conn, $dn, $entry);
 		}
 	
@@ -244,9 +254,9 @@ class Hubzero_Ldap
 			
 		if ($count > 0)
 		{
-			$firstentry = ldap_first_entry($conn, $entry);
+			$firstentry = @ldap_first_entry($conn, $entry);
 	
-			$attr = ldap_get_attributes($conn, $firstentry);
+			$attr = @ldap_get_attributes($conn, $firstentry);
 
 			if (!empty($attr))
 			{
@@ -350,7 +360,7 @@ class Hubzero_Ldap
 			$dbinfo['memberUid'] = $db->loadResultArray();
 		}
 
-		$ldap_params = JComponentHelper::getParams('com_ldap');
+		$ldap_params = JComponentHelper::getParams('com_system');
 		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
 
 		if (is_numeric($group) && $group >= 0)
@@ -368,7 +378,7 @@ class Hubzero_Ldap
 
 		$entry = @ldap_search($conn, $dn, $filter, $reqattr, 0, 1, 0);
 		
-		$count = ($entry) ? ldap_count_entries($conn, $entry) : 0;
+		$count = ($entry) ? @ldap_count_entries($conn, $entry) : 0;
 
 		/* If there was a database entry, but there was no ldap entry, create the ldap entry */
 
@@ -397,13 +407,13 @@ class Hubzero_Ldap
 
 		$ldapinfo = null;
 			
-		$count = ($entry) ? ldap_count_entries($conn, $entry) : 0;
+		$count = ($entry) ? @ldap_count_entries($conn, $entry) : 0;
 
 		if ($count > 0)
 		{
-			$firstentry = ldap_first_entry($conn, $entry);
+			$firstentry = @ldap_first_entry($conn, $entry);
 
-			$attr = ldap_get_attributes($conn, $firstentry);
+			$attr = @ldap_get_attributes($conn, $firstentry);
 
 			if (!empty($attr) && $attr['count'] > 0)
 			{
@@ -494,7 +504,7 @@ class Hubzero_Ldap
 			return false;
 		}
 		
-		$ldap_params = JComponentHelper::getParams('com_ldap');
+		$ldap_params = JComponentHelper::getParams('com_system');
 		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
 	
 		if (is_numeric($group) && $group >= 0)
@@ -512,7 +522,7 @@ class Hubzero_Ldap
 	
 		$entry = @ldap_search($conn, $dn, $filter, $reqattr, 0, 1, 0);
 		
-		$count = ldap_count_entries($conn, $entry);
+		$count = @ldap_count_entries($conn, $entry);
 		
 		/* If there was a database entry, but there was no ldap entry, create the ldap entry */
 	
@@ -525,9 +535,9 @@ class Hubzero_Ldap
 			
 		if ($count > 0)
 		{
-			$firstentry = ldap_first_entry($conn, $entry);
+			$firstentry = @ldap_first_entry($conn, $entry);
 	
-			$attr = ldap_get_attributes($conn, $firstentry);
+			$attr = @ldap_get_attributes($conn, $firstentry);
 	
 			if (!empty($attr) && $attr['count'] > 0)
 			{
@@ -682,7 +692,7 @@ class Hubzero_Ldap
 	    
 	    /* delete all old hubGroup schema based group entries */
 	    
-	    $ldap_params = JComponentHelper::getParams('com_ldap');
+	    $ldap_params = JComponentHelper::getParams('com_system');
 	    $hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
 	    
     	$dn = "ou=groups," . $hubLDAPBaseDN;
@@ -784,7 +794,7 @@ class Hubzero_Ldap
 	    
 	    /* delete all old hubAccount schema based user entries */
 	    
-	    $ldap_params = JComponentHelper::getParams('com_ldap');
+	    $ldap_params = JComponentHelper::getParams('com_system');
 	    $hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
 	    
     	$dn = "ou=users," . $hubLDAPBaseDN;
