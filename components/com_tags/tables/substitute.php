@@ -141,9 +141,10 @@ class TagsSubstitute extends JTable
 	 * Remove all tag references for a given object
 	 * 
 	 * @param      integer $tag_id Tag ID
+	 * @param      array   $data   List of specific tags to remove (removes all if empty)
 	 * @return     boolean True if records removed
 	 */
-	public function removeForTag($tag_id=null)
+	public function removeForTag($tag_id=null, $data=array())
 	{
 		if (!$tag_id) 
 		{
@@ -156,6 +157,10 @@ class TagsSubstitute extends JTable
 		}
 
 		$sql = "DELETE FROM $this->_tbl WHERE tag_id='$tag_id'";
+		if (count($data) > 0)
+		{
+			$sql .= " AND tag IN ('" . implode("','", $data) . "')";
+		}
 
 		$this->_db->setQuery($sql);
 		if (!$this->_db->query()) 

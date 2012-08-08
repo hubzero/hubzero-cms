@@ -608,6 +608,10 @@ class TagsTag extends JTable
 
 		$ts = new TagsSubstitute($this->_db);
 		$subs = $ts->getRecords($tag_id);
+		if (!$subs)
+		{
+			$subs = array();
+		}
 
 		$raw_tags = explode(',', trim($tag_string));
 
@@ -634,6 +638,26 @@ class TagsTag extends JTable
 			}
 		}
 
+		// Build list of tags from old list not found in new list and delete them
+		$remove = array();
+		foreach ($subs as $key => $sub)
+		{
+			if (!in_array($key, $tags)) 
+			{
+				$remove[] = $key;
+			}
+		}
+		$ts = new TagsSubstitute($this->_db);
+		if (count($remove) > 0)
+		{
+			if (!$ts->removeForTag($tag_id, $remove)) 
+			{
+				$this->setError($this->_db->getErrorMsg());
+				return false;
+			}
+		}
+
+		// Get all possibly existing tags that are now aliases
 		$sql = "SELECT t.id FROM $this->_tbl AS t WHERE t.tag IN ('" . implode("','", $tags) . "')";
 		$this->_db->setQuery($sql);
 
@@ -643,6 +667,7 @@ class TagsTag extends JTable
 
 			$to = new TagsObject($this->_db);
 
+			// Move associations on tag and delete tag
 			foreach ($ids as $id)
 			{
 				if ($tag_id != $id->id) 
@@ -650,6 +675,10 @@ class TagsTag extends JTable
 					// Get all the associations to this tag
 					// Loop through the associations and link them to a different tag
 					$to->moveObjects($id->id, $tag_id);
+
+					// Get all the substitutions to this tag
+					// Loop through the records and link them to a different tag
+					$ts->moveSubstitutes($id->id, $tag_id);
 
 					// Delete the tag
 					$tag = new TagsTag($this->_db);
