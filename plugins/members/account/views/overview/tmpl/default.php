@@ -115,8 +115,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<form action="index.php" method="post" data-section-registation="password" data-section-profile="password">
 				<?php if(is_array($this->passinfo)) { ?>
 					<p class="<?php echo $this->passinfo['message_style']; ?>">
-						Passwords are good for <?php echo $this->passinfo['max']; ?> days. 
-						Your password will expire in <?php echo $this->passinfo['diff']; ?> days.
+						<?php echo JText::sprintf('PLG_MEMBERS_ACCOUNT_PASSWORD_EXPIRATION_EXPLANATION', $this->passinfo['diff'], $this->passinfo['max']); ?>
 					</p>
 				<?php } // close if is array passinfo ?>
 				<p class="error" id="section-edit-errors"></p>
