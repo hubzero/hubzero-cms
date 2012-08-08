@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           administrator/components/com_ldap/views/ldap/tmpl/default.xml
+@file           administrator/components/com_system/views/ldap/tmpl/default.xml
 @copyright      Copyright 2012 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
