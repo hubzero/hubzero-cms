@@ -24,6 +24,7 @@
 		border-bottom: 0.27em solid #eee;
 		text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
 		z-index: 1;
+		*background-image: url("/media/system/images/light-stripes.png");
 		background-image: -webkit-gradient(linear, 0 0, 100% 100%,
 											color-stop(.25, rgba(255, 255, 255, .075)), color-stop(.25, transparent),
 											color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .075)),
@@ -73,6 +74,7 @@
 		margin: 0;
 		padding: 0;
 	}
+	.modnotices p span.modnoticep-before,
 	.modnotices p:before {
 		content: "\f095";
 		position: absolute;
@@ -90,11 +92,13 @@
 		position: absolute;
 		top: 0.41803399em;
 		right: 0.61803399em;
+		text-align: left;
 		width: 18px;
 		height: 18px;
 		font-size: 18px;
 		line-height: 18px;
 		overflow: hidden;
+		white-space: nowrap;
 		border: none !important;
 	}
 	.modnotices.low .close {
@@ -110,31 +114,35 @@
 		color: #fff !important;
 		border: none !important;
 	}
+	.modnotices .close span.modnoticec-before,
 	.modnotices .close:before {
-		/*display: block;
-		position: absolute;
-		top: 0;
-		right: 0;
-		width: 16px;
-		height: 16px;
-		font-size: 16px;
-		line-height: 16px;
-		overflow: hidden;*/
 		font-family: 'Fontcons';
 		margin-top: -0.25em;
 		content: "\f057";
 	}
+	.modnotices .close span.modnoticec-before {
+		margin-top: -0.5em;
+	}
 /* [!] HACKS - IE 7 and older */
-	.modnotices.low { 
-		*background: #84A7DB url("/modules/mod_notices/images/information.png") 0.71803399em 0.71803399em no-repeat;
-	}
-	.modnotices.medium { 
-		*background: #cea638 url("/modules/mod_notices/images/warning.png") 0.71803399em 0.71803399em no-repeat;
-	}
-	.modnotices.high { 
-		*background: #ba4a3b url("/modules/mod_notices/images/error.png") 0.71803399em 0.71803399em no-repeat; 
+	.modnotices p {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="modnoticep-before">&#xf095;&nbsp;</span>' + this.innerHTML);
 	}
 	.modnotices .close {
-		*background: url("/modules/mod_notices/images/delete.png") 0 0 no-repeat;
-		*text-indent: 5em;
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="modnoticec-before">&#xf057;&nbsp;</span>' + this.innerHTML);
 	}
+/* [!] HACKS - Firefox 3.4 and older */
+@-moz-document url-prefix() {
+	html.firefox3 .modnotices.low { 
+		background: #84A7DB url("/modules/mod_notices/images/information.png") 0.71803399em 0.71803399em no-repeat;
+	}
+	html.firefox3 .modnotices.medium { 
+		background: #cea638 url("/modules/mod_notices/images/warning.png") 0.71803399em 0.71803399em no-repeat;
+	}
+	html.firefox3 .modnotices.high { 
+		background: #ba4a3b url("/modules/mod_notices/images/error.png") 0.71803399em 0.71803399em no-repeat; 
+	}
+	html.firefox3 .modnotices .close {
+		background: url("/modules/mod_notices/images/delete.png") 0 0 no-repeat;
+		text-indent: 5em;
+	}
+}

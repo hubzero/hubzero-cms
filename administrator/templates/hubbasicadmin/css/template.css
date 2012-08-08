@@ -1046,6 +1046,7 @@
 		color: #424242;
 		font-weight: bold;
 	}
+	.sub-navigation li a.active small.fontcon-before,
 	.sub-navigation li a.active:before {
 		position: absolute;
 		width: 0px;
@@ -1059,6 +1060,7 @@
 		left: 50%;
 		margin-left: -8px;
 	}
+	.sub-navigation li a.active small.fontcon-after,
 	.sub-navigation li a.active:after {
 		position: absolute;
 		width: 0px;
@@ -1476,6 +1478,7 @@
 	.toolbar-box .header small {
 		color: #999;
 	}
+	.toolbar-box .header small.fontcon-before,
 	.toolbar-box .header:before {
 		font-family: 'Fontcons';	
 		font-size: 1.6em;
@@ -1483,6 +1486,8 @@
 		top: 0.55em;
 		left: 0.5em;
 		content: "\f02f";
+		display: block;
+		color: #666;
 	}
 	.toolbar-box a {
 		color: #666;
@@ -1547,6 +1552,7 @@
 		position: relative;
 		text-indent: 0;
 	}
+	.toolbar-box table a small.fontcon-before,
 	.toolbar-box table a span:before {
 		font-family: 'Fontcons';	
 		font-size: 24px;
@@ -1556,7 +1562,9 @@
 		content: "\2588";
 		color: #666;
 		text-decoration: none;
+		cursor: pointer;
 	}
+	.toolbar-box table a small.fontcon-after,
 	.toolbar-box table a span:after {
 		font-size: 16px;
 		font-family: 'Fontcons';
@@ -1571,6 +1579,7 @@
 		      1px -1px 0 #fff,
 		      -1px 1px 0 #fff,
 		       1px 1px 0 #fff;
+		cursor: pointer;
 	}
 	.toolbar-box table a:hover,
 	.toolbar-box td:hover a span:before,

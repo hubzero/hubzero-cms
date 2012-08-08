@@ -6,15 +6,6 @@
  */
 
 /* Structure */
-	.toolbar-box {
-		border-bottom: 1px solid #ccc;
-	}
-	.toolbar-box table a span:before {
-		top: -8px;
-	}
-	.toolbar-box .header:before {
-		font-size: 26px;
-	}
 	.mod {
 		border-top: 1px solid #666;
 		border-right: 1px solid #d0d0d0;
@@ -84,37 +75,185 @@
 		display: none;
 	}
 /* Toolbar */
-	#toolbar-box .header {
-		padding-left: .618em;
+	.toolbar-box {
+		border-bottom: 1px solid #ccc;
 	}
-	#toolbar-box table {
+	.toolbar-box table a {
+		white-space: nowrap;
+	}
+	.toolbar-box table a span {
+		top: -8px;
+	}
+	.toolbar-box .header {
+		font-size: 26px;
+	}
+	
+	.toolbar-box .header small.fontcon-before {
+		font-size: 1.1em;
+		top: 0.35em;
+	}
+	.sub-navigation li a.active {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before"></small>' + this.innerHTML + '<small class="fontcon-after"></small>');
+	}
+	.toolbar-box table a small.fontcon-before {
+		line-height: 24px;
+	}
+	
+	.toolbar-box .icon-32-send         { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x2709;&nbsp;</small>' + this.innerHTML + '<small class="fontcon-after">&#x2192;</small>'); }
+	.toolbar-box .icon-32-send small.fontcon-after { right: 0; bottom: 4px; }
+	.toolbar-box .icon-32-delete       { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf014;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-32-help         { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf059;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-32-cancel       { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf057;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-32-checkin      { }
+	.toolbar-box .icon-32-options      { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x2692;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-32-apply        { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf058;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-32-back         { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x2190;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-32-export       { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf08e;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-32-forward      { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x2192;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-32-save         { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x2605;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-32-edit         { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x270E;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-32-copy         { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf060;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-32-move         { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf047;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-32-new          { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x271A;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-32-upload       { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf046;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-32-assign       { }
+	.toolbar-box .icon-32-html         { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf016;&nbsp;</small>' + this.innerHTML + '<small class="fontcon-after">HTML</small>'); }
+	.toolbar-box .icon-32-css          { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf016;&nbsp;</small>' + this.innerHTML + '<small class="fontcon-after">CSS</small>'); }
+	.toolbar-box .icon-32-menus        { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf03a;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-32-publish      { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x2714;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-32-unblock      { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf007;&nbsp;</small>' + this.innerHTML + '<small class="fontcon-after">&#x2611;</small>'); }
+	.toolbar-box .icon-32-unpublish    { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x2298;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-32-restore      { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x267B;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-32-trash        { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf014;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-32-archive      { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf005;&nbsp;</small>' + this.innerHTML + '<small class="fontcon-after">&#x2190;</small>'); }
+	.toolbar-box .icon-32-unarchive    { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf005;&nbsp;</small>' + this.innerHTML + '<small class="fontcon-after">&#x2192;</small>'); }
+	.toolbar-box .icon-32-preview      { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf06e;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-32-default      { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x2605;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-32-refresh      { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf021;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-32-save-new     { }
+	.toolbar-box .icon-32-save-copy    { }
+	.toolbar-box .icon-32-error        { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x26A0;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-32-new-style    { }
+	.toolbar-box .icon-32-delete-style { }
+	.toolbar-box .icon-32-purge        { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x21BB;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-32-remove       { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x2296;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-32-featured     { }
+	.toolbar-box .icon-32-stats        { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x25F7;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-32-config       { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x2699;&nbsp;</small>' + this.innerHTML); }
+
+/* Header */
+	.toolbar-box .icon-48-generic                 { }
+	/* Banners */
+	.toolbar-box .icon-48-banners                 { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x2691;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-banners-categories      { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x2691;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-banners-category-edit   { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x2691;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-banners-category-add    { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x2691;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-banners-clients         { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x2691;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-banners-tracks          { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x2691;&nbsp;</small>' + this.innerHTML); }
+	/* contact */
+	.toolbar-box .icon-48-contact                 { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x2709;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-contact-categories      { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x2709;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-contact-category-edit   { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x2709;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-contact-category-add    { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x2709;&nbsp;</small>' + this.innerHTML); }
+	/* Groups */
+	.toolbar-box .icon-48-groups                  { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf042;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-groups-add              { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf042;&nbsp;</small>' + this.innerHTML); }
+	/* Levels */
+	.toolbar-box .icon-48-levels                  { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf067;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-levels-add              { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf067;&nbsp;</small>' + this.innerHTML); }
+	/* Menus */
+	.toolbar-box .icon-48-menu                    { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf03a;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-menu-add                { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf03a;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-menumgr                 { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf03a;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-trash                   { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf014;&nbsp;</small>' + this.innerHTML); }
+	/* User */
+	.toolbar-box .icon-48-user                    { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf007;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-user-add                { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf007;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-user-edit               { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf007;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-user-profile            { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf007;&nbsp;</small>' + this.innerHTML); }
+	/* Messaging */
+	.toolbar-box .icon-48-inbox                   { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf01c;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-new-privatemessage      { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf01c;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-msgconfig               { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf01c;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-writemess               { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x270D;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-massemail,
+	.toolbar-box .icon-48-massmail                { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x2709;&nbsp;</small>' + this.innerHTML); }
+	/* Managers */
+	.toolbar-box .icon-48-thememanager            { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf081;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-langmanager             { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf075;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-mediamanager            { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf08c;&nbsp;</small>' + this.innerHTML); }
+	/* Extensions */
+	.toolbar-box .icon-48-plugin                  { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf085;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-module                  { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf009;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-install                 { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x26A1;&nbsp;</small>' + this.innerHTML); }
+	/* Misc. */
+	.toolbar-box .icon-48-help_header             { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf059;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-impressions             { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf056;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-browser                 { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x2641;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-featured                { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x2605;&nbsp;</small>' + this.innerHTML); } /* \f04e */
+	.toolbar-box .icon-48-addedit                 { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x270D;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-purge                   { }
+	.toolbar-box .icon-48-cpanel                  { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf083;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-config                  { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf082;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-checkin                 { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf058;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-clear                   { }
+	/* Sections */
+	.toolbar-box .icon-48-sections                { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf071;&nbsp;</small>' + this.innerHTML); }
+	/* Articles */
+	.toolbar-box .icon-48-article-add             { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf016;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-article-edit            { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf016;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-article                 { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf016;&nbsp;</small>' + this.innerHTML); }
+	/* Categories */
+	.toolbar-box .icon-48-categories,
+	.toolbar-box .icon-48-content-categories      { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf07b;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-category-edit,
+	.toolbar-box .icon-48-content-category-edit   { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf07b;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-category-add,
+	.toolbar-box .icon-48-content-category-add    { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf07b;&nbsp;</small>' + this.innerHTML); }
+	/* Database */
+	.toolbar-box .icon-48-dbbackup                { }
+	.toolbar-box .icon-48-dbrestore               { }
+	.toolbar-box .icon-48-dbquery                 { }
+	.toolbar-box .icon-48-systeminfo              { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf05a;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-redirect                { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf064;&nbsp;</small>' + this.innerHTML); }
+	/* Search */
+	.toolbar-box .icon-48-search                  { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf002;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-searchtext              { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf002;&nbsp;</small>' + this.innerHTML); }
+	/* Newsfeeds */
+	.toolbar-box .icon-48-newsfeeds               { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf029;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-newsfeeds-cat, 
+	.toolbar-box .icon-48-newsfeeds-categories    { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf029;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-newsfeeds-category-edit { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf029;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-newsfeeds-category-add  { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf029;&nbsp;</small>' + this.innerHTML); }
+	/* Weblinks */
+	.toolbar-box .icon-48-weblinks                { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x26D3;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-weblinks-categories     { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x26D3;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-weblinks-category-edit  { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x26D3;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-weblinks-category-add   { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x26D3;&nbsp;</small>' + this.innerHTML); }
+	/* 3rd-party Components */
+	.toolbar-box .icon-48-support                 { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf055;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-event                   { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf073;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-tags                    { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf02c;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-alert                   { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x26A0;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-forum                   { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf086;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-citation                { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x275D;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-store                   { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf04d;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-tools                   { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x2692;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-wishlist                { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf078;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-wiki                    { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf072;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-kb                      { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf02d;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-poll                    { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf080;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-service                 { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf022;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-cron                    { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x23F0;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-feedback                { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf075;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-usage                   { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf004;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-blog                    { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf036;&nbsp;</small>' + this.innerHTML); }
+	.toolbar-box .icon-48-script                  { *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf07d;&nbsp;</small>' + this.innerHTML); }
+
+	.toolbar-box table {
 		width: 1%;
 	}
-	#toolbar-box table a {
-		display: block;
-		color: #888;
-		cursor: pointer;
-		font-size: 1.3em;
-		margin-left: 0.5em;
-		border: 1px solid #ccc;
-		padding: 0.309em 0.618em;
-	}
-	.toolbar-box table td.spacer {
-		width: 24px;
-	}
-	#toolbar-box table a span {
-		display: inline;
-		height: auto;
-		width: auto;
-	}
-	#toolbar-box table a:hover,
-	#toolbar-box table a:hover span,
-	#toolbar-box table a span:hover {
-		color: #222;
-	}
-	#toolbar-box table a:hover {
-		border: 1px solid #222;
-	}
+
 /* State Links */
 	a.state,
 	a.state:link,
@@ -185,7 +324,7 @@
 	}
 /* Sub-menu */
 	.sub-navigation ul {
-		height: 3.5em;
+		height: 2.6em;
 	}
 	.sub-navigation li {
 		display: block;
@@ -200,6 +339,11 @@
 		margin-left: -2.236em;
 		margin-top: -0.61803399em;
 		text-indent: 1.61803399em;
+	}
+	table.adminlist tbody tr,
+	table.adminlist tbody tr td,
+	table.adminlist tbody tr th {
+		background: #fff;
 	}
 /* Accessibility: css in template.css for slider keyboard
  * has to be reversed here or the mouse does not work for ie */

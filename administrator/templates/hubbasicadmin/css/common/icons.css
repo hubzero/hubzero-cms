@@ -64,6 +64,7 @@
 	.toolbar-box .icon-32-upload:before	      { content: "\f046"; }
 	.toolbar-box .icon-32-assign:before       { }
 	.toolbar-box .icon-32-html:before         { content: "\f016"; }
+	.toolbar-box .icon-32-html small.fontcon-after,
 	.toolbar-box .icon-32-html:after { 
 		font-size: 6px; 
 		line-height: 6px;
@@ -77,6 +78,7 @@
 		padding: 0 1px;
 	}
 	.toolbar-box .icon-32-css:before          { content: "\f016"; }
+	.toolbar-box .icon-32-css small.fontcon-after,
 	.toolbar-box .icon-32-css:after { 
 		font-size: 6px; 
 		line-height: 6px;
@@ -109,7 +111,7 @@
 	.toolbar-box .icon-32-new-style:before    { }
 	.toolbar-box .icon-32-delete-style:before { }
 	.toolbar-box .icon-32-purge:before        { content: "\21BB"; }
-	.toolbar-box .icon-32-remove:before	      { content: "\2296"; }
+	.toolbar-box .icon-32-remove:before       { content: "\2296"; }
 	.toolbar-box .icon-32-featured:before     { }
 	.toolbar-box .icon-32-stats:before        { content: "\25F7"; }
 	.toolbar-box .icon-32-config:before       { content: "\2699"; }
@@ -131,7 +133,7 @@
 	.toolbar-box .icon-48-contact-category-add:before    { content: "\2709"; }
 	/* Groups */
 	.toolbar-box .icon-48-groups:before                  { content: "\f042"; }
-	.toolbar-box .icon-48-groups-add:before	             { content: "\f042"; }
+	.toolbar-box .icon-48-groups-add:before              { content: "\f042"; }
 	/* Levels */
 	.toolbar-box .icon-48-levels:before                  { content: "\f067"; }
 	.toolbar-box .icon-48-levels-add:before              { content: "\f067"; }
@@ -158,7 +160,7 @@
 	.toolbar-box .icon-48-mediamanager:before            { content: "\f08c"; }
 	/* Extensions */
 	.toolbar-box .icon-48-plugin:before                  { content: "\f085"; }
-	.toolbar-box .icon-48-module:before	                 { content: "\f009"; }
+	.toolbar-box .icon-48-module:before                  { content: "\f009"; }
 	.toolbar-box .icon-48-install:before                 { content: "\26A1"; }
 	/* Misc. */
 	.toolbar-box .icon-48-help_header:before             { content: "\f059"; }

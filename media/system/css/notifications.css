@@ -105,6 +105,7 @@
 		border-radius: 0.27em;
 		text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
 		z-index: 1;
+		background-image: url("/media/system/images/light-stripes.png");
 		background-image: -webkit-gradient(linear, 0 0, 100% 100%,
 											color-stop(.25, rgba(255, 255, 255, .075)), color-stop(.25, transparent),
 											color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .075)),
@@ -200,6 +201,7 @@
 		color: #ffd2c3 !important;
 		border-color: #982819;
 	}
+	span.systemmessage-before,
 	.help:before,
 	.info:before,
 	.warning:before,
@@ -241,39 +243,29 @@
 		left: 0.71803399em;
 	}
 
-/* IE 7 and older */
+/* [!] HACKS - IE 7 and older */
 	.help,
 	#system-message dd.help { 
-		*background-image: url("/media/system/images/help.png");
-		*background-position: 10px 10px;
-		*background-repeat: no-repeat;
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="systemmessage-before">&#xf059;&nbsp;</span>' + this.innerHTML);
 	}
 	.info,
 	#system-message dd.info { 
-		*background-image: url("/media/system/images/information.png");
-		*background-position: 10px 10px;
-		*background-repeat: no-repeat;
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="systemmessage-before">&#xf05a;&nbsp;</span>' + this.innerHTML);
 	}
 	.warning,
 	#system-message dd.warning { 
-		*background-image: url("/media/system/images/warning.png");
-		*background-position: 10px 10px;
-		*background-repeat: no-repeat;
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="systemmessage-before">&#x26A0;&nbsp;</span>' + this.innerHTML);
 	}
 	.error,
 	#system-message dd.error { 
-		*background-image: url("/media/system/images/error.png");
-		*background-position: 10px 10px;
-		*background-repeat: no-repeat;
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="systemmessage-before">&#xf094;&nbsp;</span>' + this.innerHTML);
 	}
 	.passed,
 	#system-message dd.passed { 
-		*background-image: url("/media/system/images/accept.png");
-		*background-position: 10px 10px;
-		*background-repeat: no-repeat;
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="systemmessage-before">&#x2714;&nbsp;</span>' + this.innerHTML);
 	}
 
-/* Firefox 3.4 and older */
+/* [!] HACKS - Firefox 3.4 and older */
 @-moz-document url-prefix() {
 	html.firefox3 .help,
 	html.firefox3 #system-message dd.help { 
