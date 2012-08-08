@@ -64,7 +64,7 @@ defined('_JEXEC') or die('Restricted access');
 				$conflict = false;
 
 				// If email conflicts, we can offer suggestions of pre-existing accounts
-				if($this->xregistration->_invalid['email'] && !array_key_exists('email', $this->xregistration->_missing))
+				if(array_key_exists('email', $this->xregistration->_invalid) && !array_key_exists('email', $this->xregistration->_missing))
 				{
 					// Email conflicts with another email in the system
 					$username = Hubzero_User_Profile_Helper::find_by_email($this->registration['email']);
