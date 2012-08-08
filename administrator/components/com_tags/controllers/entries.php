@@ -180,9 +180,10 @@ class TagsControllerEntries extends Hubzero_Controller
 	/**
 	 * Save an entry
 	 * 
+	 * @param      integer $redirect Redirect after saving? (defaults to 1 = yes)
 	 * @return     void
 	 */
-	public function saveTask()
+	public function saveTask($redirect=1)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -228,16 +229,19 @@ class TagsControllerEntries extends Hubzero_Controller
 		$row->saveSubstitutions(JRequest::getVar('substitutions', ''));
 
 		// Redirect to main listing
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('TAG_SAVED')
-		);
+		if ($redirect)
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('TAG_SAVED')
+			);
+		}
 	}
 
 	/**
 	 * Remove one or more entries
 	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function removeTask()
 	{
@@ -374,7 +378,7 @@ class TagsControllerEntries extends Hubzero_Controller
 					$_POST['alias'] = '';
 					$_POST['description'] = '';
 
-					$this->save(0);
+					$this->saveTask(0);
 
 					$tagging = new TagsHandler($this->database);
 					$mtag = $tagging->get_raw_tag_id($tag_new);
@@ -518,7 +522,7 @@ class TagsControllerEntries extends Hubzero_Controller
 					$_POST['alias'] = '';
 					$_POST['description'] = '';
 
-					$this->save(0);
+					$this->saveTask(0);
 
 					$tagging = new TagsHandler($this->database);
 					$mtag = $tagging->get_raw_tag_id($tag_new);
