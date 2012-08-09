@@ -509,7 +509,7 @@ class ResourcesResource extends JTable
 			$tagging = new ResourcesTags($this->_db);
 			$tags = $tagging->_parse_tags($filters['tag']);
 
-			$query .= "AND RTA.objectid=C.id AND (TA.tag IN ('" . implode("','", $tags) . ") OR TA.alias IN ('" . implode("','", $tags) . "))";
+			$query .= "AND RTA.objectid=C.id AND (TA.tag IN ('" . implode("','", $tags) . "') OR TA.alias IN ('" . implode("','", $tags) . "'))";
 			$query .= " GROUP BY C.id HAVING uniques=" . count($tags);
 		}
 		$query .= " ORDER BY ";
