@@ -209,9 +209,11 @@ p.callToAction {
 }
 
 /* IE 7 hacks */
-html>body #authentication #credentials-hub input[type="text"] {
+html>body #authentication #credentials-hub input[type="text"],
+html>body #authentication #credentials-hub input[type="password"] {
 	*width: 168px;
 }
-html>body #authentication.multiAuth #credentials-hub input[type="text"] {
+html>body #authentication.multiAuth #credentials-hub input[type="text"],
+html>body #authentication.multiAuth #credentials-hub input[type="password"] {
 	*width: 118px;
 }
