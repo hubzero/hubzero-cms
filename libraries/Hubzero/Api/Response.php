@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2011-2012 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright Copyright 2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2011-2012 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -750,7 +750,7 @@ class Hubzero_API_Response
 	 * @param      unknown $accept Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	function setRequestAccepts($accept)
+	function setAcceptableMediaTypes($accept)
 	{
 		$accepts = $this->_parse_accept($accept);
 		$provides = $this->_parse_accept($this->_response_accept);
@@ -774,7 +774,7 @@ class Hubzero_API_Response
 	 * 
 	 * @return     string Return description (if any) ...
 	 */
-	function getRequestAccepts()
+	function getAcceptableMediaTypes()
 	{
 		return $this->_request_accept;
 	}
@@ -832,6 +832,7 @@ class Hubzero_API_Response
 		{
 			$this->_content_type = $this->_resolveContentType($accepts, $provides);
 		}
+		
 		return $this->_content_type;
 	}
 
@@ -843,7 +844,7 @@ class Hubzero_API_Response
 	 * @param      unknown $accept Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	function setRequestAcceptsEncodings($accept)
+	function setAcceptableEncodings($accept)
 	{
 		$accepts = $this->_parse_encoding($accept);
 		$provides = $this->_parse_encoding($this->_response_accept_encoding);
@@ -867,7 +868,7 @@ class Hubzero_API_Response
 	 * 
 	 * @return     unknown Return description (if any) ...
 	 */
-	function getRequestAcceptsEncodings()
+	function getAcceptableEncodings()
 	{
 		return $this->_request_accept_encoding;
 	}
@@ -944,13 +945,18 @@ class Hubzero_API_Response
 		$best_score = '';
 		$score = null;
 
+		if (empty($accept))
+		{
+			$accept = array("*/*"=>"1");
+		}
+		
 		foreach($accept as $client_type=>$client_value)
 		{
 			if ($client_type == 'text/*')
 			{
 				foreach($provide as $provider_type=>$provider_value)
 				{
-					if (strncmp($provide,'text/',5) == 0)
+					if (strncmp($provider_type,'text/',5) == 0)
 					{
 						$score = $client_value * $provider_value;
 						$client_type = $provider_type;
@@ -1134,7 +1140,7 @@ class Hubzero_API_Response
 				echo "\n";
 			}
 
-			if (!is_object($message))
+			if (!is_object($message) && !is_array($message))
 			{
 				echo $message;
 			}
@@ -1164,7 +1170,7 @@ class Hubzero_API_Response
 				echo '<p id="status">' . htmlspecialchars($status) . "</p>\n";
 			}
 
-			if (!is_object($message))
+			if (!is_object($message) && !is_array($message))
 			{
 				echo '<p id ="message">' . $message . "</p>\n";
 			}
@@ -1197,7 +1203,7 @@ class Hubzero_API_Response
 			{
 				echo '<p id="status">' . htmlspecialchars($status) . "</p>\n";
 			}
-			if (!is_object($message))
+			if (!is_object($message) && !is_array($message))
 			{
 				echo '<p id ="message">' . $message . "</p>\n";
 			}
@@ -1212,7 +1218,7 @@ class Hubzero_API_Response
 		}
 		else if ($content_type == "application/xml")
 		{
-			echo Hubzero_XML::encode($response);
+			echo Hubzero_Xml::encode($response);
 		}
 		else if ($content_type == 'application/json')
 		{
@@ -1269,7 +1275,7 @@ class Hubzero_API_Response
 		{
 			$this->setReason($reason);
 		}
-
+				
 		$message = $this->_serializeResponseObject($message);
 
 		if ($message === 406)

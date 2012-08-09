@@ -35,34 +35,33 @@
  */
 class Hubzero_Api_Controller
 {
-
 	/**
 	 * Description for '_response'
 	 * 
 	 * @var unknown
 	 */
-	private $_response = null;
+	protected $_response = null;
 
 	/**
 	 * Description for '_request'
 	 * 
 	 * @var unknown
 	 */
-	private $_request = null;
+	protected $_request = null;
 
 	/**
 	 * Description for '_provider'
 	 * 
 	 * @var unknown
 	 */
-	private $_provider = null;
+	protected $_provider = null;
 
 	/**
 	 * Description for '_segments'
 	 * 
 	 * @var array
 	 */
-	private $_segments = array();
+	protected $segments = array();
 
 	/**
 	 * Short description for 'setRequest'
@@ -149,7 +148,7 @@ class Hubzero_Api_Controller
 	 */
 	function setRouteSegments($segments)
 	{
-		$this->_segments = $segments;
+		$this->segments = $segments;
 	}
 
 	/**
@@ -161,8 +160,16 @@ class Hubzero_Api_Controller
 	 */
 	function getRouteSegments()
 	{
-		return $this->_segments;
+		return $this->segments;
+	}
+	
+	function setMessage($message = null, $status = null, $reason = null)	
+	{
+		$this->_response->setMessage($message, $status, $reason);
+	}
+	
+	function setMessageType($format)
+	{
+		$this->_response->setResponseProvides($format);
 	}
 }
-
-?>

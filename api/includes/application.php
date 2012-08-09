@@ -38,7 +38,25 @@ defined('_JEXEC') or die('Restricted access');
  */
 class Hubzero_API extends JApplication
 {
-
+	function reset()
+	{
+		$this->unregister_long_arrays();
+		$this->unregister_globals();
+		$this->fix_http_headers();
+		$this->handle_method_override();
+		
+		$this->_enabled = false;
+		$this->_component = false;
+		$this->_route = array();
+		$this->provider = null;
+		
+		$this->request = new Hubzero_Api_Request();
+		$this->response = new Hubzero_Api_Response();
+		$this->output = '';
+			
+		return $this; // chaining
+	}
+	
 	/**
 	 * Description for '_enabled'
 	 * 
@@ -61,19 +79,21 @@ class Hubzero_API extends JApplication
 	private $_route = array(); // path segments to pass to api controller
 
 	/**
-	 * Description for '_response'
+	 * Description for 'response'
 	 * 
 	 * @var object
 	 */
-	private $_response = null;
+	public $response = null;
 
 	/**
-	 * Description for '_request'
+	 * Description for 'request'
 	 * 
 	 * @var object
 	 */
-	private $_request = null;
+	public $request = null;
 
+	
+	public $output = '';
 	/**
 	 * Description for '_provider'
 	 * 
@@ -91,33 +111,41 @@ class Hubzero_API extends JApplication
 	 */
 	function __construct($config = array())
 	{
+		define('JPATH_API', JPATH_ROOT . DS . 'api');
+		define('JPATH_PLUGINS', JPATH_ROOT . DS . 'plugins');
+		define('JPATH_CACHE', JPATH_BASE . DS . 'cache');
+		
 		JLoader::import('joomla.version');
 		JLoader::import('joomla.user.user');
 		JLoader::register('JText' , JPATH_LIBRARIES . DS . 'joomla' . DS . 'methods.php');
 		JLoader::import('joomla.filter.filterinput');
-
+		JLoader::import('joomla.environment.uri');
+		JLoader::import('Hubzero.Api.Response');
+		JLoader::import('Hubzero.Api.Request');
+		
 		$version = new JVersion();
 
-	/**
-	 * Description for ''JVERSION''
-	 */
 		define('JVERSION', $version->getShortVersion());
 
 		$config['clientId'] = 4;
         $config['session'] = false;
-
+        
+        $this->reset();
+        
         parent::__construct($config);
 	}
 
 	/**
-	 * Short description for 'handle_method_override'
-	 * 
-	 * Long description (if any) ...
+	 * For clients that can't (or programmer to lazy to) support all
+	 * HTTP methods allow the method to be specified via HTTP_X_HTTP_METHOD_OVERRIDE
+	 * header.
 	 * 
 	 * @return     void
 	 */
 	function handle_method_override()
 	{
+		// @FIXME: should maybe only be valid if the real method is GET
+		
 		if (isset($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']))
 		{
 			$method = strtoupper($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']);
@@ -130,9 +158,7 @@ class Hubzero_API extends JApplication
 	}
 
 	/**
-	 * Short description for 'fix_http_headers'
-	 * 
-	 * Long description (if any) ...
+	 * Add some request headers that PHP suppresses by default
 	 * 
 	 * @return     void
 	 */
@@ -153,14 +179,12 @@ class Hubzero_API extends JApplication
 
 		if (ini_get('expose_php'))
 		{
-		    header('X-Powered-By: PHP');
+		    $_SERVER['HTTP_X_POWERED_BY'] = 'PHP';
 		}
 	}
 
 	/**
-	 * Short description for 'unregister_long_arrays'
-	 * 
-	 * Long description (if any) ...
+	 * Unset HTTP_* global variables if using a PHP installation that has these enabled 
 	 * 
 	 * @return     void
 	 */
@@ -179,9 +203,7 @@ class Hubzero_API extends JApplication
 	}
 
 	/**
-	 * Short description for 'unregister_globals'
-	 * 
-	 * Long description (if any) ...
+	 * Unset 'magic' global variables if using a PHP installation that has these enabled
 	 * 
 	 * @return     void
 	 */
@@ -234,8 +256,6 @@ class Hubzero_API extends JApplication
 		}
 	}
 
-	// static function &getInstance($client, $config, $prefix) inherited
-
 	/**
 	 * Short description for 'initialise'
 	 * 
@@ -245,23 +265,12 @@ class Hubzero_API extends JApplication
 	 */
 	function initialise()
 	{
-		require_once JPATH_LIBRARIES . DS . 'Hubzero' . DS . 'Api' . DS . "Response.php";
-		require_once JPATH_LIBRARIES . DS . 'Hubzero' . DS . 'Api' . DS . "Request.php";
+		$this->response->setCachable(false);
+		$this->response->setAcceptableMediaTypes($this->request->getHeader('Accept'));
+		$this->response->setAcceptableEncodings($this->request->getHeader('Accept-Encoding'));
+		$this->response->setSuppressResponseCodes($this->request->getSuppressResponseCodes());
 
-		$this->unregister_long_arrays();
-		$this->unregister_globals();
-		$this->fix_http_headers();
-		$this->handle_method_override();
-
-		$this->_request = new Hubzero_Api_Request();
-		$this->_response = new Hubzero_Api_Response();
-
-		$this->_response->setCachable(false);
-		$this->_response->setRequestAccepts($this->_request->getHeaderField('Accept'));
-		$this->_response->setRequestAcceptsEncodings($this->_request->getHeaderField('Accept-Encoding'));
-		$this->_response->setSuppressResponseCodes($this->_request->getSuppressResponseCodes());
-
-		$this->_enabled = (JFactory::getConfig()->getValue('config.api_server') == true);
+		$this->_enabled = 1;//(JFactory::getConfig()->getValue('config.api_server') == true);
 	}
 
 	/**
@@ -273,14 +282,12 @@ class Hubzero_API extends JApplication
 	 */
 	function route()
 	{
-		require_once JPATH_LIBRARIES . DS . 'Hubzero' . DS . 'Api' . DS . "Controller.php";
-
 		if (!$this->_enabled)
 		{
 			return;
 		}
 
-		$route = $this->_request->path;
+		$route = $this->request->get('path');
 
 		$segments = explode('/', $route);
 
@@ -288,7 +295,6 @@ class Hubzero_API extends JApplication
 		{
 			array_shift($segments);
 		}
-
 		if ((count($segments) > 2) && ($segments[0] == 'api'))
 		{
 			array_shift($segments);
@@ -302,16 +308,20 @@ class Hubzero_API extends JApplication
 
 			$filename = JPATH_SITE . DS . 'components' . DS . 'com_'
 				. $segments[0] . DS . 'controllers' . DS . 'api.php';
-
-			if (is_file($filename))
-			{
-				require_once($filename);
-
-				$this->_component = $segments[0];
-
-				array_shift($segments);
+			
+			$classname = ucfirst($segments[0]) . 'ApiController';
+			
+			if (!class_exists($classname))
+			{			
+				if (is_file($filename))
+				{
+					require($filename);
+				}
 			}
-
+			
+			$this->_component = $segments[0];
+			array_shift($segments);
+				
 			$this->_route = $segments;
 		}
 	}
@@ -330,27 +340,45 @@ class Hubzero_API extends JApplication
 			return;
 		}
         
-		ximport('Hubzero_User_Profile');
-		ximport('Hubzero_User_Helper');
-		ximport('Hubzero_Oauth_Provider');
-		ximport('Hubzero_User');
-		ximport('Hubzero_Xml');
-		//require_once JPATH_LIBRARIES . DS . 'Hubzero' . DS . 'User' . DS . "Profile.php";
-		//require_once JPATH_LIBRARIES . DS . 'Hubzero' . DS . 'User' . DS . "Helper.php";
-		//require_once JPATH_LIBRARIES . DS . 'Hubzero' . DS . 'Oauth' . DS . "Provider.php";
-		//require_once JPATH_LIBRARIES . DS . 'Hubzero' . DS . 'User.php';
-		//require_once JPATH_LIBRARIES . DS . 'Hubzero' . DS . 'Xml.php';
+		JLoader::import('Hubzero.User.Profile');
+		JLoader::import('Hubzero.User.Helper');
+		JLoader::import('Hubzero.Oauth.Provider');
+		JLoader::import('Hubzero.User');
+		JLoader::import('Hubzero.Xml');
+		
+		$queryvars = $this->request->get('queryvars');
 
-		$oauthp = new Hubzero_Oauth_Provider();
-		$oauthp->setResponse($this->_response);
+		$oauthkeys = array('oauth_token','oauth_timestamp','oauth_nonce','oauth_consumer_key','oauth_signature','oauth_signature_method');
+		$params = array();
+		foreach($oauthkeys as $key)
+		{
+			if (isset($queryvars[$key]))
+			{
+				$params[$key] = $queryvars[$key];
+			}
+		}
+
+		if (empty($params))
+		{
+			return false;
+		}
+
+		$oauthp = new Hubzero_Oauth_Provider($params);
 		$oauthp->setRequestTokenPath('/api/oauth/request_token');
 		$oauthp->setAccessTokenPath('/api/oauth/access_token');
 		$oauthp->setAuthorizePath('/api/oauth/authorize');
-        
-		if (!$oauthp->validateRequest())
+
+		$result = $oauthp->validateRequest($this->request->get('request'));
+		
+		if (is_array($result))
 		{
-			return;
+			//$this->response->setResponseProvides('application/x-www-form-urlencoded;q=1.0,text/html;q=0.9');
+			$this->response->setResponseProvides('application/x-www-form-urlencoded');
+			$this->response->setMessage($result['message'], $result['status'], $result['reason']);
+			return false;
 		}
+
+		$this->request->validApiKey = true;
 
 		$this->_provider = $oauthp;
 	}
@@ -364,21 +392,27 @@ class Hubzero_API extends JApplication
 	 */
 	function dispatch()
 	{
-		if (!$this->_provider)
-		{
-			return;
-		}
+  		//if (!$this->_provider)
+		//{
+		//	return;
+		//}
 
 		$classname = ucfirst($this->_component) . 'ApiController';
 
 		if (class_exists($classname))
 		{
 			$controller = new $classname();
-			$controller->setRequest($this->_request);
-			$controller->setResponse($this->_response);
+			$controller->setRequest($this->request);
+			$controller->setResponse($this->response);
 			$controller->setProvider($this->_provider);
 			$controller->setRouteSegments($this->_route);
+
+			ob_start();
 			$controller->execute();
+			$output = ob_get_clean();
+				
+			$this->response->appendBody($output);
+				
 		}
 	}
 
@@ -392,10 +426,10 @@ class Hubzero_API extends JApplication
 	function render()
 	{
 		global $_HUBZERO_API_START;
+		
+		$this->response->setHeader('X-Runtime: ' . (microtime(true) - $_HUBZERO_API_START));
 
-		$this->_response->setHeader('X-Runtime: ' . (microtime(true) - $_HUBZERO_API_START));
-
-		$this->_response->send();
+		$this->response->send();
 	}
 
 	/**
@@ -405,8 +439,15 @@ class Hubzero_API extends JApplication
 	 * 
 	 * @return     void
 	 */
-	function execute()
+	function execute($capture = false)
 	{
+		global $_HUBZERO_API_START;
+		
+		if (!isset($_HUBZERO_API_START))
+		{
+			$_HUBZERO_API_START = microtime(true);		
+		}
+		
 		$this->initialise();
 
 		$this->route();
@@ -415,7 +456,19 @@ class Hubzero_API extends JApplication
 
 		$this->dispatch();
 
+		if ($capture)
+		{
+			ob_start();
+		}
+		
 		$this->render();
+		
+		if ($capture)
+		{
+			$this->output = ob_get_clean();
+		}
+		
+		unset($_HUBZERO_API_START);
 	}
 
 	/**

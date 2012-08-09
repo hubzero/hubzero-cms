@@ -61,13 +61,6 @@ class Hubzero_Oauth_Provider
 	private $_token_data = null;
 
 	/**
-	 * Description for '_response'
-	 * 
-	 * @var object
-	 */
-	private $_response = null;
-
-	/**
 	 * Description for '_request_token_path'
 	 * 
 	 * @var unknown
@@ -87,19 +80,6 @@ class Hubzero_Oauth_Provider
 	 * @var unknown
 	 */
 	private $_authorize_path = null;
-
-	/**
-	 * Short description for 'setResponse'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $response Parameter description (if any) ...
-	 * @return     void
-	 */
-	function setResponse($response)
-	{
-		$this->_response = $response;
-	}
 
 	/**
 	 * Short description for 'setRequestTokenPath'
@@ -147,12 +127,19 @@ class Hubzero_Oauth_Provider
 	 * 
 	 * @return     void
 	 */
-	function __construct()
+	function __construct($params = array())
 	{
-		$this->_provider = new OAuthProvider();
-		$this->_provider->consumerHandler(array($this,'lookupConsumer'));
-		$this->_provider->timestampNonceHandler(array($this,'timestampNonceChecker'));
+
+		$this->_provider = new OAuthProvider($params);
+		
+		$this->_provider->consumerHandler(array($this,'consumerHandler'));
+		$this->_provider->timestampNonceHandler(array($this,'timestampNonceHandler'));
 		$this->_provider->tokenHandler(array($this, 'tokenHandler'));
+		
+		if (empty($params['oauth_token']))
+		{
+			$this->_provider->is2LeggedEndpoint(true);
+		}
 	}
 
 	// @FIXME: validateRequest() is still a bit awkward and needs to be refactored
@@ -165,19 +152,19 @@ class Hubzero_Oauth_Provider
 	 * @param      unknown $uri Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	function validateRequest($uri = null)
+	function validateRequest($uri = null, $method = 'GET')
 	{
 		$endpoint = false;
 
 		if (is_null($uri))
 		{
-			$uri = $_SERVER['SCRIPT_URI'];
+			$uri = "";
 		}
 
 		$parts = parse_url($uri);
 
 		$path = trim($parts['path'],'/');
-
+				
 		if ($path == $this->_request_token_path)
 		{
 			$this->_provider->isRequestTokenEndpoint(true);
@@ -222,7 +209,7 @@ class Hubzero_Oauth_Provider
 
 		try
 		{
-			$this->_provider->checkOAuthRequest($uri);
+			$this->_provider->checkOAuthRequest($uri,$method);
 		}
 		catch (OAuthException $E)
 		{
@@ -288,10 +275,11 @@ class Hubzero_Oauth_Provider
 			$status = 400;
 		}
 
-		$this->_response->setResponseProvides('application/x-www-form-urlencoded,text/html;q=0.9');
-		$this->_response->setMessage($message,$status,$reason);
-
-		return false;
+		$result['message'] = $message;
+		$result['status'] = $status;
+		$result['reason'] = $reason;
+		
+		return $result;
 	}
 
 	/**
@@ -343,13 +331,19 @@ class Hubzero_Oauth_Provider
 	}
 
 	/**
-	 * Short description for 'lookupConsumer'
+	 * OAuthProvider consumerHandler Callback
 	 * 
-	 * Long description (if any) ...
+	 * Lookup requested consumer key secret
 	 * 
-	 * @return     integer Return description (if any) ...
+	 * Result is stored in OAuthProvider instance's consumer_secret property
+	 * Consumer data record is stored in _consumer_data property
+	 * 
+	 * @return  OAUTH_OK on success
+	 * 		If consumer_key doesn't exist returns OAUTH_CONSUMER_KEY_UNKNOWN
+	 * 		If consumer_key is expired or otherwise invalid returns OAUTH_CONSUMER_KEY_REFUSED
+	 * 		If lookup process failed for some reason returns OAUTH_ERR_INTERNAL_ERROR 
 	 */
- 	function lookupConsumer()
+ 	function consumerHandler()
 	{
 		$db = JFactory::getDBO();
 
@@ -358,22 +352,23 @@ class Hubzero_Oauth_Provider
 			return OAUTH_ERR_INTERNAL_ERROR;
 		}
 
-		$db->setQuery("SELECT * FROM #__oauthp_consumers WHERE token="
-			. $db->Quote($this->_provider->consumer_key) . " LIMIT 1;");
+		$db->setQuery("SELECT * FROM #__oauthp_consumers WHERE token=" . 
+				$db->Quote($this->_provider->consumer_key) . 
+				" LIMIT 1;");
 
 		$result = $db->loadObject();
 
-		if ($result === false)
+		if ($result === false)	// query failed
 		{
 			return OAUTH_ERR_INTERNAL_ERROR;
 		}
 
-		if (empty($result))
+		if (empty($result)) // key not found
 		{
 			return OAUTH_CONSUMER_KEY_UNKNOWN;
 		}
 
-		if ($result->state != 1)
+		if ($result->state != 1) // key not in a valid state
 		{
 			return OAUTH_CONSUMER_KEY_REFUSED;
 		}
@@ -385,13 +380,16 @@ class Hubzero_Oauth_Provider
 	}
 
 	/**
-	 * Short description for 'timestampNonceChecker'
+	 * OAuthProvider timestampNonceHandler Callback
 	 * 
-	 * Long description (if any) ...
+	 * Validate timestamp and nonce assocaited with OAuthProvider instance
 	 * 
-	 * @return     integer Return description (if any) ...
+	 * @return  OAUTH_OK on success
+	 * 		If timestamp is invalid (expired) returns OAUTH_BAD_TIMESTAMP
+	 * 		If nonce has been seen before returns OAUTH_BAD_NONCE
+	 * 		If lookup process failed for some reason returns OAUTH_ERR_INTERNAL_ERROR 
 	 */
-	function timestampNonceChecker()
+	function timestampNonceHandler()
 	{
 		$timediff = abs(time() - $this->_provider->timestamp);
 
@@ -404,19 +402,22 @@ class Hubzero_Oauth_Provider
 
 		if (!is_object($db))
 		{
-			return 500;
+			return OAUTH_ERR_INTERNAL_ERROR;
 		}
 
 		$db->setQuery("INSERT INTO #__oauthp_nonces (nonce,stamp,created) "
-				. " VALUES (" . $db->Quote($this->_provider->nonce) . ","
-				. $db->Quote($this->_provider->timestamp) . ", NOW());");
+				. " VALUES (" . 
+				$db->Quote($this->_provider->nonce) . 
+				"," .
+				$db->Quote($this->_provider->timestamp) . 
+				", NOW());");
 
-		if (($db->query() === false) && ($db->getErrorNum() != 1062))
+		if (($db->query() === false) && ($db->getErrorNum() != 1062)) // duplicate row error ok (well expected anyway)
 		{
-			return 550;
+			return OAUTH_ERR_INTERNAL_ERROR;
 		}
 
-		if ($db->getAffectedRows() < 1)
+		if ($db->getAffectedRows() < 1) // duplicate row error throws this error instead
 		{
 			return OAUTH_BAD_NONCE;
 		}
@@ -425,42 +426,49 @@ class Hubzero_Oauth_Provider
 	}
 
 	/**
-	 * Short description for 'tokenHandler'
+	 * OAuthProvider tokenHandler Callback
 	 * 
-	 * Long description (if any) ...
+	 * Lookup token data associated with OAuthProvider instance
 	 * 
-	 * @return     integer Return description (if any) ...
+	 * If token is valid stores full token record in _token_data property
+	 * 
+	 * @return  OAUTH_OK on success
+	 * 		If token not found returns OAUTH_TOKEN_REJECTED
+	 * 		If token has expired or is otherwise unusable returns OAUTH_TOKEN_REJECTED
+	 * 		If request verifier doesn't match token's verifier returns OAUTH_VERIFIER_INVALID
+	 * 		If lookup process failed for some reason returns OAUTH_ERR_INTERNAL_ERROR 
 	 */
 	function tokenHandler()
 	{
 		$db = JFactory::getDBO();
-
+			
 		if (!is_object($db))
 		{
-			return 500;
+			return OAUTH_ERR_INTERNAL_ERROR;
 		}
 
-		$db->setQuery("SELECT * FROM #__oauthp_tokens WHERE token="
-			. $db->Quote($this->_provider->token) . ";");
+		$db->setQuery("SELECT * FROM #__oauthp_tokens WHERE token="	. 
+				$db->Quote($this->_provider->token) . 
+				" LIMIT 1;");
 
 		$result = $db->loadObject();
-
-		if ($result === false)
+		
+		if ($result === false) // query failed
 		{
-			return 500;
+			return OAUTH_ERR_INTERNAL_ERROR;
 		}
 
-		if (empty($result))
-		{
-			return OAUTH_TOKEN_REJECTED;
-		}
-
-		if ($result->state != '1')
+		if (empty($result)) // token not found
 		{
 			return OAUTH_TOKEN_REJECTED;
 		}
 
-		if ($result->user_id == '0') // check verifier on non-access tokens
+		if ($result->state != '1') // token not in a valid state
+		{
+			return OAUTH_TOKEN_REJECTED;
+		}
+
+		if ($result->user_id == '0') // check verifier on request tokens
 		{
 			if ($result->verifier != $this->_provider->verifier)
 			{

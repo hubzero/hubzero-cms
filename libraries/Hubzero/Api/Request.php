@@ -36,12 +36,6 @@
 class Hubzero_API_Request
 {
 
-	/**
-	 * Description for 'method'
-	 * 
-	 * @var string
-	 */
-	public $method = 'GET';
 
 	/**
 	 * Description for 'suppress_response_codes'
@@ -58,12 +52,43 @@ class Hubzero_API_Request
 	public $accepts = "text/plain";
 
 	/**
+	 * Description for 'method'
+	 * 
+	 * @var string
+	 */
+	private $method = 'GET';
+	/**
 	 * Description for 'path'
 	 * 
 	 * @var string
 	 */
-	public $path = '';
+	private $scheme = 'http';
+	private $username = '';
+	private $password = '';
+	private $hostname = 'localhost';
+	private $port = '';
+	private $path = '';
+	private $query = '';
+	private $fragment = '';
+	
+	private $version = 'HTTP/1.0';
 
+	private $headers = array();
+	
+	private $body = '';
+	
+	
+	private $_server = array();
+	private $_get = array();
+	private $_post = array();
+	private $_files = array();
+	private $_cookie = array();
+	private $_session = array();
+	private $_request = array();
+	private $_env = array();
+	
+	
+	
 	/**
 	 * Short description for 'getHeaderField'
 	 * 
@@ -98,56 +123,218 @@ class Hubzero_API_Request
 	 * 
 	 * @return     void
 	 */
-	function __construct()
+	function __construct($options = array())
 	{
-		$this->path = $_SERVER['SCRIPT_URL'];
-
-		if (isset($_GET['format']))
+		if (($options == '_SERVER') || (in_array('_SERVER', $options)))
 		{
-			$this->accepts = $this->_parse_accept($_GET['format']);
-		}
-		else if (isset($_POST['format']))
-		{
-			$this->accepts = $this->_parse_accept($_POST['format']);
-		}
-		else if (isset($_SERVER['HTTP_ACCEPT']))
-		{
-			$this->accepts = $_SERVER['HTTP_ACCEPT'];
-		}
-
-		if (empty($this->accepts))
-		{
-			$format = strrchr($_SERVER['REQUEST_URI'],'.');
-
-			if (strchr($format,'/') === false)
+			$this->set('request','_SERVER');
+	
+			if (isset($_GET['format']))
 			{
-				$this->accepts = $this->_parse_accept(substr($format,1));
+				$this->accepts = $this->_parse_accept($_GET['format']);
+			}
+			else if (isset($_POST['format']))
+			{
+				$this->accepts = $this->_parse_accept($_POST['format']);
+			}
+			else if (isset($_SERVER['HTTP_ACCEPT']))
+			{
+				$this->accepts = $_SERVER['HTTP_ACCEPT'];
+			}
+	
+			if (empty($this->accepts))
+			{
+				$format = strrchr($_SERVER['REQUEST_URI'],'.');
+	
+				if (strchr($format,'/') === false)
+				{
+					$this->accepts = $this->_parse_accept(substr($format,1));
+				}
+			}
+	
+			if (isset($_GET['suppress_response_codes']))
+			{
+				$this->suppress_response_codes = true;
+			}
+	
+			if (isset($_POST['suppress_response_codes']))
+			{
+				$this->suppress_response_codes = true;
+			}
+	
+			if (isset($_SERVER['HTTP_X_HTTP_SUPPRESS_RESPONSE_CODES']))
+			{
+				$this->suppress_response_codes = true;
+			}
+	
+			if (isset($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']))
+			{
+				$this->method = strtoupper($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']);
+			}
+			else
+			{
+				if (isset($_SERVER['REQUEST_METHOD']))
+				{
+					$this->method = $_SERVER['REQUEST_METHOD'];
+				}
+				else
+				{
+					$this->method = '';
+				}
 			}
 		}
-
-		if (isset($_GET['suppress_response_codes']))
+	}
+	
+	function import($what = array('all'), $where = '_SYSTEM')
+	{
+		if ($where != '_SYSTEM') 
 		{
-			$this->suppress_response_codes = true;
+			return false;
+		}
+		
+		$what = (array) $what;
+		
+		if (in_array('all',$what)) {
+			$what = array_merge($what, array('method','request','version','headers','body'));
+		}
+		
+		foreach ($what as $item) {
+			switch($item)
+			{
+				case 'method':
+					$this->set('method', $_SERVER['REQUEST_METHOD']);
+					break;
+				case 'request':
+					$this->set('request', $_SERVER['REQUEST_URI']);
+					break;
+				case 'version':
+					$this->set('version', $_SERVER['SERVER_PROTOCOL']);
+					break;
+				case 'headers':
+					$this->set('header', null);
+					
+					foreach($_SERVER as $key=>$value)
+					{
+						if (strncmp($key, 'HTTP_', 5) == 0)
+						{
+							$header = explode('_', strtolower($key));
+							array_shift($header);
+							$header = array_map('ucfirst', $header);
+							$header = implode('-', $header);
+							$this->headers[$header] = $value;
+						}
+					}
+					break;
+				case 'body':
+					$this->set('body','php://input');
+					break;
+			}
+		}
+		
+	}
+	
+	function export($what = 'all', $where = '_SYSTEM')
+	{
+		if ($where != '_SYSTEM')
+		{
+			return false;
+		}
+		
+		$what = (array) $what;
+		
+		if (in_array('all',$what)) 
+		{
+			$what = array_merge($what, array('uri','get','method','version','headers'));
 		}
 
-		if (isset($_POST['suppress_response_codes']))
-		{
-			$this->suppress_response_codes = true;
-		}
+		
+		// uri.... fill _SERVER: SCRIPT_*, QUERY_STRING
+		// method... fill _SERVER: REQUEST_METHOD
+		// headers... fill _SERVER HTTP_*
+		// get... fill _GET
+		// post.... fill _POST
+		// cookies.. fill _COOKIE
+		// recompute _REQUEST if _GET or _POST changed
+		
+		foreach ($what as $item) {
+			switch($item)
+			{
+				case 'version':
+					$_SERVER['SERVER_PROTOCOL'] = $this->version;
+					break;
+					
+				case 'uri':
+					$_SERVER['REQUEST_URI'] = '/' . $this->path;
+					$_SERVER['SCRIPT_NAME'] = '/' . $this->path;
+					$_SERVER['PHP_SELF'] = '/' . $this->path;
+					$_SERVER['SCRIPT_URL'] 	= '/' . $this->path;
 
-		if (isset($_SERVER['HTTP_X_HTTP_SUPPRESS_RESPONSE_CODES']))
-		{
-			$this->suppress_response_codes = true;
+					$request = '';
+					
+					if ($this->scheme)
+					{
+						$request .= $this->scheme . "://";
+					}
+					
+					if ($this->username && $this->password)
+					{
+						$request .= $this->username . ":" . $this->password . '@';
+					}
+					
+					$request .= $this->hostname;
+					
+					if ($this->port)
+					{
+						$request .= ":" . $this->port . "/";
+					}
+					
+					$request .= $this->path;
+						
+					$_SERVER['SCRIPT_URI'] 	= $request;
+						
+					if (!empty($this->query))
+					{
+						$_SERVER['REQUEST_URI'] .= '?'.$this->get('query');
+					}
+					
+					if ($this->get('scheme') == 'https')
+					{
+						$_SERVER['HTTPS'] = 'on';
+					}
+					else
+					{
+						unset($_SERVER['HTTPS']);
+					}
+					
+					$_SERVER['QUERY_STRING'] = $this->get('query');
+					
+					break;
+				case 'method':
+					$_SERVER['REQUEST_METHOD'] = $this->get('method');
+					break;
+				case 'get':
+					{
+						// can add variables to scope, so keep these braces to block out scope
+						parse_str($this->get('query'), $_GET);
+						parse_str($this->get('query'), $_REQUEST); // @FIXME: quick hack, will break when _POST support added
+					}
+					break;
+				case 'headers':
+					foreach($this->headers as $key=>$value)
+					{
+						$key = str_replace('-','_',$key);
+						$key = "HTTP_" . strtoupper($key);
+						$_SERVER[$key] = $value;
+					}
+					if (!isset($_SERVER['HTTP_HOST']))
+					{
+						$_SERVER['HTTP_HOST'] = $this->get('hostname');
+					}
+					break;
+			}
 		}
-
-		if (isset($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']))
-		{
-			$this->method = strtoupper($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']);
-		}
-		else
-		{
-			$this->method = $_SERVER['REQUEST_METHOD'];
-		}
+		
+		$GLOBALS['_JREQUEST'] = array();
 	}
 
 	/**
@@ -203,5 +390,297 @@ class Hubzero_API_Request
 
 		return '';
 	}
+	
+	public function get($key, $default = '')
+	{
+		switch($key)
+		{
+			case 'version':
+				return isset($this->version) ? $this->version : $default;
+			case 'method':
+				return isset($this->method) ? $this->method : $default;
+			case 'scheme':
+				return isset($this->scheme) ? $this->scheme: $default;				
+			case 'username':
+				return isset($this->username) ? $this->username: $default;				
+			case 'password':
+				return isset($this->password) ? $this->password: $default;				
+			case 'hostname':
+				return isset($this->hostname) ? $this->hostname: $default;				
+			case 'port':
+				return isset($this->port) ? $this->port: $default;				
+			case 'path':
+				return isset($this->path) ? $this->path: $default;				
+			case 'query':
+				return isset($this->query) ? $this->query: $default;				
+			case 'fragment':
+				return isset($this->fragment) ? $this->fragment: $default;
+			case 'request': // @FIXME: this work should probably be cached
 
+				$request = '';
+				
+				if ($this->scheme)
+				{
+					$request .= $this->scheme . "://";
+				}
+				
+				if ($this->username && $this->password)
+				{
+					$request .= $this->username . ":" . $this->password . '@'; 
+				}
+				
+				$request .= $this->hostname;
+				
+				if ($this->port)
+				{
+					$request .= ":" . $this->port . "/";
+				}
+				
+				$request .= $this->path;
+				
+				if ($this->query)
+				{
+					$request .= "?" . $this->query;
+				}
+				
+				if ($this->fragment)
+				{
+					$request .= "#" . $this->fragment;
+				}
+				
+				return !empty($request) ? $request : $default;
+				
+			case 'queryvars': // @FIXME: this work should be cached
+			{
+				// can add variables to scope, so keep these braces to block out scope
+				parse_str($this->get('query'), $queryvars);
+				
+				return $queryvars;
+			}
+			case 'sbs':
+				if (empty($this->method))
+				{
+					return false;
+				}
+				
+				$sbs = oauth_get_sbs($this->method, $this->get('request'));
+				
+				return $sbs;	
+
+			default:			
+				break;
+				
+		}
+	}
+	
+	public function setHeader($key, $value)
+	{
+		if (empty($value))
+		{
+			unset($this->headers[$key]);
+		}
+		else
+		{
+			$this->headers[$key] = $value;
+		}
+	}
+	
+	public function getHeader($key, $default = '')
+	{
+		if (isset($this->headers[$key]))
+		{
+			return $this->headers[$key];
+		}
+		
+		return $default;
+	}
+	
+	public function add($property, $key, $value)
+	{
+		switch($property)
+		{
+			case 'query':
+
+				if (!empty($this->query))
+				{
+					$this->query .= '&';
+				}
+		
+				$this->query .= $key . '=' . $value;
+				
+				break;
+		}
+	}
+	
+	public function set($key, $value = null)
+	{
+		switch($key)
+		{
+			case 'method':
+				$this->method = $value;
+				break;
+			case 'scheme':
+				$this->scheme = $value;
+				break;
+			case 'username':
+				$this->username = $value;
+				break;
+			case 'password':
+				$this->password = $value;
+				break;
+			case 'hostname':
+				$this->hostname = $value;
+				break;
+			case 'port':
+				$this->port = $value;
+				break;
+			case 'path':
+				$this->path = $value;
+				break;
+			case 'query':
+				if (is_array($value))
+				{
+					$this->query = '';
+					
+					foreach($value as $key=>$value)
+					{
+						if (!empty($this->query))
+						{
+							$this->query .= '&';
+						}
+						  
+						$this->query .= $key . '=' . $value;
+					}
+				}
+				else
+				{
+					$this->query = $value;
+				}
+				break;
+			case 'fragment':
+				$this->fragment = $value;
+				break;
+			case 'version':
+				$this->version = $value;
+				break;
+			case 'headers':
+				$this->headers = $value;
+				break;
+			case 'body';
+				$this->body = $value;
+				break;
+			case 'request':
+			{
+				if (is_string($value))
+				{
+					if ($value == '_SERVER')
+					{
+						$u = $_SERVER['SCRIPT_URI'];	
+					}
+					else
+					{
+						$u = parse_url($value);
+					}
+
+					$this->scheme = (isset($u['scheme'])) ? $u['scheme'] : '';
+					$this->username = (isset($u['username'])) ? $u['username'] : '';
+					$this->password = (isset($u['password'])) ? $u['password'] : '';
+					$this->hostname = (isset($u['hostname'])) ? $u['hostname'] : '';
+					$this->port = (isset($u['port'])) ? $u['port'] : '';
+					$this->path = (isset($u['path'])) ? $u['path'] : '';
+					$this->query = (isset($u['query'])) ? $u['query'] : '';
+					$this->fragment = (isset($u['fragment'])) ? $u['fragment'] : '';
+				}
+				else
+				{
+					$this->scheme = '';
+					$this->username = '';
+					$this->password = '';
+					$this->hostname = '';
+					$this->port = '';
+					$this->path = '';
+					$this->query = '';
+					$this->fragment = '';
+				}
+			}
+		}
+	}
+	
+	public function sign($type = 'oauth', $key = '', $secret1 = '', $secret2 = '')
+	{
+		switch($type)
+		{
+			case 'oauth':
+				
+				$queryvars = $this->get('queryvars');
+				
+				if (!isset($queryvars['oauth_nonce']))
+				{
+					$queryvars['oauth_nonce'] = uniqid();
+				}
+				
+				if (!isset($queryvars['oauth_timestamp']))
+				{
+					$queryvars['oauth_timestamp'] = time();
+				}
+				
+				if (!isset($queryvars['oauth_token']))
+				{
+					$queryvars['oauth_token'] = '';
+				}
+
+				if (!isset($queryvars['oauth_consumer_key']))
+				{
+					$queryvars['oauth_consumer_key'] = oauth_urlencode($key);
+				}
+				
+				if (!isset($queryvars['oauth_signature_method']))
+				{
+					$queryvars['oauth_signature_method'] = 'HMAC-SHA1';
+				}
+				
+				if (!isset($queryvars['oauth_version']))
+				{
+					$queryvars['oauth_version'] = '1.0';
+				}
+				
+				if (isset($queryvars['oauth_signature']))
+				{
+					return false;
+				}
+				
+				if ($queryvars['oauth_version'] != '1.0')
+				{
+					return false;
+				}
+				
+				if ($queryvars['oauth_signature_method'] != 'HMAC-SHA1')
+				{
+					return fasle;
+				}
+				
+				$this->add('query', 'oauth_nonce', $queryvars['oauth_nonce']);
+				$this->add('query', 'oauth_timestamp', $queryvars['oauth_timestamp'] );
+				$this->add('query', 'oauth_token', $queryvars['oauth_token']);
+				$this->add('query', 'oauth_consumer_key', $queryvars['oauth_consumer_key']);
+				$this->add('query', 'oauth_signature_method', $queryvars['oauth_signature_method']);
+				$this->add('query', 'oauth_version', $queryvars['oauth_version'] );
+				
+				$sbs = $this->get('sbs');
+
+				$secret = (!empty($secret1)) ? oauth_urlencode($secret1) : '';
+				$token_secret = (!empty($secret2)) ? oauth_urlencode($secret2) : '';
+				$secret = $secret . '&' . $token_secret;
+				
+				$signature = base64_encode( hash_hmac('sha1', $sbs, $secret, true) );
+		
+				$this->add('query', 'oauth_signature', oauth_urlencode($signature));
+				
+				break;
+				
+			default:
+				return false;
+		}
+	}
+	
 }	
