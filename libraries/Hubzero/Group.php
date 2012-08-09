@@ -37,7 +37,8 @@ ximport('Hubzero_Validate');
 
 /**
  * Short description for 'Hubzero_Group'
- * Long description (if any) .../
+ * Long description (if any) ...
+ */
 class Hubzero_Group
 {
 	
