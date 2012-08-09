@@ -126,6 +126,7 @@ p.callToAction {
 }
 #authentication #credentials-hub-inner div.labelInputPair {
 	position: relative;
+	overflow: hidden;
 }
 #authentication #credentials-hub-inner a.forgots {
 	position: absolute;
