@@ -31,78 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$app      = JFactory::getApplication();
-$document = JFactory::getDocument();
-
-// Make sure we're using a secure connection
-if (!isset( $_SERVER['HTTPS'] ) || $_SERVER['HTTPS'] == 'off')
-{
-	$app->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-	die('insecure connection and redirection failed');
-}
-
-// Get and add the js and extra css to the page
-$assets      = DS."components".DS."com_user".DS."assets".DS;
-$media       = DS."media".DS."system";
-$js          = $assets.DS."js".DS."login.jquery.js";
-$css         = $assets.DS."css".DS."login.css";
-$uniform_js  = $media.DS."js".DS."jquery.uniform.js";
-$uniform_css = $media.DS."css".DS."uniform.css";
-if(file_exists(JPATH_BASE . $js))
-{
-	$document->addScript($js);
-}
-if(file_exists(JPATH_BASE . $css))
-{
-	$document->addStyleSheet($css);
-}
-if(file_exists(JPATH_BASE . $uniform_js))
-{
-	$document->addScript($uniform_js);
-}
-if(file_exists(JPATH_BASE . $uniform_css))
-{
-	$document->addStyleSheet($uniform_css);
-}
-
-// If we have a return set with an authenticator in it, we're linking an existing account
-// Parse the return to retrive the authenticator, and remove it from the list below
-$auth = '';
-if($areturn = JRequest::getVar('return', null))
-{
-	$areturn = base64_decode($areturn);
-	$query   = parse_url($areturn);
-	$query   = $query['query'];
-	$query   = explode('&', $query);
-	$auth    = '';
-	foreach($query as $q)
-	{
-		$n = explode('=', $q);
-		if($n[0] == 'authenticator')
-		{
-			$auth = $n[1];
-		}
-	}
-}
-
-// Figure out whether or not any of our third party auth plugins are turned on 
-// Don't include the 'hubzero' plugin, or the $auth plugin as described above
-$multiAuth      = false;
-$plugins        = JPluginHelper::getPlugin('authentication');
-$authenticators = array();
-
-foreach($plugins as $p)
-{
-	if($p->name != 'hubzero' && $p->name != $auth)
-	{
-		$authenticators[] = $p->name;
-		$multiAuth = true;
-	}
-}
-
-// Set the return if we have it...
-$r = ($return) ? "&return={$return}" : '';
-
 // Check for error messages (regular message queue)
 if (!empty($error_message))
 {
@@ -138,12 +66,12 @@ if (!empty($error_message))
 					<div class="labelInputPair">
 						<label for="username"><?php echo JText::_('Username'); ?>:</label>
 						<a class="forgots" href="<?php echo JRoute::_('index.php?option=com_user&view=remind'); ?>"><?php echo JText::_('Lost username?');?></a>
-						<input tabindex="1" type="text" name="username" id="username" placeholder="username<?php //echo JText::_('username'); ?>" />
+						<input tabindex="1" type="text" name="username" id="username" placeholder="username" />
 					</div>
 					<div class="labelInputPair">
 						<label for="password"><?php echo JText::_('Password'); ?>:</label>
 						<a class="forgots" href="<?php echo JRoute::_('index.php?option=com_user&view=reset'); ?>"><?php echo JText::_('Forgot password?'); ?></a>
-						<input tabindex="2" type="password" name="passwd" id="password" placeholder="password<?php //echo JText::_('password'); ?>" />
+						<input tabindex="2" type="password" name="passwd" id="password" placeholder="password" />
 					</div>
 					<div class="submission">
 					<?php if(JPluginHelper::isEnabled('system', 'remember')) : ?>
@@ -156,7 +84,7 @@ if (!empty($error_message))
 					<input type="hidden" name="option" value="com_user" />
 					<input type="hidden" name="task" value="login" />
 					<input type="hidden" name="return" value="<?php echo $return; ?>" />
-					<input type="hidden" name="freturn" value="<?php echo  base64_encode(  $_SERVER['REQUEST_URI'] ); ?>" />
+					<input type="hidden" name="freturn" value="<?php echo $freturn; ?>" />
 					<?php echo JHTML::_('form.token'); ?>
 				</form>
 			</div>
