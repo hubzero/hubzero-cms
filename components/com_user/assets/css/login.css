@@ -7,9 +7,9 @@
 
 /* Container styles */
 #content {
-	background: #F4F4F4 url("images/background_noise.png");
+	background: #F4F4F4 url("/components/com_user/assets/img/background_noise.png");
 }
-#content-header h2 {
+div.componentheading {
 	display: none;
 }
 #content-wrap h3 {
@@ -42,7 +42,7 @@
 	z-index: 500;
 }
 #authentication.multiAuth #inner {
-	background: url('images/line.png') 50% 50% repeat-y;
+	background: url('/components/com_user/assets/img/line.png') 50% 50% repeat-y;
 	overflow: hidden;
 }
 #authentication .error {
@@ -83,21 +83,21 @@ p.callToAction {
 	height: 50px;
 	width: 250px;
 }
-#authentication #providers li#facebook a { background: url('images/facebook_login_button.png') 0 0 no-repeat; }
-#authentication #providers li#facebook:hover a { background: url('images/facebook_login_button.png') 0 -50px no-repeat; }
-#authentication #providers li#facebook:active a { background: url('images/facebook_login_button.png') 0 -100px no-repeat; }
+#authentication #providers li#facebook a { background: url('/components/com_user/assets/img/facebook_login_button.png') 0 0 no-repeat; }
+#authentication #providers li#facebook:hover a { background: url('/components/com_user/assets/img/facebook_login_button.png') 0 -50px no-repeat; }
+#authentication #providers li#facebook:active a { background: url('/components/com_user/assets/img/facebook_login_button.png') 0 -100px no-repeat; }
 
-#authentication #providers li#linkedin a { background: url('images/linkedin_login_button.png') 0 0 no-repeat; }
-#authentication #providers li#linkedin:hover a { background: url('images/linkedin_login_button.png') 0 -50px no-repeat; }
-#authentication #providers li#linkedin:active a { background: url('images/linkedin_login_button.png') 0 -100px no-repeat; }
+#authentication #providers li#linkedin a { background: url('/components/com_user/assets/img/linkedin_login_button.png') 0 0 no-repeat; }
+#authentication #providers li#linkedin:hover a { background: url('/components/com_user/assets/img/linkedin_login_button.png') 0 -50px no-repeat; }
+#authentication #providers li#linkedin:active a { background: url('/components/com_user/assets/img/linkedin_login_button.png') 0 -100px no-repeat; }
 
-#authentication #providers li#google a { background: url('images/google_login_button.png') 0 0 no-repeat; }
-#authentication #providers li#google:hover a { background: url('images/google_login_button.png') 0 -50px no-repeat; }
-#authentication #providers li#google:active a { background: url('images/google_login_button.png') 0 -100px no-repeat; }
+#authentication #providers li#google a { background: url('/components/com_user/assets/img/google_login_button.png') 0 0 no-repeat; }
+#authentication #providers li#google:hover a { background: url('/components/com_user/assets/img/google_login_button.png') 0 -50px no-repeat; }
+#authentication #providers li#google:active a { background: url('/components/com_user/assets/img/google_login_button.png') 0 -100px no-repeat; }
 
-#authentication #providers li#pucas a { background: url('images/pucas_login_button.png') 0 0 no-repeat; }
-#authentication #providers li#pucas:hover a { background: url('images/pucas_login_button.png') 0 -50px no-repeat; }
-#authentication #providers li#pucas:active a { background: url('images/pucas_login_button.png') 0 -100px no-repeat; }
+#authentication #providers li#pucas a { background: url('/components/com_user/assets/img/pucas_login_button.png') 0 0 no-repeat; }
+#authentication #providers li#pucas:hover a { background: url('/components/com_user/assets/img/pucas_login_button.png') 0 -50px no-repeat; }
+#authentication #providers li#pucas:active a { background: url('/components/com_user/assets/img/pucas_login_button.png') 0 -100px no-repeat; }
 
 /* Hub credentials section */
 #authentication #credentials-hub-inner .labelInputPair label {
@@ -170,10 +170,10 @@ p.callToAction {
 	background-color: #FFF;
 }
 #authentication #credentials-hub input[type="text"] {
-	background-image: url('images/user.png');
+	background-image: url('/components/com_user/assets/img/user.png');
 }
 #authentication #credentials-hub input[type="password"] {
-	background-image: url('images/padlock.png');
+	background-image: url('/components/com_user/assets/img/padlock.png');
 }
 #authentication #credentials-hub input[type="submit"] {
 	width: 100%;

@@ -1,4 +1,7 @@
 <?php defined('_JEXEC') or die('Restricted access'); ?>
+
+<?php $mainframe->redirect( base64_decode($this->return) ); ?>
+
 <?php /** @todo Should this be routed */ ?>
 <form action="<?php echo JRoute::_( 'index.php' ); ?>" method="post" name="login" id="login">
 <?php if ( $this->params->get( 'show_logout_title' ) ) : ?>

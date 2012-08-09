@@ -30,7 +30,7 @@
  * 		@subpackage Login
  * 		@copyright  Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
  * 		@license    GNU/GPL, see LICENSE.php
-
+ *
  * @package   hubzero-cms-joomla
  * @file      components/com_user/views/logout/tmpl/default.php
  * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
@@ -39,6 +39,7 @@
  */
 ?>
 <?php defined('_JEXEC') or die('Restricted access'); ?>
+<?php $mainframe->redirect( JRoute::_( 'index.php?option=com_user&task=logout&return=' . $this->return, false )); ?>
 <?php if ($this->params->get( 'show_page_title', 1)) : ?>
 <div class="componentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
 	<?php echo $this->escape($this->params->get('page_title')); ?>

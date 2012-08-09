@@ -32,9 +32,41 @@ class UserViewLogin extends JView
 
 		// Initialize variables
 		$document	=& JFactory::getDocument();
+		$app        = JFactory::getApplication();
 		$user		=& JFactory::getUser();
 		$pathway	=& $mainframe->getPathway();
 		$image		= '';
+
+		// Make sure we're using a secure connection
+		if (!isset( $_SERVER['HTTPS'] ) || $_SERVER['HTTPS'] == 'off')
+		{
+			$app->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+			die('insecure connection and redirection failed');
+		}
+
+		// Get and add the js and extra css to the page
+		$assets      = DS."components".DS."com_user".DS."assets".DS;
+		$media       = DS."media".DS."system";
+		$js          = $assets.DS."js".DS."login.jquery.js";
+		$css         = $assets.DS."css".DS."login.css";
+		$uniform_js  = $media.DS."js".DS."jquery.uniform.js";
+		$uniform_css = $media.DS."css".DS."uniform.css";
+		if(file_exists(JPATH_BASE . $js))
+		{
+			$document->addScript($js);
+		}
+		if(file_exists(JPATH_BASE . $css))
+		{
+			$document->addStyleSheet($css);
+		}
+		if(file_exists(JPATH_BASE . $uniform_js))
+		{
+			$document->addScript($uniform_js);
+		}
+		if(file_exists(JPATH_BASE . $uniform_css))
+		{
+			$document->addStyleSheet($uniform_css);
+		}
 
 		$menu   =& JSite::getMenu();
 		$item   = $menu->getActive();
@@ -104,13 +136,59 @@ class UserViewLogin extends JView
 
 		$this->assignRef('params', $params);
 
+		// HUBzero: If we have a return set with an authenticator in it, we're linking an existing account
+		// Parse the return to retrive the authenticator, and remove it from the list below
+		$auth = '';
+		if($return = JRequest::getVar('return', null))
+		{
+			$return = base64_decode($return);
+			$query  = parse_url($return);
+			$query  = $query['query'];
+			$query  = explode('&', $query);
+			$auth   = '';
+			foreach($query as $q)
+			{
+				$n = explode('=', $q);
+				if($n[0] == 'authenticator')
+				{
+					$auth = $n[1];
+				}
+			}
+		}
+
+		// Figure out whether or not any of our third party auth plugins are turned on 
+		// Don't include the 'hubzero' plugin, or the $auth plugin as described above
+		$multiAuth      = false;
+		$plugins        = JPluginHelper::getPlugin('authentication');
+		$authenticators = array();
+
+		foreach($plugins as $p)
+		{
+			if($p->name != 'hubzero' && $p->name != $auth)
+			{
+				$authenticators[] = $p->name;
+				$multiAuth = true;
+			}
+		}
+
+		// Override $multiAuth if authenticator is set to hubzero
+		if(JRequest::getWord('authenticator') == 'hubzero')
+		{
+			$multiAuth = false;
+		}
+
+		// Set the return if we have it...
+		$returnUrl = (base64_decode($url) != '/members/myaccount') ? "&return={$url}" : '';
+
+		$this->assign('multiAuth', $multiAuth);
+		$this->assign('returnUrl', $returnUrl);
+		$this->assign('authenticators', $authenticators);
+
 		// if authenticator is specified call plugin display method, otherwise (or if method does not exist) use default
 		
 		$authenticator = JRequest::getVar('authenticator', '', 'method');
 
 		JPluginHelper::importPlugin('authentication');
-
-		$plugins = JPluginHelper::getPlugin('authentication');
 
 		foreach ($plugins as $plugin)
 		{	
@@ -143,4 +221,3 @@ class UserViewLogin extends JView
 	
 	function attach() {}
 }
-

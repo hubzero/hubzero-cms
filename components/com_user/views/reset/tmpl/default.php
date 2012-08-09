@@ -1,28 +1,22 @@
 <?php defined('_JEXEC') or die; ?>
 
 <?php if ( $this->params->def( 'show_page_title', 1 ) ) : ?>
-	<div class="componentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
-		<?php echo $this->escape($this->params->get('page_title')); ?>
+	<div id="content-header">
+		<h2><?php echo $this->escape($this->params->get('page_title')); ?></h2>
 	</div>
 <?php endif; ?>
 
-<form action="<?php echo JRoute::_( 'index.php?option=com_user&task=requestreset' ); ?>" method="post" class="josForm form-validate">
-	<table cellpadding="0" cellspacing="0" border="0" width="100%" class="contentpane">
-		<tr>
-			<td colspan="2" height="40">
-				<p><?php echo JText::_('RESET_PASSWORD_REQUEST_DESCRIPTION'); ?></p>
-			</td>
-		</tr>
-		<tr>
-			<td height="40">
-				<label for="username" class="hasTip" title="<?php echo JText::_('RESET_PASSWORD_USERNAME_TIP_TITLE'); ?>::<?php echo JText::_('RESET_PASSWORD_USERNAME_TIP_TEXT'); ?>"><?php echo JText::_('User Name'); ?>:</label>
-			</td>
-			<td>
-				<input id="username" name="username" type="text" class="required" size="36" />
-			</td>
-		</tr>
-	</table>
+	<form action="<?php echo JRoute::_( 'index.php?option=com_user&task=requestreset' ); ?>" method="post" class="josForm form-validate" name="hubForm" id="hubForm">
+		<fieldset>
+			<legend><?php echo JText::_('Email Verification Token'); ?></legend>
 
-	<button type="submit" class="validate"><?php echo JText::_('Submit'); ?></button>
-	<?php echo JHTML::_( 'form.token' ); ?>
-</form>
+			<p><?php echo JText::_('RESET_PASSWORD_REQUEST_DESCRIPTION'); ?></p>
+			<label for="username" class="hasTip" title="<?php echo JText::_('RESET_PASSWORD_USERNAME_TIP_TITLE'); ?>::<?php echo JText::_('RESET_PASSWORD_USERNAME_TIP_TEXT'); ?>"><?php echo JText::_('User Name'); ?>:</label>
+			<input id="username" name="username" type="text" class="required" size="36" />
+	
+		</fieldset>
+		<div class="clear"></div>
+			
+		<p class="submit"><button type="submit" class="validate"><?php echo JText::_('Submit'); ?></button></p>
+		<?php echo JHTML::_( 'form.token' ); ?>
+	</form>
