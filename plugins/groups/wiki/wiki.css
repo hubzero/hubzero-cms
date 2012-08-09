@@ -75,7 +75,7 @@
 		color: #777;
 		font-size: 11px;
 		text-align: right;
-		background: url("../../../components/com_wiki/images/comment-arrow.gif") right -201px no-repeat;
+		background: url("/components/com_wiki/assets/img/comment-arrow.gif") right -201px no-repeat;
 	}
 	#commentform .sidenote {
 		border: 1px solid #edf0e8;
@@ -204,11 +204,11 @@
 	}
 	/* Options */
 	.abuse {
-		background: url("../../../components/com_wiki/images/abuse.gif") 0 0 no-repeat;
+		background: url("/components/com_wiki/assets/img/abuse.gif") 0 0 no-repeat;
 		padding-left: 15px;
 	}
 	.reply {
-		background: url("../../../components/com_wiki/images/reply.gif") 0 0 no-repeat;
+		background: url("/components/com_wiki/assets/img/reply.gif") 0 0 no-repeat;
 		padding-left: 15px;
 	}
 	.abuse:hover,
@@ -243,7 +243,7 @@
 		color: #777;
 		font-size: 11px;
 		text-align: right;
-		background: url("../../../components/com_wiki/images/comment-arrow.gif") right 15px no-repeat;
+		background: url("/components/com_wiki/assets/img/comment-arrow.gif") right 15px no-repeat;
 	}
 	/* Content */
 	ol.comments .comment-content {
@@ -267,7 +267,7 @@
 	}
 	ol.comments .author p.comment-member-photo,
 	ol.comments .author ol.comments .author p.comment-member-photo {
-		background: url("../../../components/com_wiki/images/comment-arrow.gif") right -129px no-repeat;
+		background: url("/components/com_wiki/assets/img/comment-arrow.gif") right -129px no-repeat;
 	}
 	ol.comments .author ol.comments .comment-content,
 	ol.comments .author ol.comments .author ol.comments .comment-content {
@@ -276,7 +276,7 @@
 	}
 	ol.comments .author ol.comments p.comment-member-photo,
 	ol.comments .author ol.comments .author ol.comments p.comment-member-photo {
-		background: url("../../../components/com_wiki/images/comment-arrow.gif") right 15px no-repeat;
+		background: url("/components/com_wiki/assets/img/comment-arrow.gif") right 15px no-repeat;
 	}
 	/* Chosen comments */
 	ol.comments .chosen .comment-content {
@@ -284,7 +284,7 @@
 		border-color: #eeecf9;
 	}
 	ol.comments .chosen p.comment-member-photo {
-		background: url("../../../components/com_wiki/images/comment-arrow.gif") right -57px no-repeat;
+		background: url("/components/com_wiki/assets/img/comment-arrow.gif") right -57px no-repeat;
 	}
 	/* Details (date, time) */
 	ol.comments span.comment-details {
@@ -421,7 +421,7 @@
 		display: none;
 	}
 	.article-tags {
-		background: #F4F4F4 url("/components/com_wiki/images/tag_orange.png") 0.5em 0.5em no-repeat;
+		background: #F4F4F4 url("/components/com_wiki/assets/img/tag_orange.png") 0.5em 0.5em no-repeat;
 		margin: 0 0 1em 0;
 		padding: 0.5em 0.5em 0.4em 2em;
 	}
@@ -452,11 +452,11 @@
 		float: right;
 	}
 	a.ext-link {
-		background: url("../../../../components/com_groups/assets/img/extlink.gif") 0 0.4em no-repeat;
+		background: url("/components/com_groups/assets/img/extlink.gif") 0 0.4em no-repeat;
 		padding-left: 15px;
 	}
 	a.missing {
-		background: url("../../../../components/com_groups/assets/img/missinglink.gif") 0 0.4em no-repeat;
+		background: url("/components/com_groups/assets/img/missinglink.gif") 0 0.4em no-repeat;
 		padding-left: 7px;
 	}
 /* Diffs */
@@ -554,4 +554,150 @@
 	#attachments .delete {
 		padding-left: 0;
 		background: transparent;
+	}
+/* Admonitions */
+	div.admon-caution, 
+	div.admon-important, 
+	div.admon-note, 
+	div.admon-tip, 
+	div.admon-warning {
+		border: 1pt solid #E5E5E5;
+		background-color: #F9F9FF;
+		color: black;
+		margin: 10pt 30pt 10pt 30pt;
+		background-repeat: no-repeat;
+		background-position: 8px 8px;
+		min-height: 64px; /*64=48+8+8 but doesn't work with IE*/
+		padding-left: 64px;
+	}
+	div.admon-caution p, 
+	div.admon-important p, 
+	div.admon-note p, 
+	div.admon-tip p, 
+	div.admon-warning p {
+		margin-top: 8px; /*to align text with bg graphic*/
+	}
+	div.admon-tip { 
+		background-image: url("/components/com_wiki/assets/img/admon-tip.png"); 
+	}
+	div.admon-note { 
+		background-image: url("/components/com_wiki/assets/img/admon-note.png"); 
+	}
+	div.admon-important { 
+		background-image: url("/components/com_wiki/assets/img/admon-important.png"); 
+	}
+	div.admon-caution { 
+		background-image: url("/components/com_wiki/assets/img/admon-caution.png"); 
+	}
+	div.admon-warning { 
+		background-image: url("/components/com_wiki/assets/img/admon-warning.png"); 
+	}
+
+	.com_wiki .wiki .modified-date {
+		color: #aaa;
+		font-size: 90%;
+	}
+/* Wiki pages */
+	.wikipage {
+		margin: 0;
+		padding: 1em 0 0 18px;
+	}
+	.wikipage h1,
+	.wikipage h1,
+	.wikipage h2,
+	.wikipage h3,
+	.wikipage h4,
+	.wikipage h5,
+	.wikipage h6 {
+		color: #333;
+		text-shadow: none;
+		font-weight: bold;
+		padding: 0;
+		margin: 0.618em 0;
+		border: none;
+		line-height: 1.2;
+	}
+	.wikipage h1 {
+		font-size: 1.8em;
+	}
+	.wikipage h2 span {
+		color: #333;
+	}
+	.wikipage h1, 
+	.wikipage h2, 
+	.wikipage h3 {
+		margin-left: -18px;
+	}
+	.wikipage ul,
+	.wikipage ol {
+		padding: 0;
+		margin: 0 0 1em 0;
+	}
+	.wikipage ul {
+		list-style-type: disc;
+	}
+	.wikipage ol {
+		list-style-type: decimal;
+	}
+	.wikipage li {
+		padding: 0;
+		margin: 0em 0 0em 2em;
+	}
+	.wikipage ul li {
+	}
+	.wikipage dd {
+		color: #888;
+	}
+	.wikipage table {
+		border: 2px solid #ccc;
+		width: auto;
+	}
+	.wikipage table td, 
+	.wikipage table th {
+		border: 1px solid #ccc;
+		margin: 0;
+		padding: 0.2em 0.4em;
+	}
+	.wikipage blockquote {
+		margin: 2em 0 2.5em 0;
+		padding: 5px 0 5px 10px;
+	}
+	.wikipage pre {
+		font-family: "Bitstream Vera Sans Mono", Courier, Monaco, ProFont, "American Typewriter", "Andale Mono", monospace;
+		color: #555;
+		background: #f7f7f7;
+		border: 1px solid #d7d7d7;
+		margin: 1em 1.75em;
+		padding: .25em;
+		overflow: auto;
+		font-size: 0.85em;
+		line-height: 1.95em;
+		white-space: pre;
+		white-space: pre-wrap;
+		word-wrap: break-word;
+		white-space: -moz-pre-wrap;
+		white-space: -pre-wrap;
+		white-space: -o-pre-wrap;
+		
+	}
+/* Figures */
+	.wikipage .figure img {
+		margin: 0.5em;
+		padding: 0;
+		background: transparent;
+		text-align: center;
+	}
+	.wikipage .figure {
+		display: inline-block;
+		background: #fff;
+		border: 1px solid #eaeaea;
+	}
+	.wikipage .figure a {
+		border: none;
+	}
+	.wikipage .figcaption {
+		display: block;
+		margin: 0;
+		padding: 0.5em;
+		background: #efefef;
 	}
