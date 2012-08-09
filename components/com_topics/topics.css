@@ -12,7 +12,16 @@
 	-- -- -- -- -- -- --
 
 */
-
+/* Introduction page */
+	#introduction:after {
+		content: "\f072";
+	}
+/* [!] HACKS - IE 7 and older */
+	#introduction {
+		*background-image: url("/components/com_wiki/assets/img/topics-large.gif");
+		*background-position: 30px 25px;
+		*background-repeat: no-repeat;
+	}
 /* Sections */
 	.com_topics .main {
 		border-top: 1px solid #fff;
