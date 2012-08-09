@@ -1,78 +1,172 @@
-<?php // no direct access
-defined('_JEXEC') or die('Restricted access'); ?>
-<?php if($type == 'logout') : ?>
-<form action="index.php" method="post" name="login" id="form-login">
-<?php if ($params->get('greeting')) : ?>
-	<div>
-	<?php if ($params->get('name')) : {
-		echo JText::sprintf( 'HINAME', $user->get('name') );
-	} else : {
-		echo JText::sprintf( 'HINAME', $user->get('username') );
-	} endif; ?>
-	</div>
-<?php endif; ?>
-	<div align="center">
-		<input type="submit" name="Submit" class="button" value="<?php echo JText::_( 'BUTTON_LOGOUT'); ?>" />
-	</div>
+<?php
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2011 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Sam Wilson <samwilson@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
 
-	<input type="hidden" name="option" value="com_user" />
-	<input type="hidden" name="task" value="logout" />
-	<input type="hidden" name="return" value="<?php echo $return; ?>" />
-</form>
-<?php else : ?>
-<?php if(JPluginHelper::isEnabled('authentication', 'openid')) :
-		$lang->load( 'plg_authentication_openid', JPATH_ADMINISTRATOR );
-		$langScript = 	'var JLanguage = {};'.
-						' JLanguage.WHAT_IS_OPENID = \''.JText::_( 'WHAT_IS_OPENID' ).'\';'.
-						' JLanguage.LOGIN_WITH_OPENID = \''.JText::_( 'LOGIN_WITH_OPENID' ).'\';'.
-						' JLanguage.NORMAL_LOGIN = \''.JText::_( 'NORMAL_LOGIN' ).'\';'.
-						' var modlogin = 1;';
-		$document = &JFactory::getDocument();
-		$document->addScriptDeclaration( $langScript );
-		JHTML::_('script', 'openid.js');
-endif; ?>
-<form action="<?php echo JRoute::_( 'index.php', true, $params->get('usesecure')); ?>" method="post" name="login" id="form-login" >
-	<?php echo $params->get('pretext'); ?>
-	<fieldset class="input">
-	<p id="form-login-username">
-		<label for="modlgn_username"><?php echo JText::_('Username') ?></label><br />
-		<input id="modlgn_username" type="text" name="username" class="inputbox" alt="username" size="18" />
-	</p>
-	<p id="form-login-password">
-		<label for="modlgn_passwd"><?php echo JText::_('Password') ?></label><br />
-		<input id="modlgn_passwd" type="password" name="passwd" class="inputbox" size="18" alt="password" />
-	</p>
-	<?php if(JPluginHelper::isEnabled('system', 'remember')) : ?>
-	<p id="form-login-remember">
-		<label for="modlgn_remember"><?php echo JText::_('Remember me') ?></label>
-		<input id="modlgn_remember" type="checkbox" name="remember" class="inputbox" value="yes" alt="Remember Me" />
-	</p>
-	<?php endif; ?>
-	<input type="submit" name="Submit" class="button" value="<?php echo JText::_('LOGIN') ?>" />
-	</fieldset>
-	<ul>
-		<li>
-			<a href="<?php echo JRoute::_( 'index.php?option=com_user&view=reset' ); ?>">
-			<?php echo JText::_('FORGOT_YOUR_PASSWORD'); ?></a>
-		</li>
-		<li>
-			<a href="<?php echo JRoute::_( 'index.php?option=com_user&view=remind' ); ?>">
-			<?php echo JText::_('FORGOT_YOUR_USERNAME'); ?></a>
-		</li>
-		<?php
-		$usersConfig = &JComponentHelper::getParams( 'com_users' );
-		if ($usersConfig->get('allowUserRegistration')) : ?>
-		<li>
-			<a href="<?php echo JRoute::_( 'index.php?option=com_user&view=register' ); ?>">
-				<?php echo JText::_('REGISTER'); ?></a>
-		</li>
-		<?php endif; ?>
-	</ul>
-	<?php echo $params->get('posttext'); ?>
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die( 'Restricted access' );
 
-	<input type="hidden" name="option" value="com_user" />
-	<input type="hidden" name="task" value="login" />
-	<input type="hidden" name="return" value="<?php echo $return; ?>" />
-	<?php echo JHTML::_( 'form.token' ); ?>
-</form>
-<?php endif; ?>
+$app      = JFactory::getApplication();
+$document = JFactory::getDocument();
+
+// Make sure we're using a secure connection
+if (!isset( $_SERVER['HTTPS'] ) || $_SERVER['HTTPS'] == 'off')
+{
+	$app->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+	die('insecure connection and redirection failed');
+}
+
+// Get and add the js and extra css to the page
+$assets      = DS."components".DS."com_user".DS."assets".DS;
+$media       = DS."media".DS."system";
+$js          = $assets.DS."js".DS."login.jquery.js";
+$css         = $assets.DS."css".DS."login.css";
+$uniform_js  = $media.DS."js".DS."jquery.uniform.js";
+$uniform_css = $media.DS."css".DS."uniform.css";
+if(file_exists(JPATH_BASE . $js))
+{
+	$document->addScript($js);
+}
+if(file_exists(JPATH_BASE . $css))
+{
+	$document->addStyleSheet($css);
+}
+if(file_exists(JPATH_BASE . $uniform_js))
+{
+	$document->addScript($uniform_js);
+}
+if(file_exists(JPATH_BASE . $uniform_css))
+{
+	$document->addStyleSheet($uniform_css);
+}
+
+// If we have a return set with an authenticator in it, we're linking an existing account
+// Parse the return to retrive the authenticator, and remove it from the list below
+$auth = '';
+if($areturn = JRequest::getVar('return', null))
+{
+	$areturn = base64_decode($areturn);
+	$query   = parse_url($areturn);
+	$query   = $query['query'];
+	$query   = explode('&', $query);
+	$auth    = '';
+	foreach($query as $q)
+	{
+		$n = explode('=', $q);
+		if($n[0] == 'authenticator')
+		{
+			$auth = $n[1];
+		}
+	}
+}
+
+// Figure out whether or not any of our third party auth plugins are turned on 
+// Don't include the 'hubzero' plugin, or the $auth plugin as described above
+$multiAuth      = false;
+$plugins        = JPluginHelper::getPlugin('authentication');
+$authenticators = array();
+
+foreach($plugins as $p)
+{
+	if($p->name != 'hubzero' && $p->name != $auth)
+	{
+		$authenticators[] = $p->name;
+		$multiAuth = true;
+	}
+}
+
+// Set the return if we have it...
+$r = ($return) ? "&return={$return}" : '';
+
+// Check for error messages (regular message queue)
+if (!empty($error_message))
+{
+	echo '<p class="error">'. $error_message . '</p>';
+}
+
+?>
+
+<div id="authentication" class="<?php echo ($multiAuth) ? 'multiAuth' : 'singleAuth'; ?>">
+	<div class="error"></div>
+	<div id="inner" class="<?php echo ($multiAuth) ? 'multiAuth' : 'singleAuth'; ?>">
+		<?php if($multiAuth) { // only display if we have third part auth plugins enabled ?>
+			<div id="providers" class="two columns first">
+				<h3>Sign in with your:</h2>
+				<ul>
+					<?php 
+						foreach($authenticators as $a)
+						{
+					?>
+							<li id="<?php echo $a; ?>" class="entry">
+								<a id="<?php echo $a; ?>-button" class="" href="<?php echo JRoute::_('index.php?option=com_user&view=login&authenticator=' . $a . $r); ?>"></a>
+							</li>
+					<?php
+						}
+					?>
+				</ul>
+			</div>
+		<?php } // close if - check if any authentication plugins are enabled ?>
+		<div id="credentials-hub" class="<?php echo ($multiAuth) ? 'two columns second' : 'singleAuth'; ?>">
+			<div id="credentials-hub-inner">
+				<h3><?php echo ($multiAuth) ? 'Your local hub account:' : 'Sign In:'; ?></h2>
+				<form action="<?php echo JRoute::_('index.php', true, true); ?>" method="post" id="login_form">
+					<div class="labelInputPair">
+						<label for="username"><?php echo JText::_('Username'); ?>:</label>
+						<a class="forgots" href="<?php echo JRoute::_('index.php?option=com_user&view=remind'); ?>"><?php echo JText::_('Lost username?');?></a>
+						<input tabindex="1" type="text" name="username" id="username" placeholder="username<?php //echo JText::_('username'); ?>" />
+					</div>
+					<div class="labelInputPair">
+						<label for="password"><?php echo JText::_('Password'); ?>:</label>
+						<a class="forgots" href="<?php echo JRoute::_('index.php?option=com_user&view=reset'); ?>"><?php echo JText::_('Forgot password?'); ?></a>
+						<input tabindex="2" type="password" name="passwd" id="password" placeholder="password<?php //echo JText::_('password'); ?>" />
+					</div>
+					<div class="submission">
+					<?php if(JPluginHelper::isEnabled('system', 'remember')) : ?>
+						<input type="checkbox" class="option" name="remember" id="remember" value="yes" alt="Remember Me" checked="checked" />
+						<label for="remember" id="remember-me-label"><?php echo JText::_('Keep me logged in?'); ?></label>
+					<?php endif; ?>
+					<input type="submit" value="Login" id="login-submit"/>
+					</div>
+					<div class="clear"></div>
+					<input type="hidden" name="option" value="com_user" />
+					<input type="hidden" name="task" value="login" />
+					<input type="hidden" name="return" value="<?php echo $return; ?>" />
+					<input type="hidden" name="freturn" value="<?php echo  base64_encode(  $_SERVER['REQUEST_URI'] ); ?>" />
+					<?php echo JHTML::_('form.token'); ?>
+				</form>
+			</div>
+		</div>
+		<?php if(!$multiAuth) { ?>
+			<p class="callToAction">Don't have an account? <a href="/register">Create one.</a></p>
+		<?php } ?>
+	</div>
+	<div class="clear"></div>
+	<?php if($multiAuth) { ?>
+		<p class="callToAction">Or, you can <a href="/register">create a local account.</a></p>
+	<?php } ?>
+</div>
