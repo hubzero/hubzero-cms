@@ -26,7 +26,9 @@
  * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- */administrator/components/com_support/controllers/tickets.php
+ * /administrator/components/com_support/controllers/tickets.php
+ * 
+ */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -749,6 +751,7 @@ class SupportControllerTickets extends Hubzero_Controller
 									'name'    => JText::_('[none]'),
 									'address' => $email
 								);
+								}
 							}
 						}
 					}
@@ -787,7 +790,7 @@ class SupportControllerTickets extends Hubzero_Controller
 			$this->editTask();
 		}
 	}
-
+	
 	/**
 	 * Removes a ticket and all associated records (tags, comments, etc.)
 	 *
