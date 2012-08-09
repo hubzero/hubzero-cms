@@ -26,12 +26,14 @@
  * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- */
+ */administrator/components/com_support/controllers/tickets.php
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Controller');
+
+include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'Emailtoken.php');
 
 /**
  * Short description for 'SupportControllerTickets'
@@ -81,7 +83,7 @@ class SupportControllerTickets extends Hubzero_Controller
 	}
 
 	/**
-	 * Create a new ticket
+	 * Create a new ticketadministrator/components/com_support/controllers/tickets.php
 	 *
 	 * @return	void
 	 */
@@ -270,6 +272,13 @@ class SupportControllerTickets extends Hubzero_Controller
 		// Incoming
 		$id = JRequest::getInt('id', 0);
 
+		$allowEmailResponses = $this->config->get('email_processing');
+
+		if ($allowEmailResponses)
+		{
+			$encryptor = new Hubzero_Email_Token();
+		}
+		
 		// Instantiate the tagging class - we'll need this a few times
 		$st = new SupportTags($this->database);
 
@@ -458,7 +467,7 @@ class SupportControllerTickets extends Hubzero_Controller
 					// Build e-mail components
 					$admin_email = $jconfig->getValue('config.mailfrom');
 
-					$subject = ucfirst($this->_name) . ', Ticket #' . $row->id . ' comment ' . md5($row->id);
+					$subject = ucfirst($this->_name) . ', Ticket #' . $row->id;
 
 					$from = array();
 					$from['name']  = $jconfig->getValue('config.sitename') . ' ' . ucfirst($this->_name);
@@ -487,6 +496,22 @@ class SupportControllerTickets extends Hubzero_Controller
 					}
 					$message .= $attach->parse($comment) . "\r\n\r\n";
 
+                    // Prepare message to allow email responses to be parsed and added to the ticket
+					if ($allowEmailResponses)
+					{
+						$live_site = rtrim(JURI::base(),'/');
+						
+						$ticketURL = $live_site . JRoute::_('index.php?option=' . $this->option);
+						
+						$prependtext = "~!~!~!~!~!~!~!~!~!~!\r\n";
+						$prependtext .= "You can reply to this message, just include your reply text above this area\r\n" ;
+						$prependtext .= "Attachments (up to 2MB each) are permitted\r\n" ;
+						$prependtext .= "Message from " . $live_site . " / Ticket #" . $row->id . "\r\n";
+
+						$message = $prependtext . "\r\n\r\n" . $message;
+					}					
+					
+					
 					// Build the link to the ticket
 					//   NOTE: We don't use JRoute as it will have no affect on the back-end
 					//   and it would return only the script name and querystring (index.php?option=...)
@@ -538,6 +563,14 @@ class SupportControllerTickets extends Hubzero_Controller
 									}
 								}
 
+								// Only build tokens in if component is configured to allow email responses to tickets and ticket comments
+								if ($allowEmailResponses)
+								{
+									// The reply-to address contains the token 
+									$token = $encryptor->buildEmailToken(1, 1, $zuser->get('id'), $id);
+									$from['replytoemail'] = 'htc-' . $token;									
+								}								
+								
 								if (!$dispatcher->trigger('onSendMessage', array($type, $subject, $message, $from, array($zuser->get('id')), $this->_option)))
 								{
 									$this->setError(JText::_('Failed to message ticket submitter.'));
@@ -553,7 +586,16 @@ class SupportControllerTickets extends Hubzero_Controller
 							}
 							else if ($row->email && SupportUtilities::checkValidEmail($row->email))
 							{
-								$emails[] = $row->email;
+								if ($allowEmailResponses)
+								{
+									// Build a temporary token for this user, userid will not be valid, but the token will
+									$token = $encryptor->buildEmailToken(1, 1, $zuser->get('id'), $id);
+									$emails[] = array($row->email, 'htc-' . $token);
+								}
+								else
+								{
+									$emails[] = $row->email;
+								}
 							}
 						}
 					}
@@ -565,6 +607,14 @@ class SupportControllerTickets extends Hubzero_Controller
 						if ($row->owner)
 						{
 							$juser =& JUser::getInstance($row->owner);
+							
+							// Only put tokens in if component is configured to allow email responses to tickets and ticket comments
+							if ($allowEmailResponses)
+							{
+								// The reply-to address contains the token 
+								$token = $encryptor->buildEmailToken(1, 1, $juser->get('id'), $id);
+								$from['replytoemail'] = 'htc-' . $token;									
+							}
 
 							if (!$dispatcher->trigger('onSendMessage', array('support_reply_assigned', $subject, $message, $from, array($juser->get('id')), $this->_option)))
 							{
@@ -608,6 +658,13 @@ class SupportControllerTickets extends Hubzero_Controller
 									continue;
 								}
 								
+								if ($allowEmailResponses)
+								{
+									// The reply-to address contains the token 
+									$token = $encryptor->buildEmailToken(1, 1, -9999, $id);
+									$from['replytoemail'] = 'htc-' . $token;															
+								}
+								
 								// Is this the same account as the submitter? If so, ignore
 								if (strtolower($row->login) == strtolower($juser->get('username')) 
 								  || strtolower($row->email) == strtolower($juser->get('email')))
@@ -639,7 +696,16 @@ class SupportControllerTickets extends Hubzero_Controller
 									continue;
 								}
 								
-								$emails[] = $acc;
+								if ($allowEmailResponses)
+								{
+									// The reply-to address contains the token
+									$token = $encryptor->buildEmailToken(1, 1, -9999, $id);
+									$emails[] = array($acc, 'htc-' . $token);
+								}
+								else
+								{
+									$emails[] = $acc;
+								}
 							}
 						}
 					}
@@ -647,18 +713,37 @@ class SupportControllerTickets extends Hubzero_Controller
 					// Send an e-mail to each address
 					foreach ($emails as $email)
 					{
-						if (SupportUtilities::sendEmail($email, $subject, $message, $from))
+						
+						if ($allowEmailResponses)
 						{
-							if (strtolower($row->email) == $email)
+							// In this case each item in email in an array, 1- To, 2:reply to address
+							if(SupportUtilities::sendEmail($email[0], $subject, $message, $from, $email[1]))
 							{
+								if (strtolower($row->email) == $email[0])
+								{
+									$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_SUBMITTER').' - '.$row->email.'</li>';
+								}
+								else 
+								{
+									$emaillog[] = '<li>' . JText::_('TICKET_EMAILED_CC') . ' - ' . $email[0] . '</li>';
+								}
+							}
+						}
+						else 
+						{
+							// email is just a plain 'ol string
+							if(SupportUtilities::sendEmail($email, $subject, $message, $from))
+							{
+								if (strtolower($row->email) == $email)
+								{
 								$log['notifications'][] = array(
 									'role'    => JText::_('COMMENT_SEND_EMAIL_SUBMITTER'),
 									'name'    => $row->name,
 									'address' => $row->email
 								);
-							}
-							else 
-							{
+								}
+								else 
+								{
 								$log['notifications'][] = array(
 									'role'    => JText::_('COMMENT_SEND_EMAIL_CC'),
 									'name'    => JText::_('[none]'),
