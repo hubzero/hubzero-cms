@@ -13,6 +13,7 @@ class MembersApiController extends Hubzero_Api_Controller
 			case 'test':		$this->test();						break;
 			case 'groups':		$this->groups();					break;
 			case 'profile':		$this->profile();					break;
+			case 'myprofile':	$this->myprofile();					break;
 			case 'sessions':	$this->sessions();					break;
 			default:
 				$this->not_found();
@@ -100,6 +101,44 @@ class MembersApiController extends Hubzero_Api_Controller
 		$this->setMessage($obj);
 	}
 
+	function myprofile()
+	{
+		$data = $this->_provider->getTokenData();
+
+		$userid = $data->user_id;
+		
+		$result = Hubzero_User_Profile::getInstance($userid);
+
+		if ($result === false)
+			return $this->not_found();
+
+		$profile = array();
+
+		$public_keys = array("uidNumber","name","picture","givenName","middleName","surname","registerDate");
+		$private_keys = array("username","bio","email","phone","url","homeDirectory","orgtype","organization","countryresident","countryorigin","gender");
+
+		ximport("Hubzero_User_Profile_Helper");
+
+		$member_pic = Hubzero_User_Profile_Helper::getMemberPhoto( $result );
+		//$member_pic = "https://" . $_SERVER['HTTP_HOST'] . $member_pic;
+
+		foreach($public_keys as $pub) 
+		{
+			switch( $pub )
+			{
+				case "picture":		$profile['picture'] = $member_pic;										break;
+				default:			$profile[$pub] = ($result->get($pub) != "") ? $result->get($pub) : "";
+			}
+		}
+
+		$obj = new stdClass();
+
+		$obj->profile = $profile;
+
+		$this->setMessageType("application/json");
+		$this->setMessage($obj);
+	}
+	
 	private function sessions()
 	{
 		//get request vars
