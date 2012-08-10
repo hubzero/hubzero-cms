@@ -256,19 +256,11 @@ if (!$this->filters['filterby'] == 'none') {
 					</tbody>
 				</table>
 				<?php 
-				$pagenavhtml = $this->pageNav->getListFooter();
-				$pagenavhtml = str_replace('&amp;&amp;', '&amp;', $pagenavhtml);
-				$pagenavhtml = str_replace('?&amp;', '?', $pagenavhtml);
-				if (!strstr($pagenavhtml, 'filterby=')) {
-					$pagenavhtml = str_replace('?', '?filterby='.urlencode($this->filters['filterby']).'&amp;', $pagenavhtml);
-				}
-				if (!strstr($pagenavhtml, 'sortby=')) {
-					$pagenavhtml = str_replace('?', '?sortby='.urlencode($this->filters['sortby']).'&amp;', $pagenavhtml);
-				}
-				if (!strstr($pagenavhtml, 'area=')) {
-					$pagenavhtml = str_replace('?', '?area='.urlencode($this->filters['area']).'&amp;', $pagenavhtml);
-				}
-				echo $pagenavhtml;
+				$this->pageNav->setAdditionalUrlParam('q', $this->filters['q']);
+				$this->pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);
+				$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
+				$this->pageNav->setAdditionalUrlParam('area', $this->filters['area']);
+				echo $this->pageNav->getListFooter();
 				?>
 				<div class="clearfix"></div>
 			</div><!-- / .container -->

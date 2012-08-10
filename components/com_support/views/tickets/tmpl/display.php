@@ -40,7 +40,7 @@ else
 	$fstring = urlencode(trim($this->filters['_find']));
 }
 
-$live_site = rtrim(JURI::base(),'/');
+$live_site = rtrim(JURI::base(), '/');
 
 ?>
 <div id="content-header">
@@ -61,7 +61,7 @@ $live_site = rtrim(JURI::base(),'/');
 <?php if ($this->acl->check('read', 'tickets')) { ?>
 				<label>
 					<?php echo JText::_('SUPPORT_FIND'); ?>:
-					<input type="text" name="find" id="find" value="<?php echo ($this->filters['_show'] == '') ? htmlentities($this->filters['_find']) : ''; ?>" />
+					<input type="text" name="find" id="find" value="<?php echo ($this->filters['_show'] == '') ? $this->escape($this->filters['_find']) : ''; ?>" />
 				</label>
 				
 				<a title="DOM:guide" class="fixedImgTip" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&action=help'); ?>"><?php echo JText::_('SUPPORT_HELP'); ?></a>
@@ -152,17 +152,9 @@ $live_site = rtrim(JURI::base(),'/');
 				<tfoot>
 					<tr>
 						<td colspan="<?php echo ($this->acl->check('delete', 'tickets')) ? '8' : '7'; ?>"><?php
-						$html = $this->pageNav->getListFooter();
-						$html = str_replace('support/?', 'support/tickets/?',$html);
-						$html = str_replace('/?/tickets&amp;', '/?',$html);
-						$html = str_replace('ticketslimit', 'tickets?limit',$html);
-						if ($this->filters['_show'] && !strstr($html, 'show=')) {
-							$html = str_replace('?', '?show='.$this->filters['_show'].'&amp;',$html);
-						}
-						if ($this->filters['_find'] && !strstr($html, 'find=')) {
-							$html = str_replace('?', '?find='.$this->filters['_find'].'&amp;',$html);
-						}
-						echo $html;
+						$this->pageNav->setAdditionalUrlParam('show', $this->filters['_show']);
+						$this->pageNav->setAdditionalUrlParam('find', $this->filters['_find']);
+						echo $this->pageNav->getListFooter();
 						?></td>
 					</tr>
 				</tfoot>

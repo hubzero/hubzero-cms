@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 $juser =& JFactory::getUser();
 ?>
@@ -38,7 +38,7 @@ $juser =& JFactory::getUser();
 </div><!-- / #content-header -->
 
 <div class="main section">
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option); ?>" method="post">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post">
 		<div class="aside">
 			<div class="container">
 				<h3>Site Members</h3>
@@ -59,11 +59,11 @@ $juser =& JFactory::getUser();
 				<fieldset class="entry-search">
 					<legend>Search for Members</legend>
 					<label for="entry-search-field">Enter keyword or phrase</label>
-					<input type="text" name="search" id="entry-search-field" value="<?php echo htmlentities($this->filters['search'], ENT_COMPAT, 'UTF-8'); ?>" />
-					<input type="hidden" name="sortby" value="<?php echo htmlentities($this->filters['sortby']); ?>" />
-					<input type="hidden" name="show" value="<?php echo htmlentities($this->filters['show']); ?>" />
+					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" />
+					<input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
+					<input type="hidden" name="show" value="<?php echo $this->escape($this->filters['show']); ?>" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-					<input type="hidden" name="index" value="<?php echo htmlentities($this->filters['index']); ?>" />
+					<input type="hidden" name="index" value="<?php echo $this->escape($this->filters['index']); ?>" />
 				</fieldset>
 			</div><!-- / .container -->
 			
@@ -71,42 +71,42 @@ $juser =& JFactory::getUser();
 $qs = array();
 foreach ($this->filters as $f=>$v)
 {
-	$qs[] = ($v != '' && $f != 'index' && $f != 'authorized' && $f != 'start') ? $f.'='.$v : '';
+	$qs[] = ($v != '' && $f != 'index' && $f != 'authorized' && $f != 'start') ? $f . '=' . $v : '';
 }
 $qs[] = 'limitstart=0';
 $qs = implode(a,$qs);
 
 $letters = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
 
-$url  = 'index.php?option='.$this->option;
-$url .= ($qs != '') ? '&'.$qs : '';
-$html  = '<a href="'.JRoute::_($url).'"';
+$url  = 'index.php?option=' . $this->option;
+$url .= ($qs != '') ? '&' . $qs : '';
+$html  = '<a href="' . JRoute::_($url) . '"';
 if ($this->filters['index'] == '') {
 	$html .= ' class="active-index"';
 }
-$html .= '>'.JText::_('ALL').'</a> '."\n";
+$html .= '>' . JText::_('ALL') . '</a> ' . "\n";
 foreach ($letters as $letter)
 {
-	$url  = 'index.php?option='.$this->option.'&index='.strtolower($letter);
-	$url .= ($qs != '') ? '&'.$qs : '';
+	$url  = 'index.php?option=' . $this->option . '&index=' . strtolower($letter);
+	$url .= ($qs != '') ? '&' . $qs : '';
 
-	$html .= "\t\t\t\t\t\t\t\t".'<a href="'.JRoute::_($url).'"';
+	$html .= "\t\t\t\t\t\t\t\t".'<a href="' . JRoute::_($url) . '"';
 	if ($this->filters['index'] == strtolower($letter)) {
 		$html .= ' class="active-index"';
 	}
-	$html .= '>'.$letter.'</a> '."\n";
+	$html .= '>' . $letter . '</a> ' . "\n";
 }
 ?>
 			<div class="container">
 				<ul class="entries-menu order-options">
-					<li><a<?php echo ($this->filters['sortby'] == 'name') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&index='.$this->filters['index'].'&show='.$this->filters['show'].'&sortby=name'); ?>" title="Sort by name">&darr; Name</a></li>
-					<li><a<?php echo ($this->filters['sortby'] == 'organization') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&index='.$this->filters['index'].'&show='.$this->filters['show'].'&sortby=organization'); ?>" title="Sort by organization">&darr; Organization</a></li>
-					<li><a<?php echo ($this->filters['sortby'] == 'contributions') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&index='.$this->filters['index'].'&show='.$this->filters['show'].'&sortby=contributions'); ?>" title="Sort by number of contributions">&darr; Contributions</a></li>
+					<li><a<?php echo ($this->filters['sortby'] == 'name') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse&index=' . $this->filters['index'] . '&show='.$this->filters['show'] . '&sortby=name'); ?>" title="Sort by name">&darr; Name</a></li>
+					<li><a<?php echo ($this->filters['sortby'] == 'organization') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse&index=' . $this->filters['index'] . '&show='.$this->filters['show'] . '&sortby=organization'); ?>" title="Sort by organization">&darr; Organization</a></li>
+					<li><a<?php echo ($this->filters['sortby'] == 'contributions') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse&index=' . $this->filters['index'] . '&show='.$this->filters['show'] . '&sortby=contributions'); ?>" title="Sort by number of contributions">&darr; Contributions</a></li>
 				</ul>
 				
 				<ul class="entries-menu filter-options">
-					<li><a<?php echo ($this->filters['show'] != 'contributors') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&index='.$this->filters['index'].'&sortby='.$this->filters['sortby']); ?>" title="Show All members">All</a></li>
-					<li><a<?php echo ($this->filters['show'] == 'contributors') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&index='.$this->filters['index'].'&show=contributors&sortby='.$this->filters['sortby']); ?>" title="Show only members with Contributions">Contributors</a></li>
+					<li><a<?php echo ($this->filters['show'] != 'contributors') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse&index=' . $this->filters['index'] . '&sortby=' . $this->filters['sortby']); ?>" title="Show All members">All</a></li>
+					<li><a<?php echo ($this->filters['show'] == 'contributors') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse&index=' . $this->filters['index'] . '&show=contributors&sortby=' . $this->filters['sortby']); ?>" title="Show only members with Contributions">Contributors</a></li>
 				</ul>
 				
 				<table class="members entries" summary="<?php echo JText::_('TABLE_SUMMARY'); ?>">
@@ -117,7 +117,7 @@ foreach ($letters as $letter)
 						$e = ($this->filters['limit'] == 0) ? $this->total : $e;
 
 						if ($this->filters['search'] != '') {
-							echo 'Search for "'.$this->filters['search'].'" in ';
+							echo JText::sprintf('Search for "%s" in ', $this->filters['search']);
 						}
 						?>
 						<?php if ($this->filters['show'] != 'contributors') {
@@ -128,7 +128,7 @@ foreach ($letters as $letter)
 						<?php if ($this->filters['index']) { ?>
 							<?php echo JText::_('starting with'); ?> "<?php echo strToUpper($this->filters['index']); ?>"
 						<?php } ?>
-						<span>(<?php echo $s.'-'.$e; ?> of <?php echo $this->total; ?>)</span>
+						<span>(<?php echo $s . '-' . $e; ?> of <?php echo $this->total; ?>)</span>
 					</caption>
 					<thead>
 						<tr>
@@ -143,16 +143,17 @@ foreach ($letters as $letter)
 					</thead>
 					<tbody>
 <?php
-if (count($this->rows) > 0) {
+if (count($this->rows) > 0) 
+{
 	// Get plugins
-	JPluginHelper::importPlugin( 'members' );
+	JPluginHelper::importPlugin('members');
 	$dispatcher =& JDispatcher::getInstance();
 
 	$areas = array();
-	$activeareas = $dispatcher->trigger( 'onMembersContributionsAreas', array($this->authorized) );
+	$activeareas = $dispatcher->trigger('onMembersContributionsAreas', array($this->authorized));
 	foreach ($activeareas as $area)
 	{
-		$areas = array_merge( $areas, $area );
+		$areas = array_merge($areas, $area);
 	}
 
 	$cols = 2;
@@ -160,24 +161,16 @@ if (count($this->rows) > 0) {
 	$cls = ''; //'even';
 
 	// Default thumbnail
-	$config =& JComponentHelper::getParams( 'com_members' );
-	$thumb = $config->get('webpath');
-	if (substr($thumb, 0, 1) != DS) {
-		$thumb = DS.$thumb;
-	}
-	if (substr($thumb, -1, 1) == DS) {
-		$thumb = substr($thumb, 0, (strlen($thumb) - 1));
-	}
-	$dfthumb = $config->get('defaultpic');
-	if (substr($dfthumb, 0, 1) != DS) {
-		$dfthumb = DS.$dfthumb;
-	}
+	$config =& JComponentHelper::getParams('com_members');
+	$thumb = DS . trim($config->get('webpath', '/site/members'), DS);
+
+	$dfthumb = DS . ltrim($config->get('defaultpic'), DS);
 	$dfthumb = Hubzero_View_Helper_Html::thumbit($dfthumb);
 
 	// User messaging
 	$messaging = false;
-	if ($this->config->get('user_messaging') > 0
-	 && !$juser->get('guest')) {
+	if ($this->config->get('user_messaging') > 0 && !$juser->get('guest')) 
+	{
 		ximport('Hubzero_User_Helper');
 
 		switch ($this->config->get('user_messaging'))
@@ -186,10 +179,12 @@ if (count($this->rows) > 0) {
 				// Get the groups the visiting user
 				$xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
 				$usersgroups = array();
-				if (!empty($xgroups)) {
+				if (!empty($xgroups)) 
+				{
 					foreach ($xgroups as $group)
 					{
-						if ($group->regconfirmed) {
+						if ($group->regconfirmed) 
+						{
 							$usersgroups[] = $group->cn;
 						}
 					}
@@ -208,63 +203,77 @@ if (count($this->rows) > 0) {
 	{
 		//$cls = ($cls == 'odd') ? 'even' : 'odd';
 		$cls = '';
-		if ($row->public != 1) {
+		if ($row->public != 1) 
+		{
 			$cls = 'private';
 		}
 
-		if ($row->uidNumber < 0) {
+		if ($row->uidNumber < 0) 
+		{
 			$id = 'n' . -$row->uidNumber;
-		} else {
+		} 
+		else 
+		{
 			$id = $row->uidNumber;
 		}
 
-		if ($row->uidNumber == $juser->get('id')) {
+		if ($row->uidNumber == $juser->get('id')) 
+		{
 			$cls .= ($cls) ? ' me' : 'me';
 		}
 
 		// User name
-		$row->name = stripslashes($row->name);
-		$row->surname = stripslashes($row->surname);
-		$row->givenName = stripslashes($row->givenName);
+		$row->name       = stripslashes($row->name);
+		$row->surname    = stripslashes($row->surname);
+		$row->givenName  = stripslashes($row->givenName);
 		$row->middelName = stripslashes($row->middleName);
 
-		if (!$row->surname) {
+		if (!$row->surname) 
+		{
 			$bits = explode(' ', $row->name);
 			$row->surname = array_pop($bits);
-			if (count($bits) >= 1) {
+			if (count($bits) >= 1) 
+			{
 				$row->givenName = array_shift($bits);
 			}
-			if (count($bits) >= 1) {
-				$row->middleName = implode(' ',$bits);
+			if (count($bits) >= 1) 
+			{
+				$row->middleName = implode(' ', $bits);
 			}
 		}
 
 		$name = ($row->surname) ? stripslashes($row->surname) : '';
-		if ($row->givenName) {
+		if ($row->givenName) 
+		{
 			$name .= ($row->surname) ? ', ' : '';
 			$name .= stripslashes($row->givenName);
-			$name .= ($row->middleName) ? ' '.stripslashes($row->middleName) : '';
+			$name .= ($row->middleName) ? ' ' . stripslashes($row->middleName) : '';
 		}
-		if (!trim($name)) {
-			$name = 'Unknown ('.$row->username.')';
+		if (!trim($name)) 
+		{
+			$name = 'Unknown (' . $row->username . ')';
 		}
 
 		// User picture
 		$uthumb = '';
 		if ($row->picture) {
-			$uthumb = $thumb.DS.Hubzero_View_Helper_Html::niceidformat($row->uidNumber).DS.$row->picture;
+			$uthumb = $thumb . DS . Hubzero_View_Helper_Html::niceidformat($row->uidNumber) . DS . $row->picture;
 			$uthumb = Hubzero_View_Helper_Html::thumbit($uthumb);
 		}
 
-		if ($uthumb && is_file(JPATH_ROOT.$uthumb)) {
+		if ($uthumb && is_file(JPATH_ROOT . $uthumb)) 
+		{
 			$p = $uthumb;
-		} else {
+		} 
+		else 
+		{
 			$p = $dfthumb;
 		}
 
 		// User messaging
 		$messageuser = false;
-		if ($messaging && $row->uidNumber > 0 && $row->uidNumber != $juser->get('id')) {
+		if ($messaging && $row->uidNumber > 0 && $row->uidNumber != $juser->get('id')) 
+		{
 			switch ($this->config->get('user_messaging'))
 			{
 				case 1:
@@ -272,10 +281,12 @@ if (count($this->rows) > 0) {
 					$pgroups = Hubzero_User_Helper::getGroups($row->uidNumber, 'all');
 					// Get the groups the user has access to
 					$profilesgroups = array();
-					if (!empty($pgroups)) {
+					if (!empty($pgroups)) 
+					{
 						foreach ($pgroups as $group)
 						{
-							if ($group->regconfirmed) {
+							if ($group->regconfirmed) 
+							{
 								$profilesgroups[] = $group->cn;
 							}
 						}
@@ -284,7 +295,8 @@ if (count($this->rows) > 0) {
 					// Find the common groups
 					$common = array_intersect($usersgroups, $profilesgroups);
 
-					if (count($common) > 0) {
+					if (count($common) > 0) 
+					{
 						$messageuser = true;
 					}
 				break;
@@ -302,21 +314,21 @@ if (count($this->rows) > 0) {
 ?>
 						<tr<?php echo ($cls) ? ' class="'.$cls.'"' : ''; ?>>
 							<th class="entry-img">
-								<img width="50" height="50" src="<?php echo $p; ?>" alt="Avatar for <?php echo htmlentities($name,ENT_COMPAT,'UTF-8'); ?>" />
+								<img width="50" height="50" src="<?php echo $p; ?>" alt="Avatar for <?php echo $this->escape($name); ?>" />
 							</th>
 							<td>
-								<a class="entry-title" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$id); ?>"><?php echo $name; ?></a><br />
+								<a class="entry-title" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $id); ?>"><?php echo $name; ?></a><br />
 								<span class="entry-details">
 									<span class="organization"><?php echo Hubzero_View_Helper_Html::xhtml(stripslashes($row->organization)); ?></span>
 								</span>
 							</td>
 							<td>
 								<!-- rcount: <?php echo $row->rcount; ?> --> 
-								<span class="activity"><?php echo $row->resource_count.' Resources, '.$row->wiki_count.' Topics'; ?></span>
+								<span class="activity"><?php echo $row->resource_count . ' Resources, ' . $row->wiki_count . ' Topics'; ?></span>
 							</td>
-						<td class="message-member">
+							<td class="message-member">
 <?php if ($messageuser) { ?>
-								<a class="message tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$juser->get('id').'&active=messages&task=new&to[]='.$row->uidNumber); ?>" title="Message :: Send a message to <?php echo htmlentities($name,ENT_COMPAT,'UTF-8'); ?>"><?php echo JText::_('Send a message to '.htmlentities($name,ENT_COMPAT,'UTF-8')); ?></a></td>
+								<a class="message tooltips" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $juser->get('id') . '&active=messages&task=new&to[]=' . $row->uidNumber); ?>" title="Message :: Send a message to <?php echo $this->escape($name); ?>"><?php echo JText::_('Send a message to ' . $this->escape($name)); ?></a></td>
 <?php } ?>
 							</td>
 						</tr>
@@ -332,16 +344,10 @@ if (count($this->rows) > 0) {
 					</tbody>
 				</table>
 <?php
-	$pn = $this->pageNav->getListFooter();
-	$pn = str_replace('/?/&amp;','/?',$pn);
-	$f = '';
-	foreach ($this->filters as $k=>$v)
-	{
-		$f .= ($v && $k != 'authorized' && $k != 'limit' && $k != 'start') ? $k.'='.$v.'&amp;' : '';
-	}
-	$pn = str_replace('?','?'.$f,$pn);
-	$pn = str_replace('&amp;&amp;','&amp;',$pn);
-	echo $pn;
+	$this->pageNav->setAdditionalUrlParam('index', $this->filters['index']);
+	$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
+	$this->pageNav->setAdditionalUrlParam('show', $this->filters['show']);
+	echo $this->pageNav->getListFooter();
 ?>
 				<div class="clearfix"></div>
 			</div><!-- / .container -->

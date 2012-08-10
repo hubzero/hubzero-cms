@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 $maxtextlen = 42;
 $juser =& JFactory::getUser();
@@ -45,7 +45,7 @@ $juser =& JFactory::getUser();
 </div><!-- / #content-header-extra -->
 
 <?php
-	foreach($this->notifications as $notification) {
+	foreach ($this->notifications as $notification) {
 		echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
 	}
 ?>
@@ -72,9 +72,9 @@ $juser =& JFactory::getUser();
 				<fieldset class="entry-search">
 					<legend>Search for Groups</legend>
 					<label for="entry-search-field">Enter keyword or phrase</label>
-					<input type="text" name="search" id="entry-search-field" value="<?php echo htmlentities($this->filters['search'], ENT_COMPAT, 'UTF-8'); ?>" />
+					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" />
 					<input type="hidden" name="sortby" value="<?php echo $this->filters['sortby']; ?>" />
-					<input type="hidden" name="policy" value="<?php echo htmlentities($this->filters['policy']); ?>" />
+					<input type="hidden" name="policy" value="<?php echo $this->escape($this->filters['policy']); ?>" />
 					<!-- <input type="hidden" name="option" value="<?php echo $this->option; ?>" /> -->
 					<input type="hidden" name="index" value="<?php echo $this->filters['index']; ?>" />
 				</fieldset>
@@ -243,13 +243,11 @@ if ($this->groups) {
 					</tbody>
 				</table>
 <?php
-$pn = $this->pageNav->getListFooter();
-$pn = str_replace('/?','/browse/?',$pn);
-$pn = str_replace('&amp;&amp;','&amp;',$pn);
-$pn = str_replace('?/groups/browse&amp;','?',$pn);
-$pn = str_replace('?','?index='.$this->filters['index'].'&amp;sortby='.$this->filters['sortby'],$pn);
-$pn = preg_replace('/(&amp;sortby=\D{0,5})\&?/', '$1&', $pn);
-echo $pn;
+$this->pageNav->setAdditionalUrlParam('index', $this->filters['index']);
+$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
+$this->pageNav->setAdditionalUrlParam('policy', $this->filters['policy']);
+
+echo $this->pageNav->getListFooter();
 ?>
 				<div class="clearfix"></div>
 			</div><!-- / .container -->

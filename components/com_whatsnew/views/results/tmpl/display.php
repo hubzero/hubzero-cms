@@ -305,11 +305,10 @@ foreach ($this->results as $category)
 				$this->limit
 			);
 
-			$pgn = $pageNav->getListFooter();
-			$pgn = str_replace('category=' . urlencode(strToLower($this->active)) . '&amp;&amp;', '', $pgn);
-			$pgn = str_replace('category=' . urlencode(strToLower($this->active)) . '&amp;', '', $pgn);
-			$pgn = str_replace('whatsnew/?', 'whatsnew/' . $this->active . ':' . $this->period . '/?', $pgn);
-			$html .= $pgn;
+			$pageNav->setAdditionalUrlParam('category', urlencode(strToLower($this->active)));
+			$pageNav->setAdditionalUrlParam('period', $this->period);
+
+			$html .= $pageNav->getListFooter();
 		} 
 		else 
 		{

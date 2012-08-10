@@ -165,17 +165,9 @@ if ($this->rows) {
 					</tbody>
 				</table>
 				<?php
-					$pn = $this->pageNav->getListFooter();
-					//$pn = str_replace('/?','/?task=browse&amp;',$pn);
-					//$pn = str_replace('task=browse&amp;task=browse','task=browse',$pn);
-					//$pn = str_replace('&amp;&amp;','&amp;',$pn);
-					//$pn = str_replace('view=browse','task=browse',$pn);
-					//$pn = str_replace('/?task=browse&amp;','/browse?search='.urlencode($this->filters['search']).'&amp;',$pn);
-					//$pn = str_replace('?search='.urlencode($this->filters['search']).'&amp;search='.urlencode($this->filters['search']).'&amp;','?search='.urlencode($this->filters['search']).'&amp;',$pn);
-                    
-					$pn = str_replace('/tags/browselimit', '/tags/browse?limit', $pn);
-					$pn = str_replace('/tags/browse?', '/tags/browse?search=' . urlencode($this->filters['search']) . '&sortby=' . JRequest::getVar('sortby', '') . '&', $pn);
-					echo $pn;
+					$this->pageNav->setAdditionalUrlParam('search', $this->filters['search']);
+					$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
+					echo $this->pageNav->getListFooter();
 				?>
 				<div class="clearfix"></div>
 				<input type="hidden" name="sortby" value="<?php echo JRequest::getVar('sortby', ''); ?>" />
