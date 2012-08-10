@@ -1,0 +1,57 @@
+/**
+ * @package     hubzero-cms
+ * @file        modules/mod_mygroups/mod_mygroups.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	mod_myprojects
+	-- -- -- -- -- -- --
+
+*/
+	div.draggable #myprojects .compactlist li {
+		padding-left: 1em;
+		clear: both;
+	}
+	div.draggable #myprojects .compactlist li.pr-inactive {
+		background: #f9f9f9;
+	}
+	div.draggable #myprojects .compactlist li.pr-setup {
+		background: #fdf8ef;
+	}
+	div.draggable #myprojects a {
+		padding: 0;
+		margin: 0;
+	}
+	div.draggable #myprojects .module-nav a {
+		padding: 0.1em 0.5em;
+		white-space: nowrap;
+	}
+	div.draggable #myprojects img {
+		width: 30px;
+		height: 30px;
+		padding: 0 0.5em 1.2em 0.5em;
+		float: left;
+		margin-right: 0.5em;
+		*padding-bottom: 0;
+	}	
+	div.draggable #myprojects span.sub {
+		display: block;
+		font-size: 85%;
+		margin-top: -0.2em;
+		line-height: 1.2em;
+	}	
+	div.draggable #myprojects .compactlist li span span.s-new {
+		display: block;
+		position: absolute;
+		font-size: 75%;
+		font-weight: bold;
+		color: #FFF;
+		background: red;
+		padding: 0 0.5em;
+		margin-top: 1em;
+	}
+	

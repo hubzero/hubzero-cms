@@ -1,0 +1,1037 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Project todo CSS
+	-- -- -- -- -- -- --
+
+*/
+
+	h3.todo {		
+		margin-bottom: -0.5em;
+	}
+	h3.todo a {
+		color: #000;
+		border-bottom: 1px dotted #000;
+	}
+
+/* Todo
+--------------------------------------------- */
+	.pinboard {
+		list-style: none;
+		margin: 0;
+		padding: 2em 0 2em 0;
+		background: transparent url("images/cork.jpg") 0 0 repeat;
+		/*background: #f6f6f6;*/
+		border-top: 1px dotted #000;
+		border-bottom: 1px dotted #000;
+	}
+	.pinboard li, .pinboard #td-item {
+		float: left;
+		width: 160px;
+		margin-left: 30px;
+		margin-bottom: 50px;
+		display: block;
+		-moz-box-shadow: 5px 5px 5px #ebebeb;
+		-webkit-box-shadow: 5px 5px 5px #ebebeb;
+		box-shadow: 5px 5px 5px #ebebeb;
+		background: #FFFFFF;
+	}
+	.pinboard .edited {
+		width: 200px;
+	}
+	.duebox {
+		display: block;
+		width: 100px;
+	}
+	.pinboard .edited  label {
+		margin-bottom: 0;
+		padding-bottom: 0;
+	}
+	.submittodo {
+		display: block;
+		margin-top: 1em;
+	}
+	.pinboard li.clear {
+		float: none;
+		display: block;
+		background: none;
+	}
+	.pinboard .pin {
+		*background: transparent url("images/pins/grey.gif") 0 0 no-repeat;
+		padding: 1em;
+		position: absolute;
+		margin-top: -2em;
+		*margin-top: -0.7em;
+		margin-left: -0.5em;
+	}
+	.pinboard li .complete {
+		padding: 1em;
+		position: absolute;
+		margin-top: -2em;
+		margin-left: 140px;
+	}
+	.pinboard li .comment-blurb {		
+		position: absolute;
+		display: block;
+		margin-top: 0;
+		margin-left: 120px;
+		font-size: 90%;
+		font-weight: bold;
+		background: none;
+	}
+	.pinboard li .comment-blurb a {
+		padding: 0.2em 1em 0.2em 1.3em;
+		*background: transparent url("/components/com_projects/assets/img/icons/comment.png") 0 0 no-repeat;
+	}
+	.pinboard li .comment-blurb a:hover, .pinboard li .comment-blurb a:focus {
+		border: none;
+	}
+	.pinboard li.edited .complete, .pinboard li.edited .comment-blurb {
+		margin-left: 180px;
+	}
+	.pinboard .todo-content {
+		border: 1px solid #CCC;
+		padding: 0.5em;	
+		font-family: 'Times', sans-serif;
+		font-style: italic;
+		font-size: 110%;
+		display: block;
+		padding-top: 10px;
+		padding-bottom: 20px;
+	}
+	.pinboard .todo-options {
+		position: absolute;
+		margin-top: -1.5em;
+		margin-left: 0.7em;
+	}
+	
+/* Grey pin
+--------------------------------------------- */
+	div#pinoptions ul li span:before, 
+	.showpin span.pin_grey:before,
+	.pinboard .pin:before {
+		content: "";
+		width: 16px;
+		height: 16px;
+		font-size: 16px;
+		font-family: 'Fontcons';
+		color: #aaa;
+		margin-right: 0.3em;
+		vertical-align: middle;
+	}
+	div#pinoptions ul li span:before, 
+	.showpin span.pin_grey:before,
+	.pinboard .pin:before {
+		content: "\f08d";
+		color: #CCC;	
+	}		
+	
+/* Todo - hover rotation
+--------------------------------------------- */
+/*
+	.pinboard li:nth-child(2n-1), .pinboard li:nth-child(2n-2):hover, .pinboard li:nth-child(2n-2):hover .pin {
+		-webkit-transform: rotate(2deg);
+		-moz-transform: rotate(2deg);
+		-o-transform: rotate(2deg);
+		transform: rotate(2deg);
+	}
+	.pinboard li:nth-child(2n-2), .pinboard li:nth-child(2n-1):hover, .pinboard li:nth-child(2n-1):hover .pin {
+		-webkit-transform: rotate(-2deg);
+		-moz-transform: rotate(-2deg);
+		-o-transform: rotate(-2deg);
+		transform: rotate(-2deg);
+	}
+*/
+
+.pinboard li:nth-child(2n-1) {
+	-webkit-transform: rotate(2deg);
+	-moz-transform: rotate(2deg);
+	-o-transform: rotate(2deg);
+	transform: rotate(2deg);
+}
+.pinboard li:nth-child(2n-2) {
+	-webkit-transform: rotate(-2deg);
+	-moz-transform: rotate(-2deg);
+	-o-transform: rotate(-2deg);
+	transform: rotate(-2deg);
+}
+	
+/* Todo - float fix
+--------------------------------------------- */
+	.pinboard li.todo-empty, .pinboard li.todo-empty:hover {
+		float: none;
+		display: block;
+		text-align: center;
+		-webkit-transform: none;
+		-moz-transform: none;
+		-o-transform: none;
+		transform: none;
+		-moz-box-shadow: none;
+		-webkit-box-shadow: none;
+		box-shadow: none;
+		background: none;
+		width: 100%;
+	}
+	.pinboard li .todo-content-empty {
+		padding: 0.5em;	
+		font-family: 'Times', sans-serif;
+		font-style: italic;
+		font-size: 110%;
+	}
+	
+/* Todo - page header
+--------------------------------------------- */
+	h3.todo .indlist  {
+		padding-left: 20px;
+		font-size: 75%;
+	}
+	h3.todo .itemname {
+		font-size: 75%;	
+	}
+	h3.todo .itemname:before {
+		content: "";
+		padding-left: 20px;
+	}
+	
+/* Font-based pins
+--------------------------------------------- */
+	.pinboard .pin:before, .tdlists li a:before, h3.todo span:before, 
+	.tdlists li .pin:before, .tdlists li input[type="text"]:before,
+	div#pinoptions ul li span:before, #pinner:before, .showpin span:before {
+		content: "\f08d";
+		width: 16px;
+		height: 16px;
+		font-size: 16px;
+		font-family: 'Fontcons';
+		color: #CCC;
+		margin-right: 0.3em;
+		vertical-align: middle;
+		margin-left: -1em;
+	}
+	.tdlists li.newcolor .pin:before {
+		margin-left: -0.5em;
+		margin-right: -0.2em;
+	}
+	#pinner:before {
+		margin-right: 0;
+	}
+	.pinboard .pin_red .pin:before, .tdlists li.pin_red a:before, h3.todo .pin_red:before, 
+	.tdlists li.pin_red .pin:before, .tdlists li.pin_red input[type="text"]:before,
+	div#pinoptions ul li span.pin_red:before, #pinselector .pin_red:before, .showpin span.pin_red:before {
+		color: red;
+	}
+	.pinboard .pin_purple .pin:before, .tdlists li.pin_purple a:before, h3.todo .pin_purple:before, 
+	.tdlists li.pin_purple .pin:before, .tdlists li.pin_purple input[type="text"]:before,
+	div#pinoptions ul li span.pin_purple:before, #pinselector span.pin_purple:before, .showpin span.pin_purple:before {
+		color: purple;
+	}
+	.pinboard .pin_orange .pin:before, .tdlists li.pin_orange a:before, h3.todo .pin_orange:before, 
+	.tdlists li.pin_orange .pin:before, .tdlists li.pin_orange input[type="text"]:before,
+	div#pinoptions ul li span.pin_orange:before, #pinselector span.pin_orange:before, .showpin span.pin_orange:before {
+		color: orange;
+	}
+	.pinboard .pin_lightblue .pin:before, .tdlists li.pin_lightblue a:before, h3.todo .pin_lightblue:before, 
+	.tdlists li.pin_lightblue .pin:before, .tdlists li.pin_lightblue input[type="text"]:before,
+	div#pinoptions ul li span.pin_lightblue:before, #pinselector span.pin_lightblue:before, .showpin span.pin_lightblue:before {
+		color: #44b6dc;
+	}
+	.pinboard .pin_blue .pin:before, .tdlists li.pin_blue a:before, h3.todo .pin_blue:before, 
+	.tdlists li.pin_blue .pin:before, .tdlists li.pin_blue input[type="text"]:before,
+	div#pinoptions ul li span.pin_blue:before, #pinselector span.pin_blue:before, .showpin span.pin_blue:before {
+		color: blue;
+	}
+	.pinboard .pin_green .pin:before, .tdlists li.pin_green a:before, h3.todo .pin_green:before, 
+	.tdlists li.pin_green .pin:before, .tdlists li.pin_green input[type="text"]:before,
+	div#pinoptions ul li span.pin_green:before, #pinselector span.pin_green:before, .showpin span.pin_green:before {
+		color: green;
+	}
+	.pinboard .pin_yellow .pin:before, .tdlists li.pin_yellow a:before, h3.todo .pin_yellow:before, 
+	.tdlists li.pin_yellow .pin:before, .tdlists li.pin_yellow input[type="text"]:before,
+	div#pinoptions ul li span.pin_yellow:before, #pinselector span.pin_yellow:before, .showpin span.pin_yellow:before {
+		color: #f5c238;
+	}
+	.pinboard .pin_black .pin:before, .tdlists li.pin_black a:before, h3.todo .pin_black:before, 
+	.tdlists li.pin_black .pin:before, .tdlists li.pin_black input[type="text"]:before,
+	div#pinoptions ul li span.pin_black:before, #pinselector span.pin_black:before, .showpin span.pin_black:before {
+		color: black;
+	}
+	.pinboard .pin_pink .pin:before, .tdlists li.pin_pink a:before, h3.todo .pin_pink:before, 
+	.tdlists li.pin_pink .pin:before, .tdlists li.pin_pink input[type="text"]:before,
+	div#pinoptions ul li span.pin_pink:before, #pinselector span.pin_pink:before, .showpin span.pin_pink:before {
+		color: #f538d4;
+	}	
+	
+/* Todo - lists
+--------------------------------------------- */
+	.pinboard .pin_red .pin, .tdlists li.pin_red a, h3.todo .pin_red, 
+	.tdlists li.pin_red .pin, .tdlists li.pin_red input[type="text"],
+	div#pinoptions ul li span.pin_red, #pinselector span.pin_red, .showpin span.pin_red {
+		*background: url("images/pins/red.gif") 0 0 no-repeat;
+		color: red;
+	}
+	.pinboard .pin_purple .pin, .tdlists li.pin_purple a, h3.todo .pin_purple, 
+	.tdlists li.pin_purple .pin, .tdlists li.pin_purple input[type="text"],
+	div#pinoptions ul li span.pin_purple, #pinselector span.pin_purple, .showpin span.pin_purple {
+		*background: url("images/pins/purple.gif") 0 0 no-repeat;
+		color: purple;
+	}
+	.pinboard .pin_orange .pin, .tdlists li.pin_orange a, h3.todo .pin_orange, 
+	.tdlists li.pin_orange .pin, .tdlists li.pin_orange input[type="text"],
+	div#pinoptions ul li span.pin_orange, #pinselector span.pin_orange, .showpin span.pin_orange {
+		*background: url("images/pins/orange.gif") 0 0 no-repeat;
+		color: orange;
+	}
+	.pinboard .pin_lightblue .pin, .tdlists li.pin_lightblue a, h3.todo .pin_lightblue, 
+	.tdlists li.pin_lightblue .pin, .tdlists li.pin_lightblue input[type="text"], 
+	div#pinoptions ul li span.pin_lightblue, #pinselector span.pin_lightblue, .showpin span.pin_lightblue {
+		*background: url("images/pins/lightblue.gif") 0 0 no-repeat;
+		color: #44b6dc;
+	}
+	.pinboard .pin_blue .pin, .tdlists li.pin_blue a, h3.todo .pin_blue, 
+	.tdlists li.pin_blue .pin, .tdlists li.pin_blue input[type="text"],
+	div#pinoptions ul li span.pin_blue, #pinselector span.pin_blue, .showpin span.pin_blue {
+		*background: url("images/pins/blue.gif") 0 0 no-repeat;
+		color: blue;
+	}
+	.pinboard .pin_green .pin, .tdlists li.pin_green a, h3.todo .pin_green, 
+	.tdlists li.pin_green .pin, .tdlists li.pin_green input[type="text"],
+	div#pinoptions ul li span.pin_green, #pinselector span.pin_green, .showpin span.pin_green {
+		*background: url("images/pins/green.gif") 0 0 no-repeat;
+		color: green;
+	}
+	.pinboard .pin_yellow .pin, .tdlists li.pin_yellow a, h3.todo .pin_yellow, 
+	.tdlists li.pin_yellow .pin, .tdlists li.pin_yellow input[type="text"],
+	div#pinoptions ul li span.pin_yellow, #pinselector span.pin_yellow, .showpin span.pin_yellow  {
+		*background: url("images/pins/yellow.gif") 0 0 no-repeat;
+		color: #f5c238;
+	}
+	.pinboard .pin_black .pin, .tdlists li.pin_black a, h3.todo .pin_black, 
+	.tdlists li.pin_black .pin, .tdlists li.pin_black input[type="text"],
+	div#pinoptions ul li span.pin_black, #pinselector span.pin_black, .showpin span.pin_black {
+		*background: url("images/pins/black.gif") 0 0 no-repeat;
+		color: black;
+	}
+	.pinboard .pin_pink .pin, .tdlists li.pin_pink a, h3.todo .pin_pink, 
+	.tdlists li.pin_pink .pin, .tdlists li.pin_pink input[type="text"],
+	div#pinoptions ul li span.pin_pink, #pinselector span.pin_pink, .showpin span.pin_pink {
+		*background: url("images/pins/pink.gif") 0 0 no-repeat;
+		color: #f538d4;
+	}
+	.tdlists li input[type="text"] {
+		background: #FFFFFF !important;
+		border: 1px solid #DEE4CD;
+		width: 130px;
+	}
+	.tdlists li .pin {
+		padding-left: 1em;
+		padding-top: 0.2em;
+		padding-bottom: 0.2em;
+	}
+	.tdlists li {
+		padding: 0.3em;
+		margin: 0;
+	}
+	.tdlists li.newcolor {
+	 	padding: 1em 0.3em;	
+	}
+	.tdlists li a {
+		padding: 0.2em 1em;
+		padding-left: 20px;
+		width: 80%;
+		display: block;
+	}
+	.tdlists li.activelist {
+		background: #FFFFFF;
+	}
+	.tdlists li:last-child {
+		border: none;
+	}
+	.tdlists li a:hover {
+		border: none;
+		background-color: #fdf6c8;
+	}
+
+/* Todo - content
+--------------------------------------------- */
+	.pinboard .pin_red .todo-content {
+		border: 1px solid red;
+		-moz-box-shadow: inset 0 0 1em #fdabb0;
+		-webkit-box-shadow: inset 0 0 1em #fdabb0;
+	}
+	.pinboard .pin_purple .todo-content {
+		border: 1px solid purple;
+		-moz-box-shadow: inset 0 0 1em #dcb5fb;
+		-webkit-box-shadow: inset 0 0 1em #dcb5fb;
+	}
+	.pinboard .pin_green .todo-content {
+		border: 1px solid green;
+		-moz-box-shadow: inset 0 0 1em #b7fab2;
+		-webkit-box-shadow: inset 0 0 1em #b7fab2;
+	}
+	.pinboard .pin_lightblue .todo-content {
+		border: 1px solid #5dc7ea;
+		-moz-box-shadow: inset 0 0 1em #d1f2fd;
+		-webkit-box-shadow: inset 0 0 1em #d1f2fd;
+	}
+	.pinboard .pin_blue .todo-content {
+		border: 1px solid blue;
+		-moz-box-shadow: inset 0 0 1em #b8c9fc;
+		-webkit-box-shadow: inset 0 0 1em #b8c9fc;
+	}
+	.pinboard .pin_orange .todo-content {
+		border: 1px solid orange;
+		-moz-box-shadow: inset 0 0 1em #fdcea1;
+		-webkit-box-shadow: inset 0 0 1em #fdcea1;
+	}
+	.pinboard .pin_yellow .todo-content {
+		border: 1px solid #f5c238;
+		-moz-box-shadow: inset 0 0 1em #feec71;
+		-webkit-box-shadow: inset 0 0 1em #feec71;
+	}
+	.pinboard .pin_black .todo-content {
+		border: 1px solid #000;
+		-moz-box-shadow: inset 0 0 1em #b7b7b7;
+		-webkit-box-shadow: inset 0 0 1em #b7b7b7;
+	}
+	.pinboard .pin_pink .todo-content {
+		border: 1px solid #f538d4;
+		-moz-box-shadow: inset 0 0 1em #fdcefe;
+		-webkit-box-shadow: inset 0 0 1em #fdcefe;
+	}
+
+/* Todo - ajax inline editing
+--------------------------------------------- */
+	.todo-content textarea {
+		width: 180px;
+		height: 100px;
+		border: none;
+		background: none;
+		border-bottom: 1px solid #CCC;
+		font-style: italic;
+		line-height: 1.3em;
+		font-size: 1em;
+		font-family: 'Times', sans-serif;
+	}
+	.todo-content label {
+		padding: 0.5em 0;
+		margin-bottom: 1em;
+		display: block;
+		font-size: 85%;
+	}
+	.todo-assigned {
+		font-size: 75%;
+		color: #000;
+		font-weight: bold;
+		display: block;
+		margin-bottom: -0.5em;
+		margin-top: 0;
+	}
+	.todo-closed {
+		font-size: 75%;
+		color: #65903a;
+		display: block;
+		margin-top: 0;
+	}
+	.todo-due {
+		font-size: 75%;
+		padding: 0 0.5em;
+		height: 15px;
+		color: #FFF;
+		display: block;
+		margin-top: 0.5em;
+		padding-bottom: 0.3em;
+		background: #666666;
+	}
+	.td-edit {
+		position: absolute;
+		margin-left: 130px;
+		margin-top: -2em;
+		font-size: 85%;
+	}
+	.todoeditoptions {
+		margin-left: 3em;
+		font-size: 85%;
+		font-style: normal;
+		border-bottom: 1px solid #CCC;
+		width: 70%;
+	}
+	
+/* Todo - due box display
+--------------------------------------------- */
+	.todo-due:nth-child(2n-1) {
+		-webkit-transform: rotate(5deg);
+		-moz-transform: rotate(5deg);
+		-o-transform: rotate(5deg);
+		transform: rotate(5deg);
+	}
+	.todo-due:nth-child(2n-2) {
+		-webkit-transform: rotate(-5deg);
+		-moz-transform: rotate(-5deg);
+		-o-transform: rotate(-5deg);
+		transform: rotate(-5deg);
+	}
+	.pinboard li.pin_purple .todo-due {
+		background: purple;
+	}
+	.pinboard li.pin_blue .todo-due {
+		background: blue;
+	}
+	.pinboard li.pin_orange .todo-due {
+		background: orange;
+	}
+	.pinboard li.pin_black .todo-due {
+		background: black;
+	}
+	.pinboard li.pin_yellow .todo-due {
+		background: #f5c238;
+	}
+	.pinboard li.pin_pink .todo-due {
+		background: #f538d4;
+	}
+	.pinboard li.pin_red .todo-due {
+		background: red;
+	}
+	.pinboard li.pin_lightblue .todo-due {
+		background: #5dc7ea;
+	}
+	.pinboard li.pin_green .todo-due {
+		background: green;
+	}
+	
+/* Item page
+--------------------------------------------- */
+	.pinboard #td-item .todo-body {
+		background: none;
+		border-bottom: 1px solid #CCC;
+		padding: 0.5em 0;
+		margin-bottom: 1em;
+		display: block;
+	}
+	.pinboard #td-item .td-info {
+		padding: 0;
+		margin: 0;
+		font-size: 85%;
+		color: #999;
+		margin-top: -1em;
+		margin-bottom: 1em;
+	}
+	.pinboard #td-item {
+		float: none;
+		width: 200px;
+	}
+
+/* Todo form 
+--------------------------------------------- */
+	#newtodo {
+		width: 100%;
+	}
+	#newtodo fieldset {
+		padding: 0.5em 0.5em 0.5em 0.5em;
+		border: none;
+		float: none !important;
+		width: 97%;
+		margin: 0 0 1em 0;
+		color: #777;
+		background: #F5F7F2;
+		border: 1px solid #DEE4CD;
+		-moz-border-radius: 10px;
+		border-radius: 10px;		
+	}
+	.todo-submitarea {
+		padding: 0;
+		margin: 0;
+		text-align: right;
+	}
+	#newtodo input {
+		margin: 0;
+		width: 75%;
+		padding: 0.2em;	
+		margin-right: -1em;
+		margin-left: 30px;
+		border: 1px solid #DEE4CD;
+	}
+	#newtodo input.todo-submit, input.todo-submit {
+		height: auto;
+		width: auto;
+		display: inline;
+		float: right;
+		padding: 0.1em 0.6em;
+		border: 1px solid #999;
+		margin-right: 0.5em;
+		color: #000;
+		-moz-border-radius: 10px;
+		border-radius: 10px;
+	}
+	.newcolor input.todo-submit {
+		margin: 0;
+		width: auto;
+	}
+	#newtodo input.todo-submit:hover {
+		cursor: pointer;
+	}
+
+/* Todo - sorting & tips
+--------------------------------------------- */
+	.sorting {
+		float: right;
+	}
+	.todo-nav {
+		font-size: 85%;
+		padding: 0.3em 0;
+		margin: 0;
+		margin-top: 2em;
+		color: #000;
+	}
+	.tips {
+		float: right;
+		color: #CCC;
+		font-size: 85%;
+		margin-top: -0.1em;
+	}
+	.td-mv {
+		color: #999;
+		margin-left: 0.5em;
+	}
+	
+/* List options for new todo
+--------------------------------------------- */
+	div#pinoptions {
+		position: absolute;
+		background: #FFFFFF;
+		border: 1px solid #DEE4CD;
+		padding: 1em;
+		margin: 0;
+		z-index: 2000;
+		width: 200px;
+		margin-top: 2em;
+		-moz-box-shadow: 5px 5px 5px #ebebeb;
+		-webkit-box-shadow: 5px 5px 5px #ebebeb;
+		box-shadow: 5px 5px 5px #ebebeb;
+		display: none;
+	}
+	div#pinoptions ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		text-align: left;
+		float: none !important;
+	}
+	div#pinoptions ul li {
+		display: block;
+		margin: 0.2em 0;
+		padding: 0;
+		background: none;
+		border: none;
+	}
+	#plg-form fieldset #pinoptions input[type="radio"]  {
+		display: inline;
+		margin: 0 0.5em 0 0 !important;
+		padding: 0 !important;
+		width: auto !important;
+	}
+	div#pinoptions ul li span, .showpin span.pin_grey {
+		*background: url("images/pins/grey.gif") 0 0 no-repeat;
+		padding-left: 20px;
+		padding-top: 0.2em;
+		padding-bottom: 0.2em;
+		font-size: 85%;
+	}
+	#pinselector, .showpin {
+		position: absolute;	
+		width: 30px;
+		display: block;	
+	}
+	.showpin span {
+		padding: 0 1em;
+		margin-left: 10px;
+	}
+	#pinselector span {
+		width: 15px;
+		padding: 0 1em;
+		display: inline;
+	}
+	#pinselector span.pin_grey {
+		*background: url("images/pins/grey.gif") 0 0 no-repeat;
+		width: 15px;
+		padding: 0 1em;
+		display: inline;
+	}
+	#pinselector .show-options {
+		background: url("images/downarrow.gif") 0 5px no-repeat;
+		display: block;
+		width: 15px;
+		position: absolute;
+		padding: 0;
+		display: inline;
+	}
+	
+/* Todo dragging
+--------------------------------------------- */
+	.dragbox {
+		margin-bottom: 3em;
+		margin-top: -2em;
+	}
+	.dragbox h4 {
+		color: black;
+		margin-bottom: 0.3em;
+	}
+	.dragbox h4 a {
+		border: none;
+		font-size: 85%;
+	}
+	.dragbox div {
+		padding: 0;
+		border: 2px dashed #CCC;
+		background: #f4f4f4;
+		-moz-border-radius: 10px;
+		border-radius: 10px;
+	}
+	.dragbox div p {
+		margin: 0;
+		padding: 1em;
+		padding-left: 3em;
+		font-size: 85%;
+		color: #000000;
+	}
+	#todo-mine div {
+		background: #fff7e2;
+	}
+	#todo-completed div {
+		background: #e6fde1;
+	}
+	#todo-mine h4 {
+		*background: url("images/star.png") 0 0 no-repeat;
+		*padding-left: 25px;
+	}
+	#todo-completed h4 {
+		*background: url("images/completed.png") 0 0 no-repeat;
+		*padding-left: 25px;
+	}
+	#todo-mine h4, #todo-completed h4 {
+		border-bottom: 5px solid #f8f2d3;
+		padding-bottom: 5px;
+	}
+	.mytodo {
+		*background: url("images/star.png") -5px -5px no-repeat;
+	}
+	.completedtd {
+		*background: url("images/completed.png") -5px -5px no-repeat;
+		margin-left: -10px;
+	}
+	.compeleted_todo {
+		*background: url("images/completed.png") 0 0 no-repeat;
+	}
+	
+	#todo-mine h4:before,
+	#todo-completed h4:before,
+	.completedtd:before,
+	.mytodo:before,
+	.pinboard li .complete:before {
+		content: "";
+		width: 16px;
+		height: 16px;
+		font-size: 16px;
+		font-family: 'Fontcons';
+		color: #aaa;
+		margin-right: 0.3em;
+		vertical-align: middle;
+	}
+	#todo-completed h4:before,
+	.completedtd:before,
+	.pinboard li .complete:before {
+		content: "\2714";
+		color: #55c64c;
+		font-weight: normal;
+	}
+	#todo-mine h4:before,
+	.mytodo:before {
+		content: "\2606";
+		color: #f4ce7d;
+	}
+	
+/* Todo list options
+--------------------------------------------- */
+	.listoptions {
+		display: block;
+		margin: 0 1em;
+		text-align: right;
+	}
+	.tdlists li span.listoptions a {
+		background: none;
+		padding: 0;
+		margin: 0;
+		color: #6699cc;
+		display: inline;
+	}
+	
+/* Pop-up calendar
+--------------------------------------------- */
+	input.todocal {
+	  width: 74px;
+	  display: inline;
+	}
+	button.todocal {
+	  background: url("/components/com_projects/assets/img/icons/cal.png") 0 0 no-repeat;
+	  border: 0;
+	  cursor: pointer;
+	  display: inline;
+	  height: 20px;
+	  margin-top: -2em;
+	  width: 20px;
+	  margin-left: 5px;
+	}
+	.todocal table td {
+		font-size: 85%;
+	}
+	.todocal table tbody, .todocal table thead, .todocal table caption {
+		font-size: 85%;
+		background: #FFFFFF !important;
+	}
+	.todocal table caption {
+		text-align: center;
+		color: #666;
+	}
+	.todocal table {
+		border: none !important;
+	}
+	.todocal table td, .todocal table thead th {
+		padding: 0.2em 0.7em;
+		border: 1px solid #87b6cb;
+	}
+	.todocal table thead th  {
+		border: none;
+	}
+	.todocal div {
+		background: #FFFFFF !important;
+		border: 2px solid #87b6cb;
+		padding: 0 0.5em 0.5em 0.5em;
+		margin: 0;
+		-moz-box-shadow: 5px 5px 5px #ebebeb;
+		-webkit-box-shadow: 5px 5px 5px #ebebeb;
+		box-shadow: 5px 5px 5px #ebebeb;	
+	}
+	.todocal table td {
+		color: #CCCCCC;
+		background: #ecf1f3 !important;
+	}
+	.todocal table td.active {
+		color: #FFFFFF;
+		font-weight: bold;
+		background: #87b6cb !important;
+	}
+	.todocal table td.invalid {
+		color: #87b6cb;
+		background: #d9eff9 !important;
+	}
+	.todocal table td.valid:hover {
+		background: #87b6cb !important;
+		color: #FFFFFF;
+		cursor: pointer;
+	}
+	.todocal table td.valid {
+		background: #FFFFFF !important;
+		color: black;
+	}
+	.todocal .next {
+		float: right;
+		width: 0px; 
+		height: 0px; 
+		border-top: 5px solid transparent;  /* left arrow slant */
+		border-bottom: 5px solid transparent; /* right arrow slant */
+		border-left: 5px solid black; /* top, add background color here */
+		color: #FFFFFF;
+		margin-top: 0.5em;
+	}
+	.todocal .next:hover {
+		border-left:5px solid #87b6cb;
+		cursor: pointer;
+	}
+	.todocal .prev {
+		float: left;
+		width: 0px; 
+		height: 0px; 
+		border-top: 5px solid transparent;  /* left arrow slant */
+		border-bottom: 5px solid transparent; /* right arrow slant */
+		border-right: 5px solid black; /* top, add background color here */
+		color: #FFFFFF;
+		margin-top: 0.5em;
+	}
+	.todocal .prev:hover {
+		border-right: 5px solid #87b6cb;
+		cursor: pointer;
+	}
+	.todocal .year {
+		margin-left: 0.5em;
+	}
+
+/* Todo - delete list confirmation
+--------------------------------------------- */
+	
+	.tdlists li .confirmaction p {
+		padding: 0;
+		margin: 0.5em 0 0.1em 0;
+	}
+	.tdlists li .confirmaction a {
+		background: none;
+		color: #6699cc;
+		padding: 0;
+		font-weight: normal;
+	}
+
+/* Todo - delete comment/to-do item confirmation
+--------------------------------------------- */
+	/*
+	.pinboard  ul#td-comments li:nth-child(2n-1) #confirm-box { 
+		-webkit-transform: rotate(-2deg);
+		-moz-transform: rotate(-2deg);
+		-o-transform: rotate(-2deg);
+		transform: rotate(-2deg);
+	}
+	.pinboard ul#td-comments li:nth-child(2n-2) #confirm-box{
+		-webkit-transform: rotate(2deg);
+		-moz-transform: rotate(2deg);
+		-o-transform: rotate(2deg);
+		transform: rotate(2deg);
+	}*/
+
+/* Todo - Comments (item page)
+--------------------------------------------- */
+	.td-comment {
+		padding: 0.5em;
+		margin: 0;
+		margin-top: 1em;
+		display: block;
+		width: 90%;
+	}
+	.pinboard h4.comment-blurb {
+		*padding-left: 18px !important;
+		*background: url("/components/com_projects/assets/img/icons/comment.png") 0 2px no-repeat;
+	}
+	.pinboard ul#td-comments {
+		display: block;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		margin-top: 1.5em;
+	}
+	.pinboard ul#td-comments li {
+		margin-left: 0;
+		float: none;
+		display: block;
+		background: #fdfbe9;
+		min-height: 30px;
+		width: 85%;
+		border: 1px solid #CCC;
+		padding: 0 1em;
+	}
+	/* Do not rotate on hover */
+	/*
+	.pinboard  ul#td-comments li:nth-child(2n-1):hover {
+		-webkit-transform: rotate(2deg);
+		-moz-transform: rotate(2deg);
+		-o-transform: rotate(2deg);
+		transform: rotate(2deg);
+	}
+	.pinboard ul#td-comments li:nth-child(2n-2):hover {
+		-webkit-transform: rotate(-2deg);
+		-moz-transform: rotate(-2deg);
+		-o-transform: rotate(-2deg);
+		transform: rotate(-2deg);
+	}*/
+	.pinboard .hint {
+		font-size: 85%;
+		color: #CCC;
+	}
+	.pinboard ul#td-comments li .todo-assigned {
+		margin: 0 0 1em 0 ;
+	}
+	.pinboard ul#td-comments li .todo-assigned span.date {
+		color: #999;
+	}		
+	
+/* Font-based styles
+--------------------------------------------- */
+
+	.trash:before,
+	.checked:before,
+	.pinboard li .comment-blurb a:before {
+		content: "";
+		width: 16px;
+		height: 16px;
+		font-size: 16px;
+		font-family: 'Fontcons';
+		color: #aaa;
+		margin-right: 0.3em;
+		vertical-align: middle;
+	}
+	.pinboard li .comment-blurb a:before {
+		content: "\f075";
+		width: 12px;
+		height: 12px;
+		font-size: 12px;
+		color: #ccc;
+	}
+	.checked:before {
+		content: "\2714";
+		color: #55c64c;
+	}
+	.trash:before {
+		content: "\f014";
+	}
+	
+/* JQuery calendar (datepicker)
+--------------------------------------------- */	
+	#ui-datepicker-div {
+		background: #fef8e6;
+		border: 2px solid #fddb72;
+	}
+	#ui-datepicker-div table {
+		border: none;
+	}
+	#ui-datepicker-div a {
+		border: none;
+	}
+	.ui-datepicker { width: 17em; padding: .2em .2em 0; display: none; }
+	.ui-datepicker .ui-datepicker-header { position:relative; padding:.2em 0; background: #fddb72; color: #000; }
+	.ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next { position:absolute; top: 2px; width: 1.8em; height: 1.8em; }
+	.ui-datepicker .ui-datepicker-prev { left:2px; font-size: 85%; }
+	.ui-datepicker .ui-datepicker-next { right:10px; font-size: 85%; }
+	.ui-datepicker .ui-datepicker-prev span, .ui-datepicker .ui-datepicker-next span { display: block; position: absolute; left: 50%; margin-left: -8px; top: 50%; margin-top: -8px;  }
+	.ui-datepicker .ui-datepicker-title { margin: 0 2.3em; line-height: 1.8em; text-align: center; }
+	.ui-datepicker .ui-datepicker-title select { font-size:1em; margin:1px 0; }
+	.ui-datepicker select.ui-datepicker-month-year {width: 100%;}
+	.ui-datepicker select.ui-datepicker-month, 
+	.ui-datepicker select.ui-datepicker-year { width: 49%;}
+	.ui-datepicker table {width: 100%; font-size: .9em; border-collapse: collapse; margin:0 0 .4em; }
+	.ui-datepicker th { padding: .7em .3em; text-align: center; font-weight: bold; border: 0;  }
+	.ui-datepicker td { border: 0; padding: 1px; text-align: center; }
+	.ui-datepicker td span, .ui-datepicker td a { display: block; padding: .2em; text-align: right; text-decoration: none; }
+	.ui-datepicker .ui-datepicker-buttonpane { background-image: none; margin: .7em 0 0 0; padding:0 .2em; border-left: 0; border-right: 0; border-bottom: 0; }
+	.ui-datepicker .ui-datepicker-buttonpane button { float: right; margin: .5em .2em .4em; cursor: pointer; padding: .2em .6em .3em .6em; width:auto; overflow:visible; }
+	.ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current { float:left; }
+
+/* Misc
+--------------------------------------------- */
+	
+/* 	Fixes for smaller screens
+--------------------------------------------- */
+	@media all and (max-width: 800px) {
+		.dragbox {
+			display: none;
+			margin: 0;
+		}
+	}
+	
+		
+/* IE7 hacks 
+--------------------------------------------- */
+	

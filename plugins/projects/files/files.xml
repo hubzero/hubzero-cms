@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package        hubzero-cms
+@file           plugins/projects/blog.xml
+@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+
+Copyright 2005-2011 Purdue University. All rights reserved.
+
+This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+
+The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+HUBzero is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+HUBzero is a registered trademark of Purdue University.
+-->
+
+<extension version="1.7" type="plugin" group="projects">
+	<name>Projects - Files</name>
+	<author>Alissa Nedossekina</author>
+	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<description>Manage project files</description>
+	<files>
+		<filename plugin="files">files.php</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_projects_files.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="display_limit" type="text" menu="hide" label="Display limit" default="50" description="Number of items to return" />
+				<field name="maxUpload" type="text" menu="hide" label="Max file upload (bytes)" default="104857600" description="Maximum upload file size for project files in bites (master default set to 100MB (104857600 bytes))" />
+				<field name="maxDownload" type="text" menu="hide" label="Max file download  (bytes)" default="104857600" description="Maximum download file size for project files in bites (master default set to 100MB (104857600 bytes))" />
+				<field name="tempPath" type="text" menu="hide" default="/site/projects/temp" label="Temp file directory" description="File path for storing temp files during batch download" />	
+			</fieldset>
+		</fields>
+	</config>
+</extension>

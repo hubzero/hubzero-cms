@@ -1,0 +1,118 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Project team CSS
+	-- -- -- -- -- -- --
+
+*/
+
+	.add-team {
+		margin: 2.5em 0;
+	}
+	#hubForm .add-team input {
+		width: 35%;
+		display: inline;
+	}
+	#hubForm .add-team label {
+		display: inline;
+		min-width: 600px;
+	}
+	#hubForm .add-team input.btn {
+		width: auto;
+	}	
+	#team_manage {
+		padding-bottom: 1em;
+	}
+	.userinvited {
+		line-height: 1em;
+		background: url("images/user_invited.gif") 0 4px no-repeat;
+	}
+	.useractive {
+		line-height: 1em;
+		background: url("images/user_active.gif") 0 4px no-repeat;
+	}
+	.usercurator {
+		line-height: 1em;
+		background: url("images/user_curator.gif") 0 4px no-repeat;
+	}
+	.userowner {
+		line-height: 1em;
+		background: url("images/user_owner.gif") 0 4px no-repeat;
+	}
+	.usercreator {
+		line-height: 1em;
+		background: url("images/user_creator.gif") 0 4px no-repeat;
+	}
+	.userinactive {
+		line-height: 1em;
+		background: url("images/user_inactive.gif") 0 4px no-repeat;
+	}
+	.invited {
+		display: block;
+		color: #9bbc7d;
+		font-style: italic;
+		font-weight: bold;
+	}
+	.instr {
+		position: absolute;
+		margin-top: -1.5em;
+		*margin-top: 0;
+	}
+	#edit-project-content .instr {
+		*margin-top: -1em;
+	}
+	.frole:hover {
+		cursor: pointer;
+	}
+	.frole {
+		border-bottom: 1px dotted #CCC;
+	}
+	
+/* Publication authors listing
+--------------------------------------------- */
+	#author-access {
+		margin-top: 2em;
+	}
+	
+/* Team table 
+--------------------------------------------- */
+	table th.th_image {
+		width: 30px;
+	}
+	table th.activesort {
+		font-weight: bold !important;
+	}
+	table th.activesort a {
+		color: #000;
+	}
+	table#teamlist img {
+		border: 1px solid #CCCCCC;
+	}
+	table.listing tbody tr.native {
+		background: #effeee;
+		border: 1px solid #effeee;
+	}
+	table.listing tbody tr.u_invited {
+		background: #f6f6f6;
+		border: 1px solid #f6f6f6;
+	}
+
+/* Misc
+--------------------------------------------- */
+	.online {
+		color: #52ad4b;
+		font-weight: bold;
+	}
+	
+/* IE7 hacks 
+--------------------------------------------- */
+	

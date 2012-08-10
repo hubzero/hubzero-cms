@@ -1,0 +1,220 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Project blog CSS
+	-- -- -- -- -- -- --
+
+*/
+
+/* Blog form
+--------------------------------------------- */
+
+	#blab {
+		width: 100%;
+	}
+	#blab fieldset {
+		padding: 0.5em 1em;
+		border: none;
+		float: none !important;
+		width: 95%;
+		margin: 1em 0 1em 0;
+		color: #777;
+		background: #F5F7F2;
+		border: 1px solid #DEE4CD;
+		-moz-border-radius: 10px;
+		border-radius: 10px;		
+	}
+	#blab textarea {
+		margin: 0;
+		height: 40px;
+		width: 98%;
+		padding: 0.2em;	
+		display: block;
+	}
+	#blab input, .content-feed .addcomment input {
+		width: auto;
+	}
+	#blab input.blog-submit, .content-feed .addcomment input.c-submit {
+		padding: 0.1em 0.6em;
+		border: 1px solid #999;
+		margin-right: 0.5em;
+		margin-top: 0.5em;
+		color: #000;
+		-moz-border-radius: 10px;
+		border-radius: 10px;
+	}
+	.content-feed #blab input.blog-submit:hover {
+		cursor: pointer;
+	}
+	.blog-submit {
+		display: block;
+		margin: 0;
+		padding: 0;
+		text-align: right;
+	}
+	#blog-submitarea {
+		padding: 0;
+		margin: 0;
+		text-align: right;
+		width: 100%;
+	}
+	#blog-submitarea input {
+		float: right;
+	}
+	.blog-time {
+		font-size: 85%;
+		float: right;
+		color: #999;
+		margin-left: 2em;
+	}
+
+/* Side blocks
+--------------------------------------------- */
+
+	.content-feed .sidebox {
+		margin-bottom: 2em;
+		margin-top: 1em;
+	}
+	.content-feed .sidebox h4 a.hlink, .content-feed .sidebox h4 a.hlink:hover {
+		border: none;
+		color: #333;
+	}
+	.content-feed .sidebox p, .sidebox p {
+		margin-top: 0;
+		padding: 0.5em;
+	}
+	.content-feed .sidebox p.editing {
+		padding-top: 0;
+	}
+	.content-feed .sidebox h4 span, #hubForm .infofeed h4 span {
+		float: right;
+		font-weight: normal;
+		font-size: 85%;
+	}	
+
+/* News feed 
+--------------------------------------------- */
+	.infofeed {
+		margin-bottom: 2em;
+		width: 98%;
+	}
+	.infofeed ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		margin-top: 1em;
+	}
+	.infofeed ul li {
+		border-bottom: 1px solid #f2f2f2;
+		padding-top: 0.3em;
+		padding-bottom: 0.7em;
+		padding-right: 0;
+		margin: 0;
+		color: #999;
+	}
+	.infofeed ul li div {
+		padding-right: 1em;
+	}
+	.infofeed h4, .sumup {
+		padding: 0.3em 0.5em;
+		background: #ededed;
+		border-top: 1px solid #cccccc;
+	}
+	.infofeed .editing {
+		margin-top: 0;
+		margin-bottom: 0;
+		padding-left: 0.5em;
+		border-bottom: 1px solid #ececec;
+	}
+	.infofeed span.body {
+		font-style: italic;
+		color: #444;
+		margin: 0;
+		padding: 0 100px 0 0;
+		display: inline-block;
+	}
+	.infofeed li {
+		background-position: 0 0.8em;
+	}
+	.infofeed span.comment {
+		margin: 0;
+		padding: 0;
+		padding-left: 20px;
+		font-size: 85%;
+	}
+	.infofeed span.actor {
+		font-weight: bold;
+		color: #666;
+	}
+	.infofeed .mline:hover {
+		background: none !important;
+	}
+	.infofeed .confirmaction {
+		font-size: 85%;
+		padding-top: 0;
+	}
+	.infofeed .confirmaction p {
+		text-align: center;
+	}
+	.infofeed .activity:before {
+		position: absolute;
+		margin-left: -20px;
+	}
+	.infofeed .activity {
+		padding-left: 20px;	
+	}
+	.mline:hover .m_options, .quote:hover .m_options {
+		display: block;
+	}
+	.infofeed .activity:before {
+		color: #CCC;
+	}
+	.infofeed .admin:before {
+		color: #fce48a;
+	}
+	.admin-action:before {
+		color: #fce48a !important;
+	}
+
+/* Misc
+--------------------------------------------- */
+	
+	#plg-content .infofeed .mline {
+		display: block;
+		margin-bottom: 0;
+		padding-top: 0.5em;
+	}
+	
+/* IE7 hacks 
+--------------------------------------------- */
+	
+	#blab input.blog-submit {
+		*text-align: center;
+	}
+	#blab {
+		*margin-bottom: 2em;
+	}
+	#blog-submitarea {
+		*padding-bottom: 1em;
+	}
+	#hubForm .infofeed h4 span, .content-feed .sidebox h4 span {
+		*margin-top: -1.5em;
+	}
+	#blab fieldset {
+		*padding-left: 35px;
+		*background: #F5F7F2 url("images/talker_big.gif") 0 5px no-repeat;
+		*width: 93%;	
+	}
+	.infofeed span.body {
+		*padding: 0 100px 0 20px;
+	}
+	

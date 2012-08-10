@@ -1,0 +1,404 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Project notes CSS
+	-- -- -- -- -- -- --
+
+*/
+
+/* Project Notes 
+--------------------------------------------- */
+	.wiki-content {
+		margin-top: 1.5em;
+		margin-left: 25px;
+	}
+	.wiki-content textarea {
+		width: 95%;
+		height: auto;
+		min-height: 300px;
+		border: 1px dashed #a8c7ec;
+		padding: 0.5em;
+		background: #dfe5ed;
+		-moz-box-shadow: inset 0 0 10em #FFF;
+		-webkit-box-shadow: inset 0 0 10em #FFF;
+	}
+	.wiki-lastedit {
+		font-size: 85%;
+		color: #999;
+		padding: 0;
+		margin: -1em 0 0.5em 0;
+		margin-left: 25px;
+		position: absolute;
+	}
+	#notes-area {
+		width: 95%;
+		min-height: 300px;
+		border: 1px dashed #a8c7ec;
+		padding: 0.5em 0.8em;
+	}
+	#notes-area p {
+		margin-top: 0;
+	}
+	#notes-area:hover {
+		background: #f8fbfe;
+	}
+	.wiki-submit input {
+		padding: 0.1em 0.6em;
+		border: 1px solid #999;
+		background: url("/components/com_projects/assets/img/backgrounds/bg_btn.gif") 0 0 repeat-x;
+		margin-right: 0.5em;
+		margin-top: 0.5em;
+		color: #000;
+		-moz-border-radius: 10px;
+		border-radius: 10px;
+	}
+	.wiki-submit {
+		float: right;
+		display: block;
+		margin: 0;
+		margin-top: -3em;
+		margin-right: 25%;
+	}
+	.wiki-cancel {
+		font-size: 85%;
+		border-bottom: 1px solid #dde6f2;
+	}
+	.content-notes .aside {
+		margin-top: -2em !important;
+	}
+	.content-notes .reorder {
+		font-size: 85%;
+		margin-top: -3em;
+	}
+	.content-notes .reorder a {
+		color: #999;
+		border-bottom: 1px dotted #666;
+	}
+	#notes-wrap .addanote {
+		float: right;
+		font-size: 90%;
+		margin-top: -2em;
+	}
+	.wrongvalue {
+		border: 2px solid #dba59f;
+		padding: 0.2em;
+		background: #f5ebea;
+	}
+	
+/* Notes - wiki content - style fixes and adjustments
+--------------------------------------------- */
+	#notes-wrap {
+		width: 100%;
+		margin: 0;
+		padding: 0;
+		margin-top: 1em;
+	}
+	#notes-wrap .main {
+		min-width: 200px;
+		padding: 0;		
+	}
+	#notes-wrap .sidebox h4 {
+		padding-left: 0.5em !important;
+	}
+	#notes-wrap .sidebox li {
+		padding: 0.3em 0;
+	}
+	#notes-wrap .sidebox li.active {
+		background: #FFFFFF;
+		font-weight: bold;
+	}
+	#notes-wrap .sidebox li.active a {
+		color: #000000;
+	}
+	#notes-wrap .sidebox li.addnew {
+		padding-left: 20px;
+	}
+	#notes-content {
+		padding: 1em 1.5em;
+		margin: 0;
+		border: 1px dashed #a8c7ec;
+		width: auto;
+		overflow: hidden;
+		-moz-box-shadow: inset 0 0 2em #dfe5ed;
+		-webkit-box-shadow: inset 0 0 2em #dfe5ed;
+	}
+	.withside #notes-content {
+		margin-top: -1em;
+	}
+	#notes-content #hubForm fieldset {
+		padding-left: 2%;
+		width: 66%;
+	}
+	#notes-content #hubForm h3 {
+		display:none;
+	}
+	#notes-content .hide {
+		display: none;
+	}	
+	#notes-content .s-notes {
+		padding: 1em;
+		text-align: center;
+	}
+	#notes-content .s-notes a {
+		padding: 2em;
+		padding-left: 4em;
+		border: none;
+		background: transparent url("/components/com_projects/assets/img/features/notes.png") 5px center no-repeat;
+	}
+	.note {
+		padding: 0.3em 0;
+		padding-left: 20px;
+		background: transparent url("images/wikipage.png") 0 center no-repeat;
+	}
+	.wikitemplate {
+		padding: 0.3em 0;
+		padding-left: 20px;
+		background: transparent url("images/wikitemplate.png") 0 center no-repeat;
+	}
+	.wikilevel_2, .wikilevel_3, .wikilevel_4 {
+		margin-left: 2em;
+		background: url("images/childlink.gif") 0 0 no-repeat;
+	}
+	.wikilevel_3 {
+		margin-left: 4em;
+	}
+	.wikilevel_4 {
+		margin-left: 6em;
+	}
+	.withside #notes-content .warning {
+		width: 50%;
+	}
+	#notes-content h2 {
+		font-size: 130%;
+		color: #728490;
+	}
+	.withside #notes-content .aside {
+		display: none; /* hide side content */
+		float: none;
+		width: 0;
+		margin: 0 !important;
+		padding: 0;
+	}
+	.withside #notes-content .subject {		
+		padding: 1em 0.5em;
+		margin: 0 !important;
+		display: block;
+		float: none;
+		width: auto;
+	}
+	#notes-content #sub-section-menu {
+		display: block;
+		margin-bottom: 1em;
+		height: 20px;
+		font-size: 85%;
+		padding: 0;
+	    border: none;
+		background: #f5f5f5;	
+	}
+	#notes-content #sub-section-menu a {
+		color: #666;
+		border-bottom: 1px dotted #CCC;
+	}
+	#notes-content #sub-section-menu .active a {
+		font-weight: bold;
+		border: none;
+		color: #000;
+	}
+	#notes-content #sub-section-menu a:hover {
+		color: #000000;
+		border-bottom: 1px dotted #666;
+	}
+	#notes-content #section-useroptions {
+		font-size: 85%;
+	}
+	#notes-wrap .wiki-help {
+		margin: -1em 0 2em 0 !important;
+		font-size: 85% !important;
+		color: #999 !important;
+	}
+	#notes-wrap img {
+		max-width: 100%;
+	}
+
+/* Wiki style fixes
+--------------------------------------------- */
+	#section-useroptions li:last-child {
+		border: none;
+	}
+	
+/* Wiki Attachments
+--------------------------------------------- */
+	#notes-wrap #filer {
+		border: 0;
+		background: transparent;
+		overflow: hidden;
+		height: auto !important;
+		min-height: 280px !important;
+	}
+
+/* Wiki Reference 
+--------------------------------------------- */
+	.wiki-reference {
+		background: #eef5fd;
+		font-size: 90%;
+	}
+	.wiki-reference caption, h4.wiki-tips {
+		font-size: 100%;
+		background: #dae4ef;
+	}
+	h4.wiki-tips {
+		font-size: 90%;
+	}
+
+/* Wiki Comments
+--------------------------------------------- */
+	#plg-content #notes-wrap .comments li {
+		background: none;
+		padding: 0;
+	}
+	#notes-content #commentlist-title {
+		color: #728490;
+		font-size: 110%;
+		margin-bottom: 0;
+		margin-left: 0;
+	}
+	#notes-wrap .comments li:before {
+		content: "";
+	}
+	
+/* Wiki pages */
+	.wikipage h1,
+	.wikipage h1,
+	.wikipage h2,
+	.wikipage h3,
+	.wikipage h4,
+	.wikipage h5,
+	.wikipage h6 {
+		color: #333;
+		text-shadow: none;
+		font-weight: bold;
+		padding: 0;
+		margin: 0.618em 0;
+		border: none;
+		line-height: 1.2;
+	}
+	.wikipage h1 {
+		font-size: 1.8em;
+	}
+	.wikipage h2 span {
+		color: #333;
+	}
+	.wikipage h1, 
+	.wikipage h2, 
+	.wikipage h3 {
+		margin-left: -18px;
+	}
+	.wikipage ul,
+	.wikipage ol {
+		padding: 0;
+		margin: 0 0 1em 0;
+	}
+	.wikipage ul {
+		list-style-type: disc;
+	}
+	.wikipage ol {
+		list-style-type: decimal;
+	}
+	.wikipage li {
+		padding: 0;
+		margin: 0em 0 0em 2em;
+	}
+	.wikipage ul li {
+	}
+	.wikipage dd {
+		color: #888;
+	}
+	.wikipage table {
+		border: 2px solid #ccc;
+		width: auto;
+	}
+	.wikipage table td, 
+	.wikipage table th {
+		border: 1px solid #ccc;
+		margin: 0;
+		padding: 0.2em 0.4em;
+	}
+	.wikipage blockquote, #preview blockquote {
+		margin: 2em 0 2.5em 0;
+		padding: 5px 0 5px 10px;
+	}
+	.wikipage pre, #preview pre {
+		font-family: "Bitstream Vera Sans Mono", Courier, Monaco, ProFont, "American Typewriter", "Andale Mono", monospace;
+		color: #555;
+		background: #f7f7f7;
+		border: 1px solid #d7d7d7;
+		margin: 1em 1.75em;
+		padding: .25em;
+		overflow: auto;
+		font-size: 0.85em;
+		line-height: 1.95em;
+		white-space: pre;
+		white-space: pre-wrap;
+		word-wrap: break-word;
+		white-space: -moz-pre-wrap;
+		white-space: -pre-wrap;
+		white-space: -o-pre-wrap;
+
+	}
+/* Figures */
+	.wikipage .figure img,
+	#preview .figure img  {
+		margin: 0.5em;
+		padding: 0;
+		background: transparent;
+		text-align: center;
+	}
+	.wikipage .figure,
+	#preview .figure {
+		display: inline-block;
+		background: #fff;
+		border: 1px solid #eaeaea;
+	}
+	.wikipage .figure a,
+	#preview .figure a {
+		border: none;
+	}
+	.wikipage .figcaption,
+	.figcaption {
+		display: block;
+		margin: 0;
+		padding: 0.5em;
+		background: #efefef;
+	}
+	
+/* Preview */
+	#preview .section {
+		padding: 0;
+	}
+	#preview .main .subject {
+		max-height: 400px;
+		overflow: auto;
+		border: 2px solid #eee;
+		padding: 1em;
+		margin: 1em 1em 0 0;
+		background: url("/components/com_wiki/assets/img/draft.gif");
+	}
+	#preview .aside p {
+		padding-left: 2em;
+	}
+
+/* Misc
+--------------------------------------------- */
+	
+/* IE7 hacks 
+--------------------------------------------- */
+

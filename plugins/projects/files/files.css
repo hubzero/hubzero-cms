@@ -1,0 +1,324 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Project files CSS
+	-- -- -- -- -- -- --
+
+*/
+
+/* Files management - file upload
+--------------------------------------------- */
+	#manage_assets {
+		padding: 0;
+		margin: 0;
+		padding-left: 1em;
+		margin-top: -0.2em;
+		margin-left: 2em;
+		float: right;
+		display: inline;
+		width: auto;	
+	}
+	#manage_assets label, #pub-editor .c-inner #manage_assets label {
+		padding: 0;
+		margin: 0;
+		padding-left: 25px;
+		margin-bottom: 1em;
+	}
+	#manage_assets .addnew {
+		padding: 0.5em 0 0.5em 20px;
+		background-position: 1em 0.3em;
+		border-left: 1px solid #CCC;
+		margin-left: 2em;
+		padding-left: 3em;
+		*background: none;
+	}
+	#filerForm #manage_assets label {
+		display: block;
+	}
+	#hubForm label.inliner, #filerForm #manage_assets label.inliner, #filerForm label.inliner {
+		display: inline;
+		padding: 0;
+	}
+	#hubForm label.inliner input, 
+	#hubForm label.inliner select, 
+	#filerForm label.inliner select,
+	#filerForm label.inliner input,
+	#filerForm #manage_assets label.inliner,
+	#hubForm .inliner div {
+		width: auto;
+		display: inline;
+	}
+	#manage_assets label.oneline {
+		margin-left: 0;
+		padding-left: 0;
+		display: block;
+	}
+	
+/* Files management icons
+--------------------------------------------- */
+	.uptoparent {
+		background: url("images/uptoparent.png") 0 0 no-repeat;
+		padding-left: 20px;
+	}
+	.shared {
+		background: url("images/shared.gif") 0 0 no-repeat;
+		padding: 0.5em;
+		padding-left: 32px;
+	}
+	.google {
+		background: url("images/google.gif") 0 0 no-repeat;
+		padding-left: 20px;
+	}
+	
+/* File preview window 
+--------------------------------------------- */
+	#preview-window {
+		padding: 1em;
+		border: 1px solid #CCC;
+		-moz-box-shadow: 5px 5px 5px #999;
+		-webkit-box-shadow: 5px 5px 5px #999;
+		box-shadow: 5px 5px 5px #999;
+		background: #FFFFFF;
+		width: 300px;
+		min-height: 50px;
+		position: absolute;
+		left: 30%;
+		top: 0;
+		display: none;
+		overflow: hidden;
+		font-size: 85%;
+		-moz-border-radius: 15px;
+		border-radius: 15px;
+		z-index: 999;
+	}
+	#preview-window pre {
+		font-size: 90%;
+	}
+	#preview-image {
+		text-align: center;
+		width: 100%;
+	}
+	#preview-image img {
+		max-width: 100%;
+		max-height: 150px;
+	}
+	
+/* Disk space indicator
+--------------------------------------------- */
+	#indicator-wrapper {
+		padding: 0;
+		margin-left: 1em;
+		margin-top: 0.3em;
+		border: 1px solid #CCC;
+		background: #FFFFFF;
+		width: 100px;
+		height: 10px;
+		position: absolute;
+	}
+	#indicator-area {
+		background: #d0e4fe;
+		height: 10px;
+		width: 100px;
+		padding: 0;
+		position: absolute;
+		border-right: 1px solid #CCC;
+	}
+	#indicator-value {
+		position: absolute;
+		text-align: center;
+		color: #5180c0;
+		width: 100px;
+		margin-top: -0.3em;
+		font-size: 85%;
+	}
+	.quota-warning #indicator-area, #disk-usage.quota-warning #indicator-area, #disk-usage.quota-warning .l-regular {
+		background: #fedad0;
+	}
+	.quota-warning #indicator-value, #disk-usage.quota-warning #indicator-value, .approaching-quota  {
+		color: #df7052;
+	}
+	#indicator-value  span {
+		position: relative;
+	}
+	#disk-usage {
+		border: 1px dotted #CCC;
+		padding: 1em 0;
+		width: 95%;
+		min-height: 100px;
+	}
+	#disk-usage div.disk-usage-wrapper {
+		position: absolute;
+		width: 70% ;
+	}
+	#disk-usage #indicator-wrapper {
+		position: static;
+		width: 100%;
+		height: 15px;
+	}
+	#disk-usage #indicator-area {
+		width: 100%;
+		height: 15px;		
+	}
+	#disk-usage #indicator-value {
+		width: 100%;
+		margin: 0;
+	}
+	#disk-usage h3 {
+		padding: 0;
+		margin: 0 0 0 1em;
+		font-size: 100%;
+	}
+	#usage-labels {
+		padding: 1em;
+		text-align: center;
+		margin-top: 1em;
+		font-size: 85%;
+	}
+	.l-regular, .l-unused {
+		border: 1px solid #CCC;
+		background: #FFFFFF;
+		margin-right: 0.5em;
+		margin-left: 1em;
+		padding: 0 0.5em;
+	}
+	.l-regular {
+		background: #d0e4fe;
+	}
+	.show-quota {
+		margin-left: 130px;
+	}
+
+/* back-end display
+--------------------------------------------- */
+
+	.editform #disk-usage div.disk-usage-wrapper {
+		width: 38%;
+	}
+	
+/* New file management (icon-based)
+--------------------------------------------- */
+	
+	#a-download:before,
+	#a-move:before,
+	#a-history:before,
+	#a-delete:before,
+	#a-folder:before,
+	.delete:before,
+	.download_file:before {
+		content: "";
+		width: 16px;
+		height: 16px;
+		font-size: 16px;
+		font-family: 'Fontcons';
+		color: #6897a4;
+		margin-right: 0.3em;
+		vertical-align: middle;
+	}
+	#a-download:before,
+	.download_file:before {
+		content: "\f019";
+	}
+	.download_file:hover {
+		border: none;
+	}
+	#a-move:before {
+		content: "\f047";
+	}
+	#a-folder:before {
+		content: "\f07b";
+	}
+	#a-history:before {
+	/*	content: "\f005"; */
+		content: "\f017";
+	}
+	#a-delete:before,
+	.delete:before {
+		content: "\f014";
+	}
+	.fmanage {
+		color: #000;
+	}
+	.fmanage a {
+		border: none;
+	}
+	#manage_assets a.inactive,
+	#manage_assets a.inactive:hover,
+	#manage_assets a.inactive:before,
+	#manage_assets a.inactive:hover:before {
+		color: #CCC;
+	}
+	#manage_assets a {
+		color: #6897a4;
+		padding: 0.1em 0.3em;
+		margin-left: 0.5em;
+	}
+	#manage_assets a span {
+		display: none;
+	}
+	#manage_assets a:hover,
+	#manage_assets a:hover:before {
+		color: #000;
+	}
+	.delete {
+		background: none;
+		padding: 0;
+	}
+	.list-editing a:hover {
+		border: none;
+	}
+	.list-editing a.inactive, .list-editing a.inactive:hover {
+		background: none;
+		color: #CCC;
+		border: none;
+		cursor: default;
+	}
+	
+/* Renaming
+--------------------------------------------- */
+	.rename {
+		position: absolute;
+		display: none;
+		padding: 0.5em 2em;
+		margin-left: -2.5em;
+	}
+	table.listing tbody tr.mline:hover .rename {
+		display: block;
+	}
+	.rename:before {
+		width: 16px;
+		height: 16px;
+		font-size: 16px;
+		font-family: 'Fontcons';
+		color: #c4d2d6;
+		margin-right: 0.3em;
+		content: "\270D";
+	}
+
+/* Misc
+--------------------------------------------- */	
+
+	table#filelist tbody tr {
+		height: 38px;
+	}
+	.content-files  {
+		min-width: 630px;
+	}
+	table#filelist tbody tr.newfolder td {
+		background: #fafadf;
+		padding-bottom: 1.5em;
+	}
+	
+/* IE7 hacks 
+--------------------------------------------- */
+	#manage_assets a span {
+		*display: inline;
+	}

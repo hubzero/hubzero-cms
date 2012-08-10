@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<install version="1.5" type="plugin" group="projects">
+	<name>Projects - Files</name>
+	<author>Alissa Nedossekina</author>
+	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
+	<description>Manage project files</description>
+	<files>
+		<filename plugin="files">files.php</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_projects_files.ini</language>
+	</languages>
+	<params>
+		<param name="display_limit" type="text" size="5" default="50" label="Display Limit" description="Number of items to return"/>
+		<param name="maxUpload" type="text" menu="hide" default="104857600" label="Max file upload (bytes)" description="Maximum upload file size for project files in bites (master default set to 100MB (104857600 bytes))" />
+		<param name="maxDownload" type="text" menu="hide" default="104857600" label="Max size for batch download (bytes)" description="Maximum download file size for zipped project files in bites (master default set to 100MB (104857600 bytes))" />
+		<param name="tempPath" type="text" menu="hide" default="/site/projects/temp" label="Temp file directory" description="File path for storing temp files during batch download" />
+	</params>
+</install>

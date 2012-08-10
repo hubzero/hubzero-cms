@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<install type="component" version="1.5">
+	<name>Projects</name>
+	<author>Alissa Nedossekina</author>
+	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
+	<description>Manage projects</description>
+	<files>
+		<filename>controller.php</filename>
+		<filename>projects.php</filename>
+		<filename>router.php</filename>
+		<filename>index.html</filename>
+		<filename>assets/css/projects.css</filename>
+		<filename>assets/js/projects.js</filename>
+		<filename>assets/js/setup.js</filename>
+		<filename>assets/js/calendar.js</filename>
+		<filename>helpers/autocomplete.php</filename>
+		<filename>helpers/html.php</filename>
+		<filename>helpers/helper.php</filename>
+		<filename>helpers/install.php</filename>
+		<filename>helpers/imghandler.php</filename>
+		<filename>helpers/index.html</filename>
+		<filename>views/browse/tmpl/default.php</filename>
+		<filename>views/browse/tmpl/default.xml</filename>
+		<filename>views/edit/tmpl/default.php</filename>
+		<filename>views/edit/tmpl/default.xml</filename>
+		<filename>views/emails/tmpl/index.html</filename>
+		<filename>views/emails/tmpl/invite.php</filename>
+		<filename>views/emails/tmpl/invite.xml</filename>
+		<filename>views/emails/tmpl/new.php</filename>
+		<filename>views/emails/tmpl/new.xml</filename>
+		<filename>views/image/tmpl/default.php</filename>
+		<filename>views/image/tmpl/default.xml</filename>
+		<filename>views/intro/tmpl/default.php</filename>
+		<filename>views/intro/tmpl/default.xml</filename>
+		<filename>views/intro/tmpl/features.php</filename>
+		<filename>views/intro/tmpl/features.xml</filename>
+		<filename>views/login/tmpl/default.php</filename>
+		<filename>views/login/tmpl/default.xml</filename>
+		<filename>views/setup/tmpl/describe.php</filename>
+		<filename>views/setup/tmpl/describe.xml</filename>
+		<filename>views/setup/tmpl/finalize.php</filename>
+		<filename>views/setup/tmpl/finalize.xml</filename>
+		<filename>views/setup/tmpl/team.php</filename>
+		<filename>views/setup/tmpl/team.xml</filename>
+		<filename>views/view/tmpl/external.php</filename>
+		<filename>views/view/tmpl/external.xml</filename>
+		<filename>views/view/tmpl/internal.php</filename>
+		<filename>views/view/tmpl/internal.xml</filename>
+		<filename>views/view/tmpl/invited.php</filename>
+		<filename>views/view/tmpl/invited.xml</filename>
+		<filename>views/view/tmpl/suspended.php</filename>
+		<filename>views/view/tmpl/suspended.xml</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.com_projects.ini</language>
+	</languages>
+	<install>
+	</install>
+	<uninstall>
+	</uninstall>
+	<installfile>
+		<filename></filename>
+	</installfile>
+	<uninstallfile>
+		<filename></filename>
+	</uninstallfile>
+
+	<administration>
+		<menu>Projects</menu>
+		<files>
+			<filename>controller.php</filename>
+			<filename>projects.php</filename>
+			<filename>config.xml</filename>
+			<filename>index.html</filename>
+			<filename>helpers/html.php</filename>
+			<filename>tables/project.php</filename>
+			<filename>tables/project.activity.php</filename>
+			<filename>tables/project.comment.php</filename>
+			<filename>tables/project.microblog.php</filename>
+			<filename>tables/project.owner.php</filename>
+			<filename>tables/project.publication.php</filename>
+			<filename>tables/project.todo.php</filename>
+			<filename>tables/project.type.php</filename>
+			<filename>tables/project.wiki.php</filename>
+			<filename>views/edit/tmpl/default.php</filename>
+			<filename>views/edit/tmpl/default.xml</filename>
+			<filename>views/edit/tmpl/index.html</filename>
+			<filename>views/emails/tmpl/default.php</filename>
+			<filename>views/emails/tmpl/default.xml</filename>
+			<filename>views/emails/tmpl/index.html</filename>
+			<filename>views/projects/tmpl/default.php</filename>
+			<filename>views/projects/tmpl/default.xml</filename>
+			<filename>views/projects/tmpl/index.html</filename>
+		</files>
+		<languages folder="admin">
+			<language tag="en-GB">en-GB.com_projects.ini</language>
+	        </languages>
+	</administration>
+</install>
