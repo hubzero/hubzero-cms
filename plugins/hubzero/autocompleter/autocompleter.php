@@ -122,16 +122,17 @@ class plgHubzeroAutocompleter extends JPlugin
 			//if (JPluginHelper::isEnabled('system', 'jquery'))
 			if ($jq)
 			{
-				$scripts .= '<script src="' . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.jquery.js"></script>';
+				$scripts .= '<script type="text/javascript" src="' . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.jquery.js"></script>' . "\n";
 			}
 			else 
 			{
-				$scripts .= '<script src="' . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'textboxlist.js"></script>';
-				$scripts .= '<script src="' . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'observer.js"></script>';
-				$scripts .= '<script src="' . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.js"></script>';
+				$scripts .= '<script type="text/javascript" src="' . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'textboxlist.js"></script>' . "\n";
+				$scripts .= '<script type="text/javascript" src="' . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'observer.js"></script>' . "\n";
+				$scripts .= '<script type="text/javascript" src="' . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.js"></script>' . "\n";
 			}
 
-			$scripts .= '<input type="hidden" name="plgAutocompleterCss" id="plgAutocompleterCss" value="';
+			$scripts .= '<script type="text/javascript">var plgAutocompleterCss = "';
+			//$scripts .= '<input type="hidden" name="plgAutocompleterCss" id="plgAutocompleterCss" value="';
 
 			$app =& JFactory::getApplication();
 			$templatecss = DS . 'templates' . DS . $app->getTemplate() . DS . 'html' . DS . 'plg_hubzero_autocompleter' . DS . 'autocompleter.css';
@@ -145,7 +146,8 @@ class plgHubzeroAutocompleter extends JPlugin
 				$scripts .= $plugincss . '?v=' . filemtime(JPATH_SITE . $plugincss);
 			}
 
-			$scripts .= '" />';
+			$scripts .= '";</script>' . "\n";
+			//$scripts .= '" />';
 
 			$this->_pushscripts = false;
 		}
@@ -156,7 +158,7 @@ class plgHubzeroAutocompleter extends JPlugin
 		$html .= ($class) ? ' class="' . trim($class) . '"' : '';
 		$html .= ($size)  ? ' size="' . $size . '"'         : '';
 		$html .= ($dsabl) ? ' readonly="readonly"'          : '';
-		$html .= ' value="' . htmlentities($value, ENT_QUOTES) . '" autocomplete="off" />';
+		$html .= ' value="' . htmlentities($value, ENT_QUOTES) . '" autocomplete="off" data-css="" />'  . "\n";
 		$html .= $scripts;
 		
 		/*$json = '';
