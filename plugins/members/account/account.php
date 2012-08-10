@@ -326,6 +326,7 @@ class plgMembersAccount extends Hubzero_Plugin
 		jimport('joomla.mail.helper');
 		jimport('joomla.user.helper');
 		ximport('Hubzero_Auth_Link');
+		ximport('Hubzero_User_Password');
 
 		// Make sure they're logged in
 		if ($this->user->get('guest'))
@@ -339,8 +340,9 @@ class plgMembersAccount extends Hubzero_Plugin
 			return;
 		}
 
-		// Make sure this is an auth link account
-		if(!Hubzero_Auth_Link::find_by_id($this->user->get('auth_link_id')))
+		// Make sure this is an auth link account (i.e. no password set)
+		$hzup = Hubzero_User_Password::getInstance($this->member->get('uidNumber'));
+		if(!empty($hzup->passhash))
 		{
 			JError::raiseError(404, JText::_('PLG_MEMBERS_ACCOUNT_NOT_LINKED_ACCOUNT'));
 			return;
@@ -665,13 +667,27 @@ class plgMembersAccount extends Hubzero_Plugin
 	 */
 	private function _unlink()
 	{
+		// Import a few things
+		ximport('Hubzero_User_Password');
+		
 		// Get the id of the account to be unlinked
 		$hzal_id = JRequest::getInt('hzal_id', null);
 
 		// Get instance
 		$hzal = Hubzero_Auth_Link::find_by_id($hzal_id);
 
-		// Delete
+		// Determine what type of password change the user needs
+		$hzup = Hubzero_User_Password::getInstance($this->member->get('uidNumber'));
+		if(empty($hzup->passhash) && count(Hubzero_Auth_Link::find_by_user_id($this->member->get('uidNumber'))) <= 1)
+		{
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=account'),
+				JText::_('PLG_MEMBERS_ACCOUNT_CANT_REMOVE_ONLY_ACCESS'),
+				'warning'
+			);
+		}
+
+		// Delete the auth_link
 		if(!$hzal->delete())
 		{
 			JError::raiseError(500, JText::_('PLG_MEMBERS_UNLINK_FAILED'));
