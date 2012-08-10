@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           components/com_resources/views/browse/tmpl/tags_list.xml
+@file           components/com_contribute/views/steps/tmpl/type.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Browse by tags column">
+	<layout title="Contribute Step Type">
 		<message>
-			<![CDATA[Browse by tags column]]>
+			<![CDATA[Contribute Step Type]]>
 		</message>
 	</layout>
 	<state>
-		<name>Browse by tags column</name>
-		<description>Browse by tags column</description>
+		<name>Contribute Step Type</name>
+		<description>Contribute Step Type</description>
 		<params>
 		</params>
 	</state>

@@ -41,35 +41,51 @@ function ResourcesBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (!empty($query['id'])) 
+	if (!empty($query['task']) && in_array($query['task'], array('new', 'start', 'retract', 'delete', 'discard', 'remove', 'reorder'))) 
 	{
-		$segments[] = $query['id'];
-		unset($query['id']);
+		if (!empty($query['task'])) 
+		{
+			$segments[] = $query['task'];
+			unset($query['task']);
+		}
+		if (!empty($query['id'])) 
+		{
+			$segments[] = $query['id'];
+			unset($query['id']);
+		}
 	}
-	if (!empty($query['alias'])) 
+	else 
 	{
-		$segments[] = $query['alias'];
-		unset($query['alias']);
-	}
-	if (!empty($query['active'])) 
-	{
-		$segments[] = $query['active'];
-		unset($query['active']);
-	}
-	if (!empty($query['task'])) 
-	{
-		$segments[] = $query['task'];
-		unset($query['task']);
-	}
-	if (!empty($query['file'])) 
-	{
-		$segments[] = $query['file'];
-		unset($query['file']);
-	}
-	if (!empty($query['type'])) 
-	{
-		$segments[] = $query['type'];
-		unset($query['type']);
+		if (!empty($query['id'])) 
+		{
+			$segments[] = $query['id'];
+			unset($query['id']);
+		}
+		if (!empty($query['alias'])) 
+		{
+			$segments[] = $query['alias'];
+			unset($query['alias']);
+		}
+		if (!empty($query['active'])) 
+		{
+			$segments[] = $query['active'];
+			unset($query['active']);
+		}
+		if (!empty($query['task'])) 
+		{
+			$segments[] = $query['task'];
+			unset($query['task']);
+		}
+		if (!empty($query['file'])) 
+		{
+			$segments[] = $query['file'];
+			unset($query['file']);
+		}
+		if (!empty($query['type'])) 
+		{
+			$segments[] = $query['type'];
+			unset($query['type']);
+		}
 	}
 
 	return $segments;
@@ -98,6 +114,15 @@ function ResourcesParseRoute($segments)
 	{
 		$vars['task'] = $segments[0];
 	} 
+	elseif (in_array($segments[0], array('new', 'start', 'retract', 'delete', 'discard', 'remove', 'reorder'))) 
+	{
+		$vars['task'] = $segments[0];
+		$vars['controller'] = 'create';
+		if (isset($segments[1]))
+		{
+			$vars['id'] = $segments[1];
+		}
+	}
 	else 
 	{
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
@@ -112,10 +137,10 @@ function ResourcesParseRoute($segments)
 		// For example, /resources/learningmodules => Learning Modules
 		for ($i = 0; $i < count($types); $i++)
 		{
-			$normalized = preg_replace("/[^a-zA-Z0-9]/", '', $types[$i]->type);
-			$normalized = strtolower($normalized);
+			//$normalized = preg_replace("/[^a-zA-Z0-9]/", '', $types[$i]->type);
+			//$normalized = strtolower($normalized);
 
-			if (trim($segments[0]) == $normalized) 
+			if (trim($segments[0]) == $types[$i]->alias) 
 			{
 				$vars['type'] = $segments[0];
 				$vars['task'] = 'browsetags';

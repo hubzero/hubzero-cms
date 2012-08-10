@@ -55,7 +55,7 @@ if ($this->show_edit != 0) {
 		if ($this->line->type == 7) {
 			$link = JRoute::_('index.php?option=com_contribtool&task=start&step=1&rid='. $this->line->id);
 		} else {
-			$link = JRoute::_('index.php?option=com_contribute&step=1&id='. $this->line->id);
+			$link = JRoute::_('index.php?option=com_resources&task=start&step=1&id='. $this->line->id);
 		}
 		$html .= ' <a class="edit button" href="'. $link .'" title="'. JText::_('COM_RESOURCES_EDIT') .'">'. JText::_('COM_RESOURCES_EDIT') .'</a>';
 	}

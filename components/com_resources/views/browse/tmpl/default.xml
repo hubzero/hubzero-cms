@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Browse Resources Layout">
+	<layout title="Standard browse layout">
 		<message>
-			<![CDATA[STANDARD BROWSE RESOURCES LAYOUT DESC]]>
+			<![CDATA[Standard browse layout]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Browse Resources Layout</name>
-		<description>STANDARD BROWSE RESOURCES LAYOUT DESC</description>
+		<name>Standard browse layout</name>
+		<description>Standard browse layout</description>
 		<params>
 		</params>
 	</state>

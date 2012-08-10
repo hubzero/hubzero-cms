@@ -37,19 +37,19 @@ defined('_JEXEC') or die('Restricted access');
 
 <div id="introduction" class="section">
 	<div class="aside">
-		<p id="getstarted"><a href="<?php echo JRoute::_('index.php?option=com_contribute&task=start'); ?>">Submit a resource &rsaquo;</a></p>
+		<p id="getstarted"><a href="<?php echo JRoute::_('index.php?option=com_contribute&task=start'); ?>"><?php echo JText::_('Submit a resource'); ?></a></p>
 		<ul>
-			<li><a href="/kb/resources/faq">Resources FAQ</a></li>
+			<li><a href="/kb/resources/faq"><?php echo JText::_('Resources FAQ'); ?></a></li>
 		</ul>
 	</div><!-- / .aside -->
 	<div class="subject">
 		<div class="two columns first">
-			<h3>What are resources?</h3>
-			<p>Resources are user-submitted pieces of content that range from video presentations to publications to simulation tools.</p>
+			<h3><?php echo JText::_('What are resources?'); ?></h3>
+			<p><?php echo JText::_('Resources are user-submitted pieces of content that range from video presentations to publications to simulation tools.'); ?></p>
 		</div>
 		<div class="two columns second">
-			<h3>Who can submit a resource?</h3>
-			<p>Anyone can submit a resource! Resources must be relevant to the community and may undergo a short approval process to ensure all appropriate files and information are included.</p>
+			<h3><?php echo JText::_('Who can submit a resource?'); ?></h3>
+			<p><?php echo JText::_('Anyone can submit a resource! Resources must be relevant to the community and may undergo a short approval process to ensure all appropriate files and information are included.'); ?></p>
 		</div>
 		<div class="clear"></div>
 	</div><!-- / .subject -->
@@ -59,44 +59,41 @@ defined('_JEXEC') or die('Restricted access');
 <div class="section">
 	
 	<div class="four columns first">
-		<h2>Find a resource</h2>
+		<h2><?php echo JText::_('Find a resource'); ?></h2>
 	</div><!-- / .four columns first -->
 	<div class="four columns second third fourth">
 		<div class="two columns first">
 			<form action="/search" method="get" class="search">
 				<fieldset>
 					<p>
-						<label for="rsearch">Keyword or phrase:</label>
+						<label for="rsearch"><?php echo JText::_('Keyword or phrase:'); ?></label>
 						<input type="text" name="terms" id="rsearch" value="" />
 						<input type="hidden" name="domains[]" value="resources" />
-						<input type="submit" value="Search" />
+						<input type="submit" value="<?php echo JText::_('Search'); ?>" />
 					</p>
 				</fieldset>
 			</form>
 		</div><!-- / .two columns first -->
 		<div class="two columns second">
 			<div class="browse">
-				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>">Browse the list of available resources</a></p>
+				<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>"><?php echo JText::_('Browse the list of available resources'); ?></a></p>
 			</div><!-- / .browse -->
 		</div><!-- / .two columns second -->
 	</div><!-- / .four columns second third fourth -->
 	<div class="clear"></div>
 
 <?php
-$categories = $this->categories;
-if ($categories) {
+if ($this->categories) {
 ?>
 	<div class="four columns first">
-		<h2>Categories</h2>
+		<h2><?php echo JText::_('Categories'); ?></h2>
 	</div><!-- / .four columns first -->
 	<div class="four columns second third fourth">
 <?php
 	$i = 0;
 	$clm = '';
-	/*if (count($categories)%3!=0) { 
-	    ;
-	}*/
-	foreach ($categories as $category)
+
+	foreach ($this->categories as $category)
 	{
 		$i++;
 		switch ($clm)
@@ -107,20 +104,27 @@ if ($categories) {
 			default: $clm = 'first'; break;
 		}
 
-		$normalized = preg_replace("/[^a-zA-Z0-9]/", "", $category->type);
-		$normalized = strtolower($normalized);
-
-		if (substr($normalized, -3) == 'ies') {
-			$cls = $normalized;
+		if (substr($category->alias, -3) == 'ies') {
+			$cls = $category->alias;
 		} else {
-			$cls = rtrim($normalized, 's');
+			$cls = rtrim($category->alias, 's');
 		}
 ?>
 		<div class="three columns <?php echo $clm; ?>">
 			<div class="<?php echo $cls; ?>">
-				<h3><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&type='.$normalized); ?>"><?php echo stripslashes($category->type); ?></a></h3>
-				<p><?php echo stripslashes($category->description); ?></p>
-				<p><a class="read-more" href="<?php echo JRoute::_('index.php?option='.$this->option.'&type='.$normalized); ?>" title="Browse <?php echo htmlentities(stripslashes($category->type),ENT_COMPAT,'UTF-8'); ?>">Browse <span><?php echo stripslashes($category->type); ?> </span>&rsaquo;</a></p>
+				<h3>
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $category->alias); ?>">
+						<?php echo $this->escape(stripslashes($category->type)); ?>
+					</a>
+				</h3>
+				<p>
+					<?php echo $this->escape(stripslashes($category->description)); ?>
+				</p>
+				<p>
+					<a class="read-more" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $category->alias); ?>" title="<?php echo JText::sprintf('Browse %s', $this->escape(stripslashes($category->type))); ?>">
+						<?php echo JText::sprintf('Browse <span>%s </span>&rsaquo;', $this->escape(stripslashes($category->type))); ?>
+					</a>
+				</p>
 			</div>
 		</div><!-- / .three columns <?php echo $clm; ?> -->
 <?php

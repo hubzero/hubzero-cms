@@ -30,7 +30,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 $database =& JFactory::getDBO();
 
@@ -42,28 +42,41 @@ $sortbys['date'] = JText::_('COM_RESOURCES_DATE_PUBLISHED');
 $sortbys['date_modified'] = JText::_('COM_RESOURCES_DATE_MODIFIED');
 $sortbys['title'] = JText::_('COM_RESOURCES_TITLE');
 ?>
-<div id="content-header" class="full">
+<div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
+</div><!-- / #content-header -->
+
+<div id="content-header-extra">
+	<p>
+		<a class="add" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">
+			<?php echo JText::_('Submit a resource'); ?>
+		</a>
+	</p>
 </div><!-- / #content-header -->
 
 <div class="main section">
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>" id="resourcesform" method="post">
 		<div class="aside">
 
-    	<fieldset>
-        <?php
-          JPluginHelper::importPlugin( 'tageditor' );
-          $dispatcher =& JDispatcher::getInstance();
-          $tf = $dispatcher->trigger( 'onTagsEdit', array(array('tag','actags','',$this->filters['tag'],'')) );
-        ?>
-    		<label>
-      		<?php echo JText::_('COM_RESOURCES_SEARCH_WITH_TAGS'); ?>:
-          <?php if (count($tf) > 0) {
-      			echo $tf[0];
-          } else { ?>
-      			<input type="text" name="tag" value="<?php echo $this->filters['tag']; ?>" />
-          <?php } ?>
-    		</label>
+			<fieldset>
+				<legend><?php echo JText::_('Filter results'); ?></legend>
+
+				<label>
+					<?php echo JText::_('COM_RESOURCES_SEARCH_WITH_TAGS'); ?>:
+<?php 
+					JPluginHelper::importPlugin('hubzero');
+					$dispatcher =& JDispatcher::getInstance();
+					$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tag', 'actags', '', $this->filters['tag'])));  // type, field name, field id, class, value
+					if (count($tf) > 0) {
+						echo $tf[0];
+					} else { 
+?>
+						<input type="text" name="tag" value="<?php echo $this->filters['tag']; ?>" />
+<?php 
+					} 
+?>
+				</label>
+
 				<label>
 					<?php echo JText::_('COM_RESOURCES_TYPE'); ?>: 
 					<select name="type" id="type">
@@ -73,7 +86,7 @@ $sortbys['title'] = JText::_('COM_RESOURCES_TITLE');
 				foreach ($this->types as $item)
 				{
 ?>
-						<option value="<?php echo $item->id; ?>"<?php echo ($this->filters['type'] == $item->id) ? ' selected="selected"' : ''; ?>><?php echo stripslashes($item->type); ?></option>
+						<option value="<?php echo $item->id; ?>"<?php echo ($this->filters['type'] == $item->id) ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($item->type)); ?></option>
 <?php
 				}
 			}
@@ -87,7 +100,7 @@ $sortbys['title'] = JText::_('COM_RESOURCES_TITLE');
 						foreach ($sortbys as $avalue => $alabel)
 						{
 ?>
-						<option value="<?php echo $avalue; ?>"<?php echo ($avalue == $this->filters['sortby'] || $alabel == $this->filters['sortby']) ? ' selected="selected"' : ''; ?>><?php echo $alabel; ?></option>
+						<option value="<?php echo $avalue; ?>"<?php echo ($avalue == $this->filters['sortby'] || $alabel == $this->filters['sortby']) ? ' selected="selected"' : ''; ?>><?php echo $this->escape($alabel); ?></option>
 <?php
 						}
 ?>
@@ -108,21 +121,17 @@ if ($this->results) {
 		case 'date':
 		default: $show_date = 3; break;
 	}
-	echo ResourcesHtml::writeResults( $database, $this->results, $this->authorized, $show_date );
+	echo ResourcesHtml::writeResults($database, $this->results, $this->authorized, $show_date);
 	echo '<div class="clear"></div>';
 } else { ?>
 			<p class="warning"><?php echo JText::_('COM_RESOURCES_NO_RESULTS'); ?></p>
 <?php }
 
-$pn = $this->pageNav->getListFooter();
-$pn = str_replace('/?/&amp;','/?',$pn);
-$f = 'task=browse';
-foreach ($this->filters as $k=>$v)
-{
-	$f .= ($v && $k != 'authorized' && $k != 'limit' && $k != 'start') ? '&amp;'.$k.'='.$v : '';
-}
-$pn = str_replace('?','?'.$f.'&amp;',$pn);
-echo $pn;
+$this->pageNav->setAdditionalUrlParam('tag', $this->filters['tag']);
+$this->pageNav->setAdditionalUrlParam('type', $this->filters['type']);
+$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
+
+echo $this->pageNav->getListFooter();
 ?>
 		</div><!-- / .subject -->
 		<div class="clear"></div>
