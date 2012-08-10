@@ -174,10 +174,10 @@ if ($this->admin && !$this->getError()) {
 <?php 
 				} 
 ?>
-					<input type="hidden" name="sortby" value="<?php echo htmlentities($this->filters['sortby']); /* xss fix for ticket 1413/1417 */ ?>" />
-					<input type="hidden" name="filterby" value="<?php echo htmlentities($this->filters['filterby']); /* xss fix for ticket 1412/1419 */?>" />
+					<input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); /* xss fix for ticket 1413/1417 */ ?>" />
+					<input type="hidden" name="filterby" value="<?php echo $this->escape($this->filters['filterby']); /* xss fix for ticket 1412/1419 */?>" />
 
-					<input type="hidden" name="task" value="<?php echo htmlentities($this->task); /* XSS fix, see ticket 1420*/ ?>" />
+					<input type="hidden" name="task" value="<?php echo $this->escape($this->task); /* XSS fix, see ticket 1420*/ ?>" />
 					<input type="hidden" name="newsearch" value="1" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				</fieldset>
@@ -379,12 +379,11 @@ if ($this->admin && !$this->getError()) {
 				</table>
 <?php
 				// Page navigation
-				$pagenavhtml = $this->pageNav->getListFooter();
-				$pagenavhtml = str_replace('wishlist/?','wishlist/'.$this->wishlist->category.'/'.$this->wishlist->referenceid.'/?',$pagenavhtml);
-				$pagenavhtml = str_replace('newsearch=1','newsearch=0',$pagenavhtml);
-				$pagenavhtml = str_replace('?/wishlist/'.$this->wishlist->category.'/'.$this->wishlist->referenceid,'?',$pagenavhtml);
-				$pagenavhtml = str_replace('?','?filterby='.$this->filters['filterby'].a.'sortby='.$this->filters['sortby'].a.'tags='.$this->filters['tag'].'&amp;',$pagenavhtml);
-				echo $pagenavhtml;
+				$this->pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);
+				$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
+				$this->pageNav->setAdditionalUrlParam('tag', $this->filters['tag']);
+				$this->pageNav->setAdditionalUrlParam('newsearch', 0);
+				echo $this->pageNav->getListFooter();
 ?>
 				<div class="clearfix"></div>
 			</div><!-- / .container -->

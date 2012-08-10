@@ -115,6 +115,11 @@ class JPagination extends JObject
 			$this->set('pages.total', ceil($this->total / $this->limit));
 			$this->set('pages.current', ceil(($this->limitstart + 1) / $this->limit));
 		}
+		else 
+		{
+			$this->set('pages.total', 1);
+			$this->set('pages.current', $this->limitstart + 1);
+		}
 
 		// Set the pagination iteration loop values.
 		$displayedPages = 10;
@@ -319,6 +324,8 @@ class JPagination extends JObject
 		$list['prefix'] = $this->prefix;
 		$list['i']      = $this->get('pages.i');
 		$list['total']  = $this->get('pages.total');
+		$list['startloop'] = $this->get('pages.start');
+		$list['stoploop']  = $this->get('pages.stop');
 
 		$itemOverride = false;
 		$listOverride = false;
@@ -642,9 +649,10 @@ class JPagination extends JObject
 		{
 			$html .= '<li class="page"><span>...</span></li>' . "\n";
 		}
-		foreach ($list['pages'] as $page)
+		//foreach ($list['pages'] as $page)
+		for (; $list['i'] <= $list['stoploop'] && $list['i'] <= $list['total']; $list['i']++) 
 		{
-			$html .= '<li class="page">' . $page['data'] . '</li>' . "\n";
+			$html .= '<li class="page">' . $list['pages'][$list['i']]['data'] . '</li>' . "\n";
 		}
 		if (($list['i'] - 1) < $list['total']) 
 		{
