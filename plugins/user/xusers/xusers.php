@@ -201,6 +201,7 @@ class plgUserXusers extends JPlugin
 
 		if ($hzal) {
 			$juser->set('auth_link_id',$hzal->id);
+			$session->set('linkaccount', true);
 		}
 
 		$session =& JFactory::getSession();

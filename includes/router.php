@@ -92,6 +92,7 @@ class JRouterSite extends JRouter
 
 				if ($vars['option'] == 'com_register') // register component can be accessed with incomplete registration
 				{
+					$session->set('linkaccount', false);
 					return $vars;
 				}
 
@@ -107,9 +108,17 @@ class JRouterSite extends JRouter
 					}
 					else if (substr($juser->get('email'), -8) == '@invalid') // force auth_link users to registration update page
 					{
-						$vars['option'] = 'com_register';
-						$vars['task']	= 'update';
-						$vars['act']	= '';
+						if($session->get('linkaccount', true))
+						{
+							$vars['option'] = 'com_user';
+							$vars['view']   = 'link';
+						}
+						else
+						{
+							$vars['option'] = 'com_register';
+							$vars['task']	= 'update';
+							$vars['act']	= '';
+						}
 					}
 					else // otherwise, send to profile to fill in missing info
 					{
