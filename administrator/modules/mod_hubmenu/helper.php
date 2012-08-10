@@ -83,6 +83,7 @@ class modHubMenuHelper
 			$menu->addChild(new JMenuNode(JText::_('Geo DB'), 'index.php?option=com_system&controller=geodb', 'class:geo'));
 			$menu->addChild(new JMenuNode(JText::_('APC'), 'index.php?option=com_system&controller=apc', 'class:apc'));
 			$menu->addChild(new JMenuNode(JText::_('Scripts'), 'index.php?option=com_system&controller=scripts', 'class:scripts'));
+			$menu->addChild(new JMenuNode(JText::_('Routes'), 'index.php?option=com_system&controller=routes', 'class:routes'));
 			$menu->getParent();
 		$menu->addSeparator();
 		$menu->addChild(new JMenuNode(JText::_('System Info'), 'index.php?option=com_admin&task=sysinfo', 'class:info'));

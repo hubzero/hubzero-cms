@@ -28,9 +28,10 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-JToolBarHelper::title( '<a href="index.php?option=com_sef">'.JText::_( 'SEF Manager' ).'</a>', 'addedit.png' );
-JToolBarHelper::preferences('com_sef', '550');
+defined('_JEXEC') or die('Restricted access');
+
+JToolBarHelper::title(JText::_('SEF Manager'), 'config.png');
+JToolBarHelper::preferences($this->option, '550');
 JToolBarHelper::spacer();
 JToolBarHelper::addNew();
 JToolBarHelper::editList();
@@ -42,35 +43,32 @@ function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 	// do field validation
-	submitform( pressbutton );
+	submitform(pressbutton);
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm">
-	<fieldset id="filter">
-		<label>
-			ViewMode:
-			<?php echo $this->lists['viewmode'];?> 
-		</label>
+<form action="index.php" method="post" name="adminForm" id="adminForm">
+	<fieldset id="filter-bar">
+		<label>ViewMode:</label>
+		<?php echo $this->lists['viewmode']; ?> 
 		
-		<label>
-			Sort by:
-			<?php echo $this->lists['sortby'];?>
-		</label>
+		<label>Sort by:</label>
+		<?php echo $this->lists['sortby']; ?>
 	</fieldset>
+	<div class="clr"></div>
 
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th>#</th>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows ); ?>);" /></th>
-				<th>Hits</th>
-				<th><?php echo (($this->is404mode == true) ? 'Date Added' : '<acronym title="Search Engine Friendly">SEF</acronym> URL' ); ?></th>
-				<th><?php echo (($this->is404mode == true) ? 'URL' : 'Real URL' ); ?></th>
+				<th scope="col">#</th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
+				<th scope="col">Hits</th>
+				<th scope="col"><?php echo (($this->is404mode == true) ? 'Date Added' : '<acronym title="Search Engine Friendly">SEF</acronym> URL'); ?></th>
+				<th scope="col"><?php echo (($this->is404mode == true) ? 'URL' : 'Real URL'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -83,7 +81,7 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $k = 0;
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
+for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row =& $this->rows[$i];
 ?>
@@ -95,11 +93,11 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				if ($this->is404mode == true) {
    					echo $row->dateadd;
 				} else {
-					?><a href="index.php?option=<?php echo $this->option ?>&amp;task=edit&amp;id[]=<?php echo $row->id;?>"><?php echo $row->oldurl;?></a><?php 
+					?><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id;?>"><?php echo $row->oldurl; ?></a><?php 
 				} ?></td>
 				<td><?php 
    				if ($this->is404mode == true) {
-   					?><a href="index.php?option=<?php echo $this->option ?>&amp;task=edit&amp;id[]=<?php echo $row->id;?>"><?php echo $row->oldurl;?></a><?php 
+   					?><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id;?>"><?php echo $row->oldurl; ?></a><?php 
 				} else {
 					$row->newurl = str_replace('&','&amp;', $row->newurl);
 					echo $row->newurl;
@@ -113,8 +111,9 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	</table>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

@@ -86,6 +86,11 @@ JSubMenuHelper::addEntry(
 	'index.php?option=' . $option . '&controller=apc',
 	$controllerName == 'apc'
 );
+JSubMenuHelper::addEntry(
+	JText::_('Routes'),
+	'index.php?option=' . $option . '&controller=routes',
+	$controllerName == 'routes'
+);
 
 require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'SystemController' . ucfirst($controllerName);

@@ -28,9 +28,11 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-$text = ( $this->task == 'edit' ? JText::_( 'Edit' ) : JText::_( 'New' ) );
-JToolBarHelper::title( '<a href="index.php?option=com_sef">'.JText::_( 'SEF Manager' ).'</a>: <small><small>[ '. $text.' ]</small></small>', 'addedit.png' );
+defined('_JEXEC') or die('Restricted access');
+
+$text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
+
+JToolBarHelper::title(JText::_('SEF Manager') . ': <small><small>[ ' . $text . ' ]</small></small>', 'config.png');
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
@@ -41,23 +43,23 @@ function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 	// do field validation
 	if (form.newurl.value == "") {
-		alert( "You must provide a URL for the redirection." );
+		alert("You must provide a URL for the redirection.");
 	} else {
-		submitform( pressbutton );
+		submitform(pressbutton);
 	}
 }
 //-->
 </script>
 
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="item-form">
 	<?php
 	if ($this->getError()) {
-		echo '<p>'.JText::_('Error:').' '.$this->getError().'</p>';
+		echo '<p class="error">' . JText::_('Error:') . ' ' . implode('<br />', $this->getErrors()) . '</p>';
 	}
 	?>
 	<fieldset class="adminform">
@@ -79,8 +81,9 @@ function submitbutton(pressbutton)
 	</fieldset>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="task" value="save" />
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>
