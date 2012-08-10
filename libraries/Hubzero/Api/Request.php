@@ -195,7 +195,7 @@ class Hubzero_API_Request
 		$what = (array) $what;
 		
 		if (in_array('all',$what)) {
-			$what = array_merge($what, array('method','request','version','headers','body'));
+			$what = array_merge($what, array('method','request','version','headers','body','hostname','scheme'));
 		}
 		
 		foreach ($what as $item) {
@@ -228,6 +228,19 @@ class Hubzero_API_Request
 				case 'body':
 					$this->set('body','php://input');
 					break;
+				case 'hostname':
+					$this->set('hostname', $_SERVER['HTTP_HOST']);
+					break;
+				case 'scheme':
+					if ($_SERVER['HTTPS']) 
+					{
+						$this->set('scheme','https');
+					}
+					else
+					{
+						$this->set('scheme','http');
+					}
+						
 			}
 		}
 		
