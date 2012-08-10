@@ -656,6 +656,49 @@ class Hubzero_Auth_Link
 	}
 
 	/**
+	 * Return array of linked accounts associated with a given email address
+	 * Also include auth domain name for easy display of domain name
+	 * 
+	 * @param      string $email - email address to match accounts against
+	 * @return     array Return - array of auth link entries for the given user_id
+	 */
+	public function find_by_email($email = null, $exclude = array())
+	{
+		if(empty($email))
+		{
+			return false;
+		}
+
+		$db = JFactory::getDBO();
+
+		if(empty($db))
+		{
+			return false;
+		}
+
+		$sql  = "SELECT l.*, d.authenticator as auth_domain_name FROM #__auth_link as l, #__auth_domain as d";
+		$sql .= " WHERE l.auth_domain_id = d.id AND l.email = " . $db->Quote($email);
+		if(!empty($exclude[0]))
+		{
+			foreach($exclude as $e)
+			{
+				$sql .= " AND l.auth_domain_id != " . $db->Quote($e);
+			}
+		}
+
+		$db->setQuery($sql);
+
+		$result = $db->loadAssocList();
+
+		if(empty($result))
+		{
+			return false;
+		}
+
+		return $result;
+	}
+
+	/**
 	 * Short description for 'delete_by_user_id'
 	 * 
 	 * Long description (if any) ...

@@ -77,14 +77,36 @@ class UserViewLink extends JView
 		$hzad    = Hubzero_Auth_Domain::find_by_id($hzal->auth_domain_id);
 		$plugins = JPluginHelper::getPlugin('authentication');
 
-		// Check for conflicting email addresses in the system
-		$conflict = false;
-		$username = Hubzero_User_Profile_Helper::find_by_email($hzal->email);
-		if($username)
+		// First check in the hub accounts
+		$profile_conflicts = Hubzero_User_Profile_Helper::find_by_email($hzal->email);
+
+		// Now check the auth_link table
+		$link_conflicts = Hubzero_Auth_Link::find_by_email($hzal->email, array($hzad->id));
+
+		$conflict = array();
+		if($profile_conflicts)
 		{
-			$conflict = true;
-			$this->assign('username', $username);
+			foreach($profile_conflicts as $p)
+			{
+				$user_id    = JUserHelper::getUserId($p);
+				$juser      = JFactory::getUser($user_id);
+				$dname      = (Hubzero_Auth_Link::find_by_user_id($user->id)->auth_domain_name) ? 
+								Hubzero_Auth_Link::find_by_user_id($user->id)->auth_domain_name : 
+								'hubzero';
+				$conflict[] = array("auth_domain_name" => $dname, "name" => $juser->name, "email" => $juser->email);
+			}
 		}
+		if($link_conflicts)
+		{
+			foreach($link_conflicts as $l)
+			{
+				$juser      = JFactory::getUser($l['user_id']);
+				$conflict[] = array("auth_domain_name" => $l['auth_domain_name'], "name" => $juser->name, "email" => $l['email']);
+			}
+		}
+
+		// Make sure we don't somehow have any duplicate conflicts
+		$conflict = array_map("unserialize", array_unique(array_map("serialize", $conflict)));
 
 		// @TODO: Could also check for high probability of name matches???
 

@@ -52,27 +52,19 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</p>
 
 			<div id="account-suggestions">
-
-<?php foreach($this->username as $u)
-{
-		$user_id  = JUserHelper::getUserId($u);
-		$user     = JFactory::getUser($u);
-		$pname    = (Hubzero_Auth_Link::find_by_user_id($user->id)) ? Hubzero_Auth_Link::find_by_user_id($user->id) : array(array("auth_domain_name" => 'hubzero'));
-
-		foreach($pname as $p) { ?>
-			<a href="<?php echo JRoute::_('/logout?return=' .
-				base64_encode(JRoute::_('/login?authenticator=' . $p['auth_domain_name'] . '&return=' .
-				base64_encode(JRoute::_('/login?authenticator=' . $this->hzad->authenticator))))); ?>">
-				<div class="account-group">
-					<div class="auth_link_icon" id="<?php echo $p['auth_domain_name']; ?>"></div>
-					<p>
-						<span class="user-icon"><?php echo $user->name; ?></span><br />
-						<span class="email-icon"><?php echo $user->email; ?></span>
-					</p>
-				</div>
-			</a>
-<?php } // close foreach pname
-} // close foreach $this->username ?>
+<?php foreach($this->conflict as $c) { ?>
+				<a href="<?php echo JRoute::_('/logout?return=' .
+					base64_encode(JRoute::_('/login?authenticator=' . $c['auth_domain_name'] . '&return=' .
+					base64_encode(JRoute::_('/login?authenticator=' . $this->hzad->authenticator))))); ?>">
+					<div class="account-group">
+						<div class="auth_link_icon" id="<?php echo $c['auth_domain_name']; ?>"></div>
+						<p>
+							<span class="user-icon"><?php echo $c['name']; ?></span><br />
+							<span class="email-icon"><?php echo $c['email']; ?></span>
+						</p>
+					</div>
+				</a>
+<?php } // close foreach conflict ?>
 			</div><!-- / #account-suggestions -->
 <?php } // close if $this->conflict ?>
 
