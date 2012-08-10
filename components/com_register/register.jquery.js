@@ -360,29 +360,6 @@ HUB.Register = {
 			// Not found - this should mean we're on the full
 			// registration form
 
-			// Hide the registration section for auth_link accounts
-			var regmain   = $('#registration-main');
-			var option1   = $('#option1-link-existing');
-			var option2   = $('#option2-create-new');
-			var clickable = $('.clickable');
-			var inner     = $('.inner');
-
-			// If regmain exists, then we know we have something to work with
-			if(regmain.length) {
-				regmain.hide();
-				inner.hide();
-
-				clickable.on('click', function(e){
-					e.preventDefault();
-					$(this).next('.inner').slideToggle('fast');
-				});
-
-				option2.on('click', function(e){
-					e.preventDefault();
-					regmain.slideToggle('fast');
-				});
-			}
-
 			// organization
 			if ($('#org')) {
 				$('#org').change(HUB.Register.disableOrgOther);
