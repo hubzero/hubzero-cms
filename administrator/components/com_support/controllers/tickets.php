@@ -100,9 +100,9 @@ class SupportControllerTickets extends Hubzero_Controller
 	public function editTask()
 	{
 		JRequest::setVar('hidemainmenu', 1);
-		
+
 		$this->view->setLayout('edit');
-		
+
 		// Push some styles to the template
 		$document =& JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . $this->_name . '.css');
@@ -509,9 +509,8 @@ class SupportControllerTickets extends Hubzero_Controller
 						$prependtext .= "Message from " . $live_site . " / Ticket #" . $row->id . "\r\n";
 
 						$message = $prependtext . "\r\n\r\n" . $message;
-					}					
-					
-					
+					}
+
 					// Build the link to the ticket
 					//   NOTE: We don't use JRoute as it will have no affect on the back-end
 					//   and it would return only the script name and querystring (index.php?option=...)
@@ -1047,36 +1046,18 @@ class SupportControllerTickets extends Hubzero_Controller
 		}
 
 		// Get the configured upload path
-		$basePath = $this->config->get('webpath');
-		if ($basePath)
-		{
-			// Make sure the path doesn't end with a slash
-			if (substr($basePath, -1) == DS)
-			{
-				$basePath = substr($basePath, 0, strlen($basePath) - 1);
-			}
-			// Ensure the path starts with a slash
-			if (substr($basePath, 0, 1) != DS)
-			{
-				$basePath = DS . $basePath;
-			}
-		}
-		$basePath .= DS . $attach->ticket;
+		$basePath = DS . trim($this->config->get('webpath', '/site/tickets'), DS) . DS . $attach->ticket;
 
-		// Does the path start with a slash?
-		if (substr($file, 0, 1) != DS)
+		$file = DS . ltrim($file, DS);
+		// Does the beginning of the $attachment->path match the config path?
+		if (substr($file, 0, strlen($basePath)) == $basePath)
 		{
-			$file = DS . $file;
-			// Does the beginning of the $attachment->path match the config path?
-			if (substr($file, 0, strlen($basePath)) == $basePath)
-			{
-				// Yes - this means the full path got saved at some point
-			}
-			else
-			{
-				// No - append it
-				$file = $basePath . $file;
-			}
+			// Yes - this means the full path got saved at some point
+		}
+		else
+		{
+			// No - append it
+			$file = $basePath . $file;
 		}
 
 		// Add JPATH_ROOT
@@ -1159,7 +1140,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		else
 		{
 			// Scan for viruses
-			$path = $path . DS . $file['name']; //JPATH_ROOT . DS . 'virustest';
+			$path = $file_path . DS . $file['name']; //JPATH_ROOT . DS . 'virustest';
 			exec("clamscan -i --no-summary --block-encrypted $path", $output, $status);
 			if ($status == 1)
 			{
