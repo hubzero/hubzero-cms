@@ -159,9 +159,9 @@ $newdir  = ($dir == 'asc') ? 'desc' : 'asc';
 				<?php if(count($this->records) > 0) {
 					foreach($this->records as $record) { 
 						// Cut the description off if it's too long
-						if(strlen($record->description) > 50)
+						if(strlen($record->description) > 25)
 						{
-							$record->description = trim(substr($record->description,0,50))."...";
+							$record->description = trim(substr($record->description,0,25))."...";
 						}
 						// Highlight search words if set
 						if(!empty($this->filters['search']))

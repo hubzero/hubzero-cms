@@ -47,71 +47,6 @@
 /*-------------------------
 	Filters
 -------------------------*/
-#plg_time_records .filters {
-	background: url('/components/com_time/images/filter.png') no-repeat 3px 0;
-	border: 2px solid transparent;
-	width: 21px;
-	height: 16px;
-	float: left;
-	position: relative;
-	margin-right: 2px;
-	}
-#plg_time_records .filters:hover {
-	height: 16px;
-	width: 21px;
-	background: #F1F1F1 url('/components/com_time/images/filter.png') no-repeat 3px 0;
-	border: 2px solid #E9E9E9;
-	-webkit-border-radius: 0;
-	-moz-border-radius: 0;
-	border-radius: 0;
-	-webkit-border-top-left-radius: 3px;
-	-webkit-border-top-right-radius: 3px;
-	-moz-border-radius-topleft: 3px;
-	-moz-border-radius-topright: 3px;
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
-	}
-#plg_time_records .filters-fix {
-	position: absolute;
-	top: 14px;
-	left: 0px;
-	height: 10px;
-	width: 21px;
-	z-index: 999;
-	visibility: hidden;
-	background: #F1F1F1;
-	}
-#plg_time_records .filters-inner {
-	position: absolute;
-	top: 17px;
-	left: -2px;
-	height: 50px;
-	width: 200px;
-	padding: 15px;
-	z-index: 888;
-	visibility: hidden;
-	background: #F1F1F1;
-	border: 2px solid #E9E9E9;
-	overflow: hidden;
-	-webkit-border-radius: 0;
-	-moz-border-radius: 0;
-	border-radius: 0;
-	-webkit-border-bottom-left-radius: 3px;
-	-webkit-border-bottom-right-radius: 3px;
-	-webkit-border-top-right-radius: 3px;
-	-moz-border-radius-bottomleft: 3px;
-	-moz-border-radius-bottomright: 3px;
-	-moz-border-radius-topright: 3px;
-	border-bottom-left-radius: 3px;
-	border-bottom-right-radius: 3px;
-	border-top-right-radius: 3px;
-	-webkit-box-shadow: 3px 3px 3px #AAA;
-	}
-#plg_time_records .filters:hover .filters-inner,
-#plg_time_records .filters:hover .filters-fix,
-#plg_time_records .filters .filters-inner:hover {
-	visibility: visible;
-	}
 #plg_time_records #applied-filters {
 	display: block;
 	min-height: 30px;
@@ -183,7 +118,7 @@
 	border-radius: 8px;
 	background: #00C803;
 	color: #FFF;
-	padding: 0px 1px 1px 2px;
+	padding: 0px 1px 1px 3px;
 	width: 16px;
 	height: 16px;
 	line-height: 12px;
