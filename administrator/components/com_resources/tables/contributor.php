@@ -380,6 +380,15 @@ class ResourcesContributor extends JTable
 		if (!$uid || $uid > 0)
 		{
 			$uid = $this->getLastUserId();
+
+			// Check for potentially conflicting profile
+			$this->_db->setQuery("SELECT uidNumber FROM #__xprofiles ORDER BY uidNumber ASC LIMIT 1");
+			$pid = $this->_db->loadResult();
+			if ($pid < $uid)
+			{
+				$uid = $pid;
+			}
+
 			if ($uid > 0)
 			{
 				$uid = 0;
