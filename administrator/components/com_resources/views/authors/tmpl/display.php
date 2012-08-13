@@ -110,6 +110,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		$stickyAlt = JText::_('Not member');
 		$scls = 'notmember';
 	}
+	if ($row->authorid > 0 && !$row->name)
+	{
+		$u = JUser::getInstance($row->authorid);
+		$row->name = $u->get('name');
+	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
@@ -123,11 +128,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td>
 <?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->authorid; ?>" title="<?php echo JText::_('COM_RESOURCES_EDIT_LIST'); ?>">
-						<span><?php echo $this->escape(stripslashes($row->name)); ?></span>
+						<span><?php echo ($row->name) ? $this->escape(stripslashes($row->name)) : JText::_('[unknown]'); ?></span>
 					</a>
 <?php } else { ?>
 					<span>
-						<span><?php echo $this->escape(stripslashes($row->name)); ?></span>
+						<span><?php echo ($row->name) ? $this->escape(stripslashes($row->name)) : JText::_('[unknown]'); ?></span>
 					</span>
 <?php } ?>
 				</td>
