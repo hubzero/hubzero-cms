@@ -345,22 +345,56 @@ class Hubzero_API extends JApplication
 		JLoader::import('Hubzero.Oauth.Provider');
 		JLoader::import('Hubzero.User');
 		JLoader::import('Hubzero.Xml');
+
 		
-		$queryvars = $this->request->get('queryvars');
-
-		$oauthkeys = array('oauth_token','oauth_timestamp','oauth_nonce','oauth_consumer_key','oauth_signature','oauth_signature_method');
+		/*
+		 * If CLI then we have to gather all query, post and header values
+		 * into params for Oauth_Provider's constructor.
+		 * 
+		 * 
+		 * 
+		 */
 		$params = array();
-		foreach($oauthkeys as $key)
+				;
+		if ( php_sapi_name() == 'cli')
 		{
-			if (isset($queryvars[$key]))
-			{
-				$params[$key] = $queryvars[$key];
-			}
-		}
+			$queryvars = $this->request->get('queryvars');
+			$postvars = $this->request->get('postdata');
 
-		if (empty($params))
-		{
-			return false;
+			if (!empty($queryvars))
+			{
+				foreach($queryvars as $key=>$value)
+				{
+					if (isset($queryvars[$key]))
+					{
+						$params[$key] = $queryvars[$key];
+					}
+					else if (isset($postvars[$key]))
+					{
+						$params[$key] = $postvars[$key];
+					}
+				}
+			}
+			
+			if (!empty($postvars))
+			{
+				foreach($postvars as $key=>$value)
+				{
+					if (isset($queryvars[$key]))
+					{
+						$params[$key] = $queryvars[$key];
+					}
+					else if (isset($postvars[$key]))
+					{
+						$params[$key] = $postvars[$key];
+					}
+				}
+			}
+				
+			if (empty($params))
+			{
+				return false;
+			}			
 		}
 
 		$oauthp = new Hubzero_Oauth_Provider($params);
@@ -368,8 +402,8 @@ class Hubzero_API extends JApplication
 		$oauthp->setAccessTokenPath('/api/oauth/access_token');
 		$oauthp->setAuthorizePath('/api/oauth/authorize');
 
-		$result = $oauthp->validateRequest($this->request->get('request'));
-		
+		$result = $oauthp->validateRequest($this->request->get('request'), $this->request->get('method'));
+	
 		if (is_array($result))
 		{
 			//$this->response->setResponseProvides('application/x-www-form-urlencoded;q=1.0,text/html;q=0.9');

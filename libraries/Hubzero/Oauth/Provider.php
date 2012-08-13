@@ -152,7 +152,7 @@ class Hubzero_Oauth_Provider
 	 * @param      unknown $uri Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	function validateRequest($uri = null, $method = 'GET')
+	function validateRequest($uri = null, $method = null)
 	{
 		$endpoint = false;
 
@@ -161,6 +161,12 @@ class Hubzero_Oauth_Provider
 			$uri = "";
 		}
 
+		if (is_null($method))
+		{
+			$method = $_SERVER['REQUEST_METHOD'];
+			//$_GLOBALS['_SERVER']['REQUEST_METHOD'] = 'GET';
+		}
+		
 		$parts = parse_url($uri);
 
 		$path = trim($parts['path'],'/');
@@ -197,9 +203,9 @@ class Hubzero_Oauth_Provider
 				|| !strpos($header,'x_auth_mode'))
 			{
 				$this->_provider->is2LeggedEndpoint(true);
-				$this->_provider->addRequiredParameter ('x_auth_mode');
-				$this->_provider->addRequiredParameter ('x_auth_username');
-				$this->_provider->addRequiredParameter ('x_auth_password');
+				//$this->_provider->addRequiredParameter ('x_auth_mode');
+				//$this->_provider->addRequiredParameter ('x_auth_username');
+				//$this->_provider->addRequiredParameter ('x_auth_password');
 			}
 
 			$endpoint = true;

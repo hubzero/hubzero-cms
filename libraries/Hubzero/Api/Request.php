@@ -77,7 +77,6 @@ class Hubzero_API_Request
 	
 	private $body = '';
 	
-	
 	private $_server = array();
 	private $_get = array();
 	private $_post = array();
@@ -195,7 +194,7 @@ class Hubzero_API_Request
 		$what = (array) $what;
 		
 		if (in_array('all',$what)) {
-			$what = array_merge($what, array('method','request','version','headers','body','hostname','scheme'));
+			$what = array_merge($what, array('method','request','version','headers','body','hostname','scheme','post'));
 		}
 		
 		foreach ($what as $item) {
@@ -240,7 +239,9 @@ class Hubzero_API_Request
 					{
 						$this->set('scheme','http');
 					}
-						
+				case 'post':
+					$this->set('post', $_POST);
+					break;
 			}
 		}
 		
@@ -257,7 +258,7 @@ class Hubzero_API_Request
 		
 		if (in_array('all',$what)) 
 		{
-			$what = array_merge($what, array('uri','get','method','version','headers'));
+			$what = array_merge($what, array('uri','get','method','version','headers','postdata'));
 		}
 
 		
@@ -269,7 +270,8 @@ class Hubzero_API_Request
 		// cookies.. fill _COOKIE
 		// recompute _REQUEST if _GET or _POST changed
 		
-		foreach ($what as $item) {
+		foreach ($what as $item) 
+		{
 			switch($item)
 			{
 				case 'version':
@@ -332,6 +334,9 @@ class Hubzero_API_Request
 						parse_str($this->get('query'), $_REQUEST); // @FIXME: quick hack, will break when _POST support added
 					}
 					break;
+				case 'postdata':
+					$_POST = $this->get('postdata');
+					break;
 				case 'headers':
 					foreach($this->headers as $key=>$value)
 					{
@@ -344,6 +349,46 @@ class Hubzero_API_Request
 						$_SERVER['HTTP_HOST'] = $this->get('hostname');
 					}
 					break;
+			}
+		}
+		
+		$order = ini_get('request_order');
+		
+		if (empty($order))
+		{
+			$order = ini_get('variables_order');
+		}
+		
+		if (empty($order))
+		{ 
+			$order = "GP";
+		}
+		
+		$g = stripos($order, 'g');
+		$p = stripos($order, 'p');
+		
+		if ($g < $p)
+		{
+			$_REQUEST = $_GET;
+			
+			if (!empty($_POST))
+			{
+				foreach($_POST as $k=>$v)
+				{
+					$_REQUEST[$k] = $v;
+				}
+			}
+		}
+		else		
+		{
+			$_REQUEST = $_POST;
+				
+			if (!empty($_GET))
+			{
+				foreach($_GET as $k=>$v)
+				{
+					$_REQUEST[$k] = $v;
+				}
 			}
 		}
 		
@@ -470,14 +515,15 @@ class Hubzero_API_Request
 				
 				return $queryvars;
 			}
+			case 'postdata':
+				return $this->_post;
 			case 'sbs':
 				if (empty($this->method))
 				{
 					return false;
 				}
 				
-				$sbs = oauth_get_sbs($this->method, $this->get('request'));
-				
+				$sbs = oauth_get_sbs($this->method, $this->get('request'), $this->_post);
 				return $sbs;	
 
 			default:			
@@ -518,10 +564,20 @@ class Hubzero_API_Request
 				{
 					$this->query .= '&';
 				}
-		
-				$this->query .= $key . '=' . $value;
+
+				$this->query .= $key . '=' . rawurlencode($value);
 				
 				break;
+				 
+			case 'postdata':
+				if ($value === null)
+				{
+					unset($this->_post[$key]);
+				}
+				else
+				{
+					$this->_post[$key] = $value;
+				}
 		}
 	}
 	
@@ -562,7 +618,7 @@ class Hubzero_API_Request
 							$this->query .= '&';
 						}
 						  
-						$this->query .= $key . '=' . $value;
+						$this->query .= $key . '=' . oauth_urlencode($value);
 					}
 				}
 				else
@@ -581,6 +637,9 @@ class Hubzero_API_Request
 				break;
 			case 'body';
 				$this->body = $value;
+				break;
+			case 'postdata':
+				$this->_post = $value;
 				break;
 			case 'request':
 			{
@@ -619,65 +678,56 @@ class Hubzero_API_Request
 		}
 	}
 	
-	public function sign($type = 'oauth', $key = '', $secret1 = '', $secret2 = '')
+	public function sign($type = 'oauth', $key = '', $secret1 = '', $secret2 = '', $method = '')
 	{
+		if (empty($method))
+		{
+			$method = $this->get('method');
+			
+			if ($method == 'GET')
+			{
+				$qkey = 'query';
+			}
+			else
+			{
+				$qkey = 'postdata';
+			}
+		}
+		//$qkey = 'query';
 		switch($type)
 		{
 			case 'oauth':
-				
 				$queryvars = $this->get('queryvars');
-				
-				if (!isset($queryvars['oauth_nonce']))
-				{
-					$queryvars['oauth_nonce'] = uniqid();
-				}
-				
-				if (!isset($queryvars['oauth_timestamp']))
-				{
-					$queryvars['oauth_timestamp'] = time();
-				}
-				
-				if (!isset($queryvars['oauth_token']))
-				{
-					$queryvars['oauth_token'] = '';
-				}
+				$postvars = $this->get('postdata');
 
-				if (!isset($queryvars['oauth_consumer_key']))
+				if (!isset($queryvars['oauth_nonce']) && !isset($postvars['oauth_nonce']))
 				{
-					$queryvars['oauth_consumer_key'] = oauth_urlencode($key);
+					$this->add($qkey, 'oauth_nonce', uniqid());
 				}
-				
-				if (!isset($queryvars['oauth_signature_method']))
+				if (!isset($queryvars['oauth_timestamp']) && !isset($postvars['oauth_timestamp']))
 				{
-					$queryvars['oauth_signature_method'] = 'HMAC-SHA1';
+					$this->add($qkey, 'oauth_timestamp', time());
 				}
-				
-				if (!isset($queryvars['oauth_version']))
+				if (!isset($queryvars['oauth_token']) && !isset($postvars['oauth_token']))
 				{
-					$queryvars['oauth_version'] = '1.0';
+					$this->add($qkey, 'oauth_token', '');
 				}
-				
-				if (isset($queryvars['oauth_signature']))
+				if (!isset($queryvars['oauth_consumer_key']) && !isset($postvars['oauth_consumer_key']))
+				{
+					$this->add($qkey, 'oauth_consumer_key', oauth_urlencode($key));
+				}
+				if (!isset($queryvars['oauth_signature_method']) && !isset($postvars['oauth_signature_method']))
+				{
+					$this->add($qkey, 'oauth_signature_method', 'HMAC-SHA1');
+				}
+				if (!isset($queryvars['oauth_version']) && !isset($postvars['oauth_version']))
+				{
+					$this->add($qkey, 'oauth_version', '1.0');
+				}
+				if (isset($queryvars['oauth_signature']) || isset($postvars['oauth_signature']))
 				{
 					return false;
 				}
-				
-				if ($queryvars['oauth_version'] != '1.0')
-				{
-					return false;
-				}
-				
-				if ($queryvars['oauth_signature_method'] != 'HMAC-SHA1')
-				{
-					return fasle;
-				}
-				
-				$this->add('query', 'oauth_nonce', $queryvars['oauth_nonce']);
-				$this->add('query', 'oauth_timestamp', $queryvars['oauth_timestamp'] );
-				$this->add('query', 'oauth_token', $queryvars['oauth_token']);
-				$this->add('query', 'oauth_consumer_key', $queryvars['oauth_consumer_key']);
-				$this->add('query', 'oauth_signature_method', $queryvars['oauth_signature_method']);
-				$this->add('query', 'oauth_version', $queryvars['oauth_version'] );
 				
 				$sbs = $this->get('sbs');
 
@@ -687,7 +737,7 @@ class Hubzero_API_Request
 				
 				$signature = base64_encode( hash_hmac('sha1', $sbs, $secret, true) );
 		
-				$this->add('query', 'oauth_signature', oauth_urlencode($signature));
+				$this->add($qkey, 'oauth_signature', $signature);
 				
 				break;
 				
