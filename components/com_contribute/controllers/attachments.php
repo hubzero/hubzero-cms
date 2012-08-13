@@ -328,6 +328,25 @@ class ContributeControllerAttachments extends Hubzero_Controller
 			}
 		}
 
+		// Scan for viruses
+		$path = $path . DS . $file['name']; //JPATH_ROOT . DS . 'virustest';
+		exec("clamscan -i --no-summary --block-encrypted $path", $output, $status);
+		if ($status == 1)
+		{
+			if (JFile::delete($path)) 
+			{
+				// Delete associations to the resource
+				$row->deleteExistence();
+
+				// Delete resource
+				$row->delete();
+			}
+
+			$this->setError(JText::_('File rejected due to possible security risk.'));
+			$this->displayTask($pid);
+			return;
+		}
+
 		if (!$row->path) 
 		{
 			$row->path = $listdir . DS . $file['name'];

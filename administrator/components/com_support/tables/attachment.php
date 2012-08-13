@@ -189,6 +189,35 @@ class SupportAttachment extends JTable
 	}
 
 	/**
+	 * Delete all records based on ticket number
+	 * 
+	 * @param      integer $ticket   Ticket ID
+	 * @return     boolean True on success
+	 */
+	public function deleteAllForTicket($ticket)
+	{
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE ticket=" . $ticket);
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+
+		$config = JComponentHelper::getParams('com_support');
+		$path = JPATH_ROOT . DS . trim($config->get('webpath', '/site/tickets'), DS) . DS . $ticket;
+		if (is_dir($path)) 
+		{
+			jimport('joomla.filesystem.folder');
+			if (!JFolder::delete($path)) 
+			{
+				$this->setError(JText::_('Unable to delete path'));
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
 	 * Load a record based on filename and ticket number and bind to $this
 	 * 
 	 * @param      integer $filename File name

@@ -38,9 +38,7 @@ ximport('Hubzero_Controller');
 include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'Emailtoken.php');
 
 /**
- * Short description for 'SupportControllerTickets'
- * 
- * Long description (if any) ...
+ * Support controller class for tickets
  */
 class SupportControllerTickets extends Hubzero_Controller
 {
@@ -85,7 +83,7 @@ class SupportControllerTickets extends Hubzero_Controller
 	}
 
 	/**
-	 * Create a new ticketadministrator/components/com_support/controllers/tickets.php
+	 * Create a new ticket
 	 *
 	 * @return	void
 	 */
@@ -188,8 +186,8 @@ class SupportControllerTickets extends Hubzero_Controller
 		$row->report  = str_replace("<br />","",$row->report);
 		$row->report  = htmlentities($row->report, ENT_COMPAT, 'UTF-8');
 		$row->report  = nl2br($row->report);
-		$row->report  = str_replace("\t",'&nbsp;&nbsp;&nbsp;&nbsp;',$row->report);
-		$row->report  = str_replace("    ",'&nbsp;&nbsp;&nbsp;&nbsp;',$row->report);
+		$row->report  = str_replace("\t", '&nbsp;&nbsp;&nbsp;&nbsp;', $row->report);
+		$row->report  = str_replace("    ", '&nbsp;&nbsp;&nbsp;&nbsp;', $row->report);
 
 		if ($id)
 		{
@@ -827,6 +825,10 @@ class SupportControllerTickets extends Hubzero_Controller
 			$comment = new SupportComment($this->database);
 			$comment->deleteComments($id);
 
+			// Delete attachments
+			$attach = new SupportAttachment($this->database);
+			$attach->deleteAllForTicket($id);
+
 			// Delete ticket
 			$ticket = new SupportTicket($this->database);
 			$ticket->delete($id);
@@ -1156,6 +1158,18 @@ class SupportControllerTickets extends Hubzero_Controller
 		}
 		else
 		{
+			// Scan for viruses
+			$path = $path . DS . $file['name']; //JPATH_ROOT . DS . 'virustest';
+			exec("clamscan -i --no-summary --block-encrypted $path", $output, $status);
+			if ($status == 1)
+			{
+				if (JFile::delete($path)) 
+				{
+					$this->setError(JText::_('File rejected due to possible security risk.'));
+					return '';
+				}
+			}
+
 			// File was uploaded
 			// Create database entry
 			$description = htmlspecialchars($description);

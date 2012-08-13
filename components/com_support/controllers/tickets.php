@@ -1910,6 +1910,17 @@ class SupportControllerTickets extends Hubzero_Controller
 		$comment = new SupportComment($this->database);
 		$comment->deleteComments($id);
 
+		$attach = new SupportAttachment($this->database);
+		if (!$attach->deleteAllForTicket($id))
+		{
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=tickets'),
+				$attach->getError(),
+				'error'
+			);
+			return;
+		}
+
 		// Delete ticket
 		$ticket = new SupportTicket($this->database);
 		$ticket->delete($id);
@@ -2249,36 +2260,19 @@ class SupportControllerTickets extends Hubzero_Controller
 		}
 
 		// Get the configured upload path
-		$basePath = $this->config->get('webpath');
-		if ($basePath) 
-		{
-			// Make sure the path doesn't end with a slash
-			if (substr($basePath, -1) == DS) 
-			{
-				$basePath = substr($basePath, 0, strlen($basePath) - 1);
-			}
-			// Ensure the path starts with a slash
-			if (substr($basePath, 0, 1) != DS) 
-			{
-				$basePath = DS . $basePath;
-			}
-		}
-		$basePath .= DS . $attach->ticket;
+		$basePath = DS . trim($this->config->get('webpath', '/site/tickets'), DS) . DS . $attach->ticket;
 
 		// Does the path start with a slash?
-		if (substr($file, 0, 1) != DS) 
+		$file = DS . ltrim($file, DS);
+		// Does the beginning of the $attachment->path match the config path?
+		if (substr($file, 0, strlen($basePath)) == $basePath) 
 		{
-			$file = DS . $file;
-			// Does the beginning of the $attachment->path match the config path?
-			if (substr($file, 0, strlen($basePath)) == $basePath) 
-			{
-				// Yes - this means the full path got saved at some point
-			} 
-			else 
-			{
-				// No - append it
-				$file = $basePath . $file;
-			}
+			// Yes - this means the full path got saved at some point
+		} 
+		else 
+		{
+			// No - append it
+			$file = $basePath . $file;
 		}
 
 		// Add JPATH_ROOT
@@ -2376,6 +2370,18 @@ class SupportControllerTickets extends Hubzero_Controller
 		} 
 		else 
 		{
+			// Scan for viruses
+			$path = $path . DS . $file['name']; //JPATH_ROOT . DS . 'virustest';
+			exec("clamscan -i --no-summary --block-encrypted $path", $output, $status);
+			if ($status == 1)
+			{
+				if (JFile::delete($path)) 
+				{
+					$this->setError(JText::_('File rejected due to possible security risk.'));
+					return '';
+				}
+			}
+
 			// File was uploaded
 			// Create database entry
 			$description = htmlspecialchars($description);
