@@ -194,7 +194,7 @@ class Hubzero_API_Request
 		$what = (array) $what;
 		
 		if (in_array('all',$what)) {
-			$what = array_merge($what, array('method','request','version','headers','body','hostname','scheme','post'));
+			$what = array_merge($what, array('method','request','version','headers','body','hostname','scheme','postdata'));
 		}
 		
 		foreach ($what as $item) {
@@ -239,8 +239,8 @@ class Hubzero_API_Request
 					{
 						$this->set('scheme','http');
 					}
-				case 'post':
-					$this->set('post', $_POST);
+				case 'postdata':
+					$this->set('postdata', $_POST);
 					break;
 			}
 		}
@@ -309,7 +309,7 @@ class Hubzero_API_Request
 						
 					if (!empty($this->query))
 					{
-						$_SERVER['REQUEST_URI'] .= '?'.$this->get('query');
+						$_SERVER['REQUEST_URI'] .= '?'.rawurldecode($this->get('query'));
 					}
 					
 					if ($this->get('scheme') == 'https')
@@ -321,7 +321,7 @@ class Hubzero_API_Request
 						unset($_SERVER['HTTPS']);
 					}
 					
-					$_SERVER['QUERY_STRING'] = $this->get('query');
+					$_SERVER['QUERY_STRING'] = rawurldecode($this->get('query'));
 					
 					break;
 				case 'method':
@@ -618,7 +618,7 @@ class Hubzero_API_Request
 							$this->query .= '&';
 						}
 						  
-						$this->query .= $key . '=' . oauth_urlencode($value);
+						$this->query .= $key . '=' . rawurlencode($value);
 					}
 				}
 				else
