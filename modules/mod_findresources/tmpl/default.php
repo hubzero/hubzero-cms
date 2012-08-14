@@ -84,6 +84,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 }
 ?>
 	<div class="uploadcontent">
-		<h4><?php echo JText::_('Upload your own content!'); ?> <span><a href="<?php echo JRoute::_('index.php?option=com_contribute'); ?>" class="contributelink"><?php echo JText::_('Get started &rsaquo;'); ?></a></span></h4>
+		<h4><?php echo JText::_('Upload your own content!'); ?> <span><a href="<?php echo JRoute::_('index.php?option=com_resources&task=new'); ?>" class="contributelink"><?php echo JText::_('Get started &rsaquo;'); ?></a></span></h4>
 	</div>
 </div><!-- / <?php echo ($this->params->get('cssId')) ? '#' . $this->params->get('cssId') : ''; ?> -->

@@ -132,7 +132,7 @@ if (count($links) > 0) {
 	$html .= implode( "\n", $links );
 	$html .= '</ul>'."\n";
 }
-$html .= "\t".'<p class="add"><a href="'.JRoute::_('index.php?option=com_contribute&task=start').'">'.JText::_('PLG_GROUPS_RESOURCES_START_A_CONTRIBUTION').'</a></p>'."\n";
+$html .= "\t".'<p class="add"><a href="'.JRoute::_('index.php?option=com_resources&task=new').'">'.JText::_('PLG_GROUPS_RESOURCES_START_A_CONTRIBUTION').'</a></p>'."\n";
 $html .= "\t".'<input type="hidden" name="area" value="'.$this->active.'" />'."\n";
 echo $html;
 ?>

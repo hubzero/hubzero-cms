@@ -87,7 +87,7 @@ if ($this->show_tools && $tools) {
 					$html .='</span>'."\n";
 				}
 				if ($this->show_tickets) {
-					$html .= '<span class="item_s"><a href="'.JRoute::_('index.php?option=com_support&task=tickets').'?find=group:'.$tools[$i]->devgroup.'"';
+					$html .= '<span class="item_s"><a href="'.JRoute::_('index.php?option=com_support&task=tickets&find=group:' . $tools[$i]->devgroup) . '"';
 					$html .= ' title="';
 					if ($tools[$i]->s == 1) {
 						$html .= JText::sprintf('MOD_MYCONTRIBUTIONS_NUM_TICKET', $tools[$i]->s, $tools[$i]->s_new);
@@ -111,7 +111,7 @@ if ($this->show_tools && $tools) {
 	$html .= '<h4>'.JText::_('MOD_MYCONTRIBUTIONS_OTHERS_IN_PROGRESS');
 	if ($this->contributions && count($this->contributions) > $this->limit_other)  {
 		$juser =& JFactory::getUser();
-		$html .= ' <small><a href="'.JRoute::_('index.php?option=com_members&id='.$juser->get('id')).DS.'contributions">'.JText::_('MOD_MYCONTRIBUTIONS_VIEW_ALL').'</a></small>'."\n";
+		$html .= ' <small><a href="'.JRoute::_('index.php?option=com_members&id=' . $juser->get('id')) . '&active=contributions">'.JText::_('MOD_MYCONTRIBUTIONS_VIEW_ALL').'</a></small>'."\n";
 	}
 	$html .= '</h4>'."\n";
 }
@@ -140,7 +140,7 @@ if (!$contributions) {
 			if (is_object($author)) {
 				$author_login = '<a href="'.JRoute::_('index.php?option=com_members&id='.$author->get('id')).'">'.stripslashes($author->get('name')).'</a>';
 			}
-			$href = '/contribute/?step=1&amp;id='.$contributions[$i]->id;
+			$href = JRoute::_('index.php?option=com_resources&task=start&step=1&id='.$contributions[$i]->id);
 
 			$html .= "\t".'<li class="'.$class.'">'."\n";
 			$html .= "\t\t".'<a href="'.$href.'">'.Hubzero_View_Helper_Html::shortenText(stripslashes($contributions[$i]->title), 40, 0).'</a>'."\n";
@@ -151,7 +151,7 @@ if (!$contributions) {
 	$html .= '</ul>'."\n";
 }
 
-$html .= "\t\t".'<ul class="module-nav"><li><a href="/contribute/?task=start">'.JText::_('MOD_MYCONTRIBUTIONS_START_NEW').'</a></li></ul>'."\n";
+$html .= "\t\t".'<ul class="module-nav"><li><a href="'.JRoute::_('index.php?option=com_resources&task=new').'">'.JText::_('MOD_MYCONTRIBUTIONS_START_NEW').'</a></li></ul>'."\n";
 
 // Output final HTML
 echo $html;
