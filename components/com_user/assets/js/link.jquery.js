@@ -41,7 +41,7 @@ HUB.UserLink = {
 			}
 			next.slideToggle('fast');
 		});
-	},
+	}
 }
 
 jQuery(document).ready(function($){

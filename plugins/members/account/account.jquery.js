@@ -133,7 +133,7 @@ HUB.Plugins.MembersAccount = {
 			error: function(xhr, status, error)
 			{
 				console.log("An error occured while trying to save your password.");
-			},
+			}
 		});
 	} // end passSave
 }
