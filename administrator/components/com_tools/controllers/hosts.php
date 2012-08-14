@@ -133,9 +133,7 @@ class ToolsControllerHosts extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'apply'
-	 * 
-	 * Long description (if any) ...
+	 * Check the status of a host
 	 * 
 	 * @return     void
 	 */
@@ -165,13 +163,11 @@ class ToolsControllerHosts extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'middleware'
+	 * Execute a middleware command
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $comm Parameter description (if any) ...
-	 * @param      array &$fnoutput Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param      string $comm      Command to execute
+	 * @param      array  &$fnoutput Command output
+	 * @return     integer 1 = success, 0 = failure
 	 */
 	protected function _middleware($comm, &$fnoutput)
 	{
@@ -234,7 +230,7 @@ class ToolsControllerHosts extends Hubzero_Controller
 
 		// Get the middleware database
 		$mwdb =& MwUtils::getMWDBO();
-		
+
 		if (is_object($row))
 		{
 			$this->view->row = $row;
@@ -374,16 +370,17 @@ class ToolsControllerHosts extends Hubzero_Controller
 		// Get the middleware database
 		$mwdb =& MwUtils::getMWDBO();
 
-		$query = "SELECT @value:=value FROM hosttype WHERE name=" . $mwdb->Quote($item) .
+		$query = "SELECT @value:=value FROM hosttype WHERE name=" . $mwdb->Quote($item) . ";" . 
 				" UPDATE host SET provisions = provisions ^ @value WHERE hostname = " . $mwdb->Quote($hostname) . ";";
 		$mwdb->setQuery($query);
-		if (defined('_JEXEC')) 
+		if (!$mwdb->queryBatch())
 		{
-			$result = $mwdb->queryBatch();
-		} 
-		else 
-		{
-			$result = $mwdb->query_batch();
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('Provision update failed.'),
+				'error'
+			);
+			return;
 		}
 
 		$this->setRedirect(
