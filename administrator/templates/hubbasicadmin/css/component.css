@@ -820,24 +820,35 @@
 	.tool-tip,
 	.tip {
 		float: left;
-		background: #ffc;
-		border: 1px solid #D4D5AA;
-		padding: 5px;
+		background: #333;
+		background: rgba(0, 0, 0, 0.8);
+		*background: #333; /* IE 7 and older */
+		border: 2px solid #000;
+		padding: 0.5em;
+		min-width: 200px;
 		max-width: 400px;
 		z-index: 50;
+		-webkit-box-shadow: 0 0px 8px rgba(0, 0, 0, 0.5);
+		-moz-box-shadow: 0 0px 8px rgba(0, 0, 0, 0.5);
+		-o-box-shadow: 0 0px 8px rgba(0, 0, 0, 0.5);
+		-ms-box-shadow: 0 0px 8px rgba(0, 0, 0, 0.5);
+		box-shadow: 0 0px 8px rgba(0, 0, 0, 0.5);
+		-webkit-border-radius: 0.5em;
+		-moz-border-radius: 0.5em;
+		-ms-border-radius: 0.5em;
+		-o-border-radius: 0.5em;
+		border-radius: 0.5em;
+		color: #fff;
+		text-shadow: 0 1px 1px rgba(0, 0, 0, 0.6);
 	}
 	.tool-tip .tool-title,
 	.tip-title {
-		padding: 0;
-		margin: 0;
+		padding: 0 0 0 0;
+		margin: 0 0 0.5em 0;
 		font-size: 1em;
 		font-weight: bold;
-		margin-top: -15px;
-		padding-top: 15px;
-		padding-bottom: 5px;
-		background: url("../images/layout/selector-arrow.png") no-repeat;
+		border-bottom: 1px dotted #666;
 	}
-	.tool-tip .tool-text,
 	.tip-text {
 		font-size: 1em;
 		margin: 0;
