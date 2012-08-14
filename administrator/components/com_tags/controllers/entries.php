@@ -375,7 +375,6 @@ class TagsControllerEntries extends Hubzero_Controller
 				{
 					// Yes, we are
 					$_POST['raw_tag'] = $tag_new;
-					$_POST['alias'] = '';
 					$_POST['description'] = '';
 
 					$this->saveTask(0);
@@ -519,7 +518,6 @@ class TagsControllerEntries extends Hubzero_Controller
 				{
 					// Yes, we are
 					$_POST['raw_tag'] = $tag_new;
-					$_POST['alias'] = '';
 					$_POST['description'] = '';
 
 					$this->saveTask(0);

@@ -58,13 +58,6 @@ class TagsTag extends JTable
 	var $raw_tag     = NULL;
 
 	/**
-	 * string(100)
-	 * 
-	 * @var string
-	 */
-	var $alias       = NULL;
-
-	/**
 	 * text
 	 * 
 	 * @var string
@@ -105,7 +98,7 @@ class TagsTag extends JTable
 
 		$oid = $this->normalize($oid);
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE tag='$oid' OR alias='$oid' LIMIT 1"); //raw_tag='$oid' OR 
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE tag='$oid' LIMIT 1"); //raw_tag='$oid' OR 
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			return $this->bind($result);
@@ -235,10 +228,6 @@ class TagsTag extends JTable
 		}
 
 		$this->tag = $this->normalize($this->raw_tag);
-		if ($this->alias)
-		{
-			$this->alias = $this->normalize($this->alias);
-		}
 
 		return true;
 	}
@@ -281,7 +270,7 @@ class TagsTag extends JTable
 		} 
 		else 
 		{
-			$query = "SELECT t.id, t.tag, t.raw_tag, t.alias, t.admin, (SELECT COUNT(*) FROM #__tags_object AS tt WHERE tt.tagid=t.id) AS total, (SELECT COUNT(*) FROM #__tags_substitute AS s WHERE s.tag_id=t.id) AS substitutes";
+			$query = "SELECT t.id, t.tag, t.raw_tag, t.admin, (SELECT COUNT(*) FROM #__tags_object AS tt WHERE tt.tagid=t.id) AS total, (SELECT COUNT(*) FROM #__tags_substitute AS s WHERE s.tag_id=t.id) AS substitutes";
 		}
 		$query .= " FROM $this->_tbl AS t";
 		if ($filters['search']) 
@@ -370,7 +359,7 @@ class TagsTag extends JTable
 	{
 		$tj = new TagsObject($this->_db);
 
-		$sql  = "SELECT t.tag, t.raw_tag, t.alias, t.admin, COUNT(*) as count
+		$sql  = "SELECT t.tag, t.raw_tag, t.admin, COUNT(*) as count
 				FROM $this->_tbl AS t 
 				INNER JOIN " . $tj->getTableName() . " AS rt ON (rt.tagid = t.id) AND rt.tbl='$tbl' ";
 		if (isset($objectid) && $objectid) 
@@ -406,6 +395,7 @@ class TagsTag extends JTable
 	{
 		$query = "SELECT t.id, t.tag, t.raw_tag 
 					FROM $this->_tbl AS t 
+					JOIN #__tags_substitute AS s ON s.tag_id=t.id
 					WHERE";
 		if (isset($filters['admin']) && $filters['admin']) 
 		{
@@ -415,7 +405,7 @@ class TagsTag extends JTable
 		{
 			$query .= " admin=0 AND";
 		}
-		$query .= " LOWER(t.raw_tag) LIKE '" . $filters['search'] . "%' 
+		$query .= " (LOWER(t.raw_tag) LIKE '" . $filters['search'] . "%' OR LOWER(s.raw_tag) LIKE '" . $filters['search'] . "%') 
 					ORDER BY t.raw_tag ASC";
 
 		$this->_db->setQuery($query);
@@ -439,7 +429,7 @@ class TagsTag extends JTable
 			$filter = "";
 		}
 
-		$query = "SELECT id, tag, raw_tag, alias, admin, COUNT(*) as tcount 
+		$query = "SELECT id, tag, raw_tag, admin, COUNT(*) as tcount 
 				FROM $this->_tbl $filter 
 				GROUP BY raw_tag 
 				ORDER BY raw_tag ASC";
@@ -461,7 +451,7 @@ class TagsTag extends JTable
 	{
 		$tj = new TagsObject($this->_db);
 
-		$sql  = "SELECT t.tag, t.raw_tag, t.alias, t.admin, tj.tagid, tj.objectid, COUNT(tj.tagid) AS tcount ";
+		$sql  = "SELECT t.tag, t.raw_tag, t.admin, tj.tagid, tj.objectid, COUNT(tj.tagid) AS tcount ";
 		$sql .= "FROM $this->_tbl AS t  ";
 		$sql .= "JOIN " . $tj->getTableName() . " AS tj ON t.id=tj.tagid ";
 		if ($exclude_private) 

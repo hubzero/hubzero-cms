@@ -110,7 +110,9 @@ $this->filters['sort'] = '';
 								<?php echo JText::_('COM_TAGS'); ?>
 								<span>(<?php echo $s . '-' . $e; ?> of <?php echo $this->total; ?>)</span>
 							</th>
+<?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
 							<th><?php echo JText::_('COM_TAGS_COL_ALIAS'); ?></th>
+<?php } ?>
 							<th><?php echo JText::_('COM_TAGS_COL_NUMBER_TAGGED'); ?></th>
 						</tr>
 					</thead>
@@ -150,9 +152,11 @@ if ($this->rows) {
 									<?php echo $this->escape(stripslashes($row->raw_tag)); ?>
 								</a>
 							</td>
+<?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
 							<td>
-								<?php echo $this->escape($row->alias); ?>
+								<?php echo $this->escape($row->substitutes); ?>
 							</td>
+<?php } ?>
 							<td>
 								<?php echo $this->escape($row->total); ?>
 							</td>

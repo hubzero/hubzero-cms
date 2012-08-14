@@ -127,16 +127,12 @@ class TagsControllerTags extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'view'
+	 * View items tagged with this tag
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function viewTask()
 	{
-		//$title = JText::_(strtoupper($this->_option));
-
 		// Incoming
 		$tagstring = urldecode(trim(JRequest::getVar('tag', '', 'request', 'none', 2)));
 
@@ -490,7 +486,8 @@ class TagsControllerTags extends Hubzero_Controller
 			$tagobj->loadTag($tag);
 
 			// Ensure we loaded the tag's info from the database
-			if ($tagobj->id) {
+			if ($tagobj->id) 
+			{
 				$tags[] = $tagobj;
 			}
 		}
@@ -824,6 +821,13 @@ class TagsControllerTags extends Hubzero_Controller
 	 */
 	public function saveTask()
 	{
+		// Check that the user is authorized
+		if (!$this->config->get('access-edit-tag')) 
+		{
+			JError::raiseWarning(403, JText::_('ALERTNOTAUTH'));
+			return;
+		}
+
 		$tag = JRequest::getVar('fields', array(), 'post');
 
 		$row = new TagsTag($this->database);
@@ -861,6 +865,10 @@ class TagsControllerTags extends Hubzero_Controller
 			return;
 		}
 
+		// Save substitutions
+		$row->saveSubstitutions($tag['substitutions']);
+
+		// Redirect to main listing
 		$this->setRedirect(
 			JRoute::_('index.php?option=' . $this->_option . '&task=browse')
 		);

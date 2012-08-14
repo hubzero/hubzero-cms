@@ -89,15 +89,11 @@ if ($this->getError())
 						<td><input type="text" name="raw_tag" id="raw_tag" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->tag->raw_tag)); ?>" /></td>
 					</tr>
 					<tr>
-						<th class="key"><label for="alias"><?php echo JText::_('ALIAS'); ?>:</label></th>
-						<td><input type="text" name="alias" id="alias" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->tag->alias)); ?>" /></td>
-					</tr>
-					<tr>
 						<th class="key" style="vertical-align:top;"><label><?php echo JText::_('DESCRIPTION'); ?>:</label></th>
 						<td><?php echo $editor->display('description', stripslashes($this->tag->description), '360px', '200px', '50', '10'); ?></td>
 					</tr>
 					<tr>
-						<th class="key" style="vertical-align:top;"><label><?php echo JText::_('Substitute for'); ?>:</label></th>
+						<th class="key" style="vertical-align:top;"><label><?php echo JText::_('ALIAS'); ?>:</label></th>
 						<td><?php echo $editor->display('substitutions', stripslashes($this->tag->getSubstitutions($this->tag->id, true)), '360px', '200px', '50', '10'); ?></td>
 					</tr>
 				</tbody>
@@ -107,7 +103,7 @@ if ($this->getError())
 	<div class="col width-40 fltrt">
 		<h4><?php echo JText::_('Normalization'); ?></h4>
 		<p><?php echo JText::_('NORMALIZED_EXPLANATION'); ?></p>
-		<h4><?php echo JText::_('Substitutions'); ?></h4>
+		<h4><?php echo JText::_('ALIAS'); ?></h4>
 		<p><?php echo JText::_('Enter a comma-separated list of tags you wish this tag to be substituted for. For example: If you enter "h20, aqua" for the tag "water", any time someone enters "h20" or "aqua" it will result in a tag of "water".'); ?></p>
 	</div>
 	<div class="clr"></div>

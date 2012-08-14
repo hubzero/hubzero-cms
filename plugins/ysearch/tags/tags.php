@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Search tag entries
@@ -45,16 +45,16 @@ class plgYSearchTags extends YSearchPlugin
 	 */
 	public static function onYSearchWidget($terms, &$widgets)
 	{
-		$weight = 'match(t.raw_tag, t.alias, t.description) against (\'' . join(' ', $terms['stemmed']) . '\')';
+		$weight = 'match(t.raw_tag, t.description) against (\'' . join(' ', $terms['stemmed']) . '\')';
 			
 		$addtl_where = array();
 		foreach ($terms['mandatory'] as $mand)
 		{
-			$addtl_where[] = "(t.raw_tag LIKE '%$mand%' OR t.alias LIKE '%$mand%' OR t.description LIKE '%$mand%')";
+			$addtl_where[] = "(t.raw_tag LIKE '%$mand%' OR t.tag LIKE '%$mand%' OR t.description LIKE '%$mand%')";
 		}
 		foreach ($terms['forbidden'] as $forb)
 		{
-			$addtl_where[] = "(t.raw_tag NOT LIKE '%$forb%' AND t.alias NOT LIKE '%$forb%' AND t.description NOT LIKE '%$forb%')";
+			$addtl_where[] = "(t.raw_tag NOT LIKE '%$forb%' AND t.tag NOT LIKE '%$forb%' AND t.description NOT LIKE '%$forb%')";
 		}
 
 		$tags = new YSearchResultSQL(

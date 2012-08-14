@@ -63,19 +63,20 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</label>
 
 			<label>
-				<?php echo JText::_('COM_TAGS_COL_ALIAS'); ?>
-				<input type="text" name="fields[alias]" value="<?php echo $this->escape(stripslashes($this->tag->alias)); ?>" size="38" />
+				<input class="option" type="checkbox" name="fields[admin]" value="1" /> 
+				<strong><?php echo JText::_('COM_TAGS_ADMINISTRATION'); ?></strong>
+				<span class="hint">(<?php echo JText::_('COM_TAGS_ADMINISTRATION_EXPLANATION'); ?>)</span>
 			</label>
 
 			<label>
-				<input class="option" type="checkbox" name="fields[admin]" value="1" /> 
-				<strong><?php echo JText::_('COM_TAGS_ADMINISTRATION'); ?></strong>
-			</label>
-			<p class="hint"><?php echo JText::_('COM_TAGS_ADMINISTRATION_EXPLANATION'); ?></p>
-	
-			<label>
 				<?php echo JText::_('COM_TAGS_DESCRIPTION'); ?>
-				<textarea name="fields[description]" rows="10" cols="35"><?php echo $this->escape(stripslashes($this->tag->description)); ?></textarea>
+				<textarea name="fields[description]" rows="7" cols="35"><?php echo $this->escape(stripslashes($this->tag->description)); ?></textarea>
+			</label>
+
+			<label>
+				<?php echo JText::_('COM_TAGS_COL_ALIAS'); ?>
+				<textarea name="fields[substitutions]" rows="5" cols="35"><?php echo stripslashes($this->tag->getSubstitutions($this->tag->id, true)); ?></textarea>
+				<span class="hint"><?php echo JText::_('Enter a comma-separated list of tags you wish this tag to be substituted for. For example: If you enter "h20, aqua" for the tag "water", any time someone enters "h20" or "aqua" it will result in a tag of "water".'); ?></span>
 			</label>
 
 			<input type="hidden" name="fields[tag]" value="<?php echo $this->tag->tag; ?>" />
