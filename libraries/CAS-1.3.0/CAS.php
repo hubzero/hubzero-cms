@@ -296,6 +296,21 @@ class phpCAS
      * @{
      */
 
+	/**
+	 * phpCAS client initialization check
+	 */
+	public static function isInitialized()
+	{
+		if (is_object(self::$_PHPCAS_CLIENT))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+    }
+
     /**
      * phpCAS client initializer.
      *

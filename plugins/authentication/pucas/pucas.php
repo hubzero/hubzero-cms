@@ -35,6 +35,8 @@ ximport('Hubzero_Auth_Domain');
 ximport('Hubzero_Auth_Link');
 jimport('joomla.plugin.plugin');
 
+require_once(JPATH_SITE . DS . 'libraries' . DS . 'CAS-1.3.0' . DS . 'CAS.php');
+
 /**
  * Authentication Plugin class for PUCAS
  */
@@ -42,10 +44,13 @@ class plgAuthenticationPUCAS extends JPlugin
 {
 	/**
 	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 *
+	 * For php4 compatability we must not use the __constructor as a constructor for plugins
+	 * because func_get_args ( void ) returns a copy of all passed arguments NOT references.
+	 * This causes problems with cross-referencing necessary for the observer design pattern.
+	 *
+	 * @param object $subject The object to observe
+	 * @param array  $config  An array that holds the plugin configuration
 	 */
 	public function plgAuthenticationPucas(&$subject, $config)
 	{
@@ -59,12 +64,11 @@ class plgAuthenticationPUCAS extends JPlugin
 	 */
 	public function logout()
 	{
-		global $PHPCAS_CLIENT, $mainframe;
+		global $mainframe;
 
-		if (!is_object($PHPCAS_CLIENT))
+		phpCAS::setDebug();
+		if(!phpCAS::isInitialized())
 		{
-			require_once(JPATH_SITE . DS . 'libraries' . DS . 'CAS-1.0.1' . DS . 'CAS.php');
-			phpCAS::setDebug();
 			phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas', false);
 		}
 
@@ -87,27 +91,25 @@ class plgAuthenticationPUCAS extends JPlugin
 
 		if (phpCAS::isAuthenticated() || phpCAS::checkAuthentication())
 		{
-			phpCAS::logoutWithUrl($service . '/index.php?option=com_user&view=login&authenticator=pucas' . $return);
+			phpCAS::logoutWithRedirectService($service . '/index.php?option=com_user&view=login&authenticator=pucas' . $return);
 		}
 	}
 
 	/**
-	 * Short description for 'status'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     array Return description (if any) ...
+	 * Check login status of current user with regards to Purdue CAS
+	 *
+	 * @access	public
+	 * @return	Array $status
 	 */
 	public function status()
 	{
-		global $PHPCAS_CLIENT, $mainframe;
+		global $mainframe;
 
 		$status = array();
 
-		if (!is_object($PHPCAS_CLIENT))
+		phpCAS::setDebug();
+		if(!phpCAS::isInitialized())
 		{
-			require_once(JPATH_SITE . DS . 'libraries' . DS . 'CAS-1.0.1' . DS . 'CAS.php');
-			phpCAS::setDebug();
 			phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas', false);
 		}
 
@@ -142,27 +144,25 @@ class plgAuthenticationPUCAS extends JPlugin
 	}
 
 	/**
-	 * Short description for 'display'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      mixed $view Parameter description (if any) ...
-	 * @param      unknown $tpl Parameter description (if any) ...
-	 * @return     void
+	 * Method to setup Purdue CAS params and redirect to pucas auth URL
+	 *
+	 * @access	public
+	 * @param   object	$view	view object
+	 * @param 	object	$tpl	template object
+	 * @return	void
 	 */
 	public function display($view, $tpl)
 	{
-		global $PHPCAS_CLIENT, $mainframe;
+		global $mainframe;
 
-		if (!is_object($PHPCAS_CLIENT))
+		phpCAS::setDebug();
+		if(!phpCAS::isInitialized())
 		{
-			require_once(JPATH_SITE . DS . 'libraries' . DS . 'CAS-1.3.0' . DS . 'CAS.php');
-			phpCAS::setDebug();
 			phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas', false);
 		}
 
 		$service = rtrim(JURI::base(),'/');
-		
+
 		if (empty($service))
 		{
 			$service = $_SERVER['HTTP_HOST'];
@@ -194,12 +194,9 @@ class plgAuthenticationPUCAS extends JPlugin
 	 */
 	public function onAuthenticate($credentials, $options, &$response)
 	{
-		global $PHPCAS_CLIENT;
-
-		if (!is_object($PHPCAS_CLIENT))
+		phpCAS::setDebug();
+		if(!phpCAS::isInitialized())
 		{
-			require_once(JPATH_SITE . DS . 'libraries' . DS . 'CAS-1.3.0' . DS . 'CAS.php');
-			phpCAS::setDebug();
 			phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas', false);
 		}
 
@@ -249,6 +246,59 @@ class plgAuthenticationPUCAS extends JPlugin
 		{
 			$response->status = JAUTHENTICATE_STATUS_FAILURE;
 			$response->error_message = 'Not Authenticated.';
+		}
+	}
+
+	/**
+	 * Similar to onAuthenticate, except we already have a logged in user, we're just linking accounts
+	 *
+	 * @access	public
+	 * @return	void
+	 */
+	public function link()
+	{
+		global $mainframe;
+
+		// Get the user
+		$juser = JFactory::getUser();
+
+		phpCAS::setDebug();
+		if(!phpCAS::isInitialized())
+		{
+			phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas', false);
+		}
+
+		phpCAS::setNoCasServerValidation();
+
+		if (phpCAS::isAuthenticated())
+		{
+			// Get unique username
+			$username = phpCAS::getUser();
+
+			$hzad = Hubzero_Auth_Domain::getInstance('authentication', 'pucas', '');
+
+			// Create the link
+			if(Hubzero_Auth_Link::getInstance($hzad->id, $username))
+			{
+				// This facebook account is already linked to another hub account
+				$mainframe->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'), 
+					'This Purdue Career Account appears to already be linked to a hub account', 
+					'error');
+			}
+			else
+			{
+				$hzal = Hubzero_Auth_Link::find_or_create('authentication', 'pucas', null, $username);
+				$hzal->user_id = $juser->get('id');
+				$hzal->email   = phpCAS::getAttribute('email');
+				$hzal->update();
+			}
+		}
+		else
+		{
+			// User somehow got redirect back without being authenticated (not sure how this would happen?)
+			$mainframe->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'), 
+				'There was an error linking your Purdue Career Account, please try again later.', 
+				'error');
 		}
 	}
 }
