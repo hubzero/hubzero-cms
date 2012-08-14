@@ -280,7 +280,7 @@ class plgAuthenticationPUCAS extends JPlugin
 			// Create the link
 			if(Hubzero_Auth_Link::getInstance($hzad->id, $username))
 			{
-				// This facebook account is already linked to another hub account
+				// This purdue cas account is already linked to another hub account
 				$mainframe->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'), 
 					'This Purdue Career Account appears to already be linked to a hub account', 
 					'error');
