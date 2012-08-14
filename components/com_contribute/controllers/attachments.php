@@ -329,8 +329,8 @@ class ContributeControllerAttachments extends Hubzero_Controller
 		}
 
 		// Scan for viruses
-		$path = $path . DS . $file['name']; //JPATH_ROOT . DS . 'virustest';
-		exec("clamscan -i --no-summary --block-encrypted $path", $output, $status);
+		$fpath = $path . DS . $file['name']; //JPATH_ROOT . DS . 'virustest';
+		exec("clamscan -i --no-summary --block-encrypted $fpath", $output, $status);
 		if ($status == 1)
 		{
 			if (JFile::delete($path)) 
@@ -388,15 +388,15 @@ class ContributeControllerAttachments extends Hubzero_Controller
 			$dbh =& JFactory::getDBO();
 
 			$hash = sha1_file($path . DS . $file['name']);
-			$dbh->setQuery('SELECT id FROM #__document_text_data WHERE hash = \''.$hash.'\'');
+			$dbh->setQuery('SELECT id FROM #__document_text_data WHERE hash = \'' . $hash . '\'');
 			if (!($doc_id = $dbh->loadResult()))
 			{
-				$dbh->execute('INSERT INTO #__document_text_data(hash) VALUES (\''.$hash.'\')');
+				$dbh->execute('INSERT INTO #__document_text_data(hash) VALUES (\'' . $hash . '\')');
 				$doc_id = $dbh->insertId();
 			}
 
-			$dbh->execute('INSERT IGNORE INTO #__document_resource_rel(document_id, resource_id) VALUES ('.(int)$doc_id.', '.(int)$row->id.')');
-			system('/usr/local/bin/textifier '.escapeshellarg($path . DS . $file['name']).' >/dev/null');
+			$dbh->execute('INSERT IGNORE INTO #__document_resource_rel(document_id, resource_id) VALUES (' . (int)$doc_id . ', ' . (int)$row->id . ')');
+			system('/usr/local/bin/textifier ' . escapeshellarg($path . DS . $file['name']) . ' >/dev/null');
 		}
 
 		// Push through to the attachments view

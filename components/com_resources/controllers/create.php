@@ -359,7 +359,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 		// Ensure we have an ID to work with
 		if (!$this->view->id) 
 		{
-			JError::raiseError(500, JText::_('COM_RESOURCES_NO_ID'));
+			JError::raiseError(500, JText::_('COM_CONTRIBUTE_NO_ID'));
 			return;
 		}
 
@@ -393,7 +393,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 		// Ensure we have an ID to work with
 		if (!$this->view->id) 
 		{
-			JError::raiseError(500, JText::_('COM_RESOURCES_NO_ID'));
+			JError::raiseError(500, JText::_('COM_CONTRIBUTE_NO_ID'));
 			return;
 		}
 
@@ -493,7 +493,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 		// Ensure we have an ID to work with
 		if (!$this->view->id) 
 		{
-			JError::raiseError(500, JText::_('COM_RESOURCES_NO_ID'));
+			JError::raiseError(500, JText::_('COM_CONTRIBUTE_NO_ID'));
 			return;
 		}
 
@@ -578,7 +578,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 		// Ensure we have an ID to work with
 		if (!$this->view->id) 
 		{
-			JError::raiseError(500, JText::_('COM_RESOURCES_NO_ID'));
+			JError::raiseError(500, JText::_('COM_CONTRIBUTE_NO_ID'));
 			return;
 		}
 
@@ -740,7 +740,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 
 			if (!$f && isset($fields[$tagname]) && $fields[$tagname]->required) 
 			{
-				$this->setError(JText::sprintf('COM_RESOURCES_REQUIRED_FIELD_CHECK', $fields[$tagname]->label));
+				$this->setError(JText::sprintf('COM_CONTRIBUTE_REQUIRED_FIELD_CHECK', $fields[$tagname]->label));
 			}
 
 			$found[] = $tagname;
@@ -751,7 +751,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 			if (!in_array($field->name, $found) && $field->required)
 			{
 				$found[] = $field->name;
-				$this->setError(JText::sprintf('COM_RESOURCES_REQUIRED_FIELD_CHECK', $field->label));
+				$this->setError(JText::sprintf('COM_CONTRIBUTE_REQUIRED_FIELD_CHECK', $field->label));
 			}
 		}
 
@@ -1080,7 +1080,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 		// Ensure we have an ID to work with
 		if (!$id) 
 		{
-			JError::raiseError(500, JText::_('COM_RESOURCES_NO_ID'));
+			JError::raiseError(500, JText::_('COM_CONTRIBUTE_NO_ID'));
 			return;
 		}
 
@@ -1099,7 +1099,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 		$authorized = JRequest::getInt('authorization', 0);
 		if (!$authorized && !$published) 
 		{
-			$this->setError(JText::_('COM_RESOURCES_CONTRIBUTION_NOT_AUTHORIZED'));
+			$this->setError(JText::_('COM_CONTRIBUTE_CONTRIBUTION_NOT_AUTHORIZED'));
 			$this->_checkProgress($id);
 			$this->step_review();
 			return;
@@ -1141,7 +1141,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 
 			if (!$contributors || count($contributors) <= 0) 
 			{
-				$this->setError(JText::_('COM_RESOURCES_CONTRIBUTION_HAS_NO_AUTHORS'));
+				$this->setError(JText::_('COM_CONTRIBUTE_CONTRIBUTION_HAS_NO_AUTHORS'));
 				$this->_checkProgress($id);
 				$this->step_review();
 				return;
@@ -1387,7 +1387,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 		// Make sure we have a record to pull
 		if (!$id) 
 		{
-			$this->setError(JText::_('COM_RESOURCES_NO_ID'));
+			$this->setError(JText::_('COM_CONTRIBUTE_NO_ID'));
 			return false;
 		}
 
@@ -1418,7 +1418,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 		// Make sure we have a record to pull
 		if (!$id) 
 		{
-			$this->setError(JText::_('COM_RESOURCES_NO_ID'));
+			$this->setError(JText::_('COM_CONTRIBUTE_NO_ID'));
 			return false;
 		}
 
@@ -1462,14 +1462,14 @@ class ResourcesControllerCreate extends Hubzero_Controller
 				// Check if the folder even exists
 				if (!is_dir($path) or !$path) 
 				{
-					$this->setError(JText::_('COM_RESOURCES_DIRECTORY_NOT_FOUND'));
+					$this->setError(JText::_('COM_CONTRIBUTE_DIRECTORY_NOT_FOUND'));
 				} 
 				else 
 				{
 					// Attempt to delete the folder
 					if (!JFolder::delete($path)) 
 					{
-						$this->setError(JText::_('COM_RESOURCES_UNABLE_TO_DELETE_DIRECTORY'));
+						$this->setError(JText::_('COM_CONTRIBUTE_UNABLE_TO_DELETE_DIRECTORY'));
 					}
 				}
 
@@ -1498,14 +1498,14 @@ class ResourcesControllerCreate extends Hubzero_Controller
 		// Check if the folder even exists
 		if (!is_dir($path) or !$path) 
 		{
-			$this->setError(JText::_('COM_RESOURCES_DIRECTORY_NOT_FOUND'));
+			$this->setError(JText::_('COM_CONTRIBUTE_DIRECTORY_NOT_FOUND'));
 		} 
 		else 
 		{
 			// Attempt to delete the folder
 			if (!JFolder::delete($path)) 
 			{
-				$this->setError(JText::_('COM_RESOURCES_UNABLE_TO_DELETE_DIRECTORY'));
+				$this->setError(JText::_('COM_CONTRIBUTE_UNABLE_TO_DELETE_DIRECTORY'));
 			}
 		}
 

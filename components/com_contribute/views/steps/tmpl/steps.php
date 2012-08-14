@@ -112,7 +112,7 @@ for ($i=1, $n=count( $this->steps ); $i < $n; $i++)
 	$html .= '>';
 	if ($this->step == $i) {
 		$html .= '<strong>' . $this->steps[$i] . '</strong>';
-	} elseif ($this->progress[$this->steps[$i]] == 1) {
+	} elseif ($this->progress[$this->steps[$i]] == 1 || $this->step > $i) {
 		$html .= '<a href="'. JRoute::_('index.php?option='.$this->option.'&step='.$i.'&id='.$this->id) .'">'.JText::_('COM_CONTRIBUTE_STEP_'.strtoupper($this->steps[$i])).'</a>';
 	} else {
 		if ($this->progress['submitted'] == 1) {

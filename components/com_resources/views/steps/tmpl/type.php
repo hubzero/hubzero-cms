@@ -49,41 +49,127 @@ $jconfig =& JFactory::getConfig();
 	<p class="warning"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-<div class="main section withleft">
+<div class="main section">
 	<div class="aside">
-		<ul>
-			<?php
-			if ($this->types) {
-				foreach ($this->types as $type)
-				{
-					if ($type->contributable == 1) {
-						if ($type->id == 7) {
-							$url = '/contribute/tools/register';
-						} else {
-							$url = JRoute::_('index.php?option='.$this->option.'&task=start&step='.$this->step.'&type='.$type->id);
-						}
-						echo '<li><a class="tooltips" href="'.$url.'" title="'.$this->escape(stripslashes($type->type)).' :: '.$this->escape(stripslashes($type->description)).'">'.$this->escape(stripslashes($type->type)).'</a></li>'."\n";
-					}
-				}
-			}
-			?>
-		</ul>
+		<h3>Select a type</h3>
+		<p>Select one of the resource types listed to proceed to the next step. The type of resource chosen can affect what information you will need to provide in the following steps.</p>
 	</div><!-- /.aside -->
 	<div class="subject">
-		<p>Select one of the resource types listed to proceed to the next step. The type of resource chosen can affect what information you will need to provide in the following steps.</p>
+<?php
+	if ($this->types) 
+	{
+		$i = 0;
+		$clm = '';
+		foreach ($this->types as $type)
+		{
+			if ($type->contributable != 1) 
+			{
+				continue;
+			}
+			if ($type->id == 7) 
+			{
+				$url = JRoute::_('index.php?option=com_contribtool&task=start');
+			}
+			else 
+			{
+				$url = JRoute::_('index.php?option=' . $this->option . '&task=start&step=' . $this->step . '&type=' . $type->id);
+			}
 
-		<h4>What if I want to contribute a type not listed here?</h4>
-		<p>If you feel your contribution does not fit into any of our predefined types, please <a href="feedback/report_problems/">contact us</a> with details of</p>
-		<ol>
-			<li>what you wish to contribute, including a description and file types</li>
-			<li>how you believe it should be categorized</li>
-		</ol>
-		<p>We will try to accomodate you or provide another suggestion.</p>
+			$i++;
+			switch ($clm)
+			{
+				case 'second': $clm = 'third'; break;
+				case 'first': $clm = 'second'; break;
+				case '':
+				case 'third':
+				default: $clm = 'first'; break;
+			}
 
-		<p>In order for <?php echo $jconfig->getValue('config.sitename'); ?> to display your content, we must be given legal license to do so. At the very least, <?php echo $jconfig->getValue('config.sitename'); ?> must be authorized to 
-		hold, copy, distribute, and perform (play back) your material according to <a class="popup" href="/legal/license">this agreement</a>. 
-		You will retain any copyrights to the materials and decide how they should be licensed for end-user access. We encourage you to <a class="popup" href="/legal/licensing">license your contributions</a> 
-		so that others can build upon them.</p>
+			if (substr($type->alias, -3) == 'ies') 
+			{
+				$cls = $type->alias;
+			} 
+			else 
+			{
+				$cls = substr($type->alias, 0, -1);
+			}
+?>
+		<div class="three columns <?php echo $clm; ?>">
+			<div class="type-container <?php echo $cls; ?>">
+				<p class="type-button"><a href="<?php echo $url; ?>"><?php echo $this->escape(stripslashes($type->type)); ?></a></p>
+				<p><?php echo $this->escape(stripslashes($type->description)); ?></p>
+			</div>
+		</div><!-- / .three columns <?php echo $clm; ?> -->
+<?php
+			if ($clm == 'third') 
+			{
+				echo '<div class="clear"></div>';
+				$clm = '';
+				$i = 0;
+			}
+		}
+		if ($i == 1 || $i == 2) 
+		{
+?>
+		<div class="three columns third">
+			<p> </p>
+		</div><!-- / .three columns third -->
+<?php
+		}
+?>
+		<div class="clear"></div>
+<?php
+	}
+?>
+
+		<p class="info">
+			In order for <?php echo $jconfig->getValue('config.sitename'); ?> to display your content, we must be given legal license to do so. At the very least, <?php echo $jconfig->getValue('config.sitename'); ?> must be authorized to 
+			hold, copy, distribute, and perform (play back) your material according to <a class="popup" href="/legal/license">this agreement</a>. 
+			You will retain any copyrights to the materials and decide how they should be licensed for end-user access. We encourage you to <a class="popup" href="/legal/licensing">license your contributions</a> 
+			so that others can build upon them.
+		</p>
+
+		<div class="container" id="entry-29">
+			<div class="container-block">
+				<h3>Frequently Asked Questions</h3>
+				<div class="entry-content">
+					<ul class="faq-list"> 
+						<li><a href="#unknowntype">What if I want to contribute a type not listed here?</a></li> 
+						<li><a href="#drafts">What if I don't have all the materials right now?</a></li> 
+						<li><a href="#submission">What happens after submission?</a></li> 
+						<li><a href="#retract">Ooops! I missed something and/or submitted too early!</a></li> 
+					</ul>
+
+					<h4><a name="unknowntype"></a>What if I want to contribute a type not listed here?</h4>
+					<p>If you feel your contribution does not fit into any of our predefined types, please <a href="feedback/report_problems/">contact us</a> with details of</p>
+					<ol>
+						<li>what you wish to contribute, including a description and file types</li>
+						<li>how you believe it should be categorized</li>
+					</ol>
+					<p>We will try to accommodate you or provide another suggestion.</p>
+
+					<h4><a name="drafts"></a>What if I don't have all the materials right now?</h4>
+					<p>This is perfectly fine. When you start a new contribution, it remains in a "draft" state until you decide to submit it for publication. You may work on portions of it at your leisure and return to a step at any time.</p>
+					<p>You can find a list of your drafts through a variety of methods:</p>
+					<ul>
+						<li>Go to the "contributions" tab under your <a href="<?php echo JRoute::_('index.php?option=com_members&task=myaccount'); ?>">account</a>.</li>
+						<li>Add the "My Drafts" module to your personalized dashboard (also found under your <a href="<?php echo JRoute::_('index.php?option=com_members&task=myaccount'); ?>">account</a>).</li>
+						<li>Visit the <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">new contribution</a> page.</li>
+					</ul>
+
+					<h4><a name="submission"></a>What happens after submission?</h4>
+					<p>After submitting your contribution, it will enter a "pending" state to be reviewed for completeness. If all appears satisfactory, the contribution will be marked as "published" and immediately appear in the <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>">resources listing</a>.</p>
+
+					<h4><a name="retract"></a>Ooops! I missed something and/or submitted too early!</h4>
+					<p>No worries! You can retract a submission by following these steps:</p>
+					<ul>
+						<li>Visit the <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">new contribution</a> page.</li>
+						<li>You should be presented with a list of your "drafts" and "pending" submissions. Find the (pending) contribution you wish to retract.</li>
+						<li>Click "retract".</li>
+					</ul>
+				</div>
+			</div><!-- / .container-block -->
+		</div><!-- / .container -->
 	</div><!-- /.subject -->
 	<div class="clear"></div>
 </div><!-- /.main section -->
