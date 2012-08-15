@@ -181,7 +181,7 @@ $newdir  = ($dir == 'asc') ? 'desc' : 'asc';
 						<td class="col-time"><?php echo $record->time; ?></td>
 						<td><?php echo JHTML::_('date', $record->date, '%m/%d/%Y', 0); ?></td>
 						<td><?php echo $record->pname; ?></td>
-						<td><?php echo $record->description; ?>
+						<td class="last"><?php echo $record->description; ?>
 							<?php if($record->billed == 0 && ($this->juser->get('id') == $record->uid || in_array($record->uid, $this->subordinates))) { ?>
 								<div class="modifiers">
 									<a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=records&action=edit&id='.$record->id); ?>"></a>

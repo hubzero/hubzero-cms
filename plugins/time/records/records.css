@@ -9,9 +9,11 @@
 	Edit, Delete, and view buttons
 ------------------------------------*/
 #plg_time_records .modifiers {
-	float: right;
+	position: absolute;
 	width: 50px;
 	height: 20px;
+	right: 0px;
+	top: 30%;
 	}
 #plg_time_records .modifiers .view {
 	background: url("/components/com_time/images/eye.png") 0 0 no-repeat;
@@ -134,6 +136,11 @@
 #plg_time_records table thead td {
 	font-weight: bold;
 	border-bottom: 2px solid #EFEFEF;
+	min-width: 32px;
+	}
+#plg_time_records table td.last {
+	padding-right: 60px;
+	position: relative;
 	}
 #plg_time_records .entries tbody td.no_records {
 	text-align: center;
