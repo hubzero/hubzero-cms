@@ -303,6 +303,9 @@ class modHubMenuHelper
 		$menu->addChild(new JMenuNode(JText::_('Site'), null, 'disabled'));
 
 		// Menus SubMenu
+		$menu->addChild(new JMenuNode(JText::_('Users'), null, 'disabled'));
+
+		// Menus SubMenu
 		$menu->addChild(new JMenuNode(JText::_('Menus'), null, 'disabled'));
 
 		// Content SubMenu
@@ -318,12 +321,6 @@ class modHubMenuHelper
 		if ($installModules) 
 		{
 			$menu->addChild(new JMenuNode(JText::_('Extensions'), null, 'disabled'));
-		}
-
-		// System SubMenu
-		if ($canConfig) 
-		{
-			$menu->addChild(new JMenuNode(JText::_('System'),  null, 'disabled'));
 		}
 
 		// Help SubMenu
