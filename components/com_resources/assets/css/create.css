@@ -214,6 +214,20 @@
 		list-style: decimal;
 	}
 
+	.summary {
+		background: #fff;
+		border: 2px solid #e9e9e9;
+	}
+	.summary caption {
+		text-align: left;
+	}
+	.summary tbody td,
+	.summary tbody th {
+		border-bottom: 1px solid #eee;
+	}
+	.summary tbody th {
+		font-weight: bold;
+	}
 /* My submissions */
 	#submissions {
 		margin: 0 0 1em 0;

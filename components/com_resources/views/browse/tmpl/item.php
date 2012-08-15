@@ -53,9 +53,9 @@ $html .= "\t\t".'<p class="title"><a href="'.$sef.'">'. Hubzero_View_Helper_Html
 if ($this->show_edit != 0) {
 	if ($this->line->published >= 0) {
 		if ($this->line->type == 7) {
-			$link = JRoute::_('index.php?option=com_contribtool&task=start&step=1&rid='. $this->line->id);
+			$link = JRoute::_('index.php?option=com_contribtool&task=draft&step=1&rid='. $this->line->id);
 		} else {
-			$link = JRoute::_('index.php?option=com_resources&task=start&step=1&id='. $this->line->id);
+			$link = JRoute::_('index.php?option=com_resources&task=draft&step=1&id='. $this->line->id);
 		}
 		$html .= ' <a class="edit button" href="'. $link .'" title="'. JText::_('COM_RESOURCES_EDIT') .'">'. JText::_('COM_RESOURCES_EDIT') .'</a>';
 	}

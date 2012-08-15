@@ -226,7 +226,7 @@ class ResourcesHtml
 				} 
 				else 
 				{
-					$link = JRoute::_('index.php?option=com_resources&task=start&step=1&id=' . $id);
+					$link = JRoute::_('index.php?option=com_resources&task=draft&step=1&id=' . $id);
 				}
 				$txt = JText::_('EDIT');
 			break;

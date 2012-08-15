@@ -140,7 +140,7 @@ if (!$contributions) {
 			if (is_object($author)) {
 				$author_login = '<a href="'.JRoute::_('index.php?option=com_members&id='.$author->get('id')).'">'.stripslashes($author->get('name')).'</a>';
 			}
-			$href = JRoute::_('index.php?option=com_resources&task=start&step=1&id='.$contributions[$i]->id);
+			$href = JRoute::_('index.php?option=com_resources&task=draft&step=1&id='.$contributions[$i]->id);
 
 			$html .= "\t".'<li class="'.$class.'">'."\n";
 			$html .= "\t\t".'<a href="'.$href.'">'.Hubzero_View_Helper_Html::shortenText(stripslashes($contributions[$i]->title), 40, 0).'</a>'."\n";

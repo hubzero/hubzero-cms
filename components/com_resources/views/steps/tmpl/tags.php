@@ -37,7 +37,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <div id="content-header-extra">
 	<p>
-		<a class="add" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=start'); ?>">
+		<a class="add" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft'); ?>">
 			<?php echo JText::_('New submission'); ?>
 		</a>
 	</p>
@@ -57,7 +57,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php if ($this->getError()) { ?>
 	<p class="warning"><?php echo $this->getError(); ?></p>
 <?php } ?>
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=start&step=' . $this->next_step . '&id=' . $this->id); ?>" method="post" id="hubForm">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft&step=' . $this->next_step . '&id=' . $this->id); ?>" method="post" id="hubForm">
 		<div class="explaination">
 			<h4><?php echo JText::_('COM_CONTRIBUTE_TAGS_WHAT_ARE_TAGS'); ?></h4>
 			<p><?php echo JText::_('COM_CONTRIBUTE_TAGS_EXPLANATION'); ?></p>

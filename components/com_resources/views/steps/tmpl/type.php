@@ -68,11 +68,11 @@ $jconfig =& JFactory::getConfig();
 			}
 			if ($type->id == 7) 
 			{
-				$url = JRoute::_('index.php?option=com_contribtool&task=start');
+				$url = JRoute::_('index.php?option=com_contribtool&task=draft');
 			}
 			else 
 			{
-				$url = JRoute::_('index.php?option=' . $this->option . '&task=start&step=' . $this->step . '&type=' . $type->id);
+				$url = JRoute::_('index.php?option=' . $this->option . '&task=draft&step=' . $this->step . '&type=' . $type->id);
 			}
 
 			$i++;
@@ -139,7 +139,8 @@ $jconfig =& JFactory::getConfig();
 						<li><a href="#submission">What happens after submission?</a></li> 
 						<li><a href="#retract">Ooops! I missed something and/or submitted too early!</a></li> 
 					</ul>
-
+				</div>
+				<div class="entry-content">
 					<h4><a name="unknowntype"></a>What if I want to contribute a type not listed here?</h4>
 					<p>If you feel your contribution does not fit into any of our predefined types, please <a href="feedback/report_problems/">contact us</a> with details of</p>
 					<ol>
@@ -147,19 +148,22 @@ $jconfig =& JFactory::getConfig();
 						<li>how you believe it should be categorized</li>
 					</ol>
 					<p>We will try to accommodate you or provide another suggestion.</p>
-
+				</div>
+				<div class="entry-content">
 					<h4><a name="drafts"></a>What if I don't have all the materials right now?</h4>
 					<p>This is perfectly fine. When you start a new contribution, it remains in a "draft" state until you decide to submit it for publication. You may work on portions of it at your leisure and return to a step at any time.</p>
 					<p>You can find a list of your drafts through a variety of methods:</p>
 					<ul>
 						<li>Go to the "contributions" tab under your <a href="<?php echo JRoute::_('index.php?option=com_members&task=myaccount'); ?>">account</a>.</li>
-						<li>Add the "My Drafts" module to your personalized dashboard (also found under your <a href="<?php echo JRoute::_('index.php?option=com_members&task=myaccount'); ?>">account</a>).</li>
+						<li>Add the "My Drafts" module to your personalized dashboard (found <a href="<?php echo JRoute::_('index.php?option=com_members&task=myaccount'); ?>">here</a>).</li>
 						<li>Visit the <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">new contribution</a> page.</li>
 					</ul>
-
+				</div>
+				<div class="entry-content">
 					<h4><a name="submission"></a>What happens after submission?</h4>
-					<p>After submitting your contribution, it will enter a "pending" state to be reviewed for completeness. If all appears satisfactory, the contribution will be marked as "published" and immediately appear in the <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>">resources listing</a>.</p>
-
+					<p>After submitting your contribution, it will be reviewed for completeness. If all appears satisfactory, the contribution will beapproved and immediately appear in the <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>">resources listing</a>.</p>
+				</div>
+				<div class="entry-content">
 					<h4><a name="retract"></a>Ooops! I missed something and/or submitted too early!</h4>
 					<p>No worries! You can retract a submission by following these steps:</p>
 					<ul>

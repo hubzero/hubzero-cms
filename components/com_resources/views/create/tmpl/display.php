@@ -57,7 +57,7 @@ if (!$juser->get('guest')) {
 
 <div id="introduction" class="contribute section">
 	<div class="aside">
-		<p id="getstarted"><a href="<?php echo JRoute::_('index.php?option='.$option.'&task=start'); ?>">Get Started &rsaquo;</a></p>
+		<p id="getstarted"><a href="<?php echo JRoute::_('index.php?option='.$option.'&task=draft'); ?>">Get Started &rsaquo;</a></p>
 	</div><!-- / .aside -->
 	<div class="subject">
 		<div class="two columns first">
@@ -115,14 +115,14 @@ if (!$juser->get('guest')) {
 				$tags = $rt->getTags( $submission->id );
 ?>
 				<tr class="<?php echo $cls; ?>">
-					<td><?php if ($submission->published == 2) { ?><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=start&step=1&id='.$submission->id); ?>"><?php } ?><?php echo stripslashes($submission->title); ?><?php if ($submission->published == 2) { ?></a><?php } ?><br /><span class="type"><?php echo stripslashes($submission->typetitle); ?></span></td>
-					<td><?php if ($submission->published == 2) { ?><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=start&step=2&id='.$submission->id); ?>"><?php } ?><?php echo $attachments; ?> attachment(s)<?php if ($submission->published == 2) { ?></a><?php } ?></td>
-					<td><?php if ($submission->published == 2) { ?><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=start&step=3&id='.$submission->id); ?>"><?php } ?><?php echo $authors; ?> author(s)<?php if ($submission->published == 2) { ?></a><?php } ?></td>
-					<td><?php if ($submission->published == 2) { ?><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=start&step=4&id='.$submission->id); ?>"><?php } ?><?php echo count($tags); ?> tag(s)<?php if ($submission->published == 2) { ?></a><?php } ?></td>
+					<td><?php if ($submission->published == 2) { ?><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft&step=1&id='.$submission->id); ?>"><?php } ?><?php echo stripslashes($submission->title); ?><?php if ($submission->published == 2) { ?></a><?php } ?><br /><span class="type"><?php echo stripslashes($submission->typetitle); ?></span></td>
+					<td><?php if ($submission->published == 2) { ?><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft&step=2&id='.$submission->id); ?>"><?php } ?><?php echo $attachments; ?> attachment(s)<?php if ($submission->published == 2) { ?></a><?php } ?></td>
+					<td><?php if ($submission->published == 2) { ?><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft&step=3&id='.$submission->id); ?>"><?php } ?><?php echo $authors; ?> author(s)<?php if ($submission->published == 2) { ?></a><?php } ?></td>
+					<td><?php if ($submission->published == 2) { ?><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft&step=4&id='.$submission->id); ?>"><?php } ?><?php echo count($tags); ?> tag(s)<?php if ($submission->published == 2) { ?></a><?php } ?></td>
 					<td>
 						<span class="<?php echo $state; ?> status"><?php echo $state; ?></span>
 						<?php if ($submission->published == 2) { ?>
-						<br /><a class="review" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=start&step=5&id='.$submission->id); ?>"><?php echo JText::_('Review &amp; Submit &rsaquo;'); ?></a>
+						<br /><a class="review" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft&step=5&id='.$submission->id); ?>"><?php echo JText::_('Review &amp; Submit &rsaquo;'); ?></a>
 						<?php } elseif ($submission->published == 3) { ?>
 						<br /><a class="retract" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=retract&id='.$submission->id); ?>"><?php echo JText::_('&lsaquo; Retract'); ?></a>
 						<?php } ?>
@@ -204,7 +204,7 @@ if ($categories) {
 ?>
 		<div class="three columns <?php echo $clm; ?>">
 			<div class="<?php echo $cls; ?>">
-				<h3><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=start&step=1&type='.$category->id); ?>"><?php echo stripslashes($category->type); ?></a></h3>
+				<h3><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=draft&step=1&type='.$category->id); ?>"><?php echo stripslashes($category->type); ?></a></h3>
 				<p><?php echo $this->escape(stripslashes($category->description)); ?></p>
 			</div>
 		</div><!-- / .three columns <?php echo $clm; ?> -->

@@ -41,10 +41,14 @@ function ResourcesBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (!empty($query['task']) && in_array($query['task'], array('new', 'start', 'retract', 'delete', 'discard', 'remove', 'reorder'))) 
+	if (!empty($query['task']) && in_array($query['task'], array('new', 'draft', 'start', 'retract', 'delete', 'discard', 'remove', 'reorder'))) 
 	{
 		if (!empty($query['task'])) 
 		{
+			if ($query['task'] == 'start')
+			{
+				$query['task'] = 'draft';
+			}
 			$segments[] = $query['task'];
 			unset($query['task']);
 		}
@@ -114,7 +118,7 @@ function ResourcesParseRoute($segments)
 	{
 		$vars['task'] = $segments[0];
 	} 
-	elseif (in_array($segments[0], array('new', 'start', 'retract', 'delete', 'discard', 'remove', 'reorder'))) 
+	elseif (in_array($segments[0], array('new', 'draft', 'start', 'retract', 'delete', 'discard', 'remove', 'reorder'))) 
 	{
 		$vars['task'] = $segments[0];
 		$vars['controller'] = 'create';

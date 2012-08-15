@@ -60,15 +60,18 @@ $fields = $elements->render();
 
 <div id="content-header-extra">
 	<p>
-		<a class="add" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=start'); ?>">
-			<?php echo JText::_('New submission'); ?>
+		<a class="add" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft'); ?>">
+			<?php echo JText::_('COM_CONTRIBUTE_NEW_SUBMISSION'); ?>
 		</a>
 	</p>
 </div><!-- / #content-header -->
 
 <div class="main section">
 <?php
-$view = new JView(array('name'=>'steps','layout'=>'steps'));
+$view = new JView(array(
+	'name'   => 'steps',
+	'layout' => 'steps'
+));
 $view->option = $this->option;
 $view->step = $this->step;
 $view->steps = $this->steps;
@@ -80,7 +83,7 @@ $view->display();
 <?php if ($this->getError()) { ?>
 	<p class="warning"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=start&step=' . $this->next_step . '&id=' . $this->id); ?>" method="post" id="hubForm" accept-charset="utf-8">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft&step=' . $this->next_step . '&id=' . $this->id); ?>" method="post" id="hubForm" accept-charset="utf-8">
 		<div class="explaination">
 			<p><?php echo JText::_('COM_CONTRIBUTE_COMPOSE_EXPLANATION'); ?></p>
 

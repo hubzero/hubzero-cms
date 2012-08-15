@@ -47,7 +47,7 @@ if ($juser->get('guest')) { ?>
 	<div class="submission">
 		<h4>
 			<?php echo stripslashes($row->title); ?> 
-			<a class="edit" href="<?php echo JRoute::_('index.php?option=com_resources&task=start&step=1&id=' . $row->id); ?>">
+			<a class="edit" href="<?php echo JRoute::_('index.php?option=com_resources&task=draft&step=1&id=' . $row->id); ?>">
 				<?php echo JText::_('MOD_MYSUBMISSIONS_EDIT'); ?>
 			</a>
 		</h4>
@@ -74,7 +74,7 @@ if ($juser->get('guest')) { ?>
 					<th><?php echo $steps[$i]; ?></th>
 					<td><?php echo $completed; ?></td>
 					<td>
-						<a href="<?php echo JRoute::_('index.php?option=com_resources&task=start&step=' . $i . '&id=' . $row->id); ?>">
+						<a href="<?php echo JRoute::_('index.php?option=com_resources&task=draft&step=' . $i . '&id=' . $row->id); ?>">
 							<?php echo JText::_('MOD_MYSUBMISSIONS_EDIT'); ?>
 						</a>
 					</td>
@@ -90,7 +90,7 @@ if ($juser->get('guest')) { ?>
 			</a>
 		</p>
 		<p class="review">
-			<a href="<?php echo JRoute::_('index.php?option=com_com_resources&task=start&step=' . $laststep . '&id=' . $row->id); ?>">
+			<a href="<?php echo JRoute::_('index.php?option=com_com_resources&task=draft&step=' . $laststep . '&id=' . $row->id); ?>">
 				<?php echo JText::_('MOD_MYSUBMISSIONS_REVIEW_SUBMIT'); ?>
 			</a>
 		</p>

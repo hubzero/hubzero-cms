@@ -56,6 +56,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 	{
 		$this->registerTask('discard', 'delete');
 		$this->registerTask('remove', 'delete');
+		$this->registerTask('start', 'draft');
 
 		// Load the com_resources component config
 		$this->config = JComponentHelper::getParams('com_resources');
@@ -65,7 +66,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 		$this->step = JRequest::getInt('step', 0);
 		if ($this->step && !$task) 
 		{
-			JRequest::setVar('task', 'start');
+			JRequest::setVar('task', 'draft');
 		}
 
 		if ($this->juser->get('guest')) 
@@ -217,7 +218,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 	 * 
 	 * @return     void
 	 */
-	public function startTask()
+	public function draftTask()
 	{
 		$this->_getStyles($this->_option, $this->_controller . '.css');
 
@@ -332,7 +333,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 
 		// Output HTML
 		$this->view->row  = $row;
-		$this->view->task = 'start';
+		$this->view->task = 'draft';
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)
@@ -369,7 +370,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 
 		// Output HTML
 		$this->view->next_step = $this->step + 1;
-		$this->view->task = 'start';
+		$this->view->task = 'draft';
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)
@@ -408,7 +409,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 
 		// Output HTML
 		$this->view->next_step = $this->step + 1;
-		$this->view->task = 'start';
+		$this->view->task = 'draft';
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)
@@ -539,7 +540,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 		// Output HTML
 		$this->view->tags      = $tags;
 		$this->view->next_step = $this->step + 1;
-		$this->view->task      = 'start';
+		$this->view->task      = 'draft';
 		$this->view->existing  = $existing;
 		if ($this->getError()) 
 		{
@@ -1332,7 +1333,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 
 				// Redirect to the start page
 				$this->setRedirect(
-					JRoute::_('index.php?option=' . $this->_option)
+					JRoute::_('index.php?option=' . $this->_option . '&task=new')
 				);
 			break;
 		}
@@ -1352,7 +1353,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 		if (!$id) 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option)
+				JRoute::_('index.php?option=' . $this->_option . '&task=new')
 			);
 			return;
 		}
@@ -1372,7 +1373,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 
 		// Redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option)
+			JRoute::_('index.php?option=' . $this->_option . '&task=new')
 		);
 	}
 
