@@ -644,7 +644,7 @@ class JPagination extends JObject
 		// Reverse output rendering for right-to-left display.
 		//$html = '<ul>';
 		$html  = '<li class="start">' . $list['start']['data'] . '</li>' . "\n";
-		//$html .= '<li class="prev">' . $list['previous']['data'] . '</li>' . "\n";  Removed superfluous buttons - zooley (2012-08-10)
+		$html .= '<li class="prev">' . $list['previous']['data'] . '</li>' . "\n";  //Removed superfluous buttons - zooley (2012-08-10)
 		if ($list['i'] > 1) 
 		{
 			$html .= '<li class="page"><span>...</span></li>' . "\n";
@@ -658,7 +658,7 @@ class JPagination extends JObject
 		{
 			$html .= '<li class="page"><span>...</span></li>' . "\n";
 		}
-		//$html .= '<li class="next">' . $list['next']['data'] . '</li>' . "\n";  Removed superfluous buttons - zooley (2012-08-10)
+		$html .= '<li class="next">' . $list['next']['data'] . '</li>' . "\n";  //Removed superfluous buttons - zooley (2012-08-10)
 		$html .= '<li class="end">' . $list['end']['data'] . '</li>' . "\n";
 		//$html .= '</ul>';
 
