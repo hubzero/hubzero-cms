@@ -393,7 +393,7 @@ class TagsTag extends JTable
 	 */
 	public function getAutocomplete($filters=array())
 	{
-		$query = "SELECT t.id, t.tag, t.raw_tag 
+		$query = "SELECT DISTINCT t.id, t.tag, t.raw_tag 
 					FROM $this->_tbl AS t 
 					JOIN #__tags_substitute AS s ON s.tag_id=t.id
 					WHERE";
