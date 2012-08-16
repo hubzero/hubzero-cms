@@ -265,7 +265,7 @@ class OauthApiController extends Hubzero_Api_Controller
 
 		if (isset($_SERVER['HTTP_AUTHORIZATION']))
 		{
-			$header = $_SERVER['HTTP_AUTHORTIZATION'];
+			$header = $_SERVER['HTTP_AUTHORIZATION'];
 		}
 
 		// @FIXME: header check is inexact and could give false positives
