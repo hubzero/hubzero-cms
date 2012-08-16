@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metafile version="1.5"  client="installation" >
+	<tag>da-DK</tag>
+	<name>Danish(DK)</name>
+	<description>Danish language installation for Joomla</description>
+    <version>1.5.9</version>
+    <creationDate>March 2009</creationDate>
+	<author>Danish Translation project</author>
+	<copyright>(C) 2005-2009 Open Source Matters. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html</license>
+	<metadata>
+		<name>Danish(DK)</name>
+		<tag>da-DK</tag>
+		<rtl>0</rtl>
+		<locale>da_DK.UTF-8, da_DK.utf8, da_DK, danish, dansk</locale>
+		<winCodePage>iso-8859-1</winCodePage>
+		<backwardLang>danish</backwardLang>
+	</metadata>
+	<params />
+</metafile>

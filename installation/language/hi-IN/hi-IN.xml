@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metafile version="1.5"  client="installation" >
+	<tag>hi-IN</tag>
+	<name>Hindi (India)</name>
+	<description></description>
+	<version>1.5.9</version>
+	<creationDate>2010-03-16</creationDate>
+	<author>Sanjeev Naroliya</author>
+	<authorUrl></authorUrl>
+	<copyright>Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<metadata>
+		<name>Hindi (India)</name>
+		<tag>hi-IN</tag>
+		<rtl>0</rtl>
+		<locale>hi_IN.UTF8</locale>
+		<winCodePage>utf8</winCodePage>
+		<backwardLang>hindi</backwardLang>
+	</metadata>
+	<params></params>
+</metafile>
