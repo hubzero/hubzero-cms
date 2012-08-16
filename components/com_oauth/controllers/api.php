@@ -395,7 +395,7 @@ class OauthApiController extends Hubzero_Api_Controller
 
 				$db->setQuery("INSERT INTO #__oauthp_tokens (consumer_id,user_id,state,token,token_secret,callback_url) VALUE ("
 					. $db->Quote($this->_provider->getConsumerData()->id) . ","
-					. $db->Quote($useraccount->getUserId()) . ","
+					. $db->Quote($useraccount->get('id')) . ","
 					. "'1',"
 					. $db->Quote($token) . ","
 					. $db->Quote($token_secret) . ","
