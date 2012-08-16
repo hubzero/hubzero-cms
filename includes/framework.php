@@ -33,7 +33,6 @@ if (!file_exists( JPATH_CONFIGURATION . DS . 'configuration.php' ) ) {
 	}
 }
 
-
 /*
  * Joomla! system startup
  */
@@ -56,10 +55,9 @@ if (@$CONFIG->error_reporting === 0) {
 
 define( 'JDEBUG', $CONFIG->debug );
 
-
 /* if configuration just has an install key and no other properties then redirect into the installer */
 
-if ((@$CONFIG->install_key != '') && count(get_object_vars($CONFIG) == 1))
+if (count(get_object_vars($CONFIG)) <= 1)
 {
 	if( file_exists( JPATH_INSTALLATION . DS . 'index.php' ) ) {
 		header( 'Location: installation/index.php' );
