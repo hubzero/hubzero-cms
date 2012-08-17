@@ -183,7 +183,7 @@ class plgAuthenticationPUCAS extends JPlugin
 		phpCAS::setNoCasServerValidation();
 		phpCAS::forceAuthentication();
 
-		$mainframe->redirect($service . '/index.php?option=com_user&task=login&authenticator=pucas' . $return);
+		$mainframe->redirect($service . '/index.php?option=com_user&task=' . $task . '&authenticator=pucas' . $return);
 	}
 
 	/**
