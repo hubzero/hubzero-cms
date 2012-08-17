@@ -67,35 +67,6 @@ class JInstallationModel extends JModel
 	}
 
 	/**
-	 * Generate a panel of language choices for the user to select their language
-	 *
-	 * @return	boolean True if successful
-	 * @access	public
-	 * @since	1.5
-	 */
-	function chooseLanguage()
-	{
-		global $mainframe;
-
-		$vars	=& $this->getVars();
-
-		jimport('joomla.language.helper');
-		$native = JLanguageHelper::detectLanguage();
-		$forced = $mainframe->getLocalise();
-
-		if ( !empty( $forced['lang'] ) ){
-			$native = $forced['lang'];
-		}
-
-		$lists = array ();
-		$lists['langs'] = JLanguageHelper::createLanguageList($native);
-
-		$this->setData('lists', $lists);
-
-		return true;
-	}
-
-	/**
 	 * Gets the parameters for database creation
 	 *
 	 * @return	boolean True if successful

@@ -43,30 +43,6 @@ class JInstallationView extends JView
 	var $_template		= null;
 
 	/**
-	 * Language page
-	 *
-	 * @return	boolean True if successful
-	 * @access	public
-	 * @since	1.5
-	 */
-	function chooseLanguage()
-	{
-		$steps	=& $this->getSteps();
-
-		$model	=& $this->getModel();
-		$lists	=& $model->getData('lists');
-
-		$tmpl	=& $this->getTemplate( 'language.html' );
-
-		$steps['lang'] = 'on';
-
-		$tmpl->addVars( 'stepbar', $steps, 'step_' );
-		$tmpl->addRows( 'lang-options', $lists['langs'] );
-
-		return $this->display();
-	}
-
-	/**
 	 * Create a template object
 	 *
 	 * @return	boolean True if successful

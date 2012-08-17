@@ -186,31 +186,6 @@ class JInstallationController extends JController
 	}
 
 	/**
-	 * Present a choice of languages
-	 *
-	 * Step One!
-	 *
-	 * @return	Boolean True if successful
-	 * @access	public
-	 * @since	1.5
-	 */
-	function lang()
-	{
-		$model	=& $this->getModel();
-		$view	=& $this->getView();
-
-		if ( ! $model->chooseLanguage() )
-		{
-			$view->error();
-			return false;
-		}
-
-		$view->chooseLanguage();
-
-		return true;
-	}
-
-	/**
 	 *
 	 *
 	 * @return	Boolean True if successful
