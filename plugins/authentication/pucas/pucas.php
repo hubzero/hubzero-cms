@@ -175,7 +175,11 @@ class plgAuthenticationPUCAS extends JPlugin
 			$return = '&return=' . $view->return;
 		}
 
-		phpCAS::setFixedServiceURL($service . '/index.php?option=com_user&task=login&authenticator=pucas' . $return);
+		// If someone is logged in already, then we're linking an account, otherwise, we're just loggin in fresh
+		$juser = JFactory::getUser();
+		$task  = ($juser->get('guest')) ? 'login' : 'link';
+
+		phpCAS::setFixedServiceURL($service . '/index.php?option=com_user&task=' . $task . '&authenticator=pucas' . $return);
 		phpCAS::setNoCasServerValidation();
 		phpCAS::forceAuthentication();
 
