@@ -134,51 +134,6 @@ class JInstallationModel extends JModel
 	}
 
 	/**
-	 * Gets the parameters for ldap creation
-	 *
-	 * @return	boolean True if successful
-	 * @access	public
-	 * @since
-	 */
-	function ldapConfig()
-	{
-		$vars	=& $this->getVars();
-
-		if (!isset ($vars['ldapPrimaryURI'])) {
-			$vars['ldapPrimaryURI'] = 'ldap://localhost';
-		}
-
-		if (!isset ($vars['ldapSecondaryURI'])) {
-			$vars['ldapSecondaryURI'] = '';
-		}
-
-		if (!isset ($vars['ldapNegotiateTLS'])) {
-			$vars['ldapNegotiateTLS'] = '0';
-		}
-
-		if (!isset ($vars['ldapBaseDN'])) {
-			$vars['ldapBaseDN'] = 'dc=localhost';
-		}
-
-		if (!isset ($vars['ldapSearchDN'])) {
-			$vars['ldapSearchDN'] = '';
-		}
-
-		if (!isset ($vars['ldapSearchPW'])) {
-			$vars['ldapSearchPW'] = '';
-		}
-
-		if (!isset ($vars['ldapManagerDN'])) {
-			$vars['ldapManagerDN'] = 'cn=admin';
-		}
-
-		if (!isset ($vars['ldapManagerPW'])) {
-			$vars['ldapManagerPW'] = '';
-		}
-		return true;
-	}
-
-	/**
 	 * Displays the finish screen
 	 *
 	 * @return	boolean True if successful

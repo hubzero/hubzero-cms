@@ -64,29 +64,6 @@ class JInstallationController extends JController
 	}
 
 	/**
-	 *
-	 *
-	 * @return	Boolean True if successful
-	 * @access	public
-	 * @since
-	 */
-	function ldapconfig()
-	{
-		$model	=& $this->getModel();
-		$view	=& $this->getView();
-
-		if ( ! $model->ldapConfig() )
-		{
-			$view->error();
-			return false;
-		}
-
-		$view->ldapConfig();
-
-		return true;
-	}
-
-	/**
 	 * Overload the parent controller method to add a check for configuration variables
 	 *  when a task has been provided
 	 *
@@ -273,37 +250,6 @@ class JInstallationController extends JController
 			$view->error();
 			return false;
 		}
-
-		//if ( ! $model->ftpConfig( 1 ) )
-		if ( ! $model->ldapConfig( 1 ) )
-		{
-			$view->error();
-			return false;
-		}
-
-		//$view->ftpConfig();
-		$view->ldapConfig(); // HUBZERO add ldap configuration page
-
-		return true;
-	}
-
-	/**
-	 *
-	 *
-	 * @return	Boolean True if successful
-	 * @access	public
-	 * @since
-	 */
-	function makeldap()
-	{
-		$model	=& $this->getModel();
-		$view	=& $this->getView();
-
-		//if ( ! $model->makeLDAP())
-		//{
-	//		$view->error();
-	//		return false;
-	//	}
 
 		if ( ! $model->ftpConfig( 1 ) )
 		{

@@ -113,28 +113,6 @@ class JInstallationView extends JView
 	}
 
 	/**
-	 * The LDAP Config page
-	 *
-	 * @return	boolean True if successful
-	 * @access	public
-	 * @since	1.5
-	 */
-	function ldapConfig()
-	{
-		$steps	=& $this->getSteps();
-		$model	=& $this->getModel();
-		$lists	=& $model->getData('lists');
-		$tmpl	=& $this->getTemplate( 'ldapconfig.html' );
-
-		$steps['ldapconfig'] = 'on';
-
-		$tmpl->addVars( 'stepbar', $steps, 'step_' );
-		$tmpl->addRows( 'ldap-options', $lists['ldap'] );
-
-		return $this->display();
-	}
-
-	/**
 	 * Display the template
 	 *
 	 * @return	boolean True if successful
@@ -252,7 +230,6 @@ class JInstallationView extends JView
 				'preinstall' => 'off',
 				'license' => 'off',
 				'dbconfig' => 'off',
-				'ldapconfig' => 'off',
 				'ftpconfig' => 'off',
 				'mainconfig' => 'off',
 				'finish' => 'off'
