@@ -105,6 +105,7 @@ class plgTimeRecords extends Hubzero_Plugin
 		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'tables'.DS.'hubs.php');
 		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'tables'.DS.'records.php');
 		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'helpers'.DS.'html.php');
+		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'helpers'.DS.'filters.php');
 
 		// Add some styles to the view
 		ximport('Hubzero_Document');
@@ -155,66 +156,13 @@ class plgTimeRecords extends Hubzero_Plugin
 		);
 
 		// Set filters for view
-		$view->filters['start']    = (JRequest::getInt('start')) ? JRequest::getInt('start') : JRequest::getInt('limitstart', 0);
-		$view->filters['limit']    = JRequest::getInt('limit', $this->mainframe->getUserState("$this->option.$this->active.limit"));
-		$view->filters['orderby']  = JRequest::getVar('orderby', $this->mainframe->getUserState("$this->option.$this->active.orderby"));
-		$view->filters['orderdir'] = JRequest::getVar('orderdir', $this->mainframe->getUserState("$this->option.$this->active.orderdir"));
-		$view->filters['search']   = JRequest::getVar('search', $this->mainframe->getUserState("$this->option.$this->active.search"));
-
-		// Process query filters
-		$q = $this->mainframe->getUserState("$this->option.$this->active.q");
-		if(JRequest::getVar('q', NULL))
-		{
-			$incoming = JRequest::getVar('q', NULL);
-			if(!empty($incoming['column']) && !empty($incoming['operator']) && !empty($incoming['value']))
-			{
-				$q[] = $incoming;
-			}
-			else
-			{
-				$this->addPluginMessage(JText::_('Looks like you may have forgotten to select an option'), 'warning');
-			}
-		}
-
-		// Turn search into array of results, if not already
-		if($view->filters['search'] !== NULL && !is_array($view->filters['search']))
-		{
-			// Explode multiple words into array
-			$view->filters['search'] = explode(" ", $view->filters['search']);
-			// Only allow alphabetical characters for search
-			$view->filters['search'] = preg_replace("/[^a-zA-Z]/", "", $view->filters['search']);
-		}
-
-		// Set some defaults for the filters, if not set otherwise
-		$view->filters['limit']         = (empty($view->filters['limit'])) ? 10 : $view->filters['limit'];
-		$view->filters['search']        = ($view->filters['search'] === NULL) ? '' : $view->filters['search'];
-		if(!is_array($q))
-		{
-			$q[0]['column']   = 'user_id';
-			$q[0]['operator'] = 'e';
-			$q[0]['value']    = $this->juser->get('id');
-		}
-
-		// Translate operators and augment query filters with human-friendly text
-		$view->filters['q'] = TimeHTML::filtersMap($q);
-
-		// Set some values in the session
-		$this->mainframe->setUserState("$this->option.$this->active.start", $view->filters['start']);
-		$this->mainframe->setUserState("$this->option.$this->active.limit", $view->filters['limit']);
-		$this->mainframe->setUserState("$this->option.$this->active.orderby", $view->filters['orderby']);
-		$this->mainframe->setUserState("$this->option.$this->active.orderdir", $view->filters['orderdir']);
-		$this->mainframe->setUserState("$this->option.$this->active.search", $view->filters['search']);
-		$this->mainframe->setUserState("$this->option.$this->active.q", $view->filters['q']);
+		$view->filters = TimeFilters::getFilters();
 
 		// Get the total number of records (for pagination)
 		$view->total = $records->getCount($view->filters);
 
-		// Import pagination
-		jimport('joomla.html.pagination');
-
-		// Instantiate pagination
-		$pageNav       = new JPagination($view->total, $view->filters['start'], $view->filters['limit']);
-		$view->pageNav = $pageNav->getListFooter();
+		// Setup pagination
+		$view->pageNav = TimeFilters::getPagination($view->total, $view->filters['start'], $view->filters['limit']);
 
 		// Get the records
 		$view->records = $records->getRecords($view->filters);

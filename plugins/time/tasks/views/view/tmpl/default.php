@@ -58,38 +58,56 @@ $newdir  = ($dir == 'asc') ? 'desc' : 'asc';
 		</ul>
 	</div>
 	<div class="container">
+		<form method="get" action="<?php echo JRoute::_('index.php?option='.$this->option.'&active='.$this->active); ?>">
+			<div class="search-box">
+				<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&active='.$this->active.'&search='); ?>">
+					<span class="clear-button"><?php echo JText::_('PLG_TIME_TASKS_CLEAR'); ?></span>
+				</a>
+				<input class="search-submit" type="submit" value="<?php echo JText::_('PLG_TIME_TASKS_SEARCH'); ?>" />
+				<fieldset class="search-text">
+					<input id="search-input" type="text" name="search" placeholder="<?php echo JText::_('PLG_TIME_TASKS_SEARCH_EXPLANATION'); ?>" value="<?php 
+							echo (is_array($this->filters['search']) && !empty($this->filters['search'][0])) ? implode(" ", $this->filters['search']) : ''; ?>" />
+				</fieldset>
+			</div><!-- / .search-box -->
+		</form>
+		<form method="get" action="<?php echo JRoute::_('index.php?option='.$this->option.'&active='.$this->active); ?>">
+			<div id="add-filters">
+				<p>Filter results:
+					<select name="q[column]" id="filter-column">
+						<?php foreach ($this->cols as $c) { ?>
+							<option value="<?php echo $c['raw']; ?>"><?php echo $c['human']; ?></option>
+						<?php } // end foreach $cols ?>
+					</select>
+					<?php echo $this->operators; ?>
+					<select name="q[value]" id="filter-value">
+					</select>
+					<input id="filter-submit" type="submit" value="<?php echo JText::_('+ Add filter'); ?>" />
+					<input type="hidden" value="time_tasks" id="filter-table" />
+				</p>
+			</div><!-- / .filters -->
+		</form>
 		<?php
-			if(!empty($this->filters['hub']) ||
-				($this->filters['priority'] != NULL) ||
-				!empty($this->filters['aname']) ||
-				!empty($this->filters['lname']))
+			if(!empty($this->filters['q']) || (is_array($this->filters['search']) && !empty($this->filters['search'][0])))
 			{
 				echo '<div id="applied-filters">';
-				echo '<p>Filters:</p>';
+				echo '<p>Applied filters:</p>';
 				echo '<ul class="filters-list">';
-				if(!empty($this->filters['hub']))
+				if(!empty($this->filters['q']))
 				{
-					echo '<li><a href="' .
-						JRoute::_('index.php?option='.$this->option.'&active=tasks&hub=0') .
-						'" class="filters-x">x</a><i>Hub</i>: ' . $this->filter_hub->name . '</li>';
+					foreach($this->filters['q'] as $q)
+					{
+						echo '<li><a href="' .
+							JRoute::_('index.php?option='.$this->option.'&active='.$this->active.'&q[column]=' . $q['column'] .
+								'&q[operator]=' . $q['operator'] . '&q[value]=' . $q['value'] . '&q[delete]') .
+							'" class="filters-x">x</a><i>' . $q['human_column'] . ' ' . $q['human_operator'] . '</i>: ' .
+							$q['human_value'] . '</li>';
+					}
 				}
-				if($this->filters['priority'] != NULL)
+				if(is_array($this->filters['search']) && !empty($this->filters['search'][0]))
 				{
 					echo '<li><a href="' .
-						JRoute::_('index.php?option='.$this->option.'&active=tasks&priority=') .
-						'" class="filters-x">x</a><i>Priority</i>: ' . $this->filters['priority'] . '</li>';
-				}
-				if(!empty($this->filters['aname']))
-				{
-					echo '<li><a href="' .
-						JRoute::_('index.php?option='.$this->option.'&active=tasks&aname=0') .
-						'" class="filters-x">x</a><i>Assignee</i>: ' . $this->filter_assignee->name . '</li>';
-				}
-				if(!empty($this->filters['lname']))
-				{
-					echo '<li><a href="' .
-						JRoute::_('index.php?option='.$this->option.'&active=tasks&lname=0') .
-						'" class="filters-x">x</a><i>Liaison</i>: ' . $this->filter_liaison->name . '</li>';
+						JRoute::_('index.php?option='.$this->option.'&active='.$this->active.'&search=') .
+						'" class="filters-x">x</a><i>Search</i>: ' . implode(" ", $this->filters['search']) . '</li>';
 				}
 				echo '</ul>';
 				echo '</div>';
@@ -111,52 +129,23 @@ $newdir  = ($dir == 'asc') ? 'desc' : 'asc';
 							<?php echo JText::_('PLG_TIME_TASKS_HUB_NAME'); ?>
 						</a>
 						<?php if($sortcol == 'hname') { echo ($dir == 'asc') ? $imgasc : $imgdesc; } ?>
-						<div class="filters">
-							<div class="filters-fix"></div>
-							<div class="filters-inner">
-								<label for="user"><?php echo JText::_('PLG_TIME_TASKS_FILTER_HUB'); ?>:</label>
-								<?php echo $this->hlist; ?>
-							</div>
-						</div>
-					</td>
 					<td>
 						<a href="<?php echo JRoute::_('index.php?option='.$this->option.$start.'&active='.$this->active.'&orderby=priority&orderdir='.$newdir); ?>">
 							<?php echo JText::_('PLG_TIME_TASKS_PRIORITY'); ?>
 						</a>
 						<?php if($sortcol == 'priority') { echo ($dir == 'asc') ? $imgasc : $imgdesc; } ?>
-						<div class="filters">
-							<div class="filters-fix"></div>
-							<div class="filters-inner">
-								<label for="priority"><?php echo JText::_('PLG_TIME_TASKS_FILTER_PRIORITY'); ?>:</label>
-								<?php echo $this->priority_list; ?>
-							</div>
-						</div>
 					</td>
 					<td>
 						<a href="<?php echo JRoute::_('index.php?option='.$this->option.$start.'&active='.$this->active.'&orderby=aname&orderdir='.$newdir); ?>">
 							<?php echo JText::_('PLG_TIME_TASKS_ASSIGNEE_SHORT'); ?>
 						</a>
 						<?php if($sortcol == 'aname') { echo ($dir == 'asc') ? $imgasc : $imgdesc; } ?>
-						<div class="filters">
-							<div class="filters-fix"></div>
-							<div class="filters-inner">
-								<label for="assignee"><?php echo JText::_('PLG_TIME_TASKS_FILTER_ASSIGNEE'); ?>:</label>
-								<?php echo $this->alist; ?>
-							</div>
-						</div>
 					</td>
 					<td>
 						<a href="<?php echo JRoute::_('index.php?option='.$this->option.$start.'&active='.$this->active.'&orderby=lname&orderdir='.$newdir); ?>">
 							<?php echo JText::_('PLG_TIME_TASKS_LIAISON_SHORT'); ?>
 						</a>
 						<?php if($sortcol == 'lname') { echo ($dir == 'asc') ? $imgasc : $imgdesc; } ?>
-						<div class="filters">
-							<div class="filters-fix"></div>
-							<div class="filters-inner">
-								<label for="liaison"><?php echo JText::_('PLG_TIME_TASKS_FILTER_LIAISON'); ?>:</label>
-								<?php echo $this->llist; ?>
-							</div>
-						</div>
 					</td>
 					<td>
 						<a href="<?php echo JRoute::_('index.php?option='.$this->option.$start.'&active='.$this->active.'&orderby=start_date&orderdir='.$newdir); ?>">

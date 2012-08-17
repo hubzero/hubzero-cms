@@ -105,6 +105,7 @@ class plgTimeTasks extends Hubzero_Plugin
 		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'tables'.DS.'hubs.php');
 		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'tables'.DS.'records.php');
 		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'helpers'.DS.'html.php');
+		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'helpers'.DS.'filters.php');
 
 		// Add some styles to the view
 		ximport('Hubzero_Document');
@@ -156,64 +157,22 @@ class plgTimeTasks extends Hubzero_Plugin
 			)
 		);
 
-		// Set filters for the view
-		$view->filters['start']    = (JRequest::getInt('start')) ? JRequest::getInt('start') : JRequest::getInt('limitstart', 0);
-		$view->filters['limit']    = JRequest::getInt('limit',    $this->mainframe->getUserState("$this->option.$this->active.limit"));
-		$view->filters['orderby']  = JRequest::getVar('orderby',  $this->mainframe->getUserState("$this->option.$this->active.orderby"));
-		$view->filters['orderdir'] = JRequest::getVar('orderdir', $this->mainframe->getUserState("$this->option.$this->active.orderdir"));
-		$view->filters['hub']      = JRequest::getVar('hub',      $this->mainframe->getUserState("$this->option.$this->active.hub"));
-		$view->filters['priority'] = JRequest::getVar('priority', $this->mainframe->getUserState("$this->option.$this->active.priority"));
-		$view->filters['aname']    = JRequest::getVar('aname',    $this->mainframe->getUserState("$this->option.$this->active.aname"));
-		$view->filters['lname']    = JRequest::getVar('lname',    $this->mainframe->getUserState("$this->option.$this->active.lname"));
-
-		// Set some values in the session
-		$this->mainframe->setUserState("$this->option.$this->active.start",    $view->filters['start']);
-		$this->mainframe->setUserState("$this->option.$this->active.limit",    $view->filters['limit']);
-		$this->mainframe->setUserState("$this->option.$this->active.orderby",  $view->filters['orderby']);
-		$this->mainframe->setUserState("$this->option.$this->active.orderdir", $view->filters['orderdir']);
-		$this->mainframe->setUserState("$this->option.$this->active.hub",      $view->filters['hub']);
-		$this->mainframe->setUserState("$this->option.$this->active.priority", $view->filters['priority']);
-		$this->mainframe->setUserState("$this->option.$this->active.aname",    $view->filters['aname']);
-		$this->mainframe->setUserState("$this->option.$this->active.lname",    $view->filters['lname']);
-
-		// Set some defaults for the filters, if not set otherwise
-		$view->filters['limit']  = (empty($view->filters['limit'])) ? 10 : $view->filters['limit'];
-		$view->filters['hub']    = ($view->filters['hub'] === NULL) ? '' : $view->filters['hub'];
-		$view->filters['aname']  = ($view->filters['aname'] === NULL) ? $this->juser->get('id') : $view->filters['aname'];
+		// Set filters for view
+		$view->filters = TimeFilters::getFilters();
 
 		// Get the total number of tasks (for pagination)
 		$view->total = $tasks->getCount($view->filters);
 
-		// Import pagination
-		jimport('joomla.html.pagination');
-
-		// Instantiate pagination
-		$pageNav       = new JPagination($view->total, $view->filters['start'], $view->filters['limit']);
-		$view->pageNav = $pageNav->getListFooter();
+		// Setup pagination
+		$view->pageNav = TimeFilters::getPagination($view->total, $view->filters['start'], $view->filters['limit']);
 
 		// Get the tasks
 		$view->tasks = $tasks->getTasks($view->filters);
+		$view->tasks = TimeFilters::highlight($view->tasks, $view->filters);
 
-		// Translate some filters from id to human-readable name for view filter indicators
-		if(!empty($view->filters['hub']))
-		{
-			$hub->load($view->filters['hub']);
-			$view->filter_hub = $hub;
-		}
-		if(!empty($view->filters['aname']))
-		{
-			$view->filter_assignee =& JFactory::getUser($view->filters['aname']);
-		}
-		if(!empty($view->filters['lname']))
-		{
-			$view->filter_liaison =& JFactory::getUser($view->filters['lname']);
-		}
-
-		// Create the hubs list (for filtering records)
-		$view->hlist         = TimeHTML::buildHubsList($this->active, $view->filters['hub'], 0, 2);
-		$view->priority_list = TimeHTML::buildPriorityList($view->filters['priority'], $this->active, 1);
-		$view->alist         = TimeHTML::buildUserList($view->filters['aname'], $this->active, 3);
-		$view->llist         = TimeHTML::buildLiaisonList($view->filters['lname'], $this->active, 2);
+		// Get the column list and operators
+		$view->cols      = TimeFilters::getColumnNames('time_tasks');
+		$view->operators = TimeFilters::buildSelectOperators();
 
 		// Set a few things for the vew
 		$view->notifications = ($this->getPluginMessage()) ? $this->getPluginMessage() : array();

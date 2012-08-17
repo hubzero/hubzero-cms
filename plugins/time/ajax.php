@@ -106,6 +106,7 @@ class plgTimeAjax extends Hubzero_Plugin
 			case 'hub.json':              $this->_hub_json();             break;
 			case 'users.json':            $this->_users_json();           break;
 			case 'records.json':          $this->_records_json();         break;
+			case 'get_values.json':       $this->_get_values_json();      break;
 			case 'report_records.json':   $this->_report_records_json();  break;
 			case 'savecontact.json':      $this->_save_contact_json();    break;
 		}
@@ -408,6 +409,42 @@ class plgTimeAjax extends Hubzero_Plugin
 
 		// Echo back results
 		echo '['.implode(',',$masterlist).']';
+
+		header("HTTP/1.0 200 OK");
+		exit;
+	}
+
+	/**
+	 * JSON method for getting possible unique values based on table and column
+	 * 
+	 * @return void
+	 */
+	private function _get_values_json()
+	{
+		// Get table and column values
+		$table  = JRequest::getVar('table', '');
+		$column = JRequest::getVar('column', '');
+
+		// Make sure those values haven't been tampered with
+		$acceptable = array('time_tasks', 'time_records');
+		if(!in_array($table, $acceptable))
+		{
+			echo json_encode(array("error" => "not authorized"));
+
+			header("HTTP/1.0 401 Unauthorized");
+			exit;
+		}
+
+		// Get group members
+		$query  = "SELECT DISTINCT(" . $column . ") as val";
+		$query .= " FROM #__" . $table;
+		$query .= " ORDER BY val ASC";
+
+		$this->db->setQuery($query);
+		$values = $this->db->loadAssocList();
+
+		// Output results in JSON format
+		echo json_encode($values);
 
 		header("HTTP/1.0 200 OK");
 		exit;

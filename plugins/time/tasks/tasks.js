@@ -27,32 +27,44 @@ HUB.Plugins.TimeTasks = {
 	initialize: function() {
 		var $ = this.jQuery.noConflict();
 
-		// Set variables
-		var hub      = $(".filters-inner select#hub_id");
-		var priority = $(".filters-inner select#priority");
-		var assignee = $(".filters-inner select#assignee");
-		var liaison  = $(".filters-inner select#liaison");
+		// Initialize variables
+		var column = $('#filter-column');
 
-		// Add change event to hub select box (filter list of tasks by hub)
-		hub.change(function(event) {
-			window.location.href = '/time/tasks?hub='+$(this).val();
-		});
+		HUB.Plugins.TimeTasks.col_change();
 
-		// Add change event to priority select box (filter list of tasks by priority)
-		priority.change(function(event) {
-			window.location.href = '/time/tasks?priority='+$(this).val();
-		});
+		// Capture change events on the column field
+		column.on('change', HUB.Plugins.TimeTasks.col_change);
+	}, // end initialize
 
-		// Add change event to assignee select box (filter list of tasks by assignee)
-		assignee.change(function(event) {
-			window.location.href = '/time/tasks?aname='+$(this).val();
-		});
+	col_change: function() {
+		var $ = HUB.Plugins.TimeTasks.jQuery.noConflict();
 
-		// Add change event to liaison select box (filter list of tasks by liaison)
-		liaison.change(function(event) {
-			window.location.href = '/time/tasks?lname='+$(this).val();
+		// Initialize variables
+		var table  = $('#filter-table');
+		var column = $('#filter-column');
+		var value  = $('#filter-value');
+
+		// Create a ajax call to get relevent value options
+		$.ajax({
+			url: "index.php?option=com_time&task=ajax&active=ajax&action=get_values.json",
+			data: "table="+table.val()+"&column="+column.val(),
+			dataType: "json",
+			cache: false,
+			success: function(json){
+				// If success, update the list of values based on the chosen column
+				var options = '';
+				if(json.length > 0) {
+					console.log(json);
+					for (var i = 0; i < json.length; i++) {
+						options += '<option value="' + json[i].val + '">' + json[i].val + '</option>';
+					}
+				} else {
+					options = '<option value="">No values are available</option>';
+				}
+				value.html(options);
+			}
 		});
-	} // end initialize
+	} // end col_change
 }
 
 jQuery(document).ready(function($){

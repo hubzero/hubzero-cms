@@ -169,49 +169,29 @@ Class TimeTasks extends JTable
 		$query .= $this->buildquery();
 
 		// Filters
-		if(!empty($filters['active']) ||
-			!empty($filters['hub_id']) ||
-			!empty($filters['hub']) ||
-			(isset($filters['priority']) && $filters['priority'] != NULL) ||
-			!empty($filters['aname']) ||
-			!empty($filters['lname']))
+		if(!empty($filters['search']) || !empty($filters['q']))
 		{
 			$first = true;
-			if(!empty($filters['active']))
+
+			if(!empty($filters['search']))
 			{
-				$query .= ($first) ? " WHERE " : " AND ";
-				$query .= "p.active = " . $filters['active'];
-				$first = false;
+				foreach($filters['search'] as $arg)
+				{
+					$query .= ($first) ? " WHERE " : " AND ";
+					$query .= "LOWER(p.name) LIKE '%" . strtolower($arg) . "%'";
+
+					$first = false;
+				}
 			}
-			if(!empty($filters['hub_id']))
+			if(!empty($filters['q']))
 			{
-				$query .= ($first) ? " WHERE " : " AND ";
-				$query .= "p.hub_id = " . $filters['hub_id'];
-				$first = false;
-			}
-			if(!empty($filters['hub']))
-			{
-				$query .= ($first) ? " WHERE " : " AND ";
-				$query .= "p.hub_id = " . $filters['hub'];
-				$first = false;
-			}
-			if(isset($filters['priority']) && $filters['priority'] != NULL)
-			{
-				$query .= ($first) ? " WHERE " : " AND ";
-				$query .= "p.priority = " . $filters['priority'];
-				$first = false;
-			}
-			if(!empty($filters['aname']))
-			{
-				$query .= ($first) ? " WHERE " : " AND ";
-				$query .= "p.assignee = " . $filters['aname'];
-				$first = false;
-			}
-			if(!empty($filters['lname']))
-			{
-				$query .= ($first) ? " WHERE " : " AND ";
-				$query .= "p.liaison = " . $filters['lname'];
-				$first = false;
+				foreach($filters['q'] as $arg)
+				{
+					$query .= ($first) ? " WHERE " : " AND ";
+					$query .= "p." . $arg['column'] . ' ' . $arg['o'] . ' ' . $this->_db->Quote($arg['value']);
+
+					$first = false;
+				}
 			}
 		}
 
@@ -231,53 +211,32 @@ Class TimeTasks extends JTable
 		$query .= $this->buildquery();
 
 		// Filters
-		if(!empty($filters['active']) ||
-			!empty($filters['hub_id']) ||
-			!empty($filters['hub']) ||
-			(isset($filters['priority']) && $filters['priority'] != NULL) ||
-			!empty($filters['aname']) ||
-			!empty($filters['lname']))
+		if(!empty($filters['search']) || !empty($filters['q']))
 		{
 			$first = true;
-			if(!empty($filters['active']))
+
+			if(!empty($filters['search']))
 			{
-				$query .= ($first) ? " WHERE " : " AND ";
-				$query .= "p.active = " . $filters['active'];
-				$query .= " AND h.active = 1";
-				$first = false;
+				foreach($filters['search'] as $arg)
+				{
+					$query .= ($first) ? " WHERE " : " AND ";
+					$query .= "LOWER(p.name) LIKE '%" . strtolower($arg) . "%'";
+
+					$first = false;
+				}
 			}
-			if(!empty($filters['hub_id']))
+			if(!empty($filters['q']))
 			{
-				$query .= ($first) ? " WHERE " : " AND ";
-				$query .= "p.hub_id = " . $filters['hub_id'];
-				$first = false;
-			}
-			if(!empty($filters['hub']))
-			{
-				$query .= ($first) ? " WHERE " : " AND ";
-				$query .= "p.hub_id = " . $filters['hub'];
-				$query .= " AND h.active = 1";
-				$first = false;
-			}
-			if(isset($filters['priority']) && $filters['priority'] != NULL)
-			{
-				$query .= ($first) ? " WHERE " : " AND ";
-				$query .= "p.priority = " . $filters['priority'];
-				$first = false;
-			}
-			if(!empty($filters['aname']))
-			{
-				$query .= ($first) ? " WHERE " : " AND ";
-				$query .= "p.assignee = " . $filters['aname'];
-				$first = false;
-			}
-			if(!empty($filters['lname']))
-			{
-				$query .= ($first) ? " WHERE " : " AND ";
-				$query .= "p.liaison = " . $filters['lname'];
-				$first = false;
+				foreach($filters['q'] as $arg)
+				{
+					$query .= ($first) ? " WHERE " : " AND ";
+					$query .= "p." . $arg['column'] . ' ' . $arg['o'] . ' ' . $this->_db->Quote($arg['value']);
+
+					$first = false;
+				}
 			}
 		}
+
 		if(!empty($filters['orderby']) && !empty($filters['orderdir']))
 		{
 			$query .= " ORDER BY ".$filters['orderby']." ".$filters['orderdir'];
