@@ -24,13 +24,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  * Installation check, and check on removal of the install directory.
  */
 if (!file_exists( JPATH_CONFIGURATION . DS . 'configuration.php' ) ) {
-	if( file_exists( JPATH_INSTALLATION . DS . 'index.php' ) ) {
-		header( 'Location: installation/index.php' );
-		exit();
-	} else {
-		echo 'No configuration file found and no installation code available. Exiting...';
-		exit();
-	}
+	die('Error - Configuration file does not exist');
 }
 
 /*
@@ -43,17 +37,13 @@ require_once( JPATH_LIBRARIES		.DS.'joomla'.DS.'import.php');
 // Pre-Load configuration
 require_once( JPATH_CONFIGURATION	.DS.'configuration.php' );
 
-// System configuration
-$CONFIG = new JConfig();
-
-if (@$CONFIG->error_reporting === 0) {
-	error_reporting( 0 );
-} else if (@$CONFIG->error_reporting > 0) {
-	error_reporting( $CONFIG->error_reporting );
-	ini_set( 'display_errors', 1 );
+if (!class_exists(JConfig))
+{
+	die('Error - Invalid configuration file');
 }
 
-define( 'JDEBUG', $CONFIG->debug );
+// System configuration
+$CONFIG = new JConfig();
 
 /* if configuration just has an install key and no other properties then redirect into the installer */
 
@@ -67,6 +57,16 @@ if (count(get_object_vars($CONFIG)) <= 1)
 		exit();
 	}
 }
+
+if (@$CONFIG->error_reporting === 0) {
+	error_reporting( 0 );
+} else if (@$CONFIG->error_reporting > 0) {
+	error_reporting( $CONFIG->error_reporting );
+	ini_set( 'display_errors', 1 );
+}
+
+define( 'JDEBUG', $CONFIG->debug );
+
 
 unset( $CONFIG );
 
