@@ -119,24 +119,42 @@ class TagsObject extends JTable
 		}
 
 		$sql = "DELETE FROM $this->_tbl WHERE tagid='$tagid'";
+		$filters = '';
 		if ($tbl) 
 		{
-			$sql .= " AND tbl='$tbl'";
+			$filters .= " AND tbl='$tbl'";
 		}
 		if ($objectid) 
 		{
-			$sql .= " AND objectid='$objectid'";
+			$filters .= " AND objectid='$objectid'";
 		}
 		if (!$admin) 
 		{
-			$sql .= " AND taggerid='$taggerid'";
+			$filters .= " AND taggerid='$taggerid'";
 		}
 
-		$this->_db->setQuery($sql);
+		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE tagid='$tagid' $filters");
+		$items = $this->_db->loadResultArray();
+
+		$this->_db->setQuery($sql . $filters);
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
+		}
+		else
+		{
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'log.php');
+
+			$data = new stdClass;
+			$data->tbl = $tbl;
+			$data->objectid = $objectid;
+			$data->taggerid = $taggerid;
+			$data->tagid = $tagid;
+			$data->entres = $items;
+
+			$log = new TagsLog($this->_db);
+			$log->log($tagid, 'objects_removed', json_encode($data));
 		}
 		return true;
 	}
@@ -164,6 +182,9 @@ class TagsObject extends JTable
 			return false;
 		}
 
+		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE objectid='$objectid' AND tbl='$tbl'");
+		$items = $this->_db->loadResultArray();
+
 		$sql = "DELETE FROM $this->_tbl WHERE tbl='$tbl' AND objectid='$objectid'";
 
 		$this->_db->setQuery($sql);
@@ -171,6 +192,18 @@ class TagsObject extends JTable
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
+		}
+		else
+		{
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'log.php');
+
+			$data = new stdClass;
+			$data->tbl = $tbl;
+			$data->objectid = $objectid;
+			$data->entries = $items;
+
+			$log = new TagsLog($this->_db);
+			$log->log($objectid, 'tags_removed', json_encode($data));
 		}
 		return true;
 	}
@@ -296,11 +329,26 @@ class TagsObject extends JTable
 			return false;
 		}
 
+		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE tagid='$oldtagid'");
+		$items = $this->_db->loadResultArray();
+
 		$this->_db->setQuery("UPDATE $this->_tbl SET tagid='$newtagid' WHERE tagid='$oldtagid'");
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
+		}
+		else 
+		{
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'log.php');
+
+			$data = new stdClass;
+			$data->old_id = $oldtagid;
+			$data->new_id = $newtagid;
+			$data->entries = $items;
+
+			$log = new TagsLog($this->_db);
+			$log->log($newtagid, 'objects_moved', json_encode($data));
 		}
 		return true;
 	}
@@ -331,6 +379,7 @@ class TagsObject extends JTable
 		$rows = $this->_db->loadObjectList();
 		if ($rows) 
 		{
+			$entries = array();
 			foreach ($rows as $row)
 			{
 				$to = new TagsObject($this->_db);
@@ -341,7 +390,17 @@ class TagsObject extends JTable
 				$to->taggedon = $row->taggedon;
 				$to->tbl = $row->tbl;
 				$to->store();
+				$entries[] = $row->id;
 			}
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'log.php');
+
+			$data = new stdClass;
+			$data->old_id = $oldtagid;
+			$data->new_id = $newtagid;
+			$data->entries = $entries;
+
+			$log = new TagsLog($this->_db);
+			$log->log($newtagid, 'objects_copied', json_encode($data));
 		}
 		return true;
 	}

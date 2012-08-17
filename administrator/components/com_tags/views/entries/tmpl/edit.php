@@ -99,6 +99,81 @@ if ($this->getError())
 				</tbody>
 			</table>
 		</fieldset>
+<?php
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'log.php');
+		$logger = new TagsLog(JFactory::getDBO());
+		$logs = $logger->getLogs($this->tag->id);
+		if ($logs)
+		{
+?>
+		<h4><?php echo JText::_('Activity log'); ?></h4>
+		<ul class="entry-log">
+<?php
+			foreach ($logs as $log)
+			{
+				$user = JUser::getInstance($log->actorid);
+?>
+			<li>
+				<?php
+				$data = json_decode($log->comments);
+				switch ($log->action)
+				{
+					case 'substitute_created':
+						$s = JText::sprintf('%s alias created on %s by %s', $data->raw_tag, $log->timestamp, $this->escape(stripslashes($user->get('name'))));
+					break;
+
+					case 'substitute_edited':
+						$s = JText::sprintf('%s alias edited on %s by %s', $data->raw_tag, $log->timestamp, $this->escape(stripslashes($user->get('name'))));
+					break;
+
+					case 'substitute_deleted':
+						$s = JText::sprintf('%s aliases removed on %s by %s', implode(', ', $data->tags), $log->timestamp, $this->escape(stripslashes($user->get('name'))));
+					break;
+					
+					case 'substitute_moved':
+						$s = JText::sprintf('%s aliases moved from %s on %s by %s', count($data->entries), $data->old_id, $log->timestamp, $this->escape(stripslashes($user->get('name'))));
+					break;
+
+					case 'tags_removed':
+						$s = JText::sprintf('%s associations removed from %s %s on %s by %s', count($data->entries), $data->tbl, $data->objectid, $log->timestamp, $this->escape(stripslashes($user->get('name'))));
+					break;
+
+					case 'objects_copied':
+						$s = JText::sprintf('%s associations copied from %s on %s by %s', count($data->entries), $data->old_id, $log->timestamp, $this->escape(stripslashes($user->get('name'))));
+					break;
+
+					case 'objects_moved':
+						$s = JText::sprintf('%s associations moved from %s on %s by %s', count($data->entries), $data->old_id, $log->timestamp, $this->escape(stripslashes($user->get('name'))));
+					break;
+
+					case 'objects_removed':
+						if ($data->objectid || $data->tbl)
+						{
+							$s = JText::sprintf('%s associations removed for %s %s on %s by %s', count($data->entries), $data->tbl, $data->objectid, $log->timestamp, $this->escape(stripslashes($user->get('name'))));
+						}
+						else 
+						{
+							$s = JText::sprintf('%s associations removed on %s by %s', count($data->entries), $data->tagid, $log->timestamp, $this->escape(stripslashes($user->get('name'))));
+						}
+					break;
+
+					default:
+						$s = JText::sprintf('%s on %s by %s', str_replace('_', ' ', $log->action), $log->timestamp, $this->escape(stripslashes($user->get('name'))));
+					break;
+				}
+				if ($s)
+				{
+					echo '<span class="entry-log-data">' . $s . '</span>';
+				}
+				?>
+			</li>
+<?php 
+			}
+?>
+		</ul>
+<?php 
+		}
+?>
 	</div>
 	<div class="col width-40 fltrt">
 		<h4><?php echo JText::_('Normalization'); ?></h4>

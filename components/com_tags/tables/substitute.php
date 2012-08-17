@@ -126,6 +126,59 @@ class TagsSubstitute extends JTable
 	}
 
 	/**
+	 * Inserts a new row if id is zero or updates an existing row in the database table
+	 *
+	 * @param     boolean $updateNulls If false, null object variables are not updated
+	 * @return    null|string null if successful otherwise returns and error message
+	 */
+	public function store($updateNulls=false)
+	{
+		$k = $this->_tbl_key;
+		if ($this->$k)
+		{
+			$action = 'substitute_edited';
+		}
+		else
+		{
+			$action = 'substitute_created';
+		}
+
+		$result = parent::store($updateNulls);
+		if ($result)
+		{
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'log.php');
+
+			$data = new stdClass;
+			$data->tag_id = $this->tag_id;
+			$data->tag = $this->tag;
+			$data->raw_tag = $this->raw_tag;
+			$data->id = $this->$k;
+
+			$log = new TagsLog($this->_db);
+			$log->log($this->tag_id, $action, json_encode($data));
+		}
+		return $result;
+	}
+
+	/**
+	 * Default delete method
+	 *
+	 * @param      integer $oid Entry ID
+	 * @return     true if successful otherwise returns and error message
+	 */
+	public function delete($oid=null)
+	{
+		$result = parent::delete($oid);
+		if ($result)
+		{
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'log.php');
+			$log = new TagsLog($this->_db);
+			$log->log($oid, 'substitute_deleted');
+		}
+		return $result;
+	}
+
+	/**
 	 * Normalize a raw tag
 	 * Strips all non-alphanumeric characters
 	 * 
@@ -168,6 +221,15 @@ class TagsSubstitute extends JTable
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
+
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'log.php');
+
+		$d = new stdClass;
+		$d->tags = $data;
+
+		$log = new TagsLog($this->_db);
+		$log->log($tag_id, 'substitute_deleted', json_encode($d));
+
 		return true;
 	}
 
@@ -268,11 +330,26 @@ class TagsSubstitute extends JTable
 			return false;
 		}
 
+		$this->_db->setQuery("SELECT tag FROM $this->_tbl WHERE tag_id='$oldtagid'");
+		$items = $this->_db->loadResultArray();
+
 		$this->_db->setQuery("UPDATE $this->_tbl SET tag_id='$newtagid' WHERE tag_id='$oldtagid'");
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
+		}
+		else 
+		{
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'log.php');
+
+			$data = new stdClass;
+			$data->old_id = $oldtagid;
+			$data->new_id = $newtagid;
+			$data->entries = $items;
+
+			$log = new TagsLog($this->_db);
+			$log->log($newtagid, 'substitutes_moved', json_encode($data));
 		}
 		return $this->cleanUp($newtagid);
 	}

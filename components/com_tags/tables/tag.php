@@ -156,7 +156,43 @@ class TagsTag extends JTable
 			return false;
 		}
 
-		return parent::delete($oid);
+		$result = parent::delete($oid);
+		if ($result)
+		{
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'log.php');
+			$log = new TagsLog($this->_db);
+			$log->log($oid, 'tag_deleted');
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Inserts a new row if id is zero or updates an existing row in the database table
+	 *
+	 * @param     boolean $updateNulls If false, null object variables are not updated
+	 * @return    null|string null if successful otherwise returns and error message
+	 */
+	public function store($updateNulls=false)
+	{
+		$k = $this->_tbl_key;
+		if ($this->$k)
+		{
+			$action = 'tag_edited';
+		}
+		else
+		{
+			$action = 'tag_created';
+		}
+
+		$result = parent::store($updateNulls);
+		if ($result)
+		{
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'log.php');
+			$log = new TagsLog($this->_db);
+			$log->log($this->$k, $action);
+		}
+		return $result;
 	}
 
 	/**
