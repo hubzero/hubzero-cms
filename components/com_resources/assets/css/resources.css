@@ -32,6 +32,9 @@
 	.com_resources .four {
 		position: relative;
 	}
+	.extracontent li {
+		list-style: none;
+	}
 	.extracontent li:before,
 	.com_resources .four .columns div:before,
 	.com_resources .four .columns div:after {
@@ -200,6 +203,7 @@
 		padding: 0.5em;
 		position: relative;
 	}
+	.aside #recommendations li,
 	.aside #whatsrelated li {
 		list-style: none;
 		margin: 0 0 0 0.5em;
