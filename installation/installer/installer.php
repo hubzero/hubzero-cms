@@ -28,7 +28,7 @@ $config = array();
 if (file_exists( JPATH_CONFIGURATION . DS . 'configuration.php' ) && (filesize( JPATH_CONFIGURATION . DS . 'configuration.php' ) > 10) && file_exists( JPATH_INSTALLATION . DS . 'index.php' )) {
 	$config['default_task']	= 'removedir';
 } else {
-	$config['default_task']	= 'preinstall';
+	$config['default_task']	= 'installkey';
 }
 $controller	= new JInstallationController($config);
 $controller->initialize();

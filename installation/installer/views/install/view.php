@@ -181,7 +181,7 @@ class JInstallationView extends JView
 		if ( is_null($this->_steps) )
 		{
 			$this->_steps = array(
-				'lang' => 'off',
+				'installkey' => 'off',
 				'preinstall' => 'off',
 				'license' => 'off',
 				'dbconfig' => 'off',
@@ -299,7 +299,28 @@ class JInstallationView extends JView
 
 		return $this->display();
 	}
+	/**
+	 * The installkey page
+	 *
+	 * @return      boolean True if successful
+	 * @access      public
+	 * @since       HUBzero 1.1
+	 */
+	function installkey()
+	{
+		$steps  =& $this->getSteps();
+		$model  =& $this->getModel();
+		$lists  =& $model->getData('lists');
 
+		$tmpl           =& $this->getTemplate( 'installkey.html' );
+
+		$steps['installkey'] = 'on';
+
+		$tmpl->addVars( 'stepbar',      $steps,         'step_' );
+
+		return $this->display();
+	}
+		
 	/**
 	 * Remove directory messages
 	 *

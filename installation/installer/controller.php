@@ -63,6 +63,33 @@ class JInstallationController extends JController
 		return true;
 	}
 
+	function keycheck($key = '')
+	{
+		if (!class_exists('JConfig'))
+		{
+			return false;
+		}
+
+		$CONFIG = new JConfig();
+
+		if (count(get_object_vars($CONFIG)) > 1)
+		{
+			return false;
+		}
+
+		if (empty($CONFIG->installkey))
+		{
+			return false;
+		}
+
+		if (empty($key))
+		{
+			return false;
+		}
+
+		return $key == $CONFIG->installkey;
+	}
+	
 	/**
 	 * Overload the parent controller method to add a check for configuration variables
 	 *  when a task has been provided
@@ -76,8 +103,16 @@ class JInstallationController extends JController
 	{
 		global $mainframe;
 
+		$vars = JRequest::getVar('vars', '');
+		$key = $vars['key'];
+
+		if (!$this->keycheck($key))
+		{
+			$task = 'installkey';
+		}
+		
 		// Sanity check
-		if ( $task && ( $task != 'lang' ) && ( $task != 'removedir' ) )
+		if ( $task && ( $task != 'installkey' ) && ( $task != 'removedir' ) )
 		{
 
 			/**
@@ -230,6 +265,29 @@ class JInstallationController extends JController
 		return true;
 	}
 
+	/**
+	 * Present a key install check
+	 *
+	 * @return	Boolean True if successful
+	 * @access	public
+	 * @since	HUBzero 1.1
+	 */
+	function installkey()
+	{
+		$model	=& $this->getModel();
+		$view	=& $this->getView();
+
+		if ( ! $model->installkey() )
+		{
+			$view->error();
+			return true;
+		}
+
+		$view->installkey();
+
+		return true;
+	}
+	
 	/**
 	 * Present a preinstall check
 	 *

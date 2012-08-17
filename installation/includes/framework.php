@@ -23,12 +23,27 @@ error_reporting( E_ALL );
 @set_magic_quotes_runtime( 0 );
 @ini_set('zend.ze1_compatibility_mode', '0');
 
-/*
- *
- */
-if (file_exists( JPATH_CONFIGURATION . DS . 'configuration.php' ) && (filesize( JPATH_CONFIGURATION . DS . 'configuration.php' ) > 10) && !file_exists( JPATH_INSTALLATION . DS . 'index.php' )) {
-	header( 'Location: ../index.php' );
-	exit();
+if (file_exists( JPATH_CONFIGURATION . DS . 'configuration.php' ) )
+{
+	require_once( JPATH_CONFIGURATION . DS . 'configuration.php' );
+
+	if (class_exists('JConfig'))
+	{
+		// System configuration
+		$CONFIG = new JConfig();
+
+		if (count(get_object_vars($CONFIG)) > 1)
+		{
+			header( 'Location: ../index.php' );
+			exit();
+		}
+               
+		if (empty($CONFIG->installkey))
+		{
+			header( 'Location: ../index.php' );
+			exit();
+		}
+	}
 }
 
 /*

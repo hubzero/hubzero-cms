@@ -66,6 +66,18 @@ class JInstallationModel extends JModel
 		}
 	}
 
+   /**
+	* Get installation key from user
+	*
+	* @return      boolean True if successful
+	* @access      public
+	* @since       HUBzero 1.1
+	*/
+	function installkey()
+	{
+		return true;
+	}
+	
 	/**
 	 * Gets the parameters for database creation
 	 *
@@ -508,6 +520,7 @@ class JInstallationModel extends JModel
 	function preInstall()
 	{
 		$vars	=& $this->getVars();
+		
 		$lists	= array ();
 
 		$phpOptions[] = array (
