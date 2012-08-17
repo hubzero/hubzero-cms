@@ -153,53 +153,6 @@ class JInstallationModel extends JModel
 	}
 
 	/**
-	 * Gets ftp configuration parameters
-	 *
-	 * @return	boolean True if successful
-	 * @access	public
-	 * @since	1.5
-	 */
-	function ftpConfig($DBcreated = '0')
-	{
-		global $mainframe;
-
-		$vars	=& $this->getVars();
-
-		// Require the xajax library
-		require_once( JPATH_BASE.DS.'includes'.DS.'xajax'.DS.'xajax.inc.php' );
-
-		// Instantiate the xajax object and register the function
-		$xajax = new xajax(JURI::base().'installer/jajax.php');
-		$xajax->registerFunction(array('getFtpRoot', 'JAJAXHandler', 'ftproot'));
-		$xajax->registerFunction(array('FTPVerify', 'JAJAXHandler', 'ftpverify'));
-		//$xajax->debugOn();
-
-		$vars['DBcreated'] = JArrayHelper::getValue($vars, 'DBcreated', $DBcreated);
-		$strip = get_magic_quotes_gpc();
-
-		if (!isset ($vars['ftpEnable'])) {
-			$vars['ftpEnable'] = '1';
-		}
-		if (!isset ($vars['ftpHost'])) {
-			$vars['ftpHost'] = '127.0.0.1';
-		}
-		if (!isset ($vars['ftpPort'])) {
-			$vars['ftpPort'] = '21';
-		}
-		if (!isset ($vars['ftpUser'])) {
-			$vars['ftpUser'] = '';
-		}
-		if (!isset ($vars['ftpPassword'])) {
-			$vars['ftpPassword'] = '';
-		}
-
-		$doc =& JFactory::getDocument();
-		$doc->addCustomTag($xajax->getJavascript('', 'includes/js/xajax.js', 'includes/js/xajax.js'));
-
-		return true;
-	}
-
-	/**
 	 * Get data for later use
 	 *
 	 * @return	string
@@ -494,11 +447,6 @@ class JInstallationModel extends JModel
 
 		$vars	=& $this->getVars();
 
-		// get ftp configuration into registry for use in case of safe mode
-		if($vars['ftpEnable']) {
-			JInstallationHelper::setFTPCfg( $vars );
-		}
-
 		// Check a few directories are writeable as this may cause issues
 		if(!is_writeable(JPATH_SITE.DS.'tmp') || !is_writeable(JPATH_SITE.DS.'installation'.DS.'sql'.DS.'migration')) {
 			$vars['dircheck'] = JText::_('Some paths may be unwritable');
@@ -748,20 +696,6 @@ class JInstallationModel extends JModel
 			$vars['helpurl'] = $forced['helpurl'];
 		}
 
-		// If FTP has not been enabled, set the value to 0
-		if (!isset($vars['ftpEnable']))
-		{
-			$vars['ftpEnable'] = 0;
-		}
-
-		/*
-		 * Trim the last slash from the FTP root, as the FTP root usually replaces JPATH_ROOT.
-		 * If the path had a trailing slash, this would lead to double slashes, like "/joomla//configuration.php"
-		 */
-		if (isset($vars['ftpRoot'])) {
-			$vars['ftpRoot'] = rtrim($vars['ftpRoot'], '/');
-		}
-
 		switch ($vars['DBtype']) {
 
 			case 'mssql' :
@@ -789,11 +723,6 @@ class JInstallationModel extends JModel
 		$tmpl->readTemplatesFromFile('configuration.html');
 		$tmpl->addVars('configuration', $vars, 'var_');
 
-		if (empty($vars['ftpSavePass'])) {
-			$tmpl->addVar('configuration', 'var_ftpuser', '');
-			$tmpl->addVar('configuration', 'var_ftppassword', '');
-		}
-
 		$buffer = $tmpl->getParsedTemplate('configuration');
 		$path = JPATH_CONFIGURATION.DS.'configuration.php';
 
@@ -803,56 +732,11 @@ class JInstallationModel extends JModel
 			$canWrite = is_writable(JPATH_CONFIGURATION.DS);
 		}
 
-		/*
-		 * If the file exists but isn't writable OR if the file doesn't exist and the parent directory
-		 * is not writable we need to use FTP
-		 */
-		$ftpFlag = false;
-		if ((file_exists($path) && !is_writable($path)) || (!file_exists($path) && !is_writable(dirname($path).'/'))) {
-			$ftpFlag = true;
-		}
-
-		// Check for safe mode
-		if (ini_get('safe_mode'))
-		{
-			$ftpFlag = true;
-		}
-
-		// Enable/Disable override
-		if (!isset($vars['ftpEnable']) || ($vars['ftpEnable'] != 1))
-		{
-			$ftpFlag = false;
-		}
-
-		if ($ftpFlag == true)
-		{
-			// Connect the FTP client
-			jimport('joomla.client.ftp');
-			jimport('joomla.filesystem.path');
-
-			$ftp = & JFTP::getInstance($vars['ftpHost'], $vars['ftpPort']);
-			$ftp->login($vars['ftpUser'], $vars['ftpPassword']);
-
-			// Translate path for the FTP account
-			$file = JPath::clean(str_replace(JPATH_CONFIGURATION, $vars['ftpRoot'], $path), '/');
-
-			// Use FTP write buffer to file
-			if (!$ftp->write($file, $buffer)) {
-				$this->setData('buffer', $buffer);
-				return false;
-			}
-
-			$ftp->quit();
-
-		}
-		else
-		{
-			if ($canWrite) {
-				file_put_contents($path, $buffer);
-			} else {
-				$this->setData('buffer', $buffer);
-				return true;
-			}
+		if ($canWrite) {
+			file_put_contents($path, $buffer);
+		} else {
+			$this->setData('buffer', $buffer);
+			return true;
 		}
 
 		return true;

@@ -124,29 +124,6 @@ class JInstallationController extends JController
 	}
 
 	/**
-	 * Present form for FTP information
-	 *
-	 * @return	Boolean True if successful
-	 * @access	public
-	 * @since	1.5
-	 */
-	function ftpconfig()
-	{
-		$model	=& $this->getModel();
-		$view	=& $this->getView();
-
-		if ( ! $model->ftpConfig() )
-		{
-			$view->error();
-			return false;
-		}
-
-		$view->ftpConfig();
-
-		return true;
-	}
-
-	/**
 	 * Get the model for the installer component
 	 *
 	 * @return	JInstallerModel
@@ -250,14 +227,6 @@ class JInstallationController extends JController
 			$view->error();
 			return false;
 		}
-
-		if ( ! $model->ftpConfig( 1 ) )
-		{
-			$view->error();
-			return false;
-		}
-
-		$view->ftpConfig();
 
 		return true;
 	}

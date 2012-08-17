@@ -194,27 +194,6 @@ class JInstallationView extends JView
 	}
 
 	/**
-	 * Show the FTP config page
-	 *
-	 * @return	boolean True if successful
-	 * @access	public
-	 * @since	1.5
-	 */
-	function ftpConfig()
-	{
-		$steps	=& $this->getSteps();
-		$model	=& $this->getModel();
-
-		$tmpl =& $this->getTemplate( 'ftpconfig.html' );
-
-		$steps['ftpconfig'] = 'on';
-
-		$tmpl->addVars( 'stepbar', $steps, 'step_' );
-
-		return $this->display();
-	}
-
-	/**
 	 * Get the installation steps
 	 *
 	 * @return	array
@@ -230,7 +209,6 @@ class JInstallationView extends JView
 				'preinstall' => 'off',
 				'license' => 'off',
 				'dbconfig' => 'off',
-				'ftpconfig' => 'off',
 				'mainconfig' => 'off',
 				'finish' => 'off'
 			);
@@ -306,7 +284,7 @@ class JInstallationView extends JView
 
 		$tmpl->addVars( 'stepbar', $steps, 'step_' );
 
-		$tmpl->addVar( 'buttons', 'previous', 'ftpconfig');
+		$tmpl->addVar( 'buttons', 'previous', 'dbconfig');
 		//		$tmpl->addRows( 'folder-perms', $lists['folderPerms'] );
 
 		/*
