@@ -113,7 +113,8 @@ class plgCitationEndnote extends JPlugin
 
 		foreach ($raw_citations_text as $line)
 		{
-			$line = $this->_cleanText(trim($line));
+			//$line = $this->_cleanText(trim($line));
+			$line = trim($line);
 			if ($line == '')
 			{
 				$raw_citations[] = $raw_citation;
@@ -158,14 +159,18 @@ class plgCitationEndnote extends JPlugin
 					{
 						switch($key)
 						{
-							case "%A": $citation[$key] .= "; " . htmlentities(trim($cd[0])); break;
-							case "%E": $citation[$key] .= "; " . htmlentities(trim($cd[0])); break;
-							case "%Z": $citation[$key] .= "\n" . htmlentities(trim($cd[0])); break;
+							//case "%A": $citation[$key] .= "; " . htmlentities(trim($cd[0])); break;
+							//case "%E": $citation[$key] .= "; " . htmlentities(trim($cd[0])); break;
+							//case "%Z": $citation[$key] .= "\n" . htmlentities(trim($cd[0])); break;
+							case "%A": $citation[$key] .= "; " . htmlspecialchars(trim($cd[0])); break;
+							case "%E": $citation[$key] .= "; " . htmlspecialchars(trim($cd[0])); break;
+							case "%Z": $citation[$key] .= "\n" . htmlspecialchars(trim($cd[0])); break;
 						}
 					} 
 					else 
 					{
-						$citation[$key] = htmlentities(trim($cd[0]));
+						//$citation[$key] = htmlentities(trim($cd[0]));
+						$citation[$key] = htmlspecialchars(trim($cd[0]));
 					}
 				}
 			}

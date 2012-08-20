@@ -112,11 +112,11 @@ class CitationsDownloadEndnote extends CitationsDownloadAbstract
 
 		if ($row->booktitle && !in_array('booktitle', $exclude)) 
 		{
-			$doc .= "%B " . trim(stripslashes($row->booktitle)) . "\r\n";
+			$doc .= "%B " . htmlspecialchars_decode(trim(stripslashes($row->booktitle))) . "\r\n";
 		}
 		if ($row->journal && !in_array('journal', $exclude)) 
 		{
-			$doc .= "%J " . trim(stripslashes($row->journal)) . "\r\n";
+			$doc .= "%J " . htmlspecialchars_decode(trim(stripslashes($row->journal))) . "\r\n";
 		}
 		if ($row->year && !in_array('year', $exclude))
 		{
@@ -124,7 +124,7 @@ class CitationsDownloadEndnote extends CitationsDownloadAbstract
 		}
 		if ($row->title && !in_array('title', $exclude))
 		{
-			$doc .= "%T " . trim(stripslashes($row->title)) . "\r\n";
+			$doc .= "%T " . htmlspecialchars_decode(trim(stripslashes($row->title))) . "\r\n";
 		}
 		if (!in_array('authors', $exclude))
 		{
@@ -144,7 +144,7 @@ class CitationsDownloadEndnote extends CitationsDownloadAbstract
 		}
 		if ($row->address && !in_array('address', $exclude))
 		{
-			$doc .= "%C " . trim(stripslashes($row->address)) . "\r\n";
+			$doc .= "%C " . htmlspecialchars_decode(trim(stripslashes($row->address))) . "\r\n";
 		}
 		if ($row->editor && !in_array('editor', $exclude)) 
 		{
@@ -156,7 +156,7 @@ class CitationsDownloadEndnote extends CitationsDownloadAbstract
 		}
 		if ($row->publisher && !in_array('publisher', $exclude)) 
 		{
-			$doc .= "%I " . trim(stripslashes($row->publisher)) . "\r\n";
+			$doc .= "%I " . htmlspecialchars_decode(trim(stripslashes($row->publisher))) . "\r\n";
 		}
 		if ($row->number && !in_array('number', $exclude))
 		{
@@ -176,7 +176,7 @@ class CitationsDownloadEndnote extends CitationsDownloadAbstract
 		}
 		if ($row->note && !in_array('note', $exclude))
 		{
-			$doc .= "%Z " . trim($row->note) . "\r\n";
+			$doc .= "%Z " . htmlspecialchars_decode(trim($row->note)) . "\r\n";
 		}
 		if ($row->edition && !in_array('edition', $exclude))
 		{
@@ -196,27 +196,27 @@ class CitationsDownloadEndnote extends CitationsDownloadAbstract
 		}
 		if ($row->keywords && !in_array('keywords', $exclude))
 		{
-			$doc .= "%K " . trim($row->keywords) . "\r\n";
+			$doc .= "%K " . htmlspecialchars_decode(trim($row->keywords)) . "\r\n";
 		}
 		if ($row->research_notes && !in_array('research_notes', $exclude))
 		{
-			$doc .= "%< " . trim($row->research_notes) . "\r\n";
+			$doc .= "%< " . htmlspecialchars_decode(trim($row->research_notes)) . "\r\n";
 		}
 		if ($row->abstract && !in_array('abstract', $exclude))
 		{
-			$doc .= "%X " . trim($row->abstract) . "\r\n";
+			$doc .= "%X " . htmlspecialchars_decode(trim($row->abstract)) . "\r\n";
 		}
 		if ($row->label && !in_array('label', $exclude))
 		{
-			$doc .= "%F " . trim($row->label) . "\r\n";
+			$doc .= "%F " . htmlspecialchars_decode(trim($row->label)) . "\r\n";
 		}
 		if ($row->language && !in_array('language', $exclude))
 		{
-			$doc .= "%G " . trim($row->language) . "\r\n";
+			$doc .= "%G " . htmlspecialchars_decode(trim($row->language)) . "\r\n";
 		}
 		if ($row->author_address && !in_array('author_address', $exclude))
 		{
-			$doc .= "%+ " . trim($row->author_address) . "\r\n";
+			$doc .= "%+ " . htmlspecialchars_decode(trim($row->author_address)) . "\r\n";
 		}
 		if ($row->accession_number && !in_array('accession_number', $exclude))
 		{
@@ -228,7 +228,7 @@ class CitationsDownloadEndnote extends CitationsDownloadAbstract
 		}
 		if ($row->short_title && !in_array('short_title', $exclude))
 		{
-			$doc .= "%! " . trim($row->short_title) . "\r\n";
+			$doc .= "%! " . htmlspecialchars_decode(trim($row->short_title)) . "\r\n";
 		}
 		$doc .= "\r\n";
 		return $doc;
