@@ -993,6 +993,7 @@ class Hubzero_Registration
 			}
 		}
 
+		/*
 		if ($registrationHispanic != REG_HIDE)
 		{
 			if (empty($registration['hispanic']))
@@ -1000,6 +1001,7 @@ class Hubzero_Registration
 				$this->_invalid['hispanic'] = 'Invalid hispanic heritage selection.';
 			}
 		}
+		*/
 
 		if ($registrationRace == REG_REQUIRED)
 		{
