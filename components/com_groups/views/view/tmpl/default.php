@@ -112,7 +112,7 @@ $no_html = JRequest::getInt( 'no_html', 0 );
 								<span class="label">Discoverability</span>
 								<span class="value"><?php echo $privacy; ?></span>
 							</li>
-							<li class="info-discoverability">
+							<li class="info-join-policy">
 								<span class="label">Join Policy</span>
 								<span class="value"><?php echo $policy; ?></span>
 							</li>
