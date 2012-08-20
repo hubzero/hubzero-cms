@@ -409,11 +409,11 @@ class Hubzero_Group_Helper
 					
 					if(($access == 'registered' && $juser->get('guest')) || ($access == 'members' && !in_array($juser->get("id"), $group->get('members'))))
 					{
-						$menu_item  = "<li class=\"protected\"><span class=\"overview\">Overview</span>";
+						$menu_item  = "<li class=\"protected group-overview-tab\"><span class=\"overview\">Overview</span>";
 					}
 					else
 					{
-						$menu_item  = "<li class=\"{$li_cls}\">";
+						$menu_item  = "<li class=\"{$li_cls} group-overview-tab\">";
 						$menu_item .= "<a class=\"overview\" title=\"{$group->get('description')}'s Overview Page\" href=\"{$link}\">Overview</a>";
 					} 
 					
@@ -453,13 +453,13 @@ class Hubzero_Group_Helper
 					}
 					elseif($access == 'members' && !in_array($juser->get("id"), $group->get('members'))) 
 					{
-						$menu_item  = "<li class=\"protected members-only\" title=\"This page is restricted to group members only!\">";
+						$menu_item  = "<li class=\"protected members-only group-{$cls}-tab\" title=\"This page is restricted to group members only!\">";
 						$menu_item .= "<span class=\"{$cls}\">{$title}</span>";
 						$menu_item .= "</li>";
 					}
 					elseif($access == 'registered' && $juser->get('guest'))
 					{
-						$menu_item  = "<li class=\"protected registered-only\" title=\"This page is restricted to registered hub users only!\">";
+						$menu_item  = "<li class=\"protected registered-only group-{$cls}-tab\" title=\"This page is restricted to registered hub users only!\">";
 						$menu_item .= "<span class=\"{$cls}\">{$title}</span>";
 						$menu_item .= "</li>";
 					}
@@ -471,7 +471,7 @@ class Hubzero_Group_Helper
 						$meta_alert = (isset($metadata['alert']) && $metadata['alert'] != '') ? $metadata['alert'] : '';
 
 						//create menu item
-						$menu_item  = "<li class=\"{$li_cls}\">";
+						$menu_item  = "<li class=\"{$li_cls} group-{$cls}-tab\">";
 						$menu_item .= "<a class=\"{$cls}\" title=\"{$group->get('description')}'s {$title} Page\" href=\"{$link}\">{$title}</a>";
 						$menu_item .= "<span class=\"meta\">";
 						if($meta_count)
@@ -490,5 +490,132 @@ class Hubzero_Group_Helper
 		}
 		
 		return $group_menu;
+	}
+	
+	//----
+	// New function for new groups (Chris)
+	//----
+	
+
+	/**
+	 * Short description for 'search_roles'
+	 * Long description (if any) ...
+	 *
+	 * @param string $role Parameter description (if any) ...
+	 * @return boolean Return description (if any) ...
+	 */
+	public function search_roles($role = '')
+	{
+		if ($role == '')
+			return false;
+		
+		$db = & JFactory::getDBO();
+		
+		$query = "SELECT uidNumber FROM #__xgroups_roles as r, #__xgroups_member_roles as m WHERE r.id='" . $role . "' AND r.id=m.role AND r.gidNumber='" . $this->gidNumber . "'";
+		
+		$db->setQuery($query);
+		
+		$result = $db->loadResultArray();
+		
+		$result = array_intersect($result, $this->members);
+		
+		if (count($result) > 0)
+		{
+			return $result;
+		}
+	}
+	
+	//----
+	// New function with new groups (Chris)
+	//----
+	
+
+	/**
+	 * Short description for 'getPluginAccess'
+	 * Long description (if any) ...
+	 *
+	 * @param string $get_plugin Parameter description (if any) ...
+	 * @return mixed Return description (if any) ...
+	 */
+	public function getPluginAccess($get_plugin = '')
+	{
+		// Get plugins
+		JPluginHelper::importPlugin('groups');
+		$dispatcher = & JDispatcher::getInstance();
+		
+		// Trigger the functions that return the areas we'll be using
+		//then add overview to array
+		$hub_group_plugins = $dispatcher->trigger('onGroupAreas', array());
+		array_unshift($hub_group_plugins, array('name'=>'overview', 'title'=>'Overview', 'default_access'=>'anyone'));
+		
+		//array to store plugin preferences when after retrieved from db
+		$active_group_plugins = array();
+		
+		//get the group plugin preferences
+		//returns array of tabs and their access level (ex. [overview] => 'anyone', [messages] => 'registered')
+		$group_plugins = $this->get('plugins');
+		
+		if ($group_plugins)
+		{
+			$group_plugins = explode(',', $group_plugins);
+			
+			foreach ($group_plugins as $plugin)
+			{
+				$temp = explode('=', trim($plugin));
+				
+				if ($temp[0])
+				{
+					$active_group_plugins[$temp[0]] = trim($temp[1]);
+				}
+			}
+		}
+		
+		//array to store final group plugin preferences
+		//array of acceptable access levels
+		$group_plugin_access = array();
+		$acceptable_levels = array('nobody', 'anyone', 'registered', 'members');
+		
+		//if we have already set some 
+		if ($active_group_plugins)
+		{
+			//for each plugin that is active on the hub
+			foreach ($hub_group_plugins as $hgp)
+			{
+				//if group defined access level is not an acceptable value or not set use default value that is set per plugin
+				//else use group defined access level
+				if (!isset($active_group_plugins[$hgp['name']]) || !in_array($active_group_plugins[$hgp['name']], $acceptable_levels))
+				{
+					$value = $hgp['default_access'];
+				}
+				else
+				{
+					$value = $active_group_plugins[$hgp['name']];
+				}
+				
+				//store final  access level in array of access levels
+				$group_plugin_access[$hgp['name']] = $value;
+			}
+		}
+		else
+		{
+			//for each plugin that is active on the hub
+			foreach ($hub_group_plugins as $hgp)
+			{
+				$value = $hgp['default_access'];
+				
+				//store final  access level in array of access levels
+				$group_plugin_access[$hgp['name']] = $value;
+			}
+		}
+		
+		//if we wanted to return only a specific level return that otherwise return all access levels
+		if ($get_plugin != '')
+		{
+			return $group_plugin_access[$get_plugin];
+		}
+		else
+		{
+			return $group_plugin_access;
+		}
 	}
 }
