@@ -392,6 +392,10 @@ class Hubzero_Registration
 		$this->_registration['orgtype']	= JRequest::getVar('orgtype', null, 'post');
 		$this->_registration['org'] = JRequest::getVar('org', null, 'post');
 		$this->_registration['orgtext']	= JRequest::getVar('orgtext', null, 'post');
+		if (!$this->_registration['org'])
+		{
+			$this->_registration['org'] = $this->_registration['orgtext'];
+		}
 		$this->_registration['reason'] = JRequest::getVar('reason', null, 'post');
 		$this->_registration['reasontxt'] = JRequest::getVar('reasontxt', null, 'post');
 		$this->_registration['password'] = JRequest::getVar('password', null, 'post');
