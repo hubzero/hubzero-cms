@@ -2592,6 +2592,45 @@
 		border: none;
 		cursor: default;
 	}
+	
+	.com_media table,
+	.com_media table tr,
+	.com_media table tbody th,
+	.com_media table tbody td {
+		border: none;
+	}
+	.com_media table tbody td:first-child {
+		background-color: #fff;
+		padding: 0;
+		
+		border: none;
+		background: #eaeaea url("../images/layout/noise.png");
+		-webkit-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2), 0 1px 1px rgba(255, 255, 255, 0.4);
+		-moz-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2), 0 1px 1px rgba(255, 255, 255, 0.4);
+		box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2), 0 1px 1px rgba(255, 255, 255, 0.4);
+	}
+	.com_media table tbody td:first-child fieldset {
+		padding: 0;
+		margin: 0;
+	}
+	.com_media table tbody td:first-child fieldset legend {
+		color: #ddd;
+		margin: 0;
+		padding: 0.5em 1em;
+		font-size: 1em;
+		text-indent: 0;
+		text-shadow: 0px -1px 2px #333;
+		background: #6e6e6e url("../images/nav/noise.png");
+		-webkit-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2);
+		-moz-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2);
+		box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2);
+		zoom: 1;
+	}
+	.com_media #treeview {
+		width: 200px;
+		padding: 0;
+	}
+	
 /* Link types */
 	a[href^="mailto:"]:before {
 		font-family: 'Fontcons';
