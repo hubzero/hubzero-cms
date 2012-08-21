@@ -136,7 +136,13 @@ class Hubzero_Oauth_Provider
 		$this->_provider->timestampNonceHandler(array($this,'timestampNonceHandler'));
 		$this->_provider->tokenHandler(array($this, 'tokenHandler'));
 		
-		if (empty($params['oauth_token']))
+		// @FIXME: clean this logic
+		
+		if (empty($params['oauth_token']) && (php_sapi_name() == 'cli'))
+		{
+			$this->_provider->is2LeggedEndpoint(true);
+		}
+		else if (empty($_REQUEST['oauth_token']) && (php_sapi_name() != 'cli'))
 		{
 			$this->_provider->is2LeggedEndpoint(true);
 		}

@@ -231,7 +231,7 @@ class Hubzero_API_Request
 					$this->set('hostname', $_SERVER['HTTP_HOST']);
 					break;
 				case 'scheme':
-					if ($_SERVER['HTTPS']) 
+					if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS']) 
 					{
 						$this->set('scheme','https');
 					}
