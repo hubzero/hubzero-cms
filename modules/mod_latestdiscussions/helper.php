@@ -145,15 +145,16 @@ class modLatestDiscussions extends JObject
 		$categories = array();
 		$ids = array();
 		$threads = array();
+
 		foreach ($posts as $post)
 		{
-			if ($post->parent == 0)
+			if ($post['parent'] == 0)
 			{
-				$threads[$post->id] = $post->title;
+				$threads[$post['id']] = $post['title'];
 			}
 			else 
 			{
-				$threads[$post->parent] = (isset($threads[$post->parent])) ? $threads[$post->parent] : '';
+				$threads[$post['parent']] = (isset($threads[$post['parent']])) ? $threads[$post['parent']] : '';
 			}
 			$ids[] = $post['category_id'];
 		}
