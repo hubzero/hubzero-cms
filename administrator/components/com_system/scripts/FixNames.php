@@ -54,11 +54,11 @@ class FixNames extends SystemHelperScript
 	{
 		echo 'Fixing names...<br />';
 
-		$query = "SELECT uidNumber FROM #__xprofiles;";
+		$query = "SELECT uidNumber FROM #__xprofiles WHERE (givenName = '' OR givenName IS NULL) AND (surname = '' OR surname IS NULL);";
 
 		$this->_db->setQuery($query);
 
-		$result = $this->_db->query();
+		$result = $this->_db->loadObjectList();
 
 		if ($result === false)
 		{
@@ -66,9 +66,16 @@ class FixNames extends SystemHelperScript
 			return false;
 		}
 
-		foreach ($result as $row)
+		if ($result)
 		{
-			$this->_fixName($row['uidNumber']);
+			foreach ($result as $row)
+			{
+				$this->_fixName($row->uidNumber);
+			}
+		}
+		else 
+		{
+			echo 'No changes to be made.';
 		}
 
 		return true;
@@ -95,6 +102,12 @@ class FixNames extends SystemHelperScript
 			$lastname   = $xprofile->get('surname');
 			$name       = $xprofile->get('name');
 			$username   = $xprofile->get('username');
+
+			if ($firstname && $surname)
+			{
+				echo "passed $name as [$firstname] [$lastname] <br />\n";
+				return;
+			}
 
 			if (empty($firstname) && empty($middlename) && empty($surname) && empty($name))
 			{
