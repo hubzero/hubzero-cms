@@ -236,15 +236,15 @@ class Hubzero_Group
 	public function clear()
 	{
 		$cvars = get_class_vars(__CLASS__);
-		
+
 		$this->_updatedkeys = array();
-		
+
 		foreach ($cvars as $key=>$value)
 		{
 			if ($key{0} != '_')
 			{
 				unset($this->$key);
-				
+
 				if (!in_array($key, self::$_list_keys))
 				{
 					$this->$key = null;
@@ -255,9 +255,9 @@ class Hubzero_Group
 				}
 			}
 		}
-		
+
 		$this->_updatedkeys = array();
-		
+
 		return true;
 	}
 
@@ -271,12 +271,12 @@ class Hubzero_Group
 	static public function getInstance($group)
 	{
 		$hzg = new Hubzero_Group();
-		
+
 		if ($hzg->read($group) === false)
 		{
 			return false;
 		}
-		
+
 		return $hzg;
 	}
 
@@ -291,33 +291,33 @@ class Hubzero_Group
 	public function create()
 	{
 		$db = &JFactory::getDBO();
-		
+
 		if (empty($db))
 		{
 			return false;
 		}
-		
+
 		$cn = $this->cn;
 		$gidNumber = $this->gidNumber;
-		
+
 		if (empty($cn) && empty($gidNumber))
 		{
 			return false;
 		}
-		
+
 		if (is_numeric($gidNumber))
 		{
 			if (empty($cn))
 			{
 				$cn = '_gid' . $gidNumber;
 			}
-			
-			$query = "INSERT INTO #__xgroups (gidNumber,cn) VALUES ( " . $db->Quote($gidNumber) . "," . $db->Quote($cn) . ");";
-			
+
+			$query = "INSERT INTO #__xgroups (gidNumber,cn) VALUES (" . $db->Quote($gidNumber) . "," . $db->Quote($cn) . ");";
+
 			$db->setQuery($query);
-			
+
 			$result = $db->query();
-			
+
 			if ($result === false && $db->getErrorNum() != 1062)
 			{
 				return false;
@@ -325,25 +325,25 @@ class Hubzero_Group
 		}
 		else
 		{
-			$query = "INSERT INTO #__xgroups (cn) VALUES ( " . $db->Quote($cn) . ");";
-			
+			$query = "INSERT INTO #__xgroups (cn) VALUES (" . $db->Quote($cn) . ");";
+
 			$db->setQuery($query);
-			
+
 			$result = $db->query();
-			
+
 			if ($result === false && $db->getErrorNum() == 1062) // row exists
 			{
 				$query = "SELECT gidNumber FROM #__xgroups WHERE cn=" . $db->Quote($cn) . ";";
-				
+
 				$db->setQeury($query);
-				
+
 				$result = $db->loadResult();
-				
+
 				if (empty($result))
 				{
 					return false;
 				}
-				
+
 				$this->__set('gidNumber', $result);
 			}
 			else if ($result !== false)
@@ -355,13 +355,13 @@ class Hubzero_Group
 				return false;
 			}
 		}
-		
+
 		JPluginHelper::importPlugin('user');
-		
+
 		//trigger the onAfterStoreGroup event
 		$dispatcher = & JDispatcher::getInstance();
 		$dispatcher->trigger('onAfterStoreGroup', array($this));
-		
+
 		return $this->gidNumber;
 	}
 
@@ -376,14 +376,14 @@ class Hubzero_Group
 	public function read($name = null)
 	{
 		$this->clear();
-		
+
 		$db = JFactory::getDBO();
-		
+
 		if (empty($db))
 		{
 			return false;
 		}
-		
+
 		if (!is_null($name))
 		{
 			if (Hubzero_Validate::is_positive_integer($name))
@@ -395,10 +395,10 @@ class Hubzero_Group
 				$this->cn = $name;
 			}
 		}
-		
+
 		$result = true;
 		$lazyloading = false;
-		
+
 		if (is_numeric($this->gidNumber))
 		{
 			$query = "SELECT * FROM #__xgroups WHERE gidNumber = " . $db->Quote($this->gidNumber) . ";";
@@ -407,17 +407,17 @@ class Hubzero_Group
 		{
 			$query = "SELECT * FROM #__xgroups WHERE cn = " . $db->Quote($this->cn) . ";";
 		}
-		
+
 		$db->setQuery($query);
-		
+
 		$result = $db->loadAssoc();
-		
+
 		if (empty($result))
 		{
 			$this->clear();
 			return false;
 		}
-		
+
 		foreach ($result as $key=>$value)
 		{
 			if (property_exists(__CLASS__, $key) && $key{0} != '_')
@@ -425,12 +425,12 @@ class Hubzero_Group
 				$this->__set($key, $value);
 			}
 		}
-		
+
 		$this->__unset('members'); // we unset the lists so we can detect whether they have been loaded or not
 		$this->__unset('invitees');
 		$this->__unset('applicants');
 		$this->__unset('managers');
-		
+
 		if (!$lazyloading)
 		{
 			$this->__get('members');
@@ -438,9 +438,9 @@ class Hubzero_Group
 			$this->__get('applicants');
 			$this->__get('managers');
 		}
-		
+
 		$this->_updatedkeys = array();
-		
+
 		return true;
 	}
 
@@ -455,41 +455,41 @@ class Hubzero_Group
 	public function update()
 	{
 		$db = JFactory::getDBO();
-		
+
 		if (empty($db))
 		{
 			return false;
 		}
-		
+
 		if (!is_numeric($this->gidNumber))
 		{
 			return false;
 		}
-		
+
 		if (empty($this->_updatedkeys))
 		{
 			return true;
 		}
-		
+
 		$query = "UPDATE #__xgroups SET ";
-		
+
 		$classvars = get_class_vars(__CLASS__);
-		
+
 		$first = true;
 		$affected = 0;
-		
+
 		foreach ($classvars as $property=>$value)
 		{
 			if (($property{0} == '_') || in_array($property, self::$_list_keys))
 			{
 				continue;
 			}
-			
+
 			if (!in_array($property, $this->_updatedkeys))
 			{
 				continue;
 			}
-			
+
 			if (!$first)
 			{
 				$query .= ',';
@@ -498,9 +498,9 @@ class Hubzero_Group
 			{
 				$first = false;
 			}
-			
+
 			$value = $this->$property;
-			
+
 			if ($value === null)
 			{
 				$query .= "`$property`=NULL";
@@ -510,44 +510,44 @@ class Hubzero_Group
 				$query .= "`$property`=" . $db->Quote($value);
 			}
 		}
-		
+
 		$query .= " WHERE `gidNumber`=" . $db->Quote($this->gidNumber) . ";";
-		
+
 		if (($first != true) && !empty($query))
 		{
 			$db->setQuery($query);
-			
+
 			$result = $db->query();
-			
+
 			if ($result === false)
 			{
 				return false;
 			}
-			
+
 			$affected = $db->getAffectedRows();
 		}
-		
+
 		$aNewUserGroupEnrollments = array();
-		
+
 		foreach (self::$_list_keys as $property)
 		{
 			if (!in_array($property, $this->_updatedkeys))
 			{
 				continue;
 			}
-			
+
 			$aux_table = "#__xgroups_" . $property;
-			
+
 			$list = $this->$property;
-			
+
 			if (!is_null($list) && !is_array($list))
 			{
 				$list = array($list);
 			}
-			
+
 			$ulist = null;
 			$tlist = null;
-			
+
 			foreach ($list as $value)
 			{
 				if (!is_null($ulist))
@@ -555,31 +555,29 @@ class Hubzero_Group
 					$ulist .= ',';
 					$tlist .= ',';
 				}
-				
+
 				$ulist .= $db->Quote($value);
 				$tlist .= '(' . $db->Quote($this->gidNumber) . ',' . $db->Quote($value) . ')';
 			}
-			
+
 			// @FIXME: I don't have a better solution yet. But the next refactoring of this class
 			// should eliminate the ability to read the entire member table due to problems with
 			// scale on a large (thousands of members) groups. The add function should track the members
 			// being added to a group, but would need to be verified to handle adding members
 			// already in group. *njk*
-			
 
 			// @FIXME: Not neat, but because all group membership is resaved every time even for single additions
 			// there is no nice way to detect only *new* additions without this check. I don't want to 
 			// fire off an 'onUserGroupEnrollment' event for users unless they are really being enrolled. *drb*
-			
 
 			if (in_array($property, array('members', 'managers')))
 			{
 				$query = "SELECT uidNumber FROM #__xgroups_members WHERE gidNumber=" . $this->gidNumber;
 				$db->setQuery($query);
-				
+
 				// compile current list of members in this group
 				$aExistingUserMembership = array();
-				
+
 				if (($results = $db->loadAssoc()))
 				{
 					foreach ($results as $uid)
@@ -587,26 +585,26 @@ class Hubzero_Group
 						$aExistingUserMembership[] = $uid;
 					}
 				}
-				
+
 				// see who is missing
 				$aNewUserGroupEnrollments = array_diff($list, $aExistingUserMembership);
 			}
-			
+
 			if (is_array($list) && count($list) > 0)
 			{
 				if (in_array($property, array('members', 'managers', 'applicants', 'invitees')))
 				{
 					$query = "REPLACE INTO $aux_table (gidNumber,uidNumber) VALUES $tlist;";
 				}
-				
+
 				$db->setQuery($query);
-				
+
 				if ($db->query())
 				{
 					$affected += $db->getAffectedRows();
 				}
 			}
-			
+
 			if (!is_array($list) || count($list) == 0)
 			{
 				if (in_array($property, array('members', 'managers', 'applicants', 'invitees')))
@@ -622,27 +620,25 @@ class Hubzero_Group
 						$db->Quote($this->gidNumber) . " AND m.uidNumber NOT IN (" . $ulist . ");";
 				}
 			}
-			
+
 			$db->setQuery($query);
-			
+
 			if ($db->query())
 			{
 				$affected += $db->getAffectedRows();
 			}
 		}
-		
+
 		// After SQL is done and has no errors, fire off onGroupUserEnrolledEvents 
 		// for every user added to this group
-		
-
 		JPluginHelper::importPlugin('groups');
 		$dispatcher = & JDispatcher::getInstance();
-		
+
 		foreach ($aNewUserGroupEnrollments as $userid)
 		{
 			$dispatcher->trigger('onGroupUserEnrollment', array($this->gidNumber, $userid));
 		}
-		
+
 		if ($affected > 0)
 		{
 			JPluginHelper::importPlugin('user');
@@ -651,7 +647,7 @@ class Hubzero_Group
 			$dispatcher = & JDispatcher::getInstance();
 			$dispatcher->trigger('onAfterStoreGroup', array($this));
 		}
-		
+
 		return true;
 	}
 
@@ -665,35 +661,35 @@ class Hubzero_Group
 	public function delete()
 	{
 		$db = JFactory::getDBO();
-		
+
 		if (empty($db))
 		{
 			return false;
 		}
-		
+
 		if (!is_numeric($this->gidNumber))
 		{
 			$db->setQuery("SELECT gidNumber FROM #__xgroups WHERE cn=" . $db->Quote($this->cn) . ";");
-			
+
 			$gidNumber = $db->loadResult();
-			
+
 			if (!is_numeric($this->gidNumber))
 			{
 				return false;
 			}
-			
+
 			$this->gidNumber = $gidNumber;
 		}
-		
+
 		$db->setQuery("DELETE FROM #__xgroups WHERE gidNumber=" . $db->Quote($this->gidNumber) . ";");
-		
+
 		$result = $db->query();
-		
+
 		if ($result === false)
 		{
 			return false;
 		}
-		
+
 		$db->setQuery("DELETE FROM #__xgroups_applicants WHERE gidNumber=" . $db->Quote($this->gidNumber) . ";");
 		$db->query();
 		$db->setQuery("DELETE FROM #__xgroups_invitees WHERE gidNumber=" . $db->Quote($this->gidNumber) . ";");
@@ -702,13 +698,13 @@ class Hubzero_Group
 		$db->query();
 		$db->setQuery("DELETE FROM #__xgroups_members WHERE gidNumber=" . $db->Quote($this->gidNumber) . ";");
 		$db->query();
-		
+
 		JPluginHelper::importPlugin('user');
-		
+
 		//trigger the onAfterStoreGroup event
 		$dispatcher = & JDispatcher::getInstance();
 		$dispatcher->trigger('onAfterStoreGroup', array($this));
-		
+
 		return true;
 	}
 
@@ -727,26 +723,26 @@ class Hubzero_Group
 			{
 				$property = '(null)';
 			}
-			
+
 			$this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
 			die();
 		}
-		
+
 		if (in_array($property, self::$_list_keys))
 		{
 			if (!array_key_exists($property, get_object_vars($this)))
 			{
 				$db = &JFactory::getDBO();
-				
+
 				if (is_object($db))
 				{
 					$groups = array('applicants'=>array(), 'invitees'=>array(), 'members'=>array(), 'managers'=>array());
-					
+
 					foreach ($groups as $key=>$data)
 					{
 						$this->__set($key, $data);
 					}
-					
+
 					$query = "(select uidNumber, 'invitees' AS role from #__xgroups_invitees where gidNumber=" . $db->Quote($this->gidNumber) . ")
 						UNION
 							(select uidNumber, 'applicants' AS role from #__xgroups_applicants where gidNumber=" . $db->Quote($this->gidNumber) . ")
@@ -756,7 +752,7 @@ class Hubzero_Group
 							(select uidNumber, 'managers' AS role from #__xgroups_managers where gidNumber=" . $db->Quote($this->gidNumber) . ")";
 					
 					$db->setQuery($query);
-					
+
 					if (($results = $db->loadObjectList()))
 					{
 						foreach ($results as $result)
@@ -766,7 +762,7 @@ class Hubzero_Group
 								$groups[$result->role][] = $result->uidNumber;
 							}
 						}
-						
+
 						foreach ($groups as $key=>$data)
 						{
 							$this->__set($key, $data);
@@ -775,19 +771,19 @@ class Hubzero_Group
 				}
 			}
 		}
-		
+
 		if (isset($this->$property))
 		{
 			return $this->$property;
 		}
-		
+
 		if (array_key_exists($property, get_object_vars($this)))
 		{
 			return null;
 		}
-		
+
 		$this->_error("Undefined property " . __CLASS__ . "::$" . $property, E_USER_NOTICE);
-		
+
 		return null;
 	}
 
@@ -807,20 +803,20 @@ class Hubzero_Group
 			{
 				$property = '(null)';
 			}
-			
+
 			$this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
 			die();
 		}
-		
+
 		if (in_array($property, self::$_list_keys))
 		{
 			$value = array_diff((array) $value, array(''));
-			
+
 			if (in_array($property, array('managers', 'members', 'applicants', 'invitees')))
 			{
 				$value = $this->_userids($value);
 			}
-			
+
 			$value = array_unique($value);
 			$value = array_values($value);
 			$this->$property = $value;
@@ -829,7 +825,7 @@ class Hubzero_Group
 		{
 			$this->$property = $value;
 		}
-		
+
 		if (!in_array($property, $this->_updatedkeys))
 		{
 			$this->_updatedkeys[] = $property;
@@ -851,11 +847,11 @@ class Hubzero_Group
 			{
 				$property = '(null)';
 			}
-			
+
 			$this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
 			die();
 		}
-		
+
 		return isset($this->$property);
 	}
 
@@ -874,13 +870,13 @@ class Hubzero_Group
 			{
 				$property = '(null)';
 			}
-			
+
 			$this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
 			die();
 		}
-		
+
 		$this->_updatedkeys = array_diff($this->_updatedkeys, array($property));
-		
+
 		unset($this->$property);
 	}
 
@@ -895,7 +891,7 @@ class Hubzero_Group
 	private function _error($message, $level = E_USER_NOTICE)
 	{
 		$caller = next(debug_backtrace());
-		
+
 		switch ($level)
 		{
 			case E_USER_NOTICE:
@@ -908,7 +904,7 @@ class Hubzero_Group
 				echo "Unknown error: ";
 				break;
 		}
-		
+
 		echo $message . ' in ' . $caller['file'] . ' on line ' . $caller['line'] . "\n";
 	}
 
@@ -947,20 +943,20 @@ class Hubzero_Group
 	private function _userids($users)
 	{
 		$db = JFactory::getDBO();
-		
+
 		if (empty($db))
 		{
 			return false;
 		}
-		
+
 		$usernames = array();
 		$userids = array();
-		
+
 		if (!is_array($users))
 		{
 			$users = array($users);
 		}
-		
+
 		foreach ($users as $u)
 		{
 			if (is_numeric($u))
@@ -972,27 +968,27 @@ class Hubzero_Group
 				$usernames[] = $db->Quote($u);
 			}
 		}
-		
+
 		if (empty($usernames))
 		{
 			return $userids;
 		}
-		
+
 		$set = implode($usernames, ",");
-		
-		$sql = "SELECT id FROM #__users WHERE username IN ( $set );";
-		
+
+		$sql = "SELECT id FROM #__users WHERE username IN ($set);";
+
 		$db->setQuery($sql);
-		
+
 		$result = $db->loadResultArray();
-		
+
 		if (empty($result))
 		{
 			$result = array();
 		}
-		
+
 		$result = array_merge($result, $userids);
-		
+
 		return $result;
 	}
 
@@ -1007,7 +1003,7 @@ class Hubzero_Group
 	public function add($key = null, $value = array())
 	{
 		$users = $this->_userids($value);
-		
+
 		$this->__set($key, array_merge($this->__get($key), $users));
 	}
 
@@ -1022,7 +1018,7 @@ class Hubzero_Group
 	public function remove($key = null, $value = array())
 	{
 		$users = $this->_userids($value);
-		
+
 		$this->__set($key, array_diff($this->__get($key), $users));
 	}
 
@@ -1037,23 +1033,23 @@ class Hubzero_Group
 	static function iterate($func)
 	{
 		$db = &JFactory::getDBO();
-		
+
 		$query = "SELECT cn FROM #__xgroups;";
-		
+
 		$db->setQuery($query);
-		
+
 		$result = $db->loadResultArray();
-		
+
 		if ($result === false)
 		{
 			return false;
 		}
-		
+
 		foreach ($result as $row)
 		{
 			call_user_func($func, $row);
 		}
-		
+
 		return true;
 	}
 
@@ -1067,12 +1063,12 @@ class Hubzero_Group
 	static public function exists($group, $check_system = false)
 	{
 		$db = &JFactory::getDBO();
-		
+
 		if (empty($group))
 		{
 			return false;
 		}
-		
+
 		if ($check_system)
 		{
 			if (is_numeric($group) && posix_getgrid($group))
@@ -1085,7 +1081,7 @@ class Hubzero_Group
 				return true;
 			}
 		}
-		
+
 		if (is_numeric($group))
 		{
 			$query = 'SELECT gidNumber FROM #__xgroups WHERE gidNumber=' . $db->Quote($group);
@@ -1094,19 +1090,19 @@ class Hubzero_Group
 		{
 			$query = 'SELECT gidNumber FROM #__xgroups WHERE cn=' . $db->Quote($group);
 		}
-		
+
 		$db->setQuery($query);
-		
+
 		if (!$db->query())
 		{
 			return false;
 		}
-		
+
 		if ($db->loadResult() > 0)
 		{
 			return true;
 		}
-		
+
 		return false;
 	}
 
@@ -1120,15 +1116,15 @@ class Hubzero_Group
 	static function find($filters = array())
 	{
 		$db = &JFactory::getDBO();
-		
+
 		// Type 0 - System Group
 		// Type 1 - HUB Group
 		// Type 2 - Project Group
 		// Type 3 - Partner "Special" Group
 		$gTypes = array('all', 'system', 'hub', 'project', 'partner', '0', '1', '2', '3');
-		
+
 		$types = !empty($filters['type']) ? $filters['type'] : array('all');
-		
+
 		foreach ($types as $type)
 		{
 			if (!in_array($type, $gTypes))
@@ -1136,7 +1132,7 @@ class Hubzero_Group
 				return false;
 			}
 		}
-		
+
 		if (in_array('all', $types))
 		{
 			$where_clause = '';
@@ -1154,7 +1150,7 @@ class Hubzero_Group
 				$t = 0;
 			$where_clause = 'WHERE type IN (' . $t . ')';
 		}
-		
+
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
 			if ($where_clause != '')
@@ -1168,7 +1164,7 @@ class Hubzero_Group
 			
 			$where_clause .= " (LOWER(description) LIKE '%" . $filters['search'] . "%' OR LOWER(cn) LIKE '%" . $filters['search'] . "%')";
 		}
-		
+
 		if (isset($filters['index']) && $filters['index'] != '')
 		{
 			if ($where_clause != '')
@@ -1182,7 +1178,7 @@ class Hubzero_Group
 			
 			$where_clause .= " (LOWER(description) LIKE '" . $filters['index'] . "%') ";
 		}
-		
+
 		if (isset($filters['authorized']) && $filters['authorized'] === 'admin')
 		{
 			if (isset($filters['privacy']) && $filters['privacy'])
@@ -1195,7 +1191,7 @@ class Hubzero_Group
 				{
 					$where_clause .= "WHERE";
 				}
-				
+
 				switch ($filters['privacy'])
 				{
 					case 'private':
@@ -1224,10 +1220,10 @@ class Hubzero_Group
 			{
 				$where_clause .= "WHERE";
 			}
-			
+
 			$where_clause .= " privacy=0";
 		}
-		
+
 		if (isset($filters['policy']) && $filters['policy'])
 		{
 			if ($where_clause != '')
@@ -1238,7 +1234,7 @@ class Hubzero_Group
 			{
 				$where_clause .= "WHERE";
 			}
-			
+
 			switch ($filters['policy'])
 			{
 				case 'closed':
@@ -1256,16 +1252,16 @@ class Hubzero_Group
 					break;
 			}
 		}
-		
+
 		if (empty($filters['fields']))
 		{
 			$filters['fields'][] = 'cn';
 		}
-		
+
 		$field = implode(',', $filters['fields']);
-		
+
 		$query = "SELECT $field FROM #__xgroups $where_clause";
-		
+
 		if (isset($filters['sortby']) && $filters['sortby'] != '')
 		{
 			$query .= " ORDER BY ";
@@ -1283,16 +1279,16 @@ class Hubzero_Group
 					break;
 			}
 		}
-		
+
 		if (isset($filters['limit']) && $filters['limit'] != 'all')
 		{
 			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
-		
+
 		$query .= ";";
-		
+
 		$db->setQuery($query);
-		
+
 		if (!in_array('COUNT(*)', $filters['fields']))
 		{
 			$result = $db->loadObjectList();
@@ -1301,12 +1297,12 @@ class Hubzero_Group
 		{
 			$result = $db->loadResult();
 		}
-		
+
 		if (empty($result))
 		{
 			return false;
 		}
-		
+
 		return $result;
 	}
 
@@ -1398,20 +1394,20 @@ class Hubzero_Group
 		{
 			return false;
 		}
-		
+
 		$db = JFactory::getDBO();
-		
+
 		if (empty($db))
 		{
 			return false;
 		}
-		
+
 		$query = 'SELECT u.email FROM #__users AS u, #__xgroups_' . $tbl . ' AS gm WHERE gm.gidNumber=' . $db->Quote($this->gidNumber) . ' AND u.id=gm.uidNumber;';
-		
+
 		$db->setQuery($query);
-		
+
 		$emails = $db->loadResultArray();
-		
+
 		return $emails;
 	}
 
@@ -1432,15 +1428,131 @@ class Hubzero_Group
 		{
 			return false;
 		}
-		
+
 		$table = '#__xgroups_' . $tbl;
-		
+
 		$db = & JFactory::getDBO();
-		
+
 		$query = 'SELECT u.id FROM #__xgroups_ ' . $tbl . ' AS t,#__users AS u WHERE t.gidNumber=' . $db->Quote($this->gidNumber) . " AND u.id=t.uidNumber AND LOWER(u.name) LIKE '%" . strtolower($q) . "%';";
-		
+
 		$db->setQuery($query);
-		
+
 		return $db->loadResultArray();
+	}
+
+	/**
+	 * Search group roles
+	 * 
+	 * @param      string $role Role ID
+	 * @return     boolean Return description (if any) ...
+	 */
+	public function search_roles($role='')
+	{
+		if ($role == '')
+		{
+			return false;
+		}
+
+		$roles = '#__xgroups_roles';
+		$member_roles = '#__xgroups_member_roles';
+
+		$db = & JFactory::getDBO();
+
+		$query = "SELECT uidNumber FROM $roles as r, $member_roles as m WHERE r.id='" . $role . "' AND r.id=m.role AND r.gidNumber='" . $this->gidNumber . "'";
+
+		$db->setQuery($query);
+		$result = $db->loadResultArray();
+
+		$result = array_intersect($result, $this->members);
+
+		if (count($result) > 0) 
+		{
+			return $result;
+		}
+	}
+
+	/**
+	 * Check the access setting for a group plugin
+	 * 
+	 * @param      string $get_plugin Plugin name
+	 * @return     mixed Return description (if any) ...
+	 */
+	public function getPluginAccess($get_plugin = '')
+	{
+		// Get plugins
+		JPluginHelper::importPlugin('groups');
+		$dispatcher =& JDispatcher::getInstance();
+
+		// Trigger the functions that return the areas we'll be using
+		//then add overview to array
+		$hub_group_plugins = $dispatcher->trigger('onGroupAreas', array());
+		array_unshift($hub_group_plugins, array('name'=>'overview', 'title'=>'Overview', 'default_access'=>'anyone'));
+
+		//array to store plugin preferences when after retrieved from db
+		$active_group_plugins = array();
+
+		//get the group plugin preferences
+		//returns array of tabs and their access level (ex. [overview] => 'anyone', [messages] => 'registered')
+		$group_plugins = $this->get('plugins');
+		if ($group_plugins) 
+		{
+			$group_plugins = explode(',', $group_plugins);
+			foreach ($group_plugins as $plugin) 
+			{
+				$temp = explode('=', trim($plugin));
+				if ($temp[0]) 
+				{
+					$active_group_plugins[$temp[0]] = trim($temp[1]);
+				}
+			}
+		}
+
+		//array to store final group plugin preferences
+		//array of acceptable access levels
+		$group_plugin_access = array();
+		$acceptable_levels = array('nobody', 'anyone', 'registered', 'members');
+
+		//if we have already set some 
+		if ($active_group_plugins) 
+		{
+			//for each plugin that is active on the hub
+			foreach ($hub_group_plugins as $hgp) 
+			{
+				//if group defined access level is not an acceptable value or not set use default value that is set per plugin
+				//else use group defined access level
+				if (!isset($active_group_plugins[$hgp['name']]) || !in_array($active_group_plugins[$hgp['name']], $acceptable_levels)) 
+				{
+					$value = $hgp['default_access'];
+				} 
+				else 
+				{
+					$value = $active_group_plugins[$hgp['name']];
+				}
+
+				//store final  access level in array of access levels
+				$group_plugin_access[$hgp['name']] = $value;
+			}
+		} 
+		else 
+		{
+			//for each plugin that is active on the hub
+			foreach ($hub_group_plugins as $hgp) 
+			{
+				$value = $hgp['default_access'];
+
+				//store final  access level in array of access levels
+				$group_plugin_access[$hgp['name']] = $value;
+			}
+		}
+
+		//if we wanted to return only a specific level return that otherwise return all access levels
+		if ($get_plugin != '') 
+		{
+			return $group_plugin_access[$get_plugin];
+		} 
+		else 
+		{
+			return $group_plugin_access;
+		}
 	}
 }
