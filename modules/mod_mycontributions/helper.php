@@ -214,7 +214,7 @@ class modMyContributions
 						include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.php');
 						include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.rank.php');
 						include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.attachment.php');
-						require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'controller.php');
+						require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'controllers' . DS . 'wishlist.php');
 
 						$objWishlist = new Wishlist($database);
 						$objWish = new Wish($database);
