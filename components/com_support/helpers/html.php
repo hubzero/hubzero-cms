@@ -29,9 +29,10 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-if (!defined('n')) {
+if (!defined('n')) 
+{
 
 /**
  * Description for ''n''
@@ -55,41 +56,10 @@ if (!defined('n')) {
 }
 
 /**
- * Short description for 'SupportHtml'
- * 
- * Long description (if any) ...
+ * Support helper class for misc. HTML
  */
 class SupportHtml
 {
-
-	/**
-	 * Short description for 'error'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $msg Parameter description (if any) ...
-	 * @param      string $tag Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	public function error( $msg, $tag='p' )
-	{
-		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'.n;
-	}
-
-	/**
-	 * Short description for 'warning'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $msg Parameter description (if any) ...
-	 * @param      string $tag Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	public function warning( $msg, $tag='p' )
-	{
-		return '<'.$tag.' class="warning">'.$msg.'</'.$tag.'>'.n;
-	}
-
 	/**
 	 * Short description for 'alert'
 	 * 
@@ -98,94 +68,48 @@ class SupportHtml
 	 * @param      string $msg Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function alert( $msg )
+	public function alert($msg)
 	{
 		return "<script type=\"text/javascript\"> alert('".$msg."'); window.history.go(-1); </script>\n";
 	}
 
 	/**
-	 * Short description for 'hed'
+	 * Get the status text for a status number
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $level Parameter description (if any) ...
-	 * @param      string $txt Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      integer $int Status number
+	 * @return     string 
 	 */
-	public function hed($level, $txt)
+	public function getStatus($open=0, $status=0)
 	{
-		return '<h'.$level.'>'.$txt.'</h'.$level.'>';
-	}
-
-	/**
-	 * Short description for 'div'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $txt Parameter description (if any) ...
-	 * @param      string $cls Parameter description (if any) ...
-	 * @param      string $id Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	public function div($txt, $cls='', $id='')
-	{
-		$html  = '<div';
-		$html .= ($cls) ? ' class="'.$cls.'"' : '';
-		$html .= ($id) ? ' id="'.$id.'"' : '';
-		$html .= '>'.n;
-		$html .= $txt.n;
-		$html .= '</div><!-- / ';
-		if ($id) {
-			$html .= '#'.$id;
-		}
-		if ($cls) {
-			$html .= '.'.$cls;
-		}
-		$html .= ' -->'.n;
-		return $html;
-	}
-
-	/**
-	 * Short description for 'getStatus'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $int Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
-	 */
-	public function getStatus($int)
-	{
-		switch ($int)
+		/*switch ($int)
 		{
 			case 0: $status = JText::_('TICKET_STATUS_NEW');      break;
 			case 1: $status = JText::_('TICKET_STATUS_WAITING');  break;
 			case 2: $status = JText::_('TICKET_STATUS_RESOLVED'); break;
 		}
-		return $status;
-	}
-
-	/**
-	 * Short description for 'shortenText'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $text Parameter description (if any) ...
-	 * @param      integer $chars Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	public function shortenText($text, $chars=500)
-	{
-		$text = strip_tags($text);
-		$text = trim($text);
-
-		if (strlen($text) > $chars) {
-			$text = $text.' ';
-			$text = substr($text,0,$chars);
-			$text = substr($text,0,strrpos($text,' '));
-			$text = $text.' ...';
+		return $status;*/
+		switch ($open)
+		{
+			case 1:
+				switch ($status)
+				{
+					case 2:
+						$status = JText::_('TICKET_STATUS_WAITING');
+					break;
+					case 1:
+						$status = 'accepted';
+					break;
+					case 0:
+					default:
+						$status = JText::_('TICKET_STATUS_NEW');
+					break;
+				}
+			break;
+			case 0:
+				$status = JText::_('TICKET_STATUS_RESOLVED');
+			break;
 		}
-
-		return $text;
+		return $status;
 	}
 
 	/**
@@ -203,15 +127,15 @@ class SupportHtml
 	public function selectArray($name, $array, $value, $class='', $js='')
 	{
 		$html  = '<select name="'.$name.'" id="'.$name.'"'.$js;
-		$html .= ($class) ? ' class="'.$class.'">'.n : '>'.n;
+		$html .= ($class) ? ' class="'.$class.'">'."\n" : '>'."\n";
 		foreach ($array as $anode)
 		{
 			$selected = ($anode == $value)
 					  ? ' selected="selected"'
 					  : '';
-			$html .= ' <option value="'.$anode.'"'.$selected.'>'.stripslashes($anode).'</option>'.n;
+			$html .= ' <option value="'.$anode.'"'.$selected.'>'.stripslashes($anode).'</option>'."\n";
 		}
-		$html .= '</select>'.n;
+		$html .= '</select>'."\n";
 		return $html;
 	}
 
@@ -230,15 +154,15 @@ class SupportHtml
 	public function selectObj($name, $array, $value, $class='', $js='')
 	{
 		$html  = '<select name="'.$name.'" id="'.$name.'"'.$js;
-		$html .= ($class) ? ' class="'.$class.'">'.n : '>'.n;
+		$html .= ($class) ? ' class="'.$class.'">'."\n" : '>'."\n";
 		foreach ($array as $anode)
 		{
 			$selected = ($anode->txt == $value)
 					  ? ' selected="selected"'
 					  : '';
-			$html .= ' <option value="'.$anode->id.'"'.$selected.'>'.stripslashes($anode->txt).'</option>'.n;
+			$html .= ' <option value="'.$anode->id.'"'.$selected.'>'.stripslashes($anode->txt).'</option>'."\n";
 		}
-		$html .= '</select>'.n;
+		$html .= '</select>'."\n";
 		return $html;
 	}
 
@@ -250,18 +174,20 @@ class SupportHtml
 	 * @param      array $filters Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
-	public function collapseFilters( $filters )
+	public function collapseFilters($filters)
 	{
 		$fstring = array();
-		foreach ($filters as $key=>$val)
+		foreach ($filters as $key => $val)
 		{
-			if (substr($key,0,1) != '_' && $key != 'limit' && $key != 'start') {
-				if ($val !== '') {
-					$fstring[] = $key.':'.$val;
+			if (substr($key,0,1) != '_' && $key != 'limit' && $key != 'start') 
+			{
+				if ($val !== '') 
+				{
+					$fstring[] = $key . ':' . $val;
 				}
 			}
 		}
-		$fstring = implode(' ',$fstring);
+		$fstring = implode(' ', $fstring);
 		return trim($fstring);
 	}
 
@@ -275,8 +201,9 @@ class SupportHtml
 	 */
 	public function mkt($stime)
 	{
-		if ($stime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $stime, $regs )) {
-			$stime = mktime( $regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1] );
+		if ($stime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $stime, $regs)) 
+		{
+			$stime = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
 		}
 		return $stime;
 	}
@@ -324,7 +251,8 @@ class SupportHtml
 		$text = sprintf("%d %s ", $number, $periods[$val]);
 
 		// Ensure there is still something to recurse through, and we have not found 1 minute and 0 seconds.
-		if (($val >= 1) && (($current_time - $new_time) > 0)){
+		if (($val >= 1) && (($current_time - $new_time) > 0))
+		{
 			$text .= SupportHtml::timeAgoo($new_time);
 		}
 
@@ -344,9 +272,9 @@ class SupportHtml
 		$timestamp = SupportHtml::mkt($timestamp);
 		$text = SupportHtml::timeAgoo($timestamp);
 
-		$parts = explode(' ',$text);
+		$parts = explode(' ', $text);
 
-		$text  = $parts[0].' '.$parts[1];
+		$text  = $parts[0] . ' ' . $parts[1];
 
 		return $text;
 	}
@@ -360,34 +288,31 @@ class SupportHtml
 	 * @param      integer $anonymous Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function getMemberPhoto( $member, $anonymous=0 )
+	public function getMemberPhoto($member, $anonymous=0)
 	{
-		$config =& JComponentHelper::getParams( 'com_members' );
+		$config =& JComponentHelper::getParams('com_members');
 
-		if (!$anonymous && $member->get('picture')) {
-			$thumb  = $config->get('webpath');
-			if (substr($thumb, 0, 1) != DS) {
-				$thumb = DS.$thumb;
-			}
-			if (substr($thumb, -1, 1) == DS) {
-				$thumb = substr($thumb, 0, (strlen($thumb) - 1));
-			}
-			$thumb .= DS.SupportHtml::niceidformat($member->get('uidNumber')).DS.$member->get('picture');
+		if (!$anonymous && $member->get('picture')) 
+		{
+			$thumb  = DS . trim($config->get('webpath'), DS);
+			$thumb .= DS . SupportHtml::niceidformat($member->get('uidNumber')) . DS . $member->get('picture');
 
 			$thumb = SupportHtml::thumbit($thumb);
-		} else {
+		} 
+		else 
+		{
 			$thumb = '';
 		}
 
-		$dfthumb = $config->get('defaultpic');
-		if (substr($dfthumb, 0, 1) != DS) {
-			$dfthumb = DS.$dfthumb;
-		}
+		$dfthumb = DS . ltrim($config->get('defaultpic'), DS);
 		$dfthumb = SupportHtml::thumbit($dfthumb);
 
-		if ($thumb && is_file(JPATH_ROOT.$thumb)) {
+		if ($thumb && is_file(JPATH_ROOT . $thumb)) 
+		{
 			return $thumb;
-		} else if (is_file(JPATH_ROOT.$dfthumb)) {
+		} 
+		else if (is_file(JPATH_ROOT . $dfthumb)) 
+		{
 			return $dfthumb;
 		}
 	}
@@ -402,12 +327,12 @@ class SupportHtml
 	 */
 	public function thumbit($thumb)
 	{
-		$image = explode('.',$thumb);
+		$image = explode('.', $thumb);
 		$n = count($image);
 		$image[$n-2] .= '_thumb';
 		$end = array_pop($image);
 		$image[] = $end;
-		$thumb = implode('.',$image);
+		$thumb = implode('.', $image);
 
 		return $thumb;
 	}

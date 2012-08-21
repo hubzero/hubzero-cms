@@ -23,66 +23,33 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
-
-// Check to ensure this file is included in Joomla!
+// No direct access
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * Support helper class for HTML
- */
-class SupportHtml
-{
-	/**
-	 * Display a message and go to previous page
-	 * 
-	 * @param      string $msg Message
-	 * @return     string Javascript
-	 */
-	public function alert($msg)
+if ($this->getError()) { ?>
+	<li class="error">Error: <?php echo $this->getError(); ?></li>
+<?php } ?>
+<?php
+	if ($this->queries) 
 	{
-		return "<script type=\"text/javascript\"> alert('" . $msg . "'); window.history.go(-1); </script>\n";
-	}
-
-	/**
-	 * Get the status text for a status number
-	 * 
-	 * @param      integer $int Status number
-	 * @return     string 
-	 */
-	public function getStatus($open=0, $status=0)
-	{
-		/*switch ($int)
+		foreach ($this->queries as $query) 
 		{
-			case 0: $status = 'new';      break;
-			case 1: $status = 'accepted'; break;
-			case 2: $status = 'resolved'; break;
-		}*/
-		switch ($open)
-		{
-			case 1:
-				switch ($status)
-				{
-					case 2:
-						$status = 'waiting';
-					break;
-					case 1:
-						$status = 'accepted';
-					break;
-					case 0:
-					default:
-						$status = 'new';
-					break;
-				}
-			break;
-			case 0:
-				$status = 'resolved';
-			break;
+?>
+	<li<?php if (intval($this->show) == $query->id) { echo ' class="active"'; }?>>
+		<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=tickets&amp;show=<?php echo $query->id; ?>">
+			<?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->count; ?></span>
+		</a>
+		<a class="delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=queries&amp;task=remove&amp;id[]=<?php echo $query->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::_('Delete'); ?>">
+			<?php echo JText::_('Delete'); ?>
+		</a>
+		<a class="edit" href="index.php?option=<?php echo $this->option; ?>&amp;controller=queries&amp;task=edit&amp;id[]=<?php echo $query->id; ?>" title="<?php echo JText::_('Edit'); ?>">
+			<?php echo JText::_('Edit'); ?>
+		</a>
+	</li>
+<?php
 		}
-		return $status;
 	}
-}
-
+?>

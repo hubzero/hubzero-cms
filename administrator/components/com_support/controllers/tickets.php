@@ -35,6 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Controller');
 
+include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'query.php');
 include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'Emailtoken.php');
 
 /**
@@ -49,20 +50,98 @@ class SupportControllerTickets extends Hubzero_Controller
 	 */
 	public function displayTask()
 	{
+		// Get configuration
+		$config = JFactory::getConfig();
+		$app =& JFactory::getApplication();
+
 		// Push some styles to the template
 		$document =& JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS . $this->_name . '.css');
-
-		// Get filters
-		$this->view->filters = SupportUtilities::getFilters();
+		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . $this->_name . '.css');
 
 		$obj = new SupportTicket($this->database);
 
-		// Record count
-		$this->view->total = $obj->getTicketsCount($this->view->filters, true);
+		// Get filters
+		//$this->view->filters = SupportUtilities::getFilters();
+		$this->view->total = 0;
+		$this->view->rows = array();
 
-		// Fetch results
-		$this->view->rows = $obj->getTickets($this->view->filters, true);
+		$this->view->filters = array();
+		// Paging
+		$this->view->filters['limit'] = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.limit',
+			'limit',
+			$config->getValue('config.list_limit'),
+			'int'
+		);
+		$this->view->filters['start'] = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.limitstart',
+			'limitstart',
+			0,
+			'int'
+		);
+		// Query to filter by
+		$this->view->filters['show'] = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.show',
+			'show',
+			0,
+			'int'
+		);
+		// Search
+		$this->view->filters['search']       = urldecode($app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.search', 
+			'search', 
+			''
+		));
+
+		// Get query list
+		$sq = new SupportQuery($this->database);
+		$this->view->queries = array(
+			'common' => $sq->getCommon(),
+			'mine'   => $sq->getMine(),
+			'custom' => $sq->getCustom($this->juser->get('id'))
+		);
+		// If no query is set, default to the first one in the list
+		if (!$this->view->filters['show'])
+		{
+			$this->view->filters['show'] = $this->view->queries['common'][0]->id;
+		}
+		// Loop through each grouping
+		foreach ($this->view->queries as $key => $queries)
+		{
+			// Loop through each query in a group
+			foreach ($queries as $k => $query)
+			{
+				// Build the query from the condition set
+				if (!$query->query)
+				{
+					$query->query = $sq->getQuery($query->conditions);
+				}
+				// Get a record count
+				$this->view->queries[$key][$k]->count = $obj->getCount($query->query);
+				// The query is the current active query
+				// get records
+				if ($query->id == $this->view->filters['show'])
+				{
+					// Set the total for the pagination
+					$this->view->total = $this->view->queries[$key][$k]->count;
+					// Incoming sort
+					$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
+						$this->_option . '.' . $this->_controller . '.sort', 
+						'filter_order', 
+						$query->sort
+					));
+					$this->view->filters['sortdir']     = trim($app->getUserStateFromRequest(
+						$this->_option . '.' . $this->_controller . '.sortdir', 
+						'filter_order_Dir', 
+						$query->sort_dir
+					));
+					//$this->view->filters['sort']    = $query->sort;
+					//$this->view->filters['sortdir'] = $query->sort_dir;
+					// Get the records
+					$this->view->rows  = $obj->getRecords($query->query, $this->view->filters);
+				}
+			}
+		}
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
@@ -75,7 +154,10 @@ class SupportControllerTickets extends Hubzero_Controller
 		// Set any errors
 		if ($this->getError()) 
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 
 		// Output the HTML
@@ -83,7 +165,7 @@ class SupportControllerTickets extends Hubzero_Controller
 	}
 
 	/**
-	 * Create a new ticket
+	 * Show a form for creating a ticket
 	 *
 	 * @return	void
 	 */
@@ -105,7 +187,7 @@ class SupportControllerTickets extends Hubzero_Controller
 
 		// Push some styles to the template
 		$document =& JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS . $this->_name . '.css');
+		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . $this->_name . '.css');
 		//$document->addScript('/components' . DS . 'com_support' . DS . 'autosave.js');
 
 		// Incoming
@@ -126,7 +208,7 @@ class SupportControllerTickets extends Hubzero_Controller
 
 			// Parse comment text for attachment tags
 			$juri =& JURI::getInstance();
-			$webpath = str_replace('/administrator/', '/', $juri->base() . $this->config->get('webpath') . DS . $id);
+			$webpath = str_replace('/administrator/', '/', $juri->base() . $this->config->get('webpath', '/site/tickets') . DS . $id);
 			$webpath = str_replace('//','/',$webpath);
 			if (isset($_SERVER['HTTPS']))
 			{
@@ -186,8 +268,8 @@ class SupportControllerTickets extends Hubzero_Controller
 		$row->report  = str_replace("<br />","",$row->report);
 		$row->report  = htmlentities($row->report, ENT_COMPAT, 'UTF-8');
 		$row->report  = nl2br($row->report);
-		$row->report  = str_replace("\t", '&nbsp;&nbsp;&nbsp;&nbsp;', $row->report);
-		$row->report  = str_replace("    ", '&nbsp;&nbsp;&nbsp;&nbsp;', $row->report);
+		$row->report  = str_replace("\t",'&nbsp;&nbsp;&nbsp;&nbsp;',$row->report);
+		$row->report  = str_replace("    ",'&nbsp;&nbsp;&nbsp;&nbsp;',$row->report);
 
 		if ($id)
 		{
@@ -247,9 +329,7 @@ class SupportControllerTickets extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'apply'
-	 * 
-	 * Long description (if any) ...
+	 * Save an entry and return t the edit form
 	 * 
 	 * @return     void
 	 */
@@ -278,7 +358,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		{
 			$encryptor = new Hubzero_Email_Token();
 		}
-		
+
 		// Instantiate the tagging class - we'll need this a few times
 		$st = new SupportTags($this->database);
 
@@ -333,9 +413,10 @@ class SupportControllerTickets extends Hubzero_Controller
 			if ($comment)
 			{
 				// If a comment was posted to a closed ticket, re-open it.
-				if ($old->status == 2 && $row->status == 2)
+				if ($old->open == 0 && $row->status == 0)
 				{
-					$row->status = 0;
+					$row->open = 1;
+					$row->status = 1;
 					$row->resolved = '';
 					$row->store();
 				}
@@ -343,7 +424,8 @@ class SupportControllerTickets extends Hubzero_Controller
 				$ccreated_by = JRequest::getVar('username', '');
 				if ($row->status == 1 && $ccreated_by == $row->login)
 				{
-					$row->status = 0;
+					$row->open = 1;
+					$row->status = 1;
 					$row->resolved = '';
 					$row->store();
 				}
@@ -407,8 +489,8 @@ class SupportControllerTickets extends Hubzero_Controller
 			{
 				$log['changes'][] = array(
 					'field'  => JText::_('TICKET_FIELD_STATUS'),
-					'before' => SupportHtml::getStatus($old->status),
-					'after'  => SupportHtml::getStatus($row->status)
+					'before' => SupportHtml::getStatus($old->open, $old->status),
+					'after'  => SupportHtml::getStatus($row->open, $row->status)
 				);
 			}
 
@@ -567,9 +649,9 @@ class SupportControllerTickets extends Hubzero_Controller
 								{
 									// The reply-to address contains the token 
 									$token = $encryptor->buildEmailToken(1, 1, $zuser->get('id'), $id);
-									$from['replytoemail'] = 'htc-' . $token;									
-								}								
-								
+									$from['replytoemail'] = 'htc-' . $token;
+								}
+
 								if (!$dispatcher->trigger('onSendMessage', array($type, $subject, $message, $from, array($zuser->get('id')), $this->_option)))
 								{
 									$this->setError(JText::_('Failed to message ticket submitter.'));
@@ -606,7 +688,7 @@ class SupportControllerTickets extends Hubzero_Controller
 						if ($row->owner)
 						{
 							$juser =& JUser::getInstance($row->owner);
-							
+
 							// Only put tokens in if component is configured to allow email responses to tickets and ticket comments
 							if ($allowEmailResponses)
 							{
@@ -629,7 +711,7 @@ class SupportControllerTickets extends Hubzero_Controller
 							}
 						}
 					}
-					
+
 					// Add any CCs to the e-mail list
 					$cc = JRequest::getVar('cc', '', 'post');
 					if (trim($cc))
@@ -643,34 +725,34 @@ class SupportControllerTickets extends Hubzero_Controller
 							{
 								$acc = trim(preg_replace('/(.+?)\s+\((.+?)\)/i', '$2', $acc));
 							}
-							
+
 							// Is this a username/ID or email address?
 							if (!strstr($acc, '@'))
 							{
 								// Username or user ID - load the user
 								$juser =& JUser::getInstance($acc);
-								
+
 								// Did we find an account?
 								if (!is_object($juser))
 								{
 									// Move on - nothing else we can do here
 									continue;
 								}
-								
+
 								if ($allowEmailResponses)
 								{
 									// The reply-to address contains the token 
 									$token = $encryptor->buildEmailToken(1, 1, -9999, $id);
-									$from['replytoemail'] = 'htc-' . $token;															
+									$from['replytoemail'] = 'htc-' . $token;
 								}
-								
+
 								// Is this the same account as the submitter? If so, ignore
 								if (strtolower($row->login) == strtolower($juser->get('username')) 
 								  || strtolower($row->email) == strtolower($juser->get('email')))
 								{
 									continue;
 								}
-								
+
 								// Send message
 								if (!$dispatcher->trigger('onSendMessage', array('support_reply_assigned', $subject, $message, $from, array($juser->get('id')), $this->_option)))
 								{
@@ -694,7 +776,7 @@ class SupportControllerTickets extends Hubzero_Controller
 								{
 									continue;
 								}
-								
+
 								if ($allowEmailResponses)
 								{
 									// The reply-to address contains the token
@@ -716,7 +798,7 @@ class SupportControllerTickets extends Hubzero_Controller
 						if ($allowEmailResponses)
 						{
 							// In this case each item in email in an array, 1- To, 2:reply to address
-							if(SupportUtilities::sendEmail($email[0], $subject, $message, $from, $email[1]))
+							if (SupportUtilities::sendEmail($email[0], $subject, $message, $from, $email[1]))
 							{
 								if (strtolower($row->email) == $email[0])
 								{
@@ -731,23 +813,23 @@ class SupportControllerTickets extends Hubzero_Controller
 						else 
 						{
 							// email is just a plain 'ol string
-							if(SupportUtilities::sendEmail($email, $subject, $message, $from))
+							if (SupportUtilities::sendEmail($email, $subject, $message, $from))
 							{
 								if (strtolower($row->email) == $email)
 								{
-								$log['notifications'][] = array(
-									'role'    => JText::_('COMMENT_SEND_EMAIL_SUBMITTER'),
-									'name'    => $row->name,
-									'address' => $row->email
-								);
+									$log['notifications'][] = array(
+										'role'    => JText::_('COMMENT_SEND_EMAIL_SUBMITTER'),
+										'name'    => $row->name,
+										'address' => $row->email
+									);
 								}
 								else 
 								{
-								$log['notifications'][] = array(
-									'role'    => JText::_('COMMENT_SEND_EMAIL_CC'),
-									'name'    => JText::_('[none]'),
-									'address' => $email
-								);
+									$log['notifications'][] = array(
+										'role'    => JText::_('COMMENT_SEND_EMAIL_CC'),
+										'name'    => JText::_('[none]'),
+										'address' => $email
+									);
 								}
 							}
 						}
@@ -773,11 +855,11 @@ class SupportControllerTickets extends Hubzero_Controller
 		if ($redirect) 
 		{
 			$filters = JRequest::getVar('filters', '');
-			$filters = str_replace('&amp;','&',$filters);
-			
+			$filters = str_replace('&amp;','&', $filters);
+
 			// Redirect
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($filters ? '&' . $filters : '')),
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($filters ? '&' . $filters : ''),
 				JText::sprintf('TICKET_SUCCESSFULLY_SAVED', $row->id)
 			);
 		} 

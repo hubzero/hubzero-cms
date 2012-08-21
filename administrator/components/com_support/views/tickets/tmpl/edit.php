@@ -199,13 +199,13 @@ if ($this->row->id) {
 		</fieldset>
 	</div><!-- / .col width-70 fltlft -->
 	<div class="col width-30 fltrt">
-		<dl class="ticket-status <?php if ($this->row->status == 2) { echo 'closed'; } else { echo 'open'; } ?>">
-			<dt><?php echo JText::_('ticket_status'); ?></dt>
+		<dl class="ticket-status <?php if ($this->row->open == 0) { echo 'closed'; } else { echo 'open'; } ?>">
+			<dt><?php echo JText::_('TICKET_STATUS'); ?></dt>
 			<dd><?php 
-				if ($this->row->status == 2) {
-					echo JText::_('ticket_status_closed');
+				if ($this->row->open == 0) {
+					echo JText::_('TICKET_STATUS_CLOSED_TICKET');
 				} else {
-					echo JText::_('ticket_status_open');
+					echo JText::_('TICKET_STATUS_OPEN_TICKET');
 				} ?></dd>
 		</dl>
 		
@@ -300,62 +300,70 @@ if ($this->row->id) {
 						?></p>
 					</blockquote><!-- / .comment-content -->
 <?php } ?>
-<?php if (trim($comment->changelog)) { ?>
-					<div class="comment-changelog">
-						<?php 
-							if (strstr($comment->changelog, '<'))
-							{
-								$comment->changelog = str_replace('changelog', 'changes', $comment->changelog);
-								$comment->changelog = str_replace('E-mailed', JText::_('Messaged'), $comment->changelog);
-								echo str_replace('emaillog', 'notifications', $comment->changelog);
-							}
-							else 
-							{
-								/*$json = '{
-									"changes": [
-										{
-											"field": "status", 
-											"before": "closed", 
-											"after": "open"
-										}
-									],
-									"notifications": [
-										{
-											"name": "Shawn Rice",
-											"address": "zooley@purdue.edu",
-											"role": "assignee"
-										},
-										{
-											"name": "Michael McLennan",
-											"address": "mmclennan@purdue.edu",
-											"role": "submitter"
-										}
-									]
-								}';*/
-								$logs = json_decode($comment->changelog, true);
-								foreach ($logs as $type => $log)
+<?php 
+				if (trim($comment->changelog)) 
+				{
+					$clog = '';
+					if (strstr($comment->changelog, '<'))
+					{
+						$comment->changelog = str_replace('changelog', 'changes', $comment->changelog);
+						$comment->changelog = str_replace('E-mailed', JText::_('Messaged'), $comment->changelog);
+						$clog .= str_replace('emaillog', 'notifications', $comment->changelog);
+					}
+					else 
+					{
+						/*$json = '{
+							"changes": [
 								{
-									if (is_array($log) && count($log) > 0)
+									"field": "status", 
+									"before": "closed", 
+									"after": "open"
+								}
+							],
+							"notifications": [
+								{
+									"name": "Shawn Rice",
+									"address": "zooley@purdue.edu",
+									"role": "assignee"
+								},
+								{
+									"name": "Michael McLennan",
+									"address": "mmclennan@purdue.edu",
+									"role": "submitter"
+								}
+							]
+						}';*/
+						$logs = json_decode($comment->changelog, true);
+						foreach ($logs as $type => $log)
+						{
+							if (is_array($log) && count($log) > 0)
+							{
+								$clog .= '<ul class="' . $type . '">';
+								foreach ($log as $items)
+								{
+									if ($type == 'changes')
 									{
-										echo '<ul class="' . $type . '">';
-										foreach ($log as $items)
-										{
-											if ($type == 'changes')
-											{
-												echo '<li>' . JText::sprintf('%s changed from "%s" to "%s"', $items['field'], $items['before'], $items['after']) . '</li>';
-											}
-											else 
-											{
-												echo '<li>' . JText::_('Messaged') . ' (' . $items['role'] . ') ' . $items['name'] . ' - ' . $items['address'] . '</li>';
-											}
-										}
-										echo '</ul>';
+										$clog .= '<li>' . JText::sprintf('%s changed from "%s" to "%s"', $items['field'], $items['before'], $items['after']) . '</li>';
+									}
+									else 
+									{
+										$clog .= '<li>' . JText::_('Messaged') . ' (' . $items['role'] . ') ' . $items['name'] . ' - ' . $items['address'] . '</li>';
 									}
 								}
+								$clog .= '</ul>';
 							}
-						?>
+						}
+					}
+					if ($clog) 
+					{
+?>
+					<div class="comment-changelog">
+						<?php echo $clog; ?>
 					</div><!-- / .comment-changelog -->
-<?php } ?>
+<?php 
+					}
+				} 
+?>
 				</li>
 <?php
 			}
@@ -619,10 +627,10 @@ if ($this->row->id) {
 						<label for="ticket-field-status">
 							<?php echo JText::_('COMMENT_STATUS'); ?>
 							<select name="resolved" id="ticket-field-status">
-								<option value=""<?php if ($this->row->status == 0 || $this->row->resolved == '') { echo ' selected="selected"'; } ?>><?php echo JText::_('COMMENT_OPT_OPEN'); ?></option>
-								<option value="1"<?php if ($this->row->status == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COMMENT_OPT_WAITING'); ?></option>
+								<option value=""<?php if ($this->row->open == 1 && $this->row->status < 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('COMMENT_OPT_OPEN'); ?></option>
+								<option value="1"<?php if ($this->row->status == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('COMMENT_OPT_WAITING'); ?></option>
 								<optgroup label="<?php echo JText::_('Closed'); ?>">
-									<option value="noresolution"<?php if ($this->row->status == 2 && $this->row->resolved == 'noresolution') { echo ' selected="selected"'; } ?>><?php echo JText::_('COMMENT_OPT_CLOSED'); ?></option>
+									<option value="noresolution"<?php if ($this->row->open == 0 && $this->row->resolved == 'noresolution') { echo ' selected="selected"'; } ?>><?php echo JText::_('COMMENT_OPT_CLOSED'); ?></option>
 <?php
 							if (isset($this->lists['resolutions']) && $this->lists['resolutions']!='') 
 							{

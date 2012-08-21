@@ -190,6 +190,36 @@ class SupportComment extends JTable
 	}
 
 	/**
+	 * Get the newest comment on a ticket
+	 * 
+	 * @param      integer $authorized Administrator access?
+	 * @param      integer $ticket     Ticket ID
+	 * @return     object
+	 */
+	public function newestCommentsForTickets($authorized, $ticket=NULL)
+	{
+		if (!$ticket) 
+		{
+			$ticket = $this->_ticket;
+		}
+		if (is_array($ticket))
+		{
+			$ticket = array_map('intval', $ticket);
+			$ticket = implode(',', $ticket);
+		}
+		if ($authorized) 
+		{
+			$sqladmin = "";
+		} 
+		else 
+		{
+			$sqladmin = "AND access=0";
+		}
+		$this->_db->setQuery("SELECT ticket, MAX(created) AS lastactivity FROM $this->_tbl WHERE ticket IN (" . $ticket . ") $sqladmin GROUP BY ticket");
+		return $this->_db->loadAssocList('ticket');
+	}
+
+	/**
 	 * Delete comments based on parent ticket ID
 	 * 
 	 * @param      integer $ticket Ticket ID

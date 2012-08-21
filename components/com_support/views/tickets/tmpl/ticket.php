@@ -46,7 +46,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 JPluginHelper::importPlugin('hubzero');
 $dispatcher =& JDispatcher::getInstance();
 
-$status = SupportHtml::getStatus($this->row->status);
+$status = SupportHtml::getStatus($this->row->open, $this->row->status);
 
 $fstring = urlencode(trim($this->filters['_find']));
 ?>
@@ -83,8 +83,8 @@ $fstring = urlencode(trim($this->filters['_find']));
 <div class="main section">
 	<div class="aside">
 		<div class="ticket-status">
-			<p class="<?php echo ($this->row->status == 2) ? 'closed' : 'open'; ?>"><strong><?php echo ($this->row->status == 2) ? JText::_('TICKET_STATUS_CLOSED_TICKET') : JText::_('TICKET_STATUS_OPEN_TICKET'); ?></strong></p>
-<?php if ($this->row->status == 2) { ?>
+			<p class="<?php echo (!$this->row->open) ? 'closed' : 'open'; ?>"><strong><?php echo (!$this->row->open) ? JText::_('TICKET_STATUS_CLOSED_TICKET') : JText::_('TICKET_STATUS_OPEN_TICKET'); ?></strong></p>
+<?php if (!$this->row->open) { ?>
 			<p><strong>Note:</strong> To reopen this issue, add a comment below.</p>
 <?php } ?>
 			<!-- <p class="ticket-number">#<strong><?php echo $this->row->id; ?></strong></p> -->
@@ -365,18 +365,18 @@ $fstring = urlencode(trim($this->filters['_find']));
 						<select name="ticket[resolved]" id="status">
 						<?php 
 						$html  = '<option value=""';
-						if ($this->row->status == 0 || $this->row->resolved == '') {
+						if ($this->row->open && $this->row->status != 2) {
 							$html .= ' selected="selected"';
 						}
 						$html .= '>'.JText::_('COMMENT_OPT_OPEN').'</option>'."\n";
 						$html .= '<option value="1"';
-						if ($this->row->status == 1) {
+						if ($this->row->open && $this->row->status == 2) {
 							$html .= ' selected="selected"';
 						}
 						$html .= '>'.JText::_('COMMENT_OPT_WAITING').'</option>'."\n";
 						$html .= '<optgroup label="Closed">'."\n";
 						$html .= "\t".'<option value="noresolution"';
-						if ($this->row->status == 2 && $this->row->resolved == 'noresolution') {
+						if (!$this->row->open && $this->row->resolved == 'noresolution') {
 							$html .= ' selected="selected"';
 						}
 						$html .= '>'.JText::_('COMMENT_OPT_CLOSED').'</option>'."\n";

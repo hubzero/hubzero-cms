@@ -49,7 +49,7 @@ class SupportControllerStats extends Hubzero_Controller
 	{
 		// Push some styles to the template
 		$document =& JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS . $this->_name . '.css');
+		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . $this->_name . '.css');
 
 		// Instantiate a new view
 		$this->view->title = JText::_(strtoupper($this->_name));

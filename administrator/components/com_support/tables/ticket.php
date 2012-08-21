@@ -44,7 +44,14 @@ class SupportTicket extends JTable
 	var $id         = NULL;
 
 	/**
-	 * int(3)  --  0 = new, 1 = accepted, 2 = closed
+	 * int(3)  --  0 = closed, 1 = open
+	 * 
+	 * @var integer
+	 */
+	var $open      = NULL;
+
+	/**
+	 * int(3)  --  0 = new, 1 = accepted, 2 = waiting
 	 * 
 	 * @var integer
 	 */
@@ -240,36 +247,46 @@ class SupportTicket extends JTable
 				$this->created = date("Y-m-d H:i:s");
 			}
 		}
-		
+
 		// Set the status of the ticket
 		if ($this->resolved)
 		{
 			if ($this->resolved == 1)
 			{
 				// "waiting user response"
-				$this->status = 1;
+				$this->status = 2;
+				$this->open = 1;
 			}
 			else
 			{
 				// If there's a resolution, close the ticket
-				$this->status = 2;
+				$this->status = 0;
+				$this->open = 0;
 			}
 		}
 		else
 		{
-			$this->status = 0;
+			$this->open = 1;
+			$this->status = 1;
 		}
 
 		// Set the status to just "open" if no owner and no resolution
 		if (!$this->owner && !$this->resolved)
 		{
-			$this->status = 0;
+			$this->open = 1;
+			$this->status = 1;
 		}
 
-		// If status is "open" or "waiting", ensure the resolution is empty
-		if ($this->status == 0 || $this->status == 1)
+		// If status is "open", ensure the resolution is empty
+		if ($this->open == 1)
 		{
 			$this->resolved = '';
+		}
+
+		// All new tickets default to "new"
+		if (!$this->id)
+		{
+			$this->status = 0;
 		}
 
 		return true;
@@ -288,11 +305,11 @@ class SupportTicket extends JTable
 
 		switch ($filters['status'])
 		{
-			case 'open':    $filter .= " AND (status=0 OR status=1)"; break;
-			case 'closed':  $filter .= " AND status=2";               break;
+			case 'open':    $filter .= " AND open=1"; break;
+			case 'closed':  $filter .= " AND open=0";               break;
 			case 'all':     $filter .= "";                            break;
-			case 'new':     $filter .= " AND status=0 AND (owner IS NULL OR owner='') AND (resolved IS NULL OR resolved='') AND ((SELECT COUNT(*) FROM #__support_comments AS k WHERE k.ticket=f.id) <= 0)"; break;
-			case 'waiting': $filter .= " AND status=1";               break;
+			case 'new':     $filter .= " AND open=1 AND status=0 AND (owner IS NULL OR owner='') AND (resolved IS NULL OR resolved='') AND ((SELECT COUNT(*) FROM #__support_comments AS k WHERE k.ticket=f.id) <= 0)"; break;
+			case 'waiting': $filter .= " AND open=1 AND status=2";               break;
 		}
 		if (isset($filters['severity']) && $filters['severity'] != '') 
 		{
@@ -445,6 +462,89 @@ class SupportTicket extends JTable
 	/**
 	 * Get a record count
 	 * 
+	 * @param      string  $query Filters to build query from
+	 * @return     integer
+	 */
+	public function getCount($query)
+	{
+		if (!$query)
+		{
+			$this->setError(JText::_('Missing conditions'));
+			return 0;
+		}
+		$sql = "SELECT count(DISTINCT f.id) 
+				FROM $this->_tbl AS f";
+		if (strstr($query, 't.`tag`'))
+		{
+			$sql .= " LEFT JOIN #__tags_object AS st on st.objectid=f.id AND st.tbl='support' 
+					LEFT JOIN #__tags AS t ON st.tagid=t.id";
+		}
+		$sql .= " WHERE " . $query;
+		if (isset($filters['search']) && $filters['search'] != '') 
+		{
+			$sql .= " AND ";
+			$sql .= "(
+						LOWER(f.report) LIKE '%" . $filters['search'] . "%' 
+						OR LOWER(f.owner) LIKE '%" . $filters['search'] . "%' 
+						OR LOWER(f.name) LIKE '%" . $filters['search'] . "%' 
+						OR LOWER(f.login) LIKE '%" . $filters['search'] . "%'";
+			if (is_numeric($filters['search'])) 
+			{
+				$sql .= " OR id=" . $filters['search'];
+			}
+			$sql .= ") ";
+		}
+
+		$this->_db->setQuery($sql);
+		return $this->_db->loadResult();
+	}
+
+	/**
+	 * Get a record count
+	 * 
+	 * @param      string  $query Filters to build query from
+	 * @return     integer
+	 */
+	public function getRecords($query, $filters=array())
+	{
+		if (!$query)
+		{
+			$this->setError(JText::_('Missing conditions'));
+			return array();
+		}
+		$sql = "SELECT DISTINCT f.`id`, f.`summary`, f.`report`, f.`category`, f.`open`, f.`status`, f.`severity`, f.`resolved`, f.`group`, f.`owner`, f.`created`, f.`login`, f.`name`, f.`email` 
+				FROM $this->_tbl AS f";
+		if (strstr($query, 't.`tag`'))
+		{
+			$sql .= " LEFT JOIN #__tags_object AS st on st.objectid=f.id AND st.tbl='support' 
+					LEFT JOIN #__tags AS t ON st.tagid=t.id";
+		}
+		$sql .= " WHERE " . $query;
+		if (isset($filters['search']) && $filters['search'] != '') 
+		{
+			$sql .= " AND ";
+			$sql .= "(
+						LOWER(f.report) LIKE '%" . $filters['search'] . "%' 
+						OR LOWER(f.owner) LIKE '%" . $filters['search'] . "%' 
+						OR LOWER(f.name) LIKE '%" . $filters['search'] . "%' 
+						OR LOWER(f.login) LIKE '%" . $filters['search'] . "%'";
+			if (is_numeric($filters['search'])) 
+			{
+				$sql .= " OR id=" . $filters['search'];
+			}
+			$sql .= ") ";
+		}
+
+		$sql .= " ORDER BY " . $filters['sort'] . ' ' . $filters['sortdir'];
+		$sql .= ($filters['limit']) ? " LIMIT " . $filters['start'] . "," . $filters['limit'] : "";
+
+		$this->_db->setQuery($sql);
+		return $this->_db->loadObjectList();
+	}
+
+	/**
+	 * Get a record count
+	 * 
 	 * @param      array   $filters Filters to build query from
 	 * @param      boolean $admin   Admin access?
 	 * @return     integer
@@ -479,11 +579,11 @@ class SupportTicket extends JTable
 
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
-			$sql = "SELECT DISTINCT `id`, `summary`, `report`, `category`, `status`, `severity`, `resolved`, `owner`, `created`, `login`, `name`, `email`, `group`";
+			$sql = "SELECT DISTINCT `id`, `summary`, `report`, `category`, `open`, `status`, `severity`, `resolved`, `owner`, `created`, `login`, `name`, `email`, `group`";
 		} 
 		else 
 		{
-			$sql = "SELECT DISTINCT f.id, f.summary, f.report, f.category, f.status, f.severity, f.resolved, f.group, f.owner, f.created, f.login, f.name, f.email";
+			$sql = "SELECT DISTINCT f.id, f.summary, f.report, f.category, f.open, f.status, f.severity, f.resolved, f.group, f.owner, f.created, f.login, f.name, f.email";
 		}
 		$sql .= " FROM $filter";
 		$sql .= " ORDER BY ".$filters['sort'] . ' ' . $filters['sortdir'];

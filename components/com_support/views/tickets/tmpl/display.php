@@ -174,7 +174,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		$lastcomment = $sc->newestComment($this->acl->check('read', 'private_comments'), $row->id);
 	}
 
-	if ($row->status == 2) 
+	if (!$row->open) 
 	{
 		$status = 'closed';
 	} 
@@ -182,7 +182,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	{
 		$status = 'new';
 	} 
-	elseif ($row->status == 1) 
+	elseif ($row->status == 2) 
 	{
 		$status = 'waiting';
 	}
@@ -210,7 +210,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		}
 	}
 
-	$when = SupportHtml::timeAgo($row->created);
+	$when = Hubzero_View_Helper_Html::timeAgo($row->created);
 
 	//$row->report = htmlentities(stripslashes($row->report),ENT_QUOTES);
 	$row->report = stripslashes($row->report);
@@ -238,7 +238,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						</td>
 						<td style="white-space: nowrap;">
 							<span class="<?php echo $status; ?> status">
-								<?php echo ($row->status == 2) ? '&radic; ' : ''; echo $status; echo ($row->status == 2) ? ' (' . $this->escape($row->resolved) . ')' : ''; ?>
+								<?php echo $status; echo ($row->resolved) ? ' (' . $this->escape($row->resolved) . ')' : ''; ?>
 							</span>
 						</td>
 						<td style="white-space: nowrap;">
@@ -251,7 +251,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 							<?php echo $when; ?>
 						</td>
 						<td style="white-space: nowrap;">
-							<?php echo $comments; echo ($comments > 0) ? ' (' . SupportHtml::timeAgo($lastcomment) . ')' : ''; ?>
+							<?php echo $comments; echo ($comments > 0) ? ' (' . Hubzero_View_Helper_Html::timeAgo($lastcomment) . ')' : ''; ?>
 						</td>
 <?php if ($this->acl->check('delete', 'tickets')) { ?>
 						<td>

@@ -162,9 +162,9 @@ if ($this->users) {
 		
 			<!-- <h3>Ticket Total</h3>
 			<canvas id="line2" width="475" height="250">[Please wait...]</canvas> -->
-			<script type="text/javascript" src="../components/com_support/scripts/rgraph/RGraph.common.js" ></script>
-			<script type="text/javascript" src="../components/com_support/scripts/rgraph/RGraph.line.js" ></script>
-			<!--[if IE]><script src="../components/com_support/scripts/excanvas/excanvas.compressed.js"></script><![endif]-->
+			<script type="text/javascript" src="../components/com_support/assets/js/rgraph/RGraph.common.js" ></script>
+			<script type="text/javascript" src="../components/com_support/assets/js/rgraph/RGraph.line.js" ></script>
+			<!--[if IE]><script src="../components/com_support/assets/js/excanvas/excanvas.compressed.js"></script><![endif]-->
 <?php
 $closeddata = '';
 if ($this->closedmonths) {
