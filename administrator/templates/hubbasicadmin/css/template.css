@@ -676,6 +676,11 @@
 		width: 100%;
 		max-width: 100%;
 	}
+	table.admintable .calendar-field, 
+	table.admintable input[type="text"].calendar-field {
+		width: 85%;
+		margin-right: 0.5em;
+	}
 	table.admintable tfoot td {
 		text-align: right;
 		border-top: 1px solid #dddddd;
@@ -1346,7 +1351,7 @@
 		z-index: 1;
 		overflow: hidden;
 		padding: 0;
-		margin: 0;
+		margin: 0 0.2em 0 0;
 		display: inline-block;
 		height: 16px;
 		width: 16px;
@@ -1371,6 +1376,17 @@
 	}
 	.glyph.tag:before {
 		content: "\f02b";
+	}
+	.glyph.org:before {
+		content: "\f062";
+	}
+	.glyph.public:before {
+		content: "\f06e";
+		line-height: 24px;
+	}
+	.glyph.private:before {
+		content: "\f070";
+		line-height: 24px;
 	}
 	
 	.level,
@@ -1450,6 +1466,7 @@
 		line-height: 22px;
 		position: relative;
 		float: none;
+		white-space: nowrap;
 	}
 	.toolbar-box .header {
 		line-height: 1.7em;
@@ -2241,6 +2258,14 @@
 		margin: 0;
 		background: #fff;
 	}
+	.tool-tip img {
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		-ms-border-radius: 0.25em;
+		-o-border-radius: 0.25em;
+		border-radius: 0.25em;
+	}
+
 /* Uniform */
 	div.selector,
 	div.selector span,

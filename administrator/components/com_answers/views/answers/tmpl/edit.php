@@ -30,10 +30,26 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$canDo = AnswersHelper::getActions('answer');
+
 $text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
-JToolBarHelper::title(JText::_('Answer') . ': <small><small>[ ' . $text . ' ]</small></small>', 'addedit.png');
-JToolBarHelper::save();
+
+JToolBarHelper::title(JText::_('Answer') . ': <small><small>[ ' . $text . ' ]</small></small>', 'answers.png');
+if ($canDo->get('core.edit')) 
+{
+	JToolBarHelper::save();
+}
 JToolBarHelper::cancel();
+
+$dateFormat = '%Y-%m-%d';
+$timeFormat = '%H:%M:s';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'Y-m-d';
+	$timeFormat = 'H:i:s';
+	$tz = true;
+}
 
 $create_date = NULL;
 if (intval( $this->row->created ) <> 0)
@@ -44,9 +60,6 @@ if (intval( $this->row->created ) <> 0)
 jimport('joomla.html.editor');
 $editor =& JEditor::getInstance();
 ?>
-<link rel="stylesheet" type="text/css" media="all" href="../includes/js/calendar/calendar-mos.css" title="green" />
-<script type="text/javascript" src="../includes/js/calendar/calendar.js"></script>
-<script type="text/javascript" src="../includes/js/calendar/lang/calendar-en.js"></script>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
 {
@@ -87,7 +100,7 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr>
 						<td class="key">Question:</td>
-						<td><?php echo stripslashes($this->question->subject); ?></td>
+						<td><?php echo $this->escape(stripslashes($this->question->subject)); ?></td>
 					</tr>
 					<tr>
 						<td class="key"><label>Answer</label></td>
@@ -122,20 +135,19 @@ function submitbutton(pressbutton)
 				<tbody>
 					<tr>
 						<td class="key"><label for="state">Accept:</label></td>
-						<td colspan="2"><input type="checkbox" name="answer[state]" id="state" value="1" <?php echo $this->row->state ? 'checked="checked"' : ''; ?> /> (<?php echo ($this->row->state == 1) ? 'Accepted answer' : 'Unaccepted'; ?>)</td>
+						<td><input type="checkbox" name="answer[state]" id="state" value="1" <?php echo $this->row->state ? 'checked="checked"' : ''; ?> /> (<?php echo ($this->row->state == 1) ? 'Accepted answer' : 'Unaccepted'; ?>)</td>
 					</tr>
 					<tr>
 						<td class="key"><label for="created_by">Change Creator:</label></td>
-						<td colspan="2"><input type="text" name="answer[created_by]" id="created_by" size="25" maxlength="50" value="<?php echo $this->row->created_by; ?>" /></td>
+						<td><input type="text" name="answer[created_by]" id="created_by" size="25" maxlength="50" value="<?php echo $this->escape($this->row->created_by); ?>" /></td>
 					</tr>
 					<tr>
 						<td class="key"><label for="created">Created Date:</label></td>
-						<td><input type="text" name="answer[created]" id="created" size="25" maxlength="19" value="<?php echo $this->row->created; ?>" /></td>
-						<td><a class="icon_calendar" id="reset" title="View a calendar to select a date from" onclick="return showCalendar('created', 'y-mm-dd');">calendar</a></td>
+						<td><?php echo JHTML::_('calendar', $this->row->created, 'answer[created]', 'created', $dateFormat . ' ' . $timeFormat, array('class' => 'calendar-field')); ?></td>
 					</tr>
 					<tr>
 						<td class="key">Helpful:</td>
-						<td colspan="2">
+						<td>
 							+<?php echo $this->row->helpful; ?> -<?php echo $this->row->nothelpful; ?>
 							<?php if ( $this->row->helpful > 0 || $this->row->nothelpful > 0 ) { ?>
 								<input type="button" name="reset_helpful" value="Reset Helpful" onclick="submitbutton('resethelpful');" />

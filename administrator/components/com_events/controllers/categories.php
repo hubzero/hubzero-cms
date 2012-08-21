@@ -157,12 +157,26 @@ class EventsControllerCategories extends Hubzero_Controller
 	}
 
 	/**
+	 * Show a form for adding an entry
+	 * 
+	 * @return     void
+	 */
+	public function addTask()
+	{
+		$this->editTask();
+	}
+
+	/**
 	 * Show a form for editing an entry
 	 * 
 	 * @return     void
 	 */
 	public function editTask()
 	{
+		JRequest::setVar('hidemainmenu', 1);
+
+		$this->view->setLayout('edit');
+
 		// Incoming
 		$id = JRequest::getInt('id', 0);
 
@@ -204,22 +218,51 @@ class EventsControllerCategories extends Hubzero_Controller
 		$ipos[] = JHTML::_('select.option', 'left', JText::_('left'), 'value', 'text');
 		$ipos[] = JHTML::_('select.option', 'right', JText::_('right'), 'value', 'text');
 
-		$this->view->iposlist = JHTML::_('select.genericlist', $ipos, 'image_position', 'class="inputbox" size="1"','value', 'text', $this->view->row->image_position ? $this->view->row->image_position : 'left', false, false);
+		$this->view->iposlist = JHTML::_(
+			'select.genericlist', 
+			$ipos, 
+			'image_position', 
+			'class="inputbox" size="1"',
+			'value', 
+			'text', 
+			($this->view->row->image_position ? $this->view->row->image_position : 'left'), 
+			false, 
+			false
+		);
 
-		$imgFiles = $this->readDirectory(JPATH_ROOT.DS.'images'.DS.'stories');
+		$imgFiles = $this->readDirectory(JPATH_ROOT . DS . 'images' . DS . 'stories');
 		$images = array(JHTML::_('select.option', '', JText::_('Select Image'), 'value', 'text'));
 		foreach ($imgFiles as $file)
 		{
-			if (preg_match("/bmp|gif|jpg|jpe|jpeg|png/", $file)) {
+			if (preg_match("/bmp|gif|jpg|jpe|jpeg|png/", $file)) 
+			{
 				$images[] = JHTML::_('select.option', $file, $file, 'value', 'text');
 			}
 		}
 
-		$this->view->imagelist = JHTML::_('select.genericlist', $images, 'image', 'class="inputbox" size="1"'
-		. " onchange=\"javascript:if (document.forms[0].image.options[selectedIndex].value!='') {document.imagelib.src='../images/stories/' + document.forms[0].image.options[selectedIndex].value} else {document.imagelib.src='../images/M_images/blank.png'}\"",
-		'value', 'text', $this->view->row->image, false, false);
+		$this->view->imagelist = JHTML::_(
+			'select.genericlist', 
+			$images, 
+			'image', 
+			'class="inputbox" size="1"' . " onchange=\"javascript:if (document.forms[0].image.options[selectedIndex].value!='') {document.imagelib.src='../images/stories/' + document.forms[0].image.options[selectedIndex].value} else {document.imagelib.src='../images/M_images/blank.png'}\"",
+			'value', 
+			'text', 
+			$this->view->row->image, 
+			false, 
+			false
+		);
 
-		$this->view->orderlist = JHTML::_('select.genericlist', $order, 'ordering', 'class="inputbox" size="1"','value', 'text', $this->view->row->ordering, false, false);
+		$this->view->orderlist = JHTML::_(
+			'select.genericlist', 
+			$order, 
+			'ordering', 
+			'class="inputbox" size="1"',
+			'value', 
+			'text', 
+			$this->view->row->ordering, 
+			false, 
+			false
+		);
 
 		// Get list of groups
 		$this->database->setQuery("SELECT id AS value, name AS text FROM #__groups ORDER BY id");

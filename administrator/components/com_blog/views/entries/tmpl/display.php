@@ -58,6 +58,14 @@ if ($canDo->get('core.create'))
 	JToolBarHelper::addNew();
 }
 JHTML::_('behavior.tooltip');
+
+$dateFormat = '%d %b %Y';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M Y';
+	$tz = 0;
+}
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -258,7 +266,7 @@ for ($i=0, $n=count($rows); $i < $n; $i++)
 				</td>
 				<td>
 					<time datetime="<?php echo $row->created; ?>">
-						<?php echo JHTML::_('date', $row->created, JText::_('DATE_FORMAT_LC4')); ?>
+						<?php echo JHTML::_('date', $row->created, $dateFormat, $tz) ?>
 					</time>
 				</td>
 				<td>

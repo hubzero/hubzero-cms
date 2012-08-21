@@ -65,15 +65,15 @@ function submitbutton(pressbutton)
 	<table class="adminlist" summary="<?php echo JText::_('PASSWORD_RULES_TABLE_SUMMARY'); ?>">
 		<thead>
 		 	<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th><?php echo JText::_('PASSWORD_ID'); ?></th>
-				<th><?php echo JText::_('PASSWORD_RULE'); ?></th>
-				<th><?php echo JText::_('PASSWORD_DESCRIPTION'); ?></th>
-				<th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
+				<th scope="col"><?php echo JText::_('PASSWORD_ID'); ?></th>
+				<th scope="col"><?php echo JText::_('PASSWORD_RULE'); ?></th>
+				<th scope="col"><?php echo JText::_('PASSWORD_DESCRIPTION'); ?></th>
+				<th scope="col">
 					<?php echo JText::_('PASSWORD_ORDERING'); ?>
 					<?php echo JHTML::_('grid.order',  $this->rows); ?>
 				</th>
-				<th><?php echo JText::_('PASSWORD_ENABLED'); ?></th>
+				<th scope="col"><?php echo JText::_('PASSWORD_ENABLED'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -101,19 +101,19 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $this->escape(stripslashes($row->rule)); ?>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<? echo $row->id; ?>">
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
 						<?php echo $this->escape($row->description); ?>
 					</a>
 				</td>
 				<td class="order">
-					<?php echo $this->pageNav->orderUpIcon( $i, $row->ordering, 'orderup', 'Move Up', $row->ordering ); ?>
-					<?php echo $this->pageNav->orderDownIcon( $i, $n, $row->ordering, 'orderdown', 'Move Down', $row->ordering ); ?>
+					<span><?php echo $this->pageNav->orderUpIcon($i, $row->ordering, 'orderup', 'Move Up', $row->ordering); ?></span>
+					<span><?php echo $this->pageNav->orderDownIcon($i, $n, $row->ordering, 'orderdown', 'Move Down', $row->ordering); ?></span>
 					<?php $disabled = $row->ordering ?  '' : 'disabled="disabled"'; ?>
 					<input type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>"  <?php echo $disabled ?> class="text_area" style="text-align: center" />
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=toggle_enabled&amp;id[]=<? echo $row->id; ?>">
-						<?php echo ($row->enabled) ? 'yes': 'no'; ?>
+					<a class="state <?php echo ($row->enabled) ? 'yes': 'no'; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=toggle_enabled&amp;id[]=<?php echo $row->id; ?>">
+						<span><?php echo ($row->enabled) ? 'yes': 'no'; ?></span>
 					</a>
 				</td>
 			</tr>

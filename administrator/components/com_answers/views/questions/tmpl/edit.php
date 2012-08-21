@@ -31,10 +31,20 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
-JToolBarHelper::title(JText::_('Question') . ': <small><small>[ ' . $text . ' ]</small></small>', 'addedit.png');
+JToolBarHelper::title(JText::_('Question') . ': <small><small>[ ' . $text . ' ]</small></small>', 'answers.png');
 JToolBarHelper::spacer();
 JToolBarHelper::save();
 JToolBarHelper::cancel();
+
+$dateFormat = '%Y-%m-%d';
+$timeFormat = '%H:%M:s';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'Y-m-d';
+	$timeFormat = 'H:i:s';
+	$tz = true;
+}
 
 $create_date = NULL;
 if (intval($this->row->created) <> 0)
@@ -45,9 +55,6 @@ if (intval($this->row->created) <> 0)
 jimport('joomla.html.editor');
 $editor =& JEditor::getInstance();
 ?>
-<link rel="stylesheet" type="text/css" media="all" href="../includes/js/calendar/calendar-mos.css" title="green" />
-<script type="text/javascript" src="../includes/js/calendar/calendar.js"></script>
-<script type="text/javascript" src="../includes/js/calendar/lang/calendar-en.js"></script>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
 {
@@ -85,7 +92,7 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr>
 						<td class="key"><label for="q_subject">Subject: <span class="required">*</span></label></td>
-						<td><input type="text" name="question[subject]" id="q_subject" size="30" maxlength="250" value="<?php echo stripslashes($this->row->subject); ?>" /></td>
+						<td><input type="text" name="question[subject]" id="q_subject" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->subject)); ?>" /></td>
 					</tr>
 					<tr>
 						<td class="key" style="vertical-align:top;"><label for="question[question]">Question:</label></td>
@@ -93,7 +100,7 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr>
 						<td class="key"><label for="q_tags">Tags: <span class="required">*</span></label></td>
-						<td><input type="text" name="question[tags]" id="q_tags" size="30" value="<?php echo $this->tags; ?>" /></td>
+						<td><input type="text" name="question[tags]" id="q_tags" size="30" value="<?php echo $this->escape(stripslashes($this->tags)); ?>" /></td>
 					</tr>
 				</tbody>
 			</table>
@@ -125,16 +132,15 @@ function submitbutton(pressbutton)
 				<tbody>
 					<tr>
 						<td class="key"><label for="created_by">Change Creator:</label></td>
-						<td colspan="2"><input type="text" name="question[created_by]" id="created_by" size="25" maxlength="50" value="<?php echo $this->row->created_by; ?>" /></td>
+						<td><input type="text" name="question[created_by]" id="created_by" size="25" maxlength="50" value="<?php echo $this->row->created_by; ?>" /></td>
 					</tr>
 					<tr>
 						<td class="key"><label for="created">Created Date:</label></td>
-						<td><input type="text" name="question[created]" id="created" size="25" maxlength="19" value="<?php echo $this->row->created; ?>" /></td>
-						<td></td>
+						<td><?php echo JHTML::_('calendar', $this->row->created, 'question[created]', 'created', $dateFormat . ' ' . $timeFormat, array('class' => 'calendar-field')); ?></td>
 					</tr>
 					<tr>
 						<td class="key"><label for="state">State:</label></td>
-						<td colspan="2">
+						<td>
 							<select name="question[state]" id="state">
 								<option value="0"<?php echo ($this->row->state == 0) ? ' selected="selected"' : ''; ?>>Open</option>
 								<option value="1"<?php echo ($this->row->state == 1) ? ' selected="selected"' : ''; ?>>Closed</option>

@@ -864,6 +864,13 @@
 		margin: 0;
 		background: #fff;
 	}
+	.tool-tip img {
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		-ms-border-radius: 0.25em;
+		-o-border-radius: 0.25em;
+		border-radius: 0.25em;
+	}
 /* Notifications */
 	#system-message {
 		margin-bottom: 1.61803399em;

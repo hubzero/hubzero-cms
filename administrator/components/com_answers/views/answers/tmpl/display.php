@@ -30,12 +30,30 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Answers Manager') . '</a>', 'addedit.png');
-JToolBarHelper::addNew();
-JToolBarHelper::editList();
-JToolBarHelper::deleteList();
+$canDo = AnswersHelper::getActions('answer');
 
+JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Answers Manager') . '</a>', 'answers.png');
+if ($canDo->get('core.create')) 
+{
+	JToolBarHelper::addNew();
+}
+if ($canDo->get('core.edit')) 
+{
+	JToolBarHelper::editList();
+}
+if ($canDo->get('core.delete')) 
+{
+	JToolBarHelper::deleteList();
+}
 ximport('Hubzero_View_Helper_Html');
+
+$dateFormat = '%d %b %Y';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M Y';
+	$tz = 0;
+}
 
 ?>
 <script type="text/javascript">
@@ -123,8 +141,8 @@ for ($i=0, $n=count( $this->results ); $i < $n; $i++)
 						<span><img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /></span>
 					</a>
 				</td>
-				<td>
-					<time><?php echo $row->created; ?></time>
+				<td style="white-space: nowrap;">
+					<time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz) ?></time>
 				</td>
 				<td>
 					<a class="glyph user" href="index.php?option=com_members&amp;controller=members&amp;task=edit&amp;id[]=<?php echo $row->created_by; ?>">

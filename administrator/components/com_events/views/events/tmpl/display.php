@@ -68,7 +68,6 @@ JHTML::_('behavior.tooltip');
 				<th scope="col"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_STATE'); ?></th>
 				<th scope="col"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_ANNOUNCEMENT'); ?></th>
 				<th scope="col"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_TIMESHEET'); ?></th>
-				<th scope="col"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_CHECKEDOUT'); ?></th>
 				<th scope="col"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_ACCESS'); ?></th>
 				<th scope="col"><?php echo JText::_('Pages'); ?></th>
 			</tr>
@@ -88,17 +87,34 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 $row = &$this->rows[$i];
 ?>
 			<tr class="<?php echo "row$k"; ?>">
-				<td><?php echo $row->id; ?></td>
-				<td><?php 
-				if ($row->checked_out && $row->checked_out != $juser->get('id')) {
-					echo '&nbsp;';
-				} else {
-					?><input type="checkbox" id="cb<?php echo $i;?>" name="id[]" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" /><?php 
-				} ?></td>
-				<td><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>"><?php echo $this->escape(stripslashes($row->title)); ?></a></td>
-				<td><?php echo $this->escape($row->category); ?></td>
-
-<td><?php
+				<td>
+					<?php echo $row->id; ?>
+				</td>
+				<td>
+				<?php if ($row->checked_out && $row->checked_out != $juser->get('id')) { ?>
+					&nbsp;
+				<?php } else { ?>
+					<input type="checkbox" id="cb<?php echo $i;?>" name="id[]" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
+				<?php } ?>
+				</td>
+				<td>
+<?php if ($row->checked_out && $row->checked_out != $juser->get('id')) { ?>
+					<span class="checkedout hasTip" title="Checked out::<?php echo $this->escape(stripslashes($row->editor)); ?>">
+						<?php echo $this->escape(stripslashes($row->title)); ?>
+					</span>
+<?php } else { ?>
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>">
+						<?php echo $this->escape(stripslashes($row->title)); ?>
+					</a>
+<?php } ?>
+				</td>
+				<td>
+					<span>
+						<?php echo $this->escape($row->category); ?>
+					</span>
+				</td>
+				<td style="white-space: nowrap;">
+<?php
 	if ($row->reccurtype > 0) {
 		switch ($row->reccurtype)
 		{
@@ -142,7 +158,8 @@ $row = &$this->rows[$i];
 		}
 	}
 ?></td>
-				<td><?php
+				<td>
+<?php
 	$now = date("Y-m-d h:i:s");
 	if ($now <= $row->publish_up && $row->state == "1") {
 		$img = 'publish_y.png';
@@ -176,13 +193,13 @@ $row = &$this->rows[$i];
 
 	$pages = $p->getCount(array('event_id'=>$row->id));
 
-	if ($times) {
-        ?>
-			<a class="state <?php echo $row->state ? 'publish' : 'unpublish' ?> hasTip" href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i;?>','<?php echo $row->state ? 'unpublish' : 'publish' ?>')" title="<?php echo JText::_('Publish Information');?>::<?php echo $times; ?>">
-				<img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" />
-			</a><?php
-	}
-?></td>
+	if ($times) { 
+?>
+					<a class="state <?php echo $row->state ? 'publish' : 'unpublish' ?> hasTip" href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i;?>','<?php echo $row->state ? 'unpublish' : 'publish' ?>')" title="<?php echo JText::_('Publish Information');?>::<?php echo $times; ?>">
+						<span><img src="images/<?php echo $img; ?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /></span>
+					</a>
+<?php } ?>
+				</td>
 				<td><?php 
 				if ($row->announcement == 0) {
 					$class = 'unpublished';
@@ -193,16 +210,24 @@ $row = &$this->rows[$i];
 					$tsk = 'event';
 					$alt = 'announcement';
 					}
-				?><a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i;?>','make_<?php echo $tsk;?>')" title="Click to make into an <?php echo $tsk;?>"><span><?php echo $alt; ?></span></a></td>
-				<td style="white-space: nowrap;"><?php echo $times; ?></td>
-				<td><?php
-				if ($row->checked_out) {
-					echo $this->escape($row->editor);
-				} else {
-					echo '&nbsp;';
-				} ?></td>
-				<td><?php echo $row->groupname; ?></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=pages&amp;id[]=<? echo $row->id; ?>"><?php echo $pages; ?> <?php echo JText::_('Pages'); ?></a></td>
+				?>
+					<a href="javascript: void(0);" onclick="return listItemTask('cb<?php echo $i;?>','make_<?php echo $tsk; ?>')" title="Click to make into an <?php echo $tsk; ?>">
+						<span><?php echo $alt; ?></span>
+					</a>
+				</td>
+				<td style="white-space: nowrap;">
+					<?php echo $times; ?>
+				</td>
+				<td>
+					<span>
+						<?php echo $this->escape(stripslashes($row->groupname)); ?>
+					</span>
+				</td>
+				<td style="white-space: nowrap;">
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=pages&amp;id[]=<?php echo $row->id; ?>">
+						<?php echo JText::sprintf('%s page(s)', $pages); ?>
+					</a>
+				</td>
 			</tr>
 <?php
 $k = 1 - $k;

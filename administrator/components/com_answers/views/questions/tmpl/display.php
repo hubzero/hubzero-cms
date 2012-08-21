@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = AnswersHelper::getActions('question');
 
-JToolBarHelper::title('<a href="index.php?option='.$this->option.'">' . JText::_( 'Answers Manager' ) . '</a>', 'addedit.png');
+JToolBarHelper::title('<a href="index.php?option='.$this->option.'">' . JText::_( 'Answers Manager' ) . '</a>', 'answers.png');
 if ($canDo->get('core.admin')) {
 	JToolBarHelper::preferences($this->option, '550');
 	JToolBarHelper::spacer();
@@ -152,7 +152,7 @@ for ($i=0, $n=count( $this->results ); $i < $n; $i++)
 					<time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz) ?></time>
 				</td>
 				<td>
-					<a class="user" href="index.php?option=com_members&amp;controller=members&amp;task=edit&amp;id[]=<?php echo $row->created_by; ?>">
+					<a class="glyph user" href="index.php?option=com_members&amp;controller=members&amp;task=edit&amp;id[]=<?php echo $row->created_by; ?>">
 						<?php echo $this->escape(stripslashes($row->created_by)); ?>
 					</a>
 <?php if ($row->anonymous) { ?>
