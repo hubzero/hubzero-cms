@@ -257,7 +257,8 @@ class ForumControllerThreads extends Hubzero_Controller
 			$group = Hubzero_Group::getInstance($gf['group_id']);
 			if (is_object($group)) 
 			{
-				$forum_access = $group->getPluginAccess('forum');
+				ximport("Hubzero_Group_Helper");
+				$forum_access = Hubzero_Group_Helper::getPluginAccess($group, 'forum');
 
 				if ($forum_access == 'nobody' 
 				 || ($forum_access == 'registered' && $this->juser->get('guest')) 

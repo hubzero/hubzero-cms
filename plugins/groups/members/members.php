@@ -228,7 +228,8 @@ class plgGroupsMembers extends JPlugin
 				}
 
 				//get messages plugin access level
-				$view->messages_acl = $group->getPluginAccess('messages');
+				ximport("Hubzero_Group_Helper");
+				$view->messages_acl = Hubzero_Group_Helper::getPluginAccess($group, 'messages');
 
 				//get all member roles
 				$db =& JFactory::getDBO();
@@ -255,13 +256,13 @@ class plgGroupsMembers extends JPlugin
 					break;
 					case 'managers':
 						$view->groupusers = ($view->q) ? $group->search('managers', $view->q) : $group->get('managers');
-						$view->groupusers = ($view->role_filter) ? $group->search_roles($view->role_filter) : $view->groupusers;
+						$view->groupusers = ($view->role_filter) ? Hubzero_Group_Helper::search_roles($group, $view->role_filter) : $view->groupusers;
 						$view->managers   = $group->get('managers');
 					break;
 					case 'members':
 					default:
 						$view->groupusers = ($view->q) ? $group->search('members', $view->q) : $group->get('members');
-						$view->groupusers = ($view->role_filter) ? $group->search_roles($view->role_filter) : $view->groupusers;
+						$view->groupusers = ($view->role_filter) ? Hubzero_Group_Helper::search_roles($group, $view->role_filter) : $view->groupusers;
 						$view->managers   = $group->get('managers');
 					break;
 				}

@@ -110,7 +110,8 @@ $lid = $this->group->get('gidNumber');
 		</label>
 		<label>Page Privacy: <span class="required">Required</span>
 			<?php
-				$access = $this->group->getPluginAccess('overview');
+				ximport("Hubzero_Group_Helper");
+				$access = Hubzero_Group_Helper::getPluginAccess($this->group, 'overview');
 				switch($access)
 				{
 					case 'anyone':		$name = "Any HUB Visitor";		break;

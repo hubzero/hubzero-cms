@@ -93,6 +93,7 @@ class modLatestDiscussions extends JObject
 		$juser =& JFactory::getUser();
 
 		ximport("Hubzero_Group");
+		ximport("Hubzero_Group_Helper");
 
 		//get the params
 		$this->cls = $this->params->get('moduleclass_sfx');
@@ -116,7 +117,7 @@ class modLatestDiscussions extends JObject
 			$group = Hubzero_Group::getInstance($gf['group_id']);
 			if (is_object($group)) 
 			{
-				$forum_access = $group->getPluginAccess('forum');
+				$forum_access = Hubzero_Group_Helper::getPluginAccess($group, 'forum');
 				
 				if ($forum_access == 'nobody' 
 				 || ($forum_access == 'registered' && $juser->get('guest')) 

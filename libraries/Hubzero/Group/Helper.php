@@ -504,20 +504,20 @@ class Hubzero_Group_Helper
 	 * @param string $role Parameter description (if any) ...
 	 * @return boolean Return description (if any) ...
 	 */
-	public function search_roles($role = '')
+	public function search_roles($group, $role = '')
 	{
 		if ($role == '')
 			return false;
 		
 		$db = & JFactory::getDBO();
 		
-		$query = "SELECT uidNumber FROM #__xgroups_roles as r, #__xgroups_member_roles as m WHERE r.id='" . $role . "' AND r.id=m.role AND r.gidNumber='" . $this->gidNumber . "'";
+		$query = "SELECT uidNumber FROM #__xgroups_roles as r, #__xgroups_member_roles as m WHERE r.id='" . $role . "' AND r.id=m.role AND r.gidNumber='" . $group->gidNumber . "'";
 		
 		$db->setQuery($query);
 		
 		$result = $db->loadResultArray();
 		
-		$result = array_intersect($result, $this->members);
+		$result = array_intersect($result, $group->members);
 		
 		if (count($result) > 0)
 		{
@@ -537,7 +537,7 @@ class Hubzero_Group_Helper
 	 * @param string $get_plugin Parameter description (if any) ...
 	 * @return mixed Return description (if any) ...
 	 */
-	public function getPluginAccess($get_plugin = '')
+	public function getPluginAccess($group, $get_plugin = '')
 	{
 		// Get plugins
 		JPluginHelper::importPlugin('groups');
@@ -553,7 +553,7 @@ class Hubzero_Group_Helper
 		
 		//get the group plugin preferences
 		//returns array of tabs and their access level (ex. [overview] => 'anyone', [messages] => 'registered')
-		$group_plugins = $this->get('plugins');
+		$group_plugins = $group->get('plugins');
 		
 		if ($group_plugins)
 		{

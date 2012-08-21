@@ -605,7 +605,7 @@ class GroupsController extends Hubzero_Controller
 		));
 
 		// Get plugin access
-		$group_plugin_access = $group->getPluginAccess();
+		$group_plugin_access = Hubzero_Group_Helper::getPluginAccess($group);
 
 		// If active tab not overview and an not one of available tabs
 		if ($tab != 'overview' && !in_array($tab, array_keys($group_plugin_access))) 
@@ -2394,7 +2394,7 @@ class GroupsController extends Hubzero_Controller
 		));
 
 		// Get plugin access
-		$group_plugin_access = $group->getPluginAccess();
+		$group_plugin_access = Hubzero_Group_Helper::getPluginAccess($group);
 
 		// Build the page title
 		$this->_buildTitle();
@@ -2926,7 +2926,7 @@ class GroupsController extends Hubzero_Controller
 		$page_urls = array_keys($group_pages);
 
 		// Get plugin names
-		$plugin_names = array_keys($group->getPluginAccess());
+		$plugin_names = array_keys(Hubzero_Group_Helper::getPluginAccess($group));
 
 		if (in_array($current_url, $plugin_names)) 
 		{
@@ -3801,7 +3801,7 @@ class GroupsController extends Hubzero_Controller
 		if ($this->active == 'wiki') 
 		{
 			//get access level for wiki
-			$access = $group->getPluginAccess('wiki');
+			$access = Hubzero_Group_Helper::getPluginAccess($group, 'wiki');
 
 			//check to make sure user has access to wiki section
 			if (($access == 'members' && !in_array($this->juser->get('id'), $group->get('members'))) 
@@ -3830,7 +3830,7 @@ class GroupsController extends Hubzero_Controller
 		elseif ($this->active == 'blog')
 		{
 			//get access setting of group blog
-			$access = $group->getPluginAccess('blog');
+			$access = Hubzero_Group_Helper::getPluginAccess($group, 'blog');
 	
 			//make sure user has access to blog
 			if (($access == 'members' && !in_array($this->juser->get('id'), $group->get('members'))) 
@@ -3853,7 +3853,7 @@ class GroupsController extends Hubzero_Controller
 		else 
 		{
 			//get access level for overview or other group pages
-			$access = $group->getPluginAccess('overview');
+			$access = Hubzero_Group_Helper::getPluginAccess($group, 'overview');
 
 			//check to make sure we can access it
 			if (($access == 'members' && !in_array($this->juser->get('id'), $group->get('members'))) 
