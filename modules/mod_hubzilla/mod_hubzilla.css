@@ -1,0 +1,30 @@
+/**
+ * @package     hubzero-cms
+ * @file        modules/mod_application_env/mod_application_env.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	mod_application_env
+	-- -- -- -- -- -- --
+
+*/
+
+	#hubzilla {
+		display: block;
+		margin: 0;
+		padding: 0;
+		position: absolute;
+		width: 5px;
+		height: 5px;
+		background: transparent url("/modules/mod_hubzilla/hubzilla.png") 0 0 no-repeat;
+		overflow: hidden;
+		z-index: 999;
+	}
+	#hubzilla:hover {
+		width: 320px;
+		height: 280px;
+	}

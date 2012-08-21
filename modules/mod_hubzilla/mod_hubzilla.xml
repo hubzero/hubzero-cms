@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<install type="module" version="1.5.0">
+	<name>Hubzilla</name>
+	<author>HUBzero</author>
+	<creationDate>August 2012</creationDate>
+	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<authorEmail>zooley@purdue.edu</authorEmail>
+	<version>1.5.0</version>
+	<description>Hubzilla attack!</description>
+	<files>
+		<filename module="mod_hubzilla">mod_hubzilla.php</filename>
+		<filename>tmpl/default.php</filename>
+		<filename>tmpl/index.html</filename>
+		<filename>index.html</filename>
+		<filename>mod_hubzilla.css</filename>
+		<filename>mod_hubzilla.js</filename>
+		<filename>sounds/roar.mp3</filename>
+		<filename>sounds/roar.ogg</filename>
+		<filename>sounds/roar.wav</filename>
+	</files>
+	<params>
+		<param name="posLeft" type="text" default="auto" label="Left" description="Left position" />
+		<param name="posRight" type="text" default="5px" label="Right" description="Right position" />
+		<param name="posTop" type="text" default="auto" label="Top" description="Top position" />
+		<param name="posBottom" type="text" default="5px" label="Bottom" description="Bottom position" />
+	</params>
+	<languages>
+		<language tag="en-GB">en-GB.mod_hubzilla.ini</language>
+	</languages>
+</install>
