@@ -170,7 +170,7 @@ if ($this->row) {
 		if (trim($this->row->contact_info)) {
 			$html .= '  <tr>'."\n";
 			$html .= '   <th scope="row">'.JText::_('EVENTS_CAL_LANG_EVENT_CONTACT').':</th>'."\n";
-			$html .= '   <td>'. htmlentities($this->row->contact_info) .'</td>'."\n";
+			$html .= '   <td>'. $this->row->contact_info .'</td>'."\n";
 			$html .= '  </tr>'."\n";
 		}
 		if (trim($this->row->adresse_info)) {

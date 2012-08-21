@@ -704,7 +704,16 @@ class EventsControllerEvents extends Hubzero_Controller
 		$row->adresse_info = preg_replace("/(http:\/\/)((-|$alphadigit|\.)+)(\.$alphadigit+)/i", "<a href=\"http://$2$5$8\">$1$2$5$8</a>", $row->adresse_info);
 
 		// Contact
-		$row->contact_info = preg_replace("/(mailto:\/\/)?((-|$alphadigit|\.)+)@((-|$alphadigit|\.)+)(\.$alphadigit+)/i", "<a href=\"mailto:$2@$5$8\">$2@$5$8</a>", $row->contact_info);
+		$row->contact_info = stripslashes(strip_tags($row->contact_info));
+		if (substr($row->contact_info, 0, strlen('mailto:')) == 'mailto:') 
+		{
+			$row->contact_info = '<a href="mailto:' . $this->obfuscate(substr($row->contact_info, strlen('mailto:'))) . '">' . $this->obfuscate(substr($row->contact_info, strlen('mailto:'))) . '</a>';
+		}
+		else if (preg_match("/^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $row->contact_info))
+		{
+			$row->contact_info = '<a href="mailto:' . $this->obfuscate($row->contact_info) . '">' . $this->obfuscate($row->contact_info) . '</a>';
+		}
+		//$row->contact_info = preg_replace("/(mailto:\/\/)?((-|$alphadigit|\.)+)@((-|$alphadigit|\.)+)(\.$alphadigit+)/i", "<a href=\"mailto:$2@$5$8\">$2@$5$8</a>", $row->contact_info);
 		$row->contact_info = preg_replace("/(http:\/\/)((-|$alphadigit|\.)+)(\.$alphadigit+)/i", "<a href=\"http://$2$5$8\">$1$2$5$8</a>", $row->contact_info);
 
 		// Images - replace the {mosimage} plugins in both text areas
@@ -878,6 +887,24 @@ class EventsControllerEvents extends Hubzero_Controller
 			}
 		}
 		$view->display();
+	}
+
+	/**
+	 * Obfuscate an email adress
+	 * 
+	 * @param      string $email Address to obfuscate
+	 * @return     string
+	 */
+	public function obfuscate($email)
+	{
+		$length = strlen($email);
+		$obfuscatedEmail = '';
+		for ($i = 0; $i < $length; $i++) 
+		{
+			$obfuscatedEmail .= '&#' . ord($email[$i]) . ';';
+		}
+		
+		return $obfuscatedEmail;
 	}
 
 	/**
