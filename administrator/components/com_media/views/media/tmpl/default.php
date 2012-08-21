@@ -63,7 +63,15 @@
             <!-- File Upload Form -->
 			<?php $canUpload= ($this->user->authorize('com_media', 'upload')); ?> 	
 			<?php if ($canUpload) : ?>
-				<form action="<?php echo JURI::base(); ?>index.php?option=com_media&amp;task=file.upload&amp;tmpl=component&amp;<?php echo $this->session->getName().'='.$this->session->getId(); ?>&amp;<?php echo JUtility::getToken();?>=1" id="uploadForm" method="post" enctype="multipart/form-data">
+				<?php
+				// [!] HUBZERO - ensure base is set to https when appropriate
+				$base = JURI::base();
+				if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off')
+				{
+					$base = (substr($base, 0, strlen('https')) != 'https') ? str_replace('http://', 'https://', $base) : $base;
+				}
+				?>
+				<form action="<?php echo $base; ?>index.php?option=com_media&amp;task=file.upload&amp;tmpl=component&amp;<?php echo $this->session->getName().'='.$this->session->getId(); ?>&amp;<?php echo JUtility::getToken();?>=1" id="uploadForm" method="post" enctype="multipart/form-data">
 					<fieldset>
 						<legend><?php echo JText::_( 'Upload File' ); ?> [ <?php echo JText::_( 'Max' ); ?>&nbsp;<?php echo ($this->config->get('upload_maxsize') / 1000000); ?>M ]</legend>
 						<fieldset class="actions">
