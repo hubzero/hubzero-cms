@@ -37,7 +37,7 @@ require_once( JPATH_LIBRARIES		.DS.'joomla'.DS.'import.php');
 // Pre-Load configuration
 require_once( JPATH_CONFIGURATION	.DS.'configuration.php' );
 
-if (!class_exists(JConfig))
+if (!class_exists('JConfig'))
 {
 	die('Error - Invalid configuration file');
 }
