@@ -439,4 +439,52 @@ class SupportQuery extends JTable
 
 		return '(' . implode($op, $q) . ')';
 	}
+
+	/**
+	 * Populate the database with default values
+	 * 
+	 * @param      string  $type Type of query to populate [common, mine]
+	 * @return     boolean False if errors, True on success
+	 */
+	public function populateDefaults($type='common') 
+	{
+		$me = '$me';
+
+		switch (strtolower(trim($type)))
+		{
+			case 'common':
+				$method = 'getCommon';
+				$sql = "INSERT INTO $this->_tbl (`id`, `title`, `conditions`, `query`, `user_id`, `sort`, `sort_dir`, `created`, `iscore`)
+				VALUES
+					(null,'Open tickets','{\"operator\":\"AND\",\"expressions\":[{\"fldval\":\"open\",\"flddisp\":\"Open/Closed\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"1\"},{\"fldval\":\"type\",\"flddisp\":\"Type\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"0\"}],\"nestedexpressions\":[]}',NULL,0,'created','desc','2012-07-18 00:00:00',2),
+					(null,'New tickets','{\"operator\":\"AND\",\"expressions\":[{\"fldval\":\"open\",\"flddisp\":\"Open/Closed\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"1\"},{\"fldval\":\"type\",\"flddisp\":\"Type\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"0\"},{\"fldval\":\"status\",\"flddisp\":\"Status\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"0\"}],\"nestedexpressions\":[]}',NULL,0,'created','desc','2012-08-09 00:00:00',2),
+					(null,'Unassigned','{\"operator\":\"AND\",\"expressions\":[{\"fldval\":\"open\",\"flddisp\":\"Open/Closed\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"1\"},{\"fldval\":\"type\",\"flddisp\":\"Type\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"0\"}],\"nestedexpressions\":[{\"operator\":\"OR\",\"expressions\":[{\"fldval\":\"owner\",\"flddisp\":\"Owner\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"\"},{\"fldval\":\"owner\",\"flddisp\":\"Owner\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"NULL\"}],\"nestedexpressions\":[]}]}',NULL,0,'created','desc','2012-08-09 00:00:00',2),
+					(null,'Awaiting User Action','{\"operator\":\"AND\",\"expressions\":[{\"fldval\":\"open\",\"flddisp\":\"Open/Closed\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"1\"},{\"fldval\":\"type\",\"flddisp\":\"Type\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"0\"},{\"fldval\":\"status\",\"flddisp\":\"Status\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"2\"}],\"nestedexpressions\":[]}',NULL,0,'created','desc','2012-08-09 00:00:00',3),
+					(null,'Closed tickets','{\"operator\":\"AND\",\"expressions\":[{\"fldval\":\"open\",\"flddisp\":\"Open/Closed\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"0\"},{\"fldval\":\"type\",\"flddisp\":\"Type\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"0\"}],\"nestedexpressions\":[]}',NULL,0,'created','desc','2012-08-09 00:00:00',2),
+					(null,'All tickets','{\"operator\":\"AND\",\"expressions\":[{\"fldval\":\"type\",\"flddisp\":\"Type\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"0\"}],\"nestedexpressions\":[]}',NULL,0,'created','desc','2012-08-09 00:00:00',3);";
+			break;
+
+			case 'mine':
+				$method = 'getMine';
+				$sql = "INSERT INTO $this->_tbl (`id`, `title`, `conditions`, `query`, `user_id`, `sort`, `sort_dir`, `created`, `iscore`)
+				VALUES
+					(null,'Reported by me','{\"operator\":\"AND\",\"expressions\":[{\"fldval\":\"open\",\"flddisp\":\"Open/Closed\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"1\"},{\"fldval\":\"type\",\"flddisp\":\"Type\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"0\"}],\"nestedexpressions\":[{\"operator\":\"OR\",\"expressions\":[{\"fldval\":\"login\",\"flddisp\":\"Submitter\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"$me\"}],\"nestedexpressions\":[]}]}',NULL,0,'created','desc','2012-08-09 00:00:00',1),
+					(null,'Assigned to me','{\"operator\":\"AND\",\"expressions\":[{\"fldval\":\"open\",\"flddisp\":\"Open/Closed\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"1\"},{\"fldval\":\"type\",\"flddisp\":\"Type\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"0\"}],\"nestedexpressions\":[{\"operator\":\"OR\",\"expressions\":[{\"fldval\":\"owner\",\"flddisp\":\"Owner\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"$me\"}],\"nestedexpressions\":[]}]}',NULL,0,'created','desc','2012-08-09 00:00:00',1),
+					(null,'Assigned to me (closed)','{\"operator\":\"AND\",\"expressions\":[{\"fldval\":\"open\",\"flddisp\":\"Open/Closed\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"0\"},{\"fldval\":\"type\",\"flddisp\":\"Type\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"0\"}],\"nestedexpressions\":[{\"operator\":\"OR\",\"expressions\":[{\"fldval\":\"owner\",\"flddisp\":\"Owner\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"$me\"},{\"fldval\":\"login\",\"flddisp\":\"Submitter\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"$me\"}],\"nestedexpressions\":[]}]}',NULL,0,'created','desc','2012-08-09 00:00:00',3);";
+			break;
+
+			default:
+				$this->setError(JText::_('Unsupported type'));
+				return false;
+			break;
+		}
+
+		$this->_db->setQuery($sql);
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		return $this->$method();
+	}
 }

@@ -100,6 +100,14 @@ class SupportControllerTickets extends Hubzero_Controller
 			'mine'   => $sq->getMine(),
 			'custom' => $sq->getCustom($this->juser->get('id'))
 		);
+		if (!$this->view->queries['common'] || count($this->view->queries['common']) <= 0)
+		{
+			$this->view->queries['common'] = $sq->populateDefaults('common');
+		}
+		if (!$this->view->queries['mine'] || count($this->view->queries['mine']) <= 0)
+		{
+			$this->view->queries['mine'] = $sq->populateDefaults('mine');
+		}
 		// If no query is set, default to the first one in the list
 		if (!$this->view->filters['show'])
 		{

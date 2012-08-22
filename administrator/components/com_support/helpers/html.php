@@ -37,17 +37,6 @@ defined('_JEXEC') or die('Restricted access');
 class SupportHtml
 {
 	/**
-	 * Display a message and go to previous page
-	 * 
-	 * @param      string $msg Message
-	 * @return     string Javascript
-	 */
-	public function alert($msg)
-	{
-		return "<script type=\"text/javascript\"> alert('" . $msg . "'); window.history.go(-1); </script>\n";
-	}
-
-	/**
 	 * Get the status text for a status number
 	 * 
 	 * @param      integer $int Status number
@@ -55,7 +44,8 @@ class SupportHtml
 	 */
 	public function getStatus($open=0, $status=0)
 	{
-		/*switch ($int)
+		/* Old values
+		switch ($int)
 		{
 			case 0: $status = 'new';      break;
 			case 1: $status = 'accepted'; break;
