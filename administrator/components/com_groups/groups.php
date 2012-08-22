@@ -68,6 +68,7 @@ require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'pages.php');
 
 //Hubzero Libraries
 ximport('Hubzero_Group');
+ximport('Hubzero_Group_Helper');
 ximport('Hubzero_User_Helper');
 
 $controllerName = JRequest::getCmd('controller', 'manage');

@@ -504,7 +504,7 @@ class Hubzero_Group_Helper
 	 * @param string $role Parameter description (if any) ...
 	 * @return boolean Return description (if any) ...
 	 */
-	public function search_roles($group, $role = '')
+	public static function search_roles($group, $role = '')
 	{
 		if ($role == '')
 			return false;
@@ -537,7 +537,7 @@ class Hubzero_Group_Helper
 	 * @param string $get_plugin Parameter description (if any) ...
 	 * @return mixed Return description (if any) ...
 	 */
-	public function getPluginAccess($group, $get_plugin = '')
+	public static function getPluginAccess($group, $get_plugin = '')
 	{
 		// Get plugins
 		JPluginHelper::importPlugin('groups');

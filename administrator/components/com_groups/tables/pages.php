@@ -173,7 +173,7 @@ Class GroupPages extends JTable
 		$access = true;
 
 		//get overview page access
-		$overview_access = $this->group->getPluginAccess('overview');
+		$overview_access = Hubzero_Group_Helper::getPluginAccess($this->group, 'overview');
 
 		//get group discoverability
 		$discoverability = $this->group->get('privacy');
@@ -360,7 +360,7 @@ Class GroupPages extends JTable
 		$about .= '<br />';
 
 		//get the members plugin access for this group
-		$access = $this->group->getPluginAccess('members');
+		$access = Hubzero_Group_Helper::getPluginAccess($this->group, 'members');
 
 		//check to make sure we should be showing the mini member browser
 		if ($access == 'nobody' || ($access == 'registered' && $this->juser->get('guest')) || ($access == 'members' && !$isMember)) 
