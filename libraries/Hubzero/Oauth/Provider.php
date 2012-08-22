@@ -129,23 +129,11 @@ class Hubzero_Oauth_Provider
 	 */
 	function __construct($params = array())
 	{
-
 		$this->_provider = new OAuthProvider($params);
 		
 		$this->_provider->consumerHandler(array($this,'consumerHandler'));
 		$this->_provider->timestampNonceHandler(array($this,'timestampNonceHandler'));
 		$this->_provider->tokenHandler(array($this, 'tokenHandler'));
-		
-		// @FIXME: clean this logic
-		
-		if (empty($params['oauth_token']) && (php_sapi_name() == 'cli'))
-		{
-			$this->_provider->is2LeggedEndpoint(true);
-		}
-		else if (empty($_REQUEST['oauth_token']) && (php_sapi_name() != 'cli'))
-		{
-			$this->_provider->is2LeggedEndpoint(true);
-		}
 	}
 
 	// @FIXME: validateRequest() is still a bit awkward and needs to be refactored
@@ -170,7 +158,6 @@ class Hubzero_Oauth_Provider
 		if (is_null($method))
 		{
 			$method = $_SERVER['REQUEST_METHOD'];
-			//$_GLOBALS['_SERVER']['REQUEST_METHOD'] = 'GET';
 		}
 		
 		$parts = parse_url($uri);
@@ -180,7 +167,6 @@ class Hubzero_Oauth_Provider
 		if ($path == $this->_request_token_path)
 		{
 			$this->_provider->isRequestTokenEndpoint(true);
-			$endpoint = true;
 		}
 		else if ($path == $this->_access_token_path)
 		{
@@ -206,36 +192,27 @@ class Hubzero_Oauth_Provider
 				|| isset($_POST['x_auth_password'])
 				|| !strpos($header,'x_auth_mode')
 				|| !strpos($header,'x_auth_username')
-				|| !strpos($header,'x_auth_mode'))
+				|| !strpos($header,'x_auth_password'))
 			{
 				$this->_provider->is2LeggedEndpoint(true);
 				//$this->_provider->addRequiredParameter ('x_auth_mode');
 				//$this->_provider->addRequiredParameter ('x_auth_username');
 				//$this->_provider->addRequiredParameter ('x_auth_password');
 			}
-
-			$endpoint = true;
 		}
-
-		$E = null;
 
 		try
 		{
 			$this->_provider->checkOAuthRequest($uri,$method);
+			
+			return true;
 		}
 		catch (OAuthException $E)
 		{
-			$E;
 		}
 
-		if ($E === null)
-		{
-			return true;
-		}
-
-		// unsigned requests pass
-		if (!$endpoint
-			&& ($this->_provider->consumer_key === null)
+		// No attempt was made to sign this, let it pass as such
+		if ( ($this->_provider->consumer_key === null)
 			&& ($this->_provider->consumer_secret === null)
 			&& ($this->_provider->nonce === null)
 			&& ($this->_provider->token === null)
@@ -244,14 +221,15 @@ class Hubzero_Oauth_Provider
 			&& ($this->_provider->version === null)
 			&& ($this->_provider->signature_method === null)
 			&& ($this->_provider->callback === null)
-			)
+			&& (empty($this->_provider->signature))
+		)
 		{
 			return true;
 		}
 
+		// request to authorize path can have token and callback params, but are unsigned
 		if ($path == $this->_authorize_path)
 		{
-			// request to authorize path can have token and callback params, but are unsigned
 			if (($this->_provider->consumer_key === null)
 				&& ($this->_provider->consumer_secret === null)
 				&& ($this->_provider->nonce === null)
@@ -259,17 +237,35 @@ class Hubzero_Oauth_Provider
 				&& ($this->_provider->timestamp === null)
 				&& ($this->_provider->version === null)
 				&& ($this->_provider->signature_method === null)
-				&& ($this->_provider->callback === null)
+				&& (empty($this->_provider->signature))
 				)
 			{
 				return true;
 			}
 		}
-
+		
+		$message = OAuthProvider::reportProblem($E, false);
+		
+		// request signed without token is allowed to pass
+		if ($message == "oauth_problem=token_rejected")
+		{		
+			if ( ($this->_provider->consumer_key !== null)
+				&& ($this->_provider->consumer_secret !== null)
+				&& ($this->_provider->nonce !== null)
+				&& (empty($this->_provider->token))
+				&& (empty($this->_provider->token_secret))
+				&& ($this->_provider->timestamp !== null)
+				&& ($this->_provider->version !== null)
+				&& ($this->_provider->signature_method !== null)
+				&& (!empty($this->_provider->signature))
+			)
+			{
+				return true;
+			}
+		}
+				
 		$status = 401;
 		$reason = 'Unauthorized';
-
-		$message = OAuthProvider::reportProblem($E, false);
 
 		if ($message == "oauth_problem=signature_method_rejected")
 		{
@@ -291,7 +287,7 @@ class Hubzero_Oauth_Provider
 		$result['status'] = $status;
 		$result['reason'] = $reason;
 		
-		return $result;
+		return false;
 	}
 
 	/**
