@@ -1,0 +1,186 @@
+/**
+ * @package     hubzero-cms
+ * @file        administrator/components/com_support/support.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+	#sbox-content fieldset input, 
+	#sbox-content fieldset select, 
+	#sbox-content fieldset textarea {
+		width: auto;
+	}
+	#sbox-content fieldset input#field-title {
+		width: 60%;
+	}
+	#sbox-content fieldset {
+		width: auto;
+	}
+	#queryForm fieldset.wrapper {
+		padding: 1em;
+	}
+	#queryForm h3 {
+		margin: 0;
+		padding: 0.5em 2em 0.5em 1em;
+		width: auto;
+		position: inherit;
+		display: block;
+		border-bottom: 1px solid #757575;
+		color: #555;
+		text-shadow: 0px 1px 0px #e5e5ee;
+		background: #a2a2a2;
+		background: -webkit-gradient(linear, left top, left bottom, from(#c4c4c4), to(#a2a2a2));
+		background: -webkit-linear-gradient(#c4c4c4, #a2a2a2);
+		background: -moz-linear-gradient(top, #c4c4c4, #a2a2a2);
+		background: -moz-gradient(center top, #c4c4c4 0%, #a2a2a2 100%);
+		background: -o-linear-gradient(#c4c4c4, #a2a2a2);
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c4c4c4', endColorstr='#a2a2a2');
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#c4c4c4, endColorstr=#a2a2a2)";
+	}
+	#form-title {
+		
+	}
+	#sbox-content fieldset label {
+		width: auto;
+		display: inline;
+		border: none;
+		padding: 0;
+	}
+
+	#sbox-content fieldset.fields,
+	#sbox-content fieldset.query {
+		/*margin: 1em 0;
+		box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.2);
+		border-radius: 0.5em;
+		background: rgba(255, 255, 255, 0.6);*/
+		padding: 0.5em 1em 1em 1em;
+		
+		
+	}
+	#sbox-content fieldset.fields.sort {
+		padding-top: 1.5em;
+	}
+	#sbox-content fieldset.query {
+
+	}
+	.query fieldset {
+		margin: 0;
+		border: none;
+		padding: 0;
+	}
+	.query fieldset p {
+		border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+		margin: 0;
+		padding: 0.5em;
+	}
+	.query fieldset div {
+		position: relative;
+	}
+	.query fieldset legend,
+	.query fieldset p.operator {
+		background: transparent;
+		border: none;
+		padding: 0.5em 0;
+		border-bottom: 2px solid #ccc;
+	}
+	.query fieldset legend {
+		padding: 0.5em 0;
+		width: 100%;
+		float: left;
+		background: #fff;
+	}
+	.query fieldset fieldset p.operator {
+		padding: 0.5em;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+	}
+	.query fieldset fieldset p.conditions {
+		padding-left: 3em;
+	}
+	.query fieldset fieldset fieldset p.operator {
+		padding-left: 3em;
+	}
+	.query fieldset fieldset fieldset p.conditions {
+		padding-left: 6em;
+	}
+	.query fieldset fieldset fieldset p.operator:before,
+	.query fieldset fieldset p.conditions:before {
+		content: "\221F";
+		font-size: 18px;
+		padding-right: 0.2em;
+	}
+	.query fieldset div span {
+		position: absolute;
+		bottom: 0.5em;
+		right: 0;
+	}
+	/*table.admintable .query select, 
+	table.admintable .query .input-text, 
+	table.admintable .query input[type="text"], 
+	table.admintable .query input[type="password"], 
+	table.admintable .query input[type="email"], 
+	table.admintable .query textarea,
+	table.admintable .query input,
+	.query fieldset input {
+		width: auto;
+		background: #fff;
+	}*/
+	.query fieldset button {
+		/*border: 2px solid #cacaca;*/
+		border: none;
+		width: 24px;
+		height: 24px;
+		display: inline-block;
+		background: transparent;
+		border-radius: 21px;
+		overflow: hidden;
+		text-indent: 5em;
+		cursor: pointer;
+		position: relative;
+		color: #c1c1c1;
+		margin-right: 0.5em;
+	}
+	.query fieldset button:before {
+		border: 2px solid #c1c1c1;
+		border-radius: 20px;
+		display: block;
+		width: 20px;
+		height: 20px;
+		position: absolute;
+		top: 0;
+		left: 0;
+		text-indent: 0;
+		font-size: 16px;
+		line-height: 17px;
+		/*font-weight: bold;
+		font-family: 'Fontcons';*/
+	}
+	html.chrome .query fieldset button.remove:before,
+	html.chrome .query fieldset button.add:before {
+		line-height: 18px;
+	}
+	.query fieldset button.remove:before {
+		content: "\00D7"; /* \2297 */
+	}
+	.query fieldset button.add:before {
+		content: "+";
+	}
+	.query fieldset button.addroot:before {
+		content: "\22EF";
+		line-height: 20px;
+		font-size: 20px;
+	}
+	.query fieldset button:hover:before {
+		border-color: #333;
+		color: #333;
+	}
+	.query fieldset button.head:hover:before {
+		border-color: #cacaca;
+		color: #cacaca;
+	}
+	.query .head {
+		/* for IE */
+		filter: alpha(opacity=50);
+		/* CSS 3 standard */
+		opacity: 0.5;
+	}
+	

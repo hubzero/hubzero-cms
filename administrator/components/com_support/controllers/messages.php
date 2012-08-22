@@ -34,9 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Controller');
 
 /**
- * Short description for 'SupportControllerMessages'
- * 
- * Long description (if any) ...
+ * Support controller class for message templates
  */
 class SupportControllerMessages extends Hubzero_Controller
 {

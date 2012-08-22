@@ -39,13 +39,13 @@ if ($this->getError()) { ?>
 		{
 ?>
 	<li<?php if (intval($this->show) == $query->id) { echo ' class="active"'; }?>>
-		<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=tickets&amp;show=<?php echo $query->id; ?>">
+		<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=tickets&task=display&show=' . $query->id); ?>">
 			<?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->count; ?></span>
 		</a>
-		<a class="delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=queries&amp;task=remove&amp;id[]=<?php echo $query->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::_('Delete'); ?>">
+		<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=remove&id=' . $query->id); ?>" title="<?php echo JText::_('Delete'); ?>">
 			<?php echo JText::_('Delete'); ?>
 		</a>
-		<a class="modal edit" href="index.php?option=<?php echo $this->option; ?>&amp;controller=queries&amp;task=edit&amp;id[]=<?php echo $query->id; ?>" title="<?php echo JText::_('Edit'); ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
+		<a class="modal edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=edit&id=' . $query->id); ?>" title="<?php echo JText::_('Edit'); ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
 			<?php echo JText::_('Edit'); ?>
 		</a>
 	</li>

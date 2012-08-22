@@ -31,28 +31,21 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Push some styles to the template
-$document =& JFactory::getDocument();
-$document->addStyleSheet('components' . DS . $this->option . DS . 'assets' . DS . 'css' . DS . 'conditions.css');
+//$document =& JFactory::getDocument();
+//$document->addStyleSheet('components' . DS . $this->option . DS . 'assets' . DS . 'css' . DS . 'conditions.css');
 
 $tmpl = JRequest::getVar('tmpl', '');
-
-//if ($tmpl) 
-//{
-	/*$document->addScript('/media/system/js/jquery.js');
-	$document->addScript('/media/system/js/jquery.noconflict.js');
-	$document->addScript('components' . DS . $this->option . DS . 'assets' . DS . 'js' . DS . 'json2.js');
-	$document->addScript('components' . DS . $this->option . DS . 'assets' . DS . 'js' . DS . 'condition.builder.js');*/
-if (!$tmpl) 
-{
-	$text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
-	JToolBarHelper::title(JText::_('Ticket Query').': <small><small>[ '. $text.' ]</small></small>', 'support.png');
-	JToolBarHelper::save();
-	JToolBarHelper::cancel();
-}
+$no_html = JRequest::getInt('no_html', 0);
 
 $juser = JFactory::getUser();
 ?>
-<?php if (!$tmpl) { ?>
+<?php 
+if (!$tmpl && !$no_html) { 
+	ximport('Hubzero_Document');
+	Hubzero_Document::addComponentScript($this->option, 'assets/js/json2');
+	Hubzero_Document::addComponentScript($this->option, 'assets/js/condition.builder');
+	Hubzero_Document::addComponentStylesheet($this->option, 'assets/css/conditions.css');
+?>
 	<form action="index.php" method="post" name="adminForm" id="item-form">
 		<div class="col width-100">
 			<fieldset class="adminform">
@@ -141,10 +134,10 @@ $juser = JFactory::getUser();
 
 		<?php echo JHTML::_('form.token'); ?>
 	</form>
-	<script type="text/javascript" src="/media/system/js/jquery.js"></script>
+	<!-- <script type="text/javascript" src="/media/system/js/jquery.js"></script>
 	<script type="text/javascript" src="/media/system/js/jquery.noconflict.js"></script>
 	<script type="text/javascript" src="<?php echo 'components' . DS . $this->option . DS . 'assets' . DS . 'js' . DS . 'json2.js'; ?>"></script>
-	<script type="text/javascript" src="<?php echo 'components' . DS . $this->option . DS . 'assets' . DS . 'js' . DS . 'condition.builder.js'; ?>"></script>
+	<script type="text/javascript" src="<?php echo 'components' . DS . $this->option . DS . 'assets' . DS . 'js' . DS . 'condition.builder.js'; ?>"></script> -->
 	<script type="text/javascript">
 		function submitbutton(pressbutton) 
 		{
@@ -176,15 +169,17 @@ $juser = JFactory::getUser();
 	}
 ?>
 	<form action="index.php" method="post" name="adminForm" id="queryForm">
-		<fieldset>
-			<div style="float: right">
-				<button type="button" onclick="saveAndUpdate();"><?php echo JText::_( 'Save' );?></button>
-				<button type="button" onclick="window.parent.document.getElementById('sbox-window').close();"><?php echo JText::_( 'Cancel' );?></button>
-			</div>
-			<div class="configuration" >
+		<h3>
+			<span style="float: right">
+				<input type="submit" value="<?php echo JText::_('Save'); ?>" />
+				<!-- <button type="button" onclick="saveAndUpdate();"><?php echo JText::_( 'Save' );?></button>
+				<button type="button" onclick="window.parent.document.getElementById('sbox-window').close();"><?php echo JText::_( 'Cancel' );?></button> -->
+			</span>
+			<span class="configuration">
 				<?php echo JText::_('Query builder') ?>
-			</div>
-		</fieldset>
+			</span>
+		</h3>
+		<fieldset class="wrapper">
 
 		<fieldset class="fields title">
 			<label for="field-title"><?php echo JText::_('Title'); ?></label>
@@ -208,6 +203,7 @@ $juser = JFactory::getUser();
 			$view->conditions = $this->conditions;
 			$view->row        = $this->row;
 			$view->display();
+			
 		//}
 	}
 ?>
@@ -248,13 +244,14 @@ $juser = JFactory::getUser();
 		<input type="hidden" name="task" value="save" />
 
 		<?php echo JHTML::_('form.token'); ?>
+		</fieldset>
 	</form>
-	<script type="text/javascript" src="/media/system/js/jquery.js"></script>
+	<!-- <script type="text/javascript" src="/media/system/js/jquery.js"></script>
 	<script type="text/javascript" src="/media/system/js/jquery.noconflict.js"></script>
 	<script type="text/javascript" src="<?php echo 'components' . DS . $this->option . DS . 'assets' . DS . 'js' . DS . 'json2.js'; ?>"></script>
-	<script type="text/javascript" src="<?php echo 'components' . DS . $this->option . DS . 'assets' . DS . 'js' . DS . 'condition.builder.js'; ?>"></script>
+	<script type="text/javascript" src="<?php echo 'components' . DS . $this->option . DS . 'assets' . DS . 'js' . DS . 'condition.builder.js'; ?>"></script> -->
 	<script type="text/javascript">
-		function submitbutton(pressbutton) 
+		/*function submitbutton(pressbutton) 
 		{
 			var $ = jq;
 
@@ -288,12 +285,12 @@ $juser = JFactory::getUser();
 				window.parent.document.getElementById('custom-views').innerHTML = data;
 				window.top.setTimeout('window.parent.document.getElementById(\'sbox-window\').close()', 700);
 			});
-		}
+		}*/
 
 		Conditions.option = <?php echo json_encode($this->conditions); ?>
 
-		jQuery(document).ready(function(jq){
+		/*jQuery(document).ready(function(jq){
 			Conditions.addqueryroot('.query', true);
-		});
+		});*/
 	</script>
 <?php } ?>

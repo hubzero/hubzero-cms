@@ -30,30 +30,13 @@ HUB.Support = {
 	},
 	
 	initialize: function() {
-		var iTTips = new MooTips($$('.fixedImgTip'), {
-				showDelay: 500,			// Delay for 500 milliseconds
-				maxTitleChars: 100,
-				className: 'img',
-				fixed: true,			// fixed in place; note tip mouseover does not hide tip
-				offsets: {'x':20,'y':5} // offset by 100,100
-			});
-			
+		HUB.Support.addDeleteQueryEvent();
+		HUB.Support.addEditQueryEvent();
+
 		if ($('messages')) {
 			$('messages').addEvent('change', HUB.Support.getMessage);
 		}
-		
-		if ($('toggle-details')) {
-			$('toggle-details').onclick = function() {
-				var tbody = $('ticket-details-body');
-				if (tbody.hasClass('hide')) {
-					tbody.removeClass('hide');
-				} else {
-					tbody.addClass('hide');
-				}
-				return false;
-			}	
-		}
-		
+
 		if ($('make-private')) {
 			$('make-private').onclick = function() {
 				var es = $('email_submitter');
@@ -70,6 +53,105 @@ HUB.Support = {
 				}
 			}
 		}
+	},
+
+	addEditQueryEvent: function() {
+		if (typeof(SqueezeBoxHub) != "undefined") {
+			if (!SqueezeBoxHub || !$('sbox-window')) {
+				SqueezeBoxHub.initialize({ size: {x: 750, y: 500} });
+			}
+			
+			$$('a.modal').each(function(el) {
+				if (el.href.indexOf('?') == -1) {
+					el.href = el.href + '?no_html=1';
+				} else {
+					el.href = el.href + '&no_html=1';
+				}
+				el.addEvent('click', function(e) {
+					new Event(e).stop();
+
+					w = 600;
+					h = 550;
+					if (this.className) {
+						var sizeString = this.className.split(' ').pop();
+						if (sizeString && sizeString != 'play') {
+							var sizeTokens = sizeString.split('x');
+							w = parseInt(sizeTokens[0]);
+							h = parseInt(sizeTokens[1]);
+						}
+					}
+
+					SqueezeBoxHub.fromElement(el,{
+						handler: 'url', 
+						size: {x: w, y: h}, 
+						ajaxOptions: {method: 'get'},
+						onComplete: function() {
+							Conditions.addqueryroot('.query', true);
+
+							if ($('queryForm')) {
+								$('queryForm').addEvent('submit', function(e) {
+									new Event(e).stop();
+
+									if (!$('field-title').value) {
+										alert('Please provide a title.');
+										return false;
+									}
+
+									var myAjax = new Ajax($(this).getProperty('action'), {
+										method: 'post',
+										update: $('custom-views'),
+										evalScripts: false,
+										onSuccess: function() {
+											HUB.Support.addEditQueryEvent();
+											SqueezeBoxHub.close();
+										}
+									}).request();
+
+									/*$(this).send({
+										//update: $('sbox-content'),
+										onComplete: function() {
+											SqueezeBoxHub.close();
+										}
+							        });*/
+								});
+							}
+						}
+					});
+				});
+			});
+		}
+	},
+
+	addDeleteQueryEvent: function() {
+		$$('.views .delete').each(function(el) {
+			$(el).addEvent('click', function(e){
+				new Event(e).stop();
+
+				var res = confirm('Are you sure you wish to delete this item?');
+				if (!res) {
+					return false;
+				}
+
+				var href = $(this).href;
+				if (href.indexOf('?') == -1) {
+					href += '?no_html=1';
+				} else {
+					href += '&no_html=1';
+				}
+
+				var myAjax = new Ajax(href, {
+					method: 'get',
+					update: $('custom-views'),
+					evalScripts: false,
+					onSuccess: function() {
+						HUB.Support.addDeleteQueryEvent();
+						HUB.Support.addEditQueryEvent();
+					}
+				}).request();
+
+				return false;
+			});
+		});
 	}
 }
 

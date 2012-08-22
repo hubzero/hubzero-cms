@@ -30,6 +30,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
 $juser =& JFactory::getUser();
 //$database =& JFactory::getDBO();
 
@@ -48,7 +49,34 @@ $dispatcher =& JDispatcher::getInstance();
 
 $status = SupportHtml::getStatus($this->row->open, $this->row->status);
 
-$fstring = urlencode(trim($this->filters['_find']));
+$unknown = 1;
+$name = JText::_('Unknown');
+
+$submitter = new Hubzero_User_Profile();
+if ($this->row->login) 
+{
+	//$juseri =& JUser::getInstance($comment->created_by);
+	$submitter->load($this->row->login);
+	if (is_object($submitter) && $submitter->get('name')) 
+	{
+		$name = '<a rel="profile" href="' . JRoute::_('index.php?option=com_members&id=' . $submitter->get('uidNumber')) . '">' . $this->escape(stripslashes($submitter->get('name'))) . ' (' . $this->escape(stripslashes($this->row->login)) . ')</a>';
+		$unknown = 0;
+	} 
+	else 
+	{
+		$name  = '<a rel="email" href="mailto:'. $this->row->email .'">';
+		$name .= ($this->row->login) ? $this->escape(stripslashes($this->row->name)) . ' (' . $this->escape(stripslashes($this->row->login)) . ')' : $this->escape(stripslashes($this->row->name));
+		$name .= '</a>';
+	}
+} 
+else 
+{
+	$name  = '<a rel="email" href="mailto:'. $this->row->email .'">';
+	$name .= ($this->row->login) ? $this->escape(stripslashes($this->row->name)) . ' (' . $this->escape(stripslashes($this->row->login)) . ')' : $this->escape(stripslashes($this->row->name));
+	$name .= '</a>';
+}
+
+ximport('Hubzero_User_Profile_Helper');
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -56,28 +84,16 @@ $fstring = urlencode(trim($this->filters['_find']));
 
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li><?php
-		if ($this->row->prev) {
-			echo '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=ticket&id='. $this->row->prev.'&find='.$fstring.'&limit='.$this->filters['limit'].'&limitstart='.$this->filters['start']).'">'.JText::_('PREVIOUS_TICKET').'</a>';
-		} else {
-			echo '<span>'.JText::_('PREVIOUS_TICKET').'</span>';
-		}
-		?></li>
-<?php if (!$juser->get('guest')) { ?>
-		<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=tickets&find='.$fstring.'&limit='.$this->filters['limit'].'&limitstart='.$this->filters['start']); ?>"><?php echo JText::_('TICKETS'); ?></a></li>
-<?php } ?>
-		<li class="last"><?php
-		if ($this->row->next) {
-			echo '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=ticket&id='. $this->row->next.'&find='.$fstring.'&limit='.$this->filters['limit'].'&limitstart='.$this->filters['start']).'">'.JText::_('NEXT_TICKET').'</a>';
-		} else {
-			echo '<span>'.JText::_('NEXT_TICKET').'</span>';
-		}
-		?></li>
+		<li class="last">
+			<a class="ticket" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=tickets&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='.$this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
+				<?php echo JText::_('TICKETS'); ?>
+			</a>
+		</li>
 	</ul>
 </div><!-- / #content-header-extra -->
 
 <?php if ($this->getError()) { ?>
-<p class="error"><?php echo $this->getError(); ?></p>
+<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
 
 <div class="main section">
@@ -88,79 +104,58 @@ $fstring = urlencode(trim($this->filters['_find']));
 			<p><strong>Note:</strong> To reopen this issue, add a comment below.</p>
 <?php } ?>
 			<!-- <p class="ticket-number">#<strong><?php echo $this->row->id; ?></strong></p> -->
-<?php
-/*if ($this->comments) {
-	$lc = end($this->comments);
-?>
-		<p><?php echo JText::_('TICKET_LAST_ACTIVITY'); ?>: <strong><?php echo SupportHtml::timeAgo($lc->created); ?> ago</strong></p>
-<?php
-}*/
-?>
 		</div><!-- / .ticket-status -->
 	</div><!-- / .aside -->
 
 	<div class="subject">
-		<?php
-		$unknown = 1;
-		$name = JText::_('Unknown');
-		$submitter = new Hubzero_User_Profile();
-		if ($this->row->login) {
-			//$juseri =& JUser::getInstance($comment->created_by);
-			$submitter->load($this->row->login);
-			if (is_object($submitter) && $submitter->get('name')) {
-				$name = '<a rel="profile" href="'.JRoute::_('index.php?option=com_members&id='.$submitter->get('uidNumber')).'">'.stripslashes($submitter->get('name')).' ('.$this->row->login.')</a>';
-				$unknown = 0;
-			} else {
-				$name  = '<a rel="email" href="mailto:'. $this->row->email .'">';
-				$name .= ($this->row->login) ? $this->row->name.' ('.$this->row->login.')' : $this->row->name;
-				$name .= '</a>';
-			}
-		} else {
-			$name  = '<a rel="email" href="mailto:'. $this->row->email .'">';
-			$name .= ($this->row->login) ? $this->row->name.' ('.$this->row->login.')' : $this->row->name;
-			$name .= '</a>';
-		}
-		?>
 		<div class="ticket" id="t<?php echo $this->row->id; ?>">
 			<p class="ticket-member-photo">
 				<span class="ticket-anchor"><a name="ticket"></a></span>
-				<img src="<?php echo SupportHtml::getMemberPhoto($submitter, $unknown); ?>" alt="" />
+				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($submitter, $unknown); ?>" alt="" />
 			</p><!-- / .ticket-member-photo -->
 			<div class="ticket-content">
 				<p class="ticket-title">
 					<strong><?php echo $name; ?></strong> 
-					<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=ticket&id='.$this->row->id); ?>" title="<?php echo JText::_('COM_SUPPORT_PERMALINK'); ?>">@ 
-						<span class="time"><?php echo JHTML::_('date',$this->row->created, $timeFormat, $tz); ?></span> on 
-						<span class="date"><?php echo JHTML::_('date',$this->row->created, $dateFormat, $tz); ?></span>
+					<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=ticket&id=' . $this->row->id); ?>" title="<?php echo JText::_('COM_SUPPORT_PERMALINK'); ?>">@ 
+						<span class="time"><time datetime="<?php echo $this->row->created; ?>"><?php echo JHTML::_('date', $this->row->created, $timeFormat, $tz); ?></time></span> <?php echo JText::_('on'); ?> 
+						<span class="date"><time datetime="<?php echo $this->row->created; ?>"><?php echo JHTML::_('date', $this->row->created, $dateFormat, $tz); ?></time></span>
 					</a>
 				</p><!-- / .ticket-title -->
-				<p><?php echo preg_replace('/  /', ' &nbsp;', $this->row->report); ?></p>
+				<blockquote class="ticket-body" cite="<?php echo ($this->row->login) ? $this->escape(stripslashes($this->row->login)) : $this->escape(stripslashes($this->row->name)); ?>">
+					<p><?php echo preg_replace('/  /', ' &nbsp;', $this->row->report); ?></p>
+				</blockquote><!-- / .ticket-body -->
 <?php if ($this->acl->check('update', 'tickets') > 0) { ?>
-				<table id="ticket-details" summary="<?php echo JText::_('TICKET_DETAILS_TBL_SUMMARY'); ?>">
-					<caption id="toggle-details"><?php echo JText::_('TICKET_DETAILS'); ?></caption>
-					<tbody id="ticket-details-body" class="hide">
-						<tr>
-							<th><?php echo JText::_('TICKET_DETAILS_OS'); ?>:</th>
-							<td><?php echo $this->row->os; ?> / <?php echo $this->row->browser; ?> (<?php echo ($this->row->cookies) ? JText::_('COOKIES_ENABLED') : JText::_('COOKIES_DISABLED'); ?>)</td>
-						</tr>
-						<tr>
-							<th><?php echo JText::_('TICKET_DETAILS_IP'); ?>:</th>
-							<td><?php echo $this->row->ip; ?> (<?php echo $this->row->hostname; ?>)</td>
-						</tr>
-						<tr>
-							<th><?php echo JText::_('TICKET_DETAILS_REFERRER'); ?>:</th>
-							<td><?php echo ($this->row->referrer) ? $this->row->referrer : ' '; ?></td>
-						</tr>
-						<tr>
-							<th><?php echo JText::_('TICKET_DETAILS_INSTANCES'); ?>:</th>
-							<td><?php echo $this->row->instances; ?></td>
-						</tr>
-						<tr>
-							<th><?php echo JText::_('TICKET_DETAILS_UASTRING'); ?>:</th>
-							<td><?php echo $this->row->uas; ?></td>
-						</tr>
-					</tbody>
-				</table>
+				<div class="ticket-details">
+					<table summary="<?php echo JText::_('TICKET_DETAILS_TBL_SUMMARY'); ?>">
+						<tbody>
+							<tr>
+								<th scope="row"><?php echo JText::_('TICKET_DETAILS_EMAIL'); ?>:</th>
+								<td><a href="mailto:<?php echo $this->row->email; ?>"><?php echo $this->escape($this->row->email); ?></a></td>
+							</tr>
+							<tr>
+								<th scope="row"><?php echo JText::_('TICKET_DETAILS_OS'); ?>:</th>
+								<td><?php echo $this->escape($this->row->os); ?> / <?php echo $this->escape($this->row->browser); ?> (<?php echo ($this->row->cookies) ? JText::_('COOKIES_ENABLED') : JText::_('COOKIES_DISABLED'); ?>)</td>
+							</tr>
+							<tr>
+								<th scope="row"><?php echo JText::_('TICKET_DETAILS_IP'); ?>:</th>
+								<td><?php echo $this->escape($this->row->ip); ?> (<?php echo  $this->escape($this->row->hostname); ?>)</td>
+							</tr>
+							<tr>
+								<th scope="row"><?php echo JText::_('TICKET_DETAILS_REFERRER'); ?>:</th>
+								<td><?php echo ($this->row->referrer) ? $this->escape($this->row->referrer) : ' '; ?></td>
+							</tr>
+							<tr>
+								<th scope="row"><?php echo JText::_('TICKET_DETAILS_INSTANCES'); ?>:</th>
+								<td><?php echo $this->escape($this->row->instances); ?></td>
+							</tr>
+<?php 			if ($this->row->uas) { ?>
+							<tr>
+								<td colspan="2"><?php echo $this->escape($this->row->uas); ?></td>
+							</tr>
+<?php 			} ?>
+						</tbody>
+					</table>
+				</div><!-- / .ticket-details -->
 <?php } ?>
 			</div><!-- / .ticket-content -->
 		</div><!-- / .ticket -->
@@ -173,7 +168,9 @@ $fstring = urlencode(trim($this->filters['_find']));
 			
 	<div class="aside">
 <?php if ($this->acl->check('create', 'comments')) { ?>
-		<p class="add"><a href="#commentform"><?php echo JText::_('ADD_COMMENT'); ?></a></p>
+		<p>
+			<a class="add" href="#commentform"><?php echo JText::_('ADD_COMMENT'); ?></a>
+		</p>
 <?php } ?>
 	</div><!-- / .aside -->
 
@@ -181,96 +178,116 @@ $fstring = urlencode(trim($this->filters['_find']));
 <?php if (count($this->comments) > 0) { ?>
 		<ol class="comments">
 <?php
-			ximport('Hubzero_User_Profile');
-			$o = 'even';
-			$i = 0;
-			foreach ($this->comments as $comment)
+		ximport('Hubzero_User_Profile');
+		$o = 'even';
+		$i = 0;
+		foreach ($this->comments as $comment)
+		{
+			// Is the comment private?
+			// If so, does the user have access to read private comments?
+			//   If not, skip it
+			if (!$this->acl->check('read', 'private_comments') && $comment->access == 1) 
 			{
-				if (!$this->acl->check('read', 'private_comments') && $comment->access == 1) {
-					continue;
-				}
-				$i++;
+				continue;
+			}
+			$i++;
 
-				if ($comment->access == 1) {
-					$access = 'private';
-				} else {
-					$access = 'public';
-				}
-				if ($comment->created_by == $this->row->login && $comment->access != 1) {
-					$access = 'submitter';
-				}
+			// Set the CSS class
+			if ($comment->access == 1) 
+			{
+				$access = 'private';
+			} 
+			else 
+			{
+				$access = 'public';
+			}
+			if ($comment->created_by == $this->row->login && $comment->access != 1) 
+			{
+				$access = 'submitter';
+			}
 
-				$name = JText::_('Unknown');
-				if ($comment->created_by) {
-					//$juseri =& JUser::getInstance($comment->created_by);
-					$juseri = new Hubzero_User_Profile();
-					$juseri->load($comment->created_by);
-					if (is_object($juseri) && $juseri->get('name')) {
-						$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$juseri->get('uidNumber')).'">'.stripslashes($juseri->get('name')).'</a>';
-					}
+			$name = JText::_('Unknown');
+			$cite = $name;
+			if ($comment->created_by) 
+			{
+				$juseri = Hubzero_User_Profile::getInstance($comment->created_by);
+				if (is_object($juseri) && $juseri->get('name')) 
+				{
+					$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $juseri->get('uidNumber')) . '">' . $this->escape(stripslashes($juseri->get('name'))) . '</a>';
+					$cite = $this->escape(stripslashes($juseri->get('name')));
 				}
+			}
 
-				$o = ($o == 'odd') ? 'even' : 'odd';
+			$o = ($o == 'odd') ? 'even' : 'odd';
 ?>
-			<li class="comment <?php echo $access.' '.$o; ?>" id="c<?php echo $comment->id; ?>">
+			<li class="comment <?php echo $access . ' ' . $o; ?>" id="c<?php echo $comment->id; ?>">
 				<p class="comment-member-photo">
 					<span class="comment-anchor"><a name="c<?php echo $comment->id; ?>"></a></span>
-					<img src="<?php echo SupportHtml::getMemberPhoto($juseri, 0); ?>" alt="" />
+					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($juseri, 0); ?>" alt="" />
 				</p>
 				<div class="comment-content">
-					<p class="comment-title">
-						<strong><?php echo $name; ?></strong>
-						<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=ticket&id='.$this->row->id.'#c'.$comment->id); ?>" title="<?php echo JText::_('COM_SUPPORT_PERMALINK'); ?>">@ 
-							<span class="time"><?php echo JHTML::_('date', $comment->created, $timeFormat, $tz); ?></span> on 
-							<span class="date"><?php echo JHTML::_('date', $comment->created, $dateFormat, $tz); ?></span>
+					<p class="comment-head">
+						<strong>
+							<?php echo $name; ?>
+						</strong>
+						<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=ticket&id=' . $this->row->id . '#c' . $comment->id); ?>" title="<?php echo JText::_('COM_SUPPORT_PERMALINK'); ?>">@ 
+							<span class="time"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, $dateFormat, $tz); ?></time></span> <?php echo JText::_('on'); ?> 
+							<span class="date"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, $timeFormat, $tz); ?></time></span>
 						</a>
-					</p>
+					</p><!-- / .comment-head -->
+<?php 		if ($comment->comment) { ?>
+					<blockquote class="comment-body" cite="<?php echo $cite; ?>">
+						<p><?php echo preg_replace('/  /', ' &nbsp;', $comment->comment); ?></p>
+					</blockquote><!-- / .comment-body -->
+<?php 		} ?>
 <?php 
-				if ($comment->comment) {
-?>
-					<p><?php echo preg_replace('/  /', ' &nbsp;',$comment->comment); ?></p>
-<?php
-				}
-?>
-					<div class="changelog">
-						<?php 
-						if (substr($comment->changelog, 0, 1) == '{')
+			if (trim($comment->changelog)) 
+			{
+				$clog = '';
+				if (substr($comment->changelog, 0, 1) == '{')
+				{
+					$logs = json_decode($comment->changelog, true);
+					foreach ($logs as $type => $log)
+					{
+						if (is_array($log) && count($log) > 0)
 						{
-							$logs = json_decode($comment->changelog, true);
-							foreach ($logs as $type => $log)
+							$clog .= '<ul class="' . $type . '">';
+							foreach ($log as $items)
 							{
-								if (is_array($log) && count($log) > 0)
+								if ($type == 'changes')
 								{
-									echo '<ul class="' . $type . '">';
-									foreach ($log as $items)
-									{
-										if ($type == 'changes')
-										{
-											echo '<li>' . JText::sprintf('%s changed from "%s" to "%s"', $items['field'], $items['before'], $items['after']) . '</li>';
-										}
-										else 
-										{
-											echo '<li>' . JText::_('Messaged') . ' (' . $items['role'] . ') ' . $items['name'] . ' - ' . $items['address'] . '</li>';
-										}
-									}
-									echo '</ul>';
+									$clog .= '<li>' . JText::sprintf('%s changed from "%s" to "%s"', $items['field'], $items['before'], $items['after']) . '</li>';
+								}
+								else 
+								{
+									$clog .= '<li>' . JText::_('Messaged') . ' (' . $items['role'] . ') ' . $items['name'] . ' - ' . $items['address'] . '</li>';
 								}
 							}
+							$clog .= '</ul>';
 						}
-						else
-						{
-							echo $comment->changelog;
-						}
-						?>
+					}
+				}
+				else
+				{
+					$comment->changelog = str_replace('changelog', 'changes', $comment->changelog);
+					$comment->changelog = str_replace('E-mailed', JText::_('Messaged'), $comment->changelog);
+					$clog .= str_replace('emaillog', 'notifications', $comment->changelog);
+				}
+?>
+<?php 			if ($clog) { ?>
+					<div class="comment-changelog">
+						<?php echo $clog; ?>
 					</div><!-- / .changelog -->
+<?php 			} ?>
+<?php 		}  // if (trim($comment->changelog))  ?>
 				</div><!-- / .comment-content -->
 			</li>
 <?php
-			}
+		}  // foreach 
 ?>
 		</ol>
 <?php } else { ?>
-		<p class="no-comments">No comments found.</p>
+		<p class="no-comments"><?php echo JText::_('No comments found.'); ?></p>
 <?php } ?>
 	</div><!-- / .subject -->
 	<div class="clear"></div>
@@ -295,14 +312,11 @@ $fstring = urlencode(trim($this->filters['_find']));
 				if (!$juser->get('guest')) {
 					$jxuser = new Hubzero_User_Profile();
 					$jxuser->load($juser->get('id'));
-					$thumb = SupportHtml::getMemberPhoto($jxuser, 0);
+					$thumb = Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, 0);
 				} else {
 					$config =& JComponentHelper::getParams('com_members');
-					$thumb = $config->get('defaultpic');
-					if (substr($thumb, 0, 1) != DS) {
-						$thumb = DS.$dfthumb;
-					}
-					$thumb = SupportHtml::thumbit($thumb);
+					$thumb = DS . ltrim($config->get('defaultpic'), DS);
+					$thumb = Hubzero_User_Profile_Helper::thumbit($thumb);
 				}
 			?>
 				<img src="<?php echo $thumb; ?>" alt="" />
@@ -310,11 +324,16 @@ $fstring = urlencode(trim($this->filters['_find']));
 			<fieldset>
 				<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
 				<input type="hidden" name="ticket[id]" id="ticketid" value="<?php echo $this->row->id; ?>" />
+				<input type="hidden" name="username" value="<?php echo $juser->get('username'); ?>" />
+				
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 				<input type="hidden" name="task" value="update" />
-				<input type="hidden" name="username" value="<?php echo $juser->get('username'); ?>" />
-				<input type="hidden" name="find" value="<?php echo $this->escape(urldecode($fstring)); ?>" />
+				
+				<input type="hidden" name="search" value="<?php echo $this->escape($this->filters['search']); ?>" />
+				<input type="hidden" name="show" value="<?php echo $this->escape($this->filters['show']); ?>" />
+				<input type="hidden" name="limit" value="<?php echo $this->escape($this->filters['limit']); ?>" />
+				<input type="hidden" name="limistart" value="<?php echo $this->escape($this->filters['start']); ?>" />
 <?php if (!$this->acl->check('create', 'private_comments')) { ?>
 				<input type="hidden" name="access" value="0" />
 <?php } ?>
@@ -322,7 +341,7 @@ $fstring = urlencode(trim($this->filters['_find']));
 <?php if ($this->acl->check('update', 'tickets')) { ?>
 				<fieldset>
 <?php if ($this->acl->check('update', 'tickets') > 0) { ?>
-					<legend>Ticket Details</legend>
+					<legend><span><?php echo JText::_('Ticket Details'); ?></span></legend>
 					<label>
 						<?php echo JText::_('COMMENT_TAGS'); ?>:<br />
 						<?php 
@@ -335,69 +354,56 @@ $fstring = urlencode(trim($this->filters['_find']));
 					<?php } ?>
 					</label>
 
-				<div class="grouping">
-					<label>
-						<?php echo JText::_('COMMENT_GROUP'); ?>:
-						<?php 
-					$gc = $dispatcher->trigger('onGetSingleEntryWithSelect', array(array('groups', 'ticket[group]', 'acgroup', '',$this->row->group, '', 'ticketowner')));
-					if (count($gc) > 0) {
-						echo $gc[0];
-					} else { ?>
-						<input type="text" name="ticket[group]" value="<?php echo $this->row->group; ?>" id="acgroup" value="" autocomplete="off" />
-					<?php } ?>
-					</label>
+					<div class="grouping">
+						<label>
+							<?php echo JText::_('COMMENT_GROUP'); ?>:
+							<?php 
+						$gc = $dispatcher->trigger('onGetSingleEntryWithSelect', array(array('groups', 'ticket[group]', 'acgroup', '',$this->row->group, '', 'ticketowner')));
+						if (count($gc) > 0) {
+							echo $gc[0];
+						} else { ?>
+							<input type="text" name="ticket[group]" value="<?php echo $this->row->group; ?>" id="acgroup" value="" autocomplete="off" />
+						<?php } ?>
+						</label>
 
-					<label>
-						<?php echo JText::_('COMMENT_OWNER'); ?>:
-						<?php echo $this->lists['owner']; ?>
-					</label>
-				</div>
-				<div class="clear"></div>
+						<label>
+							<?php echo JText::_('COMMENT_OWNER'); ?>:
+							<?php echo $this->lists['owner']; ?>
+						</label>
+					</div>
+					<div class="clear"></div>
 
-				<div class="grouping">
-					<label>
-						<?php echo JText::_('COMMENT_SEVERITY'); ?>:
-						<?php echo SupportHtml::selectArray('ticket[severity]',$this->lists['severities'],$this->row->severity); ?>
-					</label>
+					<div class="grouping">
+						<label>
+							<?php echo JText::_('COMMENT_SEVERITY'); ?>:
+							<?php echo SupportHtml::selectArray('ticket[severity]', $this->lists['severities'], $this->row->severity); ?>
+						</label>
 <?php } // ACL can update ticket (admin) ?>
-					<label>
-						<?php echo JText::_('COMMENT_STATUS'); ?>:
-						<select name="ticket[resolved]" id="status">
+						<label>
+							<?php echo JText::_('COMMENT_STATUS'); ?>:
+							<select name="ticket[resolved]" id="status">
+								<option value=""<?php if ($this->row->open && $this->row->status != 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('COMMENT_OPT_OPEN'); ?></option>
+								<option value="1"<?php if ($this->row->open && $this->row->status == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('COMMENT_OPT_WAITING'); ?></option>
+								<optgroup label="Closed">
+									<option value="noresolution"<?php if (!$this->row->open && $this->row->resolved == 'noresolution') { echo ' selected="selected"'; } ?>><?php echo JText::_('COMMENT_OPT_CLOSED'); ?></option>
 						<?php 
-						$html  = '<option value=""';
-						if ($this->row->open && $this->row->status != 2) {
-							$html .= ' selected="selected"';
-						}
-						$html .= '>'.JText::_('COMMENT_OPT_OPEN').'</option>'."\n";
-						$html .= '<option value="1"';
-						if ($this->row->open && $this->row->status == 2) {
-							$html .= ' selected="selected"';
-						}
-						$html .= '>'.JText::_('COMMENT_OPT_WAITING').'</option>'."\n";
-						$html .= '<optgroup label="Closed">'."\n";
-						$html .= "\t".'<option value="noresolution"';
-						if (!$this->row->open && $this->row->resolved == 'noresolution') {
-							$html .= ' selected="selected"';
-						}
-						$html .= '>'.JText::_('COMMENT_OPT_CLOSED').'</option>'."\n";
 						if (isset($this->lists['resolutions']) && $this->lists['resolutions']!='') {
 							foreach ($this->lists['resolutions'] as $anode)
 							{
 								$selected = ($anode->alias == $this->row->resolved)
 										  ? ' selected="selected"'
 										  : '';
-								$html .= "\t".'<option value="'.$anode->alias.'"'.$selected.'>'.$this->escape(stripslashes($anode->title)).'</option>'."\n";
+								echo '<option value="'.$anode->alias.'"'.$selected.'>'.$this->escape(stripslashes($anode->title)).'</option>';
 							}
 						}
-						$html .= "\t".'</optgroup>'."\n";
-						echo $html;
 						?>
-						</select>
-					</label>
+								</optgroup>
+							</select>
+						</label>
 <?php if ($this->acl->check('update', 'tickets') > 0) { ?>
-				</div>
+					</div>
 <?php } ?>
-				<div class="clear"></div>
+					<div class="clear"></div>
 				</fieldset>
 
 <?php } // ACL can update tickets ?>
@@ -411,25 +417,25 @@ $fstring = urlencode(trim($this->filters['_find']));
 						<label>
 							<?php
 							$hi = array();
-							$o  = '<select name="messages" id="messages">'."\n";
-							$o .= "\t".'<option value="mc">'.JText::_('COMMENT_CUSTOM').'</option>'."\n";
+							$o  = '<select name="messages" id="messages">' . "\n";
+							$o .= "\t" . '<option value="mc">' . JText::_('COMMENT_CUSTOM') . '</option>' . "\n";
 							$jconfig =& JFactory::getConfig();
 							foreach ($this->lists['messages'] as $message)
 							{
-								$message->message = str_replace('"', '&quot;',$message->message);
-								$message->message = str_replace('&quote;', '&quot;',$message->message);
-								$message->message = str_replace('#XXX', '#'.$this->row->id,$message->message);
-								$message->message = str_replace('{ticket#}',$this->row->id,$message->message);
-								$message->message = str_replace('{sitename}',$jconfig->getValue('config.sitename'),$message->message);
-								$message->message = str_replace('{siteemail}',$jconfig->getValue('config.mailfrom'),$message->message);
+								$message->message = str_replace('"', '&quot;', $message->message);
+								$message->message = str_replace('&quote;', '&quot;', $message->message);
+								$message->message = str_replace('#XXX', '#' . $this->row->id, $message->message);
+								$message->message = str_replace('{ticket#}', $this->row->id, $message->message);
+								$message->message = str_replace('{sitename}', $jconfig->getValue('config.sitename'), $message->message);
+								$message->message = str_replace('{siteemail}', $jconfig->getValue('config.mailfrom'), $message->message);
 
-								$o .= "\t".'<option value="m'.$message->id.'">'.$this->escape(stripslashes($message->title)).'</option>'."\n";
+								$o .= "\t".'<option value="m' . $message->id . '">' . $this->escape(stripslashes($message->title)) . '</option>' . "\n";
 
-								$hi[] = '<input type="hidden" name="m'.$message->id.'" id="m'.$message->id.'" value="'.$this->escape(stripslashes($message->message)).'" />'."\n";
+								$hi[] = '<input type="hidden" name="m' . $message->id . '" id="m'.$message->id.'" value="' . $this->escape(stripslashes($message->message)) . '" />' . "\n";
 							}
-							$o .= '</select>'."\n";
-							$hi = implode("\n",$hi);
-							echo $o.$hi;
+							$o .= '</select>' . "\n";
+							$hi = implode("\n", $hi);
+							echo $o . $hi;
 							?>
 						</label>
 <?php } // ACL can create comment (admin) ?>
@@ -449,14 +455,14 @@ $fstring = urlencode(trim($this->filters['_find']));
 				<fieldset>
 					<legend><?php echo JText::_('COMMENT_LEGEND_ATTACHMENTS'); ?></legend>
 					<div class="grouping">
-						<label>
+						<label for="upload">
 							<?php echo JText::_('COMMENT_FILE'); ?>:
 							<input type="file" name="upload" id="upload" />
 						</label>
 
-						<label>
+						<label for="field-description">
 							<?php echo JText::_('COMMENT_FILE_DESCRIPTION'); ?>:
-							<input type="text" name="description" value="" />
+							<input type="text" name="description" id="field-description" value="" />
 						</label>
 					</div>
 				</fieldset>
@@ -465,11 +471,11 @@ $fstring = urlencode(trim($this->filters['_find']));
 				<fieldset>
 					<legend><?php echo JText::_('COMMENT_LEGEND_EMAIL'); ?>:</legend>
 					<div class="grouping">
-						<label>
+						<label for="email_submitter">
 							<input class="option" type="checkbox" name="email_submitter" id="email_submitter" value="1" checked="checked" /> 
 							<?php echo JText::_('COMMENT_SEND_EMAIL_SUBMITTER'); ?>
 						</label>
-						<label>
+						<label for="email_owner">
 							<input class="option" type="checkbox" name="email_owner" id="email_owner" value="1" checked="checked" /> 
 							<?php echo JText::_('COMMENT_SEND_EMAIL_OWNER'); ?>
 						</label>

@@ -30,7 +30,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Controller');
-include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'query.php');
+include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php');
 
 /**
  * Support controller class for ticket queries
@@ -44,63 +44,9 @@ class SupportControllerQueries extends Hubzero_Controller
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app =& JFactory::getApplication();
-		$config = JFactory::getConfig();
-
-		// Get paging variables
-		$this->view->filters = array();
-		$this->view->filters['limit'] = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=tickets&task=display'
 		);
-		$this->view->filters['start'] = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort', 
-			'filter_order', 
-			'id'
-		));
-		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir', 
-			'filter_order_Dir', 
-			'ASC'
-		));
-		$this->view->filters['iscore']   = array(2, 1);
-
-		$obj = new SupportQuery($this->database);
-
-		// Record count
-		$this->view->total = $obj->getCount($this->view->filters);
-
-		// Fetch results
-		$this->view->rows = $obj->getRecords($this->view->filters);
-
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
-		// Set any errors
-		if ($this->getError()) 
-		{
-			foreach ($this->getError() as $error)
-			{
-				$this->view->setError($error);
-			}
-		}
-
-		// Output the HTML
-		$this->view->display();
 	}
 
 	/**
@@ -120,8 +66,6 @@ class SupportControllerQueries extends Hubzero_Controller
 	 */
 	public function editTask()
 	{
-		JRequest::setVar('hidemainmenu', 1);
-
 		$this->view->setLayout('edit');
 
 		$this->view->lists = array();
@@ -132,8 +76,7 @@ class SupportControllerQueries extends Hubzero_Controller
 
 		$this->view->lists['severities'] = SupportUtilities::getSeverities($this->config->get('severities'));
 
-		$id = JRequest::getVar('id', array(0));
-		$id = intval($id[0]);
+		$id = JRequest::getInt('id', 0);
 
 		$this->view->row = new SupportQuery($this->database);
 		$this->view->row->load($id);
@@ -146,7 +89,7 @@ class SupportControllerQueries extends Hubzero_Controller
 			$this->view->row->sort_dir = 'desc';
 		}
 
-		include_once(JPATH_COMPONENT . DS . 'models' . DS . 'conditions.php');
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'conditions.php');
 		$con = new SupportModelConditions();
 		$this->view->conditions = $con->getConditions();
 
@@ -227,8 +170,7 @@ class SupportControllerQueries extends Hubzero_Controller
 		{
 			// Output messsage and redirect
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('QUERY_SUCCESSFULLY_SAVED')
+				JRoute::_('index.php?option=' . $this->_option . '&controller=tickets&task=display&show=' . $row->id)
 			);
 		}
 		else 
@@ -273,21 +215,18 @@ class SupportControllerQueries extends Hubzero_Controller
 	 */
 	public function removeTask()
 	{
-		// Check for request forgeries
-		JRequest::checkToken() or JRequest::checkToken('get') or jexit('Invalid Token');
-
 		// Incoming
-		$ids     = JRequest::getVar('id', array());
+		$id      = JRequest::getInt('id', 0);
 		$no_html = JRequest::getInt('no_html', 0);
 		$tmpl    = JRequest::getVar('component', '');
 
 		// Check for an ID
-		if (count($ids) < 1)
+		if (!$id)
 		{
 			if (!$no_html && $tmpl != 'component')
 			{
 				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+					'index.php?option=' . $this->_option . '&controller=tickets&task=display',
 					JText::_('SUPPORT_ERROR_SELECT_QUERY_TO_DELETE'),
 					'error'
 				);
@@ -296,18 +235,14 @@ class SupportControllerQueries extends Hubzero_Controller
 		}
 
 		$row = new SupportQuery($this->database);
-		foreach ($ids as $id)
-		{
-			// Delete message
-			$row->delete(intval($id));
-		}
+		// Delete message
+		$row->delete(intval($id));
 
 		if (!$no_html && $tmpl != 'component')
 		{
 			// Output messsage and redirect
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::sprintf('QUERY_SUCCESSFULLY_DELETED', count($ids))
+				'index.php?option=' . $this->_option . '&controller=tickets&task=display'
 			);
 		}
 		else
@@ -353,7 +288,7 @@ class SupportControllerQueries extends Hubzero_Controller
 	public function cancelTask()
 	{
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			'index.php?option=' . $this->_option . '&controller=tickets&task=display'
 		);
 	}
 }

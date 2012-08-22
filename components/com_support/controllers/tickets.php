@@ -33,6 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Controller');
 
+include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php');
 include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'Emailtoken.php');
 
 /**
@@ -333,33 +334,109 @@ class SupportControllerTickets extends Hubzero_Controller
 
 		$this->view->database = $this->database;
 
-		// Incoming
-		$this->view->filters = $this->_getFilters();
-
-		// Check authorization
-		if (!$this->acl->check('read','tickets')) 
-		{
-			$this->view->filters['owner'] = $this->juser->get('username');
-			$this->view->filters['reportedby'] = $this->juser->get('username');
-		}
-		$this->view->authorized = $this->_authorize();
-
 		// Create a Ticket object
 		$obj = new SupportTicket($this->database);
 
-		// Record count
-		$total = $obj->getTicketsCount($this->view->filters, $this->acl->check('read','tickets'));
+		$config = JFactory::getConfig();
+		$app =& JFactory::getApplication();
 
-		// Fetch results
-		$this->view->rows = $obj->getTickets($this->view->filters, $this->acl->check('read','tickets'));
+		$this->view->total = 0;
+		$this->view->rows = array();
+
+		$this->view->filters = array();
+		// Paging
+		$this->view->filters['limit'] = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.limit',
+			'limit',
+			$config->getValue('config.list_limit'),
+			'int'
+		);
+		$this->view->filters['start'] = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.limitstart',
+			'limitstart',
+			0,
+			'int'
+		);
+		// Query to filter by
+		$this->view->filters['show'] = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.show',
+			'show',
+			0,
+			'int'
+		);
+		// Search
+		$this->view->filters['search']       = urldecode($app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.search', 
+			'search', 
+			''
+		));
+
+		$sq = new SupportQuery($this->database);
+		$this->view->queries = array(
+			'common' => $sq->getCommon(),
+			'mine'   => $sq->getMine(),
+			'custom' => $sq->getCustom($this->juser->get('id'))
+		);
+		if (!$this->view->queries['common'] || count($this->view->queries['common']) <= 0)
+		{
+			$this->view->queries['common'] = $sq->populateDefaults('common');
+		}
+		if (!$this->view->queries['mine'] || count($this->view->queries['mine']) <= 0)
+		{
+			$this->view->queries['mine'] = $sq->populateDefaults('mine');
+		}
+		// If no query is set, default to the first one in the list
+		if (!$this->view->filters['show'])
+		{
+			$this->view->filters['show'] = $this->view->queries['common'][0]->id;
+		}
+		// Loop through each grouping
+		foreach ($this->view->queries as $key => $queries)
+		{
+			// Loop through each query in a group
+			foreach ($queries as $k => $query)
+			{
+				// Build the query from the condition set
+				if (!$query->query)
+				{
+					$query->query = $sq->getQuery($query->conditions);
+				}
+				// Get a record count
+				$this->view->queries[$key][$k]->count = $obj->getCount($query->query);
+				// The query is the current active query
+				// get records
+				if ($query->id == $this->view->filters['show'])
+				{
+					// Set the total for the pagination
+					$this->view->total = $this->view->queries[$key][$k]->count;
+					// Incoming sort
+					$this->view->filters['sort']    = trim($app->getUserStateFromRequest(
+						$this->_option . '.' . $this->_controller . '.sort', 
+						'filter_order', 
+						$query->sort
+					));
+					$this->view->filters['sortdir'] = trim($app->getUserStateFromRequest(
+						$this->_option . '.' . $this->_controller . '.sortdir', 
+						'filter_order_Dir', 
+						$query->sort_dir
+					));
+					// Get the records
+					$this->view->rows  = $obj->getRecords($query->query, $this->view->filters);
+				}
+			}
+		}
 
 		// Initiate paging class
 		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination($total, $this->view->filters['start'], $this->view->filters['limit']);
+		$this->view->pageNav = new JPagination(
+			$this->view->total, 
+			$this->view->filters['start'], 
+			$this->view->filters['limit']
+		);
 
 		// Set the page title
 		$this->_buildTitle();
-		
+
 		$this->view->title = $this->_title;
 
 		// Set the pathway
@@ -1115,19 +1192,52 @@ class SupportControllerTickets extends Hubzero_Controller
 			);
 			return;
 		}
-		
+
 		// Check authorization
 		if ($this->juser->get('guest')) 
 		{
 			$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task . '&id=' . $id));
-			$this->_redirect = JRoute::_('index.php?option=com_login&return=' . $return);
+			$this->setRedirect(
+				JRoute::_('index.php?option=com_login&return=' . $return)
+			);
 			return;
 		}
 
 		$this->view->database = $this->database;
 
 		// Incoming
-		$this->view->filters = $this->_getFilters();
+		// Incoming
+		//$this->view->filters = $this->_getFilters();
+		$config = JFactory::getConfig();
+		$app =& JFactory::getApplication();
+
+		$this->view->filters = array();
+		// Paging
+		$this->view->filters['limit'] = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.limit',
+			'limit',
+			$config->getValue('config.list_limit'),
+			'int'
+		);
+		$this->view->filters['start'] = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.limitstart',
+			'limitstart',
+			0,
+			'int'
+		);
+		// Query to filter by
+		$this->view->filters['show'] = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.show',
+			'show',
+			0,
+			'int'
+		);
+		// Search
+		$this->view->filters['search']       = urldecode($app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.search', 
+			'search', 
+			''
+		));
 
 		// Initiate database class and load info
 		$this->view->row = new SupportTicket($this->database);
@@ -1180,8 +1290,8 @@ class SupportControllerTickets extends Hubzero_Controller
 		}
 
 		// Get the next and previous support tickets
-		$this->view->row->prev = $this->view->row->getTicketId('prev', $this->view->filters, $this->view->authorized);
-		$this->view->row->next = $this->view->row->getTicketId('next', $this->view->filters, $this->view->authorized);
+		//$this->view->row->prev = $this->view->row->getTicketId('prev', $this->view->filters, $this->view->authorized);
+		//$this->view->row->next = $this->view->row->getTicketId('next', $this->view->filters, $this->view->authorized);
 
 		// Create a summary title from the report
 		$summary = substr($this->view->row->report, 0, 70);
@@ -1275,8 +1385,8 @@ class SupportControllerTickets extends Hubzero_Controller
 				$this->view->row->owner, 
 				1, 
 				'', 
-				trim($this->view->row->group
-			));
+				trim($this->view->row->group)
+			);
 		} 
 		elseif (trim($this->config->get('group'))) 
 		{
@@ -1302,7 +1412,7 @@ class SupportControllerTickets extends Hubzero_Controller
 
 		// Set the page title
 		$this->_buildTitle($this->view->row);
-		
+
 		$this->view->title = $this->_title;
 
 		// Get some needed styles
@@ -1412,17 +1522,19 @@ class SupportControllerTickets extends Hubzero_Controller
 	 */
 	public function updateTask()
 	{
-		$live_site = rtrim(JURI::base(),'/');
-		
+		$live_site = rtrim(JURI::base(), '/');
+
 		// Make sure we are still logged in
 		if ($this->juser->get('guest')) 
 		{
 			$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task));
-			$this->_redirect = JRoute::_('index.php?option=com_login&return=' . $return);
+			$this->setRedirect(
+				JRoute::_('index.php?option=com_login&return=' . $return)
+			);
 			return;
 		}
-		
-        //$params = &JComponentHelper::getParams($this->_option);
+
+		//$params = &JComponentHelper::getParams($this->_option);
 		$allowEmailResponses = $this->config->get('email_processing');
 
 		if ($allowEmailResponses)
@@ -1482,9 +1594,7 @@ class SupportControllerTickets extends Hubzero_Controller
 
 		// Save the tags
 		$tags = trim(JRequest::getVar('tags', '', 'post'));
-		//if ($tags) {
-			$st->tag_object($this->juser->get('id'), $row->id, $tags, 0, true);
-		//}
+		$st->tag_object($this->juser->get('id'), $row->id, $tags, 0, true);
 
 		// We must have a ticket ID before we can do anything else
 		if ($id) 
@@ -1511,7 +1621,6 @@ class SupportControllerTickets extends Hubzero_Controller
 			}
 
 			// Compare fields to find out what has changed for this ticket and build a changelog
-			//$changelog = array();
 			$log = array(
 				'changes'       => array(),
 				'notifications' => array()

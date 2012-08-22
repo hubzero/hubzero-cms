@@ -79,13 +79,13 @@ function supportBuildRoute(&$query)
 				$segments[] = 'new';
 				unset($query['task']);
 			break;
-			
+
 			case 'update':
 				$segments[] = 'ticket';
 				$segments[] = 'update';
 				unset($query['task']);
 			break;
-			
+
 			case 'feed':
 				$segments[] = 'tickets';
 				$segments[] = 'feed';
@@ -99,6 +99,10 @@ function supportBuildRoute(&$query)
 				}
 				else 
 				{
+					if ($query['controller'] == 'queries')
+					{
+						$segments[] = $query['controller'];
+					}
 					$segments[] = $query['task'];
 				}
 				unset($query['task']);
@@ -140,6 +144,18 @@ function supportParseRoute($segments)
 			$vars['option'] = 'com_support';
 			$vars['controller'] = 'tickets';
 			$vars['task'] = 'new';
+		break;
+
+		case 'queries':
+			$vars['controller'] = $segments[0];
+			if (!empty($segments[1])) 
+			{
+				$vars['task'] = $segments[1];
+			}
+			if (!empty($segments[2])) 
+			{
+				$vars['id'] = $segments[2];
+			}
 		break;
 
 		case 'tickets':
