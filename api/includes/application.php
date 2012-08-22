@@ -49,6 +49,7 @@ class Hubzero_API extends JApplication
 		$this->_component = false;
 		$this->_route = array();
 		$this->provider = null;
+		$this->_authn = array();
 		
 		$this->request = new Hubzero_Api_Request();
 		$this->response = new Hubzero_Api_Response();
@@ -56,6 +57,13 @@ class Hubzero_API extends JApplication
 			
 		return $this; // chaining
 	}
+	
+	/**
+	 * Description for '_authn'
+	 * 
+	 * @var array
+	 */
+	private $_authn = array(); // authentication variables
 	
 	/**
 	 * Description for '_enabled'
@@ -346,13 +354,9 @@ class Hubzero_API extends JApplication
 		JLoader::import('Hubzero.User');
 		JLoader::import('Hubzero.Xml');
 
-		
 		/*
 		 * If CLI then we have to gather all query, post and header values
 		 * into params for Oauth_Provider's constructor.
-		 * 
-		 * 
-		 * 
 		 */
 		$params = array();
 				;
@@ -412,9 +416,73 @@ class Hubzero_API extends JApplication
 			return false;
 		}
 
-		$this->request->validApiKey = true;
-
 		$this->_provider = $oauthp;
+		
+		$this->_authn['oauth_token'] = $oauthp->getToken();
+		$this->_authn['consumer_key'] = $oauthp->getConsumerKey();
+		$this->_authn['user_id'] = null;
+		
+		if ($this->_authn['oauth_token'])
+		{
+			$data = $oauthp->getTokenData();
+			
+			if (!empty($data->user_id))
+			{
+				$this->_authn['user_id'] = $data->user_id;
+			}
+			
+			$this->_authn['session_id'] = null;
+		}
+		else
+		{
+			// well lets try to authenticate it with a session instead
+			
+			$session_name = md5(JUtility::getHash('site'));
+			$session_id = null;
+			
+			if (!empty($_COOKIE[$session_name]))
+			{
+				$session_id = $_COOKIE[$session_name];
+			}
+			
+			$this->_authn['session_id'] = $session_id;
+			$this->_authn['user_id'] = null;
+			
+			if (!empty($session_id))
+			{
+				$db = JFactory::getDBO();
+				$timeout = JFactory::getConfig()->getValue('config.timeout');
+				$query = "SELECT userid FROM #__session WHERE session_id=" . $db->Quote($session_id) . "AND " .
+					" time + " . (int) $timeout . " <= NOW() AND client_id = 0;";
+					
+				$db->setQuery($query);
+				
+				$user_id = $db->loadResult();
+
+				if (!empty($user_id))
+				{
+					$this->_authn['user_id'] = $user_id;
+				}
+			}
+		}
+		
+		$this->request->validApiKey = !empty($this->_authn['consumer_key']);
+	}
+	
+	function getAuthN($key = null)
+	{
+		if ($key === null)
+		{
+			return $this->_authn;
+		}
+		
+		if (in_array($key, array('session_id', 'user_id', 'oauth_token', 'consumer_key')))
+		{
+			if (array_key_exists($key, $this->_authn))
+				return $this->_authn[$key];
+			
+			return null;
+		}
 	}
 
 	/**

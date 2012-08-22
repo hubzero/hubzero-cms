@@ -103,9 +103,7 @@ class MembersApiController extends Hubzero_Api_Controller
 
 	function myprofile()
 	{
-		$data = $this->_provider->getTokenData();
-
-		$userid = $data->user_id;
+		$userid = JFactory::getApplication()->getAuthn('user_id');
 		
 		$result = Hubzero_User_Profile::getInstance($userid);
 
