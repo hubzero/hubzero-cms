@@ -1719,7 +1719,30 @@
 		padding: 0.5em 1em;
 		text-align: center;
 	}
-
+	#fancybox-overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		z-index: 997;
+		background:#000;
+	}
+	.fancybox-wrap {
+		z-index: 998;
+	}
+	.fancybox-wrap .fancybox-title {
+		display: none;
+	}
+	.fancybox-close {
+		position: absolute;
+		top: 0px;
+		right: 0px;
+		width: 30px;
+		height: 30px;
+		background: transparent url('../images/lightbox/fancybox.png') -40px 0px;
+		cursor: pointer;
+		z-index: 999;
+	}
 /* Tagcloud */
 	.tags {
 		margin: 0;
