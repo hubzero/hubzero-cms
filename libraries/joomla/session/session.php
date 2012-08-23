@@ -450,9 +450,12 @@ class JSession extends JObject
 		/* BEGIN: HUBzero Extension to regenerate session id if passed a session id that no longer exists */
 		if ($_SESSION === array())
 		{
-			session_destroy();
-			session_id( $this->_createId() );
-			session_start();
+			if (!$this->_store instanceof JSessionStorageNull) 
+			{
+				session_destroy();
+				session_id( $this->_createId() );
+				session_start();
+			}
 		}
 		/* END: HUBzero Extension to regenerate session id if passed a session id that no longer exists */
 		

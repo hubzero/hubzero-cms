@@ -136,7 +136,6 @@ class Hubzero_API extends JApplication
 		define('JVERSION', $version->getShortVersion());
 
 		$config['clientId'] = 4;
-        $config['session'] = false;
         
         $this->reset();
         
@@ -810,7 +809,37 @@ class Hubzero_API extends JApplication
 	 */
 	function &_createSession( $name )
 	{
-		die('_createSession() invalid in API application context');
+		$conf =& JFactory::getConfig();
+		$conf->setValue('config.session_handler', 'null');
+		
+		$options['name'] = JUtility::getHash('site'); 
+		
+		switch($this->_clientId) 
+		{
+			case 0:
+				if($this->getCfg('force_ssl') == 2) 
+				{
+					$options['force_ssl'] = true;
+				}
+				break;
+				
+			case 1:
+				if($this->getCfg('force_ssl') >= 1) 
+				{
+					$options['force_ssl'] = true;
+				}
+				break;
+		}
+		
+		$session =& JFactory::getSession($options);
+		$session->set('registry',	new JRegistry('session'));
+		$session->set('user',		new JUser());
+		
+		jimport('joomla.database.table');
+		$storage = & JTable::getInstance('session');
+		$storage->load($session->getId());
+		session_decode($storage->data);
+		return $session;	
 	}
 
 	/**
