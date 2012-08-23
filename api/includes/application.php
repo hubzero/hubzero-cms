@@ -302,7 +302,7 @@ class Hubzero_API extends JApplication
 		{
 			array_shift($segments);
 		}
-		if ((count($segments) > 2) && ($segments[0] == 'api'))
+		if ((count($segments) >= 2) && ($segments[0] == 'api'))
 		{
 			array_shift($segments);
 
@@ -325,10 +325,15 @@ class Hubzero_API extends JApplication
 					require($filename);
 				}
 			}
-			
+
 			$this->_component = $segments[0];
 			array_shift($segments);
-				
+
+			if ($segments === array())
+			{
+				$segments[0] = '';
+			}
+
 			$this->_route = $segments;
 		}
 	}
