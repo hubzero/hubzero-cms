@@ -185,6 +185,12 @@
 	#attachments tbody td {
 		padding: 0.2em 0.4em;
 	}
+	#attachments tbody td span {
+		display: block;
+		overflow: scroll;
+		max-width: 180px;
+		word-wrap: break-word;
+	}
 	#attachments .delete {
 		padding-left: 0;
 		background: transparent;
