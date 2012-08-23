@@ -195,6 +195,6 @@ function ximport($path)
 {
 	if (substr(strtolower($path),0,7) == 'hubzero')
 	{
-		return JLoader::import('.' . str_replace('_', '.', $path), JPATH_ROOT . DS . 'libraries');
+		return JLoader::import(str_replace('_', '.', $path), JPATH_ROOT . DS . 'libraries');
 	}
 }
