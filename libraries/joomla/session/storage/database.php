@@ -81,6 +81,11 @@ class JSessionStorageDatabase extends JSessionStorage
 	 */
 	function write($id, $session_data)
 	{
+		if (JFactory::getApplication()->getClientId() == 4)
+		{
+			return true; // skip session write on api calls
+		}
+		
 		$db =& JFactory::getDBO();
 		if(!$db->connected()) {
 			return false;
