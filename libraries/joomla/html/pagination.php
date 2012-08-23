@@ -414,14 +414,14 @@ class JPagination extends JObject
 			$list['end']['data'] = ($itemOverride) ? pagination_item_inactive($data->end) : $this->_item_inactive($data->end);
 		}
 
-		if ($this->total > $this->limit)
-		{
+		//if ($this->total > $this->limit)
+		//{
 			return ($listOverride) ? pagination_list_render($list) : $this->_list_render($list);
-		}
+		/*}
 		else
 		{
 			return '';
-		}
+		}*/
 	}
 
 	/**
@@ -441,7 +441,7 @@ class JPagination extends JObject
 		$list['limitstart'] = $this->limitstart;
 		$list['total'] = $this->total;
 		$list['limitfield'] = $this->getLimitBox();
-		$list['pagescounter'] = $this->getPagesCounter();
+		$list['pagescounter'] = $this->getResultsCounter(); //$this->getPagesCounter();
 		$list['pageslinks'] = $this->getPagesLinks();
 
 		$chromePath = JPATH_THEMES . '/' . $app->getTemplate() . '/html/pagination.php';
