@@ -86,8 +86,7 @@ class plgGroupsProjects extends JPlugin
 			if(!in_array($this_area['name'],$areas)) {
 				return;
 			}
-		}
-		
+		}		
 		
 		//if we want to return content
 		if ($return == 'html') {
@@ -141,7 +140,7 @@ class plgGroupsProjects extends JPlugin
 			
 			// Which view 		
 			$task = $action ? strtolower(trim($action)) : JRequest::getVar('action', '');
-
+			
 			switch ($task) 
 			{
 				case 'all': 		$arr['html'] = $this->_view('all');     	break;
@@ -149,9 +148,6 @@ class plgGroupsProjects extends JPlugin
 				case 'updates':    	$arr['html'] = $this->_updates();   		break;         
 				default:     		$arr['html'] = $this->_view('all');   		break;
 			}
-			
-			//set the returned html to view all groups projects
-			//$arr['html'] = $this->browse();
 		}
 		
 		// Return the output

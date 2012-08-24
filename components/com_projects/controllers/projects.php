@@ -3701,7 +3701,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		if ($project->owned_by_group) 
 		{
 			$eview->nativegroup = new Hubzero_Group();
-			$eview->nativegroup->select( $project->owned_by_group);	
+			$eview->nativegroup = Hubzero_Group::getInstance( $project->owned_by_group );
 		}
 		
 		// Send out message/email

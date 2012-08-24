@@ -25,6 +25,7 @@
 		background-color:#f4f4f4;
 		border:10px solid #f4f4f4;
 		}
+	#page_menu li .projects:before { content: "\f03f"; }
 
 /* Aside */
 	.group_projects .aside {

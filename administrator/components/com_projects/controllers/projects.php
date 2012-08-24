@@ -1,34 +1,48 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * HUBzero CMS
  *
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
+ * Copyright 2005-2011 Purdue University. All rights reserved.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * This program is distributed in the hope that it will be useful,
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Controller');
 
+/**
+ * Manage projects
+ */
 class ProjectsControllerProjects extends Hubzero_Controller
 {
+	/**
+	 * Executes a task
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 		// Load the component config
@@ -72,9 +86,11 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			require_once( JPATH_ROOT . DS . 'components'.DS
 				. 'com_publications' . DS . 'helpers' . DS . 'helper.php');	
 		}
-				
-		$this->_task = strtolower(JRequest::getVar('task', '','request'));
 		
+		$this->_task = strtolower(JRequest::getVar('task', '','request'));
+		parent::execute();
+		
+		/*	
 		switch ($this->_task) 
 		{
 			case 'browse':   	 $this->_browse();   	  break;
@@ -86,13 +102,15 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			
 			default: $this->_browse(); break;
 		}
+		*/
 	}
 
-	//----------------------------------------------------------
-	//  Views
-	//----------------------------------------------------------
-	
-	protected function _browse()
+	/**
+	 * Lists projects
+	 * 
+	 * @return     void
+	 */
+	public function displayTask()
 	{
 		// Instantiate a new view
 		$view = new JView( array('name'=>'projects') );
@@ -105,9 +123,9 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$app =& JFactory::getApplication();
 		
 		// Push some styles to the template
-		$document =& JFactory::getDocument();
-		$document->addStyleSheet(DS.'components'.DS.$this->_option.DS.'projects.css');
-		
+		ximport('Hubzero_Document');
+		Hubzero_Document::addComponentStylesheet('com_projects');
+			
 		// Get filters
 		$view->filters = array();
 		$view->filters['search'] 		= urldecode($app->getUserStateFromRequest($this->_option.'.search', 'search', ''));
@@ -150,9 +168,12 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$view->display();
 	}
 	
-	//-----------
-	
-	protected function _edit( ) 
+	/**
+	 * Edit project info
+	 * 
+	 * @return     void 
+	 */
+	public function editTask()
 	{
 		// Incoming project ID
 		$id = JRequest::getVar( 'id', array(0) );
@@ -176,16 +197,16 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$obj = new Project( $this->database );
 		$objAC = new ProjectActivity( $this->database );
 				
-		if($id) 
+		if ($id) 
 		{
-			if(!$obj->loadProject($id)) 
+			if (!$obj->loadProject($id)) 
 			{
 				$this->_message = JText::_('COM_PROJECTS_NOTICE_ID_NOT_FOUND');
 				$this->_redirect = 'index.php?option='.$this->_option;
 				return;
 			}
 		}
-		if(!$id) 
+		if (!$id) 
 		{
 			$this->_message = JText::_('COM_PROJECTS_NOTICE_NEW_PROJECT_FRONT_END');
 			$this->_redirect = 'index.php?option='.$this->_option;
@@ -224,7 +245,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		// Was project suspended?
 		$view->suspended = false;
 		$setup_complete = $this->_config->get('confirm_step', 0) ? 3 : 2;
-		if($obj->state == 0 && $obj->setup_stage >= $setup_complete) 
+		if ($obj->state == 0 && $obj->setup_stage >= $setup_complete) 
 		{
 			$view->suspended = $objAC->checkActivity( $id, JText::_('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'));
 		}
@@ -252,9 +273,13 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$view->display();	
 	}
 	
-	//-----------
-
-	protected function _save() 
+	/**
+	 * Saves a project
+	 * Redirects to main listing
+	 * 
+	 * @return     void
+	 */
+	public function saveTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
@@ -273,7 +298,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		
 		// Initiate extended database class
 		$obj = new Project( $this->database );
-		if(!$id or !$obj->loadProject($id)) 
+		if (!$id or !$obj->loadProject($id)) 
 		{
 			$this->setError( JText::_('COM_PROJECTS_NOTICE_ID_NOT_FOUND') );
 			return false;
@@ -288,7 +313,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		
 		// Was project suspended?
 		$suspended = false;
-		if($obj->state == 0 && $obj->setup_stage >= $setup_complete) 
+		if ($obj->state == 0 && $obj->setup_stage >= $setup_complete) 
 		{
 			$suspended = $objAA->checkActivity( $id, JText::_('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'));
 		}
@@ -307,7 +332,8 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$managers = $objO->getIds( $id, 1, 1 );
 
 		// Admin actions
-		if($action) {
+		if ($action) 
+		{
 			switch ($action) 
 			{
 				case 'delete':   	 
@@ -352,11 +378,11 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		
 		// Save params
 		$incoming   = JRequest::getVar( 'params', array() );
-		if(!empty($incoming)) 
+		if (!empty($incoming)) 
 		{
 			foreach($incoming as $key=>$value) 
 			{
-				if($key == 'quota') 
+				if ($key == 'quota') 
 				{
 					// convert GB to bytes
 					$value = ProjectsHtml::convertSize( floatval($value), 'GB', 'b');
@@ -366,7 +392,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		}
 		
 		// Send message
-		if($this->_config->get('messaging', 0) && $sendmail && count($managers) > 0) 
+		if ($this->_config->get('messaging', 0) && $sendmail && count($managers) > 0) 
 		{
 			// Get message body
 			$eview = new JView( array('name'=>'emails' ) );
@@ -376,11 +402,11 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			$eview->hubShortName = $jconfig->getValue('config.sitename');
 			$eview->project = $project;
 			$livesite = $jconfig->getValue('config.live_site');
-			$eview->url = $livesite.DS.'projects'.DS.$project->alias;
+			$eview->url = $livesite.DS.'projects' . DS . $project->alias;
 			$eview->params = new JParameter( $obj->params );
 			$eview->config = $this->_config;
 			$body = $eview->loadTemplate();
-			if($message) 
+			if ($message) 
 			{
 				$body.=  JText::_('COM_PROJECTS_MSG_MESSAGE_FROM_ADMIN').': '."\n".$message;
 			}	
@@ -397,19 +423,23 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$this->_message = JText::_('Item successfully saved');
 	}
 	
-	//-----------
-
-	protected function _cancel()
+	/**
+	 * Redirects
+	 * 
+	 * @return     void
+	 */
+	public function cancelTask()
 	{
-		$this->_redirect = 'index.php?option='.$this->_option;
+		$this->_redirect = 'index.php?option=' . $this->_option;
 		return;
 	}
 	
-	//-----------
-	// Notice::
-	// This will completely wipe out all project info and data - to be used to remove test projects only	
-	
-	protected function _erase( ) 
+	/**
+	 * Erases all project information (to be used for test projects only)
+	 * 
+	 * @return     void
+	 */
+	public function eraseTask() 
 	{
 		$id = JRequest::getVar( 'id', 0 );
 		$permanent = 1;
@@ -417,7 +447,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		
 		// Initiate extended database class
 		$obj = new Project( $this->database );
-		if(!$id or !$obj->loadProject($id)) 
+		if (!$id or !$obj->loadProject($id)) 
 		{
 			$this->setError( JText::_('COM_PROJECTS_NOTICE_ID_NOT_FOUND') );
 			return false;
@@ -445,7 +475,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		ximport('Hubzero_Group');
 		$group = new Hubzero_Group();
 		$group->read( $prgroup );
-		if($group) 
+		if ($group) 
 		{
 			$group->delete();	
 		}		
@@ -467,24 +497,28 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$objB->deletePosts( $id, $permanent );
 		
 		// Erase all notes
-		include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'attachment.php');
-		include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'author.php');
-		include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'comment.php');
-		include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'log.php');
-		include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'page.php');
-		include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'tables'.DS.'revision.php');
+		include_once(JPATH_ROOT.DS.'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'attachment.php');
+		include_once(JPATH_ROOT.DS.'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'author.php');
+		include_once(JPATH_ROOT.DS.'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'comment.php');
+		include_once(JPATH_ROOT.DS.'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'log.php');
+		include_once(JPATH_ROOT.DS.'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
+		include_once(JPATH_ROOT.DS.'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'revision.php');
 		
-		if(is_file(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'helpers'.DS.'config.php')) 
+		if(is_file(JPATH_ROOT.DS.'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'config.php')) 
 		{
-			include_once(JPATH_ROOT.DS.'components'.DS.'com_wiki'.DS.'helpers'.DS.'config.php');
+			include_once(JPATH_ROOT.DS.'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'config.php');
 		}
-		$masterscope = 'projects'.DS.$alias.DS.'notes';
+		$masterscope = 'projects' . DS . $alias.DS.'notes';
 		
 		// Get all notes
-		$this->database->setQuery( "SELECT DISTINCT p.id FROM #__wiki_page AS p WHERE p.group='".$prgroup."' AND p.scope LIKE '".$masterscope."%' " );
+		$this->database->setQuery( "SELECT DISTINCT p.id FROM #__wiki_page AS p 
+			WHERE p.group_cn='".$prgroup."' AND p.scope LIKE '".$masterscope."%' " );
 		$notes = $this->database->loadObjectList();
-		if($notes) {
-			foreach($notes as $note) {
+		
+		if($notes) 
+		{
+			foreach($notes as $note) 
+			{
 				$page = new WikiPage( $this->database );
 						
 				// Delete the page's history, tags, comments, etc.
@@ -514,7 +548,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			$repodir = substr($repodir, 0, (strlen($repodir) - 1));
 		}
 		$path = $prefix.$repodir.DS.$dir;
-		if(is_dir($path)) 
+		if (is_dir($path)) 
 		{
 			JFolder::delete( $path);			
 		}
@@ -530,13 +564,16 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			$webdir = substr($webdir, 0, (strlen($webdir) - 1));
 		}
 		$webpath = JPATH_ROOT.$webdir.DS.$dir;
-		if(is_dir($webpath)) 
+		if (is_dir($webpath)) 
 		{
 			JFolder::delete( $webpath);
 		}		
 		
 		// Erase all publications
-		// TBD ^^^^^^^^^^^^^^^^^^
+		if ($this->_publishing)
+		{
+			// TBD
+		}
 		
 		// Redirect
 		$this->_redirect = 'index.php?option='.$this->_option;

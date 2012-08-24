@@ -444,8 +444,7 @@ class ProjectsHelper extends JObject {
 		// Get profile of author group
 		if ($project->owned_by_group) 
 		{
-			$eview->nativegroup = new Hubzero_Group();
-			$eview->nativegroup->select( $project->owned_by_group);	
+			$eview->nativegroup = Hubzero_Group::getInstance( $project->owned_by_group );	
 		}
 		$body = $eview->loadTemplate();
 		$body = str_replace("\n", "\r\n", $body);
