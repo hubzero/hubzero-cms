@@ -214,6 +214,8 @@ if ($results)
 	if (jQuery()) {
 		var $ = jq;
 		
+		dataurl = '/index.php?option=com_resources&id=<?php echo $this->resource->id; ?>&active=usage&action=top&datetime=';
+		
 		$(function () {
 			var datasets = [
 				{
@@ -324,7 +326,7 @@ if ($results)
 								mm = '0' + mm
 							}
 							// Update organizations pie chart
-							if (orgData[yyyy + '/' + mm + '/01'].length > 0) {
+							/*if (orgData[yyyy + '/' + mm + '/01'].length > 0) {
 								populateTable('pie-org-data', orgData[yyyy + '/' + mm + '/01']);
 								$.plot($("#pie-org"), orgData[yyyy + '/' + mm + '/01'].slice(1), pieOptions);
 							}
@@ -337,7 +339,34 @@ if ($results)
 							if (domainData[yyyy + '/' + mm + '/01'].length > 0) {
 								populateTable('pie-domains-data', domainData[yyyy + '/' + mm + '/01']);
 								$.plot($("#pie-domains"), domainData[yyyy + '/' + mm + '/01'].slice(1), pieOptions);
-							}
+							}*/
+							$.getJSON(dataurl + yyyy + '-' + mm, function(series){
+								if (!orgData[yyyy + '/' + mm + '/01']) {
+									orgData[yyyy + '/' + mm + '/01'] = series.orgs[yyyy + '/' + mm + '/01'];
+								}
+								if (!countryData[yyyy + '/' + mm + '/01']) {
+									countryData[yyyy + '/' + mm + '/01'] = series.countries[yyyy + '/' + mm + '/01'];
+								}
+								if (!domainData[yyyy + '/' + mm + '/01']) {
+									domainData[yyyy + '/' + mm + '/01'] = series.domains[yyyy + '/' + mm + '/01'];
+								}
+								// Update organizations pie chart
+								if (orgData[yyyy + '/' + mm + '/01'].length > 0) {
+									populateTable('pie-org-data', orgData[yyyy + '/' + mm + '/01']);
+									$.plot($("#pie-org"), orgData[yyyy + '/' + mm + '/01'].slice(1), pieOptions);
+								}
+								// Update countries pie chart
+								if (countryData[yyyy + '/' + mm + '/01'].length > 0) {
+									populateTable('pie-country-data', countryData[yyyy + '/' + mm + '/01']);
+									$.plot($("#pie-country"), countryData[yyyy + '/' + mm + '/01'].slice(1), pieOptions);
+								}
+								// Update domains pie chart
+								if (domainData[yyyy + '/' + mm + '/01'].length > 0) {
+									populateTable('pie-domains-data', domainData[yyyy + '/' + mm + '/01']);
+									$.plot($("#pie-domains"), domainData[yyyy + '/' + mm + '/01'].slice(1), pieOptions);
+								}
+							});
+
 							// Unhighlight any previously clicked points
 							plotU.unhighlight();
 							plotR.unhighlight();
@@ -394,8 +423,36 @@ if ($results)
 							if (mm < 10) {
 								mm = '0' + mm
 							}
+
+							$.getJSON(dataurl + yyyy + '-' + mm, function(series){
+								if (!orgData[yyyy + '/' + mm + '/01']) {
+									orgData[yyyy + '/' + mm + '/01'] = series.orgs[yyyy + '/' + mm + '/01'];
+								}
+								if (!countryData[yyyy + '/' + mm + '/01']) {
+									countryData[yyyy + '/' + mm + '/01'] = series.countries[yyyy + '/' + mm + '/01'];
+								}
+								if (!domainData[yyyy + '/' + mm + '/01']) {
+									domainData[yyyy + '/' + mm + '/01'] = series.domains[yyyy + '/' + mm + '/01'];
+								}
+								// Update organizations pie chart
+								if (orgData[yyyy + '/' + mm + '/01'].length > 0) {
+									populateTable('pie-org-data', orgData[yyyy + '/' + mm + '/01']);
+									$.plot($("#pie-org"), orgData[yyyy + '/' + mm + '/01'].slice(1), pieOptions);
+								}
+								// Update countries pie chart
+								if (countryData[yyyy + '/' + mm + '/01'].length > 0) {
+									populateTable('pie-country-data', countryData[yyyy + '/' + mm + '/01']);
+									$.plot($("#pie-country"), countryData[yyyy + '/' + mm + '/01'].slice(1), pieOptions);
+								}
+								// Update domains pie chart
+								if (domainData[yyyy + '/' + mm + '/01'].length > 0) {
+									populateTable('pie-domains-data', domainData[yyyy + '/' + mm + '/01']);
+									$.plot($("#pie-domains"), domainData[yyyy + '/' + mm + '/01'].slice(1), pieOptions);
+								}
+							});
+
 							// Update organizations pie chart
-							if (orgData[yyyy + '/' + mm + '/01'].length > 0) {
+							/*if (orgData[yyyy + '/' + mm + '/01'].length > 0) {
 								populateTable('pie-org-data', orgData[yyyy + '/' + mm + '/01']);
 								$.plot($("#pie-org"), orgData[yyyy + '/' + mm + '/01'].slice(1), pieOptions);
 							}
@@ -408,7 +465,7 @@ if ($results)
 							if (domainData[yyyy + '/' + mm + '/01'].length > 0) {
 								populateTable('pie-domains-data', domainData[yyyy + '/' + mm + '/01']);
 								$.plot($("#pie-domains"), domainData[yyyy + '/' + mm + '/01'].slice(1), pieOptions);
-							}
+							}*/
 							// Unhighlight any previously clicked points
 							plotU.unhighlight();
 							plotR.unhighlight();
@@ -610,22 +667,28 @@ $colors = array(
 	$this->params->get('pie_chart_color10', '#3a3a3a'),
 );
 
+$datetime = date("Y") . '-' . date("m");
+$tid = plgResourcesUsage::getTid($this->resource->id, $datetime);
+
 if (intval($this->params->get('cache', 1)))
 {
 	$cache =& JFactory::getCache('callback');
 	$cache->setCaching(1);
 	$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
-	$results = $cache->call(array('plgResourcesUsage', 'getTopValue'), $this->resource->id, 3);
+	$results = $cache->call(array('plgResourcesUsage', 'getTopValue'), $this->resource->id, 3, $tid, $datetime);
 }
 else 
 {
-	$results = plgResourcesUsage::getTopCountry($this->resource->id, 3);
+	$results = plgResourcesUsage::getTopValue($this->resource->id, 3, $tid, $datetime);
 }
-
+$data = array();
+$r = array();
+$results = null;
 $total = 0;
 $cls = 'even';
 $tot = '';
 $pieOrg = array();
+$toporgs = null;
 if ($results)
 {
 	$i = 0;
@@ -641,7 +704,10 @@ if ($results)
 			$r[$ky] = array();
 		}
 		$data[$ky][] = $row;
-		
+		if (!isset($colors[$i]))
+		{
+			$i = 0;
+		}
 		$r[$ky][] = '{label: \''.addslashes($row->name).'\', data: '.number_format($row->value).', color: \''.$colors[$i].'\'}';
 		$i++;
 	}
@@ -734,7 +800,7 @@ else
 				?>
 				};
 
-				if (orgData['<?php echo $nd; ?>'].length > 0) {
+				if (typeof orgData['<?php echo $nd; ?>'] != 'undefined' && orgData['<?php echo $nd; ?>'].length > 0) {
 					$.plot($("#pie-org"), orgData['<?php echo $nd; ?>'], pieOptions);
 				}
 			}
@@ -762,13 +828,14 @@ if (intval($this->params->get('cache', 1)))
 	$cache =& JFactory::getCache('callback');
 	$cache->setCaching(1);
 	$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
-	$results = $cache->call(array('plgResourcesUsage', 'getTopValue'), $this->resource->id, 1);
+	$results = $cache->call(array('plgResourcesUsage', 'getTopValue'), $this->resource->id, 1, $tid, $datetime);
 }
 else 
 {
-	$results = plgResourcesUsage::getTopCountry($this->resource->id, 1);
+	$results = plgResourcesUsage::getTopValue($this->resource->id, 1, $tid, $datetime);
 }
-
+$results = null;
+$topcountries = null;
 $i = 0;
 if ($results)
 {
@@ -784,7 +851,10 @@ if ($results)
 			$r[$ky] = array();
 		}
 		$data[$ky][] = $row;
-		
+		if (!isset($colors[$i]))
+		{
+			$i = 0;
+		}
 		$r[$ky][] = '{label: \''.addslashes($row->name).'\', data: '.number_format($row->value).', color: \''.$colors[$i].'\'}'."\n";
 		$i++;
 	}
@@ -861,7 +931,7 @@ echo $tot;
 					?>
 				};
 
-				if (countryData['<?php echo $nd; ?>'].length > 0) {
+				if (typeof countryData['<?php echo $nd; ?>'] != 'undefined' && countryData['<?php echo $nd; ?>'].length > 0) {
 					$.plot($("#pie-country"), countryData['<?php echo $nd; ?>'], pieOptions);
 				}
 			}
@@ -889,13 +959,14 @@ if (intval($this->params->get('cache', 1)))
 	$cache =& JFactory::getCache('callback');
 	$cache->setCaching(1);
 	$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
-	$results = $cache->call(array('plgResourcesUsage', 'getTopValue'), $this->resource->id, 2);
+	$results = $cache->call(array('plgResourcesUsage', 'getTopValue'), $this->resource->id, 2, $tid, $datetime);
 }
 else 
 {
-	$results = plgResourcesUsage::getTopCountry($this->resource->id, 2);
+	$results = plgResourcesUsage::getTopValue($this->resource->id, 2, $tid, $datetime);
 }
-
+$results = null;
+$topdoms = null;
 $i = 0;
 if ($results)
 {
@@ -911,7 +982,10 @@ if ($results)
 			$r[$ky] = array();
 		}
 		$data[$ky][] = $row;
-		
+		if (!isset($colors[$i]))
+		{
+			$i = 0;
+		}
 		$r[$ky][] = '{label: \''.addslashes($row->name).'\', data: '.number_format($row->value).', color: \''.$colors[$i].'\'}';
 		$i++;
 	}
@@ -988,7 +1062,7 @@ echo $tot;
 				?>
 				};
 
-				if (domainData['<?php echo $nd; ?>'].length > 0) {
+				if (typeof domainData['<?php echo $nd; ?>'] != 'undefined' && domainData['<?php echo $nd; ?>'].length > 0) {
 					$.plot($("#pie-domains"), domainData['<?php echo $nd; ?>'], pieOptions);
 				}
 			}

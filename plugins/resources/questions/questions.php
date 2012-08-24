@@ -60,11 +60,21 @@ class plgResourcesQuestions extends JPlugin
 	 */
 	public function &onResourcesAreas($resource)
 	{
-		if ($resource->_type->_params->get('plg_questions')) {
+		if (isset($resource->toolpublished) || isset($resource->revision))
+		{
+			if ($resource->thistool && ($resource->revision=='dev' or !$resource->toolpublished)) 
+			{
+				$resource->_type->_params->set('plg_questions', 0);
+			}
+		}
+		if ($resource->_type->_params->get('plg_questions')) 
+		{
 			$areas = array(
 				'questions' => JText::_('PLG_RESOURCES_QUESTIONS')
 			);
-		} else {
+		} 
+		else 
+		{
 			$areas = array();
 		}
 		return $areas;
@@ -82,6 +92,7 @@ class plgResourcesQuestions extends JPlugin
 	public function onResources($resource, $option, $areas, $rtrn='all')
 	{
 		$arr = array(
+			'area' => 'questions',
 			'html' => '',
 			'metadata' => ''
 		);

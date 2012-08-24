@@ -90,6 +90,7 @@ class plgResourcesSupportingDocs extends JPlugin
 	public function onResources($resource, $option, $areas, $rtrn='all')
 	{
 		$arr = array(
+			'area' => 'supportingdocs',
 			'html' => '',
 			'metadata' => ''
 		);

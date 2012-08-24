@@ -85,6 +85,7 @@ class plgResourcesAbout extends JPlugin
 	public function onResources($resource, $option, $areas, $rtrn='all')
 	{
 		$arr = array(
+			'area' => 'about',
 			'html' => '',
 			'metadata' => ''
 		);

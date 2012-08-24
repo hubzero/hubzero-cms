@@ -83,6 +83,7 @@ class plgResourcesUsage extends JPlugin
 	public function onResources($resource, $option, $areas, $rtrn='all')
 	{
 		$arr = array(
+			'area' => 'usage',
 			'html' => '',
 			'metadata' => ''
 		);
@@ -151,9 +152,15 @@ class plgResourcesUsage extends JPlugin
 		// Are we returning HTML?
 		if ($rtrn == 'all' || $rtrn == 'html') 
 		{
+			$action = JRequest::getVar('action', '');
+			if ($action == 'top')
+			{
+				$this->getTopValues($resource->id, JRequest::getVar('datetime', '0000-00-00 00:00:00'));
+				return;
+			}
 			ximport('Hubzero_Document');
 			Hubzero_Document::addComponentStylesheet('com_usage');
-			
+	
 			// Instantiate a view
 			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
@@ -257,21 +264,182 @@ class plgResourcesUsage extends JPlugin
 	 * 
 	 * @param      integer $id  Resource ID
 	 * @param      integer $top Value type (1 = country, 2 = domain, 3 = org)
+	 * @param      integer $tid Stats ID for that tool
+	 * @param      string  $datetime Timestamp YYYY-MM-DD
 	 * @return     array
 	 */
-	public static function getTopValue($id, $top)
+	public static function getTopValue($id, $top, $tid, $datetime)
 	{
 		$database =& JFactory::getDBO();
+
+		if (!$id || !$tid)
+		{
+			return array();
+		}
 
 		$sql = "SELECT v.*, t.`datetime` 
 				FROM #__resource_stats_tools AS t
 				LEFT JOIN #__resource_stats_tools_topvals AS v ON v.id=t.id
 				WHERE t.resid = '$id' 
 				AND t.period = '1'
-				AND v.top = '$top'
+				AND t.datetime = '" . $datetime . "-00 00:00:00'
+				AND t.id = $tid
+				AND v.top = '3'
 				ORDER BY v.id, v.rank";
 		$database->setQuery($sql);
 		return $database->loadObjectList();
+	}
+
+	/**
+	 * Get the stats ID for a specific resource
+	 * Getting this now allows for faster data pulling later on
+	 * 
+	 * @param      integer $id       Resource ID
+	 * @param      string  $datetime Timestamp YYYY-MM-DD
+	 * @return     array
+	 */
+	public static function getTid($id, $datetime)
+	{
+		$database =& JFactory::getDBO();
+
+		$sql = "SELECT t.id FROM #__resource_stats_tools AS t WHERE t.resid = '$id' AND t.period = '1' AND t.datetime = '" . $datetime . "-00 00:00:00' ORDER BY t.id LIMIT 1";
+		$database->setQuery($sql);
+		return $database->loadResult();
+	}
+
+	/**
+	 * Get data for orgs, countries, domains for a given time period
+	 * (1 = country, 2 = domain, 3 = org)
+	 * 
+	 * @param      integer $id       Resource ID
+	 * @param      string  $datetime Timestamp YYYY-MM-DD
+	 * @return     array
+	 */
+	public function getTopValues($id, $datetime)
+	{
+		$colors = array(
+			$this->params->get('pie_chart_color1', '#7c7c7c'),
+			$this->params->get('pie_chart_color2', '#515151'),
+			$this->params->get('pie_chart_color3', '#d9d9d9'),
+			$this->params->get('pie_chart_color4', '#3d3d3d'),
+			$this->params->get('pie_chart_color5', '#797979'),
+			$this->params->get('pie_chart_color6', '#595959'),
+			$this->params->get('pie_chart_color7', '#e5e5e5'),
+			$this->params->get('pie_chart_color8', '#828282'),
+			$this->params->get('pie_chart_color9', '#404040'),
+			$this->params->get('pie_chart_color10', '#6a6a6a'),
+			$this->params->get('pie_chart_color1', '#bcbcbc'),
+			$this->params->get('pie_chart_color2', '#515151'),
+			$this->params->get('pie_chart_color3', '#d9d9d9'),
+			$this->params->get('pie_chart_color4', '#3d3d3d'),
+			$this->params->get('pie_chart_color5', '#797979'),
+			$this->params->get('pie_chart_color6', '#595959'),
+			$this->params->get('pie_chart_color7', '#e5e5e5'),
+			$this->params->get('pie_chart_color8', '#828282'),
+			$this->params->get('pie_chart_color9', '#404040'),
+			$this->params->get('pie_chart_color10', '#3a3a3a'),
+		);
+
+		$json = new stdClass;
+
+		$database =& JFactory::getDBO();
+
+		$tid = $this->getTid($id, $datetime);
+
+		$orgs = $this->getTopValue($id, 3, $tid, $datetime);
+		if ($orgs)
+		{
+			$i = 0;
+			$r = array();
+			foreach ($orgs as $row)
+			{
+				$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
+				if (!isset($r[$ky]))
+				{
+					$i = 0;
+					$r[$ky] = array();
+				}
+
+				if (!isset($colors[$i]))
+				{
+					$i = 0;
+				}
+
+				$obj = new stdClass;
+				$obj->label = $row->name;
+				$obj->data  = (int) number_format($row->value);
+				$obj->color = $colors[$i];
+
+				$r[$ky][] = $obj; //'{label: \'' . addslashes($row->name) . '\', data: ' . number_format($row->value) . ', color: \'' . $colors[$i] . '\'}';
+				$i++;
+			}
+		}
+		$json->orgs = $r;
+
+		$countries = $this->getTopValue($id, 1, $tid, $datetime);
+		if ($countries)
+		{
+			$i = 0;
+			$r = array();
+			foreach ($countries as $row)
+			{
+				$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
+				if (!isset($r[$ky]))
+				{
+					$i = 0;
+					$r[$ky] = array();
+				}
+
+				if (!isset($colors[$i]))
+				{
+					$i = 0;
+				}
+
+				$obj = new stdClass;
+				$obj->label = $row->name;
+				$obj->data  = (int) number_format($row->value);
+				$obj->color = $colors[$i];
+
+				$r[$ky][] = $obj; //'{label: \'' . addslashes($row->name) . '\', data: ' . number_format($row->value) . ', color: \'' . $colors[$i] . '\'}';
+				$i++;
+			}
+		}
+		$json->countries = $r;
+
+		$domains = $this->getTopValue($id, 2, $tid, $datetime);
+		if ($domains)
+		{
+			$i = 0;
+			$r = array();
+			foreach ($domains as $row)
+			{
+				$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
+				if (!isset($r[$ky]))
+				{
+					$i = 0;
+					$r[$ky] = array();
+				}
+
+				if (!isset($colors[$i]))
+				{
+					$i = 0;
+				}
+
+				$obj = new stdClass;
+				$obj->label = $row->name;
+				$obj->data  = (int) number_format($row->value);
+				$obj->color = $colors[$i];
+
+				$r[$ky][] = $obj; //'{label: \'' . addslashes($row->name) . '\', data: ' . number_format($row->value) . ', color: \'' . $colors[$i] . '\'}';
+				$i++;
+			}
+		}
+		$json->domains = $r;
+
+		ob_clean();
+
+		echo json_encode($json);
+		die();
 	}
 }
 

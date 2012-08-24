@@ -86,6 +86,7 @@ class plgResourcesCitations extends JPlugin
 	public function onResources($resource, $option, $areas, $rtrn='all')
 	{
 		$arr = array(
+			'area' => 'citations',
 			'html' => '',
 			'metadata' => ''
 		);

@@ -77,6 +77,7 @@ class plgResourcesRelated extends JPlugin
 	public function onResourcesSub($resource, $option, $miniview=0)
 	{
 		$arr = array(
+			'area' => 'related',
 			'html' => '',
 			'metadata' => ''
 		);

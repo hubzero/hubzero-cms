@@ -78,8 +78,9 @@ class plgResourcesSponsors extends Hubzero_Plugin
 	public function onResourcesSub($resource, $option, $miniview=0)
 	{
 		$arr = array(
-			'html'=>'',
-			'metadata'=>''
+			'area' => 'sponsors',
+			'html' => '',
+			'metadata' => ''
 		);
 
 		// Get recommendations

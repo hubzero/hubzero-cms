@@ -119,9 +119,13 @@ if (preg_match("/([\<])([^\>]{1,})*([\>])/i", $maintext)) {
 ?>
 <div class="subject abouttab">
 <?php
-// Screenshots
-$ss = new ResourcesScreenshot($this->database);
-$shots = ResourcesHtml::screenshots($this->resource->id, $this->resource->created, $this->config->get('uploadpath'), $this->config->get('uploadpath'), $this->resource->versionid, $ss->getScreenshots($this->resource->id, $this->resource->versionid), 1);
+if ($this->resource->revision == 'dev' or !$this->resource->toolpublished) {
+	$shots = null;
+} else {
+	// Screenshots
+	$ss = new ResourcesScreenshot($this->database);
+	$shots = ResourcesHtml::screenshots($this->resource->id, $this->resource->created, $this->config->get('uploadpath'), $this->config->get('uploadpath'), $this->resource->versionid, $ss->getScreenshots($this->resource->id, $this->resource->versionid), 1);
+}
 if ($shots) {
 ?>
 	<div class="sscontainer">
@@ -136,9 +140,15 @@ if ($shots) {
 				<th><?php echo JText::_('Category'); ?></th>
 				<td><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $this->resource->_type->alias); ?>"><?php echo stripslashes($this->resource->_type->type); ?></a></td>
 			</tr>
-<?php
-// Check how much we can display
-if ($this->resource->access == 3 && (!in_array($this->resource->group_owner, $usersgroups) || !$this->authorized)) {
+<?php if ($this->resource->revision == 'dev' or !$this->resource->toolpublished) { ?>
+			<tr>
+				<th><?php echo JText::_('PLG_RESOURCES_ABOUT_ABSTRACT'); ?></th>
+				<td>
+					<?php /*<p class="warning"><?php echo JText::_('This tool version is unpublished and cannot be run.'); ?></p> */ ?>
+					<?php echo $maintext; ?>
+				</td>
+			</tr>
+<?php } else if ($this->resource->access == 3 && (!in_array($this->resource->group_owner, $usersgroups) || !$this->authorized)) {
 	// Protected - only show the introtext
 ?>
 			<tr>

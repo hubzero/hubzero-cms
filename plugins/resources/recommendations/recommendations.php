@@ -77,6 +77,7 @@ class plgResourcesRecommendations extends JPlugin
 	public function onResourcesSub($resource, $option, $miniview=0)
 	{
 		$arr = array(
+			'area' => 'recommendations',
 			'html' => '',
 			'metadata' => ''
 		);

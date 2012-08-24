@@ -78,6 +78,7 @@ class plgResourcesShare extends JPlugin
 	public function onResources($resource, $option, $areas, $rtrn='all')
 	{
 		$arr = array(
+			'area' => 'share',
 			'html' => '',
 			'metadata' => ''
 		);

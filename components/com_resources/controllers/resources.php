@@ -1269,6 +1269,27 @@ class ResourcesControllerResources extends Hubzero_Controller
 				)
 			);
 		}
+		else if ($revision)
+		{
+			$resource->authorized = $authorized;
+			$resource->thistool = $thistool;
+			$resource->alltools = $alltools;
+			$resource->curtool  = $curtool;
+			$resource->revision = $revision;
+
+			$cats = array(
+				array('about' => JText::_('About'))
+			);
+
+			// Get the sections
+			$sections = $dispatcher->trigger('onResources', array(
+					$resource,
+					$this->_option,
+					array($tab),
+					'all',
+				)
+			);
+		}
 
 		$available = array('play');
 		foreach ($cats as $cat)

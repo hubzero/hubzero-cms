@@ -85,6 +85,7 @@ class plgResourcesVersions extends JPlugin
 	public function onResources($resource, $option, $areas, $rtrn='all')
 	{
 		$arr = array(
+			'area' => 'versions',
 			'html' => '',
 			'metadata' => ''
 		);

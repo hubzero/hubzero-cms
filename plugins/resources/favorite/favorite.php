@@ -93,6 +93,7 @@ class plgResourcesFavorite extends JPlugin
 		}
 
 		$arr = array(
+			'area' => 'favorite',
 			'html' => '',
 			'metadata' => ''
 		);

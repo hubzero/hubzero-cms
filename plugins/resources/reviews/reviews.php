@@ -88,6 +88,7 @@ class plgResourcesReviews extends JPlugin
 		$id = JRequest::getInt('rid', 0);
 
 		$arr = array(
+			'area' => 'reviews',
 			'html' => '',
 			'metadata' => ''
 		);
@@ -120,6 +121,7 @@ class plgResourcesReviews extends JPlugin
 	public function onResources($resource, $option, $areas, $rtrn='all')
 	{
 		$arr = array(
+			'area' => 'reviews',
 			'html' => '',
 			'metadata' => ''
 		);

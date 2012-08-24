@@ -729,11 +729,12 @@ class ResourcesHtml
 			if ($section['html'] != '') 
 			{
 				$cls  = ($c) ? $c . ' ' : '';
-				if (key($cats[$k]) != $active) 
+				//if (key($cats[$k]) != $active) 
+				if ($section['area'] != $active)
 				{
 					$cls .= ($h) ? $h . ' ' : '';
 				}
-				$html .= '<div class="' . $cls . 'section" id="' . key($cats[$k]) . '-section">' . $section['html'] . '</div>';
+				$html .= '<div class="' . $cls . 'section" id="' . $section['area'] . '-section">' . $section['html'] . '</div>';
 			}
 			$k++;
 		}
