@@ -102,9 +102,13 @@ class JInstallationController extends JController
 	function execute($task)
 	{
 		global $mainframe;
-
+		
 		$vars = JRequest::getVar('vars', '');
-		$key = $vars['key'];
+		$key = null;
+		if (!empty($vars['key']))
+		{
+			$key = $vars['key'];
+		}
 
 		if (!$this->keycheck($key))
 		{
@@ -237,6 +241,8 @@ class JInstallationController extends JController
 			$view->error();
 			return false;
 		}
+
+		$view->mainconfig();
 
 		return true;
 	}

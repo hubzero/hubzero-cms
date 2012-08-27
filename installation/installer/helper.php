@@ -22,6 +22,9 @@ defined('_JEXEC') or die('Restricted access');
  */
 class JInstallationHelper
 {
+	static $non_prefixed_tables = array('app','display','domainclass','domainclasses','fileperm','host','hosttype','ipusers','job',
+					'joblog','orgtypes','session','sessionlog','sessionpriv','summary_andmore','summary_andmore_vals','summary_misc',
+					'summary_misc_vals','summary_simusage','summary_simusage_vals','summary_user','user_map','view','viewlog','viewperm');
 	/**
 	 * @return string A guess at the db required
 	 */
@@ -123,9 +126,10 @@ class JInstallationHelper
 		{
 			foreach ($tables as $table)
 			{
-				if (strpos($table, $DBPrefix) === 0)
+				if ((strpos($table, $DBPrefix) === 0) || (in_array($table, self::$non_prefixed_tables)))
 				{
-					$butable = str_replace($DBPrefix, $BUPrefix, $table);
+					$butable = str_replace($DBPrefix, '', $table);
+					$butable = $BUPrefix . $butable;
 					$query = "DROP TABLE IF EXISTS `$butable`";
 					$db->setQuery($query);
 					$db->query();
@@ -160,7 +164,7 @@ class JInstallationHelper
 		{
 			foreach ($tables as $table)
 			{
-				if (strpos($table, $DBPrefix) === 0)
+				if ((strpos($table, $DBPrefix) === 0) || (in_array($table, self::$non_prefixed_tables)))
 				{
 					$query = "DROP TABLE IF EXISTS `$table`";
 					$db->setQuery($query);

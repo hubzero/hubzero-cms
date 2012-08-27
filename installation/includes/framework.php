@@ -40,8 +40,7 @@ if (file_exists( JPATH_CONFIGURATION . DS . 'configuration.php' ) )
                
 		if (empty($CONFIG->installkey))
 		{
-			header( 'Location: ../index.php' );
-			exit();
+			die('Error - Invalid configuration file');
 		}
 	}
 }
