@@ -151,12 +151,12 @@ ximport('Hubzero_User_Profile_Helper');
 					<div class="comment-content">
 						<p class="comment-title">
 							<strong><?php echo $name; ?></strong> 
-							<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->alias . '&thread=' . $this->post->id . '#c' . $row->id); ?>" title="<?php echo JText::_('COM_FORUM_PERMALINK'); ?>">@
-								<span class="time"><time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $timeFormat, $tz); ?></time></span> <?php echo JText::_('COM_FORUM_ON'); ?> 
+							<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->alias . '&thread=' . $this->post->id . '#c' . $row->id); ?>" title="<?php echo JText::_('COM_FORUM_PERMALINK'); ?>"><span class="comment-date-at">@</span>
+								<span class="time"><time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $timeFormat, $tz); ?></time></span> <span class="comment-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span> 
 								<span class="date"><time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?></time></span>
 								<?php if ($row->modified && $row->modified != '0000-00-00 00:00:00') { ?>
-									&mdash; <?php echo JText::_('COM_FORUM_EDITED'); ?>
-									<span class="time"><time datetime="<?php echo $row->modified; ?>"><?php echo JHTML::_('date', $row->modified, $timeFormat, $tz); ?></time></span> <?php echo JText::_('COM_FORUM_ON'); ?> 
+									&mdash; <?php echo JText::_('COM_FORUM_EDITED'); ?><span class="comment-date-at">@</span> 
+									<span class="time"><time datetime="<?php echo $row->modified; ?>"><?php echo JHTML::_('date', $row->modified, $timeFormat, $tz); ?></time></span> <span class="comment-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span> 
 									<span class="date"><time datetime="<?php echo $row->modified; ?>"><?php echo JHTML::_('date', $row->modified, $dateFormat, $tz); ?></time></span>
 								<?php } ?>
 							</a>
@@ -208,15 +208,11 @@ ximport('Hubzero_User_Profile_Helper');
 		<?php } ?>
 			</ol>
 		<?php 
-			// @FIXME: Nick's Fix Based on Resources View
-			//echo '<input type="hidden" name="topic" value="' . $this->post->id . '" />';
-			$pf = $this->pageNav->getListFooter();
-			//$nm = str_replace('com_','',$this->option);
-			$pf = str_replace('?controller=threads&amp;', '/' . $this->category->alias . '/' . $this->post->id . '?', $pf);
-			$pf = str_replace('?&amp;', '?', $pf);
-			echo $pf;
-			//echo $this->pageNav->getListFooter(); 
-			// @FIXME: End Nick's Fix
+			$this->pageNav->setAdditionalUrlParam('section', $this->filters['section']);
+			$this->pageNav->setAdditionalUrlParam('category', $this->category->alias);
+			$this->pageNav->setAdditionalUrlParam('thread', $this->post->id);
+
+			echo $this->pageNav->getListFooter();
 		?>
 		</form>
 	</div><!-- / .subject -->
@@ -296,8 +292,9 @@ ximport('Hubzero_User_Profile_Helper');
 					<strong>
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape($juser->get('name')); ?></a>
 					</strong> 
-					<span class="permalink">@
-						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, $timeFormat, $tz); ?></time></span> <?php echo JText::_('COM_FORUM_ON'); ?> 
+					<span class="permalink">
+						<span class="comment-date-at">@</span>
+						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, $timeFormat, $tz); ?></time></span> <span class="comment-date-on"><?php echo JText::_('COM_FORUM_ON'); ?> </span>
 						<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, $dateFormat, $tz); ?></time></span>
 					</span>
 				</p>

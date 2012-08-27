@@ -42,8 +42,8 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 		}
 ?>
 				<a href="<?php echo JRoute::_('index.php?option='.$this->option . '&section=' . $this->filters['section'] . '&category=' . $this->filters['category'] . '&thread=' . ($this->lastpost->parent ? $this->lastpost->parent : $this->lastpost->id)); ?>" class="entry-date">
-					@
-					<span class="time"><time datetime="<?php echo $this->lastpost->created; ?>"><?php echo JHTML::_('date', $this->lastpost->created, $timeFormat, $tz); ?></time></span> <?php echo JText::_('COM_FORUM_ON'); ?> 
+					<span class="entry-date-at">@</span>
+					<span class="time"><time datetime="<?php echo $this->lastpost->created; ?>"><?php echo JHTML::_('date', $this->lastpost->created, $timeFormat, $tz); ?></time></span> <span class="entry-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span> 
 					<span class="date"><time datetime="<?php echo $this->lastpost->created; ?>"><?php echo JHTML::_('date', $this->lastpost->created, $dateFormat, $tz); ?></time></span>
 				</a>
 				<span class="entry-author">
@@ -79,7 +79,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
 				<fieldset class="entry-search">
-					<legend><span><?php echo JText::_('Search for articles'); ?></span></legend>
+					<legend><span><?php echo JText::_('Search posts'); ?></span></legend>
 					
 					<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
 					<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" />
@@ -199,18 +199,15 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 					</tbody>
 				</table>
 <?php 
-			if ($this->pageNav) {
-				// @FIXME: Nick's Fix Based on Resources View
-				$pf = $this->pageNav->getListFooter();
-				//var_dump($pf);
-				$nm = str_replace('com_', '', $this->option);
-				//$pf = str_replace($nm.'/?',$nm.'/'.$this->group->get('cn').'/'.$this->_element.'/?',$pf);
-				echo $pf;
-				//echo $this->pageNav->getListFooter();
-				// @FIXME: End Nick's Fix
+			if ($this->pageNav) 
+			{
+				$this->pageNav->setAdditionalUrlParam('section', $this->filters['section']);
+				$this->pageNav->setAdditionalUrlParam('category', $this->filters['category']);
+				$this->pageNav->setAdditionalUrlParam('q', $this->filters['search']);
+				echo $this->pageNav->getListFooter();
 			}
 ?>
-				<div class="clear"></div>
+				<div class="clearfix"></div>
 			</div><!-- / .container -->
 		</form>
 	</div><!-- /.subject -->

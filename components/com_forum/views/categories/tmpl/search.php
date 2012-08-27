@@ -52,7 +52,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
 				<fieldset class="entry-search">
-					<legend><?php echo JText::_('Search for articles'); ?></legend>				
+					<legend><?php echo JText::_('Search posts'); ?></legend>
 					<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
 					<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -126,18 +126,15 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 					</tbody>
 				</table>
 <?php 
-			if ($this->pageNav) {
-				// @FIXME: Nick's Fix Based on Resources View
-				$pf = $this->pageNav->getListFooter();
-				//var_dump($pf);
-				$nm = str_replace('com_', '', $this->option);
-				//$pf = str_replace($nm.'/?',$nm.'/'.$this->group->get('cn').'/'.$this->_element.'/?',$pf);
-				echo $pf;
-				//echo $this->pageNav->getListFooter();
-				// @FIXME: End Nick's Fix
+			if ($this->pageNav) 
+			{
+				$this->pageNav->setAdditionalUrlParam('section', $this->filters['section']);
+				$this->pageNav->setAdditionalUrlParam('category', $this->filters['category']);
+				$this->pageNav->setAdditionalUrlParam('q', $this->filters['search']);
+				echo $this->pageNav->getListFooter();
 			}
 ?>
-				<div class="clear"></div>
+				<div class="clearfix"></div>
 			</div><!-- / .container -->
 		</form>
 	</div><!-- /.subject -->

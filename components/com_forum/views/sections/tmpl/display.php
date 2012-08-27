@@ -24,7 +24,7 @@ $juser = JFactory::getUser();
 <div class="main section">
 	<div class="aside">
 		<div class="container">
-			<h3><?php echo JText::_('Statistics'); ?><span class="starter-point"></span></h3>
+			<h3><?php echo JText::_('Statistics'); ?></h3>
 			<table summary="<?php echo JText::_('Statistics'); ?>">
 				<tbody>
 					<tr>
@@ -43,7 +43,7 @@ $juser = JFactory::getUser();
 			</table>
 		</div><!-- / .container -->
 		<div class="container">
-			<h3><?php echo JText::_('Last Post'); ?><span class="starter-point"></span></h3>
+			<h3><?php echo JText::_('Last Post'); ?></h3>
 			<p>
 <?php
 			if (is_object($this->lastpost)) 
@@ -71,8 +71,8 @@ $juser = JFactory::getUser();
 				}
 ?>
 				<a class="entry-date" href="<?php echo JRoute::_('index.php?option='.$this->option . '&section=' . $sec . '&category=' . $cat . '&thread=' . ($this->lastpost->parent ? $this->lastpost->parent : $this->lastpost->id)); ?>">
-					@
-					<span class="time"><time datetime="<?php echo $this->lastpost->created; ?>"><?php echo JHTML::_('date', $this->lastpost->created, $timeFormat, $tz); ?></time></span> <?php echo JText::_('COM_FORUM_ON'); ?> 
+					<span class="entry-date-at">@</span>
+					<span class="time"><time datetime="<?php echo $this->lastpost->created; ?>"><?php echo JHTML::_('date', $this->lastpost->created, $timeFormat, $tz); ?></time></span> <span class="entry-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span> 
 					<span class="date"><time datetime="<?php echo $this->lastpost->created; ?>"><?php echo JHTML::_('date', $this->lastpost->created, $dateFormat, $tz); ?></time></span>
 				</a>
 				<span class="entry-author">
