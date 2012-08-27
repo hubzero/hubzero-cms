@@ -3,7 +3,7 @@
 
 /* Generic exception class
  */
-class OAuthException extends Exception {
+class LinkedInOAuthException extends Exception {
   // pass
 }
 
@@ -443,7 +443,7 @@ class OAuthRequest {
     foreach ($this->parameters as $k => $v) {
       if (substr($k, 0, 5) != "oauth") continue;
       if (is_array($v)) {
-        throw new OAuthException('Arrays not supported in headers');
+        throw new LinkedInOAuthException('Arrays not supported in headers');
       }
       $out .= ($first) ? ' ' : ',';
       $out .= OAuthUtil::urlencode_rfc3986($k) .
@@ -576,7 +576,7 @@ class OAuthServer {
       $version = '1.0';
     }
     if ($version !== $this->version) {
-      throw new OAuthException("OAuth version '$version' not supported");
+      throw new LinkedInOAuthException("OAuth version '$version' not supported");
     }
     return $version;
   }
@@ -592,12 +592,12 @@ class OAuthServer {
     if (!$signature_method) {
       // According to chapter 7 ("Accessing Protected Ressources") the signature-method
       // parameter is required, and we can't just fallback to PLAINTEXT
-      throw new OAuthException('No signature method parameter. This parameter is required');
+      throw new LinkedInOAuthException('No signature method parameter. This parameter is required');
     }
 
     if (!in_array($signature_method,
                   array_keys($this->signature_methods))) {
-      throw new OAuthException(
+      throw new LinkedInOAuthException(
         "Signature method '$signature_method' not supported " .
         "try one of the following: " .
         implode(", ", array_keys($this->signature_methods))
@@ -615,12 +615,12 @@ class OAuthServer {
         : NULL;
 
     if (!$consumer_key) {
-      throw new OAuthException("Invalid consumer key");
+      throw new LinkedInOAuthException("Invalid consumer key");
     }
 
     $consumer = $this->data_store->lookup_consumer($consumer_key);
     if (!$consumer) {
-      throw new OAuthException("Invalid consumer");
+      throw new LinkedInOAuthException("Invalid consumer");
     }
 
     return $consumer;
@@ -638,7 +638,7 @@ class OAuthServer {
       $consumer, $token_type, $token_field
     );
     if (!$token) {
-      throw new OAuthException("Invalid $token_type token: $token_field");
+      throw new LinkedInOAuthException("Invalid $token_type token: $token_field");
     }
     return $token;
   }
@@ -670,7 +670,7 @@ class OAuthServer {
     );
 
     if (!$valid_sig) {
-      throw new OAuthException("Invalid signature");
+      throw new LinkedInOAuthException("Invalid signature");
     }
   }
 
@@ -679,14 +679,14 @@ class OAuthServer {
    */
   private function check_timestamp($timestamp) {
     if( ! $timestamp )
-      throw new OAuthException(
+      throw new LinkedInOAuthException(
         'Missing timestamp parameter. The parameter is required'
       );
     
     // verify that timestamp is recentish
     $now = time();
     if (abs($now - $timestamp) > $this->timestamp_threshold) {
-      throw new OAuthException(
+      throw new LinkedInOAuthException(
         "Expired timestamp, yours $timestamp, ours $now"
       );
     }
@@ -697,7 +697,7 @@ class OAuthServer {
    */
   private function check_nonce($consumer, $token, $nonce, $timestamp) {
     if( ! $nonce )
-      throw new OAuthException(
+      throw new LinkedInOAuthException(
         'Missing nonce parameter. The parameter is required'
       );
 
@@ -709,7 +709,7 @@ class OAuthServer {
       $timestamp
     );
     if ($found) {
-      throw new OAuthException("Nonce already used: $nonce");
+      throw new LinkedInOAuthException("Nonce already used: $nonce");
     }
   }
 

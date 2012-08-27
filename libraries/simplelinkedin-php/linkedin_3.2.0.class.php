@@ -70,13 +70,8 @@
  * Rename and move as needed, changing the require_once() call to the correct 
  * name and path.
  */    
-if(!extension_loaded('oauth')) {
-  // the PECL OAuth extension is not present, load our third-party OAuth library
-  require_once('OAuth.php');
-} else {
-  // the PECL extension is present, which is not compatible with this library
-  throw new LinkedInException('Simple-LinkedIn: library not compatible with installed PECL OAuth extension.  Please disable this extension to use the Simple-LinkedIn library.');
-}
+ require_once('OAuth.php');
+
 
 /**
  * 'LinkedInException' class declaration.
@@ -717,7 +712,7 @@ class LinkedIn {
       
       // no exceptions thrown, return the data
       return $return_data;
-    } catch(OAuthException $e) {
+    } catch(LinkedInOAuthException $e) {
       // oauth exception raised
       throw new LinkedInException('OAuth exception caught: ' . $e->getMessage());
     }
