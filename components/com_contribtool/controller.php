@@ -188,10 +188,10 @@ class ContribtoolController extends JObject
 	 * Long description (if any) ...
 	 * 
 	 * @param      string $option Parameter description (if any) ...
-	 * @param      string $name Parameter description (if any) ...
+	 * @param      string $script Parameter description (if any) ...
 	 * @return     void
 	 */
-	private function getScripts($option='',$name='')
+	private function getScripts($option='', $script='')
 	{
 		$document = JFactory::getDocument();
 
@@ -884,7 +884,7 @@ class ContribtoolController extends JObject
 						else {
 
 							require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'models'.DS.'wishlist.php' );
-							require_once( JPATH_ROOT.DS.'components'.DS.'com_wishlist'.DS.'controller.php' );
+							require_once( JPATH_ROOT.DS.'components'.DS.'com_wishlist'.DS.'controllers' . DS . 'wishlist.php' );
 
 							$objWishlist = new Wishlist( $database );
 							$objWish = new Wish( $database );
@@ -1183,7 +1183,7 @@ class ContribtoolController extends JObject
 				$tool['toolname'] = strtolower($tool['toolname']);
 		        $tool['developers'] = array_map('trim', explode(',',$tool['developers']));
 		        $tool['membergroups'] = array_map('trim', explode(',',$tool['membergroups']));
-
+				
 				// save tool info
 				if (!$id)  // new tool
 				{
@@ -1212,7 +1212,7 @@ class ContribtoolController extends JObject
 					$oldstatus = $hztv->toArray();
 					$oldstatus['toolstate'] = $hzt->state;
 					$oldstatus['membergroups'] = $tool['membergroups'];
-					
+
 					if($id) {
 						$oldstatus['developers'] = $obj->getToolDevelopers($id);
 					}
@@ -1298,7 +1298,8 @@ class ContribtoolController extends JObject
                     // store/update member groups
                     if(count($tool['membergroups'] > 0) && $tool['exec']=='@GROUP')
                     {
-                        $hztv->add('member', $tool['membergroups']);
+                        $hztv->remove('member', $hztv->member); // need to remove previous member groups first
+						$hztv->add('member', $tool['membergroups']);
                     }
 
 					// Add repo for new tools
@@ -2505,11 +2506,21 @@ class ContribtoolController extends JObject
 
 			if(!$this->invokescript($command, JText::_('NOTICE_VERSION_FINALIZED'), $output)) {
 				$out .= " invoke script failure";
+				$out .= "<br>";
+				$out .= "$command";
+				$out .= "<br>";
+				$out .= implode("<br>",$output);
+				$out .= "<br>";
 				return false;
 			}
 			else {
 				if($output['class'] == 'error') {
 					$out .= " invoke script failure";
+					$out .= "<br>";
+					$out .= "$command";
+					$out .= "<br>";
+					$out .= implode("<br>",$output);
+					$out .= "<br>";
 					return false;
 				}
 			 	// get tarball
