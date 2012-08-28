@@ -187,10 +187,13 @@ Class TimeTasks extends JTable
 			{
 				foreach($filters['q'] as $arg)
 				{
-					$query .= ($first) ? " WHERE " : " AND ";
-					$query .= "p." . $arg['column'] . ' ' . $arg['o'] . ' ' . $this->_db->Quote($arg['value']);
+					if($arg['value'] !== NULL)
+					{
+						$query .= ($first) ? " WHERE " : " AND ";
+						$query .= "p." . $arg['column'] . ' ' . $arg['o'] . ' ' . $this->_db->Quote($arg['value']);
 
-					$first = false;
+						$first = false;
+					}
 				}
 			}
 		}
@@ -229,10 +232,13 @@ Class TimeTasks extends JTable
 			{
 				foreach($filters['q'] as $arg)
 				{
-					$query .= ($first) ? " WHERE " : " AND ";
-					$query .= "p." . $arg['column'] . ' ' . $arg['o'] . ' ' . $this->_db->Quote($arg['value']);
+					if($arg['value'] !== NULL)
+					{
+						$query .= ($first) ? " WHERE " : " AND ";
+						$query .= "p." . $arg['column'] . ' ' . $arg['o'] . ' ' . $this->_db->Quote($arg['value']);
 
-					$first = false;
+						$first = false;
+					}
 				}
 			}
 		}

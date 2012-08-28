@@ -27,10 +27,13 @@ HUB.Plugins.TimeRecords = {
 	initialize: function() {
 		var $ = this.jQuery;
 
-		// Set a variable for our hub_id select box
+		// Initialize variables
 		var hub        = $("#hub_id");
 		var col_filter = $("#filter-column");
 		var filter_sub = $("#filter-submit");
+
+		// Show add filters box
+		$('#add-filters').css('display', 'block');
 
 		// Expand the submit button on hover (not necessary, just fun...)
 		if($.isFunction($().hoverIntent)){
@@ -46,25 +49,21 @@ HUB.Plugins.TimeRecords = {
 			});
 		}
 
-		// Add change event to hub select box (filter tasks list by selected hub)
+		// Add change event to hub select box (filter tasks list by selected hub) - ('edit' view)
 		hub.change(function(event) {
-
-			// Set hub = -1 if hub value is empty (so the ajax call returns nothing, instead of everything)
-			// @FIXME: this is sortof 'hacky'
-			if(hub.val() == '') { hid = -1 } else { hid = hub.val() }
-
 			// Create a ajax call to get the tasks
 			$.ajax({
-				url: "index.php?option=com_time&task=ajax&active=ajax&action=tasks.json",
-				data: "hid="+hid,
+				url: "/api/time/indexTasks",
+				data: "hid="+hub.val()+"&pactive=1",
 				dataType: "json",
 				cache: false,
 				success: function(json){
 					// If success, update the list of tasks based on the chosen hub
 					var options = '';
-					if(json.length > 0) {
-						for (var i = 0; i < json.length; i++) {
-							options += '<option value="' + json[i].objValue + '">' + json[i].objText + '</option>';
+
+					if(json.tasks.length > 0) {
+						for (var i = 0; i < json.tasks.length; i++) {
+							options += '<option value="' + json.tasks[i].id + '">' + json.tasks[i].name + '</option>';
 						}
 					} else {
 						options = '<option value="">No tasks for this hub</option>';
@@ -74,18 +73,20 @@ HUB.Plugins.TimeRecords = {
 			});
 		});
 
+		// Add change event to the column filters select box ('view' view)
 		col_filter.change(function(event){
 			// Update the filter values when column is changed
 			HUB.Plugins.TimeRecords.col_change();
 		});
 
-		// Update the filter values on page load too
+		// Update the filter values on initial page load too
 		HUB.Plugins.TimeRecords.col_change();
 
 	}, // end initialize
 
 	col_change: function() {
-		var $       = this.jQuery;
+		var $ = this.jQuery;
+
 		var col_val = $('#filter-column').val();
 
 		if(col_val == 'user_id') {
@@ -102,15 +103,15 @@ HUB.Plugins.TimeRecords = {
 
 		// Create a ajax call to get the users
 		$.ajax({
-			url: "index.php?option=com_time&task=ajax&active=ajax&action=users.json",
+			url: "/api/time/indexTimeUsers",
 			dataType: "json",
 			cache: false,
 			success: function(json){
 				// If success, update the list of users
 				var options = '';
-				if(json.length > 0) {
-					for (var i = 0; i < json.length; i++) {
-						options += '<option value="' + json[i].id + '">' + json[i].name + '</option>';
+				if(json.users.length > 0) {
+					for (var i = 0; i < json.users.length; i++) {
+						options += '<option value="' + json.users[i].id + '">' + json.users[i].name + '</option>';
 					}
 				} else {
 					options = '<option value="">No users are available</option>';
@@ -126,16 +127,16 @@ HUB.Plugins.TimeRecords = {
 
 		// Create a ajax call to get the tasks
 		$.ajax({
-			url: "index.php?option=com_time&task=ajax&active=ajax&action=tasks.json",
-			data: "hid=0",
+			url: "/api/time/indexTasks",
 			dataType: "json",
+			data: "pactive=1",
 			cache: false,
 			success: function(json){
 				// If success, update the list of tasks based on the chosen hub
 				var options = '';
-				if(json.length > 0) {
-					for (var i = 0; i < json.length; i++) {
-						options += '<option value="' + json[i].objValue + '">' + json[i].objText + '</option>';
+				if(json.tasks.length > 0) {
+					for (var i = 0; i < json.tasks.length; i++) {
+						options += '<option value="' + json.tasks[i].id + '">' + json.tasks[i].name + '</option>';
 					}
 				} else {
 					options = '<option value="">No tasks are available</option>';

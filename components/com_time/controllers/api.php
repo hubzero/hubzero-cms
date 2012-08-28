@@ -1,7 +1,48 @@
 <?php
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2011 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Sam Wilson <samwilson@purdue.edu>
+ * @copyright Copyright 2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
 
+// no direct access
+defined('_JEXEC') or die('Restricted access');
+
+JLoader::import('Hubzero.Api.Controller');
+
+/**
+ * API controller for the time component
+ */
 class TimeApiController extends Hubzero_Api_Controller
 {
+	/**
+	 * Execute!
+	 * 
+	 * @return void
+	 */
 	function execute()
 	{
 		// Import some Joomla libraries
@@ -9,7 +50,7 @@ class TimeApiController extends Hubzero_Api_Controller
 		JLoader::import('joomla.application.component.helper');
 
 		// Get the request type
-		$this->format = JRequest::getVar('format', 'json');
+		$this->format = JRequest::getVar('format', 'application/json');
 
 		// Get a database object
 		$this->db = JFactory::getDBO();
@@ -18,37 +59,68 @@ class TimeApiController extends Hubzero_Api_Controller
 		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'tables'.DS.'tasks.php');
 		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'tables'.DS.'hubs.php');
 		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'tables'.DS.'records.php');
-
-		// Establish response variables
-		$this->segments = $this->getRouteSegments();
-		$this->response = $this->getResponse();
+		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'tables'.DS.'contacts.php');
 
 		// Switch based on task (i.e. "/api/time/xxxxx")
 		switch($this->segments[0])
 		{
-			case 'records':  $this->records();             break;
-			case 'tasks':    $this->tasks();               break;
-			case 'hubs':     $this->hubs();                break;
+			// Records
+			case 'indexRecords':             $this->indexRecords();             break;
+			case 'indexRecordsForBill':      $this->indexRecordsForBill();      break;
+			case 'saveRecord':               $this->saveRecord();               break;
+			// Tasks
+			case 'indexTasks':               $this->indexTasks();               break;
+			// Hubs
+			case 'indexHubs':                $this->indexHubs();                break;
+			case 'showHub':                  $this->showHub();                  break;
+			// Miscellaneous
+			case 'saveContact':              $this->saveContact();              break;
+			case 'indexTimeUsers':           $this->indexTimeUsers();           break;
+			case 'getValues':                $this->getValues();                break;
 
-			default:         $this->method_not_found();    break;
+			default:                         $this->method_not_found();         break;
 		}
 	}
 
 	//--------------------------
-	// Records function
+	// Records functions
 	//--------------------------
 
-	function records()
+	/**
+	 * Get time records
+	 * 
+	 * @return array of records objects
+	 */
+	private function indexRecords()
 	{
+		// Require authorization
+		if(!$this->authorize())
+		{
+			$this->setMessage('', 401, 'Unauthorized');
+			return;
+		}
+
 		// Incoming posted data
-		$pid       = JRequest::getInt('pid', 0);
+		$tid       = JRequest::getInt('tid', NULL);
 		$startdate = JRequest::getVar('startdate', '2000-01-01');
 		$enddate   = JRequest::getVar('enddate', '2100-01-01');
-		$limit     = JRequest::getInt('limit', 100);
+		$billed    = JRequest::getInt('billed', NULL);
+		$limit     = JRequest::getInt('limit', 1000);
 		$start     = JRequest::getInt('start', 0);
+		$orderby   = JRequest::getCmd('orderby', 'uname');
+		$orderdir  = JRequest::getCmd('orderdir', 'ASC');
 
 		// Filters for query
-		$filters = array('limit'=>$limit, 'start'=>$start, 'pid'=>$pid, 'startdate'=>$startdate, 'enddate'=>$enddate);
+		$filters['limit']     = $limit;
+		$filters['start']     = $start;
+		$filters['orderby']   = $orderby;
+		$filters['orderdir']  = $orderdir;
+		$filters['q']         = array(
+			array('column'=>'task_id', 'o'=>'=',  'value'=>$tid),
+			array('column'=>'date',    'o'=>'>=', 'value'=>$startdate),
+			array('column'=>'date',    'o'=>'<=', 'value'=>$enddate),
+			array('column'=>'billed',  'o'=>'=',  'value'=>$billed)
+		);
 
 		// Create object and get records
 		$record  = new TimeRecords($this->db);
@@ -59,24 +131,162 @@ class TimeApiController extends Hubzero_Api_Controller
 		$obj->records = $records;
 
 		// Return object
-		$this->response->setResponseProvides($this->format);
-		$this->response->setMessage($obj);
+		$this->setMessageType($this->format);
+		$this->setMessage($obj, 200, 'OK');
+	}
+
+	/**
+	 * Get the time records (formatted for building reporting bills)
+	 * 
+	 * @return 200 ok with success - include records retrieved
+	 */
+	private function indexRecordsForBill()
+	{
+		// Require authorization
+		if(!$this->authorize())
+		{
+			$this->setMessage('', 401, 'Unauthorized');
+			return;
+		}
+
+		// Incoming posted data
+		$tid       = JRequest::getInt('tid', NULL);
+		$startdate = JRequest::getVar('startdate', '2000-01-01');
+		$enddate   = JRequest::getVar('enddate', '2100-01-01');
+		$billed    = JRequest::getInt('billed', NULL);
+
+		// Filters for query
+		$filters['limit']     = '1000';
+		$filters['start']     = '0';
+		$filters['orderby']   = 'uname';
+		$filters['orderdir']  = 'ASC';
+		$filters['q']         = array(
+			array('column'=>'task_id', 'o'=>'=',  'value'=>$tid),
+			array('column'=>'date',    'o'=>'>=', 'value'=>$startdate),
+			array('column'=>'date',    'o'=>'<=', 'value'=>$enddate),
+			array('column'=>'billed',  'o'=>'=',  'value'=>$billed)
+		);
+
+		// Create object and get records
+		$record  = new TimeRecords($this->db);
+		$records = $record->getRecords($filters);
+
+		// We want an array of users involved in these records
+		$users = array();
+
+		// Put those users into an array
+		foreach($records as $record)
+		{
+			$users[] = $record->uid;
+		}
+
+		// Get only the unique users from the array
+		$users = array_unique($users);
+
+		// Placeholder for our master list
+		$masterList = array();
+
+		// First make sure we have at least one record
+		if (count($records) > 0)
+		{
+			// Start by looping through the users
+			foreach ($users as $user)
+			{
+				// Placeholder for our records array
+				$rlist = array();
+
+				// Then loop through the records
+				foreach ($records as $record)
+				{
+					// If the record belongs to the current user
+					if ($record->uid == $user)
+					{
+						$rlist[] = $record;
+					}
+				}
+				// Create master list of records array per user
+				$masterList[] = array($user, $rlist);
+			}
+		}
+
+		// Return results
+		$this->setMessageType($this->format);
+		$this->setMessage($masterList, 200, 'OK');
+	}
+
+
+	/**
+	 * Save a time record
+	 * 
+	 * @return 201 created on success
+	 */
+	private function saveRecord()
+	{
+		// Require authorization
+		if(!$this->authorize())
+		{
+			$this->setMessage('', 401, 'Unauthorized');
+			return;
+		}
+
+		// Incoming posted data (grab individually for added security)
+		$record = array();
+		$record['task_id']     = JRequest::getInt('task_id');
+		$record['time']        = JRequest::getCmd('time');
+		$record['date']        = JRequest::getCmd('date');
+		$record['description'] = JRequest::getString('description');
+
+		$record = array_map('trim', $record);
+
+		// Add user_id to array based on token
+		$record['user_id'] = JFactory::getApplication()->getAuthn('user_id');
+
+		// Create object and store new content
+		$records = new TimeRecords($this->db);
+		if(!$records->save($record))
+		{
+			$this->setMessage('Record creation failed', 500, 'Internal server error');
+			return;
+		}
+
+		// Return message
+		$this->setMessageType($this->format);
+		$this->setMessage('Record successfully created', 201, 'Created');
 	}
 
 	//--------------------------
-	// Tasks function
+	// Tasks functions
 	//--------------------------
 
-	function tasks()
+	/**
+	 * Get time tasks
+	 * 
+	 * @return array of tasks objects
+	 */
+	private function indexTasks()
 	{
-		// Incoming posted data
-		$hub_id  = JRequest::getInt('hid', 0);
-		$pactive = JRequest::getInt('pactive', 1);
+		// Require authorization
+		if(!$this->authorize())
+		{
+			$this->setMessage('', 401, 'Unauthorized');
+			return;
+		}
+
+		// Incoming data
+		$hub_id  = JRequest::getInt('hid', NULL);
+		$active  = JRequest::getInt('pactive', NULL);
 		$limit   = JRequest::getInt('limit', 100);
 		$start   = JRequest::getInt('start', 0);
 
 		// Filters for the query
-		$filters = array('limit'=>$limit, 'start'=>$start, 'hub'=>$hub_id, 'active'=>$pactive);
+		$filters = array(
+						'limit'=>$limit,
+						'start'=>$start,
+						'q'=>array(
+							array('column'=>'hub_id', 'o'=>'=', 'value'=>$hub_id),
+							array('column'=>'active', 'o'=>'=', 'value'=>$active)
+						)
+					);
 
 		// Get list of tasks
 		$taskObj = new TimeTasks($this->db);
@@ -87,16 +297,28 @@ class TimeApiController extends Hubzero_Api_Controller
 		$obj->tasks = $tasks;
 
 		// Return object
-		$this->response->setResponseProvides($this->format);
-		$this->response->setMessage($obj);
+		$this->setMessageType($this->format);
+		$this->setMessage($obj, 200, 'OK');
 	}
 
 	//--------------------------
-	// Hubs function
+	// Hubs functions
 	//--------------------------
 
-	function hubs()
+	/**
+	 * Get time hubs
+	 * 
+	 * @return array of hubs objects
+	 */
+	private function indexHubs()
 	{
+		// Require authorization
+		if(!$this->authorize())
+		{
+			$this->setMessage('', 401, 'Unauthorized');
+			return;
+		}
+
 		// Incoming posted data
 		$active = JRequest::getInt('active', 1);
 		$limit  = JRequest::getInt('limit', 100);
@@ -114,26 +336,232 @@ class TimeApiController extends Hubzero_Api_Controller
 		$obj->hubs = $hubs;
 
 		// Return object
-		$this->response->setResponseProvides($this->format);
-		$this->response->setMessage($obj);
+		$this->setMessageType($this->format);
+		$this->setMessage($obj, 200, 'OK');
+	}
+
+	/**
+	 * Get single hub
+	 * 
+	 * @return object - single hub instance
+	 */
+	private function showHub()
+	{
+		// Require authorization
+		if(!$this->authorize())
+		{
+			$this->setMessage('', 401, 'Unauthorized');
+			return;
+		}
+
+		// Incoming posted data
+		$id = JRequest::getInt('id');
+
+		// Error checking
+		if(empty($id))
+		{
+			$this->setMessage('Missing id parameter', 422, 'Unprocessable entity');
+			return;
+		}
+
+		// Create a 'hub' object
+		$hub = new TimeHubs($this->db);
+
+		// Load the specific hub
+		if(!$hub->load($id))
+		{
+			$this->setMessage('Load hub failed', 500, 'Internal server error');
+			return;
+		}
+		else
+		{
+			$result = new stdClass();
+			$result->hname = $hub->name;
+			$result->hliaison = $hub->liaison;
+			$result->hanniversarydate = $hub->anniversary_date;
+			$result->hsupportlevel = $hub->support_level;
+
+			// Create object with specific hub properties
+			$obj = new stdClass();
+			$obj->hub = $result;
+
+			// Return object
+			$this->setMessageType($this->format);
+			$this->setMessage($obj, 200, 'OK');
+		}
 	}
 
 	//--------------------------
-	// Method not found
+	// Miscellaneous
 	//--------------------------
 
-	function method_not_found()
+	/**
+	 * Save hub contact function
+	 * 
+	 * @return 201 created on success (include newly created object in body)
+	 */
+	private function saveContact()
 	{
-		// Set the error message
-		$message = "Method not found";
+		// Require authorization
+		if(!$this->authorize())
+		{
+			$this->setMessage('', 401, 'Unauthorized');
+			return;
+		}
 
-		// Create object with error property
+		// Incoming posted data (grab individually for added security)
+		$contact = array();
+		$contact['name']     = JRequest::getString('name');
+		$contact['phone']    = JRequest::getString('phone');
+		$contact['email']    = JRequest::getString('email');
+		$contact['role']     = JRequest::getString('role');
+		$contact['hub_id']   = JRequest::getInt('hid');
+
+		$contact = array_map('trim', $contact);
+
+		// Create object and store new content
+		$contacts = new TimeContacts($this->db);
+		if(!$contacts->save($contact))
+		{
+			$this->setMessage('Contact creation failed', 500, 'Internal server error');
+			return;
+		}
+
+		// Return message (include $contact object for use again by the javascript)
+		$this->setMessageType($this->format);
+		$this->setMessage($contacts->id, 201, 'Created');
+	}
+
+	/**
+	 * Get the list of users in the 'time' group
+	 * 
+	 * @return 200 OK on success
+	 */
+	private function indexTimeUsers()
+	{
+		// Require authorization
+		if(!$this->authorize())
+		{
+			$this->setMessage('', 401, 'Unauthorized');
+			return;
+		}
+
+		// Get group members query
+		$query  = "SELECT u.id, u.name";
+		$query .= " FROM #__xgroups_members AS m";
+		$query .= " LEFT JOIN #__xgroups AS g ON m.gidNumber = g.gidNumber";
+		$query .= " LEFT JOIN #__users AS u ON u.id = m.uidNumber";
+		$query .= " WHERE g.cn = 'time'";
+		$query .= " ORDER BY u.name ASC";
+
+		// Set the query
+		$this->db->setQuery($query);
+		$users = $this->db->loadObjectList();
+
+		// Create object with users property
 		$obj = new stdClass();
-		$obj->error = $message;
+		$obj->users = $users;
 
 		// Return object
-		$this->response->setResponseProvides($this->format);
-		$this->response->setMessage($obj);
+		$this->setMessageType($this->format);
+		$this->setMessage($obj, 200, 'OK');
+	}
+
+	/**
+	 * Method for getting possible unique values based on table and column
+	 * 
+	 * @return 200 on success
+	 */
+	private function getValues()
+	{
+		// Require authorization
+		if(!$this->authorize())
+		{
+			$this->setMessage('', 401, 'Unauthorized');
+			return;
+		}
+
+		// Get table and column values
+		$table  = JRequest::getVar('table', '');
+		$column = JRequest::getVar('column', '');
+
+		// Make sure those values haven't been tampered with
+		$acceptable = array('time_tasks', 'time_records');
+		if(!in_array($table, $acceptable))
+		{
+			$this->setMessage('Table provided is not allowed', 422, 'Unprocessable entity');
+			return;
+		}
+
+		// Setup query
+		$query  = "SELECT DISTINCT(" . $column . ") as val";
+		$query .= " FROM #__" . $table;
+		$query .= " ORDER BY val ASC";
+
+		$this->db->setQuery($query);
+		if(!$values = $this->db->loadObjectList())
+		{
+			$this->setMessage('Query failed', 500, 'Internal server error');
+			return;
+		}
+
+		// Process any overrides
+		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'helpers'.DS.'filters.php');
+		$values = TimeFilters::filtersOverrides($values, $column);
+
+		// Create object with values
+		$obj = new stdClass();
+		$obj->values = $values;
+
+		// Return object
+		$this->setMessageType($this->format);
+		$this->setMessage($obj, 200, 'OK');
+	}
+
+	/**
+	 * Default method - not found
+	 * 
+	 * @return 404 error
+	 */
+	private function method_not_found()
+	{
+		// Set the error message
+		$this->_response->setErrorMessage(404, 'Not found');
+		return;
+	}
+
+	/**
+	 * Helper function to check whether or not someone is using oauth and in the 'time' group
+	 * 
+	 * @return bool - true if in group, false otherwise
+	 */
+	private function authorize()
+	{
+		// Get the user id
+		$user_id = JFactory::getApplication()->getAuthn('user_id');
+
+		if(!is_numeric($user_id))
+		{
+			return false;
+		}
+
+		// @FIXME: add parameter for group access
+		$accessgroup = 'time';
+
+		// Check if they're a member of the admin group
+		JLoader::import('Hubzero.User.Helper');
+		$ugs = Hubzero_User_Helper::getGroups($user_id);
+		if ($ugs && count($ugs) > 0)
+		{
+			foreach ($ugs as $ug)
+			{
+				if ($ug->cn == $accessgroup)
+				{
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 }
-?>

@@ -310,7 +310,7 @@
 	border-bottom: none;
 	}
 #time_content #add-filters {
-	display: block;
+	display: none;
 	min-height: 30px;
 	border: 1px dotted #C5C3C3;
 	padding: 5px;
@@ -346,6 +346,9 @@
 	height: 16px;
 	line-height: 12px;
 	}
+#time_content #add-filters input[type=text] {
+	width: auto;
+}
 
 /* --------------------------
 	Search box

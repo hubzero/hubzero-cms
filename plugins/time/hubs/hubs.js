@@ -164,7 +164,7 @@ HUB.Plugins.TimeHubs = {
 
 			// Create a ajax call to save the contact
 			$.ajax({
-				url: "index.php?option=com_time&task=ajax&active=ajax&action=savecontact.json",
+				url: "/api/time/saveContact",
 				data: "hid="+hid+"&name="+name+"&phone="+phone+"&email="+email+"&role="+role,
 				dataType: "json",
 				cache: false,
@@ -172,7 +172,7 @@ HUB.Plugins.TimeHubs = {
 					// If success, add another row for a new contact
 
 					// Get the new contact id
-					var cid = json.cid;
+					var cid = json;
 
 					// Create the new row
 					var new_row  = '<div class="grouping contact-grouping" id="brand_new">';

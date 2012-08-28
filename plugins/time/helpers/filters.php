@@ -110,10 +110,11 @@ class TimeFilters
 	/**
 	 * Get column names
 	 * 
-	 * @param  array $table - table to get column names for
-	 * @return $columns     - array of column names
+	 * @param  array $table   - table to get column names for
+	 * @param  array $exclude - array of columns to exclude
+	 * @return $columns       - array of column names
 	 */
-	public function getColumnNames($table)
+	public function getColumnNames($table, $exclude=array())
 	{
 		// Get the column names
 		$prefix = JFactory::getApplication()->getCfg('dbprefix');
@@ -125,9 +126,12 @@ class TimeFilters
 		$cols = array_keys($cols[$prefix.$table]);
 		foreach($cols as $c)
 		{
-			$human = str_replace('_', ' ', $c);
-			$human = ucwords($human);
-			$columns[] = array("raw" => $c, "human" => $human);
+			if(!in_array($c, $exclude))
+			{
+				$human = str_replace('_', ' ', $c);
+				$human = ucwords($human);
+				$columns[] = array("raw" => $c, "human" => $human);
+			}
 		}
 
 		return $columns;
@@ -171,6 +175,7 @@ class TimeFilters
 		$html .= '<option value="lt">is less than (&#60;)</option>';
 		$html .= '<option value="gte">is greater than or equal to (&#62;&#61;)</option>';
 		$html .= '<option value="lte">is less than or equal to (&#60;&#61;)</option>';
+		$html .= '<option value="like">is like (LIKE)</option>';
 		$html .= '</select>';
 
 		return $html;
@@ -215,7 +220,7 @@ class TimeFilters
 		$doperator = '';
 		$dvalue    = '';
 
-		// First, make we have something to iterate over
+		// First, make sure we have something to iterate over
 		if(!empty($q[0]))
 		{
 			// Go through query filters
@@ -266,7 +271,7 @@ class TimeFilters
 					// All others
 					else
 					{
-						$val['human_column']   = ucwords($val['column']);
+						$val['human_column']   = ucwords(str_replace("_", " ", $val['column']));
 						$val['o']              = self::translateOperator($val['operator']);
 						$val['human_operator'] = self::mapOperator($val['o']);
 						$val['human_value']    = $val['value'];
@@ -299,6 +304,41 @@ class TimeFilters
 	}
 
 	/**
+	 * Override default filter values
+	 * 
+	 * ex: change hub_id to Hub
+	 * 
+	 * @param  $vals   - incoming values
+	 * @param  $column - incoming column for which values pertain
+	 * @return $return - outgoing values
+	 */
+	public function filtersOverrides($vals, $column)
+	{
+		$return = array();
+
+		foreach($vals as $val)
+		{
+			// Just so I don't have to keep writing $val->val
+			$value = $val->val;
+
+			$x            = array();
+			$x['value']   = $value;
+			$x['display'] = $value;
+
+			// Now override at will...
+			if($column == 'assignee' || $column == 'liaison')
+			{
+				$x['value'] = $value;
+				$x['display'] = JFactory::getUser($value)->get('name');
+			}
+
+			$return[] = $x;
+		}
+
+		return $return;
+	}
+
+	/**
 	 * Translate operators from form value to database operator
 	 * 
 	 * @param  $o - operator of interest
@@ -310,27 +350,27 @@ class TimeFilters
 		{
 			return '=';
 		}
-		if($o == 'de')
+		elseif($o == 'de')
 		{
 			return '!=';
 		}
-		if($o == 'gt')
+		elseif($o == 'gt')
 		{
 			return '>';
 		}
-		if($o == 'gte')
+		elseif($o == 'gte')
 		{
 			return '>=';
 		}
-		if($o == 'lt')
+		elseif($o == 'lt')
 		{
 			return '<';
 		}
-		if($o == 'lte')
+		elseif($o == 'lte')
 		{
 			return '<=';
 		}
-		if($o == 'like')
+		elseif($o == 'like')
 		{
 			return 'LIKE';
 		}
@@ -341,7 +381,7 @@ class TimeFilters
 	 * Map operator symbol to text equivalent (ex: '>' = 'is greater than')
 	 * 
 	 * @param  $o - operator of interest
-	 * @return void
+	 * @return string - value of operator
 	 */
 	private function mapOperator($o)
 	{
@@ -349,30 +389,30 @@ class TimeFilters
 		{
 			return 'is';
 		}
-		if($o == '!=')
+		elseif($o == '!=')
 		{
 			return 'is not';
 		}
-		if($o == '>')
+		elseif($o == '>')
 		{
 			return 'is greater than';
 		}
-		if($o == '>=')
+		elseif($o == '>=')
 		{
 			return 'is greater than or equal to';
 		}
-		if($o == '<')
+		elseif($o == '<')
 		{
 			return 'is less than';
 		}
-		if($o == '<=')
+		elseif($o == '<=')
 		{
 			return 'is less than or equal to';
 		}
-		if($o == 'like')
+		elseif($o == 'LIKE')
 		{
 			return 'is like';
 		}
-		return;
+		return $o;
 	}
 }

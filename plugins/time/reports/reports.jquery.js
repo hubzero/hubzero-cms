@@ -63,23 +63,18 @@ HUB.Plugins.TimeReports = {
 
 		// Add change event to hub select box (filter tasks list by selected hub)
 		hub.change(function(event) {
-
-			// Set hub = -1 if hub value is empty (so the ajax call returns nothing, instead of everything)
-			// @FIXME: this is sortof 'hacky'
-			if(hub.val() == '') { hid = -1 } else { hid = hub.val() }
-
 			// Create a ajax call to get the tasks
 			$.ajax({
-				url: "index.php?option=com_time&task=ajax&active=ajax&action=tasks.json",
-				data: "hid="+hid+"&pactive=0",
+				url: "/api/time/indexTasks",
+				data: "hid="+hub.val(),
 				dataType: "json",
 				cache: false,
 				success: function(json){
 					// If success, update the list of tasks based on the chosen hub
 					var options = '';
-					if(json.length > 0) {
-						for (var i = 0; i < json.length; i++) {
-							options += '<option value="' + json[i].objValue + '">' + json[i].objText + '</option>';
+					if(json.tasks.length > 0) {
+						for (var i = 0; i < json.tasks.length; i++) {
+							options += '<option value="' + json.tasks[i].id + '">' + json.tasks[i].name + '</option>';
 						}
 					} else {
 						options = '<option value="none">No tasks for this hub</option>';
@@ -106,14 +101,10 @@ HUB.Plugins.TimeReports = {
 
 		if(hub.val() != "" && task.val() != "" && startdate.val() != "" && enddate.val() != "") {
 
-			// Set task = -1 if task value is empty (so the ajax call returns nothing, instead of everything)
-			// @FIXME: this is sortof 'hacky'
-			if(task.val() == 'none') { pid = -1 } else { pid = task.val() }
-
 			// Create a ajax call to get the records
 			$.ajax({
-				url: "index.php?option=com_time&task=ajax&active=ajax&action=report_records.json",
-				data: "pid="+pid+"&startdate="+startdate.val()+"&enddate="+enddate.val(),
+				url: "/api/time/indexRecordsForBill",
+				data: "tid="+task.val()+"&startdate="+startdate.val()+"&enddate="+enddate.val()+"&billed=0",
 				dataType: "json",
 				cache: false,
 				success: function(json){
@@ -135,31 +126,31 @@ HUB.Plugins.TimeReports = {
 									if(j == 0) {
 										tablerows += '<tr class="report_user_subsection"><td colspan="4">'
 												  + '<div class="user_header">'
-												  + json[i][1][j].user
+												  + json[i][1][j].uname
 												  + '</div>'
 												  + '</td></tr>';
 									}
 									// First, trim the description if it's too long (should we do this here?)
-									if(json[i][1][j].rdescription.length > 75) {
-										var description = json[i][1][j].rdescription.substring(0,75)+"...";
+									if(json[i][1][j].description.length > 75) {
+										var description = json[i][1][j].description.substring(0,75)+"...";
 									} else {
-										var description = json[i][1][j].rdescription;
+										var description = json[i][1][j].description;
 									}
 									// Write out the table row for the user
-									tablerows += '<tr class="select-me" id="' + json[i][1][j].rid + '">'
-											  +  '<td class="report_time">' + json[i][1][j].rtime + '</td>'
-											  +  '<td class="report_date">' + json[i][1][j].rdate + '</td>'
-											  +  '<td>' + json[i][1][j].task  + '</td>'
-											  +  '<td>' + description    + '</td></tr>';
+									tablerows += '<tr class="select-me" id="' + json[i][1][j].id + '">'
+											  +  '<td class="report_time">' + json[i][1][j].time + '</td>'
+											  +  '<td class="report_date">' + json[i][1][j].date + '</td>'
+											  +  '<td>' + json[i][1][j].pname  + '</td>'
+											  +  '<td>' + description + '</td></tr>';
 
 									// Create a sum of the users time and the total time
-									sum_user_time += parseFloat(json[i][1][j].rtime);
-									total_time    += parseFloat(json[i][1][j].rtime);
+									sum_user_time += parseFloat(json[i][1][j].time);
+									total_time    += parseFloat(json[i][1][j].time);
 
 									// Add a row for the sum of the users time (only once per user)
 									if(j == (json[i][1].length-1)) {
 										tablerows += '<tr><td class="report_user_total">total time for ' 
-												  + json[i][1][j].user + ': ' 
+												  + json[i][1][j].uname + ': ' 
 												  + sum_user_time + '</td><td colspan="3"></td></tr>';
 									}
 								}
@@ -193,6 +184,12 @@ HUB.Plugins.TimeReports = {
 					});
 				}
 			});
+		}
+		else
+		{
+			var tablerows = '<tr><td colspan="4" class="no_records">No records matching your current criteria</td></tr>';
+			$("#records").html(tablerows);
+			$("#results").val('');
 		}
 	} // end getRecords
 }

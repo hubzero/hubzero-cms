@@ -182,10 +182,13 @@ Class TimeRecords extends JTable
 			{
 				foreach($filters['q'] as $arg)
 				{
-					$query .= ($first) ? " WHERE " : " AND ";
-					$query .= $arg['column'] . ' ' . $arg['o'] . ' ' . $arg['value'];
+					if($arg['value'] !== NULL)
+					{
+						$query .= ($first) ? " WHERE " : " AND ";
+						$query .= $arg['column'] . ' ' . $arg['o'] . ' ' . $this->_db->Quote($arg['value']);
 
-					$first = false;
+						$first = false;
+					}
 				}
 			}
 		}
@@ -256,10 +259,13 @@ Class TimeRecords extends JTable
 			{
 				foreach($filters['q'] as $arg)
 				{
-					$query .= ($first) ? " WHERE " : " AND ";
-					$query .= $arg['column'] . ' ' . $arg['o'] . ' ' . $arg['value'];
+					if($arg['value'] !== NULL)
+					{
+						$query .= ($first) ? " WHERE " : " AND ";
+						$query .= $arg['column'] . ' ' . $arg['o'] . ' ' . $this->_db->Quote($arg['value']);
 
-					$first = false;
+						$first = false;
+					}
 				}
 			}
 		}

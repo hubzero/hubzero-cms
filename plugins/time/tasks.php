@@ -171,7 +171,7 @@ class plgTimeTasks extends Hubzero_Plugin
 		$view->tasks = TimeFilters::highlight($view->tasks, $view->filters);
 
 		// Get the column list and operators
-		$view->cols      = TimeFilters::getColumnNames('time_tasks');
+		$view->cols      = TimeFilters::getColumnNames('time_tasks', array("id"));
 		$view->operators = TimeFilters::buildSelectOperators();
 
 		// Set a few things for the vew
