@@ -38,7 +38,7 @@ $html .= '>' . "\n";
 
 if ($this->feed)
 {
-	$html .= "\t" . '<h3>' . $module->title;
+	$html .= "\t" . '<h3>' . $this->module->title;
 	$html .= ' <a class="newsfeed" href="' . $this->feedlink . '" title="' . JText::_('MOD_WHATSNEW_SUBSCRIBE') . '">' . JText::_('MOD_WHATSNEW_NEWS_FEED') . '</a>';
 	$html .= '</h3>' . "\n";
 }
