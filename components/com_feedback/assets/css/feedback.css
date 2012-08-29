@@ -14,73 +14,63 @@
 */
 
 /* Intro */
+	#introduction:after {
+		content: "\f075";
+	}
 	#introduction {
-		margin: 0 -15px 3em -15px;
-		padding: 25px 15px 25px 120px;
-		background: #fbf8ea url("/components/com_feedback/assets/img/feedback-large.gif") 30px 25px no-repeat;
-		border-top: 2px solid #e7dac4;
-		border-bottom: 2px solid #e7dac4;
-		color: #7c7266;
+		*background-image: url("/components/com_feedback/assets/img/feedback-large.gif");
+		*background-position: 30px 25px;
+		*background-repeat: no-repeat;
 	}
-	#introduction .aside,
-	#introduction .subject {
-		margin-top: 0;
-		margin-bottom: 0;
-		padding-top: 0;
-		padding-bottom: 0;
-		background: transparent;
-		border: none;
+	.two div {
+		position: relative;
+		padding-left: 30px;
 	}
-	#introduction h3 {
-		margin-top: 0;
-		color: #7c7266;
+	.two span.fontcon-before,
+	.two span.fontcon-after,
+	.two div:before,
+	.two div:after {
+		content: "";
+		display: block;
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 20px;
+		height: 20px;
+		font-size: 20px;
+		line-height: 1;
+		font-family: 'Fontcons';
+		color: #aaa;
 	}
-	#introduction .columns {
-		border: none;
+	.two div.story:before {
+		content: "\275D";
 	}
-	#introduction ul,
-	#introduction li {
-		list-style: none;
-		margin: 1em 0;
-		padding: 0;
+	.two div.story {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#x275D;&nbsp;</span>' + this.innerHTML);
 	}
-	#introduction li {
-		margin: 0;
-		padding: 0 0 0 15px;
-		background: transparent url("/components/com_feedback/assets/img/arrow.gif") 0 50% no-repeat;
+	.two div.wish:before {
+		content: "\f078";
 	}
-/* Four Columns */
-	.com_feedback .four {
-		border-top: 1px solid #e0e0d7;
-		margin-bottom: 3em;
+	.two div.wish {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf078;&nbsp;</span>' + this.innerHTML);
 	}
-	.com_feedback .four h3 { 
-		color: #000; 
-		margin-top: 1em; 
-		padding-top: 0em;
+	.two div.poll:before {
+		content: "\f080";
 	}
-	.com_feedback .four h3 a { 
-		color: #000; 
-		border-bottom: none; 
+	.two div.poll {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf080;&nbsp;</span>' + this.innerHTML);
 	}
-	.com_feedback .four ul {
-		margin: 1em 0;
+	.two div.report:before {
+		content: "\f01f";
 	}
-	.com_feedback .four li {
-		margin: 1em 0;
+	.two div.report {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf01f;&nbsp;</span>' + this.innerHTML);
 	}
-	.com_feedback .first h2 { 
-		font-weight: normal;
-		margin: 0;
-		padding: 0.5em 0 0 0;
-		line-height: 1.2em;
-		border: none;
-		border-top: 2px solid #e0e0d7;
+	.two span.fontcon-before,
+	.two span.fontcon-after {
+		*top: 1.2em;
 	}
-	.com_feedback .big {
-		height: 3em;
-	}
-
+/* Iframe */
 	iframe {
 		border: none;
 	}
@@ -99,7 +89,6 @@
 	#hubForm label#fbBotcheck-label {
 		display: none;
 	}
-/* Supporting styles missing from main.css */
 
 /* For the options to Poll */
 	ul {
@@ -108,81 +97,4 @@
 	}
 	.introtext {
 		margin-top:5px;
-	}
-/* Four Columns */
-	.columns {
-		margin: 0;
-		padding: 0;
-		border: none;
-		float: left;
-		text-align: left;
-	}
-	.four {
-		width: 23%; 
-		background: none;
-	}
-	.four.first {
-		padding: 0 1.25% 0 0;
-	}
-	.four.second {
-		padding: 0 1.25% 0 1.25%;
-	}
-	.four.third {
-		padding: 0 1.25% 0 1.25%;
-	}
-	.four.fourth {
-		padding: 0 0 0 1.25%;
-	}
-/* Two Columns */
-	.two {
-		width: 48%; 
-		background: none;
-	}
-	.two.first {
-		padding: 0 2% 0 0;
-	}
-	.two.second {
-		padding: 0 0 0 2%;
-	}
-/* Three Columns */
-	.three {
-		width: 31.5%; 
-		background: none;
-	}
-	.three.first {
-		padding: 0 1.25% 0 0;
-	}
-	.three.second {
-		padding: 0 1.25% 0 1.25%;
-	}
-	.three.third {
-		padding: 0 0 0 1.25%;
-	}
-	.three.first.second {
-		padding: 0 1.25% 0 0;
-		width: 64.5%;
-	}
-	.three.second.third {
-		padding: 0 0 0 1.25%;
-		width: 64.5%;
-	}
-
-	.columns .story,
-	.columns .poll,
-	.columns .report,
-	.columns .wish {
-		padding-left: 25px;
-	}
-	
-	.columns .story {
-		background: url("/components/com_feedback/assets/img/story.gif") 0 0 no-repeat;
-	}
-	.columns .poll {
-		background: url("/components/com_feedback/assets/img/poll.gif") 0 0 no-repeat;
-	}
-	.columns .report {
-		background: url("/components/com_feedback/assets/img/report.gif") 0 0 no-repeat;
-	}
-	.columns .wish {
-		background: url("/components/com_feedback/assets/img/wish.gif") 0 0 no-repeat;
 	}

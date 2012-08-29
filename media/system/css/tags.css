@@ -1,0 +1,97 @@
+/**
+ * @package     hubzero-cms
+ * @file        media/hubzero/css/tags.css
+ * @copyright   Copyright 2005-2012 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/* Tags */
+	.tags {
+		margin-left: 14px;
+		font-size: 10px !important;
+	}
+	.tags li {
+		display: inline-block !important;
+		margin: 2px 12px 2px 0px !important;
+	}
+	.tags li a {
+		position: relative;
+		display: inline-block !important;
+		border: 0;
+		-webkit-border-radius: 0 3px 3px 0 !important;
+		-moz-border-radius: 0 3px 3px 0 !important;
+		-ms-border-radius: 0 3px 3px 0 !important;
+		-o-border-radius: 0 3px 3px 0 !important;
+		border-radius: 0 3px 3px 0 !important;
+		line-height: 2em !important;
+		margin: 0 !important;
+		background: #333 !important;
+		color: #ccc !important;
+		padding: 2px 6px 2px 6px !important;
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before"></small>' + this.innerHTML + '<small class="fontcon-after">&bull;</small>'); /* [!] HACK - IE 7 and older */
+	}
+	.tags li a span {
+		background-color: #444; /* For browsers that don't support rgba */
+		background-color: rgba(255, 255, 255, 0.2);
+		display: inline-block;
+		margin: -2px -6px -2px 4px;
+		padding: 2px 6px 2px 6px;
+		-webkit-border-radius: 0 3px 3px 0;
+		-moz-border-radius: 0 3px 3px 0;
+		-ms-border-radius: 0 3px 3px 0;
+		-o-border-radius: 0 3px 3px 0;
+		border-radius: 0 3px 3px 0;
+	}
+	.tags li a small.fontcon-before,
+	.tags li a:before {
+		content: "";
+		border-color: transparent #333 transparent transparent !important;
+		border-style: dashed solid dashed dashed !important;
+		border-width: 12px 12px 12px 0 !important;
+		height: 0;
+		width: 0;
+		display: block;
+		overflow: hidden;
+		position: absolute;
+		top: 0 !important;
+		left: -12px !important;
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+	.tags li a small.fontcon-after,
+	.tags li a:after {
+		content: "";
+		height: 4px;
+		width: 4px;
+		display: block;
+		position: absolute;
+		top: 10px;
+		left: -3px;
+		background-color: #f6f6f6;
+		-webkit-border-radius: 4px;
+		-moz-border-radius: 4px;
+		-ms-border-radius: 4px;
+		-o-border-radius: 4px;
+		border-radius: 4px;
+	}
+	/* [!] HACK - IE 7 and older */
+	.tags li a small.fontcon-after {
+		*background-color: transparent;
+		*color: #fff;
+		*font-size: 18px;
+		*line-height: 12px;
+		*top: 7px;
+		*left: -4px;
+	}
+	.tags li a:hover {
+		color: #fff;
+		background: #000 !important;
+	}
+	.tags li a:hover span {
+		background-color: #111; /* For browsers that don't support rgba */
+		background-color: rgba(255, 255, 255, 0.2);
+	}
+	.tags li a:hover small.fontcon-before,
+	.tags li a:hover:before {
+		border-color: transparent #000 transparent transparent !important;
+	}

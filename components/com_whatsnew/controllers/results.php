@@ -58,6 +58,11 @@ class WhatsnewControllerResults extends Hubzero_Controller
 	public function displayTask()
 	{
 		$menu = JSite::getMenu()->getActive();
+		if (!$menu)
+		{
+			$menu = new stdClass;
+			$menu->params = '';
+		}
 		$paramsClass = 'JParameter';
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{

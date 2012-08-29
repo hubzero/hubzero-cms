@@ -13,40 +13,17 @@
 
 */
 
-/* Columns */
-	.com_events .section {
-		padding: 0;
-		border-top: 1px solid #EFEFEF;
-	}
-	.com_events .main {
-		border: none;
-	}
-	.below {
-		margin: 2em 0 0 0;
-		padding-top: 1em;
-	}
-	.com_events .aside {
-		float: right;
-		width: 214px;
-		padding-top: 1em;
-	}
-	.com_events .subject {
-		margin: 1em 0;
-		margin-right: 235px;
-		padding: 1.4em;
-		background: #F7F7F7;
-		border-top: 1px solid #E3E3E3;
-		border-bottom: 1px solid #E3E3E3;
-	}
-	.com_events .main .subject {
-		border: none;
-		background: transparent;
-		padding: 0;
-	}
-	.com_events .main {
-		padding-top: 2em;
+	.com_events #sub-menu {
+		margin-bottom: 0;
 	}
 /* Date navigation */
+	.com_events .aside fieldset {
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+		-ms-box-shadow: none;
+		-o-box-shadow: none;
+		box-shadow: none;
+	}
 	#event-categories,
 	.calendarwrap {
 		background-color: #F6F6F6;
@@ -313,14 +290,11 @@
 		padding: 0.4em 1em;
 		line-height: 1em;
 		border: 1px solid #bbb;
-		-moz-border-radius-topright: 5px;
-		-moz-border-radius-topleft: 5px;
-		-webkit-border-top-right-radius: 5px;
-		-webkit-border-top-left-radius: 5px;
-		-ms-border-radius-topright: 5px;
-		-ms-border-radius-topleft: 5px;
-		border-top-right-radius: 5px;
-		border-top-left-radius: 5px;
+		-webkit-border-radius: 0.25em 0.25em 0 0;
+		-moz-border-radius: 0.25em 0.25em 0 0;
+		-ms-border-radius: 0.25em 0.25em 0 0;
+		-o-border-radius: 0.25em 0.25em 0 0;
+		border-radius: 0.25em 0.25em 0 0;
 	}
 	#sub-sub-menu li a:hover {
 		color: #fff;
@@ -340,92 +314,6 @@
 		border-color: #999;
 		border-bottom: 1px solid #fff;
 	}
-	.fancybox-inner {
-		background: #fff;
-		-webkit-border-radius: 4px;
-		-moz-border-radius: 4px;
-		border-radius: 4px;
-		-webkit-box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-		-moz-box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-		box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-	}
-	.modal h2 {
-		margin: 0;
-		padding: 30px;
-		border-bottom: 1px solid #eee;
-	}
-	.modal .entry-details {
-		margin: 0;
-		padding: 30px;
-	}
-	.modal .entry-link,
-	.modal .entry-location,
-	.modal .entry-datetime,
-	.modal .entry-category,
-	.modal .entry-contact {
-		padding-left: 1.7em;
-		position: relative;
-	}
-	.modal .entry-link:before,
-	.modal .entry-location:before,
-	.modal .entry-datetime:before,
-	.modal .entry-category:before,
-	.modal .entry-contact:before {
-		font-family: 'Fontcons';
-		font-size: 1.5em;
-		position: absolute;
-		top: 0;
-		left: 0;
-		color: #ddd;
-		font-weight: normal;
-	}
-	.modal .entry-link:before {
-		content: "\26D3";
-	}
-	.modal .entry-location:before {
-		content: "\f041";
-		left: .2em;
-	}
-	.modal .entry-datetime:before {
-		content: "\f017";
-	}
-	.modal .entry-category:before {
-		content: "\f07b";
-		font-size: 1.1em;
-	}
-	.modal .entry-contact:before {
-		content: "\2709";
-	}
-	.modal .delete,
-	.modal .edit {
-		display: block;
-		overflow: hidden;
-		width: 1em;
-		height: 1em;
-		float: right;
-		border: none;
-		position: relative;
-		text-indent: 55em;
-	}
-	.modal .delete:before,
-	.modal .edit:before {
-		display: block;
-		position: absolute;
-		top: 0;
-		left: 0;
-		overflow: hidden;
-		width: 1em;
-		height: 1em;
-		text-indent: 0em;
-	}
-	.modal .container {
-		margin: 0 0 2.326em 0;
-		padding: 0;
-	}
-	.modal .container h3:first-child {
-		margin-top: 0;
-		padding-top: 0;
-	}
 /* IE 7 hacks */
 	html>body .ecalendar .today {
 		*width: 13%;
@@ -433,23 +321,4 @@
 	html>body .ecalendar caption a:hover,
 	html>body .datenav a:hover {
 		*background-position: 0 -15px;
-	}
-/* IE 6 hacks */
-	* html .com_events ul.events li {
-		background-image: none;
-		border-top: 1px solid #ddd;
-	}
-	* html .ecalendar .today {
-		width: 13%;
-	}
-	* html .ecalendar caption a.prv,
-	* html .datenav a.prv {
-		background-image: url("/components/com_events/assets/img/calendar-previous.png");
-	}
-	* html .ecalendar caption a:hover,
-	* html .datenav a:hover {
-		background-position: 0 -15px;
-	}
-	* html .com_events ul.events div.ewrap { 
-		height: 6em;
 	}

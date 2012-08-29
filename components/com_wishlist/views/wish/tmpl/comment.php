@@ -39,6 +39,16 @@ if ($this->reply->anonymous != 1) {
 	$name = $this->reply->authorname;
 }
 
+$dateformat = '%d %b %Y';
+$timeformat = '%I:%M %p';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateformat = 'd M Y';
+	$timeformat = 'H:i p';
+	$tz = true;
+}
+
 ximport('Hubzero_Wiki_Parser');
 
 $wikiconfig = array(
@@ -72,7 +82,10 @@ if ($this->reply->comment)
 <div class="comment-content">
 	<p class="comment-title">
 		<strong><?php echo $name; ?></strong> 
-		<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&id='.$this->listid.'#c'.$this->reply->id); ?>" title="<?php echo JText::_('COM_WISHLIST_PERMALINK'); ?>">@ <span class="time"><?php echo JHTML::_('date',$this->reply->added, '%I:%M %p', 0); ?></span> on <span class="date"><?php echo JHTML::_('date',$this->reply->added, '%d %b, %Y', 0); ?></span></a>
+		<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&id='.$this->listid.'#c'.$this->reply->id); ?>" title="<?php echo JText::_('COM_WISHLIST_PERMALINK'); ?>">
+			<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $this->reply->added; ?>"><?php echo JHTML::_('date', $this->reply->added, $timeformat, $tz); ?></time></span> 
+			<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $this->reply->added; ?>"><?php echo JHTML::_('date', $this->reply->added, $dateformat, $tz); ?></time></span>
+		</a>
 	</p>
 <?php if ($this->abuse && $this->reply->reports > 0) { ?>
 	<p class="warning"><?php echo JText::_('NOTICE_POSTING_REPORTED'); ?></p>

@@ -34,23 +34,24 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Controller');
 
 /**
- * Short description for 'FeedbackController'
- * 
- * Long description (if any) ...
+ * Feedback controller class
  */
 class FeedbackControllerFeedback extends Hubzero_Controller
 {
+	/**
+	 * Determine task and execute it
+	 * 
+	 * @return     void
+	 */
 	public function execute()
 	{
 		$this->registerTask('success_story', 'story');
-		
+
 		parent::execute();
 	}
-	
+
 	/**
-	 * Short description for '_buildPathway'
-	 * 
-	 * Long description (if any) ...
+	 * Set the pathway (breadcrumbs)
 	 * 
 	 * @return     void
 	 */
@@ -75,9 +76,7 @@ class FeedbackControllerFeedback extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for '_buildTitle'
-	 * 
-	 * Long description (if any) ...
+	 * Set the page title
 	 * 
 	 * @return     void
 	 */
@@ -86,16 +85,14 @@ class FeedbackControllerFeedback extends Hubzero_Controller
 		$this->_title = JText::_(strtoupper($this->_option));
 		if ($this->_task) 
 		{
-			$this->_title .= ': '.JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task));
+			$this->_title .= ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		}
 		$document =& JFactory::getDocument();
 		$document->setTitle($this->_title);
 	}
 
 	/**
-	 * Short description for 'main'
-	 * 
-	 * Long description (if any) ...
+	 * Display the main page
 	 * 
 	 * @return     void
 	 */
@@ -115,6 +112,7 @@ class FeedbackControllerFeedback extends Hubzero_Controller
 		$this->_buildPathway();
 
 		// Push some styles to the template
+		$this->_getStyles('', 'introduction.css', true); // component, stylesheet name, look in media system dir
 		$this->_getStyles();
 
 		// Set any messages

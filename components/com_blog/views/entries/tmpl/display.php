@@ -50,7 +50,7 @@ $juser =& JFactory::getUser();
 		$jconfig =& JFactory::getConfig();
 		$live_site = rtrim(JURI::base(),'/');
 		
-		$feed = $live_site . ltrim($feed, DS);
+		$feed = rtrim($live_site, DS) . DS . ltrim($feed, DS);
 	}
 	$feed = str_replace('https:://','http://', $feed);
 	?>

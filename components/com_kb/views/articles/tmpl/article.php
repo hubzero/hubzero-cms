@@ -78,7 +78,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 				if ($this->catid == $row->id) {
 					$html .= ' class="active"';
 				}
-				$html .= 'href="' . JRoute::_('index.php?option=' . $this->option . '&section=' . $row->alias) . '">' . $this->escape(stripslashes($row->title)) . ' (' . $row->numitems . ')</a>';
+				$html .= 'href="' . JRoute::_('index.php?option=' . $this->option . '&section=' . $row->alias) . '">' . $this->escape(stripslashes($row->title)) . ' <span class="item-count">' . $row->numitems . '</span></a>';
 				if (count($this->subcategories) > 0 && $this->catid == $row->id) 
 				{
 					$html .= "\t" . '<ul class="categories">' . "\n";
@@ -89,7 +89,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 						{
 							$html .= ' class="active"';
 						}
-						$html .= 'href="' . JRoute::_('index.php?option=' . $this->option . '&section=' . $this->category->alias . '&category=' . $cat->alias) . '">' . $this->escape(stripslashes($cat->title)) . ' (' . $cat->numitems . ')</a></li>' . "\n";
+						$html .= 'href="' . JRoute::_('index.php?option=' . $this->option . '&section=' . $this->category->alias . '&category=' . $cat->alias) . '">' . $this->escape(stripslashes($cat->title)) . ' <span class="item-count">' . $cat->numitems . '</span></a></li>' . "\n";
 					}
 					$html .= "\t" . '</ul>' . "\n";
 				}
@@ -153,7 +153,9 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 				<div class="clearfix"></div>
 			</div><!-- / .container-block -->
 		</div><!-- / .container -->
+	</div><!-- / .subject -->
 </div><!-- / .main section -->
+
 <?php 
 if ($this->config->get('allow_comments')) {
 	$d = ($this->article->modified) ? $this->article->modified : $this->article->created;
@@ -187,7 +189,7 @@ if ($this->config->get('allow_comments')) {
 	$pdt = strftime($yearFormat, $dt) . '-' . strftime($monthFormat, $dt) . '-' . strftime($dayFormat, $dt) . ' 00:00:00';
 	$today = date('Y-m-d H:i:s', time());
 ?>		
-<div class="below">
+<div class="below section">
 	<h3 class="comments-title">
 		<a name="comments"></a>
 		Comments on this entry
@@ -210,6 +212,14 @@ if ($this->config->get('feeds_enabled')) {
 }
 ?>
 	</h3>
+	<div class="aside">
+<?php if ($this->config->get('close_comments') == 'never' || ($this->config->get('close_comments') != 'now' && $today < $pdt)) { ?>
+		<p>
+			<a class="add" href="#post-comment"><?php echo JText::_('Add a comment'); ?></a>
+		</p>
+<?php } ?>
+	</div>
+	<div class="subject">
 <?php 
 ximport('Hubzero_User_Profile');
 ximport('Hubzero_User_Profile_Helper');
@@ -239,10 +249,9 @@ if ($this->comments) {
 		}
 
 		$name = JText::_('COM_KB_ANONYMOUS');
+
+		$xuser = Hubzero_User_Profile::getInstance($comment->created_by);
 		if (!$comment->anonymous) {
-			//$xuser =& JUser::getInstance($comment->created_by);
-			$xuser = new Hubzero_User_Profile();
-			$xuser->load($comment->created_by);
 			if (is_object($xuser) && $xuser->get('name')) {
 				$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$comment->created_by).'">'.$this->escape(stripslashes($xuser->get('name'))).'</a>';
 			}
@@ -280,8 +289,9 @@ if ($this->comments) {
 				<p class="comment-title">
 					<strong><?php echo $name; ?></strong> 
 					<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&section='.$this->section->alias.'&category='.$this->category->alias.'&alias='.$this->article->alias.'#c'.$comment->id); ?>" title="<?php echo JText::_('COM_KB_PERMALINK'); ?>">
-						@ <span class="time"><?php echo JHTML::_('date', $comment->created, $timeformat, $tz); ?></span> 
-						on <span class="date"><?php echo JHTML::_('date', $comment->created, $dateformat, $tz); ?></span></a>
+						<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, $timeformat, $tz); ?></time></span> 
+						<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, $dateformat, $tz); ?></time></span>
+					</a>
 				</p>
 				<?php echo $content; ?>
 <?php 		if (!$comment->reports) { ?>
@@ -315,10 +325,10 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 				}
 
 				$name = JText::_('COM_KB_ANONYMOUS');
+
+				$xuser = Hubzero_User_Profile::getInstance($reply->created_by);
+
 				if (!$reply->anonymous) {
-					//$xuser =& JUser::getInstance($reply->created_by);
-					$xuser = new Hubzero_User_Profile();
-					$xuser->load($reply->created_by);
 					if (is_object($xuser) && $xuser->get('name')) {
 						$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$reply->created_by).'">'.$this->escape(stripslashes($xuser->get('name'))).'</a>';
 					}
@@ -356,8 +366,8 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 						<p class="comment-title">
 							<strong><?php echo $name; ?></strong> 
 							<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&section='.$this->section->alias.'&category='.$this->category->alias.'&alias='.$this->article->alias.'#c'.$reply->id); ?>" title="<?php echo JText::_('COM_KB_PERMALINK'); ?>">
-								@ <span class="time"><?php echo JHTML::_('date', $reply->created, $timeformat, $tz); ?></span> 
-								on <span class="date"><?php echo JHTML::_('date', $reply->created, $dateformat, $tz); ?></span>
+								<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $reply->created; ?>"><?php echo JHTML::_('date', $reply->created, $timeformat, $tz); ?></time></span> 
+								<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $reply->created; ?>"><?php echo JHTML::_('date', $reply->created, $dateformat, $tz); ?></time></span>
 							</a>
 						</p>
 						<?php echo $content; ?>
@@ -384,10 +394,8 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 						}
 
 						$name = JText::_('COM_KB_ANONYMOUS');
+						$xuser = Hubzero_User_Profile::getInstance($response->created_by);
 						if (!$response->anonymous) {
-							//$xuser =& JUser::getInstance($reply->created_by);
-							$xuser = new Hubzero_User_Profile();
-							$xuser->load($response->created_by);
 							if (is_object($xuser) && $xuser->get('name')) {
 								$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$response->created_by).'">'.$this->escape(stripslashes($xuser->get('name'))).'</a>';
 							}
@@ -425,8 +433,8 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 								<p class="comment-title">
 									<strong><?php echo $name; ?></strong> 
 									<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&section='.$this->section->alias.'&category='.$this->category->alias.'&alias='.$this->article->alias.'#c'.$response->id); ?>" title="<?php echo JText::_('COM_KB_PERMALINK'); ?>">
-										@ <span class="time"><?php echo JHTML::_('date', $response->created, $timeformat, $tz); ?></span> 
-										on <span class="date"><?php echo JHTML::_('date', $response->created, $dateformat, $tz); ?></span>
+										<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $response->created; ?>"><?php echo JHTML::_('date', $response->created, $timeformat, $tz); ?></time></span> 
+										<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $response->created; ?>"><?php echo JHTML::_('date', $response->created, $dateformat, $tz); ?></time></span>
 									</a>
 								</p>
 								<?php echo $content; ?>
@@ -464,11 +472,11 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 <?php
 }
 ?>
-		</div><!-- / .below -->
 	</div><!-- / .subject -->
-	
 	<div class="clear"></div>
-<div class="below">
+</div><!-- / .below -->
+
+<div class="below section">
 	<h3 class="post-comment-title">
 		<?php echo JText::_('Post a comment'); ?>
 	</h3>
@@ -533,10 +541,9 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 				if ($this->replyto->id) {
 					ximport('Hubzero_View_Helper_Html');
 					$name = JText::_('COM_KB_ANONYMOUS');
+					$xuser = Hubzero_User_Profile::getInstance($this->replyto->created_by);
 					if (!$this->replyto->anonymous) {
 						//$xuser =& JUser::getInstance($reply->created_by);
-						$xuser = new Hubzero_User_Profile();
-						$xuser->load($this->replyto->created_by);
 						if (is_object($xuser) && $xuser->get('name')) {
 							$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$this->replyto->created_by).'">'.stripslashes($xuser->get('name')).'</a>';
 						}
@@ -545,8 +552,8 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 				<blockquote cite="c<?php echo $this->replyto->id ?>">
 					<p>
 						<strong><?php echo $name; ?></strong> 
-						@ <span class="time"><?php echo JHTML::_('date',$this->replyto->created, $timeformat, $tz); ?></span> 
-						on <span class="date"><?php echo JHTML::_('date',$this->replyto->created, $dateformat, $tz); ?></span>
+						<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $this->replyto->created; ?>"><?php echo JHTML::_('date', $this->replyto->created, $timeformat, $tz); ?></time></span> 
+						<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $this->replyto->created; ?>"><?php echo JHTML::_('date', $this->replyto->created, $dateformat, $tz); ?></time></span>
 					</p>
 					<p><?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($this->replyto->content), 300, 0); ?></p>
 				</blockquote>
@@ -608,8 +615,7 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 			</fieldset>
 		</form>
 	</div><!-- / .subject -->
-	</div><!-- / .below -->
-<?php } else { ?>
-	</div><!-- / .subject -->
+</div><!-- / .below -->
+<?php //} else { ?>
+
 <?php } // if ($this->config->get('allow_comments')) ?>
-</div><!-- / .main section -->

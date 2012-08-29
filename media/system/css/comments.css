@@ -1,0 +1,413 @@
+/**
+ * @package     hubzero-cms
+ * @file        media/hubzero/css/comments.css
+ * @copyright   Copyright 2005-2012 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/* Comments */
+	ol.comments {
+		list-style-type: none !important;
+		margin: 1em 0 0 0;
+		padding: 0;
+		background: transparent;
+		border: none;
+	}
+	ol.comments:before {  /* This is to remove any possible styling conflicts with .comments class */
+		content: "";
+		display: none;
+	}
+	ol.comments li {
+		clear: left;
+		margin: 0;
+		padding: 0;
+		border: none;
+	}
+	ol.comments ol {
+		margin: 0;
+		padding: 0;
+	}
+	ol.comments li ol.comments li {
+		padding-left: 70px;
+	}
+	/* Options */
+	ol.comments .comment-options {
+		color: #fff;
+		font-size: 90%;
+		visibility: hidden;
+	}
+	ol.comments .comment-content:hover .comment-options {
+		visibility: visible;
+	}
+	ol.comments .comment-options a {
+		margin-right: 1em;
+	}		
+	ol.comments .comment-options a span {
+		display: none;
+	}
+	ol.comments dl.comment-details {
+		display: none;
+	}
+	/* Member photo */
+	ol.comments p.comment-member-photo {
+		float: left;
+		margin: 0 20px 0 0;
+		padding: 0;
+		width: 48px;
+		height: 48px;
+		overflow: hidden;
+		color: #777;
+		font-size: 11px;
+		text-align: right;
+		position: relative;
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		-ms-border-radius: 0.25em;
+		-o-border-radius: 0.25em;
+		border-radius: 0.25em;
+		-webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+		-moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+		-ms-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+		-o-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+	}
+	/* Content */
+	ol.comments .comment-content {
+		margin: 0 0 1em 70px;
+		position: relative;
+		background-color: #fff;
+		border: 1px solid #d9d9d9;
+		padding: .61803399em 1.61803399em;
+		-webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
+		-moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
+		-ms-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
+		-o-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
+		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
+	}
+	/* Arrow */
+	ol.comments .comment-content:before,
+	ol.comments .comment-content:after {
+		content: "";
+		position: absolute;
+		top: 10px;
+		left: -20px;
+		border-width: 10px;
+		border-style: solid;
+		border-color: transparent #dad9d9 transparent transparent;
+	    display: block; 
+	    width: 0;
+	}
+	/* Arrow base (should be same color as content border) */
+	ol.comments .comment-content:before {
+		top: 10px; 
+		left: -20px;
+		bottom: auto;
+		border-width: 10px;
+		border-color: transparent #dad9d9 transparent transparent;
+	}
+	/* 
+	Arrow overlay (should be same color as content background) 
+	This is offset by a pixel relative to :before, which creates a 1px border effect
+	*/
+	ol.comments .comment-content:after {
+		top: 10px; 
+		left: -18px;
+		bottom: auto;
+		border-width: 10px;
+		border-color: transparent #fff transparent transparent; 
+	}
+	ol.comments .comment-voting {
+		margin: -0.61803399em 0 0 0;
+		padding: 0;
+	}
+	ol.comments .comment-voting .thumbsvote {
+		margin-top: 0.5em;
+	}
+	/* Author comments */
+	ol.comments .author:before { /* This is to remove any possible styling conflicts with .author class */
+		content: "";
+		display: none;
+	}
+	ol.comments .start>.comment-content,
+	ol.comments .author>.comment-content {
+		border-color: #999;
+		background: #fff url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAYAAACALL/6AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADtJREFUeNpiYWBgEPn///8bBihgZGQUgbGxiTORohisgRTFIHEmUhSDbSBFMYqTiPULEymKB2koAQQYANU4UCtoY01GAAAAAElFTkSuQmCC) bottom repeat-x;
+	}
+	ol.comments .author>.comment-content:before,
+	ol.comments .start>.comment-content:before {
+		border-color: transparent #999 transparent transparent;
+	}
+	/* Chosen comments */
+	ol.comments .chosen>.comment-content {
+		border-color: #c3b7ff;
+	}
+	ol.comments .chosen>.comment-content:before {
+		border-color: transparent #c3b7ff transparent transparent;
+	}
+	/* Private comments */
+	ol.comments .private>.comment-content {
+		background-color: #f9f8fd;
+		border-color: #eeecf9;
+	}
+	ol.comments .private>.comment-content:before {
+		border-color: transparent #eeecf9 transparent transparent;
+	}
+	ol.comments .private .comment-member-photo {
+		border: 1px solid #999;
+	}
+	/* Details (date, time) */
+	ol.comments span.comment-details {
+		color: #bfbfbf;
+	}
+	/* Permalink */
+	ol.comments .permalink {
+		border: none;
+		color: #bfbfbf;
+	}
+	ol.comments .permalink:hover {
+		color: #000;
+		border: none;
+	}
+	#commentform .comment-date-at,
+	#commentform .comment-date-on,
+	ol.comments .comment-date-at,
+	ol.comments .comment-date-on {
+		visibility: hidden;
+		display: none;
+	}
+	#commentform .date,
+	#commentform .time,
+	ol.comments .date,
+	ol.comments .time {
+		margin-left: 0.7em;
+	}
+	ol.comments .img {
+		padding-left: 0px;
+		background: transparent;
+		text-align: center;
+	}
+	ol.comments .figure {
+		display: inline-block;
+		background: #fff;
+		border: 1px solid #eaeaea;
+	}
+	ol.comments .figure a {
+		border: none;
+	}
+	ol.comments .figcaption {
+		display: block;
+		padding: 0.5em;
+		background: #efefef;
+	}
+
+/* Add comment (comment form inside a comment) */
+	ol.comments .addcomment {
+		margin: 0 0 1em 0;
+		padding: 1em;
+		border: 1px solid #ccc;
+		background-color: #eee;
+	}
+	ol.comments .addcomment label {
+		display: block;
+	}
+	ol.comments .addcomment .cancelreply {
+		margin-left: 2em;
+	}
+	ol.comments .addcomment .submit {
+		clear: both;
+		margin: -1.5em 0 0 0;
+		padding: 0;
+		text-align: right;
+	}
+	ol.comments .addcomment input, 
+	ol.comments .addcomment select, 
+	ol.comments .addcomment textarea {
+		margin-top: 0.25em;
+		width: 100%;
+	}
+	ol.comments .addcomment .submit input,
+	ol.comments .addcomment .option {
+		width: auto;
+	}
+	ol.comments .addcomment .reply-anonymous-label {
+		width: 50%;
+	}
+
+/* No comments found */
+	.no-comments {
+		background-color: #fafafa;
+		border: 10px solid #f2f2f2;
+		padding: 1em;
+	}
+
+/* Comment form */
+	#commentform {
+		margin: 0;
+		padding: 0;
+	}
+	#commentform fieldset {
+		margin: 0;
+		text-align: left;
+		color: #777;
+		position: relative;
+		background-color: #fff;
+		border: 1px solid #0fa1ca;
+		padding: .61803399em 1.61803399em 0 1.61803399em;
+		-webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
+		-moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
+		-ms-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
+		-o-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
+		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
+	}
+	/* Arrow */
+	#commentform fieldset:before,
+	#commentform fieldset:after {
+		content: "";
+		position: absolute;
+		bottom: -15px;
+		left: 50px;
+		border-width: 15px 0 0 15px;
+		border-style: solid;
+		border-color: #fff transparent; 
+		display: block; 
+		width: 0;
+	}
+	/* Arrow base (should be same color as content border) */
+	#commentform fieldset:before {
+		top: 10px; 
+		left: -20px;
+		bottom:auto;
+		border-width: 10px;
+		border-color: transparent #0fa1ca transparent transparent;
+	}
+	/* 
+	Arrow overlay (should be same color as content background) 
+	This is offset by a pixel relative to :before, which creates a 1px border effect
+	*/
+	#commentform fieldset:after {
+		top: 10px; 
+		left: -18px;
+		bottom: auto;
+		border-width: 10px;
+		border-color: transparent #fff transparent transparent; 
+	}
+	#commentform fieldset fieldset {
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+		-ms-box-shadow: none;
+		-o-box-shadow: none;
+		box-shadow: none;
+	}
+	#commentform fieldset fieldset:before,
+	#commentform fieldset fieldset:after {
+		display: none;
+	}
+	#commentform p.comment-member-photo {
+		float: left;
+		overflow: hidden;
+		color: #777;
+		font-size: 11px;
+		text-align: right;
+		margin: 0 20px 0 0;
+		padding: 0;
+		width: 48px;
+		height: 48px;
+		background: transparent;
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		border-radius: 0.25em;
+		-webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+		-moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+	}
+	#commentform .sidenote {
+		padding: .61803399em 1.61803399em;
+		color: #aaa;
+		margin: .61803399em -1.61803399em 0 -1.61803399em;
+		background: #fafafa;
+	}
+	#commentform .required,
+	#commentform .optional {
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		font-size: 80%;
+	}
+	#commentform .required {
+		color: #AD6456;
+	}
+	#commentform .optional {
+		color: #888;
+	}
+	#commentform label {
+		padding-top: 1em;
+		position: relative;
+		display: block;
+	}
+	#commentform label span {
+		position: absolute;
+		top: 1.5em;
+		right: 0;
+		display: none;
+	}
+	#commentform .grouping {
+		position: relative;
+		margin-left: -3em;
+		padding: 0 0 1.5em 5em;
+		overflow: hidden;
+		top: 1em;
+		left: 1.5em;
+	}
+	#commentform .grouping label {
+		padding: 0;
+		float: left;
+		width: 50%;
+	}
+	#commentform .grouping label:first-child {
+		margin: 0 2em 0 -3.5em;
+	}
+	#commentform .grouping label span {
+		top: 0;
+	}
+	#commentform input, 
+	#commentform select, 
+	#commentform textarea {
+		margin-top: 0.25em;
+		width: 100%;
+	}
+	#commentform .submit {
+		clear: both;
+		margin: -1.5em 0 1em 0;
+		padding: 0;
+		text-align: right;
+	}
+	#commentform .submit input,
+	#commentform .option {
+		width: auto;
+	}
+	#commentform #comment-anonymous-label {
+		width: 50%;
+	}
+	#commentform fieldset fieldset {
+		border: 1px solid #ddd;
+		margin: 1em 0;
+		padding: 0 1em;
+		box-shadow: none;
+	}
+	#commentform fieldset fieldset legend {
+		margin: 0 0.5em;
+		padding: 0 1em;
+	}
+
+/* Wiki Reference */
+	table.wiki-reference {
+		border: none;
+		font-size: 11px;
+		margin: 0;
+	}
+	table.wiki-reference caption {
+		font-weight: bold;
+	}
+	table.wiki-reference tbody td {
+		border-top: 1px solid #efefef;
+		border-bottom: 1px solid #efefef;
+	}

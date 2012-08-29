@@ -32,8 +32,8 @@
 	.com_support #content-wrap .section {
 		padding: 0 15px;
 	}*/
-	.com_support #content-wrap .tickets {
-		margin: 0 -15px -15px -15px;
+	.com_support .tickets {
+		padding: 0;
 	}
 	.com_support #page-sidebar {
 		width: 214px;

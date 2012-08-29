@@ -177,11 +177,11 @@
 		display: none;
 	}
 /* Aside containers */
-	.aside .container {
+	.com_resources .aside .container {
 		margin-bottom: 2em;
 	}
-	.aside .container ul, 
-	.aside .container p {
+	.com_resources .aside .container ul, 
+	.com_resources .aside .container p {
 		margin: 0;
 		padding: 0.5em;
 		border-left: 1px solid #9da6b7;
@@ -189,37 +189,37 @@
 		border-bottom: 1px solid #9da6b7;
 		font-size: 90%;
 	}
-	.aside p#credits {
+	.com_resources .aside p#credits {
 		border: none;
 		padding: 0.2em 0;
 		margin: 0;
 		font-size: 85%;
 	}
-	.aside .container ul {
+	.com_resources .aside .container ul {
 		padding-left: 0.5em;
 	}
-	.aside .container li {
+	.com_resources .aside .container li {
 		margin: 0 0 0 2em;
 		padding: 0.5em;
 		position: relative;
 	}
-	.aside #recommendations li,
-	.aside #whatsrelated li {
+	.com_resources .aside #recommendations li,
+	.com_resources .aside #whatsrelated li {
 		list-style: none;
 		margin: 0 0 0 0.5em;
 		padding: 0.5em 0.5em 0.5em 2em;
 	}
-	.aside .container li.nodata {
+	.com_resources .aside .container li.nodata {
 		border: none;
 		list-style: none;
 		padding-bottom: 1em;
 	}
-	.aside .container li span {
+	.com_resources .aside .container li span {
 		display: inline;
 		color: #999;
 		font-size: 90%;
 	}
-	.aside .container h3 {
+	.com_resources .aside .container h3 {
 		margin: 0 !important;
 		padding: 0 !important;
 		color: #747b88;
@@ -533,7 +533,7 @@
 	.com_resources #introduction h3 {
 		margin-top: 0;
 	}
-	.section h3 span {
+	.com_resources .section h3 span {
 		display: inline;
 		float: right;
 		font-weight: normal;
@@ -1151,23 +1151,23 @@
 		list-style: none;
 		margin-left: 0;
 	}
-	.section h3 {
+	.com_resources .section h3 {
 		display: none;
 	}
-	.section .section h3 {
+	.com_resources .section .section h3 {
 		display: block;
 		margin: 1em 0 0.5em;
 	}
-	.section .section {
+	.com_resources .section .section {
 		padding: 0;
 	}
-	.section .section .subject {
+	.com_resources .section .section .subject {
 		background: #F7F7F7;
 		border-top: 1px solid #E3E3E3;
 		border-bottom: 1px solid #E3E3E3;
 		padding: 1em;
 	}
-	.section .section .aside {
+	.com_resources .section .section .aside {
 		padding-top: 0;
 	}
 	#sub-menu {

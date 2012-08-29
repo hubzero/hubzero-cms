@@ -112,7 +112,7 @@ if (count($this->versions) > 1) {
 					</select>
 				</label>
 				<input type="hidden" name="task" value="comments" />
-				<input type="submit" value="<?php echo JText::_('GO'); ?>" />
+				<p class="submit"><input type="submit" value="<?php echo JText::_('GO'); ?>" /></p>
 <?php if ($this->sub) { ?>
 				<input type="hidden" name="active" value="<?php echo $this->sub; ?>" />
 <?php } ?>
@@ -211,11 +211,11 @@ if ($this->comments) {
 <?php if (!$this->mycomment->parent) { ?>
 				<fieldset>
 					<legend><?php echo JText::_('WIKI_FIELD_RATING'); ?>:</legend>
-					<label><input class="option" id="review_rating_1" name="comment[rating]" type="radio" value="1"<?php if ($this->mycomment->rating == 1) { $html .= ' checked="checked"'; } ?> /> <img src="/components/com_wiki/images/stars/1.gif" alt="1 star" /> <?php echo JText::_('WIKI_FIELD_RATING_ONE'); ?></label>
-					<label><input class="option" id="review_rating_2" name="comment[rating]" type="radio" value="2"<?php if ($this->mycomment->rating == 2) { $html .= ' checked="checked"'; } ?> /> <img src="/components/com_wiki/images/stars/2.gif" alt="2 stars" /></label>
-					<label><input class="option" id="review_rating_3" name="comment[rating]" type="radio" value="3"<?php if ($this->mycomment->rating == 3) { $html .= ' checked="checked"'; } ?> /> <img src="/components/com_wiki/images/stars/3.gif" alt="3 stars" /></label>
-					<label><input class="option" id="review_rating_4" name="comment[rating]" type="radio" value="4"<?php if ($this->mycomment->rating == 4) { $html .= ' checked="checked"'; } ?> /> <img src="/components/com_wiki/images/stars/4.gif" alt="4 stars" /></label>
-					<label><input class="option" id="review_rating_5" name="comment[rating]" type="radio" value="5"<?php if ($this->mycomment->rating == 5) { $html .= ' checked="checked"'; } ?> /> <img src="/components/com_wiki/images/stars/5.gif" alt="5 stars" /> <?php echo JText::_('WIKI_FIELD_RATING_FIVE'); ?></label>
+					<label><input class="option" id="review_rating_1" name="comment[rating]" type="radio" value="1"<?php if ($this->mycomment->rating == 1) { $html .= ' checked="checked"'; } ?> /> &#x272D;&#x2729;&#x2729;&#x2729;&#x2729; <?php echo JText::_('WIKI_FIELD_RATING_ONE'); ?></label>
+					<label><input class="option" id="review_rating_2" name="comment[rating]" type="radio" value="2"<?php if ($this->mycomment->rating == 2) { $html .= ' checked="checked"'; } ?> /> &#x272D;&#x272D;&#x2729;&#x2729;&#x2729;</label>
+					<label><input class="option" id="review_rating_3" name="comment[rating]" type="radio" value="3"<?php if ($this->mycomment->rating == 3) { $html .= ' checked="checked"'; } ?> /> &#x272D;&#x272D;&#x272D;&#x2729;&#x2729;</label>
+					<label><input class="option" id="review_rating_4" name="comment[rating]" type="radio" value="4"<?php if ($this->mycomment->rating == 4) { $html .= ' checked="checked"'; } ?> /> &#x272D;&#x272D;&#x272D;&#x272D;&#x2729;</label>
+					<label><input class="option" id="review_rating_5" name="comment[rating]" type="radio" value="5"<?php if ($this->mycomment->rating == 5) { $html .= ' checked="checked"'; } ?> /> &#x272D;&#x272D;&#x272D;&#x272D;&#x272D; <?php echo JText::_('WIKI_FIELD_RATING_FIVE'); ?></label>
 				</fieldset>
 <?php } ?>
 				<label>

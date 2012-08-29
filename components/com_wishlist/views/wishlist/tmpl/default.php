@@ -33,6 +33,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 $jconfig = JFactory::getConfig();
 $sitename = $jconfig->getValue('config.sitename');
 
+$dateformat = '%d %b %Y';
+$timeformat = '%I:%M %p';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateformat = 'd M Y';
+	$timeformat = 'H:i p';
+	$tz = true;
+}
+
 /* Wish List */
 if ($this->wishlist) {	
 	if (!$this->wishlist->public && !$this->admin) {
@@ -277,9 +287,9 @@ if ($this->admin && !$this->getError()) {
 <?php 					if (!$item->reports) { ?>
 								<a class="entry-title" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>"><?php echo $item->subject; ?></a><br />
 								<span class="entry-details">
-									<?php echo JText::_('WISH_PROPOSED_BY'); ?> <?php echo ($item->anonymous == 1) ? JText::_('ANONYMOUS') : $item->authorname; ?> @ 
-									<span class="entry-time"><?php echo JHTML::_('date', $item->proposed, '%I:%M %p', 0); ?></span> <?php echo JText::_('on'); ?> 
-									<span class="entry-date"><?php echo JHTML::_('date', $item->proposed, '%d %b %Y', 0); ?></span>
+									<?php echo JText::_('WISH_PROPOSED_BY'); ?> <?php echo ($item->anonymous == 1) ? JText::_('ANONYMOUS') : $item->authorname; ?> @
+									<span class="entry-time"><time datetime="<?php echo $item->proposed; ?>"><?php echo JHTML::_('date', $item->proposed, $timeformat, $tz); ?></time></span> <?php echo JText::_('on'); ?> 
+									<span class="entry-date"><time datetime="<?php echo $item->proposed; ?>"><?php echo JHTML::_('date', $item->proposed, $dateformat, $tz); ?></time></span>
 									<span class="entry-details-divider">&bull;</span>
 									<span class="entry-comments"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&com=1&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'#comments'); ?>" title="<?php echo $item->numreplies; ?> <?php echo JText::_('COMMENTS'); ?>"><?php echo $item->numreplies; ?></a></span>
 								</span>

@@ -78,8 +78,8 @@ if ($this->reply->anonymous != 1)
 	<p class="comment-title">
 		<strong><?php echo $name; ?></strong> 
 		<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=question&id=' . $this->question->id . '#c' . $this->reply->id); ?>" title="<?php echo JText::_('COM_ANSWERS_PERMALINK'); ?>">
-			@ <span class="time"><time datetime="<?php echo $this->reply->added; ?>"><?php echo JHTML::_('date', $this->reply->added, $timeFormat, $tz); ?></time></span> 
-			on <span class="date"><time datetime="<?php echo $this->reply->added; ?>"><?php echo JHTML::_('date', $this->reply->added, $dateFormat, $tz); ?></time></span>
+			<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $this->reply->added; ?>"><?php echo JHTML::_('date', $this->reply->added, $timeFormat, $tz); ?></time></span> 
+			<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $this->reply->added; ?>"><?php echo JHTML::_('date', $this->reply->added, $dateFormat, $tz); ?></time></span>
 		</a>
 	</p>
 <?php if ($this->abuse && $this->reply->reports > 0) { ?>

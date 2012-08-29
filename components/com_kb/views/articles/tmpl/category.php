@@ -73,7 +73,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 				{
 					$html .= ' class="active"';
 				}
-				$html .= 'href="' . JRoute::_('index.php?option=' . $this->option . '&section=' . $row->alias) . '">' . $this->escape(stripslashes($row->title)) . ' (' . $row->numitems . ')</a>' . "\n";
+				$html .= 'href="' . JRoute::_('index.php?option=' . $this->option . '&section=' . $row->alias) . '">' . $this->escape(stripslashes($row->title)) . ' <span class="item-count">' . $row->numitems . '</span></a>' . "\n";
 				if (count($this->subcategories) > 0 && $this->catid == $row->id) 
 				{
 					$html .= "\t" . '<ul class="categories">' . "\n";
@@ -84,7 +84,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 						{
 							$html .= ' class="active"';
 						}
-						$html .= 'href="' . JRoute::_('index.php?option=' . $this->option . '&section=' . $row->alias . '&category=' . $cat->alias) . '">' . $this->escape(stripslashes($cat->title)) . ' (' . $cat->numitems . ')</a></li>' . "\n";
+						$html .= 'href="' . JRoute::_('index.php?option=' . $this->option . '&section=' . $row->alias . '&category=' . $cat->alias) . '">' . $this->escape(stripslashes($cat->title)) . ' <span class="item-count">' . $cat->numitems . '</span></a></li>' . "\n";
 					}
 					$html .= "\t" . '</ul>' . "\n";
 				}

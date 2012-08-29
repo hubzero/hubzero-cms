@@ -46,7 +46,7 @@ Hubzero_Document::addComponentStylesheet($this->option, 'assets/css/conditions.c
 <?php if ($this->acl->check('read', 'tickets')) { ?>
 		<li><a class="stats" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=stats'); ?>"><?php echo JText::_('Stats'); ?></a></li>
 <?php } ?>
-		<li class="last"><a class="new-ticket" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=new'); ?>"><?php echo JText::_('SUPPORT_NEW_TICKET'); ?></a></li>
+		<li class="last"><a class="add" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=new'); ?>"><?php echo JText::_('SUPPORT_NEW_TICKET'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 
@@ -224,10 +224,17 @@ if (count($ids))
 	$alltags = $st->checkTags($ids);
 }
 
+$users = array();
+
 ximport('Hubzero_View_Helper_Html');
 for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
+
+	if ($row->login && !isset($users[$row->login]))
+	{
+		$users[$row->login] = $row->login;
+	}
 
 	$comments = 0;
 	/*$comments = $sc->countComments(true, $row->id);
@@ -274,12 +281,28 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	$targetuser = null;
 	if ($row->login) 
 	{
-		jimport('joomla.user.helper');
+		/*jimport('joomla.user.helper');
 		if (($id = JUserHelper::getUserId($row->login)))
+		{*/
+		if (!isset($users[$row->login]))
 		{
 			$targetuser =& JUser::getInstance($row->login);
-			$lnk = JRoute::_('index.php?option=com_members&id=' . $targetuser->id);
+			if ($targetuser->get('id'))
+			{
+				$users[$row->login] = $targetuser; //$targetuser->get('id');
+				$lnk = JRoute::_('index.php?option=com_members&id=' . $targetuser->get('id'));
+			}
 		}
+		else
+		{
+			$targetuser = $users[$row->login]; 
+			if (is_object($targetuser) && $targetuser->get('id'))
+			{
+				//$targetuser->get('id');
+				$lnk = JRoute::_('index.php?option=com_members&id=' . $targetuser->get('id'));
+			}
+		}
+		//}
 	}
 
 	//$when = Hubzero_View_Helper_Html::timeAgo($row->created);

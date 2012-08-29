@@ -1,0 +1,43 @@
+/**
+ * @package     hubzero-cms
+ * @file        media/hubzero/css/pagination.css
+ * @copyright   Copyright 2005-2012 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/* Pagination */
+	.list-footer {
+		margin: 1em 0 1em 0;
+		padding: 0;
+		color: #ccc;
+		background-image: none;
+		list-style: none;
+	}
+	.list-footer li {
+		float: left;
+		margin: 0;
+		padding: 0 0.4em;
+		background-image: none;
+		list-style: none;
+	}
+	.list-footer .counter {
+		float: right;
+		padding: 0;
+		color: #333;
+	}
+	.list-footer .page { 
+		padding: 0 0.3em;
+	}
+	.list-footer .limit {
+		padding-right: 1em;
+		color: #333;
+		float: right;
+	}
+	.list-footer .start {
+		margin-left: 0;
+		padding-left: 0;
+	}
+	.list-footer .next,
+	.list-footer .prev {
+		display: none;
+	}

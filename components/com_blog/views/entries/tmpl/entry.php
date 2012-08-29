@@ -352,8 +352,8 @@ if ($this->comments) {
 					<p class="comment-title">
 						<strong><?php echo $name; ?></strong> 
 						<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz) . '/' . $this->row->alias.'#c'.$comment->id); ?>" title="<?php echo JText::_('COM_BLOG_PERMALINK'); ?>">
-							@ <span class="time"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, $this->timeFormat, $this->tz); ?></time></span> 
-							on <span class="date"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, $this->dateFormat, $this->tz); ?></time></span>
+							<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, $this->timeFormat, $this->tz); ?></time></span> 
+							<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, $this->dateFormat, $this->tz); ?></time></span>
 						</a>
 					</p>
 				<?php echo $content; ?>
@@ -410,8 +410,8 @@ if ($juser->get('guest')) {
 							<p class="comment-title">
 								<strong><?php echo $name; ?></strong> 
 								<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task='.JHTML::_('date', $this->row->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz) . '/' . $this->row->alias.'#c'.$reply->id); ?>" title="<?php echo JText::_('COM_BLOG_PERMALINK'); ?>">
-									@ <span class="time"><time datetime="<?php echo $reply->created; ?>"><?php echo JHTML::_('date', $reply->created, $this->timeFormat, $this->tz); ?></time></span> 
-									on <span class="date"><time datetime="<?php echo $reply->created; ?>"><?php echo JHTML::_('date', $reply->created, $this->dateFormat, $this->tz); ?></time></span>
+									<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $reply->created; ?>"><?php echo JHTML::_('date', $reply->created, $this->timeFormat, $this->tz); ?></time></span> 
+									<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $reply->created; ?>"><?php echo JHTML::_('date', $reply->created, $this->dateFormat, $this->tz); ?></time></span>
 								</a>
 							</p>
 							<?php echo $content; ?>
@@ -460,8 +460,8 @@ if ($juser->get('guest')) {
 									<p class="comment-title">
 										<strong><?php echo $name; ?></strong> 
 										<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task='.JHTML::_('date', $this->row->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $this->row->publish_up, $this->monthFormat, $this->tz) . '/' . $this->row->alias.'#c'.$response->id); ?>" title="<?php echo JText::_('COM_BLOG_PERMALINK'); ?>">
-											@ <span class="time"><time datetime="<?php echo $response->created; ?>"><?php echo JHTML::_('date', $response->created, $this->timeFormat, $this->tz); ?></time></span> 
-											on <span class="date"><time datetime="<?php echo $response->created; ?>"><?php echo JHTML::_('date', $response->created, $this->dateFormat, $this->tz); ?></time></span>
+											<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $response->created; ?>"><?php echo JHTML::_('date', $response->created, $this->timeFormat, $this->tz); ?></time></span> 
+											<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $response->created; ?>"><?php echo JHTML::_('date', $response->created, $this->dateFormat, $this->tz); ?></time></span>
 										</a>
 									</p>
 									<?php echo $content; ?>
@@ -580,8 +580,8 @@ if ($juser->get('guest')) {
 				<blockquote cite="c<?php echo $this->replyto->id ?>">
 					<p>
 						<strong><?php echo $name; ?></strong> 
-						@ <span class="time"><time datetime="<?php echo $this->replyto->created; ?>"><?php echo JHTML::_('date', $this->replyto->created, $this->timeFormat, $this->tz); ?></time></span> 
-						on <span class="date"><time datetime="<?php echo $this->replyto->created; ?>"><?php echo JHTML::_('date', $this->replyto->created, $this->dateFormat, $this->tz); ?></time></span>
+						<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $this->replyto->created; ?>"><?php echo JHTML::_('date', $this->replyto->created, $this->timeFormat, $this->tz); ?></time></span> 
+						<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $this->replyto->created; ?>"><?php echo JHTML::_('date', $this->replyto->created, $this->dateFormat, $this->tz); ?></time></span>
 					</p>
 					<p>
 						<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($this->replyto->content), 300, 0); ?>

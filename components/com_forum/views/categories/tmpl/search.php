@@ -18,7 +18,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	<h2><?php echo $this->escape($this->title); ?></h2>
 </div>
 <div id="content-header-extra">
-	<p><a class="main-page" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('All categories'); ?></a></p>
+	<p><a class="categories" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('All categories'); ?></a></p>
 </div>
 <div class="clear"></div>
 
@@ -128,8 +128,8 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 <?php 
 			if ($this->pageNav) 
 			{
-				$this->pageNav->setAdditionalUrlParam('section', $this->filters['section']);
-				$this->pageNav->setAdditionalUrlParam('category', $this->filters['category']);
+				//$this->pageNav->setAdditionalUrlParam('section', $this->filters['section']);
+				//$this->pageNav->setAdditionalUrlParam('category', $this->filters['category']);
 				$this->pageNav->setAdditionalUrlParam('q', $this->filters['search']);
 				echo $this->pageNav->getListFooter();
 			}

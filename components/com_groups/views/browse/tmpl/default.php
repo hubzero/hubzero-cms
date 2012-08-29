@@ -142,13 +142,17 @@ foreach ($letters as $letter)
 							<?php echo JText::_('starting with'); ?> "<?php echo strToUpper($this->filters['index']); ?>"
 <?php } ?>
 <?php if ($this->groups) { ?>
-						<span>(<?php echo $s.'-'.$e; ?> of <?php echo $this->total; ?>)</span>
+						<span>(<?php echo $s . '-' . $e; ?> of <?php echo $this->total; ?>)</span>
 <?php } ?>
 					</caption>
 					<thead>
 						<tr>
 							<th colspan="<?php echo ($this->authorized) ? '4' : '3'; ?>">
-								<?php echo $html; ?>
+								<span class="index-wrap">
+									<span class="index">
+										<?php echo $html; ?>
+									</span>
+								</span>
 							</th>
 						</tr>
 					</thead>

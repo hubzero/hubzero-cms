@@ -33,6 +33,16 @@ defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_User_Profile');
 
+$dateformat = '%d %b %Y';
+$timeformat = '%I:%M %p';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateformat = 'd M Y';
+	$timeformat = 'H:i p';
+	$tz = true;
+}
+
 $wikiconfig = array(
 	'option'   => $this->option,
 	'scope'    => 'answer',
@@ -133,14 +143,14 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 
 	<div class="subject">
 		
-		<div class="question" id="q<?php echo $this->question->id; ?>">
-			<p class="question-member-photo">
+		<div class="entry question" id="q<?php echo $this->question->id; ?>">
+			<p class="entry-member-photo">
 				<span class="question-anchor"><a name="q<?php echo $this->question->id; ?>"></a></span>
 				<img src="<?php echo AnswersHelperMember::getMemberPhoto($user, $this->question->anonymous); ?>" alt="" />
 			</p><!-- / .question-member-photo -->
-			<div class="question-content">
+			<div class="entry-content">
 			<?php if ($reports == 0) { ?>
-				<p class="question-voting voting">
+				<p class="entry-voting voting">
 					<?php
 						$view = new JView(array(
 							'name'   => $this->controller, 
@@ -155,9 +165,12 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 				</p><!-- / .question-voting -->
 			<?php } ?>
 
-				<p class="question-title">
+				<p class="entry-title">
 					<strong><?php echo $name; ?></strong> 
-					<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=question&id='.$this->question->id); ?>" title="<?php echo JText::_('COM_ANSWERS_PERMALINK'); ?>">@ <span class="time"><?php echo JHTML::_('date',$this->question->created, '%I:%M %p', 0); ?></span> on <span class="date"><?php echo JHTML::_('date',$this->question->created, '%d %b, %Y', 0); ?></span></a>
+					<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=question&id='.$this->question->id); ?>" title="<?php echo JText::_('COM_ANSWERS_PERMALINK'); ?>">
+						<span class="entry-date-at">@</span> <span class="date"><time datetime="<?php echo $this->question->created; ?>"><?php echo JHTML::_('date', $this->question->created, $timeformat, $tz); ?></time></span> 
+						<span class="entry-date-on">on</span> <span class="date"><time datetime="<?php echo $this->question->created; ?>"><?php echo JHTML::_('date', $this->question->created, $dateformat, $tz); ?></time></span>
+					</a>
 				</p><!-- / .question-title -->
 
 		<?php if ($reports > 0) { ?>
@@ -165,16 +178,16 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 					<?php echo JText::_('COM_ANSWERS_NOTICE_QUESTION_REPORTED'); ?>
 				</p>
 		<?php } else { ?>
-				<div class="question-subject">
+				<div class="entry-subject">
 					<?php echo $parser->parse(stripslashes($this->question->subject), $wikiconfig); ?>
 				</div><!-- / .question-subject -->
 			<?php if ($this->question->question) { ?>
-				<div class="question-long">
+				<div class="entry-long">
 					<?php echo $parser->parse(stripslashes($this->question->question), $wikiconfig); ?>
 				</div><!-- / .question-long -->
 			<?php } ?>
 			<?php if (count($this->tags) > 0) { ?>
-				<div class="question-tags">
+				<div class="entry-tags">
 					<p><?php echo JText::_('COM_ANSWERS_TAGS'); ?>:</p>
 					<ol class="tags">
 					<?php
@@ -196,7 +209,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 			<?php } ?>
 		<?php } ?>
 			</div><!-- / .question-content -->
-			<p class="question-status">
+			<p class="entry-status">
 		<?php if ($reports == 0) { ?>
 				<span>
 					<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=question&id=' . $this->question->id); ?>" title="<?php echo JText::_('COM_ANSWERS_TITLE_REPORT_ABUSE'); ?>">
@@ -329,43 +342,43 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 		<h3>
 			<?php echo JText::_('COM_ANSWERS_YOUR_ANSWER'); ?>
 		</h3>
-		<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" id="commentform">
-			<div class="aside">
-				<table class="wiki-reference" summary="Wiki Syntax Reference">
-					<caption>Wiki Syntax Reference</caption>
-					<tbody>
-						<tr>
-							<td>'''bold'''</td>
-							<td><b>bold</b></td>
-						</tr>
-						<tr>
-							<td>''italic''</td>
-							<td><i>italic</i></td>
-						</tr>
-						<tr>
-							<td>__underline__</td>
-							<td><span style="text-decoration:underline;">underline</span></td>
-						</tr>
-						<tr>
-							<td>{{{monospace}}}</td>
-							<td><code>monospace</code></td>
-						</tr>
-						<tr>
-							<td>~~strike-through~~</td>
-							<td><del>strike-through</del></td>
-						</tr>
-						<tr>
-							<td>^superscript^</td>
-							<td><sup>superscript</sup></td>
-						</tr>
-						<tr>
-							<td>,,subscript,,</td>
-							<td><sub>subscript</sub></td>
-						</tr>
-					</tbody>
-				</table>
-			</div><!-- / .aside -->
-			<div class="subject">
+		<div class="aside">
+			<table class="wiki-reference" summary="Wiki Syntax Reference">
+				<caption>Wiki Syntax Reference</caption>
+				<tbody>
+					<tr>
+						<td>'''bold'''</td>
+						<td><b>bold</b></td>
+					</tr>
+					<tr>
+						<td>''italic''</td>
+						<td><i>italic</i></td>
+					</tr>
+					<tr>
+						<td>__underline__</td>
+						<td><span style="text-decoration:underline;">underline</span></td>
+					</tr>
+					<tr>
+						<td>{{{monospace}}}</td>
+						<td><code>monospace</code></td>
+					</tr>
+					<tr>
+						<td>~~strike-through~~</td>
+						<td><del>strike-through</del></td>
+					</tr>
+					<tr>
+						<td>^superscript^</td>
+						<td><sup>superscript</sup></td>
+					</tr>
+					<tr>
+						<td>,,subscript,,</td>
+						<td><sub>subscript</sub></td>
+					</tr>
+				</tbody>
+			</table>
+		</div><!-- / .aside -->
+		<div class="subject">
+			<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" id="commentform">
 				<p class="comment-member-photo">
 					<span class="comment-anchor"><a name="answerform"></a></span>
 				<?php
@@ -413,9 +426,9 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 						</p>
 					</div>
 				</fieldset>
-			</div><!-- / .subject -->
-			<div class="clear"></div>
-		</form>
+			</form>
+		</div><!-- / .subject -->
+		<div class="clear"></div>
 	</div><!-- / .below section -->
 	<div class="clear"></div>
 	<?php } ?>
@@ -498,8 +511,8 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 						<p class="comment-title">
 							<strong><?php echo $name; ?></strong> 
 							<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=question&id=' . $this->question->id . '#c' . $row->id); ?>" title="<?php echo JText::_('COM_ANSWERS_PERMALINK'); ?>">
-								@ <span class="time"><time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $timeFormat, $tz); ?></time></span> 
-								on <span class="date"><time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?></time></span>
+								<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $timeFormat, $tz); ?></time></span> 
+								<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?></time></span>
 							</a>
 						</p><!-- / .comment-title -->
 				<?php if (!$abuse) { ?>
@@ -621,11 +634,11 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 			<?php } else { ?>
 				<p class="condensed"><?php echo JText::_('COM_ANSWERS_NOTICE_POSTING_REPORTED'); ?></p>
 			<?php } //if ($this->showcomments && isset($row->replies)) ?>
-			</li>
-		</ol>
-	</div><!-- / .subject -->
-</div><!-- / .below section -->
-<div class="clear"></div>
+				</li>
+			</ol>
+		</div><!-- / .subject -->
+	</div><!-- / .below section -->
+	<div class="clear"></div>
 	<?php
 		}
 	}
@@ -698,7 +711,10 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 					<?php } ?>
 						<p class="comment-title">
 							<strong><?php echo $name; ?></strong> 
-							<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=question&id=' . $this->question->id . '#c'.$row->id); ?>" title="<?php echo JText::_('COM_ANSWERS_PERMALINK'); ?>">@ <span class="time"><?php echo JHTML::_('date',$row->created, '%I:%M %p', 0); ?></span> on <span class="date"><?php echo JHTML::_('date',$row->created, '%d %b, %Y', 0); ?></span></a>
+							<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=question&id=' . $this->question->id . '#c'.$row->id); ?>" title="<?php echo JText::_('COM_ANSWERS_PERMALINK'); ?>">
+								<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $timeformat, $tz); ?></time></span> 
+								<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $dateformat, $tz); ?></time></span>
+							</a>
 						</p><!-- / .comment-title -->
 					<?php if (!$abuse) { ?>
 						<?php echo $parser->parse(stripslashes($row->answer), $wikiconfig); ?>
@@ -722,10 +738,13 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 						$view->display();
 					?>
 					</div><!-- / .comment-content -->
-				<?php if ($this->showcomments && isset($row->replies)) {
+				<?php 
+			if ($this->showcomments && isset($row->replies)) 
+			{
 				$o = 'even';
 				$html = '';
-				if (count($row->replies) > 0) {
+				if (count($row->replies) > 0) 
+				{
 					$html .= '<ol class="comments pass2">';
 					foreach ($row->replies as $reply)
 					{
@@ -736,7 +755,8 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 						/*if ($this->abuse && $reply->reports > 0) {
 							$html .= ' abusive';
 						}*/
-						if ($this->question->created_by == $reply->added_by) {
+						if ($this->question->created_by == $reply->added_by) 
+						{
 							$cls .= ' author';
 						}
 						$html .= '" id="c'.$reply->id.'r">';
@@ -754,7 +774,8 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 						$html .= $view->loadTemplate();
 
 						// Another level? 
-						if (count($reply->replies) > 0) {
+						if (count($reply->replies) > 0) 
+						{
 							$html .= '<ol class="comments pass3">';
 							foreach ($reply->replies as $r)
 							{
@@ -764,7 +785,8 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 								/*if ($this->abuse && $r->reports > 0) {
 									$html .= ' abusive';
 								}*/
-								if ($this->question->created_by == $r->added_by) {
+								if ($this->question->created_by == $r->added_by) 
+								{
 									$cls .= ' author';
 								}
 								$html .= '" id="c'.$r->id.'r">';
@@ -782,7 +804,8 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 								$html .= $view->loadTemplate();
 
 								// Yet another level?? 
-								if (count($r->replies) > 0) {
+								if (count($r->replies) > 0) 
+								{
 									$html .= '<ol class="comments pass4">';
 									foreach ($r->replies as $rr)
 									{
@@ -815,33 +838,33 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 						}
 						$html .= '</li>';
 					}
-					$html .= '</ol><!-- end pass2 -->';
-					echo $html;
+				$html .= '</ol><!-- end pass2 -->';
+				echo $html;
 				} //foreach ($row->replies as $reply)
-				} //if (count($row->replies) > 0) 
+			} //if (count($row->replies) > 0) 
 				?>
 				<?php } else { ?>
 					<p class="warning"><?php echo JText::_('COM_ANSWERS_NOTICE_POSTING_REPORTED'); ?></p>
 				<?php } //if ($this->showcomments && isset($row->replies)) ?>
-			</li>
+				</li>
 		<?php } //foreach ($this->responses as $row) ?>
-		</ol>
+			</ol>
 <?php } else if ($chosen) { ?>
-		<div class="subject-wrap">
-			<p>No other responses made.</p>
-		</div>
+			<div class="subject-wrap">
+				<p>No other responses made.</p>
+			</div>
 <?php } else { ?>
-		<div class="subject-wrap">
-		<p><?php echo JText::_('COM_ANSWERS_NO_ANSWERS_BE_FIRST'); ?> <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=answer&id='.$this->question->id); ?>"><?php echo JText::_('COM_ANSWERS_BE_FIRST_ANSWER_THIS'); ?></a>.</p>
+			<div class="subject-wrap">
+				<p><?php echo JText::_('COM_ANSWERS_NO_ANSWERS_BE_FIRST'); ?> <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=answer&id='.$this->question->id); ?>"><?php echo JText::_('COM_ANSWERS_BE_FIRST_ANSWER_THIS'); ?></a>.</p>
 	<?php if ($this->banking) { ?>
-		<p class="help">
-			<strong><?php echo JText::_('COM_ANSWERS_DID_YOU_KNOW_ABOUT_POINTS'); ?></strong><br />
-			<a href="<?php echo $this->infolink; ?>"><?php echo JText::_('COM_ANSWERS_LEARN_MORE'); ?></a> <?php echo JText::_('COM_ANSWERS_LEARN_HOW_POINTS_AWARDED'); ?>.
-		</p>
-		</div>
+				<p class="help">
+					<strong><?php echo JText::_('COM_ANSWERS_DID_YOU_KNOW_ABOUT_POINTS'); ?></strong><br />
+					<a href="<?php echo $this->infolink; ?>"><?php echo JText::_('COM_ANSWERS_LEARN_MORE'); ?></a> <?php echo JText::_('COM_ANSWERS_LEARN_HOW_POINTS_AWARDED'); ?>.
+				</p>
 	<?php } ?>
+			</div>
 <?php } //if ($this->responses) { ?>
-	</div><!-- / .subject -->
+		</div><!-- / .subject -->
 	
 <?php } else if ($reports > 0) { ?>
 		</div><!-- / #questionwrap -->

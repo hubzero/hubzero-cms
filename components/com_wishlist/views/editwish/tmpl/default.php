@@ -33,107 +33,124 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /* Add/Edit Wish */
 
-		$wishlist = $this->wishlist;
-		$wish = $this->wish;
-		$title = $this->title;
-		$option = $this->option;
-		$task = $this->task;
-		$admin = $this->admin;
-		$error = $this->getError();
-		$infolink = $this->infolink;
-		$juser = $this->juser;
-		$funds = $this->funds;
-		$banking = $this->banking;
+	$wishlist = $this->wishlist;
+	$wish = $this->wish;
+	$task = $this->task;
+	$admin = $this->admin;
+	$infolink = $this->infolink;
+	$juser = $this->juser;
+	$funds = $this->funds;
 
-		$html = '';
+	$html = '';
 
-		if($wishlist) {
-
-			// what is submitter name?
-			if($task=='editwish') {
-				$login  = JText::_('UNKNOWN');
-				$ruser =& JUser::getInstance($wish->proposed_by);
-				if (is_object($ruser)) {
-					$login = $ruser->get('username');
-				}
+	if ($wishlist) 
+	{
+		// what is submitter name?
+		if ($task=='editwish') 
+		{
+			$login = JText::_('UNKNOWN');
+			$ruser =& JUser::getInstance($wish->proposed_by);
+			if (is_object($ruser)) 
+			{
+				$login = $ruser->get('username');
 			}
+		}
 
-			$wish->subject = stripslashes($wish->subject);
-			$wish->subject = str_replace('&quote;','&quot;',$wish->subject);
-			$wish->subject = htmlspecialchars($wish->subject);
+		$wish->subject = str_replace('&quote;','&quot;', stripslashes($wish->subject));
+		$wish->subject = $this->escape($wish->subject);
 
-			$wish->about = trim(stripslashes($wish->about));
-			$wish->about = preg_replace('/<br\\s*?\/??>/i', "", $wish->about);
-			$wish->about = WishlistHtml::txt_unpee($wish->about);
+		$wish->about = trim(stripslashes($wish->about));
+		$wish->about = preg_replace('/<br\\s*?\/??>/i', '', $wish->about);
+		$wish->about = WishlistHtml::txt_unpee($wish->about);
+?>
+	<div id="content-header">
+		<h2><?php echo $this->escape($this->title); ?></h2>
+	</div>
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<li class="last">
+				<a class="nav_wishlist" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=wishlist&category='. $wishlist->category . '&rid=' . $wishlist->referenceid); ?>">
+					<?php echo JText::_('WISHES_ALL'); ?>
+				</a>
+			</li>
+		</ul>
+	</div><!-- / #content-header-extra -->
 
-			$html .= Hubzero_View_Helper_Html::div( Hubzero_View_Helper_Html::hed( 2, $title ), '', 'content-header' );
-			$html .= '<div id="content-header-extra">'.n;
-			$html .= t.'<ul id="useroptions">'.n;
-			$html .= t.t.'<li class="last"><a class="nav_wishlist" href="'.JRoute::_('index.php?option='.$option.a.'task=wishlist'.a.'category='. $wishlist->category.a.'rid='.$wishlist->referenceid) .'">'.JText::_('WISHES_ALL').'</a></li>'.n;
-			$html .= t.'</ul>'.n;
-			$html .= '</div><!-- / #content-header-extra -->'.n;
-			$html .= '<div class="main section">'.n;
-			$html .= t.'<div class="aside">'.n;
-			$html .= t.'<p>'.JText::_('TEXT_ADD_WISH').'</p>'.n;
-			if($banking && $task!='editwish') {
-				$html .= t.'<p class="help" style="margin-top: 2em;"><strong>'.JText::_('WHAT_IS_REWARD').'</strong><br />'.n;
-				$html .= t.JText::_('WHY_ADDBONUS').' <a href="'.$infolink.'">'.JText::_('LEARN_MORE').'</a> '.JText::_('ABOUT_POINTS').'.</p>'.n;
-			}
-			$html .= t.'</div><!-- / .aside -->'.n;
-			$html .= t.'<div class="subject">'.n;
-			if($error) { $html .= Hubzero_View_Helper_Html::error($error).n; }
-				$html .= t.t.t.' <form id="hubForm" method="post" action="index.php?option='.$option.'">'.n;
-				$html .= t.t.t.'	 <fieldset>'.n;
-			if($task=='editwish') {
-				$html .= t.t.t.'	  <label>'.JText::_('WISH_PROPOSED_BY').': <span class="required">'.JText::_('REQUIRED').'</span>'.n;
-				$html .= t.t.t.'	  <input name="by" maxlength="50" id="by" type="text" value="'.$login.'" /></label>'.n;
-			}
-			$html .= t.t.t.'	  <input type="hidden" id="proposed_by" name="proposed_by" value="'.$wish->proposed_by.'" />'.n;
-			$html .= t.t.t.'	  <label><input class="option" type="checkbox" name="anonymous" value="1" ';
-			$html .= ($wish->anonymous) ? 'checked="checked"' : '';
-			$html .= '/>'.JText::_('WISH_POST_ANONYMOUSLY').'</label>'.n;
-			if($admin == 2 && $wishlist->public) { // list owner
-				$html .= t.t.t.'	  <label><input class="option" type="checkbox" name="private" value="1" ';
-				$html .= ($wish->private) ? 'checked="checked"' : '';
-				$html .= '/>'.JText::_('WISH_MAKE_PRIVATE').'</label>'.n;
-			}
-			$html .= t.t.t.'	  <input type="hidden"  name="task" value="savewish" />'.n;
-			$html .= t.t.t.'	  <input type="hidden" id="wishlist" name="wishlist" value="'.$wishlist->id.'" />'.n;
-			$html .= t.t.t.'	  <input type="hidden" id="status" name="status"  value="'.$wish->status.'" />'.n;
-			$html .= t.t.t.'	  <input type="hidden" id="id" name="id" value="'.$wish->id.'" />'.n;
-			$html .= t.t.t.'	  <label>Summary of your wish: <span class="required">'.JText::_('REQUIRED').'</span>'.n;
-			$html .= t.t.t.'	  <input name="subject" maxlength="120" id="subject" type="text" value="'.$wish->subject.'" /></label>'.n;
-			$html .= t.t.t.'	  <label>'.JText::_('WISH_EXPLAIN_IN_DETAIL').': '.n;
-			$html .= t.t.t.'	  <textarea name="about" rows="10" cols="50">'.$wish->about.'</textarea></label>'.n;
-			$html .= t.t.t.'	  <label>'.JText::_('WISH_ADD_TAGS').': <br />'.n;
+	<div class="main section">
+		<form id="hubForm" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+			<?php if ($this->getError()) { ?>
+				<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
+			<?php } ?>
+			<div class="explaination">
+				<p><?php echo JText::_('TEXT_ADD_WISH'); ?></p>
+				<?php if ($this->banking && $task!='editwish') { ?>
+					<p class="help" style="margin-top: 2em;">
+						<strong><?php echo JText::_('WHAT_IS_REWARD'); ?></strong><br />
+						<?php echo JText::_('WHY_ADDBONUS'); ?> <a href="<?php echo $infolink; ?>"><?php echo JText::_('LEARN_MORE'); ?></a> <?php echo JText::_('ABOUT_POINTS'); ?>.
+					</p>
+				<?php } ?>
+			</div><!-- / .aside -->
+				<fieldset>
+			<?php if ($task == 'editwish') { ?>
+					<label>
+						<?php echo JText::_('WISH_PROPOSED_BY'); ?>: <span class="required"><?php echo JText::_('REQUIRED'); ?></span>
+						<input name="by" maxlength="50" id="by" type="text" value="<?php echo $login; ?>" />
+					</label>
+			<?php } ?>
+					<input type="hidden" id="proposed_by" name="proposed_by" value="<?php echo $wish->proposed_by; ?>" />
+					<label>
+						<input class="option" type="checkbox" name="anonymous" value="1" <?php echo ($wish->anonymous) ? 'checked="checked"' : ''; ?>/> 
+						<?php echo JText::_('WISH_POST_ANONYMOUSLY'); ?>
+					</label>
+			<?php if ($admin == 2 && $wishlist->public) { // list owner ?>
+ 					<label>
+						<input class="option" type="checkbox" name="private" value="1" <?php echo ($wish->private) ? 'checked="checked"' : ''; ?>/>
+						<?php echo JText::_('WISH_MAKE_PRIVATE'); ?>
+					</label>
+			<?php } ?>
+					<input type="hidden"  name="task" value="savewish" />
+					<input type="hidden" id="wishlist" name="wishlist" value="<?php echo $wishlist->id; ?>" />
+					<input type="hidden" id="status" name="status" value="<?php echo $wish->status; ?>" />
+					<input type="hidden" id="id" name="id" value="<?php echo $wish->id; ?>" />
+					
+					<label>
+						Summary of your wish: <span class="required"><?php echo JText::_('REQUIRED'); ?></span>
+						<input name="subject" maxlength="120" id="subject" type="text" value="<?php echo $wish->subject; ?>" />
+					</label>
+					<label>
+						<?php echo JText::_('WISH_EXPLAIN_IN_DETAIL'); ?>: 
+						<textarea name="about" rows="10" cols="50"><?php echo $wish->about; ?></textarea>
+					</label>
+					<label>
+						<?php echo JText::_('WISH_ADD_TAGS'); ?>: <br />
+			<?php 
 			// Tag editor plug-in
 			JPluginHelper::importPlugin( 'hubzero' );
 			$dispatcher =& JDispatcher::getInstance();
-			$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$wish->tags)) );
+			$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags','', $wish->tags)) );
 			if (count($tf) > 0) {
-				$html .= $tf[0];
-			} else {
-				$html .= t.t.t.'<textarea name="tags" id="tags-men" rows="6" cols="35">'. $wish->tags .'</textarea>'.n;
-			}
-			$html .= '</label>';
-			if($banking && $task!='editwish') {
-				$html .= t.t.'<label>'.JText::_('ASSIGN_REWARD').':<br />'.n;
-				$html .= t.t.'<input type="text" name="reward" value="" size="5" ';
-				if ($funds <= 0 ) {
-					$html .= 'disabled style="background:#e2e2e2;" ';
-				}
-				$html .= '/> <span class="subtext">'.JText::_('YOU_HAVE').' <strong>'.$funds.'</strong> '.JText::_('POINTS_TO_SPEND').'.</span></label>'.n;
-				$html .= t.t.t.'	  <input type="hidden"  name="funds" value="'.$funds.'" />'.n;
-			}
-			$html .= t.t.t.'      <p class="submit"><input type="submit" id="send-wish" value="'.JText::_('FORM_SUBMIT').'" /></p>'.n;
-			$html .= t.t.t.'	 </fieldset>'.n;
-			$html .= t.t.t.' </form>'.n;
-			$html .= '</div><div class="clear"></div></div>'.n;
-		}
-		else {
-			$html  = Hubzero_View_Helper_Html::error('ERROR_WISHLIST_NOT_FOUND').n;
-		}
+				echo $tf[0];
+			} else { ?>
+						<textarea name="tags" id="tags-men" rows="6" cols="35"><?php echo $wish->tags; ?></textarea>
+			<?php } ?>
+					</label>
+			<?php if ($this->banking && $task != 'editwish') { ?>
+					<label>
+						<?php echo JText::_('ASSIGN_REWARD'); ?>:<br />
+						<input type="text" name="reward" value="" size="5"<?php if ($funds <= 0 ) { echo ' disabled="disabled" style="background:#e2e2e2;"'; } ?> /> 
+						<span class="subtext"><?php echo JText::_('YOU_HAVE'); ?> <strong><?php echo $funds; ?></strong> <?php echo JText::_('POINTS_TO_SPEND'); ?>.</span>
+					</label>
+					<input type="hidden"  name="funds" value="<?php echo $funds; ?>" />
+			<?php } ?>
+					
+				</fieldset>
+				<div class="clear"></div>
+				
+				<p class="submit"><input type="submit" id="send-wish" value="<?php echo JText::_('FORM_SUBMIT'); ?>" /></p>
+			</form>
 
-		// HTML output
-		echo $html;
-?>
+		
+	</div><!-- / .main section -->
+	<?php } else { ?>
+	<p class="error"><?php echo JText::_('ERROR_WISHLIST_NOT_FOUND'); ?></p>
+	<?php } ?>

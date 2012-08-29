@@ -29,39 +29,41 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 // Push some resources to the tmeplate
 ximport('Hubzero_Document');
 Hubzero_Document::addComponentStyleSheet('com_ysearch');
 Hubzero_Document::addComponentScript('com_ysearch');
-//$document =& JFactory::getDocument();
-//$document->addStyleSheet('/components/com_ysearch/ysearch.css');
-//$document->addScript('/components/com_ysearch/ysearch.js');
+
 $show_weight = array_key_exists('show_weight', $_GET);
 ?>
 <div id="content-header" class="full">
-	<h2>Search</h2>
+	<h2><?php echo JText::_('Search'); ?></h2>
 </div><!-- / #content-header -->
 
 <div class="main section">
 	<div class="aside">
+		<div class="container">
+			<h3>
+				Filter results
+			</h3>
 		<?php if ($this->results->get_total_count()): ?>
 			<ul class="sub-nav">
 				<li>
 					<?php if ($this->plugin): ?>
-						<a href="/ysearch/?terms=<?php echo $this->url_terms; ?>">All Categories (<?php echo $this->results->get_total_count(); ?>)</a>
+						<a href="/ysearch/?terms=<?php echo $this->url_terms; ?>">All Categories <span class="item-count"><?php echo $this->results->get_total_count(); ?></span></a>
 					<?php else: ?>
-						<strong>All Categories (<?php echo $this->results->get_total_count(); ?>)</strong>
+						<strong>All Categories <span class="item-count"><?php echo $this->results->get_total_count(); ?></span></strong>
 					<?php endif; ?>
 				</li>
 			<?php foreach ($this->results->get_result_counts() as $cat=>$def): ?>
 				<?php if ($def['count']): ?>
 					<li>
 						<?php if ($this->plugin == $cat && !$this->section): ?>
-							<strong><?php echo $def['friendly_name']; ?> (<?php echo $def['count']; ?>)</strong>
+							<strong><?php echo $def['friendly_name']; ?> <span class="item-count"><?php echo $def['count']; ?></span></strong>
 						<?php else: ?> 
-							<a href="/ysearch/?terms=<?php echo $cat . ':' . $this->url_terms ?>"><?php echo $def['friendly_name']; ?> (<?php echo $def['count']; ?>)</a>
+							<a href="/ysearch/?terms=<?php echo $cat . ':' . $this->url_terms ?>"><?php echo $def['friendly_name']; ?> <span class="item-count"><?php echo $def['count']; ?></span></a>
 						<?php endif; ?>
 						<?php 
 						$fc_child_flag = 'plgYSearch'.$def['plugin_name'].'::FIRST_CLASS_CHILDREN';
@@ -72,9 +74,9 @@ $show_weight = array_key_exists('show_weight', $_GET);
 								<?php 
 								if (!$this->plugin || !$this->section || $cat != $this->plugin || $this->section != $section_key):
 								?>
-									<li><a href="/ysearch/?terms=<?php echo $cat . ':' . $section_key . ':' . $this->url_terms ?>"><?php echo $sdef['name']; ?> (<?php echo $sdef['count']; ?>)</a></li>
+									<li><a href="/ysearch/?terms=<?php echo $cat . ':' . $section_key . ':' . $this->url_terms ?>"><?php echo $sdef['name']; ?> <span class="item-count"><?php echo $sdef['count']; ?></span></a></li>
 								<?php else: ?>
-									<li><strong><?php echo $sdef['name']; ?> (<?php echo $sdef['count']; ?>)</strong></li>
+									<li><strong><?php echo $sdef['name']; ?> <span class="item-count"><?php echo $sdef['count']; ?></span></strong></li>
 								<?php endif; ?>
 							<?php endforeach; ?>
 							</ul>
@@ -84,6 +86,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 			<?php endforeach; ?>
 			</ul>
 		<?php endif; ?>
+		</div><!-- / .container -->
 	</div><!-- / .aside -->
 	<div class="subject">
 		<form action="/ysearch/" method="get" class="container data-entry">
@@ -120,21 +123,23 @@ $show_weight = array_key_exists('show_weight', $_GET);
 			<?php endforeach; ?>
 		</ol>
 	<?php endif; ?>
+
 	<?php foreach ($this->results->get_widgets() as $widget): ?>
 		<?php echo $widget; ?>
 	<?php endforeach; ?>
+
 	<ol class="results">
 	<?php foreach ($this->results as $res) : ?>
 		<li>
 			<p class="title"><a <?php $this->attr('href', $res->get_link()); ?>><?php echo $res->get_highlighted_title(); ?></a></p>
-		  <?php $before = $this->app->triggerEvent('onBeforeYSearchRender' . $res->get_plugin(), array($res)); ?>
-      <div class="summary">
+			<?php $before = $this->app->triggerEvent('onBeforeYSearchRender' . $res->get_plugin(), array($res)); ?>
+			<div class="summary">
 				<?php if ($res->has_metadata()): ?>
 					<p class="details">
 						<span class="section"><?php echo $res->get_section(); ?></span>
-						<span class="date"><?php if (($date = $res->get_date())) echo date('j M Y', $date); ?></span>
+						<?php if (($date = $res->get_date())) { ?><span class="date"><?php echo date('j M Y', $date); ?></span><?php } ?>
+						<?php if (($contributors = $res->get_contributors())): ?>
 						<span class="contributors">
-							<?php if (($contributors = $res->get_contributors())): ?>
 								<?php 
 									$contrib_ids = $res->get_contributor_ids();
 									$contrib_len = count($contributors);
@@ -143,30 +148,29 @@ $show_weight = array_key_exists('show_weight', $_GET);
 								<?php foreach ($contributors as $idx=>$contrib): ?>
 									<a href="/members/<?php echo $contrib_ids[$idx]; ?>"><?php echo $contrib; ?></a><?php if ($idx != $contrib_len - 1) echo ', '; ?>
 								<?php endforeach; ?>
-							<?php endif; ?>
 						</span>
+						<?php endif; ?>
 					</p>
 				<?php endif; ?>
-        <?php if ($before): ?>
-          <div class="result-pre">
-           <?php foreach ($before as $html): ?>
-              <?php echo $html; ?>
-            <?php endforeach; ?>
-          </div>
-        <?php endif; ?>
-
-	<?php if ($show_weight): ?>
-	<ul class="weight-log">
-	<?php foreach ($res->get_weight_log() as $entry): ?>
-		<li><?php echo $entry; ?></li>
-	<?php endforeach; ?>
-	</ul>
-	<?php endif; ?>
-        <div class="result-description<?php echo $before ? ' shifted' : ''; ?>">
-  				<p><?php echo $res->get_highlighted_excerpt(); ?></p>
-        </div>
-        <p class="clear"></p>
-			</div>
+				<?php if ($before): ?>
+					<div class="result-pre">
+						<?php foreach ($before as $html): ?>
+							<?php echo $html; ?>
+						<?php endforeach; ?>
+					</div><!-- / .result-pre -->
+				<?php endif; ?>
+				<?php if ($show_weight): ?>
+					<ul class="weight-log">
+						<?php foreach ($res->get_weight_log() as $entry): ?>
+							<li><?php echo $entry; ?></li>
+						<?php endforeach; ?>
+					</ul>
+				<?php endif; ?>
+				<div class="result-description<?php echo $before ? ' shifted' : ''; ?>">
+					<p><?php echo $res->get_highlighted_excerpt(); ?></p>
+				</div><!-- / .result-description<?php echo $before ? ' shifted' : ''; ?> -->
+				<p class="clear"></p>
+			</div><!-- / .summary -->
 			<?php 
 				$last_type = NULL;
 				if (($children = $res->get_children())):
@@ -215,10 +219,16 @@ $show_weight = array_key_exists('show_weight', $_GET);
 		</li>
 	<?php endforeach; ?>
 	</ol>
-	<?php echo $this->pagination->getListFooter(); ?>
+	<form action="/ysearch/" method="get">
+	<?php 
+	$this->pagination->setAdditionalUrlParam('terms', $this->terms);
+	echo $this->pagination->getListFooter(); ?>
+		<input type="hidden" name="terms" <?php $this->attr('value', $this->terms) ?>/>
+	<div class="clearfix"></div>
+	</form>
 </div><!-- / .container -->
 <?php elseif (($raw = $this->terms->get_raw())): ?>
-	<p>No results were found for '<?php echo htmlspecialchars($raw); ?>'</p>
+	<p>No results were found for '<?php echo $this->escape($raw); ?>'</p>
 	<?php 
 		# raw terms were specified but no chunks were parsed out, meaning they were all stop words, so we can give a quasi-helpful explanation of why nothing turned up
 		if (!$this->terms->any()):
@@ -227,5 +237,6 @@ $show_weight = array_key_exists('show_weight', $_GET);
 	<?php endif; ?>
 <?php endif; ?>
 </div><!-- / .subject -->
+</form>
 </div><!-- / .main section -->
 

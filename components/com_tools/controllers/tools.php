@@ -93,7 +93,7 @@ class ToolsControllerTools extends Hubzero_Controller
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
-				$title,
+				$this->_title,
 				'index.php?option=' . $this->_option
 			);
 		}

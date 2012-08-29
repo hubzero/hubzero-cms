@@ -49,6 +49,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=view'); //.'&tag='.$this->tagstring); ?>" method="get">
 		
 	<div class="aside">
+		<div class="container">
 		<h3><?php echo JText::_('Categories'); ?></h3>
 		<?php
 		// Add the "all" category
@@ -91,7 +92,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				}
 
 				// Build the HTML
-				$l = "\t".'<li'.$a.'><a href="'.$sef.'">' . $this->escape(stripslashes($cat['title'])) . ' ('.$cat['total'].')</a>';
+				$l = "\t".'<li><a'.$a.' href="'.$sef.'">' . $this->escape(stripslashes($cat['title'])) . ' <span class="item-count">'.$cat['total'].'</span></a>';
 				// Are there sub-categories?
 				if (isset($cat['_sub']) && is_array($cat['_sub'])) {
 					// An array for storing the HTML we make
@@ -120,7 +121,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 							// Build the HTML
 							$sef = JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='. stripslashes($blob).'&sort='.$this->filters['sort']);
 							$sef = str_replace('%20','+',$sef);
-							$k[] = "\t\t\t".'<li'.$a.'><a href="'.$sef.'">' . $this->escape(stripslashes($subcat['title'])) . ' ('.$subcat['total'].')</a></li>';
+							$k[] = "\t\t\t".'<li><a'.$a.' href="'.$sef.'">' . $this->escape(stripslashes($subcat['title'])) . ' <span class="item-count">'.$subcat['total'].'</span></a></li>';
 						}
 					}
 					// Do we actually have any links?
@@ -139,7 +140,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		// NOTE: this method prevents returning empty list tags "<ul></ul>"
 		if (count($links) > 0) {
 			// Yes - output the necessary HTML
-			$html  = '<ul class="sub-nav">'."\n";
+			$html  = '<ul>'."\n";
 			$html .= implode( "\n", $links );
 			$html .= '</ul>'."\n";
 		} else {
@@ -150,6 +151,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 		echo $html;
 		?>
+		</div>
 	</div><!-- / .aside -->
 	<div class="subject">
 		
@@ -191,7 +193,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 			}
 		}
 		?>
-		<h3><?php echo JText::_('Results'); ?></h3>
 		<div class="container">
 			<ul class="entries-menu">
 				<li>
@@ -214,7 +215,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				</li>
 <?php /*				<li><a<?php echo ($this->filters['sort'] == '') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='.$this->active); ?>" title="Sort by popularity">&darr; <?php echo JText::_('Popular'); ?></a></li> */ ?>
 			</ul>
-			
+
 			<div class="container-block">
 <?php
 $juri =& JURI::getInstance();
@@ -317,7 +318,7 @@ foreach ($this->results as $category)
 		}
 
 		// Build the category HTML
-		$html .= '<h4 class="category-header opened" id="rel-'.$divid.'">';
+		$html .= '<h3 id="rel-'.$divid.'">';
 		if (!$dopaging) {
 			$html .= '<a href="'.JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='.$cats[$k]['category']).'" title="'.JText::_('View all items in &quot;'.$name.'&quot;').'">';
 		}
@@ -326,9 +327,9 @@ foreach ($this->results as $category)
 			$html .= '<span class="more">&raquo;</span></a> ';
 		}
 		//if ($this->active) {
-			$html .= '<a class="feed" href="'.$feed.'" title="'.JText::_('COM_TAGS_FEED').'">'.JText::_('COM_TAGS_FEED').'</a>';
+			//$html .= '<a class="feed" href="'.$feed.'" title="'.JText::_('COM_TAGS_FEED').'">'.JText::_('COM_TAGS_FEED').'</a>';
 		//}
-		$html .= '</h4>'."\n";
+		$html .= '</h3>'."\n";
 		$html .= '<div class="category-wrap" id="'.$divid.'">'."\n";
 		$html .= '<ol class="search results">'."\n";
 		foreach ($category as $row)
@@ -402,15 +403,10 @@ if ($dopaging) {
 		$this->filters['limit']
 	);
 
-	//$html .= $pageNav->getListFooter();
-	$pf = $pageNav->getListFooter();
-
-	$nm = str_replace('com_','',$this->option);
-
-	$pf = str_replace($nm.'/?',$nm.'/'.$this->tagstring.'/'.$this->active.'/?',$pf);
-	$pf = str_replace('%20','+',$pf);
-	$pf = str_replace('//','/',$pf);
-	echo $pf.'<div class="clearfix"></div>';
+	$pageNav->setAdditionalUrlParam('tag', $this->tagstring);
+	$pageNav->setAdditionalUrlParam('active', $this->active);
+	$pageNav->setAdditionalUrlParam('sort', $this->filters['sort']);
+	echo $pageNav->getListFooter() . '<div class="clearfix"></div>';
 }
 ?>
 		</div><!-- / .container -->

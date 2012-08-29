@@ -13,14 +13,14 @@
 
 */
 
-/* Item listing */
+/* Item listing 
 	.com_whatsnew .section h3 {
 		display: none;
-		}
-	.results .resource .title {
+		}*/
+	.entries .resource .title {
 		margin-right: 220px;
-		}
-	.results .stats { 
+	}
+	/*.results .stats { 
 		margin: -1.5em 0 0 0;
 		float: right;
 		width: 190px;
@@ -35,4 +35,37 @@
 		font-size: 90%;
 		margin: 0 0 0.5em 0;
 		padding: 0;
-		}
+	}*/
+	.com_whatsnew .container-block h3 {
+		margin-bottom: 0;
+		border: 2px solid #e9e9e9;
+		border-bottom: 1px solid #e9e9e9;
+	}
+	.com_whatsnew .container-block h3 a.feed {
+		float: right;
+	}
+	/*.com_whatsnew .container-block {
+		border: 2px solid #e9e9e9;
+		background-color: #fff;
+		margin: 0;
+		padding: 0 15px;
+	}*/
+	ol.entries {
+		list-style-type: none !important;
+		border: 2px solid #e9e9e9;
+		border-top: none;
+		background-color: #fff;
+		margin: 0;
+		padding: 0;
+	}
+	ol.entries h4 {
+		margin: 1em 0;
+		line-height: 1em;
+	}
+	ol.entries > li {
+		clear: left;
+		margin: 0 !important;
+		padding: 0 1em;
+		border-top: 1px solid #efefef;
+		position: relative;
+	}

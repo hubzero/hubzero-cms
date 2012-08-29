@@ -44,7 +44,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<?php echo JText::_('COM_WHATSNEW_TIME_PERIOD'); ?>
 					<?php echo JHTMLSelect::genericlist($this->periodlist, 'period', '', 'value', 'text', $this->period); ?>
 				</label>
-				<input type="submit" value="<?php echo JText::_('COM_WHATSNEW_GO'); ?>" />
+				<p class="submit"><input type="submit" value="<?php echo JText::_('COM_WHATSNEW_GO'); ?>" /></p>
 			</fieldset>
 <?php
 // Add the "all" category
@@ -87,7 +87,7 @@ foreach ($this->cats as $cat)
 		}
 
 		// Build the HTML
-		$l = "\t" . '<li' . $a . '><a href="'.JRoute::_('index.php?option=' . $this->option . '&period=' . urlencode(stripslashes($blob))) . '">' . $this->escape($cat['title']) . ' (' . $cat['total'] . ')</a>';
+		$l = "\t" . '<li' . $a . '><a href="'.JRoute::_('index.php?option=' . $this->option . '&period=' . urlencode(stripslashes($blob))) . '">' . $this->escape($cat['title']) . ' <span class="item-count">' . $cat['total'] . '</span></a>';
 		// Are there sub-categories?
 		if (isset($cat['_sub']) && is_array($cat['_sub'])) 
 		{
@@ -125,7 +125,7 @@ foreach ($this->cats as $cat)
 					}
 
 					// Build the HTML
-					$k[] = "\t\t\t" . '<li' . $a . '><a href="' . JRoute::_('index.php?option=' . $this->option . '&period=' . urlencode(stripslashes($blob))) . '">' . $this->escape($subcat['title']) . ' (' . $subcat['total'] . ')</a></li>';
+					$k[] = "\t\t\t" . '<li' . $a . '><a href="' . JRoute::_('index.php?option=' . $this->option . '&period=' . urlencode(stripslashes($blob))) . '">' . $this->escape($subcat['title']) . ' <span class="item-count">' . $subcat['total'] . '</span></a></li>';
 				}
 			}
 			// Do we actually have any links?
@@ -144,14 +144,16 @@ foreach ($this->cats as $cat)
 // Do we actually have any links?
 // NOTE: this method prevents returning empty list tags "<ul></ul>"
 if (count($links) > 0) { ?>
-			<ul class="sub-nav">
-				<?php echo implode( "\n", $links ); ?>
-			</ul>
+			<div class="container">
+				<ul class="sub-nav">
+					<?php echo implode( "\n", $links ); ?>
+				</ul>
+			</div>
 <?php } ?>
 			<input type="hidden" name="category" value="<?php echo $this->escape($this->active); ?>" />
 		</div><!-- / .aside -->
 		<div class="subject">
-			<h3><?php echo JText::_('COM_WHATSNEW_SEARCH_RESULTS'); ?></h3>
+			<div class="container">
 <?php
 $jconfig =& JFactory::getConfig();
 $juri =& JURI::getInstance();
@@ -237,8 +239,8 @@ foreach ($this->results as $category)
 		$feed = str_replace('https:://', 'http://', $feed);
 
 		// Build the category HTML
-		$html .= '<h4 class="category-header opened" id="rel-' . $divid . '">' . $this->escape($name) . ' <small>' . $num . ' (<a class="feed" href="' . $feed . '">' . JText::_('COM_WHATSNEW_FEED') . '</a>)</small></h4>' . "\n";
-		$html .= '<div class="category-wrap" id="' . $divid . '">' . "\n";
+		$html .= '<div class="container-block" id="' . $divid . '">' . "\n";
+		$html .= '<h3 id="rel-' . $divid . '">' . $this->escape($name) . ' <a class="feed" href="' . $feed . '">' . JText::_('COM_WHATSNEW_FEED') . '</a></h3>' . "\n";
 
 		// Does this category have custom output?
 		// Check if a function exist (using old style plugins)
@@ -254,7 +256,7 @@ foreach ($this->results as $category)
 			$html .= call_user_func(array($obj,'before'), $this->period);
 		}
 
-		$html .= '<ol class="search results">'."\n";
+		$html .= '<ol class="entries">'."\n";
 		foreach ($category as $row)
 		{
 			$row->href = str_replace('&amp;', '&', $row->href);
@@ -309,6 +311,7 @@ foreach ($this->results as $category)
 			$pageNav->setAdditionalUrlParam('period', $this->period);
 
 			$html .= $pageNav->getListFooter();
+			$html .= '<div class="clearfix"></div>';
 		} 
 		else 
 		{
@@ -356,10 +359,10 @@ foreach ($this->results as $category)
 }
 echo $html;
 ?>
-
 <?php if (!$foundresults) { ?>
-			<p class="warning"><?php echo JText::_('COM_WHATSNEW_NO_RESULTS'); ?></p>
+				<p class="warning"><?php echo JText::_('COM_WHATSNEW_NO_RESULTS'); ?></p>
 <?php } ?>
+			</div><!-- / .container -->
 		</div><!-- / .subject -->
 		<div class="clear"></div>
 	</form>

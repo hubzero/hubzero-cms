@@ -62,14 +62,14 @@ $jconfig =& JFactory::getConfig();
 			<div class="story">
 				<h3><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=success_story'); ?>"><?php echo JText::_('COM_FEEDBACK_STORY_HEADER'); ?></a></h3>
 				<p><?php echo JText::_('COM_FEEDBACK_STORY_OTHER_OPTIONS'); ?></p>
-				<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=success_story'); ?>"><?php echo JText::_('Start writing a story'); ?> &rarr;</a></p>
+				<p><a class="more btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=success_story'); ?>"><?php echo JText::_('Start writing a story'); ?></a></p>
 			</div>
 		</div><!-- / .two columns first -->
 		<div class="two columns second">
 			<div class="report">
 				<h3><a href="<?php echo JRoute::_('index.php?option=com_support&controller=tickets&task=new'); ?>"><?php echo JText::_('COM_FEEDBACK_TROUBLE_HEADER'); ?></a></h3>
 				<p><?php echo JText::_('COM_FEEDBACK_TROUBLE_INTRO'); ?></p>
-				<p><a href="<?php echo JRoute::_('index.php?option=com_support&controller=tickets&task=new'); ?>"><?php echo JText::_('Start writing a report'); ?> &rarr;</a></p>
+				<p><a class="more btn" href="<?php echo JRoute::_('index.php?option=com_support&controller=tickets&task=new'); ?>"><?php echo JText::_('Start writing a report'); ?></a></p>
 			</div>
 		</div><!-- / .two columns second -->
 		<div class="clear"></div>
@@ -79,7 +79,7 @@ $jconfig =& JFactory::getConfig();
 			<div class="wish">
 				<h3><a href="<?php echo JRoute::_('index.php?option=com_wishlist'); ?>"><?php echo JText::_('COM_FEEDBACK_WISHLIST_HEADER'); ?></a></h3>
 				<p><?php echo JText::_('COM_FEEDBACK_WISHLIST_DESCRIPTION'); ?></p>
-				<p><a href="<?php echo JRoute::_('index.php?option=com_wishlist'); ?>"><?php echo JText::_('View wish list'); ?> &rarr;</a></p>
+				<p><a class="more btn" href="<?php echo JRoute::_('index.php?option=com_wishlist'); ?>"><?php echo JText::_('View wish list'); ?></a></p>
 			</div>
 <?php } ?>
 		</div><!-- / .two columns first -->
@@ -88,7 +88,7 @@ $jconfig =& JFactory::getConfig();
 			<div class="poll">
 				<h3><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=poll'); ?>"><?php echo JText::_('COM_FEEDBACK_POLL_HEADER'); ?></a></h3>
 				<p><?php echo JText::_('COM_FEEDBACK_POLL_DESCRIPTION'); ?></p>
-				<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=poll'); ?>"><?php echo JText::_('View latest poll'); ?> &rarr;</a></p>
+				<p><a class="more btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=poll'); ?>"><?php echo JText::_('View latest poll'); ?></a></p>
 			</div>
 <?php } ?>
 		</div><!-- / .two columns second -->

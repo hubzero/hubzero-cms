@@ -34,6 +34,15 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_User_Profile');
 ximport('Hubzero_User_Profile_Helper');
 
+$dateformat = '%d %b %Y';
+$timeformat = '%I:%M %p';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateformat = 'd M Y';
+	$timeformat = 'H:i p';
+	$tz = true;
+}
 
 		/* Wish view */
 		$error		= $this->getError();
@@ -49,14 +58,14 @@ if ($this->wishlist && $this->wish) {
 				$name = $this->wish->authorname;
 			}
 			
-			$assigned = ($this->wish->assigned && ($this->admin==2 or $this->admin==1)) ? JText::_('assigned to').' <a href="'.JRoute::_('index.php?option='.$this->option.a.'task=wish'.a.'category='.$this->wishlist->category.a.'rid='.$this->wishlist->referenceid.a.'wishid='.$this->wish->id).'?filterby='.$this->filters['filterby'].a.'sortby='.$this->filters['sortby'].a.'tags='.$this->filters['tag'].a.'action=editplan#plan">'.$this->wish->assignedto.'</a>' : '';	
+			$assigned = ($this->wish->assigned && ($this->admin==2 or $this->admin==1)) ? JText::_('assigned to').' <a href="'.JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id).'?filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'&action=editplan#plan">'.$this->wish->assignedto.'</a>' : '';	
 			
 			if (!$assigned && ($this->admin==2 or $this->admin==1) && $this->wish->status==0) {
-				$assigned = '<a href="'.JRoute::_('index.php?option='.$this->option.a.'task=wish'.a.'category='.$this->wishlist->category.a.'rid='.$this->wishlist->referenceid.a.'wishid='.$this->wish->id).'?filterby='.$this->filters['filterby'].a.'sortby='.$this->filters['sortby'].a.'tags='.$this->filters['tag'].a.'action=editplan#plan">'.JText::_('unassigned').'</a>';
+				$assigned = '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id).'?filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'&action=editplan#plan">'.JText::_('unassigned').'</a>';
 			}
 				
 			$this->wish->status = ($this->wish->accepted==1 && $this->wish->status==0) ? 6 : $this->wish->status;
-			$due  = ($this->wish->due !='0000-00-00 00:00:00') ? JHTML::_('date',$this->wish->due, '%Y-%m-%d') : '';
+			$due  = ($this->wish->due !='0000-00-00 00:00:00') ? JHTML::_('date', $this->wish->due, $dateformat, $tz) : '';
 				
 			switch ($this->wish->status) 
 			{
@@ -75,7 +84,7 @@ if ($this->wishlist && $this->wish) {
 							$statusnote = JText::_('WISH_STATUS_WITHDRAWN_INFO');
 				break;
 				case 1:    	$status = strtolower(JText::_('WISH_STATUS_GRANTED'));
-							$statusnote = $this->wish->granted!='0000-00-00 00:00:00' ? strtolower(JText::_('ON')).' '.JHTML::_('date',$this->wish->granted, '%d %b %y').' '.strtolower(JText::_('BY')).' '.$this->wish->grantedby : '';
+							$statusnote = $this->wish->granted!='0000-00-00 00:00:00' ? strtolower(JText::_('ON')).' '.JHTML::_('date', $this->wish->granted, $dateformat, $tz).' '.strtolower(JText::_('BY')).' '.$this->wish->grantedby : '';
 				break;
 			}
 			
@@ -83,7 +92,7 @@ if ($this->wishlist && $this->wish) {
 	if (!$this->wishlist->public && !$this->admin) {
 		$html .= Hubzero_View_Helper_Html::div(Hubzero_View_Helper_Html::hed(2, JText::_('PRIVATE_LIST')), '', 'content-header');
 		$html .= '<div class="main section">'."\n";
-		$html .= Hubzero_View_Helper_Html::error(JText::_('WARNING_NOT_AUTHORIZED_PRIVATE_LIST')).n;
+		$html .= Hubzero_View_Helper_Html::error(JText::_('WARNING_NOT_AUTHORIZED_PRIVATE_LIST'))."\n";
 		$html .= '</div>'."\n";	
 	 } else {
 ?>
@@ -101,25 +110,25 @@ if ($this->wishlist && $this->wish) {
 		<ul id="useroptions">
 			<li>
 		<?php if ($this->wish->prev) { ?>
-				<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->prev.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>">
-					<span>&lsaquo; <?php echo JText::_('PREV'); ?></span>
+				<a class="prev" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->prev.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>">
+					<span><?php echo JText::_('PREV'); ?></span>
 				</a>
 		<?php } else { ?>
-				<span>&lsaquo; <?php echo JText::_('PREV'); ?></span>
+				<span class="prev"><?php echo JText::_('PREV'); ?></span>
 		<?php } ?>
 			</li>
 			<li>
-				<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=wishlist'.a.'category='.$this->wishlist->category.a.'rid='.$this->wishlist->referenceid.a.'filterby='.$this->filters['filterby'].a.'sortby='.$this->filters['sortby'].a.'tags='.$this->filters['tag']); ?>">
+				<a class="all" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wishlist&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>">
 					<span><?php echo JText::_('All'); ?></span>
 				</a>
 			</li>
 			<li class="last">
 			<?php if ($this->wish->next) { ?>
-				<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=wish'.a.'category='.$this->wishlist->category.a.'rid='.$this->wishlist->referenceid.a.'wishid='.$this->wish->next.a.'filterby='.$this->filters['filterby'].a.'sortby='.$this->filters['sortby'].a.'tags='.$this->filters['tag']); ?>">
-					<span><?php echo JText::_('NEXT'); ?> &rsaquo;</span>
+				<a class="next" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->next.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>">
+					<span><?php echo JText::_('NEXT'); ?></span>
 				</a>
 			<?php } else { ?>
-				<span><?php echo JText::_('NEXT'); ?> &rsaquo; </span>
+				<span class="next"><?php echo JText::_('NEXT'); ?></span>
 			<?php } ?>
 			</li>
 		</ul>
@@ -130,7 +139,7 @@ if ($this->wishlist && $this->wish) {
 			<div class="wish-status">
 				<p class="<?php echo strtolower($status); ?>">
 				<?php if ($this->admin==2) { ?>
-					<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=wish'.a.'category='.$this->wishlist->category.a.'rid='.$this->wishlist->referenceid.a.'wishid='.$this->wish->id.'?action=changestatus#action'); ?>">
+					<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'?action=changestatus#action'); ?>">
 				<?php } ?>
 					<strong><?php echo strtolower($status); ?></strong>
 				<?php if ($this->admin==2) { ?>
@@ -152,11 +161,11 @@ if ($this->wishlist && $this->wish) {
 ?>
 			<div class="assign_bonus">			
 				<?php if (isset($this->wish->bonus) && $this->wish->bonus > 0 && ($this->wish->status==0 or $this->wish->status==6)) { ?>
-				<a class="bonus tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=wish'.a.'category='.$this->wishlist->category.a.'rid='.$this->wishlist->referenceid.a.'wishid='.$this->wish->id.'?action=addbonus#action'); ?>" title="<?php echo JText::_('WISH_ADD_BONUS').' ::'.$this->wish->bonusgivenby.' '.JText::_('MULTIPLE_USERS').' '.JText::_('WISH_BONUS_CONTRIBUTED_TOTAL').' '.$this->wish->bonus.' '.JText::_('POINTS').' '.JText::_('WISH_BONUS_AS_BONUS'); ?>">
+				<a class="bonus tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'?action=addbonus#action'); ?>" title="<?php echo JText::_('WISH_ADD_BONUS').' ::'.$this->wish->bonusgivenby.' '.JText::_('MULTIPLE_USERS').' '.JText::_('WISH_BONUS_CONTRIBUTED_TOTAL').' '.$this->wish->bonus.' '.JText::_('POINTS').' '.JText::_('WISH_BONUS_AS_BONUS'); ?>">
 					+ <?php echo $this->wish->bonus; ?>
 				</a>
 				<?php } else if($this->wish->status==0 or $this->wish->status==6) { ?>
-				<a class="nobonus tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=wish'.a.'category='.$this->wishlist->category.a.'rid='.$this->wishlist->referenceid.a.'wishid='.$this->wish->id.'?action=addbonus#action'); ?>" title="<?php echo JText::_('WISH_ADD_BONUS').' :: '.JText::_('WISH_BONUS_NO_USERS_CONTRIBUTED'); ?>">
+				<a class="nobonus tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'?action=addbonus#action'); ?>" title="<?php echo JText::_('WISH_ADD_BONUS').' :: '.JText::_('WISH_BONUS_NO_USERS_CONTRIBUTED'); ?>">
 					&nbsp;
 				</a>
 				<?php } else { ?>
@@ -175,14 +184,14 @@ if ($this->wishlist && $this->wish) {
 		<?php if ($this->wish->reports) {
 			echo Hubzero_View_Helper_Html::error(JText::_('NOTICE_POSTING_REPORTED'));
 		} else { ?>
-			<div class="wish" id="w<?php echo $this->wish->id; ?>">
-				<p class="wish-member-photo">
-					<span class="wish-anchor"><a name="w<?php echo $this->wish->id; ?>"></a></span>
+			<div class="entry wish" id="w<?php echo $this->wish->id; ?>">
+				<p class="entry-member-photo">
+					<span class="entry-anchor"><a name="w<?php echo $this->wish->id; ?>"></a></span>
 					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($user, $this->wish->anonymous); ?>" alt="<?php echo JText::_('Member avatar'); ?>" />
 				</p><!-- / .wish-member-photo -->
 
-				<div class="wish-content">
-					<p class="wish-voting" id="wish_<?php echo $this->wish->id; ?>">
+				<div class="entry-content">
+					<p class="entry-voting" id="wish_<?php echo $this->wish->id; ?>">
 					<?php
 					$view = new JView(array('name'=>'rateitem'));
 					$view->option = $this->option;
@@ -195,31 +204,30 @@ if ($this->wishlist && $this->wish) {
 					echo $view->loadTemplate();
 					?>
 					</p><!-- / .wish-voting -->
-					
-					<p class="wish-title">
+
+					<p class="entry-title">
 						<strong><?php echo $name; ?></strong>
-						<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&id='.$this->wishlist->id.'&ref='.$this->wish->id); ?>" title="<?php echo JText::_('COM_WISHLIST_PERMALINK'); ?>">@ 
-							<span class="time"><?php echo JHTML::_('date',$this->wish->proposed, '%I:%M %p', 0); ?></span> on 
-							<span class="date"><?php echo JHTML::_('date',$this->wish->proposed, '%d %b, %Y', 0); ?></span>
+						<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&id='.$this->wishlist->id.'&ref='.$this->wish->id); ?>" title="<?php echo JText::_('COM_WISHLIST_PERMALINK'); ?>"><span class="entry-date-at">@</span> 
+							<span class="time"><time datetime="<?php echo $this->wish->proposed; ?>"><?php echo JHTML::_('date', $this->wish->proposed, $timeformat, $tz); ?></time></span> <span class="entry-date-on">on</span> 
+							<span class="date"><time datetime="<?php echo $this->wish->proposed; ?>"><?php echo JHTML::_('date', $this->wish->proposed, $dateformat, $tz); ?></time></span>
 						</a>
 					</p><!-- / .wish-title -->
-				
-					<div class="wish-subject">
-						<p><?php echo $this->wish->subject; ?></p>
+
+					<div class="entry-subject">
+						<p><?php echo $this->escape(stripslashes($this->wish->subject)); ?></p>
 					</div><!-- / .wish-subject -->
 				<?php if ($this->wish->about) { ?>
-					<div class="wish-details">
+					<div class="entry-long">
 						<p><?php 
 						$this->wish->about = trim(stripslashes($this->wish->about));
 						$this->wish->about = preg_replace('/<br\\s*?\/??>/i', '', $this->wish->about);
-						$this->wish->about = htmlspecialchars(WishlistHtml::txt_unpee($this->wish->about));
+						$this->wish->about = $this->escape(WishlistHtml::txt_unpee($this->wish->about));
 						echo nl2br($this->wish->about); 
 						?></p>
 					</div><!-- / .wish-details -->
 				<?php } ?>
-				
 
-					<div class="wish-tags">
+					<div class="entry-tags">
 						<p>Tags:</p>
 						<?php if (count($this->wish->tags) > 0) { ?>
 						<ol class="tags">
@@ -231,7 +239,6 @@ if ($this->wishlist && $this->wish) {
 						<?php echo JText::_('(none)'); ?>
 						<?php } ?>
 					</div><!-- / .wish-tags -->
-				
 				</div><!-- / .wish-content -->
 					
 				<?php
@@ -243,7 +250,7 @@ if ($this->wishlist && $this->wish) {
 						$html = '';
 						if ($due && $this->wish->status!=1) 
 						{
-							$html .= ($this->wish->due <= date('Y-m-d H:i:s')) ? '<span class="overdue"><a href="'.JRoute::_('index.php?option='.$this->option.a.'task=wish'.a.'category='.$this->wishlist->category.a.'rid='.$this->wishlist->referenceid.a.'wishid='.$this->wish->id).'?action=editplan#plan">'.JText::_('OVERDUE') : '<span class="due"><a href="'.JRoute::_('index.php?option='.$this->option.a.'task=wish'.a.'category='.$this->wishlist->category.a.'rid='.$this->wishlist->referenceid.a.'wishid='.$this->wish->id).'?action=editplan#plan">'.JText::_('WISH_DUE_IN').' '.WishlistHTML::nicetime($this->wish->due);
+							$html .= ($this->wish->due <= date('Y-m-d H:i:s')) ? '<span class="overdue"><a href="'.JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id).'?action=editplan#plan">'.JText::_('OVERDUE') : '<span class="due"><a href="'.JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id).'?action=editplan#plan">'.JText::_('WISH_DUE_IN').' '.WishlistHTML::nicetime($this->wish->due);
 							$html .= '</a></span>';
 						}
 						//$html .= '</div>'."\n";
@@ -391,18 +398,17 @@ if ($this->wishlist && $this->wish) {
 													$this->wish->average_effort = 7;
 												}
 ?>					
-												<td><?php echo WishlistHtml::convertVote($this->wish->average_effort,'effort'); ?></td>			
+												<td><?php echo WishlistHtml::convertVote($this->wish->average_effort,'effort'); ?></td>
 <?php
 											}
 ?>
 												<td>
-<?php 										if($this->wishlist->banking) { ?>
-													
-													<div class="assign_bonus">			
+<?php 										if ($this->wishlist->banking) { ?>
+													<div class="assign_bonus">
 														<?php if(isset($this->wish->bonus) && $this->wish->bonus > 0 && ($this->wish->status==0 or $this->wish->status==6)) { ?>
-														<a class="bonus tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=wish'.a.'category='.$this->wishlist->category.a.'rid='.$this->wishlist->referenceid.a.'wishid='.$this->wish->id.'&action=addbonus#action'); ?>" title="<?php echo JText::_('WISH_ADD_BONUS').' ::'.$this->wish->bonusgivenby.' '.JText::_('MULTIPLE_USERS').' '.JText::_('WISH_BONUS_CONTRIBUTED_TOTAL').' '.$this->wish->bonus.' '.JText::_('POINTS').' '.JText::_('WISH_BONUS_AS_BONUS'); ?>">+ <?php echo $this->wish->bonus; ?></a>
+														<a class="bonus tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=addbonus#action'); ?>" title="<?php echo JText::_('WISH_ADD_BONUS').' ::'.$this->wish->bonusgivenby.' '.JText::_('MULTIPLE_USERS').' '.JText::_('WISH_BONUS_CONTRIBUTED_TOTAL').' '.$this->wish->bonus.' '.JText::_('POINTS').' '.JText::_('WISH_BONUS_AS_BONUS'); ?>">+ <?php echo $this->wish->bonus; ?></a>
 														<?php } else if($this->wish->status==0 or $this->wish->status==6) { ?>
-														<a class="nobonus tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=wish'.a.'category='.$this->wishlist->category.a.'rid='.$this->wishlist->referenceid.a.'wishid='.$this->wish->id.'&action=addbonus#action'); ?>" title="<?php echo JText::_('WISH_ADD_BONUS').' :: '.JText::_('WISH_BONUS_NO_USERS_CONTRIBUTED'); ?>">&nbsp;</a>
+														<a class="nobonus tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=addbonus#action'); ?>" title="<?php echo JText::_('WISH_ADD_BONUS').' :: '.JText::_('WISH_BONUS_NO_USERS_CONTRIBUTED'); ?>">&nbsp;</a>
 														<?php } else { ?>
 														<span class="bonus_inactive" title="<?php echo JText::_('WISH_BONUS_NOT_ACCEPTED'); ?>">&nbsp;</span>
 														<?php } ?>
@@ -425,65 +431,65 @@ if ($this->wishlist && $this->wish) {
 			
 
 			<ul class="wish-options">
-				<?php if($this->admin && $this->admin!=3) {	?>			
+				<?php if($this->admin && $this->admin!=3) { ?>
 					<?php if($this->wish->status!=1) { ?>
 						<li>
-							<a class="changestatus" href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=wish'.a.'category='.$this->wishlist->category.a.'rid='.$this->wishlist->referenceid.a.'wishid='.$this->wish->id.'&action=changestatus#action'); ?>">
+							<a class="changestatus" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=changestatus#action'); ?>">
 								<?php echo JText::_('ACTION_CHANGE_STATUS'); ?>
 							</a>
 						</li>
 					<?php } ?>
 						<li>
-							<a class="transfer" href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=wish'.a.'category='.$this->wishlist->category.a.'rid='.$this->wishlist->referenceid.a.'wishid='.$this->wish->id.'&action=move#action'); ?>">
+							<a class="transfer" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=move#action'); ?>">
 								<?php echo JText::_('MOVE'); ?>
 							</a>
 						</li>
 					<?php if($this->wish->private) { ?>
 						<li>
-							<a class="makepublic" href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=editprivacy'.a.'category='.$this->wishlist->category.a.'rid='.$this->wishlist->referenceid.a.'wishid='.$this->wish->id.'&private=0'); ?>">
+							<a class="makepublic" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=editprivacy&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&private=0'); ?>">
 								<?php echo JText::_('MAKE_PUBLIC'); ?>
 							</a>
 						</li>
 					<?php } else { ?>
 						<li>
-							<a class="makeprivate" href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=editprivacy'.a.'category='.$this->wishlist->category.a.'rid='.$this->wishlist->referenceid.a.'wishid='.$this->wish->id.'&private=1'); ?>">
+							<a class="makeprivate" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=editprivacy&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&private=1'); ?>">
 								<?php echo JText::_('MAKE_PRIVATE'); ?>
 							</a>
 						</li>	
 					<?php } ?>
 
 					<li>
-						<a class="editwish" href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=editwish'.a.'category='.$this->wishlist->category.a.'rid='.$this->wishlist->referenceid.a.'wishid='.$this->wish->id); ?>">
+						<a class="editwish" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=editwish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id); ?>">
 							<?php echo ucfirst(JText::_('ACTION_EDIT')); ?>
 						</a>
-					</li>					
+					</li>
 				<?php } ?>
 					<li>
-						<a href="<?php echo JRoute::_('index.php?option=com_support'.a.'task=reportabuse'.a.'category=wish'.a.'id='.$this->wish->id.a.'parent='.$this->wishlist->id); ?>" class="abuse">
+						<a href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=wish&id='.$this->wish->id.'&parent='.$this->wishlist->id); ?>" class="abuse">
 							<?php echo JText::_('REPORT_ABUSE'); ?>
 						</a>
 					</li>
 				<?php if ($this->juser->get('id') == $this->wish->proposed_by && $this->wish->status==0) { ?>
 					<li>
-						<a class="deletewish" href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=wish'.a.'category='.$this->wishlist->category.a.'rid='.$this->wishlist->referenceid.a.'wishid='.$this->wish->id.'&action=delete#action'); ?>">
+						<a class="deletewish" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=delete#action'); ?>">
 							<?php echo JText::_('ACTION_WITHDRAW_WISH'); ?>
 						</a>
 					</li>
-				<?php } ?>								
+				<?php } ?>
 			</ul>
-		
+
 		<?php if ($this->wish->action == 'delete') { ?>
 			<a name="action"></a>
 			<div class="error">
 				<h4><?php echo JText::_('ARE_YOU_SURE_DELETE_WISH'); ?></h4>
 				<p>
 					<span class="say_yes">
-						<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=withdraw'.a.'category='.$this->wishlist->category.a.'rid='.$this->wishlist->referenceid.a.'wishid='.$this->wish->id); ?>">
+						<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=withdraw&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id); ?>">
 							<?php echo strtoupper(JText::_('YES')); ?>
 						</a>
 					</span> 
 					<span class="say_no">
-						<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=wish'.a.'category='.$this->wishlist->category.a.'rid='.$this->wishlist->referenceid.a.'wishid='.$this->wish->id); ?>">
+						<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id); ?>">
 							<?php echo strtoupper(JText::_('NO')); ?>
 						</a>
 					</span>
@@ -547,12 +553,12 @@ if ($this->wishlist && $this->wish) {
 							<input type="submit" value="<?php echo strtolower(JText::_('ACTION_CHANGE_STATUS')); ?>" /> 
 						
 							<span class="cancelaction">
-								<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=wish'.a.'category='.$this->wishlist->category.a.'rid='.$this->wishlist->referenceid.a.'wishid='.$this->wish->id); ?>">
+								<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id); ?>">
 									<?php echo JText::_('CANCEL'); ?>
 								</a>
 							</span>
 						</p>
-					</fieldset>		
+					</fieldset>
 				</form>
 			</div>
 		<?php } ?>
@@ -592,7 +598,7 @@ if ($this->wishlist && $this->wish) {
 							<input type="submit" class="process" value="<?php echo strtolower(JText::_('ACTION_ADD_POINTS')); ?>" />
 					<?php } ?>
 							<span class="cancelaction">
-								<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=wish'.a.'category='.$this->wishlist->category.a.'rid='.$this->wishlist->referenceid.a.'wishid='.$this->wish->id); ?>">
+								<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id); ?>">
 									<?php echo JText::_('CANCEL'); ?>
 								</a>
 							</span>
@@ -681,7 +687,7 @@ if ($this->wishlist && $this->wish) {
 						<p>
 							<input type="submit" value="<?php echo strtolower(JText::_('ACTION_MOVE_THIS_WISH')); ?>" /> 
 							<span class="cancelaction">
-								<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=wish'.a.'category='.$this->wishlist->category.a.'rid='.$this->wishlist->referenceid.a.'wishid='.$this->wish->id); ?>">
+								<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id); ?>">
 									<?php echo JText::_('CANCEL'); ?>
 								</a>
 							</span>
@@ -813,7 +819,7 @@ if ($this->wishlist && $this->wish) {
 			?>
 			<?php if (!isset($this->wish->replies) or count($this->wish->replies)==0) {?>
 			<p>
-				<?php echo JText::_('NO_COMMENTS'); ?> <a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=reply'.a.'cat=wish'.a.'id='.$this->wishlist->id.a.'refid='.$this->wish->id.a.'wishid='.$this->wish->id); ?>"><?php echo JText::_('MAKE_A_COMMENT'); ?></a>.
+				<?php echo JText::_('NO_COMMENTS'); ?> <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=reply&cat=wish&id='.$this->wishlist->id.'&refid='.$this->wish->id.'&wishid='.$this->wish->id); ?>"><?php echo JText::_('MAKE_A_COMMENT'); ?></a>.
 			</p>
 			<?php } ?>
 		</div><!-- / .subject -->
@@ -896,9 +902,9 @@ if ($this->wishlist && $this->wish) {
 				<fieldset>
 		<?php 
 		if ($this->wish->action=='editplan') {
-			$document =& JFactory::getDocument();
-			$document->addScript('components'.DS.'com_events'.DS.'js'.DS.'calendar.rc4.js');
-			$document->addScript('components'.DS.'com_events'.DS.'js'.DS.'events.js');
+			//$document =& JFactory::getDocument();
+			//$document->addScript('components'.DS.'com_events'.DS.'js'.DS.'calendar.rc4.js');
+			//$document->addScript('components'.DS.'com_events'.DS.'js'.DS.'events.js');
 		?>
 					<fieldset>
 						<legend><?php echo JText::_('DUE'); ?></legend>
@@ -949,7 +955,7 @@ if ($this->wishlist && $this->wish) {
 					<p class="submit">
 						<input type="submit" name="submit" value="<?php echo JText::_('SAVE'); ?>" />
 						<span class="cancelaction">
-							<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=wish'.a.'category='.$this->wishlist->category.a.'rid='.$this->wishlist->referenceid.a.'wishid='.$this->wish->id); ?>">
+							<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id); ?>">
 							<?php echo JText::_('CANCEL'); ?></a>
 						</span>
 					</p>
@@ -962,7 +968,7 @@ if ($this->wishlist && $this->wish) {
 	<?php 	} else if (!$this->wish->plan) { ?>
 					<p>
 						<?php echo JText::_('THERE_IS_NO_PLAN'); ?>
-						<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=wish'.a.'category='.$this->wishlist->category.a.'rid='.$this->wishlist->referenceid.a.'wishid='.$this->wish->id.'&action=editplan#plan'); ?>">
+						<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=editplan#plan'); ?>">
 							<?php echo JText::_('START_PLAN'); ?>
 						</a>.
 					</p>
@@ -972,7 +978,7 @@ if ($this->wishlist && $this->wish) {
 							<?php echo $assigned; ?>
 
 							<?php echo JText::_('PLAN_IS_DUE'); ?> 
-							<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=wish'.a.'category='.$this->wishlist->category.a.'rid='.$this->wishlist->referenceid.a.'wishid='.$this->wish->id.'&action=editplan#plan'); ?>'">
+							<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=editplan#plan'); ?>'">
 								<?php echo ($due) ? $due : JText::_('DUE_NEVER'); ?>
 							</a>
 						</p>
@@ -983,14 +989,14 @@ if ($this->wishlist && $this->wish) {
 						<?php echo JText::_('PLAN_IS_ASSIGNED'); ?> 
 						<?php echo $assigned; ?>
 						<?php echo JText::_('PLAN_IS_DUE'); ?>
-						<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=wish'.a.'category='.$this->wishlist->category.a.'rid='.$this->wishlist->referenceid.a.'wishid='.$this->wish->id.'&action=editplan#plan'); ?>'">
+						<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=editplan#plan'); ?>'">
 							<?php echo ($due) ? $due : JText::_('DUE_NEVER'); ?>
 						</a>.
 					</p>
 				<?php } ?>
 					<div class="planbody">
 						<p class="plannote">
-							<?php echo JText::_('PLAN_LAST_EDIT').' '.JHTML::_('date', $this->wish->plan->created, '%d %b %Y').' at '.JHTML::_('date',$this->wish->plan->created, '%I:%M %p').' '.JText::_('by').' '.$this->wish->plan->authorname;?>
+							<?php echo JText::_('PLAN_LAST_EDIT').' '.JHTML::_('date', $this->wish->plan->created, $dateformat, $tz).' at '.JHTML::_('date',$this->wish->plan->created, $timeformat, $tz).' '.JText::_('by').' '.$this->wish->plan->authorname;?>
 						</p>
 						<?php
 							$wikiconfig = array(
