@@ -632,14 +632,12 @@ class WikiParser
 
 		$database =& JFactory::getDBO();
 		$p = new WikiPage($database);
-		if ($namespace == 'wiki:')
+		if ($namespace == 'wiki:' && substr($href, 0, strlen('&#8220;')) == '&#8220;')
 		{
-			if (substr($href, 0, strlen('&#8220;')) == '&#8220;')
-			{
-				$title = substr($matches[1], strlen('[wiki:&#8220;'));
-				$title = substr($title, 0, -strlen('&#8221;]'));
-				$href = '#';
-			}
+			$title = substr($matches[1], strlen('[wiki:&#8220;'));
+			$title = substr($title, 0, -strlen('&#8221;]'));
+			$href = '#';
+
 			$p->loadByTitle($title);
 			if ($p->id) 
 			{
