@@ -230,7 +230,7 @@ $juser =& JFactory::getUser();
 				}
 ?>
 
-					<li class="entry <?php echo $cls; ?>" id="e<?php echo $row->id; ?>">
+					<li class="<?php echo $cls; ?>" id="e<?php echo $row->id; ?>">
 						<h4 class="entry-title">
 							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task='.JHTML::_('date', $row->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $row->publish_up, $this->monthFormat, $this->tz) . '/' . $row->alias); ?>">
 								<?php echo $this->escape(stripslashes($row->title)); ?>
@@ -310,10 +310,10 @@ $juser =& JFactory::getUser();
 ?>
 				</ol>
 <?php 
-			$pagenavhtml = $this->pageNav->getListFooter();
-			$pagenavhtml = str_replace('&amp;&amp;', '&amp;', $pagenavhtml);
-			$pagenavhtml = str_replace('?&amp;', '?', $pagenavhtml);
-			echo $pagenavhtml;
+			$this->pageNav->setAdditionalUrlParam('year', $this->filters['year']);
+			$this->pageNav->setAdditionalUrlParam('month', $this->filters['month']);
+			$this->pageNav->setAdditionalUrlParam('search', $this->filters['search']);
+			echo $this->pageNav->getListFooter();
 		} else {
 ?>
 				<p class="warning">No entries found.</p>

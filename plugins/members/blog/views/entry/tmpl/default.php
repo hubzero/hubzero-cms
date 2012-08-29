@@ -58,8 +58,8 @@ $juser =& JFactory::getUser();
 				<ul>
 					<?php foreach ($this->popular as $row) : ?>
 						<li>
-							<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias); ?>">
-								<?php echo stripslashes($row->title); ?>
+							<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task='.JHTML::_('date',$row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$row->publish_up, $this->monthFormat, $this->tz).'/'.$row->alias); ?>">
+								<?php echo $this->escape(stripslashes($row->title)); ?>
 							</a>
 						</li>
 					<?php endforeach; ?>
@@ -73,8 +73,8 @@ $juser =& JFactory::getUser();
 				<ul>
 					<?php foreach ($this->recent as $row) : ?>
 						<li>
-							<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias); ?>">
-								<?php echo stripslashes($row->title); ?>
+							<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task='.JHTML::_('date',$row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$row->publish_up, $this->monthFormat, $this->tz).'/'.$row->alias); ?>">
+								<?php echo $this->escape(stripslashes($row->title)); ?>
 							</a>
 						</li>
 					<?php endforeach; ?>
@@ -163,7 +163,7 @@ $juser =& JFactory::getUser();
 	<?php if ($this->row->allow_comments == 1) : ?>
 		<div class="aside aside-below">
 			<p class="add">
-				<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->row->created_by.'&active=blog&task='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias.'#post-comment'); ?>">
+				<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->row->created_by.'&active=blog&task='.JHTML::_('date', $this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'#post-comment'); ?>">
 					<?php echo JText::_('Add a comment'); ?>
 				</a>
 			</p>
@@ -202,8 +202,7 @@ $juser =& JFactory::getUser();
 						$name = JText::_('PLG_MEMBERS_BLOG_ANONYMOUS');
 						if (!$comment->anonymous) {
 							//$xuser =& JUser::getInstance( $comment->created_by );
-							$xuser = new Hubzero_User_Profile();
-							$xuser->load( $comment->created_by );
+							$xuser = Hubzero_User_Profile::getInstance($comment->created_by);
 							if (is_object($xuser) && $xuser->get('name')) {
 								$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$comment->created_by).'">'.stripslashes($xuser->get('name')).'</a>';
 							}
@@ -223,13 +222,16 @@ $juser =& JFactory::getUser();
 							<div class="comment-content">
 								<p class="comment-title">
 									<strong><?php echo $name; ?></strong> 
-									<a class="permalink" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->row->created_by.'&active=blog&task='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias.'#c'.$comment->id); ?>" title="<?php echo JText::_('PLG_MEMBERS_BLOG_PERMALINK'); ?>">@ <span class="time"><?php echo JHTML::_('date',$comment->created, '%I:%M %p', 0); ?></span> on <span class="date"><?php echo JHTML::_('date',$comment->created, '%d %b, %Y', 0); ?></span></a>
+									<a class="permalink" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->row->created_by.'&active=blog&task='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'#c'.$comment->id); ?>" title="<?php echo JText::_('PLG_MEMBERS_BLOG_PERMALINK'); ?>">
+										<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, $this->timeFormat, $this->tz); ?></time></span> 
+										<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, $this->dateFormat, $this->tz); ?></time></span>
+									</a>
 								</p>
 								<?php echo $content; ?>
 				<?php 		if (!$comment->reports) { ?>
 								<p class="comment-options">
 									<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=blog&id='.$comment->id.'&parent='.$this->row->id); ?>">Report abuse</a> | 
-									<a class="reply" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->row->created_by.'&active=blog&task='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias.'?reply='.$comment->id.'#post-comment'); ?>">Reply</a>
+									<a class="reply" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->row->created_by.'&active=blog&task='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'?reply='.$comment->id.'#post-comment'); ?>">Reply</a>
 								</p>
 				<?php 		} ?>
 							</div>
@@ -249,9 +251,9 @@ $juser =& JFactory::getUser();
 								$name = JText::_('PLG_MEMBERS_BLOG_ANONYMOUS');
 								if (!$reply->anonymous) {
 									//$xuser =& JUser::getInstance( $reply->created_by );
-									$xuser = new Hubzero_User_Profile();
-									$xuser->load( $reply->created_by );
-									if (is_object($xuser) && $xuser->get('name')) {
+									$xuser = Hubzero_User_Profile::getInstance($reply->created_by);
+									if (is_object($xuser) && $xuser->get('name')) 
+									{
 										$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$reply->created_by).'">'.stripslashes($xuser->get('name')).'</a>';
 									}
 								}
@@ -270,13 +272,16 @@ $juser =& JFactory::getUser();
 									<div class="comment-content">
 										<p class="comment-title">
 											<strong><?php echo $name; ?></strong> 
-											<a class="permalink" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->row->created_by.'&active=blog&task='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias.'#c'.$reply->id); ?>" title="<?php echo JText::_('PLG_MEMBERS_BLOG_PERMALINK'); ?>">@ <span class="time"><?php echo JHTML::_('date',$reply->created, '%I:%M %p', 0); ?></span> on <span class="date"><?php echo JHTML::_('date',$reply->created, '%d %b, %Y', 0); ?></span></a>
+											<a class="permalink" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->row->created_by.'&active=blog&task='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'#c'.$reply->id); ?>" title="<?php echo JText::_('PLG_MEMBERS_BLOG_PERMALINK'); ?>">
+												<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $reply->created; ?>"><?php echo JHTML::_('date', $reply->created, $this->timeFormat, $this->tz); ?></time></span> 
+												<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $reply->created; ?>"><?php echo JHTML::_('date', $reply->created, $this->dateFormat, $this->tz); ?></time></span>
+											</a>
 										</p>
 										<?php echo $content; ?>
 				<?php 				if (!$reply->reports) { ?>
 										<p class="comment-options">
 											<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=blog&id='.$reply->id.'&parent='.$this->row->id); ?>">Report abuse</a> | 
-											<a class="reply" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->row->created_by.'&active=blog&task='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias.'?reply='.$reply->id.'#post-comment'); ?>">Reply</a>
+											<a class="reply" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->row->created_by.'&active=blog&task='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'?reply='.$reply->id.'#post-comment'); ?>">Reply</a>
 										</p>
 				<?php 				} ?>
 									</div>
@@ -294,11 +299,11 @@ $juser =& JFactory::getUser();
 										}
 
 										$name = JText::_('PLG_MEMBERS_BLOG_ANONYMOUS');
-										if (!$response->anonymous) {
-											//$xuser =& JUser::getInstance( $reply->created_by );
-											$xuser = new Hubzero_User_Profile();
-											$xuser->load( $response->created_by );
-											if (is_object($xuser) && $xuser->get('name')) {
+										if (!$response->anonymous) 
+										{
+											$xuser = Hubzero_User_Profile::getInstance($response->created_by);
+											if (is_object($xuser) && $xuser->get('name')) 
+											{
 												$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$response->created_by).'">'.stripslashes($xuser->get('name')).'</a>';
 											}
 										}
@@ -317,7 +322,10 @@ $juser =& JFactory::getUser();
 											<div class="comment-content">
 												<p class="comment-title">
 													<strong><?php echo $name; ?></strong> 
-													<a class="permalink" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->row->created_by.'&active=blog&task='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias.'#c'.$response->id); ?>" title="<?php echo JText::_('PLG_MEMBERS_BLOG_PERMALINK'); ?>">@ <span class="time"><?php echo JHTML::_('date',$response->created, '%I:%M %p', 0); ?></span> on <span class="date"><?php echo JHTML::_('date',$response->created, '%d %b, %Y', 0); ?></span></a>
+													<a class="permalink" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->row->created_by.'&active=blog&task='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'#c'.$response->id); ?>" title="<?php echo JText::_('PLG_MEMBERS_BLOG_PERMALINK'); ?>">
+														<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $response->created; ?>"><?php echo JHTML::_('date', $response->created, $this->timeFormat, $this->tz); ?></time></span> 
+														<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $response->created; ?>"><?php echo JHTML::_('date', $response->created, $this->dateFormat, $this->tz); ?></time></span>
+													</a>
 												</p>
 												<?php echo $content; ?>
 				<?php 					if (!$response->reports) { ?>
@@ -392,7 +400,7 @@ $juser =& JFactory::getUser();
 	
 		<div class="subject below">
 			<h3><a name="post-comment"></a>Post a comment</h3>
-			<form method="post" action="<?php echo JRoute::_('index.php?option=com_members&id='.$this->row->created_by.'&active=blog&task='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias); ?>" id="commentform">
+			<form method="post" action="<?php echo JRoute::_('index.php?option=com_members&id='.$this->row->created_by.'&active=blog&task='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias); ?>" id="commentform">
 				<p class="comment-member-photo">
 		<?php
 					if (!$juser->get('guest')) {
@@ -415,19 +423,20 @@ $juser =& JFactory::getUser();
 					if ($this->replyto->id) {
 						ximport('Hubzero_View_Helper_Html');
 						$name = JText::_('PLG_MEMBERS_BLOG_ANONYMOUS');
-						if (!$this->replyto->anonymous) {
-							//$xuser =& JUser::getInstance( $reply->created_by );
-							$xuser = new Hubzero_User_Profile();
-							$xuser->load( $this->replyto->created_by );
-							if (is_object($xuser) && $xuser->get('name')) {
-								$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$this->replyto->created_by).'">'.stripslashes($xuser->get('name')).'</a>';
+						if (!$this->replyto->anonymous) 
+						{
+							$xuser = Hubzero_User_Profile::getInstance($this->replyto->created_by);
+							if (is_object($xuser) && $xuser->get('name')) 
+							{
+								$name = '<a href="'.JRoute::_('index.php?option=com_members&id=' . $this->replyto->created_by) . '">' . $this->escape(stripslashes($xuser->get('name'))) . '</a>';
 							}
 						}
 		?>
 					<blockquote cite="c<?php echo $this->replyto->id ?>">
 						<p>
 							<strong><?php echo $name; ?></strong> 
-							@ <span class="time"><?php echo JHTML::_('date',$this->replyto->created, '%I:%M %p', 0); ?></span> on <span class="date"><?php echo JHTML::_('date',$this->replyto->created, '%d %b, %Y', 0); ?></span>
+							<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $this->replyto->created; ?>"><?php echo JHTML::_('date', $this->replyto->created, $this->timeFormat, $this->tz); ?></time></span> 
+							<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $this->replyto->created; ?>"><?php echo JHTML::_('date', $this->replyto->created, $this->dateFormat, $this->tz); ?></time></span>
 						</p>
 						<p><?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($this->replyto->content), 300, 0); ?></p>
 					</blockquote>
@@ -442,7 +451,7 @@ $juser =& JFactory::getUser();
 						$editor =& Hubzero_Wiki_Editor::getInstance();
 						echo $editor->display('comment[content]', 'commentcontent', '', '', '40', '15');
 					} else { 
-						$rtrn = JRoute::_('index.php?option=com_members&id='.$this->row->created_by.'&active=blog&task='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias.'#post-comment');
+						$rtrn = JRoute::_('index.php?option=com_members&id='.$this->row->created_by.'&active=blog&task='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'#post-comment');
 		?>
 						<p class="warning">
 							You must <a href="/login?return=<?php echo base64_encode($rtrn); ?>">log in</a> to post comments.

@@ -13,7 +13,7 @@
 
 */
 
-/* Settings */
+/* Settings 
 	.com_members .settings h3,
 	.com_members .delete h3 {
 		display:block;
@@ -133,10 +133,19 @@
 	}
 	div.entry .entry-content {
 		margin: 0;
+		padding: 0;
+		background: transparent;
+		border: none;
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+		-ms-box-shadow: none;
+		-o-box-shadow: none;
+		box-shadow: none;
 	}
-	/*.main .subject .entry h3 {
-		display: block;
-	}*/
+	div.entry .entry-content:before,
+	div.entry .entry-content:after {
+		display: none;
+	}
 	.private {
 		background-image: none;
 	}
@@ -199,7 +208,7 @@
 		border-bottom:1px solid #efefef;
 	}
 
-/* Comments */
+/* Comments 
 	ol.comments {
 		list-style-type: none !important;
 		margin: 20px 0 0 0;
@@ -219,7 +228,7 @@
 	ol.comments li li {
 		padding-left: 75px;
 	}
-	/* Options */
+	/* Options 
 	.abuse {
 		background: url("/plugins/members/blog/images/abuse.gif") 0 0 no-repeat;
 		padding-left: 15px;
@@ -249,7 +258,7 @@
 	ol.comments dl.comment-details {
 		display: none;
 	}
-	/* Member photo */
+	/* Member photo 
 	ol.comments p.comment-member-photo {
 		float: left;
 		margin: 0;
@@ -262,14 +271,14 @@
 		text-align: right;
 		background: url("/plugins/members/blog/images/comment-arrow.gif") right 15px no-repeat;
 	}
-	/* Content */
+	/* Content 
 	ol.comments .comment-content {
 		margin: 0 0 1em 75px;
 		background-color: #fafafa;
 		border: 10px solid #f2f2f2;
 		padding: 0 1em;
 	}
-	/* Author comments */
+	/* Author comments 
 	ol.comments .author .comment-content,
 	ol.comments .author ol.comments .author .comment-content {
 		background-color: #fdfbf8;
@@ -288,7 +297,7 @@
 	ol.comments .author ol.comments .author ol.comments p.comment-member-photo {
 		background: url("/plugins/members/blog/images/comment-arrow.gif") right 15px no-repeat;
 	}
-	/* Private comments */
+	/* Private comments 
 	ol.comments .private .comment-content {
 		background-color: #f9f8fd;
 		border-color: #eeecf9;
@@ -296,11 +305,11 @@
 	ol.comments .private p.comment-member-photo {
 		background: url("/plugins/members/blog/images/comment-arrow.gif") right -57px no-repeat;
 	}
-	/* Details (date, time) */
+	/* Details (date, time) 
 	ol.comments span.comment-details {
 		color: #bfbfbf;
 	}
-	/* Permalink */
+	/* Permalink 
 	ol.comments .permalink {
 		border: none;
 		color: #bfbfbf;
@@ -319,7 +328,7 @@
 		color: #aaa;
 	}
 
-/* Wiki Reference */
+/* Wiki Reference 
 	table.wiki-reference {
 		border: none;
 		font-size: 11px;
@@ -333,7 +342,7 @@
 		border-bottom: 1px solid #efefef;
 	}
 
-/* Comment form */
+/* Comment form 
 	#commentform {
 		margin: 20px 0 0 0;
 		padding: 0;

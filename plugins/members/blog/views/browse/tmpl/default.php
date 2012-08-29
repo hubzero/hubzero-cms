@@ -198,7 +198,7 @@ $live_site = rtrim(JURI::base(),'/');
 					break;
 			}
 ?>
-			<li class="entry <?php echo $cls; ?>" id="e<?php echo $row->id; ?>">
+			<li class="<?php echo $cls; ?>" id="e<?php echo $row->id; ?>">
 				<h4 class="entry-title">
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task='.JHTML::_('date', $row->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $row->publish_up, $this->monthFormat, $this->tz) . '/' . $row->alias); ?>">
 						<?php echo $this->escape(stripslashes($row->title)); ?>
