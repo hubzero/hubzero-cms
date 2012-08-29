@@ -13,6 +13,18 @@
 		<filename plugin="debug">debug.php</filename>
 	</files>
 	<params>
+		<param name="filter_groups" type="usergroup"
+			description="Optionally restrict users that can see debug information to those in the selected user groups. If none selected, all users see the debug information."
+			label="Allowed Groups"
+			multiple="true"
+			size="10"
+		/>
+		<param name="filter_users" type="textarea"
+			description="Optionally restrict users that can see debug information to those in the comma-separated list of usernames. If none entered, all users see the debug information."
+			label="Allowed Users"
+			col="35"
+			row="5"
+		/>
 		<param name="profile" type="radio" default="1" label="Display Profiling Information" description="If yes, display profiling information">
 			<option value="0">No</option>
 			<option value="1">Yes</option>

@@ -61,6 +61,28 @@ class  plgSystemDebug extends JPlugin
 		// Only render for HTML output
 		if ( $doctype !== 'html' ) { return; }
 
+		// If the user is not allowed to view the output then end here
+		//print_R($this->params->get('filter_groups', null)); die();
+		$filterGroups = (array) $this->params->get('filter_groups', null);
+		if (!empty($filterGroups)) {
+			if (!in_array(JFactory::getUser()->get('gid'), $filterGroups)) {
+				return;
+			}
+		}
+		/* [JOOMLA] zooley (2012-08-29) 
+		 * ADDED: Ability to show deubg output to specified users
+		 */
+		else {
+			$filterUsers = $this->params->get('filter_users', null);
+			if (!empty($filterUsers)) {
+				$filterUsers = explode(',', $filterUsers);
+				$filterUsers = array_map('trim', $filterUsers);
+				if (!in_array(JFactory::getUser()->get('username'), $filterUsers)) {
+					return;
+				}
+			}
+		}
+
 		$profiler	=& $_PROFILER;
 
 		ob_start();
