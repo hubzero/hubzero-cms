@@ -464,4 +464,115 @@ class Hubzero_Document
 			$jdocument->addScript($url . '?v=' . filemtime(JPATH_SITE . $url), $type, $defer, $async);
 		}
 	}
+
+	/**
+	 * Returns the path to a system stylesheet
+	 * Accepts either an array or string of comma-separated file names
+	 * If more than one stylesheet is called for, it will combine, compress, return path to cached file
+	 *
+	 * @param	mixed  $elements An array or string of comma-separated file names
+	 * @return  string
+	 */
+	public static function getSystemStylesheet($elements = null)
+	{
+		// Anything passed?
+		if (!$elements)
+		{
+			return '';
+		}
+		// Is it a string?
+		if (is_string($elements))
+		{
+			$elements = explode(',', $elements);
+		}
+		if (count($elements) <= 0)
+		{
+			return '';
+		}
+		// Trim items
+		$elements = array_map('trim', $elements);
+
+		// Path to system cache
+		$cachedir = JPATH_ROOT . DS . 'cache';
+		// Path to system CSS
+		$thispath = JPATH_ROOT . DS . 'media' . DS . 'system' . DS . 'css';
+
+		// Determine last modification date of the files
+		$lastmodified = 0;
+
+		foreach ($elements as $k => $element) 
+		{
+			if (!$element) 
+			{
+				$elements[$k] = false;
+				continue;
+			}
+
+			// Strip file extension to normalize data
+			$element = basename($element, '.css');
+
+			$elements[$k] = $element;
+
+			// Check if the file exists
+			$path = $thispath . DS . $element . '.css';
+
+			if (!file_exists($path)) 
+			{
+				$elements[$k] = false;
+				continue;
+			}
+
+			// Get the last modified time
+			// We take the max time so $lastmodified should be different if any of the files have changed.
+			//$lastmodified = max($lastmodified, filemtime($path));
+			$lastmodified += filemtime($path);
+		}
+
+		// Remove any empty items
+		$elements = array_filter($elements);
+
+		// Build hash
+		$hash = $lastmodified; // . '-' . md5(implode(',', $elements));
+
+		// Only one stylesheet called for so return it as is
+		if (count($elements) == 1)
+		{
+			return $thispath . DS . $elements[0] . '.css';
+		}
+
+		// Try the cache first to see if the combined files were already generated
+		$cachefile = 'cache-' . $hash . '.css';
+
+		if (!file_exists($cachedir . DS . $cachefile)) 
+		{
+			$contents = '';
+			reset($elements);
+
+			foreach ($elements as $k => $element) 
+			{
+				$contents .= "\n\n" . file_get_contents($thispath . DS . $element . '.css');
+			}
+			$patterns = array(
+				'!/\*[^*]*\*+([^/][^*]*\*+)*/!',  /* remove comments */
+				'/[\n\r \t]/',                    /* remove tabs, spaces, newlines, etc. */
+				'/ +/',                           /* collapse multiple spaces to a single space */
+				'/ ?([,:;{}]) ?/'                 /* remove space before and after , : ; { } */
+			);
+			$replacements = array(
+				'',
+				' ',
+				' ',
+				'$1'
+			);
+			$contents = preg_replace($patterns, $replacements, $contents);
+
+			if ($fp = fopen($cachedir . DS . $cachefile, 'wb')) 
+			{
+				fwrite($fp, $contents);
+				fclose($fp);
+			}
+		}
+
+		return DS . 'cache' . DS . $cachefile;
+	}
 }
