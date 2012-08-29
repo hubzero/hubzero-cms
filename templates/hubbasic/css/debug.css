@@ -1,0 +1,13 @@
+/* System Debug */
+	#system-debug {
+		background: transparent;
+		margin: 0;
+		padding: 30px;
+		color: #999;
+		border-top: 1px solid #444;
+	}
+	#system-debug h4,
+	#system-debug h3 {
+		margin: 1.33em 0;
+		color: #ccc;
+	}

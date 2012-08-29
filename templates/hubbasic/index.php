@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+ximport('Hubzero_Document');
+
 $config =& JFactory::getConfig();
 $juser =& JFactory::getUser();
 
@@ -58,15 +60,14 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 <!--[if IE 9 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie9"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo $b . ' ' . $b . $v; ?>"> <!--<![endif]-->
 	<head>
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/media/system/css/reset.css" />
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/media/system/css/columns.css" />
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/media/system/css/fontcons.css" />
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/media/system/css/notifications.css" />
+		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo Hubzero_Document::getSystemStylesheet(array('fontcons', 'reset', 'columns', 'notifications', 'pagination', 'tabs', 'tags', 'comments', 'voting', 'layout')); /* reset MUST come before all others except fontcons */ ?>" />
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/main.css" />
 		<link rel="stylesheet" type="text/css" media="print" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/print.css" />
 
 		<jdoc:include type="head" />
-
+<?php if (JPluginHelper::isEnabled('system', 'debug')) { ?>
+		<link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/debug.css" />
+<?php } ?>
 		<!--[if IE 9]>
 			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie9.css" />
 		<![endif]-->
