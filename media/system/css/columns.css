@@ -117,12 +117,16 @@
 	.six.sixth {
 		zoom: 1;
 	}
+	/* Clearing fixes */
+	.clearfix {
+		border: 1px solid transparent;
+	}
 	.clearfix:after {
 		content: "."; 
 		display: block; 
 		height: 0;
 		line-height: 0em;
-		clear: both; 
+		clear: left; 
 		visibility: hidden;
 	}
 /* IE 7 */
