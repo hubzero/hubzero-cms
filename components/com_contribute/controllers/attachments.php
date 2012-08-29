@@ -396,7 +396,7 @@ class ContributeControllerAttachments extends Hubzero_Controller
 			}
 
 			$dbh->execute('INSERT IGNORE INTO #__document_resource_rel(document_id, resource_id) VALUES (' . (int)$doc_id . ', ' . (int)$row->id . ')');
-			system('/usr/local/bin/textifier ' . escapeshellarg($path . DS . $file['name']) . ' >/dev/null');
+			system('textifier ' . escapeshellarg($path . DS . $file['name']) . ' >/dev/null');
 		}
 
 		// Push through to the attachments view
