@@ -19,81 +19,16 @@
 	#page_options li {
 		margin: 0 0 0 5px;
 		float: right;
-		/*border: 1px solid #999;*/
 	}
-	/*#page_options li a {
-		display: block;
-		border-top: 1px solid #FFF;
-		color: #333;
-		padding: 0 10px 2px 25px;
-		font-weight: bold;
-		font-size: 0.85em;
-		position: relative;
-		background: #eee;
-	}
-	#page_options li a:before {
-		content: "";
-		position: absolute;
-		left: 8px;
-		top: 0px;
-		width: 18px;
-		height: 18px;
-		font-size: 14px;
-		font-family: 'Fontcons';
-		color: #333;
-	}
-	#page_options li a:hover {
-		border-bottom:0;
-		color: #000;
-	}
-	#page_options li a:hover:before {
-		color: #000;
-	}
-	#page_options li a:active {
-		border-top: 1px solid #ccc;
-		background-color: #ddd;
-	}
-	#page_options li a.edit:before {
-		content: "\270E";
-	}
-	#page_options li a.password:before {
-		content: "\f023";
-	}
-	#page_options li a.message:before {
-		content: "\f075";
-	}*/
+
 	#page_options li#personalize {
-		/*border: 1px solid #000;*/
 		position: relative;
 	}
-	/*#page_options li#personalize a {
-		color: #F8F8F8;
-		border-top: 1px solid #777;
-		padding: 0 20px 2px 25px;
-		background: #555;
-		display: block;
-		zoom: 1;
-	}*/
+
 	#page_options li#personalize a:before {
-		/*color: #FFF;*/
 		content: "\2699";
-		/*font-family: 'Fontcons';
-		margin-right: 0.2em;*/
 	}
-	/*#page_options li#personalize a:after {
-		position: absolute;
-		top: 9px;
-		right: 5px;
-		content: "";
-		border: 4px solid #F8F8F8;
-		border-bottom: 4px solid transparent;
-		border-right: 4px solid transparent;
-		border-left: 4px solid transparent;
-	}
-	#page_options li#personalize a:active {
-		background-color: #444;
-		border-top: 1px solid #111;
-	}*/
+
 	#page_options li#personalize #modules-dock:before {
 		content: "";
 		position: absolute;

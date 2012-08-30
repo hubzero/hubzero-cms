@@ -11,12 +11,10 @@
 
 /* Intro */
 	#introduction {
-		margin: 0 -15px 3em -15px;
+		margin: 0 0 3em 0;
 		padding: 25px 15px 25px 120px;
-		background: #fbf8ea;
-		border-top: 2px solid #e7dac4;
-		border-bottom: 2px solid #e7dac4;
-		color: #7c7266;
+		background: #eee;
+		color: #666;
 		position: relative;
 	}
 	#introduction:before,
@@ -33,7 +31,7 @@
 	#introduction:before {
 		width: 69px;
 		height: 69px;
-		border: 3px solid #e8dbc5;
+		border: 3px solid #ccc;
 		-webkit-border-radius: 0.5em;
 		-moz-border-radius: 0.5em;
 		-ms-border-radius: 0.5em;
@@ -45,7 +43,7 @@
 		font-size: 50px;
 		top: 58px;
 		left: 45px;
-		color: #b29171;
+		color: #bbb;
 	}
 	#introduction .aside,
 	#introduction .subject {
@@ -58,7 +56,7 @@
 	}
 	#introduction h3 {
 		margin-top: 0;
-		color: #7c7266;
+		color: #666;
 	}
 	#introduction .columns {
 		border: none;

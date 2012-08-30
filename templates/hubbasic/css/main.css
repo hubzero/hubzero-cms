@@ -2050,3 +2050,19 @@
 	body #page_container {
 		margin: 0 -15px -15px -15px;
 	}
+	body #introduction {
+		background: #fbf8ea;
+		border-top: 2px solid #e7dac4;
+		border-bottom: 2px solid #e7dac4;
+		color: #7c7266;
+		margin: 0 -15px 3em -15px;
+	}
+	body #introduction:before {
+		border: 3px solid #e8dbc5;
+	}
+	body #introduction:after {
+		color: #b29171;
+	}
+	body #introduction h3 {
+		color: #7c7266;
+	}
