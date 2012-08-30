@@ -266,11 +266,20 @@ class plgMembersBlog extends JPlugin
 			$filters['limit']
 		);
 
-		$pagenavhtml = $pageNav->getListFooter();
-		$pagenavhtml = str_replace('members/?', 'members/' . $this->member->get('uidNumber') . '/blog/?', $pagenavhtml);
-		$pagenavhtml = str_replace('action=browse', '', $pagenavhtml);
-		$pagenavhtml = str_replace('&amp;&amp;', '&amp;', $pagenavhtml);
-		$pagenavhtml = str_replace('?&amp;', '?', $pagenavhtml);
+		$pageNav->setAdditionalUrlParam('id', $this->member->get('uidNumber'));
+		$pageNav->setAdditionalUrlParam('active', 'blog');
+		if ($filters['year'])
+		{
+			$pageNav->setAdditionalUrlParam('year', $filters['year']);
+		}
+		if ($filters['month'])
+		{
+			$pageNav->setAdditionalUrlParam('month', $filters['month']);
+		}
+		if ($filters['search'])
+		{
+			$pageNav->setAdditionalUrlParam('search', $filters['search']);
+		}
 
 		$view->firstentry = $be->getDateOfFirstEntry($filters);
 
@@ -280,7 +289,7 @@ class plgMembersBlog extends JPlugin
 		$view->year = $filters['year'];
 		$view->month = $filters['month'];
 		$view->search = $filters['search'];
-		$view->pagenavhtml = $pagenavhtml;
+		$view->pagenavhtml = $pageNav->getListFooter();
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)

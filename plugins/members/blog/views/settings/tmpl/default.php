@@ -35,12 +35,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php if ($this->message) { ?>
 	<p class="passed"><?php echo $this->message; ?></p>
 <?php } ?>
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=blog&task=savesettings'); ?>" method="post" id="hubForm">
-		<div class="explaination">
-			<p>Privacy settings can be set for individual posts when creating/editing them.</p>
-		</div>
+	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=blog&task=savesettings'); ?>" method="post" id="hubForm" class="full">
 		<fieldset class="settings">
-			<legend><?php echo JText::_('Blog Settings'); ?></legend>
+			<legend><?php echo JText::_('Posts'); ?></legend>
+			<p>Privacy settings can be set for individual posts when creating/editing them.</p>
+		</fieldset>
+		<fieldset class="settings">
+			<legend><?php echo JText::_('Feeds'); ?></legend>
 			
 			<label>
 				RSS Feed of entries

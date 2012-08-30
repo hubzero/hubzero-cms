@@ -27,16 +27,15 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
+
+ximport('Hubzero_User_Profile_Helper');
 
 $juser =& JFactory::getUser();
 ?>
 
 <?php if ($juser->get('id') == $this->member->get('uidNumber')) : ?>
-<ul class="blog-options">
-	<li>
-		Blog Actions
-	</li>
+<ul id="page_options">
 	<li>
 		<a class="add" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->member->get('uidNumber').'&active=blog&task=new'); ?>">
 			<?php echo JText::_('New entry'); ?>
@@ -162,8 +161,8 @@ $juser =& JFactory::getUser();
 
 	<?php if ($this->row->allow_comments == 1) : ?>
 		<div class="aside aside-below">
-			<p class="add">
-				<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->row->created_by.'&active=blog&task='.JHTML::_('date', $this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'#post-comment'); ?>">
+			<p>
+				<a class="add" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->row->created_by.'&active=blog&task='.JHTML::_('date', $this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'#post-comment'); ?>">
 					<?php echo JText::_('Add a comment'); ?>
 				</a>
 			</p>
@@ -201,7 +200,7 @@ $juser =& JFactory::getUser();
 
 						$name = JText::_('PLG_MEMBERS_BLOG_ANONYMOUS');
 						if (!$comment->anonymous) {
-							//$xuser =& JUser::getInstance( $comment->created_by );
+							//$xuser =& JUser::getInstance($comment->created_by);
 							$xuser = Hubzero_User_Profile::getInstance($comment->created_by);
 							if (is_object($xuser) && $xuser->get('name')) {
 								$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$comment->created_by).'">'.stripslashes($xuser->get('name')).'</a>';
@@ -250,7 +249,7 @@ $juser =& JFactory::getUser();
 
 								$name = JText::_('PLG_MEMBERS_BLOG_ANONYMOUS');
 								if (!$reply->anonymous) {
-									//$xuser =& JUser::getInstance( $reply->created_by );
+									//$xuser =& JUser::getInstance($reply->created_by);
 									$xuser = Hubzero_User_Profile::getInstance($reply->created_by);
 									if (is_object($xuser) && $xuser->get('name')) 
 									{
@@ -267,7 +266,7 @@ $juser =& JFactory::getUser();
 								<li class="comment <?php echo $cls; ?>" id="c<?php echo $reply->id; ?>">
 									<a name="#c<?php echo $reply->id; ?>"></a>
 									<p class="comment-member-photo">
-										<img src="<?php echo BlogHelperMember::getMemberPhoto($xuser, $reply->anonymous); ?>" alt="" />
+										<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($xuser, $reply->anonymous); ?>" alt="" />
 									</p>
 									<div class="comment-content">
 										<p class="comment-title">
@@ -317,7 +316,7 @@ $juser =& JFactory::getUser();
 										<li class="comment <?php echo $cls; ?>" id="c<?php echo $response->id; ?>">
 											<a name="#c<?php echo $response->id; ?>"></a>
 											<p class="comment-member-photo">
-												<img src="<?php echo BlogHelperMember::getMemberPhoto($xuser, $response->anonymous); ?>" alt="" />
+												<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($xuser, $response->anonymous); ?>" alt="" />
 											</p>
 											<div class="comment-content">
 												<p class="comment-title">
@@ -403,20 +402,14 @@ $juser =& JFactory::getUser();
 			<form method="post" action="<?php echo JRoute::_('index.php?option=com_members&id='.$this->row->created_by.'&active=blog&task='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias); ?>" id="commentform">
 				<p class="comment-member-photo">
 		<?php
-					if (!$juser->get('guest')) {
-						$jxuser = new Hubzero_User_Profile();
-						$jxuser->load( $juser->get('id') );
-						$thumb = BlogHelperMember::getMemberPhoto($jxuser, 0);
-					} else {
-						$config =& JComponentHelper::getParams( 'com_members' );
-						$thumb = $config->get('defaultpic');
-						if (substr($thumb, 0, 1) != DS) {
-							$thumb = DS.$dfthumb;
-						}
-						$thumb = BlogHelperMember::thumbit($thumb);
+					$jxuser = Hubzero_User_Profile::getInstance($juser->get('id'));
+					$anon = 1;
+					if (!$juser->get('guest')) 
+					{
+						$anon = 0;
 					}
 		?>
-					<img src="<?php echo $thumb; ?>" alt="" />
+					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, $anon); ?>" alt="" />
 				</p>
 				<fieldset>
 		<?php

@@ -35,10 +35,7 @@ $live_site = rtrim(JURI::base(),'/');
 ?>
 
 <?php if ($juser->get('id') == $this->member->get('uidNumber')) : ?>
-<ul class="blog-options">
-	<li>
-		Blog Actions
-	</li>
+<ul id="page_options">
 	<li>
 		<a class="add" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->member->get('uidNumber').'&active=blog&task=new'); ?>">
 			<?php echo JText::_('New entry'); ?>
@@ -52,44 +49,8 @@ $live_site = rtrim(JURI::base(),'/');
 </ul>
 <?php endif; ?>
 
-<div class="aside">
-		<div class="container">
-			<h4>Options</h4>
-			<p class="starter">
-				<span class="starter-point"></span>
-			</p>
-			<?php
-				if ($this->config->get('feeds_enabled')) :
-					$path  = 'index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=blog&task=feed.rss';
-					$path .= ($this->year) ? '&year='.$this->year : '';
-					$path .= ($this->month) ? '&month='.$this->month : '';
-					$feed = JRoute::_($path);
-					if (substr($feed, 0, 4) != 'http') {
-						if (substr($feed, 0, 1) != DS) {
-							$feed = DS.$feed;
-						}
-						
-						$feed = $live_site.$feed;
-					}
-					$feed = str_replace('https:://','http://',$feed);
-			?>
-			<p class="feed">
-				<a href="<?php echo $feed; ?>">
-					<?php echo JText::_('RSS Feed'); ?>
-				</a>
-			</p>
-			<?php endif; ?>
-		</div>
-	
-	<div class="container">
-		<h4>Search Entries</h4>
-		<p class="starter">
-			<span class="starter-point"></span>
-		</p>
-		<input type="text" name="search" value="<?php echo htmlentities(utf8_encode(stripslashes($this->search)),ENT_COMPAT,'UTF-8'); ?>" />
-		<input type="submit" name="go" value="Go" />
-	</div>
-	
+<form method="get" action="<?php JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=blog'); ?>">
+	<div class="aside">
 	<?php if ($this->firstentry) : ?>
 		<div class="container">
 			<h4>Entries by Year</h4>
@@ -141,8 +102,8 @@ $live_site = rtrim(JURI::base(),'/');
 			<ul>
 				<?php foreach ($this->popular as $row) : ?>
 					<li>
-						<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias); ?>">
-							<?php echo stripslashes($row->title); ?>
+						<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task='.JHTML::_('date', $row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date', $row->publish_up, $this->monthFormat, $this->tz).'/'.$row->alias); ?>">
+							<?php echo $this->escape(stripslashes($row->title)); ?>
 						</a>
 					</li>
 				<?php endforeach; ?>
@@ -156,25 +117,64 @@ $live_site = rtrim(JURI::base(),'/');
 			<ul>
 				<?php foreach ($this->recent as $row) : ?>
 					<li>
-						<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias); ?>">
-							<?php echo stripslashes($row->title); ?>
+						<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task='.JHTML::_('date', $row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date', $row->publish_up, $this->monthFormat, $this->tz).'/'.$row->alias); ?>">
+							<?php echo $this->escape(stripslashes($row->title)); ?>
 						</a>
 					</li>
 				<?php endforeach; ?>
 			</ul>
 		</div>
 	<?php endif; ?>
-</div><!-- / .aside -->
-	
-	
-<div class="subject">
+	</div><!-- / .aside -->
+
+	<div class="subject">
 	<?php if ($this->getError()) : ?>
 		<p class="error"><?php echo $this->getError(); ?></p>
 	<?php endif; ?>
+
+		<div class="container data-entry">
+			<input class="entry-search-submit" type="submit" value="Search" />
+			<fieldset class="entry-search">
+				<input type="text" name="search" value="<?php echo $this->escape($this->search); ?>" />
+			</fieldset>
+		</div><!-- / .container -->
 	
-	<div class="container">
+		<div class="container">
+			<h3>
+<?php if (isset($this->search) && $this->search) { ?>
+				<?php echo JText::sprintf('Search for "%s"', $this->escape($this->search)); ?>
+<?php } else if (!isset($this->year) || !$this->year) { ?>
+				<?php echo JText::_('Latest Entries'); ?>
+<?php } else { 
+		$format = '%b %Y';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$format = 'M Y';
+		}
+				$archiveDate  = $this->year;
+				$archiveDate .= ($this->month) ? '-' . $this->month : '-01';
+				$archiveDate .= '-01 00:00:00';
+				echo JHTML::_('date', $archiveDate, $format, $this->tz);
+} ?>
+				<?php
+					if ($this->config->get('feeds_enabled')) :
+						$path  = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=blog&task=feed.rss';
+						$path .= ($this->year)  ? '&year=' . $this->year   : '';
+						$path .= ($this->month) ? '&month=' . $this->month : '';
+						$feed = JRoute::_($path);
+						if (substr($feed, 0, 4) != 'http') 
+						{
+							$feed = rtrim($live_site, DS) . DS . ltrim($feed, DS);
+						}
+						$feed = str_replace('https:://', 'http://', $feed);
+				?>
+				<a class="feed" href="<?php echo $feed; ?>">
+					<?php echo JText::_('RSS Feed'); ?>
+				</a>
+				<?php endif; ?>
+			</h3>
 	<?php if ($this->rows) { ?>
-		<ol class="blog-entries">
+			<ol class="blog-entries">
 <?php 
 		$cls = 'even';
 		foreach ($this->rows as $row)
@@ -203,14 +203,6 @@ $live_site = rtrim(JURI::base(),'/');
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task='.JHTML::_('date', $row->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $row->publish_up, $this->monthFormat, $this->tz) . '/' . $row->alias); ?>">
 						<?php echo $this->escape(stripslashes($row->title)); ?>
 					</a>
-<?php if ($juser->get('id') == $row->created_by || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
-					<a class="edit" href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task=edit&entry='.$row->id); ?>" title="<?php echo JText::_('Edit'); ?>">
-						<?php echo JText::_('Edit'); ?>
-					</a>
-					<a class="delete" href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task=delete&entry='.$row->id); ?>" title="<?php echo JText::_('Delete'); ?>">
-						<?php echo JText::_('Delete'); ?>
-					</a>
-<?php } ?>
 				</h4>
 				<dl class="entry-meta">
 					<dt>
@@ -251,6 +243,16 @@ $live_site = rtrim(JURI::base(),'/');
 						<?php echo $state; ?>
 					</dd>
 <?php } ?>
+					<dd class="entry-options">
+<?php if ($juser->get('id') == $row->created_by) { ?>
+						<a class="edit" href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task=edit&entry='.$row->id); ?>" title="<?php echo JText::_('Edit'); ?>">
+							<?php echo JText::_('Edit'); ?>
+						</a>
+						<a class="delete" href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by.'&active=blog&task=delete&entry='.$row->id); ?>" title="<?php echo JText::_('Delete'); ?>">
+							<?php echo JText::_('Delete'); ?>
+						</a>
+<?php } ?>
+					</dd>
 				</dl>
 				<div class="entry-content">
 					<p>
@@ -261,10 +263,11 @@ $live_site = rtrim(JURI::base(),'/');
 				</div>
 			</li>
 <?php } ?>
-		</ol>
+			</ol>
 <?php } else { ?>
-		<p>Currently there are no blog entries.</p>
+			<p>Currently there are no blog entries.</p>
 <?php } ?>
-		<?php echo $this->pagenavhtml; ?>
-	</div>
-</div><!-- / .subject -->
+			<?php echo $this->pagenavhtml; ?>
+		</div>
+	</div><!-- / .subject -->
+</form>

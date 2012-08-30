@@ -14,47 +14,62 @@
 */
 
 /* Point Balance Box */
-.point-balance {
-	font-weight: bold;
-	text-align:center;
-	font-size:18px;
-	margin-top:20px;
+	.point-balance-container {
+		margin: 1em 0;
+		padding: 1.618em;
+		border: 0.27em solid #e1e1e1;
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		-ms-border-radius: 0.25em;
+		-o-border-radius: 0.25em;
+		border-radius: 0.25em;
+		background: #f5f5f5;
 	}
-.point-balance span {
-	color:#888;
+	.point-balance-container h4 {
+		display: none;
 	}
-.point-balance .spend {
-	display:block;
-	font-weight:normal;
-	font-size:12px;
-	color:#888;
-	margin:10px 0 15px 0;
+	.point-balance {
+		text-align: center;
+	}
+	.point-balance strong {
+		font-size: 1.8em;
+		font-weight: bold;
+	}
+	.point-balance span {
+		color:#888;
+	}
+	.point-balance .spend {
+		display: block;
+		font-size: 1em;
+		color: #888;
+		margin: 1em 0 0 0;
 	}
 
 /* Point transactions table */
-.com_members .transactions .withdraw {	
-	color: red;
+	.com_members .transactions thead th {
+		padding: 10px;
 	}
-.com_members .transactions .deposit {
-	color: green;
+	.com_members .transactions .withdraw {	
+		color: red;
 	}
-.com_members .transactions .textual-data {
-	text-align: left;		
+	.com_members .transactions .deposit {
+		color: green;
 	}
-.com_members .transactions .numerical-data {
-	text-align: right;
+	.com_members .transactions .textual-data {
+		text-align: left;
 	}
-.com_members .transactions tbody tr:nth-child(even) td {
-	background:#efefef;
+	.com_members .transactions .numerical-data {
+		text-align: right;
 	}
-
-	
-	.transactions .odd .highlight {
+	.com_members .transactions tbody tr:nth-child(even) td {
+		background:#efefef;
+	}
+	.com_members .transactions .odd .highlight {
 		background-color: #eee;
-		}
-	.transactions .even .highlight {
+	}
+	.com_members .transactions .even .highlight {
 		background-color: #f8f8f8;
-		}
-	.transactions .odd {
+	}
+	.com_members .transactions .odd {
 		background-color: #f6f6f1;
-		}
+	}

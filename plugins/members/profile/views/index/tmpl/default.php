@@ -465,6 +465,14 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<div class="key"><?php echo JText::_('COL_WEBSITE'); ?></div>
 						<?php
 							$url = stripslashes($this->profile->get('url'));
+							if ($url)
+							{
+								$UrlPtn  = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)";
+								if (!preg_match("/$UrlPtn/", $url)) 
+								{
+									$url = 'http://' . $url;
+								}
+							}
 							$title = $this->profile->get("name") . "'s Website";
 							$url = ($url) ? "<a class=\"url\" rel=\"external\" title=\"{$title}\" href=\"{$url}\">{$url}</a>" : JText::_('Enter your Website.');
 						?>

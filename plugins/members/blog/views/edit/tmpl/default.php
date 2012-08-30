@@ -38,55 +38,12 @@ $tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'acta
 <?php } ?>
 	
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=blog&task=save'); ?>" method="post" id="hubForm" class="full">
-		<div class="explaination">
-			<table class="wiki-reference" summary="Wiki Syntax Reference">
-				<caption>Wiki Syntax Reference</caption>
-				<tbody>
-					<tr>
-						<td>'''bold'''</td>
-						<td><b>bold</b></td>
-					</tr>
-					<tr>
-						<td>''italic''</td>
-						<td><i>italic</i></td>
-					</tr>
-					<tr>
-						<td>__underline__</td>
-						<td><span style="text-decoration:underline;">underline</span></td>
-					</tr>
-					<tr>
-						<td>{{{monospace}}}</td>
-						<td><code>monospace</code></td>
-					</tr>
-					<tr>
-						<td>~~strike-through~~</td>
-						<td><del>strike-through</del></td>
-					</tr>
-					<tr>
-						<td>^superscript^</td>
-						<td><sup>superscript</sup></td>
-					</tr>
-					<tr>
-						<td>,,subscript,,</td>
-						<td><sub>subscript</sub></td>
-					</tr>
-					<tr>
-						<td colspan="2"><a href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiMacros#image'); ?>">[[Image(filename.jpg)]]</a> includes an image</td>
-					</tr>
-					<tr>
-						<td colspan="2"><a href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiMacros#file'); ?>">[[File(filename.pdf)]]</a> includes a file</td>
-					</tr>
-				</tbody>
-			</table>
-			<h4 id="files-header"><?php echo JText::_('Uploaded files'); ?></h4>
-			<iframe width="100%" height="370" name="filer" id="filer" src="<?php echo 'index.php?option=com_blog&controller=media&id='.$this->member->get('uidNumber').'&scope=member&tmpl=component'; ?>"></iframe>
-		</div>
 		<fieldset>
-			<h3><?php echo JText::_('PLG_MEMBERS_BLOG_EDIT_DETAILS'); ?></h3>
+			<legend><?php echo JText::_('PLG_MEMBERS_BLOG_EDIT_DETAILS'); ?></legend>
 
 			<label<?php if ($this->task == 'save' && !$this->entry->title) { echo ' class="fieldWithErrors"'; } ?>>
 				<?php echo JText::_('PLG_MEMBERS_BLOG_TITLE'); ?>
-				<input type="text" name="entry[title]" size="35" value="<?php echo htmlentities(stripslashes($this->entry->title),ENT_COMPAT,'UTF-8'); ?>" />
+				<input type="text" name="entry[title]" size="35" value="<?php echo $this->escape(stripslashes($this->entry->title)); ?>" />
 			</label>
 <?php if ($this->task == 'save' && !$this->entry->title) { ?>
 			<p class="error"><?php echo JText::_('PLG_MEMBERS_BLOG_ERROR_PROVIDE_TITLE'); ?></p>
@@ -94,16 +51,60 @@ $tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'acta
 
 			<label for="entrycontent">
 				<?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_CONTENT'); ?>
+				<span class="syntax hint"><a class="tooltips" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>" title="Syntax Reference :: <table class=&quot;wiki-reference&quot;>
+					<tbody>
+						<tr>
+							<td>'''bold'''</td>
+							<td><b>bold</b></td>
+						</tr>
+						<tr>
+							<td>''italic''</td>
+							<td><i>italic</i></td>
+						</tr>
+						<tr>
+							<td>__underline__</td>
+							<td><span style=&quot;text-decoration:underline;&quot;>underline</span></td>
+						</tr>
+						<tr>
+							<td>{{{monospace}}}</td>
+							<td><code>monospace</code></td>
+						</tr>
+						<tr>
+							<td>~~strike-through~~</td>
+							<td><del>strike-through</del></td>
+						</tr>
+						<tr>
+							<td>^superscript^</td>
+							<td><sup>superscript</sup></td>
+						</tr>
+						<tr>
+							<td>,,subscript,,</td>
+							<td><sub>subscript</sub></td>
+						</tr>
+						<tr>
+							<td colspan=&quot;2&quot;><a href=&quot;<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiMacros#image'); ?>&quot;>[[Image(filename.jpg)]]</a> includes an image</td>
+						</tr>
+						<tr>
+							<td colspan=&quot;2&quot;><a href=&quot;<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiMacros#file'); ?>&quot;>[[File(filename.pdf)]]</a> includes a file</td>
+						</tr>
+					</tbody>
+				</table>">Wiki formatting</a> is allowed.</span>
 				<?php
 				ximport('Hubzero_Wiki_Editor');
 				$editor =& Hubzero_Wiki_Editor::getInstance();
-				echo $editor->display('entry[content]', 'entrycontent', stripslashes($this->entry->content), '', '50', '40');
+				echo $editor->display('entry[content]', 'entrycontent', stripslashes($this->entry->content), '', '50', '30');
 				?>
-				<span class="hint"><a href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
 			</label>
 <?php if ($this->task == 'save' && !$this->entry->content) { ?>
 			<p class="error"><?php echo JText::_('PLG_MEMBERS_BLOG_ERROR_PROVIDE_CONTENT'); ?></p>
-<?php } ?>			
+<?php } ?>
+
+			<fieldset>
+				<legend><?php echo JText::_('Uploaded files'); ?></legend>
+				<div class="field-wrap">
+					<iframe width="100%" height="260" name="filer" id="filer" src="<?php echo 'index.php?option=com_blog&controller=media&id='.$this->member->get('uidNumber').'&scope=member&tmpl=component'; ?>"></iframe>
+				</div>
+			</fieldset>
 
 			<label>
 				<?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_TAGS'); ?>

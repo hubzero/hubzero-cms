@@ -1,4 +1,4 @@
-/* Misc */
+/* Misc 
 	.clearfix {
 		border: 1px solid #f4f4f4;
 	}
@@ -9,7 +9,7 @@
 		clear: left; 
 		visibility: hidden;
 	}
-/* Content blocks */
+/* Content blocks 
 	.container {
 		margin: 1em 0 1em 0;
 		padding: 0;
@@ -28,7 +28,7 @@
 		background: #f8f8f8 url("images/light-stripes.png");
 		border-bottom: 2px solid #e9e9e9;
 		font-size: 135%;
-	}
+	}*/
 	.container-block h4 {
 		font-size: 115%;
 		border-bottom: 1px solid #eee;
@@ -43,7 +43,6 @@
 		border: none;
 	}
 	.container-block h4 .more {
-		/*float: right;*/
 		color: #aaa;
 	}
 	.container-block h4 a:hover,
@@ -51,17 +50,17 @@
 		border: none;
 		color: #ff6600;
 	}
-	.container-block .columns {
+	/*.container-block .columns {
 		margin-top: 0em;
 		margin-bottom: 1em;
-	}
+	}*/
 	.container-block .entry-content {
 		margin: 0 0 2em 0;
 	}
 	.container-block .entry-content h4 {
 		font-weight: bold;
 	}
-/* Submenu styling */
+/* Submenu styling 
 	.entries-menu {
 		list-style: none;
 		padding: 0;
@@ -118,13 +117,13 @@
 		text-shadow: 0 1px 1px rgba(0,0,0,.3);
 		text-decoration: none;
 	}
-/* Item listing */
+/* Item listing 
 	.container .container-block {
 		margin: 0;
 		padding: 0;
 		border: 2px solid #e9e9e9;
 		background: #fff;
-	}
+	}*/
 	.container .category-wrap {
 		margin: 0;
 		padding: 0;
@@ -134,7 +133,33 @@
 		margin: 0;
 		padding: 0.5em 0.7em;
 		font-size: 1.2em;
-		background: #f8f8f8 url("images/light-stripes.png");
+		background-color: #f8f8f8;
+		background-image: url("/media/system/images/light-stripes.png");
+		background-image: -webkit-gradient(linear, 0 0, 100% 100%,
+											color-stop(.25, rgba(255, 255, 255, .5)), color-stop(.25, transparent),
+											color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .5)),
+											color-stop(.75, rgba(255, 255, 255, .5)), color-stop(.75, transparent),
+											to(transparent));
+		background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .5) 25%, transparent 25%,
+										transparent 50%, rgba(255, 255, 255, .5) 50%, rgba(255, 255, 255, .5) 75%,
+										transparent 75%, transparent);
+		background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .5) 25%, transparent 25%,
+										transparent 50%, rgba(255, 255, 255, .5) 50%, rgba(255, 255, 255, .5) 75%,
+										transparent 75%, transparent);
+		background-image: -ms-linear-gradient(-45deg, rgba(255, 255, 255, .5) 25%, transparent 25%,
+										transparent 50%, rgba(255, 255, 255, .5) 50%, rgba(255, 255, 255, .5) 75%,
+										transparent 75%, transparent);
+		background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .5) 25%, transparent 25%,
+										transparent 50%, rgba(255, 255, 255, .5) 50%, rgba(255, 255, 255, .5) 75%,
+										transparent 75%, transparent);
+		background-image: linear-gradient(-45deg, rgba(255, 255, 255, .5) 25%, transparent 25%,
+										transparent 50%, rgba(255, 255, 255, .5) 50%, rgba(255, 255, 255, .5) 75%,
+										transparent 75%, transparent);
+		-webkit-background-size: 30px 30px;
+		-moz-background-size: 30px 30px;
+		-ms-background-size: 30px 30px;
+		-o-background-size: 30px 30px;
+		background-size: 30px 30px; /* Controls the size of the stripes */
 		font-weight: normal;
 		color: #555;
 	}
@@ -172,12 +197,6 @@
 	.container .results .member p.title {
 		margin-left: 60px;
 	}
-	.aside .sub-nav {
-		margin-top: 0;
-		list-style-type: none;
-		background-color: #F4F4ee;
-		border: none;
-	}
 	.results .resource .title {
 		margin-right: 220px;
 	}
@@ -197,10 +216,6 @@
 	.results .href {
 		font-size: 85%;
 		color: green;
-	}
-	.aside > p {
-		margin-top: 0;
-		float: left;
 	}
 	.moreresults {
 		display: none;
@@ -233,6 +248,103 @@
 	.results .resource .title .unpublished {
 		color: red;
 	}
-/* IE 7 hacks */
 
-/* IE 6 hacks */
+/* Category list */
+	.member_favorites .filter-options {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+	.member_favorites .filter-options li {
+		border: none;
+		position: relative;
+	}
+	.member_favorites .filter-options li a:after {
+		content: " \f0dc";
+		font-family: "Fontcons";
+	}
+	.member_favorites .filter-options ul {
+		list-style: none;
+		margin: 0;
+		padding: 1em;
+		visibility: hidden;
+		position: absolute;
+		top: 100%;
+		left: 0;
+		z-index: 798;
+		width: 200px;
+		background-color: #636166;
+		-webkit-border-radius: 10px;
+		-moz-border-radius: 10px;
+		-ms-border-radius: 10px;
+		-o-border-radius: 10px;
+		border-radius: 10px;
+	}
+	.member_favorites .filter-options ul:after {
+		content: "";
+		border-color: transparent transparent #636166 transparent;
+		border-style: dashed dashed solid dashed;
+		border-width: 0 4px 4px 4px;
+		height: 0;
+		width: 0;
+		display: block;
+		overflow: hidden;
+		position: absolute;
+		top: -4px;
+		left: 3em;
+	}
+	.member_favorites .filter-options ul ul {
+		padding: 0;
+		margin: 0;
+		top: auto;
+		left: auto;
+		position: static;
+		width: auto;
+		visibility: hidden;
+	}
+	.member_favorites .filter-options ul li {
+		float: none;
+		margin: 0;
+		padding: 0;
+		position: static;
+	}
+	.member_favorites .filter-options ul li a:after {
+		content: "";
+		display: none;
+	}
+	.member_favorites .filter-options ul li a {
+		color: #fff;
+		background-color: #636166;
+		text-shadow: 0 1px 1px rgba(0,0,0,.3);
+		text-decoration: none;
+		font-weight: normal;
+		line-height: 1em;
+		border: none;
+		margin: 0;
+		padding: 0.4em 0.75em;
+	}
+	.member_favorites .filter-options .item-count:before {
+		content: "(";
+	}
+	.member_favorites .filter-options .item-count:after {
+		content: ")";
+	}
+	.member_favorites .filter-options a:before {
+		display: none;
+	}
+	.member_favorites .filter-options ul li.active>a {
+		background-color: #333;
+		-webkit-border-radius: 10px;
+		-moz-border-radius: 10px;
+		-ms-border-radius: 10px;
+		-o-border-radius: 10px;
+		border-radius: 10px;
+	}
+	.member_favorites .filter-options li.active ul ul a,
+	.member_favorites .filter-options ul ul a {
+		padding-left: 2em;
+	}
+	.member_favorites .filter-options li:hover ul,
+	.member_favorites .filter-options li:focus ul {
+		visibility: visible;
+	}

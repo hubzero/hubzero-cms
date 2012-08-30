@@ -103,7 +103,11 @@ class plgMembersContributions extends JPlugin
 		// Incoming paging vars
 		$limit = JRequest::getInt('limit', 25);
 		$limitstart = JRequest::getInt('limitstart', 0);
-		$sort = JRequest::getVar('sort', 'date');
+		$sort = strtolower(JRequest::getVar('sort', 'date'));
+		if (!in_array($sort, array('usage', 'title', 'date')))
+		{
+			$sort = 'date';
+		}
 
 		// Trigger the functions that return the areas we'll be using
 		$areas = array();

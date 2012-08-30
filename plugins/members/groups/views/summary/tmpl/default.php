@@ -36,6 +36,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<?php echo JText::_('PLG_MEMBERS_GROUPS'); ?>
 </h3>
 
+<ul id="page_options">
+	<li>
+		<a class="add" href="<?php echo JRoute::_('index.php?option=com_groups&task=new'); ?>">
+			<?php echo JText::_('PLG_MEMBERS_GROUPS_CREATE'); ?>
+		</a>
+	</li>
+</ul>
+
 <?php if ($this->groups) { ?>
 	<div class="container">
 		<table class="groups entries" summary="<?php echo JText::_('PLG_MEMBERS_GROUPS_TBL_SUMMARY'); ?>">
@@ -43,13 +51,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<?php echo JText::_('Your Groups'); ?>
 				<span>(<?php echo count($this->groups); ?>)</span>
 			</caption>
-			<tfoot>
-				<tr>
-					<td colspan="5">
-						<a class="add" href="<?php echo JRoute::_('index.php?option=com_groups&task=new'); ?>"><?php echo JText::_('PLG_MEMBERS_GROUPS_CREATE'); ?></a>
-					</td>
-				</tr>
-			</tfoot>
 			<tbody>
 <?php
 	foreach ($this->groups as $group)
@@ -149,7 +150,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<div class="two columns first">
 			<h4><?php echo JText::_('Your Groups'); ?></h4>
 			<p><?php echo JText::_('Here you will find the groups you created, have membership in, or have been invited to. You may cancel membership in a group at any time.'); ?></p>
-			<p><a class="add" href="<?php echo JRoute::_('index.php?option=com_groups&task=new'); ?>"><?php echo JText::_('PLG_MEMBERS_GROUPS_CREATE'); ?></a></p>
 		</div><!-- / .container -->
 		<div class="two columns second">
 			<h4><?php echo JText::_('PLG_MEMBERS_GROUPS_WHAT_ARE_GROUPS'); ?></h4>
