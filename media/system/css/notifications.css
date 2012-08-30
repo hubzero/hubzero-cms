@@ -167,6 +167,18 @@
 		color: #fff !important;
 		border-bottom: 1px solid #fff !important;
 	}
+	.help h4:first-child,
+	.info h4:first-child,
+	.warning h4:first-child,
+	.error h4:first-child,
+	.passed h4:first-child,
+	.help h3:first-child,
+	.info h3:first-child,
+	.warning h3:first-child,
+	.error h3:first-child,
+	.passed h3:first-child {
+		margin-top: 0;
+	}
 	#system-message dd {
 		margin: 0;
 	}
