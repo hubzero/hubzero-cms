@@ -1,0 +1,35 @@
+/*
+
+	-- -- -- -- -- -- --
+	catalyzecare.org CSS
+	Print styles
+	-- -- -- -- -- -- --
+
+*/
+	* {
+		overflow: visible !important;
+	}
+	body {
+		margin: 0;
+		padding: 0;
+		font: 8pt/16pt "Lucida Grande", "Trebuchet MS", Tahoma, sans-serif;
+		height: 100%;
+		overflow: auto;
+		background: #fff;
+	}
+	#header {
+		border-bottom: 1px solid #bbb;
+	}
+	#header h1 a {
+		text-indent: 0;
+	}
+	#help-pane {
+		display: none;
+	}
+	#nav,
+	#trail {
+		border-bottom: 1px solid #bbb;
+	}
+	#home-splash {
+		border-bottom: 1px solid #bbb;
+	}

@@ -1,0 +1,191 @@
+/*
+
+	-- -- -- -- -- -- --
+	error CSS
+	-- -- -- -- -- -- --
+
+*/
+
+	#content .two {
+		
+	}
+/* Outline */
+	#outline {
+		width: 602px;
+		margin: 0 auto 0 auto;
+		padding: 60px 0 60px 0;
+		/*border: 1px solid #ebebeb;
+		border-top: 8px solid #ccc;
+		text-align: right;
+		background: #ebebeb;
+		-moz-border-radius-bottomright: 10px;
+		-moz-border-radius-bottomleft: 10px;
+		-webkit-border-bottom-right-radius: 10px;
+		-webkit-border-bottom-left-radius: 10px;
+		-khtml-border-radius-bottomright: 10px;
+		-khtml-border-radius-bottomleft: 10px;
+		border-bottom-right-radius: 10px;
+		border-bottom-left-radius: 10px;
+		box-shadow: 0px 2px 4px #000;
+		-webkit-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+		-moz-box-shadow: #000 0px 2px 4px;
+		*/
+	}
+/* Error Message */
+	#errorbox {
+		background: url("../images/layout/stripes.png") 0 bottom repeat-x;
+		padding: 0 0 10px 0;
+		margin-bottom: 15px;
+	}
+	#errorbox .wrap {
+		background: #fff;
+		-webkit-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		-moz-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		-o-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		position: relative;
+		display: block;
+		padding: 30px;
+	}
+	#errorbox h3 {
+		margin-top: 0;
+		padding-top: 0;
+	}
+	#errormessage {
+		margin-top: 2em;
+		margin-bottom: 0em;
+	}
+	.signature {
+		font-style: italic;
+		text-align: right;
+	}
+	
+	/*#errorbox.code-403 {
+		border-color: #EFEAC2;
+		color: #CC6633; 
+		background: #FFFDEF url("../images/icons/warning-large.png") 10px 10px no-repeat;
+	}
+	#errorbox h2 {
+		margin: 0;
+		padding: 0;
+		font-weight: bold;
+		font-size: 1.4em;
+		line-height: 1.4em;
+		color: #CC0000;
+	}
+	#errorbox.code-403 h2 {
+		color: #CC6633; 
+	}
+	#errorbox ol {
+		margin: 1em 0 1em 2em;
+		padding: 0;
+	}
+	#errorbox ol li {
+		margin: 0;
+		padding: 0;
+		line-height: 1.5em;
+	}
+ Search Form 
+	#outline form {
+		margin: 0;
+		padding: 0;
+		color: #333;
+		text-align: center;
+	}
+	#outline fieldset {
+		margin: 0;
+		padding: 10px;
+		border: 1px solid #ccc; 
+		color: #333;
+		background: #eeeeee;
+		-moz-border-radius-bottomright: 10px;
+		-moz-border-radius-bottomleft: 10px;
+		-webkit-border-bottom-right-radius: 10px;
+		-webkit-border-bottom-left-radius: 10px;
+		-khtml-border-radius-bottomright: 10px;	
+		-khtml-border-radius-bottomleft: 10px;
+		border-bottom-right-radius: 10px;
+		border-bottom-left-radius: 10px;
+		box-shadow: 0px 2px 4px #CCC;
+		-webkit-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+		-moz-box-shadow: #ccc 0px 2px 4px;
+	}
+	#outline form span {
+		text-transform: uppercase;
+		color: #bbb;
+		margin: 0 2em;
+	}
+	#outline label {
+		font-weight: bold;
+	}
+	#outline input {
+		color: #333;
+		width: auto;
+	}*/
+	.error-code {
+		position: relative;
+		font-size: 18em;
+		text-align: center;
+		color: #ddd;
+		text-shadow: 0 1px 1px rgba(255, 255, 255, 0.9), 0 -1px 1px rgba(0, 0, 0, 0.2);
+		margin: 0;
+		padding: 0;
+		line-height: 1.2em;
+		font-family: 'ArvoRegular', Georgia, 'Times New Roman', 'Times', Serif;
+		font-weight: normal;
+		height: 300px;
+	}
+	.code500 .error-code:after {
+		display: block;
+		width: 409px;
+		height: 400px;
+		content: "";
+		position: absolute;
+		left: 0;
+		top: 0;
+		background: url("../images/layout/footprint.png") 0 0 no-repeat;
+	}
+/* Stack trace */
+	#techinfo {
+		margin: 30px 0 0 0;
+		padding: 30px;
+		text-align: left;
+		/*border-bottom: 1px solid #494949;
+		color: #aaa;
+		background: #393939 url("../images/layout/noise.png");*/
+		background: #e1e1e1 url("../images/layout/noise-lite.png");
+	}
+	#techinfo p {
+		color: #CC6633;
+	}
+	table {
+		width: 100%;
+		text-align: left;
+		font-size: 0.85em;
+		border: none;
+	}
+	table th,
+	table td {
+		vertical-align: top;
+		line-height: 1.6em;
+		padding: 0.2em 0.5em;
+		/*border-bottom: 1px solid #444;
+		color: #ccc;*/
+		border-bottom: 1px solid #d2d2d2;
+	}
+	/*table td strong {
+		color: #fff;
+	}*/
+	table thead th {
+		font-weight: bold;
+		border-bottom: 1px solid #d2d2d2;
+		text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.8);
+		white-space: nowrap;
+	}
+/* IE 6 Hacks */
+	* html #header h1 a {
+		border: none;
+	}
+	* html #header h1 a:hover {
+		border: none;
+	}

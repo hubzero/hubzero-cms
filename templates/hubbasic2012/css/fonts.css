@@ -1,0 +1,57 @@
+/* Fonts */
+
+@font-face {
+	font-family: 'Share-Regular';
+	src: url('fonts/Share-Regular-webfont.eot');
+	src: url('fonts/Share-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+		 url('fonts/Share-Regular-webfont.woff') format('woff'),
+		 url('fonts/Share-Regular-webfont.ttf') format('truetype'),
+		 url('fonts/Share-Regular-webfont.svg#Share-Regular') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'ArvoRegular';
+	src: url('fonts/Arvo-Regular-webfont.eot');
+	src: url('fonts/Arvo-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+		 url('fonts/Arvo-Regular-webfont.woff') format('woff'),
+		 url('fonts/Arvo-Regular-webfont.ttf') format('truetype'),
+		 url('fonts/Arvo-Regular-webfont.svg#ArvoRegular') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'ArvoItalic';
+	src: url('fonts/Arvo-Italic-webfont.eot');
+	src: url('fonts/Arvo-Italic-webfont.eot?#iefix') format('embedded-opentype'),
+		 url('fonts/Arvo-Italic-webfont.woff') format('woff'),
+		 url('fonts/Arvo-Italic-webfont.ttf') format('truetype'),
+		 url('fonts/Arvo-Italic-webfont.svg#ArvoItalic') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'ArvoBold';
+	src: url('fonts/Arvo-Bold-webfont.eot');
+	src: url('fonts/Arvo-Bold-webfont.eot?#iefix') format('embedded-opentype'),
+		 url('fonts/Arvo-Bold-webfont.woff') format('woff'),
+		 url('fonts/Arvo-Bold-webfont.ttf') format('truetype'),
+		 url('fonts/Arvo-Bold-webfont.svg#ArvoBold') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'ArvoBoldItalic';
+	src: url('fonts/Arvo-BoldItalic-webfont.eot');
+	src: url('fonts/Arvo-BoldItalic-webfont.eot?#iefix') format('embedded-opentype'),
+		 url('fonts/Arvo-BoldItalic-webfont.woff') format('woff'),
+		 url('fonts/Arvo-BoldItalic-webfont.ttf') format('truetype'),
+		 url('fonts/Arvo-BoldItalic-webfont.svg#ArvoBoldItalic') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+

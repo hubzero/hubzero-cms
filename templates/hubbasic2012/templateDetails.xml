@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<install type="template" version="1.5">
+	<name>hubbasic2012</name>
+	<author>HUBzero</author>
+	<copyright>Copyright 2005-2012 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
+	<description>hubbasic2012</description>
+	<files>
+		<filename>css/component.css</filename>
+		<filename>css/debug.css</filename>
+		<filename>css/error.css</filename>
+		<filename>css/fonts.css</filename>
+		<filename>css/main.css</filename>
+		<filename>css/print.css</filename>
+		<filename>css/browser/ie7.css</filename>
+		<filename>css/browser/ie8.css</filename>
+		<filename>css/browser/ie9.css</filename>
+		<filename>css/pages/community.css</filename>
+		<filename>css/pages/congrats.css</filename>
+		<filename>css/pages/discover.css</filename>
+		<filename>css/pages/home.css</filename>
+		<filename>html/com_content/article/default.php</filename>
+		<filename>html/com_content/article/form.php</filename>
+		<filename>html/mod_breadcrumbs/default.php</filename>
+		<filename>html/mod_reportproblems/mod_reportproblems.css</filename>
+		<filename>html/mod_search/default.php</filename>
+		<filename>images/anim/circling-ball-loading.gif</filename>
+		<filename>images/anim/spinner.gif</filename>
+		<filename>images/layout/input-search.png</filename>
+		<filename>images/layout/input-tags.png</filename>
+		<filename>images/layout/noise-lite.png</filename>
+		<filename>images/layout/noise.png</filename>
+		<filename>images/layout/search.png</filename>
+		<filename>images/layout/stripes-white.png</filename>
+		<filename>images/layout/stripes.png</filename>
+		<filename>images/logos/yourhub.png</filename>
+		<filename>images/logos/hub.png</filename>
+		<filename>images/logos/creativecommons.gif</filename>
+		<filename>images/logos/closedsource.gif</filename>
+		<filename>images/logos/opensource.gif</filename>
+		<filename>images/logos/hubzero.png</filename>
+		<filename>images/overlay/close.png</filename>
+		<filename>images/overlay/closebox.png</filename>
+		<filename>images/overlay/closelabel.gif</filename>
+		<filename>images/overlay/fancybox.png</filename>
+		<filename>images/overlay/newwindowbox.png</filename>
+		<filename>images/overlay/refreshbox.png</filename>
+		<filename>images/overlay/resizebox.png</filename>
+		<filename>images/overlay/nextlabel.gif</filename>
+		<filename>images/overlay/prevlabel.gif</filename>
+		<filename>index.php</filename>
+		<filename>component.php</filename>
+		<filename>error.php</filename>
+		<filename>js/applesearch.js</filename>
+		<filename>js/globals.js</filename>
+		<filename>js/growl.js</filename>
+		<filename>js/hub.jquery.js</filename>
+		<filename>js/hub.js</filename>
+		<filename>js/insertflash.js</filename>
+		<filename>js/slimbox.js</filename>
+		<filename>js/modal.js</filename>
+		<filename>js/tooltips.js</filename>
+		<filename>template_thumbnail.png</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.tpl_hubbasic2012.ini</language>
+	</languages>
+	<administration>
+		<languages folder="admin">
+			<language tag="en-GB">en-GB.tpl_hubbasic2012.ini</language>
+		</languages>
+	</administration>
+	<positions>
+		<position>footer</position>
+		<position>banner</position>
+		<position>welcome</position>
+		<position>left</position>
+		<position>right</position>
+		<position>helppane</position>
+		<position>user3</position>
+		<position>introblock</position>
+		<position>notices</position>
+		<position>search</position>
+	</positions>
+	<params>
+	</params>
+</install>

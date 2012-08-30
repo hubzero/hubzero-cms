@@ -1,0 +1,180 @@
+/**
+ * @package     hubzero-cms
+ * @file        templates/hubbasic/css/pages/discover.css
+ * @copyright   Copyright 2005-2012 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+	#content .three,
+	#content .four {
+		border: none;
+		border-top: 1px solid #e0e0d7;
+		position: relative;
+	}
+	#content .four {
+		margin-right: 0;
+		padding-right: 5%;
+		border-top: 1px dashed #bAbAbA;
+	}
+	#content .fourth {
+		padding-right: 0;
+	}
+	span.fontcon-before,
+	span.fontcon-after,
+	#content .four div:before,
+	#content .four div:after {
+		content: "";
+		display: block;
+		position: absolute;
+		left: 0;
+		top: 0.7em;
+		width: 18px;
+		height: 18px;
+		font-size: 18px;
+		font-family: 'Fontcons';
+		color: #aaa;
+	}
+	span.fontcon-before,
+	span.fontcon-after {
+		*top: 1.2em;
+	}
+	#content .four div {
+		background: none;
+	}
+	#content .four div {
+		padding-left: 25px;
+	}
+	#content .firstset .four div {
+		padding-left: 0;
+	}
+	#content .four .columns div {
+		padding-left: 25px;
+	}
+	#content .four div.wiki:before {
+		content: "\f072";
+	}
+	#content .four div.presentation:before {
+		content: "\f040";
+	}
+	#content .four div.quote:before {
+		content: "\275D";
+	}
+	#content .four div.tag:before {
+		content: "\f02c";
+	}
+	#content .four div.feedback:before {
+		content: "\f086";
+	}
+	#content .four div.note:before {
+		content: "\f075";
+	}
+	#content .four div.contribute:before {
+		content: "\f01b";
+	}
+	#content .four div.tool:before {
+		content: "\2692";
+	}
+	#content .four div.donate:before {
+		content: "\f04d";
+	}
+	#content .four div.workshop:before {
+		content: "\273D";
+	}
+	#content .four div.poll:before {
+		content: "\f080";
+	}
+	#content .four div.event:before {
+		content: "\f073";
+	}
+	#content .four div.cart:before {
+		content: "\f04d";
+	}
+	#content .four div.new:before {
+		content: "\273D";
+	}
+	#content .four div.wish:before {
+		content: "\f078";
+	}
+	/* [!] HACKS - IE 7 */
+	#content .four div.wiki {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf072;&nbsp;</span>' + this.innerHTML);
+	}
+	#content .four div.presentation {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf040;&nbsp;</span>' + this.innerHTML);
+	}
+	#content .four div.quote {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#x275D;&nbsp;</span>' + this.innerHTML);
+	}
+	#content .four div.tag {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf02c;&nbsp;</span>' + this.innerHTML);
+	}
+	#content .four div.feedback {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf086;&nbsp;</span>' + this.innerHTML);
+	}
+	#content .four div.note {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf075;&nbsp;</span>' + this.innerHTML);
+	}
+	#content .four div.wish {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf078;&nbsp;</span>' + this.innerHTML);
+	}
+	#content .four div.contribute {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf01b;&nbsp;</span>' + this.innerHTML);
+	}
+	#content .four div.tool {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#x2692;&nbsp;</span>' + this.innerHTML);
+	}
+	#content .four div.donate {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf04d;&nbsp;</span>' + this.innerHTML);
+	}
+	#content .four div.workshop {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#x273D;&nbsp;</span>' + this.innerHTML);
+	}
+	#content .four div.poll {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf080;&nbsp;</span>' + this.innerHTML);
+	}
+	#content .four div.event {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf073;&nbsp;</span>' + this.innerHTML);
+	}
+	#content .four div.cart {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf04d;&nbsp;</span>' + this.innerHTML);
+	}
+	#content .four div.new {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#x273D;&nbsp;</span>' + this.innerHTML);
+	}
+	
+	#content .firstset .three {
+		border: none;
+	}
+	#content .first h2 { 
+		font-weight: normal;
+		margin: 0;
+		padding: 0.5em 0 0 0;
+		line-height: 1em;
+		border: none;
+	}	
+	#content .columns h3 { 
+		margin: 0 0 1em 0; 
+		padding: 0.6em 0 0.6em 0;
+		display: block;
+		border-bottom: 1px solid #dadada;
+		line-height: 1.4em;
+		color: #565656;
+	}
+	#content .columns h3 a { 
+		border: none;
+		color: #565656;
+	}
+	#content ul {
+		list-style: none;
+		margin-left: 0;
+	}
+	#content .four {
+		margin-bottom: 2em;
+	}
+	#content .firstset .four {
+		margin-bottom: 0;
+	}
+	#content .four .three {
+		margin-top: -1px;
+		margin-bottom: 2em;
+	}

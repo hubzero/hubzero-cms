@@ -1,0 +1,72 @@
+/**
+ * @package     hubzero-cms
+ * @file        templates/hubbasic/css/pages/community.css
+ * @copyright   Copyright 2005-2012 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+	.blocks-section {
+		position: relative;
+		z-index: 1;
+	}
+	.blocks-section .first,
+	.blocks-section .second {
+		margin-bottom: 4em;
+	}
+	.blocks-section .two fieldset,
+	.blocks-section .two p {
+		margin: 1.7em;
+	}
+	.blocks-section .two {
+		background: #fff;
+		position: relative;
+		-webkit-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		-moz-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		-o-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+	}
+	.blocks-section .two:before,
+	.blocks-section .two:after {
+		content: '\00A0';
+		z-index: -1;
+		position: absolute;
+		left: 11px;
+		bottom: 11px;
+		width: 200px;
+		max-width: 300px;
+		max-height: 100px;
+		height: 10px;
+		-webkit-box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+		-moz-box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+		box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+		-webkit-transform: skew(-15deg) rotate(-6deg);
+		-moz-transform: skew(-15deg) rotate(-6deg);
+		-ms-transform: skew(-15deg) rotate(-6deg);
+		-o-transform: skew(-15deg) rotate(-6deg);
+		transform: skew(-15deg) rotate(-6deg);
+	}
+	.blocks-section .two:after {
+		left: auto;
+		right: 11px;
+		-webkit-transform: skew(15deg) rotate(6deg);
+		-moz-transform: skew(15deg) rotate(6deg);
+		-ms-transform: skew(15deg) rotate(6deg);
+		-o-transform: skew(15deg) rotate(6deg);
+		transform: skew(15deg) rotate(6deg);
+	}
+	.blocks-section h3 {
+		margin: 0;
+		padding: 0;
+	}
+	.blocks-section h3 a {
+		display: block;
+		padding: 0.8em 1em;
+		margin: 0;
+		border-bottom: 1px solid #E5E5E5;
+		background: #f4f4f4;
+		color: #333;
+	}
+	.blocks-section h3 a:hover {
+		color: #fff;
+		background-color: #333;
+	}

@@ -1,0 +1,255 @@
+/**
+ * @package     hubzero-cms
+ * @file        templates/hubbasic/css/ie7.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Hubbasic CSS
+	IE 7 Windows hacks
+	-- -- -- -- -- -- --
+
+*/
+	/* 5 star Reviews */
+	.avgrating {
+		padding-left: 70px;
+	}
+	.avgrating span {
+		padding-left: 0;
+	}
+	.no-stars        { background: url("../../images/stars/stars.gif") 0 0 no-repeat; }
+	.half-stars      { background: url("../../images/stars/stars.gif") 0 -40px no-repeat; }
+	.one-stars       { background: url("../../images/stars/stars.gif") 0 -80px no-repeat; }
+	.onehalf-stars   { background: url("../../images/stars/stars.gif") 0 -120px no-repeat; }
+	.two-stars       { background: url("../../images/stars/stars.gif") 0 -160px no-repeat; }
+	.twohalf-stars   { background: url("../../images/stars/stars.gif") 0 -200px no-repeat; }
+	.three-stars     { background: url("../../images/stars/stars.gif") 0 -240px no-repeat; }
+	.threehalf-stars { background: url("../../images/stars/stars.gif") 0 -280px no-repeat; }
+	.four-stars      { background: url("../../images/stars/stars.gif") 0 -320px no-repeat; }
+	.fourhalf-stars  { background: url("../../images/stars/stars.gif") 0 -360px no-repeat; }
+	.five-stars      { background: url("../../images/stars/stars.gif") 0 -400px no-repeat; }
+
+	.changestatus {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf08d;&nbsp;</small>' + this.innerHTML);
+	}
+	.transfer {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x2194;&nbsp;</small>' + this.innerHTML);
+	}
+	.makeprivate {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf06e;&nbsp;</small>' + this.innerHTML);
+	}
+	.editwish {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x270E;&nbsp;</small>' + this.innerHTML);
+	}
+	.abuse {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#x2298;&nbsp;</small>' + this.innerHTML);
+	}
+	.reply {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf08a;&nbsp;</small>' + this.innerHTML);
+	}
+	
+	#content {
+		border: 1px solid #f9f9f9;
+		margin-top: -30px;
+	}
+	#content .inner {
+		zoom: 1;
+	}
+	body #introduction {
+		margin-left: 0;
+		margin-right: 0;
+	}
+/* Top bar 
+	#top {
+		zoom: 1.0;
+	}
+	#tab a { 
+		background-position: right 10px;
+	}
+	#tab a:hover {
+		background-position: right -36px;
+	}
+/* Nav 
+	#nav {
+		border-bottom: 1px solid #bdbbb7;
+	}
+	#nav ul.menu li {
+		zoom: 1;
+	}
+/* Content 
+	#content {
+		margin: 0;
+		filter: progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=75, Color='#aaaaaa');
+	}
+	#content-wrap {
+		margin: -5px 0 -5px 0;
+	}
+/* Footer 
+	#bottom-nav {
+		padding-bottom: 0;
+		zoom: 1;
+		filter: progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=130, Color='#292929');
+	}
+/* Misc. */
+#top {
+	zoom: 1;
+}
+#topbar ul {
+	margin: 0;
+	padding: 0;
+	height: 2.8em;
+	list-style: none;
+	float: none;
+	overflow: hidden;
+}
+#topbar ul li {
+	float: none;
+	display: inline;
+	line-height: 3em;
+}
+#topbar ul li a {
+	
+}
+#masthead {
+	z-index: 777;
+}
+#masthead .inner {
+	z-index: 778;
+}
+#searchform {
+	float: none;
+	position: absolute;
+	right: 120px;
+	top: 0px;
+	margin: 0;
+}
+#searchword {
+	background: #1a1a1a url("../../images/layout/search.png") 10px 11px no-repeat;
+	border: 1px solid #1a1a1a;
+}
+	.events-section {
+		padding-top: 20px;
+	}
+	#introduction .subject {
+		padding-left: 0;
+	}
+	#content-header-extra ul li {
+		display: inline;
+	}
+	.explaination {
+		margin-left: 60px;
+	}
+	.com_wishlist .entries,
+	.com_kb .entries,
+	.com_answers .entries {
+		border: 1px solid #e9e9e9;
+	}
+	.com_answers .entries caption {
+		border: 1px solid #e9e9e9;
+	}
+	#nav ul.menu>li.active>a:after {
+		bottom: -19px;
+	}
+	#account #account-info ul,
+	#nav ul.menu ul {
+		background: url("../../images/layout/overlay.png");
+	}
+	#account #account-info ul li,
+	#nav ul.menu ul li {
+		background: url("../../images/layout/overlay.png");
+	}
+	#nav ul.menu ul{
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML=this.innerHTML + '<small class="nav-ul-after"></small>');
+	}
+	
+	.subject {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="subject-before"></small>' + this.innerHTML);
+	}
+	.aside {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="aside-before"></small>' + this.innerHTML + '<small class="aside-after"></small>');
+	}
+	.subject small.subject-before {
+		background: #dfdfdf;
+		filter:progid:DXImageTransform.Microsoft.Alpha(opacity=100, finishopacity=0, style=2);
+		right: 263px;
+		bottom: 24px;
+	}
+	.aside small.aside-after {
+		background: #dfdfdf;
+		filter:progid:DXImageTransform.Microsoft.Alpha(opacity=100, finishopacity=0, style=2);
+		right: 263px;
+		top: 24px;
+	}
+	.aside small.aside-before {
+		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=1,startColorstr=#dfdfdf,endColorstr=#f9f9f9);
+		width: 10px;
+		right: 260px;
+	}
+/* Tags */
+	.tags li {
+		display: inline !important;
+	}
+	.tags li a {
+		display: inline-block;
+		line-height: 1em !important;
+		padding: 6px 6px 5px 6px !important;
+	}
+	.tags li a span {
+		background-color: #666;
+		padding: 6px 6px 6px 6px !important;
+		margin: -6px -6px -7px 4px;
+	}
+	.tags li a:hover span {
+		background-color: #444;
+	}
+
+/* Forms */
+	.explaination {
+		margin-left: 60px;
+	}
+	#hubForm input[type=text],
+	#hubForm input[type=password],
+	#hubForm input[type=email],
+	#hubForm textarea {
+		background: #F0F0F0;
+		border: 1px solid #D9D9D9;
+		padding: 0.2em 0.4em 0.6em 0.4em;
+	}
+	#hubForm textarea:focus, 
+	#hubForm input[type="text"]:focus, 
+	#hubForm input[type="password"]:focus, 
+	#hubForm input[type="file"]:focus {
+		background-color: #fff;
+		border-color: #ecada2;
+	}
+	#hubForm legend {
+		margin-top: -0.5em;
+		margin-left: -2.6em;
+		border: 1px solid #e5e5e5;
+		border-left: none;
+	}
+	#hubForm label {
+
+	}
+	#hubForm .group {
+		clear: left;
+	}
+	#hubForm .group label input {
+		width: 97%;
+		margin: 0 0 0 -3.2em;
+	}
+	#hubForm .threeup label input {
+		margin: 0 0 0 -2.7em;
+	}
+	#hubForm .group label:first-child input {
+		margin: 0 0 0 -2em;
+	}
+	#hubForm {
+	}
+	#hubForm .explaination {
+		margin: 0;
+		padding: 0 0 0 60px;
+	}
