@@ -29,7 +29,20 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
+
+ximport('Hubzero_User_Profile_Helper');
+
+$dateFormat  = '%d %b, %Y';
+$timeFormat  = '%I:%M %p';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat  = 'd M, Y';
+	$timeFormat  = 'h:i a';
+	$tz = true;
+}
+
 $wikiconfig = array(
 	'option'   => $this->option,
 	'scope'    => 'reply',
@@ -38,7 +51,8 @@ $wikiconfig = array(
 	'filepath' => '',
 	'domain'   => ''
 );
-if (!$this->parser) {
+if (!$this->parser) 
+{
 	ximport('Hubzero_Wiki_Parser');
 	$parser =& Hubzero_Wiki_Parser::getInstance();
 	$this->parser = $parser;
@@ -46,27 +60,28 @@ if (!$this->parser) {
 
 // Set the name of the reviewer
 $name = JText::_('PLG_RESOURCES_REVIEWS_ANONYMOUS');
-if ($this->reply->anonymous != 1) {
-	$name = JText::_('PLG_RESOURCES_REVIEWS_UNKNOWN');
-	/*$ruser =& JUser::getInstance($this->reply->added_by);
-	if (is_object($ruser)) {
-		$name = $ruser->get('name');
-	}*/
-	$juseri = new Hubzero_User_Profile();
-	$juseri->load( $this->reply->added_by );
-	if (is_object($juseri) && $juseri->get('name')) {
-		$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$juseri->get('uidNumber')).'">'.stripslashes($juseri->get('name')).'</a>';
+if ($this->reply->anonymous != 1) 
+{
+	//$name = JText::_('PLG_RESOURCES_REVIEWS_UNKNOWN');
+	
+	$juseri = Hubzero_User_Profile::getInstance($this->reply->added_by);
+	if (is_object($juseri) && $juseri->get('name')) 
+	{
+		$name = '<a href="'.JRoute::_('index.php?option=com_members&id=' . $juseri->get('uidNumber')) . '">' . $this->escape(stripslashes($juseri->get('name'))) . '</a>';
 	}
 }
 ?>
-<a name="c<?php echo $this->reply->id; ?>"></a>
 <p class="comment-member-photo">
-	<img src="<?php echo plgResourcesReviews::getMemberPhoto($juseri, $this->reply->anonymous); ?>" alt="" />
+	<a name="c<?php echo $this->reply->id; ?>"></a>
+	<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($juseri, $this->reply->anonymous); ?>" alt="" />
 </p>
 <div class="comment-content">
 	<p class="comment-title">
 		<strong><?php echo $name; ?></strong> 
-		<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->id.'&active=reviews#c'.$this->reply->id); ?>" title="<?php echo JText::_('PLG_RESOURCES_REVIEWS_PERMALINK'); ?>">@ <span class="time"><?php echo JHTML::_('date',$this->reply->added, '%I:%M %p', 0); ?></span> on <span class="date"><?php echo JHTML::_('date',$this->reply->added, '%d %b, %Y', 0); ?></span></a>
+		<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->id.'&active=reviews#c'.$this->reply->id); ?>" title="<?php echo JText::_('PLG_RESOURCES_REVIEWS_PERMALINK'); ?>">
+			<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $this->reply->added; ?>"><?php echo JHTML::_('date', $this->reply->added, $timeFormat, $tz); ?></time></span> 
+			<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $this->reply->added; ?>"><?php echo JHTML::_('date', $this->reply->added, $dateFormat, $tz); ?></time></span>
+		</a>
 	</p>
 <?php if ($this->abuse && $this->reply->abuse_reports > 0) { ?>
 	<p class="warning"><?php echo JText::_('PLG_RESOURCES_REVIEWS_NOTICE_POSTING_REPORTED'); ?></p>
@@ -78,17 +93,28 @@ if ($this->reply->anonymous != 1) {
 	<?php } ?>
 	
 	<p class="comment-options">
-<?php if ($this->abuse) { ?>
-		<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=comment&id='.$this->reply->id.'&parent='.$this->id); ?>"><?php echo JText::_('PLG_RESOURCES_REVIEWS_REPORT_ABUSE'); ?></a>
+<?php if ($this->abuse) { 
+		if ($this->juser->get('guest')) {
+			$href = JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=com_support&task=reportabuse&category=comment&id='.$this->reply->id.'&parent='.$this->id)));
+		} else {
+			$href = JRoute::_('index.php?option=com_support&task=reportabuse&category=comment&id='.$this->reply->id.'&parent='.$this->id);
+		}
+?>
+		<a class="abuse" href="<?php echo $href; ?>"><?php echo JText::_('PLG_RESOURCES_REVIEWS_REPORT_ABUSE'); ?></a>
 <?php } ?>
 <?php
 	// Cannot reply at third level
 	if ($this->level < 3) {
+		if ($this->juser->get('guest')) {
+			$href = JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option='.$this->option.'&id='.$this->id.'&active=reviews&action=reply&category=reviewcomment&refid='.$this->reply->id)));
+		} else {
+			$href = JRoute::_('index.php?option='.$this->option.'&id='.$this->id.'&active=reviews&action=reply&category=reviewcomment&refid='.$this->reply->id);
+		}
 		echo '<a ';
 		//if (!$this->juser->get('guest')) {
 		//	echo 'class="showreplyform" href="javascript:void(0);"';
 		//} else {
-			echo 'href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->id.'&active=reviews&action=reply&category=reviewcomment&refid='.$this->reply->id).'" ';
+			echo 'href="'.$href.'" ';
 		//}
 		echo 'class="reply" id="rep_'.$this->reply->id.'">'.JText::_('PLG_RESOURCES_REVIEWS_REPLY').'</a>';
 	}

@@ -88,20 +88,15 @@ if ($this->review->id) {
 			<p class="comment-member-photo">
 				<span class="comment-anchor"><a name="reviewform"></a></span>
 <?php
-			if (!$this->juser->get('guest')) {
-				$jxuser = new Hubzero_User_Profile();
-				$jxuser->load( $this->juser->get('id') );
-				$thumb = plgResourcesReviews::getMemberPhoto($jxuser, 0);
-			} else {
-				$config =& JComponentHelper::getParams( 'com_members' );
-				$thumb = $config->get('defaultpic');
-				if (substr($thumb, 0, 1) != DS) {
-					$thumb = DS.$dfthumb;
-				}
-				$thumb = plgResourcesReviews::thumbit($thumb);
+			$anon = 1;
+			ximport('Hubzero_User_Profile_Helper');
+			$jxuser = Hubzero_User_Profile::getInstance($this->juser->get('id'));
+			if (!$this->juser->get('guest')) 
+			{
+				$anon = 0;
 			}
 ?>
-				<img src="<?php echo $thumb; ?>" alt="" />
+				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, $anon); ?>" alt="" />
 			</p>
 			<fieldset>
 				<input type="hidden" name="created" value="<?php echo $this->review->created; ?>" />
@@ -118,27 +113,27 @@ if ($this->review->id) {
 					<legend><?php echo JText::_('PLG_RESOURCES_REVIEWS_FORM_RATING'); ?>:</legend>
 					<label>
 						<input class="option" id="review_rating_1" name="rating" type="radio" value="1"<?php if ($this->review->rating == 1) { echo ' checked="checked"'; } ?> /> 
-						<img src="/components/<?php echo $this->option; ?>/images/stars/1.gif" alt="<?php echo JText::_('PLG_RESOURCES_REVIEWS_RATING_1_STAR'); ?>" /> 
+						&#x272D;&#x2729;&#x2729;&#x2729;&#x2729;
 						<?php echo JText::_('PLG_RESOURCES_REVIEWS_RATING_POOR'); ?>
 					</label>
 					<label>
 						<input class="option" id="review_rating_2" name="rating" type="radio" value="2"<?php if ($this->review->rating == 2) { echo ' checked="checked"'; } ?> /> 
-						<img src="/components/<?php echo $this->option; ?>/images/stars/2.gif" alt="<?php echo JText::_('PLG_RESOURCES_REVIEWS_RATING_2_STARS'); ?>" /> 
+						&#x272D;&#x272D;&#x2729;&#x2729;&#x2729;
 						<?php echo JText::_('PLG_RESOURCES_REVIEWS_RATING_FAIR'); ?>
 					</label>
 					<label>
 						<input class="option" id="review_rating_3" name="rating" type="radio" value="3"<?php if ($this->review->rating == 3) { echo ' checked="checked"'; } ?> /> 
-						<img src="/components/<?php echo $this->option; ?>/images/stars/3.gif" alt="<?php echo JText::_('PLG_RESOURCES_REVIEWS_RATING_3_STARS'); ?>" /> 
+						&#x272D;&#x272D;&#x272D;&#x2729;&#x2729;
 						<?php echo JText::_('PLG_RESOURCES_REVIEWS_RATING_GOOD'); ?>
 					</label>
 					<label>
 						<input class="option" id="review_rating_4" name="rating" type="radio" value="4"<?php if ($this->review->rating == 4) { echo ' checked="checked"'; } ?> /> 
-						<img src="/components/<?php echo $this->option; ?>/images/stars/4.gif" alt="<?php echo JText::_('PLG_RESOURCES_REVIEWS_RATING_4_STARS'); ?>" /> 
+						&#x272D;&#x272D;&#x272D;&#x272D;&#x2729;
 						<?php echo JText::_('PLG_RESOURCES_REVIEWS_RATING_VERY_GOOD'); ?>
 					</label>
 					<label>
 						<input class="option" id="review_rating_5" name="rating" type="radio" value="5"<?php if ($this->review->rating == 5) { echo ' checked="checked"'; } ?> /> 
-						<img src="/components/<?php echo $this->option; ?>/images/stars/5.gif" alt="<?php echo JText::_('PLG_RESOURCES_REVIEWS_RATING_5_STARS'); ?>" /> 
+						&#x272D;&#x272D;&#x272D;&#x272D;&#x272D;
 						<?php echo JText::_('PLG_RESOURCES_REVIEWS_RATING_EXCELLENT'); ?>
 					</label>
 				</fieldset>
@@ -170,7 +165,7 @@ if ($this->review->id) {
 						<strong>Please keep comments relevant to this entry. Comments deemed inappropriate may be removed.</strong>
 					</p>
 					<p>
-						Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="/topics/Help:WikiFormatting" class="popup">Wiki syntax</a> is supported.
+						Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="/wiki/Help:WikiFormatting" class="popup">Wiki syntax</a> is supported.
 					</p>
 				</div>
 			</fieldset>

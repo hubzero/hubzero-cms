@@ -29,7 +29,19 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
+
+ximport('Hubzero_User_Profile_Helper');
+
+$dateFormat  = '%d %b, %Y';
+$timeFormat  = '%I:%M %p';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat  = 'd M, Y';
+	$timeFormat  = 'h:i a';
+	$tz = true;
+}
 
 $database =& JFactory::getDBO();
 $juser =& JFactory::getUser();
@@ -37,7 +49,17 @@ $html = '';
 ?>
 <h3>
 	<a name="reviews"></a>
-	<span><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id.'&active=reviews&action=addreview#reviewform'); ?>" class="add"><?php echo JText::_('PLG_RESOURCES_REVIEWS_WRITE_A_REVIEW'); ?></a></span>
+	<span>
+<?php if ($juser->get('guest')) { ?>
+		<a href="<?php echo JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=reviews&action=addreview#reviewform'))); ?>" class="add">
+			<?php echo JText::_('PLG_RESOURCES_REVIEWS_WRITE_A_REVIEW'); ?>
+		</a>
+<?php } else { ?>
+		<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=reviews&action=addreview#reviewform'); ?>" class="add">
+			<?php echo JText::_('PLG_RESOURCES_REVIEWS_WRITE_A_REVIEW'); ?>
+		</a>
+<?php } ?>
+	</span>
 	<?php echo JText::_('PLG_RESOURCES_REVIEWS'); ?>
 </h3>
 <?php
@@ -56,30 +78,34 @@ if ($this->reviews) {
 
 	$admin = false;
 	// Check if they're a site admin (from Joomla)
-	if ($juser->authorize($this->option, 'manage')) {
+	/*if ($juser->authorize($this->option, 'manage')) 
+	{
 		$admin = true;
-	}
+	}*/
 
 	// Set the abuse flag
 	// Determines if we're using abuse reports or not
-	$abuse = false;
-	if (is_file(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'reportabuse.php')) {
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'reportabuse.php' );
+	/*$abuse = false;
+	if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php')) 
+	{*/
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
 		$abuse = true;
-	}
+	//}
 
 	// Set the reply flag
 	// Determines if we're allowing replies to reviews
-	$reply = false;
-	if (is_file(JPATH_ROOT.DS.'libraries'.DS.'Hubzero'.DS.'Comment.php')) {
-		include_once( JPATH_ROOT.DS.'libraries'.DS.'Hubzero'.DS.'Comment.php' );
+	/*$reply = false;
+	if (is_file(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'Comment.php')) 
+	{
+		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'Comment.php');*/
 		$reply = true;
 
+		ximport('Hubzero_Comment');
 		// See if we have a comment (comeone clicked a "reply" link)
-		$addcomment = new Hubzero_Comment( $database );
-		$addcomment->referenceid = JRequest::getInt( 'refid', 0 );
-		$addcomment->category = JRequest::getVar( 'category', '' );
-	}
+		$addcomment = new Hubzero_Comment($database);
+		$addcomment->referenceid = JRequest::getInt('refid', 0);
+		$addcomment->category = JRequest::getVar('category', '');
+	//}
 
 	$o = 'even';
 
@@ -105,13 +131,14 @@ if ($this->reviews) {
 
 		// Set the name of the reviewer
 		$name = JText::_('PLG_RESOURCES_REVIEWS_ANONYMOUS');
-		$ruser = new Hubzero_User_Profile();
-		$ruser->load( $review->user_id );
-		if ($review->anonymous != 1) {
+		$ruser = Hubzero_User_Profile::getInstance($review->user_id);
+		if ($review->anonymous != 1) 
+		{
 			$name = JText::_('PLG_RESOURCES_REVIEWS_UNKNOWN');
 			//$ruser =& JUser::getInstance($review->user_id);
-			if (is_object($ruser)) {
-				$name = $ruser->get('name');
+			if (is_object($ruser)) 
+			{
+				$name = $this->escape(stripslashes($ruser->get('name')));
 			}
 		}
 
@@ -132,29 +159,50 @@ if ($this->reviews) {
 		$html .= "\t".'<li class="comment '.$o.'" id="c'.$review->id.'">';
 		$html .= "\t\t".'<p class="comment-member-photo">'."\n";
 		$html .= "\t\t".'	<span class="comment-anchor"><a name="c'.$review->id.'"></a></span>'."\n";
-		$html .= "\t\t".'	<img src="'.plgResourcesReviews::getMemberPhoto($ruser, $review->anonymous).'" alt="" />'."\n";
+		$html .= "\t\t".'	<img src="'.Hubzero_User_Profile_Helper::getMemberPhoto($ruser, $review->anonymous).'" alt="" />'."\n";
 		$html .= "\t\t".'</p><!-- / .comment-member-photo -->'."\n";
 		$html .= "\t\t".'<div class="comment-content">'."\n";
-		$html .= "\t\t\t".'<p><span class="avgrating'.$class.'"><span>'.JText::sprintf('PLG_RESOURCES_REVIEWS_OUT_OF_5_STARS',$review->rating).'</span></span></p>'."\n";
+		
+		if ($review->comment && $this->voting) {
+			// Display thumbs voting
+			$html .= "\t\t".'<p id="reviews_'.$review->id.'" class="comment-voting voting">'."\n";
+			//$html .= $this->rateitem($review, $juser, $this->option, $this->resource->id)."\n";
+			$view = new Hubzero_Plugin_View(
+				array(
+					'folder'  => 'resources',
+					'element' => 'reviews',
+					'name'    => 'browse',
+					'layout'  => 'rateitem'
+				)
+			);
+			$view->option = $this->option;
+			$view->item = $review;
+			$view->rid = $this->resource->id;
+
+			$html .= $view->loadTemplate();
+			$html .= "\t\t".'</p>'."\n";
+		}
+		
 		$html .= "\t\t".'<p class="comment-title">'."\n";
 		$html .= "\t\t".'	<strong>'. $name.'</strong> '."\n";
-		$html .= "\t\t".'	<a class="permalink" href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id.'&active=reviews#c'.$review->id).'" title="'. JText::_('PLG_RESOURCES_REVIEWS_PERMALINK').'">@ <span class="time">'. JHTML::_('date',$review->created, '%I:%M %p', 0).'</span> on <span class="date">'.JHTML::_('date',$review->created, '%d %b, %Y', 0).'</span></a>'."\n";
+		$html .= "\t\t".'	<a class="permalink" href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id.'&active=reviews#c'.$review->id).'" title="'. JText::_('PLG_RESOURCES_REVIEWS_PERMALINK').'"><span class="comment-date-at">@</span> <span class="time"><time datetime="' . $review->created . '">'. JHTML::_('date', $review->created, $timeFormat, $tz).'</time></span> <span class="comment-date-on">on</span> <span class="date"><time datetime="' . $review->created . '">'.JHTML::_('date',$review->created, $dateFormat, $tz).'</time></span></a>'."\n";
 		$html .= "\t\t".'</p><!-- / .comment-title -->'."\n";
+		$html .= "\t\t\t".'<p><span class="avgrating'.$class.'"><span>'.JText::sprintf('PLG_RESOURCES_REVIEWS_OUT_OF_5_STARS',$review->rating).'</span></span></p>'."\n";
 		if ($abuse && $abuse_reports > 0) {
 			$html .= "\t\t\t".'<p class="warning">'.JText::_('PLG_RESOURCES_REVIEWS_COMMENT_REPORTED_AS_ABUSIVE').'</p>';
 			$html .= "\t\t".'</div>'."\n";
 		} else {
 			if ($review->comment) {
-				if ($this->voting) {
+				/*if ($this->voting) {
 					// Display thumbs voting
-					$html .= "\t\t".'<p id="reviews_'.$review->id.'" class="'.$this->option.'">'."\n";
+					$html .= "\t\t".'<p id="reviews_'.$review->id.'" class="comment-voting voting">'."\n";
 					//$html .= $this->rateitem($review, $juser, $this->option, $this->resource->id)."\n";
 					$view = new Hubzero_Plugin_View(
 						array(
-							'folder'=>'resources',
-							'element'=>'reviews',
-							'name'=>'browse',
-							'layout'=>'rateitem'
+							'folder'  => 'resources',
+							'element' => 'reviews',
+							'name'    => 'browse',
+							'layout'  => 'rateitem'
 						)
 					);
 					$view->option = $this->option;
@@ -163,7 +211,7 @@ if ($this->reviews) {
 
 					$html .= $view->loadTemplate();
 					$html .= "\t\t".'</p>'."\n";
-				}
+				}*/
 				$html .= $parser->parse(stripslashes($review->comment), $wikiconfig);
 			} else {
 				$html .= "\t\t\t".'<p class="comment-none">'.JText::_('PLG_RESOURCES_REVIEWS_NO_COMMENT').'</p>'."\n";
@@ -174,7 +222,12 @@ if ($this->reviews) {
 				$html .= "\t\t\t".'<p class="comment-options">'."\n";
 				//if ($abuse && $review->comment) {
 				if ($abuse) {
-					$html .= "\t\t\t\t".'<a class="abuse" href="'.JRoute::_('index.php?option=com_support&task=reportabuse&category=review&id='.$review->id.'&parent='.$this->resource->id).'">'.JText::_('PLG_RESOURCES_REVIEWS_REPORT_ABUSE').'</a> | '."\n";
+					if ($juser->get('guest')) {
+						$href = JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=com_support&task=reportabuse&category=review&id='.$review->id.'&parent='.$this->resource->id)));
+					} else {
+						$href = JRoute::_('index.php?option=com_support&task=reportabuse&category=review&id='.$review->id.'&parent='.$this->resource->id);
+					}
+					$html .= "\t\t\t\t".'<a class="abuse" href="'.$href.'">'.JText::_('PLG_RESOURCES_REVIEWS_REPORT_ABUSE').'</a> | '."\n";
 				}
 				//if ($reply && $review->comment) {
 				if ($reply) {
@@ -182,10 +235,15 @@ if ($this->reviews) {
 					//if (!$juser->get('guest')) {
 						$html .= 'reply';
 					//}
-					$html .= '" href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id.'&active=reviews&action=reply&refid='.$review->id.'&category=review').'" id="rep_'.$review->id.'" title="'.JText::sprintf('PLG_RESOURCES_REVIEWS_REPLY_TO_USER', $name).'"">'.JText::_('PLG_RESOURCES_REVIEWS_REPLY').'</a>'."\n";
+					if ($juser->get('guest')) {
+						$href = JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id.'&active=reviews&action=reply&refid='.$review->id.'&category=review')));
+					} else {
+						$href = JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id.'&active=reviews&action=reply&refid='.$review->id.'&category=review');
+					}
+					$html .= '" href="'.$href.'" id="rep_'.$review->id.'" title="'.JText::sprintf('PLG_RESOURCES_REVIEWS_REPLY_TO_USER', $name).'"">'.JText::_('PLG_RESOURCES_REVIEWS_REPLY').'</a>'."\n";
 				}
 				if ($admin) {
-					$html .= "\t\t\t\t".' | <a class="deletereview" href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id.'&active=reviews&action=deletereview&reviewid='.$review->id).'">'.JText::_('PLG_RESOURCES_REVIEWS_DELETE').'</a>'."\n";
+					$html .= "\t\t\t\t".' | <a class="delete" href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id.'&active=reviews&action=deletereview&reviewid='.$review->id).'">'.JText::_('PLG_RESOURCES_REVIEWS_DELETE').'</a>'."\n";
 				}
 				$html .= "\t\t\t".'</p>'."\n";
 			}
@@ -330,7 +388,7 @@ if ($this->reviews) {
 }
 echo $html;
 if ($this->getError()) { ?>
-	<p class="warning"><?php echo $this->getError(); ?></p>
+	<p class="warning"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php }
 
 // Display the review form if needed
@@ -353,4 +411,3 @@ if (!$juser->get('guest')) {
 		$view->display();
 	}
 }
-?>

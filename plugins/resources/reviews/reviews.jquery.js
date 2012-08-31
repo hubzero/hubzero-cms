@@ -31,13 +31,15 @@ HUB.Plugins.ResourcesReviews = {
 		// Reply to review or comment
 		$('.reply').each(function(i, item) {
 			$(item).on('click', function(e) {
-				e.preventDefault();
-				
-				var f = $(this).closest('.addcomment');
-				if (f.hasClass('hide')) {
-					f.removeClass('hide');
-				} else {
-					f.addClass('hide');
+				if ($(this).attr('href').indexOf('login') == -1) {
+					e.preventDefault();
+
+					var f = $(this).parent().parent().find('.addcomment');
+					if (f.hasClass('hide')) {
+						f.removeClass('hide');
+					} else {
+						f.addClass('hide');
+					}
 				}
 			});
 		});
@@ -52,43 +54,33 @@ HUB.Plugins.ResourcesReviews = {
 		$('.cancelreply').each(function(i, item) {
 			$(item).on('click', function(e) {
 				e.preventDefault();
-				$(item.parentNode.parentNode.parentNode.parentNode).addClass('hide');
+				$($(this).parent().parent().parent().parent()).addClass('hide');
 			});
 		});
 		
 		// review ratings
-		$('.thumbsvote').each(function(i, v) {
-			$(v).on('mouseover', function() {
-				var el = $($(this).last());
-				var el = $(el.last());
-				el.css('display', "inline");
-			});
-			$(v).on('mouseout', function() {
-				var el = $($(this).last());
-				var el = $(el.last());
-				el.css('display', "none");
-			});
-		});
-		
-		$('.revvote').each(function(i, item) {
-			$(item).on('click', function(e) {
-				pn = $(this.parentNode.parentNode.parentNode);
-				if ($(this.parentNode).hasClass('gooditem')) {
-					var s = 'yes';
-				} else {
-					var s = 'no';
-				}
-			
-				var id = $(this.parentNode.parentNode.parentNode).attr('id').replace('reviews_','');
+		$('.vote-button').each(function(i, item) {
+			if ($(item).attr('href')) {
+				$(item).on('click', function (e) {
+					e.preventDefault();
 
-				var rid = $(this.parentNode.parentNode).attr('id').replace('rev'+id+'_','');
+					href = $(this).attr('href');
+					if (href.indexOf('?') == -1) {
+						href += '?no_html=1';
+					} else {
+						href += '&no_html=1';
+					}
+					$(this).attr('href', href);
 
-				$.get('/index.php?option=com_resources&task=plugin&trigger=onResourcesRateItem&action=rateitem&no_html=1&rid='+id+'&refid='+id+'&ajax=1&vote='+s, {}, function(data) {
-					$(pn).html(data);
+					$.get($(this).attr('href'), {}, function(data) {
+						$(item).closest('.voting').html(data);
+					});
 				});
-			});
+			}
 		});
 	} // end initialize
 }
 
-window.addEvent('domready', HUB.Plugins.ResourcesReviews.initialize);
+jQuery(document).ready(function($){
+	HUB.Plugins.ResourcesReviews.initialize();
+});

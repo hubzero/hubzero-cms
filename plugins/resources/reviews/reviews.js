@@ -25,13 +25,15 @@ HUB.Plugins.ResourcesReviews = {
 		if (show) {
 			show.each(function(item) {
 				item.addEvent('click', function(e) {
-					new Event(e).stop();
+					if ($(this).getProperty('href').indexOf('login') == -1) {
+						new Event(e).stop();
 					
-					var f = $(this.parentNode.parentNode).getElement('.addcomment');
-					if (f.hasClass('hide')) {
-						f.removeClass('hide');
-					} else {
-						f.addClass('hide');
+						var f = $(this.parentNode.parentNode).getElement('.addcomment');
+						if (f.hasClass('hide')) {
+							f.removeClass('hide');
+						} else {
+							f.addClass('hide');
+						}
 					}
 				});
 			});
@@ -68,32 +70,29 @@ HUB.Plugins.ResourcesReviews = {
 				el.style.display = "none";
 			});
 		});
-		
-		var vote = $$('.revvote');
-		if (vote) {
-			for (i = 0; i < vote.length; i++) 
-			{
-				vote[i].onclick=function() {
-					pn = $(this.parentNode.parentNode.parentNode);
-					if ($(this.parentNode).hasClass('gooditem')) {
-						var s = 'yes';
-					} else {
-						var s = 'no';
-					}
-				
-					var id = $(this.parentNode.parentNode.parentNode).getProperty('id').replace('reviews_','');
-	
-					var rid = $(this.parentNode.parentNode).getProperty('id').replace('rev'+id+'_','');	
-					//var myAjax1 = new Ajax('index.php?option=com_resources&task=reviews&id='+rid+'&no_html=1&action=rateitem&refid='+id+'&ajax=1&vote='+s,{update:pn}).request();
 
-					new Ajax('/index.php?option=com_resources&task=plugin&trigger=onResourcesRateItem&action=rateitem&no_html=1&rid='+id+'&refid='+id+'&ajax=1&vote='+s,{
-					//new Ajax('/resources/'+rid+'/reviews/?no_html=1&action=rateitem&refid='+id+'&ajax=1&vote='+s,{
+		$$('.vote-button').each(function(item) {
+			if ($(item).getProperty('href')) {
+				$(item).addEvent('click', function (e) {
+					new Event(e).stop();
+
+					href = $(this).getProperty('href');
+					if (href.indexOf('?') == -1) {
+						href += '?no_html=1';
+					} else {
+						href += '&no_html=1';
+					}
+					$(this).setProperty('href', href);
+
+					var pn = pn = $(this.parentNode.parentNode.parentNode);
+
+					new Ajax($(this).getProperty('href'),{
 						'method' : 'get',
 						'update' : $(pn)
-					}).request();				
-				}
+					}).request();
+				});
 			}
-		}
+		});
 	} // end initialize
 }
 

@@ -175,13 +175,9 @@ class plgResourcesReviews extends JPlugin
 			if (!$h->loggedin) 
 			{
 				// Instantiate a view
-				$view = new Hubzero_Plugin_View(
-					array(
-						'folder'  => 'resources',
-						'element' => 'reviews',
-						'name'    => 'login'
-					)
-				);
+				$rtrn = JRequest::getVat('REQUEST_URI', JRoute::_('index.php?option=' . $option . '&id=' . $resource->id . '&active=reviews'), 'server');
+				$this->_redirect = JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn));
+				return;
 			} 
 			else 
 			{
@@ -196,21 +192,17 @@ class plgResourcesReviews extends JPlugin
 			}
 
 			// Thumbs voting CSS & JS
-			$voting = $this->params->get('voting');
-			if ($voting) 
-			{
-				Hubzero_Document::addComponentStylesheet('com_answers', 'vote.css');
-			}
+			$view->voting = $this->params->get('voting', 1);
 
 			// Pass the view some info
 			$view->option = $option;
 			$view->resource = $resource;
 			$view->reviews = $reviews;
-			$view->voting = $voting;
+			//$view->voting = $voting;
 			$view->h = $h;
 			$view->banking = $this->banking;
 			$view->infolink = $this->infolink;
-			$view->voting = $voting;
+			//$view->voting = $voting;
 			if ($h->getError()) 
 			{
 				foreach ($h->getErrors() as $error)
@@ -281,10 +273,10 @@ class plgResourcesReviews extends JPlugin
 		{
 			foreach ($comments as $comment)
 			{
-				$comment->replies = plgResourcesReviews::getComments($comment, 'reviewcomment', $level, $abuse);
+				$comment->replies = self::getComments($comment, 'reviewcomment', $level, $abuse);
 				if ($abuse) 
 				{
-					$comment->abuse_reports = plgResourcesReviews::getAbuseReports($comment->id, 'reviewcomment');
+					$comment->abuse_reports = self::getAbuseReports($comment->id, 'reviewcomment');
 				}
 			}
 		}
@@ -304,79 +296,6 @@ class plgResourcesReviews extends JPlugin
 
 		$ra = new ReportAbuse($database);
 		return $ra->getCount(array('id' => $item, 'category' => $category));
-	}
-
-	/**
-	 * Get a member thumbnail picture
-	 * 
-	 * @param      object  $member    Member to get thumbnail for
-	 * @param      integer $anonymous User is anaonymous
-	 * @return     string
-	 */
-	public function getMemberPhoto($member, $anonymous=0)
-	{
-		$config =& JComponentHelper::getParams('com_members');
-
-		if (!$anonymous && $member->get('picture')) 
-		{
-			$thumb = $config->get('webpath');
-			$thumb = DS . trim($thumb, DS);
-			$thumb .= DS . plgResourcesReviews::niceidformat($member->get('uidNumber')) . DS . $member->get('picture');
-
-			$thumb = plgResourcesReviews::thumbit($thumb);
-		} 
-		else 
-		{
-			$thumb = '';
-		}
-
-		$dfthumb = $config->get('defaultpic');
-		$dfthumb = DS . trim($dfthumb, DS);
-		$dfthumb = plgResourcesReviews::thumbit($dfthumb);
-
-		if ($thumb && is_file(JPATH_ROOT . $thumb)) 
-		{
-			return $thumb;
-		} 
-		else if (is_file(JPATH_ROOT . $dfthumb)) 
-		{
-			return $dfthumb;
-		}
-	}
-
-	/**
-	 * Generate a thumbnail image string from image name
-	 * 
-	 * @param      string $thumb Picture name
-	 * @return     string 
-	 */
-	public function thumbit($thumb)
-	{
-		$image = explode('.', $thumb);
-		$n = count($image);
-		$image[$n-2] .= '_thumb';
-		$end = array_pop($image);
-		$image[] = $end;
-		$thumb = implode('.', $image);
-
-		return $thumb;
-	}
-
-	/**
-	 * Short description for 'niceidformat'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $someid Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
-	 */
-	public function niceidformat($someid)
-	{
-		while (strlen($someid) < 5)
-		{
-			$someid = 0 . "$someid";
-		}
-		return $someid;
 	}
 }
 
@@ -592,10 +511,11 @@ class PlgResourcesReviewsHelper extends JObject
 		$juser =& JFactory::getUser();
 
 		$id   = JRequest::getInt('refid', 0);
-		$ajax = JRequest::getInt('ajax', 0);
+		$ajax = JRequest::getInt('no_html', 0);
 		$cat  = JRequest::getVar('category', 'review');
 		$vote = JRequest::getVar('vote', '');
-		$ip   = $this->_ipAddress();
+		ximport('Hubzero_Environment');
+		$ip   = Hubzero_Environment::ipAddress();
 		$rid  = JRequest::getInt('id', 0);
 
 		if (!$id) 
@@ -607,18 +527,18 @@ class PlgResourcesReviewsHelper extends JObject
 		// Is the user logged in?
 		if ($juser->get('guest')) 
 		{
-			$this->login(JText::_('PLG_RESOURCES_REVIEWS_PLEASE_LOGIN_TO_VOTE'));
+			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_PLEASE_LOGIN_TO_VOTE'));
 			return;
 		}
 
 		// Load answer
 		$rev = new ResourcesReview($database);
 		$rev->load($id);
-		$voted = $rev->getVote ($id, $cat, $juser->get('id'));
+		$voted = $rev->getVote($id, $cat, $juser->get('id'));
 
-		if (!$voted && $vote && $rev->user_id != $juser->get('id')) 
+		if (!$voted && $vote) // && $rev->user_id != $juser->get('id')) 
 		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'vote.class.php');
+			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'vote.php');
 			$v = new Vote($database);
 			$v->referenceid = $id;
 			$v->category    = $cat;
@@ -642,7 +562,7 @@ class PlgResourcesReviewsHelper extends JObject
 		if ($ajax) 
 		{
 			$response = $rev->getRating($id, $juser->get('id'));
-			//echo plgResourcesReviews::rateitem($response[0], $juser, $this->_option, $rid);
+
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'resources',
@@ -653,7 +573,9 @@ class PlgResourcesReviewsHelper extends JObject
 			);
 			$view->option = $this->_option;
 			$view->item = $response[0];
+
 			$view->display();
+			exit();
 		} 
 		else 
 		{
@@ -796,11 +718,11 @@ class PlgResourcesReviewsHelper extends JObject
 				'name'    => 'emails'
 			)
 		);
-		$eview->option = $this->_option;
-		$eview->juser = $juser;
+		$eview->option   = $this->_option;
+		$eview->juser    = $juser;
 		$eview->resource = $resource;
+		$eview->review   = $row;
 		$message = $eview->loadTemplate();
-		$message = str_replace("\n", "\r\n", $message);
 
 		// Build the "from" data for the e-mail
 		$from = array();
@@ -880,73 +802,6 @@ class PlgResourcesReviewsHelper extends JObject
 		// Recalculate the average rating for the parent resource
 		$resource->calculateRating();
 		$resource->updateRating();
-	}
-
-	/**
-	 * Short description for '_validIp'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $ip Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
-	 */
-	private function _validIp($ip)
-	{
-		return (!preg_match("/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/", $ip)) ? FALSE : TRUE;
-	}
-
-	/**
-	 * Short description for '_ipAddress'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     mixed Return description (if any) ...
-	 */
-	private function _ipAddress()
-	{
-		if ($this->_server('REMOTE_ADDR') AND $this->_server('HTTP_CLIENT_IP')) {
-			$ip_address = $_SERVER['HTTP_CLIENT_IP'];
-		} elseif ($this->_server('REMOTE_ADDR')) {
-			$ip_address = $_SERVER['REMOTE_ADDR'];
-		} elseif ($this->_server('HTTP_CLIENT_IP')) {
-			$ip_address = $_SERVER['HTTP_CLIENT_IP'];
-		} elseif ($this->_server('HTTP_X_FORWARDED_FOR')) {
-			$ip_address = $_SERVER['HTTP_X_FORWARDED_FOR'];
-		}
-
-		if ($ip_address === FALSE) {
-			$ip_address = '0.0.0.0';
-			return $ip_address;
-		}
-
-		if (strstr($ip_address, ',')) {
-			$x = explode(',', $ip_address);
-			$ip_address = end($x);
-		}
-
-		if (!$this->_validIp($ip_address)) {
-			$ip_address = '0.0.0.0';
-		}
-
-		return $ip_address;
-	}
-
-	/**
-	 * Short description for '_server'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $index Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
-	 */
-	private function _server($index = '')
-	{
-		if (!isset($_SERVER[$index])) 
-		{
-			return FALSE;
-		}
-
-		return $_SERVER[$index];
 	}
 }
 

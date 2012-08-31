@@ -1487,7 +1487,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		}
 
 		// Output HTML
-		if ($no_html) 
+		/*if ($no_html) 
 		{
 			$jconfig =& JFactory::getConfig();
 			$css = JURI::base();
@@ -1514,9 +1514,9 @@ class ResourcesControllerResources extends Hubzero_Controller
 			print("document.write(\"" . $html . "\");");
 		} 
 		else 
-		{
+		{*/
 			$view->display();
-		}
+		//}
 	}
 
 	/**

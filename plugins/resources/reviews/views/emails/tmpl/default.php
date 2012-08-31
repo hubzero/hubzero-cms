@@ -29,18 +29,29 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-$juri =& JURI::getInstance();
-$sef = JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id.'&active=reviews');
-if (substr($sef,0,1) == '/') {
-	$sef = substr($sef,1,strlen($sef));
+$dateFormat  = '%d %b, %Y';
+$timeFormat  = '%I:%M %p';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat  = 'd M, Y';
+	$timeFormat  = 'h:i a';
+	$tz = true;
 }
 
-$message  = JText::_('PLG_RESOURCES_REVIEWS_SOMEONE_POSTED_REVIEW')."\n\n";
-$message .= stripslashes($this->resource->title)."\n\n";
-$message .= JText::_('PLG_RESOURCES_REVIEWS_TO_VIEW_COMMENT')."\n";
-$message .= $juri->base().$sef . "\n";
+$juri =& JURI::getInstance();
+
+$sef = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=reviews');
+
+$message  = JText::_('PLG_RESOURCES_REVIEWS_SOMEONE_POSTED_REVIEW') . "\r\n\r\n";
+$message .= '----------------------------' . "\r\n";
+$message .= JText::_('Resource:') . ' #' . $this->resource->id . ' - ' . stripslashes($this->resource->title) . "\r\n";
+$message .= JText::_('Review posted on:') . ' ' . JHTML::_('date', $this->review->created, $dateFormat, $tz) . "\r\n";
+$message .= '----------------------------' . "\r\n\r\n";
+$message .= preg_replace('#<br[\s/]?>#', "\r", $this->review->comment) . "\r\n\r\n";
+$message .= JText::_('PLG_RESOURCES_REVIEWS_TO_VIEW_COMMENT') . "\r\n";
+$message .= rtrim($juri->base(), DS) . DS . ltrim($sef, DS) . "\r\n";
 
 echo $message;
-?>
