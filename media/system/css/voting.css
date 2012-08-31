@@ -9,10 +9,10 @@
 	.voting {
 		white-space: nowrap;
 	}
-	.vote-button, 
-	a.vote-button,
-	.vote-button:hover, 
-	a.vote-button:hover {
+	.voting .vote-button, 
+	.voting a.vote-button,
+	.voting .vote-button:hover, 
+	.voting a.vote-button:hover {
 		border: none;
 		background: #f1f1f1;
 		color: #555;
@@ -28,18 +28,18 @@
 		text-align: left;
 		cursor: pointer;
 	}
-	.vote-button:hover, 
-	a.vote-button:hover {
+	.voting .vote-button:hover, 
+	.voting a.vote-button:hover {
 		background: #e7e7e7;
 		color: #111;
 	}
-	.vote-like, 
-	.vote-dislike {
+	.voting .vote-like, 
+	.voting .vote-dislike {
 		margin-left: 0.2em;
 		cursor: pointer;
 		display: inline-block;
 	}
-	.vote-button span {
+	.voting .vote-button span {
 		display: inline-block;
 		width: 1.2em;
 		height: 1.4em;
@@ -48,20 +48,20 @@
 		padding: 0;
 		margin: 0 0 0 0.3em;
 	}
-	.vote-like .neutral span,
-	.like span,
-	.vote-dislike .neutral span,
-	.dislike span {
+	.voting .vote-like .neutral span,
+	.voting .like span,
+	.voting .vote-dislike .neutral span,
+	.voting .dislike span {
 		background: none;
 		position: relative;
 	}
-	.like:hover {
+	.voting .like:hover {
 		background-color: #99ca78;
 	}
-	.vote-like .neutral span:after,
-	.like span:after,
-	.vote-dislike .neutral span:after,
-	.dislike span:after {
+	.voting .vote-like .neutral span:after,
+	.voting .like span:after,
+	.voting .vote-dislike .neutral span:after,
+	.voting .dislike span:after {
 		position: absolute;
 		left: 0;
 		top: 0;
@@ -71,15 +71,15 @@
 		font-size: 1.2em;
 		line-height: 1;
 	}
-	.vote-like .neutral span:after,
-	.like span:after {
+	.voting .vote-like .neutral span:after,
+	.voting .like span:after {
 		content: "\f087";
 	}
-	.dislike:hover {
+	.voting .dislike:hover {
 		background-color: #d86560;
 	}
-	.vote-dislike .neutral span:after,
-	.dislike span:after {
+	.voting .vote-dislike .neutral span:after,
+	.voting .dislike span:after {
 		top: 0.2em;
 		content: "\f088";
 	}

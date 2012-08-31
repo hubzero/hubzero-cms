@@ -119,6 +119,8 @@
 	ol.comments .comment-voting {
 		margin: -0.61803399em 0 0 0;
 		padding: 0;
+		float: right;
+		min-width: 10em;
 	}
 	ol.comments .comment-voting .thumbsvote {
 		margin-top: 0.5em;
