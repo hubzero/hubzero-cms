@@ -9,6 +9,9 @@ $juser =& JFactory::getUser();
 
 $this->template = 'hubbasic2012';
 
+$lang =& JFactory::getLanguage();
+$lang->load('tpl_hubbasic2012');
+
 ximport('Hubzero_Browser');
 $browser = new Hubzero_Browser();
 $b = $browser->getBrowser();
@@ -63,8 +66,8 @@ $v = $browser->getBrowserMajorVersion();
 				<div class="inner">
 					<div id="topbar">
 						<ul>
-							<li><a href="#content">Skip to content</a></li>
-							<li><a href="/about/contact">Contact</a></li>
+							<li><a href="#content"><?php echo JText::_('TPL_HUBBASIC_SKIP'); ?></a></li>
+							<li><a href="/about/contact"><?php echo JText::_('TPL_HUBBASIC_CONTACT'); ?></a></li>
 						</ul>
 						<?php Hubzero_Module_Helper::displayModules('search'); ?>
 						<p id="tab">
