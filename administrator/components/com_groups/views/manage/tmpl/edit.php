@@ -96,7 +96,9 @@ function submitbutton(pressbutton)
 						<td>
 							<select name="group[type]">
 								<option value="1"<?php echo ($this->group->type == '1') ? ' selected="selected"' : ''; ?>><?php echo JText::_('hub'); ?></option>
+<?php if ($canDo->get('core.admin')) { ?>
 								<option value="0"<?php echo ($this->group->type == '0') ? ' selected="selected"' : ''; ?>><?php echo JText::_('system'); ?></option>
+<?php } ?>
 								<option value="2"<?php echo ($this->group->type == '2') ? ' selected="selected"' : ''; ?>><?php echo JText::_('project'); ?></option>
 								<option value="3"<?php echo ($this->group->type == '3') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Special Unbranded Group'); ?></option>
 							</select>

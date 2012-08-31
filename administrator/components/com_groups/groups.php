@@ -37,10 +37,11 @@ error_reporting(E_ALL);
 if (version_compare(JVERSION, '1.6', 'lt'))
 {
 	$jacl = JFactory::getACL();
+	$jacl->addACL($option, 'admin', 'users', 'super administrator');
 	$jacl->addACL($option, 'manage', 'users', 'super administrator');
 	$jacl->addACL($option, 'manage', 'users', 'administrator');
 	$jacl->addACL($option, 'manage', 'users', 'manager');
-	
+
 	// Authorization check
 	$user = JFactory::getUser();
 	if (!$user->authorize($option, 'manage'))

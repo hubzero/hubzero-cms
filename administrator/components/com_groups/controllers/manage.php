@@ -77,6 +77,25 @@ class GroupsControllerManage extends Hubzero_Controller
 		$this->view->filters['fields'] = array('COUNT(*)');
 		$this->view->filters['authorized'] = 'admin';
 
+		$canDo = GroupsHelper::getActions('group');
+		if (!$canDo->get('core.admin')) 
+		{
+			if ($this->view->filters['type'][0] == 'system' || $this->view->filters['type'][0] == 0)
+			{
+				$this->view->filters['type'] = array('all');
+			}
+
+			if ($this->view->filters['type'][0] == 'all')
+			{
+				$this->view->filters['type'] = array(
+					//0,  No system groups 
+					1,  // hub
+					2,  // project 
+					3   // partner
+				);
+			}
+		}
+
 		// Get a record count
 		$this->view->total = Hubzero_Group::find($this->view->filters);
 
@@ -147,6 +166,11 @@ class GroupsControllerManage extends Hubzero_Controller
 		// Load the group page
 		$group = new Hubzero_Group();
 		$group->read($gid);
+
+		if (!$this->_authorize($group)) 
+		{
+			return;
+		}
 
 		$this->gid = $gid;
 		$this->group = $group;
@@ -259,6 +283,11 @@ class GroupsControllerManage extends Hubzero_Controller
 		$this->view->group = new Hubzero_Group();
 		$this->view->group->read($id);
 
+		if (!$this->_authorize($this->view->group)) 
+		{
+			return;
+		}
+
 		// Set any errors
 		if ($this->getError())
 		{
@@ -324,6 +353,11 @@ class GroupsControllerManage extends Hubzero_Controller
 
 			// Load the group
 			$group->read($g['gidNumber']);
+		}
+
+		if (!$this->_authorize($group)) 
+		{
+			return;
 		}
 
 		// Check for any missing info
@@ -478,6 +512,10 @@ class GroupsControllerManage extends Hubzero_Controller
 
 				// Ensure we found the group info
 				if (!$group)
+				{
+					continue;
+				}
+				if (!$this->_authorize($group)) 
 				{
 					continue;
 				}
@@ -1195,5 +1233,29 @@ class GroupsControllerManage extends Hubzero_Controller
 		{
 			return false;
 		}
+	}
+
+	/**
+	 * Authorization check
+	 * Checks if the group is a system group and the user has super admin access
+	 *
+	 * @param     object $group Hubzero_Group
+	 * @return    boolean True if authorized, false if not.
+	 */
+	protected function _authorize($group=null)
+	{
+		// Check if the group is a system group and the user has super admin access
+		$canDo = GroupsHelper::getActions('group');
+		if (!$canDo->get('core.admin') && $group->get('type') == 0) 
+		{
+			// No access - redirect to main listing
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('COM_GROUPS_ALERTNOTAUTH'),
+				'error'
+			);
+			return false;
+		}
+		return true;
 	}
 }

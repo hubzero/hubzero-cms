@@ -64,6 +64,7 @@ class GroupsHelper
 			{
 				$result->set('core.' . $action, $user->authorize($assetName, 'manage'));
 			}
+			$result->set('core.admin', $user->authorize($assetName, 'admin'));
 		}
 		else 
 		{
