@@ -201,7 +201,7 @@ if (!$this->app->sess) {
 	
 	<div class="clear"></div>
 <?php if ($this->config->get('shareable', 0)) { ?>
-	<form name="share" id="app-share" method="get" action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+	<form name="share" id="app-share" method="post" action="<?php echo JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=session&sess='.$this->app->sess); ?>">
 		<div class="three columns first second">
 			<p class="share-member-photo">
 				<a class="share-anchor" name="shareform"></a>
