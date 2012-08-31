@@ -309,9 +309,7 @@
 	}
 /* Tabbed view specifics */
 	.sep {
-		border-bottom: 4px solid #9da6b7;
 		margin-top: 0;
-		margin-right: 250px;
 	}
 	#authorslist p {
 		line-height: 1.4em;
@@ -449,19 +447,26 @@
 	.unavail {
 		color: #978971;
 	}
-/* Important view overwrites */	
+/* Important view overwrites 
 	#reviews-section .com_resources {
 		padding-top:0 !important;
+	}*/
+	.com_resources .overviewcontainer #content-header {
+		border: none;
+		background: transparent;
+		margin: 0;
+		padding: 0;
 	}
-	.com_resources .overviewcontainer h2 {
+	.com_resources .overviewcontainer #content-header h2 {
 		line-height: 1.4em;
+		padding: 0 0 0.5em 0;
+		border: none;
+		background: transparent;
 	}
 	.subject #content-header h2 {
 		margin-left: 0 !important;
 	}
-	.com_resources .upperpane {
-		border: none;
-	}
+
 	.subject {
 		background: none;
 		border: none;
@@ -500,12 +505,12 @@
 	.subject #hubForm .submit {
 		margin-right: 0;
 	}
-	.section .section .subject {
+	/*.section .section .subject {
 		background: #ffffff !important;
 		border:none !important;
 		padding-right:0 !important;
 		padding-left:0 !important;
-	}
+	}*/
 	.resource td {
 		border:none !important;
 	}
@@ -539,8 +544,18 @@
 		font-weight: normal;
 		font-size: small;
 	}
+	.com_resources .results .resource .title {
+		margin-right: 200px;
+	}
 	#sub-menu {
 		padding: 0;
+	}
+	#sub-menu ul {
+		padding: 0 15px;
+	}
+	#sub-menu li a span {
+		padding-left: 11px;
+		padding-right: 11px;
 	}
 	.tabbed .supportingdocs .caption {
 		float: right;
@@ -555,9 +570,14 @@
 /* Tabbed view containers */
 	.com_resources .upperpane {
 		padding-top: 2em;
+		padding-bottom: 0;
+		border: none;
+	}
+	.com_resources .upperpane + .section {
+		padding-top: 0;
 	}
 	.upperpane .subject {
-		margin-right: 250px;
+		/*margin-right: 250px;*/
 		margin-bottom: 1em !important;
 	}
 	.upperpane .rankarea, 
@@ -571,23 +591,25 @@
 		float: left;
 		margin-right: -3em;
 	}
-	.tabbed {
-		padding-top:0 !important;
-		padding-bottom: 2em !important;
-		margin-right: 250px;
-		background: #ffffff !important;
+	.com_resources .tabbed {
+		padding-top: 0;
+		padding-bottom: 2em;
+		/*margin-right: 250px;*/
+		background: transparent;
 	}
-	.tabbed .aside {
-		padding-right: 1em !important;
+	.com_resources .tabbed .subject {
+		margin-right: 0;
 	}
-	.tabbed .section {
-		padding: 0.1em !important;
+	.com_resources .tabbed .aside {
+		padding-right: 1em;
 	}
-	.tabbed #sub-menu li a {
-		padding: 0 8px 0 0 !important;
+	.com_resources .tabbed .section {
+		padding: 0.1em;
+	}
+	.com_resources .tabbed #sub-menu li a {
 		font-size: 88%;
 	}
-	.tabbed .abouttab {
+	/*.tabbed .abouttab {
 		margin-right: 0;
 	}
 	.tabbed #sub-menu ul {
@@ -596,7 +618,7 @@
 	}
 	.tabbed #sub-menu li a span {
 		padding: 10px 0 0 8px;
-	}
+	}*/
 /* Primary Resource file */	
 	#primary-document {
 		margin: 1em 0 1.5em 0;
@@ -702,70 +724,6 @@
 		margin: 0 0 0 2em;
 		padding: 0;
 		text-indent: -555em;
-	}
-/* Resource info table */
-	.resource {
-		margin-top: 1.5em;
-		border: none;
-	}
-	.resource th, 
-	.resource td {
-		padding-bottom: 25px;
-	}
-	.resource th {
-		text-align: right;
-		color: #999;
-		white-space: nowrap;
-	}
-	.resource td {
-		padding-right: 1.5em;
-	}
-	.resource .tags {
-		margin: 0;
-	}
-	.resource ul {
-		margin-left: 1.5em;
-		list-style: disc;
-	}
-	.resource td #authorslist,
-	.resource td #authorslist p,
-	.resource td ul:first-child,
-	.resource td ul:first-child li:first-child {
-		margin-top: 0;
-		padding-right: 0;
-		line-height: 1.6em;
-	}
-	.resource .citations {
-		border: 2px solid #e5e5e5;
-		padding: 0 1em;
-		margin: 0;
-		list-style: none;
-	}
-	.resource td p {
-		margin: 1em 0;
-	}
-	.resource td p:first-child {
-		margin-top: 0;
-	}
-	.resource ul.results li {
-		list-style: none;
-	}
-	.results .resource .title {
-		margin-right: 200px;
-	}
-	#about-section hr {
-		border: none;
-		border-top: 1px solid #eee;
-	}
-	#tagForm {
-		margin: 1.5em 0 0 0;
-	}
-	.tags:after {
-		content: "."; 
-		display: block; 
-		height: 0; 
-		clear: both; 
-		visibility: hidden;
 	}
 /* Resources listing */
 	.resources .title { 
@@ -1162,10 +1120,10 @@
 		padding: 0;
 	}
 	.com_resources .section .section .subject {
-		background: #F7F7F7;
+		/*background: #F7F7F7;
 		border-top: 1px solid #E3E3E3;
 		border-bottom: 1px solid #E3E3E3;
-		padding: 1em;
+		padding: 1em;*/
 	}
 	.com_resources .section .section .aside {
 		padding-top: 0;

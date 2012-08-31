@@ -102,6 +102,9 @@ class plgResourcesAbouttool extends JPlugin
 
 		if ($rtrn == 'all' || $rtrn == 'html') 
 		{
+			ximport('Hubzero_Document');
+			Hubzero_Document::addPluginStyleSheet('resources', 'abouttool');
+
 			// Instantiate a view
 			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(

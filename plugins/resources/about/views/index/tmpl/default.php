@@ -93,46 +93,50 @@ $maintext = str_replace('<blink>', '', $maintext);
 $maintext = str_replace('</blink>', '', $maintext);
 ?>
 <div class="subject abouttab">
-	<table class="resource" summary="<?php echo JText::_('RESOURCE_TBL_SUMMARY'); ?>">
-		<tbody>
-			<tr>
-				<th><?php echo JText::_('Category'); ?></th>
-				<td><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $this->resource->_type->alias); ?>"><?php echo stripslashes($this->resource->_type->type); ?></a></td>
-			</tr>
-			<tr>
-				<th><?php echo JText::_('Published'); ?></th>
-				<td><?php echo JHTML::_('date', $thedate, $dateFormat, $tz); ?></a></td>
-			</tr>
+	<div class="resource">
+		<div class="two columns first">
+			<h4><?php echo JText::_('Category'); ?></h4>
+			<p class="resource-content">
+				<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $this->resource->_type->alias); ?>">
+					<?php echo $this->escape(stripslashes($this->resource->_type->type)); ?>
+				</a>
+			</tp>
+		</div>
+		<div class="two columns second">
+			<h4><?php echo JText::_('Published on'); ?></h4>
+			<p class="resource-content">
+				<time datetime="<?php echo $thedate; ?>"><?php echo JHTML::_('date', $thedate, $dateFormat, $tz); ?></time>
+			</p>
+		</div>
+		<div class="clearfix"></div>
 <?php
 // Check how much we can display
 if ($this->resource->access == 3 && (!in_array($this->resource->group_owner, $this->usersgroups) || !$this->authorized)) {
 	// Protected - only show the introtext
 ?>
-			<tr>
-				<th><?php echo JText::_('PLG_RESOURCES_ABOUT_ABSTRACT'); ?></th>
-				<td><?php echo $this->escape($this->resource->introtext); ?></td>
-			</tr>
+		<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_ABSTRACT'); ?></h4>
+		<div class="resource-content">
+			<?php echo $this->escape($this->resource->introtext); ?>
+		</div>
 <?php
 } else {
 	if (trim($maintext)) {
 ?>
-			<tr>
-				<th><?php echo JText::_('PLG_RESOURCES_ABOUT_ABSTRACT'); ?></th>
-				<td><?php echo $maintext; ?></td>
-			</tr>
+		<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_ABSTRACT'); ?></h4>
+		<div class="resource-content">
+			<?php echo $maintext; ?>
+		</div>
 <?php
 	}
 	$this->helper->getSubmitters(true, 1, $this->plugin->get('badges', 0));
 	if ($this->helper->contributors && $this->helper->contributors != '<br />') {
 ?>
-			<tr>
-				<th><?php echo JText::_('Submitter'); ?></th>
-				<td>
-					<span id="authorslist">
-						<?php echo $this->helper->contributors; ?>
-					</span>
-				</td>
-			</tr>
+			<h4><?php echo JText::_('Submitter'); ?></h4>
+			<div class="resource-content">
+				<span id="authorslist">
+					<?php echo $this->helper->contributors; ?>
+				</span>
+			</div>
 <?php
 	}
 	$citations = '';
@@ -143,10 +147,10 @@ if ($this->resource->access == 3 && (!in_array($this->resource->group_owner, $th
 				$citations = $data[$field->name];
 			} else if ($value = $elements->display($field->type, $data[$field->name])) {
 ?>
-			<tr>
-				<th><?php echo $field->label; ?></th>
-				<td><?php echo $value; ?></td>
-			</tr>
+			<h4><?php echo $field->label; ?></h4>
+			<div class="resource-content">
+				<?php echo $value; ?>
+			</div>
 <?php
 			}
 		}
@@ -179,10 +183,10 @@ if ($this->resource->access == 3 && (!in_array($this->resource->group_owner, $th
 		$citeinstruct  = ResourcesHtml::citation( $this->option, $cite, $this->resource->id, $citations, $this->resource->type, 0 );
 		$citeinstruct .= ResourcesHtml::citationCOins($cite, $this->resource, $this->config, $this->helper);
 ?>
-			<tr>
-				<th><a name="citethis"></a><?php echo JText::_('PLG_RESOURCES_ABOUT_CITE_THIS'); ?></th>
-				<td><?php echo $citeinstruct; ?></td>
-			</tr>
+			<h4><a name="citethis"></a><?php echo JText::_('PLG_RESOURCES_ABOUT_CITE_THIS'); ?></h4>
+			<div class="resource-content">
+				<?php echo $citeinstruct; ?>
+			</div>
 <?php
 	}
 }
@@ -201,19 +205,15 @@ if ($this->attribs->get('timeof', '')) {
 		$seminarTime = $this->attribs->get('timeof', '');
 	}
 ?>
-			<tr>
-				<th><?php echo JText::_('PLG_RESOURCES_ABOUT_TIME'); ?></th>
-				<td><?php echo $this->escape($seminarTime); ?></td>
-			</tr>
+			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_TIME'); ?></h4>
+			<p class="resource-content"><time><?php echo $this->escape($seminarTime); ?></time></p>
 <?php
 }
 // If the resource had a specific location
 if ($this->attribs->get('location', '')) {
 ?>
-			<tr>
-				<th><?php echo JText::_('PLG_RESOURCES_ABOUT_LOCATION'); ?></th>
-				<td><?php echo $this->escape($this->attribs->get('location', '')); ?></td>
-			</tr>
+			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_LOCATION'); ?></h4>
+			<p class="resource-content"><?php echo $this->escape($this->attribs->get('location', '')); ?></p>
 <?php
 }
 // Tags
@@ -222,15 +222,14 @@ if ($this->params->get('show_assocs')) {
 
 	if ($tagCloud) {
 ?>
-			<tr>
-				<th><?php echo JText::_('PLG_RESOURCES_ABOUT_TAGS'); ?></th>
-				<td><?php echo $tagCloud; ?></td>
-			</tr>
+			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_TAGS'); ?></h4>
+			<div class="resource-content">
+				<?php echo $tagCloud; ?>
+			</div>
 <?php
 	}
 }
 ?>
-		</tbody>
-	</table>
+	</div><!-- / .resource -->
 </div><!-- / .subject -->
 <div class="clear"></div>

@@ -134,61 +134,54 @@ if ($shots) {
 <?php
 }
 ?>
-	<table class="resource" summary="<?php echo JText::_('RESOURCE_TBL_SUMMARY'); ?>">
-		<tbody>
-			<tr>
-				<th><?php echo JText::_('Category'); ?></th>
-				<td><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $this->resource->_type->alias); ?>"><?php echo stripslashes($this->resource->_type->type); ?></a></td>
-			</tr>
+	<div class="resource">
+		<div class="two columns first">
+			<h4><?php echo JText::_('Category'); ?></h4>
+			<p class="resource-content">
+				<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $this->resource->_type->alias); ?>">
+					<?php echo $this->escape(stripslashes($this->resource->_type->type)); ?>
+				</a>
+			</tp>
+		</div>
+		<div class="two columns second">
+			<h4><?php echo JText::_('Published on'); ?></h4>
+			<p class="resource-content">
+				<time datetime="<?php echo $thedate; ?>"><?php echo JHTML::_('date', $thedate, $dateFormat, $tz); ?></time>
+			</p>
+		</div>
+		<div class="clearfix"></div>
+
 <?php if ($this->resource->revision == 'dev' or !$this->resource->toolpublished) { ?>
-			<tr>
-				<th><?php echo JText::_('PLG_RESOURCES_ABOUT_ABSTRACT'); ?></th>
-				<td>
-					<?php /*<p class="warning"><?php echo JText::_('This tool version is unpublished and cannot be run.'); ?></p> */ ?>
-					<?php echo $maintext; ?>
-				</td>
-			</tr>
+			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_ABSTRACT'); ?></h4>
+			<div class="resource-content">
+				<?php echo $maintext; ?>
+			</div>
 <?php } else if ($this->resource->access == 3 && (!in_array($this->resource->group_owner, $usersgroups) || !$this->authorized)) {
 	// Protected - only show the introtext
 ?>
-			<tr>
-				<th><?php echo ''; ?></th>
-				<td><?php echo $this->escape($introtext); ?></td>
-			</tr>
+			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_ABSTRACT'); ?></h4>
+			<div class="resource-content">
+				<?php echo $this->escape($introtext); ?>
+			</div>
 <?php
 } else {
 	if (trim($maintext)) {
 ?>
-			<tr>
-				<th><?php echo JText::_('PLG_RESOURCES_ABOUT_ABSTRACT'); ?></th>
-				<td><?php echo $maintext; ?></td>
-			</tr>
+			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_ABSTRACT'); ?></h4>
+			<div class="resource-content">
+				<?php echo $maintext; ?>
+			</div>
 <?php
 	}
 	$this->helper->getSubmitters(true, 1, $this->plugin->get('badges', 0));
 	if ($this->helper->contributors && $this->helper->contributors != '<br />') {
 ?>
-			<tr>
-				<th><?php echo JText::_('PLG_RESOURCES_ABOUT_CONTRIBUTOR'); ?></th>
-				<td><?php 
-				/*$name = JText::_('PLG_RESOURCES_ABOUT_ANONYMOUS');
-				if ($this->resource->created_by) {
-					$xuser =& JUser::getInstance($this->resource->created_by);
-					if (is_object($xuser) && $xuser->get('name')) {
-						$name  = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $this->resource->created_by) . '">' . stripslashes($xuser->get('name')) . '</a>';
-						$types = array(23 => 'manager', 24 => 'administrator', 25 => 'super administrator', 21 => 'publisher', 20 => 'editor');
-						if (isset($types[$xuser->gid])) {
-							$name .= ' <span class="user-badges"><span>' . str_replace(' ', '-', $types[$xuser->gid]) . '</span></span>';
-						}
-					}
-				}
-				echo $name;*/ 
-				$html  = ' <div id="authorslist">'."\n";
-				$html .= $this->helper->contributors."\n";
-				$html .= '</div>'."\n";
-				echo $html;
-				?></td>
-			</tr>
+			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_CONTRIBUTOR'); ?></th>
+			<div class="resource-content">
+				<span id="authorslist">
+					<?php echo $this->helper->contributors; ?>
+				</span>
+			</div>
 <?php
 	}
 	$citations = '';
@@ -199,10 +192,10 @@ if ($shots) {
 				$citations = $data[$field->name];
 			} else if ($value = $elements->display($field->type, $data[$field->name])) {
 ?>
-			<tr>
-				<th><?php echo $field->label; ?></th>
-				<td><?php echo $value; ?></td>
-			</tr>
+			<h4><?php echo $field->label; ?></h4>
+			<div class="resource-content">
+				<?php echo $value; ?>
+			</div>
 <?php
 			}
 		}
@@ -257,15 +250,15 @@ if ($shots) {
 		$citeinstruct  = ResourcesHtml::citation($this->option, $cite, $this->resource->id, $citations, $this->resource->type, $revision);
 		$citeinstruct .= ResourcesHtml::citationCOins($cite, $this->resource, $this->config, $this->helper);
 ?>
-			<tr>
-				<th><a name="citethis"></a><?php echo JText::_('PLG_RESOURCES_ABOUT_CITE_THIS'); ?></th>
-				<td><?php echo $citeinstruct; ?></td>
-			</tr>
+			<h4><a name="citethis"></a><?php echo JText::_('PLG_RESOURCES_ABOUT_CITE_THIS'); ?></h4>
+			<div class="resource-content">
+				<?php echo $citeinstruct; ?>
+			</div>
 <?php
 	}
 }
 // If the resource had a specific event date/time
-if ($this->attribs->get('timeof', '')) {
+/*if ($this->attribs->get('timeof', '')) {
 	if (substr($this->attribs->get('timeof', ''), -8, 8) == '00:00:00') {
 		$exp = $dateFormat; //'%B %d %Y';
 	} else {
@@ -293,7 +286,7 @@ if ($this->attribs->get('location', '')) {
 				<td><?php echo $this->escape($this->attribs->get('location', '')); ?></td>
 			</tr>
 <?php
-}
+}*/
 // Tags
 if (!$this->thistool && $this->revision != 'dev') {
 	if ($this->params->get('show_assocs')) {
@@ -301,10 +294,10 @@ if (!$this->thistool && $this->revision != 'dev') {
 
 		if ($tagCloud) {
 ?>
-			<tr>
-				<th><?php echo JText::_('PLG_RESOURCES_ABOUT_TAGS'); ?></th>
-				<td><?php echo $tagCloud; ?></td>
-			</tr>
+			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_TAGS'); ?></h4>
+			<div class="resource-content">
+				<?php echo $tagCloud; ?>
+			</div>
 <?php
 		}
 	}

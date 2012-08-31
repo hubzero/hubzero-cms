@@ -1,0 +1,44 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/resources/abouttool/abouttool.css
+ * @copyright   Copyright 2005-2012 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Resources abouttool plugin CSS
+	-- -- -- -- -- -- --
+
+*/
+
+	.resource {
+		border: none;
+		padding-top: 1em;
+	}
+	.resource .resource-content {
+		margin-bottom: 3em;
+		padding: 0 0 0 1.5em;
+	}
+	.resource ul {
+		margin-left: 1.5em;
+		list-style: disc;
+	}
+	.resource #authorslist,
+	.resource #authorslist p,
+	.resource ul:first-child,
+	.resource ul:first-child li:first-child {
+		margin-top: 0;
+		padding-right: 0;
+		line-height: 1.6em;
+	}
+	.resource .citations {
+		border: 2px solid #e5e5e5;
+		padding: 0 1em;
+		margin: 0;
+		list-style: none;
+	}
+	.resource .citations li {
+		border: none;
+	}

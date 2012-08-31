@@ -14,7 +14,7 @@
 	.voting .vote-button:hover, 
 	.voting a.vote-button:hover {
 		border: none;
-		background: #f1f1f1;
+		background-color: #f1f1f1;
 		color: #555;
 		text-shadow: none;
 		margin: 0;
@@ -30,7 +30,7 @@
 	}
 	.voting .vote-button:hover, 
 	.voting a.vote-button:hover {
-		background: #e7e7e7;
+		background-color: #e7e7e7;
 		color: #111;
 	}
 	.voting .vote-like, 
@@ -82,4 +82,13 @@
 	.voting .dislike span:after {
 		top: 0.2em;
 		content: "\f088";
+	}
+	@-moz-document url-prefix() {
+		.voting .vote-button span {
+			height: 1.1em;
+		}
+		.voting .vote-dislike .neutral span:after,
+		.voting .dislike span:after {
+			top: 0;
+		}
 	}

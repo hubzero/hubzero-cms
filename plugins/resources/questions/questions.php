@@ -62,7 +62,7 @@ class plgResourcesQuestions extends JPlugin
 	{
 		if (isset($resource->toolpublished) || isset($resource->revision))
 		{
-			if ($resource->thistool && ($resource->revision=='dev' or !$resource->toolpublished)) 
+			if (isset($resource->thistool) && $resource->thistool && ($resource->revision=='dev' or !$resource->toolpublished)) 
 			{
 				$resource->_type->_params->set('plg_questions', 0);
 			}

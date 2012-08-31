@@ -41,7 +41,7 @@
 		display: block;
 		height: 27px;
 		margin: 0;
-		padding: 0 15px 0 0;
+		padding: 0;
 		text-align: center;
 		text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.6);
 	}
@@ -51,7 +51,7 @@
 		display: block;
 		height: 22px;
 		margin: 0;
-		padding: 5px 0 0 15px;
+		padding: 5px 15px 0 15px;
 		text-align: center;
 	}
 	#sub-menu li a:hover {
