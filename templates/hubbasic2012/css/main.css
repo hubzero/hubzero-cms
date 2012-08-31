@@ -2791,3 +2791,7 @@
 		content: "\f002";
 		font-family: "Fontcons";
 	}
+	.voting .vote-button,
+	.voting a.vote-button {
+		background: url("../images/layout/stripes.png");
+	}
