@@ -9,39 +9,29 @@
 <jtmpl:tmpl name="page" autoclear="yes">
 <jtmpl:tmpl name="stepbar">
 	<div id="stepbar">
-		<div class="t">
-		<div class="t">
-			<div class="t"></div>
-		</div>
-	</div>
-	<div class="m">
-			<h1><jtmpl:translate>Steps</jtmpl:translate></h1>
-			<div class="step-{STEP_INSTALLKEY}">
+		<h2><jtmpl:translate>Steps</jtmpl:translate></h2>
+		<ol class="container">
+			<li class="step-{STEP_INSTALLKEY}">
 				1 : <jtmpl:translate>Install Key</jtmpl:translate>
-			</div>
-			<div class="step-{STEP_PREINSTALL}">
+			</li>
+			<li class="step-{STEP_PREINSTALL}">
 				2 : <jtmpl:translate>Pre-Installation check</jtmpl:translate>
-			</div>
-			<div class="step-{STEP_LICENSE}">
+			</li>
+			<li class="step-{STEP_LICENSE}">
 				3 : <jtmpl:translate>License</jtmpl:translate>
-			</div>
-			<div class="step-{STEP_DBCONFIG}">
+			</li>
+			<li class="step-{STEP_DBCONFIG}">
 				4 : <jtmpl:translate>Database</jtmpl:translate>
-			</div>
-			<div class="step-{STEP_MAINCONFIG}">
+			</li>
+			<li class="step-{STEP_MAINCONFIG}">
 				5 : <jtmpl:translate>Configuration</jtmpl:translate>
-			</div>
-			<div class="step-{STEP_FINISH}">
+			</li>
+			<li class="step-{STEP_FINISH}">
 				6 : <jtmpl:translate>Finish</jtmpl:translate>
-			</div>
+			</li>
+		</ol>
 		<div class="box"></div>
-  	</div>
-	<div class="b">
-		<div class="b">
-			<div class="b"></div>
-		</div>
 	</div>
-  </div>
 </jtmpl:tmpl>
 <jtmpl:tmpl name="warning">
 
