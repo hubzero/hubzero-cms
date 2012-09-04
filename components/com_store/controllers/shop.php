@@ -93,10 +93,10 @@ class StoreControllerShop extends Hubzero_Controller
 					);
 				break;
 				default:
-					$pathway->addItem(
+					/*$pathway->addItem(
 						JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
 						'index.php?option=' . $this->_option . '&task=' . $this->_task
-					);
+					);*/
 				break;
 			}
 		}
@@ -110,7 +110,7 @@ class StoreControllerShop extends Hubzero_Controller
 	protected function _buildTitle()
 	{
 		$this->view->title = JText::_(strtoupper($this->_option));
-		if ($this->_task) 
+		if ($this->_task && $this->_task != 'display') 
 		{
 			$this->view->title .= ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		}
