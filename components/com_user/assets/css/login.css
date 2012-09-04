@@ -6,15 +6,6 @@
  */
 
 /* Container styles */
-#content {
-	background: #F4F4F4 url("/components/com_user/assets/img/background_noise.png");
-}
-div.componentheading {
-	display: none;
-}
-#content-wrap h3 {
-	display: none;
-}
 #authentication {
 	overflow: hidden;
 	padding: 25px 25px 10px 25px;
