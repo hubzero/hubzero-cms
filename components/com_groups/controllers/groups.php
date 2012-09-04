@@ -2490,12 +2490,13 @@ class GroupsController extends Hubzero_Controller
 		$group->set('logo', $logo);
 		$group->set('overview_type', $overview_type);
 		$group->set('overview_content', $overview_content);
-		$group->set('plugins',$plugin_access);
-		$group->update();
+		$group->set('plugins', $plugin_access);
 
-		if ($group->error) 
+		if (!$group->update()) 
 		{
-			$this->setNotification($group->error, 'error');
+			$this->setNotification(JText::_('An error occurred when trying to save changes to this group.'), 'error');
+			$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&gid=' . $group->get('cn'));
+			return;
 		}
 
 		// Log the group save
@@ -2512,7 +2513,7 @@ class GroupsController extends Hubzero_Controller
 		}
 
 		// Push a success message
-		$this->setNotification("You have successfully customized the \"{$group->get('description')}\" group.", 'passed');
+		$this->setNotification(JText::sprintf('You have successfully customized the %s group.', $group->get('description')), 'passed');
 
 		// Redirect back to the group page
 		$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&gid=' . $group->get('cn'));
