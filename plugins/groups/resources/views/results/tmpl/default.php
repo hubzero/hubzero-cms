@@ -65,7 +65,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php } ?>
 				</select>
 			</label>
-			<input type="submit" value="<?php echo JText::_('PLG_GROUPS_RESOURCES_GO'); ?>" />
+			<p class="submit">
+				<input type="submit" value="<?php echo JText::_('PLG_GROUPS_RESOURCES_GO'); ?>" />
+			</p>
 		</fieldset>
 <?php
 // An array for storing all the links we make
@@ -88,7 +90,7 @@ foreach ($this->cats as $cat)
 			$blob = $cat['category'];
 		}
 		// Build the HTML
-		$l = "\t".'<li'.$a.'><a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=resources&area='. urlencode(stripslashes($blob))) .'">' . stripslashes($cat['title']) . ' ('.$cat['total'].')</a>';
+		$l = "\t".'<li'.$a.'><a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=resources&area='. urlencode(stripslashes($blob))) .'">' . $this->escape(stripslashes($cat['title'])) . ' ('.$cat['total'].')</a>';
 		// Are there sub-categories?
 		if (isset($cat['_sub']) && is_array($cat['_sub'])) {
 			// An array for storing the HTML we make
@@ -109,7 +111,7 @@ foreach ($this->cats as $cat)
 						$blob = $subcat['category'];
 					}
 					// Build the HTML
-					$k[] = "\t\t\t".'<li'.$a.'><a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=resources&area='. urlencode(stripslashes($blob))) .'">' . stripslashes($subcat['title']) . ' ('.$subcat['total'].')</a></li>';
+					$k[] = "\t\t\t".'<li'.$a.'><a href="'.JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=resources&area='. urlencode(stripslashes($blob))) .'">' . $this->escape(stripslashes($subcat['title'])) . ' ('.$subcat['total'].')</a></li>';
 				}
 			}
 			// Do we actually have any links?
@@ -126,16 +128,19 @@ foreach ($this->cats as $cat)
 }
 // Do we actually have any links?
 // NOTE: this method prevents returning empty list tags "<ul></ul>"
-if (count($links) > 0) {
+if (count($links) > 0) 
+{
 	// Yes - output the necessary HTML
 	$html .= '<ul class="sub-nav">'."\n";
 	$html .= implode( "\n", $links );
 	$html .= '</ul>'."\n";
 }
-$html .= "\t".'<p class="add"><a href="'.JRoute::_('index.php?option=com_resources&task=new').'">'.JText::_('PLG_GROUPS_RESOURCES_START_A_CONTRIBUTION').'</a></p>'."\n";
-$html .= "\t".'<input type="hidden" name="area" value="'.$this->active.'" />'."\n";
 echo $html;
 ?>
+	<p>
+		<a class="add" href="<?php echo JRoute::_('index.php?option=com_resources&task=new'); ?>"><?php echo JText::_('PLG_GROUPS_RESOURCES_START_A_CONTRIBUTION'); ?></a>
+	</p>
+	<input type="hidden" name="area" value="<?php echo $this->escape($this->active); ?>" />
 </div><!-- / .aside -->
 <div class="subject">
 <?php
@@ -232,7 +237,7 @@ foreach ($this->results as $category)
 				$html .= call_user_func( array($obj,'out'), $row, $this->authorized );
 			} else {
 				$html .= "\t".'<li>'."\n";
-				$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.stripslashes($row->title).'</a></p>'."\n";
+				$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.$this->escape(stripslashes($row->title)).'</a></p>'."\n";
 				if ($row->text) {
 					$html .= "\t\t".Hubzero_View_Helper_Html::shortenText(stripslashes($row->text))."\n";
 				}
@@ -245,12 +250,12 @@ foreach ($this->results as $category)
 			jimport('joomla.html.pagination');
 			$pageNav = new JPagination( $this->total, $this->limitstart, $this->limit );
 
-			$pf = $pageNav->getListFooter();
-
-			$nm = str_replace('com_','',$this->option);
-
-			$pf = str_replace($nm.'/?',$nm.'/'.$this->group->get('cn').'/'.$this->active.'/?',$pf);
-			$html .= $pf;
+			$pageNav->setAdditionalUrlParam('id', $this->group->get('cn'));
+			$pageNav->setAdditionalUrlParam('active', 'resources');
+			$pageNav->setAdditionalUrlParam('area', urlencode(stripslashes($this->active)));
+			$pageNav->setAdditionalUrlParam('sort', $this->sort);
+			$pageNav->setAdditionalUrlParam('access', $this->access);
+			echo $pageNav->getListFooter();
 		} else {
 			$html .= '<p class="moreresults">'.JText::sprintf('PLG_GROUPS_RESOURCES_NUMBER_SHOWN', $amt);
 			// Ad a "more" link if necessary

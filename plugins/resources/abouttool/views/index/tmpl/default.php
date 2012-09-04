@@ -303,7 +303,6 @@ if (!$this->thistool && $this->revision != 'dev') {
 	}
 }
 ?>
-		</tbody>
-	</table>
+	</div><!-- / .resource -->
 </div><!-- / .subject -->
 <div class="clear"></div>
