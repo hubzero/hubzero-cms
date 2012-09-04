@@ -113,7 +113,7 @@ class TitleIndexMacro extends WikiMacro
 			} 
 			else 
 			{
-				$sql .= "p.`group_cn`=''";
+				$sql .= "(p.`group_cn`='' OR p.`group_cn` IS NULL)";
 			}
 		}
 		switch ($sort)
