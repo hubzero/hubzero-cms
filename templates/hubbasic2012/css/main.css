@@ -1844,10 +1844,10 @@
 	#content .section #system-message {
 		margin: 0 0 30px 0;
 	}
-/* HUB Forms 
+/* HUB Forms */
 	#hubForm {
-		padding: 0;
-		margin: 1em 0;
+		/*padding: 0;
+		margin: 1em 0;*/
 		position: relative;
 	}
 	/* Side fade */
@@ -1867,6 +1867,10 @@
 		width: 30px;
 		border: 0;
 		_display: none;
+		
+		right: 210px;
+		top: 0;
+		bottom: 0;
 	}
 	/* Top side fade */
 	#hubForm:after {
@@ -1883,6 +1887,9 @@
 		right: 260px;
 		border: 0;
 		_display: none;
+		
+		right: 230px;
+		top: -10px;
 	}
 	/* Bottom side fade */
 	#hubForm .explaination:first-child:after {
@@ -1899,6 +1906,9 @@
 		width: 10px;
 		border: none;
 		_display: none;
+		
+		right: 230px;
+		bottom: -10px;
 	}
 	#hubForm.login .explaination:first-child:after {
 		display: none;
@@ -2058,6 +2068,10 @@
 		float: none;
 		width: auto;
 	}
+	#commentform input[type=text],
+	#commentform input[type=password],
+	#commentform input[type=email],
+	#commentform textarea,
 	#hubForm input[type=text],
 	#hubForm input[type=password],
 	#hubForm input[type=email],
@@ -2081,12 +2095,16 @@
 		transition: all 0.1s ease-out;
 		-webkit-background-clip: padding-box;
 	}
+	#commentform textarea:focus, 
+	#commentform input[type="text"]:focus, 
+	#commentform input[type="password"]:focus, 
+	#commentform input[type="file"]:focus,
 	#hubForm textarea:focus, 
 	#hubForm input[type="text"]:focus, 
 	#hubForm input[type="password"]:focus, 
 	#hubForm input[type="file"]:focus {
 		background-color: #fff;
-		border-color: #d86560;
+		border-color: #0fa1ca;
 	}
 	/*#hubForm textarea:focus {
 		background-image: -webkit-linear-gradient(#eee 1px, transparent 1px);
@@ -2794,4 +2812,20 @@
 	.voting .vote-button,
 	.voting a.vote-button {
 		background: url("../images/layout/stripes.png");
+	}
+	body ul.token-input-list-act, 
+	body ul.token-input-list-acg, 
+	body ul.token-input-list-acm {
+		background: #F0F0F0;
+		border: 1px solid #D9D9D9;
+		background-color: rgba(0, 0, 0, .039);
+		border-color: rgba(0, 0, 0, .19) rgba(0, 0, 0, .13) rgba(0, 0, 0, .07);
+		-webkit-border-radius: 1px;
+		-moz-border-radius: 1px;
+		border-radius: 1px;
+	}
+	body #hubForm ul.token-input-list-act input, 
+	body #hubForm ul.token-input-list-acg input, 
+	body #hubForm ul.token-input-list-acm input {
+		background: transparent;
 	}

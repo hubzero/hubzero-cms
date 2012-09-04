@@ -160,6 +160,9 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 							<jdoc:include type="modules" name="welcome" />
 						</div><!-- / #splash -->
 <?php endif; ?>
+<?php if ($this->getBuffer('message')) : ?>
+						<jdoc:include type="message" />
+<?php endif; ?>
 					</div><!-- / #sub-masthead -->
 				</div><!-- / .inner -->
 			</div><!-- / .inner-wrap -->
@@ -181,9 +184,6 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 							<jdoc:include type="modules" name="right" />
 						</div><!-- / .aside -->
 						<div class="subject">
-<?php endif; ?>
-<?php if ($this->getBuffer('message')) : ?>
-							<jdoc:include type="message" />
 <?php endif; ?>
 							<!-- start component output -->
 							<jdoc:include type="component" />
