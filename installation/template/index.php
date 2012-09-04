@@ -33,21 +33,23 @@ $v = $browser->getBrowserMajorVersion();
 	</head>
 	<body>
 		<div id="wrap">
-			<div id="header">
-				<h1>
-					<span><?php echo JText::_('Installation') ?></span>
-				</h1>
-				<span id="version">1.2</span>
-			</div>
-			<div id="content-box">
-				<div id="content-pad">
-					<jdoc:include type="installation" />
+			<div id="content">
+				<div id="header">
+					<h1>
+						<span><?php echo JText::_('Installation') ?></span>
+					</h1>
+					<span id="version">1.2</span>
+				</div>
+				<div id="content-box">
+					<div id="content-pad">
+						<jdoc:include type="installation" />
+					</div>
 				</div>
 			</div>
-		</div>
-		<div id="copyright">
-			<a href="http://hubzer.org" rel="external">HUBzero&reg;</a>
-			<?php echo JText::_('ISFREESOFTWARE') ?>
+			<div id="copyright">
+				<a href="http://hubzer.org" rel="external">HUBzero&reg;</a>
+				<?php echo JText::_('ISFREESOFTWARE') ?>
+			</div>
 		</div>
 	</body>
 </html>

@@ -9,14 +9,9 @@
 <form action="index.php" method="post" name="adminForm">
 <div id="right">
 	<div id="rightpad">
-		<div id="step">
-			<div class="t">
-		<div class="t">
-			<div class="t"></div>
-		</div>
-		</div>
-		<div class="m">
 
+		<div id="step">
+			<div class="m">
 				<div class="far-right">
 					<jtmpl:tmpl name="buttons" type="Condition" conditionvar="direction">
 						<jtmpl:sub condition="ltr">
@@ -30,133 +25,101 @@
 					<div class="button1-left"><div class="refresh"><a onclick="submitForm( adminForm, 'preinstall' );" alt="<jtmpl:translate escape="yes">Check Again</jtmpl:translate>"><jtmpl:translate escape="yes">Check Again</jtmpl:translate></a></div></div>
 						</jtmpl:sub>
 					</jtmpl:tmpl>
-				</div>
+				</div><!-- / .far-right -->
 				<span class="step"><jtmpl:translate>Pre-Installation check</jtmpl:translate></span>
-			</div>
-		<div class="b">
-		<div class="b">
-			<div class="b"></div>
-		</div>
-		</div>
-	</div>
+			</div><!-- / .m -->
+		</div><!-- / #step -->
 
-	<div id="installer">
-			<div class="t">
-		<div class="t">
-			<div class="t"></div>
-		</div>
-		</div>
-		<div class="m">
-
+		<div id="installer">
+			<div class="m">
 				<h2><jtmpl:translate key="preTitle">Pre-installation check for</jtmpl:translate> {VERSION}:</h2>
 				<div class="install-text">
 					<jtmpl:translate key="tipPreinstall">If any of these items is not supported (marked as <strong><font color="#ff00">No</font></strong>)
 					then please take actions to correct them. Failure to do so
 					could lead to your Joomla! installation not functioning
 					correctly.</jtmpl:translate>
-				</div>
+				</div><!-- / .install-text -->
 				<div class="install-body">
-				<div class="t">
-			<div class="t">
-				<div class="t"></div>
-			</div>
-			</div>
-			<div class="m">
+					<div class="m">
 						<fieldset>
-
 							<table class="content">
-							<jtmpl:tmpl name="php-options">
-							<tr>
-								<td class="item" valign="top">
-									{LABEL}
-								</td>
-								<td valign="top">
-									<span class="{STATE}">
-									<jtmpl:var name="statetext" copyFrom="state" modifier="translate" />
-									</span>
-									<span class="small">
-									{NOTICE}&nbsp;
-									</span>
-								</td>
-							</tr>
-							</jtmpl:tmpl>
-							<tr>
-								<td valign="top" class="item">
-								</td>
-							</tr>
+								<tbody>
+									<jtmpl:tmpl name="php-options">
+									<tr>
+										<th scope="row" class="item">
+											{LABEL}
+										</th>
+										<td>
+											<span class="{STATE}">
+											<jtmpl:var name="statetext" copyFrom="state" modifier="translate" />
+											</span>
+											<span class="small">
+											{NOTICE}&nbsp;
+											</span>
+										</td>
+									</tr>
+									</jtmpl:tmpl>
+								</tbody>
 							</table>
 						</fieldset>
-					</div>
-			<div class="b">
-			<div class="b">
-				<div class="b"></div>
-			</div>
-			</div>
+					</div><!-- / .m -->
 					<div class="clr"></div>
-				</div>
-		<div class="newsection"></div>
+				</div><!-- / .install-body -->
+
+				<div class="newsection"></div>
+
 				<h2><jtmpl:translate>Recommended settings</jtmpl:translate>:</h2>
 				<div class="install-text">
 					<jtmpl:translate key="tipRecomSettings">These settings are recommended for PHP in order to ensure full
 					compatibility with Joomla.
 					<br />
 					However, Joomla! will still operate if your settings do not quite match the recommended.</jtmpl:translate>
-				</div>
+				</div><!-- / .install-text -->
 				<div class="install-body">
-				<div class="t">
-			<div class="t">
-				<div class="t"></div>
-			</div>
-			</div>
-			<div class="m">
+					<div class="m">
 						<fieldset>
 							<table class="content">
-							<tr>
-								<td class="toggle">
-									<jtmpl:translate>Directive</jtmpl:translate>
-								</td>
-								<td class="toggle">
-									<jtmpl:translate>Recommended</jtmpl:translate>
-								</td>
-								<td class="toggle">
-									<jtmpl:translate>Actual</jtmpl:translate>
-								</td>
-							</tr>
-							<jtmpl:tmpl name="php-settings">
-							<tr>
-								<td class="item">
-									{LABEL}:
-								</td>
-								<td class="toggle">
-									<jtmpl:var name="setting" modifier="translate" />
-								</td>
-								<td>
-									<span class="{STATE}">
-									<jtmpl:var name="actual" modifier="translate" />
-									</span>
-								<td>
-							</tr>
-							</jtmpl:tmpl>
+								<thead>
+									<tr>
+										<th scope="col" class="toggle">
+											<jtmpl:translate>Directive</jtmpl:translate>
+										</th>
+										<th scope="col" class="toggle">
+											<jtmpl:translate>Recommended</jtmpl:translate>
+										</th>
+										<th scope="col" class="toggle">
+											<jtmpl:translate>Actual</jtmpl:translate>
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									<jtmpl:tmpl name="php-settings">
+									<tr>
+										<th scope="row" class="item">
+											{LABEL}:
+										</th>
+										<td class="toggle">
+											<jtmpl:var name="setting" modifier="translate" />
+										</td>
+										<td>
+											<span class="{STATE}">
+											<jtmpl:var name="actual" modifier="translate" />
+											</span>
+										<td>
+									</tr>
+									</jtmpl:tmpl>
+								</tbody>
 							</table>
 						</fieldset>
-					</div>
-			<div class="b">
-			<div class="b">
-				<div class="b"></div>
-			</div>
-			</div>
+					</div><!-- / .m -->
 					<div class="clr"></div>
-				</div>
-		<div class="clr"></div>
-		</div>
-		<div class="b">
-		<div class="b">
-			<div class="b"></div>
-		</div>
-		</div>
-		</div>
-	</div>
-</div>
+				</div><!-- / .install-body -->
+				<div class="clr"></div>
+			</div><!-- / .m -->
+		</div><!-- / #installer -->
+
+	</div><!-- / #rightpad -->
+</div><!-- / #right -->
 
 <div class="clr"></div>
 

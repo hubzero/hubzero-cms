@@ -65,13 +65,9 @@
 <form action="index.php" method="post" name="adminForm" id="adminForm" class="form-validate" autocomplete="off">
 <div id="right">
 	<div id="rightpad">
+		
 		<div id="step">
-			<div class="t">
-		<div class="t">
-			<div class="t"></div>
-		</div>
-		</div>
-		<div class="m">
+			<div class="m">
 				<div class="far-right">
 					<jtmpl:tmpl name="buttons" type="condition" conditionvar="direction">
 						<jtmpl:sub condition="ltr">
@@ -85,21 +81,11 @@
 					</jtmpl:tmpl>
 				</div>
 				<span class="step"><jtmpl:translate>Database Configuration</jtmpl:translate></span>
-			</div>
-		<div class="b">
-		<div class="b">
-			<div class="b"></div>
-		</div>
-		</div>
-	</div>
+			</div><!-- / .m -->
+		</div><!-- / #step -->
 
-	<div id="installer">
-			<div class="t">
-		<div class="t">
-			<div class="t"></div>
-		</div>
-		</div>
-		<div class="m">
+		<div id="installer">
+			<div class="m">
 
 				<h2><jtmpl:translate>Connection Settings</jtmpl:translate>:</h2>
 				<div class="install-text">
@@ -112,175 +98,152 @@
 					</jtmpl:translate>
 				</div>
 				<div class="install-body">
-				<div class="t">
-			<div class="t">
-				<div class="t"></div>
-			</div>
-			</div>
-			<div class="m">
+					<div class="m-smenu">
+
 							<h3 class="title-smenu" title="<jtmpl:translate>Basic</jtmpl:translate>"><jtmpl:translate>Basic Settings</jtmpl:translate></h3>
 							<div class="section-smenu">
 								<table class="content2">
-								<tr>
-									<td></td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr>
-									<td colspan="2">
-										<label for="vars_dbtype">
-											<jtmpl:translate>Database Type</jtmpl:translate>
-										</label>
-										<br />
-										<select id="vars_dbtype" name="vars[DBtype]" class="inputbox" size="1">
-										<option value=""><jtmpl:translate>Select Type</jtmpl:translate></option>
-										<jtmpl:tmpl name="dbtype-options">
-											<option value="{TEXT}" {SELECTED}>{TEXT}</option>
-										</jtmpl:tmpl>
-										</select>
-									</td>
-									<td>
-										<em>
-										<jtmpl:translate key="tipType">This is probably 'mysql'</jtmpl:translate>
-										</em>
-									</td>
-								</tr>
-								<tr>
-									<td colspan="2">
-										<label for="vars_dbhostname">
-											<span id="dbhostnamemsg"><jtmpl:translate>Host Name</jtmpl:translate></span>
-										</label>
-										<br />
-										<input id="vars_dbhostname" class="inputbox validate required none dbhostnamemsg" type="text" name="vars[DBhostname]" value="{VAR_DBHOSTNAME}" />
-									</td>
-									<td>
-										<em>
-										<jtmpl:translate key="tipHost">This is usually 'localhost'</jtmpl:translate>
-										</em>
-									</td>
-								</tr>
-								<tr>
-									<td colspan="2">
-										<label for="vars_dbusername">
-											<span id="dbusernamemsg"><jtmpl:translate>User Name</jtmpl:translate></span>
-										</label>
-										<br />
-										<input id="vars_dbusername" class="inputbox validate required none dbusernamemsg" type="text" name="vars[DBuserName]" value="{VAR_DBUSERNAME}" />
-									</td>
-									<td>
-										<em>
-										<jtmpl:translate key="tipUser">Either something as 'root' or a username given by the hoster</jtmpl:translate>
-										</em>
-									</td>
-								</tr>
-								<tr>
-									<td colspan="2">
-										<label for="vars_dbpassword">
-											<jtmpl:translate>Password</jtmpl:translate>
-										</label>
-										<br />
-										<input id="vars_dbpassword" class="inputbox" type="password" name="vars[DBpassword]" value="{VAR_DBPASSWORD}" />
-									</td>
-									<td>
-										<em>
-										<jtmpl:translate key="tipPassword">For site security using a password for the mysql account is mandatory</jtmpl:translate>
-										</em>
-									</td>
-								</tr>
-								<tr>
-									<td colspan="2">
-										<label for="vars_dbname">
-											<span id="dbnamemsg"><jtmpl:translate>Database Name</jtmpl:translate></span>
-										</label>
-										<br />
-										<input id="vars_dbname" class="inputbox validate required none dbnamemsg" type="text" name="vars[DBname]" value="{VAR_DBNAME}" />
-									</td>
-									<td>
-										<em>
-										<jtmpl:translate key="tipDatabase">Some hosts allow only a certain DB name per site. Use table prefix in this case for distinct Joomla! sites.</jtmpl:translate>
-										</em>
-									</td>
-								</tr>
+									<tbody>
+										<tr>
+											<td>
+												<label for="vars_dbtype">
+													<jtmpl:translate>Database Type</jtmpl:translate>
+												</label>
+												<br />
+												<select id="vars_dbtype" name="vars[DBtype]" class="inputbox" size="1">
+													<option value=""><jtmpl:translate>Select Type</jtmpl:translate></option>
+												<jtmpl:tmpl name="dbtype-options">
+													<option value="{TEXT}" {SELECTED}>{TEXT}</option>
+												</jtmpl:tmpl>
+												</select>
+											</td>
+											<td>
+												<em>
+												<jtmpl:translate key="tipType">This is probably 'mysql'</jtmpl:translate>
+												</em>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<label for="vars_dbhostname">
+													<span id="dbhostnamemsg"><jtmpl:translate>Host Name</jtmpl:translate></span>
+												</label>
+												<br />
+												<input id="vars_dbhostname" class="inputbox validate required none dbhostnamemsg" type="text" name="vars[DBhostname]" value="{VAR_DBHOSTNAME}" />
+											</td>
+											<td>
+												<em>
+												<jtmpl:translate key="tipHost">This is usually 'localhost'</jtmpl:translate>
+												</em>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<label for="vars_dbusername">
+													<span id="dbusernamemsg"><jtmpl:translate>User Name</jtmpl:translate></span>
+												</label>
+												<br />
+												<input id="vars_dbusername" class="inputbox validate required none dbusernamemsg" type="text" name="vars[DBuserName]" value="{VAR_DBUSERNAME}" />
+											</td>
+											<td>
+												<em>
+												<jtmpl:translate key="tipUser">Either something as 'root' or a username given by the hoster</jtmpl:translate>
+												</em>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<label for="vars_dbpassword">
+													<jtmpl:translate>Password</jtmpl:translate>
+												</label>
+												<br />
+												<input id="vars_dbpassword" class="inputbox" type="password" name="vars[DBpassword]" value="{VAR_DBPASSWORD}" />
+											</td>
+											<td>
+												<em>
+												<jtmpl:translate key="tipPassword">For site security using a password for the mysql account is mandatory</jtmpl:translate>
+												</em>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<label for="vars_dbname">
+													<span id="dbnamemsg"><jtmpl:translate>Database Name</jtmpl:translate></span>
+												</label>
+												<br />
+												<input id="vars_dbname" class="inputbox validate required none dbnamemsg" type="text" name="vars[DBname]" value="{VAR_DBNAME}" />
+											</td>
+											<td>
+												<em>
+												<jtmpl:translate key="tipDatabase">Some hosts allow only a certain DB name per site. Use table prefix in this case for distinct Joomla! sites.</jtmpl:translate>
+												</em>
+											</td>
+										</tr>
+									</tbody>
 								</table>
 								<br /><br />
 							</div>
 							<h3 class="title-smenu moofx-toggler" title="<jtmpl:translate>Advanced</jtmpl:translate>"><jtmpl:translate>Advanced settings</jtmpl:translate></h3>
 							<div class="section-smenu moofx-slider">
 								<table class="content2">
-								<tr>
-									<td></td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr>
-									<td>
-										<input id="vars_dbolddel" type="radio" name="vars[DBOld]" value="rm" />
-									</td>
-									<td>
-										<label for="vars_dbolddel">
-											<jtmpl:translate>Drop Existing Tables</jtmpl:translate>
-										</label>
-									</td>
-									<td></td>
-								</tr>
-								<tr>
-									<td>
-										<input id="vars_dboldbackup" type="radio" name="vars[DBOld]" value="bu"  checked="checked"/>
-									</td>
-
-									<td>
-										<label for="vars_dboldbackup">
-											<jtmpl:translate>Backup Old Tables</jtmpl:translate>
-										</label>
-									</td>
-
-									<td>
-										<em>
-										<jtmpl:translate key="tipBackup">Any existing backup tables from former Joomla! installations will be replaced</jtmpl:translate>
-										</em>
-									</td>
-								</tr>
-								<tr>
-									<td colspan="2">
-										<label for="vars_dbprefix">
-											<jtmpl:translate>Table Prefix</jtmpl:translate>
-										</label>
-										<br />
-										<input id="vars_dbprefix" class="inputbox" type="text" name="vars[DBPrefix]" value="{VAR_DBPREFIX}" />
-									</td>
-									<td>
-										<em>
-										<jtmpl:translate key="tipPrefix">Dont use 'old_' since this is used for backup tables</jtmpl:translate>
-										</em>
-									</td>
-								</tr>
+									<tbody>
+										<tr>
+											<td>
+												<input id="vars_dbolddel" type="radio" name="vars[DBOld]" value="rm" />
+											</td>
+											<td>
+												<label for="vars_dbolddel">
+													<jtmpl:translate>Drop Existing Tables</jtmpl:translate>
+												</label>
+											</td>
+											<td></td>
+										</tr>
+										<tr>
+											<td>
+												<input id="vars_dboldbackup" type="radio" name="vars[DBOld]" value="bu"  checked="checked"/>
+											</td>
+											<td>
+												<label for="vars_dboldbackup">
+													<jtmpl:translate>Backup Old Tables</jtmpl:translate>
+												</label>
+											</td>
+											<td>
+												<em>
+												<jtmpl:translate key="tipBackup">Any existing backup tables from former Joomla! installations will be replaced</jtmpl:translate>
+												</em>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="2">
+												<label for="vars_dbprefix">
+													<jtmpl:translate>Table Prefix</jtmpl:translate>
+												</label>
+												<br />
+												<input id="vars_dbprefix" class="inputbox" type="text" name="vars[DBPrefix]" value="{VAR_DBPREFIX}" />
+											</td>
+											<td>
+												<em>
+												<jtmpl:translate key="tipPrefix">Dont use 'old_' since this is used for backup tables</jtmpl:translate>
+												</em>
+											</td>
+										</tr>
+									</tbody>
 								</table>
+							</div>
+							<div class="clr"></div>
 
-						</div>
-						<div class="clr"></div>
-			</div>
-			<div class="b">
-				<div class="b">
-					<div class="b"></div>
-				</div>
-			</div>
+					</div><!-- / .m-smenu -->
 					<div class="clr"></div>
-				</div>
-		<div class="clr"></div>
-		</div>
-		<div class="b">
-			<div class="b">
-				<div class="b"></div>
-			</div>
-		</div>
-		</div>
-	</div>
-</div>
+				</div><!-- / .install-body -->
+				<div class="clr"></div>
 
+			</div><!-- / .m -->
+		</div><!-- / #installer -->
 
+	</div><!-- / #rightpad -->
+</div><!-- / #right -->
 <div class="clr"></div>
+
 <input type="hidden" name="task" value="" />
 <input type="hidden" id='vars_key' name="vars[key]" value="{VAR_KEY}" />
 </form>
-
-
