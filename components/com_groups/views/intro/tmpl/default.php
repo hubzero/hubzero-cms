@@ -58,9 +58,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<li>
 				<a href="/kb/groups/guide">Group Guidelines</a>
 			</li>
-			<li class="new">
-				<a class="add" href="<?php echo JRoute::_('index.php?option='.$option.'&task=new'); ?>"><?php echo JText::_('Create User Group'); ?></a>
-			</li>
 		</ul>
 	</div><!-- / .aside -->
 	<div class="subject">

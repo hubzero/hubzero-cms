@@ -440,7 +440,7 @@
 		padding: 0 0 0 15px;
 	}
 
-/* ----------------------- */
+/* ----------------------- 
 	.tags {
 		margin-left: 14px;
 		font-size: 10px !important;
@@ -463,7 +463,7 @@
 		padding: 2px 6px 2px 6px !important;
 	}
 	.tags li a span {
-		background-color: #fcebc7; /* For browsers that don't support rgba */
+		background-color: #fcebc7;
 		background-color: rgba(255, 255, 255, 0.4);
 		display: inline-block;
 		margin: -2px -6px -2px 2px;
@@ -504,7 +504,7 @@
 		background: #f3ae22 !important;
 	}
 	.tags li a:hover span {
-		background-color: #f7ce7a; /* For browsers that don't support rgba */
+		background-color: #f7ce7a;
 		background-color: rgba(255, 255, 255, 0.4);
 	}
 	.tags li a:hover:before {
@@ -515,7 +515,7 @@
 	#group_options {
 		position: absolute;
 		top: 20px;
-		right: 5px;
+		right: 20px;
 		list-style: none;
 		margin: 0;
 		padding: 0;
