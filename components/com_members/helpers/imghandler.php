@@ -384,9 +384,9 @@ class MembersImgHandler extends JObject
 		}
 
 		jimport('joomla.filesystem.file');
-		$ext = JFile::getExt($thumb);
+		$ext = JFile::getExt($image);
 
-		return JFile::stripExt($thumb) . $tn . '.' . $ext;
+		return JFile::stripExt($image) . $tn . '.' . $ext;
 	}
 
 	/**
