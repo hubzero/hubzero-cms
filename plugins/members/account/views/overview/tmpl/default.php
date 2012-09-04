@@ -51,8 +51,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			foreach($this->hzalaccounts as $hzala)
 			{
 ?>
-				<div class="account-group active">
-					<div class="auth_link_icon" id="<?php echo $hzala['auth_domain_name']; ?>"></div>
+				<div class="account-group active" id="<?php echo $hzala['auth_domain_name']; ?>">
 					<div class="x"><a title="<?php echo JText::_('PLG_MEMBERS_ACCOUNT_REMOVE_ACCOUNT'); ?>" href="<?php 
 						echo JRoute::_('index.php?option=' .
 							$this->option . '&id=' .
@@ -77,8 +76,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			{
 ?>
 				<a href="<?php echo JRoute::_('index.php?option=com_user&view=login&authenticator=' . $domain->name); ?>">
-					<div class="account-group inactive">
-						<div class="auth_link_icon" id="<?php echo $domain->name; ?>"></div>
+					<div class="account-group inactive" id="<?php echo $domain->name; ?>">
 						<p>
 							<?php echo JText::_('PLG_MEMBERS_ACCOUNT_ACCOUNT_TYPE'); ?>: <?php echo $domain->name; ?><br />
 							<?php echo JText::_('PLG_MEMBERS_ACCOUNT_CLICK_TO_LINK'); ?>

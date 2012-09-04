@@ -56,8 +56,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<a href="<?php echo JRoute::_('/logout?return=' .
 					base64_encode(JRoute::_('/login?authenticator=' . $c['auth_domain_name'] . '&return=' .
 					base64_encode(JRoute::_('/login?authenticator=' . $this->hzad->authenticator))))); ?>">
-					<div class="account-group">
-						<div class="auth_link_icon" id="<?php echo $c['auth_domain_name']; ?>"></div>
+					<div class="account-group" id="<?php echo $c['auth_domain_name']; ?>">
 						<p>
 							<span class="user-icon"><?php echo $c['name']; ?></span><br />
 							<span class="email-icon"><?php echo $c['email']; ?></span>

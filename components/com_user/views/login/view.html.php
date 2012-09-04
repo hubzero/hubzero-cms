@@ -45,13 +45,14 @@ class UserViewLogin extends JView
 		}
 
 		// Get and add the js and extra css to the page
-		$assets      = DS."components".DS."com_user".DS."assets";
-		$template    = DS."templates".DS.JFactory::getApplication()->getTemplate().DS."html".DS."com_user".DS;
-		$media       = DS."media".DS."system";
-		$js          = $assets.DS."js".DS."login.jquery.js";
-		$css         = $assets.DS."css".DS."login.css";
-		$uniform_js  = $media.DS."js".DS."jquery.uniform.js";
-		$uniform_css = $media.DS."css".DS."uniform.css";
+		$assets        = DS."components".DS."com_user".DS."assets";
+		$template      = DS."templates".DS.JFactory::getApplication()->getTemplate().DS."html".DS."com_user".DS;
+		$media         = DS."media".DS."system";
+		$js            = $assets.DS."js".DS."login.jquery.js";
+		$css           = $assets.DS."css".DS."login.css";
+		$uniform_js    = $media.DS."js".DS."jquery.uniform.js";
+		$uniform_css   = $media.DS."css".DS."uniform.css";
+		$providers_css = $assets.DS."css".DS."providers.css";
 		if(file_exists(JPATH_BASE . $template . "login.jquery.js"))
 		{
 			$document->addScript($template . "login.jquery.js");
@@ -75,6 +76,10 @@ class UserViewLogin extends JView
 		if(file_exists(JPATH_BASE . $uniform_css))
 		{
 			$document->addStyleSheet($uniform_css);
+		}
+		if(file_exists(JPATH_BASE . $providers_css))
+		{
+			$document->addStyleSheet($providers_css);
 		}
 
 		$menu   =& JSite::getMenu();

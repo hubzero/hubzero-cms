@@ -227,42 +227,7 @@
 	text-decoration: line-through;
 }
 
-/* --------------------
-   Linked accounts
-   -------------------- */
-#members-account-section .account-group {
-	border: 1px solid #999;
-	background-color: #FFF;
-	display: block;
-	float: left;
-	overflow: hidden;
-	padding: 2px;
-	margin-right: 15px;
-	margin-bottom: 15px;
-	min-height: 40px;
-	min-width: 250px;
-	position: relative;
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	-o-border-radius: 4px;
-	border-radius: 4px;
-	-webkit-box-shadow: 2px 2px 3px #BFBF9A;
-}
-#members-account-section .account-group:hover {
-	-webkit-box-shadow: inset 0 1px 2px #F2F2F2;
-	-moz-box-shadow: inset 0 1px 2px #F2F2F2;
-	box-shadow: inset 0 1px 2px #F2F2F2;
-}
-#members-account-section .account-group.active {
-	
-}
-#members-account-section .account-group.inactive {
-	opacity: .6;
-	background: url('/plugins/members/account/images/light-stripes.png') 0 0 repeat;
-}
-#members-account-section .account-group.inactive:hover {
-	opacity: .9;
-}
+/* other */
 #members-account-section .account-group .x {
 	position: absolute;
 	top: 10px;
@@ -272,23 +237,12 @@
 	line-height: 6px;
 }
 #members-account-section .account-group .x a {
+	text-decoration: none;
 	border-bottom: none;
+	color: #fff;
 }
-#members-account-section .auth_link_icon {
-	width: 50px;
-	height: 50px;
-	float: left;
-	margin: 10px;
-}
-#members-account-section #facebook {
-	background: transparent url('/plugins/members/account/images/facebook_icon.png') 0 0 no-repeat;
-}
-#members-account-section #google {
-	background: transparent url('/plugins/members/account/images/google_icon.png') 0 0 no-repeat;
-}
-#members-account-section #linkedin {
-	background: transparent url('/plugins/members/account/images/linkedin_icon.png') 0 0 no-repeat;
-}
-#members-account-section #pucas {
-	background: transparent url('/plugins/members/account/images/pucas_icon.png') 0 0 no-repeat;
+#members-account-section .account-group .x a:hover {
+	text-decoration: none;
+	border-bottom: none;
+	color: #A87C58;
 }

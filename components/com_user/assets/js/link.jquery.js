@@ -40,6 +40,7 @@ HUB.UserLink = {
 				next = $(this).parent().next('.inner');
 			}
 			next.slideToggle('fast');
+			$(this).toggleClass('active');
 		});
 	}
 }

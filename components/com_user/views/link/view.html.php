@@ -57,6 +57,7 @@ class UserViewLink extends JView
 		$assets = DS."components".DS."com_user".DS."assets".DS;
 		$js     = $assets.DS."js".DS."link.jquery.js";
 		$css    = $assets.DS."css".DS."link.css";
+		$p_css  = $assets.DS."css".DS."providers.css";
 		if(file_exists(JPATH_BASE . $js))
 		{
 			$document->addScript($js);
@@ -64,6 +65,10 @@ class UserViewLink extends JView
 		if(file_exists(JPATH_BASE . $css))
 		{
 			$document->addStyleSheet($css);
+		}
+		if(file_exists(JPATH_BASE . $p_css))
+		{
+			$document->addStyleSheet($p_css);
 		}
 
 		// Import a few things

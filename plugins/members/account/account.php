@@ -134,6 +134,10 @@ class plgMembersAccount extends Hubzero_Plugin
 			Hubzero_Document::addPluginStylesheet('members', 'account');
 			Hubzero_Document::addPluginScript('members', 'account');
 
+			// Add providers stylesheet
+			$doc =& JFactory::getDocument();
+			$doc->addStylesheet(DS . 'components' . DS . 'com_user' . DS . 'assets' . DS . 'css' . DS . 'providers.css');
+
 			// Initialize variables (just needed for views)
 			$action       = JRequest::getWord('action', 'view');
 			$this->user   = $user;

@@ -61,43 +61,21 @@ p.callToAction {
 /* External auth providers */
 #authentication #providers h3 {
 	margin-top: 0;
+	margin-bottom: 20px;
 }
 #authentication.multiAuth #providers h3 {
 	display: inline-block;
 }
-#authentication #providers ul {
-	margin: 20px 0 0 0;
-	padding: 0;
+#authentication #providers a {
+	color: #fff;
+	font-size: 17px;
+	font-weight: normal;
+	text-align: center;
+	padding: 0.5em 1em 0.5em 60px;
 }
-#authentication #providers li {
-	list-style: none;
-	padding-left: 0;
-	padding-top: 0;
-	margin: 0 0 10px 0;
-	height: 50px;
-	width: 250px;
+#authentication #providers a:before {
+	padding: 7px 0.3em;
 }
-#authentication #providers li a {
-	border-bottom: none;
-	display: block;
-	height: 50px;
-	width: 250px;
-}
-#authentication #providers li#facebook a { background: url('/components/com_user/assets/img/facebook_login_button.png') 0 0 no-repeat; }
-#authentication #providers li#facebook:hover a { background: url('/components/com_user/assets/img/facebook_login_button.png') 0 -50px no-repeat; }
-#authentication #providers li#facebook:active a { background: url('/components/com_user/assets/img/facebook_login_button.png') 0 -100px no-repeat; }
-
-#authentication #providers li#linkedin a { background: url('/components/com_user/assets/img/linkedin_login_button.png') 0 0 no-repeat; }
-#authentication #providers li#linkedin:hover a { background: url('/components/com_user/assets/img/linkedin_login_button.png') 0 -50px no-repeat; }
-#authentication #providers li#linkedin:active a { background: url('/components/com_user/assets/img/linkedin_login_button.png') 0 -100px no-repeat; }
-
-#authentication #providers li#google a { background: url('/components/com_user/assets/img/google_login_button.png') 0 0 no-repeat; }
-#authentication #providers li#google:hover a { background: url('/components/com_user/assets/img/google_login_button.png') 0 -50px no-repeat; }
-#authentication #providers li#google:active a { background: url('/components/com_user/assets/img/google_login_button.png') 0 -100px no-repeat; }
-
-#authentication #providers li#pucas a { background: url('/components/com_user/assets/img/pucas_login_button.png') 0 0 no-repeat; }
-#authentication #providers li#pucas:hover a { background: url('/components/com_user/assets/img/pucas_login_button.png') 0 -50px no-repeat; }
-#authentication #providers li#pucas:active a { background: url('/components/com_user/assets/img/pucas_login_button.png') 0 -100px no-repeat; }
 
 /* Hub credentials section */
 #authentication #credentials-hub-inner .labelInputPair label {

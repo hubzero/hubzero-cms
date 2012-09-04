@@ -1,0 +1,163 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_user/assets/css/providers.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/* Social icons font set */
+@font-face {
+	font-family: 'Socicons';
+	src: url('/media/system/css/fonts/socicons-webfont.eot');
+	src: url('/media/system/css/fonts/socicons-webfont.eot?#iefix') format('embedded-opentype'), 
+		url('/media/system/css/fonts/socicons-webfont.woff') format('woff'), 
+		url('/media/system/css/fonts/socicons-webfont.ttf') format('truetype'), 
+		url('/media/system/css/fonts/socicons-webfont.svgz#SociconsRegular') format('svg'), 
+		url('/media/system/css/fonts/socicons-webfont.svg#SociconsRegular') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+/* defaults */
+.account-group {
+	zoom: 1;
+	display: inline-block;
+	vertical-align: baseline;
+	margin: 0 5px 10px 0;
+	outline: none;
+	text-align: left;
+	text-decoration: none;
+	font-weight: bold;
+	line-height: 1.8em;
+	padding: 0.8em 2.2em 0.8em 5em;
+	text-shadow: 0px -1px 1px #1E2D4D;
+	-webkit-border-radius: 0.25em;
+	-moz-border-radius: 0.25em;
+	border-radius: 0.25em;
+	-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+	-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+	box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+	color: white;
+	border: 1px solid #3A5918;
+	background: #619926;
+	white-space: nowrap;
+	word-wrap: normal;
+	position: relative;
+	min-width: 175px;
+}
+#account-suggestions a,
+#members-account-section a {
+	border-bottom: none;
+}
+#account-suggestions a:hover,
+#members-account-section a:hover {
+	border-bottom: none;
+}
+.account-group:hover {
+	text-decoration: none;
+	border-bottom: none;
+	color: #fff;
+	-webkit-box-shadow: inset 0 0 1px #fff, 2px 2px 2px rgba(0, 0, 0, 0.35);
+	-moz-box-shadow: inset 0 0 1px #fff, 2px 2px 2px rgba(0, 0, 0, 0.35);
+	-ms-box-shadow: inset 0 0 1px #fff, 2px 2px 2px rgba(0, 0, 0, 0.35);
+	box-shadow: inset 0 0 1px #fff, 2px 2px 2px rgba(0, 0, 0, 0.35);
+	background: #537F22;
+}
+a {
+	border-bottom: none;
+	text-decoration: none;
+}
+a:active .account-group,
+a:active.account-group {
+	-webkit-box-shadow: inset 0px 2px 3px #000;
+	-moz-box-shadow: inset 0px 2px 3px #000;
+	box-shadow: inset 0px 2px 3px #000;
+}
+.account-group:before {
+	background: rgba(0, 0, 0, 0.08);
+	position: absolute;
+	border-right: 1px solid #3A5918;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 1em;
+	text-align: center;
+	font-family: Socicons;
+	color: white;
+	font-size: 28px;
+	font-weight: normal;
+	padding: 17px 0.3em;
+	-webkit-border-radius: 0.25em 0 0 0.25em;
+	-moz-border-radius: 0.25em 0 0 0.25em;
+	border-radius: 0.25em 0 0 0.25em;
+	margin-right: 0.2em;
+}
+.account-group p {
+	margin: 0;
+}
+.account-group.inactive {
+	opacity: .5;
+}
+.account-group.inactive:hover {
+	opacity: .9;
+}
+
+/* facebook */
+#facebook:before {
+	content: "\f013";
+}
+#facebook {
+	border: 1px solid #223357;
+	background: #3B5998;
+}
+#facebook:hover {
+	background: #36528C;
+}
+
+/* google */
+#google:before {
+	content: "\f02c";
+}
+#google {
+	border: 1px solid #223357;
+	background: #D6492C;
+}
+#google:hover {
+	background: #C74429;
+}
+
+/* linkedin */
+#linkedin:before {
+	content: "\f017";
+}
+#linkedin {
+	border: 1px solid #223357;
+	background: #4875B4;
+}
+#linkedin:hover {
+	background: #446FAB;
+}
+
+/* pucas */
+#pucas:before {
+	content: "\f006";
+}
+#pucas {
+	border: 1px solid #223357;
+	background: #A3792C;
+}
+#pucas:hover {
+	background: #997229;
+}
+
+/* hub */
+#hubzero:before {
+	content: "\f002";
+}
+#hubzero {
+	border: 1px solid #223357;
+	background: #999;
+}
+#hubzero:hover {
+	background: #888;
+}
