@@ -241,7 +241,9 @@ if ($this->recent) {
 <?php }*/ ?>
 		<div class="entry-content">
 			<?php echo $this->row->content; ?>
-			<?php //echo $this->tags; ?>
+<?php if ($this->tags) { ?>
+			<?php echo $this->tags; ?>
+<?php } ?>
 		</div>
 <?php 
 	if ($this->config->get('show_authors')) {
@@ -264,6 +266,7 @@ if ($this->recent) {
 					<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($author->get('bio')), 300, 0); ?>
 				</p>
 			<?php } ?>
+				<div class="clearfix"></div>
 			</div>
 		</div>
 <?php

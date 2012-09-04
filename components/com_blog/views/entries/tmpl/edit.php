@@ -54,7 +54,7 @@ $tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'acta
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 	
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=save'); ?>" method="post" id="hubForm" class="full">
+	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=save'); ?>" method="post" id="hubForm">
 		<div class="explaination">
 			<table class="wiki-reference" summary="Wiki Syntax Reference">
 				<caption>Wiki Syntax Reference</caption>
