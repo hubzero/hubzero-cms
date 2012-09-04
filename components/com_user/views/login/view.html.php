@@ -180,7 +180,9 @@ class UserViewLogin extends JView
 		{
 			if($p->name != 'hubzero' && $p->name != $auth)
 			{
-				$authenticators[] = $p->name;
+				$pparams = new JParameter($p->params);
+				$display = $pparams->get('display_name', ucfirst($p->name));
+				$authenticators[] = array('name' => $p->name, 'display' => $display);
 				$multiAuth = true;
 			}
 		}

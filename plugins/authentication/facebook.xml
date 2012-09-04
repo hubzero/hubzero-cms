@@ -40,7 +40,8 @@ HUBzero is a registered trademark of Purdue University.
 		<filename plugin="facebook">facebook.php</filename>
 	</files>
 	<params>
-		<param name="app_id"     type="text" size="20" label="App ID"          description="Your Hub's Facebook App ID" />
-		<param name="app_secret" type="text" size="32" label="Consumer Secret" description="Consumer Secret provided when your hub is registered on Facebook" />
+		<param name="app_id"       type="text" size="20" label="App ID"          description="Your Hub's Facebook App ID" />
+		<param name="app_secret"   type="text" size="32" label="Consumer Secret" description="Consumer Secret provided when your hub is registered on Facebook" />
+		<param name="display_name" type="text" size="32" label="Display name"    description="Text to display on the site when referencing this plugin" default="Facebook" />
 	</params>
 </install>

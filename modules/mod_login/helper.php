@@ -145,12 +145,13 @@ class modLoginHelper extends JObject
 		}
 
 		// Get and add the js and extra css to the page
-		$assets      = DS."components".DS."com_user".DS."assets".DS;
-		$media       = DS."media".DS."system";
-		$js          = $assets.DS."js".DS."login.jquery.js";
-		$css         = $assets.DS."css".DS."login.css";
-		$uniform_js  = $media.DS."js".DS."jquery.uniform.js";
-		$uniform_css = $media.DS."css".DS."uniform.css";
+		$assets        = DS."components".DS."com_user".DS."assets".DS;
+		$media         = DS."media".DS."system";
+		$js            = $assets.DS."js".DS."login.jquery.js";
+		$css           = $assets.DS."css".DS."login.css";
+		$uniform_js    = $media.DS."js".DS."jquery.uniform.js";
+		$uniform_css   = $media.DS."css".DS."uniform.css";
+		$providers_css = $assets.DS."css".DS."providers.css";
 		if(file_exists(JPATH_BASE . $js))
 		{
 			$document->addScript($js);
@@ -166,6 +167,10 @@ class modLoginHelper extends JObject
 		if(file_exists(JPATH_BASE . $uniform_css))
 		{
 			$document->addStyleSheet($uniform_css);
+		}
+		if(file_exists(JPATH_BASE . $providers_css))
+		{
+			$document->addStyleSheet($providers_css);
 		}
 
 		$type 	 = $this->getType();
@@ -202,7 +207,9 @@ class modLoginHelper extends JObject
 		{
 			if($p->name != 'hubzero' && $p->name != $auth)
 			{
-				$authenticators[] = $p->name;
+				$pparams = new JParameter($p->params);
+				$display = $pparams->get('display_name', ucfirst($p->name));
+				$authenticators[] = array('name' => $p->name, 'display' => $display);
 				$multiAuth = true;
 			}
 		}

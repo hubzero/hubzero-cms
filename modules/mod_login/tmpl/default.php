@@ -45,18 +45,16 @@ if (!empty($error_message))
 		<?php if($multiAuth) { // only display if we have third part auth plugins enabled ?>
 			<div id="providers" class="two columns first">
 				<h3>Sign in with your:</h2>
-				<ul>
-					<?php 
-						foreach($authenticators as $a)
-						{
-					?>
-							<li id="<?php echo $a; ?>" class="entry">
-								<a id="<?php echo $a; ?>-button" class="" href="<?php echo JRoute::_('index.php?option=com_user&view=login&authenticator=' . $a . $r); ?>"></a>
-							</li>
-					<?php
-						}
-					?>
-				</ul>
+				<?php 
+					foreach($authenticators as $a)
+					{
+				?>
+						<a class="account-group" id="<?php echo $a['name']; ?>" href="<?php echo JRoute::_('index.php?option=com_user&view=login&authenticator=' . $a['name'] . $r); ?>">
+							<p><?php echo $a['display']; ?> account</p>
+						</a>
+				<?php
+					}
+				?>
 			</div>
 		<?php } // close if - check if any authentication plugins are enabled ?>
 		<div id="credentials-hub" class="<?php echo ($multiAuth) ? 'two columns second' : 'singleAuth'; ?>">

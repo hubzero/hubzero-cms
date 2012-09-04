@@ -49,8 +49,8 @@ if (!empty($error_message))
 					foreach($this->authenticators as $a)
 					{
 				?>
-						<a class="account-group" id="<?php echo $a; ?>" href="<?php echo JRoute::_('index.php?option=com_user&view=login&authenticator=' . $a . $this->returnUrl); ?>">
-							<p><?php echo $a; ?> account</p>
+						<a class="account-group" id="<?php echo $a['name']; ?>" href="<?php echo JRoute::_('index.php?option=com_user&view=login&authenticator=' . $a['name'] . $this->returnUrl); ?>">
+							<p><?php echo $a['display']; ?> account</p>
 						</a>
 				<?php
 					}
