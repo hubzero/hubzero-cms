@@ -101,6 +101,7 @@ function submitbutton(pressbutton)
 <?php } ?>
 								<option value="2"<?php echo ($this->group->type == '2') ? ' selected="selected"' : ''; ?>><?php echo JText::_('project'); ?></option>
 								<option value="3"<?php echo ($this->group->type == '3') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Special Unbranded Group'); ?></option>
+								<option value="4"<?php echo ($this->group->type == '4') ? ' selected="selected"' : ''; ?>><?php echo JText::_('course'); ?></option>
 							</select>
 						</td>
 					</tr>

@@ -79,6 +79,7 @@ function submitbutton(pressbutton)
 <?php } ?>
 			<option value="project"<?php echo ($this->filters['type'][0] == 'project') ? ' selected="selected"' : ''; ?>>Project</option>
 			<option value="partner"<?php echo ($this->filters['type'][0] == 'partner') ? ' selected="selected"' : ''; ?>>Partner</option>
+			<option value="course"<?php echo ($this->filters['type'][0] == 'course') ? ' selected="selected"' : ''; ?>>Course</option>
 		</select>
 		
 		<label for="filter-privacy"><?php echo JText::_('Privacy'); ?>:</label> 
@@ -138,6 +139,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		case '1': $type = 'Hub';     break;
 		case '2': $type = 'Project'; break;
 		case '3': $type = 'Partner'; break;
+		case '4': $type = 'Course';  break;
 	}
 
 	$members = count($group->get('members'));

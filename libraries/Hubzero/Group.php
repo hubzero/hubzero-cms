@@ -1121,7 +1121,8 @@ class Hubzero_Group
 		// Type 1 - HUB Group
 		// Type 2 - Project Group
 		// Type 3 - Partner "Special" Group
-		$gTypes = array('all', 'system', 'hub', 'project', 'partner', '0', '1', '2', '3');
+		// Type 4 - Course group
+		$gTypes = array('all', 'system', 'hub', 'project', 'partner', 'course', '0', '1', '2', '3', '4');
 
 		$types = !empty($filters['type']) ? $filters['type'] : array('all');
 
@@ -1146,6 +1147,8 @@ class Hubzero_Group
 				$t = 2;
 			if ($t == 'partner')
 				$t = 3;
+			if ($t == 'course')
+				$t = 4;
 			if ($t == 'system')
 				$t = 0;
 			$where_clause = 'WHERE type IN (' . $t . ')';
