@@ -108,6 +108,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 
 							<ul id="account" class="<?php echo (!$juser->get('guest')) ? 'loggedin' : 'loggedout'; ?>">
 <?php if (!$juser->get('guest')) { 
+		ximport('Hubzero_User_Profile');
 		$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
 ?>
 								<li id="account-info">
