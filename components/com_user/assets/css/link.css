@@ -11,9 +11,6 @@
 	-- -- -- -- -- -- -- -- -- --
 */
 
-#link-existing {
-	margin-top: 15px;
-}
 #link-existing .important {
 	font-weight: bold;
 	font-size: 14px;
@@ -78,7 +75,7 @@
 	text-decoration: none;
 	border-bottom: none;
 }
-#link-existing .inner {
+#link-existing .inner-content {
 	padding: 0px 60px;
 	margin-bottom: 10px;
 }

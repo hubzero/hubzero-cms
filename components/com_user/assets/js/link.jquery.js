@@ -29,15 +29,15 @@ HUB.UserLink = {
 		var option1   = $('#option1-link-existing');
 		var option2   = $('#option2-create-new');
 		var clickable = $('.clickable');
-		var inner     = $('.inner');
+		var inner     = $('.inner-content');
 
 		inner.hide();
 
 		clickable.on('click', function(e){
 			e.preventDefault();
-			var next = $(this).next('.inner');
+			var next = $(this).next('.inner-content');
 			if(!next.length) {
-				next = $(this).parent().next('.inner');
+				next = $(this).parent().next('.inner-content');
 			}
 			next.slideToggle('fast');
 			$(this).toggleClass('active');
