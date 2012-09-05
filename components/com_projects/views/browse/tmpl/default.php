@@ -32,8 +32,8 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 	<h2><?php echo $this->title; ?></h2>
 </div><!-- / #content-header -->
 <div id="content-header-extra">
-    <ul id="useroptions">
-    	<li><a class="addnew" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=start'); ?>"><?php echo JText::_('COM_PROJECTS_START_NEW'); ?></a></li>		
+    <ul id="page_options">
+    	<li><a class="add" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=start'); ?>"><?php echo JText::_('COM_PROJECTS_START_NEW'); ?></a></li>		
 	</ul>
 </div><!-- / #content-header-extra -->
 <div class="main section">
