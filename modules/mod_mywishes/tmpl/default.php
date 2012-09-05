@@ -46,7 +46,7 @@ ximport('Hubzero_View_Helper_Html');
 ?>
 		<li class="wishlist">
 			<a href="<?php echo JRoute::_('index.php?option=com_wishlist&task=wish&id=' . $row->wishlist . '&wishid=' . $row->id); ?>" class="tooltips" title="<?php echo htmlentities(stripslashes($row->subject), ENT_QUOTES) . ' :: ' . Hubzero_View_Helper_Html::shortenText(htmlentities(stripslashes($row->about), ENT_QUOTES), 160); ?>">
-				#<?php echo $row->id; ?>: <?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($row->subject), 35); ?>
+				#<?php echo $row->id; ?>: <?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($row->subject), 35, 0); ?>
 			</a>
 			<span>
 				<span class="<?php 
