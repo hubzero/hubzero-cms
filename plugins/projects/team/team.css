@@ -18,19 +18,33 @@
 	.add-team {
 		margin: 2.5em 0;
 	}
-	#hubForm .add-team input {
-		width: 35%;
-		display: inline;
+	#edit-project-content .list-editing {
+		margin: 1em 0;
 	}
-	#hubForm .add-team label {
+	#hubForm .add-team input {
+		width: 100%;
 		display: inline;
-		min-width: 600px;
 	}
 	#hubForm .add-team input.btn {
 		width: auto;
-	}	
-	#team_manage {
-		padding-bottom: 1em;
+	}
+	#hubForm .add-team label {
+		float: left;
+		display: block;
+		width: 200px !important;
+	}
+	#hubForm .add-team li {
+		white-space: normal;
+	}
+	#setup .combine_options label  {
+		padding-right: 0;
+		margin-right: -1em;
+	}
+	#team-spacer {
+		position: relative;
+		float: left;
+		width: 100%;
+		display: block;
 	}
 	.userinvited {
 		line-height: 1em;

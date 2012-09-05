@@ -44,21 +44,26 @@ $wikiconfig = array(
 	'domain'   => $this->project->alias
 );
 $this->project->about = $p->parse( $this->project->about, $wikiconfig );
+
+$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->option . '&task=' . $this->task), 'server');
+
 ?>
 <div id="project-wrap">
  <div class="main section">
-	<?php echo ProjectsHtml::writeProjectHeader($this, '', 1); ?>	
-	<div id="confirm-invite">	
-		<div class="columns three first">
-			<h3><?php echo JText::_('COM_PROJECTS_INVITED_CONFIRM'); ?></h3>
-			<p class="invitation"><?php echo JText::_('COM_PROJECTS_INVITED_CONFIRM_SCREEN').' "'.$this->project->title.'" '. JText::_('COM_PROJECTS_INVITED_NEED_ACCOUNT').' <a href="/register">'.JText::_('COM_PROJECTS_INVITED_CREATE_NEW_ACCOUNT').'</a> '.JText::_('COM_PROJECTS_INVITED_IF_NO_ACCOUNT'); ?>
+	<?php echo ProjectsHtml::writeProjectHeader($this, '', 1); ?>
+	<h3><?php echo JText::_('COM_PROJECTS_INVITED_CONFIRM'); ?></h3>	
+	<div id="confirm-invite" class="invitation">	
+		<div class="columns two first">
+			<p><?php echo JText::_('COM_PROJECTS_INVITED_CONFIRM_SCREEN').' "'.$this->project->title.'". '. JText::_('COM_PROJECTS_INVITED_NEED_ACCOUNT_TO_JOIN'); ?>
 			</p>
 		</div>
-		<div class="columns three second third">
-		<?php
-		ximport('Hubzero_Module_Helper');
-		echo Hubzero_Module_Helper::displayModules('force_mod');
-		?>
+		<div class="columns two second">
+			<p>
+			<?php echo JText::_('COM_PROJECTS_INVITED_HAVE_ACCOUNT') . ' <a href="' . JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn)) .  '">' . JText::_('COM_PROJECTS_INVITED_PLEASE_LOGIN') . '</a>'; ?>
+			</p>
+			<p>
+			<?php echo JText::_('COM_PROJECTS_INVITED_DO_NOT_HAVE_ACCOUNT') . ' <a href="' . JRoute::_('index.php?option=com_register&return=' . base64_encode($rtrn)) .  '">' . JText::_('COM_PROJECTS_INVITED_PLEASE_REGISTER') . '</a>'; ?>
+			</p>
 		</div>
 		<div class="clear"></div>
 	</div>

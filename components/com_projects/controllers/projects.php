@@ -101,7 +101,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 				.'com_publications' . DS . 'tables' . DS . 'tool.php');
 			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'type.php');
+				.'com_publications' . DS . 'tables' . DS . 'category.php');
 			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 				.'com_publications' . DS . 'tables' . DS . DS.'master.type.php');
 			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
@@ -118,15 +118,20 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$this->_id 			= JRequest::getInt( 'id', 0 );
 		$this->_alias   	= JRequest::getVar( 'alias', '' );
 		$this->_identifier  = $this->_id ? $this->_id : $this->_alias;
-		
+				
 		// Needed to support no-conflict jquery mode
 		if (JPluginHelper::isEnabled('system', 'jquery'))
 		{
-			$app = JFactory::getApplication();
-			$document = JFactory::getDocument();
-			$document->addScript('templates' . DS . $app->getTemplate() . DS .  'js' . DS . 'modal.js');
+			$plugin 		= JPluginHelper::getPlugin( 'system', 'jquery' );
+			$p_params 		= new JParameter($plugin->params);
+			if ($p_params->get('noconflictSite'))
+			{
+				$app = JFactory::getApplication();
+				$document = JFactory::getDocument();
+				$document->addScript('templates' . DS . $app->getTemplate() . DS .  'js' . DS . 'modal.js');			
+			}
 		}
-		
+				
 		switch ( $this->_task ) 
 		{
 			// Setup
@@ -277,20 +282,13 @@ class ProjectsControllerProjects extends Hubzero_Controller
 	 * @return     void
 	 */
 	protected function _login() 
-	{
-		// Set the pathway
-		$this->_buildPathway(null);
-
-		// Set the page title
-		$this->_buildTitle(null);
-		$view 		 = new JView( array('name'=>'login') );
-		$view->title = $this->_title;
-		$view->msg   = $this->_msg;
-		if ($this->getError()) 
-		{
-			$view->setError( $this->getError() );
-		}
-		$view->display();
+	{		
+		$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
+		$this->setRedirect(
+			JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn)),
+			$this->_msg,
+			'warning'
+		);
 	}
 			
 	/**
@@ -511,6 +509,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$extended 		= JRequest::getInt( 'extended', 0, 'post');
 		$requested_step = JRequest::getInt( 'step', 6);			
 		$tempid 		= JRequest::getInt( 'tempid', 0 );
+		$restricted 	= JRequest::getVar( 'restricted', 'no', 'post' );
 		$group 			= '';
 		$pid 			= 0;	
 	
@@ -520,11 +519,8 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		// Login required
 		if ($this->juser->get('guest')) 
 		{			
-			$this->_buildPathway(null);
-			$view 		 = new JView( array('name'=>'login') );
-			$view->msg   = JText::_('COM_PROJECTS_LOGIN_SETUP');
-			$view->title = $this->title;
-			$view->display();
+			$this->_msg = JText::_('COM_PROJECTS_LOGIN_SETUP');
+			$this->_login();
 			return;
 		}
 		
@@ -686,11 +682,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			}
 			
 			if ($this->_save($pid, $what, $setup = 1, $tempid)) 
-			{
-				
-				// Load updated project
-				$obj->loadProject($this->_identifier);
-					
+			{									
 				// Record setup stage and move on
 				if ($save_stage > $obj->setup_stage) 
 				{
@@ -729,9 +721,19 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			$this->_redirect 	= JRoute::_('index.php?option=' . $this->_option . a . 'alias=' . $obj->alias);			
 			return;
 		}
+		
+		// Do we need to ask about restricted data up front?
+		if ($this->_config->get('restricted_upfront', 0) == 1 && !$this->_identifier) 
+		{
+			$proceed = JRequest::getInt( 'proceed', 0, 'post');
+			if (!$proceed)
+			{
+				$layout = 'restricted';
+			}
+		}
 				
 		// Instantiate a new view
-		$view = new JView( array('name'=>'setup','layout'=>$layout) );	
+		$view = new JView( array('name'=>'setup','layout' => $layout) );	
 		
 		// Get project params
 		$view->params = new JParameter( $obj->params );
@@ -802,11 +804,10 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		if ($stage == 2) 
 		{
 			$view->team 		= $objO->getOwnerNames($this->_identifier);
-			$view->grant_id 	= JRequest::getVar( 'grant_id', '' );
-			$view->grant_title 	= JRequest::getVar( 'grant_title', '' );
-			$view->grant_PI 	= JRequest::getVar( 'grant_PI', '' );
-			$view->grant_agency = JRequest::getVar( 'grant_agency', '' );
-			$view->grant_budget = JRequest::getVar( 'grant_budget', '' );
+
+			// Load updated project
+			$obj->loadProject($this->_identifier);
+			$view->params = new JParameter( $obj->params );
 		}	
 		
 		// Set the pathway
@@ -820,11 +821,12 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$this->_getScripts('assets/js/setup');
 					
 		// Output HTML
-		$view->title  	= $this->title;
-		$view->option 	= $this->_option;
-		$view->config 	= $this->_config;
-		$view->gid 		= $this->_gid;
-		$view->group 	= $group;
+		$view->title  		= $this->title;
+		$view->option 		= $this->_option;
+		$view->config 		= $this->_config;
+		$view->gid 			= $this->_gid;
+		$view->group 		= $group;
+		$view->restricted 	= $restricted;
 		
 		// Get messages	and errors	
 		$view->msg = isset($this->_msg) ? $this->_msg : $this->getNotifications('success');
@@ -1038,10 +1040,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			$match = $obj->matchInvite( $pid, $confirmcode, $email );
 			if ($this->juser->get('guest') && $match) 
 			{
-				$this->_msg = JText::_('COM_PROJECTS_INVITED_CONFIRM_SCREEN') . ' ' 
-							. $project->title . '. ' . JText::_('COM_PROJECTS_INVITED_ACTIONS');
-				$this->_login();
-				return;
+				$layout = 'invited';
 			}
 			elseif ($match && $objO->load($match)) 
 			{
@@ -1089,8 +1088,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 					$layout = 'provisioned';
 					
 					// Add JS
-					$document =& JFactory::getDocument();
-					$document->addScript( 'components' . DS . 'com_projects' . DS . 'js' . DS . 'setup.js');
+					$this->_getScripts('assets/js/setup');
 				}
 				elseif ($this->juser->get('guest')) 
 				{
@@ -1131,10 +1129,8 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			// Login required
 			if ($this->juser->get('guest')) 
 			{
-				$view 			= new JView( array('name'=>'login') );
-				$view->msg   	= JText::_('COM_PROJECTS_LOGIN_PRIVATE_PROJECT');
-				$view->title 	= $this->title;
-				$view->display();
+				$this->_msg = JText::_('COM_PROJECTS_LOGIN_PRIVATE_PROJECT');
+				$this->_login();
 				return;
 			}
 			if (!$authorized && !$reviewer) 
@@ -1428,6 +1424,11 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$view->uid 			= $this->juser->get('id');
 		$view->guest 		= $this->juser->get('guest');
 		$view->msg 			= $this->getNotifications('success');
+		if ($layout == 'invited')
+		{
+			$view->confirmcode  = $confirmcode;
+			$view->email		= $email;
+		}		
 		$error 				= $this->getError() ? $this->getError() : $this->getNotifications('error');
 		if ($error) 
 		{
@@ -1514,10 +1515,8 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		// Login required
 		if ($this->juser->get('guest')) 
 		{
-			$view = new JView( array('name'=>'login') );
-			$view->msg   = JText::_('COM_PROJECTS_LOGIN_PRIVATE_PROJECT_AREA');
-			$view->title = ucfirst(JText::_('COM_PROJECTS_LOGIN'));
-			$view->display();
+			$this->_msg = JText::_('COM_PROJECTS_LOGIN_PRIVATE_PROJECT_AREA');
+			$this->_login();
 			return;
 		}
 		if ($project->role != 1) { // Only managers can edit
@@ -1659,6 +1658,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$about 		= trim(JRequest::getVar( 'about', '', 'post' ));
 		$type 		= JRequest::getInt( 'type', 1, 'post' );
 		$private 	= JRequest::getInt( 'private', 1, 'post' );	
+		$restricted = JRequest::getVar( 'restricted', '', 'post' );
 		
 		// Instantiate needed classes
 		$obj 	= new Project( $this->database );
@@ -1696,7 +1696,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 					$obj->created_by_user = $this->juser->get('id');
 					$obj->owned_by_user = $this->juser->get('id');
 					$obj->owned_by_group = $this->_gid;
-
+					
 					// Get image name if tempid was used
 					if ($tempid) 
 					{
@@ -1713,18 +1713,10 @@ class ProjectsControllerProjects extends Hubzero_Controller
 					$obj->private = $private;
 				}
 
-				if ($setup) 
+				if ($setup && !$pid) 
 				{
 					// Copy params from default project type
 					$obj->params = $objT->getParams ($obj->type);					
-				}
-				else 
-				{
-					// Activate apps
-					if ($obj->type == 2) 
-					{
-						$obj->saveParam( $pid, 'apps_dev', 1);
-					}
 				}
 				
 				// Save changes
@@ -1735,6 +1727,15 @@ class ProjectsControllerProjects extends Hubzero_Controller
 				if (!$obj->id) {
 					$obj->checkin();
 				}
+				
+				// Save resctricted data choice
+				if ($restricted && $setup && !$pid)
+				{
+					$restricted = $restricted == 'yes' ? 'yes' : 'no';
+					
+					// Save params	
+					$obj->saveParam($obj->id, 'restricted_data', htmlentities($restricted));
+				}				
 				
 				// Send ID of newly created project back to setup screens
 				$this->_identifier = $obj->id;
@@ -1853,6 +1854,8 @@ class ProjectsControllerProjects extends Hubzero_Controller
 					$setup_complete 	= $this->_config->get('confirm_step', 0) ? 3 : 2;
 					$agree 				= JRequest::getInt( 'agree', 0, 'post' );
 					$restricted 		= JRequest::getVar( 'restricted', '', 'post' );	
+					$agree_irb 			= JRequest::getInt( 'agree_irb', 0, 'post' );
+					$agree_ferpa 		= JRequest::getInt( 'agree_ferpa', 0, 'post' );
 					$state				= 1;
 
 					if ($setup_complete == 3 ) 
@@ -1873,17 +1876,31 @@ class ProjectsControllerProjects extends Hubzero_Controller
 						// Restricted data with specific questions
 						if ($this->_config->get('restricted_data', 0) == 1) 
 						{
-							$hipaa = JRequest::getVar( 'hipaa', 'no', 'post' );
-							$ferpa = JRequest::getVar( 'ferpa', 'no', 'post' );
-							$excon = JRequest::getVar( 'excon', 'no', 'post' );
+							$restrictions = array(
+								'hipaa_data'  => JRequest::getVar( 'hipaa', 'no', 'post' ),
+								'ferpa_data'  => JRequest::getVar( 'ferpa', 'no', 'post' ),
+								'export_data' => JRequest::getVar( 'export', 'no', 'post' ),
+								'irb_data'    => JRequest::getVar( 'irb', 'no', 'post' )
+							);
 							
-							if (!isset($_POST['restricted'])) {
-								
-								if ($hipaa == 'yes' || $ferpa == 'yes' || $excon == 'yes')
+							// Save individual restrictions
+							foreach ($restrictions as $key => $value) 
+							{
+								$obj->saveParam($pid, $key, $value);
+							}
+							
+							// No selections?	
+							if (!isset($_POST['restricted'])) 
+							{	
+								foreach ($restrictions as $key => $value) 
 								{
-									$restricted = 'yes';
+									if ($value == 'yes')
+									{
+										$restricted = 'yes';
+									}
 								}
-								else 
+								
+								if ($restricted != 'yes') 
 								{
 									$this->setError( JText::_('COM_PROJECTS_ERROR_SETUP_TERMS_HIPAA'));
 									return false;
@@ -1895,24 +1912,45 @@ class ProjectsControllerProjects extends Hubzero_Controller
 							
 							if ($restricted == 'yes')
 							{
-								if ($hipaa == 'no' && $ferpa == 'no' && $excon == 'no')
+								// Check selections
+								$selected = 0;
+								foreach ($restrictions as $key => $value) 
+								{
+									if ($value == 'yes')
+									{
+										$selected++;
+									}
+								}
+								// Make sure user made selections
+								if ($selected == 0)
 								{
 									$this->setError( JText::_('COM_PROJECTS_ERROR_SETUP_TERMS_SPECIFY_DATA'));
 									return false;
 								}
+								
+								// Check for required confirmations
+								if (($restrictions['ferpa_data'] == 'yes' && !$agree_ferpa)
+									|| ($restrictions['irb_data'] == 'yes' && !$agree_irb))
+								{
+									$this->setError( JText::_('COM_PROJECTS_ERROR_SETUP_TERMS_RESTRICTED_DATA_AGREE_REQUIRED'));
+									return false;
+								}
+								
+								// Stop if hipaa/export controlled, or send to extra approval screen
 								if ($this->_config->get('approve_restricted', 0)) 
 								{
-									$state = 5; // pending approval
+									if ($restrictions['export_data'] == 'yes' 
+										|| $restrictions['hipaa_data'] == 'yes'
+										|| $restrictions['ferpa_data'] == 'yes' )
+									{
+										$state = 5; // pending approval
+									}
 								}
 							}
 							elseif ($restricted == 'maybe')
 							{
 								$obj->saveParam($pid, 'followup', 'yes');
 							}
-							
-							$obj->saveParam($pid, 'hipaa_data', $hipaa);
-							$obj->saveParam($pid, 'ferpa_data', $ferpa);
-							$obj->saveParam($pid, 'export_data', $excon);
 						}
 						
 						// Check to make sure user has agreed to terms
@@ -2222,10 +2260,8 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		// Login required
 		if ($this->juser->get('guest')) 
 		{
-			$view 		 = new JView( array('name'=>'login') );
-			$view->msg   = JText::_('COM_PROJECTS_LOGIN_PRIVATE_PROJECT_AREA');
-			$view->title = ucfirst(JText::_('COM_PROJECTS_LOGIN'));
-			$view->display();
+			$this->_msg = JText::_('COM_PROJECTS_LOGIN_PRIVATE_PROJECT_AREA');
+			$this->_login();
 			return;
 		}
 		
@@ -3313,35 +3349,35 @@ class ProjectsControllerProjects extends Hubzero_Controller
 	 */
 	protected function _buildPathway( $project = null, $group = null ) 
 	{
-		$app 			=& JFactory::getApplication();
-		$pathway 		=& $app->getPathway();
-		$group_tasks 	= array('start', 'setup', 'view');		
+		$pathway = JFactory::getApplication()->getPathway();
+		$group_tasks 	= array('start', 'setup', 'view');	
 		
+		// Add group
+		if (is_object($group) && in_array($this->_task, $group_tasks) ) 
+		{
+			$pathway->setPathway(array());
+			$pathway->addItem(
+				JText::_('COM_PROJECTS_GROUPS_COMPONENT'),
+				JRoute::_('index.php?option=com_groups')
+			);
+			$pathway->addItem(
+				Hubzero_View_Helper_Html::shortenText($group->get('description'), 50, 0),
+				JRoute::_('index.php?option=com_groups' . a . 'gid=' . $group->cn)
+			);
+			$pathway->addItem(
+				JText::_('COM_PROJECTS_PROJECTS'),
+				JRoute::_('index.php?option=com_groups' . a . 'gid=' . $group->cn . a . 'active=projects')
+			);
+		}
+					
 		if (count($pathway->getPathWay()) <= 0) 
 		{
-			if (is_object($group) && in_array($this->_task, $group_tasks) ) 
-			{
-				$pathway->addItem(
-					JText::_('COM_PROJECTS_GROUPS_COMPONENT'),
-					JRoute::_('index.php?option=com_groups')
-				);
-				$pathway->addItem(
-					Hubzero_View_Helper_Html::shortenText($group->get('description'), 50, 0),
-					JRoute::_('index.php?option=com_groups' . a . 'gid=' . $group->cn)
-				);
-				$pathway->addItem(
-					JText::_('COM_PROJECTS_PROJECTS'),
-					JRoute::_('index.php?option=com_groups' . a . 'gid=' . $group->cn . a . 'active=projects')
-				);
-			}
-			else 
-			{
-				$pathway->addItem(
-					JText::_('COMPONENT_LONG_NAME'),
-					JRoute::_('index.php?option=' . $this->_option)
-				);
-			}			
+			$pathway->addItem(
+				JText::_('COMPONENT_LONG_NAME'),
+				JRoute::_('index.php?option=' . $this->_option)
+			);			
 		}
+		
 		if (is_object($project) && $project->alias) 
 		{
 			if ($project->provisioned == 1) 
@@ -3385,12 +3421,13 @@ class ProjectsControllerProjects extends Hubzero_Controller
 				break;
 				
 				case 'setup':
-					if (!is_object($project)) 
+					if (!is_object($project) || !$project->id) 
 					{
 						$pathway->addItem(
-							ucfirst(JText::_('COM_PROJECTS_SETUP')),
-							JRoute::_('index.php?option=' . $this->_option . a . 'task=setup')	
+							JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task)),
+							'index.php?option=' . $this->_option . '&task=' . $this->_task
 						);
+						break;
 					}
 					break;
 					
@@ -3701,7 +3738,6 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		// Get profile of author group
 		if ($project->owned_by_group) 
 		{
-			$eview->nativegroup = new Hubzero_Group();
 			$eview->nativegroup = Hubzero_Group::getInstance( $project->owned_by_group );
 		}
 		

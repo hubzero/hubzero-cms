@@ -176,6 +176,9 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 			if($params->get('export_data') == 'yes') {
 				$html .= '<span class="block">' . JText::_('COM_PROJECTS_SETUP_EXPORT_CONTROLLED') . '</span>';
 			}
+			if($params->get('irb_data') == 'yes') {
+				$html .= '<span class="block">' . JText::_('COM_PROJECTS_SETUP_IRB') . '</span>';
+			}
 			if($params->get('restricted_data') == 'maybe' && $params->get('followup') == 'yes') {
 				$html .= '<span class="block">' . JText::_('COM_PROJECTS_SETUP_FOLLOW_UP_NECESSARY') . '</span>';
 			}

@@ -46,45 +46,68 @@ $urlbit = $this->task == 'edit' ? 'edit=team' : 'step=1';
 // Use alias or id in urls?
 $use_alias = $this->config->get('use_alias', 0);
 $goto  = $use_alias ? 'alias='.$this->project->alias : 'id='.$this->project->id;
+
+JPluginHelper::importPlugin( 'hubzero' );
+$dispatcher =& JDispatcher::getInstance();
+
 ?>
 <?php if (!$this->setup) { ?>
-<h5><?php echo JText::_('COM_PROJECTS_ADD_NEW_MEMBERS').' '.JText::_('COM_PROJECTS_AS').':'; ?></h5>
+	<h5><?php echo JText::_('COM_PROJECTS_ADD_NEW_MEMBERS').' '.JText::_('COM_PROJECTS_AS').':'; ?></h5>
 <?php } ?>
+
 <div class="combine_options">
 	 <label>
+		<?php if ($this->setup) { ?>
+			<?php echo JText::_('COM_PROJECTS_AS'); ?>:
+		<?php } ?>
 		 <input class="option" name="role" id="role_owner" type="radio" value="1"  />
 		<?php echo JText::_('COM_PROJECTS_LABEL_OWNERS'); ?>  
 	 </label>
 	 <label>
+		<span class="and_or"><?php echo JText::_('COM_PROJECTS_OR'); ?></span>
 		<input class="option" name="role" id="role_collaborator" type="radio" value="0" checked="checked" />
 		<?php echo JText::_('COM_PROJECTS_LABEL_COLLABORATORS'); ?>
 	</label>
 </div>
+<p class="hint"><?php echo JText::_('COM_PROJECTS_ADD_TEAM_HINT'); ?></p>
+
 <div class="add-team">
-	<label>
+	<label id="add-users">
 		 <span class="instr i_user"><?php echo JText::_('COM_PROJECTS_ADD_IND_USER'); ?>:</span>
-		 <input type="text" name="newmember" id="newmember" value="" />
-		 <span class="and_or"><?php echo strtoupper(JText::_('COM_PROJECTS_AND')); ?> / <?php echo strtoupper(JText::_('COM_PROJECTS_OR')); ?></span>
+		<?php 
+			$mc = $dispatcher->trigger( 'onGetMultiEntry', array(array('members', 'newmember', 'newmember')) );
+			if (count($mc) > 0) {
+				echo $mc[0];
+			} else { ?>
+				<input type="text" name="newmember" id="newmember" value="" size="35" />
+			<?php } ?>
 	</label>
-	<label>
+	<span class="and_or leftfloat"><?php echo strtoupper(JText::_('COM_PROJECTS_AND')); ?> / <?php echo strtoupper(JText::_('COM_PROJECTS_OR')); ?></span>
+	<label id="add-groups">
 		 <span class="instr i_group"><?php echo JText::_('COM_PROJECTS_ADD_GROUP_OF_USERS'); ?>:</span>
-		 <input name="newgroup" maxlength="200" id="newgroup" type="text" value=""  />
+		<?php 
+			$mc = $dispatcher->trigger( 'onGetMultiEntry', array(array('groups', 'newgroup', 'newgroup')) );
+			if (count($mc) > 0) {
+				echo $mc[0];
+			} else { ?>
+				<input type="text" name="newgroup" id="newgroup" value="" size="35" maxlength="200" />
+			<?php } ?>
 	</label>
 	 <input type="submit" value="<?php echo JText::_('COM_PROJECTS_ADD'); ?>" class="btn yesbtn" />
-	<p class="hint mini"><?php echo JText::_('COM_PROJECTS_ADD_TEAM_HINT'); ?></p>
 </div>
-<?php if ($this->project->owned_by_group) { ?>
-<p class="notice"><?php echo JText::_('COM_PROJECTS_TEAM_GROUP_PROJECT_EDITING'); ?></p>
-<?php } ?>
-<div class="list-editing">
- <p>
-	<span id="u-hd"><?php echo ucfirst(JText::_('COM_PROJECTS_TEAM_TOTAL_MEMBERS')); ?>: <span class="prominent"><?php echo $this->total; ?></span></span>
- 	<span id="team-manage" class="manage-options hidden">
-	<span class="faded"><?php echo JText::_('COM_PROJECTS_TEAM_EDIT_ROLE'); ?></span>
-		<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto.a.'active=team').'?action=delete'; ?>" class="manage" id="t-delete" ><?php echo JText::_('COM_PROJECTS_DELETE'); ?></a>
-	</span>	
-</p>
-<input name="n_members" id="n_members" type="hidden" value="<?php echo $this->total; ?>"  />
+<div id="team-spacer">
+	<?php if ($this->project->owned_by_group) { ?>
+	<p class="notice"><?php echo JText::_('COM_PROJECTS_TEAM_GROUP_PROJECT_EDITING'); ?></p>
+	<?php } ?>
+	<div class="list-editing">
+	 <p>
+		<span><?php echo ucfirst(JText::_('COM_PROJECTS_TEAM_TOTAL_MEMBERS')); ?>: <span class="prominent"><?php echo $this->total; ?></span></span>
+	 	<span id="team-manage" class="manage-options hidden">
+		<span class="faded"><?php echo JText::_('COM_PROJECTS_TEAM_EDIT_ROLE'); ?></span>
+			<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto.a.'active=team').'?action=delete'; ?>" class="manage" id="t-delete" ><?php echo JText::_('COM_PROJECTS_DELETE'); ?></a>
+		</span>	
+	</p>
+	</div>
 </div>
 	<table id="teamlist" class="listing">
 		<thead>
@@ -126,14 +149,13 @@ $goto  = $use_alias ? 'alias='.$this->project->alias : 'id='.$this->project->id;
 					else 
 					{
 						$role = JText::_('COM_PROJECTS_LABEL_COLLABORATOR');
-					}
-						
+					}					
 ?>
 			<tr class="mline <?php if($owner->userid == $this->uid) { echo 'native'; } else if($owner->status == 0) { echo 'u_invited'; } ?>" id="tr_<?php echo $owner->id; ?>">
 				<td><input type="checkbox" value="<?php echo $owner->id?>" name="owner[]" class="checkmember <?php if($owner->groupid) { echo 'group:'.$owner->groupid; } ?>"  <?php if($owner->native && ($this->project->owned_by_group or ($this->managers_count == 1 && $owner->role == 1) or $this->setup)) { echo 'disabled="disabled"'; } ?> /></td>
 				<td <?php echo $usr_class; ?>><img width="30" height="30" src="<?php echo $thumb; ?>" alt="<?php echo $owner->fullname; ?>" /></td>
 				<td><?php echo $owner->fullname; ?><span class="block mini short prominent"><?php echo $username; ?></span></td>
-				<td class="mini"><?php if(!$creator) { ?><span class="frole owner:<?php echo $owner->id; ?> role:<?php echo $owner->role; ?>" id="r<?php echo $owner->id; ?>"><?php } ?><?php echo $role; ?><?php if(!$creator) { ?></span><?php } ?></td>
+				<td class="mini nobsp"><?php if(!$creator) { ?><span class="frole owner:<?php echo $owner->id; ?> role:<?php echo $owner->role; ?>" id="r<?php echo $owner->id; ?>"><?php } ?><?php echo $role; ?><?php if(!$creator) { ?></span><?php } ?></td>
 				<td class="mini"><?php echo $owner->status == 1 ? JHTML::_('date', $owner->added, '%d/%m/%Y') : '<span class="invited">'.JText::_('COM_PROJECTS_INVITED').'</span>';  ?></td>				
 				<td><?php echo $owner->groupdesc ? Hubzero_View_Helper_Html::shortenText($owner->groupdesc, 30, 0) : ''; ?><span class="block mini short prominent"><?php echo $owner->groupname; ?></span></td>
 			</tr>

@@ -136,7 +136,7 @@
 	}
 	#notes-content #hubForm fieldset {
 		padding-left: 2%;
-		width: 66%;
+		width: 60%;
 	}
 	#notes-content #hubForm h3 {
 		display:none;
@@ -180,6 +180,9 @@
 	#notes-content h2 {
 		font-size: 130%;
 		color: #728490;
+	}
+	.explaination {
+		
 	}
 	.withside #notes-content .aside {
 		display: none; /* hide side content */
@@ -227,6 +230,15 @@
 	}
 	#notes-wrap img {
 		max-width: 100%;
+	}
+	
+/* Editing 
+--------------------------------------------- */
+	#hubForm .explaination {
+		position: relative;
+		float: right;
+		min-height: 10px;
+		width: 30%;
 	}
 
 /* Wiki style fixes

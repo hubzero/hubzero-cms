@@ -403,11 +403,6 @@ class plgProjectsNotes extends JPlugin
 								if (is_file( $fpath ) && !$atid)
 								{
 									$filename = basename($file);
-									if ($file != basename($file))
-									{
-										$filename = $ih->createThumbName(basename($file), '-' 
-											. strtolower(ProjectsHtml::generateCode(5, 5, 0, 1, 1)));
-									}
 									JFile::copy($fpath, $previewPath . DS . $filename);
 									$revision->pagetext = preg_replace("'\\[\\File\\(". $file ."'si", 
 										'[Image('.$filename, $revision->pagetext);
@@ -452,12 +447,7 @@ class plgProjectsNotes extends JPlugin
 						if (is_file( $fpath ))
 						{
 							$filename = basename($file);
-							if ($file != basename($file))
-							{
-								$filename = $ih->createThumbName(basename($file), '-' 
-									. strtolower(ProjectsHtml::generateCode(5, 5, 0, 1, 1)));
-							}
-
+	
 							JFile::copy($fpath, $previewPath . DS . $filename);
 							$revision->pagetext = preg_replace("'\\[\\Image\\(". $file ."'si", 
 								'[Image('.$filename, $revision->pagetext);
@@ -581,14 +571,13 @@ class plgProjectsNotes extends JPlugin
 	 * @return     string
 	 */
 	public function getWikiPath( $page)
-	{		
-		jimport('joomla.filesystem.folder');
-		
+	{				
 		// Get the upload path
 		$path = JPATH_ROOT . DS . trim($this->_wiki_config->get('filepath', '/site/wiki'), DS) . DS . $page->id;
 		
 		if (!is_dir($path)) 
 		{
+			jimport('joomla.filesystem.folder');
 			if (!JFolder::create($path, 0777)) 
 			{
 				return false;

@@ -158,7 +158,7 @@ $goto  = $use_alias ? 'alias='.$this->project->alias : 'id='.$this->project->id;
 		<?php } ?>
 		<span class="sorting js"><?php echo JText::_('COM_PROJECTS_ORDER_BY'); ?>: 
 			<?php if($this->filters['state'] != 1 ) { ?>
-			<input type="radio" name="sortby" class="sortoption" value="p.priority DESC" <?php if ($this->filters['sortby'] == 'p.priority DESC') { echo ' checked="checked"'; } ?> /> <?php echo JText::_('COM_PROJECTS_TODO_NEWEST'); ?>
+			<input type="radio" name="sortby" class="sortoption" value="p.priority ASC" <?php if ($this->filters['sortby'] == 'p.priority ASC') { echo ' checked="checked"'; } ?> /> <?php echo JText::_('COM_PROJECTS_TODO_NEWEST'); ?>
 			<input type="radio" name="sortby" class="sortoption" value="due DESC, p.duedate ASC" <?php if ($this->filters['sortby'] == 'due DESC, p.duedate ASC') { echo ' checked="checked"'; } ?> /> <?php echo JText::_('COM_PROJECTS_DUE_DATE'); ?>
 			<?php } else { ?>
 			<input type="radio" name="sortby" class="sortoption" value="p.closed DESC" <?php if ($this->filters['sortby'] == 'p.closed DESC') { echo ' checked="checked"'; } ?> /> <?php echo JText::_('COM_PROJECTS_TODO_RECENTLY_CLOSED'); ?>

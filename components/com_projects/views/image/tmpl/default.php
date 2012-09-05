@@ -49,8 +49,8 @@ $src = $this->thumb && file_exists( $this->file_path.DS.$this->thumb ) ? $this->
 				<p class="actionlink"><a href="index.php?option=<?php echo $this->option; ?>&amp;no_html=1&amp;task=deleteimg&amp;file=<?php echo $this->file; ?>&amp;imaid=<?php echo $this->id; ?>&amp;tempid=<?php echo $this->tempid; ?>">[ <?php echo JText::_('DELETE'); ?> ]</a></p>
 				<?php } ?>
 			</div>
-			<fieldset id="ima_upload">
-				<legend><?php echo JText::_('COM_PROJECTS_UPLOAD_NEW_IMAGE'); ?> <span class="hint"><?php echo JText::_('COM_PROJECTS_WILL_REPLACE_EXISTING_IMAGE'); ?></span></legend>
+			<div>
+				<h4><?php echo JText::_('COM_PROJECTS_UPLOAD_NEW_IMAGE'); ?> <span class="hint"><?php echo JText::_('COM_PROJECTS_WILL_REPLACE_EXISTING_IMAGE'); ?></span></h4>
 
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="no_html" value="1" />
@@ -63,7 +63,7 @@ $src = $this->thumb && file_exists( $this->file_path.DS.$this->thumb ) ? $this->
 				<?php if ($this->getError()) { ?>
 							<p class="error_s"><?php echo JText::_('COM_PROJECTS_ERROR'); ?>: <?php echo $this->getError(); ?></p>
 				<?php } ?>
-			</fieldset>
+			</div>
 	   </form>
 	</body>
 </html>

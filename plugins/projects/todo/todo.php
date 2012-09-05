@@ -169,7 +169,14 @@ class plgProjectsTodo extends JPlugin
 			$document =& JFactory::getDocument();
 			Hubzero_Document::addPluginScript('projects', 'todo');
 			Hubzero_Document::addPluginStylesheet('projects', 'todo');
-			$document->addScript('components' . DS . 'com_projects' . DS . 'assets' . DS . 'js' . DS . 'calendar.js');						
+			
+			$plugin 		= JPluginHelper::getPlugin( 'system', 'jquery' );
+			$p_params 		= $plugin ? new JParameter($plugin->params) : NULL;
+			
+			if (!$plugin || $p_params->get('noconflictSite'))
+			{
+				$document->addScript('components' . DS . 'com_projects' . DS . 'assets' . DS . 'js' . DS . 'calendar.js');						
+			}
 														
 			// Set vars									
 			$this->_task 		= $action ? $action : JRequest::getVar('action','');
@@ -204,6 +211,7 @@ class plgProjectsTodo extends JPlugin
 					break;
 					
 				case 'reorder':
+				case 'sortitems':
 					$arr['html'] = $this->reorder(); 
 					break;
 					
@@ -258,7 +266,7 @@ class plgProjectsTodo extends JPlugin
 		$filters['state'] 		= isset($this->_state) ? $this->_state : JRequest::getVar('state', 0);
 		$filters['mine'] 		= isset($this->_mine) ? $this->_mine : JRequest::getInt('mine', 0);
 		$filters['assignedto']  = $filters['mine'] ? $this->_uid : 0;
-		$defaultsort 			= $filters['state'] == 1 ? 'p.closed DESC' : 'p.priority DESC';
+		$defaultsort 			= $filters['state'] == 1 ? 'p.closed DESC' : 'p.priority ASC';
 		$filters['sortby']		= JRequest::getVar('sortby', $defaultsort);	
 		
 		// Instantiate some needed objects
@@ -804,21 +812,37 @@ class plgProjectsTodo extends JPlugin
 		// Incoming
 		$newid = JRequest::getInt('newid', 0);
 		$oldid = JRequest::getInt('oldid', 0);
+		$items = JRequest::getVar( 'item', array(), 'request', 'array' );
 		
-		$objTD1 = new ProjectTodo( $this->_database );
-		$objTD1->loadTodo ($this->_project->id, $oldid);
-		
-		$objTD2 = new ProjectTodo( $this->_database );
-		$objTD2->loadTodo ($this->_project->id, $newid);
-		
-		$priority1 = $objTD1->priority;
-		$priority2 = $objTD2->priority;
-		
-		$objTD2->priority = $priority1;
-		$objTD1->priority = $priority2;
-		
-		$objTD1->store();
-		$objTD2->store();
+		if ($newid && $oldid)
+		{
+			$objTD1 = new ProjectTodo( $this->_database );
+			$objTD1->loadTodo ($this->_project->id, $oldid);
+
+			$objTD2 = new ProjectTodo( $this->_database );
+			$objTD2->loadTodo ($this->_project->id, $newid);
+
+			$priority1 = $objTD1->priority;
+			$priority2 = $objTD2->priority;
+
+			$objTD2->priority = $priority1;
+			$objTD1->priority = $priority2;
+
+			$objTD1->store();
+			$objTD2->store();
+		}
+		elseif (!empty($items))
+		{
+			$o = 1;
+			foreach ($items as $item)
+			{
+				$objTD = new ProjectTodo( $this->_database );
+				$objTD->loadTodo ($this->_project->id, $item);
+				$objTD->priority = $o;
+				$objTD->store();
+				$o++;
+			}
+		}
 				
 		// Go back to todo list
 		return $this->view();

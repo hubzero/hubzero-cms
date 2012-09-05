@@ -137,7 +137,16 @@ $shown = array();
 			?>
 		</ul>
 		<label class="addnew">
-			<input type="text" name="newmember" id="newmember" value="" />
+			<?php 
+				JPluginHelper::importPlugin( 'hubzero' );
+				$dispatcher =& JDispatcher::getInstance();
+			
+				$mc = $dispatcher->trigger( 'onGetMultiEntry', array(array('members', 'newmember', 'newmember')) );
+				if (count($mc) > 0) {
+					echo $mc[0];
+				} else { ?>
+					<input type="text" name="newmember" id="newmember" value="" size="35" />
+				<?php } ?>
 		</label>
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="id" id="projectid" value="<?php echo $this->project->id; ?>" />

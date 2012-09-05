@@ -683,8 +683,14 @@ class plgProjectsFiles extends JPlugin
 				{
 					// Get used space 
 					chdir($prefix . $path);
-					exec('du -sk .[!.]*', $out);
-					
+					if ($this->_task != 'saveprov')
+					{
+						exec('du -sk .[!.]*', $out);
+					}
+					else
+					{
+						exec('du -sk', $out);
+					}
 					$kb = str_replace('.git', '', trim($out[0]));
 					$dirsize = $kb * 1024;
 					$unused = $quota - $dirsize;
@@ -872,7 +878,7 @@ class plgProjectsFiles extends JPlugin
 		{
 			return $this->browser();
 		}
-		elseif ($this->_task != 'saveprov')  
+		else
 		{			
 			// Pass success or error message
 			if ($this->getError()) {

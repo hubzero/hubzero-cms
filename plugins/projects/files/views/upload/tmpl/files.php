@@ -130,7 +130,6 @@ $shown = array();
 	}		
 	 ?>
 	</ul>
-		<p class="witherror" id="statusmsg"></p>
 		<label class="addnew">
 			<input name="upload[]" type="file" size="20" class="option" id="uploader" /> 
 		</label>

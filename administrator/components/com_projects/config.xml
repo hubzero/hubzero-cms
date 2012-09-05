@@ -36,8 +36,12 @@
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="restricted_data" type="list" default="0" label="Ask about sensitive data?" description="Inlcude a question about sensitive data (HIPAA/FERPA/Export Control)">
 			<option value="0">NO</option>
-			<option value="1">YES, with HIPAA/FERPA etc. options</option>
 			<option value="2">YES, with one general question</option>
+			<option value="1">YES, with HIPAA/FERPA etc. options</option>
+		</param>
+		<param name="restricted_upfront" type="list" default="0" label="Warn about sensitive data upfront?" description="Inlcude a question about sensitive data upfront?">
+			<option value="0">NO</option>
+			<option value="1">YES</option>
 		</param>
 		<param name="approve_restricted" type="list" default="0" label="Must approve sensitive data projects?" description="Require approval for sensitive data projects?">
 			<option value="0">NO</option>

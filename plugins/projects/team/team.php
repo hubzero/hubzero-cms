@@ -175,10 +175,19 @@ class plgProjectsTeam extends JPlugin
 			{	
 				case 'edit': 
 				case 'setup': 
-					$document->addScript('plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'observer.js');
-					$document->addScript('plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'textboxlist.js');
-					$document->addScript('plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.js');
-					$document->addStyleSheet('plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.css');
+					
+					// Do we need to incule extra scripts?
+					$plugin 		= JPluginHelper::getPlugin( 'system', 'jquery' );
+					$p_params 		= $plugin ? new JParameter($plugin->params) : NULL;
+					
+					if (!$plugin || $p_params->get('noconflictSite'))
+					{
+						$document->addScript('plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'observer.js');
+						$document->addScript('plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'textboxlist.js');
+						$document->addScript('plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.js');
+						$document->addStyleSheet('plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.css');
+					}
+					
 					$arr['html'] = $this->view( 1 ); 
 					break;
 				
@@ -255,7 +264,7 @@ class plgProjectsTeam extends JPlugin
 		
 		// Instantiate project owner
 		$objO = new ProjectOwner($this->_database);
-		$view->filters['limit']    =  intval($this->_params->get('limit', 25));
+		$view->filters['limit']    =  intval($this->_params->get('limit', 0));
 		$view->filters['start']    = JRequest::getInt( 't_limitstart', 0);
 		$view->filters['sortby']   = JRequest::getVar( 't_sortby', 'name');
 		$view->filters['sortdir']  = JRequest::getVar( 't_sortdir', 'ASC');
@@ -435,6 +444,10 @@ class plgProjectsTeam extends JPlugin
 						{
 							$name = $parts[0];
 							$uid = preg_replace('/[)]/', '', $parts[1]);
+						}
+						elseif (intval($cid))
+						{
+							$uid = $cid;	
 						}
 						else 
 						{

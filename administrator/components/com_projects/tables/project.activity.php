@@ -209,10 +209,6 @@ class ProjectActivity extends JTable
 		{
 			return false;
 		}
-		if (intval($projectid) == 0)
-		{
-			return false;
-		}
 		
 		$sortby  		= isset($filters['sortby']) ? $filters['sortby'] : 'recorded';
 		$limit   		= isset($filters['limit']) ? $filters['limit'] : 0;

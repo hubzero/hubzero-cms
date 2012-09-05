@@ -166,6 +166,7 @@ function submitbutton(pressbutton)
 						<?php if($this->params->get( 'hipaa_data')  == 'yes') { echo 'HIPAA'; } ?>
 						<?php if($this->params->get( 'ferpa_data')  == 'yes') { echo 'FERPA'; } ?>
 						<?php if($this->params->get( 'export_data') == 'yes') { echo 'Export Controlled'; } ?>
+						<?php if($this->params->get( 'irb_data') == 'yes') { echo 'IRB'; } ?>
 						)
 					<?php } ?></td>
 				</tr>	

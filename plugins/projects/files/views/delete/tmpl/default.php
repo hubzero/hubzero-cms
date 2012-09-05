@@ -49,12 +49,12 @@ if (!$this->getError()) {
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<!--<p class="anote"><?php echo JText::_('COM_PROJECTS_DELETE_FILES_NOTE'); ?></p> -->
 		<p><?php echo JText::_('COM_PROJECTS_DELETE_FILES_CONFIRM'); ?></p>
-		<?php if(count($this->folders) > 0) { ?>
+		<?php if(count($this->folders) > 0 && $this->folders[0] != '') { ?>
 			<p class="warning"><?php echo JText::_('COM_PROJECTS_DELETE_FILES_CONFIRM_WARNING'); ?></p>
 		<?php } ?>
 		<ul>
 		<?php if(count($this->folders) > 0 && $this->folders[0] != '') { foreach ($this->folders as $folder) {  ?>
-		<li>	<img src="/components/com_projects/images/files/folder.gif" alt="<?php echo urldecode($folder); ?>" />
+		<li>	<img src="/plugins/projects/files/images/folder.gif" alt="<?php echo urldecode($folder); ?>" />
 		<?php	
 			echo urldecode($folder); 
 			$f++; 

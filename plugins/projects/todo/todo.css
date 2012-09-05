@@ -191,7 +191,7 @@
 /* Todo - page header
 --------------------------------------------- */
 	h3.todo .indlist  {
-		padding-left: 20px;
+		padding-left: 30px;
 		font-size: 75%;
 	}
 	h3.todo .itemname {
@@ -733,7 +733,7 @@
 	
 	#todo-mine h4:before,
 	#todo-completed h4:before,
-	.completedtd:before,
+	h3.todo .completedtd:before,
 	.mytodo:before,
 	.pinboard li .complete:before {
 		content: "";
@@ -746,14 +746,14 @@
 		vertical-align: middle;
 	}
 	#todo-completed h4:before,
-	.completedtd:before,
+	h3.todo .completedtd:before,
 	.pinboard li .complete:before {
 		content: "\2714";
 		color: #55c64c;
 		font-weight: normal;
 	}
 	#todo-mine h4:before,
-	.mytodo:before {
+	h3.todo .mytodo:before {
 		content: "\2606";
 		color: #f4ce7d;
 	}

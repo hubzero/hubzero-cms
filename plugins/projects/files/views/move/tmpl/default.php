@@ -51,7 +51,7 @@ if (!$this->getError()) {
 		<p><?php echo JText::_('COM_PROJECTS_MOVE_FILES_CONFIRM'); ?></p>
 		<ul>
 		<?php if(count($this->folders) > 0 && $this->folders[0] != '') { foreach ($this->folders as $folder) {  ?>
-		<li>	<img src="/components/com_projects/images/files/folder.gif" alt="<?php echo urldecode($folder); ?>" />
+		<li>	<img src="/plugins/projects/files/images/folder.gif" alt="<?php echo urldecode($folder); ?>" />
 		<?php	
 			echo urldecode($folder); 
 			$f++; 

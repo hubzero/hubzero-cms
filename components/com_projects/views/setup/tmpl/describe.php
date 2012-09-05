@@ -59,7 +59,7 @@ $title = $this->project->title ? JText::_('COM_PROJECTS_NEW_PROJECT').': '.$this
 	$html .= t.t.'<h4>'.JText::_('COM_PROJECTS_HOWTO_TITLE_NAME_PROJECT').'</h4>'.n;
 	$html .= t.t.'<p>'.JText::_('COM_PROJECTS_HOWTO_NAME_PROJECT').'</p>'.n;
 	$html .= t.'</div>'.n;	
-	$html .= t.t.'<fieldset>'.n;
+	$html .= t.t.'<fieldset class="oldstyle">'.n;
 	$html .= t.t.'<h2>'.JText::_('COM_PROJECTS_PICK_NAME').'</h2>'.n;
 	$html .= t.t.t.'<input type="hidden"  name="task" value="setup" />'.n;
 	$html .= t.t.t.'<input type="hidden"  name="save_stage" id="save_stage" value="1" />'.n;
@@ -69,6 +69,7 @@ $title = $this->project->title ? JText::_('COM_PROJECTS_NEW_PROJECT').': '.$this
 	$html .= t.t.t.'<input type="hidden" name="pid" value="'.$this->project->id.'" />'.n;
 	$html .= t.t.t.'<input type="hidden" id="tempid" name="tempid" value="'.$this->tempid.'" />'.n;	
 	$html .= t.t.t.'<input type="hidden" id="gid" name="gid" value="'.$this->gid.'" />'.n;	
+	$html .= t.t.t.'<input type="hidden" name="restricted" value="'.$this->restricted.'" />'.n;
 	$html .= t.t.t.'<input type="hidden" id="verified" name="verified" value="'.$this->verified.'" />'.n;
 	$html .= t.t.t.'<input type="hidden" id="extended" name="extended" value="0" />'.n;	
 	$html .= t.t.t.'<div id="verificationarea_title"></div>'.n;

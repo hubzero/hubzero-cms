@@ -183,16 +183,6 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
 					</td>				
 				</tr>	
 			<?php } ?>
-		
-			<?php 
-			if($this->case == 'files' && $this->fileparams->get('shared', 0)) { ?>
-			<tr class="mini faded mline">
-				<td><span class="i-new"><?php echo JText::_('COM_PROJECTS_FILES_NEW'); ?></span></td>
-				<td colspan="<?php echo $publishing ? 7 : 6; ?>" class="shared">
-					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . $goto . '&active='.$this->case).'?action=shared'; ?>" title=""><?php echo JText::_('Shared'); ?></a>
-					<span class="pale block"><?php echo JText::_('bring in files from Google or Dropbox'); ?></span></td>
-			</tr>
-			<?php } ?>
 			<?php 
 			if($this->subdir) { ?>
 				<tr>
@@ -211,7 +201,7 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
 					?>
 						<tr class="mini faded mline">
 							<td><input type="checkbox" value="<?php echo urlencode($dir); ?>" name="folder[]" class="checkasset js dir" /></td>
-							<td class="top_valign"><img src="/plugins/projects/files/images/folder.gif" alt="<?php echo $dir; ?>" />
+							<td class="top_valign nobsp"><img src="/plugins/projects/files/images/folder.gif" alt="<?php echo $dir; ?>" />
 								<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'active='.$this->case.a.$goto).'/?action=browse'.a.'subdir='.urlencode($dirpath); ?>" class="dir:<?php echo urlencode($dir); ?>" title="<?php echo JText::_('COM_PROJECTS_FILES_GO_TO_DIR') . ' ' . $dir; ?>" id="edit-c-<?php echo $c; ?>"><?php echo $dir; ?></a>
 							</td>
 							<td class="js"><span id="rename-c-<?php echo $c; ?>" class="rename" title="<?php echo JText::_('COM_PROJECTS_FILES_RENAME_DIR_TOOLTIP'); ?>">&nbsp;</span></td>

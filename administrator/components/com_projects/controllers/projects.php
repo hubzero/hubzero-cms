@@ -76,7 +76,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 				.'com_publications' . DS . 'tables' . DS . 'tool.php');
 			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'type.php');
+				.'com_publications' . DS . 'tables' . DS . 'category.php');
 			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 				.'com_publications' . DS . 'tables' . DS . DS.'master.type.php');
 			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
@@ -186,7 +186,20 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		ximport('Hubzero_Document');
 		Hubzero_Document::addComponentStylesheet('com_projects');	
 		Hubzero_Document::addPluginStylesheet('projects', 'files');	
-		Hubzero_Document::addPluginScript('projects', 'files');
+		
+		// Do we need to incule extra scripts?
+		$plugin 		= JPluginHelper::getPlugin( 'system', 'jquery' );
+		$p_params 		= $plugin ? new JParameter($plugin->params) : NULL;
+		
+		if (!$plugin || !$p_params->get('activateAdmin'))
+		{
+			$document =& JFactory::getDocument();
+			$document->addScript(DS . 'plugins' . DS . 'projects' . DS . 'files' . DS . 'files.js');
+		}
+		else
+		{
+			Hubzero_Document::addPluginScript('projects', 'files');
+		}
 		
 		// Instantiate a new view
 		$view = new JView( array('name'=>'edit') );

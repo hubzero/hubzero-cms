@@ -302,6 +302,9 @@
 		margin-right: 0.3em;
 		content: "\270D";
 	}
+	#editv {
+		white-space: nowrap;
+	}
 
 /* Misc
 --------------------------------------------- */	

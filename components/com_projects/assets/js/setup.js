@@ -46,17 +46,22 @@ HUB.ProjectSetup = {
 		var resta = $$('.restricted-answer');
 		if(rest.length > 0 && resta.length > 0)
 		{
+			HUB.ProjectSetup.enableButton();
 			if($('restricted-yes'))
 			{
 				rest.each(function(item) 
 				{	
-					item.removeEvents();				
+					item.removeEvents();
+					HUB.ProjectSetup.showStopSigns(item);			
 					item.addEvent('click', function(e) {
 						resta.each(function(ritem) 
 						{
 							ritem.checked = false;
 						});
 						$('restricted-yes').checked = true;
+						
+						HUB.ProjectSetup.showStopSigns(item);
+						HUB.ProjectSetup.enableButton();
 					});
 				});
 			}
@@ -67,21 +72,43 @@ HUB.ProjectSetup = {
 					rest.each(function(item) 
 					{
 						item.checked = false;
+						HUB.ProjectSetup.showStopSigns(item);
+						HUB.ProjectSetup.enableButton();
 					});	
 				});	
 			}
 			
-			if($('restricted-maybe'))
+			// Check if can proceed
+			if($$('.option').length > 0)
 			{
-				$('restricted-maybe').addEvent('click', function(e) {
-					rest.each(function(item) 
-					{
-						item.checked = false;
-					});	
-				});	
+				$$('.option').each(function(item) 
+				{
+					item.addEvent('click', function(e) {
+						HUB.ProjectSetup.enableButton();
+					});
+				});
 			}
 		}
-
+		
+		// Setup pre-screen
+		if ($('f-restricted-no') && $('f-restricted-explain'))
+		{
+			$('f-restricted-no').addEvent('click', function(e) {
+				$('f-restricted-explain').addClass('hidden');
+			});
+			if ($('f-restricted-no').checked == true)
+			{
+				$('f-restricted-explain').addClass('hidden');
+			}
+		}
+		
+		if ($('f-restricted-yes') && $('f-restricted-explain'))
+		{
+			$('f-restricted-yes').addEvent('click', function(e) {
+				$('f-restricted-explain').removeClass('hidden');
+			});
+		}
+	
 		// Show/hide options to describe project		
 		if($('pid') && ($('pid').value == '' || $('pid').value == 0)) 
 		{
@@ -239,16 +266,73 @@ HUB.ProjectSetup = {
 		}
 	},
 	
+	showStopSigns: function(el)
+	{
+		var oid = el.getProperty('id');
+		var obox = 'stop-' + oid;
+		if(el.checked == true && $(obox).hasClass('hidden'))
+		{
+			$(obox).removeClass('hidden');
+		}
+		else
+		{
+			$(obox).addClass('hidden');
+		}
+	},
+	
 	enableButtonActivate: function() 
 	{
 		var con = $('b-continue');
 		var passed = 1;
 		
-		if($('verified').value == 0 || $('new-alias').value == '')
+		if (con)
+		{
+			if($('verified') && $('verified').value == 0 || $('new-alias').value == '')
+			{
+				passed = 0;
+			}
+			if($('agree') && $('agree') && $('agree').checked == false)
+			{
+				passed = 0;
+			}
+
+			if(passed == 1 && con.hasClass('disabled')) { 
+				con.removeClass('disabled'); 
+			}
+			if(passed == 0 && !con.hasClass('disabled')) {
+				con.addClass('disabled');
+			}
+
+			con.removeEvents();
+			con.addEvent('click', function(e) {
+				new Event(e).stop();
+				if(!con.hasClass('disabled')) {
+					if($('activate-form')) {					
+						$('activate-form').submit();
+					}
+				}
+			});
+		}
+	},
+	
+	enableButton: function() 
+	{
+		var con = $('btn-finalize');
+		var passed = 1;
+		
+		if($('export') && $('export').checked == true)
 		{
 			passed = 0;
 		}
-		if($('agree') && $('agree').checked == false)
+		if($('hipaa') && $('hipaa').checked == true)
+		{
+			passed = 0;
+		}
+		if($('irb') && $('irb').checked == true && $('agree_irb').checked == false )
+		{
+			passed = 0;
+		}
+		if($('ferpa') && $('ferpa').checked == true && $('agree_ferpa').checked == false )
 		{
 			passed = 0;
 		}
@@ -264,8 +348,8 @@ HUB.ProjectSetup = {
 		con.addEvent('click', function(e) {
 			new Event(e).stop();
 			if(!con.hasClass('disabled')) {
-				if($('activate-form')) {					
-					$('activate-form').submit();
+				if($('hubForm')) {					
+					$('hubForm').submit();
 				}
 			}
 		});

@@ -15,12 +15,10 @@
 
 */
 
-@import url("/media/system/css/fontcons.css");
-
-	/*#content { 
+	#content { 
 		padding: 0px; 
 		margin: 0px; 
-	}*/
+	}
 	#content-wrap #project-wrap {
 		margin: 0 -15px -15px -15px;
 	}
@@ -44,7 +42,7 @@
 	}
 
 /* Sections, general
---------------------------------------------- 
+--------------------------------------------- */
 	.main {
 		border: none;
 		min-width: 700px;
@@ -72,7 +70,7 @@
 	} */
 	
 /* HUBzero 
---------------------------------------------- 
+--------------------------------------------- */	
 
 	.com_projects {
 		background: #FFFFFF !important;
@@ -84,8 +82,9 @@
 	.com_projects .withleft .aside {
 		border: none;
 	}
+	
 /* User options
---------------------------------------------- 
+--------------------------------------------- */	
 	#content-header-extra {
 		width: 50%;
 	}
@@ -103,18 +102,6 @@
 	
 /* Forms 
 --------------------------------------------- */
-#content #content-header-extra a.browse {
-	padding-left: 2.91em;
-}
-#content #content-header-extra a.browse:before {
-	top: 0;
-	left: 0;
-	width: 1em;
-	font-size: 1.2em;
-	position: absolute;
-	height: auto;
-	color: #555;
-}
 	#hubForm h2 {
 		font-size: 1.2em;
 		margin-bottom: 0;
@@ -125,8 +112,11 @@
 		width: 70%;
 		display: block;
 	}
-	#hubForm fieldset {
-		padding: 0 2% 1.75em 23%;
+	#hubForm fieldset.oldstyle {
+		padding: 0 2% 1.75em 15%;
+	}
+	#hubForm fieldset h2, #hubForm fieldset h4 {
+		margin-left: 1.2em;
 	}
 	#hubForm .hint {
 		margin-top: 0.2em;
@@ -178,9 +168,6 @@
 	#hubForm .combine_options .option {
 		margin: 0 !important;
 		padding: 0;
-	}
-	#hubForm .combine_options label #role_collaborator {
-		margin-left: 2em !important;
 	}
 	#hubForm th.tdnarrow {
 		width: 10%;
@@ -617,11 +604,11 @@
 	}
 	
 /* Introduction page
---------------------------------------------- 
+--------------------------------------------- */
 	#introduction {
 		margin: -1px 0 3em 0;
 		padding: 0 0 0 140px;
-		background: #fbf8ea url("../img/projects-large.gif") 35px 25px no-repeat;
+		background: #fbf8ea url("../img/projects-large.gif") 35px 25px no-repeat !important;
 		border-top: 2px solid #e7dac4;
 		border-bottom: 2px solid #e7dac4;
 		color: #7c7266;
@@ -653,15 +640,9 @@
 		list-style: none;
 		margin: 1em 0;
 		padding: 0;
-	}
+		}
 	#introduction li {
 		margin: 0.3em 0;
-	}*/
-	#introduction:after {
-		content: "\f03f";
-	}
-	#introduction {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="intro-before"></small>' + this.innerHTML + '<small class="intro-after">&#xf03f;</small>');
 	}
 	#introduction .subnote {
 		margin-left: 20px;
@@ -906,10 +887,44 @@
 	#hubForm h2.setup-h, h4.setup-h {
 		font-size: 1em;
 		padding-left: 0.5em;
-		margin: 2em 0 -0.5em 0;
+		margin-top: 2em;
+		margin-bottom: 1em;
 		background: #edf3e5;
 		border-top: 1px dotted #000;
 		border-bottom: 1px dotted #000;
+	}
+	#setup #hubForm {
+		min-width: 850px;
+	}
+	.stopaction {
+		border: 4px solid #f4bfbf;
+		margin: 1em 1.5em;
+		padding: 0.3em 1em;
+		background: #fae6e5;
+		color: red;
+	}
+	.extraaction {
+		border: 4px solid #f4e6bf;
+		margin: 1em 1.5em;
+		padding: 0.3em 1em;
+		background: #FFFFFF;
+	}
+	.extraaction label {
+		margin-bottom: 1em;
+	}
+	.extraaction h5 {
+		color: red;
+		margin: 1em 0;
+	}
+	.cautionaction {
+		border: 4px solid #f4bfbf;
+		margin: 1em 1.5em;
+		padding: 0.3em 1em;
+		background: #FFFFFF;
+	}
+	.cautionaction p {
+		padding: 0 !important;
+		margin: 0.5em 0 1em !important;
 	}
 
 /* Setup - describe project
@@ -993,7 +1008,6 @@
 		font-size: 100%;
 	}
 	#restricted-choice {
-		margin-top: -1em;
 		padding: 0 1em 1em 1em;
 	}
 	
@@ -1569,6 +1583,7 @@
 	}
 	#cbody .list-editing {
 		background: #e3e5e2;
+		padding: 0;
 	}
 	.list-editing p {
 		text-align: left;	
@@ -1579,7 +1594,7 @@
 	.manage {
 		padding: 0.1em 0.3em;
 		border: 1px solid #CCC !important;
-		background: url("../img/bg_btn.gif") 0 0 repeat-x;
+		background: url("../img/backgrounds/bg_btn.gif") 0 0 repeat-x;
 		margin-left: 0.5em;
 		color: #000;
 	}
@@ -1706,7 +1721,7 @@
 	#abox-content ul li.level_1 span.folder,
 	#abox-content ul li.level_2 span.folder,
 	#abox-content ul li.level_3 span.folder {
-		background: url("../img/files/folder.gif") 0 0 no-repeat;
+		background: url("/plugins/projects/files/images/folder.gif") 0 0 no-repeat;
 		padding-left: 20px;
 		margin-left: 0;
 	}
@@ -2077,18 +2092,10 @@
 	body#project-picture, body#project-team {
 		background: #fff !important;
 	}
-	#imaForm {
+	form#imaForm {
 		border-top: 2px solid #dee4cd;
-		border-bottom: 2px solid #dee4cd;
-		height: 80px;
 		padding-top: 1em;
 		background: #ffffff;
-	}
-	#imaForm fieldset  {
-		margin-left: 100px;
-	}
-	#imaForm fieldset legend {
-		margin-bottom: 0.5em;
 	}
 
 /* Right-hand side blocks
@@ -2190,6 +2197,7 @@
 		color: #444;
 		border-bottom: 1px solid #FFF;
 		margin-right: 0;
+		clear: none;
 	}
 	#plg-content .comments .delit-container {
 		float: right;
@@ -2565,6 +2573,7 @@
 	.status-msg p {
 		color: #51b126;
 		background: #f2fcee;
+		border: 1px solid #dbfdcd;
 		padding: 0.3em 0.5em;
 		margin: 0;
 		font-weight: bold;
@@ -2573,9 +2582,10 @@
 	.status-msg p.witherror, p.witherror {
 		color: red;
 		background: #fae6e5;
+		border: 1px solid #f9c9c6;
 	}
 	p.witherror, p.successmsg {
-		padding: 0 0.5em;
+		padding: 0.3em 0.5em;
 		margin: 0;
 		font-weight: bold;
 		font-size: 85%;
@@ -2627,25 +2637,26 @@
 		opacity:0.1;
 	}
 
-	#blockG_1{
+	#blockG_1 {
 	-webkit-animation-delay:0.39s;
 	-moz-animation-delay:0.39s;
 	-o-animation-delay:0.39s;
 	-ms-animation-delay:0.39s;
 	}
 
-	#blockG_2{
+	#blockG_2 {
 	-webkit-animation-delay:0.52s;
 	-moz-animation-delay:0.52s;
 	-o-animation-delay:0.52s;
 	-ms-animation-delay:0.52s;
 	}
 
-	#blockG_3{
+	#blockG_3 {
 	-webkit-animation-delay:0.65s;
 	-moz-animation-delay:0.65s;
 	-o-animation-delay:0.65s;
 	-ms-animation-delay:0.65s;
+	margin-right: 5px;
 	}
 
 	@-webkit-keyframes bounceG{
@@ -2877,9 +2888,10 @@
 		text-align: center;
 	}
 	.and_or {
-		font-size: 75%;
+		font-size: 0.8em;
 		font-style: italic;
 		padding: 0 0.3em;
+		text-transform: uppercase;
 	}
 	.js {
 		display: none;
@@ -3131,7 +3143,8 @@
 	#plg-content .addcomment fieldset:before,
 	.admin-note:before,
 	.private:before,
-	.s-private:before, {
+	.s-private:before,
+	.browse:before {
 		content: "";
 		width: 16px;
 		height: 16px;
@@ -3210,8 +3223,7 @@
 		height: 14px;
 		font-size: 14px;
 	}
-	#content #content-header-extra .browse:before {
-		font-family: 'Fontcons';
+	.browse:before {
 		content: "\f002";
 	}
 	.publications:before, .publication:before {

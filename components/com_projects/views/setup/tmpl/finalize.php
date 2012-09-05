@@ -93,27 +93,29 @@ $html  = '';
 			<h2><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_INFO'); ?></h2>
 			<p class="notice"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_INFO_WHY'); ?></p>
 			<label class="terms-label"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_TITLE'); ?>:
-			 <input name="grant_title" maxlength="250" type="text" value="<?php echo $this->grant_title; ?>" class="long" />
+			 <input name="grant_title" maxlength="250" type="text" value="<?php echo $this->params->get('grant_title'); ?>" class="long" />
 			</label>
 			<label class="terms-label"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_PI'); ?>:
-			 <input name="grant_PI" maxlength="250" type="text" value="<?php echo $this->grant_PI; ?>" class="long" />
+			 <input name="grant_PI" maxlength="250" type="text" value="<?php echo $this->params->get('grant_PI'); ?>" class="long" />
 			</label>
 			<label class="terms-label"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_AGENCY'); ?>:
-			 <input name="grant_agency" maxlength="250" type="text" value="<?php echo $this->grant_agency; ?>" class="long" />
+			 <input name="grant_agency" maxlength="250" type="text" value="<?php echo $this->params->get('grant_agency'); ?>" class="long" />
 			</label>
 			<label class="terms-label"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_BUDGET'); ?>:
-			 <input name="grant_budget" maxlength="250" type="text" value="<?php echo $this->grant_budget; ?>" class="long" />
+			 <input name="grant_budget" maxlength="250" type="text" value="<?php echo $this->params->get('grant_budget'); ?>" class="long" />
 			</label>
 			</fieldset>
 			<div class="clear"></div>
 			<?php } ?>
 		<div class="explaination">
-			<h4><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_PRIVACY_WHY'); ?></h4>
-			<p><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_PRIVACY_BECAUSE'); ?> <a href="<?php echo $privacylink; ?>" rel="external" ><?php echo JText::_('COM_PROJECTS_SETUP_TERMS'); ?></a>.</p>
 			<?php if($this->config->get('restricted_data', 0)) { ?>
 			<h4><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_PRIVACY_RULE'); ?></h4>
 			<p><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_PRIVACY_RULE_EXPLAIN'); ?> </p>
 			<p><?php echo JText::_('COM_PROJECTS_SETUP_MORE_ON'); ?><a href="<?php echo $hipaa; ?>" rel="external" > <?php echo JText::_('COM_PROJECTS_SETUP_TERMS_HIPAA'); ?></a>. <?php echo JText::_('COM_PROJECTS_SETUP_MORE_ON'); ?><a href="<?php echo $ferpa; ?>" rel="external" > <?php echo JText::_('COM_PROJECTS_SETUP_TERMS_FERPA'); ?></a>.</p>
+			<p class="info"><?php echo JText::_('COM_PROJECTS_ERROR_SETUP_TERMS_NOTE'); ?></p>
+			<?php } else { ?>
+				<h4><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_PRIVACY_WHY'); ?></h4>
+				<p><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_PRIVACY_BECAUSE'); ?> <a href="<?php echo $privacylink; ?>" rel="external" ><?php echo JText::_('COM_PROJECTS_SETUP_TERMS'); ?></a>.</p>
 			<?php } ?>
 		</div>
 		<fieldset class="wider">
@@ -128,49 +130,56 @@ $html  = '';
 			<p><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_WHY_ASK'); ?></p>
 			<?php if($this->config->get('restricted_data', 0) == 1) { ?>
 			<h4 class="terms-question"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_QUESTION_PHI'); ?><span class="required"><?php echo JText::_('REQUIRED'); ?></span></h4>
-			<label class="terms-label">
+			<label class="terms-label dark">
 				<input class="option restricted-answer" name="restricted" id="restricted-yes" type="radio" value="yes" <?php if($this->params->get('restricted_data') == 'yes') { echo 'checked="checked"'; } ?> />
 				<?php echo JText::_('COM_PROJECTS_SETUP_TERMS_QUESTION_PHI_YES'); ?>
 			</label>
-			<p class="ipadded hint prominent"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_QUESTION_MAKE_CHOICE'); ?></p>
 			<div class="ipadded" id="restricted-choice">
+				<p class="hint prominent"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_QUESTION_MAKE_CHOICE'); ?></p>
 				<label class="terms-label">
-					<input class="option restricted-opt" name="hipaa" type="checkbox" value="yes" <?php if($this->params->get('hipaa_data') == 'yes' ) { echo 'checked="checked"'; } ?> />
-					<?php $q = JText::_('COM_PROJECTS_SETUP_TERMS_PROJECT_WILL_INVOLVE')
-					. ' <a href="'.$hipaa.'" rel="external" title="' . JText::_('COM_PROJECTS_SETUP_TERMS_HIPAA_ABOUT')
-					. '">' . JText::_('COM_PROJECTS_SETUP_TERMS_HIPAA') . '</a> '
-					. JText::_('COM_PROJECTS_SETUP_TERMS_PROJECT_DATA') . ' '
-					. JText::_('COM_PROJECTS_SETUP_TERMS_HIPAA_EXP');
-					echo $q; ?>
+					<input class="option restricted-opt" name="export" id="export" type="checkbox" value="yes" <?php if($this->params->get('export_data') == 'yes' ) { echo 'checked="checked"'; } ?> />
+					<?php echo JText::_('COM_PROJECTS_SETUP_TERMS_PROJECT_WILL_INVOLVE_EXPORT_CONTROLLED'); ?>
 				</label>
+				<div id="stop-export" class="stopaction hidden"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_RESTRICTED_STOP_EXPORT'); ?></div>
 				<label class="terms-label">
-					<input class="option restricted-opt" name="ferpa" type="checkbox" value="yes" <?php if($this->params->get('ferpa_data') == 'yes' ) { echo 'checked="checked"'; } ?> />
-					<?php $q = JText::_('COM_PROJECTS_SETUP_TERMS_PROJECT_WILL_INVOLVE') 
-					. ' <a href="'.$ferpa.'" rel="external" title="' . JText::_('COM_PROJECTS_SETUP_TERMS_FERPA_ABOUT')
-					. '">' . JText::_('COM_PROJECTS_SETUP_TERMS_FERPA') . '</a> '
-					. JText::_('COM_PROJECTS_SETUP_TERMS_PROJECT_DATA') . ' '
-					. JText::_('COM_PROJECTS_SETUP_TERMS_FERPA_EXP');
-					echo $q; ?>
+					<input class="option restricted-opt" name="irb" id="irb" type="checkbox" value="yes" <?php if($this->params->get('irb_data') == 'yes' ) { echo 'checked="checked"'; } ?> />
+					<?php echo JText::_('COM_PROJECTS_SETUP_TERMS_PROJECT_WILL_INVOLVE_IRB'); ?>
 				</label>
+				<div id="stop-irb" class="extraaction hidden">
+					<h5><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_RESTRICTED_MUST_ACKNOWLEDGE'); ?></h5>
+					<?php echo JText::_('COM_PROJECTS_SETUP_TERMS_RESTRICTED_STOP_IRB'); ?>
+					<label>
+						<input class="option" name="agree_irb" id="agree_irb" type="checkbox" value="1"  />
+						<?php echo JText::_('COM_PROJECTS_SETUP_TERMS_RESTRICTED_STOP_IRB_AGREE'); ?>
+					</label>
+				</div>
 				<label class="terms-label">
-					<input class="option restricted-opt" name="excon" type="checkbox" value="yes" <?php if($this->params->get('export_data') == 'yes' ) { echo 'checked="checked"'; } ?> />
-					<?php echo JText::_('COM_PROJECTS_SETUP_TERMS_PROJECT_WILL_INVOLVE') 
-					. ' ' . JText::_('COM_PROJECTS_SETUP_EXPORT_CONTROLLED') . ' '
-					. JText::_('COM_PROJECTS_SETUP_TERMS_PROJECT_DATA'); ?>
+					<input class="option restricted-opt" name="hipaa" id="hipaa" type="checkbox" value="yes" <?php if($this->params->get('hipaa_data') == 'yes' ) { echo 'checked="checked"'; } ?> />
+					<?php echo JText::_('COM_PROJECTS_SETUP_TERMS_PROJECT_WILL_INVOLVE_HIPAA'); ?>
 				</label>
+				<div id="stop-hipaa" class="stopaction hidden"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_RESTRICTED_STOP_HIPAA'); ?></div>
+				<label class="terms-label">
+					<input class="option restricted-opt" name="ferpa" id="ferpa" type="checkbox" value="yes" <?php if($this->params->get('ferpa_data') == 'yes' ) { echo 'checked="checked"'; } ?> />
+					<?php echo JText::_('COM_PROJECTS_SETUP_TERMS_PROJECT_WILL_INVOLVE_FERPA'); ?>
+				</label>
+				<div id="stop-ferpa" class="extraaction hidden">
+					<h5><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_RESTRICTED_MUST_ACKNOWLEDGE'); ?></h5>
+					<?php echo JText::_('COM_PROJECTS_SETUP_TERMS_RESTRICTED_STOP_FERPA'); ?>
+					<label>
+						<input class="option" name="agree_ferpa" id="agree_ferpa" type="checkbox" value="1"  />
+						<?php echo JText::_('COM_PROJECTS_SETUP_TERMS_RESTRICTED_STOP_FERPA_AGREE'); ?>
+					</label>
+				</div>
 			</div>
-			<label class="terms-label">
+			<label class="terms-label dark">
 				<input class="option restricted-answer" name="restricted" id="restricted-no" type="radio" value="no" <?php if($this->params->get('restricted_data') == 'no' ) { echo 'checked="checked"'; } ?> />
 				<?php echo JText::_('COM_PROJECTS_SETUP_TERMS_QUESTION_PHI_NO'); ?>
 			</label>			
-			<label class="terms-label">
-				<input class="option restricted-answer" name="restricted" id="restricted-maybe" type="radio" value="maybe" <?php if($this->params->get('restricted_data') == 'maybe' ) { echo 'checked="checked"'; } ?> />
-				<?php echo JText::_('COM_PROJECTS_SETUP_TERMS_QUESTION_PHI_MAYBE'); ?>
-			</label>
+			
 			<?php } ?>
 			<?php if($this->config->get('restricted_data', 0) == 2) { ?>
 			<h4 class="terms-question"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_QUESTION_PHI'); ?><span class="required"><?php echo JText::_('REQUIRED'); ?></span></h4>
-			<label class="terms-label">
+			<label class="terms-label dark">
 				<input class="option" name="restricted" type="checkbox" value="no" />
 				<?php echo JText::_('COM_PROJECTS_SETUP_TERMS_SENSITIVE_DATA_AGREE'); ?>
 			</label>	
@@ -180,7 +189,7 @@ $html  = '';
 				<input class="option" name="agree" type="checkbox" value="1" />
 				<?php echo JText::_('COM_PROJECTS_SETUP_TERMS_AGREE'); ?> <a href="<?php echo $privacylink; ?>" rel="external" ><?php echo JText::_('COM_PROJECTS_SETUP_TERMS'); ?></a> <?php echo JText::_('COM_PROJECTS_SETUP_TERMS_QUESTION_AGREE_PROJECT'); ?> <span class="prominent"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_ALL_MEMBERS'); ?></span>.
 			</label>
-			<p class="submitarea"><input type="submit" value="<?php echo JText::_('COM_PROJECTS_SAVE_AND_CONTINUE'); ?>" class="btn" /></p>
+			<p class="submitarea"><input type="submit" value="<?php echo JText::_('COM_PROJECTS_SAVE_AND_CONTINUE'); ?>" class="btn" id="btn-finalize" /></p>
 		</fieldset>
 	</form>
 	<div class="clear"></div>
