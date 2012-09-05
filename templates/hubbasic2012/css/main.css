@@ -152,7 +152,7 @@
 	code,
 	tt {
 		font-family: Monaco, ProFont, "Bitstream Vera Sans Mono", "American Typewriter", "Andale Mono", monospace;
-		font-size: 0.91em; /* 1.09em for Courier */
+		font-size: 0.91em;
 	}
 /* Table */
 	table,
@@ -237,14 +237,14 @@
 	}
 /* Shortcuts */
 	#top {
-		border-top: 3px solid #0fa1ca; /*#4b7d85;*/
-		background: -moz-linear-gradient(left, #333333 0%, #565656 50%, #333333 100%); /* FF3.6+ */
-		background: -webkit-gradient(linear, left top, right top, color-stop(0%,#333333), color-stop(50%,#565656), color-stop(100%,#333333)); /* Chrome,Safari4+ */
-		background: -webkit-linear-gradient(left, #333333 0%,#565656 50%,#333333 100%); /* Chrome10+,Safari5.1+ */
-		background: -o-linear-gradient(left, #333333 0%,#565656 50%,#333333 100%); /* Opera 11.10+ */
-		background: -ms-linear-gradient(left, #333333 0%,#565656 50%,#333333 100%); /* IE10+ */
-		background: linear-gradient(to right, #333333 0%,#565656 50%,#333333 100%); /* W3C */
-		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#243236', endColorstr='#4e5d61'); /* IE6-9 */
+		border-top: 3px solid #0fa1ca;
+		background: -moz-linear-gradient(left, #333333 0%, #565656 50%, #333333 100%);
+		background: -webkit-gradient(linear, left top, right top, color-stop(0%,#333333), color-stop(50%,#565656), color-stop(100%,#333333));
+		background: -webkit-linear-gradient(left, #333333 0%,#565656 50%,#333333 100%);
+		background: -o-linear-gradient(left, #333333 0%,#565656 50%,#333333 100%);
+		background: -ms-linear-gradient(left, #333333 0%,#565656 50%,#333333 100%);
+		background: linear-gradient(to right, #333333 0%,#565656 50%,#333333 100%);
+		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#243236', endColorstr='#4e5d61');
 		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=1,startColorstr=#333333, endColorstr=#565656)";
 	}
 	#top .inner-wrap {
@@ -319,18 +319,13 @@
 						radial-gradient(circle contain, rgba(209, 209, 209, 0.2) 16px, rgba(209, 209, 209, 0.3) 17px, transparent 20px),
 						radial-gradient(circle contain, rgba(209, 209, 209, 0.2) 26px, rgba(209, 209, 209, 0.3) 27px, transparent 30px),
 						radial-gradient(circle contain, rgba(209, 209, 209, 0.2) 36px, rgba(209, 209, 209, 0.3) 37px, transparent 40px);
-		/*-moz-background-size: 193px 283px, 409px 347px, 181px 367px,283px 359px,199px 229px,271px 389px,347px 181px,277px 271px,233px 263px,163px 199px,191px 241px,211px 227px,239px 193px;
-		background-size: 193px 283px, 409px 347px, 181px 367px, 283px 359px, 199px 229px,271px 389px,347px 181px,277px 271px,233px 263px,163px 199px,191px 241px,211px 227px,239px 193px;*/
 		background-position: 197px 251px, 313px 499px, 419px 359px,263px 433px,449px 197px,389px 317px,439px 281px,541px 263px,397px 449px,191px 463px,271px 271px,491px 397px,211px 349px;
 		-webkit-background-size: 293px 483px, 249px 547px, 281px 567px, 383px 259px, 379px 289px, 271px 389px, 347px 181px, 277px 271px, 333px 163px, 463px 249px, 291px 341px, 511px 350px, 339px 393px;
 		-moz-background-size: 293px 483px, 249px 547px, 281px 567px, 383px 259px, 379px 289px, 271px 389px, 347px 181px, 277px 271px, 333px 163px, 463px 249px, 291px 341px, 511px 350px, 339px 393px;
 		-ms-background-size: 293px 483px, 249px 547px, 281px 567px, 383px 259px, 379px 289px, 271px 389px, 347px 181px, 277px 271px, 333px 163px, 463px 249px, 291px 341px, 511px 350px, 339px 393px;
 		-o-background-size: 293px 483px, 249px 547px, 281px 567px, 383px 259px, 379px 289px, 271px 389px, 347px 181px, 277px 271px, 333px 163px, 463px 249px, 291px 341px, 511px 350px, 339px 393px;
 		background-size: 293px 483px, 249px 547px, 281px 567px, 383px 259px, 379px 289px, 271px 389px, 347px 181px, 277px 271px, 333px 163px, 463px 249px, 291px 341px, 511px 350px, 339px 393px;
-		/*background-position: 27% 750%, 40% 49%, 132% 190%, 40% 355%, 70% 829%, 52% 491%, 65% 38%, 54% 26%, 57% 44%, 33.5% 108%, 37% 48%, 97% 9%, 11% 107%;*/
 		box-shadow: inset 0 0 4em rgba(0, 0, 0, 0.4);
-		/*background-image: url(bokeh.svg), url(bokeh.svg), url(bokeh.svg), url(bokeh.svg);
-		*background-position: -360px -10px, -60px -10px, 240px -10px, 540px -10px; */
 		*background-image: none;
 	}
 	#top .inner {
@@ -1036,6 +1031,7 @@
 		margin: -1px -15px 3em -15px;
 	}
 	/* White background for icon */
+	body #introduction small.intro-before,
 	body #introduction:before {
 		top: 32px;
 		left: 32px;
@@ -1048,10 +1044,11 @@
 		background-color: #FEFEFE;
 	}
 	/* Icon */
+	body #introduction small.intro-after,
 	body #introduction:after {
 		color: #666;
 		font-size: 40px;
-		top: 57px;
+		top: 48px;
 		left: 49px;
 	}
 	/* Text styles */

@@ -18,6 +18,9 @@
 	#introduction:after {
 		content: "\f055";
 	}
+	#introduction {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="intro-before"></small>' + this.innerHTML + '<small class="intro-after">&#xf055;</small>');
+	}
 	#ticketForm {
 		position: relative;
 		overflow: hidden;

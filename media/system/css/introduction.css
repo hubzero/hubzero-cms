@@ -17,6 +17,8 @@
 		color: #666;
 		position: relative;
 	}
+	#introduction small.intro-before,
+	#introduction small.intro-after,
 	#introduction:before,
 	#introduction:after {
 		content: "";
@@ -28,6 +30,7 @@
 		left: 30px;
 		z-index: 100;
 	}
+	#introduction small.intro-before,
 	#introduction:before {
 		width: 69px;
 		height: 69px;
@@ -38,10 +41,12 @@
 		-o-border-radius: 0.5em;
 		border-radius: 0.5em;
 	}
+	#introduction small.intro-after,
 	#introduction:after {
 		font-family: 'Fontcons';
 		font-size: 50px;
-		top: 58px;
+		line-height: 1;
+		top: 43px;
 		left: 45px;
 		color: #bbb;
 	}

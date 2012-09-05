@@ -28,7 +28,6 @@
 		background: #333 !important;
 		color: #ccc !important;
 		padding: 2px 6px 2px 6px !important;
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before"></small>' + this.innerHTML + '<small class="fontcon-after">&bull;</small>'); /* [!] HACK - IE 7 and older */
 	}
 	.tags li a span {
 		background-color: #444; /* For browsers that don't support rgba */
@@ -42,7 +41,7 @@
 		-o-border-radius: 0 3px 3px 0;
 		border-radius: 0 3px 3px 0;
 	}
-	.tags li a small.fontcon-before,
+	.tags li a small.tag-before,
 	.tags li a:before {
 		content: "";
 		border-color: transparent #333 transparent transparent !important;
@@ -58,7 +57,7 @@
 		margin: 0 !important;
 		padding: 0 !important;
 	}
-	.tags li a small.fontcon-after,
+	.tags li a small.tag-after,
 	.tags li a:after {
 		content: "";
 		height: 4px;
@@ -74,15 +73,6 @@
 		-o-border-radius: 4px;
 		border-radius: 4px;
 	}
-	/* [!] HACK - IE 7 and older */
-	.tags li a small.fontcon-after {
-		*background-color: transparent;
-		*color: #fff;
-		*font-size: 18px;
-		*line-height: 12px;
-		*top: 7px;
-		*left: -4px;
-	}
 	.tags li a:hover {
 		color: #fff;
 		background: #000 !important;
@@ -91,7 +81,36 @@
 		background-color: #111; /* For browsers that don't support rgba */
 		background-color: rgba(255, 255, 255, 0.2);
 	}
-	.tags li a:hover small.fontcon-before,
+	.tags li a:hover small.tag-before,
 	.tags li a:hover:before {
 		border-color: transparent #000 transparent transparent !important;
+	}
+
+/* [!] HACK - IE 7 and older */
+	.tags li a {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="tag-before"></small>' + this.innerHTML + '<small class="tag-after">&bull;</small>');
+	}
+	.tags li a small.tag-after {
+		*background-color: transparent;
+		*color: #fff;
+		*font-size: 18px;
+		*line-height: 12px;
+		*top: 7px;
+		*left: -4px;
+	}
+	.tags li {
+		*display: inline !important;
+	}
+	.tags li a {
+		*display: inline-block;
+		*line-height: 1em !important;
+		*padding: 6px 6px 5px 6px !important;
+	}
+	.tags li a span {
+		*background-color: #666;
+		*padding: 6px 6px 6px 6px !important;
+		*margin: -6px -6px -7px 4px;
+	}
+	.tags li a:hover span {
+		*background-color: #444;
 	}

@@ -31,55 +31,92 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juser = JFactory::getUser();
-$num_likes = 0;
-$num_dislikes = 0;
+$this->item->helpful = ($this->item->helpful) ? $this->item->helpful : 0;
+$this->item->nothelpful = ($this->item->nothelpful) ? $this->item->nothelpful : 0;
+
+$dcls = '';
+$lcls = '';
 
 $like_link = JRoute::_('index.php?option='.$this->option.'&task=vote&category='.$this->type.'&id='.$this->item->id.'&vote=like');
 $dislike_link = JRoute::_('index.php?option='.$this->option.'&task=vote&category='.$this->type.'&id='.$this->item->id.'&vote=dislike');
 
-if($this->vote == 'like' || $this->vote == 'yes' || $this->vote == 'positive') {
-	$this->vote = 'like';
-} elseif($this->vote == 'dislike' || $this->vote == 'no' || $this->vote == 'negative') {
-	$this->vote = 'dislike';
+if (isset($this->vote)) {
+	switch ($this->vote)
+	{
+		case 'yes':
+		case 'positive':
+		case 'like':
+			$lcls = ' chosen';
+		break;
+
+		case 'no':
+		case 'negative':
+		case 'dislike':
+			$dcls = ' chosen';
+		break;
+	}
+} else {
+	$this->item->vote = null;
 }
 
-$num_likes = $this->item->helpful;
-$num_dislikes = $this->item->nothelpful;
+$juser = JFactory::getUser();
+if (!$juser->get('guest')) {
+	$like_title = 'Vote this up :: '.$this->item->helpful.' people liked this';
+	$dislike_title = 'Vote this down :: '.$this->item->nothelpful.' people did not like this';
+	$cls = ' tooltips';
+} else {
+	$like_title = 'Vote this up :: Please login to vote.';
+	$dislike_title = 'Vote this down :: Please login to vote.';
+	$cls = ' tooltips';
+}
 ?>
 
-<span class="voting-links">
-<?php if(!$this->vote) : ?>
-	<?php if($juser->get('guest')) : ?>
-		<span class="like like-disabled tooltips" title="Vote Up :: Please login to vote">
-			<span><?php echo $num_likes; ?></span>
+<?php if (!$this->vote) : ?>
+	<?php if ($juser->get('guest')) : ?>
+		<span class="vote-like<?php echo $lcls; ?>">
+			<span class="vote-button like tooltips" title="Vote Up :: Please login to vote">
+				<?php echo $this->item->helpful; ?><span> Like</span>
+			</span>
 		</span>
-		<span class="dislike dislike-disabled tooltips" title="Vote down :: Please login to vote">
-			<span><?php echo $num_dislikes; ?></span>
+		<span class="vote-dislike<?php echo $lcls; ?>">
+			<span class="vote-button dislike dislike-disabled tooltips" title="Vote down :: Please login to vote">
+				<?php echo $this->item->nothelpful; ?><span> Dislike</span>
+			</span>
 		</span>
 	<?php else : ?>
-		<a class="vote-link like tooltips" href="<?php echo $like_link; ?>" title="Vote Up :: I like this">
-			<span><?php echo $num_likes; ?></span>
-		</a>
-		<a class="vote-link dislike tooltips" href="<?php echo $dislike_link; ?>" title="Vote Down :: I dislike this">
-			<span><?php echo $num_dislikes; ?></span>
-		</a>
+		<span class="vote-like<?php echo $lcls; ?>">
+			<a class="vote-button like tooltips" href="<?php echo $like_link; ?>" title="Vote Up :: I like this">
+				<?php echo $this->item->helpful; ?><span> Like</span>
+			</a>
+		</span>
+		<span class="vote-dislike<?php echo $lcls; ?>">
+			<a class="vote-button dislike tooltips" href="<?php echo $dislike_link; ?>" title="Vote Down :: I dislike this">
+				<?php echo $this->item->nothelpful; ?><span> Dislike</span>
+			</a>
+		</span>
 	<?php endif; ?>
 <?php else : ?>
-	<?php if($this->vote == 'like') : ?>
-		<span class="like like-chosen tooltips" title="Already Voted :: You already liked this">
-			<span><?php echo $num_likes; ?></span>
+	<?php if (trim($lcls) == 'chosen') : ?>
+		<span class="vote-like<?php echo $lcls; ?>">
+			<span class="vote-button <?php echo ($this->item->helpful > 0) ? 'like' : 'neutral'; ?> tooltips" title="<?php echo $like_title; ?>">
+				<?php echo $this->item->helpful; ?><span> Like</span>
+			</span>
 		</span>
-		<a class="vote-link dislike tooltips" href="<?php echo $dislike_link; ?>" title="Change Your Vote :: Dislike this">
-			<span><?php echo $num_dislikes; ?></span>
-		</a>
+		<span class="vote-dislike<?php echo $dcls; ?>">
+			<a class="vote-button <?php echo ($this->item->nothelpful > 0) ? 'dislike' : 'neutral'; ?> tooltips" href="<?php echo $dislike_link; ?>" title="<?php echo $dislike_title; ?>">
+				<?php echo $this->item->nothelpful; ?><span> Dislike</span>
+			</a>
+		</span>
 	<?php else : ?>
-		<a class="vote-link like tooltips" href="<?php echo $like_link; ?>" title="Change Your Vote :: Like this">
-			<span><?php echo $num_likes; ?></span>
-		</a>
-		<span class="dislike dislike-chosen tooltips" title="Already Voted :: You already disliked this">
-			<span><?php echo $num_dislikes; ?></span>
+		<span class="vote-like<?php echo $lcls; ?>">
+			<a class="vote-button <?php echo ($this->item->helpful > 0) ? 'like' : 'neutral'; ?> tooltips" href="<?php echo $like_link; ?>" title="<?php echo $like_title; ?>">
+				<?php echo $this->item->helpful; ?><span> Like</span>
+			</a>
+		</span>
+		<span class="vote-dislike<?php echo $dcls; ?>">
+			<span class="vote-button <?php echo ($this->item->nothelpful > 0) ? 'dislike' : 'neutral'; ?> tooltips" title="<?php echo $dislike_title; ?>">
+				<?php echo $this->item->nothelpful; ?><span> Dislike</span>
+			</span>
 		</span>
 	<?php endif; ?>
 <?php endif; ?>
-</span>

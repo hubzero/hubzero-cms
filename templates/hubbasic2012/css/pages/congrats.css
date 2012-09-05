@@ -11,6 +11,10 @@
 	#content {
 		background: transparent;
 		box-shadow: none;
+		*border: none;
+	}
+	html>body #content {
+		*border: none;
 	}
 /* Misc */
 	#sub-masthead {
@@ -40,6 +44,8 @@
 		text-align: center;
 		color: #ddd;
 		text-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+		*background: #000;
+		filter: alpha(opacity = 60);
 	}
 	#congrats h2 {
 		margin: 0;

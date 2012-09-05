@@ -555,14 +555,14 @@ class Hubzero_Document
 			$patterns = array(
 				'!/\*[^*]*\*+([^/][^*]*\*+)*/!',  /* remove comments */
 				'/[\n\r \t]/',                    /* remove tabs, spaces, newlines, etc. */
-				'/ +/',                           /* collapse multiple spaces to a single space */
-				'/ ?([,:;{}]) ?/'                 /* remove space before and after , : ; { } */
+				'/ +/'                           /* collapse multiple spaces to a single space */
+				/* '/ ?([,:;{}]) ?/'                 remove space before and after , : ; { }     [!] apparently, IE 7 doesn't like this and won't process the stylesheet */
 			);
 			$replacements = array(
 				'',
 				' ',
-				' ',
-				'$1'
+				' '/*,
+				'$1'*/
 			);
 			$contents = preg_replace($patterns, $replacements, $contents);
 

@@ -158,25 +158,6 @@ if ($this->recent) {
 		
 		<h2 class="entry-title">
 			<?php echo stripslashes($this->row->title); ?>
-		<?php /*if ($juser->get('id') == $this->row->created_by) { ?>
-			<span class="state"><?php 
-				switch ($this->row->state)
-				{
-					case 1:
-						echo JText::_('Public');
-					break;
-					case 2:
-						echo JText::_('Registered members');
-					break;
-					case 0:
-					default:
-						echo JText::_('Private');
-					break;
-				}
-				?></span>
-			<a class="edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=edit&entry='.$this->row->id); ?>" title="<?php echo JText::_('Edit'); ?>"><?php echo JText::_('Edit'); ?></a>
-			<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=delete&entry='.$this->row->id); ?>" title="<?php echo JText::_('Delete'); ?>"><?php echo JText::_('Delete'); ?></a>
-		<?php }*/ ?>
 		</h2>
 
 		<dl class="entry-meta">
@@ -237,8 +218,6 @@ if ($this->recent) {
 		<?php } ?>
 		</dl>
 
-		<?php /*><p class="entry-author">Posted by <cite><a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->row->created_by); ?>"><?php echo stripslashes($creator->get('name')); ?></a></cite></p> ?>
-<?php }*/ ?>
 		<div class="entry-content">
 			<?php echo $this->row->content; ?>
 <?php if ($this->tags) { ?>
@@ -247,18 +226,17 @@ if ($this->recent) {
 		</div>
 <?php 
 	if ($this->config->get('show_authors')) {
-		$author = new Hubzero_User_Profile();
-		$author->load($this->row->created_by);
+		$author = Hubzero_User_Profile::getInstance($this->row->created_by);
 		if (is_object($author) && $author->get('name')) 
 		{
 ?>
 		<div class="entry-author">
 			<h3><?php echo JText::_('About the author'); ?></h3>
-			<p class="entry-author-photo"><img src="<?php echo BlogHelperMember::getMemberPhoto($author, 0); ?>" alt="" /></p>
+			<p class="entry-author-photo"><img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($author, 0); ?>" alt="" /></p>
 			<div class="entry-author-content">
 				<h4>
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->row->created_by); ?>">
-						<?php echo stripslashes($author->get('name')); ?>
+						<?php echo $this->escape(stripslashes($author->get('name'))); ?>
 					</a>
 				</h4>
 			<?php if ($author->get('bio')) { ?>
@@ -328,9 +306,7 @@ if ($this->comments) {
 
 		$name = JText::_('COM_BLOG_ANONYMOUS');
 		if (!$comment->anonymous) {
-			//$xuser =& JUser::getInstance($comment->created_by);
-			$xuser = new Hubzero_User_Profile();
-			$xuser->load($comment->created_by);
+			$xuser = Hubzero_User_Profile::getInstance($comment->created_by);
 			if (is_object($xuser) && $xuser->get('name')) {
 				$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$comment->created_by).'">'.stripslashes($xuser->get('name')).'</a>';
 			}
@@ -386,9 +362,7 @@ if ($juser->get('guest')) {
 
 				$name = JText::_('COM_BLOG_ANONYMOUS');
 				if (!$reply->anonymous) {
-					//$xuser =& JUser::getInstance($reply->created_by);
-					$xuser = new Hubzero_User_Profile();
-					$xuser->load($reply->created_by);
+					$xuser = Hubzero_User_Profile::getInstance($reply->created_by);
 					if (is_object($xuser) && $xuser->get('name')) {
 						$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$reply->created_by).'">'.stripslashes($xuser->get('name')).'</a>';
 					}
@@ -436,9 +410,7 @@ if ($juser->get('guest')) {
 
 						$name = JText::_('COM_BLOG_ANONYMOUS');
 						if (!$response->anonymous) {
-							//$xuser =& JUser::getInstance($reply->created_by);
-							$xuser = new Hubzero_User_Profile();
-							$xuser->load($response->created_by);
+							$xuser = Hubzero_User_Profile::getInstance($response->created_by);
 							if (is_object($xuser) && $xuser->get('name')) {
 								$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$response->created_by).'">'.stripslashes($xuser->get('name')).'</a>';
 							}
@@ -457,7 +429,7 @@ if ($juser->get('guest')) {
 							<li class="comment <?php echo $cls; ?>" id="c<?php echo $response->id; ?>">
 								<a name="#c<?php echo $response->id; ?>"></a>
 								<p class="comment-member-photo">
-									<img src="<?php echo BlogHelperMember::getMemberPhoto($xuser, $response->anonymous); ?>" alt="" />
+									<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($xuser, $response->anonymous); ?>" alt="" />
 								</p>
 								<div class="comment-content">
 									<p class="comment-title">
@@ -553,17 +525,14 @@ if ($juser->get('guest')) {
 		<form method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz) . '/' . $this->row->alias); ?>" id="commentform">
 			<p class="comment-member-photo">
 <?php
+				$jxuser = Hubzero_User_Profile::getInstance($juser->get('id'));
 				if (!$juser->get('guest')) {
-					$jxuser = new Hubzero_User_Profile();
-					$jxuser->load($juser->get('id'));
-					$thumb = BlogHelperMember::getMemberPhoto($jxuser, 0);
+					$anonymous = 0;
 				} else {
-					$config =& JComponentHelper::getParams('com_members');
-					$thumb = DS . ltrim($config->get('defaultpic'), DS);
-					$thumb = BlogHelperMember::thumbit($thumb);
+					$anonymous = 1;
 				}
 ?>
-				<img src="<?php echo $thumb; ?>" alt="" />
+				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, $anonymous); ?>" alt="" />
 			</p>
 			<fieldset>
 <?php
@@ -572,9 +541,7 @@ if ($juser->get('guest')) {
 					ximport('Hubzero_View_Helper_Html');
 					$name = JText::_('COM_BLOG_ANONYMOUS');
 					if (!$this->replyto->anonymous) {
-						//$xuser =& JUser::getInstance($reply->created_by);
-						$xuser = new Hubzero_User_Profile();
-						$xuser->load($this->replyto->created_by);
+						$xuser = Hubzero_User_Profile::getInstance($this->replyto->created_by);
 						if (is_object($xuser) && $xuser->get('name')) {
 							$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$this->replyto->created_by).'">'.stripslashes($xuser->get('name')).'</a>';
 						}

@@ -138,19 +138,6 @@
 		border: none;
 		box-shadow: none;
 	}
-	/* Headers 
-	.aside .container h3,
-	.aside .container h4 {
-		color: #333;
-		padding: 1.8em 0 0.4em 30px;
-		margin: 0 0 0 -30px;
-		font-weight: normal;
-		border-top: 1px solid #ddd;
-		background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAYAAACALL/6AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADtJREFUeNpiYWBgEPn///8bBihgZGQUgbGxiTORohisgRTFIHEmUhSDbSBFMYqTiPULEymKB2koAQQYANU4UCtoY01GAAAAAElFTkSuQmCC) top repeat-x;
-	}
-	.aside .container h3:after,
-	.aside .container h4:after {
-	}*/
 	/* Paragraphs */
 	.aside .container p {
 		margin: 1em 0 2em 0;
@@ -266,6 +253,9 @@
 		float: left;
 		margin: 0 0 0.2em 0;
 	}
+	.container .filter-options {
+		*margin-top: -2em;
+	}
 
 /* Entries */
 	.entries {
@@ -327,6 +317,8 @@
 		margin: 0;
 		padding: 0.295em 0;
 		border: none;
+		*display: inline;
+		*padding: 0.5em;
 	}
 	.entries thead th a:hover {
 		background-color: #666;

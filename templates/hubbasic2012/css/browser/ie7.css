@@ -13,7 +13,56 @@
 	-- -- -- -- -- -- --
 
 */
-	/* 5 star Reviews */
+
+/* Top containers */
+	#top {
+		zoom: 1;
+	}
+	#top .inner-wrap {
+		background: transparent url("../../images/layout/bokeh.png");
+	}
+	#top .inner {
+		background: transparent url("../../images/layout/noise.png");
+	}
+
+/* Top bar */
+	#topbar ul {
+		margin: 0;
+		padding: 0;
+		height: 2.8em;
+		list-style: none;
+		float: none;
+		overflow: hidden;
+	}
+	#topbar ul li {
+		float: none;
+		display: inline;
+		line-height: 3em;
+	}
+
+/* Masthead */
+	#masthead {
+		z-index: 777;
+	}
+	#masthead .inner {
+		z-index: 778;
+		background: transparent url("../../images/layout/stripes.png") left top repeat-x;
+	}
+
+/* Search form */
+	#searchform {
+		float: none;
+		position: absolute;
+		right: 120px;
+		top: 0px;
+		margin: 0;
+	}
+	#searchword {
+		background: #1a1a1a url("../../images/layout/search.png") 10px 11px no-repeat;
+		border: 1px solid #1a1a1a;
+	}
+
+/* 5 star Reviews */
 	.avgrating {
 		padding-left: 70px;
 	}
@@ -52,7 +101,7 @@
 	}
 	
 	#content {
-		border: 1px solid #f9f9f9;
+		border: 1px solid #ccc;
 		margin-top: -30px;
 	}
 	#content .inner {
@@ -94,42 +143,10 @@
 		filter: progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=130, Color='#292929');
 	}
 /* Misc. */
-#top {
-	zoom: 1;
-}
-#topbar ul {
-	margin: 0;
-	padding: 0;
-	height: 2.8em;
-	list-style: none;
-	float: none;
-	overflow: hidden;
-}
-#topbar ul li {
-	float: none;
-	display: inline;
-	line-height: 3em;
-}
-#topbar ul li a {
-	
-}
-#masthead {
-	z-index: 777;
-}
-#masthead .inner {
-	z-index: 778;
-}
-#searchform {
-	float: none;
-	position: absolute;
-	right: 120px;
-	top: 0px;
-	margin: 0;
-}
-#searchword {
-	background: #1a1a1a url("../../images/layout/search.png") 10px 11px no-repeat;
-	border: 1px solid #1a1a1a;
-}
+
+
+
+
 	.events-section {
 		padding-top: 20px;
 	}
@@ -165,6 +182,12 @@
 		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML=this.innerHTML + '<small class="nav-ul-after"></small>');
 	}
 	
+	#page_options a,
+	#content-header-extra a {
+		padding: 0.4em 0.91em 0.4em 0.91em;
+	}
+
+/* Sections */
 	.subject {
 		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="subject-before"></small>' + this.innerHTML);
 	}
@@ -187,23 +210,6 @@
 		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=1,startColorstr=#dfdfdf,endColorstr=#f9f9f9);
 		width: 10px;
 		right: 260px;
-	}
-/* Tags */
-	.tags li {
-		display: inline !important;
-	}
-	.tags li a {
-		display: inline-block;
-		line-height: 1em !important;
-		padding: 6px 6px 5px 6px !important;
-	}
-	.tags li a span {
-		background-color: #666;
-		padding: 6px 6px 6px 6px !important;
-		margin: -6px -6px -7px 4px;
-	}
-	.tags li a:hover span {
-		background-color: #444;
 	}
 
 /* Forms */
@@ -232,7 +238,6 @@
 		border-left: none;
 	}
 	#hubForm label {
-
 	}
 	#hubForm .group {
 		clear: left;
