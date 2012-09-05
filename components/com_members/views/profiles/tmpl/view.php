@@ -158,6 +158,7 @@ if (!$no_html) {
 			
 		</div><!-- /#page_sidebar -->
 		<div id="page_main">
+<?php if ($edit || $password || $messaging) : ?>
 			<ul id="page_options">
 				<?php if($edit) : ?>
 					<?php $edit_url = JRoute::_('index.php?option=com_members&id='.$this->profile->get("uidNumber").'&task=edit'); ?>
@@ -173,7 +174,8 @@ if (!$no_html) {
 					<?php $msg_url = JRoute::_('index.php?option=com_members&id=' . $juser->get("id") . '&active=messages&task=new&to[]=' . $this->profile->get('uidNumber')); ?>
 					<li><a class="message tooltips" title="Message :: Send a message to <?php echo stripslashes($this->profile->get('name')); ?>" href="<?php echo $msg_url; ?>"><?php echo JText::_('Message'); ?></a></li>
 				<?php endif; ?>
-			</ul> 
+			</ul>
+<?php endif; ?>
 			<div id="page_header">
 				<h2 <?php if($this->profile->get("public") != 1) : ?> class="private" <?php endif; ?>>
 					<a href="/members/<?php echo $this->profile->get("uidNumber"); ?>">
