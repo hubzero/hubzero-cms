@@ -107,6 +107,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				echo JText::_('PLG_MEMBERS_SET_LOCAL_PASSWORD');
 			}
 		?></h4>
+		<div class="clear"></div>
 		<div class="sub-section-content">
 <?php if($this->passtype == 'changelocal' || $this->passtype == 'changehub')
 {
@@ -185,6 +186,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</div><!-- / .sub-section -->
 	<div class="sub-section">
 		<h4><?php echo JText::_('PLG_MEMBERS_MANAGE_KEYS'); ?></h4>
+		<div class="clear"></div>
 		<div class="sub-section-content">
 			<form action=<?php echo JRoute::_('index.php?option=' . $this->option .
 												'&id=' . $this->member->get('uidNumber') .
