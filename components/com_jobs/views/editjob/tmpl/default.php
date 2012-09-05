@@ -30,6 +30,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$dateFormat = "%Y-%m-%d";
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = "Y-m-d";
+	$tz = true;
+}
+
 	/* Post New Job / Edit Job Form */
 
 	// load some classes
@@ -42,24 +50,26 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$profile = $this->profile;
 	$id = $this->jobid;
 
-	$startdate = ($job->startdate && $job->startdate !='0000-00-00 00:00:00') ? JHTML::_('date',$job->startdate, '%Y-%m-%d',0) : '';
-	$closedate = ($job->closedate && $job->closedate !='0000-00-00 00:00:00') ? JHTML::_('date',$job->closedate, '%Y-%m-%d',0) : '';
+	$startdate = ($job->startdate && $job->startdate !='0000-00-00 00:00:00') ? JHTML::_('date', $job->startdate, $dateFormat, $tz) : '';
+	$closedate = ($job->closedate && $job->closedate !='0000-00-00 00:00:00') ? JHTML::_('date', $job->closedate, $dateFormat, $tz) : '';
 
 	$status = $this->task != 'addjob' ? $job->status : 4; // draft mode	
 ?>
-<div id="content-header" class="full">
+<div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 </div><!-- / #content-header -->
 
 <div id="content-header-extra">
-    <ul id="useroptions">
-    <?php if($this->emp) {  ?>
-    	<li><a class="myjobs" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=dashboard'); ?>"><?php echo JText::_('JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
-        <li><a class="shortlist" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=resumes').'?filterby=shortlisted'; ?>"><?php echo JText::_('JOBS_SHORTLIST'); ?></a></li>
-     <?php } else { ?> 
-     <li><?php echo JText::_('NOTICE_YOU_ARE_ADMIN'); ?>
-        	<a class="myjobs" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=dashboard'); ?>"><?php echo JText::_('JOBS_ADMIN_DASHBOARD'); ?></a></li> 
-     <?php } ?>      
+	<ul id="useroptions">
+	<?php if($this->emp) {  ?>
+		<li><a class="myjobs" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo JText::_('JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
+		<li><a class="shortlist" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resumes&filterby=shortlisted'); ?>"><?php echo JText::_('JOBS_SHORTLIST'); ?></a></li>
+	 <?php } else { ?> 
+	 	<li>
+			<!-- <?php echo JText::_('NOTICE_YOU_ARE_ADMIN'); ?> -->
+			<a class="myjobs" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo JText::_('JOBS_ADMIN_DASHBOARD'); ?></a>
+		</li> 
+	 <?php } ?>
 	</ul>
 </div><!-- / #content-header-extra -->
 
@@ -74,118 +84,137 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$job->description = preg_replace('/<br\\s*?\/??>/i', "", $job->description);
 		$job->description = JobsHtml::txt_unpee($job->description);
 		$job->companyLocation = $id ? $job->companyLocation : $employer->companyLocation;
-		$job->companyLocationCountry = $id ? $job->companyLocationCountry : htmlentities(Hubzero_Geo::getcountry($profile->get('countryresident')));
+		$job->companyLocationCountry = $id ? $job->companyLocationCountry : $this->escape(Hubzero_Geo::getcountry($profile->get('countryresident')));
 		$job->companyName = $id ? $job->companyName : $employer->companyName;
 		$job->companyWebsite = $id ? $job->companyWebsite : $employer->companyWebsite;
 		$usonly = (isset($this->config->parameters['usonly'])) ? $this->config->parameters['usonly'] : 0;
-
-		$html .= '<div class="main section">'.n;
-		$html .= t.t.t.' <form id="hubForm" method="post" action="index.php?option='.$this->option.'">'.n;
-		$html .= t.'<div class="explaination">'.n;
-		$html .= t.t.'<p>'.JText::_('EDITJOB_OVERVIEW_INFO').'</p>'.n;
-		$html .= t.'</div>'.n;
-		$html .= t.t.t.'	 <fieldset>'.n;
-		$html .= t.t.'<h3>'.JText::_('EDITJOB_JOB_OVERVIEW').'</h3>'.n;
-		$html .= t.t.t.'	  <input type="hidden"  name="task" value="savejob" />'.n;
-		$html .= t.t.t.'	  <input type="hidden"  name="code" value="'.$job->code.'" />'.n;
-		$html .= t.t.t.'	  <input type="hidden" id="id" name="id" value="'.$id.'" />'.n;
-		$html .= t.t.t.'	  <input type="hidden" name="status" value="'.$status.'" />'.n;
-		$html .= t.t.t.'	  <input type="hidden" name="employerid" value="'.$this->uid.'" />'.n;
-		$html .= t.t.t.'	  <label>'.JText::_('EDITJOB_JOB_TITLE').': <span class="required">'.JText::_('REQUIRED').'</span>'.n;
-		$html .= t.t.t.'	  <input name="title" maxlength="190" id="title" type="text" value="'.$job->title.'" /></label>'.n;
-		$html .= t.t.t.'	  <label>'.JText::_('EDITJOB_JOB_LOCATION').': <span class="required">'.JText::_('REQUIRED').'</span>'.n;
-		$html .= t.t.t.'	  <input name="companyLocation" maxlength="190" id="companyLocation" type="text" value="'.$job->companyLocation.'" /></label>'.n;
-		if(!$usonly) {
-			$html .= t.t.t.'	 <label>'.JText::_('EDITJOB_COUNTRY').': <span class="required">'.JText::_('REQUIRED').'</span>'.n;
-			$html .= "\t\t\t\t".'<select name="companyLocationCountry" id="companyLocationCountry">'."\n";
-			$html .= "\t\t\t\t".' <option value="">'.JText::_('OPTION_SELECT_FROM_LIST').'</option>'."\n";
-			$countries = Hubzero_Geo::getcountries();
-				foreach($countries as $country) {
-						$selected = $job->companyLocationCountry ? $job->companyLocationCountry : 'United States'; 
-						$html .= "\t\t\t\t".' <option value="' . htmlentities($country['name']) . '"';
-						if($country['name'] == strtoupper($selected) || $country['name'] == $selected) {
-							$html .= ' selected="selected"';
-						}
-						$html .= '>' . htmlentities($country['name']) . '</option>'."\n";
-				}
-			$html .= t.t.t.t.'</select></label>'.n;
-		}
-		else {
-			$html .= t.t.t.'	  <p class="hint">'.JText::_('EDITJOB_US_ONLY').'</p>'.n;
-			$html .= t.t.t.'	  <input type="hidden" id="companyLocationCountry" name="companyLocationCountry" value="us" />'.n;
-		}
-		$html .= t.t.t.'	  <label>'.JText::_('EMPLOYER_COMPANY_NAME').': <span class="required">'.JText::_('REQUIRED').'</span>'.n;
-		$html .= t.t.t.'	  <input name="companyName" maxlength="120" id="companyName" type="text" value="'.$job->companyName.'" /></label>'.n;
-		$html .= t.t.t.'	  <label>'.JText::_('EMPLOYER_COMPANY_WEBSITE').': '.n;
-		$html .= t.t.t.'	  <input name="companyWebsite" maxlength="190" id="companyWebsite" type="text" value="'.$job->companyWebsite.'" /></label>'.n;
-		$html .= t.t.t.'	  <p class="hint">'.JText::_('EDITJOB_HINT_COMPANY').'</p>'.n;
-		$html .= t.t.t.'	 </fieldset>'.n;
-
-		$html .= t.t.t.'	 <fieldset>'.n;
-		$html .= t.t.'<h3>'.JText::_('EDITJOB_JOB_DESCRIPTION').' <br/> <span class="required">'.JText::_('REQUIRED').'</span></h3>'.n;
-		ximport('Hubzero_Wiki_Editor');
-		$editor =& Hubzero_Wiki_Editor::getInstance();
-		$html .= $editor->display('description', 'description', $job->description, 'no-image-macro no-file-macro', '10', '25');
-		$html .= t.t.t.'	 </fieldset>'.n;
-
-		$html .= t.'<div class="explaination">'.n;
-		$html .= t.t.'<p>'.JText::_('EDITJOB_DESC_INFO').'</p>'.n;
-		//$html .= JobsHtml::wikiHelp();
-		$html .= t.'</div>'.n;
-		$html .= t.t.t.'	 <fieldset>'.n;
-		$html .= t.t.'<h3>'.JText::_('EDITJOB_JOB_SPECIFICS').'</h3>'.n;
-		$html .= t.t.t.'	  <label>'.JText::_('EDITJOB_CATEGORY').': '.n;
-		$html .= JobsHtml::formSelect('cid', $this->cats, $job->cid, '', '');
-		$html .= t.t.t.'	  </label>'.n;
-		$html .= t.t.t.'	  <label>'.JText::_('EDITJOB_TYPE').': '.n;
-		$html .= JobsHtml::formSelect('type', $this->types, $job->type, '', '');
-		$html .= t.t.t.'	  </label>'.n;
-		$html .= t.t.t.'<label>'.JText::_('EDITJOB_START_DATE').':'.n;
-		$html .= t.t.t.t.'<input type="text" class="option level" name="startdate" id="startdate" size="10" maxlength="10" value="'.$startdate.'" /> <span class="hint">'.JText::_('EDITJOB_HINT_DATE_FORMAT'). '</span>'.n;
-		$html .= t.t.t.'</label>'.n;
-		$html .= t.t.t.'<label>'.JText::_('EDITJOB_CLOSE_DATE').':'.n;
-		$html .= t.t.t.t.'<input  type="text" class="option level" name="closedate" id="closedate" size="10" maxlength="10" value="'.$closedate.'" /> <span class="hint">'.JText::_('EDITJOB_HINT_DATE_FORMAT') . '</span>'.n;
-		$html .= t.t.t.'</label>'.n;
-		$html .= t.t.t.'<label>'.JText::_('EDITJOB_EXTERNAL_URL').':'.n;
-		$html .= t.t.t.t.'<input  type="text" name="applyExternalUrl" size="100" maxlength="250" value="'.$job->applyExternalUrl.'" />'.n;
-		$html .= t.t.t.'</label>'.n;
-		$html .= t.t.t.'<label>'.n;
-		$html .= t.t.t.t.'<input type="checkbox" class="option" name="applyInternal" value="1" ';
-		$html .= $job->applyInternal ? 'checked="checked" ' : '';
-		$html .= ' /> ';
-		$html .= JText::_('EDITJOB_ALLOW_INTERNAL_APPLICATION').n;
-		$html .= t.t.t.'</label>'.n;
-		$html .= t.t.t.'	 </fieldset>'.n;
-
-		$html .= t.'<div class="explaination">'.n;
-		$html .= t.t.'<p>'.JText::_('EDITJOB_SPECIFICS_INFO').'</p>'.n;
-		$html .= t.'</div>'.n;
-		$html .= t.t.t.'	 <fieldset>'.n;
-		$html .= t.t.'<h3>'.JText::_('EDITJOB_CONTACT_INFO').'<br /><span>('.JText::_('OPTIONAL').')</span></h3>'.n;
-		$html .= t.t.t.'	  <label>'.JText::_('EDITJOB_CONTACT_NAME').': '.n;
-		$html .= t.t.t.'	  <input name="contactName" maxlength="100"  type="text" value="';
-		$html .= $job->contactName ? $job->contactName : $profile->get('name');
-		$html .='" /></label>'.n;
-		$html .= t.t.t.'	  <label>'.JText::_('EDITJOB_CONTACT_EMAIL').': '.n;
-		$html .= t.t.t.'	  <input name="contactEmail" maxlength="100"  type="text" value="';
-		$html .= $job->contactEmail ? $job->contactEmail : $profile->get('email');
-		$html .= '" /></label>'.n;
-		$html .= t.t.t.'	  <label>'.JText::_('EDITJOB_CONTACT_PHONE').': '.n;
-		$html .= t.t.t.'	  <input name="contactPhone" maxlength="100"  type="text" value="';
-		$html .= $job->contactPhone ? $job->contactPhone : $profile->get('phone');
-		$html .= '" /></label>'.n;
-		$html .= t.'<p class="submit"><input type="submit" name="submit" value="';
-		$html .= ($this->task=='addjob' or $job->status == 4) ? JText::_('ACTION_SAVE_PREVIEW') : JText::_('ACTION_SAVE');
-		$html .= '" />';
-		$html .= '<span class="cancelaction">';
-		$html .= '<a href="'.JRoute::_('index.php?option='.$this->option.a.'task=dashboard').'">';
-		$html .= JText::_('CANCEL').'</a></span></p>'.n;
-		$html .= t.t.t.'	 </fieldset>'.n;
-		$html .= t.'<div class="explaination">'.n;
-		$html .= t.t.'<p>'.JText::_('EDITJOB_CONTACT_DETAILS').'</p>'.n;
-		$html .= t.'</div>'.n;
-		$html .= t.t.t.' </form>'.n;
-		$html .= t.'</div>'.n;
-
-		echo $html;
 ?>
+<div class="main section">
+	<form id="hubForm" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+		<div class="explaination">
+			<p><?php echo JText::_('EDITJOB_OVERVIEW_INFO'); ?></p>
+		</div>
+		<fieldset>
+			<legend><?php echo JText::_('EDITJOB_JOB_OVERVIEW'); ?></legend>
+			
+			<input type="hidden" name="task" value="savejob" />
+			<input type="hidden" name="code" value="<?php echo $job->code; ?>" />
+			<input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
+			<input type="hidden" name="status" value="<?php echo $status; ?>" />
+			<input type="hidden" name="employerid" value="<?php echo $this->uid; ?>" />
+			
+			<label for="title">
+				<?php echo JText::_('EDITJOB_JOB_TITLE'); ?>: <span class="required"><?php echo JText::_('REQUIRED'); ?></span>
+				<input name="title" maxlength="190" id="title" type="text" value="<?php echo $this->escape($job->title); ?>" />
+			</label>
+			
+			<label for="companyLocation">
+				<?php echo JText::_('EDITJOB_JOB_LOCATION'); ?>: <span class="required"><?php echo JText::_('REQUIRED'); ?></span>
+				<input name="companyLocation" maxlength="190" id="companyLocation" type="text" value="<?php echo $this->escape(stripslashes($job->companyLocation)); ?>" />
+			</label>
+		<?php if (!$usonly) { ?>
+			<label for="companyLocationCountry">
+				<?php echo JText::_('EDITJOB_COUNTRY'); ?>: <span class="required"><?php echo JText::_('REQUIRED'); ?></span>
+				<select name="companyLocationCountry" id="companyLocationCountry">
+					<option value=""><?php echo JText::_('OPTION_SELECT_FROM_LIST'); ?></option>
+				<?php 
+				$countries = Hubzero_Geo::getcountries();
+				foreach ($countries as $country) 
+				{
+					$selected = $job->companyLocationCountry ? $job->companyLocationCountry : 'United States';
+					?>
+					<option value="<?php echo $this->escape($country['name']); ?>"<?php if (strtoupper($country['name']) == strtoupper($selected)) { echo ' selected="selected"'; } ?>><?php echo $this->escape($country['name']); ?></option>
+					<?php 
+				} 
+				?>
+				</select>
+			</label>
+		<?php } else { ?>
+			<p class="hint"><?php echo JText::_('EDITJOB_US_ONLY'); ?></p>
+			<input type="hidden" id="companyLocationCountry" name="companyLocationCountry" value="us" />
+		<?php } ?>
+			<label>
+				<?php echo JText::_('EMPLOYER_COMPANY_NAME'); ?>: <span class="required"><?php echo JText::_('REQUIRED'); ?></span>
+				<input name="companyName" maxlength="120" id="companyName" type="text" value="<?php echo $this->escape(stripslashes($job->companyName)); ?>" />
+			</label>
+			<label>
+				<?php echo JText::_('EMPLOYER_COMPANY_WEBSITE'); ?>: 
+				<input name="companyWebsite" maxlength="190" id="companyWebsite" type="text" value="<?php echo $this->escape(stripslashes($job->companyWebsite)); ?>" />
+			</label>
+			<p class="hint"><?php echo JText::_('EDITJOB_HINT_COMPANY'); ?></p>
+		</fieldset>
+
+		<div class="explaination">
+			<p><?php echo JText::_('EDITJOB_DESC_INFO'); ?></p>
+		</div>
+		<fieldset>
+			<legend><?php echo JText::_('EDITJOB_JOB_DESCRIPTION'); ?> <span class="required"><?php echo JText::_('REQUIRED'); ?></span></legend>
+			<label>
+				&nbsp;
+			<?php 
+				ximport('Hubzero_Wiki_Editor');
+				$editor =& Hubzero_Wiki_Editor::getInstance();
+				echo $editor->display('description', 'description', $job->description, 'no-image-macro no-file-macro', '10', '25');
+			?>
+			</label>
+		</fieldset>
+
+		<div class="explaination">
+			<p><?php echo JText::_('EDITJOB_SPECIFICS_INFO'); ?></p>
+		</div>
+		<fieldset>
+			<legend><?php echo JText::_('EDITJOB_JOB_SPECIFICS'); ?></legend>
+			
+			<label>
+				<?php echo JText::_('EDITJOB_CATEGORY'); ?>: 
+				<?php echo JobsHtml::formSelect('cid', $this->cats, $job->cid, '', ''); ?>
+			</label>
+			<label>
+				<?php echo JText::_('EDITJOB_TYPE'); ?>: 
+				<?php echo JobsHtml::formSelect('type', $this->types, $job->type, '', ''); ?>
+			</label>
+			<label for="startdate">
+				<?php echo JText::_('EDITJOB_START_DATE'); ?>:
+				<input type="text" class="option level" name="startdate" id="startdate" size="10" maxlength="10" value="<?php echo $startdate; ?>" /> <span class="hint"><?php echo JText::_('EDITJOB_HINT_DATE_FORMAT'); ?></span>
+			</label>
+			<label for="closedate">
+				<?php echo JText::_('EDITJOB_CLOSE_DATE'); ?>:
+				<input  type="text" class="option level" name="closedate" id="closedate" size="10" maxlength="10" value="<?php echo $closedate; ?>" /> <span class="hint"><?php echo JText::_('EDITJOB_HINT_DATE_FORMAT'); ?></span>
+			</label>
+			<label for="applyExternalUrl">
+				<?php echo JText::_('EDITJOB_EXTERNAL_URL'); ?>:
+				<input  type="text" name="applyExternalUrl" id="applyExternalUrl" size="100" maxlength="250" value="<?php echo $this->escape(stripslashes($job->applyExternalUrl)); ?>" />
+			</label>
+			<label for="applyInternal">
+				<input type="checkbox" class="option" name="applyInternal" id="applyInternal" value="1"<?php echo $job->applyInternal ? ' checked="checked" ' : ''; ?> /> 
+				<?php echo JText::_('EDITJOB_ALLOW_INTERNAL_APPLICATION'); ?>
+			</label>
+		</fieldset>
+		
+		<div class="explaination">
+			<p><?php echo JText::_('EDITJOB_CONTACT_DETAILS'); ?></p>
+		</div>
+		<fieldset>
+			<legend><?php echo JText::_('EDITJOB_CONTACT_INFO'); ?> <span>(<?php echo JText::_('OPTIONAL'); ?>)</span></legend>
+			
+			<label for="contactName">
+				<?php echo JText::_('EDITJOB_CONTACT_NAME'); ?>: 
+				<input name="contactName" id="contactName" maxlength="100"  type="text" value="<?php echo $job->contactName ? $this->escape(stripslashes($job->contactName)) : $this->escape(stripslashes($profile->get('name'))); ?>" />
+			</label>
+			<label for="contactEmail">
+				<?php echo JText::_('EDITJOB_CONTACT_EMAIL'); ?>:
+				<input name="contactEmail" id="contactEmail" maxlength="100"  type="text" value="<?php echo $job->contactEmail ? $this->escape(stripslashes($job->contactEmail)) : $this->escape(stripslashes($profile->get('email'))); ?>" />
+			</label>
+			<label for="contactPhone">
+				<?php echo JText::_('EDITJOB_CONTACT_PHONE'); ?>: 
+				<input name="contactPhone" id="contactPhone" maxlength="100"  type="text" value="<?php echo $job->contactPhone ? $this->escape(stripslashes($job->contactPhone)) : $this->escape(stripslashes($profile->get('phone'))); ?>" />
+			</label>
+		</fieldset>
+		<p class="submit">
+			<input type="submit" name="submit" value="<?php echo ($this->task=='addjob' or $job->status == 4) ? JText::_('ACTION_SAVE_PREVIEW') : JText::_('ACTION_SAVE'); ?>" />
+			<span class="cancelaction">
+				<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo JText::_('CANCEL'); ?></a>
+			</span>
+		</p>
+	</form>
+</div>

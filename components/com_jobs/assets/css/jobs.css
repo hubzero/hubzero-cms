@@ -34,7 +34,7 @@
 		width: 500px !important; 
 		text-align: right; 
 	} 
-	.com_jobs #useroptions li { 
+	/*.com_jobs #useroptions li { 
 		white-space: nowrap; 
 		font-size: 85%; 
 	}
@@ -43,7 +43,7 @@
 	}
 	#content-header-extra p { 
 		font-size: 85%; 
-	}
+	}*/
 	.why {
 	}
 	.com_jobs .group {
@@ -53,9 +53,14 @@
 		background: url("/components/com_jobs/assets/img/smiley.gif") 0 50% no-repeat; 
 		padding-left: 16px; 
 	}
-	.myjobs { 
+	/*.myjobs { 
 		background: url("/components/com_jobs/assets/img/dashboard.gif") 0 50% no-repeat; 
 		padding-left: 20px; 
+	}*/
+	.myjobs:before {
+		content: "\f083";
+		font-family: 'Fontcons';
+		margin-right: 0.2em;
 	}
 	.myresume { 
 		background: url("/components/com_jobs/assets/img/resumeicon.gif") 0 50% no-repeat; 
@@ -1117,43 +1122,12 @@
 		width: 30%;
 	}
 
-/* Introductory screen */
+/* Introductory screen 
 	#introduction {
-		margin: 0 -15px 2em -15px;
-		padding: 20px 15px 20px 120px;
 		background: #fbf8ea url("/components/com_jobs/assets/img/jobs-large.gif") 30px 25px no-repeat;
-		border-top: 2px solid #e7dac4;
-		border-bottom: 2px solid #e7dac4;
-		color: #7c7266;
-	}
-	#introduction .aside,
-	#introduction .subject {
-		margin-top: 0;
-		margin-bottom: 0;
-		padding-top: 0;
-		padding-bottom: 0;
-		background: transparent;
-		border: none;
-	}
-	#introduction h3 {
-		display: block;
-		margin-top: 0;
-		color: #7c7266;
-	}
-	#introduction .columns, 
-	.columns {
-		border: none !important;
-	}
-	#introduction ul,
-	#introduction li {
-		list-style: none;
-		margin: 1em 0 0.5em 0;
-		padding: 0;
-	}
-	#introduction li {
-		margin: 0 0 0 0;
-		padding: 0.5em 0.5em 0.5em 2em;
-		background: url("/components/com_jobs/assets/img/orangepointer.gif") 5px center no-repeat;
+	}*/
+	#introduction:after {
+		content: "\f022";
 	}
 	.promo {
 		font-size: 85%;
