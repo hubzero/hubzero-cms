@@ -54,7 +54,7 @@ $juser =& JFactory::getUser();
 	}
 	$feed = str_replace('https:://','http://', $feed);
 	?>
-	<p><a class="feed" href="<?php echo $feed; ?>"><?php echo JText::_('RSS Feed'); ?></a></p>
+	<p><a class="feed btn" href="<?php echo $feed; ?>"><?php echo JText::_('RSS Feed'); ?></a></p>
 </div>
 
 <div class="main section">

@@ -46,7 +46,7 @@ $tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'acta
 	<h2><?php echo $this->title; ?></h2>
 </div>
 <div id="content-header-extra">
-	<p><a class="archive" href="<?php echo JRoute::_('index.php?option='.$this->option); ?>"><?php echo JText::_('Archive'); ?></a></p>
+	<p><a class="archive btn" href="<?php echo JRoute::_('index.php?option='.$this->option); ?>"><?php echo JText::_('Archive'); ?></a></p>
 </div>
 
 <div class="main section">

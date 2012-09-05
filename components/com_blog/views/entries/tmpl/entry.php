@@ -43,7 +43,7 @@ $entry_month = substr($this->row->publish_up, 5, 2);//intval(JHTML::_('date',$th
 </div>
 <div id="content-header-extra">
 	<p>
-		<a class="archive" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=archive'); ?>">
+		<a class="archive btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=archive'); ?>">
 			<?php echo JText::_('Archive'); ?>
 		</a>
 	</p>
@@ -53,7 +53,7 @@ $entry_month = substr($this->row->publish_up, 5, 2);//intval(JHTML::_('date',$th
 	<div class="aside">
 <?php if ($this->config->get('access-create-entry')) { ?>
 		<p>
-			<a class="add" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">
+			<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">
 				<?php echo JText::_('New entry'); ?>
 			</a>
 		</p>

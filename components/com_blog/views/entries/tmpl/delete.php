@@ -36,7 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 </div>
 
 <div id="content-header-extra">
-	<p><a class="archive" href="<?php echo JRoute::_('index.php?option='.$this->option); ?>"><?php echo JText::_('Archive'); ?></a></p>
+	<p><a class="archive btn" href="<?php echo JRoute::_('index.php?option='.$this->option); ?>"><?php echo JText::_('Archive'); ?></a></p>
 </div><!-- / #content-header-extra -->
 
 <div class="main section">
@@ -46,7 +46,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=delete&entry='.$this->entry->id); ?>" method="post" id="hubForm">
 		<div class="explaination">
 <?php if ($this->authorized) { ?>
-			<p><a class="add" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=new'); ?>"><?php echo JText::_('New entry'); ?></a></p>
+			<p><a class="add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=new'); ?>"><?php echo JText::_('New entry'); ?></a></p>
 <?php } ?>
 		</div>
 		<fieldset>
