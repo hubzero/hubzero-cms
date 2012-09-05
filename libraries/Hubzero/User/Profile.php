@@ -1465,6 +1465,30 @@ class Hubzero_User_Profile extends JObject
 	}
 
 	/**
+	 * Short description for 'getCourseMemberRoles'
+	 * Long description (if any) ...
+	 *
+	 * @param string $uid Parameter description (if any) ...
+	 * @param string $gid Parameter description (if any) ...
+	 * @return unknown Return description (if any) ...
+	 */
+	public function getCourseMemberRoles($uid, $gid)
+	{
+		$user_roles = '';
+		
+		$db = & JFactory::getDBO();
+		$sql = "SELECT r.id, r.role FROM #__courses_roles as r, #__courses_member_roles as m WHERE r.id=m.role AND m.uidNumber='" . $uid . "' AND r.gidNumber='" . $gid . "'";
+		$db->setQuery($sql);
+		
+		$roles = $db->loadAssocList();
+		
+		if ($roles)
+		{
+			return $roles;
+		}
+	}
+
+	/**
 	 * Get the groups for a user
 	 *
 	 * @param string $role The group set to return. Returns all groups if not set

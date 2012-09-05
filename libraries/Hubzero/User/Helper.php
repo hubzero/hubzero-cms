@@ -349,8 +349,61 @@ class Hubzero_User_Helper
 
 		return $result;
 	}
-	
-	
+
+	/**
+	 * Short description for 'getCourses'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $uid Parameter description (if any) ...
+	 * @param      string $type Parameter description (if any) ...
+	 * @param      string $cat Parameter description (if any) ...
+	 * @return     boolean Return description (if any) ...
+	 */
+	public static function getCourses($uid, $type='all', $cat = null)
+	{
+		$db =& JFactory::getDBO();
+
+		$g = '';
+		if ($cat == 1) {
+			$g .= "(g.type='".$cat."' OR g.type='3') AND";
+		}
+
+		// Get all courses the user is a member of
+		$query1 = "SELECT g.gidNumber, g.published, g.cn, g.description, g.join_policy, '1' AS registered, '0' AS regconfirmed, '0' AS manager FROM #__courses AS g, #__courses_applicants AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
+		$query2 = "SELECT g.gidNumber, g.published, g.cn, g.description, g.join_policy, '1' AS registered, '1' AS regconfirmed, '0' AS manager FROM #__courses AS g, #__courses_members AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
+		$query3 = "SELECT g.gidNumber, g.published, g.cn, g.description, g.join_policy, '1' AS registered, '1' AS regconfirmed, '1' AS manager FROM #__courses AS g, #__courses_managers AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
+		$query4 = "SELECT g.gidNumber, g.published, g.cn, g.description, g.join_policy, '0' AS registered, '1' AS regconfirmed, '0' AS manager FROM #__courses AS g, #__courses_invitees AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
+
+		switch ($type)
+		{
+			case 'all':
+				$query = "( $query1 ) UNION ( $query2 ) UNION ( $query3 ) UNION ( $query4 )";
+			break;
+			case 'applicants':
+				$query = $query1." ORDER BY description, cn";
+			break;
+			case 'members':
+				$query = $query2." ORDER BY description, cn";
+			break;
+			case 'managers':
+				$query = $query3." ORDER BY description, cn";
+			break;
+			case 'invitees':
+				$query = $query4." ORDER BY description, cn";
+			break;
+		}
+
+		$db->setQuery($query);
+
+		$result = $db->loadObjectList();
+
+		if (empty($result))
+			return false;
+
+		return $result;
+	}
+
 	/**
 	 * Short description for 'getCommonGroups'
 	 * 
