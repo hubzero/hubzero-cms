@@ -2739,12 +2739,18 @@
 	.subject::after, 
 	#hubForm legend:after,
 	#hubForm fieldset::after, 
-	#hubForm .group label.datepickers::after, 
-	ol.tags::after {
+	#hubForm .group label.datepickers::after {
 		content: ".";
 		display: block;
 		height: 0;
 		clear: both;
+		visibility: hidden;
+	}
+	ol.tags::after {
+		content: ".";
+		display: block;
+		height: 0;
+		clear: left;
 		visibility: hidden;
 	}
 
