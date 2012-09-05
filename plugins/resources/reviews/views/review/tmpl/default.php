@@ -151,7 +151,7 @@ if ($this->review->id) {
 					?>
 				</label>
 
-				<label id="review-anonymous-label">
+				<label id="comment-anonymous-label">
 					<input class="option" type="checkbox" name="anonymous" id="review-anonymous" value="1"<?php if ($this->review->anonymous != 0) { echo ' checked="checked"'; } ?> />
 					<?php echo JText::_('PLG_RESOURCES_REVIEWS_FORM_ANONYMOUS'); ?>
 				</label>

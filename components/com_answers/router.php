@@ -106,6 +106,10 @@ function AnswersParseRoute($segments)
 			if ($segments[1] == 'new') 
 			{
 				$vars['task'] = 'new';
+				if (isset($segments[2]) && $segments[2]) 
+				{
+					$vars['tag'] = $segments[2];
+				}
 				return $vars;
 			}
 

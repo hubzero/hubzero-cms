@@ -13,82 +13,22 @@
 
 */
 
-
-/* Tool versions list */
-	.versions { 
-		margin: 0 0 1em 0;
-		}
-	.aside .versions h3 {
-		margin: 0;
-		padding: 0.4em 1em;
-		color: #fff;
-		font-size: 1em;
-		background: #cdcdcd;
+/* Versioning */
+	.toolpublished {
+		background: url("/components/com_resources/assets/img/check.gif") 0 0 no-repeat;
 		display: block;
-		}
-	.versions ul {
-		margin: 0;
+		width: 15px;
+		height: 15px;
+		margin: 0 0 0 2em;
+		text-indent: -555em;
 		padding: 0;
-		list-style: none;
-		background: #f4f4f4;
-		border-top: 1px solid #dfdfdf;
-		border-bottom: 1px solid #dfdfdf;
-		}
-	.versions ul li {
-		margin: 0 1px;
-		padding: 0.6em 1em;
-		border: none;
-		border-top: 1px solid #fff;
-		padding-left: 35px;
-		background-position: 1em 0.5em;
-		list-style: none;
-		}
-	.versions ul li a {
-		background: none;
-		color: #999999;
-		}
-	.versions ul li a:hover {
-		color: #f60;
-		border-bottom: 1px solid #f60;
-		}
-	.versions small {
-		color: #999;
+	}
+	.toolunpublished {
+		background: url("/components/com_resources/assets/img/minus.gif") 0 0 no-repeat;
 		display: block;
-		}
-	.versions .downloadcode {
-		display: block;
-		padding-left: 20px;
-		background: url("images/childlink.gif") 0 0 no-repeat;
-		}
-	.versions .downloadcode a {
-		color: #fff;
-		display: block;
-		background: #333;
-		padding: 0.2em;
-		margin: 0.5em 0 0 0;
-		border: 3px double #999;
-		text-align: center;
-		}
-	.versions .downloadcode a:hover {
-		color: #fff;
-		border: 3px double #fff;
-		background: #e7792c;
-		}
-	.versions .downloadcode span {
-		color: #bbb;
-		display: block;
-		background: #666;
-		padding: 0.2em;
-		margin: 0.5em 0 0 0;
-		border: 3px double #999;
-		text-align: center;
-		}
-	.versions .currentversion {
-		background: url("images/arrow_right.png") 10px 0.5em no-repeat;
-		}
-
-
-/* IE 7 hacks */
-
-/* IE 6 hacks */
-
+		width: 15px;
+		height: 15px;
+		margin: 0 0 0 2em;
+		padding: 0;
+		text-indent: -555em;
+	}

@@ -54,6 +54,6 @@ class ResourcesElementTextarea extends ResourcesElement
 		// convert <br /> tags so they are not visible when editing
 		$value = str_replace('<br />', "\n", $value);
 
-		return '<textarea name="'.$control_name.'['.$name.']" cols="'.$cols.'" rows="'.$rows.'" '.$class.' id="'.$control_name.'-'.$name.'" >'.$value.'</textarea>';
+		return '<span class="field-wrap"><textarea name="'.$control_name.'['.$name.']" cols="'.$cols.'" rows="'.$rows.'" '.$class.' id="'.$control_name.'-'.$name.'" >'.$value.'</textarea></span>';
 	}
 }

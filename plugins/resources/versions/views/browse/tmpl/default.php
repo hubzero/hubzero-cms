@@ -29,9 +29,19 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
+
+$dateFormat = '%d %b %Y';
+$timeFormat = '%I:%M %p';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M Y';
+	$timeFormat = 'H:i p';
+	$tz = true;
+}
 ?>
-<h3>
+<h3 class="section-header">
 	<a name="versions"></a>
 	<?php echo JText::_('PLG_RESOURCES_VERSIONS'); ?> 
 </h3>
@@ -72,7 +82,7 @@ if ($this->rows) {
 				<?php echo ($v->version) ? '<a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id).'?rev='.$v->revision.'">'.$v->version.'</a>' : 'N/A'; ?>
 			</td>
 			<td>
-				<?php echo ($v->released && $v->released!='0000-00-00 00:00:00') ? JHTML::_('date',$v->released, '%d %b %Y') : 'N/A'; ?>
+				<?php echo ($v->released && $v->released!='0000-00-00 00:00:00') ? JHTML::_('date', $v->released, $dateFormat, $tz) : 'N/A'; ?>
 			</td>
 			<td>
 				<?php echo ($handle) ? $handle : 'N/A'; ?>

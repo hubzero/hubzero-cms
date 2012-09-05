@@ -63,7 +63,7 @@ class ResourcesElementList extends ResourcesElement
 			$options[] = JHTML::_('select.option', $val, JText::_($text));
 		}
 
-		return JHTML::_('select.genericlist',  $options, $control_name.'['.$name.']', $class, 'value', 'text', $value, $control_name.'-'.$name);
+		return '<span class="field-wrap">' . JHTML::_('select.genericlist',  $options, $control_name.'['.$name.']', $class, 'value', 'text', $value, $control_name.'-'.$name) . '</span>';
 	}
 
 	/**

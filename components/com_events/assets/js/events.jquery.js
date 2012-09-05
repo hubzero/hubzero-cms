@@ -61,7 +61,7 @@ HUB.Events = {
 		
 		HUB.Events.form = $('#hubForm');
 		
-		$('.title a').fancybox({
+		/*$('.title a').fancybox({
 			type: 'ajax',
 			width: '80%',
 			height: '80%',
@@ -81,7 +81,7 @@ HUB.Events = {
 			afterShow: function() {
 				HUB.Events.addEvent();
 			}
-		});
+		});*/
 		
 		if ($('#event-id') && $('#event-id').val() != '0') {
 			$('#publish_up').datepicker({

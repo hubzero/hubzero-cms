@@ -33,11 +33,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $database =& JFactory::getDBO();
 ?>
-<div class="supportingdocs">
-<h3>
+<h3 class="section-header">
 	<a name="supportingdocs"></a>
 	<?php echo JText::_('PLG_RESOURCES_SUPPORTINGDOCS'); ?> 
 </h3>
+<div class="supportingdocs">
 <?php
 switch ($this->resource->type)
 {

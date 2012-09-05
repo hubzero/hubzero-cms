@@ -15,7 +15,7 @@
 
 	.resource {
 		border: none;
-		padding-top: 1em;
+		padding-top: 0em;
 	}
 	.resource .resource-content {
 		margin-bottom: 3em;

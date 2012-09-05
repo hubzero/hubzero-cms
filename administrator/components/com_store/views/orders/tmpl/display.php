@@ -96,6 +96,13 @@ public function submitbutton(pressbutton)
 				<th></th>
 			</tr>
 		</thead>
+		<tfoot>
+			<tr>
+				<td colspan="6">
+					<?php echo $this->pageNav->getListFooter(); ?>
+				</td>
+			</tr>
+		</tfoot>
 		<tbody>
 <?php
 $k = 0;
@@ -151,8 +158,6 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 ?>
 		</tbody>
 	</table>
-
-	<?php echo $this->pageNav->getListFooter(); ?>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

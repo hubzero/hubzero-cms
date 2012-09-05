@@ -110,25 +110,29 @@ if ($this->wishlist && $this->wish) {
 		<ul id="useroptions">
 			<li>
 		<?php if ($this->wish->prev) { ?>
-				<a class="prev" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->prev.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>">
+				<a class="prev btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->prev.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>">
 					<span><?php echo JText::_('PREV'); ?></span>
 				</a>
 		<?php } else { ?>
-				<span class="prev"><?php echo JText::_('PREV'); ?></span>
+				<span class="prev btn">
+					<span><?php echo JText::_('PREV'); ?></span>
+				</span>
 		<?php } ?>
 			</li>
 			<li>
-				<a class="all" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wishlist&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>">
+				<a class="all btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wishlist&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>">
 					<span><?php echo JText::_('All'); ?></span>
 				</a>
 			</li>
 			<li class="last">
 			<?php if ($this->wish->next) { ?>
-				<a class="next" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->next.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>">
+				<a class="next btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->next.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>">
 					<span><?php echo JText::_('NEXT'); ?></span>
 				</a>
 			<?php } else { ?>
-				<span class="next"><?php echo JText::_('NEXT'); ?></span>
+				<span class="next btn">
+					<span><?php echo JText::_('NEXT'); ?></span>
+				</span>
 			<?php } ?>
 			</li>
 		</ul>
@@ -155,11 +159,11 @@ if ($this->wishlist && $this->wish) {
 <?php 
 		/*if (!$this->admin) 
 		{
-			// Points				
+			// Points
 			if ($this->wishlist->banking) 
 			{
 ?>
-			<div class="assign_bonus">			
+			<div class="assign_bonus">
 				<?php if (isset($this->wish->bonus) && $this->wish->bonus > 0 && ($this->wish->status==0 or $this->wish->status==6)) { ?>
 				<a class="bonus tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'?action=addbonus#action'); ?>" title="<?php echo JText::_('WISH_ADD_BONUS').' ::'.$this->wish->bonusgivenby.' '.JText::_('MULTIPLE_USERS').' '.JText::_('WISH_BONUS_CONTRIBUTED_TOTAL').' '.$this->wish->bonus.' '.JText::_('POINTS').' '.JText::_('WISH_BONUS_AS_BONUS'); ?>">
 					+ <?php echo $this->wish->bonus; ?>
@@ -175,7 +179,7 @@ if ($this->wishlist && $this->wish) {
 				<?php } ?>
 			</div><!-- / .assign_bonus -->
 <?php
-			}				
+			}
 		}*/
 ?>
 				
@@ -191,7 +195,7 @@ if ($this->wishlist && $this->wish) {
 				</p><!-- / .wish-member-photo -->
 
 				<div class="entry-content">
-					<p class="entry-voting" id="wish_<?php echo $this->wish->id; ?>">
+					<p class="entry-voting voting" id="wish_<?php echo $this->wish->id; ?>">
 					<?php
 					$view = new JView(array('name'=>'rateitem'));
 					$view->option = $this->option;

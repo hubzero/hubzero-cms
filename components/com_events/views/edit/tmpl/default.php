@@ -31,11 +31,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<div id="content-header" class="full">
+<div id="content-header">
     <h2><?php echo $this->title; ?></h2>
 </div>
+<div id="content-header-extra">
+	<ul id="useroptions">
+		<li class="last">
+			<a class="main-page" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Browse Events'); ?></a>
+		</li>
+	</ul>
+</div>
+
 <div class="main section">
-	<form action="index.php" method="post" id="hubForm">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=save'); ?>" method="post" id="hubForm">
 <?php if ($this->getError()) { ?>
 		<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
@@ -43,7 +51,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<p><?php echo JText::_('EVENTS_CAL_LANG_EXPLANATION'); ?></p>
 		</div>
 		<fieldset>
-			<h3><?php echo ($this->row->id) ? JText::_('EVENTS_UPDATE_EVENT') : JText::_('EVENTS_NEW_EVENT');?></h3>
+			<legend><?php echo ($this->row->id) ? JText::_('EVENTS_UPDATE_EVENT') : JText::_('EVENTS_NEW_EVENT');?></legend>
 			
 			<label>
 				<?php echo JText::_('EVENTS_CAL_LANG_EVENT_CATEGORY'); ?>: <span class="required"><?php echo JText::_('EVENTS_CAL_LANG_REQUIRED'); ?></span>
@@ -52,22 +60,22 @@ defined('_JEXEC') or die( 'Restricted access' );
 			
 			<label>
 				<?php echo JText::_('EVENTS_CAL_LANG_EVENT_TITLE'); ?>: <span class="required"><?php echo JText::_('EVENTS_CAL_LANG_REQUIRED'); ?></span>
-				<input type="text" name="title" maxlength="250" value="<?php echo htmlentities(stripslashes($this->row->title)); ?>" />
+				<input type="text" name="title" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
 			</label>
 
 			<label>
 				<?php echo JText::_('EVENTS_CAL_LANG_EVENT_DESCRIPTION'); ?>: <span class="required"><?php echo JText::_('EVENTS_CAL_LANG_REQUIRED'); ?></span>
-				<textarea name="econtent" id="econtent" style="width:100%;height:200px;" rows="45" cols="10"><?php echo htmlentities(stripslashes($this->row->content), ENT_COMPAT, 'UTF-8'); ?></textarea>
+				<textarea name="econtent" id="econtent" rows="15" cols="10"><?php echo $this->escape(stripslashes($this->row->content)); ?></textarea>
 			</label>
 
 			<label>
 				<?php echo JText::_('EVENTS_CAL_LANG_EVENT_ADRESSE'); ?>
-				<input type="text" name="adresse_info" maxlength="120" value="<?php echo htmlentities(stripslashes($this->row->adresse_info)); ?>" />
+				<input type="text" name="adresse_info" maxlength="120" value="<?php echo $this->escape(stripslashes($this->row->adresse_info)); ?>" />
 			</label>
 
 			<label>
 				<?php echo JText::_('EVENTS_CAL_LANG_EVENT_EXTRA'); ?>
-				<input type="text" name="extra_info" maxlength="240" value="<?php echo htmlentities(stripslashes($this->row->extra_info)); ?>" />
+				<input type="text" name="extra_info" maxlength="240" value="<?php echo $this->escape(stripslashes($this->row->extra_info)); ?>" />
 			</label>
 <?php
 	if ($this->fields) {
@@ -84,7 +92,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					}
 					echo ' />';
 				} else {
-					echo '<input type="text" name="fields['. $field[0] .']" size="45" maxlength="255" value="'. stripslashes(end($field)) .'" />';
+					echo '<input type="text" name="fields['. $field[0] .']" size="45" maxlength="255" value="'. $this->escape(stripslashes(end($field))) .'" />';
 				}
 				?>
 			</label>
@@ -244,12 +252,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</fieldset>
 		</fieldset><div class="clear"></div>
 <?php } ?>
-		<input type="hidden" name="email" value="<?php echo stripslashes($this->row->email); ?>" />
-		<input type="hidden" name="restricted" value="<?php echo stripslashes($this->row->restricted); ?>" />
+		<input type="hidden" name="email" value="<?php echo $this->escape(stripslashes($this->row->email)); ?>" />
+		<input type="hidden" name="restricted" value="<?php echo $this->escape(stripslashes($this->row->restricted)); ?>" />
 		<p class="submit"><input type="submit" value="<?php echo JText::_('EVENTS_SAVE'); ?>" /></p>
       
 		<input type="hidden" name="created_by" value="<?php echo $this->row->created_by; ?>" />
-		<input type="hidden" name="created_by_alias" value="<?php echo $this->row->created_by_alias; ?>" />
+		<input type="hidden" name="created_by_alias" value="<?php echo $this->escape($this->row->created_by_alias); ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="task" value="save" />
 		<input type="hidden" name="id" id="event-id" value="<?php echo $this->row->id; ?>" />

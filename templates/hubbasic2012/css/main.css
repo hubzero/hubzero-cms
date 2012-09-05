@@ -166,7 +166,7 @@
 	table caption,
 	.contentpaneopen table caption {
 		line-height: 1.6em;
-		padding: 5px 10px;
+		padding: 0.4045084975em 0.61803399em;
 		text-align: left;
 	}
 	table th,
@@ -175,7 +175,7 @@
 	.contentpaneopen table td {
 		vertical-align: top;
 		line-height: 1.6em;
-		padding: 5px 9px;
+		padding: 0.4045084975em 0.61803399em;
 		border-bottom: 1px solid #dadada;
 	}
 	table tr.odd,
@@ -186,8 +186,8 @@
 	.contentpaneopen table tr.even {
 		background-color: #fff;
 	}
-	table thead th,
-	.contentpaneopen table thead th {
+	table th,
+	.contentpaneopen table th {
 		font-weight: bold;
 		white-space: nowrap;
 	}

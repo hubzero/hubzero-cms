@@ -17,10 +17,10 @@
 
 @import url("/media/system/css/fontcons.css");
 
-	#content { 
+	/*#content { 
 		padding: 0px; 
 		margin: 0px; 
-	}
+	}*/
 	#content-wrap #project-wrap {
 		margin: 0 -15px -15px -15px;
 	}
@@ -44,7 +44,7 @@
 	}
 
 /* Sections, general
---------------------------------------------- */
+--------------------------------------------- 
 	.main {
 		border: none;
 		min-width: 700px;
@@ -72,7 +72,7 @@
 	} */
 	
 /* HUBzero 
---------------------------------------------- */	
+--------------------------------------------- 
 
 	.com_projects {
 		background: #FFFFFF !important;
@@ -85,7 +85,7 @@
 		border: none;
 	}
 /* User options
---------------------------------------------- */	
+--------------------------------------------- 
 	#content-header-extra {
 		width: 50%;
 	}
@@ -103,6 +103,18 @@
 	
 /* Forms 
 --------------------------------------------- */
+#content #content-header-extra a.browse {
+	padding-left: 2.91em;
+}
+#content #content-header-extra a.browse:before {
+	top: 0;
+	left: 0;
+	width: 1em;
+	font-size: 1.2em;
+	position: absolute;
+	height: auto;
+	color: #555;
+}
 	#hubForm h2 {
 		font-size: 1.2em;
 		margin-bottom: 0;
@@ -605,7 +617,7 @@
 	}
 	
 /* Introduction page
---------------------------------------------- */
+--------------------------------------------- 
 	#introduction {
 		margin: -1px 0 3em 0;
 		padding: 0 0 0 140px;
@@ -641,9 +653,15 @@
 		list-style: none;
 		margin: 1em 0;
 		padding: 0;
-		}
+	}
 	#introduction li {
 		margin: 0.3em 0;
+	}*/
+	#introduction:after {
+		content: "\f03f";
+	}
+	#introduction {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="intro-before"></small>' + this.innerHTML + '<small class="intro-after">&#xf03f;</small>');
 	}
 	#introduction .subnote {
 		margin-left: 20px;
@@ -3113,8 +3131,7 @@
 	#plg-content .addcomment fieldset:before,
 	.admin-note:before,
 	.private:before,
-	.s-private:before,
-	.browse:before {
+	.s-private:before, {
 		content: "";
 		width: 16px;
 		height: 16px;
@@ -3193,7 +3210,8 @@
 		height: 14px;
 		font-size: 14px;
 	}
-	.browse:before {
+	#content #content-header-extra .browse:before {
+		font-family: 'Fontcons';
 		content: "\f002";
 	}
 	.publications:before, .publication:before {

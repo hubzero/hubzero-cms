@@ -113,6 +113,9 @@ class plgResourcesVersions extends JPlugin
 			$tv = new ToolVersion($database);
 			$rows = $tv->getVersions($resource->alias);
 
+			ximport('Hubzero_Document');
+			Hubzero_Document::addPluginStylesheet('resources', 'versions');
+
 			// Instantiate a view
 			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(

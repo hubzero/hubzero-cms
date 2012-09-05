@@ -31,13 +31,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
+	<h3 class="section-header">
+		<a name="wishlist"></a>
+		<?php echo JText::_('PLG_RESOURCES_WISHLIST'); ?>
+	</h3>
 	<div class="container">
+		<p class="section-options">
+			<a class="add" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=add&category='. $this->wishlist->category.'&rid='.$this->wishlist->referenceid); ?>">
+				<?php echo JText::_('ADD_NEW_WISH'); ?>
+			</a>
+		</p>
 		<table class="ideas entries" summary="<?php echo JText::_('Ideas submitted by the community'); ?>">
 			<caption>
 				<?php echo $this->title; ?>
-				<a class="add" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=add&category='. $this->wishlist->category.'&rid='.$this->wishlist->referenceid); ?>">
-					<?php echo JText::_('ADD_NEW_WISH'); ?>
-				</a>
 			</caption>
 			<tbody>
 <?php

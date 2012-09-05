@@ -328,6 +328,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$view->rows = $obj->getRecords($view->filters, $admin = false, $this->juser->get('id'), 0, $setup_complete);
 
 		// Add the CSS to the template
+		$this->_getStyles('', 'introduction.css', true); // component, stylesheet name, look in media system dir
 		$this->_getStyles();
 
 		// Set the pathway
@@ -348,7 +349,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		{
 			$view->setError( $this->getError() );
 		}
-		$view->display();		
+		$view->display();
 	}
 	
 	/**

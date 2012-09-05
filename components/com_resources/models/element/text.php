@@ -57,6 +57,6 @@ class ResourcesElementText extends ResourcesElement
 		 */
 		$value = htmlspecialchars(html_entity_decode($value, ENT_QUOTES), ENT_QUOTES);
 
-		return '<input type="text" name="'.$control_name.'['.$name.']" id="'.$control_name.'-'.$name.'" value="'.$value.'" '.$class.' '.$size.' />';
+		return '<span class="field-wrap"><input type="text" name="'.$control_name.'['.$name.']" id="'.$control_name.'-'.$name.'" value="'.$value.'" '.$class.' '.$size.' /></span>';
 	}
 }

@@ -32,10 +32,11 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 </div><!-- / #content-header -->
 <div id="content-header-extra">
     <ul id="useroptions">
-    	<li><a class="browse" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=browse'); ?>"><?php echo JText::_('COM_PROJECTS_BROWSE_PUBLIC_PROJECTS'); ?></a></li>		
+    	<li><a class="browse" href="<?php echo JRoute::_('index.php?option='.$option.'&task=browse'); ?>"><?php echo JText::_('COM_PROJECTS_BROWSE_PUBLIC_PROJECTS'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 <div class="clear"></div>
+<?php if ($this->getError() || $this->msg) { ?>
 <div class="status-msg">
 <?php 
 	// Display error or success message
@@ -46,7 +47,8 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 		echo ('<p>' . $this->msg . '</p>');
 	} ?>
 </div>
-<div id="introduction">
+<?php } ?>
+<div id="introduction" class="section">
 	<div>
 		<div class="two columns first">
 			<h3><?php echo JText::_('COM_PROJECTS_INTRO_COLLABORATION_MADE_EASY'); ?></h3>

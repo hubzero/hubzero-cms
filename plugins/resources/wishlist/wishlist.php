@@ -263,10 +263,8 @@ class plgResourcesWishlist extends JPlugin
 			$metadata = $view->loadTemplate();
 		}
 
-		$arr = array(
-			'html' => $html,
-			'metadata' => $metadata
-		);
+		$arr['html'] = $html;
+		$arr['metadata'] = $metadata;
 
 		return $arr;
 	}
