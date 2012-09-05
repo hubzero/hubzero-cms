@@ -1,0 +1,503 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Comments CSS
+	-- -- -- -- -- -- --
+
+*/
+
+/* Voting */
+	.vote-button {
+		display: inline-block;
+		zoom: 1; /* zoom and *display = ie7 hack for display:inline-block */
+		*display: inline;
+		vertical-align: baseline;
+		margin: 0 2px;
+		outline: none;
+		cursor: pointer;
+		text-align: center;
+		text-decoration: none;
+		font: 11px/100% Arial, Helvetica, sans-serif;
+		padding: 0.2em 0.75em 0.275em 0.75em;
+		text-shadow: 0 1px 1px rgba(0,0,0,.3);
+		-webkit-border-radius: .5em; 
+		-moz-border-radius: .5em;
+		border-radius: .5em;
+		opacity: 0.8;
+	}
+	.chosen .vote-button,
+	.vote-button:hover {
+		text-decoration: none;
+		opacity: 1;
+	}
+	.vote-button:active {
+		position: relative;
+		top: 1px;
+		opacity: 1;
+	}
+	.vote-like,
+	.vote-dislike {
+		margin: 0;
+		padding: 0;
+	}
+	.vote-like .vote-button {
+		margin-right: 0;
+		-moz-border-radius-bottomright: 0;
+		-moz-border-radius-topright: 0;
+		-webkit-border-bottom-right-radius: 0;
+		-webkit-border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
+		border-top-right-radius: 0;
+	}
+	.vote-dislike .vote-button {
+		margin-left: -5px;
+		-moz-border-radius-bottomleft: 0;
+		-moz-border-radius-topleft: 0;
+		-webkit-border-bottom-left-radius: 0;
+		-webkit-border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
+		border-top-left-radius: 0;
+	}
+	/* neutral (gray base colors) */
+	.vote-button,
+	a.vote-button {
+		color: #aaa;
+		border: solid 1px #b7b7b7;
+		background: #fff;
+		background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ededed));
+		background: -moz-linear-gradient(top,  #fff,  #ededed);
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ededed');
+	}
+	.vote-button:hover,
+	a.vote-button:hover {
+		color: #606060;
+		border: solid 1px #b7b7b7;
+		background: #ededed;
+		background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#dcdcdc));
+		background: -moz-linear-gradient(top,  #fff,  #dcdcdc);
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#dcdcdc');
+	}
+	.vote-button:active,
+	a.vote-button:active {
+		border: solid 1px #b7b7b7;
+		color: #999;
+		background: -webkit-gradient(linear, left top, left bottom, from(#ededed), to(#fff));
+		background: -moz-linear-gradient(top,  #ededed,  #fff);
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#ffffff');
+	}
+	/* dislike (rose) */
+	.chosen .dislike,
+	.voting:hover a.dislike,
+	.entries tr:hover a.dislike {
+		color: #fae7e9;
+		border: solid 1px #b73948;
+		background: #da5867;
+		background: -webkit-gradient(linear, left top, left bottom, from(#f16c7c), to(#bf404f));
+		background: -moz-linear-gradient(top,  #f16c7c,  #bf404f);
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f16c7c', endColorstr='#bf404f');
+	}
+	.chosen .dislike:hover,
+	.voting:hover a.dislike:hover,
+	.entries tr:hover a.dislike:hover {
+		border: solid 1px #b73948;
+		background: #ba4b58;
+		background: -webkit-gradient(linear, left top, left bottom, from(#cf5d6a), to(#a53845));
+		background: -moz-linear-gradient(top,  #cf5d6a,  #a53845);
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cf5d6a', endColorstr='#a53845');
+	}
+	.chosen .dislike:active,
+	.voting:hover a.dislike:active,
+	.entries tr:hover a.dislike:active {
+		border: solid 1px #b73948;
+		color: #dca4ab;
+		background: -webkit-gradient(linear, left top, left bottom, from(#bf404f), to(#f16c7c));
+		background: -moz-linear-gradient(top,  #bf404f,  #f16c7c);
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bf404f', endColorstr='#f16c7c');
+	}
+	/* like (green) */
+	.chosen .like,
+	.voting:hover a.like,
+	.entries tr:hover a.like {
+		color: #e8f0de;
+		border: solid 1px #538312;
+		background: #64991e;
+		background: -webkit-gradient(linear, left top, left bottom, from(#7db72f), to(#4e7d0e));
+		background: -moz-linear-gradient(top,  #7db72f,  #4e7d0e);
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7db72f', endColorstr='#4e7d0e');
+	}
+	.chosen .like:hover,
+	.voting:hover a.like:hover,
+	.entries tr:hover a.like:hover {
+		border: solid 1px #538312;
+		background: #538018;
+		background: -webkit-gradient(linear, left top, left bottom, from(#6b9d28), to(#436b0c));
+		background: -moz-linear-gradient(top,  #6b9d28,  #436b0c);
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#6b9d28', endColorstr='#436b0c');
+	}
+	.chosen .like:active,
+	.voting:hover a.like:active,
+	.entries tr:hover a.like:active {
+		border: solid 1px #538312;
+		color: #a9c08c;
+		background: -webkit-gradient(linear, left top, left bottom, from(#4e7d0e), to(#7db72f));
+		background: -moz-linear-gradient(top,  #4e7d0e,  #7db72f);
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4e7d0e', endColorstr='#7db72f');
+	}
+	/* thumbs up/down image */
+	.vote-button span {
+		display: inline-block;
+		width: 14px;
+		height: 14px;
+		overflow: hidden;
+		text-indent: -55em;
+		padding: 0;
+		margin: 0 0 0 3px;
+	}
+	.vote-like .neutral span,
+	.like span {
+		background: url("/plugins/hubzero/comments/images/thumbs.png") 0 0 no-repeat;
+	}
+	.vote-dislike .neutral span,
+	.dislike span {
+		background: url("/plugins/hubzero/comments/images/thumbs.png") 0 -14px no-repeat;
+	}
+
+/* Comments */
+	/* Header */
+	h3.comments-title {
+		position: relative;
+	}
+	h3.comments-title .feed {
+		display: block;
+		width: 16px;
+		height: 16px;
+		overflow: hidden;
+		text-indent: -55em;
+		position: absolute;
+		top: 5px;
+		right: 0px;
+		margin: 0;
+		padding: 0;
+	}
+	/* List */
+	ol.comments {
+		list-style-type: none !important;
+		margin: 0;
+		padding: 0;
+		background: transparent;
+	}
+	ol.comments li {
+		clear: left;
+		margin: 0;
+		padding: 0;
+		border-top: 1px solid #fff;
+	}
+	ol.comments ol {
+		margin: 0;
+		padding: 0;
+	}
+	ol.comments li li {
+		padding-left: 70px;
+	}
+	/* Options */
+	ol.comments .comment-options {
+		color: #fff;
+		font-size: 90%;
+		visibility: hidden;
+		margin: 1em 0;
+		padding: 0;
+		border: none;
+	}
+	ol.comments .comment-content:hover .comment-options {
+		visibility: visible;
+	}
+	ol.comments .comment-options li {
+		border: none;
+		margin: 0;
+		padding: 0;
+		display: inline;
+	}
+	ol.comments .comment-options a {
+		margin-right: 1em;
+	}
+	ol.comments .comment-options a span {
+		display: inline;
+	}
+	ol.comments .comment-options .abuse a {
+		background: url("/plugins/hubzero/comments/images/abuse.gif") 0 0 no-repeat;
+		padding-left: 15px;
+	}
+	ol.comments .comment-options .reply a {
+		background: url("/plugins/hubzero/comments/images/reply.gif") 0 0 no-repeat;
+		padding-left: 15px;
+	}
+	.abuse:hover,
+	.reply:hover {
+		background-position: 0 -20px;
+	}
+	/* Member photo */
+	ol.comments p.comment-member-photo {
+	    float: left;
+	    margin: 0;
+	    padding: 0 20px 0 0; /*105px;*/
+		width: 50px;
+		height: 50px;
+		overflow: hidden;
+	    color: #777;
+	    font-size: 11px;
+	    text-align: right;
+		position: relative;
+	}
+	ol.comments .comment-anchor {
+		border-color: transparent #f2f2f2 transparent transparent;
+		border-style: dashed solid dashed dashed;
+		border-width: 10px;
+		height: 0;
+		width: 0;
+		display: block;
+		overflow: hidden;
+		position: absolute;
+		top: 20px;
+		right: 0px;
+	}
+	/* Content */
+	ol.comments .comment-content {
+		margin: 0 0 1em 70px; /*125px;*/
+		background-color: #fafafa;
+		border: 10px solid #f2f2f2;
+		padding: 0 1em;
+	}
+	.no-comments {
+		background-color: #fafafa;
+		border: 10px solid #f2f2f2;
+		padding: 1em;
+	}
+	ol.comments .comment-voting {
+		float: right;
+		text-align: right;
+		min-width: 10em;
+		margin: 0.7em 0 0.7em 0;
+		padding: 0;
+	}
+	ol.comments .comment-voting .thumbsvote {
+		margin-top: 0.5em;
+	}
+	/* Author comments */
+	ol.comments .author .comment-content,
+	ol.comments .author ol.comments .author .comment-content {
+		background-color: #fdfbf8;
+		border-color: #f9f2ec;
+	}
+	ol.comments .author .comment-anchor,
+	ol.comments .author ol.comments .author .comment-anchor {
+		border-color: transparent #f9f2ec transparent transparent;
+	}
+	ol.comments .author ol.comments .comment-content,
+	ol.comments .author ol.comments .author ol.comments .comment-content {
+		background-color: #fafafa;
+		border-color: #f2f2f2;
+	}
+	ol.comments .author ol.comments .comment-anchor,
+	ol.comments .author ol.comments .author ol.comments .comment-anchor {
+		border-color: transparent #f2f2f2 transparent transparent;
+	}
+	/* Chosen comments */
+	ol.comments .chosen .comment-content {
+		background-color: #f9f8fd;
+		border-color: #eeecf9;
+	}
+	ol.comments .chosen .comment-anchor {
+		border-color: transparent #eeecf9 transparent transparent;
+	}	
+	/* Details (date, time) */
+	ol.comments span.comment-details {
+		color: #bfbfbf;
+	}
+	/* Permalink */
+	ol.comments .permalink {
+		border: none;
+		color: #bfbfbf;
+	}
+	ol.comments .permalink:hover {
+		color: #000;
+		border: none;
+	}
+	ol.comments .odd,
+	ol.comments .even {
+		background: transparent;
+	}
+/* Add comment */
+	.comment-add {
+		margin: 0 0 1em 0;
+		padding: 1em;
+		border: 10px solid #ccc;
+		background-color: #eee;
+	}
+	.comment-add label {
+		display: block;
+	}
+	.comment-add label span {
+		display: none;
+	}
+	.comment-add .cancelreply {
+		margin-left: 2em;
+	}
+	.comment-add .submit {
+		clear: both;
+		margin: -1.5em 0 0 0;
+		padding: 0;
+		text-align: right;
+	}
+	.comment-add input, 
+	.comment-add select, 
+	.comment-add textarea {
+		margin-top: 0.25em;
+		width: 100%;
+	}	
+	.comment-add .submit input,
+	.comment-add .option {
+		width: auto;
+	}
+	.comment-add .reply-anonymous-label {
+		width: 50%;
+	}
+/* Comment form */
+	/* Form */
+	#commentform {
+		margin: 0;
+		padding: 0;
+	}
+	#commentform fieldset {
+		background: #F5F7F2;
+		border: 10px solid #DEE4CD;
+		margin: 0;
+		padding: 0 1em 0em 1em;
+		text-align: left;
+		color: #777;
+	}
+	#commentform p.comment-member-photo {
+		float: left;
+		margin: 0;
+		padding: 0 20px 0 0;
+		width: 50px;
+		height: 50px;
+		overflow: hidden;
+		color: #777;
+		font-size: 11px;
+		text-align: right;
+		position: relative;
+	}
+	#commentform .comment-anchor {
+		border-color: transparent #DEE4CD transparent transparent;
+		border-style: dashed solid dashed dashed;
+		border-width: 10px;
+		height: 0;
+		width: 0;
+		display: block;
+		overflow: hidden;
+		position: absolute;
+		top: 20px;
+		right: 0px;
+	}
+	#commentform .sidenote {
+		border: 1px solid #edf0e8;
+		padding: 0 1em;
+		margin: 0 -1em 0 -1em;
+		color: #aaa;
+		background-color: #edf0e8;
+	}
+	#commentform .required,
+	#commentform .optional {
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		font-size: 80%;
+	}
+	#commentform .required {
+		color: #AD6456;
+	}
+	#commentform .optional {
+		color: #888;
+	}
+	#commentform label {
+		padding-top: 1em;
+		position: relative;
+		display: block;
+	}
+	#commentform label span {
+		position: absolute;
+		top: 1.5em;
+		right: 0;
+		display: none;
+	}
+	#commentform .grouping {
+		position: relative;
+		margin-left: -3em;
+		padding: 0 0 1.5em 5em;
+		overflow: hidden;
+		top: 1em;
+		left: 1.5em;
+	}
+	#commentform .grouping label {
+		padding: 0;
+		float: left;
+		width: 50%;
+	}
+	#commentform .grouping label:first-child {
+		margin: 0 2em 0 -3.5em;
+	}
+	#commentform .grouping label span {
+		top: 0;
+	}
+	#commentform input, 
+	#commentform select, 
+	#commentform textarea {
+		margin-top: 0.25em;
+		width: 100%;
+	}
+	#commentform .submit {
+		clear: both;
+		margin: -1.5em 0 1em 0;
+		padding: 0;
+		text-align: right;
+	}
+	#commentform .submit input,
+	#commentform .option {
+		width: auto;
+	}
+	#commentform #comment-anonymous-label {
+		width: 50%;
+	}
+/* Wiki Reference */
+	table.wiki-reference {
+		border: none;
+		font-size: 11px;
+		margin: 0;
+	}
+	table.wiki-reference caption {
+		font-weight: bold;
+	}
+	table.wiki-reference tbody td {
+		border-top: 1px solid #efefef;
+		border-bottom: 1px solid #efefef;
+	}
+/* IE 7 hacks */
+	html>body .aside .container .starter .starter-point {
+		*top: -1.2em;
+	}
+/* IE 6 hacks */
+	* html ol.comments .comment-anchor,
+	* html #commentform .comment-anchor {
+		_border-top-color: pink;
+		_border-bottom-color: pink;
+		_border-left-color: pink;
+		_filter: chroma(color=pink);
+	}
