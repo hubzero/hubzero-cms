@@ -43,6 +43,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php if(count($this->domains_unused) > 0 || !empty($this->hzalaccounts[0])) { ?>
 	<div class="sub-section">
 		<h4><?php echo JText::_('PLG_MEMBERS_LINKED_ACCOUNTS'); ?></h4>
+		<div class="clear"></div>
 		<div class="sub-section-content">
 <?php 
 		if($this->hzalaccounts)
