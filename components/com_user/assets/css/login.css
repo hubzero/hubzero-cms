@@ -188,4 +188,5 @@ html>body #authentication.multiAuth #credentials-hub input[type="password"] {
 }
 html>body #authentication.multiAuth #providers a {
 	*padding-left: 1em;
+	*width: 218px;
 }
