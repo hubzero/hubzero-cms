@@ -127,7 +127,7 @@ HUBzero is a registered trademark of Purdue University.
 		<param name="dev_suffix" type="text" menu="hide" default="_dev" label="Dev tool suffix" description="Suffix indicating the development instance of a tool (e.g. _dev for toolname_dev) " />
 		<param name="group_prefix" type="text" menu="hide" default="app-" label="Dev group prefix" description="Prefix to name of development group (e.g. app-) " />
 		<param name="demo_url" type="text" menu="hide" default="" label="Demo URL" description="URL to demo explaining contribution process" />
-		<param name="doi_service" type="text" menu="hide" default="" label="DOI service path" description="URL of CreateHandle service for registering DOI" />
+		<param name="doi_service" type="text" menu="hide" default="" label="DOI service path" description="URL of CreateHandle service for registering DOI">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
