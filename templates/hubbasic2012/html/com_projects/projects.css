@@ -112,15 +112,37 @@
 		width: 1em;
 		height: auto;
 	}
+	#content .browse:before,
+	.browse:before {
+		content: "\f00b";
+		top: 0;
+		height: auto;
+		width: 16px;
+		font-size: 16px;
+	}
+	#content .browse {
+		padding-left: 40px;
+	}
+	.useroptions a:before {
+		height: auto;
+	}
 	#setup.section {
 		padding-top: 0;
 	}
+	
+	#setup {
+		min-height: 300px;
+	}
+
 /* Introduction */
 	body #introduction {
 		border-top: 2px solid #e7dac4;
 		border-bottom: 2px solid #e7dac4;
 		margin: -1px -15px 3em -15px;
 		color: #7c7266;
+		background: #e1e1e1 url("../images/layout/noise-lite.png") !important;
+		border: none;
+		color: #666;
 	}
 	body #introduction li:before {
 		content: "\2714";
@@ -131,9 +153,18 @@
 		body #introduction .clear:after {
 		bottom: auto;	
 	}
-	body #introduction .clear:before {
-		margin-left: -15px;
+	#introduction .second {
+		background: transparent url("images/intro.jpg") top right no-repeat;
 	}
-	body #introduction .clear:after {
-		margin-right: -15px;
+	
+/* Icon */
+	body #introduction small.intro-after,
+	body #introduction:after {
+		content: "\f03f";
+	}
+	ul.flow {
+		border: none;
+	}
+	#content .four ul.flow li {
+		margin-right: 1em;
 	}
