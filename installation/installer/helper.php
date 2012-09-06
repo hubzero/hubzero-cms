@@ -201,7 +201,7 @@ class JInstallationHelper
 	/**
 	 *
 	 */
-	function populateDatabase(& $db, $sqlfile, & $errors, $nexttask='mainconfig')
+	function populateDatabase(& $db, $sqlfile, & $errors, $mode = 'normal')
 	{
 		if( !($buffer = file_get_contents($sqlfile)) )
 		{
@@ -217,9 +217,23 @@ class JInstallationHelper
 			{
 				$db->setQuery($query);
 				//echo $query .'<br />';
-				$db->query() or die($db->getErrorMsg());
+				$result = $db->query();
 
-				JInstallationHelper::getDBErrors($errors, $db );
+				if (!$result)
+				{
+					$dberrno = $db->getErrorNum();
+					
+					if ($mode == 'keep' && $dberrno != 1050 && $dberrno != 1062)
+					{
+						echo $dberrno;					
+						die($db->getErrorMsg());
+					}
+				}
+				else
+				{
+					JInstallationHelper::getDBErrors($errors, $db );
+				}
+
 			}
 		}
 		return count($errors);

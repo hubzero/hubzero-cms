@@ -437,7 +437,9 @@ class JInstallationModel extends JModel
 				$dbscheme = 'sql'.DS.$type.DS.'joomla_backward.sql';
 			}
 
-			if (JInstallationHelper::populateDatabase($db, $dbscheme, $errors) > 0)
+			$mode = ($DBOld == 'keep') ? 'keep' : 'normal';
+			
+			if (JInstallationHelper::populateDatabase($db, $dbscheme, $errors, $mode) > 0)
 			{
 				$this->setError(JText::_('WARNPOPULATINGDB'));
 				$this->setData('back', 'dbconfig');
@@ -451,7 +453,7 @@ class JInstallationModel extends JModel
 			jimport('joomla.filesystem.file');
 			$dblocalise = 'sql'.DS.$type.DS.'localise.sql';
 			if(JFile::exists($dblocalise)) {
-				if(JInstallationHelper::populateDatabase($db, $dblocalise, $errors) > 0) {
+				if(JInstallationHelper::populateDatabase($db, $dblocalise, $errors, $mode) > 0) {
 					$this->setError(JText::_('WARNPOPULATINGDB'));
 					$this->setData('back', 'dbconfig');
 					$this->setData('errors', JInstallationHelper::errors2string($errors));
