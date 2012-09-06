@@ -63,33 +63,6 @@ class JInstallationController extends JController
 		return true;
 	}
 
-	function keycheck($key = '')
-	{
-		if (!class_exists('JConfig'))
-		{
-			return false;
-		}
-
-		$CONFIG = new JConfig();
-
-		if (count(get_object_vars($CONFIG)) > 1)
-		{
-			return false;
-		}
-
-		if (empty($CONFIG->installkey))
-		{
-			return false;
-		}
-
-		if (empty($key))
-		{
-			return false;
-		}
-
-		return $key == $CONFIG->installkey;
-	}
-	
 	/**
 	 * Overload the parent controller method to add a check for configuration variables
 	 *  when a task has been provided
@@ -103,7 +76,6 @@ class JInstallationController extends JController
 	{
 		global $mainframe;
 
-		
 		$vars = JRequest::getVar('vars', '');
 		$key = null;
 		if (!empty($vars['key']))
@@ -432,6 +404,33 @@ class JInstallationController extends JController
 		}
 	}
 
+	function keycheck($key = '')
+	{
+		if (!class_exists('JConfig'))
+		{
+			return false;
+		}
+
+		$CONFIG = new JConfig();
+
+		if (count(get_object_vars($CONFIG)) > 1)
+		{
+			return false;
+		}
+
+		if (empty($CONFIG->installkey))
+		{
+			return false;
+		}
+
+		if (empty($key))
+		{
+			return false;
+		}
+
+		return $key == $CONFIG->installkey;
+	}
+	
 	/**
 	 * Present a key install check
 	 *

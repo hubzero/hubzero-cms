@@ -172,53 +172,6 @@ class JAJAXHandler
 	}
 
 	/**
-	 * Method to load and execute a sql script
-	 */
-	function hzsampledata($args)
-	{
-		jimport( 'joomla.database.database');
-		jimport( 'joomla.language.language');
-		jimport( 'joomla.registry.registry');
-
-
-		$errors = null;
-		$msg = '';
-		$objResponse = new xajaxResponse();
-		$lang = new JAJAXLang($args['lang']);
-//		$lang->setDebug(true);
-
-		/*
-		 * execute the default sample data file
-		 */
-		$type = $args['DBtype'];
-		if (($type == 'mysqli') || ($type == 'pdo_mysql')) {
-			$type = 'mysql';
-		}
-		$dbsample = '../sql'.DS.$type.DS.'hz_sample_data.sql';
-
-		$db = & JInstallationHelper::getDBO($args['DBtype'], $args['DBhostname'], $args['DBuserName'], $args['DBpassword'], $args['DBname'], $args['DBPrefix']);
-		$result = JInstallationHelper::populateDatabase($db, $dbsample, $errors);
-
-		/*
-		 * prepare sql error messages if returned from populate
-		 */
-		if (!is_null($errors)){
-			foreach($errors as $error){
-				$msg .= stripslashes( $error['msg'] );
-				$msg .= chr(13)."-------------".chr(13);
-				$txt = '<textarea cols="35" rows="5" name="instHzDefault" readonly="readonly" >'.$lang->_('Database Errors Reported').chr(13).$msg.'</textarea>';
-			}
-		} else {
-			// consider other possible errors from populate
-			$msg = $result == 0 ? $lang->_("Sample HUBzero data installed successfully") : $lang->_("Error installing SQL script") ;
-			$txt = '<input size="35" name="instHzDefault" value="'.$msg.'" readonly="readonly" />';
-		}
-
-		$objResponse->addAssign("theHzDefault", "innerHTML", $txt);
-		return $objResponse;
-	}
-
-	/**
 	 * Handle a raised error : for now just silently return
 	 *
 	 * @access	private
@@ -405,6 +358,54 @@ class JAJAXLang extends JObject
 		}
 		return $dir;
 	}
+
+	/**
+	 * Method to load and execute a sql script
+	 */
+	function hzsampledata($args)
+	{
+		jimport( 'joomla.database.database');
+		jimport( 'joomla.language.language');
+		jimport( 'joomla.registry.registry');
+
+
+		$errors = null;
+		$msg = '';
+		$objResponse = new xajaxResponse();
+		$lang = new JAJAXLang($args['lang']);
+//		$lang->setDebug(true);
+
+		/*
+		 * execute the default sample data file
+		 */
+		$type = $args['DBtype'];
+		if (($type == 'mysqli') || ($type == 'pdo_mysql')) {
+			$type = 'mysql';
+		}
+		$dbsample = '../sql'.DS.$type.DS.'hz_sample_data.sql';
+
+		$db = & JInstallationHelper::getDBO($args['DBtype'], $args['DBhostname'], $args['DBuserName'], $args['DBpassword'], $args['DBname'], $args['DBPrefix']);
+		$result = JInstallationHelper::populateDatabase($db, $dbsample, $errors);
+
+		/*
+		 * prepare sql error messages if returned from populate
+		 */
+		if (!is_null($errors)){
+			foreach($errors as $error){
+				$msg .= stripslashes( $error['msg'] );
+				$msg .= chr(13)."-------------".chr(13);
+				$txt = '<textarea cols="35" rows="5" name="instHzDefault" readonly="readonly" >'.$lang->_('Database Errors Reported').chr(13).$msg.'</textarea>';
+			}
+		} else {
+			// consider other possible errors from populate
+			$msg = $result == 0 ? $lang->_("Sample HUBzero data installed successfully") : $lang->_("Error installing SQL script") ;
+			$txt = '<input size="35" name="instHzDefault" value="'.$msg.'" readonly="readonly" />';
+		}
+
+		$objResponse->addAssign("theHzDefault", "innerHTML", $txt);
+		return $objResponse;
+	}
+
 }
 
 

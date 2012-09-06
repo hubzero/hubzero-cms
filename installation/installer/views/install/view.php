@@ -337,7 +337,7 @@ class JInstallationView extends JView
 		$steps['preinstall'] = 'on';
 
 		$tmpl->addVars( 'stepbar', 	$steps, 	'step_' );
-		$tmpl->addVar( 'body', 		'version', 	$version->getLongVersion() );
+		$tmpl->addVar( 'body', 		'version', 	'HUBzero 1.1' /* $version->getLongVersion() */ );
 
 		$tmpl->addRows( 'php-options', 	$lists['phpOptions'] );
 		$tmpl->addRows( 'php-settings', $lists['phpSettings'] );

@@ -23,7 +23,7 @@ require_once ( JPATH_BASE .DS.'includes'.DS.'framework.php' );
 $mainframe =& JFactory::getApplication('installation');
 
 // initialuse the application
-$mainframe->initialise();
+$mainframe->initialise( array("language"=>"en-GB"));
 
 // render the application
 $mainframe->render();

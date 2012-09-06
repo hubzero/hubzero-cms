@@ -95,18 +95,6 @@ class JInstallationModel extends JModel
 		return true;
 	}
 
-   /**
-	* Get installation key from user
-	*
-	* @return      boolean True if successful
-	* @access      public
-	* @since       HUBzero 1.1
-	*/
-	function installkey()
-	{
-		return true;
-	}
-	
 	/**
 	 * Gets the parameters for database creation
 	 *
@@ -719,42 +707,6 @@ class JInstallationModel extends JModel
 	}
 
 	/**
-	 * No configuration file messages
-	 *
-	 * @return	Boolean True if successful
-	 * @access	public
-	 * @since	HUBzero 1.1
-	 */
-	function noconfig()
-	{
-		return true;
-	}
-	
-	/**
-	 * Invalid configuration file messages
-	 *
-	 * @return	Boolean True if successful
-	 * @access	public
-	 * @since	HUBzero 1.1
-	 */
-	function invalidconfig()
-	{
-		return true;
-	}
-	
-	/**
-	 * Has configuration file messages
-	 *
-	 * @return	Boolean True if successful
-	 * @access	public
-	 * @since	HUBzero 1.1
-	 */
-	function hasconfig()
-	{
-		return true;
-	}
-	
-	/**
 	 * Save the configuration information
 	 *
 	 * @return	boolean True if successful
@@ -1033,4 +985,53 @@ class JInstallationModel extends JModel
 		}
 		return $migResult;
 	}
+
+   /**
+	* Get installation key from user
+	*
+	* @return      boolean True if successful
+	* @access      public
+	* @since       HUBzero 1.1
+	*/
+	function installkey()
+	{
+		return true;
+	}
+	
+	/**
+	 * No configuration file messages
+	 *
+	 * @return	Boolean True if successful
+	 * @access	public
+	 * @since	HUBzero 1.1
+	 */
+	function noconfig()
+	{
+		return true;
+	}
+	
+	/**
+	 * Invalid configuration file messages
+	 *
+	 * @return	Boolean True if successful
+	 * @access	public
+	 * @since	HUBzero 1.1
+	 */
+	function invalidconfig()
+	{
+		return true;
+	}
+	
+	/**
+	 * Has configuration file messages
+	 *
+	 * @return	Boolean True if successful
+	 * @access	public
+	 * @since	HUBzero 1.1
+	 */
+	function hasconfig()
+	{
+		return true;
+	}
+
 }
