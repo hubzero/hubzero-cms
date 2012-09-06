@@ -86,10 +86,11 @@
 	}
 /* Tool Session */
 	#session {
-		padding: 25px 10px 0 10px;
+		margin: 0;
+		padding: 0;
 	}
 	#app-wrap {
-		margin: 0;
+		margin: 30px;
 		padding: 0;
 		float: left;
 		position: relative;
@@ -182,6 +183,7 @@
 		padding: 8px 20px 8px 20px;
 		font-weight: bold;
 		width: 40%;
+		font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	}
 	#app-header ul li a:hover,
 	#app-header ul li.active a {
@@ -495,7 +497,7 @@
 
 /* Share form */
 	#app-share {
-		margin: 2em -25px -2.5em -25px;
+		margin: 2em 0 0 0;
 		padding: 25px;
 		-webkit-border-radius: 0 0 0.27em 0.27em;
 		-moz-border-radius: 0 0 0.27em 0.27em;
@@ -731,7 +733,7 @@
 		border-radius: 10px;
 	}
 	.com_tools #app-manager {
-		margin: 2.5em -25px -2.5em -25px;
+		margin: 0;
 		background-color: #FFFDEF;
 		padding: 25px;
 		color: #CC6633;
