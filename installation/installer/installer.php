@@ -25,11 +25,39 @@ $config = array();
 // check on proper task:
 // lang for installation
 // removedir for remove directory message
+
+if (!file_exists( JPATH_CONFIGURATION . DS . 'configuration.php')) {
+	$config['default_task'] = 'noconfig';
+}
+else 
+{
+	require_once( JPATH_CONFIGURATION . DS . 'configuration.php' );
+	
+	if (!class_exists('JConfig'))
+	{
+		$config['default_task'] = 'invalidconfig';
+	}
+	else
+	{
+		$CONFIG = new JConfig();
+		
+		if (count(get_object_vars($CONFIG)) > 1)
+		{
+			$config['default_task'] = 'hasconfig';
+		}
+		else
+		{
+			$config['default_task'] = 'installkey';
+		}
+	}
+}
+/*
 if (file_exists( JPATH_CONFIGURATION . DS . 'configuration.php' ) && (filesize( JPATH_CONFIGURATION . DS . 'configuration.php' ) > 10) && file_exists( JPATH_INSTALLATION . DS . 'index.php' )) {
 	$config['default_task']	= 'removedir';
 } else {
 	$config['default_task']	= 'installkey';
 }
+*/
 $controller	= new JInstallationController($config);
 $controller->initialize();
 

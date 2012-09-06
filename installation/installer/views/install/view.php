@@ -306,7 +306,7 @@ class JInstallationView extends JView
 	 * @access      public
 	 * @since       HUBzero 1.1
 	 */
-	function installkey()
+	function installkey2()
 	{
 		$steps  =& $this->getSteps();
 		$model  =& $this->getModel();
@@ -339,7 +339,82 @@ class JInstallationView extends JView
 		return $this->display();
 	}
 
-
+	/**
+	 * No configuration file messages
+	 *
+	 * @return	Boolean True if successful
+	 * @access	public
+	 * @since	HUBzero 1.1
+	 */
+	function noconfig()
+	{
+		$model	=& $this->getModel();
+	
+		$this->_createTemplate('', 'noconfig.html');
+		$tmpl = $this->_template;
+	
+		#$tmpl	=& $this->getTemplate( 'noconfig.html' );
+		return $this->display();
+	}
+	
+	/**
+	 * Invalid configuration file messages
+	 *
+	 * @return	Boolean True if successful
+	 * @access	public
+	 * @since	HUBzero 1.1
+	 */
+	function invalidconfig()
+	{
+		$model	=& $this->getModel();
+	
+		$this->_createTemplate('', 'invalidconfig.html');
+		$tmpl = $this->_template;
+	
+		#$tmpl	=& $this->getTemplate( 'invalidconfig.html' );
+		return $this->display();
+	}
+	
+	/**
+	 * Has configuration file messages
+	 *
+	 * @return	Boolean True if successful
+	 * @access	public
+	 * @since	HUBzero 1.1
+	 */
+	function hasconfig()
+	{
+		$model	=& $this->getModel();
+	
+		$this->_createTemplate('', 'hasconfig.html');
+		$tmpl = $this->_template;
+	
+		#$tmpl	=& $this->getTemplate( 'hasconfig.html' );
+		return $this->display();
+	}
+	
+	/**
+	 * Installkey messages
+	 *
+	 * @return	Boolean True if successful
+	 * @access	public
+	 * @since	HUBzero 1.1
+	 */
+	function installkey()
+	{
+		$steps	=& $this->getSteps();
+		$model	=& $this->getModel();
+		$lists	=& $model->getData('lists');
+		
+		$tmpl	=& $this->getTemplate( 'installkey.html' );
+					
+		$steps['installkey'] = 'on';
+		$tmpl->addVars( 'stepbar', $steps, 'step_' );
+		$tmpl->addRows( 'key-options', $lists['key'] );
+		
+		return $this->display();
+	}
+	
 	function migrateScreen() {
 		$steps	=& $this->getSteps();
 		$model	=& $this->getModel();

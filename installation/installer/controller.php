@@ -343,6 +343,75 @@ class JInstallationController extends JController
 	}
 
 	/**
+	 * No configuration file messages
+	 *
+	 * @return	Boolean True if successful
+	 * @access	public
+	 * @since	HUBzero 1.1
+	 */
+	function noconfig()
+	{
+		$model	=& $this->getModel();
+		$view	=& $this->getView();
+
+		if ( ! $model->noconfig() )
+		{
+			$view->error();
+			return true;
+		}
+
+		$view->noconfig();
+
+		return true;
+	}
+	
+	/**
+	 * Invalid configuration file messages
+	 *
+	 * @return	Boolean True if successful
+	 * @access	public
+	 * @since	HUBzero 1.1
+	 */
+	function invalidconfig()
+	{
+		$model	=& $this->getModel();
+		$view	=& $this->getView();
+
+		if ( ! $model->invalidconfig() )
+		{
+			$view->error();
+			return true;
+		}
+
+		$view->invalidconfig();
+
+		return true;
+	}
+	
+	/**
+	 * Has configuration file messages
+	 *
+	 * @return	Boolean True if successful
+	 * @access	public
+	 * @since	HUBzero 1.1
+	 */
+	function hasconfig()
+	{
+		$model	=& $this->getModel();
+		$view	=& $this->getView();
+
+		if ( ! $model->hasconfig() )
+		{
+			$view->error();
+			return true;
+		}
+
+		$view->hasconfig();
+
+		return true;
+	}
+	
+	/**
 	 *
 	 *
 	 * @return	Boolean True if successful

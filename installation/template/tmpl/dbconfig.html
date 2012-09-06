@@ -90,10 +90,10 @@
 				<h2><jtmpl:translate>Connection Settings</jtmpl:translate>:</h2>
 				<div class="install-text">
 					<jtmpl:translate key="tipDatabaseSteps">
-					<p>Setting up Joomla! to run on your server involves 4 simple steps...</p>
-					<p>Please enter the hostname of the server Joomla! is to be installed on.</p>
+					<p>Setting up HUBzero to run on your server involves 4 simple steps...</p>
+					<p>Please enter the hostname of the server HUBzero is to be installed on.</p>
 					<p>Enter the MySQL username, password and database name you wish to use with Joomla.</p>
-					<p>Enter a prefix to be used by tables for this Joomla! installation. Select how to handle exisitng tables from a previous installation.</p>
+					<p>Enter a prefix to be used by tables for this HUBzero installation. Select how to handle exisitng tables from a previous installation.</p>
 					<p>Install the samples unless you are experienced want to start with a virtually empty site.</p>
 					</jtmpl:translate>
 				</div>
@@ -184,9 +184,24 @@
 								<br /><br />
 							</div>
 							<h3 class="title-smenu moofx-toggler" title="<jtmpl:translate>Advanced</jtmpl:translate>"><jtmpl:translate>Advanced settings</jtmpl:translate></h3>
-							<div class="section-smenu moofx-slider">
+							<div class="section-smenu">
 								<table class="content2">
 									<tbody>
+										<tr>
+											<td>
+												<input id="vars_dboldkeep" type="radio" name="vars[DBOld]" value="keep" />
+											</td>
+											<td>
+												<label for="vars_dboldkeep">
+													<jtmpl:translate>Keep Existing Tables</jtmpl:translate>
+												</label>
+											</td>
+											<td>
+												<em>
+												<jtmpl:translate key="tipKeep">Any existing tables from former HUBzero installations will be kept unchanged</jtmpl:translate>
+												</em>
+											</td>
+										</tr>
 										<tr>
 											<td>
 												<input id="vars_dbolddel" type="radio" name="vars[DBOld]" value="rm" />
@@ -209,7 +224,7 @@
 											</td>
 											<td>
 												<em>
-												<jtmpl:translate key="tipBackup">Any existing backup tables from former Joomla! installations will be replaced</jtmpl:translate>
+												<jtmpl:translate key="tipBackup">Any existing backup tables from former HUBzero installations will be replaced</jtmpl:translate>
 												</em>
 											</td>
 										</tr>

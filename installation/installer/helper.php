@@ -81,7 +81,25 @@ class JInstallationHelper
 		{
 			return false;
 		}
-
+		
+		if ($DButfSupport)
+		{
+			$sql = "CREATE DATABASE `$DBname" . "_metrics` CHARACTER SET `utf8`";
+		}
+		else
+		{
+			$sql = "CREATE DATABASE `$DBname" . "_metrics`";
+		}
+		
+		$db->setQuery($sql);
+		$db->query();
+		$result = $db->getErrorNum();
+		
+		if ($result != 0)
+		{
+			return false;
+		}
+		
 		return true;
 	}
 

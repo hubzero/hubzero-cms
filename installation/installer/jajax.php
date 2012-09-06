@@ -84,7 +84,7 @@ class JAJAXHandler
 		 * execute the default sample data file
 		 */
 		$type = $args['DBtype'];
-		if ($type == 'mysqli') {
+		if (($type == 'mysqli') || ($type == "pdo_mysql")) {
 			$type = 'mysql';
 		}
 		$dbsample = '../sql'.DS.$type.DS.'sample_data.sql';
@@ -131,7 +131,7 @@ class JAJAXHandler
 		 * execute the default sample data file
 		 */
 		$type = $args['DBtype'];
-		if ($type == 'mysqli') {
+		if (($type == 'mysqli') || ($type == 'pdo_mysql')) {
 			$type = 'mysql';
 		}
 		$dbsample = '../sql'.DS.$type.DS.'hz_sample_data.sql';

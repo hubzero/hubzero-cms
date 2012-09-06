@@ -96,7 +96,7 @@ class JInstallationModel extends JModel
 		}
 
 		$lists	= array ();
-		$files	= array ('mysql', 'mysqli',);
+		$files	= array ('mysql', 'mysqli', 'pdo_mysql');
 		$db		= JInstallationHelper::detectDB();
 		foreach ($files as $file)
 		{
@@ -334,12 +334,8 @@ class JInstallationModel extends JModel
 					//return JInstallationView::error($vars, , 'dbconfig', JInstallationHelper::errors2string($errors));
 				}
 			}
-			else
+			else if ($DBOld == 'bu')
 			{
-				/*
-				 * We assume since we aren't deleting the database that we need
-				 * to back it up :)
-				 */
 				if (JInstallationHelper::backupDatabase($db, $DBname, $DBPrefix, $errors)) {
 					$this->setError(JText::_('WARNBACKINGUPDB'));
 					$this->setData('back', 'dbconfig');
@@ -350,7 +346,7 @@ class JInstallationModel extends JModel
 			}
 
 			$type = $DBtype;
-			if ($type == 'mysqli') {
+			if (($type == 'mysqli') || ($type == 'pdo_mysql')) {
 				$type = 'mysql';
 			}
 
@@ -636,6 +632,42 @@ class JInstallationModel extends JModel
 		return true;
 	}
 
+	/**
+	 * No configuration file messages
+	 *
+	 * @return	Boolean True if successful
+	 * @access	public
+	 * @since	HUBzero 1.1
+	 */
+	function noconfig()
+	{
+		return true;
+	}
+	
+	/**
+	 * Invalid configuration file messages
+	 *
+	 * @return	Boolean True if successful
+	 * @access	public
+	 * @since	HUBzero 1.1
+	 */
+	function invalidconfig()
+	{
+		return true;
+	}
+	
+	/**
+	 * Has configuration file messages
+	 *
+	 * @return	Boolean True if successful
+	 * @access	public
+	 * @since	HUBzero 1.1
+	 */
+	function hasconfig()
+	{
+		return true;
+	}
+	
 	/**
 	 * Save the configuration information
 	 *
