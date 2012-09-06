@@ -82,6 +82,11 @@ JSubMenuHelper::addEntry(
 	$controllerName == 'tickets'
 );
 JSubMenuHelper::addEntry(
+	JText::_('Queries'),
+	'index.php?option=com_support&controller=queries',
+	$controllerName == 'queries'
+);
+JSubMenuHelper::addEntry(
 	JText::_('Messages'),
 	'index.php?option=com_support&controller=messages',
 	$controllerName == 'messages'
