@@ -252,14 +252,9 @@
 
 			<form enctype="multipart/form-data" action="index.php" method="post" name="filename" id="filename">
 
-				<h2><jtmpl:translate key="loadSampleOrMigrate">Load Sample Data, Restore or Migrate Backed Up Content</jtmpl:translate></h2>
+				<h2><jtmpl:translate key="loadSampleOrMigrate">Load Sample Data or Restore Backed Up Content</jtmpl:translate></h2>
 				<div class="install-text">
 					<p><jtmpl:translate>LOADSQLINSTRUCTIONS1</jtmpl:translate></p>
-					<p><jtmpl:translate>LOADSQLINSTRUCTIONS2</jtmpl:translate></p>
-					<p><jtmpl:translate>LOADSQLINSTRUCTIONS3</jtmpl:translate></p>
-					<p><jtmpl:translate>LOADSQLINSTRUCTIONS4</jtmpl:translate></p>
-					<p><jtmpl:translate>LOADSQLINSTRUCTIONS5</jtmpl:translate></p>
-					<p><jtmpl:translate>LOADSQLINSTRUCTIONS6</jtmpl:translate></p>
 					<p><jtmpl:translate>LOADSQLINSTRUCTIONS7</jtmpl:translate></p>
 				</div>
 				<div class="install-body">
@@ -286,6 +281,7 @@
 									</label>
 								</td>
 								<td>
+								    <p><jtmpl:translate>LOADSQLINSTRUCTIONS3</jtmpl:translate></p>
 									<em>
 									<jtmpl:translate key="tipInstallDefault" />
 									</em>
@@ -294,27 +290,9 @@
 							<tr>
 								<td></td>
 								<td colspan="2">
-									<span id="theDefault"><input class="button" type="button" name="instDefault" value="<jtmpl:translate>clickToInstallDefault</jtmpl:translate>" onclick="JDefault();"/></span>
+									<span id="theDefault"><input class="button" type="button" name="instHzDefault" value="<jtmpl:translate>clickToInstallHzDefault</jtmpl:translate>" onclick="JHzDefault();"/></span>
 								</td>
 							</tr>
-							<tr>
-								<td></td>
-								<td colspan="2">
-									or
-								</td>
-							</tr>
-							<tr>
-								<td></td>
-								<td colspan="2">
-									<span id="theHzDefault"><input class="button" type="button" name="instHzDefault" value="<jtmpl:translate>clickToInstallHubDefault</jtmpl:translate>" onclick="JHzDefault();"/></span>
-								</td>
-							</tr>
-							<tr>
-								<td>&nbsp;</td>
-								<td></td>
-								<td></td>
-							</tr>
-
 							<tr>
 								<td valign="top">
 									<input id="migrate_sql" type="radio" name="what_to_load" onclick="selectMode();"/>
@@ -325,14 +303,9 @@
 									</label>
 								</td>
 								<td>
-									<em>
-									<jtmpl:translate key="tipLoadMigration">The migration script needs to be created on the old site by the com_migrator tool or created manually to conform.</jtmpl:translate>
-									</em>
-									<br />
-									<em>
-									<jtmpl:translate key="tipLoadSql">Joomla! 1.5 Migration SQL scripts need to be Joomla 1.5 compatible and should have the appropriate table prefix.</jtmpl:translate>
-									</em>
-
+								    <p><jtmpl:translate>LOADSQLINSTRUCTIONS4</jtmpl:translate></p>
+									<p><jtmpl:translate>LOADSQLINSTRUCTIONS5</jtmpl:translate></p>
+									<p><jtmpl:translate>LOADSQLINSTRUCTIONS6</jtmpl:translate></p>
 								</td>
 							</tr>
 							<jtmpl:tmpl name="uploadsize">
@@ -348,44 +321,15 @@
 							</jtmpl:tmpl>
 							<tr>
 								<td></td>
-								<td>
-									<label for="oldPrefix">
-										<jtmpl:translate>Old table prefix</jtmpl:translate>
-									</label>
-								</td>
-								<td>
-									<input class="inputbox" type="text" id="oldPrefix" name="vars[oldPrefix]" value="" size="24" />
-								</td>
-							</tr>
-							<tr>
-								<td></td>
-								<td>
-									<label for="srcEncoding">
-										<jtmpl:translate>Old site encoding</jtmpl:translate>
-									</label>
-								</td>
-								<td>
-									<!--<input class="inputbox" type="text" id="srcEncoding" name="vars[srcEncoding]" value="" size="24" />-->
-									<select id="srcEncoding" name="vars[srcEncoding]" class="inputbox" >
-									<jtmpl:tmpl name="encoding_options">
-										<option value="{VALUE}" >{VALUE}</option>
-									</jtmpl:tmpl>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<td></td>
 								<td valign="top">
 									<label for="migration_script">
-										<jtmpl:translate>Migration Script</jtmpl:translate>
+										<jtmpl:translate>Script</jtmpl:translate>
 									</label>
 								</td>
 								<td>
 									<input class="input_box" id="migration_script" name="sqlFile" type="file" size="20"  />
 									<br />
 									<input class="input_box" id="sqlUploaded" name="sqlUploaded" type="checkbox" /><jtmpl:translate key="tipUploaded">I have already uploaded a SQL file</jtmpl:translate>
-									<br />
-									<input class="input_box" id="migration" name="migration" type="checkbox" /><jtmpl:translate key="tipMigration">This script is a Joomla! 1.0 migration script.</jtmpl:translate>
 									<br />
 									<input class="button" type="button" name="migrationLoad" value="<jtmpl:translate>Upload and execute</jtmpl:translate>" onclick="migrationSql(filename, 'migration');" />
 									<br /><br />
