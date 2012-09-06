@@ -70,11 +70,13 @@ $v = $browser->getBrowserMajorVersion();
 							<li><a href="/about/contact"><?php echo JText::_('TPL_HUBBASIC_CONTACT'); ?></a></li>
 						</ul>
 						<?php Hubzero_Module_Helper::displayModules('search'); ?>
+<?php if (Hubzero_Module_Helper::countModules('helppane')) : ?>
 						<p id="tab">
 							<a href="<?php echo JRoute::_('index.php?option=com_support'); ?>" title="<?php echo JText::_('TPL_HUBBASIC_NEED_HELP'); ?>">
 								<span><?php echo JText::_('TPL_HUBBASIC_HELP'); ?></span>
 							</a>
 						</p>
+<?php endif; ?>
 					</div><!-- / #topbar -->
 					<div id="masthead">
 						<div class="inner">

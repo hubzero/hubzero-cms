@@ -37,6 +37,32 @@ defined('_JEXEC') or die('Restricted access');
 class Hubzero_Module_Helper
 {
 	/**
+	 * Count the modules based on the given condition
+	 *
+	 * @param  string 	$condition	The condition to use
+	 * @return integer  Number of modules found
+	 */
+	public static function countModules($condition)
+	{
+		jimport('joomla.application.module.helper');
+
+		//$result = '';
+
+		$words = explode(' ', $condition);
+		for($i = 0; $i < count($words); $i+=2)
+		{
+			// odd parts (modules)
+			$name = strtolower($words[$i]);
+			//$words[$i] = ((isset($this->_buffer['modules'][$name])) && ($this->_buffer['modules'][$name] === false)) ? 0 : count(JModuleHelper::getModules($name));
+			$words[$i] = count(JModuleHelper::getModules($name));
+		}
+
+		$str = 'return ' . implode(' ', $words) . ';';
+
+		return eval($str);
+	}
+
+	/**
 	 * Render modules for a position
 	 * Alias method for renderModules()
 	 * 
