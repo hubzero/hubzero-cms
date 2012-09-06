@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metafile version="1.5"  client="site" >
+	<tag>tl-PH</tag>
+	<name>Tagalog (Philippines)</name>
+	<description>Tagalog (Philippines) site language pack for Joomla!</description>
+	<version>1.5.14</version>
+	<creationDate>2009-07-21</creationDate>
+	<author>PinoyJoomla</author>
+	<authorUrl>http://www.pinoyjoomla.com</authorUrl>
+	<authorEmail>team@pinoyjoomla.com</authorEmail>
+	<copyright>Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<metadata>
+		<name>Tagalog (Philippines)</name>
+		<tag>tl-PH</tag>
+		<rtl>0</rtl>
+		<locale>tl, tagalog, tl_PH.UTF-8</locale>
+		<winCodePage>ISO-8559-1</winCodePage>
+		<backwardLang>tagalog</backwardLang>
+		<pdfFontName>freesans</pdfFontName>
+	</metadata>
+	<params></params>
+</metafile>

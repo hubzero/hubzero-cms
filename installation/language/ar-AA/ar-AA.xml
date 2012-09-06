@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metafile version="1.5" client="installation" >
+	<name>Arabic(العربية الموحدة)</name>
+	<version>1.5.9</version>
+	<creationDate>January 2010</creationDate>
+	<author>Joomla! Arabic Unitag Translation - Mahmood Alhaj Kassem</author>
+	<authorEmail>suneye3@gmail.com</authorEmail>
+	<copyright>Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<description>ملف اللغة العربية الموحدة لتنصيب نظام جوملا!</description>
+	<metadata>
+		<name>Arabic(العربية الموحدة)</name>
+		<tag>ar-AA</tag>
+		<rtl>1</rtl>
+		<locale>ar_AR.utf8, ar_AR.UTF-8, ar_AR, ara_AR, arb_AR, arabic_ar, arabe, ara, arab, arabic, ar, arabic_Standard, ar_AR.iso88596, ar_AR.ISO-8859-6, ar_AR.ISO8859-6, ISO-8859-6</locale>
+		<winCodePage>utf-8</winCodePage>
+		<backwardLang>arabic</backwardLang>
+	</metadata>
+	<params />
+</metafile>

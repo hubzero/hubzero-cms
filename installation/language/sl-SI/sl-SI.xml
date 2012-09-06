@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- $Id: sl-SI.xml 10511 2008-07-06 19:21:55Z willebil $ -->
+<metafile version="1.5" client="installation">
+    <name>Slovenian(SI)</name>
+    <version>1.5.9</version>
+    <creationDate>September 2009</creationDate>
+    <author>Planinc Borut</author>
+    <authorUrl></authorUrl>
+    <copyright>Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.</copyright>
+    <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+    <description>Slovenian language installation for Joomla</description>
+    <metadata>
+    	<name>Slovenian (SI)</name>
+    	<tag>sl-SI</tag>
+    	<rtl>0</rtl>
+    	<locale>sl_SI.UTF-8, sl_SI.utf8, sl_SI, si, sl, SI, slovenia, slovenian, Slovenia</locale>
+    	<winCodePage>iso-8859-2</winCodePage>
+    	<backwardLang>slovenian</backwardLang>
+    </metadata>
+    <params />
+</metafile>

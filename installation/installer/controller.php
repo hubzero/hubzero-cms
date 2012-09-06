@@ -102,6 +102,7 @@ class JInstallationController extends JController
 	function execute($task)
 	{
 		global $mainframe;
+
 		
 		$vars = JRequest::getVar('vars', '');
 		$key = null;
@@ -159,6 +160,29 @@ class JInstallationController extends JController
 	 */
 	function initialize()
 	{
+		return true;
+	}
+
+	/**
+	 * Present form for FTP information
+	 *
+	 * @return	Boolean True if successful
+	 * @access	public
+	 * @since	1.5
+	 */
+	function ftpconfig()
+	{
+		$model	=& $this->getModel();
+		$view	=& $this->getView();
+
+		if ( ! $model->ftpConfig() )
+		{
+			$view->error();
+			return false;
+		}
+
+		$view->ftpConfig();
+
 		return true;
 	}
 
@@ -225,6 +249,31 @@ class JInstallationController extends JController
 	}
 
 	/**
+	 * Present a choice of languages
+	 *
+	 * Step One!
+	 *
+	 * @return	Boolean True if successful
+	 * @access	public
+	 * @since	1.5
+	 */
+	function lang()
+	{
+		$model	=& $this->getModel();
+		$view	=& $this->getView();
+
+		if ( ! $model->chooseLanguage() )
+		{
+			$view->error();
+			return false;
+		}
+
+		$view->chooseLanguage();
+
+		return true;
+	}
+
+	/**
 	 *
 	 *
 	 * @return	Boolean True if successful
@@ -242,7 +291,15 @@ class JInstallationController extends JController
 			return false;
 		}
 
-		$view->mainconfig();
+		/*
+		if ( ! $model->ftpConfig( 1 ) )
+		{
+			$view->error();
+			return false;
+		}
+		*/
+
+		$view->mainConfig();
 
 		return true;
 	}
@@ -271,29 +328,6 @@ class JInstallationController extends JController
 		return true;
 	}
 
-	/**
-	 * Present a key install check
-	 *
-	 * @return	Boolean True if successful
-	 * @access	public
-	 * @since	HUBzero 1.1
-	 */
-	function installkey()
-	{
-		$model	=& $this->getModel();
-		$view	=& $this->getView();
-
-		if ( ! $model->installkey() )
-		{
-			$view->error();
-			return true;
-		}
-
-		$view->installkey();
-
-		return true;
-	}
-	
 	/**
 	 * Present a preinstall check
 	 *
@@ -338,6 +372,85 @@ class JInstallationController extends JController
 		}
 
 		$view->removedir();
+
+		return true;
+	}
+
+	/**
+	 *
+	 *
+	 * @return	Boolean True if successful
+	 * @access	public
+	 * @since	1.5
+	 */
+	function saveconfig()
+	{
+		$model	=& $this->getModel();
+		$view	=& $this->getView();
+
+		if ( ! $model->saveConfig() )
+		{
+			$view->error();
+			return false;
+		}
+
+		if ( ! $model->finish() )
+		{
+			$view->error();
+			return false;
+		}
+
+		$view->finish();
+
+		return true;
+	}
+
+	function dumpLoad() {
+		$model	=& $this->getModel();
+		$model->dumpLoad();
+
+	}
+
+	function migration() {
+		$model =& $this->getModel();
+		$model->setData('back', 'mainconfig');
+		$view =& $this->getView();
+		if(!$model->checkUpload()) {
+			$view->error();
+			return false;
+		}
+
+		$view->migrateScreen();
+		return true;
+	}
+
+	function postmigrate() {
+		$model =& $this->getModel();
+		$view =& $this->getView();
+		if($model->postMigrate()) {
+			// errors!
+		}
+	}
+
+	/**
+	 * Present a key install check
+	 *
+	 * @return	Boolean True if successful
+	 * @access	public
+	 * @since	HUBzero 1.1
+	 */
+	function installkey()
+	{
+		$model	=& $this->getModel();
+		$view	=& $this->getView();
+
+		if ( ! $model->installkey() )
+		{
+			$view->error();
+			return true;
+		}
+
+		$view->installkey();
 
 		return true;
 	}
@@ -411,60 +524,5 @@ class JInstallationController extends JController
 		return true;
 	}
 	
-	/**
-	 *
-	 *
-	 * @return	Boolean True if successful
-	 * @access	public
-	 * @since	1.5
-	 */
-	function saveconfig()
-	{
-		$model	=& $this->getModel();
-		$view	=& $this->getView();
-
-		if ( ! $model->saveConfig() )
-		{
-			$view->error();
-			return false;
-		}
-
-		if ( ! $model->finish() )
-		{
-			$view->error();
-			return false;
-		}
-
-		$view->finish();
-
-		return true;
-	}
-
-	function dumpLoad() {
-		$model	=& $this->getModel();
-		$model->dumpLoad();
-
-	}
-
-	function migration() {
-		$model =& $this->getModel();
-		$model->setData('back', 'mainconfig');
-		$view =& $this->getView();
-		if(!$model->checkUpload()) {
-			$view->error();
-			return false;
-		}
-
-		$view->migrateScreen();
-		return true;
-	}
-
-	function postmigrate() {
-		$model =& $this->getModel();
-		$view =& $this->getView();
-		if($model->postMigrate()) {
-			// errors!
-		}
-	}
 
 }

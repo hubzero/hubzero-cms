@@ -46,6 +46,8 @@ require_once (JXPATH_BASE.DS.'xajax'.DS.'xajax.inc.php');
 $xajax = new xajax();
 $xajax->errorHandlerOn();
 
+$xajax->registerFunction(array('getFtpRoot', 'JAJAXHandler', 'ftproot'));
+$xajax->registerFunction(array('FTPVerify', 'JAJAXHandler', 'ftpverify'));
 $xajax->registerFunction(array('instDefault', 'JAJAXHandler', 'sampledata'));
 $xajax->registerFunction(array('instHzDefault', 'JAJAXHandler', 'hzsampledata'));
 
@@ -64,6 +66,64 @@ require_once(JPATH_SITE.DS.'libraries'.DS.'joomla'.DS.'utilities'.DS.'compat'.DS
  */
 class JAJAXHandler
 {
+	/**
+	 * Method to get the path from the FTP root to the Joomla root directory
+	 */
+	function ftproot($args)
+	{
+		jimport( 'joomla.application.application' );
+		jimport( 'joomla.registry.registry' );
+
+		$lang = new JAJAXLang($args['lang']);
+//		$lang->setDebug(true);
+
+		$objResponse = new xajaxResponse();
+		$args = $args['vars'];
+
+		$root = JInstallationHelper::findFtpRoot($args['ftpUser'], $args['ftpPassword'], $args['ftpHost'], $args['ftpPort']);
+		if (JError::isError($root)) {
+			$objResponse->addScript('document.getElementById(\'ftpdisable\').checked = true;');
+			$objResponse->addAlert($lang->_($root->get('message')));
+		} else {
+			$objResponse->addAssign('ftproot', 'value', $root);
+			$objResponse->addAssign('rootPath', 'style.display', '');
+			$objResponse->addScript('document.getElementById(\'verifybutton\').click();');
+		}
+
+		return $objResponse;
+	}
+
+	/**
+	 * Method to verify the ftp values are valid
+	 */
+	function ftpverify($args)
+	{
+		jimport( 'joomla.application.application' );
+		jimport( 'joomla.registry.registry' );
+
+		$lang = new JAJAXLang($args['lang']);
+//		$lang->setDebug(true);
+
+		$objResponse = new xajaxResponse();
+		$args = $args['vars'];
+
+		$status =  JInstallationHelper::FTPVerify($args['ftpUser'], $args['ftpPassword'], $args['ftpRoot'], $args['ftpHost'], $args['ftpPort']);
+		if (JError::isError($status)) {
+			if (($msg = $status->get('message')) != 'INVALIDROOT') {
+				$msg = $lang->_('INVALIDFTP') ."\n". $lang->_($msg);
+			} else {
+				$msg = $lang->_($msg);
+			}
+			$objResponse->addScript('document.getElementById(\'ftpdisable\').checked = true;');
+			$objResponse->addAlert($msg);
+		} else {
+			$objResponse->addScript('document.getElementById(\'ftpenable\').checked = true;');
+			$objResponse->addAlert($lang->_('VALIDFTP'));
+		}
+
+		return $objResponse;
+	}
+
 	/**
 	 * Method to load and execute a sql script
 	 */

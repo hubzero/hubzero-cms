@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metafile version="1.5"  client="installation" >
+	<tag>km-KH</tag>
+	<name>Khmer (Cambodia)</name>
+	<description>Khmer language installation for Joomla</description>
+	<version>1.5.9</version>
+	<creationDate>2009-07-13</creationDate>
+	<author>Heng Sovann (Rick Dyck Foundation)</author>
+	<copyright>Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<metadata>
+		<name>Khmer (Cambodia)</name>
+		<tag>km-KH</tag>
+		<rtl>0</rtl>
+		<locale>km_KH.utf8, km_KH.UTF-8, km_KH, khm_KH, km, khmer, khmer-kh, kh, cam, cambodia</locale>
+		<winCodePage>utf-8</winCodePage>
+		<backwardLang>khmer</backwardLang>
+	</metadata>
+	<params />
+</metafile>

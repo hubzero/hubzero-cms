@@ -43,6 +43,30 @@ class JInstallationView extends JView
 	var $_template		= null;
 
 	/**
+	 * Language page
+	 *
+	 * @return	boolean True if successful
+	 * @access	public
+	 * @since	1.5
+	 */
+	function chooseLanguage()
+	{
+		$steps	=& $this->getSteps();
+
+		$model	=& $this->getModel();
+		$lists	=& $model->getData('lists');
+
+		$tmpl	=& $this->getTemplate( 'language.html' );
+
+		$steps['lang'] = 'on';
+
+		$tmpl->addVars( 'stepbar', $steps, 'step_' );
+		$tmpl->addRows( 'lang-options', $lists['langs'] );
+
+		return $this->display();
+	}
+
+	/**
 	 * Create a template object
 	 *
 	 * @return	boolean True if successful
@@ -165,6 +189,27 @@ class JInstallationView extends JView
 		if ($buffer) {
 			$tmpl->addVar( 'configuration-error', 'buffer', $buffer );
 		}
+
+		return $this->display();
+	}
+
+	/**
+	 * Show the FTP config page
+	 *
+	 * @return	boolean True if successful
+	 * @access	public
+	 * @since	1.5
+	 */
+	function ftpConfig()
+	{
+		$steps	=& $this->getSteps();
+		$model	=& $this->getModel();
+
+		$tmpl =& $this->getTemplate( 'ftpconfig.html' );
+
+		$steps['ftpconfig'] = 'on';
+
+		$tmpl->addVars( 'stepbar', $steps, 'step_' );
 
 		return $this->display();
 	}
@@ -299,28 +344,7 @@ class JInstallationView extends JView
 
 		return $this->display();
 	}
-	/**
-	 * The installkey page
-	 *
-	 * @return      boolean True if successful
-	 * @access      public
-	 * @since       HUBzero 1.1
-	 */
-	function installkey2()
-	{
-		$steps  =& $this->getSteps();
-		$model  =& $this->getModel();
-		$lists  =& $model->getData('lists');
 
-		$tmpl           =& $this->getTemplate( 'installkey.html' );
-
-		$steps['installkey'] = 'on';
-
-		$tmpl->addVars( 'stepbar',      $steps,         'step_' );
-
-		return $this->display();
-	}
-		
 	/**
 	 * Remove directory messages
 	 *
@@ -336,6 +360,19 @@ class JInstallationView extends JView
 		$tmpl = $this->_template;
 
 		#$tmpl	=& $this->getTemplate( 'removedir.html' );
+		return $this->display();
+	}
+
+
+	function migrateScreen() {
+		$steps	=& $this->getSteps();
+		$model	=& $this->getModel();
+
+		$tmpl		=& $this->getTemplate( 'migration.html' );
+		$scriptpath =& $model->getData('scriptpath');
+		$tmpl->addVars( 'stepbar', 	$steps, 	'step_' );
+		$tmpl->addVar( 'migration', 'migration', JRequest::getVar( 'migration', 0, 'post', 'bool' ));
+		$tmpl->addVar( 'buttons', 'previous', 'mainconfig');
 		return $this->display();
 	}
 
@@ -412,18 +449,6 @@ class JInstallationView extends JView
 		$tmpl->addVars( 'stepbar', $steps, 'step_' );
 		$tmpl->addRows( 'key-options', $lists['key'] );
 		
-		return $this->display();
-	}
-	
-	function migrateScreen() {
-		$steps	=& $this->getSteps();
-		$model	=& $this->getModel();
-
-		$tmpl		=& $this->getTemplate( 'migration.html' );
-		$scriptpath =& $model->getData('scriptpath');
-		$tmpl->addVars( 'stepbar', 	$steps, 	'step_' );
-		$tmpl->addVar( 'migration', 'migration', JRequest::getVar( 'migration', 0, 'post', 'bool' ));
-		$tmpl->addVar( 'buttons', 'previous', 'mainconfig');
 		return $this->display();
 	}
 }

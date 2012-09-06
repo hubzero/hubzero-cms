@@ -402,6 +402,181 @@ class JInstallationHelper
 	}
 
 	/**
+	 * Find the ftp filesystem root for a given user/pass pair
+	 *
+	 * @static
+	 * @param	string	$user	Username of the ftp user to determine root for
+	 * @param	string	$pass	Password of the ftp user to determine root for
+	 * @return	string	Filesystem root for given FTP user
+	 * @since 1.5
+	 */
+	function findFtpRoot($user, $pass, $host='127.0.0.1', $port='21')
+	{
+		jimport('joomla.client.ftp');
+		$ftpPaths = array();
+
+		// Connect and login to the FTP server (using binary transfer mode to be able to compare files)
+		$ftp =& JFTP::getInstance($host, $port, array('type'=>FTP_BINARY));
+		if (!$ftp->isConnected()) {
+			return JError::raiseError('31', 'NOCONNECT');
+		}
+		if (!$ftp->login($user, $pass)) {
+			return JError::raiseError('31', 'NOLOGIN');
+		}
+
+		// Get the FTP CWD, in case it is not the FTP root
+		$cwd = $ftp->pwd();
+		if ($cwd === false) {
+			return JError::raiseError('SOME_ERROR_CODE', 'NOPWD');
+		}
+		$cwd = rtrim($cwd, '/');
+
+		// Get list of folders in the CWD
+		$ftpFolders = $ftp->listDetails(null, 'folders');
+		if ($ftpFolders === false || count($ftpFolders) == 0) {
+			return JError::raiseError('SOME_ERROR_CODE', 'NODIRECTORYLISTING');
+		}
+		for ($i=0, $n=count($ftpFolders); $i<$n; $i++) {
+			$ftpFolders[$i] = $ftpFolders[$i]['name'];
+		}
+
+		// Check if Joomla! is installed at the FTP CWD
+		$dirList = array('administrator', 'components', 'installation', 'language', 'libraries', 'plugins');
+		if (count(array_diff($dirList, $ftpFolders)) == 0) {
+			$ftpPaths[] = $cwd.'/';
+		}
+
+		// Process the list: cycle through all parts of JPATH_SITE, beginning from the end
+		$parts		= explode(DS, JPATH_SITE);
+		$tmpPath	= '';
+		for ($i=count($parts)-1; $i>=0; $i--)
+		{
+			$tmpPath = '/'.$parts[$i].$tmpPath;
+			if (in_array($parts[$i], $ftpFolders)) {
+				$ftpPaths[] = $cwd.$tmpPath;
+			}
+		}
+
+		// Check all possible paths for the real Joomla! installation
+		$checkValue = file_get_contents(JPATH_LIBRARIES.DS.'joomla'.DS.'version.php');
+		foreach ($ftpPaths as $tmpPath)
+		{
+			$filePath = rtrim($tmpPath, '/').'/libraries/joomla/version.php';
+			$buffer = null;
+			@$ftp->read($filePath, $buffer);
+			if ($buffer == $checkValue)
+			{
+				$ftpPath = $tmpPath;
+				break;
+			}
+		}
+
+		// Close the FTP connection
+		$ftp->quit();
+
+		// Return the FTP root path
+		if (isset($ftpPath)) {
+			return $ftpPath;
+		} else {
+			return JError::raiseError('SOME_ERROR_CODE', 'Unable to autodetect the FTP root folder');
+		}
+	}
+
+	/**
+	 * Verify the FTP configuration values are valid
+	 *
+	 * @static
+	 * @param	string	$user	Username of the ftp user to determine root for
+	 * @param	string	$pass	Password of the ftp user to determine root for
+	 * @return	mixed	Boolean true on success or JError object on fail
+	 * @since	1.5
+	 */
+	function FTPVerify($user, $pass, $root, $host='127.0.0.1', $port='21')
+	{
+		jimport('joomla.client.ftp');
+		$ftp = & JFTP::getInstance($host, $port);
+
+		// Since the root path will be trimmed when it gets saved to configuration.php, we want to test with the same value as well
+		$root = rtrim($root, '/');
+
+		// Verify connection
+		if (!$ftp->isConnected()) {
+			return JError::raiseWarning('31', 'NOCONNECT');
+		}
+
+		// Verify username and password
+		if (!$ftp->login($user, $pass)) {
+			return JError::raiseWarning('31', 'NOLOGIN');
+		}
+
+		// Verify PWD function
+		if ($ftp->pwd() === false) {
+			return JError::raiseError('SOME_ERROR_CODE', 'NOPWD');
+		}
+
+		// Verify root path exists
+		if (!$ftp->chdir($root)) {
+			return JError::raiseWarning('31', 'NOROOT');
+		}
+
+		// Verify NLST function
+		if (($rootList = $ftp->listNames()) === false) {
+			return JError::raiseError('SOME_ERROR_CODE', 'NONLST');
+		}
+
+		// Verify LIST function
+		if ($ftp->listDetails() === false) {
+			return JError::raiseError('SOME_ERROR_CODE', 'NOLIST');
+		}
+
+		// Verify SYST function
+		if ($ftp->syst() === false) {
+			return JError::raiseError('SOME_ERROR_CODE', 'NOSYST');
+		}
+
+		// Verify valid root path, part one
+		$checkList = array('CHANGELOG.php', 'COPYRIGHT.php', 'index.php', 'INSTALL.php', 'LICENSE.php');
+		if (count(array_diff($checkList, $rootList))) {
+			return JError::raiseWarning('31', 'INVALIDROOT');
+		}
+
+		// Verify RETR function
+		$buffer = null;
+		if ($ftp->read($root.'/libraries/joomla/version.php', $buffer) === false) {
+			return JError::raiseError('SOME_ERROR_CODE', 'NORETR');
+		}
+
+		// Verify valid root path, part two
+		$checkValue = file_get_contents(JPATH_LIBRARIES.DS.'joomla'.DS.'version.php');
+		if ($buffer !== $checkValue) {
+			return JError::raiseWarning('31', 'INVALIDROOT');
+		}
+
+		// Verify STOR function
+		if ($ftp->create($root.'/ftp_testfile') === false) {
+			return JError::raiseError('SOME_ERROR_CODE', 'NOSTOR');
+		}
+
+		// Verify DELE function
+		if ($ftp->delete($root.'/ftp_testfile') === false) {
+			return JError::raiseError('SOME_ERROR_CODE', 'NODELE');
+		}
+
+		// Verify MKD function
+		if ($ftp->mkdir($root.'/ftp_testdir') === false) {
+			return JError::raiseError('SOME_ERROR_CODE', 'NOMKD');
+		}
+
+		// Verify RMD function
+		if ($ftp->delete($root.'/ftp_testdir') === false) {
+			return JError::raiseError('SOME_ERROR_CODE', 'NORMD');
+		}
+
+		$ftp->quit();
+		return true;
+	}
+
+	/**
 	 * Set default folder permissions
 	 *
 	 * @param string $path The full file path
@@ -413,15 +588,60 @@ class JInstallationHelper
 	{
 		jimport('joomla.filesystem.path');
 
-		$path = JPath::clean(JPATH_SITE.DS.$dir);
+		/*
+		 * Initialize variables
+		 */
+		$ftpFlag = false;
+		$ftpRoot = $srv['ftpRoot'];
 
-		if (!@ chmod($path, octdec('0755')))
+		/*
+		 * First we need to determine if the path is chmodable
+		 */
+		if (!JPath::canChmod(JPath::clean(JPATH_SITE.DS.$dir)))
 		{
-			$ret = false;
+			$ftpFlag = true;
+		}
+
+		// Do NOT use ftp if it is not enabled
+		if (!$srv['ftpEnable'])
+		{
+			$ftpFlag = false;
+		}
+
+		if ($ftpFlag == true)
+		{
+			// Connect the FTP client
+			jimport('joomla.client.ftp');
+			$ftp = & JFTP::getInstance($srv['ftpHost'], $srv['ftpPort']);
+			$ftp->login($srv['ftpUser'],$srv['ftpPassword']);
+
+			//Translate path for the FTP account
+			$path = JPath::clean($ftpRoot."/".$dir);
+
+			/*
+			 * chmod using ftp
+			 */
+			if (!$ftp->chmod($path, '0755'))
+			{
+				$ret = false;
+			}
+
+			$ftp->quit();
+			$ret = true;
 		}
 		else
 		{
-			$ret = true;
+
+			$path = JPath::clean(JPATH_SITE.DS.$dir);
+
+			if (!@ chmod($path, octdec('0755')))
+			{
+				$ret = false;
+			}
+			else
+			{
+				$ret = true;
+			}
 		}
 
 		return $ret;
@@ -1191,12 +1411,63 @@ class JInstallationHelper
 		}
 	}
 
+	/**
+	 * Inserts ftp variables to mainframe registry
+	 * Needed to activate ftp layer for file operations in safe mode
+	 *
+	 * @param array The post values
+	 */
+	function setFTPCfg( $vars )
+	{
+		global $mainframe;
+		$arr = array();
+		$arr['ftp_enable'] = $vars['ftpEnable'];
+		$arr['ftp_user'] = $vars['ftpUser'];
+		$arr['ftp_pass'] = $vars['ftpPassword'];
+		$arr['ftp_root'] = $vars['ftpRoot'];
+		$arr['ftp_host'] = $vars['ftpHost'];
+		$arr['ftp_port'] = $vars['ftpPort'];
+
+		$mainframe->setCfg( $arr, 'config' );
+	}
+
 	function _chmod( $path, $mode )
 	{
 		global $mainframe;
 		$ret = false;
 
-		$ret = @ chmod($path, $mode);
+		// Initialize variables
+		$ftpFlag	= true;
+		$ftpRoot	= $mainframe->getCfg('ftp_root');
+
+		// Do NOT use ftp if it is not enabled
+		if ($mainframe->getCfg('ftp_enable') != 1) {
+			$ftpFlag = false;
+		}
+
+		if ($ftpFlag == true)
+		{
+			// Connect the FTP client
+			jimport('joomla.client.ftp');
+			$ftp = & JFTP::getInstance($mainframe->getCfg('ftp_host'), $mainframe->getCfg('ftp_port'));
+			$ftp->login($mainframe->getCfg('ftp_user'), $mainframe->getCfg('ftp_pass'));
+
+			//Translate the destination path for the FTP account
+			$path = JPath::clean(str_replace(JPATH_SITE, $ftpRoot, $path), '/');
+
+			// do the ftp chmod
+			if (!$ftp->chmod($path, $mode))
+			{
+				// FTP connector throws an error
+				return false;
+			}
+			$ftp->quit();
+			$ret = true;
+		}
+		else
+		{
+			$ret = @ chmod($path, $mode);
+		}
 
 		return $ret;
 	}
