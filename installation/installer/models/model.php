@@ -512,7 +512,6 @@ class JInstallationModel extends JModel
 		// Instantiate the xajax object and register the function
 		$xajax = new xajax(JURI::base().'installer/jajax.php');
 		$xajax->registerFunction(array('instDefault', 'JAJAXHandler', 'sampledata'));
-		$xajax->registerFunction(array('instHzDefault', 'JAJAXHandler', 'hzsampledata'));
 		//		$xajax->debugOn();
 		$xajax->errorHandlerOn();
 		$doc =& JFactory::getDocument();

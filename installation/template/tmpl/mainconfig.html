@@ -43,21 +43,19 @@
 		var frm = this.document.filename;
 		if(frm.what_to_load[0].checked) {
 			frm.instDefault.disabled = false;
-			frm.instHzDefault.disabled = false;
-			frm.sqlFile.disabled = true;
-			frm.oldPrefix.disabled = true;
-			frm.srcEncoding.disabled = true;
-			frm.migrationLoad.disabled = true;
-			frm.migration.disabled = true;
 			frm.sqlUploaded.disabled = true;
+			//frm.oldPrefix.disabled = true;
+			//frm.srcEncoding.disabled = true;
+			frm.migrationLoad.disabled = true;
+			//frm.migration.disabled = true;
+			frm.sqlFile.disabled = true;
 		} else if(frm.what_to_load[1].checked) {
 			frm.instDefault.disabled = true;
-			frm.instHzDefault.disabled = true;
 			frm.sqlFile.disabled = false;
-			frm.oldPrefix.disabled = false;
-			frm.srcEncoding.disabled = false;
+			//frm.oldPrefix.disabled = false;
+			//frm.srcEncoding.disabled = false;
 			frm.migrationLoad.disabled = false;
-			frm.migration.disabled = false;
+			//frm.migration.disabled = false;
 			frm.sqlUploaded.disabled = false;
 		}
 	}
@@ -65,11 +63,6 @@
 	function JDefault() {
 		this.document.filename.dataLoaded.value = '1';
 		xajax_instDefault(xajax.getFormValues('filename'));
-	}
-
-	function JHzDefault() {
-		this.document.filename.dataLoaded.value = '1';
-		xajax_instHzDefault(xajax.getFormValues('filename'));
 	}
 
 	function externalSql(frm, task) {
@@ -277,7 +270,7 @@
 								</td>
 								<td>
 									<label for="default_sample">
-										<jtmpl:translate>Install sample data</jtmpl:translate>
+										<jtmpl:translate>Install default sample data</jtmpl:translate>
 									</label>
 								</td>
 								<td>
@@ -290,9 +283,15 @@
 							<tr>
 								<td></td>
 								<td colspan="2">
-									<span id="theDefault"><input class="button" type="button" name="instHzDefault" value="<jtmpl:translate>clickToInstallHzDefault</jtmpl:translate>" onclick="JHzDefault();"/></span>
+									<span id="theDefault"><input class="button" type="button" name="instDefault" value="<jtmpl:translate>clickToInstallDefault</jtmpl:translate>" onclick="JDefault();"/></span>
 								</td>
 							</tr>
+							<tr>
+								<td>&nbsp;</td>
+								<td></td>
+								<td></td>
+							</tr>
+
 							<tr>
 								<td valign="top">
 									<input id="migrate_sql" type="radio" name="what_to_load" onclick="selectMode();"/>
@@ -386,12 +385,14 @@
 
 
 <script language="JavaScript" type="text/javascript">
-	document.filename.what_to_load[document.filename.loadchecked.value].checked = true;
+    if (this.document.filename.loadchecked.value == "") {
+    	this.document.filename.loadchecked.value =0;
+    }
+	this.document.filename.what_to_load[document.filename.loadchecked.value].checked = true;
 	selectMode();
 	if(this.document.filename.migstatus.value == '1') {
 		this.document.filename.what_to_load.disabled = 1;
 		this.document.filename.instDefault.disabled = 1;
-		this.document.filename.instHzDefault.disabled = 1;
 		this.document.filename.default_sample.disabled = 1;
 		this.document.filename.migrate_sql.disabled = 1;
 	}
