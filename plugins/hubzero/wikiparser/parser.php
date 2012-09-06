@@ -262,6 +262,11 @@ class WikiParser
 	 */
 	public function parse($text, $fullparse=true, $linestart=0, $camelcase=1)
 	{
+		if (!$fullparse) 
+		{
+			$camelcase = 0;
+		}
+
 		$text = trim($text);
 		$text = "\n" . $text;
 

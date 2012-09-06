@@ -55,8 +55,7 @@ ximport('Hubzero_Wiki_Parser');
 $parser =& Hubzero_Wiki_Parser::getInstance();
 
 $name = JText::_('COM_ANSWERS_ANONYMOUS');
-$user = new Hubzero_User_Profile();
-$user->load($this->question->created_by);
+$user = Hubzero_User_Profile::getInstance($this->question->created_by);
 if ($this->question->anonymous == 0) {
 	//$user =& JUser::getInstance($this->question->created_by);
 	if (is_object($user)) {
@@ -179,11 +178,11 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 				</p>
 		<?php } else { ?>
 				<div class="entry-subject">
-					<?php echo $parser->parse(stripslashes($this->question->subject), $wikiconfig); ?>
+					<?php echo $parser->parse(stripslashes($this->question->subject), $wikiconfig, false); ?>
 				</div><!-- / .question-subject -->
 			<?php if ($this->question->question) { ?>
 				<div class="entry-long">
-					<?php echo $parser->parse(stripslashes($this->question->question), $wikiconfig); ?>
+					<?php echo $parser->parse(stripslashes($this->question->question), $wikiconfig, false); ?>
 				</div><!-- / .question-long -->
 			<?php } ?>
 			<?php if (count($this->tags) > 0) { ?>
@@ -516,7 +515,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 							</a>
 						</p><!-- / .comment-title -->
 				<?php if (!$abuse) { ?>
-					<?php echo $parser->parse(stripslashes($row->answer), $wikiconfig); ?>
+					<?php echo $parser->parse(stripslashes($row->answer), $wikiconfig, false); ?>
 					<p class="comment-options">
 						<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=answer&id=' . $row->id . '&parent=' . $this->question->id); ?>">
 							<?php echo JText::_('COM_ANSWERS_REPORT_ABUSE'); ?>
@@ -717,7 +716,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 							</a>
 						</p><!-- / .comment-title -->
 					<?php if (!$abuse) { ?>
-						<?php echo $parser->parse(stripslashes($row->answer), $wikiconfig); ?>
+						<?php echo $parser->parse(stripslashes($row->answer), $wikiconfig, false); ?>
 						<p class="comment-options">
 							<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=answer&id='.$row->id.'&parent='.$this->question->id); ?>"><?php echo JText::_('COM_ANSWERS_REPORT_ABUSE'); ?></a>
 						<?php if (!$chosen) { ?>

@@ -58,8 +58,7 @@ if (!$this->parser)
 
 // Set the name of the reviewer
 $name = JText::_('COM_ANSWERS_ANONYMOUS');
-$ruser = new Hubzero_User_Profile();
-$ruser->load($this->reply->added_by);
+$ruser = Hubzero_User_Profile::getInstance($this->reply->added_by);
 if ($this->reply->anonymous != 1) 
 {
 	$name = JText::_('COM_ANSWERS_UNKNOWN');
@@ -86,7 +85,7 @@ if ($this->reply->anonymous != 1)
 	<p class="warning"><?php echo JText::_('COM_ANSWERS_NOTICE_POSTING_REPORTED'); ?></p>
 <?php } else { ?>
 	<?php if ($this->reply->comment) { ?>
-		<p><?php echo $this->parser->parse(stripslashes($this->reply->comment), $wikiconfig); ?></p>
+		<p><?php echo $this->parser->parse(stripslashes($this->reply->comment), $wikiconfig, false); ?></p>
 	<?php } else { ?>
 		<p><?php echo JText::_('COM_ANSWERS_NO_COMMENT'); ?></p>
 	<?php } ?>
