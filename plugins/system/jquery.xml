@@ -57,7 +57,7 @@
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
-		<param name="jqueryuicsspath" size="30" type="text" default="/plugins/system/jquery/css/jquery-ui-1.8.6.custom.css" label="jQuery UI CSS path" description="An address for jQuery UI CSS from the web."  />
+		<param name="jqueryuicsspath" size="30" type="text" default="/media/system/css/jquery.ui.css" label="jQuery UI CSS path" description="An address for jQuery UI CSS from the web."  />
 		<param name="jquerytools" type="list" default="0" label="Embed jQuery Tools" description="Selects, whether the plugin should attach jQuery Tools to page, and what source is to be used.">
 			<option value="0">No</option>
 			<option value="1">Yes - local copy</option>
@@ -76,7 +76,7 @@
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
-		<param name="jqueryfbcsspath" size="30" type="text" default="/plugins/system/jquery/css/jquery-fancybox-2.0.4.css" label="fancyBox CSS path" description="An address for fancyBox CSS from the web."  />
+		<param name="jqueryfbcsspath" size="30" type="text" default="/media/system/css/jquery.fancybox.css" label="fancyBox CSS path" description="An address for fancyBox CSS from the web."  />
 	</params>
 	<params group="advanced">
 		<param name="activateSite" type="radio" default="1" label="Activate at site (frontend)" description="Allows to embed the libraries into the frontend site.">

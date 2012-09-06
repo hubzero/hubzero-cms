@@ -33,18 +33,18 @@ HUB.Base = {
 
 	jQuery: jq,
 
-	templatepath: '/templates/hubbasic/',
+	templatepath: '/templates/hubbasic2012/',
 
 	// launch functions
 	initialize: function() {
 		var $ = this.jQuery, w = 760, h = 520;
 
 		// Set the base path to this template
-		$('script').each(function(i, s) {
+		/*$('script').each(function(i, s) {
 			if (s.src && s.src.match(/hub\.jquery\.js(\?.*)?$/)) {
 				HUB.Base.templatepath = s.src.replace(/js\/hub\.jquery\.js(\?.*)?$/, '');
 			}
-		});
+		});*/
 
 		// Set focus on username field for login form
 		if ($('#username').length > 0) {

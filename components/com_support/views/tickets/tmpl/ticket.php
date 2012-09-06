@@ -85,7 +85,7 @@ ximport('Hubzero_User_Profile_Helper');
 <div id="content-header-extra">
 	<ul id="useroptions">
 		<li class="last">
-			<a class="ticket" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=tickets&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='.$this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
+			<a class="browse" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=tickets&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='.$this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
 				<?php echo JText::_('TICKETS'); ?>
 			</a>
 		</li>
@@ -103,29 +103,30 @@ ximport('Hubzero_User_Profile_Helper');
 <?php if (!$this->row->open) { ?>
 			<p><strong>Note:</strong> To reopen this issue, add a comment below.</p>
 <?php } ?>
-			<!-- <p class="ticket-number">#<strong><?php echo $this->row->id; ?></strong></p> -->
-		</div><!-- / .ticket-status -->
+			<!-- <p class="entry-number">#<strong><?php echo $this->row->id; ?></strong></p> -->
+		</div><!-- / .entry-status -->
 	</div><!-- / .aside -->
 
 	<div class="subject">
-		<div class="ticket" id="t<?php echo $this->row->id; ?>">
-			<p class="ticket-member-photo">
-				<span class="ticket-anchor"><a name="ticket"></a></span>
+		<div class="ticket entry" id="t<?php echo $this->row->id; ?>">
+			<p class="entry-member-photo">
+				<span class="entry-anchor"><a name="ticket"></a></span>
 				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($submitter, $unknown); ?>" alt="" />
-			</p><!-- / .ticket-member-photo -->
-			<div class="ticket-content">
-				<p class="ticket-title">
+			</p><!-- / .entry-member-photo -->
+			<div class="entry-content">
+				<p class="entry-title">
 					<strong><?php echo $name; ?></strong> 
-					<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=ticket&id=' . $this->row->id); ?>" title="<?php echo JText::_('COM_SUPPORT_PERMALINK'); ?>">@ 
-						<span class="time"><time datetime="<?php echo $this->row->created; ?>"><?php echo JHTML::_('date', $this->row->created, $timeFormat, $tz); ?></time></span> <?php echo JText::_('on'); ?> 
+					<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=ticket&id=' . $this->row->id); ?>" title="<?php echo JText::_('COM_SUPPORT_PERMALINK'); ?>"><span class="entry-date-at">@</span> 
+						<span class="time"><time datetime="<?php echo $this->row->created; ?>"><?php echo JHTML::_('date', $this->row->created, $timeFormat, $tz); ?></time></span> <span class="entry-date-on"><?php echo JText::_('on'); ?></span> 
 						<span class="date"><time datetime="<?php echo $this->row->created; ?>"><?php echo JHTML::_('date', $this->row->created, $dateFormat, $tz); ?></time></span>
 					</a>
-				</p><!-- / .ticket-title -->
-				<blockquote class="ticket-body" cite="<?php echo ($this->row->login) ? $this->escape(stripslashes($this->row->login)) : $this->escape(stripslashes($this->row->name)); ?>">
+				</p><!-- / .entry-title -->
+				<blockquote class="entry-body" cite="<?php echo ($this->row->login) ? $this->escape(stripslashes($this->row->login)) : $this->escape(stripslashes($this->row->name)); ?>">
 					<p><?php echo preg_replace('/  /', ' &nbsp;', $this->row->report); ?></p>
-				</blockquote><!-- / .ticket-body -->
+				</blockquote><!-- / .entry-body -->
+			</div><!-- / .entry-content -->
 <?php if ($this->acl->check('update', 'tickets') > 0) { ?>
-				<div class="ticket-details">
+				<div class="entry-details">
 					<table summary="<?php echo JText::_('TICKET_DETAILS_TBL_SUMMARY'); ?>">
 						<tbody>
 							<tr>
@@ -155,9 +156,8 @@ ximport('Hubzero_User_Profile_Helper');
 <?php 			} ?>
 						</tbody>
 					</table>
-				</div><!-- / .ticket-details -->
+				</div><!-- / .entry-details -->
 <?php } ?>
-			</div><!-- / .ticket-content -->
 		</div><!-- / .ticket -->
 	</div><!-- / .subject -->
 </div><!-- / .main section -->
@@ -230,9 +230,9 @@ ximport('Hubzero_User_Profile_Helper');
 						<strong>
 							<?php echo $name; ?>
 						</strong>
-						<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=ticket&id=' . $this->row->id . '#c' . $comment->id); ?>" title="<?php echo JText::_('COM_SUPPORT_PERMALINK'); ?>">@ 
-							<span class="time"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, $dateFormat, $tz); ?></time></span> <?php echo JText::_('on'); ?> 
-							<span class="date"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, $timeFormat, $tz); ?></time></span>
+						<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=ticket&id=' . $this->row->id . '#c' . $comment->id); ?>" title="<?php echo JText::_('COM_SUPPORT_PERMALINK'); ?>"><span class="entry-date-at">@</span> 
+							<span class="date"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, $timeFormat, $tz); ?></time></span> <span class="entry-date-on"><?php echo JText::_('on'); ?></span> 
+							<span class="time"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, $dateFormat, $tz); ?></time></span>
 						</a>
 					</p><!-- / .comment-head -->
 <?php 		if ($comment->comment) { ?>
@@ -240,6 +240,7 @@ ximport('Hubzero_User_Profile_Helper');
 						<p><?php echo preg_replace('/  /', ' &nbsp;', $comment->comment); ?></p>
 					</blockquote><!-- / .comment-body -->
 <?php 		} ?>
+				</div><!-- / .comment-content -->
 <?php 
 			if (trim($comment->changelog)) 
 			{
@@ -280,7 +281,7 @@ ximport('Hubzero_User_Profile_Helper');
 					</div><!-- / .changelog -->
 <?php 			} ?>
 <?php 		}  // if (trim($comment->changelog))  ?>
-				</div><!-- / .comment-content -->
+
 			</li>
 <?php
 		}  // foreach 

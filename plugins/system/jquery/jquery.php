@@ -45,21 +45,14 @@ class plgSystemJquery extends JPlugin
 		{
 			$client = 'Admin';
 		}
-		
+
 		// Check if active for this client (Site|Admin)
 		if (!$this->params->get('activate' . $client)) 
 		{
 			return;
 		}
-		
+
 		$document = JFactory::getDocument();
-		
-		if ($this->params->get('noconflict' . $client)) 
-		{
-			//JHTML::_('behavior.mootools');
-			//$document->addScript(JURI::root(true) . '/media/system/js/jquery.noconflict.js');
-			//$document->addScriptDeclaration('var jq = jQuery.noConflict();');
-		}
 
 		if ($value = $this->params->get('jquery')) 
 		{
@@ -102,7 +95,7 @@ class plgSystemJquery extends JPlugin
 			{
 				if ($value == 1) 
 				{
-					$document->addStyleSheet($this->params->get('jqueryuicsspath'));
+					$document->addStyleSheet($this->params->get('jqueryuicsspath', JURI::root(true) . '/media/system/css/jquery.ui.css'));
 				}
 			}
 		}
@@ -123,7 +116,7 @@ class plgSystemJquery extends JPlugin
 			{
 				if ($value == 1) 
 				{
-					$document->addStyleSheet($this->params->get('jqueryfbcsspath'));
+					$document->addStyleSheet($this->params->get('jqueryfbcsspath', JURI::root(true) . '/media/system/css/jquery.fancybox.css'));
 				}
 			}
 		}
@@ -144,7 +137,6 @@ class plgSystemJquery extends JPlugin
 		{
 			$document->addScript(JURI::root(true) . '/media/system/js/jquery.noconflict.js');
 			JHTML::_('behavior.mootools');
-			//$document->addScriptDeclaration('var jq = jQuery.noConflict();');
 		}
 	}
 
@@ -185,7 +177,6 @@ class plgSystemJquery extends JPlugin
 			);
 			foreach ($data['scripts'] as $key => $val)
 			{
-				//if (substr($key, 0, strlen('/media/system/js')) != '/media/system/js')
 				if (!in_array($key, $mootools))
 				{
 					$nd[$key] = $val;
@@ -195,21 +186,6 @@ class plgSystemJquery extends JPlugin
 
 			$nds = array();
 			$data['script'] = preg_replace('/window\.addEvent\(\'domready\', function\(\)\{(.*)\}\)\;/', '', $data['script']);
-			
-			//print_R($data['script']);
-			/*foreach ($data['script'] as $key => $val)
-			{
-				if (substr(trim($val), 0, strlen('window.addEvent(\'domready\', function(){')) == 'window.addEvent(\'domready\', function(){')
-				{
-					continue;
-				}
-				$nds[$key] = $val;
-				if (substr(trim($val), 0, strlen('function keepAlive() {')) == 'function keepAlive() {')
-				{
-					$nds[$key] = 'function keepAlive() { $.get("index.php"); } jQuery(document).ready(function($){ var periodic = setInterval(keepAlive, 840000); });';
-				}
-			}
-			$data['script'] = $nds;*/
 
 			$document->setHeadData($data);
 		}

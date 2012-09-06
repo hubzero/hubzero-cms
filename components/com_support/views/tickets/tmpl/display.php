@@ -140,7 +140,7 @@ Hubzero_Document::addComponentStylesheet($this->option, 'assets/css/conditions.c
 	<?php } ?>
 			</ul>
 			<p>
-				<a class="modal" id="new-query" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=add'); ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
+				<a class="modal add btn" id="new-query" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=add'); ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
 					<?php echo JText::_('Add query'); ?>
 				</a>
 			</p>
@@ -345,7 +345,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 							</p>
 							<p>
 								<a class="ticket-content" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=' . $row->id . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
-									<?php echo $this->escape(stripslashes($row->summary)); ?>
+									<?php echo stripslashes($row->summary); ?>
 								</a>
 							</p>
 		<?php if ($tags || $row->owner) { ?>

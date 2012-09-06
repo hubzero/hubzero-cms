@@ -62,72 +62,39 @@ HUB.Modules = {};
 HUB.Components = {};
 HUB.Base = {
 	templatepath: '',
-	
-	//  Overlay for "loading", lightbox, etc.
-	overlayer: function() {
-		// The following code creates and inserts HTML into the document:
-		// <div id="initializing" style="display:none;">
-		//   <img id="loading" src="templates/zepar/images/circle_animation.gif" alt="" />
-		// </div>
+
+	// launch functions
+	initialize: function() {
+		var w = 760, h = 520;
 
 		$A(document.getElementsByTagName("script")).each( function(s) {
 			if (s.src && s.src.match(/globals\.js(\?.*)?$/)) {
 				HUB.Base.templatepath = s.src.replace(/js\/globals\.js(\?.*)?$/,'');
-				imgpath = HUB.Base.templatepath + 'images/anim/circling-ball-loading.gif';
 			}
 	    });
 
-		var panel = new Element('div', {
-			id: 'initializing',
-			events: {
-				'click': function(event) {
-					this.setStyles({ display:'none' });
-					$('sbox-overlay').setStyles({ display:'none', visibility: 'hidden', opacity: '0' });
-				}
-			}
-		}).injectInside(document.body);
-		
-		var img = new Element('img', {
-			id: 'loading',
-			src: imgpath
-		}).injectInside(panel);
-		
-		// Note: the rest of the code is in a separate function because it's needs to be
-		// able to be called by itself (usually after loading some HTML via AJAX).
-		HUB.Base.launchTool();
-	},
-	
-	launchTool: function() {
-		$$('.launchtool').each(function(trigger) {
-			trigger.addEvent('click', function(e) {
-				$('sbox-overlay').setStyles({
-					width: window.getScrollWidth(), 
-					height: window.getScrollHeight(), 
-					display: 'block',
-					visibility: 'visible',
-					opacity: '0.7'
-				});
-				$('initializing').setStyles({
-					top: (window.getScrollTop() + (window.getHeight() / 2) - 90), 
-					display: 'block',
-					zIndex: 65557
-				});
-			});
-		});
-	},
-
-	// set focus on username field for login form
-	setLoginFocus: function() {
+		// Set focus on username field for login form
 		if ($('username')) {
 			$('username').focus();
 		}
-	},
 
-	// turn links with specific classes into popups
-	popups: function() {
-		var w = 760;
-		var h = 520;
-		
+		// Set the search box's placeholder text color
+		if ($('searchword')) {
+			$('searchword').addEvent('focus', function(){
+				if (this.value == 'Search') {
+					this.value = '';
+					this.style.color = '#ddd';
+				}
+			});
+			$('searchword').addEvent('blur', function(){
+				if (this.value == '' || this.value == 'Search') {
+					this.value = 'Search';
+					this.style.color = '#777';
+				}
+			});
+		}
+
+		// Turn links with specific classes into popups
 		$$('a').each(function(trigger) {
 			if (trigger.hasClass('demo') 
 			 || trigger.hasClass('popinfo') 
@@ -153,43 +120,69 @@ HUB.Base = {
 				trigger.setProperty('target','_blank');
 			}
 		});
-	},
 
-	searchbox: function() {
-		if ($('searchword')) {
-			$('searchword').addEvent('focus', function(){
-				if (this.value == 'Search') {
-					this.value = '';
-					this.style.color = '#333';
-				}
-			});
-			$('searchword').addEvent('blur', function(){
-				if (this.value == '' || this.value == 'Search') {
-					this.value = 'Search';
-					this.style.color = '#999';
-				}
-			});
-		}
-	},
-
-	// launch functions
-	initialize: function() {
-		HUB.Base.setLoginFocus();
-		HUB.Base.searchbox();
-		HUB.Base.popups();
-		
 		// Init SqueezeBox
 		SqueezeBoxHub.initialize({ size: {x: 760, y: 520} });
-		
-		HUB.Base.overlayer();
-		
-		// Init Growl
-		Growl.Bezel = new Gr0wl.Bezel(HUB.Base.templatepath+'images/bezel.png');
-		Growl.Smoke = new Gr0wl.Smoke(HUB.Base.templatepath+'images/smoke.png');
-		
+
+		// Set overlays for lightboxed elements
+		$$('a[rel=lightbox]').each(function(el) {
+			el.addEvent('click', function(e) {
+				new Event(e).stop();
+				$(el).rel = '';
+				SqueezeBoxHub.fromElement(el,{handler: 'image'});
+			});
+		});
+
+		//HUB.Base.overlayer();
+		$$('.launchtool').each(function(trigger) {
+			if (!$('initializing')) {
+				var panel = new Element('div', {
+					id: 'initializing',
+					styles: {
+						'position': 'absolute',
+						'margin-left': '-45px',
+						'padding': '0',
+						'top': '80px',
+						'left': '50%',
+						'width': '90px',
+						'height': '90px',
+						'z-index': '888',
+						'text-align': 'center',
+						'display': 'none'
+					},
+					events: {
+						'click': function(event) {
+							this.setStyles({ display:'none' });
+							$('sbox-overlay').setStyles({ display:'none', visibility: 'hidden', opacity: '0' });
+						}
+					}
+				}).injectInside(document.body);
+
+				var img = new Element('img', {
+					id: 'loading',
+					src: HUB.Base.templatepath + 'images/anim/circling-ball-loading.gif'
+				}).injectInside(panel);
+			}
+
+			trigger.addEvent('click', function(e) {
+				$('sbox-overlay').setStyles({
+					width: window.getScrollWidth(), 
+					height: window.getScrollHeight(), 
+					display: 'block',
+					visibility: 'visible',
+					opacity: '0.7'
+				});
+				$('initializing').setStyles({
+					top: (window.getScrollTop() + (window.getHeight() / 2) - 90), 
+					display: 'block',
+					zIndex: 65557
+				});
+			});
+		});
+
 		// Init tooltips
 		var TTips = new Tips($$('.tooltips'));
-		
+
 		// Init fixed position DOM: tooltips
 		var fTTips = new MooTips($$('.fixedToolTip'), {
 			showDelay: 500,

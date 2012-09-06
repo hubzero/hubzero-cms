@@ -22,6 +22,7 @@
 		margin: 0;
 		padding: 0;
 		border: none;
+		position: relative;
 	}
 	ol.comments ol {
 		margin: 0;
@@ -147,14 +148,27 @@
 	}
 	/* Private comments */
 	ol.comments .private>.comment-content {
-		background-color: #f9f8fd;
-		border-color: #eeecf9;
+		border-color: #ecada2;
+		background-color: #fdf7f6;
 	}
 	ol.comments .private>.comment-content:before {
-		border-color: transparent #eeecf9 transparent transparent;
+		border-color: transparent #ecada2 transparent transparent;
 	}
-	ol.comments .private .comment-member-photo {
-		border: 1px solid #999;
+	ol.comments .private>.comment-content:after {
+		border-color: transparent #fdf7f6 transparent transparent;
+	}
+	ol.comments .private small.private-after,
+	ol.comments .private:after {
+		position: absolute;
+		top: 1.61803399em;
+		right: 1.61803399em;
+		display: block;
+		font-family: 'Fontcons';
+		color: #999;
+		content: '\f023';
+	}
+	ol.comments .private {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML=this.innerHTML + '<small class="private-after">&#xf023;</small>');
 	}
 	/* Details (date, time) */
 	ol.comments span.comment-details {
@@ -391,7 +405,7 @@
 	#commentform fieldset fieldset {
 		border: 1px solid #ddd;
 		margin: 1em 0;
-		padding: 0 1em;
+		padding: 0 1em 1em 1em;
 		box-shadow: none;
 	}
 	#commentform fieldset fieldset legend {

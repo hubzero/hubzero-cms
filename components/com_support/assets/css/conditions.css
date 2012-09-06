@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        administrator/components/com_support/support.css
+ * @file        components/com_support/assets/css/conditions.css
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -37,32 +37,20 @@
 		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c4c4c4', endColorstr='#a2a2a2');
 		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#c4c4c4, endColorstr=#a2a2a2)";
 	}
-	#form-title {
-		
-	}
 	#sbox-content fieldset label {
 		width: auto;
 		display: inline;
 		border: none;
 		padding: 0;
 	}
-
 	#sbox-content fieldset.fields,
 	#sbox-content fieldset.query {
-		/*margin: 1em 0;
-		box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.2);
-		border-radius: 0.5em;
-		background: rgba(255, 255, 255, 0.6);*/
 		padding: 0.5em 1em 1em 1em;
-		
-		
 	}
 	#sbox-content fieldset.fields.sort {
 		padding-top: 1.5em;
 	}
-	#sbox-content fieldset.query {
 
-	}
 	.query fieldset {
 		margin: 0;
 		border: none;
@@ -113,19 +101,8 @@
 		bottom: 0.5em;
 		right: 0;
 	}
-	/*table.admintable .query select, 
-	table.admintable .query .input-text, 
-	table.admintable .query input[type="text"], 
-	table.admintable .query input[type="password"], 
-	table.admintable .query input[type="email"], 
-	table.admintable .query textarea,
-	table.admintable .query input,
-	.query fieldset input {
-		width: auto;
-		background: #fff;
-	}*/
+
 	.query fieldset button {
-		/*border: 2px solid #cacaca;*/
 		border: none;
 		width: 24px;
 		height: 24px;
@@ -151,8 +128,6 @@
 		text-indent: 0;
 		font-size: 16px;
 		line-height: 17px;
-		/*font-weight: bold;
-		font-family: 'Fontcons';*/
 	}
 	html.chrome .query fieldset button.remove:before,
 	html.chrome .query fieldset button.add:before {

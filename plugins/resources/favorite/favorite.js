@@ -23,6 +23,10 @@ HUB.Plugins.ResourcesFavorite = {
 		// Add to favorites
 		var fav = $('fav-this');
 		if (fav) {
+			// Init Growl
+			Growl.Bezel = new Gr0wl.Bezel('/media/system/images/overlay/bezel.png');
+			Growl.Smoke = new Gr0wl.Smoke('/media/system/images/overlay/smoke.png');
+
 			fav.addEvent('click', function(e) {
 				new Event(e).stop();
 				

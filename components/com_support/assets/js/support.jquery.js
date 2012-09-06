@@ -68,9 +68,11 @@ HUB.Support = {
 			autoSize: false,
 			fitToView: false,
 			titleShow: false,
-			tpl: {
-				wrap:'<div class="fancybox-wrap"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div>'
-			},
+			arrows: false,
+			closeBtn: true,
+			/*tpl: {
+				wrap:'<div class="fancybox-wrap"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div><a title="Close" class="fancybox-item fancybox-close" href="javascript:;"></a></div>'
+			},*/
 			beforeLoad: function() {
 				href = $(this).attr('href');
 				if (href.indexOf('?') == -1) {

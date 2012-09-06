@@ -1,0 +1,28 @@
+@import url("/components/com_resources/assets/css/resources.css");
+
+/* Tabbed view containers */
+	.com_resources .upperpane {
+		padding: 30px;
+		background: #fff;
+		border-bottom: 1px dotted #e4e4e4;
+	}
+	.com_resources .upperpane .subject {
+		margin-bottom: 0 !important;
+	}
+	#sub-menu {
+		margin-left: -30px;
+		margin-right: -30px;
+	}
+	#sub-menu ul {
+		padding-left: 30px;
+		padding-right: 30px;
+	}
+	.com_resources .noborder .aside:before {
+		top: 0;
+	}
+	.com_resources .upperpane .aside:before,
+	.com_resources .upperpane .aside:after,
+	.com_resources .upperpane .subject:before,
+	.com_resources .noborder .aside:after {
+		display: none;
+	}

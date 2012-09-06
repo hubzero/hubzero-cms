@@ -64,7 +64,7 @@
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-				<field name="jqueryuicsspath" size="30" type="text" default="/plugins/system/jquery/css/jquery-ui-1.8.6.custom.css" label="PLG_SYSTEM_JQUERY_UI_CSS_CUSTOM" description="PLG_SYSTEM_JQUERY_UI_CSS_CUSTOM_DESC"  />
+				<field name="jqueryuicsspath" size="30" type="text" default="/media/system/css/jquery.ui.css" label="PLG_SYSTEM_JQUERY_UI_CSS_CUSTOM" description="PLG_SYSTEM_JQUERY_UI_CSS_CUSTOM_DESC"  />
 			</fieldset>
 			<fieldset name="jquery_tools">
 				<field name="jquerytools" type="list" default="0" label="PLG_SYSTEM_JQUERY_EMBED_JQUERY_TOOLS" description="PLG_SYSTEM_JQUERY_EMBED_JQUERY_TOOLS_DESC">
@@ -87,7 +87,7 @@
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-				<field name="jqueryfbcsspath" size="30" type="text" default="/plugins/system/jquery/css/jquery-fancybox-2.0.4.css" label="PLG_SYSTEM_JQUERY_FB_CSS_CUSTOM" description="PLG_SYSTEM_JQUERY_FB_CSS_CUSTOM_DESC"  />
+				<field name="jqueryfbcsspath" size="30" type="text" default="/media/system/css/jquery.fancybox.css" label="PLG_SYSTEM_JQUERY_FB_CSS_CUSTOM" description="PLG_SYSTEM_JQUERY_FB_CSS_CUSTOM_DESC"  />
 			</fieldset>
 			<fieldset name="advanced">
 				<field name="activateSite" type="radio" default="1" label="PLG_SYSTEM_JQUERY_ACTIVATE_SITE" description="PLG_SYSTEM_JQUERY_ACTIVATE_SITE_DESC">
