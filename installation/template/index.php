@@ -18,6 +18,7 @@ $v = $browser->getBrowserMajorVersion();
 		<jdoc:include type="head" />
 
 		<link href="../media/system/css/fontcons.css" rel="stylesheet" type="text/css" />
+		<link href="../media/system/css/notifications.css" rel="stylesheet" type="text/css" />
 		<link href="template/css/template.css" rel="stylesheet" type="text/css" />
 		<?php if ($this->direction == 'rtl') : ?>
 		<link href="template/css/template_rtl.css" rel="stylesheet" type="text/css" />

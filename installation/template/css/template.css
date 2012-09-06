@@ -71,6 +71,19 @@
 	table td {
 		border-bottom: 1px solid #efefef;
 		padding: 0.309016495em 0.61803399em;
+		vertical-align: top;
+	}
+	table th label,
+	table td label {
+		font-weight: bold;
+	}
+	table th p:first-child,
+	table td p:first-child {
+		margin-top: 0;
+	}
+	table tr.sub-option th,
+	table tr.sub-option td {
+		border: none;
 	}
 	table th {
 		text-align: left;
@@ -437,6 +450,7 @@
 		margin-top: 0;
 		border-top: none;
 	}
+	#installer .m .install-text,
 	#installer .m>div,
 	#installer .m>fieldset {
 		padding: 0 1.61803399em 1.61803399em 1.61803399em;
