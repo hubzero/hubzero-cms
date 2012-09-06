@@ -426,6 +426,12 @@
 	#step .refresh a:before {
 		content: "\f021";
 	}
+	#step .admin a:before {
+		content: "\f083";
+	}
+	#step .site a:before {
+		content: "\f022";
+	}
 	
 	#installer {
 		-webkit-border-radius: 0.27em;
@@ -438,7 +444,7 @@
 		background: #fbfbfb;
 	}
 	#installer h2 {
-		padding: 1.61803399em;
+		padding: 1em 1.61803399em;
 		border-top: 1px solid #e3e3e3;
 		border-bottom: 1px solid #e3e3e3;
 		margin: 0 0 1.61803399em 0;

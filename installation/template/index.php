@@ -39,7 +39,7 @@ $v = $browser->getBrowserMajorVersion();
 					<h1>
 						<span><?php echo JText::_('Installation') ?></span>
 					</h1>
-					<span id="version">1.2</span>
+					<span id="version">version 1.1</span>
 				</div>
 				<div id="content-box">
 					<div id="content-pad">
