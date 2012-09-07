@@ -637,6 +637,8 @@
 	table thead th img {
 		margin-left: 0.2em;
 	}
+	#tablecell table.adminform tbody tr.row0,
+	#tablecell table.adminform tbody tr.row1,
 	table.adminlist tbody tr {
 		background-color: #fff;
 	}
@@ -653,6 +655,8 @@
 	table tbody tr td:last-child {
 		padding-right: 1.61803399em;
 	}
+	#tablecell table.adminform tbody tr:last-child th,
+	#tablecell table.adminlist tbody tr:last-child td,
 	table.adminlist tbody tr:last-child th,
 	table.adminlist tbody tr:last-child td {
 		border-bottom: 1px solid #dddddd;
@@ -1814,6 +1818,7 @@
 		-moz-box-shadow: 0 1px 5px #E4E4E4;
 		box-shadow: 0 1px 5px #E4E4E4;
 	}
+	#tablecell table.adminform,
 	table.adminlist {
 		border: 1px solid #D6D6D6;
 		background: #f6f6f6;
@@ -1823,6 +1828,15 @@
 		-webkit-box-shadow: 0 1px 5px #E4E4E4;
 		-moz-box-shadow: 0 1px 5px #E4E4E4;
 		box-shadow: 0 1px 5px #E4E4E4;
+	}
+	fieldset.adminform table.adminlist {
+		border: none;
+		-webkit-border-radius: 0;
+		-moz-border-radius: 0;
+		border-radius: 0;
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+		box-shadow: none;
 	}
 	form#item-form {
 		border: none;
@@ -2075,6 +2089,8 @@
 		cursor: pointer;
 		-webkit-border-radius: 0.27em;
 		-moz-border-radius: 0.27em;
+		-ms-border-radius: 0.27em;
+		-o-border-radius: 0.27em;
 		border-radius: 0.27em;
 		padding: 0.5em 1.618em 0.5em 1.618em;
 		margin: 0;
@@ -2090,13 +2106,15 @@
 	.panel h3:after {
 		position: absolute;
 		right: 1.618em;
-		top: 0;
+		top: 0.5em;
 		content: "\2190";
 		font-family: 'Fontcons';
 	}
 	.panel h3.jpane-toggler-down {
 		-webkit-border-radius: 0.27em 0.27em 0 0;
 		-moz-border-radius: 0.27em 0.27em 0 0;
+		-ms-border-radius: 0.27em 0.27em 0 0;
+		-o-border-radius: 0.27em 0.27em 0 0;
 		border-radius: 0.27em 0.27em 0 0;
 	}
 	.panel h3.jpane-toggler-down:after {
@@ -2112,6 +2130,8 @@
 		background: #F6F6F6;
 		-webkit-border-radius: 0 0 0.27em 0.27em;
 		-moz-border-radius: 0 0 0.27em 0.27em;
+		-ms-border-radius: 0 0 0.27em 0.27em;
+		-o-border-radius: 0 0 0.27em 0.27em;
 		border-radius: 0 0 0.27em 0.27em;
 	}
 	table.admintable .paramlist_value input#detailscreated,
@@ -2599,11 +2619,22 @@
 	.com_media table tbody td {
 		border: none;
 	}
-	.com_media table tbody td:first-child {
-		background-color: #fff;
+	.com_media table tr {
+		background: #fff;
+	}
+	/*.com_media table tr td {
+		background: #eaeaea url("../images/layout/noise.png");
+		-webkit-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2), 0 1px 1px rgba(255, 255, 255, 0.4);
+		-moz-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2), 0 1px 1px rgba(255, 255, 255, 0.4);
+		box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2), 0 1px 1px rgba(255, 255, 255, 0.4);
+	}*/
+	.com_media table tbody td {
 		padding: 0;
-		
 		border: none;
+		border: 1px solid #dddddd;
+	}
+	.com_media table tbody td:first-child {
+		padding: 0;
 		background: #eaeaea url("../images/layout/noise.png");
 		-webkit-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2), 0 1px 1px rgba(255, 255, 255, 0.4);
 		-moz-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2), 0 1px 1px rgba(255, 255, 255, 0.4);
@@ -2630,6 +2661,52 @@
 		width: 200px;
 		padding: 0;
 	}
+	.com_media table tbody td:last-child {
+		padding: 0;
+		border-left: none;
+	}
+	.com_media table fieldset#folderview legend,
+	.com_media table #uploadForm legend {
+		float: left;
+		width: 100%;
+		border-bottom: 1px solid #dddddd;
+		background: #f6f6f6;
+		-webkit-border-radius: 0.27em 0.27em 0 0;
+		-moz-border-radius: 0.27em 0.27em 0 0;
+		border-radius: 0.27em 0.27em 0 0;
+		padding: 0.61803399em 0 0.61803399em 0;
+		color: #999;
+		text-transform: uppercase;
+		text-shadow: 0 1px 1px rgba(255, 255, 255, 1);
+	}
+	.com_media table #uploadForm legend {
+		margin-top: 1.61803399em;
+		border-top: 1px solid #dddddd;
+	}
+	.com_media table fieldset#folderview {
+		margin: 0;
+		padding: 0;
+	}
+	.com_media table fieldset#folderview div,
+	.com_media table #uploadForm fieldset.actions {
+		padding: 0.61803399em 1.61803399em;
+	}
+	.com_media table fieldset#folderview div.path {
+		padding-top: 4.61803399em;
+	}
+	.com_media table fieldset#folderview div.view:before {
+		display: none;
+		content: "";
+	}
+	/*.com_media #folderview {
+		background: #fff;
+	}
+	.com_media #folderview .view {
+		background: #fff;
+	}
+	.com_media table tbody td:last-child {
+		background-color: #fff;
+	}*/
 	
 /* Link types */
 	a[href^="mailto:"]:before {

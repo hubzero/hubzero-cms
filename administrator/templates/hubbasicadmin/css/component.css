@@ -259,6 +259,7 @@
 		overflow-x: hidden;
 		padding: 0;
 		background: #f2f2f2 url("../images/layout/noise.png");
+		background: #fff;
 	}
 	body {
 		text-align: left;
