@@ -139,10 +139,12 @@ if ($this->row->modified != '0000-00-00 00:00:00') {
 					<th class="key"><?php echo JText::_('COM_KB_LAST_MODIFIED'); ?>:</th>
 					<td><?php echo $this->row->modified; ?></td>
 				</tr>
+<?php if (is_object($modifier)) {?>
 				<tr>
 					<th class="key"><?php echo JText::_('Modifier'); ?>:</th>
 					<td><?php echo $this->escape($modifier->get('name')); ?></td>
 				</tr>
+<?php } ?>
 <?php } ?>
 			</tbody>
 		</table>
