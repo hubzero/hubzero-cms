@@ -47,7 +47,7 @@ class JMenuSite extends JMenu
 		$db->setQuery($sql);
 
 		if (!($menus = $db->loadObjectList('id'))) {
-			JError::raiseWarning('SOME_ERROR_CODE', "Error loading Menus: ".$db->getErrorMsg());
+			// JError::raiseWarning('SOME_ERROR_CODE', "Error loading Menus: ".$db->getErrorMsg());
 			return false;
 		}
 
