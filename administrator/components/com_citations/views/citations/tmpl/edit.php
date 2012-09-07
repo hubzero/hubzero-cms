@@ -44,6 +44,27 @@ JToolBarHelper::cancel();
 jimport('joomla.html.editor');
 $editor =& JEditor::getInstance();
 
+//set the escape callback
+$this->setEscape("htmlentities");
+
+//need to fix these fields
+$author = html_entity_decode($this->row->author);
+$author = (!preg_match('!\S!u', $author)) ? utf8_encode($author) : $author;
+
+$ceditor = html_entity_decode($this->row->editor);
+$ceditor = (!preg_match('!\S!u', $ceditor)) ? utf8_encode($ceditor) : $ceditor;
+
+$title = html_entity_decode($this->row->title);
+$title = (!preg_match('!\S!u', $title)) ? utf8_encode($title) : $title;
+
+$booktitle = html_entity_decode($this->row->booktitle);
+$booktitle = (!preg_match('!\S!u', $booktitle)) ? utf8_encode($booktitle) : $booktitle;
+
+$short_title = html_entity_decode($this->row->short_title);
+$short_title = (!preg_match('!\S!u', $short_title)) ? utf8_encode($short_title) : $short_title;
+
+$journal = html_entity_decode($this->row->journal);
+$journal = (!preg_match('!\S!u', $journal)) ? utf8_encode($journal) : $journal;
 ?>
 <!--
 <script type="text/javascript" src="../includes/js/mootools.js"></script>
@@ -114,7 +135,7 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr>
 						<th class="key"><label for="author"><?php echo JText::_('AUTHORS'); ?>:</label></th>
-						<td colspan="3"><input type="text" name="citation[author]" id="author" size="100" value="<?php echo $this->escape(stripslashes($this->row->author)); ?>" /></td>
+						<td colspan="3"><input type="text" name="citation[author]" id="author" size="100" value="<?php echo $this->escape($author); ?>" /></td>
 					</tr>
 					<tr>
 						<th class="key"><label for="author_address"><?php echo JText::_('Author Address'); ?>:</label></th>
@@ -122,23 +143,23 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr>
 						<th class="key"><label for="editor"><?php echo JText::_('EDITORS'); ?>:</label></th>
-						<td colspan="3"><input type="text" name="citation[editor]" id="editor" size="100" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->editor)); ?>" /></td>
+						<td colspan="3"><input type="text" name="citation[editor]" id="editor" size="100" maxlength="250" value="<?php echo $this->escape($ceditor); ?>" /></td>
 					</tr>
 					<tr>
 						<th class="key"><label for="title"><?php echo JText::_('TITLE_CHAPTER'); ?>:</label></th>
-						<td colspan="3"><input type="text" name="citation[title]" id="title" size="100" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" /></td>
+						<td colspan="3"><input type="text" name="citation[title]" id="title" size="100" maxlength="250" value="<?php echo $this->escape($title); ?>" /></td>
 					</tr>
 					<tr>
 						<th class="key"><label for="booktitle"><?php echo JText::_('BOOK_TITLE'); ?>:</label></th>
-						<td colspan="3"><input type="text" name="citation[booktitle]" id="booktitle" size="100" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->booktitle)); ?>" /></td>
+						<td colspan="3"><input type="text" name="citation[booktitle]" id="booktitle" size="100" maxlength="250" value="<?php echo $this->escape($booktitle); ?>" /></td>
 					</tr>
 					<tr>
 						<th class="key"><label for="shorttitle"><?php echo JText::_('Short Title'); ?>:</label></th>
-						<td colspan="3"><input type="text" name="citation[short_title]" id="shorttitle" size="100" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->short_title)); ?>" /></td>
+						<td colspan="3"><input type="text" name="citation[short_title]" id="shorttitle" size="100" maxlength="250" value="<?php echo $this->escape($short_title); ?>" /></td>
 					</tr>
 					<tr>
 						<th class="key"><label for="journal"><?php echo JText::_('JOURNAL'); ?>:</label></th>
-						<td colspan="3"><input type="text" name="citation[journal]" id="journal" size="100" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->journal)); ?>" /></td>
+						<td colspan="3"><input type="text" name="citation[journal]" id="journal" size="100" maxlength="250" value="<?php echo $this->escape($journal); ?>" /></td>
 					</tr>
 					<tr>
 						<th class="key"><label for="volume"><?php echo JText::_('VOLUME'); ?>:</label></th>

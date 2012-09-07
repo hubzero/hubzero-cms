@@ -49,6 +49,9 @@ if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
 }
+
+//set the escape callback
+$this->setEscape("htmlentities");
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -123,15 +126,29 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					?>
 				</td>
 				<td>
+					<?php
+						$title = html_entity_decode($row->title);
+						$author = html_entity_decode($row->author);
+						if (!preg_match('!\S!u', $title)) 
+						{
+							$title = utf8_encode($title);
+						}
+						
+						if (!preg_match('!\S!u', $author)) 
+						{
+							$author = utf8_encode($author);
+						}
+					?>
 <?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
-						<?php echo $this->escape($row->title); ?></a><br />
-						<small><?php echo $this->escape($row->author); ?></small>
+						<?php echo $this->escape($title); ?>
 					</a>
+					<br />
+					<small><?php echo $this->escape($author); ?></small>
 <?php } else { ?>
 					<span>
-						<?php echo $this->escape($row->title); ?></a><br />
-						<small><?php echo $this->escape($row->author); ?></small>
+						<?php echo $this->escape($title); ?></a><br />
+						<small><?php echo $this->escape($author); ?></small>
 					</span>
 <?php } ?>
 				</td>

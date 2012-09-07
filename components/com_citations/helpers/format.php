@@ -266,7 +266,11 @@ class CitationFormat
 				if ($k == 'author') 
 				{
 					$a = array();
-					$author_string = $citation->$k;
+					
+					$auth = html_entity_decode($citation->$k);
+					$auth = (!preg_match('!\S!u', $auth)) ? utf8_encode($auth) : $auth;
+					
+					$author_string = $auth;
 					$authors = explode(';', $author_string);
 
 					foreach ($authors as $author) 
@@ -329,10 +333,13 @@ class CitationFormat
 					{
 						$url = $citation->url;
 					}
-
+					
+					$t = html_entity_decode($citation->$k);
+					$t = (!preg_match('!\S!u', $t)) ? utf8_encode($t) : $t;
+					
 					$title = ($url != '' && preg_match('/http:|https:/', $url)) 
-							? '<a rel="external" class="citation-title" href="' . $url . '">' . html_entity_decode($citation->$k) . '</a>' 
-							: '<span class="citation-title">' . html_entity_decode($citation->$k) . '</span>';
+							? '<a rel="external" class="citation-title" href="' . $url . '">' . $t . '</a>' 
+							: '<span class="citation-title">' . $t . '</span>';
 
 					$replace_values[$v] = '"' . $title . '"';
  				}
@@ -572,7 +579,7 @@ class CitationFormat
 			$html = '<ul class="badges">';
 			foreach ($badges as $badge) 
 			{
-				$html .= '<li>' . stripslashes($tag['raw_tag']) . '</li>';
+				$html .= '<li>' . stripslashes($badge['raw_tag']) . '</li>';
 			}
 			$html .= "</ul>";
 		}
