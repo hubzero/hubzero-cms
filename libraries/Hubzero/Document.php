@@ -524,7 +524,6 @@ class Hubzero_Document
 
 			// Get the last modified time
 			// We take the max time so $lastmodified should be different if any of the files have changed.
-			//$lastmodified = max($lastmodified, filemtime($path));
 			$lastmodified += filemtime($path);
 		}
 
@@ -541,7 +540,7 @@ class Hubzero_Document
 		}
 
 		// Try the cache first to see if the combined files were already generated
-		$cachefile = 'cache-' . $hash . '.css';
+		$cachefile = 'system-' . $hash . '.css';
 
 		if (!file_exists($cachedir . DS . $cachefile)) 
 		{
