@@ -49,8 +49,7 @@ $cache     = $this->cache;
 	</ul>
 </div>
 
-<div class="content">
-
+<form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 <?php
 	if (!isset($fieldname))
 	{
@@ -61,8 +60,8 @@ $cache     = $this->cache;
 	}
 	if (!empty($this->MYREQUEST['SH']))
 	{
-		echo '<div class="info"><table cellspacing=0><tbody>';
-		echo '<tr><th>Attribute</th><th>Value</th></tr>';
+		echo '<table class="adminlist"><thead>';
+		echo '<tr><th>Attribute</th><th>Value</th></tr></thead><tbody>';
 
 		$m=0;
 		foreach($this->scope_list as $j => $list)
@@ -103,111 +102,130 @@ $cache     = $this->cache;
 	}
 	else
 	{
-		$cols = 6;
-		echo '<div class=sorting><form>Scope:';
-		echo "<input type=hidden name=option value={$this->option}>";
-		echo "<input type=hidden name=controller value={$this->controller}>";
-		echo "<input type=hidden name=task value={$this->task}>";
-		echo "<input type=hidden name=OB value={$this->MYREQUEST['OB']}>";
-		echo '<select name=SCOPE>';
-
-		echo
-			"<option value=A",$this->MYREQUEST['SCOPE']=='A' ? " selected":"",">Active</option>",
-			"<option value=D",$this->MYREQUEST['SCOPE']=='D' ? " selected":"",">Deleted</option>",
-			"</select>",
-			", Sorting:<select name=SORT1>",
-			"<option value=H",$this->MYREQUEST['SORT1']=='H' ? " selected":"",">Hits</option>",
-			"<option value=Z",$this->MYREQUEST['SORT1']=='Z' ? " selected":"",">Size</option>",
-			"<option value=S",$this->MYREQUEST['SORT1']=='S' ? " selected":"",">$fieldheading</option>",
-			"<option value=A",$this->MYREQUEST['SORT1']=='A' ? " selected":"",">Last accessed</option>",
-			"<option value=M",$this->MYREQUEST['SORT1']=='M' ? " selected":"",">Last modified</option>",
-			"<option value=C",$this->MYREQUEST['SORT1']=='C' ? " selected":"",">Created at</option>",
-			"<option value=D",$this->MYREQUEST['SORT1']=='D' ? " selected":"",">Deleted at</option>";
-		if($fieldname=='info') echo
-			"<option value=D",$this->MYREQUEST['SORT1']=='T' ? " selected":"",">Timeout</option>";
-		echo 
-			'</select>',
-			'<select name=SORT2>',
-			'<option value=D',$this->MYREQUEST['SORT2']=='D' ? ' selected':'','>DESC</option>',
-			'<option value=A',$this->MYREQUEST['SORT2']=='A' ? ' selected':'','>ASC</option>',
-			'</select>',
-			'<select name=COUNT onChange="form.submit()">',
-			'<option value=10 ',$this->MYREQUEST['COUNT']=='10' ? ' selected':'','>Top 10</option>',
-			'<option value=20 ',$this->MYREQUEST['COUNT']=='20' ? ' selected':'','>Top 20</option>',
-			'<option value=50 ',$this->MYREQUEST['COUNT']=='50' ? ' selected':'','>Top 50</option>',
-			'<option value=100',$this->MYREQUEST['COUNT']=='100'? ' selected':'','>Top 100</option>',
-			'<option value=150',$this->MYREQUEST['COUNT']=='150'? ' selected':'','>Top 150</option>',
-			'<option value=200',$this->MYREQUEST['COUNT']=='200'? ' selected':'','>Top 200</option>',
-			'<option value=500',$this->MYREQUEST['COUNT']=='500'? ' selected':'','>Top 500</option>',
-			'<option value=0  ',$this->MYREQUEST['COUNT']=='0'  ? ' selected':'','>All</option>',
-			'</select>','&nbsp; Search: <input name=SEARCH value="',$this->MYREQUEST['SEARCH'],'" type=text size=25/>',
-			'&nbsp;<input type=submit value="GO!">',
-			'</form></div>';
-
+		$cols = 7;
+?>
+	<fieldset id="filter-bar">
+		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+		<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
+		<input type="hidden" name="OB" value="<?php echo $this->MYREQUEST['OB']; ?>" />
+		<div class="col width-60 fltlft">
+		<label for="filter-scope">Scope:</label>
+		<select name="SCOPE" id="filter-scope">
+			<option value="A"<?php echo $this->MYREQUEST['SCOPE']=='A' ? ' selected="selected"' : ''; ?>>Active</option>
+			<option value="D"<?php echo $this->MYREQUEST['SCOPE']=='D' ? ' selected="selected"' : ''; ?>>Deleted</option>
+		</select>
+		
+		<label for="filter-sort1">Sorting:</label>
+		<select name="SORT1" id="filter-sort1">
+			<option value="H"<?php echo $this->MYREQUEST['SORT1']=='H' ? ' selected="selected"' : ''; ?>>Hits</option>
+			<option value="Z"<?php echo $this->MYREQUEST['SORT1']=='Z' ? ' selected="selected"' : ''; ?>>Size</option>
+			<option value="S"<?php echo $this->MYREQUEST['SORT1']=='S' ? ' selected="selected"' : ''; ?>><?php echo $fieldheading; ?></option>
+			<option value="A"<?php echo $this->MYREQUEST['SORT1']=='A' ? ' selected="selected"' : ''; ?>>Last accessed</option>
+			<option value="M"<?php echo $this->MYREQUEST['SORT1']=='M' ? ' selected="selected"' : ''; ?>>Last modified</option>
+			<option value="C"<?php echo $this->MYREQUEST['SORT1']=='C' ? ' selected="selected"' : ''; ?>>Created at</option>
+			<option value="D"<?php echo $this->MYREQUEST['SORT1']=='D' ? ' selected="selected"' : ''; ?>>Deleted at</option>
+		<?php if ($fieldname=='info') { ?>
+			<option value="D"<?php echo $this->MYREQUEST['SORT1']=='T' ? ' selected="selected"' : ''; ?>>Timeout</option>
+		<?php } ?>
+		</select>
+		
+		<select name="SORT2">
+			<option value="D"<?php echo $this->MYREQUEST['SORT2']=='D' ? ' selected="selected"' : ''; ?>>DESC</option>
+			<option value="A"<?php echo $this->MYREQUEST['SORT2']=='A' ? ' selected="selected"' : ''; ?>>ASC</option>
+		</select>
+		
+		<select name="COUNT" onChange="form.submit()">
+			<option value="10" <?php echo $this->MYREQUEST['COUNT']=='10' ? ' selected="selected"' : ''; ?>>Top 10</option>
+			<option value="20" <?php echo $this->MYREQUEST['COUNT']=='20' ? ' selected="selected"' : ''; ?>>Top 20</option>
+			<option value="50" <?php echo $this->MYREQUEST['COUNT']=='50' ? ' selected="selected"' : ''; ?>>Top 50</option>
+			<option value="100"<?php echo $this->MYREQUEST['COUNT']=='100'? ' selected="selected"' : ''; ?>>Top 100</option>
+			<option value="150"<?php echo $this->MYREQUEST['COUNT']=='150'? ' selected="selected"' : ''; ?>>Top 150</option>
+			<option value="200"<?php echo $this->MYREQUEST['COUNT']=='200'? ' selected="selected"' : ''; ?>>Top 200</option>
+			<option value="500"<?php echo $this->MYREQUEST['COUNT']=='500'? ' selected="selected"' : ''; ?>>Top 500</option>
+			<option value="0"  <?php echo $this->MYREQUEST['COUNT']=='0'  ? ' selected="selected"' : ''; ?>>All</option>
+		</select>
+		</div>
+		<div class="col width-40 fltrt">
+		<label for="filter_search">Search:</label> 
+		<input name="SEARCH" id="filter_search" value="<?php echo $this->MYREQUEST['SEARCH']; ?>" type="text" size="25" />
+		
+		&nbsp;<input type="submit" value="GO!" />
+		</div>
+	</fieldset>
+	<div class="clr"></div>
+	
+<?php
 		if (isset($this->MYREQUEST['SEARCH']))
 		{
 			// Don't use preg_quote because we want the user to be able to specify a
 			// regular expression subpattern.
-			$this->MYREQUEST['SEARCH'] = '/'.str_replace('/', '\\/', $this->MYREQUEST['SEARCH']).'/i';
+			$this->MYREQUEST['SEARCH'] = '/' . str_replace('/', '\\/', $this->MYREQUEST['SEARCH']) . '/i';
 			if (preg_match($this->MYREQUEST['SEARCH'], 'test') === false)
 			{
-				echo '<div class="error">Error: enter a valid regular expression as a search query.</div>';
+				echo '<p class="error">Error: enter a valid regular expression as a search query.</p>';
 				break;
 			}
 		}
-
-		echo
-			'<div class="info"><table cellspacing=0><tbody>',
-			'<tr>',
-			'<th>',SystemHtml::sortheader('S',$fieldheading,  "&OB=".$this->MYREQUEST['OB']),'</th>',
-			'<th>',SystemHtml::sortheader('H','Hits',         "&OB=".$this->MYREQUEST['OB']),'</th>',
-			'<th>',SystemHtml::sortheader('Z','Size',         "&OB=".$this->MYREQUEST['OB']),'</th>',
-			'<th>',SystemHtml::sortheader('A','Last accessed',"&OB=".$this->MYREQUEST['OB']),'</th>',
-			'<th>',SystemHtml::sortheader('M','Last modified',"&OB=".$this->MYREQUEST['OB']),'</th>',
-			'<th>',SystemHtml::sortheader('C','Created at',   "&OB=".$this->MYREQUEST['OB']),'</th>';
-
-		if($fieldname=='info')
+?>
+	<table class="adminlist">
+		<thead>
+			<tr>
+				<th><?php echo SystemHtml::sortheader('S',$fieldheading,   "&OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader('H','Hits',          "&OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader('Z','Size',          "&OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader('A','Last accessed', "&OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader('M','Last modified', "&OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader('C','Created at',    "&OB=" . $this->MYREQUEST['OB']); ?></th>
+<?php
+		if ($fieldname=='info')
 		{
-			$cols+=2;
-			 echo '<th>',SystemHtml::sortheader('T','Timeout',"&OB=".$this->MYREQUEST['OB']),'</th>';
+			$cols+=1;
+?>
+				<th><?php echo SystemHtml::sortheader('T','Timeout', "&OB=" . $this->MYREQUEST['OB']); ?></th>
+<?php
 		}
-		echo '<th>',SystemHtml::sortheader('D','Deleted at',"&OB=".$this->MYREQUEST['OB']),'</th></tr>';
-
+?>
+				<th><?php echo SystemHtml::sortheader('D','Deleted at', "&OB=" . $this->MYREQUEST['OB']); ?></th>
+			</tr>
+		</thead>
+		<tbody>
+<?php
 		// builds list with alpha numeric sortable keys
 		//
 		$list = array();
-		foreach($this->cache[$this->scope_list[$this->MYREQUEST['SCOPE']]] as $i => $entry)
+		foreach ($this->cache[$this->scope_list[$this->MYREQUEST['SCOPE']]] as $i => $entry)
 		{
-			switch($this->MYREQUEST['SORT1'])
+			switch ($this->MYREQUEST['SORT1'])
 			{
-				case 'A': $k=sprintf('%015d-',$entry['access_time']); 	break;
-				case 'H': $k=sprintf('%015d-',$entry['num_hits']); 		break;
-				case 'Z': $k=sprintf('%015d-',$entry['mem_size']); 		break;
-				case 'M': $k=sprintf('%015d-',$entry['mtime']);			break;
-				case 'C': $k=sprintf('%015d-',$entry['creation_time']);	break;
-				case 'T': $k=sprintf('%015d-',$entry['ttl']);			break;
-				case 'D': $k=sprintf('%015d-',$entry['deletion_time']);	break;
-				case 'S': $k='';										break;
+				case 'A': $k = sprintf('%015d-', $entry['access_time']);   break;
+				case 'H': $k = sprintf('%015d-', $entry['num_hits']);      break;
+				case 'Z': $k = sprintf('%015d-', $entry['mem_size']);      break;
+				case 'M': $k = sprintf('%015d-', $entry['mtime']);         break;
+				case 'C': $k = sprintf('%015d-', $entry['creation_time']); break;
+				case 'T': $k = sprintf('%015d-', $entry['ttl']);           break;
+				case 'D': $k = sprintf('%015d-', $entry['deletion_time']); break;
+				case 'S': $k = '';                                         break;
 			}
-			$list[$k.$entry[$fieldname]]=$entry;
+			$list[$k . $entry[$fieldname]] = $entry;
 		}
 
 		if ($list)
 		{
 			// sort list
-			//
-			switch ($this->MYREQUEST['SORT2']) {
-				case "A":	krsort($list);	break;
-				case "D":	ksort($list);	break;
+			switch ($this->MYREQUEST['SORT2']) 
+			{
+				case "A": krsort($list); break;
+				case "D": ksort($list);  break;
 			}
 
 			// output list
 			$i=0;
-			foreach($list as $k => $entry)
+			foreach ($list as $k => $entry)
 			{
-				if(!$this->MYREQUEST['SEARCH'] || preg_match($this->MYREQUEST['SEARCH'], $entry[$fieldname]) != 0)
+				if (!$this->MYREQUEST['SEARCH'] || preg_match($this->MYREQUEST['SEARCH'], $entry[$fieldname]) != 0)
 				{
-					$field_value = htmlentities(strip_tags($entry[$fieldname],''), ENT_QUOTES, 'UTF-8');
+					$field_value = $this->escape(strip_tags($entry[$fieldname], ''));
 					echo
 						'<tr class=tr-',$i%2,'>',
 						"<td class=td-0><a href=\"$MY_SELF&OB=",$this->MYREQUEST['OB'],"&SH=",md5($entry[$fieldkey]),"\">",$field_value,'</a></td>',
@@ -217,7 +235,7 @@ $cache     = $this->cache;
 						'<td class="td-n center">',date(DATE_FORMAT,$entry['mtime']),'</td>',
 						'<td class="td-n center">',date(DATE_FORMAT,$entry['creation_time']),'</td>';
 
-					if($fieldname=='info')
+					if ($fieldname=='info')
 					{
 						if($entry['ttl'])
 							echo '<td class="td-n center">'.$entry['ttl'].' seconds</td>';
@@ -241,11 +259,15 @@ $cache     = $this->cache;
 					echo '</tr>';
 					$i++;
 					if ($i == $this->MYREQUEST['COUNT'])
+					{
 						break;
+					}
 				}
 			}
-		} else {
-			echo '<tr class=tr-0><td class="center" colspan=',$cols,'><i>No data</i></td></tr>';
+		} 
+		else 
+		{
+			echo '<tr class=tr-0><td class="center" colspan="',$cols,'"><i>No data</i></td></tr>';
 		}
 		echo '</tbody></table>';
 
@@ -253,7 +275,6 @@ $cache     = $this->cache;
 		{
 			echo "<a href=\"$MY_SELF&OB=",$this->MYREQUEST['OB'],"&COUNT=0\"><i>",count($list)-$i,' more available...</i></a>';
 		}
-
-		echo "</div>";
 	}
 ?>
+</form>

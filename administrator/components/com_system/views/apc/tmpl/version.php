@@ -44,14 +44,9 @@ JToolBarHelper::title(JText::_('APC Version Information'), 'config.png');
 	</ul>
 </div>
 
-<div class="content">
+<form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<div class="info">
-	<h2>APC Version Information</h2>
-		<table cellspacing="0">
-			<tbody>
-				<tr>
-					<th></th>
-				</tr>
+		<h2>APC Version Information</h2>
 <?php 
 	if (defined('PROXY'))
 	{
@@ -65,29 +60,31 @@ JToolBarHelper::title(JText::_('APC Version Information'), 'config.png');
 
 	if (!$rss)
 	{
-		echo '<tr class="td-last center"><td>Unable to fetch version information.</td></tr>';
+		echo '<p class="error">Unable to fetch version information.</p>';
 	}
 	else
 	{
 		$apcversion = phpversion('apc');
 
 		preg_match('!<title>APC ([0-9.]+)</title>!', $rss, $match);
-		echo '<tr class="tr-0 center"><td>';
+		//echo '<tr class="tr-0 center"><td>';
 		if (version_compare($apcversion, $match[1], '>='))
 		{
-			echo '<div class="ok">You are running the latest version of APC ('.$apcversion.')</div>';
+			echo '<p class="message">You are running the latest version of APC ('.$apcversion.')</p>';
 			$i = 3;
 		}
 		else
 		{
-			echo '<div class="failed">You are running an older version of APC ('.$apcversion.'), 
+			echo '<p class="warning">You are running an older version of APC ('.$apcversion.'), 
 				newer version '.$match[1].' is available at <a href="http://pecl.php.net/package/APC/'.$match[1].'">
 				http://pecl.php.net/package/APC/'.$match[1].'</a>
-				</div>';
+				</p>';
 			$i = -1;
 		}
-		echo '</td></tr>';
-		echo '<tr class="tr-0"><td><h3>Change Log:</h3><br/>';
+
+		echo '<div class="change-log">';
+		echo '<h3>Change Log:</h3>';
+		echo '<div class="change-log-contents">';
 
 		preg_match_all('!<(title|description)>([^<]+)</\\1>!', $rss, $match);
 		next($match[2]); next($match[2]);
@@ -103,14 +100,12 @@ JToolBarHelper::title(JText::_('APC Version Information'), 'config.png');
 			{
 				break;
 			}
-			echo "<b><a href=\"http://pecl.php.net/package/APC/$ver\">".htmlspecialchars($v)."</a></b><br><blockquote>";
+			echo "<b><a href=\"http://pecl.php.net/package/APC/$ver\">".htmlspecialchars($v)."</a></b><br /><blockquote>";
 			echo nl2br(htmlspecialchars(current($match[2])))."</blockquote>";
 			next($match[2]);
 		}
-		echo '</td></tr>';
+		echo '</div>';
 	}
 ?>
-			</tbody>
-		</table>
 	</div>
-</div>
+</form>

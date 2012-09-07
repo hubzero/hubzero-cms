@@ -61,82 +61,115 @@ window.addEvent('domready', function() {
 });
 </script>
 
-<div id="clearcache" style="float:right;margin-top:-61px;">
+<div id="clearcache">
 	<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=clrcache">Clear <?php echo $this->cache_mode; ?> cache</a>
 </div>
 
-<div class=content>
-<div class="leftcol">
-	<div class="info div1">
-		<h2>General Cache Information</h2>
-		<table cellspacing=0>
+<form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
+	<div class="col width-50 fltlft">
+		<table class="adminlist">
+			<thead>
+				<tr>
+					<th colspan="2">
+						General Cache Information
+					</th>
+				</tr>
+			</thead>
 			<tbody>
-				<tr class=tr-0><td class=td-0>APC Version</td><td><?php echo $this->apcversion; ?></td></tr>
-				<tr class=tr-1><td class=td-0>PHP Version</td><td><?php echo $this->phpversion; ?></td></tr>
-				<tr class=tr-0><td class=td-0>APC Host</td><td><?php echo $_SERVER['SERVER_NAME'] . ' ' . $this->host; ?></td></tr>
-				<tr class=tr-1><td class=td-0>Server Software</td><td><?php echo $_SERVER['SERVER_SOFTWARE']; ?></td></tr>
-				<tr class=tr-0>
-					<td class=td-0>Shared Memory</td>
+				<tr class="row0">
+					<th scope="row">APC Version</th>
+					<td><?php echo $this->apcversion; ?></td>
+				</tr>
+				<tr class="row1">
+					<th scope="row">PHP Version</th>
+					<td><?php echo $this->phpversion; ?></td>
+				</tr>
+				<tr class="row0">
+					<th scope="row">APC Host</th>
+					<td><?php echo $_SERVER['SERVER_NAME'] . ' ' . $this->host; ?></td>
+				</tr>
+				<tr class="row1">
+					<th scope="row">Server Software</th>
+					<td><?php echo $_SERVER['SERVER_SOFTWARE']; ?></td>
+				</tr>
+				<tr class="row0">
+					<th scope="row">Shared Memory</th>
 					<td>
 						<?php echo "{$this->mem['num_seg']} Segment(s) with {$this->seg_size}
 							<br />
 						({$this->cache['memory_type']} memory, {$this->cache['locking_type']} locking)"; ?>
 					</td>
 				</tr>
-				<tr class=tr-1>
-					<td class=td-0>Start Time</td>
+				<tr class="row1">
+					<th scope="row">Start Time</th>
 					<td><?php echo date(DATE_FORMAT, $this->cache['start_time']); ?></td>
 				</tr>
-				<tr class=tr-0>
-					<td class=td-0>Uptime</td>
+				<tr class="row0">
+					<th scope="row">Uptime</th>
 					<td><?php echo $this->duration; ?></td>
 				</tr>
-				<tr class=tr-1>
-					<td class=td-0>File Upload Support</td>
+				<tr class="row1">
+					<th scope="row">File Upload Support</th>
 					<td><?php echo $this->cache['file_upload_progress']; ?></td>
 				</tr>
 			</tbody>
 		</table>
-	</div>
-	<div class="info div1">
-		<h2>File Cache Information</h2>
-		<table cellspacing=0>
+
+		<table class="adminlist">
+			<thead>
+				<tr>
+					<th colspan="2">
+						File Cache Information
+					</th>
+				</tr>
+			</thead>
 			<tbody>
-				<tr class=tr-0><td class=td-0>Cached Files</td><td><?php echo "$this->number_files ($this->size_files)"; ?></td></tr>
-				<tr class=tr-1><td class=td-0>Hits</td><td><?php echo "{$this->cache['num_hits']}"; ?></td></tr>
-				<tr class=tr-0><td class=td-0>Misses</td><td><?php echo "{$this->cache['num_misses']}"; ?></td></tr>
-				<tr class=tr-1><td class=td-0>Request Rate (hits, misses)</td><td><?php echo "$this->req_rate cache requests/second"; ?></td></tr>
-				<tr class=tr-0><td class=td-0>Hit Rate</td><td><?php echo "$this->hit_rate cache requests/second"; ?></td></tr>
-				<tr class=tr-1><td class=td-0>Miss Rate</td><td><?php echo "$this->miss_rate cache requests/second"; ?></td></tr>
-				<tr class=tr-0><td class=td-0>Insert Rate</td><td><?php echo "$this->insert_rate cache requests/second"; ?></td></tr>
-				<tr class=tr-1><td class=td-0>Cache full count</td><td><?php echo "{$this->cache['expunges']}"; ?></td></tr>
+				<tr class="row0"><th scope="row">Cached Files</th><td><?php echo "$this->number_files ($this->size_files)"; ?></td></tr>
+				<tr class="row1"><th scope="row">Hits</th><td><?php echo "{$this->cache['num_hits']}"; ?></td></tr>
+				<tr class="row0"><th scope="row">Misses</th><td><?php echo "{$this->cache['num_misses']}"; ?></td></tr>
+				<tr class="row1"><th scope="row">Request Rate (hits, misses)</th><td><?php echo "$this->req_rate cache requests/second"; ?></td></tr>
+				<tr class="row0"><th scope="row">Hit Rate</th><td><?php echo "$this->hit_rate cache requests/second"; ?></td></tr>
+				<tr class="row1"><th scope="row">Miss Rate</th><td><?php echo "$this->miss_rate cache requests/second"; ?></td></tr>
+				<tr class="row0"><th scope="row">Insert Rate</th><td><?php echo "$this->insert_rate cache requests/second"; ?></td></tr>
+				<tr class="row1"><th scope="row">Cache full count</th><td><?php echo "{$this->cache['expunges']}"; ?></td></tr>
 			</tbody>
 		</table>
-	</div>
-	<div class="info div1">
-		<h2>User Cache Information</h2>
-		<table cellspacing=0>
+
+		<table class="adminlist">
+			<thead>
+				<tr>
+					<th colspan="2">
+						User Cache Information
+					</th>
+				</tr>
+			</thead>
 			<tbody>
-				<tr class=tr-0><td class=td-0>Cached Variables</td><td><?php echo "$this->number_vars ($this->size_vars)"; ?></td></tr>
-				<tr class=tr-1><td class=td-0>Hits</td><td><?php echo "{$this->cache_user['num_hits']}"; ?></td></tr>
-				<tr class=tr-0><td class=td-0>Misses</td><td><?php echo "{$this->cache_user['num_misses']}"; ?></td></tr>
-				<tr class=tr-1><td class=td-0>Request Rate (hits, misses)</td><td><?php echo "$this->req_rate_user cache requests/second"; ?></td></tr>
-				<tr class=tr-0><td class=td-0>Hit Rate</td><td><?php echo "$this->hit_rate_user cache requests/second"; ?></td></tr>
-				<tr class=tr-1><td class=td-0>Miss Rate</td><td><?php echo "$this->miss_rate_user cache requests/second"; ?></td></tr>
-				<tr class=tr-0><td class=td-0>Insert Rate</td><td><?php echo "$this->insert_rate_user cache requests/second"; ?></td></tr>
-				<tr class=tr-1><td class=td-0>Cache full count</td><td><?php echo "{$this->cache_user['expunges']}"; ?></td></tr>
+				<tr class="row0"><th scope="row">Cached Variables</th><td><?php echo "$this->number_vars ($this->size_vars)"; ?></td></tr>
+				<tr class="row1"><th scope="row">Hits</th><td><?php echo "{$this->cache_user['num_hits']}"; ?></td></tr>
+				<tr class="row0"><th scope="row">Misses</th><td><?php echo "{$this->cache_user['num_misses']}"; ?></td></tr>
+				<tr class="row1"><th scope="row">Request Rate (hits, misses)</th><td><?php echo "$this->req_rate_user cache requests/second"; ?></td></tr>
+				<tr class="row0"><th scope="row">Hit Rate</th><td><?php echo "$this->hit_rate_user cache requests/second"; ?></td></tr>
+				<tr class="row1"><th scope="row">Miss Rate</th><td><?php echo "$this->miss_rate_user cache requests/second"; ?></td></tr>
+				<tr class="row0"><th scope="row">Insert Rate</th><td><?php echo "$this->insert_rate_user cache requests/second"; ?></td></tr>
+				<tr class="row1"><th scope="row">Cache full count</th><td><?php echo "{$this->cache_user['expunges']}"; ?></td></tr>
 			</tbody>
 		</table>
-	</div>
-	<div class="info div2">
-		<h2>Runtime Settings</h2>
-		<table cellspacing=0>
+</div>
+<div class="col width-50 fltrt">
+		<table class="adminlist">
+			<thead>
+				<tr>
+					<th colspan="2">
+						Runtime Settings
+					</th>
+				</tr>
+			</thead>
 			<tbody>
 <?php
 	$j = 0;
 	foreach (ini_get_all('apc') as $k => $v)
 	{
-		echo "<tr class=tr-$j><td class=td-0>",$k,"</td><td>",str_replace(',',',<br />',$v['local_value']),"</td></tr>\n";
+		echo "<tr class=\"row$j\"><th>",$k,"</th><td>",str_replace(',',',<br />',$v['local_value']),"</td></tr>\n";
 		$j = 1 - $j;
 	}
 
@@ -151,49 +184,66 @@ window.addEvent('domready', function() {
 ?>
 			</tbody>
 		</table>
-	</div>
 </div>
-<div class="rightcol">
-	<div class="graph div3">
-		<h2>Host Status Diagrams</h2>
-		<table cellspacing=0>
-			<tbody>
-<?php $size='width='.(GRAPH_SIZE+50).' height='.(GRAPH_SIZE+10); ?>
+<div class="clr"></div>
+
+<div class="col width-50 fltlft">
+		<table class="adminlist">
+			<thead>
 				<tr>
-					<td class=td-0><?php echo $mem_note; ?></td>
-					<td class=td-1>Hits &amp; Misses</td>
+					<th colspan="2">
+						Host Status Diagrams
+					</th>
 				</tr>
-<?php if ($this->graphics_avail) { ?>
+			</thead>
+			<tbody>
 				<tr>
-					<td class=td-0><img alt="" <?php echo "$size src=\"index.php?option={$this->option}&controller={$this->controller}&task=mkimage&IMG=1&time=$time\""; ?>></td>
-					<td class=td-1><img alt="" <?php echo "$size src=\"index.php?option={$this->option}&controller={$this->controller}&task=mkimage&IMG=2&time=$time\""; ?>></td>
+					<th scope="col"><?php echo $mem_note; ?></th>
+					<th scope="col">Hits &amp; Misses</th>
+				</tr>
+<?php $size = 'width='.(GRAPH_SIZE+50).' height='.(GRAPH_SIZE+10); ?>
+<?php if ($this->graphics_avail) { ?>
+				<tr class="row0">
+					<td><img alt="" <?php echo $size; ?> src="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=mkimage&amp;IMG=1&amp;time=<?php echo $time; ?>" /></td>
+					<td><img alt="" <?php echo $size; ?> src="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=mkimage&amp;IMG=2&amp;time=<?php echo $time; ?>" /></td>
 				</tr>
 <?php } else { ?>
-				<tr>
-					<td class=td-0><span class="green box">&nbsp;</span>
+				<tr class="row0">
+					<td>
+						<span class="green box">&nbsp;</span>
 						<?php echo "Free: $this->bmem_avail " . sprintf(" (%.1f%%)", $this->mem_avail*100/$this->mem_size); ?>
 					</td>
-					<td class=td-1><span class="green box">&nbsp;</span>
+					<td>
+						<span class="green box">&nbsp;</span>
 						<?php echo "Hits: {$this->cache['num_hits']} " . sprintf(" (%.1f%%)", $this->cache['num_hits']*100/($this->cache['num_hits']+$this->cache['num_misses'])); ?>
 					</td>
 				</tr>
-				<tr>
-					<td class=td-0><span class="red box">&nbsp;</span>
+				<tr class="row1">
+					<td>
+						<span class="red box">&nbsp;</span>
 						<?php echo "Used: $this->bmem_used " . sprintf(" (%.1f%%)", $this->mem_used*100/$this->mem_size); ?>
 					</td>
-					<td class=td-1><span class="red box">&nbsp;</span>
-						<?php echo "Misses: {$this->cache['num_misses']} " . sprintf(" (%.1f%%)",$this->cache['num_misses']*100/($this->cache['num_hits']+$this->cache['num_misses'])); ?>
+					<td>
+						<span class="red box">&nbsp;</span>
+						<?php echo "Misses: {$this->cache['num_misses']} " . sprintf(" (%.1f%%)", $this->cache['num_misses']*100/($this->cache['num_hits']+$this->cache['num_misses'])); ?>
 					</td>
 				</tr>
 <?php } ?>
 			</tbody>
 		</table>
-		<br/>
-		<h2>Detailed Memory Usage and Fragmentation</h2>
-			<table cellspacing=0>
-				<tbody>
-					<tr>
-						<td class=td-0 colspan=2><br/>
+	</div>
+	<div class="col width-50 fltrt">
+		<table class="adminlist">
+			<thead>
+				<tr>
+					<th colspan="2">
+						Detailed Memory Usage and Fragmentation
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th colspan="2">
 <?php
 	// Fragementation: (freeseg - 1) / total_seg
 	$nseg = $freeseg = $fragsize = $freetotal = 0;
@@ -228,7 +278,7 @@ window.addEvent('domready', function() {
 		echo "<img alt=\"\" $size src=\"index.php?option={$this->option}&controller={$this->controller}&task=mkimage&IMG=3&time=$time\" />";
 	}
 	echo "</br>Fragmentation: $frag";
-	echo "</td>";
+	echo "</th>";
 	echo "</tr>";
 	if(isset($this->mem['adist']))
 	{
@@ -244,5 +294,5 @@ window.addEvent('domready', function() {
 			</tbody>
 		</table>
 	</div>
-</div>
-</div>
+	<div class="clr"></div>
+</form>

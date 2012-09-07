@@ -48,61 +48,71 @@ $MY_SELF   = $this->MY_SELF;
 	</ul>
 </div>
 
-<div class="content">
-	<div class="sorting">
-		<form method="post" action="index.php">
-			Scope:
-			<input type="hidden" name="OB" value="<?php echo $this->MYREQUEST['OB']; ?>" />
-			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-			<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
-			<select name="SCOPE">
+<form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
+	<fieldset id="filter-bar">
+		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+		<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
+		<input type="hidden" name="OB" value="<?php echo $this->MYREQUEST['OB']; ?>" />
+		<div class="col width-60 fltlft">
+		<label for="filter-scope">Scope:</label>
+		<select name="SCOPE" id="filter-scope">
+			<option value="A"<?php echo $this->MYREQUEST['SCOPE']=='A' ? ' selected="selected"' : ''; ?>>Active</option>
+			<option value="D"<?php echo $this->MYREQUEST['SCOPE']=='D' ? ' selected="selected"' : ''; ?>>Deleted</option>
+		</select>
 
-<?php
-	echo 
-		"<option value=A",$this->MYREQUEST['SCOPE']=='A' ? " selected":"",">Active</option>",
-		"<option value=D",$this->MYREQUEST['SCOPE']=='D' ? " selected":"",">Deleted</option>",
-		"</select>",
-		", Sorting:<select name=SORT1>",
-		"<option value=H",$this->MYREQUEST['SORT1']=='H' ? " selected":"",">Total Hits</option>",
-		"<option value=Z",$this->MYREQUEST['SORT1']=='Z' ? " selected":"",">Total Size</option>",
-		"<option value=T",$this->MYREQUEST['SORT1']=='T' ? " selected":"",">Number of Files</option>",
-		"<option value=S",$this->MYREQUEST['SORT1']=='S' ? " selected":"",">Directory Name</option>",
-		"<option value=A",$this->MYREQUEST['SORT1']=='A' ? " selected":"",">Avg. Size</option>",
-		"<option value=C",$this->MYREQUEST['SORT1']=='C' ? " selected":"",">Avg. Hits</option>",
-		'</select>',
-		'<select name=SORT2>',
-		'<option value=D',$this->MYREQUEST['SORT2']=='D' ? ' selected':'','>DESC</option>',
-		'<option value=A',$this->MYREQUEST['SORT2']=='A' ? ' selected':'','>ASC</option>',
-		'</select>',
-		'<select name=COUNT onChange="form.submit()">',
-		'<option value=10 ',$this->MYREQUEST['COUNT']=='10' ? ' selected':'','>Top 10</option>',
-		'<option value=20 ',$this->MYREQUEST['COUNT']=='20' ? ' selected':'','>Top 20</option>',
-		'<option value=50 ',$this->MYREQUEST['COUNT']=='50' ? ' selected':'','>Top 50</option>',
-		'<option value=100',$this->MYREQUEST['COUNT']=='100'? ' selected':'','>Top 100</option>',
-		'<option value=150',$this->MYREQUEST['COUNT']=='150'? ' selected':'','>Top 150</option>',
-		'<option value=200',$this->MYREQUEST['COUNT']=='200'? ' selected':'','>Top 200</option>',
-		'<option value=500',$this->MYREQUEST['COUNT']=='500'? ' selected':'','>Top 500</option>',
-		'<option value=0  ',$this->MYREQUEST['COUNT']=='0'  ? ' selected':'','>All</option>',
-		'</select>',
-		", Group By Dir Level:<select name=AGGR>",
-		"<option value='' selected>None</option>";
-		for ($i = 1; $i < 10; $i++)
-			echo "<option value=$i",$this->MYREQUEST['AGGR']==$i ? " selected":"",">$i</option>";
-		echo '</select>',
-		'&nbsp;<input type=submit value="GO!">',
-		'</form></div>',
-
-		'<div class="info"><table cellspacing=0><tbody>',
-		'<tr>',
-		'<th>',SystemHtml::sortheader('S','Directory Name',	"&OB=".$this->MYREQUEST['OB']),'</th>',
-		'<th>',SystemHtml::sortheader('T','Number of Files',"&OB=".$this->MYREQUEST['OB']),'</th>',
-		'<th>',SystemHtml::sortheader('H','Total Hits',	"&OB=".$this->MYREQUEST['OB']),'</th>',
-		'<th>',SystemHtml::sortheader('Z','Total Size',	"&OB=".$this->MYREQUEST['OB']),'</th>',
-		'<th>',SystemHtml::sortheader('C','Avg. Hits',	"&OB=".$this->MYREQUEST['OB']),'</th>',
-		'<th>',SystemHtml::sortheader('A','Avg. Size',	"&OB=".$this->MYREQUEST['OB']),'</th>',
-		'</tr>';
-
+		<label for="filter-sort1">Sorting:</label>
+		<select name="SORT1" id="filter-sort1">
+			<option value="H"<?php echo $this->MYREQUEST['SORT1']=='H' ? ' selected="selected"' : ''; ?>>Total Hits</option>
+			<option value="Z"<?php echo $this->MYREQUEST['SORT1']=='Z' ? ' selected="selected"' : ''; ?>>Total Size</option>
+			<option value="T"<?php echo $this->MYREQUEST['SORT1']=='T' ? ' selected="selected"' : ''; ?>>Number of Files</option>
+			<option value="S"<?php echo $this->MYREQUEST['SORT1']=='S' ? ' selected="selected"' : ''; ?>>Directory Name</option>
+			<option value="A"<?php echo $this->MYREQUEST['SORT1']=='A' ? ' selected="selected"' : ''; ?>>Avg. Size</option>
+			<option value="C"<?php echo $this->MYREQUEST['SORT1']=='C' ? ' selected="selected"' : ''; ?>>Avg. Hits</option>
+		</select>
+		
+		<select name="SORT2">
+			<option value="D"<?php echo $this->MYREQUEST['SORT2']=='D' ? ' selected="selected"' : ''; ?>>DESC</option>
+			<option value="A"<?php echo $this->MYREQUEST['SORT2']=='A' ? ' selected="selected"' : ''; ?>>ASC</option>
+		</select>
+		
+		<select name="COUNT" onChange="form.submit()">
+			<option value="10" <?php echo $this->MYREQUEST['COUNT']=='10' ? ' selected="selected"' : ''; ?>>Top 10</option>
+			<option value="20" <?php echo $this->MYREQUEST['COUNT']=='20' ? ' selected="selected"' : ''; ?>>Top 20</option>
+			<option value="50" <?php echo $this->MYREQUEST['COUNT']=='50' ? ' selected="selected"' : ''; ?>>Top 50</option>
+			<option value="100"<?php echo $this->MYREQUEST['COUNT']=='100'? ' selected="selected"' : ''; ?>>Top 100</option>
+			<option value="150"<?php echo $this->MYREQUEST['COUNT']=='150'? ' selected="selected"' : ''; ?>>Top 150</option>
+			<option value="200"<?php echo $this->MYREQUEST['COUNT']=='200'? ' selected="selected"' : ''; ?>>Top 200</option>
+			<option value="500"<?php echo $this->MYREQUEST['COUNT']=='500'? ' selected="selected"' : ''; ?>>Top 500</option>
+			<option value="0"  <?php echo $this->MYREQUEST['COUNT']=='0'  ? ' selected="selected"' : ''; ?>>All</option>
+		</select>
+		</div>
+		<div class="col width-40 fltrt">
+		<label for="AGGR">Group By Dir Level:</label> 
+		<select name="AGGR" id="AGGR">
+			<option value="" selected="selected">None</option>
+		<?php for ($i = 1; $i < 10; $i++) { ?>
+			<option value="<?php echo $i; ?>"<?php echo $this->MYREQUEST['AGGR']==$i ? ' selected="selected"' : ''; ?>><?php echo $i; ?></option>
+		<?php } ?>
+		</select>
+		&nbsp;<input type="submit" value="GO!" />
+		</div>
+	</fieldset>
+	<div class="clr"></div>
+	
+	<table class="adminlist">
+		<thead>
+			<tr>
+				<th><?php echo SystemHtml::sortheader('S','Directory Name',  "&OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader('T','Number of Files', "&OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader('H','Total Hits',      "&OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader('Z','Total Size',      "&OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader('C','Avg. Hits',       "&OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader('A','Avg. Size',       "&OB=" . $this->MYREQUEST['OB']); ?></th>
+			</tr>
+		</thead>
+		<tbody>
+<?php 
 	// builds list with alpha numeric sortable keys
 	$tmp = $list = array();
 	foreach($this->cache[$this->scope_list[$this->MYREQUEST['SCOPE']]] as $entry)
@@ -123,19 +133,20 @@ $MY_SELF   = $this->MY_SELF;
 
 	foreach ($tmp as $k => $v)
 	{
-		switch($this->MYREQUEST['SORT1'])
+		switch ($this->MYREQUEST['SORT1'])
 		{
-			case 'A': $kn=sprintf('%015d-',$v['size'] / $v['ents']);break;
-			case 'T': $kn=sprintf('%015d-',$v['ents']);		break;
-			case 'H': $kn=sprintf('%015d-',$v['hits']);		break;
-			case 'Z': $kn=sprintf('%015d-',$v['size']);		break;
-			case 'C': $kn=sprintf('%015d-',$v['hits'] / $v['ents']);break;
-			case 'S': $kn = $k;					break;
+			case 'A': $kn = sprintf('%015d-', $v['size'] / $v['ents']); break;
+			case 'T': $kn = sprintf('%015d-', $v['ents']);              break;
+			case 'H': $kn = sprintf('%015d-', $v['hits']);              break;
+			case 'Z': $kn = sprintf('%015d-', $v['size']);              break;
+			case 'C': $kn = sprintf('%015d-', $v['hits'] / $v['ents']); break;
+			case 'S': $kn = $k;                                         break;
 		}
-		$list[$kn.$k] = array($k, $v['ents'], $v['hits'], $v['size']);
+		$list[$kn . $k] = array($k, $v['ents'], $v['hits'], $v['size']);
 	}
 
-	if ($list) {
+	if ($list) 
+	{
 		// sort list
 		switch ($this->MYREQUEST['SORT2'])
 		{
@@ -144,24 +155,27 @@ $MY_SELF   = $this->MY_SELF;
 		}
 		// output list
 		$i = 0;
-		foreach($list as $entry) {
+		foreach ($list as $entry) 
+		{
 			echo
-				'<tr class=tr-',$i%2,'>',
-				"<td class=td-0>",$entry[0],'</a></td>',
-				'<td class="td-n center">',$entry[1],'</td>',
-				'<td class="td-n center">',$entry[2],'</td>',
-				'<td class="td-n center">',$entry[3],'</td>',
-				'<td class="td-n center">',round($entry[2] / $entry[1]),'</td>',
-				'<td class="td-n center">',round($entry[3] / $entry[1]),'</td>',
+				'<tr class="row' . $i%2 . '">' .
+				'<td class="td-0">' . $entry[0] . '</a></td>' .
+				'<td class="td-n center">' . $entry[1] . '</td>' .
+				'<td class="td-n center">' . $entry[2] . '</td>' .
+				'<td class="td-n center">' . $entry[3] . '</td>' .
+				'<td class="td-n center">' . round($entry[2] / $entry[1]) . '</td>' .
+				'<td class="td-n center">' . round($entry[3] / $entry[1]) . '</td>' .
 				'</tr>';
 
-			if (++$i == $this->MYREQUEST['COUNT']) break;
+			if (++$i == $this->MYREQUEST['COUNT']) 
+			{
+				break;
+			}
 		}
-		
 	}
 	else
 	{
-		echo '<tr class=tr-0><td class="center" colspan=6><i>No data</i></td></tr>';
+		echo '<tr class="row0"><td class="center" colspan="6"><i>No data</i></td></tr>';
 	}
 
 	echo "</tbody></table>";
@@ -171,5 +185,4 @@ $MY_SELF   = $this->MY_SELF;
 		echo "<a href=\"$MY_SELF&OB=",$this->MYREQUEST['OB'],"&COUNT=0\"><i>",count($list)-$i,' more available...</i></a>';
 	}
 ?>
-
-</div>
+</form>
