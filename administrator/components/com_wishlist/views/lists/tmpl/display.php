@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = WishlistHelper::getActions('component');
 
-JToolBarHelper::title('<a href="index.php?option=com_wishlist">' . JText::_('Wishlist Manager') . '</a>', 'addedit.png');
+JToolBarHelper::title('<a href="index.php?option=com_wishlist">' . JText::_('Wishlist Manager') . '</a>', 'wishlist.png');
 if ($canDo->get('core.admin')) 
 {
 	JToolBarHelper::preferences($this->option, '550');
