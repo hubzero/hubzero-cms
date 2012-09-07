@@ -51,7 +51,7 @@ var HUB = {};
 					</tr>
 					<tr>
 						<td class="key" style="vertical-align:top;"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_ACTIVITY'); ?>:</td>
-						<td><?php echo $editor->display('econtent', $this->row->content, 'auto', 'auto', '45', '10', false); ?></td>
+						<td><?php echo $editor->display('econtent', $this->row->content, '100%', 'auto', '45', '10', false); ?></td>
 					</tr>
 					<tr>
 						<td class="key"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_ADRESSE'); ?>:</td>
@@ -258,27 +258,34 @@ var HUB = {};
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
+		<table class="meta">
+			<tbody>
+				<tr>
+					<th><?php echo JText::_('EVENTS_CAL_LANG_EVENT_STATE'); ?></th>
+					<td><?php echo $this->row->state > 0 ? JText::_('Published') : ($this->row->state < 0 ? JText::_('Archived') : JText::_('Draft Unpublished'));?></td>
+				</tr>
+				<tr>
+					<th><?php echo JText::_('EVENTS_CAL_LANG_EVENT_HITS'); ?></th>
+					<td><?php echo $this->row->hits;?></td>
+				</tr>
+				<tr>
+					<th><?php echo JText::_('EVENTS_CAL_LANG_EVENT_CREATED'); ?></th>
+					<td><?php echo $this->row->created ? $this->row->created.'</td></tr><tr><th>'.JText::_('EVENTS_CAL_LANG_EVENT_CREATED_BY').'</th><td>'.$userc : JText::_('EVENTS_CAL_LANG_EVENT_NEWEVENT');?></td>
+				</tr>
+<?php if ($this->row->modified && $this->row->modified != '0000-00-00 00:00:00') { ?>
+				<tr>
+					<th><?php echo JText::_('EVENTS_CAL_LANG_EVENT_MODIFIED'); ?></th>
+					<td><?php echo $this->row->modified ? $this->row->modified.'</td></tr><tr><th>'.JText::_('EVENTS_CAL_LANG_EVENT_MODIFIED_BY').'</th><td>'.$userm : JText::_('EVENTS_CAL_LANG_EVENT_NOTMODIFIED');?></td>
+				</tr>
+<?php } ?>
+			</tbody>
+		</table>
+
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('EVENTS_CAL_LANG_EVENT_STATUS'); ?></span></legend>
 
 			<table class="admintable">
 				<tbody>
-					<tr>
-						<td class="key"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_STATE'); ?></td>
-						<td><?php echo $this->row->state > 0 ? JText::_('Published') : ($this->row->state < 0 ? JText::_('Archived') : JText::_('Draft Unpublished'));?></td>
-					</tr>
-					<tr>
-						<td class="key"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_HITS'); ?></td>
-						<td><?php echo $this->row->hits;?></td>
-					</tr>
-					<tr>
-						<td class="key"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_CREATED'); ?></td>
-						<td><?php echo $this->row->created ? $this->row->created.'</td></tr><tr><td class="key">'.JText::_('EVENTS_CAL_LANG_EVENT_CREATED_BY').'</td><td>'.$userc : JText::_('EVENTS_CAL_LANG_EVENT_NEWEVENT');?></td>
-					</tr>
-					<tr>
-						<td class="key"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_MODIFIED'); ?></td>
-						<td><?php echo $this->row->modified ? $this->row->modified.'</td></tr><tr><td class="key">'.JText::_('EVENTS_CAL_LANG_EVENT_MODIFIED_BY').'</td><td>'.$userm : JText::_('EVENTS_CAL_LANG_EVENT_NOTMODIFIED');?></td>
-					</tr>
 					<tr>
 						<td class="key"><?php echo JText::_('EVENTS_CAL_LANG_EVENT_TYPE'); ?></td>
 						<td>

@@ -205,6 +205,8 @@ class EventsControllerEvents extends Hubzero_Controller
 	 */
 	public function editTask()
 	{
+		JRequest::setVar('hidemainmenu', 1);
+
 		// Instantiate a new view
 		$this->view->setLayout('edit');
 
