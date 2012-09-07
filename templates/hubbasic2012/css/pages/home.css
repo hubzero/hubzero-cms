@@ -295,12 +295,14 @@
 	.resources-section {
 		position: relative;
 		z-index: 1;
+		margin-bottom: 1em;
 	}
 	.resources-section .two {
 		background: #fff;
 		position: relative;
 		-webkit-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
 		-moz-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		-ms-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
 		-o-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
 		box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
 	}
@@ -317,6 +319,8 @@
 		height: 10px;
 		-webkit-box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 		-moz-box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+		-ms-box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+		-o-box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 		box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 		-webkit-transform: skew(-15deg) rotate(-6deg);
 		-moz-transform: skew(-15deg) rotate(-6deg);
@@ -359,34 +363,125 @@
 		display: block;
 		z-index: 1;
 	}
+	.events-section .wrap .first,
+	.events-section .wrap .second {
+		margin-bottom: 0;
+	}
+	.events-section table.latest_events_tbl,
+	.events-section table.latest_events_tbl td, 
+	.events-section table.latest_events_tbl th {
+		border: none;
+	}
+	/*.events-section table.latest_events_tbl td {
+		border-bottom: 1px solid #f9f9f9;
+	}*/
 
 	/* Events */
+	.events-section .mod_events_calendar caption {
+		position: relative;
+		border-bottom: 1px dashed #dadada;
+		font-size: 1.5em;
+		line-height: 1;
+		padding: 0 0 0.8em 0;
+		margin: 0;
+		text-align: center;
+		font-weight: normal;
+		font-family: 'ArvoRegular', Georgia, 'Times New Roman', 'Times', Serif;
+	}
+	.events-section .mod_events_calendar caption a {
+		color: #555;
+		border: none;
+	}
+	.events-section table.mod_events_calendar td {
+		border-bottom: 1px solid #eee;
+		text-align: center;
+	}
+	.events-section table.mod_events_calendar tr td:first-child,
+	.events-section table.mod_events_calendar tr td:last-child {
+		background-color: #f9f9f9;
+	}
+	.events-section table.mod_events_calendar tr td.daywithevents:first-child,
+	.events-section table.mod_events_calendar tr td.daywithevents:last-child,
+	.events-section table.mod_events_calendar .daywithevents {
+		background-color: #f1f1f1;
+	}
+	.events-section table.mod_events_calendar .prev, 
+	.events-section table.mod_events_calendar .next {
+		display: block;
+		width: 1em;
+		height: 1em;
+		font-size: 1em;
+		line-height: 1em;
+		overflow: hidden;
+		border: none;
+		position: absolute;
+		top: 0;
+		color: #bbb;
+	}
+	.events-section table.mod_events_calendar .prev {
+		left: 0;
+	}
+	.events-section table.mod_events_calendar .next {
+		right: 0;
+	}
+	.events-section table.mod_events_calendar .prev:hover, 
+	.events-section table.mod_events_calendar .next:hover {
+		border: none;
+		color: #333;
+	}
+	.events-section table.mod_events_calendar .prev:before {
+		font-family: 'Fontcons';
+		content: '\f0a8';
+		margin-right: 2em;
+	}
+	.events-section table.mod_events_calendar .next:before {
+		font-family: 'Fontcons';
+		content: '\f0a9';
+		margin-right: 2em;
+	}
+
 	.event-date {
 		width: 40px;
 		text-align: center;
 	}
-	.event-date .month {
+	.events-section .event-date span.month {
 		display: block;
 		text-transform: uppercase;
-		color: #ffff8f;
-		background: #72A233; 
+		color: #fff;
+		background-color: #555; /*#72A233; #0fa1ca */
+		border-color: #555;
 		font-weight: bold;
 		padding: 2px;
 		font-size: x-small;
+		text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.8);
+		letter-spacing: 0.1em;
+		-webkit-border-radius: 0.25em 0.25em 0 0;
+		-moz-border-radius: 0.25em 0.25em 0 0;
+		-ms-border-radius: 0.25em 0.25em 0 0;
+		-o-border-radius: 0.25em 0.25em 0 0;
+		border-radius: 0.25em 0.25em 0 0;
 	}
 	.event-date .upcoming {
 		background: rgb(0, 104, 55);
 		color: #f6f6f6;
 	}
-	.event-date .day {
+	.events-section .event-date span.day {
 		display: block;
 		padding: 2px;
-		border: 1px solid #f6f6f6;
+		background-color: #f1f1f1;
+		border: 1px solid #f1f1f1;
 		line-height: 20px;
+		letter-spacing: 0.1em;
+		text-shadow: 0 1px 1px #fff;
+		-webkit-border-radius: 0 0 0.25em 0.25em;
+		-moz-border-radius: 0 0 0.25em 0.25em;
+		-ms-border-radius: 0 0 0.25em 0.25em;
+		-o-border-radius: 0 0 0.25em 0.25em;
+		border-radius: 0 0 0.25em 0.25em;
 	}
 	.event-date {
-		float: left;
-		clear: left;
+		/*float: left;
+		clear: left;*/
 		width: 40px;
 		margin-right: 0.5em;
 		margin-bottom: 1em;
