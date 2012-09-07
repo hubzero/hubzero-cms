@@ -164,7 +164,7 @@ class JAJAXHandler
 		if (($type == 'mysqli') || ($type == "pdo_mysql")) {
 			$type = 'mysql';
 		}
-		$dbsample = '../sql'.DS.$type.DS.'sample_data.sql';
+		$dbsample = '../sql'.DS.$type.DS.'hz_sample_data.sql';
 
 		$db = & JInstallationHelper::getDBO($args['DBtype'], $args['DBhostname'], $args['DBuserName'], $args['DBpassword'], $args['DBname'], $args['DBPrefix']);
 		$result = JInstallationHelper::populateDatabase($db, $dbsample, $errors);
