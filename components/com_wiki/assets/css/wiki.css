@@ -343,12 +343,6 @@
 	.com_wiki #hubForm h3 {
 		display: none;
 	}*/
-	.com_wiki hr {
-		border-top: 1px solid #ccc;
-		background-image: none;
-		height: 1px;
-		width: auto;
-	}
 
 /* Preview */
 	#preview .section {
@@ -464,11 +458,12 @@
 	.wikipage blockquote {
 		margin: 2em 0 2.5em 0;
 		padding: 5px 0 5px 10px;
+		border-left: 2px solid #ccc;
 	}
 	.wikipage pre {
 		font-family: "Bitstream Vera Sans Mono", Courier, Monaco, ProFont, "American Typewriter", "Andale Mono", monospace;
 		color: #555;
-		background: #f7f7f7;
+		background-color: #f7f7f7;
 		border: 1px solid #d7d7d7;
 		margin: 1em 1.75em;
 		padding: .25em;
@@ -486,6 +481,14 @@
 	.com_wiki .wiki .modified-date {
 		color: #aaa;
 		font-size: 90%;
+	}
+	.wikipage hr {
+		border-top: 1px solid #ccc;
+		background-image: none;
+		height: 1px;
+		width: auto;
+		visibility: visible;
+		display: block;
 	}
 
 	/* Links */
