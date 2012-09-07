@@ -79,7 +79,7 @@ if ($this->post->id) {
 			</p>
 	
 			<fieldset>
-<?php if ($this->config->get('access-edit-thread') && !$this->post->parent) { ?>
+<?php if ($this->config->get('access-manage-thread') && !$this->post->parent) { ?>
 				<label for="field-sticky">
 					<input class="option" type="checkbox" name="fields[sticky]" id="field-sticky" value="1"<?php if ($this->post->sticky) { echo ' checked="checked"'; } ?> /> 
 					<?php echo JText::_('COM_FORUM_FIELD_STICKY'); ?>

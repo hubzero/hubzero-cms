@@ -260,6 +260,7 @@ class ForumPost extends JTable
 				$this->title .= '...';
 			}
 		}
+		$this->sticky = ($this->sticky) ? $this->sticky : 0;
 
 		$juser =& JFactory::getUser();
 		if (!$this->id) 
