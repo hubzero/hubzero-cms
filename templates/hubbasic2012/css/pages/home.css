@@ -11,8 +11,11 @@
 	#content {
 		background: transparent;
 		box-shadow: none;
+		*border: none;
 	}
-
+	html>body #content {
+		*border: none;
+	}
 /* Misc */
 	#sub-masthead {
 		padding: 0;
@@ -27,28 +30,31 @@
 		overflow: hidden;
 	}
 
-	#content-nav {
-		background: #fff;
-		border-bottom: 1px solid #E5E5E5;
-		padding: 0 30px;
+/* Congratulations box */
+	#welcome {
+		width: 45em;
+		margin: 40px auto 0 auto;
+		background: rgba(0, 0, 0, 0.4);
+		-webkit-border-radius: 1em;
+		-moz-border-radius: 1em;
+		-ms-border-radius: 1em;
+		-o-border-radius: 1em;
+		border-radius: 1em;
+		padding: 30px;
+		text-align: center;
+		color: #ddd;
+		text-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+		*background: #000;
+		filter: alpha(opacity = 60);
 	}
-	#content-nav ul {
+	#welcome h2 {
 		margin: 0;
 		padding: 0;
-		list-style: none;
-		float: left;
-		overflow: hidden;
-		border-right: 1px solid #E5E5E5;
+		color: #fff;
 	}
-	#content-nav ul li {
-		color: #B1B1B1;
-		float: left;
-		position: relative;
-		margin: 0;
-		padding: 1.2em 1em;
-		border-left: 1px solid #E5E5E5;
-		font-size: 0.875em;
-		line-height: 1;
+	#welcome h2 sup {
+		font-size: 75%;
+		font-weight: normal;
 	}
 
 /* Freatured items */
@@ -79,25 +85,22 @@
 	#features .columns ul {
 		border: none;
 	}
-	#features .columns p {
+	#features .columns p,
+	#features .columns form {
 		margin: 0;
 		padding: 0 30px 30px 30px;
 	}
-	/*#features .columns p:last-child {
-		margin-bottom: 0;
+	#features .columns form {
+		padding-bottom: 0;
 	}
-	#features .columns p.featured-img a {
-		border: none;
-	}*/
-	#features .columns p.featured-img {
-		float: left;
-		margin: 0;
+	#features .columns p.btn-container {
+		text-align: center;
 	}
 	#features .columns div:first-child {
 		position: relative;
 		background: #fff;
 		margin: 0;
-		padding: 30px;
+		padding: 0;
 		-webkit-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
 		-moz-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
 		-o-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
@@ -106,9 +109,6 @@
 	}
 	html.firefox #features .columns div:first-child {
 		min-height: 274px;
-	}
-	#features .columns div:first-child h3 {
-		display: none;
 	}
 	#features .columns:before,
 	#features .columns:after,
@@ -171,6 +171,7 @@
 	}
 	#features .poll ul {
 		margin: 0;
+		list-style: none;
 	}
 	#features .poll li {
 		background: #f9f9f9;
@@ -190,6 +191,7 @@
 		content: "\f086";
 	}
 
+/* Highlight section */
 	.highlight-section {
 		padding: 30px 60px;
 		margin: 0 -30px 2em -30px;

@@ -77,8 +77,8 @@
 	#content .four div.donate:before {
 		content: "\f04d";
 	}
-	#content .four div.workshop:before {
-		content: "\273D";
+	#content .four div.blog:before {
+		content: "\f036";
 	}
 	#content .four div.poll:before {
 		content: "\f080";
@@ -126,8 +126,8 @@
 	#content .four div.donate {
 		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf04d;&nbsp;</span>' + this.innerHTML);
 	}
-	#content .four div.workshop {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#x273D;&nbsp;</span>' + this.innerHTML);
+	#content .four div.blog {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf036;&nbsp;</span>' + this.innerHTML);
 	}
 	#content .four div.poll {
 		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf080;&nbsp;</span>' + this.innerHTML);

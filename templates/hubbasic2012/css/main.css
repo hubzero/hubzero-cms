@@ -425,10 +425,12 @@
 	#masthead h1 {
 		color: #333333;
 		font-size: 2em;
-		position: absolute;
 		margin: 0;
+		/*position: absolute;
 		top: 15px;
-		left: 26px;
+		left: 26px;*/
+		margin: 15px 0 0 26px;
+		float: left;
 		text-transform: lowercase;
 	}
 	#masthead h1 a {
@@ -662,6 +664,8 @@
 		border: none;
 		margin: 31px 0 0 230px;
 		padding: 0;
+		
+		margin: 31px 0 0 5px;
 	}
 	#nav h2 {
 		display: none;
