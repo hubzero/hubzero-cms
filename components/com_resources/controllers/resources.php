@@ -1062,6 +1062,16 @@ class ResourcesControllerResources extends Hubzero_Controller
 			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
 			return;
 		}
+		if ($resource->publish_up && $resource->publish_up != '0000-00-00 00:00:00' && $resource->publish_up >= $now) 
+		{
+			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			return;
+		}
+		if ($resource->publish_down && $resource->publish_down != '0000-00-00 00:00:00' && $resource->publish_down <= $now) 
+		{
+			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+			return;
+		}
 
 		// Initiate a resource helper class
 		$helper = new ResourcesHelper($resource->id, $this->database);
