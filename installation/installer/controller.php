@@ -263,14 +263,18 @@ class JInstallationController extends JController
 			return false;
 		}
 
-		/*
-		if ( ! $model->ftpConfig( 1 ) )
+		/*if ( ! $model->ftpConfig( 1 ) )
+		{
+			$view->error();
+			return false;
+		}*/
+		
+		if ( ! $model->mainConfig() )
 		{
 			$view->error();
 			return false;
 		}
-		*/
-
+		
 		$view->mainConfig();
 
 		return true;

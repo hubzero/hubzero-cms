@@ -43,12 +43,12 @@
 		var frm = this.document.filename;
 		if(frm.what_to_load[0].checked) {
 			frm.instDefault.disabled = false;
-			frm.sqlUploaded.disabled = true;
+			frm.sqlFile.disabled = true;
 			//frm.oldPrefix.disabled = true;
 			//frm.srcEncoding.disabled = true;
 			frm.migrationLoad.disabled = true;
 			//frm.migration.disabled = true;
-			frm.sqlFile.disabled = true;
+			frm.sqlUploaded.disabled = true;
 		} else if(frm.what_to_load[1].checked) {
 			frm.instDefault.disabled = true;
 			frm.sqlFile.disabled = false;
@@ -104,7 +104,6 @@
 
 <div id="right">
 	<div id="rightpad">
-
 		<div id="step">
 			<div class="m">
 				<div class="far-right">

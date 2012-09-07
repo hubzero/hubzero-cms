@@ -48,7 +48,7 @@ $v = $browser->getBrowserMajorVersion();
 				</div>
 			</div>
 			<div id="copyright">
-				<a href="http://hubzer.org" rel="external">HUBzero&reg;</a>
+				<a href="http://hubzero.org" rel="external">HUBzero&reg;</a>
 				<?php echo JText::_('ISFREESOFTWARE') ?>
 			</div>
 		</div>

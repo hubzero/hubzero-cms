@@ -32,9 +32,27 @@ define( 'JPATH_LIBRARIES',		JPATH_ROOT . DS . 'libraries' );
 define( 'JXPATH_BASE', JPATH_BASE.DS.'includes' );
 
 // Make sure that Joomla! is not yet installed
-if (file_exists(JPATH_CONFIGURATION.DS.'configuration.php') && (filesize(JPATH_CONFIGURATION.DS.'configuration.php') > 10)) {
-	header( 'Location: ../../index.php' );
-	exit();
+if (file_exists( JPATH_CONFIGURATION . DS . 'configuration.php' ) )
+{
+	require_once( JPATH_CONFIGURATION . DS . 'configuration.php' );
+
+	if (class_exists('JConfig'))
+	{
+		// System configuration
+		$CONFIG = new JConfig();
+
+		if (count(get_object_vars($CONFIG)) > 1)
+		{
+			header( 'Location: ../../index.php' );
+			exit();
+		}
+		 
+		if (empty($CONFIG->installkey))
+		{
+			header( 'Location: ../../index.php' );
+			exit();
+		}
+	}
 }
 
 // System includes
@@ -358,8 +376,6 @@ class JAJAXLang extends JObject
 		return $dir;
 	}
 }
-
-
 
 /*
  * Process the AJAX requests
