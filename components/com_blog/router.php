@@ -67,6 +67,11 @@ function BlogBuildRoute(&$query)
 		$segments[] = $query['alias'];
 		unset($query['alias']);
 	}
+	if (!empty($query['action'])) 
+	{
+		$segments[] = $query['action'];
+		unset($query['action']);
+	}
 
 	return $segments;
 }
@@ -121,6 +126,10 @@ function BlogParseRoute($segments)
 		if ($segments[3] == 'comments.rss') 
 		{
 			$vars['task'] = 'comments';
+		}
+		else 
+		{
+			$vars['task'] = $segments[3];
 		}
 	}
 	if (in_array($vars['task'], array('deletefile', 'deletefolder', 'upload')))

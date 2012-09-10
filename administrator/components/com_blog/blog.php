@@ -65,24 +65,24 @@ require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'blog.php');
 
 $scope = JRequest::getCmd('scope', 'site');
+$controllerName = JRequest::getCmd('controller', 'entries');
 
 JSubMenuHelper::addEntry(
 	JText::_('Site'),
 	'index.php?option=' . $option. '&controller=entries&scope=site',
-	$scope == 'site'
+	($controllerName == 'entries' && $scope == 'site')
 );
 JSubMenuHelper::addEntry(
 	JText::_('Member'),
 	'index.php?option=' . $option. '&controller=entries&scope=member',
-	$scope == 'member'
+	($controllerName == 'entries' && $scope == 'member')
 );
 JSubMenuHelper::addEntry(
 	JText::_('Group'),
 	'index.php?option=' . $option. '&controller=entries&scope=group',
-	$scope == 'group'
+	($controllerName == 'entries' && $scope == 'group')
 );
 
-$controllerName = JRequest::getCmd('controller', 'entries');
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'entries';

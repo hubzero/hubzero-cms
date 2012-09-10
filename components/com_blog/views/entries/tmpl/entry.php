@@ -338,6 +338,9 @@ if ($this->comments) {
 				<?php echo $content; ?>
 <?php 		if (!$comment->reports) { ?>
 					<p class="comment-options">
+<?php if ($this->config->get('access-manage-entry')) { ?>
+						<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&year='.JHTML::_('date', $this->row->publish_up, $this->yearFormat, $this->tz) . '&month=' . JHTML::_('date', $this->row->publish_up, $this->monthFormat, $this->tz) . '&alias=' . $this->row->alias.'&action=deletecomment&comment='.$comment->id); ?>"><?php echo JText::_('Delete'); ?></a> | 
+<?php } ?>
 						<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=blog&id='.$comment->id.'&parent='.$this->row->id); ?>"><?php echo JText::_('Report abuse'); ?></a> | 
 <?php
 $rtrn = JRoute::_('index.php?option=' . $this->option . '&task='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz) . '/' . $this->row->alias.'?reply='.$comment->id.'#post-comment');
@@ -394,8 +397,11 @@ if ($juser->get('guest')) {
 							<?php echo $content; ?>
 <?php 				if (!$reply->reports) { ?>
 							<p class="comment-options">
-								<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=blog&id='.$reply->id.'&parent='.$this->row->id); ?>">Report abuse</a> | 
-								<a class="reply" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task='.JHTML::_('date', $this->row->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz) . '/' . $this->row->alias.'?reply='.$reply->id.'#post-comment'); ?>">Reply</a>
+							<?php if ($this->config->get('access-manage-entry')) { ?>
+								<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&year='.JHTML::_('date', $this->row->publish_up, $this->yearFormat, $this->tz) . '&month=' . JHTML::_('date', $this->row->publish_up, $this->monthFormat, $this->tz) . '&alias=' . $this->row->alias.'&action=deletecomment&comment='.$reply->id); ?>"><?php echo JText::_('Delete'); ?></a> | 
+							<?php } ?>
+								<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=blog&id='.$reply->id.'&parent='.$this->row->id); ?>"><?php echo JText::_('Report abuse'); ?></a> | 
+								<a class="reply" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task='.JHTML::_('date', $this->row->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz) . '/' . $this->row->alias.'?reply='.$reply->id.'#post-comment'); ?>"><?php echo JText::_('Reply'); ?></a>
 							</p>
 <?php 				} ?>
 						</div>
@@ -442,6 +448,9 @@ if ($juser->get('guest')) {
 									<?php echo $content; ?>
 <?php 					if (!$response->reports) { ?>
 									<p class="comment-options">
+									<?php if ($this->config->get('access-manage-entry')) { ?>
+										<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&year='.JHTML::_('date', $this->row->publish_up, $this->yearFormat, $this->tz) . '&month=' . JHTML::_('date', $this->row->publish_up, $this->monthFormat, $this->tz) . '&alias=' . $this->row->alias.'&action=deletecomment&comment='.$response->id); ?>"><?php echo JText::_('Delete'); ?></a> | 
+									<?php } ?>
 										<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=blog&id='.$response->id.'&parent='.$this->row->id); ?>"><?php echo JText::_('Report abuse'); ?></a>
 									</p>
 <?php 					} ?>

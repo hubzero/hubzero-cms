@@ -327,5 +327,93 @@ class BlogComment extends JTable
 		}
 		return true;
 	}
+
+	/**
+	 * Return a count of entries based off of filters passed
+	 * Used for admin interface
+	 * 
+	 * @param      array $filters Filters to build query from
+	 * @return     integer
+	 */
+	public function getEntriesCount($filters=array())
+	{
+		$filters['limit'] = 0;
+		$query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadResult();
+	}
+
+	/**
+	 * Get entries based off of filters passed
+	 * Used for admin interface
+	 * 
+	 * @param      array $filters Filters to build query from
+	 * @return     array
+	 */
+	public function getEntries($filters=array())
+	{
+		$query = "SELECT c.*, u.name " . $this->_buildQuery($filters);
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
+
+	/**
+	 * Build a query from filters passed
+	 * Used for admin interface
+	 * 
+	 * @param      array $filters Filters to build query from
+	 * @return     string SQL
+	 */
+	private function _buildQuery($filters)
+	{
+		$query  = "FROM $this->_tbl AS c, #__xprofiles AS u";
+
+		$where = array(
+			"c.created_by=u.uidNumber"
+		);
+
+		if (isset($filters['created_by']) && $filters['created_by'] != 0) 
+		{
+			$where[] = "c.created_by=" . $filters['created_by'];
+		}
+		if (isset($filters['entry_id']) && $filters['entry_id'] != 0) 
+		{
+			$where[] = "c.entry_id=" . $filters['entry_id'];
+		}
+		if (isset($filters['parent']) && $filters['parent'] != '') 
+		{
+			$where[] = "c.parent='" . $filters['parent'] . "'";
+		}
+		if (isset($filters['anonymous']) && $filters['anonymous'] != '') 
+		{
+			$where[] = "c.anonymous='" . $filters['anonymous'] . "'";
+		}
+		if (isset($filters['search']) && $filters['search'] != '') 
+		{
+			$where[] = "LOWER(c.content) LIKE '%" . strtolower($filters['search']) . "%'";
+		}
+
+		if (count($where) > 0)
+		{
+			$query .= " WHERE " . implode(" AND ", $where);
+		}
+
+		if (!isset($filters['sort']) || !$filters['sort']) 
+		{
+			$filters['sort'] = 'created';
+		}
+		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+		{
+			$filters['sort_Dir'] = 'DESC';
+		}
+		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+		/*if (isset($filters['limit']) && $filters['limit'] != 0) 
+		{
+			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+		}*/
+		return $query;
+	}
 }
 

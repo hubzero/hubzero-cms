@@ -275,9 +275,15 @@ for ($i=0, $n=count($rows); $i < $n; $i++)
 					</a>
 				</td>
 				<td>
+<?php if ($canDo->get('core.edit')) { ?>
+					<a class="comment" href="index.php?option=<?php echo $this->option ?>&amp;controller=comments&amp;entry_id=<?php echo $row->id; ?>">
+						<?php echo $row->comments . ' ' . JText::_('comment(s)'); ?>
+					</a>
+<?php } else { ?>
 					<span class="comment">
 						<?php echo $row->comments . ' ' . JText::_('comment(s)'); ?>
 					</span>
+<?php } ?>
 				</td>
 <?php if ($this->filters['scope'] == 'group') { ?>
 				<td>

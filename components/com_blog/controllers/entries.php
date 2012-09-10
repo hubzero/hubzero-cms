@@ -882,7 +882,7 @@ class BlogControllerEntries extends Hubzero_Controller
 		$comment = new BlogComment($this->database);
 		$comment->load($id);
 
-		if ($this->juser->get('id') != $comment->created_by && !$this->authorized) 
+		if ($this->juser->get('id') != $comment->created_by && !$this->config->get('access-manage-entry')) 
 		{
 			return $this->entryTask();
 		}
@@ -897,7 +897,13 @@ class BlogControllerEntries extends Hubzero_Controller
 		}
 
 		// Return the topics list
-		return $this->entryTask();
+		//return $this->entryTask();
+		$year  = JRequest::getVar('year', '');
+		$month = JRequest::getVar('month', '');
+		$alias = JRequest::getVar('alias', '');
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $row->alias)
+		);
 	}
 
 	/**
