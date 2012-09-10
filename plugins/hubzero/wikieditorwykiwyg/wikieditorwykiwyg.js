@@ -103,6 +103,8 @@ WYKIWYG.converter = function() {
 							columns.count = 0;
 						}
 						replace += innerHTML ? '\n' + '[[Column(start' + (style && style[1] ? ', style=' + style[1] : '' ) + (cls && cls[1] ? ', class=' + cls[1] : '' ) + (id && id[1] ? ', id=' + id[1] : '' ) + ')]]' + innerHTML + '[[Column(end)]]\n' : '';
+					} else {
+						replace += innerHTML + '\n';
 					}
 
 					return replace;
@@ -1972,6 +1974,17 @@ WYKIWYG.editor = function() {
 			v = v.replace(/<span style="font-weight: bold;?">(.*)<\/span>/gi,'<strong>$1</strong>');
 			v = v.replace(/<span style="font-style: italic;?">(.*)<\/span>/gi,'<em>$1</em>');
 			v = v.replace(/<span style="font-weight: bold;?">(.*)<\/span>|<b\b[^>]*>(.*?)<\/b[^>]*>/gi,'<strong>$1</strong>');
+			v = v.replace(/\n{2,}<br ?\/?>/gi,'\n\n');
+
+			// Strip unwanted spans -- these can occur when pasting from other applications
+			v = v.replace(/<span\b[^>]*>([\s\S]*?)<\/span>/gi,'$1');
+
+			// Most of this is to get Firefox to behave
+			v = v.replace(/<div style="margin-left: 40px;?">(.*)<\/div>/gi,'<blockquote>$1</blockquote>\n\n');
+			v = v.replace(/<br ?\/?><\/(blockquote|p|div|li|dt|dd|td|h[1-6])>/gi,'</$1>');
+			v = v.replace(/<\/(blockquote|p|div|li|dt|dd|td|h[1-6])><br ?\/?>/gi,'</$1>\n');
+			v = v.replace(/<\/div><(blockquote|p|div|li|dt|dd|td|h[1-6])(\b[^>]*)>/gi,'</div>\n<$1$2>');
+			v = v.replace(/<br ?\/?><br ?\/?>/gi,'\n\n');
 		}
 		return converter.makeWiki(v);
 	},
