@@ -56,7 +56,7 @@ if ($canDo->get('core.edit'))
 }
 if ($canDo->get('core.delete')) 
 {
-	JToolBarHelper::deleteList();
+	//JToolBarHelper::deleteList();
 }
 
 JHTML::_('behavior.tooltip');
