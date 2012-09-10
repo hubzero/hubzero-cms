@@ -47,7 +47,7 @@ if ($this->report && !$this->getError()) {
 		}
 	}
 ?>
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="hubForm">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=reportabuse'); ?>" method="post" id="hubForm">
 		<div class="explaination">
 			<p><?php echo JText::_('REPORT_ABUSE_EXPLANATION'); ?></p>
 			<p><?php echo JText::_('REPORT_ABUSE_DESCRIPTION_HINT'); ?></p>
@@ -55,15 +55,17 @@ if ($this->report && !$this->getError()) {
 		<fieldset>
 			<h3><?php echo JText::_('REPORT_ABUSE'); ?></h3>
 	
-			<div class="abuseitem">
+			<div class="abuseitem field-wrap">
 				<h4><?php 
-	 				echo ($this->report->href) ? '<a href="' . $this->report->href . '">': '';
-	 				echo ucfirst($this->cat) . ' by ';
-	 				echo ($this->report->anon != 0) ? JText::_('ANONYMOUS') : $name;
-	 				echo ($this->report->href) ? '</a>': '';
+					echo ($this->report->href) ? '<a href="' . $this->report->href . '">': '';
+					echo ucfirst($this->cat) . ' by ';
+					echo ($this->report->anon != 0) ? JText::_('ANONYMOUS') : $name;
+					echo ($this->report->href) ? '</a>': '';
 				?></h4>
-				<?php echo ($this->report->subject) ? t.t.'<p><strong>'.stripslashes($this->report->subject).'</strong></p>'.n : ''; ?>
-				<p><?php echo stripslashes($this->report->text); ?></p>
+				<?php echo ($this->report->subject) ? '<p><strong>'.stripslashes($this->report->subject).'</strong></p>' : ''; ?>
+				<blockquote cite="<?php echo ($this->report->anon != 0) ? JText::_('ANONYMOUS') : $name; ?>">
+					<p><?php echo $this->escape(stripslashes($this->report->text)); ?></p>
+				</blockquote>
 			</div>
 	
 			<p class="multiple-option">

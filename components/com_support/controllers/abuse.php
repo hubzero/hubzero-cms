@@ -39,6 +39,42 @@ ximport('Hubzero_Controller');
 class SupportControllerAbuse extends Hubzero_Controller
 {
 	/**
+	 * Method to set the document path
+	 * 
+	 * @return     void
+	 */
+	protected function _buildPathway()
+	{
+		$pathway =& JFactory::getApplication()->getPathway();
+
+		if (count($pathway->getPathWay()) <= 0) 
+		{
+			$pathway->addItem(
+				JText::_(strtoupper($this->_name)),
+				'index.php?option=' . $this->_option . '&controller=index'
+			);
+		}
+		$pathway->addItem(
+			JText::_(strtoupper('REPORT_ABUSE')),
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=reportabuse'
+		);
+	}
+
+	/**
+	 * Method to build and set the document title
+	 * 
+	 * @return     void
+	 */
+	protected function _buildTitle()
+	{
+		$this->_title = JText::_(strtoupper($this->_option));
+		$this->_title .= ': ' . JText::_(strtoupper('REPORT_ABUSE'));
+
+		$document =& JFactory::getDocument();
+		$document->setTitle($this->_title);
+	}
+
+	/**
 	 * Reports an item as abusive
 	 * 
 	 * @return     void
@@ -182,6 +218,8 @@ class SupportControllerAbuse extends Hubzero_Controller
 		}
 
 		// Get the search result totals
+		JPluginHelper::importPlugin('support');
+		$dispatcher =& JDispatcher::getInstance();
 		$results = $dispatcher->trigger('onReportItem', array(
 			$this->view->refid,
 			$this->view->cat

@@ -99,7 +99,7 @@ function supportBuildRoute(&$query)
 				}
 				else 
 				{
-					if ($query['controller'] == 'queries')
+					if (isset($query['controller']) && $query['controller'] == 'queries')
 					{
 						$segments[] = $query['controller'];
 					}

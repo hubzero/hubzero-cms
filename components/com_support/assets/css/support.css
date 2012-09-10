@@ -715,6 +715,8 @@
 		color: #666666;
 		font-weight: normal;
 	}
+	#hubForm .abuseitem.field-wrap p, 
+	#hubForm .abuseitem p,
 	.abuseitem p {
 		margin: 0.5em 0 0.5em 0;
 	}
