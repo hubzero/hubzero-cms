@@ -239,7 +239,7 @@ var Conditions = {
 			expressions[i].flddisp = col.text();
 			expressions[i].opval   = op.val();
 			expressions[i].opdisp  = op.text();
-			expressions[i].val     = $(expressionelem[i]).find('.val')[0].val();//$(expressionelem[i]).find(':text').val();
+			expressions[i].val     = $($(expressionelem[i]).find('.val')[0]).val();//$(expressionelem[i]).find(':text').val();
 		}
 		q.expressions = expressions;
 

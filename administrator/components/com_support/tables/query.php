@@ -235,7 +235,6 @@ class SupportQuery extends JTable
 	public function getCommon()
 	{
 		$filters = array(
-			'user_id'  => 0,
 			'iscore'   => 2,
 			'sort'     => 'id',
 			'sort_Dir' => 'asc'
@@ -254,7 +253,6 @@ class SupportQuery extends JTable
 	public function getMine()
 	{
 		$filters = array(
-			'user_id'  => 0,
 			'iscore'   => 1,
 			'sort'     => 'id',
 			'sort_Dir' => 'asc'

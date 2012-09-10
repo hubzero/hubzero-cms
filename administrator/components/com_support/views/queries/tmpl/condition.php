@@ -75,8 +75,6 @@ if ($this->condition->expressions)
 			}
 		}
 ?>
-				<option value="="<?php if ($expression->opval == '=') { echo ' selected="selected"'; } ?>>is</option>
-				<option value="!="<?php if ($expression->opval == '!=') { echo ' selected="selected"'; } ?>>is not</option>
 			</select>
 <?php 
 		if (is_array($values))

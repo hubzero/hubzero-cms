@@ -175,6 +175,8 @@ class SupportModelConditions extends JObject
 		);
 		$conditions->report = $this->_expression(
 			array(
+				$this->_operator('=', 'is', false),
+				$this->_operator('!=', 'is not', false),
 				$this->_operator('LIKE \'%$1%\'', 'contains', true),
 				$this->_operator('LIKE \'$1%\'', 'starts with', false),
 				$this->_operator('LIKE \'%$1\'', 'ends with', false),
