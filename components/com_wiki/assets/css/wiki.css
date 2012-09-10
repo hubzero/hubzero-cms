@@ -502,16 +502,16 @@
 	}
 
 /* Figures */
-	.wikipage .figure img {
-		margin: 0.5em;
-		padding: 0;
-		background: transparent;
-		text-align: center;
-	}
 	.wikipage .figure {
 		display: inline-block;
 		background: #fff;
 		border: 1px solid #eaeaea;
+	}
+	.wikipage .figure img {
+		margin: 0; /*.5em;*/
+		padding: 0;
+		background: transparent;
+		text-align: center;
 	}
 	.wikipage .figure a {
 		border: none;
