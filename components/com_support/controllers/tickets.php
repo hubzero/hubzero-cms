@@ -412,12 +412,12 @@ class SupportControllerTickets extends Hubzero_Controller
 					// Incoming sort
 					$this->view->filters['sort']    = trim($app->getUserStateFromRequest(
 						$this->_option . '.' . $this->_controller . '.sort', 
-						'filter_order', 
+						'sort', 
 						$query->sort
 					));
 					$this->view->filters['sortdir'] = trim($app->getUserStateFromRequest(
 						$this->_option . '.' . $this->_controller . '.sortdir', 
-						'filter_order_Dir', 
+						'sortdir', 
 						$query->sort_dir
 					));
 					// Get the records
