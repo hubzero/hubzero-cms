@@ -675,6 +675,10 @@ class GroupsController extends Hubzero_Controller
 		// If we are a special group load special template
 		if ($group->get('type') == 3) 
 		{
+			if (is_file(JPATH_SITE . DS . 'templates' . DS . JFactory::getApplication()->getTemplate() . DS . 'group.php'))
+			{
+				JRequest::setVar('tmpl', 'group');
+			}
 			$view = new JView(array('name' => 'view', 'layout' => 'special'));
 		} 
 		else 
