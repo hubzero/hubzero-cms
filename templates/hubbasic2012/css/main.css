@@ -114,6 +114,9 @@
 	h2:hover a {
 		color: inherit;
 	}
+	blockquote {
+		margin-left: 2em;
+	}
 /* Pre, Code, TrueType. */
 	pre {
 		font-family: "Bitstream Vera Sans Mono", Courier, Monaco, ProFont, "American Typewriter", "Andale Mono", monospace;
