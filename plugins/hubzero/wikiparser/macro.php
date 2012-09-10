@@ -66,6 +66,13 @@ class WikiMacro
 	protected $_error = NULL;
 
 	/**
+	 * Allow macro in partial parsing?
+	 * 
+	 * @var string
+	 */
+	public $allowPartial = false;
+
+	/**
 	 * Instance of a macro
 	 * 
 	 * @var object

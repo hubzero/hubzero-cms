@@ -37,6 +37,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 class FileMacro extends WikiMacro
 {
 	/**
+	 * Allow macro in partial parsing?
+	 * 
+	 * @var string
+	 */
+	public $allowPartial = true;
+
+	/**
 	 * Container for element attributes
 	 * 
 	 * @var array

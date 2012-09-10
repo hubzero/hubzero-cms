@@ -40,6 +40,14 @@ defined('_JEXEC') or die('Restricted access');
 class WikiParser
 {
 	/**
+	 * Perform a full parse
+	 * False = limited macro usage, etc.
+	 * 
+	 * @var string
+	 */
+	var $fullparse = true;
+
+	/**
 	 * Description for 'mUniqPrefix'
 	 * 
 	 * @var string
@@ -165,7 +173,9 @@ class WikiParser
 	 */
 	public function parse($text, $fullparse=true, $linestart=0, $camelcase=1)
 	{
-		if (!$fullparse) 
+		$this->fullparse = $fullparse;
+
+		if (!$this->fullparse) 
 		{
 			$camelcase = 0;
 		}
@@ -183,7 +193,7 @@ class WikiParser
 
 		// Process includes
 		// Includes are essentially smaller other pages
-		if ($fullparse) 
+		if ($this->fullparse) 
 		{
 			$text = $this->includes($text);
 		}
@@ -209,27 +219,24 @@ class WikiParser
 		// exciting things like link expansions from showing up in surprising
 		// places.
 		$text = $this->tables($text);
-		if ($fullparse) 
-		{
-			
 
+		if ($this->fullparse) 
+		{
 			// Do horizontal rules <hr />
 			$text = preg_replace('/(^|\n)-----*/', '\\1<hr />', $text);
 
 			// Do headings <h1>, <h2>, etc.
 			$text = $this->headings($text);
 		}
+
 		// Do quotes. '''stuff''' => <strong>stuff</strong>
 		$text = $this->quotes($text);
 
 		// Do spans
 		$text = $this->spans($text);
 
-		if ($fullparse) 
-		{
-			// Process macros
-			$text = $this->macros($text);
-		}
+		// Process macros
+		$text = $this->macros($text);
 
 		// Do glyphs
 		$text = $this->glyphs($text);
@@ -247,21 +254,19 @@ class WikiParser
 		);
 		$text = preg_replace(array_keys($fixtags), array_values($fixtags), $text);
 
-		if ($fullparse) 
+		if ($this->fullparse) 
 		{
 			$text = $this->admonitions($text);
 		}
-			// Do definition lists
-			$text = $this->doDFLists($text);
-		if ($fullparse) 
-		{
-			// Unstrip macro blocks BEFORE doing block levels or <p> tags will get messy
-			$text = preg_replace_callback('/MACRO' . $this->mUniqPrefix . '/i', array(&$this, 'restore_macros'), $text);
-		}
 
-			// Only once and last
-			$text = $this->doBlockLevels($text, $linestart);
-		//}
+		// Do definition lists
+		$text = $this->doDFLists($text);
+
+		// Unstrip macro blocks BEFORE doing block levels or <p> tags will get messy
+		$text = preg_replace_callback('/MACRO' . $this->mUniqPrefix . '/i', array(&$this, 'restore_macros'), $text);
+
+		// Only once and last
+		$text = $this->doBlockLevels($text, $linestart);
 
 		// Put back removed <math>
 		$text = $this->aftermath($text);
@@ -277,7 +282,7 @@ class WikiParser
 		$text = preg_replace('!(</?(?:table|tr|td|th|div|ul|ol|li|pre|select|form|blockquote|p|h[1-6])[^>]*>)\s*</p>!', "$1", $text);
 
 		// Format headings and build a table of contents
-		if (strstr($text, '<p>MACRO' . $this->uniqPrefix() . '[[TableOfContents]]' . "\n" . '</p>')) 
+		if ($this->fullparse && strstr($text, '<p>MACRO' . $this->uniqPrefix() . '[[TableOfContents]]' . "\n" . '</p>')) 
 		{
 			//$output = $this->toc($text);
 			//$text = $output['text'];
@@ -838,8 +843,16 @@ class WikiParser
 		$t = str_replace("\n", '', $t);
 		if (substr($t, 0, 6) == '#!html') 
 		{
-			$txt = $this->cleanXss($txt);
-			return preg_replace('/#!html/', '', $txt, 1);
+			if ($this->fullparse)
+			{
+				$txt = $this->cleanXss($txt);
+				return preg_replace('/#!html/', '', $txt, 1);
+			}
+			else
+			{
+				$txt = $this->cleanXss($txt);
+				return '<strong>' . JText::_('Wiki HTML blocks not allowed') . '</strong>';
+			}
 		} 
 		else 
 		{
@@ -1305,6 +1318,12 @@ class WikiParser
 				if (class_exists($macroname)) 
 				{
 					$macro = new $macroname();
+
+					if (!$this->fullparse && !$macro->allowPartial)
+					{
+						return '<strong>Macro "' . $matches[1] . '" not allowed.</strong>';
+					}
+
 					$_macros[$matches[1]] =& $macro;
 				} 
 				else 
