@@ -116,6 +116,16 @@
 	}
 	blockquote {
 		margin-left: 2em;
+		color: #888;
+		position: relative;
+	}
+	blockquote:before {
+		content: "\275D";
+		font-family: 'Fontcons';
+		position: absolute;
+		top: 0;
+		left: -2em;
+		color: #ccc;
 	}
 /* Pre, Code, TrueType. */
 	pre {
@@ -1468,7 +1478,8 @@
 		padding-left: 20px;
 	}
 	.aside li strong,
-	.aside li a {
+	.aside li a,
+	.aside li span.member {
 		display: block;
 		padding: 0.5em 0;
 		color: #747474;
@@ -1480,7 +1491,8 @@
 		position: relative;
 	}
 	.aside li strong:before,
-	.aside li a:before {
+	.aside li a:before,
+	.aside li span.member:before {
 		content: "";
 		border-color: transparent transparent transparent #747474;
 		border-style: dashed dashed dashed solid;

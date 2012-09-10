@@ -113,10 +113,10 @@ $v = $browser->getBrowserMajorVersion();
 									</ul>
 								</li>
 <?php } else { ?>
-								<li id="login">
+								<li id="account-login">
 									<a href="<?php echo JRoute::_('index.php?option=com_login'); ?>" title="<?php echo JText::_('TPL_HUBBASIC_LOGIN'); ?>"><?php echo JText::_('TPL_HUBBASIC_LOGIN'); ?></a>
 								</li>
-								<li id="register">
+								<li id="account-register">
 									<a href="<?php echo JRoute::_('index.php?option=com_register'); ?>" title="<?php echo JText::_('TPL_HUBBASIC_SIGN_UP'); ?>"><?php echo JText::_('TPL_HUBBASIC_REGISTER'); ?></a>
 								</li>
 <?php } ?>
