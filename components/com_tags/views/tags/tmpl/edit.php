@@ -84,6 +84,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="task" value="save" />
+			
+			<input type="hidden" name="limit" value="<?php echo $this->escape($this->filters['limit']); ?>" />
+			<input type="hidden" name="limitstart" value="<?php echo $this->escape($this->filters['start']); ?>" />
+			<input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
+			<input type="hidden" name="search" value="<?php echo $this->escape($this->filters['search']); ?>" />
 		</fieldset>
 		<p class="submit"><input type="submit" value="<?php echo JText::_('COM_TAGS_SUBMIT'); ?>" /></p>
 	</form>

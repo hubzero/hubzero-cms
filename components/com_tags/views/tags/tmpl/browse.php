@@ -134,14 +134,14 @@ if ($this->rows) {
 <?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
 							<td>
 	<?php if ($this->config->get('access-delete-tag')) { ?>
-								<a class="delete delete-tag" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=delete&id[]='.$row->id.'&search='.urlencode($this->filters['search']).'&sortby='.JRequest::getVar("sortby","").'&limit='.JRequest::getVar("limit",25).'&limitstart='.JRequest::getVar("limitstart",0)); ?>">
+								<a class="delete delete-tag" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=delete&id[]='.$row->id.'&search='.urlencode($this->filters['search']).'&sortby='.$this->filters['sortby'].'&limit='.$this->filters['limit'].'&limitstart='.$this->filters['start']); ?>">
 									<?php echo JText::_('COM_TAGS_DELETE_TAG'); ?>
 								</a>
 	<?php } ?>
 							</td>
 							<td>
 	<?php if ($this->config->get('access-edit-tag')) { ?>
-								<a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=edit&id='.$row->id); ?>" title="<?php echo JText::_('COM_TAGS_EDIT_TAG'); ?> &quot;<?php echo stripslashes($row->raw_tag); ?>&quot;">
+								<a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=edit&id='.$row->id.'&search='.urlencode($this->filters['search']).'&sortby='.$this->filters['sortby'].'&limit='.$this->filters['limit'].'&limitstart='.$this->filters['start']); ?>" title="<?php echo JText::_('COM_TAGS_EDIT_TAG'); ?> &quot;<?php echo stripslashes($row->raw_tag); ?>&quot;">
 									<?php echo JText::_('COM_TAGS_EDIT'); ?>
 								</a>
 	<?php } ?>
@@ -174,7 +174,7 @@ if ($this->rows) {
 					echo $this->pageNav->getListFooter();
 				?>
 				<div class="clearfix"></div>
-				<input type="hidden" name="sortby" value="<?php echo JRequest::getVar('sortby', ''); ?>" />
+				<input type="hidden" name="sortby" value="<?php echo $this->filters['sortby']; ?>" />
 			</div><!-- / .container -->
 		</div><!-- / .main subject -->
 		<div class="clear"></div>

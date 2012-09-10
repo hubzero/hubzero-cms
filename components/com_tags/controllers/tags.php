@@ -669,12 +669,29 @@ class TagsControllerTags extends Hubzero_Controller
 
 		// Get configuration
 		$jconfig = JFactory::getConfig();
+		$app =& JFactory::getApplication();
 
 		// Incoming
 		$this->view->filters = array();
-		$this->view->filters['start']  = JRequest::getInt('limitstart', 0);
-		$this->view->filters['search'] = urldecode(JRequest::getString('search'));
-		$this->view->filters['sortby'] = JRequest::getVar('sortby', '');
+		//$this->view->filters['start']  = JRequest::getInt('limitstart', 0);
+		//$this->view->filters['search'] = urldecode(JRequest::getString('search'));
+		$this->view->filters['start'] = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.limitstart',
+			'limitstart',
+			0,
+			'int'
+		);
+		$this->view->filters['search']       = urldecode($app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.search', 
+			'search', 
+			''
+		));
+		$this->view->filters['sortby'] = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.sortby',
+			'show',
+			''
+		);
+		//$this->view->filters['sortby'] = JRequest::getVar('sortby', '');
 		if (!in_array($this->view->filters['sortby'], array('raw_tag', 'total')))
 		{
 			$this->view->filters['sortby'] = '';
@@ -687,7 +704,13 @@ class TagsControllerTags extends Hubzero_Controller
 		$order = JRequest::getVar('order', '');
 		if ($order == 'usage') 
 		{
-			$limit = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
+			//$limit = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
+			$limit = $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				$jconfig->getValue('config.list_limit'),
+				'int'
+			);
 
 			$this->view->rows = $t->getTopTags($limit);
 		} 
@@ -696,7 +719,13 @@ class TagsControllerTags extends Hubzero_Controller
 			// Record count
 			$this->view->total = $t->getCount($this->view->filters);
 
-			$this->view->filters['limit'] = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
+			$this->view->filters['limit'] = $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				$jconfig->getValue('config.list_limit'),
+				'int'
+			);
+			//$this->view->filters['limit'] = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
 
 			// Get records
 			$this->view->rows = $t->getRecords($this->view->filters);
@@ -775,6 +804,12 @@ class TagsControllerTags extends Hubzero_Controller
 			$this->view->tag = new TagsTag($this->database);
 			$this->view->tag->load($id);
 		}
+
+		$this->view->filters = array();
+		$this->view->filters['limit']  = JRequest::getInt('limit', 0);
+		$this->view->filters['start']  = JRequest::getInt('limitstart', 0);
+		$this->view->filters['sortby'] = JRequest::getInt('sortby', '');
+		$this->view->filters['search'] = urldecode(JRequest::getString('search', ''));
 
 		// Set the pathway
 		$this->_buildPathway();
@@ -868,9 +903,14 @@ class TagsControllerTags extends Hubzero_Controller
 		// Save substitutions
 		$row->saveSubstitutions($tag['substitutions']);
 
+		$limit  = JRequest::getInt('limit', 0);
+		$start  = JRequest::getInt('limitstart', 0);
+		$sortby = JRequest::getInt('sortby', '');
+		$search = urldecode(JRequest::getString('search', ''));
+
 		// Redirect to main listing
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&task=browse')
+			JRoute::_('index.php?option=' . $this->_option . '&task=browse&search=' . urlencode($search) . '&sortby=' . $sortby . '&limit=' . $limit . '&limitstart=' . $start)
 		);
 	}
 
