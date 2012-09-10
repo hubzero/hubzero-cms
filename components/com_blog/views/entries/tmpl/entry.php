@@ -319,7 +319,7 @@ if ($this->comments) {
 		if ($comment->reports) {
 			$content = '<p class="warning">'.JText::_('COM_BLOG_COMMENT_REPORTED_AS_ABUSIVE').'</p>';
 		} else {
-			$content = $p->parse(stripslashes($comment->content), $wikiconfig);
+			$content = $p->parse(stripslashes($comment->content), $wikiconfig, false);
 		}
 ?>
 			<li class="comment <?php echo $cls; ?>" id="c<?php echo $comment->id; ?>">
@@ -378,7 +378,7 @@ if ($juser->get('guest')) {
 				if ($reply->reports) {
 					$content = '<p class="warning">'.JText::_('COM_BLOG_COMMENT_REPORTED_AS_ABUSIVE').'</p>';
 				} else {
-					$content = $p->parse(stripslashes($reply->content), $wikiconfig);
+					$content = $p->parse(stripslashes($reply->content), $wikiconfig, false);
 				}
 ?>
 					<li class="comment <?php echo $cls; ?>" id="c<?php echo $reply->id; ?>">
@@ -429,7 +429,7 @@ if ($juser->get('guest')) {
 						if ($response->reports) {
 							$content = '<p class="warning">'.JText::_('COM_BLOG_COMMENT_REPORTED_AS_ABUSIVE').'</p>';
 						} else {
-							$content = $p->parse(stripslashes($response->content), $wikiconfig);
+							$content = $p->parse(stripslashes($response->content), $wikiconfig, false);
 						}
 ?>
 							<li class="comment <?php echo $cls; ?>" id="c<?php echo $response->id; ?>">
