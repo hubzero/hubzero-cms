@@ -37,6 +37,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 class FileMacro extends WikiMacro
 {
 	/**
+	 * Container for element attributes
+	 * 
+	 * @var array
+	 */
+	private $attr = array();
+
+	/**
 	 * Returns description of macro, use, and accepted arguments
 	 * 
 	 * @return     string
@@ -91,103 +98,21 @@ class FileMacro extends WikiMacro
 		$args   = explode(',', $content);
 		$file   = array_shift($args);
 
-		$size   = '/[0-9+](%|px)?$/';
-		$attrs  = '/(alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap)=(.+)/';
-		$quoted = "/(?:[\"'])(.*)(?:[\"'])$/";
+		$this->attr   = array();
+		$this->attr['href']  = '';
+		$this->attr['style'] = array();
 
-		// Collected attributes
-		$attr   = array();
-		$attr['href']  = '';
-		$attr['style'] = array();
+		// Get single attributes
+		// EX: [[Image(myimage.png, nolink, right)]]
+		$argues = preg_replace_callback('/[, ](left|right|top|bottom)(?:[, ]|$)/i', array(&$this, 'parseSingleAttribute'), $content);
+		// Get quoted attribute/value pairs
+		// EX: [[Image(myimage.png, desc="My description, contains, commas")]]
+		$argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap)=(?:["\'])([^"]*)(?:["\'])/i', array(&$this, 'parseAttributeValuePair'), $content);
+		// Get non-quoted attribute/value pairs
+		// EX: [[Image(myimage.png, width=100)]]
+		$argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap)=([^"\',]*)(?:[, ]|$)/i', array(&$this, 'parseAttributeValuePair'), $content);
 
-		foreach ($args as $arg) 
-		{
-			$arg = trim($arg);
-
-			// Set width if just a pixel size is given 
-			// e.g., [[File(myfile.jpg, 120px)]]
-			if (!strstr($arg, '=') && preg_match($size, $arg, $matches)) 
-			{
-				if ($matches[0])
-				{
-					$attr['width'] = $arg;
-					continue;
-				}
-			}
-
-			if (is_numeric($arg))
-			{
-				$attr['width'] = $arg;
-			}
-			// Specific call to NOT link an image
-			// Links images by default
-			if ($arg == 'nolink') 
-			{
-				$attr['href'] = 'none';
-				continue;
-			}
-			// Check for a specific link given
-			if (substr($arg, 0, 5) == 'link=') 
-			{
-				$attr['href'] = 'none';
-				$bits = explode('=', $arg);
-				$val = trim(end($bits));
-				if ($val) 
-				{
-					$attr['href'] = $val;
-					//$urlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
-					$urlPtrn  = "[^=\"\']*(https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
-					if (preg_match("/$urlPtrn/", $val))
-					{
-						$attr['rel']  = 'external';
-					}
-				}
-				continue;
-			}
-			// Check for alignment, no key given
-			// e.g., [[File(myfile.jpg, left)]]
-			if (in_array($arg, array('left', 'right', 'top', 'bottom'))) 
-			{
-				$attr['style']['float'] = $arg;
-				continue;
-			}
-
-			// Look for any other attributes
-			preg_match($attrs, $arg, $matches);
-
-			if ($matches) 
-			{
-				$key = strtolower($matches[1]);
-				$val = $matches[2];
-				$m = preg_match($quoted, $val, $m);
-				if ($m) 
-				{
-					$val = trim($val, '"');
-					$val = trim($val, "'");
-				}
-				if ($key == 'align') 
-				{
-					if ($val == 'center')
-					{
-						$attr['style']['display'] = 'block';
-						$attr['style']['margin-right'] = 'auto';
-						$attr['style']['margin-left'] = 'auto';
-					}
-					else 
-					{
-						$attr['style']['float'] = $val;
-					}
-				} 
-				else if ($key == 'border') 
-				{
-					$attr['style']['border'] = '#ccc ' . intval($val) . 'px solid';
-				} 
-				else 
-				{
-					$attr[$key] = $val;
-				}
-			}
-		}
+		$attr = $this->attr;
 
 		// Get wiki config
 		$this->config = JComponentHelper::getParams('com_wiki');
@@ -257,6 +182,162 @@ class FileMacro extends WikiMacro
 			// Return error message
 			return '(file:' . $file . ' not found)';
 		}
+	}
+
+	/**
+	 * Parse attribute=value pairs
+	 * EX: [[Image(myimage.png, desc="My description, contains, commas", width=200)]]
+	 * 
+	 * @param      array $matches Values matching attr=val pairs
+	 * @return     void
+	 */
+	public function parseAttributeValuePair($matches)
+	{
+		$key = strtolower(trim($matches[1]));
+		$val = trim($matches[2]);
+
+		$size   = '/[0-9+](%|px|em)?$/';
+		$attrs  = '/(alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap)=(.+)/';
+		$quoted = "/(?:[\"'])(.*)(?:[\"'])$/";
+
+		// Set width if just a pixel size is given 
+		// e.g., [[File(myfile.jpg, width=120px)]]
+		if (preg_match($size, $val, $matches)) 
+		{
+			if ($matches[0])
+			{
+				$this->attr['style']['width'] = $val;
+				$this->attr['width'] = $val;
+				return;
+			}
+		}
+
+		if (is_numeric($val))
+		{
+			$this->attr['style']['width'] = $val . 'px';
+			$this->attr['width'] = $val;
+		}
+		// Specific call to NOT link an image
+		// Links images by default
+		if ($key == 'nolink') 
+		{
+			$this->attr['href'] = 'none';
+			return;
+		}
+		// Check for a specific link given
+		if ($key == 'link') 
+		{
+			$this->attr['href'] = 'none';
+
+			if ($val) 
+			{
+				$this->attr['href'] = $val;
+
+				$urlPtrn  = "[^=\"\']*(https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
+				if (preg_match("/$urlPtrn/", $val))
+				{
+					$this->attr['rel']  = 'external';
+				}
+			}
+            return;
+		}
+		// Check for alignment, no key given
+		// e.g., [[File(myfile.jpg, left)]]
+		if (in_array($key, array('left', 'right', 'top', 'bottom'))) 
+		{
+			$this->attr['style']['float'] = $key;
+			if ($key == 'left')
+			{
+				$this->attr['style']['margin-right'] = '1em';
+			}
+			else if ($key == 'right')
+			{
+				$this->attr['style']['margin-left'] = '1em';
+			}
+			return;
+		}
+
+		// Look for any other attributes
+		if ($key == 'align') 
+		{
+			if ($val == 'center')
+			{
+				$this->attr['style']['display'] = 'block';
+				$this->attr['style']['margin-right'] = 'auto';
+				$this->attr['style']['margin-left'] = 'auto';
+			}
+			else 
+			{
+				$this->attr['style']['float'] = $val;
+			}
+		} 
+		else if ($key == 'border') 
+		{
+			$this->attr['style']['border'] = '#ccc ' . intval($val) . 'px solid';
+		} 
+		else 
+		{
+			$this->attr[$key] = $val;
+		}
+		return;
+	}
+
+	/**
+	 * Handle single attribute values
+	 * EX: [[Image(myimage.png, nolink, right)]]
+	 * 
+	 * @param      array $matches Values matching the single attribute pattern
+	 * @return     void
+	 */
+	public function parseSingleAttribute($matches)
+	{
+		$key = strtolower(trim($matches[1]));
+
+		// Set width if just a pixel size is given 
+		// e.g., [[File(myfile.jpg, 120px)]]
+		$size   = '/[0-9+](%|px|em)?$/';
+		if (preg_match($size, $key, $matches)) 
+		{
+			if ($matches[0])
+			{
+				$this->attr['style']['width'] = $key;
+				$this->attr['width'] = $key;
+				return;
+			}
+		}
+
+		if (is_numeric($key))
+		{
+			$this->attr['style']['width'] = $key . 'px';
+			$this->attr['width'] = $key;
+		}
+
+		// Specific call to NOT link an image
+		// Links images by default
+		if ($key == 'nolink') 
+		{
+			$this->attr['href'] = 'none';
+			return;
+		}
+
+		// Check for alignment, no key given
+		// e.g., [[File(myfile.jpg, left)]]
+		if (in_array($key, array('left', 'right', 'top', 'bottom'))) 
+		{
+			$this->attr['style']['display'] = 'block';
+			$this->attr['style']['float'] = $key;
+			if ($key == 'left')
+			{
+				$this->attr['style']['margin-right'] = '1em';
+			}
+			else if ($key == 'right')
+			{
+				$this->attr['style']['margin-left'] = '1em';
+			}
+			return;
+		}
+
+		return;
 	}
 
 	/**
@@ -390,6 +471,7 @@ class FileMacro extends WikiMacro
 
 				if (in_array($ext, $this->imgs)) 
 				{
+					$styles = '';
 					if (count($attr['style']) > 0) 
 					{
 						$s = array();
@@ -397,7 +479,7 @@ class FileMacro extends WikiMacro
 						{
 							$s[] = strtolower($k) . ':' . $v;
 						}
-						$attr['style'] = implode('; ', $s);
+						$styles = implode('; ', $s);
 					}
 					else 
 					{
@@ -413,7 +495,7 @@ class FileMacro extends WikiMacro
 							$attribs[] = $k . '="' . $v . '"';
 						}
 					}
-					$html  = '<span class="figure">';
+					$html  = '<span class="figure"' . ($styles ? ' style="' . $styles . '"' : '') . '>';
 					$img = '<img src="' . $this->_link($file) . '" ' . implode(' ', $attribs) . '" />';
 					if ($attr['href'] == 'none') 
 					{
