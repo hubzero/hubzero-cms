@@ -506,7 +506,17 @@ class GroupsController extends Hubzero_Controller
 		// Ensure we found the group info
 		if (!is_object($group) || (!$group->get('gidNumber') && !$group->get('cn'))) 
 		{
-			JError::raiseError(404, JText::_('GROUPS_NO_GROUP_FOUND'));
+			/*JError::raiseError(404, JText::_('GROUPS_NO_GROUP_FOUND'));*/
+			//$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&task=new' . (is_numeric($this->gid) ? '' : '&cn=' . $this->gid));
+			$view = new JView(array('name' => 'error'));
+			$view->title = JText::_('GROUPS_NO_GROUP_FOUND');
+			$view->notifications = array(array(
+				'type' => 'warning',
+				'message' => JText::_('This group does not seem to exist. Would you like to <a href="' . JRoute::_('index.php?option=' . $this->_option . '&task=new' . (is_numeric($this->gid) ? '' : '&cn=' . $this->gid)) . '">create it</a>?')
+			));
+			$view->gid = $this->gid;
+			$view->option = $this->_option;
+			$view->display();
 			return;
 		}
 
@@ -1314,6 +1324,7 @@ class GroupsController extends Hubzero_Controller
 		} 
 		else 
 		{
+			$group->set('cn', JRequest::getVar('cn', ''));
 			$group->set('join_policy', $this->config->get('join_policy'));
 			$group->set('privacy', $this->config->get('privacy'));
 			$group->set('access', $this->config->get('access'));
