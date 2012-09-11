@@ -89,7 +89,7 @@ if (!is_array($this->defaults['developers']))
 		<p><?php echo JText::_('SIDE_TIPS_WIKIACCESS'); ?></p>
 	</div><!-- / .aside -->
 	<div class="subject contracted">
-		<form action="index.php" method="post" id="hubForm" enctype="multipart/form-data">
+		<form action="index.php" method="post" id="hubForm" class="full" enctype="multipart/form-data">
 			<fieldset>
 				<legend><?php echo JText::_('LEGEND_ABOUT'); ?>:</legend>
 				

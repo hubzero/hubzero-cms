@@ -251,7 +251,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			if (JComponentHelper::isEnabled('com_wishlist')) 
 			{
 				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'controller.php');
+				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'controllers' . DS . 'wishlist.php');
 
 				$objWishlist = new Wishlist($this->database);
 				$objWish = new Wish($this->database);

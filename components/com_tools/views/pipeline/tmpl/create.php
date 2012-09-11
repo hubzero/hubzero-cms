@@ -82,7 +82,7 @@ $wikiChoices['@DEV'] = ucfirst(JText::_('ACCESS_RESTRICTED'));
 	</div><!-- / .aside -->
 	
 	<div class="subject contracted">
-		<form action="index.php" method="post" id="hubForm" enctype="multipart/form-data">
+		<form action="index.php" method="post" id="hubForm" class="full" enctype="multipart/form-data">
 			<fieldset>
 				<legend><?php echo JText::_('LEGEND_ABOUT'); ?>:</legend>
 				

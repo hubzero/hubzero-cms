@@ -306,7 +306,7 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 			$juri =& JURI::getInstance();
 			//$juri->base();
 
-			$xhub 			=& Hubzero_Factory::getHub();
+			$jconfig =& JFactory::getConfig();
 			$hubShortName 	= $jconfig->getValue('config.sitename'); //$hubShortName;
 			$hubShortURL 	= str_replace('https://', '', $juri->base()); //$hubShortURL;
 			$hubLongURL 	= $juri->base(); //$hubLongURL;

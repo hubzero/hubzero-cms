@@ -5,6 +5,7 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+/*
 	.clearfix {
 		border: 1px solid transparent;
 	}
@@ -15,7 +16,7 @@
 		clear: left; 
 		visibility: hidden;
 	}
-/* Content blocks */
+/* Content blocks 
 	.container {
 		margin: 1em 0;
 		padding: 0;
@@ -67,7 +68,7 @@
 	.container-block .entry-content h4 {
 		font-weight: bold;
 	}
-/* Entries search */
+/* Entries search 
 	.entry-search {
 		margin: 0 1em 0 0;
 		border: none;
@@ -86,7 +87,7 @@
 		background: white url("/components/com_tools/assets/img/search.png") 5px 50% no-repeat;
 		padding: 5px 5px 5px 20px;
 	}
-/* Entries (table) */
+/* Entries (table) 
 	.entries {
 		border: 2px solid #e9e9e9;
 		border-top: none;
@@ -99,7 +100,7 @@
 		background: #f8f8f8 url("/components/com_tools/assets/img/light-stripes.png");
 		border: 2px solid #e9e9e9;
 		border-bottom: 1px solid #e9e9e9;
-		margin-right: -2px; /* Fix 2px issue */
+		margin-right: -2px;
 	}
 	.entries caption a {
 		float: right;
@@ -156,6 +157,9 @@
 		background: url("/components/com_tools/assets/img/contribute/application.png") right 1em no-repeat;
 	}
 	/* Status */
+	.tools tbody tr th .entry-id:before {
+		content: "";
+	}
 	.tools tbody tr.uploaded,
 	.tools tbody tr.updated,
 	.tools tbody tr.approved,
@@ -201,7 +205,7 @@
 	.container-block .entry-details {
 		padding: 0.7em 0 0.7em 0;
 	}
-/* Submenu styling */
+/* Submenu styling 
 	.entries-menu {
 		list-style: none;
 		padding: 0;

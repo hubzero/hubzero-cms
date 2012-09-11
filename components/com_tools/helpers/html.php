@@ -217,21 +217,21 @@ class ToolsHelperHtml
 	public function getNumofTools($status, $toolnum='')
 	{
 		// get hub parameters
-		$xhub =& Hubzero_Factory::getHub();
-		$hubShortName = $xhub->getCfg('hubShortName');
+		$jconfig =& JFactory::getConfig();
+		$hubShortName = $jconfig->getValue('config.sitename');
 
 		$toolnum = ($status['state']!=9) ? JText::_('THIS_TOOL').'  ': '';
 		if (!$status['published'] && self::toolActive($status['state'])) 
 		{
-			$toolnum .= JText::_('IS_ONE_OF').' '.$status['ntoolsdev'].' '.strtolower(JText::_('TOOLS')). ' '.strtolower(JText::_('UNDER_DEVELOPMENT')).' '.JText::_('ON').' '.$xhub->getCfg('hubShortName');
+			$toolnum .= JText::_('IS_ONE_OF').' '.$status['ntoolsdev'].' '.strtolower(JText::_('TOOLS')). ' '.strtolower(JText::_('UNDER_DEVELOPMENT')).' '.JText::_('ON').' '.$jconfig->getValue('config.sitename');
 		}
 		else if ($status['published'] && self::toolActive($status['state'])) 
 		{
-			$toolnum .= JText::_('IS_ONE_OF').' '.$status['ntools_published'].' '.strtolower(JText::_('TOOLS')). ' '.strtolower(JText::_('PUBLISHED')).' '.JText::_('ON').' '.$xhub->getCfg('hubShortName');
+			$toolnum .= JText::_('IS_ONE_OF').' '.$status['ntools_published'].' '.strtolower(JText::_('TOOLS')). ' '.strtolower(JText::_('PUBLISHED')).' '.JText::_('ON').' '.$jconfig->getValue('config.sitename');
 		}
 		else if ($status['state']==8) 
 		{
-			$toolnum .= JText::_('WAS_ONCE_PUBLISHED').' '.JText::_('ON').' '.$xhub->getCfg('hubShortName').' '.JText::_('NOW_RETIRED');
+			$toolnum .= JText::_('WAS_ONCE_PUBLISHED').' '.JText::_('ON').' '.$jconfig->getValue('config.sitename').' '.JText::_('NOW_RETIRED');
 		}
 
 		return $toolnum;
