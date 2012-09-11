@@ -542,6 +542,9 @@
 	#tktlist .critical:after {
 		content: "\2622";
 	}
+	#tktlist .critical small.severity-after {
+		font-family: 'DejaVu Sans', 'Symbola', 'Arial Unicode MS';
+	}
 	#tktlist .major {
 		border-color: #ebc250 #ebc250 transparent transparent;
 		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML=this.innerHTML + '<small class="severity-after">&nbsp;&#xf06d;</small>');  /* [!] HACKS - IE 7 and older */
@@ -563,6 +566,9 @@
 	}
 	#tktlist .trivial:after {
 		content: "\2746";
+	}
+	#tktlist .trivial small.severity-after {
+		font-family: 'Zapf Dingbats', 'DejaVu Sans', 'Symbola', 'Dingbats', 'Arial Unicode MS';
 	}
 
 /* Ticket */

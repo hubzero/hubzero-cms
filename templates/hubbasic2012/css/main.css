@@ -571,14 +571,11 @@
 		cursor: pointer;
 	}
 	#account ul {
-		visibility: hidden;
 		position: absolute;
-		top: 100%;
-		right: 0px;
+		visibility: hidden;
 		width: 200px;
-		background: #616161;
-		border: 1px solid #616161;
-		margin: -1px 0 0 0;
+		right: 0px;
+		top: 100%;
 	}
 	#account #account-info img {
 		float: left;
@@ -813,6 +810,10 @@
 		color: #747474;
 		font-family: 'ArvoRegular', Georgia, 'Times New Roman', 'Times', Serif;
 		font-size: 1.2em;
+		-webkit-transition: all ease-in-out 0.2s;
+		-moz-transition: all ease-in-out 0.2s;
+		-o-transition: all ease-in-out 0.2s;
+		transition: all ease-in-out 0.2s;
 	}
 	#nav ul.menu ul li a {
 		padding: 10px 12px;
@@ -821,6 +822,10 @@
 		border-top: 1px solid #3a3a3a;
 		color: #bbb;
 		border: none;
+		-webkit-transition: none;
+		-moz-transition: none;
+		-o-transition: none;
+		transition: none;
 	}
 	#nav ul.menu li:hover > a,
 	#nav ul.menu li:focus > a { 
@@ -1990,11 +1995,13 @@
 		border-bottom: 1px solid #e5e5e5;
 		margin: 0 0px 1em 0px;
 		padding: 0.8em 0;
-		color: #ececec;
 		text-indent: 2em;
 		font-weight: bold;
-		color: #333;
-		background: #ECECEC url("../images/layout/noise-lite.png");
+		/*color: #333;
+		background: #ECECEC url("../images/layout/noise-lite.png");*/
+		background: #666 url("../images/layout/noise.png");
+		text-shadow: 0 -1px 1px #000;
+		color: #ececec;
 	}
 	#hubForm fieldset h3:first-child {
 		background: #747474;
@@ -2684,6 +2691,7 @@
 		font-weight: normal;
 		border-top: 1px solid #ddd;
 		background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAYAAACALL/6AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADtJREFUeNpiYWBgEPn///8bBihgZGQUgbGxiTORohisgRTFIHEmUhSDbSBFMYqTiPULEymKB2koAQQYANU4UCtoY01GAAAAAElFTkSuQmCC) top repeat-x;
+		*background: transparent;  /* IE 7 throws "Unsecure content" warnings when using https and data urls */
 	}
 	.aside .container ul {
 		padding: 1em 0 1.7em 0;

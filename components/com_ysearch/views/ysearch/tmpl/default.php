@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 // Push some resources to the tmeplate
 ximport('Hubzero_Document');
 Hubzero_Document::addComponentStyleSheet('com_ysearch');
-Hubzero_Document::addComponentScript('com_ysearch');
+Hubzero_Document::addComponentScript('com_ysearch', 'assets/js/ysearch');
 
 $show_weight = array_key_exists('show_weight', $_GET);
 ?>

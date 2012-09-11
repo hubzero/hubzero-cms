@@ -181,6 +181,24 @@
 	#nav ul.menu ul{
 		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML=this.innerHTML + '<small class="nav-ul-after"></small>');
 	}
+
+	#account #account-info {
+		position: relative;
+	}
+	#account #account-info ul {
+		
+	}
+	#account #account-info ul,
+	#account #account-info li,
+	#account #account-info a {
+		zoom: 1;
+		display: block;
+	}
+	/*#account li:hover > li,
+	#account li:focus > li {
+		visibility: visible;
+		display: block;
+	}*/
 	
 	#page_options a,
 	#content-header-extra a {

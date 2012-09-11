@@ -239,11 +239,13 @@ if ($this->recent) {
 						<?php echo $this->escape(stripslashes($author->get('name'))); ?>
 					</a>
 				</h4>
-			<?php if ($author->get('bio')) { ?>
 				<p class="entry-author-bio">
+				<?php if ($author->get('bio')) { ?>
 					<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($author->get('bio')), 300, 0); ?>
+				<?php } else { ?>
+					<em><?php echo JText::_('This author has yet to write their bio'); ?></em>
+				<?php } ?>
 				</p>
-			<?php } ?>
 				<div class="clearfix"></div>
 			</div>
 		</div>

@@ -63,6 +63,9 @@
 	.com_forum .entries .entry-id:before {
 		content: "\f086";
 	}
+	.com_forum .entries .entry-id {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="entry-id-before">&#xf086;</small>' + this.innerHTML);
+	}
 	.com_forum .entries .closed .entry-id:before {
 		content: "\f023";
 	}
@@ -71,6 +74,9 @@
 	}
 	.com_forum .categories .entry-id:before {
 		content: "\f07b";
+	}
+	.com_forum .categories .entry-id {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="entry-id-before">&#xf07b;</small>' + this.innerHTML);
 	}
 	.com_forum .categories .closed .entry-id:before {
 		content: "\f023";

@@ -53,7 +53,7 @@ if ($this->report && !$this->getError()) {
 			<p><?php echo JText::_('REPORT_ABUSE_DESCRIPTION_HINT'); ?></p>
 		</div>
 		<fieldset>
-			<h3><?php echo JText::_('REPORT_ABUSE'); ?></h3>
+			<legend><?php echo JText::_('REPORT_ABUSE'); ?></legend>
 	
 			<div class="abuseitem field-wrap">
 				<h4><?php 

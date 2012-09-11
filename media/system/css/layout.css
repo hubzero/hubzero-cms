@@ -368,7 +368,9 @@
 		width: 1.2em;
 		height: 1.2em;
 		margin: .5em 0 0 0;
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="entry-id-before">&#xf0a1;</small>' + this.innerHTML);
 	}
+	.entries small.entry-id-before,
 	.entries .entry-id:before {
 		font-family: "Fontcons";
 		content: "\f0a1";
@@ -427,6 +429,7 @@
 		-o-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
 		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
 		background: #fff url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAYAAACALL/6AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADtJREFUeNpiYWBgEPn///8bBihgZGQUgbGxiTORohisgRTFIHEmUhSDbSBFMYqTiPULEymKB2koAQQYANU4UCtoY01GAAAAAElFTkSuQmCC) bottom repeat-x;
+		*background: #fff; /* IE 7 throws "Unsecure content" warnings when using https and data urls */
 	}
 	.entry .entry-content:before,
 	.entry .entry-content:after {
@@ -437,8 +440,8 @@
 		border-width: 10px;
 		border-style: solid;
 		border-color: transparent #999 transparent transparent;
-	    display: block; 
-	    width: 0;
+		display: block; 
+		width: 0;
 	}
 	.entry .entry-content:before {
 		top: 10px; 
@@ -463,27 +466,10 @@
 		color: #000;
 		border: none;
 	}
-	/* Subject 
-	.entry .entry-subject {
-		margin: 1em -1em 0 -1em;
-		padding: 1em;
-		font-weight: bold;
-		background-color: #FdFdF8;
-	}
-	.entry .entry-long {
-		margin: 0 -1em 1em -1em;
-		padding: 0 1em 1em 1em;
-		background-color: #FdFdF8;
-	}
-	.entry .entry-subject>p,
-	.entry .entry-long>p {
-		margin-top: 0;
-	}
 	/* Tags */
 	.entry .entry-tags {
 		margin: 1.61803399em .61803399em 1.61803399em .61803399em;
 		padding: 0;
-		
 		color: #aaa;
 	}
 	.entry .entry-tags p {

@@ -58,6 +58,7 @@
 	.voting .like:hover {
 		background-color: #99ca78;
 	}
+	.voting small.voting-after,
 	.voting .vote-like .neutral span:after,
 	.voting .like span:after,
 	.voting .vote-dislike .neutral span:after,
@@ -75,6 +76,10 @@
 	.voting .like span:after {
 		content: "\f087";
 	}
+	.voting .vote-like .neutral span,
+	.voting .like span {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML=this.innerHTML + '<small class="voting-after">&#xf087;</small>');
+	}
 	.voting .dislike:hover {
 		background-color: #d86560;
 	}
@@ -82,6 +87,10 @@
 	.voting .dislike span:after {
 		top: 0.2em;
 		content: "\f088";
+	}
+	.voting .vote-dislike .neutral span,
+	.voting .dislike span {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML=this.innerHTML + '<small class="voting-after">&#xf088;</small>');
 	}
 	@-moz-document url-prefix() {
 		.voting .vote-button span {
