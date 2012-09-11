@@ -54,7 +54,7 @@ defined('_JEXEC') or die('Restricted access');
 			<?php echo implode($this->accepted_files, "<br />"); ?>
 		</p>
 		<fieldset>
-			<h3>Upload:</h3>
+			<legend>Upload:</legend>
 			<label>Citations file: <span class="required">Required</span>
 				<input type="file" name="citations_file" />
 				<span class="hint">Max File size is 4<abbr title="Mega Bytes">MB</abbr></span>
