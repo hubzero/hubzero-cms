@@ -540,7 +540,7 @@ LOCK TABLES `#__password_blacklist` WRITE;
 INSERT INTO `#__password_blacklist` (`id`, `word`) VALUES (1,'hubzero');
 INSERT INTO `#__password_blacklist` (`id`, `word`) VALUES (2,'test');
 INSERT INTO `#__password_blacklist` (`id`, `word`) VALUES (3,'password');
-INSERT INTO `#__password_blacklist` (`id`, `word`) VALUES (3,'secret');
+INSERT INTO `#__password_blacklist` (`id`, `word`) VALUES (4,'secret');
 /*!40000 ALTER TABLE `#__password_blacklist` ENABLE KEYS */;
 UNLOCK TABLES;
 
