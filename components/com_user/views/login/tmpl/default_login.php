@@ -63,12 +63,12 @@ if (!empty($error_message))
 				<form action="<?php echo JRoute::_('index.php', true, true); ?>" method="post" id="login_form">
 					<div class="labelInputPair">
 						<label for="username"><?php echo JText::_('Username'); ?>:</label>
-						<a class="forgots" href="<?php echo JRoute::_('index.php?option=com_user&view=remind'); ?>"><?php echo JText::_('Lost username?');?></a>
+						<a class="forgots forgot-username" href="<?php echo JRoute::_('index.php?option=com_user&view=remind'); ?>"><?php echo JText::_('Lost username?');?></a>
 						<input tabindex="1" type="text" name="username" id="username" placeholder="username<?php //echo JText::_('username'); ?>" />
 					</div>
 					<div class="labelInputPair">
 						<label for="password"><?php echo JText::_('Password'); ?>:</label>
-						<a class="forgots" href="<?php echo JRoute::_('index.php?option=com_user&view=reset'); ?>"><?php echo JText::_('Forgot password?'); ?></a>
+						<a class="forgots forgot-password" href="<?php echo JRoute::_('index.php?option=com_user&view=reset'); ?>"><?php echo JText::_('Forgot password?'); ?></a>
 						<input tabindex="2" type="password" name="passwd" id="password" placeholder="password<?php //echo JText::_('password'); ?>" />
 					</div>
 					<div class="submission">
