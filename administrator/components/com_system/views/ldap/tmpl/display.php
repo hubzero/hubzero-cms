@@ -32,47 +32,60 @@ defined('_JEXEC') or die('Restricted access');
 
 JToolBarHelper::title(JText::_('LDAP Configuration'), 'config.png');
 JToolBarHelper::preferences($this->option, '550');
-
 ?>
-<p>Import old HubConfig LDAP configuration...</p>
-<form action="index.php" method="post" name="adminForm">
+
+<form action="index.php" method="post" name="adminForm" id="adminForm">
+	<div class="col width-50 fltlft">
+		<fieldset class="adminform">
+			<legend><?php echo JText::_('HubConfig'); ?></legend>
+			<table class="admintable">
+				<tbody>
+					<tr>
+						<td class="key"><input type="submit" name="importHubConfig" id="importHubConfig" value="<?php echo JText::_('Import'); ?>" onclick="submitbutton('importHubConfig');" /></td>
+						<td><?php echo JText::_('Import old HubConfig LDAP settings.'); ?></td>
+					</tr>
+				</tbody>
+			</table>
+		</fieldset>
+	</div>
+	<div class="col width-50 fltrt">
+		<p class="warning"><strong><?php echo JText::_('Warning!'); ?></strong> <?php echo JText::_('The following operations are irreversible.'); ?></p>
+		
+		<fieldset class="adminform">
+			<legend><?php echo JText::_('Users'); ?></legend>
+			<table class="admintable">
+				<tbody>
+					<tr>
+						<td class="key"><input type="submit" name="exportUsers" id="exportUsers" value="<?php echo JText::_('Export to LDAP'); ?>" onclick="submitbutton('exportUsers');" /></td>
+						<td><?php echo JText::_('This will export all relevant user data to the LDAP.'); ?></td>
+					</tr>
+					<tr>
+						<td class="key"><input type="submit" name="deleteUsers" id="deleteUsers" value="<?php echo JText::_('Delete from LDAP'); ?>" onclick="submitbutton('deleteUsers');" /></td>
+						<td><?php echo JText::_('This will remove all exported entries in the LDAP.'); ?></td>
+					</tr>
+				</tbody>
+			</table>
+		</fieldset>
+		
+		<fieldset class="adminform">
+			<legend><?php echo JText::_('Groups'); ?></legend>
+			<table class="admintable">
+				<tbody>
+					<tr>
+						<td class="key"><input type="submit" name="exportGroups" id="exportGroups" value="<?php echo JText::_('Export to LDAP'); ?>" onclick="submitbutton('exportGroups');" /></td>
+						<td><?php echo JText::_('This will export all relevant group data and memberships to the LDAP.'); ?></td>
+					</tr>
+					<tr>
+						<td class="key"><input type="submit" name="deleteGroups" id="deleteGroups" value="<?php echo JText::_('Delete from LDAP'); ?>" onclick="submitbutton('deleteGroups');" /></td>
+						<td><?php echo JText::_('This will remove all exported entries in the LDAP.'); ?></td>
+					</tr>
+				</tbody>
+			</table>
+		</fieldset>
+	</div>
+	<div class="clr"></div>
+	
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-	<input type="hidden" name="task" value="importHubConfig" />
-	<input type="submit" value="ImportHubConfig" />
-</form>
-
-<br />
-<p class="error">Seriously! Don't try the following commands unless you want to irreperably break your LDAP. This is a work in progress.</p>
-
-<p>Export Groups to LDAP...</p>
-<form action="index.php" method="post" name="adminForm">
-	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-	<input type="hidden" name="task" value="exportGroups" />
-	<input type="submit" value="exportGroups" />
-</form>
-
-<p>Export Users to LDAP...</p>
-<form action="index.php" method="post" name="adminForm">
-	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-	<input type="hidden" name="task" value="exportUsers" />
-	<input type="submit" value="exportUsers" />
-</form>
-
-<p>Delete exported LDAP Group Entries...</p>
-<form action="index.php" method="post" name="adminForm">
-	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-	<input type="hidden" name="task" value="deleteGroups" />
-	<input type="submit" value="deleteGroups" />
-</form>
-
-<p>Delete exported LDAP User Entries...</p>
-<form action="index.php" method="post" name="adminForm">
-	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-	<input type="hidden" name="task" value="deleteUsers" />
-	<input type="submit" value="deleteUsers" />
+	<input type="hidden" name="task" value="" />
 </form>

@@ -34,10 +34,29 @@ JToolBarHelper::title(JText::_('LDAP Configuration'), 'config.png');
 JToolBarHelper::preferences($this->option, '550');
 
 ?>
-<p>Import old HubConfig LDAP configuration...</p>
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="adminForm">
+	<div class="col width-50 fltlft">
+		<fieldset class="adminform">
+			<legend><?php echo JText::_('HubConfig'); ?></legend>
+			<table class="admintable">
+				<tbody>
+					<tr>
+						<td class="key"><input type="submit" name="importHubConfig" id="importHubConfig" value="<?php echo JText::_('Import'); ?>" /></td>
+						<td><?php echo JText::_('Import old HubConfig GeoDB settings.'); ?></td>
+					</tr>
+				</tbody>
+			</table>
+		</fieldset>
+	</div>
+	<div class="col width-50 fltrt">
+		<p>
+			The Geo DB is used for accessing a centralized database of geolocation data. This data can be available site-wide and can be used by components, 
+			for example, to pre-select a value when filling out a form that asks for a user's country.
+		</p>
+	</div>
+	<div class="clr"></div>
+	
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="importHubConfig" />
-	<input type="submit" value="ImportHubConfig" />
 </form>

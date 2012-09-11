@@ -99,15 +99,15 @@ class SystemControllerLdap extends Hubzero_Controller
 	public function deleteGroupsTask()
 	{
 		ximport('Hubzero_Ldap');
-		
+
 		Hubzero_Ldap::deleteAllGroups();
-	
+
 		$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
 				JText::_('All LDAP Group Entries Deleted')
 		);
 	}
-	
+
 	/**
 	 * Delete LDAP user entries
 	 *
@@ -116,15 +116,15 @@ class SystemControllerLdap extends Hubzero_Controller
 	public function deleteUsersTask()
 	{
 		ximport('Hubzero_Ldap');
-	
+
 		Hubzero_Ldap::deleteAllUsers();
-	
+
 		$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('All LDAP User Entries Deleted')
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::_('All LDAP User Entries Deleted')
 		);
 	}
-	
+
 	/**
 	 * Export all groups to LDAP
 	 *
@@ -133,15 +133,15 @@ class SystemControllerLdap extends Hubzero_Controller
 	public function exportGroupsTask()
 	{
 		ximport('Hubzero_Ldap');
-		
+
 		Hubzero_Ldap::syncAllGroups();
-	
+
 		$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('Groups have been exported to LDAP')
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::_('Groups have been exported to LDAP')
 		);
 	}
-	
+
 	/**
 	 * Delete LDAP user entries
 	 *
@@ -150,12 +150,12 @@ class SystemControllerLdap extends Hubzero_Controller
 	public function exportUsersTask()
 	{
 		ximport('Hubzero_Ldap');
-	
+
 		Hubzero_Ldap::syncAllUsers();
-	
+
 		$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('Users have been exported to LDAP')
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::_('Users have been exported to LDAP')
 		);
 	}
 }
