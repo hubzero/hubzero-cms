@@ -214,6 +214,15 @@ class ResourcesControllerAttachments extends Hubzero_Controller
 			$this->displayTask($pid);
 			return;
 		}
+		
+		// File already exists
+		if ($row->loadByFile($file['name'], $pid))
+		{
+			$this->setError(JText::_('A file with this name and type appears to already exist.'));
+			$this->displayTask($pid);
+			return;
+		}
+		
 		// Store new content
 		if (!$row->store()) 
 		{
@@ -569,7 +578,7 @@ class ResourcesControllerAttachments extends Hubzero_Controller
 		{
 			foreach ($this->getErrors() as $error)
 			{
-				$this->setError($error);
+				$this->view->setError($error);
 			}
 		}
 
