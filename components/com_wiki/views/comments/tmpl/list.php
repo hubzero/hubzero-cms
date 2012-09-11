@@ -31,6 +31,16 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$dateFormat = '%d %b %Y';
+$timeFormat = '%I:%M %p';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M Y';
+	$timeFormat = 'H:i p';
+	$tz = true;
+}
+
 $this->c = ($this->c) ? $this->c : 'odd';
 $i = 1;
 $html = '';
@@ -53,8 +63,8 @@ if (count($this->comments) > 0) {
 	foreach ($this->comments as $comment)
 	{
 		$author = JText::_('WIKI_AUTHOR_ANONYMOUS');
-		$cuser = new Hubzero_User_Profile();
-		$cuser->load( $comment->created_by );
+		$cuser = Hubzero_User_Profile::getInstance($comment->created_by);
+
 		if ($comment->anonymous != 1) {
 			$author = JText::_('WIKI_AUTHOR_UNKNOWN');
 			//$cuser =& JUser::getInstance($comment->created_by);
@@ -64,8 +74,8 @@ if (count($this->comments) > 0) {
 		}
 
 		$html .= "\t".'<li class="comment '.$this->c.'" id="c'.$comment->id.'">'."\n";
-		$html .= "\t\t".'<a name="c'.$comment->id.'"></a>'."\n";
 		$html .= "\t\t".'<p class="comment-member-photo">'."\n";
+		$html .= "\t\t".'	<a name="c'.$comment->id.'"></a>'."\n";
 		$html .= "\t\t".'	<img src="'.Hubzero_User_Profile_Helper::getMemberPhoto($cuser, $comment->anonymous).'" alt="" />'."\n";
 		$html .= "\t\t".'</p><!-- / .comment-member-photo -->'."\n";
 		$html .= "\t\t".'<div class="comment-content">'."\n";
@@ -89,36 +99,42 @@ if (count($this->comments) > 0) {
 		}
 		$html .= "\t\t".'	<p class="comment-title">'."\n";
 		$html .= "\t\t".'		<strong>'. $author.'</strong> '."\n";
-		$html .= "\t\t".'		<a class="permalink" href="'.JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=comments#c'.$comment->id).'" title="'. JText::_('Permalink').'">@ <span class="time">'. JHTML::_('date',$comment->created, '%I:%M %p', 0).'</span> on <span class="date">'.JHTML::_('date',$comment->created, '%d %b %Y', 0).'</span>';
+		$html .= "\t\t".'		<a class="permalink" href="'.JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=comments#c'.$comment->id).'" title="'. JText::_('Permalink').'">';
+		$html .= '<span class="comment-date-at">@</span> <span class="time">'. JHTML::_('date', $comment->created, $timeFormat, $tz).'</span> <span class="comment-date-on">on</span> <span class="date">'.JHTML::_('date',$comment->created, $dateFormat, $tz).'</span>';
 		if ($this->level == 1) {
 			$html .= ' to revision '.$comment->version;
 		}
 		$html .= '</a>'."\n";
 		$html .= "\t\t".'	</p><!-- / .comment-title -->'."\n";
-		//$html .= (trim($chtml)) ? trim($chtml).n : JText::_('(No comment.)').n;
+
 		if ($comment->ctext) {
-			//$html .= "\t\t\t".$parser->parse( "\n".trim(stripslashes($comment->ctext)))."\n";
-			//$html .= (is_object($parser)) ? $parser->parse( "\n".trim(stripslashes($comment->ctext)) ) : nl2br( trim(stripslashes($comment->ctext)) );
-			$html .= $parser->parse(stripslashes($comment->ctext), $wikiconfig);
+			$html .= $parser->parse(stripslashes($comment->ctext), $wikiconfig, false);
 		} else {
 			$html .= "\t\t\t".'<p class="comment-none">'.JText::_('No comment.').'</p>'."\n";
 		}
+		$html .= "\t\t\t".'<p class="comment-options">'."\n";
+
+			if ($this->config->get('access-comment-delete'))
+			{
+				$html .= "\t\t\t\t".'<a class="delete" href="'.JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=removecomment&id='.$comment->id).'" title="'.JText::_('Delete this comment').'">'.JText::_('Delete').'</a>'."\n";
+			}
 		if ($this->level < 3) {
-			$html .= "\t\t\t".'<p class="comment-options">'."\n";
 			$html .= "\t\t\t\t".'<a class="reply" href="'.JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=addcomment&parent='.$comment->id).'" title="'.JText::sprintf('WIKI_COMMENT_REPLY_TO',$author).'">'.JText::_('Reply').'</a>'."\n";
-			$html .= "\t\t\t".'</p>'."\n";
+			
 		}
 		//$html .= t.t.t.' | <a class="abuse" href="'.JRoute::_('index.php?option='.$this->option.a.'scope='.$this->page->scope.a.'pagename='.$this->page->pagename.a.'task=reportcomment'.a.'id='.$comment->id).'">'.JText::_('WIKI_COMMENT_REPORT').'</a>';
 		//$html .= '</p><p class="actions">&nbsp;</p>'.n;
+		$html .= "\t\t\t".'</p>'."\n";
 		$html .= "\t\t".'</div><!-- .comment-content -->'."\n";
 		if (isset($comment->children)) {
 			//$html .= WikiHtml::commentList($comment->children,$this->page,$this->option,$c,$level++);
 			$view = new JView( array('name'=>'comments','layout'=>'list','base_path'=>JPATH_ROOT.DS.'components'.DS.'com_wiki') );
-			$view->option = $this->option;
-			$view->page = $this->page;
+			$view->option   = $this->option;
+			$view->page     = $this->page;
 			$view->comments = $comment->children;
-			$view->c = $this->c;
-			$view->level = ($this->level+1);
+			$view->c        = $this->c;
+			$view->level    = ($this->level+1);
+			$view->config   = $this->config;
 			$html .= $view->loadTemplate();
 		}
 		$html .= "\t".'</li>'."\n";

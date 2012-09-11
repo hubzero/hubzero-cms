@@ -284,9 +284,9 @@ class WikiControllerComments extends Hubzero_Controller
 	 */
 	public function saveTask()
 	{
-		$pagename = trim(JRequest::getVar('pagename', '', 'post'));
-		$scope = trim(JRequest::getVar('scope', '', 'post'));
-		
+		$pagename = JRequest::getVar('pagename', '', 'post');
+		$scope    = JRequest::getVar('scope', '', 'post');
+
 		$fields = JRequest::getVar('comment', array(), 'post');
 
 		// Bind the form data to our object
@@ -356,27 +356,41 @@ class WikiControllerComments extends Hubzero_Controller
 	 */
 	public function removeTask()
 	{
-		$id = JRequest::getInt('id', 0, 'request');
+		$id = JRequest::getInt('id', 0);
+
+		$msg = null;
+		$cls = 'message';
 
 		// Make sure we have a comment to delete
 		if ($id) 
 		{
 			// Make sure they're authorized to delete (must be an author)
-			if ($this->config->get('access-delete-comment')) 
+			if ($this->config->get('access-comment-delete')) 
 			{
 				$comment = new WikiPageComment($this->database);
-				if ($comment->delete($id))
+				$comment->load($id);
+				$comment->status = 2;
+				if ($comment->store())
 				{
-					$this->setMessage(JText::_('WIKI_COMMENT_DELETED'));
+					$msg = JText::_('WIKI_COMMENT_DELETED');
 				}
 			} 
 			else 
 			{
-				$this->setError(JText::_('WIKI_ERROR_NOTAUTH'));
+				$msg = JText::_('WIKI_ERROR_NOTAUTH');
+				$cls = 'error';
 			}
 		}
 
-		$this->displayTask();
+		$pagename = JRequest::getVar('pagename', '');
+		$scope    = JRequest::getVar('scope', '');
+
+		// Redirect to Comments page
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&scope=' . $scope . '&pagename=' . $pagename . '&task=comments'),
+			$msg,
+			$cls
+		);
 	}
 
 	/**

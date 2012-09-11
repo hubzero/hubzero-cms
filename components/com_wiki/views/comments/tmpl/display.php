@@ -132,6 +132,7 @@ if ($this->comments) {
 	$view->comments = $this->comments;
 	$view->c = '';
 	$view->level = 1;
+	$view->config = $this->config;
 	$view->display();
 } else {
 	if ($this->v) {

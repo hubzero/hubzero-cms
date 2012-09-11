@@ -29,160 +29,151 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'WikiPageComment'
- * 
- * Long description (if any) ...
+ * Wiki table class for comment
  */
 class WikiPageComment extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id         = NULL;  // @var int(11) Primary key
+	var $id         = NULL;
 
 	/**
-	 * Description for 'pageid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $pageid     = NULL;  // @var int(11)
+	var $pageid     = NULL;
 
 	/**
-	 * Description for 'version'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $version    = NULL;  // @var int(11)
+	var $version    = NULL;
 
 	/**
-	 * Description for 'created'
+	 * datetime
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $created    = NULL;  // @var datetime
+	var $created    = NULL;
 
 	/**
-	 * Description for 'created_by'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $created_by = NULL;  // @var int(11)
+	var $created_by = NULL;
 
 	/**
-	 * Description for 'ctext'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $ctext      = NULL;  // @var text
+	var $ctext      = NULL;
 
 	/**
-	 * Description for 'chtml'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $chtml      = NULL;  // @var text
+	var $chtml      = NULL;
 
 	/**
-	 * Description for 'rating'
+	 * int(1)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $rating     = NULL;  // @var int(1)
+	var $rating     = NULL;
 
 	/**
-	 * Description for 'anonymous'
+	 * int(1)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $anonymous  = NULL;  // @var int(1)
+	var $anonymous  = NULL;
 
 	/**
-	 * Description for 'parent'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $parent     = NULL;  // @var int(11)
+	var $parent     = NULL;
 
 	/**
-	 * Description for 'status'
+	 * int(1)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $status     = NULL;  // @var int(1)
-
-	//-----------
+	var $status     = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__wiki_comments', 'id', $db );
+		parent::__construct('#__wiki_comments', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'getResponses'
+	 * Get all replies to a comment
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     object Return description (if any) ...
+	 * @return     array
 	 */
 	public function getResponses()
 	{
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE parent='$this->id'" );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE parent='$this->id' AND status < 2");
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'report'
+	 * Mark a comment as abusive
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $oid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $oid Entry ID
+	 * @return     boolean True on success, False if error
 	 */
-	public function report( $oid=null )
+	public function report($oid=null)
 	{
 		$k = $this->_tbl_key;
-		if ($oid) {
-			$this->$k = intval( $oid );
+		if ($oid) 
+		{
+			$this->$k = intval($oid);
 		}
 
-		$this->_db->setQuery( "UPDATE $this->_tbl SET status=1 WHERE $this->_tbl_key = '".$this->$k."'" );
+		$this->_db->setQuery("UPDATE $this->_tbl SET status=1 WHERE $this->_tbl_key = '" . $this->$k . "'");
 
-		if ($this->_db->query()) {
+		if ($this->_db->query()) 
+		{
 			return true;
-		} else {
-			$this->_error = $this->_db->getErrorMsg();
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
 
 	/**
-	 * Short description for 'getComments'
+	 * Get all comments for a page
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $id Parameter description (if any) ...
-	 * @param      string $parent Parameter description (if any) ...
-	 * @param      string $ver Parameter description (if any) ...
-	 * @param      string $limit Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $id     Page ID
+	 * @param      integer $parent Parent comment ID
+	 * @param      string  $ver    Page version
+	 * @param      string  $limit  Number of records to return
+	 * @return     array
 	 */
-	public function getComments( $id, $parent, $ver='', $limit='' )
+	public function getComments($id, $parent, $ver='', $limit='')
 	{
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE pageid='".$id."' AND parent=".$parent." $ver ORDER BY created DESC $limit" );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE pageid='" . $id . "' AND status < 2 AND parent=" . $parent . " $ver ORDER BY created DESC $limit");
 		return $this->_db->loadObjectList();
 	}
 }
