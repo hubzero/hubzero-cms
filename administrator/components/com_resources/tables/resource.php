@@ -268,6 +268,26 @@ class ResourcesResource extends JTable
 	}
 
 	/**
+	 * Load a record by alias and bind to $this
+	 * 
+	 * @param      string $oid Resource alias
+	 * @return     boolean True on success
+	 */
+	public function loadByFile($oid=NULL, $parent_id=null)
+	{
+		if ($oid === NULL || $parent_id === NULL) 
+		{
+			return false;
+		}
+		$this->_db->setQuery("SELECT r.id FROM $this->_tbl AS r LEFT JOIN #__resource_assoc AS a ON a.child_id=r.id WHERE (r.`path`='$oid' OR r.`path` LIKE '%/$oid') AND r.`standalone`=0 AND a.parent_id=$parent_id");
+		if ($result = $this->_db->loadResult()) 
+		{
+			return true;
+		} 
+		return false;
+	}
+
+	/**
 	 * Validate data
 	 * 
 	 * @return     boolean True if data is valid
