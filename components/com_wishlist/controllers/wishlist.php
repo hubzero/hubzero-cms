@@ -701,6 +701,8 @@ class WishlistController extends JObject
 		jimport('joomla.html.pagination');
 		$pageNav = new JPagination($total, $filters['start'], $filters['limit']);
 
+		JRequest::setVar('id', $id);
+
 		$view = new JView(array('name'=>'wishlist' , 'base_path' => JPATH_ROOT . DS . 'components' . DS . $this->_option));
 		$view->title = $this->_title;
 		$view->config = $this->config;
