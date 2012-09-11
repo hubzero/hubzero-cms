@@ -325,6 +325,33 @@ CREATE TABLE `#__bannertrack` (
   `banner_id` int(10) unsigned NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+CREATE TABLE `#__billboard_collection` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET latin1 DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__billboards` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `collection_id` int(11) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `header` varchar(255) DEFAULT NULL,
+  `text` text,
+  `learn_more_text` varchar(255) DEFAULT NULL,
+  `learn_more_target` varchar(255) DEFAULT NULL,
+  `learn_more_class` varchar(255) DEFAULT NULL,
+  `learn_more_location` varchar(255) DEFAULT NULL,
+  `background_img` varchar(255) DEFAULT NULL,
+  `padding` varchar(255) DEFAULT NULL,
+  `alias` varchar(255) DEFAULT NULL,
+  `css` text,
+  `published` tinyint(1) DEFAULT '0',
+  `ordering` int(11) DEFAULT NULL,
+  `checked_out` int(11) DEFAULT '0',
+  `checked_out_time` datetime DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 CREATE TABLE `#__blog_comments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `entry_id` int(11) DEFAULT '0',
