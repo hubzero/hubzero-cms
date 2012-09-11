@@ -97,7 +97,7 @@ if ($this->groups) {
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'State', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Group', 'group', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Revisions', 'revisions', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Hits', 'hits', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'Comments', 'comments', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -112,6 +112,8 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 {
 	$paramsClass = 'JParameter';
 }
+$database = JFactory::getDBO();
+$comment = new WikiPageComment($database);
 
 $k = 0;
 for ($i=0, $n=count($this->rows); $i < $n; $i++)
@@ -139,16 +141,6 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		$row->title = $row->pagename;
 	}
 
-	/*if (!$row->access) {
-		$color_access = 'style="color: green;"';
-		$task_access = 'accessregistered';
-	} elseif ($row->access == 1) {
-		$color_access = 'style="color: red;"';
-		$task_access = 'accessspecial';
-	} else {
-		$color_access = 'style="color: black;"';
-		$task_access = 'accesspublic';
-	}*/
 	$params = new $paramsClass($row->params);
 ?>
 			<tr class="<?php echo "row$k"; ?>">
@@ -202,10 +194,21 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					</span>
 				</td>
 <?php } ?>
-				<td>
+				<!-- <td>
 					<span class="hits">
 						<span><?php echo $this->escape($row->hits); ?></span>
 					</span>
+				</td> -->
+				<td>
+<?php if ($canDo->get('core.edit')) { ?>
+					<a class="comment" href="index.php?option=<?php echo $this->option ?>&amp;controller=comments&amp;pageid=<?php echo $row->id; ?>">
+						<?php echo $comment->getEntriesCount(array('pageid' => $row->id)) . ' ' . JText::_('comment(s)'); ?>
+					</a>
+<?php } else { ?>
+					<span class="comment">
+						<?php echo $comment->getEntriesCount(array('pageid' => $row->id)) . ' ' . JText::_('comment(s)'); ?>
+					</span>
+<?php } ?>
 				</td>
 			</tr>
 <?php

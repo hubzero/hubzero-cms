@@ -29,16 +29,13 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'WikiPage'
- * 
- * Long description (if any) ...
+ * Wiki table class for page
  */
 class WikiPage extends JTable
 {
-
 	/**
 	 * Primary key field in the table
 	 *
@@ -61,18 +58,18 @@ class WikiPage extends JTable
 	public $hits = NULL;
 
 	/**
-	 * Creator of the page
+	 * Creator of the page int(11)
 	 *
 	 * @var	integer
 	 */
-	public $created_by  = NULL;  // @var int(11)
+	public $created_by  = NULL;
 
 	/**
-	 * Page rating
+	 * Page rating decimal(2,1)
 	 *
 	 * @var	integer
 	 */
-	public $rating = NULL;  // @var decimal(2,1)
+	public $rating = NULL;
 
 	/**
 	 * Number of times a page is rated
@@ -582,7 +579,7 @@ class WikiPage extends JTable
 		$where = array();
 		if (isset($filters['search']) && $filters['search']) 
 		{
-			$where[] = "(LOWER( t.pagename ) LIKE '%" . $filters['search'] . "%' OR LOWER( t.title ) LIKE '%" . $filters['search'] . "%')";
+			$where[] = "(LOWER(t.pagename) LIKE '%" . $filters['search'] . "%' OR LOWER(t.title) LIKE '%" . $filters['search'] . "%')";
 		}
 		if (isset($filters['group'])) // && $filters['group'] != '' 
 		{
@@ -645,7 +642,7 @@ class WikiPage extends JTable
 		else 
 		{
 			$query = "SELECT v.pageid AS id, w.title, w.pagename AS alias, v.pagehtml AS itext, NULL AS ftext, w.state, v.created, v.created AS modified, v.created AS publish_up, w.params, 
-					CONCAT( 'index.php?option=com_topics&pagename=', w.pagename ) AS href, 'topics' AS `section`, w.`group_cn` AS area, w.scope AS category, w.rating, w.times_rated, w.ranking, w.access, w.hits ";
+					CONCAT('index.php?option=com_topics&pagename=', w.pagename) AS href, 'topics' AS `section`, w.`group_cn` AS area, w.scope AS category, w.rating, w.times_rated, w.ranking, w.access, w.hits ";
 			if (isset($filters['tags'])) 
 			{
 				$query .= ", COUNT(DISTINCT t.tagid) AS uniques ";
@@ -660,7 +657,7 @@ class WikiPage extends JTable
 							. "  MATCH(v.pagetext) AGAINST ('$exactphrase' IN BOOLEAN MODE) +"
 							. "  MATCH(w.title) AGAINST ('$exactphrase' IN BOOLEAN MODE) +"
 							. "  CASE WHEN LOWER(w.pagename) LIKE '%$text3%' THEN 10 ELSE 0 END"
-							. " ) AS relevance ";
+							. ") AS relevance ";
 				} 
 				else 
 				{
@@ -687,7 +684,7 @@ class WikiPage extends JTable
 							. "  MATCH(w.title) AGAINST ('+$text -\"$text2\"') +"
 							. "  CASE WHEN LOWER(w.title) LIKE '%$text2%' THEN 5 ELSE 0 END +"
 							. "  CASE WHEN LOWER(w.pagename) LIKE '%$text3%' THEN 50 ELSE 0 END"
-							. " ) AS relevance ";
+							. ") AS relevance ";
 				}
 			}
 		}
@@ -718,7 +715,7 @@ class WikiPage extends JTable
 			if (!empty($phrases)) 
 			{
 				$exactphrase = addslashes('"' . $phrases[0] . '"');
-				$where[] = "( (MATCH(w.title) AGAINST ('$exactphrase' IN BOOLEAN MODE) > 0) OR (MATCH(v.pagetext) AGAINST ('$exactphrase' IN BOOLEAN MODE) > 0) )";
+				$where[] = "((MATCH(w.title) AGAINST ('$exactphrase' IN BOOLEAN MODE) > 0) OR (MATCH(v.pagetext) AGAINST ('$exactphrase' IN BOOLEAN MODE) > 0))";
 			} 
 			else 
 			{
@@ -728,7 +725,7 @@ class WikiPage extends JTable
 				$text2 = preg_replace("/[^a-zA-Z0-9\s]/", '', strtolower($searchquery->searchText));
 				$text3 = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($searchquery->searchText));
 
-				$where[] = "( ( MATCH(w.title) AGAINST ('+$text -\"$text2\"') > 0) OR ( MATCH(v.pagetext) AGAINST ('+$text -\"$text2\"') > 0) )";
+				$where[] = "((MATCH(w.title) AGAINST ('+$text -\"$text2\"') > 0) OR (MATCH(v.pagetext) AGAINST ('+$text -\"$text2\"') > 0))";
 			}
 		}
 
