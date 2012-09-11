@@ -426,7 +426,7 @@ class ToolsControllerAttachments extends Hubzero_Controller
 		$helper->getChildren();
 
 		// get config
-		$this->view->cparams =& JComponentHelper::getParams('com_contribute');
+		$this->view->cparams =& JComponentHelper::getParams('com_resources');
 		$this->view->path = '';
 		$this->view->children = $helper->children;
 

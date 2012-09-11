@@ -131,7 +131,7 @@ if ($this->contributors) {
 			//.ContribtoolHtml::orderUpIcon( $i, $this->id, $contributor->id, 'c' ).'</td>';
 			//$out .= '  <td class="d">'.ContribtoolHtml::orderDownIcon( $i, $n, $this->id, $contributor->id, 'c' ).'</td>';
 		// build trash icon
-			$out .= '  <td class="t"><a href="/index.php?option='.$this->option.'&controller='.$this->controller.'&task=remove&tmpl=component&id='.$contributor->id.'&pid='.$this->id.'"><img src="/components/com_contribute/images/trash.gif" alt="'.JText::_('DELETE').'" /></a></td>';
+			$out .= '  <td class="t"><a href="/index.php?option='.$this->option.'&controller='.$this->controller.'&task=remove&tmpl=component&id='.$contributor->id.'&pid='.$this->id.'"><img src="/components/com_tools/assets/img/trash.gif" alt="'.JText::_('DELETE').'" /></a></td>';
 		}
 		$out .= ' </tr>';
 

@@ -831,7 +831,7 @@ class ToolsControllerScreenshots extends Hubzero_Controller
 		}
 
 		// get config
-		$this->view->cparams =& JComponentHelper::getParams('com_contribute');
+		$this->view->cparams =& JComponentHelper::getParams('com_resources');
 		$this->view->version = $version;
 		$this->view->rid = $rid;
 
