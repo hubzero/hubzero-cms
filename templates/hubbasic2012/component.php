@@ -18,10 +18,8 @@ $v = $browser->getBrowserMajorVersion();
 <!--[if IE 9 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie9"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo $b . ' ' . $b . $v; ?>"> <!--<![endif]-->
 	<head>
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/media/system/css/reset.css" />
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/media/system/css/columns.css" />
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/media/system/css/notifications.css" />
-		<!-- <link rel="stylesheet" type="text/css" media="screen" href="<?php /*echo Hubzero_Document::getSystemStylesheet(array('fontcons', 'reset', 'columns', 'notifications'));  reset MUST come before all others except fontcons */ ?>" /> -->
+		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo Hubzero_Document::getSystemStylesheet(array('reset', 'fontcons', 'columns', 'notifications')); /* reset MUST come before all others except fontcons */ ?>" />
+
 <?php if ($this->direction == 'rtl' && (!file_exists(JPATH_THEMES . DS . $this->template . DS . 'css/component_rtl.css') || !file_exists(JPATH_THEMES . DS . $this->template . DS . 'css/component.css'))) : ?>
 		<link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/system/css/template_rtl.css" type="text/css" />
 <?php elseif ($this->direction == 'rtl' ) : ?>
