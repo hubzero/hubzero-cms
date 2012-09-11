@@ -229,7 +229,7 @@ class WikiControllerPage extends Hubzero_Controller
 		}
 
 		// Up the hit counter
-		$this->page->hit();
+		//$this->page->hit();
 
 		// Load the wiki parser
 		$wikiconfig = array(
@@ -692,12 +692,12 @@ class WikiControllerPage extends Hubzero_Controller
 		}
 
 		// Stripslashes just to make sure
-		$old->pagetext = rtrim(stripslashes($old->pagetext));
-		$this->revision->pagetext = rtrim(stripslashes($this->revision->pagetext));
+		//$old->pagetext = rtrim(stripslashes($old->pagetext));
+		//$this->revision->pagetext = rtrim(stripslashes($this->revision->pagetext));
 
 		// Compare against previous revision
 		// We don't want to create a whole new revision if just the tags were changed
-		if ($old->pagetext != $this->revision->pagetext) 
+		if (rtrim($old->pagetext) != rtrim($this->revision->pagetext)) 
 		{
 			// Transform the wikitext to HTML
 			$wikiconfig = array(

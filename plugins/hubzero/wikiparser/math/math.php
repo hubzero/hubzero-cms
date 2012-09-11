@@ -217,7 +217,7 @@ class MathRenderer
 
 		// Location of the texvc binary
 		$b = '/usr/bin'; // dirname(__FILE__);
-		$texvc = $b.DS.'texvc';
+		$texvc = $b . DS . 'texvc';
 
 		if ($this->mode == MW_MATH_SOURCE) 
 		{
