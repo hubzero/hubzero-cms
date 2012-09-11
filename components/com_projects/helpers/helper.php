@@ -395,6 +395,19 @@ class ProjectsHelper extends JObject {
 	}
 	
 	/**
+	 * Covert param to array of values
+	 * 
+	 * @param      string $param
+	 * 
+	 * @return     array
+	 */
+	public function getParamArray($param = '')
+	{
+		$array = explode(',', $param);
+		return array_map('trim', $array);		
+	}
+	
+	/**
 	 * Send hub message
 	 * 
 	 * @param      string $option
