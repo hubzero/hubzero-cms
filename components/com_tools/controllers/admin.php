@@ -770,6 +770,10 @@ class ToolsControllerAdmin extends Hubzero_Controller
 		}
 
 		$tarball_path = $this->config->get('sourcecodePath');
+		if ($tarball_path[0] != DS)
+                {
+                        $tarball_path = rtrim(JPATH_ROOT . DS . $tarball_path, DS);
+                }
 
 		$xlog->logDebug("finalizeTool(): checkpoint 2");
 

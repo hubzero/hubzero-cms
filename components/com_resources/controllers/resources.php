@@ -2215,6 +2215,10 @@ class ResourcesControllerResources extends Hubzero_Controller
 		// Get contribtool params
 		$tparams =& JComponentHelper::getParams('com_contribtool');
 		$tarball_path = $tparams->get('sourcecodePath');
+		if ($tarball_path[0] != DS)
+                {
+                        $tarball_path = rtrim(JPATH_ROOT . DS . $tarball_path, DS);
+                }
 		$tarpath = $tarball_path . DS . $tv->toolname . DS;
 		$opencode = ($tv->codeaccess=='@OPEN') ? 1 : 0;
 

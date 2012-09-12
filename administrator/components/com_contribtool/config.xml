@@ -46,7 +46,7 @@ HUBzero is a registered trademark of Purdue University.
 		<param name="addreposcript_dir" type="text" menu="hide" default="/usr/bin" label="AddRepo Script Directory" description="Directory for addrepo script" />
 		<param name="dev_suffix" type="text" menu="hide" default="_dev" label="Dev tool suffix" description="Suffix indicating the development instance of a tool (e.g. _dev for toolname_dev) " />
 		<param name="group_prefix" type="text" menu="hide" default="app-" label="Dev group prefix" description="Prefix to name of development group (e.g. app-) " />
-		<param name="sourcecodePath" type="text" menu="hide" default="" label="Source code path" description="Source code path. " />
+		<param name="sourcecodePath" type="text" menu="hide" default="site/protected/source" label="Source code path" description="Source code path. " />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
         <param name="learn_url" type="text" menu="hide" default="http://rappture.org/wiki/FAQ_UpDownloadSrc" label="Learn More URL" description="URL to a uploading source tutorial" />
         <param name="rappture_url" type="text" menu="hide" default="http://rappture.org" label="Rappture URL" description="URL to a rappture tutorial" />
