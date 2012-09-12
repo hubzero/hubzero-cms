@@ -13,7 +13,7 @@
 */
 
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
 
@@ -33,64 +33,81 @@ class PollController extends JController
 	 * @access	public
 	 * @since	1.5
 	 */
-	function display()
+	public function display()
 	{
-		JRequest::setVar('view','poll'); // force it to be the polls view
+		//JRequest::setVar('view', 'poll'); // force it to be the polls view
+		parent::display();
+	}
+
+	/**
+	 * Method to show the latest poll
+	 *
+	 * @access	public
+	 * @since	1.5
+	 */
+	public function latest()
+	{
+		JRequest::setVar('view', 'latest');
 		parent::display();
 	}
 
 	/**
  	 * Add a vote to an option
  	 */
-	function vote()
+	public function vote()
 	{
-		global $mainframe;
+		$app = JFactory::getApplication();
 
 		// Check for request forgeries
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		JRequest::checkToken() or jexit('Invalid Token');
 
-		$db			=& JFactory::getDBO();
-		$poll_id	= JRequest::getVar( 'id', 0, '', 'int' );
-		$option_id	= JRequest::getVar( 'voteid', 0, 'post', 'int' );
+		$db =& JFactory::getDBO();
+		$poll_id   = JRequest::getVar('id', 0, '', 'int');
+		$option_id = JRequest::getVar('voteid', 0, 'post', 'int');
 
 		$poll =& JTable::getInstance('poll','Table');
-		if (!$poll->load( $poll_id ) || $poll->published != 1) {
-			JError::raiseWarning( 404, JText::_('ALERTNOTAUTH') );
+		if (!$poll->load($poll_id) || $poll->published != 1) 
+		{
+			JError::raiseWarning(404, JText::_('ALERTNOTAUTH'));
 			return;
 		}
 
-		$cookieName	= JUtility::getHash( $mainframe->getName() . 'poll' . $poll_id );
+		$cookieName = JUtility::getHash($app->getName() . 'poll' . $poll_id);
 		// ToDo - may be adding those information to the session?
-		$voted = JRequest::getVar( $cookieName, '0', 'COOKIE', 'INT');
+		$voted = JRequest::getVar($cookieName, '0', 'COOKIE', 'INT');
 
-		if ($voted || !$option_id )
+		if ($voted || !$option_id)
 		{
-			if($voted) {
+			if ($voted) 
+			{
 				$msg = JText::_('You already voted for this poll today!');
 			}
 
-			if(!$option_id){
+			if (!$option_id)
+			{
 				$msg = JText::_('WARNSELECT');
 			}
 		}
 		else
 		{
-			setcookie( $cookieName, '1', time() + $poll->lag );
+			setcookie($cookieName, '1', time() + $poll->lag);
 
-			require_once(JPATH_COMPONENT.DS.'models'.DS.'poll.php');
+			require_once(JPATH_COMPONENT . DS . 'models' . DS . 'poll.php');
 			$model = new PollModelPoll();
-			$model->vote( $poll_id, $option_id );
+			$model->vote($poll_id, $option_id);
 
-			$msg = JText::_( 'Thanks for your vote!' );
+			$msg = JText::_('Thanks for your vote!');
 		}
 
 		// set Itemid id for links
 		$menu = &JSite::getMenu();
-		$items	= $menu->getItems('link', 'index.php?option=com_poll&view=poll');
+		$items = $menu->getItems('link', 'index.php?option=com_poll&view=poll');
 
-		$itemid = isset($items[0]) ? '&Itemid='.$items[0]->id : '';
+		$itemid = isset($items[0]) ? '&Itemid=' . $items[0]->id : '';
 
-		$this->setRedirect( JRoute::_('index.php?option=com_poll&id='. $poll_id.':'.$poll->alias.$itemid, false), $msg );
+		$this->setRedirect(
+			JRoute::_('index.php?option=com_poll&id=' . $poll_id . ':' . $poll->alias . $itemid, false), 
+			$msg
+		);
 	}
 }
-?>

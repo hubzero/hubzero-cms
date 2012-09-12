@@ -37,6 +37,8 @@ class TablePoll extends JTable
 	var $access				= 0;
 	/** @var int */
 	var $lag				= 0;
+	/** @var int */
+	var $open				= 0;
 
 	/**
 	* @param database A database connector object

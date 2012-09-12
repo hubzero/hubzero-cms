@@ -59,4 +59,45 @@ class PollModelPoll extends JModel
 		$db->setQuery( $query );
 		$db->query();
 	}
+
+	function getLatest()
+	{
+		$db		=& JFactory::getDBO();
+		$result	= null;
+
+		$query = 'SELECT id'
+			.' FROM #__polls'
+			.' WHERE published = 1 AND open = 1 ORDER BY id DESC Limit 1'
+			;
+		$db->setQuery($query);
+		$result = $db->loadResult();
+
+		if ($db->getErrorNum()) {
+			JError::raiseWarning( 500, $db->stderr() );
+		}
+		
+		$poll =& JTable::getInstance('poll', 'Table');
+		$poll->load($result);
+
+		return $poll;
+	}
+
+	function getPollOptions($id)
+	{
+		$db	=& JFactory::getDBO();
+
+		$query = 'SELECT id, text' .
+			' FROM #__poll_data' .
+			' WHERE pollid = ' . (int) $id .
+			' AND text <> ""' .
+			' ORDER BY id';
+		$db->setQuery($query);
+
+		if (!($options = $db->loadObjectList())) {
+			//echo "MD ".$db->stderr();
+			return array();
+		}
+
+		return $options;
+	}
 }

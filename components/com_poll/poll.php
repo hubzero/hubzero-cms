@@ -13,30 +13,40 @@
 */
 
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
+
+if (JFactory::getConfig()->getValue('config.debug')) 
+{
+	error_reporting(E_ALL);
+	@ini_set('display_errors','1');
+}
 
 // Set the table directory
-JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'tables');
+JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables');
 
 // Require the base controller
-require_once (JPATH_COMPONENT.DS.'controller.php');
+require_once(JPATH_COMPONENT . DS . 'controller.php');
 
 // Require specific controller if requested
-if($controller = JRequest::getWord('controller')) {
-	$path = JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php';
-	if (file_exists($path)) {
+if ($controller = JRequest::getWord('controller', 'poll')) 
+{
+	$path = JPATH_COMPONENT . DS . 'controllers' . DS . $controller . '.php';
+	if (file_exists($path)) 
+	{
 		require_once $path;
-	} else {
+	} 
+	else 
+	{
 		$controller = '';
 	}
 }
 
 // Create the controller
-$classname	= 'PollController'.ucfirst($controller);
-$controller = new $classname( );
+$classname	= 'PollController' . ucfirst($controller);
+$controller = new $classname();
 
 // Register Extra tasks
-$controller->registerTask( 'results', 'display' );
+$controller->registerTask('results', 'display');
 
 // Perform the Request task
 $controller->execute(JRequest::getCmd('task'));

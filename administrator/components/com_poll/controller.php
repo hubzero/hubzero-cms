@@ -32,6 +32,7 @@ class PollController extends JController
 
 		$this->registerTask( 'apply', 		'save');
 		$this->registerTask( 'unpublish', 	'publish');
+		$this->registerTask( 'close', 		'open');
 		$this->registerTask( 'preview', 	'display');
 		$this->registerTask( 'edit', 		'display');
 		$this->registerTask( 'add' , 		'display' );
@@ -191,6 +192,54 @@ class PollController extends JController
 
 		$query = 'UPDATE #__polls'
 		. ' SET published = ' . (int) $publish
+		. ' WHERE id IN ( '. $cids .' )'
+		. ' AND ( checked_out = 0 OR ( checked_out = '.(int) $user->get('id').' ) )'
+		;
+		$db->setQuery( $query );
+		if (!$db->query())
+		{
+			JError::raiseError(500, $db->getErrorMsg() );
+		}
+
+		if (count( $cid ) == 1)
+		{
+			$row =& JTable::getInstance('poll', 'Table');
+			$row->checkin( $cid[0] );
+		}
+		$mainframe->redirect( 'index.php?option=com_poll' );
+	}
+
+	/**
+	* Publishes or Unpublishes one or more records
+	* @param array An array of unique category id numbers
+	* @param integer 0 if unpublishing, 1 if publishing
+	* @param string The current url option
+	*/
+	function open()
+	{
+		global $mainframe;
+
+		// Check for request forgeries
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+
+		$db 	=& JFactory::getDBO();
+		$user 	=& JFactory::getUser();
+
+		$cid		= JRequest::getVar( 'cid', array(), '', 'array' );
+		$publish	= ( $this->getTask() == 'open' ? 1 : 0 );
+
+		JArrayHelper::toInteger($cid);
+
+		if (count( $cid ) < 1)
+		{
+			$action = $publish ? 'open' : 'close';
+			JError::raiseError(500, JText::_( 'Select an item to' .$action, true ) );
+		}
+
+		$cids = implode( ',', $cid );
+
+		$query = 'UPDATE #__polls'
+		. ' SET open = ' . (int) $publish
 		. ' WHERE id IN ( '. $cids .' )'
 		. ' AND ( checked_out = 0 OR ( checked_out = '.(int) $user->get('id').' ) )'
 		;

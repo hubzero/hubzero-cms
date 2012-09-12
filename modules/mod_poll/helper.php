@@ -21,12 +21,23 @@ class modPollHelper
 		$db		=& JFactory::getDBO();
 		$result	= null;
 
-		$query = 'SELECT id, title,'
-			.' CASE WHEN CHAR_LENGTH(alias) THEN CONCAT_WS(\':\', id, alias) ELSE id END as slug '
-			.' FROM #__polls'
-			.' WHERE id = '.(int) $id
-			.' AND published = 1'
-			;
+		if ($id)
+		{
+			$query = 'SELECT id, title,'
+				.' CASE WHEN CHAR_LENGTH(alias) THEN CONCAT_WS(\':\', id, alias) ELSE id END as slug '
+				.' FROM #__polls'
+				.' WHERE id = '.(int) $id
+				.' AND published = 1'
+				;
+		}
+		else 
+		{
+			$query = 'SELECT id, title,'
+				.' CASE WHEN CHAR_LENGTH(alias) THEN CONCAT_WS(\':\', id, alias) ELSE id END as slug '
+				.' FROM #__polls'
+				.' WHERE published = 1 AND open = 1 ORDER BY id DESC Limit 1'
+				;
+		}
 		$db->setQuery($query);
 		$result = $db->loadObject();
 

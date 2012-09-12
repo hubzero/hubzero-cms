@@ -90,6 +90,10 @@ function PollBuildRoute( &$query )
 			unset($query['id']);
 			unset($query['alias']);
 		}
+		if (isset($query['view']) && $query['view'] == 'latest')
+		{
+			$segments[] = $query['view'];
+		}
 		unset($query['view']);
 	}
 	else
@@ -113,6 +117,12 @@ function PollBuildRoute( &$query )
 function PollParseRoute( $segments )
 {
 	$vars = array();
+
+	if ($segments[0] == 'latest')
+	{
+		$vars['view'] = 'latest';
+		return $vars;
+	}
 
 	//Get the active menu item
 	$menu	=& JSite::getMenu();

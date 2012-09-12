@@ -30,14 +30,14 @@
 defined('_JEXEC') or die('Restricted access');
 
 
-class XPollHelper
+class PollHelper
 {
 	/**
 	 * Name of the component
 	 * 
 	 * @var string
 	 */
-	public static $extension = 'com_xpoll';
+	public static $extension = 'com_poll';
 	
 	/**
 	 * Gets a list of the actions that can be performed.
@@ -50,7 +50,7 @@ class XPollHelper
 	 */
 	public static function getActions($assetType='component', $assetId = 0)
 	{
-		$assetName = 'com_xpoll';
+		$assetName = 'com_poll';
 		$user	= JFactory::getUser();
 		$result	= new JObject;
 

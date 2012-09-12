@@ -89,6 +89,14 @@ JFilterOutput::objectHTMLSafe( $this->poll, ENT_QUOTES );
 				<?php echo JHTML::_( 'select.booleanlist',  'published', 'class="inputbox"', $this->poll->published ); ?>
 			</td>
 		</tr>
+		<tr>
+			<td width="120" class="key">
+				<?php echo JText::_( 'Open' ); ?>:
+			</td>
+			<td>
+				<?php echo JHTML::_( 'select.booleanlist',  'open', 'class="inputbox"', $this->poll->open ); ?>
+			</td>
+		</tr>
 	</table>
 	</fieldset>
 </div>

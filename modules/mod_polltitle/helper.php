@@ -101,16 +101,13 @@ class modPollTitle extends JObject
 	 */
 	public function run()
 	{
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_xpoll' . DS . 'tables' . DS . 'poll.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_xpoll' . DS . 'tables' . DS . 'data.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_xpoll' . DS . 'tables' . DS . 'date.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_xpoll' . DS . 'tables' . DS . 'menu.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_poll' . DS . 'tables' . DS . 'poll.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_poll' . DS . 'models' . DS . 'poll.php');
 
-		$this->database = JFactory::getDBO();
+		$model = new PollModelPoll();
 
 		// Load the latest poll
-		$this->poll = new XPollPoll($this->database);
-		$this->poll->getLatestPoll();
+		$this->poll = $model->getLatest();
 
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
