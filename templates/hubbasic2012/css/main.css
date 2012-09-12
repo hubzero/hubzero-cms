@@ -1278,6 +1278,10 @@
 	#page_content .subject:before {
 		right: 250px;
 	}
+	.subject.contracted:before {
+		right: 40%;
+		margin-right: 20px;
+	}
 	.section .section .subject:before {
 		display: none;
 	}
@@ -1308,6 +1312,9 @@
 	#page_content .aside:before {
 		right: 230px;
 	}
+	.aside.expanded:before {
+		right: 40%;
+	}
 	/* .section + .section .aside:after { */
 	.aside small.aside-after,
 	.aside:after {
@@ -1327,6 +1334,10 @@
 	}
 	#page_content .aside:after {
 		right: 250px;
+	}
+	.aside.expanded:after {
+		right: 40%;
+		margin-right: 20px;
 	}
 	.subject + .clear + .aside:before,
 	.subject + .clear + .aside:after,
@@ -1942,6 +1953,11 @@
 		font-family: 'Fontcons';
 		margin-right: 0.3em;
 	}
+	.status:before {
+		content: "\f056";
+		font-family: 'Fontcons';
+		margin-right: 0.2em;
+	}
 	#content #system-message {
 		margin: 0 0 30px 0;
 	}
@@ -2101,6 +2117,8 @@
 		padding: 0 1em;
 		margin: 0 0 0 1em;
 		text-indent: 0;
+		text-shadow: none;
+		font-size: 1em;
 	}
 	#hubForm.full fieldset fieldset fieldset,
 	#hubForm fieldset fieldset fieldset {
@@ -2132,7 +2150,11 @@
 	}
 	#hubForm .field-wrap,
 	#hubForm p {
+		display: block;
 		margin: 1.5em 2em 0 2em;
+	}
+	#hubForm label + .field-wrap {
+		margin: 0 2em 0 2em;
 	}
 	#hubForm legend + .group label{
 		padding-top: 0.5em;
