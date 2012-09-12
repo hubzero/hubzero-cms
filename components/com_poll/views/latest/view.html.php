@@ -34,24 +34,14 @@ class PollViewLatest extends JView
 		$document  =& JFactory::getDocument();
 		$pathway   =& $mainframe->getPathway();
 
-		//$poll_id = JRequest::getVar('id', 0, '', 'int');
-
-		//$poll =& JTable::getInstance('poll', 'Table');
-		//$poll->load($poll_id);
-
 		require_once(JPATH_COMPONENT . DS . 'models' . DS . 'poll.php');
 		$model = new PollModelPoll();
 		$poll = $model->getLatest();
-		/*if (!is_object($poll))
-		{
-			$poll =& JTable::getInstance('poll', 'Table');
-		}*/
 
 		// if id value is passed and poll not published then exit
 		if ($poll->id > 0 && $poll->published != 1) 
 		{
-			echo 'ggg';
-			//JError::raiseError(403, JText::_('Access Forbidden'));
+			JError::raiseError(403, JText::_('Access Forbidden'));
 			return;
 		}
 

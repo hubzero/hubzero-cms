@@ -13,9 +13,9 @@
 */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-jimport( 'joomla.application.component.view');
+jimport('joomla.application.component.view');
 
 /**
  * HTML View class for the Poll component
@@ -27,22 +27,22 @@ jimport( 'joomla.application.component.view');
  */
 class PollViewPoll extends JView
 {
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
-		global $mainframe;
+		$mainframe =& JFactory::getApplication();
 
 		$db 	  =& JFactory::getDBO();
 		$document =& JFactory::getDocument();
 		$pathway  =& $mainframe->getPathway();
 
-		$poll_id = JRequest::getVar( 'id', 0, '', 'int' );
+		$poll_id = JRequest::getVar('id', 0, '', 'int');
 
 		$poll =& JTable::getInstance('poll', 'Table');
-		$poll->load( $poll_id );
+		$poll->load($poll_id);
 
 		// if id value is passed and poll not published then exit
 		if ($poll->id > 0 && $poll->published != 1) {
-			JError::raiseError( 403, JText::_('Access Forbidden') );
+			JError::raiseError(403, JText::_('Access Forbidden'));
 			return;
 		}
 
@@ -55,21 +55,26 @@ class PollViewPoll extends JView
 
 		// because the application sets a default page title, we need to get it
 		// right from the menu item itself
-		if (is_object( $menu )) {
-			$menu_params = new JParameter( $menu->params );
-			if (!$menu_params->get( 'page_title')) {
+		if (is_object($menu)) {
+			$paramsClass = 'JRegistry';
+			if (version_compare(JVERSION, '1.6', 'lt'))
+			{
+				$paramsClass = 'JParameter';
+			}
+			$menu_params = new $paramsClass($menu->params);
+			if (!$menu_params->get('page_title')) {
 				$params->set('page_title',	$poll->title);
 			}
 		} else {
 			$params->set('page_title',	$poll->title);
 		}
-		$document->setTitle( $params->get( 'page_title' ) );
+		$document->setTitle($params->get('page_title'));
 
 		//Set pathway information
 		$pathway->addItem($poll->title, '');
 
-		$params->def( 'show_page_title', 1 );
-		$params->def( 'page_title', $poll->title );
+		$params->def('show_page_title', 1);
+		$params->def('page_title', $poll->title);
 
 		$first_vote = '';
 		$last_vote 	= '';
@@ -78,20 +83,20 @@ class PollViewPoll extends JView
 		// Check if there is a poll corresponding to id and if poll is published
 		if ($poll->id > 0)
 		{
-			if (empty( $poll->title )) {
+			if (empty($poll->title)) {
 				$poll->id = 0;
-				$poll->title = JText::_( 'Select Poll from the list' );
+				$poll->title = JText::_('Select Poll from the list');
 			}
 
-			$query = 'SELECT MIN( date ) AS mindate, MAX( date ) AS maxdate'
+			$query = 'SELECT MIN(date) AS mindate, MAX(date) AS maxdate'
 				. ' FROM #__poll_date'
 				. ' WHERE poll_id = '. (int) $poll->id;
-			$db->setQuery( $query );
+			$db->setQuery($query);
 			$dates = $db->loadObject();
 
-			if (isset( $dates->mindate )) {
-				$first_vote = JHTML::_('date',  $dates->mindate, JText::_('DATE_FORMAT_LC2') );
-				$last_vote 	= JHTML::_('date',  $dates->maxdate, JText::_('DATE_FORMAT_LC2') );
+			if (isset($dates->mindate)) {
+				$first_vote = JHTML::_('date',  $dates->mindate, JText::_('DATE_FORMAT_LC2'));
+				$last_vote 	= JHTML::_('date',  $dates->maxdate, JText::_('DATE_FORMAT_LC2'));
 			}
 
 			$query = 'SELECT a.id, a.text, a.hits, b.voters '
@@ -100,7 +105,7 @@ class PollViewPoll extends JView
 				. ' WHERE a.pollid = '. (int) $poll->id
 				. ' AND a.text <> ""'
 				. ' ORDER BY a.hits DESC';
-			$db->setQuery( $query );
+			$db->setQuery($query);
 			$votes = $db->loadObjectList();
 		} else {
 			$votes = array();
@@ -112,7 +117,7 @@ class PollViewPoll extends JView
 			. ' WHERE published = 1'
 			. ' ORDER BY id'
 		;
-		$db->setQuery( $query );
+		$db->setQuery($query);
 		$pList = $db->loadObjectList();
 
 		foreach ($pList as $k=>$p)
@@ -120,7 +125,7 @@ class PollViewPoll extends JView
 			$pList[$k]->url = JRoute::_('index.php?option=com_poll&id='.$p->id.':'.$p->alias);
 		}
 
-		array_unshift( $pList, JHTML::_('select.option',  '', JText::_( 'Select Poll from the list' ), 'url', 'title' ));
+		array_unshift($pList, JHTML::_('select.option',  '', JText::_('Select Poll from the list'), 'url', 'title'));
 
 		// dropdown output
 		$lists = array();
@@ -143,14 +148,14 @@ class PollViewPoll extends JView
 		$sumval		= isset($votes[0]) ? $votes[0]->voters : 0;
 
 		$k = 0;
-		for ($i = 0; $i < count( $votes ); $i++)
+		for ($i = 0; $i < count($votes); $i++)
 		{
 			$vote =& $votes[$i];
 
 			if ($maxval > 0 && $sumval > 0)
 			{
-				$vote->width	= ceil( $vote->hits * $graphwidth / $maxval );
-				$vote->percent = round( 100 * $vote->hits / $sumval, 1 );
+				$vote->width	= ceil($vote->hits * $graphwidth / $maxval);
+				$vote->percent = round(100 * $vote->hits / $sumval, 1);
 			}
 			else
 			{
@@ -189,4 +194,3 @@ class PollViewPoll extends JView
 		parent::display($tpl);
 	}
 }
-?>
