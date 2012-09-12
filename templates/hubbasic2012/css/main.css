@@ -1953,7 +1953,7 @@
 		font-family: 'Fontcons';
 		margin-right: 0.3em;
 	}
-	.status:before {
+	#content-header-extra .status:before {
 		content: "\f056";
 		font-family: 'Fontcons';
 		margin-right: 0.2em;
@@ -2153,6 +2153,7 @@
 		display: block;
 		margin: 1.5em 2em 0 2em;
 	}
+	#hubForm span.field-wrap,
 	#hubForm label + .field-wrap {
 		margin: 0 2em 0 2em;
 	}
