@@ -115,6 +115,9 @@ class plgMembersMessages extends Hubzero_Plugin
 		// Are we returning HTML?
 		if ($returnhtml) 
 		{
+			$this->app = JFactory::getApplication();
+			$this->jconfig = JFactory::getConfig();
+
 			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('members', 'messages');
 
@@ -171,6 +174,20 @@ class plgMembersMessages extends Hubzero_Plugin
 			$view->member = $member;
 			$view->task = $task;
 
+			$view->filters = array();
+			$view->filters['limit'] = $this->app->getUserStateFromRequest(
+				$option . '.plugin.messages.limit',
+				'limit',
+				$this->jconfig->getValue('config.list_limit'),
+				'int'
+			);
+			$view->filters['start'] = $this->app->getUserStateFromRequest(
+				$option . '.plugin.messages.limitstart',
+				'limitstart',
+				0,
+				'int'
+			);
+
 			$view->body = $body;
 			$view->notifications = ($this->getPluginMessage()) ? $this->getPluginMessage() : array();
 			$arr['html'] = $view->loadTemplate();
@@ -210,36 +227,7 @@ class plgMembersMessages extends Hubzero_Plugin
 	public function inbox($database, $option, $member) 
 	{
 		// Push some scripts to the template
-		Hubzero_Document::addPluginScript("members","messages");
-
-		// Filters for returning results
-		$filters = array();
-		$filters['limit'] = JRequest::getInt('limit', 10);
-		$filters['start'] = JRequest::getInt('limitstart', 0);
-		$filters['state'] = 0;
-		$filter = JRequest::getVar('filter', '');
-		$filters['filter'] = ($filter) ? 'com_'.$filter : '';
-
-		$recipient = new Hubzero_Message_Recipient($database);
-
-		$total = $recipient->getMessagesCount($member->get('uidNumber'), $filters);
-
-		$rows = $recipient->getMessages($member->get('uidNumber'), $filters);
-
-		jimport('joomla.html.pagination');
-		$pageNav = new JPagination($total, $filters['start'], $filters['limit']);
-
-		$xmc = new Hubzero_Message_Component($database);
-		$components = $xmc->getComponents();
-
-		$pagenavhtml = $pageNav->getListFooter();
-		$pagenavhtml = str_replace('members?','members/' . $member->get('uidNumber') . '/messages/inbox/?',$pagenavhtml);
-		$pagenavhtml = str_replace('members/?','members/' . $member->get('uidNumber') . '/messages/inbox/?',$pagenavhtml);
-		$pagenavhtml = str_replace('action=inbox','',$pagenavhtml);
-		$pagenavhtml = str_replace('&amp;&amp;','&amp;',$pagenavhtml);
-		$pagenavhtml = str_replace('?&amp;','?',$pagenavhtml);
-		$pagenavhtml = str_replace('href="<li class=limit','href="members/' . $member->get('uidNumber') . '/messages/inbox/?limit',$pagenavhtml);
-		$pagenavhtml = str_replace('messages?','messages/inbox?',$pagenavhtml);
+		Hubzero_Document::addPluginScript('members', 'messages');
 
 		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
@@ -252,10 +240,49 @@ class plgMembersMessages extends Hubzero_Plugin
 		);
 		$view->option = $option;
 		$view->member = $member;
-		$view->components = $components;
-		$view->rows = $rows;
-		$view->pagenavhtml = $pagenavhtml;
-		$view->filter = $filter;
+
+		// Filters for returning results
+		$filters = array();
+		$filters['limit'] = $this->app->getUserStateFromRequest(
+			$option . '.plugin.messages.limit',
+			'limit',
+			$this->jconfig->getValue('config.list_limit'),
+			'int'
+		);
+		$filters['start'] = $this->app->getUserStateFromRequest(
+			$option . '.plugin.messages.limitstart',
+			'limitstart',
+			0,
+			'int'
+		);
+		$filters['state'] = 0;
+
+		$view->filter = JRequest::getVar('filter', '');
+		$filters['filter'] = ($view->filter) ? 'com_' . $view->filter : '';
+
+		$recipient = new Hubzero_Message_Recipient($database);
+
+		$view->total = $recipient->getMessagesCount($member->get('uidNumber'), $filters);
+
+		$view->rows = $recipient->getMessages($member->get('uidNumber'), $filters);
+
+		jimport('joomla.html.pagination');
+		$pageNav = new JPagination(
+			$view->total, 
+			$filters['start'], 
+			$filters['limit']
+		);
+
+		$xmc = new Hubzero_Message_Component($database);
+		$view->components = $xmc->getComponents();
+
+		$pageNav->setAdditionalUrlParam('id', $member->get('uidNumber'));
+		$pageNav->setAdditionalUrlParam('active', 'messages');
+		$pageNav->setAdditionalUrlParam('task', 'inbox');
+		$pageNav->setAdditionalUrlParam('action', '');
+
+		$view->pagenavhtml = $pageNav->getListFooter();
+
 		return $view->loadTemplate();
 	}
 	
@@ -273,35 +300,6 @@ class plgMembersMessages extends Hubzero_Plugin
 		ximport('Hubzero_Document');
 		Hubzero_Document::addPluginScript('members', 'messages', 'messages');
 
-		// Filters for returning results
-		$filters = array();
-		$filters['limit'] = JRequest::getInt('limit', 10);
-		$filters['start'] = JRequest::getInt('limitstart', 0);
-		$filters['state'] = 1;
-		$filter = JRequest::getVar('filter', '');
-		$filters['filter'] = ($filter) ? 'com_' . $filter : '';
-
-		$recipient = new Hubzero_Message_Recipient($database);
-
-		$total = $recipient->getMessagesCount($member->get('uidNumber'), $filters);
-
-		$rows = $recipient->getMessages($member->get('uidNumber'), $filters);
-
-		jimport('joomla.html.pagination');
-		$pageNav = new JPagination($total, $filters['start'], $filters['limit']);
-
-		$xmc = new Hubzero_Message_Component($database);
-		$components = $xmc->getComponents();
-
-		$pagenavhtml = $pageNav->getListFooter();
-		$pagenavhtml = str_replace('members?','members/' . $member->get('uidNumber') . '/messages/archive/?',$pagenavhtml);
-		$pagenavhtml = str_replace('members/?','members/' . $member->get('uidNumber') . '/messages/archive/?',$pagenavhtml);
-		$pagenavhtml = str_replace('action=archive','',$pagenavhtml);
-		$pagenavhtml = str_replace('&amp;&amp;','&amp;',$pagenavhtml);
-		$pagenavhtml = str_replace('?&amp;','?',$pagenavhtml);
-		$pagenavhtml = str_replace('href="<li class=limit','href="members/' . $member->get('uidNumber') . '/messages/inbox/?limit',$pagenavhtml);
-		$pagenavhtml = str_replace('messages?','messages/archive?',$pagenavhtml);
-
 		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
@@ -313,10 +311,48 @@ class plgMembersMessages extends Hubzero_Plugin
 		);
 		$view->option = $option;
 		$view->member = $member;
-		$view->components = $components;
-		$view->rows = $rows;
-		$view->pagenavhtml = $pagenavhtml;
-		$view->filter = $filter;
+
+		// Filters for returning results
+		$filters = array();
+		$filters['limit'] = $this->app->getUserStateFromRequest(
+			$option . '.plugin.messages.limit',
+			'limit',
+			$this->jconfig->getValue('config.list_limit'),
+			'int'
+		);
+		$filters['start'] = $this->app->getUserStateFromRequest(
+			$option . '.plugin.messages.limitstart',
+			'limitstart',
+			0,
+			'int'
+		);
+		$filters['state'] = 1;
+		$view->filter = JRequest::getVar('filter', '');
+		$filters['filter'] = ($view->filter) ? 'com_' . $view->filter : '';
+
+		$recipient = new Hubzero_Message_Recipient($database);
+
+		$view->total = $recipient->getMessagesCount($member->get('uidNumber'), $filters);
+
+		$view->rows = $recipient->getMessages($member->get('uidNumber'), $filters);
+
+		jimport('joomla.html.pagination');
+		$pageNav = new JPagination(
+			$view->total, 
+			$filters['start'], 
+			$filters['limit']
+		);
+
+		$xmc = new Hubzero_Message_Component($database);
+		$view->components = $xmc->getComponents();
+
+		$pageNav->setAdditionalUrlParam('id', $member->get('uidNumber'));
+		$pageNav->setAdditionalUrlParam('active', 'messages');
+		$pageNav->setAdditionalUrlParam('task', 'archive');
+		$pageNav->setAdditionalUrlParam('action', '');
+
+		$view->pagenavhtml = $pageNav->getListFooter();
+
 		return $view->loadTemplate();
 	}
 
@@ -334,50 +370,59 @@ class plgMembersMessages extends Hubzero_Plugin
 		ximport('Hubzero_Document');
 		Hubzero_Document::addPluginScript('members', 'messages', 'messages');
 
-		// Filters for returning results
-		$filters = array();
-		$filters['limit'] = JRequest::getInt('limit', 10);
-		$filters['start'] = JRequest::getInt('limitstart', 0);
-		$filters['state'] = 2;
-		$filter = JRequest::getVar('filter', '');
-		$filters['filter'] = ($filter) ? 'com_' . $filter : '';
-
-		$recipient = new Hubzero_Message_Recipient($database);
-
-		$total = $recipient->getMessagesCount($member->get('uidNumber'), $filters);
-
-		$rows = $recipient->getMessages($member->get('uidNumber'), $filters);
-
-		jimport('joomla.html.pagination');
-		$pageNav = new JPagination($total, $filters['start'], $filters['limit']);
-
-		$xmc = new Hubzero_Message_Component($database);
-		$components = $xmc->getComponents();
-
-		$pagenavhtml = $pageNav->getListFooter();
-		$pagenavhtml = str_replace('members?','members/' . $member->get('uidNumber') . '/messages/trash/?',$pagenavhtml);
-		$pagenavhtml = str_replace('members/?','members/' . $member->get('uidNumber') . '/messages/trash/?',$pagenavhtml);
-		$pagenavhtml = str_replace('action=trash','',$pagenavhtml);
-		$pagenavhtml = str_replace('&amp;&amp;','&amp;',$pagenavhtml);
-		$pagenavhtml = str_replace('?&amp;','?',$pagenavhtml);
-		$pagenavhtml = str_replace('href="<li class=limit','href="members/' . $member->get('uidNumber') . '/messages/inbox/?limit',$pagenavhtml);
-		$pagenavhtml = str_replace('messages?','messages/trash?',$pagenavhtml);
-
 		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'members',
 				'element' => 'messages',
 				'name'    => 'default',
-				'layout'  =>'trash'
+				'layout'  => 'trash'
 			)
 		);
 		$view->option = $option;
 		$view->member = $member;
-		$view->components = $components;
-		$view->rows = $rows;
-		$view->pagenavhtml = $pagenavhtml;
-		$view->filter = $filter;
+
+		// Filters for returning results
+		$filters = array();
+		$filters['limit'] = $this->app->getUserStateFromRequest(
+			$option . '.plugin.messages.limit',
+			'limit',
+			$this->jconfig->getValue('config.list_limit'),
+			'int'
+		);
+		$filters['start'] = $this->app->getUserStateFromRequest(
+			$option . '.plugin.messages.limitstart',
+			'limitstart',
+			0,
+			'int'
+		);
+		$filters['state'] = 2;
+		$view->filter = JRequest::getVar('filter', '');
+		$filters['filter'] = ($view->filter) ? 'com_' . $view->filter : '';
+
+		$recipient = new Hubzero_Message_Recipient($database);
+
+		$view->total = $recipient->getMessagesCount($member->get('uidNumber'), $filters);
+
+		$view->rows = $recipient->getMessages($member->get('uidNumber'), $filters);
+
+		jimport('joomla.html.pagination');
+		$pageNav = new JPagination(
+			$view->total, 
+			$filters['start'], 
+			$filters['limit']
+		);
+
+		$xmc = new Hubzero_Message_Component($database);
+		$view->components = $xmc->getComponents();
+
+		$pageNav->setAdditionalUrlParam('id', $member->get('uidNumber'));
+		$pageNav->setAdditionalUrlParam('active', 'messages');
+		$pageNav->setAdditionalUrlParam('task', 'trash');
+		$pageNav->setAdditionalUrlParam('action', '');
+
+		$view->pagenavhtml = $pageNav->getListFooter();
+
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)
@@ -402,34 +447,6 @@ class plgMembersMessages extends Hubzero_Plugin
 		ximport('Hubzero_Document');
 		Hubzero_Document::addPluginScript('members', 'messages', 'messages');
 
-		// Filters for returning results
-		$filters = array();
-		$filters['limit'] = JRequest::getInt('limit', 10);
-		$filters['start'] = JRequest::getInt('limitstart', 0);
-		$filters['created_by'] = $member->get('uidNumber');
-
-		$recipient = new Hubzero_Message_Message($database);
-
-		$total = $recipient->getSentMessagesCount($filters);
-
-		$rows = $recipient->getSentMessages($filters);
-
-		jimport('joomla.html.pagination');
-		$pageNav = new JPagination(
-			$total, 
-			$filters['start'], 
-			$filters['limit']
-		);
-
-		$pagenavhtml = $pageNav->getListFooter();
-		$pagenavhtml = str_replace('members?', 'members/' . $member->get('uidNumber') . '/messages/sent/?', $pagenavhtml);
-		$pagenavhtml = str_replace('members/?', 'members/' . $member->get('uidNumber') . '/messages/sent/?', $pagenavhtml);
-		$pagenavhtml = str_replace('action=sent', '', $pagenavhtml);
-		$pagenavhtml = str_replace('&amp;&amp;', '&amp;', $pagenavhtml);
-		$pagenavhtml = str_replace('?&amp;', '?', $pagenavhtml);
-		$pagenavhtml = str_replace('href="<li class=limit','href="members/' . $member->get('uidNumber') . '/messages/inbox/?limit', $pagenavhtml);
-		$pagenavhtml = str_replace('messages?', 'messages/sent?', $pagenavhtml);
-
 		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
@@ -441,8 +458,43 @@ class plgMembersMessages extends Hubzero_Plugin
 		);
 		$view->option = $option;
 		$view->member = $member;
-		$view->rows = $rows;
-		$view->pagenavhtml = $pagenavhtml;
+
+		// Filters for returning results
+		$filters = array();
+		$filters['limit'] = $this->app->getUserStateFromRequest(
+			$option . '.plugin.messages.limit',
+			'limit',
+			$this->jconfig->getValue('config.list_limit'),
+			'int'
+		);
+		$filters['start'] = $this->app->getUserStateFromRequest(
+			$option . '.plugin.messages.limitstart',
+			'limitstart',
+			0,
+			'int'
+		);
+		$filters['created_by'] = $member->get('uidNumber');
+
+		$recipient = new Hubzero_Message_Message($database);
+
+		$view->total = $recipient->getSentMessagesCount($filters);
+
+		$view->rows = $recipient->getSentMessages($filters);
+
+		jimport('joomla.html.pagination');
+		$pageNav = new JPagination(
+			$view->total, 
+			$filters['start'], 
+			$filters['limit']
+		);
+
+		$pageNav->setAdditionalUrlParam('id', $member->get('uidNumber'));
+		$pageNav->setAdditionalUrlParam('active', 'messages');
+		$pageNav->setAdditionalUrlParam('task', 'sent');
+		$pageNav->setAdditionalUrlParam('action', '');
+
+		$view->pagenavhtml = $pageNav->getListFooter();
+
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)
@@ -683,7 +735,7 @@ class plgMembersMessages extends Hubzero_Plugin
 	 */
 	public function sendtoarchive($database, $option, $member) 
 	{
-		$limit = JRequest::getInt('limit', 20);
+		$limit = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
 		$start = JRequest::getInt('limitstart', 0);
 		$mids  = JRequest::getVar('mid',array(0));
 
@@ -727,7 +779,7 @@ class plgMembersMessages extends Hubzero_Plugin
 	 */
 	public function sendtoinbox($database, $option, $member) 
 	{
-		$limit = JRequest::getInt('limit', 20);
+		$limit = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
 		$start = JRequest::getInt('limitstart', 0);
 		$mids = JRequest::getVar('mid',array(0));
 
@@ -760,7 +812,7 @@ class plgMembersMessages extends Hubzero_Plugin
 	 */
 	public function sendtotrash($database, $option, $member) 
 	{
-		$limit = JRequest::getInt('limit', 20);
+		$limit = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
 		$start = JRequest::getInt('limitstart', 0);
 		$mids  = JRequest::getVar('mid',array(0));
 
@@ -826,7 +878,7 @@ class plgMembersMessages extends Hubzero_Plugin
 	 */
 	public function delete($database, $option, $member) 
 	{
-		$limit = JRequest::getInt('limit', 20);
+		$limit = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
 		$start = JRequest::getInt('limitstart', 0);
 		$mids  = JRequest::getVar('mid', array(0));
 
@@ -846,7 +898,7 @@ class plgMembersMessages extends Hubzero_Plugin
 		}
 
 		$this->addPluginMessage('You have successfully deleted <b><u>' . count($mids) . '</u></b> message(s).', 'passed');
-		return $this->redirect(JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=messages&task=trash&start=' . $start . '&limit=' . $limit));
+		return $this->redirect(JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=messages&task=inbox&start=' . $start . '&limit=' . $limit));
 	}
 
 	/**
@@ -859,7 +911,7 @@ class plgMembersMessages extends Hubzero_Plugin
 	 */
 	public function markasread($database, $option, $member) 
 	{
-		$limit = JRequest::getInt('limit', 20);
+		$limit = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
 		$start = JRequest::getInt('limitstart', 0);
 		$ids   = JRequest::getVar('mid', array(0));
 
@@ -893,7 +945,7 @@ class plgMembersMessages extends Hubzero_Plugin
 	 */
 	public function markasunread($database, $option, $member) 
 	{
-		$limit = JRequest::getInt('limit', 20);
+		$limit = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
 		$start = JRequest::getInt('limitstart', 0);
 		$ids   = JRequest::getVar('mid',array(0));
 
@@ -1133,9 +1185,16 @@ class plgMembersMessages extends Hubzero_Plugin
 
 		return $obfuscatedEmail;
 	}
-	
-	//-----------
 
+	/**
+	 * Build a select list of methods
+	 * 
+	 * @param      array  $notimethods Methods
+	 * @param      string $name        Field name
+	 * @param      array  $values      Option values
+	 * @param      array  $ids         Option IDs
+	 * @return     string
+	 */
 	public function selectMethod($notimethods, $name, $values=array(), $ids=array())
 	{
 		$out = '';

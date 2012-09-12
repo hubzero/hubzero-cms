@@ -87,6 +87,14 @@
 		background-repeat: no-repeat;
 		background-position: 8px 45%;
 	}
+	#message-toolbar li .inbox:before,
+	#message-toolbar li .sent:before,
+	#message-toolbar li .new:before,
+	#message-options li .settings:before,
+	#message-toolbar li .trash:before,
+	#message-toolbar li .archive:before {
+		display: none;
+	}
 	#messages-container {
 		margin-top: -2px;
 		border: 2px solid #E9E9E9;

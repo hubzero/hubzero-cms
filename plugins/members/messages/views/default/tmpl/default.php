@@ -34,27 +34,27 @@ $sections = array(
 	array(
 		'name' => 'inbox',
 		'title' => JText::_('PLG_MEMBERS_MESSAGES_INBOX'),
-		'link' => JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=inbox')
+		'link' => JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=inbox&limit=' . $this->filters['limit'] . '&limitstart=0')
 	),
 	array(
 		'name' => 'sent',
 		'title' => JText::_('PLG_MEMBERS_MESSAGES_SENT'),
-		'link' => JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=sent')
+		'link' => JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=sent&limit=' . $this->filters['limit'] . '&limitstart=0')
 	),
 	array(
 		'name' => 'archive',
 		'title' => JText::_('PLG_MEMBERS_MESSAGES_ARCHIVE'),
-		'link' => JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=archive')
+		'link' => JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=archive&limit=' . $this->filters['limit'] . '&limitstart=0')
 	),
 	array(
 		'name' => 'trash',
 		'title' => JText::_('PLG_MEMBERS_MESSAGES_TRASH'),
-		'link' => JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=trash')
+		'link' => JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=trash&limit=' . $this->filters['limit'] . '&limitstart=0')
 	),
 	array(
 		'name' => 'new',
 		'title' => JText::_('PLG_MEMBERS_MESSAGES_COMPOSE'),
-		'link' => JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=new')
+		'link' => JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=new&limit=' . $this->filters['limit'] . '&limitstart=0')
 	)
 );
 
