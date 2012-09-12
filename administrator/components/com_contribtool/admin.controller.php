@@ -222,10 +222,8 @@ class ContribtoolController extends JObject
 					admingroup=apps
 					default_mw=narwhal
 					default_vnc=780x600
-					developer_url=https://example.com
 					developer_site=FORGE
-					developer_email=
-					project_path=/projects/app-
+					project_path=/
 					invokescript_dir=/apps
 					adminscript_dir=/apps/bin
 					dev_suffix=_dev

@@ -27,8 +27,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 // get configurations/ defaults
 $developer_site = $this->config->get('developer_site', 'hubFORGE');
-$developer_url 	= $this->config->get('developer_url', 'https://developer.hubzero.org');
-$project_path 	= $this->config->get('project_path', '/projects/app-');
+$live_site = rtrim(JURI::base(),'/');
+$developer_url = $live_site = "https://" . preg_replace('#^(https://|http://)#','',$live_site);
+$project_path 	= $this->config->get('project_path', '/tools/');
 $dev_suffix 	= $this->config->get('dev_suffix', '_dev');
 
 ximport('Hubzero_View_Helper_Html');
@@ -313,13 +314,14 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 
 			// get tool access text
 			$toolaccess = ToolsHelperHtml::getToolAccess($this->status['exec'], $this->status['membergroups']);
-
+			$live_site = rtrim(JURI::base(),'/');
+			$developer_url = $live_site = "https://" . preg_replace('#^(https://|http://)#','',$live_site);
+				
 			// get configurations/ defaults
 			$developer_site = $this->config->get('developer_site', 'hubFORGE');
-			$developer_url  = $this->config->get('developer_url', 'https://developer.hubzero.org');
 			$rappture_url   = $this->config->get('rappture_url', '');
 			$learn_url      = $this->config->get('learn_url', '');
-			$project_path   = $this->config->get('project_path', '/tools/app-');
+			$project_path   = $this->config->get('project_path', '/tools/');
 			$dev_suffix     = $this->config->get('dev_suffix', '_dev');
 
 			// set common paths
@@ -332,7 +334,7 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 				case 1:
 			?>
 				<p>
-					<?php echo JText::_('TEAM_WILL_CREATE'); ?> <a href="<?php echo $developer_url; ?>"><?php echo $developer_site; ?></a>, <?php echo JText::_('WHATSNEXT_REGISTERED_INSTRUCTIONS');?>. 
+					<?php echo JText::_('TEAM_WILL_CREATE'); ?> <a href="<?php echo $developer_url; ?>/tools"><?php echo $developer_site; ?></a>, <?php echo JText::_('WHATSNEXT_REGISTERED_INSTRUCTIONS');?>. 
 					<?php echo JText::_('WHATSNEXT_IT_HAS_BEEN'); ?> <?php echo Hubzero_View_Helper_Html::timeAgo($this->status['changed']); ?> <?php echo JText::_('WHATSNEXT_SINCE_YOUR_REQUEST'); ?>. 
 					<?php echo JText::_('WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE'); ?> 24 <?php echo JText::_('HOURS'); ?>
 				</p>

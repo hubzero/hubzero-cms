@@ -649,17 +649,18 @@ class ContribtoolHtml
 		// get configs
 		$config =& JFactory::getConfig();
 		$sitename = $config->getValue('config.sitename');
+		
 		$live_site = rtrim(JURI::base(),'/');
+		$developer_url = $live_site = "https://" . preg_replace('#^(https://|http://)#','',$live_site);
 		
 		// get tool access text
 		$toolaccess = ContribtoolHtml::getToolAccess($status['exec'], $status['membergroups']);
 
 		// get configurations/ defaults
 		$developer_site = isset($config->parameters['developer_site']) ? $config->parameters['developer_site'] : 'nanoFORGE';
-		$developer_url 	= isset($config->parameters['developer_url']) ? $config->parameters['developer_url'] : 'https://developer.nanohub.org';
 		$rappture_url 	= isset($config->parameters['rappture_url']) ? $config->parameters['rappture_url'] : '';
 		$learn_url 	= isset($config->parameters['learn_url']) ? $config->parameters['learn_url'] : '';
-		$project_path 	= isset($config->parameters['project_path']) ? $config->parameters['project_path'] : '/tools/app-';
+		$project_path 	= isset($config->parameters['project_path']) ? $config->parameters['project_path'] : '/tools/';
 		$dev_suffix 	= isset($config->parameters['dev_suffix']) ? $config->parameters['dev_suffix'] : '_dev';
 
 		// set common paths
@@ -677,14 +678,14 @@ class ContribtoolHtml
 
 	    //  registered
         case 1:
-			$par = '		<p>'.JText::_('TEAM_WILL_CREATE').' <a href="'.$developer_url.'">'.$developer_site.'</a>, '.JText::_('WHATSNEXT_REGISTERED_INSTRUCTIONS').'. '.JText::_('WHATSNEXT_IT_HAS_BEEN').' '.ContribtoolHtml::timeAgo($status['changed']).' '.JText::_('WHATSNEXT_SINCE_YOUR_REQUEST').'. '.JText::_('WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE').' 24 '.JText::_('HOURS').'</p>';
+			$par = '		<p>'.JText::_('TEAM_WILL_CREATE').' <a href="'.$developer_url.'/tools">'.$developer_site.'</a>, '.JText::_('WHATSNEXT_REGISTERED_INSTRUCTIONS').'. '.JText::_('WHATSNEXT_IT_HAS_BEEN').' '.ContribtoolHtml::timeAgo($status['changed']).' '.JText::_('WHATSNEXT_SINCE_YOUR_REQUEST').'. '.JText::_('WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE').' 24 '.JText::_('HOURS').'</p>';
 			$step2 = '		<li class="incomplete"> '.JText::_('WHATSNEXT_UPLOAD_CODE').' '.$developer_site.'</li>';
 			$step4 = '		<li class="incomplete"> '.JText::_('WHATSNEXT_TEST_AND_APPROVE').'</li>';
 		break;
 
 		//  created
         case 2:
-			$par  = '		<p>'.ucfirst(JText::_('THE')).' '.$sitename.'  '.JText::_('WHATSNEXT_AREA_CREATED').' <a href="'.$developer_url.'">'.$developer_site.'</a>:<br />';
+			$par  = '		<p>'.ucfirst(JText::_('THE')).' '.$sitename.'  '.JText::_('WHATSNEXT_AREA_CREATED').' <a href="'.$developer_url.'/tools">'.$developer_site.'</a>:<br />';
 			$par .= '		<a href="'.$developer_url.$project_path.$status['toolname'].'/wiki">'.$developer_url.$project_path.$status['toolname'].'/wiki</a></p>'.n;
 			$par .= '		<p>'.JText::_('WHATSNEXT_FOLLOW_STEPS').':</p>'.n;
 			$par .= '		<ul>'.n;
@@ -1619,9 +1620,11 @@ class ContribtoolHtml
 	 */
     public function writeToolStatus($status, $user, $admin, $error, $option, $msg, $title, $config)
 	{
+		$live_site = rtrim(JURI::base(),'/');
+		$developer_url = $live_site = "https://" . preg_replace('#^(https://|http://)#','',$live_site);
+		
 		// get configurations/ defaults
 		$developer_site = isset($config->parameters['developer_site']) ? $config->parameters['developer_site'] : 'nanoFORGE';
-		$developer_url 	= isset($config->parameters['developer_url']) ? $config->parameters['developer_url'] : 'https://developer.nanohub.org';
 		$project_path 	= isset($config->parameters['project_path']) ? $config->parameters['project_path'] : '/projects/app-';
 		$dev_suffix 	= isset($config->parameters['dev_suffix']) ? $config->parameters['dev_suffix'] : '_dev';
 
@@ -1915,10 +1918,12 @@ class ContribtoolHtml
 	 */
 	public function summary (&$tools, $option, $filters, $admin, &$pageNav, $total, $title, $config)
 	{
+		$live_site = rtrim(JURI::base(),'/');
+		$developer_url = $live_site = "https://" . preg_replace('#^(https://|http://)#','',$live_site);
+		
 		// get configurations/ defaults
 		$developer_site = isset($config->parameters['developer_site']) ? $config->parameters['developer_site'] : 'nanoFORGE';
-		$developer_url 	= isset($config->parameters['developer_url']) ? $config->parameters['developer_url'] : 'https://developer.nanohub.org';
-		$project_path 	= isset($config->parameters['project_path']) ? $config->parameters['project_path'] : '/projects/app-';
+		$project_path 	= isset($config->parameters['project_path']) ? $config->parameters['project_path'] : '/tools/';
 		$dev_suffix 	= isset($config->parameters['dev_suffix']) ? $config->parameters['dev_suffix'] : '_dev';
 	?>
 		<div id="content-header">

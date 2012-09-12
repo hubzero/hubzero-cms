@@ -1107,7 +1107,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		if (empty($gid))
 		{
 			$hzg = new Hubzero_Group();
-			$hzg->cn =  $group_prefix . $toolname;
+			$hzg->cn =  $group_prefix . strtolower($tool['toolname']);
 			$hzg->create();
 		}
 		else
@@ -1691,7 +1691,6 @@ class ToolsControllerPipeline extends Hubzero_Controller
 	 */
 	protected function _email($toolid, $summary, $comment, $access, $action, $toolinfo = array())
 	{
-		$xhub =& Hubzero_Factory::getHub();
 		$jconfig =& JFactory::getConfig();
 
 		$headline = '';
@@ -1790,7 +1789,9 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			'email' => $jconfig->getValue('config.mailfrom'), 
 			'name'  => $from
 		);
-
+		
+		$live_site = rtrim(JURI::base(),'/');
+		
 		// Compose Message
 		$message  = strtoupper(JText::_('TOOL')) . ': ' . $status['title'] . ' (' . $status['toolname'] . ')' . "\r\n";
 		$message .= strtoupper(JText::_('SUMMARY')) . ': ' . $summary . "\r\n";
@@ -1804,7 +1805,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			$message .= '----------------------------' . "\r\n\r\n";
 		}
 		$message .= JText::_('TIP_URL_TO_STATUS') . "\r\n";
-		$message .= $xhub->getCfg('hubLongURL') . JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=status&app=' . $status['toolname']) . "\r\n";
+		$message .= $live_site.JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=status&app=' . $status['toolname']) . "\r\n";
 
 		// fire off message
 		if ($summary or $comment) 
@@ -2035,7 +2036,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 	 * @param      integer $action    Parameter description (if any) ...
 	 * @return     boolean False if errors, True on success
 	 */
-	protected function _updateTicket($toolid, $oldstuff, $newstuff, $comment, $access=0, $email=0, $action=1)
+	protected function _updateTicket($toolid, $oldstuff, $newstuff, $comment, $access=0, $email=0, $action=1, $toolinfo=array())
 	{
 		$obj = new Tool($this->database);
 
