@@ -769,11 +769,11 @@ class ToolsControllerAdmin extends Hubzero_Controller
 			return false;
 		}
 
-		$tarball_path = $this->config->get('sourcecodePath');
+		$tarball_path = $this->config->get('sourcecodePath','site/protected/source');
 		if ($tarball_path[0] != DS)
-                {
-                        $tarball_path = rtrim(JPATH_ROOT . DS . $tarball_path, DS);
-                }
+		{
+			$tarball_path = rtrim(JPATH_ROOT . DS . $tarball_path, DS);
+		}
 
 		$xlog->logDebug("finalizeTool(): checkpoint 2");
 

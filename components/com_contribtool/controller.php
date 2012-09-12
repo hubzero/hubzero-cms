@@ -2479,10 +2479,14 @@ class ContribtoolController extends JObject
 
 		//$tarball_path = $this->rconfig->get('uploadpath');
 		$tarball_path = $this->config->parameters['sourcecodePath'];
-                if ($tarball_path[0] != DS)
-                {
-                        $tarball_path = rtrim(JPATH_ROOT . DS . $tarball_path, DS);
-                }
+		if (empty($tarball_path))
+		{
+			$tarball_path = "site/protected/source";
+		}
+		if ($tarball_path[0] != DS)
+		{
+			$tarball_path = rtrim(JPATH_ROOT . DS . $tarball_path, DS);
+		}
 
 		$xlog->logDebug("finalizeTool(): checkpoint 2");
 		// Create a Tool object

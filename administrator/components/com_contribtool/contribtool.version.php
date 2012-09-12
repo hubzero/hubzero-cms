@@ -718,7 +718,7 @@ class ToolVersion extends  JTable
 		// Get some needed libraries
 		//include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'helpers'.DS.'html.php' );
 		$resource->tarname = $resource->alias.'-r'.$resource->revision.'.tar.gz';
-		$tarball_path = $config->get('sourcecodePath');
+		$tarball_path = $config->get('sourcecodePath','site/protected/source');
 		if ($tarball_path[0] != DS)
 		{
 			$tarball_path = rtrim(JPATH_ROOT . DS . $tarball_path, DS);
