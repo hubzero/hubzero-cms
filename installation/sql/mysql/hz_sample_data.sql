@@ -186,32 +186,6 @@ INSERT INTO `#__content` (`id`, `title`, `alias`, `title_alias`, `introtext`, `f
 /*!40000 ALTER TABLE `#__content` ENABLE KEYS */;
 UNLOCK TABLES;
 
-
---
--- Dumping data for table `#__core_acl_groups_aro_map`
---
-
-LOCK TABLES `#__core_acl_groups_aro_map` WRITE;
-/*!40000 ALTER TABLE `#__core_acl_groups_aro_map` DISABLE KEYS */;
-INSERT INTO `#__core_acl_groups_aro_map` (`group_id`, `section_value`, `aro_id`) VALUES (18,'',11);
-INSERT INTO `#__core_acl_groups_aro_map` (`group_id`, `section_value`, `aro_id`) VALUES (18,'',15);
-INSERT INTO `#__core_acl_groups_aro_map` (`group_id`, `section_value`, `aro_id`) VALUES (18,'',17);
-INSERT INTO `#__core_acl_groups_aro_map` (`group_id`, `section_value`, `aro_id`) VALUES (18,'',19);
-INSERT INTO `#__core_acl_groups_aro_map` (`group_id`, `section_value`, `aro_id`) VALUES (18,'',20);
-INSERT INTO `#__core_acl_groups_aro_map` (`group_id`, `section_value`, `aro_id`) VALUES (18,'',23);
-INSERT INTO `#__core_acl_groups_aro_map` (`group_id`, `section_value`, `aro_id`) VALUES (18,'',24);
-INSERT INTO `#__core_acl_groups_aro_map` (`group_id`, `section_value`, `aro_id`) VALUES (18,'',25);
-INSERT INTO `#__core_acl_groups_aro_map` (`group_id`, `section_value`, `aro_id`) VALUES (18,'',26);
-INSERT INTO `#__core_acl_groups_aro_map` (`group_id`, `section_value`, `aro_id`) VALUES (18,'',27);
-INSERT INTO `#__core_acl_groups_aro_map` (`group_id`, `section_value`, `aro_id`) VALUES (23,'',16);
-INSERT INTO `#__core_acl_groups_aro_map` (`group_id`, `section_value`, `aro_id`) VALUES (25,'',10);
-INSERT INTO `#__core_acl_groups_aro_map` (`group_id`, `section_value`, `aro_id`) VALUES (25,'',14);
-INSERT INTO `#__core_acl_groups_aro_map` (`group_id`, `section_value`, `aro_id`) VALUES (25,'',18);
-INSERT INTO `#__core_acl_groups_aro_map` (`group_id`, `section_value`, `aro_id`) VALUES (25,'',21);
-INSERT INTO `#__core_acl_groups_aro_map` (`group_id`, `section_value`, `aro_id`) VALUES (25,'',22);
-/*!40000 ALTER TABLE `#__core_acl_groups_aro_map` ENABLE KEYS */;
-UNLOCK TABLES;
-
 --
 -- Dumping data for table `#__events_config`
 --
