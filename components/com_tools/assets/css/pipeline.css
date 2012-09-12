@@ -263,28 +263,32 @@
 	Contribtool
 ---------------------------------------------------------------*/
 	#whatsnext { 
-		padding:0;
-		margin:0 0 1em;
-		}
-	#whatsnext ul, ul.youroptions { 
+		padding: 0;
+		margin: 0 0 1em;
+	}
+	#whatsnext ul, 
+	ul.youroptions { 
 		margin: 1em 0 1em 1em;
 		padding: 0 0 0 0;
 		list-style: none;
 	}
-	#whatsnext a, #whatsnext a:hover { 
-		padding:0;
-		margin:0;
+	#whatsnext a, 
+	#whatsnext a:hover { 
+		padding: 0;
+		margin: 0;
 		position: relative;		
-		}
+	}
 	#whatsnext ul li {
 		padding: 0 0 0 20px;
 		margin: 0 0 1em 0;
 	}
-	#whatsnext ul li.complete, #todolist span.complete { 
+	#whatsnext ul li.complete, 
+	#todolist span.complete { 
 		background: url("/components/com_tools/assets/img/contribute/bullets/task_complete.gif") 0 0 no-repeat;
 		color: #6a0;
 	}
-	#whatsnext ul li.incomplete, #todolist span.incomplete { 
+	#whatsnext ul li.incomplete, 
+	#todolist span.incomplete { 
 		background: url("/components/com_tools/assets/img/contribute/bullets/task_incomplete.gif") 0 0 no-repeat;
 	}
 	#whatsnext ul li.todo { 
@@ -296,11 +300,13 @@
 	}
 	#whatsnext ul li.todo_disabled a, 
 	#whatsnext ul li.todo_disabled a:hover, 
-	a.optiondisabled, a.optiondisabled:hover  { 
+	a.optiondisabled, 
+	a.optiondisabled:hover  { 
 		color:#999;
 		border-bottom: 1px solid #999999;
 	}
-	ul.youroptions li, #whatsnext ul li {
+	ul.youroptions li, 
+	#whatsnext ul li {
 		padding: 0 0 0 20px;
 		margin: 0 0 1em 0;
 		background: url("/components/com_tools/assets/img/contribute/bullets/arrow.png") 0 0.2em no-repeat;
@@ -487,7 +493,7 @@
 		width: 15px;
 		height: 15px;
 		margin: 0 0 0 2em;
-		padding:0;
+		padding: 0;
 	}
 	.toolunpublished {
 		background: url("/components/com_tools/assets/img/contribute/minus.gif") 0 0 no-repeat;
@@ -495,40 +501,86 @@
 		width: 15px;
 		height: 15px;
 		margin: 0 0 0 2em;
-		padding:0;
+		padding: 0;
 	}
 	
-	.vmanage { padding: 0 0 1.5em 0; }
-	.vmanage select { float:right;}
-	.vnotice { padding: 0.5em 0.5em 0.5em 1.5em; margin:0.5em 1.5em 0 1.5em;  background: #f0ece7; border: 1px solid #dbd5ce;  }
-	.vline {line-height:0.8em; }
+	.vmanage { 
+		padding: 0 0 1.5em 0;
+	}
+	.vmanage select { 
+		float: right;
+	}
+	.vnotice { 
+		padding: 0.5em 0.5em 0.5em 1.5em; 
+		margin: 0.5em 1.5em 0 1.5em; 
+		background: #f0ece7; 
+		border: 1px solid #dbd5ce;
+	}
+	.vline {
+		line-height: 0.8em;
+	}
 	
-	.versionfield { padding:1em; background: #f0ece7; border: 1px solid #dbd5ce; margin:0.5em 0 0.5em 0; }
+	.versionfield { 
+		padding: 1em; 
+		background: #f0ece7; 
+		border: 1px solid #dbd5ce; 
+		margin: 0.5em 0 0.5em 0; 
+	}
 	
 	.vbutton {
-		float:right; 
-		position:relative;
-		margin-right:2em;
-		}
-	#displays_0, .devversion {
+		float: right; 
+		position: relative;
+		margin-right: 2em;
+	}
+	#displays_0, 
+	.devversion {
 		background: url("/components/com_tools/assets/img/contribute/bgdev.gif") 0 0 repeat-X;
 	}
-	.devversion, .currentversion {
-		padding: 1em; margin: 0; margin-left:20px;
+	.devversion, 
+	.currentversion {
+		padding: 1em; 
+		margin: 0; 
+		/*margin-left: 20px;*/
 	}
 	p.currentversion {
-		border-bottom:1px solid #72d0eb;
+		border-bottom: 1px solid #72d0eb;
 		background: #f0f9ff; 
 	}
-	.config { border: none; border-bottom: 2px solid #ccc; padding-bottom:1em; }
-	.config h4, .controls h4 { margin: 0.5em 0 0 0; }
-	.config p,  .controls p { margin: 0.5em 0 0 0; }
-	.config span.heading, span.heading { color:#5d715c; font-weight:bold; margin-right: 0.5em; }
-	.config span.desc, span.desc { color:#666666; width:200px;  }
+	.config { 
+		border: none; 
+		border-bottom: 2px solid #ccc; 
+		padding-bottom: 1em; 
+	}
+	.config h4,
+	.controls h4 { 
+		margin: 0.5em 0 0 0; 
+	}
+	.config p,
+	.controls p { 
+		margin: 0.5em 0 0 0;
+	}
+	.config span.heading, 
+	span.heading { 
+		color: #5d715c; 
+		font-weight: bold; 
+		margin-right: 0.5em;
+	}
+	.config span.desc, 
+	span.desc { 
+		color: #666; 
+		width: 200px;
+	}
 /*---------------------------------------------------------------
 	Steps
 ---------------------------------------------------------------*/
-	#steps { border-bottom:1px solid #ccc; padding:0 0 0.5em 0; list-style:none; margin:1em 0 2em 0; position:relative; margin-left:20px; }
+	#steps { 
+		border-bottom: 1px solid #ccc; 
+		padding: 0 0 0.5em 0; 
+		list-style: none; 
+		margin: 1em 0 2em 0; 
+		position: relative; 
+		/*margin-left:20px;*/
+	}
 	#steps li {
 		margin: 0 1em 0 0;
 		padding: 0 0 0.6em 0;
@@ -538,27 +590,56 @@
 		font-size: 1em;
 		font-weight: normal;
 	}
-	#steps li.intermediate{ background: url("/components/com_tools/assets/img/contribute/fc-arrow.gif") bottom center no-repeat; padding: 0 1em 0 1em; margin: 0;}
-	#steps li.prev { color: #333; background: #fff; font-weight: bold; margin: 0; }
-	#steps li.active { color: #bd6416; background: #fff; font-weight: bold; background: url("/components/com_tools/assets/img/contribute/arrow-up.gif") bottom center no-repeat; }
-	#steps li.future { color: #b1c1b3; }
-	#steps li.steps_hed { font-size:x-small; text-transform: uppercase; }
+	#steps li.intermediate { 
+		background: url("/components/com_tools/assets/img/contribute/fc-arrow.gif") bottom center no-repeat; 
+		padding: 0 1em 0 1em; 
+		margin: 0;
+	}
+	#steps li.prev { 
+		color: #333; 
+		background: #fff; 
+		font-weight: bold; 
+		margin: 0;
+	}
+	#steps li.active { 
+		color: #bd6416; 
+		background: #fff; 
+		font-weight: bold; 
+		background: url("/components/com_tools/assets/img/contribute/arrow-up.gif") bottom center no-repeat;
+	}
+	#steps li.future { 
+		color: #b1c1b3;
+	}
+	#steps li.steps_hed { 
+		font-size: x-small; 
+		text-transform: uppercase;
+	}
 
 /*---------------------------------------------------------------
 	Newly added
 ---------------------------------------------------------------*/
 	.licensetxt {
-		white-space: pre-wrap;_white-space: pre;word-wrap: break-word;white-space: -moz-pre-wrap;height:300px;overflow:scroll;
+		white-space: pre-wrap;
+		_white-space: pre;
+		word-wrap: break-word;
+		white-space: -moz-pre-wrap;
+		height: 300px;
+		overflow: scroll;
 	}
-	.com_contribtool .columns .wiki { padding-left: 0; background: none; }
+	.com_contribtool .columns .wiki { 
+		padding-left: 0;
+		background: none;
+	}
 	.licinput {
-		margin-top:2em;
+		margin-top: 2em;
 	}
 	.licinput textarea {
 		width:100%;
 	}
 	#legendnotes p {
-		padding-bottom:2em;border-bottom:1px solid #ccc;margin-bottom:0.5em;
+		padding-bottom: 2em;
+		border-bottom: 1px solid #ccc;
+		margin-bottom: 0.5em;
 	}
 /*---------------------------------------------------------------
 	Tool edit form
@@ -624,26 +705,46 @@
 		border: 1px solid #b1a997; 
 		color: #59554c; 
 		background: #f9f7f1;
-		margin-left:20px;
+		/*margin-left: 20px;*/
 	}
 	.toolinfo_abandoned {
 		border: 1px solid #ccc; 
 		color: #666; 
 		background: #eee;
-		margin-left:20px;
+		/*margin-left:20px;*/
 	}
 	.toolinfo_closed {
 		border: 1px solid #ccc; 
 		color: #666; 
 		background: #f0f9ff;
-		margin-left:20px;
+		/*margin-left:20px;*/
 	}
-	.state_hed  { color: #bd6416; }
-	.toolinfo_note { color:#666666; padding:0; margin:1em 0 0 0; margin-left:20px; }
-	.toolinfo table ul { list-style:none; }
-	#toolstatus th { color:#999; font-size:90%;}
-	#toolstatus th.toolinfo_hed { font-weight:bold; color:#333333; font-size:110%; }
-	#toolstatus span.admin_label, .admin_label { display:block; margin: 0 0 1.5em 0; }
+	.state_hed  { 
+		color: #bd6416;
+	}
+	.toolinfo_note { 
+		color: #666; 
+		padding: 0; 
+		margin: 1em 0 0 0; 
+		/*margin-left:20px;*/
+	}
+	.toolinfo table ul { 
+		list-style: none;
+	}
+	#toolstatus th { 
+		color: #999;
+		font-size: 90%;
+	}
+	#toolstatus th.toolinfo_hed {
+		font-weight: bold;
+		color: #333333;
+		font-size: 110%;
+	}
+	#toolstatus span.admin_label, 
+	.admin_label {
+		display: block;
+		margin: 0 0 1.5em 0;
+	}
 	
 	
 /*---------------------------------------------------------------
