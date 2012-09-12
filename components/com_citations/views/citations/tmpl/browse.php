@@ -60,6 +60,13 @@ if ($label == "none") {
 	<h2><?php echo $this->title; ?></h2>
 </div><!-- / #content-header -->
 
+<div id="content-header-extra">
+	<ul>
+		<li class="last">
+			<a class="main-page" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Main page'); ?></a>
+		</li>
+	</ul>
+</div><!-- / #content-header -->
 
 <div class="main section">
 	
@@ -71,6 +78,17 @@ if ($label == "none") {
 	
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>" id="citeform" method="post">
 		<div class="aside <?php if ($batch_download) { echo " withBatchDownload"; } ?>">
+			<?php if ($batch_download) : ?>
+				<fieldset id="download-batch">
+					<strong><?php echo JText::_('Export Multiple Citations'); ?></strong>
+					<p><?php echo JText::_('Check the citations that you would like to have exported.'); ?></p>
+					
+					<input type="submit" name="download" class="download-endnote" value="EndNote" /> 
+					| 
+					<input type="submit" name="download" class="download-bibtex" value="BibTex" />
+					<input type="hidden" name="task" value="downloadbatch" id="download-batch-input" />
+				</fieldset>
+			<?php endif; ?>
 			<fieldset>
 				<label>
 					<?php echo JText::_('SORT_BY'); ?>
@@ -187,18 +205,6 @@ if ($label == "none") {
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="task" value="browse" />
 			</fieldset>
-			
-			<?php if ($batch_download) : ?>
-				<fieldset id="download-batch">
-					<strong><?php echo JText::_('Export Multiple Citations'); ?></strong>
-					<p><?php echo JText::_('Check the citations that you would like to have exported.'); ?></p>
-					
-					<input type="submit" name="download" class="download-endnote" value="EndNote" /> 
-					| 
-					<input type="submit" name="download" class="download-bibtex" value="BibTex" />
-					<input type="hidden" name="task" value="downloadbatch" id="download-batch-input" />
-				</fieldset>
-			<?php endif; ?>
 		</div><!-- / .aside -->
 		<div class="subject">
 			<?php if (count($this->citations) > 0) : ?>
@@ -307,8 +313,8 @@ if ($label == "none") {
 			<?php endif; ?>
 			
 			<?php 
-				$qs = '';
-				foreach ($this->filters as $key=>$value)
+				$this->pageNav->setAdditionalUrlParam('task', 'browse');
+				foreach ($this->filters as $key => $value)
 				{
 					switch ($key)
 					{
@@ -319,20 +325,18 @@ if ($label == "none") {
 						case 'reftype':
 						case 'aff':
 						case 'geo':
-							foreach ($value as $k=>$v)
+							foreach ($value as $k => $v)
 							{
-								$qs .= $key.'['.$k.']='.$v.'&';
+								$this->pageNav->setAdditionalUrlParam($key . '[' . $k . ']', $v);
 							}
 						break;
 
 						default:
-							$qs .= $key.'='.$value.'&';
+							$this->pageNav->setAdditionalUrlParam($key, $value);
 						break;
 					}
 				}
-				$paging = $this->pageNav->getListFooter();
-				$paging = str_replace('citations/?','citations/browse?'.$qs,$paging);
-				echo $paging;
+				echo $this->pageNav->getListFooter();
 			?>
 			
 		</div><!-- / .subject -->

@@ -14,439 +14,391 @@
 */
  
 /* Intro */
-#introduction:after {
-	content: "\275D";
-}
-/* [!] HACKS - IE 7 and older */
-#introduction {
-	*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="intro-before"></small>' + this.innerHTML + '<small class="intro-after">&#x275D;</small>');
-}
+	#introduction:after {
+		content: "\275D";
+	}
+	/* [!] HACKS - IE 7 and older */
+	#introduction {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="intro-before"></small>' + this.innerHTML + '<small class="intro-after">&#x275D;</small>');
+	}
 
-/* Four Columns */
-.com_citations .four {
-	border-top: 1px solid #e0e0d7;
-	margin-bottom: 3em;
-	}
-.com_citations .four h3 { 
-	color: #000; 
-	margin-top: 1em; 
-	padding-top: 0em;
-	}
-.com_citations .four h3 a { 
-	color: #000; 
-	border-bottom: none; 
-	}
-.com_citations .four ul {
-	margin: 1em 0;
-	}
-.com_citations .four li {
-	margin: 1em 0;
-	}
-.com_citations .first h2 { 
-	font-weight: normal;
-	margin: 0;
-	padding: 0.5em 0 0 0;
-	line-height: 1em;
-	border: none;
-	border-top: 2px solid #e0e0d7;
-	}
-.com_citations .big {
-	height: 3em;
-	}
-.com_citations .browse a {
-	font-weight: bold;
-	font-size: 1.2em;
-	}
-.com_citations form.search {
-	background-position: 0 0.9em;
-	border: 1px solid #fff;
-	}
 /* CSS bar graph */
-.com_citations .graph { 
-	position: relative; /* IE is dumb */
+	.com_citations .graph { 
+		position: relative; /* IE is dumb */
 	}
-.com_citations .graph .bar { 
-	display: block;
-	position: relative;
-	background: #B1D632; 
-	text-align: center; 
-	color: #333; 
-	height: 2em; 
-	line-height: 2em;
+	.com_citations .graph .bar { 
+		display: block;
+		position: relative;
+		background: #B1D632; 
+		text-align: center; 
+		color: #333; 
+		height: 2em; 
+		line-height: 2em;
 	}
-.com_citations .graph .bar span {
-	position: absolute;
-	left: 1em;
+	.com_citations .graph .bar span {
+		position: absolute;
+		left: 1em;
 	}
-.com_citations .graph .color1 {
-	background: #B1D632;
+	.com_citations .graph .color1 {
+		background: #B1D632;
 	}
-.com_citations .graph .color2 {
-	background: #BBADFF;
+	.com_citations .graph .color2 {
+		background: #BBADFF;
 	}
-.com_citations .graph .color3 {
-	background: #DAB7D7;
+	.com_citations .graph .color3 {
+		background: #DAB7D7;
 	}
-.com_citations .graph .color4 {
-	background: #FFB430;
+	.com_citations .graph .color4 {
+		background: #FFB430;
 	}
-.com_citations .graph .color5 {
-	background: #E2998B;
+	.com_citations .graph .color5 {
+		background: #E2998B;
 	}
-	
-	
-#citeform .aside {
-	position:relative;
-	}	
-#citeform .aside.withBatchDownload {
-	margin-top:2em;
-	padding-top:150px;
-	}	
-#download-batch {
-	position:absolute;
-	top:0;
-	left:0;
-	}	
 
-.citations {
-	border-collapse:separate;
-	margin-top:10px;
+	#download-batch {
+		padding: 1em;
 	}
-.citations thead th {
-	background:#f5f5f5;
-	}	
-.citations thead th.batch {
-	padding:0;
-	text-align:center;
-	vertical-align:middle;
-	width:30px;
-	border-right:1px solid #efefef;
+
+	.citations {
+		border-collapse:separate;
+		margin-top: 10px;
 	}
-.citations tbody tr td.batch {
-	padding:10px 0 0 0;
-	text-align:center;
+	.citations thead th {
+		background: #f5f5f5;
 	}
-.citations tbody tr td {
-	border-bottom:1px solid #efefef;
-	padding:10px 0;
+	.citations thead th.batch {
+		padding: 0;
+		text-align: center;
+		vertical-align: middle;
+		width: 30px;
+		border-right: 1px solid #efefef;
 	}
-.citations tbody tr:nth-child(odd) td {
-	border-bottom:none;
+	.citations tbody tr td.batch {
+		padding: 10px 0 0 0;
+		text-align: center;
+	}
+	.citations tbody tr td {
+		border-bottom: 1px solid #efefef;
+		padding: 10px 0;
+	}
+	.citations tbody tr:nth-child(odd) td {
+		border-bottom: none;
 	}
 
 /* Citations Label */
-.citations .citation-label .type {
-	font-weight:bold;
-	text-transform:uppercase;
-	text-align:center;
-	float:left;
+	.citations .citation-label .type {
+		font-weight: bold;
+		text-transform: uppercase;
+		text-align: center;
+		float: left;
 	}
-.citations .citation-label .number {
-	font-weight:bold;
-	float:left;
-	padding-right:20px;
-	color:#000;
+	.citations .citation-label .number {
+		font-weight: bold;
+		float: left;
+		padding-right: 20px;
+		color: #000;
 	}
-.citations .both-label {
-	width:150px;
-	}	
-.citations .type-label {
-	width:150px;
+	.citations .both-label {
+		width: 150px;
 	}
-.citations .type-label .type {
-	width:100%;
+	.citations .type-label {
+		width: 150px;
 	}
-.citations .number-label .number {
-	padding-right:0;
+	.citations .type-label .type {
+		width: 100%;
 	}
-.citations span.citation-title {
-	border-bottom:1px dotted #777;
-	}	
+	.citations .number-label .number {
+		padding-right: 0;
+	}
+	.citations span.citation-title {
+		border-bottom: 1px dotted #777;
+	}
 
 /* Citation Notes */
-.citations .citation-container {
-	display:block;
-	position:relative;
-	}	
-.citations .citation-notes {
-	position:absolute;
-	display:none;
-	z-index:610;
-	top:0;
-	left:0;
-	border:3px solid #000;
-	-webkit-border-radius:5px;
-	-moz-border-radius:5px;
-	border-radius:5px;
-	-webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
-	-moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
-	box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
-	width:500px;
+	.citations .citation-container {
+		display: block;
+		position: relative;
 	}
-.citations .citation-notes p.sponsor {
-	padding:5px 10px;
-	background:#f2f0f8;
-	border-bottom:1px solid #CCC;
-	font-size:11px;
-	}	
-.citations .citation-notes p {
-	padding:10px;
-	background:#FFFFFF;
-	margin:0;
-	color:#555;
-	overflow-y:scroll;
-	max-height:300px;
+	.citations .citation-notes {
+		position: absolute;
+		display: none;
+		z-index: 610;
+		top: 0;
+		left: 0;
+		border: 3px solid #000;
+		-webkit-border-radius: 5px;
+		-moz-border-radius: 5px;
+		-ms-border-radius: 5px;
+		-o-border-radius: 5px;
+		border-radius: 5px;
+		-webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+		-moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+		-ms-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+		-o-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+		box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+		width: 500px;
 	}
-.citations .citation-notes:before {
-	content: ".";
-	position:absolute;
-	bottom:-13px;
-	left:45%;
-	color:transparent;
-	border-top:5px solid #000;
-	border-left:5px solid transparent;
-	border-right:5px solid transparent;
-	border-bottom:5px solid transparent;
-	width:0;
-	height:0;
+	.citations .citation-notes p.sponsor {
+		padding: 5px 10px;
+		background: #f2f0f8;
+		border-bottom: 1px solid #CCC;
+		font-size: 11px;
 	}
-.citations .citation-notes.bottom:before {
-	top:-13px;
-	border-top:5px solid transparent;
-	border-left:5px solid transparent;
-	border-right:5px solid transparent;
-	border-bottom:5px solid #000;
+	.citations .citation-notes p {
+		padding: 10px;
+		background: #FFFFFF;
+		margin: 0;
+		color: #555;
+		overflow-y: scroll;
+		max-height: 300px;
 	}
-
+	.citations .citation-notes:before {
+		content: ".";
+		position: absolute;
+		bottom: -13px;
+		left: 45%;
+		color: transparent;
+		border-top: 5px solid #000;
+		border-left: 5px solid transparent;
+		border-right: 5px solid transparent;
+		border-bottom: 5px solid transparent;
+		width: 0;
+		height: 0;
+	}
+	.citations .citation-notes.bottom:before {
+		top: -13px;
+		border-top: 5px solid transparent;
+		border-left: 5px solid transparent;
+		border-right: 5px solid transparent;
+		border-bottom: 5px solid #000;
+	}
 
 /* Citation Details */
-.citations tbody tr td.citation-details {
-	padding-left:10px;
+	.citations tbody tr td.citation-details {
+		padding-left: 10px;
 	}
-.citation-details span {
-	color:#fff;
-	margin:0 0.5em;
+	.citation-details span {
+		color: #fff;
+		margin: 0 0.5em;
 	}
-.citation-details .badges {
-	float:right;
+	.citation-details .badges {
+		float: right;
 	}
 
 /* Citation Badges */
-label.badges ul li.bit-input {
-	border:none;
-	background:transparent;
+	label.badges ul li.bit-input {
+		border: none;
+		background: transparent;
 	}
-label.badges ul li.bit-box {
-	border: 1px solid #634024; 
-	background: #8e6e59;
-	color:#FFF;
-	position:relative;
+	label.badges ul li.bit-box {
+		border: 1px solid #634024; 
+		background: #8e6e59;
+		color: #FFF;
+		position: relative;
 	}
-label.badges ul li.bit-box a.closebutton,
-label.badges ul li.bit-box a.closebutton:hover {
-	background-position:0 100%;
-	border-bottom:none;
+	label.badges ul li.bit-box a.closebutton,
+	label.badges ul li.bit-box a.closebutton:hover {
+		background-position: 0 100%;
+		border-bottom: none;
 	}
 
 /* Citation Tags */
-.tags {
-	margin-top:15px;
-}
-
+	.tags {
+		margin-top: 15px;
+	}
 
 /* Citations Import */
-#steps {
-	margin:20px 0 0 0;
-	list-style:none;
-	overflow:hidden;
+	#steps {
+		margin: 20px 0 0 0;
+		list-style: none;
+		overflow: hidden;
 	}
-#steps li {
-	float:left;
-	margin:0;
+	#steps li {
+		float: left;
+		margin: 0;
 	}
-#steps li a {
-	display:block;
-	padding:10px;
-	background:#efefef;
-	border:1px solid #ccc;
-	color:#ccc;
-	font-size:24px;
-	font-weight:bold;
-	line-height:24px;
-	margin-right:5px;
-	-webkit-border-radius:5px;
-	min-width:150px;
+	#steps li a {
+		display: block;
+		padding: 10px;
+		background: #efefef;
+		border: 1px solid #ccc;
+		color: #ccc;
+		font-size: 24px;
+		font-weight: bold;
+		line-height: 24px;
+		margin-right: 5px;
+		-webkit-border-radius: 5px;
+		-moz-border-radius: 5px;
+		-ms-border-radius: 5px;
+		-o-border-radius: 5px;
+		border-radius: 5px;
+		min-width: 150px;
 	}
-#steps li a span {
-	display:block;
-	font-size:12px;
-	line-height:18px;
-	font-weight:normal;
+	#steps li a span {
+		display: block;
+		font-size: 12px;
+		line-height: 18px;
+		font-weight: normal;
 	}
-#steps li a.active {
-	background:#ee8c00;
-	color:#FFF;
-	}	
-#steps li a.passed {
-	background:#a1cb99;
-	color:#e1f0de;
-	margin-top:0;
-	margin-bottom:0;
+	#steps li a.active {
+		background: #ee8c00;
+		color: #FFF;
 	}
-
-
+	#steps li a.passed {
+		background: #a1cb99;
+		color: #e1f0de;
+		margin-top: 0;
+		margin-bottom: 0;
+	}
 
 /* Upload List */
-.upload-list {
-	margin-top:20px;
-	border:1px solid #CCC;
-	border-collapse:separate;
+	.upload-list {
+		margin-top: 20px;
+		border: 1px solid #CCC;
+		border-collapse: separate;
 	}
 
 /* Table Head */
-.upload-list thead th {
-	background:#efefef;
-	font-size:14px;
-	color:#000;
+	.upload-list thead th {
+		background: #efefef;
+		font-size: 14px;
+		color: #000;
 	}
-.upload-list thead th:nth-child(odd),
-.upload-list tbody td:nth-child(odd) {
-	border-right:1px solid #CCC;
-	width:2%;
+	.upload-list thead th:nth-child(odd),
+	.upload-list tbody td:nth-child(odd) {
+		border-right: 1px solid #CCC;
+		width: 2%;
 	}
 
 /* Table Body */
-.upload-list tbody tr:nth-child(even) {
-	background:#f5f5f5;
+	.upload-list tbody tr:nth-child(even) {
+		background: #f5f5f5;
 	}
-.upload-list tbody tr:hover {
-	background-color:#fff7db;
+	.upload-list tbody tr:hover {
+		background-color: #fff7db;
 	}
-.upload-list tbody tr.active {
-	background:#fff7db;
+	.upload-list tbody tr.active {
+		background: #fff7db;
 	}
-.upload-list tbody tr:nth-child(even).active {
-	background:#fcf0c5;
+	.upload-list tbody tr:nth-child(even).active {
+		background: #fcf0c5;
 	}
-.upload-list tbody tr.active .click-more {
-	color:#000;
+	.upload-list tbody tr.active .click-more {
+		color: #000;
 	}
 
 /* Citation Title */
-.upload-list .citation-title {
-	font-weight:bold;
-	color:#777;
+	.upload-list .citation-title {
+		font-weight: bold;
+		color: #777;
 	}
-.upload-list .citation-title:hover {
-	cursor:pointer;
-	}	
+	.upload-list .citation-title:hover {
+		cursor: pointer;
+	}
 
-/* Click More */	
-.upload-list tbody tr .click-more {
-	visibility:hidden;
-	padding-left:20px;
-	text-transform:uppercase;
-	color:#ccc;
-	font-size:0.85em;
-	font-weight:bold;
+/* Click More */
+	.upload-list tbody tr .click-more {
+		visibility: hidden;
+		padding-left: 20px;
+		text-transform: uppercase;
+		color: #ccc;
+		font-size: 0.85em;
+		font-weight: bold;
 	}
-.upload-list tbody tr:hover .click-more {
-	visibility:visible;
-	}	
+	.upload-list tbody tr:hover .click-more {
+		visibility: visible;
+	}
 
 /* Citation Details */
-.upload-list .citation-details {
-	border:1px solid #ccc;
-	background-color:#fff;
-	border-collapse:separate;
-	padding:0;
-	text-indent:0;
-	margin:1% 0;
-	font-size:0.9em;
-	/*width:90%; */
+	.upload-list .citation-details {
+		border: 1px solid #ccc;
+		background-color: #fff;
+		border-collapse: separate;
+		padding: 0;
+		text-indent: 0;
+		margin: 1% 0;
+		font-size: 0.9em;
 	}
-.upload-list .citation-details thead th {
-	border-right:none;
-	font-size:0.9em;
+	.upload-list .citation-details thead th {
+		border-right: none;
+		font-size: 0.9em;
 	}
-.upload-list .citation-details .key {
-	text-transform:uppercase;
-	font-weight:bold;
-	color:#444;
-	width:15%;
-	/*text-align:right;*/
+	.upload-list .citation-details .key {
+		text-transform: uppercase;
+		font-weight: bold;
+		color: #444;
+		width: 15%;
 	}
-.upload-list .citation-details tbody tr:nth-child(even):hover {
-	background:#f5f5f5;
+	.upload-list .citation-details tbody tr:nth-child(even):hover {
+		background: #f5f5f5;
 	} 
-.upload-list .citation-details tbody tr:hover {
-	background-color:transparent;
-	}		
-
+	.upload-list .citation-details tbody tr:hover {
+		background-color: transparent;
+	}
 
 /* Users attention required box */
-.require-action thead th {
-	color:#F00;
-	background:#fdeaea;
+	.require-action thead th {
+		color: #F00;
+		background: #fdeaea;
 	}
-.require-action .citation-details thead th {
-	color:#444;
-	background:#efefef;
+	.require-action .citation-details thead th {
+		color: #444;
+		background: #efefef;
 	}
-.require-action .citation-details tbody td {
-	border-bottom:1px solid #ccc;
+	.require-action .citation-details tbody td {
+		border-bottom: 1px solid #ccc;
 	}
-.require-action .citation-details th.options {
-	background:#444;
-	color:#fff;
-	font-weight:normal;
-	font-size:1em;
+	.require-action .citation-details th.options {
+		background: #444;
+		color: #fff;
+		font-weight: normal;
+		font-size: 1em;
 	}
-.require-action .citation-details th.options label {
-	margin-right:15px;
+	.require-action .citation-details th.options label {
+		margin-right: 15px;
 	}
 
 /* Difference Table */	
-.require-action .citation-differences,
-.require-action .citation-differences tbody td {
-	border:none;
-	padding:0;
-	}	
-.require-action .citation-differences tbody tr {
-	background:transparent;
-	}	
-.require-action .citation-details .citation-differences tbody tr:hover {
-	background:transparent;
+	.require-action .citation-differences,
+	.require-action .citation-differences tbody td {
+		border: none;
+		padding: 0;
 	}
-.require-action .citation-differences tbody td:nth-child(odd) {
-	width:10%;
-	padding-right:1%;
-	text-align:right;
+	.require-action .citation-differences tbody tr {
+		background: transparent;
 	}
-.require-action .citation-differences tbody td span {
-	margin:0;
-	color:#555;
+	.require-action .citation-details .citation-differences tbody tr:hover {
+		background: transparent;
 	}
-.require-action .citation-differences .insert {
-	border: 1px solid #DAE6DA;
-    background: #F2FFF2;
-    color: #360;
-	text-decoration:underline;
+	.require-action .citation-differences tbody td:nth-child(odd) {
+		width: 10%;
+		padding-right: 1%;
+		text-align: right;
 	}
-.require-action .citation-differences .delete {
-	border: 1px solid #EFCCC2; 
-    background: #FFF2EF;
-    color: #CC0000;
-	padding:0;
-	text-decoration:line-through;
+	.require-action .citation-differences tbody td span {
+		margin: 0;
+		color: #555;
+	}
+	.require-action .citation-differences .insert {
+		border: 1px solid #DAE6DA;
+		background: #F2FFF2;
+		color: #360;
+		text-decoration: underline;
+	}
+	.require-action .citation-differences .delete {
+		border: 1px solid #EFCCC2; 
+		background: #FFF2EF;
+		color: #CC0000;
+		padding: 0;
+		text-decoration: line-through;
 	}
 
-#hubForm.add-citation .group {
-	padding:0 0 0 5em;
+	#hubForm.add-citation .group {
+		padding: 0 0 0 5em;
 	}
-#hubForm.add-citation .threeup {
-	padding-left:0;
+	#hubForm.add-citation .threeup {
+		padding-left: 0;
 	}
-#hubForm.add-citation .group label {
-	padding-bottom:1.5em;
+	#hubForm.add-citation .group label {
+		padding-bottom: 1.5em;
 	}
