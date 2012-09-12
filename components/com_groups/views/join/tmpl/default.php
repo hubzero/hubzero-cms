@@ -48,18 +48,18 @@ defined('_JEXEC') or die( 'Restricted access' );
 			echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
 		}
 	?>
-	<form action="index.php" method="post" id="hubForm">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=confirm'); ?>" method="post" id="hubForm">
 		<div class="explaination">
 			<p class="info"><?php echo JText::_('GROUPS_JOIN_EXPLANATION'); ?></p>
 		</div>
-		<fieldset>	
-			<h3><?php echo JText::_('GROUPS_JOIN_HEADER'); ?></h3>
-			<p>&nbsp;</p>
+		<fieldset>
+			<legend><?php echo JText::_('GROUPS_JOIN_HEADER'); ?></legend>
+
 			<?php if ($this->group->get('restrict_msg')) { ?>
-				<p class="warning"><?php echo JText::_('NOTE').': '.htmlentities(stripslashes($this->group->get('restrict_msg'))); ?></p>
+				<p class="warning"><?php echo JText::_('NOTE') . ': ' . $this->escape(stripslashes($this->group->get('restrict_msg'))); ?></p>
 			<?php } ?>
 			
-			<label>
+			<label for="reason">
 				<?php echo JText::_('GROUPS_JOIN_REASON'); ?>
 				<textarea name="reason" id="reason" rows="10" cols="50"></textarea>
 			</label>

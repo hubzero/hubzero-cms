@@ -73,65 +73,68 @@ $lid = $this->group->get('gidNumber');
 </div>
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li><a href="<?php echo JRoute::_($base_link); ?>">Back to Manage Pages</a></li>
+		<li><a class="prev" href="<?php echo JRoute::_($base_link); ?>">Back to Manage Pages</a></li>
 	</ul>
 </div>
 
 <div class="main section">
-	<?php
-		foreach($this->notifications as $notification) {
-			echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
-		}
-	?>
+	<?php foreach ($this->notifications as $notification) { ?>
+		<p class="<?php echo $notification['type']; ?>"><?php echo $notification['message']; ?></p>
+	<?php } ?>
 
-<form action="<?php echo JRoute::_($base_link); ?>" method="POST" id="hubForm">
-	<div class="explaination">
-		<div id="asset_browser">
-			<p><strong><?php echo JText::_('Upload files or images:'); ?></strong></p>
-			<iframe width="100%" height="300" name="filer" id="filer" src="index.php?option=com_groups&amp;no_html=1&amp;task=media&amp;listdir=<?php echo $lid; ?>"></iframe>
-		</div><!-- / .asset_browser -->
-	</div>
-	<fieldset>
-		<h3><?php echo $form_title; ?></h3>
-		<label>Page Title: <span class="required">Required</span>
-			<input type="text" name="page[title]" value="<?php echo $title; ?>" />
-		</label>
-		<label>Page URL: <span class="optional">Optional</span>
-			<input type="text" name="page[url]" value="<?php echo $url; ?>" />
-			<span class="hint">Page URL's can only contain alphanumeric characters and underscores. Spaces will be removed.</span>
-		</label>
-		<label for="page[content]">Page Content: <span class="optional">Optional</span>
-			<?php
-				ximport('Hubzero_Wiki_Editor');
-				$editor =& Hubzero_Wiki_Editor::getInstance();
-				echo $editor->display('page[content]', 'page[content]', stripslashes($content), '', '50', '15');
-			?>
-			<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> &amp; <a class="popup" href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiMacros'); ?>">Wiki Macros</a> is allowed.</span>
-		</label>
-		<label>Page Privacy: <span class="required">Required</span>
-			<?php
-				ximport("Hubzero_Group_Helper");
-				$access = Hubzero_Group_Helper::getPluginAccess($this->group, 'overview');
-				switch($access)
-				{
-					case 'anyone':		$name = "Any HUB Visitor";		break;
-					case 'registered':	$name = "Registered HUB Users";	break;
-					case 'members':		$name = "Group Members Only";	break;
-				}
-			?>
-			<select name="page[privacy]">
-				<option value="default" <?php if($privacy == "default") { echo "selected"; } ?>>Inherits overview tab's privacy setting (Currently set to: <?php echo $name; ?>)</option>
-				<option value="members" <?php if($privacy == "members") { echo "selected"; } ?>>Private Page (Accessible to members only)</option>
-			</select>
-		</label>
-		<input type="hidden" name="page[id]" value="<?php echo $id; ?>" />
-		<input type="hidden" name="page[gid]" value="<?php echo $gid; ?>" />
-		<input type="hidden" name="page[porder]" value="<?php echo $order; ?>" />
-		<input type="hidden" name="page[active]" value="<?php echo $active; ?>" />
-		<input type="hidden" name="page[new]" value="<?php echo $new; ?>" />
-		<input type="hidden" name="sub_task" value="save_page" />
-	</fieldset>
-	<div class="clear"></div>
-	<p class="submit"><input type="submit" name="page_submit" value="<?php echo $form_btn; ?>" /></p>
-</form>
+	<form action="<?php echo JRoute::_($base_link); ?>" method="POST" id="hubForm">
+		<div class="explaination">
+			<div id="asset_browser">
+				<p><strong><?php echo JText::_('Upload files or images:'); ?></strong></p>
+				<iframe width="100%" height="310" name="filer" id="filer" src="index.php?option=com_groups&amp;tmpl=component&amp;task=media&amp;listdir=<?php echo $lid; ?>"></iframe>
+			</div><!-- / .asset_browser -->
+		</div>
+		<fieldset>
+			<legend><?php echo $form_title; ?></legend>
+			<label for="field-title">
+				Page Title: <span class="required">Required</span>
+				<input type="text" name="page[title]" id="field-title" value="<?php echo $this->escape(stripslashes($title)); ?>" />
+			</label>
+			<label for="field-url">
+				Page URL: <span class="optional">Optional</span>
+				<input type="text" name="page[url]" id="field-url" value="<?php echo $this->escape($url); ?>" />
+				<span class="hint">Page URL's can only contain alphanumeric characters and underscores. Spaces will be removed.</span>
+			</label>
+			<label for="page[content]">
+				Page Content: <span class="optional">Optional</span>
+				<?php
+					ximport('Hubzero_Wiki_Editor');
+					$editor =& Hubzero_Wiki_Editor::getInstance();
+					echo $editor->display('page[content]', 'page[content]', stripslashes($content), '', '50', '15');
+				?>
+				<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> &amp; <a class="popup" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiMacros'); ?>">Wiki Macros</a> is allowed.</span>
+			</label>
+			<label>Page Privacy: <span class="required">Required</span>
+				<?php
+					ximport("Hubzero_Group_Helper");
+					$access = Hubzero_Group_Helper::getPluginAccess($this->group, 'overview');
+					switch($access)
+					{
+						case 'anyone':		$name = "Any HUB Visitor";		break;
+						case 'registered':	$name = "Registered HUB Users";	break;
+						case 'members':		$name = "Group Members Only";	break;
+					}
+				?>
+				<select name="page[privacy]">
+					<option value="default" <?php if($privacy == "default") { echo "selected"; } ?>>Inherits overview tab's privacy setting (Currently set to: <?php echo $name; ?>)</option>
+					<option value="members" <?php if($privacy == "members") { echo "selected"; } ?>>Private Page (Accessible to members only)</option>
+				</select>
+			</label>
+			<input type="hidden" name="page[id]" value="<?php echo $id; ?>" />
+			<input type="hidden" name="page[gid]" value="<?php echo $gid; ?>" />
+			<input type="hidden" name="page[porder]" value="<?php echo $order; ?>" />
+			<input type="hidden" name="page[active]" value="<?php echo $active; ?>" />
+			<input type="hidden" name="page[new]" value="<?php echo $new; ?>" />
+			<input type="hidden" name="sub_task" value="save_page" />
+		</fieldset>
+		<div class="clear"></div>
+		<p class="submit">
+			<input type="submit" name="page_submit" value="<?php echo $form_btn; ?>" />
+		</p>
+	</form>
 </div>

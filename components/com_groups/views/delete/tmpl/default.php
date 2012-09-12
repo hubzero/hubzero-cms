@@ -42,40 +42,37 @@ defined('_JEXEC') or die( 'Restricted access' );
 </div><!-- / #content-header-extra -->
 
 <div class="main section">
-	<?php
-		foreach($this->notifications as $notification) {
-			echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
-		}
-	?>
-	<form action="index.php" method="post" id="hubForm">
+	<?php foreach ($this->notifications as $notification) { ?>
+		<p class="<?php echo $notification['type']; ?>"><?php echo $notification['message']; ?></p>
+	<?php } ?>
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=delete'); ?>" method="post" id="hubForm">
 		<div class="explaination">
 			<p><strong>Are you sure you want to delete?</strong></p>
 			<p>Deleting a group will permanently remove the group and all data associated with that group.</p>
-			<p>&nbsp;</p>
-			
+
 			<p><strong>Alternative to deleting</strong></p>
 			<p>You could set the group join policy to closed to restrict further membership activity and set the discoverability to hidden so the group is hidden to the world but still there later if you decide you want to use the group again.</p>
-			<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=edit'); ?>">&raquo; Click here to edit group settings</a></p>
-			<!--
+			<p><a class="config btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=edit'); ?>">Click here to edit group settings</a></p>
+			<?php /*
 			<div class="admin-options">
 				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=view'); ?>"><?php echo JText::_('GROUPS_VIEW_GROUP'); ?></a></p>
 				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=edit'); ?>"><?php echo JText::_('GROUPS_EDIT_GROUP'); ?></a></p>
 				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=customize'); ?>"><?php echo JText::_('GROUPS_CUSTOMIZE_GROUP'); ?></a></p>
 				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=invite'); ?>"><?php echo JText::_('GROUPS_INVITE_USERS'); ?></a></p>
 			</div>
-			-->
+			*/ ?>
 		</div>
 		<fieldset>
-			<h3><?php echo JText::_('GROUPS_DELETE_HEADER'); ?></h3>
+			<legend><?php echo JText::_('GROUPS_DELETE_HEADER'); ?></legend>
 
-	 		<p class="warning" style="margin-top:2em"><?php echo JText::sprintf('GROUPS_DELETE_WARNING',$this->group->get('description')).'<br /><br />'.$this->log; ?></p>
+	 		<p class="warning"><?php echo JText::sprintf('GROUPS_DELETE_WARNING', $this->group->get('description')) . '<br /><br />' . $this->log; ?></p>
 
-			<label>
+			<label for="msg">
 				<?php echo JText::_('GROUPS_DELETE_MESSAGE'); ?>
 				<textarea name="msg" id="msg" rows="12" cols="50"><?php echo htmlentities($this->msg); ?></textarea>
 			</label>
-			<label>
-				<input type="checkbox" class="option" name="confirmdel" value="1" /> 
+			<label for="confirmdel">
+				<input type="checkbox" class="option" name="confirmdel" id="confirmdel" value="1" /> 
 				<?php echo JText::_('GROUPS_DELETE_CONFIRM'); ?>
 			</label>
 		</fieldset>

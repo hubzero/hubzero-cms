@@ -293,6 +293,10 @@ HUB.Groups = {
 			assetBox = $("#asset_browser"),
 			max = 0;
 
+		assetBox
+			.css('width', ($(assetBox.parent()).width() - 10) + 'px')
+			.css('padding', '10px');
+
 		if(assetBox.length && topBox.length && bottomBox.length)
 		{
 			max = (bottomBox.position().top + bottomBox.outerHeight(true)) - assetBox.outerHeight(true);

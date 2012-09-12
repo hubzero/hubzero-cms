@@ -50,7 +50,7 @@ $dispatcher =& JDispatcher::getInstance();
 			echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
 		}
 	?>
-	<form action="index.php" method="post" id="hubForm">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=invite'); ?>" method="post" id="hubForm">
 		<div class="explaination">
 			<p><strong>Invite Members to Your Group</strong></p>
 			<p>Start typing the names of registered members on the hub and suggestions matching the text entered with be displayed.</p>
@@ -65,7 +65,7 @@ $dispatcher =& JDispatcher::getInstance();
 			-->
 		</div>
 		<fieldset>
-			<h3><?php echo JText::_('GROUPS_INVITE_HEADER'); ?></h3>
+			<legend><?php echo JText::_('GROUPS_INVITE_HEADER'); ?></legend>
 
 	 		<p><?php echo JText::sprintf('GROUPS_INVITE_EXPLANATION',$this->group->get('description')); ?></p>
 
@@ -80,9 +80,9 @@ $dispatcher =& JDispatcher::getInstance();
 					<?php } ?>
 				<span class="hint"><?php echo JText::_('Enter names or e-mails separated by commas'); ?></span>
 			</label>
-			<label>
+			<label for="msg">
 				<?php echo JText::_('GROUPS_INVITE_MESSAGE'); ?>
-				<textarea name="msg" id="msg" rows="12" cols="50"><?php echo htmlentities(stripslashes($this->msg)); ?></textarea>
+				<textarea name="msg" id="msg" rows="12" cols="50"><?php echo $this->escape(stripslashes($this->msg)); ?></textarea>
 			</label>
 		</fieldset>
 		<div class="clear"></div>

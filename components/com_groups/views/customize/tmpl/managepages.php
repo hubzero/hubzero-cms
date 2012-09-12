@@ -44,11 +44,9 @@ $base_link = 'index.php?option=com_groups&gid='.$this->group->get('cn').'&task=m
 	</ul>
 </div><!-- / #content-header-extra -->
 
-	<?php
-		foreach($this->notifications as $notification) {
-			echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
-		}
-	?>
+	<?php foreach ($this->notifications as $notification) { ?>
+		<p class="<?php echo $notification['type']; ?>"><?php echo $notification['message']; ?></p>
+	<?php } ?>
 <div class="main section">
 <form name="groupPages" action="index.php" method="POST" id="hubForm">
 	<div class="explaination">
@@ -56,7 +54,7 @@ $base_link = 'index.php?option=com_groups&gid='.$this->group->get('cn').'&task=m
 		<p><a class="add" href="<?php echo JRoute::_($base_link.'&sub_task=add_page'); ?>">Add a New Group Page</a></p>
 	</div>
 	<fieldset>
-		<h3>Manage Pages</h3>
+		<legend>Manage Pages</legend>
 		
 		<fieldset>
 			<legend>Your Active Pages</legend>

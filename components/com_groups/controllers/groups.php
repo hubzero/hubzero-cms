@@ -3300,6 +3300,9 @@ class GroupsController extends Hubzero_Controller
 
 		$group = Hubzero_Group::getInstance($listdir);
 
+		// Push some needed styles to the template
+		$this->_getGroupStyles();
+
 		// Output HTML
 		$view = new JView(array('name' => 'edit', 'layout' => 'filebrowser'));
 		$view->option = $this->_option;

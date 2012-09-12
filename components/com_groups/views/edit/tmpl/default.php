@@ -89,7 +89,7 @@ else
 		<div class="explaination">
 			<div id="asset_browser">
 				<p><strong><?php echo JText::_('Upload files or images:'); ?></strong></p>
-				<iframe width="100%" height="300" name="filer" id="filer" src="index.php?option=<?php echo $this->option; ?>&amp;no_html=1&amp;task=media&amp;listdir=<?php echo $this->lid; ?>"></iframe>
+				<iframe width="100%" height="310" name="filer" id="filer" src="index.php?option=<?php echo $this->option; ?>&amp;tmpl=component&amp;task=media&amp;listdir=<?php echo $this->lid; ?>"></iframe>
 			</div><!-- / .asset_browser -->
 		</div>
 		<fieldset id="top_box">

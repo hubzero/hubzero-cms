@@ -22,6 +22,11 @@
 		background: #efefef;
 		border: 0px;
 	}
+	#file_browser fieldset {
+		border: none;
+		margin: 0;
+		padding: 0;
+	}
 	#file_list {
 		background-color: #fff;
 	}
@@ -94,7 +99,7 @@
 		border: 3px dashed #ccc;
 		height: 23px;
 		text-align: center;
-		font-size: 20px;
+		font-size: 18px;
 		color: #ccc;
 		text-shadow: 0 1px 0 #FFF;
 		padding: 15px 0;

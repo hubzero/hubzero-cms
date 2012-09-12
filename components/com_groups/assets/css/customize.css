@@ -11,12 +11,15 @@
 		margin-top: 7px;
 		-webkit-box-shadow: 0 0 2px #444;
 		-moz-box-shadow: 0 0 2px #444;
+		-ms-box-shadow: 0 0 2px #444;
+		-o-box-shadow: 0 0 2px #444;
 		box-shadow: 0 0 2px #444;
 		background: #efefef;
 		padding: 2%;
 		width: 96%;
 		position: absolute;
 		top: 2px;
+		right: 0;
 	}
 	#asset_browser:before {
 		content: '\f005';
