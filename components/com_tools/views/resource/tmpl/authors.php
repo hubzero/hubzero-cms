@@ -36,8 +36,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<p><?php echo JText::_('AUTHORS_NO_LOGIN_EXPLANATION'); ?></p>
 </div>
 <fieldset>
-	<h3><?php echo JText::_('AUTHORS_AUTHORS'); ?></h3>
-
-	<iframe name="authors" id="authors" src="index.php?option=<?php echo $this->option; ?>&amp;controller=authors&amp;rid=<?php echo $this->row->id; ?>&amp;tmpl=component&amp;version=<?php echo $this->version; ?>" width="100%" height="400" frameborder="0"></iframe>
-
+	<legend><?php echo JText::_('AUTHORS_AUTHORS'); ?></legend>
+	<div class="field-wrap">
+		<iframe name="authors" id="authors" src="index.php?option=<?php echo $this->option; ?>&amp;controller=authors&amp;rid=<?php echo $this->row->id; ?>&amp;tmpl=component&amp;version=<?php echo $this->version; ?>" width="100%" height="400" frameborder="0"></iframe>
+	</div>
 </fieldset><div class="clear"></div>

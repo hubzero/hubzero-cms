@@ -44,8 +44,8 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 
 <div id="content-header-extra">
 	<ul id="useroptions">
-    	<li><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=pipeline'); ?>">&larr; <?php echo JText::_('CONTRIBTOOL_ALL_TOOLS'); ?></a></li>
-		<li class="last"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=create'); ?>" class="add"><?php echo JText::_('CONTRIBTOOL_NEW_TOOL'); ?></a></li>
+    	<li><a class="main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=pipeline'); ?>"><?php echo JText::_('CONTRIBTOOL_ALL_TOOLS'); ?></a></li>
+		<li class="last"><a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=create'); ?>"><?php echo JText::_('CONTRIBTOOL_NEW_TOOL'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 

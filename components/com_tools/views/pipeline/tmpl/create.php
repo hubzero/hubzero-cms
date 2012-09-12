@@ -55,9 +55,9 @@ $wikiChoices['@DEV'] = ucfirst(JText::_('ACCESS_RESTRICTED'));
 <div id="content-header-extra">
 	<ul id="useroptions">
 <?php if ($this->id) { ?>
-		<li><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->defaults['toolname']); ?>"><?php echo JText::_('TOOL_STATUS'); ?></a></li>
+		<li><a class="status btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->defaults['toolname']); ?>"><?php echo JText::_('TOOL_STATUS'); ?></a></li>
 <?php } ?>
-		<li class="last"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=pipeline'); ?>"><?php echo JText::_('CONTRIBTOOL_ALL_TOOLS'); ?></a></li>
+		<li class="last"><a class="main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=pipeline'); ?>"><?php echo JText::_('CONTRIBTOOL_ALL_TOOLS'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 

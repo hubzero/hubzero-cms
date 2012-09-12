@@ -48,11 +48,12 @@ else {
 
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=pipeline&task=status&app=' . $this->row->alias); ?>"><?php echo JText::_('TOOL_STATUS'); ?></a></li>
-		<li class="last"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=pipeline&task=create'); ?>" class="add"><?php echo JText::_('CONTRIBTOOL_NEW_TOOL'); ?></a></li>
+		<li><a class="status" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=pipeline&task=status&app=' . $this->row->alias); ?>"><?php echo JText::_('TOOL_STATUS'); ?></a></li>
+		<li class="last"><a class="add" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=pipeline&task=create'); ?>"><?php echo JText::_('CONTRIBTOOL_NEW_TOOL'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 
+<div class="section steps-section">
 <?php	
 	$view = new JView(array(
 		'name' => $this->controller,
@@ -67,8 +68,9 @@ else {
 	$view->vnum = $v;
 	$view->display();
 ?>
+</div>
 
-<div class="main section noborder">
+<div class="main section">
 	<form action="index.php" method="post" id="hubForm">
 		<div style="float:left; width:70%;padding:1em 0 1em 0;">
 <?php if ($this->step !=1 ) { ?>

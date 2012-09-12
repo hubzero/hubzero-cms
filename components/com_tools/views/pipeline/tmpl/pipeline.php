@@ -48,7 +48,7 @@ ximport('Hubzero_View_Helper_Html');
 </div><!-- / #content-header -->
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li class="last"><a class="add" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=create'); ?>"><?php echo JText::_('CONTRIBTOOL_NEW_TOOL'); ?></a></li>
+		<li class="last"><a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=create'); ?>"><?php echo JText::_('CONTRIBTOOL_NEW_TOOL'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 

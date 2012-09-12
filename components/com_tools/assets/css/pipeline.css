@@ -5,157 +5,7 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-/*
-	.clearfix {
-		border: 1px solid transparent;
-	}
-	.clearfix:after {
-		content: "."; 
-		display: block; 
-		height: 0; 
-		clear: left; 
-		visibility: hidden;
-	}
-/* Content blocks 
-	.container {
-		margin: 1em 0;
-		padding: 0;
-		border: 10px solid #f4f4f4;
-		background: #f4f4f4;
-	}
-	.data-entry {
-		border-color: #eef0e7;
-		background-color: #eef0e7;
-	}
-	.container-block {
-		border: 2px solid #e9e9e9;
-		background-color: #fff;
-		margin: 0;
-		padding: 0 15px;
-	}
-	.container-block h3 {
-		margin: 0 -15px 1em -15px;
-		padding: 0.5em 0.7em;
-		background: #f8f8f8 url("/components/com_tools/assets/img/contribute/light-stripes.png");
-		border-bottom: 2px solid #e9e9e9;
-		font-size: 135%;
-	}
-	.container-block h4 {
-		font-size: 115%;
-		border-bottom: 1px solid #eee;
-		padding: 0.2em 0;
-		font-weight: normal;
-	}
-	.container-block h4 a {
-		color: #333;
-	}
-	.container-block h4 .more {
-		float: right;
-		color: #aaa;
-	}
-	.container-block h4 a:hover,
-	.container-block h4 a:hover .more {
-		border: none;
-		color: #ff6600;
-	}
-	.container-block .columns {
-		margin-top: 0em;
-		margin-bottom: 1em;
-	}
-	.container-block .entry-content {
-		margin: 0 0 2em 0;
-	}
-	.container-block .entry-content h4 {
-		font-weight: bold;
-	}
-/* Entries search 
-	.entry-search {
-		margin: 0 1em 0 0;
-		border: none;
-		padding: 0;
-	}
-	.entry-search label {
-		display: none;
-	}
-	.entry-search-submit {
-		float: right;
-		margin: 3px 0 0 10px;
-	}
-	.entry-search input {
-		width: 95%;
-		border: 1px solid #A8A8A8;
-		background: white url("/components/com_tools/assets/img/search.png") 5px 50% no-repeat;
-		padding: 5px 5px 5px 20px;
-	}
-/* Entries (table) 
-	.entries {
-		border: 2px solid #e9e9e9;
-		border-top: none;
-		background-color: #fff;
-		margin: 0;
-		padding: 0;
-	}
-	.entries caption {
-		font-size: 115%;
-		background: #f8f8f8 url("/components/com_tools/assets/img/light-stripes.png");
-		border: 2px solid #e9e9e9;
-		border-bottom: 1px solid #e9e9e9;
-		margin-right: -2px;
-	}
-	.entries caption a {
-		float: right;
-	}
-	.entries caption a {
-		background-position: 0 50%;
-	}
-	.container-block h4 span,
-	.entries caption span {
-		color: #aaa;
-	}
-	.entries thead th {
-		text-align: left;
-		font-size: 85%;
-		background-color: #FBFBF6;
-		color: #999;
-		text-transform: uppercase;
-	}
-	.entries tbody td {
-		text-align: left;
-		border-bottom: 1px solid #eee;
-		padding: 10px;
-	}
-	.entries tbody th {
-		width: 5px;
-		text-align: center;
-		border-bottom: 1px solid #eee;
-	}
-	.entry-details {
-		font-size: 85%;
-		color: #999;
-	}
-	.entry-details a {
-		color: #666;
-		border-bottom: 1px dotted #666;
-	}
-	.entry-details a:hover {
-		color: #000;
-		border-bottom: 1px solid #333;
-	}
-	.entry-details-divider {
-		margin-left: 0.5em;
-		margin-right: 0.5em;
-	}
-	.entry-comments {
-		padding-right: 16px;
-		background: url("/components/com_wishlist/images/bullets_small.png") no-repeat right -428px;
-	}
-
-	.entries .entry-id {
-		display: none;
-	}
-	.tools tbody th {
-		background: url("/components/com_tools/assets/img/contribute/application.png") right 1em no-repeat;
-	}
+/* Enries */
 	/* Status */
 	.tools tbody tr th .entry-id:before {
 		content: "";
@@ -205,63 +55,8 @@
 	.container-block .entry-details {
 		padding: 0.7em 0 0.7em 0;
 	}
-/* Submenu styling 
-	.entries-menu {
-		list-style: none;
-		padding: 0;
-		margin: 0;
-		font-size: 85%;
-	}
-	.entries-menu li {
-		float: right;
-		padding: 0 0.2em 0.5em 0.2em;
-		margin: 0;
-	}
-	.entries-menu li a,
-	.entries-menu span.nolink {
-		color: #888;
-		display: block;
-		cursor: pointer;
-		font-weight: normal;
-		line-height: 1em;
-		border: none;
-		margin: 0;
-		padding: 0.4em 0.75em;
-		text-shadow: 0px 1px 1px #fff;
-	}
-	.entries-menu span.nolink {
-		color: #999;
-	}
-	.entries-menu a.active,
-	.entries-menu span.nolink.active {
-		color: #fff;
-		background-color: #636166;
-		-moz-border-radius: 10px;
-		-webkit-border-radius: 10px;
-		-webkit-border-radius: 10px;
-		border-radius: 10px;
-		text-shadow: 0 1px 1px rgba(0,0,0,.3);
-		text-decoration: none;
-	}
-	.entries-menu a:hover {
-		color: #fff;
-		background-color: #fc9022;
-		-moz-border-radius: 10px;
-		-webkit-border-radius: 10px;
-		-webkit-border-radius: 10px;
-		border-radius: 10px;
-		text-shadow: 0 1px 1px rgba(0,0,0,.3);
-		text-decoration: none;
-	}
-	.filter-options li {
-		float: left;
-	}
-	.filter-options {
-		width: 60%;
-	}
-/*---------------------------------------------------------------
-	Contribtool
----------------------------------------------------------------*/
+
+/* Contribtool */
 	#whatsnext { 
 		padding: 0;
 		margin: 0 0 1em;
@@ -311,49 +106,79 @@
 		margin: 0 0 1em 0;
 		background: url("/components/com_tools/assets/img/contribute/bullets/arrow.png") 0 0.2em no-repeat;
 	}
-/*---------------------------------------------------------------
-	Tool Status
----------------------------------------------------------------*/
-	#ctCancel { display:none; padding: 1em 1.5em 0.5em 1.5em;  }
-	#ctComment { display:none; padding: 0.5em 0.5em 0.5em 1.5em; margin:1.5em;  background: #f0ece7; border: 1px solid #dbd5ce;  }
-	#ctComment h4 { padding:0.5em 0 0.5em 0; margin: 0; }
-	#ctComment fieldset { padding:0.3em 0 0.3em 0; margin: 0; }
-	#ctComment form { padding:0; margin: 0; }
-	#ctComment .hidemsg { margin-left: 1.5em; }
-	.closebox { float:right; position:relative; margin: -0.2em 0.5em -4em 0.5em; }
-	.hidemsg { color:#999999; font-size:130%; border:none;  }
-	
+
+/* Tool Status */
+	#ctCancel { 
+		display: none;
+		padding: 1em 1.5em 0.5em 1.5em;
+	}
+	#ctComment { 
+		display: none;
+		padding: 0.5em 0.5em 0.5em 1.5em;
+		margin: 1.5em;
+		background: #f0ece7;
+		border: 1px solid #dbd5ce;
+	}
+	#ctComment h4 { 
+		padding: 0.5em 0 0.5em 0;
+		margin: 0;
+	}
+	#ctComment fieldset { 
+		padding: 0.3em 0 0.3em 0;
+		margin: 0;
+	}
+	#ctComment form { 
+		padding: 0;
+		margin: 0;
+	}
+	#ctComment .hidemsg { 
+		margin-left: 1.5em;
+	}
+	.closebox { 
+		float: right;
+		position: relative;
+		margin: -0.2em 0.5em -4em 0.5em;
+	}
+	.hidemsg { 
+		color: #999;
+		font-size: 130%;
+		border: none;
+	}
 	#commentarea {
-		padding:0;
+		padding: 0;
 	}
 	#comment {
-		width:200px;
+		width: 200px;
 	}
-	.cancel_warning { display:block; }
-	.boundary { padding: 0 1em 0 1em; }
+	.cancel_warning { 
+		display: block;
+	}
+	.boundary { 
+		padding: 0 1em 0 1em;
+	}
 
-/*---------------------------------------------------------------
-	Admin actions
----------------------------------------------------------------*/
-
-	#admintools h4, .admintitle {
-		padding-top:1.5em;
+/* Admin actions */
+	#admintools h4, 
+	.admintitle {
+		padding-top: 1.5em;
 	}
 	.adminactions {
 		list-style: none;
-		margin:0;
-		padding:0 0 0 1em;
-		line-height:2em;
+		margin: 0;
+		padding: 0 0 0 1em;
+		line-height: 2em;
 	}
 	.adminactions li {
-		display:inline;
+		display: inline;
 		padding: 0 0.5em 0 0.2em;
-		background:none;		
+		background: none;
 	}
-	.adminactions li a, .adminactions li a:hover, .adminactions li span {
+	.adminactions li a, 
+	.adminactions li a:hover, 
+	.adminactions li span {
 		padding: 0.2em 0 0.2em 1.7em;
 		border: none;
-		font-size:x-small;
+		font-size: x-small;
 	}
 	span.showcontrols {
 		padding: 0.2em 0 0.2em 0.2em;
@@ -374,34 +199,102 @@
 		padding: 0.5em 1.5em 0.5em 1.5em;
 	}
 	
-	span.showcontrols a { display:inline; border: none; padding: 0.2em 0.2em 0.2em 0.2em; margin: 0 -2px 0 0; }
-
-	span.showcontrols a.expand { background:  url("/components/com_tools/assets/img/contribute/showcontrols.gif") -3px 3px no-repeat; border:0; }
-	span.showcontrols a.collapse { background:  url("/components/com_tools/assets/img/contribute/showcontrols.gif") -1px -12px no-repeat; padding: 0.2em 0.2em 0.2em 0.5em; border:0; }
+	span.showcontrols a { 
+		display: inline;
+		border: none;
+		padding: 0.2em 0.2em 0.2em 0.2em;
+		margin: 0 -2px 0 0;
+	}
+	span.showcontrols a.expand { 
+		background: url("/components/com_tools/assets/img/contribute/showcontrols.gif") -3px 3px no-repeat;
+		border: 0;
+	}
+	span.showcontrols a.collapse { 
+		background:  url("/components/com_tools/assets/img/contribute/showcontrols.gif") -1px -12px no-repeat;
+		padding: 0.2em 0.2em 0.2em 0.5em;
+		border: 0;
+	}
 	
-	.history a, .history span { background: transparent url("/components/com_tools/assets/img/contribute/history.gif") 0 0 no-repeat; }
-	.timeline a, .timeline span { background: transparent url("/components/com_tools/assets/img/contribute/timeline.gif") 0 0 no-repeat; }
-	.wiki a, .wiki span { background: transparent url("/components/com_tools/assets/img/contribute/wiki.gif") 0 0 no-repeat; }
-	.agenda a { background: transparent url("/components/com_tools/assets/img/contribute/agenda.gif") 0 0 no-repeat; }
-	.agenda_new a { background: transparent url("/components/com_tools/assets/img/contribute/agenda_new.gif") 0 0 no-repeat; }
-	.disabled { color:#999999; }
-	.sourcecode a, .sourcecode span { background: transparent url("/components/com_tools/assets/img/contribute/sourcecode.gif") 0 0 no-repeat; }
-	.canceltool a { background: transparent url("/components/com_tools/assets/img/contribute/delete.gif") 2px 2px no-repeat; }
-	.message a { background: transparent url("/components/com_tools/assets/img/contribute/message.gif") 0 0 no-repeat; border:none; }
-	.newmessage a { background: transparent url("/components/com_tools/assets/img/contribute/newmessage.gif") 0 0 no-repeat; padding: 0.2em 0.5em 0.2em 0.5em;
-		margin: 0; border:none; }
-	#createtool a, #createtool span { background: transparent url("/components/com_tools/assets/img/contribute/create_project.gif") 0 0 no-repeat; }
-	#installtool a, #installtool span { background: transparent url("/components/com_tools/assets/img/contribute/install_tool.gif") 0 0 no-repeat; }
-	#publishtool a, #publishtool span { background: transparent url("/components/com_tools/assets/img/contribute/publish_tool.gif") 0 0 no-repeat; }
-	#retiretool a, #retiretool span { background: transparent url("/components/com_tools/assets/img/contribute/retire.gif") 0 0 no-repeat; }
-	.canceltool a:hover { background-position: 2px -18px; }
-	#installtool a:hover { background-position: 0 -18px; }
-	#createtool a:hover { background-position: 0 -16px; }
-	#publishtool a:hover { background-position: 0 -20px; }
-	#retiretool a:hover { background-position: 0 -17px; }
+	.history a, 
+	.history span { 
+		background: transparent url("/components/com_tools/assets/img/contribute/history.gif") 0 0 no-repeat;
+	}
+	.timeline a, 
+	.timeline span { 
+		background: transparent url("/components/com_tools/assets/img/contribute/timeline.gif") 0 0 no-repeat;
+	}
+	.wiki a, 
+	.wiki span { 
+		background: transparent url("/components/com_tools/assets/img/contribute/wiki.gif") 0 0 no-repeat;
+	}
+	.agenda a { 
+		background: transparent url("/components/com_tools/assets/img/contribute/agenda.gif") 0 0 no-repeat;
+	}
+	.agenda_new a { 
+		background: transparent url("/components/com_tools/assets/img/contribute/agenda_new.gif") 0 0 no-repeat;
+	}
+	.disabled { 
+		color: #999;
+	}
+	.sourcecode a, 
+	.sourcecode span { 
+		background: transparent url("/components/com_tools/assets/img/contribute/sourcecode.gif") 0 0 no-repeat;
+	}
+	.canceltool a { 
+		background: transparent url("/components/com_tools/assets/img/contribute/delete.gif") 2px 2px no-repeat;
+	}
+	.message a { 
+		background: transparent url("/components/com_tools/assets/img/contribute/message.gif") 0 0 no-repeat;
+		border: none;
+	}
+	.newmessage a { 
+		background: transparent url("/components/com_tools/assets/img/contribute/newmessage.gif") 0 0 no-repeat;
+		padding: 0.2em 0.5em 0.2em 0.5em;
+		margin: 0;
+		border: none;
+	}
+	#createtool a, 
+	#createtool span { 
+		background: transparent url("/components/com_tools/assets/img/contribute/create_project.gif") 0 0 no-repeat;
+	}
+	#installtool a, 
+	#installtool span { 
+		background: transparent url("/components/com_tools/assets/img/contribute/install_tool.gif") 0 0 no-repeat;
+	}
+	#publishtool a, 
+	#publishtool span { 
+		background: transparent url("/components/com_tools/assets/img/contribute/publish_tool.gif") 0 0 no-repeat;
+	}
+	#retiretool a, 
+	#retiretool span { 
+		background: transparent url("/components/com_tools/assets/img/contribute/retire.gif") 0 0 no-repeat;
+	}
+	.canceltool a:hover { 
+		background-position: 2px -18px;
+	}
+	#installtool a:hover { 
+		background-position: 0 -18px;
+	}
+	#createtool a:hover { 
+		background-position: 0 -16px;
+	}
+	#publishtool a:hover { 
+		background-position: 0 -20px;
+	}
+	#retiretool a:hover { 
+		background-position: 0 -17px;
+	}
 	
-	.conf { background: transparent url("/components/com_tools/assets/img/contribute/configure.gif") 0 0 no-repeat; padding: 0.2em 0.6em 0.2em 0.6em; border:none; margin-left:1em; }
-	.conf:hover { background-position: 0 -17px; border:none; }
+	.conf { 
+		background: transparent url("/components/com_tools/assets/img/contribute/configure.gif") 0 0 no-repeat;
+		padding: 0.2em 0.6em 0.2em 0.6em;
+		border: none;
+		margin-left: 1em;
+	}
+	.conf:hover { 
+		background-position: 0 -17px;
+		border: none;
+	}
 	
 	.ticketinfo h4 {
 		margin: 1.5em 0 1em 1.4em;
@@ -422,14 +315,12 @@
 		background: url("/components/com_tools/assets/img/contribute/warning.gif") 0 0 no-repeat;
 		padding-left: 17px;
 	}
-/*---------------------------------------------------------------
-	Tool Summary
----------------------------------------------------------------*/
 
+/* Tool Summary */
 	.highpriority { 
 		background: transparent url("/components/com_tools/assets/img/contribute/high_priority.gif") 2em 0.3em no-repeat;
-		width:15px;
-		height:15px;
+		width: 15px;
+		height: 15px;
 	}
 	.disabled_links {
 		color: #666;
@@ -439,27 +330,36 @@
 	#tktlist tbody tr.published_user a.showstatus,
 	#tktlist tbody tr.abandoned a.showstatus,
 	#tktlist tbody tr.retired a.showstatus,
-	#tktlist tbody tr.retired_user a.showstatus, tktlist a {
-		border:0;
+	#tktlist tbody tr.retired_user a.showstatus, 
+	#tktlist a {
+		border: 0;
 	}
-	
 	#tktlist tbody tr.abandoned,
 	#tktlist tbody tr.abandoned:hover,
 	#tktlist tbody tr.retired,
 	#tktlist tbody tr.retired:hover,
 	#tktlist tbody tr.retired_user,
-	#tktlist tbody tr.retired_user:hover { background: #eeeeee; color: #999 }
+	#tktlist tbody tr.retired_user:hover { 
+		background: #eeeeee;
+		color: #999 
+	}
 	#tktlist tbody tr.abandoned a,
 	#tktlist tbody tr.retired a,
-	#tktlist tbody tr.retired_user a { color: #999; border-bottom: 1px solid #ccc; }
-	
+	#tktlist tbody tr.retired_user a { 
+		color: #999;
+		border-bottom: 1px solid #ccc;
+	}
 	#tktlist tbody tr.published,
 	#tktlist tbody tr.published:hover,
 	#tktlist tbody tr.published_user,
-	#tktlist tbody tr.published_user:hover { background: #f0f9ff;  }
+	#tktlist tbody tr.published_user:hover {
+		background: #f0f9ff;
+	}
 	#tktlist tbody tr.published a,
-	#tktlist tbody tr.published_user a { color: #469; border-bottom: 1px solid #C4CDEB; }
-	
+	#tktlist tbody tr.published_user a { 
+		color: #469;
+		border-bottom: 1px solid #C4CDEB;
+	}
 	#tktlist tbody tr.registered,
 	#tktlist tbody tr.registered:hover,
 	#tktlist tbody tr.updated,
@@ -476,17 +376,16 @@
 	table.mycontrib tr.installed_user,
 	table.mycontrib tr.draft,
 	table.mycontrib tr.installed_user td.tool,
-	table.mycontrib tr.created_user td.tool
-	{ background-color: #fed;  }
-	
+	table.mycontrib tr.created_user td.tool { 
+		background-color: #fed;
+	}
 	table.mycontrib tr.created_user td,
 	table.mycontrib tr.installed_user td,
-	table.mycontrib tr.draft td
-	{ border-bottom: 1px solid #ddd;  }
-			
-/*---------------------------------------------------------------
-	Versioning
----------------------------------------------------------------*/
+	table.mycontrib tr.draft td {
+		border-bottom: 1px solid #ddd;
+	}
+
+/* Versioning */
 	.toolpublished {
 		background: url("/components/com_tools/assets/img/contribute/check.gif") 0 0 no-repeat;
 		display: block;
@@ -511,9 +410,9 @@
 		float: right;
 	}
 	.vnotice { 
-		padding: 0.5em 0.5em 0.5em 1.5em; 
-		margin: 0.5em 1.5em 0 1.5em; 
-		background: #f0ece7; 
+		padding: 0.5em 0.5em 0.5em 1.5em;
+		margin: 0.5em 1.5em 0 1.5em;
+		background: #f0ece7;
 		border: 1px solid #dbd5ce;
 	}
 	.vline {
@@ -521,14 +420,14 @@
 	}
 	
 	.versionfield { 
-		padding: 1em; 
-		background: #f0ece7; 
-		border: 1px solid #dbd5ce; 
-		margin: 0.5em 0 0.5em 0; 
+		padding: 1em;
+		background: #f0ece7;
+		border: 1px solid #dbd5ce;
+		margin: 0.5em 0 0.5em 0;
 	}
 	
 	.vbutton {
-		float: right; 
+		float: right;
 		position: relative;
 		margin-right: 2em;
 	}
@@ -538,22 +437,21 @@
 	}
 	.devversion, 
 	.currentversion {
-		padding: 1em; 
-		margin: 0; 
-		/*margin-left: 20px;*/
+		padding: 1em;
+		margin: 0;
 	}
 	p.currentversion {
 		border-bottom: 1px solid #72d0eb;
-		background: #f0f9ff; 
+		background: #f0f9ff;
 	}
 	.config { 
-		border: none; 
-		border-bottom: 2px solid #ccc; 
-		padding-bottom: 1em; 
+		border: none;
+		border-bottom: 2px solid #ccc;
+		padding-bottom: 1em;
 	}
 	.config h4,
 	.controls h4 { 
-		margin: 0.5em 0 0 0; 
+		margin: 0.5em 0 0 0;
 	}
 	.config p,
 	.controls p { 
@@ -561,25 +459,23 @@
 	}
 	.config span.heading, 
 	span.heading { 
-		color: #5d715c; 
-		font-weight: bold; 
+		color: #5d715c;
+		font-weight: bold;
 		margin-right: 0.5em;
 	}
 	.config span.desc, 
 	span.desc { 
-		color: #666; 
+		color: #666;
 		width: 200px;
 	}
-/*---------------------------------------------------------------
-	Steps
----------------------------------------------------------------*/
+
+/* Steps */
 	#steps { 
-		border-bottom: 1px solid #ccc; 
-		padding: 0 0 0.5em 0; 
-		list-style: none; 
-		margin: 1em 0 2em 0; 
-		position: relative; 
-		/*margin-left:20px;*/
+		border-bottom: 1px solid #ccc;
+		padding: 0 0 0.5em 0;
+		list-style: none;
+		margin: 1em 0 2em 0;
+		position: relative;
 	}
 	#steps li {
 		margin: 0 1em 0 0;
@@ -591,33 +487,31 @@
 		font-weight: normal;
 	}
 	#steps li.intermediate { 
-		background: url("/components/com_tools/assets/img/contribute/fc-arrow.gif") bottom center no-repeat; 
-		padding: 0 1em 0 1em; 
+		background: url("/components/com_tools/assets/img/contribute/fc-arrow.gif") bottom center no-repeat;
+		padding: 0 1em 0 1em;
 		margin: 0;
 	}
 	#steps li.prev { 
-		color: #333; 
-		background: #fff; 
-		font-weight: bold; 
+		color: #333;
+		background: #fff;
+		font-weight: bold;
 		margin: 0;
 	}
 	#steps li.active { 
-		color: #bd6416; 
-		background: #fff; 
-		font-weight: bold; 
+		color: #bd6416;
+		background: #fff;
+		font-weight: bold;
 		background: url("/components/com_tools/assets/img/contribute/arrow-up.gif") bottom center no-repeat;
 	}
 	#steps li.future { 
 		color: #b1c1b3;
 	}
 	#steps li.steps_hed { 
-		font-size: x-small; 
+		font-size: x-small;
 		text-transform: uppercase;
 	}
 
-/*---------------------------------------------------------------
-	Newly added
----------------------------------------------------------------*/
+/* Newly added */
 	.licensetxt {
 		white-space: pre-wrap;
 		_white-space: pre;
@@ -641,9 +535,8 @@
 		border-bottom: 1px solid #ccc;
 		margin-bottom: 0.5em;
 	}
-/*---------------------------------------------------------------
-	Tool edit form
----------------------------------------------------------------*/
+
+/* Tool edit form */
 	form#toolForm tr { 
 		background: #eee;
 	}
@@ -651,29 +544,29 @@
 		background: #e4e4e4;
 	}
 	.submitform { 
-		display:block; 
+		display:block;
 		margin: 0.5em 0 1.5em 0;
 	}
 	#hubForm p.hint { 
-		margin-bottom: 0; 
-		margin-top: 0.5em; 
-		padding: 0; 
-		color: #a8a8a8; 
+		margin-bottom: 0;
+		margin-top: 0.5em;
+		padding: 0;
+		color: #a8a8a8;
 	} 
 	#hubForm .sameline { 
-		display: inline; 
+		display: inline;
 		width: 10%;
 	}
 	div.subject { 
-		background: none; 
-		border: none; 
-		margin-left: 0; 
+		background: none;
+		border: none;
+		margin-left: 0;
 		margin-top: 0;
 		padding-left: 0;
 	}
 	div.subject legend { 
-		font-size: 120%; 
-		color: #333333; 
+		font-size: 120%;
+		color: #333333;
 		font-weight: bold;
 	}
 	.section .expanded {
@@ -682,51 +575,30 @@
 	.section .contracted {
 		width: 55%;
 	}
-	/*.contracted #hubForm fieldset {
-		padding-left: 2%;
-	}
-	.contracted #hubForm legend {
-		position: static;
-		left: auto;
-		top: auto;
-		width: auto;
-		margin: 0;
-		padding: 0 1em;
-	}
-	.contracted #hubForm .explaination {
-		width: 40%;
-	}*/
 
-/*---------------------------------------------------------------
-	Tool Info
----------------------------------------------------------------*/
-	
+/* Tool Info */
 	.toolinfo {
-		border: 1px solid #b1a997; 
-		color: #59554c; 
+		border: 1px solid #b1a997;
+		color: #59554c;
 		background: #f9f7f1;
-		/*margin-left: 20px;*/
 	}
 	.toolinfo_abandoned {
-		border: 1px solid #ccc; 
-		color: #666; 
+		border: 1px solid #ccc;
+		color: #666;
 		background: #eee;
-		/*margin-left:20px;*/
 	}
 	.toolinfo_closed {
-		border: 1px solid #ccc; 
-		color: #666; 
+		border: 1px solid #ccc;
+		color: #666;
 		background: #f0f9ff;
-		/*margin-left:20px;*/
 	}
 	.state_hed  { 
 		color: #bd6416;
 	}
 	.toolinfo_note { 
-		color: #666; 
-		padding: 0; 
-		margin: 1em 0 0 0; 
-		/*margin-left:20px;*/
+		color: #666;
+		padding: 0;
+		margin: 1em 0 0 0;
 	}
 	.toolinfo table ul { 
 		list-style: none;
@@ -745,52 +617,93 @@
 		display: block;
 		margin: 0 0 1.5em 0;
 	}
-	
-	
-/*---------------------------------------------------------------
-	Misc
----------------------------------------------------------------*/
-	.nextaction { margin: 0; padding: 0; border:none;  }
-	#tktlist tbody tr:hover { background:#f6f0e8; }
-	.hide { display:none;  }	
-	.shifted { position:absolute; left:200px; margin: 0 0 2em 0; font-size: 1em; }
-	#lic { display:none; padding:1.5em 0 0.5em 0; margin: 0 0 2em 0; }
-	#lic_cl { margin: 2em 0 1em 0; }
-	span.actionlink {color:#999999; text-transform:uppercase; font-size:0.8em;border-bottom:1px solid #e2e2e2; font-weight:normal; margin-left:1.5em; }
-	.actionlink a {color:#0097c3; }
-	.actionlink a:hover { border:none;color:#666666; }
+
+/* Misc */
+	.nextaction { 
+		margin: 0;
+		padding: 0;
+		border: none;
+	}
+	#tktlist tbody tr:hover {
+		background: #f6f0e8;
+	}
+	.hide { 
+		display: none;
+	}
+	.shifted { 
+		position: absolute;
+		left: 200px;
+		margin: 0 0 2em 0;
+		font-size: 1em;
+	}
+	#lic { 
+		display: none;
+		padding: 1.5em 0 0.5em 0;
+		margin: 0 0 2em 0;
+	}
+	#lic_cl { 
+		margin: 2em 0 1em 0;
+	}
+	span.actionlink {
+		color: #999;
+		text-transform: uppercase;
+		font-size: 0.8em;
+		border-bottom: 1px solid #e2e2e2;
+		font-weight: normal;
+		margin-left: 1.5em;
+	}
+	.actionlink a {
+		color:#0097c3;
+	}
+	.actionlink a:hover { 
+		border: none;
+		color: #666;
+	}
 	#license_preview { 
 		height: 200px;
 		width: 90%;
 		overflow: scroll;
-		color:#666666;
+		color: #666;
 		border: 1px solid #999;
 		background-color: #e2e2e2;
 		padding: 0.5em;
 	}
-	.moveon { text-align:center; padding-top:1em; }
-	#hubForm ul { list-style:none; margin: 0; padding: 0; }
+	.moveon { 
+		text-align: center;
+		padding-top: 1em;
+	}
+	#hubForm ul { 
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
 	.opensource {
-		background: url("/components/com_resources/images/opensource.gif") 0 0 no-repeat;	
+		background: url("/components/com_resources/assets/img/opensource.gif") 0 0 no-repeat;	
 	}
 	.closedsource { 
-		background: url("/components/com_resources/images/closedsource.gif") 0 0 no-repeat;
+		background: url("/components/com_resources/assets/img/closedsource.gif") 0 0 no-repeat;
 	}
-	.opensource, .closedsource { 
+	.opensource, 
+	.closedsource { 
 		text-align: left;
-		font-size:x-small;
 		padding: 0 0 1em 5.5em;
 	}
-	
+
 /*---------------------------------------------------------------
 	My Contributions Module
 ---------------------------------------------------------------*/
-	table.mycontrib { padding:0; margin: 0 0 0.5em 0; }
-
-	.contribauthor {
-		color:#666;display:block;
+	table.mycontrib { 
+		padding: 0;
+		margin: 0 0 0.5em 0;
 	}
-	
-	span.tstatus { float:right; }
-	span.ttitle { float:left }
+	.contribauthor {
+		color: #666;
+		display: block;
+	}
+	span.tstatus { 
+		float: right;
+	}
+	span.ttitle { 
+		float: left;
+	}
 

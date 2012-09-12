@@ -195,13 +195,13 @@ class ToolsControllerAuthors extends Hubzero_Controller
 				$this->_authorCheck($uid);
 
 				$xprofile = Hubzero_User_Profile::getInstance($juser->get('id'));
-				$rcc->subtable = 'resources';
-				$rcc->subid = $id;
-				$rcc->authorid = $uid;
-				$rcc->ordering = $order;
-				$rcc->role = $role;
-				$rcc->name = addslashes($xprofile->get('name'));
-				$rcc->organization = addslashes($xprofile->get('organization'));
+				$rcc->subtable     = 'resources';
+				$rcc->subid        = $id;
+				$rcc->authorid     = $uid;
+				$rcc->ordering     = $order;
+				$rcc->name         = $xprofile->get('name');
+				$rcc->role         = $role;
+				$rcc->organization = $xprofile->get('organization');
 				if (!$rcc->createAssociation()) 
 				{
 					$this->setError($rcc->getError());
@@ -270,6 +270,42 @@ class ToolsControllerAuthors extends Hubzero_Controller
 			if (!$rc->deleteAssociation($id, $pid, 'resources')) 
 			{
 				$this->setError($rc->getError());
+			}
+		}
+
+		// Push through to the authors view
+		$this->displayTask($pid);
+	}
+
+	/**
+	 * Update information for a resource author
+	 * 
+	 * @return     void
+	 */
+	public function updateTask()
+	{
+		// Incoming
+		$ids = JRequest::getVar('authors', array(), 'post');
+		$pid = JRequest::getInt('pid', 0);
+
+		// Ensure we have a resource ID ($pid) to work with
+		if (!$pid) 
+		{
+			$this->setError(JText::_('COM_CONTRIBUTE_NO_ID'));
+			$this->displayTask();
+			return;
+		}
+
+		// Ensure we have the contributor's ID ($id)
+		if ($ids) 
+		{
+			foreach ($ids as $id => $data)
+			{
+				$rc = new ResourcesContributor($this->database);
+				$rc->loadAssociation($id, $pid, 'resources');
+				$rc->organization = $data['organization'];
+				$rc->role = $data['role'];
+				$rc->updateAssociation();
 			}
 		}
 

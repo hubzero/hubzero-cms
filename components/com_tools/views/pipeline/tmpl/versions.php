@@ -33,8 +33,8 @@ $juser = &JFactory::getUser();
 
 <div id="content-header-extra">
 	<ul id="useroptions">
-    	<li><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->status['toolname']); ?>"><?php echo JText::_('TOOL_STATUS'); ?></a></li>
-		<li class="last"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=create'); ?>" class="add"><?php echo JText::_('CONTRIBTOOL_NEW_TOOL'); ?></a></li>
+    	<li><a class="status btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->status['toolname']); ?>"><?php echo JText::_('TOOL_STATUS'); ?></a></li>
+		<li class="last"><a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=create'); ?>"><?php echo JText::_('CONTRIBTOOL_NEW_TOOL'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 
@@ -48,8 +48,6 @@ $submitlabel = ($this->action == 'edit') ? JText::_('SAVE') : JText::_('USE_THIS
 if ($this->action == 'confirm') {
 	ToolsHelperHtml::writeApproval(JText::_('CONFIRM_VERSION'));
 }
-
-$xhub =& Hubzero_Factory::getHub();
 
 $rconfig =& JComponentHelper::getParams( 'com_resources' );
 $hubDOIpath = $rconfig->get('doi');
