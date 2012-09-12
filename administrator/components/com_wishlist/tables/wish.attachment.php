@@ -141,7 +141,7 @@ class WishAttachment extends JTable
 		{
 			if (is_file($this->uppath . DS . $a[0])) 
 			{
-				if (preg_match("#bmp|gif|jpg|jpe|jpeg|tif|tiff|png#i", $a[0])) 
+				if (preg_match("/bmp|gif|jpg|jpe|jpeg|tif|tiff|png/i", $a[0])) 
 				{
 					$size = getimagesize($this->uppath . DS . $a[0]);
 					if ($size[0] > 300) 
@@ -152,25 +152,27 @@ class WishAttachment extends JTable
 					{
 						$img = '<img src="' . $this->webpath . '/' . $a[0] . '" alt="' . $a[1] . '" />';
 					}
-					return $img;
+					$this->description = $img;
 				} 
 				else 
 				{
 					$html  = '<a href="' . $this->webpath . '/' . $a[0] . '" title="' . $a[1] . '">';
 					$html .= ($a[1]) ? $a[1] : $a[0];
 					$html .= '</a>';
-					return $html;
+					$this->description = $html;
 				}
 			} 
 			else 
 			{
-				return '[attachment #' . $id . ' not found]';
+				$this->description = ''; //'[attachment #' . $id . ' not found]';
 			}
 		} 
 		else 
 		{
-			return $this->webpath . '/' . $a[0];
+			$this->description = $this->webpath . '/' . $a[0];
 		}
+
+		return '';
 	}
 
 	/**

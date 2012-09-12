@@ -33,9 +33,9 @@ defined('_JEXEC') or die('Restricted access');
 
 // Set the name of the reviewer
 $name = JText::_('ANONYMOUS');
-$ruser = new Hubzero_User_Profile();
-$ruser->load($this->reply->added_by);
-if ($this->reply->anonymous != 1) {
+$ruser = Hubzero_User_Profile::getInstance($this->reply->added_by);
+if ($this->reply->anonymous != 1) 
+{
 	$name = $this->reply->authorname;
 }
 
@@ -64,11 +64,11 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 
 if ($this->reply->comment)
 {
-	$this->reply->comment = stripslashes($this->reply->comment);
+	/*$this->reply->comment = stripslashes($this->reply->comment);
 	$this->reply->comment = preg_replace('/<br(\s+)\/?>/', '', $this->reply->comment);
-	$this->reply->comment = preg_replace('/\[(attachment #[0-9]{1,} not found)\]/', "$1", $this->reply->comment);
-	
-	//$this->reply->comment = $p->parse("\n" . $this->reply->comment, $wikiconfig);
+	$this->reply->comment = preg_replace('/\[(attachment #[0-9]{1,} not found)\]/', "$1", $this->reply->comment);*/
+
+	$this->reply->comment = $p->parse("\n" . $this->reply->comment, $wikiconfig, false);
 }
 
 //$commenttype = $this->reply->added_by == $this->wishauthor && $this->reply->anonymous != 1 ?  'submittercomment' : 'plaincomment';
@@ -82,7 +82,7 @@ if ($this->reply->comment)
 <div class="comment-content">
 	<p class="comment-title">
 		<strong><?php echo $name; ?></strong> 
-		<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&id='.$this->listid.'#c'.$this->reply->id); ?>" title="<?php echo JText::_('COM_WISHLIST_PERMALINK'); ?>">
+		<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=wish&id=' . $this->listid . '#c' . $this->reply->id); ?>" title="<?php echo JText::_('COM_WISHLIST_PERMALINK'); ?>">
 			<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $this->reply->added; ?>"><?php echo JHTML::_('date', $this->reply->added, $timeformat, $tz); ?></time></span> 
 			<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $this->reply->added; ?>"><?php echo JHTML::_('date', $this->reply->added, $dateformat, $tz); ?></time></span>
 		</a>
@@ -95,30 +95,37 @@ if ($this->reply->comment)
 	<?php } else { ?>
 		<p><?php echo JText::_('NO_COMMENT'); ?></p>
 	<?php } ?>
+	<?php if ($this->reply->attachment) { ?>
+		<p class="attachment"><?php echo $this->reply->attachment; ?></p>
+	<?php } ?>
 
 	<p class="comment-options">
 <?php if ($this->abuse) { ?>
-		<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=comment&id='.$this->reply->id.'&parent='.$this->wishid); ?>"><?php echo JText::_('REPORT_ABUSE'); ?></a>
+		<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=comment&id=' . $this->reply->id . '&parent=' . $this->wishid); ?>"><?php echo JText::_('REPORT_ABUSE'); ?></a>
 <?php } ?>
 <?php if ($this->juser->get('id') == $this->reply->added_by) { ?>
-		<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=deletereply&replyid='.$this->reply->id); ?>"><?php echo JText::_('DELETE_COMMENT'); ?></a>
+		<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=deletereply&replyid=' . $this->reply->id); ?>"><?php echo JText::_('DELETE_COMMENT'); ?></a>
 <?php } ?>
 <?php if ($this->level < 3) { // Cannot reply at third level ?>
-		<a class="reply" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=reply&cat=wishcomment&id='.$this->listid.'&refid='.$this->reply->id.'&wishid='.$this->wishid); ?>" id="rep_<?php echo $this->reply->id; ?>"><?php echo JText::_('REPLY'); ?></a>
+		<a class="reply" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=reply&cat=wishcomment&id=' . $this->listid . '&refid=' . $this->reply->id . '&wishid=' . $this->wishid); ?>" id="rep_<?php echo $this->reply->id; ?>"><?php echo JText::_('REPLY'); ?></a>
 <?php } ?>
 	</p>
 	
 <?php 
 	// Add the reply form if needed
-	if ($this->level < 3 && !$this->juser->get('guest')) {
-		$view = new JView(array('name'=>'wish', 'layout'=>'addcomment'));
-		$view->option = $this->option;
-		$view->listid = $this->listid;
-		$view->level = $this->level;
-		$view->row = $this->reply;
-		$view->juser = $this->juser;
-		$view->wishid = $this->wishid;
-		$view->refid = $this->reply->id;
+	if ($this->level < 3 && !$this->juser->get('guest')) 
+	{
+		$view = new JView(array(
+			'name'   => 'wish', 
+			'layout' => 'addcomment'
+		));
+		$view->option     = $this->option;
+		$view->listid     = $this->listid;
+		$view->level      = $this->level;
+		$view->row        = $this->reply;
+		$view->juser      = $this->juser;
+		$view->wishid     = $this->wishid;
+		$view->refid      = $this->reply->id;
 		$view->addcomment = $this->addcomment;
 		$view->display();
 	}

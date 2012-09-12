@@ -2795,8 +2795,8 @@ class WishlistController extends JObject
 			$row->comment   = Hubzero_View_Helper_Html::purifyText($row->comment);
 			$attachment     = $this->upload($wishid);
 			$row->comment  .= ($attachment) ? "\n" . $attachment : '';
-			$row->comment   = nl2br($row->comment);
-			$row->comment   = str_replace('<br>', '<br />', $row->comment);
+			//$row->comment   = nl2br($row->comment);
+			//$row->comment   = str_replace('<br>', '<br />', $row->comment);
 			$row->anonymous = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
 			$row->added     = $when;
 			$row->state     = 0;
@@ -3213,12 +3213,13 @@ class WishlistController extends JObject
 				{
 					if (!strstr($comment->comment, '</p>') && !strstr($comment->comment, '<pre class="wiki">')) 
 					{
-						$comment->comment = str_replace('<br />', '', $comment->comment);
-						$comment->comment = htmlentities($comment->comment, ENT_COMPAT, 'UTF-8');
-						$comment->comment = nl2br($comment->comment);
-						$comment->comment = str_replace("\t", '&nbsp;&nbsp;&nbsp;&nbsp;', $comment->comment);
+						$comment->comment = preg_replace('/<br\\s*?\/??>/i', '', $comment->comment);
+						//$comment->comment = htmlentities($comment->comment, ENT_COMPAT, 'UTF-8');
+						//$comment->comment = nl2br($comment->comment);
+						//$comment->comment = str_replace("\t", '&nbsp;&nbsp;&nbsp;&nbsp;', $comment->comment);
 					}
-					$comment->comment = $attach->parse($comment->comment);
+					$comment->comment    = $attach->parse($comment->comment);
+					$comment->attachment = $attach->description;
 				}
 
 				// get authors excluding current commentator
