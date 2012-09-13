@@ -125,7 +125,7 @@ HUB.ToolsPipeline = {
 		// change status
 		$('.flip').each(function(i, item) {
 			$(item).on('click', function(){
-				var newi = $(this.parentNode).attr('id').replace('_', '');
+				var newi = $($(this).parent()).attr('id').replace('_', '');
 				$('#newstate').val(newi);
 				$(HUB.ToolsPipeline.statusform).submit();
 				return false;

@@ -292,7 +292,7 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 	<div class="two columns second">
 		<div id="whatsnext">
 			<h2 class="nextaction"><?php echo JText::_('WHAT_NEXT');?></h2>
-			<form action="index.php" method="post" id="statusForm">
+			<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->status['toolname']); ?>" method="post" id="statusForm">
 				<fieldset>
 					<input type="hidden" name="option" value="<?php echo $this->option ?>" />
 					<input type="hidden" name="task" value="update" />
