@@ -99,9 +99,11 @@ class plgGroupsWiki extends JPlugin
 		{
 			if (!in_array($this_area['name'], $areas)) 
 			{
-				return;
+				$return = 'metadata';
 			}
 		}
+
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
 
 		// Determine if we need to return any HTML (meaning this is the active plugin)
 		if ($return == 'html') 
@@ -155,7 +157,6 @@ class plgGroupsWiki extends JPlugin
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'author.php');
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'comment.php');
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'log.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'revision.php');
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'page.php');
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'html.php');
@@ -236,6 +237,11 @@ class plgGroupsWiki extends JPlugin
 			// Return the content
 			$arr['html'] = $content;
 		}
+
+		$page = new WikiPage(JFactory::getDBO());
+		$arr['metadata']['count'] = $page->getPagesCount(array(
+			'group' => $group->get('cn')
+		));
 
 		// Return the output
 		return $arr;

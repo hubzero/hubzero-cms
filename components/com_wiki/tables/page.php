@@ -596,17 +596,20 @@ class WikiPage extends JTable
 		{
 			$query .= " WHERE " . implode(' AND ', $where);
 		}
-		if (isset($filters['sortby']) && $filters['sortby'] != '') 
+		if (!isset($filters['count']) || !$filters['count']) 
 		{
-			$query .= " ORDER BY t." . $filters['sortby'];
-		} 
-		else 
-		{
-			$query .= " ORDER BY t.id ASC GROUP BY `t.group_cn`";
-		}
-		if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all') 
-		{
-			$query .= " LIMIT  ". $filters['start'] . "," . $filters['limit'];
+			if (isset($filters['sortby']) && $filters['sortby'] != '') 
+			{
+				$query .= " ORDER BY t." . $filters['sortby'];
+			} 
+			else 
+			{
+				$query .= " ORDER BY t.id ASC GROUP BY `t.group_cn`";
+			}
+			if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all') 
+			{
+				$query .= " LIMIT  ". $filters['start'] . "," . $filters['limit'];
+			}
 		}
 
 		return $query;

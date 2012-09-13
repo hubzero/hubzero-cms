@@ -123,7 +123,7 @@ class plgGroupsResources extends JPlugin
 		{
 			if (!in_array($this_area['name'], $areas)) 
 			{
-				return;
+				$return = 'metadata';
 			}
 		}
 
@@ -324,36 +324,12 @@ class plgGroupsResources extends JPlugin
 				}
 
 				// Return the output
+				$arr['metadata']['count'] = $total;
 				$arr['html'] = $view->loadTemplate();
 			break;
 
 			case 'metadata':
-				$arr['metadata'] = '<a href="' . JRoute::_('index.php?option=' . $option . '&gid=' . $group->cn . '&active=resources') . '">' . JText::sprintf('PLG_GROUPS_RESOURCES_NUMBER_RESOURCES', $total) . '</a>' . "\n";
-
-				// Instantiate a vew
-				ximport('Hubzero_Plugin_View');
-				$view = new Hubzero_Plugin_View(
-					array(
-						'folder'  => 'groups',
-						'element' => 'resources',
-						'name'    => 'dashboard'
-					)
-				);
-
-				// Pass the view some info
-				$view->option = $option;
-				$view->group = $group;
-				$view->authorized = $authorized;
-				$view->config = $config;
-				$view->results = $results[0];
-				if ($this->getError()) 
-				{
-					foreach ($this->getErrors() as $error)
-					{
-						$view->setError($error);
-					}
-				}
-				$arr['dashboard'] = $view->loadTemplate();
+				$arr['metadata']['count'] = $total;
 			break;
 		}
 
