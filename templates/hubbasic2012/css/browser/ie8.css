@@ -14,54 +14,61 @@
 
 */
 
-/* Header */
-	#header-wrap {
-		height: 80px;
+/* Top containers */
+	#top .inner-wrap {
+		background: transparent url("../../images/layout/bokeh.png");
 	}
-	#header h1 {
-		padding: 0;
-		margin: -10px 0 0 0;
+	#top .inner {
+		background: transparent url("../../images/layout/noise.png");
 	}
-	#header h1 a {
-		margin-top: 0;
+
+/* Masthead */
+	#masthead {
+		z-index: 777;
 	}
-	#nav {
-		border-top: 1px solid #f6f6f6;
+	#masthead .inner {
+		z-index: 778;
+		background: transparent url("../../images/layout/stripes.png") left top repeat-x;
 	}
+
+/* Search form */
+	#searchform {
+		float: none;
+		position: absolute;
+		right: 120px;
+		top: 0px;
+		margin: 0;
+	}
+	#searchword {
+		background: #1a1a1a url("../../images/layout/search.png") 10px 11px no-repeat;
+		border: 1px solid #1a1a1a;
+	}
+
+/* Nav */
+	#account #account-info ul,
+	#nav ul.menu ul {
+		background: url("../../images/layout/overlay.png");
+	}
+	#account #account-info ul li,
+	#nav ul.menu ul li {
+		background: url("../../images/layout/overlay.png");
+	}
+
 /* Content */
 	#content {
-		-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=75, Color='#aaaaaa')";
+		border: 1px solid #ccc;
+		margin-top: -30px;
+		padding-top: 9px;
 	}
-/* Content header */
-	#content-header {
-		margin-top: -15px;
+
+/* Sections */
+	.aside:before {
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=1,startColorstr=#dfdfdf,endColorstr=#f9f9f9)";
+		border-left: 1px solid #dfdfdf;
 	}
-/* Footer */
-	#bottom-nav {
-		margin-top: -20px;
-		-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=130, Color='#292929')";
-	}
+
 /* Forms */
-	#hubForm legend {
-		margin-top: -2em;
-		padding-top: 3.25em;
-		background: transparent;
-	}
-	#hubForm legend {
-		margin: -7px 0 0 -1em;
-		padding: 10px 0 0 0;
-		border: 5px solid #eeede0;
-		border-bottom: none;
-		background: #f7f6ed;
-		width: 70%;
-		text-indent: 1em;
-	}
-	#hubForm fieldset fieldset {
-		position: inherit;
-	}
-	#hubForm fieldset fieldset legend {
-		margin: 0;
-		padding: 0.2em 0.5em;
-		position: static;
+	#hubForm:before {
+		border-left: 1px solid #dfdfdf;
 	}
 

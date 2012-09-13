@@ -11,10 +11,11 @@
 	#content {
 		background: transparent;
 		box-shadow: none;
-		*border: none;
 	}
 	html>body #content {
 		*border: none;
+		border: none\9;
+		margin-top: -1px\9;
 	}
 /* Misc */
 	#sub-masthead {
@@ -34,6 +35,7 @@
 	#congrats {
 		width: 45em;
 		margin: 40px auto 0 auto;
+		background: #000;
 		background: rgba(0, 0, 0, 0.4);
 		-webkit-border-radius: 1em;
 		-moz-border-radius: 1em;
@@ -99,6 +101,7 @@
 		padding: 0;
 		-webkit-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
 		-moz-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		-ms-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
 		-o-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
 		box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
 		min-height: 264px;
@@ -187,6 +190,8 @@
 		display: inline-block;
 		-webkit-border-radius: 0.25em;
 		-moz-border-radius: 0.25em;
+		-ms-border-radius: 0.25em;
+		-o-border-radius: 0.25em;
 		border-radius: 0.25em;
 		outline: 0;
 		font-size: 1em;
@@ -328,6 +333,7 @@
 		position: relative;
 		-webkit-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
 		-moz-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		-ms-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
 		-o-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
 		box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
 	}
@@ -344,6 +350,8 @@
 		height: 10px;
 		-webkit-box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 		-moz-box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+		-ms-box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+		-o-box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 		box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 		-webkit-transform: skew(-15deg) rotate(-6deg);
 		-moz-transform: skew(-15deg) rotate(-6deg);
@@ -379,6 +387,7 @@
 		background: #fff;
 		-webkit-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
 		-moz-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		-ms-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
 		-o-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
 		box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
 		position: relative;
