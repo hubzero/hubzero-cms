@@ -103,15 +103,14 @@ ximport('Hubzero_User_Profile_Helper');
 					$huser = '';
 					if (!$row->anonymous) 
 					{
-						$huser = new Hubzero_User_Profile();
-						$huser->load($row->created_by);
+						$huser = Hubzero_User_Profile::getInstance($row->created_by);
 						if (is_object($huser) && $huser->get('name')) 
 						{
 							$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $row->created_by) . '">' . $this->escape(stripslashes($huser->get('name'))) . '</a>';
 						}
 					}
 
-					$comment  = $p->parse("\n" . stripslashes($row->comment), $wikiconfig);
+					$comment  = $p->parse("\n" . stripslashes($row->comment), $wikiconfig, false);
 					$comment .= $this->attach->getAttachment(
 						$row->id, 
 						'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias . '/' . $this->post->id . '/' . $row->id . '/', 
@@ -128,13 +127,13 @@ ximport('Hubzero_User_Profile_Helper');
 					<div class="comment-content">
 						<p class="comment-title">
 							<strong><?php echo $name; ?></strong> 
-							<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias . '/' . $this->post->id . '#c' . $row->id); ?>" title="<?php echo JText::_('PLG_GROUPS_FORUM_PERMALINK'); ?>">@
-								<span class="time"><?php echo JHTML::_('date', $row->created, $timeFormat, $tz); ?></span> <?php echo JText::_('PLG_GROUPS_FORUM_ON'); ?> 
-								<span class="date"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?></span>
+							<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias . '/' . $this->post->id . '#c' . $row->id); ?>" title="<?php echo JText::_('PLG_GROUPS_FORUM_PERMALINK'); ?>"><span class="comment-date-at">@</span> 
+								<span class="time"><time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $timeFormat, $tz); ?></time></span> <span class="comment-date-on"><?php echo JText::_('PLG_GROUPS_FORUM_ON'); ?></span> 
+								<span class="date"><time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?></time></span>
 								<?php if ($row->modified && $row->modified != '0000-00-00 00:00:00') { ?>
 									&mdash; <?php echo JText::_('PLG_GROUPS_FORUM_EDITED'); ?>
-									<span class="time"><?php echo JHTML::_('date', $row->modified, $timeFormat, $tz); ?></span> <?php echo JText::_('PLG_GROUPS_FORUM_ON'); ?> 
-									<span class="date"><?php echo JHTML::_('date', $row->modified, $dateFormat, $tz); ?></span>
+									<span class="time"><time datetime="<?php echo $row->modified; ?>"><?php echo JHTML::_('date', $row->modified, $timeFormat, $tz); ?></time></span> <span class="comment-date-on"><?php echo JText::_('PLG_GROUPS_FORUM_ON'); ?></span> 
+									<span class="date"><time datetime="<?php echo $row->modified; ?>"><?php echo JHTML::_('date', $row->modified, $dateFormat, $tz); ?></time></span>
 								<?php } ?>
 							</a>
 						</p>
@@ -166,33 +165,22 @@ ximport('Hubzero_User_Profile_Helper');
 			<li><p><?php echo JText::_('PLG_GROUPS_FORUM_NO_REPLIES_FOUND'); ?></p></li>
 		<?php } ?>
 		</ol>
-	    <?php 
-            // @FIXME: Nick's Fix Based on Resources View
-            //echo '<input type="hidden" name="topic" value="' . $this->post->id . '" />';
-            $pf = $this->pageNav->getListFooter();
-            //$nm = str_replace('com_','',$this->option);
-            $pf = str_replace('?controller=threads&amp;', '/' . $this->category->alias . '/' . $this->post->id . '?', $pf);
-			//if (strstr('&amp;limitstart=', $pf) && !strstr('&amp;limit=', $pf) && !strstr('?limit=', $pf))
-			//{
-				//$pf = str_replace('limit=', '?limit=', $pf);
-			//}
-			$pf = str_replace('?&amp;', '?', $pf);
-			$pf = preg_replace('/\?task=([A-Za-z0-9]*)(&amp;)?/i', '/$1' . '/' . $this->category->alias . '/' . $this->post->id . '?', $pf);
-			$pf = str_replace('?start=', '?limit=' . $this->pageNav->limit . '&amp;limitstart=' . intval($this->pageNav->limitstart), $pf);
-            $pf = str_replace($this->filters['section'] . 'limit', $this->filters['section'], $pf);
-			echo $pf;
-            //echo $this->pageNav->getListFooter(); 
-            // @FIXME: End Nick's Fix
-        ?>
+<?php 
+		$this->pageNav->setAdditionalUrlParam('gid', $this->group->get('cn'));
+		$this->pageNav->setAdditionalUrlParam('active', 'forum');
+		$this->pageNav->setAdditionalUrlParam('scope', $this->filters['section'] . '/' . $this->category->alias . '/' . $this->post->id);
+
+		echo $this->pageNav->getListFooter();
+?>
 		</form>
- 	</div><!-- / .subject -->
+	</div><!-- / .subject -->
 	<div class="clear"></div>
 </div><!-- / .main section -->
 
 <div class="below section">
 	<h3 class="post-comment-title">
 		<?php echo JText::_('PLG_GROUPS_FORUM_ADD_COMMENT'); ?>
-	</h3>			
+	</h3>
 	<div class="aside">
 		<table class="wiki-reference" summary="Wiki Syntax Reference">
 			<caption>Wiki Syntax Reference</caption>
@@ -233,24 +221,15 @@ ximport('Hubzero_User_Profile_Helper');
 			<p class="comment-member-photo">
 				<a class="comment-anchor" name="commentform"></a>
 <?php
+				$anon = 1;
+				$jxuser = Hubzero_User_Profile::getInstance($juser->get('id'));
 				if (!$juser->get('guest')) 
 				{
-					$jxuser = new Hubzero_User_Profile();
-					$jxuser->load($juser->get('id'));
-					$thumb = Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, 0);
-				} 
-				else 
-				{
-					$config = JComponentHelper::getParams('com_members');
-					$thumb = $config->get('defaultpic');
-					if (substr($thumb, 0, 1) != DS) 
-					{
-						$thumb = DS . $dfthumb;
-					}
-					$thumb = Hubzero_User_Profile_Helper::thumbit($thumb);
+					$anon = 0;
 				}
+				$now = date('Y-m-d H:i:s', time());
 ?>
-				<img src="<?php echo $thumb; ?>" alt="" />
+				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, $anon); ?>" alt="" />
 			</p>
 	
 			<fieldset>
@@ -261,9 +240,9 @@ ximport('Hubzero_User_Profile_Helper');
 					<strong>
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape($juser->get('name')); ?></a>
 					</strong> 
-					<span class="permalink">@
-						<span class="time"><?php echo JHTML::_('date', date('Y-m-d H:i:s', time()), $timeFormat, $tz); ?></span> <?php echo JText::_('PLG_GROUPS_FORUM_ON'); ?> 
-						<span class="date"><?php echo JHTML::_('date', date('Y-m-d H:i:s', time()), $dateFormat, $tz); ?></span>
+					<span class="permalink"><span class="comment-date-at">@</span>
+						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, $timeFormat, $tz); ?></time></span> <span class="comment-date-on"><?php echo JText::_('PLG_GROUPS_FORUM_ON'); ?></span> 
+						<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, $dateFormat, $tz); ?></time></span>
 					</span>
 				</p>
 				
