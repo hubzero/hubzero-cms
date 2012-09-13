@@ -251,7 +251,7 @@ defined('_JEXEC') or die('Restricted access');
 		// Name
 		if ($this->registrationFullname != REG_HIDE) {
 			$required = ($this->registrationFullname == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_REGISTER_FORM_REQUIRED').'</span>' : '';
-			$message = (!empty($this->xregistration->_invalid['name'])) ? '<span class="error">' . $this->xregistration->_invalid['name'] . '</span>' : '';
+			$message = (!empty($this->xregistration->_invalid['name'])) ? '<p class="error">' . $this->xregistration->_invalid['name'] . '</p>' : '';
 			$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
 
 			$givenName = '';
