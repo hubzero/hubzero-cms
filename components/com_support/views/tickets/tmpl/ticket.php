@@ -121,9 +121,9 @@ ximport('Hubzero_User_Profile_Helper');
 						<span class="date"><time datetime="<?php echo $this->row->created; ?>"><?php echo JHTML::_('date', $this->row->created, $dateFormat, $tz); ?></time></span>
 					</a>
 				</p><!-- / .entry-title -->
-				<blockquote class="entry-body" cite="<?php echo ($this->row->login) ? $this->escape(stripslashes($this->row->login)) : $this->escape(stripslashes($this->row->name)); ?>">
+				<div class="entry-body" cite="<?php echo ($this->row->login) ? $this->escape(stripslashes($this->row->login)) : $this->escape(stripslashes($this->row->name)); ?>">
 					<p><?php echo preg_replace('/  /', ' &nbsp;', $this->row->report); ?></p>
-				</blockquote><!-- / .entry-body -->
+				</div><!-- / .entry-body -->
 			</div><!-- / .entry-content -->
 <?php if ($this->acl->check('update', 'tickets') > 0) { ?>
 				<div class="entry-details">
@@ -236,9 +236,9 @@ ximport('Hubzero_User_Profile_Helper');
 						</a>
 					</p><!-- / .comment-head -->
 <?php 		if ($comment->comment) { ?>
-					<blockquote class="comment-body" cite="<?php echo $cite; ?>">
+					<div class="comment-body" cite="<?php echo $cite; ?>">
 						<p><?php echo preg_replace('/  /', ' &nbsp;', $comment->comment); ?></p>
-					</blockquote><!-- / .comment-body -->
+					</div><!-- / .comment-body -->
 <?php 		} ?>
 				</div><!-- / .comment-content -->
 <?php 
