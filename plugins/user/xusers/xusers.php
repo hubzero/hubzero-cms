@@ -278,8 +278,8 @@ class plgUserXusers extends JPlugin
 			
 			$xprofile = new Hubzero_User_Profile();
 			
-			$xprofile->set('gidNumber', '3000');
-			$xprofile->set('gid','public');
+			$xprofile->set('gidNumber', $params->get('gidNumber', '100'));
+			$xprofile->set('gid', $params->get('gid', 'users'));
 			$xprofile->set('uidNumber', $user['id']);
 			$xprofile->set('homeDirectory', $hubHomeDir . DS . $user['username']);
 			$xprofile->set('loginShell', '/bin/bash');
