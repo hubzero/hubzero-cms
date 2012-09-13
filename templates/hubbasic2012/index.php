@@ -108,6 +108,8 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 
 							<ul id="account" class="<?php echo (!$juser->get('guest')) ? 'loggedin' : 'loggedout'; ?>">
 <?php if (!$juser->get('guest')) { 
+		ximport('Hubzero_User_Profile');
+		ximport('Hubzero_User_Profile_Helper');
 		$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
 ?>
 								<li id="account-info">
@@ -134,7 +136,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 								</li>
 <?php } else { ?>
 								<li id="account-login">
-									<a href="<?php echo JRoute::_('index.php?option=com_user&view=login'); ?>" title="<?php echo JText::_('TPL_HUBBASIC_LOGIN'); ?>"><?php echo JText::_('TPL_HUBBASIC_LOGIN'); ?></a>
+									<a href="<?php echo JRoute::_('index.php?option=com_login'); ?>" title="<?php echo JText::_('TPL_HUBBASIC_LOGIN'); ?>"><?php echo JText::_('TPL_HUBBASIC_LOGIN'); ?></a>
 								</li>
 								<li id="account-register">
 									<a href="<?php echo JRoute::_('index.php?option=com_register'); ?>" title="<?php echo JText::_('TPL_HUBBASIC_SIGN_UP'); ?>"><?php echo JText::_('TPL_HUBBASIC_REGISTER'); ?></a>
