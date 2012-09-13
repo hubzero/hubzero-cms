@@ -101,8 +101,8 @@ class FeedbackControllerFeedback extends Hubzero_Controller
 		// Check if wishlistcomponent entry is there
 		$this->view->wishlist = JComponentHelper::isEnabled('com_wishlist', true);
 
-		// Check if xpoll component entry is there
-		$this->view->xpoll = JComponentHelper::isEnabled('com_xpoll', true);
+		// Check if poll component entry is there
+		$this->view->poll = JComponentHelper::isEnabled('com_poll', true);
 
 		// Set page title
 		$this->_buildTitle();

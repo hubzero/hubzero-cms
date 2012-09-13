@@ -42,7 +42,7 @@ jimport('joomla.application.module.helper');
 	
 <?php if (count(JModuleHelper::getModules('poll')) > 0) { ?>
 	<div class="introtext">
-		<?php echo JModuleHelper::renderModule( JModuleHelper::getModule( 'mod_xpoll' ) ); ?>
+		<?php echo JModuleHelper::renderModule( JModuleHelper::getModule( 'mod_poll' ) ); ?>
 	</div>
 <?php } else { ?>
 	<p class="warning"><?php echo JText::_('COM_FEEDBACK_NO_ACTIVE_POLLS'); ?></p>

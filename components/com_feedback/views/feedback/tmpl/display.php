@@ -84,7 +84,7 @@ $jconfig =& JFactory::getConfig();
 <?php } ?>
 		</div><!-- / .two columns first -->
 		<div class="two columns second">
-<?php if ($this->xpoll) { ?>
+<?php if ($this->poll) { ?>
 			<div class="poll">
 				<h3><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=poll'); ?>"><?php echo JText::_('COM_FEEDBACK_POLL_HEADER'); ?></a></h3>
 				<p><?php echo JText::_('COM_FEEDBACK_POLL_DESCRIPTION'); ?></p>
