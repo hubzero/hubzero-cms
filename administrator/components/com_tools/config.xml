@@ -57,10 +57,14 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">No</option>
 		</param>
 		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="contribtool_on" type="radio" default="0" label="Contribtool" description="Indicate whether the component is active or not">
 			<option value="0">OFF</option>
 			<option value="1">ON</option>
+			<option value="2">ON (admin only)</option>
 		</param>
+		<param name="contribtool_redirect" type="text" menu="hide" label="Redirect" default="/home" description="The URL to redirect to when the component is OFF" />
+		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="admingroup" type="text" menu="hide" default="apps" label="Admin group" description="Name of contribtool admin group" />
 		<param name="default_mw" type="text" menu="hide" default="narwhal" label="Default middleware" description="Name of default middleware" />
 		<param name="default_vnc" type="text" menu="hide" default="780x600" label="Default VNC size" description="Default VNC geometry values" />
@@ -69,19 +73,44 @@ HUBzero is a registered trademark of Purdue University.
 		<param name="invokescript_dir" type="text" menu="hide" default="/apps" label="Invoke script dir" description="Directory for invoke script" />
 		<param name="dev_suffix" type="text" menu="hide" default="_dev" label="Dev tool suffix" description="Suffix indicating the development instance of a tool (e.g. _dev for toolname_dev) " />
 		<param name="group_prefix" type="text" menu="hide" default="app-" label="Dev group prefix" description="Prefix to name of development group (e.g. app-) " />
+		<param name="sourcecodePath" type="text" menu="hide" default="site/protected/source" label="Source code path" description="Source code path. " />
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+        <param name="learn_url" type="text" menu="hide" default="http://rappture.org/wiki/FAQ_UpDownloadSrc" label="Learn More URL" description="URL to a uploading source tutorial" />
+        <param name="rappture_url" type="text" menu="hide" default="http://rappture.org" label="Rappture URL" description="URL to a rappture tutorial" />
 		<param name="demo_url" type="text" menu="hide" default="" label="Demo URL" description="URL to demo explaining contribution process" />
-		<param name="usedoi" type="radio" default="1" label="Use DOI?" description="Register DOI handle for new tool releases">
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="usedoi" type="radio" default="0" label="Register old-style DOI?" description="Register DOI handle for new tool releases">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
-		<param name="doi_service" type="text" menu="hide" default="http://dir1.lib.purdue.edu:8080/axis/services/CreateHandleService?wsdl" label="DOI service path" description="URL of CreateHandle service for registering DOI" />
+		<param name="doi_service" type="text" menu="hide" default="" label="DOI service path" description="URL of CreateHandle service for registering DOI" />
+		<param name="doi_prefix" type="text" menu="hide" default="" label="DOI service prefix" description="Service prefix for DOI" />
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="new_doi" type="radio" default="0" label="Enable new DOI?" description="Register DOI handle for new tool releases with new Purdue Libraries service">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="doi_newservice" type="text" menu="hide" default="" label="New DOI service path" description="URL for new Purdue Libraries DOI service" />
+		<param name="doi_shoulder" type="text" menu="hide" default="" label="DOI shoulder" description="Shoulder for new Purdue Libraries DOI service" />
+		<param name="doi_newprefix" type="text" menu="hide" default="" label="DOI handle prefix" description="Prefix for DOI handles (e.g. test handles)" />
+		<param name="doi_publisher" type="text" menu="hide" default="" label="DOI publisher" description="Publisher name (use full HUB name) for new Purdue Libraries DOI service" />
+		<param name="doi_resolve" type="text" menu="hide" default="http://dx.doi.org/" label="DOI resolve url" description="URL for resolving DOIs" />
+		<param name="doi_verify" type="text" menu="hide" default="http://n2t.net/ezid/id/" label="DOI verify url" description="URL for verifying DOIs" />
+		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="exec_pu" type="radio" default="1" label="Include PU" description="Include Purdue campus as a tool access restriction">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
+		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="screenshot_edit" type="radio" default="0" label="Edit Screenshots" description="Allow editing of screenshots via contribtool and display of screenshots for individual versions">
 			<option value="0">OFF</option>
 			<option value="1">ON</option>
+		</param>
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="downloadable_on" type="radio" default="0" label="Allow Downloadables" description="Include an option to create a downloadable tool">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
 		</param>
 	</params>
 </config>
