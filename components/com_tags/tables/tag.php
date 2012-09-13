@@ -431,7 +431,7 @@ class TagsTag extends JTable
 	{
 		$query = "SELECT DISTINCT t.id, t.tag, t.raw_tag 
 					FROM $this->_tbl AS t 
-					JOIN #__tags_substitute AS s ON s.tag_id=t.id
+					LEFT JOIN #__tags_substitute AS s ON s.tag_id=t.id
 					WHERE";
 		if (isset($filters['admin']) && $filters['admin']) 
 		{
