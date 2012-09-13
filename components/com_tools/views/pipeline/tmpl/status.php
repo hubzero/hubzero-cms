@@ -308,9 +308,8 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 			//$juri->base();
 
 			$jconfig =& JFactory::getConfig();
-			$hubShortName 	= $jconfig->getValue('config.sitename'); //$hubShortName;
+			$sitename 	= $jconfig->getValue('config.sitename');
 			$hubShortURL 	= str_replace('https://', '', $juri->base()); //$hubShortURL;
-			$hubLongURL 	= $juri->base(); //$hubLongURL;
 
 			// get tool access text
 			$toolaccess = ToolsHelperHtml::getToolAccess($this->status['exec'], $this->status['membergroups']);
@@ -342,7 +341,7 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 				<ul>
 					<li class="complete">
 						<?php echo JText::_('WHATSNEXT_REGISTER'); ?> 
-						<?php echo $hubShortName; ?>
+						<?php echo $sitename; ?>
 					</li>
 					<li class="incomplete">
 						<?php echo JText::_('WHATSNEXT_UPLOAD_CODE'); ?> 
@@ -374,7 +373,7 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 				case 2:
 			?>
 				<p>
-					<?php echo ucfirst(JText::_('THE')); ?> <?php echo $hubShortName; ?>  <?php echo JText::_('WHATSNEXT_AREA_CREATED'); ?> <a href="<?php echo $developer_url; ?>"><?php echo $developer_site; ?></a>:<br />
+					<?php echo ucfirst(JText::_('THE')); ?> <?php echo $sitename; ?>  <?php echo JText::_('WHATSNEXT_AREA_CREATED'); ?> <a href="<?php echo $developer_url; ?>"><?php echo $developer_site; ?></a>:<br />
 					<a href="<?php echo $developer_url . $project_path . $this->status['toolname']; ?>/wiki"><?php echo $developer_url . $project_path . $this->status['toolname']; ?>/wiki</a>
 				</p>
 				<p>
@@ -402,7 +401,7 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 				</ul>
 				<h4><?php echo JText::_('WHATSNEXT_REMAINING_STEPS'); ?>:</h4>
 				<ul>
-					<li class="complete"><?php echo JText::_('WHATSNEXT_REGISTER'); ?> <?php echo $hubShortName; ?></li>
+					<li class="complete"><?php echo JText::_('WHATSNEXT_REGISTER'); ?> <?php echo $sitename; ?></li>
 					<li class="incomplete">
 						<?php echo JText::_('WHATSNEXT_UPLOAD_COMMIT_FINAL_CODE'); ?> 
 						<span id="Uploaded_">
@@ -438,14 +437,14 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 				case 3:
 			?>
 				<p>
-					<?php echo ucfirst(JText::_('THE')); ?> <?php echo $hubShortName; ?> <?php echo JText::_('WHATSNEXT_UPLOADED_TEAM_NEEDS'); ?> <?php echo $hubShortName; ?> <?php echo JText::_('WHATSNEXT_UPLOADED_SO_YOU_CAN_TEST'); ?>. 
+					<?php echo ucfirst(JText::_('THE')); ?> <?php echo $sitename; ?> <?php echo JText::_('WHATSNEXT_UPLOADED_TEAM_NEEDS'); ?> <?php echo $sitename; ?> <?php echo JText::_('WHATSNEXT_UPLOADED_SO_YOU_CAN_TEST'); ?>. 
 					<?php echo JText::_('WHATSNEXT_IT_HAS_BEEN'); ?> <?php echo Hubzero_View_Helper_Html::timeAgo($this->status['changed']); ?> <?php echo JText::_('WHATSNEXT_SINCE_LAST_STATUS_CHANGE'); ?>. 
 					<?php echo JText::_('WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE'); ?> 3 <?php echo JText::_('DAYS'); ?>.
 				</p>
 				<h4><?php echo JText::_('WHATSNEXT_REMAINING_STEPS'); ?>:</h4>
 				<ul>
 					<li class="complete">
-						<?php echo JText::_('WHATSNEXT_REGISTER'); ?> <?php echo $hubShortName; ?>
+						<?php echo JText::_('WHATSNEXT_REGISTER'); ?> <?php echo $sitename; ?>
 					</li>
 					<li class="complete">
 						<?php echo JText::_('WHATSNEXT_UPLOAD_CODE'); ?> <?php echo $developer_site; ?>
@@ -518,7 +517,7 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 				<h4><?php echo JText::_('WHATSNEXT_REMAINING_STEPS'); ?>:</h4>
 				<ul>
 					<li class="complete">
-						<?php echo JText::_('WHATSNEXT_REGISTER'); ?> <?php echo $hubShortName; ?>
+						<?php echo JText::_('WHATSNEXT_REGISTER'); ?> <?php echo $sitename; ?>
 					</li>
 					<li class="complete">
 						<?php echo JText::_('WHATSNEXT_UPLOAD_CODE'); ?> <?php echo $developer_site; ?>
@@ -555,14 +554,14 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 				case 5:
 			?>
 				<p>
-					<?php echo ucfirst(JText::_('THE')); ?> <?php echo $hubShortName; ?> <?php echo JText::_('WHATSNEXT_UPLOADED_TEAM_NEEDS'); ?> <?php echo $hubShortName; ?> <?php echo JText::_('WHATSNEXT_UPLOADED_SO_YOU_CAN_TEST'); ?>. 
+					<?php echo ucfirst(JText::_('THE')); ?> <?php echo $sitename; ?> <?php echo JText::_('WHATSNEXT_UPLOADED_TEAM_NEEDS'); ?> <?php echo $sitename; ?> <?php echo JText::_('WHATSNEXT_UPLOADED_SO_YOU_CAN_TEST'); ?>. 
 					<?php echo JText::_('WHATSNEXT_IT_HAS_BEEN'); ?> <?php echo Hubzero_View_Helper_Html::timeAgo($this->status['changed']); ?> <?php echo JText::_('WHATSNEXT_SINCE_LAST_STATUS_CHANGE'); ?>. 
 					<?php echo JText::_('WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE'); ?> 3 <?php echo JText::_('DAYS'); ?>.
 				</p>
 				<h4><?php echo JText::_('WHATSNEXT_REMAINING_STEPS'); ?>:</h4>
 				<ul>
 					<li class="complete">
-						<?php echo JText::_('WHATSNEXT_REGISTER'); ?> <?php echo $hubShortName; ?>
+						<?php echo JText::_('WHATSNEXT_REGISTER'); ?> <?php echo $sitename; ?>
 					</li>
 					<li class="complete">
 						<?php echo JText::_('WHATSNEXT_UPLOAD_CODE'); ?> <?php echo $developer_site; ?>
@@ -593,16 +592,16 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 				case 6:
 			?>
 				<p>
-					<?php echo ucfirst(JText::_('THE')).' '.$hubShortName.' '.JText::_('WHATSNEXT_APPROVED_TEAM_WILL_FINALIZE').' '.JText::_('WHATSNEXT_IT_HAS_BEEN').' '.Hubzero_View_Helper_Html::timeAgo($this->status['changed']).' '.JText::_('WHATSNEXT_APPROVED_SINCE').'  '.JText::_('WHATSNEXT_APPROVED_WHAT_WILL_HAPPEN').' '.$toolaccess; ?>.
+					<?php echo ucfirst(JText::_('THE')).' '.$sitename.' '.JText::_('WHATSNEXT_APPROVED_TEAM_WILL_FINALIZE').' '.JText::_('WHATSNEXT_IT_HAS_BEEN').' '.Hubzero_View_Helper_Html::timeAgo($this->status['changed']).' '.JText::_('WHATSNEXT_APPROVED_SINCE').'  '.JText::_('WHATSNEXT_APPROVED_WHAT_WILL_HAPPEN').' '.$toolaccess; ?>.
 				</p>
 				<p>
-					<?php echo JText::_('WHATSNEXT_APPROVED_PLS_CLICK'); ?> <?php echo $hubShortName; ?>: <br />
+					<?php echo JText::_('WHATSNEXT_APPROVED_PLS_CLICK'); ?> <?php echo $sitename; ?>: <br />
 					<a href="<?php echo JRoute::_('index.php?option=com_resources&alias=' . $this->status['toolname']); ?>"><?php echo JRoute::_('index.php?option=' . $this->option . '&app=' . $this->status['toolname']); ?></a>
 				</p>
 				<h4><?php echo JText::_('WHATSNEXT_REMAINING_STEPS'); ?>:</h4>
 				<ul>
 					<li class="complete">
-						<?php echo JText::_('WHATSNEXT_REGISTER'); ?> <?php echo $hubShortName; ?>
+						<?php echo JText::_('WHATSNEXT_REGISTER'); ?> <?php echo $sitename; ?>
 					</li>
 					<li class="complete">
 						<?php echo JText::_('WHATSNEXT_UPLOAD_CODE'); ?> <?php echo $developer_site; ?>
@@ -652,7 +651,7 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 			?>
 				<p>
 					<?php echo JText::_('WHATSNEXT_RETIRED_FROM'); ?> <?php echo $hubShortURL; ?>. 
-					<?php echo JText::_('CONTACT'); ?> <?php echo $hubShortName; ?> <?php echo JText::_('CONTACT_SUPPORT_TO_REPUBLISH'); ?>.
+					<?php echo JText::_('CONTACT'); ?> <?php echo $sitename; ?> <?php echo JText::_('CONTACT_SUPPORT_TO_REPUBLISH'); ?>.
 				</p>
 				<h3><?php echo JText::_('WHATSNEXT_YOUR_OPTIONS'); ?>:</h3>
 				<ul class="youroptions">
@@ -670,7 +669,7 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 				case 9:
 			?>
 				<p>
-					<?php echo JText::_('WHATSNEXT_ABANDONED_MSG'); ?> <?php echo $hubShortName; ?> <?php echo JText::_('WHATSNEXT_ABANDONED_CONTACT'); ?>.
+					<?php echo JText::_('WHATSNEXT_ABANDONED_MSG'); ?> <?php echo $sitename; ?> <?php echo JText::_('WHATSNEXT_ABANDONED_CONTACT'); ?>.
 				</p>
 			<?php
 				break;

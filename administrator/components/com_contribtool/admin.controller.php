@@ -225,7 +225,6 @@ class ContribtoolController extends JObject
 					developer_site=FORGE
 					project_path=/
 					invokescript_dir=/apps
-					adminscript_dir=/apps/bin
 					dev_suffix=_dev
 					group_prefix=app-
 					demo_url=
@@ -892,7 +891,7 @@ class ContribtoolController extends JObject
 		// Get hub config
 		$jconfig =& JFactory::getConfig();
 		$live_site = rtrim(JURI::base(),'/');
-		$sitename = $jconfig.getValue('config.sitename');
+		$sitename = $jconfig->getValue('config.sitename');
 		
 		// Get config
 		$config =& JComponentHelper::getParams( $this->_option );

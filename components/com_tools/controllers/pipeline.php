@@ -1251,9 +1251,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
             $ldap_params = JComponentHelper::getParams('com_system');
             $pw = $ldap_params->get('ldap_searchpw','');
                 
-			$scriptdir = DS . trim($this->config->get('addreposcript_dir', '/usr/bin'), DS);
-
-			$command = $scriptdir . DS . 'addrepo ' . $toolinfo['toolname'] . ' -title "' . $toolinfo['title'] . '" -description "' . $toolinfo['description'] . '" -password "' . $pw . '"' . " -hubdir " . JPATH_ROOT;
+			$command = '/usr/bin/addrepo ' . $toolinfo['toolname'] . ' -title "' . $toolinfo['title'] . '" -description "' . $toolinfo['description'] . '" -password "' . $pw . '"' . " -hubdir " . JPATH_ROOT;
 
 			if (!$this->_invokescript($command, JText::_('NOTICE_PROJECT_AREA_CREATED'), $output)) 
 			{
@@ -2352,15 +2350,13 @@ class ToolsControllerPipeline extends Hubzero_Controller
 	{
 		$token = md5(uniqid());
 
-		$scriptdir = JPATH_COMPONENT . DS . 'scripts';
-
 		$fname = '/tmp/license' . $toolname . $token . 'txt';
 		$handle = fopen($fname, "w");
 
 		fwrite($handle, $this->_output);
 		fclose($handle);
 
-		$command = '/bin/sh ' . $scriptdir . DS . 'licensetool.php -hubdir ' . JPATH_ROOT . ' -type raw -license ' . $fname . ' ' . $toolname;
+		$command = '/usr/bin/sudo -u apps /usr/bin/licensetool -hubdir ' . JPATH_ROOT . ' -type raw -license ' . $fname . ' ' . $toolname;
 
 		if (!$this->_invokescript($command, JText::_('NOTICE_LICENSE_CHECKED_IN'), $output)) 
 		{

@@ -32,9 +32,6 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $juser =& JFactory::getUser();
-//$xhub =& Hubzero_Factory::getHub();
-//$hubShortName = $xhub->getCfg('hubShortName');
-//$hubShortURL = $xhub->getCfg('hubShortURL');
 //$license = '/legal/license';
 $database = JFactory::getDBO();
 $html = '';

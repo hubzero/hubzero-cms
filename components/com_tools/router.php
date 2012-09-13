@@ -220,8 +220,8 @@ function toolsParseRoute($segments)
 
 			// Tools controller
 			case 'report':
-				$xhub =& Hubzero_Factory::getHub();
-				$xhub->redirect(JRoute::_('index.php?option=com_support&task=tickets&find=group:app-' . $segments[0]));
+				JFactory::getApplication()->redirect(JRoute::_('index.php?option=com_support&task=tickets&find=group:app-' . $segments[0]));
+				exit();
 			break;
 
 			case 'forge.png':

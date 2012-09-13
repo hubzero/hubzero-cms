@@ -164,7 +164,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 		$ldap_params = JComponentHelper::getParams('com_system');
 		$pw = $ldap_params->get('ldap_searchpw','');
 		
-		$command  = DS . trim($this->config->get('addreposcript_dir', '/usr/bin'), DS);
+		$command  = '/usr/bin';
 		$command .= DS . 'addrepo ' . $status['toolname'];
 		$command .= ' -title "' . $status['title'] . '"';
 		$command .= ' -description "' . $status['description'] . '"';
@@ -236,8 +236,8 @@ class ToolsControllerAdmin extends Hubzero_Controller
 		}
 
 		// Build the exec command
-		$command = '/bin/bash ' . JPATH_COMPONENT . DS . 'scripts' . DS . 'installtool.php -type raw -hubdir ' . JPATH_ROOT . ' ' . $status['toolname'];
-
+		$command = '/usr/bin/sudo -u apps /usr/bin/installtool -type raw -hubdir ' . JPATH_ROOT . ' ' . $status['toolname'];
+		error_log($command);
 		// Invoke the script
 		if ($this->_invokeScript($command, JText::_('NOTICE_REV_INSTALLED'))) 
 		{
@@ -497,7 +497,11 @@ class ToolsControllerAdmin extends Hubzero_Controller
 				$doiservice = $this->config->get('doi_service', 'http://dir1.lib.purdue.edu:8080/axis/services/CreateHandleService?wsdl');
 				$latestdoi  = $objDOI->getLatestDoi($status['resourceid']);
 				$newlabel   = ($latestdoi) ? (intval($latestdoi) + 1): 1;
-				$handle     = $this->config->get('doi_prefix', strtolower(Hubzero_Factory::getHub()->getCfg('hubShortName')) . '-r') . $status['resourceid'] . '.' . $newlabel;
+				$jconfig =& JFactory::getConfig();
+				$live_site = rtrim(JURI::base(),'/');
+				$sitename = $jconfig->getValue('config.sitename');
+				
+				$handle     = $this->config->get('doi_prefix', strtolower($sitename) . '-r') . $status['resourceid'] . '.' . $newlabel;
 
 				// Register with the new DOI service
 				if ($new_doi) 
@@ -800,7 +804,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 			fclose($handle);
 			chmod($fname, 0664);
 
-			$command = '/bin/sh ' . JPATH_COMPONENT . DS . 'scripts' . DS . 'finalizetool.php -hubdir ' . JPATH_ROOT . ' -title "' . $status['title'] . '" -version "' . $status['version'] . '" -license ' . $fname . ' ' . $status['toolname'];
+			$command = '/usr/bin/sudo -u apps /usr/bin/finalizetool -hubdir ' . JPATH_ROOT . ' -title "' . $status['title'] . '" -version "' . $status['version'] . '" -license ' . $fname . ' ' . $status['toolname'];
 			$xlog->logDebug("finalizeTool(): checkpoint 3: $command");
 
 			if (!$this->_invokescript($command, JText::_('NOTICE_VERSION_FINALIZED'))) 

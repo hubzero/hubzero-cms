@@ -2333,7 +2333,6 @@ class ContribtoolController extends JObject
 	protected function licenseTool($toolname)
 	{
 		$token = md5(uniqid());
-		$scriptdir = JPATH_COMPONENT . DS . 'scripts';
 
 		$fname = '/tmp/license'.$toolname.$token.'txt';
 		$handle = fopen($fname, "w");
@@ -2341,7 +2340,7 @@ class ContribtoolController extends JObject
 		fwrite($handle, $this->_output);
 		fclose($handle);
 
-		$command = '/bin/sh ' . $scriptdir.DS.'licensetool.php -hubdir '.JPATH_ROOT.' -type raw -license '.$fname.' '.$toolname;
+		$command = '/usr/bin/sudo -u apps /usr/bin/licensetool -hubdir '.JPATH_ROOT.' -type raw -license '.$fname.' '.$toolname;
 
 		if(!$this->invokescript($command, JText::_('NOTICE_LICENSE_CHECKED_IN'), $output)) {
 			return false;
@@ -2373,9 +2372,6 @@ class ContribtoolController extends JObject
 		$ldap_params = JComponentHelper::getParams('com_system');	
 		$pw = $ldap_params->get('ldap_searchpw','');
 
-		$scriptdirparam =& JComponentHelper::getParams( 'com_contribtool' );
-		$scriptdir = $scriptdirparam->get( 'addreposcript_dir', '/usr/bin' );
-
 		// Create a Tool object
 		if(empty($toolinfo)) {
 			$obj = new Tool( $database );
@@ -2383,7 +2379,7 @@ class ContribtoolController extends JObject
 		}
 
 		if(!empty($toolinfo)) {
-				$command = $scriptdir.DS.'addrepo '.$toolinfo['toolname'].' -title "'.$toolinfo['title'].'" -description "'.$toolinfo['description'].'" -password "'.$pw.'"' . " -hubdir " . JPATH_ROOT;
+				$command = '/usr/bin/addrepo '.$toolinfo['toolname'].' -title "'.$toolinfo['title'].'" -description "'.$toolinfo['description'].'" -password "'.$pw.'"' . " -hubdir " . JPATH_ROOT;
 
 			if(!$this->invokescript($command, JText::_('NOTICE_PROJECT_AREA_CREATED'), $output)) {
 				return false;
@@ -2416,13 +2412,12 @@ class ContribtoolController extends JObject
 		}
 
 		$database =& JFactory::getDBO();
-		$scriptdir = JPATH_COMPONENT . DS . 'scripts';
 
 		// Create a Tool object
 		$obj = new Tool( $database );
 		$obj->getToolStatus($this->_toolid, $this->_option, $status, 'dev');
 		if(count($status) > 0) {
-			$command = '/bin/bash ' . $scriptdir.DS.'installtool.php -type raw -hubdir '.JPATH_ROOT.' '.$status['toolname'];
+			$command = '/usr/bin/sudo -u apps /usr/bin/installtool -type raw -hubdir '.JPATH_ROOT.' '.$status['toolname'];
 
 			if(!$this->invokescript($command, JText::_('NOTICE_REV_INSTALLED'), $output)) {
 				return false;
@@ -2475,7 +2470,6 @@ class ContribtoolController extends JObject
 		}
 
 		$database =& JFactory::getDBO();
-		$scriptdir = JPATH_COMPONENT . DS . 'scripts';
 
 		//$tarball_path = $this->rconfig->get('uploadpath');
 		$tarball_path = $this->config->parameters['sourcecodePath'];
@@ -2509,7 +2503,7 @@ class ContribtoolController extends JObject
 			fclose($handle);
 			chmod($fname, 0664);
 
-			$command = '/bin/sh ' . $scriptdir.DS.'finalizetool.php -hubdir '.JPATH_ROOT.' -title "'.$status['title'].'" -version "'.$status['version'].'" -license '.$fname.' '.$status['toolname'];
+			$command = '/usr/bin/sudo -u apps /usr/bin/finalizetool -hubdir '.JPATH_ROOT.' -title "'.$status['title'].'" -version "'.$status['version'].'" -license '.$fname.' '.$status['toolname'];
 			$xlog->logDebug("finalizeTool(): checkpoint 3: $command");
 
 			if(!$this->invokescript($command, JText::_('NOTICE_VERSION_FINALIZED'), $output)) {

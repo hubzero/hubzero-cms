@@ -76,9 +76,6 @@ HUBzero is a registered trademark of Purdue University.
 		<filename>images/trash.gif</filename>
 		<filename>images/warning.gif</filename>
 		<filename>images/wishlist.gif</filename>
-		<filename>scripts/installtool.php</filename>
-		<filename>scripts/finalizetool.php</filename>
-		<filename>scripts/licensetool.php</filename>
 	</files>
 	<languages>
 		<language tag="en-GB">en-GB.com_contribtool.ini</language>
