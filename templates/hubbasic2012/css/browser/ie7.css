@@ -62,6 +62,31 @@
 		border: 1px solid #1a1a1a;
 	}
 
+/* Nav */
+	#nav ul.menu>li.active>a:after {
+		bottom: -19px;
+	}
+	#account #account-info ul,
+	#nav ul.menu ul {
+		background: url("../../images/layout/overlay.png");
+	}
+	#account #account-info ul li,
+	#nav ul.menu ul li {
+		background: url("../../images/layout/overlay.png");
+	}
+	#nav ul.menu ul{
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML=this.innerHTML + '<small class="nav-ul-after"></small>');
+	}
+	#account #account-info {
+		position: relative;
+	}
+	#account #account-info ul,
+	#account #account-info li,
+	#account #account-info a {
+		zoom: 1;
+		display: block;
+	}
+
 /* 5 star Reviews */
 	.avgrating {
 		padding-left: 70px;
@@ -81,6 +106,7 @@
 	.fourhalf-stars  { background: url("../../images/stars/stars.gif") 0 -360px no-repeat; }
 	.five-stars      { background: url("../../images/stars/stars.gif") 0 -400px no-repeat; }
 
+/* Common classes */
 	.changestatus {
 		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf08d;&nbsp;</small>' + this.innerHTML);
 	}
@@ -99,7 +125,8 @@
 	.reply {
 		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="fontcon-before">&#xf08a;&nbsp;</small>' + this.innerHTML);
 	}
-	
+
+/* Content */
 	#content {
 		border: 1px solid #ccc;
 		margin-top: -30px;
@@ -107,99 +134,30 @@
 	#content .inner {
 		zoom: 1;
 	}
+
+/* Introduction */
 	body #introduction {
 		margin-left: 0;
 		margin-right: 0;
 	}
-/* Top bar 
-	#top {
-		zoom: 1.0;
+	body #introduction .subject {
+		padding-left: 0;
 	}
-	#tab a { 
-		background-position: right 10px;
-	}
-	#tab a:hover {
-		background-position: right -36px;
-	}
-/* Nav 
-	#nav {
-		border-bottom: 1px solid #bdbbb7;
-	}
-	#nav ul.menu li {
-		zoom: 1;
-	}
-/* Content 
-	#content {
-		margin: 0;
-		filter: progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=75, Color='#aaaaaa');
-	}
-	#content-wrap {
-		margin: -5px 0 -5px 0;
-	}
-/* Footer 
-	#bottom-nav {
-		padding-bottom: 0;
-		zoom: 1;
-		filter: progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=130, Color='#292929');
-	}
+
 /* Misc. */
-
-
-
-
 	.events-section {
 		padding-top: 20px;
-	}
-	#introduction .subject {
-		padding-left: 0;
 	}
 	#content-header-extra ul li {
 		display: inline;
 	}
-	.explaination {
-		margin-left: 60px;
-	}
-	.com_wishlist .entries,
-	.com_kb .entries,
-	.com_answers .entries {
+	.entries {
 		border: 1px solid #e9e9e9;
 	}
-	.com_answers .entries caption {
+	.entries caption {
 		border: 1px solid #e9e9e9;
-	}
-	#nav ul.menu>li.active>a:after {
-		bottom: -19px;
-	}
-	#account #account-info ul,
-	#nav ul.menu ul {
-		background: url("../../images/layout/overlay.png");
-	}
-	#account #account-info ul li,
-	#nav ul.menu ul li {
-		background: url("../../images/layout/overlay.png");
-	}
-	#nav ul.menu ul{
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML=this.innerHTML + '<small class="nav-ul-after"></small>');
 	}
 
-	#account #account-info {
-		position: relative;
-	}
-	#account #account-info ul {
-		
-	}
-	#account #account-info ul,
-	#account #account-info li,
-	#account #account-info a {
-		zoom: 1;
-		display: block;
-	}
-	/*#account li:hover > li,
-	#account li:focus > li {
-		visibility: visible;
-		display: block;
-	}*/
-	
 	#page_options a,
 	#content-header-extra a {
 		padding: 0.4em 0.91em 0.4em 0.91em;
@@ -231,8 +189,29 @@
 	}
 
 /* Forms */
-	.explaination {
-		margin-left: 60px;
+	#hubForm {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="hubform-before"></small>' + this.innerHTML + '<small class="hubform-after"></small>');
+	}
+	#hubForm .explaination {
+		background: transparent;
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML=this.innerHTML + '<small class="explaination-after"></small>');
+	}
+	#hubForm small.hubform-after {
+		background: #dfdfdf;
+		filter:progid:DXImageTransform.Microsoft.Alpha(opacity=100, finishopacity=0, style=2);
+		top: -7px;
+		right: 233px;
+	}
+	#hubForm small.hubform-before {
+		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=1,startColorstr=#dfdfdf,endColorstr=#f9f9f9);
+		width: 10px;
+		right: 230px;
+	}
+	#hubForm .explaination small.explaination-after {
+		background: #dfdfdf;
+		filter:progid:DXImageTransform.Microsoft.Alpha(opacity=100, finishopacity=0, style=2);
+		bottom: -7px;
+		right: 233px;
 	}
 	#hubForm input[type=text],
 	#hubForm input[type=password],
@@ -269,10 +248,4 @@
 	}
 	#hubForm .group label:first-child input {
 		margin: 0 0 0 -2em;
-	}
-	#hubForm {
-	}
-	#hubForm .explaination {
-		margin: 0;
-		padding: 0 0 0 60px;
 	}

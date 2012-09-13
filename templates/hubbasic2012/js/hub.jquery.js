@@ -17,34 +17,29 @@ if (!HUB) {
 //-----------------------------------------------------------
 if (!jq) {
 	var jq = $;
-	
+
 	$.getDocHeight = function(){
-	     var D = document;
-	     return Math.max(Math.max(D.body.scrollHeight, D.documentElement.scrollHeight), Math.max(D.body.offsetHeight, D.documentElement.offsetHeight), Math.max(D.body.clientHeight, D.documentElement.clientHeight));
+		var D = document;
+		return Math.max(Math.max(D.body.scrollHeight, D.documentElement.scrollHeight), Math.max(D.body.offsetHeight, D.documentElement.offsetHeight), Math.max(D.body.clientHeight, D.documentElement.clientHeight));
 	};
 } else {
 	jq.getDocHeight = function(){
-	     var D = document;
-	     return Math.max(Math.max(D.body.scrollHeight, D.documentElement.scrollHeight), Math.max(D.body.offsetHeight, D.documentElement.offsetHeight), Math.max(D.body.clientHeight, D.documentElement.clientHeight));
+		var D = document;
+		return Math.max(Math.max(D.body.scrollHeight, D.documentElement.scrollHeight), Math.max(D.body.offsetHeight, D.documentElement.offsetHeight), Math.max(D.body.clientHeight, D.documentElement.clientHeight));
 	};
 }
 
 HUB.Base = {
-
+	// Container for jquery. 
+	// Needed for noconflict mode compatibility
 	jQuery: jq,
 
+	// Set the base path to this template
 	templatepath: '/templates/hubbasic2012/',
 
 	// launch functions
 	initialize: function() {
 		var $ = this.jQuery, w = 760, h = 520;
-
-		// Set the base path to this template
-		/*$('script').each(function(i, s) {
-			if (s.src && s.src.match(/hub\.jquery\.js(\?.*)?$/)) {
-				HUB.Base.templatepath = s.src.replace(/js\/hub\.jquery\.js(\?.*)?$/, '');
-			}
-		});*/
 
 		// Set focus on username field for login form
 		if ($('#username').length > 0) {
@@ -102,9 +97,9 @@ HUB.Base = {
 		$('a[rel=lightbox]').fancybox();
 
 		// Init tooltips
-		$('.hasTip').tooltip({
-			position:'TOP RIGHT',
-			//offset: [10,-20],
+		$('.hasTip, .tooltips').tooltip({
+			position: 'top center',
+			effect: 'fade',
 			onBeforeShow: function(event, position) {
 				var tip = this.getTip(),
 					tipText = tip[0].innerHTML;
@@ -114,27 +109,13 @@ HUB.Base = {
 					tip[0].innerHTML = '<span class="tooltip-title">' + parts[0] + '</span><span class="tooltip-text">' + parts[1] + '</span>';
 				}
 			}
-		}).dynamic({ bottom: { direction: 'down' }, right: { direction: 'left' } });
-		$('.tooltips').tooltip({
-			position:'TOP RIGHT',
-			//offset: [10,2],
-			onBeforeShow: function(event, position) {
-				var tip = this.getTip(),
-					tipText = tip[0].innerHTML;
-					
-				if (tipText.indexOf('::') != -1) {
-					var parts = tipText.split('::');
-					tip[0].innerHTML = '<span class="tooltip-title">' + parts[0] + '</span><span class="tooltip-text">' + parts[1] + '</span>';
-				}
-			}
-		}).dynamic({ bottom: { direction: 'down' }, right: { direction: 'left' } });
+		});
 
 		// Init fixed position DOM: tooltips
 		$('.fixedToolTip').tooltip({
 			relative: true
 		});
 	}
-
 };
 
 jQuery(document).ready(function($){

@@ -1,0 +1,198 @@
+@import url("/plugins/hubzero/autocompleter/autocompleter.css");
+
+/* MooTools version */
+	ul.textboxlist-holder li.bit-box { 
+		-webkit-border-radius: 0 3px 3px 0;
+		-moz-border-radius: 0 3px 3px 0;
+		-ms-border-radius: 0 3px 3px 0;
+		-o-border-radius: 0 3px 3px 0;
+		border-radius: 0 3px 3px 0;
+		line-height: 2em;
+		margin: 0;
+		background: #fadea3;
+		color: #5a2d00;
+		padding: 2px 6px 2px 6px;
+		position: relative;
+	}
+	ul.textboxlist-holder li.bit-box:before {
+		content: "";
+		border-color: transparent #fadea3 transparent transparent;
+		border-style: dashed solid dashed dashed;
+		border-width: 12px 12px 12px 0;
+		height: 0;
+		width: 0;
+		display: block;
+		overflow: hidden;
+		position: absolute;
+		top: 0;
+		left: -12px;
+		margin: 0;
+		padding: 0;
+	}
+	ul.textboxlist-holder li.bit-box:after {
+		content: "";
+		height: 4px;
+		width: 4px;
+		display: block;
+		position: absolute;
+		top: 10px;
+		left: -3px;
+		background-color: #fff;
+		-webkit-border-radius: 4px;
+		-moz-border-radius: 4px;
+		-ms-border-radius: 4px;
+		-o-border-radius: 4px;
+		border-radius: 4px;
+	}
+
+/* Field - Match styles for form inputs */
+	#commentform ul.token-input-list-act li input, 
+	#commentform ul.token-input-list-acg li input, 
+	#commentform ul.token-input-list-acm li input,
+	#commentform ul.token-input-list-act li input:focus, 
+	#commentform ul.token-input-list-acg li input:focus, 
+	#commentform ul.token-input-list-acm li input:focus,
+	#commentform ul.token-input-list-act li input[type=text], 
+	#commentform ul.token-input-list-acg li input[type=text], 
+	#commentform ul.token-input-list-acm li input[type=text],
+	#commentform ul.token-input-list-act li input[type=text]:focus, 
+	#commentform ul.token-input-list-acg li input[type=text]:focus, 
+	#commentform ul.token-input-list-acm li input[type=text]:focus,
+	#hubForm ul.token-input-list-act li input, 
+	#hubForm ul.token-input-list-acg li input, 
+	#hubForm ul.token-input-list-acm li input,
+	#hubForm ul.token-input-list-act li input:focus, 
+	#hubForm ul.token-input-list-acg li input:focus, 
+	#hubForm ul.token-input-list-acm li input:focus,
+	#hubForm ul.token-input-list-act li input[type=text], 
+	#hubForm ul.token-input-list-acg li input[type=text], 
+	#hubForm ul.token-input-list-acm li input[type=text],
+	#hubForm ul.token-input-list-act li input[type=text]:focus, 
+	#hubForm ul.token-input-list-acg li input[type=text]:focus, 
+	#hubForm ul.token-input-list-acm li input[type=text]:focus,
+	ul.token-input-list-act li input:focus, 
+	ul.token-input-list-acg li input:focus, 
+	ul.token-input-list-acm li input:focus,
+	ul.token-input-list-act li input, 
+	ul.token-input-list-acg li input, 
+	ul.token-input-list-acm li input {
+		background: transparent;
+	}
+	ul.token-input-list-act, 
+	ul.token-input-list-acg, 
+	ul.token-input-list-acm {
+		background: #F0F0F0;
+		border: 1px solid #D9D9D9;
+		background-color: rgba(0, 0, 0, .039);
+		border-color: rgba(0, 0, 0, .19) rgba(0, 0, 0, .13) rgba(0, 0, 0, .07);
+		-webkit-border-radius: 1px;
+		-moz-border-radius: 1px;
+		-ms-border-radius: 1px;
+		-o-border-radius: 1px;
+		border-radius: 1px;
+	}
+
+/* Field - focus */
+	ul.token-input-list-focus-act,
+	ul.token-input-list-focus-acg,
+	ul.token-input-list-focus-acm {
+		background-color: #fff;
+		border-color: #0fa1ca;
+	}
+
+/* Tags */
+	li.token-input-token-act {
+		background: transparent;
+		border: none;
+	}
+	li.token-input-token-act p {
+		font-size: 10px !important;
+		position: relative;
+		display: inline-block !important;
+		border: 0;
+		-webkit-border-radius: 0 !important;
+		-moz-border-radius: 0 !important;
+		-ms-border-radius: 0 !important;
+		-o-border-radius: 0 !important;
+		border-radius: 0 !important;
+		line-height: 2em !important;
+		margin: 0 0 0 14px !important;
+		background: #333 !important;
+		color: #ccc !important;
+		padding: 2px 6px 2px 6px !important;
+	}
+	#commentform label li.token-input-token-act span,
+	li.token-input-token-act span {
+		background-color: #5b5b5b;
+		color: #aaa;
+		display: inline-block;
+		margin: 0;
+		padding: 2px 6px 2px 6px;
+		-webkit-border-radius: 0 3px 3px 0;
+		-moz-border-radius: 0 3px 3px 0;
+		-ms-border-radius: 0 3px 3px 0;
+		-o-border-radius: 0 3px 3px 0;
+		border-radius: 0 3px 3px 0;
+		position: static;
+	}
+	#commentform label li.token-input-token-act span:hover,
+	li.token-input-token-act span:hover {
+		color: #fff;
+	}
+	li.token-input-token-act p:before {
+		content: "";
+		border-color: transparent #333 transparent transparent !important;
+		border-style: dashed solid dashed dashed !important;
+		border-width: 12px 12px 12px 0 !important;
+		height: 0;
+		width: 0;
+		display: block;
+		overflow: hidden;
+		position: absolute;
+		top: 0 !important;
+		left: -12px !important;
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+	li.token-input-token-act p:after {
+		content: "";
+		height: 4px;
+		width: 4px;
+		display: block;
+		position: absolute;
+		top: 10px;
+		left: -3px;
+		background-color: #f6f6f6;
+		-webkit-border-radius: 4px;
+		-moz-border-radius: 4px;
+		-ms-border-radius: 4px;
+		-o-border-radius: 4px;
+		border-radius: 4px;
+	}
+
+/* Hover */
+	li.token-input-token-act p:hover {
+		color: #fff;
+		background: #000 !important;
+	}
+	#commentform label li.token-input-token-act p:hover + span,
+	li.token-input-token-act p:hover + span {
+		background-color: #3b3b3b;
+	}
+	li.token-input-token-act p:hover:before {
+		border-color: transparent #000 transparent transparent !important;
+	}
+
+/* Highlight selected tag */
+	li.token-input-selected-token-act p {
+		color: #fff !important;
+		background: #0fa1ca !important;
+	}
+	#commentform label li.token-input-selected-token-act span,
+	li.token-input-selected-token-act span {
+		color: #fff !important;
+		background-color: #11b6dd;
+	}
+	li.token-input-selected-token-act p:before {
+		border-color: transparent #0fa1ca transparent transparent !important;
+	}
