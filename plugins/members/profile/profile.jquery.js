@@ -369,30 +369,18 @@ HUB.Members.Profile = {
 	{
 		var $ = this.jQuery;
 		
-		//show privacy button
-		$("#profile-privacy").css('display','inline-block');
+		$("#profile-privacy").addClass("tooltips");
 		
-		$("#page_identity_link img").load(function(){
-			var w = $("#page_identity_link img").outerWidth(true);
-			w = (w > 150) ? w : 150;
-			$("#page_identity").outerWidth(w + 2);
-			$("#profile-privacy").outerWidth(w + 2);
-		});
-		
-		
-		$("#profile-privacy").on("click", function(event){
-			var text = "",
-				pub = 0,
+		$("#page_header").on("click", "#profile-privacy", function(event){
+			var pub = 0,
 				id = $(this).attr("data-uidnumber");
 			
 			if($(this).hasClass("private"))
 			{
-				text = "Public Profile. Set Private?";
 				pub = 1;
 			}
 			else
 			{
-				text = "Private Profile. Set Public?";
 				pub = 0;
 			}
 			
@@ -410,10 +398,16 @@ HUB.Members.Profile = {
 				
 				if(returned.success)
 				{
-					$("#profile-privacy")
-						.toggleClass("private")
-						.html(text);
-					$("#page_header").load(window.location.href +  " #page_header > *");
+					if(pub)
+					{
+						$("#profile-privacy").removeClass("private");
+						$("body").find(".tooltip-text").html("Click here to set your profile private.");
+					}
+					else
+					{
+						$("#profile-privacy").addClass("private");
+						$("body").find(".tooltip-text").html("Click here to set your profile public.");
+					}
 				}
 			});
 			
@@ -433,19 +427,22 @@ HUB.Members.Profile = {
 		//if this is our profile otherwise dont do ot
 		if( $(".section-edit a").length )
 		{
+			var w = $identity.find("img").width() + 2;
+			w = (w < 165) ? 165 : w;
+			
 			$identity.find("img").load(function(){
 				$change
-					.css('width', $identity.find("img").width())
+					.css('width',  w)
 					.attr("href", window.location.href.replace("profile","ajaxupload"))
 					.appendTo($identity);
-
+					
 				//edit picture	
 				$('.com_members')
 					.on("mouseenter", "#page_identity", function(event) {
-						$change.fadeIn("slow");
+						//$change.fadeIn("slow");
 					})
 					.on("mouseleave", "#page_identity", function(event) {
-						$change.fadeOut("slow");
+						//$change.fadeOut("slow");
 					})
 					.on("click", "#page_identity_change", function(event) {
 						HUB.Members.Profile.editProfilePicturePopup();

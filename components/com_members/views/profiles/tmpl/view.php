@@ -93,23 +93,6 @@ if (!$no_html) {
 				</a>
 			</div><!-- /#page_identity --> 
 			
-			<?php if($this->profile->get("uidNumber") == $juser->get("id") && $tab == "profile") : ?>
-				<?php
-					$cls = "";
-					$text = "Public Profile. <wbr>Set Private?";
-					$title = "Public Profile :: Click here to set your profile private.";
-					if($this->profile->get("public") != 1)
-					{
-						$cls = "private";
-						$text = "Private Profile. <wbr>Set Public?";
-						$title = "Private Profile :: Click here to set your profile public.";
-					}
-				?>
-				<a href="/members/<?php echo $this->profile->get("uidNumber"); ?>/edit" data-uidnumber="<?php echo $this->profile->get("uidNumber"); ?>" id="profile-privacy" class="tooltip <?php echo $cls; ?>" title="<?php echo $title; ?>">
-					<?php echo $text; ?>
-				</a>
-			<?php endif; ?>
-			
 			<ul id="page_menu">
 				<?php foreach($this->cats as $k => $c) : ?>
 					<?php 
@@ -177,7 +160,22 @@ if (!$no_html) {
 			</ul>
 <?php endif; ?>
 			<div id="page_header">
-				<h2 <?php if($this->profile->get("public") != 1) : ?> class="private" <?php endif; ?>>
+				<?php if($this->profile->get("uidNumber") == $juser->get("id")) : ?>
+					<?php
+						$cls = "";
+						$title = "Public Profile :: Click here to set your profile private.";
+						if($this->profile->get("public") != 1)
+						{
+							$cls = "private";
+							$title = "Private Profile :: Click here to set your profile public.";
+						}
+					?>
+					<a href="javascript:void(0);" data-uidnumber="<?php echo $this->profile->get("uidNumber"); ?>" id="profile-privacy" class="<?php echo $cls; ?>" title="<?php echo $title; ?>">
+						<?php echo $title; ?>
+					</a>
+				<?php endif; ?>
+				
+				<h2>
 					<a href="/members/<?php echo $this->profile->get("uidNumber"); ?>">
 						<?php echo stripslashes($this->profile->get('name')); ?>
 					</a>
