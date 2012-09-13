@@ -13,35 +13,17 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$tz = true;
 }
 ?>
-<div id="content-header-extra">
-	<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'); ?>"><?php echo JText::_('&larr; All categories'); ?></a></p>
-</div>
+<ul id="page_options">
+	<li>
+		<a class="categories btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'); ?>"><?php echo JText::_('All categories'); ?></a>
+	</li>
+</ul>
+
 <div class="main section">
 <?php foreach ($this->notifications as $notification) { ?>
 	<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
 <?php } ?>
 
-	<div class="aside">
-<?php if ($this->config->get('access-create-thread')) { ?>
-		<div class="container">
-			<h3><?php echo JText::_('Start Your Own'); ?><span class="starter-point"></span></h3>
-<?php if (!$this->category->closed) { ?>
-			<p>
-				<?php echo JText::_('Create your own discussion where you and other users can discuss related topics.'); ?>
-			</p>
-			<p class="add">
-				<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'); ?>"><?php echo JText::_('Add Discussion'); ?></a>
-			</p>
-<?php } else { ?>
-			<p class="warning">
-				<?php echo JText::_('This category is closed and no new discussions may be created.'); ?>
-			</p>
-<?php } ?>
-		</div>
-<?php } ?>
-	</div><!-- / .aside -->
-
-	<div class="subject">
 		<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post">
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
@@ -62,6 +44,17 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 					echo JText::sprintf('Search for "%s"', $this->escape($this->filters['search']));
 ?>
 					</caption>
+<?php if (!$this->category->closed) { ?>
+					<tfoot>
+						<tr>
+							<td colspan="4">
+								<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->filters['category'] . '/new'); ?>">
+									<?php echo JText::_('Add Discussion'); ?>
+								</a>
+							</td>
+						</tr>
+					</tfoot>
+<?php } ?>
 					<tbody>
 <?php
 			if ($this->rows) {
@@ -89,7 +82,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 								</a>
 								<span class="entry-details">
 									<span class="entry-date">
-										<?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?>
+										<time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?></time>
 									</span>
 									<?php echo JText::_('by'); ?>
 									<span class="entry-author">
@@ -114,25 +107,23 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 				}
 			} else { ?>
 						<tr>
-							<td><?php echo JText::_('There are currently no discussions.'); ?></td>
+							<td colspan="4">
+								<?php echo JText::_('There are currently no discussions.'); ?>
+							</td>
 						</tr>
 <?php 		} ?>
 					</tbody>
 				</table>
 <?php 
 			if ($this->pageNav) {
-				// @FIXME: Nick's Fix Based on Resources View
-				$pf = $this->pageNav->getListFooter();
-				//var_dump($pf);
-				$nm = str_replace('com_', '', $this->option);
-				//$pf = str_replace($nm.'/?',$nm.'/'.$this->group->get('cn').'/'.$this->_element.'/?',$pf);
-				echo $pf;
-				//echo $this->pageNav->getListFooter();
-				// @FIXME: End Nick's Fix
+				$this->pageNav->setAdditionalUrlParam('gid', $this->group->get('cn'));
+				$this->pageNav->setAdditionalUrlParam('active', 'forum');
+				$this->pageNav->setAdditionalUrlParam('scope', $this->filters['section'] . '/' . $this->filters['category']);
+				$this->pageNav->setAdditionalUrlParam('search', $this->filters['search']);
 			}
 ?>
 				<div class="clear"></div>
 			</div><!-- / .container -->
 		</form>
-	</div><!-- /.subject -->
+
 </div><!-- /.main -->

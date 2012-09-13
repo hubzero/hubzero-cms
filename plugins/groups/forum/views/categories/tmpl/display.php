@@ -16,7 +16,9 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 
 <ul id="page_options">
 	<li>
-		<a class="categories btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'); ?>"><?php echo JText::_('All categories'); ?></a>
+		<a class="categories btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'); ?>">
+			<?php echo JText::_('All categories'); ?>
+		</a>
 	</li>
 </ul>
 
@@ -99,7 +101,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 								</a>
 								<span class="entry-details">
 									<span class="entry-date">
-										<?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?>
+										<time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?></time>
 									</span>
 									<?php echo JText::_('by'); ?>
 									<span class="entry-author">
@@ -171,6 +173,9 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 				</table>
 <?php 
 			if ($this->pageNav) {
+				$this->pageNav->setAdditionalUrlParam('gid', $this->group->get('cn'));
+				$this->pageNav->setAdditionalUrlParam('active', 'forum');
+				$this->pageNav->setAdditionalUrlParam('scope', $this->filters['section'] . '/' . $this->filters['category']);
 				echo $this->pageNav->getListFooter();
 			}
 ?>

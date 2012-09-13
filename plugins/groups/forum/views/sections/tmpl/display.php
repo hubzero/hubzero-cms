@@ -90,69 +90,23 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 <?php } ?>
 			</p>
 		</div>
-<?php 
-$params =& JComponentHelper::getParams('com_groups');
-if ($params->get('email_comment_processing'))
-{ ?>
-	<div class="container">
-		<h3><?php echo JText::_('Email Settings'); ?><span class="starter-point"></span></h3>
-		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'); ?>" method="post">
-			<input type="hidden" name="task" value="savememberoptions" />
-			<input type="hidden" name="memberoptionid" value="<?php echo $this->recvEmailOptionID; ?>" />
-			<input type="hidden" name="postsaveredirect" value="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum') ?>" />
-
-			<input type="checkbox" id="recvpostemail" value="1" name="recvpostemail"<?php if ($this->recvEmailOptionValue == 1) { echo ' checked="checked"'; } ?> />
-			<label for="recvpostemail"><?php echo JText::_('Email forum posts'); ?></label>
-
-			<p class="submit">
-				<input type="submit" value="<?php echo JText::_('Save'); ?>" />
-			</p>
-		</form>
-	</div>
-<?php } ?>
-<?php if ($this->config->get('access-create-section')) { ?>
-		<div class="container">
-			<h3><?php echo JText::_('Sections'); ?><span class="starter-point"></span></h3>
-			<p>
-				<?php echo JText::_('Use sections to group related categories.'); ?>
-			</p>
-		
-			<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'); ?>" method="post">
-				<fieldset>
-					<legend><?php echo JText::_('New Section'); ?></legend>
-					<label for="field-title">
-						<?php echo JText::_('Section Title'); ?>
-						<input type="text" name="fields[title]" id="field-title" value="" />
-					</label>
-					<input type="submit" value="<?php echo JText::_('Create'); ?>" />
-					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-					<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
-					<input type="hidden" name="fields[group_id]" value="<?php echo $this->group->get('gidNumber'); ?>" />
-					<input type="hidden" name="active" value="forum" />
-					<input type="hidden" name="task" value="savesection" />
-				</fieldset>
-			</form>
-		</div>
-<?php } ?>
 	</div><!-- / .aside -->
 
-
-
 	<div class="subject">
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'); ?>" method="post">
-		<div class="container data-entry">
-			<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
-			<fieldset class="entry-search">
-				<legend><?php echo JText::_('Search categories'); ?></legend>				
-				<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
-				<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" />
-				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-				<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
-				<input type="hidden" name="active" value="forum" />
-				<input type="hidden" name="action" value="search" />
-			</fieldset>
-		</div><!-- / .container -->
-	</form>
+		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'); ?>" method="post">
+			<div class="container data-entry">
+				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
+				<fieldset class="entry-search">
+					<legend><?php echo JText::_('Search categories'); ?></legend>
+					<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
+					<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" />
+					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+					<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
+					<input type="hidden" name="active" value="forum" />
+					<input type="hidden" name="action" value="search" />
+				</fieldset>
+			</div><!-- / .container -->
+		</form>
 <?php
 if (count($this->sections) > 0) {
 	foreach ($this->sections as $section)
@@ -270,6 +224,55 @@ if ($section->categories) {
 <?php
 }
 ?>
+
+<?php if ($this->config->get('access-create-section')) { ?>
+		<div class="container">
+			<form method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'); ?>">
+					<table class="entries categories">
+						<caption>
+							<label for="field-title">
+								<?php echo JText::_('New Section'); ?>
+								<input type="text" name="fields[title]" id="field-title" value="" />
+							</label>
+							<input type="submit" value="<?php echo JText::_('Create'); ?>" />
+						</caption>
+						<tbody>
+							<tr>
+								<td><?php echo JText::_('Use sections to group related categories.'); ?></td>
+							</tr>
+						</tbody>
+					</table>
+
+					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+					<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
+					<input type="hidden" name="fields[group_id]" value="<?php echo $this->group->get('gidNumber'); ?>" />
+					<input type="hidden" name="active" value="forum" />
+					<input type="hidden" name="task" value="savesection" />
+				</fieldset>
+			</form>
+		</div><!-- /.container -->
+<?php } ?>
+
+<?php 
+$params =& JComponentHelper::getParams('com_groups');
+if ($params->get('email_comment_processing'))
+{ ?>
+			<form method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'); ?>" id="forum-options">
+				<fieldset>
+					<legend><?php echo JText::_('Email Settings'); ?></legend>
+					
+					<input type="hidden" name="task" value="savememberoptions" />
+					<input type="hidden" name="memberoptionid" value="<?php echo $this->recvEmailOptionID; ?>" />
+					<input type="hidden" name="postsaveredirect" value="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum') ?>" />
+
+					<label class="option" for="recvpostemail">
+						<input type="checkbox" class="option" id="recvpostemail" value="1" name="recvpostemail"<?php if ($this->recvEmailOptionValue == 1) { echo ' checked="checked"'; } ?> />
+						<?php echo JText::_('Email forum posts'); ?>
+					</label>
+					<input class="option" type="submit" value="<?php echo JText::_('Save'); ?>" />
+				</fieldset>
+			</form>
+<?php } ?>
 
 	</div><!-- /.subject -->
 </div><!-- /.main -->

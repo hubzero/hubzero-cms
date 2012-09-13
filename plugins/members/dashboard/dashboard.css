@@ -111,7 +111,6 @@
 /* Fix some content container problems */
 	.section-header-extra {
 		text-align: right;
-		display:none;
 	}
 	.section-header-extra #useroptions {
 		margin: 0;

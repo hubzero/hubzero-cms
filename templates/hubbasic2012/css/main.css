@@ -535,7 +535,9 @@
 		vertical-align: middle;
 		zoom: 1;
 	}
-	#account a {
+	#account #account-login a,
+	#account #account-register a,
+	#account ul a {
 		display: block;
 		border: none;
 		padding: 10px 0 10px 24px;
@@ -546,6 +548,10 @@
 	#account a:hover,
 	#account a:focus { 
 		color: #111;
+	}
+	#account .account-details {
+		color: #555;
+		border: none;
 	}
 	#account #account-info {
 		padding: 0.7em 3em 0.5em 0.7em;
@@ -569,7 +575,7 @@
 		top: 1em;
 		right: 1em;
 	}
-	#account #account-info a {
+	#account #account-info ul a {
 		display: inline-block;
 		padding: 10px 12px;
 	}
@@ -2274,11 +2280,27 @@
 	#hubForm .error {
 		margin-top: 0;
 	}
-	#hubForm .error,
-	#hubForm .warning,
-	#hubForm .information,
-	#hubForm .help {
+	#hubForm fieldset .error,
+	#hubForm fieldset .warning,
+	#hubForm fieldset .information,
+	#hubForm fieldset .help {
 		margin: 1em 2em;
+	}
+	#hubForm ul {
+		margin: 1em 2em;
+	}
+	#hubForm ul li {
+		margin-left: 2em;
+	}
+	#hubForm ul li.error {
+		margin-left: 0;
+	}
+	#hubForm span.warning,
+	#hubForm span.information,
+	#hubForm span.help,
+	#hubForm span.error {
+		margin: 0.5em 0 0 0;
+		display: inline-block;
 	}
 	#hubForm .error p,
 	#hubForm .warning p,

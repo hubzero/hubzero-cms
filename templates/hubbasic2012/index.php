@@ -114,10 +114,10 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 ?>
 								<li id="account-info">
 									<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($profile); ?>" alt="<?php echo $juser->get('name'); ?>" width="30" height="30" />
-									<span class="account-details">
+									<a class="account-details" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>">
 										<?php echo stripslashes($juser->get('name')); ?> 
 										<span class="account-username"><?php echo $juser->get('username'); ?></span>
-									</span>
+									</a>
 									<span class="account-sep"></span>
 									<ul>
 										<li id="account-dashboard">

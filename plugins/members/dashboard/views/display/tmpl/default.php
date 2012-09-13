@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <?php if ($this->config->get('allow_customization', 0) != 1) { ?>
 <div class="section-header-extra">
-	<ul id="useroptions">
+	<ul id="page_options">
 		<li class="last hide" id="personalize">
 			<a class="dashboard" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->juser->get('id').'&active=dashboard'); ?>" title="<?php echo JText::_('PLG_MEMBERS_DASHBOARD_PERSONALIZE_TITLE'); ?>">
 				<?php echo JText::_('PLG_MEMBERS_DASHBOARD_PERSONALIZE'); ?>
