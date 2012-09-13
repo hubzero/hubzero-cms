@@ -830,7 +830,7 @@ class plgGroupsMembers extends JPlugin
 			return false;
 		}
 
-		$app->redirect(JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&task=invite&return=members'),true);
+		$app->redirect(JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&task=invite&return=members'),'','message',true);
 	}
 
 	/**
@@ -1159,7 +1159,7 @@ class plgGroupsMembers extends JPlugin
 			$this->setError('An error occurred while trying to add the member role. Please try again.');
 		}
 
-		$app->redirect(JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=members'),true);
+		$app->redirect(JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=members'),'','message',true);
 	}
 
 	/**
@@ -1197,7 +1197,7 @@ class plgGroupsMembers extends JPlugin
 			$this->setError('An error occurred while trying to remove the member role. Please try again.');
 		}
 
-		$app->redirect(JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=members'),true);
+		$app->redirect(JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=members'),'','message',true);
 	}
 
 	/**
@@ -1291,7 +1291,7 @@ class plgGroupsMembers extends JPlugin
 
 		if ($no_html == 0) 
 		{
-			$app->redirect(JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=members'),true);
+			$app->redirect(JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=members'),'','message',true);
 		}
 	}
 
@@ -1328,7 +1328,7 @@ class plgGroupsMembers extends JPlugin
 			$this->setError('An error occurred while trying to remove the members role. Please try again.');
 		}
 
-		$app->redirect(JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=members'),true);
+		$app->redirect(JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=members'),'','message',true);
 	}
 
 	/**

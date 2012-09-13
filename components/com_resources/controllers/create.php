@@ -306,7 +306,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 		if ($type == '7') 
 		{
 			$app = JFactory::getApplication();
-			$app->redirect(JRoute::_('index.php?option=com_contribtool&task=create'), true);
+			$app->redirect(JRoute::_('index.php?option=com_contribtool&task=create'), '', 'message', true);
 		}
 
 		$this->view->next_step = $this->step + 1;

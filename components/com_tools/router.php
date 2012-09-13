@@ -220,7 +220,7 @@ function toolsParseRoute($segments)
 
 			// Tools controller
 			case 'report':
-				JFactory::getApplication()->redirect(JRoute::_('index.php?option=com_support&task=tickets&find=group:app-' . $segments[0]));
+				JFactory::getApplication()->redirect(JRoute::_('index.php?option=com_support&task=tickets&find=group:app-' . $segments[0]),'','message',true);
 				exit();
 			break;
 

@@ -922,11 +922,11 @@ class GroupsController extends Hubzero_Controller
 		// Action Complete. Redirect to appropriate page
 		if ($return == 'browse') 
 		{
-			$app->redirect(JRoute::_('index.php?option=' . $this->_option));
+			$app->redirect(JRoute::_('index.php?option=' . $this->_option), '', 'message', true);
 		} 
 		else 
 		{
-			$app->redirect(JRoute::_('index.php?option=' . $this->_option . '&gid=' . $group->get('cn')));
+			$app->redirect(JRoute::_('index.php?option=' . $this->_option . '&gid=' . $group->get('cn')), '', 'message', true);
 		}
 	}
 
@@ -1089,7 +1089,7 @@ class GroupsController extends Hubzero_Controller
 		}
 
 		// Push through to the groups listing
-		$app->redirect(JRoute::_('index.php?option=' . $this->_option . '&gid=' . $group->get('cn')), true);
+		$app->redirect(JRoute::_('index.php?option=' . $this->_option . '&gid=' . $group->get('cn')), '', 'message', true);
 	}
 
 	/**
@@ -1261,11 +1261,11 @@ class GroupsController extends Hubzero_Controller
 		// Action Complete. Redirect to appropriate page
 		if ($return == 'browse') 
 		{
-			$app->redirect(JRoute::_('index.php?option=' . $this->_option));
+			$app->redirect(JRoute::_('index.php?option=' . $this->_option), '', 'message', true);
 		} 
 		else 
 		{
-			$app->redirect(JRoute::_('index.php?option=' . $this->_option . '&gid='. $group->get('cn')));
+			$app->redirect(JRoute::_('index.php?option=' . $this->_option . '&gid='. $group->get('cn')), '', 'message', true);
 		}
 	}
 
@@ -2283,7 +2283,7 @@ class GroupsController extends Hubzero_Controller
 		// Do we need to redirect?
 		if ($return == 'members') 
 		{
-			$app->redirect(JRoute::_('index.php?option=' . $this->_option . '&gid='. $group->get('cn') . '&active=members'), true);
+			$app->redirect(JRoute::_('index.php?option=' . $this->_option . '&gid='. $group->get('cn') . '&active=members'), '', 'message', true);
 		}
 
 		// Push all invitees together

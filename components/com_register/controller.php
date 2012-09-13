@@ -54,7 +54,7 @@ class RegisterController extends Hubzero_Controller
 		// Make sure we're using a secure connection
 		if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == 'off')
 		{
-			$app->redirect('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], true);
+			$app->redirect('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], '', 'message', true);
 			die('insecure connection and redirection failed');
 		}
 
@@ -252,7 +252,7 @@ class RegisterController extends Hubzero_Controller
 			{
 				// Redirect
 				$jsession->clear('session.return');
-				$app->redirect($return,true);
+				$app->redirect($return,'','message',true);
 			}
 		} 
 		else 
@@ -295,7 +295,7 @@ class RegisterController extends Hubzero_Controller
 			{
 				// Redirect
 				$jsession->clear('session.return');
-				$app->redirect($return,true);
+				$app->redirect($return,'','message',true);
 			}
 		}
 
@@ -548,11 +548,11 @@ class RegisterController extends Hubzero_Controller
 			$jsession->set('registration.incomplete', false);
 			if ($_SERVER['REQUEST_URI'] == '/register/update')
 			{
-				$app->redirect('/', true);
+				$app->redirect('/', '', 'message', true);
 			}
 			else
 			{
-				$app->redirect($_SERVER['REQUEST_URI'], true);
+				$app->redirect($_SERVER['REQUEST_URI'], '', 'message', true);
 			}
 			return(true);
 		}
@@ -684,11 +684,11 @@ class RegisterController extends Hubzero_Controller
 				$suri = JRequest::getVar('REQUEST_URI','/','server');
 				if ($suri == '/register/update')
 				{
-					$app->redirect('/members/myaccount');
+					$app->redirect('/members/myaccount','','message',true);
 				}
 				else
 				{
-					$app->redirect($suri);
+					$app->redirect($suri,'','message',true);
 				}
 			} 
 			else 
@@ -1421,7 +1421,7 @@ class RegisterController extends Hubzero_Controller
 				if ($pemail == $email) 
 				{
 					// Addresses are the same! Redirect
-					$app->redirect($return,true);
+					$app->redirect($return,'','message',true);
 				} 
 				else 
 				{
@@ -1581,7 +1581,7 @@ class RegisterController extends Hubzero_Controller
 				$myreturn = ($r) ? $r : JRoute::_('index.php?option=com_members&task=myaccount');
 			}
 
-			$app->redirect($myreturn,true);
+			$app->redirect($myreturn,'','message',true);
 		} 
 		else 
 		{
@@ -1723,7 +1723,7 @@ class RegisterController extends Hubzero_Controller
 			{
 				$juri = JURI::getInstance();
 				$juri->setVar('cookie', 'no');
-				return $app->redirect($juri->toString(), true);
+				return $app->redirect($juri->toString(),'','message',true);
 			}
 
 			$view = new JView(array('name' => 'error'));
@@ -1738,7 +1738,7 @@ class RegisterController extends Hubzero_Controller
 			$juri = JURI::getInstance();
 			$juri->delVar('cookie');
 
-			return $app->redirect($juri->toString(), true);
+			return $app->redirect($juri->toString(),'','message',true);
 		}
 
 		return true;
