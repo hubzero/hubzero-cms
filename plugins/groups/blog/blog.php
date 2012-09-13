@@ -88,7 +88,8 @@ class plgGroupsBlog extends JPlugin
 
 		// The output array we're returning
 		$arr = array(
-			'html' => ''
+			'html'     => '',
+			'metadata' => ''
 		);
 
 		//get this area details
@@ -99,9 +100,11 @@ class plgGroupsBlog extends JPlugin
 		{
 			if (!in_array($this_area['name'], $areas)) 
 			{
-				return;
+				$return = 'metadata';
 			}
 		}
+
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'blog.entry.php');
 
 		//are we returning html
 		if ($return == 'html') 
@@ -180,7 +183,6 @@ class plgGroupsBlog extends JPlugin
 			}
 
 			//include helpers
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'blog.entry.php');
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'blog.comment.php');
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'helpers' . DS . 'blog.member.php');
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'helpers' . DS . 'blog.tags.php');
@@ -220,6 +222,30 @@ class plgGroupsBlog extends JPlugin
 				default: $arr['html'] = $this->_browse(); break;
 			}
 		}
+
+		$filters = array();
+		$filters['scope']    = 'group';
+		$filters['group_id'] = $group->get('gidNumber');
+
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) 
+		{
+			$filters['state'] = 'public';
+		} 
+		else 
+		{
+			if ($authorized != 'member' 
+			 && $authorized != 'manager' 
+			 && $authorized != 'admin') 
+			{
+				$filters['state'] = 'registered';
+			}
+		}
+
+		$be = new BlogEntry(JFactory::getDBO());
+
+		// Build the HTML meant for the "profile" tab's metadata overview
+		$arr['metadata']['count'] = $be->getCount($filters);
 
 		return $arr;
 	}
@@ -308,11 +334,20 @@ class plgGroupsBlog extends JPlugin
 			$filters['limit']
 		);
 
-		$pagenavhtml = $pageNav->getListFooter();
-		$pagenavhtml = str_replace('groups/?', 'groups/' . $this->group->get('cn') . '/blog/?', $pagenavhtml);
-		$pagenavhtml = str_replace('action=browse', '', $pagenavhtml);
-		$pagenavhtml = str_replace('&amp;&amp;', '&amp;', $pagenavhtml);
-		$pagenavhtml = str_replace('?&amp;', '?', $pagenavhtml);
+		$pageNav->setAdditionalUrlParam('gid', $this->group->get('cn'));
+		$pageNav->setAdditionalUrlParam('active', 'blog');
+		if ($filters['year'])
+		{
+			$pageNav->setAdditionalUrlParam('year', $filters['year']);
+		}
+		if ($filters['month'])
+		{
+			$pageNav->setAdditionalUrlParam('month', $filters['month']);
+		}
+		if ($filters['search'])
+		{
+			$pageNav->setAdditionalUrlParam('search', $filters['search']);
+		}
 
 		$path = $this->params->get('uploadpath');
 		$view->path = str_replace('{{gid}}', $this->group->get('gidNumber'),$path);
@@ -325,7 +360,7 @@ class plgGroupsBlog extends JPlugin
 		$view->year = $filters['year'];
 		$view->month = $filters['month'];
 		$view->search = $filters['search'];
-		$view->pagenavhtml = $pagenavhtml;
+		$view->pagenavhtml = $pageNav->getListFooter();
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)

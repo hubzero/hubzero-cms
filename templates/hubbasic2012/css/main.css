@@ -45,6 +45,13 @@
 	ul li {
 		margin: 0.5em 0;
 	}
+	ol {
+		list-style: decimal;
+		margin: 0 0 0 2em;
+	}
+	ol li {
+		margin: 0.5em 0;
+	}
 	iframe {
 		overflow: auto;
 		-webkit-overflow-scrolling: touch;
@@ -2381,6 +2388,11 @@
 		background: transparent;
 		color: #eee;
 	}
+	.tooltip .tooltip-text table.wiki-reference tbody td,
+	.tool-tip .tool-text table.wiki-reference tbody td,
+	.tip-text table.wiki-reference tbody td {
+		border-color: #000;
+	}
 	.tooltip .tooltip-title,
 	.tool-tip .tool-title,
 	.tip-title {
@@ -2713,4 +2725,7 @@
 	.voting .vote-button,
 	.voting a.vote-button {
 		background: url("../images/layout/stripes.png");
+	}
+	#browse-resources {
+		background: #e1e1e1 url("../images/layout/noise-lite.png");
 	}

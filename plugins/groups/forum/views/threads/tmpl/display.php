@@ -14,9 +14,13 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 
 ximport('Hubzero_User_Profile_Helper');
 ?>
-<div id="content-header-extra">
-	<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias); ?>"><?php echo JText::_('&larr; All discussions'); ?></a></p>
-</div>
+<ul id="page_options">
+	<li>
+		<a class="comments" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias); ?>">
+			<?php echo JText::_('All discussions'); ?>
+		</a>
+	</li>
+</ul>
 
 <div class="main section">
 	<h3 class="thread-title">
@@ -76,9 +80,9 @@ ximport('Hubzero_User_Profile_Helper');
 	</div><!-- / .aside  -->
 
 	<div class="subject">
-		<h4 class="comments-title">
+		<!-- <h4 class="comments-title">
 			<?php echo JText::_('PLG_GROUPS_FORUM_COMMENTS'); ?>
-		</h4>
+		</h4> -->
 		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias . '/' . $this->post->id); ?>" method="get">
 		<ol class="comments">
 			<?php

@@ -39,8 +39,19 @@ $tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'acta
 ximport('Hubzero_Wiki_Editor');
 $editor =& Hubzero_Wiki_Editor::getInstance();
 ?>
+<ul id="page_options">
+	<li>
+		<a class="archive" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog'); ?>" title="<?php echo JText::_('Archive'); ?>">
+			<?php echo JText::_('Archive'); ?>
+		</a>
+	</li>
+</ul>
+
+<?php if ($this->getError()) { ?>
+	<p class="error"><?php echo $this->getError(); ?></p>
+<?php } ?>
 <form action="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=blog'); ?>" method="post" id="hubForm" class="full">
-	<div class="explaination">
+	<!-- <div class="explaination">
 		<table class="wiki-reference" summary="Wiki Syntax Reference">
 			<caption>Wiki Syntax Reference</caption>
 			<tbody>
@@ -84,10 +95,10 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 		
 		<h4 id="files-header"><?php echo JText::_('Uploaded files'); ?></h4>
 			<iframe width="100%" height="370" name="filer" id="filer" src="<?php echo 'index.php?option=com_blog&controller=media&id='.$this->group->get('gidNumber').'&scope=group&tmpl=component'; ?>"></iframe>
-	</div><!-- /.explaination -->
+	</div>/.explaination -->
 		
 	<fieldset>
-		<!--<h3><?php echo JText::_('PLG_GROUPS_BLOG_EDIT_DETAILS'); ?></h3>-->
+		<legend><?php echo JText::_('PLG_GROUPS_BLOG_EDIT_DETAILS'); ?></legend>
 
 		<label<?php if ($this->task == 'save' && !$this->entry->title) { echo ' class="fieldWithErrors"'; } ?>>
 			<?php echo JText::_('PLG_GROUPS_BLOG_TITLE'); ?>
@@ -99,12 +110,56 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 		
 		<label for="entry_content">
 			<?php echo JText::_('PLG_GROUPS_BLOG_FIELD_CONTENT'); ?>
-			<?php echo $editor->display('entry[content]', 'entry_content', $this->escape(stripslashes($this->entry->content)), '', '40', '35'); ?>
-			<span class="hint"><a href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>" class="popup">Wiki formatting</a> is allowed.</span>
+			<span class="syntax hint"><a class="tooltips" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>" title="Syntax Reference :: <table class=&quot;wiki-reference&quot;>
+				<tbody>
+					<tr>
+						<td>'''bold'''</td>
+						<td><b>bold</b></td>
+					</tr>
+					<tr>
+						<td>''italic''</td>
+						<td><i>italic</i></td>
+					</tr>
+					<tr>
+						<td>__underline__</td>
+						<td><span style=&quot;text-decoration:underline;&quot;>underline</span></td>
+					</tr>
+					<tr>
+						<td>{{{monospace}}}</td>
+						<td><code>monospace</code></td>
+					</tr>
+					<tr>
+						<td>~~strike-through~~</td>
+						<td><del>strike-through</del></td>
+					</tr>
+					<tr>
+						<td>^superscript^</td>
+						<td><sup>superscript</sup></td>
+					</tr>
+					<tr>
+						<td>,,subscript,,</td>
+						<td><sub>subscript</sub></td>
+					</tr>
+					<tr>
+						<td colspan=&quot;2&quot;><a href=&quot;<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiMacros#image'); ?>&quot;>[[Image(filename.jpg)]]</a> includes an image</td>
+					</tr>
+					<tr>
+						<td colspan=&quot;2&quot;><a href=&quot;<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiMacros#file'); ?>&quot;>[[File(filename.pdf)]]</a> includes a file</td>
+					</tr>
+				</tbody>
+			</table>">Wiki formatting</a> is allowed.</span>
+			<?php echo $editor->display('entry[content]', 'entry_content', $this->escape(stripslashes($this->entry->content)), '', '50', '30'); ?>
 		</label>
 		<?php if ($this->task == 'save' && !$this->entry->content) { ?>
 			<p class="error"><?php echo JText::_('PLG_GROUPS_BLOG_ERROR_PROVIDE_CONTENT'); ?></p>
 		<?php } ?>
+
+		<fieldset>
+			<legend><?php echo JText::_('Uploaded files'); ?></legend>
+			<div class="field-wrap">
+				<iframe width="100%" height="260" name="filer" id="filer" src="<?php echo 'index.php?option=com_blog&controller=media&id='.$this->group->get('gidNumber').'&scope=group&tmpl=component'; ?>"></iframe>
+			</div>
+		</fieldset>
 
 		<label>
 			<?php echo JText::_('PLG_GROUPS_BLOG_FIELD_TAGS'); ?>

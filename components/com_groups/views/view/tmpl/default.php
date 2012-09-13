@@ -65,6 +65,71 @@ $no_html = JRequest::getInt( 'no_html', 0 );
 					</a>
 				</div><!-- /#page_identity -->
 				
+				<ul id="group_options">
+					<?php if(in_array($this->user->get("id"), $this->group->get("invitees"))) : ?>
+						<?php if($membership_control == 1) : ?>
+							<li>
+								<a class="group-invited" href="/groups/<?php echo $this->group->get("cn"); ?>/accept">Accept Group Invitation</a>
+							</li>
+						<?php endif; ?>
+					<?php elseif($this->group->get('join_policy') == 3 && !in_array($this->user->get("id"), $this->group->get("members"))) : ?>
+						<li><span class="group-closed">Group Closed</span></li>
+					<?php elseif($this->group->get('join_policy') == 2 && !in_array($this->user->get("id"), $this->group->get("members"))) : ?>
+						<li><span class="group-inviteonly">Group is Invite Only</span></li>
+					<?php elseif($this->group->get('join_policy') == 0 && !in_array($this->user->get("id"), $this->group->get("members"))) : ?>
+						<?php if($membership_control == 1) : ?> 
+							<li>
+								<a class="group-join" href="/groups/<?php echo $this->group->get("cn"); ?>/join">Join Group</a>
+							</li>
+						<?php endif; ?> 
+					<?php elseif($this->group->get('join_policy') == 1 && !in_array($this->user->get("id"), $this->group->get("members"))) : ?>
+						<?php if($membership_control == 1) : ?>
+							<?php if(in_array($this->user->get("id"), $this->group->get("applicants"))) : ?>
+								<li><span class="group-pending">Request Waiting Approval</span></li>
+							<?php else : ?>
+								<li>
+									<a class="group-request" href="/groups/<?php echo $this->group->get("cn"); ?>/join">Request Group Membership</a>
+								</li>
+							<?php endif; ?>
+						<?php endif; ?>
+					<?php else : ?>
+						<?php $isManager = (in_array($this->user->get("id"), $this->group->get("managers"))) ? true : false; ?>
+						<?php $canCancel = (($isManager && count($this->group->get("managers")) > 1) || (!$isManager && in_array($this->user->get("id"), $this->group->get("members")))) ? true : false; ?>
+						<li class="no-float">
+							<a href="javascript:void(0);" class="dropdown group-<?php echo ($isManager) ? "manager" : "member" ?>">
+								Group <?php echo ($isManager) ? "Manager" : "Member" ?>
+								<span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu pull-right">
+								<?php if($isManager) : ?>
+									<?php if($membership_control == 1) : ?> 
+										<li><a class="group-invite" href="/groups/<?php echo $this->group->get("cn"); ?>/invite">Invite Members</a></li>
+									<?php endif; ?>
+									<li><a class="group-edit" href="/groups/<?php echo $this->group->get("cn"); ?>/edit">Edit Group Settings</a></li>
+									<li><a class="group-customize" href="/groups/<?php echo $this->group->get("cn"); ?>/customize">Customize Group</a></li>
+									<li><a class="group-pages" href="/groups/<?php echo $this->group->get("cn"); ?>/managepages">Manage Group Pages</a></li>
+									<?php if($membership_control == 1) : ?> 
+										<li class="divider"></li>
+									<?php endif; ?>
+								<?php endif; ?>
+								<?php if($canCancel) : ?>
+									<?php if($membership_control == 1) : ?> 
+										<li><a class="group-cancel" href="/groups/<?php echo $this->group->get("cn"); ?>/cancel">Cancel Group Membership</a></li>
+										<?php if($isManager): ?>
+											<li class="divider"></li>
+										<?php endif; ?>
+									<?php endif; ?>
+								<?php endif; ?>
+								<?php if($isManager) : ?>
+									<?php if($membership_control == 1) : ?> 
+										<li><a class="group-delete" href="/groups/<?php echo $this->group->get("cn"); ?>/delete">Delete Group</a></li>
+									<?php endif; ?>
+								<?php endif; ?>
+							</ul>
+						</li>
+					<?php endif; ?>
+				</ul><!-- /#page_options -->
+				
 				<ul id="page_menu">
 					<?php
 						echo Hubzero_Group_Helper::displayGroupMenu($this->group, $this->sections, $this->hub_group_plugins, $this->group_plugin_access, $this->pages, $this->tab);
@@ -132,70 +197,6 @@ $no_html = JRequest::getInt( 'no_html', 0 );
 						<span></span>
 					</a>
 				<?php endif; ?>
-				<ul id="group_options">
-					<?php if(in_array($this->user->get("id"), $this->group->get("invitees"))) : ?>
-						<?php if($membership_control == 1) : ?>
-							<li>
-								<a class="group-invited" href="/groups/<?php echo $this->group->get("cn"); ?>/accept">Accept Group Invitation</a>
-							</li>
-						<?php endif; ?>
-					<?php elseif($this->group->get('join_policy') == 3 && !in_array($this->user->get("id"), $this->group->get("members"))) : ?>
-						<li><span class="group-closed">Group Closed</span></li>
-					<?php elseif($this->group->get('join_policy') == 2 && !in_array($this->user->get("id"), $this->group->get("members"))) : ?>
-						<li><span class="group-inviteonly">Group is Invite Only</span></li>
-					<?php elseif($this->group->get('join_policy') == 0 && !in_array($this->user->get("id"), $this->group->get("members"))) : ?>
-						<?php if($membership_control == 1) : ?> 
-							<li>
-								<a class="group-join" href="/groups/<?php echo $this->group->get("cn"); ?>/join">Join Group</a>
-							</li>
-						<?php endif; ?> 
-					<?php elseif($this->group->get('join_policy') == 1 && !in_array($this->user->get("id"), $this->group->get("members"))) : ?>
-						<?php if($membership_control == 1) : ?>
-							<?php if(in_array($this->user->get("id"), $this->group->get("applicants"))) : ?>
-								<li><span class="group-pending">Request Waiting Approval</span></li>
-							<?php else : ?>
-								<li>
-									<a class="group-request" href="/groups/<?php echo $this->group->get("cn"); ?>/join">Request Group Membership</a>
-								</li>
-							<?php endif; ?>
-						<?php endif; ?>
-					<?php else : ?>
-						<?php $isManager = (in_array($this->user->get("id"), $this->group->get("managers"))) ? true : false; ?>
-						<?php $canCancel = (($isManager && count($this->group->get("managers")) > 1) || (!$isManager && in_array($this->user->get("id"), $this->group->get("members")))) ? true : false; ?>
-						<li class="no-float">
-							<a href="javascript:void(0);" class="dropdown group-<?php echo ($isManager) ? "manager" : "member" ?>">
-								Group <?php echo ($isManager) ? "Manager" : "Member" ?>
-								<span class="caret"></span>
-							</a>
-							<ul class="dropdown-menu pull-right">
-								<?php if($isManager) : ?>
-									<?php if($membership_control == 1) : ?> 
-										<li><a class="group-invite" href="/groups/<?php echo $this->group->get("cn"); ?>/invite">Invite Members</a></li>
-									<?php endif; ?>
-									<li><a class="group-edit" href="/groups/<?php echo $this->group->get("cn"); ?>/edit">Edit Group Settings</a></li>
-									<li><a class="group-customize" href="/groups/<?php echo $this->group->get("cn"); ?>/customize">Customize Group</a></li>
-									<li><a class="group-pages" href="/groups/<?php echo $this->group->get("cn"); ?>/managepages">Manage Group Pages</a></li>
-									<?php if($membership_control == 1) : ?> 
-										<li class="divider"></li>
-									<?php endif; ?>
-								<?php endif; ?>
-								<?php if($canCancel) : ?>
-									<?php if($membership_control == 1) : ?> 
-										<li><a class="group-cancel" href="/groups/<?php echo $this->group->get("cn"); ?>/cancel">Cancel Group Membership</a></li>
-										<?php if($isManager): ?>
-											<li class="divider"></li>
-										<?php endif; ?>
-									<?php endif; ?>
-								<?php endif; ?>
-								<?php if($isManager) : ?>
-									<?php if($membership_control == 1) : ?> 
-										<li><a class="group-delete" href="/groups/<?php echo $this->group->get("cn"); ?>/delete">Delete Group</a></li>
-									<?php endif; ?>
-								<?php endif; ?>
-							</ul>
-						</li>
-					<?php endif; ?>
-				</ul><!-- /#page_options -->
 				<div id="page_header">
 					<h2><a href="/groups/<?php echo $this->group->get("cn"); ?>"><?php echo $this->group->get('description'); ?></a></h2>
 					<span class="divider">►</span>

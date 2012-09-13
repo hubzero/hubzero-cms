@@ -999,6 +999,7 @@
 	}
 /*\*/
 	#tagbrowser ul {
+		background: #fff;
 		border: 1px solid #C5C5C5; 
 		height: 350px; 
 		overflow: auto;
@@ -1167,8 +1168,7 @@
 		color: #fff;
 	}
 	#content-header-extra fieldset label span {
-		display: block;
-		visibility: hidden;
+		display: none;
 	}
 	#tagbrowser .info {
 		display: none;

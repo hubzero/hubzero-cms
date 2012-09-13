@@ -78,7 +78,14 @@
 		font-weight: bold;
 		margin: 0;
 	}
-
+	#page_options .comments:before {
+		font-family: "Fontcons";
+		content: "\f086";
+	}
+	#page_options .categories:before {
+		font-family: "Fontcons";
+		content: "\f07b";
+	}
 /* Article Listing 
 	.main h3,
 	.below h3 {
@@ -94,7 +101,7 @@
 		margin-right: 235px;
 	}*/
 
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: 1064px) {
 	.group_forum .aside,
 	.group_forum .subject {
 		float: none;

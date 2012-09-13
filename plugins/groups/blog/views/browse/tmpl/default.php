@@ -46,15 +46,9 @@ $wikiconfig = array(
 
 $p =& Hubzero_Wiki_Parser::getInstance();
 ?>
-<a name="blog"></a>
-<h3 class="heading">
-	<?php echo JText::_('PLG_GROUPS_BLOG'); ?>
-</h3>
 
-<ul class="blog-options">
-	<li>
-		Blog Actions
-	</li>
+<?php if ($this->canpost || ($this->authorized == 'manager' || $this->authorized == 'admin')) { ?>
+<ul id="page_options">
 <?php if ($this->canpost) { ?>
 	<li>
 		<a class="add" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=new'); ?>">
@@ -70,36 +64,11 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 	</li>
 <?php } ?>
 </ul>
+<?php } ?>
 
-<div class="main section">
+<form method="get" action="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=browse'); ?>" id="blogentries">
 	<div class="aside">
-		<?php if($this->config->get('feeds_enabled')) { ?>
-			<div class="container">
-				<h4>Blog Actions</h4>
-				<?php
-					if ($this->config->get('feeds_enabled')) {
-						$path  = 'index.php?option='.$this->option.'&gid='.$this->group->cn.'&active=blog&scope=feed.rss';
-						$path .= ($this->year) ? '&year='.$this->year : '';
-						$path .= ($this->month) ? '&month='.$this->month : '';
-						$feed = JRoute::_($path);
-						if (substr($feed, 0, 4) != 'http') {
-							if (substr($feed, 0, 1) != DS) {
-								$feed = DS.$feed;
-							}
-							$jconfig =& JFactory::getConfig();
-							$live_site = rtrim(JURI::base(),'/');
-								
-							$feed = $live_site . $feed;
-						}
-						$feed = str_replace('https:://','http://',$feed);
-
-						echo "<p class=\"feed\"><a href=\"{$feed}\">".JText::_('Subscribe RSS')."</a></p>";
-					}
-				?>
-			</div>
-		<?php } ?>
-		
-		<div class="blog-entries-years">
+		<div class="container blog-entries-years">
 			<h4><?php echo JText::_('Entries By Year'); ?></h4>
 			<ol>
 				<?php if ($this->firstentry) { ?>
@@ -149,40 +118,43 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 				<?php } ?>
 			</ol>
 		</div>
-		
-		<div class="blog-popular-entries">
+
+<?php if ($this->popular) { ?>
+		<div class="container blog-popular-entries">
 			<h4><?php echo JText::_('Popular Entries'); ?></h4>
 			<ol>
-				<?php if ($this->popular) { ?>
-					<?php foreach ($this->popular as $row) { ?>
-						<li>
-							<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$row->publish_up, $this->monthFormat, $this->tz).'/'.$row->alias); ?>">
-								<?php echo stripslashes($row->title); ?>
-							</a>
-						</li>
-					<?php } ?>
-				<?php } ?>
+			<?php foreach ($this->popular as $row) { ?>
+				<li>
+					<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$row->publish_up, $this->monthFormat, $this->tz).'/'.$row->alias); ?>">
+						<?php echo $this->escape(stripslashes($row->title)); ?>
+					</a>
+				</li>
+			<?php } ?>
 			</ol>
 		</div><!-- / .blog-popular-entries -->
+<?php } ?>
 
-		<div class="blog-recent-entries">
+<?php if ($this->recent) { ?>
+		<div class="container blog-recent-entries">
 			<h4><?php echo JText::_('Recent Entries'); ?></h4>
 			<ol>
-				<?php if ($this->recent) { ?>
-					<?php foreach ($this->recent as $row) { ?>
-						<li>
-							<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date', $row->publish_up, $this->monthFormat, $this->tz).'/'.$row->alias); ?>">
-								<?php echo stripslashes($row->title); ?>
-							</a>
-						</li>
-					<?php } ?>
-				<?php } ?>
+			<?php foreach ($this->recent as $row) { ?>
+				<li>
+					<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date', $row->publish_up, $this->monthFormat, $this->tz).'/'.$row->alias); ?>">
+						<?php echo $this->escape(stripslashes($row->title)); ?>
+					</a>
+				</li>
+			<?php } ?>
 			</ol>
 		</div><!-- / .blog-recent-entries -->
+<?php } ?>
 	</div><!-- / .aside -->
 	
 	<div class="subject">
-		<form action="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=browse'); ?>" method="get" id="blogentries">
+	<?php if ($this->getError()) : ?>
+		<p class="error"><?php echo $this->getError(); ?></p>
+	<?php endif; ?>
+
 		<div class="container data-entry">
 			<input class="entry-search-submit" type="submit" value="Search" />
 			<fieldset class="entry-search">
@@ -191,7 +163,41 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 				<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape(utf8_encode(stripslashes($this->search))); ?>" />
 			</fieldset>
 		</div><!-- / .container -->
+
 		<div class="container">
+			<h3>
+<?php if (isset($this->search) && $this->search) { ?>
+				<?php echo JText::sprintf('Search for "%s"', $this->escape($this->search)); ?>
+<?php } else if (!isset($this->year) || !$this->year) { ?>
+				<?php echo JText::_('Latest Entries'); ?>
+<?php } else { 
+		$format = '%b %Y';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$format = 'M Y';
+		}
+				$archiveDate  = $this->year;
+				$archiveDate .= ($this->month) ? '-' . $this->month : '-01';
+				$archiveDate .= '-01 00:00:00';
+				echo JHTML::_('date', $archiveDate, $format, $this->tz);
+} ?>
+				<?php
+					if ($this->config->get('feeds_enabled')) :
+						$path  = 'index.php?option='.$this->option.'&gid='.$this->group->cn.'&active=blog&scope=feed.rss';
+						$path .= ($this->year)  ? '&year=' . $this->year   : '';
+						$path .= ($this->month) ? '&month=' . $this->month : '';
+						$feed = JRoute::_($path);
+						if (substr($feed, 0, 4) != 'http') 
+						{
+							$feed = rtrim($live_site, DS) . DS . ltrim($feed, DS);
+						}
+						$feed = str_replace('https:://', 'http://', $feed);
+				?>
+				<a class="feed" href="<?php echo $feed; ?>">
+					<?php echo JText::_('RSS Feed'); ?>
+				</a>
+				<?php endif; ?>
+			</h3>
 		<?php if ($this->rows) { ?>
 			<ol class="blog-entries">
 <?php 
@@ -217,19 +223,11 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 						break;
 				}
 ?>
-				<li class="entry <?php echo $cls; ?>" id="e<?php echo $row->id; ?>">
+				<li class="<?php echo $cls; ?>" id="e<?php echo $row->id; ?>">
 					<h4 class="entry-title">
 						<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date', $row->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $row->publish_up, $this->monthFormat, $this->tz) . '/' . $row->alias); ?>">
 							<?php echo $this->escape(stripslashes($row->title)); ?>
 						</a>
-<?php if ($this->juser->get('id') == $row->created_by || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
-						<a class="edit" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=edit&entry='.$row->id); ?>" title="<?php echo JText::_('Edit'); ?>">
-							<?php echo JText::_('Edit'); ?>
-						</a>
-						<a class="delete" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=delete&entry='.$row->id); ?>" title="<?php echo JText::_('Delete'); ?>">
-							<?php echo JText::_('Delete'); ?>
-						</a>
-<?php } ?>
 					</h4>
 					<dl class="entry-meta">
 						<dt>
@@ -270,6 +268,16 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 							<?php echo $state; ?>
 						</dd>
 <?php } ?>
+						<dd class="entry-options">
+<?php if ($this->juser->get('id') == $row->created_by || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
+							<a class="edit" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=edit&entry='.$row->id); ?>" title="<?php echo JText::_('Edit'); ?>">
+								<?php echo JText::_('Edit'); ?>
+							</a>
+							<a class="delete" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=delete&entry='.$row->id); ?>" title="<?php echo JText::_('Delete'); ?>">
+								<?php echo JText::_('Delete'); ?>
+							</a>
+<?php } ?>
+						</dd>
 					</dl>
 					<div class="entry-content">
 						<p>
@@ -283,7 +291,11 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 	<?php } ?>
 			</ol>
 <?php } else { ?>
-			<p>Currently there are no blog entries.</p>
+			<ol class="blog-entries">
+				<li>
+					<p>Currently there are no blog entries.</p>
+				</li>
+			</ol>
 <?php } ?>
 
 			<?php echo $this->pagenavhtml; ?>

@@ -34,18 +34,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 ximport('Hubzero_User_Profile');
 ximport('Hubzero_Wiki_Editor');
 
+$juser =& JFactory::getUser();
 $editor =& Hubzero_Wiki_Editor::getInstance();
 ?>
-<a name="blog"></a>
-<h3 class="heading">
-	<?php echo JText::_('PLG_GROUPS_BLOG'); ?>
-</h3>
-
 <?php if ($this->canpost || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
-	<ul class="blog-options">
-		<li>
-			Blog Actions
-		</li>
+	<ul id="page_options">
 	<?php if ($this->canpost) { ?>
 		<li>
 			<a class="add" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=new'); ?>">
@@ -63,7 +56,7 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 	</ul>
 <?php } ?>
 
-<div class="main section">
+<div class="entry-container">
 	<div class="aside">
 		<div class="blog-popular-entries">
 			<h4><?php echo JText::_('Popular Entries'); ?></h4>
@@ -167,8 +160,7 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 			</div>
 
 			<?php 
-			$author = new Hubzero_User_Profile();
-			$author->load($this->row->created_by);
+			$author = Hubzero_User_Profile::getInstance($this->row->created_by);
 			if (is_object($author) && $author->get('name')) 
 			{
 			?>
@@ -178,14 +170,16 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 				<div class="entry-author-content">
 					<h4>
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->row->created_by); ?>">
-							<?php echo stripslashes($author->get('name')); ?>
+							<?php echo $this->escape(stripslashes($author->get('name'))); ?>
 						</a>
 					</h4>
-				<?php if ($author->get('bio')) { ?>
 					<p class="entry-author-bio">
-						<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($author->get('bio')), 300, 0); ?>
+						<?php if ($author->get('bio')) { ?>
+							<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($author->get('bio')), 300, 0); ?>
+						<?php } else { ?>
+							<?php echo JText::_('This author has yet to provide a bio.'); ?>
+						<?php } ?>
 					</p>
-				<?php } ?>
 				</div>
 			</div>
 			<?php
@@ -193,13 +187,9 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 			?>
 		</div>
 	</div><!-- /.subject -->
-</div>
-<div class="clear"></div>
+	<div class="clear"></div>
 
 <?php if ($this->row->allow_comments == 1) { ?>
-	<a name="comments"></a>
-	<h3 class="below_heading">Comments on this entry</h3>
-	<div class="below section">
 		
 		<?php
 			/* How to do this ... ?
@@ -219,15 +209,19 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 			*/
 		?>
 
-		<div class="aside">
+		<div class="aside aside-below">
 			<p>
-				<a class="add" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias.'#post-comment'); ?>">
+				<a class="add btn" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias.'#post-comment'); ?>">
 					<?php echo JText::_('Add a comment'); ?>
 				</a>
 			</p>
 		</div><!-- / .aside -->
 		
-		<div class="subject">
+		<div class="subject below">
+			<h3 class="below_heading">
+				<a name="comments"></a>
+				<?php echo JText::_('Comments on this entry'); ?>
+			</h3>
 			<?php if ($this->comments) { ?>
 				<ol class="comments">
 					<?php foreach ($this->comments as $comment) { ?>
@@ -236,17 +230,16 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 							$xuser = "";
 							if (!$comment->anonymous) {
 								//$xuser =& JUser::getInstance( $comment->created_by );
-								$xuser = new Hubzero_User_Profile();
-								$xuser->load( $comment->created_by );
+								$xuser = Hubzero_User_Profile::getInstance($comment->created_by);
 								if (is_object($xuser) && $xuser->get('name')) {
-									$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$comment->created_by).'">'.stripslashes($xuser->get('name')).'</a>';
+									$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$comment->created_by).'">'.$this->escape(stripslashes($xuser->get('name'))).'</a>';
 								}
 							}
 
 							if ($comment->reports) {
 								$content = '<p class="warning">'.JText::_('PLG_GROUPS_BLOG_COMMENT_REPORTED_AS_ABUSIVE').'</p>';
 							} else {
-								$content = $this->p->parse( "\n".stripslashes($comment->content), $this->wikiconfig );
+								$content = $this->p->parse("\n" . stripslashes($comment->content), $this->wikiconfig, false);
 							}
 						?>
 						<li class="comment <?php echo $cls; ?>" id="c<?php echo $comment->id; ?>">
@@ -257,14 +250,17 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 							<div class="comment-content">
 								<p class="comment-title">
 									<strong><?php echo $name; ?></strong> 
-									<a class="permalink" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias.'#c'.$comment->id); ?>" title="<?php echo JText::_('PLG_GROUPS_BLOG_PERMALINK'); ?>">@ <span class="time"><?php echo JHTML::_('date',$comment->created, '%I:%M %p', 0); ?></span> on <span class="date"><?php echo JHTML::_('date',$comment->created, '%d %b, %Y', 0); ?></span></a>
+									<a class="permalink" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'#c'.$comment->id); ?>" title="<?php echo JText::_('PLG_GROUPS_BLOG_PERMALINK'); ?>">
+										<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, $this->timeFormat, $this->tz); ?></time></span> 
+										<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, $this->dateFormat, $this->tz); ?></time></span>
+									</a>
 								</p>
 								<?php echo $content; ?>
 							
 								<?php if (!$comment->reports) { ?>
 									<p class="comment-options">
 										<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=blog&id='.$comment->id.'&parent='.$this->row->id); ?>">Report abuse</a> | 
-										<a class="reply" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias.'?reply='.$comment->id.'#post-comment'); ?>">Reply</a>
+										<a class="reply" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'?reply='.$comment->id.'#post-comment'); ?>">Reply</a>
 									</p>
 								<?php } ?>
 							</div>
@@ -276,18 +272,16 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 											$name = JText::_('PLG_GROUPS_BLOG_ANONYMOUS');
 											$xuser = "";
 											if (!$reply->anonymous) {
-												//$xuser =& JUser::getInstance( $reply->created_by );
-												$xuser = new Hubzero_User_Profile();
-												$xuser->load( $reply->created_by );
+												$xuser = Hubzero_User_Profile::getInstance($reply->created_by);
 												if (is_object($xuser) && $xuser->get('name')) {
-													$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$reply->created_by).'">'.stripslashes($xuser->get('name')).'</a>';
+													$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$reply->created_by).'">'.$this->escape(stripslashes($xuser->get('name'))).'</a>';
 												}
 											}
 
 											if ($reply->reports) {
 												$content = '<p class="warning">'.JText::_('PLG_GROUPS_BLOG_COMMENT_REPORTED_AS_ABUSIVE').'</p>';
 											} else {
-												$content = $this->p->parse( "\n".stripslashes($reply->content), $this->wikiconfig );
+												$content = $this->p->parse("\n" . stripslashes($reply->content), $this->wikiconfig, false);
 											}
 										?>
 										<li class="comment <?php echo $cls; ?>" id="c<?php echo $reply->id; ?>">
@@ -298,14 +292,17 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 											<div class="comment-content">
 												<p class="comment-title">
 													<strong><?php echo $name; ?></strong> 
-													<a class="permalink" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias.'#c'.$reply->id); ?>" title="<?php echo JText::_('PLG_GROUPS_BLOG_PERMALINK'); ?>">@ <span class="time"><?php echo JHTML::_('date',$reply->created, '%I:%M %p', 0); ?></span> on <span class="date"><?php echo JHTML::_('date',$reply->created, '%d %b, %Y', 0); ?></span></a>
+													<a class="permalink" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'#c'.$reply->id); ?>" title="<?php echo JText::_('PLG_GROUPS_BLOG_PERMALINK'); ?>">
+														<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $reply->created; ?>"><?php echo JHTML::_('date', $reply->created, $this->timeFormat, $this->tz); ?></time></span> 
+														<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $reply->created; ?>"><?php echo JHTML::_('date', $reply->created, $this->dateFormat, $this->tz); ?></time></span>
+													</a>
 												</p>
 												<?php echo $content; ?>
 												
 												<?php if (!$reply->reports) { ?>
 													<p class="comment-options">
 														<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=blog&id='.$reply->id.'&parent='.$this->row->id); ?>">Report abuse</a> | 
-														<a class="reply" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias.'?reply='.$reply->id.'#post-comment'); ?>">Reply</a>
+														<a class="reply" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'?reply='.$reply->id.'#post-comment'); ?>">Reply</a>
 													</p>
 												<?php } ?>
 											</div>
@@ -316,9 +313,7 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 															$name = JText::_('PLG_GROUPS_BLOG_ANONYMOUS');
 															$xuser = "";
 															if (!$response->anonymous) {
-																//$xuser =& JUser::getInstance( $reply->created_by );
-																$xuser = new Hubzero_User_Profile();
-																$xuser->load( $response->created_by );
+																$xuser = Hubzero_User_Profile::getInstance($response->created_by);
 																if (is_object($xuser) && $xuser->get('name')) {
 																	$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$response->created_by).'">'.stripslashes($xuser->get('name')).'</a>';
 																}
@@ -338,7 +333,10 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 															<div class="comment-content">
 																<p class="comment-title">
 																	<strong><?php echo $name; ?></strong> 
-																	<a class="permalink" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias.'#c'.$response->id); ?>" title="<?php echo JText::_('PLG_GROUPS_BLOG_PERMALINK'); ?>">@ <span class="time"><?php echo JHTML::_('date',$response->created, '%I:%M %p', 0); ?></span> on <span class="date"><?php echo JHTML::_('date',$response->created, '%d %b, %Y', 0); ?></span></a>
+																	<a class="permalink" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'#c'.$response->id); ?>" title="<?php echo JText::_('PLG_GROUPS_BLOG_PERMALINK'); ?>">
+																		<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $response->created; ?>"><?php echo JHTML::_('date', $response->created, $this->timeFormat, $this->tz); ?></time></span> 
+																		<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $response->created; ?>"><?php echo JHTML::_('date', $response->created, $this->dateFormat, $this->tz); ?></time></span>
+																	</a>
 																</p>
 																<?php echo $content; ?>
 
@@ -363,13 +361,9 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 				<p class="no-comments">There are no comments at this time.</p>
 			<?php } ?>
 		</div><!-- / .subject -->
-	</div><!-- / .below -->
-	<div class="clear"></div>
-	
-	<a name="post-comment"></a>
-	<h3 class="below_heading">Post a comment</h3>
-	<div class="below section">		
-		<div class="aside">
+		<div class="clear"></div>
+
+		<div class="aside aside-below">
 			<table class="wiki-reference" summary="Wiki Syntax Reference">
 				<caption>Wiki Syntax Reference</caption>
 				<tbody>
@@ -405,24 +399,23 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 			</table>
 		</div><!-- / .aside -->
 	
-		<div class="subject">
+		<div class="subject below">
+			<h3 class="below_heading">
+				<a name="post-comment"></a>
+				Post a comment
+			</h3>
+			
 			<form method="post" action="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias); ?>" id="commentform">
 				<p class="comment-member-photo">
 					<?php
-						if (!$this->juser->get('guest')) {
-							$jxuser = new Hubzero_User_Profile();
-							$jxuser->load( $this->juser->get('id') );
-							$thumb = BlogHelperMember::getMemberPhoto($jxuser, 0);
-						} else {
-							$config =& JComponentHelper::getParams( 'com_members' );
-							$thumb = $config->get('defaultpic');
-							if (substr($thumb, 0, 1) != DS) {
-								$thumb = DS.$dfthumb;
-							}
-							$thumb = BlogHelperMember::thumbit($thumb);
+						$jxuser = Hubzero_User_Profile::getInstance($juser->get('id'));
+						$anon = 1;
+						if (!$juser->get('guest')) 
+						{
+							$anon = 0;
 						}
 					?>
-					<img src="<?php echo $thumb; ?>" alt="" />
+					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, $anon); ?>" alt="" />
 				</p>
 				<fieldset>
 					<?php
@@ -430,23 +423,22 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 							ximport('Hubzero_View_Helper_Html');
 							$name = JText::_('PLG_GROUPS_BLOG_ANONYMOUS');
 							if (!$this->replyto->anonymous) {
-								//$xuser =& JUser::getInstance( $reply->created_by );
-								$xuser = new Hubzero_User_Profile();
-								$xuser->load( $this->replyto->created_by );
+								$xuser = Hubzero_User_Profile::getInstance($this->replyto->created_by);
 								if (is_object($xuser) && $xuser->get('name')) {
-									$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$this->replyto->created_by).'">'.stripslashes($xuser->get('name')).'</a>';
+									$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$this->replyto->created_by).'">'.$this->escape(stripslashes($xuser->get('name'))).'</a>';
 								}
 							}
 					?>
 							<blockquote cite="c<?php echo $this->replyto->id ?>">
 								<p>
 									<strong><?php echo $name; ?></strong> 
-									@ <span class="time"><?php echo JHTML::_('date',$this->replyto->created, '%I:%M %p', 0); ?></span> on <span class="date"><?php echo JHTML::_('date',$this->replyto->created, '%d %b, %Y', 0); ?></span>
+									<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $this->replyto->created; ?>"><?php echo JHTML::_('date', $this->replyto->created, $this->timeFormat, $this->tz); ?></time></span> 
+									<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $this->replyto->created; ?>"><?php echo JHTML::_('date', $this->replyto->created, $this->dateFormat, $this->tz); ?></time></span>
 								</p>
 								<p>
 									<?php 
 										$reply_content = Hubzero_View_Helper_Html::shortenText(stripslashes($this->replyto->content), 300, 0);
-										echo $this->p->parse( "\n".stripslashes($reply_content), $this->wikiconfig );
+										echo $this->p->parse("\n".stripslashes($reply_content), $this->wikiconfig, false);
 									?>
 								</p>
 							</blockquote>
@@ -491,6 +483,5 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 				</fieldset>
 			</form>
 		</div><!-- / .subject -->
-	</div><!-- / .below -->
-	<br class="clear" />
 <?php } //end if allow comments ?>
+</div><!-- /.entry-container -->

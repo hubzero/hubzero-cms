@@ -37,16 +37,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php if ($this->message) { ?>
 	<p class="passed"><?php echo $this->message; ?></p>
 <?php } ?>
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->cn.'&active=blog&task=savesettings'); ?>" method="post" id="hubForm">
-		<div class="explaination">
+	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->cn.'&active=blog&task=savesettings'); ?>" method="post" id="hubForm" class="full">
+		<fieldset class="settings">
+			<legend><?php echo JText::_('Posts'); ?></legend>
 			<p>Privacy settings can be set for individual posts when creating/editing them.</p>
-		</div>
-		<fieldset>
+		</fieldset>
+		<fieldset class="settings">
 			<legend><?php echo JText::_('Blog Settings'); ?></legend>
 
-			<label>
+			<label for="param-posting">
 				Who can post to this blog?
-				<select name="params[posting]">
+				<select name="params[posting]" id="param-posting">
 					<option value="0"<?php if (!$this->config->get('posting')) { echo ' selected="selected"'; }?>>All group members</option>
 					<option value="1"<?php if ($this->config->get('posting') == 1) { echo ' selected="selected"'; }?>>Group managers only</option>
 				</select>
@@ -55,18 +56,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<p class="help">
 				Group managers can add/edit/delete any post. Standard group members can only edit/delete <strong>their own</strong> posts.
 			</p>
-			
-			<label>
+		</fieldset>
+		<fieldset class="settings">
+			<legend><?php echo JText::_('Feeds'); ?></legend>
+
+			<label for="param-feeds_enabled">
 				RSS Feed of entries
-				<select name="params[feeds_enabled]">
+				<select name="params[feeds_enabled]" id="param-feeds_enabled">
 					<option value="0"<?php if (!$this->config->get('feeds_enabled')) { echo ' selected="selected"'; }?>>Disabled</option>
 					<option value="1"<?php if ($this->config->get('feeds_enabled') == 1) { echo ' selected="selected"'; }?>>Enabled</option>
 				</select>
 			</label>
 			
-			<label>
+			<label for="param-feeds_entries">
 				The length of RSS feed entries
-				<select name="params[feed_entries]">
+				<select name="params[feed_entries]" id="param-feeds_entries">
 					<option value="full"<?php if ($this->config->get('feed_entries') == 'full') { echo ' selected="selected"'; }?>>Full</option>
 					<option value="partial"<?php if ($this->config->get('feed_entries') == 'partial') { echo ' selected="selected"'; }?>>Partial</option>
 				</select>

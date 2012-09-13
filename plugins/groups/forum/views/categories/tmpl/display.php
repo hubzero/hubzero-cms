@@ -13,34 +13,17 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$tz = true;
 }
 ?>
-<div id="content-header-extra">
-	<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'); ?>"><?php echo JText::_('&larr; All categories'); ?></a></p>
-</div>
-<div class="main section">
-<?php foreach ($this->notifications as $notification) { ?>
-	<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
-<?php } ?>
-	<div class="aside">
-<?php if ($this->config->get('access-create-thread')) { ?>
-		<div class="container">
-			<h3><?php echo JText::_('Start Your Own'); ?><span class="starter-point"></span></h3>
-<?php if (!$this->category->closed) { ?>
-			<p>
-				<?php echo JText::_('Create your own discussion where you and other users can discuss related topics.'); ?>
-			</p>
-			<p class="add">
-				<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->filters['category'] . '/new'); ?>"><?php echo JText::_('Add Discussion'); ?></a>
-			</p>
-<?php } else { ?>
-			<p class="warning">
-				<?php echo JText::_('This category is closed and no new discussions may be created.'); ?>
-			</p>
-<?php } ?>
-		</div>
-<?php } ?>
-	</div><!-- / .aside -->
 
-	<div class="subject">
+<ul id="page_options">
+	<li>
+		<a class="categories btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'); ?>"><?php echo JText::_('All categories'); ?></a>
+	</li>
+</ul>
+
+<div class="main section">
+	<?php foreach ($this->notifications as $notification) { ?>
+		<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
+	<?php } ?>
 		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'); ?>" method="post">
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
@@ -54,7 +37,13 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 					<input type="hidden" name="action" value="search" />
 				</fieldset>
 			</div><!-- / .container -->
-			
+
+<?php if ($this->category->closed) { ?>
+			<p class="warning">
+				<?php echo JText::_('This category is closed and no new discussions may be created.'); ?>
+			</p>
+<?php } ?>
+
 			<div class="container">
 				<table class="entries">
 					<caption>
@@ -73,10 +62,18 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 				}
 			}
 ?>
-<?php /*if (!$this->category->closed && $this->config->get('access-create-thread')) { ?>
-						<a class="add" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->filters['category'] . '/new'); ?>"><?php echo JText::_('Add Discussion'); ?></a>
-<?php }*/ ?>
 					</caption>
+<?php if (!$this->category->closed) { ?>
+					<tfoot>
+						<tr>
+							<td colspan="<?php echo ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread')) ? '5' : '4'; ?>">
+								<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->filters['category'] . '/new'); ?>">
+									<?php echo JText::_('Add Discussion'); ?>
+								</a>
+							</td>
+						</tr>
+					</tfoot>
+<?php } ?>
 					<tbody>
 <?php
 			if ($this->rows) {
@@ -165,25 +162,19 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 				}
 			} else { ?>
 						<tr>
-							<td><?php echo JText::_('There are currently no discussions.'); ?></td>
+							<td colspan="<?php echo ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread')) ? '5' : '4'; ?>">
+								<?php echo JText::_('There are currently no discussions.'); ?>
+							</td>
 						</tr>
 <?php 		} ?>
 					</tbody>
 				</table>
 <?php 
 			if ($this->pageNav) {
-				// @FIXME: Nick's Fix Based on Resources View
-				$pf = $this->pageNav->getListFooter();
-				//var_dump($pf);
-				$nm = str_replace('com_', '', $this->option);
-				//$pf = str_replace($nm.'/?',$nm.'/'.$this->group->get('cn').'/'.$this->_element.'/?',$pf);
-				echo $pf;
-				//echo $this->pageNav->getListFooter();
-				// @FIXME: End Nick's Fix
+				echo $this->pageNav->getListFooter();
 			}
 ?>
 				<div class="clear"></div>
 			</div><!-- / .container -->
 		</form>
-	</div><!-- /.subject -->
 </div><!-- /.main -->

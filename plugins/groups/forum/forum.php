@@ -101,9 +101,13 @@ class plgGroupsForum extends Hubzero_Plugin
 		{
 			if (!in_array($this_area['name'], $areas)) 
 			{
-				return $arr;
+				$return = 'metadata';
 			}
 		}
+
+		$this->group = $group;
+		$this->database = JFactory::getDBO();
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
 
 		// Determine if we need to return any HTML (meaning this is the active plugin)
 		if ($return == 'html') 
@@ -148,7 +152,6 @@ class plgGroupsForum extends Hubzero_Plugin
 			$this->authorized = $authorized;
 
 			//group vars
-			$this->group = $group;
 			$this->members = $members;
 
 			//option and paging vars
@@ -156,7 +159,6 @@ class plgGroupsForum extends Hubzero_Plugin
 			$this->name = substr($option, 4, strlen($option));
 			$this->limitstart = $limitstart;
 			$this->limit = $limit;
-			$this->database = JFactory::getDBO();
 			
 			$juri = JURI::getInstance();
 			$path = $juri->getPath();
@@ -251,7 +253,6 @@ class plgGroupsForum extends Hubzero_Plugin
 			Hubzero_Document::addPluginScript('groups', 'forum');
 
 			//include 
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'category.php');
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'section.php');
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'attachment.php');
@@ -298,6 +299,14 @@ class plgGroupsForum extends Hubzero_Plugin
 				default: $arr['html'] .= $this->sections(); break;
 			}
 		}
+
+		$tModel = new ForumPost($this->database);
+		
+		$arr['metadata']['count'] = $tModel->getCount(array(
+			'group' => $this->group->get('gidNumber'),
+			'state' => 1,
+			'parent' => 0
+		));
 
 		// Return the output
 		return $arr;

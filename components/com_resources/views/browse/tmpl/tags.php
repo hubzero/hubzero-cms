@@ -89,7 +89,7 @@ foreach ($this->types as $type)
 			<input type="hidden" name="preinput2" id="preinput2" value="<?php echo $this->tag2; ?>" />
 			<div class="clear"></div>
 		</div><!-- / #tagbrowser -->
-		
+	
 		<p id="viewalltools"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&type='.$this->filters['type']); ?>"><?php echo JText::_('COM_RESOURCES_VIEW_MORE'); ?></a></p>
 		<div class="clear"></div>
 
@@ -113,7 +113,8 @@ if ($this->supportedtag) {
 <?php
 }
 ?>
-
+	</div>
+	<div class="below section">
 <?php
 if ($this->results) {
 ?>
