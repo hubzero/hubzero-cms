@@ -335,6 +335,8 @@
 	#page_header #profile-privacy {
 		color:transparent;
 		position:absolute;
+		top:25px;
+		left:20px;
 		width:30px;
 		height:25px;
 		border:none;
