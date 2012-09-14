@@ -51,6 +51,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 			echo "<h5>" . JText::_('PLG_MEMBERS_ACCOUNT_ACTIVE_PROVIDERS') . ":</h5>";
 			foreach($this->hzalaccounts as $hzala)
 			{
+				// Get the display name for the current plugin being used
+				$paramsClass = 'JParameter';
+				if (version_compare(JVERSION, '1.6', 'ge'))
+				{
+					$paramsClass = 'JRegistry';
+				}
+				$plugin       = JPluginHelper::getPlugin('authentication', $hzala['auth_domain_name']);
+				$pparams      = new $paramsClass($plugin->params);
+				$display_name = $pparams->get('display_name', ucfirst($hzala['auth_domain_name']));
 ?>
 				<div class="account-group active" id="<?php echo $hzala['auth_domain_name']; ?>">
 					<div class="x"><a title="<?php echo JText::_('PLG_MEMBERS_ACCOUNT_REMOVE_ACCOUNT'); ?>" href="<?php 
@@ -60,7 +69,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 							'&active=account&action=unlink&hzal_id=' .
 							$hzala['id']); ?>">x</a></div>
 					<p>
-						<?php echo JText::_('PLG_MEMBERS_ACCOUNT_ACCOUNT_TYPE'); ?>: <?php echo $hzala['auth_domain_name']; ?><br />
+						<?php echo JText::_('PLG_MEMBERS_ACCOUNT_ACCOUNT_TYPE'); ?>: <?php echo $display_name; ?><br />
 						<?php echo JText::_('PLG_MEMBERS_ACCOUNT_ACCOUNT_ID'); ?>: <?php echo $hzala['username']; ?>
 					</p>
 				</div>
@@ -75,11 +84,20 @@ defined('_JEXEC') or die( 'Restricted access' );
 			echo '<h5>' . JText::_('PLG_MEMBERS_ACCOUNT_AVAILABLE_PROVIDERS') . ':</h5>';
 			foreach($this->domains_unused as $domain)
 			{
+				// Get the display name for the current plugin being used
+				$paramsClass = 'JParameter';
+				if (version_compare(JVERSION, '1.6', 'ge'))
+				{
+					$paramsClass = 'JRegistry';
+				}
+				$plugin       = JPluginHelper::getPlugin('authentication', $domain->name);
+				$pparams      = new $paramsClass($plugin->params);
+				$display_name = $pparams->get('display_name', ucfirst($domain->name));
 ?>
 				<a href="<?php echo JRoute::_('index.php?option=com_user&view=login&authenticator=' . $domain->name); ?>">
 					<div class="account-group inactive" id="<?php echo $domain->name; ?>">
 						<p>
-							<?php echo JText::_('PLG_MEMBERS_ACCOUNT_ACCOUNT_TYPE'); ?>: <?php echo $domain->name; ?><br />
+							<?php echo JText::_('PLG_MEMBERS_ACCOUNT_ACCOUNT_TYPE'); ?>: <?php echo $display_name; ?><br />
 							<?php echo JText::_('PLG_MEMBERS_ACCOUNT_CLICK_TO_LINK'); ?>
 						</p>
 					</div>

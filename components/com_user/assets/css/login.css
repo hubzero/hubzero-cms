@@ -18,7 +18,7 @@
 	position: relative;
 }
 #authentication.multiAuth {
-	width: 600px;
+	width: 650px;
 	position: relative;
 }
 #authentication.multiAuth #inner:before {
@@ -27,7 +27,7 @@
 	padding: 10px;
 	font-style: italic;
 	position: absolute;
-	left: 305px;
+	left: 330px;
 	top: 130px;
 	background: #FFF;
 	z-index: 500;
@@ -41,9 +41,8 @@
 	margin-top: 0;
 }
 #authentication .two {
-	width: 50%;
 	margin: 0;
-	width: 300px;
+	width: 325px;
 }
 p.callToAction {
 	text-align: center;

@@ -43,7 +43,7 @@
 	white-space: nowrap;
 	word-wrap: normal;
 	position: relative;
-	min-width: 175px;
+	min-width: 200px;
 }
 #account-suggestions a,
 #members-account-section a {
