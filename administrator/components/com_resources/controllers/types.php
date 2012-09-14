@@ -76,7 +76,7 @@ class ResourcesControllerTypes extends Hubzero_Controller
 		$this->view->filters['category'] = $app->getUserStateFromRequest(
 			$this->_option . '.types.category',
 			'category',
-			0,
+			27,
 			'int'
 		);
 

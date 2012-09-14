@@ -175,6 +175,10 @@ class ResourcesType extends JTable
 		{
 			$query .= "WHERE category=" . $filters['category'] . " ";
 		}
+		else 
+		{
+			$query .= "WHERE category!=0 ";
+		}
 		$query .= "ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'] . " ";
 		$query .= "LIMIT " . $filters['start'] . "," . $filters['limit'];
 
