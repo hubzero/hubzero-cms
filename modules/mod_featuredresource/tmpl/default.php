@@ -38,7 +38,6 @@ if ($this->getError()) { ?>
 		ximport('Hubzero_View_Helper_Html');
 ?>
 	<div class="<?php echo $this->cls; ?>">
-		<h3><?php echo JText::_('MOD_FEATUREDRESOURCE_FEATURED') . ' ' . $this->row->typetitle; ?></h3>
 	<?php if (is_file(JPATH_ROOT . $this->thumb)) { ?>
 		<p class="featured-img">
 			<a href="<?php echo JRoute::_('index.php?option=com_resources&id=' . $this->id); ?>">
@@ -55,7 +54,13 @@ if ($this->getError()) { ?>
 		<?php } ?>
 		</p>
 	</div>
-<?php
+<?php } else { ?>
+	<div class="<?php echo $this->cls; ?>">
+		<p>
+			<?php echo JText::_('MOD_FEATUREDRESOURCE_NO_RESULTS'); ?>
+		</p>
+	</div>
+<?php 
 	}
 }
 ?>

@@ -272,9 +272,13 @@ class modFeaturedresource extends JObject
 			$this->id    = $id;
 			$this->thumb = $thumb;
 			$this->row   = $row;
-
-			require(JModuleHelper::getLayoutPath($this->module->module));
 		}
+		else 
+		{
+			$this->row = null;
+		}
+
+		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 
 	/**
