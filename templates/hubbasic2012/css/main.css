@@ -956,6 +956,14 @@
 		border-bottom: 1px dotted #e4e4e4;
 		/*border-bottom: 1px dashed #bAbAbA;*/
 	}
+	/*body #page_container {
+		background-color: transparent;
+	}
+	body #page_header {
+		background: #fff;
+		border-bottom: 1px dotted #e4e4e4;
+		padding-bottom: 25px;
+	}*/
 	.com_content .content-header h2,
 	#content-header h2 {
 		margin: 0;
@@ -1124,6 +1132,10 @@
 	#sub-menu li.active a,
 	#sub-menu li.active a:hover {
 		background: #f9f9f9 url("../images/layout/noise-lite.png");
+	}
+	#page_container #sub-menu li.active a,
+	#page_container #sub-menu li.active a:hover {
+		background: #fff;
 	}
 /* Pagination */
 	.list-footer .page {
@@ -1669,6 +1681,7 @@
 	.btn.status,
 	.btn.search,
 	.btn.message,
+	.btn.nav_wishlist,
 	.btn.archive {
 		padding: 0.4em 0.91em 0.4em 2.91em;
 	}
@@ -2545,8 +2558,8 @@
 	}
 /* AJAX message box */
 	#sbox-content {
-		background-color: #f0f0f0;
-		box-shadow: 0 0 0 10px rgba(0, 0, 0, 0.2);
+		/*background-color: #f0f0f0;
+		box-shadow: 0 0 0 10px rgba(0, 0, 0, 0.2);*/
 	}
 	#sbox-content #content-header,
 	#sbox-content .explaination,

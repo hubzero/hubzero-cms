@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /* Edit Wish List Settings */
 
@@ -93,7 +93,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			if ($wishlist->public==1) {
 				echo ' checked="checked"';
 			}
-			if($wishlist->category=='resource' or ($wishlist->category=='general' && $wishlist->referenceid=='1')) {
+			if ($wishlist->category=='resource' or ($wishlist->category=='general' && $wishlist->referenceid=='1')) {
 				echo ' disabled="disabled"';
 			} ?> /> <?php echo JText::_('WISHLIST_PUBLIC'); ?>
 
@@ -101,7 +101,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			if ($wishlist->public==0) {
 				echo ' checked="checked"';
 			}
-			if($wishlist->category=='resource' or ($wishlist->category=='general' && $wishlist->referenceid=='1')) {
+			if ($wishlist->category=='resource' or ($wishlist->category=='general' && $wishlist->referenceid=='1')) {
 				echo ' disabled="disabled"';
 			} ?> /> <?php echo JText::_('WISHLIST_PRIVATE'); ?>
 					</label>
@@ -128,141 +128,164 @@ defined('_JEXEC') or die( 'Restricted access' );
 			$allmembers = array();
 			if (count($wishlist->groups)>0) {
 				$k=1;
-				for ($i=0, $n=count( $wishlist->groups ); $i < $n; $i++) {
-				$instance = Hubzero_Group::getInstance($wishlist->groups[$i]);
-				$cn = $instance->get('cn');
-				$members = $instance->get('members');
-				$managers = $instance->get('managers');
-				$members = array_merge($members, $managers);
-				$members = array_unique($members);
+				for ($i=0, $n=count($wishlist->groups); $i < $n; $i++) 
+				{
+					$instance = Hubzero_Group::getInstance($wishlist->groups[$i]);
+					$cn = $instance->get('cn');
+					$members = $instance->get('members');
+					$managers = $instance->get('managers');
+					$members = array_merge($members, $managers);
+					$members = array_unique($members);
 
-				$allmembers = array_merge($allmembers, $members);
-				$html .= "\t" . ' 			<tr>' . "\n";
-				$html .= "\t" . ' 			 <td>'.$k.'.</td>' . "\n";
-				$html .= "\t" . ' 			 <td>'.$cn.'</td>' . "\n";
-				$html .= "\t" . ' 			 <td>'.count($members).'</td>' . "\n";
-				$html .= "\t" . ' 			 <td>';
-				$html .= ($n>1 && !in_array($wishlist->groups[$i], $wishlist->nativegroups)) ? '<a href="'.JRoute::_('index.php?option='.$this->option . '&task=savesettings').'?listid='.$wishlist->id . '&action=delete' . '&group='.$wishlist->groups[$i].'" class="delete">'.JText::_('WISHLIST_OPTION_REMOVE').'</a>' : '' ;
-				$html .= "\t" . '			 </td>' . "\n";
-				$html .= "\t" . ' 			</tr>' . "\n";
-				$k++;
-				}
-			}
-			else {
-				$html .= "\t" . ' 			<tr>' . "\n";
-				$html .= "\t" . ' 			 <td colspan="4">'.JText::_('WISHLIST_NO_OWNER_GROUPS_FOUND').'.</td>' . "\n";
-				$html .= "\t" . ' 			</tr>' . "\n";
-			}
-			$html .= "\t" . ' 		</tbody>' . "\n";
-			$html .= "\t" . '	</table></div>' . "\n";
-			$html .= "\t" . '	 <label>'.JText::_('WISHLIST_SETTINGS_ADD_GROUPS').': ' . "\n";
-			$html .= "\t" . '	 	<input name="newgroups"  type="text" value="" />' . "\n";
-			$html .= "\t" . '	    <span>'.JText::_('WISHLIST_GROUP_HINT').'</span></label>' . "\n";
-			$html .= "\t" . '	 </fieldset>' . "\n";
-			$html .= "\t" . '	 <div class="clear"></div>' . "\n";
-			$html .= "\t" . '	 <div class="explaination">' . "\n";
-			$html .= "\t" . '	 <p>'.JText::_('WISHLIST_INDIVIDUALS_HINT').'</p>' . "\n";
-			$html .= "\t" . '	 </div>' . "\n";
-			$html .= "\t" . '	 <fieldset>' . "\n";
-			$html .= "\t" . '	 <legend>'.JText::_('WISHLIST_INDIVIDUALS').'</legend>' . "\n";
-			$html .= "\t" . '	<div class="field-wrap"><table class="tktlist">' . "\n";
-			$html .= "\t" . ' 		<thead>' . "\n";
-			$html .= "\t" . ' 			<tr>' . "\n";
-			$html .= "\t" . ' 			 <th style="width:20px;"></th>' . "\n";
-			$html .= "\t" . ' 			 <th>'.JText::_('WISHLIST_IND_NAME').'</th>' . "\n";
-			$html .= "\t" . ' 			 <th>'.JText::_('WISHLIST_IND_LOGIN').'</th>' . "\n";
-			$html .= "\t" . ' 			 <th style="width:80px;">'.JText::_('WISHLIST_GROUP_OPTIONS').'</th>' . "\n";
-			$html .= "\t" . ' 			</tr>' . "\n";
-			$html .= "\t" . '		</thead>' . "\n";
-			$html .= "\t" . '		<tbody>' . "\n";
-
+					$allmembers = array_merge($allmembers, $members);
+			?>
+								<tr>
+									<td><?php echo $k; ?>.</td>
+									<td><?php echo $cn; ?></td>
+									<td><?php echo count($members); ?></td>
+									<td>
+										<?php echo ($n>1 && !in_array($wishlist->groups[$i], $wishlist->nativegroups)) ? '<a href="'.JRoute::_('index.php?option='.$this->option . '&task=savesettings&listid='.$wishlist->id . '&action=delete' . '&group='.$wishlist->groups[$i]).'" class="delete">'.JText::_('WISHLIST_OPTION_REMOVE').'</a>' : '' ; ?>
+									</td>
+								</tr>
+				
+				<?php 
+					$k++;
+				} 
+				?>
+			<?php } else { ?>
+								<tr>
+									<td colspan="4"><?php echo JText::_('WISHLIST_NO_OWNER_GROUPS_FOUND'); ?>.</td>
+								</tr>
+			<?php } ?>
+							</tbody>
+						</table>
+					</div>
+					
+					<label>
+						<?php echo JText::_('WISHLIST_SETTINGS_ADD_GROUPS'); ?>: 
+						<input name="newgroups"  type="text" value="" />
+						<span><?php echo JText::_('WISHLIST_GROUP_HINT'); ?></span>
+					</label>
+				</fieldset>
+				<div class="clear"></div>
+				
+				<div class="explaination">
+					<p><?php echo JText::_('WISHLIST_INDIVIDUALS_HINT'); ?></p>
+				</div>
+				<fieldset>
+					<legend><?php echo JText::_('WISHLIST_INDIVIDUALS'); ?></legend>
+					<div class="field-wrap">
+						<table class="tktlist">
+							<thead>
+								<tr>
+									<th style="width:20px;"></th>
+									<th><?php echo JText::_('WISHLIST_IND_NAME'); ?></th>
+									<th><?php echo JText::_('WISHLIST_IND_LOGIN'); ?></th>
+									<th style="width:80px;"><?php echo JText::_('WISHLIST_GROUP_OPTIONS'); ?></th>
+								</tr>
+							</thead>
+							<tbody>
+					<?php 
 			$allmembers = array_unique($allmembers);
 
 			// if we have people outside of groups
-			if(count($wishlist->owners) > count($allmembers)) {
+			if (count($wishlist->owners) > count($allmembers)) {
 				$k=1;
-				for ($i=0, $n=count( $wishlist->owners ); $i < $n; $i++) {
-					if(!in_array($wishlist->owners[$i], $allmembers)) {
-					$kuser =& Hubzero_User_Profile::getInstance ( $wishlist->owners[$i]);
-					$html .= "\t" . ' 			<tr>' . "\n";
-					$html .= "\t" . ' 			 <td>'.$k.'.</td>' . "\n";
-					$html .= "\t" . ' 			 <td>'.$kuser->get('name').'</td>' . "\n";
-					$html .= "\t" . ' 			 <td>'.$kuser->get('username').'</td>' . "\n";
-					$html .= "\t" . ' 			 <td>';
-					$html .= ($n> 1 && !in_array($wishlist->owners[$i], $wishlist->nativeowners))  ? '<a href="'.JRoute::_('index.php?option='.$this->option . '&task=savesettings').'?listid='.$wishlist->id . '&action=delete' . '&user='.$wishlist->owners[$i].'" class="delete">'.JText::_('WISHLIST_OPTION_REMOVE').'</a>' : '' ;
-					$html .= "\t" . '			 </td>' . "\n";
-					$html .= "\t" . ' 			</tr>' . "\n";
-					$k++;
+				for ($i=0, $n=count($wishlist->owners); $i < $n; $i++) {
+					if (!in_array($wishlist->owners[$i], $allmembers)) { 
+						$kuser =& Hubzero_User_Profile::getInstance($wishlist->owners[$i]);
+					?>
+								<tr>
+									<td><?php echo $k; ?>.</td>
+									<td><?php echo $kuser->get('name'); ?></td>
+									<td><?php echo $kuser->get('username'); ?></td>
+									<td>
+										<?php echo ($n> 1 && !in_array($wishlist->owners[$i], $wishlist->nativeowners))  ? '<a href="'.JRoute::_('index.php?option='.$this->option . '&task=savesettings&listid='.$wishlist->id . '&action=delete' . '&user='.$wishlist->owners[$i]).'" class="delete">'.JText::_('WISHLIST_OPTION_REMOVE').'</a>' : '' ; ?>
+									</td>
+								</tr>
+					<?php
+						$k++;
 					}
 				}
-			}
-			else {
-				$html .= "\t" . ' 			<tr>' . "\n";
-				$html .= "\t" . ' 			 <td colspan="4">'.JText::_('WISHLIST_NO_IND_FOUND').'</td>' . "\n";
-				$html .= "\t" . ' 			</tr>' . "\n";
-			}
-			$html .= "\t" . ' 		</tbody>' . "\n";
-			$html .= "\t" . '	</table></div>' . "\n";
-			$html .= "\t" . '	 <label>'.JText::_('WISHLIST_ADD_IND').': ' . "\n";
-			$html .= "\t" . '	 	<input name="newowners" id="newowners" type="text" value="" />' . "\n";
-			$html .= "\t" . '	    <span>'.JText::_('WISHLIST_ENTER_LOGINS').'</span></label>' . "\n";
-			$html .= "\t" . '	 </fieldset>' . "\n";
+			} else { ?>
+								<tr>
+									<td colspan="4"><?php echo JText::_('WISHLIST_NO_IND_FOUND'); ?></td>
+								</tr>
+			<?php } ?>
+							</tbody>
+						</table>
+					</div>
+					
+					<label>
+						<?php echo JText::_('WISHLIST_ADD_IND'); ?>: 
+						<input name="newowners" id="newowners" type="text" value="" />
+						<span><?php echo JText::_('WISHLIST_ENTER_LOGINS'); ?></span>
+					</label>
+				</fieldset>
+				<div class="clear"></div>
 
-			if($wishlist->allow_advisory) {
-				$html .= "\t" . '	 <div class="clear"></div>' . "\n";
-				$html .= "\t" . '	 <div class="explaination">' . "\n";
-				$html .= "\t" . '	 <p>'.JText::_('WISHLIST_ADD_ADVISORY_INFO').'</p>' . "\n";
-				$html .= "\t" . '	 </div>' . "\n";
-				$html .= "\t" . '	 <fieldset>' . "\n";
-				$html .= "\t" . '	 <legend>'.JText::_('WISHLIST_ADVISORY').'</legend>' . "\n";
-				$html .= "\t" . '	<div class="field-wrap"><table class="tktlist">' . "\n";
-				$html .= "\t" . ' 		<thead>' . "\n";
-				$html .= "\t" . ' 			<tr>' . "\n";
-				$html .= "\t" . ' 			 <th style="width:20px;"></th>' . "\n";
-				$html .= "\t" . ' 			 <th>'.JText::_('WISHLIST_IND_NAME').'</th>' . "\n";
-				$html .= "\t" . ' 			 <th>'.JText::_('WISHLIST_IND_LOGIN').'</th>' . "\n";
-				$html .= "\t" . ' 			 <th style="width:80px;">'.JText::_('WISHLIST_GROUP_OPTIONS').'</th>' . "\n";
-				$html .= "\t" . ' 			</tr>' . "\n";
-				$html .= "\t" . '		</thead>' . "\n";
-				$html .= "\t" . '		<tbody>' . "\n";
-
+		<?php if ($wishlist->allow_advisory) { ?>
+				<div class="explaination">
+					<p><?php echo JText::_('WISHLIST_ADD_ADVISORY_INFO'); ?></p>
+				</div>
+				<fieldset>
+					<legend><?php echo JText::_('WISHLIST_ADVISORY'); ?></legend>
+					<div class="field-wrap">
+						<table class="tktlist">
+							<thead>
+								<tr>
+									<th style="width:20px;"></th>
+									<th><?php echo JText::_('WISHLIST_IND_NAME'); ?></th>
+									<th><?php echo JText::_('WISHLIST_IND_LOGIN'); ?></th>
+									<th style="width:80px;"><?php echo JText::_('WISHLIST_GROUP_OPTIONS'); ?></th>
+								</tr>
+							</thead>
+							<tbody>
+						<?php
 				// if we have people outside of groups
-				if(count($wishlist->advisory) > 0) {
+				if (count($wishlist->advisory) > 0) 
+				{
 					$k=1;
 
-					for ($i=0, $n=count( $wishlist->advisory ); $i < $n; $i++) {
-						if(!in_array($wishlist->advisory[$i], $allmembers)) {
-						$quser =& Hubzero_User_Profile::getInstance($wishlist->advisory[$i]);
-						$html .= "\t" . ' 			<tr>' . "\n";
-						$html .= "\t" . ' 			 <td>'.$k.'.</td>' . "\n";
-						$html .= "\t" . ' 			 <td>'.$quser->get('name').'</td>' . "\n";
-						$html .= "\t" . ' 			 <td>'.$quser->get('username').'</td>' . "\n";
-						$html .= "\t" . ' 			 <td>';
-						$html .=  '<a href="'.JRoute::_('index.php?option='.$this->option . '&task=savesettings').'?listid='.$wishlist->id . '&action=delete' . '&user='.$wishlist->advisory[$i].'" class="delete">'.JText::_('WISHLIST_OPTION_REMOVE').'</a>' ;
-						$html .= "\t" . '			 </td>' . "\n";
-						$html .= "\t" . ' 			</tr>' . "\n";
-						$k++;
+					for ($i=0, $n=count($wishlist->advisory); $i < $n; $i++) 
+					{
+						if (!in_array($wishlist->advisory[$i], $allmembers)) 
+						{
+							$quser =& Hubzero_User_Profile::getInstance($wishlist->advisory[$i]);
+						?>
+								<tr>
+									<td><?php echo $k; ?>.</td>
+									<td><?php echo $quser->get('name'); ?></td>
+									<td><?php echo $quser->get('username'); ?></td>
+									<td>
+										<a href="<?php echo JRoute::_('index.php?option='.$this->option . '&task=savesettings&listid='.$wishlist->id . '&action=delete' . '&user='.$wishlist->advisory[$i]); ?>" class="delete"><?php echo JText::_('WISHLIST_OPTION_REMOVE'); ?></a>
+									</td>
+								</tr>
+						<?php
+							$k++;
 						}
 					}
-				}
-				else {
-					$html .= "\t" . ' 			<tr>' . "\n";
-					$html .= "\t" . ' 			 <td colspan="4">'.JText::_('WISHLIST_NO_ADVISORY_FOUND').'</td>' . "\n";
-					$html .= "\t" . ' 			</tr>' . "\n";
-				}
-				$html .= "\t" . ' 		</tbody>' . "\n";
-				$html .= "\t" . '	</table></div>' . "\n";
-				$html .= "\t" . '	 <label>'.JText::_('WISHLIST_ADD_ADVISORY_MEMBERS').': ' . "\n";
-				$html .= "\t" . '	 	<input name="newadvisory" id="newadvisory" type="text" value="" />' . "\n";
-				$html .= "\t" . '	    <span>'.JText::_('WISHLIST_ENTER_LOGINS').'</span></label>' . "\n";
-				if($wishlist->category=='resource' or ($wishlist->category=='general' && $wishlist->referenceid=='1')) {
-					$html .= "\t" . '    <input type="hidden" name="public" value="'.$wishlist->public.'" />' . "\n";
-				}
-				$html .= "\t" . '	 </fieldset>' . "\n";
-			} // -- end if allow advisory 
-			echo $html;
-			?>
+				} else { ?>
+								<tr>
+									<td colspan="4"><?php echo JText::_('WISHLIST_NO_ADVISORY_FOUND'); ?></td>
+								</tr>
+				<?php } ?>
+							</tbody>
+						</table>
+					</div>
+					
+					<label>
+						<?php echo JText::_('WISHLIST_ADD_ADVISORY_MEMBERS'); ?>: 
+						<input name="newadvisory" id="newadvisory" type="text" value="" />
+						<span><?php echo JText::_('WISHLIST_ENTER_LOGINS'); ?></span>
+					</label>
+				<?php if ($wishlist->category=='resource' or ($wishlist->category=='general' && $wishlist->referenceid=='1')) { ?>
+					<input type="hidden" name="public" value="<?php echo $wishlist->public; ?>" />
+				<?php } ?>
+				</fieldset>
 				<div class="clear"></div>
+		<?php } // -- end if allow advisory ?>
+
 				<p class="submit">
 					<input type="submit" name="submit" value="<?php echo JText::_('SAVE'); ?>" />
 					<span class="cancelaction">
