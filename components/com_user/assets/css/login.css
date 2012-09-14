@@ -179,13 +179,13 @@ p.callToAction {
 /* IE 7 hacks */
 html>body #authentication #credentials-hub input[type="text"],
 html>body #authentication #credentials-hub input[type="password"] {
-	*width: 168px;
+	*width: 193px;
 }
 html>body #authentication.multiAuth #credentials-hub input[type="text"],
 html>body #authentication.multiAuth #credentials-hub input[type="password"] {
-	*width: 118px;
+	*width: 143px;
 }
 html>body #authentication.multiAuth #providers a {
 	*padding-left: 1em;
-	*width: 218px;
+	*width: 243px;
 }
