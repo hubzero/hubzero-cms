@@ -68,7 +68,7 @@ if ($canDo->get('core.delete'))
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="4"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="5"><?php echo $this->pageNav->getListFooter(); ?></td>
 			</tr>
 		</tfoot>
 		<tbody>

@@ -152,9 +152,13 @@ class ResourcesType extends JTable
 	public function getAllCount($filters=array())
 	{
 		$query = "SELECT count(*) FROM $this->_tbl";
-		if (isset($filters['category']) && $filters['category'] != 0) 
+		if (isset($filters['category']) && $filters['category']) 
 		{
 			$query .= " WHERE category=" . $filters['category'];
+		}
+		else 
+		{
+			$query .= " WHERE category!=0 ";
 		}
 
 		$this->_db->setQuery($query);
@@ -171,7 +175,7 @@ class ResourcesType extends JTable
 	public function getAllTypes($filters=array())
 	{
 		$query  = "SELECT * FROM $this->_tbl ";
-		if (isset($filters['category']) && $filters['category'] != 0) 
+		if (isset($filters['category']) && $filters['category']) 
 		{
 			$query .= "WHERE category=" . $filters['category'] . " ";
 		}
