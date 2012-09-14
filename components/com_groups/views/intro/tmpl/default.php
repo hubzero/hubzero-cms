@@ -38,7 +38,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li class="last"><a class="add" href="<?php echo JRoute::_('index.php?option='.$option.'&task=new'); ?>"><?php echo JText::_('Create User Group'); ?></a></li>
+		<li class="last"><a class="add btn" href="<?php echo JRoute::_('index.php?option='.$option.'&task=new'); ?>"><?php echo JText::_('Create User Group'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 

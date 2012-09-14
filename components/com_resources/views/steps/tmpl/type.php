@@ -39,7 +39,7 @@ $jconfig =& JFactory::getConfig();
 
 <div id="content-header-extra">
 	<p>
-		<a class="main-page" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">
+		<a class="main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">
 			<?php echo JText::_('Main page'); ?>
 		</a>
 	</p>

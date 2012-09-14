@@ -8,7 +8,7 @@ ximport('Hubzero_User_Profile_Helper');
 	<h2><?php echo JText::_('COM_FORUM'); ?></h2>
 </div>
 <div id="content-header-extra">
-	<p><a class="categories" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('All categories'); ?></a></p>
+	<p><a class="categories btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('All categories'); ?></a></p>
 </div>
 <div class="clear"></div>
 
@@ -23,7 +23,7 @@ ximport('Hubzero_User_Profile_Helper');
 <?php } else { ?>
 		<?php echo JText::_('COM_FORUM_NEW_CATEGORY'); ?>
 <?php } ?>
-	</h3>			
+	</h3>
 	<div class="aside">
 		<table class="wiki-reference" summary="<?php echo JText::_('COM_FORUM_WIKI_SYNTAX_REFERENCE'); ?>">
 			<caption><?php echo JText::_('COM_FORUM_WIKI_SYNTAX_REFERENCE'); ?></caption>

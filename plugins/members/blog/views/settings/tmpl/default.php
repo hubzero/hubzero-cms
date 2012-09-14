@@ -29,6 +29,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
+<ul id="page_options">
+	<li>
+		<a class="archive btn" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->member->get('uidNumber').'&active=blog'); ?>">
+			<?php echo JText::_('Archive'); ?>
+		</a>
+	</li>
+</ul>
+
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>

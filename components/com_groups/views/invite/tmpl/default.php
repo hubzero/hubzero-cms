@@ -40,7 +40,7 @@ $dispatcher =& JDispatcher::getInstance();
 
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li class="last"><a class="group" href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn')); ?>"><?php echo JText::_('Back to Group'); ?></a></li>
+		<li class="last"><a class="group btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn')); ?>"><?php echo JText::_('Back to Group'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 

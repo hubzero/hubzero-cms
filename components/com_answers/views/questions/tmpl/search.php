@@ -46,7 +46,9 @@ if (!$this->filters['filterby'] == 'none') {
 </div><!-- / #content-header -->
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li class="last"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=new'); ?>" class="add"><span><?php echo JText::_('COM_ANSWERS_NEW_QUESTION'); ?></span></a></li>
+		<li class="last">
+			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=new'); ?>" class="add btn"><span><?php echo JText::_('COM_ANSWERS_NEW_QUESTION'); ?></span></a>
+		</li>
 	</ul>
 </div><!-- / #content-header-extra -->
 <div class="clear"></div>

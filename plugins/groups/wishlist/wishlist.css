@@ -5,267 +5,127 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-.group_wishlist .subject {
-	border:none;
-	background:none;
-	border-bottom:0;
-	padding:0;
-	}
-.group_wishlist .subject:after {
-	clear:none;
-	}
-.group_wishlist .container {
-	background-color:#f4f4f4;
-	border:10px solid #f4f4f4;
-	}
-.group_wishlist .main {
-	border:none;
-	}
-.group_wishlist .section {
-	padding:0;
-	}
-	
-/* Entries Table */
-.entries {
-	border: 2px solid #e9e9e9;
-    border-top: none;
-    background-color: #fff;
-    margin: 0;
-    padding: 0;
-    }
-.entries caption {
-	font-size: 115%;
-	background: #f8f8f8 url('../../../components/com_groups/assets/img/light-stripes.png');
-    border: 2px solid #e9e9e9;
-    border-bottom: 1px solid #e9e9e9;
-    margin-right: -2px; /* Fix 2px issue */
-    }
-.container-block h4 span,
-.entries caption span {
-	color: #aaa;
-    }
-.entries caption span a {
-	font-size:0.9em;
-}
-
-/* tbody */
-.entries tbody td {
-	text-align: left;
-    border-bottom: 1px solid #eee;
-    padding: 10px;
-    background-color:#fff;
-	position:relative;
-	display:block;
-	overflow:hidden;
-    }
-.entries tbody th {
-	width: 50px;
-    padding: 10px;
-    text-align: center;
-    border-bottom: 1px solid #eee;
-    }
-
-/* Wishlist details */
-/*
-.entries .comment-details {
-	margin:0;
-	float:left;
-	font-size:11px;
-	text-align:right;
-	width:7%
-	}
-.entries .comment-details span {
-	display:block;
-	height:45px;
-	}
-.entries .comment-details .wish_outstanding {
-	background:url('../../../components/com_wishlist/images/wishbone.png') no-repeat 5px right;
-	}
-.entries .comment-details .wish_unranked {
-	background:url('../../../components/com_wishlist/images/wishbone_new.png') no-repeat top right;
-	}
-.entries .comment-details .wish_granted {
-	background:url('../../../components/com_wishlist/images/wishbone_granted.png') no-repeat top right;
-	}
-*/
-/* wish left */
-.entries .ensemble_left {
-	float:left;
-	width:60%;
-	}
-.entries .ensemble_left p {
-	padding-left:45px;
-	}
-.entries .ensemble_left .wishcontent {
-	margin:0;
-	}
-.entries .ensemble_left .wishcontent a {
-	font-weight:bold;
-	}
-.entries .ensemble_left .proposed {
-	font-size:11px;
-	color:#777;
+/* Sections */
+	.group_wishlist .section {
+		padding: 0;
 	}
 
-.entries .wish_outstanding {
-	background:url('../../../components/com_wishlist/images/wishbone.png') no-repeat 20px 5px;
+/* Entries (table) */
+	.entry-details a {
+		color: #666;
+		border-bottom: 1px dotted #666;
 	}
-.entries .wish_unranked {
-	background:url('../../../components/com_wishlist/images/wishbone_new.png') no-repeat -30px 5px;
-	}
-.entries .grantedwish td {
-	background:#f5f5f5;
-	}
-.entries .wish_granted {
-	background:url('../../../components/com_wishlist/images/wishbone_granted.png') no-repeat -30px 5px;
+	.entry-details a:hover {
+		color: #000;
+		border-bottom: 1px solid #333;
 	}
 
-/* wish right */
-.entries .ensemble_right {
-	width:265px;
-	position:absolute;
-	top:10px;
-	right:10px;
-	}
-.entries .ensemble_right div {
+	.entry-comments {
+		padding-right: 16px;
+		background: url("/components/com_wishlist/assets/img/bullets_small.png") no-repeat right -428px;
 	}
 
-/*ranking */
-.entries .ensemble_right .wishranking {
-	margin-top:10px;
-	text-align:center;
-	border-right:1px solid #dedede;
-    border-left:1px solid #dedede;
-	float:left;
-	width:98px;
-    }
-.entries .ensemble_right .wishranking .rankit {
-	color:#f00;
+	.ideas .entry-id:before {
+		content: "\f078";
 	}
-.entries .ensemble_right .wishranking span {
-	display:block;
-	color:#666666;
+	.ideas .entry-id {
+		display: none;
 	}
-.entries .ensemble_right .wishranking .special {
-	display:block;
-	font-size:xx-small;
-	text-transform:uppercase;
+	.ideas tbody th {
+		background: url("/components/com_wishlist/assets/img/lightbulb_off.png") right 15px no-repeat;
 	}
-.entries .ensemble_right .wishranking .accepted {
-	background:#E7FDED;
-	color:#0da538;
-	font-weight:bold;
+	/* Accepted */
+	.ideas tbody tr.accepted {
+		background: #ffe;
 	}
-.entries .ensemble_right .wishranking .rejected {
-	background:#FCF5F5;
-	color:#F00;
-	font-weight:bold;
-	}	
-.entries .ensemble_right .wishranking .priority_number {
-	font-weight:bold;
-	display:inline;
-	color:#000;
+	.ideas tbody tr.accepted th {
+		background: url("/components/com_wishlist/assets/img/lightbulb.png") right 15px no-repeat;
 	}
-.entries .ensemble_right .wishranking .mini {
-	font-size:90%;
+	/* Granted */
+	.ideas tbody tr.granted th {
+		background: url("/components/com_wishlist/assets/img/lightbulb_granted.png") right 15px no-repeat;
 	}
-	
-	
-/* voting */
-.entries .ensemble_right .voting {
-	float:left;
-	width:100px;
-	margin:10px 20px 0 20px;
+	.ideas tbody tr.granted {
+		background: #f7fef4;
 	}
-.entries .ensemble_right .voting .thumbsvote {
-	color:#666;
+	/* Rejected */
+	.ideas tbody tr.rejected th {
+		background: url("/components/com_wishlist/assets/img/lightbulb_rejected.png") right 15px no-repeat;
 	}
-
-.entries .ensemble_right .voting .gooditem a {
-	padding:1px 10px 2px 5px;
-	background:url('../../../components/com_answers/images/thumbup.gif') no-repeat top right;
+	.ideas tbody tr.rejected {
+		background: #fff6f4;
 	}
-.entries .ensemble_right .voting .gooditem span,
-.entries .ensemble_right .voting .gooditem a:hover {
-	padding:1px 10px 2px 5px;
-	background:url('../../../components/com_answers/images/thumbup.gif') no-repeat bottom right;
-	border:none;
+	/* Flagged */
+	.ideas tbody tr.flagged th {
+		background: url("/components/com_wishlist/assets/img/lightbulb_flagged.png") right 15px no-repeat;
 	}
-.entries .ensemble_right .voting .baditem a {
-	padding:1px 10px 2px 5px;
-	background:url('../../../components/com_answers/images/thumbdown.gif') no-repeat top right;
+	/* Withdrawn */
+	.ideas tbody tr.withdrawn {
+		background: #f1f1f1;
 	}
-.entries .ensemble_right .voting .baditem span,
-.entries .ensemble_right .voting .baditem a:hover {
-	padding:1px 10px 2px 5px;
-	background:url('../../../components/com_answers/images/thumbdown.gif') no-repeat bottom right;
-	border:none;
+	.ideas tbody tr.withdrawn th {
+		background: url("/components/com_wishlist/assets/img/lightbulb_withdrawn.png") right 15px no-repeat;
 	}
-.entries .ensemble_right .voting .gooditem span.dis,
-.entries .ensemble_right .voting .baditem span.dis {
-	background-position:top right;
+	/* Private */
+	.ideas tbody tr.private {
+		background-image: none;
 	}
-	
-/* Bonus */
-.entries .ensemble_right .assign_bonus {
-	float:left;
-	width:25px;
-	margin-top:10px;
+	.ideas tbody tr.private th {
+		background-image: url("/components/com_wishlist/assets/img/lightbulb_private.png"); /* lock.png */
 	}
-.entries .ensemble_right .assign_bonus .bonus {
-	display:block;
-	height:25px;
-	background: url("../../../components/com_wishlist/images/moneybag.png") no-repeat top right;
-	}	
-.entries .ensemble_right .assign_bonus .nobonus,
-.entries .ensemble_right .assign_bonus .bonus_inactive {
-	display:block;
-	height:25px;
-	background:url('../../../components/com_wishlist/images/moneybag_empty.png') no-repeat top right;
+	.entries tbody td.voting,
+	.voting {
+		text-align: right;
+		white-space: nowrap;
 	}
-.entries .ensemble_right .assign_bonus .bonus:hover,
-.entries .ensemble_right .assign_bonus .nobonus:hover {
-	background:url('../../../components/com_wishlist/images/moneybag_add.png') no-repeat top right;
-	border:none;
+	p.voting {
+		float: right;
+		min-width: 10em;
+		margin: 0.7em 0 0.7em 0;
+		padding: 0;
 	}
-
-/* Aside */
-.group_wishlist .aside {
-	padding:0;
+	.container-block .entry-details {
+		padding: 0.7em 0 0.7em 0;
 	}
-.group_wishlist .aside .container {
-    margin: 0 0 1em 0;
-    padding: 0;
-    background-color: #F4F4ee;
-    border: 10px solid #F4F4ee;
-    }
-/* Headers */
-.group_wishlist .aside .container h3,
-.group_wishlist .aside .container h4 {
-    margin: -10px -10px 1em -10px;
-    padding: 5px 10px;
-    background-color: #999;
-    color: #fff;
-    font-size: 1em;
-    }
-/* Paragraphs */
-.group_wishlist .aside .container p {
-    margin: 1em 0 0 0;
-    }
-.group_wishlist .aside .container .starter {
-    padding: 0 0 0 0;
-    position: relative;
-    }
-.group_wishlist .aside .container .starter .starter-point {
-    border-color: #999 transparent transparent transparent;
-    border-style: solid dashed dashed dashed;
-    border-width: 10px;
-    height: 0;
-    width: 0;
-    display: block;
-    overflow: hidden;
-    position: absolute;
-    top: -1em;
-    left: 10px;
-    }
-
+	.entry-popularity {
+		display: none;
+	}
+	.rankit,
+	.ideas .ranking span {
+		text-transform: uppercase;
+		font-size: xx-small;
+		font-weight: bold;
+		white-space: nowrap;
+	}
+	.ideas .ranking .accepted {
+		color: #f1c037;
+	}
+	.ideas .ranking .granted {
+		color: #7AAB69;
+	}
+	.ideas .ranking .flagged,
+	.ideas .ranking .rejected {
+		color: #CC0000;
+	}
+	.ideas .ranking .withdrawn {
+		color: #bbb;
+	}
+/* Priority */
+	.priority-level-base {
+		display: block;
+		margin: 0;
+		padding: 0;
+		height: 3px; 
+		background-color: #ddd;
+		width: 5.5em;
+	}
+	.priority-level {
+		display: block;
+		margin: 0;
+		padding: 0;
+		height: 3px; 
+		background-color: #aaa;
+	}
+	.priority-level span {
+		display: none;
+	}

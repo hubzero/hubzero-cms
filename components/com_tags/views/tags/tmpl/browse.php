@@ -35,16 +35,16 @@ $this->filters['sort'] = '';
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div>
+</div><!-- / #content-header -->
 <div id="content-header-extra">
 	<ul id="useroptions">
 		<li class="last">
-			<a class="tag" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+			<a class="tag btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
 				<?php echo JText::_('COM_TAGS_MORE_TAGS'); ?>
 			</a>
 		</li>
 	</ul>
-</div>
+</div><!-- / #content-header-extra -->
 <div class="clear"></div>
 
 <form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>" method="get">

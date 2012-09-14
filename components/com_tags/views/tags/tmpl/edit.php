@@ -33,16 +33,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div>
+</div><!-- / #content-header -->
 <div id="content-header-extra">
 	<ul id="useroptions">
 		<li class="last">
-			<a class="tag" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+			<a class="tag btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
 				<?php echo JText::_('COM_TAGS_MORE_TAGS'); ?>
 			</a>
 		</li>
 	</ul>
-</div>
+</div><!-- / #content-header-extra -->
 <div class="clear"></div>
 
 <?php if ($this->getError()) { ?>
@@ -50,32 +50,32 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php } ?>
 
 <div class="main section">
-	<form action="index.php" method="post" id="hubForm">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" id="hubForm">
 		<div class="explaination">
 			<p><?php echo JText::_('COM_TAGS_NORMALIZED_TAG_EXPLANATION'); ?></p>
 		</div>
 		<fieldset>
 			<legend><?php echo JText::_('COM_TAGS_DETAILS'); ?></legend>
 
-			<label>
+			<label for="field-raw_tag">
 				<?php echo JText::_('COM_TAGS_TAG'); ?>
-				<input type="text" name="fields[raw_tag]" value="<?php echo $this->escape(stripslashes($this->tag->raw_tag)); ?>" size="38" />
+				<input type="text" name="fields[raw_tag]" id="field-raw_tag" value="<?php echo $this->escape(stripslashes($this->tag->raw_tag)); ?>" size="38" />
 			</label>
 
-			<label>
-				<input class="option" type="checkbox" name="fields[admin]" value="1" /> 
+			<label for="field-admin">
+				<input class="option" type="checkbox" name="fields[admin]" id="field-admin" value="1" /> 
 				<strong><?php echo JText::_('COM_TAGS_ADMINISTRATION'); ?></strong>
 				<span class="hint">(<?php echo JText::_('COM_TAGS_ADMINISTRATION_EXPLANATION'); ?>)</span>
 			</label>
 
-			<label>
+			<label for="field-description">
 				<?php echo JText::_('COM_TAGS_DESCRIPTION'); ?>
-				<textarea name="fields[description]" rows="7" cols="35"><?php echo $this->escape(stripslashes($this->tag->description)); ?></textarea>
+				<textarea name="fields[description]" id="field-description" rows="7" cols="35"><?php echo $this->escape(stripslashes($this->tag->description)); ?></textarea>
 			</label>
 
-			<label>
+			<label for="field-substitutions">
 				<?php echo JText::_('COM_TAGS_COL_ALIAS'); ?>
-				<textarea name="fields[substitutions]" rows="5" cols="35"><?php echo stripslashes($this->tag->getSubstitutions($this->tag->id, true)); ?></textarea>
+				<textarea name="fields[substitutions]" id="field-substitutions" rows="5" cols="35"><?php echo stripslashes($this->tag->getSubstitutions($this->tag->id, true)); ?></textarea>
 				<span class="hint"><?php echo JText::_('Enter a comma-separated list of tags you wish this tag to be substituted for. For example: If you enter "h20, aqua" for the tag "water", any time someone enters "h20" or "aqua" it will result in a tag of "water".'); ?></span>
 			</label>
 

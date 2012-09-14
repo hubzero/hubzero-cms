@@ -29,13 +29,22 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
+
+<ul id="page_options">
+	<li>
+		<a class="archive btn" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->member->get('uidNumber').'&active=blog'); ?>">
+			<?php echo JText::_('Archive'); ?>
+		</a>
+	</li>
+</ul>
+
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=blog&task=delete&entry='.$this->entry->id); ?>" method="post" id="hubForm">
 		<div class="explaination">
 <?php if ($this->authorized) { ?>
-			<p><a class="add" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=blog&task=new'); ?>"><?php echo JText::_('New entry'); ?></a></p>
+			<p><a class="add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=blog&task=new'); ?>"><?php echo JText::_('New entry'); ?></a></p>
 <?php } ?>
 		</div>
 		<fieldset class="delete">
@@ -43,8 +52,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 	 		<p class="warning"><?php echo JText::sprintf('PLG_MEMBERS_BLOG_DELETE_WARNING',$this->entry->title); ?></p>
 
-			<label>
-				<input type="checkbox" class="option" name="confirmdel" value="1" /> 
+			<label for="confirmdel">
+				<input type="checkbox" class="option" name="confirmdel" id="confirmdel" value="1" /> 
 				<?php echo JText::_('PLG_MEMBERS_BLOG_DELETE_CONFIRM'); ?>
 			</label>
 		</fieldset>

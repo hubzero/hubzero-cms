@@ -37,16 +37,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li><a href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" class="storefront"><?php echo JText::_('COM_STORE_STOREFRONT'); ?></a></li>
-		<li class="last"><a class="mypoints" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id') . '&active=points'); ?>"><?php echo JText::_('COM_STORE_MY_POINTS'); ?></a></li>
+		<li><a href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" class="storefront btn"><?php echo JText::_('COM_STORE_STOREFRONT'); ?></a></li>
+		<li class="last"><a class="mypoints btn" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id') . '&active=points'); ?>"><?php echo JText::_('COM_STORE_MY_POINTS'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 
-<?php if ($this->getError()) { ?>
-	<p class="error"><?php echo $this->getError(); ?></p>
-<?php } ?>
-
 <div class="main section">
+	<?php if ($this->getError()) { ?>
+		<p class="error"><?php echo $this->getError(); ?></p>
+	<?php } ?>
+
 	<div id="cartcontent">
 <?php if ($this->msg) { ?>
 		<p class="passed"><?php echo $this->msg; ?></p>

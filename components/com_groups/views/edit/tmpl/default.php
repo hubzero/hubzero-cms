@@ -69,7 +69,7 @@ else
 <div id="content-header-extra">
 	<ul id="useroptions">
 		<li class="last">
-			<a class="group" href="<?php echo $link; ?>" title="<?php echo $title; ?>"><?php echo $title; ?></a>
+			<a class="group btn" href="<?php echo $link; ?>" title="<?php echo $title; ?>"><?php echo $title; ?></a>
 		</li>
 	</ul>
 </div><!-- / #content-header-extra -->
@@ -85,7 +85,7 @@ else
 		<p class="warning"><?php echo JText::_('GROUPS_STATUS_NEW_GROUP'); ?></p>
 	<?php } ?>
 	
-	<form action="index.php" method="post" id="hubForm">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" id="hubForm">
 		<div class="explaination">
 			<div id="asset_browser">
 				<p><strong><?php echo JText::_('Upload files or images:'); ?></strong></p>
@@ -93,7 +93,7 @@ else
 			</div><!-- / .asset_browser -->
 		</div>
 		<fieldset id="top_box">
-			<h3><?php echo JText::_('GROUPS_EDIT_DETAILS'); ?></h3>
+			<legend><?php echo JText::_('GROUPS_EDIT_DETAILS'); ?></legend>
 <?php if ($this->task != 'new') { ?>
 			<input name="cn" type="hidden" value="<?php echo $this->group->get('cn'); ?>" />
 <?php } else { ?>
@@ -141,7 +141,7 @@ else
 		<div class="clear"></div>
 
 		<fieldset>
-			<h3><?php echo JText::_('GROUPS_EDIT_MEMBERSHIP'); ?></h3>
+			<legend><?php echo JText::_('GROUPS_EDIT_MEMBERSHIP'); ?></legend>
 			<p><?php echo JText::_('GROUPS_EDIT_CREDENTIALS_EXPLANATION'); ?></p>
 			<fieldset>
 				<legend><?php echo JText::_('Who can join?'); ?> <span class="required"><?php echo JText::_('GROUPS_REQUIRED'); ?></span></legend>
@@ -175,7 +175,7 @@ else
 		?>
 		
 		<fieldset <?php if(!$allowEmailResponses) { echo 'id="bottom_box"'; } ?>>
-			<h3><?php echo JText::_('Discoverability Settings'); ?></h3>
+			<legend><?php echo JText::_('Discoverability Settings'); ?></legend>
 			<p><?php echo JText::_('GROUPS_ACCESS_EXPLANATION'); ?></p>
 			<fieldset>
 				<legend><?php echo JText::_('GROUPS_PRIVACY'); ?> <span class="required"><?php echo JText::_('GROUPS_REQUIRED'); ?></span></legend>
@@ -192,7 +192,7 @@ else
 
 		<?php if ($allowEmailResponses) : ?>
 			<fieldset id="bottom_box">
-			<h3><?php echo JText::_('GROUPS_SETTINGS'); ?></h3>
+			<legend><?php echo JText::_('GROUPS_SETTINGS'); ?></legend>
 			<p><?php echo JText::_('GROUP_LEVEL_CONFIGURATION_OPTIONS'); ?></p>
 				<fieldset>
 					<legend><?php echo JText::_('GROUPS_SETTING_EMAIL'); ?></legend>
@@ -205,7 +205,7 @@ else
 						</span>
 					</label>
 				</fieldset>
-			</fieldset>                
+			</fieldset>
 		<?php endif; ?>
 		
 		<div class="clear"></div>

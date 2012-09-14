@@ -34,18 +34,14 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Controller');
 
 /**
- * Short description for 'FeedbackController'
- * 
- * Long description (if any) ...
+ * Feedback controller class for media management
  */
 class FeedbackControllerMedia extends Hubzero_Controller
 {
 	/**
-	 * Short description for 'upload'
+	 * Upload an image
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function uploadTask()
 	{
@@ -74,7 +70,7 @@ class FeedbackControllerMedia extends Hubzero_Controller
 		}
 
 		// Build upload path
-		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath'), DS) . DS . Hubzero_View_Helper_Html::niceidformat($id);
+		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . Hubzero_View_Helper_Html::niceidformat($id);
 
 		if (!is_dir($path)) 
 		{
@@ -121,11 +117,9 @@ class FeedbackControllerMedia extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'delete'
+	 * Delete an image
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function deleteTask()
 	{
@@ -162,7 +156,7 @@ class FeedbackControllerMedia extends Hubzero_Controller
 		$file = basename($file);
 
 		// Build the file path
-		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath'), DS) . DS . Hubzero_View_Helper_Html::niceidformat($id);
+		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . Hubzero_View_Helper_Html::niceidformat($id);
 
 		if (!file_exists($path . DS . $file) or !$file) 
 		{
@@ -187,18 +181,16 @@ class FeedbackControllerMedia extends Hubzero_Controller
 	}
 
 	/**
-	 * Short description for 'img'
+	 * Display a form for uploading an image and any data for current uploaded image
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $file Parameter description (if any) ...
-	 * @param      integer $id Parameter description (if any) ...
+	 * @param      string  $file Image name
+	 * @param      integer $id   User ID
 	 * @return     void
 	 */
 	public function displayTask($file='', $id=0)
 	{
 		$this->view->setLayout('display');
-		
+
 		// Do have an ID or do we need to get one?
 		if (!$id) 
 		{
@@ -212,19 +204,19 @@ class FeedbackControllerMedia extends Hubzero_Controller
 			  : JRequest::getVar('file', '');
 
 		// Build the directory path
-		$path = $this->config->get('uploadpath') . DS . $dir;
+		$path = DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . $dir;
 
 		// Push some styles to the template
 		$this->_getStyles();
 
 		// Output form with error messages
-		$this->view->title = $this->_title;
-		$this->view->webpath = $this->config->get('uploadpath', '/site/quotes');
+		$this->view->title     = $this->_title;
+		$this->view->webpath   = $this->config->get('uploadpath', '/site/quotes');
 		$this->view->default_picture = $this->config->get('defaultpic', '/components/com_feedback/assets/img/contributor.gif');
-		$this->view->path = $dir;
-		$this->view->file = $file;
+		$this->view->path      = $dir;
+		$this->view->file      = $file;
 		$this->view->file_path = $path;
-		$this->view->id = $id;
+		$this->view->id        = $id;
 
 		if ($this->getError()) 
 		{

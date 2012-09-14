@@ -39,18 +39,21 @@ $types = array(
 	'profiles'  => JText::_('COM_FEATURES_PROFILES'),
 );
 ?>
-<div id="content-header" class="full">
+<div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 </div><!-- / #content-header -->
+
+<div id="content-header-extra">
+	<p><a class="main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Back to Features History'); ?></a></p>
+</div><!-- / #content-header-extra -->
 
 <div class="main section">
 	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=save'); ?>" method="post" id="hubForm">
 		<div class="explaination">
 			<p><span class="required">*</span> = <?php echo JText::_('COM_FEATURES_REQUIRED_FIELD'); ?></p>
-			<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Back to Features History'); ?></a></p>
 		</div><!-- / .aside -->
 		<fieldset>
-			<h3><?php echo JText::_('COM_FEATURES_FEATURED_ITEM'); ?></h3>
+			<legend><?php echo JText::_('COM_FEATURES_FEATURED_ITEM'); ?></legend>
 			
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="task" value="save" />

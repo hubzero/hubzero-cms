@@ -83,7 +83,7 @@ if ($mode != 'static') {
 			<p><?php echo JText::_('WIKI_DELETE_PAGE_EXPLANATION'); ?></p>
 		</div>
 		<fieldset>
-			<h3><?php echo JText::_('WIKI_DELETE_PAGE'); ?></h3>
+			<legend><?php echo JText::_('WIKI_DELETE_PAGE'); ?></legend>
 			<label>
 				<input class="option" type="checkbox" name="confirm" value="1" />
 				<?php echo JText::_('WIKI_FIELD_CONFIRM_DELETE'); ?>

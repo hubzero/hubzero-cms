@@ -59,7 +59,7 @@ if ($this->wishlist) {
 
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li class="last"><a class="add" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=add&category='. $this->wishlist->category.'&rid='.$this->wishlist->referenceid); ?>"><?php echo JText::_('TASK_ADD'); ?></a></li>
+		<li class="last"><a class="add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=add&category='. $this->wishlist->category.'&rid='.$this->wishlist->referenceid); ?>"><?php echo JText::_('TASK_ADD'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 

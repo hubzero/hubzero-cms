@@ -171,4 +171,3 @@ $content .= ' </tbody>'."\n";
 $content .= '</table>'."\n";
 
 echo $content;
-?>

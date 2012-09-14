@@ -37,14 +37,14 @@ if (!$juser->get('guest')) { ?>
 	<ul id="<?php echo ($this->sub) ? 'section-useroptions' : 'useroptions'; ?>">
 	<?php if ($this->page->pagename != 'MainPage') { ?>
 		<li>
-			<a class="main-page" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope); ?>">
+			<a class="main-page btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope); ?>">
 				<?php echo JText::_('Main Page'); ?>
 			</a>
 		</li>
 	<?php } ?>
 	<?php if ($this->config->get('access-create')) { ?>
 		<li>
-			<a class="add" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&task=new'); ?>">
+			<a class="add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&task=new'); ?>">
 				<?php echo JText::_('WIKI_NEW_PAGE'); ?>
 			</a>
 		</li>

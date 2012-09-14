@@ -85,7 +85,7 @@ echo $this->monitor;
 			</fieldset>
 			<fieldset>
 				<legend>Manual</legend>
-				<div class="filebrowser">
+				<div class="filebrowser field-wrap">
 					Browse your storage space
 					<iframe src="<?php echo JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=filelist&tmpl=component'); ?>" name="filer" id="filer" width="98%" height="300" border="0" frameborder="0"></iframe>
 				</div>

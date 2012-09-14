@@ -249,11 +249,7 @@
 		font-weight: bold;
 		letter-spacing: -0.1em;
 	}
-/* Misc. */
-	.com_events .last a {
-		padding-left: 20px;
-		background: url("/components/com_events/assets/img/date_add.png") 0 0 no-repeat;
-	}
+
 /* (sub) Tabs */
 	.com_events .main h3 {
 		margin: 0 0 1.5em 0;

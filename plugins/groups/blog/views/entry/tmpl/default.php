@@ -41,14 +41,14 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 	<ul id="page_options">
 	<?php if ($this->canpost) { ?>
 		<li>
-			<a class="add" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=new'); ?>">
+			<a class="add btn" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=new'); ?>">
 				<?php echo JText::_('New entry'); ?>
 			</a>
 		</li>
 	<?php } ?>
 	<?php if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
 		<li>
-			<a class="config" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=settings'); ?>" title="<?php echo JText::_('Edit Settings'); ?>">
+			<a class="config btn" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=settings'); ?>" title="<?php echo JText::_('Edit Settings'); ?>">
 				<?php echo JText::_('Settings'); ?>
 			</a>
 		</li>

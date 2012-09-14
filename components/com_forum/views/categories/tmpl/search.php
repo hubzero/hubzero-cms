@@ -18,7 +18,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	<h2><?php echo $this->escape($this->title); ?></h2>
 </div>
 <div id="content-header-extra">
-	<p><a class="categories" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('All categories'); ?></a></p>
+	<p><a class="categories btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('All categories'); ?></a></p>
 </div>
 <div class="clear"></div>
 

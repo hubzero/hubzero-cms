@@ -302,6 +302,9 @@
 		overflow: hidden;
 		position:relative;
 	}
+	#page_options + #page_header {
+		margin-right: 11em;
+	}
 	#page_header h2 {
 		float: left;
 		color: #444; 
@@ -333,13 +336,13 @@
 	}
 	
 	#page_header #profile-privacy {
-		color:transparent;
-		position:absolute;
-		top:25px;
-		left:20px;
-		width:30px;
-		height:25px;
-		border:none;
+		color: transparent;
+		position: absolute;
+		top: 25px;
+		left: 20px;
+		width: 30px;
+		height: 25px;
+		border: none;
 	}
 	#page_header #profile-privacy:before {
 		content: "\f023";
@@ -362,7 +365,7 @@
 		right: 20px;
 		margin: 0;
 		padding: 0;
-		/*z-index: 677;*/
+		/*z-index: 477;*/
 	}
 	#page_options li {
 		margin: 0;

@@ -33,9 +33,19 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 jimport('joomla.application.module.helper');
 ?>
-<div id="content-header" class="full">
+<div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 </div><!-- / #content-header -->
+
+<div id="content-header-extra">
+	<ul>
+		<li>
+			<a class="main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+				<?php echo JText::_('Main page'); ?>
+			</a>
+		</li>
+	</ul>
+</div><!-- / #content-header-extra -->
 
 <div class="main section">
 	<h3><?php echo JText::_('COM_FEEDBACK_HAVE_AN_OPINION'); ?> <span><?php echo JText::_('COM_FEEDBACK_CAST_A_VOTE'); ?></span></h3>

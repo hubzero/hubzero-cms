@@ -58,7 +58,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 </div><!-- / #content-header -->
 <div id="content-header-extra">
 	<p>
-		<a class="add" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=new'); ?>">
+		<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=new'); ?>">
 			<span><?php echo JText::_('COM_ANSWERS_NEW_QUESTION'); ?></span>
 		</a>
 	</p>

@@ -65,7 +65,7 @@ if ($this->resource->id)
 
 <div id="content-header-extra">
 	<p>
-		<a class="add" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft'); ?>">
+		<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft'); ?>">
 			<?php echo JText::_('COM_CONTRIBUTE_NEW_SUBMISSION'); ?>
 		</a>
 	</p>
@@ -78,7 +78,7 @@ if ($this->resource->id)
 
 	<div class="aside">
 		<p>
-			<a class="main-page" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">Return to start</a>
+			<a class="main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">Return to start</a>
 		</p>
 	</div><!-- /.aside -->
 	<div class="subject">

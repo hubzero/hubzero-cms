@@ -20,12 +20,12 @@ if (!jq) {
 }
 
 HUB.TagBrowser = {
-	
+
 	jQuery: jq,
 
 	settings: {
 	},
-	
+
 	//isIE: false,
 	col1active: '',
 	col2active: '',
@@ -63,16 +63,18 @@ HUB.TagBrowser = {
 		this.isMozilla	= (agent.indexOf('mozilla') != -1);
 	},
 
-	incompatible: function() {
+	/*incompatible: function() {
 		var $ = this.jQuery;
 		
-		$('tagbrowser').parentNode.removeChild(div);
-		$('tbh2').parentNode.removeChild(tbh2);
-	},
+		$('#tagbrowser').parentNode.remove(div);
+		$('#tbh2').parent().remove(tbh2);
+	},*/
 
 	nextLevel: function(type, input, input2, level, id, rid) {
 		var com = this,
-			$ = this.jQuery;
+			$ = this.jQuery,
+			sortby = '',
+			filterby = '';
 
 		if (level == 2) {
 			if (HUB.TagBrowser.col2active != '' && $(HUB.TagBrowser.col2active)) {
@@ -92,11 +94,11 @@ HUB.TagBrowser = {
 			curractive.addClass('open');
 			HUB.TagBrowser.col1active = '#'+id;
 		}
-		var sortby = '';
-		if ($('#sortby')) {
+
+		if ($('#sortby').length > 0) {
 			sortby = $('#sortby').val();
 		}
-		var filterby = '';
+
 		var frm = document.getElementById('tagBrowserForm');
 		if (frm && frm.filter) {
 			for (var i=0; i < frm.filter.length; i++){
@@ -105,66 +107,46 @@ HUB.TagBrowser = {
 				}
 			}
 		}
-		var url = HUB.TagBrowser.baseURI+'&type='+type+'&level='+level+'&input='+input+'&input2='+input2+'&id='+rid+'&sortby='+sortby+filterby;
-		/*if(browser.isFirefox ==false && browser.isCamino==false && browser.isMozilla) {
-			var ev = false;
-		} else {
-			var ev = true;
-		}
-		var myAjax = new Ajax(url, {
-			method: 'get',
-			update: $('level-'+level), 
-			onSuccess: function(){
-				if ($('rid')) {
-					var r = $('rid').value;
-					if ($('col2_'+r)) {
-						$('col2_'+r).addClass('open');
-					}
-				}
-			}, 
-			evalScripts: ev
-		}).request();*/
-		
-		$.get(url, {}, function(data) {
+
+		$.get(HUB.TagBrowser.baseURI+'&type='+type+'&level='+level+'&input='+input+'&input2='+input2+'&id='+rid+'&sortby='+sortby+filterby, {}, function(data) {
 			$('#level-'+level).html(data);
-			if ($('#rid')) {
+			if ($('#rid').length > 0) {
 				var r = $('#rid').val();
-				if ($('#col2_'+r)) {
+				if ($('#col2_'+r).length > 0) {
 					$('#col2_'+r).addClass('open');
 				}
 			}
 		});
 	},
-	
+
 	changeSort: function() {
 		var com = this,
-			$ = this.jQuery;
+			$ = this.jQuery,
+			p = null;
 			
-		var type = $('#pretype').val();
-		var k = $('#preinput2').val();
-		var p = null;
+		var type = $('#pretype').val(),
+			k = $('#preinput2').val();
+
 		$("#level-1 .open").each(function(i, el) {
 			p = $(el).attr('id');
 		});
 		var i = p.replace('col1_', '');
 		i = (i == 'all') ? '' : i;
-		
+
 		HUB.TagBrowser.nextLevel(type, i, k, 2, p, 0);
 	},
-	
+
 	sc: 0,
-	
+
 	setScroll: function() {
 		var com = this,
 			$ = this.jQuery;
-			
-		if ($('#d')) {
+
+		if ($('#d').length > 0) {
 			atg = $('#atg').val();
-			d = $('#d').val();
-			if ($("#col1_"+atg)) {
-				objDiv = $("#ultags");
-				dist = $("#col1_"+atg).offsetHeight;
-				objDiv.scrollTop = ((dist * d) - dist);
+			if ($("#col1_"+atg).length > 0) {
+				var dist = $("#col1_" + atg).offsetHeight;
+				$("#ultags").scrollTop = ((dist * $('#d').val()) - dist);
 				clearTimeout(HUB.TagBrowser.sc);
 			}
 		}
@@ -173,12 +155,12 @@ HUB.TagBrowser = {
 	initialize: function() {
 		var com = this,
 			$ = this.jQuery,
-			imgpath = '/components/com_resources/images/loading.gif';
-			
-		if (!$('#tagbrowser')) {
+			imgpath = '/components/com_resources/assets/img/loading.gif';
+
+		if ($('#tagbrowser').length <= 0) {
 			return;
 		}
-			
+
 		var input = $('#preinput').val();
 		var input2 = $('#preinput2').val();
 		var type = $('#pretype').val();
@@ -187,16 +169,16 @@ HUB.TagBrowser = {
 		$('#tagbrowser').show();
 		$('#tbh2').show();
 		$('#viewalltools').hide();
-			
+
 		if (input != '') {
 			HUB.TagBrowser.col2active = '#col1_'+input;
 		} else {
 			HUB.TagBrowser.col2active = '#col1_all';
 		}
-		
+
 		$('<img src="'+imgpath+'" id="loading-img1" />').appendTo($('#level-1-loading'));
 		$('<img src="'+imgpath+'" id="loading-img2" />').appendTo($('#level-2-loading'));
-		
+
 		$.get(HUB.TagBrowser.baseURI+'&type='+type+'&level=1&input='+input+'&input2='+input2+'&id='+id, {}, function(data) {
 			$('#level-1').html(data);
 			HUB.TagBrowser.sc = setTimeout("HUB.TagBrowser.setScroll()", 500);

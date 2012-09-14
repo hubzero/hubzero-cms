@@ -74,9 +74,6 @@
 	iframe {
 		border: none;
 	}
-	#component-body {
-		background-color: #f3f1ed;
-	}
 	#component-body fieldset {
 		margin: 1.5em 0 2em 0;
 		padding: 0.5em 0;

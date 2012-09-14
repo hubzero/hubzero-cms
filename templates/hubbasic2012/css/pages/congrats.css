@@ -21,6 +21,7 @@
 	#sub-masthead {
 		padding: 0;
 		position: relative;
+		height: auto;
 	}
 	#splash {
 		margin: 0 30px;

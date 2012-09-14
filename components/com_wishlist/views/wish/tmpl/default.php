@@ -712,7 +712,7 @@ if ($this->wishlist && $this->wish) {
 		</h3>
 		<div class="aside">
 			<p>
-				<a class="add" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=reply&cat=wish&id='.$this->wishlist->id.'&refid='.$this->wish->id.'&wishid='.$this->wish->id.'#commentform');?>">
+				<a class="add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=reply&cat=wish&id='.$this->wishlist->id.'&refid='.$this->wish->id.'&wishid='.$this->wish->id.'#commentform');?>">
 					<?php echo JText::_('ADD_A_COMMENT'); ?>
 				</a>
 			</p>
@@ -857,7 +857,7 @@ if ($this->wishlist && $this->wish) {
 			<div class="aside">
 <?php if ($this->wish->action != 'editplan') { ?>
 				<p>
-					<a class="add" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=editplan#plan'); ?>">
+					<a class="add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=editplan#plan'); ?>">
 						<?php echo JText::_('ADD_TO_THE_PLAN'); ?>
 					</a>
 				</p>

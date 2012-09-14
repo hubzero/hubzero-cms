@@ -49,7 +49,7 @@ $tag = ($this->resource->type == 7) ? 'tool:'.$this->resource->alias : 'resource
 </h3>
 <div class="container">
 	<p class="section-options">
-		<a class="add" href="<?php echo JRoute::_('index.php?option=com_answers&task=new&tag=' . urlencode($tag)); ?>"><?php echo JText::_('PLG_RESOURCES_QUESTIONS_ASK_A_QUESTION'); ?></a>
+		<a class="add btn" href="<?php echo JRoute::_('index.php?option=com_answers&task=new&tag=' . urlencode($tag)); ?>"><?php echo JText::_('PLG_RESOURCES_QUESTIONS_ASK_A_QUESTION'); ?></a>
 	</p>
 	<table class="questions entries" summary="Questions submitted by the community">
 		<caption>

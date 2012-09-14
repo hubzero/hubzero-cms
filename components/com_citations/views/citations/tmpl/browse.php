@@ -63,10 +63,10 @@ if ($label == "none") {
 <div id="content-header-extra">
 	<ul>
 		<li class="last">
-			<a class="main-page" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Main page'); ?></a>
+			<a class="main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Main page'); ?></a>
 		</li>
 	</ul>
-</div><!-- / #content-header -->
+</div><!-- / #content-header-extra -->
 
 <div class="main section">
 	
@@ -201,7 +201,9 @@ if ($label == "none") {
 					<input type="text" name="search" value="<?php echo $this->escape(stripslashes($this->filters['search'])); ?>" />
 				</label>
 				
-				<input type="submit" name="go" value="<?php echo JText::_('GO'); ?>" />
+				<p class="submit">
+					<input type="submit" name="go" value="<?php echo JText::_('GO'); ?>" />
+				</p>
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="task" value="browse" />
 			</fieldset>

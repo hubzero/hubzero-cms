@@ -81,7 +81,7 @@ if (!$mode || ($mode && $mode != 'static'))
 ?>
 <div class="section">
 	<div class="aside">
-		<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=addcomment#commentform'); ?>" class="add"><?php echo JText::_('WIKI_ADD_COMMENT'); ?></a></p>
+		<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=addcomment#commentform'); ?>" class="add btn"><?php echo JText::_('WIKI_ADD_COMMENT'); ?></a></p>
 	</div><!-- / .aside -->
 	<div class="subject">
 		<p><?php echo JText::_('WIKI_COMMENTS_EXPLANATION'); ?></p>

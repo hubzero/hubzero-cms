@@ -12,7 +12,7 @@ if ($this->post->id) {
 	<h2><?php echo JText::_('COM_FORUM'); ?></h2>
 </div>
 <div id="content-header-extra">
-	<p><a class="comments" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->section->alias . '&category=' . $this->category->alias); ?>"><?php echo JText::_('All discussions'); ?></a></p>
+	<p><a class="comments btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->section->alias . '&category=' . $this->category->alias); ?>"><?php echo JText::_('All discussions'); ?></a></p>
 </div>
 <div class="clear"></div>
 

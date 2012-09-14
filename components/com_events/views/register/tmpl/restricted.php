@@ -46,7 +46,7 @@ $params = new $paramsClass( $this->event->params );
 <?php if ($this->authorized) { ?>
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li class="last"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=add'); ?>"><?php echo JText::_('EVENTS_ADD_EVENT'); ?></a></li>
+		<li class="last"><a class="add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=add'); ?>"><?php echo JText::_('EVENTS_ADD_EVENT'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 <?php } ?>
@@ -99,7 +99,7 @@ $params = new $paramsClass( $this->event->params );
 			<p><?php echo JText::_('EVENTS_PROVIDE_PASSWORD'); ?></p>
 		</div>
 		<fieldset>
-			<h3><?php echo JText::_('EVENTS_LIMITED_REGISTRATION'); ?></h3>
+			<legend><?php echo JText::_('EVENTS_LIMITED_REGISTRATION'); ?></legend>
 			<label>
 				<?php echo JText::_('EVENTS_PASSWORD'); ?>
 				<input type="password" name="passwrd" />

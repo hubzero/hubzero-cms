@@ -60,8 +60,8 @@ $helper = new ResourcesHelper($this->resource->id, $database);
 
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=pipeline&task=status&app=' . $this->resource->alias); ?>"><?php echo JText::_('TOOL_STATUS'); ?></a></li>
-		<li class="last"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=pipeline&task=create'); ?>" class="add"><?php echo JText::_('CONTRIBTOOL_NEW_TOOL'); ?></a></li>
+		<li><a class="status btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=pipeline&task=status&app=' . $this->resource->alias); ?>"><?php echo JText::_('TOOL_STATUS'); ?></a></li>
+		<li class="last"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=pipeline&task=create'); ?>" class="add btn"><?php echo JText::_('CONTRIBTOOL_NEW_TOOL'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 

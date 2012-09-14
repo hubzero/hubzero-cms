@@ -33,6 +33,14 @@ JPluginHelper::importPlugin( 'hubzero' );
 $dispatcher =& JDispatcher::getInstance();
 $tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$this->tags)) );
 ?>
+<ul id="page_options">
+	<li>
+		<a class="archive btn" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->member->get('uidNumber').'&active=blog'); ?>">
+			<?php echo JText::_('Archive'); ?>
+		</a>
+	</li>
+</ul>
+
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>

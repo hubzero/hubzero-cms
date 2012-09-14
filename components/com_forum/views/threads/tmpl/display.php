@@ -19,7 +19,7 @@ ximport('Hubzero_User_Profile_Helper');
 </div>
 <div id="content-header-extra">
 	<p>
-		<a class="comments" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->alias); ?>">
+		<a class="comments btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->category->alias); ?>">
 			<?php echo JText::_('COM_FORUM_ALL_DISCUSSIONS'); ?>
 		</a>
 	</p>

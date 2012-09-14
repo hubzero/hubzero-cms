@@ -113,4 +113,3 @@ if (isset($this->register['comments'])) {
 	$message .= 'Comments: '. $this->register['comments'] ."\n\n";
 }
 echo $message;
-?>

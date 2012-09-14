@@ -278,7 +278,7 @@ if ($this->recent) {
 	</h3>
 	<div class="aside">
 		<p>
-			<a class="add" href="#post-comment">
+			<a class="add btn" href="#post-comment">
 				<?php echo JText::_('Add a comment'); ?>
 			</a>
 		</p>

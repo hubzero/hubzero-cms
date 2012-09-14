@@ -166,7 +166,7 @@ foreach ($this->sections as $section)
 				<tfoot>
 					<tr>
 						<td<?php if ($section->categories) { echo ' colspan="5"'; } ?>>
-							<a class="add" id="addto-<?php echo $section->id; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $section->alias . '&task=new'); ?>">
+							<a class="add btn" id="addto-<?php echo $section->id; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $section->alias . '&task=new'); ?>">
 								<span><?php echo JText::_('Add Category'); ?></span>
 							</a>
 						</td>

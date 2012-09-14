@@ -37,12 +37,12 @@ $live_site = rtrim(JURI::base(),'/');
 <?php if ($juser->get('id') == $this->member->get('uidNumber')) : ?>
 <ul id="page_options">
 	<li>
-		<a class="add" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->member->get('uidNumber').'&active=blog&task=new'); ?>">
+		<a class="add btn" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->member->get('uidNumber').'&active=blog&task=new'); ?>">
 			<?php echo JText::_('New entry'); ?>
 		</a>
 	</li>
 	<li>
-		<a class="config" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->member->get('uidNumber').'&active=blog&task=settings'); ?>" title="<?php echo JText::_('Edit Settings'); ?>">
+		<a class="config btn" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->member->get('uidNumber').'&active=blog&task=settings'); ?>" title="<?php echo JText::_('Edit Settings'); ?>">
 			<?php echo JText::_('Settings'); ?>
 		</a>
 	</li>

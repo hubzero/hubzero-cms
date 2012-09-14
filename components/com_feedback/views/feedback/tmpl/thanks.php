@@ -51,9 +51,19 @@ else
 	$mh = $oh;
 }
 ?>
-<div id="content-header" class="full">
+<div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 </div><!-- / #content-header -->
+
+<div id="content-header-extra">
+	<ul>
+		<li>
+			<a class="main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+				<?php echo JText::_('Main page'); ?>
+			</a>
+		</li>
+	</ul>
+</div><!-- / #content-header-extra -->
 
 <div class="main section">
 	<p class="passed"><?php echo JText::_('COM_FEEDBACK_STORY_THANKS'); ?></p>

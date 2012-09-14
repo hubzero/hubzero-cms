@@ -40,7 +40,7 @@ $juser =& JFactory::getUser();
 
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li class="last"><a class="add" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=new'); ?>"><?php echo JText::_('GROUPS_CREATE_GROUP'); ?></a></li>
+		<li class="last"><a class="add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=new'); ?>"><?php echo JText::_('GROUPS_CREATE_GROUP'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 

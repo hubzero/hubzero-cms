@@ -103,7 +103,7 @@ $tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'acta
 
 			<label<?php if ($this->task == 'save' && !$this->entry->title) { echo ' class="fieldWithErrors"'; } ?>>
 				<?php echo JText::_('COM_BLOG_TITLE'); ?>
-				<input type="text" name="entry[title]" size="35" value="<?php echo htmlentities(stripslashes($this->entry->title),ENT_COMPAT,'UTF-8'); ?>" />
+				<input type="text" name="entry[title]" size="35" value="<?php echo $this->escape(stripslashes($this->entry->title)); ?>" />
 			</label>
 <?php if ($this->task == 'save' && !$this->entry->title) { ?>
 			<p class="error"><?php echo JText::_('PLG_MEMBERS_BLOG_ERROR_PROVIDE_TITLE'); ?></p>
@@ -116,7 +116,7 @@ $tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'acta
 				$editor =& Hubzero_Wiki_Editor::getInstance();
 				echo $editor->display('entry[content]', 'entrycontent', stripslashes($this->entry->content), '', '50', '40');
 				?>
-				<span class="hint"><a href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
+				<span class="hint"><a href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
 			</label>
 <?php if ($this->task == 'save' && !$this->entry->content) { ?>
 			<p class="error"><?php echo JText::_('PLG_MEMBERS_BLOG_ERROR_PROVIDE_CONTENT'); ?></p>
@@ -133,14 +133,14 @@ $tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'acta
 			</label>
 			
 			<div class="group">
-				<label>
-					<input type="checkbox" class="option" name="entry[allow_comments]" value="1"<?php if ($this->entry->allow_comments == 1) { echo ' checked="checked"'; } ?> /> 
+				<label for="field-allow_comments">
+					<input type="checkbox" class="option" name="entry[allow_comments]" id="field-allow_comments" value="1"<?php if ($this->entry->allow_comments == 1) { echo ' checked="checked"'; } ?> /> 
 					<?php echo JText::_('COM_BLOG_FIELD_ALLOW_COMMENTS'); ?>
 				</label>
 
-				<label>
+				<label for="field-state">
 					<?php echo JText::_('COM_BLOG_FIELD_PRIVACY'); ?>
-					<select name="entry[state]">
+					<select name="entry[state]" id="field-state">
 						<option value="1"<?php if ($this->entry->state == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public (anyone can see)'); ?></option>
 						<option value="2"<?php if ($this->entry->state == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Registered members'); ?></option>
 						<option value="0"<?php if ($this->entry->state == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Private (only I can see)'); ?></option>

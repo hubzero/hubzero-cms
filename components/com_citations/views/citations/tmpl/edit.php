@@ -54,19 +54,28 @@ $tags_list = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags',
 $badges_list = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'badges', 'actags1','', implode(",",$b))));
 
 ?>
-<div id="content-header" class="full">
+<div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div>
+</div><!-- / #content-header -->
+
+<div id="content-header-extra">
+	<ul>
+		<li class="last">
+			<a class="main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Main page'); ?></a>
+		</li>
+	</ul>
+</div><!-- / #content-header-extra -->
+
 <div class="main section">
 	<?php if ($this->getError()) { ?>
 			<p class="error"><?php echo $this->getError(); ?></p>
 	<?php } ?>
-	<form action="index.php" method="post" id="hubForm" class="add-citation">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" id="hubForm" class="add-citation">
 		<div class="explaination">
 			<p><?php echo JText::_('Please enter the information for the work that references content on this site. <strong>Not all fields may apply to the citation</strong> - fill in only those that do.'); ?></p>
 		</div>
 		<fieldset>
-			<h3><?php echo JText::_('DETAILS'); ?></h3>
+			<legend><?php echo JText::_('DETAILS'); ?></legend>
 
 			<div class="group twoup">
 				<label for="type">
@@ -297,7 +306,7 @@ $badges_list = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'badg
 				<p><?php echo JText::_(''); ?></p>
 			</div>
 			<fieldset>
-				<h3><?php echo $fieldset_label; ?></h3>
+				<legend><?php echo $fieldset_label; ?></legend>
 				<?php if ($allow_tags == "yes") : ?>
 					<label>
 						Tags: <span class="optional">Optional</span>
@@ -333,8 +342,9 @@ $badges_list = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'badg
 			<p><?php echo JText::_('Please enter all the resources, articles, or topic pages the work references.'); ?></p>
 		</div>
 		<fieldset>
-			<h3><?php echo JText::_('CITATION_FOR'); ?></h3>
+			<legend><?php echo JText::_('CITATION_FOR'); ?></legend>
 			
+			<div class="field-wrap">
 			<table id="assocs">
 				<thead>
 					<tr>
@@ -390,9 +400,10 @@ $badges_list = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'badg
 				?>
 				</tbody>
 			</table>
+			</div>
 		</fieldset><div class="clear"></div>
 		<fieldset>
-			<h3><?php echo JText::_('AFFILIATION'); ?></h3>
+			<legend><?php echo JText::_('AFFILIATION'); ?></legend>
 			
 			<label>
 				<input type="checkbox" class="option" name="affiliated" id="affiliated" value="1"<?php if ($this->row->affiliated) { echo ' checked="checked"'; } ?> />

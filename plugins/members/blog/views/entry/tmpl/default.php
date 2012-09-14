@@ -34,20 +34,20 @@ ximport('Hubzero_User_Profile_Helper');
 $juser =& JFactory::getUser();
 ?>
 
-<?php if ($juser->get('id') == $this->member->get('uidNumber')) : ?>
 <ul id="page_options">
+<?php if ($juser->get('id') == $this->member->get('uidNumber')) : ?>
 	<li>
-		<a class="add" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->member->get('uidNumber').'&active=blog&task=new'); ?>">
+		<a class="add btn" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->member->get('uidNumber').'&active=blog&task=new'); ?>">
 			<?php echo JText::_('New entry'); ?>
 		</a>
 	</li>
+<?php endif; ?>
 	<li>
-		<a class="config" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->member->get('uidNumber').'&active=blog&task=settings'); ?>" title="<?php echo JText::_('Edit Settings'); ?>">
-			<?php echo JText::_('Settings'); ?>
+		<a class="archive btn" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->member->get('uidNumber').'&active=blog'); ?>">
+			<?php echo JText::_('Archive'); ?>
 		</a>
 	</li>
 </ul>
-<?php endif; ?>
 
 <div class="entry-container">
 	<div class="aside">

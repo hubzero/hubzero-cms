@@ -73,7 +73,7 @@ $lid = $this->group->get('gidNumber');
 </div>
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li><a class="prev" href="<?php echo JRoute::_($base_link); ?>">Back to Manage Pages</a></li>
+		<li><a class="prev btn" href="<?php echo JRoute::_($base_link); ?>">Back to Manage Pages</a></li>
 	</ul>
 </div>
 

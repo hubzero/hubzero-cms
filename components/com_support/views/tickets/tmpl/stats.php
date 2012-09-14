@@ -38,8 +38,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 </div>
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li><a class="tickets" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display'); ?>"><?php echo JText::_('Tickets'); ?></a></li>
-		<li class="last"><a class="new-ticket" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=new'); ?>"><?php echo JText::_('SUPPORT_NEW_TICKET'); ?></a></li>
+		<li><a class="browse btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display'); ?>"><?php echo JText::_('Tickets'); ?></a></li>
+		<li class="last"><a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=new'); ?>"><?php echo JText::_('SUPPORT_NEW_TICKET'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 

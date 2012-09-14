@@ -30,6 +30,16 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$dateformat = '%d %b %Y';
+$timeformat = '%I:%M %p';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateformat = 'd M Y';
+	$timeformat = 'H:i p';
+	$tz = true;
+}
 ?>
 	<h3 class="section-header">
 		<a name="wishlist"></a>
@@ -37,7 +47,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</h3>
 	<div class="container">
 		<p class="section-options">
-			<a class="add" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=add&category='. $this->wishlist->category.'&rid='.$this->wishlist->referenceid); ?>">
+			<a class="add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=add&category='. $this->wishlist->category.'&rid='.$this->wishlist->referenceid); ?>">
 				<?php echo JText::_('ADD_NEW_WISH'); ?>
 			</a>
 		</p>
@@ -62,7 +72,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				$status = 'outstanding';
 			}
 			
-			$state  = (isset($item->ranked) && !$item->ranked && $item->status!=1 && ($this->admin==2 or $this->admin==3)) ? 'new' : '' ;				
+			$state  = (isset($item->ranked) && !$item->ranked && $item->status!=1 && ($this->admin==2 or $this->admin==3)) ? 'new' : '' ;
 			$state .= ($item->private) ? ' private' : '' ;
 			switch ($item->status) 
 			{
@@ -99,8 +109,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 						<a class="entry-title" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>"><?php echo $item->subject; ?></a><br />
 						<span class="entry-details">
 							<?php echo JText::_('WISH_PROPOSED_BY'); ?> <?php echo $name; ?> @ 
-							<span class="entry-time"><?php echo JHTML::_('date', $item->proposed, '%I:%M %p', 0); ?></span> <?php echo JText::_('on'); ?> 
-							<span class="entry-date"><?php echo JHTML::_('date', $item->proposed, '%d %b %Y', 0); ?></span>
+							<span class="entry-time"><time datetime="<?php echo $item->proposed; ?>"><?php echo JHTML::_('date', $item->proposed, $timeFormat, $tz); ?></time></span> <?php echo JText::_('on'); ?> 
+							<span class="entry-date"><time datetime="<?php echo $item->proposed; ?>"><?php echo JHTML::_('date', $item->proposed, $dateFormat, $tz); ?></time></span>
 							<span class="entry-details-divider">&bull;</span>
 							<span class="entry-comments"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&com=1&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'#comments'); ?>" title="<?php echo $item->numreplies; ?> <?php echo JText::_('COMMENTS'); ?>"><?php echo $item->numreplies; ?></a></span>
 						</span>
@@ -110,7 +120,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					</td>
 <?php 			if ($this->config->get('banking')) { ?>
 					<td class="reward">
-						<span class="entry-reward">			
+						<span class="entry-reward">
 <?php 					if (isset($item->bonus) && $item->bonus > 0 && ($item->status==0 or $item->status==6)) { ?>
 							<a class="bonus tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&action=addbonus&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'#action'); ?>" title="<?php echo JText::_('WISH_ADD_BONUS').' ::'.$item->bonusgivenby.' '.JText::_('MULTIPLE_USERS').' '.JText::_('WISH_BONUS_CONTRIBUTED_TOTAL').' '.$item->bonus.' '.JText::_('POINTS').' '.JText::_('WISH_BONUS_AS_BONUS'); ?>"><?php echo $item->bonus; ?> <span><?php echo JText::_('POINTS'); ?></span></a>
 <?php 					} else if ($item->status == 0 || $item->status == 6) { ?>

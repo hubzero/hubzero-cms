@@ -151,7 +151,7 @@ if (count($this->sections) > 0) {
 				<tfoot>
 					<tr>
 						<td<?php if ($section->categories) { echo ' colspan="5"'; } ?>>
-							<a class="add" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $section->alias . '/new'); ?>">
+							<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $section->alias . '/new'); ?>">
 								<span><?php echo JText::_('Add Category'); ?></span>
 							</a>
 						</td>

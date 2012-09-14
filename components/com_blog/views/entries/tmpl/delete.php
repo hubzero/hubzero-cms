@@ -50,12 +50,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php } ?>
 		</div>
 		<fieldset>
-			<h3><?php echo JText::_('COM_BLOG_DELETE_HEADER'); ?></h3>
+			<legend><?php echo JText::_('COM_BLOG_DELETE_HEADER'); ?></legend>
 
-	 		<p class="warning"><?php echo JText::sprintf('COM_BLOG_DELETE_WARNING',$this->entry->title); ?></p>
+	 		<p class="warning"><?php echo JText::sprintf('COM_BLOG_DELETE_WARNING', $this->entry->title); ?></p>
 
-			<label>
-				<input type="checkbox" class="option" name="confirmdel" value="1" /> 
+			<label for="confirmdel">
+				<input type="checkbox" class="option" name="confirmdel" id="confirmdel" value="1" /> 
 				<?php echo JText::_('COM_BLOG_DELETE_CONFIRM'); ?>
 			</label>
 		</fieldset>

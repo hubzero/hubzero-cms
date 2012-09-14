@@ -33,13 +33,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_User_Password');
 ?>
-<div id="content-header" class="full">
+<div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 </div><!-- / #content-header -->
 
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li class="last"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->profile->get('uidNumber')); ?>"><?php echo JText::_('My Account'); ?></a></li>
+		<li class="last"><a class="member btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->profile->get('uidNumber')); ?>"><?php echo JText::_('My Account'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 

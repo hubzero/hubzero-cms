@@ -38,7 +38,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <div id="content-header-extra">
 	<ul id="useroptions">
 		<li class="last">
-			<a class="search" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=search'); ?>">
+			<a class="search btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=search'); ?>">
 				<span><?php echo JText::_('COM_ANSWERS_ALL_QUESTIONS'); ?></span>
 			</a>
 		</li>

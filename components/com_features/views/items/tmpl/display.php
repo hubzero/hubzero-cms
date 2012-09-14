@@ -77,7 +77,7 @@ $types = array(
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			</fieldset>
 <?php if ($this->config->get('access-manage-component')) { ?>
-			<p class="add"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=add'); ?>"><?php echo JText::_('COM_FEATURES_ADD'); ?></a></p>
+			<p><a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=add'); ?>"><?php echo JText::_('COM_FEATURES_ADD'); ?></a></p>
 <?php } ?>
 		</div><!-- / .aside -->
 		<div class="subject">

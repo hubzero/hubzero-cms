@@ -46,7 +46,7 @@ $params = new $paramsClass( $this->event->params );
 <?php if ($this->authorized) { ?>
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li class="last"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=add'); ?>"><?php echo JText::_('EVENTS_ADD_EVENT'); ?></a></li>
+		<li class="last"><a class="add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=add'); ?>"><?php echo JText::_('EVENTS_ADD_EVENT'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 <?php } ?>
@@ -106,7 +106,7 @@ $params = new $paramsClass( $this->event->params );
 			?>
 		</div>
 		<fieldset>
-			<h3>Name &amp; Title</h3>
+			<legend>Name &amp; Title</legend>
 			<div class="group">
 				<label>First Name <span class="required">required</span>
 				<input type="text" name="register[firstname]" value="<?php echo (isset($this->register['firstname'])) ? $this->register['firstname'] : ''; ?>" /></label>
@@ -127,7 +127,7 @@ $params = new $paramsClass( $this->event->params );
 			<input type="hidden" name="task" value="process" />
 		</fieldset>
 		<fieldset>
-			<h3>Contact Information</h3>
+			<legend>Contact Information</legend>
 			<?php if ($params->get('show_address')) { ?>
 			<div class="group">
 				<label>City
@@ -170,7 +170,7 @@ $params = new $paramsClass( $this->event->params );
 			|| $params->get('show_gender')
 			|| $params->get('show_race')) { ?>
 		<fieldset>
-			<h3>Demographics</h3>
+			<legend>Demographics</legend>
 
 			<?php if ($params->get('show_position')) { ?>
 			<label>
@@ -227,7 +227,7 @@ $params = new $paramsClass( $this->event->params );
 	<?php } ?>
 	<?php if ($params->get('show_arrival') || $params->get('show_departure')) { ?>
 		<fieldset>
-			<h3>Arrival/Departure</h3>
+			<legend>Arrival/Departure</legend>
 
 			<?php if ($params->get('show_arrival')) { ?>
 			<fieldset>
@@ -256,7 +256,7 @@ $params = new $paramsClass( $this->event->params );
 	<?php } ?>
 	<?php if ($params->get('show_disability') || $params->get('show_dietary')) { ?>
 		<fieldset>
-			<h3>Disability/Dietary needs</h3>
+			<legend>Disability/Dietary needs</legend>
 			<?php if ($params->get('show_disability')) { ?>
 			<label><input type="checkbox" class="option" name="disability" value="yes" /> I have auxiliary aids or services due to a disability. Please contact me.</label>
 			<?php } ?>
@@ -272,9 +272,9 @@ $params = new $paramsClass( $this->event->params );
 	<?php } ?>
 	<?php if ($params->get('show_dinner')) { ?>
 		<fieldset>
-			<h3>Dinner</h3>
+			<legend>Dinner</legend>
 
-			<label><input type="checkbox" class="option" name="dinner" value="yes" /> I plan to attend the dinner.</label>
+			<label for="filed-dinner"><input type="checkbox" class="option" name="dinner" id="filed-dinner" value="yes" /> I plan to attend the dinner.</label>
 		</fieldset>
 	<?php } ?>
 
@@ -291,7 +291,7 @@ $params = new $paramsClass( $this->event->params );
 		</fieldset> -->
 		<?php if ($params->get('show_abstract')) { ?>
 		<fieldset>
-			<h3>Abstract</h3>
+			<legend>Abstract</legend>
 			<label>
 				<?php 
 				if ($params->get('abstract_text')) {
@@ -305,7 +305,7 @@ $params = new $paramsClass( $this->event->params );
 
 		<?php if ($params->get('show_comments')) { ?>
 		<fieldset>
-			<h3>Comments</h3>
+			<legend>Comments</legend>
 			<label>
 				Please use the space below to provide any additional comments:
 				<textarea name="register[comments]" rows="4" cols="32"></textarea>

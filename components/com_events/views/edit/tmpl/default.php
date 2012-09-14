@@ -37,7 +37,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <div id="content-header-extra">
 	<ul id="useroptions">
 		<li class="last">
-			<a class="main-page" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Browse Events'); ?></a>
+			<a class="browse btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Browse Events'); ?></a>
 		</li>
 	</ul>
 </div>
@@ -158,7 +158,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<p><?php echo JText::_('EVENTS_CAL_LANG_EVENT_REPEAT_INFO'); ?></p>
 		</div>
 		<fieldset>
-    		<h3><?php echo JText::_('EVENTS_CAL_LANG_EVENT_REPEATTYPE'); ?></h3>
+    		<legend><?php echo JText::_('EVENTS_CAL_LANG_EVENT_REPEATTYPE'); ?></legend>
 
 			<label>
 				<input class="option" id="reccurtype-no" name="reccurtype" type="radio" value="0" <?php if ($this->row->reccurtype == 0) { echo 'checked="checked"'; } ?> /> 

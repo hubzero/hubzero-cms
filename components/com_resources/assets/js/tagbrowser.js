@@ -158,32 +158,27 @@ HUB.TagBrowser = {
 					$('tbh2').style.display = 'block';
 				}
 				$('viewalltools').style.display = 'none';
-			
+
 				if (input != '') {
 					HUB.TagBrowser.col2active = 'col1_'+input;
 				} else {
 					HUB.TagBrowser.col2active = 'col1_all';
 				}
-				
-				//$('level-1').cildNode[0]
-				imgpath = '/components/com_resources/images/loading.gif';
-				
+
+				imgpath = '/components/com_resources/assets/img/loading.gif';
+
 				var img1 = new Element('img', {'id':'loading-img1','src':imgpath}).injectInside($('level-1-loading'));
 				var img2 = new Element('img', {'id':'loading-img2','src':imgpath}).injectInside($('level-2-loading'));
-				
-				//if ((browser.isFirefox==false && browser.isCamino==false && browser.isMozilla) || browser.isIE) {
-					var myAjax = new Ajax(HUB.TagBrowser.baseURI+'&type='+type+'&level=1&input='+input+'&input2='+input2+'&id='+id, {
-						method: 'get',
-						update: $('level-1'),
-						evalScripts: false,
-						onSuccess: function() {
-							HUB.TagBrowser.sc = setTimeout("HUB.TagBrowser.setScroll()", 500);
-							var myAjax = new Ajax(HUB.TagBrowser.baseURI+'&type='+type+'&level=2&input='+input+'&input2='+input2+'&id='+id, {method: 'get',update: $('level-2')}).request();
-						}
-					}).request();
-				//} else {
-				//	var myAjax = new Ajax(HUB.TagBrowser.baseURI+'&type='+type+'&level=1&input='+input+'&id='+id, {method: 'get',update: $('level-1'),evalScripts:true}).request();
-				//}
+
+				var myAjax = new Ajax(HUB.TagBrowser.baseURI+'&type='+type+'&level=1&input='+input+'&input2='+input2+'&id='+id, {
+					method: 'get',
+					update: $('level-1'),
+					evalScripts: false,
+					onSuccess: function() {
+						HUB.TagBrowser.sc = setTimeout("HUB.TagBrowser.setScroll()", 500);
+						var myAjax = new Ajax(HUB.TagBrowser.baseURI+'&type='+type+'&level=2&input='+input+'&input2='+input2+'&id='+id, {method: 'get',update: $('level-2')}).request();
+					}
+				}).request();
 			}
 		}
 	}

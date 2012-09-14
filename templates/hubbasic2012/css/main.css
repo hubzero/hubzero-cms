@@ -487,8 +487,9 @@
 /* Trail */
 	#sub-masthead {
 		margin: 0;
-		padding: 0;
+		padding: 0 30px 30px 30px;
 		vertical-align: baseline;
+		height: 85px;
 	}
 	#trail {
 		font-size: 0.85em;
@@ -498,8 +499,8 @@
 	}
 	#trail span.pathway {
 		display: block;
-		padding: 10px 0 80px 0;
-		margin: 0 30px;
+		padding: 10px 0 10px 0;
+		margin: 0;
 	}
 	#trail a {
 		color: #eee;
@@ -524,7 +525,7 @@
 		margin: 31px 30px 0 0;
 		padding: 0;
 		position: relative;
-		z-index: 598;
+		z-index: 798;
 	}
 	#account li {
 		list-style: none;
@@ -1599,184 +1600,10 @@
 		padding: 0 0 0 20px;
 	}
 /* Icons */
-	.edit-member:before {
-		content: "\f007";
-		font-family: 'Fontcons';
-		margin-right: 0.2em;
-	}
-	.email:before {
-		content: "\2709";
-		font-family: 'Fontcons';
-		margin-right: 0.2em;
-	}
-	.delete:before {
-		content: "\f014";
-		font-family: 'Fontcons';
-		margin-right: 0.2em;
-	}
-	.edit:before {
-		content: "\270E";
-		font-family: 'Fontcons';
-		margin-right: 0.2em;
-	}
-	.config:before {
-		content: "\2699";
-		font-family: 'Fontcons';
-		margin-right: 0.2em;
-	}
-	.abuse:before {
-		content: "\2298";
-		font-family: 'Fontcons';
-		margin-right: 0.2em;
-	}
-	.reply:before {
-		content: "\f08a";
-		font-family: 'Fontcons';
-		margin-right: 0.2em;
-	}
-	.date:before {
-		content: "\f073";
-		font-family: 'Fontcons';
-		margin-right: 0.2em;
-	}
-	.history:before,
-	.time:before {
-		content: "\f017";
-		font-family: 'Fontcons';
-		margin-right: 0.2em;
-	}
-	.comments:before {
-		content: "\f075";
-		font-family: 'Fontcons';
-		margin-right: 0.2em;
-	}
-	.add:before {
-		content: "\2295";
-		font-family: 'Fontcons';
-		margin-right: 0.2em;
-	}
-	.stats:before {
-		content: "\f004";
-		font-family: 'Fontcons';
-		margin-right: 0.2em;
-	}
-	a.group:before {
-		content: "\f042";
-		font-family: 'Fontcons';
-		margin-right: 0.2em;
-	}
-	.shoppingcart:before {
-		content: "\f04d";
-		font-family: 'Fontcons';
-		margin-right: 0.2em;
-	}
-	.archive:before {
-		content: "\f005";
-		font-family: 'Fontcons';
-		margin-right: 0.2em;
-	}
-	.author:before {
-		content: "\f007";
-		font-family: 'Fontcons';
-		margin-right: 0.2em;
-	}
-	.main-page:before {
-		content: "\f071";
-		font-family: 'Fontcons';
-	}
-	.tag:before {
-		content: "\f02b";
-		font-family: 'Fontcons';
-		margin-right: 0.3em;
-	}
-	.feed:before {
-		content: "\f029";
-		font-family: 'Fontcons';
-		margin-right: 0.2em;
-	}
-	
-	#page_options .edit:before {
-		content: "";
-		margin-right: 0;
-	}
-	
-	a.feed,
-	a.add {
-		padding: 0.4em 0.91em 0.4em 2.91em;
-		text-align: center;
-		text-shadow: 0px -1px 1px #1E2D4D;
-		color: #555;
-		-webkit-background-clip: padding-box;
-		/*margin-top: -1.2em;*/
-		display: inline-block;
-		-webkit-border-radius: 0.25em;
-		-moz-border-radius: 0.25em;
-		border-radius: 0.25em;
-		background: #e0e0e0;
-		background: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#e0e0e0));
-		background: -webkit-linear-gradient(#FAFAFA, #e0e0e0);
-		background: -moz-linear-gradient(center top, #FAFAFA 0%, #e0e0e0 100%);
-		background: -moz-gradient(center top, #FAFAFA 0%, #e0e0e0 100%);
-		background: -o-linear-gradient(#FAFAFA, #e0e0e0);
-		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FAFAFA,endColorstr=#e0e0e0);
-		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FAFAFA, endColorstr=#e0e0e0)";
-		border: 1px solid #CCC;
-		-webkit-box-shadow: inset 0 0 1px #fff;
-		-moz-box-shadow: inset 0 0 1px #fff;
-		-ms-box-shadow: inset 0 0 1px #fff;
-		box-shadow: inset 0 0 1px #fff;
-		text-shadow: 0 1px 0 #fff;
-		border-color: #CCC #CCC #AAA #AAA;
-		outline: 0;
-		font-weight: bold;
-		font-size: 11px;
-		white-space: nowrap;
-		word-wrap: normal;
-		vertical-align: middle;
-		cursor: pointer;
-		position: relative;
-	}
-	a.feed:hover,
-	a.add:hover {
-		background: #e8e8e8;
-		background: -webkit-gradient(linear, left top, left bottom, from(#f1f1f1), to(#e8e8e8));
-		background: -webkit-linear-gradient(#f1f1f1, #e8e8e8);
-		background: -moz-linear-gradient(center top, #f1f1f1 0%, #e8e8e8 100%);
-		background: -moz-gradient(center top, #f1f1f1 0%, #e8e8e8 100%);
-		background: -o-linear-gradient(#f1f1f1, #e8e8e8);
-		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#f1f1f1,endColorstr=#e8e8e8);
-		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#f1f1f1, endColorstr=#e8e8e8)";
-		border: 1px solid #aaaaaa;
-		-webkit-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
-		-moz-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
-		-ms-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
-		box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
-	}
-	a.feed:before,
-	a.add:before {
-		background: #e3e3e3;
-		background: rgba(0, 0, 0, 0.08);
-		position: absolute;
-		top: 0;
-		left: 0;
-		bottom: 0;
-		width: 1em;
-		text-align: center;
-		font-size: 1.2em;
-		line-height: 2.2;
-		padding: 0 0.5em;
-		-webkit-border-radius: 0.25em 0 0 0.25em;
-		-moz-border-radius: 0.25em 0 0 0.25em;
-		border-radius: 0.25em 0 0 0.25em;
-	}
-	#content-header-extra ul,
-	#content-header-extra li,
-	#content-header-extra p {
-		margin: 0;
-		padding: 0;
-	}
+	#conten-header-extra a,
 	#page_options a,
-	#content-header-extra a {
+	.btn,
+	a.btn {
 		color: #555;
 		background: #e0e0e0;
 		background: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#e0e0e0));
@@ -1788,15 +1615,15 @@
 		background: linear-gradient(#FAFAFA, #e0e0e0);
 		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FAFAFA,endColorstr=#e0e0e0);
 		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FAFAFA, endColorstr=#e0e0e0)";
-		border: 1px solid #CCC;
 		-webkit-box-shadow: inset 0 0 1px #fff;
 		-moz-box-shadow: inset 0 0 1px #fff;
 		-ms-box-shadow: inset 0 0 1px #fff;
 		-o-box-shadow: inset 0 0 1px #fff;
 		box-shadow: inset 0 0 1px #fff;
 		text-shadow: 0 1px 0 #fff;
+		border: 1px solid #CCC;
 		border-color: #CCC #CCC #AAA #AAA;
-		padding: 0.4em 0.91em 0.4em 2.91em;
+		padding: 0.4em 0.91em 0.4em 0.91em;
 		text-align: center;
 		font-weight: normal;
 		-webkit-background-clip: padding-box;
@@ -1814,46 +1641,44 @@
 		cursor: pointer;
 		position: relative;
 	}
-	#content-header-extra span.btn {
+	#conten-header-extra a,
+	#page_options a,
+	.btn.add,
+	.btn.edit-member,
+	.btn.email,
+	.btn.delete,
+	.btn.edit,
+	.btn.config,
+	.btn.abuse,
+	.btn.reply,
+	.btn.date,
+	.btn.history,
+	.btn.time,
+	.btn.feed,
+	.btn.stats,
+	.btn.author,
+	.btn.main-page,
+	.btn.shoppingcart,
+	.btn.tag,
+	.btn.prev,
+	.btn.next,
+	.btn.comments,
+	.btn.categories,
+	.btn.browse,
+	.btn.group,
+	.btn.status,
+	.btn.search,
+	.btn.message,
+	.btn.archive {
 		padding: 0.4em 0.91em 0.4em 2.91em;
-		text-align: center;
-		text-shadow: 0px -1px 1px #1E2D4D;
+	}
+	span.btn {
 		color: #999;
-		-webkit-background-clip: padding-box;
-		display: inline-block;
-		-webkit-border-radius: 0.25em;
-		-moz-border-radius: 0.25em;
-		-ms-border-radius: 0.25em;
-		-o-border-radius: 0.25em;
-		border-radius: 0.25em;
-		background: #e0e0e0;
-		background: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#e0e0e0));
-		background: -webkit-linear-gradient(#FAFAFA, #e0e0e0);
-		background: -moz-gradient(center top, #FAFAFA 0%, #e0e0e0 100%);
-		background: -moz-linear-gradient(center top, #FAFAFA 0%, #e0e0e0 100%);
-		background: -ms-linear-gradient(#FAFAFA, #e0e0e0);
-		background: -o-linear-gradient(#FAFAFA, #e0e0e0);
-		background: linear-gradient(#FAFAFA, #e0e0e0);
-		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FAFAFA,endColorstr=#e0e0e0);
-		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FAFAFA, endColorstr=#e0e0e0)";
-		border: 1px solid #CCC;
-		-webkit-box-shadow: inset 0 0 1px #fff;
-		-moz-box-shadow: inset 0 0 1px #fff;
-		-ms-box-shadow: inset 0 0 1px #fff;
-		-o-box-shadow: inset 0 0 1px #fff;
-		box-shadow: inset 0 0 1px #fff;
-		text-shadow: 0 1px 0 #fff;
 		border-color: #CCC;
-		outline: 0;
-		font-weight: bold;
-		font-size: 11px;
-		white-space: nowrap;
-		word-wrap: normal;
-		vertical-align: middle;
-		position: relative;
 	}
 	#page_options a:hover,
-	#content-header-extra a:hover {
+	#conten-header-extra a:hover,
+	a.btn:hover {
 		background: #e8e8e8;
 		background: -webkit-gradient(linear, left top, left bottom, from(#f1f1f1), to(#e8e8e8));
 		background: -webkit-linear-gradient(#f1f1f1, #e8e8e8);
@@ -1869,9 +1694,62 @@
 		-o-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
 		box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
 	}
-	#content-header-extra span.btn:before,
+	.add:before,
+	.edit-member:before,
+	.email:before,
+	.delete:before,
+	.edit:before,
+	.config:before,
+	.abuse:before,
+	.reply:before,
+	.date:before,
+	.history:before,
+	.time:before,
+	.feed:before,
+	.stats:before,
+	.author:before,
+	.main-page:before,
+	.shoppingcart:before,
+	.tag:before,
+	.prev:before,
+	.next:before,
+	.comments:before,
+	.categories:before,
+	.browse:before,
+	.archive:before {
+		font-family: 'Fontcons';
+		margin-right: 0.2em;
+	}
 	#page_options a:before,
-	#content-header-extra a:before {
+	#conten-header-extra a:before,
+	.btn.add:before,
+	.btn.edit-member:before,
+	.btn.email:before,
+	.btn.delete:before,
+	.btn.edit:before,
+	.btn.config:before,
+	.btn.abuse:before,
+	.btn.reply:before,
+	.btn.date:before,
+	.btn.history:before,
+	.btn.time:before,
+	.btn.feed:before,
+	.btn.stats:before,
+	.btn.author:before,
+	.btn.main-page:before,
+	.btn.shoppingcart:before,
+	.btn.tag:before,
+	.btn.prev:before,
+	.btn.next:before,
+	.btn.comments:before,
+	.btn.categories:before,
+	.btn.browse:before,
+	.btn.group:before,
+	.btn.status:before,
+	.btn.search:before,
+	.btn.message:before,
+	.btn.nav_wishlist:before,
+	.btn.archive:before {
 		background: #e3e3e3;
 		background: rgba(0, 0, 0, 0.08);
 		position: absolute;
@@ -1882,20 +1760,94 @@
 		text-align: center;
 		font-size: 1.2em;
 		font-weight: normal;
+		font-family: 'Fontcons';
 		line-height: 2.1;
 		padding: 0 0.5em;
+		margin-right: 0.2em;
 		-webkit-border-radius: 0.25em 0 0 0.25em;
 		-moz-border-radius: 0.25em 0 0 0.25em;
 		-ms-border-radius: 0.25em 0 0 0.25em;
 		-o-border-radius: 0.25em 0 0 0.25em;
 		border-radius: 0.25em 0 0 0.25em;
 	}
-	#content-header-extra .all {
-		padding: 0.4em 0.91em 0.4em 0.91em;
+	.edit-member:before {
+		content: "\f007";
 	}
-	#content-header-extra .all:before {
-		display: none;
+	.message:before,
+	.email:before {
+		content: "\2709";
 	}
+	.delete:before {
+		content: "\f014";
+	}
+	.edit:before {
+		content: "\270E";
+	}
+	.config:before {
+		content: "\2699";
+	}
+	.abuse:before {
+		content: "\2298";
+	}
+	.reply:before {
+		content: "\f08a";
+	}
+	.date:before {
+		content: "\f073";
+	}
+	.history:before,
+	.time:before {
+		content: "\f017";
+	}
+	.comments:before {
+		content: "\f075";
+	}
+	.add:before {
+		content: "\2295";
+	}
+	.stats:before {
+		content: "\f004";
+	}
+	a.group:before {
+		content: "\f042";
+		font-family: 'Fontcons';
+		margin-right: 0.2em;
+	}
+	.shoppingcart:before {
+		content: "\f04d";
+	}
+	.archive:before {
+		content: "\f005";
+	}
+	.author:before {
+		content: "\f007";
+	}
+	.main-page:before {
+		content: "\f071";
+	}
+	.tag:before {
+		content: "\f02b";
+		margin-right: 0.3em;
+	}
+	.feed:before {
+		content: "\f029";
+	}
+	.browse:before {
+		content: "\f00b";
+		margin-right: 0.3em;
+	}
+
+	#page_options .edit:before {
+		content: "";
+		margin-right: 0;
+	}
+	#content-header-extra ul,
+	#content-header-extra li,
+	#content-header-extra p {
+		margin: 0;
+		padding: 0;
+	}
+
 	#content-header-extra .prev:before {
 		content: "\2190";
 		font-family: 'Fontcons';
@@ -1929,29 +1881,8 @@
 		content: "\2192";
 		font-family: 'Fontcons';
 	}
-	.main-page:before {
-		content: "\f071";
-		font-family: 'Fontcons';
-	}
-	.tag:before {
-		content: "\f02b";
-		font-family: 'Fontcons';
-		margin-right: 0.3em;
-	}
-	.feed:before {
-		content: "\f029";
-		font-family: 'Fontcons';
-		margin-right: 0.2em;
-	}
-	.browse:before {
-		content: "\f00b";
-		font-family: 'Fontcons';
-		margin-right: 0.3em;
-	}
-	#content-header-extra .status:before {
+	.btn.status:before {
 		content: "\f056";
-		font-family: 'Fontcons';
-		margin-right: 0.2em;
 	}
 	#content #system-message {
 		margin: 0 0 30px 0;

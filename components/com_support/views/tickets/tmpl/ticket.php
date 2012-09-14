@@ -85,7 +85,7 @@ ximport('Hubzero_User_Profile_Helper');
 <div id="content-header-extra">
 	<ul id="useroptions">
 		<li class="last">
-			<a class="browse" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=tickets&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='.$this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
+			<a class="browse btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=tickets&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='.$this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
 				<?php echo JText::_('TICKETS'); ?>
 			</a>
 		</li>
@@ -169,7 +169,7 @@ ximport('Hubzero_User_Profile_Helper');
 	<div class="aside">
 <?php if ($this->acl->check('create', 'comments')) { ?>
 		<p>
-			<a class="add" href="#commentform"><?php echo JText::_('ADD_COMMENT'); ?></a>
+			<a class="add btn" href="#commentform"><?php echo JText::_('ADD_COMMENT'); ?></a>
 		</p>
 <?php } ?>
 	</div><!-- / .aside -->

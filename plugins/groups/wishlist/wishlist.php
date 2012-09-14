@@ -105,9 +105,15 @@ class plgGroupsWishlist extends JPlugin
 		{
 			if (!in_array($this_area['name'], $areas)) 
 			{
-				return;
+				$return = 'metadata';
 			}
 		}
+
+		//Create user object
+		$juser =& JFactory::getUser();
+
+		//get the group members
+		$members = $group->get('members');
 
 		//if we want to return content
 		if ($return == 'html') 
@@ -115,11 +121,7 @@ class plgGroupsWishlist extends JPlugin
 			//set group members plugin access level
 			$group_plugin_acl = $access[$active];
 
-			//Create user object
-			$juser =& JFactory::getUser();
-
-			//get the group members
-			$members = $group->get('members');
+			
 
 			//if set to nobody make sure cant access
 			if ($group_plugin_acl == 'nobody') 
@@ -146,7 +148,7 @@ class plgGroupsWishlist extends JPlugin
 				$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
 				return $arr;
 			}
-
+		}
 			//instantiate database
 			$database =& JFactory::getDBO();
 
@@ -245,6 +247,10 @@ class plgGroupsWishlist extends JPlugin
 			//get item count
 			$items = $objWish->get_count($id, $filters, $admin);
 
+		$arr['metadata']['count'] = $items;
+
+		if ($return == 'html') 
+		{
 			// Get wishes
 			$wishlist->items = $objWish->get_wishes($wishlist->id, $filters, $admin, $juser);
 

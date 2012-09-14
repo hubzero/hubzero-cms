@@ -33,9 +33,19 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $jconfig =& JFactory::getConfig();
 ?>
-<div id="content-header" class="full">
+<div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 </div><!-- / #content-header -->
+
+<div id="content-header-extra">
+	<ul>
+		<li>
+			<a class="main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+				<?php echo JText::_('Main page'); ?>
+			</a>
+		</li>
+	</ul>
+</div><!-- / #content-header-extra -->
 
 <div class="main section">
 <?php if ($this->getError()) { ?>
@@ -72,7 +82,7 @@ $jconfig =& JFactory::getConfig();
 
 			<label<?php echo ($this->getError() && $this->row->quote == '') ? ' class="fieldWithErrors"' : ''; ?> for="quote">
 				<?php echo JText::_('COM_FEEDBACK_STORY_DESCRIPTION'); ?>
-				<textarea name="fields[quote]" id="quote" rows="50" cols="15"><?php echo $this->escape($this->row->quote); ?></textarea>
+				<textarea name="fields[quote]" id="quote" rows="40" cols="15"><?php echo $this->escape($this->row->quote); ?></textarea>
 			</label>
 <?php if ($this->getError() && $this->row->quote == '') { ?>
 			<p class="error"><?php echo JText::_('COM_FEEDBACK_STORY_MISSING_DESCRIPTION'); ?></p>

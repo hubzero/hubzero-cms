@@ -52,7 +52,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 </div>
 <div id="content-header-extra">
 	<p>
-		<a class="main-page" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Main page'); ?></a>
+		<a class="main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Main page'); ?></a>
 	</p>
 </div>
 <div class="main section">
@@ -215,7 +215,7 @@ if ($this->config->get('feeds_enabled')) {
 	<div class="aside">
 <?php if ($this->config->get('close_comments') == 'never' || ($this->config->get('close_comments') != 'now' && $today < $pdt)) { ?>
 		<p>
-			<a class="add" href="#post-comment"><?php echo JText::_('Add a comment'); ?></a>
+			<a class="add btn" href="#post-comment"><?php echo JText::_('Add a comment'); ?></a>
 		</p>
 <?php } ?>
 	</div>
@@ -609,7 +609,7 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 						<strong><?php echo JText::_('Please keep comments relevant to this entry.'); ?></strong>
 					</p>
 					<p>
-						Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="/topics/Help:WikiFormatting" class="popup">Wiki syntax</a> is supported.
+						Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="<?php echo JRoute::_('index.php?option=com_wiki&pagename=Help:WikiFormatting'); ?>" class="popup">Wiki syntax</a> is supported.
 					</p>
 				</div>
 			</fieldset>
