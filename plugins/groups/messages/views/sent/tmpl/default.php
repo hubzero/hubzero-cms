@@ -29,57 +29,70 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-?>
-<a name="messages"></a>
-<h3><?php echo JText::_('MESSAGES'); ?></h3>
+defined('_JEXEC') or die('Restricted access');
 
-<div class="subject">
-	<ul class="entries-menu">
-		<li><a class="active" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->get('cn').'&active=messages'); ?>"><span><?php echo JText::_('PLG_GROUPS_MESSAGES_SENT'); ?></span></a></li>
-		<?php if($this->authorized == 'manager') { ?>
-			<li><a id="new-group-message" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->get('cn').'&active=messages&task=new'); ?>"><span><?php echo JText::_('PLG_GROUPS_MESSAGES_SEND'); ?></span></a></li>
-		<?php } ?>
-	</ul>
-	<br class="clear" />
+$dateFormat  = '%d %b, %Y';
+$timeFormat  = '%I:%M %p';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat  = 'd M, Y';
+	$timeFormat  = 'h:i a';
+	$tz = true;
+}
+?>
+<h3 class="section-header">
+	<a name="messages"></a>
+	<?php echo JText::_('MESSAGES'); ?>
+</h3>
+
+<?php if ($this->authorized == 'manager') { ?>
+<ul id="page_options">
+	<li>
+		<a id="new-group-message" class="message btn" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->get('cn').'&active=messages&task=new'); ?>">
+			<span><?php echo JText::_('PLG_GROUPS_MESSAGES_SEND'); ?></span>
+		</a>
+	</li>
+</ul>
+<?php } ?>
+
+<div class="section">
 	<div class="container">
 		<form action="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->get('cn').'&active=messages'); ?>" method="post">
-		<table class="groups entries" summary="Groups this person is a member of">
-			<caption><?php echo JText::_('PLG_GROUPS_MESSAGES_SENT'); ?> <span>(<?php echo count($this->rows); ?>)</span></caption>
-			<thead>
-				<tr>
-					<th scope="col"><?php echo JText::_('Subject'); ?></th>
-					<th scope="col"><?php echo JText::_('Message From'); ?></th>
-					<th scope="col"><?php echo JText::_('Date Sent'); ?></th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php if(count($this->rows) > 0) { ?>
-					<?php foreach($this->rows as $row) { ?>
+			<table class="groups entries" summary="Groups this person is a member of">
+				<caption><?php echo JText::_('PLG_GROUPS_MESSAGES_SENT'); ?> <span>(<?php echo count($this->rows); ?>)</span></caption>
+				<thead>
+					<tr>
+						<th scope="col"><?php echo JText::_('Subject'); ?></th>
+						<th scope="col"><?php echo JText::_('Message From'); ?></th>
+						<th scope="col"><?php echo JText::_('Date Sent'); ?></th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php if (count($this->rows) > 0) { ?>
+						<?php foreach ($this->rows as $row) { ?>
+							<tr>
+								<td><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=messages&task=viewmessage&msg='.$row->id); ?>"><?php echo $this->escape(stripslashes($row->subject)); ?></a></td>
+								<td><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by); ?>"><?php echo $this->escape(stripslashes($row->name)); ?></a></td>
+								<td><time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?></time></td>
+							</tr>
+						<?php } ?>
+					<?php } else { ?>
 						<tr>
-							<td><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=messages&task=viewmessage&msg='.$row->id); ?>"><?php echo stripslashes($row->subject); ?></a></td>
-							<td><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$row->created_by); ?>"><?php echo stripslashes($row->name); ?></a></td>
-							<td><?php echo JHTML::_('date', $row->created, '%d %b, %Y'); ?></td>
+							<td colspan="3"><?php echo JText::_('No messages found'); ?></td>
 						</tr>
 					<?php } ?>
-				<?php } else { ?>
-					<tr>
-						<td colspan="3"><?php echo JText::_('No messages found'); ?></td>
-					</tr>
-				<?php } ?>
-			</tbody>
-		</table>
+				</tbody>
+			</table>
 		</form>
-	</div>
 	
 	<?php 
-		$pagenavhtml = $this->pageNav->getListFooter();
-		$pagenavhtml = str_replace('groups/?','groups/'.$this->group->get('cn').'/messages/sent/?',$pagenavhtml);
-		$pagenavhtml = str_replace('action=sent','',$pagenavhtml);
-		$pagenavhtml = str_replace('&amp;&amp;','&amp;',$pagenavhtml);
-		$pagenavhtml = str_replace('?&amp;','?',$pagenavhtml);
-		echo $pagenavhtml;
+		$this->pageNav->setAdditionalUrlParam('gid', $this->group->get('cn'));
+		$this->pageNav->setAdditionalUrlParam('active', 'messages');
+
+		echo $this->pageNav->getListFooter();
 	?>
-	
-</div><!-- // .subject -->
+		<div class="clearfix"></div>
+	</div><!-- / .container -->
+</div><!-- / .section -->
 
