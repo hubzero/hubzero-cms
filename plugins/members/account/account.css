@@ -215,10 +215,17 @@
 #members-account-section ul#passrules li {
 	margin: 5px 0;
 	padding: 2px 2px 2px 20px;
+	position: relative;
 }
 #members-account-section ul#passrules li:before {
 	left: 4px;
 	top: 7px;
+}
+#members-account-section ul#passrules li.empty:before {
+	position: absolute;
+	left: 0;
+	top: 0;
+	content: "\2192";
 }
 #members-account-section ul#passrules li.error {
 	font-weight: bold;

@@ -40,7 +40,7 @@ HUB.Plugins.MembersAccount = {
 		// Augment cancel button in password box
 		passcancel.on('click', function(){
 			$('#section-edit-errors').slideUp('fast');
-			$('#passrules').find('li').removeClass('error passed').addClass('info');
+			$('#passrules').find('li').switchClass('error passed', 'empty', 200);
 		});
 
 		// Set keyup event on password field to do validation
@@ -74,7 +74,7 @@ HUB.Plugins.MembersAccount = {
 				else
 				{
 					// Probably deleted password, so reset classes
-					passrule.find('li').removeClass('error passed').addClass('info');
+					passrule.find('li').switchClass('error passed', 'empty', 200);
 				}
 			}
 		});
@@ -120,7 +120,7 @@ HUB.Plugins.MembersAccount = {
 						$('#newpass2').val('');
 						error.removeClass('passed').addClass('error');
 						error.html('');
-						passrule.find('li').removeClass('error passed').addClass('info');
+						passrule.find('li').switchClass('error passed', 'empty', 200);
 					});
 				}
 				else

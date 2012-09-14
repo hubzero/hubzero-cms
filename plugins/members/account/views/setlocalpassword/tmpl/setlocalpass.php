@@ -84,7 +84,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 							} else {
 								$err = '';
 							}
-							$mclass = ($err)  ? ' class="error"' : 'class="info"';
+							$mclass = ($err)  ? ' class="error"' : ' class="empty"';
 							echo "<li $mclass>".$rule."</li>";
 						}
 					}
