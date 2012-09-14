@@ -2584,6 +2584,25 @@
 		border: none;
 		background-color: transparent;
 	}
+	#sbox-content fieldset legend {
+		margin: 0;
+		padding: 0.5em 1em;
+		width: 100%;
+		position: inherit;
+		display: block;
+		font-weight: bold;
+		border-bottom: 1px solid #757575;
+		color: #555;
+		text-shadow: 0px 1px 0px #e5e5ee;
+		background: #a2a2a2;
+		background: -webkit-gradient(linear, left top, left bottom, from(#c4c4c4), to(#a2a2a2));
+		background: -webkit-linear-gradient(#c4c4c4, #a2a2a2);
+		background: -moz-linear-gradient(center top, #c4c4c4 0%, #a2a2a2 100%);
+		background: -moz-gradient(center top, #c4c4c4 0%, #a2a2a2 100%);
+		background: -o-linear-gradient(#c4c4c4, #a2a2a2);
+		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#c4c4c4,endColorstr=#a2a2a2);
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#c4c4c4, endColorstr=#a2a2a2)";
+	}
 	#sbox-content fieldset label {
 		margin: 0;
 		padding: 0.5em 1em;

@@ -36,7 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<p class="info"><?php echo JText::_('PLG_GROUPS_MEMBERS_DENY_EXPLANATION'); ?></p>
 	</div>
 	<fieldset>
-		<h3><?php echo JText::_('PLG_GROUPS_MEMBERS_DENY_MEMBERSHIP'); ?></h3>
+		<legend><?php echo JText::_('PLG_GROUPS_MEMBERS_DENY_MEMBERSHIP'); ?></legend>
 
 		<label>
 			<?php echo JText::_('PLG_GROUPS_MEMBERS_DENY_USERS'); ?><br />

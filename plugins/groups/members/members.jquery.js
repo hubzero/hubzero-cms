@@ -28,7 +28,7 @@ HUB.Plugins.GroupsMembers = {
 	initialize: function() {
 		var $ = this.jQuery;
 		
-		$('.remove-role a').on('click', function(e) {
+		$('.delete-role a').on('click', function(e) {
 			e.preventDefault();
 			var answer = confirm('Are you sure you want to delete this member role? It will also delete any associations members have with the role.');
 			if (answer) { 
@@ -44,7 +44,7 @@ HUB.Plugins.GroupsMembers = {
 			fitToView: false,
 			titleShow: false,
 			tpl: {
-				wrap:'<div class="fancybox-wrap"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div>'
+				wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
 			},
 			beforeLoad: function() {
 				href = $(this).attr('href');
@@ -60,7 +60,7 @@ HUB.Plugins.GroupsMembers = {
 					$('#message-ajax').submit(function(e) {
 						e.preventDefault();
 						$.post($(this).attr('action'), $(this).serialize(), function(returndata) {
-							$.fancybox().close();
+							$.fancybox.close();
 						});
 					});
 				}
@@ -71,12 +71,12 @@ HUB.Plugins.GroupsMembers = {
 		$('a.assign-role').fancybox({
 			type: 'ajax',
 			width: 300,
-			height: 150,
+			height: 170,
 			autoSize: false,
 			fitToView: false,
 			titleShow: false,
 			tpl: {
-				wrap:'<div class="fancybox-wrap"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div>'
+				wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
 			},
 			beforeLoad: function() {
 				href = $(this).attr('href');
@@ -105,7 +105,7 @@ HUB.Plugins.GroupsMembers = {
 							} else {
 								$('#roles-list-' + uid).html(old + ', ' + role);
 							}
-							$.fancybox().close();
+							$.fancybox.close();
 						});
 					});
 				}

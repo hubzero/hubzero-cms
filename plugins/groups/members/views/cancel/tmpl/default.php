@@ -36,7 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<p class="info"><?php echo JText::_('PLG_GROUPS_MEMBERS_CANCEL_EXPLANATION'); ?></p>
 	</div>
 	<fieldset>
-		<h3><?php echo JText::_('PLG_GROUPS_MEMBERS_CANCEL_INVITATION'); ?></h3>
+		<legend><?php echo JText::_('PLG_GROUPS_MEMBERS_CANCEL_INVITATION'); ?></legend>
 
 		<label>
 			<?php echo JText::_('PLG_GROUPS_MEMBERS_CANCEL_INVITATIONS'); ?><br />
@@ -57,7 +57,7 @@ foreach ($this->users as $user)
 ?>
 			<strong><?php echo implode(', ',$names); ?></strong>
 		</label>
-		<label>
+		<label for="reason">
 			<?php echo JText::_('PLG_GROUPS_MEMBERS_CANCEL_REASON'); ?>
 			<textarea name="reason" id="reason" rows="12" cols="50"></textarea>
 		</label>

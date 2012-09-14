@@ -38,7 +38,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <form action="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->get('cn')); ?>" method="post" id="hubForm<?php if ($this->no_html) { echo '-ajax'; }; ?>"> 
 	<fieldset>
-		<h3>Assign Member Role</h3>
+		<legend>Assign Member Role</legend>
 		<label>
 			<input type="hidden" name="uid" value="<?php echo $this->uid; ?>" id="uid" />
 			<?php
