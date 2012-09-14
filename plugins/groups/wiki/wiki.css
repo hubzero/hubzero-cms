@@ -17,6 +17,12 @@
 		margin-top: -1em;
 	}
 
+/* Wiki options */
+	#page_options li {
+		display: inline-block;
+		margin-left: 0.5em;
+	}
+
 /* Attachments */
 	#attachments {
 		margin: 0;
@@ -394,6 +400,9 @@
 	.wikipage blockquote {
 		margin: 2em 0 2.5em 0;
 		padding: 5px 0 5px 10px;
+	}
+	.wikipage blockquote:before {
+		display: none;
 	}
 	.wikipage pre {
 		font-family: "Bitstream Vera Sans Mono", Courier, Monaco, ProFont, "American Typewriter", "Andale Mono", monospace;
