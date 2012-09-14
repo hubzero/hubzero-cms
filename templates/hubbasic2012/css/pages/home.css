@@ -80,7 +80,7 @@
 		border-bottom: 1px dashed #bAbAbA;
 		font-size: 1.5em;
 		padding: 30px;
-		margin: 0 0 30px 0;
+		margin: 0;
 		font-weight: normal;
 		background: #f9f9f9 url("../../images/layout/noise-lite.png");
 	}
@@ -91,7 +91,11 @@
 	#features .columns p,
 	#features .columns form {
 		margin: 0;
-		padding: 0 30px 30px 30px;
+		padding: 30px 30px 30px 30px;
+	}
+	#features .columns form p,
+	#features .columns p + p {
+		padding-top: 0;
 	}
 	#features .columns form {
 		padding-bottom: 0;
@@ -109,10 +113,10 @@
 		-ms-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
 		-o-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
 		box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
-		min-height: 264px;
+		min-height: 164px;
 	}
 	html.firefox #features .columns div:first-child {
-		min-height: 274px;
+		min-height: 174px;
 	}
 	#features .columns:before,
 	#features .columns:after,
@@ -195,6 +199,22 @@
 	}
 	#features .columns div.question:after {
 		content: "\f086";
+	}
+	#features .columns .featured-resource .featured-img {
+		float: left;
+		padding-bottom: 15px;
+	}
+	#features .columns .featured-resource .featured-img a {
+		border: none;
+	}
+	#features .columns .featured-resource p {
+		padding: 30px;
+	}
+	#features .columns .featured-resource:after {
+		content: ".";
+		visibility: hidden;
+		height: 1px;
+		clear: left;
 	}
 
 /* Highlight section */
