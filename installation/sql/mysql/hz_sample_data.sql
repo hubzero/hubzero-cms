@@ -46,6 +46,7 @@ UPDATE `#__components` SET params='upload_extensions=bmp,csv,doc,epg,gif,ico,jpg
 UPDATE `#__components` SET params='show_noauth=0\nshow_title=1\nlink_titles=0\nshow_intro=1\nshow_section=0\nlink_section=0\nshow_category=0\nlink_category=0\nshow_author=0\nshow_create_date=0\nshow_modify_date=0\nshow_item_navigation=0\nshow_readmore=1\nshow_vote=0\nshow_icons=0\nshow_pdf_icon=0\nshow_print_icon=0\nshow_email_icon=0\nshow_hits=0\nfeed_summary=0\nfilter_tags=\nfilter_attritbutes=\n\n' WHERE name='Articles';
 UPDATE `#__components` SET params='allowUserRegistration=1\nnew_usertype=Registered\nuseractivation=1\nfrontend_userparams=1\nallow_duplicate_emails=0\n\n' WHERE name='User Manager';
 UPDATE `#__modules` SET position='user3' WHERE title='Main Menu';
+UPDATE `#__modules` SET showtitle='0' WHERE title='Main Menu';
 UPDATE `#__modules` SET published='0' WHERE title='Quick Icons';
 UPDATE `#__modules` SET module='mod_hubmenu' WHERE title='Admin Menu';
 
@@ -390,7 +391,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `#__modules` WRITE;
 /*!40000 ALTER TABLE `#__modules` DISABLE KEYS */;
-INSERT INTO `#__modules` VALUES (16,'Breadcrumbs','',1,'breadcrumbs',0,'0000-00-00 00:00:00',1,'mod_breadcrumbs',0,0,1,'showHome=1\nhomeText=Home\nshowLast=1\nseparator=/\nmoduleclass_sfx=\ncache=0\n\n',0,0,'');
+INSERT INTO `#__modules` VALUES (16,'Breadcrumbs','',1,'breadcrumbs',0,'0000-00-00 00:00:00',0,'mod_breadcrumbs',0,0,1,'showHome=1\nhomeText=Home\nshowLast=1\nseparator=/\nmoduleclass_sfx=\ncache=0\n\n',0,0,'');
 INSERT INTO `#__modules` VALUES (17,'Members','',0,'cpanel',0,'0000-00-00 00:00:00',1,'mod_members',0,0,1,'cache=1\n\n',0,1,'');
 INSERT INTO `#__modules` VALUES (18,'Groups','',1,'cpanel',0,'0000-00-00 00:00:00',1,'mod_groups',0,0,1,'type=1\ncache=1\n\n',0,1,'');
 INSERT INTO `#__modules` VALUES (19,'Events Calendar','',0,'eventsLeft',0,'0000-00-00 00:00:00',1,'mod_events_cal',0,0,0,'moduleclass_sfx=\nshow_nav_prev_month=1\nstart_day=0\ndisplay_last_month=NO\ndisplay_last_month_days=0\nshow_nav_next_month=1\ndisplay_next_month=NO\ndisplay_next_month_days=0\ncache=0\ncache_time=900\n\n',0,0,'');
