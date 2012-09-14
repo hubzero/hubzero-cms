@@ -73,10 +73,6 @@ if (!$mode || ($mode && $mode != 'static'))
 	<p class="passed"><?php echo $this->message; ?></p>
 <?php } ?>
 
-<?php /*if ($this->warning) { ?>
-	<p class="warning"><?php echo $this->warning; ?></p>
-<?php }*/ ?>
-
 <?php
 	$view = new JView(array(
 		'base_path' => $this->base_path, 
@@ -93,18 +89,16 @@ if (!$mode || ($mode && $mode != 'static'))
 ?>
 
 <div class="section">
-	<div class="aside">
+	<div class="two columns first">
 		<dl class="diff-versions">
 			<dt><?php echo JText::_('WIKI_VERSION') . ' ' . $this->or->version; ?><dt>
-			<dd><?php echo $this->or->created; ?><dd>
-			<dd><?php echo $orauthor; ?><dd>
+			<dd><time datetime="<?php echo $this->or->created; ?>"><?php echo $this->or->created; ?></time> by <?php echo $this->escape($orauthor); ?><dd>
 			
 			<dt><?php echo JText::_('WIKI_VERSION') . ' ' . $this->dr->version; ?><dt>
-			<dd><?php echo $this->dr->created; ?><dd>
-			<dd><?php echo $drauthor; ?><dd>
+			<dd><time datetime="<?php echo $this->dr->created; ?>"><?php echo $this->dr->created; ?></time> by <?php echo $this->escape($drauthor); ?><dd>
 		</dl>
 	</div><!-- / .aside -->
-	<div class="subject">
+	<div class="two columns second">
 		<p class="diff-deletedline"><del class="diffchange">Deletions</del> or items before changed</p>
 		<p class="diff-addedline"><ins class="diffchange">Additions</ins> or items after changed</p>
 	</div><!-- / .subject -->

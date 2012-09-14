@@ -73,7 +73,7 @@ if ($this->page->id) {
 	$view->display();
 } else {
 ?>
-<div id="<?php echo ($this->sub) ? 'sub-section-menu' : 'sub-menu'; ?>">
+<div id="sub-menu" class="sub-menu">
 	<ul>
 		<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename); ?>"><span>Article</span></a></li>
 		<li class="active"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=edit'); ?>"><span>Edit</span></a></li>
@@ -104,21 +104,21 @@ if ($this->page->id && !$this->config->get('access-modify')) {
 <?php if ($this->preview) { ?>
 	<div id="preview">
 		<div class="main section">
-			<div class="aside">
-				<p>This a preview only. Changes will not take affect until saved.</p>
-			</div><!-- / .aside -->
-			<div class="subject">
+			<p class="warning">This a preview only. Changes will not take affect until saved.</p>
+
+			<div class="wikipage">
 				<?php echo $this->revision->pagehtml; ?>
-			</div><!-- / .subject -->
+			</div>
 		</div><!-- / .section -->
 	</div><div class="clear"></div>
 <?php } ?>
 
-<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename); ?>" method="post" id="hubForm">
+<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename); ?>" method="post" id="hubForm"<?php echo ($this->sub) ? ' class="full"' : ''; ?>>
+<?php if (!$this->sub) { ?>
 	<div class="explaination">
-<?php if ($this->page->id && $this->config->get('access-edit')) { ?>
+	<?php if ($this->page->id && $this->config->get('access-edit')) { ?>
 		<p>To change the page name (the portion used for URLs), go <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=rename'); ?>">here</a>.</p>
-<?php } ?>
+	<?php } ?>
 		<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Help:WikiMacros#image'); ?>">[[Image(filename.jpg)]]</a> to include an image.</p>
 		<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Help:WikiMacros#file'); ?>">[[File(filename.pdf)]]</a> to include a file.</p>
 
@@ -127,15 +127,15 @@ if ($this->page->id && !$this->config->get('access-modify')) {
 		</div>
 		<div id="file-uploader-list"></div>
 	</div>
-	<fieldset>
-<?php if ($this->config->get('access-edit')) { ?>
-		<label for="title">
-			<?php echo JText::_('WIKI_FIELD_TITLE'); ?>:
-			<input type="text" name="page[title]" id="title" value="<?php echo $this->escape($this->page->title); ?>" size="38" />
-		</label>
 <?php } else { ?>
-		<input type="hidden" name="page[title]" id="title" value="<?php echo $this->escape($this->page->title); ?>" />
+	<?php if ($this->page->id && $this->config->get('access-edit')) { ?>
+		<p>To change the page name (the portion used for URLs), go <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=rename'); ?>">here</a>.</p>
+	<?php } ?>
 <?php } ?>
+	<fieldset>
+		<legend><?php echo JText::_('Page'); ?></legend>
+
+		<div class="group">
 		<label for="parent">
 			<?php echo JText::_('Parent page'); ?>:
 			<select name="scope" id="parent">
@@ -213,6 +213,17 @@ if ($templates) {
 ?>			</select>
 			<?php echo implode("\n", $hi); ?>
 		</label>
+		</div>
+		
+	<?php if ($this->config->get('access-edit')) { ?>
+		<label for="title">
+			<?php echo JText::_('WIKI_FIELD_TITLE'); ?>:
+			<input type="text" name="page[title]" id="title" value="<?php echo $this->escape($this->page->title); ?>" size="38" />
+		</label>
+	<?php } else { ?>
+		<input type="hidden" name="page[title]" id="title" value="<?php echo $this->escape($this->page->title); ?>" />
+	<?php } ?>
+		
 		<label for="pagetext">
 			<?php echo JText::_('WIKI_FIELD_PAGETEXT'); ?>: 
 			<span class="required"><?php echo JText::_('WIKI_REQUIRED'); ?></span>
@@ -223,8 +234,27 @@ if ($templates) {
 			?>
 		</label>
 		<p class="ta-right hint">
-			See <a class="popup" href="/wiki/Help:WikiFormatting">Help: Wiki Formatting</a> for help on editing content.
+			See <a class="popup" href="<?php echo JRoute::_('index.php?option=com_wiki&pagename=Help:WikiFormatting'); ?>">Help: Wiki Formatting</a> for help on editing content.
 		</p>
+		
+<?php if ($this->sub) { ?>
+		<div class="field-wrap">
+			<div class="two columns first">
+				<div id="file-uploader" data-action="/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=upload&amp;listdir=<?php echo $lid; ?>" data-list="/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=list&amp;listdir=<?php echo $lid; ?>">
+					<iframe width="100%" height="370" name="filer" id="filer" style="border:2px solid #eee;margin-top: 0;" src="index.php?option=com_wiki&amp;tmpl=component&amp;controller=media&amp;scope=<?php echo $this->page->scope; ?>&amp;pagename=<?php echo $this->page->pagename; ?>&amp;listdir=<?php echo $lid; ?>"></iframe>
+				</div>
+				<div id="file-uploader-list"></div>
+			</div>
+			<div class="two columns second">
+				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Help:WikiMacros#image'); ?>">[[Image(filename.jpg)]]</a> to include an image.</p>
+				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Help:WikiMacros#file'); ?>">[[File(filename.pdf)]]</a> to include a file.</p>
+			</div>
+			<div class="clear"></div>
+		</div>
+<?php } ?>
+	</fieldset><div class="clear"></div>
+	<fieldset>
+		<legend><?php echo JText::_('Access'); ?></legend>
 <?php
 $mode = $this->page->params->get('mode', 'wiki');
 if ($this->config->get('access-edit')) {
@@ -306,10 +336,13 @@ if ($this->config->get('access-edit')) {
 		<div class="clear"></div>
 
 <?php if ($this->config->get('access-edit')) { ?>
+	<?php if (!$this->sub) { ?>
 		<div class="explaination">
 			<p><?php echo JText::_('WIKI_FIELD_TAGS_EXPLANATION'); ?></p>
 		</div>
+	<?php } ?>
 		<fieldset>
+			<legend><?php echo JText::_('Metadata'); ?></legend>
 			<label>
 				<?php echo JText::_('WIKI_FIELD_TAGS'); ?>:
 				<?php 
@@ -322,13 +355,10 @@ if ($this->config->get('access-edit')) {
 				?>
 				<span class="hint"><?php echo JText::_('WIKI_FIELD_TAGS_HINT'); ?></span>
 			</label>
-		</fieldset>
-		<div class="clear"></div>
 <?php } else { ?>
 		<input type="hidden" name="tags" value="<?php echo $this->escape($this->tags); ?>" />
 <?php } ?>
 
-		<fieldset>
 			<label>
 				<?php echo JText::_('WIKI_FIELD_EDIT_SUMMARY'); ?>:
 				<input type="text" name="revision[summary]" value="<?php echo $this->escape($this->revision->summary); ?>" size="38" />
@@ -336,6 +366,7 @@ if ($this->config->get('access-edit')) {
 			</label>
 			<input type="hidden" name="revision[minor_edit]" value="1" />
 		</fieldset>
+		<div class="clear"></div>
 
 		<input type="hidden" name="page[id]" value="<?php echo $this->page->id; ?>" />
 		<input type="hidden" name="lid" value="<?php echo $lid; ?>" />

@@ -79,35 +79,46 @@ if (!$mode || ($mode && $mode != 'static'))
 	$view->sub    = $this->sub;
 	$view->display();
 ?>
+<?php if (!$this->sub) { ?>
 <div class="section">
 	<div class="aside">
 		<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=addcomment#commentform'); ?>" class="add btn"><?php echo JText::_('WIKI_ADD_COMMENT'); ?></a></p>
 	</div><!-- / .aside -->
 	<div class="subject">
+<?php } ?>
 		<p><?php echo JText::_('WIKI_COMMENTS_EXPLANATION'); ?></p>
+<?php if (!$this->sub) { ?>
 	</div><!-- / .subject -->
 </div><!-- / .section -->
 <div class="clear"></div>
+<?php } ?>
 
 <div class="main section">
+	<?php if ($this->sub) { ?>
+	<p class="comment-add-btn">
+		<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=addcomment#commentform'); ?>" class="add btn"><?php echo JText::_('WIKI_ADD_COMMENT'); ?></a>
+	</p>
+	<?php } ?>
 	<h3 id="commentlist-title"><?php echo JText::_('COMMENTS'); ?></h3>
-
+	<div class="clear"></div>
+<?php //if (!$this->sub) { ?>
 	<div class="aside">
 		<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename); ?>" method="get">
 			<fieldset class="controls">
-				<label>
+				<label for="filter-version">
 					<?php echo JText::_('WIKI_COMMENT_REVISION'); ?>:
-					<select name="version">
+					<select name="version" id="filter-version">
 						<option value=""><?php echo JText::_('ALL'); ?></option>
 <?php
-if (count($this->versions) > 1) {
-	foreach ($this->versions as $ver)
-	{
+		if (count($this->versions) > 1) 
+		{
+			foreach ($this->versions as $ver)
+			{
 ?>
 						<option value="<?php echo $ver->version; ?>"<?php echo ($this->v == $ver->version) ? ' selected="selected"' : ''; ?>>Version <?php echo $ver->version; ?></option>
 <?php
-	}
-}
+			}
+		}
 ?>
 					</select>
 				</label>
@@ -120,6 +131,7 @@ if (count($this->versions) > 1) {
 		</form>
 	</div><!-- / .aside -->
 	<div class="subject">
+<?php //} ?>
 <?php
 if ($this->comments) {
 	$view = new JView(array(
@@ -257,7 +269,7 @@ if ($this->comments) {
 						<strong>Please keep comments relevant to this entry. Comments deemed inappropriate may be removed.</strong>
 					</p>
 					<p>
-						Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="/wiki/Help:WikiFormatting" class="popup">Wiki syntax</a> is supported.
+						Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="<?php echo JRoute::_('index.php?option=com_wiki&pagename=Help:WikiFormatting'); ?>" class="popup">Wiki syntax</a> is supported.
 					</p>
 				</div>
 			</fieldset>

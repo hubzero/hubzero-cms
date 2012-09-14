@@ -91,11 +91,10 @@ $first = end($this->revisions);
 	$view->display();
 ?>
 <div class="section">
-	<div class="aside">
-		<p>This article has <?php echo count($this->revisions); ?> versions, was created on <?php echo $first->created; ?> and last edited on <?php echo $this->revisions[0]->created; ?>.</p>
-	</div><!-- / .aside -->
-	<div class="subject">
+	<div class="two columns first">
 		<p>Versions are listed in reverse-chronological order (newest to oldest). For any version listed below, click on its date to view it. For more help, see <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Help:PageHistory'); ?>">Help:Page history</a>.</p> 
+	</div><!-- / .aside -->
+	<div class="two columns second">
 		<p>(cur) = difference from current version<br />(last) = difference from preceding version</p>
 	</div><!-- / .subject -->
 	<div class="clear"></div>
@@ -103,11 +102,11 @@ $first = end($this->revisions);
 
 <div class="main section">
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=compare'); ?>" method="post">
-		<div class="aside">
-			<p><input type="submit" value="<?php echo JText::_('WIKI_HISTORY_COMPARE'); ?>" /></p>
-		</div><!-- / .aside -->
-		<div class="subject">
+		<p class="info">
+			This article has <?php echo count($this->revisions); ?> versions, was created on <time datetime="<?php echo $first->created; ?>"><?php echo $first->created; ?></time> and last edited on <time datetime="<?php echo $this->revisions[0]->created; ?>"><?php echo $this->revisions[0]->created; ?></time>.
+		</p>
 			<div class="container">
+				<p><input type="submit" value="<?php echo JText::_('WIKI_HISTORY_COMPARE'); ?>" /></p>
 				<table class="entries" id="revisionhistory" summary="<?php echo JText::_('WIKI_HISTORY_TBL_SUMMARY'); ?>">
 					<caption><?php echo JText::_('WIKI_HISTORY_TBL_SUMMARY'); ?></caption>
 					<thead>
@@ -189,7 +188,7 @@ foreach ($this->revisions as $revision)
 <?php } ?>
 							<td>
 								<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&version='.$revision->version); ?>" class="tooltips" title="<?php echo JText::_('WIKI_REVISION_SUMMARY').' :: '.$summary; ?>">
-									<?php echo $this->escape($revision->created); ?>
+									<time datetime="<?php echo $revision->created; ?>"><?php echo $this->escape($revision->created); ?></time>
 								</a>
 							</td>
 							<td>
@@ -215,8 +214,9 @@ foreach ($this->revisions as $revision)
 <?php } ?>
 					</tbody>
 				</table>
+				<p><input type="submit" value="<?php echo JText::_('WIKI_HISTORY_COMPARE'); ?>" /></p>
 			</div><!-- / .container -->
-		</div><!-- / .subject -->
+
 		<div class="clear"></div>
 
 		<input type="hidden" name="pagename" value="<?php echo $this->page->pagename; ?>" />

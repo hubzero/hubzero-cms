@@ -516,6 +516,15 @@ class WikiControllerPage extends Hubzero_Controller
 		$this->view->display();
 	}
 
+	/**
+	 * Recursive method to build a tree
+	 * 
+	 * @param      integer $id       Parent ID
+	 * @param      array   $children Records container
+	 * @param      integer $maxlevel Maximum depth
+	 * @param      integer $level    Current level
+	 * @return     void
+	 */
 	public static function treeRecurse($id, $children, $maxlevel=9999, $level=0)
 	{
 		$list = array();
@@ -531,8 +540,6 @@ class WikiControllerPage extends Hubzero_Controller
 				{
 					$list[$id]->children = self::treeRecurse($id, $children, $maxlevel, $level+1);
 				}
-				//$list[$id]['children'] = @$children[$id];
-				//$list = self::treeRecurse($id, $children, $maxlevel, $level+1);
 			}
 		}
 		return $list;
