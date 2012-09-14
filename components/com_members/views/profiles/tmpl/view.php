@@ -163,16 +163,25 @@ if (!$no_html) {
 				<?php if($this->profile->get("uidNumber") == $juser->get("id")) : ?>
 					<?php
 						$cls = "";
+						$span_title = "Public Profile :: Your profile is currently public.";
 						$title = "Public Profile :: Click here to set your profile private.";
 						if($this->profile->get("public") != 1)
 						{
 							$cls = "private";
+							$span_title = "Private Profile :: Your profile is currently private.";
 							$title = "Private Profile :: Click here to set your profile public.";
 						}
 					?>
-					<a href="javascript:void(0);" data-uidnumber="<?php echo $this->profile->get("uidNumber"); ?>" id="profile-privacy" class="<?php echo $cls; ?>" title="<?php echo $title; ?>">
-						<?php echo $title; ?>
-					</a>
+					
+					<?php if($this->tab == "profile") : ?>
+						<a id="profile-privacy" href="javascript:void(0);" data-uidnumber="<?php echo $this->profile->get("uidNumber"); ?>" class="<?php echo $cls; ?> tooltips" title="<?php echo $title; ?>">
+							<?php echo $title; ?>
+						</a>
+					<?php else: ?>
+						<span id="profile-privacy" class="" title="<?php //echo $span_title; ?>">
+							<?php echo $span_title; ?>
+						</span>
+					<?php endif; ?>
 				<?php endif; ?>
 				
 				<h2>

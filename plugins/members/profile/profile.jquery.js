@@ -369,8 +369,6 @@ HUB.Members.Profile = {
 	{
 		var $ = this.jQuery;
 		
-		$("#profile-privacy").addClass("tooltips");
-		
 		$("#page_header").on("click", "#profile-privacy", function(event){
 			var pub = 0,
 				id = $(this).attr("data-uidnumber");

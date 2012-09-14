@@ -340,9 +340,11 @@
 		position: absolute;
 		top: 25px;
 		left: 20px;
-		width: 30px;
+		width:21px;
 		height: 25px;
 		border: none;
+		display:block;
+		padding:0;
 	}
 	#page_header #profile-privacy:before {
 		content: "\f023";
