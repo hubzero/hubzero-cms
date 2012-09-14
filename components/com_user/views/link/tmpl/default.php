@@ -38,13 +38,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <div class="main section" id="link-existing">
 	<p class="passed">
-		You've logged in successfully with your <?php echo ucfirst($this->hzad->authenticator); ?> account, 
+		You've logged in successfully with your <?php echo $this->display_name; ?> account, 
 		but it doesn't seem to be linked to a current hub account. You can:
 	</p>
 
 	<div id="option1-link-existing" class="options">
 		<div class="clickable">Log in with an existing <?php echo $this->sitename; ?> account, 
-			and link your <?php echo ucfirst($this->hzad->authenticator); ?> account to it
+			and link your <?php echo $this->display_name; ?> account to it
 		</div>
 		<div id="option1-inner" class="inner-content">
 
@@ -52,7 +52,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<p>
 				<span class="important">Is one of these you?</span> Based on your email address, we found the following accounts that may be yours.
 				Click one of them to login with that existing account
-				and link it up with your <?php echo ucfirst($this->hzad->authenticator); ?> account.
+				and link it up with your <?php echo $this->display_name; ?> account.
 			</p>
 
 			<div id="account-suggestions">
@@ -80,12 +80,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 				</p>
 
 <?php foreach($this->plugins as $plugin) {
-	$name = ($plugin->name == 'hubzero') ? 'local' : $plugin->name;
+	$paramsClass = 'JParameter';
+	if (version_compare(JVERSION, '1.6', 'ge'))
+	{
+		$paramsClass = 'JRegistry';
+	}
+
+	$pparams = new $paramsClass($plugin->params);
+	$display = $pparams->get('display_name', ucfirst($plugin->name));
+
+	$name = ($plugin->name == 'hubzero') ? 'Local hub' : $display;
 	if($plugin->name != $this->hzad->authenticator) {
 		echo '<a href="' . JRoute::_('/logout?return=' .
 			base64_encode(JRoute::_('/login?authenticator=' . $plugin->name . '&return=' .
 			base64_encode(JRoute::_('/login?authenticator=' . $this->hzad->authenticator))))) .
-			'">My current ' . $this->sitename . ' account was setup using a ' . $name  . ' account</a><br />';
+			'">I login to ' . $this->sitename . ' using my ' . $name  . ' account</a><br />';
 	}
 } ?>
 
@@ -94,7 +103,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</div><!-- / #option1-link-existing -->
 
 	<div id="option2-create-new" class="options">
-		<div class="clickable">Create a new account using your <?php echo ucfirst($this->hzad->authenticator); ?> identity</div>
+		<div class="clickable">Create a new account using your <?php echo $this->display_name; ?> identity</div>
 		<div id="option2-inner" class="inner-content">
 			<a id="new-account" href="<?php echo JRoute::_('index.php?option=com_register&task=update'); ?>">Create a new account</a>
 		</div>

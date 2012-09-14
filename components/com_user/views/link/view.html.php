@@ -82,7 +82,17 @@ class UserViewLink extends JView
 		$hzad    = Hubzero_Auth_Domain::find_by_id($hzal->auth_domain_id);
 		$plugins = JPluginHelper::getPlugin('authentication');
 
-		// First check in the hub accounts
+		// Get the display name for the current plugin being used
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+		$plugin       = JPluginHelper::getPlugin('authentication', $hzad->authenticator);
+		$pparams      = new $paramsClass($plugin->params);
+		$display_name = $pparams->get('display_name', ucfirst($plugin->name));
+
+		// Look for conflicts - first check in the hub accounts
 		$profile_conflicts = Hubzero_User_Profile_Helper::find_by_email($hzal->email);
 
 		// Now check the auth_link table
@@ -123,6 +133,7 @@ class UserViewLink extends JView
 		$this->assign('hzal', $hzal);
 		$this->assign('hzad', $hzad);
 		$this->assign('plugins', $plugins);
+		$this->assign('display_name', $display_name);
 		$this->assign('conflict', $conflict);
 		$this->assign('sitename', $sitename);
 		$this->assignref('juser', $user);
