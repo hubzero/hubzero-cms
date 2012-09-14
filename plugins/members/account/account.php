@@ -832,6 +832,10 @@ class plgMembersAccount extends Hubzero_Plugin
 		{
 			return $key;
 		}
+		if(!JFile::exists($base.$user.$ssh.$auth))
+		{
+			return $key;
+		}
 
 		// Read the file contents
 		$key = JFile::read($base.$user.$ssh.$auth);
