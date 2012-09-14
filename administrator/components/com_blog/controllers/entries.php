@@ -199,11 +199,22 @@ class BlogControllerEntries extends Hubzero_Controller
 	}
 
 	/**
-	 * Save an entry
+	 * Save an entry and show the edit form
 	 * 
 	 * @return     void
 	 */
-	public function saveTask()
+	public function applyTask()
+	{
+		$this->saveTask(false);
+	}
+
+	/**
+	 * Save an entry
+	 * 
+	 * @param      boolean $redirect Redirect after save?
+	 * @return     void
+	 */
+	public function saveTask($redirect=true)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -247,11 +258,17 @@ class BlogControllerEntries extends Hubzero_Controller
 			1
 		);
 
-		// Set the redirect
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Entry saved!')
-		);
+		if ($redirect)
+		{
+			// Set the redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('Entry saved!')
+			);
+			return;
+		}
+
+		$this->editTask($row);
 	}
 
 	/**
