@@ -2714,3 +2714,6 @@
 	#browse-resources {
 		background: #e1e1e1 url("../images/layout/noise-lite.png");
 	}
+	body .wikipage pre {
+		background-color: #fff;
+	}
