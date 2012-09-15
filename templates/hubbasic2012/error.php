@@ -81,7 +81,7 @@ $v = $browser->getBrowserMajorVersion();
 					<div id="masthead">
 						<div class="inner">
 							<h1>
-								<a href="<?php echo $this->baseurl; ?>" title="<?php echo $config->getValue('config.sitename'); ?>">
+								<a href="<?php echo empty($this->baseurl) ? "/" : $this->baseurl; ?>" title="<?php echo $config->getValue('config.sitename'); ?>">
 									<span><?php echo $config->getValue('config.sitename'); ?></span>
 									<span class="tagline"><?php echo JText::_('TPL_HUBBASIC_TAGLINE'); ?></span>
 								</a>
