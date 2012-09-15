@@ -66,7 +66,7 @@ class FeedbackControllerFeedback extends Hubzero_Controller
 				'index.php?option=' . $this->_option
 			);
 		}
-		if ($this->_task) 
+		if ($this->_task && $this->_task != 'display')		
 		{
 			$pathway->addItem(
 				JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
@@ -83,7 +83,7 @@ class FeedbackControllerFeedback extends Hubzero_Controller
 	protected function _buildTitle()
 	{
 		$this->_title = JText::_(strtoupper($this->_option));
-		if ($this->_task) 
+		if ($this->_task && $this->_task != 'display') 
 		{
 			$this->_title .= ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		}

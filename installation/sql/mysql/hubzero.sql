@@ -3303,7 +3303,6 @@ INSERT INTO `#__components` VALUES (31, 'User Manager', '', 0, 0, '', 'Users', '
 INSERT INTO `#__components` VALUES (32, 'Cache Manager', '', 0, 0, '', 'Cache', 'com_cache', 0, '', 1, '', 1);
 INSERT INTO `#__components` VALUES (33, 'Control Panel', '', 0, 0, '', 'Control Panel', 'com_cpanel', 0, '', 1, '', 1);
 INSERT INTO `#__components` VALUES (34,'Answers','option=com_answers',0,0,'option=com_answers','Answers','com_answers',0,'js/ThemeOffice/component.png',0,'infolink=/kb/points\nnotify_users=\n\n',1);
-INSERT INTO `#__components` VALUES (102,'Contribute','option=com_contribute',0,0,'','','com_contribute',0,'js/Themeoffice/component.png',0,'',1);
 INSERT INTO `#__components` VALUES (38,'Events','option=com_events',0,0,'option=com_events','Events','com_events',0,'js/ThemeOffice/component.png',0,'',1);
 INSERT INTO `#__components` VALUES (39,'Manage Events','',0,38,'option=com_events','Manage Events','com_events',0,'js/ThemeOffice/component.png',0,'',1);
 INSERT INTO `#__components` VALUES (40,'Manage Events Categories','',0,38,'option=com_events&task=cats','Manage Events Categories','com_events',1,'js/ThemeOffice/component.png',0,'',1);
