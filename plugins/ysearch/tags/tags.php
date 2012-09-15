@@ -45,6 +45,8 @@ class plgYSearchTags extends YSearchPlugin
 	 */
 	public static function onYSearchWidget($terms, &$widgets)
 	{
+		$terms = $terms->get_term_ar();
+		
 		$weight = 'match(t.raw_tag, t.description) against (\'' . join(' ', $terms['stemmed']) . '\')';
 			
 		$addtl_where = array();
@@ -78,6 +80,10 @@ class plgYSearchTags extends YSearchPlugin
 		{
 			$tag_html[] = '<li><a href="' . $tag->get_link() . '">' . $tag->get_title() . '</a></li>';
 		}
-		$widgets->add_html('<ol class="tags">' . join('', $tag_html) . '</ol>');
+		if (!empty($widgets))
+		{
+			$widgets->add_html('<ol class="tags">' . join('', $tag_html) . '</ol>');
+		}
+		
 	}
 }
