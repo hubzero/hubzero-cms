@@ -380,7 +380,8 @@ CREATE TABLE `#__blog_entries` (
   `scope` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   FULLTEXT KEY `title` (`title`),
-  FULLTEXT KEY `content` (`content`)
+  FULLTEXT KEY `content` (`content`),
+  FULLTEXT KEY `#__blog_entries_title_content_ftidx` (`title`,`content`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__cart` (
@@ -421,6 +422,8 @@ CREATE TABLE `#__categories` (
 CREATE TABLE `#__citations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `uid` varchar(200) DEFAULT NULL,
+  `type` varchar(30) DEFAULT NULL,
+  `published` int(3) NOT NULL DEFAULT '1',
   `affiliated` int(3) DEFAULT NULL,
   `fundedby` int(3) DEFAULT NULL,
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -447,7 +450,6 @@ CREATE TABLE `#__citations` (
   `series` varchar(250) DEFAULT NULL,
   `school` varchar(250) DEFAULT NULL,
   `title` varchar(250) DEFAULT NULL,
-  `type` int(11) DEFAULT NULL,
   `url` varchar(250) DEFAULT NULL,
   `volume` int(11) DEFAULT NULL,
   `year` int(4) DEFAULT NULL,
@@ -461,8 +463,18 @@ CREATE TABLE `#__citations` (
   `exp_list_exp_data` int(3) DEFAULT NULL,
   `exp_data` int(3) DEFAULT NULL,
   `notes` text,
-  `published` int(3) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`)
+  `language` varchar(100) DEFAULT NULL,
+  `accession_number` varchar(100) DEFAULT NULL,
+  `short_title` varchar(250) DEFAULT NULL,
+  `author_address` text,
+  `keywords` text,
+  `abstract` text,
+  `call_number` varchar(100) DEFAULT NULL,
+  `label` varchar(100) DEFAULT NULL,
+  `research_notes` text,
+  `params` text,
+  PRIMARY KEY (`id`),
+  FULLTEXT KEY `#__citations_title_isbn_doi_abstract_ftidx` (`title`,`isbn`,`doi`,`abstract`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__citations_assoc` (
