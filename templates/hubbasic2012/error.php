@@ -132,7 +132,7 @@ $v = $browser->getBrowserMajorVersion();
 
 					<div id="sub-masthead">
 						<div id="trail">
-							<?php Hubzero_Module_Helper::displayModules('breadcrumbs'); ?>
+							<?php /* Hubzero_Module_Helper::displayModules('breadcrumbs'); */ ?>
 						</div>
 					</div><!-- / #sub-masthead -->
 				</div><!-- / .inner -->
