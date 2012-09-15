@@ -177,7 +177,11 @@ abstract class YSearchResult
 	 * 
 	 * @return     unknown Return description (if any) ...
 	 */
-	public function get_highlighted_title() { return $this->title_highlighted; }
+	public function get_highlighted_title() 
+	{ 
+		// return $this->title_highlighted; @FIXME: this property no longer seems to exist 
+		return $this->title; 
+	}
 
 	/**
 	 * Short description for 'get_raw_link'
