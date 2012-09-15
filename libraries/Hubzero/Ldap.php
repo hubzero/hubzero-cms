@@ -698,7 +698,7 @@ class Hubzero_Ldap
     	$dn = "ou=groups," . $hubLDAPBaseDN;
 	    $filter = '(objectclass=hubGroup)';
 
-        $sr = @ldap_search($conn, $dn, $filter, array('gid'), 0, 0, 0);
+        $sr = @ldap_search($conn, $dn, $filter, array('gid','cn'), 0, 0, 0);
 
         $gids = array();
         
@@ -712,17 +712,23 @@ class Hubzero_Ldap
         		{
         			$attr = @ldap_get_attributes($conn, $entry);
         			
-        			$gids[] = $attr['gid'][0];
-        			
+					if (array_key_exists('gid', $attr))
+					{
+						$gids[] = "gid=" . $attr['gid'][0] . "," .  "ou=groups," . $hubLDAPBaseDN;
+					}
+					else if (array_key_exists('cn',$attr))
+					{
+						$gids[] = "cn=" . $attr['cn'][0] . "," .  "ou=groups," . $hubLDAPBaseDN;
+					}
+
         			$entry = @ldap_next_entry($conn, $entry);
             	}
         	}
         }
         
-        foreach($gids as $gid)
+        foreach($gids as $giddn)
         {
-        	$dn = "gid=$gid," . "ou=groups," . $hubLDAPBaseDN;
-        	@ldap_delete($conn, $dn);
+        	@ldap_delete($conn, $giddn);
         }
         
         /* delete all entries that have mysql counterparts */
