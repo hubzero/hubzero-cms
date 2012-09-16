@@ -3537,12 +3537,11 @@ INSERT INTO `#__plugins` VALUES (150,'YSearch - Resources','resources','ysearch'
 INSERT INTO `#__plugins` VALUES (151,'YSearch - Site Map','sitemap','ysearch',0,11,1,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES (152,'YSearch - Sort courses by date','sortcourses','ysearch',0,12,1,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES (153,'YSearch - Sort events by date','sortevents','ysearch',0,13,1,0,0,0,'0000-00-00 00:00:00','');
-INSERT INTO `#__plugins` VALUES (154,'YSearch - Tags','tags','ysearch',0,14,1,0,0,0,'0000-00-00 00:00:00','');
-INSERT INTO `#__plugins` VALUES (155,'YSearch - Terms - Suffix Expansion','suffixes','ysearch',0,15,1,0,0,0,'0000-00-00 00:00:00','');
-INSERT INTO `#__plugins` VALUES (156,'YSearch - Topics','topics','ysearch',0,16,1,0,0,0,'0000-00-00 00:00:00','');
-INSERT INTO `#__plugins` VALUES (157,'YSearch - Increase weight of items with contributors matching terms','weightcontributor','ysearch',0,17,1,0,0,0,'0000-00-00 00:00:00','');
-INSERT INTO `#__plugins` VALUES (158,'YSearch - Increase relevance for tool results','weighttools','ysearch',0,18,0,0,0,0,'0000-00-00 00:00:00','');
-INSERT INTO `#__plugins` VALUES (159,'YSearch - Wishlists','wishlists','ysearch',0,19,1,0,0,0,'0000-00-00 00:00:00','');
+INSERT INTO `#__plugins` VALUES (154,'YSearch - Terms - Suffix Expansion','suffixes','ysearch',0,14,1,0,0,0,'0000-00-00 00:00:00','');
+INSERT INTO `#__plugins` VALUES (155,'YSearch - Topics','topics','ysearch',0,15,1,0,0,0,'0000-00-00 00:00:00','');
+INSERT INTO `#__plugins` VALUES (156,'YSearch - Increase weight of items with contributors matching terms','weightcontributor','ysearch',0,16,1,0,0,0,'0000-00-00 00:00:00','');
+INSERT INTO `#__plugins` VALUES (157,'YSearch - Increase relevance for tool results','weighttools','ysearch',0,17,0,0,0,0,'0000-00-00 00:00:00','');
+INSERT INTO `#__plugins` VALUES (158,'YSearch - Wishlists','wishlists','ysearch',0,18,1,0,0,0,'0000-00-00 00:00:00','');
 
 INSERT INTO `#__modules` VALUES (1, 'Main Menu', '', 1, 'left', 0, '0000-00-00 00:00:00', 1, 'mod_mainmenu', 0, 0, 1, 'menutype=mainmenu\nmoduleclass_sfx=_menu\n', 1, 0, '');
 INSERT INTO `#__modules` VALUES (2, 'Login', '', 1, 'login', 0, '0000-00-00 00:00:00', 1, 'mod_login', 0, 0, 1, '', 1, 1, '');
