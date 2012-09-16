@@ -136,7 +136,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 			<div class="summary">
 				<?php if ($res->has_metadata()): ?>
 					<p class="details">
-						<span class="section"><?php echo $res->get_section(); ?></span>
+						<?php if (($section = $res->get_section())) {?><span class="section"><?php echo $section; ?></span><?php }?>
 						<?php if (($date = $res->get_date())) { ?><span class="date"><?php echo date('j M Y', $date); ?></span><?php } ?>
 						<?php if (($contributors = $res->get_contributors())): ?>
 						<span class="contributors">
