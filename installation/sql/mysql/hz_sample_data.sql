@@ -370,6 +370,7 @@ INSERT INTO `#__menu` VALUES (91,'default','Citations','citations','index.php?op
 INSERT INTO `#__menu` VALUES (92,'default','Wishlist','wishlist','index.php?option=com_wishlist&view=wishlist','component',1,0,65,0,22,0,'0000-00-00 00:00:00',0,0,0,0,'banking=\nallow_advisory=\nvotesplit=\nshow_percentage_granted=\npage_title=\nshow_page_title=1\npageclass_sfx=\nmenu_image=-1\nsecure=0\n\n',0,0,0);
 INSERT INTO `#__menu` VALUES (94,'default','What\'s New','whatsnew','index.php?option=com_whatsnew&view=results&layout=display','component',1,0,45,0,20,0,'0000-00-00 00:00:00',0,0,0,0,'period=\npage_title=\nshow_page_title=1\npageclass_sfx=\nmenu_image=-1\nsecure=0\n\n',0,0,0);
 INSERT INTO `#__menu` VALUES (95,'default','Congratulations','congratulations','index.php?option=com_content&view=article&id=32','component',1,0,20,0,3,0,'0000-00-00 00:00:00',0,0,0,0,'show_noauth=\nshow_title=\nlink_titles=\nshow_intro=\nshow_section=\nlink_section=\nshow_category=\nlink_category=\nshow_author=\nshow_create_date=\nshow_modify_date=\nshow_item_navigation=\nshow_readmore=\nshow_vote=\nshow_icons=\nshow_pdf_icon=\nshow_print_icon=\nshow_email_icon=\nshow_hits=\nfeed_summary=\npage_title=\nshow_page_title=1\npageclass_sfx=\nmenu_image=-1\nsecure=0\n\n',0,0,0);
+INSERT INTO `#__menu` VALUES (96,'legal','Creative Commons','cc','index.php?option=com_content&view=article&id=13','component','1','69','20','1','3','0','0000-00-00 00:00:00','0','0','0','0','show_noauth=\nshow_title=\nlink_titles=\nshow_intro=\nshow_section=\nlink_section=\nshow_category=\nlink_category=\nshow_author=\nshow_create_date=\nshow_modify_date=\nshow_item_navigation=\nshow_readmore=\nshow_vote=\nshow_icons=\nshow_pdf_icon=\nshow_print_icon=\nshow_email_icon=\nshow_hits=\nfeed_summary=\npage_title=\nshow_page_title=1\npageclass_sfx=\nmenu_image=-1\nsecure=0\n\n','0','0','0');
 /*!40000 ALTER TABLE `#__menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -469,6 +470,7 @@ INSERT INTO `#__modules_menu` (`moduleid`, `menuid`) VALUES (32,72);
 INSERT INTO `#__modules_menu` (`moduleid`, `menuid`) VALUES (32,73);
 INSERT INTO `#__modules_menu` (`moduleid`, `menuid`) VALUES (32,74);
 INSERT INTO `#__modules_menu` (`moduleid`, `menuid`) VALUES (32,75);
+INSERT INTO `#__modules_menu` (`moduleid`, `menuid`) VALUES (32,96);
 INSERT INTO `#__modules_menu` (`moduleid`, `menuid`) VALUES (45,0);
 INSERT INTO `#__modules_menu` (`moduleid`, `menuid`) VALUES (46,12);
 INSERT INTO `#__modules_menu` (`moduleid`, `menuid`) VALUES (47,0);
