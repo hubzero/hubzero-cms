@@ -165,7 +165,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		// Get assigned questions
 		if ($this->view->filters['area'] == 'assigned') 
 		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_contribtool' . DS . 'contribtool.author.php');
+			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
 
 			// What tools did this user contribute?
 			$TA = new ToolAuthor($this->database);
@@ -602,7 +602,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		// Get assigned questions
 		if ($this->view->filters['area'] == 'assigned') 
 		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_contribtool' . DS . 'contribtool.author.php');
+			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
 
 			// What tools did this user contribute?
 			$TA = new ToolAuthor($this->database);
@@ -1109,8 +1109,8 @@ class AnswersControllerQuestions extends Hubzero_Controller
 			$tags = explode(',', $tags);
 			if (count($tags) > 0) 
 			{
-				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_contribtool' . DS . 'contribtool.author.php');
-				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_contribtool' . DS . 'contribtool.version.php');
+				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
+				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
 
 				$TA = new ToolAuthor($this->database);
 				$objV = new ToolVersion($this->database);

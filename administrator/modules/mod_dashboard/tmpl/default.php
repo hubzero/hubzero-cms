@@ -61,10 +61,10 @@ $app = JFactory::getApplication();
 			</tr>
 			<tr class="row0">
 				<th scope="row">
-					<a href="../index.php?option=com_contribtool">Tool contributions</a>
+					<a href="../index.php?option=com_tools">Tool contributions</a>
 				</th>
 				<td>
-					<a href="../index.php?option=com_contribtool"><?php echo $contribtool; ?></a>
+					<a href="../index.php?option=com_tools"><?php echo $contribtool; ?></a>
 				</td>
 			</tr>
 			<tr class="row1">

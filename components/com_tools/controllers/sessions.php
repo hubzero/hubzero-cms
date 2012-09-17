@@ -1359,7 +1359,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 		}
 
 		$admin = false;
-		$ctconfig =& JComponentHelper::getParams('com_contribtool');
+		$ctconfig =& JComponentHelper::getParams('com_tools');
 		if ($ctconfig->get('admingroup') != '' && in_array($ctconfig->get('admingroup'), $groups)) 
 		{
 			$admin = true;

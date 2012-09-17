@@ -53,7 +53,7 @@ $html .= "\t\t".'<p class="title"><a href="'.$sef.'">'. Hubzero_View_Helper_Html
 if ($this->show_edit != 0) {
 	if ($this->line->published >= 0) {
 		if ($this->line->type == 7) {
-			$link = JRoute::_('index.php?option=com_contribtool&task=draft&step=1&rid='. $this->line->id);
+			$link = JRoute::_('index.php?option=com_tools&task=resource&step=1&app='. $this->line->alias);
 		} else {
 			$link = JRoute::_('index.php?option=com_resources&task=draft&step=1&id='. $this->line->id);
 		}

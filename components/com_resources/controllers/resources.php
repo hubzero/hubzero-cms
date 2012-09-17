@@ -567,7 +567,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 							$tool = $tool[0];
 						}
 						// get contribtool params
-						$tparams =& JComponentHelper::getParams('com_contribtool');
+						$tparams =& JComponentHelper::getParams('com_tools');
 						$tv->compileResource($tool, '', &$resource, '', $tparams);
 					}
 				}
@@ -1168,7 +1168,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		$curtool  = '';
 
 		// Get contribtool params
-		$tconfig =& JComponentHelper::getParams('com_contribtool');
+		$tconfig =& JComponentHelper::getParams('com_tools');
 
 		if ($resource->type == 7 && $resource->alias) 
 		{
@@ -2214,7 +2214,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		$tarname = $tv->toolname . '-r' . $tv->revision . '.tar.gz';
 
 		// Get contribtool params
-		$tparams =& JComponentHelper::getParams('com_contribtool');
+		$tparams =& JComponentHelper::getParams('com_tools');
 		$tarball_path = $tparams->get('sourcecodePath');
 		if (empty($tarball_path))
 		{
@@ -2341,7 +2341,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 	protected function citation()
 	{
 		// Get contribtool params
-		$tconfig =& JComponentHelper::getParams('com_contribtool');
+		$tconfig =& JComponentHelper::getParams('com_tools');
 
 		// Incoming
 		$id = JRequest::getInt('id', 0);

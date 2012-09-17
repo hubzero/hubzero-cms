@@ -554,7 +554,7 @@ class modSpotlight extends JObject
 
 					if ($row->type == 7)
 					{
-						include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_contribtool' . DS . 'contribtool.version.php');
+						include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
 
 						$tv = new ToolVersion($this->database);
 
@@ -726,7 +726,7 @@ class modSpotlight extends JObject
 	private function _getToolImage($path, $versionid=0)
 	{
 		// Get contribtool parameters
-		$tconfig =& JComponentHelper::getParams('com_contribtool');
+		$tconfig =& JComponentHelper::getParams('com_tools');
 		$allowversions = $tconfig->get('screenshot_edit');
 
 		if ($versionid && $allowversions)

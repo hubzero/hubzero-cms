@@ -40,10 +40,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</thead>
 	<tbody>
 		<tr>
-			<td class="registered"><a href="index.php?option=com_contribtool&amp;status=1" title="<?php echo JText::_('View registered tools'); ?>"><?php echo $this->registered; ?></a></td>
-			<td class="created"><a href="index.php?option=com_contribtool&amp;status=2" title="<?php echo JText::_('View approved tools'); ?>"><?php echo $this->created; ?></a></td>
-			<td class="uploaded"><a href="index.php?option=com_contribtool&amp;status=3" title="<?php echo JText::_('View uploaded tools'); ?>"><?php echo $this->uploaded; ?></a></td>
-			<td class="updated"><a href="index.php?option=com_contribtool&amp;status=5" title="<?php echo JText::_('View updated tools'); ?>"><?php echo $this->updated; ?></a></td>
+			<td class="registered"><a href="index.php?option=com_tools&amp;status=1" title="<?php echo JText::_('View registered tools'); ?>"><?php echo $this->registered; ?></a></td>
+			<td class="created"><a href="index.php?option=com_tools&amp;status=2" title="<?php echo JText::_('View approved tools'); ?>"><?php echo $this->created; ?></a></td>
+			<td class="uploaded"><a href="index.php?option=com_tools&amp;status=3" title="<?php echo JText::_('View uploaded tools'); ?>"><?php echo $this->uploaded; ?></a></td>
+			<td class="updated"><a href="index.php?option=com_tools&amp;status=5" title="<?php echo JText::_('View updated tools'); ?>"><?php echo $this->updated; ?></a></td>
 		</tr>
 	</tbody>
 </table>
@@ -59,10 +59,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</thead>
 	<tbody>
 		<tr>
-			<td class="approved"><a href="index.php?option=com_contribtool&amp;status=6" title="<?php echo JText::_('View approved tools'); ?>"><?php echo $this->approved; ?></a></td>
-			<td class="published"><a href="index.php?option=com_contribtool&amp;status=7" title="<?php echo JText::_('View registered tools'); ?>"><?php echo $this->published; ?></a></td>
-			<td class="retired"><a href="index.php?option=com_contribtool&amp;status=8" title="<?php echo JText::_('View uploaded tools'); ?>"><?php echo $this->retired; ?></a></td>
-			<td class="abandoned"><a href="index.php?option=com_contribtool&amp;status=9" title="<?php echo JText::_('View updated tools'); ?>"><?php echo $this->abandoned; ?></a></td>
+			<td class="approved"><a href="index.php?option=com_tools&amp;status=6" title="<?php echo JText::_('View approved tools'); ?>"><?php echo $this->approved; ?></a></td>
+			<td class="published"><a href="index.php?option=com_tools&amp;status=7" title="<?php echo JText::_('View registered tools'); ?>"><?php echo $this->published; ?></a></td>
+			<td class="retired"><a href="index.php?option=com_tools&amp;status=8" title="<?php echo JText::_('View uploaded tools'); ?>"><?php echo $this->retired; ?></a></td>
+			<td class="abandoned"><a href="index.php?option=com_tools&amp;status=9" title="<?php echo JText::_('View updated tools'); ?>"><?php echo $this->abandoned; ?></a></td>
 		</tr>
 	</tbody>
 </table>

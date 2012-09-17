@@ -68,7 +68,7 @@ $jconfig =& JFactory::getConfig();
 			}
 			if ($type->id == 7) 
 			{
-				$url = JRoute::_('index.php?option=com_contribtool&task=draft');
+				$url = JRoute::_('index.php?option=com_tools&task=create');
 			}
 			else 
 			{

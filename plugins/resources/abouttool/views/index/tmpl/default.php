@@ -220,7 +220,7 @@ if ($shots) {
 			$cite->author = $this->helper->ul_contributors;
 			
 			// Get contribtool params
-			$tconfig =& JComponentHelper::getParams( 'com_contribtool' );
+			$tconfig =& JComponentHelper::getParams( 'com_tools' );
 			$doi = '';
 
 			if (isset($this->resource->doi) && $this->resource->doi && $tconfig->get('doi_shoulder'))

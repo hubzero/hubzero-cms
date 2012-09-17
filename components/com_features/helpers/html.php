@@ -142,7 +142,7 @@ class FeaturesHtml
 	public function getToolImage($path, $versionid=0)
 	{
 		// Get contribtool parameters
-		$tconfig =& JComponentHelper::getParams('com_contribtool');
+		$tconfig =& JComponentHelper::getParams('com_tools');
 		$allowversions = $tconfig->get('screenshot_edit');
 
 		if ($versionid && $allowversions) 

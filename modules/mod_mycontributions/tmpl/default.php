@@ -37,7 +37,7 @@ $tools = $this->tools;
 if ($this->show_tools && $tools) {
 	$html .= '<h4>'.JText::_('MOD_MYCONTRIBUTIONS_TOOLS').' ';
 	if (count($tools) > $this->limit_tools)  {
-		$html .= '<small><a href="'.JRoute::_('index.php?option=com_contribtool').'">'.JText::_('MOD_MYCONTRIBUTIONS_VIEW_ALL').' '.count($tools).'</a></small>';
+		$html .= '<small><a href="'.JRoute::_('index.php?option=com_tools&controller=pipeline').'">'.JText::_('MOD_MYCONTRIBUTIONS_VIEW_ALL').' '.count($tools).'</a></small>';
 	}
 	$html .= '</h4>'."\n";
 	//$html .= '<div class="category-wrap">'."\n";
@@ -49,7 +49,7 @@ if ($this->show_tools && $tools) {
 			$urgency = ($this->getState($tools[$i]->state) == 'installed' or $this->getState($tools[$i]->state)=='created') ? ' '.JText::_('and requires your action') : '' ;
 
 			$html .= '<li class="'.$class.'">'."\n";
-			$html .= '<a href="'.JRoute::_('index.php?option=com_contribtool&task=status&toolid='.$tools[$i]->id).'">'.stripslashes($tools[$i]->toolname).'</a>'."\n";
+			$html .= '<a href="'.JRoute::_('index.php?option=com_tools&controller=pipeline&task=status&app='.$tools[$i]->toolname).'">'.stripslashes($tools[$i]->toolname).'</a>'."\n";
 
 			if ($tools[$i]->published) {
 				$html .= '<span class="extra">'."\n";
@@ -102,7 +102,7 @@ if ($this->show_tools && $tools) {
 					$html .= '</span>'."\n";
 				}
 			}
-			$html .= '<span class="under">'.JText::_('Status').': <span class="status_'.$this->getState($tools[$i]->state).'"><a href="'.JRoute::_('index.php?option=com_contribtool&task=status&toolid='.$tools[$i]->id).'" title="'.JText::_('This tool is now in').' '.$this->getState($tools[$i]->state).' '.JText::_('status').$urgency.'">'.$this->getState($tools[$i]->state).'</a></span></span>'."\n";
+			$html .= '<span class="under">'.JText::_('Status').': <span class="status_'.$this->getState($tools[$i]->state).'"><a href="'.JRoute::_('index.php?option=tools&controller=pipeline&task=status&app='.$tools[$i]->toolname).'" title="'.JText::_('This tool is now in').' '.$this->getState($tools[$i]->state).' '.JText::_('status').$urgency.'">'.$this->getState($tools[$i]->state).'</a></span></span>'."\n";
 			$html .= '</li>'."\n";
 		}
 	}

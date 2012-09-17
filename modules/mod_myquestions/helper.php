@@ -201,7 +201,7 @@ class modMyQuestions
 
 			case 'assigned':
 				$filters['mine'] = 0;
-				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_contribtool' . DS . 'contribtool.author.php');
+				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
 
 				$TA = new ToolAuthor($database);
 				$tools = $TA->getToolContributions($juser->get('id'));
