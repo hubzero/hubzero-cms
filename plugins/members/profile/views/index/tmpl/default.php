@@ -601,7 +601,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							);
 							ximport('Hubzero_Wiki_Parser');
 							$p =& Hubzero_Wiki_Parser::getInstance();
-							$bio = $p->parse(stripslashes($this->profile->get('bio')), $wikiconfig);
+							$bio = $p->parse(stripslashes($this->profile->get('bio')), $wikiconfig, false);
 						}
 						else
 						{

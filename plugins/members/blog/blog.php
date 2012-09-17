@@ -98,9 +98,10 @@ class plgMembersBlog extends JPlugin
 			'metadata' => ''
 		);
 
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'blog.entry.php');
+
 		if ($returnhtml) 
 		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'blog.entry.php');
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'blog.comment.php');
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'helpers' . DS . 'blog.member.php');
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'helpers' . DS . 'blog.tags.php');
@@ -166,25 +167,29 @@ class plgMembersBlog extends JPlugin
 			}
 		}
 
-		$arr['metadata'] = $this->_metadata();
+		$filters = array();
+		$filters['scope']      = 'member';
+		$filters['group_id']   = 0;
+		$filters['created_by'] = $this->member->get('uidNumber');
+
+		$juser =& JFactory::getUser();
+		if ($juser->get('guest')) 
+		{
+			$filters['state'] = 'public';
+		} 
+		else 
+		{
+			if ($juser->get('id') != $this->member->get('uidNumber')) 
+			{
+				$filters['state'] = 'registered';
+			}
+		}
+
+		$be = new BlogEntry(JFactory::getDBO());
+
+		$arr['metadata']['count'] = $be->getCount($filters);
 
 		return $arr;
-	}
-
-	/**
-	 * Display some metadata about this blog
-	 * 
-	 * @return     string
-	 */
-	private function _metadata() 
-	{
-		/*
-		$title 	= "Blog Entries";
-		$text 	= "2";
-		$html 	= "<span class=\"meta\" title=\"{$title}\">{$text}</span>";
-		*/
-		$html = "";
-		return $html;
 	}
 
 	/**
