@@ -176,9 +176,7 @@ class WishlistController extends JObject
 	}
 
 	/**
-	 * Short description for 'execute'
-	 * 
-	 * Long description (if any) ...
+	 * Determine task and execute
 	 * 
 	 * @return     unknown Return description (if any) ...
 	 */
@@ -197,7 +195,7 @@ class WishlistController extends JObject
 		$this->config = $config;
 
 		$database =& JFactory::getDBO();
-		$objWishlist = new Wishlist ($database);
+		$objWishlist = new Wishlist($database);
 
 		// Check if main wishlist exists, create one if missing
 		$this->mainlist = $objWishlist->get_wishlistID(1, 'general');
@@ -257,9 +255,7 @@ class WishlistController extends JObject
 	}
 
 	/**
-	 * Short description for 'redirect'
-	 * 
-	 * Long description (if any) ...
+	 * Perform a redirect
 	 * 
 	 * @return     void
 	 */
@@ -273,9 +269,7 @@ class WishlistController extends JObject
 	}
 
 	/**
-	 * Short description for '_getStyles'
-	 * 
-	 * Long description (if any) ...
+	 * Push CSS to the document head
 	 * 
 	 * @param      string $option Parameter description (if any) ...
 	 * @param      string $css Parameter description (if any) ...
@@ -295,9 +289,7 @@ class WishlistController extends JObject
 	}
 
 	/**
-	 * Short description for '_getScripts'
-	 * 
-	 * Long description (if any) ...
+	 * Push scripts to the document head
 	 * 
 	 * @param      string $option Parameter description (if any) ...
 	 * @param      string $name Parameter description (if any) ...
@@ -330,9 +322,7 @@ class WishlistController extends JObject
 	}
 
 	/**
-	 * Short description for '_buildTitle'
-	 * 
-	 * Long description (if any) ...
+	 * Build the page title
 	 * 
 	 * @return     void
 	 */
@@ -352,11 +342,9 @@ class WishlistController extends JObject
 	}
 
 	/**
-	 * Short description for '_buildPathway'
+	 * Build the breadcrumbs
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $wishlist Parameter description (if any) ...
+	 * @param      object $wishlist Wishlist
 	 * @return     void
 	 */
 	private function _buildPathway($wishlist)
@@ -369,7 +357,7 @@ class WishlistController extends JObject
 
 		if (count($pathway->getPathWay()) <= 0) 
 		{
-			$this->startPath ($wishlist, $comtitle, $pathway);
+			$this->startPath($wishlist, $comtitle, $pathway);
 		}
 
 		if ($this->_task) 
@@ -434,7 +422,7 @@ class WishlistController extends JObject
 	 * @param      object $pathway Parameter description (if any) ...
 	 * @return     void
 	 */
-	public function startPath ($wishlist, $title, $pathway) 
+	public function startPath($wishlist, $title, $pathway) 
 	{
 		// build return path to resource
 		if (isset($wishlist->resource) && isset($wishlist->resource->typetitle)) 
@@ -465,9 +453,7 @@ class WishlistController extends JObject
 	}
 
 	/**
-	 * Short description for 'abort'
-	 * 
-	 * Long description (if any) ...
+	 * Display an error message if the wishlist isn't configured
 	 * 
 	 * @return     void
 	 */
@@ -500,9 +486,7 @@ class WishlistController extends JObject
 	}
 
 	/**
-	 * Short description for 'login'
-	 * 
-	 * Long description (if any) ...
+	 * Display a login form
 	 * 
 	 * @return     void
 	 */
@@ -519,11 +503,9 @@ class WishlistController extends JObject
 	}
 
 	/**
-	 * Short description for 'wishlist'
+	 * Show a list of entries for this list
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function wishlist()
 	{
@@ -723,11 +705,9 @@ class WishlistController extends JObject
 	}
 
 	/**
-	 * Short description for 'wish'
+	 * Show an entry and associated content
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     unknown Return description (if any) ...
+	 * @return     void
 	 */
 	public function wish()
 	{

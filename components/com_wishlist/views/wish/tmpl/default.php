@@ -95,6 +95,13 @@ if ($this->wishlist && $this->wish) {
 		$html .= Hubzero_View_Helper_Html::error(JText::_('WARNING_NOT_AUTHORIZED_PRIVATE_LIST'))."\n";
 		$html .= '</div>'."\n";	
 	 } else {
+		
+		$filters  = '';
+		$filters .= ($this->filters['filterby']) ? '&filterby=' . $this->filters['filterby'] : '';
+		$filters .= ($this->filters['sortby'])   ? '&sortby=' . $this->filters['sortby']     : '';
+		$filters .= ($this->filters['tag'])      ? '&tags=' . $this->filters['tag']          : '';
+		$filters .= ($this->filters['limit'])    ? '&limit=' . $this->filters['limit']       : '';
+		$filters .= ($this->filters['start'])    ? '&start=' . $this->filters['start']       : '';
 ?>
 	<div id="content-header">
 		<h2><?php echo $this->title.' #'.$this->wish->id; ?></h2>
@@ -110,7 +117,7 @@ if ($this->wishlist && $this->wish) {
 		<ul id="useroptions">
 			<li>
 		<?php if ($this->wish->prev) { ?>
-				<a class="prev btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->prev.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>">
+				<a class="prev btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->prev . $filters); ?>">
 					<span><?php echo JText::_('PREV'); ?></span>
 				</a>
 		<?php } else { ?>
@@ -120,13 +127,13 @@ if ($this->wishlist && $this->wish) {
 		<?php } ?>
 			</li>
 			<li>
-				<a class="all btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wishlist&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>">
+				<a class="all btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wishlist&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid . $filters); ?>">
 					<span><?php echo JText::_('All'); ?></span>
 				</a>
 			</li>
 			<li class="last">
 			<?php if ($this->wish->next) { ?>
-				<a class="next btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->next.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>">
+				<a class="next btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->next . $filters); ?>">
 					<span><?php echo JText::_('NEXT'); ?></span>
 				</a>
 			<?php } else { ?>

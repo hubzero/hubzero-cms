@@ -235,7 +235,13 @@ if ($this->admin && !$this->getError()) {
 					<tbody>
 <?php
 				if ($this->wishlist->items) {
-					$y = 1;			
+					$y = 1;
+					$filters  = '';
+					$filters .= ($this->filters['filterby']) ? '&filterby='.$this->filters['filterby'] : '';
+					$filters .= ($this->filters['sortby'])   ? '&sortby='.$this->filters['sortby']     : '';
+					$filters .= ($this->filters['tag'])      ? '&tags='.$this->filters['tag']          : '';
+					$filters .= ($this->filters['limit'])    ? '&limit='.$this->filters['limit']       : '';
+					$filters .= ($this->filters['start'])    ? '&start='.$this->filters['start']       : '';
 					foreach ($this->wishlist->items as $item) 
 					{	
 						// Do some text cleanup
@@ -285,13 +291,13 @@ if ($this->admin && !$this->getError()) {
 							</th>
 							<td>
 <?php 					if (!$item->reports) { ?>
-								<a class="entry-title" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>"><?php echo $item->subject; ?></a><br />
+								<a class="entry-title" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id . $filters); ?>"><?php echo $item->subject; ?></a><br />
 								<span class="entry-details">
 									<?php echo JText::_('WISH_PROPOSED_BY'); ?> <?php echo ($item->anonymous == 1) ? JText::_('ANONYMOUS') : $item->authorname; ?> @
 									<span class="entry-time"><time datetime="<?php echo $item->proposed; ?>"><?php echo JHTML::_('date', $item->proposed, $timeformat, $tz); ?></time></span> <?php echo JText::_('on'); ?> 
 									<span class="entry-date"><time datetime="<?php echo $item->proposed; ?>"><?php echo JHTML::_('date', $item->proposed, $dateformat, $tz); ?></time></span>
 									<span class="entry-details-divider">&bull;</span>
-									<span class="entry-comments"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&com=1&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'#comments'); ?>" title="<?php echo $item->numreplies; ?> <?php echo JText::_('COMMENTS'); ?>"><?php echo $item->numreplies; ?></a></span>
+									<span class="entry-comments"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&com=1' . $filters . '#comments'); ?>" title="<?php echo $item->numreplies; ?> <?php echo JText::_('COMMENTS'); ?>"><?php echo $item->numreplies; ?></a></span>
 								</span>
 <?php 					} else { ?>
 								<span class="warning adjust"><?php echo JText::_('NOTICE_POSTING_REPORTED'); ?></span>
@@ -301,9 +307,9 @@ if ($this->admin && !$this->getError()) {
 							<td class="reward">
 								<span class="entry-reward">			
 <?php 							if (isset($item->bonus) && $item->bonus > 0 && ($item->status==0 or $item->status==6)) { ?>
-									<a class="bonus tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&action=addbonus&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'#action'); ?>" title="<?php echo JText::_('WISH_ADD_BONUS').' ::'.$item->bonusgivenby.' '.JText::_('MULTIPLE_USERS').' '.JText::_('WISH_BONUS_CONTRIBUTED_TOTAL').' '.$item->bonus.' '.JText::_('POINTS').' '.JText::_('WISH_BONUS_AS_BONUS'); ?>"><?php echo $item->bonus; ?> <span><?php echo JText::_('POINTS'); ?></span></a>
+									<a class="bonus tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&action=addbonus' . $filters . '#action'); ?>" title="<?php echo JText::_('WISH_ADD_BONUS').' ::'.$item->bonusgivenby.' '.JText::_('MULTIPLE_USERS').' '.JText::_('WISH_BONUS_CONTRIBUTED_TOTAL').' '.$item->bonus.' '.JText::_('POINTS').' '.JText::_('WISH_BONUS_AS_BONUS'); ?>"><?php echo $item->bonus; ?> <span><?php echo JText::_('POINTS'); ?></span></a>
 <?php 							} else if ($item->status == 0 || $item->status == 6) { ?>
-									<a class="nobonus tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&action=addbonus&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'#action'); ?>" title="<?php echo JText::_('WISH_ADD_BONUS').' :: '.JText::_('WISH_BONUS_NO_USERS_CONTRIBUTED'); ?>"><?php echo $item->bonus; ?> <span><?php echo JText::_('POINTS'); ?></span></a>
+									<a class="nobonus tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&action=addbonus' . $filters . '#action'); ?>" title="<?php echo JText::_('WISH_ADD_BONUS').' :: '.JText::_('WISH_BONUS_NO_USERS_CONTRIBUTED'); ?>"><?php echo $item->bonus; ?> <span><?php echo JText::_('POINTS'); ?></span></a>
 <?php 							} else { ?>
 									<span class="inactive" title="<?php echo JText::_('WISH_BONUS_NOT_ACCEPTED'); ?>">&nbsp;</span>
 <?php 							} ?>
@@ -336,7 +342,7 @@ if ($this->admin && !$this->getError()) {
 								{
 									case 0:
 										if (isset($item->ranked) && !$item->ranked && ($this->admin==2 or $this->admin==3)) {
-											$html .= '<a class="rankit" href="index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'">'.JText::_('WISH_RANK_THIS').'</a>'."\n";
+											$html .= '<a class="rankit" href="index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id . $filters . '">'.JText::_('WISH_RANK_THIS').'</a>'."\n";
 										} else if (isset($item->ranked) && $item->ranked) {
 											//$html .= JText::_('WISH_PRIORITY').': <span class="priority">'.$item->ranking.'</span>'."\n";
 											$html .= '<span class="priority-level-base">
