@@ -131,6 +131,19 @@ CREATE TABLE `job` (
   KEY `heartbeat_2` (`heartbeat`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `metrics_ipgeo_cache` (
+  `ip` int(10) NOT NULL DEFAULT '0000000000',
+  `countrySHORT` char(2) NOT NULL DEFAULT '',
+  `countryLONG` varchar(64) NOT NULL DEFAULT '',
+  `ipREGION` varchar(128) NOT NULL DEFAULT '',
+  `ipCITY` varchar(128) NOT NULL DEFAULT '',
+  `ipLATITUDE` double DEFAULT NULL,
+  `ipLONGITUDE` double DEFAULT NULL,
+  `lookup_datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`ip`),
+  KEY (`lookup_datetime`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 CREATE TABLE `joblog` (
   `sessnum` bigint(20) unsigned NOT NULL DEFAULT '0',
   `job` int(10) unsigned NOT NULL DEFAULT '0',
@@ -1987,6 +2000,29 @@ CREATE TABLE `#__session_log` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+CREATE TABLE `#__session_geo` (
+  `session_id` varchar(200) NOT NULL default '0',
+  `username` varchar(150) default '',
+  `time` varchar(14) default '',
+  `guest` tinyint(4) default '1',
+  `userid` int(11) default '0',
+  `ip` varchar(15) default NULL,
+  `host` varchar(128) default NULL,
+  `domain` varchar(128) default NULL,
+  `signed` tinyint(3) default '0',
+  `countrySHORT` char(2) default NULL,
+  `countryLONG` varchar(64) default NULL,
+  `ipREGION` varchar(128) default NULL,
+  `ipCITY` varchar(128) default NULL,
+  `ipLATITUDE` double default NULL,
+  `ipLONGITUDE` double default NULL,
+  `bot` tinyint(4) default '0',
+  PRIMARY KEY  (`session_id`),
+  KEY `userid` (`userid`),
+  KEY `time` (`time`),
+  KEY `ip` (`ip`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 CREATE TABLE `#__sites` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(100) DEFAULT NULL,
@@ -3575,6 +3611,20 @@ INSERT INTO `#__core_acl_aro_groups` VALUES (24,23,'Administrator',15,18,'Admini
 INSERT INTO `#__core_acl_aro_groups` VALUES (25,24,'Super Administrator',16,17,'Super Administrator');
 
 INSERT INTO `#__core_acl_aro_sections` VALUES (10,'users',1,'Users',0);
+
+INSERT INTO `#__stats_tops` VALUES (1,'Top Tools by Ranking',1,5);
+INSERT INTO `#__stats_tops` VALUES (2,'Top Tools by Simulation Users',1,5);
+INSERT INTO `#__stats_tops` VALUES (3,'Top Tools by Interactive Sessions',1,5);
+INSERT INTO `#__stats_tops` VALUES (4,'Top Tools by Simulation Sessions',1,5);
+INSERT INTO `#__stats_tops` VALUES (5,'Top Tools by Simulation Runs',1,5);
+INSERT INTO `#__stats_tops` VALUES (6,'Top Tools by Simulation Wall Time',2,5);
+INSERT INTO `#__stats_tops` VALUES (7,'Top Tools by Simulation CPU Time',2,5);
+INSERT INTO `#__stats_tops` VALUES (8,'Top Tools by Simulation Interaction Time',2,5);
+INSERT INTO `#__stats_tops` VALUES (9,'Top Tools by Citations',1,5);
+
+INSERT INTO `#__resource_stats_tools_tops` VALUES (1,'Users By Country Of Residence',1,5);
+INSERT INTO `#__resource_stats_tools_tops` VALUES (2,'Top Domains By User Count',1,5);
+INSERT INTO `#__resource_stats_tools_tops` VALUES (3,'Users By Organization Type',1,5);
 
 INSERT INTO `#__xmessage_component` VALUES (1,'com_support','support_reply_submitted','Someone replies to a support ticket I submitted.');
 INSERT INTO `#__xmessage_component` VALUES (2,'com_support','support_reply_assigned','Someone replies to a support ticket I am assigned to.');
