@@ -135,6 +135,9 @@
 		background-position: 0 0.9em;
 		border: 1px solid #fff;
 	}
+	#content form.search p label {
+		display: none;
+	}
 	#content form.search,
 	#content .browse {
 		position: relative;

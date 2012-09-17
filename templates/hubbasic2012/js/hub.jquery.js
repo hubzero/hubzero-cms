@@ -100,6 +100,7 @@ HUB.Base = {
 		$('.hasTip, .tooltips').tooltip({
 			position: 'top center',
 			effect: 'fade',
+			offset: [-4, 0],
 			onBeforeShow: function(event, position) {
 				var tip = this.getTip(),
 					tipText = tip[0].innerHTML;

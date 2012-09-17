@@ -26,6 +26,9 @@
 	.aside .entry-date-at {
 		display: none;
 	}
+	.aside .entry-date-on {
+		display: inline;
+	}
 
 	.entries .edit,
 	.entries .delete {

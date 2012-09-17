@@ -55,9 +55,9 @@
 		padding: 0;
 		color: #fff;
 	}
-	#welcome h2 sup {
-		font-size: 75%;
-		font-weight: normal;
+	#welcome a:hover {
+		color: #fff;
+		border-bottom: 1px solid #fff;
 	}
 
 /* Freatured items */
