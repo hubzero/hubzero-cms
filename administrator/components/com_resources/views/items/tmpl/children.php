@@ -43,15 +43,13 @@ if ($this->filters['parent_id'] > 0)
 	{
 		JToolBarHelper::deleteList('', 'removechild', 'Remove Child');
 	}
+	JToolBarHelper::spacer();
 }
-else
+if ($canDo->get('core.edit.state')) 
 {
-	if ($canDo->get('core.edit.state')) 
-	{
-		JToolBarHelper::publishList();
-		JToolBarHelper::unpublishList();
-		JToolBarHelper::spacer();
-	}
+	JToolBarHelper::publishList();
+	JToolBarHelper::unpublishList();
+	JToolBarHelper::spacer();
 }
 if ($canDo->get('core.edit')) 
 {

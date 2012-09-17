@@ -456,7 +456,7 @@ class ResourcesControllerItems extends Hubzero_Controller
 							$this->view->pid = $pid;
 
 							// No child ID! Throw an error and present the form from the previous step
-							$this->setError(JText::_('Resource with provided ID # not found.')) ;
+							$this->setError(JText::_('Resource with provided ID # not found.'));
 
 							// Get the available types
 							$rt = new ResourcesType($this->database);
@@ -518,14 +518,22 @@ class ResourcesControllerItems extends Hubzero_Controller
 		// Make sure we have both parent and child IDs
 		if (!$pid)
 		{
-			echo ResourcesHtml::alert(JText::_('Error: Missing parent ID'));
-			exit();
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('Missing parent ID'), 
+				'error'
+			);
+			return;
 		}
 
 		if (!$id)
 		{
-			echo ResourcesHtml::alert(JText::_('Error: Missing child ID'));
-			exit();
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid,
+				JText::_('Missing child ID'), 
+				'error'
+			);
+			return;
 		}
 
 		// Instantiate a ResourcesAssoc object
@@ -540,23 +548,38 @@ class ResourcesControllerItems extends Hubzero_Controller
 
 		// Create new parent/child association
 		$assoc->parent_id = $pid;
-		$assoc->child_id = $id;
-		$assoc->ordering = $order;
-		$assoc->grouping = 0;
+		$assoc->child_id  = $id;
+		$assoc->ordering  = $order;
+		$assoc->grouping  = 0;
 		if (!$assoc->check())
 		{
-			die($assoc->getError());
+			$this->setError($assoc->getError());
 		}
-		if (!$assoc->store(true))
+		else 
 		{
-			die($assoc->getError());
+			if (!$assoc->store(true))
+			{
+				$this->setError($assoc->getError());
+			}
 		}
 
-		// Redirect
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pid=' . $pid,
-			JText::_('Child successfully added')
-		);
+		if ($this->getError())
+		{
+			// Redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid,
+				$this->getError(), 
+				'error'
+			);
+		}
+		else 
+		{
+			// Redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid,
+				JText::_('Child successfully added')
+			);
+		}
 	}
 
 	/**
@@ -574,15 +597,23 @@ class ResourcesControllerItems extends Hubzero_Controller
 		// Make sure we have a parent ID
 		if (!$pid)
 		{
-			echo ResourcesHtml::alert(JText::_('Error: Missing parent ID'));
-			exit();
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('Missing parent ID'), 
+				'error'
+			);
+			return;
 		}
 
 		// Make sure we have children IDs
 		if (!$ids || count($ids) < 1)
 		{
-			echo ResourcesHtml::alert(JText::_('Error: Missing child ID'));
-			exit();
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid,
+				JText::_('Missing child ID'), 
+				'error'
+			);
+			return;
 		}
 
 		$assoc = new ResourcesAssoc($this->database);
@@ -595,11 +626,11 @@ class ResourcesControllerItems extends Hubzero_Controller
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pid=' . $pid,
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid,
 			JText::sprintf('%s children successfully removed', count($ids))
 		);
 	}
-	
+
 	/**
 	 * Edit form for a new resource
 	 * 
