@@ -162,7 +162,7 @@ $juser =& JFactory::getUser();
 	<?php if ($this->row->allow_comments == 1) : ?>
 		<div class="aside aside-below">
 			<p>
-				<a class="add" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->row->created_by.'&active=blog&task='.JHTML::_('date', $this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'#post-comment'); ?>">
+				<a class="add btn" href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->row->created_by.'&active=blog&task='.JHTML::_('date', $this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'#post-comment'); ?>">
 					<?php echo JText::_('Add a comment'); ?>
 				</a>
 			</p>
@@ -176,7 +176,7 @@ $juser =& JFactory::getUser();
 					$cls = 'even';
 					ximport('Hubzero_User_Profile');
 
-					$path = $this->config->get('uploadpath');
+					$path = $this->config->get('uploadpath', '/site/members/{{uid}}/blog');
 					$path = str_replace('{{uid}}',Hubzero_View_Helper_Html::niceidformat($this->member->get('uidNumber')),$path);
 
 					$wikiconfig = array(

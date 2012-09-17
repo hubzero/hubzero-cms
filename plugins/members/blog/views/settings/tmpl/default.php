@@ -54,16 +54,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<label>
 				RSS Feed of entries
 				<select name="params[feeds_enabled]">
-					<option value="0"<?php if (!$this->config->get('feeds_enabled')) { echo ' selected="selected"'; }?>>Disabled</option>
-					<option value="1"<?php if ($this->config->get('feeds_enabled') == 1) { echo ' selected="selected"'; }?>>Enabled</option>
+					<option value="0"<?php if (!$this->config->get('feeds_enabled', 1)) { echo ' selected="selected"'; }?>>Disabled</option>
+					<option value="1"<?php if ($this->config->get('feeds_enabled', 1) == 1) { echo ' selected="selected"'; }?>>Enabled</option>
 				</select>
 			</label>
 			
 			<label>
 				The length of RSS feed entries
 				<select name="params[feed_entries]">
-					<option value="full"<?php if ($this->config->get('feed_entries') == 'full') { echo ' selected="selected"'; }?>>Full</option>
-					<option value="partial"<?php if ($this->config->get('feed_entries') == 'partial') { echo ' selected="selected"'; }?>>Partial</option>
+					<option value="full"<?php if ($this->config->get('feed_entries', 'partial') == 'full') { echo ' selected="selected"'; }?>>Full</option>
+					<option value="partial"<?php if ($this->config->get('feed_entries', 'partial') == 'partial') { echo ' selected="selected"'; }?>>Partial</option>
 				</select>
 			</label>
 			

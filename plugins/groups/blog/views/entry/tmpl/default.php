@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_User_Profile');
 ximport('Hubzero_Wiki_Editor');
@@ -229,7 +229,7 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 							$name = JText::_('PLG_GROUPS_BLOG_ANONYMOUS');
 							$xuser = "";
 							if (!$comment->anonymous) {
-								//$xuser =& JUser::getInstance( $comment->created_by );
+								//$xuser =& JUser::getInstance($comment->created_by);
 								$xuser = Hubzero_User_Profile::getInstance($comment->created_by);
 								if (is_object($xuser) && $xuser->get('name')) {
 									$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$comment->created_by).'">'.$this->escape(stripslashes($xuser->get('name'))).'</a>';
@@ -322,7 +322,7 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 															if ($response->reports) {
 																$content = '<p class="warning">'.JText::_('PLG_GROUPS_BLOG_COMMENT_REPORTED_AS_ABUSIVE').'</p>';
 															} else {
-																$content = $this->p->parse( "\n".stripslashes($response->content), $this->wikiconfig );
+																$content = $this->p->parse("\n" . stripslashes($response->content), $this->wikiconfig , false);
 															}
 														?>
 														<li class="comment <?php echo $cls; ?>" id="c<?php echo $response->id; ?>">

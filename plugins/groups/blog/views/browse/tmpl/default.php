@@ -182,7 +182,7 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 				echo JHTML::_('date', $archiveDate, $format, $this->tz);
 } ?>
 				<?php
-					if ($this->config->get('feeds_enabled')) :
+					if ($this->config->get('feeds_enabled', 1)) :
 						$path  = 'index.php?option='.$this->option.'&gid='.$this->group->cn.'&active=blog&scope=feed.rss';
 						$path .= ($this->year)  ? '&year=' . $this->year   : '';
 						$path .= ($this->month) ? '&month=' . $this->month : '';

@@ -312,7 +312,7 @@ class plgMembersBlog extends JPlugin
 	 */
 	private function _feed() 
 	{
-		if (!$this->params->get('feeds_enabled')) 
+		if (!$this->params->get('feeds_enabled', 1)) 
 		{
 			$this->_browse();
 			return;
@@ -384,7 +384,7 @@ class plgMembersBlog extends JPlugin
 			ximport('Hubzero_Wiki_Parser');
 			$p =& Hubzero_Wiki_Parser::getInstance();
 			
-			$path = $this->params->get('uploadpath');
+			$path = $this->params->get('uploadpath', '/site/members/{{uid}}/blog');
 			$path = str_replace('{{uid}}', Hubzero_View_Helper_Html::niceidformat($this->member->get('uidNumber')), $path);
 			
 			foreach ($rows as $row)
@@ -410,7 +410,7 @@ class plgMembersBlog extends JPlugin
 				);
 				$description = $p->parse(stripslashes($row->content), $wikiconfig, true, true);
 				$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($description));
-				if ($this->params->get('feed_entries') == 'partial') 
+				if ($this->params->get('feed_entries', 'partial') == 'partial') 
 				{
 					$description = Hubzero_View_Helper_Html::shortenText($description, 300, 0);
 				}
@@ -563,7 +563,7 @@ class plgMembersBlog extends JPlugin
 
 		if ($view->row->content) 
 		{
-			$path = $this->params->get('uploadpath');
+			$path = $this->params->get('uploadpath', '/site/members/{{uid}}/blog');
 			$path = str_replace('{{uid}}', Hubzero_View_Helper_Html::niceidformat($this->member->get('uidNumber')), $path);
 
 			$wikiconfig = array(

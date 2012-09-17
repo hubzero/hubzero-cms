@@ -349,7 +349,7 @@ class plgGroupsBlog extends JPlugin
 			$pageNav->setAdditionalUrlParam('search', $filters['search']);
 		}
 
-		$path = $this->params->get('uploadpath');
+		$path = $this->params->get('uploadpath', '/site/groups/{{gid}}/blog');
 		$view->path = str_replace('{{gid}}', $this->group->get('gidNumber'),$path);
 
 		$view->firstentry = $be->getDateOfFirstEntry($filters);
@@ -378,7 +378,7 @@ class plgGroupsBlog extends JPlugin
 	 */
 	private function _feed()
 	{
-		if (!$this->params->get('feeds_enabled')) 
+		if (!$this->params->get('feeds_enabled', 1)) 
 		{
 			$this->_browse();
 			return;
@@ -449,7 +449,7 @@ class plgGroupsBlog extends JPlugin
 		{
 			ximport('wiki.parser');
 			//$p = new WikiParser(JText::_(strtoupper($this->_option)), $this->_option, 'blog', '', 0, $this->config->get('uploadpath'));
-			$path = $this->params->get('uploadpath');
+			$path = $this->params->get('uploadpath', '/site/groups/{{gid}}/blog');
 			$path = str_replace('{{gid}}', $this->group->get('gidNumber'), $path);
 
 			foreach ($rows as $row)
@@ -469,7 +469,7 @@ class plgGroupsBlog extends JPlugin
 				// Strip html from feed item description text
 				$description = $p->parse("\n" . stripslashes($row->content), 0, 0);
 				$description = html_entity_decode(Hubzero_View_Helper_Html::purifyText($description));
-				if ($this->params->get('feed_entries') == 'partial') 
+				if ($this->params->get('feed_entries', 'partial') == 'partial') 
 				{
 					$description = Hubzero_View_Helper_Html::shortenText($description, 300, 0);
 				}
@@ -669,12 +669,12 @@ class plgGroupsBlog extends JPlugin
 				
 				$plugin = JPluginHelper::getPlugin('members', 'blog');
 				$params = new $paramsClass($plugin->params);
-				$path = $params->get('uploadpath');
+				$path = $params->get('uploadpath', '/site/members/{{uid}}/blog');
 				$path = str_replace('{{uid}}', Hubzero_View_Helper_Html::niceidformat($view->row->created_by), $path);
 			} 
 			else 
 			{
-				$path = $this->params->get('uploadpath');
+				$path = $this->params->get('uploadpath', '/site/groups/{{gid}}/blog');
 				$path = str_replace('{{gid}}', $this->group->get('gidNumber'), $path);
 			}
 			

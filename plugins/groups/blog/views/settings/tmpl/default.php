@@ -56,8 +56,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<label for="param-posting">
 				Who can post to this blog?
 				<select name="params[posting]" id="param-posting">
-					<option value="0"<?php if (!$this->config->get('posting')) { echo ' selected="selected"'; }?>>All group members</option>
-					<option value="1"<?php if ($this->config->get('posting') == 1) { echo ' selected="selected"'; }?>>Group managers only</option>
+					<option value="0"<?php if (!$this->config->get('posting', 0)) { echo ' selected="selected"'; }?>>All group members</option>
+					<option value="1"<?php if ($this->config->get('posting', 0) == 1) { echo ' selected="selected"'; }?>>Group managers only</option>
 				</select>
 			</label>
 			
@@ -71,16 +71,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<label for="param-feeds_enabled">
 				RSS Feed of entries
 				<select name="params[feeds_enabled]" id="param-feeds_enabled">
-					<option value="0"<?php if (!$this->config->get('feeds_enabled')) { echo ' selected="selected"'; }?>>Disabled</option>
-					<option value="1"<?php if ($this->config->get('feeds_enabled') == 1) { echo ' selected="selected"'; }?>>Enabled</option>
+					<option value="0"<?php if (!$this->config->get('feeds_enabled', 1)) { echo ' selected="selected"'; }?>>Disabled</option>
+					<option value="1"<?php if ($this->config->get('feeds_enabled', 1) == 1) { echo ' selected="selected"'; }?>>Enabled</option>
 				</select>
 			</label>
 			
 			<label for="param-feeds_entries">
 				The length of RSS feed entries
 				<select name="params[feed_entries]" id="param-feeds_entries">
-					<option value="full"<?php if ($this->config->get('feed_entries') == 'full') { echo ' selected="selected"'; }?>>Full</option>
-					<option value="partial"<?php if ($this->config->get('feed_entries') == 'partial') { echo ' selected="selected"'; }?>>Partial</option>
+					<option value="full"<?php if ($this->config->get('feed_entries', 'partial') == 'full') { echo ' selected="selected"'; }?>>Full</option>
+					<option value="partial"<?php if ($this->config->get('feed_entries', 'partial') == 'partial') { echo ' selected="selected"'; }?>>Partial</option>
 				</select>
 			</label>
 			
