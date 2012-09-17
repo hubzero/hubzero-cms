@@ -393,7 +393,11 @@ class ForumControllerThreads extends Hubzero_Controller
 			{
 				$return = JRoute::_('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category . '&thread=' . $id . '&task=edit');
 			}
-			$this->setRedirect(JRoute::_('index.php?option=com_login&return=' . base64_encode($return)));
+			$this->setRedirect(
+				JRoute::_('index.php?option=com_login&return=' . base64_encode($return)).
+					JText::_('Please login to create or edit posts.'),
+					'warning'
+			);
 			return;
 		}
 
@@ -420,9 +424,13 @@ class ForumControllerThreads extends Hubzero_Controller
 		{
 			$this->view->post->created_by = $this->juser->get('id');
 		}
-		elseif ($this->view->post->created_by != $this->juser->get('id') && $this->view->authorized != 'admin') 
+		elseif ($this->view->post->created_by != $this->juser->get('id') && !$this->config->get('access-edit-thread')) 
 		{
-			$this->setRedirect(JRoute::_('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category));
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
+				JText::_('You are not authorized to edit this thread.'),
+				'warning'
+			);
 			return;
 		}
 

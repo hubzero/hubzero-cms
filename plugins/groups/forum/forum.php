@@ -1416,6 +1416,10 @@ class plgGroupsForum extends Hubzero_Plugin
 		$prependtext .= $juser->name . " (". $juser->username . ") wrote:";
 		$forum_message = $prependtext . "\r\n\r\n" . $model->comment;
 
+		$juri =& JURI::getInstance();
+		$sef = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category->alias . '/' . $thread . '#c' . $model->id);
+		$forum_message .= "\r\n\r\n" . rtrim($juri->base(), DS) . DS . ltrim($sef, DS) . "\r\n";
+
 		// Translate the message wiki formatting to html
 		/*
 		ximport('Hubzero_Wiki_Parser');
