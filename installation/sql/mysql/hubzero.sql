@@ -3512,7 +3512,7 @@ INSERT INTO `#__plugins` VALUES ( 89,'Resources - Reviews','reviews','resources'
 INSERT INTO `#__plugins` VALUES ( 90,'Resources - Share','share','resources',0,8,1,0,0,0,'0000-00-00 00:00:00','icons_limit=3\nshare_facebook=1\nshare_twitter=1\nshare_google=1\nshare_digg=1\nshare_technorati=1\nshare_delicious=1\nshare_reddit=0\nshare_email=0\nshare_print=0\n\n');
 INSERT INTO `#__plugins` VALUES ( 91,'Resources - Sponsors','sponsors','resources',0,13,1,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES ( 92,'Resources - Supporting Documents','supportingdocs','resources',0,11,1,0,0,0,'0000-00-00 00:00:00','display_limit=50');
-INSERT INTO `#__plugins` VALUES ( 93,'Resources - Usage','usage','resources',0,5,1,0,0,0,'0000-00-00 00:00:00','');
+INSERT INTO `#__plugins` VALUES ( 93,'Resources - Usage','usage','resources',0,5,1,0,0,0,'0000-00-00 00:00:00','period=14\nchart_path=/site/stats/chart_resources/\nmap_path=/site/stats/resource_maps/');
 INSERT INTO `#__plugins` VALUES ( 94,'Resources - Versions','versions','resources',0,6,1,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES ( 95,'Resources - Wishlist','wishlist','resources',0,9,1,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES ( 96,'Support - Answers','answers','support',0,0,1,0,0,0,'0000-00-00 00:00:00','');
