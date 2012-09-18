@@ -425,7 +425,7 @@ HUB.Register = {
 
 		var passmtr = $('#passmeter');
 		var passwd = $('#password');
-		if (passmtr && passwd) {
+		if (passmtr.length && passwd.length) {
 			$('<span id="meter-container"></span>').insertAfter(passwd);
 
 			if (passwd.val() != '') {
