@@ -201,6 +201,9 @@
 		display: none;
 	}
 /* Columns */
+	.contentpaneopen {
+		padding: 0 30px;
+	}
 	.section {
 		padding: 0 30px;
 		padding-top: 10px;

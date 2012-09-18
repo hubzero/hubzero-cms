@@ -287,6 +287,16 @@ HUB.Register = {
 	},
 	
 	initialize: function() {
+		$$('a.popup').each(function(trigger) {
+			href = $(this).getProperty('href');
+			if (href.indexOf('?') == -1) {
+				href += '?tmpl=component';
+			} else {
+				href += '&tmpl=component';
+			}
+			$(this).setProperty('href', href);
+		});
+		
 		// Look for the "type-linked" element
 		var typeindie = $('type-indie');
 		if (typeindie) {

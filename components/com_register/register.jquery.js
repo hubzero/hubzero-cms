@@ -310,7 +310,17 @@ HUB.Register = {
 	},
 
 	initialize: function() {
-		var $ = HUB.Register.jQuery;
+		var $ = HUB.Register.jQuery, w = 760, h = 520;
+
+		$('.com_register a.popup').each(function(i, trigger) {
+			href = $(this).attr('href');
+			if (href.indexOf('?') == -1) {
+				href += '?tmpl=component';
+			} else {
+				href += '&tmpl=component';
+			}
+			$(this).attr('href', href);
+		});
 
 		if ($('#tagcloud')) {
 			$('#tagcloud').removeClass('hide');
