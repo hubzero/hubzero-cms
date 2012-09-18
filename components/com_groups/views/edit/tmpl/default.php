@@ -85,7 +85,7 @@ else
 		<p class="warning"><?php echo JText::_('GROUPS_STATUS_NEW_GROUP'); ?></p>
 	<?php } ?>
 	
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" id="hubForm">
+	<form action="index.php" method="post" id="hubForm">
 		<div class="explaination">
 			<div id="asset_browser">
 				<p><strong><?php echo JText::_('Upload files or images:'); ?></strong></p>
