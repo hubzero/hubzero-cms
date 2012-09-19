@@ -262,7 +262,7 @@ class MembersControllerProfiles extends Hubzero_Controller
 		{
 			// Add to the pathway
 			$pathway->addItem(
-				strtoupper($filters['index']), 
+				strtoupper($this->view->filters['index']), 
 				'index.php?option=' . $this->_option . '&index=' . $this->view->filters['index']
 			);
 		}
