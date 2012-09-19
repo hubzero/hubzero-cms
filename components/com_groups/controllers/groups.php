@@ -2108,7 +2108,7 @@ class GroupsController extends Hubzero_Controller
 				if ($uid != '') 
 				{
 					// If not a member
-					if (!in_array($uid, $members)) 
+					if (!in_array($uid, $members) || !in_array($uid, $current_invitees)) 
 					{
 						// If an applicant
 						// Make applicant a member
