@@ -99,20 +99,6 @@ CREATE TABLE `hosttype` (
   `description` varchar(255) NOT NULL DEFAULT ''
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE `ipusers` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `ip` varchar(15) NOT NULL,
-  `user` tinytext NOT NULL,
-  `ntimes` smallint(6) NOT NULL,
-  `from` datetime DEFAULT NULL,
-  `to` datetime DEFAULT NULL,
-  `orgtype` varchar(4) NOT NULL,
-  `countryresident` char(2) NOT NULL,
-  `countrycitizen` char(2) NOT NULL,
-  `countryip` char(2) NOT NULL,
-  UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 CREATE TABLE `job` (
   `sessnum` bigint(20) unsigned NOT NULL DEFAULT '0',
   `jobid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -3141,12 +3127,6 @@ CREATE TABLE `#__ysearch_site_map` (
   FULLTEXT KEY `#__ysearch_site_map_title_description_ftidx` (`title`,`description`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE `orgtypes` (
-  `name` varchar(64) NOT NULL,
-  `orgtype` tinyint(4) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`orgtype`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 CREATE TABLE `session` (
   `sessnum` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(32) NOT NULL DEFAULT '',
@@ -3186,71 +3166,6 @@ CREATE TABLE `sessionpriv` (
   `privilege` varchar(40) NOT NULL DEFAULT '',
   `start` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   UNIQUE KEY `privid` (`privid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE `summary_andmore` (
-  `id` tinyint(4) NOT NULL DEFAULT '0',
-  `label` varchar(255) NOT NULL DEFAULT 'no_name',
-  `plot` int(1) DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE `summary_andmore_vals` (
-  `colid` tinyint(4) NOT NULL DEFAULT '0',
-  `datetime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `period` tinyint(4) NOT NULL DEFAULT '1',
-  `rowid` tinyint(4) NOT NULL DEFAULT '0',
-  `valfmt` tinyint(4) NOT NULL DEFAULT '0',
-  `value` bigint(20) DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE `summary_misc` (
-  `id` tinyint(4) NOT NULL DEFAULT '0',
-  `label` varchar(255) NOT NULL DEFAULT 'no_name',
-  `plot` int(1) DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE `summary_misc_vals` (
-  `colid` tinyint(4) NOT NULL DEFAULT '0',
-  `datetime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `period` tinyint(4) NOT NULL DEFAULT '1',
-  `rowid` tinyint(4) NOT NULL DEFAULT '0',
-  `valfmt` tinyint(4) NOT NULL DEFAULT '0',
-  `value` varchar(200) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE `summary_simusage` (
-  `id` tinyint(4) NOT NULL DEFAULT '0',
-  `label` varchar(255) NOT NULL DEFAULT 'no_name',
-  `plot` int(1) DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE `summary_simusage_vals` (
-  `colid` tinyint(4) NOT NULL DEFAULT '0',
-  `datetime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `period` tinyint(4) NOT NULL DEFAULT '1',
-  `rowid` tinyint(4) NOT NULL DEFAULT '0',
-  `valfmt` tinyint(4) NOT NULL DEFAULT '0',
-  `value` bigint(20) DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE `summary_user` (
-  `id` tinyint(4) NOT NULL DEFAULT '0',
-  `label` varchar(255) NOT NULL DEFAULT 'no_name',
-  `plot` int(1) DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE `user_map` (
-  `countryLONG` varchar(64) NOT NULL,
-  `countrySHORT` char(2) NOT NULL,
-  `datetime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `ip` int(10) unsigned zerofill NOT NULL DEFAULT '0000000000',
-  `ipCITY` varchar(128) NOT NULL,
-  `ipLAT` double DEFAULT NULL,
-  `ipLONG` double DEFAULT NULL,
-  `ipREGION` varchar(128) NOT NULL,
-  `type` tinyint(4) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`ip`),
-  KEY `ip` (`ip`) USING BTREE
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `view` (
