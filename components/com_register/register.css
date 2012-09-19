@@ -54,9 +54,9 @@
 	}
 
 /* Username checker */
-	p.hint.ok {
+	#hubForm .group p.hint.ok {
 		color: #090;
 	}
-	p.hint.notok {
+	#hubForm .group p.hint.notok {
 		color: #900;
 	}
