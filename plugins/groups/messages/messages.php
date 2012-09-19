@@ -440,9 +440,13 @@ class plgGroupsMessages extends JPlugin
 
 		// Build the "from" data for the e-mail
 		$from = array();
-		$from['name']  = $juser->get('name').' ('.JText::_(strtoupper($this->_name)).': '.$this->group->get('cn').')';
-		$from['email'] = $juser->get('email');
-
+		$config =& JFactory::getConfig();
+		$from['name'] = $this->group->get('description') . " Group on " . $config->getValue("fromname");
+		$from['email'] = $config->getValue("mailfrom");
+		
+		//append "on behalf..." to subject
+		$subject .= " - Email sent on Behalf of " . $juser->get('name');
+		
 		// Send the message
 		JPluginHelper::importPlugin('xmessage');
 		$dispatcher =& JDispatcher::getInstance();
