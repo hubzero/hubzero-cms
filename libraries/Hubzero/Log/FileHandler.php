@@ -29,36 +29,31 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Hubzero_Log_FileHandler'
- * 
- * Long description (if any) ...
+ * Log class for opening/reading/writing log files
  */
 class Hubzero_Log_FileHandler
 {
-
 	/**
-	 * Description for '_filename'
+	 * Log file name
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $_filename = null;
 
 	/**
-	 * Description for '_fp'
+	 * File connection
 	 * 
 	 * @var unknown
 	 */
 	var $_fp = null;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $filename Parameter description (if any) ...
+	 * @param      string $filename NAme of log file
 	 * @return     void
 	 */
 	public function __construct($filename)
@@ -68,32 +63,35 @@ class Hubzero_Log_FileHandler
 	}
 
 	/**
-	 * Short description for 'log'
+	 * Write a message to the log file
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $priority Parameter description (if any) ...
-	 * @param      unknown $message Parameter description (if any) ...
-	 * @param      boolean $trace Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      integer $priority Message priority level
+	 * @param      string  $message  Message to log
+	 * @param      boolean $trace    Include a stack-trace?
+	 * @return     void
 	 */
 	public function log($priority, $message, $trace = false)
 	{
-		if (empty($this->_fp)) {
+		if (empty($this->_fp)) 
+		{
 			if (is_null($this->_fp))
-				$this->_fp = fopen($this->_filename, "ab");
+			{
+				$this->_fp = @fopen($this->_filename, "ab");
+			}
 
-			if (empty($this->_fp)) {
+			if (empty($this->_fp)) 
+			{
 				return;
 			}
 		}
 
 		flock($this->_fp, LOCK_EX);
-		fwrite($this->_fp, date('Y-m-d H:i:s ') );
+		fwrite($this->_fp, date('Y-m-d H:i:s '));
 		fwrite($this->_fp, $message);
 
-		if ($trace) {
-			fwrite($this->_fp, Hubzero_Log::getSimpleTrace() );
+		if ($trace) 
+		{
+			fwrite($this->_fp, Hubzero_Log::getSimpleTrace());
 		}
 
 		fwrite($this->_fp, "\n");
@@ -104,15 +102,14 @@ class Hubzero_Log_FileHandler
 	}
 
 	/**
-	 * Short description for 'close'
-	 * 
-	 * Long description (if any) ...
+	 * Close file connection
 	 * 
 	 * @return     void
 	 */
 	public function close()
 	{
-		if (!empty($this->_fp)) {
+		if (!empty($this->_fp)) 
+		{
 			fclose($this->_fp);
 			$this->_fp = null;
 		}
