@@ -157,15 +157,18 @@ class UserViewLogin extends JView
 		{
 			$return = base64_decode($return);
 			$query  = parse_url($return);
-			$query  = $query['query'];
-			$query  = explode('&', $query);
-			$auth   = '';
-			foreach($query as $q)
+			if (is_array($query) && isset($query['query']))
 			{
-				$n = explode('=', $q);
-				if($n[0] == 'authenticator')
+				$query  = $query['query'];
+				$query  = explode('&', $query);
+				$auth   = '';
+				foreach($query as $q)
 				{
-					$auth = $n[1];
+					$n = explode('=', $q);
+					if($n[0] == 'authenticator')
+					{
+						$auth = $n[1];
+					}
 				}
 			}
 		}
