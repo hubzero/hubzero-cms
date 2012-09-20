@@ -403,6 +403,9 @@
 	}*/
 
 	/* Events */
+	.events-section .mod_events_calendar {
+		position: relative; /* Firefox doesn't honor position on table captions, it seems */
+	}
 	.events-section .mod_events_calendar caption {
 		position: relative;
 		border-bottom: 1px dashed #dadada;

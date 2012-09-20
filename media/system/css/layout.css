@@ -142,17 +142,25 @@
 		position: relative;
 	}
 	/* Lists */
+	.aside .container ol,
 	.aside .container ul {
 		margin: 0;
 		padding: 1em 0 1em 0;
 		list-style: none;
 	}
+	.aside .container ol li:first-child,
 	.aside .container ul li:first-child {
 		border-top: none;
 	}
+	.aside .container ol li,
 	.aside .container ul li {
 		margin: 0;
 		padding: 0;
+	}
+	.aside .container ol ol,
+	.aside .container ul ul {
+		padding: 0;
+		margin-left: 2em;
 	}
 	.aside .container a {
 		position: relative;

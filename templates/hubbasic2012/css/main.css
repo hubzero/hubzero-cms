@@ -869,10 +869,6 @@
 		color: #747474;
 		font-family: 'ArvoRegular', Georgia, 'Times New Roman', 'Times', Serif;
 		font-size: 1.2em;
-		-webkit-transition: all ease-in-out 0.2s;
-		-moz-transition: all ease-in-out 0.2s;
-		-o-transition: all ease-in-out 0.2s;
-		transition: all ease-in-out 0.2s;
 	}
 	#nav ul.menu ul li a {
 		padding: 10px 12px;
@@ -881,10 +877,6 @@
 		border-top: 1px solid #3a3a3a;
 		color: #bbb;
 		border: none;
-		-webkit-transition: none;
-		-moz-transition: none;
-		-o-transition: none;
-		transition: none;
 	}
 	#nav ul.menu li:hover > a,
 	#nav ul.menu li:focus > a { 
@@ -2739,17 +2731,22 @@ System styles
 		background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAYAAACALL/6AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADtJREFUeNpiYWBgEPn///8bBihgZGQUgbGxiTORohisgRTFIHEmUhSDbSBFMYqTiPULEymKB2koAQQYANU4UCtoY01GAAAAAElFTkSuQmCC) top repeat-x;
 		*background: transparent;  /* IE 7 throws "Unsecure content" warnings when using https and data urls */
 	}
+	.aside .container ol,
 	.aside .container ul {
-		padding: 1em 0 1.7em 0;
+		margin-bottom: 1.618em;
+		padding: 1em 0 1.618em 0;
 		border-bottom: 1px dashed #bAbAbA;
 	}
+	.aside .container ol ol,
 	.aside .container ul ul {
+		margin: 0;
 		padding: 0;
 		border-top: 1px solid #dadada;
 		border-bottom: none;
 	}
+	.aside .container ol ol li,
 	.aside .container ul ul li {
-		padding-left: 1em;
+		padding-left: 1.618em;
 	}
 	ol.comments .addcomment {
 		background: #eee url("../images/layout/noise-lite.png");
