@@ -101,6 +101,9 @@
 	#ticketForm #page-sidebar fieldset label {
 		display: none;
 	}
+	#ticketForm #page-sidebar fieldset #filter-search {
+		width: 78%;
+	}
 	#ticketForm #page-sidebar h3 {
 		color: #333;
 		background: #eeeeee;

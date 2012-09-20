@@ -231,27 +231,18 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
 
-	if ($row->login && !isset($users[$row->login]))
-	{
-		$users[$row->login] = $row->login;
-	}
-
 	$comments = 0;
-	/*$comments = $sc->countComments(true, $row->id);
 	
-	if ($comments > 0) {*/
-		$lastcomment = '0000-00-00 00:00:00';
-		if (isset($lastactivities[$row->id]))
-		{
-			$lastcomment = $lastactivities[$row->id]['lastactivity']; //
-		}
-		// Was there any activity on this item?
-		if ($lastcomment && $lastcomment != '0000-00-00 00:00:00')
-		{
-			$comments = 1;
-		}
-		//$lastcomment = $sc->newestComment(true, $row->id);
-	//}
+	$lastcomment = '0000-00-00 00:00:00';
+	if (isset($lastactivities[$row->id]))
+	{
+		$lastcomment = $lastactivities[$row->id]['lastactivity'];
+	}
+	// Was there any activity on this item?
+	if ($lastcomment && $lastcomment != '0000-00-00 00:00:00')
+	{
+		$comments = 1;
+	}
 
 	switch ($row->open)
 	{
@@ -277,19 +268,17 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 
 	$row->severity = ($row->severity) ? $row->severity : 'normal';
 
-	$lnk = JRoute::_('index.php?option=com_members&id=' . $row->login);
+	$lnk = '';
 	$targetuser = null;
 	if ($row->login) 
 	{
-		/*jimport('joomla.user.helper');
-		if (($id = JUserHelper::getUserId($row->login)))
-		{*/
 		if (!isset($users[$row->login]))
 		{
+			//echo 'ffff';
 			$targetuser =& JUser::getInstance($row->login);
 			if ($targetuser->get('id'))
 			{
-				$users[$row->login] = $targetuser; //$targetuser->get('id');
+				$users[$row->login] = $targetuser;
 				$lnk = JRoute::_('index.php?option=com_members&id=' . $targetuser->get('id'));
 			}
 		}
@@ -298,16 +287,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 			$targetuser = $users[$row->login]; 
 			if (is_object($targetuser) && $targetuser->get('id'))
 			{
-				//$targetuser->get('id');
 				$lnk = JRoute::_('index.php?option=com_members&id=' . $targetuser->get('id'));
 			}
 		}
-		//}
 	}
 
-	//$when = Hubzero_View_Helper_Html::timeAgo($row->created);
-
-	//$row->report = htmlentities(stripslashes($row->report),ENT_QUOTES);
 	$row->summary = substr($row->report, 0, 200);
 	if (strlen($row->summary) >= 200) 
 	{
@@ -332,7 +316,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						<td colspan="6">
 							<p>
 								<span class="ticket-author">
-									<?php echo $this->escape($row->name); echo ($row->login) ? ' (<a href="' . $lnk . '">' . $this->escape($row->login) . '</a>)' : ''; ?>
+									<?php echo $this->escape($row->name); echo ($lnk) ? ' (<a href="' . $lnk . '">' . $this->escape($row->login) . '</a>)' : ''; ?>
 								</span>
 								<span class="ticket-datetime">
 									@ <time datetime="<?php echo $row->created; ?>"><?php echo $row->created; ?></time>
@@ -370,30 +354,6 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		<?php } ?>
 							</p>
 		<?php } ?>
-						<!-- 	<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=' . $row->id . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>" title="<?php echo Hubzero_View_Helper_Html::shortenText($this->escape(stripslashes($row->report)), 500, 0, 1); ?>">
-								<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($row->summary), 300, 0); ?>
-							</a>
-							<span class="reporter">
-								by <?php echo $this->escape($row->name); echo ($row->login) ? ' (<a href="' . $lnk . '">' . $this->escape($row->login) . '</a>)' : ''; if ($tags) { ?>, 
-								<?php echo JText::_('TAGS'); ?>: <span class="tags"><?php echo $tags; ?></span><?php } ?>
-							</span>
-						</td>
-						<td style="white-space: nowrap;">
-							<span class="<?php echo $status; ?> status">
-								<?php echo $status; echo ($row->resolved) ? ' (' . $this->escape($row->resolved) . ')' : ''; ?>
-							</span>
-						</td>
-						<td style="white-space: nowrap;">
-							<?php echo $this->escape($row->group); ?>
-						</td>
-						<td style="white-space: nowrap;">
-							<?php echo $this->escape($row->owner); ?>
-						</td>
-						<td style="white-space: nowrap;">
-							<?php echo $when; ?>
-						</td>
-						<td style="white-space: nowrap;">
-							<?php echo $comments; echo ($comments > 0) ? ' (' . Hubzero_View_Helper_Html::timeAgo($lastcomment) . ')' : ''; ?> -->
 						</td>
 						<td class="tkt-severity">
 <?php if ($this->acl->check('delete', 'tickets')) { ?>
