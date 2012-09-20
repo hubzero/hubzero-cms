@@ -229,7 +229,7 @@ class plgUserXusers extends JPlugin
 						
 			$params =& JComponentHelper::getParams('com_members');
 		
-			$hubHomeDir = rtrim($params->get('hubHomeDir'),'/');
+			$hubHomeDir = rtrim($params->get('homedir'),'/');
 		
 			if (empty($hubHomeDir)) {
 				// @FIXME: this is legacy joomla, should be replaced with correct solution

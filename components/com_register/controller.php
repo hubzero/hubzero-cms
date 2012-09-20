@@ -170,7 +170,7 @@ class RegisterController extends Hubzero_Controller
 		
 		$params =& JComponentHelper::getParams('com_members');
 		
-		$hubHomeDir = rtrim($params->get('hubHomeDir'),'/');
+		$hubHomeDir = rtrim($params->get('homedir'),'/');
 		
 		$updateEmail     = false;
 
@@ -387,7 +387,7 @@ class RegisterController extends Hubzero_Controller
 		$jconfig =& JFactory::getConfig();
 		$this->jconfig = $jconfig;
 		$params =& JComponentHelper::getParams('com_members');
-		$hubHomeDir = rtrim($params->get('hubHomeDir'),'/');
+		$hubHomeDir = rtrim($params->get('homedir'),'/');
 		
 		jimport('joomla.application.component.helper');
 		$config   =& JComponentHelper::getParams('com_users');
@@ -560,7 +560,7 @@ class RegisterController extends Hubzero_Controller
 		if (!$force && $check && JRequest::getMethod() == 'POST') 
 		{
 			$params =& JComponentHelper::getParams('com_members');
-			$hubHomeDir = rtrim($params->get('hubHomeDir'),'/');
+			$hubHomeDir = rtrim($params->get('homedir'),'/');
 
 			$updateEmail     = false;
 
@@ -839,7 +839,7 @@ class RegisterController extends Hubzero_Controller
 
 					// Get some settings
 					$params =& JComponentHelper::getParams('com_members');
-					$hubHomeDir = rtrim($params->get('hubHomeDir'), '/');
+					$hubHomeDir = rtrim($params->get('homedir'), '/');
 					
 					// Attempt to get the new user
 					$xprofile = Hubzero_User_Profile::getInstance($user->get('id'));
