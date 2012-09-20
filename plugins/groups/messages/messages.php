@@ -283,6 +283,7 @@ class plgGroupsMessages extends JPlugin
 		$view->group = $this->group;
 		$view->authorized = $this->authorized;
 		$view->xmessage = $xmessage;
+		$view->no_html = JRequest::getInt('no_html', 0);
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)

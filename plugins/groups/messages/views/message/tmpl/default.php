@@ -39,10 +39,13 @@ if (substr($this->xmessage->type, -8) == '_message') {
 }
 
 ?>
+<!--
 <a name="messages"></a>
 <h3><?php echo JText::_('MESSAGES'); ?></h3>
+-->
 
 <div class="subject">
+	<?php if(!$this->no_html): ?>
 	<ul class="entries-menu">
 		<li><a class="active" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->get('cn').'&active=messages'); ?>"><span><?php echo JText::_('PLG_GROUPS_MESSAGES_SENT'); ?></span></a></li>
 		<?php if($this->authorized == 'admin' || $this->authorized == 'manager') { ?>
@@ -50,30 +53,39 @@ if (substr($this->xmessage->type, -8) == '_message') {
 		<?php } ?>
 	</ul>
 	<br class="clear" />
-	<div class="container">
-		<form action="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->get('cn').'&active=messages'); ?>" method="post">
-		<table class="groups entries" summary="Groups this person is a member of">
-			<caption><?php echo JText::_('PLG_GROUPS_MESSAGE'); ?> <span><small>( <a href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->get('cn').'&active=messages'); ?>">&lsaquo; Back to Sent Messages</a> )</small></span></caption>
-			<tbody>
-				<tr>
-					<th><?php echo JText::_('PLG_GROUPS_MESSAGES_RECEIVED'); ?>:</th>
-					<td><?php echo JHTML::_('date', $this->xmessage->created, '%d %b, %Y'); ?></td>
-				</tr>
-				<tr>
-					<th><?php echo JText::_('PLG_GROUPS_MESSAGES_FROM'); ?>:</th>
-					<td><?php echo $from; ?></td>
-				</tr>
-				<tr>
-					<th><?php echo JText::_('PLG_GROUPS_MESSAGES_SUBJECT'); ?>:</th>
-					<td><?php echo stripslashes($this->xmessage->subject); ?></td>
-				</tr>
-				<tr>
-					<th><?php echo JText::_('PLG_GROUPS_MESSAGES_MESSAGE'); ?>:</th>
-					<td><?php echo $this->xmessage->message; ?></td>
-				</tr>
-			</tbody>
-		</table>
-		</form>
-	</div>
+	<?php endif; ?>
+	
+	<form action="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->get('cn').'&active=messages'); ?>" method="post">
+		<fieldset class="hub-mail" style="min-height:200px">
+			<table class="groups entries" summary="Groups this person is a member of">
+				<caption>
+					<?php echo JText::_('PLG_GROUPS_MESSAGE'); ?>
+					<?php if(!$this->no_html) : ?>
+						<span>
+							<small>( <a href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->get('cn').'&active=messages'); ?>">&lsaquo; Back to Sent Messages</a> )</small>
+						</span>
+					<?php endif; ?>
+				</caption>
+				<tbody>
+					<tr>
+						<th><?php echo JText::_('PLG_GROUPS_MESSAGES_RECEIVED'); ?>:</th>
+						<td><?php echo JHTML::_('date', $this->xmessage->created, '%d %b, %Y'); ?></td>
+					</tr>
+					<tr>
+						<th><?php echo JText::_('PLG_GROUPS_MESSAGES_FROM'); ?>:</th>
+						<td><?php echo $from; ?></td>
+					</tr>
+					<tr>
+						<th><?php echo JText::_('PLG_GROUPS_MESSAGES_SUBJECT'); ?>:</th>
+						<td><?php echo stripslashes($this->xmessage->subject); ?></td>
+					</tr>
+					<tr>
+						<th><?php echo JText::_('PLG_GROUPS_MESSAGES_MESSAGE'); ?>:</th>
+						<td><?php echo $this->xmessage->message; ?></td>
+					</tr>
+				</tbody>
+			</table>
+		</fieldset>
+	</form>	
 </div><!-- // .subject -->
 
