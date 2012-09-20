@@ -856,7 +856,7 @@ class WikiParser
 		} 
 		else 
 		{
-			return '<pre>' . $txt . '</pre>';
+			return '<pre>' . $this->encode_html($txt) . '</pre>';
 		}
 	}
 
