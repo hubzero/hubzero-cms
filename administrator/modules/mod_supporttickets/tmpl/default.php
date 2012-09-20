@@ -45,9 +45,9 @@ $app = JFactory::getApplication();
 		</thead>
 		<tbody>
 			<tr>
-				<td class="major"><a href="index.php?option=com_support&amp;c=tickets&amp;show=status:open" title="<?php echo JText::_('View open tickets'); ?>"><?php echo $this->opened['open']; ?></a></td>
-				<td class="critical"><a href="index.php?option=com_support&amp;c=tickets&amp;show=owner:none" title="<?php echo JText::_('View unassigned tickets'); ?>"><?php echo $this->opened['unassigned']; ?></a></td>
-				<td class="newt"><a href="index.php?option=com_support&amp;c=tickets&amp;show=status:new" title="<?php echo JText::_('View new tickets'); ?>"><?php echo $this->opened['new']; ?></a></td>
+				<td class="major"><a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->opened[0]->id; ?>" title="<?php echo JText::_('View open tickets'); ?>"><?php echo $this->opened[0]->count; ?></a></td>
+				<td class="critical"><a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->opened[2]->id; ?>" title="<?php echo JText::_('View unassigned tickets'); ?>"><?php echo $this->opened[2]->count; ?></a></td>
+				<td class="newt"><a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->opened[1]->id; ?>" title="<?php echo JText::_('View new tickets'); ?>"><?php echo $this->opened[1]->count; ?></a></td>
 			</tr>
 		</tbody>
 	</table>
@@ -78,8 +78,8 @@ $app = JFactory::getApplication();
 		</thead>
 		<tbody>
 			<tr>
-				<td><a href="index.php?option=com_support&amp;c=tickets&amp;show=reportedby:me" title="<?php echo JText::_('View my reported tickets'); ?>"><?php echo $this->my['open']; ?></a></td>
-				<td><a href="index.php?option=com_support&amp;c=tickets&amp;show=status:open%20owner:me" title="<?php echo JText::_('View my assigned tickets'); ?>"><?php echo $this->my['assigned']; ?></a></td>
+				<td><a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->my[0]->id; ?>" title="<?php echo JText::_('View my reported tickets'); ?>"><?php echo $this->my[0]->count; ?></a></td>
+				<td><a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->my[1]->id; ?>" title="<?php echo JText::_('View my assigned tickets'); ?>"><?php echo $this->my[1]->count; ?></a></td>
 			</tr>
 		</tbody>
 	</table>

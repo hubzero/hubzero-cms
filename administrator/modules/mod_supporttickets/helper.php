@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Module class for com_support ticket data
@@ -100,6 +100,7 @@ class modSupportTickets
 	 */
 	public function display()
 	{
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php');
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'ticket.php');
 
 		$juser =& JFactory::getUser();
@@ -121,45 +122,31 @@ class modSupportTickets
 		$opened = array();
 		$my = array();
 
-		// Currently open tickets
-		$opened['open'] = $st->getCountOfOpenTickets($this->type, false, $this->group);
-
-		// Currently unassigned tickets
-		$opened['unassigned'] = $st->getCountOfOpenTickets($this->type, true, $this->group);
-
-		$filters = array();
-		$filters['search'] = '';
-		$filters['status'] = 'new';
-		$filters['type'] = 0;
-		$filters['owner'] = '';
-		$filters['reportedby'] = '';
-		$filters['severity'] = '';
-		$filters['sort'] = 'created';
-		$filters['sortdir'] = 'DESC';
-
-		$opened['new'] = $st->getTicketsCount($filters, true);
-
-		$this->opened = $opened;
-
-		if ($this->params->get('showMine', 1))
+		$sq = new SupportQuery($this->database);
+		$types = array(
+			'common' => $sq->getCommon(),
+			'mine'   => $sq->getMine()
+		);
+		// Loop through each grouping
+		foreach ($types as $key => $queries)
 		{
-			$filters['status'] = 'open';
-			$filters['reportedby'] = $juser->get('username');
-			$my['open'] = $st->getTicketsCount($filters, true);
-
-			$filters['reportedby'] = '';
-			$filters['status'] = 'open';
-			$filters['owner'] = $juser->get('username');
-			$my['assigned'] = $st->getTicketsCount($filters, true);
-
-			$this->my = $my;
+			// Loop through each query in a group
+			foreach ($queries as $k => $query)
+			{
+				// Build the query from the condition set
+				if (!$query->query)
+				{
+					$query->query = $sq->getQuery($query->conditions);
+				}
+				// Get a record count
+				$types[$key][$k]->count = $st->getCount($query->query);
+			}
 		}
+		$this->opened = $types['common'];
+		$this->my = $types['mine'];
 
 		// Get avgerage lifetime
 		$this->lifetime = $st->getAverageLifeOfTicket($this->type, $this->year, $this->group);
-
-		//ximport('Hubzero_Document');
-		//Hubzero_Document::addModuleStyleSheet($this->module->module);
 
 		$document =& JFactory::getDocument();
 		$document->addStyleSheet('/administrator/modules/' . $this->module->module . '/' . $this->module->module . '.css');
