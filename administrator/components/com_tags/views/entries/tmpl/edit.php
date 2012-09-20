@@ -90,11 +90,11 @@ if ($this->getError())
 					</tr>
 					<tr>
 						<th class="key" style="vertical-align:top;"><label><?php echo JText::_('DESCRIPTION'); ?>:</label></th>
-						<td><?php echo $editor->display('description', stripslashes($this->tag->description), '360px', '200px', '50', '10'); ?></td>
+						<td><?php echo $editor->display('description', stripslashes($this->tag->description), '100%', '200px', '50', '10'); ?></td>
 					</tr>
 					<tr>
 						<th class="key" style="vertical-align:top;"><label><?php echo JText::_('ALIAS'); ?>:</label></th>
-						<td><?php echo $editor->display('substitutions', stripslashes($this->tag->getSubstitutions($this->tag->id, true)), '360px', '200px', '50', '10'); ?></td>
+						<td><?php echo $editor->display('substitutions', stripslashes($this->tag->getSubstitutions($this->tag->id, true)), '100%', '200px', '50', '10'); ?></td>
 					</tr>
 				</tbody>
 			</table>
@@ -116,6 +116,10 @@ if ($this->getError())
 			<li>
 				<?php
 				$data = json_decode($log->comments);
+				if (!isset($data->entries))
+				{
+					$data->entries = 0;
+				}
 				switch ($log->action)
 				{
 					case 'substitute_created':
