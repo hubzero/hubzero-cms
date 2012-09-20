@@ -117,19 +117,6 @@ CREATE TABLE `job` (
   KEY `heartbeat_2` (`heartbeat`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `metrics_ipgeo_cache` (
-  `ip` int(10) NOT NULL DEFAULT '0000000000',
-  `countrySHORT` char(2) NOT NULL DEFAULT '',
-  `countryLONG` varchar(64) NOT NULL DEFAULT '',
-  `ipREGION` varchar(128) NOT NULL DEFAULT '',
-  `ipCITY` varchar(128) NOT NULL DEFAULT '',
-  `ipLATITUDE` double DEFAULT NULL,
-  `ipLONGITUDE` double DEFAULT NULL,
-  `lookup_datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ip`),
-  KEY (`lookup_datetime`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 CREATE TABLE `joblog` (
   `sessnum` bigint(20) unsigned NOT NULL DEFAULT '0',
   `job` int(10) unsigned NOT NULL DEFAULT '0',
@@ -1295,6 +1282,19 @@ CREATE TABLE `#__messages_cfg` (
   `cfg_name` varchar(100) NOT NULL DEFAULT '',
   `cfg_value` varchar(255) NOT NULL DEFAULT '',
   UNIQUE KEY `idx_user_var_name` (`user_id`,`cfg_name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__metrics_ipgeo_cache` (
+  `ip` int(10) NOT NULL DEFAULT '0000000000',
+  `countrySHORT` char(2) NOT NULL DEFAULT '',
+  `countryLONG` varchar(64) NOT NULL DEFAULT '',
+  `ipREGION` varchar(128) NOT NULL DEFAULT '',
+  `ipCITY` varchar(128) NOT NULL DEFAULT '',
+  `ipLATITUDE` double DEFAULT NULL,
+  `ipLONGITUDE` double DEFAULT NULL,
+  `lookup_datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`ip`),
+  KEY (`lookup_datetime`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__migration_backlinks` (
