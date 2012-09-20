@@ -1,15 +1,104 @@
-Welcome to the '''Wiki''' area. This portion of the site is currently in Beta, as we test out features and fix bugs.
-
-=== What are Wiki Pages? ===
-
-Wiki pages are user-written articles on a range of subjects. Any contributor or a group of contributors can create (and own) new articles, and there can be multiple articles on the same topic, each written by a different author.
-
-=== Who can make a wiki page? ===
-
-Anyone with an account can create a new article. When creating a new article, the initial contributor can choose to have a defined list of authors, all of whom can edit the page, or have an open, wiki-like format where anyone can contribute.
+{{{
+#!html
+<div id="introduction" class="section">
+	<div class="aside">
+}}}
 
 === Questions? ===
 
- * [/wiki/?task=new Create a new article]
- * [/wiki/Help:Index Help Articles]
- * [/wiki/Index Full Article List]
+ * [?task=new Create a new article]
+ * [Help:Index Help Articles]
+ * [Index Full Article List]
+
+{{{
+#!html
+	</div><!-- / .aside -->
+	<div class="subject">
+		<div class="two columns first">
+}}}
+
+=== What are topic pages? ===
+
+Topic pages are user-written articles on a range of subjects. Any contributor or a group of contributors can create (and own) new articles, and there can be multiple articles on the same topic, each written by a different author.
+
+{{{
+#!html
+		</div>
+		<div class="two columns second">
+}}}
+
+=== Who can make a topic page? ===
+
+Anyone with an account can create a new article. When creating a new article, the initial contributor can choose to have a defined list of authors, all of whom can edit the page, or have an open, wiki-like format where anyone can contribute.
+
+{{{
+#!html
+		</div>
+		<div class="clear"></div>
+	</div><!-- / .subject -->
+	<div class="clear"></div>
+</div><!-- / #introduction.section -->
+
+<div class="section">
+	<div class="four columns first">
+}}}
+
+== Find an article ==
+
+{{{
+#!html
+	</div><!-- / .four columns first -->
+	<div class="four columns second third fourth">
+		<div class="two columns first">
+			<form action="/xsearch" method="get" class="search">
+				<fieldset>
+					<p>
+						<input type="text" name="searchword" value="" />
+						<input type="submit" value="Search" />
+					</p>
+				</fieldset>
+			</form>
+		</div><!-- / .two columns first -->
+		<div class="two columns second">
+			<div class="browse">
+}}}
+
+[Index Browse the list of available articles]
+
+{{{
+#!html
+			</div><!-- / .browse -->
+		</div><!-- / .two columns second -->
+	</div><!-- / .four columns second third fourth -->
+	<div class="clear"></div>
+	
+	<div class="four columns first">
+		<h2>Recent articles</h2>
+	</div><!-- / .four columns first -->
+	<div class="four columns second">
+}}}
+
+[[RecentPage(1, wiki, 0)]]
+
+{{{
+#!html
+	</div><!-- / .four columns second -->
+	<div class="four columns third">
+}}}
+
+[[RecentPage(1, wiki, 1)]]
+
+{{{
+#!html
+	</div><!-- / .four columns third -->
+	<div class="four columns fourth">
+}}}
+
+[[RecentPage(1, wiki, 2)]]
+
+{{{
+#!html
+	</div><!-- / .four columns fourth -->
+	<div class="clear"></div>
+</div><!-- / .section -->
+}}}

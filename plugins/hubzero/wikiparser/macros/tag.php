@@ -68,7 +68,7 @@ class TagMacro extends WikiMacro
 		if ($tag) 
 		{
 			// Perform query
-			$this->_db->setQuery("SELECT raw_tag FROM #__tags WHERE tag='" . $tag . "' OR alias='" . $tag . "' LIMIT 1");
+			$this->_db->setQuery("SELECT raw_tag FROM #__tags WHERE tag='" . $tag . "' LIMIT 1");
 			$a = $this->_db->loadResult();
 
 			// Did we get a result from the database?

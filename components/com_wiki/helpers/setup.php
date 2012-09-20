@@ -55,6 +55,9 @@ class WikiSetup
 			return JText::_('No default pages found');
 		}
 
+		ximport('Hubzero_Wiki_Parser');
+		$p =& Hubzero_Wiki_Parser::getInstance();
+
 		foreach ($pages as $f => $c)
 		{
 			$f = str_replace('_', ':', $f);
@@ -62,7 +65,15 @@ class WikiSetup
 			// Instantiate a new page
 			$page = new WikiPage($database);
 			$page->pagename = $f;
-			$page->params = 'mode=wiki' . "\n";
+			$page->title    = $page->getTitle();
+			if ($page->pagename == 'MainPage')
+			{
+				$page->params   = 'mode=static' . "\n";
+			} 
+			else 
+			{
+				$page->params   = 'mode=wiki' . "\n";
+			}
 
 			// Check content
 			if (!$page->check()) 
@@ -92,9 +103,20 @@ class WikiSetup
 			$revision->pagetext   = $c;
 			$revision->approved   = 1;
 
+			$wikiconfig = array(
+				'option'   => $option,
+				'scope'    => $page->scope,
+				'pagename' => $page->pagename,
+				'pageid'   => $page->id,
+				'filepath' => '',
+				'domain'   => $page->group_cn
+			);
+
 			// Transform the wikitext to HTML
-			$p = new WikiParser($page->pagename, $option, $page->scope, $page->pagename);
-			$revision->pagehtml = $p->parse($revision->pagetext);
+			if ($page->pagename != 'Help:WikiMath')
+			{
+				$revision->pagehtml = $p->parse($revision->pagetext, $wikiconfig, true, true);
+			}
 
 			// Check content
 			if (!$revision->check()) 
@@ -120,7 +142,7 @@ class WikiSetup
 	 */
 	public function defaultPages()
 	{
-		$path = dirname(__FILE__);
+		$path = dirname(dirname(__FILE__));
 		$d = @dir($path . DS . 'default');
 		$pages = array();
 

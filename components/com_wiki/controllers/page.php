@@ -80,15 +80,9 @@ class WikiControllerPage extends Hubzero_Controller
 		{
 			$this->config = JComponentHelper::getParams('com_wiki');
 		}
-		
+
 		define('WIKI_SUBPAGE_SEPARATOR', $this->config->get('subpage_separator', '/'));
 		define('WIKI_MAX_PAGENAME_LENGTH', $this->config->get('max_pagename_length', 100));
-		
-		if (!is_object($this->page))
-		{
-			$this->page = WikiHelperPage::getPage($this->config);
-		}
-		$this->config = WikiHelperPage::authorize($this->config, $this->page);
 
 		$wp = new WikiPage($this->database);
 		if (!$wp->count()) 
@@ -99,6 +93,12 @@ class WikiControllerPage extends Hubzero_Controller
 				$this->setError($result);
 			}
 		}
+
+		if (!is_object($this->page))
+		{
+			$this->page = WikiHelperPage::getPage($this->config);
+		}
+		$this->config = WikiHelperPage::authorize($this->config, $this->page);
 
 		if (substr(strtolower($this->page->pagename), 0, strlen('image:')) == 'image:'
 		 || substr(strtolower($this->page->pagename), 0, strlen('file:')) == 'file:') 
