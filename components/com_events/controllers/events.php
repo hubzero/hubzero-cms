@@ -46,6 +46,7 @@ class EventsControllerEvents extends Hubzero_Controller
 	public function execute()
 	{
 		$this->dateFormat = '%d %b %Y';
+		$this->dateFormatShort = '%d %b';
 		$this->timeFormat = '%I:%M %p';
 		$this->yearFormat  = "%Y";
 		$this->monthFormat = "%m";
@@ -54,6 +55,7 @@ class EventsControllerEvents extends Hubzero_Controller
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
 			$this->dateFormat = 'd M Y';
+			$this->dateFormatShort = 'd M';
 			$this->timeFormat = 'H:i p';
 			$this->yearFormat  = "Y";
 			$this->monthFormat = "m";
@@ -492,8 +494,8 @@ class EventsControllerEvents extends Hubzero_Controller
 		$this_enddate = clone($this_date);
 		$this_enddate->addDays(+6);
 
-		$sdt = JHTML::_('date', $this_date->year . '-' . $this_date->month . '-' . $this_date->day . ' 00:00:00', $this->dayFormat . ' ' . $this->monthFormat, $this->tz);
-		$edt = JHTML::_('date', $this_enddate->year . '-' . $this_enddate->month . '-' . $this_enddate->day . ' 00:00:00', $this->dayFormat . ' ' . $this->monthFormat, $this->tz);
+		$sdt = JHTML::_('date', $this_date->year . '-' . $this_date->month . '-' . $this_date->day . ' 00:00:00', $this->dateFormatShort, $this->tz);
+		$edt = JHTML::_('date', $this_enddate->year . '-' . $this_enddate->month . '-' . $this_enddate->day . ' 00:00:00', $this->dateFormatShort, $this->tz);
 
 		$this_currentdate = $this_date;
 

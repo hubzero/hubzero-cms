@@ -229,7 +229,7 @@ if ($this->admin && !$this->getError()) {
 						<?php echo JText::_('COM_WISHLIST_FILTER_'.strtoupper($this->filters['filterby'])); ?> 
 						<?php echo ($this->filters['tag'] != '') ? JText::_('WISHES_TAGGED_WITH').' "'.$this->filters['tag'].'"' : ''; ?>
 						<span>
-							(<?php echo ($this->filters['start'] + 1); ?> - <?php echo $this->filters['start'] + count($this->wishlist->items); ?> of <?php echo $this->pageNav->total; ?>)
+							(<?php echo ($this->pageNav->total > 0) ? ($this->filters['start'] + 1) : $this->filters['start']; ?> - <?php echo $this->filters['start'] + count($this->wishlist->items); ?> of <?php echo $this->pageNav->total; ?>)
 						</span>
 					</caption>
 					<tbody>

@@ -188,7 +188,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 				<table class="questions entries" summary="<?php echo JText::_('COM_ANSWERS_RESULTS_SUMMARY'); ?>">
 					<caption>
 <?php
-	$s = $this->filters['start']+1;
+	$s = ($this->filters['start'] > 0) ? $this->filters['start']+1 : $this->filters['start'];
 	$e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
 
 	if ($this->filters['q'] != '') {

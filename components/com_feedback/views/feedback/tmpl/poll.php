@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.module.helper');
 ?>
@@ -50,9 +50,9 @@ jimport('joomla.application.module.helper');
 <div class="main section">
 	<h3><?php echo JText::_('COM_FEEDBACK_HAVE_AN_OPINION'); ?> <span><?php echo JText::_('COM_FEEDBACK_CAST_A_VOTE'); ?></span></h3>
 	
-<?php if (count(JModuleHelper::getModules('poll')) > 0) { ?>
+<?php if (count(JModuleHelper::isEnabled('mod_poll')) > 0) { ?>
 	<div class="introtext">
-		<?php echo JModuleHelper::renderModule( JModuleHelper::getModule( 'mod_poll' ) ); ?>
+		<?php echo JModuleHelper::renderModule(JModuleHelper::getModule('mod_poll')); ?>
 	</div>
 <?php } else { ?>
 	<p class="warning"><?php echo JText::_('COM_FEEDBACK_NO_ACTIVE_POLLS'); ?></p>

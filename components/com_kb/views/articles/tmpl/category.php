@@ -125,7 +125,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	
 				<table class="articles entries" summary="Articles">
 <?php
-$s = $this->filters['start']+1;
+$s = ($this->total > 0) ? $this->filters['start']+1 : $this->filters['start'];
 $e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
 ?>
 					<caption>

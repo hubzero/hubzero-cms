@@ -50,10 +50,16 @@ $this->filters['sort'] = '';
 <form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>" method="get">
 	<div class="main section">
 		<div class="aside">
+<?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
 			<p class="help">
 				<strong><?php echo JText::_('COM_TAGS_WHATS_AN_ALIAS'); ?></strong>
 				<br /><?php echo JText::_('COM_TAGS_ALIAS_EXPLANATION'); ?>
 			</p>
+<?php } else { ?>
+			<p>
+				Here you will find a list of all tags currently in use. Click a tag to see the items tagged with it.
+			</p>
+<?php } ?>
 		</div><!-- / .aside -->
 		<div class="subject">
 			
@@ -91,7 +97,7 @@ $this->filters['sort'] = '';
 				
 				<table class="entries" id="taglist" summary="<?php echo JText::_('COM_TAGS_TABLE_SUMMARY'); ?>">
 <?php
-					$s = $this->filters['start']+1;
+					$s = ($this->total > 0) ? $this->filters['start']+1 : $this->filters['start'];
 					$e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
 					//$e = ($this->filters['limit'] > $this->total) ? $this->filters['start'] + $this->filters['limit'] : $this->filters['start'] + $this->filters['limit'];
 ?>

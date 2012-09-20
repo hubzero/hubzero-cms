@@ -64,6 +64,8 @@ class BlogControllerEntries extends Hubzero_Controller
 			$this->tz = true;
 		}
 
+		$this->registerTask('feed.rss', 'feed');
+		$this->registerTask('feedrss', 'feed');
 		$this->registerTask('archive', 'display');
 
 		parent::execute();
