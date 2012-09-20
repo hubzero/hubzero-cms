@@ -87,7 +87,7 @@ defined('_JEXEC') or die('Restricted access');
 								} else {
 									$link_on = JRoute::_('index.php?option=' . $this->option . '&task=article&section='.$row->section.'&category='.$row->category.'&id='.$row->id);
 								}
-								$html .= "\t\t".'<li><a href="'. $link_on .'" title="'.JText::_('READ_ARTICLE').'">'.$this->escape(stripslashes($row->title)).'</a></li>'."\n";
+								$html .= "\t\t".'<li><a href="'. $link_on .'" title="'.JText::_('COM_KB_READ_ARTICLE').'">'.$this->escape(stripslashes($row->title)).'</a></li>'."\n";
 							}
 							$html .= "\t".'</ul>'."\n";
 						} else {
@@ -108,7 +108,7 @@ defined('_JEXEC') or die('Restricted access');
 								} else {
 									$link_on = JRoute::_('index.php?option=' . $this->option . '&task=article&section='.$row->section.'&category='.$row->category.'&id='.$row->id);
 								}
-								$html .= "\t\t".'<li><a href="'. $link_on .'" title="'.JText::_('READ_ARTICLE').'">'.$this->escape(stripslashes($row->title)).'</a></li>'."\n";
+								$html .= "\t\t".'<li><a href="'. $link_on .'" title="'.JText::_('COM_KB_READ_ARTICLE').'">'.$this->escape(stripslashes($row->title)).'</a></li>'."\n";
 							}
 							$html .= "\t".'</ul>'."\n";
 						} else {
