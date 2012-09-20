@@ -150,6 +150,8 @@ class MembersControllerMembers extends Hubzero_Controller
 	 */
 	public function editTask($id=0)
 	{
+		JRequest::setVar('hidemainmenu', 1);
+
 		$this->view->setLayout('edit');
 
 		if (!$id) 
