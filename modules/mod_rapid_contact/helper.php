@@ -125,11 +125,16 @@ class modRapidContact extends JObject
 	    $this->invalid_email = $this->params->get('invalid_email', 'Please write a valid email');
 
 		// From
+		$jconfig =& JFactory::getConfig();
 		$this->from_name     = @$this->params->get('from_name', 'Rapid Contact');
 		$this->from_email    = @$this->params->get('from_email', 'rapid_contact@yoursite.com');
 
 		// To
-		$this->recipient     = $this->params->get('email_recipient', '');
+		$this->recipient     = $this->params->get('email_recipient', $jconfig->getValue('config.mailfrom'));
+		if (!trim($this->recipient))
+		{
+			$this->recipient = $jconfig->getValue('config.mailfrom');
+		}
 
 		// Enable Anti-spam?
 		$this->enable_anti_spam = $this->params->get('enable_anti_spam', true);
@@ -196,9 +201,12 @@ class modRapidContact extends JObject
 				$mySubject = $_POST['rp']['subject'];
 				$myMessage = 'You received a message from '. $_POST['rp']['email'] ."\n\n". $_POST['rp']['message'];
 
+				$this->from_email = $_POST['rp']['email'];
+				$this->from_name  = (isset($_POST['rp']['name']) && $_POST['rp']['name']) ? $_POST['rp']['name'] : $_POST['rp']['email'];
+
 				$mailSender = &JFactory::getMailer();
 				$mailSender->addRecipient($this->recipient);
-				$mailSender->setSender(array($this->from_email,$this->from_name));
+				$mailSender->setSender(array($this->from_email, $this->from_name));
 				$mailSender->addReplyTo(array($_POST['rp']['email'], ''));
 				$mailSender->setSubject($mySubject);
 				$mailSender->setBody($myMessage);
