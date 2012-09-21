@@ -1,0 +1,50 @@
+body {
+	background: white;
+	margin: 0px;
+	padding: 0;
+	color: #000;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-size: 0.8em;
+	line-height: 1.6em;
+	min-width: 400px;
+}
+h1 {
+	font-size: 2em;
+	color: #666;
+}
+#main {
+	background: white;
+	padding: 4px 4px 4px 12px;
+}
+#description {
+	padding: 0px;
+}
+#warning {
+	margin: 0 12px 1em 12px;
+	padding: 10px 10px 10px 30px;
+	border: 1px solid #EFEAC2;
+	color: #CC6633;
+	background: #FFFDEF url("/media/system/images/warning.gif") 10px 10px no-repeat;
+}
+#logo {
+	padding: 0;
+	height: 101px;
+	position: relative;
+}
+#logo h1 {
+	margin: 0;
+	padding: 0;
+}
+#logo h1 a {
+	background: url("/templates/hubbasic2012/images/logo/hub.png") 10px center no-repeat;
+	width: 100%;
+	height: 68px;
+	display: block;
+	position:absolute;
+	top:0;
+	text-indent: -555em;
+	border: none;
+	margin: 0;
+	padding: 0;
+}
+
