@@ -879,7 +879,7 @@ class WikiParser
 
 		$t = trim($txt);
 		$t = str_replace("\n", '', $t);
-		return '<code>' . $txt . '</code>';
+		return '<code>' . $this->encode_html($txt) . '</code>';
 	}
 
 	/**
@@ -895,7 +895,7 @@ class WikiParser
 	 */
 	private function doSpecial($text, $start, $end, $method='fSpecial')
 	{
-	  return preg_replace_callback('/(^|\s|[[({>])' . preg_quote($start, '/') . '(.*?)' . preg_quote($end, '/') . '(\s|$|[\])}])?/ms', array(&$this, $method), $text);
+	  return preg_replace_callback('/(^|\s|[[({>"])' . preg_quote($start, '/') . '(.*?)' . preg_quote($end, '/') . '(\s|$|["\])}])?/ms', array(&$this, $method), $text);
 	}
 
 	/**
@@ -924,7 +924,7 @@ class WikiParser
 	private function fPCode($m)
 	{
 		@list(, $before, $text, $after) = $m;
-		array_push($this->codes,'<code>{{{' . $this->encode_html($text) . '}}}</code>');
+		array_push($this->codes,'{{{' . $text . '}}}');
 		return $before . '<code></code>' . $after;
 	}
 
@@ -939,7 +939,7 @@ class WikiParser
 	private function fCCode($m)
 	{
 		@list(, $before, $text, $after) = $m;
-		array_push($this->codes, '<code>`' . $this->encode_html($text) . '`</code>');
+		array_push($this->codes, '`' . $text . '`');
 		return $before . '<code></code>' . $after;
 	}
 
@@ -954,7 +954,7 @@ class WikiParser
 	private function fCode($m)
 	{
 		@list(, $before, $text, $after) = $m;
-		array_push($this->codes, '<code>' . $this->encode_html($text) . '</code>');
+		array_push($this->codes, $text);
 		return $before . '<code></code>' . $after;
 	}
 
