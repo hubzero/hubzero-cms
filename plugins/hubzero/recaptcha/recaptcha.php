@@ -84,11 +84,14 @@ class plgHubzeroRecaptcha extends JPlugin
 			return JText::_('To use reCAPTCHA you must get an API key from <a href="https://www.google.com/recaptcha/admin/create">https://www.google.com/recaptcha/admin/create</a>');
 		}
 
-		if ($this->params->get('use_ssl', 1)) 
+		$use_ssl = true;
+		$server = $this->apiSecureServer;
+		
+		if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == 'off')
 		{
-			$server = $this->apiSecureServer;
-		} 
-		else 
+			$use_ssl = false;
+		}
+		if (!$use_ssl) 
 		{
 			$server = $this->apiServer;
 		}
@@ -109,7 +112,7 @@ class plgHubzeroRecaptcha extends JPlugin
 
 			$html .= '
 					<div id="recaptcha_ajax_instance_' . $i . '"></div>
-					<script type="text/javascript" src="http://api.recaptcha.net/js/recaptcha_ajax.js"></script>
+					<script type="text/javascript" src="' . $server . '/js/recaptcha_ajax.js"></script>
 					<script type="text/javascript">
 						(function(){
 							function loadRecaptcha() { 
