@@ -37,6 +37,20 @@ defined('_JEXEC') or die('Restricted access');
 class ToolsHelperHtml
 {
 	/**
+	 * Short description for 'error'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      string $msg Parameter description (if any) ...
+	 * @param      string $tag Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
+	public function error( $msg, $tag='p' )
+	{
+		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'."\n";
+	}
+
+	/**
 	 * Turn datetime 0000-00-00 00:00:00 to timestamp
 	 * 
 	 * @param      string $stime Datetime to convert
