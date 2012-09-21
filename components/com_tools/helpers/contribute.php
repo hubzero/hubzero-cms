@@ -326,7 +326,7 @@ class ContribtoolHtml
 		
 		$toolnum = ($status['state']!=9) ? JText::_('THIS_TOOL').'  ': '';
 		if (!$status['published'] && ContribtoolHtml::toolActive($status['state']) ) {
-			$toolnum .= JText::_('IS_ONE_OF').' '.$status['ntoolsdev'].' '.strtolower(JText::_('TOOLS')). ' '.strtolower(JText::_('UNDER_DEVELOPMENT')).' '.JText::_('ON').' '.$sitename);
+			$toolnum .= JText::_('IS_ONE_OF').' '.$status['ntoolsdev'].' '.strtolower(JText::_('TOOLS')). ' '.strtolower(JText::_('UNDER_DEVELOPMENT')).' '.JText::_('ON').' '.$sitename;
 		}
 		else if($status['published'] && ContribtoolHtml::toolActive($status['state'])) {
 			$toolnum .= JText::_('IS_ONE_OF').' '.$status['ntools_published'].' '.strtolower(JText::_('TOOLS')). ' '.strtolower(JText::_('PUBLISHED')).' '.JText::_('ON').' '.$sitename;
