@@ -78,6 +78,7 @@ $params->merge($rparams);
 
 	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=' . $this->task); ?>" method="post" id="hubForm">
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 		<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 		<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
 		<input type="hidden" name="step" value="<?php echo $this->step; ?>" />
