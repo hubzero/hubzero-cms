@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<extension version="1.7" type="plugin" group="hubzero">
+	<name>Hubzero - Recaptcha</name>
+	<author>HUBzero</author>
+	<creationDate>September 2012</creationDate>
+	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<authorEmail>extension@stefysoft.com</authorEmail>
+	<authorUrl>www.stefysoft.com</authorUrl>
+	<version>1.5.7</version>
+	<description>Display a ReCAPTCHA form</description>
+	<files>
+		<filename plugin="recaptcha">recaptcha.php</filename>
+		<filename>recaptcha/recaptchalib.php</filename>
+		<filename>recaptcha/api.php</filename>
+	</files>
+	<languages folder="lang">
+        <language tag="en-GB">en-GB.plg_hubzero_recaptcha.ini</language>
+    </languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field type="text" name="public" default='' label="HUBZERO_RECAPTCHA_PUBLIC_KEY"  description="HUBZERO_RECAPTCHA_PUBLIC_KEY_DESC" />
+				<field type="text" name="private" default='' label="HUBZERO_RECAPTCHA_PRIVATE_KEY" description="HUBZERO_RECAPTCHA_PRIVATE_KEY_DESC" />
+				<field name="@spacer" type="spacer" />
+				<field name="@spacer2" type="spacer" default="HUBZERO_RECAPTCHA_CUSTOMISATION"/>
+				<field type="radio" name="ajax" default="1" label="HUBZERO_RECAPTCHA_TYPE" description="HUBZERO_RECAPTCHA_TYPE_DESC">
+					<option value="0">HUBZERO_RECAPTCHA_IFRAME</option>
+					<option value="1">HUBZERO_RECAPTCHA_AJAX</option>
+				</param>
+				<field type="list" name="template" default="clean" label="HUBZERO_RECAPTCHA_TEMPLATE" description="HUBZERO_RECAPTCHA_TEMPLATE_DESC">
+					<option value="red">HUBZERO_RECAPTCHA_RED</option>
+					<option value="white">HUBZERO_RECAPTCHA_WHITE</option>
+					<option value="blackglass">HUBZERO_RECAPTCHA_BLACKGLASS</option>
+					<option value="clean">HUBZERO_RECAPTCHA_CLEAN</option>
+				</fieldset>
+			</fields>
+		</config>
+</extension>
