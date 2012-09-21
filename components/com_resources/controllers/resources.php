@@ -995,6 +995,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 
 		$view->path     = $path;
 		$view->videos   = $videos;
+		$view->video_mp4 = $video_mp4;
 		$view->subs     = $subs;
 
 		$view->width    = $width;
