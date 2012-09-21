@@ -79,7 +79,7 @@ class plgHubzeroRecaptcha extends JPlugin
 	 */
 	public function onGetCaptcha($error='')
 	{
-		if (!$this->params->get('public', '6Lf2-QQAAAAAAC5kQM5ChJfvRP1jZNvOn8kE590h')) 
+		if (!$this->params->get('public')) 
 		{
 			return JText::_('To use reCAPTCHA you must get an API key from <a href="https://www.google.com/recaptcha/admin/create">https://www.google.com/recaptcha/admin/create</a>');
 		}
@@ -116,7 +116,7 @@ class plgHubzeroRecaptcha extends JPlugin
 					<script type="text/javascript">
 						(function(){
 							function loadRecaptcha() { 
-								Recaptcha.create("' . $this->params->get('public', '6Lf2-QQAAAAAAC5kQM5ChJfvRP1jZNvOn8kE590h') . '","' . $id . '", {theme: "' . $this->params->get('theme', 'clean') . '"});
+								Recaptcha.create("' . $this->params->get('public') . '","' . $id . '", {theme: "' . $this->params->get('theme', 'clean') . '"});
 							}
 							if (window.addEvent) {
 								window.addEvent("domready", loadRecaptcha);
@@ -142,11 +142,11 @@ class plgHubzeroRecaptcha extends JPlugin
 		else
 		{
 			$html .= '<script type="text/javascript"> var RecaptchaOptions = { theme: "' . $this->params->get('theme', 'clean') . '"  }; </script>
-					<script type="text/javascript" src="'. $server . '/challenge?k=' . $this->params->get('public', '6Lf2-QQAAAAAAC5kQM5ChJfvRP1jZNvOn8kE590h') . $errorpart . '"></script>';
+					<script type="text/javascript" src="'. $server . '/challenge?k=' . $this->params->get('public') . $errorpart . '"></script>';
 		}
 
 		$html .= '<noscript>
-					<iframe src="'. $server . '/noscript?k=' . $this->params->get('public', '6Lf2-QQAAAAAAC5kQM5ChJfvRP1jZNvOn8kE590h') . $errorpart . '" height="300" width="500" frameborder="0"></iframe><br />
+					<iframe src="'. $server . '/noscript?k=' . $this->params->get('public') . $errorpart . '" height="300" width="500" frameborder="0"></iframe><br />
 					<textarea name="recaptcha_challenge_field" rows="3" cols="40"></textarea>
 					<input type="hidden" name="recaptcha_response_field" value="manual_challenge" />
 				</noscript>';
@@ -164,7 +164,7 @@ class plgHubzeroRecaptcha extends JPlugin
 	public function onValidateCaptcha()
 	{
 		$resp = $this->_recaptcha_check_answer(
-			$this->params->get('private', '6Lf2-QQAAAAAAFcse8UtCXQ82wW5fWG9koEQAktv'),
+			$this->params->get('private'),
 			JRequest::getVar('REMOTE_ADDR', '', 'server'),
 			JRequest::getVar('recaptcha_challenge_field'),
 			JRequest::getVar('recaptcha_response_field')

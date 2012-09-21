@@ -120,7 +120,7 @@ class plgHubzeroImagecaptcha extends JPlugin
 	 */
 	public function onValidateCaptcha()
 	{
-		$imgCatchaTxt = JRequest::getVar('imgCatchaTxt', '');
+		$imgCatchaTxt = strtolower(JRequest::getVar('imgCatchaTxt', ''));
 		$imgCatchaTxtInst = JRequest::getVar('imgCatchaTxtInst', '');
 
 		$option = JRequest::getVar('option');
@@ -202,7 +202,7 @@ class plgHubzeroImagecaptcha extends JPlugin
 		$width = 120;
 		$height = 60;
 		$fluctuation_amplitude = 5;
-		$no_spaces = true;
+		$no_spaces = false;
 
 		$this->_setColors();
 
@@ -429,7 +429,7 @@ class plgHubzeroImagecaptcha extends JPlugin
 			header('Content-Type: image/x-png');
 			imagepng($img2);
 		}
-		$security_code = $this->keystring;
+		$security_code = strtolower(str_replace(' ', '', trim($this->keystring)));
 
 		//Set the session to store the security code
 		$currentSession =& JFactory::getSession();
