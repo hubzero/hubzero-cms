@@ -559,20 +559,19 @@ HUB.Members.Profile = {
 		if( $("#usage-agreement-popup").length )
 		{
 			$("#usage-agreement-popup").hide();
-			$("#usage-agreement").load("/legal/terms?tmpl=component", function() {
-				$.fancybox({
-					type:'inline',
-					autoSize:false, 
-					modal: true,
-					width: 600,
-					content:$("#usage-agreement-popup"),
-					beforeLoad: function() 
-					{
-						href = $("#usage-agreement-popup form").attr('action').replace("#", "");
-						href += (href.indexOf('?') == -1) ? '?no_html=1' : '&no_html=1' ;
-						$("#usage-agreement-popup form").attr('action', href);	
-					},
-				});
+			
+			$.fancybox({
+				type:'inline',
+				autoSize:false, 
+				modal: true,
+				width: 600,
+				content:$("#usage-agreement-popup"),
+				beforeLoad: function() 
+				{
+					href = $("#usage-agreement-popup form").attr('action').replace("#", "");
+					href += (href.indexOf('?') == -1) ? '?no_html=1' : '&no_html=1' ;
+					$("#usage-agreement-popup form").attr('action', href);	
+				}
 			});
 		}
 	},
