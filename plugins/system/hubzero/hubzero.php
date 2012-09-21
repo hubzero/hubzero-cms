@@ -30,14 +30,12 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.event.plugin');
 
 /**
- * Short description for 'class'
- * 
- * Long description (if any) ...
+ * System plugin for hubzero
  */
 class plgSystemHubzero extends JPlugin
 {
@@ -51,19 +49,17 @@ class plgSystemHubzero extends JPlugin
 	 * @param object $subject The object to observe
 	 * @since 1.5
 	 */
-	function plgSystemHubzero(& $subject) 
+	public function __construct(& $subject) 
 	{
 		parent::__construct($subject, NULL);
 	}
 
 	/**
-	 * Short description for 'onAfterRoute'
-	 * 
-	 * Long description (if any) ...
+	 * Hook for after app routing
 	 * 
 	 * @return	   void
 	 */
-	function onAfterRoute()
+	public function onAfterRoute()
 	{
 		$app = &JFactory::getApplication();
 		if (!JPluginHelper::isEnabled('system', 'jquery'))
@@ -73,13 +69,11 @@ class plgSystemHubzero extends JPlugin
 	}
 
 	/**
-	 * Short description for 'onAfterInitialise'
-	 * 
-	 * Long description (if any) ...
+	 * Hook for after app initialization 
 	 * 
 	 * @return	   void
 	 */
-	function onAfterInitialise()
+	public function onAfterInitialise()
 	{
 		// Get the application object
 		$app = &JFactory::getApplication();
@@ -92,16 +86,18 @@ class plgSystemHubzero extends JPlugin
 
 		if ($session->isNew())
 		{
+			$tracker = array();
+
 			// Transfer tracking cookie data to session
-			
+
 			jimport('joomla.utilities.utility');
 			jimport('joomla.utilities.simplecrypt');
 			jimport('joomla.user.helper');
-					
+
 			$hash = JUtility::getHash( JFactory::getApplication()->getName().':tracker');
-							
+
 			$crypt = new JSimpleCrypt();
-	
+
 			if ($str = JRequest::getString($hash, '', 'cookie', JREQUEST_ALLOWRAW | JREQUEST_NOTRIM))
 			{
 				$sstr = $crypt->decrypt($str);
@@ -204,16 +200,14 @@ class plgSystemHubzero extends JPlugin
 	}
 
 	/**
-	 * Short description for 'onLoginFailure'
-	 * 
-	 * Long description (if any) ...
+	 * Hook for login failure
 	 * 
 	 * @param	   unknown $response Parameter description (if any) ...
-	 * @return	   boolean Return description (if any) ...
+	 * @return	   boolean 
 	 */
-	function onLoginFailure($response)
+	public function onLoginFailure($response)
 	{
-		Hubzero_Factory::getAuthLogger()->logAuth( $_POST['username'] . ' ' . $_SERVER['REMOTE_ADDR'] . ' invalid');
+		Hubzero_Factory::getAuthLogger()->logAuth($_POST['username'] . ' ' . $_SERVER['REMOTE_ADDR'] . ' invalid');
 		apache_note('auth','invalid');
 
 		return true;

@@ -343,19 +343,19 @@ class ToolsControllerStorage extends Hubzero_Controller
 		else 
 		{
 			bcscale(6);
-			$val = ($du['softspace'] != 0) ? bcdiv($du['space'], $du['softspace']) : 0;
+			$val = (isset($du['softspace']) && $du['softspace'] != 0) ? bcdiv($du['space'], $du['softspace']) : 0;
 			$percent = round($val * 100);
 		}
 
 		$amt = ($percent > 100) ? '100' : $percent;
-		$total = $du['softspace'] / 1024000000;
+		$total = (isset($du['softspace'])) ? $du['softspace'] / 1024000000 : 0;
 
-		$this->view->amt = $amt;
-		$this->view->total = $total;
-		$this->view->du = $du;
-		$this->view->percent = $percent;
-		$this->view->msgs = $msgs;
-		$this->view->ajax = 1;
+		$this->view->amt       = $amt;
+		$this->view->total     = $total;
+		$this->view->du        = $du;
+		$this->view->percent   = $percent;
+		$this->view->msgs      = $msgs;
+		$this->view->ajax      = 1;
 		$this->view->writelink = 1;
 		if ($this->getError()) 
 		{

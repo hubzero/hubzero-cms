@@ -325,11 +325,11 @@
 	.com_wiki  ol.footnotes li {
 		padding: 0.2em 0;
 	}
-/* Forms 
+/* Forms */
 	.com_wiki #hubForm label.hide {
 		display: none;
 	}
-	.com_wiki #hubForm .paramlist input, 
+	/*.com_wiki #hubForm .paramlist input, 
 	.com_wiki #hubForm .paramlist select, 
 	.com_wiki #hubForm .paramlist textarea,
 	.com_wiki #hubForm .paramlist label {

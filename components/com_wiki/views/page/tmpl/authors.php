@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if ($this->page->params->get('mode') == 'knol' && !$this->page->params->get('hide_authors', 0)) 
+if ($this->page->params->get('mode', 'wiki') == 'knol' && !$this->page->params->get('hide_authors', 0)) 
 {
 	$authors = $this->page->getAuthors();
 
@@ -45,29 +45,16 @@ if ($this->page->params->get('mode') == 'knol' && !$this->page->params->get('hid
 	}
 
 	$auths = array();
-	$auths[] = '<a href="'.JRoute::_('index.php?option=com_members&id='.$this->page->created_by).'">'.$this->escape($author).'</a>';
+	$auths[] = '<a href="'.JRoute::_('index.php?option=com_members&id='.$this->page->created_by).'">'.$this->escape(stripslashes($author)).'</a>';
 	foreach ($authors as $auth)
 	{
+		if (stripslashes($auth->name) == stripslashes($author))
+		{
+			continue;
+		}
 		$auths[] = '<a href="'.JRoute::_('index.php?option=com_members&id='.$auth->user_id).'">'.$this->escape(stripslashes($auth->name)).'</a>';
 	}
 	?>
 	<p class="topic-authors"><?php echo JText::_('by') .' '. implode(', ', $auths); ?></p>
 	<?php
-	/*$contributors = $this->revision->getContributors();
-	if (count($contributors) > 0) {
-		$cons = array();
-		foreach ($contributors as $contributor)
-		{
-			if ($contributor != $this->page->created_by) {
-				$zuser =& JUser::getInstance($contributor);
-				if (is_object($zuser)) {
-					if (!in_array($zuser->get('username'),$authors)) {
-						$cons[] = '<a href="'.JRoute::_('index.php?option=com_contributors&id='.$contributor).'">'.$zuser->get('name').'</a>';
-					}
-				}
-			}
-		}
-		$cons = implode(', ',$cons);
-		$html .= ($cons) ? '<p class="topic-contributors">'.JText::_('WIKI_PAGE_CONTRIBUTIONS_BY') .' '. $cons.'</p>'."\n" : '';
-	}*/
 }

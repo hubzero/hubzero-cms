@@ -651,7 +651,7 @@ class JRouterSite extends JRouter
 		{
 			$item = $menu->getItem($query['Itemid']);
 
-			if (is_object($item) && $query['option'] == $item->component) {
+			if (is_object($item) && isset($query['option']) && $query['option'] == $item->component) {
 				/* START: HUBzero Extension to fix ???? */
 				/*
 				$tmp = !empty($tmp) ? $item->route.'/'.$tmp : $item->route;
@@ -667,7 +667,7 @@ class JRouterSite extends JRouter
 			/*
 			$tmp = 'component/'.substr($query['option'], 4).'/'.$tmp;
 			*/
-			$tmp = substr($query['option'], 4).'/'.$tmp;
+			$tmp = (isset($query['option'])) ? substr($query['option'], 4).'/'.$tmp : $tmp;
 			/* END: HUBzero Extension to strip 'component' from url */
 		}
 
