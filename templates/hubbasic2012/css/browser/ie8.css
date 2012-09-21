@@ -38,6 +38,7 @@
 		right: 120px;
 		top: 0px;
 		margin: 0;
+		width: 200px;
 	}
 	#searchword {
 		background: #1a1a1a url("../../images/layout/search.png") 10px 11px no-repeat;
