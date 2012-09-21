@@ -187,7 +187,7 @@ Display:
 
 == Escaping Links and WikiPageNames ==
 
-You may avoid making hyperlinks out of TracLinks by preceding an expression with a single "!" (exclamation mark).
+You may avoid making hyperlinks out of !TracLinks by preceding an expression with a single "!" (exclamation mark).
 
 Example:
 {{{

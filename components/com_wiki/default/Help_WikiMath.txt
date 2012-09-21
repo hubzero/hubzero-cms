@@ -1,8 +1,8 @@
-The Wiki supports LaTeX markup:
+The Wiki supports !LaTeX markup:
 
 <math>pi=\frac{3}{4} \sqrt{3}+24 \int_0^{1/4}{\sqrt{x-x^2}dx}</math>
 
-Mathematical Formula (LaTeX) can be inserted into text like this:
+Mathematical Formula (!LaTeX) can be inserted into text like this:
 {{{
 <math>Insert formula here</math>
 }}}
@@ -14,7 +14,7 @@ For example:
 
 == Displaying a Formula ==
 
-The Wiki uses a subset of TeX markup, including some extensions from LaTeX and AMSLaTeX, for mathematical formulae. It generates either PNG images or simple HTML markup, depending on the complexity of the expression. While it can generate MathML, it is not currently used due to limited browser support. As browsers become more advanced and support for MathML becomes more wide-spread, this could be the preferred method of output as images have very real disadvantages.
+The Wiki uses a subset of !TeX markup, including some extensions from !LaTeX and !AMSLaTeX, for mathematical formulae. It generates either PNG images or simple HTML markup, depending on the complexity of the expression. While it can generate !MathML, it is not currently used due to limited browser support. As browsers become more advanced and support for !MathML becomes more wide-spread, this could be the preferred method of output as images have very real disadvantages.
 
 === Syntax ===
 
@@ -25,13 +25,13 @@ Math markup goes inside `<math> ... </math>`.
  # The formula's background, font size and face match the rest of HTML contents and the appearance respects CSS and browser settings.
  # Pages using HTML will load faster.
 
-=== Pros of TeX ===
- # TeX is semantically superior to HTML. In TeX, "{{{x}}}" means "mathematical variable <math>x</math>", whereas in HTML "{{{x}}}" could mean anything. Information has been irrevocably lost.
- # TeX has been specifically designed for typesetting formulae, so input is easier and more natural, and output is more aesthetically pleasing.
- # One consequence of point 1 is that TeX can be transformed into HTML, but not vice-versa. This means that on the server side we can always transform a formula, based on its complexity and location within the text, user preferences, type of browser, etc. Therefore, where possible, all the benefits of HTML can be retained, together with the benefits of TeX. It's true that the current situation is not ideal, but that's not a good reason to drop information/contents. It's more a reason to [[#Bug_reports|help improve the situation]].
- # Another consequence of point 1 is that TeX can be converted to [[w:MathML|MathML]] for browsers which support it, thus keeping its semantics and allowing it to be rendered vectorially.
- # When writing in TeX, editors need not worry about whether this or that version of this or that browser supports this or that HTML entity. The burden of these decisions is put on the server. This doesn't hold for HTML formulae, which can easily end up being rendered wrongly or differently from the editor's intentions on a different browser.
- # TeX is the preferred text formatting language of most professional mathematicians, scientists, and engineers. It is easier to persuade them to contribute if they can write in TeX.
+=== Pros of !TeX ===
+ # !TeX is semantically superior to HTML. In !TeX, "{{{x}}}" means "mathematical variable <math>x</math>", whereas in HTML "{{{x}}}" could mean anything. Information has been irrevocably lost.
+ # !TeX has been specifically designed for typesetting formulae, so input is easier and more natural, and output is more aesthetically pleasing.
+ # One consequence of point 1 is that !TeX can be transformed into HTML, but not vice-versa. This means that on the server side we can always transform a formula, based on its complexity and location within the text, user preferences, type of browser, etc. Therefore, where possible, all the benefits of HTML can be retained, together with the benefits of !TeX. It's true that the current situation is not ideal, but that's not a good reason to drop information/contents. It's more a reason to [[#Bug_reports|help improve the situation]].
+ # Another consequence of point 1 is that !TeX can be converted to [[w:!MathML|!MathML]] for browsers which support it, thus keeping its semantics and allowing it to be rendered vectorially.
+ # When writing in !TeX, editors need not worry about whether this or that version of this or that browser supports this or that HTML entity. The burden of these decisions is put on the server. This doesn't hold for HTML formulae, which can easily end up being rendered wrongly or differently from the editor's intentions on a different browser.
+ # !TeX is the preferred text formatting language of most professional mathematicians, scientists, and engineers. It is easier to persuade them to contribute if they can write in !TeX.
 
 === Example Formulas ===
 
@@ -266,7 +266,7 @@ Texvc cannot render arbitrary Unicode characters. Those it can handle can be ent
 
 === Spacing ===
 
-Note that TeX handles most spacing automatically, but you may sometimes want manual control.
+Note that !TeX handles most spacing automatically, but you may sometimes want manual control.
 
 || '''Feature''' || '''Syntax''' || '''How it looks rendered''' ||
 || double quad space || a \qquad b || <math>a \qquad b</math> ||
