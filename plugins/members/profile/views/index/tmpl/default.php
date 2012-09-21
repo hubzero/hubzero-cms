@@ -384,13 +384,13 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 		<?php endif; ?>
 	
 		<?php if ($this->profile->get('email')) : ?>
-			<?php if ($this->params->get('access_email') == 0 
-			 		|| ($this->params->get('access_email') == 1 && $loggedin) 
-			 		|| ($this->params->get('access_email') == 2 && $isUser)
+			<?php if ($this->params->get('access_email', 2) == 0 
+			 		|| ($this->params->get('access_email', 2) == 1 && $loggedin) 
+			 		|| ($this->params->get('access_email', 2) == 2 && $isUser)
 					) : ?>
 					<?php
 						$cls = "";
-						if($this->params->get('access_email') == 2) 
+						if($this->params->get('access_email', 2) == 2) 
 						{
 							$cls .= "private";
 						}                     
