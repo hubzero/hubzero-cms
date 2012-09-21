@@ -521,6 +521,11 @@ HUB.Members.Profile = {
 			element: $("#ajax-uploader")[0],
 			action: $("#ajax-uploader").attr("data-action"),
 			multiple: false,
+			template: '<div class="qq-uploader">' + 
+	                '<div class="qq-upload-drop-area"><span>Drop files here to upload</span></div>' +
+	                '<div class="qq-upload-button">Upload an Image</div>' +
+	                '<ul class="qq-upload-list"></ul>' + 
+	             '</div>',
 			onSubmit: function(id, file)
 			{
 				$("#ajax-upload-left").append("<div id=\"ajax-upload-uploading\" />");
