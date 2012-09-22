@@ -945,7 +945,7 @@ class ToolVersion extends  JTable
 	 */
 	public function validVersion($toolname, $newversion, &$error, $required=1, $result=1)
 	{
-		$toolhelper = new ContribtoolHelper();
+		$toolhelper = new ToolsHelperUtils();
 
 		if ($required && !$newversion) 
 		{ // was left blank

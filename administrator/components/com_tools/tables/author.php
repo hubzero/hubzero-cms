@@ -270,11 +270,11 @@ class ToolAuthor extends  JTable
 
 		if ($authors) 
 		{
-			$authors = ContribtoolHelper::transform($authors, 'uidNumber');
+			$authors = ToolsHelperUtils::transform($authors, 'uidNumber');
 		}
 
 		$dev_authors = $this->getToolAuthors('dev', $rid);
-		$dev_authors = ContribtoolHelper::transform($dev_authors, 'uidNumber');
+		$dev_authors = ToolsHelperUtils::transform($dev_authors, 'uidNumber');
 
 		if ($dev_authors && $version == 'dev') 
 		{

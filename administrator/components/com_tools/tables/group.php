@@ -125,13 +125,13 @@ class ToolGroup extends  JTable
 			return false;
 		}
 
-		$members = ContribtoolHelper::transform($members, 'uidNumber');
+		$members = ToolsHelperUtils::transform($members, 'uidNumber');
 		$group = new Hubzero_Group();
 
 		if (Hubzero_Group::exists($devgroup)) 
 		{
 			$group->read($devgroup);
-			$existing_members = ContribtoolHelper::transform(Tool::getToolDevelopers($toolid), 'uidNumber');
+			$existing_members = ToolsHelperUtils::transform(Tool::getToolDevelopers($toolid), 'uidNumber');
 			$group->set('members', $existing_members);
 			$group->set('managers', $existing_managers);
 		}
@@ -179,8 +179,8 @@ class ToolGroup extends  JTable
 		}
 
 		$membergroups = Hubzero_Tool::getToolGroups($toolid);
-		$membergroups = ContribtoolHelper::transform($membergroups, 'cn');
-		$newgroups = ContribtoolHelper::transform($newgroups, 'cn');
+		$membergroups = ToolsHelperUtils::transform($membergroups, 'cn');
+		$newgroups = ToolsHelperUtils::transform($newgroups, 'cn');
 		$to_delete = array_diff($membergroups, $newgroups);
 
 		if (count($to_delete) > 0 && $editversion != 'current') 
@@ -221,7 +221,7 @@ class ToolGroup extends  JTable
 	{
 		ximport('Hubzero_Group');
 
-		$toolhelper = new ContribtoolHelper();
+		$toolhelper = new ToolsHelperUtils();
 
 		$groups    = is_array($new) ? $new : $toolhelper->makeArray($new);
 		$grouplist = array();
@@ -270,7 +270,7 @@ class ToolGroup extends  JTable
 	 */
 	public function writeTeam($new, $id, $database, &$err='') 
 	{
-		$toolhelper = new ContribtoolHelper();
+		$toolhelper = new ToolsHelperUtils();
 
 		$members  = is_array($new) ? $new : $toolhelper->makeArray($new);
 		$teamlist = array();
