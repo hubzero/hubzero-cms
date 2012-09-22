@@ -864,7 +864,9 @@ class ToolsControllerScreenshots extends Hubzero_Controller
 		}
 
 		// Get the configured upload path
-		$base_path = $this->rconfig->get('uploadpath');
+		$rconfig =& JComponentHelper::getParams('com_resources');
+
+		$base_path = $rconfig->get('uploadpath');
 		if ($base_path) 
 		{
 			// Make sure the path doesn't end with a slash
