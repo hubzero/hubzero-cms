@@ -130,16 +130,36 @@ class modSupportTickets
 		// Loop through each grouping
 		foreach ($types as $key => $queries)
 		{
+			if (!is_array($queries) || count($queries) <= 0)
+			{
+				$one = new stdClass;
+				$one->count = 0;
+				$one->id = 0;
+				$two = new stdClass;
+				$two->count = 0;
+				$two->id = 0;
+				$three = new stdClass;
+				$three->count = 0;
+				$three->id = 0;
+				$types[$key] = $queries = array(
+					$one,
+					$two,
+					$three
+				);
+			}
 			// Loop through each query in a group
 			foreach ($queries as $k => $query)
 			{
-				// Build the query from the condition set
-				if (!$query->query)
+				if ($query->id)
 				{
-					$query->query = $sq->getQuery($query->conditions);
+					// Build the query from the condition set
+					if (!$query->query)
+					{
+						$query->query = $sq->getQuery($query->conditions);
+					}
+					// Get a record count
+					$types[$key][$k]->count = $st->getCount($query->query);
 				}
-				// Get a record count
-				$types[$key][$k]->count = $st->getCount($query->query);
 			}
 		}
 		$this->opened = $types['common'];
