@@ -5,23 +5,9 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-#content {
-	padding: 0px;
-	margin: 0px;
-	}
-#content-wrap {
-	overflow: hidden;
-	}
-#time_header {
-	color: #444;
-	margin: 0 20px;
-	}
-#time_header h2 {
-	margin: 0px;
-	border-bottom: 0px;
-	line-height: 1em;
-	padding: 20px 0 15px;
-	}
+#time_container {
+	padding: 15px;
+}
 
 /*-------------------------
 	Menu structure
@@ -29,7 +15,7 @@
 #time_sidebar {
 	float: left;
 	width: 120px;
-	margin-top: 20px;
+	margin-top: 15px;
 	overflow: hidden;
 	}
 #time_menu {
@@ -126,41 +112,45 @@
 	margin: 0 20px;
 	}
 #time_content {
-	padding: 0 20px;
+	padding: 0 0 0 20px;
 	}
 #time_content .container {
 	margin: 1em 0;
 	padding: 0;
-	border: 10px solid #F4F4F4;
-	background: #F4F4F4;
+	border: 10px solid transparent;
+	background: transparent;
 	}
 #time_content p.submit {
 	text-align: center;
 	}
 /* back button */
-#time_content a.back {
-	background: url('/components/com_time/images/back.png') 0 0 no-repeat;
-	padding-left: 20px;
-	padding-top: 3px;
-	border-bottom: none;
+#time_content a.back:before {
+	content: "\f00d";
+	font-family: 'Fontcons';
+	margin-right: 0.2em;
 	}
 
 /*-------------------------
 	Tables
 -------------------------*/
 #time_content .entries {
-	border: 2px solid #E9E9E9;
-	border-top: none;
-	background-color: #fff;
-	margin: 0;
-	padding: 0;
+	color: #777;
+	background: white;
+	border: 1px solid #E5E5E5;
+	padding: 0 0px 1.75em 0px;
+	margin: 0.7em 270px 1.7em 0;
+	clear: none;
 	}
 #time_content .entries caption {
-	font-size: 110%;
-	background: #f8f8f8 url('/components/com_time/images/light-stripes.png') 0 0 repeat;
-	border: 2px solid #e9e9e9;
-	border-bottom: 1px solid #e9e9e9;
-	margin-right: -2px;
+	width: auto;
+	border-bottom: 1px solid #E5E5E5;
+	margin: 0;
+	padding: 0.5em 0;
+	color: #ECECEC;
+	font-weight: bold;
+	color: #333;
+	background: #ECECEC;
+	text-align: center;
 	}
 #time_content .entries thead th {
 	text-align: left;
@@ -176,11 +166,6 @@
 	width: 5px;
 	text-align: center;
 	border-bottom: 1px solid #eee;
-	}
-#time_content .list-footer {
-	margin-bottom: 10px;
-	min-height: 1px;
-	overflow: hidden;
 	}
 
 /*-------------------------
@@ -385,4 +370,66 @@
 	-webkit-box-shadow: inset 0 1px 2px #F2F2F2;
 	-moz-box-shadow: inset 0 1px 2px #F2F2F2;
 	box-shadow: inset 0 1px 2px #F2F2F2;
+	}
+
+/* --------------------------
+	Header-extra buttons
+----------------------------- */
+#time_content #content-header-extra a {
+	padding: 0.4em 0.91em;
+	padding: 0.3em 0.71em;
+	text-align: center;
+	text-shadow: 0px -1px 1px #1E2D4D;
+	color: #555;
+	-webkit-background-clip: padding-box;
+	display: inline-block;
+	-webkit-border-radius: 0.25em;
+	-moz-border-radius: 0.25em;
+	-ms-border-radius: 0.25em;
+	-o-border-radius: 0.25em;
+	border-radius: 0.25em;
+	background: #e0e0e0;
+	background: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#e0e0e0));
+	background: -webkit-linear-gradient(#FAFAFA, #e0e0e0);
+	background: -moz-gradient(center top, #FAFAFA 0%, #e0e0e0 100%);
+	background: -moz-linear-gradient(center top, #FAFAFA 0%, #e0e0e0 100%);
+	background: -ms-linear-gradient(#FAFAFA, #e0e0e0);
+	background: -o-linear-gradient(#FAFAFA, #e0e0e0);
+	background: linear-gradient(#FAFAFA, #e0e0e0);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FAFAFA,endColorstr=#e0e0e0);
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FAFAFA, endColorstr=#e0e0e0)";
+	border: 1px solid #CCC;
+	-webkit-box-shadow: inset 0 0 1px #fff;
+	-moz-box-shadow: inset 0 0 1px #fff;
+	-ms-box-shadow: inset 0 0 1px #fff;
+	-o-box-shadow: inset 0 0 1px #fff;
+	box-shadow: inset 0 0 1px #fff;
+	text-shadow: 0 1px 0 #fff;
+	border-color: #CCC #CCC #AAA #AAA;
+	outline: 0;
+	font-weight: normal;
+	font-size: 11px;
+	white-space: nowrap;
+	word-wrap: normal;
+	vertical-align: middle;
+	cursor: pointer;
+	position: relative;
+	}
+#time_content #content-header-extra a:hover {
+	background: #e8e8e8;
+	background: -webkit-gradient(linear, left top, left bottom, from(#f1f1f1), to(#e8e8e8));
+	background: -webkit-linear-gradient(#f1f1f1, #e8e8e8);
+	background: -moz-gradient(center top, #f1f1f1 0%, #e8e8e8 100%);
+	background: -moz-linear-gradient(center top, #f1f1f1 0%, #e8e8e8 100%);
+	background: -ms-linear-gradient(#f1f1f1, #e8e8e8);
+	background: -o-linear-gradient(#f1f1f1, #e8e8e8);
+	background: linear-gradient(#f1f1f1, #e8e8e8);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#f1f1f1,endColorstr=#e8e8e8);
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#f1f1f1, endColorstr=#e8e8e8)";
+	border: 1px solid #aaaaaa;
+	-webkit-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
+	-moz-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
+	-ms-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
+	-o-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
+	box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
 	}

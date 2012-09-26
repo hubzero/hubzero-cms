@@ -11,6 +11,7 @@
 	text-align: center;
 	width: 50%;
 	margin-left: 25%;
+	clear: none;
 	}
 #plg_time_overview table thead tr {
 	font-weight: bold;

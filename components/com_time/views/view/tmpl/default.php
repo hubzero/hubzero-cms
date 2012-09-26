@@ -32,6 +32,9 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
+<div id="content-header" class="full">
+	<h2><?php echo JText::_('PLG_TIME_'.strtoupper($this->active_tab)); ?></h2>
+</div>
 <div id="time_container">
 	<div id="time_sidebar">
 		<ul id="time_menu">
@@ -73,9 +76,6 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 	</div>
 	<div id="time_main">
-		<div id="time_header">
-			<h2><?php echo JText::_('PLG_TIME_'.strtoupper($this->active_tab)); ?></h2>
-		</div>
 		<div id="time_notifications">
 			<?php
 				foreach($this->notifications as $notification)

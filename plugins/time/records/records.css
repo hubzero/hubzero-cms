@@ -19,18 +19,12 @@
 	background: url("/components/com_time/images/eye.png") 0 0 no-repeat;
 	padding-left: 20px;
 	}
-#plg_time_records .edit,
-#plg_time_records .delete,
-#plg_time_records .add,
-#plg_time_records .view {
-	padding-top: 3px;
-	border-bottom: none;
-	}
 #plg_time_records tr .edit,
 #plg_time_records tr .delete,
 #plg_time_records tr .view {
 	visibility: hidden;
 	opacity: .4;
+	border-bottom: none;
 	}
 #plg_time_records tr:hover .edit,
 #plg_time_records tr:hover .delete,
@@ -143,6 +137,7 @@
 	background: url('/components/com_time/images/underline.png') 0 0 repeat;
 	padding: 5px 5px 0 12%;
 	min-height: 150px;
+	margin: 0;
 	}
 #plg_time_records .readonly .hub-notes .inner p {
 	line-height: 1.7em;
