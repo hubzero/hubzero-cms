@@ -132,20 +132,20 @@ defined('_JEXEC') or die('Restricted access');
 	// Login information
 	if ($this->registrationUsername != REG_HIDE || $this->registrationPassword != REG_HIDE) {
 		$html .= "\t".'<div class="explaination">'."\n";
-		$html .= "\t\t".'<p>Usernames cannot be changed. If this poses a serious problem or raises concerns please contact our <a href="support/">support</a>.</p>'."\n";
+		$html .= "\t\t".'<p>' . JText::_('COM_REGISTER_CANNOT_CHANGE_USERNAME') . '</p>'."\n";
 
 		if ($this->task == 'create' || $this->task == 'proxycreate') {
-			$html .= "\t\t".'<p>'.JText::_('Password may be changed any time after account creation.').'</p>'."\n";
+			$html .= "\t\t".'<p>'.JText::_('COM_REGISTER_PASSWORD_CHANGE_HINT').'</p>'."\n";
 		}
 
 		$html .= "\t".'</div>'."\n";
 
 		$html .= "\t".'<fieldset>'."\n";
-		$html .= "\t\t".'<legend>'.JText::_('Login Information').'</legend>'."\n";
+		$html .= "\t\t".'<legend>'.JText::_('COM_REGISTER_LOGIN_INFORMATION').'</legend>'."\n";
 
 		// Username
 		if ($this->registrationUsername == REG_READONLY) {
-			$html .= "\t\t".'<label>'.JText::_('User Login').': '."\n";
+			$html .= "\t\t".'<label>'.JText::_('COM_REGISTER_USER_LOGIN').': '."\n";
 			$html .= "\t\t\t".htmlentities($this->registration['login'],ENT_COMPAT,'UTF-8')."\n";
 			$html .= "\t\t\t".'<input name="login" id="login" type="hidden" value="'. htmlentities($this->registration['login'],ENT_COMPAT,'UTF-8') .'" />'."\n";
 			$html .= "\t\t".'</label>'."\n";
@@ -156,11 +156,11 @@ defined('_JEXEC') or die('Restricted access');
 
 			$html .= "\t\t".'<div class="group">'."\n";
 			$html .= "\t\t\t".'<label '.$fieldclass.'>'."\n";
-			$html .= "\t\t\t\t".JText::_('User Login').': '.$required."\n";
+			$html .= "\t\t\t\t".JText::_('COM_REGISTER_USER_LOGIN').': '.$required."\n";
 			$html .= "\t\t\t\t".'<input name="login" id="userlogin" type="text" maxlength="32" value="'.htmlentities($this->registration['login'],ENT_COMPAT,'UTF-8') .'" />' ."\n";
 			$html .= ($message) ? "\t\t\t\t" . $message . "\n" : '';
 			$html .= "\t\t\t".'</label>'."\n";
-			$html .= "\t\t\t".'<p class="hint" id="usernameHint">'.JText::_('Combination of lowercase letters and numbers. No spaces or punctuation.').'</p>'."\n";
+			$html .= "\t\t\t".'<p class="hint" id="usernameHint">'.JText::_('COM_REGISTER_USERNAME_HINT').'</p>'."\n";
 			$html .= "\t\t".'</div>'."\n";
 		}
 
@@ -177,7 +177,7 @@ defined('_JEXEC') or die('Restricted access');
 
 			$html .= "\t\t".'<div class="group">'."\n";
 			$html .= "\t\t\t".'<label '.$fieldclass.'>'."\n";
-			$html .= "\t\t\t\t".JText::_('Password').': '.$required."\n";
+			$html .= "\t\t\t\t".JText::_('COM_REGISTER_PASSWORD').': '.$required."\n";
 			$html .= "\t\t\t\t".'<input name="password" id="password" type="password" value="'. htmlentities($this->registration['password'],ENT_COMPAT,'UTF-8') .'" />'."\n";
 			$html .= ($message) ? "\t\t\t\t" . $message . "\n" : '';
 			$html .= "\t\t\t".'</label>'."\n";
@@ -189,7 +189,7 @@ defined('_JEXEC') or die('Restricted access');
 				$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
 
 				$html .= "\t\t\t".'<label '.$fieldclass.'>'."\n";
-				$html .= "\t\t\t\t".JText::_('Confirm Password').': '.$required."\n";
+				$html .= "\t\t\t\t".JText::_('COM_REGISTER_CONFIRM_PASSWORD').': '.$required."\n";
 				$html .= "\t\t\t\t".'<input name="password2" id="password2" type="password" value="'. htmlentities($this->registration['confirmPassword'],ENT_COMPAT,'UTF-8') .'" />'."\n";
 				$html .= ($message) ? "\t\t\t\t" . $message . "\n" : '';
 				$html .= "\t\t\t".'</label>'."\n";
@@ -238,15 +238,15 @@ defined('_JEXEC') or die('Restricted access');
 		$html .= "\t".'<div class="explaination">'."\n";
 
 		if ($this->task == 'create') {
-			$html .= "\t\t".'<p>Once you create an account, you will be sent an email containing an activation link.</p>'."\n";
+			$html .= "\t\t".'<p>'.JText::_('COM_REGISTER_ACTIVATION_EMAIL_HINT').'</p>'."\n";
 		} else if ($this->task == 'proxycreate') {
 			$html .= "\t\t".'<p>Once you create an account, the new account owner will be sent an email containing an activation link.</p>'."\n";
 		}
-		$html .= "\t\t".'<p>We respect your privacy, and will never disclose your sensitive information to others.</p>'."\n";
+		$html .= "\t\t".'<p>'.JText::_('COM_REGISTER_PRIVACY_HINT').'</p>'."\n";
 		$html .= "\t".'</div>'."\n";
 
 		$html .= "\t".'<fieldset>'."\n";
-		$html .= "\t\t".'<legend>'.JText::_('Contact Information').'</legend>'."\n";
+		$html .= "\t\t".'<legend>'.JText::_('COM_REGISTER_CONTACT_INFORMATION').'</legend>'."\n";
 
 		// Name
 		if ($this->registrationFullname != REG_HIDE) {
@@ -269,15 +269,15 @@ defined('_JEXEC') or die('Restricted access');
 
 			$html .= "\t\t".'<div class="threeup group">'."\n";
 			$html .= "\t\t\t".'<label'.$fieldclass.'>'."\n";
-			$html .= "\t\t\t\t".JText::_('First Name').': '.$required."\n";
+			$html .= "\t\t\t\t".JText::_('COM_REGISTER_FIRST_NAME').': '.$required."\n";
 			$html .= "\t\t\t\t".'<input type="text" name="name[first]" value="'. htmlentities(trim($givenName), ENT_COMPAT, 'UTF-8') .'" />'."\n";
 			$html .= "\t\t\t".'</label>'."\n";
 			$html .= "\t\t\t".'<label>'."\n";
-			$html .= "\t\t\t\t".JText::_('Middle Name').':'."\n";
+			$html .= "\t\t\t\t".JText::_('COM_REGISTER_MIDDLE_NAME').':'."\n";
 			$html .= "\t\t\t\t".'<input type="text" name="name[middle]" value="'. htmlentities(trim($middleName), ENT_COMPAT, 'UTF-8') .'" />'."\n";
 			$html .= "\t\t\t".'</label>'."\n";
 			$html .= "\t\t\t".'<label'.$fieldclass.'>'."\n";
-			$html .= "\t\t\t\t".JText::_('Last Name').': '.$required."\n";
+			$html .= "\t\t\t\t".JText::_('COM_REGISTER_LAST_NAME').': '.$required."\n";
 			$html .= "\t\t\t\t".'<input type="text" name="name[last]" value="'. htmlentities(trim($surname), ENT_COMPAT, 'UTF-8') .'" />'."\n";
 			$html .= "\t\t\t".'</label>'."\n";
 			$html .= "\t\t".'</div>'."\n";
@@ -295,7 +295,7 @@ defined('_JEXEC') or die('Restricted access');
 				$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
 
 				$html .= "\t\t\t".'<label '.$fieldclass.'>'."\n";
-				$html .= "\t\t\t\t".JText::_('Valid E-mail').': '.$required."\n";
+				$html .= "\t\t\t\t".JText::_('COM_REGISTER_VALID_EMAIL').': '.$required."\n";
 				$html .= "\t\t\t\t".'<input name="email" id="email" type="text" value="'.htmlentities($this->registration['email'],ENT_COMPAT,'UTF-8').'" />'."\n";
 				$html .= ($message) ? "\t\t\t\t" . $message . "\n" : '';
 				$html .= "\t\t\t".'</label>'."\n";
@@ -317,7 +317,7 @@ defined('_JEXEC') or die('Restricted access');
 				$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
 
 				$html .= "\t\t\t".'<label'.$fieldclass.'>'."\n";
-				$html .= "\t\t\t\t".JText::_('Confirm E-mail').': '.$required."\n";
+				$html .= "\t\t\t\t".JText::_('COM_REGISTER_CONFIRM_EMAIL').': '.$required."\n";
 				$html .= "\t\t\t\t".'<input name="email2" id="email2" type="text" value="'.htmlentities($this->registration['confirmEmail'],ENT_COMPAT,'UTF-8').'" />'."\n";
 				$html .= ($message) ? "\t\t\t\t" . $message . "\n" : '';
 				$html .= "\t\t\t".'</label>'."\n";
@@ -330,7 +330,7 @@ defined('_JEXEC') or die('Restricted access');
 				if ($this->task == 'proxycreate') {
 					$html .= "\t\t".RegistrationHelperHtml::warning('Important! The user <strong>must</strong> confirm receipt of confirmation e-mail from '.RegistrationHelperHtml::obfuscate($jconfig->getValue('config.mailfrom')).' in order to complete registration.');
 				} else if ($this->task == 'create') {
-					$html .= "\t\t".RegistrationHelperHtml::warning('Important! You <strong>must</strong> confirm receipt of confirmation e-mail from '.RegistrationHelperHtml::obfuscate($jconfig->getValue('config.mailfrom')).' in order to complete registration.');
+					$html .= "\t\t".RegistrationHelperHtml::warning(JText::sprintf('COM_REGISTER_YOU_MUST_CONFIRM_EMAIL', RegistrationHelperHtml::obfuscate($jconfig->getValue('config.mailfrom'))));
 				} else {
 					$html .= "\t\t".RegistrationHelperHtml::warning('Important! If you change your e-mail address you <strong>must</strong> confirm receipt of the confirmation e-mail from '.RegistrationHelperHtml::obfuscate($jconfig->getValue('config.mailfrom')).' in order to re-activate your account.');
 				}
@@ -1010,7 +1010,7 @@ defined('_JEXEC') or die('Restricted access');
 	// Terms of use
 	if ($this->registrationTOU != REG_HIDE) {
 		$html .= "\t".'<fieldset>'."\n";
-		$html .= "\t\t".'<legend>'.JText::_('Terms &amp; Conditions').'</legend>'."\n";
+		$html .= "\t\t".'<legend>'.JText::_('COM_REGISTER_TERMS_AND_CONDITIONS').'</legend>'."\n";
 
 		if ($this->registrationTOU != REG_HIDE) {
 			$required = ($this->registrationTOU == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_REGISTER_FORM_REQUIRED').'</span>' : '';
