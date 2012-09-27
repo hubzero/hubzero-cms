@@ -56,6 +56,9 @@
 		background-color: #fff;
 		border-color: #0fa1ca;
 	}
+	sup {
+		line-height: 1;
+	}
 /* Links */
 	a, 
 	a:link, 
