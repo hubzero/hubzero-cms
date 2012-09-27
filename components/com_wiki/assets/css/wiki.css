@@ -203,18 +203,18 @@
 	}
 
 /* Table of contents */
-	.article-toc,
-	.article-search {
+	.wikipage .article-toc,
+	.wikipage .article-search {
 		background-color: #eee;
-		margin: 0 0 1em 0;
-		padding: 0.5em;
+		margin: 1em 0;
+		padding: 0;
 	}
-	.subject .article-toc {
+	.wikipage .article-toc {
 		width: 300px;
-		float: left;
+		/*float: left;*/
 	}
-	.article-toc h3,
-	.article-search h3 {
+	.wikipage .article-toc h3,
+	.wikipage .article-search h3 {
 		margin: 0;
 		padding: 0.4em;
 		color: #fff;
@@ -222,25 +222,27 @@
 		font-size: 1em;
 		text-shadow: none;
 		font-weight: bold;
+		text-align: center;
 	}
-	.article-toc ul {
+	.wikipage .article-toc ul {
 		margin: 0;
 		padding: 0.4em;
 		max-height: 300px;
 		overflow: auto;
 		border: 1px solid #aaa;
 		background: #fff;
+		list-style: none;
 	}
-	.article-toc ul li {
+	.wikipage .article-toc ul li {
 		background-image: none;
 	}
-	.article-toc ul ul {
+	.wikipage .article-toc ul ul {
 		max-height: none;
 		border: none;
 		margin: 0 0 0 1em;
 		padding: 0;
 	}
-	.article-toc li {
+	.wikipage .article-toc li {
 		margin: 0;
 		padding: 0.2em;
 	}

@@ -2643,6 +2643,7 @@ class WikiParser
 
 			// Save headline for section edit hint before it's escaped
 			$headline_hint = $canonized_headline;
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'sanitizer.php');
 			$canonized_headline = Sanitizer::escapeId($canonized_headline);
 			$refers[$headlineCount] = $canonized_headline;
 
@@ -2718,7 +2719,7 @@ class WikiParser
 		}
 
 		$tocc  = '<div class="article-toc">' . "\n";
-		$tocc .= '<h3 class="article-toc-heading">Content</h3>' . "\n";
+		$tocc .= '<h3 class="article-toc-heading">Contents</h3>' . "\n";
 		$tocc .= $toc . "\n";
 		$tocc .= '</div>' . "\n";
 
