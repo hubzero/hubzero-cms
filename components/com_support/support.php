@@ -34,26 +34,26 @@ defined('_JEXEC') or die('Restricted access');
 if (JFactory::getConfig()->getValue('config.debug')) 
 {
 	error_reporting(E_ALL);
-	@ini_set('display_errors','1');
+	@ini_set('display_errors', '1');
 }
 
 if (version_compare(JVERSION, '1.6', 'lt'))
 {
 	$jacl = JFactory::getACL();
-	$jacl->addACL($option, 'manage', 'users', 'super administrator');
-	$jacl->addACL($option, 'manage', 'users', 'administrator');
+	$jacl->addACL('com_support', 'manage', 'users', 'super administrator');
+	$jacl->addACL('com_support', 'manage', 'users', 'administrator');
 }
 
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'ticket.php');
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'comment.php');
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'message.php');
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'resolution.php');
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'attachment.php');
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'reportabuse.php');
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'utilities.php');
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'acl.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'tags.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'html.php');
+include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'ticket.php');
+include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'comment.php');
+include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'message.php');
+include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'resolution.php');
+include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'attachment.php');
+include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'reportabuse.php');
+include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'utilities.php');
+include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'acl.php');
+include_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'tags.php');
+include_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'index'));
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))

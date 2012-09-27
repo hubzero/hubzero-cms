@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 if (JFactory::getConfig()->getValue('config.debug')) 
 {
 	error_reporting(E_ALL);
-	@ini_set('display_errors','1');
+	@ini_set('display_errors', '1');
 }
 
 if (version_compare(JVERSION, '1.6', 'lt'))
@@ -46,13 +46,13 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 }
 
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'question.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'response.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'log.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'questionslog.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'economy.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'member.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'tags.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'question.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'response.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'log.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'questionslog.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'economy.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'member.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'tags.php');
 
 ximport('Hubzero_View_Helper_Html');
 ximport('Hubzero_Filter');

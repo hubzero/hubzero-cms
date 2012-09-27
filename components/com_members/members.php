@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 if (JFactory::getConfig()->getValue('config.debug')) 
 {
 	error_reporting(E_ALL);
-	@ini_set('display_errors','1');
+	@ini_set('display_errors', '1');
 }
 
 if (version_compare(JVERSION, '1.6', 'lt'))
@@ -46,8 +46,8 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 
 jimport('joomla.application.component.helper');
 
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'profile.php');
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'association.php');
+include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'profile.php');
+include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'association.php');
 include_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'imghandler.php'); 
 include_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'tags.php');
 include_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');

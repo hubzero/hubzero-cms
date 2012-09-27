@@ -29,12 +29,12 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 if (JFactory::getConfig()->getValue('config.debug')) 
 {
 	error_reporting(E_ALL);
-	@ini_set('display_errors','1');
+	@ini_set('display_errors', '1');
 }
 
 if (version_compare(JVERSION, '1.6', 'lt'))
@@ -50,11 +50,11 @@ ximport('Hubzero_Bank');
 ximport('Hubzero_Geo');
 ximport('Hubzero_User_Profile');
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'store.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'order.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'orderitem.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'cart.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'html.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'store.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'order.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'orderitem.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'cart.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'shop'));
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))

@@ -40,6 +40,16 @@ if (!$this->filters['filterby']) {
 if (!$this->filters['filterby'] == 'none') {
 	$this->filters['filterby'] = 'all';
 }
+
+$dateFormat = '%d %b %Y';
+$timeFormat = '%I:%M %p';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M Y';
+	$timeFormat = 'H:i p';
+	$tz = true;
+}
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -204,9 +214,9 @@ if (!$this->filters['filterby'] == 'none') {
 							}
 ?>
 								<span class="entry-details">
-									<?php echo JText::sprintf('COM_ANSWERS_ASKED_BY', $name); ?> @ 
-									<span class="entry-time"><?php echo JHTML::_('date', $row->created, '%I:%M %p', 0); ?></span> on 
-									<span class="entry-date"><?php echo JHTML::_('date', $row->created, '%d %b %Y', 0); ?></span>
+									<?php echo JText::sprintf('COM_ANSWERS_ASKED_BY', $name); ?> <span class="entry-date-at">@</span> 
+									<span class="entry-time"><time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $timeFormat, $tz); ?></time></span> <span class="entry-date-on">on</span> 
+									<span class="entry-date"><time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?></time></span>
 									<span class="entry-details-divider">&bull;</span>
 									<span class="entry-state">
 										<?php echo ($row->state==1) ? JText::_('COM_ANSWERS_STATE_CLOSED') : JText::_('COM_ANSWERS_STATE_OPEN'); ?>

@@ -34,15 +34,15 @@ defined('_JEXEC') or die('Restricted access');
 if (JFactory::getConfig()->getValue('config.debug')) 
 {
 	error_reporting(E_ALL);
-	@ini_set('display_errors','1');
+	@ini_set('display_errors', '1');
 }
 
 if (version_compare(JVERSION, '1.6', 'lt'))
 {
 	$jacl = JFactory::getACL();
-	$jacl->addACL($option, 'manage', 'users', 'super administrator');
-	$jacl->addACL($option, 'manage', 'users', 'administrator');
-	$jacl->addACL($option, 'manage', 'users', 'manager');
+	$jacl->addACL('com_jobs', 'manage', 'users', 'super administrator');
+	$jacl->addACL('com_jobs', 'manage', 'users', 'administrator');
+	$jacl->addACL('com_jobs', 'manage', 'users', 'manager');
 }
 
 ximport('Hubzero_View_Helper_Html');
@@ -52,19 +52,19 @@ ximport('Hubzero_User_Profile');
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_services' . DS . 'tables' . DS . 'service.php');
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_services' . DS . 'tables' . DS . 'subscription.php');
 
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'admin.php');
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'application.php');
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'category.php');
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'employer.php');
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'job.php');
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'prefs.php');
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'resume.php');
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'seeker.php');
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'shortlist.php');
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'stats.php');
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'type.php');
+include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'admin.php');
+include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'application.php');
+include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'category.php');
+include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'employer.php');
+include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'job.php');
+include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'prefs.php');
+include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'resume.php');
+include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'seeker.php');
+include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'shortlist.php');
+include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'stats.php');
+include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'type.php');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'html.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
 
 $controllerName = JRequest::getCmd('controller', 'jobs');
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))

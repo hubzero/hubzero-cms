@@ -34,19 +34,19 @@ if (JFactory::getConfig()->getValue('config.debug'))
 if (version_compare(JVERSION, '1.6', 'lt'))
 {
 	$jacl = JFactory::getACL();
-	$jacl->addACL($option, 'manage', 'users', 'super administrator');
-	$jacl->addACL($option, 'manage', 'users', 'administrator');
-	$jacl->addACL($option, 'manage', 'users', 'manager');
+	$jacl->addACL('com_forum', 'manage', 'users', 'super administrator');
+	$jacl->addACL('com_forum', 'manage', 'users', 'administrator');
+	$jacl->addACL('com_forum', 'manage', 'users', 'manager');
 }
 
 jimport('joomla.application.component.view');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'attachment.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'post.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'category.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'section.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'models' . DS . 'pagination.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'models' . DS . 'tags.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'attachment.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'post.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'category.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'section.php');
+require_once(JPATH_COMPONENT . DS . 'models' . DS . 'pagination.php');
+require_once(JPATH_COMPONENT . DS . 'models' . DS . 'tags.php');
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'sections'));
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))

@@ -48,6 +48,12 @@
 		text-align: right;
 	}
 
+	.entry-date-at, 
+	.entry-date-on {
+		visibility: visible;
+		display: inline;
+	}
+
 	.entries .entry-id {
 		display: none;
 	}

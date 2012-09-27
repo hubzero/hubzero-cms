@@ -40,9 +40,9 @@ if (JFactory::getConfig()->getValue('config.debug'))
 if (version_compare(JVERSION, '1.6', 'lt'))
 {
 	$jacl =& JFactory::getACL();
-	$jacl->addACL($option, 'manage', 'users', 'super administrator');
-	$jacl->addACL($option, 'manage', 'users', 'administrator');
-	$jacl->addACL($option, 'manage', 'users', 'manager');
+	$jacl->addACL('com_wiki', 'manage', 'users', 'super administrator');
+	$jacl->addACL('com_wiki', 'manage', 'users', 'administrator');
+	$jacl->addACL('com_wiki', 'manage', 'users', 'manager');
 }
 
 ximport('Hubzero_User_Helper');
@@ -68,6 +68,6 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'controller
 $controllerName = 'WikiController' . ucfirst($controllerName);
 
 // Instantiate controller
-$controller = new $controllerName(array('name'=>'wiki'));
+$controller = new $controllerName(array('name' => 'wiki'));
 $controller->execute();
 $controller->redirect();

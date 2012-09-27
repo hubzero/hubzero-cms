@@ -582,9 +582,26 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$this->view->filters['tag']      = JRequest::getVar('tags', '');
 		$this->view->filters['tag']      = ($this->view->filters['tag']) ? $this->view->filters['tag'] : JRequest::getVar('tag', '');
 		$this->view->filters['q']        = JRequest::getVar('q', '');
+
 		$this->view->filters['filterby'] = JRequest::getWord('filterby', '');
-		$this->view->filters['sortby']   = JRequest::getWord('sortby', 'rewards');
+		if ($this->view->filters['filterby'] 
+		 && !in_array($this->view->filters['filterby'], array('open', 'closed')))
+		{
+			$this->view->filters['filterby'] = '';
+		}
+
+		$this->view->filters['sortby']   = JRequest::getWord('sortby', 'date');
+		if (!in_array($this->view->filters['sortby'], array('date', 'votes')))
+		{
+			$this->view->filters['sortby'] = 'date';
+		}
+
 		$this->view->filters['area']     = JRequest::getVar('area', '');
+		if ($this->view->filters['area'] 
+		 && !in_array($this->view->filters['area'], array('mine', 'assigned', 'interest')))
+		{
+			$this->view->filters['area'] = '';
+		}
 
 		// Get questions of interest
 		if ($this->view->filters['area'] == 'interest') 

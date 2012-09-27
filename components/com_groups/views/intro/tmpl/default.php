@@ -38,7 +38,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li class="last"><a class="add btn" href="<?php echo JRoute::_('index.php?option='.$option.'&task=new'); ?>"><?php echo JText::_('Create User Group'); ?></a></li>
+		<li class="last"><a class="add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=new'); ?>"><?php echo JText::_('Create User Group'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 
@@ -109,7 +109,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</div><!-- / .four columns first -->
 	<div class="four columns second third fourth">
 		<div class="two columns first">
-			<form action="<?php echo JRoute::_('index.php?option='.$option.'&task=browse'); ?>" method="get" class="search">
+			<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>" method="get" class="search">
 				<fieldset>
 					<p>
 						<label for="gsearch">Keyword or phrase:</label>
@@ -124,7 +124,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		</div><!-- / .two columns first -->
 		<div class="two columns second">
 			<div class="browse">
-				<p><a href="<?php echo JRoute::_('index.php?option='.$option.'&task=browse'); ?>">Browse the list of available groups</a></p>
+				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>">Browse the list of available groups</a></p>
 				<p>A list of all public and restricted groups. Private groups are not listed.</p>
 			</div><!-- / .browse -->
 		</div><!-- / .two columns second -->

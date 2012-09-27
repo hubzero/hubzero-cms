@@ -40,15 +40,15 @@ if (JFactory::getConfig()->getValue('config.debug'))
 if (version_compare(JVERSION, '1.6', 'lt'))
 {
 	$jacl = JFactory::getACL();
-	$jacl->addACL($option, 'manage', 'users', 'super administrator');
-	$jacl->addACL($option, 'manage', 'users', 'administrator');
-	$jacl->addACL($option, 'manage', 'users', 'manager');
+	$jacl->addACL('com_tags', 'manage', 'users', 'super administrator');
+	$jacl->addACL('com_tags', 'manage', 'users', 'administrator');
+	$jacl->addACL('com_tags', 'manage', 'users', 'manager');
 }
 
 ximport('Hubzero_View_Helper_Html');
 
 include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'html' . DS . 'select.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'handler.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'handler.php');
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'tags'));
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
