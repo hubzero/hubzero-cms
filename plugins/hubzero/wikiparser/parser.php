@@ -1995,14 +1995,16 @@ class WikiParser
 			}
 
 			$cells = array();
-			foreach (explode("|", $row) as $cell)
+			$row = trim(trim($row), '|');
+			foreach (explode("||", $row) as $cell)
 			{
 				$ctyp = "d";
-				if (preg_match("/^_/", $cell)) 
+				if (preg_match("/^_/", $cell) || preg_match("/^=(.*)=$/", $cell)) 
 				{
 					$ctyp = "h";
+					$cell = trim($cell, '=');
 				}
-				if (preg_match("/^(_?$this->s$this->a$this->c\.)(.*)/", $cell, $cmtch)) 
+				if (preg_match("/^(_?$this->s$this->a$this->c\.)(.*)/", $cell, $cmtch) || preg_match("/^(=?$this->s$this->a$this->c\.)(.*)=?/", $cell, $cmtch)) 
 				{
 					$catts = $this->pba($cmtch[1], 'td');
 					$cell = $cmtch[2];
@@ -2014,7 +2016,7 @@ class WikiParser
 
 				$cell = $this->spans($cell);
 
-				if (trim($cell) != '')
+				if ($cell != '')
 				{
 					$cells[] = "\t\t\t<t$ctyp$catts>$cell</t$ctyp>";
 				}

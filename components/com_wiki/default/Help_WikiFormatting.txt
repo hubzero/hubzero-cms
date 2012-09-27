@@ -159,6 +159,19 @@ Display:
 ||Cell 1||Cell 2||Cell 3||
 ||Cell 4||Cell 5||Cell 6||
 
+Cell headings can be specified by wrapping the content in a pair of '=' characters. Note that the '=' characters have to stick to the cell separators, like this:
+{{{
+||        ||= stable =||= latest =||
+||= 0.10 =||  0.10.5  || 0.10.6dev||
+||= 0.11 =||  0.11.6  || 0.11.7dev||
+}}}
+
+Display:
+
+||        ||= stable =||= latest =||
+||= 0.10 =||  0.10.5  || 0.10.6dev||
+||= 0.11 =||  0.11.6  || 0.11.7dev||
+
 == Links ==
 
 Hyperlinks are automatically created for WikiPageNames and URLs. !WikiPageLinks can be disabled by prepending an exclamation mark "!" character, such as {{{!WikiPageLink}}}.

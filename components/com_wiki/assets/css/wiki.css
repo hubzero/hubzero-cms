@@ -538,6 +538,12 @@
 		padding-left: 1.6em;
 		margin-bottom: 0.5em;
 	}
+	.wikipage td {
+		background-color: #fff;
+	}
+	.wikipage th {
+		background-color: #f7f7f7;
+	}
 
 /* Figures */
 	.wikipage .figure {
