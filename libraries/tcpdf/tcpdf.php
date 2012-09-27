@@ -3659,6 +3659,12 @@ if(!class_exists('TCPDF')) {
 		* @access protected
 		*/
 		function _parsejpg($file) {
+			$p = dirname(__FILE__);
+			if (substr($file, 0, strlen($p)) != JPATH_ROOT)
+			{
+				$file = substr($file, strlen($p));
+				$file = JPATH_ROOT . DS . ltrim(substr($file, strlen($p)), DS);
+			}
 			if(!function_exists('imagecreatefromjpeg')) {
 				// GD is not installed, try legacy method
 				return $this->_legacyparsejpg($file);
@@ -3681,6 +3687,12 @@ if(!class_exists('TCPDF')) {
 		* @access protected
 		*/
 		function _parsegif($file) {
+			$p = dirname(__FILE__);
+			if (substr($file, 0, strlen($p)) != JPATH_ROOT)
+			{
+				$file = substr($file, strlen($p));
+				$file = JPATH_ROOT . DS . ltrim(substr($file, strlen($p)), DS);
+			}
 			if(!function_exists('imagecreatefromgif')) {
 				// PDF doesn't support native GIF and GD is not installed
 				return false;
@@ -3704,6 +3716,12 @@ if(!class_exists('TCPDF')) {
 		* @access protected
 		*/
 		function _parsepng($file) {
+			$p = dirname(__FILE__);
+			if (substr($file, 0, strlen($p)) != JPATH_ROOT)
+			{
+				$file = substr($file, strlen($p));
+				$file = JPATH_ROOT . DS . ltrim(substr($file, strlen($p)), DS);
+			}
 			if(!function_exists('imagecreatefrompng')) {
 				// GD is not installed, try legacy method
 				return $this->_legacyparsepng($file);
@@ -4722,7 +4740,7 @@ if(!class_exists('TCPDF')) {
 					break;
 				}
 				case 'a': {
-					$this->HREF = $attr['href'];
+					$this->HREF = isset($attr['href']) ? $attr['href'] : '';
 					break;
 				}
 				case 'img': {
