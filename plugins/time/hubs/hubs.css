@@ -14,8 +14,7 @@
 	height: 20px;
 	}
 #plg_time_hubs .edit,
-#plg_time_hubs .delete,
-#plg_time_hubs .add {
+#plg_time_hubs .delete {
 	padding-top: 3px;
 	border-bottom: none;
 	}
