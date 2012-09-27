@@ -47,7 +47,7 @@ class plgSystemJquery extends JPlugin
 		}
 
 		// Check if active for this client (Site|Admin)
-		if (!$this->params->get('activate' . $client)) 
+		if (!$this->params->get('activate' . $client) || JRequest::getVar('format') == 'pdf') 
 		{
 			return;
 		}
@@ -152,7 +152,7 @@ class plgSystemJquery extends JPlugin
 
 		// No remember me for admin
 		$client = 'Site';
-		if ($app->isAdmin()) 
+		if ($app->isAdmin() || JRequest::getVar('format') == 'pdf') 
 		{
 			$client = 'Admin';
 			return;

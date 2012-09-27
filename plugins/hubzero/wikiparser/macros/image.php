@@ -448,6 +448,10 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 		
 		$file = trim($file, DS);
 		
+		if (JRequest::getVar('format') == 'pdf')
+		{
+			return $this->_path($file);
+		}
 		$link  = DS . substr($this->option, 4, strlen($this->option)) . DS;
 		if ($this->scope) 
 		{

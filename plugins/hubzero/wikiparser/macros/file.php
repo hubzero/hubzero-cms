@@ -416,6 +416,10 @@ class FileMacro extends WikiMacro
 		$type = 'File';
 		if (in_array(strtolower(JFile::getExt($file)), $this->imgs)) 
 		{
+			if (JRequest::getVar('format') == 'pdf')
+			{
+				return $this->_path($file);
+			}
 			$type = 'Image';
 		}
 		$link .= $this->pagename . DS . $type . ':' . $file;
