@@ -319,14 +319,14 @@
 	.resource th {
 		padding-bottom: 10px;
 	}
-	.com_wiki  ol.footnotes {
+	/*.com_wiki  ol.footnotes {
 		border: 1px dotted #ccc;
 		background-color: #f9f9f9;
 		font-size: 90%;
 	}
 	.com_wiki  ol.footnotes li {
 		padding: 0.2em 0;
-	}
+	}*/
 /* Forms */
 	.com_wiki #hubForm label.hide {
 		display: none;
@@ -506,17 +506,52 @@
 		padding-left: 7px;
 	}
 
+	.wikipage .mbox-content {
+		border: 1px solid #aaa;
+		background: #fff;
+		border-left: 10px solid #f28500;
+		padding: 0;
+		width: 250px;
+		font-size: 0.85em;
+		position: relative;
+	}
+	.wikipage .mbox-content p.mbox-text {
+		padding: 0.4em 0.4em 0.4em 4.4em;
+		margin: 0;
+		line-height: 1.4em;
+	}
+	.wikipage .mbox-content .mbox-date {
+		font-style: italic;
+	}
+	.wikipage .mbox-unreferenced p:before {
+		font-family: "Fontcons";
+		content: "\275D"; /* \f072 */
+		color: #ddd;
+		font-size: 3em;
+		line-height: 1;
+		position: absolute;
+		top: 0.1em;
+		left: 0.3em;
+	}
+	.wikipage .rellink {
+		font-style: italic;
+		padding-left: 1.6em;
+		margin-bottom: 0.5em;
+	}
+
 /* Figures */
 	.wikipage .figure {
 		display: inline-block;
-		background: #fff;
-		border: 1px solid #eaeaea;
+		background: #efefef;
+		border: 1px solid #e1e1e1;
+		padding: 4px;
 	}
 	.wikipage .figure img {
 		margin: 0; /*.5em;*/
 		padding: 0;
 		background: transparent;
 		text-align: center;
+		display: block;
 	}
 	.wikipage .figure a {
 		border: none;
@@ -524,6 +559,7 @@
 	.wikipage .figcaption {
 		display: block;
 		margin: 0;
-		padding: 0.5em;
+		padding: 0.5em 0;
 		background: #efefef;
+		font-size: 0.85em;
 	}
