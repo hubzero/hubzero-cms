@@ -1657,7 +1657,7 @@
 		padding: 0 0 0 20px;
 	}
 /* Buttons & Icons */
-	#conten-header-extra a,
+	#content-header-extra a,
 	#page_options a,
 	.btn,
 	a.btn {
@@ -1698,7 +1698,7 @@
 		cursor: pointer;
 		position: relative;
 	}
-	#conten-header-extra a,
+	#content-header-extra a,
 	#page_options a,
 	.btn.add,
 	.btn.edit-member,
@@ -1735,7 +1735,7 @@
 		border-color: #CCC;
 	}
 	#page_options a:hover,
-	#conten-header-extra a:hover,
+	#content-header-extra a:hover,
 	a.btn:hover {
 		background: #e8e8e8;
 		background: -webkit-gradient(linear, left top, left bottom, from(#f1f1f1), to(#e8e8e8));
@@ -1779,7 +1779,7 @@
 		margin-right: 0.2em;
 	}
 	#page_options a:before,
-	#conten-header-extra a:before,
+	#content-header-extra a:before,
 	.btn.add:before,
 	.btn.edit-member:before,
 	.btn.email:before,
