@@ -29,726 +29,729 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'MwSession'
- * 
- * Long description (if any) ...
+ * Middleware class for session
  */
 class MwSession extends JTable
 {
-
 	/**
-	 * Description for 'sessnum'
+	 * bigint(20)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $sessnum    = null;
 
 	/**
-	 * Description for 'username'
+	 * varchar(32)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $username   = null;
 
 	/**
-	 * Description for 'remoteip'
+	 * varchar(40)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $remoteip   = null;
 
 	/**
-	 * Description for 'exechost'
+	 * varchar(40)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $exechost   = null;
 
 	/**
-	 * Description for 'dispnum'
+	 * int(10)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $dispnum    = null;
 
 	/**
-	 * Description for 'start'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $start      = null;
 
 	/**
-	 * Description for 'accesstime'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $accesstime = null;
 
 	/**
-	 * Description for 'timeout'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $timeout    = null;
 
 	/**
-	 * Description for 'appname'
+	 * varchar(80)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $appname    = null;
 
 	/**
-	 * Description for 'sessname'
+	 * varchar(100)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $sessname   = null;
 
 	/**
-	 * Description for 'sesstoken'
+	 * varchar(32)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $sesstoken  = null;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( 'session', 'sessnum', $db );
+		parent::__construct('session', 'sessnum', $db);
 	}
 
 	/**
-	 * Short description for 'load'
+	 * Load a session and bind to $this
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $sess Parameter description (if any) ...
-	 * @param      unknown $username Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $sess     Session number
+	 * @param      string  $username Username
+	 * @return     boolean False if error, true on success
 	 */
-	public function load( $sess=null, $username=null )
+	public function load($sess=null, $username=null)
 	{
-		if ($sess == null) {
+		if ($sess == null) 
+		{
 			$sess = $this->sessnum;
 		}
-		if ($sess === null) {
+		if ($sess === null) 
+		{
 			return false;
 		}
 
 		$query = "SELECT * FROM $this->_tbl WHERE sessnum='$sess'";
 
-		if ($username) {
+		if ($username) 
+		{
 			$query .= " AND username='$username'";
 		}
 
-		$this->_db->setQuery( $query );
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery($query);
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
 
 	/**
-	 * Short description for 'loadSession'
+	 * Load a session
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $sess Parameter description (if any) ...
-	 * @param      string $authorized Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $sess       Session number
+	 * @param      string  $authorized Is user admin?
+	 * @return     mixed False if error, object on success
 	 */
-	public function loadSession( $sess=null, $authorized=null )
+	public function loadSession($sess=null, $authorized=null)
 	{
-		if ($sess == null) {
+		if ($sess == null) 
+		{
 			$sess = $this->sessnum;
 		}
-		if ($sess === null) {
+		if ($sess === null) 
+		{
 			return false;
 		}
 
-		$mv = new MwViewperm( $this->_db );
+		$mv = new MwViewperm($this->_db);
 
-		if ($authorized === 'admin') {
+		if ($authorized === 'admin') 
+		{
 			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s 
 					  ON v.sessnum = s.sessnum 
-					  WHERE v.sessnum=".$sess." 
+					  WHERE v.sessnum=" . $sess . " 
 					  LIMIT 1";
-		} else {
+		} 
+		else 
+		{
 			$juser =& JFactory::getUser();
 			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s 
 					  ON v.sessnum = s.sessnum 
-					  WHERE v.sessnum=".$sess." 
-					  AND v.viewuser='".$juser->get('username')."'";
+					  WHERE v.sessnum=" . $sess . " 
+					  AND v.viewuser='" . $juser->get('username') . "'";
 		}
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		$rows = $this->_db->loadObjectList();
-		if (count($rows) > 0) {
+		if (count($rows) > 0) 
+		{
 			return $rows[0];
 		}
 	}
 
 	/**
-	 * Short description for 'checkSession'
+	 * Check if a session is owner by the current user
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $sess Parameter description (if any) ...
-	 * @param      string $authorized Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $sess       Session number
+	 * @param      string  $authorized Is user admin?
+	 * @return     mixed False if error, object on success
 	 */
 	public function checkSession($sess=null, $authorized=null)
 	{
-		if ($sess == null) {
+		if ($sess == null) 
+		{
 			$sess = $this->sessnum;
 		}
-		if ($sess === null) {
+		if ($sess === null) 
+		{
 			return false;
 		}
 
-		$mv = new MwViewperm( $this->_db );
+		$mv = new MwViewperm($this->_db);
 
-		if ($authorized === 'admin') {
+		if ($authorized === 'admin') 
+		{
 			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s 
 					  ON v.sessnum = s.sessnum 
-					  WHERE v.sessnum=".$sess." 
+					  WHERE v.sessnum=" . $sess . " 
 					  LIMIT 1";
-		} else {
+		} 
+		else 
+		{
 			// Note: this check is different from others.
 			// Here, we check that the $juser->get('username') OWNS the session.
 			$juser =& JFactory::getUser();
 			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s 
 					  ON v.sessnum = s.sessnum 
-					  WHERE v.sessnum=".$sess." 
-					  AND s.username='".$juser->get('username')."'
-					  AND v.viewuser='".$juser->get('username')."'";
+					  WHERE v.sessnum=" . $sess . " 
+					  AND s.username='" . $juser->get('username') . "'
+					  AND v.viewuser='" . $juser->get('username') . "'";
 		}
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		$rows = $this->_db->loadObjectList();
-		if (count($rows) > 0) {
+		if (count($rows) > 0) 
+		{
 			return $rows[0];
 		}
 	}
 
 	/**
-	 * Short description for 'getCount'
+	 * Get a record count
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $username Parameter description (if any) ...
-	 * @param      unknown $appname Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      string $username Username
+	 * @param      string $appname  Tool name
+	 * @return     mixed False if error, integer on success
 	 */
-	public function getCount( $username=NULL, $appname=NULL )
+	public function getCount($username=NULL, $appname=NULL)
 	{
-		if ($username == null) {
+		if ($username == null) 
+		{
 			$username = $this->username;
 		}
-		if ($username === null) {
+		if ($username === null) 
+		{
 			return false;
 		}
 
 		$a = "";
-		if ($appname) {
+		if ($appname) 
+		{
 			$a = "AND s.appname='$appname'";
 		}
 
-		$mv = new MwViewperm( $this->_db );
+		$mv = new MwViewperm($this->_db);
 
 		$query = "SELECT COUNT(*) FROM $mv->_tbl AS v JOIN $this->_tbl AS s
 				  ON v.sessnum = s.sessnum 
 				  WHERE v.viewuser='".$username."' AND s.username='".$username."' $a
 				  ORDER BY s.start";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getRecords'
+	 * Get records
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $username Parameter description (if any) ...
-	 * @param      unknown $appname Parameter description (if any) ...
-	 * @param      string $authorized Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      string $username   Username
+	 * @param      string $appname    Tool name
+	 * @param      string $authorized Is user admin?
+	 * @return     mixed False if error, array on success
 	 */
-	public function getRecords( $username=null, $appname=null, $authorized=null)
+	public function getRecords($username=null, $appname=null, $authorized=null)
 	{
-		if ($username == null) {
+		if ($username == null) 
+		{
 			$username = $this->username;
 		}
-		if ($username === null) {
+		if ($username === null) 
+		{
 			return false;
 		}
 
 		$a = "";
-		if ($appname) {
+		if ($appname) 
+		{
 			$a = "AND s.appname='$appname'";
 		}
 
-		$mv = new MwViewperm( $this->_db );
+		$mv = new MwViewperm($this->_db);
 
-		if ($authorized === 'admin') {
+		if ($authorized === 'admin') 
+		{
 			$query = "SELECT * FROM $this->_tbl AS s ORDER BY s.start";
-		} else {
+		} 
+		else 
+		{
 			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s
 					  ON v.sessnum = s.sessnum
-					  WHERE v.viewuser='".$username."' $a
+					  WHERE v.viewuser='" . $username . "' $a
 					  ORDER BY s.start";
 		}
 
 		if (empty($this->_db))
+		{
 			return false;
+		}
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'getTimeout'
+	 * Get the timeout time
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $sess Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $sess Session number
+	 * @return     mixed False on error, integer on success
 	 */
-	public function getTimeout( $sess )
+	public function getTimeout($sess)
 	{
-		if ($sess == null) {
+		if ($sess == null) 
+		{
 			$sess = $this->sessnum;
 		}
-		if ($sess === null) {
+		if ($sess === null) 
+		{
 			return false;
 		}
 
-		$mv = new MwView( $this->_db );
-		$mj = new MwJob( $this->_db );
+		$mv = new MwView($this->_db);
+		$mj = new MwJob($this->_db);
 
 		$query = "SELECT timeout-TIME_TO_SEC(TIMEDIFF(NOW(), accesstime)) AS remaining
 			FROM $this->_tbl AS s
 			LEFT JOIN $mv->_tbl AS v ON s.sessnum = v.sessnum
 			LEFT JOIN $mj->_tbl AS j ON s.sessnum = j.sessnum
 			WHERE viewid IS NULL AND jobid IS NULL
-			AND s.sessnum=".$sess;
+			AND s.sessnum=" . $sess;
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $mwdb->loadResult();
 	}
 }
 
 /**
- * Short description for 'class'
- * 
- * Long description (if any) ...
+ * Middleware table class for job
  */
 class MwJob extends JTable
 {
-
 	/**
-	 * Description for 'sessnum'
+	 * bigint(20)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $sessnum   = null;
 
 	/**
-	 * Description for 'jobid'
+	 * bigint(20)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $jobid     = null;
 
 	/**
-	 * Description for 'superjob'
+	 * bigint(20)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $superjob  = null;
 
 	/**
-	 * Description for 'event'
+	 * varchar(40)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $event     = null;
 
 	/**
-	 * Description for 'ncpus'
+	 * smallint(5)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $ncpus     = null;
 
 	/**
-	 * Description for 'venue'
+	 * varchar(80)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $venue     = null;
 
 	/**
-	 * Description for 'start'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $start     = null;
 
 	/**
-	 * Description for 'heartbeat'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $heartbeat = null;
 
 	/**
-	 * Short description for '__construct'
+	 * smallint(2)
 	 * 
-	 * Long description (if any) ...
+	 * @var integer
+	 */
+	var $active     = null;
+
+	/**
+	 * Constructor
 	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( 'job', 'jobid', $db );
+		parent::__construct('job', 'jobid', $db);
 	}
 }
 
 /**
- * Short description for 'MwView'
- * 
- * Long description (if any) ...
+ * Middleware table class for view
  */
 class MwView extends JTable
 {
-
 	/**
-	 * Description for 'viewid'
+	 * bigint(20)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $viewid    = null;
 
 	/**
-	 * Description for 'sessnum'
+	 * bigint(20)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $sessnum   = null;
 
 	/**
-	 * Description for 'username'
+	 * varchar(32)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $username  = null;
 
 	/**
-	 * Description for 'remoteip'
+	 * varchar(40)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $remoteip  = null;
 
 	/**
-	 * Description for 'start'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $start     = null;
 
 	/**
-	 * Description for 'heartbeat'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $heartbeat = null;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( 'view', 'viewid', $db );
+		parent::__construct('view', 'viewid', $db);
 	}
 }
 
 /**
- * Short description for 'class'
- * 
- * Long description (if any) ...
+ * Middleware table class for viewperm
  */
 class MwViewperm extends JTable
 {
-
 	/**
-	 * Description for 'sessnum'
+	 * bigint(20)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $sessnum   = null;
 
 	/**
-	 * Description for 'viewuser'
+	 * varchar(32)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $viewuser  = null;
 
 	/**
-	 * Description for 'viewtoken'
+	 * varchar(32)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $viewtoken = null;
 
 	/**
-	 * Description for 'geometry'
+	 * varchar(9)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $geometry  = null;
 
 	/**
-	 * Description for 'fwhost'
+	 * varchar(40)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $fwhost    = null;
 
 	/**
-	 * Description for 'fwpost'
+	 * smallint(5)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $fwpost    = null;
+	var $fwport    = null;
 
 	/**
-	 * Description for 'vncpass'
+	 * varchar(16)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $vncpass   = null;
 
 	/**
-	 * Description for 'readonly'
+	 * varchar(4)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $readonly  = null;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( 'viewperm', 'sessnum', $db );
+		parent::__construct('viewperm', 'sessnum', $db);
 	}
 
 	/**
-	 * Short description for 'loadViewperm'
+	 * Load a record
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $sess Parameter description (if any) ...
-	 * @param      string $username Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $sess     Session number
+	 * @param      string  $username Username
+	 * @return     mixed False on error, array on success
 	 */
-	public function loadViewperm( $sess=null, $username=null )
+	public function loadViewperm($sess=null, $username=null)
 	{
-		if ($sess == null) {
+		if ($sess == null) 
+		{
 			$sess = $this->sessnum;
 		}
-		if ($sess === null) {
+		if ($sess === null) 
+		{
 			return false;
 		}
 		$query = "SELECT * FROM $this->_tbl WHERE sessnum='$sess'";
-		if ($username) {
-			$query .=  " AND viewuser='".$username."'";
+		if ($username) 
+		{
+			$query .=  " AND viewuser='" . $username . "'";
 		}
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'deleteViewperm'
+	 * Delete a record
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $sess Parameter description (if any) ...
-	 * @param      string $username Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $sess     Session number
+	 * @param      string  $username Username
+	 * @return     boolean False on error, true on success
 	 */
-	public function deleteViewperm( $sess=null, $username=null )
+	public function deleteViewperm($sess=null, $username=null)
 	{
-		if ($sess == null) {
+		if ($sess == null) 
+		{
 			$sess = $this->sessnum;
 		}
-		if ($sess === null) {
+		if ($sess === null) 
+		{
 			return false;
 		}
 		$query = "DELETE FROM $this->_tbl WHERE sessnum='$sess'";
-		if ($username) {
-			$query .=  " AND viewuser='".$username."'";
+		if ($username) 
+		{
+			$query .=  " AND viewuser='" . $username . "'";
 		}
-		$this->_db->setQuery( $query );
-		if (!$this->_db->query()) {
-			$err = $this->_db->getErrorMsg();
-			die( $err );
+		$this->_db->setQuery($query);
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
 		}
+		return true;
 	}
 
 	/**
-	 * Short description for 'update'
+	 * Update a record
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      boolean $updateNulls Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      boolean $updateNulls Update null values?
+	 * @return     boolean False on error, true on success
 	 */
-	public function update( $updateNulls=false )
+	public function update($updateNulls=false)
 	{
-		$ret = $this->_db->updateObject( $this->_tbl, $this, $this->_tbl_key, $updateNulls );
+		$ret = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, $updateNulls);
 
-		if (!$ret) {
-			$this->setError(get_class( $this ).'::store failed - '.$this->_db->getErrorMsg());
+		if (!$ret) 
+		{
+			$this->setError(get_class($this) . '::store failed - ' . $this->_db->getErrorMsg());
 			return false;
-		} else {
+		} 
+		else 
+		{
 			return true;
 		}
 	}
 
 	/**
-	 * Short description for 'insert'
+	 * Insert a record
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean False on error, true on success
 	 */
 	public function insert()
 	{
-		$ret = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key );
+		$ret = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
 
-		if (!$ret) {
-			$this->setError(get_class( $this ).'::store failed - '.$this->_db->getErrorMsg());
+		if (!$ret) 
+		{
+			$this->setError(get_class($this) . '::store failed - ' . $this->_db->getErrorMsg());
 			return false;
-		} else {
+		} 
+		else 
+		{
 			return true;
 		}
 	}
 }
 
-//----------------------------------------------------------
-// Narwhal class
-//----------------------------------------------------------
-
 /**
- * Short description for 'MiddlewareApp'
- * 
- * Long description (if any) ...
+ * Narwhal class
  */
 class MiddlewareApp
 {
-
 	/**
-	 * Description for 'appname'
+	 * varchar(80)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $appname;
 
 	/**
-	 * Description for 'geometry'
+	 * varchar(9)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $geometry;
 
 	/**
-	 * Description for 'depth'
+	 * smallint(5)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $depth;
 
 	/**
-	 * Description for 'hostreq'
+	 * bigint(20)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $hostreq;
 
 	/**
-	 * Description for 'userreq'
+	 * bigint(20)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $userreq;
 
 	/**
-	 * Description for 'timeout'
+	 * int(10)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $timeout;
 
 	/**
-	 * Description for 'command'
+	 * varchar(255)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $command;
 
 	/**
-	 * Description for 'description'
+	 * varchar(255)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $description;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $a Parameter description (if any) ...
-	 * @param      unknown $g Parameter description (if any) ...
-	 * @param      unknown $d Parameter description (if any) ...
-	 * @param      unknown $h Parameter description (if any) ...
-	 * @param      unknown $u Parameter description (if any) ...
-	 * @param      unknown $t Parameter description (if any) ...
-	 * @param      unknown $c Parameter description (if any) ...
-	 * @param      unknown $desc Parameter description (if any) ...
+	 * @param      string  $a    App name
+	 * @param      string  $g    Geometry
+	 * @param      integer $d    Depth
+	 * @param      integer $h    Host requirement
+	 * @param      integer $u    User requirement
+	 * @param      integer $t    Timeout
+	 * @param      string  $c    Commans
+	 * @param      string  $desc Description
 	 * @return     void
 	 */
-	public function __construct( $a,$g,$d,$h,$u,$t,$c,$desc )
+	public function __construct($a,$g,$d,$h,$u,$t,$c,$desc)
 	{
 		$this->appname  = $a;
 		$this->geometry = $g;
@@ -761,179 +764,151 @@ class MiddlewareApp
 	}
 }
 
-//----------------------------------------------------------
-// Host class
-//----------------------------------------------------------
-
 /**
- * Short description for 'class'
- * 
- * Long description (if any) ...
+ * Host class
  */
 class Host
 {
-
 	/**
-	 * Description for 'hostname'
+	 * varchar(40)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $hostname;
 
 	/**
-	 * Description for 'provisions'
+	 * bigint(20)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $provisions;
 
 	/**
-	 * Description for 'status'
+	 * varchar(20)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $status;
 
 	/**
-	 * Short description for 'Description'
+	 * Set values
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $h Parameter description (if any) ...
-	 * @param      unknown $p Parameter description (if any) ...
-	 * @param      unknown $s Parameter description (if any) ...
+	 * @param      string  $h Hostname
+	 * @param      integer $p Provisions
+	 * @param      string  $s Status
 	 * @return     void
 	 */
-	public function Description($h,$p,$s)
+	public function Description($h, $p, $s)
 	{
-		$this->hostname = $h;
+		$this->hostname   = $h;
 		$this->provisions = $p;
-		$this->status = $s;
+		$this->status     = $s;
 	}
 }
 
-//----------------------------------------------------------
-// Hosttype class
-//----------------------------------------------------------
-
 /**
- * Short description for 'Hosttype'
- * 
- * Long description (if any) ...
+ * Hosttype class
  */
 class Hosttype
 {
-
 	/**
-	 * Description for 'name'
+	 * varchar(40)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $name;
 
 	/**
-	 * Description for 'value'
+	 * bigint(20)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $value;
 
 	/**
-	 * Description for 'description'
+	 * varchar(255)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $description;
 
 	/**
-	 * Short description for 'Description'
+	 * Set values
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $n Parameter description (if any) ...
-	 * @param      unknown $v Parameter description (if any) ...
-	 * @param      unknown $d Parameter description (if any) ...
+	 * @param      string  $n Name
+	 * @param      integer $v Value
+	 * @param      string  $d Description
 	 * @return     void
 	 */
-	public function Description($n,$v,$d)
+	public function Description($n, $v, $d)
 	{
-		$this->name = $n;
-		$this->value = $v;
+		$this->name        = $n;
+		$this->value       = $v;
 		$this->description = $d;
 	}
 }
 
-//----------------------------------------------------------
-// Recent tools class
-//----------------------------------------------------------
-
 /**
- * Short description for 'class'
- * 
- * Long description (if any) ...
+ * Recent tools class
  */
 class RecentTool extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $id      = NULL;
 
 	/**
-	 * Description for 'uid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $uid     = NULL;
 
 	/**
-	 * Description for 'tool'
+	 * varchar
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $tool    = NULL;
 
 	/**
-	 * Description for 'created'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $created = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__recent_tools', 'id', $db );
+		parent::__construct('#__recent_tools', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'getRecords'
+	 * Get all records for recently used tools
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $uid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $uid User ID
+	 * @return     mixed False if error, array on success
 	 */
-	public function getRecords( $uid=null )
+	public function getRecords($uid=null)
 	{
-		if ($uid == null) {
+		if ($uid == null) 
+		{
 			$uid = $this->uid;
 		}
-		if ($uid === null) {
+		if ($uid === null) 
+		{
 			return false;
 		}
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE uid=".$uid." ORDER BY created DESC" );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE uid=" . $uid . " ORDER BY created DESC");
 		return $this->_db->loadObjectList();
 	}
 }
-?>

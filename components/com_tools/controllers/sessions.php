@@ -543,14 +543,14 @@ class ToolsControllerSessions extends Hubzero_Controller
 			}
 
 			$mv = new MwViewperm($mwdb);
-			$checkrows = $mv->loadViewperm($sess, $user);
+			$checkrows = $mv->loadViewperm($sess, $zuser->get('username'));
 
 			// If there are no matching entries in viewperm, add a new entry,
 			// Otherwise, update the existing entry (e.g. readonly).
 			if (count($checkrows) == 0) 
 			{
 				$mv->sessnum   = $sess;
-				$mv->viewuser  = $user;
+				$mv->viewuser  = $zuser->get('username');
 				$mv->viewtoken = md5(rand());
 				$mv->geometry  = $rows[0]->geometry;
 				$mv->fwhost    = $rows[0]->fwhost;
