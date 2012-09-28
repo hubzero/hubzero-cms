@@ -482,6 +482,30 @@
 		white-space: -pre-wrap;
 		white-space: -o-pre-wrap;
 	}
+	.wikipage .pre {
+		font-family: "Bitstream Vera Sans Mono", Courier, Monaco, ProFont, "American Typewriter", "Andale Mono", monospace;
+		color: #555;
+		background-color: #f7f7f7;
+		border: 1px solid #d7d7d7;
+		margin: 1em 1.75em;
+		padding: .25em;
+		overflow: auto;
+		font-size: 1.15em;
+		line-height: 1.35em;
+	}
+	.wikipage tt,
+	.wikipage code {
+		display: inline-block;
+		color: #666; /*#600;*/
+		border: 1px solid #ddd; /*#edc;*/
+		-webkit-border-radius: .25em;
+		-moz-border-radius: .25em;
+		-ms-border-radius: .25em;
+		-o-border-radius: .25em;
+		border-radius: .25em;
+		padding: 0 0.3em;
+		background: #fafafa;
+	}
 
 	.com_wiki .wiki .modified-date {
 		color: #aaa;

@@ -485,10 +485,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 			}
 			$styles = implode('; ', $s);
 		}
-		else 
-		{
-			$attr['style'] = '';
-		}
+		$attr['style'] = '';
 
 		$attribs = array();
 		foreach ($attr as $k => $v)
@@ -496,7 +493,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 			$k = strtolower($k);
 			if ($k != 'href' && $k != 'rel' && $k != 'desc' && $v)
 			{
-				$attribs[] = $k . '="' . $v . '"';
+				$attribs[] = $k . '="' . trim($v, '"') . '"';
 			}
 		}
 

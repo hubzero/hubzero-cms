@@ -492,22 +492,19 @@ class FileMacro extends WikiMacro
 						}
 						$styles = implode('; ', $s);
 					}
-					else 
-					{
-						$attr['style'] = '';
-					}
-					
+					$attr['style'] = '';
+
 					$attribs = array();
 					foreach ($attr as $k => $v)
 					{
 						$k = strtolower($k);
 						if ($k != 'href' && $k != 'rel' && $k != 'desc' && $v)
 						{
-							$attribs[] = $k . '="' . $v . '"';
+							$attribs[] = $k . '="' . trim($v, '"') . '"';
 						}
 					}
 					$html  = '<span class="figure"' . ($styles ? ' style="' . $styles . '"' : '') . '>';
-					$img = '<img src="' . $this->_link($file) . '" ' . implode(' ', $attribs) . '" />';
+					$img = '<img src="' . $this->_link($file) . '" ' . implode(' ', $attribs) . ' />';
 					if ($attr['href'] == 'none') 
 					{
 						$html .= $img;

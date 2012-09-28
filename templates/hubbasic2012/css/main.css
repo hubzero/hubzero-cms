@@ -205,6 +205,29 @@
 		-moz-border-radius: 0.25em;
 		border-radius: 0.25em;
 	}
+	body .wikipage .pre,
+	.pre {
+		background-color: #fff; 
+		background-image: -webkit-linear-gradient(#eee 1px, transparent 1px),
+						  -webkit-linear-gradient(0deg, transparent 1em, #eee 1em, #eee 1.1em, transparent 1.1em);
+		background-image: -moz-linear-gradient(#eee 1px, transparent 1px),
+						  -moz-linear-gradient(0deg, transparent 1em, #eee 1em, #eee 1.1em, transparent 1.1em);
+		background-image: -ms-linear-gradient(#eee 1px, transparent 1px),
+						  -ms-linear-gradient(0deg, transparent 1em, #eee 1em, #eee 1.1em, transparent 1.1em);
+		background-image: -o-linear-gradient(#eee 1px, transparent 1px),
+						  -o-linear-gradient(0deg, transparent 1em, #eee 1em, #eee 1.1em, transparent 1.1em);
+		background-image: linear-gradient(#eee 1px, transparent 1px),
+						  linear-gradient(0deg, transparent 1em, #eee 1em, #eee 1.1em, transparent 1.1em);
+		background-size: 100% 1.35em;
+		background-position: 0 -1px;
+		-webkit-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		-moz-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		-o-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		border-radius: 0.25em;
+	}
 	code,
 	tt {
 		font-family: Monaco, ProFont, "Bitstream Vera Sans Mono", "American Typewriter", "Andale Mono", monospace;

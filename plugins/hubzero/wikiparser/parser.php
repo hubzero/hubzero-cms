@@ -212,7 +212,12 @@ class WikiParser
 		$text = $this->math($text);
 
 		// Strip HTML tags out
+		//$text = preg_replace("/(\<|\>\.)|(\<\>)/i", '', $text);
+		$text = str_replace('<.', '&lt;.', $text);
+		$text = str_replace('<>', '&lt;&gt;', $text);
 		$text = strip_tags($text, '<pre><code><xpre><math>');
+		$text = str_replace('&lt;.', '<.', $text);
+		$text = str_replace('&lt;&gt;', '<>', $text);
 
 		// Tables need to come after variable replacement for things to work
 		// properly; putting them before other transformations should keep
@@ -462,6 +467,7 @@ class WikiParser
 		$title = preg_replace('/\(.*?\)/', '', $title);
 		$title = preg_replace('/^.*?\:/', '', $title);
 
+		// Should this really be an external link?
 		$UrlPtn  = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)" .
 		           "(?:[^ |\\/\"\']*\\/)*[^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]";
 
@@ -470,6 +476,21 @@ class WikiParser
 		{
 			$regex = '(' . '\[' . '([^\]\[]*?)' . '(\s+[^\]]*?)?' . '\]' . ')';
 			return preg_replace_callback("/$regex/i", array(&$this, 'linkExternal'), $matches[0]);
+		}
+
+		// Are we placing an anchor?
+		if (substr($href, 0, 2) == '=#')
+		{
+			$l = '<a name="' . ltrim($href, '=#') . '"></a>';
+			array_push($this->links, $l);
+			return '<link></link>';
+		}
+		// Are we jumping to an anchor?
+		else if (substr($href, 0, 1) == '#')
+		{
+			$l = '<a class="wiki int-link" href="' . $href . '">' . $title . '</a>';
+			array_push($this->links, $l);
+			return '<link></link>';
 		}
 
 		$cls = 'wiki';
@@ -511,7 +532,7 @@ class WikiParser
 
 		if (!$p->id) 
 		{
-			$cls .= (substr($href,0,1) != '?') ? ' missing' : '';
+			$cls .= (substr($href, 0, 1) != '?') ? ' missing' : '';
 			$p->scope = ($p->scope) ? $p->scope : $this->scope;
 		} 
 		else 
@@ -666,6 +687,9 @@ class WikiParser
 		$bits = explode("\n", $text);
 		foreach ($bits as $line)
 		{
+			$line = $this->doSpecial($line, '`{{{', '}}}`', 'fPCode');
+			$line = $this->doSpecial($line, '{{{`', '`}}}', 'fCCode');
+
 			$line = preg_replace_callback('/\{\{\{([\s]*)/i', array(&$this, 'handle_pre_up'), $line);
 			$line = preg_replace_callback('/([\s]*)\}\}\}/i', array(&$this, 'handle_pre_down'), $line);
 			$output .= $line . "\n";
@@ -673,12 +697,13 @@ class WikiParser
 			if ($this->counter == 0) 
 			{
 				$output = preg_replace_callback('/\{\{\{1([\s\S]*)1\}\}\}/i', array(&$this, 'handle_save_pre'), $output);
-				$output = $this->doSpecial($output, '`{{{', '}}}`', 'fPCode');
-				$output = $this->doSpecial($output, '{{{`', '`}}}', 'fCCode');
+				//$output = $this->doSpecial($output, '`{{{', '}}}`', 'fPCode');
+				//$output = $this->doSpecial($output, '{{{`', '`}}}', 'fCCode');
 				$output = preg_replace_callback('/\{\{\{(.+?)\}\}\}/i', array(&$this, 'handle_save_code'), $output);
 				$output = $this->doSpecial($output, '`', '`', 'fCode');
 			}
 		}
+
 		$output = str_replace('<code><code>', '<code>', $output);
 		$output = str_replace('</code></code>', '</code>', $output);
 
@@ -801,7 +826,7 @@ class WikiParser
 		} 
 		else if (substr($t, 0, strlen('#!comment')) == '#!comment') 
 		{
-			return '<!-- ' . $matches[1] . ' -->';
+			return ''; //'<!-- ' . $matches[1] . ' -->';
 		} 
 		else 
 		{
@@ -839,25 +864,65 @@ class WikiParser
 			return '{{{' . $txt . '}}}';
 		}
 
-		$t = trim($txt);
-		$t = str_replace("\n", '', $t);
-		if (substr($t, 0, 6) == '#!html') 
+		$txt = trim($txt, "\n");
+
+		$lines = explode("\n", $txt);
+		$t = (isset($lines[0])) ? $lines[0] : '';
+
+		if (substr($t, 0, 2) == '#!') 
 		{
-			if ($this->fullparse)
+			$t = strtolower(substr($t, 2));
+			switch ($t)
 			{
-				$txt = $this->cleanXss($txt);
-				return preg_replace('/#!html/', '', $txt, 1);
+				case 'html':
+					if ($this->fullparse)
+					{
+						$txt = $this->cleanXss($txt);
+						return preg_replace('/#!html/', '', $txt, 1);
+					}
+					else
+					{
+						return '<strong>' . JText::_('Wiki HTML blocks not allowed') . '</strong>';
+					}
+				break;
+				
+				case 'htmlcomment':
+					$txt = preg_replace("/(\#\!$t\s*)/i", '', $txt);
+					return '<!-- ' . $this->encode_html($txt) . ' -->';
+				break;
+				
+				case 'c':
+				case 'cpp':
+				case 'python':
+				case 'perl':
+				case 'php':
+				case 'ruby':
+				case 'asp':
+				case 'java':
+				case 'js':
+				case 'sql':
+				case 'xml':
+				case 'sh':
+					jimport('geshi.geshi');
+
+					$txt = preg_replace("/(\#\!$t\s*)/i", '', $txt);
+
+					$geshi = new GeSHi('', $t);
+					$geshi->set_header_type(GESHI_HEADER_DIV);
+					$geshi->set_source($txt);
+
+					return '<div class="pre ' . $t . '">' . $geshi->parse_code() . '</div>';
+				break;
+				
+				case 'default':
+				default:
+					$txt = preg_replace("/(\#\!$t\s*)/i", '', $txt);
+					return '<pre>' . $this->encode_html($txt) . '</pre>';
+				break;
 			}
-			else
-			{
-				$txt = $this->cleanXss($txt);
-				return '<strong>' . JText::_('Wiki HTML blocks not allowed') . '</strong>';
-			}
-		} 
-		else 
-		{
-			return '<pre>' . $this->encode_html($txt) . '</pre>';
 		}
+
+		return '<pre>' . $this->encode_html($txt) . '</pre>';
 	}
 
 	/**
@@ -874,6 +939,10 @@ class WikiParser
 		{
 			$txt = str_replace('<code>', '', $txt);
 			$txt = str_replace('</code>', '', $txt);
+			if (substr($txt, 0, 1) == '`')
+			{
+				return '{{{' . $txt . '}}}';
+			}
 			return '`' . $txt . '`';
 		}
 
@@ -1472,7 +1541,7 @@ class WikiParser
 	 * @param      integer $include_id Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	private function pba($in, $element = "", $include_id = 1)
+	private function pba($in, $element = '', $include_id = 1)
 	{
 		$style = '';
 		$class = '';
@@ -1982,7 +2051,7 @@ class WikiParser
 	{
 		$tatts = $this->pba($matches[1], 'table');
 
-		foreach (preg_split("/\|\|$/m", $matches[2], -1, PREG_SPLIT_NO_EMPTY) as $row)
+		foreach (preg_split("/\|\|( *)$/m", $matches[2], -1, PREG_SPLIT_NO_EMPTY) as $row)
 		{
 			if (preg_match("/^($this->a$this->c\.)(.*)/m", ltrim($row), $rmtch)) 
 			{
@@ -1995,17 +2064,36 @@ class WikiParser
 			}
 
 			$cells = array();
-			$row = trim(trim($row), '|');
-			foreach (explode("||", $row) as $cell)
+
+			$colspan = 0;
+			// Can't use trim($row, '|') as it would remove empy (colspan) cells.
+			// EX:
+			//    ||||  content ||
+			//    trim result: "  content "
+			// This would lead to an incorrect cell count.
+			$row = preg_replace("/^\|\|(.*)(\|\|)?$/", "$1", ltrim($row));
+			foreach (explode('||', $row) as $cell)
 			{
-				$ctyp = "d";
+				// If it's an empty cell, we're colspanning
+				if ($cell == '')
+				{
+					// If colspan isn't set, start with 2 (we can't colspan="1"), 
+					// otherwise up the count by 1 and move on to the next cell
+					$colspan = ($colspan > 0) ? $colspan + 1 : 2;
+					continue;
+				}
+				// Cell type
+				$ctyp = 'd';
 				if (preg_match("/^_/", $cell) || preg_match("/^=(.*)=$/", $cell)) 
 				{
-					$ctyp = "h";
-					$cell = trim($cell, '=');
+					$ctyp = 'h';
+					$cell = substr($cell, 1, -1); //trim($cell, '=');
 				}
+
+				// Cell attributes
 				if (preg_match("/^(_?$this->s$this->a$this->c\.)(.*)/", $cell, $cmtch) || preg_match("/^(=?$this->s$this->a$this->c\.)(.*)=?/", $cell, $cmtch)) 
 				{
+					// Parse Block Attributes
 					$catts = $this->pba($cmtch[1], 'td');
 					$cell = $cmtch[2];
 				} 
@@ -2013,13 +2101,34 @@ class WikiParser
 				{
 					$catts = '';
 				}
-
+				$prefixLength = strspn($cell, ' ', 0);
+				$suffixLength = strspn($cell, ' ', $prefixLength + strlen(trim($cell)));
+				if (!$catts)
+				{
+					if ($suffixLength == 0 && $prefixLength > 0)
+					{
+						$catts .= ' style="text-align:right;"';
+					}
+					else if ($suffixLength > 0 && $prefixLength == 0)
+					{
+						$catts .= ' style="text-align:left;"';
+					}
+					/*else if ($suffixLength > 0 && $prefixLength > 0 && $suffixLength == $prefixLength)
+					{
+						$catts .= ' style="text-align:justify;"';
+					}*/
+				}
+				// Is there a colspan set?
+				// If so, apply it and reset $colspan
+				if ($colspan)
+				{
+					$catts .= ' colspan="' . $colspan . '"';
+					$colspan = 0;
+				}
+				// Apply formatting to cell contents
 				$cell = $this->spans($cell);
 
-				if ($cell != '')
-				{
-					$cells[] = "\t\t\t<t$ctyp$catts>$cell</t$ctyp>";
-				}
+				$cells[] = "\t\t\t<t$ctyp$catts>$cell</t$ctyp>";
 			}
 			$rows[] = "\t\t<tr$ratts>\n" . join("\n", $cells) . ($cells ? "\n" : '') . "\t\t</tr>";
 			unset($cells, $catts);

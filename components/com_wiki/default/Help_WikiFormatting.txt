@@ -68,6 +68,8 @@ Line 1[[BR]]Line 2
 
 The wiki supports both ordered/numbered and unordered lists.
 
+'''NOTE:''' The first character of a list item must be a space: " * text"
+
 Example:
 {{{
  * Item 1
@@ -146,7 +148,6 @@ Example:
 Display:
   This text is a quote from someone else.
 
-== Tables ==
 
 Simple tables can be created like this:
 {{{
@@ -171,6 +172,65 @@ Display:
 ||        ||= stable =||= latest =||
 ||= 0.10 =||  0.10.5  || 0.10.6dev||
 ||= 0.11 =||  0.11.6  || 0.11.7dev||
+
+Finally, specifying an empty cell means that the next non empty cell will span the empty cells. For example:
+
+{{{
+|| 1 || 2 || 3 ||
+|||| 1-2 || 3 ||
+|| 1 |||| 2-3 ||
+|||||| 1-2-3 ||
+}}}
+
+Display:
+
+|| 1 || 2 || 3 ||
+|||| 1-2 || 3 ||
+|| 1 |||| 2-3 ||
+|||||| 1-2-3 ||
+
+To explicitly align content:
+{{{
+||= attribute list =||= longer column  =||
+||<. align left     ||   longer text    ||
+||>. align right    ||   longer text    ||
+||=. center         ||   longer text    ||
+||<>. justify       ||   longer text    ||
+||^. valign top     || longer[[br]]text ||
+||~. bottom         || longer[[br]]text ||
+}}}
+
+Display:
+
+||= attribute list =||= longer column  =||
+||<. align left     ||   longer text    ||
+||>. align right    ||   longer text    ||
+||=. center         ||   longer text    ||
+||<>. justify       ||   longer text    ||
+||^. valign top     || longer[[br]]text ||
+||~. bottom         || longer[[br]]text ||
+
+Note that if the content of a cell "sticks" to one side of the cell and only one, then the text will be aligned on that side. Explicit alignment (above) will override this. Example:
+
+{{{
+||=Text =||= Numbers =||
+||left align    ||        1.0||
+||      right align||     4.5||
+|| default alignment ||   2.5||
+||default||         2.5||
+||  default ||      2.5||
+|| default ||       2.5||
+||<.     left align||     4.5||
+}}}
+
+||=Text =||= Numbers =||
+||left align    ||        1.0||
+||      right align||     4.5||
+|| default alignment ||   2.5||
+||default||         2.5||
+||  default ||      2.5||
+|| default ||       2.5||
+||<.     left align||     4.5||
 
 == Links ==
 
@@ -198,9 +258,39 @@ Display:
  * [MainPage Main Page]
  * [Help:WikiMacros]
 
-== Escaping Links and WikiPageNames ==
+== Setting Anchors ==
 
-You may avoid making hyperlinks out of !TracLinks by preceding an expression with a single "!" (exclamation mark).
+An anchor, or more correctly speaking, an anchor name can be added explicitly at any place in the Wiki page, in order to uniquely identify a position in the document:
+
+{{{
+[=#point1]
+}}}
+
+It's also very close to the syntax for the corresponding link to that anchor:
+
+{{{
+[#point1]
+}}}
+
+Example usage:
+
+{{{
+[#point2 jump to the second point]
+
+...
+
+Point2:  [=#point2] Jump here
+}}}
+
+[#point2 jump to the second point]
+
+...
+
+Point2:  [=#point2] Jump here
+
+== Escaping Links and Wiki Page Names ==
+
+You may avoid making hyperlinks out of !WikiLinks by preceding an expression with a single "!" (exclamation mark).
 
 Example:
 {{{
