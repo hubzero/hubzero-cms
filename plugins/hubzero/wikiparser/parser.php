@@ -97,11 +97,39 @@ class WikiParser
 	var $hlgn, $vlgn, $lnge, $clas, $styl, $cspn, $rspn, $a, $s, $c;
 
 	/**
-	 * Description for 'pageid'
+	 * Current page ID
 	 * 
 	 * @var integer
 	 */
-	var $pageid, $option, $scope, $pagename, $pres;
+	var $pageid;
+
+	/**
+	 * Current component name
+	 * 
+	 * @var string
+	 */
+	var $option;
+
+	/**
+	 * Page scope
+	 * 
+	 * @var string
+	 */
+	var $scope;
+
+	/**
+	 * Page name
+	 * 
+	 * @var string
+	 */
+	var $pagename;
+
+	/**
+	 * Temp container for PREs
+	 * 
+	 * @var array
+	 */
+	var $pres;
 
 	/**
 	 * Constructor
@@ -134,11 +162,11 @@ class WikiParser
 		$this->styl = "(?:\{[^}]+\})";
 		$this->cspn = "(?:\\\\\d+)";
 		$this->rspn = "(?:\/\d+)";
-		$this->a = "(?:{$this->hlgn}|{$this->vlgn})*";
-		$this->s = "(?:{$this->cspn}|{$this->rspn})*";
-		//$this->c = "(?:{$this->clas}|{$this->styl}|{$this->lnge}|{$this->hlgn})*";
-		//$this->c = "(?:{$this->clas}|{$this->styl}|{$this->lnge})*";
-		$this->c = "(?:{$this->clas}|{$this->styl})*";
+		$this->a    = "(?:{$this->hlgn}|{$this->vlgn})*";
+		$this->s    = "(?:{$this->cspn}|{$this->rspn})*";
+		//$this->c   = "(?:{$this->clas}|{$this->styl}|{$this->lnge}|{$this->hlgn})*";
+		//$this->c   = "(?:{$this->clas}|{$this->styl}|{$this->lnge})*";
+		$this->c    = "(?:{$this->clas}|{$this->styl})*";
 	}
 
 	/**
@@ -298,13 +326,11 @@ class WikiParser
 	}
 
 	/**
-	 * Short description for 'replaceLinks'
+	 * Convert wiki links to HTML links
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $text Parameter description (if any) ...
-	 * @param      integer $camelcase Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string  $text      Wiki markup
+	 * @param      integer $camelcase Convert camcel-cased text? 1=yes, 0=no
+	 * @return     string
 	 */
 	public function links($text, $camelcase=1)
 	{
@@ -374,7 +400,11 @@ class WikiParser
 	/**
 	 * Automatically links any strings matching a URL pattern
 	 * 
-	 * @param      array $matches Parameter description (if any) ...
+	 * Link is pushed to internal array and placeholder returned
+	 * This is to ensure links aren't parsed twice. We put the links back in place
+	 * towards the end of parsing.
+	 * 
+	 * @param      array $matches Text matching link pattern
 	 * @return     string
 	 */
 	public function linkAuto($matches)
@@ -418,7 +448,7 @@ class WikiParser
 	}
 
 	/**
-	 * Obfuscate an email adress
+	 * Obfuscate an email address
 	 * 
 	 * @param      string $email Address to obfuscate
 	 * @return     string
@@ -436,12 +466,11 @@ class WikiParser
 	}
 
 	/**
-	 * Short description for 'linkAutoRestore'
+	 * Turn link placeholders into actual links
+	 * (see linkAuto() method)
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $matches Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      array $matches Text matching autolink tag
+	 * @return     string Placeholder tag
 	 */
 	public function linkAutoRestore($matches)
 	{
@@ -449,12 +478,13 @@ class WikiParser
 	}
 
 	/**
-	 * Short description for 'linkInternal'
+	 * Generate a link to an external (off-site) page
+	 * Link is pushed to internal array and placeholder returned
+	 * This is to ensure links aren't parsed twice. We put the links back in place
+	 * towards the end of parsing.
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $matches Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      array $matches Text matching internal link pattern
+	 * @return     string Placeholder tag
 	 */
 	public function linkInternal($matches)
 	{
@@ -548,12 +578,11 @@ class WikiParser
 	}
 
 	/**
-	 * Short description for 'linkRestore'
+	 * Turn link placeholders into actual links
+	 * (see linkExternal() and linkInternal() methods)
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $matches Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      array $matches Text matching internal link placeholder pattern
+	 * @return     string HTML
 	 */
 	public function linkRestore($matches)
 	{
@@ -561,12 +590,13 @@ class WikiParser
 	}
 
 	/**
-	 * Short description for 'linkExternal'
+	 * Generate a link to an internal (same site) page
+	 * Link is pushed to internal array and placeholder returned
+	 * This is to ensure links aren't parsed twice. We put the links back in place
+	 * towards the end of parsing.
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $matches Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array $matches Text matching internal link pattern
+	 * @return     string Placeholder tag
 	 */
 	public function linkExternal($matches)
 	{
@@ -623,13 +653,11 @@ class WikiParser
 	}
 
 	/**
-	 * Short description for 'linkWikiName'
+	 * Generate a link to a wiki page based on page name
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      mixed $name Parameter description (if any) ...
-	 * @param      unknown $anchor Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      string $name   Page name
+	 * @param      string $anchor Anchor
+	 * @return     string
 	 */
 	public function linkWikiName($name, $anchor)
 	{
@@ -669,12 +697,10 @@ class WikiParser
 	}
 
 	/**
-	 * Short description for 'strip'
+	 * Strip <pre> and <code> blocks from text
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $text Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string $text Wiki markup
+	 * @return     string 
 	 */
 	private function strip($text)
 	{
@@ -711,12 +737,11 @@ class WikiParser
 	}
 
 	/**
-	 * Short description for 'shelve'
+	 * Store an item in the shelf
+	 * Returns a unique ID as a placeholder for content retrieval later on
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $val Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string $val Content to store
+	 * @return     integer Unique ID
 	 */
 	private function shelve($val)
 	{
@@ -726,13 +751,11 @@ class WikiParser
 	}
 
 	/**
-	 * Short description for 'unstrip'
+	 * Put <pre> blocks back into the main content flow
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $text Parameter description (if any) ...
-	 * @param      boolean $html Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string  $text Wiki markup
+	 * @param      boolean $html Escape HTML?
+	 * @return     string
 	 */
 	private function unstrip($text, $html=true)
 	{
@@ -759,7 +782,7 @@ class WikiParser
 	/**
 	 * Adds a count to first level PRE blocks 
 	 * Enables handling of nested blocks by appending a first level indicator
-	  * {{{1
+	 * {{{1
 	 *    {{{
 	 *       ...
 	 *    }}}
@@ -864,11 +887,12 @@ class WikiParser
 			return '{{{' . $txt . '}}}';
 		}
 
-		$txt = trim($txt, "\n");
+		$ttxt = trim($txt);
 
-		$lines = explode("\n", $txt);
-		$t = (isset($lines[0])) ? $lines[0] : '';
+		$lines = explode("\n", $ttxt);
+		$t = (isset($lines[0])) ? trim($lines[0]) : '';
 
+		// Check for processor flag
 		if (substr($t, 0, 2) == '#!') 
 		{
 			$t = strtolower(substr($t, 2));
@@ -885,12 +909,12 @@ class WikiParser
 						return '<strong>' . JText::_('Wiki HTML blocks not allowed') . '</strong>';
 					}
 				break;
-				
+
 				case 'htmlcomment':
 					$txt = preg_replace("/(\#\!$t\s*)/i", '', $txt);
 					return '<!-- ' . $this->encode_html($txt) . ' -->';
 				break;
-				
+
 				case 'c':
 				case 'cpp':
 				case 'python':
@@ -906,6 +930,7 @@ class WikiParser
 					jimport('geshi.geshi');
 
 					$txt = preg_replace("/(\#\!$t\s*)/i", '', $txt);
+					$txt = trim($txt, "\n\r\t");
 
 					$geshi = new GeSHi('', $t);
 					$geshi->set_header_type(GESHI_HEADER_DIV);
@@ -913,10 +938,11 @@ class WikiParser
 
 					return '<div class="pre ' . $t . '">' . $geshi->parse_code() . '</div>';
 				break;
-				
+
 				case 'default':
 				default:
 					$txt = preg_replace("/(\#\!$t\s*)/i", '', $txt);
+					$txt = trim($txt, "\n\r\t");
 					return '<pre>' . $this->encode_html($txt) . '</pre>';
 				break;
 			}
@@ -983,9 +1009,7 @@ class WikiParser
 	}
 
 	/**
-	 * Short description for 'fPCode'
-	 * 
-	 * Long description (if any) ...
+	 * `{{{...}}}`
 	 * 
 	 * @param      unknown $m Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -998,9 +1022,7 @@ class WikiParser
 	}
 
 	/**
-	 * Short description for 'fCCode'
-	 * 
-	 * Long description (if any) ...
+	 * {{{`...`}}}
 	 * 
 	 * @param      unknown $m Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -1013,9 +1035,7 @@ class WikiParser
 	}
 
 	/**
-	 * Short description for 'fCode'
-	 * 
-	 * Long description (if any) ...
+	 * `...`
 	 * 
 	 * @param      unknown $m Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -1028,9 +1048,7 @@ class WikiParser
 	}
 
 	/**
-	 * Short description for 'fPre'
-	 * 
-	 * Long description (if any) ...
+	 * {{{...}}}
 	 * 
 	 * @param      unknown $m Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
