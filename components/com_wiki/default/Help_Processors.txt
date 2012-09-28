@@ -43,9 +43,23 @@ As some processors are meant to process Wiki markup, it's quite possible to nest
 || `#!html` || Insert custom HTML in a wiki page. For more details see the [Help:WikiHtml Wiki HTML help page]. ||
 || `#!htmlcomment` || Insert an HTML comment in a wiki page. ||
 ||||==. Code Highlighting Support =||
-||#!c[[br]]#!cpp (C++)[[br]]#!python[[br]]#!perl[[br]]#!ruby[[br]]#!php[[br]]#!asp[[br]]#!java[[br]]#!js (Javascript)[[br]]#!sql[[br]]#!xml (XML or HTML)[[br]]#!sh (Bourne/Bash shell)||The wiki includes processors to provide inline syntax highlighting for source code in various languages.||
+|| `#!c` [[br]] `#!cpp` (C++)[[br]] `#!python` [[br]] `#!perl` [[br]] `#!ruby` [[br]] `#!php` [[br]] `#!asp` [[br]] `#!java` [[br]] `#!js` (Javascript)[[br]] `#!sql` [[br]] `#!xml` [[br]] `#!sh` (Bourne/Bash shell) || The wiki includes processors to provide inline syntax highlighting for source code in various languages. ||
 
 Example:
+
+{{{
+{{{
+#!php
+$yes = true;
+if ($yes)
+{
+    echo 'Yes!';
+}
+}}}
+}}}
+
+Displays:
+
 {{{
 #!php
 $yes = true;
