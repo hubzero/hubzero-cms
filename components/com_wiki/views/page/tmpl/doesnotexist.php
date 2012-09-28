@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<div id="<?php echo ($this->page->group_cn) ? 'sub-content-header' : 'content-header'; ?>" class="full">
+<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>" class="full">
 	<h2><?php echo $this->escape($this->title); ?></h2>
 </div><!-- /#content-header -->
 
@@ -54,12 +54,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<p class="warning">
 		This page does not exist. Would you like to <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=new'); ?>">create it?</a>
 	</p>
+<?php if ($templates = $this->page->getTemplates()) { ?>
 	<p>
 		<?php echo JText::_('Or choose a page template to create an already-formatted page:'); ?>
 	</p>
 	<ul>
 <?php 
-if ($templates = $this->page->getTemplates()) {
+if ($templates) {
 	foreach ($templates as $template)
 	{
 ?>
@@ -79,5 +80,6 @@ if ($templates = $this->page->getTemplates()) {
 }
 ?>
 	</ul>
+<?php } ?>
 	<div class="clear"></div>
 </div><!-- / .main section -->

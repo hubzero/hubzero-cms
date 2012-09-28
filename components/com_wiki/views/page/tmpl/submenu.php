@@ -35,13 +35,13 @@ $juser =& JFactory::getUser();
 if (!$juser->get('guest')) { ?>
 <div id="<?php echo ($this->sub) ? 'sub-content-header-extra' : 'content-header-extra'; ?>">
 	<ul id="<?php echo ($this->sub) ? 'page_options' : 'useroptions'; ?>">
-	<?php if ($this->page->pagename != 'MainPage') { ?>
+	<?php /*if ($this->page->pagename != 'MainPage') { ?>
 		<li>
 			<a class="main-page btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope); ?>">
 				<?php echo JText::_('Main Page'); ?>
 			</a>
 		</li>
-	<?php } ?>
+	<?php }*/ ?>
 	<?php if ($this->config->get('access-create')) { ?>
 		<li>
 			<a class="add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&task=new'); ?>">
@@ -60,33 +60,47 @@ if (!$juser->get('guest')) { ?>
 			</a>
 		</li>
 <?php if ($this->page->id) { ?>
-<?php if (($this->page->state == 1 && $this->config->get('access-manage')) || ($this->page->state != 1 && $this->config->get('access-edit'))) { ?>
+	<?php if (($this->page->state == 1 && $this->config->get('access-manage')) || ($this->page->state != 1 && $this->config->get('access-edit'))) { ?>
 		<li class="page-edit<?php if ($this->controller == 'page' && $this->task == 'edit') { echo ' active'; } ?>">
 			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=edit'); ?>">
 				<span><?php echo JText::_('WIKI_TAB_EDIT'); ?></span>
 			</a>
 		</li>
-<?php } ?>
-<?php if ($this->config->get('access-comment-view')) { ?>
+	<?php } ?>
+	<?php if ($this->config->get('access-comment-view')) { ?>
 		<li class="page-comments<?php if ($this->controller == 'comments') { echo ' active'; } ?>">
 			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=comments'); ?>">
 				<span><?php echo JText::_('WIKI_TAB_COMMENTS'); ?></span>
 			</a>
 		</li>
-<?php } ?>
+	<?php } ?>
 		<li class="page-history<?php if ($this->controller == 'history') { echo ' active'; } ?>">
 			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=history'); ?>">
 				<span><?php echo JText::_('WIKI_TAB_HISTORY'); ?></span>
 			</a>
 		</li>
-<?php if ($this->config->get('access-delete')) { ?>
+	<?php if ($this->config->get('access-delete')) { ?>
 		<li class="page-delete<?php if ($this->controller == 'page' && $this->task == 'delete') { echo ' active'; } ?>">
 			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=delete'); ?>">
 				<span><?php echo JText::_('WIKI_DELETE_PAGE'); ?></span>
 			</a>
 		</li>
+	<?php } ?>
 <?php } ?>
-<?php } ?>
+	<?php if ($this->page->pagename != 'MainPage') { ?>
+		<li class="page-main">
+			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope); ?>">
+				<span><?php echo JText::_('Main Page'); ?></span>
+			</a>
+		</li>
+	<?php } ?>
+	<?php if ($this->page->pagename != 'Index') { ?>
+		<li class="page-index">
+			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Index'); ?>">
+				<span><?php echo JText::_('Index'); ?></span>
+			</a>
+		</li>
+	<?php } ?>
 	</ul>
 	<div class="clear"></div>
 </div><!-- / .page-options -->

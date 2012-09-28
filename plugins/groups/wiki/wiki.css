@@ -48,87 +48,58 @@
 	}
 
 /* (sub) Tabs */
-	#sub-section-menu {
-		height: auto;
-		padding: 0;
-		background: none;
-		border: 3px double #ccc;
+	#sub-menu li a span:before {
+		font-family: "Fontcons";
+		margin-right: 0.4em;
 	}
-	#sub-section-menu ul {
-		background: none;
-		border: none;
-		height: auto;
-		padding: 0;
-		margin: 0;
-	}
-	#sub-section-menu li {
-		height: auto;
-		padding: 0.2em 1em;
-		float: left;
-		display: block;
-		margin: 0;
-		background-image: none;
-	}
-	#sub-section-menu li a {
-		background: none;
-		height: auto;
-		padding: 0;
-		color: #BA7A75;
-	}
-	#sub-section-menu li a span {
-		background: none;
-		height: auto;
-		padding: 0;
-	}
-	#sub-section-menu li.active a {
-		color: #333;
-		border: none;
-	}
-	#sub-menu li.page-delete,
-	#sub-section-menu li.page-delete {
+	#sub-menu li.page-main,
+	#sub-menu li.page-index {
 		float: right;
 	}
-
-/* Table of contents */
-	.article-toc,
-	.article-search {
-		background-color: #eee;
-		margin: 0 0 1em 0;
-		padding: 0.5em;
-	}
-	.article-toc h3,
-	.article-search h3 {
-		margin: 0;
-		padding: 0.4em;
-		color: #fff;
-		background: #777;
-		font-size: 1em;
-		font-weight: bold;
-	}
-	.article-toc ul {
-		margin: 0;
-		padding: 0.4em;
-		max-height: 300px;
-		overflow: auto;
-		border: 1px solid #aaa;
-		background: #fff;
-	}
-	.article-toc ul li {
-		background-image: none;
-	}
-	.article-toc ul ul {
-		max-height: none;
-		border: none;
-		margin: 0 0 0 1em;
+	#sub-menu li.page-main a,
+	#sub-menu li.page-index a {
+		background: transparent;
+		border-radius: 0;
+		color: inherit;
+		text-shadow: none;
+		border-top: none;
+		border-left: none;
+		border-right: none;
+		height: auto;
 		padding: 0;
+		margin: 5px 0 0 30px;
+		display: inline;
 	}
-	.article-toc li {
+	#sub-menu li.page-main a span,
+	#sub-menu li.page-index a span {
 		margin: 0;
-		padding: 0.2em;
+		padding: 0;
+		height: auto;
+		display: inline;
 	}
-	.tocnumber {
-		display: none;
+	#sub-menu li.page-text a span:before {
+		content: "\f036";
 	}
+	#sub-menu li.page-edit a span:before {
+		content: "\270E";
+	}
+	#sub-menu li.page-comments a span:before {
+		content: "\f086";
+	}
+	#sub-menu li.page-history a span:before {
+		content: "\f017";
+	}
+	#sub-menu li.page-delete a span:before {
+		content: "\f057";
+	}
+	#sub-menu li.page-main a span:before {
+		content: "\f071";
+	}
+	#sub-menu li.page-index a span:before {
+		content: "\f03a";
+	}
+
+/* Tags */
 	.article-tags {
 		background: #F4F4F4 url("/components/com_wiki/assets/img/tag_orange.png") 0.5em 0.5em no-repeat;
 		margin: 0 0 1em 0;
@@ -157,17 +128,52 @@
 		background-color: #f4f4f4;
 		text-align: left;
 	}
-	.timestamp .article-usage {
-		float: right;
+
+/* Table of contents */
+	.wikipage .article-toc,
+	.wikipage .article-search {
+		background-color: #eee;
+		margin: 1em 0;
+		padding: 0;
 	}
-	a.ext-link {
-		background: url("/components/com_wiki/assets/img/extlink.gif") 0 0.4em no-repeat;
-		padding-left: 15px;
+	.wikipage .article-toc {
+		width: 300px;
+		/*float: left;*/
 	}
-	a.missing {
-		background: url("/components/com_wiki/assets/img/missinglink.gif") 0 0.4em no-repeat;
-		padding-left: 7px;
+	.wikipage .article-toc h3,
+	.wikipage .article-search h3 {
+		margin: 0;
+		padding: 0.4em;
+		color: #fff;
+		background: #777;
+		font-size: 1em;
+		text-shadow: none;
+		font-weight: bold;
+		text-align: center;
 	}
+	.wikipage .article-toc ul {
+		margin: 0;
+		padding: 0.4em;
+		max-height: 300px;
+		overflow: auto;
+		border: 1px solid #aaa;
+		background: #fff;
+		list-style: none;
+	}
+	.wikipage .article-toc ul li {
+		background-image: none;
+	}
+	.wikipage .article-toc ul ul {
+		max-height: none;
+		border: none;
+		margin: 0 0 0 1em;
+		padding: 0;
+	}
+	.wikipage .article-toc li {
+		margin: 0;
+		padding: 0.2em;
+	}
+
 /* Diffs */
 	.diff-versions {
 		margin: 0;
@@ -421,6 +427,31 @@
 		white-space: -pre-wrap;
 		white-space: -o-pre-wrap;
 	}
+	.wikipage .pre {
+		font-family: "Bitstream Vera Sans Mono", Courier, Monaco, ProFont, "American Typewriter", "Andale Mono", monospace;
+		color: #555;
+		background-color: #f7f7f7;
+		border: 1px solid #d7d7d7;
+		margin: 1em 1.35em;
+		padding: .25em;
+		overflow: auto;
+		font-size: 1.15em;
+		line-height: 1.35em;
+	}
+	.wikipage tt,
+	.wikipage code {
+		display: inline-block;
+		color: #666; /*#600;*/
+		border: 1px solid #ddd; /*#edc;*/
+		-webkit-border-radius: .25em;
+		-moz-border-radius: .25em;
+		-ms-border-radius: .25em;
+		-o-border-radius: .25em;
+		border-radius: .25em;
+		padding: 0 0.3em;
+		background: #fafafa;
+	}
+
 	.modified-date {
 		color: #aaa;
 		font-size: 90%;
@@ -434,6 +465,10 @@
 		display: block;
 	}
 
+	.timestamp .article-usage {
+		float: right;
+	}
+
 	/* Links */
 	.wikipage a.ext-link {
 		background: url("/components/com_wiki/assets/img/extlink.gif") 0 0.4em no-repeat;
@@ -444,17 +479,58 @@
 		padding-left: 7px;
 	}
 
+	.wikipage .mbox-content {
+		border: 1px solid #aaa;
+		background: #fff;
+		border-left: 10px solid #f28500;
+		padding: 0;
+		width: 250px;
+		font-size: 0.85em;
+		position: relative;
+	}
+	.wikipage .mbox-content p.mbox-text {
+		padding: 0.4em 0.4em 0.4em 4.4em;
+		margin: 0;
+		line-height: 1.4em;
+	}
+	.wikipage .mbox-content .mbox-date {
+		font-style: italic;
+	}
+	.wikipage .mbox-unreferenced p:before {
+		font-family: "Fontcons";
+		content: "\275D"; /* \f072 */
+		color: #ddd;
+		font-size: 3em;
+		line-height: 1;
+		position: absolute;
+		top: 0.1em;
+		left: 0.3em;
+	}
+	.wikipage .rellink {
+		font-style: italic;
+		padding-left: 1.6em;
+		margin-bottom: 0.5em;
+	}
+	.wikipage td {
+		background-color: #fff;
+	}
+	.wikipage th {
+		background-color: #f7f7f7;
+	}
+
 /* Figures */
 	.wikipage .figure {
 		display: inline-block;
-		background: #fff;
-		border: 1px solid #eaeaea;
+		background: #efefef;
+		border: 1px solid #e1e1e1;
+		padding: 4px;
 	}
 	.wikipage .figure img {
-		margin: 0;
+		margin: 0; /*.5em;*/
 		padding: 0;
 		background: transparent;
 		text-align: center;
+		display: block;
 	}
 	.wikipage .figure a {
 		border: none;
@@ -462,8 +538,9 @@
 	.wikipage .figcaption {
 		display: block;
 		margin: 0;
-		padding: 0.5em;
+		padding: 0.5em 0;
 		background: #efefef;
+		font-size: 0.85em;
 	}
 
 /* Hide the sidebar if the page is too narrow */

@@ -234,14 +234,14 @@ class WikiParser
 			$text = $this->headings($text);
 		}
 
+		// Process macros
+		$text = $this->macros($text);
+
 		// Do quotes. '''stuff''' => <strong>stuff</strong>
 		$text = $this->quotes($text);
 
 		// Do spans
 		$text = $this->spans($text);
-
-		// Process macros
-		$text = $this->macros($text);
 
 		// Do glyphs
 		$text = $this->glyphs($text);

@@ -79,13 +79,57 @@
 		float: right;
 		margin: 0 0 0 1.5em;
 	}
-	#sub-menu li.page-delete,
-	#sub-sub-menu li.page-delete {
+	#sub-menu li a span:before {
+		font-family: "Fontcons";
+		margin-right: 0.4em;
+	}
+	#sub-menu li.page-main,
+	#sub-menu li.page-index {
 		float: right;
 	}
-	/*#content-header-extra li {
+	#sub-menu li.page-main a,
+	#sub-menu li.page-index a {
+		background: transparent;
+		border-radius: 0;
+		color: inherit;
+		text-shadow: none;
+		border-top: none;
+		border-left: none;
+		border-right: none;
+		height: auto;
+		padding: 0;
+		margin: 5px 0 0 30px;
 		display: inline;
-	}*/
+	}
+	#sub-menu li.page-main a span,
+	#sub-menu li.page-index a span {
+		margin: 0;
+		padding: 0;
+		height: auto;
+		display: inline;
+	}
+	#sub-menu li.page-text a span:before {
+		content: "\f036";
+	}
+	#sub-menu li.page-edit a span:before {
+		content: "\270E";
+	}
+	#sub-menu li.page-comments a span:before {
+		content: "\f086";
+	}
+	#sub-menu li.page-history a span:before {
+		content: "\f017";
+	}
+	#sub-menu li.page-delete a span:before {
+		content: "\f057";
+	}
+	#sub-menu li.page-main a span:before {
+		content: "\f071";
+	}
+	#sub-menu li.page-index a span:before {
+		content: "\f03a";
+	}
+
 	#file-uploader .qq-upload-button {
 		background:#222;
 		background-image: -webkit-linear-gradient(top, #444, #222);

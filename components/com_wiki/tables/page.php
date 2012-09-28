@@ -845,12 +845,13 @@ class WikiPage extends JTable
 	{
 		$this->_db->setQuery("SELECT visitors, visits FROM #__wiki_page_metrics WHERE pageid = " . $this->id);
 		$vals = $this->_db->loadObjectList();
-		$stats = array(
-			'visitors' => 0,
-			'visits'   => 0
-		);
+		$stats = null;
 		if ($vals)
 		{
+			$stats = array(
+				'visitors' => 0,
+				'visits'   => 0
+			);
 			foreach ($vals as $val)
 			{
 				$stats['visitors'] = $val->visitors;
