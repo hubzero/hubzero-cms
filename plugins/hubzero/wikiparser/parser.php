@@ -527,15 +527,16 @@ class WikiParser
 
 		$bits = explode('/', $href);
 
-		$database =& JFactory::getDBO();
-		$p = new WikiPage($database);
+		//$database =& JFactory::getDBO();
+		//$p = new WikiPage($database);
 		if ($namespace == 'wiki:' && substr($href, 0, strlen('&#8220;')) == '&#8220;')
 		{
 			$title = substr($matches[1], strlen('[wiki:&#8220;'));
 			$title = substr($title, 0, -strlen('&#8221;]'));
 			$href = '#';
 
-			$p->loadByTitle($title);
+			//$p->loadByTitle($title);
+			$p = WikiPage::getInstance($title, $this->scope);
 			if ($p->id) 
 			{
 				$href = $p->pagename;
@@ -543,7 +544,7 @@ class WikiParser
 		}
 		else 
 		{
-			if (count($bits) > 1) 
+			/*if (count($bits) > 1) 
 			{
 				$p->pagename = array_pop($bits);
 				$p->scope = implode('/', $bits);
@@ -556,8 +557,23 @@ class WikiParser
 			if (trim(strtolower($namespace)) == 'help:') 
 			{
 				$p->pagename = 'Help:' . $p->pagename;
+			}*/
+			//$p->getID();
+			if (count($bits) > 1) 
+			{
+				$pagename = array_pop($bits);
+				$scope = implode('/', $bits);
+			} 
+			else 
+			{
+				$pagename = end($bits);
+				$scope = $this->scope;
 			}
-			$p->getID();
+			if (trim(strtolower($namespace)) == 'help:') 
+			{
+				$pagename = 'Help:' . $pagename;
+			}
+			$p = WikiPage::getInstance($pagename, $scope);
 		}
 
 		if (!$p->id) 
@@ -666,32 +682,33 @@ class WikiParser
 		{
 			return ltrim($name, '!');
 		}
-		$database =& JFactory::getDBO();
+		//$database =& JFactory::getDBO();
 		$cls = 'wiki';
 		$append = '';
 
-		$p = new WikiPage($database);
-		$p->pagename = $name;
+		
+		//$p->pagename = $name;
 
 		$bits = explode('/', $name);
 		if (count($bits) > 1) 
 		{
-			$p->pagename = array_pop($bits);
-			$p->scope = implode('/', $bits);
+			$pagename = array_pop($bits);
+			$scope = implode('/', $bits);
 		} 
 		else 
 		{
-			$p->pagename = end($bits);
-			$p->scope = $this->scope;
+			$pagename = end($bits);
+			$scope = $this->scope;
 		}
+		$p = WikiPage::getInstance($pagename, $scope);
 
-		$p->getID();
+		//$p->getID();
 		if (!$p->id && substr($name, 0, 1) != '?') 
 		{
 			$cls .= ' missing';
 		}
 
-		$link = JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->scope . '&pagename=' . $name);
+		$link = JRoute::_('index.php?option=' . $this->option . '&scope=' . $scope . '&pagename=' . $pagename);
 
 		return '<a href="' . $link . '" class="' . $cls . '">' . $name . $append . '</a>';
 	}
@@ -1316,9 +1333,7 @@ class WikiParser
 				$pagename = $matches[3];
 			}
 
-			$database =& JFactory::getDBO();
-			$p = new WikiPage($database);
-			$p->load($pagename, $scope);
+			$p = WikiPage::getInstance($pagename, $scope);
 
 			if ($p->id) 
 			{

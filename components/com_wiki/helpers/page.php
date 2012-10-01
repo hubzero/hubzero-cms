@@ -52,15 +52,15 @@ class WikiHelperPage
 		}
 
 		// Load the page
-		$database =& JFactory::getDBO();
+		$page = WikiPage::getInstance($pagename, $scope);
 
-		$page = new WikiPage($database);
-		$page->load($pagename, $scope);
-		$page->scope = $scope;
-		$page->pagename = $pagename;
+		/*if (in_array(strtolower($page->getNamespace()), array('special'))) 
+		{
+			$page->load(JRequest::getVar('page', ''), $scope);
+		}*/
 
 		if (!$page->exist() 
-		 && (substr(strtolower($pagename), 0, strlen('help:')) == 'help:')) 
+		 && (strtolower($page->getNamespace()) == 'help')) 
 		{
 			$page->load($pagename, '');
 			$page->scope = $scope;

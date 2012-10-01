@@ -139,6 +139,46 @@ class WikiPage extends JTable
 	}
 
 	/**
+	 * Returns a reference to the global User object, only creating it if it
+	 * doesn't already exist.
+	 *
+	 * This method must be invoked as:
+	 * 		<pre>  $user =& JUser::getInstance($id);</pre>
+	 *
+	 * @access 	public
+	 * @param 	int 	$id 	The user to load - Can be an integer or string - If string, it is converted to ID automatically.
+	 * @return 	JUser  			The User object.
+	 * @since 	1.5
+	 */
+	static function &getInstance($pagename=NULL, $scope='')
+	{
+		static $instances, $test;
+
+		if (!isset($instances)) 
+		{
+			$instances = array();
+		}
+
+		if (!isset($instances[$scope . '/' . $pagename])) 
+		{
+			$page = new WikiPage(JFactory::getDBO());
+			// Find the page id
+			if (strstr($pagename, ' '))
+			{
+				$page->loadByTitle($pagename, $scope);
+			}
+			else
+			{
+				$page->load($pagename, $scope);
+			}
+
+			$instances[$scope . '/' . $pagename] = $page;
+		}
+
+		return $instances[$scope . '/' . $pagename];
+	}
+
+	/**
 	 * Loads a database record into the current object
 	 *
 	 * @param 	integer 	$oid
@@ -344,8 +384,79 @@ class WikiPage extends JTable
 	public function getCurrentRevision()
 	{
 		$obj = new WikiPageRevision($this->_db);
-		$obj->loadByVersion($this->id);
+		/*if ($this->version_id)
+		{
+			$obj->load($this->version_id);
+		}
+		else 
+		{*/
+			$obj->loadByVersion($this->id);
+		//}
 		return $obj;
+	}
+
+	/**
+	 * Set the current page version ID
+	 * If no revision ID passed, it retrieves the current (active) revision
+	 *
+	 * @param      integer $id Revision ID
+	 * @return     boolean False if errors, True otherwise
+	 */
+	public function setRevisionId($id=null)
+	{
+		if (!$id)
+		{
+			$revision = $this->getCurrentRevision();
+			$id = $revision->id;
+		}
+		$this->version_id = $id;
+		$this->modified   = date('Y-m-d H:i:s', time());  // use gmdate() ?
+
+		return $this->store();
+	}
+
+	/**
+	 * Determine the namespace
+	 * Namespaces are determined by a colon (e.g., Special:Cite)
+	 *
+	 * @param      string $pagename Name to get namespace from
+	 * @return     boolean False if errors, True otherwise
+	 */
+	public function getNamespace($pagename=null)
+	{
+		if ($pagename === null)
+		{
+			$pagename = $this->pagename;
+		}
+		if (strstr($pagename, ':'))
+		{
+			$parts = explode(':', $pagename);
+			//return preg_replace('/^([^:]+)(:.*)$/', "$1", $pagename);
+			return trim($parts[0]);
+		}
+		return '';
+	}
+
+	/**
+	 * Determine the namespace
+	 * Namespaces are determined by a colon (e.g., Special:Cite)
+	 *
+	 * @param      string $pagename Name to get namespace from
+	 * @return     boolean False if errors, True otherwise
+	 */
+	public function stripNamespace($pagename=null)
+	{
+		if ($pagename === null)
+		{
+			$pagename = $this->pagename;
+		}
+		if (strstr($pagename, ':'))
+		{
+			$parts = explode(':', $pagename);
+			//return preg_replace('/^([^:]+)(:.*)$/', "$2", $pagename);
+			return trim($parts[1]);
+		}
+		return $pagename;
 	}
 
 	/**
@@ -362,7 +473,7 @@ class WikiPage extends JTable
 	/**
 	 * Method for checking that fields are valid before sending to the database
 	 * 
-	 * @return		boolean      	True if all fields are valid
+	 * @return    boolean True if all fields are valid
 	 */
 	public function check()
 	{
@@ -374,20 +485,19 @@ class WikiPage extends JTable
 		{
 			$this->pagename = $this->normalize($this->pagename);
 		}
-		
+
 		if (!$this->pagename) 
 		{
 			$this->setError(JText::_('WIKI_ERROR_NO_PAGE_TITLE'));
 			return false;
 		}
-		
-		if (substr(strtolower($this->pagename), 0, strlen('image:')) == 'image:'
-		 || substr(strtolower($this->pagename), 0, strlen('file:')) == 'file:') 
+
+		if (in_array(strtolower($this->getNamespace()), array('special', 'image', 'file'))) 
 		{
 			$this->setError(JText::_('WIKI_ERROR_INVALID_TITLE'));
 			return false;
 		}
-		
+
 		if (strlen($this->pagename) > WIKI_MAX_PAGENAME_LENGTH) 
 		{
 			//$this->pagename = substr($this->pagename, 0, WIKI_MAX_PAGENAME_LENGTH);
@@ -397,8 +507,7 @@ class WikiPage extends JTable
 
 		if (!$this->id)
 		{
-			$g = new WikiPage($this->_db);
-			$g->load($this->pagename, $this->scope);
+			$g = WikiPage::getInstance($this->pagename, $this->scope);
 			if ($g->exist()) 
 			{
 				$this->setError(JText::_('WIKI_ERROR_PAGE_EXIST'));

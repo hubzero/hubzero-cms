@@ -87,11 +87,15 @@ class WikiControllerPage extends Hubzero_Controller
 		$wp = new WikiPage($this->database);
 		if (!$wp->count()) 
 		{
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'setup.php');
+
 			$result = WikiSetup::initialize($this->_option);
 			if ($result) 
 			{
 				$this->setError($result);
 			}
+
+			JDEBUG ? JProfiler::getInstance('Application')->mark('afterWikiSetup') : null;
 		}
 
 		if (!is_object($this->page))
@@ -153,6 +157,27 @@ class WikiControllerPage extends Hubzero_Controller
 			);
 		}
 
+		// Is this a special page?
+		if (strtolower($this->page->getNamespace()) == 'special') 
+		{
+			// Set the layout
+			$this->view->setLayout('special');
+			$this->view->layout  = $this->page->stripNamespace();
+			$this->view->page->scope = trim(JRequest::getVar('scope', ''));
+
+			$this->view->message = $this->_message;
+
+			if ($this->getError()) 
+			{
+				foreach ($this->getErrors() as $error)
+				{
+					$this->view->setError($error);
+				}
+			}
+			$this->view->display();
+			return;
+		}
+
 		// Does a page exist for the given pagename?
 		if (!$this->page->exist()) 
 		{
@@ -169,7 +194,7 @@ class WikiControllerPage extends Hubzero_Controller
 			$this->view->display();
 			return;
 		}
-		
+
 		if ($this->page->group_cn && !$this->_group)
 		{
 			$this->setRedirect(
@@ -194,8 +219,7 @@ class WikiControllerPage extends Hubzero_Controller
 				$bit = trim($bit);
 				if ($bit != '/' && $bit != '') 
 				{
-					$p = new WikiPage($this->database);
-					$p->load($bit, implode('/', $s));
+					$p = WikiPage::getInstance($bit, implode('/', $s));
 					if ($p->id) 
 					{
 						$pathway->addItem($p->title, 'index.php?option=' . $this->_option . '&scope=' . $p->scope . '&pagename=' . $p->pagename);
@@ -204,6 +228,14 @@ class WikiControllerPage extends Hubzero_Controller
 				}
 			}
 		}
+		if ($this->page->group_cn)
+		{
+			$pathway->addItem(
+				JText::_('Wiki'),
+				'index.php?option=' . $this->_option . '&scope=' . $this->page->scope
+			);
+		}
+
 		$pathway->addItem(
 			$this->view->title,
 			'index.php?option=' . $this->_option . '&scope=' . $this->page->scope . '&pagename=' . $this->page->pagename
@@ -245,10 +277,25 @@ class WikiControllerPage extends Hubzero_Controller
 		$p =& Hubzero_Wiki_Parser::getInstance();
 
 		// Parse the text
-		$this->view->revision->pagehtml = $p->parse($this->view->revision->pagetext, $wikiconfig, true, true);
+		if (intval($this->config->get('cache', 1)))
+		{
+			// Caching
+			// Default time is 15 minutes
+			$cache =& JFactory::getCache('callback');
+			$cache->setCaching(1);
+			$cache->setLifeTime(intval($this->config->get('cache_time', 15)));
 
-		// Create a linked Table of Contents
-		//$this->view->output = (is_object($p->_parser)) ? $p->_parser->parser->formatHeadings($this->view->revision->pagehtml) : array('text'=>$this->view->revision->pagehtml,'toc'=>'');
+			$this->view->revision->pagehtml = $cache->call(
+				array($p, 'parse'), 
+				$this->view->revision->pagetext, $wikiconfig, true, true
+			);
+		}
+		else 
+		{
+			$this->view->revision->pagehtml = $p->parse($this->view->revision->pagetext, $wikiconfig, true, true);
+		}
+
+		JDEBUG ? JProfiler::getInstance('Application')->mark('afterWikiParse') : null;
 
 		// Get the page's tags
 		if ($this->config->get('admin')) 
@@ -261,7 +308,7 @@ class WikiControllerPage extends Hubzero_Controller
 		}
 
 		$this->view->message = $this->_message;
-		
+
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)
@@ -561,7 +608,7 @@ class WikiControllerPage extends Hubzero_Controller
 			);
 			return;
 		}
-		
+
 		// Incoming revision
 		$rev = JRequest::getVar('revision', array(), 'post', 'none', 2);
 		$rev['pageid'] = (isset($rev['pageid'])) ? intval($rev['pageid']) : 0;

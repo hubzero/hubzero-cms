@@ -30,5 +30,11 @@
 		<param name="maxAllowed" type="text" menu="hide" default="40000000" label="Max upload" description="Maximum upload file size" />
 		<param name="img_ext" type="text" menu="hide" label="Image Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif" description="Allowed image types" />
 		<param name="file_ext" type="text" menu="hide" label="File Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz" description="Allowed file types" />
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the contents of wiki pages">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="cache_time" type="text" default="15" label="Cache Time" description="The time before the wiki page is recached" />
 	</params>
 </config>

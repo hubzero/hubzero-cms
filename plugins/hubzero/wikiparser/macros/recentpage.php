@@ -86,12 +86,16 @@ class RecentPageMacro extends WikiMacro
 			}
 		}
 
-		$query = "SELECT f.pageid, f.title, f.pagename, f.scope, f.group_cn, f.access, f.created_by, f.created, f.pagehtml, MAX(f.version) AS version FROM (
-					SELECT v.pageid, w.title, w.pagename, w.scope, w.group_cn, w.access, v.version, v.created_by, v.created, v.pagehtml
-					FROM #__wiki_page AS w, #__wiki_version AS v
-					WHERE w.id=v.pageid AND v.approved=1 AND w.group_cn='" . $this->domain . "' AND w.scope='" . $this->scope . "' AND w.access!=1
+		$query = "SELECT wv.pageid, wp.title, wp.pagename, wp.scope, wp.group_cn, wp.access, wv.version, wv.created_by, wv.created, wv.pagehtml 
+					FROM #__wiki_version AS wv 
+					INNER JOIN #__wiki_page AS wp 
+						ON wp.id = wv.pageid 
+					WHERE wv.approved = 1 
+						AND wp.group_cn = '$this->domain' 
+						AND wp.scope = '$this->scope' 
+						AND wp.access != 1 
+						AND wv.id = (SELECT MAX(wv2.id) FROM #__wiki_version AS wv2 WHERE wv2.pageid = wv.pageid)
 					ORDER BY created DESC
-					) AS f GROUP BY pageid ORDER BY created DESC
 					LIMIT $limitstart, $limit";
 
 		// Perform query

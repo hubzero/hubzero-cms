@@ -114,6 +114,8 @@ function WikiParseRoute($segments)
 		case 'save':
 		case 'rename':
 		case 'saverename':
+		case 'approve':
+		case 'deleterevision':
 		default:
 			$vars['controller'] = 'page';
 		break;

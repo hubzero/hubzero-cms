@@ -59,7 +59,7 @@ if (!$juser->get('guest')) { ?>
 				<span><?php echo JText::_('WIKI_TAB_ARTICLE'); ?></span>
 			</a>
 		</li>
-<?php if ($this->page->id) { ?>
+<?php if ($this->page->id && strtolower($this->page->getNamespace()) != 'special') { ?>
 	<?php if (($this->page->state == 1 && $this->config->get('access-manage')) || ($this->page->state != 1 && $this->config->get('access-edit'))) { ?>
 		<li class="page-edit<?php if ($this->controller == 'page' && $this->task == 'edit') { echo ' active'; } ?>">
 			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=edit'); ?>">
@@ -96,7 +96,7 @@ if (!$juser->get('guest')) { ?>
 	<?php } ?>
 	<?php if ($this->page->pagename != 'Index') { ?>
 		<li class="page-index">
-			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Index'); ?>">
+			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Special:AllPages'); ?>">
 				<span><?php echo JText::_('Index'); ?></span>
 			</a>
 		</li>

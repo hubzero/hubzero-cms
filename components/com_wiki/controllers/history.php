@@ -60,11 +60,7 @@ class WikiControllerHistory extends Hubzero_Controller
 			$this->_group = $config['group'];
 		}
 
-		/*$this->_access = false;
-		if (isset($config['access'])) 
-		{
-			$this->_access = $config['access'];
-		}*/
+		$this->registerTask('deleterevision', 'delete');
 
 		parent::__construct($config);
 	}
@@ -250,9 +246,9 @@ class WikiControllerHistory extends Hubzero_Controller
 			'index.php?option=' . $this->_option . '&scope=' . $this->page->scope . '&pagename=' . $this->page->pagename . '&task=' . $this->_task
 		);
 
-		$this->view->sub = $this->_sub;
+		$this->view->sub     = $this->_sub;
 		$this->view->message = $this->_message;
-		$this->view->name = JText::_(strtoupper($this->_name));
+		$this->view->name    = JText::_(strtoupper($this->_name));
 
 		if ($this->getError()) 
 		{
@@ -307,15 +303,30 @@ class WikiControllerHistory extends Hubzero_Controller
 		}
 
 		// Delete it
-		$revision->delete($id);
+		if (!$revision->delete($id))
+		{
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option . '&scope=' . $this->page->scope . 'pagename=' . $this->page->pagename . '&task=history'),
+				JText::_('Error occurred while removing revision.'), 
+				'error'
+			);
+			return;
+		}
+
+		// If we're deleting the current revision, set the current 
+		// revision number to the previous available revision
+		/*if ($id == $this->page->version_id)
+		{
+			$this->page->setRevisionId();
+		}*/
 
 		// Log the action
 		$log = new WikiLog($this->database);
-		$log->pid = $this->page->id;
-		$log->uid = $this->juser->get('id');
+		$log->pid       = $this->page->id;
+		$log->uid       = $this->juser->get('id');
 		$log->timestamp = date('Y-m-d H:i:s', time());
-		$log->action = 'revision_removed';
-		$log->actorid = $this->juser->get('id');
+		$log->action    = 'revision_removed';
+		$log->actorid   = $this->juser->get('id');
 		if (!$log->store()) 
 		{
 			$this->setError($log->getError());
@@ -371,11 +382,11 @@ class WikiControllerHistory extends Hubzero_Controller
 
 		// Log the action
 		$log = new WikiLog($this->database);
-		$log->pid = $this->page->id;
-		$log->uid = $this->juser->get('id');
+		$log->pid       = $this->page->id;
+		$log->uid       = $this->juser->get('id');
 		$log->timestamp = date('Y-m-d H:i:s', time());
-		$log->action = 'revision_approved';
-		$log->actorid = $this->juser->get('id');
+		$log->action    = 'revision_approved';
+		$log->actorid   = $this->juser->get('id');
 		if (!$log->store()) 
 		{
 			$this->setError($log->getError());

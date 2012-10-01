@@ -56,7 +56,6 @@ include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . 
 
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'page.php');
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'html.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'setup.php');
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'tags.php');
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'page'));

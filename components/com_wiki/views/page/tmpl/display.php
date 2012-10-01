@@ -29,7 +29,15 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
+
+$dateFormat = '%d %b %Y';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M Y';
+	$tz = true;
+}
 
 $mode = $this->page->params->get('mode', 'wiki');
 ?>
@@ -52,11 +60,11 @@ if (!$mode || ($mode && $mode != 'static')) {
 ?>
 	</div><!-- /#content-header -->
 
-<?php if ($mode == 'static' && $this->config->get('access-admin')) { ?>
+<?php if ($mode == 'static' && $this->config->get('access-admin') && $this->task != 'display') { ?>
 	<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>-extra">
 		<ul id="<?php echo ($this->sub) ? 'section-useroptions' : 'useroptions'; ?>">
-			<li><a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=edit'); ?>">Edit</a></li>
-			<li class="last"><a class="history" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=history'); ?>">History</a></li>
+			<li><a class="edit btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=edit'); ?>">Edit</a></li>
+			<li class="last"><a class="history btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=history'); ?>">History</a></li>
 		</ul>
 	</div><!-- /#content-header-extra -->
 <?php } ?>
@@ -68,10 +76,6 @@ if (!$mode || ($mode && $mode != 'static')) {
 <?php if ($this->message) { ?>
 	<p class="passed"><?php echo $this->message; ?></p>
 <?php } ?>
-
-<?php /*if ($this->warning) { ?>
-	<p class="warning"><?php echo $this->warning; ?></p>
-<?php }*/ ?>
 
 <?php
 if (!$mode || ($mode && $mode != 'static')) {
@@ -95,7 +99,7 @@ if (!$mode || ($mode && $mode != 'static')) {
 			<?php echo $this->revision->pagehtml; ?>
 		</div>
 		<p class="timestamp">
-			<?php echo JText::_('WIKI_PAGE_CREATED').' '.JHTML::_('date',$first->created, '%d %b %Y').', '.JText::_('WIKI_PAGE_LAST_MODIFIED').' '.JHTML::_('date',$this->revision->created, '%d %b %Y'); ?>
+			<?php echo JText::_('WIKI_PAGE_CREATED').' <time datetime="' . $first->created . '">'.JHTML::_('date', $first->created, $dateFormat, $tz).'</time>, '.JText::_('WIKI_PAGE_LAST_MODIFIED').' <time datetime="' . $this->revision->created . '">'.JHTML::_('date', $this->revision->created, $dateFormat, $tz) . '</time>'; ?>
 			<?php if ($stats = $this->page->getMetrics()) { ?>
 			<span class="article-usage">
 				<?php echo $stats['visitors']; ?> Visitors, <?php echo $stats['visits']; ?> Visits
@@ -104,7 +108,7 @@ if (!$mode || ($mode && $mode != 'static')) {
 		</p>
 		<div class="article-tags">
 			<h3><?php echo JText::_('WIKI_PAGE_TAGS'); ?></h3>
-			<?php echo WikiHtml::tagcloud( $this->tags ); ?>
+			<?php echo WikiHtml::tagcloud($this->tags); ?>
 		</div>
 </div><!-- / .main section -->
 <?php
