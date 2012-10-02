@@ -44,10 +44,10 @@ $base_link = 'index.php?option=com_groups&gid='.$this->group->get('cn').'&task=m
 	</ul>
 </div><!-- / #content-header-extra -->
 
+<div class="main section">
 	<?php foreach ($this->notifications as $notification) { ?>
 		<p class="<?php echo $notification['type']; ?>"><?php echo $notification['message']; ?></p>
 	<?php } ?>
-<div class="main section">
 <form name="groupPages" action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" id="hubForm">
 	<div class="explaination">
 		<p>This is where you can manage any of your groups custom content pages. There is no limit to the number of custom pages and pages can contain text, images, links to files. The pages support wiki syntax that is used throughout the hub.</p>
