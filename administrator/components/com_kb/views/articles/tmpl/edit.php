@@ -132,7 +132,7 @@ function submitbutton(pressbutton)
 					<td><?php echo $this->escape($this->creator->get('name')); ?></td>
 				</tr>
 <?php 
-if ($this->row->modified != '0000-00-00 00:00:00') { 
+if ($this->row->id && $this->row->modified != '0000-00-00 00:00:00') { 
 	$modifier = JUser::getInstance($this->row->modified_by);
 ?>
 				<tr>
