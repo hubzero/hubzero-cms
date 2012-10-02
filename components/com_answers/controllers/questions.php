@@ -902,6 +902,8 @@ class AnswersControllerQuestions extends Hubzero_Controller
 			return;
 		}
 
+		$this->view->setLayout('new');
+
 		// Instantiate a new view
 		$this->view->infolink = $this->infolink;
 		$this->view->banking = $this->banking;
