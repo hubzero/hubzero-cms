@@ -1407,15 +1407,15 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 								$no = 'checked="checked"';
 							}
 							$optin_html = "<p>Would like to receive newsletters and other updates by e-mail?</p>";
-							$optin_html .= '<input type="radio" id="mailPreferenceOptionYes" name="mailPreferenceOption" value="1" '.$yes.' /> Yes';
-							$optin_html .= ' <input type="radio" id="mailPreferenceOptionNo" name="mailPreferenceOption" value="unset" '.$no.' /> No';
+							$optin_html .= '<label for="mailPreferenceOptionYes"><input type="radio" id="mailPreferenceOptionYes" name="mailPreferenceOption" value="1" '.$yes.' /> Yes</label>';
+							$optin_html .= ' <label for="mailPreferenceOptionNo"><input type="radio" id="mailPreferenceOptionNo" name="mailPreferenceOption" value="unset" '.$no.' /> No</label>';
 
 							$editview->registration_field = "mailPreferenceOption";
 							$editview->profile_field = "mailPreferenceOption";
 							$editview->title = JText::_('Email Updates');
 							$editview->profile = $this->profile;
 							$editview->isUser = $isUser;
-							$editview->inputs = '<label>'.$optin_html.'</label>';
+							$editview->inputs = $optin_html;
 							$editview->access = '<label>Email Updates Access Level' . MembersHtml::selectAccess('access[optin]',$this->params->get('access_optin'),'input-select') . '</label>';
 							$editview->display();
 						?>
