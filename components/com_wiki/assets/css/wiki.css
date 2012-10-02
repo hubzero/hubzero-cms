@@ -613,6 +613,17 @@
 		background-color: #f7f7f7;
 	}
 
+	.wikipage fieldset {
+		border: 1px solid #ccc;
+		background: #fff;
+		margin: 1em -18px;
+		padding: 1em;
+	}
+	.wikipage fieldset legend {
+		margin: 0 1em;
+		padding: 0 1em;
+	}
+
 /* Figures */
 	.wikipage .figure {
 		display: inline-block;

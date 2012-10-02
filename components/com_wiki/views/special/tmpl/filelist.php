@@ -115,6 +115,9 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 						</a>
 					</th>
 					<th scope="col">
+						<?php echo JText::_('Preview'); ?>
+					</th>
+					<th scope="col">
 						<?php echo JText::_('Size'); ?>
 					</th>
 					<th scope="col">
@@ -135,6 +138,7 @@ if ($rows)
 {
 	ximport('Hubzero_View_Helper_Html');
 	ximport('Hubzero_User_Profile');
+	jimport('joomla.filesystem.file');
 
 	$dateFormat = '%d %b %Y';
 	$tz = 0;
@@ -151,7 +155,7 @@ if ($rows)
 		{
 			$fsize = Hubzero_View_Helper_Html::formatSize(filesize(JPATH_ROOT . DS . trim($this->config->get('filepath', '/site/wiki'), DS) . DS . $row->pageid . DS . $row->filename));
 		}
-		
+
 		$name = JText::_('(unknown)');
 		$xprofile = Hubzero_User_Profile::getInstance($row->created_by);
 		if (is_object($xprofile))
@@ -167,6 +171,17 @@ if ($rows)
 						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $row->scope . '/' . $row->pagename . '/File:' . $row->filename); ?>">
 							<?php echo $this->escape(stripslashes($row->filename)); ?>
 						</a>
+					</td>
+					<td>
+						<?php
+						if (in_array(strtolower(JFile::getExt($row->filename)), array('png', 'gif', 'jpg', 'jpeg', 'jpe'))) {
+						?>
+						<a rel="lightbox" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $row->scope . '/' . $row->pagename . '/File:' . $row->filename); ?>">
+							<img src="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $row->scope . '/' . $row->pagename . '/File:' . $row->filename); ?>" width="50" alt="<?php echo $this->escape(stripslashes($row->filename)); ?>" />
+						</a>
+						<?php
+						} 
+						?>
 					</td>
 					<td>
 						<span><?php echo $fsize; ?></span>

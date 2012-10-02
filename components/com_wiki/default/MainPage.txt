@@ -8,7 +8,7 @@
 
  * [?task=new Create a new article]
  * [Help:Index Help Articles]
- * [Index Full Article List]
+ * [Special:AllPages Full Article List]
 
 {{{
 #!html
@@ -50,11 +50,12 @@ Anyone with an account can create a new article. When creating a new article, th
 	</div><!-- / .four columns first -->
 	<div class="four columns second third fourth">
 		<div class="two columns first">
-			<form action="/xsearch" method="get" class="search">
+			<form action="/search" method="get" class="search">
 				<fieldset>
 					<p>
-						<input type="text" name="searchword" value="" />
+						<input type="text" name="terms" value="" />
 						<input type="submit" value="Search" />
+						<input type="hidden" name="category" value="topics" />
 					</p>
 				</fieldset>
 			</form>
@@ -63,7 +64,7 @@ Anyone with an account can create a new article. When creating a new article, th
 			<div class="browse">
 }}}
 
-[Index Browse the list of available articles]
+[Special:AllPages Browse the list of available articles]
 
 {{{
 #!html

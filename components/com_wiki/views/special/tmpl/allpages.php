@@ -41,15 +41,14 @@ $jconfig =& JFactory::getConfig();
 $juser =& JFactory::getUser();
 
 $dir = strtoupper(JRequest::getVar('dir', 'ASC'));
-$limit = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
-$start = JRequest::getInt('limitstart', 0);
 
 $database =& JFactory::getDBO();
 
 $where = '';
-if ($namespace = JRequest::getWord('namespace', ''))
+$namespace = urldecode(JRequest::getVar('namespace', ''));
+if ($namespace)
 {
-	$where .= "AND LOWER(p.pagename) LIKE '" . strtolower($namespace) . "%'";
+	$where .= "AND LOWER(wp.pagename) LIKE '" . strtolower($namespace) . "%'";
 }
 
 $query = "SELECT COUNT(*) 
@@ -75,31 +74,30 @@ $query = "SELECT wv.pageid, (CASE WHEN (wp.`title` IS NOT NULL AND wp.`title` !=
 				$where
 				AND wv.id = (SELECT MAX(wv2.id) FROM #__wiki_version AS wv2 WHERE wv2.pageid = wv.pageid)
 			ORDER BY title $dir";
-if ($limit && $limit != 'all')
-{
-	$query .= " LIMIT $start, $limit";
-}
 
 $database->setQuery($query);
 $rows = $database->loadObjectList();
-
-jimport('joomla.html.pagination');
-$pageNav = new JPagination(
-	$total, 
-	$start, 
-	$limit
-);
 ?>
-<div class="wikipage">
+<form method="get" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:AllPages'); ?>">
+	<div class="wikipage">
+	<fieldset>
+		<legend><?php echo JText::_('Filter list'); ?></legend>
+		
+		<label for="field-namespace">
+			<?php echo JText::_('Namespace'); ?>
+			<select name="namespace" id="field-namespace">
+				<option value=""<?php if ($namespace == '') { echo ' selected="selected"'; } ?>>all</option>
+				<option value="Help:"<?php if ($namespace == 'Help:') { echo ' selected="selected"'; } ?>>Help:</option>
+				<option value="Template:"<?php if ($namespace == 'Template:') { echo ' selected="selected"'; } ?>>Template:</option>
+			</select>
+		</label>
+		
+		<input type="submit" value="<?php echo JText::_('Go'); ?>" />
+	</fieldset>
+	
 <?php
 if ($rows) 
 {
-	$letters = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
-	$index = strtoupper(substr($rows[0]->title, 0, 1));
-?>
-	<h3><?php echo $index; ?></h3>
-	<ul>
-<?php
 	$dateFormat = '%d %b %Y';
 	$tz = 0;
 	if (version_compare(JVERSION, '1.6', 'ge'))
@@ -108,33 +106,62 @@ if ($rows)
 		$tz = true;
 	}
 
-	foreach ($rows as $row)
+	$columns = array_chunk($rows, ceil(count($rows) / 3 ), true /* preserve keys */ );
+
+	$index = '';
+	$i = 0;
+	foreach ($columns as $column)
 	{
-		if (strtoupper(substr($row->title, 0, 1)) != $index)
+		switch ($i)
 		{
-			$index = strtoupper(substr($row->title, 0, 1));
-?>
-	</ul>
-	<h3><?php echo $index; ?></h3>
-	<ul>
-<?php
+			case 0: $cls = 'first'; break;
+			case 1: $cls = 'second'; break;
+			case 2: $cls = 'third'; break;
 		}
 ?>
-		<li>
-			<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&pagename=' . $row->pagename . '&scope=' . $row->scope); ?>">
-				<?php echo $this->escape(stripslashes($row->title)); ?>
-			</a>
-		</li>
+		<div class="three columns <?php echo $cls; ?>">
+			<?php
+		if (count($column) > 0)
+		{
+			$k = 0;
+			foreach ($column as $row)
+			{
+				if (strtoupper(substr($row->title, 0, 1)) != $index)
+				{
+					$index = strtoupper(substr($row->title, 0, 1));
+					?>
+					</ul>
+					<h3><?php echo $index; ?></h3>
+					<ul>
+					<?php
+				} 
+				else if ($k == 0)
+				{
+					?>
+					<h3><?php echo $index; ?> contd.</h3>
+					<ul>
+					<?php
+				}
+			?>
+				<li>
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&pagename=' . $row->pagename . '&scope=' . $row->scope); ?>">
+						<?php echo $this->escape(stripslashes($row->title)); ?>
+					</a>
+				</li>
+			<?php
+				$k++;
+			}
+			?>
+			</ul>
+		<?php 
+		}
+		?>
+		</div>
 <?php
+		$i++;
 	}
-?>
-	</ul>
-</div>
-<?php
 }
-	$pageNav->setAdditionalUrlParam('scope', $this->page->scope);
-	$pageNav->setAdditionalUrlParam('pagename', $this->page->pagename);
-
-	echo $pageNav->getListFooter();
 ?>
-<div class="clearfix"></div>
+		<div class="clear"></div>
+	</div>
+</form>

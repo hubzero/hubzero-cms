@@ -162,10 +162,19 @@ class WikiControllerPage extends Hubzero_Controller
 		{
 			// Set the layout
 			$this->view->setLayout('special');
-			$this->view->layout  = $this->page->stripNamespace();
+			$this->view->layout = $this->page->stripNamespace();
 			$this->view->page->scope = trim(JRequest::getVar('scope', ''));
-
 			$this->view->message = $this->_message;
+
+			// Ensure the special page exists
+			if (!in_array(strtolower($this->view->layout), $this->_getSpecialPages()))
+			{
+				//JError::raiseWarning(404, JText::_('WIKI_WARNING_NOT_FOUND'));
+				$this->setRedirect(
+					JRoute::_('index.php?option=' . $this->_option . '&scope=' . $this->view->page->scope)
+				);
+				return;
+			}
 
 			if ($this->getError()) 
 			{
@@ -318,6 +327,49 @@ class WikiControllerPage extends Hubzero_Controller
 		}
 
 		$this->view->display();
+	}
+
+	/**
+	 * Get a list of special pages
+	 * 
+	 * @return     array
+	 */
+	protected function _getSpecialPages()
+	{
+		$path = JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'views' . DS . 'special' . DS . 'tmpl';
+
+		$pages = array();
+
+		if (is_dir($path))
+		{
+			jimport('joomla.filesystem.file');
+			// Loop through all files and separate them into arrays of images, folders, and other
+			$dirIterator = new DirectoryIterator($path);
+			foreach ($dirIterator as $file)
+			{
+				if ($file->isDot() || $file->isDir())
+				{
+					continue;
+				}
+
+				if ($file->isFile())
+				{
+					$name = $file->getFilename();
+					if (JFile::getExt($name) != 'php'
+					 || 'cvs' == strtolower($name)
+					 || '.svn' == strtolower($name))
+					{
+						continue;
+					}
+
+					$pages[] = strtolower(JFile::stripExt($name));
+				}
+			}
+
+			sort($pages);
+		}
+
+		return $pages;
 	}
 
 	/**
