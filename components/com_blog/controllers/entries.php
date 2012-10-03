@@ -352,8 +352,8 @@ class BlogControllerEntries extends Hubzero_Controller
 		{
 			$wikiconfig = array(
 				'option'   => $this->_option,
-				'scope'    => 'blog',
-				'pagename' => $this->view->row->alias,
+				'scope'    => '',
+				'pagename' => JHTML::_('date', $this->view->row->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $this->view->row->publish_up, $this->monthFormat, $this->tz) . '/' . $this->view->row->alias,
 				'pageid'   => 0,
 				'filepath' => $this->config->get('uploadpath', '/site/blog'),
 				'domain'   => ''
@@ -530,7 +530,7 @@ class BlogControllerEntries extends Hubzero_Controller
 			return;
 		}
 
-		$entry = JRequest::getVar('entry', array(), 'post');
+		$entry = JRequest::getVar('entry', array(), 'post', 'none', 2);
 
 		$row = new BlogEntry($this->database);
 		if (!$row->bind($entry)) 

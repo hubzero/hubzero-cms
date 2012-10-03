@@ -39,6 +39,93 @@ ximport('Hubzero_Controller');
 class BlogControllerMedia extends Hubzero_Controller
 {
 	/**
+	 * Download a file
+	 * 
+	 * @return     void
+	 */
+	public function downloadTask()
+	{
+		if (!($file = JRequest::getVar('file', '')))
+		{
+			$filename = array_pop(explode('/', $_SERVER['REQUEST_URI']));
+
+			//get the file name
+			if (substr(strtolower($filename), 0, strlen('image:')) == 'image:') 
+			{
+				$file = substr($filename, strlen('image:'));
+			} 
+			elseif (substr(strtolower($filename), 0, strlen('file:')) == 'file:') 
+			{
+				$file = substr($filename, strlen('file:'));
+			}
+		}
+
+		//decode file name
+		$file = urldecode($file);
+
+		//build file path
+		$file_path = $this->_getUploadPath('site', 0) . DS . $file;
+
+		// Ensure the file exist
+		if (!file_exists($file_path)) 
+		{
+			JError::raiseError(404, JText::_('The requested file could not be found: ') . ' ' . $file);
+			return;
+		}
+
+		if (preg_match("/^\s*http[s]{0,1}:/i", $file_path)) 
+		{
+			JError::raiseError(404, JText::_('COM_MEMBERS_BAD_FILE_PATH'));
+			return;
+		}
+		if (preg_match("/^\s*[\/]{0,1}index.php\?/i", $file_path)) 
+		{
+			JError::raiseError(404, JText::_('COM_MEMBERS_BAD_FILE_PATH'));
+			return;
+		}
+		// Disallow windows drive letter
+		if (preg_match("/^\s*[.]:/", $file_path)) 
+		{
+			JError::raiseError(404, JText::_('COM_MEMBERS_BAD_FILE_PATH'));
+			return;
+		}
+		// Disallow \
+		if (strpos('\\', $file_path)) 
+		{
+			JError::raiseError(404, JText::_('COM_MEMBERS_BAD_FILE_PATH'));
+			return;
+		}
+		// Disallow ..
+		if (strpos('..', $file_path)) 
+		{
+			JError::raiseError(404, JText::_('COM_MEMBERS_BAD_FILE_PATH'));
+			return;
+		}
+
+		// Get some needed libraries
+		ximport('Hubzero_Content_Server');
+
+
+		// Serve up the image
+		$xserver = new Hubzero_Content_Server();
+		$xserver->filename($file_path);
+		$xserver->disposition('inline');
+		$xserver->acceptranges(false); // @TODO fix byte range support
+
+		//serve up file
+		if (!$xserver->serve()) 
+		{
+			// Should only get here on error
+			JError::raiseError(404, JText::_('An error occurred while trying to output the file'));
+		} 
+		else 
+		{
+			exit;
+		}
+		return;
+	}
+
+	/**
 	 * Upload a file or create a new folder
 	 * 
 	 * @return     void
@@ -262,7 +349,7 @@ class BlogControllerMedia extends Hubzero_Controller
 
 			case 'site':
 			default:
-				$p = $this->config->get('uploadpath');
+				$p = $this->config->get('uploadpath', '/site/blog');
 			break;
 		}
 		$path .= DS . trim($p, DS);

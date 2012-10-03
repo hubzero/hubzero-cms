@@ -127,12 +127,22 @@ function BlogParseRoute($segments)
 		{
 			$vars['task'] = 'comments';
 		}
-		else 
+		else if (strstr($segments[3], ':'))
+		{
+			$parts = explode(':', $segments[3]);
+			$namespace = strtolower(trim($parts[0]));
+			if (in_array($namespace, array('image', 'file')))
+			{
+				$vars['task'] = 'download';
+				$vars['file'] = trim($parts[1]);
+			}
+		}
+		else
 		{
 			$vars['task'] = $segments[3];
 		}
 	}
-	if (in_array($vars['task'], array('deletefile', 'deletefolder', 'upload')))
+	if (in_array($vars['task'], array('deletefile', 'deletefolder', 'upload', 'download')))
 	{
 		$vars['controller'] = 'media';
 	}

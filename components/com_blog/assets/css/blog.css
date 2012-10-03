@@ -371,24 +371,180 @@
 		background: -moz-linear-gradient(top,  #bf404f,  #f16c7c);
 		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bf404f', endColorstr='#f16c7c');
 	}
+	.entry-content ul,
+	.entry-content ol {
+		padding: 0;
+		margin: 0 0 1em 0;
+	}
+	.entry-content ul {
+		list-style-type: disc;
+	}
+	.entry-content ol {
+		list-style-type: decimal;
+	}
+	.entry-content li {
+		padding: 0;
+		margin: 0em 0 0em 2em;
+	}
+	.entry-content ul li {
+	}
+	.entry-content dd {
+		color: #888;
+	}
+	.entry-content table {
+		border: 2px solid #ccc;
+		width: auto;
+	}
+	.entry-content table td, 
+	.entry-content table th {
+		border: 1px solid #ccc;
+		margin: 0;
+		padding: 0.2em 0.4em;
+	}
+	.entry-content blockquote {
+		margin: 2em 0 2.5em 0;
+		padding: 5px 0 5px 10px;
+		border-left: 2px solid #ccc;
+	}
+	.entry-content blockquote:before {
+		display: none;
+	}
+	.entry-content pre {
+		font-family: "Bitstream Vera Sans Mono", Courier, Monaco, ProFont, "American Typewriter", "Andale Mono", monospace;
+		color: #555;
+		background-color: #f7f7f7;
+		border: 1px solid #d7d7d7;
+		margin: 1em 1.75em;
+		padding: .25em;
+		overflow: auto;
+		font-size: 0.85em;
+		line-height: 1.95em;
+		white-space: pre;
+		white-space: pre-wrap;
+		word-wrap: break-word;
+		white-space: -moz-pre-wrap;
+		white-space: -pre-wrap;
+		white-space: -o-pre-wrap;
+	}
+	.entry-content .pre {
+		font-family: "Bitstream Vera Sans Mono", Courier, Monaco, ProFont, "American Typewriter", "Andale Mono", monospace;
+		color: #555;
+		background-color: #f7f7f7;
+		border: 1px solid #d7d7d7;
+		margin: 1em 1.35em;
+		padding: .25em;
+		overflow: auto;
+		font-size: 1.15em;
+		line-height: 1.35em;
+	}
+	.entry-content tt,
+	.entry-content code {
+		display: inline-block;
+		color: #666; /*#600;*/
+		border: 1px solid #ddd; /*#edc;*/
+		-webkit-border-radius: .25em;
+		-moz-border-radius: .25em;
+		-ms-border-radius: .25em;
+		-o-border-radius: .25em;
+		border-radius: .25em;
+		padding: 0 0.3em;
+		background: #fafafa;
+	}
+
+	.com_wiki .wiki .modified-date {
+		color: #aaa;
+		font-size: 90%;
+	}
+	.entry-content hr {
+		border-top: 1px solid #ccc;
+		background-image: none;
+		height: 1px;
+		width: auto;
+		visibility: visible;
+		display: block;
+	}
+
+	/* Links */
+	.entry-content a.ext-link {
+		background: url("/components/com_wiki/assets/img/extlink.gif") 0 0.4em no-repeat;
+		padding-left: 15px;
+	}
+	.entry-content a.missing {
+		background: url("/components/com_wiki/assets/img/missinglink.gif") 0 0.4em no-repeat;
+		padding-left: 7px;
+	}
+
+	.entry-content .mbox-content {
+		border: 1px solid #aaa;
+		background: #fff;
+		border-left: 10px solid #f28500;
+		padding: 0;
+		width: 250px;
+		font-size: 0.85em;
+		position: relative;
+	}
+	.entry-content .mbox-content p.mbox-text {
+		padding: 0.4em 0.4em 0.4em 4.4em;
+		margin: 0;
+		line-height: 1.4em;
+	}
+	.entry-content .mbox-content .mbox-date {
+		font-style: italic;
+	}
+	.entry-content .mbox-unreferenced p:before {
+		font-family: "Fontcons";
+		content: "\275D"; /* \f072 */
+		color: #ddd;
+		font-size: 3em;
+		line-height: 1;
+		position: absolute;
+		top: 0.1em;
+		left: 0.3em;
+	}
+	.entry-content .rellink {
+		font-style: italic;
+		padding-left: 1.6em;
+		margin-bottom: 0.5em;
+	}
+	.entry-content td {
+		background-color: #fff;
+	}
+	.entry-content th {
+		background-color: #f7f7f7;
+	}
+
+	.entry-content fieldset {
+		border: 1px solid #ccc;
+		background: #fff;
+		margin: 1em -18px;
+		padding: 1em;
+	}
+	.entry-content fieldset legend {
+		margin: 0 1em;
+		padding: 0 1em;
+	}
+
 /* Figures */
-	.com_blog .figure img {
-		margin: 0.5em;
+	.entry-content .figure {
+		display: inline-block;
+		background: #efefef;
+		border: 1px solid #e1e1e1;
+		padding: 4px;
+	}
+	.entry-content .figure img {
+		margin: 0; /*.5em;*/
 		padding: 0;
 		background: transparent;
 		text-align: center;
+		display: block;
 	}
-	.com_blog .figure {
-		display: inline-block;
-		background: #fff;
-		border: 1px solid #eaeaea;
-	}
-	.com_blog .figure a {
+	.entry-content .figure a {
 		border: none;
 	}
-	.com_blog .figcaption {
+	.entry-content .figcaption {
 		display: block;
 		margin: 0;
-		padding: 0.5em;
+		padding: 0.5em 0;
 		background: #efefef;
+		font-size: 0.85em;
 	}
