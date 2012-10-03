@@ -144,7 +144,7 @@ class ColumnMacro extends WikiMacro
 			$div  = '</div>';
 			if ($this->_cursor == $this->_columns)
 			{
-				$div .= '<div class="clear"><!-- columns --></div>';
+				$div .= "\n" . '<div class="clear"><!-- columns --></div>';
 				$this->_cursor = 0;
 			}
 		}

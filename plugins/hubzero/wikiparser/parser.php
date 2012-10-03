@@ -703,7 +703,7 @@ class WikiParser
 		$p = WikiPage::getInstance($pagename, $scope);
 
 		//$p->getID();
-		if (!$p->id && substr($name, 0, 1) != '?') 
+		if ((!is_object($p) || !$p->id) && substr($name, 0, 1) != '?') 
 		{
 			$cls .= ' missing';
 		}
