@@ -142,64 +142,42 @@ function submitbutton(pressbutton)
 			<tr>
 			   <td class="key"><label for="orgtype"><?php echo JText::_('COL_EMPLOYMENT_STATUS'); ?>:</label></td>
 			   <td>
+					<select name="profile[orgtype]" id="orgtype">
+						<option value=""<?php if (!$this->profile->get('orgtype')) { echo ' selected="selected"'; } ?>><?php echo JText::_('(select from list)'); ?></option>
 				<?php
-				$html  = "\t\t".'<select name="profile[orgtype]" id="orgtype">'."\n";
-				if (!$this->profile->get('orgtype')) {
-					$html .= "\t\t\t".'<option value="" selected="selected">'.JText::_('(select from list)').'</option>'."\n";
+				
+				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_register' . DS . 'tables' . DS . 'organizationtype.php');
+
+				$rot = new RegisterOrganizationType(JFactory::getDBO());
+				$types = $rot->getTypes();
+
+				if (!$types || count($types) <= 0) 
+				{
+					$types = array(
+						'universityundergraduate' => JText::_('University / College Undergraduate'),
+						'universitygraduate'      => JText::_('University / College Graduate Student'),
+						'universityfaculty'       => JText::_('University / College Faculty'), // university
+						'universitystaff'         => JText::_('University / College Staff'),
+						'precollegestudent'       => JText::_('K-12 (Pre-College) Student'),
+						'precollegefacultystaff'  => JText::_('K-12 (Pre-College) Faculty/Staff'), // precollege
+						'nationallab'             => JText::_('National Laboratory'),
+						'industry'                => JText::_('Industry / Private Company'),
+						'government'              => JText::_('Government Agency'),
+						'military'                => JText::_('Military'),
+						'unemployed'              => JText::_('Retired / Unemployed')
+					);
 				}
-				$html .= "\t\t\t".'<option value="universityundergraduate"';
-				if ($this->profile->get('orgtype') == 'universityundergraduate') {
-					$html .= ' selected="selected"';
+				foreach ($types as $type => $title) 
+				{
+					echo '<option value="' . $type . '"';
+					if ($this->profile->get('orgtype') == $type) 
+					{
+						echo ' selected="selected"';
+					}
+					echo '>' . $this->escape(stripslashes($title)) . '</option>' . "\n";
 				}
-				$html .= '>'.JText::_('University / College Undergraduate').'</option>'."\n";
-				$html .= "\t\t\t".'<option value="universitygraduate"';
-				if ($this->profile->get('orgtype') == 'universitygraduate') {
-					$html .= ' selected="selected"';
-				}
-				$html .= '>'.JText::_('University / College Graduate Student').'</option>'."\n";
-				$html .= "\t\t\t".'<option value="universityfaculty"';
-				if ($this->profile->get('orgtype') == 'universityfaculty' || $this->profile->get('orgtype') == 'university') {
-					$html .= ' selected="selected"';
-				}
-				$html .= '>'.JText::_('University / College Faculty').'</option>'."\n";
-				$html .= "\t\t\t".'<option value="universitystaff"';
-				if ($this->profile->get('orgtype') == 'universitystaff') {
-					$html .= ' selected="selected"';
-				}
-				$html .= '>'.JText::_('University / College Staff').'</option>'."\n";
-				$html .= "\t\t\t".'<option value="precollegestudent"';
-				if ($this->profile->get('orgtype') == 'precollegestudent') {
-					$html .= ' selected="selected"';
-				}
-				$html .= '>'.JText::_('K-12 (Pre-College) Student').'</option>'."\n";
-				$html .= "\t\t\t".'<option value="precollegefacultystaff"';
-				if ($this->profile->get('orgtype') == 'precollege' || $this->profile->get('orgtype') == 'precollegefacultystaff') {
-					$html .= ' selected="selected"';
-				}
-				$html .= '>'.JText::_('K-12 (Pre-College) Faculty/Staff').'</option>'."\n";
-				$html .= "\t\t\t".'<option value="industry"';
-				if ($this->profile->get('orgtype') == 'industry') {
-					$html .= ' selected="selected"';
-				}
-				$html .= '>'.JText::_('Industry / Private Company').'</option>'."\n";
-				$html .= "\t\t\t".'<option value="government"';
-				if ($this->profile->get('orgtype') == 'government') {
-					$html .= ' selected="selected"';
-				}
-				$html .= '>'.JText::_('Government Agency').'</option>'."\n";
-				$html .= "\t\t\t".'<option value="military"';
-				if ($this->profile->get('orgtype') == 'military') {
-					$html .= ' selected="selected"';
-				}
-				$html .= '>'.JText::_('Military').'</option>'."\n";
-				$html .= "\t\t\t".'<option value="unemployed"';
-				if ($this->profile->get('orgtype') == 'unemployed') {
-					$html .= ' selected="selected"';
-				}
-				$html .= '>'.JText::_('Retired / Unemployed').'</option>'."\n";
-				$html .= "\t\t".'</select>'."\n";
-				echo $html;
-				?>
+					?>
+					</select>
 				</td>
 			  </tr>  
 			<tr>
