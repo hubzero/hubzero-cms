@@ -188,11 +188,11 @@ class SupportQuery extends JTable
 			{
 				$filters['sort_Dir'] = 'desc';
 			}
-			$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+			$query .= " ORDER BY `" . $filters['sort'] . "` " . $filters['sort_Dir'];
 		}
 		if (isset($filters['limit']) && $filters['limit'] != 0) 
 		{
-			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+			$query .= " LIMIT " . intval($filters['start']) . "," . intval($filters['limit']);
 		}
 	
 		return $query;

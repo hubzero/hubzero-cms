@@ -535,8 +535,8 @@ class SupportTicket extends JTable
 			$sql .= ") ";
 		}
 
-		$sql .= " ORDER BY " . $filters['sort'] . ' ' . $filters['sortdir'];
-		$sql .= ($filters['limit']) ? " LIMIT " . $filters['start'] . "," . $filters['limit'] : "";
+		$sql .= " ORDER BY `" . $filters['sort'] . '` ' . $filters['sortdir'];
+		$sql .= ($filters['limit']) ? " LIMIT " . intval($filters['start']) . "," . intval($filters['limit']) : "";
 
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
