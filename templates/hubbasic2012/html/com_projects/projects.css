@@ -79,6 +79,12 @@
 	.list-editing {
 		height: 25px;
 	}
+	
+	/* Blog */
+	.com_projects textarea {
+		background: white;
+		min-height: 30px;
+	}
 
 	/* Notes */
 	.com_projects .aside li a.note,
