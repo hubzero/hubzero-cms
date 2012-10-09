@@ -485,7 +485,7 @@ class BlogEntry extends JTable
 				break;
 				case 'public':
 				default:
-					$query .= " AND m.state=1 AND u.public=1 ";
+					$query .= " AND m.state=1 "; // AND u.public=1 ";
 				break;
 			}
 		}
