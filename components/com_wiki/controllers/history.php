@@ -47,6 +47,10 @@ class WikiControllerHistory extends Hubzero_Controller
 	public function __construct($config=array())
 	{
 		$this->_base_path = JPATH_ROOT . DS . 'components' . DS . 'com_wiki';
+		if (isset($config['base_path'])) 
+		{
+			$this->_base_path = $config['base_path'];
+		}
 
 		$this->_sub = false;
 		if (isset($config['sub'])) 
