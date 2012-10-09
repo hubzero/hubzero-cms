@@ -72,8 +72,8 @@
 		font-size: 85%;
 		border-bottom: 1px solid #dde6f2;
 	}
-	.content-notes .aside {
-		margin-top: -2em !important;
+	.content-notes #hubForm fieldset {
+		width: 90% !important;
 	}
 	.content-notes .reorder {
 		font-size: 85%;

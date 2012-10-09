@@ -69,20 +69,6 @@ HUB.ProjectNotes = {
 			$('#file-uploader-list').remove();	
 		}
 		
-		// Hide new page menu, add 'new subpage'
-		if ($('#section-useroptions')) {
-			if ($('#hubForm')) {			
-				$('#section-useroptions li').remove();
-			} else {
-				$('section-useroptions').html('');
-			}
-			
-			if ($('#add-subpage').length)
-			{
-				$('#section-useroptions').append('<li id="clone-subpage"></li>');
-				$('#clone-subpage').html($('#add-subpage').html());
-			}
-		}
 	},
 	
 	checkTitle: function(title, default_title, default_temp_title) 

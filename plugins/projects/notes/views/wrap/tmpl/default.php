@@ -92,10 +92,37 @@ $content = str_replace('<input type="hidden" name="task" value="comments" />',
 $content = str_replace('<input type="hidden" name="task" value="compare" />', 
 						'<input type="hidden" name="action" value="compare" />', 
 						$content );
-						
+
+// Fix up scope						
 $content = preg_replace('/<label for="parent">(.*?)<\/label>/is',
                            '<input type="hidden" name="scope" value="' . $this->scope . '" />',
                            $content);
+$content = str_replace('"/projects?scope=&amp;pagename="', 
+						'"'.JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.'&active=notes&scope='. $this->scope).'"', 
+						$content );
+						
+// Remove unnecessary tabs
+$content = preg_replace('/<li class="page-index">(.*?)<\/li>/is',
+                           '',
+                           $content);
+$content = preg_replace('/<li class="page-main">(.*?)<\/li>/is',
+                           '',
+                           $content);
+if ($this->task == 'view' or $this->task == 'page') 
+{
+	$content = preg_replace('/<li class="page-delete">(.*?)<\/li>/is',
+                           '',
+                           $content);
+}
+if ($this->task == 'new')
+{
+	$content = str_replace('class="sub-menu"', 
+							'class="sub-menu hidden"', 
+							$content );
+}
+$content = preg_replace('/<ul id="page_options">(.*?)<\/ul>/is',
+                       '',
+                       $content);
 
 // Make sure info links open up
 $content = str_replace('Help:WikiMacros/view#image">[[Image(filename.jpg)]]</a>', 
@@ -119,6 +146,12 @@ $content		  = preg_replace( "'<iframe[^>]*>.*?</iframe>'si", "", $content );
 // Edit page
 if ($this->task == 'edit')
 {
+	
+	// Newest wiki
+/*
+	$content = preg_replace('/<p>(.*?)<\/p>/is',
+	                       '<div class="explaination">' . $about_templates . $wiki_reference . $include_images . '</div>',
+	                       $content);
 	// New wiki
 	$content = str_replace('rename">here</a>.</p>', 'rename">here</a>.</p>'
 			. $about_templates . $wiki_reference . $include_images, $content );
@@ -126,14 +159,17 @@ if ($this->task == 'edit')
 	// Old wiki
 	$content = str_replace('renamepage">here</a>.</p>', 'renamepage">here</a>.</p>'
 			. $about_templates . $wiki_reference . $include_images, $content );
+*/
 }
 
 // New page
 if ($this->task == 'new')
 {
+	/*
 	$content = str_replace('id="hubForm">' . "\n" . t. '<div class="explaination">'
 			, 'id="hubForm">' . "\n" . t. '<div class="explaination">' . $about_templates . $wiki_reference 
 			. $include_images, $content );
+	*/
 }
 
 // Breadcrumbs
@@ -160,8 +196,10 @@ $notes = array();
 $order = array();
 $thirdlevel = array();
 
-if($this->notes) {
-	foreach($this->notes as $note) { 
+if($this->notes) 
+{
+	foreach ($this->notes as $note) 
+	{ 
 		$parts = explode ( '/', $note->scope );	
 		$remaining = array_slice($parts, 3);
 		$level = count($remaining) + 1;
@@ -191,7 +229,8 @@ $parentScope = $this->scope . DS . $this->pagename;
 <div id="notes-wrap" <?php if($this->task == 'view' or $this->task == 'page') { echo 'class="withside"'; } ?>>
 	<?php if($this->task == 'view' or $this->task == 'page') { ?>
 	<div class="aside">
-		<div class="addanote addnew"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.'&active=notes').'?action=new'; ?>"><?php echo JText::_('COM_PROJECTS_NOTES_ADD_NOTE'); ?></a></div>
+		<div class="addanote"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'scope='.$parentScope.a.'action=new'); ?>" class="addnew"><?php echo JText::_('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?></a> &nbsp; <a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.'&active=notes').'?action=new'; ?>" class=" addnew"><?php echo JText::_('COM_PROJECTS_NOTES_ADD_NOTE'); ?></a></div>
+
 		<div class="sidebox">
 			<h4><?php echo ucfirst(JText::_('COM_PROJECTS_NOTES_MULTI')); ?></h4>
 			<ul>
@@ -251,7 +290,6 @@ $parentScope = $this->scope . DS . $this->pagename;
 	if(($this->task == 'view' or $this->task == 'page') && count($this->parent_notes) < 2) { ?>
 	</div>
 	<div class="clear"></div>
-	<div id="add-subpage" class="hidden"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'scope='.$parentScope.a.'action=new'); ?>" class="addnew"><?php echo JText::_('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?></a></div>
 	<?php } ?>
 </div>
 
