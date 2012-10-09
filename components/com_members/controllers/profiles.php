@@ -111,9 +111,9 @@ class MembersControllerProfiles extends Hubzero_Controller
 			return;
 		}
 
-		//$restrict = '';
-		//if ($this->config->get('user_messaging', 1) == 1)
-		//{
+		$restrict = '';
+		if ($this->_authorize() !== 'admin')
+		{
 			$profile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
 			$xgroups = $profile->getGroups('all');
 			$usersgroups = array();
@@ -143,8 +143,8 @@ class MembersControllerProfiles extends Hubzero_Controller
 			{
 				$members = array($this->juser->get('id'));
 			}
-			$restrict = "OR xp.uidNumber IN (" . implode(',', $members) . ")";
-		//}
+			$restrict = " AND (xp.public=1 OR xp.uidNumber IN (" . implode(',', $members) . "))";
+		}
 
 		$filters = array();
 		$filters['limit']  = 20;
@@ -161,7 +161,7 @@ class MembersControllerProfiles extends Hubzero_Controller
 		$query = "SELECT xp.uidNumber, xp.name, xp.username, xp.organization, xp.picture 
 				FROM #__xprofiles AS xp 
 				INNER JOIN #__users u ON u.id = xp.uidNumber AND u.block = 0
-				WHERE LOWER(xp.name) LIKE '%" . $filters['search'] . "%' AND xp.emailConfirmed=1 ANd (xp.public=1 $restrict) 
+				WHERE LOWER(xp.name) LIKE '%" . $filters['search'] . "%' AND xp.emailConfirmed=1 $restrict 
 				ORDER BY xp.name ASC";
 
 		$this->database->setQuery($query);
