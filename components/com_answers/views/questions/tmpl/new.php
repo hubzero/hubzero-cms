@@ -104,6 +104,8 @@ if (count($tf) > 0) {
 <?php } ?>
 			<input class="option" type="hidden" name="email" value="1" checked="checked" />
 		</fieldset>
+		<div class="clear"></div>
+
 		<p class="submit"><input type="submit" value="<?php echo JText::_('COM_ANSWERS_SUBMIT'); ?>" /></p>
 	</form>
 </div><!-- / .main section -->
