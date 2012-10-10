@@ -39,6 +39,35 @@ ximport('Hubzero_Controller');
 class ResourcesControllerResources extends Hubzero_Controller
 {
 	/**
+	 * Constructor
+	 * 
+	 * @param      array $config Optional configurations
+	 * @return     void
+	 */
+	public function __construct($config=array())
+	{
+		$this->_base_path = JPATH_ROOT . DS . 'components' . DS . 'com_resources';
+		if (isset($config['base_path'])) 
+		{
+			$this->_base_path = $config['base_path'];
+		}
+
+		$this->_sub = false;
+		if (isset($config['sub'])) 
+		{
+			$this->_sub = $config['sub'];
+		}
+
+		$this->_group = false;
+		if (isset($config['group'])) 
+		{
+			$this->_group = $config['group'];
+		}
+
+		parent::__construct($config);
+	}
+
+	/**
 	 * Execute a task
 	 * 
 	 * @return     void
@@ -995,7 +1024,6 @@ class ResourcesControllerResources extends Hubzero_Controller
 
 		$view->path     = $path;
 		$view->videos   = $videos;
-		$view->video_mp4 = $video_mp4;
 		$view->subs     = $subs;
 
 		$view->width    = $width;
@@ -1349,7 +1377,11 @@ class ResourcesControllerResources extends Hubzero_Controller
 				$activechild = $this->activechild;
 			}
 
-			$view 				= new JView(array('name'=>'view', 'layout'=>'play'));
+			$view 				= new JView(array(
+				'base_path' => $this->_base_path,
+				'name'=>'view', 
+				'layout'=>'play'
+			));
 			$view->option 		= $this->_option;
 			$view->config 		= $this->config;
 			$view->tconfig 		= $tconfig;
@@ -1397,7 +1429,11 @@ class ResourcesControllerResources extends Hubzero_Controller
 			else 
 			{
 				// Instantiate a new view
-				$view 					= new JView(array('name'=>'view', 'layout'=>'watch'));
+				$view 					= new JView(array(
+					'base_path' => $this->_base_path,
+					'name'=>'view', 
+					'layout'=>'watch'
+				));
 				$view->option 			= $this->_option;
 				$view->config 			= $this->config;
 				$view->tconfig 			= $tconfig;
@@ -1458,7 +1494,10 @@ class ResourcesControllerResources extends Hubzero_Controller
 		}
 
 		// Determine the layout we're using
-		$v = array('name'=>'view');
+		$v = array(
+			'base_path' => $this->_base_path,
+			'name'=>'view'
+		);
 		$app =& JFactory::getApplication();
 		if ($type_alias
 		 && (is_file(JPATH_ROOT . DS . 'templates' . DS .  $app->getTemplate()  . DS . 'html' . DS . $this->_option . DS . 'view' . DS . $type_alias . '.php')
@@ -1863,9 +1902,9 @@ class ResourcesControllerResources extends Hubzero_Controller
 						} 
 						else 
 						{
-							$podcastp = $this->config->get('uploadpath') . $podcastp;
+							$podcastp = trim($this->config->get('uploadpath'), DS) . DS . ltrim($podcastp, DS);
 						}
-						$podcastp = JPATH_ROOT . $podcastp;
+						$podcastp = JPATH_ROOT . DS . ltrim($podcastp, DS);
 						if (true /* file_exists($podcastp) */) 
 						{
 							$fs = filesize($podcastp);
@@ -2753,7 +2792,12 @@ class ResourcesControllerResources extends Hubzero_Controller
 		}
 		if (!$resource->standalone) 
 		{
-			if ($p && ($p->access == 4 || $p->access == 3) && count($common) < 1) 
+			if (!isset($p) && isset($parents) && count($parents) == 1) 
+			{
+				$p = new ResourcesResource($this->database);
+				$p->load($parents[0]->id);
+			}
+			if (isset($p) && ($p->access == 4 || $p->access == 3) && count($common) < 1) 
 			{
 				$restricted = true;
 			}

@@ -121,6 +121,7 @@ $view->display();
 		<input type="hidden" name="created_by" value="<?php echo $this->row->created_by; ?>" />
 		<input type="hidden" name="publish_up" value="<?php echo $this->row->publish_up; ?>" />
 		<input type="hidden" name="publish_down" value="<?php echo $this->row->publish_down; ?>" />
+		<input type="hidden" name="group_owner" value="<?php echo $this->row->group_owner; ?>" />
 
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

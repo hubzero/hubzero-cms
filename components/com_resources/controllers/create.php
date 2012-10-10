@@ -275,6 +275,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 	 */
 	public function step_type()
 	{
+		$this->view->group = JRequest::getVar('group', '');
 		$this->view->step = $this->step;
 		$this->view->step++;
 
@@ -301,6 +302,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 	 */
 	public function step_compose($row=null)
 	{
+		$group = JRequest::getVar('group', '');
 		$type = JRequest::getVar('type', '');
 
 		if ($type == '7') 
@@ -328,6 +330,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 				// Load the type and set the state
 				$row->type = $type;
 				$row->published = 2;
+				$row->group_owner = $group;
 			}
 		}
 

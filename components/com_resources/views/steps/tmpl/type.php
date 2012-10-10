@@ -72,7 +72,7 @@ $jconfig =& JFactory::getConfig();
 			}
 			else 
 			{
-				$url = JRoute::_('index.php?option=' . $this->option . '&task=draft&step=' . $this->step . '&type=' . $type->id);
+				$url = JRoute::_('index.php?option=' . $this->option . '&task=draft&step=' . $this->step . '&type=' . $type->id . ($this->group ? '&group=' . $this->group : ''));
 			}
 
 			$i++;
