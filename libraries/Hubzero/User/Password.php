@@ -627,10 +627,10 @@ class Hubzero_User_Password
 		
 		$db = JFactory::getDBO();
 		
-		$db->setQuery("UPDATE #__xprofiles SET userPassword=" . $db->Quote($passhash) . ";");
+		$db->setQuery("UPDATE #__xprofiles SET userPassword=" . $db->Quote($passhash) . " WHERE uidNumber=" . $db->Quote($hzup->get('user_id')) . ";");
 		$db->query();
 		
-		$db->setQuery("UPDATE #__users SET password=" . $db->Quote($passhash) . ";");
+		$db->setQuery("UPDATE #__users SET password=" . $db->Quote($passhash) . " WHERE id=" . $db->Quote($hzup->get('user_id')) . ";");
 		$db->query();
 		
 		if (!empty($oldhash))
