@@ -705,7 +705,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 			$fields[$field->name] = $field;
 		}
 
-		$nbtag = $_POST['nbtag'];
+		$nbtag = (isset($_POST['nbtag'])) ? $_POST['nbtag'] : array();
 		$found = array();
 		foreach ($nbtag as $tagname => $tagcontent)
 		{

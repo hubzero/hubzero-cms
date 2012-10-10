@@ -186,8 +186,8 @@ class ResourcesControllerAuthors extends Hubzero_Controller
 						$rcc->subid    = $id;
 						$rcc->authorid = $rcc->getUserId($cid);
 						$rcc->ordering = $order;
-						$rcc->name     = trim($cid);
-						$rcc->role     = $role;
+						$rcc->name     = addslashes(trim($cid));
+						$rcc->role     = addslashes($role);
 						$rcc->createAssociation();
 						//$this->setError(JText::sprintf('COM_CONTRIBUTE_UNABLE_TO_FIND_USER_ACCOUNT', $cid));
 						$order++;
