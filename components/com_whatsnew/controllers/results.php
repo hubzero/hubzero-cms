@@ -422,12 +422,18 @@ class WhatsnewControllerResults extends Hubzero_Controller
 					if (!strstr($row->href, 'Itemid')) 
 					{
 						$temp = explode('id=', $row->href);
-						if (isset($temp[1])) {
-						$row->href .= '&Itemid=' . $app->getItemid($temp[1]);
+						if (isset($temp[1])) 
+						{
+							$row->href .= '&Itemid=' . $app->getItemid($temp[1]);
 						}
 					}
 				}
 				$link = JRoute::_($row->href);
+
+				if (!isset($row->text) && isset($row->itext))
+				{
+					$row->text = $row->itext;
+				}
 
 				// Strip html from feed item description text
 				$description = preg_replace("'<script[^>]*>.*?</script>'si", '', stripslashes($row->text));
