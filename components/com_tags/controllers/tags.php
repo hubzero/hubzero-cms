@@ -206,7 +206,7 @@ class TagsControllerTags extends Hubzero_Controller
 		{
 			if ($i > 0) 
 			{
-				$title .= '+ ';
+				//$title .= '+ ';
 			}
 			$tagname[] = $tags[$i]->raw_tag;
 			$tagstring[] = $tags[$i]->tag;
