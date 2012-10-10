@@ -286,7 +286,7 @@ class JobsControllerJobs extends Hubzero_Controller
 			$job->code = $code;
 
 			$job->added = date('Y-m-d H:i:s');
-			$job->addedBy = $juser->get('id');
+			$job->addedBy = $this->juser->get('id');
 		}
 
 		$subject = $id ? JText::_('Status update on your job ad #') . $job->code : '';
