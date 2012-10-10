@@ -37,7 +37,7 @@ JToolBarHelper::title(JText::_('Blog Manager'), 'blog.png');
 
 if ($canDo->get('core.delete')) 
 {
-	JToolBarHelper::deleteList('', 'delete');
+	JToolBarHelper::deleteList();
 }
 if ($canDo->get('core.edit')) 
 {
