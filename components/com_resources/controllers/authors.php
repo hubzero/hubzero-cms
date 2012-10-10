@@ -166,6 +166,7 @@ class ResourcesControllerAuthors extends Hubzero_Controller
 					$uid = JUserHelper::getUserId(strtolower($cid));
 					if (!$uid) 
 					{
+						$cid = addslashes(trim($cid));
 						// No account
 						// This should mean we have an author that is not a site member
 						$rcc = new ResourcesContributor($this->database);
@@ -186,7 +187,7 @@ class ResourcesControllerAuthors extends Hubzero_Controller
 						$rcc->subid    = $id;
 						$rcc->authorid = $rcc->getUserId($cid);
 						$rcc->ordering = $order;
-						$rcc->name     = addslashes(trim($cid));
+						$rcc->name     = $cid;
 						$rcc->role     = addslashes($role);
 						$rcc->createAssociation();
 						//$this->setError(JText::sprintf('COM_CONTRIBUTE_UNABLE_TO_FIND_USER_ACCOUNT', $cid));
