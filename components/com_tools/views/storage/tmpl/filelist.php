@@ -40,7 +40,7 @@ ximport('Hubzero_View_Helper_Html');
 					<caption>
 						<span class="home">
 <?php if (count($this->dirtree) > 0) { ?>
-							<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=listfiles&tmpl=component'); ?>"><?php echo JText::_('Home'); ?></a>
+							<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=filelist&tmpl=component'); ?>"><?php echo JText::_('Home'); ?></a>
 <?php } else { ?>
 							<span><?php echo JText::_('Home'); ?></span>
 <?php } ?>
@@ -58,7 +58,7 @@ ximport('Hubzero_View_Helper_Html');
 						<span class="arrow">&raquo;</span>
 						<span class="folder">
 <?php 							if ($i != count($this->dirtree)) { ?>
-							<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=listfiles&tmpl=component&listdir='.$path); ?>"><?php echo ucfirst($branch); ?></a>
+							<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=filelist&tmpl=component&listdir='.$path); ?>"><?php echo ucfirst($branch); ?></a>
 <?php 							} else { ?>
 							<span><?php echo ucfirst($branch); ?></span>
 <?php 							} ?>
@@ -84,12 +84,12 @@ foreach ($this->folders as $fullpath => $name)
 ?>
 						<tr>
 							<td>
-								<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=listfiles&tmpl=component&amp;listdir=' . urlencode($d)); ?>">
+								<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=filelist&tmpl=component&amp;listdir=' . urlencode($d)); ?>">
 									<img src="/components/<?php echo $this->option; ?>/assets/img/folder.gif" alt="<?php echo $name; ?>" width="16" height="16" />
 								</a>
 							</td>
 							<td width="100%">
-								<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=listfiles&tmpl=component&listdir=' . urlencode($d)); ?>">
+								<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=filelist&tmpl=component&listdir=' . urlencode($d)); ?>">
 									<?php echo $dir; ?>
 								</a>
 							</td>
