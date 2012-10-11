@@ -2435,7 +2435,7 @@ class SupportControllerTickets extends Hubzero_Controller
 
 		// Incoming file
 		$file = JRequest::getVar('upload', '', 'files', 'array');
-		if (!$file['name']) 
+		if (!isset($file['name']) || !$file['name']) 
 		{
 			//$this->setError(JText::_('SUPPORT_NO_FILE'));
 			return '';
