@@ -153,10 +153,16 @@
 		padding: 0;
 	}
 	#app-header ul {
-		float: right;
 		border-left: 1px solid rgba(0, 0, 0, 0.1);
 		border-right: none;
-		width: 40%;
+		/*width: 40%;
+		float: right;*/
+		
+		width: auto;
+		float: none;
+		position: absolute;
+		top: 0;
+		right: 0;
 	}
 	#app-header ul li {
 		margin: 0;
@@ -180,10 +186,11 @@
 		line-height: 1.2em;
 		float: left;
 		margin: 0;
-		padding: 8px 20px 8px 20px;
+		/*padding: 8px 20px 8px 20px;*/
 		font-weight: bold;
-		width: 40%;
+		width: 45%;
 		font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+		padding: 10px 20px 10px 20px;
 	}
 	#app-header ul li a:hover,
 	#app-header ul li.active a {
@@ -325,6 +332,7 @@
 		height: 30px;
 		width: 90px;
 		background-image: none;
+		border: 1px solid transparent;
 	}
 /* Disk usage */
 	#diskusage { 
