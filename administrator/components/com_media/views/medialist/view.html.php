@@ -52,7 +52,13 @@ class MediaViewMediaList extends JView
 			});
 		});");
 
-		$this->assign('baseURL', JURI::root());
+		$base = JURI::root();
+		if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off')
+		{
+			$base = (substr($base, 0, strlen('https')) != 'https') ? str_replace('http://', 'https://', $base) : $base;
+		}
+
+		$this->assign('baseURL', $base);
 		$this->assignRef('images', $this->get('images'));
 		$this->assignRef('documents', $this->get('documents'));
 		$this->assignRef('folders', $this->get('folders'));
