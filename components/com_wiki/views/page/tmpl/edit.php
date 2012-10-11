@@ -31,6 +31,20 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+if (JPluginHelper::isEnabled('system', 'jquery')) 
+{
+	Hubzero_Document::addSystemScript('jquery.sisyphus');
+	$jdoc = &JFactory::getDocument();
+	$jdoc->addScriptDeclaration('
+	jQuery(document).ready(function(jq){
+		var $ = jq;
+		$("#hubForm").sisyphus({
+			timeout: 5,
+			customKeyPrefix: "rev' . $this->revision->id . '_"
+		});
+	});');
+}
+
 if ($this->page->id) {
 	$lid = $this->page->id;
 } else {
@@ -224,7 +238,7 @@ if ($templates) {
 		<input type="hidden" name="page[title]" id="title" value="<?php echo $this->escape($this->page->title); ?>" />
 	<?php } ?>
 		
-		<label for="pagetext">
+		<label for="pagetext" style="position: relative;">
 			<?php echo JText::_('WIKI_FIELD_PAGETEXT'); ?>: 
 			<span class="required"><?php echo JText::_('WIKI_REQUIRED'); ?></span>
 			<?php
@@ -232,6 +246,7 @@ if ($templates) {
 			$editor =& Hubzero_Wiki_Editor::getInstance();
 			echo $editor->display('revision[pagetext]', 'pagetext', $this->revision->pagetext, '', '35', '40');
 			?>
+			<span id="pagetext-overlay"><span>Drop file here to include in page</span></span>
 		</label>
 		<p class="ta-right hint">
 			See <a class="popup" href="<?php echo JRoute::_('index.php?option=com_wiki&pagename=Help:WikiFormatting'); ?>">Help: Wiki Formatting</a> for help on editing content.
@@ -391,4 +406,21 @@ if ($this->config->get('access-edit')) {
 			<input type="submit" name="submit" value="<?php echo JText::_('SUBMIT'); ?>" />
 		</p>
 	</form>
+
+	<style>
+		#pagetext-overlay {
+			background: rgba(255, 255, 255, 0.6); position: absolute; top: 0; bottom: 0; left: 0; right: 0;
+		}
+		#pagetext-overlay span {
+			display: block;
+			width: 200px;
+			border-radius: 0.25em;
+			background: rgba(0, 0, 0, 0.8);
+			color: #fff;
+			padding: 1em;
+			text-align: center;
+			text-shadow: rgba(0, 0, 0, 0.8);
+			margin: 200px auto 100px auto;
+		}
+	</style>
 </div><!-- / .main section -->

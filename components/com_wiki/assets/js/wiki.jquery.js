@@ -152,6 +152,7 @@ HUB.Wiki = {
 				action: $('#file-uploader').attr('data-action'),
 				multiple: true,
 				debug: false,
+				extraDropzones: [$('#pagetext-overlay')],
 				onSubmit: function(id, file) {
 					//$("#ajax-upload-left").append("<div id=\"ajax-upload-uploading\" />");
 				},
@@ -160,6 +161,143 @@ HUB.Wiki = {
 					HUB.Wiki.updateFileList();
 				}
 			});
+			
+			var dropArea = document.getElementById('pagetext-overlay');
+
+			if (dropArea) {
+				var dzt = new qq.UploadDropZone({
+					element: dropArea,
+					onEnter: function(e){
+						//qq.addClass(dropArea, self._classes.dropActive);
+						e.stopPropagation();
+					},
+					onLeave: function(e){
+						e.stopPropagation();
+					},
+					onLeaveNotDescendants: function(e){
+						//qq.removeClass(dropArea, self._classes.dropActive);  
+					},
+					onDrop: function(e){
+						dropArea.style.display = 'none';
+						//qq.removeClass(dropArea, self._classes.dropActive);
+						uploader._uploadFileList(e.dataTransfer.files);    
+						if (typeof(wykiwygs) !== 'undefined') {
+							if (wykiwygs.length) {
+								for (i=0; i<wykiwygs.length; i++)
+								{
+									wykiwygs[i].action('insertHTML', '[[File(' + e.dataTransfer.files[0].name + ')]] ', false);
+								}
+							}
+						}
+						if (typeof(HUB.Plugins.WikiEditorToolbar) !== 'undefined') {
+							HUB.Wiki.insertTags('[[File(', ')]] ', e.dataTransfer.files[0].name, 'pagetext');
+						}
+					}
+				});
+
+				dropArea.style.display = 'none';
+
+				qq.attach(document, 'dragenter', function(e){
+					if (!dzt._isValidFileDrag(e)) return; 
+
+					dropArea.style.display = 'block';
+				});
+				qq.attach(document, 'dragleave', function(e){
+					if (!dzt._isValidFileDrag(e)) return;
+					var relatedTarget = document.elementFromPoint(e.clientX, e.clientY);
+					// only fire when leaving document out
+					if ( ! relatedTarget || relatedTarget.nodeName == "HTML") {
+						dropArea.style.display = 'none';
+					}
+				});
+			}
+		}
+	},
+
+	insertTags: function(tagOpen, tagClose, sampleText, id) {
+		var txtarea = document.getElementById(id);
+		var selText, isSample = false;
+
+		if (document.selection && document.selection.createRange) { // IE/Opera
+			// Save window scroll position
+			if (document.documentElement && document.documentElement.scrollTop) {
+				var winScroll = document.documentElement.scrollTop
+			} else if (document.body) {
+				var winScroll = document.body.scrollTop;
+			}
+
+			// Get current selection  
+			txtarea.focus();
+
+			var range;
+			if (window.getSelection) {
+				range = window.getSelection();
+			} else if (document.getSelection) {
+		        range = document.getSelection();
+			} else if (document.selection) {
+				range = document.selection.createRange();
+			}
+
+			selText = range.text;
+
+			// Insert tags
+			checkSelectedText();
+			range.text = tagOpen + selText + tagClose;
+
+			// Mark sample text as selected
+			if (isSample && range.moveStart) {
+				if (window.opera) {
+					tagClose = tagClose.replace(/\n/g,'');
+				}
+				range.moveStart('character', - tagClose.length - selText.length); 
+				range.moveEnd('character', - tagClose.length); 
+			}
+			range.select();
+
+			// Restore window scroll position
+			if (document.documentElement && document.documentElement.scrollTop) {
+				document.documentElement.scrollTop = winScroll
+			} else if (document.body) {
+				document.body.scrollTop = winScroll;
+			}
+		} else if (txtarea.selectionStart || txtarea.selectionStart == '0') { // Mozilla
+			// Save textarea scroll position
+			var textScroll = txtarea.scrollTop;
+
+			// Get current selection
+			txtarea.focus();
+			var startPos = txtarea.selectionStart;
+			var endPos = txtarea.selectionEnd;
+			selText = txtarea.value.substring(startPos, endPos);
+
+			// Insert tags
+			checkSelectedText();
+
+			txtarea.value = txtarea.value.substring(0, startPos)
+				+ tagOpen + selText + tagClose
+				+ txtarea.value.substring(endPos, txtarea.value.length);
+
+			// Set new selection
+			if (isSample) {
+				txtarea.selectionStart = startPos + tagOpen.length;
+				txtarea.selectionEnd = startPos + tagOpen.length + selText.length;
+			} else {
+				txtarea.selectionStart = startPos + tagOpen.length + selText.length + tagClose.length;
+				txtarea.selectionEnd = txtarea.selectionStart;
+			}
+
+			// Restore textarea scroll position
+			txtarea.scrollTop = textScroll;
+		} 
+
+		function checkSelectedText() {
+			if (!selText) {
+				selText = sampleText;
+				isSample = true;
+			} else if (selText.charAt(selText.length - 1) == ' ') { // Exclude ending space char
+				selText = selText.substring(0, selText.length - 1);
+				tagClose += ' ';
+			} 
 		}
 	},
 
