@@ -81,11 +81,11 @@ class plgYSearchContent extends YSearchPlugin
 				c.title,
 				concat(coalesce(c.introtext, ''), coalesce(c.`fulltext`, '')) AS description,
 				CASE
-					WHEN s.alias!='' OR ca.alias!='' OR c.alias!='' THEN 
+					WHEN s.name OR ca.name OR c.alias THEN
 						concat(
-							CASE WHEN s.alias!='' THEN concat('/', s.alias) ELSE '' END, 
-							CASE WHEN ca.alias!='' AND ca.alias != s.alias THEN concat('/', ca.alias) ELSE '' END, 
-							CASE WHEN c.alias!='' AND c.alias != ca.alias THEN concat('/', c.alias) ELSE '' END
+							CASE WHEN s.name THEN concat('/', s.name) ELSE '' END,
+							CASE WHEN ca.name AND ca.name != s.name THEN concat('/', ca.name) ELSE '' END,
+							CASE WHEN c.alias THEN concat('/', c.alias) ELSE '' END
 						)
 					ELSE concat('/content/article/', c.id) 
 				END AS link,
