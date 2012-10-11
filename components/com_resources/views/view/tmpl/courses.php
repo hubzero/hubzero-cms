@@ -362,7 +362,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						}
 						$html .= '>'.$child->title.'</a>';
 						if ($child->type != 31) {
-							$html .= ($child->introtext) ? '<br />'.Hubzero_View_Helper_Html::shortenText(stripslashes($child->introtext),200,0) : '';
+							//$html .= ($child->introtext) ? '<br />'.Hubzero_View_Helper_Html::shortenText(stripslashes($child->introtext),200,0) : '';
 						}
 					}
 					$html .= '</td>'."\n";
@@ -423,6 +423,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 						$html .= "\t\t\t".'<td colspan="5"> </td>'."\n";
 					}
 					$html .= "\t\t".'</tr>'."\n";
+					if ($child->standalone == 1) {
+						if ($child->type != 31 && $child->introtext) { 
+							$html .= "\t\t".'<tr class="'.$o.'">'."\n";
+							$html .= "\t\t\t".'<td colspan="6">';
+							$html .= Hubzero_View_Helper_Html::shortenText(stripslashes($child->introtext),200,0) . '<br /><br />';
+							$html .= "\t\t\t".'</td>'."\n";
+							$html .= "\t\t".'</tr>'."\n";
+						}
+					}
 				}
 				$html .= "\t".'</tbody>'."\n";
 				$html .= '</table>'."\n";
