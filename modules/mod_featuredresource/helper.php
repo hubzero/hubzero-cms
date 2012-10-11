@@ -84,11 +84,11 @@ class modFeaturedresource extends JObject
 	}
 
 	/**
-	 * Display module contents
+	 * Generate module contents
 	 * 
 	 * @return     void
 	 */
-	public function display()
+	public function run()
 	{
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_features' . DS . 'tables' . DS . 'history.php');
 
@@ -279,6 +279,28 @@ class modFeaturedresource extends JObject
 		}
 
 		require(JModuleHelper::getLayoutPath($this->module->module));
+	}
+
+	/**
+	 * Display module contents
+	 * 
+	 * @return     void
+	 */
+	public function display()
+	{
+		$juser =& JFactory::getUser();
+
+		if (!$juser->get('guest') && intval($this->params->get('cache', 0)))
+		{
+			$cache =& JFactory::getCache('callback');
+			$cache->setCaching(1);
+			$cache->setLifeTime(intval($this->params->get('cache_time', 15)));
+			$cache->call(array($this, 'run'));
+			echo '<!-- cached ' . date('Y-m-d H:i:s', time()) . ' -->';
+			return;
+		}
+
+		$this->run();
 	}
 
 	/**
