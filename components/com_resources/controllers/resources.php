@@ -1220,7 +1220,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 							$thistool = $tool;
 						}
 						// Current version
-						if ($tool->state == 1 && count($alltools) > 1 &&  $alltools[1]->version == $tool->version) 
+						if ($tool->state == 1 && (count($alltools) == 1 || (count($alltools) > 1 &&  $alltools[1]->version == $tool->version)))
 						{
 							$curtool = $tool;
 							$revision = $revision ? $revision : $tool->revision;
