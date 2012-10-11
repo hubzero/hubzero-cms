@@ -44,7 +44,7 @@ if (!empty($this->fields)) {
 	for ($i=0, $n=count( $this->fields ); $i < $n; $i++)
 	{
 		// explore the text and pull out all matches
-		array_push($this->fields[$i], EventsControllerEvent::parseTag($this->row->content, $this->fields[$i][0]));
+		array_push($this->fields[$i], EventsControllerEvents::parseTag($this->row->content, $this->fields[$i][0]));
 		// clean the original text of any matches
 		$this->row->content = str_replace('<ef:'.$this->fields[$i][0].'>'.end($this->fields[$i]).'</ef:'.$this->fields[$i][0].'>','',$this->row->content);
 	}
