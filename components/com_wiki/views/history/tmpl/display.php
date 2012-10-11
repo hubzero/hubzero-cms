@@ -33,6 +33,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $mode = $this->page->params->get('mode', 'wiki');
 
+if (!is_array($this->revisions))
+{
+	$this->revisions = array();
+}
+if (count($this->revisions) <= 0)
+{
+	$this->revisions[] = new WikiPageRevision(JFactory::getDBO());
+}
+
 $first = end($this->revisions);
 ?>
 	<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">

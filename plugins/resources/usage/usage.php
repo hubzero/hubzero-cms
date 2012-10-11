@@ -347,10 +347,10 @@ class plgResourcesUsage extends JPlugin
 		$tid = $this->getTid($id, $datetime);
 
 		$orgs = $this->getTopValue($id, 3, $tid, $datetime);
+		$r = array();
 		if ($orgs)
 		{
 			$i = 0;
-			$r = array();
 			foreach ($orgs as $row)
 			{
 				$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
@@ -377,10 +377,10 @@ class plgResourcesUsage extends JPlugin
 		$json->orgs = $r;
 
 		$countries = $this->getTopValue($id, 1, $tid, $datetime);
+		$r = array();
 		if ($countries)
 		{
 			$i = 0;
-			$r = array();
 			foreach ($countries as $row)
 			{
 				$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
@@ -407,10 +407,10 @@ class plgResourcesUsage extends JPlugin
 		$json->countries = $r;
 
 		$domains = $this->getTopValue($id, 2, $tid, $datetime);
+		$r = array();
 		if ($domains)
 		{
 			$i = 0;
-			$r = array();
 			foreach ($domains as $row)
 			{
 				$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));

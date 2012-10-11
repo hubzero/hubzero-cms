@@ -207,6 +207,7 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 
 			<a class="feed" href="<?php echo $feed; ?>" title="<?php echo JText::_('Comments RSS Feed'); ?>"><?php echo JText::_('Comments RSS Feed'); ?></a>
 			*/
+			$cls = 'even';
 		?>
 
 		<div class="aside aside-below">
@@ -226,6 +227,7 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 				<ol class="comments">
 					<?php foreach ($this->comments as $comment) { ?>
 						<?php
+							$cls = ($cls == 'even') ? 'odd' : 'even';
 							$name = JText::_('PLG_GROUPS_BLOG_ANONYMOUS');
 							$xuser = "";
 							if (!$comment->anonymous) {

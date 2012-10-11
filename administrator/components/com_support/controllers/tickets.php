@@ -678,7 +678,7 @@ class SupportControllerTickets extends Hubzero_Controller
 								if ($allowEmailResponses)
 								{
 									// Build a temporary token for this user, userid will not be valid, but the token will
-									$token = $encryptor->buildEmailToken(1, 1, $zuser->get('id'), $id);
+									$token = $encryptor->buildEmailToken(1, 1, 1, $id);
 									$emails[] = array($row->email, 'htc-' . $token);
 								}
 								else

@@ -1161,7 +1161,7 @@ class GroupsController extends Hubzero_Controller
 		//are we already a member
 		if (in_array($this->juser->get('id'), $members)) 
 		{
-			$add->redirect(JRoute::_('index.php?option=com_groups&gid=' . $group->get("cn")));
+			$app->redirect(JRoute::_('index.php?option=com_groups&gid=' . $group->get("cn")));
 			exit();
 		}
 

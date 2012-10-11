@@ -202,7 +202,7 @@ class ResourcesHelper extends JObject
 	 */
 	public function getCons()
 	{
-		$sql = "SELECT a.authorid, a.name, a.organization AS org, a.role, n.uidNumber AS id, n.givenName AS firstname, n.middleName AS middlename, n.surname AS lastname, n.organization AS xorg
+		$sql = "SELECT a.authorid, a.name, a.name AS xname, a.organization AS org, a.role, n.uidNumber AS id, n.givenName AS firstname, n.middleName AS middlename, n.surname AS lastname, n.organization AS xorg
 				FROM #__author_assoc AS a 
 				LEFT JOIN #__xprofiles AS n ON n.uidNumber=a.authorid
 				WHERE a.subtable='resources' 

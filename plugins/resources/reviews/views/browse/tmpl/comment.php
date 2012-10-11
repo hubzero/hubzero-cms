@@ -60,11 +60,12 @@ if (!$this->parser)
 
 // Set the name of the reviewer
 $name = JText::_('PLG_RESOURCES_REVIEWS_ANONYMOUS');
+
+$juseri = Hubzero_User_Profile::getInstance($this->reply->added_by);
+
 if ($this->reply->anonymous != 1) 
 {
 	//$name = JText::_('PLG_RESOURCES_REVIEWS_UNKNOWN');
-	
-	$juseri = Hubzero_User_Profile::getInstance($this->reply->added_by);
 	if (is_object($juseri) && $juseri->get('name')) 
 	{
 		$name = '<a href="'.JRoute::_('index.php?option=com_members&id=' . $juseri->get('uidNumber')) . '">' . $this->escape(stripslashes($juseri->get('name'))) . '</a>';

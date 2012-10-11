@@ -54,6 +54,8 @@ $wikiconfig = array(
 ximport('Hubzero_Wiki_Parser');
 $parser =& Hubzero_Wiki_Parser::getInstance();
 
+ximport('Hubzero_User_Profile_Helper');
+
 $name = JText::_('COM_ANSWERS_ANONYMOUS');
 $user = Hubzero_User_Profile::getInstance($this->question->created_by);
 if ($this->question->anonymous == 0) {
@@ -145,7 +147,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 		<div class="entry question" id="q<?php echo $this->question->id; ?>">
 			<p class="entry-member-photo">
 				<span class="question-anchor"><a name="q<?php echo $this->question->id; ?>"></a></span>
-				<img src="<?php echo AnswersHelperMember::getMemberPhoto($user, $this->question->anonymous); ?>" alt="" />
+				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($user, $this->question->anonymous); ?>" alt="" />
 			</p><!-- / .question-member-photo -->
 			<div class="entry-content">
 			<?php if ($reports == 0) { ?>
@@ -381,17 +383,14 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 				<p class="comment-member-photo">
 					<span class="comment-anchor"><a name="answerform"></a></span>
 				<?php
+					$jxuser = Hubzero_User_Profile::getInstance($this->juser->get('id'));
 					if (!$this->juser->get('guest')) {
-						$jxuser = new Hubzero_User_Profile();
-						$jxuser->load($this->juser->get('id'));
-						$thumb = AnswersHelperMember::getMemberPhoto($jxuser, 0);
+						$anon = 0;
 					} else {
-						$config =& JComponentHelper::getParams('com_members');
-						$thumb = DS . ltrim($config->get('defaultpic'));
-						$thumb = AnswersHelperMember::thumbit($thumb);
+						$anon = 1;
 					}
 				?>
-					<img src="<?php echo $thumb; ?>" alt="<?php echo JText::_(''); ?>" />
+					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, $anon); ?>" alt="<?php echo JText::_(''); ?>" />
 				</p>
 				<fieldset>
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -480,7 +479,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 				<li class="comment <?php echo $cls; ?>" id="c<?php echo $row->id; ?>">
 					<p class="comment-member-photo">
 						<span class="comment-anchor"><a name="c<?php echo $row->id; ?>"></a></span>
-						<img src="<?php echo AnswersHelperMember::getMemberPhoto($ruser, $row->anonymous); ?>" alt="" />
+						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($ruser, $row->anonymous); ?>" alt="" />
 					</p><!-- / .comment-member-photo -->
 					<div class="comment-content">
 				<?php if (!$abuse) { ?>
@@ -695,7 +694,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 				<li class="comment <?php echo $cls; ?>" id="c<?php echo $row->id; ?>">
 					<p class="comment-member-photo">
 						<span class="comment-anchor"><a name="c<?php echo $row->id; ?>"></a></span>
-						<img src="<?php echo AnswersHelperMember::getMemberPhoto($ruser, $row->anonymous); ?>" alt="" />
+						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($ruser, $row->anonymous); ?>" alt="" />
 					</p><!-- / .comment-member-photo -->
 					<div class="comment-content">
 					<?php if (!$abuse) { ?>

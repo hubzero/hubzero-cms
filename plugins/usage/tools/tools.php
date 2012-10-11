@@ -542,7 +542,7 @@ class plgUsageTools extends JPlugin
 	{
 		$database =& JFactory::getDBO();
 
-		$sql = "SELECT COUNT(datetime) FROM #__stats_topvals WHERE LEFT(datetime,7) = " . $db->Quote($yearmonth) . " AND period = " . $db->Quote($period);
+		$sql = "SELECT COUNT(datetime) FROM #__stats_topvals WHERE LEFT(datetime,7) = " . $database->Quote($yearmonth) . " AND period = " . $database->Quote($period);
 		$database->setQuery($sql);
 		$result = $database->loadResult();
 
@@ -654,7 +654,7 @@ class plgUsageTools extends JPlugin
 		{
 			$html  = $this->navlinks($period, $s_top);
 		}
-		$html .= '<form method="post" action="' . JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task . '&period=' . $period) . '">' . "\n";
+		$html  = '<form method="post" action="' . JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task . '&period=' . $period) . '">' . "\n";
 		$html .= "\t" . '<fieldset class="filters">' . "\n";
 		$html .= "\t\t" . '<label>' . "\n";
 		$html .= "\t\t\t".JText::_('PLG_USAGE_SHOW_DATA_FOR') . ': ' . "\n";

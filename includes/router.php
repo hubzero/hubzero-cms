@@ -773,7 +773,10 @@ class JRouterSite extends JRouter
 			if(!$uri->getVar('option'))
 			{
 				$item  = $menu->getItem($itemid);
-				$uri->setVar('option', $item->component);
+				if (is_object($item))
+				{
+					$uri->setVar('option', $item->component);
+				}
 			}
 		}
 

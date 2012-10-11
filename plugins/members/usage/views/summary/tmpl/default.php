@@ -181,8 +181,11 @@ $cls = 'even';
 			<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">
 				<td><?php echo $count; ?></td>
 				<td class="textual-data"><a href="<?php echo JRoute::_('index.php?option=com_resources&id='.$row->id); ?>"><?php echo $row->title; ?></a> <span class="small"><?php echo $row->type; ?></span></td>
-				<td><?php echo number_format(plgMembersUsage::get_usercount($row->id,12)); ?></td>
-				<td><?php echo number_format(plgMembersUsage::get_usercount($row->id,14)); ?></td>
+				<td><?php $result = plgMembersUsage::get_usercount($row->id,12);
+				echo (is_numeric($result)) ? number_format($result) : $result; ?></td>
+				<td><?php 
+				$result = plgMembersUsage::get_usercount($row->id,14);
+				echo (is_numeric($result)) ? number_format($result) : $result; ?></td>
 				<td><?php echo plgMembersUsage::get_citationcount($row->id, 0); ?></td>
 				<td><?php echo $row->publish_up; ?></td>
 			</tr>
