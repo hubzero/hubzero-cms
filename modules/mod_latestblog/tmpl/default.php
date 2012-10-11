@@ -79,6 +79,15 @@ $c = 0;
 						}
 					?>
 					<li>
+						<?php
+						$author = Hubzero_User_Profile::getInstance($post->created_by);
+						if (is_object($author) && $author->get('name')) 
+						{
+						?>
+							<p class="entry-author-photo"><img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($author, 0); ?>" alt="" /></p>
+						<?php
+							}
+						?>
 						<div class="entry-content">
 							<h4>
 								<a href="<?php echo JRoute::_($url); ?>"><?php echo stripslashes($post->title); ?></a>
