@@ -380,7 +380,11 @@ class GroupsController extends Hubzero_Controller
 
 		//vars
 		$mytags = '';
-		$mygroups = array();
+		$mygroups = array(
+			'members'    => null,
+			'invitees'   => null,
+			'applicants' => null
+		);
 		$populargroups = array();
 		$interestinggroups = array();
 

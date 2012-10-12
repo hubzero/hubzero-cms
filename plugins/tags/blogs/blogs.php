@@ -114,7 +114,7 @@ class plgTagsBlogs extends JPlugin
 		$e_count = "SELECT COUNT(f.id) FROM (SELECT e.id, COUNT(DISTINCT t.tagid) AS uniques";
 		$e_fields = "SELECT e.id, e.title, e.alias, NULL AS itext, e.content AS ftext, e.state, e.created, e.created_by, 
 					NULL AS modified, e.publish_up, e.publish_down, CONCAT('index.php?option=com_blog&task=view&id=', e.id) AS href, 
-					'blog' AS section, COUNT(DISTINCT t.tagid) AS uniques, e.params, e.scope AS rcount, u.name AS data1, 
+					'blogs' AS section, COUNT(DISTINCT t.tagid) AS uniques, e.params, e.scope AS rcount, u.name AS data1, 
 					NULL AS data2, NULL AS data3 ";
 		$e_from  = " FROM #__blog_entries AS e, #__tags_object AS t, #__users AS u";
 		$e_where = " WHERE e.created_by=u.id AND t.objectid=e.id AND t.tbl='blog' AND t.tagid IN ($ids)";
@@ -207,13 +207,32 @@ class plgTagsBlogs extends JPlugin
 	 */
 	public function out($row)
 	{
+		$juri =& JURI::getInstance();
+
+		$yearFormat = '%Y';
+		$monthFormat = '%b';
 		$dateFormat = '%d %b %Y';
 		$tz = 0;
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
+			$yearFormat = 'Y';
+			$monthFormat = 'm';
 			$dateFormat = 'd M Y';
 			$tz = true;
 		}
+
+		switch ($row->rcount)
+		{
+			case 'site':
+				$row->href = JRoute::_('index.php?option=com_blog&task=' . JHTML::_('date', $row->publish_up, $yearFormat, $tz) . '/' . JHTML::_('date', $row->publish_up, $monthFormat, $tz) . '/' . $row->alias);
+			break;
+			case 'member':
+				$row->href = JRoute::_('index.php?option=com_members&id=' . $row->created_by . '&active=blog&task=' . JHTML::_('date', $row->publish_up, $yearFormat, $tz) . '/' . JHTML::_('date', $row->publish_up, $monthFormat, $tz) . '/' . $row->alias);
+			break;
+			case 'group':
+			break;
+		}
+		$row->href = JRoute::_($row->href);
 
 		// Start building the HTML
 		$html  = "\t" . '<li class="blog-entry">' . "\n";
@@ -225,6 +244,7 @@ class plgTagsBlogs extends JPlugin
 		{
 			$html .= "\t\t" . Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->ftext)), 200) . "\n";
 		}
+		$html .= "\t\t" . '<p class="href">' . rtrim($juri->base(), DS) . DS . ltrim($row->href, DS) . '</p>' . "\n";
 		$html .= "\t" . '</li>' . "\n";
 
 		// Return output

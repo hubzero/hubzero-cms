@@ -1587,6 +1587,7 @@ class ResourcesHtml
 				$paramsClass = 'JRegistry';
 			}
 
+			$linkAction = 0;
 			$out .= '<ul>' . "\n";
 			$base = $config->get('uploadpath');
 			foreach ($children as $child)

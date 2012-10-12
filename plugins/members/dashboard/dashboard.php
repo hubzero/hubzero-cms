@@ -221,7 +221,7 @@ class plgMembersDashboard extends JPlugin
 		$usermods = array();
 		foreach ($mymods as $ky => $arr)
 		{
-			$usermods[$ky] = implode(',', $arr);
+			$usermods[$ky] = (is_array($arr)) ? implode(',', $arr) : '';
 		}
 
 		// Build a list of all modules being used by this user 
@@ -307,6 +307,10 @@ class plgMembersDashboard extends JPlugin
 		{
 			return $html;
 		}
+		if (!is_array($mods) || count($mods) <= 0)
+		{
+			return $html;
+		}
 
 		$paramsClass = 'JParameter';
 		if (version_compare(JVERSION, '1.6', 'ge'))
@@ -381,10 +385,19 @@ class plgMembersDashboard extends JPlugin
 		$id  = $this->save(1);
 
 		$ids = explode(';',$id);
+		if (!is_array($ids))
+		{
+			$ids = array(
+				'',
+				'',
+				''
+			);
+		}
 		for ($i = 0; $i < count($ids); $i++)
 		{
 			if (!trim($ids[$i])) 
 			{
+				$ids[$i] = array();
 				continue;
 			}
 			$ids[$i] = explode(',', $ids[$i]);
@@ -719,36 +732,46 @@ class plgMembersDashboard extends JPlugin
 
 		return $string;
 	}
-	
-	
-	private function _resolveDeletedModules( $hub_modules, $user_modules )
+
+	/**
+	 * loop through each column of modules then through each module in each column to 
+	 * see if that module id exists in available modules if doesn't exist unset from user module prefs
+	 * 
+	 * @param      array $hub_modules  Dashboard modules list
+	 * @param      array $user_modules Current user's module list
+	 * @return     array
+	 */
+	private function _resolveDeletedModules($hub_modules, $user_modules)
 	{
-		//get the id's foreach module for the 'myhub/dashboard' position
+		// get the id's foreach module for the 'myhub/dashboard' position
 		$modules = array();
-		foreach($hub_modules as $hub_module)
+		foreach ($hub_modules as $hub_module)
 		{
 			$modules[] = $hub_module->id;
 		}
-		
-		//loop through each column of modules then through each module in each colum to see if that module id exists in available modules
-		//if doesnt exist unset from user module prefs
-		$prefs = "";
-		foreach($user_modules as $column => $user_module)
+
+		// loop through each column of modules then through each module in each column to see if that module id exists in available modules
+		// if doesn't exist unset from user module prefs
+		$prefs = '';
+		foreach ($user_modules as $column => $user_module)
 		{
-			foreach($user_module as $k => $v)
+			if (is_array($user_module))
 			{
-				if(!in_array($v, $modules))
+				foreach ($user_module as $k => $v)
 				{
-					unset($user_modules[$column][$k]);
-				}
-				else
-				{
-					$prefs .= $v . ",";
+					if (!in_array($v, $modules))
+					{
+						unset($user_modules[$column][$k]);
+					}
+					else
+					{
+						$prefs .= $v . ",";
+					}
 				}
 			}
-			$prefs .= ";";
+			$prefs .= ';';
 		}
-		
+
 		//we need to rewrite the user myhub prefs
 		$myhub = new MyhubPrefs($this->database);
 		$myhub->load($this->member->get('uidNumber'));
@@ -762,7 +785,7 @@ class plgMembersDashboard extends JPlugin
 		{
 			$this->setError($myhub->getError());
 		}
-		
+
 		return $user_modules;
 	}
 

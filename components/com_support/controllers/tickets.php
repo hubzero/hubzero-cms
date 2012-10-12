@@ -614,6 +614,12 @@ class SupportControllerTickets extends Hubzero_Controller
 		// Incoming
 		$no_html  = JRequest::getInt('no_html', 0);
 		$verified = JRequest::getInt('verified', 0);
+		if (!isset($_POST['reporter']) || !isset($_POST['problem']))
+		{
+			// This really, REALLY shouldn't happen.
+			JError::raiseError(500, JText::_('No data submitted'));
+			return;
+		}
 		$reporter = array_map('trim', $_POST['reporter']);
 		$problem  = array_map('trim', $_POST['problem']);
 

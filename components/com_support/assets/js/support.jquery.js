@@ -61,6 +61,8 @@ HUB.Support = {
 	},
 
 	addEditQueryEvent: function() {
+		var $ = HUB.Support.jQuery;
+
 		$('a.modal').fancybox({
 			type: 'ajax',
 			width: 600,

@@ -1398,12 +1398,13 @@ class RegisterController extends Hubzero_Controller
 		$view->title = JText::_('COM_REGISTER_CHANGE');
 		$view->login = $login;
 		$view->email = $email;
-		$view->return = $return;
 		$view->email_confirmed = $email_confirmed;
 		$view->success = false;
 
 		// Incoming
 		$return = urldecode(JRequest::getVar('return', '/'));
+
+		$view->return = $return;
 
 		// Check if a new email was submitted
 		$pemail = JRequest::getVar('email', '', 'post');

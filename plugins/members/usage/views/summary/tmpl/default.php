@@ -133,14 +133,7 @@ $cls = 'even';
 <?php
 			$count++;
     	}
-	} else {
-?>
-			<tr class="odd">
-				<td colspan="8" class="textual-data"><?php echo JText::_('PLG_MEMBERS_USAGE_NO_RESULTS'); ?></td>
-			</tr>
-<?php
-	}
-	if ($this->tool_total_14 && $this->tool_total_12) {
+		if ($this->tool_total_14 && $this->tool_total_12) {
 ?>
 			<tr class="summary">
 				<td></td>
@@ -151,6 +144,13 @@ $cls = 'even';
 				<td><?php echo number_format($sum_simcount_14); ?></td>
 				<td></td>
 				<td></td>
+			</tr>
+<?php
+		}
+	} else {
+?>
+			<tr class="odd">
+				<td colspan="8" class="textual-data"><?php echo JText::_('PLG_MEMBERS_USAGE_NO_RESULTS'); ?></td>
 			</tr>
 <?php
 	}
@@ -192,14 +192,7 @@ $cls = 'even';
 <?php
 			$count++;
     	}
-	} else {
-?>
-			<tr class="odd">
-				<td colspan="6" class="textual-data"><?php echo JText::_('PLG_MEMBERS_USAGE_NO_RESULTS'); ?></td>
-			</tr>
-<?php
-	}
-	if ($this->andmore_total_14 && $this->andmore_total_12) {
+		if ($this->andmore_total_14 && $this->andmore_total_12) {
 ?>
 			<tr class="summary">
 				<td></td>
@@ -208,6 +201,13 @@ $cls = 'even';
 				<td><?php echo number_format($this->andmore_total_14); ?></td>
 				<td></td>
 				<td></td>
+			</tr>
+<?php
+		}
+	} else {
+?>
+			<tr class="odd">
+				<td colspan="6" class="textual-data"><?php echo JText::_('PLG_MEMBERS_USAGE_NO_RESULTS'); ?></td>
 			</tr>
 <?php
 	}

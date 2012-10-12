@@ -52,14 +52,16 @@ if ($this->isNew) {
 		case 3: $policy = JText::_('GROUPS_POLICY_CLOSED');   break;
 		case 2: $policy = JText::_('GROUPS_POLICY_INVITE');   break;
 		case 1: $policy = JText::_('GROUPS_POLICY_RESTRICTED'); break;
-		case 0: $policy = JText::_('GROUPS_POLICY_OPEN');    break;
+		case 0: 
+		default: $policy = JText::_('GROUPS_POLICY_OPEN');    break;
 	}
 	$message .= JText::_('GROUPS_JOIN_POLICY').': '. $policy ."\n";
 	switch ($this->group->get('privacy'))
 	{
 		case 4: $privacy = JText::_('GROUPS_ACCESS_PRIVATE');   break;
 		case 3: $privacy = JText::_('GROUPS_ACCESS_PROTECTED'); break;
-		case 0: $privacy = JText::_('GROUPS_ACCESS_PUBLIC');    break;
+		case 0: 
+		default: $privacy = JText::_('GROUPS_ACCESS_PUBLIC');    break;
 	}
 	$message .= JText::_('GROUPS_PRIVACY').': '. $privacy ."\n";
 
@@ -68,7 +70,8 @@ if ($this->isNew) {
 	{
 		case 4: $access = JText::_('GROUPS_ACCESS_PRIVATE');   break;
 		case 3: $access = JText::_('GROUPS_ACCESS_PROTECTED'); break;
-		case 0: $access = JText::_('GROUPS_ACCESS_PUBLIC');    break;
+		case 0: 
+		default: $access = JText::_('GROUPS_ACCESS_PUBLIC');    break;
 	}
 	$message .= JText::_('GROUPS_CONTENT_PRIVACY').': '. $access ."\n";
 	*/
@@ -82,14 +85,16 @@ switch ($this->g_join_policy)
 	case 3: $policy = JText::_('GROUPS_POLICY_CLOSED');   break;
 	case 2: $policy = JText::_('GROUPS_POLICY_INVITE');   break;
 	case 1: $policy = JText::_('GROUPS_POLICY_RESTRICTED'); break;
-	case 0: $policy = JText::_('GROUPS_POLICY_OPEN');    break;
+	case 0: 
+	default: $policy = JText::_('GROUPS_POLICY_OPEN');    break;
 }
 $message .= JText::_('GROUPS_JOIN_POLICY').': '. $policy ."\n";
 switch ($this->g_privacy)
 {
 	case 4: $privacy = JText::_('GROUPS_ACCESS_PRIVATE');   break;
 	case 3: $privacy = JText::_('GROUPS_ACCESS_PROTECTED'); break;
-	case 0: $privacy = JText::_('GROUPS_ACCESS_PUBLIC');    break;
+	case 0: 
+	default: $privacy = JText::_('GROUPS_ACCESS_PUBLIC');    break;
 }
 $message .= JText::_('GROUPS_PRIVACY').': '. $privacy ."\n";
 
@@ -108,4 +113,3 @@ $message .= JText::_('GROUPS_USE_LINK_TO_REVIEW_GROUP')."\n";
 $message .= $juri->base().$sef."\n";
 
 echo $message;
-?>

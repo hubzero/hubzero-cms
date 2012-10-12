@@ -195,34 +195,7 @@ class plgTagsMembers extends JPlugin
 	 */
 	public function out($row)
 	{
-		$config =& JComponentHelper::getParams('com_members');
-
-		$row->picture = $row->publish_down;
-
-		if ($row->picture) 
-		{
-			$thumb  = DS . trim($config->get('webpath', '/site/members'), DS);
-			if ($row->id < 0) 
-			{
-				$id = abs($row->id);
-				$thumb .= DS . 'n' . plgTagsMembers::niceidformat($id) . DS . $row->picture;
-			} 
-			else 
-			{
-				$thumb .= DS . plgTagsMembers::niceidformat($row->id) . DS . $row->picture;
-			}
-		} 
-		else 
-		{
-			$thumb = DS . trim($config->get('defaultpic', '/components/com_members/images/profile.gif'), DS);
-		}
-
-		$image = explode('.', $thumb);
-		$n = count($image);
-		$image[$n-2] .= '_thumb';
-		$end = array_pop($image);
-		$image[] = $end;
-		$thumb = implode('.', $image);
+		$member = Hubzero_User_Profile::getInstance($row->id);
 
 		if (strstr($row->href, 'index.php')) 
 		{
@@ -231,10 +204,7 @@ class plgTagsMembers extends JPlugin
 		$juri =& JURI::getInstance();
 
 		$html  = "\t" . '<li class="member">' . "\n";
-		if (is_file(JPATH_ROOT . $thumb)) 
-		{
-			$html .= "\t\t".'<p class="photo"><img width="50" height="50" src="' . $thumb . '" alt="" /></p>' . "\n";
-		}
+		$html .= "\t\t" . '<p class="photo"><img width="50" height="50" src="' . Hubzero_User_Profile_Helper::getMemberPhoto($member, 0) . '" alt="" /></p>' . "\n";
 		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
 		if ($row->ftext) 
 		{
@@ -243,20 +213,5 @@ class plgTagsMembers extends JPlugin
 		$html .= "\t\t" . '<p class="href">' . $juri->base() . ltrim($row->href, DS) . '</p>' . "\n";
 		$html .= "\t" . '</li>' . "\n";
 		return $html;
-	}
-
-	/**
-	 * Prepend 0's to an ID
-	 * 
-	 * @param      integer $someid ID to format
-	 * @return     integer Formatted ID
-	 */
-	public function niceidformat($someid)
-	{
-		while (strlen($someid) < 5)
-		{
-			$someid = 0 . "$someid";
-		}
-		return $someid;
 	}
 }

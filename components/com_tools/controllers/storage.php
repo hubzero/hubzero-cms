@@ -412,7 +412,7 @@ class ToolsControllerStorage extends Hubzero_Controller
 		// Check if they are logged in
 		if ($this->juser->get('guest')) 
 		{
-			$this->listfilesTask();
+			$this->filelistTask();
 			return;
 		}
 
@@ -421,7 +421,7 @@ class ToolsControllerStorage extends Hubzero_Controller
 		if (!$listdir) 
 		{
 			$this->setError(JText::_('Directory not found.'));
-			$this->listfilesTask();
+			$this->filelistTask();
 			return;
 		}
 
@@ -432,7 +432,7 @@ class ToolsControllerStorage extends Hubzero_Controller
 		if (!($folder = urldecode(JRequest::getVar('delFolder', '')))) 
 		{
 			$this->setError(JText::_('Directory not found.'));
-			$this->listfilesTask();
+			$this->filelistTask();
 			return;
 		}
 
@@ -454,7 +454,7 @@ class ToolsControllerStorage extends Hubzero_Controller
 		}
 
 		// Push through to the media view
-		$this->listfilesTask();
+		$this->filelistTask();
 	}
 
 	/**
@@ -467,7 +467,7 @@ class ToolsControllerStorage extends Hubzero_Controller
 		// Check if they are logged in
 		if ($this->juser->get('guest')) 
 		{
-			$this->listfilesTask();
+			$this->filelistTask();
 			return;
 		}
 
@@ -481,7 +481,7 @@ class ToolsControllerStorage extends Hubzero_Controller
 		if (!($file = urldecode(JRequest::getVar('file', '')))) 
 		{
 			$this->setError(JText::_('File not found.'));
-			$this->listfilesTask();
+			$this->filelistTask();
 			return;
 		}
 
@@ -501,7 +501,7 @@ class ToolsControllerStorage extends Hubzero_Controller
 		}
 
 		// Push through to the media view
-		$this->listfilesTask();
+		$this->filelistTask();
 	}
 
 	/**

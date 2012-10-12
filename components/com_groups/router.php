@@ -129,7 +129,7 @@ function GroupsParseRoute($segments)
 	{
 		if ($segments[1] == 'wiki') 
 		{
-			if (preg_match('/File:|Image:/', $segments[3])) 
+			if (isset($segments[3]) && preg_match('/File:|Image:/', $segments[3])) 
 			{
 				$vars['pagename'] = $segments[2];
 			} 
