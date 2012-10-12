@@ -180,7 +180,7 @@ class plgTagsBlogs extends JPlugin
 
 				foreach ($rows as $key => $row)
 				{
-					switch ($row->scope)
+					switch ($row->rcount)
 					{
 						case 'site':
 							$rows[$key]->href = JRoute::_('index.php?option=com_blog&task=' . JHTML::_('date', $row->publish_up, $yearFormat, $tz) . '/' . JHTML::_('date', $row->publish_up, $monthFormat, $tz) . '/' . $row->alias);
