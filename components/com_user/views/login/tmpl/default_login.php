@@ -80,6 +80,7 @@ if (!empty($error_message))
 					</div>
 					<div class="clear"></div>
 					<input type="hidden" name="option" value="com_user" />
+					<input type="hidden" name="authenticator" value="hubzero" />
 					<input type="hidden" name="task" value="login" />
 					<input type="hidden" name="return" value="<?php echo $this->return; ?>" />
 					<input type="hidden" name="freturn" value="<?php echo $this->freturn; ?>" />
