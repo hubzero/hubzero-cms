@@ -108,7 +108,9 @@ if (!$mode || ($mode && $mode != 'static')) {
 		</p>
 		<div class="article-tags">
 			<h3><?php echo JText::_('WIKI_PAGE_TAGS'); ?></h3>
-			<?php echo WikiHtml::tagcloud($this->tags); ?>
+			<?php 
+			$obj = new WikiTags(JFactory::getDBO());
+			echo $obj->get_tag_cloud(0, $this->config->get('admin', 0), $this->page->id); ?>
 		</div>
 </div><!-- / .main section -->
 <?php

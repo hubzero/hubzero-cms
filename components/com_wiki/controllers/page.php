@@ -196,6 +196,11 @@ class WikiControllerPage extends Hubzero_Controller
 		{
 			// No! Ask if they want to create a new page
 			$this->view->setLayout('doesnotexist');
+			if ($this->_group)
+			{
+				$this->page->group_cn = $this->_group;
+				$this->page->scope = $this->_group . '/wiki';
+			}
 
 			if ($this->getError()) 
 			{
@@ -311,14 +316,14 @@ class WikiControllerPage extends Hubzero_Controller
 		JDEBUG ? JProfiler::getInstance('Application')->mark('afterWikiParse') : null;
 
 		// Get the page's tags
-		if ($this->config->get('admin')) 
+		/*if ($this->config->get('admin')) 
 		{
 			$this->view->tags = $this->page->getTags(1);
 		} 
 		else 
 		{
 			$this->view->tags = $this->page->getTags();
-		}
+		}*/
 
 		$this->view->message = $this->_message;
 
