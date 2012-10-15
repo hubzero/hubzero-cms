@@ -858,6 +858,9 @@ class WikiControllerPage extends Hubzero_Controller
 		$tagging->tag_object($this->revision->created_by, $this->page->id, $tags, 1, 1);
 
 		$data = new stdClass();
+		$data->pagename = $this->page->pagename;
+		$data->scope    = $this->page->scope;
+		$data->group_cn = $this->page->group_cn;
 		$data->revisions = array(
 			'old' => $old->id,
 			'new' => $this->revision->id
@@ -927,6 +930,12 @@ class WikiControllerPage extends Hubzero_Controller
 			case 1:
 				$page = new WikiPage($this->database);
 
+				$data = new stdClass();
+				$data->pagename = $this->page->pagename;
+				$data->scope    = $this->page->scope;
+				$data->group_cn = $this->page->group_cn;
+				$data->revisions = array();
+
 				// Delete the page's history, tags, comments, etc.
 				$page->deleteBits($this->page->id);
 
@@ -948,7 +957,6 @@ class WikiControllerPage extends Hubzero_Controller
 				{
 					$this->setError(JText::_('COM_WIKI_UNABLE_TO_DELETE'));
 				}*/
-				$data = new stdClass();
 
 				// Log the action
 				$log = new WikiLog($this->database);
@@ -1162,6 +1170,15 @@ class WikiControllerPage extends Hubzero_Controller
 			return;
 		}
 
+		$data = new stdClass();
+		$data->pagename  = array(
+			'old' => $oldpagename,
+			'new' => $newpagename
+		);
+		$data->scope     = $page->scope;
+		$data->group_cn  = $page->group_cn;
+		$data->revisions = array();
+
 		// Log the action
 		$log = new WikiLog($this->database);
 		$log->pid       = $page->id;
@@ -1169,6 +1186,7 @@ class WikiControllerPage extends Hubzero_Controller
 		$log->timestamp = date('Y-m-d H:i:s', time());
 		$log->action    = 'page_renamed';
 		$log->actorid   = $this->juser->get('id');
+		$log->comments  = json_encode($data);
 		if (!$log->store()) 
 		{
 			$this->setError($log->getError());
