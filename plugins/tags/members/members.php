@@ -183,6 +183,8 @@ class plgTagsMembers extends JPlugin
 	 */
 	public function documents()
 	{
+		ximport('Hubzero_User_Profile');
+		ximport('Hubzero_User_Profile_helper');
 		ximport('Hubzero_Document');
 		Hubzero_Document::addComponentStylesheet('com_members');
 	}
