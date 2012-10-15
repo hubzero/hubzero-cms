@@ -1481,10 +1481,10 @@ class plgGroupsForum extends Hubzero_Plugin
 			$dispatcher =& JDispatcher::getInstance();
 
 			// Email each group member separately, each needs a user specific token
+			ximport('Hubzero_Emailtoken');
 			foreach ($userIDsToEmail as $userID)
 			{
-				ximport('Hubzero_Emailtoken');
-				$encryptor = new Hubzero_Email_Token();
+				$encryptor = new Hubzero_EmailToken();
 				$jconfig =& JFactory::getConfig();
 
 				// Construct User specific Email ThreadToken

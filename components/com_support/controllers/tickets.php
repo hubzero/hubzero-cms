@@ -1545,7 +1545,7 @@ class SupportControllerTickets extends Hubzero_Controller
 
 		if ($allowEmailResponses)
 		{
-			$encryptor = new Hubzero_Email_Token();
+			$encryptor = new Hubzero_EmailToken();
 		}
 
 		// Incoming

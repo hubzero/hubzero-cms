@@ -29,14 +29,13 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Hubzero_Email_Token'
- * 
- * Long description (if any) ...
+ * Hubzero library class for creating a unique token to 
+ * include in emails
  */
-class Hubzero_Email_Token
+class Hubzero_EmailToken
 {
 	/**
 	 * Description for 'mailTokenTicket'
@@ -84,21 +83,24 @@ class Hubzero_Email_Token
 	public function __construct()
 	{
 		$config = JFactory::getConfig();
-		
+
 		$file = '/etc/hubmail_gw.conf';
 
-		if (file_exists($file)) {
+		if (file_exists($file)) 
+		{
 			include_once($file);
 		}
 		else
+		{
 			throw new Exception("/etc/hubmail_gw.conf file does not exist");
+		}
 	
 		// HubmailConfig is defined here
 		include_once('/etc/hubmail_gw.conf');
 
 		if (empty($config))
 		{
-			throw new Exception('Class Hubzero_Email_Token: failed JFactory::getConfig() call');
+			throw new Exception('Class Hubzero_EmailToken: failed JFactory::getConfig() call');
 		}
 
 		if (!class_exists('HubmailConfig'))
@@ -132,7 +134,7 @@ class Hubzero_Email_Token
 
 		if (count($keyArray) <> 2)
 		{
-			throw new Exception('Class Hubzero_Email_Token: config.email_token_encryption_info_v' . $tokenVersion . ' cannot be split');
+			throw new Exception('Class Hubzero_EmailToken: config.email_token_encryption_info_v' . $tokenVersion . ' cannot be split');
 		}
 
 		$this->_key = $keyArray[0];
