@@ -48,6 +48,10 @@
 		font-family: "Fontcons";
 		content: "\f057";
 	}
+	.groups .user-options .accept:before {
+		font-family: "Fontcons";
+		content: "\2714";
+	}
 	.groups .user-options a:before {
 		margin-right: 2em;
 	}
