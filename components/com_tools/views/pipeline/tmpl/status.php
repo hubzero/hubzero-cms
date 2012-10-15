@@ -125,23 +125,23 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 						<th><?php echo JText::_('VERSION'); ?></th>
 						<td><?php echo ($this->status['version']) ? JText::_('THIS_VERSION').' '.$this->status['version']: JText::_('THIS_VERSION').': '.JText::_('NO_LABEL');
 							if (!$this->status['published'] or ($this->status['version']!=$this->status['currentversion'] && ToolsHelperHtml::toolActive($this->status['state']))) { echo ' ('.JText::_('UNDER_DEVELOPMENT').')';  }
-							if ($this->status['published']) { echo ' [<a href="'.JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=versions&app='.$this->status['toolname']).'">'.strtolower(JText::_('ALL_VERSIONS')).'</a>]'; }  ?>
+							if ($this->status['published']) { echo ' [<a class="tool-versions" href="'.JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=versions&app='.$this->status['toolname']).'">'.strtolower(JText::_('ALL_VERSIONS')).'</a>]'; }  ?>
 						</td>
 					</tr>
 					<tr>
 						<th><?php echo JText::_('AT_A_GLANCE'); ?></th>
-						<td><?php echo htmlspecialchars(stripslashes($this->status['description'])); ?></td>
+						<td><?php echo $this->escape(stripslashes($this->status['description'])); ?></td>
 					</tr>
 					<tr>
 						<th><?php echo JText::_('DESCRIPTION'); ?></th>
 						<td>
-							<a href="<?php echo JRoute::_('index.php?option=com_resources&id=' . $this->status['resourceid'] . '&rev=dev'); ?>"><?php echo JText::_('PREVIEW'); ?></a> | 
-							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('EDIT_THIS_PAGE'); ?></a>
+							<a class="preview-resource" href="<?php echo JRoute::_('index.php?option=com_resources&id=' . $this->status['resourceid'] . '&rev=dev'); ?>"><?php echo JText::_('PREVIEW'); ?></a> | 
+							<a class="edit-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('EDIT_THIS_PAGE'); ?></a>
 						</td>
 					</tr>
 					<tr>
 						<th><?php echo JText::_('VNC_GEOMETRY'); ?></th>
-						<td><?php echo $this->status['vncGeometryX'].'x'.$this->status['vncGeometryY'];?></td>
+						<td><?php echo $this->status['vncGeometryX'] . 'x' . $this->status['vncGeometryY'];?></td>
 					</tr>
 					<tr>
 						<th><?php echo JText::_('TOOL_EXEC'); ?></th>
@@ -151,7 +151,7 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 						<th><?php echo JText::_('SOURCE_CODE'); ?></th>
 						<td><?php echo ToolsHelperHtml::getCodeAccess($this->status['code']); ?>
 						<?php if ( ToolsHelperHtml::toolActive($this->status['state']) && ToolsHelperHtml::toolWIP($this->status['state'])) { ?>
-							[<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=license&app=' . $this->status['toolname']); ?>"><?php echo JText::_('CHANGE_LICENSE'); ?></a>]
+							[<a class="license-tool" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=license&app=' . $this->status['toolname']); ?>"><?php echo JText::_('CHANGE_LICENSE'); ?></a>]
 						<?php } ?>
 						</td>
 					</tr>
@@ -333,7 +333,7 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 				case 1:
 			?>
 				<p>
-					<?php echo JText::_('TEAM_WILL_CREATE'); ?> <a href="<?php echo $developer_url; ?>/tools"><?php echo $developer_site; ?></a>, <?php echo JText::_('WHATSNEXT_REGISTERED_INSTRUCTIONS');?>. 
+					<?php echo JText::_('TEAM_WILL_CREATE'); ?> <a class="developer-site" href="<?php echo $developer_url; ?>/tools"><?php echo $developer_site; ?></a>, <?php echo JText::_('WHATSNEXT_REGISTERED_INSTRUCTIONS');?>. 
 					<?php echo JText::_('WHATSNEXT_IT_HAS_BEEN'); ?> <?php echo Hubzero_View_Helper_Html::timeAgo($this->status['changed']); ?> <?php echo JText::_('WHATSNEXT_SINCE_YOUR_REQUEST'); ?>. 
 					<?php echo JText::_('WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE'); ?> 24 <?php echo JText::_('HOURS'); ?>
 				</p>
@@ -350,13 +350,13 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 				<?php if ($this->status['resource_modified'] == '1') { ?>
 					<li class="complete">
 						<?php echo JText::_('TODO_MAKE_RES_PAGE'); ?>.
-						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&task=preview&app=' . $this->status['toolname']); ?>"><?php echo JText::_('PREVIEW'); ?></a> | 
-						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('TODO_EDIT_PAGE'); ?>...</a>
+						<a class="preview-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&task=preview&app=' . $this->status['toolname']); ?>"><?php echo JText::_('PREVIEW'); ?></a> | 
+						<a class="edit-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('TODO_EDIT_PAGE'); ?>...</a>
 					</li>
 				<?php } else { ?>
 					<li class="todo">
 						<?php echo JText::_('TODO_MAKE_RES_PAGE'); ?>.
-						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('TODO_CREATE_PAGE'); ?>...</a>
+						<a class="create-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('TODO_CREATE_PAGE'); ?>...</a>
 					</li>
 				<?php } ?>
 					<li class="incomplete">
@@ -374,7 +374,7 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 			?>
 				<p>
 					<?php echo ucfirst(JText::_('THE')); ?> <?php echo $sitename; ?>  <?php echo JText::_('WHATSNEXT_AREA_CREATED'); ?> <a href="<?php echo $developer_url; ?>"><?php echo $developer_site; ?></a>:<br />
-					<a href="<?php echo $developer_url . $project_path . $this->status['toolname']; ?>/wiki"><?php echo $developer_url . $project_path . $this->status['toolname']; ?>/wiki</a>
+					<a class="developer-wiki" href="<?php echo $developer_url . $project_path . $this->status['toolname']; ?>/wiki"><?php echo $developer_url . $project_path . $this->status['toolname']; ?>/wiki</a>
 				</p>
 				<p>
 					<?php echo JText::_('WHATSNEXT_FOLLOW_STEPS'); ?>:
@@ -386,7 +386,7 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 				<?php if (!empty($rappture_url)) { ?>
 					<li><?php echo JText::_('LEARN_MORE'); ?> <?php echo JText::_('ABOUT'); ?> <?php echo JText::_('THE'); ?> <a href="<?php echo $rappture_url; ?>">Rappture toolkit</a>.</li>
 				<?php } ?>
-					<li><?php echo JText::_('WHATSNEXT_WHEN_READY'); ?>, <a href="<?php echo $developer_url . $project_path . $this->status['toolname']; ?>/wiki/GettingStarted"><?php echo JText::_('WHATSNEXT_FOLLOW_THESE_INSTRUCTIONS'); ?></a> <?php echo JText::_('WHATSNEXT_TO_ACCESS_CODE'); ?>.</li>
+					<li><?php echo JText::_('WHATSNEXT_WHEN_READY'); ?>, <a class="developer-wiki" href="<?php echo $developer_url . $project_path . $this->status['toolname']; ?>/wiki/GettingStarted"><?php echo JText::_('WHATSNEXT_FOLLOW_THESE_INSTRUCTIONS'); ?></a> <?php echo JText::_('WHATSNEXT_TO_ACCESS_CODE'); ?>.</li>
 				</ul>
 				<h2><?php echo JText::_('WHATSNEXT_WE_ARE_WAITING'); ?></h2>
 				<p><?php echo JText::_('WHATSNEXT_CREATED_LET_US_KNOW'); ?>:</p>
@@ -409,18 +409,18 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 								<?php echo JText::_('WHATSNEXT_DONE'); ?>
 							</a>
 						</span> 
-						<br /><a href="<?php echo $developer_url . $project_path . $this->status['toolname']; ?>/wiki/GettingStarted"><?php echo JText::_('WHATSNEXT_UPLOAD_HOW_DO_I_DO_THIS'); ?></a>
+						<br /><a class="developer-wiki" href="<?php echo $developer_url . $project_path . $this->status['toolname']; ?>/wiki/GettingStarted"><?php echo JText::_('WHATSNEXT_UPLOAD_HOW_DO_I_DO_THIS'); ?></a>
 					</li>
 				<?php if ($this->status['resource_modified'] == '1') { ?>
 					<li class="complete">
 						<?php echo JText::_('TODO_MAKE_RES_PAGE'); ?>.
-						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&task=preview&app=' . $this->status['toolname']); ?>"><?php echo JText::_('PREVIEW'); ?></a> | 
-						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('TODO_EDIT_PAGE'); ?>...</a>
+						<a class="preview-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&task=preview&app=' . $this->status['toolname']); ?>"><?php echo JText::_('PREVIEW'); ?></a> | 
+						<a class="edit-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('TODO_EDIT_PAGE'); ?>...</a>
 					</li>
 				<?php } else { ?>
 					<li class="todo">
 						<?php echo JText::_('TODO_MAKE_RES_PAGE'); ?>.
-						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('TODO_CREATE_PAGE'); ?>...</a>
+						<a class="create-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('TODO_CREATE_PAGE'); ?>...</a>
 					</li>
 				<?php } ?>
 					<li class="incomplete">
@@ -452,13 +452,13 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 				<?php if ($this->status['resource_modified'] == '1') { ?>
 					<li class="complete">
 						<?php echo JText::_('TODO_MAKE_RES_PAGE'); ?>.
-						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&task=preview&app=' . $this->status['toolname']); ?>"><?php echo JText::_('PREVIEW'); ?></a> | 
-						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('TODO_EDIT_PAGE'); ?>...</a>
+						<a class="preview-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&task=preview&app=' . $this->status['toolname']); ?>"><?php echo JText::_('PREVIEW'); ?></a> | 
+						<a class="edit-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('TODO_EDIT_PAGE'); ?>...</a>
 					</li>
 				<?php } else { ?>
 					<li class="todo">
 						<?php echo JText::_('TODO_MAKE_RES_PAGE'); ?>.
-						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('TODO_CREATE_PAGE'); ?>...</a>
+						<a class="create-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('TODO_CREATE_PAGE'); ?>...</a>
 					</li>
 				<?php } ?>
 					<li class="incomplete">
@@ -484,9 +484,9 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 					</li>
 					<li class="todo">
 				<?php if ($this->status['resource_modified']) { ?>
-						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&task=preview&app=' . $this->status['toolname']); ?>"><?php echo JText::_('TODO_REVIEW_RES_PAGE'); ?></a>
+						<a class="preview-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&task=preview&app=' . $this->status['toolname']); ?>"><?php echo JText::_('TODO_REVIEW_RES_PAGE'); ?></a>
 				<?php } else { ?>
-						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('TODO_CREATE_PAGE'); ?></a>
+						<a class="create-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('TODO_CREATE_PAGE'); ?></a>
 				<?php } ?>
 					</li>
 				</ul>
@@ -525,13 +525,13 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 				<?php if ($this->status['resource_modified'] == '1') { ?>
 					<li class="complete">
 						<?php echo JText::_('TODO_MAKE_RES_PAGE'); ?>.
-						<a href="<?php echo JRoute::_('index.php?option=com_resources&id=' . $this->status['resourceid'] . '&rev=dev'); ?>"><?php echo JText::_('PREVIEW'); ?></a> | 
-						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('TODO_EDIT_PAGE'); ?>...</a>
+						<a class="preview-resource" href="<?php echo JRoute::_('index.php?option=com_resources&id=' . $this->status['resourceid'] . '&rev=dev'); ?>"><?php echo JText::_('PREVIEW'); ?></a> | 
+						<a class="edit-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('TODO_EDIT_PAGE'); ?>...</a>
 					</li>
 				<?php } else { ?>
 					<li class="todo">
 						<?php echo JText::_('TODO_MAKE_RES_PAGE'); ?>.
-						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('TODO_CREATE_PAGE'); ?>...</a>
+						<a class="create-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('TODO_CREATE_PAGE'); ?>...</a>
 					</li>
 				<?php } ?>
 					<li class="todo">
@@ -569,13 +569,13 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 				<?php if ($this->status['resource_modified'] == '1') { ?>
 					<li class="complete">
 						<?php echo JText::_('TODO_MAKE_RES_PAGE'); ?>.
-						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&task=preview&app=' . $this->status['toolname']); ?>"><?php echo JText::_('PREVIEW'); ?></a> | 
-						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('TODO_EDIT_PAGE'); ?>...</a>
+						<a class="preview-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&task=preview&app=' . $this->status['toolname']); ?>"><?php echo JText::_('PREVIEW'); ?></a> | 
+						<a class="edit-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('TODO_EDIT_PAGE'); ?>...</a>
 					</li>
 				<?php } else { ?>
 					<li class="todo">
 						<?php echo JText::_('TODO_MAKE_RES_PAGE'); ?>.
-						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('TODO_CREATE_PAGE'); ?>...</a>
+						<a class="create-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('TODO_CREATE_PAGE'); ?>...</a>
 					</li>
 				<?php } ?>
 					<li class="incomplete">
@@ -596,7 +596,7 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 				</p>
 				<p>
 					<?php echo JText::_('WHATSNEXT_APPROVED_PLS_CLICK'); ?> <?php echo $sitename; ?>: <br />
-					<a href="<?php echo JRoute::_('index.php?option=com_resources&alias=' . $this->status['toolname']); ?>"><?php echo JRoute::_('index.php?option=' . $this->option . '&app=' . $this->status['toolname']); ?></a>
+					<a class="view-tool" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&app=' . $this->status['toolname']); ?>"><?php echo JRoute::_('index.php?option=' . $this->option . '&app=' . $this->status['toolname']); ?></a>
 				</p>
 				<h4><?php echo JText::_('WHATSNEXT_REMAINING_STEPS'); ?>:</h4>
 				<ul>
@@ -609,13 +609,13 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 				<?php if ($this->status['resource_modified'] == '1') { ?>
 					<li class="complete">
 						<?php echo JText::_('TODO_MAKE_RES_PAGE'); ?>.
-						<a href="<?php echo JRoute::_('index.php?option=com_resources&id=' . $this->status['resourceid'] . '&rev=dev'); ?>"><?php echo JText::_('PREVIEW'); ?></a> | 
-						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('TODO_EDIT_PAGE'); ?>...</a>
+						<a class="preview-resource" href="<?php echo JRoute::_('index.php?option=com_resources&id=' . $this->status['resourceid'] . '&rev=dev'); ?>"><?php echo JText::_('PREVIEW'); ?></a> | 
+						<a class="edit-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('TODO_EDIT_PAGE'); ?>...</a>
 					</li>
 				<?php } else { ?>
 					<li class="todo">
 						<?php echo JText::_('TODO_MAKE_RES_PAGE'); ?>.
-						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('TODO_CREATE_PAGE'); ?>...</a>
+						<a class="create-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('TODO_CREATE_PAGE'); ?>...</a>
 					</li>
 				<?php } ?>
 					<li class="complete">
@@ -634,7 +634,7 @@ ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
 			?>
 				<p>
 					<?php echo JText::_('WHATSNEXT_PUBLISHED_MSG'); ?>: <br />
-					<a href="<?php echo JRoute::_('index.php?option=com_resources&alias=' . $this->status['toolname']); ?>"><?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&app=' . $this->status['toolname']); ?></a>
+					<a class="view-tool" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&app=' . $this->status['toolname']); ?>"><?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&app=' . $this->status['toolname']); ?></a>
 				</p>
 				<h3><?php echo JText::_('WHATSNEXT_YOUR_OPTIONS'); ?>:</h3>
 				<ul class="youroptions">

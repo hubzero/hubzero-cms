@@ -72,35 +72,35 @@ ximport('Hubzero_View_Helper_Html');
 			<ul class="entries-menu order-options">
 				<?php if ($this->admin) { ?>	
 				<li>
-					<a<?php if ($this->filters['sortby'] == 'f.state, f.priority, f.toolname') { echo ' class="active"'; } ?>  href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.state, f.priority, f.toolname') . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('CONTRIBTOOL_SORTBY_STATUS'); ?>">
+					<a class="sort-status<?php if ($this->filters['sortby'] == 'f.state, f.priority, f.toolname') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.state, f.priority, f.toolname') . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('CONTRIBTOOL_SORTBY_STATUS'); ?>">
 						&darr; <?php echo JText::_('Status'); ?>
 					</a>
 				</li>
 				<?php } else { ?>
 				<li>
-					<a<?php if ($this->filters['sortby'] == 'f.state, f.registered') { echo ' class="active"'; } ?>  href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.state, f.registered') . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('CONTRIBTOOL_SORTBY_STATUS'); ?>">
+					<a class="sort-status<?php if ($this->filters['sortby'] == 'f.state, f.registered') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.state, f.registered') . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('CONTRIBTOOL_SORTBY_STATUS'); ?>">
 						&darr; <?php echo JText::_('Status'); ?>
 					</a>
 				</li>
 				<?php } ?>
 				<li>
-					<a<?php if ($this->filters['sortby'] == 'f.registered') { echo ' class="active"'; } ?>  href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.registered') . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('CONTRIBTOOL_SORTBY_REG'); ?>">
+					<a class="sort-date<?php if ($this->filters['sortby'] == 'f.registered') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.registered') . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('CONTRIBTOOL_SORTBY_REG'); ?>">
 						&darr; <?php echo JText::_('Date'); ?>
 					</a>
 				</li>
 				<li>
-					<a<?php if ($this->filters['sortby'] == 'f.toolname') { echo ' class="active"'; } ?>  href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.toolname') . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('CONTRIBTOOL_SORTBY_NAME'); ?>">
+					<a class="sort-name<?php if ($this->filters['sortby'] == 'f.toolname') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.toolname') . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('CONTRIBTOOL_SORTBY_NAME'); ?>">
 						&darr; <?php echo JText::_('Name'); ?>
 					</a>
 				</li>
-				<?php if ($this->admin) { ?>			
+				<?php if ($this->admin) { ?>
 				<li>
-					<a<?php if ($this->filters['sortby'] == 'f.priority') { echo ' class="active"'; } ?>  href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.priority') . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('PRIORITY'); ?>">
+					<a class="sort-priority<?php if ($this->filters['sortby'] == 'f.priority') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.priority') . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('PRIORITY'); ?>">
 						&darr; <?php echo JText::_('Priority'); ?>
 					</a>
 				</li>
 				<li>
-					<a<?php if ($this->filters['sortby'] == 'f.state_changed DESC') { echo ' class="active"'; } ?>  href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.state_changed DESC') . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('LAST_STATUS_CHANGE'); ?>">
+					<a class="sort-change <?php if ($this->filters['sortby'] == 'f.state_changed DESC') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.state_changed DESC') . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('LAST_STATUS_CHANGE'); ?>">
 						&darr; <?php echo JText::_('Status Change'); ?>
 					</a>
 				</li>
@@ -109,23 +109,23 @@ ximport('Hubzero_View_Helper_Html');
 			
 			<ul class="entries-menu filter-options">
 				<li>
-					<a<?php if ($this->filters['filterby'] == 'all') { echo ' class="active"'; } ?>  href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&filterby=all&sortby=' . urlencode($this->filters['sortby']) . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('CONTRIBTOOL_FILTER_ALL'); ?>">
+					<a class="filter-all<?php if ($this->filters['filterby'] == 'all') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&filterby=all&sortby=' . urlencode($this->filters['sortby']) . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('CONTRIBTOOL_FILTER_ALL'); ?>">
 						<?php echo JText::_('All'); ?>
 					</a>
 				</li>
 				<li>
-					<a<?php if ($this->filters['filterby'] == 'mine') { echo ' class="active"'; } ?>  href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&filterby=mine&sortby=' . urlencode($this->filters['sortby']) . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('CONTRIBTOOL_FILTER_MINE'); ?>">
+					<a class="filter-mine<?php if ($this->filters['filterby'] == 'mine') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&filterby=mine&sortby=' . urlencode($this->filters['sortby']) . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('CONTRIBTOOL_FILTER_MINE'); ?>">
 						<?php echo JText::_('Mine'); ?>
 					</a>
 				</li>
 				<li>
-					<a<?php if ($this->filters['filterby'] == 'published') { echo ' class="active"'; } ?>  href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&filterby=published&sortby=' . urlencode($this->filters['sortby']) . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('CONTRIBTOOL_FILTER_PUBLISHED'); ?>">
+					<a class="filter-published<?php if ($this->filters['filterby'] == 'published') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&filterby=published&sortby=' . urlencode($this->filters['sortby']) . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('CONTRIBTOOL_FILTER_PUBLISHED'); ?>">
 						<?php echo JText::_('Published'); ?>
 					</a>
 				</li>
 				<?php if ($this->admin) { ?>
 				<li>
-					<a<?php if ($this->filters['filterby'] == 'dev') { echo ' class="active"'; } ?>  href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&filterby=dev&sortby=' . urlencode($this->filters['sortby']) . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('CONTRIBTOOL_FILTER_ALL_DEV'); ?>">
+					<a class="filter-dev<?php if ($this->filters['filterby'] == 'dev') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&filterby=dev&sortby=' . urlencode($this->filters['sortby']) . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('CONTRIBTOOL_FILTER_ALL_DEV'); ?>">
 						<?php echo JText::_('Development'); ?>
 					</a>
 				</li>
