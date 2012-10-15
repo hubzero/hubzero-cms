@@ -87,8 +87,8 @@ $juser =& JFactory::getUser();
 					$fltrs .= ($this->filters['search']) ? '&search=' . $this->filters['search'] : '';
 				?>
 				<ul class="entries-menu order-options">
-					<li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&sortby=title' . $fltrs); ?>" title="Sort by title">&darr; Title</a></li>
-					<li><a<?php echo ($this->filters['sortby'] == 'alias') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&sortby=alias' . $fltrs); ?>" title="Sort by alias">&darr; Alias</a></li>
+					<li><a class="sort-title<?php echo ($this->filters['sortby'] == 'title') ? ' active' : ''; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&sortby=title' . $fltrs); ?>" title="Sort by title">&darr; Title</a></li>
+					<li><a class="sort-alias<?php echo ($this->filters['sortby'] == 'alias') ? ' active' : ''; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&sortby=alias' . $fltrs); ?>" title="Sort by alias">&darr; Alias</a></li>
 				</ul>
 				<?php
 				$fltrs  = ($this->filters['index'])  ? '&index=' . $this->filters['index']   : '';
@@ -96,11 +96,11 @@ $juser =& JFactory::getUser();
 				$fltrs .= ($this->filters['search']) ? '&search=' . $this->filters['search'] : '';
 				?>
 				<ul class="entries-menu filter-options">
-					<li><a<?php echo ($this->filters['policy'] == '') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse' . $fltrs); ?>" title="Show All groups">All</a></li>
-					<li><a<?php echo ($this->filters['policy'] == 'open') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&policy=open' . $fltrs); ?>" title="Show groups with an Open join policy">Open</a></li>
-					<li><a<?php echo ($this->filters['policy'] == 'restricted') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&policy=restricted' . $fltrs); ?>" title="Show groups with a Restricted join policy">Restricted</a></li>
-					<li><a<?php echo ($this->filters['policy'] == 'invite') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&policy=invite' . $fltrs); ?>" title="Show groups with an Invite only join policy">Invite only</a></li>
-					<li><a<?php echo ($this->filters['policy'] == 'closed') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&policy=closed' . $fltrs); ?>" title="Show groups with a Closed join policy">Closed</a></li>
+					<li><a class="filter-all<?php echo ($this->filters['policy'] == '') ? ' active' : ''; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse' . $fltrs); ?>" title="Show All groups">All</a></li>
+					<li><a class="filter-open<?php echo ($this->filters['policy'] == 'open') ? ' active' : ''; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&policy=open' . $fltrs); ?>" title="Show groups with an Open join policy">Open</a></li>
+					<li><a class="filter-restricted<?php echo ($this->filters['policy'] == 'restricted') ? ' active' : ''; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&policy=restricted' . $fltrs); ?>" title="Show groups with a Restricted join policy">Restricted</a></li>
+					<li><a class="filter-invite<?php echo ($this->filters['policy'] == 'invite') ? ' active' : ''; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&policy=invite' . $fltrs); ?>" title="Show groups with an Invite only join policy">Invite only</a></li>
+					<li><a class="filter-closed<?php echo ($this->filters['policy'] == 'closed') ? ' active' : ''; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&policy=closed' . $fltrs); ?>" title="Show groups with a Closed join policy">Closed</a></li>
 				</ul>
 
 <?php
