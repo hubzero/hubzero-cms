@@ -157,6 +157,10 @@ WYKIWYG.converter = function() {
 			{
 				patterns: ['code', 'tt'],
 				replacement: function(str, attrs, innerHTML) {
+					var cls = attrs.match(attrRegExp('class'));
+					if (cls && cls[1] == 'wiki-math') {
+						return innerHTML ? '<math>' + innerHTML + '</math>' : '';
+					}
 					return innerHTML ? '`' + innerHTML + '`' : '';
 				}
 			},
@@ -492,6 +496,16 @@ WYKIWYG.converter = function() {
 
 			//  Undo double lines (see comment at top of this function)
 			text = text.replace(/\n\n/g,"\n");
+			return text;
+		}
+
+		function _DoMath(text) {
+			text = text.replace(/(<(math)>(.*?)<\/\2>)/g, function(wholeMatch, m1, m2, m3){
+				var tag = m2,
+					content = m3;
+
+				return '<code class="wiki-math">' + content + '</code>';
+			});
 			return text;
 		}
 
@@ -1645,10 +1659,12 @@ WYKIWYG.converter = function() {
 		// contorted like /[ \t]*\n+/ .
 		text = text.replace(/^[ \t]+$/mg, "");
 
+		text = _DoMath(text);
+
 		text = _stripCodeBlocks(text);
 
 		text = _DoHtmlCodeBlocks(text);
-		
+
 		text = _DoCodeBlocks(text);
 
 		// Turn block-level HTML blocks into hash entries
