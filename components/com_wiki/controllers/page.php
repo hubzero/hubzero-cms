@@ -857,6 +857,12 @@ class WikiControllerPage extends Hubzero_Controller
 		$tagging = new WikiTags($this->database);
 		$tagging->tag_object($this->revision->created_by, $this->page->id, $tags, 1, 1);
 
+		$data = new stdClass();
+		$data->revisions = array(
+			'old' => $old->id,
+			'new' => $this->revision->id
+		);
+
 		// Log the action
 		$log = new WikiLog($this->database);
 		$log->pid       = $this->page->id;
@@ -864,6 +870,7 @@ class WikiControllerPage extends Hubzero_Controller
 		$log->timestamp = date('Y-m-d H:i:s', time());
 		$log->action    = ($this->revision->version == 1) ? 'page_created' : 'page_edited';
 		$log->actorid   = $this->juser->get('id');
+		$log->comments  = json_encode($data);
 		if (!$log->store()) 
 		{
 			$this->setError($log->getError());
@@ -927,7 +934,7 @@ class WikiControllerPage extends Hubzero_Controller
 				$page->delete($this->page->id);
 
 				// Delete the page's files
-				$path = DS . trim($this->config->get('filepath'), DS);
+				$path = DS . trim($this->config->get('filepath', '/site/wiki'), DS);
 				if (is_dir($path . DS . $this->page->id)) 
 				{
 					jimport('joomla.filesystem.folder');
@@ -941,6 +948,7 @@ class WikiControllerPage extends Hubzero_Controller
 				{
 					$this->setError(JText::_('COM_WIKI_UNABLE_TO_DELETE'));
 				}*/
+				$data = new stdClass();
 
 				// Log the action
 				$log = new WikiLog($this->database);
@@ -949,6 +957,7 @@ class WikiControllerPage extends Hubzero_Controller
 				$log->timestamp = date('Y-m-d H:i:s', time());
 				$log->action    = 'page_removed';
 				$log->actorid   = $this->juser->get('id');
+				$log->comments  = json_encode($data);
 				if (!$log->store()) 
 				{
 					$this->setError($log->getError());
