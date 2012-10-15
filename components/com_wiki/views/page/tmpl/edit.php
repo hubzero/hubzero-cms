@@ -89,8 +89,30 @@ if ($this->page->id) {
 ?>
 <div id="sub-menu" class="sub-menu">
 	<ul>
-		<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename); ?>"><span>Article</span></a></li>
-		<li class="active"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=edit'); ?>"><span>Edit</span></a></li>
+		<li class="page-text">
+			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename); ?>">
+				<span><?php echo JText::_('WIKI_TAB_ARTICLE'); ?></span>
+			</a>
+		</li>
+		<li class="page-edit active">
+			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=edit'); ?>">
+				<span><?php echo JText::_('WIKI_TAB_EDIT'); ?></span>
+			</a>
+		</li>
+<?php //if ($this->page->pagename != 'MainPage') { ?>
+		<li class="page-main">
+			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope); ?>">
+				<span><?php echo JText::_('Main Page'); ?></span>
+			</a>
+		</li>
+<?php //} ?>
+<?php //if ($this->page->pagename != 'Special:AllPages') { ?>
+		<li class="page-index">
+			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Special:AllPages'); ?>">
+				<span><?php echo JText::_('Index'); ?></span>
+			</a>
+		</li>
+<?php //} ?>
 	</ul>
 	<div class="clear"></div>
 </div><!-- / #sub-menu -->
@@ -118,7 +140,7 @@ if ($this->page->id && !$this->config->get('access-modify')) {
 <?php if ($this->preview) { ?>
 	<div id="preview">
 		<div class="main section">
-			<p class="warning">This a preview only. Changes will not take affect until saved.</p>
+			<p class="warning"><?php echo JText::_('This a preview only. Changes will not take affect until saved.'); ?></p>
 
 			<div class="wikipage">
 				<?php echo $this->revision->pagehtml; ?>
@@ -131,7 +153,7 @@ if ($this->page->id && !$this->config->get('access-modify')) {
 <?php if (!$this->sub) { ?>
 	<div class="explaination">
 	<?php if ($this->page->id && $this->config->get('access-edit')) { ?>
-		<p>To change the page name (the portion used for URLs), go <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=rename'); ?>">here</a>.</p>
+		<p>To change the page name (the portion used for URLs), go <a class="page-rename" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=rename'); ?>">here</a>.</p>
 	<?php } ?>
 		<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Help:WikiMacros#image'); ?>">[[Image(filename.jpg)]]</a> to include an image.</p>
 		<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Help:WikiMacros#file'); ?>">[[File(filename.pdf)]]</a> to include a file.</p>
@@ -249,7 +271,7 @@ if ($templates) {
 			<span id="pagetext-overlay"><span>Drop file here to include in page</span></span>
 		</label>
 		<p class="ta-right hint">
-			See <a class="popup" href="<?php echo JRoute::_('index.php?option=com_wiki&pagename=Help:WikiFormatting'); ?>">Help: Wiki Formatting</a> for help on editing content.
+			See <a class="wiki-formatting popup" href="<?php echo JRoute::_('index.php?option=com_wiki&pagename=Help:WikiFormatting'); ?>">Help: Wiki Formatting</a> for help on editing content.
 		</p>
 		
 <?php if ($this->sub) { ?>
@@ -261,8 +283,8 @@ if ($templates) {
 				<div id="file-uploader-list"></div>
 			</div>
 			<div class="two columns second">
-				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Help:WikiMacros#image'); ?>">[[Image(filename.jpg)]]</a> to include an image.</p>
-				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Help:WikiMacros#file'); ?>">[[File(filename.pdf)]]</a> to include a file.</p>
+				<p><a class="wiki-macros" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Help:WikiMacros#image'); ?>">[[Image(filename.jpg)]]</a> to include an image.</p>
+				<p><a class="wiki-macros" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Help:WikiMacros#file'); ?>">[[File(filename.pdf)]]</a> to include a file.</p>
 			</div>
 			<div class="clear"></div>
 		</div>

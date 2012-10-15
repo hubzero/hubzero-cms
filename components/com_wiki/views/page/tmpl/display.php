@@ -60,7 +60,7 @@ if (!$mode || ($mode && $mode != 'static')) {
 ?>
 	</div><!-- /#content-header -->
 
-<?php if ($mode == 'static' && $this->config->get('access-admin') && $this->task != 'display') { ?>
+<?php if ($mode == 'static' && $this->config->get('access-admin') && $this->controller == 'page' && $this->task == 'display') { ?>
 	<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>-extra">
 		<ul id="<?php echo ($this->sub) ? 'section-useroptions' : 'useroptions'; ?>">
 			<li><a class="edit btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=edit'); ?>">Edit</a></li>

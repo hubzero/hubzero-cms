@@ -64,15 +64,6 @@ $first = end($this->revisions);
 ?>
 	</div><!-- /#content-header -->
 
-<?php if ($mode == 'static' && $this->config->get('access-admin')) { ?>
-	<div id="<?php echo $hid; ?>-extra">
-		<ul id="<?php echo $uid; ?>">
-			<li><a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=edit'); ?>">Edit</a></li>
-			<li class="last"><a class="history" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=history'); ?>">History</a></li>
-		</ul>
-	</div><!-- /#content-header-extra -->
-<?php } ?>
-
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>

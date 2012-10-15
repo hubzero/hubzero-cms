@@ -87,20 +87,20 @@ if (!$juser->get('guest')) { ?>
 		</li>
 	<?php } ?>
 <?php } ?>
-	<?php if ($this->page->pagename != 'MainPage') { ?>
+	<?php //if ($this->page->pagename != 'MainPage') { ?>
 		<li class="page-main">
 			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope); ?>">
 				<span><?php echo JText::_('Main Page'); ?></span>
 			</a>
 		</li>
-	<?php } ?>
-	<?php if ($this->page->pagename != 'Index') { ?>
+	<?php //} ?>
+	<?php //if ($this->page->pagename != 'Special:AllPages') { ?>
 		<li class="page-index">
 			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Special:AllPages'); ?>">
 				<span><?php echo JText::_('Index'); ?></span>
 			</a>
 		</li>
-	<?php } ?>
+	<?php //} ?>
 	</ul>
 	<div class="clear"></div>
 </div><!-- / .page-options -->
