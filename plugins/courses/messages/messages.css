@@ -1,0 +1,302 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/courses/messages/messages.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+.course_messages {
+	}
+.course_messages h3 {
+	display:none;
+	}
+.course_messages .subject {
+	border:none;
+	padding:0.7em 1em 1em 1em;
+	margin:0px;
+	}
+.entries {
+	border: 2px solid #e9e9e9;
+    border-top: none;
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+    }
+/* caption */
+.entries caption {
+	font-size: 115%;
+	background: #f8f8f8 url('/components/com_courses/assets/img/light-stripes.png');
+    border: 2px solid #e9e9e9;
+    border-bottom: 1px solid #e9e9e9;
+    margin-right: -2px; /* Fix 2px issue */
+    }
+.container-block h4 span,
+.entries caption span {
+	color: #aaa;
+    }
+.entries caption span a {
+	color:#aaa;
+	border-bottom:1px dotted #555;
+	}
+.entries caption span a:hover {
+	color:#555;
+	border-bottom:1px solid #555;
+	}
+/* thead */
+.entries thead th {
+	text-align: left;
+    font-size: 85%;
+    background-color: #fbfbf6;
+    }
+.entries thead th a {
+	display: inline-block;
+    padding: 0.1em 0.4em;
+    margin: 0 0.15em;
+    border: 1px solid #fbfbf6; /*#69c;*/
+    background-color: #fbfbf6; /*#eff7ff;*/
+    }
+.entries thead th a:hover {
+	border-color: #f60;
+    color: #f60;
+    background-color: #fff;
+    }
+.entries thead th a.active-index {
+	background-color: #eee;
+    color: #999;
+    border-color: #999;
+    }
+/* tbody */
+.entries tbody td {
+	text-align: left;
+    border-bottom: 1px solid #eee;
+    padding: 10px;
+    background-color:#fff;
+    }
+.entries tbody th {
+	width: 50px;
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    }
+.entries tbody tr.private {
+	/*background: #ffe url("images/light-stripes.png");*/
+    background-image: none;
+    }
+.entries tbody tr.private .entry-title {
+    background: transparent url("images/lock.png") 0 0 no-repeat;
+    padding-left: 20px;
+    }
+.entries tbody tr.me td {
+    background-color: #f1f8ff;
+    }
+.entry-details {
+    font-size: 85%;
+    color: #999;
+    }
+.entry-details-divider {
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    }
+/* Asides */
+.course_messages .aside {
+	padding-top:0px;
+	}
+.aside .container {
+	margin: 0 0 1em 0;
+	padding: 0;
+	background-color: #F4F4ee;
+	border: 10px solid #F4F4ee;
+	}
+.aside .container h3,
+.aside .container h4 {
+	margin: -10px -10px 1em -10px;
+	padding: 5px 10px;
+	background-color: #999;
+	color: #fff;
+	}
+.aside .container p {
+	margin: 1em 0 0 0;
+	}
+.aside .container .starter {
+	padding: 0 0 0 0;
+	position: relative;
+	}
+.aside .container .starter .starter-point {
+	border-color: #999 transparent transparent transparent;
+	border-style: solid dashed dashed dashed;
+	border-width: 10px;
+	height: 0;
+	width: 0;
+	display: block;
+	overflow: hidden;
+	position: absolute;
+	top: -1.2em;
+	left: 10px;
+	}
+/* Entries Menu */
+.entries-menu {
+	list-style: none;
+	float:left;
+	padding: 0;
+	margin: 0 0 1em 0;
+	font-size: 85%;
+	}
+.list-footer,
+.entries-menu {
+	min-height: 1px;
+	}
+.list-footer {
+	margin-bottom:20px;
+	}
+.entries-menu li {
+	float: left;
+	margin: 0;
+	}
+.entries-menu li a {
+	color: #888;
+	display: block;
+	cursor: pointer;
+	font-weight: normal;
+	line-height: 1em;
+	border: none;
+	margin:0 5px 0 0;
+	padding: 5px 10px;
+	text-shadow: 0px 1px 1px #fff;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius:5px;
+	}
+.entries-menu a:hover {
+	color: #fff;
+    background-color: #636166;
+	text-shadow: 0 1px 1px rgba(0,0,0,.3);
+	text-decoration: none;
+	}
+.entries-menu .active { 
+	color:#ffffff; 
+	text-shadow: 0 1px 1px rgba(0,0,0,.3); 
+	background-color:#AAA;
+	}
+/* View Message */
+.entries tbody th {
+	width:15%;
+	text-align:right;
+	font-weight:bold;
+	}
+/* Send Message */
+#message {
+	background:#f5f5f5;
+	-webkit-box-shadow:0 0 3px #ccc;
+	-moz-box-shadow:0 0 3px #ccc;
+	box-shadow:0 0 3px #ccc;
+	border:1px solid #CCC;
+	padding:0 20px;
+	}
+#message .mail { 
+	background:url('mail-send.png') no-repeat 100% 10px;
+	}
+#message .half {
+	width:50%;
+	}	
+#message label {
+	font-weight:bold;
+	color:#444;
+	}	
+#message label span {
+	font-weight:normal;
+	}
+#message .required {
+	color:#F00;
+	font-size:80%;
+	text-transform:uppercase;
+	}
+#message input,
+#message select,
+#message textarea {
+	display:block;
+	width:100%;
+	}	
+#message p.submit {
+	overflow:hidden;
+	}
+#message input[type=submit] {
+	width:auto;
+	float:right;
+	}
+#message p.send {
+	text-align:right;
+	}
+	
+	
+	
+#sbox-content .hub-mail {
+	background:url("/plugins/members/messages/images/mail_bg.png") repeat 0 0;
+	padding:10px;
+	width:auto;
+	min-height:380px;
+	}
+#sbox-content .hub-mail .cont {
+	background-color:#FFF;
+	/*url('/plugins/courses/messages/mail-send.png') no-repeat 98% 4%;*/
+	border:1px solid #efefef;
+ 	}
+#sbox-content .hub-mail .cont label {
+	padding:0.5em 0;
+	margin:0 10px;
+	border-bottom:none;
+	color:#777;
+	display:block;
+	}
+#sbox-content .hub-mail .cont h3 {
+	background:none;
+	border:none;
+	text-shadow:none;
+	padding:0.5em 0;
+	margin:5px 10px 0 10px;
+	filter:none;
+	}
+#sbox-content .hub-mail .cont #msg-to {
+	width:350px;
+	display:block;
+	}
+#sbox-content .hub-mail .cont input[type=submit] {
+	width:auto;
+	}
+#sbox-content .hub-mail .cont .hint {
+	font-size:0.85em;
+	color:#999;
+	display:block;
+	}
+#sbox-content .hub-mail .cont .required {
+	color:#f00;
+	font-size:0.6em;
+	text-transform:uppercase;
+	}		
+#sbox-content .hub-mail #members {
+	display:block;
+	width:50%;
+	}
+#sbox-content .hub-mail .width-65{
+	width:65%;
+	}
+#sbox-content .hub-mail .smallinput {
+	width:1px;
+	}
+.message {  
+	background: url("/components/com_members/images/email_go.png") 0 0 no-repeat; 
+    padding-left: 20px;
+    }
+.message-member a {
+    margin: 0;
+    padding: 0;
+    display: block;
+    width: 16px;
+    height: 16px;
+    overflow: hidden;
+    text-indent: 555em;
+    float: right;
+    }
+.message-member a:hover {
+    border: none;
+    }
+

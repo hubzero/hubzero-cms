@@ -1,0 +1,68 @@
+/**
+ * @package     hubzero-cms
+ * @file        modules/mod_mycourses/mod_mycourses.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	mod_mycourses
+	-- -- -- -- -- -- --
+
+*/
+	div.draggable .compactlist li.course {
+		background-position: 0.7em 0.7em;
+		padding-right:5em;
+	}
+	div.draggable .compactlist li.course a {
+	}
+	div.draggable .compactlist li span span.status {
+	}
+	div.draggable .compactlist li span span.member {
+		color: #66AA00;
+	}
+	div.draggable .compactlist li span span.manager {
+		color: #ff1177;
+	}
+	div.draggable .compactlist li span span.pending {
+		color: #AA3300;
+	}
+	div.draggable .compactlist li span span.invitee {
+		color: #aaaaaa;
+	}
+	div.draggable .compactlist li.course .actions {
+		text-align: left;
+		display: block;
+		padding-right: 1em;
+		margin:0;
+	}
+	div.draggable .compactlist li.course .actions a {
+		font-size: 90%;
+		border: none;
+		padding: 0.2em 0.5em;
+		background-color: #777;
+		color: #fff;
+		-moz-border-radius: 5px;
+		-webkit-border-radius: 5px;
+		-khtml-border-radius: 5px;	
+		border-radius: 5px;
+		margin: 0;
+	}
+	div.draggable .compactlist li.course .actions a:hover {
+		border: none;
+	}
+	div.draggable .compactlist li.course .actions a.action-accept:hover {
+		background-color: #66AA00;
+	}
+	div.draggable .compactlist li.course .actions a.action-cancel:hover {
+		background-color: #c30;
+	}
+	div.draggable .compactlist .course { 
+		background: url("/modules/mod_mycourses/images/course.png") 0.7em 1em no-repeat; 
+	}
+	ul.mycourses {
+		max-height:350px;
+		overflow-y:scroll;
+	}

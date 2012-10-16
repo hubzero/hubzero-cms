@@ -1,0 +1,114 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/courses/calendar/calendar.js
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+//-----------------------------------------------------------
+//  Ensure we have our namespace
+//-----------------------------------------------------------
+if (!HUB) {
+	var HUB = {};
+}
+
+if (!HUB.Plugins) {
+	HUB.Plugins = {};
+}
+
+//----------------------------------------------------------
+//  Course Calendar Code
+//----------------------------------------------------------
+HUB.Plugins.CourseCalendar = {
+	
+	positionCalEvent: function ( popup ) {
+		var threshold = 10;
+		
+		var calBox = $('calendar-box');
+		var calBoxCoords = calBox.getCoordinates();
+		
+		var popup = $(popup);
+		var popupCoords = popup.getCoordinates();
+		
+		var tableCell = $('box-1');
+		var tableCellCoords = tableCell.getCoordinates();
+		
+		if(popupCoords.bottom > calBoxCoords.bottom) {
+			repoBottom = (calBoxCoords.bottom - popupCoords.bottom - threshold);
+			popup.setStyle('margin-top', repoBottom + 'px');
+		}
+		
+		if(popupCoords.right > calBoxCoords.right) {
+			repoRight = (calBoxCoords.right - popupCoords.right);
+			if(repoRight < -150) {
+				repoRight = repoRight - tableCellCoords.width;
+			} else {
+				repoRight = repoRight - ( 2 * tableCellCoords.width);
+			}
+			popup.setStyle('margin-left', repoRight + 'px');
+		}
+	},
+	
+	resetCalEventPopup: function() {
+		$$('.calendar-row a.active').each(function(el) {
+			el.removeClass('active');
+			el.getNext('ul').setStyle('left','-9999px');
+		});
+	},
+	
+	showCalEventPopup: function() {
+		$$('.calendar-row .event').each(function(el) {
+			var popup = el.getNext('ul');
+			if(popup) {
+				
+				el.addEvent('mouseenter',function(e) {
+					new Event(e).stop();
+					if(!el.hasClass('active')) {
+						el.getNext('ul').setStyle('left','-9999px');
+					}	
+				});
+
+				el.addEvent('click',function(e) {
+					new Event(e).stop();
+
+					if(el.hasClass('active')) {
+						el.removeClass('active');
+						el.getNext('ul').setStyle('left','-9999px');
+					} else {
+						HUB.Plugins.CourseCalendar.resetCalEventPopup();
+						el.addClass('active');
+						el.getNext('ul').setStyle('left','100px');
+						HUB.Plugins.CourseCalendar.positionCalEvent(popup);
+					}
+				});
+				
+			}
+		});
+	},
+	
+	displayDatePicker: function() {
+		if($('event_start_date')) {
+			var myCal1 = new Calendar(
+				{ event_start_date: 'm/d/Y' }, 
+				{ classes: ['mini-cal'], direction: 0.5 }
+			);
+		
+			var myCal2 = new Calendar(
+				{ event_end_date: 'm/d/Y' }, 
+				{ classes: ['mini-cal'], direction: 0.5 }
+			);
+		
+			if(myCal1 && myCal2) {
+				$$('.cal-date-help').addClass('hide');
+			}
+		}
+	},
+	
+	initialize: function() {
+		HUB.Plugins.CourseCalendar.showCalEventPopup();
+		HUB.Plugins.CourseCalendar.displayDatePicker();
+	}
+}
+
+document.addEvent('click', HUB.Plugins.CourseCalendar.resetCalEventPopup)
+window.addEvent('domready', HUB.Plugins.CourseCalendar.initialize);
