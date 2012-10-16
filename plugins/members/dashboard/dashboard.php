@@ -637,6 +637,10 @@ class plgMembersDashboard extends JPlugin
 		$cols = $this->_processList($myhub->prefs);
 		foreach ($cols as $col)
 		{
+			if (!is_array($col))
+			{
+				continue;
+			}
 			foreach ($col as $arr)
 			{
 				$mods[] = $arr;
