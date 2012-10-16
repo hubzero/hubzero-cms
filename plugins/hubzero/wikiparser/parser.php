@@ -241,11 +241,13 @@ class WikiParser
 
 		// Strip HTML tags out
 		//$text = preg_replace("/(\<|\>\.)|(\<\>)/i", '', $text);
-		$text = str_replace('<.', '&lt;.', $text);
-		$text = str_replace('<>', '&lt;&gt;', $text);
+		$text = preg_replace(
+			array('/<\./', '/<>/', '/>\./', '/<([^>]+?)</', '/>([^<]+?)>/', '/([0-9]+)<([0-9]+)/', '/<([0-9]+)/', '/>([0-9]+)/', '/([0-9]+)</', '/([0-9]+)>/'), 
+			array('&lt;.', '&lt;&gt;', '&gt;.', '&lt;$1&lt;',  '&rt;$1&rt;',  '$1 &lt; $2',          '&lt; $1',     '&gt; $1',     '$1 &lt;',     '$1 &gt;'), 
+			$text
+		);
 		$text = strip_tags($text, '<pre><code><xpre><math>');
-		$text = str_replace('&lt;.', '<.', $text);
-		$text = str_replace('&lt;&gt;', '<>', $text);
+		$text = str_replace(array('&lt;', '&gt;'), array('<', '>'), $text);
 
 		// Tables need to come after variable replacement for things to work
 		// properly; putting them before other transformations should keep
@@ -1142,7 +1144,7 @@ class WikiParser
 		// Remove really unwanted tags
 		do {
 			$oldstring = $string;
-			$string = preg_replace('#</*(applet|meta|xml|blink|link|style|script|embed|object|iframe|frame|frameset|ilayer|layer|bgsound|title|base)[^>]*>#i', '', $string);
+			$string = preg_replace('#</*(applet|meta|xml|blink|link|head|body|style|script|embed|object|iframe|frame|frameset|ilayer|layer|bgsound|title|base)[^>]*>#i', '', $string);
 		} while ($oldstring != $string);
 
 		return $string;
