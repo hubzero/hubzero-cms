@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package        hubzero-cms
+@file           administrator/components/com_courses/courses.xml
+@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+
+Copyright 2005-2011 Purdue University. All rights reserved.
+
+This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+
+The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+HUBzero is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+HUBzero is a registered trademark of Purdue University.
+-->
+
+<install type="component" version="1.5">
+	<name>Courses</name>
+	<author>HUBzero</author>
+	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<files>
+		<filename>courses.tags.php</filename>
+		<filename>controller.php</filename>
+		<filename>courses.php</filename>
+		<filename>courses.log.php</filename>
+		<filename>courses.html.php</filename>
+		<filename>router.php</filename>
+		<filename>courses.css</filename>
+		<filename>courses.js</filename>
+		<filename>courses.reason.php</filename>
+   		<filename>views/index.html</filename>
+   		<filename>views/intro/tmpl/default.php</filename>
+   		<filename>views/intro/tmpl/default.xml</filename>
+   		<filename>views/intro/tmpl/index.html</filename>
+		<filename>images/message.gif</filename>
+		<filename>images/courses-large.gif</filename>
+		<filename>images/extlink.gif</filename>
+		<filename>images/missinglink.gif</filename>
+		<filename>images/1.gif</filename>
+		<filename>images/cite.gif</filename>
+		<filename>images/course.gif</filename>
+		<filename>images/qanda.gif</filename>
+		<filename>images/resource.gif</filename>
+		<filename>images/stats.gif</filename>
+		<filename>images/topic.gif</filename>
+		<filename>images/author.gif</filename>
+		<filename>images/calendar-next.png</filename>
+		<filename>images/calendar-previous.png</filename>
+		<filename>images/comment.gif</filename>
+		<filename>images/draft.gif</filename>
+		<filename>images/icons/asf.png</filename>
+		<filename>images/icons/asx.png</filename>
+		<filename>images/icons/avi.png</filename>
+		<filename>images/icons/dmg.png</filename>
+		<filename>images/icons/doc.png</filename>
+		<filename>images/icons/folder.gif</filename>
+		<filename>images/icons/gif.png</filename>
+		<filename>images/icons/html.png</filename>
+		<filename>images/icons/jpg.png</filename>
+		<filename>images/icons/mov.png</filename>
+		<filename>images/icons/pdf.png</filename>
+		<filename>images/icons/pps.png</filename>
+		<filename>images/icons/ppt.png</filename>
+		<filename>images/icons/rar.png</filename>
+		<filename>images/icons/swf.png</filename>
+		<filename>images/icons/tiff.png</filename>
+		<filename>images/icons/trash.gif</filename>
+		<filename>images/icons/txt.png</filename>
+		<filename>images/icons/unknown.png</filename>
+		<filename>images/icons/wmv.png</filename>
+		<filename>images/icons/xls.png</filename>
+		<filename>images/icons/zip.png</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.com_courses.ini</language>
+	</languages>
+	<administration>
+		<menu>Courses</menu>
+		<files>
+  			<filename>config.xml</filename>
+			<filename>admin.controller.php</filename>
+			<filename>admin.courses.html.php</filename>
+			<filename>admin.courses.php</filename>
+			<filename>toolbar.courses.html.php</filename>
+			<filename>toolbar.courses.php</filename>
+		</files>
+		<languages folder="admin">
+			<language tag="en-GB">en-GB.com_courses.ini</language>
+		</languages>
+	</administration>
+</install>
+
