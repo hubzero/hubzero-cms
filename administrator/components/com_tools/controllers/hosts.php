@@ -33,6 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
 
+include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'venue.php');
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'host.php');
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'hosttype.php');
 
@@ -251,6 +252,10 @@ class ToolsControllerHosts extends Hubzero_Controller
 		$ht = new MwHosttype($mwdb);
 
 		$this->view->hosttypes = $ht->getRecords();
+
+		$v = new MwVenue($mwdb);
+
+		$this->view->venues = $v->getRecords();
 
 		// Set any errors
 		if ($this->getError())

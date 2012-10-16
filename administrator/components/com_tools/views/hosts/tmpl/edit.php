@@ -40,7 +40,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<td class="key"><label for="admin"><?php echo JText::_('Host types'); ?>:</label></td>
 						<td>
-							<select multiple="multiple" name="hosttype[]">
+							<select multiple="multiple" size="10" name="hosttype[]">
 <?php
 							for ($i=0; $i<count($this->hosttypes); $i++)
 							{
@@ -55,7 +55,25 @@ function submitbutton(pressbutton)
 							</select>
 						</td>
 					</tr>
-					
+					<tr>
+						<td class="key"><label for="admin"><?php echo JText::_('Venue'); ?>:</label></td>
+						<td>
+							<select name="fields[venue_id]">
+								<option value="0"><?php echo JText::_('Select...'); ?></option>
+<?php
+						if ($this->venues)
+						{
+							foreach ($this->venues as $venue)
+							{
+?>
+								<option<?php if ($venue->id == $this->row->venue_id) { echo ' selected="selected"'; } ?> value="<?php echo $venue->id; ?>"><?php echo $this->escape(stripslashes($venue->venue)); ?></option>
+<?php 
+							}
+						}
+?>
+							</select>
+						</td>
+					</tr>
 				</tbody>
 			</table>
 		</fieldset>

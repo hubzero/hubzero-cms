@@ -30,6 +30,7 @@ function submitbutton(pressbutton)
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Provisions', 'provisions', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Status', 'status', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Uses', 'uses', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'Venue', 'venue_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -88,6 +89,9 @@ if ($this->rows)
 				</td>
 				<td>
 					<?php echo $this->escape($row->uses); ?>
+				</td>
+				<td>
+					<?php echo $this->escape(stripslashes($row->venue)); ?>
 				</td>
 			</tr>
 <?php

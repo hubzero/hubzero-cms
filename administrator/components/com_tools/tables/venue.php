@@ -32,23 +32,23 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Middleware host table class
+ * Middleware venue table class
  */
-class MwHost extends JTable
+class MwVenue extends JTable
 {
 	/**
-	 * varchar(40)
-	 * 
-	 * @var string
-	 */
-	var $hostname;
-
-	/**
-	 * bigint(20)
+	 * int(11) Primary key
 	 * 
 	 * @var integer
 	 */
-	var $provisions;
+	var $id;
+
+	/**
+	 * varchar(255)
+	 * 
+	 * @var string
+	 */
+	var $venue;
 
 	/**
 	 * varchar(20)
@@ -58,25 +58,11 @@ class MwHost extends JTable
 	var $status;
 
 	/**
-	 * smallint(5)
+	 * varchar(255)
 	 * 
-	 * @var integer
+	 * @var string
 	 */
-	var $uses;
-
-	/**
-	 * int(11)
-	 * 
-	 * @var unknown
-	 */
-	var $portbase;
-
-	/**
-	 * int(11)
-	 * 
-	 * @var integer
-	 */
-	var $venue_id;
+	var $master;
 
 	/**
 	 * Constructor
@@ -86,7 +72,7 @@ class MwHost extends JTable
 	 */
 	public function __construct(&$db)
 	{
-		parent::__construct('host', 'hostname', $db);
+		parent::__construct('venue', 'id', $db);
 	}
 
 	/**
@@ -96,16 +82,27 @@ class MwHost extends JTable
 	 */
 	public function check()
 	{
-		if (!$this->hostname) 
+		$this->venue = trim($this->venue); //preg_replace("/[^A-Za-z0-9-.]/", '', $this->venue);
+		if (!$this->venue) 
 		{
-			$this->setError(JText::_('No hostname provided'));
+			$this->setError(JText::_('No venue provided'));
 			return false;
 		}
-		$this->hostname = preg_replace("/[^A-Za-z0-9-.]/", '', $this->hostname);
-
+		$this->master = trim($this->master);
+		if (!$this->master) 
+		{
+			$this->setError(JText::_('No master provided'));
+			return false;
+		}
+		$this->status = strtolower(trim($this->status));
 		if (!$this->status) 
 		{
 			$this->setError(JText::_('No status provided.'));
+			return false;
+		}
+		if (!in_array($this->status, array('up', 'down')))
+		{
+			$this->setError(JText::_('Invalid status provided.'));
 			return false;
 		}
 
@@ -113,70 +110,7 @@ class MwHost extends JTable
 	}
 
 	/**
-	 * Inserts a new row if id is zero or updates an existing row in the database table
-	 *
-	 * @param     boolean $insert      If true, forces an insert 
-	 * @param     boolean $kv          If false, null object variables are not updated 
-	 * @param     boolean $updateNulls If false, null object variables are not updated
-	 * @return    mixed null|string null if successful otherwise returns and error message
-	 */
-	public function store($insert=null, $kv=null, $updateNulls=false)
-	{
-		$k = $this->_tbl_key;
-
-		if ($insert)
-		{
-			$ret = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
-		}
-		else 
-		{
-			if ($this->$k)
-			{
-				//$ret = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, $updateNulls);
-				$fmtsql = "UPDATE $this->_tbl SET %s WHERE %s";
-				$tmp = array();
-				foreach (get_object_vars($this) as $ky => $v)
-				{
-					if (is_array($v) or is_object($v) or $ky[0] == '_' ) 
-					{ // internal or NA field
-						continue;
-					}
-					if ($ky == $this->_tbl_key) 
-					{ // PK not to be updated
-						$where = $this->_tbl_key . '=' . ($kv ? $this->_db->Quote($kv) : $this->_db->Quote($v));
-						//continue;
-					}
-					if ($v === null)
-					{
-						continue;
-					} 
-					else 
-					{
-						$val = $this->_db->isQuoted($ky) ? $this->_db->Quote($v) : (int) $v;
-					}
-					$tmp[] = $this->_db->nameQuote($ky) . '=' . $val;
-				}
-				$this->_db->setQuery(sprintf($fmtsql, implode(',', $tmp), $where));
-				$ret = $this->_db->query();
-			}
-			else
-			{
-				$ret = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
-			}
-		}
-		if (!$ret)
-		{
-			$this->setError(get_class($this) . '::store failed - ' . $this->_db->getErrorMsg());
-			return false;
-		}
-		else
-		{
-			return true;
-		}
-	}
-
-	/**
-	 * Default delete method
+	 * Delete a record and any associated records in the #__venue_locations table
 	 *
 	 * @param      integer $oid Record ID
 	 * @return     boolean True if successful otherwise returns and error message
@@ -189,19 +123,14 @@ class MwHost extends JTable
 			$this->$k = $oid;
 		}
 
-		$query = 'DELETE FROM ' . $this->_db->nameQuote($this->_tbl) .
-				' WHERE ' . $this->_tbl_key . ' = ' . $this->_db->Quote($this->$k);
-		$this->_db->setQuery($query);
-
-		if ($this->_db->query())
+		$location = new MwVenueLocation($this->_db);
+		if (!$location->deleteByVenue($oid))
 		{
-			return true;
-		}
-		else
-		{
-			$this->setError($this->_db->getErrorMsg());
+			$this->setError($location->getError());
 			return false;
 		}
+
+		return parent::delete($oid);
 	}
 
 	/**
@@ -218,29 +147,25 @@ class MwHost extends JTable
 		{
 			$where[] = "c.`status`='" . $filters['status'] . "'";
 		}
-		if (isset($filters['portbase']) && $filters['portbase'] != '') 
+		if (isset($filters['master']) && $filters['master'] != '') 
 		{
-			$where[] = "c.`portbase`='" . $filters['portbase'] . "'";
+			$where[] = "c.`master`='" . $filters['master'] . "'";
 		}
-		if (isset($filters['uses']) && $filters['uses'] != '') 
+		if (isset($filters['venue']) && $filters['venue'] != '') 
 		{
-			$where[] = "c.`uses`='" . $filters['uses'] . "'";
+			$where[] = "c.`venue`='" . $filters['venue'] . "'";
 		}
-		if (isset($filters['provisions']) && $filters['provisions'] != '') 
-		{
-			$where[] = "c.`provisions`='" . $filters['provisions'] . "'";
-		}
+
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
-			$where[] = "(LOWER(c.hostname) LIKE '%" . strtolower($filters['search']) . "%')";
+			$where[] = "(LOWER(c.venue) LIKE '%" . strtolower($filters['search']) . "%' OR LOWER(c.master) LIKE '%" . strtolower($filters['search']) . "%')";
 		}
 
 		$query = "FROM $this->_tbl AS c";
-		$query .= " LEFT JOIN venue AS v ON v.id = c.venue_id";
-		if (isset($filters['hosttype']) && $filters['hosttype']) 
+		if (isset($filters['location']) && $filters['location']) 
 		{
-			$query .= " JOIN hosttype AS t ON c.provisions & t.value != 0";
-			$where[] = "t.name = " . $mwdb->Quote($this->view->filters['hosttype']);
+			$query .= " JOIN venue_locations AS t ON c.id=t.venue_id";
+			$where[] = "t.location = " . $mwdb->Quote($this->view->filters['location']);
 		}
 		if (count($where) > 0)
 		{
@@ -275,11 +200,11 @@ class MwHost extends JTable
 	 */
 	public function getRecords($filters=array())
 	{
-		$query  = "SELECT c.*, v.venue " . $this->_buildQuery($filters);
+		$query  = "SELECT c.* " . $this->_buildQuery($filters);
 
 		if (!isset($filters['sort']) || !$filters['sort']) 
 		{
-			$filters['sort'] = 'hostname';
+			$filters['sort'] = 'venue';
 		}
 		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
 		{

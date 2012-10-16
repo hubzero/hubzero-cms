@@ -79,6 +79,11 @@ JSubMenuHelper::addEntry(
 	$controllerName == 'hosttypes'
 );
 JSubMenuHelper::addEntry(
+	JText::_('Venues'),
+	'index.php?option=com_tools&controller=venues',
+	$controllerName == 'venues'
+);
+JSubMenuHelper::addEntry(
 	JText::_('Sessions'),
 	'index.php?option=com_tools&controller=sessions',
 	$controllerName == 'sessions'
