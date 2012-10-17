@@ -229,6 +229,8 @@ if (count($ids))
 
 $users = array();
 
+$cls = 'even';
+
 ximport('Hubzero_View_Helper_Html');
 for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
@@ -307,7 +309,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		$tags = $st->get_tag_cloud(3, 1, $row->id);
 	}
 ?>
-					<tr>
+					<tr class="<?php echo $cls == 'odd' ? 'even' : 'odd'; ?>">
 						<td>
 							<span class="ticket-id">
 								<?php echo $row->id; ?>
