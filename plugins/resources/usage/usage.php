@@ -58,8 +58,9 @@ class plgResourcesUsage extends JPlugin
 	 */
 	public function &onResourcesAreas($resource) 
 	{
-		if ($resource->_type->_params->get('plg_usage')) 
+		if ($resource->_type->_params->get('plg_usage') && $resource->type == 7) 
 		{
+			// Only show tab for tools
 			$areas = array(
 				'usage' => JText::_('PLG_RESOURCES_USAGE')
 			);
