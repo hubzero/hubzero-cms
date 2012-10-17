@@ -69,7 +69,7 @@ class plgHubzeroComments extends JPlugin
 		{
 			return '';
 		}
-
+		
 		ximport('Hubzero_Item_Comment');
 		ximport('Hubzero_Item_Vote');
 		ximport('Hubzero_Plugin_View');
@@ -95,6 +95,7 @@ class plgHubzeroComments extends JPlugin
 		$this->view->params   = $this->params;
 
 		$this->view->task     = $this->task    = JRequest::getVar('action', '');
+		
 		switch ($this->task) 
 		{
 			// Feeds
@@ -397,6 +398,8 @@ class plgHubzeroComments extends JPlugin
 			0,
 			$this->params->get('comments_limit', 25)
 		);
+		
+		//print_r($this->view->comments); die;
 
 		if ($this->getError()) 
 		{
@@ -439,6 +442,7 @@ class plgHubzeroComments extends JPlugin
 			);
 			return;
 		}
+		$row->setUploadDir($this->params->get('comments_uploadpath', '/site/comments'));
 
 		if ($row->id && !$this->params->get('access-edit-comment')) 
 		{
@@ -471,7 +475,7 @@ class plgHubzeroComments extends JPlugin
 			);
 			return;
 		}
-
+		
 		$this->redirect(
 			$this->url, 
 			JText::_('PLG_HUBZERO_COMMENTS_SAVED'),

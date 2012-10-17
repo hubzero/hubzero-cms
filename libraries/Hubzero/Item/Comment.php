@@ -136,6 +136,15 @@ class Hubzero_Item_Comment extends JTable
 	var $negative      = NULL;
 
 	/**
+	 * Upload path
+	 * 
+	 * @var string
+	 */
+	var $_uploadDir    = '/sites/comments';
+
+	var $attachmentNames = NULL;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      object &$db JDatabase
@@ -191,7 +200,173 @@ class Hubzero_Item_Comment extends JTable
 			$this->modified = date('Y-m-d H:i:s', time());
 		}
 
+		// Check file attachment
+		$fieldName = 'commentFile'; 
+		if (!empty($_FILES[$fieldName])) 
+		{		
+			jimport('joomla.filesystem.file');
+			jimport('joomla.filesystem.folder');
+			
+			//any errors the server registered on uploading
+			$fileError = $_FILES[$fieldName]['error'];
+			if ($fileError > 0) 
+			{
+				switch ($fileError) 
+				{
+					case 1:
+					$this->setError(JText::_('FILE TO LARGE THAN PHP INI ALLOWS'));
+					return false;
+			 
+					case 2:
+					$this->setError(JText::_('FILE TO LARGE THAN HTML FORM ALLOWS'));
+					return false;
+			 
+					case 3:
+					$this->setError(JText::_('ERROR PARTIAL UPLOAD'));
+					return false;
+			 
+					case 4:
+					return true;
+				}
+			}
+			
+			//check for filesize
+			$fileSize = $_FILES[$fieldName]['size'];
+			if ($fileSize > 2000000)
+			{
+				$this->setError(JText::_('FILE BIGGER THAN 2MB'));
+				return false;
+			}
+			 
+			//check the file extension is ok
+			$fileName = $_FILES[$fieldName]['name'];
+			$uploadedFileNameParts = explode('.', $fileName);
+			$uploadedFileExtension = array_pop($uploadedFileNameParts);
+			 
+			$validFileExts = explode(',', 'jpeg,jpg,png,gif');
+			 
+			//assume the extension is false until we know its ok
+			$extOk = false;
+			 
+			//go through every ok extension, if the ok extension matches the file extension (case insensitive)
+			//then the file extension is ok
+			foreach ($validFileExts as $key => $value)
+			{
+				if (preg_match("/$value/i", $uploadedFileExtension) )
+				{
+					$extOk = true;
+				}
+			}
+			 
+			if ($extOk == false) 
+			{
+				$this->setError(JText::_('INVALID EXTENSION'));
+				return false;
+			}
+			
+			//the name of the file in PHP's temp directory that we are going to move to our folder
+			$fileTemp = $_FILES[$fieldName]['tmp_name'];
+			 
+			//lose any special characters in the filename
+			$fileName = preg_replace("/[^A-Za-z0-9.]/i", "-", $fileName);
+			 
+			//always use constants when making file paths, to avoid the possibilty of remote file inclusion
+			$uploadDir = $this->getUploadDir();
+					
+			// check if file exists -- rename if needed
+			$fileName = $this->checkFileName($uploadDir, $fileName);
+			
+			$uploadPath = $uploadDir.DS.$fileName;
+			
+			if (!JFile::upload($fileTemp, $uploadPath)) 
+			{
+				$this->setError(JText::_('ERROR MOVING FILE'));
+				return false;
+			}
+			
+			$this->attachmentNames = array($fileName);
+		}
+	
 		return true;
+	}
+
+	/**
+	 * Set the upload path
+	 * 
+	 * @param      string $path PAth to set to
+	 * @return     void
+	 */
+	public function setUploadDir($path) 
+	{
+		$path = trim($path);
+
+		jimport('joomla.filesystem.path');
+		$path = JPath::clean($path);
+		$path = str_replace(' ', '_', $path);
+
+		$this->_uploadDir = ($path) ? $path : $this->_uploadDir;
+	}
+
+	/**
+	 * Get the upload path
+	 * 
+	 * @return     string
+	 */
+	private function getUploadDir() 
+	{
+		return JPATH_ROOT . DS . ltrim($this->_uploadDir, DS);
+	}
+
+	private function checkFileName($uploadDir, $fileName) 
+	{
+		$ext = strrchr($fileName, '.');
+		$prefix = substr($fileName, 0, -strlen($ext));
+
+		// rename file if exists
+		$i = 1;
+		while (is_file($uploadDir . DS . $fileName)) 
+		{
+			$fileName = $prefix . ++$i . $ext;
+		}
+		return $fileName;
+	}
+
+	/**
+	 * Store attachements
+	 * 
+	 * @return     void
+	 */
+	public function store()
+	{
+		parent::store();
+
+		if ($this->attachmentNames && count($this->attachmentNames) > 0)
+		{
+			// save the attachments
+			foreach ($this->attachmentNames as $nm) 
+			{
+				// delete old attachment
+				// find old file and remove it from file system
+				$sql = "SELECT filename FROM #__item_comment_files WHERE comment_id = {$this->id}";
+				$this->_db->setQuery($sql);
+				$fileName = $this->_db->loadResult();
+
+				$uploadDir = $this->getUploadDir();
+
+				if (file_exists($uploadDir . DS . $fileName)) 
+				{
+					unlink($uploadDir . DS . $fileName);
+				}
+
+				$sql = "DELETE FROM #__item_comment_files WHERE comment_id = {$this->id}";
+				$this->_db->setQuery($sql);
+				$this->_db->query();
+
+				$sql = "INSERT INTO #__item_comment_files SET comment_id = {$this->id}, filename = '{$nm}'";
+				$this->_db->setQuery($sql);
+				$this->_db->query();
+			}
+		}
 	}
 
 	/**
@@ -204,6 +379,7 @@ class Hubzero_Item_Comment extends JTable
 	 */
 	public function getComments($item_type=NULL, $item_id=0, $parent=0, $limit=25, $start=0)
 	{
+		
 		if (!$item_type) 
 		{
 			$item_type = $this->item_type;
@@ -227,18 +403,23 @@ class Hubzero_Item_Comment extends JTable
 
 		if (!$juser->get('guest')) 
 		{
-			$sql  = "SELECT c.*, u.name, v.vote, (c.positive - c.negative) AS votes FROM $this->_tbl AS c ";
+			$sql  = "SELECT c.*, u.name, v.vote, (c.positive - c.negative) AS votes, f.filename FROM $this->_tbl AS c ";
+			$sql .= "LEFT JOIN #__item_comment_files AS f ON f.comment_id=c.id ";
 			$sql .= "LEFT JOIN #__users AS u ON u.id=c.created_by ";
 			$sql .= "LEFT JOIN #__item_votes AS v ON v.item_id=c.id AND v.created_by=" . $juser->get('id') . " AND v.item_type='comment' ";
 		} 
 		else 
 		{
-			$sql  = "SELECT c.*, u.name, NULL as vote, (c.positive - c.negative) AS votes FROM $this->_tbl AS c ";
+			$sql  = "SELECT c.*, u.name, NULL as vote, (c.positive - c.negative) AS votes, f.filename FROM $this->_tbl AS c ";
+			$sql .= "LEFT JOIN #__item_comment_files AS f ON f.comment_id=c.id ";
 			$sql .= "LEFT JOIN #__users AS u ON u.id=c.created_by ";
 		}
 		$sql .= "WHERE c.item_type='$item_type' AND c.item_id=$item_id AND c.parent=$parent AND c.state IN (1, 3) ORDER BY created ASC LIMIT $start,$limit";
-
+		
 		$this->_db->setQuery($sql);
+		
+		//echo $this->_db->_sql; die;
+		
 		$rows = $this->_db->loadObjectList();
 		if ($rows && count($rows) > 0)
 		{
