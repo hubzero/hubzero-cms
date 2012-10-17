@@ -1066,10 +1066,10 @@ class Hubzero_Registration
 
 		if ($registrationOptIn == REG_REQUIRED)
 		{
-			if (empty($registration['mailPreferenceOption']))
+			if (is_null($registration['mailPreferenceOption']) || intval($registration['mailPreferenceOption']) < 0)
 			{
 				$this->_missing['mailPreferenceOption'] = 'Opt-In for mailings';
-				$this->_invalid['mailPreferenceOption'] = 'Registration requires Opt-In of mailings.';
+				$this->_invalid['mailPreferenceOption'] = 'Opt-In for mailings has not been selected'; //'Registration requires Opt-In of mailings.';
 			}
 		}
 
@@ -1090,12 +1090,6 @@ class Hubzero_Registration
 				}
 			}
 		}
-
-		/*
-		if ($registrationOptIn != REG_HIDE)
-			if (!empty($registration['mailPreferenceOption']))
-				$this->_invalid['mailPreferenceOption'] = 'Opt-In for mailings has not been selected';
-		*/
 
 		if ($registrationTOU == REG_REQUIRED)
 		{

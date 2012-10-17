@@ -1380,12 +1380,14 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						$cls .= " missing";
 					}
 					//dont show meant for stats only
-					$cls .= (!$isUser) ? " hide" : "" ;
+					$cls .= (!$isUser) ? ' hide' : '' ;
+					
+					$val = intval($this->profile->get('mailPreferenceOption'));
 				?>
 				<li class="profile-optin section <?php echo $cls; ?>">
 					<div class="section-content">
 						<div class="key"><?php echo JText::_('E-mail Updates'); ?></div>
-						<div class="value"><?php echo ($this->profile->get('mailPreferenceOption')) ? 'Yes' : 'No'; ?></div>
+						<div class="value"><?php echo ($val >= 0) ? ($val > 0 ? 'Yes' : 'No') : 'Unanswered'; ?></div>
 						<br class="clear" />
 						<?php
 							ximport('Hubzero_Plugin_View');
