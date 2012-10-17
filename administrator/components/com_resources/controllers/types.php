@@ -205,7 +205,7 @@ class ResourcesControllerTypes extends Hubzero_Controller
 				{
 					$element = new stdClass();
 					$element->default  = (isset($val['default'])) ? $val['default'] : '';
-					$element->name     = $this->_normalize(trim($val['title']));
+					$element->name     = (isset($val['name'])) ? $val['name'] : $this->_normalize(trim($val['title']));
 					$element->label    = $val['title'];
 					$element->type     = (isset($val['type']))     ? $val['type']     : 'text';
 					$element->required = (isset($val['required'])) ? $val['required'] : '0';

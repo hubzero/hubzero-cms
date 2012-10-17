@@ -354,7 +354,8 @@ window.addEvent('domready', Fields.initialise);
 				?>
 				<tr>
 					<td>
-						<input type="text" name="fields[<?php echo $i; ?>][title]" value="<?php echo $field->label; ?>" maxlength="255" />
+						<input type="text" name="fields[<?php echo $i; ?>][title]" value="<?php echo $this->escape(stripslashes($field->label)); ?>" maxlength="255" />
+						<input type="hidden" name="fields[<?php echo $i; ?>][name]" value="<?php echo $this->escape(stripslashes($field->name)); ?>" />
 					</td>
 					<td>
 						<select name="fields[<?php echo $i; ?>][type]" id="fields-<?php echo $i; ?>-type">
