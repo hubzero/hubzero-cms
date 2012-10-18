@@ -162,7 +162,7 @@ HUB.Wiki = {
 				}
 			});
 			
-			var dropArea = document.getElementById('pagetext-overlay');
+			/*var dropArea = document.getElementById('pagetext-overlay');
 
 			if (dropArea) {
 				var dzt = new qq.UploadDropZone({
@@ -175,16 +175,15 @@ HUB.Wiki = {
 						e.stopPropagation();
 					},
 					onLeaveNotDescendants: function(e){
-						//qq.removeClass(dropArea, self._classes.dropActive);  
+						//qq.removeClass(dropArea, self._classes.dropActive); 
 					},
 					onDrop: function(e){
 						dropArea.style.display = 'none';
 						//qq.removeClass(dropArea, self._classes.dropActive);
-						uploader._uploadFileList(e.dataTransfer.files);    
+						uploader._uploadFileList(e.dataTransfer.files);
 						if (typeof(wykiwygs) !== 'undefined') {
 							if (wykiwygs.length) {
-								for (i=0; i<wykiwygs.length; i++)
-								{
+								for (i=0; i<wykiwygs.length; i++) {
 									wykiwygs[i].action('insertHTML', '[[File(' + e.dataTransfer.files[0].name + ')]] ', false);
 								}
 							}
@@ -210,7 +209,7 @@ HUB.Wiki = {
 						dropArea.style.display = 'none';
 					}
 				});
-			}
+			}*/
 		}
 	},
 

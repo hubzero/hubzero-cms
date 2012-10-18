@@ -268,7 +268,7 @@ if ($templates) {
 			$editor =& Hubzero_Wiki_Editor::getInstance();
 			echo $editor->display('revision[pagetext]', 'pagetext', $this->revision->pagetext, '', '35', '40');
 			?>
-			<span id="pagetext-overlay"><span>Drop file here to include in page</span></span>
+			<!-- <span id="pagetext-overlay"><span>Drop file here to include in page</span></span> -->
 		</label>
 		<p class="ta-right hint">
 			See <a class="wiki-formatting popup" href="<?php echo JRoute::_('index.php?option=com_wiki&pagename=Help:WikiFormatting'); ?>">Help: Wiki Formatting</a> for help on editing content.
