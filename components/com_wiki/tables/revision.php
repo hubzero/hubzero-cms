@@ -29,142 +29,183 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'WikiPageRevision'
- * 
- * Long description (if any) ...
+ * Wiki table class for page version
  */
 class WikiPageRevision extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id         = NULL;  // @var int(11) Primary key
+	var $id         = NULL;
 
 	/**
-	 * Description for 'pageid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $pageid     = NULL;  // @var int(11)
+	var $pageid     = NULL;
 
 	/**
-	 * Description for 'version'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $version    = NULL;  // @var int(11)
+	var $version    = NULL;
 
 	/**
-	 * Description for 'created'
+	 * datetime
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $created    = NULL;  // @var datetime
+	var $created    = NULL;
 
 	/**
-	 * Description for 'created_by'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $created_by = NULL;  // @var int(11)
+	var $created_by = NULL;
 
 	/**
-	 * Description for 'minor_edit'
+	 * int(1)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $minor_edit = NULL;  // @var int(1)
+	var $minor_edit = NULL;
 
 	/**
-	 * Description for 'pagetext'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $pagetext   = NULL;  // @var text
+	var $pagetext   = NULL;
 
 	/**
-	 * Description for 'pagehtml'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $pagehtml   = NULL;  // @var text
+	var $pagehtml   = NULL;
 
 	/**
-	 * Description for 'approved'
+	 * int(1)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $approved   = NULL;  // @var int(1)
+	var $approved   = NULL;
 
 	/**
-	 * Description for 'summary'
+	 * varchar(255)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $summary    = NULL;  // @var varchar(255)
-
-	//-----------
+	var $summary    = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * int(11)
 	 * 
-	 * Long description (if any) ...
+	 * @var integer
+	 */
+	var $length     = NULL;
+
+	/**
+	 * Constructor
 	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__wiki_version', 'id', $db );
+		parent::__construct('#__wiki_version', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'loadByVersion'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $pageid Parameter description (if any) ...
-	 * @param      integer $version Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid
 	 */
-	public function loadByVersion( $pageid, $version=0 )
+	public function check()
 	{
-		if (!$pageid) {
+		$this->minor_edit = intval($this->minor_edit);
+		$this->approved = intval($this->approved);
+		$this->version = intval($this->version);
+		if ($this->version <= 0)
+		{
+			$this->version = 1;
+		}
+
+		$this->pageid = intval($this->pageid);
+		if (!$this->pageid) 
+		{
+			$this->setError(JText::_('This revision is missing its page ID.'));
+			return false;
+		}
+		if (trim($this->pagetext) == '') 
+		{
+			$this->setError(JText::_('Please provide content. A wiki page cannot be empty.'));
+			return false;
+		}
+		if (!$this->id)
+		{
+			$juser =& JFactory::getUser();
+			$this->created = date('Y-m-d H:i:s', time());
+			$this->created_by = $juser->get('id');
+		}
+		$this->length = strlen($this->pagetext);
+
+		return true;
+	}
+
+	/**
+	 * Load a record by the page/version combination and bind to $this
+	 * 
+	 * @param      integer $pageid  Page ID
+	 * @param      integer $version Version number
+	 * @return     boolean True on success
+	 */
+	public function loadByVersion($pageid, $version=0)
+	{
+		if (!$pageid) 
+		{
 			return;
 		}
-		if ($version) {
-			$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE pageid='$pageid' AND version='$version'" );
-		} else {
-			$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE pageid='$pageid' AND approved='1' ORDER BY version DESC LIMIT 1" );
+		if ($version) 
+		{
+			$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE pageid='$pageid' AND version='$version'");
+		} 
+		else 
+		{
+			$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE pageid='$pageid' AND approved='1' ORDER BY version DESC LIMIT 1");
 		}
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			$this->setError( $this->_db->getErrorMsg() );
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
 
 	/**
-	 * Short description for 'getContributors'
+	 * Get a list of all contributors on a wiki page
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     array Return description (if any) ...
+	 * @return     array
 	 */
 	public function getContributors()
 	{
-		$this->_db->setQuery( "SELECT DISTINCT created_by AS id FROM $this->_tbl WHERE pageid='$this->pageid' AND approved='1'" );
+		$this->_db->setQuery("SELECT DISTINCT created_by AS id FROM $this->_tbl WHERE pageid='$this->pageid' AND approved='1'");
 		$contributors = $this->_db->loadObjectList();
 
 		$cons = array();
-		if (count($contributors) > 0) {
+		if (count($contributors) > 0) 
+		{
 			foreach ($contributors as $con)
 			{
 				$cons[] = $con->id;
@@ -174,112 +215,105 @@ class WikiPageRevision extends JTable
 	}
 
 	/**
-	 * Short description for 'getRevisionCount'
+	 * Get a count of all revisions for a page
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     object Return description (if any) ...
+	 * @return     integer
 	 */
 	public function getRevisionCount()
 	{
-		$this->_db->setQuery( "SELECT COUNT(*) FROM $this->_tbl WHERE pageid='$this->pageid' AND approved='1'" );
+		$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE pageid='$this->pageid' AND approved='1'");
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getRevisionNumbers'
+	 * Get all the revision numbers for a page
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $pageid Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $pageid Page ID
+	 * @return     array
 	 */
-	public function getRevisionNumbers( $pageid=NULL )
+	public function getRevisionNumbers($pageid=NULL)
 	{
-		if (!$pageid) {
+		if (!$pageid) 
+		{
 			$pageid = $this->pageid;
 		}
-		$this->_db->setQuery( "SELECT DISTINCT version FROM $this->_tbl WHERE pageid='$pageid' AND approved='1' ORDER BY version DESC" );
+		$this->_db->setQuery("SELECT DISTINCT version FROM $this->_tbl WHERE pageid='$pageid' AND approved='1' ORDER BY version DESC");
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'getRevisions'
+	 * Get all the revisions for a page
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $pageid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $pageid Page ID
+	 * @return     array
 	 */
-	public function getRevisions( $pageid=NULL )
+	public function getRevisions($pageid=NULL)
 	{
-		if (!$pageid) {
+		if (!$pageid) 
+		{
 			$pageid = $this->pageid;
 		}
-		//$this->_db->setQuery( "SELECT id, pageid, version, created, created_by, minor_edit, approved, summary FROM $this->_tbl WHERE pageid='$pageid' ORDER BY version DESC, created DESC" );
-		//return $this->_db->loadObjectList();
-		return $this->getRecords( array('pageid'=>$pageid) );
+		return $this->getRecords(array('pageid' => $pageid));
 	}
 
 	/**
-	 * Short description for 'getRecordsCount'
+	 * Get a record count based off of filters passed
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build from
+	 * @return     integer
 	 */
-	public function getRecordsCount( $filters=array() )
+	public function getRecordsCount($filters=array())
 	{
 		$sql  = "SELECT COUNT(*) ";
-		$sql .= $this->buildQuery( $filters );
+		$sql .= $this->buildQuery($filters);
 
-		$this->_db->setQuery( $sql );
-		return $this->_db->loadObjectList();
+		$this->_db->setQuery($sql);
+		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getRecords'
+	 * Get a list of records based off of filters passed
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build from
+	 * @return     array
 	 */
-	public function getRecords( $filters=array() )
+	public function getRecords($filters=array())
 	{
-		$sql  = "SELECT r.id, r.pageid, r.version, r.created, r.created_by, r.minor_edit, r.approved, r.summary, u.name AS created_by_name, u.username AS created_by_alias ";
-		$sql .= $this->buildQuery( $filters );
+		$sql  = "SELECT r.id, r.pageid, r.version, r.created, r.created_by, r.minor_edit, r.approved, r.summary, r.length, u.name AS created_by_name, u.username AS created_by_alias ";
+		$sql .= $this->buildQuery($filters);
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'buildQuery'
+	 * Build an SQL statement based on filters passed
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array $filters Filters to build from
+	 * @return     string SQL
 	 */
 	public function buildQuery($filters)
 	{
 		$query = " FROM $this->_tbl AS r,
-		 			#__users AS u 
-					WHERE r.created_by=u.id AND r.pageid='".$filters['pageid']."'";
-		if (isset($filters['search']) && $filters['search']) {
-			$query .= " AND LOWER( r.pagehtml ) LIKE '%".strtolower($filters['search'])."%'";
+					#__users AS u 
+					WHERE r.created_by=u.id AND r.pageid='" . (int) $filters['pageid'] . "'";
+		if (isset($filters['search']) && $filters['search']) 
+		{
+			$query .= " AND LOWER(r.pagehtml) LIKE '%" . strtolower($filters['search']) . "%'";
 		}
 
-		if (isset($filters['sortby']) && $filters['sortby'] != '') {
-			$query .= " ORDER BY ".$filters['sortby'];
-		} else {
+		if (isset($filters['sortby']) && $filters['sortby'] != '') 
+		{
+			$query .= " ORDER BY " . $filters['sortby'];
+		} 
+		else 
+		{
 			$query .= " ORDER BY version DESC, created DESC";
 		}
 
-		if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all') {
-			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
+		if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all') 
+		{
+			$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 		}
 
 		return $query;

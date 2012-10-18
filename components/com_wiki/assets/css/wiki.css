@@ -439,6 +439,15 @@
 	div.admon-warning { 
 		background-image: url("/components/com_wiki/assets/img/admon-warning.png"); 
 	}
+	.page-length {
+		color: #ccc;
+	}
+	.page-length.increase {
+		color: green;
+	}
+	.page-length.decrease {
+		color: red;
+	}
 
 /* Wiki pages */
 	.wikipage {

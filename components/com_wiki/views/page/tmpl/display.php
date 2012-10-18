@@ -44,6 +44,7 @@ $mode = $this->page->params->get('mode', 'wiki');
 	<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 		<h2><?php echo $this->title; ?></h2>
 <?php
+
 if (!$mode || ($mode && $mode != 'static')) {
 	$view = new JView(array(
 		'base_path' => $this->base_path, 
@@ -59,6 +60,8 @@ if (!$mode || ($mode && $mode != 'static')) {
 }
 ?>
 	</div><!-- /#content-header -->
+
+<?php echo $this->page->event->afterDisplayTitle; ?>
 
 <?php if ($mode == 'static' && $this->config->get('access-admin') && $this->controller == 'page' && $this->task == 'display') { ?>
 	<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>-extra">
@@ -78,6 +81,8 @@ if (!$mode || ($mode && $mode != 'static')) {
 <?php } ?>
 
 <?php
+echo $this->page->event->beforeDisplayContent;
+
 if (!$mode || ($mode && $mode != 'static')) {
 	$view = new JView(array(
 		'base_path' => $this->base_path, 
@@ -117,4 +122,6 @@ if (!$mode || ($mode && $mode != 'static')) {
 } else {
 	echo $this->revision->pagehtml;
 }
+
+echo $this->page->event->afterDisplayContent;
 ?>

@@ -89,11 +89,11 @@ class WikiControllerPage extends Hubzero_Controller
 		define('WIKI_MAX_PAGENAME_LENGTH', $this->config->get('max_pagename_length', 100));
 
 		$wp = new WikiPage($this->database);
-		if (!$wp->count()) 
+		if (!$wp->count($this->_group)) 
 		{
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'setup.php');
 
-			$result = WikiSetup::initialize($this->_option);
+			$result = WikiSetup::initialize($this->_option, $this->_group);
 			if ($result) 
 			{
 				$this->setError($result);
@@ -324,6 +324,21 @@ class WikiControllerPage extends Hubzero_Controller
 		{
 			$this->view->tags = $this->page->getTags();
 		}*/
+
+		// Handle display events
+		JPluginHelper::importPlugin('wiki');
+		$dispatcher =& JDispatcher::getInstance();
+
+		$this->page->event = new stdClass();
+
+		$results = $dispatcher->trigger('onAfterDisplayTitle', array($this->page, &$this->view->revision, $this->config));
+		$this->page->event->afterDisplayTitle = trim(implode("\n", $results));
+
+		$results = $dispatcher->trigger('onBeforeDisplayContent', array(&$this->page, &$this->view->revision, $this->config));
+		$this->page->event->beforeDisplayContent = trim(implode("\n", $results));
+
+		$results = $dispatcher->trigger('onAfterDisplayContent', array(&$this->page, &$this->view->revision, $this->config));
+		$this->page->event->afterDisplayContent = trim(implode("\n", $results));
 
 		$this->view->message = $this->_message;
 
@@ -850,6 +865,15 @@ class WikiControllerPage extends Hubzero_Controller
 				echo WikiHtml::alert($this->revision->getError());
 				exit();
 			}
+		}
+
+		$this->page->version_id = $this->revision->id;
+		$this->page->modified   = $this->revision->created;
+		if (!$this->page->store()) 
+		{
+			// This really shouldn't happen.
+			JError::raiseWarning(500, $this->page->getError());
+			return;
 		}
 
 		// Process tags

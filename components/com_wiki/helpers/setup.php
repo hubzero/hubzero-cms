@@ -43,12 +43,12 @@ class WikiSetup
 	 * @param      string $option Component name
 	 * @return     string 
 	 */
-	public function initialize($option)
+	public function initialize($option, $group_cn=null)
 	{
 		$database =& JFactory::getDBO();
 		$juser =& JFactory::getUser();
 
-		$pages = WikiSetup::defaultPages();
+		$pages = WikiSetup::defaultPages($group_cn);
 
 		if (count($pages) <= 0) 
 		{
@@ -66,7 +66,12 @@ class WikiSetup
 			$page = new WikiPage($database);
 			$page->pagename = $f;
 			$page->title    = $page->getTitle();
-			if ($page->pagename == 'MainPage')
+			if ($group_cn)
+			{
+				$page->group_cn = $group_cn;
+				$page->scope = $group_cn . '/wiki';
+			}
+			if (!$group_cn && $page->pagename == 'MainPage')
 			{
 				$page->params   = 'mode=static' . "\n";
 			} 
@@ -81,6 +86,7 @@ class WikiSetup
 				JError::raiseWarning(500, $page->getError());
 				return;
 			}
+
 			// Store content
 			if (!$page->store()) 
 			{
@@ -130,6 +136,15 @@ class WikiSetup
 				JError::raiseWarning(500, $revision->getError());
 				return;
 			}
+
+			$page->version_id = $revision->id;
+			$page->modified   = $revision->created;
+			if (!$page->store()) 
+			{
+				// This really shouldn't happen.
+				JError::raiseWarning(500, $page->getError());
+				return;
+			}
 		}
 
 		return null;
@@ -140,31 +155,38 @@ class WikiSetup
 	 * 
 	 * @return     array
 	 */
-	public function defaultPages()
+	public function defaultPages($group_cn=null)
 	{
-		$path = dirname(dirname(__FILE__));
-		$d = @dir($path . DS . 'default');
+		$path = dirname(dirname(__FILE__)) . DS . 'default';
+		if ($group_cn)
+		{
+			$path .= DS . 'groups';
+		}
+
 		$pages = array();
 
-		if ($d) 
+		if (is_dir($path))
 		{
 			jimport('joomla.filesystem.file');
 
-			while (false !== ($entry = $d->read()))
+			$dirIterator = new DirectoryIterator($path);
+			foreach ($dirIterator as $file)
 			{
-				$file = $entry;
-				if (is_file($path . DS . 'default' . DS . $file) 
-				 && substr($entry, 0, 1) != '.' 
-				 && strtolower($entry) !== 'index.html') 
+				if ($file->isDot() || $file->isDir())
 				{
-					if (preg_match("#txt#i", $file)) 
+					continue;
+				}
+
+				if ($file->isFile())
+				{
+					$fl = $file->getFilename();
+					if (strtolower(JFile::getExt($fl)) == 'txt') 
 					{
-						$name = substr($file, 0, (strlen($file) - 4));
-						$pages[$name] = JFile::read($path . DS . 'default' . DS . $file);
+						$name = JFile::stripExt($fl);
+						$pages[$name] = JFile::read($path . DS . $fl);
 					}
 				}
 			}
-			$d->close();
 		}
 
 		return $pages;

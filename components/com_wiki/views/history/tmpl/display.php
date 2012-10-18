@@ -115,6 +115,7 @@ $first = end($this->revisions);
 							<th scope="col" colspan="2"><?php echo JText::_('WIKI_HISTORY_COL_COMPARE'); ?></th>
 							<th scope="col"><?php echo JText::_('WIKI_HISTORY_COL_WHEN'); ?></th>
 							<th scope="col"><?php echo JText::_('WIKI_HISTORY_COL_MADE_BY'); ?></th>
+							<th scope="col"><?php echo JText::_('WIKI_HISTORY_COL_LENGTH'); ?></th>
 							<th scope="col"><?php echo JText::_('WIKI_HISTORY_COL_STATUS'); ?></th>
 <?php if ($this->config->get('access-manage')) { ?>
 							<th scope="col"></th>
@@ -149,6 +150,21 @@ foreach ($this->revisions as $revision)
 			$status = 'suggested';
 			break;
 	}
+	
+	$prvLength = (isset($this->revisions[$i])) ? $this->revisions[$i]->length : 0;
+
+	$diff = $revision->length - $prvLength;
+	
+	/*if ($revision->length > $prvLength)
+	{
+		$diffCls = 'increase';
+		$diff = $revision->length - $prvLength;
+	}
+	else
+	{
+		$diffCls = 'decrease';
+		$diff = $revision->length - $prvLength;
+	}*/
 ?>
 						<tr class="<?php echo $cls; ?>">
 							<td>
@@ -193,6 +209,9 @@ foreach ($this->revisions as $revision)
 							</td>
 							<td>
 								<?php echo $this->escape($xname); ?>
+							</td>
+							<td>
+								<?php echo JText::sprintf('%s bytes', number_format($revision->length)); ?> (<span class="page-length <?php echo ($diff > 0) ? 'increase' : ($diff == 0 ? 'created' : 'decrease'); ?>"><?php echo ($diff > 0) ? '+' . number_format($diff) : ($diff == 0 ? number_format($diff) : '-' . number_format($diff)); ?></span>)
 							</td>
 							<td>
 								<?php echo $this->escape($status); ?>

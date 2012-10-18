@@ -319,10 +319,10 @@ class WikiControllerHistory extends Hubzero_Controller
 
 		// If we're deleting the current revision, set the current 
 		// revision number to the previous available revision
-		/*if ($id == $this->page->version_id)
-		{
+		//if ($id == $this->page->version_id)
+		//{
 			$this->page->setRevisionId();
-		}*/
+		//}
 
 		// Log the action
 		$log = new WikiLog($this->database);

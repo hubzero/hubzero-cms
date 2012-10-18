@@ -128,6 +128,20 @@ class WikiPage extends JTable
 	public $state = NULL;
 
 	/**
+	 * datetime(0000-00-00 00:00:00)
+	 *
+	 * @var	string
+	 */
+	public $modified = NULL;
+
+	/**
+	 * int(11)
+	 *
+	 * @var	integer
+	 */
+	public $version_id = NULL;
+
+	/**
 	 * Object constructor to set table and key field
 	 *
 	 * @param 	object 		$db JDatabase object
@@ -139,16 +153,14 @@ class WikiPage extends JTable
 	}
 
 	/**
-	 * Returns a reference to the global User object, only creating it if it
-	 * doesn't already exist.
+	 * Returns a reference to a wiki page object
 	 *
 	 * This method must be invoked as:
-	 * 		<pre>  $user =& JUser::getInstance($id);</pre>
+	 *     $page = WikiPage::getInstance($pagename);
 	 *
-	 * @access 	public
-	 * @param 	int 	$id 	The user to load - Can be an integer or string - If string, it is converted to ID automatically.
-	 * @return 	JUser  			The User object.
-	 * @since 	1.5
+	 * @param      string $pagename The page to load
+	 * @param      string $scope    The page scope
+	 * @return     object WikiPage
 	 */
 	static function &getInstance($pagename=NULL, $scope='')
 	{
@@ -404,13 +416,15 @@ class WikiPage extends JTable
 	 */
 	public function setRevisionId($id=null)
 	{
+		$modified = date('Y-m-d H:i:s', time());
 		if (!$id)
 		{
 			$revision = $this->getCurrentRevision();
 			$id = $revision->id;
+			$modified = $revision->created;
 		}
 		$this->version_id = $id;
-		$this->modified   = date('Y-m-d H:i:s', time());  // use gmdate() ?
+		$this->modified   = $modified;  // use gmdate() ?
 
 		return $this->store();
 	}
@@ -513,6 +527,9 @@ class WikiPage extends JTable
 				$this->setError(JText::_('WIKI_ERROR_PAGE_EXIST'));
 				return false;
 			}
+			$juser =& JFactory::getUser();
+			$this->modified = date('Y-m-d H:i:s', time());
+			$this->created_by = $juser->get('id');
 		}
 
 		if ($this->getError()) 
@@ -618,11 +635,17 @@ class WikiPage extends JTable
 	/**
 	 * Returns a record count of the table
 	 *
-	 * @return 	integer
+	 * @param    string $group_cn Group CN
+	 * @return   integer
 	 */
-	public function count()
+	public function count($group_cn=null)
 	{
-		$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl");
+		$query = "SELECT COUNT(*) FROM $this->_tbl";
+		if ($group_cn)
+		{
+			$query .= " WHERE `group_cn`='$group_cn'";
+		}
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
