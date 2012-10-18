@@ -174,3 +174,17 @@
 		max-width: 10em;
 		margin-bottom: 0em;
 	}
+	.handle {
+		display: block;
+		overflow: hidden;
+		width: 1em;
+		height: 1em;
+		cursor: move;
+		font-size: 1.5em;
+	}
+	.handle:before {
+		font-family: "Fontcons";
+		content: "\f039";
+		margin-right: 5em;
+		color: #ccc;
+	}
