@@ -221,10 +221,10 @@ class WikiParser
 
 		// Process includes
 		// Includes are essentially smaller other pages
-		if ($this->fullparse) 
-		{
+		//if ($this->fullparse) 
+		//{
 			$text = $this->includes($text);
-		}
+		//}
 
 		// We need to temporarily put back any blocks we stripped and then restrip everything
 		// This is because of any blocks the macros may have outputted - otherwise they wouldn't get processed
@@ -529,15 +529,12 @@ class WikiParser
 
 		$bits = explode('/', $href);
 
-		//$database =& JFactory::getDBO();
-		//$p = new WikiPage($database);
 		if ($namespace == 'wiki:' && substr($href, 0, strlen('&#8220;')) == '&#8220;')
 		{
 			$title = substr($matches[1], strlen('[wiki:&#8220;'));
 			$title = substr($title, 0, -strlen('&#8221;]'));
 			$href = '#';
 
-			//$p->loadByTitle($title);
 			$p = WikiPage::getInstance($title, $this->scope);
 			if ($p->id) 
 			{
@@ -546,21 +543,6 @@ class WikiParser
 		}
 		else 
 		{
-			/*if (count($bits) > 1) 
-			{
-				$p->pagename = array_pop($bits);
-				$p->scope = implode('/', $bits);
-			} 
-			else 
-			{
-				$p->pagename = end($bits);
-				$p->scope = $this->scope;
-			}
-			if (trim(strtolower($namespace)) == 'help:') 
-			{
-				$p->pagename = 'Help:' . $p->pagename;
-			}*/
-			//$p->getID();
 			if (count($bits) > 1) 
 			{
 				$pagename = array_pop($bits);
@@ -571,16 +553,21 @@ class WikiParser
 				$pagename = end($bits);
 				$scope = $this->scope;
 			}
-			if (trim(strtolower($namespace)) == 'help:') 
-			{
-				$pagename = 'Help:' . $pagename;
-			}
+
+			$pagename = ucfirst(strtolower($namespace)) . $pagename;
 			$p = WikiPage::getInstance($pagename, $scope);
 		}
 
 		if (!$p->id) 
 		{
-			$cls .= (substr($href, 0, 1) != '?') ? ' missing' : '';
+			if (in_array(trim(strtolower($namespace)), array('special:', 'help:', 'image:', 'file:')))
+			{
+				$cls .= '';
+			}
+			else
+			{
+				$cls .= (substr($href, 0, 1) != '?') ? ' missing' : '';
+			}
 			$p->scope = ($p->scope) ? $p->scope : $this->scope;
 		} 
 		else 
@@ -1277,41 +1264,27 @@ class WikiParser
 	}
 
 	/**
-	 * Short description for 'includes'
+	 * Search for include syntax and replace with any included text
+	 *   [[Include(SomePage)]]
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $text Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      string $text Raw wiki markup
+	 * @return     string
 	 */
 	private function includes($text)
 	{
-		$path = dirname(__FILE__);
-		if (is_file($path . DS . 'macro.php')) 
-		{
-			include_once($path . DS . 'macro.php');
-		} 
-		else 
-		{
-			return $text;
-		}
-
-		$this->includes = array();
-
-		// Get macros [[name(args)]]
-		$pattern = '/\[\[(?P<includename>[\w]+)(\]\]|\((?P<includeargs>.*)\)\]\])/U';
+		//$pattern = '/\[\[(?P<includename>[\w]+)(\]\]|\((?P<includeargs>.*)\)\]\])/U';
+		$pattern = '/\[\[(include)(\]\]|\((.*)\)\]\])/Ui';
 		$text = preg_replace_callback($pattern, array(&$this, 'getInclude'), $text);
 
 		return $text;
 	}
 
 	/**
-	 * Short description for 'getInclude'
+	 * Retrieve an included page
+	 * This is recursive and should look for inclusions in any included page.
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $matches Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      array $matches Pattern matches from includes() method
+	 * @return     string
 	 */
 	private function getInclude($matches)
 	{
@@ -1320,6 +1293,10 @@ class WikiParser
 			if (strtolower($matches[1]) != 'include') 
 			{
 				return $matches[0];
+			}
+			if (!$this->fullparse)
+			{
+				return "'''Includes not allowed.'''";
 			}
 
 			$scope = ($this->domain) ? $this->domain . DS . 'wiki' : $this->scope;
@@ -1334,6 +1311,11 @@ class WikiParser
 			{
 				$pagename = $matches[3];
 			}
+			// Don't include this page (infinite loop!)
+			if ($pagename == $this->pagename && $scope == $this->scope)
+			{
+				return '';
+			}
 
 			$p = WikiPage::getInstance($pagename, $scope);
 
@@ -1341,13 +1323,10 @@ class WikiParser
 			{
 				$revision = $p->getCurrentRevision();
 
-				return $revision->pagetext;
-			} 
-			else 
-			{
-				return '';
+				return $this->includes($revision->pagetext);
 			}
 		}
+		return '';
 	}
 
 	/**

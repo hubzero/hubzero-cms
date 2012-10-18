@@ -319,6 +319,14 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 			else 
 			{
 				$this->attr['style']['float'] = $val;
+				if ($val == 'left')
+				{
+					$this->attr['style']['margin-right'] = '1em';
+				}
+				else if ($val == 'right')
+				{
+					$this->attr['style']['margin-left'] = '1em';
+				}
 			}
 		} 
 		else if ($key == 'border') 
