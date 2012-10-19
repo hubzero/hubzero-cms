@@ -191,12 +191,6 @@ $no_html = JRequest::getInt( 'no_html', 0 );
 			</div><!-- /#page_sidebar --> 
 			
 			<div id="page_main">
-				<?php if($this->group->get('type') == 3) : ?>
-					<a href="/home" id="special-group-tab" class="" title="<?php echo $config->getValue("sitename"); ?> :: Learn more about this group page and access to more <?php echo $config->getValue("sitename"); ?> content.">
-						<?php echo $config->getValue("sitename"); ?>
-						<span></span>
-					</a>
-				<?php endif; ?>
 				<div id="page_header">
 					<h2><a href="/groups/<?php echo $this->group->get("cn"); ?>"><?php echo $this->group->get('description'); ?></a></h2>
 					<span class="divider">►</span>

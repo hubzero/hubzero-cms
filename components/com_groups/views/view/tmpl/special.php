@@ -25,118 +25,78 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//links used in special menu drop down
-$links = array(
-	'/' => 'Home',
-	'/about' => 'About',
-	'/members' => 'Members',
-	'/groups' => 'Groups',
-	'/resources' => 'Resources',
-	'/answers' => 'Questions &amp; Answers',
-	'/citations' => 'Citations'
-);
-
 //get site config
 $config =& JFactory::getConfig(); 
 
 $no_html = JRequest::getVar("no_html", 0);
-if(!$no_html) {
-?>
-<div id="special-group-pane">
-	<div id="special-group-container">
-		<div class="three columns first">
-			<h1>
-				<a href="/" title="<?php echo $config->getValue('sitename'); ?> Home"><?php echo $config->getValue('sitename'); ?></a>
-			</h1>
-			<p class="intro">
-				You are currently viewing “<?php echo $this->group->get('description'); ?>” group powered by <?php echo $config->getValue('sitename'); ?>. The group areas for these partners have their own URL and additional capabilities not found in our standard groups.
-			</p>
-			
-			<h2>Interested in Becoming a Partner?</h2>
-			<p>
-				Use <?php echo $config->getValue('sitename'); ?> to create a web presence for your center. <a href="/about/contact">Contact us</a> to get more details about establishing a partnership.
-			</p>
-		</div>
-		<div class="three columns second">
-			<h2>What is <?php echo $config->getValue('sitename'); ?>?</h2>
-			<p>This web site is a resource for research, education and collaboration in your science area. It hosts various resources which will help you learn about your science area, including Online Presentations, Courses, Learning Modules, Animations, Teaching Materials, and more. These resources come from contributors in our scientific community, and are used by visitors from all over the world.</p>
-			<p>Most importantly, <?php echo $config->getValue('sitename'); ?> offers simulation tools which you can access from your web browser, so you can not only learn about but also simulate your science area.</p>
-		</div>
-		<div class="three columns third">
-			<h2>Explore other <?php echo $config->getValue('sitename'); ?> Content!</h2>
-			<ul class="site-menu">
-				<?php foreach($links as $link => $name) { ?>
-					<li><a href="<?php echo $link; ?>"><?php echo $name; ?></a></li>
-				<?php } ?>
-			</ul>
-		</div>
-		<br class="clear" />
-	</div>
-</div><!-- / #special-group-pane -->
-<?php } ?> 
-<?php
-	//define the default group template
-	$default_path = 'components' . DS . 'com_groups' . DS . 'views' . DS . 'view' . DS . 'tmpl' . DS .'default.php';
 
-	//load in the special group template
-	$temp_path 	= 'site' . DS . 'groups' . DS . $this->group->get('gidNumber') . DS . 'template' . DS . 'default.php';
-	$css_path 	= 'site' . DS . 'groups' . DS . $this->group->get('gidNumber') . DS . 'template' . DS . 'default.css';
-	$js_path 	= 'site' . DS . 'groups' . DS . $this->group->get('gidNumber') . DS . 'template' . DS . 'default.js';
+//define the default group template
+$default_path = 'components' . DS . 'com_groups' . DS . 'views' . DS . 'view' . DS . 'tmpl' . DS .'default.php';
 
-	//start the output buffer
-	ob_start();
+//load in the special group template
+$temp_path 	= 'site' . DS . 'groups' . DS . $this->group->get('gidNumber') . DS . 'template' . DS . 'default.php';
+$css_path 	= 'site' . DS . 'groups' . DS . $this->group->get('gidNumber') . DS . 'template' . DS . 'default.css';
+$js_path 	= 'site' . DS . 'groups' . DS . $this->group->get('gidNumber') . DS . 'template' . DS . 'default.js';
 
-	//if the template file exists use their custom template
-	if(is_file(JPATH_ROOT . DS . $temp_path)) {
+//start the output buffer
+ob_start();
 
-		//partner template exists
-		$tmpl = true;
+//if the template file exists use their custom template
+if(is_file(JPATH_ROOT . DS . $temp_path)) {
 
-		//get the document
-		$doc =& JFactory::getDocument();
+	//partner template exists
+	$tmpl = true;
 
-		//if the css file exists push to the page
-		if(is_file(JPATH_ROOT . DS . $css_path)) {
-			$doc->addStyleSheet( DS . $css_path );
-		}
+	//get the document
+	$doc =& JFactory::getDocument();
 
-		//if the js file exists push to the page
-		if(is_file(JPATH_ROOT . DS . $js_path)) {
-			$doc->addScript( DS . $js_path );
-		}
-
-		//include the groups template
-		include JPATH_ROOT . DS . $temp_path;
-
-	} else {
-		//partner template doesnt exist
-		$tmpl = false;
-
-		//include the default template
-		include JPATH_ROOT . DS . $default_path;
+	//if the css file exists push to the page
+	if(is_file(JPATH_ROOT . DS . $css_path)) {
+		$doc->addStyleSheet( DS . $css_path );
 	}
 
-	//get the buffer contents
-	$content = ob_get_contents();
+	//if the js file exists push to the page
+	if(is_file(JPATH_ROOT . DS . $js_path)) {
+		$doc->addScript( DS . $js_path );
+	}
 
-	//clean the buffer
-	ob_end_clean();
+	//include the groups template
+	include JPATH_ROOT . DS . $temp_path;
+} 
+else 
+{
+	//partner template doesnt exist
+	$tmpl = false;
 
-	//display the content
-	echo $content;
+	//include the default template
+	include JPATH_ROOT . DS . $default_path;
+}
+
+//get the buffer contents
+$content = ob_get_contents();
+
+//clean the buffer
+ob_end_clean();
+
+//display the content
+echo $content;
 ?>
 	
 <?php 
 	//return link for login and logout
 	$return = JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn'));
 	$return = base64_encode($return);
+	
+	$isManager = (in_array($this->user->get("id"), $this->group->get("managers"))) ? true : false;
 ?>
+
+<div class="clear"></div>
 
 <?php if($tmpl && !$no_html) { ?>	
 	<div id="special_management">
-		<?php if(!$this->user->get('guest')) { ?>
+		<?php if(!$this->user->get('guest')) : ?>
 			<ul>
-				<?php if($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
+				<?php if($isManager) : ?>
 					<li>Manage this group: </li>
 					<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=edit'); ?>">Edit</a></li>
 					<li>|</li>
@@ -147,13 +107,13 @@ if(!$no_html) {
 					<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=invite'); ?>">Invite Users</a></li>
 					<li>|</li>
 					<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&task=delete'); ?>">Delete</a></li>
-				<?php } else { ?>
+				<?php else : ?>
 					<li>Welcome <?php echo $this->user->get('name'); ?>, </li>
-				<?php } ?>
+				<?php endif; ?>
 				<li><a href="/logout?return=<?php echo $return; ?>" class="logout">Logout</a>
 			</ul>
-		<?php } else { ?>
+		<?php else : ?>
 			Want to edit this group? <a href="/login?return=<?php echo $return; ?>">Login now!</a>
-		<?php } ?>
+		<?php endif; ?>
 	</div><!-- /#special_management -->
 <?php } ?>
