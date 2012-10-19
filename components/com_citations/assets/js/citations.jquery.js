@@ -166,9 +166,12 @@ HUB.Citations = {
 				e.preventDefault();
 			}
 
-			if(!$("#download-batch-input").length) {
+			if(!$("#download-batch-input").length) 
+			{
 				$("#citeform").append("<input type=\"hidden\" name=\"task\" value=\"downloadbatch\" id=\"download-batch-input\" />");
 			}
+			
+			$("#citeform").attr("method", "POST");
 		});
 
 		//
@@ -176,6 +179,7 @@ HUB.Citations = {
 			var target = e.target.className;
 			if($("#download-batch-input").length && target != 'download-endnote' && target != 'download-bibtex') {
 				$("#download-batch-input").remove()
+				$("#citeform").attr("method", "GET");
 			}
 		});
 
@@ -240,16 +244,6 @@ HUB.Citations = {
 	{
 		var $ = this.jQuery;
 		
-		var ua = navigator.userAgent;
-		if(ua.indexOf('Firefox') == -1)
-		{
-			relative = true;
-		}
-		else
-		{
-			relative = false;
-		}
-		
 		$(".citation-container").each(function(index){
 			var $title = $(this).find(".citation-title"),
 				$note = $(this).find(".citation-notes");
@@ -261,7 +255,7 @@ HUB.Citations = {
 					.tooltip({
 						effect: 'slide',
 						position: 'top center',
-						relative: relative,
+						relative: true,
 						predelay: 500,
 						delay: 200,
 						tip: $note

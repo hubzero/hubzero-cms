@@ -475,11 +475,20 @@ class CitationFormat
 			$text = $openurl['text'];
 			$icon = $openurl['icon'];
 			$link = $openurl['link'];
-
-			$link .= '?doi=' . $citation->doi;
-			$link .= '&isbn=' . $citation->isbn;
-			$link .= '&issn=' . $citation->isbn;
-			$link .= '&title=' . $citation->title;
+			$query = array();
+			
+			if(isset($citation->doi) && $citation->doi != '')
+			{
+				$query[] = 'doi=' . $citation->doi;
+			}
+			
+			if(isset($citation->isbn) && $citation->isbn != '')
+			{
+				$query[] = 'isbn=' . $citation->isbn;
+				$query[] = 'issn=' . $citation->isbn;
+			}
+			
+			$link .= '?title=' . $citation->title . '&' . implode("&",$query);
 
 			if ($citation->doi || $citation->isbn) 
 			{
@@ -604,7 +613,7 @@ class CitationFormat
 				INNER JOIN #__tags t ON t.id = to1.tagid 
 				WHERE to1.tbl='citations' 
 				AND to1.objectid={$citation->id}
-				AND to1.label=''";
+				AND (to1.label='' OR to1.label IS NULL)";
 		$database->setQuery($sql);
 		$tags = $database->loadAssocList();
 

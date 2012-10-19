@@ -55,41 +55,62 @@ if ($label == "none") {
 } elseif ($label == "both") {
 	$citations_label_class = "both-label";
 }
+
 ?>
-<div id="content-header">
+<div id="content-header" class="full">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
+</div>
 
 <div id="content-header-extra">
-	<ul>
-		<li class="last">
-			<a class="main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Main page'); ?></a>
-		</li>
+	<ul id="useroptions">
+		<?php if ($this->allow_import == 1 || ($this->allow_import == 2 && $this->isAdmin)) : ?>
+			<li class="last">
+				<a class="add btn" href="<?php echo JRoute::_('index.php?option=com_citations&task=add'); ?>"><?php echo JText::_('Submit a Citation'); ?></a>
+			</li>
+		<?php endif; ?>
 	</ul>
-</div><!-- / #content-header-extra -->
+</div>
 
 <div class="main section">
-	
-	<?php
-		foreach($this->messages as $message) {
-			echo "<p class=\"{$message['type']}\">" . $message['message'] . "</p>";
-		}
-	?>
-	
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>" id="citeform" method="post">
-		<div class="aside <?php if ($batch_download) { echo " withBatchDownload"; } ?>">
-			<?php if ($batch_download) : ?>
-				<fieldset id="download-batch">
-					<strong><?php echo JText::_('Export Multiple Citations'); ?></strong>
-					<p><?php echo JText::_('Check the citations that you would like to have exported.'); ?></p>
-					
-					<input type="submit" name="download" class="download-endnote" value="EndNote" /> 
-					| 
-					<input type="submit" name="download" class="download-bibtex" value="BibTex" />
-					<input type="hidden" name="task" value="downloadbatch" id="download-batch-input" />
-				</fieldset>
-			<?php endif; ?>
+	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>" id="citeform" method="GET" class="<?php if ($batch_download) { echo " withBatchDownload"; } ?>">
+		<div class="aside">
 			<fieldset>
+				<label>
+					<?php echo JText::_('Type'); ?>
+					<select name="type" id="type">
+						<option value="">All</option>
+						<?php foreach($this->types as $t) : ?>
+							<?php $sel = ($this->filters['type'] == $t['id']) ? "selected=\"selected\"" : ""; ?>
+ 							<option <?php echo $sel; ?> value="<?php echo $t['id']; ?>"><?php echo $t['type_title']; ?></option>
+						<?php endforeach; ?>
+					</select>
+				</label>
+				<label>
+					<?php echo JText::_('Tags'); ?>:
+					<?php 
+						JPluginHelper::importPlugin('hubzero');
+						$dispatcher =& JDispatcher::getInstance();
+						$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tag', 'actags', '', $this->filters['tag'])));  // type, field name, field id, class, value
+						if (count($tf) > 0) : ?>
+							<?php echo $tf[0]; ?>
+						<?php else: ?>
+							<input type="text" name="tag" value="<?php echo $this->filters['tag']; ?>" />
+						<?php endif; ?>
+				</label>
+				<label>
+					<?php echo JText::_('Authored By'); ?>
+					<input type="text" name="author" value="<?php echo $this->filters['author']; ?>" />
+				</label>
+				<label>
+					<?php echo JText::_('Published In'); ?>
+					<input type="text" name="publishedin" value="<?php echo $this->filters['publishedin']; ?>" />
+				</label>
+				<label for="year_start">
+					<?php echo JText::_('Year'); ?><br />
+					<input type="text" name="year_start" class="half" value="<?php echo $this->filters['year_start']; ?>" />
+					to
+					<input type="text" name="year_end" class="half" value="<?php echo $this->filters['year_end']; ?>" />
+				</label>
 				<label>
 					<?php echo JText::_('SORT_BY'); ?>
 					<select name="sort" id="sort" class="">
@@ -99,47 +120,6 @@ if ($label == "none") {
 						<?php endforeach; ?>
 					</select>
 				</label>
-				
-				<label>
-					<?php echo JText::_('Type'); ?>
-					<select name="type" id="type">
-						<option value="all">All</option>
-						<?php
-							foreach($this->types as $t) {
-								$sel = ($this->filters['type'] == $t['id']) ? "selected=\"selected\"" : "";
- 								echo "<option {$sel} value=\"{$t['id']}\">{$t['type_title']}</option>";
-							}
-						?>
-					</select>
-				</label>
-				
-				<label>
-					<?php echo JText::_('Affiliation'); ?>
-					<select name="filter" id="filter" class="">
-						<?php foreach($this->filter as $k => $v) : ?>
-							<?php $sel = ($k == $this->filters['filter']) ? "selected" : ""; ?>
-							<option <?php echo $sel; ?> value="<?php echo $k; ?>"><?php echo $v; ?></option>
-						<?php endforeach; ?>
-					</select>
-				</label>
-				
-				<label>
-					<?php echo JText::_('FOR_YEAR'); ?>
-					<select name="year">
-						<option value=""<?php if ($this->filters['year'] == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('All'); ?></option>
-<?php
-	$y = date("Y");
-	$y++;
-	for ($i=1995, $n=$y; $i < $n; $i++)
-	{
-?>
-						<option value="<?php echo $i; ?>"<?php if ($this->filters['year'] == $i) { echo ' selected="selected"'; } ?>><?php echo $i; ?></option>
-<?php
-	}
-?>
-					</select>
-				</label>
-				
 				<fieldset>
 					<legend><?php echo JText::_('Reference Type'); ?></legend>
 					<label>
@@ -159,7 +139,6 @@ if ($label == "none") {
 						<?php echo JText::_('Cyberinfrastructure'); ?>
 					</label>
 				</fieldset>
-				
 				<fieldset>
 					<legend><?php echo JText::_('Author Geography'); ?></legend>
 					<label>
@@ -179,7 +158,6 @@ if ($label == "none") {
 						<?php echo JText::_('Asia'); ?>
 					</label>
 				</fieldset>
-				
 				<fieldset>
 					<legend><?php echo JText::_('Author Affiliation'); ?></legend>
 					<label>
@@ -196,152 +174,194 @@ if ($label == "none") {
 					</label>
 				</fieldset>
 				
-				<label>
-					<?php echo JText::_('SEARCH_TITLE'); ?>
-					<input type="text" name="search" value="<?php echo $this->escape(stripslashes($this->filters['search'])); ?>" />
-				</label>
-				
 				<p class="submit">
-					<input type="submit" name="go" value="<?php echo JText::_('GO'); ?>" />
+					<input type="submit" value="Filter" />
 				</p>
-				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-				<input type="hidden" name="task" value="browse" />
+				
 			</fieldset>
-		</div><!-- / .aside -->
+			
+			<?php if ($batch_download) : ?>
+				<fieldset id="download-batch">
+					<strong><?php echo JText::_('Export Multiple Citations'); ?></strong>
+					<p><?php echo JText::_('Check the citations that you would like to have exported.'); ?></p>
+					
+					<input type="submit" name="download" class="download-endnote" value="EndNote" /> 
+					| 
+					<input type="submit" name="download" class="download-bibtex" value="BibTex" />
+					<input type="hidden" name="task" value="downloadbatch" id="download-batch-input" />
+				</fieldset>
+			<?php endif; ?>
+		</div><!-- /.aside -->
+		
 		<div class="subject">
-			<?php if (count($this->citations) > 0) : ?>
-				<?php
-					$formatter = new CitationFormat();
-					$formatter->setTemplate($template);
+			<div class="container data-entry">
+				<input class="entry-search-submit" type="submit" value="Search" />
+				<fieldset class="entry-search">
+					<legend>Search Citations</legend>
+					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->filters['search']; ?>" placeholder="Search Citations by Title, Author, ISBN, DOI, Publisher, and Abstract" />
+				</fieldset>
+			</div><!-- /.container .data-entry -->
+			<div class="container">
+				<ul class="entries-menu filter-options">
+					<?php
+						$queryString = "";
+						$exclude = array("filter");
+						foreach($this->filters as $k => $v)
+						{
+							if($v != "" && !in_array($k, $exclude))
+							{
+								if(is_array($v))
+								{
+									foreach($v as $k2 => $v2)
+									{
+										$queryString .= "&{$k}[{$k2}]={$v2}";
+									}
+								}
+								else
+								{
+									$queryString .= "&{$k}={$v}";
+								}
+							}
+						}
+					?>
+					<li><a <?php if($this->filters['filter'] == '') { echo 'class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=com_citations&task=browse'.$queryString.'&filter='); ?>">All</a></li>
+					<li><a <?php if($this->filters['filter'] == 'aff') { echo 'class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=com_citations&task=browse'.$queryString.'&filter=aff'); ?>">Affiliated</a></li>
+					<li><a <?php if($this->filters['filter'] == 'nonaff') { echo 'class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=com_citations&task=browse'.$queryString.'&filter=nonaff'); ?>">Non-Affiliated</a></li>
+				</ul>
+				<div class="clearfix"></div>
+					
+				<?php if(count($this->citations) > 0) : ?>
+					<?php
+						$formatter = new CitationFormat();
+						$formatter->setTemplate($template);
 
-					$counter = 1;
-				?>
-				<table class="citations">
-					<thead>
-						<tr>
-							<?php if ($batch_download) : ?>
-								<th class="batch">
-									<input type="checkbox" class="checkall-download" />
-								</th>
-							<?php endif; ?>
-							<th colspan="2">Citations</th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php foreach($this->citations as $cite) : ?>
+						$counter = 1;
+					?>
+					<table class="citations entries">
+						<thead>
 							<tr>
 								<?php if ($batch_download) : ?>
-									<td class="batch">
-										<input type="checkbox" class="download-marker" name="download_marker[]" value="<?php echo $cite->id; ?>" />
-									</td>
+									<th class="batch">
+										<input type="checkbox" class="checkall-download" />
+									</th>
 								<?php endif; ?>
-								
-								<?php if ($label != "none") : ?>
-									<td class="citation-label <?php echo $citations_label_class; ?>">
-										<?php 
-											$type = "";
-											foreach($this->types as $t) {
-												if ($t['id'] == $cite->type) {
-													$type = $t['type_title'];
-												}
-											}
-											$type = ($type != "") ? $type : "Generic";
+								<th colspan="2">Citations</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach($this->citations as $cite) : ?>
+								<tr>
+									<?php if ($batch_download) : ?>
+										<td class="batch">
+											<input type="checkbox" class="download-marker" name="download_marker[]" value="<?php echo $cite->id; ?>" />
+										</td>
+									<?php endif; ?>
 
-											switch($label)
-											{
-												case "number":
-													echo "<span class=\"number\">{$counter}.</span>";
-													break;
-												case "type":
-													echo "<span class=\"type\">{$type}</span>";
-													break;
-												case "both":
-													echo "<span class=\"number\">{$counter}.</span>";
-													echo "<span class=\"type\">{$type}</span>";
-													break;
-											}
-										?>
-									</td>
-								<?php endif; ?>
-								<td class="citation-container">
-									<?php echo $formatter->formatCitation($cite, $this->filters['search'], $coins, $this->config); ?>
-								
-									<?php if ($rollover == "yes" && $cite->abstract != "") : ?>
-										<div class="citation-notes">
-											<?php
-												$cs = new CitationsSponsor($this->database);
-												$sponsors = $cs->getCitationSponsor($cite->id);
-												$final = "";
-												if ($sponsors)
-												{
-													foreach($sponsors as $s)
-													{
-														$sp = $cs->getSponsor($s);
-														if ($sp)
-														{
-															$final .= '<a rel="external" href="'.$sp[0]['link'].'">'.$sp[0]['sponsor'].'</a>, ';
-														}
+									<?php if ($label != "none") : ?>
+										<td class="citation-label <?php echo $citations_label_class; ?>">
+											<?php 
+												$type = "";
+												foreach($this->types as $t) {
+													if ($t['id'] == $cite->type) {
+														$type = $t['type_title'];
 													}
 												}
+												$type = ($type != "") ? $type : "Generic";
+
+												switch($label)
+												{
+													case "number":
+														echo "<span class=\"number\">{$counter}.</span>";
+														break;
+													case "type":
+														echo "<span class=\"type\">{$type}</span>";
+														break;
+													case "both":
+														echo "<span class=\"number\">{$counter}.</span>";
+														echo "<span class=\"type\">{$type}</span>";
+														break;
+												}
 											?>
-											<?php if ($final != '' && $this->config->get("citation_sponsors", "yes") == 'yes') : ?>
-												<?php $final = substr($final, 0, -2); ?>
-												<p class="sponsor">Abstract courtesy of <?php echo $final; ?></p>
-											<?php endif; ?>
-											<p><?php echo nl2br($cite->abstract); ?></p>
-										</div>
+										</td>
 									<?php endif; ?>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="<?php if ($label == "none") { echo 2; } else { echo 3; }; ?>" class="citation-details">
-									<?php echo $formatter->citationDetails($cite, $this->database, $this->config, $this->openurl); ?>
-								
-									<?php if ($this->config->get("citation_show_badges","no") == "yes") : ?>
-										<?php echo $formatter->citationBadges($cite, $this->database); ?>
-									<?php endif; ?>
+									<td class="citation-container">
+										<?php echo $formatter->formatCitation($cite, $this->filters['search'], $coins, $this->config); ?>
 
-									<?php if ($this->config->get("citation_show_tags","no") == "yes") : ?>
-										<?php echo $formatter->citationTags($cite, $this->database); ?>
-									<?php endif; ?>
-								</td>
-							</tr>
-							<?php $counter++; ?>
-						<?php endforeach; ?>
-					</tbody>
-				</table>
-			<?php else: ?>
-				<p class="warning"><?php echo JText::_('NO_CITATIONS_FOUND'); ?></p>
-			<?php endif; ?>
-			
-			<?php 
-				$this->pageNav->setAdditionalUrlParam('task', 'browse');
-				foreach ($this->filters as $key => $value)
-				{
-					switch ($key)
+										<?php if ($rollover == "yes" && $cite->abstract != "") : ?>
+											<div class="citation-notes">
+												<?php
+													$cs = new CitationsSponsor($this->database);
+													$sponsors = $cs->getCitationSponsor($cite->id);
+													$final = "";
+													if ($sponsors)
+													{
+														foreach($sponsors as $s)
+														{
+															$sp = $cs->getSponsor($s);
+															if ($sp)
+															{
+																$final .= '<a rel="external" href="'.$sp[0]['link'].'">'.$sp[0]['sponsor'].'</a>, ';
+															}
+														}
+													}
+												?>
+												<?php if ($final != '' && $this->config->get("citation_sponsors", "yes") == 'yes') : ?>
+													<?php $final = substr($final, 0, -2); ?>
+													<p class="sponsor">Abstract courtesy of <?php echo $final; ?></p>
+												<?php endif; ?>
+												<p><?php echo nl2br($cite->abstract); ?></p>
+											</div>
+										<?php endif; ?>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="<?php if ($label == "none") { echo 2; } else { echo 3; }; ?>" class="citation-details">
+										<?php echo $formatter->citationDetails($cite, $this->database, $this->config, $this->openurl); ?>
+
+										<?php if ($this->config->get("citation_show_badges","no") == "yes") : ?>
+											<?php echo $formatter->citationBadges($cite, $this->database); ?>
+										<?php endif; ?>
+
+										<?php if ($this->config->get("citation_show_tags","no") == "yes") : ?>
+											<?php echo $formatter->citationTags($cite, $this->database); ?>
+										<?php endif; ?>
+									</td>
+								</tr>
+								<?php $counter++; ?>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+				<?php else : ?>
+					<p class="warning"><?php echo JText::_('NO_CITATIONS_FOUND'); ?></p>
+				<?php endif; ?>
+				<?php 
+					$this->pageNav->setAdditionalUrlParam('task', 'browse');
+					foreach ($this->filters as $key => $value)
 					{
-						case 'limit':
-						case 'start':
-						break;
+						switch ($key)
+						{
+							case 'limit':
+							case 'start':
+							break;
 
-						case 'reftype':
-						case 'aff':
-						case 'geo':
-							foreach ($value as $k => $v)
-							{
-								$this->pageNav->setAdditionalUrlParam($key . '[' . $k . ']', $v);
-							}
-						break;
+							case 'reftype':
+							case 'aff':
+							case 'geo':
+								foreach ($value as $k => $v)
+								{
+									$this->pageNav->setAdditionalUrlParam($key . '[' . $k . ']', $v);
+								}
+							break;
 
-						default:
-							$this->pageNav->setAdditionalUrlParam($key, $value);
-						break;
+							default:
+								$this->pageNav->setAdditionalUrlParam($key, $value);
+							break;
+						}
 					}
-				}
-				echo $this->pageNav->getListFooter();
-			?>
-			
-		</div><!-- / .subject -->
-		<div class="clear"></div>
+					echo $this->pageNav->getListFooter();
+				?>
+				<div class="clearfix"></div>
+			</div><!-- /.container -->
+		</div><!-- /.subject -->
 	</form>
-</div><!-- / .main section -->
+</div>

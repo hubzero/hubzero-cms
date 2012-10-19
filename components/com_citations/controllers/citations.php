@@ -48,7 +48,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 	public function execute()
 	{
 		$this->registerTask('intro', 'display');
-
+		
 		parent::execute();
 	}
 
@@ -112,23 +112,33 @@ class CitationsControllerCitations extends Hubzero_Controller
 		$this->view->title    = JText::_(strtoupper($this->_name));
 		$this->view->database = $this->database;
 		$this->view->config   = $this->config;
-
+		
+		//get the earliest year we have citations for
+		$query = "SELECT c.year FROM #__citations as c WHERE published=1 ORDER BY c.year ASC LIMIT 1";
+		$this->view->database->setQuery( $query );
+		$earliest_year = $this->view->database->loadResult();
+		$earliest_year = ($earliest_year) ? $earliest_year : 1990;
+		
 		// Incoming
 		$this->view->filters = array();
+		//paging filters
 		$this->view->filters['limit']   = JRequest::getInt('limit', 50, 'request');
 		$this->view->filters['start']   = JRequest::getInt('limitstart', 0, 'get');
-		$this->view->filters['type']    = JRequest::getVar('type', '');
-		$this->view->filters['filter']  = JRequest::getVar('filter', '');
-		$this->view->filters['year']    = JRequest::getInt('year', 0);
-		$this->view->filters['sort']    = JRequest::getVar('sort', 'sec_cnt DESC');
-		$this->view->filters['search']  = $this->database->getEscaped(JRequest::getVar('search', ''));
-		$this->view->filters['reftype'] = JRequest::getVar('reftype', array('research' => 1, 'education' => 1, 'eduresearch' => 1, 'cyberinfrastructure' => 1));
-		$this->view->filters['geo']     = JRequest::getVar('geo', array('us' => 1, 'na' => 1,'eu' => 1, 'as' => 1));
-		$this->view->filters['aff']     = JRequest::getVar('aff', array('university' => 1, 'industry' => 1, 'government' => 1));
-
-		$this->view->filters['type']    = ($this->view->filters['type'] == 'all')   ? '' : $this->view->filters['type'];
-		$this->view->filters['filter']  = ($this->view->filters['filter'] == 'all') ? '' : $this->view->filters['filter'];
-
+		
+		//search/filtering params
+		$this->view->filters['tag']			= trim(JRequest::getVar('tag', '', 'request', 'none', 2));
+		$this->view->filters['search']		= $this->database->getEscaped(JRequest::getVar('search', ''));
+		$this->view->filters['type']		= JRequest::getVar('type', '');
+		$this->view->filters['author']		= JRequest::getVar('author', '');
+		$this->view->filters['publishedin']	= JRequest::getVar('publishedin', '');
+		$this->view->filters['year_start']	= JRequest::getInt('year_start', $earliest_year);
+		$this->view->filters['year_end']	= JRequest::getInt('year_end', date("Y"));
+		$this->view->filters['filter']		= JRequest::getVar('filter', '');
+		$this->view->filters['sort']		= JRequest::getVar('sort', 'sec_cnt DESC');
+		$this->view->filters['reftype']		= JRequest::getVar('reftype', array('research' => 1, 'education' => 1, 'eduresearch' => 1, 'cyberinfrastructure' => 1));
+		$this->view->filters['geo']			= JRequest::getVar('geo', array('us' => 1, 'na' => 1,'eu' => 1, 'as' => 1));
+		$this->view->filters['aff']			= JRequest::getVar('aff', array('university' => 1, 'industry' => 1, 'government' => 1));
+		
 		// Instantiate a new citations object
 		$obj = new CitationsCitation($this->database);
 
@@ -164,13 +174,39 @@ class CitationsControllerCitations extends Hubzero_Controller
 			'author ASC'   => JText::_('AUTHORS'),
 			'journal ASC'  => JText::_('JOURNAL')
 		);
-
+		
+		//get the users id to make lookup
+		$users_ip = $this->getIP();
+		
+		//get the param for ip regex to use machine ip
+		$ip_regex = array_filter(array_map("trim", explode(";", $this->view->config->get("citation_openurl_ip", '10.\d{2,5}.\d{2,5}.\d{2,5}')))); 
+		
+		$use_machine_ip = false;
+		foreach($ip_regex as $ipr)
+		{
+			$match = preg_match('/'.$ipr.'/i', $users_ip);
+			if($match)
+			{
+				$use_machine_ip = true;
+			}
+		}
+		
+		//make url based on if were using machine ip or users
+		if($use_machine_ip)
+		{
+			$url = 'http://worldcatlibraries.org/registry/lookup?IP=' . $_SERVER['SERVER_ADDR'];
+		}
+		else
+		{
+			$url = 'http://worldcatlibraries.org/registry/lookup?IP=' . $users_ip;
+		}
+		
 		//get the resolver
 		$r = null;
 		if (function_exists('curl_init'))
 		{
 			$cURL = curl_init();
-			curl_setopt($cURL, CURLOPT_URL, 'http://worldcatlibraries.org/registry/lookup?IP=requestor');
+			curl_setopt($cURL, CURLOPT_URL, $url );
 			curl_setopt($cURL, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($cURL, CURLOPT_TIMEOUT, 10);
 			$r = curl_exec($cURL);
@@ -183,12 +219,14 @@ class CitationsControllerCitations extends Hubzero_Controller
 			'text' => '',
 			'icon' => ''
 		);
-		if ($r) 
+		
+		//parse the return from resolver lookup
+		$xml = simplexml_load_string($r);
+		$resolver = $xml->resolverRegistryEntry->resolver;
+		
+		//if we have resolver set vars for creating open urls
+		if ($resolver != null) 
 		{
-			$xml = simplexml_load_string($r);
-			$resolver = $xml->resolverRegistryEntry->resolver;
-
-			//set some needed urls
 			$this->view->openurl['link'] = $resolver->baseURL;
 			$this->view->openurl['text'] = $resolver->linkText;
 			$this->view->openurl['icon'] = $resolver->linkIcon;
@@ -224,8 +262,28 @@ class CitationsControllerCitations extends Hubzero_Controller
 
 		//get any messages
 		$this->view->messages = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
-
+		//are we allowing importing
+		$this->view->allow_import = $this->config->get('citation_import', 1);
+		$this->view->allow_bulk_import = $this->config->get('citation_bulk_import', 1);
+		$this->view->isAdmin = ($this->juser->get('usertype') == 'Super Administrator') ? true : false;
 		$this->view->display();
+	}
+	
+	private function getIP()
+	{
+		foreach (array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR') as $key) 
+		{
+			if (array_key_exists($key, $_SERVER) === true) 
+			{
+				foreach (explode(',', $_SERVER[$key]) as $ip) 
+				{
+					if (filter_var($ip, FILTER_VALIDATE_IP) !== false) 
+					{
+						return $ip;
+					}
+				}
+			}
+		}
 	}
 
 	/**

@@ -473,8 +473,22 @@ class CitationsCitation extends JTable
 	{
 		$filter['sort'] = '';
 		$filter['limit'] = 0;
-
-		$query = "SELECT count(DISTINCT r.id) FROM $this->_tbl AS r";
+		
+		if(isset($filter['tag']) && $filter['tag'] != '')
+		{
+			$query  = "SELECT DISTINCT r.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string, COUNT(DISTINCT tag.tag) AS uniques 
+						FROM $this->_tbl AS r 
+						LEFT JOIN #__citations_secondary as CS ON r.id=CS.cid
+						JOIN #__tags_object as tago ON tago.objectid=r.id
+						JOIN #__tags as tag ON tag.id=tago.tagid";
+		}
+		else
+		{
+			$query  = "SELECT DISTINCT r.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string 
+						FROM $this->_tbl AS r 
+						LEFT JOIN #__citations_secondary as CS ON r.id=CS.cid";
+		}
+		
 		if (isset($filter['geo']) || isset($filter['aff'])) {
 			$q = false;
 			if ((isset($filter['geo']['us']) && $filter['geo']['us'] == 1)
@@ -496,10 +510,11 @@ class CitationsCitation extends JTable
 				$query .= ", #__citations_authors AS ca";
 			}
 		}
+		
 		$query .= $this->buildQuery( $filter, $admin );
-
+		
 		$this->_db->setQuery( $query );
-		return $this->_db->loadResult();
+		return count($this->_db->loadObjectList());
 	}
 
 	/**
@@ -513,221 +528,262 @@ class CitationsCitation extends JTable
 	 */
 	public function buildQuery( $filter=array(), $admin=true )
 	{
-		$query = "";
-		if ($admin) {
-			if (isset($filter['search'])) {
-				$query .= " WHERE r.published=1 AND (r.title LIKE '%".strtolower($filter['search'])."%'";
-				$query .= " OR LOWER(r.author) LIKE '%".strtolower($filter['search'])."%'";
-				if (is_numeric($filter['search'])) {
-					$query .= " OR r.id=".$filter['search'];
-				}
-				$query .= ")";
+		$query = " WHERE r.published=1";
+		
+		//search term match
+		if(isset($filter['search']) && $filter['search'] != '')
+		{
+			$query .= " AND (MATCH(r.title, r.isbn, r.doi, r.abstract, r.author, r.publisher) AGAINST ('" . $filter['search'] . "') > 0)";
+		}
+		
+		//tag search
+		if(isset($filter['tag']) && $filter['tag'] != '')
+		{
+			//if we have multiple tags we must explode them
+			if(strstr($filter['tag'], ","))
+			{
+				$tags = array_filter(array_map("trim",explode(",", $filter['tag'])));
 			}
-		} else {
-			$query .= " WHERE r.published=1 AND r.id!=''";
-			if (isset($filter['type']) && $filter['type']!= '') {
-				$query .= " AND r.type='".$filter['type']."'";
+			else
+			{
+				$tags = array($filter['tag']);
 			}
-			if (isset($filter['filter'])) {
-				switch ($filter['filter'])
-				{
-					case 'aff':
-						$query .= " AND affiliated=1";
-						break;
-					case 'nonaff':
-						$query .= " AND affiliated=0";
-						break;
-					default:
-						$query .= "";
-						break;
-				}
+			
+			$query .= " AND tago.tbl='citations' AND tag.tag IN ('" . implode("','", $tags) . "')";
+		}
+		
+		//type filter
+		if(isset($filter['type']) && $filter['type'] != '')
+		{
+			$query .= " AND r.type=" . $filter['type'];
+		}
+		
+		//author filter
+		if(isset($filter['author']) && $filter['author'] != '')
+		{
+			$query .= " AND r.author LIKE '%" . $filter['author'] . "%'";
+		}
+		
+		//published in filter
+		if(isset($filter['publishedin']) && $filter['publishedin'] != '')
+		{
+			$query .= " AND (r.booktitle LIKE '%" . $filter['publishedin'] . "%' OR r.journal LIKE '%" . $filter['publishedin'] . "%')";
+		}
+		
+		//year filter
+		if(isset($filter['year_start']) && is_numeric($filter['year_start']) && $filter['year_start'] > 0)
+		{
+			$query .= " AND r.year >=" . $filter['year_start'];
+		}
+		if(isset($filter['year_end']) && is_numeric($filter['year_end']) && $filter['year_end'] > 0)
+		{
+			$query .= " AND r.year <=" . $filter['year_end'];
+		}
+		
+		//affiated? filter
+		if(isset($filter['filter']) && $filter['filter'] != '')
+		{
+			if($filter['filter'] == 'aff')
+			{
+				$query .= " AND r.affiliated=1";
 			}
-			if (isset($filter['year']) && is_numeric($filter['year']) && $filter['year'] > 0) {
-				$query .= " AND r.year='".$filter['year']."'";
-			}
-			if (isset($filter['search']) && $filter['search']!='') {
-				$query .= " AND (match(r.title, r.isbn, r.doi, r.abstract) AGAINST ('".$filter['search']."') > 0)"; 
-				/*
-				$query .= ($filter['search'])
-						? " AND (LOWER(r.title) LIKE '%".strtolower($filter['search'])."%' 
-							OR LOWER(r.journal) LIKE '%".strtolower($filter['search'])."%' 
-							OR LOWER(r.author) LIKE '%".strtolower($filter['search'])."%')"
-						: "";
-				*/
-			}
-			if (isset($filter['reftype'])) {
-				if ((isset($filter['reftype']['research']) && $filter['reftype']['research'] == 1)
-				 && (isset($filter['reftype']['education']) && $filter['reftype']['education'] == 1)
-				 && (isset($filter['reftype']['eduresearch']) && $filter['reftype']['eduresearch'] == 1)
-				 && (isset($filter['reftype']['cyberinfrastructure']) && $filter['reftype']['cyberinfrastructure'] == 1)) {
-					// Show all
-				} else {
-					$query .= " AND";
-					$multi = 0;
-					$o = 0;
-					foreach ($filter['reftype'] as $g)
-					{
-						if ($g == 1) {
-							$multi++;
-						}
-					}
-					if ($multi) {
-						$query .= " (";
-					}
-					if (isset($filter['reftype']['research']) && $filter['reftype']['research'] == 1) {
-						$query .= " ((ref_type LIKE '%R%' OR ref_type LIKE '%N%' OR ref_type LIKE '%S%') AND ref_type NOT LIKE '%E%')";
-						if ($multi) {
-							$o = 1;
-						}
-					}
-					if (isset($filter['reftype']['education']) && $filter['reftype']['education'] == 1) {
-						if ($multi) {
-							$query .= ($o == 1) ? " OR" : "";
-							$o = 1;
-						}
-						$query .= " ((ref_type NOT LIKE '%R%' AND ref_type NOT LIKE '%N%' AND ref_type NOT LIKE '%S%') AND ref_type LIKE '%E%')";
-					}
-					if (isset($filter['reftype']['eduresearch']) && $filter['reftype']['eduresearch'] == 1) {
-						if ($multi) {
-							$query .= ($o == 1) ? " OR" : "";
-							$o = 1;
-						}
-						$query .= " (ref_type LIKE '%R%E%' OR ref_type LIKE '%E%R%' AND ref_type LIKE '%N%E%' OR ref_type LIKE '%E%N%' OR ref_type LIKE '%S%E%' OR ref_type LIKE '%E%S%')";
-					}
-					if (isset($filter['reftype']['cyberinfrastructure']) && $filter['reftype']['cyberinfrastructure'] == 1) {
-						if ($multi) {
-							$query .= ($o == 1) ? " OR" : "";
-							$o = 1;
-						}
-						$query .= " ((ref_type LIKE '%C%' OR ref_type LIKE '%A%' OR ref_type LIKE '%HD%' OR ref_type LIKE '%I%') AND (ref_type NOT LIKE '%R%' AND ref_type NOT LIKE '%N%' AND ref_type NOT LIKE '%S%' AND ref_type NOT LIKE '%E%'))";
-					}
-					if ($multi) {
-						$query .= " )";
-					}
-				}
-			}
-			if (isset($filter['aff'])) {
-				if ((isset($filter['aff']['university']) && $filter['aff']['university'] == 1)
-				 && (isset($filter['aff']['industry']) && $filter['aff']['industry'] == 1)
-				 && (isset($filter['aff']['government']) && $filter['aff']['government'] == 1)) {
-					// Show all
-				} else {
-					$query .= " AND ca.cid=r.id AND";
-					$multi = 0;
-					$o = 0;
-					foreach ($filter['aff'] as $g)
-					{
-						if ($g == 1) {
-							$multi++;
-						}
-					}
-					if ($multi) {
-						$query .= " (";
-					}
-					if (isset($filter['aff']['university']) && $filter['aff']['university'] == 1) {
-						$query .= " (ca.orgtype LIKE '%education%' OR ca.orgtype LIKE 'university%')";
-						if ($multi) {
-							$o = 1;
-						}
-					}
-					if (isset($filter['aff']['industry']) && $filter['aff']['industry'] == 1) {
-						if ($multi) {
-							$query .= ($o == 1) ? " OR" : "";
-							$o = 1;
-						}
-						$query .= " ca.orgtype LIKE '%industry%'";
-					}
-					if (isset($filter['aff']['government']) && $filter['aff']['government'] == 1) {
-						if ($multi) {
-							$query .= ($o == 1) ? " OR" : "";
-							$o = 1;
-						}
-						$query .= " ca.orgtype LIKE '%government%'";
-					}
-					if ($multi) {
-						$query .= " )";
-					}
-				}
-			}
-			if (isset($filter['geo'])) {
-				if ((isset($filter['geo']['us']) && $filter['geo']['us'] == 1)
-				 && (isset($filter['geo']['na']) && $filter['geo']['na'] == 1)
-				 && (isset($filter['geo']['eu']) && $filter['geo']['eu'] == 1)
-				 && (isset($filter['geo']['as']) && $filter['geo']['as'] == 1)) {
-					// Show all
-				} else {
-					ximport('Hubzero_Geo');
-
-					$query .= " AND ca.cid=r.id AND";
-
-					$multi = 0;
-					$o = 0;
-					foreach ($filter['geo'] as $g)
-					{
-						if ($g == 1) {
-							$multi++;
-						}
-					}
-					if ($multi) {
-						$query .= " (";
-					}
-					if (isset($filter['geo']['us']) && $filter['geo']['us'] == 1) {
-						$query .= " LOWER(ca.countryresident) = 'us'";
-						if ($multi) {
-							$o = 1;
-						}
-					}
-					if (isset($filter['geo']['na']) && $filter['geo']['na'] == 1) {
-						$countries = Hubzero_Geo::getCountriesByContinent('na');
-						$c = implode("','",$countries);
-						if ($multi) {
-							$query .= ($o == 1) ? " OR" : "";
-							$o = 1;
-						}
-						$query .= " LOWER(ca.countryresident) IN ('".strtolower($c)."')";
-					}
-					if (isset($filter['geo']['eu']) && $filter['geo']['eu'] == 1) {
-						$countries = Hubzero_Geo::getCountriesByContinent('eu');
-						$c = implode("','",$countries);
-						if ($multi) {
-							$query .= ($o == 1) ? " OR" : "";
-							$o = 1;
-						}
-						$query .= " LOWER(ca.countryresident) IN ('".strtolower($c)."')";
-					}
-					if (isset($filter['geo']['as']) && $filter['geo']['as'] == 1) {
-						$countries = Hubzero_Geo::getCountriesByContinent('as');
-						$c = implode("','",$countries);
-						if ($multi) {
-							$query .= ($o == 1) ? " OR" : "";
-							$o = 1;
-						}
-						$query .= " LOWER(ca.countryresident) IN ('".strtolower($c)."')";
-					}
-					if ($multi) {
-						$query .= " )";
-					}
-				}
+			else
+			{
+				$query .= " AND r.affiliated=0";
 			}
 		}
-		if (isset($filter['sort']) && $filter['sort'] != '') {
-			if (isset($filter['search']) && $filter['search']!='') {
-				$query .= " ORDER BY match(r.title, r.isbn, r.doi, r.abstract) AGAINST ('".$filter['search']."') DESC, " . $filter['sort'];
-				/*$query .= ($filter['search'])
-						? " AND (LOWER(r.title) LIKE '%".strtolower($filter['search'])."%' 
-							OR LOWER(r.journal) LIKE '%".strtolower($filter['search'])."%' 
-							OR LOWER(r.author) LIKE '%".strtolower($filter['search'])."%')"
-						: "";
-				 */
+		
+		//reference type check
+		if (isset($filter['reftype'])) {
+			if ((isset($filter['reftype']['research']) && $filter['reftype']['research'] == 1)
+			 && (isset($filter['reftype']['education']) && $filter['reftype']['education'] == 1)
+			 && (isset($filter['reftype']['eduresearch']) && $filter['reftype']['eduresearch'] == 1)
+			 && (isset($filter['reftype']['cyberinfrastructure']) && $filter['reftype']['cyberinfrastructure'] == 1)) {
+				// Show all
 			} else {
-				$query .= " ORDER BY ".$filter['sort'];
+				$query .= " AND";
+				$multi = 0;
+				$o = 0;
+				foreach ($filter['reftype'] as $g)
+				{
+					if ($g == 1) {
+						$multi++;
+					}
+				}
+				if ($multi) {
+					$query .= " (";
+				}
+				if (isset($filter['reftype']['research']) && $filter['reftype']['research'] == 1) {
+					$query .= " ((ref_type LIKE '%R%' OR ref_type LIKE '%N%' OR ref_type LIKE '%S%') AND ref_type NOT LIKE '%E%')";
+					if ($multi) {
+						$o = 1;
+					}
+				}
+				if (isset($filter['reftype']['education']) && $filter['reftype']['education'] == 1) {
+					if ($multi) {
+						$query .= ($o == 1) ? " OR" : "";
+						$o = 1;
+					}
+					$query .= " ((ref_type NOT LIKE '%R%' AND ref_type NOT LIKE '%N%' AND ref_type NOT LIKE '%S%') AND ref_type LIKE '%E%')";
+				}
+				if (isset($filter['reftype']['eduresearch']) && $filter['reftype']['eduresearch'] == 1) {
+					if ($multi) {
+						$query .= ($o == 1) ? " OR" : "";
+						$o = 1;
+					}
+					$query .= " (ref_type LIKE '%R%E%' OR ref_type LIKE '%E%R%' AND ref_type LIKE '%N%E%' OR ref_type LIKE '%E%N%' OR ref_type LIKE '%S%E%' OR ref_type LIKE '%E%S%')";
+				}
+				if (isset($filter['reftype']['cyberinfrastructure']) && $filter['reftype']['cyberinfrastructure'] == 1) {
+					if ($multi) {
+						$query .= ($o == 1) ? " OR" : "";
+						$o = 1;
+					}
+					$query .= " ((ref_type LIKE '%C%' OR ref_type LIKE '%A%' OR ref_type LIKE '%HD%' OR ref_type LIKE '%I%') AND (ref_type NOT LIKE '%R%' AND ref_type NOT LIKE '%N%' AND ref_type NOT LIKE '%S%' AND ref_type NOT LIKE '%E%'))";
+				}
+				if ($multi) {
+					$query .= " )";
+				}
 			}
-		} elseif (isset($filter['search']) && $filter['search']!='') {
-			$query .= " ORDER BY match(r.title, r.isbn, r.doi, r.abstract) AGAINST ('".$filter['search']."') DESC";
 		}
-		if (isset($filter['limit']) && $filter['limit'] > 0) {
-			$query .= " LIMIT ".$filter['start'].",".$filter['limit'];
+		
+		//author affiliation filter
+		if (isset($filter['aff'])) {
+			if ((isset($filter['aff']['university']) && $filter['aff']['university'] == 1)
+			 && (isset($filter['aff']['industry']) && $filter['aff']['industry'] == 1)
+			 && (isset($filter['aff']['government']) && $filter['aff']['government'] == 1)) {
+				// Show all
+			} else {
+				$query .= " AND ca.cid=r.id AND";
+				$multi = 0;
+				$o = 0;
+				foreach ($filter['aff'] as $g)
+				{
+					if ($g == 1) {
+						$multi++;
+					}
+				}
+				if ($multi) {
+					$query .= " (";
+				}
+				if (isset($filter['aff']['university']) && $filter['aff']['university'] == 1) {
+					$query .= " (ca.orgtype LIKE '%education%' OR ca.orgtype LIKE 'university%')";
+					if ($multi) {
+						$o = 1;
+					}
+				}
+				if (isset($filter['aff']['industry']) && $filter['aff']['industry'] == 1) {
+					if ($multi) {
+						$query .= ($o == 1) ? " OR" : "";
+						$o = 1;
+					}
+					$query .= " ca.orgtype LIKE '%industry%'";
+				}
+				if (isset($filter['aff']['government']) && $filter['aff']['government'] == 1) {
+					if ($multi) {
+						$query .= ($o == 1) ? " OR" : "";
+						$o = 1;
+					}
+					$query .= " ca.orgtype LIKE '%government%'";
+				}
+				if ($multi) {
+					$query .= " )";
+				}
+			}
 		}
+		
+		//author geo filter
+		if (isset($filter['geo'])) {
+			if ((isset($filter['geo']['us']) && $filter['geo']['us'] == 1)
+			 && (isset($filter['geo']['na']) && $filter['geo']['na'] == 1)
+			 && (isset($filter['geo']['eu']) && $filter['geo']['eu'] == 1)
+			 && (isset($filter['geo']['as']) && $filter['geo']['as'] == 1)) {
+				// Show all
+			} else {
+				ximport('Hubzero_Geo');
+
+				$query .= " AND ca.cid=r.id AND";
+
+				$multi = 0;
+				$o = 0;
+				foreach ($filter['geo'] as $g)
+				{
+					if ($g == 1) {
+						$multi++;
+					}
+				}
+				if ($multi) {
+					$query .= " (";
+				}
+				if (isset($filter['geo']['us']) && $filter['geo']['us'] == 1) {
+					$query .= " LOWER(ca.countryresident) = 'us'";
+					if ($multi) {
+						$o = 1;
+					}
+				}
+				if (isset($filter['geo']['na']) && $filter['geo']['na'] == 1) {
+					$countries = Hubzero_Geo::getCountriesByContinent('na');
+					$c = implode("','",$countries);
+					if ($multi) {
+						$query .= ($o == 1) ? " OR" : "";
+						$o = 1;
+					}
+					$query .= " LOWER(ca.countryresident) IN ('".strtolower($c)."')";
+				}
+				if (isset($filter['geo']['eu']) && $filter['geo']['eu'] == 1) {
+					$countries = Hubzero_Geo::getCountriesByContinent('eu');
+					$c = implode("','",$countries);
+					if ($multi) {
+						$query .= ($o == 1) ? " OR" : "";
+						$o = 1;
+					}
+					$query .= " LOWER(ca.countryresident) IN ('".strtolower($c)."')";
+				}
+				if (isset($filter['geo']['as']) && $filter['geo']['as'] == 1) {
+					$countries = Hubzero_Geo::getCountriesByContinent('as');
+					$c = implode("','",$countries);
+					if ($multi) {
+						$query .= ($o == 1) ? " OR" : "";
+						$o = 1;
+					}
+					$query .= " LOWER(ca.countryresident) IN ('".strtolower($c)."')";
+				}
+				if ($multi) {
+					$query .= " )";
+				}
+			}
+		}
+		
+		//group by
+		if(isset($filter['tag']) && $filter['tag'] != '')
+		{
+			$query .= " GROUP BY r.id HAVING uniques=" . count($tags);
+		}
+		
+		//if we had a search term lets order by search match
+		if(isset($filter['search']) && $filter['search'] != '')
+		{
+			$query .= " ORDER BY MATCH(r.title, r.isbn, r.doi, r.abstract, r.author, r.publisher) AGAINST ('" . $filter['search'] . "') DESC";
+		}
+		
+		//sort filter
+		if(isset($filter['sort']) && $filter['sort'] != '')
+		{
+			if(isset($filter['search']) && $filter['search'] != '')
+			{
+				$query .= ", " . $filter['sort'];
+			}
+			else
+			{
+				$query .= " ORDER BY " . $filter['sort'];
+			}
+		}
+		
+		//limit
+		if(isset($filter['limit']) && $filter['limit'] > 0)
+		{
+			$query .= " LIMIT " . $filter['start'] . "," . $filter['limit'];
+		}
+		
 		return $query;
 	}
 
@@ -742,9 +798,21 @@ class CitationsCitation extends JTable
 	 */
 	public function getRecords( $filter=array(), $admin=true )
 	{
-		$query  = "SELECT DISTINCT r.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string 
-					FROM $this->_tbl AS r 
-					LEFT JOIN #__citations_secondary as CS ON r.id=CS.cid";
+		if(isset($filter['tag']) && $filter['tag'] != '')
+		{
+			$query  = "SELECT DISTINCT r.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string, COUNT(DISTINCT tag.tag) AS uniques 
+						FROM $this->_tbl AS r 
+						LEFT JOIN #__citations_secondary as CS ON r.id=CS.cid
+						JOIN #__tags_object as tago ON tago.objectid=r.id
+						JOIN #__tags as tag ON tag.id=tago.tagid";
+		}
+		else
+		{
+			$query  = "SELECT DISTINCT r.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string 
+						FROM $this->_tbl AS r 
+						LEFT JOIN #__citations_secondary as CS ON r.id=CS.cid";
+		}
+		
 		if (isset($filter['geo']) || isset($filter['aff'])) {
 			$q = false;
 			if ((isset($filter['geo']['us']) && $filter['geo']['us'] == 1)
@@ -766,8 +834,9 @@ class CitationsCitation extends JTable
 				$query .= ", #__citations_authors AS ca";
 			}
 		}
+		
 		$query .= $this->buildQuery( $filter, $admin );
-
+		
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}

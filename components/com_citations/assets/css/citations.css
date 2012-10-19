@@ -55,10 +55,6 @@
 		background: #E2998B;
 	}
 
-	#download-batch {
-		padding: 1em;
-	}
-
 	.citations {
 		border-collapse:separate;
 		margin-top: 10px;
@@ -402,3 +398,23 @@
 	#hubForm.add-citation .group label {
 		padding-bottom: 1.5em;
 	}*/
+	
+	.withBatchDownload .aside {
+		padding-top:150px;
+	}
+	#download-batch {
+		position:absolute;
+		top:30px;
+		right:0;
+		padding:1em;
+		width:185px;
+		margin:0 30px 0 0;
+	}
+	
+	form .hint {
+		font-size:0.85em;
+		color:#999;
+		}
+	form .aside input.half {
+		width:44%;
+		}
