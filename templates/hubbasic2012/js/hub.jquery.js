@@ -116,6 +116,41 @@ HUB.Base = {
 		$('.fixedToolTip').tooltip({
 			relative: true
 		});
+		
+		HUB.Base.placeholderSupport();
+	},
+	
+	placeholderSupport: function()
+	{
+		var $ = this.jQuery;
+		
+		//test for placeholder support
+		var test = document.createElement('input');
+		var placeholder_supported  = ('placeholder' in test);
+		
+		//if we dont have placeholder support mimic it with focus and blur events
+		if(!placeholder_supported)
+		{
+			var active = document.activeElement;
+			$(':text').focus(function () {
+				if ($(this).attr('placeholder') != '' && $(this).val() == $(this).attr('placeholder')) 
+				{
+					$(this).val('').removeClass('hasPlaceholder');
+				}
+			}).blur(function () {
+				if ($(this).attr('placeholder') != '' && ($(this).val() == '' || $(this).val() == $(this).attr('placeholder'))) 
+				{
+					$(this).val($(this).attr('placeholder')).addClass('hasPlaceholder');
+				}
+			});
+
+			$(':text').blur();
+			$(active).focus();
+
+			$('form').submit(function () {
+				$(this).find('.hasPlaceholder').each(function() { $(this).val(''); });
+			});
+		}
 	}
 };
 
