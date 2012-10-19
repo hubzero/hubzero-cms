@@ -100,7 +100,7 @@ class plgWhatsnewContent extends JPlugin
 		{
 			$c_fields = " SELECT "
 				. " c.id,"
-				. " c.title, c.alias, "
+				. " c.title, c.alias, c.created, "
 				. " CONCAT(c.introtext, c.fulltext) AS text,"
 				. " CONCAT('index.php?option=com_content&task=view&id=', c.id) AS href, u.alias AS fsection, b.alias AS category,"
 				. " 'content' AS section, NULL AS subsection";
@@ -112,7 +112,7 @@ class plgWhatsnewContent extends JPlugin
 		{
 			$c_fields = " SELECT "
 				. " c.id,"
-				. " c.title, c.alias, "
+				. " c.title, c.alias, c.created, "
 				. " CONCAT(c.introtext, c.fulltext) AS text,"
 				. " CONCAT('index.php?option=com_content&task=view&id=', c.id) AS href, NULL AS fsection, b.alias AS category,"
 				. " 'content' AS section, NULL AS subsection";
