@@ -115,6 +115,7 @@
 		text-decoration: none;
 		color: #666;
 		padding-left: 15px;
+		border:none;
 		background: url("/plugins/groups/calendar/images/bullet2.png") no-repeat 5px 6px;
 		}
 	#calendar ul a.active,

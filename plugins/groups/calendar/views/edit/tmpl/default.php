@@ -70,7 +70,7 @@ if($this->event->id) {
 		<p><a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->get('cn').'&active=calendar'); ?>">&lsaquo; Back to Group Calendar</a></p>
 	</div>
 	<fieldset>
-		<h3><?php echo $form_title; ?></h3>
+		<legend><?php echo $form_title; ?></legend>
 		<label>Event Title <span class="required">Required</span>
 			<input type="text" name="event[title]" value="<?php echo $title; ?>" />
 		</label>
