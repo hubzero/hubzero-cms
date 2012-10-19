@@ -44,7 +44,7 @@ class plgYSearchCitations extends YSearchPlugin
 	public static function onYSearch($request, &$results)
 	{
 		$terms = $request->get_term_ar();
-		$weight = 'match(c.title, c.isbn, c.doi, c.abstract) AGAINST (\'' . join(' ', $terms['stemmed']) . '\')';
+		$weight = 'match(c.title, c.isbn, c.doi, c.abstract, c.author, c.publisher) AGAINST (\'' . join(' ', $terms['stemmed']) . '\')';
 
 		$sql = "SELECT 
 					c.title AS title,
