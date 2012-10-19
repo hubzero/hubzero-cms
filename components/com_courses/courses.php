@@ -64,10 +64,11 @@ require_once(JPATH_ADMINISTRATOR . DS . 'components' . DS . $option . DS . 'tabl
 require_once(JPATH_ADMINISTRATOR . DS . 'components' . DS . $option . DS . 'tables' . DS . 'reason.php');
 require_once(JPATH_ADMINISTRATOR . DS . 'components' . DS . $option . DS . 'tables' . DS . 'pages.php');
 
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'CourseUnits.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'CourseAssets.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'CourseAssetGroups.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'CourseAssetAssociations.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'unit.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'asset.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'asset.group.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'asset.association.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'instance.php');
 
 //build controller path and name
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'courses'));
@@ -76,7 +77,7 @@ if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '
 	$controllerName = 'courses';
 }
 require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = ucfirst(strtolower($controllerName)) . 'Controller';
+$controllerName = 'CoursesController' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller and execute
 $controller = new $controllerName();

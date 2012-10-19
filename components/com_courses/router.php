@@ -40,10 +40,20 @@ function CoursesBuildRoute(&$query)
 {
 	$segments = array();
 
+	if (!empty($query['controller'])) 
+	{
+		unset($query['controller']);
+	}
+
 	if (!empty($query['gid'])) 
 	{
 		$segments[] = $query['gid'];
 		unset($query['gid']);
+	}
+	if (!empty($query['instance'])) 
+	{
+		$segments[] = $query['instance'];
+		unset($query['instance']);
 	}
 	if (!empty($query['active'])) 
 	{
@@ -96,18 +106,70 @@ function CoursesParseRoute($segments)
 		return $vars;
 	}
 
-	if ($segments[0] == 'new' || $segments[0] == 'browse') 
+	if (isset($segments[0])) 
+	{
+		if (in_array($segments[0], array('intro', 'browse', 'new', 'edit', 'delete'))) 
+		{
+			$vars['controller'] = 'courses';
+			$vars['task'] = $segments[0];
+		}
+		else 
+		{
+			if ($segments[0] == 'new')
+			{
+				$vars['task'] = $segments[0];
+			}
+			else
+			{
+				$vars['gid'] = $segments[0];
+				$vars['task'] = 'display';
+				
+				//ximport('Hubzero_Course');
+				//$course = new Hubzero_Course();
+				//$course->read($segments[0]);
+			}
+			$vars['controller'] = 'course';
+		}
+	}
+
+	/*if ($segments[0] == 'new' || $segments[0] == 'browse') 
 	{
 		$vars['task'] = $segments[0];
 	} 
 	else 
 	{
 		$vars['gid'] = $segments[0];
-	}
+	}*/
 	if (isset($segments[1])) 
 	{
+		$vars['controller'] = 'course';
 		switch ($segments[1])
 		{
+			/*case 'pages':
+				$vars['controller'] = $segments[1];
+			break;*/
+
+			case 'overview':
+			case 'discussions':
+			case 'calendar':
+			case 'messages':
+			case 'enrollment':
+			case 'syllabus':
+			if (isset($vars['gid']))
+			{
+				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'instance.php');
+				$inst = new CoursesInstance(JFactory::getDBO());
+				$insts = $inst->getCourseInstances(array('course_cn' => $vars['gid']));
+				if ($insts && count($insts) == 1)
+				{
+					JRequest::setVar('instance', $insts[0]->alias);
+					$vars['instance'] = $insts[0]->alias;
+					$vars['task'] = 'instance';
+					$vars['active'] = $segments[1];
+				}
+			}
+			break;
+
 			case 'edit':
 			case 'delete':
 			case 'join':
@@ -115,22 +177,25 @@ function CoursesParseRoute($segments)
 			case 'cancel':
 			case 'invite':
 			case 'customize':
-			case 'managepages':
+			case 'manage':
 			case 'editoutline':
-			case 'managemodules':
+			case 'instances':
+			//case 'managemodules':
 			case 'ajaxupload':
 				$vars['task'] = $segments[1];
 			break;
 			default:
-				$vars['active'] = $segments[1];
+				$vars['instance'] = $segments[1];
+				$vars['task'] = 'instance';
 			break;
 		}
 	}
+
 	if (isset($segments[2])) 
 	{
 		if ($segments[1] == 'wiki') 
 		{
-			if (preg_match('/File:|Image:/', $segments[3])) 
+			if (preg_match('/^File:|Image:/i', $segments[3])) 
 			{
 				$vars['pagename'] = $segments[2];
 			} 
