@@ -110,5 +110,17 @@ class BillboardsCollection extends JTable
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
+	
+	
+	public function getBillboards($filters)
+	{
+		$query 	= "SELECT b.name, b.learn_more_target, b.background_img FROM jos_billboards as b, jos_billboard_collection as c WHERE c.id=b.collection_id";
+		$query .= " AND published=" . $filters['published'];
+		$query .= " AND b.collection_id=" . $filters['collection'];
+		$query .= " ORDER BY `ordering` ASC";
+		
+		$this->_db->setQuery($query);
+		return $this->_db->loadAssocList();
+	}
 }
 
