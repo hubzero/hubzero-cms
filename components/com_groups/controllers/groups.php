@@ -2768,15 +2768,18 @@ class GroupsController extends Hubzero_Controller
 		$pages = $GPage->getPages($group->get('gidNumber'));
 
 		//check to see if user supplied url
-		if (isset($page['url']) && $page['url'] != '')
+		if($task == 'create')
 		{
-			$page['url'] = strtolower(str_replace(' ', '_', trim($page['url'])));
+			if (isset($page['url']) && $page['url'] != '')
+			{
+				$page['url'] = strtolower(str_replace(' ', '_', trim($page['url'])));
+			}
+			else
+			{
+				$page['url'] = strtolower(str_replace(' ', '_', trim($page['title'])));
+			}
 		}
-		else
-		{
-			$page['url'] = strtolower(str_replace(' ', '_', trim($page['title'])));
-		}
-
+		
 		//remove unwanted chars
 		$invalid_chrs = array("?","!",">","<",",",".",";",":","`","~","@","#","$","%","^","&","*","(",")","-","=","+","/","\/","|","{","}","[","]");
 		$page['url'] = str_replace("'", '', $page['url']);
