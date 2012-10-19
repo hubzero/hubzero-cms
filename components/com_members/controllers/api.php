@@ -10,15 +10,11 @@ class MembersApiController extends Hubzero_Api_Controller
 
 		switch($this->segments[0]) 
 		{
-			case 'test':		$this->test();						break;
-			case 'groups':		$this->groups();					break;
-			case 'profile':		$this->profile();					break;
-			case 'myprofile':	$this->myprofile();					break;
-			case 'sessions':	$this->sessions();					break;
-			default:
-				$this->not_found();
-				break;
-					
+			case 'myprofile':		$this->myprofile();					break;
+			case 'mygroups':		$this->mygroups();					break;
+			case 'mysessions':		$this->mysessions();				break;
+			case 'recenttools':		$this->recenttools();				break;
+			default:				$this->not_found();
 		}
 	}
 	
@@ -36,169 +32,113 @@ class MembersApiController extends Hubzero_Api_Controller
 		$response->setErrorMessage(404,'Not Found');
 	}
 	
-	
-	function test()
+	function myprofile()
 	{
-		$this->setMessageType('application/json');
-		$this->setMessage( array("who" => 'me', "what" => 'this', "where" => 'here') );
-	}
+		$userid = JFactory::getApplication()->getAuthn('user_id');
+		$result = Hubzero_User_Profile::getInstance($userid);
 
-	function groups()
-	{
-		$userid = JRequest::getInt("userid");
-
-		$result = Hubzero_User_Helper::getGroups( $userid, 'members', 0);
-
-		$a = array();
-
-		foreach($result as $k => $r)
-		{
-			$a[$k]['gidNumber'] = $r->gidNumber;
-			$a[$k]['cn'] = $r->cn;
-		}
-
-		$obj = new stdClass();
-
-		$obj->groups = $a;
-
-		$this->setMessageType('application/json');
-		$this->setMessage($obj);
-	}
-
-	function profile()
-	{
-		$userid = JRequest::getInt("userid");
-		
-		$result = new Hubzero_User_Profile( $userid );
-
-		if ($result === false)
-			return $this->not_found();
+		if ($result === false)	return $this->not_found();
 
 		$profile = array();
-
 		$public_keys = array("uidNumber","name","picture","givenName","middleName","surname","registerDate");
 		$private_keys = array("username","bio","email","phone","url","homeDirectory","orgtype","organization","countryresident","countryorigin","gender");
 
 		ximport("Hubzero_User_Profile_Helper");
 
-		$member_pic = Hubzero_User_Profile_Helper::getMemberPhoto( $result );
-		//$member_pic = "https://" . $_SERVER['HTTP_HOST'] . $member_pic;
-
+		$member_pic = Hubzero_User_Profile_Helper::getMemberPhoto( $result, 0, false );
+		$member_pic_thumb = Hubzero_User_Profile_Helper::getMemberPhoto( $result, 0, true );
+		
 		foreach($public_keys as $pub) 
 		{
 			switch( $pub )
 			{
-				case "picture":		$profile['picture'] = $member_pic;										break;
-				default:			$profile[$pub] = ($result->get($pub) != "") ? $result->get($pub) : "";
+				case "picture":
+					$profile['picture']['thumb'] = $member_pic_thumb;
+					$profile['picture']['full'] = $member_pic;
+					break;
+				default:
+					$profile[$pub] = ($result->get($pub) != "") ? $result->get($pub) : "";
 			}
 		}
-
+		
+		foreach($private_keys as $pri)
+		{
+			$profile[$pri] = ($result->get($pri) != "") ? $result->get($pri) : "";
+		}
+		
+		//sleep(5);
+		
+		//encode and return result
 		$obj = new stdClass();
-
 		$obj->profile = $profile;
-
 		$this->setMessageType("application/json");
 		$this->setMessage($obj);
 	}
-
-	function myprofile()
+	
+	private function mygroups()
 	{
 		$userid = JFactory::getApplication()->getAuthn('user_id');
+		$result = Hubzero_User_Profile::getInstance($userid);
+
+		if ($result === false)	return $this->not_found();
 		
+		$groups = Hubzero_User_Helper::getGroups( $result->get('uidNumber'), 'members', 0);
+		
+		$g = array();
+		foreach($groups as $k => $group)
+		{
+			$g[$k]['gidNumber'] 	= $group->gidNumber;
+			$g[$k]['cn'] 			= $group->cn;
+			$g[$k]['description'] 	= $group->description;
+		}
+		
+		//encode and return result
+		$obj = new stdClass();
+		$obj->groups = $g;
+		$this->setMessageType("application/json");
+		$this->setMessage($obj);
+	}
+	
+	private function mysessions()
+	{
+		$userid = JFactory::getApplication()->getAuthn('user_id');
 		$result = Hubzero_User_Profile::getInstance($userid);
 
 		if ($result === false)
 			return $this->not_found();
 
-		$profile = array();
-
-		$public_keys = array("uidNumber","name","picture","givenName","middleName","surname","registerDate");
-		$private_keys = array("username","bio","email","phone","url","homeDirectory","orgtype","organization","countryresident","countryorigin","gender");
-
-		ximport("Hubzero_User_Profile_Helper");
-
-		$member_pic = Hubzero_User_Profile_Helper::getMemberPhoto( $result );
-		//$member_pic = "https://" . $_SERVER['HTTP_HOST'] . $member_pic;
-
-		foreach($public_keys as $pub) 
-		{
-			switch( $pub )
-			{
-				case "picture":		$profile['picture'] = $member_pic;										break;
-				default:			$profile[$pub] = ($result->get($pub) != "") ? $result->get($pub) : "";
-			}
-		}
-
-		$obj = new stdClass();
-
-		$obj->profile = $profile;
-
-		$this->setMessageType("application/json");
-		$this->setMessage($obj);
-	}
-	
-	private function sessions()
-	{
-		//get request vars
-
-		$userid = JRequest::getInt("userid", 0);
-		$format = JRequest::getVar("format", "json");
-
-		//get the user
-
-		$user =  Hubzero_User_Profile::getInstance( $userid );
-
-		if(!$user)
-		{
-			return;
-		}
-
 		//include middleware utilities               
-
 		JLoader::import("joomla.database.table");
-		
 		include_once( JPATH_ROOT.DS.'components'.DS.'com_tools'.DS.'models'.DS.'mw.utils.php' );
 		include_once( JPATH_ROOT.DS.'components'.DS.'com_tools'.DS.'models'.DS.'mw.class.php' ); 
 
 		//get db connection
-
 		$db =& JFactory::getDBO();
 
 		//get Middleware DB connection
-
 		$mwdb =& MwUtils::getMWDBO();
 
 		//get com_tools params
-
 		$mconfig = JComponentHelper::getParams( 'com_tools' );
 
 		//check to make sure we have a connection to the middleware and its on
-
 		if(!$mwdb || !$mconfig->get('mw_on') || $mconfig->get('mw_on') > 1)
 		{
 			return false;
 		}
 
 		//get my sessions
-
 		$ms = new MwSession( $mwdb );
-
-		$sessions = $ms->getRecords( $user->get("username"), '', false );
-
-		//echo "<pre>";
-		//print_r($sessions);
-		//echo "</pre>";
-
+		$sessions = $ms->getRecords( $result->get("username"), '', false );
+		
 		//
-
 		$result = array();
-
 		foreach($sessions as $session)
 		{
 			//get the resource
-
-			$shots = $this->getSessionScreenshots($session->appname);
-
+			//$shots = $this->getSessionScreenshots($session->appname);
+			$shots = "";
+			
 			$r = array(
 				'id' => $session->sessnum,
 				'app' => $session->appname,
@@ -211,20 +151,49 @@ class MembersApiController extends Hubzero_Api_Controller
 			$result[] = $r;
 		}
 
-		//sleep(5);
+		//sleep(10);
 
 		//encode sessions for return
-
 		$object = new stdClass();
-
 		$object->sessions = $result;
 
 		//set format and content
-
-		$this->setMessageType( $format );
+		$this->setMessageType( "json" );
 		$this->setMessage( $object );
 	}
+	
+	
+	//------
+	
+	private function recenttools()
+	{
+		$userid = JFactory::getApplication()->getAuthn('user_id');
+		$result = Hubzero_User_Profile::getInstance($userid);
 
+		if ($result === false)	return $this->not_found();
+		
+		//load database object
+		JLoader::import("joomla.database.table");
+		$database =& JFactory::getDBO();
+		
+		//load users recent tools
+		$sql = "SELECT r.id, r.title, r.alias, r.introtext as description, r.fulltxt as abstract FROM jos_recent_tools as rt, jos_resources as r WHERE rt.uid={$result->get("uidNumber")} AND rt.tool=r.alias AND r.published=1 ORDER BY rt.created";
+		$database->setQuery($sql);
+		$recent = $database->loadObjectList();
+		
+		//remove slashes and html code from abstract
+		for($i=0, $n=count($recent); $i < $n; $i++)
+		{
+			$recent[$i]->abstract = stripslashes(strip_tags($recent[$i]->abstract));
+		}
+		
+		//encode sessions for return
+		$object = new stdClass();
+		$object->recenttools = $recent;
+		$this->setMessageType( "json" );
+		$this->setMessage( $object );
+	}
+	
 	//------
 
 	private function getSessionScreenshots( $appname )
