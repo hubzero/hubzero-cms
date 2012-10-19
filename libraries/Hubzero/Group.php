@@ -1431,15 +1431,22 @@ class Hubzero_Group
 		{
 			return false;
 		}
+		
+		if($q == '')
+		{
+			return false;
+		}
 
 		$table = '#__xgroups_' . $tbl;
+		$user_table = '#__users';
 
 		$db = & JFactory::getDBO();
 
-		$query = 'SELECT u.id FROM #__xgroups_ ' . $tbl . ' AS t,#__users AS u WHERE t.gidNumber=' . $db->Quote($this->gidNumber) . " AND u.id=t.uidNumber AND LOWER(u.name) LIKE '%" . strtolower($q) . "%';";
-
+		$query = "SELECT u.id FROM {$table} AS t, {$user_table} AS u 
+					WHERE t.gidNumber={$db->Quote($this->gidNumber)} 
+					AND u.id=t.uidNumber 
+					AND LOWER(u.name) LIKE '%" . strtolower($q) . "%';";
 		$db->setQuery($query);
-
 		return $db->loadResultArray();
 	}
 }
