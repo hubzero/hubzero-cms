@@ -405,6 +405,25 @@ Class GroupPages extends JTable
 
 	 	return $about.$member_browser;
 	}
+	
+	/**
+	 * Get page content by ID
+	 * 
+	 * @return     string HTML
+	 */
+	public function getPageContent($id)
+	{
+		$sql = "SELECT title, content FROM $this->_tbl WHERE id = '{$id}'";
+		$this->_db->setQuery($sql);
+		
+		$this->_db->query();
+		
+		if ($this->_db->getNumRows())
+		{
+			return($this->_db->loadObject());	
+		}
+		return false;
+	}
 
 	/**
 	 * Record a page hit
