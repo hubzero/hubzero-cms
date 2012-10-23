@@ -249,7 +249,8 @@ class CitationFormat
 						case 'isbn':
 							$coins_data[] = ($c_type == 'book') ? "rft.isbn={$citation->$k}" : "rft.issn={$citation->$k}";
 							break;
-						//case 'title':
+						case 'title':
+							break;
 						//	$coins_data[] = ($c_type == 'book') ? "rft.btitle={$citation->$k}" : "rft.atitle={$citation->$k}";
 						//	break;
 						case 'doi':
@@ -334,6 +335,18 @@ class CitationFormat
 						$url = $citation->url;
 					}
 					
+					//prepare url 
+					if(strstr($url, "\r\n"))
+					{
+						$url = array_filter(array_values(explode("\r\n", $url)));
+						$url = $url[0];
+					}
+					elseif(strstr($url, " "))
+					{
+						$url = array_filter(array_values(explode(" ", $url)));
+						$url = $url[0];
+					}
+					
 					$t = html_entity_decode($citation->$k);
 					$t = (!preg_match('!\S!u', $t)) ? utf8_encode($t) : $t;
 					
@@ -342,6 +355,9 @@ class CitationFormat
 							: '<span class="citation-title">' . $t . '</span>';
 
 					$replace_values[$v] = '"' . $title . '"';
+					
+					//add title to coin data but fixing bad chars first
+					$coins_data[] = 'rft.atitle=' . $t;
  				}
 
 				if ($k == 'pages') 
@@ -415,18 +431,18 @@ class CitationFormat
 		{
 			$cite = substr($cite, 0, strlen($cite)-1);
 		}
-
+		
 		//percent encode chars
-		$chars = array(' ', '/', ':', '"', '&amp;');
-		$replace = array("%20", "%2F", "%3A", "%22", "%26");
+		$chars = array(' ', '', '/', ':', '"', '&amp;');
+		$replace = array("%20", "%20", "%2F", "%3A", "%22", "%26");
 		$coins_data = str_replace($chars, $replace, implode('&', $coins_data));
-
+		
 		//if we want coins add them
 		if ($include_coins) 
 		{
 			$cite .= '<span class="Z3988" title="' . $coins_data . '"></span>';
 		}
-
+		
 		//output the citation
 		return ($highlight) ? Hubzero_View_Helper_Html::str_highlight($cite, array($highlight)) : $cite;
 	}
@@ -469,35 +485,129 @@ class CitationFormat
 			$html .= '<span> | </span>';
 			$html .= '<a href="' . JRoute::_('index.php?option=com_citations&task=download&id=' . $citation->id . '&format=endnote&no_html=1') . '" title="' . JText::_('DOWNLOAD_ENDNOTE') . '">EndNote</a>';
 		}
-
+		
+		//if we have an open url link and we want to use open urls
 		if ($openurl['link'] && $openurls) 
 		{
-			$text = $openurl['text'];
-			$icon = $openurl['icon'];
-			$link = $openurl['link'];
-			$query = array();
-			
-			if(isset($citation->doi) && $citation->doi != '')
+			$html .= $this->citationOpenUrl( $openurl, $citation );
+		}
+		
+		//citation association - to HUB resources
+		$html .= $this->citationAssociation( $citation );
+		
+		return $html;
+	}
+	
+	public function citationOpenUrl( $openurl, $citation )
+	{
+		$html = "";
+		
+		$database =& JFactory::getDBO();
+		
+		$text = $openurl['text'];
+		$icon = $openurl['icon'];
+		$link = $openurl['link'];
+		$query = array();
+		
+		//citation type
+		$citation_type = new CitationsType( $database );
+		$citation_type->load( $citation->type );
+		
+		//do we have a title
+		if(isset($citation->title) && $citation->title != '')
+		{
+			if($citation_type->type == 'journalarticle')
 			{
-				$query[] = 'doi=' . $citation->doi;
+				$query[] = 'atitle=' . str_replace(" ", "+", $citation->title);
 			}
-			
-			if(isset($citation->isbn) && $citation->isbn != '')
+			else
 			{
-				$query[] = 'isbn=' . $citation->isbn;
-				$query[] = 'issn=' . $citation->isbn;
-			}
-			
-			$link .= '?title=' . $citation->title . '&' . implode("&",$query);
-
-			if ($citation->doi || $citation->isbn) 
-			{
-				$link_text = ($icon != '') ? '<img src="' . $icon . '" />' : $text;
-				$html .= '<span> | </span>';
-				$html .= '<a rel="external" href="' . $link . '" title="' . $text . '">' . $link_text . '</a>';
+				$query[] = 'title=' . str_replace(" ", "+", $citation->title);
 			}
 		}
-
+		
+		//do we have a doi to append?
+		if(isset($citation->doi) && $citation->doi != '')
+		{
+			$query[] = 'doi=' . $citation->doi;
+		}
+		
+		//do we have an issn or isbn to append?
+		if(isset($citation->isbn) && $citation->isbn != '')
+		{
+			//get the issn/isbn in db
+			$issn_isbn = $citation->isbn;;
+			
+			//check to see if we need to do any special processing to the issn/isbn before outputting
+			if(strstr($issn_isbn, "\r\n"))
+			{
+				$issn_isbn = array_filter(array_values(explode("\r\n", $issn_isbn)));
+				$issn_isbn = preg_replace("/[^0-9\-]/","",$issn_isbn[0]);
+			}
+			elseif(strstr($issn_isbn, " "))
+			{
+				$issn_isbn = array_filter(array_values(explode(" ", $issn_isbn)));
+				$issn_isbn = preg_replace("/[^0-9\-]/","",$issn_isbn[0]);
+			}
+			
+			//append to url as issn if journal otherwise as isbn
+			if($citation_type->type == 'journalarticle')
+			{
+				$query[] = 'issn=' . $issn_isbn;
+			}
+			else
+			{
+				$query[] = 'isbn=' . $issn_isbn;
+			}
+		}
+		
+		//do we have a date/year to append?
+		if(isset($citation->year) && $citation->year != '')
+		{
+			$query[] = 'date=' . $citation->year;
+		}
+		
+		//to we have an issue/number to append?
+		if(isset($citation->number) && $citation->number != '')
+		{
+			$query[] = 'issue=' . $citation->number;
+		}
+		
+		//do we have a volume to append?
+		if(isset($citation->volume) && $citation->volume != '')
+		{
+			$query[] = 'volume=' . $citation->volume;
+		}
+		
+		//do we have pages to append?
+		if(isset($citation->pages) && $citation->pages != '')
+		{
+			$query[] = 'pages=' . $citation->pages;
+		}
+		
+		//do we have a link with some data to send to resolver?
+		if (count($query) > 0) 
+		{
+			//add parts to url
+			$link .= "?" . implode("&", $query);
+			
+			//do we have an icon or just using text as the link
+			$link_text = ($icon != '') ? '<img src="' . $icon . '" />' : $text;
+			
+			//final link
+			$html .= '<span> | </span><a rel="external" href="' . $link . '" title="' . $text . '">' . $link_text . '</a>';
+		}
+		
+		return $html;
+	}
+	
+	public function citationAssociation( $citation )
+	{
+		$html = "";
+		
+		//database
+		$database =& JFactory::getDBO();
+		
 		// Get the associations
 		$assoc = new CitationsAssociation($database);
 		$assocs = $assoc->getRecords(array('cid' => $citation->id));
@@ -558,7 +668,7 @@ class CitationFormat
 			$html .= '<span>|</span>';
 			$html .= '<a href="' . Hubzero_View_Helper_Html::ampReplace($citation->eprint) . '">' . JText::_('ELECTRONIC_PAPER') . '</a>';
 		}
-
+		
 		return $html;
 	}
 
