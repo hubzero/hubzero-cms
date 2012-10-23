@@ -3401,7 +3401,7 @@ INSERT INTO `#__plugins` VALUES ( 64,'Members - Account','account','members',0,2
 INSERT INTO `#__plugins` VALUES ( 65,'Members - Blog','blog','members',0,13,1,0,0,0,'0000-00-00 00:00:00','uploadpath=/site/members/{{uid}}/blog\nfeeds_enabled=0\nfeed_entries=partial');
 INSERT INTO `#__plugins` VALUES ( 66,'Members - Contributions','contributions','members',0,6,1,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES ( 67,'Members - Contributions - Resources','resources','members',0,7,1,0,0,0,'0000-00-00 00:00:00','');
-INSERT INTO `#__plugins` VALUES ( 68,'Members - Contributions - Topics','topics','members',0,8,1,0,0,0,'0000-00-00 00:00:00','');
+INSERT INTO `#__plugins` VALUES ( 68,'Members - Contributions - Topics','wiki','members',0,8,1,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES ( 69,'Members - Dashboard','dashboard','members',0,0,1,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES ( 70,'Members - Favorites','favorites','members',0,10,1,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES ( 71,'Members - Groups','groups','members',0,4,1,0,0,0,'0000-00-00 00:00:00','');
@@ -3452,7 +3452,7 @@ INSERT INTO `#__plugins` VALUES (115,'Tags - Knowledgebase','kb','tags',0,7,1,0,
 INSERT INTO `#__plugins` VALUES (116,'Tags - Members','members','tags',0,4,1,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES (117,'Tags - Resources','resources','tags',0,1,1,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES (118,'Tags - Support','support','tags',0,3,1,0,0,0,'0000-00-00 00:00:00','');
-INSERT INTO `#__plugins` VALUES (119,'Tags - Topics','topics','tags',0,2,1,0,0,0,'0000-00-00 00:00:00','');
+INSERT INTO `#__plugins` VALUES (119,'Tags - Topics','wiki','tags',0,2,1,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES (120,'Usage - Chart','chart','usage',0,4,0,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES (121,'Usage - Domain Class','domainclass','usage',0,0,0,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES (122,'Usage - Domains','domains','usage',0,5,0,0,0,0,'0000-00-00 00:00:00','');
@@ -3467,7 +3467,7 @@ INSERT INTO `#__plugins` VALUES (130,'Whatsnew - Content','content','whatsnew',0
 INSERT INTO `#__plugins` VALUES (131,'Whatsnew - Events','events','whatsnew',0,1,1,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES (132,'Whatsnew - Knowledge Base','kb','whatsnew',0,2,1,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES (133,'Whatsnew - Resources','resources','whatsnew',0,3,1,0,0,0,'0000-00-00 00:00:00','');
-INSERT INTO `#__plugins` VALUES (134,'Whatsnew - Topics','topics','whatsnew',0,4,1,0,0,0,'0000-00-00 00:00:00','');
+INSERT INTO `#__plugins` VALUES (134,'Whatsnew - Topics','wiki','whatsnew',0,4,1,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES (135,'XMessage - Email','email','xmessage',0,0,1,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES (136,'XMessage - Handler','handler','xmessage',0,1,1,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES (137,'XMessage - Instant Message','im','xmessage',0,2,0,0,0,0,'0000-00-00 00:00:00','');
@@ -3489,7 +3489,7 @@ INSERT INTO `#__plugins` VALUES (152,'YSearch - Site Map','sitemap','ysearch',0,
 INSERT INTO `#__plugins` VALUES (153,'YSearch - Sort courses by date','sortcourses','ysearch',0,12,1,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES (154,'YSearch - Sort events by date','sortevents','ysearch',0,13,1,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES (155,'YSearch - Terms - Suffix Expansion','suffixes','ysearch',0,14,1,0,0,0,'0000-00-00 00:00:00','');
-INSERT INTO `#__plugins` VALUES (156,'YSearch - Topics','topics','ysearch',0,15,1,0,0,0,'0000-00-00 00:00:00','');
+INSERT INTO `#__plugins` VALUES (156,'YSearch - Topics','wiki','ysearch',0,15,1,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES (157,'YSearch - Increase weight of items with contributors matching terms','weightcontributor','ysearch',0,16,1,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES (158,'YSearch - Increase relevance for tool results','weighttools','ysearch',0,17,0,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES (159,'YSearch - Wishlists','wishlists','ysearch',0,18,1,0,0,0,'0000-00-00 00:00:00','');
