@@ -2769,7 +2769,7 @@ class SupportControllerTickets extends Hubzero_Controller
 					$names = explode(' ', $u->get('name'));
 					$last = trim(end($names));
 					
-					$users[$last] = $m;
+					$users[$last . ',' . $u->get('name')] = $m;
 				}
 			}
 			
