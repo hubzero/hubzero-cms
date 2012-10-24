@@ -296,7 +296,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							$editview->profile = $this->profile;
 							$editview->isUser = $isUser;
 							$editview->inputs = '<label>Organization'.$organizations.'</label><label>Enter organization below'.$organizations_text.'</label>';
-							$editview->access = '<label>Organization Access Level' . MembersHtml::selectAccess('access[org]',$this->params->get('access_org'),'input-select') . '</label>';
+							$editview->access = '<label>Privacy' . MembersHtml::selectAccess('access[org]',$this->params->get('access_org'),'input-select') . '</label>';
 							$editview->display();
 						?>
 					</div>
@@ -370,7 +370,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							$editview->profile = $this->profile;
 							$editview->isUser = $isUser;
 							$editview->inputs = '<label>Employment'.$organization_types.'</label>';
-							$editview->access = '<label>Employment Access Level' . MembersHtml::selectAccess('access[orgtype]',$this->params->get('access_orgtype'),'input-select') . '</label>';
+							$editview->access = '<label>Privacy' . MembersHtml::selectAccess('access[orgtype]',$this->params->get('access_orgtype'),'input-select') . '</label>';
 							$editview->display();
 						?>
 					</div>
@@ -425,7 +425,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							$editview->inputs = '<label class="side-by-side">Valid E-mail<input type="text" class="input-text" name="email" id="profile-email" value="'.$this->profile->get("email").'" /></label>';
 							$editview->inputs .= '<label class="side-by-side no-padding-right">Confirm E-mail<input type="text" class="input-text" name="email2" id="profile-email2" value="'.$this->profile->get("email").'" /></label>';
 							$editview->inputs .= '<br class="clear" /><p class="warning no-margin-top">Important! If you change your E-Mail address you <strong>must</strong> confirm receipt of the confirmation e-mail in order to re-activate your account.</p>';
-							$editview->access = '<label>Email Access Level' . MembersHtml::selectAccess('access[email]',$this->params->get('access_email'),'input-select') . '</label>';
+							$editview->access = '<label>Privacy' . MembersHtml::selectAccess('access[email]',$this->params->get('access_email'),'input-select') . '</label>';
 							$editview->display();
 						?>
 					</div>
@@ -493,7 +493,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							$editview->profile = $this->profile;
 							$editview->isUser = $isUser;
 							$editview->inputs = '<label>Website<input type="text" class="input-text" name="web" id="profile-url" value="'.$this->profile->get("url").'" /></label>';
-							$editview->access = '<label>Website Access Level' . MembersHtml::selectAccess('access[url]',$this->params->get('access_url'),'input-select') . '</label>';
+							$editview->access = '<label>Privacy' . MembersHtml::selectAccess('access[url]',$this->params->get('access_url'),'input-select') . '</label>';
 							$editview->display();
 						?>
 					</div>
@@ -553,7 +553,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							$editview->profile = $this->profile;
 							$editview->isUser = $isUser;
 							$editview->inputs = '<label>Telephone<input type="text" class="input-text" name="phone" id="profile-phone" value="'.$this->profile->get("phone").'" /></label>';
-							$editview->access = '<label>Telephone Access Level' . MembersHtml::selectAccess('access[phone]',$this->params->get('access_phone'),'input-select') . '</label>';
+							$editview->access = '<label>Privacy' . MembersHtml::selectAccess('access[phone]',$this->params->get('access_phone'),'input-select') . '</label>';
 							$editview->display();
 						?>
 					</div>
@@ -632,7 +632,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						$editview->profile = $this->profile;
 						$editview->isUser = $isUser;
 						$editview->inputs = '<label for="profile_bio">Biography'.$bio.'</label>';
-						$editview->access = '<label>Biography Access Level' . MembersHtml::selectAccess('access[bio]',$this->params->get('access_bio'),'input-select') . '</label>';
+						$editview->access = '<label>Privacy' . MembersHtml::selectAccess('access[bio]',$this->params->get('access_bio'),'input-select') . '</label>';
 						$editview->display();
 					?>
 				</div>
@@ -705,7 +705,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							$editview->profile = $this->profile;
 							$editview->isUser = $isUser;
 							$editview->inputs = '<label>Interests'.$interests.'</label>';
-							$editview->access = '<label>Interests Access Level' . MembersHtml::selectAccess('access[tags]',$this->params->get('access_tags'),'input-select') . '</label>';
+							$editview->access = '<label>Privacy' . MembersHtml::selectAccess('access[tags]',$this->params->get('access_tags'),'input-select') . '</label>';
 							$editview->display();
 						?>
 					</div>
@@ -804,7 +804,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							$editview->isUser = $isUser;
 							$editview->inputs = '<label class="side-by-side" for="123">Are you a Legal Citizen or Permanent Resident of the <abbr title="United States">US</abbr>?'.$citizenship.'</label>';
 							$editview->inputs .= '<label class="side-by-side no-padding-right">'.JText::_('Citizen or Permanent Resident of').$countries.'</label>';
-							$editview->access = '<label>Citizenship Access Level' . MembersHtml::selectAccess('access[countryorigin]',$this->params->get('access_countryorigin'),'input-select') . '</label>';
+							$editview->access = '<label>Privacy' . MembersHtml::selectAccess('access[countryorigin]',$this->params->get('access_countryorigin'),'input-select') . '</label>';
 							$editview->display();
 						?>
 					</div>
@@ -902,7 +902,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							$editview->isUser = $isUser;
 							$editview->inputs = '<label class="side-by-side" for="456">Do you Currently Live in the <abbr title="United States">US</abbr>?'.$citizenship.'</label>';
 							$editview->inputs .= '<label class="side-by-side no-padding-right">'.JText::_('Currently Living in').$countries.'</label>';
-							$editview->access = '<label>Residence Access Level' . MembersHtml::selectAccess('access[countryresident]',$this->params->get('access_countryresident'),'input-select') . '</label>';
+							$editview->access = '<label>Privacy' . MembersHtml::selectAccess('access[countryresident]',$this->params->get('access_countryresident'),'input-select') . '</label>';
 							$editview->display();
 						?>
 					</div>
@@ -978,7 +978,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							$editview->profile = $this->profile;
 							$editview->isUser = $isUser;
 							$editview->inputs = '<label>Gender'.$sex.'</label>';
-							$editview->access = '<label>Gender Access Level' . MembersHtml::selectAccess('access[gender]',$this->params->get('access_gender'),'input-select') . '</label>';
+							$editview->access = '<label>Privacy' . MembersHtml::selectAccess('access[gender]',$this->params->get('access_gender'),'input-select') . '</label>';
 							$editview->display();
 						?>
 					</div>
@@ -1116,7 +1116,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							$editview->profile = $this->profile;
 							$editview->isUser = $isUser;
 							$editview->inputs = '<label>Disability'.$disability_html.'</label>';
-							$editview->access = '<label>Disability Access Level' . MembersHtml::selectAccess('access[disability]',$this->params->get('access_disability'),'input-select') . '</label>';
+							$editview->access = '<label>Privacy' . MembersHtml::selectAccess('access[disability]',$this->params->get('access_disability'),'input-select') . '</label>';
 							$editview->display();
 						?>
 					</div>
@@ -1240,7 +1240,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							$editview->profile = $this->profile;
 							$editview->isUser = $isUser;
 							$editview->inputs = '<label>Hispanic Heritage'.$hispanic_html.'</label>';
-							$editview->access = '<label>Hispanic Heritage Access Level' . MembersHtml::selectAccess('access[hispanic]',$this->params->get('access_hispanic'),'input-select') . '</label>';
+							$editview->access = '<label>Privacy' . MembersHtml::selectAccess('access[hispanic]',$this->params->get('access_hispanic'),'input-select') . '</label>';
 							$editview->display();
 						?>
 					</div>
@@ -1346,7 +1346,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							$editview->profile = $this->profile;
 							$editview->isUser = $isUser;
 							$editview->inputs = '<label for="xxx">Racial Background'.$race_html.'</label>';
-							$editview->access = '<label>Racial Background Access Level' . MembersHtml::selectAccess('access[race]',$this->params->get('access_race'),'input-select') . '</label>';
+							$editview->access = '<label>Privacy' . MembersHtml::selectAccess('access[race]',$this->params->get('access_race'),'input-select') . '</label>';
 							$editview->display();
 						?>
 					</div>
@@ -1418,7 +1418,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							$editview->profile = $this->profile;
 							$editview->isUser = $isUser;
 							$editview->inputs = $optin_html;
-							$editview->access = '<label>Email Updates Access Level' . MembersHtml::selectAccess('access[optin]',$this->params->get('access_optin'),'input-select') . '</label>';
+							$editview->access = '<label>Privacy' . MembersHtml::selectAccess('access[optin]',$this->params->get('access_optin'),'input-select') . '</label>';
 							$editview->display();
 						?>
 					</div>
