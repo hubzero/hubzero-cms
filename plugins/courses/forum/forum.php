@@ -60,9 +60,9 @@ class plgCoursesForum extends Hubzero_Plugin
 	public function &onCourseAreas()
 	{
 		$area = array(
-			'name' => 'forum',
-			'title' => JText::_('PLG_COURSES_FORUM'),
-			'default_access' => $this->params->get('plugin_access','members'),
+			'name' => $this->_name,
+			'title' => JText::_('PLG_COURSES_' . strtoupper($this->_name)),
+			'default_access' => $this->params->get('plugin_access', 'members'),
 			'display_menu_tab' => true
 		);
 		return $area;
@@ -81,10 +81,10 @@ class plgCoursesForum extends Hubzero_Plugin
 	 * @param      array   $areas      Active area(s)
 	 * @return     array
 	 */
-	public function onCourse($course, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null)
+	public function onCourse($config, $course, $instance, $action='', $access, $areas=null)
 	{
 		$return = 'html';
-		$active = 'forum';
+		$active = $this->_name;
 		$active_real = 'discussion';
 
 		// The output array we're returning
@@ -97,7 +97,7 @@ class plgCoursesForum extends Hubzero_Plugin
 		$this_area = $this->onCourseAreas();
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas) && $limit) 
+		if (is_array($areas)) 
 		{
 			if (!in_array($this_area['name'], $areas)) 
 			{
@@ -112,39 +112,19 @@ class plgCoursesForum extends Hubzero_Plugin
 			$course_plugin_acl = $access[$active];
 
 			//Create user object
-			$juser = JFactory::getUser();
+			$this->juser = JFactory::getUser();
 
 			//get the course members
 			$members = $course->get('members');
 
 			//if set to nobody make sure cant access
-			if ($course_plugin_acl == 'nobody') 
+			if (!$this->config->get('access-view-instance')) 
 			{
-				$arr['html'] = '<p class="info">' . JText::sprintf('COM_COURSES_PLUGIN_OFF', ucfirst($active_real)) . '</p>';
-				return $arr;
-			}
-
-			//check if guest and force login if plugin access is registered or members
-			if ($juser->get('guest') 
-			 && ($course_plugin_acl == 'registered' || $course_plugin_acl == 'members')) 
-			{
-				ximport('Hubzero_Module_Helper');
-				$arr['html']  = '<p class="warning">' . JText::sprintf('COM_COURSES_PLUGIN_REGISTERED', ucfirst($active_real)) . '</p>';
-				$arr['html'] .= Hubzero_Module_Helper::renderModules('force_mod');
-				return $arr;
-			}
-
-			//check to see if user is member and plugin access requires members
-			if (!in_array($juser->get('id'), $members) 
-			 && $course_plugin_acl == 'members' 
-			 && $authorized != 'admin') 
-			{
-				$arr['html'] = '<p class="warning">' . JText::sprintf('COM_COURSES_PLUGIN_REQUIRES_MEMBER', ucfirst($active_real)) . '</p>';
+				$arr['html'] = '<p class="info">' . JText::sprintf('COURSES_PLUGIN_REQUIRES_MEMBER', JText::_('PLG_COURSES_' . strtoupper($this->_name))) . '</p>';
 				return $arr;
 			}
 
 			//user vars
-			$this->juser = $juser;
 			$this->authorized = $authorized;
 
 			//course vars
@@ -154,10 +134,10 @@ class plgCoursesForum extends Hubzero_Plugin
 			//option and paging vars
 			$this->option = $option;
 			$this->name = substr($option, 4, strlen($option));
-			$this->limitstart = $limitstart;
-			$this->limit = $limit;
+			$this->limitstart = JRequest::getInt('limitstart', 0);
+			$this->limit = JRequest::getInt('limit', 20);
 			$this->database = JFactory::getDBO();
-			
+
 			$juri = JURI::getInstance();
 			$path = $juri->getPath();
 			if (strstr($path, '/')) 

@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           plugins/courses/blog/views/dashboard/tmpl/default.xml
+@file           components/com_courses/views/view/tmpl/overview.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Dashboard Blog Entries Layout">
+	<layout title="Standard Courses Overview Layout">
 		<message>
-			<![CDATA[STANDARD DASHBOARD BLOG ENTRIES LAYOUT DESC]]>
+			<![CDATA[STANDARD COURSES OVERVIEW LAYOUT DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Dashboard Blog Entries Layout</name>
-		<description>STANDARD DASHBOARD BLOG ENTRIES LAYOUT DESC</description>
+		<name>Standard Courses Overview Layout</name>
+		<description>STANDARD COURSES OVERVIEW LAYOUT DESC</description>
 		<params>
 		</params>
 	</state>

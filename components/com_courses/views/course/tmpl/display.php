@@ -32,34 +32,42 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 //get objects
-$config 	=& JFactory::getConfig();
-$database 	=& JFactory::getDBO();
+$config   =& JFactory::getConfig();
+$database =& JFactory::getDBO();
 ?>
 <div id="content-header">
 	<h2>
 		<?php echo $this->escape(stripslashes($this->course->get('description'))); ?>
 	</h2>
 </div>
+<div id="content-header-extra">
+	<ul>
+		<li>
+			<a class="browse btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=browse'); ?>">
+				<?php echo JText::_('Browse courses'); ?>
+			</a>
+		</li>
+	</ul>
+</div>
 
 <div class="main section">
-	<?php
+<?php
 		foreach ($this->notifications as $notification) 
 		{
 			echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
 		}
-	?>
-				
-					
-					<?php
-							$gt = new CoursesTags( $database );
-							echo $gt->get_tag_cloud(0,0,$this->course->get('gidNumber'));
+?>
 
-						echo $this->parser->parse(stripslashes($this->course->get('public_desc')), $this->wikiconfig);
+<?php
+		//$gt = new CoursesTags($database);
+		//echo $gt->get_tag_cloud(0,0,$this->course->get('gidNumber'));
+
+		echo $this->parser->parse(stripslashes($this->course->get('private_desc')), $this->wikiconfig);
 ?>
 	<table>
 		<thead>
 			<tr>
-				<th>Instance</th>
+				<th>Offering</th>
 				<th>Starts</th>
 				<th>Ends</th>
 				<th>Enrollment</th>

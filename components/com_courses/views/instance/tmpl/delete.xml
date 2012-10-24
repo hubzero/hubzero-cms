@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           plugins/courses/blog/views/settings/tmpl/default.xml
+@file           components/com_courses/views/delete/tmpl/default.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Blog Settings Layout">
+	<layout title="Standard Delete Course Layout">
 		<message>
-			<![CDATA[STANDARD BLOG SETTINGS LAYOUT DESC]]>
+			<![CDATA[STANDARD DELETE COURSE LAYOUT DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Blog Settings Layout</name>
-		<description>STANDARD BLOG SETTINGS LAYOUT DESC</description>
+		<name>Standard Delete Course Layout</name>
+		<description>STANDARD DELETE COURSE LAYOUT DESC</description>
 		<params>
 		</params>
 	</state>

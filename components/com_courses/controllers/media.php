@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Controller');
 
 /**
- * Courses controller class
+ * Courses controller class for media
  */
 class CoursesControllerMedia extends Hubzero_Controller
 {
@@ -43,17 +43,14 @@ class CoursesControllerMedia extends Hubzero_Controller
 	 * 
 	 * @return     void
 	 */
-	public function upload()
+	public function uploadTask()
 	{
 		// Check if they're logged in
 		if ($this->juser->get('guest')) 
 		{
-			$this->media();
+			$this->mediaTask();
 			return;
 		}
-
-		// Load the component config
-		$config = $this->config;
 
 		// Incoming
 		$listdir = JRequest::getInt('listdir', 0, 'post');
@@ -61,8 +58,8 @@ class CoursesControllerMedia extends Hubzero_Controller
 		// Ensure we have an ID to work with
 		if (!$listdir) 
 		{
-			$this->setNotification(JText::_('COURSES_NO_ID'), 'error');
-			$this->media();
+			$this->addComponentMessage(JText::_('COURSES_NO_ID'), 'error');
+			$this->mediaTask();
 			return;
 		}
 
@@ -70,21 +67,21 @@ class CoursesControllerMedia extends Hubzero_Controller
 		$file = JRequest::getVar('upload', '', 'files', 'array');
 		if (!$file['name']) 
 		{
-			$this->setNotification(JText::_('COURSES_NO_FILE'), 'error');
-			$this->media();
+			$this->addComponentMessage(JText::_('COURSES_NO_FILE'), 'error');
+			$this->mediaTask();
 			return;
 		}
 
 		// Build the upload path if it doesn't exist
-		$path = JPATH_ROOT . DS . trim($config->get('uploadpath', '/site/courses'), DS) . DS . trim($listdir, DS);
+		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . trim($listdir, DS);
 
 		if (!is_dir($path)) 
 		{
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::create($path, 0777)) 
 			{
-				$this->setNotification(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'), 'error');
-				$this->media();
+				$this->addComponentMessage(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'), 'error');
+				$this->mediaTask();
 				return;
 			}
 		}
@@ -98,14 +95,14 @@ class CoursesControllerMedia extends Hubzero_Controller
 		// Perform the upload
 		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name'])) 
 		{
-			$this->setNotification(JText::_('ERROR_UPLOADING'), 'error');
+			$this->addComponentMessage(JText::_('ERROR_UPLOADING'), 'error');
 		}
 
 		//push a success message
-		$this->setNotification('You successfully uploaded the file.', 'passed');
+		$this->addComponentMessage('You successfully uploaded the file.', 'passed');
 
 		// Push through to the media view
-		$this->media();
+		$this->mediaTask();
 	}
 
 	/**
@@ -114,7 +111,7 @@ class CoursesControllerMedia extends Hubzero_Controller
 	 * 
 	 * @return     void
 	 */
-	private function ajaxUpload()
+	private function ajaxuploadTask()
 	{
 		//get config
 		$config =& JComponentHelper::getParams('com_media');
@@ -221,24 +218,21 @@ class CoursesControllerMedia extends Hubzero_Controller
 	 * 
 	 * @return     void
 	 */
-	public function deletefolder()
+	public function deletefolderTask()
 	{
 		// Check if they're logged in
 		if ($this->juser->get('guest')) 
 		{
-			$this->media();
+			$this->mediaTask();
 			return;
 		}
-
-		// Load the component config
-		$config = $this->config;
 
 		// Incoming course ID
 		$listdir = JRequest::getInt('listdir', 0, 'get');
 		if (!$listdir) 
 		{
-			$this->setNotification(JText::_('COURSES_NO_ID'), 'error');
-			$this->media();
+			$this->addComponentMessage(JText::_('COURSES_NO_ID'), 'error');
+			$this->mediaTask();
 			return;
 		}
 
@@ -246,8 +240,8 @@ class CoursesControllerMedia extends Hubzero_Controller
 		$folder = trim(JRequest::getVar('folder', '', 'get'));
 		if (!$folder) 
 		{
-			$this->setNotification(JText::_('COURSES_NO_DIRECTORY'), 'error');
-			$this->media();
+			$this->addComponentMessage(JText::_('COURSES_NO_DIRECTORY'), 'error');
+			$this->mediaTask();
 			return;
 		}
 
@@ -260,17 +254,17 @@ class CoursesControllerMedia extends Hubzero_Controller
 			jimport('joomla.filesystem.file');
 			if (!JFolder::delete(JPATH_ROOT . $del_folder)) 
 			{
-				$this->setNotification(JText::_('UNABLE_TO_DELETE_DIRECTORY'), 'error');
+				$this->addComponentMessage(JText::_('UNABLE_TO_DELETE_DIRECTORY'), 'error');
 			} 
 			else 
 			{
 				//push a success message
-				$this->setNotification('You successfully deleted the folder.', 'passed');
+				$this->addComponentMessage('You successfully deleted the folder.', 'passed');
 			}
 		}
 
 		// Push through to the media view
-		$this->media();
+		$this->mediaTask();
 	}
 
 	/**
@@ -278,24 +272,21 @@ class CoursesControllerMedia extends Hubzero_Controller
 	 * 
 	 * @return     void
 	 */
-	public function deletefile()
+	public function deletefileTask()
 	{
 		// Check if they're logged in
 		if ($this->juser->get('guest')) 
 		{
-			$this->media();
+			$this->mediaTask();
 			return;
 		}
-
-		// Load the component config
-		$config = $this->config;
 
 		// Incoming course ID
 		$listdir = JRequest::getInt('listdir', 0, 'get');
 		if (!$listdir) 
 		{
-			$this->setNotification(JText::_('COURSES_NO_ID'), 'error');
-			$this->media();
+			$this->addComponentMessage(JText::_('COURSES_NO_ID'), 'error');
+			$this->mediaTask();
 			return;
 		}
 
@@ -303,8 +294,8 @@ class CoursesControllerMedia extends Hubzero_Controller
 		$file = trim(JRequest::getVar('file', '', 'get'));
 		if (!$file) 
 		{
-			$this->setNotification(JText::_('COURSES_NO_FILE'), 'error');
-			$this->media();
+			$this->addComponentMessage(JText::_('COURSES_NO_FILE'), 'error');
+			$this->mediaTask();
 			return;
 		}
 
@@ -313,8 +304,8 @@ class CoursesControllerMedia extends Hubzero_Controller
 
 		if (!file_exists($path . DS . $file) or !$file) 
 		{
-			$this->setNotification(JText::_('FILE_NOT_FOUND'), 'error');
-			$this->media();
+			$this->addComponentMessage(JText::_('FILE_NOT_FOUND'), 'error');
+			$this->mediaTask();
 			return;
 		} 
 		else 
@@ -323,15 +314,15 @@ class CoursesControllerMedia extends Hubzero_Controller
 			jimport('joomla.filesystem.file');
 			if (!JFile::delete($path . DS . $file)) 
 			{
-				$this->setNotification(JText::_('UNABLE_TO_DELETE_FILE'), 'error');
+				$this->addComponentMessage(JText::_('UNABLE_TO_DELETE_FILE'), 'error');
 			}
 		}
 
 		//push a success message
-		$this->setNotification('The file was successfully deleted.', 'passed');
+		$this->addComponentMessage('The file was successfully deleted.', 'passed');
 
 		// Push through to the media view
-		$this->media();
+		$this->mediaTask();
 	}
 
 	/**
@@ -339,58 +330,26 @@ class CoursesControllerMedia extends Hubzero_Controller
 	 * 
 	 * @return     void
 	 */
-	public function media()
+	public function mediaTask()
 	{
-		// Load the component config
-		$config = $this->config;
-
 		// Incoming
 		$listdir = JRequest::getInt('listdir', 0);
 		if (!$listdir) 
 		{
-			$this->setNotification(JText::_('COURSES_NO_ID'), 'error');
+			$this->addComponentMessage(JText::_('COURSES_NO_ID'), 'error');
 		}
 
 		$course = Hubzero_Course::getInstance($listdir);
 
 		// Output HTML
-		$view = new JView(array('name' => 'edit', 'layout' => 'filebrowser'));
-		$this->view->option = $this->_option;
 		$this->view->config = $this->config;
 		if (is_object($course)) 
 		{
 			$this->view->course = $course;
 		}
 		$this->view->listdir = $listdir;
-		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
+		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
 		$this->view->display();
-	}
-
-	/**
-	 * Method for recursively going through a file tree and listing contents
-	 * 
-	 * @param      string $base Path to start looking through
-	 * @return     array 
-	 */
-	public function recursive_listdir($base)
-	{
-		static $filelist = array();
-		static $dirlist  = array();
-		if (is_dir($base))
-		{
-			$dh = opendir($base);
-			while (false !== ($dir = readdir($dh)))
-			{
-				if (is_dir($base  . DS .  $dir) && $dir !== '.' && $dir !== '..' && strtolower($dir) !== 'cvs') 
-				{
-					$subbase    = $base  . DS .  $dir;
-					$dirlist[]  = $subbase;
-					$subdirlist = $this->recursive_listdir($subbase);
-				}
-			}
-			closedir($dh);
-		}
-		return $dirlist;
 	}
 
 	/**
@@ -398,7 +357,7 @@ class CoursesControllerMedia extends Hubzero_Controller
 	 * 
 	 * @return     void
 	 */
-	public function listfiles()
+	public function listfilesTask()
 	{
 		// Incoming
 		$listdir = JRequest::getInt('listdir', 0, 'get');
@@ -411,7 +370,7 @@ class CoursesControllerMedia extends Hubzero_Controller
 
 		if (!$listdir) 
 		{
-			$this->setNotification(JText::_('COURSES_NO_ID'), 'error');
+			$this->addComponentMessage(JText::_('COURSES_NO_ID'), 'error');
 		}
 
 		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $listdir;
@@ -459,7 +418,6 @@ class CoursesControllerMedia extends Hubzero_Controller
 			ksort($docs);
 		}
 
-		$this->view->option = $this->_option;
 		$this->view->docs = $docs;
 		$this->view->folders = $folders;
 		$this->view->images = $images;
@@ -475,7 +433,7 @@ class CoursesControllerMedia extends Hubzero_Controller
 	 * @param      string $filename File name
 	 * @return     void
 	 */
-	public function download($filename)
+	public function downloadTask($filename)
 	{
 		//get the course
 		$course = Hubzero_Course::getInstance($this->gid);
@@ -523,29 +481,6 @@ class CoursesControllerMedia extends Hubzero_Controller
 			$wiki_config = JComponentHelper::getParams('com_wiki');
 			$base_path = $wiki_config->get('filepath') . DS . $page->get('id');
 		} 
-		elseif ($this->active == 'blog')
-		{
-			//get access setting of course blog
-			$access = Hubzero_Course_Helper::getPluginAccess($course, 'blog');
-	
-			//make sure user has access to blog
-			if (($access == 'members' && !in_array($this->juser->get('id'), $course->get('members'))) 
-			 || ($access == 'registered' && $this->juser->get('guest') == 1)) 
-			{
-				JError::raiseError(403, JText::_('COM_COURSES_NOT_AUTH') . ' ' . $file);
-				return;
-			}
-
-			//make sure we have a course id of the proper length
-			$courseID = Hubzero_Course_Helper::niceidformat($course->get('gidNumber'));
-
-			//buld path to blog folder
-			$base_path = $this->config->get('uploadpath') . DS . $courseID . DS . 'blog';
-			if (!file_exists(JPATH_ROOT . DS . $base_path . DS . $file)) 
-			{
-				$base_path = $this->config->get('uploadpath') . DS . $course->get('gidNumber') . DS . 'blog';
-			}
-		}
 		else 
 		{
 			//get access level for overview or other course pages

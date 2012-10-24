@@ -55,7 +55,7 @@ class CoursesControllerInstance extends Hubzero_Controller
 		}
 
 		// Load the course page
-		$this->course = Hubzero_Course::getInstance($this->gid);
+		$this->course = CoursesCourse::getInstance($this->gid);
 
 		// Ensure we found the course info
 		if (!$this->course || !$this->course->get('gidNumber')) 
@@ -90,7 +90,7 @@ class CoursesControllerInstance extends Hubzero_Controller
 		$this->instance = CoursesInstance::getInstance($this->inst);
 
 		// Ensure we found the course info
-		if (!$this->instance || !$this->instance->is) 
+		if (!$this->instance || !$this->instance->id) 
 		{
 			JError::raiseError(404, JText::_('COURSES_NO_COURSE_INSTANCE_FOUND'));
 			return;
@@ -147,7 +147,181 @@ class CoursesControllerInstance extends Hubzero_Controller
 	 */
 	public function displayTask()
 	{
-		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
+		//$this->view->setLayout('instance');
+
+		$inst = JRequest::getVar('instance', '');
+		if (!$inst)
+		{
+			JError::raiseError(404, JText::_('COURSES_NO_COURSE_INSTANCE_FOUND'));
+			return;
+		}
+
+		$this->view->instance = CoursesInstance::getInstance($inst);
+
+		// Check authorization
+		//$authorized = $this->_authorize();
+
+		// Get the active tab (section)
+		$this->view->active = JRequest::getVar('active', 'outline');
+
+		/*if ($tab == 'wiki') 
+		{
+			$path = '';
+		} 
+		else 
+		{
+			$path = DS . trim($this->config->get('uploadpath', '/site/courses'), DS);
+		}*/
+
+		$wikiconfig = array(
+			'option'   => $this->_option,
+			'scope'    => '',
+			'pagename' => $this->course->get('cn'),
+			'pageid'   => $this->course->get('gidNumber'),
+			'filepath' => DS . trim($this->config->get('uploadpath', '/site/courses'), DS),
+			'domain'   => $this->course->get('cn')
+		);
+
+		ximport('Hubzero_Wiki_Parser');
+		$p =& Hubzero_Wiki_Parser::getInstance();
+
+		// Get the course pages if any
+		$GPages = new CoursePages($this->database);
+		$pages = $GPages->getPages($this->course->get('gidNumber'), true);
+
+		if (in_array($this->view->active, array_keys($pages)))
+		{
+			$wikiconfig['pagename'] .= DS . $this->view->active;
+		}
+
+		// Push some vars to the course pages
+		$GPages->parser     = $p;
+		$GPages->config     = $wikiconfig;
+		$GPages->course     = $this->course;
+		$GPages->authorized = 'manager'; //$authorized;
+		$GPages->tab        = $this->view->active;
+		$GPages->pages      = $pages;
+
+		// Get the content to display course pages
+
+		// Get configuration
+		$jconfig = JFactory::getConfig();
+
+		// Incoming
+		$limit = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
+		$start = JRequest::getInt('limitstart', 0);
+
+		// Get plugins
+		JPluginHelper::importPlugin('courses');
+		$dispatcher =& JDispatcher::getInstance();
+
+		// Trigger the functions that return the areas we'll be using
+		// then add overview to array
+		$hub_course_plugins = $dispatcher->trigger('onCourseAreas', array());
+		array_unshift($hub_course_plugins, array(
+			'name'             => 'outline',
+			'title'            => JText::_('Outline'),
+			//'default_access'   => 'anyone',
+			'display_menu_tab' => true
+		));
+
+		// Get plugin access
+		$course_plugin_access = Hubzero_Course_Helper::getPluginAccess($this->course);
+
+		// If active tab not overview and an not one of available tabs
+		if ($this->view->active != 'outline' && !in_array($this->view->active, array_keys($course_plugin_access))) 
+		{
+			$this->view->active = 'outline';
+		}
+
+		// Limit the records if we're on the overview page
+		/*if ($tab == 'overview') 
+		{
+			$limit = 5;
+		}
+
+		$limit = ($limit == 0) ? 'all' : $limit;*/
+
+		// Get the sections
+		$sections = $dispatcher->trigger('onCourse', array(
+				$this->config,
+				$this->course,
+				//$this->_option,
+				$this->instance,
+				//$authorized,
+				//$limit,
+				//$start,
+				$this->action,
+				$course_plugin_access,
+				array($this->view->active)
+			)
+		);
+
+		// Push some needed styles to the template
+		// Pass in course type to include special css for paying courses
+		//$this->_getCourseStyles($this->course->get('type'));
+		$this->_getStyles($this->_option, $this->_controller . '.css');
+
+		// Push some needed scripts to the template
+		$this->_getScripts();
+
+		// Add the courses JavaScript in for "special" courses
+		/*if ($this->course->get('type') == 3)
+		{
+			$this->_getScripts('assets/js/courses.jquery.js');
+		}*/
+
+		// Build the title
+		$this->_buildTitle();
+
+		// Build pathway
+		$this->_buildPathway($pages);
+
+		// Add the default "About" section to the beginning of the lists
+		if ($this->view->active == 'outline') 
+		{
+			// Add the plugins.js
+			//$doc =& JFactory::getDocument();
+			//$doc->addScript('/components/com_courses/assets/js/plugins.js');
+
+			$view = new JView(array(
+				'name'   => $this->_controller, 
+				'layout' => $this->view->active
+			));
+			//$view->course_overview = $GPages->displayPage();
+			$view->tab = $GPages->tab;
+			$view->course   = $this->course;
+			$view->instance = $this->instance;
+			//$view->authorized = $authorized;
+			$view->database = $this->database;
+			$view->config   = $this->config;
+
+			$body = $view->loadTemplate();
+		} 
+		else 
+		{
+			$body = '';
+		}
+
+		// Push the overview view to the array of sections we're going to output
+		array_unshift($sections, array('html' => $body, 'metadata' => ''));
+
+		// If we are a special course load the special template
+		if ($this->course->get('type') == 3) 
+		{
+			$this->view->setLayout('special');
+		}
+
+		$this->view->course               = $this->course;
+		$this->view->user                 = $this->juser;
+		$this->view->config               = $this->config;
+		$this->view->hub_course_plugins   = $hub_course_plugins;
+		$this->view->course_plugin_access = $course_plugin_access;
+		$this->view->pages                = $pages;
+		$this->view->sections             = $sections;
+		//$this->view->tab                  = $tab;
+		//$this->view->authorized           = $authorized;
+		$this->view->notifications        = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
 		$this->view->display();
 	}
 

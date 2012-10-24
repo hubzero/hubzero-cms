@@ -61,9 +61,9 @@ class plgCoursesMembers extends JPlugin
 	public function &onCourseAreas()
 	{
 		$area = array(
-			'name' => 'members',
-			'title' => JText::_('PLG_COURSES_MEMBERS'),
-			'default_access' => $this->params->get('plugin_access','members'),
+			'name' => $this->_name,
+			'title' => JText::_('PLG_COURSES_' . strtoupper($this->_name)),
+			'default_access' => $this->params->get('plugin_access', 'members'),
 			'display_menu_tab' => true
 		);
 		return $area;
@@ -82,69 +82,62 @@ class plgCoursesMembers extends JPlugin
 	 * @param      array   $areas      Active area(s)
 	 * @return     array
 	 */
-	public function onCourse($course, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null)
+	public function onCourse($config, $course, $instance, $action='', $access, $areas=null)
 	{
 		$returnhtml = true;
-		$active = 'members';
+		$active = $this->_name;
 
 		// The output array we're returning
 		$arr = array(
-			'html'=>'',
-			'metadata'=>''
+			'html'     => '',
+			'metadata' => ''
 		);
 
 		//get this area details
 		$this_area = $this->onCourseAreas();
 
+		// Set some variables so other functions have access
+		//$this->authorized = $authorized;
+		$this->action = $action;
+		//$this->option = $option;
+		$this->option = JRequest::getVar('option', 'com_courses');
+		$this->course = $course;
+		//$this->_name = substr($option, 4, strlen($option));
+
+		//return metadata
+		$arr['metadata']['count'] = count($course->get('members'));
+		
+		//do we have any pending requests
+		$pending = $course->get("applicants");
+		if (count($pending) > 0)
+		{
+			$title = $this->course->get('description')." has <strong>".count($pending)."</strong> pending membership request.";
+			$link = JRoute::_('index.php?option=com_courses&gid='.$this->course->get('cn').'&active=members&filter=pending');
+			$arr['metadata']['alert'] = "<a class=\"alrt\" href=\"{$link}\"><span><h5>Member Alert</h5>{$title}</span></a>";
+		}
+
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas) && $limit) 
+		if (is_array($areas)) 
 		{
 			if (!in_array($this_area['name'], $areas)) 
 			{
-				$returnhtml = false;
+				return $arr;
 			}
 		}
 
-		// Set some variables so other functions have access
-		$this->authorized = $authorized;
-		$this->action = $action;
-		$this->_option = $option;
-		$this->course = $course;
-		$this->_name = substr($option, 4, strlen($option));
-
 		// Only perform the following if this is the active tab/plugin
-		if ($returnhtml) 
-		{
+		//if ($returnhtml) 
+		//{
+			$this->config = $config;
+
 			//set course members plugin access level
 			$course_plugin_acl = $access[$active];
 
 			//Create user object
 			$juser =& JFactory::getUser();
 
-			//get the course members
-			$members = $course->get('members');
-
-			//if set to nobody make sure cant access
-			if ($course_plugin_acl == 'nobody') 
-			{
-				$arr['html'] = '<p class="info">' . JText::sprintf('COURSES_PLUGIN_OFF', ucfirst($active)) . '</p>';
-				return $arr;
-			}
-
-			//check if guest and force login if plugin access is registered or members
-			if ($juser->get('guest') 
-			 && ($course_plugin_acl == 'registered' || $course_plugin_acl == 'members')) 
-			{
-				ximport('Hubzero_Module_Helper');
-				$arr['html']  = '<p class="info">' . JText::sprintf('COURSES_PLUGIN_REGISTERED', ucfirst($active)) . '</p>';
-				$arr['html'] .= Hubzero_Module_Helper::renderModules('force_mod');
-				return $arr;
-			}
-
 			//check to see if user is member and plugin access requires members
-			if (!in_array($juser->get('id'), $members) 
-			 && $course_plugin_acl == 'members' 
-			 && $authorized != 'admin') 
+			if (!$this->config->get('access-manage-instance')) 
 			{
 				$arr['html'] = '<p class="info">' . JText::sprintf('COURSES_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
 				return $arr;
@@ -167,8 +160,8 @@ class plgCoursesMembers extends JPlugin
 			$gparams = new $paramsClass($course->get('params'));
 			$this->membership_control = $gparams->get('membership_control', 1);
 			
-			$oparams = JComponentHelper::getParams($this->_option); 
-			$this->display_system_users = $oparams->get('display_system_users', 'no');
+			//$this->config = JComponentHelper::getParams($this->option); 
+			$this->display_system_users = $config->get('display_system_users', 'no');
 
 			switch ($gparams->get('display_system_users', "global"))
 			{
@@ -207,7 +200,7 @@ class plgCoursesMembers extends JPlugin
 				$view = new Hubzero_Plugin_View(
 					array(
 						'folder'  => 'courses',
-						'element' => 'members',
+						'element' => $this->_name,
 						'name'    => 'browse'
 					)
 				);
@@ -216,7 +209,7 @@ class plgCoursesMembers extends JPlugin
 
 				$view->option = $option;
 				$view->course = $course;
-				$view->authorized = $authorized;
+				//$view->authorized = $authorized;
 
 				$view->q = JRequest::getVar('q', '');
 				$view->filter = JRequest::getVar('filter', '');
@@ -297,19 +290,7 @@ class plgCoursesMembers extends JPlugin
 
 				$arr['html'] = $view->loadTemplate();
 			}
-		}
-		
-		//return metadata
-		$arr['metadata']['count'] = count($course->get('members'));
-		
-		//do we have any pending requests
-		$pending = $course->get("applicants");
-		if(count($pending) > 0)
-		{
-			$title = $this->course->get('description')." has <strong>".count($pending)."</strong> pending membership request.";
-			$link = JRoute::_('index.php?option=com_courses&gid='.$this->course->get('cn').'&active=members&filter=pending');
-			$arr['metadata']['alert'] = "<a class=\"alrt\" href=\"{$link}\"><span><h5>Member Alert</h5>{$title}</span></a>";
-		}
+		//}
 
 		// Return the output
 		return $arr;

@@ -108,7 +108,7 @@ function CoursesParseRoute($segments)
 
 	if (isset($segments[0])) 
 	{
-		if (in_array($segments[0], array('intro', 'browse', 'new', 'edit', 'delete'))) 
+		if (in_array($segments[0], array('intro', 'browse'))) 
 		{
 			$vars['controller'] = 'courses';
 			$vars['task'] = $segments[0];
@@ -132,14 +132,33 @@ function CoursesParseRoute($segments)
 		}
 	}
 
-	/*if ($segments[0] == 'new' || $segments[0] == 'browse') 
+	if (isset($vars['gid']))
 	{
-		$vars['task'] = $segments[0];
-	} 
-	else 
-	{
-		$vars['gid'] = $segments[0];
-	}*/
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'instance.php');
+		$inst = new CoursesInstance(JFactory::getDBO());
+		$insts = $inst->getCourseInstances(array(
+			'course_cn' => $vars['gid']
+		));
+		//$course = CoursesCourse::getInstance($vars['gid']);
+		if ($insts && count($insts) == 1)
+		{
+			JRequest::setVar('instance', $insts[0]->alias);
+			$vars['instance'] = $insts[0]->alias;
+			//$vars['task'] = 'instance';
+			//$vars['active'] = $segments[1];
+			$vars['controller'] = 'instance';
+		}
+		/*$course = CoursesCourse::getInstance($vars['gid']);
+		if ($course->offerings() && count($course->offerings()) == 1)
+		{
+			JRequest::setVar('instance', $course->offerings(0)->alias);
+			$vars['instance'] = $course->offerings(0)->alias;
+			//$vars['task'] = 'instance';
+			//$vars['active'] = $segments[1];
+			$vars['controller'] = 'instance';
+		}*/
+	}
+
 	if (isset($segments[1])) 
 	{
 		$vars['controller'] = 'course';
@@ -155,7 +174,8 @@ function CoursesParseRoute($segments)
 			case 'messages':
 			case 'enrollment':
 			case 'syllabus':
-			if (isset($vars['gid']))
+			//if (isset($vars['gid']))
+			if (!isset($vars['instance']) && isset($vars['gid']))
 			{
 				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'instance.php');
 				$inst = new CoursesInstance(JFactory::getDBO());
@@ -164,10 +184,16 @@ function CoursesParseRoute($segments)
 				{
 					JRequest::setVar('instance', $insts[0]->alias);
 					$vars['instance'] = $insts[0]->alias;
-					$vars['task'] = 'instance';
+					//$vars['task'] = 'instance';
 					$vars['active'] = $segments[1];
+					$vars['controller'] = 'instance';
 				}
 			}
+			/*else
+			{
+				$vars['instance'] = $segments[1];
+			}
+			*/
 			break;
 
 			case 'edit':
@@ -186,35 +212,27 @@ function CoursesParseRoute($segments)
 			break;
 			default:
 				$vars['instance'] = $segments[1];
-				$vars['task'] = 'instance';
+				$vars['controller'] = 'instance';
 			break;
 		}
 	}
 
 	if (isset($segments[2])) 
 	{
-		if ($segments[1] == 'wiki') 
-		{
-			if (preg_match('/^File:|Image:/i', $segments[3])) 
-			{
-				$vars['pagename'] = $segments[2];
-			} 
-			else 
-			{
-				$vars['pagename'] = array_pop($segments);
-			}
-
-			$s = implode(DS,$segments);
-			$vars['scope'] = $s;
-		} 
-		elseif ($segments[1] == 'chat') 
-		{
-			$vars['roomid'] = $segments[2];
-		} 
-		else 
-		{
-			$vars['task'] = $segments[2];
-		}
+		$vars['active'] = $segments[2];
+		$vars['controller'] = 'instance';
+	}
+	if (isset($segments[3])) 
+	{
+		$vars['unit'] = $segments[3];
+	}
+	if (isset($segments[4])) 
+	{
+		$vars['asset'] = $segments[4];
+	}
+	if (isset($segments[4])) 
+	{
+		$vars['subasset'] = $segments[4];
 	}
 
 	return $vars;

@@ -48,19 +48,19 @@ class CoursesControllerCourse extends Hubzero_Controller
 		// Get the task
 		//$this->_task  = JRequest::getVar('task', '');
 		$this->gid    = JRequest::getVar('gid', '');
-		if (!$this->gid)
+		/*if (!$this->gid)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option
+				JRoute::('index.php?option=' . $this->_option)
 			);
 			return;
-		}
+		}*/
 
 		// Load the course page
-		$this->course = Hubzero_Course::getInstance($this->gid);
+		$this->course = CoursesCourse::getInstance($this->gid);
 
 		// Ensure we found the course info
-		if (!$this->course || !$this->course->get('gidNumber')) 
+		/*if (!$this->course || !$this->course->get('gidNumber')) 
 		{
 			JError::raiseError(404, JText::_('COURSES_NO_COURSE_FOUND'));
 			return;
@@ -78,18 +78,14 @@ class CoursesControllerCourse extends Hubzero_Controller
 		{
 			JError::raiseError(404, JText::_('COURSES_NOT_PUBLISHED'));
 			return;
-		}
+		}*/
 
 		// Check authorization
-		$this->_authorize('course');
+		$this->_authorize('course', $this->course->get('gidNumber'));
 		//$this->_authorize('page');
 
 		$this->active = JRequest::getVar('active', '');
 
-		/*if ($this->gid && !$this->_task) 
-		{
-			$this->_task = 'view';
-		}*/
 		if ($this->active && $this->_task) 
 		{
 			$this->action = ($this->_task == 'instance') ? '' : $this->_task;
@@ -129,69 +125,6 @@ class CoursesControllerCourse extends Hubzero_Controller
 	}
 
 	/**
-	 * Set a notification
-	 * 
-	 * @param      string $message Message to set
-	 * @param      string $type    Type [error, passed, warning]
-	 * @return     void
-	 */
-	/*public function setNotification($message, $type)
-	{
-		//if type is not set, set to error message
-		$type = ($type == '') ? 'error' : $type;
-
-		//if message is set push to notifications
-		if ($message != '') 
-		{
-			$this->addComponentMessage($message, $type);
-		}
-	}*/
-
-	/**
-	 * Get norifications
-	 * 
-	 * @return     array
-	 */
-	/*public function getNotifications()
-	{
-		//getmessages in quene 
-		$messages = $this->getComponentMessage();
-
-		//if we have any messages return them
-		if ($messages) 
-		{
-			return $messages;
-		}
-	}*/
-
-	/**
-	 * Method to add stylesheets to the document.
-	 * 
-	 * @param      integer $course_type Parameter description (if any) ...
-	 * @return     void
-	 */
-	public function _getCourseStyles($course_type = null)
-	{
-		$this->_getStyles($this->_option, $this->_task);
-
-		if ($course_type == 3) 
-		{
-			JRequest::setVar('tmpl', 'course');
-			$doc->addStyleSheet('/components' . DS . 'com_courses' . DS . 'assets' . DS . 'css' . DS . 'special.css');
-		}
-	}
-
-	/**
-	 * Push scripts to document head
-	 * 
-	 * @return     void
-	 */
-	public function _getCourseScripts()
-	{
-		$this->_getScripts('assets/js/' . $this->_name);
-	}
-
-	/**
 	 * Method to set the document path
 	 * 
 	 * @param      array $course_pages List of roup pages
@@ -210,7 +143,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 
 			if ($this->gid) 
 			{
-				//$course = new Hubzero_Course();
+				//$course = new CoursesCourse();
 				//$this->course->read($this->gid);
 
 				$pathway->addItem(
@@ -273,7 +206,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 
 		if ($this->gid) 
 		{
-			$course = new Hubzero_Course();
+			$course = new CoursesCourse();
 			$this->course->read($this->gid);
 
 			$this->_title = JText::_('COURSE') . ': ' . stripslashes($this->course->get('description'));
@@ -282,31 +215,6 @@ class CoursesControllerCourse extends Hubzero_Controller
 		//set title of browser window
 		$document =& JFactory::getDocument();
 		$document->setTitle($this->_title);
-	}
-
-	/**
-	 * Look up username in profiles
-	 * 
-	 * @param      string $user Username or user ID
-	 * @return     array
-	 */
-	public function getMemberProfile($user)
-	{
-		/*if (is_numeric($user)) 
-		{
-			$sql = "SELECT * FROM #__xprofiles WHERE uidNumber='" . $user . "'";
-		} 
-		else 
-		{
-			$sql = "SELECT * FROM #__xprofiles WHERE username='" . $user . "'";
-		}
-
-		$this->_db->setQuery($sql);
-		$profile = $this->_db->loadAssoc();
-
-		return $profile;*/
-		ximport('Hubzero_User_Profile');
-		return Hubzero_User_Profile::getInstance($user);
 	}
 
 	/**
@@ -376,7 +284,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		$this->_getStyles($this->_option, $this->_controller . '.css');
 
 		// Push some needed scripts to the template
-		$this->_getCourseScripts();
+		$this->_getScripts();
 
 		// Build the title
 		$this->_buildTitle();
@@ -396,7 +304,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 	 * 
 	 * @return     void
 	 */
-	public function instanceTask()
+	/*public function instanceTask()
 	{
 		$this->view->setLayout('instance');
 
@@ -421,7 +329,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		} 
 		else 
 		{
-			$path = DS . ltrim($this->config->get('uploadpath', '/site/courses'), DS);
+			$path = DS . trim($this->config->get('uploadpath', '/site/courses'), DS);
 		}
 
 		$wikiconfig = array(
@@ -478,7 +386,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		));
 
 		// Get plugin access
-		$course_plugin_access = Hubzero_Course_Helper::getPluginAccess($this->course);
+		$course_plugin_access = CoursesCourse_Helper::getPluginAccess($this->course);
 
 		// If active tab not overview and an not one of available tabs
 		if ($tab != 'overview' && !in_array($tab, array_keys($course_plugin_access))) 
@@ -513,10 +421,10 @@ class CoursesControllerCourse extends Hubzero_Controller
 		$this->_getStyles($this->_option, $this->_controller . '.css');
 
 		// Push some needed scripts to the template
-		$this->_getCourseScripts();
+		$this->_getScripts();
 
 		// Add the courses JavaScript in for "special" courses
-		if (Hubzero_Course::getInstance($this->gid)->get('type') == 3)
+		if (CoursesCourse::getInstance($this->gid)->get('type') == 3)
 		{
 			$this->_getScripts('assets/js/courses.jquery.js');
 		}
@@ -534,7 +442,10 @@ class CoursesControllerCourse extends Hubzero_Controller
 			$doc =& JFactory::getDocument();
 			$doc->addScript('/components/com_courses/assets/js/plugins.js');
 
-			$view = new JView(array('name' => $this->_controller, 'layout' => 'overview'));
+			$view = new JView(array(
+				'name'   => $this->_controller, 
+				'layout' => 'overview'
+			));
 			$view->course_overview = $course_overview;
 			$view->tab = $GPages->tab;
 			$view->course = $this->course;
@@ -568,7 +479,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		$this->view->authorized           = $authorized;
 		$this->view->notifications        = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
 		$this->view->display();
-	}
+	}*/
 
 	/**
 	 * View a course instance
@@ -657,7 +568,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		));
 
 		// Get plugin access
-		$course_plugin_access = Hubzero_Course_Helper::getPluginAccess($this->course);
+		$course_plugin_access = CoursesCourse_Helper::getPluginAccess($this->course);
 
 		// If active tab not overview and an not one of available tabs
 		if ($tab != 'overview' && !in_array($tab, array_keys($course_plugin_access))) 
@@ -692,10 +603,10 @@ class CoursesControllerCourse extends Hubzero_Controller
 		$this->_getStyles($this->_option, $this->_controller . '.css');
 
 		// Push some needed scripts to the template
-		$this->_getCourseScripts();
+		$this->_getScripts();
 
 		// Add the courses JavaScript in for "special" courses
-		if (Hubzero_Course::getInstance($this->gid)->get('type') == 3)
+		if (CoursesCourse::getInstance($this->gid)->get('type') == 3)
 		{
 			$this->_getScripts('assets/js/courses.jquery.js');
 		}
@@ -713,7 +624,10 @@ class CoursesControllerCourse extends Hubzero_Controller
 			$doc =& JFactory::getDocument();
 			$doc->addScript('/components/com_courses/assets/js/plugins.js');
 
-			$view = new JView(array('name' => $this->_controller, 'layout' => 'overview'));
+			$view = new JView(array(
+				'name'   => $this->_controller, 
+				'layout' => 'overview'
+			));
 			$view->course_overview = $course_overview;
 			$view->tab = $GPages->tab;
 			$view->course = $this->course;
@@ -774,7 +688,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		}
 
 		// Load the course page
-		$course = Hubzero_Course::getInstance($this->gid);
+		$course = CoursesCourse::getInstance($this->gid);
 
 		// Ensure we found the course info
 		if (!$course || !$this->course->get('gidNumber')) 
@@ -881,7 +795,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		}
 
 		// Load the course
-		$course = Hubzero_Course::getInstance($this->gid);
+		$course = CoursesCourse::getInstance($this->gid);
 
 		// Ensure we found the course info
 		if (!$course || !$this->course->get('gidNumber')) 
@@ -984,7 +898,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 	 */
 	public function confirmTask()
 	{
-		$app = JFactory::getApplication();
+		//$app = JFactory::getApplication();
 
 		// Check if they're logged in
 		if ($this->juser->get('guest')) 
@@ -1000,10 +914,10 @@ class CoursesControllerCourse extends Hubzero_Controller
 		}
 
 		// Load the course
-		$course = Hubzero_Course::getInstance($this->gid);
+		//$course = CoursesCourse::getInstance($this->gid);
 
 		// Ensure we found the course info
-		if (!$course || !$this->course->get('gidNumber')) 
+		if (!$this->course || !$this->course->get('gidNumber')) 
 		{
 			JError::raiseError(404, JText::_('COURSES_NO_COURSE_FOUND'));
 			return;
@@ -1021,8 +935,11 @@ class CoursesControllerCourse extends Hubzero_Controller
 		// If membership is managed in seperate place disallow action
 		if ($gparams->get('membership_control', 1) == 0) 
 		{
-			$this->addComponentMessage('Course membership is not managed in the course interface.', 'error');
-			$this->_redirect = JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('cn'));
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option . '&gid=' . $this->course->get('cn')),
+				JText::_('Course membership is not managed in the course interface.'), 
+				'error'
+			);
 			return;
 		}
 
@@ -1054,7 +971,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		if ($this->course->get('join_policy') == 1) 
 		{
 			// Instantiate the reason object and bind the incoming data
-			$row = new CoursesReason($this->database);
+			/*$row = new CoursesReason($this->database);
 			$row->uidNumber = $this->juser->get('id');
 			$row->gidNumber = $this->course->get('gidNumber');
 			$row->reason    = JRequest::getVar('reason', JText::_('COURSES_NO_REASON_GIVEN'), 'post');
@@ -1071,7 +988,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 			{
 				JError::raiseError(500, $row->getError());
 				return;
-			}
+			}*/
 		}
 
 		// Log the membership request
@@ -1106,12 +1023,16 @@ class CoursesControllerCourse extends Hubzero_Controller
 		$subject = JText::sprintf('COURSES_SUBJECT_MEMBERSHIP', $this->course->get('cn'));
 
 		// Build the e-mail message
-		$eview = new JView(array('name' => 'emails', 'layout' => 'request'));
+		$eview = new JView(array(
+			'name'   => 'emails', 
+			'layout' => 'request'
+		));
 		$eview->option = $this->_option;
 		$eview->sitename = $jconfig->getValue('config.sitename');
 		$eview->juser = $this->juser;
 		$eview->course = $course;
 		$eview->row = $row;
+
 		$message = $eview->loadTemplate();
 		$message = str_replace("\n", "\r\n", $message);
 
@@ -1136,7 +1057,9 @@ class CoursesControllerCourse extends Hubzero_Controller
 		}
 
 		// Push through to the courses listing
-		$app->redirect(JRoute::_('index.php?option=' . $this->_option . '&gid=' . $this->course->get('cn')), true);
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&gid=' . $this->course->get('cn'))
+		);
 	}
 
 	/**
@@ -1165,10 +1088,10 @@ class CoursesControllerCourse extends Hubzero_Controller
 		}
 
 		// Load the course
-		$course = Hubzero_Course::getInstance($this->gid);
+		//$course = CoursesCourse::getInstance($this->gid);
 
 		// Ensure we found the course info
-		if (!$course || !$this->course->get('gidNumber')) 
+		if (!$this->course || !$this->course->get('gidNumber')) 
 		{
 			JError::raiseError(404, JText::_('COURSES_NO_COURSE_FOUND'));
 			return;
@@ -1193,8 +1116,11 @@ class CoursesControllerCourse extends Hubzero_Controller
 		// If membership is managed in seperate place disallow action
 		if ($gparams->get('membership_control', 1) == 0) 
 		{
-			$this->addComponentMessage('Course membership is not managed in the course interface.', 'error');
-			$this->_redirect = JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('cn'));
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option . '&gid=' . $this->course->get('cn')),
+				JText::_('Course membership is not managed in the course interface.'), 
+				'error'
+			);
 			return;
 		}
 
@@ -1208,12 +1134,14 @@ class CoursesControllerCourse extends Hubzero_Controller
 		//are we already a member
 		if (in_array($this->juser->get('id'), $members)) 
 		{
-			$add->redirect(JRoute::_('index.php?option=com_courses&gid=' . $this->course->get("cn")));
-			exit();
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option . '&gid=' . $this->course->get('cn'))
+			);
+			return;
 		}
 
 		// Get invite emails
-		$course_inviteemails = new Hubzero_Course_Invite_Email($this->database);
+		$course_inviteemails = new CoursesCourse_Invite_Email($this->database);
 		$inviteemails = $course_inviteemails->getInviteEmails($this->course->get('gidNumber'), true);
 		$inviteemails_with_token = $course_inviteemails->getInviteEmails($this->course->get('gidNumber'), false);
 
@@ -1244,7 +1172,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		}
 		elseif (in_array($this->juser->get('email'), $inviteemails))
 		{
-			$this->course->add('members',array($this->juser->get('id')));
+			$this->course->add('members', array($this->juser->get('id')));
 			$this->course->update();
 			$sql = "DELETE FROM #__courses_inviteemails WHERE email='" . $this->juser->get('email') . "' AND gidNumber='" . $this->course->get('gidNumber') . "'";
 			$this->database->setQuery($sql);
@@ -1252,8 +1180,8 @@ class CoursesControllerCourse extends Hubzero_Controller
 		}
 		elseif (in_array($this->juser->get('id'), $invitees))
 		{
-			$this->course->add('members',array($this->juser->get('id')));
-			$this->course->remove('invitees',array($this->juser->get('id')));
+			$this->course->add('members', array($this->juser->get('id')));
+			$this->course->remove('invitees', array($this->juser->get('id')));
 			$this->course->update();
 		}
 		else
@@ -1281,7 +1209,10 @@ class CoursesControllerCourse extends Hubzero_Controller
 		$subject = JText::sprintf('COURSES_SUBJECT_MEMBERSHIP', $this->course->get('cn'));
 
 		// Build the e-mail message
-		$eview = new JView(array('name' => 'emails', 'layout' => 'accepted'));
+		$eview = new JView(array(
+			'name'   => 'emails', 
+			'layout' => 'accepted'
+		));
 		$eview->option = $this->_option;
 		$eview->sitename = $jconfig->getValue('config.sitename');
 		$eview->juser = $this->juser;
@@ -1308,11 +1239,11 @@ class CoursesControllerCourse extends Hubzero_Controller
 		// Action Complete. Redirect to appropriate page
 		if ($return == 'browse') 
 		{
-			$app->redirect(JRoute::_('index.php?option=' . $this->_option));
+			$this->setRedirect(JRoute::_('index.php?option=' . $this->_option));
 		} 
 		else 
 		{
-			$app->redirect(JRoute::_('index.php?option=' . $this->_option . '&gid='. $this->course->get('cn')));
+			$this->setRedirect(JRoute::_('index.php?option=' . $this->_option . '&gid='. $this->course->get('cn')));
 		}
 	}
 
@@ -1350,13 +1281,6 @@ class CoursesControllerCourse extends Hubzero_Controller
 		// Check if they're logged in
 		if ($this->juser->get('guest')) 
 		{
-			$this->loginTask('You must be logged in to edit or create courses.');
-			return;
-		}
-
-		// Check if they're logged in
-		if ($this->juser->get('guest')) 
-		{
 			$this->loginTask(JText::_('You must be logged in to edit or create courses.'));
 			return;
 		}
@@ -1368,8 +1292,8 @@ class CoursesControllerCourse extends Hubzero_Controller
 			return;
 		}
 
-		// Instantiate an Hubzero_Course object
-		$course = new Hubzero_Course();
+		// Instantiate an CoursesCourse object
+		$course = new CoursesCourse();
 
 		if ($this->_task != 'new') 
 		{
@@ -1390,7 +1314,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 				return;
 			}
 
-			$title = "Edit Course: ".$this->course->get('description');
+			$title = 'Edit Course: ' . $this->course->get('description');
 		} 
 		else 
 		{
@@ -1471,8 +1395,8 @@ class CoursesControllerCourse extends Hubzero_Controller
 			return;
 		}
 
-		// Instantiate an Hubzero_Course object
-		$course = new Hubzero_Course();
+		// Instantiate an CoursesCourse object
+		$course = new CoursesCourse();
 
 		// Is this a new entry or updating?
 		$isNew = false;
@@ -1515,7 +1439,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 			$this->course->set('join_policy', $g_join_policy);
 			$this->course->set('cn', $g_cn);
 			$this->course->set('discussion_email_autosubscribe', $g_discussion_email_autosubscribe);
-            
+
 			$this->lid = $lid;
 			$this->course = $course;
 			$this->tags = $tags;
@@ -1532,7 +1456,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		{
 			$this->addComponentMessage(JText::_('COURSES_ERROR_INVALID_ID'), 'error');
 		}
-		if ($isNew && Hubzero_Course::exists($g_cn,true)) 
+		if ($isNew && CoursesCourse::exists($g_cn,true)) 
 		{
 			$this->addComponentMessage(JText::_('COURSES_ERROR_COURSE_ALREADY_EXIST'), 'error');
 		}
@@ -1582,7 +1506,10 @@ class CoursesControllerCourse extends Hubzero_Controller
 
 		// Build the e-mail message
 		// Note: this is done *before* pushing the changes to the course so we can show, in the message, what was changed
-		$eview = new JView(array('name' => 'emails', 'layout' => 'saved'));
+		$eview = new JView(array(
+			'name'   => 'emails', 
+			'layout' => 'saved'
+		));
 		$eview->option = $this->_option;
 		$eview->sitename = $jconfig->getValue('config.sitename');
 		$eview->juser = $this->juser;
@@ -1596,6 +1523,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		$eview->g_restrict_msg = $g_restrict_msg;
 		$eview->g_join_policy = $g_join_policy;
 		$eview->g_cn = $g_cn;
+
 		$message = $eview->loadTemplate();
 		$message = str_replace("\n", "\r\n", $message);
 
@@ -1689,7 +1617,6 @@ class CoursesControllerCourse extends Hubzero_Controller
 
 		if ($this->getComponentMessage()) 
 		{
-			$view = new JView(array('name' => 'error'));
 			$this->view->title = $title;
 			$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
 			$this->view->display();
@@ -1707,7 +1634,9 @@ class CoursesControllerCourse extends Hubzero_Controller
 		}
 
 		// Redirect back to the course page
-		$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&gid=' . $g_cn);
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&gid=' . $g_cn)
+		);
 	}
 
 	/**
@@ -1732,13 +1661,6 @@ class CoursesControllerCourse extends Hubzero_Controller
 			return;
 		}
 
-		// Check authorization
-		if ($this->_authorize() != 'manager') 
-		{
-			JError::raiseError(403, JText::_('COURSES_NOT_AUTH'));
-			return;
-		}
-
 		// Ensure we have a course to work with
 		if (!$this->gid) 
 		{
@@ -1746,13 +1668,17 @@ class CoursesControllerCourse extends Hubzero_Controller
 			return;
 		}
 
-		// Load the course page
-		$course = Hubzero_Course::getInstance($this->gid);
-
 		// Ensure we found the course info
-		if (!$course || !$this->course->get('gidNumber')) 
+		if (!$this->course || !$this->course->get('gidNumber')) 
 		{
 			JError::raiseError(404, JText::_('COURSES_NO_COURSE_FOUND'));
+			return;
+		}
+
+		// Check authorization
+		if (!$this->config->get('access-delete-course', $this->course->get('gidNumber'))) 
+		{
+			JError::raiseError(403, JText::_('COURSES_NOT_AUTH'));
 			return;
 		}
 
@@ -1768,8 +1694,11 @@ class CoursesControllerCourse extends Hubzero_Controller
 		// If membership is managed in seperate place disallow action
 		if ($gparams->get('membership_control', 1) == 0) 
 		{
-			$this->addComponentMessage('Course membership is not managed in the course interface.', 'error');
-			$this->_redirect = JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('cn'));
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('cn')),
+				JText::_('Course membership is not managed in the course interface.'), 
+				'error'
+			);
 			return;
 		}
 
@@ -1811,10 +1740,8 @@ class CoursesControllerCourse extends Hubzero_Controller
 			}
 
 			// Output HTML
-			$view = new JView(array('name' => 'delete'));
-			$this->view->option = $this->_option;
 			$this->view->title  = 'Delete Course: ' . $this->course->get('description');
-			$this->view->course  = $course;
+			$this->view->course = $course;
 			$this->view->log    = $log;
 			$this->view->msg    = $msg;
 			$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
@@ -1823,7 +1750,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		}
 
 		// Start log
-		$log  = JText::sprintf('COURSES_SUBJECT_COURSE_DELETED', $this->course->get('cn'));
+		/*$log  = JText::sprintf('COURSES_SUBJECT_COURSE_DELETED', $this->course->get('cn'));
 		$log .= JText::_('COURSES_TITLE') . ': ' . $this->course->get('description') . "\n";
 		$log .= JText::_('COURSES_ID') . ': ' . $this->course->get('cn') . "\n";
 		$log .= JText::_('COURSES_PRIVACY') . ': ' . $this->course->get('access') . "\n";
@@ -1873,12 +1800,13 @@ class CoursesControllerCourse extends Hubzero_Controller
 		$gidNumber = $this->course->get('gidNumber');
 		$gcn = $this->course->get('cn');
 
-		$deletedcourse = clone($course);
+		$deletedcourse = clone($course);*/
+		$this->course->set('published', 2);
 
 		// Delete course
-		if (!$this->course->delete()) 
+		if (!$this->course->update()) 
 		{
-			$view = new JView(array('name' => 'error'));
+			$this->view->setLayout('error');
 			$this->view->title = $title;
 			if ($this->course->error) 
 			{
@@ -1903,13 +1831,17 @@ class CoursesControllerCourse extends Hubzero_Controller
 		$subject = JText::sprintf('COURSES_SUBJECT_COURSE_DELETED', $gcn);
 
 		// Build the e-mail message
-		$eview = new JView(array('name' => 'emails','layout' => 'deleted'));
+		$eview = new JView(array(
+			'name'   => 'emails',
+			'layout' => 'deleted'
+		));
 		$eview->option = $this->_option;
 		$eview->sitename = $jconfig->getValue('config.sitename');
 		$eview->juser = $this->juser;
 		$eview->gcn = $gcn;
 		$eview->msg = $msg;
 		$eview->course = $deletedcourse;
+
 		$message = $eview->loadTemplate();
 		$message = str_replace("\n", "\r\n", $message);
 
@@ -1923,20 +1855,23 @@ class CoursesControllerCourse extends Hubzero_Controller
 
 		// Log the deletion
 		$xlog = new XCourseLog($this->database);
-		$xlog->gid = $gidNumber;
-		$xlog->uid = $this->juser->get('id');
+		$xlog->gid       = $gidNumber;
+		$xlog->uid       = $this->juser->get('id');
 		$xlog->timestamp = date('Y-m-d H:i:s', time());
-		$xlog->action = 'course_deleted';
-		$xlog->comments = $log;
-		$xlog->actorid = $this->juser->get('id');
+		$xlog->action    = 'course_deleted';
+		$xlog->comments  = $log;
+		$xlog->actorid   = $this->juser->get('id');
 		if (!$xlog->store()) 
 		{
 			$this->addComponentMessage($xlog->getError(), 'error');
 		}
 
 		// Redirect back to the courses page
-		$this->addComponentMessage("You successfully deleted the \"{$deletedcourse->get('description')}\" course", 'passed');
-		$this->_redirect = JRoute::_('index.php?option=' . $this->_option);
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option),
+			"You successfully deleted the \"{$deletedcourse->get('description')}\" course", 
+			'passed'
+		);
 	}
 
 	/**
@@ -1972,7 +1907,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		}
 
 		// Load the course page
-		$course = Hubzero_Course::getInstance($this->gid);
+		$course = CoursesCourse::getInstance($this->gid);
 
 		// Ensure we found the course info
 		if (!$course || !$this->course->get('gidNumber')) 
@@ -2047,7 +1982,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		$current_invitees = $this->course->get('invitees');
 
 		// Get invite emails
-		$course_inviteemails = new Hubzero_Course_Invite_Email($this->database);
+		$course_inviteemails = new CoursesCourse_Invite_Email($this->database);
 		$current_inviteemails = $course_inviteemails->getInviteEmails($this->course->get('gidNumber'), true);
 
 		// Explode the string of logins/e-mails into an array
@@ -2156,7 +2091,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		// Add the inviteemails
 		foreach ($inviteemails as $ie)
 		{
-			$course_inviteemails = new Hubzero_Course_Invite_Email($this->database);
+			$course_inviteemails = new CoursesCourse_Invite_Email($this->database);
 			$course_inviteemails->save($ie);
 		}
 
@@ -2338,7 +2273,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		}
 
 		// Load the course page
-		$course = Hubzero_Course::getInstance($this->gid);
+		$course = CoursesCourse::getInstance($this->gid);
 
 		// Ensure we found the course info
 		if (!$course || !$this->course->get('gidNumber'))
@@ -2376,7 +2311,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		));
 
 		// Get plugin access
-		$course_plugin_access = Hubzero_Course_Helper::getPluginAccess($course);
+		$course_plugin_access = CoursesCourse_Helper::getPluginAccess($course);
 
 		// Build the page title
 		$this->_buildTitle();
@@ -2385,15 +2320,12 @@ class CoursesControllerCourse extends Hubzero_Controller
 		$this->_buildPathway();
 
 		// Push some needed styles to the template
-		$this->_getCourseStyles();
+		$this->_getStyles($this->_option, $this->_controller);
 
 		// Push some needed scripts to the template
-		$this->_getCourseScripts();
+		$this->_getScripts();
 
 		// Output HTML
-		$view = new JView(array('name' => 'customize'));
-		$this->view->option = $this->_option;
-		$this->view->task   = $this->_task;
 		$this->view->title  = $this->_title;
 		$this->view->course  = $course;
 
@@ -2442,7 +2374,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		}
 
 		// Load the course page
-		$course = Hubzero_Course::getInstance($gid);
+		$course = CoursesCourse::getInstance($gid);
 
 		// Ensure we found the course info
 		if (!$course || !$this->course->get('gidNumber')) 
@@ -2505,7 +2437,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 	 * 
 	 * @return     void
 	 */
-	public function editOutlineTask()
+	public function editoutlineTask()
 	{
 		// Make sure the user is logged in
 		if ($this->juser->get('guest')) 
@@ -2529,7 +2461,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		}
 
 		// Load the course page
-		$course = Hubzero_Course::getInstance($this->gid);
+		$course = CoursesCourse::getInstance($this->gid);
 
 		// Ensure we found the course info
 		if (!$course || !$this->course->get('gidNumber')) 
@@ -2545,10 +2477,10 @@ class CoursesControllerCourse extends Hubzero_Controller
 		$this->_buildPathway();
 
 		// Push some needed styles to the template
-		$this->_getCourseStyles();
+		$this->_getStyles($this->_option, $this->_controller);
 
 		// Push some needed scripts to the template
-		$this->_getCourseScripts();
+		$this->_getScripts();
 
 		// Import the wiki parser
 		$wikiconfig = array(
@@ -2567,9 +2499,6 @@ class CoursesControllerCourse extends Hubzero_Controller
 		$this->_course = $course;
 
 		// Output HTML
-		$view = new JView(array('name' => 'customize', 'layout' => 'editoutline'));
-		$this->view->option = $this->_option;
-		$this->view->task   = $this->_task;
 		$this->view->title  = 'Manage Custom Content: ' . $this->course->get('description');
 		$this->view->course  = $course;
 		$this->view->database = $this->database;
@@ -2629,7 +2558,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 	 * @param      integer $high_order Highest order
 	 * @return     void
 	 */
-	public function reorder($type, $direction, $id, $high_order)
+	public function reorderTask($type, $direction, $id, $high_order)
 	{
 		$order_field = substr($type, 0, 1) . 'order';
 
@@ -2719,7 +2648,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 	/*public function _authorize($checkOnlyMembership = true)
 	{
 		//load the course
-		$course = Hubzero_Course::getInstance($this->gid);
+		$course = CoursesCourse::getInstance($this->gid);
 		if (!is_object($course))
 		{
 			return false;
@@ -3046,7 +2975,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 	/**
 	 * Get a course's availability
 	 * 
-	 * @param      object $course Hubzero_Course
+	 * @param      object $course CoursesCourse
 	 * @return     string
 	 */
 	private function courseAvailability($course = NULL)
@@ -3061,7 +2990,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		}
 
 		// Ensure the data passed is valid
-		if (($course == 'new' || $course == 'browse') || (!$this->_validCn($course)) || (Hubzero_Course::exists($course, true))) 
+		if (($course == 'new' || $course == 'browse') || (!$this->_validCn($course)) || (CoursesCourse::exists($course, true))) 
 		{
 			$availability = false;
 		}

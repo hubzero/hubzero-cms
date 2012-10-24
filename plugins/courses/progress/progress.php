@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -34,9 +34,9 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.plugin.plugin');
 
 /**
- * Courses Plugin class for blog entries
+ * Courses Plugin class for user progress
  */
-class plgCoursesSyllabus extends JPlugin
+class plgCoursesProgress extends JPlugin
 {
 	/**
 	 * Constructor
@@ -60,9 +60,9 @@ class plgCoursesSyllabus extends JPlugin
 	public function &onCourseAreas()
 	{
 		$area = array(
-			'name'             => $this->_name,
-			'title'            => JText::_('PLG_COURSES_' . strtoupper($this->_name)),
-			'default_access'   => $this->params->get('plugin_access', 'members'),
+			'name' => $this->_name,
+			'title' => JText::_('PLG_COURSES_' . strtoupper($this->_name)),
+			'default_access' => $this->params->get('plugin_access', 'members'),
 			'display_menu_tab' => true
 		);
 		return $area;
@@ -87,10 +87,11 @@ class plgCoursesSyllabus extends JPlugin
 
 		// The output array we're returning
 		$arr = array(
-			'html' => ''
+			'html'     => '',
+			'metadata' => ''
 		);
 
-		// get this area details
+		//get this area details
 		$this_area = $this->onCourseAreas();
 
 		// Check if our area is in the array of areas we want to return results for
@@ -98,54 +99,24 @@ class plgCoursesSyllabus extends JPlugin
 		{
 			if (!in_array($this_area['name'], $areas)) 
 			{
-				return;
+				return $arr;
 			}
 		}
 
-		//are we returning html
-		//if ($return == 'html') 
-		//{
-			// Set commonly used vars
-			$this->course     = $course;
-			$this->instance   = $instance;
-			$this->config     = $config;
+		//Create user object
+		$this->juser = JFactory::getUser();
 
-			//Create user object
-			$this->juser = JFactory::getUser();
+		//check to see if user is member and plugin access requires members
+		if (!$this->config->get('access-view-instance')) 
+		{
+			$arr['html'] = '<p class="info">' . JText::sprintf('COURSES_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
+			return $arr;
+		}
 
-			if (!$this->config->get('access-view-instance')) 
-			{
-				$arr['html'] = '<p class="info">' . JText::sprintf('COURSES_PLUGIN_REQUIRES_MEMBER', JText::_('PLG_COURSES_' . strtoupper($this->_name))) . '</p>';
-				return $arr;
-			}
+		// Return the content
+		$arr['html'] = 'My progress report';
 
-			// Set some variables so other functions have access
-			$this->action     = $action;
-			$this->option     = JRequest::getVar('option', 'com_courses');
-			$this->name       = substr($this->option, 4, strlen($this->option));
-			$this->database   = JFactory::getDBO();
-
-			//push the css to the doc
-			ximport('Hubzero_Document');
-			Hubzero_Document::addPluginStylesheet('courses', $this->_name);
-
-			// Instantiate a view
-			ximport('Hubzero_Plugin_View');
-			$view = new Hubzero_Plugin_View(
-				array(
-					'folder'  => 'courses',
-					'element' => $this->_name,
-					'name'    => 'overview'
-				)
-			);
-			$view->config   = $this->config;
-			$view->option   = $this->option;
-			$view->course   = $this->course;
-			$view->instance = $this->instance;
-
-			$arr['html'] = $view->loadTemplate();
-		//}
-
+		// Return the output
 		return $arr;
 	}
 }

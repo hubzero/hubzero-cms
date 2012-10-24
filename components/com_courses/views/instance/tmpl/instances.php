@@ -30,30 +30,61 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+//get objects
+$config 	=& JFactory::getConfig();
+$database 	=& JFactory::getDBO();
 ?>
-<table class="activity" summary="<?php echo JText::_('PLG_COURSES_BLOG_ENTRIES_TABLE_SUMMARY'); ?>">
-	<tbody>
-<?php 
-if ($this->entries) {
-	foreach ($this->entries as $entry)
+<div id="content-header">
+	<h2>
+		<?php echo $this->escape(stripslashes($this->course->get('description'))); ?>
+	</h2>
+</div>
+
+<div class="main section">
+	<?php
+		foreach ($this->notifications as $notification) 
+		{
+			echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
+		}
+	?>
+
+	<table>
+		<thead>
+			<tr>
+				<th>Instance</th>
+				<th>Starts</th>
+				<th>Ends</th>
+				<th>Enrollment</th>
+			</tr>
+		</thead>
+		<tbody>
+<?php
+if ($this->instances)
+{
+	foreach ($this->instances as $instance)
 	{
 ?>
-		<tr>
-			<th scope="row"><?php echo $area; ?></th>
-			<td class="author"><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$entry->created_by); ?>"><?php echo stripslashes($name); ?></a></td>
-			<td class="action"><?php echo stripslashes($entry->title); ?></td>
-			<td class="date"><?php echo JHTML::_('date', $entry->publish_up, '%b. %d, %Y @%I:%M %p'); ?></td>
-		</tr>
+			<tr>
+				<th>
+					<a class="inst-title" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('cn') . '&instance=' . $instance->alias); ?>">
+						<?php echo $this->escape(stripslashes($instance->title)); ?>
+					</a>
+				</th>
+				<td>
+					<?php echo $this->escape(stripslashes($instance->start_date)); ?>
+				</td>
+				<td>
+					<?php echo $this->escape(stripslashes($instance->end_date)); ?>
+				</td>
+				<td>
+					accepting
+				</td>
+			</tr>
 <?php
 	}
-} else {
-	// Do nothing if there are no events to display
-?>
-		<tr>
-			<td><?php echo JText::_('PLG_COURSES_BLOG_NO_ENTRIES_FOUND'); ?></td>
-		</tr>
-<?php 
 }
 ?>
-	</tbody>
-</table>
+		</tbody>
+	</table>
+</div><!-- /.innerwrap -->

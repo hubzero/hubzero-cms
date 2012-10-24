@@ -36,8 +36,7 @@ jimport('joomla.plugin.helper');
 ximport('Hubzero_Validate');
 
 /**
- * Short description for 'Hubzero_Course'
- * Long description (if any) ...
+ * Courses table class for a course
 */
 class CoursesCourse
 {
@@ -277,7 +276,7 @@ class CoursesCourse
 	 */
 	static public function getInstance($course)
 	{
-		$hzg = new Hubzero_Course();
+		$hzg = new CoursesCourse();
 
 		if ($hzg->read($course) === false)
 		{
@@ -1445,5 +1444,30 @@ class CoursesCourse
 		$db->setQuery($query);
 
 		return $db->loadResultArray();
+	}
+
+	/**
+	 * Execute a task
+	 * 
+	 * @return     void
+	 */
+	public function offerings($index=null)
+	{
+		static $offerings;
+
+		if (!$offerings)
+		{
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'instance.php');
+			$inst = new CoursesInstance(JFactory::getDBO()); //JTable::getInstance('instance', 'CoursesTable');
+			$offerings = $inst->getCourseInstances(array(
+				'course_cn' => $this->get('cn')
+			));
+		}
+
+		if ($index !== null && is_numeric($index))
+		{
+			return (isset($offerings[$index]) ? $offerings[$index] : false);
+		}
+		return $offerings;
 	}
 }

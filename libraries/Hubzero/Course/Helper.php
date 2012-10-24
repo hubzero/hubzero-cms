@@ -373,7 +373,7 @@ class Hubzero_Course_Helper
 	
 	//-----
 	
-	public static function displayCourseMenu($course, $sections, $cats, $access_levels, $course_pages, $active_tab)
+	public static function displayCourseMenu($course, $instance, $sections, $cats, $access_levels, $course_pages, $active_tab)
 	{
 		//instantiate objects
 		$juser =& JFactory::getUser();
@@ -399,7 +399,7 @@ class Hubzero_Course_Helper
 				$access = $access_levels[$cat['name']];
 				
 				//menu link
-				$link = JRoute::_('index.php?option=com_courses&gid='.$course->get("cn").'&active='.$active);
+				$link = JRoute::_('index.php?option=com_courses&gid='.$course->get("cn").'&instance=' . $instance->alias . '&active='.$active);
 				
 				//Are we on the overview tab with sub course pages?
 				if($cat['name'] == 'overview' && count($course_pages) > 0)

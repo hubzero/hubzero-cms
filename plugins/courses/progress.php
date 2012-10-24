@@ -31,4 +31,4 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-include_once(JPATH_ROOT . DS . 'plugins' . DS . 'courses' . DS . 'wiki' . DS . 'wiki.php');
+include_once(JPATH_ROOT . DS . 'plugins' . DS . 'courses' . DS . 'progress' . DS . 'progress.php');

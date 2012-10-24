@@ -68,6 +68,7 @@ require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'unit.php');
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'asset.php');
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'asset.group.php');
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'asset.association.php');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'course.php');
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'instance.php');
 
 //build controller path and name
