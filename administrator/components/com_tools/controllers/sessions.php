@@ -129,7 +129,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 	public function removeTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
 		$ids = JRequest::getVar('id', array());
@@ -159,9 +159,9 @@ class ToolsControllerSessions extends Hubzero_Controller
 
 				// Stop the session
 				$status = $this->middleware("stop $id", $output);
-				if ($status == 0) 
+				if ($status) 
 				{
-					$msg = 'Stopping ' . $sess . '<br />';
+					$msg = 'Stopping ' . $id . '<br />';
 					foreach ($output as $line)
 					{
 						$msg .= $line . "\n";
@@ -179,6 +179,85 @@ class ToolsControllerSessions extends Hubzero_Controller
 			JText::_('Session(s) successfully terminated.'),
 			'message'
 		);
+	}
+
+	/**
+	 * Invoke the Python script to do real work.
+	 * 
+	 * @param      string  $comm Parameter description (if any) ...
+	 * @param      array   &$output Parameter description (if any) ...
+	 * @return     integer Session ID
+	 */
+	public function middleware($comm, &$output)
+	{
+		$retval = true; // Assume success.
+		$output = new stdClass();
+		$cmd = "/bin/sh " . JPATH_ROOT . "/components/" . $this->_option . "/scripts/mw $comm 2>&1 </dev/null";
+
+		exec($cmd, $results, $status);
+
+		// Check exec status
+		if ($status != 0) 
+		{
+			// Uh-oh. Something went wrong...
+			$retval = false;
+			$this->setError($results[0]);
+		}
+
+		if (is_array($results))
+		{
+			// HTML
+			// Print out the applet tags or the error message, as the case may be.
+			foreach ($results as $line)
+			{
+				$line = trim($line);
+
+				// If it's a new session, catch the session number...
+				if ($retval && preg_match("/^Session is ([0-9]+)/", $line, $sess)) 
+				{
+					$retval = $sess[1];
+					$output->session = $sess[1];
+				} 
+				else 
+				{
+					if (preg_match("/width=\"(\d+)\"/i", $line, $param))
+					{
+						$output->width = trim($param[1], '"');
+					}
+					if (preg_match("/height=\"(\d+)\"/i", $line, $param))
+					{
+						$output->height = trim($param[1], '"');
+					}
+					if (preg_match("/^<param name=\"PORT\" value=\"?(\d+)\"?>/i", $line, $param))
+					{
+						$output->port = trim($param[1], '"');
+					}
+					if (preg_match("/^<param name=\"ENCPASSWORD\" value=\"?(.+)\"?>/i", $line, $param))
+					{
+						$output->password = trim($param[1], '"');
+					}
+					if (preg_match("/^<param name=\"CONNECT\" value=\"?(.+)\"?>/i", $line, $param))
+					{
+						$output->connect = trim($param[1], '"');
+					}
+					if (preg_match("/^<param name=\"ENCODING\" value=\"?(.+)\"?>/i", $line, $param))
+					{
+						$output->encoding = trim($param[1], '"');
+					}
+				}
+			}
+		}
+		else 
+		{
+			// JSON
+			$output = json_decode($results);
+			if ($output == null)
+			{
+				$retval = false;
+			}
+		}
+
+		return $retval;
 	}
 
 	/**

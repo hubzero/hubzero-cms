@@ -86,7 +86,7 @@ if ($this->rows)
 					</a>
 				</td>
 				<td>
-					<a class="state trash" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=remove&amp;id[]=<?php echo $row->sessnum; ?>" title="<?php echo JText::_('Terminate'); ?>">
+					<a class="state trash" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=remove&amp;id[]=<?php echo $row->sessnum; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::_('Terminate'); ?>">
 						<span><?php echo JText::_('Terminate'); ?></span>
 					</a>
 				</td>
