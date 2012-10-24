@@ -357,69 +357,17 @@ window.addEvent('domready', Fields.initialise);
 				
 				$schema->fields[] = $element;
 			}
-			
-			/*$move = strtolower(JRequest::getVar('move', ''));
-			$fld = JRequest::getInt('fld', 0);
-			if ($move == 'up' || $move == 'down')
-			{
-				//foreach ($schema->fields as $key => $field)
-				//{
-					switch ($move)
-					{
-						case 'up':
-							if ($fld > 0)
-							{
-								$prv = $schema->fields[$fld - 1];
-								$ths = $schema->fields[$fld];
-								
-								$schema->fields[$fld] = $prv;
-								$schema->fields[$fld - 1] = $ths;
-							}
-						break;
-						
-						case 'down':
-							if ($fld < (count($schema->fields) - 1))
-							{
-								$nxt = $schema->fields[$fld + 1];
-								$ths = $schema->fields[$fld];
-								
-								$schema->fields[$fld] = $nxt;
-								$schema->fields[$fld + 1] = $ths;
-							}
-						break;
-					}
-					$re = new ResourcesElements($schema);
-					$this->row->customFields = $re->toString();
-					$this->row->store();
-				//}
-			}*/
-			
+
 			$i = 0;
 			foreach ($schema->fields as $field)
 			{
 				?>
 				<tr>
-<?php //if ($this->row->id) { ?>
 					<td class="order">
 						<span class="handle hasTip" title="<?php echo JText::_('RESOURCES_MOVE_HANDLE'); ?>">
 							<?php echo JText::_('RESOURCES_MOVE_HANDLE'); ?>
 						</span>
-<?php /*						<span>
-if ($i !== 0) { ?>
-							<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $this->row->id; ?>&amp;move=up&amp;fld=<?php echo $i; ?>" title="Move Up">
-								<img src="images/uparrow.png" width="16" height="16" border="0" alt="Move Up" />
-							</a>
-<?php } ?>
-						</span>
-						<span>
-<?php if ($i !== (count($schema->fields) - 1)) { ?>
-							<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $this->row->id; ?>&amp;move=down&amp;fld=<?php echo $i; ?>" title="Move Down">
-								<img src="images/downarrow.png" width="16" height="16" border="0" alt="Move Down" />
-							</a>
-<?php }
-						</span>*/ ?>
 					</td>
-<?php //} ?>
 					<td>
 						<input type="text" name="fields[<?php echo $i; ?>][title]" value="<?php echo $this->escape(stripslashes($field->label)); ?>" maxlength="255" />
 						<input type="hidden" name="fields[<?php echo $i; ?>][name]" value="<?php echo $this->escape(stripslashes($field->name)); ?>" />
@@ -459,29 +407,25 @@ if ($i !== 0) { ?>
 		<script src="/media/system/js/jquery.noconflict.js"></script> 
 		<script src="/media/system/js/jquery.ui.js"></script> 
 		<script>
-			/*window.addEvent('domready', function(){
-				authsorts = new xSortables(['field-items'], {handle:'span[class=handle]',onComplete:function() {
-				}});
-			});*/
 			if (!jq) {
 				var jq = $;
 			}
 			
-		jQuery(document).ready(function(jq){
-			var $ = jq;
-			$("#fields tbody").sortable({
-				handle: '.handle',
-				helper: function(e, tr) {
-					var $originals = tr.children();
-					var $helper = tr.clone();
-					$helper.children().each(function(index) {
-						// Set helper cell sizes to match the original sizes
-						$(this).width($originals.eq(index).width())
-					});
-					return $helper;
-				}
-			}).disableSelection();
-		});
+			jQuery(document).ready(function(jq){
+				var $ = jq;
+				$("#fields tbody").sortable({
+					handle: '.handle',
+					helper: function(e, tr) {
+						var $originals = tr.children();
+						var $helper = tr.clone();
+						$helper.children().each(function(index) {
+							// Set helper cell sizes to match the original sizes
+							$(this).width($originals.eq(index).width())
+						});
+						return $helper;
+					}
+				});  //.disableSelection();
+			});
 		</script>
 	</fieldset>
 	</div>
