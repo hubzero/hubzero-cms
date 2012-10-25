@@ -268,6 +268,16 @@ class TimeFilters
 						$val['human_value']    = ($val['value'] == 1) ? 'yes' : 'no';
 						$filters[]  = $val;
 					}
+					elseif($val['column'] == 'hub_id')
+					{
+						$val['human_column']   = 'Hub';
+						$val['o']              = self::translateOperator($val['operator']);
+						$val['human_operator'] = self::mapOperator($val['o']);
+						$hub = new TimeHubs($this->db);
+						$hub->load($val['value']);
+						$val['human_value']    = $hub->name;
+						$filters[]  = $val;
+					}
 					// All others
 					else
 					{
@@ -330,6 +340,13 @@ class TimeFilters
 			{
 				$x['value'] = $value;
 				$x['display'] = JFactory::getUser($value)->get('name');
+			}
+			elseif($column == 'hub_id')
+			{
+				$hub = new TimeHubs($this->db);
+				$hub->load($value);
+				$x['value'] = $value;
+				$x['display'] = $hub->name;
 			}
 
 			$return[] = $x;

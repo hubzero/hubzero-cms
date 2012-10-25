@@ -169,8 +169,7 @@ $newdir  = ($dir == 'asc') ? 'desc' : 'asc';
 							<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=tasks&action=toggleactive&id='.$task->id); ?>"></a>
 						</td>
 						<td>
-							<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=records&' .
-								'q[column]=task_id&q[operator]=e&q[value]='.$task->id); ?>">
+							<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=tasks&action=edit&id='.$task->id); ?>">
 								<?php echo $task->name; ?>
 							</a>
 						</td>
