@@ -301,7 +301,7 @@ class plgYSearchMembers extends YSearchPlugin
 	{
 		if (!($href = $res->get('img_href')) || !is_file(JPATH_ROOT.$href))
 		{
-			$href = '/components/com_members/images/profile_thumb.gif';
+			$href = '/components/com_members/assets/img/profile_thumb.gif';
 		}
 
 		return '<img src="' . $href . '" alt="' . htmlentities($res->get_title()) . '" title="' . htmlentities($res->get_title()) . '" />';
