@@ -8,7 +8,7 @@
  *
  * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
  * software: you can redistribute it and/or modify it under the terms of
- * the GNU Lesser General Public License as published by the Free Software
+ * the GNU Lesser General Public License as state by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any
  * later version.
  *
@@ -42,190 +42,190 @@ class CoursesCourse
 {
 	
 	/**
-	 * Description for 'gidNumber'
+	 * title for 'gidNumber'
 	 *
 	 * @var string
 	 */
-	private $gidNumber = null;
+	private $id = null;
 	
 	/**
-	 * Description for 'cn'
+	 * title for 'cn'
 	 *
 	 * @var unknown
 	 */
-	private $cn = null;
+	private $alias = null;
 	
 	/**
-	 * Description for 'group_id'
+	 * title for 'group_id'
 	 *
 	 * @var string
 	 */
 	private $group_id = null;
 	
 	/**
-	 * Description for 'description'
+	 * title for 'title'
 	 *
 	 * @var unknown
 	 */
-	private $description = null;
+	private $title = null;
 	
 	/**
-	 * Description for 'published'
+	 * title for 'state'
 	 *
 	 * @var unknown
 	 */
-	private $published = null;
+	private $state = null;
 	
 	/**
-	 * Description for 'type'
+	 * title for 'type'
 	 *
 	 * @var unknown
 	 */
 	private $type = null;
 	
 	/**
-	 * Description for 'access'
+	 * title for 'access'
 	 *
 	 * @var unknown
 	 */
 	private $access = null;
 	
 	/**
-	 * Description for 'public_desc'
+	 * title for 'public_desc'
 	 *
 	 * @var unknown
 	 */
 	private $public_desc = null;
 	
 	/**
-	 * Description for 'private_desc'
+	 * title for 'private_desc'
 	 *
 	 * @var unknown
 	 */
 	private $private_desc = null;
 	
 	/**
-	 * Description for 'restrict_msg'
+	 * title for 'restrict_msg'
 	 *
 	 * @var unknown
 	 */
 	private $restrict_msg = null;
 	
 	/**
-	 * Description for 'join_policy'
+	 * title for 'join_policy'
 	 *
 	 * @var unknown
 	 */
 	private $join_policy = null;
 	
 	/**
-	 * Description for 'privacy'
+	 * title for 'privacy'
 	 *
 	 * @var unknown
 	 */
 	private $privacy = null;
 	
 	/**
-	 * Description for 'discussion_email_autosubscribe'
+	 * title for 'discussion_email_autosubscribe'
 	 *
 	 * @var tinyint
 	 */
 	private $discussion_email_autosubscribe = 0;
 	
 	/**
-	 * Description for 'logo'
+	 * title for 'logo'
 	 *
 	 * @var unknown
 	 */
 	private $logo = null;
 	
 	/**
-	 * Description for 'overview_type'
+	 * title for 'overview_type'
 	 *
 	 * @var unknown
 	 */
 	private $overview_type = null;
 	
 	/**
-	 * Description for 'overview_content'
+	 * title for 'overview_content'
 	 *
 	 * @var unknown
 	 */
 	private $overview_content = null;
 	
 	/**
-	 * Description for 'plugins'
+	 * title for 'plugins'
 	 *
 	 * @var unknown
 	 */
 	private $plugins = null;
 	
 	/**
-	 * Description for 'created'
+	 * title for 'created'
 	 *
 	 * @var unknown
 	 */
 	private $created = null;
 	
 	/**
-	 * Description for 'created_by'
+	 * title for 'created_by'
 	 *
 	 * @var unknown
 	 */
 	private $created_by = null;
 	
 	/**
-	 * Description for 'params'
+	 * title for 'params'
 	 *
 	 * @var unknown
 	 */
 	private $params = null;
 	
 	/**
-	 * Description for 'members'
+	 * title for 'members'
 	 *
 	 * @var array
 	 */
 	private $members = array();
 	
 	/**
-	 * Description for 'managers'
+	 * title for 'managers'
 	 *
 	 * @var array
 	 */
 	private $managers = array();
 	
 	/**
-	 * Description for 'applicants'
+	 * title for 'applicants'
 	 *
 	 * @var array
 	 */
 	private $applicants = array();
 	
 	/**
-	 * Description for 'invitees'
+	 * title for 'invitees'
 	 *
 	 * @var array
 	 */
 	private $invitees = array();
 	
 	/**
-	 * Description for '_list_keys'
+	 * title for '_list_keys'
 	 *
 	 * @var array
 	 */
 	static $_list_keys = array('members', 'managers', 'applicants', 'invitees');
 	
 	/**
-	 * Description for '_updatedkeys'
+	 * title for '_updatedkeys'
 	 *
 	 * @var array
 	 */
 	private $_updatedkeys = array();
 
 	/**
-	 * Short description for '__construct'
-	 * Long description (if any) ...
+	 * Short title for '__construct'
+	 * Long title (if any) ...
 	 *
 	 * @return void
 	 */
@@ -234,10 +234,10 @@ class CoursesCourse
 	}
 
 	/**
-	 * Short description for 'clear'
-	 * Long description (if any) ...
+	 * Short title for 'clear'
+	 * Long title (if any) ...
 	 *
-	 * @return boolean Return description (if any) ...
+	 * @return boolean Return title (if any) ...
 	 */
 	public function clear()
 	{
@@ -268,11 +268,11 @@ class CoursesCourse
 	}
 
 	/**
-	 * Short description for 'getInstance'
-	 * Long description (if any) ...
+	 * Short title for 'getInstance'
+	 * Long title (if any) ...
 	 *
-	 * @param unknown $course Parameter description (if any) ...
-	 * @return mixed Return description (if any) ...
+	 * @param unknown $course Parameter title (if any) ...
+	 * @return mixed Return title (if any) ...
 	 */
 	static public function getInstance($course)
 	{
@@ -287,12 +287,12 @@ class CoursesCourse
 	}
 
 	/**
-	 * Short description for 'create'
-	 * Long description (if any) ...
+	 * Short title for 'create'
+	 * Long title (if any) ...
 	 *
-	 * @param unknown $cn Parameter description (if any) ...
-	 * @param unknown $gidNumber Parameter description (if any) ...
-	 * @return mixed Return description (if any) ...
+	 * @param unknown $cn Parameter title (if any) ...
+	 * @param unknown $gidNumber Parameter title (if any) ...
+	 * @return mixed Return title (if any) ...
 	 */
 	public function create()
 	{
@@ -303,8 +303,8 @@ class CoursesCourse
 			return false;
 		}
 
-		$cn = $this->cn;
-		$gidNumber = $this->gidNumber;
+		$cn = $this->alias;
+		$gidNumber = $this->id;
 
 		if (empty($cn) && empty($gidNumber))
 		{
@@ -318,7 +318,7 @@ class CoursesCourse
 				$cn = '_gid' . $gidNumber;
 			}
 
-			$query = "INSERT INTO #__courses (gidNumber,cn) VALUES (" . $db->Quote($gidNumber) . "," . $db->Quote($cn) . ");";
+			$query = "INSERT INTO #__courses (id, alias) VALUES (" . $db->Quote($gidNumber) . "," . $db->Quote($cn) . ");";
 
 			$db->setQuery($query);
 
@@ -331,7 +331,7 @@ class CoursesCourse
 		}
 		else
 		{
-			$query = "INSERT INTO #__courses (cn) VALUES (" . $db->Quote($cn) . ");";
+			$query = "INSERT INTO #__courses (alias) VALUES (" . $db->Quote($cn) . ");";
 
 			$db->setQuery($query);
 
@@ -339,7 +339,7 @@ class CoursesCourse
 
 			if ($result === false && $db->getErrorNum() == 1062) // row exists
 			{
-				$query = "SELECT gidNumber FROM #__courses WHERE cn=" . $db->Quote($cn) . ";";
+				$query = "SELECT id FROM #__courses WHERE alias=" . $db->Quote($cn) . ";";
 
 				$db->setQeury($query);
 
@@ -350,11 +350,11 @@ class CoursesCourse
 					return false;
 				}
 
-				$this->__set('gidNumber', $result);
+				$this->__set('id', $result);
 			}
 			else if ($result !== false)
 			{
-				$this->__set('gidNumber', $db->insertid());
+				$this->__set('id', $db->insertid());
 			}
 			else
 			{
@@ -368,16 +368,16 @@ class CoursesCourse
 		$dispatcher = & JDispatcher::getInstance();
 		$dispatcher->trigger('onAfterStoreCourse', array($this));
 
-		return $this->gidNumber;
+		return $this->id;
 	}
 
 	/**
-	 * Short description for 'read'
-	 * Long description (if any) ...
+	 * Short title for 'read'
+	 * Long title (if any) ...
 	 *
-	 * @param unknown $name Parameter description (if any) ...
-	 * @param string $storage Parameter description (if any) ...
-	 * @return boolean Return description (if any) ...
+	 * @param unknown $name Parameter title (if any) ...
+	 * @param string $storage Parameter title (if any) ...
+	 * @return boolean Return title (if any) ...
 	 */
 	public function read($name = null)
 	{
@@ -394,24 +394,24 @@ class CoursesCourse
 		{
 			if (Hubzero_Validate::is_positive_integer($name))
 			{
-				$this->gidNumber = $name;
+				$this->id = $name;
 			}
 			else
 			{
-				$this->cn = $name;
+				$this->alias = $name;
 			}
 		}
 
 		$result = true;
 		$lazyloading = false;
 
-		if (is_numeric($this->gidNumber))
+		if (is_numeric($this->id))
 		{
-			$query = "SELECT * FROM #__courses WHERE gidNumber = " . $db->Quote($this->gidNumber) . ";";
+			$query = "SELECT * FROM #__courses WHERE id = " . $db->Quote($this->id) . ";";
 		}
 		else
 		{
-			$query = "SELECT * FROM #__courses WHERE cn = " . $db->Quote($this->cn) . ";";
+			$query = "SELECT * FROM #__courses WHERE alias = " . $db->Quote($this->alias) . ";";
 		}
 
 		$db->setQuery($query);
@@ -451,12 +451,12 @@ class CoursesCourse
 	}
 
 	/**
-	 * Short description for 'update'
-	 * Long description (if any) ...
+	 * Short title for 'update'
+	 * Long title (if any) ...
 	 *
-	 * @param unknown $gidNumber Parameter description (if any) ...
-	 * @param array $data Parameter description (if any) ...
-	 * @return boolean Return description (if any) ...
+	 * @param unknown $gidNumber Parameter title (if any) ...
+	 * @param array $data Parameter title (if any) ...
+	 * @return boolean Return title (if any) ...
 	 */
 	public function update()
 	{
@@ -467,7 +467,7 @@ class CoursesCourse
 			return false;
 		}
 
-		if (!is_numeric($this->gidNumber))
+		if (!is_numeric($this->id))
 		{
 			return false;
 		}
@@ -517,7 +517,7 @@ class CoursesCourse
 			}
 		}
 
-		$query .= " WHERE `gidNumber`=" . $db->Quote($this->gidNumber) . ";";
+		$query .= " WHERE `id`=" . $db->Quote($this->id) . ";";
 
 		if (($first != true) && !empty($query))
 		{
@@ -563,7 +563,7 @@ class CoursesCourse
 				}
 
 				$ulist .= $db->Quote($value);
-				$tlist .= '(' . $db->Quote($this->gidNumber) . ',' . $db->Quote($value) . ')';
+				$tlist .= '(' . $db->Quote($this->id) . ',' . $db->Quote($value) . ')';
 			}
 
 			// @FIXME: I don't have a better solution yet. But the next refactoring of this class
@@ -578,7 +578,7 @@ class CoursesCourse
 
 			if (in_array($property, array('members', 'managers')))
 			{
-				$query = "SELECT uidNumber FROM #__courses_members WHERE gidNumber=" . $this->gidNumber;
+				$query = "SELECT uidNumber FROM #__courses_members WHERE gidNumber=" . $this->id;
 				$db->setQuery($query);
 
 				// compile current list of members in this course
@@ -615,7 +615,7 @@ class CoursesCourse
 			{
 				if (in_array($property, array('members', 'managers', 'applicants', 'invitees')))
 				{
-					$query = "DELETE FROM $aux_table WHERE gidNumber=" . $db->Quote($this->gidNumber) . ";";
+					$query = "DELETE FROM $aux_table WHERE gidNumber=" . $db->Quote($this->id) . ";";
 				}
 			}
 			else
@@ -623,7 +623,7 @@ class CoursesCourse
 				if (in_array($property, array('members', 'managers', 'applicants', 'invitees')))
 				{
 					$query = "DELETE m FROM #__courses_$property AS m WHERE " . " m.gidNumber=" . 
-						$db->Quote($this->gidNumber) . " AND m.uidNumber NOT IN (" . $ulist . ");";
+						$db->Quote($this->id) . " AND m.uidNumber NOT IN (" . $ulist . ");";
 				}
 			}
 
@@ -642,7 +642,7 @@ class CoursesCourse
 
 		foreach ($aNewUserCourseEnrollments as $userid)
 		{
-			$dispatcher->trigger('onCourseUserEnrollment', array($this->gidNumber, $userid));
+			$dispatcher->trigger('onCourseUserEnrollment', array($this->id, $userid));
 		}
 
 		if ($affected > 0)
@@ -658,11 +658,11 @@ class CoursesCourse
 	}
 
 	/**
-	 * Short description for 'delete'
-	 * Long description (if any) ...
+	 * Short title for 'delete'
+	 * Long title (if any) ...
 	 *
-	 * @param unknown $course Parameter description (if any) ...
-	 * @return boolean Return description (if any) ...
+	 * @param unknown $course Parameter title (if any) ...
+	 * @return boolean Return title (if any) ...
 	 */
 	public function delete()
 	{
@@ -673,21 +673,21 @@ class CoursesCourse
 			return false;
 		}
 
-		if (!is_numeric($this->gidNumber))
+		if (!is_numeric($this->id))
 		{
 			$db->setQuery("SELECT gidNumber FROM #__courses WHERE cn=" . $db->Quote($this->cn) . ";");
 
 			$gidNumber = $db->loadResult();
 
-			if (!is_numeric($this->gidNumber))
+			if (!is_numeric($this->id))
 			{
 				return false;
 			}
 
-			$this->gidNumber = $gidNumber;
+			$this->id = $gidNumber;
 		}
 
-		$db->setQuery("DELETE FROM #__courses WHERE gidNumber=" . $db->Quote($this->gidNumber) . ";");
+		$db->setQuery("DELETE FROM #__courses WHERE gidNumber=" . $db->Quote($this->id) . ";");
 
 		$result = $db->query();
 
@@ -696,13 +696,13 @@ class CoursesCourse
 			return false;
 		}
 
-		$db->setQuery("DELETE FROM #__courses_applicants WHERE gidNumber=" . $db->Quote($this->gidNumber) . ";");
+		$db->setQuery("DELETE FROM #__courses_applicants WHERE gidNumber=" . $db->Quote($this->id) . ";");
 		$db->query();
-		$db->setQuery("DELETE FROM #__courses_invitees WHERE gidNumber=" . $db->Quote($this->gidNumber) . ";");
+		$db->setQuery("DELETE FROM #__courses_invitees WHERE gidNumber=" . $db->Quote($this->id) . ";");
 		$db->query();
-		$db->setQuery("DELETE FROM #__courses_managers WHERE gidNumber=" . $db->Quote($this->gidNumber) . ";");
+		$db->setQuery("DELETE FROM #__courses_managers WHERE gidNumber=" . $db->Quote($this->id) . ";");
 		$db->query();
-		$db->setQuery("DELETE FROM #__courses_members WHERE gidNumber=" . $db->Quote($this->gidNumber) . ";");
+		$db->setQuery("DELETE FROM #__courses_members WHERE gidNumber=" . $db->Quote($this->id) . ";");
 		$db->query();
 
 		JPluginHelper::importPlugin('user');
@@ -715,11 +715,11 @@ class CoursesCourse
 	}
 
 	/**
-	 * Short description for '__get'
-	 * Long description (if any) ...
+	 * Short title for '__get'
+	 * Long title (if any) ...
 	 *
-	 * @param string $property Parameter description (if any) ...
-	 * @return string Return description (if any) ...
+	 * @param string $property Parameter title (if any) ...
+	 * @return string Return title (if any) ...
 	 */
 	public function __get($property = null)
 	{
@@ -749,13 +749,13 @@ class CoursesCourse
 						$this->__set($key, $data);
 					}
 
-					$query = "(select uidNumber, 'invitees' AS role from #__courses_invitees where gidNumber=" . $db->Quote($this->gidNumber) . ")
+					$query = "(select uidNumber, 'invitees' AS role from #__courses_invitees where gidNumber=" . $db->Quote($this->id) . ")
 						UNION
-							(select uidNumber, 'applicants' AS role from #__courses_applicants where gidNumber=" . $db->Quote($this->gidNumber) . ")
+							(select uidNumber, 'applicants' AS role from #__courses_applicants where gidNumber=" . $db->Quote($this->id) . ")
 						UNION
-							(select uidNumber, 'members' AS role from #__courses_members where gidNumber=" . $db->Quote($this->gidNumber) . ")
+							(select uidNumber, 'members' AS role from #__courses_members where gidNumber=" . $db->Quote($this->id) . ")
 						UNION
-							(select uidNumber, 'managers' AS role from #__courses_managers where gidNumber=" . $db->Quote($this->gidNumber) . ")";
+							(select uidNumber, 'managers' AS role from #__courses_managers where gidNumber=" . $db->Quote($this->id) . ")";
 					
 					$db->setQuery($query);
 
@@ -794,11 +794,11 @@ class CoursesCourse
 	}
 
 	/**
-	 * Short description for '__set'
-	 * Long description (if any) ...
+	 * Short title for '__set'
+	 * Long title (if any) ...
 	 *
-	 * @param string $property Parameter description (if any) ...
-	 * @param unknown $value Parameter description (if any) ...
+	 * @param string $property Parameter title (if any) ...
+	 * @param unknown $value Parameter title (if any) ...
 	 * @return void
 	 */
 	public function __set($property = null, $value = null)
@@ -839,11 +839,11 @@ class CoursesCourse
 	}
 
 	/**
-	 * Short description for '__isset'
-	 * Long description (if any) ...
+	 * Short title for '__isset'
+	 * Long title (if any) ...
 	 *
-	 * @param string $property Parameter description (if any) ...
-	 * @return string Return description (if any) ...
+	 * @param string $property Parameter title (if any) ...
+	 * @return string Return title (if any) ...
 	 */
 	public function __isset($property = null)
 	{
@@ -862,10 +862,10 @@ class CoursesCourse
 	}
 
 	/**
-	 * Short description for '__unset'
-	 * Long description (if any) ...
+	 * Short title for '__unset'
+	 * Long title (if any) ...
 	 *
-	 * @param string $property Parameter description (if any) ...
+	 * @param string $property Parameter title (if any) ...
 	 * @return void
 	 */
 	public function __unset($property = null)
@@ -887,11 +887,11 @@ class CoursesCourse
 	}
 
 	/**
-	 * Short description for '_error'
-	 * Long description (if any) ...
+	 * Short title for '_error'
+	 * Long title (if any) ...
 	 *
-	 * @param string $message Parameter description (if any) ...
-	 * @param integer $level Parameter description (if any) ...
+	 * @param string $message Parameter title (if any) ...
+	 * @param integer $level Parameter title (if any) ...
 	 * @return void
 	 */
 	private function _error($message, $level = E_USER_NOTICE)
@@ -915,11 +915,11 @@ class CoursesCourse
 	}
 
 	/**
-	 * Short description for 'get'
-	 * Long description (if any) ...
+	 * Short title for 'get'
+	 * Long title (if any) ...
 	 *
-	 * @param unknown $key Parameter description (if any) ...
-	 * @return unknown Return description (if any) ...
+	 * @param unknown $key Parameter title (if any) ...
+	 * @return unknown Return title (if any) ...
 	 */
 	public function get($key)
 	{
@@ -927,12 +927,12 @@ class CoursesCourse
 	}
 
 	/**
-	 * Short description for 'set'
-	 * Long description (if any) ...
+	 * Short title for 'set'
+	 * Long title (if any) ...
 	 *
-	 * @param unknown $key Parameter description (if any) ...
-	 * @param unknown $value Parameter description (if any) ...
-	 * @return unknown Return description (if any) ...
+	 * @param unknown $key Parameter title (if any) ...
+	 * @param unknown $value Parameter title (if any) ...
+	 * @return unknown Return title (if any) ...
 	 */
 	public function set($key, $value)
 	{
@@ -940,11 +940,11 @@ class CoursesCourse
 	}
 
 	/**
-	 * Short description for '_userids'
-	 * Long description (if any) ...
+	 * Short title for '_userids'
+	 * Long title (if any) ...
 	 *
-	 * @param array $users Parameter description (if any) ...
-	 * @return mixed Return description (if any) ...
+	 * @param array $users Parameter title (if any) ...
+	 * @return mixed Return title (if any) ...
 	 */
 	private function _userids($users)
 	{
@@ -999,11 +999,11 @@ class CoursesCourse
 	}
 
 	/**
-	 * Short description for 'add'
-	 * Long description (if any) ...
+	 * Short title for 'add'
+	 * Long title (if any) ...
 	 *
-	 * @param unknown $key Parameter description (if any) ...
-	 * @param array $value Parameter description (if any) ...
+	 * @param unknown $key Parameter title (if any) ...
+	 * @param array $value Parameter title (if any) ...
 	 * @return void
 	 */
 	public function add($key = null, $value = array())
@@ -1014,11 +1014,11 @@ class CoursesCourse
 	}
 
 	/**
-	 * Short description for 'remove'
-	 * Long description (if any) ...
+	 * Short title for 'remove'
+	 * Long title (if any) ...
 	 *
-	 * @param unknown $key Parameter description (if any) ...
-	 * @param array $value Parameter description (if any) ...
+	 * @param unknown $key Parameter title (if any) ...
+	 * @param array $value Parameter title (if any) ...
 	 * @return void
 	 */
 	public function remove($key = null, $value = array())
@@ -1029,12 +1029,12 @@ class CoursesCourse
 	}
 
 	/**
-	 * Short description for 'iterate'
-	 * Long description (if any) ...
+	 * Short title for 'iterate'
+	 * Long title (if any) ...
 	 *
-	 * @param unknown $func Parameter description (if any) ...
-	 * @param string $storage Parameter description (if any) ...
-	 * @return boolean Return description (if any) ...
+	 * @param unknown $func Parameter title (if any) ...
+	 * @param string $storage Parameter title (if any) ...
+	 * @return boolean Return title (if any) ...
 	 */
 	static function iterate($func)
 	{
@@ -1060,11 +1060,11 @@ class CoursesCourse
 	}
 
 	/**
-	 * Short description for 'exists'
-	 * Long description (if any) ...
+	 * Short title for 'exists'
+	 * Long title (if any) ...
 	 *
-	 * @param unknown $course Parameter description (if any) ...
-	 * @return boolean Return description (if any) ...
+	 * @param unknown $course Parameter title (if any) ...
+	 * @return boolean Return title (if any) ...
 	 */
 	static public function exists($course, $check_system = false)
 	{
@@ -1113,11 +1113,11 @@ class CoursesCourse
 	}
 
 	/**
-	 * Short description for 'find'
-	 * Long description (if any) ...
+	 * Short title for 'find'
+	 * Long title (if any) ...
 	 *
-	 * @param array $filters Parameter description (if any) ...
-	 * @return boolean Return description (if any) ...
+	 * @param array $filters Parameter title (if any) ...
+	 * @return boolean Return title (if any) ...
 	 */
 	static function find($filters = array())
 	{
@@ -1168,7 +1168,7 @@ class CoursesCourse
 				$where_clause = "WHERE";
 			}
 			
-			$where_clause .= " (LOWER(description) LIKE '%" . $filters['search'] . "%' OR LOWER(cn) LIKE '%" . $filters['search'] . "%')";
+			$where_clause .= " (LOWER(title) LIKE '%" . $filters['search'] . "%' OR LOWER(alias) LIKE '%" . $filters['search'] . "%')";
 		}
 
 		if (isset($filters['index']) && $filters['index'] != '')
@@ -1182,7 +1182,7 @@ class CoursesCourse
 				$where_clause = "WHERE";
 			}
 			
-			$where_clause .= " (LOWER(description) LIKE '" . $filters['index'] . "%') ";
+			$where_clause .= " (LOWER(title) LIKE '" . $filters['index'] . "%') ";
 		}
 
 		if (isset($filters['authorized']) && $filters['authorized'] === 'admin')
@@ -1261,7 +1261,7 @@ class CoursesCourse
 
 		if (empty($filters['fields']))
 		{
-			$filters['fields'][] = 'cn';
+			$filters['fields'][] = 'alias';
 		}
 
 		$field = implode(',', $filters['fields']);
@@ -1275,10 +1275,10 @@ class CoursesCourse
 			switch ($filters['sortby'])
 			{
 				case 'alias':
-					$query .= 'cn ASC';
+					$query .= 'alias ASC';
 					break;
 				case 'title':
-					$query .= 'description ASC';
+					$query .= 'title ASC';
 					break;
 				default:
 					$query .= $filters['sortby'];
@@ -1313,12 +1313,12 @@ class CoursesCourse
 	}
 
 	/**
-	 * Short description for 'is_member_of'
-	 * Long description (if any) ...
+	 * Short title for 'is_member_of'
+	 * Long title (if any) ...
 	 *
-	 * @param string $table Parameter description (if any) ...
-	 * @param unknown $uid Parameter description (if any) ...
-	 * @return boolean Return description (if any) ...
+	 * @param string $table Parameter title (if any) ...
+	 * @param unknown $uid Parameter title (if any) ...
+	 * @return boolean Return title (if any) ...
 	 */
 	public function is_member_of($table, $uid)
 	{
@@ -1340,11 +1340,11 @@ class CoursesCourse
 	}
 
 	/**
-	 * Short description for 'isMember'
-	 * Long description (if any) ...
+	 * Short title for 'isMember'
+	 * Long title (if any) ...
 	 *
-	 * @param unknown $uid Parameter description (if any) ...
-	 * @return string Return description (if any) ...
+	 * @param unknown $uid Parameter title (if any) ...
+	 * @return string Return title (if any) ...
 	 */
 	public function isMember($uid)
 	{
@@ -1352,11 +1352,11 @@ class CoursesCourse
 	}
 
 	/**
-	 * Short description for 'isApplicant'
-	 * Long description (if any) ...
+	 * Short title for 'isApplicant'
+	 * Long title (if any) ...
 	 *
-	 * @param unknown $uid Parameter description (if any) ...
-	 * @return string Return description (if any) ...
+	 * @param unknown $uid Parameter title (if any) ...
+	 * @return string Return title (if any) ...
 	 */
 	public function isApplicant($uid)
 	{
@@ -1364,11 +1364,11 @@ class CoursesCourse
 	}
 
 	/**
-	 * Short description for 'isManager'
-	 * Long description (if any) ...
+	 * Short title for 'isManager'
+	 * Long title (if any) ...
 	 *
-	 * @param unknown $uid Parameter description (if any) ...
-	 * @return string Return description (if any) ...
+	 * @param unknown $uid Parameter title (if any) ...
+	 * @return string Return title (if any) ...
 	 */
 	public function isManager($uid)
 	{
@@ -1376,11 +1376,11 @@ class CoursesCourse
 	}
 
 	/**
-	 * Short description for 'isInvitee'
-	 * Long description (if any) ...
+	 * Short title for 'isInvitee'
+	 * Long title (if any) ...
 	 *
-	 * @param unknown $uid Parameter description (if any) ...
-	 * @return string Return description (if any) ...
+	 * @param unknown $uid Parameter title (if any) ...
+	 * @return string Return title (if any) ...
 	 */
 	public function isInvitee($uid)
 	{
@@ -1388,11 +1388,11 @@ class CoursesCourse
 	}
 
 	/**
-	 * Short description for 'getEmails'
-	 * Long description (if any) ...
+	 * Short title for 'getEmails'
+	 * Long title (if any) ...
 	 *
-	 * @param string $key Parameter description (if any) ...
-	 * @return array Return description (if any) ...
+	 * @param string $key Parameter title (if any) ...
+	 * @return array Return title (if any) ...
 	 */
 	public function getEmails($tbl = 'managers')
 	{
@@ -1408,7 +1408,7 @@ class CoursesCourse
 			return false;
 		}
 
-		$query = 'SELECT u.email FROM #__users AS u, #__courses_' . $tbl . ' AS gm WHERE gm.gidNumber=' . $db->Quote($this->gidNumber) . ' AND u.id=gm.uidNumber;';
+		$query = 'SELECT u.email FROM #__users AS u, #__courses_' . $tbl . ' AS gm WHERE gm.gidNumber=' . $db->Quote($this->id) . ' AND u.id=gm.uidNumber;';
 
 		$db->setQuery($query);
 
@@ -1418,12 +1418,12 @@ class CoursesCourse
 	}
 
 	/**
-	 * Short description for 'search'
-	 * Long description (if any) ...
+	 * Short title for 'search'
+	 * Long title (if any) ...
 	 *
-	 * @param string $tbl Parameter description (if any) ...
-	 * @param string $q Parameter description (if any) ...
-	 * @return mixed Return description (if any) ...
+	 * @param string $tbl Parameter title (if any) ...
+	 * @param string $q Parameter title (if any) ...
+	 * @return mixed Return title (if any) ...
 	 */
 	
 	// @FIXME: next refactoring this might be getMembers(), getInvitees(), getApplicaants(), 
@@ -1439,35 +1439,10 @@ class CoursesCourse
 
 		$db = & JFactory::getDBO();
 
-		$query = 'SELECT u.id FROM #__courses_ ' . $tbl . ' AS t,#__users AS u WHERE t.gidNumber=' . $db->Quote($this->gidNumber) . " AND u.id=t.uidNumber AND LOWER(u.name) LIKE '%" . strtolower($q) . "%';";
+		$query = 'SELECT u.id FROM #__courses_ ' . $tbl . ' AS t, #__users AS u WHERE t.gidNumber=' . $db->Quote($this->id) . " AND u.id=t.uidNumber AND LOWER(u.name) LIKE '%" . strtolower($q) . "%';";
 
 		$db->setQuery($query);
 
 		return $db->loadResultArray();
-	}
-
-	/**
-	 * Execute a task
-	 * 
-	 * @return     void
-	 */
-	public function offerings($index=null)
-	{
-		static $offerings;
-
-		if (!$offerings)
-		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'instance.php');
-			$inst = new CoursesInstance(JFactory::getDBO()); //JTable::getInstance('instance', 'CoursesTable');
-			$offerings = $inst->getCourseInstances(array(
-				'course_cn' => $this->get('cn')
-			));
-		}
-
-		if ($index !== null && is_numeric($index))
-		{
-			return (isset($offerings[$index]) ? $offerings[$index] : false);
-		}
-		return $offerings;
 	}
 }

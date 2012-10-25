@@ -55,24 +55,24 @@ class CoursesControllerInstance extends Hubzero_Controller
 		}
 
 		// Load the course page
-		$this->course = CoursesCourse::getInstance($this->gid);
+		$this->course = CoursesModelCourse::getInstance($this->gid);
 
 		// Ensure we found the course info
-		if (!$this->course || !$this->course->get('gidNumber')) 
+		if (!$this->course->exists()) 
 		{
 			JError::raiseError(404, JText::_('COURSES_NO_COURSE_FOUND'));
 			return;
 		}
 
 		// Ensure it's an allowable course type to display
-		if ($this->course->get('type') != 1 && $this->course->get('type') != 3)
+		/*if ($this->course->get('type') != 1 && $this->course->get('type') != 3)
 		{
 			JError::raiseError(404, JText::_('COURSES_NO_COURSE_FOUND'));
 			return;
-		}
+		}*/
 
 		// Ensure the course has been published or has been approved
-		if ($this->course->get('published') != 1)
+		if ($this->course->get('state') != 1)
 		{
 			JError::raiseError(404, JText::_('COURSES_NOT_PUBLISHED'));
 			return;
@@ -82,30 +82,30 @@ class CoursesControllerInstance extends Hubzero_Controller
 		if (!$this->inst)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=course&gid=' . $this->course->get('gidNumber')
+				'index.php?option=' . $this->_option . '&controller=course&gid=' . $this->course->get('id')
 			);
 			return;
 		}
 
-		$this->instance = CoursesInstance::getInstance($this->inst);
+		//$this->instance = CoursesInstance::getInstance($this->inst);
 
 		// Ensure we found the course info
-		if (!$this->instance || !$this->instance->id) 
+		if (!$this->course->offering($this->inst)) 
 		{
 			JError::raiseError(404, JText::_('COURSES_NO_COURSE_INSTANCE_FOUND'));
 			return;
 		}
 
 		// Check authorization
-		$this->_authorize('course', $this->course->get('gidNumber'));
-		$this->_authorize('instance', $this->instance->id);
+		//$this->_authorize('course', $this->course->get('gidNumber'));
+		//$this->_authorize('instance', $this->course->offering()->id);
 
 		$this->active = JRequest::getVar('active', '');
 
 		if ($this->active && $this->_task) 
 		{
-			$this->action = ($this->_task == 'instance') ? '' : $this->_task;
-			$this->_task = 'instance';
+			$this->action = ($this->_task == 'display') ? '' : $this->_task;
+			$this->_task = 'display';
 		}
 
 		//are we serving up a file
@@ -149,15 +149,16 @@ class CoursesControllerInstance extends Hubzero_Controller
 	{
 		//$this->view->setLayout('instance');
 
-		$inst = JRequest::getVar('instance', '');
-		if (!$inst)
+		//$inst = JRequest::getVar('instance', '');
+		//print_r($this->course->offering()); die();
+		if (!$this->course->offering()->available())
 		{
 			JError::raiseError(404, JText::_('COURSES_NO_COURSE_INSTANCE_FOUND'));
 			return;
 		}
 
-		$this->view->instance = CoursesInstance::getInstance($inst);
-
+		//$this->view->instance = CoursesInstance::getInstance($inst);
+		//$this->view->course = $this->course;
 		// Check authorization
 		//$authorized = $this->_authorize();
 
@@ -186,22 +187,22 @@ class CoursesControllerInstance extends Hubzero_Controller
 		$p =& Hubzero_Wiki_Parser::getInstance();
 
 		// Get the course pages if any
-		$GPages = new CoursePages($this->database);
-		$pages = $GPages->getPages($this->course->get('gidNumber'), true);
+		//$GPages = new CoursesTablePage($this->database);
+		//$pages = $GPages->getPages($this->course->get('gidNumber'), true);
 
-		if (in_array($this->view->active, array_keys($pages)))
+		if (in_array($this->view->active, array_keys($this->course->offering()->pages())))
 		{
 			$wikiconfig['pagename'] .= DS . $this->view->active;
 		}
 
 		// Push some vars to the course pages
-		$GPages->parser     = $p;
+		/*$GPages->parser     = $p;
 		$GPages->config     = $wikiconfig;
 		$GPages->course     = $this->course;
 		$GPages->authorized = 'manager'; //$authorized;
 		$GPages->tab        = $this->view->active;
-		$GPages->pages      = $pages;
-
+		$GPages->pages      = $this->course->offering()->pages();
+*/
 		// Get the content to display course pages
 
 		// Get configuration
@@ -217,8 +218,8 @@ class CoursesControllerInstance extends Hubzero_Controller
 
 		// Trigger the functions that return the areas we'll be using
 		// then add overview to array
-		$hub_course_plugins = $dispatcher->trigger('onCourseAreas', array());
-		array_unshift($hub_course_plugins, array(
+		$plugins = $dispatcher->trigger('onCourseAreas', array());
+		array_unshift($plugins, array(
 			'name'             => 'outline',
 			'title'            => JText::_('Outline'),
 			//'default_access'   => 'anyone',
@@ -247,12 +248,12 @@ class CoursesControllerInstance extends Hubzero_Controller
 				$this->config,
 				$this->course,
 				//$this->_option,
-				$this->instance,
+				$this->course->offering(),
 				//$authorized,
 				//$limit,
 				//$start,
 				$this->action,
-				$course_plugin_access,
+				//$course_plugin_access,
 				array($this->view->active)
 			)
 		);
@@ -275,7 +276,7 @@ class CoursesControllerInstance extends Hubzero_Controller
 		$this->_buildTitle();
 
 		// Build pathway
-		$this->_buildPathway($pages);
+		$this->_buildPathway($this->course->offering()->pages());
 
 		// Add the default "About" section to the beginning of the lists
 		if ($this->view->active == 'outline') 
@@ -289,7 +290,8 @@ class CoursesControllerInstance extends Hubzero_Controller
 				'layout' => $this->view->active
 			));
 			//$view->course_overview = $GPages->displayPage();
-			$view->tab = $GPages->tab;
+			//$view->tab = $GPages->tab;
+			$view->tab = $this->active;
 			$view->course   = $this->course;
 			$view->instance = $this->instance;
 			//$view->authorized = $authorized;
@@ -315,9 +317,9 @@ class CoursesControllerInstance extends Hubzero_Controller
 		$this->view->course               = $this->course;
 		$this->view->user                 = $this->juser;
 		$this->view->config               = $this->config;
-		$this->view->hub_course_plugins   = $hub_course_plugins;
+		$this->view->plugins              = $plugins;
 		$this->view->course_plugin_access = $course_plugin_access;
-		$this->view->pages                = $pages;
+		$this->view->pages                = $this->course->offering()->pages();
 		$this->view->sections             = $sections;
 		//$this->view->tab                  = $tab;
 		//$this->view->authorized           = $authorized;

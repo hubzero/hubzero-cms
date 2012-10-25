@@ -52,7 +52,7 @@ else
 }
 
 //if we are in edit mode we want to redirect back to course
-if($this->task == "edit") 
+if ($this->task == "edit") 
 {
 	$link = JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->get('cn'));
 	$title = "Back to Course";
@@ -69,10 +69,20 @@ else
 <div id="content-header-extra">
 	<ul id="useroptions">
 		<li class="last">
-			<a class="course" href="<?php echo $link; ?>" title="<?php echo $title; ?>"><?php echo $title; ?></a>
+			<a class="prev btn" href="<?php echo $link; ?>" title="<?php echo $title; ?>"><?php echo $title; ?></a>
 		</li>
 	</ul>
 </div><!-- / #content-header-extra -->
+
+<div id="steps" class="section">
+	<ol class="active-2">
+		<li id="step-1" class="completed">Describe your course</li>
+		<li id="step-2" class="active">Add an offering</li>
+		<li id="step-3">Add assets to your offering</li>
+		<li id="step-4">Fill out a syllabus</li>
+		<li id="step-5">Make public</li>
+	</ol>
+</div>
 
 <div class="main section">
 	<?php
@@ -87,20 +97,21 @@ else
 	
 	<form action="index.php" method="post" id="hubForm">
 		<div class="explaination">
-			<div id="asset_browser">
-				<p><strong><?php echo JText::_('Upload files or images:'); ?></strong></p>
-				<iframe width="100%" height="300" name="filer" id="filer" src="index.php?option=<?php echo $this->option; ?>&amp;no_html=1&amp;task=media&amp;listdir=<?php echo $this->lid; ?>"></iframe>
-			</div><!-- / .asset_browser -->
+			<h3>Looking for a course?</h3>
+			<p>Find courses here and stuff.</p>
+			
+			<h3>What if something?</h3>
+			<p>Then something else. Duh.</p>
 		</div>
 		<fieldset id="top_box">
-			<h3><?php echo JText::_('COURSES_EDIT_DETAILS'); ?></h3>
+			<legend><?php echo JText::_('Describing your course'); ?></legend>
 <?php if ($this->task != 'new') { ?>
 			<input name="cn" type="hidden" value="<?php echo $this->course->get('cn'); ?>" />
 <?php } else { ?>
 			<label class="course_cn_label">
-				<?php echo JText::_('COURSES_ID'); ?> <span class="required"><?php echo JText::_('COURSES_REQUIRED'); ?></span>
+				<?php echo JText::_('Course identifier'); ?> <span class="required"><?php echo JText::_('COURSES_REQUIRED'); ?></span>
 				<input name="cn" id="course_cn_field" type="text" size="35" value="<?php echo $this->course->get('cn'); ?>" autocomplete="off" /> 
-				<span class="hint"><?php echo JText::_('COURSES_ID_HINT'); ?></span>
+				<span class="hint"><?php echo JText::_('This is a short, alpha-numeric (no spaces) identifier used for URLs, catalogs, etc. Example: biology101'); ?></span>
 			</label>
 <?php } ?>
 
@@ -108,20 +119,9 @@ else
 				<?php echo JText::_('COURSES_TITLE'); ?> <span class="required"><?php echo JText::_('COURSES_REQUIRED'); ?></span>
 				<input type="text" name="description" size="35" value="<?php echo stripslashes($this->course->get('description')); ?>" />
 			</label>
-			<label>
-				<?php echo JText::_('COURSES_FIELD_TAGS'); ?> <span class="optional"><?php echo JText::_('COURSES_OPTIONAL'); ?></span>
-				
-				<?php if (count($tf) > 0) {
-					echo $tf[0];
-				} else { ?>
-					<input type="text" name="tags" value="<?php echo $this->tags; ?>" />
-				<?php } ?>
-
-				<span class="hint"><?php echo JText::_('COURSES_FIELD_TAGS_HINT'); ?></span>
-			</label>
 
 			<label for="public_desc">
-				<?php echo JText::_('COURSES_EDIT_PUBLIC_TEXT'); ?> <span class="optional"><?php echo JText::_('COURSES_OPTIONAL'); ?></span>
+				<?php echo JText::_('Brief description'); ?> <span class="optional"><?php echo JText::_('COURSES_OPTIONAL'); ?></span>
 				
 				<?php
 					ximport('Hubzero_Wiki_Editor');
@@ -129,19 +129,39 @@ else
 					echo $editor->display('public_desc', 'public_desc', stripslashes($this->course->get('public_desc')), '', '50', '15');
 				?>
 				<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
+			
+				<dl>
+					<dt>What this is:</dt>
+					<dd>A brief, one or two paragraphs about your course. Think of this as the text you would see in a course catalog.</dd>
+
+					<dt>What this is <i>not</i>:</dt>
+					<dd>A syllabus or detailed outline. You will have an opportunity to fill that out later.</dd>
+				</dl>
 			</label>
-			<label for="private_desc">
+			<!-- <label for="private_desc">
 				<?php echo JText::_('COURSES_EDIT_PRIVATE_TEXT'); ?> <span class="optional"><?php echo JText::_('COURSES_OPTIONAL'); ?></span>
 				<?php
 					echo $editor->display('private_desc', 'private_desc', stripslashes($this->course->get('private_desc')), '', '50', '15');
 				?>
 				<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
+			</label> -->
+			
+			<label>
+				<?php echo JText::_('Tags'); ?> <span class="optional"><?php echo JText::_('COURSES_OPTIONAL'); ?></span>
+				
+				<?php if (count($tf) > 0) {
+					echo $tf[0];
+				} else { ?>
+					<input type="text" name="tags" value="<?php echo $this->tags; ?>" />
+				<?php } ?>
+
+				<span class="hint">These are keywords that describe your course and will help people find it when browsing, searching, or viewing related content. <?php echo JText::_('COURSES_FIELD_TAGS_HINT'); ?></span>
 			</label>
 		</fieldset>
 		<div class="clear"></div>
-
+<!-- 
 		<fieldset>
-			<h3><?php echo JText::_('COURSES_EDIT_MEMBERSHIP'); ?></h3>
+			<legend><?php echo JText::_('COURSES_EDIT_MEMBERSHIP'); ?></legend>
 			<p><?php echo JText::_('COURSES_EDIT_CREDENTIALS_EXPLANATION'); ?></p>
 			<fieldset>
 				<legend><?php echo JText::_('Who can join?'); ?> <span class="required"><?php echo JText::_('COURSES_REQUIRED'); ?></span></legend>
@@ -207,7 +227,7 @@ else
 				</fieldset>
 			</fieldset>                
 		<?php endif; ?>
-		
+-->
 		<div class="clear"></div>
 		<input type="hidden" name="published" value="<?php echo $this->course->get('published'); ?>" />
 		<input type="hidden" name="lid" value="<?php echo $this->lid; ?>" />

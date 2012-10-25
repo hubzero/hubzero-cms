@@ -104,12 +104,12 @@ class plgCoursesForum extends Hubzero_Plugin
 				return $arr;
 			}
 		}
-
+		$this->config = $config;
 		// Determine if we need to return any HTML (meaning this is the active plugin)
 		if ($return == 'html') 
 		{
 			//set course members plugin access level
-			$course_plugin_acl = $access[$active];
+			//$course_plugin_acl = $access[$active];
 
 			//Create user object
 			$this->juser = JFactory::getUser();

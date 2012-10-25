@@ -134,10 +134,10 @@ function CoursesParseRoute($segments)
 
 	if (isset($vars['gid']))
 	{
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'instance.php');
-		$inst = new CoursesInstance(JFactory::getDBO());
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'instance.php');
+		$inst = new CoursesTableInstance(JFactory::getDBO());
 		$insts = $inst->getCourseInstances(array(
-			'course_cn' => $vars['gid']
+			'course_alias' => $vars['gid']
 		));
 		//$course = CoursesCourse::getInstance($vars['gid']);
 		if ($insts && count($insts) == 1)
@@ -177,9 +177,9 @@ function CoursesParseRoute($segments)
 			//if (isset($vars['gid']))
 			if (!isset($vars['instance']) && isset($vars['gid']))
 			{
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'instance.php');
-				$inst = new CoursesInstance(JFactory::getDBO());
-				$insts = $inst->getCourseInstances(array('course_cn' => $vars['gid']));
+				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'instance.php');
+				$inst = new CoursesTableInstance(JFactory::getDBO());
+				$insts = $inst->getCourseInstances(array('course_alias' => $vars['gid']));
 				if ($insts && count($insts) == 1)
 				{
 					JRequest::setVar('instance', $insts[0]->alias);

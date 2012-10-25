@@ -31,11 +31,27 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'course.php');
+
 /**
  * Courses model class for a course
  */
 class CoursesModelCourse extends JObject
 {
+	/**
+	 * Flag for if authorization checks have been run
+	 * 
+	 * @var mixed
+	 */
+	private $_authorized = false;
+
+	/**
+	 * JUser
+	 * 
+	 * @var object
+	 */
+	private $_creator = NULL;
+
 	/**
 	 * JDatabase
 	 * 
@@ -51,31 +67,60 @@ class CoursesModelCourse extends JObject
 	private $_data = array();
 
 	/**
+	 * Description for '_list_keys'
+	 *
+	 * @var array
+	 */
+	static $_list_keys = array('members', 'managers', 'applicants', 'invitees');
+
+	/**
 	 * Constructor
 	 * 
-	 * @param      integer $id  Resource ID or alias
-	 * @param      object  &$db JDatabase
+	 * @param      integer $id Course ID or alias
 	 * @return     void
 	 */
 	public function __construct($oid)
 	{
 		$this->_db = JFactory::getDBO();
 
-		$this->course = new CoursesCourse($this->_db);
-		$this->course->load($oid);
+		//$this->course = JTable::getInstance('course', 'CoursesTable');
+		$this->course = new CoursesTableCourse($this->_db);
+
+		if (is_numeric($oid) || is_string($oid))
+		{
+			$this->course->load($oid);
+		}
+		else if (is_object($oid))
+		{
+			$this->course->bind($oid);
+		}
+		else if (is_array($oid))
+		{
+			$this->course->bind($oid);
+		}
+
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+
+		//$this->params = JComponentHelper::getParams('com_courses');
+		//$this->params->merge(new $paramsClass($this->course->params));
+
+		$this->params = new $paramsClass($this->course->get('params'));
 	}
 
 	/**
-	 * Returns a reference to a wiki page object
+	 * Returns a reference to a course model
 	 *
 	 * This method must be invoked as:
-	 *     $inst = CoursesInstance::getInstance($alias);
+	 *     $offering = CoursesModelCourse::getInstance($alias);
 	 *
-	 * @param      string $pagename The page to load
-	 * @param      string $scope    The page scope
-	 * @return     object WikiPage
+	 * @param      mixed $oid Course ID (int) or alias (string)
+	 * @return     object CoursesModelCourse
 	 */
-	static function &getInstance($oid=null)
+	static function &getInstance($oid=0)
 	{
 		static $instances;
 
@@ -86,9 +131,7 @@ class CoursesModelCourse extends JObject
 
 		if (!isset($instances[$oid])) 
 		{
-			$inst = new CoursesModelCourse($oid);
-
-			$instances[$oid] = $inst;
+			$instances[$oid] = new CoursesModelCourse($oid);
 		}
 
 		return $instances[$oid];
@@ -132,37 +175,151 @@ class CoursesModelCourse extends JObject
 	}
 
 	/**
-	 * Method to set the article id
+	 * Returns a property of the object or the default value if the property is not set.
 	 *
 	 * @access	public
-	 * @param	int	Article ID number
-	 */
-	/*public function setId($id)
+	 * @param	string $property The name of the property
+	 * @param	mixed  $default The default value
+	 * @return	mixed The value of the property
+	 * @see		getProperties()
+	 * @since	1.5
+ 	 */
+	public function get($property, $default=null)
 	{
-		// Set new course ID and wipe data
-		$this->_id = $id;
-		if ($id)
+		if (in_array($property, self::$_list_keys))
 		{
-			$this->_course = CoursesCourse::getInstance($this->_id);
+			if (!array_key_exists($property, get_object_vars($this->course)))
+			{
+				if (is_object($this->_db))
+				{
+					$membership = array(
+						'applicants' => array(), 
+						'invitees'   => array(), 
+						'members'    => array(), 
+						'managers'   => array()
+					);
+
+					foreach ($membership as $key => $data)
+					{
+						$this->course->set($key, $data);
+					}
+
+					$query = "(select uidNumber, 'invitees' AS role from #__courses_invitees where gidNumber=" . $this->_db->Quote($this->course->get('id')) . ")
+						UNION
+							(select uidNumber, 'applicants' AS role from #__courses_applicants where gidNumber=" . $this->_db->Quote($this->course->get('id')) . ")
+						UNION
+							(select uidNumber, 'members' AS role from #__courses_members where gidNumber=" . $this->_db->Quote($this->course->get('id')) . ")
+						UNION
+							(select uidNumber, 'managers' AS role from #__courses_managers where gidNumber=" . $this->_db->Quote($this->course->get('id')) . ")";
+
+					$this->_db->setQuery($query);
+
+					if (($results = $this->_db->loadObjectList()))
+					{
+						foreach ($results as $result)
+						{
+							if (isset($membership[$result->role]))
+							{
+								$membership[$result->role][] = $result->uidNumber;
+							}
+						}
+
+						foreach ($membership as $key => $data)
+						{
+							$this->course->set($key, $data);
+						}
+					}
+				}
+			}
 		}
-	}*/
+		if (isset($this->course->$property)) 
+		{
+			return $this->course->$property;
+		}
+		return $default;
+	}
 
 	/**
-	 * Execute a task
+	 * Modifies a property of the object, creating it if it does not already exist.
+	 *
+	 * @access	public
+	 * @param	string $property The name of the property
+	 * @param	mixed  $value The value of the property to set
+	 * @return	mixed Previous value of the property
+	 * @see		setProperties()
+	 * @since	1.5
+	 */
+	public function set($property, $value = null)
+	{
+		$previous = isset($this->course->$property) ? $this->course->$property : null;
+		$this->course->$property = $value;
+		return $previous;
+	}
+
+	/**
+	 * Check if the course exists
+	 * 
+	 * @param      mixed $idx Index value
+	 * @return     array
+	 */
+	public function exists()
+	{
+		if ($this->course->get('id') && $this->course->get('id') > 0) 
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Get the creator of this entry
+	 * 
+	 * Accepts an optional property name. If provided
+	 * it will return that property value. Otherwise,
+	 * it returns the entire JUser object
+	 *
+	 * @return     mixed
+	 */
+	public function creator($property=null)
+	{
+		if (!isset($this->_creator) || !is_object($this->_creator))
+		{
+			$this->_creator = JUser::getInstance($this->course->created_by);
+		}
+		if ($property && is_a($this->_creator, 'JUser'))
+		{
+			return $this->_creator->get($property);
+		}
+		return $this->_creator;
+	}
+
+	/**
+	 * Set and get a specific offering
 	 * 
 	 * @return     void
 	 */
-	/*public function offerings()
+	public function offering($id=null)
 	{
-		if (!$this->_offerings)
+		if (!isset($this->offering) || ($id !== null && $this->offering->get('id') != $id && $this->offering->get('alias') != $id))
 		{
-			$inst = JTable::getInstance('instance', 'CoursesTable');
-			$this->_offerings = $inst->getCourseInstances(array(
-				'course_cn' => $this->course->get('cn')
-			));
+			$this->offering = null;
+			foreach ($this->offerings() as $key => $offering)
+			{
+				if ($offering->get('id') == $id || $offering->get('alias') == $id)
+				{
+					if (!is_a($offering, 'CoursesModelOffering'))
+					{
+						$offering = new CoursesModelOffering($offering);
+						// Set the offering to the model
+						$this->offerings($key, $offering);
+					}
+					$this->offering = $offering;
+					break;
+				}
+			}
 		}
-		return $this->_offerings;
-	}*/
+		return $this->offering;
+	}
 
 	/**
 	 * Get a list of offerings for a course
@@ -173,7 +330,7 @@ class CoursesModelCourse extends JObject
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
-	public function offerings($idx=null)
+	public function offerings($idx=null, $model=null)
 	{
 		if (!$this->exists()) 
 		{
@@ -184,15 +341,19 @@ class CoursesModelCourse extends JObject
 		{
 			$this->offerings = array();
 
-			$inst = JTable::getInstance('instance', 'CoursesTable');
-			$this->_offerings = $inst->getCourseInstances(array(
-				'course_cn' => $this->course->get('cn')
-			));
+			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'instance.php');
 
-			$this->_db->setQuery($sql);
-			if (($results = $this->_db->loadObjectList()))
+			//$inst = JTable::getInstance('instance', 'CoursesTable');
+			$tbl = new CoursesTableInstance($this->_db);
+			if (($results = $tbl->getCourseInstances(array('course_id' => $this->course->get('id')))))
 			{
-				$this->contributors = $results;
+				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
+
+				foreach ($results as $key => $result)
+				{
+					$results[$key] = new CoursesModelOffering($result);
+				}
+				$this->offerings = $results;
 			}
 		}
 
@@ -202,6 +363,10 @@ class CoursesModelCourse extends JObject
 			{
 				if (isset($this->offerings[$idx]))
 				{
+					if ($model && is_a($model, 'CoursesModelOffering'))
+					{
+						$this->offerings[$idx] = $model;
+					}
 					return $this->offerings[$idx];
 				}
 				else
@@ -224,13 +389,22 @@ class CoursesModelCourse extends JObject
 						return $ids;
 					break;
 
-					case 'name':
-						$names = array();
+					case 'alias':
+						$aliases = array();
 						foreach ($this->offerings as $offering)
 						{
-							$names[] = stripslashes($offering->title);
+							$aliases[] = stripslashes($offering->alias);
 						}
-						return $names;
+						return $aliases;
+					break;
+
+					case 'title':
+						$title = array();
+						foreach ($this->offerings as $offering)
+						{
+							$title[] = stripslashes($offering->title);
+						}
+						return $title;
 					break;
 
 					default:
@@ -241,6 +415,92 @@ class CoursesModelCourse extends JObject
 		}
 
 		return $this->offerings;
+	}
+
+	/**
+	 * Check a user's authorization
+	 * 
+	 * @param      string $action Action to check
+	 * @return     boolean True if authorized, false if not
+	 */
+	public function access($action='view')
+	{
+		if (!$this->_authorized)
+		{
+			// Set NOT viewable by default
+			// We need to ensure the course is published first
+			$this->params->set('access-view-course', false);
+
+			if ($this->exists() && $this->get('state') == 1)
+			{
+				$this->params->set('access-view-course', true);
+			}
+
+			$juser = JFactory::getUser();
+			if ($juser->get('guest'))
+			{
+				$this->_authorized = true;
+			}
+			else
+			{
+				// Anyone logged in can create a course
+				$this->params->set('access-create-course', true);
+
+				// Check if they're a site admin
+				if (version_compare(JVERSION, '1.6', 'lt'))
+				{
+					if ($juser->authorize('com_courses', 'manage')) 
+					{
+						$this->params->set('access-admin-course', true);
+						$this->params->set('access-manage-course', true);
+						$this->params->set('access-delete-course', true);
+						$this->params->set('access-edit-course', true);
+						$this->params->set('access-edit-state-course', true);
+						$this->params->set('access-edit-own-course', true);
+					}
+				}
+				else 
+				{
+					$this->params->set('access-admin-course', $juser->authorise('core.admin', $this->get('id')));
+					$this->params->set('access-manage-course', $juser->authorise('core.manage', $this->get('id')));
+					$this->params->set('access-delete-course', $juser->authorise('core.manage', $this->get('id')));
+					$this->params->set('access-edit-course', $juser->authorise('core.manage', $this->get('id')));
+					$this->params->set('access-edit-state-course', $juser->authorise('core.manage', $this->get('id')));
+					$this->params->set('access-edit-own-course', $juser->authorise('core.manage', $this->get('id')));
+				}
+
+				// If they're not an admin
+				if (!$this->params->get('access-admin-course') 
+				 && !$this->params->get('access-manage-course'))
+				{
+					// Does the course exist?
+					if (!$this->exists())
+					{
+						// Give editing access if the course doesn't exist
+						// i.e., it's a new course
+						$this->params->set('access-view-course', true);
+						$this->params->set('access-delete-course', true);
+						$this->params->set('access-edit-course', true);
+						$this->params->set('access-edit-state-course', true);
+						$this->params->set('access-edit-own-course', true);
+					}
+					// Check if they're the course creator or course manager
+					else if ($this->get('created_by') == $juser->get('id') 
+						  || in_array($juser->get('id'), $this->get('managers'))) 
+					{
+						// Give full access
+						$this->params->set('access-manage-course', true);
+						$this->params->set('access-delete-course', true);
+						$this->params->set('access-edit-course', true);
+						$this->params->set('access-edit-state-course', true);
+						$this->params->set('access-edit-own-course', true);
+					}
+				}
+
+				$this->_authorized = true;
+			}
+		}
+		return $this->params->get('access-' . strtolower($action) . '-course');
 	}
 }
 

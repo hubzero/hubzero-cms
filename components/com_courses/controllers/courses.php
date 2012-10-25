@@ -218,7 +218,7 @@ class CoursesControllerCourses extends Hubzero_Controller
 		$this->view->filters['limit']  = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
 		$this->view->filters['limit']  = ($this->view->filters['limit']) ? $this->view->filters['limit'] : 'all';
 		$this->view->filters['start']  = JRequest::getInt('limitstart', 0);
-		$this->view->filters['fields'] = array('cn', 'description', 'published', 'gidNumber', 'type', 'public_desc', 'join_policy');
+		$this->view->filters['fields'] = array('alias', 'title', 'state', 'id', 'type', 'public_desc', 'join_policy');
 
 		// Get a list of all courses
 		$this->view->courses = CoursesCourse::find($this->view->filters);

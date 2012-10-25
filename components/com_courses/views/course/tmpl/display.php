@@ -37,7 +37,7 @@ $database =& JFactory::getDBO();
 ?>
 <div id="content-header">
 	<h2>
-		<?php echo $this->escape(stripslashes($this->course->get('description'))); ?>
+		<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
 	</h2>
 </div>
 <div id="content-header-extra">
@@ -82,7 +82,7 @@ if ($this->instances)
 ?>
 			<tr>
 				<th>
-					<a class="inst-title" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('cn') . '&instance=' . $instance->alias); ?>">
+					<a class="inst-title" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&instance=' . $instance->alias); ?>">
 						<?php echo $this->escape(stripslashes($instance->title)); ?>
 					</a>
 				</th>

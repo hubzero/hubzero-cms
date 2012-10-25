@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Table class for logging course actions
  */
-class XCourseLog extends JTable
+class CoursesTableLog extends JTable
 {
 	/**
 	 * int(11) Primary key

@@ -370,10 +370,10 @@ class Hubzero_User_Helper
 		}
 
 		// Get all courses the user is a member of
-		$query1 = "SELECT g.gidNumber, g.published, g.cn, g.description, g.join_policy, '1' AS registered, '0' AS regconfirmed, '0' AS manager FROM #__courses AS g, #__courses_applicants AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
-		$query2 = "SELECT g.gidNumber, g.published, g.cn, g.description, g.join_policy, '1' AS registered, '1' AS regconfirmed, '0' AS manager FROM #__courses AS g, #__courses_members AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
-		$query3 = "SELECT g.gidNumber, g.published, g.cn, g.description, g.join_policy, '1' AS registered, '1' AS regconfirmed, '1' AS manager FROM #__courses AS g, #__courses_managers AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
-		$query4 = "SELECT g.gidNumber, g.published, g.cn, g.description, g.join_policy, '0' AS registered, '1' AS regconfirmed, '0' AS manager FROM #__courses AS g, #__courses_invitees AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
+		$query1 = "SELECT g.id, g.state, g.alias, g.title, g.join_policy, '1' AS registered, '0' AS regconfirmed, '0' AS manager FROM #__courses AS g, #__courses_applicants AS m WHERE $g m.gidNumber=g.id AND m.uidNumber=".$uid;
+		$query2 = "SELECT g.id, g.state, g.alias, g.title, g.join_policy, '1' AS registered, '1' AS regconfirmed, '0' AS manager FROM #__courses AS g, #__courses_members AS m WHERE $g m.gidNumber=g.id AND m.uidNumber=".$uid;
+		$query3 = "SELECT g.id, g.state, g.alias, g.title, g.join_policy, '1' AS registered, '1' AS regconfirmed, '1' AS manager FROM #__courses AS g, #__courses_managers AS m WHERE $g m.gidNumber=g.id AND m.uidNumber=".$uid;
+		$query4 = "SELECT g.id, g.state, g.alias, g.title, g.join_policy, '0' AS registered, '1' AS regconfirmed, '0' AS manager FROM #__courses AS g, #__courses_invitees AS m WHERE $g m.gidNumber=g.id AND m.uidNumber=".$uid;
 
 		switch ($type)
 		{
@@ -381,16 +381,16 @@ class Hubzero_User_Helper
 				$query = "( $query1 ) UNION ( $query2 ) UNION ( $query3 ) UNION ( $query4 )";
 			break;
 			case 'applicants':
-				$query = $query1." ORDER BY description, cn";
+				$query = $query1." ORDER BY title, alias";
 			break;
 			case 'members':
-				$query = $query2." ORDER BY description, cn";
+				$query = $query2." ORDER BY title, alias";
 			break;
 			case 'managers':
-				$query = $query3." ORDER BY description, cn";
+				$query = $query3." ORDER BY title, alias";
 			break;
 			case 'invitees':
-				$query = $query4." ORDER BY description, cn";
+				$query = $query4." ORDER BY title, alias";
 			break;
 		}
 

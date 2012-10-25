@@ -62,11 +62,11 @@ class Hubzero_Course_Helper
 		$database =& JFactory::getDBO();
 		
 		//query
-		$sql = "SELECT g.gidNumber, g.cn, g.description, g.public_desc, 
-				(SELECT COUNT(*) FROM #__courses_members AS gm WHERE gm.gidNumber=g.gidNumber) AS members
+		$sql = "SELECT g.id, g.alias, g.title, g.public_desc, 
+				(SELECT COUNT(*) FROM #__courses_members AS gm WHERE gm.gidNumber=g.id) AS members
 				FROM #__courses AS g 
 				WHERE g.type=1
-				AND g.published=1
+				AND g.state=1
 				AND g.privacy=0
 				ORDER BY members DESC";
 		
@@ -102,15 +102,15 @@ class Hubzero_Course_Helper
 		{
 			foreach ($usercourses as $ug)
 			{
-				$mycourses[] = $ug->gidNumber;
+				$mycourses[] = $ug->id;
 			}
 		}
 		
 		//query the databse for all published, type "HUB" courses
-		$sql = "SELECT g.gidNumber, g.cn, g.description, g.public_desc 
+		$sql = "SELECT g.id, g.alias, g.title, g.public_desc 
 				FROM #__courses AS g
 				WHERE g.type=1
-				AND g.published=1";
+				AND g.state=1";
 		$database->setQuery( $sql );
 		
 		//get all courses
@@ -120,7 +120,7 @@ class Hubzero_Course_Helper
 		foreach($courses as $k => $course)
 		{
 			//get the courses tags
-			$course->tags = $gt->get_tag_string( $course->gidNumber );
+			$course->tags = $gt->get_tag_string( $course->id );
 			$course->tags = array_map("trim", explode(",", $course->tags));
 			
 			//get common tags
@@ -131,7 +131,7 @@ class Hubzero_Course_Helper
 			
 			//if we dont have a match remove course from return results
 			//or if we are already a member of the course remove from return results
-			if(count($course->matches) < 1 || in_array($course->gidNumber, $mycourses))
+			if(count($course->matches) < 1 || in_array($course->id, $mycourses))
 			{
 				unset($courses[$k]);
 			}
@@ -169,7 +169,7 @@ class Hubzero_Course_Helper
 		foreach($courses as $course)
 		{
 			//get the Hubzero Course Object
-			$hg = Hubzero_Course::getInstance( $course->gidNumber );
+			$hg = CoursesCourse::getInstance( $course->id );
 			
 			//
 			$gt = new CoursesTags( $database );
@@ -180,11 +180,11 @@ class Hubzero_Course_Helper
 			//build the wiki config
 			$wikiconfig = array(
 				'option'   => $this->option,
-				'scope'    => $hg->cn.DS.'wiki',
+				'scope'    => $hg->alias.DS.'wiki',
 				'pagename' => 'course',
-				'pageid'   => $hg->gidNumber,
+				'pageid'   => $hg->id,
 				'filepath' => $config->get('uploadpath'),
-				'domain'   => $hg->cn
+				'domain'   => $hg->alias
 			);
 			
 			//get the column were on
@@ -236,7 +236,7 @@ class Hubzero_Course_Helper
 			//get the course logo
 			if($hg->logo)
 			{
-				$logo = $config->get('uploadpath') . DS . $hg->gidNumber . DS . $hg->logo;
+				$logo = $config->get('uploadpath') . DS . $hg->id . DS . $hg->logo;
 			}
 			else 
 			{
@@ -248,7 +248,7 @@ class Hubzero_Course_Helper
 				$html .= "<div class=\"course-list\">";
 					if($display_logos)
 					{
-						$html .= "<div class=\"logo\"><img src=\"{$logo}\" alt=\"{$hg->description}\" /></div>";
+						$html .= "<div class=\"logo\"><img src=\"{$logo}\" alt=\"{$hg->title}\" /></div>";
 						$d_cls = "-w-logo";
 					}
 					else
@@ -256,7 +256,7 @@ class Hubzero_Course_Helper
 						$d_cls = "";
 					}
 					$html .= "<div class=\"details{$d_cls}\">";
-						$html .= "<h3><a href=\"/courses/{$course->cn}\">{$hg->description}</a></h3>";
+						$html .= "<h3><a href=\"/courses/{$course->alias}\">{$hg->title}</a></h3>";
 						if($gdescription)
 						{
 							$html .= "<p>{$gdescription}</p>";
@@ -304,7 +304,7 @@ class Hubzero_Course_Helper
 		
 		$db = JFactory::getDBO();
 		
-		$sql = 'SELECT gidNumber FROM #__courses_inviteemails WHERE email=' . $db->Quote($email) . ';';
+		$sql = 'SELECT id FROM #__courses_inviteemails WHERE email=' . $db->Quote($email) . ';';
 		
 		$db->setQuery($sql);
 		
@@ -329,7 +329,7 @@ class Hubzero_Course_Helper
 		$values = rtrim($values,',');
 		$gids = rtrim($gids,',');
 		
-		$sql = 'INSERT INTO #__courses_invitees (gidNumber,uidNumber) VALUES ' . $values . ';';
+		$sql = 'INSERT INTO #__courses_invitees (id,uidNumber) VALUES ' . $values . ';';
 
 		$db->setQuery($sql);
 		
@@ -340,7 +340,7 @@ class Hubzero_Course_Helper
 			return false;
 		}
 		
-		$sql = 'DELETE FROM #__courses_inviteemails WHERE email=' . $db->Quote($email) . ' AND gidNumber IN (' . $gids . ');';
+		$sql = 'DELETE FROM #__courses_inviteemails WHERE email=' . $db->Quote($email) . ' AND id IN (' . $gids . ');';
 		
 		$db->setQuery($sql);
 		
@@ -399,7 +399,7 @@ class Hubzero_Course_Helper
 				$access = $access_levels[$cat['name']];
 				
 				//menu link
-				$link = JRoute::_('index.php?option=com_courses&gid='.$course->get("cn").'&instance=' . $instance->alias . '&active='.$active);
+				$link = JRoute::_('index.php?option=com_courses&gid='.$course->get("alias").'&instance=' . $instance->alias . '&active='.$active);
 				
 				//Are we on the overview tab with sub course pages?
 				if($cat['name'] == 'overview' && count($course_pages) > 0)
@@ -427,7 +427,7 @@ class Hubzero_Course_Helper
 						//page vars
 						$title = $page['title'];
 						$cls = ($true_active_tab == $page['url']) ? 'active' : '';
-						$link = JRoute::_('index.php?option=com_courses&gid='.$course->get("cn").'&active='.$page['url']);
+						$link = JRoute::_('index.php?option=com_courses&gid='.$course->get("alias").'&active='.$page['url']);
 						
 						//page menu item
 						if(($page_access == 'registered' && $juser->get('guest')) || ($page_access == 'members' && !in_array($juser->get("id"), $course->get('members'))))
@@ -511,7 +511,7 @@ class Hubzero_Course_Helper
 		
 		$db = & JFactory::getDBO();
 		
-		$query = "SELECT uidNumber FROM #__courses_roles as r, #__courses_member_roles as m WHERE r.id='" . $role . "' AND r.id=m.role AND r.gidNumber='" . $course->gidNumber . "'";
+		$query = "SELECT uidNumber FROM #__courses_roles as r, #__courses_member_roles as m WHERE r.id='" . $role . "' AND r.id=m.role AND r.id='" . $course->id . "'";
 		
 		$db->setQuery($query);
 		

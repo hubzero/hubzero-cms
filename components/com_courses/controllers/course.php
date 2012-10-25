@@ -57,7 +57,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		}*/
 
 		// Load the course page
-		$this->course = CoursesCourse::getInstance($this->gid);
+		$this->course = CoursesModelCourse::getInstance($this->gid);
 
 		// Ensure we found the course info
 		/*if (!$this->course || !$this->course->get('gidNumber')) 
@@ -81,34 +81,24 @@ class CoursesControllerCourse extends Hubzero_Controller
 		}*/
 
 		// Check authorization
-		$this->_authorize('course', $this->course->get('gidNumber'));
+		//$this->_authorize('course', $this->course->gidNumber);
 		//$this->_authorize('page');
 
-		$this->active = JRequest::getVar('active', '');
+		/*$this->active = JRequest::getVar('active', '');
 
 		if ($this->active && $this->_task) 
 		{
 			$this->action = ($this->_task == 'instance') ? '' : $this->_task;
 			$this->_task = 'instance';
 		}
-		/*if ($this->_task == '') 
+		if ($this->_task == '') 
 		{
 			$this->_task = 'intro';
 		}*/
 
 		//are we serving up a file
-		$uri = $_SERVER['REQUEST_URI'];
+		/*$uri = $_SERVER['REQUEST_URI'];
 		$name = substr(strrchr($uri, '/'), 1);
-		/*if (strstr($uri, 'Image:')) 
-		{
-			$file = strstr($uri, 'Image:');
-			$this->_task = 'download';
-		}
-		elseif (strstr($uri, 'File:'))
-		{
-			$file = strstr($uri, 'File:');
-			$this->_task = 'download';
-		}*/
 		
 		if (substr(strtolower($name), 0, strlen('image:')) == 'image:'
 		 || substr(strtolower($name), 0, strlen('file:')) == 'file:') 
@@ -117,7 +107,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 				'index.php?option=' . $this->_option . '&controller=media&task=download&file=' . $file
 			);
 			return;
-		}
+		}*/
 
 		//$this->registerTask('__default', 'intro');
 
@@ -206,8 +196,8 @@ class CoursesControllerCourse extends Hubzero_Controller
 
 		if ($this->gid) 
 		{
-			$course = new CoursesCourse();
-			$this->course->read($this->gid);
+			//$course = new CoursesCourse();
+			//$this->course->read($this->gid);
 
 			$this->_title = JText::_('COURSE') . ': ' . stripslashes($this->course->get('description'));
 		}
@@ -240,7 +230,14 @@ class CoursesControllerCourse extends Hubzero_Controller
 	 */
 	public function displayTask()
 	{
-		$inst = new CoursesInstance($this->database);
+		if (!$this->course->access('view'))
+		{
+			JError::raiseError(404, JText::_('COURSES_NO_COURSE_FOUND'));
+			return;
+		}
+
+		$this->view->instances = $this->course->offerings();
+		/*$inst = new CoursesInstance($this->database);
 		$this->view->instances = $inst->getCourseInstances(array(
 			'course_cn' => $this->course->get('cn')
 		));
@@ -249,7 +246,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		{
 			JRequest::setVar('instance', $this->view->instances[0]->alias);
 			return $this->instanceTask();
-		}
+		}*/
 
 		// Check authorization
 		//$authorized = $this->_authorize();
@@ -257,21 +254,21 @@ class CoursesControllerCourse extends Hubzero_Controller
 		// Get the active tab (section)
 		$tab = JRequest::getVar('active', 'overview');
 
-		if ($tab == 'wiki') 
+		/*if ($tab == 'wiki') 
 		{
 			$path = '';
 		} 
 		else 
 		{
 			$path = DS . ltrim($this->config->get('uploadpath', '/site/courses'), DS);
-		}
+		}*/
 
 		$this->view->wikiconfig = array(
 			'option'   => $this->_option,
 			'scope'    => '',
 			'pagename' => $this->course->get('cn'),
 			'pageid'   => $this->course->get('gidNumber'),
-			'filepath' => $path,
+			'filepath' => DS . ltrim($this->config->get('uploadpath', '/site/courses'), DS),
 			'domain'   => $this->course->get('cn')
 		);
 
@@ -1266,6 +1263,20 @@ class CoursesControllerCourse extends Hubzero_Controller
 	{
 		$this->view->setLayout('edit');
 
+		// Check if they're logged in
+		if ($this->juser->get('guest')) 
+		{
+			$this->loginTask(JText::_('You must be logged in to edit or create courses.'));
+			return;
+		}
+
+		// Check authorization
+		if (!$this->course->access('edit')) 
+		{
+			JError::raiseError(403, JText::_('COURSES_NOT_AUTH'));
+			return;
+		}
+
 		// Build the title
 		$this->_buildTitle();
 
@@ -1277,20 +1288,6 @@ class CoursesControllerCourse extends Hubzero_Controller
 
 		// Push some needed scripts to the template
 		$this->_getScripts('assets/js/' . $this->_name);
-
-		// Check if they're logged in
-		if ($this->juser->get('guest')) 
-		{
-			$this->loginTask(JText::_('You must be logged in to edit or create courses.'));
-			return;
-		}
-
-		// Check authorization
-		if (!$this->config->get('access-edit-course') && $this->_task != 'new') 
-		{
-			JError::raiseError(403, JText::_('COURSES_NOT_AUTH'));
-			return;
-		}
 
 		// Instantiate an CoursesCourse object
 		$course = new CoursesCourse();
@@ -1305,7 +1302,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 			}
 
 			// Load the course
-			$this->course->read($this->gid);
+			$course->read($this->gid);
 
 			// Ensure we found the course info
 			if (!$course) 

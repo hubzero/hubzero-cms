@@ -34,8 +34,148 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Courses table
  */
-class CoursesCourse extends JTable
+class CoursesTableCourse extends JTable
 {
+	/**
+	 * int(11) Primary key
+	 * 
+	 * @var integer
+	 */
+	var $id = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $alias    = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $group_id = NULL;
+
+	/**
+	 * varchar(50)
+	 * 
+	 * @var string
+	 */
+	var $title = NULL;
+
+	/**
+	 * text
+	 * 
+	 * @var string
+	 */
+	var $state = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $type = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $access = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $public_desc = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $private_desc = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $restrict_msg = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $join_policy = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $privacy = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $discussion_email_autosubscribe = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $logo = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $overview_type = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $overview_content = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $plugins = NULL;
+
+	/**
+	 * datetime(0000-00-00 00:00:00)
+	 * 
+	 * @var string
+	 */
+	var $created = NULL;
+
+	/**
+	 * datetime(0000-00-00 00:00:00)
+	 * 
+	 * @var string
+	 */
+	var $created_by = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $params = NULL;
+
 	/**
 	 * Constructor
 	 * 
@@ -44,7 +184,7 @@ class CoursesCourse extends JTable
 	 */
 	public function __construct(&$db)
 	{
-		parent::__construct('#__courses', 'gidNumber', $db);
+		parent::__construct('#__courses', 'id', $db);
 	}
 
 	/**
@@ -173,7 +313,7 @@ class CoursesCourse extends JTable
 			return parent::load($oid);
 		}
 
-		$sql  = "SELECT * FROM $this->_tbl WHERE cn='$oid' LIMIT 1";
+		$sql  = "SELECT * FROM $this->_tbl WHERE `alias`='$oid' LIMIT 1";
 		$this->_db->setQuery($sql);
 		if ($result = $this->_db->loadAssoc()) 
 		{

@@ -40,9 +40,25 @@ $membership_control = $this->config->get('membership_control', 1);
 
 //get no_html request var
 $no_html = JRequest::getInt( 'no_html', 0 );
-?>
 
-<?php if (!$no_html) : ?>
+if (!$no_html) : ?>
+	<div id="content-header">
+		<h2>
+			<!-- <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=course&gid=' . $this->course->get('alias')); ?>"> -->
+				<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
+			<!-- </a> -->
+		</h2>
+	</div>
+	<div id="content-header-extra">
+		<ul>
+			<li>
+				<a class="browse btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=course&task=browse'); ?>">
+					<?php echo JText::_('Browse courses'); ?>
+				</a>
+			</li>
+		</ul>
+	</div>
+
 	<div class="innerwrap">
 		<div id="page_container">
 			<div id="page_sidebar">
@@ -51,7 +67,7 @@ $no_html = JRequest::getInt( 'no_html', 0 );
 					//$default_logo = DS.'components'.DS.$this->option.DS.'assets'.DS.'img'.DS.'course_default_logo.png';
 
 					//logo link - links to course overview page
-					$link = JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->get('cn'));
+					$link = JRoute::_('index.php?option='.$this->option.'&controller=course&gid='.$this->course->get('alias') . '&instance=' . $this->course->offering()->get('alias'));
 
 					//path to course uploaded logo
 					//$path = '/site/courses/'.$this->course->get('gidNumber').DS.$this->course->get('logo');
@@ -60,8 +76,8 @@ $no_html = JRequest::getInt( 'no_html', 0 );
 					//$src = ($this->course->get('logo') != '' && is_file(JPATH_ROOT.$path)) ? $path : $default_logo;
 				?>
 				<div id="page_identity">
-					<a href="<?php echo $link; ?>" title="<?php echo $this->course->get('description'); ?> Home">
-						<?php echo $this->course->get('description'); ?> Home
+					<a href="<?php echo $link; ?>" title="<?php echo $this->escape(stripslashes($this->course->offering()->get('title'))); ?> Home">
+						<?php echo $this->escape(stripslashes($this->course->offering()->get('title'))); ?>
 					</a>
 				</div><!-- /#page_identity -->
 				
@@ -133,7 +149,7 @@ $no_html = JRequest::getInt( 'no_html', 0 );
 				
 				<ul id="page_menu">
 					<?php
-						//echo Hubzero_Course_Helper::displayCourseMenu($this->course, $this->instance, $this->sections, $this->hub_course_plugins, $this->course_plugin_access, $this->pages, $this->active);
+						//echo Hubzero_Course_Helper::displayCourseMenu($this->course, $this->course->offering(), $this->sections, $this->plugins, $this->course_plugin_access, $this->pages, $this->active);
 						//instantiate objects
 						$juser =& JFactory::getUser();
 
@@ -141,7 +157,7 @@ $no_html = JRequest::getInt( 'no_html', 0 );
 						$course_menu = '';
 
 						//loop through each category and build menu item
-						foreach ($this->hub_course_plugins as $k => $cat)
+						foreach ($this->plugins as $k => $cat)
 						{
 							//do we want to show category in menu?
 							if ($cat['display_menu_tab'])
@@ -158,7 +174,7 @@ $no_html = JRequest::getInt( 'no_html', 0 );
 								//$access = $access_levels[$cat['name']];
 
 								//menu link
-								$link = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('cn') . '&instance=' . $this->instance->alias . '&active=' . $active);
+								$link = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('cn') . '&instance=' . $this->course->offering()->get('alias') . '&active=' . $active);
 
 								//Are we on the overview tab with sub course pages?
 								if ($cat['name'] == 'outline' && count($this->pages) > 0)
@@ -186,7 +202,7 @@ $no_html = JRequest::getInt( 'no_html', 0 );
 										//page vars
 										$title = $page['title'];
 										$cls = ($true_active_tab == $page['url']) ? 'active' : '';
-										$link = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('cn') . '&instance=' . $this->instance->alias . '&active=' . $page['url']);
+										$link = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('cn') . '&instance=' . $this->course->offering()->get('alias') . '&active=' . $page['url']);
 
 										//page menu item
 										/*if (($page_access == 'registered' && $juser->get('guest')) || ($page_access == 'members' && !in_array($juser->get("id"), $course->get('members'))))
@@ -267,11 +283,11 @@ $no_html = JRequest::getInt( 'no_html', 0 );
 						<ul>
 							<li class="info-join-policy">
 								<span class="label">Starts</span>
-								<span class="value"><?php echo JHTML::_('date', $this->instance->start_date, $dateFormat, $tz); ?></span>
+								<span class="value"><?php echo JHTML::_('date', $this->course->offering()->get('start_date'), $dateFormat, $tz); ?></span>
 							</li>
 							<li class="info-created">
 								<span class="label">Ends</span>
-								<span class="value"><?php echo JHTML::_('date', $this->instance->end_date, $dateFormat, $tz); ?></span>
+								<span class="value"><?php echo JHTML::_('date', $this->course->offering()->get('end_date'), $dateFormat, $tz); ?></span>
 							</li>
 						</ul>
 					</div>
@@ -286,19 +302,19 @@ $no_html = JRequest::getInt( 'no_html', 0 );
 					</a>
 				<?php endif; ?>
 				
-				<div id="page_header">
-					<h2><a href="/courses/<?php echo $this->course->get("cn"); ?>"><?php echo $this->course->get('description'); ?></a></h2>
+				<!-- <div id="page_header">
+					<h2><a href="/courses/<?php echo $this->course->get('alias'); ?>"><?php echo $this->course->get('title'); ?></a></h2>
 					<span class="divider">►</span>
 					<h3>
 						<?php
-						/*	foreach($this->hub_course_plugins as $cat)
+						/*	foreach($this->plugins as $cat)
 							{
 								if($this->active == $cat['name'])
 								{
 									echo $cat['title'];
 								}
 							}*/
-							echo $this->escape(stripslashes($this->instance->title));
+							echo $this->escape(stripslashes($this->course->offering()->get('title')));
 						?>
 					</h3>
 					<?php
@@ -306,7 +322,7 @@ $no_html = JRequest::getInt( 'no_html', 0 );
 							$gt = new CoursesTags( $database );
 							echo $gt->get_tag_cloud(0,0,$this->course->get('gidNumber'));
 						endif;*/
-						//echo $this->escape(stripslashes($this->instance->title));
+						//echo $this->escape(stripslashes($this->course->offering()->get('title')));
 					?>
 				</div><!-- /#page_header -->
 				<div id="page_notifications">
@@ -321,14 +337,14 @@ $no_html = JRequest::getInt( 'no_html', 0 );
 					<?php endif; ?>
 
 					<?php
-					for ($i=0, $n=count($this->hub_course_plugins); $i < $n; $i++)
+					for ($i=0, $n=count($this->plugins); $i < $n; $i++)
 					{
-						if ($this->active == $this->hub_course_plugins[$i]['name'])
+						if ($this->active == $this->plugins[$i]['name'])
 						{
 							echo $this->sections[$i]['html'];
 						}
 					}
-						//echo Hubzero_Course_Helper::displayCourseContent($this->sections, $this->hub_course_plugins, $this->active);
+						//echo Hubzero_Course_Helper::displayCourseContent($this->sections, $this->plugins, $this->active);
 					?>
 
 					<?php if (!$no_html) : ?>

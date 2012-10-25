@@ -60,13 +60,16 @@ class plgCoursesMembers extends JPlugin
 	 */
 	public function &onCourseAreas()
 	{
-		$area = array(
-			'name' => $this->_name,
-			'title' => JText::_('PLG_COURSES_' . strtoupper($this->_name)),
-			'default_access' => $this->params->get('plugin_access', 'members'),
-			'display_menu_tab' => true
-		);
-		return $area;
+		/*if ($course->offering()->access('manage'))
+		{*/
+			$area = array(
+				'name' => $this->_name,
+				'title' => JText::_('PLG_COURSES_' . strtoupper($this->_name)),
+				'default_access' => $this->params->get('plugin_access', 'managers'),
+				'display_menu_tab' => true
+			);
+			return $area;
+		//}
 	}
 
 	/**
@@ -84,8 +87,10 @@ class plgCoursesMembers extends JPlugin
 	 */
 	public function onCourse($config, $course, $instance, $action='', $access, $areas=null)
 	{
-		$returnhtml = true;
-		$active = $this->_name;
+		/*if (!$course->offering()->access('manage'))
+		{
+			return;
+		}*/
 
 		// The output array we're returning
 		$arr = array(
@@ -97,23 +102,21 @@ class plgCoursesMembers extends JPlugin
 		$this_area = $this->onCourseAreas();
 
 		// Set some variables so other functions have access
-		//$this->authorized = $authorized;
 		$this->action = $action;
-		//$this->option = $option;
 		$this->option = JRequest::getVar('option', 'com_courses');
 		$this->course = $course;
-		//$this->_name = substr($option, 4, strlen($option));
 
-		//return metadata
-		$arr['metadata']['count'] = count($course->get('members'));
-		
-		//do we have any pending requests
-		$pending = $course->get("applicants");
-		if (count($pending) > 0)
+		// Get a student count
+		$arr['metadata']['count'] = count($this->course->offering()->get('members'));
+
+		// Do we have any pending requests?
+		$pending = count($this->course->offering()->get('applicants'));
+		if ($pending)
 		{
-			$title = $this->course->get('description')." has <strong>".count($pending)."</strong> pending membership request.";
-			$link = JRoute::_('index.php?option=com_courses&gid='.$this->course->get('cn').'&active=members&filter=pending');
-			$arr['metadata']['alert'] = "<a class=\"alrt\" href=\"{$link}\"><span><h5>Member Alert</h5>{$title}</span></a>";
+			$alert  = '<a class="alrt" href="' . JRoute::_('index.php?option=' . $this->option . '&controller=instance&gid=' . $this->course->get('alias') . '&active=members&filter=pending') . '">';
+			$alert .= '<span><h5>Member Alert</h5>' . JText::sprintf('%s has <strong>%s</strong> pending membership request.', $this->course->offering()->get('title'), $pending) . '</span>';
+			$alert .= '</a>';
+			$arr['metadata']['alert'] = $alert;
 		}
 
 		// Check if our area is in the array of areas we want to return results for
@@ -124,24 +127,24 @@ class plgCoursesMembers extends JPlugin
 				return $arr;
 			}
 		}
-
+$returnhtml = false;
 		// Only perform the following if this is the active tab/plugin
-		//if ($returnhtml) 
-		//{
+		if ($returnhtml) 
+		{
 			$this->config = $config;
 
 			//set course members plugin access level
-			$course_plugin_acl = $access[$active];
+			//$course_plugin_acl = $access[$active];
 
 			//Create user object
 			$juser =& JFactory::getUser();
 
 			//check to see if user is member and plugin access requires members
-			if (!$this->config->get('access-manage-instance')) 
+			/*if (!$this->config->get('access-manage-instance')) 
 			{
 				$arr['html'] = '<p class="info">' . JText::sprintf('COURSES_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
 				return $arr;
-			}
+			}*/
 
 			// Set the page title
 			$document =& JFactory::getDocument();
@@ -207,7 +210,7 @@ class plgCoursesMembers extends JPlugin
 
 				$view->membership_control = $this->membership_control;
 
-				$view->option = $option;
+				$view->option = $this->option;
 				$view->course = $course;
 				//$view->authorized = $authorized;
 
@@ -290,7 +293,7 @@ class plgCoursesMembers extends JPlugin
 
 				$arr['html'] = $view->loadTemplate();
 			}
-		//}
+		}
 
 		// Return the output
 		return $arr;

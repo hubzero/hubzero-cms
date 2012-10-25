@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Table class for course membership reason
  */
-class CoursesReason extends JTable
+class CoursesTableReason extends JTable
 {
 	/**
 	 * int(11) Primary key

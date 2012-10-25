@@ -8,7 +8,7 @@
  *
  * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
  * software: you can redistribute it and/or modify it under the terms of
- * the GNU Lesser General Public License as published by the Free Software
+ * the GNU Lesser General Public License as state by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any
  * later version.
  *
@@ -156,7 +156,7 @@ if ($this->courses) {
 	foreach ($this->courses as $course)
 	{
 		//
-		$g = Hubzero_Course::getInstance($course->gidNumber);
+		$g = CoursesCourse::getInstance($course->id);
 		$invitees = $g->get('invitees');
 		$applicants = $g->get('applicants');
 		$members = $g->get('members');
@@ -166,36 +166,36 @@ if ($this->courses) {
 		$status = '';
 		
 		//determine course status
-		if($g->get('published') && in_array($juser->get('id'), $managers))
+		if ($g->get('state'))
 		{
-			$status = 'manager';
-		}
-		elseif($g->get('published') && in_array($juser->get('id'), $members))
-		{
-			$status = 'member';
-		}
-		elseif($g->get('published') && in_array($juser->get('id'), $invitees))
-		{
-			$status = 'invitee';
-		}
-		elseif($g->get('published') && in_array($juser->get('id'), $applicants))
-		{
-			$status = 'pending';
+			if(in_array($juser->get('id'), $managers))
+			{
+				$status = 'manager';
+			}
+			elseif(in_array($juser->get('id'), $members))
+			{
+				$status = 'member';
+			}
+			elseif(in_array($juser->get('id'), $invitees))
+			{
+				$status = 'invitee';
+			}
+			elseif(in_array($juser->get('id'), $applicants))
+			{
+				$status = 'pending';
+			}
 		}
 		else
 		{
-			if(!$g->get('published'))
-			{
-				$status = 'new';
-			}
+			$status = 'new';
 		}
 ?>
 						<tr<?php echo ($status) ? ' class="'.$status.'"' : ''; ?>>
 							<th>
-								<span class="entry-id"><?php echo $course->gidNumber; ?></span>
+								<span class="entry-id"><?php echo $course->id; ?></span>
 							</th>
 							<td>
-								<a class="entry-title" href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$course->cn); ?>"><?php echo stripslashes($course->description); ?></a><br />
+								<a class="entry-title" href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$course->alias); ?>"><?php echo stripslashes($course->title); ?></a><br />
 								<span class="entry-details">
 									<span class="entry-alias"><?php echo $course->cn; ?></span>
 								</span>

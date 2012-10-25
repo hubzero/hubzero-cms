@@ -83,7 +83,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</div>
 			<ul>
 				<?php foreach($this->mycourses['invitees'] as $invite) : ?>
-					<li><?php echo $invite->description; ?><a href="<?php echo JRoute::_('index.php?option=com_courses&gid='.$invite->cn.'&task=accept'); ?>">Accept Invite</a></li>
+					<li><?php echo $invite->description; ?><a href="<?php echo JRoute::_('index.php?option=com_courses&gid='.$invite->alias.'&task=accept'); ?>">Accept Invite</a></li>
 				<?php endforeach; ?>
 			</ul>
 		</div>
@@ -97,7 +97,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</div>
 			<ul>
 				<?php foreach($this->mycourses['applicants'] as $applicant) : ?>
-					<li><?php echo $applicant->description; ?><a href="<?php echo JRoute::_('index.php?option=com_courses&gid='.$applicant->cn.'&task=cancel'); ?>">Cancel Request</a></li>
+					<li><?php echo $applicant->description; ?><a href="<?php echo JRoute::_('index.php?option=com_courses&gid='.$applicant->alias.'&task=cancel'); ?>">Cancel Request</a></li>
 				<?php endforeach; ?>
 			</ul>
 		</div>

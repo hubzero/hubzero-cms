@@ -84,6 +84,7 @@ class plgCoursesProgress extends JPlugin
 	public function onCourse($config, $course, $instance, $action='', $access, $areas=null)
 	{
 		$return = 'html';
+		$active = $this->_name;
 
 		// The output array we're returning
 		$arr = array(
@@ -105,7 +106,7 @@ class plgCoursesProgress extends JPlugin
 
 		//Create user object
 		$this->juser = JFactory::getUser();
-
+		$this->config = $config;
 		//check to see if user is member and plugin access requires members
 		if (!$this->config->get('access-view-instance')) 
 		{

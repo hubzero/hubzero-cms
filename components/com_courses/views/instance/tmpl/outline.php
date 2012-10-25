@@ -36,11 +36,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 // ---------------
 
 // Member and manager checks
-$isMember       = $this->config->get('access-view-course');
-$isManager      = $this->config->get('access-manage-course');
+$isMember       = $this->course->access('view'); //$this->config->get('access-view-course');
+$isManager      = $this->course->access('manage'); //$this->config->get('access-manage-course');
 $isNowOnManager = ($isManager) ? true : false;
 
 $this->database = JFactory::getDBO();
+
+if (!$this->course->offering()->access('view')) {
+?>
+	<p class="info"><?php echo JText::_('Access to the "Syllabus" section of this course is restricted to members only. You must be a member to view the content.'); ?></p>
+<?php 
+} else {
 // Check to make sure we should display the course outline
 /*
 ?>
@@ -64,8 +70,8 @@ $this->database = JFactory::getDBO();
 
 <?php 
 	// Get the course units
-	$unitsTbl = new CoursesUnit($this->database);
-	$units    = $unitsTbl->getCourseUnits();
+	//$unitsTbl = new CoursesTableUnit($this->database);
+	//$units    = $this->course->offering->units(); //$unitsTbl->getCourseUnits();
 
 	// Get the current time
 	$now = date("Y-m-d H:i:s");
@@ -73,61 +79,59 @@ $this->database = JFactory::getDBO();
 	$i = 0;
 ?>
 
-<ol id="timeline" class="instance">
-<?php foreach ($units as $unit) { ?>
-	<li class="unit<?php echo ($i == 0) ? ' active' : ''; ?>">
-		<div class="unit-wrap">
-			<div class="unit-content">
-<table cellpadding="0" cellspacing="0" id="course-outline">
-<?php if($now < $unit->start_date && !$isNowOnManager) { ?>
-	<tr class="comingSoon">
-		<td class="week"><?php echo $unit->title; ?></td>
-		<td><?php echo $unit->description; ?></td>
-		<td class="status">Coming soon</td>
-	</tr>
-<?php } else { ?>
-	<tr<?php echo ($now > $unit->start_date && $now < $unit->end_date) ? ' class="open"' : ''; ?>>
-		<td class="week"><?php echo $unit->title; ?></td>
-		<td><?php echo $unit->description; ?></td>
-		<td class="status posted">Posted</td>
-	</tr>
-	<tr class="details">
-		<td colspan="3">
-			<div class="detailsWrapper">
-				<div class="weeksection">
+	<ol id="timeline" class="instance">
+<?php foreach ($this->course->offering->units() as $unit) { ?>
+		<li class="unit<?php echo ($i == 0) ? ' active' : ''; ?>">
+			<div class="unit-wrap">
+				<div class="unit-content">
+					<h3>
+						<span><?php echo $this->escape(stripslashes($unit->title)); ?></span> 
+						<?php echo $this->escape(stripslashes($unit->description)); ?>
+					</h3>
 
+<?php if (!$unit->started()) { ?>
+						<div class="comingSoon">
+							<p class="status">Coming soon</p>
+<?php } else { ?>
+						<div<?php echo ($unit->available()) ? ' class="open"' : ''; ?>>
+							<p class="status posted">Posted</p>
+
+						<div class="details">
+
+								<div class="detailsWrapper">
+									<div class="weeksection">
 <?php
 	// Get the course asset groups
-	$assetGroupsTbl = new CoursesAssetGroup($this->database);
+	/*$assetGroupsTbl = new CoursesTableAssetGroup($this->database);
 
 	// Get the unique asset group types (this will build our sub-headings)
 	$assetGroupTypes = $assetGroupsTbl->getUniqueCourseAssetGroupTypes($filters=array(
 		"w"=>array(
 			"course_unit_id"=>$unit->id
 		)
-	));
+	));*/
 
 	// Loop through the asset group types
-	foreach ($assetGroupTypes as $agt)
+	foreach ($unit->assetgrouptypes() as $agt)
 	{
-		echo "<h3>{$agt['type']}</h3>";
+		echo '<h3>' . $agt->get('type') . '</h3>';
 
 		// Now grab all of the individual asset groups
-		$assetGroups = $assetGroupsTbl->getCourseAssetGroups($filters=array(
+		/*$assetGroups = $assetGroupsTbl->getCourseAssetGroups($filters=array(
 			"w"=>array(
-				"course_unit_id" => $unit->id
+				"course_unit_id" => $unit->get('id')
 			)
-		));
+		));*/
 
 		// Loop through the asset groups
-		foreach ($assetGroups as $ag)
+		foreach ($unit->assetgroups() as $ag)
 		{
-			if ($ag->type == $agt['type'])
+			if ($ag->type == $agt->get('type'))
 			{
 				echo "<h4>{$ag->title}</h4>";
 
 				// Get the course assets
-				$assetsTbl = new CoursesAsset($this->database);
+				$assetsTbl = new CoursesTableAsset($this->database);
 				$assets    = $assetsTbl->getCourseAssets($filters=array(
 					"w"=>array(
 						"course_asset_scope_id" => $ag->id,
@@ -159,14 +163,17 @@ $this->database = JFactory::getDBO();
 	
 	$i++;
 ?>
+									</div>
+								</div>
+							</div>
+
+<?php } // close else ?>
+</div>
 				</div>
 			</div>
-		</td>
-	</tr>
-<?php } // close else ?>
-</table>
-</div>
-</div>
-</li>
+		</li>
 <?php } // close foreach ?>
-</ol>
+	</ol>
+<?php
+}
+?>

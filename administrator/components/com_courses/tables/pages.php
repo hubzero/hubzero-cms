@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Table class for course page
  */
-Class CoursePages extends JTable
+Class CoursesTablePage extends JTable
 {
 	/**
 	 * int(11) Primary key
