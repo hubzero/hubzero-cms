@@ -102,7 +102,7 @@ class ToolsHelperUtils
 
 		if ($username && $host) 
 		{
-			$fp = stream_socket_client($host, $errno, $errstr, 30);
+			$fp = @stream_socket_client($host, $errno, $errstr, 30);
 			if (!$fp) 
 			{
 				$info[] = "$errstr ($errno)\n";
