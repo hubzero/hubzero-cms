@@ -1141,15 +1141,9 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			'SEARCH_VIEW'
 		));
 
-		$hztv->add('owner', $hzg->cn);
+		$hztv->set('owner', $hzg->cn);
 		$hztv->add('owner', 'apps');
-		$hztv->add('owner', $hzg->cn);
-
-		// store/update member groups
-		if (count($tool['membergroups'] > 0) && $tool['exec']=='@GROUP')
-		{
-			$hztv->add('member', $tool['membergroups']);
-		}
+		$hztv->set('member', $tool['membergroups']);
 
 		// Add repo for new tools
 		$auto_addrepo = $this->config->get('auto_addrepo', 1);
