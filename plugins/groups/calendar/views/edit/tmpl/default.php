@@ -66,7 +66,7 @@ if($this->event->id) {
 	
 <form name="editevent" action="" method="post" id="hubForm">
 	<div class="explaination">
-		<p>Here you can add events to your group calendar. These events are seperate from the HUB events.</p>
+		<p>Here you can add events to your group calendar. These events are separate from the HUB events.</p>
 		<p><a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->get('cn').'&active=calendar'); ?>">&lsaquo; Back to Group Calendar</a></p>
 	</div>
 	<fieldset>
