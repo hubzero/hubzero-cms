@@ -31,19 +31,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if ($this->resource->alias) {
-	$sef = JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->resource->alias);
+if ($this->model->resource->alias) {
+	$sef = JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->model->resource->alias);
 } else {
-	$sef = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->resource->id);
+	$sef = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->model->resource->id);
 }
 
 // Set the display date
-switch ($this->params->get('show_date'))
+switch ($this->model->params->get('show_date'))
 {
 	case 0: $thedate = ''; break;
-	case 1: $thedate = $this->resource->created;    break;
-	case 2: $thedate = $this->resource->modified;   break;
-	case 3: $thedate = $this->resource->publish_up; break;
+	case 1: $thedate = $this->model->resource->created;    break;
+	case 2: $thedate = $this->model->resource->modified;   break;
+	case 3: $thedate = $this->model->resource->publish_up; break;
 }
 if ($this->curtool) 
 {
@@ -62,16 +62,16 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$tz = true;
 }
 
-$this->resource->introtext = stripslashes($this->resource->introtext);
-//$this->resource->fulltxt = stripslashes($this->resource->fulltxt);
-$this->resource->fulltxt = ($this->resource->fulltxt) ? trim($this->resource->fulltxt) : trim($this->resource->introtext);
+$this->model->resource->introtext = stripslashes($this->model->resource->introtext);
+//$this->model->resource->fulltxt = stripslashes($this->model->resource->fulltxt);
+$this->model->resource->fulltxt = ($this->model->resource->fulltxt) ? trim($this->model->resource->fulltxt) : trim($this->model->resource->introtext);
 
 // Parse for <nb: > tags
-$type = new ResourcesType($this->database);
-$type->load($this->resource->type);
+//$type = new ResourcesType($this->database);
+//$type->load($this->model->resource->type);
 
 $data = array();
-preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->resource->fulltxt, $matches, PREG_SET_ORDER);
+preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->model->resource->fulltxt, $matches, PREG_SET_ORDER);
 if (count($matches) > 0) 
 {
 	foreach ($matches as $match)
@@ -79,23 +79,23 @@ if (count($matches) > 0)
 		$data[$match[1]] = $match[2];
 	}
 }
-$this->resource->fulltxt = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $this->resource->fulltxt);
-$this->resource->fulltxt = trim($this->resource->fulltxt);
+$this->model->resource->fulltxt = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $this->model->resource->fulltxt);
+$this->model->resource->fulltxt = trim($this->model->resource->fulltxt);
 
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
-$elements = new ResourcesElements($data, $type->customFields);
+$elements = new ResourcesElements($data, $this->model->type->customFields);
 $schema = $elements->getSchema();
 
 // Set the document description
-if ($this->resource->introtext) 
+if ($this->model->resource->introtext) 
 {
 	$document =& JFactory::getDocument();
-	$document->setDescription(ResourcesHtml::encode_html(strip_tags($this->resource->introtext)));
+	$document->setDescription(ResourcesHtml::encode_html(strip_tags($this->model->resource->introtext)));
 }
 
 // Check if there's anything left in the fulltxt after removing custom fields
 // If not, set it to the introtext
-$maintext = $this->resource->fulltxt;
+$maintext = $this->model->resource->fulltxt;
 $maintext = preg_replace('/&(?!(?i:\#((x([\dA-F]){1,5})|(104857[0-5]|10485[0-6]\d|1048[0-4]\d\d|104[0-7]\d{3}|10[0-3]\d{4}|0?\d{1,6}))|([A-Za-z\d.]{2,31}));)/i',"&amp;",$maintext);
 $maintext = str_replace('<blink>', '', $maintext);
 $maintext = str_replace('</blink>', '', $maintext);
@@ -106,10 +106,10 @@ if (preg_match("/([\<])([^\>]{1,})*([\>])/i", $maintext)) {
 		// Get the wiki parser and parse the full description
 		$wikiconfig = array(
 			'option'   => $this->option,
-			'scope'    => 'resources' . DS . $this->resource->id,
+			'scope'    => 'resources' . DS . $this->model->resource->id,
 			'pagename' => 'resources',
-			'pageid'   => $this->resource->id,
-			'filepath' => $this->config->get('uploadpath'),
+			'pageid'   => $this->model->resource->id,
+			'filepath' => $this->model->params->get('uploadpath'),
 			'domain'   => ''
 		);
 		ximport('Hubzero_Wiki_Parser');
@@ -119,12 +119,12 @@ if (preg_match("/([\<])([^\>]{1,})*([\>])/i", $maintext)) {
 ?>
 <div class="subject abouttab">
 <?php
-if ($this->resource->revision == 'dev' or !$this->resource->toolpublished) {
+if ($this->model->resource->revision == 'dev' or !$this->model->resource->toolpublished) {
 	$shots = null;
 } else {
 	// Screenshots
 	$ss = new ResourcesScreenshot($this->database);
-	$shots = ResourcesHtml::screenshots($this->resource->id, $this->resource->created, $this->config->get('uploadpath'), $this->config->get('uploadpath'), $this->resource->versionid, $ss->getScreenshots($this->resource->id, $this->resource->versionid), 1);
+	$shots = ResourcesHtml::screenshots($this->model->resource->id, $this->model->resource->created, $this->model->params->get('uploadpath'), $this->model->params->get('uploadpath'), $this->model->resource->versionid, $ss->getScreenshots($this->model->resource->id, $this->model->resource->versionid), 1);
 }
 if ($shots) {
 ?>
@@ -138,8 +138,8 @@ if ($shots) {
 		<div class="two columns first">
 			<h4><?php echo JText::_('Category'); ?></h4>
 			<p class="resource-content">
-				<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $this->resource->_type->alias); ?>">
-					<?php echo $this->escape(stripslashes($this->resource->_type->type)); ?>
+				<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $this->model->type->alias); ?>">
+					<?php echo $this->escape(stripslashes($this->model->type->type)); ?>
 				</a>
 			</tp>
 		</div>
@@ -151,12 +151,12 @@ if ($shots) {
 		</div>
 		<div class="clearfix"></div>
 
-<?php if ($this->resource->revision == 'dev' or !$this->resource->toolpublished) { ?>
+<?php if ($this->model->resource->revision == 'dev' or !$this->model->resource->toolpublished) { ?>
 			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_ABSTRACT'); ?></h4>
 			<div class="resource-content">
 				<?php echo $maintext; ?>
 			</div>
-<?php } else if ($this->resource->access == 3 && (!in_array($this->resource->group_owner, $usersgroups) || !$this->authorized)) {
+<?php } else if ($this->model->resource->access == 3 && (!in_array($this->model->resource->group_owner, $usersgroups) || !$this->authorized)) {
 	// Protected - only show the introtext
 ?>
 			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_ABSTRACT'); ?></h4>
@@ -173,13 +173,24 @@ if ($shots) {
 			</div>
 <?php
 	}
-	$this->helper->getSubmitters(true, 1, $this->plugin->get('badges', 0));
-	if ($this->helper->contributors && $this->helper->contributors != '<br />') {
+
+	if ($this->model->contributors('submitter')) {
 ?>
 			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_CONTRIBUTOR'); ?></th>
 			<div class="resource-content">
-				<span id="authorslist">
-					<?php echo $this->helper->contributors; ?>
+				<span id="submitterlist">
+					<?php 
+					$view = new JView(array(
+						'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_resources',
+						'name'   => 'view',
+						'layout' => '_submitters',
+					));
+					$view->option = $this->option;
+					$view->contributors = $this->model->contributors('submitter');
+					$view->badges = $this->plugin->get('badges', 0);
+					$view->showorgs = 1;
+					$view->display();
+					?>
 				</span>
 			</div>
 <?php
@@ -201,35 +212,35 @@ if ($shots) {
 		}
 	}
 
-	if ($this->params->get('show_citation')) {
-		if ($this->params->get('show_citation') == 1 || $this->params->get('show_citation') == 2) {
+	if ($this->model->params->get('show_citation')) {
+		if ($this->model->params->get('show_citation') == 1 || $this->model->params->get('show_citation') == 2) {
 			// Citation instructions
-			$this->helper->getUnlinkedContributors();
+			//$this->helper->getUnlinkedContributors();
 
 			// Build our citation object
 			$juri =& JURI::getInstance();
 			
 			$cite = new stdClass();
-			$cite->title = $this->resource->title;
+			$cite->title = $this->model->resource->title;
 			$cite->year = JHTML::_('date', $thedate, $yearFormat, $tz);
 			$cite->location = $juri->base() . ltrim($sef, DS);
 			$cite->date = date("Y-m-d H:i:s");
 
 			$cite->url = '';
 			$cite->type = '';
-			$cite->author = $this->helper->ul_contributors;
+			$cite->author = implode(';', $this->model->contributors('name')); //$this->helper->ul_contributors;
 			
 			// Get contribtool params
 			$tconfig =& JComponentHelper::getParams( 'com_tools' );
 			$doi = '';
 
-			if (isset($this->resource->doi) && $this->resource->doi && $tconfig->get('doi_shoulder'))
+			if (isset($this->model->resource->doi) && $this->model->resource->doi && $tconfig->get('doi_shoulder'))
 			{
-				$doi = $tconfig->get('doi_shoulder') . DS . strtoupper($this->resource->doi);
+				$doi = $tconfig->get('doi_shoulder') . DS . strtoupper($this->model->resource->doi);
 			}
-			else if (isset($this->resource->doi_label) && $this->resource->doi_label)
+			else if (isset($this->model->resource->doi_label) && $this->model->resource->doi_label)
 			{
-				$doi = '10254/' . $tconfig->get('doi_prefix') . $this->resource->id . '.' . $this->resource->doi_label;
+				$doi = '10254/' . $tconfig->get('doi_prefix') . $this->model->resource->id . '.' . $this->model->resource->doi_label;
 			}
 
 			if ($doi)
@@ -237,18 +248,18 @@ if ($shots) {
 				$cite->doi = $doi;
 			}
 			
-			if ($this->params->get('show_citation') == 2) {
+			if ($this->model->params->get('show_citation') == 2) {
 				$citations = '';
 			}
 		} else {
 			$cite = null;
 		}
 
-		$this->helper->getUnlinkedContributors();
+		//$this->helper->getUnlinkedContributors();
 		
-		$revision = isset($this->resource->revision) ? $this->resource->revision : '';
-		$citeinstruct  = ResourcesHtml::citation($this->option, $cite, $this->resource->id, $citations, $this->resource->type, $revision);
-		$citeinstruct .= ResourcesHtml::citationCOins($cite, $this->resource, $this->config, $this->helper);
+		$revision = isset($this->model->resource->revision) ? $this->model->resource->revision : '';
+		$citeinstruct  = ResourcesHtml::citation($this->option, $cite, $this->model->resource->id, $citations, $this->model->resource->type, $revision);
+		$citeinstruct .= ResourcesHtml::citationCOins($cite, $this->model); //->resource, $this->model->params, $this->helper);
 ?>
 			<h4><a name="citethis"></a><?php echo JText::_('PLG_RESOURCES_ABOUT_CITE_THIS'); ?></h4>
 			<div class="resource-content">
@@ -257,46 +268,18 @@ if ($shots) {
 <?php
 	}
 }
-// If the resource had a specific event date/time
-/*if ($this->attribs->get('timeof', '')) {
-	if (substr($this->attribs->get('timeof', ''), -8, 8) == '00:00:00') {
-		$exp = $dateFormat; //'%B %d %Y';
-	} else {
-		$exp = $timeFormat . ', ' . $dateFormat; //'%I:%M %p, %B %d %Y';
-	}
-	if (substr($this->attribs->get('timeof', ''), 4, 1) == '-') {
-		$seminarTime = ($this->attribs->get('timeof', '') != '0000-00-00 00:00:00' || $this->attribs->get('timeof', '') != '')
-					  ? JHTML::_('date', $this->attribs->get('timeof', ''), $exp)
-					  : '';
-	} else {
-		$seminarTime = $this->attribs->get('timeof', '');
-	}
-?>
-			<tr>
-				<th><?php echo JText::_('PLG_RESOURCES_ABOUT_TIME'); ?></th>
-				<td><?php echo $this->escape($seminarTime); ?></td>
-			</tr>
-<?php
-}
-// If the resource had a specific location
-if ($this->attribs->get('location', '')) {
-?>
-			<tr>
-				<th><?php echo JText::_('PLG_RESOURCES_ABOUT_LOCATION'); ?></th>
-				<td><?php echo $this->escape($this->attribs->get('location', '')); ?></td>
-			</tr>
-<?php
-}*/
 // Tags
 if (!$this->thistool && $this->revision != 'dev') {
-	if ($this->params->get('show_assocs')) {
-		$tagCloud = $this->helper->getTagCloud($this->authorized);
+	if ($this->model->params->get('show_assocs')) {
+		//$tagCloud = $this->helper->getTagCloud($this->authorized);
+		$tags = $this->model->tags();
 
-		if ($tagCloud) {
+		if ($tags) {
+			$tagger = new ResourcesTags($this->database);
 ?>
 			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_TAGS'); ?></h4>
 			<div class="resource-content">
-				<?php echo $tagCloud; ?>
+				<?php echo $tagger->buildCloud($tags); ?>
 			</div>
 <?php
 		}
