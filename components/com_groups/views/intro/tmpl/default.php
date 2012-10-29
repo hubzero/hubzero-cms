@@ -53,10 +53,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<h3>Questions?</h3>
 		<ul>
 			<li>
-				<a href="/kb/groups/faq">Groups FAQ</a>
+				<a class="group-intro-faqs" href="/kb/groups/faq">Groups FAQ</a>
 			</li>
 			<li>
-				<a href="/kb/groups/guide">Group Guidelines</a>
+				<a class="group-intro-guidelines" href="/kb/groups/guide">Group Guidelines</a>
 			</li>
 		</ul>
 	</div><!-- / .aside -->
@@ -124,7 +124,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		</div><!-- / .two columns first -->
 		<div class="two columns second">
 			<div class="browse">
-				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>">Browse the list of available groups</a></p>
+				<p><a class="group-intro-browse" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>">Browse the list of available groups</a></p>
 				<p>A list of all public and restricted groups. Private groups are not listed.</p>
 			</div><!-- / .browse -->
 		</div><!-- / .two columns second -->
