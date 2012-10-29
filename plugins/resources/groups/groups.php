@@ -32,11 +32,12 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.plugin.plugin');
+ximport('Hubzero_Plugin');
 
 /**
- * Courses Plugin class for user progress
+ * Display sponsors on a resource page
  */
-class plgCoursesProgress extends JPlugin
+class plgResourcesGroups extends Hubzero_Plugin
 {
 	/**
 	 * Constructor
@@ -55,80 +56,81 @@ class plgCoursesProgress extends JPlugin
 	/**
 	 * Return the alias and name for this category of content
 	 * 
+	 * @param      object $resource Current resource
 	 * @return     array
 	 */
-	public function &onCourseAreas()
+	public function &onResourcesSubAreas($resource)
 	{
-		$area = array(
-			'name' => $this->_name,
-			'title' => JText::_('PLG_COURSES_' . strtoupper($this->_name)),
-			'default_access' => $this->params->get('plugin_access', 'members'),
-			'display_menu_tab' => true
+		$areas = array(
+			'groups' => JText::_('PLG_RESOURCES_GROUPS')
 		);
-		return $area;
+		return $areas;
 	}
 
 	/**
-	 * Return data on a course view (this will be some form of HTML)
+	 * Return data on a resource sub view (this will be some form of HTML)
 	 * 
-	 * @param      object  $course      Current course
-	 * @param      string  $option     Name of the component
-	 * @param      string  $authorized User's authorization level
-	 * @param      integer $limit      Number of records to pull
-	 * @param      integer $limitstart Start of records to pull
-	 * @param      string  $action     Action to perform
-	 * @param      array   $access     What can be accessed
-	 * @param      array   $areas      Active area(s)
+	 * @param      object  $resource Current resource
+	 * @param      string  $option    Name of the component
+	 * @param      integer $miniview  View style
 	 * @return     array
 	 */
-	public function onCourse($config, $course, $instance, $action='', $access, $areas=null)
+	public function onResourcesSub($resource, $option, $miniview=0)
 	{
-		$return = 'html';
-		$active = $this->_name;
-
-		// The output array we're returning
 		$arr = array(
-			'html'     => '',
+			'area' => $this->_name,
+			'html' => '',
 			'metadata' => ''
 		);
 
-		//get this area details
-		$this_area = $this->onCourseAreas();
-
-		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas)) 
+		if (!$resource->group_owner)
 		{
-			if (!in_array($this_area['name'], $areas)) 
-			{
-				return $arr;
-			}
-		}
-
-		//Create user object
-		$juser = JFactory::getUser();
-		//$this->config = $config;
-		//check to see if user is member and plugin access requires members
-		if (!$course->offering()->access('view')) 
-		{
-			$arr['html'] = '<p class="info">' . JText::sprintf('COURSES_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
 			return $arr;
 		}
 
-		// Instantiate a vew
+		// Get recommendations
+		$this->database = JFactory::getDBO();
+
+		// Instantiate a view
 		ximport('Hubzero_Plugin_View');
-		$view = new Hubzero_Plugin_View(
+		$this->view = new Hubzero_Plugin_View(
 			array(
-				'folder'  => 'courses',
+				'folder'  => 'resources',
 				'element' => $this->_name,
-				'name'    => 'report'
+				'name'    => 'display'
 			)
 		);
-		$view->course = $course;
-		$view->juser  = $juser;
 
-		$arr['html'] = $view->loadTemplate();
+		ximport('Hubzero_Group');
+		$group = Hubzero_Group::getInstance($resource->group_owner);
+		if (!$group || !$group->get('gidNumber'))
+		{
+			return $arr;
+		}
+
+		ximport('Hubzero_Document');
+		Hubzero_Document::addPluginStylesheet('resources', $this->_name);
+
+		if ($miniview) 
+		{
+			$this->view->setLayout('mini');
+		}
+
+		// Pass the view some info
+		$this->view->option   = $option;
+		$this->view->resource = $resource;
+		$this->view->params   = $this->params;
+		$this->view->group    = $group;
+
+		if ($this->getError()) 
+		{
+			$this->view->setError($this->getError());
+		}
 
 		// Return the output
+		$arr['html'] = $this->view->loadTemplate();
+
 		return $arr;
 	}
 }
+

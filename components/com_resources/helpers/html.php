@@ -616,7 +616,7 @@ class ResourcesHtml
 	 */
 	public function metadata($params, $ranking, $statshtml, $id, $sections, $xtra='')
 	{
-		$html = '';
+		/*$html = '';
 		if ($params->get('show_ranking')) 
 		{
 			$rank = round($ranking, 1);
@@ -646,7 +646,15 @@ class ResourcesHtml
 		}
 		$html .= '<div class="clear"></div>';
 
-		return '<div class="metadata">' . $html . '</div>';
+		return '<div class="metadata">' . $html . '</div>';*/
+		$view = new JView(array(
+			'name'   => 'view',
+			'layout' => '_metadata',
+		));
+		$view->option = 'com_resources';
+		$view->sections = $sections;
+		$view->model = ResourcesModelResource::getInstance($id);
+		return $view->loadTemplate();
 	}
 
 	/**
@@ -866,7 +874,8 @@ class ResourcesHtml
 	 * @param      object $helper   ResourcesHelper
 	 * @return     string HTML
 	 */
-	public function citationCOins($cite, $resource, $config, $helper)
+	//public function citationCOins($cite, $resource, $config, $helper)
+	public function citationCOins($cite, $model)
 	{
 		if (!$cite) 
 		{
@@ -889,35 +898,37 @@ class ResourcesHtml
 			$doi = 'doi:10254/' . $tconfig->get('doi_prefix') . $resource->id . '.' . $resource->doi_label;
 		}*/
 
-		$html .= isset($resource->doi)
-				? '&amp;rft_id=info%3Adoi%2F'.urlencode($resource->doi)
+		$html .= isset($model->resource->doi)
+				? '&amp;rft_id=info%3Adoi%2F'.urlencode($model->resource->doi)
 				: '&amp;rfr_id=info%3Asid%2Fnanohub.org%3AnanoHUB';
 		$html .= '&amp;rft.genre=article';
 		$html .= '&amp;rft.atitle=' . urlencode($cite->title);
 		$html .= '&amp;rft.date=' . urlencode($cite->year);
 
-		if (isset($resource->revision) && $resource->revision!='dev')
+		if (isset($model->resource->revision) && $model->resource->revision!='dev')
 		{
-			$helper->getToolAuthors($resource->alias, $resource->revision);
+			//$helper->getToolAuthors($model->resource->alias, $model->resource->revision);
+			$author_array = $model->contributors('tool');
 		} 
 		else 
 		{
-			$helper->getCons();
+			//$helper->getCons();
+			$author_array = $model->contributors();
 		}
-		$author_array = $helper->_contributors;
+		//$author_array = $helper->_contributors;
 
 		if ($author_array) 
 		{
 			for ($i = 0; $i < count($author_array); $i++)
 			{
-				if ($author_array[$i]->lastname || $author_array[$i]->firstname) 
+				if ($author_array[$i]->surname || $author_array[$i]->givenName) 
 				{
-					$name = stripslashes($author_array[$i]->firstname) . ' ';
-					if ($author_array[$i]->middlename != NULL) 
+					$name = stripslashes($author_array[$i]->givenName) . ' ';
+					if ($author_array[$i]->middleName != NULL) 
 					{
-						$name .= stripslashes($author_array[$i]->middlename) . ' ';
+						$name .= stripslashes($author_array[$i]->middleName) . ' ';
 					}
-					$name .= stripslashes($author_array[$i]->lastname);
+					$name .= stripslashes($author_array[$i]->surname);
 				} 
 				else 
 				{
@@ -926,8 +937,8 @@ class ResourcesHtml
 
 				if ($i==0) 
 				{
-					$lastname  = $author_array[$i]->lastname  ? $author_array[$i]->lastname  : $author_array[$i]->name;
-					$firstname = $author_array[$i]->firstname ? $author_array[$i]->firstname : $author_array[$i]->name;
+					$lastname  = $author_array[$i]->surname  ? $author_array[$i]->surname  : $author_array[$i]->name;
+					$firstname = $author_array[$i]->givenName ? $author_array[$i]->givenName : $author_array[$i]->name;
 					$html .= '&amp;rft.aulast=' . urlencode($lastname) . '&amp;rft.aufirst=' . urlencode($firstname);
 				}
 			}

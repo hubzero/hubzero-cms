@@ -550,35 +550,39 @@ class ResourcesControllerResources extends Hubzero_Controller
 			break;
 
 			case 3:
-				$paramsClass = 'JParameter';
+				/*$paramsClass = 'JParameter';
 				if (version_compare(JVERSION, '1.6', 'ge'))
 				{
 					$paramsClass = 'JRegistry';
-				}
+				}*/
 				// Incoming (should be a resource ID)
 				$id = JRequest::getInt('input', 0);
+
+				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'resource.php');
+				$model = ResourcesModelResource::getInstance($id);
 
 				$rt = new ResourcesTags($this->database);
 				$bits['rt'] = $rt;
 				$bits['config'] = $this->config;
+				$bits['params'] = $model->params;
 
 				// Get resource
-				$resource = new ResourcesResource($this->database);
-				$resource->load($id);
-				$resource->ranking = round($resource->ranking, 1);
+				//$resource = new ResourcesResource($this->database);
+				//$resource->load($id);
+				$model->resource->ranking = round($model->resource->ranking, 1);
 
 				// Get parameters and merge with the component params
-				$rparams = new $paramsClass($resource->params);
+				/*$rparams = new $paramsClass($resource->params);
 				$params = $this->config;
 				$params->merge($rparams);
 				$bits['params'] = $params;
 
 				$resource->_type = new ResourcesType($this->database);
 				$resource->_type->load($resource->type);
-				$resource->_type->_params = new $paramsClass($resource->_type->params);
+				$resource->_type->_params = new $paramsClass($resource->_type->params);*/
 
 				// Version checks (tools only)
-				if ($resource->type == 7 && $resource->alias) 
+				/*if ($model->isTool()) 
 				{
 					$tables = $this->database->getTableList();
 					$table  = $this->database->_table_prefix . 'tool_version';
@@ -599,29 +603,31 @@ class ResourcesControllerResources extends Hubzero_Controller
 						$tparams =& JComponentHelper::getParams('com_tools');
 						$tv->compileResource($tool, '', &$resource, '', $tparams);
 					}
-				}
+				}*/
 
 				// Generate the SEF
-				if ($resource->alias) 
+				if ($model->resource->alias) 
 				{
-					$sef = JRoute::_('index.php?option=' . $this->_option . '&alias=' . $resource->alias);
+					$sef = JRoute::_('index.php?option=' . $this->_option . '&alias=' . $model->resource->alias);
 				} 
 				else 
 				{
-					$sef = JRoute::_('index.php?option=' . $this->_option . '&id=' . $resource->id);
+					$sef = JRoute::_('index.php?option=' . $this->_option . '&id=' . $model->resource->id);
 				}
 
 				// Get resource helper
-				$helper = new ResourcesHelper($resource->id, $this->database);
-				$helper->getFirstChild();
+				$helper = new ResourcesHelper($model->resource->id, $this->database);
+				//$helper->getFirstChild();
 
-				$helper->getContributorIDs();
-				$bits['authorized'] = $this->_authorize($helper->contributorIDs, $resource);
+				//$helper->getContributorIDs();
+				$bits['authorized'] = $model->access('edit'); //$this->_authorize($helper->contributorIDs, $resource);
+
+				$firstChild = $model->children(0);
 
 				// Get the first child
-				if ($helper->firstChild || $resource->type == 7) 
+				if ($firstChild || $model->isTool()) 
 				{
-					$bits['primary_child'] = ResourcesHtml::primary_child($this->_option, $resource, $helper->firstChild, '');
+					$bits['primary_child'] = ResourcesHtml::primary_child($this->_option, $model->resource, $firstChild, '');
 				}
 
 				// Get Resources plugins
@@ -629,10 +635,10 @@ class ResourcesControllerResources extends Hubzero_Controller
 				$dispatcher =& JDispatcher::getInstance();
 
 				// Get the sections
-				$bits['sections'] = $dispatcher->trigger('onResources', array($resource, $this->_option, array('about'), 'metadata'));
+				$bits['sections'] = $dispatcher->trigger('onResources', array($model, $this->_option, array('about'), 'metadata'));
 
 				// Fill our container
-				$bits['resource'] = $resource;
+				$bits['resource'] = $model->resource;
 				$bits['helper'] = $helper;
 				$bits['sef'] = $sef;
 			break;
@@ -1060,77 +1066,47 @@ class ResourcesControllerResources extends Hubzero_Controller
 		// Ensure we have an ID or alias to work with
 		if (!$id && !$alias) 
 		{
-			$this->_redirect = JRoute::_('index.php?option=' . $this->_option);
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option)
+			);
 			return;
 		}
 
 		// Load the resource
-		$resource = new ResourcesResource($this->database);
-		if ($alias) 
-		{
-			$alias = str_replace(':', '-', $alias);
-			$resource->loadAlias($alias);
-			$id = $resource->id;
-		} 
-		else 
-		{
-			$resource->load($id);
-			$alias = $resource->alias;
-		}
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'resource.php');
+		$this->model = ResourcesModelResource::getInstance(($alias ? $alias : $id));
 
 		// Make sure we got a result from the database
-		if (!$resource || !$resource->title) 
+		if (!$this->model->exists())
 		{
 			JError::raiseError(404, JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND'));
 			return;
 		}
 
 		// Make sure the resource is published and standalone
-		if ($resource->published == 0 || $resource->standalone != 1) 
+		if (!$this->model->resource->standalone || !$this->model->published())
 		{
 			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
 			return;
 		}
-		$now = date('Y-m-d H:i:s', time());
-		if ($resource->publish_up && $resource->publish_up != '0000-00-00 00:00:00' && $resource->publish_up >= $now) 
-		{
-			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
-			return;
-		}
-		if ($resource->publish_down && $resource->publish_down != '0000-00-00 00:00:00' && $resource->publish_down <= $now) 
+
+		// Is the visitor authorized to view this resource?
+		if (!$this->model->access('view')) 
 		{
 			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
 			return;
 		}
 
 		// Initiate a resource helper class
-		$helper = new ResourcesHelper($resource->id, $this->database);
-
-		// Is the visitor authorized to edit this resource?
-		$helper->getContributorIDs();
-		$authorized = $this->_authorize($helper->contributorIDs, $resource);
-
-		// Make sure they have access to view this resource
-		if ($resource->access == 4) 
-		{
-			if ($this->checkGroupAccess($resource) && !$authorized) 
-			{
-				JError::raiseError(403, JText::_('ALERTNOTAUTH'));
-				return;
-			}
-		}
+		$helper = new ResourcesHelper($this->model->resource->id, $this->database);
 
 		// Build the pathway
-		$normalized_valid_chars = 'a-zA-Z0-9';
-		$typenorm = preg_replace("/[^$normalized_valid_chars]/", "", $resource->getTypeTitle());
-		$typenorm = strtolower($typenorm);
-
 		$app =& JFactory::getApplication();
-		if ($resource->group_owner) 
+		if ($this->model->inGroup()) 
 		{
 			// Alter the pathway to reflect a group owned resource
 			ximport('Hubzero_Group');
-			$group = Hubzero_Group::getInstance($resource->group_owner);
+			$group = Hubzero_Group::getInstance($this->model->resource->group_owner);
 
 			$pathway =& $app->getPathway();
 			$pathway->_pathway = array();
@@ -1142,48 +1118,56 @@ class ResourcesControllerResources extends Hubzero_Controller
 			);
 			$pathway->addItem(
 				stripslashes($group->get('description')),
-				JRoute::_('index.php?option=com_groups&gid=' . $resource->group_owner)
+				JRoute::_('index.php?option=com_groups&gid=' . $this->model->resource->group_owner)
 			);
 			$pathway->addItem(
 				'Resources',
-				JRoute::_('index.php?option=com_groups&gid=' . $resource->group_owner . '&active=resources')
+				JRoute::_('index.php?option=com_groups&gid=' . $this->model->resource->group_owner . '&active=resources')
 			);
 			$pathway->addItem(
-				$resource->getTypeTitle(),
-				JRoute::_('index.php?option=com_groups&gid=' . $resource->group_owner . '&active=resources&area=' . $typenorm)
+				stripslashes($this->model->type->type),
+				JRoute::_('index.php?option=com_groups&gid=' . $this->model->resource->group_owner . '&active=resources&area=' . $this->model->type->alias)
 			);
 		} 
 		else 
 		{
 			$pathway =& $app->getPathway();
 			$pathway->addItem(
-				$resource->getTypeTitle(),
-				JRoute::_('index.php?option=' . $this->_option . '&type=' . $typenorm)
+				stripslashes($this->model->type->type),
+				JRoute::_('index.php?option=' . $this->_option . '&type=' . $this->model->type->alias)
 			);
 		}
 
 		// Tool development version requested
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest') && $revision=='dev') 
+		//$juser =& JFactory::getUser();
+		if ($this->juser->get('guest') && $revision == 'dev') 
 		{
 			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
 			return;
 		}
 
-		if (($revision=='dev' && $alias) or (!$revision && $resource->type==7 && $resource->published!=1)) 
+		// Access check for tools
+		if ($this->model->isTool())
 		{
-			$objT = new Tool($this->database);
-			$toolid = $objT->getToolId($alias);
-			if (!$this->check_toolaccess($toolid)) 
+			// if (development revision
+			//   or (specific revision that is NOT published))
+			if (($revision=='dev') 
+			 or (!$revision && $this->model->resource->published != 1)) 
 			{
-				JError::raiseError(403, JText::_('ALERTNOTAUTH'));
-				return;
+				// Check if the user has access to the tool
+				$objT = new Tool($this->database);
+				$toolid = $objT->getToolId($this->model->resource->alias);
+				if (!$this->check_toolaccess($toolid)) 
+				{
+					// Denied, punk! How do you like them apples?!
+					JError::raiseError(403, JText::_('ALERTNOTAUTH'));
+					return;
+				}
 			}
 		}
 
 		// Whew! Finally passed all the checks
 		// Let's get down to business...
-		$this->resource = $resource;
 
 		// Push some styles to the template
 		$this->_getStyles();
@@ -1191,82 +1175,11 @@ class ResourcesControllerResources extends Hubzero_Controller
 		// Push some scripts to the template
 		$this->_getScripts('assets/js/' . $this->_name);
 
-		// Version checks (tools only)
-		$alltools = array();
-		$thistool = '';
-		$curtool  = '';
-
 		// Get contribtool params
 		$tconfig =& JComponentHelper::getParams('com_tools');
 
-		if ($resource->type == 7 && $resource->alias) 
-		{
-			$tables = $this->database->getTableList();
-			$table  = $this->database->_table_prefix . 'tool_version';
-
-			if (in_array($table, $tables)) 
-			{
-				$tv = new ToolVersion($this->database);
-				$tv->getToolVersions('', $alltools, $alias);
-
-				if ($alltools) 
-				{
-					foreach ($alltools as $tool)
-					{
-						// Archive version, if requested
-						if (($revision && $tool->revision == $revision && $revision != 'dev') 
-						 or ($revision == 'dev' and $tool->state==3)) 
-						{
-							$thistool = $tool;
-						}
-						// Current version
-						if ($tool->state == 1 && (count($alltools) == 1 || (count($alltools) > 1 &&  $alltools[1]->version == $tool->version)))
-						{
-							$curtool = $tool;
-							$revision = $revision ? $revision : $tool->revision;
-						}
-						// Dev version
-						if (!$revision && count($alltools)==1 && $tool->state==3) 
-						{
-							$thistool = $tool;
-							$revision = 'dev';
-						}
-					}
-
-					if (!$thistool && !$curtool && count($alltools) > 1) 
-					{
-						// Tool is retired, display latest unpublished version
-						$thistool = $alltools[1];
-						$revision = $alltools[1]->revision;
-					}
-
-					if ($curtool && $thistool && $thistool == $curtool) 
-					{
-						// Display default resource page for current version
-						$thistool = '';
-					}
-				}
-
-				// Replace resource info with requested version
-				$tv->compileResource($thistool, $curtool, &$resource, $revision, $tconfig);
-			}
-		}
-
 		// Record the hit
-		$resource->hit($id);
-
-		// Initiate a resource helper class
-		/*$helper = new ResourcesHelper($resource->id, $this->database);
-
-		// Is the visitor authorized to edit this resource?
-		$helper->getContributorIDs();
-		$authorized = $this->_authorize($helper->contributorIDs);*/
-
-		// Do not show for tool versions
-		if ($thistool && $revision != 'dev') 
-		{
-			$authorized = false;
-		}
+		$this->model->resource->hit($id);
 
 		// Get Resources plugins
 		JPluginHelper::importPlugin('resources');
@@ -1275,61 +1188,29 @@ class ResourcesControllerResources extends Hubzero_Controller
 		$sections = array();
 		$cats = array();
 
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-
-		$resource->_type = new ResourcesType($this->database);
-		$resource->_type->load($resource->type);
-		$resource->_type->_params = new $paramsClass($resource->_type->params);
-
 		// We need to do this here because we need some stats info to pass to the body
-		if (!$thistool) 
+		if (!isset($this->model->thistool) || !$this->model->thistool) 
 		{
-			$resource->authorized = $authorized;
-			$resource->thistool = $thistool;
-			$resource->alltools = $alltools;
-			$resource->curtool  = $curtool;
-			$resource->revision = $revision;
-
 			// Trigger the functions that return the areas we'll be using
 			$cats = $dispatcher->trigger('onResourcesAreas', array(
-					$resource
-				)
-			);
-
-			// Get the sections
-			$sections = $dispatcher->trigger('onResources', array(
-					$resource,
-					$this->_option,
-					array($tab),
-					'all',
+					$this->model
 				)
 			);
 		}
 		else if ($revision)
 		{
-			$resource->authorized = $authorized;
-			$resource->thistool = $thistool;
-			$resource->alltools = $alltools;
-			$resource->curtool  = $curtool;
-			$resource->revision = $revision;
-
 			$cats = array(
 				array('about' => JText::_('About'))
 			);
-
-			// Get the sections
-			$sections = $dispatcher->trigger('onResources', array(
-					$resource,
-					$this->_option,
-					array($tab),
-					'all',
-				)
-			);
 		}
+		// Get the sections
+		$sections = $dispatcher->trigger('onResources', array(
+				$this->model,
+				$this->_option,
+				array($tab),
+				'all',
+			)
+		);
 
 		$available = array('play');
 		foreach ($cats as $cat)
@@ -1345,29 +1226,6 @@ class ResourcesControllerResources extends Hubzero_Controller
 			$tab = 'about';
 		}
 
-		// Get parameters and merge with the component params
-		$rparams = new $paramsClass($resource->params);
-		$params = $this->config;
-		$params->merge($rparams);
-
-		// Get attributes
-		$attribs = new $paramsClass($resource->attribs);
-
-		$juser =& JFactory::getUser();
-		if (!$juser->get('guest')) 
-		{
-			ximport('Hubzero_User_Helper');
-			$xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
-			// Get the groups the user has access to
-			$usersgroups = $this->getUsersGroups($xgroups);
-		} 
-		else 
-		{
-			$usersgroups = array();
-		}
-
-		$no_html = JRequest::getInt('no_html', 0);
-
 		// Display different main text if "playing" a resource
 		if ($this->_task == 'play') 
 		{
@@ -1377,16 +1235,16 @@ class ResourcesControllerResources extends Hubzero_Controller
 				$activechild = $this->activechild;
 			}
 
-			$view 				= new JView(array(
+			$view = new JView(array(
 				'base_path' => $this->_base_path,
-				'name'=>'view', 
-				'layout'=>'play'
+				'name'      => 'view', 
+				'layout'    => 'play'
 			));
 			$view->option 		= $this->_option;
 			$view->config 		= $this->config;
 			$view->tconfig 		= $tconfig;
 			$view->database 	= $this->database;
-			$view->resource 	= $resource;
+			$view->resource 	= $this->model->resource;
 			$view->helper 		= $helper;
 			$view->resid 		= $this->resid;
 			$view->activechild 	= $activechild;
@@ -1429,20 +1287,20 @@ class ResourcesControllerResources extends Hubzero_Controller
 			else 
 			{
 				// Instantiate a new view
-				$view 					= new JView(array(
+				$view = new JView(array(
 					'base_path' => $this->_base_path,
-					'name'=>'view', 
-					'layout'=>'watch'
+					'name'      => 'view', 
+					'layout'    => 'watch'
 				));
-				$view->option 			= $this->_option;
-				$view->config 			= $this->config;
-				$view->tconfig 			= $tconfig;
-				$view->database 		= $this->database;
-				$view->manifest 		= $manifest;
-				$view->content_folder 	= $content_folder;
-				$view->pid 				= $id;
-				$view->resid 			= JRequest::getVar('resid', '');
-				$view->doc 				=& JFactory::getDocument();
+				$view->option         = $this->_option;
+				$view->config         = $this->config;
+				$view->tconfig        = $tconfig;
+				$view->database       = $this->database;
+				$view->manifest       = $manifest;
+				$view->content_folder = $content_folder;
+				$view->pid            = $id;
+				$view->resid          = JRequest::getVar('resid', '');
+				$view->doc            =& JFactory::getDocument();
 
 				// Output HTML
 				if ($this->getError()) 
@@ -1455,79 +1313,68 @@ class ResourcesControllerResources extends Hubzero_Controller
 				$body = $view->loadTemplate();
 			}
 
-			$cat = array();
-			$cat['watch'] = JText::_('Watch Presentation');
-			$cats[] = $cat;
-			$sections[] = array('html'=>$body, 'metadata'=>'');
+			$cats[] = array(
+				'watch' => JText::_('Watch Presentation')
+			);
+
+			$sections[] = array(
+				'html'     => $body, 
+				'metadata' => ''
+			);
 			$tab = 'watch';
 		}
 
-		// Get filters (for series & workshops listing)
-		$filters = array();
-		$defaultsort = ($resource->type == 31) ? 'date' : 'ordering';
-		$defaultsort = ($resource->type == 31 && $this->config->get('show_ranking')) ? 'ranking' : $defaultsort;
-		$filters['sortby'] = JRequest::getVar('sortby', $defaultsort);
-		$filters['limit'] = JRequest::getInt('limit', 0);
-		$filters['start'] = JRequest::getInt('limitstart', 0);
-		$filters['id']    = $resource->id;
-
 		// Write title
 		$document =& JFactory::getDocument();
-		$document->setTitle(JText::_(strtoupper($this->_option)) . ': ' . stripslashes($resource->title));
+		$document->setTitle(JText::_(strtoupper($this->_option)) . ': ' . stripslashes($this->model->resource->title));
 
 		$pathway->addItem(
-			stripslashes($resource->title),
-			JRoute::_('index.php?option=' . $this->_option . '&id=' . $resource->id)
+			stripslashes($this->model->resource->title),
+			JRoute::_('index.php?option=' . $this->_option . '&id=' . $this->model->resource->id)
 		);
-
-		// Get the type
-		$t = new ResourcesType($this->database);
-		$t->load($resource->type);
 
 		// Normalize the title
 		// This is so we can determine the type of resource template to display
 		// For example, Learning Modules => learningmodules
-		$type_alias = '';
-		if ($t) 
-		{
-			$type_alias = strtolower(preg_replace("/[^a-zA-Z0-9]/", '', $t->type));
-		}
+		$type_alias = $this->model->type->alias ? $this->model->type->alias : $this->model->type->normalize($this->model->type->type);
 
 		// Determine the layout we're using
 		$v = array(
 			'base_path' => $this->_base_path,
-			'name'=>'view'
+			'name'      => 'view'
 		);
+
 		$app =& JFactory::getApplication();
 		if ($type_alias
 		 && (is_file(JPATH_ROOT . DS . 'templates' . DS .  $app->getTemplate()  . DS . 'html' . DS . $this->_option . DS . 'view' . DS . $type_alias . '.php')
-		 || is_file(JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'views' . DS . 'view' . DS . 'tmpl' . DS . $type_alias . '.php'))) 
+			|| is_file(JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'views' . DS . 'view' . DS . 'tmpl' . DS . $type_alias . '.php'))) 
 		{
 			$v['layout'] = $type_alias;
 		}
 		// Instantiate a new view
 		$view = new JView($v);
-		$view->filters = $filters;
-		if ($resource->type == 7 && $resource->alias) 
+		//$view->filters = $filters;
+		if ($this->model->isTool()) 
 		{
-			$view->thistool = $thistool;
-			$view->curtool = $curtool;
-			$view->alltools = $alltools;
+			$view->thistool = $this->model->thistool;
+			$view->curtool  = $this->model->curtool;
+			$view->alltools = $this->model->alltools;
 			$view->revision = $revision;
 		}
-		$view->config 		= $this->config;
+		$view->model = $this->model;
+		//$view->config 		= $this->config;
 		$view->tconfig 		= $tconfig;
 		$view->option 		= $this->_option;
-		$view->resource 	= $resource;
-		$view->params 		= $params;
-		$view->authorized 	= $authorized;
-		$view->attribs 		= $attribs;
+		//$view->resource 	= $this->model->resource;
+		//$view->params 		= $this->model->params;
+		//$view->authorized 	= $authorized;
+		//$view->attribs 		= $this->model->attribs;
 		$view->fsize 		= $fsize;
 		$view->cats 		= $cats;
 		$view->tab 			= $tab;
 		$view->sections 	= $sections;
 		$view->database 	= $this->database;
-		$view->usersgroups 	= $usersgroups;
+		//$view->usersgroups 	= $usersgroups;
 		$view->helper 		= $helper;
 		if ($this->getError()) 
 		{
@@ -1538,36 +1385,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		}
 
 		// Output HTML
-		/*if ($no_html) 
-		{
-			$jconfig =& JFactory::getConfig();
-			$css = JURI::base();
-
-			$app =& JFactory::getApplication();
-			if (is_file(JPATH_ROOT . DS . 'templates' . DS .  $app->getTemplate()  . DS . 'html' . DS . $this->_option . DS . 'resources.css')) 
-			{
-				$css .= 'templates' . DS .  $app->getTemplate()  . DS . 'html' . DS . $this->_option . DS . 'resources.css';
-			} 
-			else 
-			{
-				$css .= 'components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'resources.css';
-			}
-
-			$html = '<div id="nb-resource">'.$view->loadTemplate().'</div>';
-			$html = str_replace('"', '\"', $html);
-			$html = str_replace("\n", " ", $html);
-			$html = str_replace("\r", " ", $html);
-			print("var head = document.getElementsByTagName('head')[0];");
-			print("var sheet = document.createElement('link');
-				sheet.href = '" . $css . "';
-				sheet.setAttribute('type','text/css');
-				head.appendChild(sheet);");
-			print("document.write(\"" . $html . "\");");
-		} 
-		else 
-		{*/
-			$view->display();
-		//}
+		$view->display();
 	}
 
 	/**
@@ -1606,7 +1424,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		$resource = new ResourcesResource($this->database);
 		if ($alias) 
 		{
-			$resource->loadAlias($alias);
+			$resource->load($alias);
 			$id = $resource->id;
 		} 
 		else 

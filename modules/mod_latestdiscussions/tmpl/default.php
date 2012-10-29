@@ -29,6 +29,18 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$wikiconfig = array(
+	'option'   => 'com_forum',
+	'scope'    => '',
+	'pagename' => 'forum',
+	'pageid'   => 1,
+	'filepath' => DS . ltrim('/site/forum', DS),
+	'domain'   => ''
+);
+
+ximport('Hubzero_Wiki_Parser');
+$parser = Hubzero_Wiki_Parser::getInstance();
+
 $c = 0;
 ?>
 <div id="latest_discussions_module" class="<?php echo $this->cls; ?>">
@@ -65,7 +77,7 @@ $c = 0;
 						<span class="discussion-location"><?php echo $location; ?></span>
 						<span class="discussion-date"><?php echo date("F jS, Y, g:ia", strtotime($post['created'])); ?></span>
 						<?php if ($this->charlimit > 0) : ?>
-							<span class="discussion-comment"><?php echo substr($post['comment'], 0, $this->charlimit); if (strlen($post['comment']) > $this->charlimit) { echo '&hellip;'; } ?></span>
+							<span class="discussion-comment"><?php echo substr(strip_tags($parser->parse($post['comment'], $wikiconfig)), 0, $this->charlimit); if (strlen($post['comment']) > $this->charlimit) { echo '&hellip;'; } ?></span>
 						<?php endif; ?>
 					</li>
 				<?php endif; ?>

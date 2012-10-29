@@ -79,21 +79,23 @@ if (!$this->course->offering()->access('view')) {
 	$i = 0;
 ?>
 
-	<ol id="timeline" class="instance">
+	<!-- <ol id="timeline" class="instance"> -->
+	<div id="course-outline">
 <?php foreach ($this->course->offering->units() as $unit) { ?>
-		<li class="unit<?php echo ($i == 0) ? ' active' : ''; ?>">
+		<div class="unit<?php echo ($i == 0) ? ' active' : ''; ?>">
 			<div class="unit-wrap">
-				<div class="unit-content">
+				<div class="unit-content<?php echo ($unit->available()) ? ' open' : ''; ?>">
 					<h3>
 						<span><?php echo $this->escape(stripslashes($unit->title)); ?></span> 
 						<?php echo $this->escape(stripslashes($unit->description)); ?>
 					</h3>
-
+<?php //if ($this->course->offering->units()->isFirst()) { echo 'first'; } ?>
+<?php //if ($this->course->offering->units()->isLast()) { echo 'last'; } ?>
 <?php if (!$unit->started()) { ?>
 						<div class="comingSoon">
 							<p class="status">Coming soon</p>
 <?php } else { ?>
-						<div<?php echo ($unit->available()) ? ' class="open"' : ''; ?>>
+						<div>
 							<p class="status posted">Posted</p>
 
 						<div class="details">
@@ -110,31 +112,35 @@ if (!$this->course->offering()->access('view')) {
 			"course_unit_id"=>$unit->id
 		)
 	));*/
-
+//echo count($unit->assetgroups());
 	// Loop through the asset group types
-	foreach ($unit->assetgrouptypes() as $agt)
+	//foreach ($unit->assetgrouptypes() as $agt)
+	foreach ($unit->assetgroups() as $agt)
 	{
-		echo '<h3>' . $agt->get('type') . '</h3>';
-
-		// Now grab all of the individual asset groups
-		/*$assetGroups = $assetGroupsTbl->getCourseAssetGroups($filters=array(
-			"w"=>array(
-				"course_unit_id" => $unit->get('id')
-			)
-		));*/
-
+?>
+		<h4>
+			<?php echo $this->escape(stripslashes($agt->get('title'))); ?>
+		</h4>
+<?php 
 		// Loop through the asset groups
-		foreach ($unit->assetgroups() as $ag)
+		foreach ($agt->children() as $ag)
 		{
-			if ($ag->type == $agt->get('type'))
-			{
-				echo "<h4>{$ag->title}</h4>";
-
+			//if ($ag->type == $agt->get('type'))
+			//{
+				//if ($agt->children()->isFirst()) { echo 'first'; }
+				//if ($agt->children()->isLast()) { echo 'last'; }
+?>
+				<h5>
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&instance=' . $this->course->offering()->get('alias') . '&active=outline&a=' . $unit->get('alias') . '&b=' . $ag->get('alias')); ?>">
+						<?php echo $this->escape(stripslashes($ag->get('title'))); ?>
+					</a>
+				</h5>
+<?php
 				// Get the course assets
 				$assetsTbl = new CoursesTableAsset($this->database);
 				$assets    = $assetsTbl->getCourseAssets($filters=array(
 					"w"=>array(
-						"course_asset_scope_id" => $ag->id,
+						"course_asset_scope_id" => $ag->get('id'),
 						"course_asset_scope" => "asset_group"
 					)
 				));
@@ -157,7 +163,7 @@ if (!$this->course->offering()->access('view')) {
 
 				// End the list
 				echo "</ul>";
-		 	}
+		 	//}
 		}
 	}
 	
@@ -166,14 +172,15 @@ if (!$this->course->offering()->access('view')) {
 									</div>
 								</div>
 							</div>
-
+<div class="clear"></div>
 <?php } // close else ?>
 </div>
 				</div>
 			</div>
-		</li>
+		</div>
+		<div class="clear"></div>
 <?php } // close foreach ?>
-	</ol>
+	</div>
 <?php
 }
 ?>

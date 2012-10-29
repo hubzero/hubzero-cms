@@ -32,6 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'unit.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
 
 /**
  * Courses model class for a course
@@ -310,22 +311,40 @@ class CoursesModelUnit extends JObject
 	 */
 	public function assetgroup($id=null)
 	{
-		if (!isset($this->group) || $this->group->id != $id)
+		if (!isset($this->group) 
+		 || ($id !== null && $this->group->get('id') != $id && $this->group->get('alias') != $id))
 		{
 			$this->group = null;
 
 			foreach ($this->assetgroups() as $key => $group)
 			{
-				if ($group->id == $id)
+				if ($group->get('id') == $id || $group->get('alias') == $id)
 				{
-					if (!is_a($group, 'CoursesModelAssetgroup'))
+					/*if (!is_a($group, 'CoursesModelAssetgroup'))
 					{
 						$group = new CoursesModelAssetgroup($group);
 						// Set the offering to the model
 						$this->assetgroups($key, $group);
-					}
+					}*/
 					$this->group = $group;
 					break;
+				}
+				else
+				{
+					foreach ($group->children() as $child)
+					{
+						if ($child->get('id') == $id || $child->get('alias') == $id)
+						{
+							/*if (!is_a($group, 'CoursesModelAssetgroup'))
+							{
+								$group = new CoursesModelAssetgroup($child);
+								// Set the offering to the model
+								$this->assetgroups($key, $group);
+							}*/
+							$this->group = $child;
+							break;
+						}
+					}
 				}
 			}
 		}
@@ -343,27 +362,57 @@ class CoursesModelUnit extends JObject
 	 */
 	public function assetgroups($idx=null, $model=null)
 	{
-		if (!$this->exists()) 
+		/*if (!$this->exists()) 
 		{
 			return array();
-		}
+		}*/
 
-		if (!isset($this->assetgroups) || !is_array($this->assetgroups))
+		//if (!isset($this->assetgroups) || !is_array($this->assetgroups))
+		if (!isset($this->assetgroups) || !is_a($this->assetgroups, 'CoursesModelIterator'))
 		{
-			$this->assetgroups = array();
+			//$this->assetgroups = array();
+			$this->assetgroups = new CoursesModelIterator(array());
 
 			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.group.php');
 
 			$tbl = new CoursesTableAssetGroup($this->_db);
-			if (($results = $tbl->getCourseAssetGroups(array('course_unit_id' => $this->unit->id))))
+			if (($results = $tbl->getCourseAssetGroups(array('w' => array('course_unit_id' => $this->unit->id)))))
 			{
 				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'assetgroup.php');
 
-				foreach ($results as $key => $result)
+				$list = array();
+				//$children = array();
+
+				// First pass - collect children
+				foreach ($results as $v)
+				{
+					if ($v->parent == 0)
+					{
+						$list[$v->id] = new CoursesModelAssetgroup($v);
+						//$list[$v->id]->children = array();
+					}
+					//$v->name = '';
+					/*$pt = $v->parent;
+					$list = @$children[$pt] ? $children[$pt] : array();
+					array_push($list, $v);
+					$children[$pt] = $list;*/
+				}
+				foreach ($results as $c)
+				{
+					if (isset($list[$c->parent]))
+					{
+						//$list[$c->parent]->children[$c->ordering] = new CoursesModelAssetgroup($c);
+						//ksort($list[$c->parent]->children);
+						$list[$c->parent]->children->add(new CoursesModelAssetgroup($c));
+					}
+				}
+
+				/*foreach ($results as $key => $result)
 				{
 					$results[$key] = new CoursesModelAssetgroup($result);
-				}
-				$this->assetgroups = $results;
+				}*/
+				//$this->assetgroups = $list; //$results;
+				$this->assetgroups = new CoursesModelIterator(array_values($list));
 			}
 		}
 
@@ -373,10 +422,10 @@ class CoursesModelUnit extends JObject
 			{
 				if (isset($this->assetgroups[$idx]))
 				{
-					if ($model && is_a($model, 'CoursesModelAssetgroup'))
+					/*if ($model && is_a($model, 'CoursesModelAssetgroup'))
 					{
 						$this->assetgroups[$idx] = $model;
-					}
+					}*/
 					return $this->assetgroups[$idx];
 				}
 				else

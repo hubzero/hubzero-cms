@@ -73,7 +73,22 @@ function CoursesBuildRoute(&$query)
 			unset($query['task']);
 		}
 	}
-	if (!empty($query['scope'])) 
+	if (!empty($query['a'])) 
+	{
+		$segments[] = $query['a'];
+		unset($query['a']);
+	}
+	if (!empty($query['b'])) 
+	{
+		$segments[] = $query['b'];
+		unset($query['b']);
+	}
+	if (!empty($query['c'])) 
+	{
+		$segments[] = $query['c'];
+		unset($query['c']);
+	}
+	/*if (!empty($query['scope'])) 
 	{
 		$segments[] = $query['scope'];
 		unset($query['scope']);
@@ -87,7 +102,7 @@ function CoursesBuildRoute(&$query)
 	{
 		$segments[] = $query['roomid'];
 		unset($query['roomid']);
-	}
+	}*/
 	return $segments;
 }
 
@@ -228,11 +243,11 @@ function CoursesParseRoute($segments)
 	}
 	if (isset($segments[4])) 
 	{
-		$vars['asset'] = $segments[4];
+		$vars['group'] = $segments[4];
 	}
 	if (isset($segments[4])) 
 	{
-		$vars['subasset'] = $segments[4];
+		$vars['asset'] = $segments[4];
 	}
 
 	return $vars;

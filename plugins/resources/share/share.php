@@ -58,12 +58,10 @@ class plgResourcesShare extends JPlugin
 	 * @param      object $resource Current resource
 	 * @return     array
 	 */
-	public function &onResourcesAreas($resource)
+	public function &onResourcesAreas($model)
 	{
-		static $areas = array(
-		);
-
-		return $areas;
+		static $area = array();
+		return $area;
 	}
 
 	/**
@@ -75,7 +73,7 @@ class plgResourcesShare extends JPlugin
 	 * @param      string  $rtrn      Data to be returned
 	 * @return     array
 	 */
-	public function onResources($resource, $option, $areas, $rtrn='all')
+	public function onResources($model, $option, $areas, $rtrn='all')
 	{
 		$arr = array(
 			'area' => 'share',
@@ -84,14 +82,14 @@ class plgResourcesShare extends JPlugin
 		);
 
 		$juri =& JURI::getInstance();
-		$sef = JRoute::_('index.php?option=' . $option . '&id=' . $resource->id);
+		$sef = JRoute::_('index.php?option=' . $option . '&id=' . $model->resource->id);
 		$url = $juri->base() . ltrim($sef, DS);
 
 		// Incoming action
 		$sharewith = JRequest::getVar('sharewith', '');
 		if ($sharewith && $sharewith != 'email') 
 		{
-			$this->share($sharewith, $url, $resource);
+			$this->share($sharewith, $url, $model->resource);
 			return;
 		}
 
@@ -115,7 +113,7 @@ class plgResourcesShare extends JPlugin
 
 			// Pass the view some info
 			$view->option = $option;
-			$view->resource = $resource;
+			$view->resource = $model->resource;
 			$view->_params = $this->params;
 			$view->url = $url;
 			if ($this->getError()) 
@@ -146,7 +144,7 @@ class plgResourcesShare extends JPlugin
 
 			// Pass the view some info
 			$view->option = $option;
-			$view->resource = $resource;
+			$view->resource = $model->resource;
 			$view->_params = $this->params;
 			$view->url = $url;
 			if ($this->getError()) 

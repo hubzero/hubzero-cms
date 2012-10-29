@@ -38,7 +38,6 @@ defined('_JEXEC') or die('Restricted access');
  */
 class CoursesTableAssetGroup extends JTable
 {
-
 	/**
 	 * ID, primary key for course asset grouping table
 	 * 
@@ -52,6 +51,13 @@ class CoursesTableAssetGroup extends JTable
 	 * @var int(11)
 	 */
 	var $course_unit_id = NULL;
+
+	/**
+	 * Alias
+	 * 
+	 * @var varchar(255)
+	 */
+	var $alias = NULL;
 
 	/**
 	 * Asset grouping title
@@ -79,7 +85,7 @@ class CoursesTableAssetGroup extends JTable
 	 * 
 	 * @var varchar(255)
 	 */
-	var $type = NULL;
+	var $parent = NULL;
 
 	/**
 	 * Created date for unit

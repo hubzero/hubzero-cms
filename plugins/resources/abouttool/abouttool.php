@@ -58,9 +58,9 @@ class plgResourcesAbouttool extends JPlugin
 	 * @param      object $resource Current resource
 	 * @return     array
 	 */
-	public function &onResourcesAreas($resource)
+	public function &onResourcesAreas($model)
 	{
-		if ($resource->_type->_params->get('plg_abouttool', 0)) 
+		if ($model->type->params->get('plg_abouttool', 0)) 
 		{
 			$areas = array(
 				'about' => JText::_('PLG_RESOURCES_ABOUT')
@@ -82,7 +82,7 @@ class plgResourcesAbouttool extends JPlugin
 	 * @param      string  $rtrn      Data to be returned
 	 * @return     array
 	 */
-	public function onResources($resource, $option, $areas, $rtrn='all')
+	public function onResources($model, $option, $areas, $rtrn='all')
 	{
 		$arr = array(
 			'area' => 'about',
@@ -93,8 +93,8 @@ class plgResourcesAbouttool extends JPlugin
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array($areas)) 
 		{
-			if (!array_intersect($areas, $this->onResourcesAreas($resource))
-			 && !array_intersect($areas, array_keys($this->onResourcesAreas($resource)))) 
+			if (!array_intersect($areas, $this->onResourcesAreas($model))
+			 && !array_intersect($areas, array_keys($this->onResourcesAreas($model)))) 
 			{
 				$rtrn = 'metadata';
 			}
@@ -115,12 +115,12 @@ class plgResourcesAbouttool extends JPlugin
 				)
 			);
 			$view->option     = $option;
-			$view->resource   = $resource;
-			$view->authorized = $resource->authorized;
+			$view->model      = $model;
+			//$view->authorized = $resource->authorized;
 			$view->database   = JFactory::getDBO();
 			$view->juser      = JFactory::getUser();
 
-			if (!$view->juser->get('guest')) 
+			/*if (!$view->juser->get('guest')) 
 			{
 				ximport('Hubzero_User_Helper');
 				$xgroups = Hubzero_User_Helper::getGroups($view->juser->get('id'), 'all');
@@ -147,11 +147,11 @@ class plgResourcesAbouttool extends JPlugin
 
 			$view->params   = $params;
 			$view->plugin   = $this->params;
-			$view->helper   = new ResourcesHelper($resource->id, $view->database);
-			$view->thistool = $resource->thistool;
-			$view->curtool  = $resource->curtool;
-			$view->alltools = $resource->alltools;
-			$view->revision = $resource->revision;
+			$view->helper   = new ResourcesHelper($resource->id, $view->database);*/
+			$view->thistool = $model->thistool;
+			$view->curtool  = $model->curtool;
+			$view->alltools = $model->alltools;
+			$view->revision = $model->revision;
 
 			// Return the output
 			$arr['html'] = $view->loadTemplate();

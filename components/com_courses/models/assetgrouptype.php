@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'unit.php');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.group.type.php');
 
 /**
  * Courses model class for a course
@@ -77,7 +77,7 @@ class CoursesModelAssetgrouptype extends JObject
 	{
 		$this->_db = JFactory::getDBO();
 
-		$this->type = new CoursesTableAssetgrouptype($this->_db);
+		$this->type = new CoursesTableAssetGroupType($this->_db);
 
 		if (is_numeric($oid) || is_string($oid))
 		{
@@ -161,6 +161,42 @@ class CoursesModelAssetgrouptype extends JObject
 		{
 			return $this->_data[$property];
 		}
+	}
+
+	/**
+	 * Returns a property of the object or the default value if the property is not set.
+	 *
+	 * @access	public
+	 * @param	string $property The name of the property
+	 * @param	mixed  $default The default value
+	 * @return	mixed The value of the property
+	 * @see		getProperties()
+	 * @since	1.5
+ 	 */
+	public function get($property, $default=null)
+	{
+		if (isset($this->type->$property)) 
+		{
+			return $this->type->$property;
+		}
+		return $default;
+	}
+
+	/**
+	 * Modifies a property of the object, creating it if it does not already exist.
+	 *
+	 * @access	public
+	 * @param	string $property The name of the property
+	 * @param	mixed  $value The value of the property to set
+	 * @return	mixed Previous value of the property
+	 * @see		setProperties()
+	 * @since	1.5
+	 */
+	public function set($property, $value = null)
+	{
+		$previous = isset($this->type->$property) ? $this->type->$property : null;
+		$this->type->$property = $value;
+		return $previous;
 	}
 
 	/**

@@ -171,6 +171,10 @@ class ResourcesReview extends JTable
 		if (!$id) {
 			$id = $this->resource_id;
 		}
+		if (!$id)
+		{
+			return false;
+		}
 		//$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE resource_id=".$id." ORDER BY created DESC" );
 		$this->_db->setQuery( "SELECT rr.*, rr.id as id, v.helpful AS vote, "
 			."\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='yes' AND v.category='review' AND v.referenceid=rr.id) AS helpful, "
@@ -199,6 +203,10 @@ class ResourcesReview extends JTable
 
 		if (!$id) {
 			$id = $this->resource_id;
+		}
+		if (!$id)
+		{
+			return false;
 		}
 		//$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE resource_id=".$id." ORDER BY created DESC" );
 		$this->_db->setQuery( "SELECT rr.*, rr.id as id, v.helpful AS vote, "

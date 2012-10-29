@@ -32,81 +32,31 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- *
- * Course Units table class
- * 
+ * Course asset groups table class
  */
-class CoursesTableUnit extends JTable
+class CoursesTableAssetGroupType extends JTable
 {
+
 	/**
-	 * ID, primary key for course units table
+	 * ID, primary key for course asset grouping table
 	 * 
 	 * @var int(11)
 	 */
 	var $id = NULL;
 
 	/**
-	 * Course instance id of this unit (references #__course_instances.id)
+	 * Course unit id of this asset group (references #__course_units.gidNumber)
 	 * 
 	 * @var int(11)
-	 */
-	var $course_instance_id = NULL;
-
-	/**
-	 * Alias
-	 * 
-	 * @var varchar(255)
 	 */
 	var $alias = NULL;
 
 	/**
-	 * Unit title
+	 * Asset grouping title
 	 * 
 	 * @var varchar(255)
 	 */
 	var $title = NULL;
-
-	/**
-	 * Unit description
-	 * 
-	 * @var longtext
-	 */
-	var $description = NULL;
-
-	/**
-	 * Ordering
-	 * 
-	 * @var int(11)
-	 */
-	var $ordering = NULL;
-
-	/**
-	 * Start date for unit
-	 * 
-	 * @var date
-	 */
-	var $start_date = NULL;
-
-	/**
-	 * End date for unit
-	 * 
-	 * @var date
-	 */
-	var $end_date = NULL;
-
-	/**
-	 * Created date for unit
-	 * 
-	 * @var datetime
-	 */
-	var $created = NULL;
-
-	/**
-	 * Who created the unit (reference #__users.id)
-	 * 
-	 * @var int(11)
-	 */
-	var $created_by = NULL;
 
 	/**
 	 * Contructor method for JTable class
@@ -116,7 +66,7 @@ class CoursesTableUnit extends JTable
 	 */
 	public function __construct(&$db)
 	{
-		parent::__construct('#__course_units', 'id', $db);
+		parent::__construct('#__course_asset_group_types', 'id', $db);
 	}
 
 	/**
@@ -127,40 +77,5 @@ class CoursesTableUnit extends JTable
 	public function check()
 	{
 		parent::check();
-	}
-
-	/**
-	 * Build query method
-	 * 
-	 * @param  array $filters
-	 * @return $query database query
-	 */
-	public function buildQuery($filters=array())
-	{
-		$query = " FROM $this->_tbl AS cu";
-
-		return $query;
-	}
-
-	/**
-	 * Get an object list of course units
-	 * 
-	 * @param  array $filters
-	 * @return object Return course units
-	 */
-	public function getCourseUnits($filters=array())
-	{
-		$query  = "SELECT cu.*";
-		$query .= $this->buildquery($filters);
-
-		if (!empty($filters['start']) && !empty($filters['limit']))
-		{
-			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
-		}
-
-		$query .= " ORDER BY cu.ordering";
-
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
 	}
 }

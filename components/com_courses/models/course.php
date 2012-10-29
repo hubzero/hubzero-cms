@@ -32,6 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'course.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
 
 /**
  * Courses model class for a course
@@ -272,6 +273,17 @@ class CoursesModelCourse extends JObject
 	}
 
 	/**
+	 * Check if the current user has manager access
+	 * This is just a shortcut for the access check
+	 * 
+	 * @return     boolean
+	 */
+	public function manager()
+	{
+		return $this->access('manage'); //in_array(JFactory::getUser()->get('id'), $this->get('managers'));
+	}
+
+	/**
 	 * Get the creator of this entry
 	 * 
 	 * Accepts an optional property name. If provided
@@ -300,19 +312,20 @@ class CoursesModelCourse extends JObject
 	 */
 	public function offering($id=null)
 	{
-		if (!isset($this->offering) || ($id !== null && $this->offering->get('id') != $id && $this->offering->get('alias') != $id))
+		if (!isset($this->offering) 
+		 || ($id !== null && $this->offering->get('id') != $id && $this->offering->get('alias') != $id))
 		{
 			$this->offering = null;
 			foreach ($this->offerings() as $key => $offering)
 			{
 				if ($offering->get('id') == $id || $offering->get('alias') == $id)
 				{
-					if (!is_a($offering, 'CoursesModelOffering'))
+					/*if (!is_a($offering, 'CoursesModelOffering'))
 					{
 						$offering = new CoursesModelOffering($offering);
 						// Set the offering to the model
 						$this->offerings($key, $offering);
-					}
+					}*/
 					$this->offering = $offering;
 					break;
 				}
@@ -332,14 +345,16 @@ class CoursesModelCourse extends JObject
 	 */
 	public function offerings($idx=null, $model=null)
 	{
-		if (!$this->exists()) 
+		/*if (!$this->exists()) 
 		{
 			return array();
-		}
+		}*/
 
-		if (!isset($this->offerings))
+		//if (!isset($this->offerings))
+		if (!isset($this->offerings) || !is_a($this->offerings, 'CoursesModelIterator'))
 		{
-			$this->offerings = array();
+			//$this->offerings = array();
+			$this->offerings = new CoursesModelIterator(array());
 
 			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'instance.php');
 
@@ -353,7 +368,8 @@ class CoursesModelCourse extends JObject
 				{
 					$results[$key] = new CoursesModelOffering($result);
 				}
-				$this->offerings = $results;
+				//$this->offerings = $results;
+				$this->offerings = new CoursesModelIterator($results);
 			}
 		}
 
@@ -363,10 +379,10 @@ class CoursesModelCourse extends JObject
 			{
 				if (isset($this->offerings[$idx]))
 				{
-					if ($model && is_a($model, 'CoursesModelOffering'))
+					/*if ($model && is_a($model, 'CoursesModelOffering'))
 					{
 						$this->offerings[$idx] = $model;
-					}
+					}*/
 					return $this->offerings[$idx];
 				}
 				else

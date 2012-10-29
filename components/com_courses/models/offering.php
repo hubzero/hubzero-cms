@@ -32,6 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'instance.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
 
 /**
  * Courses model class for a course
@@ -413,6 +414,31 @@ class CoursesModelOffering extends JObject
 	}
 
 	/**
+	 * Check if the current user has manager access
+	 * This is just a shortcut for the access check
+	 * 
+	 * @return     boolean
+	 */
+	public function manager()
+	{
+		return $this->access('manage'); //in_array(JFactory::getUser()->get('id'), $this->get('managers'));
+	}
+
+	/**
+	 * Check if the current user is enrolled
+	 * 
+	 * @return     boolean
+	 */
+	public function enrolled($id=0)
+	{
+		if (!$id)
+		{
+			$id = JFactory::getUser()->get('id');
+		}
+		return in_array($id, $this->get('members'));
+	}
+
+	/**
 	 * Method to set the article id
 	 *
 	 * @param	int	Article ID number
@@ -420,20 +446,20 @@ class CoursesModelOffering extends JObject
 	public function unit($id=null)
 	{
 		if (!isset($this->unit) 
-		 || ($this->unit->id != $id && $this->unit->alias != $id))
+		 || ($this->unit->get('id') != $id && $this->unit->get('alias') != $id))
 		{
 			$this->unit = null;
 
-			foreach ($this->units() as $key => $offering)
+			foreach ($this->units() as $key => $unit)
 			{
-				if ($unit->id == $id || $unit->alias == $id)
+				if ($unit->get('id') == $id || $unit->get('alias') == $id)
 				{
-					if (!is_a($unit, 'CoursesModelUnit'))
+					/*if (!is_a($unit, 'CoursesModelUnit'))
 					{
 						$unit = new CoursesModelUnit($unit);
 						// Set the offering to the model
 						$this->units($key, $unit);
-					}
+					}*/
 					$this->unit = $unit;
 					break;
 				}
@@ -453,14 +479,15 @@ class CoursesModelOffering extends JObject
 	 */
 	public function units($idx=null, $model=null)
 	{
-		if (!$this->exists()) 
+		/*if (!$this->exists()) 
 		{
-			return array();
-		}
+			return new CoursesModelIterator(array());
+		}*/
 
-		if (!isset($this->units) || !is_array($this->units))
+		//if (!isset($this->units) || !is_array($this->units))
+		if (!isset($this->units) || !is_a($this->units, 'CoursesModelIterator'))
 		{
-			$this->units = array();
+			$this->units = new CoursesModelIterator(array());
 
 			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'unit.php');
 
@@ -474,7 +501,7 @@ class CoursesModelOffering extends JObject
 				{
 					$results[$key] = new CoursesModelUnit($result);
 				}
-				$this->units = $results;
+				$this->units = new CoursesModelIterator($results);
 			}
 		}
 
@@ -484,10 +511,10 @@ class CoursesModelOffering extends JObject
 			{
 				if (isset($this->units[$idx]))
 				{
-					if ($model && is_a($model, 'CoursesModelUnit'))
+					/*if ($model && is_a($model, 'CoursesModelUnit'))
 					{
 						$this->units[$idx] = $model;
-					}
+					}*/
 					return $this->units[$idx];
 				}
 				else
@@ -573,6 +600,7 @@ class CoursesModelOffering extends JObject
 			{
 				return $this->pages[$idx];
 			}
+			return null;
 		}
 
 		return $this->pages;

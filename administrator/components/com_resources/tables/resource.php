@@ -244,18 +244,22 @@ class ResourcesResource extends JTable
 	}
 
 	/**
-	 * Load a record by alias and bind to $this
+	 * Load a record and bind to $this
 	 * 
 	 * @param      string $oid Resource alias
 	 * @return     boolean True on success
 	 */
-	public function loadAlias($oid=NULL)
+	public function load($oid=NULL)
 	{
 		if ($oid === NULL) 
 		{
 			return false;
 		}
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE alias='$oid'");
+		if (is_numeric($oid))
+		{
+			return parent::load($oid);
+		}
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE `alias`='$oid'");
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			return $this->bind($result);
@@ -265,6 +269,17 @@ class ResourcesResource extends JTable
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
+	}
+
+	/**
+	 * Load a record by alias and bind to $this
+	 * 
+	 * @param      string $oid Resource alias
+	 * @return     boolean True on success
+	 */
+	public function loadAlias($oid=NULL)
+	{
+		return $this->load($oid);
 	}
 
 	/**

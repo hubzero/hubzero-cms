@@ -54,6 +54,9 @@ class ResourcesElementTextarea extends ResourcesElement
 		// convert <br /> tags so they are not visible when editing
 		$value = str_replace('<br />', "\n", $value);
 
-		return '<span class="field-wrap"><textarea name="'.$control_name.'['.$name.']" cols="'.$cols.'" rows="'.$rows.'" '.$class.' id="'.$control_name.'-'.$name.'" >'.$value.'</textarea></span>';
+		$editor =& JFactory::getEditor();
+		return '<span class="field-wrap">' . $editor->display($control_name.'['.$name.']', $value, '100%', '200px', $cols, $rows, false) . '</span>';
+
+		//return '<span class="field-wrap"><textarea name="'.$control_name.'['.$name.']" cols="'.$cols.'" rows="'.$rows.'" '.$class.' id="'.$control_name.'-'.$name.'" >'.$value.'</textarea></span>';
 	}
 }

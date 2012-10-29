@@ -32,6 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.group.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
 
 /**
  * Courses model class for a course
@@ -41,9 +42,16 @@ class CoursesModelAssetgroup extends JObject
 	/**
 	 * CoursesTableInstance
 	 * 
+	 * @var array
+	 */
+	public $children = null;
+
+	/**
+	 * CoursesTableInstance
+	 * 
 	 * @var object
 	 */
-	public $unit = NULL;
+	public $assetgroup = NULL;
 
 	/**
 	 * CoursesTableInstance
@@ -75,21 +83,23 @@ class CoursesModelAssetgroup extends JObject
 	 */
 	public function __construct($oid)
 	{
+		$this->children = new CoursesModelIterator(array());
+
 		$this->_db = JFactory::getDBO();
 
-		$this->asset = new CoursesTableAssetGroup($this->_db);
+		$this->assetgroup = new CoursesTableAssetGroup($this->_db);
 
 		if (is_numeric($oid) || is_string($oid))
 		{
-			$this->asset->load($oid);
+			$this->assetgroup->load($oid);
 		}
 		else if (is_object($oid))
 		{
-			$this->asset->bind($oid);
+			$this->assetgroup->bind($oid);
 		}
 		else if (is_array($oid))
 		{
-			$this->asset->bind($oid);
+			$this->assetgroup->bind($oid);
 		}
 	}
 
@@ -164,6 +174,36 @@ class CoursesModelAssetgroup extends JObject
 	}
 
 	/**
+	 * Returns a property of the object or the default value if the property is not set.
+	 *
+	 * @param	string $property The name of the property
+	 * @param	mixed  $default The default value
+	 * @return	mixed The value of the property
+ 	 */
+	public function get($property, $default=null)
+	{
+		if (isset($this->assetgroup->$property)) 
+		{
+			return $this->assetgroup->$property;
+		}
+		return $default;
+	}
+
+	/**
+	 * Modifies a property of the object, creating it if it does not already exist.
+	 *
+	 * @param	string $property The name of the property
+	 * @param	mixed  $value The value of the property to set
+	 * @return	mixed Previous value of the property
+	 */
+	public function set($property, $value = null)
+	{
+		$previous = isset($this->assetgroup->$property) ? $this->assetgroup->$property : null;
+		$this->assetgroup->$property = $value;
+		return $previous;
+	}
+
+	/**
 	 * Check if the resource exists
 	 * 
 	 * @param      mixed $idx Index value
@@ -171,7 +211,7 @@ class CoursesModelAssetgroup extends JObject
 	 */
 	public function exists()
 	{
-		if ($this->asset->id && $this->asset->id > 0) 
+		if ($this->get('id') && $this->get('id') > 0) 
 		{
 			return true;
 		}
@@ -205,22 +245,84 @@ class CoursesModelAssetgroup extends JObject
 	 *
 	 * @param	int	Article ID number
 	 */
+	public function children($idx=null)
+	{
+		if ($idx !== null)
+		{
+			if (is_numeric($idx))
+			{
+				if (isset($this->children[$idx]))
+				{
+					return $this->children[$idx];
+				}
+				else
+				{
+					$this->setError(JText::_('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
+					return false;
+				}
+			}
+			else if (is_array($idx))
+			{
+				$found = false;
+				$res = array();
+				foreach ($this->children as $child)
+				{
+					$obj = new stdClass;
+					foreach ($idx as $property)
+					{
+						$property = strtolower(trim($property));
+						if (isset($child->$property))
+						{
+							$obj->$property = $child->$property;
+							$found = true;
+						}
+					}
+					if ($found)
+					{
+						$res[] = $obj;
+					}
+				}
+				return $res;
+			}
+			else if (is_string($idx))
+			{
+				$idx = strtolower(trim($idx));
+
+				$res = array();
+				foreach ($this->children as $child)
+				{
+					if (isset($child->$idx))
+					{
+						$res[] = $child->$idx;
+					}
+				}
+				return $res;
+			}
+		}
+		return $this->children;
+	}
+
+	/**
+	 * Method to set the article id
+	 *
+	 * @param	int	Article ID number
+	 */
 	public function asset($id=null)
 	{
-		if (!isset($this->asset) || $this->asset->id != $id)
+		if (!isset($this->asset) || $this->asset->get('id') != $id)
 		{
 			$this->asset = null;
 
 			foreach ($this->assets() as $key => $asset)
 			{
-				if ($asset->id == $id)
+				if ($asset->get('id') == $id)
 				{
-					if (!is_a($asset, 'CoursesModelAsset'))
+					/*if (!is_a($asset, 'CoursesModelAsset'))
 					{
 						$asset = new CoursesModelAsset($asset);
 						// Set the offering to the model
 						$this->assets($key, $asset);
-					}
+					}*/
 					$this->asset = $asset;
 					break;
 				}
@@ -255,7 +357,7 @@ class CoursesModelAssetgroup extends JObject
 			$results = $tbl->getCourseAssets(
 				array(
 					'w' => array(
-						'course_asset_scope_id' => $this->group->id,
+						'course_asset_scope_id' => $this->group->get('id'),
 						'course_asset_scope' => 'asset_group'
 					)
 				)
@@ -278,10 +380,10 @@ class CoursesModelAssetgroup extends JObject
 			{
 				if (isset($this->assets[$idx]))
 				{
-					if ($model && is_a($model, 'CoursesModelAssetgroup'))
+					/*if ($model && is_a($model, 'CoursesModelAssetgroup'))
 					{
 						$this->assets[$idx] = $model;
-					}
+					}*/
 					return $this->assets[$idx];
 				}
 				else

@@ -56,9 +56,9 @@ class plgResourcesUsage extends JPlugin
 	 * @param      object $resource Current resource
 	 * @return     array
 	 */
-	public function &onResourcesAreas($resource) 
+	public function &onResourcesAreas($model) 
 	{
-		if ($resource->_type->_params->get('plg_usage') && $resource->type == 7) 
+		if ($model->type->params->get('plg_' . $this->_name) && $model->isTool()) 
 		{
 			// Only show tab for tools
 			$areas = array(
@@ -81,30 +81,30 @@ class plgResourcesUsage extends JPlugin
 	 * @param      string  $rtrn      Data to be returned
 	 * @return     array
 	 */
-	public function onResources($resource, $option, $areas, $rtrn='all')
+	public function onResources($model, $option, $areas, $rtrn='all')
 	{
 		$arr = array(
-			'area' => 'usage',
-			'html' => '',
+			'area'     => $this->_name,
+			'html'     => '',
 			'metadata' => ''
 		);
 
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array($areas)) 
 		{
-			if (!array_intersect($areas, $this->onResourcesAreas($resource)) 
-			 && !array_intersect($areas, array_keys($this->onResourcesAreas($resource)))) 
+			if (!array_intersect($areas, $this->onResourcesAreas($model)) 
+			 && !array_intersect($areas, array_keys($this->onResourcesAreas($model)))) 
 			{
 				$rtrn = 'metadata';
 			}
 		}
-		if (!$resource->_type->_params->get('plg_usage')) 
+		if (!$model->type->params->get('plg_usage')) 
 		{
 			return $arr;
 		}
 
 		// Display only for tools
-		if ($resource->type != 7) 
+		if (!$model->isTool()) 
 		{
 			//return $arr;
 			$rtrn == 'metadata';
@@ -116,13 +116,13 @@ class plgResourcesUsage extends JPlugin
 		$tables = $database->getTableList();
 		$table = $database->_table_prefix . 'resource_stats_tools';
 
-		if ($resource->alias) 
+		if ($model->resource->alias) 
 		{
-			$url = JRoute::_('index.php?option=' . $option . '&alias=' . $resource->alias . '&active=usage');
+			$url = JRoute::_('index.php?option=' . $option . '&alias=' . $model->resource->alias . '&active=usage');
 		} 
 		else 
 		{
-			$url = JRoute::_('index.php?option=' . $option . '&id=' . $resource->id . '&active=usage');
+			$url = JRoute::_('index.php?option=' . $option . '&id=' . $model->resource->id . '&active=usage');
 		}
 
 		if (!in_array($table, $tables)) 
@@ -137,7 +137,7 @@ class plgResourcesUsage extends JPlugin
 		$period = JRequest::getInt('period', $this->params->get('period', 14));
 
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'stats.php');
-		if ($resource->type == 7) 
+		if ($model->isTool()) 
 		{
 			$stats = new ResourcesStatsTools($database);
 		} 
@@ -145,10 +145,10 @@ class plgResourcesUsage extends JPlugin
 		{
 			$stats = new ResourcesStats($database);
 		}
-		$stats->loadStats($resource->id, $period, $dthis);
+		$stats->loadStats($model->resource->id, $period, $dthis);
 
 		$clusters = new ResourcesStatsClusters($database);
-		$clusters->loadStats($resource->id);
+		$clusters->loadStats($model->resource->id);
 
 		// Are we returning HTML?
 		if ($rtrn == 'all' || $rtrn == 'html') 
@@ -156,7 +156,7 @@ class plgResourcesUsage extends JPlugin
 			$action = JRequest::getVar('action', '');
 			if ($action == 'top')
 			{
-				$this->getTopValues($resource->id, JRequest::getVar('datetime', '0000-00-00 00:00:00'));
+				$this->getTopValues($model->resource->id, JRequest::getVar('datetime', '0000-00-00 00:00:00'));
 				return;
 			}
 			ximport('Hubzero_Document');
@@ -174,7 +174,7 @@ class plgResourcesUsage extends JPlugin
 
 			// Pass the view some info
 			$view->option     = $option;
-			$view->resource   = $resource;
+			$view->resource   = $model->resource;
 			$view->stats      = $stats;
 			$view->chart_path = $this->params->get('chart_path','');
 			$view->map_path   = $this->params->get('map_path','');
@@ -192,7 +192,7 @@ class plgResourcesUsage extends JPlugin
 
 		if ($rtrn == 'all' || $rtrn == 'metadata') 
 		{
-			if ($resource->type == 7) 
+			if ($model->isTool()) 
 			{
 				$arr['metadata'] = '<p class="usage"><a href="' . $url . '">' . JText::sprintf('PLG_RESOURCES_USAGE_NUM_USERS', $stats->users) . '</a></p>';
 			} 

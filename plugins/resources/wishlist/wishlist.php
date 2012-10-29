@@ -51,8 +51,7 @@ class plgResourcesWishlist extends JPlugin
 
 		$this->loadLanguage();
 
-		$wconfig = & JComponentHelper::getParams('com_wishlist');
-		$this->config = $wconfig;
+		$this->config = JComponentHelper::getParams('com_wishlist');
 
 		JPlugin::loadLanguage('com_wishlist');
 	}
@@ -63,9 +62,9 @@ class plgResourcesWishlist extends JPlugin
 	 * @param      object $resource Current resource
 	 * @return     array
 	 */
-	public function &onResourcesAreas($resource)
+	public function &onResourcesAreas($model)
 	{
-		if ($resource->_type->_params->get('plg_wishlist')) 
+		if ($model->type->params->get('plg_' . $this->_name)) 
 		{
 			$areas = array(
 				'wishlist' => JText::_('Wishlist')
@@ -87,37 +86,37 @@ class plgResourcesWishlist extends JPlugin
 	 * @param      string  $rtrn      Data to be returned
 	 * @return     array
 	 */
-	public function onResources($resource, $option, $areas, $rtrn='all')
+	public function onResources($model, $option, $areas, $rtrn='all')
 	{
 		$arr = array(
-			'area' => 'wishlist',
-			'html' => '',
+			'area'     => $this->_name,
+			'html'     => '',
 			'metadata' => ''
 		);
 
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array($areas)) 
 		{
-			if (!array_intersect($areas, $this->onResourcesAreas($resource))
-			 && !array_intersect($areas, array_keys($this->onResourcesAreas($resource)))) 
+			if (!array_intersect($areas, $this->onResourcesAreas($model))
+			 && !array_intersect($areas, array_keys($this->onResourcesAreas($model)))) 
 			{
 				$rtrn = 'metadata';
 			}
 		}
-		if (!$resource->_type->_params->get('plg_wishlist')) 
+		if (!$model->type->params->get('plg_' . $this->_name)) 
 		{
 			return $arr;
 		}
 
 		$database =& JFactory::getDBO();
-		$juser 	  =& JFactory::getUser();
+		$juser    =& JFactory::getUser();
 
 		$option = 'com_wishlist';
-		$cat 	= 'resource';
-		$refid  = $resource->id;
+		$cat    = 'resource';
+		$refid  = $model->resource->id;
 		$items  = 0;
 		$admin  = 0;
-		$html	= '';
+		$html   = '';
 
 		// Include some classes & scripts
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'wishlist.php');
@@ -149,10 +148,12 @@ class plgResourcesWishlist extends JPlugin
 		// Create a new list if necessary
 		if (!$id) 
 		{
-			if ($resource->title && $resource->standalone == 1  && $resource->published == 1) 
+			if ($model->resource->title 
+			 && $model->resource->standalone == 1 
+			 && $model->resource->published == 1) 
 			{
-				$rtitle = ($resource->type=='7'  && isset($resource->alias)) ? JText::_('WISHLIST_NAME_RESOURCE_TOOL') . ' ' . $resource->alias : JText::_('WISHLIST_NAME_RESOURCE_ID') . ' ' . $resource->id;
-				$id = $obj->createlist($cat, $refid, 1, $rtitle, $resource->title);
+				$rtitle = ($model->istool()) ? JText::_('WISHLIST_NAME_RESOURCE_TOOL') . ' ' . $model->resource->alias : JText::_('WISHLIST_NAME_RESOURCE_ID') . ' ' . $model->resource->id;
+				$id = $obj->createlist($cat, $refid, 1, $rtitle, $model->resource->title);
 			}
 		}
 
@@ -175,11 +176,11 @@ class plgResourcesWishlist extends JPlugin
 				{
 					$admin = 1;
 				}
-				if (in_array($juser->get('id'), $owners['individuals'])) 
+				if (isset($owners['individuals']) && in_array($juser->get('id'), $owners['individuals'])) 
 				{
 					$admin = 2;
 				} 
-				else if (in_array($juser->get('id'), $owners['advisory'])) 
+				else if (isset($owners['advisory']) && in_array($juser->get('id'), $owners['advisory'])) 
 				{
 					$admin = 3;
 				}
@@ -225,13 +226,13 @@ class plgResourcesWishlist extends JPlugin
 				);
 
 				// Pass the view some info
-				$view->option = $option;
-				$view->resource = $resource;
-				$view->title = $title;
+				$view->option   = $option;
+				$view->resource = $model->resource;
+				$view->title    = $title;
 				$view->wishlist = $wishlist;
-				$view->filters = $filters;
-				$view->admin = $admin;
-				$view->config = $this->config;
+				$view->filters  = $filters;
+				$view->admin    = $admin;
+				$view->config   = $this->config;
 				if ($this->getError()) 
 				{
 					foreach ($this->getErrors() as $error)
@@ -241,12 +242,11 @@ class plgResourcesWishlist extends JPlugin
 				}
 
 				// Return the output
-				$html = $view->loadTemplate();
+				$arr['html'] = $view->loadTemplate();
 			}
 		}
 
 		// Build the HTML meant for the "about" tab's metadata overview
-		$metadata = '';
 		if ($rtrn == 'all' || $rtrn == 'metadata') 
 		{
 			ximport('Hubzero_Plugin_View');
@@ -257,14 +257,12 @@ class plgResourcesWishlist extends JPlugin
 					'name'    => 'metadata'
 				)
 			);
-			$view->resource = $resource;
-			$view->items = $items;
+			$view->resource   = $model->resource;
+			$view->items      = $items;
 			$view->wishlistid = $id;
-			$metadata = $view->loadTemplate();
-		}
 
-		$arr['html'] = $html;
-		$arr['metadata'] = $metadata;
+			$arr['metadata'] = $view->loadTemplate();
+		}
 
 		return $arr;
 	}

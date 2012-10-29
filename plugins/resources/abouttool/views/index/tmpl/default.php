@@ -156,7 +156,7 @@ if ($shots) {
 			<div class="resource-content">
 				<?php echo $maintext; ?>
 			</div>
-<?php } else if ($this->resource->access == 3 && (!in_array($this->resource->group_owner, $this->usersgroups) || !$this->authorized)) {
+<?php } else if ($this->resource->access == 3 && (!in_array($this->resource->group_owner, $usersgroups) || !$this->authorized)) {
 	// Protected - only show the introtext
 ?>
 			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_ABSTRACT'); ?></h4>

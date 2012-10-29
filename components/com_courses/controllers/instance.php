@@ -163,7 +163,8 @@ class CoursesControllerInstance extends Hubzero_Controller
 		//$authorized = $this->_authorize();
 
 		// Get the active tab (section)
-		$this->view->active = JRequest::getVar('active', 'outline');
+		$active = JRequest::getVar('active', 'outline');
+		$this->view->active = $active;
 
 		/*if ($tab == 'wiki') 
 		{
@@ -174,26 +175,14 @@ class CoursesControllerInstance extends Hubzero_Controller
 			$path = DS . trim($this->config->get('uploadpath', '/site/courses'), DS);
 		}*/
 
-		$wikiconfig = array(
-			'option'   => $this->_option,
-			'scope'    => '',
-			'pagename' => $this->course->get('cn'),
-			'pageid'   => $this->course->get('gidNumber'),
-			'filepath' => DS . trim($this->config->get('uploadpath', '/site/courses'), DS),
-			'domain'   => $this->course->get('cn')
-		);
-
-		ximport('Hubzero_Wiki_Parser');
-		$p =& Hubzero_Wiki_Parser::getInstance();
-
 		// Get the course pages if any
 		//$GPages = new CoursesTablePage($this->database);
 		//$pages = $GPages->getPages($this->course->get('gidNumber'), true);
 
-		if (in_array($this->view->active, array_keys($this->course->offering()->pages())))
+		/*if (in_array($this->view->active, array_keys($this->course->offering()->pages())))
 		{
 			$wikiconfig['pagename'] .= DS . $this->view->active;
-		}
+		}*/
 
 		// Push some vars to the course pages
 		/*$GPages->parser     = $p;
@@ -279,24 +268,59 @@ class CoursesControllerInstance extends Hubzero_Controller
 		$this->_buildPathway($this->course->offering()->pages());
 
 		// Add the default "About" section to the beginning of the lists
-		if ($this->view->active == 'outline') 
+		if (($page = $this->course->offering()->pages($active)))
+		{
+			$wikiconfig = array(
+				'option'   => $this->_option,
+				'scope'    => '',
+				'pagename' => DS . $this->view->active,
+				'pageid'   => $this->course->get('id'),
+				'filepath' => DS . trim($this->config->get('uploadpath', '/site/courses'), DS),
+				'domain'   => $this->course->get('alias')
+			);
+
+			ximport('Hubzero_Wiki_Parser');
+			$p =& Hubzero_Wiki_Parser::getInstance();
+
+			//$layout = 'page';
+
+			$body = $p->parse($page['content'], $wikiconfig);
+		}
+		else if ($this->view->active == 'outline') 
 		{
 			// Add the plugins.js
 			//$doc =& JFactory::getDocument();
 			//$doc->addScript('/components/com_courses/assets/js/plugins.js');
-
+			$layout = $this->view->active;
+			if (($unit = JRequest::getVar('unit', '')))
+			{
+				$layout = 'unit';
+			}
+			if (($group = JRequest::getVar('group', '')))
+			{
+				$layout = 'lecture';
+			}
 			$view = new JView(array(
 				'name'   => $this->_controller, 
-				'layout' => $this->view->active
+				'layout' => $layout
 			));
+			if (isset($unit))
+			{
+				$view->unit = $unit;
+			}
+			if (isset($group))
+			{
+				$view->group = $group;
+			}
 			//$view->course_overview = $GPages->displayPage();
 			//$view->tab = $GPages->tab;
-			$view->tab = $this->active;
-			$view->course   = $this->course;
-			$view->instance = $this->instance;
-			//$view->authorized = $authorized;
-			$view->database = $this->database;
-			$view->config   = $this->config;
+			$view->option     = $this->_option;
+			$view->controller = $this->_controller;
+			$view->tab        = $this->active;
+			$view->course     = $this->course;
+			//$view->instance = $this->instance;
+			$view->database   = $this->database;
+			$view->config     = $this->config;
 
 			$body = $view->loadTemplate();
 		} 

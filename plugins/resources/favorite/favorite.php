@@ -58,7 +58,7 @@ class plgResourcesFavorite extends JPlugin
 	 * @param      object $resource Current resource
 	 * @return     array
 	 */
-	public function onResourcesAreas($resource)
+	public function onResourcesAreas($model)
 	{
 		return array();
 	}
@@ -72,13 +72,13 @@ class plgResourcesFavorite extends JPlugin
 	 * @param      string  $rtrn      Data to be returned
 	 * @return     array
 	 */
-	public function onResources($resource, $option, $areas, $rtrn='all')
+	public function onResources($model, $option, $areas, $rtrn='all')
 	{
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array($areas)) 
 		{
-			if (!array_intersect($areas, $this->onResourcesAreas($resource))
-			 && !array_intersect($areas, array_keys($this->onResourcesAreas($resource)))) 
+			if (!array_intersect($areas, $this->onResourcesAreas($model))
+			 && !array_intersect($areas, array_keys($this->onResourcesAreas($model)))) 
 			{
 				$rtrn = 'metadata';
 			}
@@ -89,7 +89,7 @@ class plgResourcesFavorite extends JPlugin
 		if ($action && $action == 'favorite') 
 		{
 			// Check the user's logged-in status
-			$this->fav($resource->id);
+			$this->fav($model->resource->id);
 		}
 
 		$arr = array(
@@ -117,7 +117,7 @@ class plgResourcesFavorite extends JPlugin
 				$database =& JFactory::getDBO();
 
 				$fav = new Hubzero_Favorite($database);
-				$fav->loadFavorite($juser->get('id'), $resource->id, 'resources');
+				$fav->loadFavorite($juser->get('id'), $model->resource->id, 'resources');
 				if (!$fav->id) 
 				{
 					$txt = JText::_('PLG_RESOURCES_FAVORITES_FAVORITE_THIS');
@@ -140,7 +140,7 @@ class plgResourcesFavorite extends JPlugin
 				$view->cls = $cls;
 				$view->txt = $txt;
 				$view->option = $option;
-				$view->resource = $resource;
+				$view->resource = $model->resource;
 				$arr['metadata'] = $view->loadTemplate();
 			}
 		}

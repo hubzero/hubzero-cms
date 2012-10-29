@@ -58,9 +58,9 @@ class plgResourcesAbout extends JPlugin
 	 * @param      object $resource Current resource
 	 * @return     array
 	 */
-	public function &onResourcesAreas($resource)
+	public function &onResourcesAreas($model)
 	{
-		if ($resource->_type->_params->get('plg_about', 0)) 
+		if ($model->type->params->get('plg_about', 0)) 
 		{
 			$areas = array(
 				'about' => JText::_('PLG_RESOURCES_ABOUT')
@@ -82,25 +82,25 @@ class plgResourcesAbout extends JPlugin
 	 * @param      string  $rtrn      Data to be returned
 	 * @return     array
 	 */
-	public function onResources($resource, $option, $areas, $rtrn='all')
+	public function onResources($model, $option, $areas, $rtrn='all')
 	{
 		$arr = array(
-			'area' => 'about',
-			'html' => '',
+			'area'     => $this->_name,
+			'html'     => '',
 			'metadata' => ''
 		);
 
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array($areas)) 
 		{
-			if (!array_intersect($areas, $this->onResourcesAreas($resource))
-			 && !array_intersect($areas, array_keys($this->onResourcesAreas($resource)))) 
+			if (!array_intersect($areas, $this->onResourcesAreas($model))
+			 && !array_intersect($areas, array_keys($this->onResourcesAreas($model)))) 
 			{
 				$rtrn = 'metadata';
 			}
 		}
 
-		$ar = $this->onResourcesAreas($resource);
+		$ar = $this->onResourcesAreas($model);
 		if (empty($ar)) 
 		{
 			$rtrn = '';
@@ -109,78 +109,27 @@ class plgResourcesAbout extends JPlugin
 		if ($rtrn == 'all' || $rtrn == 'html') 
 		{
 			ximport('Hubzero_Document');
-			Hubzero_Document::addPluginStyleSheet('resources', 'about');
+			Hubzero_Document::addPluginStyleSheet('resources', $this->_name);
 
 			// Instantiate a view
 			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'resources',
-					'element' => 'about',
+					'element' => $this->_name,
 					'name'    => 'index'
 				)
 			);
-			$view->option = $option;
-			$view->resource = $resource;
-			$view->authorized = $resource->authorized;
+			$view->option   = $option;
+			$view->model    = $model;
 			$view->database = JFactory::getDBO();
-			$view->juser = JFactory::getUser();
-
-			if (!$view->juser->get('guest')) 
-			{
-				ximport('Hubzero_User_Helper');
-				$xgroups = Hubzero_User_Helper::getGroups($view->juser->get('id'), 'all');
-				// Get the groups the user has access to
-				$view->usersgroups = $this->_getUsersGroups($xgroups);
-			} 
-			else 
-			{
-				$view->usersgroups = array();
-			}
-
-			$paramsClass = 'JRegistry';
-			if (version_compare(JVERSION, '1.6', 'lt'))
-			{
-				$paramsClass = 'JParameter';
-			}
-
-			$view->attribs = new $paramsClass($resource->attribs);
-			$view->config = JComponentHelper::getParams($option);
-
-			$rparams = new $paramsClass($resource->params);
-			$params = $view->config;
-			$params->merge($rparams);
-
-			$view->params = $params;
-			$view->plugin = $this->params;
-			$view->helper = new ResourcesHelper($resource->id, $view->database);
+			$view->juser    = JFactory::getUser();
+			$view->plugin   = $this->params;
 
 			// Return the output
 			$arr['html'] = $view->loadTemplate();
 		}
 
-		return $arr;
-	}
-
-	/**
-	 * Create an array of just group aliases
-	 * 
-	 * @param      array $groups A list of groups
-	 * @return     array
-	 */
-	private function _getUsersGroups($groups)
-	{
-		$arr = array();
-		if (!empty($groups)) 
-		{
-			foreach ($groups as $group)
-			{
-				if ($group->regconfirmed) 
-				{
-					$arr[] = $group->cn;
-				}
-			}
-		}
 		return $arr;
 	}
 }

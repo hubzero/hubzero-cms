@@ -31,15 +31,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$sef = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->resource->id);
+$sef = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->model->resource->id);
 
 // Set the display date
-switch ($this->params->get('show_date'))
+switch ($this->model->params->get('show_date'))
 {
 	case 0: $thedate = ''; break;
-	case 1: $thedate = $this->resource->created;    break;
-	case 2: $thedate = $this->resource->modified;   break;
-	case 3: $thedate = $this->resource->publish_up; break;
+	case 1: $thedate = $this->model->resource->created;    break;
+	case 2: $thedate = $this->model->resource->modified;   break;
+	case 3: $thedate = $this->model->resource->publish_up; break;
 }
 
 $dateFormat = '%d %b %Y';
@@ -54,16 +54,16 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$tz = true;
 }
 
-$this->resource->introtext = stripslashes($this->resource->introtext);
-$this->resource->fulltxt = stripslashes($this->resource->fulltxt);
-$this->resource->fulltxt = ($this->resource->fulltxt) ? trim($this->resource->fulltxt) : trim($this->resource->introtext);
+$this->model->resource->introtext = stripslashes($this->model->resource->introtext);
+$this->model->resource->fulltxt = stripslashes($this->model->resource->fulltxt);
+$this->model->resource->fulltxt = ($this->model->resource->fulltxt) ? trim($this->model->resource->fulltxt) : trim($this->model->resource->introtext);
 
 // Parse for <nb:field> tags
 $type = new ResourcesType($this->database);
-$type->load($this->resource->type);
+$type->load($this->model->resource->type);
 
 $data = array();
-preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->resource->fulltxt, $matches, PREG_SET_ORDER);
+preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->model->resource->fulltxt, $matches, PREG_SET_ORDER);
 if (count($matches) > 0) 
 {
 	foreach ($matches as $match)
@@ -71,23 +71,23 @@ if (count($matches) > 0)
 		$data[$match[1]] = $match[2];
 	}
 }
-$this->resource->fulltxt = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $this->resource->fulltxt);
-$this->resource->fulltxt = trim($this->resource->fulltxt);
+$this->model->resource->fulltxt = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $this->model->resource->fulltxt);
+$this->model->resource->fulltxt = trim($this->model->resource->fulltxt);
 
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
-$elements = new ResourcesElements($data, $type->customFields);
+$elements = new ResourcesElements($data, $this->model->type->customFields);
 $schema = $elements->getSchema();
 
 // Set the document description
-if ($this->resource->introtext) 
+if ($this->model->resource->introtext) 
 {
 	$document =& JFactory::getDocument();
-	$document->setDescription(ResourcesHtml::encode_html(strip_tags($this->resource->introtext)));
+	$document->setDescription(ResourcesHtml::encode_html(strip_tags($this->model->resource->introtext)));
 }
 
 // Check if there's anything left in the fulltxt after removing custom fields
 // If not, set it to the introtext
-$maintext = $this->resource->fulltxt;
+$maintext = $this->model->resource->fulltxt;
 $maintext = preg_replace('/&(?!(?i:\#((x([\dA-F]){1,5})|(104857[0-5]|10485[0-6]\d|1048[0-4]\d\d|104[0-7]\d{3}|10[0-3]\d{4}|0?\d{1,6}))|([A-Za-z\d.]{2,31}));)/i',"&amp;",$maintext);
 $maintext = str_replace('<blink>', '', $maintext);
 $maintext = str_replace('</blink>', '', $maintext);
@@ -97,8 +97,8 @@ $maintext = str_replace('</blink>', '', $maintext);
 		<div class="two columns first">
 			<h4><?php echo JText::_('Category'); ?></h4>
 			<p class="resource-content">
-				<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $this->resource->_type->alias); ?>">
-					<?php echo $this->escape(stripslashes($this->resource->_type->type)); ?>
+				<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $this->model->type->alias); ?>">
+					<?php echo $this->escape(stripslashes($this->model->type->type)); ?>
 				</a>
 			</tp>
 		</div>
@@ -111,12 +111,12 @@ $maintext = str_replace('</blink>', '', $maintext);
 		<div class="clearfix"></div>
 <?php
 // Check how much we can display
-if ($this->resource->access == 3 && (!in_array($this->resource->group_owner, $this->usersgroups) || !$this->authorized)) {
+if (!$this->model->access('view-all')) {
 	// Protected - only show the introtext
 ?>
 		<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_ABSTRACT'); ?></h4>
 		<div class="resource-content">
-			<?php echo $this->escape($this->resource->introtext); ?>
+			<?php echo $this->escape($this->model->resource->introtext); ?>
 		</div>
 <?php
 } else {
@@ -128,13 +128,24 @@ if ($this->resource->access == 3 && (!in_array($this->resource->group_owner, $th
 		</div>
 <?php
 	}
-	$this->helper->getSubmitters(true, 1, $this->plugin->get('badges', 0));
-	if ($this->helper->contributors && $this->helper->contributors != '<br />') {
+
+	if ($this->model->contributors('submitter')) {
 ?>
 			<h4><?php echo JText::_('Submitter'); ?></h4>
 			<div class="resource-content">
-				<span id="authorslist">
-					<?php echo $this->helper->contributors; ?>
+				<span id="submitterlist">
+					<?php 
+					$view = new JView(array(
+						'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_resources',
+						'name'   => 'view',
+						'layout' => '_submitters',
+					));
+					$view->option = $this->option;
+					$view->contributors = $this->model->contributors('submitter');
+					$view->badges = $this->plugin->get('badges', 0);
+					$view->showorgs = 1;
+					$view->display();
+					?>
 				</span>
 			</div>
 <?php
@@ -156,32 +167,32 @@ if ($this->resource->access == 3 && (!in_array($this->resource->group_owner, $th
 		}
 	}
 
-	if ($this->params->get('show_citation')) {
-		if ($this->params->get('show_citation') == 1 || $this->params->get('show_citation') == 2) {
+	if ($this->model->params->get('show_citation')) {
+		if ($this->model->params->get('show_citation') == 1 || $this->model->params->get('show_citation') == 2) {
 			// Citation instructions
-			$this->helper->getUnlinkedContributors();
+			//$this->helper->getUnlinkedContributors();
 
 			// Build our citation object
 			$juri =& JURI::getInstance();
 			
 			$cite = new stdClass();
-			$cite->title = $this->resource->title;
+			$cite->title = $this->model->resource->title;
 			$cite->year = JHTML::_('date', $thedate, $yearFormat, $tz);
 			$cite->location = $juri->base() . ltrim($sef, DS);
-			$cite->date = date( "Y-m-d H:i:s" );
+			$cite->date = date("Y-m-d H:i:s");
 			$cite->url = '';
 			$cite->type = '';
-			$cite->author = $this->helper->ul_contributors;
+			$cite->author = implode(';', $this->model->contributors('name')); //$this->helper->ul_contributors;
 			
-			if ($this->params->get('show_citation') == 2) {
+			if ($this->model->params->get('show_citation') == 2) {
 				$citations = '';
 			}
 		} else {
 			$cite = null;
 		}
 
-		$citeinstruct  = ResourcesHtml::citation( $this->option, $cite, $this->resource->id, $citations, $this->resource->type, 0 );
-		$citeinstruct .= ResourcesHtml::citationCOins($cite, $this->resource, $this->config, $this->helper);
+		$citeinstruct  = ResourcesHtml::citation($this->option, $cite, $this->model->resource->id, $citations, $this->model->resource->type, 0);
+		$citeinstruct .= ResourcesHtml::citationCOins($cite, $this->model); //->resource, $this->model->params, $this->helper);
 ?>
 			<h4><a name="citethis"></a><?php echo JText::_('PLG_RESOURCES_ABOUT_CITE_THIS'); ?></h4>
 			<div class="resource-content">
@@ -191,18 +202,18 @@ if ($this->resource->access == 3 && (!in_array($this->resource->group_owner, $th
 	}
 }
 // If the resource had a specific event date/time
-if ($this->attribs->get('timeof', '')) {
-	if (substr($this->attribs->get('timeof', ''), -8, 8) == '00:00:00') {
+if ($this->model->attribs->get('timeof', '')) {
+	if (substr($this->model->attribs->get('timeof', ''), -8, 8) == '00:00:00') {
 		$exp = $dateFormat; //'%B %d %Y';
 	} else {
 		$exp = $timeFormat . ', ' . $dateFormat; //'%I:%M %p, %B %d %Y';
 	}
-	if (substr($this->attribs->get('timeof', ''), 4, 1) == '-') {
-		$seminarTime = ($this->attribs->get('timeof', '') != '0000-00-00 00:00:00' || $this->attribs->get('timeof', '') != '')
-					  ? JHTML::_('date', $this->attribs->get('timeof', ''), $exp)
+	if (substr($this->model->attribs->get('timeof', ''), 4, 1) == '-') {
+		$seminarTime = ($this->model->attribs->get('timeof', '') != '0000-00-00 00:00:00' || $this->model->attribs->get('timeof', '') != '')
+					  ? JHTML::_('date', $this->model->attribs->get('timeof', ''), $exp)
 					  : '';
 	} else {
-		$seminarTime = $this->attribs->get('timeof', '');
+		$seminarTime = $this->model->attribs->get('timeof', '');
 	}
 ?>
 			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_TIME'); ?></h4>
@@ -210,21 +221,22 @@ if ($this->attribs->get('timeof', '')) {
 <?php
 }
 // If the resource had a specific location
-if ($this->attribs->get('location', '')) {
+if ($this->model->attribs->get('location', '')) {
 ?>
 			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_LOCATION'); ?></h4>
-			<p class="resource-content"><?php echo $this->escape($this->attribs->get('location', '')); ?></p>
+			<p class="resource-content"><?php echo $this->escape($this->model->attribs->get('location', '')); ?></p>
 <?php
 }
 // Tags
-if ($this->params->get('show_assocs')) {
-	$tagCloud = $this->helper->getTagCloud($this->authorized);
-
-	if ($tagCloud) {
+if ($this->model->params->get('show_assocs')) {
+	$tags = $this->model->tags();
+	//$tagCloud = $this->helper->getTagCloud($this->authorized);
+	if ($tags) {
+		$tagger = new ResourcesTags($this->database);
 ?>
 			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_TAGS'); ?></h4>
 			<div class="resource-content">
-				<?php echo $tagCloud; ?>
+				<?php echo $tagger->buildCloud($tags); ?>
 			</div>
 <?php
 	}

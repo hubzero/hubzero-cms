@@ -58,13 +58,13 @@ class plgResourcesSupportingDocs extends JPlugin
 	 * @param      object $resource Current resource
 	 * @return     array
 	 */
-	public function &onResourcesAreas($resource, $archive = 0)
+	public function &onResourcesAreas($model, $archive = 0)
 	{
 		if ($archive) 
 		{
 			$areas = array();
 		} 
-		else if ($resource->_type->_params->get('plg_supportingdocs')) 
+		else if ($model->type->params->get('plg_' . $this->_name)) 
 		{
 			$areas = array(
 				'supportingdocs' => JText::_('PLG_RESOURCES_SUPPORTINGDOCS')
@@ -87,55 +87,44 @@ class plgResourcesSupportingDocs extends JPlugin
 	 * @param      string  $rtrn      Data to be returned
 	 * @return     array
 	 */
-	public function onResources($resource, $option, $areas, $rtrn='all')
+	public function onResources($model, $option, $areas, $rtrn='all')
 	{
 		$arr = array(
-			'area' => 'supportingdocs',
-			'html' => '',
+			'area'     => $this->_name,
+			'html'     => '',
 			'metadata' => ''
 		);
 
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array($areas)) 
 		{
-			if (!array_intersect($areas, $this->onResourcesAreas($resource))
-			 && !array_intersect($areas, array_keys($this->onResourcesAreas($resource)))) 
+			if (!array_intersect($areas, $this->onResourcesAreas($model))
+			 && !array_intersect($areas, array_keys($this->onResourcesAreas($model)))) 
 			{
 				// do nothing
-				return;
+				return $arr;
 			}
 		}
 
 		ximport('Hubzero_Document');
-		Hubzero_Document::addPluginStylesheet('resources', 'supportingdocs');
-
-		$database =& JFactory::getDBO();
-
-		// Initiate a resource helper class
-		$helper = new ResourcesHelper($resource->id, $database);
-		$helper->getChildren($resource->id, 0, 'all', 0);
-
-		$config =& JComponentHelper::getParams($option);
+		Hubzero_Document::addPluginStylesheet('resources', $this->_name);
 
 		// Instantiate a view
 		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'resources',
-				'element' => 'supportingdocs',
+				'element' => $this->_name,
 				'name'    => 'browse'
 			)
 		);
-		
+
 		$jconfig =& JFactory::getConfig();
-		$live_site = rtrim(JURI::base(),'/');
-		
+
 		// Pass the view some info
 		$view->option    = $option;
-		$view->resource  = $resource;
-		$view->helper    = $helper;
-		$view->config    = $config;
-		$view->live_site = $live_site;
+		$view->model     = $model;
+		$view->live_site = rtrim(JURI::base(), '/');
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)

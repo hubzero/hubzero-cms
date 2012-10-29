@@ -58,16 +58,18 @@ class plgResourcesQuestions extends JPlugin
 	 * @param      object $resource Current resource
 	 * @return     array
 	 */
-	public function &onResourcesAreas($resource)
+	public function &onResourcesAreas($model)
 	{
-		if (isset($resource->toolpublished) || isset($resource->revision))
+		if (isset($model->resource->toolpublished) || isset($model->resource->revision))
 		{
-			if (isset($resource->thistool) && $resource->thistool && ($resource->revision=='dev' or !$resource->toolpublished)) 
+			if (isset($model->resource->thistool) 
+			 && $model->resource->thistool 
+			 && ($model->resource->revision=='dev' or !$model->resource->toolpublished)) 
 			{
-				$resource->_type->_params->set('plg_questions', 0);
+				$model->type->params->set('plg_questions', 0);
 			}
 		}
-		if ($resource->_type->_params->get('plg_questions')) 
+		if ($model->type->params->get('plg_questions')) 
 		{
 			$areas = array(
 				'questions' => JText::_('PLG_RESOURCES_QUESTIONS')
@@ -89,24 +91,24 @@ class plgResourcesQuestions extends JPlugin
 	 * @param      string  $rtrn      Data to be returned
 	 * @return     array
 	 */
-	public function onResources($resource, $option, $areas, $rtrn='all')
+	public function onResources($model, $option, $areas, $rtrn='all')
 	{
 		$arr = array(
-			'area' => 'questions',
-			'html' => '',
+			'area'     => $this->_name,
+			'html'     => '',
 			'metadata' => ''
 		);
 
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array($areas)) 
 		{
-			if (!array_intersect($areas, $this->onResourcesAreas($resource))
-			 && !array_intersect($areas, array_keys($this->onResourcesAreas($resource)))) 
+			if (!array_intersect($areas, $this->onResourcesAreas($model))
+			 && !array_intersect($areas, array_keys($this->onResourcesAreas($model)))) 
 			{
 				$rtrn = 'metadata';
 			}
 		}
-		if (!$resource->_type->_params->get('plg_questions')) 
+		if (!$model->type->params->get('plg_questions')) 
 		{
 			return $arr;
 		}
@@ -115,9 +117,6 @@ class plgResourcesQuestions extends JPlugin
 
 		// Get a needed library
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'question.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'response.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'log.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'questionslog.php');
 
 		// Get all the questions for this tool
 		$a = new AnswersQuestion($database);
@@ -125,7 +124,7 @@ class plgResourcesQuestions extends JPlugin
 		$filters = array();
 		$filters['limit']    = JRequest::getInt('limit', 0);
 		$filters['start']    = JRequest::getInt('limitstart', 0);
-		$filters['tag']      = $resource->type== 7 ? 'tool:' . $resource->alias : 'resource:' . $resource->id;
+		$filters['tag']      = $model->isTool() ? 'tool:' . $model->resource->alias : 'resource:' . $model->resource->id;
 		$filters['q']        = JRequest::getVar('q', '');
 		$filters['filterby'] = JRequest::getVar('filterby', '');
 		$filters['sortby']   = JRequest::getVar('sortby', 'withinplugin');
@@ -135,6 +134,9 @@ class plgResourcesQuestions extends JPlugin
 		// Are we returning HTML?
 		if ($rtrn == 'all' || $rtrn == 'html') 
 		{
+			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'response.php');
+			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'log.php');
+			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'questionslog.php');
 			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
 
 			ximport('Hubzero_Document');
@@ -146,10 +148,9 @@ class plgResourcesQuestions extends JPlugin
 
 			// Info aboit points link
 			$aconfig =& JComponentHelper::getParams('com_answers');
-			$infolink = $aconfig->get('infolink') ? $aconfig->get('infolink') : '/kb/points/';
+			$infolink = $aconfig->get('infolink', '/kb/points/');
 
-			$limit = $this->params->get('display_limit');
-			$limit = $limit ? $limit : 10;
+			$limit = $this->params->get('display_limit', 10);
 
 			// Get results
 			$rows = $a->getResults($filters);
@@ -160,19 +161,19 @@ class plgResourcesQuestions extends JPlugin
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'resources',
-					'element' => 'questions',
+					'element' => $this->_name,
 					'name'    => 'browse'
 				)
 			);
 
 			// Pass the view some info
-			$view->option = $option;
-			$view->resource = $resource;
-			$view->rows = $rows;
-			$view->count = $count;
+			$view->option   = $option;
+			$view->resource = $model->resource;
+			$view->rows     = $rows;
+			$view->count    = $count;
 			$view->infolink = $infolink;
-			$view->banking = $banking;
-			$view->limit = $limit;
+			$view->banking  = $banking;
+			$view->limit    = $limit;
 			if ($this->getError()) 
 			{
 				foreach ($this->getErrors() as $error)
@@ -192,12 +193,12 @@ class plgResourcesQuestions extends JPlugin
 			$view = new Hubzero_Plugin_View(
 				array(
 					'folder'  => 'resources',
-					'element' => 'questions',
+					'element' => $this->_name,
 					'name'    => 'metadata'
 				)
 			);
-			$view->resource = $resource;
-			$view->count = $count;
+			$view->resource = $model->resource;
+			$view->count    = $count;
 			$arr['metadata'] = $view->loadTemplate();
 		}
 

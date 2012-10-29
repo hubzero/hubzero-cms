@@ -82,64 +82,65 @@ if (!$no_html) : ?>
 				</div><!-- /#page_identity -->
 				
 				<ul id="course_options">
-					<?php if(in_array($this->user->get("id"), $this->course->get("invitees"))) : ?>
-						<?php if($membership_control == 1) : ?>
+					<?php /*if (in_array($this->user->get('id'), $this->course->offering()->get('invitees'))) : ?>
+						<?php if ($membership_control == 1) : ?>
 							<li>
-								<a class="course-invited" href="/courses/<?php echo $this->course->get("cn"); ?>/accept">Accept Course Invitation</a>
+								<a class="course-invited" href="/courses/<?php echo $this->course->get('alias'); ?>/accept">Accept Course Invitation</a>
 							</li>
 						<?php endif; ?>
-					<?php elseif($this->course->get('join_policy') == 3 && !in_array($this->user->get("id"), $this->course->get("members"))) : ?>
+					<?php elseif ($this->course->get('join_policy') == 3 && !in_array($this->user->get('id'), $this->course->offering()->get('members'))) : ?>
 						<li><span class="course-closed">Course Closed</span></li>
-					<?php elseif($this->course->get('join_policy') == 2 && !in_array($this->user->get("id"), $this->course->get("members"))) : ?>
+					<?php elseif ($this->course->get('join_policy') == 2 && !in_array($this->user->get('id'), $this->course->offering()->get('members'))) : ?>
 						<li><span class="course-inviteonly">Course is Invite Only</span></li>
-					<?php elseif($this->course->get('join_policy') == 0 && !in_array($this->user->get("id"), $this->course->get("members"))) : ?>
+					<?php else*/
+					if (!$this->course->offering()->access('view')) : ?>
 						<?php if($membership_control == 1) : ?> 
 							<li>
-								<a class="course-join" href="/courses/<?php echo $this->course->get("cn"); ?>/join">Join Course</a>
+								<a class="course-join" href="/courses/<?php echo $this->course->get('alias'); ?>/join">Enroll</a>
 							</li>
 						<?php endif; ?> 
-					<?php elseif($this->course->get('join_policy') == 1 && !in_array($this->user->get("id"), $this->course->get("members"))) : ?>
+					<?php /*elseif ($this->course->get('join_policy') == 1 && !in_array($this->user->get('id'), $this->course->offering()->get('members'))) : ?>
 						<?php if($membership_control == 1) : ?>
-							<?php if(in_array($this->user->get("id"), $this->course->get("applicants"))) : ?>
+							<?php if(in_array($this->user->get('id'), $this->course->get("applicants"))) : ?>
 								<li><span class="course-pending">Request Waiting Approval</span></li>
 							<?php else : ?>
 								<li>
-									<a class="course-request" href="/courses/<?php echo $this->course->get("cn"); ?>/join">Request Course Membership</a>
+									<a class="course-request" href="/courses/<?php echo $this->course->get('alias'); ?>/join">Request Course Membership</a>
 								</li>
 							<?php endif; ?>
-						<?php endif; ?>
+						<?php endif;*/ ?>
 					<?php else : ?>
-						<?php $isManager = (in_array($this->user->get("id"), $this->course->get("managers"))) ? true : false; ?>
-						<?php $canCancel = (($isManager && count($this->course->get("managers")) > 1) || (!$isManager && in_array($this->user->get("id"), $this->course->get("members")))) ? true : false; ?>
+						<?php $isManager = $this->course->offering()->access('manage'); ?>
+						<?php $canCancel = (($isManager && count($this->course->get("managers")) > 1) || (!$isManager && in_array($this->user->get('id'), $this->course->offering()->get('members')))) ? true : false; ?>
 						<li class="no-float">
-							<a href="javascript:void(0);" class="dropdown course-<?php echo ($isManager) ? "manager" : "member" ?>">
-								Course <?php echo ($isManager) ? "Manager" : "Member" ?>
+							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&instance=' . $this->course->offering()->get('alias')); ?>" class="dropdown course-<?php echo ($isManager) ? 'manager' : 'member'; ?>">
+								<?php echo ($isManager) ? 'Manager' : 'Member'; ?>
 								<span class="caret"></span>
 							</a>
 							<ul class="dropdown-menu pull-right">
-								<?php if($isManager) : ?>
-									<?php if($membership_control == 1) : ?> 
-										<li><a class="course-invite" href="/courses/<?php echo $this->course->get("cn"); ?>/invite">Invite Members</a></li>
+								<?php if ($isManager) : ?>
+									<?php if ($membership_control == 1) : ?> 
+										<li><a class="course-invite" href="/courses/<?php echo $this->course->get('alias'); ?>/invite">Invite Members</a></li>
 									<?php endif; ?>
-									<li><a class="course-edit" href="/courses/<?php echo $this->course->get("cn"); ?>/edit">Edit Course Settings</a></li>
-									<li><a class="course-customize" href="/courses/<?php echo $this->course->get("cn"); ?>/customize">Customize Course</a></li>
-									<li><a class="course-outline" href="/courses/<?php echo $this->course->get("cn"); ?>/editoutline">Edit Outline</a></li>
-									<li><a class="course-pages" href="/courses/<?php echo $this->course->get("cn"); ?>/managepages">Manage Course Pages</a></li>
-									<?php if($membership_control == 1) : ?> 
+									<!-- <li><a class="course-edit" href="/courses/<?php echo $this->course->get('alias'); ?>/edit">Edit Course Settings</a></li>
+									<li><a class="course-customize" href="/courses/<?php echo $this->course->get('alias'); ?>/customize">Customize Course</a></li> -->
+									<li><a class="course-outline" href="/courses/<?php echo $this->course->get('alias'); ?>/editoutline">Edit Outline</a></li>
+									<li><a class="course-pages" href="/courses/<?php echo $this->course->get('alias'); ?>/managepages">Manage Pages</a></li>
+									<?php if ($membership_control == 1) : ?> 
 										<li class="divider"></li>
 									<?php endif; ?>
 								<?php endif; ?>
-								<?php if($canCancel) : ?>
+								<?php if ($canCancel) : ?>
 									<?php if($membership_control == 1) : ?> 
-										<li><a class="course-cancel" href="/courses/<?php echo $this->course->get("cn"); ?>/cancel">Cancel Course Membership</a></li>
+										<li><a class="course-cancel" href="/courses/<?php echo $this->course->get('alias'); ?>/cancel">Cancel Membership</a></li>
 										<?php if($isManager): ?>
 											<li class="divider"></li>
 										<?php endif; ?>
 									<?php endif; ?>
 								<?php endif; ?>
-								<?php if($isManager) : ?>
-									<?php if($membership_control == 1) : ?> 
-										<li><a class="course-delete" href="/courses/<?php echo $this->course->get("cn"); ?>/delete">Delete Course</a></li>
+								<?php if ($isManager) : ?>
+									<?php if ($this->course->offering()->access('delete')) : ?> 
+										<li><a class="course-delete" href="/courses/<?php echo $this->course->get('alias'); ?>/delete">Delete Offering</a></li>
 									<?php endif; ?>
 								<?php endif; ?>
 							</ul>
@@ -162,6 +163,10 @@ if (!$no_html) : ?>
 							//do we want to show category in menu?
 							if ($cat['display_menu_tab'])
 							{
+								if (!$this->course->offering()->access('manage') && isset($this->course_plugin_access[$cat['name']]) && $this->course_plugin_access[$cat['name']] == 'managers')
+								{
+									continue;
+								}
 								//active menu item
 								$li_cls = ($this->active == $cat['name']) ? 'active' : '';
 
@@ -174,7 +179,7 @@ if (!$no_html) : ?>
 								//$access = $access_levels[$cat['name']];
 
 								//menu link
-								$link = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('cn') . '&instance=' . $this->course->offering()->get('alias') . '&active=' . $active);
+								$link = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&instance=' . $this->course->offering()->get('alias') . '&active=' . $active);
 
 								//Are we on the overview tab with sub course pages?
 								if ($cat['name'] == 'outline' && count($this->pages) > 0)
@@ -182,17 +187,17 @@ if (!$no_html) : ?>
 									$true_active_tab = JRequest::getVar('active', 'outline');
 									$li_cls = ($true_active_tab != $this->active) ? '' : $li_cls;
 
-									/*if (($access == 'registered' && $juser->get('guest')) || ($access == 'members' && !in_array($juser->get("id"), $course->get('members'))))
+									if (!$this->course->offering()->access('view'))
 									{
-										$menu_item  = "<li class=\"protected course-overview-tab\"><span class=\"overview\">Overview</span>";
+										$menu_item  = '<li class="protected course-overview-tab"><span class="outline">' . JText::_('Outline') . '</span>';
 									}
 									else
-									{*/
+									{
 										$menu_item  = "<li class=\"{$li_cls} course-overview-tab\">";
-										$menu_item .= "<a class=\"outline\" title=\"".$this->course->get('description')."'s Overview Page\" href=\"{$link}\">Outline</a>";
-									//} 
+										$menu_item .= '<a class="outline" href="' . $link . '">Outline</a>';
+									} 
 
-									$menu_item .= "<ul class=\"\">";
+									$menu_item .= "<ul>";
 
 									foreach ($this->pages as $page)
 									{
@@ -202,19 +207,17 @@ if (!$no_html) : ?>
 										//page vars
 										$title = $page['title'];
 										$cls = ($true_active_tab == $page['url']) ? 'active' : '';
-										$link = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('cn') . '&instance=' . $this->course->offering()->get('alias') . '&active=' . $page['url']);
+										$link = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&instance=' . $this->course->offering()->get('alias') . '&active=' . $page['url']);
 
 										//page menu item
-										/*if (($page_access == 'registered' && $juser->get('guest')) || ($page_access == 'members' && !in_array($juser->get("id"), $course->get('members'))))
+										if (!$this->course->offering()->access('view'))
 										{
-											$menu_item .= "<li class=\"protected\"><span class=\"page\">{$title}</span></li>";
+											$menu_item .= '<li class="protected"><span class="page">' . $this->escape(stripslashes($title)) . '</span></li>';
 										}
 										else
-										{*/
-											$menu_item .= "<li class=\"{$cls}\">";
-											$menu_item .= "<a href=\"{$link}\" class=\"page\" title=\"".$this->course->get('description')."'s {$title} Page\">{$title}</a>";
-											$menu_item .= "</li>";
-										//}
+										{
+											$menu_item .= '<li class="' . $cls . '"><a href="' . $link . '" class="page">' . $this->escape(stripslashes($title)) . '</a></li>';
+										}
 									}
 
 									$menu_item .= "</ul>";
@@ -222,24 +225,14 @@ if (!$no_html) : ?>
 								}
 								else
 								{
-									/*if ($access == 'nobody')
-									{
-										$menu_item = '';
-									}
-									elseif($access == 'members' && !in_array($juser->get("id"), $course->get('members'))) 
+									if (!$this->course->offering()->access('view'))
 									{
 										$menu_item  = "<li class=\"protected members-only course-{$cls}-tab\" title=\"This page is restricted to course members only!\">";
 										$menu_item .= "<span class=\"{$cls}\">{$title}</span>";
 										$menu_item .= "</li>";
 									}
-									elseif($access == 'registered' && $juser->get('guest'))
-									{
-										$menu_item  = "<li class=\"protected registered-only course-{$cls}-tab\" title=\"This page is restricted to registered hub users only!\">";
-										$menu_item .= "<span class=\"{$cls}\">{$title}</span>";
-										$menu_item .= "</li>";
-									}
 									else
-									{*/
+									{
 										//menu item meta data vars
 										$metadata   = (isset($this->sections[$k]['metadata'])) ? $this->sections[$k]['metadata'] : array();
 										$meta_count = (isset($metadata['count']) && $metadata['count'] != '') ? $metadata['count'] : '';
@@ -256,7 +249,7 @@ if (!$no_html) : ?>
 										$menu_item .= "</span>";
 										$menu_item .= $meta_alert;
 										$menu_item .= "</li>";
-									//}
+									}
 								} 
 
 								//add menu item to variable holding entire menu

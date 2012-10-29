@@ -58,9 +58,9 @@ class plgResourcesCitations extends JPlugin
 	 * @param      object $resource Current resource
 	 * @return     array
 	 */
-	public function &onResourcesAreas($resource)
+	public function &onResourcesAreas($model)
 	{
-		if ($resource->_type->_params->get('plg_citations')) 
+		if ($model->type->params->get('plg_citations')) 
 		{
 			$areas = array(
 				'citations' => JText::_('PLG_RESOURCES_CITATIONS')
@@ -83,7 +83,7 @@ class plgResourcesCitations extends JPlugin
 	 * @param      string  $rtrn      Data to be returned
 	 * @return     array
 	 */
-	public function onResources($resource, $option, $areas, $rtrn='all')
+	public function onResources($model, $option, $areas, $rtrn='all')
 	{
 		$arr = array(
 			'area' => 'citations',
@@ -94,13 +94,13 @@ class plgResourcesCitations extends JPlugin
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array($areas)) 
 		{
-			if (!array_intersect($areas, $this->onResourcesAreas($resource))
-			 && !array_intersect($areas, array_keys($this->onResourcesAreas($resource)))) 
+			if (!array_intersect($areas, $this->onResourcesAreas($model))
+			 && !array_intersect($areas, array_keys($this->onResourcesAreas($model)))) 
 			{
 				$rtrn = 'metadata';
 			}
 		}
-		if (!$resource->_type->_params->get('plg_citations')) 
+		if (!$model->type->params->get('plg_citations')) 
 		{
 			return $arr;
 		}
@@ -115,7 +115,7 @@ class plgResourcesCitations extends JPlugin
 
 		// Get reviews for this resource
 		$c = new CitationsCitation($database);
-		$citations = $c->getCitations('resource', $resource->id);
+		$citations = $c->getCitations('resource', $model->resource->id);
 
 		// Are we returning HTML?
 		if ($rtrn == 'all' || $rtrn == 'html') 
@@ -132,7 +132,7 @@ class plgResourcesCitations extends JPlugin
 
 			// Pass the view some info
 			$view->option = $option;
-			$view->resource = $resource;
+			$view->resource = $model->resource;
 			$view->citations = $citations;
 			$view->format = $this->params->get('format', 'APA');
 			if ($this->getError()) 
@@ -156,13 +156,13 @@ class plgResourcesCitations extends JPlugin
 				)
 			);
 
-			if ($resource->alias) 
+			if ($model->resource->alias) 
 			{
-				$url = JRoute::_('index.php?option=' . $option . '&alias=' . $resource->alias . '&active=citations');
+				$url = JRoute::_('index.php?option=' . $option . '&alias=' . $model->resource->alias . '&active=citations');
 			} 
 			else 
 			{
-				$url = JRoute::_('index.php?option=' . $option . '&id=' . $resource->id . '&active=citations');
+				$url = JRoute::_('index.php?option=' . $option . '&id=' . $model->resource->id . '&active=citations');
 			}
 
 			ximport('Hubzero_Plugin_View');

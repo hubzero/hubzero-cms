@@ -58,9 +58,9 @@ class plgResourcesVersions extends JPlugin
 	 * @param      object $resource Current resource
 	 * @return     array
 	 */
-	public function &onResourcesAreas($resource)
+	public function &onResourcesAreas($model)
 	{
-		if ($resource->_type->_params->get('plg_versions')) 
+		if ($model->isTool() && $model->type->params->get('plg_versions')) 
 		{
 			$areas = array(
 				'versions' => JText::_('PLG_RESOURCES_VERSIONS')
@@ -82,7 +82,7 @@ class plgResourcesVersions extends JPlugin
 	 * @param      string  $rtrn      Data to be returned
 	 * @return     array
 	 */
-	public function onResources($resource, $option, $areas, $rtrn='all')
+	public function onResources($model, $option, $areas, $rtrn='all')
 	{
 		$arr = array(
 			'area' => 'versions',
@@ -93,15 +93,15 @@ class plgResourcesVersions extends JPlugin
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array($areas)) 
 		{
-			if (!array_intersect($areas, $this->onResourcesAreas($resource))
-			 && !array_intersect($areas, array_keys($this->onResourcesAreas($resource)))) 
+			if (!array_intersect($areas, $this->onResourcesAreas($model))
+			 && !array_intersect($areas, array_keys($this->onResourcesAreas($model)))) 
 			{
 				$rtrn = 'metadata';
 			}
 		}
 
 		// Display only for tools
-		if ($resource->type != 7) 
+		if (!$model->isTool()) 
 		{
 			return $arr;
 		}
@@ -111,7 +111,7 @@ class plgResourcesVersions extends JPlugin
 		if ($rtrn == 'all' || $rtrn == 'html') 
 		{
 			$tv = new ToolVersion($database);
-			$rows = $tv->getVersions($resource->alias);
+			$rows = $tv->getVersions($model->resource->alias);
 
 			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('resources', 'versions');
@@ -132,7 +132,7 @@ class plgResourcesVersions extends JPlugin
 
 			// Pass the view some info
 			$view->option   = $option;
-			$view->resource = $resource;
+			$view->resource = $model->resource;
 			$view->rows     = $rows;
 			if ($this->getError()) 
 			{

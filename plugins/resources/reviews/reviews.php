@@ -62,9 +62,9 @@ class plgResourcesReviews extends JPlugin
 	 * @param      object $resource Current resource
 	 * @return     array
 	 */
-	public function &onResourcesAreas($resource)
+	public function &onResourcesAreas($model)
 	{
-		if ($resource->_type->_params->get('plg_reviews')) 
+		if ($model->type->params->get('plg_reviews')) 
 		{
 			$areas = array(
 				'reviews' => JText::_('PLG_RESOURCES_REVIEWS')
@@ -118,7 +118,7 @@ class plgResourcesReviews extends JPlugin
 	 * @param      string  $rtrn      Data to be returned
 	 * @return     array
 	 */
-	public function onResources($resource, $option, $areas, $rtrn='all')
+	public function onResources($model, $option, $areas, $rtrn='all')
 	{
 		$arr = array(
 			'area' => 'reviews',
@@ -129,18 +129,18 @@ class plgResourcesReviews extends JPlugin
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array($areas)) 
 		{
-			if (!array_intersect($areas, $this->onResourcesAreas($resource))
-			 && !array_intersect($areas, array_keys($this->onResourcesAreas($resource)))) 
+			if (!array_intersect($areas, $this->onResourcesAreas($model))
+			 && !array_intersect($areas, array_keys($this->onResourcesAreas($model)))) 
 			{
 				$rtrn = 'metadata';
 			}
 		}
-		if (!$resource->_type->_params->get('plg_reviews')) 
+		if (!$model->type->params->get('plg_reviews')) 
 		{
 			return $arr;
 		}
 
-		$ar = $this->onResourcesAreas($resource);
+		$ar = $this->onResourcesAreas($model);
 		if (empty($ar)) 
 		{
 			$rtrn = '';
@@ -153,15 +153,15 @@ class plgResourcesReviews extends JPlugin
 
 		// Instantiate a helper object and perform any needed actions
 		$h = new PlgResourcesReviewsHelper();
-		$h->resource = $resource;
-		$h->option = $option;
-		$h->_option = $option;
+		$h->resource = $model->resource;
+		$h->option   = $option;
+		$h->_option  = $option;
 		$h->execute();
 
 		// Get reviews for this resource
 		$database =& JFactory::getDBO();
 		$r = new ResourcesReview($database);
-		$reviews = $r->getRatings($resource->id);
+		$reviews = $r->getRatings($model->resource->id);
 
 		// Are we returning any HTML?
 		if ($rtrn == 'all' || $rtrn == 'html') 
@@ -175,7 +175,7 @@ class plgResourcesReviews extends JPlugin
 			if (!$h->loggedin) 
 			{
 				// Instantiate a view
-				$rtrn = JRequest::getVat('REQUEST_URI', JRoute::_('index.php?option=' . $option . '&id=' . $resource->id . '&active=reviews'), 'server');
+				$rtrn = JRequest::getVat('REQUEST_URI', JRoute::_('index.php?option=' . $option . '&id=' . $model->resource->id . '&active=reviews'), 'server');
 				$this->_redirect = JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn));
 				return;
 			} 
@@ -195,12 +195,12 @@ class plgResourcesReviews extends JPlugin
 			$view->voting = $this->params->get('voting', 1);
 
 			// Pass the view some info
-			$view->option = $option;
-			$view->resource = $resource;
-			$view->reviews = $reviews;
+			$view->option   = $option;
+			$view->resource = $model->resource;
+			$view->reviews  = $reviews;
 			//$view->voting = $voting;
 			$view->h = $h;
-			$view->banking = $this->banking;
+			$view->banking  = $this->banking;
 			$view->infolink = $this->infolink;
 			//$view->voting = $voting;
 			if ($h->getError()) 
@@ -227,15 +227,15 @@ class plgResourcesReviews extends JPlugin
 				)
 			);
 			
-			if ($resource->alias) 
+			if ($model->resource->alias) 
 			{
-				$url = JRoute::_('index.php?option=' . $option . '&alias=' . $resource->alias . '&active=reviews');
-				$url2 = JRoute::_('index.php?option=' . $option . '&alias=' . $resource->alias . '&active=reviews&action=addreview#reviewform');
+				$url = JRoute::_('index.php?option=' . $option . '&alias=' . $model->resource->alias . '&active=reviews');
+				$url2 = JRoute::_('index.php?option=' . $option . '&alias=' . $model->resource->alias . '&active=reviews&action=addreview#reviewform');
 			} 
 			else 
 			{
-				$url = JRoute::_('index.php?option=' . $option . '&id=' . $resource->id . '&active=reviews');
-				$url2 = JRoute::_('index.php?option=' . $option . '&id=' . $resource->id . '&active=reviews&action=addreview#reviewform');
+				$url = JRoute::_('index.php?option=' . $option . '&id=' . $model->resource->id . '&active=reviews');
+				$url2 = JRoute::_('index.php?option=' . $option . '&id=' . $model->resource->id . '&active=reviews&action=addreview#reviewform');
 			}
 
 			$view->reviews = $reviews;

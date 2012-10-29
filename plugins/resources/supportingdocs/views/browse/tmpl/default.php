@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 $database =& JFactory::getDBO();
 ?>
@@ -39,29 +39,27 @@ $database =& JFactory::getDBO();
 </h3>
 <div class="supportingdocs">
 <?php
-switch ($this->resource->type)
+/*switch ($this->model->resource->type)
 {
 	case 7:
-		$dls = ResourcesHtml::writeChildren( $this->config, $this->option, $database, $this->resource, $this->helper->children, '', '', '', $this->resource->id, 0 );
+		$children = $this->model->children();
+		$dls = ResourcesHtml::writeChildren($this->model->params, $this->option, $database, $this->model->resource, $children, '', '', '', $this->model->resource->id, 0);
 	break;
 
 	case 4:
 		$dls = '';
 
-		$database->setQuery( "SELECT r.path, r.type, r.title, r.access, r.id, r.standalone, a.* FROM #__resources AS r, #__resource_assoc AS a WHERE a.parent_id=".$this->resource->id." AND r.id=a.child_id AND r.access=1 ORDER BY a.ordering" );
-		if ($database->query()) {
-			$downloads = $database->loadObjectList();
-		}
-		$base = $this->config->get('uploadpath');
-		if ($downloads) {
+		$database->setQuery("SELECT r.path, r.type, r.title, r.access, r.id, r.standalone, a.* FROM #__resources AS r, #__resource_assoc AS a WHERE a.parent_id=".$this->model->resource->id." AND r.id=a.child_id AND r.access=1 ORDER BY a.ordering");
+
+		$base = $this->model->params->get('uploadpath', '/site/resources');
+		if (($downloads = $database->loadObjectList())) 
+		{
+			jimport('joomla.filesystem.file');
+		
 			$dls .= '<ul>'."\n";
 			foreach ($downloads as $download)
 			{
-				$ftype = '';
-				$liclass = '';
-				$file_name_arr = explode('.',$download->path);
-				$ftype = end($file_name_arr);
-				$ftype = (strlen($ftype) > 3) ? substr($ftype, 0, 3): $ftype;
+				$ftype = JFile::getExt($download->path);
 
 				if ($download->type == 12) {
 					$liclass = ' class="html"';
@@ -69,14 +67,16 @@ switch ($this->resource->type)
 					$liclass = ' class="'.$ftype.'"';
 				}
 
-				$url = ResourcesHtml::processPath($this->option, $download, $this->resource->id);
+				$url = ResourcesHtml::processPath($this->option, $download, $this->model->resource->id);
 
 				$dls .= "\t".'<li'.$liclass.'><a href="'.$url.'">'.$download->title.'</a> ';
-				$dls .= ResourcesHtml::getFileAttribs( $download->path, $base, 0 );
+				$dls .= ResourcesHtml::getFileAttribs($download->path, $base, 0);
 				$dls .= '</li>'."\n";
 			}
 			$dls .= '</ul>'."\n";
-		} else {
+		} 
+		else 
+		{
 			$dls .= '<p>'.JText::_('PLG_RESOURCES_SUPPORTINGDOCS_NONE').'</p>';
 		}
 	break;
@@ -88,14 +88,22 @@ switch ($this->resource->type)
 	case 6:
 	case 31:
 	case 2:
-		$this->helper->getChildren( $this->resource->id, 0, 'no' );
-		$dls = ResourcesHtml::writeChildren( $this->config, $this->option, $database, $this->resource, $this->helper->children, $this->live_site, '', '', $this->resource->id, 0 );
+		//$this->helper->getChildren($this->resource->id, 0, 'no');
+		$dls = ResourcesHtml::writeChildren($this->model->params, $this->option, $database, $this->model->resource, $this->model->children('!standalone'), $this->live_site, '', '', $this->model->resource->id, 0);
 	break;
 
 	default:
-		$dls = ResourcesHtml::writeChildren( $this->config, $this->option, $database, $this->resource, $this->helper->children, '', '', '', $this->resource->id, 0 );
+		$dls = ResourcesHtml::writeChildren($this->model->params, $this->option, $database, $this->model->resource, $this->model->children('!standalone'), '', '', '', $this->model->resource->id, 0);
 	break;
 }
-echo $dls;
+echo $dls;*/
+if ($this->model->isTool())
+{
+	echo ResourcesHtml::writeChildren($this->model->params, $this->option, $database, $this->model->resource, $this->model->children(), '', '', '', $this->model->resource->id, 0);
+}
+else
+{
+	echo ResourcesHtml::writeChildren($this->model->params, $this->option, $database, $this->model->resource, $this->model->children('!standalone'), '', '', '', $this->model->resource->id, 0);
+}
 ?>
 </div><!-- / .supportingdocs -->
