@@ -86,6 +86,11 @@
 	#sub-menu li.page-main,
 	#sub-menu li.page-index {
 		float: right;
+		background: transparent;
+	}
+	#sub-menu li.page-main span,
+	#sub-menu li.page-index span {
+		background: transparent;
 	}
 	#sub-menu li.page-main a,
 	#sub-menu li.page-index a {
