@@ -32,7 +32,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'instance.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
 
 /**
  * Courses model class for a course
@@ -54,18 +53,25 @@ class CoursesModelOffering extends JObject
 	public $offering = NULL;
 
 	/**
-	 * CoursesTableInstance
+	 * CoursesModelIterator
 	 * 
-	 * @var array
+	 * @var object
 	 */
-	//protected $_units = NULL;
+	public $units = NULL;
+
+	/**
+	 * CoursesModelUnit
+	 * 
+	 * @var object
+	 */
+	public $unit = NULL;
 
 	/**
 	 * JUser
 	 * 
 	 * @var object
 	 */
-	private $_instructor = NULL;
+	//private $_instructor = NULL;
 
 	/**
 	 * JUser
@@ -80,6 +86,13 @@ class CoursesModelOffering extends JObject
 	 * @var object
 	 */
 	private $_db = NULL;
+
+	/**
+	 * JParameter
+	 * 
+	 * @var object
+	 */
+	public $params = NULL;
 
 	/**
 	 * Container for properties
@@ -105,8 +118,7 @@ class CoursesModelOffering extends JObject
 	{
 		$this->_db = JFactory::getDBO();
 
-		$this->offering = JTable::getInstance('instance', 'CoursesTable');
-		//$this->offering = new CoursesTableInstance($this->_db);
+		$this->offering = new CoursesTableInstance($this->_db);
 
 		if (is_numeric($oid) || is_string($oid))
 		{
@@ -121,16 +133,7 @@ class CoursesModelOffering extends JObject
 			$this->offering->bind($oid);
 		}
 
-		/*$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}*/
-
-		$this->params = CoursesModelCourse::getInstance($this->get('course_id'))->params;
-		//$this->params->merge(new $paramsClass($this->course->params));
-
-		//$this->params = new $paramsClass($this->course->get('params'));
+		$this->params = JComponentHelper::getParams('com_courses');
 	}
 
 	/**
@@ -167,7 +170,7 @@ class CoursesModelOffering extends JObject
 	 * @param      string $property Name of property to set
 	 * @return     boolean True if set
 	 */
-	public function __isset($property)
+	/*public function __isset($property)
 	{
 		return isset($this->_data[$property]);
 	}
@@ -179,7 +182,7 @@ class CoursesModelOffering extends JObject
 	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
-	public function __set($property, $value)
+	/*public function __set($property, $value)
 	{
 		$this->_data[$property] = $value;
 	}
@@ -190,7 +193,7 @@ class CoursesModelOffering extends JObject
 	 * @param      string $property Name of property to retrieve
 	 * @return     mixed
 	 */
-	public function __get($property)
+	/*public function __get($property)
 	{
 		if (isset($this->offering->$property)) 
 		{
@@ -292,7 +295,7 @@ class CoursesModelOffering extends JObject
 	 */
 	public function exists()
 	{
-		if ($this->offering->id && $this->offering->id > 0) 
+		if ($this->get('id') &&  (int) $this->get('id') > 0) 
 		{
 			return true;
 		}
@@ -331,7 +334,7 @@ class CoursesModelOffering extends JObject
 	 * @param      string $property JUser property to return
 	 * @return     mixed
 	 */
-	public function instructor($property=null)
+	/*public function instructor($property=null)
 	{
 		if (!isset($this->_instructor) || !is_object($this->_instructor))
 		{
@@ -342,7 +345,7 @@ class CoursesModelOffering extends JObject
 			return $this->_instructor->get($property);
 		}
 		return $this->_instructor;
-	}
+	}*/
 
 	/**
 	 * Has the offering started?
@@ -358,9 +361,9 @@ class CoursesModelOffering extends JObject
 
 		$now = date('Y-m-d H:i:s', time());
 
-		if ($this->offering->start_date 
-		 && $this->offering->start_date != '0000-00-00 00:00:00' 
-		 && $this->offering->start_date > $now) 
+		if ($this->get('start_date') 
+		 && $this->get('start_date') != '0000-00-00 00:00:00' 
+		 && $this->get('start_date') > $now) 
 		{
 			return false;
 		}
@@ -382,9 +385,9 @@ class CoursesModelOffering extends JObject
 
 		$now = date('Y-m-d H:i:s', time());
 
-		if ($this->offering->end_date 
-		 && $this->offering->end_date != '0000-00-00 00:00:00' 
-		 && $this->offering->end_date <= $now) 
+		if ($this->get('end_date') 
+		 && $this->get('end_date') != '0000-00-00 00:00:00' 
+		 && $this->get('end_date') <= $now) 
 		{
 			return true;
 		}
@@ -439,27 +442,22 @@ class CoursesModelOffering extends JObject
 	}
 
 	/**
-	 * Method to set the article id
+	 * Method to get/set the current unit
 	 *
-	 * @param	int	Article ID number
+	 * @param     mixed $id ID or alias of specific unit
+	 * @return    object CoursesModelUnit
 	 */
 	public function unit($id=null)
 	{
 		if (!isset($this->unit) 
-		 || ($this->unit->get('id') != $id && $this->unit->get('alias') != $id))
+		 || ($id !== null && (int) $this->unit->get('id') != $id && (string) $this->unit->get('alias') != $id))
 		{
 			$this->unit = null;
 
 			foreach ($this->units() as $key => $unit)
 			{
-				if ($unit->get('id') == $id || $unit->get('alias') == $id)
+				if ((int) $unit->get('id') == $id || (string) $unit->get('alias') == $id)
 				{
-					/*if (!is_a($unit, 'CoursesModelUnit'))
-					{
-						$unit = new CoursesModelUnit($unit);
-						// Set the offering to the model
-						$this->units($key, $unit);
-					}*/
 					$this->unit = $unit;
 					break;
 				}
@@ -477,23 +475,18 @@ class CoursesModelOffering extends JObject
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
-	public function units($idx=null, $model=null)
+	public function units($filters=array())
 	{
-		/*if (!$this->exists()) 
-		{
-			return new CoursesModelIterator(array());
-		}*/
-
-		//if (!isset($this->units) || !is_array($this->units))
 		if (!isset($this->units) || !is_a($this->units, 'CoursesModelIterator'))
 		{
-			$this->units = new CoursesModelIterator(array());
-
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
 			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'unit.php');
 
 			$tbl = new CoursesTableUnit($this->_db);
-			//$tbl = JTable::getInstance('unit', 'CoursesTable');
-			if (($results = $tbl->getCourseUnits(array('course_instance_id' => $this->offering->id))))
+
+			$filters['course_instance_id'] = (int) $this->get('id');
+
+			if (($results = $tbl->getCourseUnits($filters)))
 			{
 				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'unit.php');
 
@@ -503,18 +496,20 @@ class CoursesModelOffering extends JObject
 				}
 				$this->units = new CoursesModelIterator($results);
 			}
+			else
+			{
+				$results = array();
+			}
+
+			$this->units = new CoursesModelIterator($results);
 		}
 
-		if ($idx !== null)
+		/*if ($idx !== null)
 		{
 			if (is_numeric($idx))
 			{
 				if (isset($this->units[$idx]))
 				{
-					/*if ($model && is_a($model, 'CoursesModelUnit'))
-					{
-						$this->units[$idx] = $model;
-					}*/
 					return $this->units[$idx];
 				}
 				else
@@ -560,7 +555,7 @@ class CoursesModelOffering extends JObject
 					break;
 				}
 			}
-		}
+		}*/
 
 		return $this->units;
 	}
@@ -586,12 +581,18 @@ class CoursesModelOffering extends JObject
 			$this->pages = array();
 
 			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'pages.php');
-			//$tbl = JTable::getInstance('page', 'CoursesTable');
+
 			$tbl = new CoursesTablePage($this->_db);
 			if (($results = $tbl->getPages($this->get('course_id'), true)))
 			{
 				$this->pages = $results;
 			}
+			/*else
+			{
+				$results = array();
+			}
+
+			$this->pages = $results;*/
 		}
 
 		if ($idx !== null)

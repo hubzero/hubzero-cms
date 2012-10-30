@@ -51,6 +51,27 @@ class CoursesModelUnit extends JObject
 	 * 
 	 * @var object
 	 */
+	public $group = NULL;
+
+	/**
+	 * CoursesTableInstance
+	 * 
+	 * @var object
+	 */
+	//public $params = NULL;
+
+	/**
+	 * CoursesTableInstance
+	 * 
+	 * @var object
+	 */
+	public $assetgroups = NULL;
+
+	/**
+	 * CoursesTableInstance
+	 * 
+	 * @var object
+	 */
 	private $_creator = NULL;
 
 	/**
@@ -92,6 +113,8 @@ class CoursesModelUnit extends JObject
 		{
 			$this->unit->bind($oid);
 		}
+
+		//$this->params = JComponentHelper::getParams('com_courses');
 	}
 
 	/**
@@ -206,7 +229,7 @@ class CoursesModelUnit extends JObject
 	 */
 	public function exists()
 	{
-		if ($this->unit->id && $this->unit->id > 0) 
+		if ($this->get('id') && (int) $this->get('id') > 0) 
 		{
 			return true;
 		}
@@ -249,9 +272,9 @@ class CoursesModelUnit extends JObject
 
 		$now = date('Y-m-d H:i:s', time());
 
-		if ($this->unit->start_date 
-		 && $this->unit->start_date != '0000-00-00 00:00:00' 
-		 && $this->unit->start_date > $now) 
+		if ($this->get('start_date') 
+		 && $this->get('start_date') != '0000-00-00 00:00:00' 
+		 && $this->get('start_date') > $now) 
 		{
 			return false;
 		}
@@ -273,9 +296,9 @@ class CoursesModelUnit extends JObject
 
 		$now = date('Y-m-d H:i:s', time());
 
-		if ($this->unit->end_date 
-		 && $this->unit->end_date != '0000-00-00 00:00:00' 
-		 && $this->unit->end_date <= $now) 
+		if ($this->get('end_date') 
+		 && $this->get('end_date') != '0000-00-00 00:00:00' 
+		 && $this->get('end_date') <= $now) 
 		{
 			return true;
 		}
@@ -312,20 +335,14 @@ class CoursesModelUnit extends JObject
 	public function assetgroup($id=null)
 	{
 		if (!isset($this->group) 
-		 || ($id !== null && $this->group->get('id') != $id && $this->group->get('alias') != $id))
+		 || ($id !== null && (int) $this->group->get('id') != $id && (string) $this->group->get('alias') != $id))
 		{
 			$this->group = null;
 
 			foreach ($this->assetgroups() as $key => $group)
 			{
-				if ($group->get('id') == $id || $group->get('alias') == $id)
+				if ((int) $group->get('id') == $id || (string) $group->get('alias') == $id)
 				{
-					/*if (!is_a($group, 'CoursesModelAssetgroup'))
-					{
-						$group = new CoursesModelAssetgroup($group);
-						// Set the offering to the model
-						$this->assetgroups($key, $group);
-					}*/
 					$this->group = $group;
 					break;
 				}
@@ -333,15 +350,11 @@ class CoursesModelUnit extends JObject
 				{
 					foreach ($group->children() as $child)
 					{
-						if ($child->get('id') == $id || $child->get('alias') == $id)
+						if ((int) $child->get('id') == $id || (string) $child->get('alias') == $id)
 						{
-							/*if (!is_a($group, 'CoursesModelAssetgroup'))
-							{
-								$group = new CoursesModelAssetgroup($child);
-								// Set the offering to the model
-								$this->assetgroups($key, $group);
-							}*/
+							$this->_assetgroups = $this->assetgroups; // back up the data
 							$this->group = $child;
+							$this->assetgroups = $group->children(); // set the current asset groups
 							break;
 						}
 					}
@@ -349,6 +362,17 @@ class CoursesModelUnit extends JObject
 			}
 		}
 		return $this->group;
+	}
+
+	/**
+	 * Reset the asset groups to top level
+	 * 
+	 * @return     void
+	 */
+	public function resetAssetgroups($idx=null, $filters=array())
+	{
+		$this->assetgroups = $this->_assetgroups;
+		return $this->assetgroups($idx, $filters);
 	}
 
 	/**
@@ -360,28 +384,20 @@ class CoursesModelUnit extends JObject
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
-	public function assetgroups($idx=null, $model=null)
+	public function assetgroups($idx=null, $filters=array())
 	{
-		/*if (!$this->exists()) 
-		{
-			return array();
-		}*/
-
-		//if (!isset($this->assetgroups) || !is_array($this->assetgroups))
 		if (!isset($this->assetgroups) || !is_a($this->assetgroups, 'CoursesModelIterator'))
 		{
-			//$this->assetgroups = array();
-			$this->assetgroups = new CoursesModelIterator(array());
-
 			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.group.php');
 
+			$filters['course_unit_id'] = (int) $this->get('id');
+
 			$tbl = new CoursesTableAssetGroup($this->_db);
-			if (($results = $tbl->getCourseAssetGroups(array('w' => array('course_unit_id' => $this->unit->id)))))
+			if (($results = $tbl->getCourseAssetGroups(array('w' => $filters))))
 			{
 				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'assetgroup.php');
 
 				$list = array();
-				//$children = array();
 
 				// First pass - collect children
 				foreach ($results as $v)
@@ -389,52 +405,41 @@ class CoursesModelUnit extends JObject
 					if ($v->parent == 0)
 					{
 						$list[$v->id] = new CoursesModelAssetgroup($v);
-						//$list[$v->id]->children = array();
 					}
-					//$v->name = '';
-					/*$pt = $v->parent;
-					$list = @$children[$pt] ? $children[$pt] : array();
-					array_push($list, $v);
-					$children[$pt] = $list;*/
 				}
 				foreach ($results as $c)
 				{
 					if (isset($list[$c->parent]))
 					{
-						//$list[$c->parent]->children[$c->ordering] = new CoursesModelAssetgroup($c);
-						//ksort($list[$c->parent]->children);
 						$list[$c->parent]->children->add(new CoursesModelAssetgroup($c));
 					}
 				}
 
-				/*foreach ($results as $key => $result)
-				{
-					$results[$key] = new CoursesModelAssetgroup($result);
-				}*/
-				//$this->assetgroups = $list; //$results;
-				$this->assetgroups = new CoursesModelIterator(array_values($list));
+				$res = array_values($list);
 			}
+			else
+			{
+				$res = array();
+			}
+			$this->assetgroups = new CoursesModelIterator($res);
 		}
 
 		if ($idx !== null)
 		{
 			if (is_numeric($idx))
 			{
-				if (isset($this->assetgroups[$idx]))
+				/*if (isset($this->assetgroups[$idx]))
 				{
-					/*if ($model && is_a($model, 'CoursesModelAssetgroup'))
-					{
-						$this->assetgroups[$idx] = $model;
-					}*/
 					return $this->assetgroups[$idx];
 				}
 				else
 				{
 					$this->setError(JText::_('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
 					return false;
-				}
+				}*/
+				return $this->assetgroups->fetch($idx);
 			}
-			else if (is_array($idx))
+			/*else if (is_array($idx))
 			{
 				$res = array();
 				foreach ($this->assetgroups as $group)
@@ -454,12 +459,12 @@ class CoursesModelUnit extends JObject
 					}
 				}
 				return $res;
-			}
+			}*/
 			else if (is_string($idx))
 			{
 				$idx = strtolower(trim($idx));
 
-				$res = array();
+				/*$res = array();
 				foreach ($this->assetgroups as $group)
 				{
 					if (isset($group->$idx))
@@ -467,7 +472,38 @@ class CoursesModelUnit extends JObject
 						$res[] = $group->$idx;
 					}
 				}
-				return $res;
+				return $res;*/
+				foreach ($this->assetgroups as $group)
+				{
+					if ($group->get('alias') == $idx)
+					{
+					/*if (!is_a($group, 'CoursesModelAssetgroup'))
+					{
+						$group = new CoursesModelAssetgroup($group);
+						// Set the offering to the model
+						$this->assetgroups($key, $group);
+					}*/
+						return $this->assetgroups;
+						break;
+					}
+					else
+					{
+						foreach ($group->children() as $child)
+						{
+							if ($child->get('alias') == $idx)
+							{
+								/*if (!is_a($group, 'CoursesModelAssetgroup'))
+								{
+									$group = new CoursesModelAssetgroup($child);
+									// Set the offering to the model
+									$this->assetgroups($key, $group);
+								}*/
+								return $group->children();
+								break;
+							}
+						}
+					}
+				}
 			}
 		}
 
@@ -479,7 +515,7 @@ class CoursesModelUnit extends JObject
 	 *
 	 * @param	int	Article ID number
 	 */
-	public function assetgrouptype($id=null)
+	/*public function assetgrouptype($id=null)
 	{
 		if (!isset($this->grouptype) || $this->grouptype->id != $id)
 		{
@@ -501,7 +537,7 @@ class CoursesModelUnit extends JObject
 			}
 		}
 		return $this->grouptype;
-	}
+	}*/
 
 	/**
 	 * Get a list of assetgroups for an offering
@@ -512,7 +548,7 @@ class CoursesModelUnit extends JObject
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
-	public function assetgrouptypes($idx=null, $model=null)
+	/*public function assetgrouptypes($idx=null, $model=null)
 	{
 		if (!$this->exists()) 
 		{
@@ -603,6 +639,6 @@ class CoursesModelUnit extends JObject
 		}
 
 		return $this->assetgrouptypes;
-	}
+	}*/
 }
 

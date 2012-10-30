@@ -36,10 +36,13 @@ defined('_JEXEC') or die('Restricted access');
 $unit = $this->course->offering()->unit($this->unit);
 if (!$unit)
 {
-	JError::raiseError(404, JText::_('un-oh'));
+	JError::raiseError(404, JText::_('uh-oh'));
 }
-
+$lecture = $unit->assetgroup($this->group);
+$current = $unit->assetgroups()->key();
 //echo $this->course->offering()->units()->key();
+
+echo $this->course->offering()->params->get('foo');
 
 if (!$this->course->offering()->access('view')) { ?>
 	<p class="info"><?php echo JText::_('Access to the "Syllabus" section of this course is restricted to members only. You must be a member to view the content.'); ?></p>
@@ -49,44 +52,80 @@ if (!$this->course->offering()->access('view')) { ?>
 		<p>
 			<?php echo $unit->get('title'); ?>
 		</p>
-		<ol class="active-1">
-			<li id="step-1" class="active">Lecture 1</li>
-			<li id="step-2">Homework 1</li>
-			<li id="step-3">Lecture 2</li>
-			<li id="step-4">Homework 2</li>
-			<li id="step-5">Quiz 1</li>
+		<ol class="steps-<?php echo $unit->assetgroups()->total(); ?> active-<?php echo ($current + 1); ?>">
+<?php foreach ($unit->assetgroups() as $key => $assetgroup) { ?>
+			<li id="step-<?php echo ($key + 1); ?>"<?php echo ($assetgroup->get('id') == $lecture->get('id')) ? ' class="active"' : ($key <= $current ? ' class="completed"' : ''); ?>><?php echo $this->escape(stripslashes($assetgroup->get('title'))); ?></li>
+<?php } ?>
 		</ol>
 	</div>
 	
 	<div class="video container" style="text-align: center;">
 		<div class="video-wrap" style="width: 640px; margin: 0 auto; text-align: left;">
 			<h3>
-				<?php echo $unit->assetgroup($this->group)->get('title'); ?>
+				<?php echo $lecture->get('title'); ?>
 			</h3>
-			<?php //print_r($unit); ?>
 			<img src="/components/com_courses/assets/img/video.png" width="640" height="390" />
 			<p>
+				<?php // $unit->assetgroups() refers to the groupings (lectures, homeworks). We need children() for individual lectures. 
+				//echo $unit->assetgroup()->key();
+				//echo $this->group; ?>
 <?php if ($this->course->offering()->units()->isFirst() && $unit->assetgroups()->isFirst()) { ?>
 				<span class="prev btn">
 					Prev
 				</span>
 <?php } else { ?>
-				<a class="prev btn" href="#">
+				<a class="prev btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&instance=' . $this->course->offering()->get('alias') . '&active=outline&a=' . $unit->get('alias') . '&b=' . $unit->assetgroups()->fetch('prev')->get('alias')); ?>">
 					Prev
 				</a>
 <?php } ?>
-<?php if ($this->course->offering()->units()->isLast() && $unit->assetgroups()->isLast()) { ?>
+<?php 
+
+$uAlias = $unit->get('alias');
+$gAlias = '';
+
+// If the last unit AND last asstegroup in the unit
+if ($this->course->offering()->units()->isLast() && $unit->assetgroups()->isLast()) 
+{
+	$gAlias = '';
+}
+else
+{
+	// If NOT the last assetgroup
+	if (!$unit->assetgroups()->isLast())
+	{
+		$gAlias = $unit->assetgroups()->fetch('next')->get('alias');
+	}
+	// If the last assetgroup AND NOT the last unit
+	if ($unit->assetgroups()->isLast() && !$this->course->offering()->units()->isLast())
+	{
+		// Get the alias of the next unit
+		$next = $this->course->offering()->units()->fetch('next');
+		// Make sure it's published
+		if ($next->available())
+		{
+			$uAlias = $next->get('alias');
+			// Does the next unit have any assetgroups?
+			if ($next->assetgroups()->total())
+			{
+				// Get the alias of the next assetgroup
+				$gAlias = $next->assetgroups(0)->get('alias');
+			}
+		}
+	}
+}
+
+if (!$uAlias || !$gAlias) { ?>
 				<span class="next btn">
 					Next
 				</span>
 <?php } else { ?>
-				<a class="next btn" href="#">
+				<a class="next btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&instance=' . $this->course->offering()->get('alias') . '&active=outline&a=' . $uAlias . '&b=' . $gAlias); ?>">
 					Next
 				</a>
 <?php } ?>
 			</p>
 			<p>
-				<?php echo $unit->assetgroup($this->group)->get('description'); ?>
+				<?php echo $lecture->get('description'); ?>
 			</p>
 		</div>
 	</div>

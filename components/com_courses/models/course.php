@@ -32,13 +32,40 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'course.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
 
 /**
  * Courses model class for a course
  */
 class CoursesModelCourse extends JObject
 {
+	/**
+	 * JUser
+	 * 
+	 * @var object
+	 */
+	private $_tbl = NULL;
+
+	/**
+	 * JUser
+	 * 
+	 * @var object
+	 */
+	public $offering = NULL;
+
+	/**
+	 * JUser
+	 * 
+	 * @var object
+	 */
+	public $offerings = NULL;
+
+	/**
+	 * JUser
+	 * 
+	 * @var object
+	 */
+	public $params = NULL;
+
 	/**
 	 * Flag for if authorization checks have been run
 	 * 
@@ -61,13 +88,6 @@ class CoursesModelCourse extends JObject
 	private $_db = NULL;
 
 	/**
-	 * Container for properties
-	 * 
-	 * @var array
-	 */
-	private $_data = array();
-
-	/**
 	 * Description for '_list_keys'
 	 *
 	 * @var array
@@ -84,20 +104,19 @@ class CoursesModelCourse extends JObject
 	{
 		$this->_db = JFactory::getDBO();
 
-		//$this->course = JTable::getInstance('course', 'CoursesTable');
-		$this->course = new CoursesTableCourse($this->_db);
+		$this->_tbl = new CoursesTableCourse($this->_db);
 
 		if (is_numeric($oid) || is_string($oid))
 		{
-			$this->course->load($oid);
+			$this->_tbl->load($oid);
 		}
 		else if (is_object($oid))
 		{
-			$this->course->bind($oid);
+			$this->_tbl->bind($oid);
 		}
 		else if (is_array($oid))
 		{
-			$this->course->bind($oid);
+			$this->_tbl->bind($oid);
 		}
 
 		$paramsClass = 'JParameter';
@@ -106,10 +125,10 @@ class CoursesModelCourse extends JObject
 			$paramsClass = 'JRegistry';
 		}
 
-		//$this->params = JComponentHelper::getParams('com_courses');
-		//$this->params->merge(new $paramsClass($this->course->params));
+		$this->params = JComponentHelper::getParams('com_courses');
+		$this->params->merge(new $paramsClass($this->get('params')));
 
-		$this->params = new $paramsClass($this->course->get('params'));
+		//$this->params = new $paramsClass($this->course->get('params'));
 	}
 
 	/**
@@ -139,57 +158,17 @@ class CoursesModelCourse extends JObject
 	}
 
 	/**
-	 * Check if a property is set
-	 * 
-	 * @param      string $property Name of property to set
-	 * @return     boolean True if set
-	 */
-	public function __isset($property)
-	{
-		return isset($this->_data[$property]);
-	}
-
-	/**
-	 * Set a property
-	 * 
-	 * @param      string $property Name of property to set
-	 * @param      mixed  $value    Value to set property to
-	 * @return     void
-	 */
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-
-	/**
-	 * Get a property
-	 * 
-	 * @param      string $property Name of property to retrieve
-	 * @return     mixed
-	 */
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) 
-		{
-			return $this->_data[$property];
-		}
-	}
-
-	/**
 	 * Returns a property of the object or the default value if the property is not set.
 	 *
-	 * @access	public
-	 * @param	string $property The name of the property
-	 * @param	mixed  $default The default value
-	 * @return	mixed The value of the property
-	 * @see		getProperties()
-	 * @since	1.5
+	 * @param     string $property The name of the property
+	 * @param     mixed  $default  The default value
+	 * @return    mixed The value of the property
  	 */
 	public function get($property, $default=null)
 	{
 		if (in_array($property, self::$_list_keys))
 		{
-			if (!array_key_exists($property, get_object_vars($this->course)))
+			if (!array_key_exists($property, get_object_vars($this->_tbl)))
 			{
 				if (is_object($this->_db))
 				{
@@ -202,16 +181,16 @@ class CoursesModelCourse extends JObject
 
 					foreach ($membership as $key => $data)
 					{
-						$this->course->set($key, $data);
+						$this->_tbl->$key = $data;
 					}
 
-					$query = "(select uidNumber, 'invitees' AS role from #__courses_invitees where gidNumber=" . $this->_db->Quote($this->course->get('id')) . ")
+					$query = "(select uidNumber, 'invitees' AS role from #__courses_invitees where gidNumber=" . $this->_db->Quote($this->_tbl->get('id')) . ")
 						UNION
-							(select uidNumber, 'applicants' AS role from #__courses_applicants where gidNumber=" . $this->_db->Quote($this->course->get('id')) . ")
+							(select uidNumber, 'applicants' AS role from #__courses_applicants where gidNumber=" . $this->_db->Quote($this->_tbl->get('id')) . ")
 						UNION
-							(select uidNumber, 'members' AS role from #__courses_members where gidNumber=" . $this->_db->Quote($this->course->get('id')) . ")
+							(select uidNumber, 'members' AS role from #__courses_members where gidNumber=" . $this->_db->Quote($this->_tbl->get('id')) . ")
 						UNION
-							(select uidNumber, 'managers' AS role from #__courses_managers where gidNumber=" . $this->_db->Quote($this->course->get('id')) . ")";
+							(select uidNumber, 'managers' AS role from #__courses_managers where gidNumber=" . $this->_db->Quote($this->_tbl->get('id')) . ")";
 
 					$this->_db->setQuery($query);
 
@@ -227,15 +206,15 @@ class CoursesModelCourse extends JObject
 
 						foreach ($membership as $key => $data)
 						{
-							$this->course->set($key, $data);
+							$this->_tbl->$key = $data;
 						}
 					}
 				}
 			}
 		}
-		if (isset($this->course->$property)) 
+		if (isset($this->_tbl->$property)) 
 		{
-			return $this->course->$property;
+			return $this->_tbl->$property;
 		}
 		return $default;
 	}
@@ -243,17 +222,14 @@ class CoursesModelCourse extends JObject
 	/**
 	 * Modifies a property of the object, creating it if it does not already exist.
 	 *
-	 * @access	public
-	 * @param	string $property The name of the property
-	 * @param	mixed  $value The value of the property to set
-	 * @return	mixed Previous value of the property
-	 * @see		setProperties()
-	 * @since	1.5
+	 * @param     string $property The name of the property
+	 * @param     mixed  $value    The value of the property to set
+	 * @return    mixed Previous value of the property
 	 */
 	public function set($property, $value = null)
 	{
-		$previous = isset($this->course->$property) ? $this->course->$property : null;
-		$this->course->$property = $value;
+		$previous = isset($this->_tbl->$property) ? $this->_tbl->$property : null;
+		$this->_tbl->$property = $value;
 		return $previous;
 	}
 
@@ -265,7 +241,7 @@ class CoursesModelCourse extends JObject
 	 */
 	public function exists()
 	{
-		if ($this->course->get('id') && $this->course->get('id') > 0) 
+		if ($this->get('id') && (int) $this->get('id') > 0) 
 		{
 			return true;
 		}
@@ -296,7 +272,7 @@ class CoursesModelCourse extends JObject
 	{
 		if (!isset($this->_creator) || !is_object($this->_creator))
 		{
-			$this->_creator = JUser::getInstance($this->course->created_by);
+			$this->_creator = JUser::getInstance($this->get('created_by'));
 		}
 		if ($property && is_a($this->_creator, 'JUser'))
 		{
@@ -313,19 +289,13 @@ class CoursesModelCourse extends JObject
 	public function offering($id=null)
 	{
 		if (!isset($this->offering) 
-		 || ($id !== null && $this->offering->get('id') != $id && $this->offering->get('alias') != $id))
+		 || ($id !== null && (int) $this->offering->get('id') != $id && (string) $this->offering->get('alias') != $id))
 		{
 			$this->offering = null;
 			foreach ($this->offerings() as $key => $offering)
 			{
-				if ($offering->get('id') == $id || $offering->get('alias') == $id)
+				if ((int) $offering->get('id') == $id || (string) $offering->get('alias') == $id)
 				{
-					/*if (!is_a($offering, 'CoursesModelOffering'))
-					{
-						$offering = new CoursesModelOffering($offering);
-						// Set the offering to the model
-						$this->offerings($key, $offering);
-					}*/
 					$this->offering = $offering;
 					break;
 				}
@@ -343,24 +313,18 @@ class CoursesModelCourse extends JObject
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
-	public function offerings($idx=null, $model=null)
+	public function offerings($filters=array())
 	{
-		/*if (!$this->exists()) 
-		{
-			return array();
-		}*/
-
-		//if (!isset($this->offerings))
 		if (!isset($this->offerings) || !is_a($this->offerings, 'CoursesModelIterator'))
 		{
-			//$this->offerings = array();
-			$this->offerings = new CoursesModelIterator(array());
-
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
 			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'instance.php');
 
-			//$inst = JTable::getInstance('instance', 'CoursesTable');
 			$tbl = new CoursesTableInstance($this->_db);
-			if (($results = $tbl->getCourseInstances(array('course_id' => $this->course->get('id')))))
+
+			$filters['course_id'] = (int) $this->get('id');
+
+			if (($results = $tbl->getCourseInstances($filters)))
 			{
 				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
 
@@ -368,21 +332,21 @@ class CoursesModelCourse extends JObject
 				{
 					$results[$key] = new CoursesModelOffering($result);
 				}
-				//$this->offerings = $results;
-				$this->offerings = new CoursesModelIterator($results);
 			}
+			else
+			{
+				$results = array();
+			}
+
+			$this->offerings = new CoursesModelIterator($results);
 		}
 
-		if ($idx !== null)
+		/*if ($idx !== null)
 		{
 			if (is_numeric($idx))
 			{
 				if (isset($this->offerings[$idx]))
 				{
-					/*if ($model && is_a($model, 'CoursesModelOffering'))
-					{
-						$this->offerings[$idx] = $model;
-					}*/
 					return $this->offerings[$idx];
 				}
 				else
@@ -428,7 +392,7 @@ class CoursesModelCourse extends JObject
 					break;
 				}
 			}
-		}
+		}*/
 
 		return $this->offerings;
 	}

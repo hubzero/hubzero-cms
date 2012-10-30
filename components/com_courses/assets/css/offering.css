@@ -1078,19 +1078,77 @@
 		z-index: 20;
 		margin-left: -12px;
 	}
-	#steps ol li#step-1 {
+	/* 2 steps */
+	#steps ol.steps-2 li#step-1 {
 		margin-left: 0;
 	}
-	#steps ol li#step-2 {
+	#steps ol.steps-2 li#step-2 {
+		left: auto;
+		right: 0;
+		margin-left: 0;
+	}
+	/* 3 steps */
+	#steps ol.steps-3 li#step-1 {
+		margin-left: 0;
+	}
+	#steps ol.steps-3 li#step-2 {
+		left: 50%;
+	}
+	#steps ol.steps-3 li#step-3 {
+		left: auto;
+		right: 0;
+		margin-left: 0;
+	}
+	/* 4 steps */
+	#steps ol.steps-4 li#step-1 {
+		margin-left: 0;
+	}
+	#steps ol.steps-4 li#step-2 {
+		left: 33.3%;
+	}
+	#steps ol.steps-4 li#step-3 {
+		left: 66.6%;
+	}
+	#steps ol.steps-4 li#step-4 {
+		left: auto;
+		right: 0;
+		margin-left: 0;
+	}
+	/* 5 steps */
+	#steps ol.steps-5 li#step-1 {
+		margin-left: 0;
+	}
+	#steps ol.steps-5 li#step-2 {
+		left: 25%;
+	}
+	#steps ol.steps-5 li#step-3 {
+		left: 50%;
+	}
+	#steps ol.steps-5 li#step-4 {
+		left: 75%;
+	}
+	#steps ol.steps-5 li#step-5 {
+		left: auto;
+		right: 0;
+		margin-left: 0;
+	}
+	/* 6 steps */
+	#steps ol.steps-6 li#step-1 {
+		margin-left: 0;
+	}
+	#steps ol.steps-6 li#step-2 {
 		left: 20%;
 	}
-	#steps ol li#step-3 {
+	#steps ol.steps-6 li#step-3 {
 		left: 40%;
 	}
-	#steps ol li#step-4 {
+	#steps ol.steps-6 li#step-4 {
 		left: 60%;
 	}
-	#steps ol li#step-5 {
+	#steps ol.steps-6 li#step-5 {
+		left: 80%;
+	}
+	#steps ol.steps-6 li#step-6 {
 		left: auto;
 		right: 0;
 		margin-left: 0;

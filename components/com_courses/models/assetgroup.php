@@ -31,14 +31,21 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.group.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.group.php');
 
 /**
  * Courses model class for a course
  */
 class CoursesModelAssetgroup extends JObject
 {
+	/**
+	 * CoursesTableInstance
+	 * 
+	 * @var array
+	 */
+	public $assets = null;
+
 	/**
 	 * CoursesTableInstance
 	 * 
@@ -72,7 +79,7 @@ class CoursesModelAssetgroup extends JObject
 	 * 
 	 * @var array
 	 */
-	private $_data = array();
+	//private $_data = array();
 
 	/**
 	 * Constructor
@@ -124,9 +131,7 @@ class CoursesModelAssetgroup extends JObject
 
 		if (!isset($instances[$oid])) 
 		{
-			$inst = new CoursesModelUnit($oid);
-
-			$instances[$oid] = $inst;
+			$instances[$oid] = new CoursesModelAssetgroup($oid);
 		}
 
 		return $instances[$oid];
@@ -138,7 +143,7 @@ class CoursesModelAssetgroup extends JObject
 	 * @param      string $property Name of property to set
 	 * @return     boolean True if set
 	 */
-	public function __isset($property)
+	/*public function __isset($property)
 	{
 		return isset($this->_data[$property]);
 	}
@@ -150,7 +155,7 @@ class CoursesModelAssetgroup extends JObject
 	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
-	public function __set($property, $value)
+	/*public function __set($property, $value)
 	{
 		$this->_data[$property] = $value;
 	}
@@ -161,7 +166,7 @@ class CoursesModelAssetgroup extends JObject
 	 * @param      string $property Name of property to retrieve
 	 * @return     mixed
 	 */
-	public function __get($property)
+	/*public function __get($property)
 	{
 		if (isset($this->asset->$property)) 
 		{
@@ -211,7 +216,7 @@ class CoursesModelAssetgroup extends JObject
 	 */
 	public function exists()
 	{
-		if ($this->get('id') && $this->get('id') > 0) 
+		if ($this->get('id') && (int) $this->get('id') > 0) 
 		{
 			return true;
 		}
@@ -231,7 +236,7 @@ class CoursesModelAssetgroup extends JObject
 	{
 		if (!isset($this->_creator) || !is_object($this->_creator))
 		{
-			$this->_creator = JUser::getInstance($this->asset->created_by);
+			$this->_creator = JUser::getInstance($this->get('created_by'));
 		}
 		if ($property && is_a($this->_creator, 'JUser'))
 		{
@@ -305,24 +310,20 @@ class CoursesModelAssetgroup extends JObject
 	/**
 	 * Method to set the article id
 	 *
-	 * @param	int	Article ID number
+	 * @param     integer $id Asset ID
+	 * @return    object CoursesModelAsset
 	 */
 	public function asset($id=null)
 	{
-		if (!isset($this->asset) || $this->asset->get('id') != $id)
+		if (!isset($this->asset) 
+		 || ($id !== null && (int) $this->asset->get('id') != $id))
 		{
 			$this->asset = null;
 
 			foreach ($this->assets() as $key => $asset)
 			{
-				if ($asset->get('id') == $id)
+				if ((int) $asset->get('id') == $id)
 				{
-					/*if (!is_a($asset, 'CoursesModelAsset'))
-					{
-						$asset = new CoursesModelAsset($asset);
-						// Set the offering to the model
-						$this->assets($key, $asset);
-					}*/
 					$this->asset = $asset;
 					break;
 				}
@@ -340,29 +341,18 @@ class CoursesModelAssetgroup extends JObject
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
-	public function assets($idx=null, $model=null)
+	public function assets($filters=array())
 	{
-		if (!$this->exists()) 
+		if (!isset($this->assets) || !is_a($this->assets, 'CoursesModelIterator'))
 		{
-			return array();
-		}
-
-		if (!isset($this->assets) || !is_array($this->assets))
-		{
-			$this->assets = array();
-
 			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
 
+			$filters['course_asset_scope_id'] = (int) $this->get('id');
+			$filters['course_asset_scope']    = 'asset_group';
+
 			$tbl = new CoursesTableAsset($this->_db);
-			$results = $tbl->getCourseAssets(
-				array(
-					'w' => array(
-						'course_asset_scope_id' => $this->group->get('id'),
-						'course_asset_scope' => 'asset_group'
-					)
-				)
-			);
-			if ($results)
+
+			if (($results = $tbl->getCourseAssets(array('w' => $filters))))
 			{
 				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
 
@@ -370,20 +360,21 @@ class CoursesModelAssetgroup extends JObject
 				{
 					$results[$key] = new CoursesModelAsset($result);
 				}
-				$this->assets = $results;
 			}
+			else
+			{
+				$results = array();
+			}
+
+			$this->assets = new CoursesModelIterator($results);
 		}
 
-		if ($idx !== null)
+		/*if ($idx !== null)
 		{
 			if (is_numeric($idx))
 			{
 				if (isset($this->assets[$idx]))
 				{
-					/*if ($model && is_a($model, 'CoursesModelAssetgroup'))
-					{
-						$this->assets[$idx] = $model;
-					}*/
 					return $this->assets[$idx];
 				}
 				else
@@ -427,7 +418,7 @@ class CoursesModelAssetgroup extends JObject
 				}
 				return $res;
 			}
-		}
+		}*/
 
 		return $this->assets;
 	}

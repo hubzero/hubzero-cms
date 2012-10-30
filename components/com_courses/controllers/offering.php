@@ -36,7 +36,7 @@ ximport('Hubzero_Controller');
 /**
  * Courses controller class
  */
-class CoursesControllerInstance extends Hubzero_Controller
+class CoursesControllerOffering extends Hubzero_Controller
 {
 	/**
 	 * Execute a task
@@ -78,11 +78,11 @@ class CoursesControllerInstance extends Hubzero_Controller
 			return;
 		}
 
-		$this->inst = JRequest::getVar('instance', '');
+		$this->inst = JRequest::getVar('offering', '');
 		if (!$this->inst)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=course&gid=' . $this->course->get('id')
+				JRoute::_('index.php?option=' . $this->_option . '&controller=course&gid=' . $this->course->get('alias'))
 			);
 			return;
 		}
@@ -390,7 +390,7 @@ class CoursesControllerInstance extends Hubzero_Controller
 
 		// Redirect back to the course page
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('cn') . '&task=instances')
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('cn') . '&task=offerings')
 		);
 	}
 
@@ -404,7 +404,7 @@ class CoursesControllerInstance extends Hubzero_Controller
 	public function deleteTask()
 	{
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('cn') . '&task=instances')
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('cn') . '&task=offerings')
 		);
 	}
 

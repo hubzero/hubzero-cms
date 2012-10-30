@@ -37,6 +37,13 @@ defined('_JEXEC') or die('Restricted access');
 class CoursesModelCourses extends JObject
 {
 	/**
+	 * CoursesTableCourse
+	 * 
+	 * @var object
+	 */
+	private $_tbl = NULL;
+
+	/**
 	 * JDatabase
 	 * 
 	 * @var object
@@ -44,11 +51,11 @@ class CoursesModelCourses extends JObject
 	private $_db = NULL;
 
 	/**
-	 * Container for properties
+	 * JDatabase
 	 * 
-	 * @var array
+	 * @var object
 	 */
-	private $_data = array();
+	private $_courses = null;
 
 	/**
 	 * Constructor
@@ -60,7 +67,7 @@ class CoursesModelCourses extends JObject
 	{
 		$this->_db = JFactory::getDBO();
 
-		$this->tbl = JTable::getInstance('course', 'CoursesTable');
+		$this->_tbl = new CoursesTableCourse($this->_db);
 	}
 
 	/**
@@ -83,47 +90,10 @@ class CoursesModelCourses extends JObject
 
 		if (!isset($instances[$oid])) 
 		{
-			$instances[$oid] = new CoursesModelCourse();
+			$instances[$oid] = new CoursesModelCourses();
 		}
 
 		return $instances[$oid];
-	}
-
-	/**
-	 * Check if a property is set
-	 * 
-	 * @param      string $property Name of property to set
-	 * @return     boolean True if set
-	 */
-	public function __isset($property)
-	{
-		return isset($this->_data[$property]);
-	}
-
-	/**
-	 * Set a property
-	 * 
-	 * @param      string $property Name of property to set
-	 * @param      mixed  $value    Value to set property to
-	 * @return     void
-	 */
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-
-	/**
-	 * Get a property
-	 * 
-	 * @param      string $property Name of property to retrieve
-	 * @return     mixed
-	 */
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) 
-		{
-			return $this->_data[$property];
-		}
 	}
 
 	/**
@@ -137,23 +107,24 @@ class CoursesModelCourses extends JObject
 	 */
 	public function courses($filters=array())
 	{
-		if (!isset($this->courses))
+		if (!isset($this->_courses) || $this->_courses === null)
 		{
-			$this->courses = array();
+			$this->_courses = array();
 
-			if (($results = $this->tbl->getRecords($filters)))
+			if (($results = $this->_tbl->getRecords($filters)))
 			{
 				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
+				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
 
 				foreach ($results as $key => $result)
 				{
 					$results[$key] = new CoursesModelCourse($result);
 				}
-				$this->courses = $results;
+				$this->_courses = new CoursesModelIterator($results);
 			}
 		}
 
-		return $this->courses;
+		return $this->_courses;
 	}
 }
 

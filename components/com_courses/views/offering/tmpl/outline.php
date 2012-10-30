@@ -69,10 +69,6 @@ if (!$this->course->offering()->access('view')) {
 
 
 <?php 
-	// Get the course units
-	//$unitsTbl = new CoursesTableUnit($this->database);
-	//$units    = $this->course->offering->units(); //$unitsTbl->getCourseUnits();
-
 	// Get the current time
 	$now = date("Y-m-d H:i:s");
 	
@@ -89,8 +85,6 @@ if (!$this->course->offering()->access('view')) {
 						<span><?php echo $this->escape(stripslashes($unit->title)); ?></span> 
 						<?php echo $this->escape(stripslashes($unit->description)); ?>
 					</h3>
-<?php //if ($this->course->offering->units()->isFirst()) { echo 'first'; } ?>
-<?php //if ($this->course->offering->units()->isLast()) { echo 'last'; } ?>
 <?php if (!$unit->started()) { ?>
 						<div class="comingSoon">
 							<p class="status">Coming soon</p>
@@ -103,18 +97,7 @@ if (!$this->course->offering()->access('view')) {
 								<div class="detailsWrapper">
 									<div class="weeksection">
 <?php
-	// Get the course asset groups
-	/*$assetGroupsTbl = new CoursesTableAssetGroup($this->database);
-
-	// Get the unique asset group types (this will build our sub-headings)
-	$assetGroupTypes = $assetGroupsTbl->getUniqueCourseAssetGroupTypes($filters=array(
-		"w"=>array(
-			"course_unit_id"=>$unit->id
-		)
-	));*/
-//echo count($unit->assetgroups());
 	// Loop through the asset group types
-	//foreach ($unit->assetgrouptypes() as $agt)
 	foreach ($unit->assetgroups() as $agt)
 	{
 ?>
@@ -122,38 +105,35 @@ if (!$this->course->offering()->access('view')) {
 			<?php echo $this->escape(stripslashes($agt->get('title'))); ?>
 		</h4>
 <?php 
-		// Loop through the asset groups
+		// Loop through the child asset groups
 		foreach ($agt->children() as $ag)
 		{
-			//if ($ag->type == $agt->get('type'))
-			//{
-				//if ($agt->children()->isFirst()) { echo 'first'; }
-				//if ($agt->children()->isLast()) { echo 'last'; }
 ?>
 				<h5>
-					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&instance=' . $this->course->offering()->get('alias') . '&active=outline&a=' . $unit->get('alias') . '&b=' . $ag->get('alias')); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=outline&a=' . $unit->get('alias') . '&b=' . $ag->get('alias')); ?>">
 						<?php echo $this->escape(stripslashes($ag->get('title'))); ?>
 					</a>
 				</h5>
 <?php
 				// Get the course assets
-				$assetsTbl = new CoursesTableAsset($this->database);
+				/*$assetsTbl = new CoursesTableAsset($this->database);
 				$assets    = $assetsTbl->getCourseAssets($filters=array(
 					"w"=>array(
 						"course_asset_scope_id" => $ag->get('id'),
 						"course_asset_scope" => "asset_group"
 					)
-				));
+				));*/
 
 				// Start our list
 				echo "<ul>";
 
 				// Loop through the assets
-				if(count($assets) > 0)
+				//if (count($assets) > 0)
+				if ($ag->assets()->total())
 				{
-					foreach($assets as $a)
+					foreach ($ag->assets() as $a)
 					{
-						echo "<li><a class=\"\" href=\"{$a->url}\">{$a->title}</a></li>";
+						echo '<li><a class="" href="' . $a->get('url') . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 					}
 				}
 				else

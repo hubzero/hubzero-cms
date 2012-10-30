@@ -236,7 +236,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 			return;
 		}
 
-		$this->view->instances = $this->course->offerings();
+		//$this->view->instances = $this->course->offerings();
 		/*$inst = new CoursesInstance($this->database);
 		$this->view->instances = $inst->getCourseInstances(array(
 			'course_cn' => $this->course->get('cn')

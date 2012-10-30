@@ -195,9 +195,9 @@ if ($this->courses) {
 								<span class="entry-id"><?php echo $course->id; ?></span>
 							</th>
 							<td>
-								<a class="entry-title" href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$course->alias); ?>"><?php echo stripslashes($course->title); ?></a><br />
+								<a class="entry-title" href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$course->alias); ?>"><?php echo $this->escape(stripslashes($course->title)); ?></a><br />
 								<span class="entry-details">
-									<span class="entry-alias"><?php echo $course->cn; ?></span>
+									<span class="entry-alias"><?php echo $course->alias; ?></span>
 								</span>
 							</td>
 							<td>

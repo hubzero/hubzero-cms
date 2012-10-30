@@ -75,29 +75,41 @@ $database =& JFactory::getDBO();
 		</thead>
 		<tbody>
 <?php
-if ($this->instances)
+if ($this->course->offerings())
 {
-	foreach ($this->instances as $instance)
+	foreach ($this->course->offerings() as $offering)
 	{
 ?>
 			<tr>
 				<th>
-					<a class="inst-title" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&instance=' . $instance->alias); ?>">
-						<?php echo $this->escape(stripslashes($instance->title)); ?>
+					<a class="inst-title" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias')); ?>">
+						<?php echo $this->escape(stripslashes($offering->get('title'))); ?>
 					</a>
 				</th>
 				<td>
-					<?php echo $this->escape(stripslashes($instance->start_date)); ?>
+					<?php echo $this->escape(stripslashes($offering->get('start_date'))); ?>
 				</td>
 				<td>
-					<?php echo $this->escape(stripslashes($instance->end_date)); ?>
+					<?php echo $this->escape(stripslashes($offering->get('end_date'))); ?>
 				</td>
 				<td>
+					<?php if ($offering->available()) { ?>
 					accepting
+					<?php } else { ?>
+					closed
+					<?php } ?>
 				</td>
 			</tr>
 <?php
 	}
+}
+else
+{
+?>
+			<tr>
+				<td><?php echo JText::_('No offerings found'); ?></td>
+			</tr>
+<?php
 }
 ?>
 		</tbody>

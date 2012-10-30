@@ -60,11 +60,10 @@ class CoursesModelIterator implements Iterator
 	/**
 	 * Constructor
 	 * 
-	 * @param      integer $id  Resource ID or alias
-	 * @param      object  &$db JDatabase
+	 * @param      array $data Array of data
 	 * @return     void
 	 */
-	public function __construct($data)
+	public function __construct($data=null)
 	{
 		if (is_array($data))
 		{
@@ -74,14 +73,14 @@ class CoursesModelIterator implements Iterator
 	}
 
 	/**
-	 * Reset cursor to starting point
+	 * Add item to the array
 	 *
+	 * @param      mixed $value
 	 * @return     void
 	 */
 	public function add($value) 
 	{
 		$this->_data[$this->_total++] = $value;
-		//reset($this->_data);
 	}
 
 	/**
@@ -92,7 +91,6 @@ class CoursesModelIterator implements Iterator
 	public function rewind() 
 	{
 		$this->_pos = 0;
-		//reset($this->_data);
 	}
 
 	/**
@@ -100,6 +98,7 @@ class CoursesModelIterator implements Iterator
 	 * Accepts either a numerical index value or string for 
 	 * previous or next record based on current cursor position
 	 *
+	 * @param      mixed $key Numeric index or string [first, last, prev, next]
 	 * @return     mixed
 	 */
 	public function fetch($key) 
@@ -159,17 +158,6 @@ class CoursesModelIterator implements Iterator
 	 */
 	public function isFirst() 
 	{
-		//$hasPrevious = isset($this->_data[$this->_pos - 1]);
-		// now undo 
-		//echo ++$this->_pos; die();
-		/*if ($hasPrevious) 
-		{
-			$this->_data[++$this->_pos];
-		}
-		else 
-		{
-			$this->first();
-		}*/
 		return !isset($this->_data[$this->_pos - 1]);
 	} 
 
@@ -179,23 +167,13 @@ class CoursesModelIterator implements Iterator
 	 * @return     boolean
 	 */
 	public function isLast() 
-	{ 
-		//$hasNext = isset($this->_data[$this->_pos + 1]);
-		// now undo 
-		/*if ($hasNext) 
-		{
-			$this->_data[--$this->_pos];
-		} 
-		else 
-		{
-			$this->last();
-		} */
+	{
 		return !isset($this->_data[$this->_pos + 1]); 
 	}
 
 	/**
-	 * Return the current array value if the cursor is at a 
-	 * valid index
+	 * Return the current array value if the cursor is at
+	 * a valid index
 	 *
 	 * @return     mixed
 	 */
@@ -206,7 +184,6 @@ class CoursesModelIterator implements Iterator
 			return $this->_data[$this->_pos];
 		}
 		return null;
-		//return current($this->_data);
 	}
 
 	/**
@@ -227,7 +204,6 @@ class CoursesModelIterator implements Iterator
 	public function first() 
 	{
 		$this->rewind();
-		//return $this->current();
 	}
 
 	/**
@@ -238,7 +214,6 @@ class CoursesModelIterator implements Iterator
 	public function last() 
 	{
 		$this->_pos = ($this->_total - 1);
-		//return $this->current();
 	}
 
 	/**
@@ -249,7 +224,6 @@ class CoursesModelIterator implements Iterator
 	public function key() 
 	{
 		return $this->_pos;
-		//return key($this->_data);
 	}
 
 	/**
@@ -260,8 +234,6 @@ class CoursesModelIterator implements Iterator
 	public function prev() 
 	{
 		--$this->_pos;
-		//return $this->current();
-		//return prev($this->_data);
 	}
 
 	/**
@@ -272,8 +244,6 @@ class CoursesModelIterator implements Iterator
 	public function next() 
 	{
 		++$this->_pos;
-		//return $this->current();
-		//return next($this->_data);
 	}
 
 	/**
@@ -284,9 +254,6 @@ class CoursesModelIterator implements Iterator
 	public function valid() 
 	{
 		return isset($this->_data[$this->_pos]);
-		//$key = key($this->_data);
-		//return ($key !== NULL && $key !== FALSE);
-		//return !is_null(key($this->_data));
 	}
 }
 

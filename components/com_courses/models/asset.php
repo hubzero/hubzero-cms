@@ -31,19 +31,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'unit.php');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
 
 /**
  * Courses model class for a course
  */
-class CoursesModelUnit extends JObject
+class CoursesModelAsset extends JObject
 {
 	/**
 	 * CoursesTableInstance
 	 * 
 	 * @var object
 	 */
-	public $unit = NULL;
+	public $asset = NULL;
 
 	/**
 	 * CoursesTableInstance
@@ -77,19 +77,19 @@ class CoursesModelUnit extends JObject
 	{
 		$this->_db = JFactory::getDBO();
 
-		$this->unit = new CoursesTableUnit($this->_db);
+		$this->asset = new CoursesTableAsset($this->_db);
 
 		if (is_numeric($oid) || is_string($oid))
 		{
-			$this->unit->load($oid);
+			$this->asset->load($oid);
 		}
 		else if (is_object($oid))
 		{
-			$this->unit->bind($oid);
+			$this->asset->bind($oid);
 		}
 		else if (is_array($oid))
 		{
-			$this->unit->bind($oid);
+			$this->asset->bind($oid);
 		}
 	}
 
@@ -114,7 +114,7 @@ class CoursesModelUnit extends JObject
 
 		if (!isset($instances[$oid])) 
 		{
-			$inst = new CoursesModelUnit($oid);
+			$inst = new CoursesModelAsset($oid);
 
 			$instances[$oid] = $inst;
 		}
@@ -128,7 +128,7 @@ class CoursesModelUnit extends JObject
 	 * @param      string $property Name of property to set
 	 * @return     boolean True if set
 	 */
-	public function __isset($property)
+	/*public function __isset($property)
 	{
 		return isset($this->_data[$property]);
 	}
@@ -140,7 +140,7 @@ class CoursesModelUnit extends JObject
 	 * @param      mixed  $value    Value to set property to
 	 * @return     void
 	 */
-	public function __set($property, $value)
+	/*public function __set($property, $value)
 	{
 		$this->_data[$property] = $value;
 	}
@@ -151,16 +151,46 @@ class CoursesModelUnit extends JObject
 	 * @param      string $property Name of property to retrieve
 	 * @return     mixed
 	 */
-	public function __get($property)
+	/*public function __get($property)
 	{
-		if (isset($this->unit->$property)) 
+		if (isset($this->asset->$property)) 
 		{
-			return $this->unit->$property;
+			return $this->asset->$property;
 		}
 		else if (isset($this->_data[$property])) 
 		{
 			return $this->_data[$property];
 		}
+	}
+
+	/**
+	 * Returns a property of the object or the default value if the property is not set.
+	 *
+	 * @param	string $property The name of the property
+	 * @param	mixed  $default The default value
+	 * @return	mixed The value of the property
+ 	 */
+	public function get($property, $default=null)
+	{
+		if (isset($this->asset->$property)) 
+		{
+			return $this->asset->$property;
+		}
+		return $default;
+	}
+
+	/**
+	 * Modifies a property of the object, creating it if it does not already exist.
+	 *
+	 * @param	string $property The name of the property
+	 * @param	mixed  $value The value of the property to set
+	 * @return	mixed Previous value of the property
+	 */
+	public function set($property, $value = null)
+	{
+		$previous = isset($this->asset->$property) ? $this->asset->$property : null;
+		$this->asset->$property = $value;
+		return $previous;
 	}
 
 	/**
@@ -171,11 +201,22 @@ class CoursesModelUnit extends JObject
 	 */
 	public function exists()
 	{
-		if ($this->unit->id && $this->unit->id > 0) 
+		if ($this->get('id') && (int) $this->get('id') > 0) 
 		{
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Check if the resource exists
+	 * 
+	 * @param      mixed $idx Index value
+	 * @return     array
+	 */
+	public function path()
+	{
+		return $this->asset->get('url');
 	}
 
 	/**
@@ -191,238 +232,13 @@ class CoursesModelUnit extends JObject
 	{
 		if (!isset($this->_creator) || !is_object($this->_creator))
 		{
-			$this->_creator = JUser::getInstance($this->unit->created_by);
+			$this->_creator = JUser::getInstance($this->asset->get('created_by'));
 		}
 		if ($property && is_a($this->_creator, 'JUser'))
 		{
 			return $this->_creator->get($property);
 		}
 		return $this->_creator;
-	}
-
-	/**
-	 * Has the offering started?
-	 * 
-	 * @return     boolean
-	 */
-	public function started()
-	{
-		if (!$this->exists()) 
-		{
-			return false;
-		}
-
-		$now = date('Y-m-d H:i:s', time());
-
-		if ($this->unit->start_date 
-		 && $this->unit->start_date != '0000-00-00 00:00:00' 
-		 && $this->unit->start_date > $now) 
-		{
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Has the offering ended?
-	 * 
-	 * @return     boolean
-	 */
-	public function ended()
-	{
-		if (!$this->exists()) 
-		{
-			return true;
-		}
-
-		$now = date('Y-m-d H:i:s', time());
-
-		if ($this->unit->end_date 
-		 && $this->unit->end_date != '0000-00-00 00:00:00' 
-		 && $this->unit->end_date <= $now) 
-		{
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Check if the offering is available
-	 * 
-	 * @return     boolean
-	 */
-	public function available()
-	{
-		if (!$this->exists())
-		{
-			return false;
-		}
-
-		// Make sure the resource is published and standalone
-		if ($this->started() && !$this->ended()) 
-		{
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Method to set the article id
-	 *
-	 * @param	int	Article ID number
-	 */
-	public function assetgroup($id=null)
-	{
-		if (!isset($this->unit) 
-		 || ($this->unit->id != $id && $this->unit->alias != $id))
-		{
-			$this->unit = null;
-
-			foreach ($this->assetgroups() as $key => $offering)
-			{
-				if ($unit->id == $id || $unit->alias == $id)
-				{
-					if (!is_a($unit, 'CoursesModelAssetgroup'))
-					{
-						$unit = new CoursesModelAssetgroup($unit);
-						// Set the offering to the model
-						$this->offerings($key, $unit);
-					}
-					$this->unit = $unit;
-					break;
-				}
-			}
-		}
-		return $this->unit;
-	}
-
-	/**
-	 * Get a list of assetgroups for an offering
-	 *   Accepts either a numeric array index or a string [id, name]
-	 *   If index, it'll return the entry matching that index in the list
-	 *   If string, it'll return either a list of IDs or names
-	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
-	 */
-	public function assetgroups($idx=null, $model=null)
-	{
-		if (!$this->exists()) 
-		{
-			return array();
-		}
-
-		if (!isset($this->assetgroups) || !is_array($this->assetgroups))
-		{
-			$this->assetgroups = array();
-
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.group.php');
-
-			$tbl = new CoursesTableAssetgroup($this->_db);
-			if (($results = $tbl->getCourseassetgroups(array('course_unit_id' => $this->unit->id))))
-			{
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'assetgroup.php');
-
-				foreach ($results as $key => $result)
-				{
-					$results[$key] = new CoursesModelAssetgroup($result);
-				}
-				$this->assetgroups = $results;
-			}
-		}
-
-		if ($idx !== null)
-		{
-			if (is_numeric($idx))
-			{
-				if (isset($this->assetgroups[$idx]))
-				{
-					if ($model && is_a($model, 'CoursesModelAssetgroup'))
-					{
-						$this->assetgroups[$idx] = $model;
-					}
-					return $this->assetgroups[$idx];
-				}
-				else
-				{
-					$this->setError(JText::_('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
-					return false;
-				}
-			}
-			else if (is_array($idx))
-			{
-				$res = array();
-				foreach ($this->assetgroups as $unit)
-				{
-					$obj = new stdClass;
-					foreach ($idx as $property)
-					{
-						$property = strtolower(trim($property));
-						if (isset($unit->$property))
-						{
-							$obj->$property = $unit->$property;
-						}
-					}
-					if ($found)
-					{
-						$res[] = $obj;
-					}
-				}
-				return $res;
-			}
-			else if (is_string($idx))
-			{
-				$idx = strtolower(trim($idx));
-
-				$res = array();
-				foreach ($this->assetgroups as $unit)
-				{
-					if (isset($unit->$idx))
-					{
-						$res[] = $unit->$idx;
-					}
-				}
-				return $res;
-				/*switch ($idx)
-				{
-					case 'id':
-						$ids = array();
-						foreach ($this->assetgroups as $unit)
-						{
-							$ids[] = (int) $unit->id;
-						}
-						return $ids;
-					break;
-
-					case 'alias':
-						$aliases = array();
-						foreach ($this->assetgroups as $unit)
-						{
-							$aliases[] = stripslashes($unit->alias);
-						}
-						return $aliases;
-					break;
-
-					case 'title':
-						$title = array();
-						foreach ($this->assetgroups as $unit)
-						{
-							$title[] = stripslashes($unit->title);
-						}
-						return $title;
-					break;
-
-					default:
-						return $this->assetgroups;
-					break;
-				}*/
-			}
-		}
-
-		return $this->assetgroups;
 	}
 }
 

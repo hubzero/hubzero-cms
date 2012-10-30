@@ -50,10 +50,10 @@ function CoursesBuildRoute(&$query)
 		$segments[] = $query['gid'];
 		unset($query['gid']);
 	}
-	if (!empty($query['instance'])) 
+	if (!empty($query['offering'])) 
 	{
-		$segments[] = $query['instance'];
-		unset($query['instance']);
+		$segments[] = $query['offering'];
+		unset($query['offering']);
 	}
 	if (!empty($query['active'])) 
 	{
@@ -88,21 +88,7 @@ function CoursesBuildRoute(&$query)
 		$segments[] = $query['c'];
 		unset($query['c']);
 	}
-	/*if (!empty($query['scope'])) 
-	{
-		$segments[] = $query['scope'];
-		unset($query['scope']);
-	}
-	if (!empty($query['pagename'])) 
-	{
-		$segments[] = $query['pagename'];
-		unset($query['pagename']);
-	}
-	if (!empty($query['roomid'])) 
-	{
-		$segments[] = $query['roomid'];
-		unset($query['roomid']);
-	}*/
+
 	return $segments;
 }
 
@@ -138,18 +124,14 @@ function CoursesParseRoute($segments)
 			{
 				$vars['gid'] = $segments[0];
 				$vars['task'] = 'display';
-				
-				//ximport('Hubzero_Course');
-				//$course = new Hubzero_Course();
-				//$course->read($segments[0]);
 			}
 			$vars['controller'] = 'course';
 		}
 	}
 
-	if (isset($vars['gid']))
+	/*if (isset($vars['gid']))
 	{
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'instance.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'offering.php');
 		$inst = new CoursesTableInstance(JFactory::getDBO());
 		$insts = $inst->getCourseInstances(array(
 			'course_alias' => $vars['gid']
@@ -157,58 +139,37 @@ function CoursesParseRoute($segments)
 		//$course = CoursesCourse::getInstance($vars['gid']);
 		if ($insts && count($insts) == 1)
 		{
-			JRequest::setVar('instance', $insts[0]->alias);
-			$vars['instance'] = $insts[0]->alias;
-			//$vars['task'] = 'instance';
-			//$vars['active'] = $segments[1];
-			$vars['controller'] = 'instance';
+			JRequest::setVar('offering', $insts[0]->alias);
+			$vars['offering'] = $insts[0]->alias;
+			$vars['controller'] = 'offering';
 		}
-		/*$course = CoursesCourse::getInstance($vars['gid']);
-		if ($course->offerings() && count($course->offerings()) == 1)
-		{
-			JRequest::setVar('instance', $course->offerings(0)->alias);
-			$vars['instance'] = $course->offerings(0)->alias;
-			//$vars['task'] = 'instance';
-			//$vars['active'] = $segments[1];
-			$vars['controller'] = 'instance';
-		}*/
-	}
+	}*/
 
 	if (isset($segments[1])) 
 	{
 		$vars['controller'] = 'course';
 		switch ($segments[1])
 		{
-			/*case 'pages':
-				$vars['controller'] = $segments[1];
-			break;*/
-
 			case 'overview':
 			case 'discussions':
 			case 'calendar':
 			case 'messages':
 			case 'enrollment':
 			case 'syllabus':
-			//if (isset($vars['gid']))
-			if (!isset($vars['instance']) && isset($vars['gid']))
-			{
-				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'instance.php');
-				$inst = new CoursesTableInstance(JFactory::getDBO());
-				$insts = $inst->getCourseInstances(array('course_alias' => $vars['gid']));
-				if ($insts && count($insts) == 1)
+				if (!isset($vars['offering']) && isset($vars['gid']))
 				{
-					JRequest::setVar('instance', $insts[0]->alias);
-					$vars['instance'] = $insts[0]->alias;
-					//$vars['task'] = 'instance';
-					$vars['active'] = $segments[1];
-					$vars['controller'] = 'instance';
+					require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'instance.php');
+					$inst = new CoursesTableInstance(JFactory::getDBO());
+					$insts = $inst->getCourseInstances(array('course_alias' => $vars['gid']));
+					if ($insts && count($insts) == 1)
+					{
+						JRequest::setVar('offering', $insts[0]->alias);
+						$vars['offering'] = $insts[0]->alias;
+						//$vars['task'] = 'offering';
+						$vars['active'] = $segments[1];
+						$vars['controller'] = 'offering';
+					}
 				}
-			}
-			/*else
-			{
-				$vars['instance'] = $segments[1];
-			}
-			*/
 			break;
 
 			case 'edit':
@@ -220,14 +181,14 @@ function CoursesParseRoute($segments)
 			case 'customize':
 			case 'manage':
 			case 'editoutline':
-			case 'instances':
+			case 'offerings':
 			//case 'managemodules':
 			case 'ajaxupload':
 				$vars['task'] = $segments[1];
 			break;
 			default:
-				$vars['instance'] = $segments[1];
-				$vars['controller'] = 'instance';
+				$vars['offering'] = $segments[1];
+				$vars['controller'] = 'offering';
 			break;
 		}
 	}
@@ -235,7 +196,7 @@ function CoursesParseRoute($segments)
 	if (isset($segments[2])) 
 	{
 		$vars['active'] = $segments[2];
-		$vars['controller'] = 'instance';
+		$vars['controller'] = 'offering';
 	}
 	if (isset($segments[3])) 
 	{
