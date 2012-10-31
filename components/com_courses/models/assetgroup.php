@@ -75,11 +75,18 @@ class CoursesModelAssetgroup extends JObject
 	private $_db = NULL;
 
 	/**
+	 * JDatabase
+	 * 
+	 * @var object
+	 */
+	private $_parent = NULL;
+
+	/**
 	 * Container for properties
 	 * 
 	 * @var array
 	 */
-	//private $_data = array();
+	public $_siblings = null;
 
 	/**
 	 * Constructor
@@ -108,6 +115,11 @@ class CoursesModelAssetgroup extends JObject
 		{
 			$this->assetgroup->bind($oid);
 		}
+
+		/*if (is_a($parent, 'CoursesModelUnit'))
+		{
+			$this->_parent = $parent;
+		}*/
 	}
 
 	/**
@@ -421,6 +433,86 @@ class CoursesModelAssetgroup extends JObject
 		}*/
 
 		return $this->assets;
+	}
+
+	public function siblings(&$siblings) 
+	{
+		/*if (is_array($siblings) && !is_a($siblings, 'CoursesModelIterator'))
+		{
+			$siblings = new CoursesModelIterator($siblings);
+		}*/
+		if (is_a($siblings, 'CoursesModelIterator'))
+		{
+			$this->_siblings = $siblings;
+		}
+		else
+		{
+			$this->_siblings = new CoursesModelIterator($siblings);
+		}
+	}
+
+	/**
+	 * Is the current position the first one?
+	 *
+	 * @return     boolean
+	 */
+	public function isFirst() 
+	{
+		if (!$this->_siblings)
+		{
+			return true;
+		}
+		return $this->_siblings->isFirst();
+	} 
+
+	/**
+	 * Is the current position the last one?
+	 *
+	 * @return     boolean
+	 */
+	public function isLast() 
+	{
+		if (!$this->_siblings)
+		{
+			return true;
+		}
+		return $this->_siblings->isLast();
+	}
+
+	/**
+	 * Return the key for the current cursor position
+	 *
+	 * @return     mixed
+	 */
+	public function key($idx=null) 
+	{
+		return $this->_siblings->key($idx);
+	}
+
+	/**
+	 * Set cursor position to previous position and return array value
+	 *
+	 * @return     mixed
+	 */
+	public function sibling($dir='next') 
+	{
+		if (!$this->_siblings)
+		{
+			return null;
+		}
+		$dir = strtolower(trim($dir));
+		switch ($dir)
+		{
+			case 'prev':
+			case 'next':
+				return $this->_siblings->fetch($dir);
+			break;
+
+			default:
+				
+			break;
+		}
+		return null;
 	}
 }
 

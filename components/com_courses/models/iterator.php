@@ -221,8 +221,17 @@ class CoursesModelIterator implements Iterator
 	 *
 	 * @return     mixed
 	 */
-	public function key() 
+	public function key($idx=null) 
 	{
+		if ($idx !== null)
+		{
+			$old = $this->_pos;
+			$this->_pos = (int) $idx;
+			if (!$this->valid())
+			{
+				$this->_pos = $old;
+			}
+		}
 		return $this->_pos;
 	}
 

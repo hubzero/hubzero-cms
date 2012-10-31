@@ -38,7 +38,6 @@ defined('_JEXEC') or die('Restricted access');
  */
 class CoursesTableAsset extends JTable
 {
-
 	/**
 	 * ID, primary key for course assets table
 	 * 
@@ -61,32 +60,32 @@ class CoursesTableAsset extends JTable
 	var $type = NULL;
 
 	/**
-	 * Target id of asset element, (references: based on scope)
-	 * 
-	 * @var int(11)
-	 */
-	var $scope_id = NULL;
-
-	/**
-	 * Asset scope
-	 * 
-	 * @var varchar(255)
-	 */
-	var $scope = NULL;
-
-	/**
 	 * Association url (basically an alternative to [associated_id + scope])
 	 * 
-	 * @var varchar(255)
+	 * @var string
 	 */
 	var $url = NULL;
 
 	/**
-	 * Ordering
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var int(11)
+	 * @var string
 	 */
-	var $ordering = NULL;
+	var $created = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $created_by = NULL;
+
+	/**
+	 * tinyint(2)
+	 * 
+	 * @var integer
+	 */
+	var $state = NULL;
 
 	/**
 	 * Contructor method for JTable class

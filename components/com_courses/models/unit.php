@@ -249,7 +249,7 @@ class CoursesModelUnit extends JObject
 	{
 		if (!isset($this->_creator) || !is_object($this->_creator))
 		{
-			$this->_creator = JUser::getInstance($this->unit->created_by);
+			$this->_creator = JUser::getInstance($this->get('created_by'));
 		}
 		if ($property && is_a($this->_creator, 'JUser'))
 		{
@@ -354,6 +354,7 @@ class CoursesModelUnit extends JObject
 						{
 							$this->_assetgroups = $this->assetgroups; // back up the data
 							$this->group = $child;
+							$this->group->siblings($group->children());
 							$this->assetgroups = $group->children(); // set the current asset groups
 							break;
 						}
@@ -477,12 +478,6 @@ class CoursesModelUnit extends JObject
 				{
 					if ($group->get('alias') == $idx)
 					{
-					/*if (!is_a($group, 'CoursesModelAssetgroup'))
-					{
-						$group = new CoursesModelAssetgroup($group);
-						// Set the offering to the model
-						$this->assetgroups($key, $group);
-					}*/
 						return $this->assetgroups;
 						break;
 					}
@@ -492,12 +487,6 @@ class CoursesModelUnit extends JObject
 						{
 							if ($child->get('alias') == $idx)
 							{
-								/*if (!is_a($group, 'CoursesModelAssetgroup'))
-								{
-									$group = new CoursesModelAssetgroup($child);
-									// Set the offering to the model
-									$this->assetgroups($key, $group);
-								}*/
 								return $group->children();
 								break;
 							}
@@ -639,6 +628,92 @@ class CoursesModelUnit extends JObject
 		}
 
 		return $this->assetgrouptypes;
+	}*/
+
+	public function siblings(&$siblings) 
+	{
+		/*if (is_array($siblings) && !is_a($siblings, 'CoursesModelIterator'))
+		{
+			$siblings = new CoursesModelIterator($siblings);
+		}*/
+		if (is_a($siblings, 'CoursesModelIterator'))
+		{
+			$this->_siblings = $siblings;
+		}
+		else
+		{
+			$this->_siblings = new CoursesModelIterator($siblings);
+		}
+	}
+
+	/**
+	 * Is the current position the first one?
+	 *
+	 * @return     boolean
+	 */
+	public function isFirst() 
+	{
+		if (!$this->_siblings)
+		{
+			return true;
+		}
+		return $this->_siblings->isFirst();
+	} 
+
+	/**
+	 * Is the current position the last one?
+	 *
+	 * @return     boolean
+	 */
+	public function isLast() 
+	{
+		if (!$this->_siblings)
+		{
+			return true;
+		}
+		return $this->_siblings->isLast();
+	}
+
+	/**
+	 * Return the key for the current cursor position
+	 *
+	 * @return     mixed
+	 */
+	public function key() 
+	{
+		return $this->_siblings->key();
+	}
+
+	/**
+	 * Set cursor position to previous position and return array value
+	 *
+	 * @return     mixed
+	 */
+	public function sibling($dir='next') 
+	{
+		$dir = strtolower(trim($dir));
+		switch ($dir)
+		{
+			case 'prev':
+			case 'next':
+				return $this->_siblings->fetch($dir);
+			break;
+
+			default:
+				
+			break;
+		}
+		return null;
+	}
+
+	/**
+	 * Set cursor position to next position and return array value
+	 *
+	 * @return     mixed
+	 */
+	/*public function next() 
+	{
+		return $this->_siblings->fetch('next');
 	}*/
 }
 

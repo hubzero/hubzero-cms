@@ -154,14 +154,25 @@ class CoursesModelOffering extends JObject
 			$instances = array();
 		}
 
-		if (!isset($instances[$oid])) 
+		if (is_numeric($oid) || is_string($oid))
 		{
-			$inst = new CoursesModelOffering($oid);
-
-			$instances[$oid] = $inst;
+			$key = $oid;
+		}
+		else if (is_object($oid))
+		{
+			$key = $oid->get('id');
+		}
+		else if (is_array($oid))
+		{
+			$key = $oid['id'];
 		}
 
-		return $instances[$oid];
+		if (!isset($instances[$key])) 
+		{
+			$instances[$key] = new CoursesModelOffering($oid);
+		}
+
+		return $instances[$key];
 	}
 
 	/**
@@ -459,6 +470,7 @@ class CoursesModelOffering extends JObject
 				if ((int) $unit->get('id') == $id || (string) $unit->get('alias') == $id)
 				{
 					$this->unit = $unit;
+					$this->unit->siblings($this->units());
 					break;
 				}
 			}
@@ -494,7 +506,11 @@ class CoursesModelOffering extends JObject
 				{
 					$results[$key] = new CoursesModelUnit($result);
 				}
-				$this->units = new CoursesModelIterator($results);
+				//$this->units = new CoursesModelIterator($results);
+				/*
+				$this->units = new CoursesModelIterator();
+				$this->units->add(new CoursesModelUnit($result, $this->units));
+				*/
 			}
 			else
 			{
