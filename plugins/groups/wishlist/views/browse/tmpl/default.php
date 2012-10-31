@@ -64,13 +64,13 @@ if (!defined('n')) {
 	define('a','&amp;');
 }
 
-$dateformat = '%d %b %Y';
-$timeformat = '%I:%M %p';
+$dateFormat = '%d %b %Y';
+$timeFormat = '%I:%M %p';
 $tz = 0;
 if (version_compare(JVERSION, '1.6', 'ge'))
 {
-	$dateformat = 'd M Y';
-	$timeformat = 'H:i p';
+	$dateFormat = 'd M Y';
+	$timeFormat = 'H:i p';
 	$tz = true;
 }
 
@@ -189,7 +189,7 @@ else {
 <?php 			if (!$item->reports) { ?>
 						<td class="voting">
 <?php
-							$view = new JView( array('name'=>'rateitem', 'base_path' => JPATH_ROOT.DS.'components'.DS.$this->option) );
+							$view = new JView( array('name'=>'rateitem', 'base_path' => JPATH_ROOT.DS.'components'.DS.'com_wishlist') );
 							$view->option = $this->option;
 							$view->item = $item;
 							$view->listid = $this->wishlist->id;
