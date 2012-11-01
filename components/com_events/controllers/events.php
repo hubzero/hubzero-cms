@@ -1360,7 +1360,7 @@ class EventsControllerEvents extends Hubzero_Controller
 		$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
 		$this->setRedirect(
 			JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn)),
-			JText::_('COM_BLOG_LOGIN_NOTICE'),
+			JText::_('EVENTS_LOGIN_NOTICE'),
 			'warning'
 		);
 	}
