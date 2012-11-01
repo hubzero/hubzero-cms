@@ -1678,8 +1678,8 @@ class SupportControllerTickets extends Hubzero_Controller
 			{
 				$log['changes'][] = array(
 					'field'  => JText::_('TICKET_FIELD_STATUS'),
-					'before' => SupportHtml::getStatus($old->status),
-					'after'  => SupportHtml::getStatus($row->status)
+					'before' => SupportHtml::getStatus($old->open, $old->status),
+					'after'  => SupportHtml::getStatus($row->open, $row->status)
 				);
 			}
 
