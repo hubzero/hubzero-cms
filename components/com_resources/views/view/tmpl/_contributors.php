@@ -87,23 +87,19 @@ if ($this->contributors)
 
 			if (trim($contributor->org) != '' && !in_array(trim($contributor->org), $orgs)) 
 			{
-				$orgs[$i-1] = $contributor->org;
-				$orgsln   .= $i . '. ' . trim($contributor->org) . ' ';
-				$orgsln_s .= $contributor->org . ' ';
+				$orgs[$i-1] = trim($contributor->org);
+				$orgsln 	.= $i . '. ' . trim($contributor->org) . ' ';
+				$orgsln_s 	.= trim($contributor->org).' ';
 				$k = $i;
 				$i++;
-
-				$link_s = $link;
-				$link .= '<sup>' . $k . '</sup>';
-				$names_s[] = $link_s;
 			} 
 			else 
 			{
-				//$k = array_search(trim($contributor->org), $orgs) + 1;
-				$link_s = $link;
-				$link .= '';
-				$names_s[] = $link_s;
+				$k = array_search(trim($contributor->org), $orgs) + 1;
 			}
+			$link_s = $link;
+			$link .= '<sup>' . $k . '</sup>';
+			$names_s[] = $link_s;
 
 		$names[] = $link;
 	}
