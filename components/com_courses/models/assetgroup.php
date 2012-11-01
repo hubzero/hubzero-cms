@@ -320,7 +320,7 @@ class CoursesModelAssetgroup extends JObject
 	}
 
 	/**
-	 * Method to set the article id
+	 * Get a specific asset
 	 *
 	 * @param     integer $id Asset ID
 	 * @return    object CoursesModelAsset
@@ -345,13 +345,11 @@ class CoursesModelAssetgroup extends JObject
 	}
 
 	/**
-	 * Get a list of assetgroups for an offering
-	 *   Accepts either a numeric array index or a string [id, name]
-	 *   If index, it'll return the entry matching that index in the list
-	 *   If string, it'll return either a list of IDs or names
+	 * Get a list of assets for a unit
+	 *   Accepts an array of filters to apply to the list of assets
 	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @param      array $filters Filters to apply
+	 * @return     object CoursesModelIterator
 	 */
 	public function assets($filters=array())
 	{

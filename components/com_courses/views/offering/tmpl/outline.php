@@ -86,73 +86,86 @@ if (!$this->course->offering()->access('view')) {
 						<?php echo $this->escape(stripslashes($unit->description)); ?>
 					</h3>
 <?php if (!$unit->started()) { ?>
-						<div class="comingSoon">
-							<p class="status">Coming soon</p>
+					<div class="comingSoon">
+						<p class="status">Coming soon</p>
 <?php } else { ?>
-						<div>
-							<p class="status posted">Posted</p>
+					<div>
+						<p class="status posted">Posted</p>
 
 						<div class="details">
-
-								<div class="detailsWrapper">
-									<div class="weeksection">
+							<div class="detailsWrapper">
 <?php
 	// Loop through the asset group types
 	foreach ($unit->assetgroups() as $agt)
 	{
 ?>
-		<h4>
-			<?php echo $this->escape(stripslashes($agt->get('title'))); ?>
-		</h4>
+		<div class="weeksection">
+			<h4>
+				<?php echo $this->escape(stripslashes($agt->get('title'))); ?>
+			</h4>
 <?php 
 		// Loop through the child asset groups
 		foreach ($agt->children() as $ag)
 		{
 ?>
-				<h5>
-					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=outline&a=' . $unit->get('alias') . '&b=' . $ag->get('alias')); ?>">
-						<?php echo $this->escape(stripslashes($ag->get('title'))); ?>
-					</a>
-				</h5>
+			<h5>
+				<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=outline&a=' . $unit->get('alias') . '&b=' . $ag->get('alias')); ?>">
+					<?php echo $this->escape(stripslashes($ag->get('title'))); ?>
+				</a>
+			</h5>
+			<ul>
 <?php
-				// Get the course assets
-				/*$assetsTbl = new CoursesTableAsset($this->database);
-				$assets    = $assetsTbl->getCourseAssets($filters=array(
-					"w"=>array(
-						"course_asset_scope_id" => $ag->get('id'),
-						"course_asset_scope" => "asset_group"
-					)
-				));*/
-
-				// Start our list
-				echo "<ul>";
-
 				// Loop through the assets
 				//if (count($assets) > 0)
 				if ($ag->assets()->total())
 				{
 					foreach ($ag->assets() as $a)
 					{
-						echo '<li><a class="" href="' . $a->get('url') . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+						$href = $a->path($this->course->get('id'));
+						if ($a->get('type') == 'video')
+						{
+							$href = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=outline&a=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
+						}
+						echo '<li><a class="" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 					}
 				}
 				else
 				{
 					echo "<li><small>" . JText::_('COURSES_NO_ASSETS_FOR_GROUPING') . "</small></li>";
 				}
-
-				// End the list
-				echo "</ul>";
-		 	//}
+?>
+			</ul>
+<?php
 		}
+?>
+		</div><!-- / .weekSection -->
+<?php
 	}
-	
 	$i++;
 ?>
-									</div>
-								</div>
-							</div>
-<div class="clear"></div>
+						</div><!-- / .detailsWrapper -->
+					</div><!-- / .details -->
+					<div class="clear"></div>
+<?php
+					if ($unit->assets()->total())
+					{
+?>
+						<ul>
+<?php
+						foreach ($unit->assets() as $a)
+						{
+							$href = $a->path($this->course->get('id'));
+							if ($a->get('type') == 'video')
+							{
+								$href = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=outline&a=' . $unit->get('alias'));
+							}
+							echo '<li><a class="" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+						}
+?>
+						</ul>
+<?php
+					}
+?>
 <?php } // close else ?>
 </div>
 				</div>

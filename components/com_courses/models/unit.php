@@ -715,5 +715,68 @@ class CoursesModelUnit extends JObject
 	{
 		return $this->_siblings->fetch('next');
 	}*/
+
+	/**
+	 * Get a specific asset
+	 *
+	 * @param     integer $id Asset ID
+	 * @return    object CoursesModelAsset
+	 */
+	public function asset($id=null)
+	{
+		if (!isset($this->asset) 
+		 || ($id !== null && (int) $this->asset->get('id') != $id))
+		{
+			$this->asset = null;
+
+			foreach ($this->assets() as $key => $asset)
+			{
+				if ((int) $asset->get('id') == $id)
+				{
+					$this->asset = $asset;
+					break;
+				}
+			}
+		}
+		return $this->asset;
+	}
+
+	/**
+	 * Get a list of assets for a unit
+	 *   Accepts an array of filters to apply to the list of assets
+	 * 
+	 * @param      array $filters Filters to apply
+	 * @return     object CoursesModelIterator
+	 */
+	public function assets($filters=array())
+	{
+		if (!isset($this->assets) || !is_a($this->assets, 'CoursesModelIterator'))
+		{
+			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
+
+			$filters['course_asset_scope_id'] = (int) $this->get('id');
+			$filters['course_asset_scope']    = 'unit';
+
+			$tbl = new CoursesTableAsset($this->_db);
+
+			if (($results = $tbl->getCourseAssets(array('w' => $filters))))
+			{
+				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
+
+				foreach ($results as $key => $result)
+				{
+					$results[$key] = new CoursesModelAsset($result);
+				}
+			}
+			else
+			{
+				$results = array();
+			}
+
+			$this->assets = new CoursesModelIterator($results);
+		}
+
+		return $this->assets;
+	}
 }
 

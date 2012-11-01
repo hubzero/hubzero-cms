@@ -67,7 +67,7 @@ if (!$no_html) : ?>
 					//$default_logo = DS.'components'.DS.$this->option.DS.'assets'.DS.'img'.DS.'course_default_logo.png';
 
 					//logo link - links to course overview page
-					$link = JRoute::_('index.php?option='.$this->option.'&controller=course&gid='.$this->course->get('alias') . '&instance=' . $this->course->offering()->get('alias'));
+					$link = JRoute::_('index.php?option='.$this->option.'&controller=course&gid='.$this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias'));
 
 					//path to course uploaded logo
 					//$path = '/site/courses/'.$this->course->get('gidNumber').DS.$this->course->get('logo');
@@ -113,7 +113,7 @@ if (!$no_html) : ?>
 						<?php $isManager = $this->course->offering()->access('manage'); ?>
 						<?php $canCancel = (($isManager && count($this->course->get("managers")) > 1) || (!$isManager && in_array($this->user->get('id'), $this->course->offering()->get('members')))) ? true : false; ?>
 						<li class="no-float">
-							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&instance=' . $this->course->offering()->get('alias')); ?>" class="dropdown course-<?php echo ($isManager) ? 'manager' : 'member'; ?>">
+							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias')); ?>" class="dropdown course-<?php echo ($isManager) ? 'manager' : 'member'; ?>">
 								<?php echo ($isManager) ? 'Manager' : 'Member'; ?>
 								<span class="caret"></span>
 							</a>
@@ -179,7 +179,7 @@ if (!$no_html) : ?>
 								//$access = $access_levels[$cat['name']];
 
 								//menu link
-								$link = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&instance=' . $this->course->offering()->get('alias') . '&active=' . $active);
+								$link = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=' . $active);
 
 								//Are we on the overview tab with sub course pages?
 								if ($cat['name'] == 'outline' && count($this->pages) > 0)
@@ -207,7 +207,7 @@ if (!$no_html) : ?>
 										//page vars
 										$title = $page['title'];
 										$cls = ($true_active_tab == $page['url']) ? 'active' : '';
-										$link = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&instance=' . $this->course->offering()->get('alias') . '&active=' . $page['url']);
+										$link = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=' . $page['url']);
 
 										//page menu item
 										if (!$this->course->offering()->access('view'))
@@ -227,9 +227,9 @@ if (!$no_html) : ?>
 								{
 									if (!$this->course->offering()->access('view'))
 									{
-										$menu_item  = "<li class=\"protected members-only course-{$cls}-tab\" title=\"This page is restricted to course members only!\">";
-										$menu_item .= "<span class=\"{$cls}\">{$title}</span>";
-										$menu_item .= "</li>";
+										$menu_item  = '<li class="protected members-only course-' . $cls . '-tab" title="This page is restricted to course members only!">';
+										$menu_item .= '<span class="' . $cls . '">' . $title . '</span>';
+										$menu_item .= '</li>';
 									}
 									else
 									{

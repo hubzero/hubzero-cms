@@ -67,6 +67,13 @@ class CoursesModelAsset extends JObject
 	private $_data = array();
 
 	/**
+	 * Container for properties
+	 * 
+	 * @var array
+	 */
+	public $params = null;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      integer $id  Resource ID or alias
@@ -91,6 +98,8 @@ class CoursesModelAsset extends JObject
 		{
 			$this->asset->bind($oid);
 		}
+
+		$this->params = JComponentHelper::getParams('com_courses');
 	}
 
 	/**
@@ -214,9 +223,10 @@ class CoursesModelAsset extends JObject
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
-	public function path()
+	public function path($course=0)
 	{
-		return $this->asset->get('url');
+		$path = DS . trim($this->params->get('uploadpath', '/site/courses'), DS) . DS . $course . DS . $this->asset->get('id') . DS . ltrim($this->asset->get('url'), DS);
+		return $path;
 	}
 
 	/**
