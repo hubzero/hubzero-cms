@@ -126,10 +126,10 @@ if ($this->contributors) {
 			$name  = stripslashes($contributor->name);
 		}
 ?>
-				<tr>
+				<tr class="author-<?php echo $contributor->authorid; ?>">
 					<td width="100%">
-						<?php echo $this->escape($name); ?><br />
-						<input type="text" name="authors[<?php echo $contributor->authorid; ?>][organization]" size="35" value="<?php echo $this->escape(stripslashes($contributor->org)); ?>" placeholder="<?php echo JText::_('Organization'); ?>" />
+						<span class="author-name"><?php echo $this->escape($name); ?></span><br />
+						<input type="text" name="authors[<?php echo $contributor->authorid; ?>][organization]" id="organization-<?php echo $contributor->authorid; ?>" size="35" value="<?php echo $this->escape(stripslashes($contributor->org)); ?>" placeholder="<?php echo JText::_('Organization'); ?>" />
 						<?php //echo ($contributor->org) ? ' <span class="caption">(' . $this->escape($contributor->org) . ')</span>' : ''; ?>
 					</td>
 					<td>
