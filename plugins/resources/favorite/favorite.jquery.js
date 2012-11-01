@@ -171,11 +171,11 @@ HUB.Plugins.ResourcesFavorite = {
 					
 					if ($(fav).hasClass('faved')) {
 						$(fav).removeClass('faved');
-						var img = '/components/com_resources/images/broken-heart.gif';
+						var img = '/components/com_resources/assets/img/broken-heart.gif';
 						var txt = 'Favorite removed.';
 					} else {
 						fav.addClass('faved');
-						var img = '/components/com_resources/images/heart.gif';
+						var img = '/components/com_resources/assets/img/heart.gif';
 						var txt = 'Favorite saved.';
 					}
 					$.growl(txt, '', img);
