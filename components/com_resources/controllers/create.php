@@ -491,6 +491,10 @@ class ResourcesControllerCreate extends Hubzero_Controller
 	 */
 	public function step_tags($existing = array()) 
 	{
+		if ($this->view->getName() != 'steps')
+		{
+			$this->setView('steps', 'tags');
+		}
 		// Incoming
 		$this->view->id = JRequest::getInt('id', 0);
 
@@ -499,6 +503,14 @@ class ResourcesControllerCreate extends Hubzero_Controller
 		{
 			JError::raiseError(500, JText::_('COM_CONTRIBUTE_NO_ID'));
 			return;
+		}
+
+		if (!isset($this->progress))
+		{
+			// Check the progress
+			$this->_checkProgress($this->view->id);
+
+			$this->view->progress = $this->progress;
 		}
 
 		// Load the resource
@@ -987,7 +999,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 			{
 				$filtered[] = $tag;
 				$parent_id = array();
-				foreach ($parents as $par) 
+				foreach ($parent as $par) 
 				{
 					$parent_id[] = $par['id'];
 				}
@@ -1045,6 +1057,8 @@ class ResourcesControllerCreate extends Hubzero_Controller
 						: 'Please make selections for "' . $lbl . '" to a depth of at least ' . $fa['minimum_depth']
 				);
 				--$this->step;
+				$this->view->step = $this->step;
+				$this->view->setLayout('tags');
 				return $this->step_tags($push);
 			}
 		}
@@ -1056,9 +1070,9 @@ class ResourcesControllerCreate extends Hubzero_Controller
 		}
 		$tags = implode(', ', $tags);
 		
-		$rt = new ResourcesTags($this->database);
-		$rt->tag_object($this->juser->get('id'), $id, $tags, 1, 1);
-		/*$this->database->execute('DELETE FROM #__tags_object WHERE tbl = \'resources\' AND objectid = ' . $id);
+		//$rt = new ResourcesTags($this->database);
+		//$rt->tag_object($this->juser->get('id'), $id, $tags, 1, 1);
+		$this->database->execute('DELETE FROM #__tags_object WHERE tbl = \'resources\' AND objectid = ' . $id);
 		foreach ($push as $tag) 
 		{
 			$this->database->setQuery('SELECT id FROM #__tags WHERE tag = ' . $this->database->quote($tag[1]));
@@ -1068,7 +1082,7 @@ class ResourcesControllerCreate extends Hubzero_Controller
 				$tid = $this->database->insertid();
 			}
 			$this->database->execute('INSERT INTO #__tags_object(tbl, objectid, tagid, label) VALUES (\'resources\', ' . $id . ', ' . $tid . ', ' . ($tag[2] ? $this->database->quote($tag[2]) : 'NULL') . ')');
-		}*/
+		}
 	}
 
 	/**

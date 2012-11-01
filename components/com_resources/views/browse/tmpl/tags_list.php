@@ -202,6 +202,8 @@ switch ($this->level)
 			$usersgroups = array();
 		}
 
+		$helper->getFirstChild();
+
 		if ($resource->access == 3 && !in_array($resource->group_owner, $usersgroups) && !$authorized) {
 			$ghtml = JText::_('You must be logged in and a member of one of the following groups to access the full resource:').' ';
 			$allowedgroups = $resource->getGroups();

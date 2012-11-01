@@ -63,17 +63,6 @@ if ($mode != 'preview')
 		<div class="main section upperpane">
 			<div class="aside rankarea">
 <?php 
-		if ($this->model->params->get('access-edit-resource')) 
-		{ 
-?>
-					<p>
-						<a class="edit btn" href="<?php echo JRoute::_('index.php?option=com_tools&task=resource&step=1&app=' . $this->model->resource->alias); ?>"><?php echo JText::_('EDIT'); ?></a>
-					</p>
-<?php 
-		} // if ($this->model->params->get('access-edit-resource')) 
-?>
-
-<?php 
 	// Show resource ratings
 	if (!$thistool) 
 	{
@@ -115,6 +104,14 @@ if ($mode != 'preview')
 					<div id="content-header">
 						<h2>
 							<?php echo $txt . $this->escape(stripslashes($this->model->resource->title)); ?>
+							<?php 
+								if ($this->model->params->get('access-edit-resource')) 
+								{ 
+							?>
+								<a class="edit button" href="<?php echo JRoute::_('index.php?option=com_tools&task=resource&step=1&app=' . $this->model->resource->alias); ?>"><?php echo JText::_('EDIT'); ?></a>
+							<?php 
+								} // if ($this->model->params->get('access-edit-resource')) 
+							?>
 						</h2>
 						<input type="hidden" name="rid" id="rid" value="<?php echo $this->model->resource->id; ?>" />
 					</div>
