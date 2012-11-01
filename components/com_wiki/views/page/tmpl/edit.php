@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if (JPluginHelper::isEnabled('system', 'jquery')) 
+/*if (JPluginHelper::isEnabled('system', 'jquery')) 
 {
 	Hubzero_Document::addSystemScript('jquery.sisyphus');
 	$jdoc = &JFactory::getDocument();
@@ -43,7 +43,7 @@ if (JPluginHelper::isEnabled('system', 'jquery'))
 			customKeyPrefix: "rev' . $this->revision->id . '_"
 		});
 	});');
-}
+}*/
 
 if ($this->page->id) {
 	$lid = $this->page->id;
