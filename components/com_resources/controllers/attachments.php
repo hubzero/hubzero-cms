@@ -351,7 +351,7 @@ class ResourcesControllerAttachments extends Hubzero_Controller
 				$row->delete();
 			}
 
-			$this->setError(JText::_('File rejected due to possible security risk.'));
+			$this->setError(JText::_('File rejected because the anti-virus scan failed.'));
 			$this->displayTask($pid);
 			return;
 		}

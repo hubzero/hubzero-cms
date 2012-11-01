@@ -2492,7 +2492,7 @@ class SupportControllerTickets extends Hubzero_Controller
 			{
 				if (JFile::delete($path)) 
 				{
-					$this->setError(JText::_('File rejected due to possible security risk.'));
+					$this->setError(JText::_('File rejected because the anti-virus scan failed.'));
 					return '';
 				}
 			}
