@@ -36,7 +36,10 @@
 	.extracontent li {
 		list-style: none;
 	}
-	.extracontent li:before,
+	.extracontent li a {
+		padding-left: 25px;
+	}
+	.extracontent li a:before,
 	.com_resources .four .columns div:before,
 	.com_resources .four .columns div:after {
 		content: "";
@@ -49,13 +52,14 @@
 		font-size: 20px;
 		font-family: 'Fontcons';
 		color: #aaa;
+		border: none;
 	}
-	.extracontent li:before,
+	.extracontent li a:before,
 	.com_resources .four .columns div:before {
 		content: "\270D";
 	}
-	.extracontent li:before {
-		top: 0.5em;
+	.extracontent li a:before {
+		top: 0.7em;
 	}
 	.com_resources .four .columns div {
 		padding-left: 25px;
@@ -65,49 +69,49 @@
 	.com_resources .four div.topicpage:before {
 		content: "\f072";
 	}
-	.extracontent .seminar:before,
+	.extracontent .seminar a:before,
 	.com_resources .four div.seminar:before,
-	.extracontent .onlinepresentation:before,
+	.extracontent .onlinepresentation a:before,
 	.com_resources .four div.onlinepresentation:before {
 		content: "\f040";
 	}
-	.extracontent .animation:before,
+	.extracontent .animation a:before,
 	.com_resources .four div.animation:before {
 		content: "\f008";
 	}
-	.extracontent .course:before,
+	.extracontent .course a:before,
 	.com_resources .four div.course:before {
 		content: "\f09c"; /* \f02d */
 	}
-	.extracontent .download:before,
+	.extracontent .download a:before,
 	.com_resources .four div.download:before {
 		content: "\f019";
 	}
-	.extracontent .note:before,
+	.extracontent .note a:before,
 	.com_resources .four div.note:before {
 		content: "\f02a";
 	}
-	.extracontent .learningmodule:before,
+	.extracontent .learningmodule a:before,
 	.com_resources .four div.learningmodule:before {
 		content: "\f078";
 	}
-	.extracontent .publication:before,
+	.extracontent .publication a:before,
 	.com_resources .four div.publication:before {
 		content: "\f016";
 	}
-	.extracontent .series:before,
+	.extracontent .series a:before,
 	.com_resources .four div.series:before {
 		content: "\f060";
 	}
-	.extracontent .tool:before,
+	.extracontent .tool a:before,
 	.com_resources .four div.tool:before {
 		content: "\2692";
 	}
-	.extracontent .teachingmaterial:before,
+	.extracontent .teachingmaterial a:before,
 	.com_resources .four div.teachingmaterial:before {
 		content: "\f000";
 	}
-	.extracontent .workshop:before,
+	.extracontent .workshop a:before,
 	.com_resources .four div.workshop:before {
 		content: "\f096";
 	}
