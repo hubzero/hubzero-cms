@@ -43,7 +43,7 @@
 	#group-owner .group-content {
 		position: relative;
 		padding: 0;
-		margin: 0;
+		margin: 0 0 2em 0;
 	}
 	#group-owner .group-description {
 		position: absolute;
