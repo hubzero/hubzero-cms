@@ -1078,8 +1078,12 @@ class ResourcesControllerCreate extends Hubzero_Controller
 			$this->database->setQuery('SELECT id FROM #__tags WHERE tag = ' . $this->database->quote($tag[1]));
 			if (!($tid = $this->database->loadResult())) 
 			{
-				$this->database->execute('INSERT INTO #__tags(tag, raw_tag) VALUES (' . $this->database->quote($tag[1]) . ', ' . $this->database->quote($tag[0]) . ')');
-				$tid = $this->database->insertid();
+				$this->database->setQuery('SELECT tag_id FROM #__tags_substitute WHERE tag = ' . $this->database->quote($tag[1]));
+				if (!($tid = $this->database->loadResult())) 
+				{
+					$this->database->execute('INSERT INTO #__tags(tag, raw_tag) VALUES (' . $this->database->quote($tag[1]) . ', ' . $this->database->quote($tag[0]) . ')');
+					$tid = $this->database->insertid();
+				}
 			}
 			$this->database->execute('INSERT INTO #__tags_object(tbl, objectid, tagid, label) VALUES (\'resources\', ' . $id . ', ' . $tid . ', ' . ($tag[2] ? $this->database->quote($tag[2]) : 'NULL') . ')');
 		}
