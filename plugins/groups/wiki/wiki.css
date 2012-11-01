@@ -98,6 +98,10 @@
 	#sub-menu li.page-index a span:before {
 		content: "\f03a";
 	}
+	#sub-menu li.page-main span,
+	#sub-menu li.page-index span {
+		background: transparent;
+	}
 
 /* Tags */
 	.article-tags {
