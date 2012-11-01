@@ -427,3 +427,7 @@
 	#small-page table tfoot td {
 		border-bottom: none;
 	}
+
+	.fa .fa {
+		margin-left: 2em;
+	}
