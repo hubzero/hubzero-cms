@@ -412,15 +412,34 @@ class WikiParser
 	public function linkAuto($matches)
 	{
 		$href = $matches[0];
+		$sp = preg_replace('/^([\s]*)(.*)/i', "$1", $href);
+		$pc = '';
+
+		$href = trim($href);
+		if (substr($href, -1) == '.') 
+		{
+			$href = rtrim($href, '.');
+			$pc = substr($href, -1);
+		}
 
 		if (substr($href, 0, 1) == '!') 
 		{
-			return ltrim($href, '!');
+			return $sp . ltrim($href, '!') . $pc;
 		}
 
 		$href = str_replace('"', '', $href);
 		$href = str_replace("'", '', $href);
 		$href = str_replace('&#8221', '', $href);
+
+		if (substr($href, 0, strlen('mailto:')) == 'mailto:') 
+		{
+			$href = 'mailto:' . $this->obfuscate(substr($href, strlen('mailto:')));
+		}
+		else if (preg_match("/^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $href))
+		{
+			
+			$href = 'mailto:' . $this->obfuscate($href);
+		}
 
 		$h = array('h', 'm', 'f', 'g', 'n');
 		$pfx = '';
@@ -430,21 +449,18 @@ class WikiParser
 			$href = substr($href, 1);
 		}
 
+		$txt = $href;
 		if (substr($href, 0, strlen('mailto:')) == 'mailto:') 
 		{
-			$href = 'mailto:' . $this->obfuscate(substr($href, strlen('mailto:')));
-		}
-		else if (preg_match("/^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $href))
-		{
-			$href = 'mailto:' . $this->obfuscate($href);
+			$txt = substr($href, strlen('mailto:'));
 		}
 
-		$l = sprintf(
+		$l = $sp . sprintf(
 			'<a class="ext-link" href="%s"%s>%s</a>',
 			$href,
 			' rel="external"',
-			trim($href)
-		);
+			$txt
+		) . $pc;
 		array_push($this->alinks, $pfx . $l);
 		return '<alink></alink>';
 	}
