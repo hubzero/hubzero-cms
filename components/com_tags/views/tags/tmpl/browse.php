@@ -86,8 +86,8 @@ $this->filters['sort'] = '';
 					</li>
 					<li> 
 						<?php
-							$cls = ($this->filters['sortby'] == '') ? ' class="active"' : '';
-							$url = JRoute::_('index.php?option='.$this->option.'&task=browse&search='.urlencode($this->filters['search']).'&limit='.JRequest::getVar("limit", 25).'&limitstart='.JRequest::getVar("limitstart", 0));
+							$cls = ($this->filters['sortby'] == '' || $this->filters['sortby'] == 'raw_tag') ? ' class="active"' : '';
+							$url = JRoute::_('index.php?option='.$this->option.'&task=browse&sortby=raw_tag&search='.urlencode($this->filters['search']).'&limit='.JRequest::getVar("limit", 25).'&limitstart='.JRequest::getVar("limitstart", 0));
 						?>
 						<a<?php echo $cls; ?> href="<?php echo $url; ?>" title="<?php echo JText::_('Sort by title'); ?>">
 							&darr; <?php echo JText::_('Alphabetically'); ?>

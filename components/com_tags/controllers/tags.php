@@ -688,7 +688,7 @@ class TagsControllerTags extends Hubzero_Controller
 		));
 		$this->view->filters['sortby'] = $app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.sortby',
-			'show',
+			'sortby',
 			''
 		);
 		//$this->view->filters['sortby'] = JRequest::getVar('sortby', '');
