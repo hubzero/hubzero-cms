@@ -131,7 +131,7 @@ class CoursesTableAsset extends JTable
 	 */
 	public function getCourseAssets($filters=array())
 	{
-		$query  = "SELECT ca.*";
+		$query  = "SELECT ca.*, caa.ordering";
 		$query .= $this->buildquery($filters);
 
 		if (!empty($filters['w']))
@@ -159,7 +159,7 @@ class CoursesTableAsset extends JTable
 			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
 
-		$query .= " ORDER BY ca.ordering";
+		$query .= " ORDER BY caa.ordering";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();

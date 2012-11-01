@@ -30,7 +30,7 @@ HUBzero is a registered trademark of Purdue University.
 <config>
 	<params>
 		<param name="uploadpath" type="text" menu="hide" default="/site/courses" label="Upload path" description="File path for pictures" size="50" />
-		<param name="iconpath" type="text" menu="hide" default="/components/com_courses/assest/img/icons" label="Icons" description="File path for icons" size="50" />
+
 		<param name="join_policy" type="list" default="0" label="Default Join Policy" description="The default default join policy for new courses.">
 			<option value="0">Public</option>
 			<option value="1">Restricted</option>
@@ -79,7 +79,5 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
-        
 	</params>
 </config>
-

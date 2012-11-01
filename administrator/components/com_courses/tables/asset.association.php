@@ -38,7 +38,6 @@ defined('_JEXEC') or die('Restricted access');
  */
 class CoursesTableAssetAssociation extends JTable
 {
-
 	/**
 	 * ID, primary key for course asset grouping table
 	 * 
@@ -66,6 +65,13 @@ class CoursesTableAssetAssociation extends JTable
 	 * @var varchar(255)
 	 */
 	var $scope = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $ordering = NULL;
 
 	/**
 	 * Contructor method for JTable class
