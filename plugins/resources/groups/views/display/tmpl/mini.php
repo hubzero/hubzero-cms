@@ -43,10 +43,12 @@ else
 ?>
 <div id="group-owner" class="container">
 	<h3><?php echo $this->escape(stripslashes($this->group->get('description'))); ?></h3>
-	<p class="group-img">
-		<img src="<?php echo $logo; ?>" width="50" alt="<?php echo $this->escape(stripslashes($this->group->get('description'))); ?> group image" />
-	</p>
 	<div class="group-content">
-		<p><?php echo JText::sprintf('This resource belongs to the %s group.', '<a href="' . JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn')) . '">' . $this->escape(stripslashes($this->group->get('description'))) . '</a>'); ?></p>
+		<p class="group-img">
+			<a href="<?php echo JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn')); ?>">
+				<img src="<?php echo $logo; ?>" width="50" alt="<?php echo $this->escape(stripslashes($this->group->get('description'))); ?> group image" />
+			</a>
+		</p>
+		<p class="group-description"><?php echo JText::sprintf('This resource belongs to the %s group.', '<a href="' . JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn')) . '">' . $this->escape(stripslashes($this->group->get('description'))) . '</a>'); ?></p>
 	</div>
 </div>
