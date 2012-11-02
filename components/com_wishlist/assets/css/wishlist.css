@@ -181,14 +181,11 @@
 /* Wish */
 	/* Options */
 	.wish-options {
-		visibility: hidden;
 		list-style: none;
-		margin: 0 0 0.5em 70px;
+		margin: 0 0 1.5em 70px;
 		padding: 0;
 	}
-	.wish:hover .wish-options {
-		visibility: visible;
-	}
+
 	.wish .wish-options li {
 		list-style: none;
 		display: inline;

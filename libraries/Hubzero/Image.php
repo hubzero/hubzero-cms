@@ -97,7 +97,9 @@ class Hubzero_Image
 
 		if (!is_null($this->source) && is_file($this->source))
 		{
-			$this->openImage();
+			if(!$this->openImage()) {
+				throw new Exception('Invalid/corrupted image file.');	
+			}
 		}
 	}
 
@@ -126,8 +128,8 @@ class Hubzero_Image
 
 		if ($this->image_type == IMAGETYPE_PNG)
 		{
-			imagesavealpha($this->resource, true);
 			imagealphablending($this->resource, false);
+			imagesavealpha($this->resource, true);
 		}
 	}
 
@@ -157,11 +159,14 @@ class Hubzero_Image
 	/**
 	 * Open an image and get it's type (png, jpg, gif)
 	 * 
-	 * @return     void
+	 * @return     bool
 	 */
 	private function openImage()
 	{
 		$image_atts = getimagesize($this->source);
+		if(empty($image_atts)) {
+			return false;	
+		}
 
 		switch ($image_atts['mime'])
 		{
@@ -188,6 +193,10 @@ class Hubzero_Image
 		if (isset($this->config['auto_rotate']) && $this->config['auto_rotate'] == true)
 		{
 			$this->autoRotate();
+		}
+		
+		if(!empty($this->resource)) {
+			return true;	
 		}
 	}
 
@@ -317,7 +326,7 @@ class Hubzero_Image
 		$h       = $height;
 		$x       = 0;
 		$y       = 0;
-
+		
 		if (($new_dimension > $width && !$use_height) || ($new_dimension > $height && $use_height))
 		{
 			return;
@@ -357,10 +366,20 @@ class Hubzero_Image
 		}
 		else
 		{
+			if (!empty($this->config['resize_by']) && $this->config['resize_by'] == 'largest')
+			{
+				// find whatever is larger and use it for resizing
+				$use_height = false;
+				if ($height > $width) 
+				{
+					$use_height = true;
+				}
+			}
+			
 			if (!$use_height)
 			{
 				$new_w = $new_dimension;
-				$new_h = floor($height * ($new_w / $width));
+				$new_h = floor($height * ($new_w / $width));				
 			}
 			else
 			{
@@ -370,6 +389,14 @@ class Hubzero_Image
 		}
 
 		$resource = imagecreatetruecolor($new_w,$new_h);
+		
+		if ($this->image_type == IMAGETYPE_PNG) 
+		{		
+			imagealphablending($resource, false);
+			imagesavealpha($resource,true);
+			$transparent = imagecolorallocatealpha($resource, 255, 255, 255, 127);
+			imagefilledrectangle($resource, 0, 0, $new_w, $new_h, $transparent);
+		}
 
 		if ($resample)
 		{

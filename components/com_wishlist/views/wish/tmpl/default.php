@@ -268,6 +268,54 @@ if ($this->wishlist && $this->wish) {
 						echo $html;
 						$html = '';
 ?>
+			<ul class="wish-options">
+				<?php if($this->admin && $this->admin!=3) { ?>
+					<?php if($this->wish->status!=1) { ?>
+						<li>
+							<a class="changestatus" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=changestatus#action'); ?>">
+								<?php echo JText::_('ACTION_CHANGE_STATUS'); ?>
+							</a>
+						</li>
+					<?php } ?>
+						<li>
+							<a class="transfer" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=move#action'); ?>">
+								<?php echo JText::_('MOVE'); ?>
+							</a>
+						</li>
+					<?php if($this->wish->private) { ?>
+						<li>
+							<a class="makepublic" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=editprivacy&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&private=0'); ?>">
+								<?php echo JText::_('MAKE_PUBLIC'); ?>
+							</a>
+						</li>
+					<?php } else { ?>
+						<li>
+							<a class="makeprivate" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=editprivacy&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&private=1'); ?>">
+								<?php echo JText::_('MAKE_PRIVATE'); ?>
+							</a>
+						</li>	
+					<?php } ?>
+
+					<li>
+						<a class="editwish" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=editwish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id); ?>">
+							<?php echo ucfirst(JText::_('ACTION_EDIT')); ?>
+						</a>
+					</li>
+				<?php } ?>
+					<li>
+						<a href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=wish&id='.$this->wish->id.'&parent='.$this->wishlist->id); ?>" class="abuse">
+							<?php echo JText::_('REPORT_ABUSE'); ?>
+						</a>
+					</li>
+				<?php if ($this->juser->get('id') == $this->wish->proposed_by && $this->wish->status==0) { ?>
+					<li>
+						<a class="deletewish" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=delete#action'); ?>">
+							<?php echo JText::_('ACTION_WITHDRAW_WISH'); ?>
+						</a>
+					</li>
+				<?php } ?>
+			</ul>
+							
 							<div class="container">
 								<form method="post" action="index.php?option=<?php echo $this->option; ?>" class="rankingform" id="rankForm">
 									<table class="wish-priority" summary="<?php echo JText::_('Wish Priority'); ?>">
@@ -440,55 +488,6 @@ if ($this->wishlist && $this->wish) {
 					} //if ($this->admin) {
 ?>
 			
-
-			<ul class="wish-options">
-				<?php if($this->admin && $this->admin!=3) { ?>
-					<?php if($this->wish->status!=1) { ?>
-						<li>
-							<a class="changestatus" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=changestatus#action'); ?>">
-								<?php echo JText::_('ACTION_CHANGE_STATUS'); ?>
-							</a>
-						</li>
-					<?php } ?>
-						<li>
-							<a class="transfer" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=move#action'); ?>">
-								<?php echo JText::_('MOVE'); ?>
-							</a>
-						</li>
-					<?php if($this->wish->private) { ?>
-						<li>
-							<a class="makepublic" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=editprivacy&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&private=0'); ?>">
-								<?php echo JText::_('MAKE_PUBLIC'); ?>
-							</a>
-						</li>
-					<?php } else { ?>
-						<li>
-							<a class="makeprivate" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=editprivacy&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&private=1'); ?>">
-								<?php echo JText::_('MAKE_PRIVATE'); ?>
-							</a>
-						</li>	
-					<?php } ?>
-
-					<li>
-						<a class="editwish" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=editwish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id); ?>">
-							<?php echo ucfirst(JText::_('ACTION_EDIT')); ?>
-						</a>
-					</li>
-				<?php } ?>
-					<li>
-						<a href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=wish&id='.$this->wish->id.'&parent='.$this->wishlist->id); ?>" class="abuse">
-							<?php echo JText::_('REPORT_ABUSE'); ?>
-						</a>
-					</li>
-				<?php if ($this->juser->get('id') == $this->wish->proposed_by && $this->wish->status==0) { ?>
-					<li>
-						<a class="deletewish" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=delete#action'); ?>">
-							<?php echo JText::_('ACTION_WITHDRAW_WISH'); ?>
-						</a>
-					</li>
-				<?php } ?>
-			</ul>
-
 		<?php if ($this->wish->action == 'delete') { ?>
 			<a name="action"></a>
 			<div class="error">

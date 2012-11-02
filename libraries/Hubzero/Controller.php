@@ -145,14 +145,14 @@ class Hubzero_Controller extends JObject
 		// Get all the public methods of this class
 		$r = new ReflectionClass($this);
 		$methods = $r->getMethods(ReflectionMethod::IS_PUBLIC);
+		
 		foreach ($methods as $method)
 		{
 			$name = $method->getName();
-
+			
 			// Ensure task isn't in the exclude list and ends in 'Task'
-			if (!in_array($name, $xMethods)
-			 || $name == 'displayTask'
-			 || substr(strtolower($name), -4) == 'task')
+			if ((!in_array($name, $xMethods) || $name == 'displayTask')
+			 && substr(strtolower($name), -4) == 'task')
 			{
 				// Remove the 'Task' suffix
 				$name = substr($name, 0, -4);
@@ -221,7 +221,7 @@ class Hubzero_Controller extends JObject
 		{
 			return JError::raiseError(404, JText::sprintf('JLIB_APPLICATION_ERROR_TASK_NOT_FOUND', $this->_task));
 		}
-
+		
 		// Attempt to parse the controller name from the class name
 		if ((ucfirst($this->_name) . 'Controller') != get_class($this)
 		 && preg_match('/(\w)Controller(.*)/i', get_class($this), $r))
@@ -294,6 +294,19 @@ class Hubzero_Controller extends JObject
 		{
 			$this->_taskMap[strtolower($task)] = $method;
 		}
+	}
+	
+	/**
+	 * Disable default task, remove __default from the taskmap
+	 *
+	 * When default task disabled the controller will give a 404 error if the method called doesn't exist
+	 *
+	 * @param	void
+	 * @return	void
+	 */
+	public function disableDefaultTask()
+	{
+		unset($this->_taskMap['__default']);
 	}
 
 	/**
