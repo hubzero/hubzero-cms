@@ -111,7 +111,10 @@ if ($this->contributors)
 				$k = array_search(trim($contributor->org), $orgs) + 1;
 			}
 			$link_s = $link;
-			$link .= '<sup>' . $k . '</sup>';
+			if (trim($contributor->org) != '')
+			{
+				$link .= '<sup>' . $k . '</sup>';
+			}
 			$names_s[] = $link_s;
 		/*} 
 		else 
