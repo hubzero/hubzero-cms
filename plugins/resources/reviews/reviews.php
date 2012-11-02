@@ -162,6 +162,10 @@ class plgResourcesReviews extends JPlugin
 		$database =& JFactory::getDBO();
 		$r = new ResourcesReview($database);
 		$reviews = $r->getRatings($model->resource->id);
+		if (!$reviews)
+		{
+			$reviews = array();
+		}
 
 		// Are we returning any HTML?
 		if ($rtrn == 'all' || $rtrn == 'html') 
