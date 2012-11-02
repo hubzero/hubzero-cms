@@ -2247,30 +2247,38 @@ class ResourcesHtml
 			$base_path = DS . trim($base_path, DS);
 		}
 
-		$path = DS . trim($path, DS);
-		// Ensure a starting slash
-		if (substr($path, 0, strlen($base_path)) == $base_path) 
+		if (preg_match("/(?:https?:|mailto:|ftp:|gopher:|news:|file:)/", $path))
 		{
-			// Do nothing
-		} 
-		else 
-		{
-			$path = $base_path . $path;
+			$type = 'HTM';
+			$fs = '';
 		}
-
-		$path = JPATH_ROOT . $path;
-
-		jimport('joomla.filesystem.file');
-		$type = strtoupper(JFile::getExt($path));
-
-		//check to see if we have a json file (HUBpresenter)
-		if ($type == 'JSON') 
+		else
 		{
-			$type = 'HTML5';
-		}
+			$path = DS . trim($path, DS);
+			// Ensure a starting slash
+			if (substr($path, 0, strlen($base_path)) == $base_path) 
+			{
+				// Do nothing
+			} 
+			else 
+			{
+				$path = $base_path . $path;
+			}
 
-		// Get the file size if the file exist
-		$fs = (file_exists($path)) ? filesize($path) : '';
+			$path = JPATH_ROOT . $path;
+
+			jimport('joomla.filesystem.file');
+			$type = strtoupper(JFile::getExt($path));
+
+			//check to see if we have a json file (HUBpresenter)
+			if ($type == 'JSON') 
+			{
+				$type = 'HTML5';
+			}
+
+			// Get the file size if the file exist
+			$fs = (file_exists($path)) ? filesize($path) : '';
+		}
 
 		$html  = '<span class="caption">(' . $type;
 		if ($fs) 
