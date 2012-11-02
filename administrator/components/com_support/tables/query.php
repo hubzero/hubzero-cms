@@ -318,12 +318,36 @@ class SupportQuery extends JTable
 
 		$op = ' ' . strtoupper($condition->operator) . ' ';
 
+		$having = '';
 		$e = array();
 		$elen = count($condition->expressions);
+
+		$tags = array();
 		for ($i = 0; $i < $elen; $i++) 
 		{
 			$expr = $condition->expressions[$i];
-			$prfx = (strtolower($expr->fldval) == 'tag') ? 't' : 'f';
+			if (strtolower($expr->fldval) == 'tag') 
+			{
+				$tags[] = $expr->val;
+			}
+		}
+
+		for ($i = 0; $i < $elen; $i++) 
+		{
+			$expr = $condition->expressions[$i];
+			//$prfx = (strtolower($expr->fldval) == 'tag') ? 't' : 'f';
+			$prfx = 'f';
+			if (strtolower($expr->fldval) == 'tag')
+			{
+				$prfx = 't';
+				if (count($tags) > 1 && strtoupper($condition->operator) == 'AND')
+				{
+					// Skip adding multiple tags for AND conditions
+					// We need to do an IN () later
+					continue;
+				}
+			}
+
 			if (strtoupper($expr->val) == 'NULL' || strtoupper($expr->val) == 'NULL')
 			{
 				$expr->opval = ($expr->opval == '=') ? 'IS $1' : 'IS NOT $1';
@@ -351,7 +375,14 @@ class SupportQuery extends JTable
 
 			if (strstr($expr->opval, '$1')) 
 			{
-				$e[] = $prfx . '.' . $this->_db->nameQuote($expr->fldval) . ' ' . str_replace('$1', $expr->val, $expr->opval);
+				if (strtolower($expr->fldval) == 'tag')
+				{
+					$e[] = '(' . $prfx . '.' . $this->_db->nameQuote($expr->fldval) . ' ' . str_replace('$1', $expr->val, $expr->opval) . ' OR ' . $prfx . '.' . $this->_db->nameQuote('raw_' . $expr->fldval) . ' ' . str_replace('$1', $expr->val, $expr->opval) . ')';
+				}
+				else
+				{
+					$e[] = $prfx . '.' . $this->_db->nameQuote($expr->fldval) . ' ' . str_replace('$1', $expr->val, $expr->opval);
+				}
 			} 
 			else 
 			{
@@ -361,6 +392,11 @@ class SupportQuery extends JTable
 				} 
 				$e[] = $prfx . '.' . $this->_db->nameQuote($expr->fldval) . ' ' . $expr->opval . ' ' . $this->_db->Quote($expr->val);
 			}
+		}
+		if (count($tags) > 0)
+		{
+			$e[] = '(t.' . $this->_db->nameQuote('tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ' OR t.' . $this->_db->nameQuote('raw_tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ')';
+			$having = " GROUP BY f.id HAVING uniques='" . count($tags) . "'";
 		}
 
 		$n = array();
@@ -382,7 +418,7 @@ class SupportQuery extends JTable
 			$q[] = implode($op, $n);
 		}
 
-		return '(' . implode($op, $q) . ')';
+		return '(' . implode($op, $q) . ')' . $having;
 	}
 
 	/**

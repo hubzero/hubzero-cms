@@ -472,13 +472,26 @@ class SupportTicket extends JTable
 			$this->setError(JText::_('Missing conditions'));
 			return 0;
 		}
-		$sql = "SELECT count(DISTINCT f.id) 
-				FROM $this->_tbl AS f";
+		$having = '';
+		if (preg_match('/GROUP BY f.id HAVING uniques=\'\d\'/i', $query, $matches))
+		{
+			$having = $matches[0];
+			$query = str_replace($matches[0], '', $query);
+
+			$sql = "SELECT f.id, COUNT(DISTINCT t.tag) AS uniques ";
+		}
+		else
+		{
+			$sql = "SELECT count(DISTINCT f.id) ";
+		}
+
+		$sql .= "FROM $this->_tbl AS f";
 		if (strstr($query, 't.`tag`'))
 		{
 			$sql .= " LEFT JOIN #__tags_object AS st on st.objectid=f.id AND st.tbl='support' 
 					LEFT JOIN #__tags AS t ON st.tagid=t.id";
 		}
+
 		$sql .= " WHERE " . $query;
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
@@ -493,6 +506,14 @@ class SupportTicket extends JTable
 				$sql .= " OR id=" . $filters['search'];
 			}
 			$sql .= ") ";
+		}
+		$sql .= $having;
+
+		if ($having)
+		{
+			$this->_db->setQuery($sql);
+			$results = $this->_db->loadObjectList();
+			return count($results);
 		}
 
 		$this->_db->setQuery($sql);
@@ -512,8 +533,19 @@ class SupportTicket extends JTable
 			$this->setError(JText::_('Missing conditions'));
 			return array();
 		}
-		$sql = "SELECT DISTINCT f.`id`, f.`summary`, f.`report`, f.`category`, f.`open`, f.`status`, f.`severity`, f.`resolved`, f.`group`, f.`owner`, f.`created`, f.`login`, f.`name`, f.`email` 
-				FROM $this->_tbl AS f";
+		$having = '';
+		if (preg_match('/GROUP BY f.id HAVING uniques=\'\d\'/i', $query, $matches))
+		{
+			$having = $matches[0];
+			$query = str_replace($matches[0], '', $query);
+		}
+
+		$sql = "SELECT DISTINCT f.`id`, f.`summary`, f.`report`, f.`category`, f.`open`, f.`status`, f.`severity`, f.`resolved`, f.`group`, f.`owner`, f.`created`, f.`login`, f.`name`, f.`email` ";
+		if ($having)
+		{
+			$sql .= ", COUNT(DISTINCT t.tag) AS uniques ";
+		}
+		$sql .= "FROM $this->_tbl AS f";
 		if (strstr($query, 't.`tag`'))
 		{
 			$sql .= " LEFT JOIN #__tags_object AS st on st.objectid=f.id AND st.tbl='support' 
@@ -534,6 +566,7 @@ class SupportTicket extends JTable
 			}
 			$sql .= ") ";
 		}
+		$sql .= $having;
 
 		$sql .= " ORDER BY `" . $filters['sort'] . '` ' . $filters['sortdir'];
 		$sql .= ($filters['limit']) ? " LIMIT " . intval($filters['start']) . "," . intval($filters['limit']) : "";
