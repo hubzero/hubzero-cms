@@ -241,11 +241,19 @@ class WikiParser
 
 		// Strip HTML tags out
 		//$text = preg_replace("/(\<|\>\.)|(\<\>)/i", '', $text);
-		$text = preg_replace(
+		/*$text = preg_replace(
 			array('/<\./', '/<>/', '/>\./', '/<([^>]+?)</', '/>([^<]+?)>/', '/([0-9]+)<([0-9]+)/', '/<([0-9]+)/', '/>([0-9]+)/', '/([0-9]+)</', '/([0-9]+)>/'), 
 			array('&lt;.', '&lt;&gt;', '&gt;.', '&lt;$1&lt;',  '&rt;$1&rt;',  '$1 &lt; $2',          '&lt; $1',     '&gt; $1',     '$1 &lt;',     '$1 &gt;'), 
 			$text
+		);*/
+		$text = preg_replace(
+			array('/<\./', '/([0-9]+)<([0-9]+)/', '/<([0-9]+)/', '/>([0-9]+)/', '/([0-9]+)</', '/([0-9]+)>/'), 
+			array('&lt;.', '$1 &lt; $2',          '&lt; $1',     '&gt; $1',     '$1 &lt;',     '$1 &gt;'), 
+			$text
 		);
+		$text = str_replace('<>.', '&lt;&gt;.', $text);
+		$text = str_replace('||>.', '||&gt;.', $text);
+
 		$text = strip_tags($text, '<pre><code><xpre><math>');
 		$text = str_replace(array('&lt;', '&gt;'), array('<', '>'), $text);
 
@@ -735,6 +743,9 @@ class WikiParser
 		$bits = explode("\n", $text);
 		foreach ($bits as $line)
 		{
+			$this->prefixLength = 0;
+			$this->prefixLength = strspn($line, ' ');
+
 			$line = $this->doSpecial($line, '`{{{', '}}}`', 'fPCode');
 			$line = $this->doSpecial($line, '{{{`', '`}}}', 'fCCode');
 
@@ -875,7 +886,17 @@ class WikiParser
 		} 
 		else 
 		{
-			array_push($this->pres, $matches[1]);
+			$val = explode("\n", $matches[1]);
+			foreach ($val as $k => $v)
+			{
+				$prfx = substr($v, 0, $this->prefixLength);
+				if (substr_count($prfx, ' ') == $this->prefixLength)
+				{
+					$val[$k] = substr($v, $this->prefixLength);
+				}
+			}
+			$val = implode("\n", $val);
+			array_push($this->pres, $val);
 			return '<pre></pre>';
 		}
 	}
@@ -2244,7 +2265,7 @@ class WikiParser
 		}
 		else 
 		{ 
-			$result = '<!-- ERR 1 -->';
+			$result = ''; //'<!-- ERR 1 "' . $char . '" -->';
 		}
 
 		return $result;
@@ -2280,7 +2301,7 @@ class WikiParser
 				return $close . '<dd>';
 			}
 		}
-		return '<!-- ERR 2 -->';
+		return ''; //'<!-- ERR 2 "' . $char . '" -->';
 	}
 
 	/**
@@ -2297,7 +2318,7 @@ class WikiParser
 		}
 		else if ('#' == $char || is_numeric($char)) 
 		{ 
-			$text = '</li></ol>'; 
+			$text = '</li></ol>';
 		}
 		else if (':' == $char) 
 		{
@@ -2313,7 +2334,7 @@ class WikiParser
 		}
 		else 
 		{
-			return '<!-- ERR 3 -->';
+			return ''; //'<!-- ERR 3 "' . $char . '" -->';
 		}
 		return $text . "\n";
 	}
@@ -2488,7 +2509,7 @@ class WikiParser
 				while ($commonPrefixLength < $lastPrefixLength)
 				{
 					$lastPrefix = $openlist[$i--];
-					$output .= $this->closeList($lastPrefix); // . 'common: ' . $commonPrefixLength . ', last: ' . $lastPrefixLength . ', prefx:' . $prefixLength;
+					$output .= $this->closeList($lastPrefix) . '<!-- common: ' . $commonPrefixLength . ', last: ' . $lastPrefixLength . ', prefx:' . $prefixLength . ', ' . $lastPrefix . ' -->';
 					--$lastPrefixLength;
 				}
 				if ($prefixLength <= $commonPrefixLength && $commonPrefixLength > 0) 
@@ -2505,8 +2526,11 @@ class WikiParser
 						$output .= $this->openList($char);
 						$listOpened = true;
 					}
-					$i++;
-					$openlist[$i] = $char;
+					//if (in_array($char, array('*', '#', ':', ';')) || is_numeric($char))
+					//{
+						$i++;
+						$openlist[$i] = $char;
+					//}
 					if (';' == $char) 
 					{
 						// FIXME: This is dupe of code above

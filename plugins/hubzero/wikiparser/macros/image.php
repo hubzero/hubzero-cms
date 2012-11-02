@@ -163,7 +163,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 
 		// Get single attributes
 		// EX: [[Image(myimage.png, nolink, right)]]
-		$argues = preg_replace_callback('/[, ](left|right|top|bottom)(?:[, ]|$)/i', array(&$this, 'parseSingleAttribute'), $content);
+		$argues = preg_replace_callback('/[, ](left|right|top|center|bottom|[0-9]+(px|%|em)(?:[, ]|$)/i', array(&$this, 'parseSingleAttribute'), $content);
 		// Get quoted attribute/value pairs
 		// EX: [[Image(myimage.png, desc="My description, contains, commas")]]
 		$argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap)=(?:["\'])([^"]*)(?:["\'])/i', array(&$this, 'parseAttributeValuePair'), $content);
@@ -293,16 +293,25 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 		}
 		// Check for alignment, no key given
 		// e.g., [[File(myfile.jpg, left)]]
-		if (in_array($key, array('left', 'right', 'top', 'bottom'))) 
+		if (in_array($key, array('left', 'right', 'top', 'bottom', 'center'))) 
 		{
-			$this->attr['style']['float'] = $key;
-			if ($key == 'left')
+			if ($key == 'center')
 			{
-				$this->attr['style']['margin-right'] = '1em';
+				$this->attr['style']['display'] = 'block';
+				$this->attr['style']['margin-right'] = 'auto';
+				$this->attr['style']['margin-left'] = 'auto';
 			}
-			else if ($key == 'right')
+			else 
 			{
-				$this->attr['style']['margin-left'] = '1em';
+				$this->attr['style']['float'] = $key;
+				if ($key == 'left')
+				{
+					$this->attr['style']['margin-right'] = '1em';
+				}
+				else if ($key == 'right')
+				{
+					$this->attr['style']['margin-left'] = '1em';
+				}
 			}
 			return;
 		}
@@ -380,17 +389,26 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 
 		// Check for alignment, no key given
 		// e.g., [[File(myfile.jpg, left)]]
-		if (in_array($key, array('left', 'right', 'top', 'bottom'))) 
+		if (in_array($key, array('left', 'right', 'top', 'bottom', 'center'))) 
 		{
-			$this->attr['style']['display'] = 'block';
-			$this->attr['style']['float'] = $key;
-			if ($key == 'left')
+			if ($key == 'center')
 			{
-				$this->attr['style']['margin-right'] = '1em';
+				$this->attr['style']['display'] = 'block';
+				$this->attr['style']['margin-right'] = 'auto';
+				$this->attr['style']['margin-left'] = 'auto';
 			}
-			else if ($key == 'right')
+			else 
 			{
-				$this->attr['style']['margin-left'] = '1em';
+				$this->attr['style']['display'] = 'block';
+				$this->attr['style']['float'] = $key;
+				if ($key == 'left')
+				{
+					$this->attr['style']['margin-right'] = '1em';
+				}
+				else if ($key == 'right')
+				{
+					$this->attr['style']['margin-left'] = '1em';
+				}
 			}
 			return;
 		}
