@@ -3840,7 +3840,23 @@ class GroupsController extends Hubzero_Controller
 			//load wiki page from db
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
 			$page = new WikiPage($this->database);
-			$page->load(JRequest::getVar('pagename'), $group->get('cn') . DS . 'wiki');
+			
+			$pagename = JRequest::getVar('pagename');
+			$scope = JRequest::getVar('scope', $group->get('cn') . DS . 'wiki');
+			if ($scope)
+			{
+				$parts = explode('/', $scope);
+				if (count($parts) > 2)
+				{
+					$pagename = array_pop($parts);
+					if (strtolower($filename) == strtolower($pagename))
+					{
+						$pagename = array_pop($parts);
+					}
+					$scope = implode('/', $parts);
+				}
+			}
+			$page->load($pagename, $scope);
 
 			//check specific wiki page access
 			if ($page->get('access') == 1 && !in_array($this->juser->get('id'), $group->get('members')) && $authorized != 'admin') 
