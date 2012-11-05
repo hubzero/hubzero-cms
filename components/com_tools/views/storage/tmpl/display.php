@@ -56,7 +56,7 @@ echo $this->monitor;
 		<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-		<form action="index.php" method="post" id="hubForm">
+		<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=storage'); ?>" method="post" id="hubForm">
 			<div class="explaination">
 				<p class="help">
 					<strong>What does "purge" do to my files?</strong><br />
@@ -90,6 +90,7 @@ echo $this->monitor;
 					<iframe src="<?php echo JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=filelist&tmpl=component'); ?>" name="filer" id="filer" width="98%" height="300" border="0" frameborder="0"></iframe>
 				</div>
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 				<input type="hidden" name="task" value="purge" />
 			</fieldset><div class="clear"></div>
 		</form>
