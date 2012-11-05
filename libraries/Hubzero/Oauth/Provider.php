@@ -287,7 +287,7 @@ class Hubzero_Oauth_Provider
 		$result['status'] = $status;
 		$result['reason'] = $reason;
 		
-		return false;
+		return $result;
 	}
 
 	/**
