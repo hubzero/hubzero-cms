@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $juser =& JFactory::getUser();
 
-$newSession = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->option . '&task=invoke&app=' . $this->toolname . '&version='. $this->version), 'server');
+$newSession = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->option . '&task=invoke&app=' . $this->app->toolname . '&version='. $this->app->version), 'server');
 if (strstr($newSession, '?'))
 {
 	$newSession .= '&amp;newinstance=1';
