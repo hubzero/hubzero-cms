@@ -365,8 +365,12 @@ WYKIWYG.converter = function() {
 				inner = inner.replace(/^\s+|\s+$/g, '');
 				inner = inner.replace(/<tbody>/g, '');
 				inner = inner.replace(/<\/tbody>/g, '');
-				inner = inner.replace(/<tr><td>(.+?)<\/td><\/tr>/g, '||$1||');
-				inner = inner.replace(/<\/td><td>/g, '||');
+				//inner = inner.replace(/<tr><t[dh]>(.+?)<\/t[dh]><\/tr>/g, '||$1||');
+				//inner = inner.replace(/<\/t[dh]><t[dh]>/g, '||');
+				inner = inner.replace(/<tr>(.+?)<\/tr>/g, '|$1|');
+				inner = inner.replace(/<\/?td>/g, '|');
+				inner = inner.replace(/<th>/g, '|=');
+				inner = inner.replace(/<\/th>/g, '=|');
 				inner = cleanUp(inner);
 				return inner;
 			});
