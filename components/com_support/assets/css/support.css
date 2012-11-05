@@ -851,3 +851,42 @@
 	#commentform .submit {
 		margin-top: 1em;
 	}
+/* Thank you Message */
+	#ticket-number {
+		margin-top: 2em;
+		margin-bottom: 0em;
+	}
+	#ticket-number h2 {
+		position: relative;
+		font-size: 5em;
+		text-align: center;
+		color: #ccc;
+		margin: 0;
+		padding: 0;
+		line-height: 1;
+		font-weight: normal;
+	}
+	#ticket-number h2 span {
+		white-space: nowrap;
+	}
+	#ticket-number h2 strong {
+		font-size: 2em;
+		display: block;
+		font-weight: normal;
+	}
+	#messagebox {
+	}
+	#messagebox .wrap {
+		background: #fff;
+		-webkit-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		-moz-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		-o-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+		position: relative;
+		display: block;
+		padding: 30px;
+	}
+	#messagebox h3 {
+		margin-top: 0;
+		padding-top: 0;
+	}

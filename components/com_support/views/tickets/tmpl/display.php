@@ -334,7 +334,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 							</p>
 							<p>
 								<a class="ticket-content" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=' . $row->id . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
-									<?php echo stripslashes($row->summary); ?>
+									<?php echo $this->escape(stripslashes($row->summary)); ?>
 								</a>
 							</p>
 		<?php if ($tags || $row->owner) { ?>

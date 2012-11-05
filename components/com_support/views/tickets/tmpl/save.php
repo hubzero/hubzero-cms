@@ -29,35 +29,40 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 ?>
 <?php if ($this->no_html) { ?>
-<div id="report-response">
-	<div>
-		<p><?php echo JText::_('COM_SUPPORT_YOUR_TICKET'); ?> # <span><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=' . $this->ticket); ?>" title="View ticket"><?php echo $this->ticket; ?></a></span></p>
-		<p><button onclick="javascript:HUB.Modules.ReportProblems.resetForm();" title="<?php echo JText::_('COM_SUPPORT_NEW_REPORT'); ?>"><?php echo JText::_('COM_SUPPORT_NEW_REPORT'); ?></button></p>
+	<div id="report-response">
+		<div>
+			<p><?php echo JText::_('COM_SUPPORT_YOUR_TICKET'); ?> # <span><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=' . $this->ticket); ?>" title="View ticket"><?php echo $this->ticket; ?></a></span></p>
+			<p><button onclick="javascript:HUB.Modules.ReportProblems.resetForm();" title="<?php echo JText::_('COM_SUPPORT_NEW_REPORT'); ?>"><?php echo JText::_('COM_SUPPORT_NEW_REPORT'); ?></button></p>
+		</div>
+		<p>
+			<?php echo JText::_('COM_SUPPORT_TROUBLE_THANKS'); ?><br /><br />
+			<?php echo JText::_('COM_SUPPORT_TROUBLE_TICKET_TIMES'); ?>
+		</p>
 	</div>
-	<p>
-		<?php echo JText::_('COM_SUPPORT_TROUBLE_THANKS'); ?><br /><br />
-		<?php echo JText::_('COM_SUPPORT_TROUBLE_TICKET_TIMES'); ?>
-	</p>
-</div>
-<script type="text/javascript">window.top.window.<?php if (JPluginHelper::isEnabled('system', 'jquery')) { ?>HUB.Modules.ReportProblems.hideTimer();<?php } else { ?>HUB.ReportProblem.hideTimer();<?php } ?></script>
-<!-- </body>
-</html> -->
+	<script type="text/javascript">window.top.window.<?php if (JPluginHelper::isEnabled('system', 'jquery')) { ?>HUB.Modules.ReportProblems.hideTimer();<?php } else { ?>HUB.ReportProblem.hideTimer();<?php } ?></script>
 <?php } else { ?>
-<div id="content-header" class="full">
-	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
-
-<div class="main section">
-<?php if ($this->getError()) { ?>
-	<p class="error"><?php echo $this->getError(); ?></p>
-<?php } ?>
-	<p><?php echo JText::_('COM_SUPPORT_TROUBLE_THANKS'); ?></p>
-	<p class="information"><?php echo JText::_('COM_SUPPORT_TROUBLE_TICKET_TIMES'); ?></p>
+	<div class="main section">
+		<div class="two columns first">
+			<div id="ticket-number">
+				<h2>
+					<span><?php echo JText::_('Ticket #'); ?></span><strong><?php echo $this->ticket; ?></strong>
+				</h2>
+			</div>
+		</div>
+		<div class="two columns second">
+			<div id="messagebox">
+				<div class="wrap">
+					<h3><?php echo JText::_('COM_SUPPORT_TROUBLE_THANKS'); ?></h3>
+					<p><?php echo JText::_('COM_SUPPORT_TROUBLE_TICKET_TIMES'); ?></p>
 <?php if ($this->ticket) { ?>
-	<p><?php echo JText::sprintf('COM_SUPPORT_TROUBLE_TICKET_REFERENCE', $this->ticket); ?></p>
+					<p><?php echo JText::sprintf('COM_SUPPORT_TROUBLE_TICKET_REFERENCE', $this->ticket); ?></p>
 <?php } ?>
-</div><!-- / .main section -->
+				</div>
+			</div>
+		</div><!-- / .two columns second -->
+		<div class="clear"></div>
+	</div><!-- / .main section -->
 <?php } ?>

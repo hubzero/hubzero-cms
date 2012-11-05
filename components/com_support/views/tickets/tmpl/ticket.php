@@ -76,6 +76,38 @@ else
 	$name .= '</a>';
 }
 
+$prev = null;
+$next = null;
+
+$sq = new SupportQuery(JFactory::getDBO());
+$sq->load($this->filters['show']);
+if ($sq->conditions)
+{
+	$sq->query = $sq->getQuery($sq->conditions);
+
+	$this->filters['sort']    = $sq->sort;
+	$this->filters['sortdir'] = $sq->sort_dir;
+	if ($rows = $this->row->getRecords($sq->query, $this->filters))
+	{
+		foreach ($rows as $key => $row)
+		{
+			if ($row->id == $this->row->id)
+			{
+				if (isset($rows[$key - 1]))
+				{
+					$prev = $rows[$key - 1];
+				}
+				if (isset($rows[$key + 1]))
+				{
+					$next = $rows[$key + 1];
+				}
+				break;
+			}
+		}
+		unset($rows);
+	}
+}
+
 ximport('Hubzero_User_Profile_Helper');
 ?>
 <div id="content-header">
@@ -84,11 +116,25 @@ ximport('Hubzero_User_Profile_Helper');
 
 <div id="content-header-extra">
 	<ul id="useroptions">
-		<li class="last">
+<?php if ($prev) { ?>
+		<li>
+			<a class="prev btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=ticket&id=' . $prev->id . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='.$this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
+				<?php echo JText::_('PREV'); ?>
+			</a>
+		</li>
+<?php } ?>
+		<li>
 			<a class="browse btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=tickets&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='.$this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
 				<?php echo JText::_('TICKETS'); ?>
 			</a>
 		</li>
+<?php if ($next) { ?>
+		<li>
+			<a class="next btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=ticket&id=' . $next->id . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='.$this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
+				<?php echo JText::_('NEXT'); ?>
+			</a>
+		</li>
+<?php } ?>
 	</ul>
 </div><!-- / #content-header-extra -->
 

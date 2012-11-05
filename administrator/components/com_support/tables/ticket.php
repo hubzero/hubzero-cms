@@ -704,7 +704,7 @@ class SupportTicket extends JTable
 				FROM #__support_comments AS k, $this->_tbl AS f
 				WHERE f.report!='' 
 				AND f.type='$type' 
-				AND f.status=2 
+				AND f.open=0 
 				AND k.ticket=f.id 
 				AND k.created>='" . $year . "-" . $month . "-" . $day . " 00:00:00'";
 		if (!$group) 
@@ -738,7 +738,7 @@ class SupportTicket extends JTable
 				FROM $this->_tbl 
 				WHERE report!='' 
 				AND type='$type' 
-				AND (status=0 OR status=1)";
+				AND open=1";
 		if (!$group) 
 		{
 			$sql .= " AND (`group`='' OR `group` IS NULL)";
@@ -776,7 +776,7 @@ class SupportTicket extends JTable
 				FROM #__support_comments AS k, $this->_tbl AS f
 				WHERE f.report!='' 
 				AND f.type='$type' 
-				AND f.status=2 
+				AND f.open=0 
 				AND k.ticket=f.id 
 				AND k.created>='" . $year . "-" . $month . "-01 00:00:00' 
 				AND k.created<'" . $nextyear . "-" . $nextmonth . "-01 00:00:00'";
@@ -844,7 +844,7 @@ class SupportTicket extends JTable
 				FROM #__support_comments AS k, $this->_tbl AS f
 				WHERE f.report!='' 
 				AND f.type='$type' 
-				AND f.status=2 
+				AND f.open=0  
 				AND k.ticket=f.id 
 				AND f.created>='" . $year . "-01-01 00:00:00'";
 		if (!$group) 

@@ -620,14 +620,16 @@ class SupportControllerTickets extends Hubzero_Controller
 			JError::raiseError(500, JText::_('No data submitted'));
 			return;
 		}
-		$reporter = array_map('trim', $_POST['reporter']);
-		$problem  = array_map('trim', $_POST['problem']);
+		$reporter = JRequest::getVar('reporter', array(), 'post', 'none', 2);
+		$problem = JRequest::getVar('problem', array(), 'post', 'none', 2);
+		//$reporter = array_map('trim', $_POST['reporter']);
+		//$problem  = array_map('trim', $_POST['problem']);
 
 		// Normally calling JRequest::getVar calls _cleanVar, but b/c of the way this page processes the posts
 		// (with array square brackets in the html names) against the $_POST collection, we explicitly
 		// call the clean_var function on these arrays after fetching them
-		$reporter = array_map(array('JRequest', '_cleanVar'), $reporter);
-		$problem  = array_map(array('JRequest', '_cleanVar'), $problem);
+		//$reporter = array_map(array('JRequest', '_cleanVar'), $reporter);
+		//$problem  = array_map(array('JRequest', '_cleanVar'), $problem);
 
 		// Reporter login can only be for authenticated users -- ignore any form submitted login names
 		$reporterLogin = $this->_getUser();
@@ -803,8 +805,10 @@ class SupportControllerTickets extends Hubzero_Controller
 		$data['severity']  = (isset($problem['severity'])) ? $problem['severity'] : 'normal';
 		$data['owner']     = (isset($problem['owner'])) ? $problem['owner'] : null;
 		$data['category']  = (isset($problem['topic'])) ? $problem['topic'] : '';
-		$data['summary']   = htmlentities($problem['short'], ENT_COMPAT, 'UTF-8');
-		$data['report']    = htmlentities($problem['long'], ENT_COMPAT, 'UTF-8');
+		//$data['summary']   = htmlentities($problem['short'], ENT_COMPAT, 'UTF-8');
+		//$data['report']    = htmlentities($problem['long'], ENT_COMPAT, 'UTF-8');
+		$data['summary']   = $problem['short'];
+		$data['report']    = $problem['long'];
 		$data['resolved']  = (isset($problem['resolved'])) ? $problem['resolved'] : null;
 		$data['email']     = $reporter['email'];
 		$data['name']      = $reporter['name'];
@@ -928,6 +932,10 @@ class SupportControllerTickets extends Hubzero_Controller
 		// Trigger any events that need to be called before session stop
 		$dispatcher->trigger('onTicketSubmission', array($row));
 
+		if (!$no_html)
+		{
+			$this->_getStyles();
+		}
 		// Output Thank You message
 		$this->view->ticket  = $row->id;
 		$this->view->no_html = $no_html;
@@ -1312,20 +1320,20 @@ class SupportControllerTickets extends Hubzero_Controller
 		else 
 		{
 			// Do some text cleanup
-			$this->view->row->summary = html_entity_decode(stripslashes($this->view->row->summary), ENT_COMPAT, 'UTF-8');
-			$this->view->row->summary = str_replace('&quote;','&quot;',$this->view->row->summary);
-			$this->view->row->summary = htmlentities($this->view->row->summary, ENT_COMPAT, 'UTF-8');
+			//$this->view->row->summary = html_entity_decode(stripslashes($this->view->row->summary), ENT_COMPAT, 'UTF-8');
+			//$this->view->row->summary = str_replace('&quote;','&quot;',$this->view->row->summary);
+			//$this->view->row->summary = htmlentities($this->view->row->summary, ENT_COMPAT, 'UTF-8');
 		}
 
-		$this->view->row->report = html_entity_decode(stripslashes($this->view->row->report), ENT_COMPAT, 'UTF-8');
-		$this->view->row->report = str_replace('&quote;','&quot;',$this->view->row->report);
+		//$this->view->row->report = html_entity_decode(stripslashes($this->view->row->report), ENT_COMPAT, 'UTF-8');
+		//$this->view->row->report = str_replace('&quote;','&quot;',$this->view->row->report);
 		//if (!strstr($this->view->row->report, '</p>') && !strstr($this->view->row->report, '<pre class="wiki">')) 
 		//{
-			$this->view->row->report = str_replace('<br />', '', $this->view->row->report);
+			//$this->view->row->report = str_replace('<br />', '', $this->view->row->report);
 			$this->view->row->report = $this->view->escape($this->view->row->report);
 			$this->view->row->report = nl2br($this->view->row->report);
 			$this->view->row->report = str_replace("\t",' &nbsp; &nbsp;',$this->view->row->report);
-			$this->view->row->report = preg_replace('/  /', ' &nbsp;', $this->view->row->report);
+			//$this->view->row->report = preg_replace('/  /', ' &nbsp;', $this->view->row->report);
 		//}
 
 		$this->view->lists = array();
@@ -1362,7 +1370,7 @@ class SupportControllerTickets extends Hubzero_Controller
 
 		$attach = new SupportAttachment($this->database);
 		$attach->webpath = $webpath;
-		$attach->uppath  = JPATH_ROOT . $this->config->get('webpath') . DS . $id;
+		$attach->uppath  = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/tickets'), DS) . DS . $id;
 		$attach->output  = 'web';
 		for ($i=0; $i < count($this->view->comments); $i++)
 		{
@@ -1371,9 +1379,10 @@ class SupportControllerTickets extends Hubzero_Controller
 			if (!strstr($comment->comment, '</p>') && !strstr($comment->comment, '<pre class="wiki">')) 
 			{
 				$comment->comment = str_replace("<br />", '', $comment->comment);
-				$comment->comment = htmlentities($comment->comment, ENT_COMPAT, 'UTF-8');
+				$comment->comment = $this->view->escape($comment->comment);
 				$comment->comment = nl2br($comment->comment);
-				$comment->comment = str_replace("\t", '&nbsp;&nbsp;&nbsp;&nbsp;', $comment->comment);
+				$comment->comment = str_replace("\t", ' &nbsp; &nbsp;', $comment->comment);
+				$comment->comment = preg_replace('/  /', ' &nbsp;', $comment->comment);
 			}
 			$comment->comment = $attach->parse($comment->comment);
 		}
