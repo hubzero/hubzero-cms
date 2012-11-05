@@ -140,22 +140,38 @@ if (!$uAlias || !$gAlias) { ?>
 			<p>
 				<?php echo $lecture->get('description'); ?>
 			</p>
+			<ul>
+<?php
+				// Loop through the assets
+				//if (count($assets) > 0)
+				if ($lecture->assets()->total())
+				{
+					foreach ($lecture->assets() as $a)
+					{
+						$href = $a->path($this->course->get('id'));
+						if ($a->get('type') == 'video')
+						{
+							$href = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=outline&a=' . $unit->get('alias') . '&b=' . $lecture->get('alias'));
+						}
+						echo '<li><a class="" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+					}
+				}
+				else
+				{
+					echo "<li><small>" . JText::_('COURSES_NO_ASSETS_FOR_GROUPING') . "</small></li>";
+				}
+?>
+			</ul>
 		</div>
 	</div>
-	
+
+<?php //if ($this->course->offering()->plugins('forum')) { ?>
 	<div class="below section">
 			<h3>
 				<a name="comments"></a>
 				<?php echo JText::_('Discussion for this lecture'); ?>
 			</h3>
 
-			<!-- <div class="aside">
-				<p>
-					<a class="add btn" href="#post-comment">
-						Add a comment			</a>
-				</p>
-			</div>/ .aside 
-			<div class="subject">-->
 				<ol class="comments">
 					<li class="comment odd" id="c1">
 						<a name="#c1"></a>
@@ -317,4 +333,5 @@ if (!$uAlias || !$gAlias) { ?>
 			</fieldset>
 		</form>
 	</div><!-- /.subject -->
+<?php //} ?>
 <?php } ?>

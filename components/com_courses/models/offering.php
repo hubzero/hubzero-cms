@@ -629,6 +629,39 @@ class CoursesModelOffering extends JObject
 	 * @param      string $action Action to check
 	 * @return     boolean True if authorized, false if not
 	 */
+	public function plugins($idx=null)
+	{
+		if (!isset($this->_plugins) || !is_array($this->_plugins))
+		{
+			JPluginHelper::importPlugin('courses');
+			$dispatcher =& JDispatcher::getInstance();
+
+			$plugins = $dispatcher->trigger('onCourseAreas', array());
+
+			array_unshift($plugins, array(
+				'name'             => 'outline',
+				'title'            => JText::_('Outline'),
+				'default_access'   => 'members',
+				'display_menu_tab' => true
+			));
+
+			$this->_plugins = $plugins;
+		}
+
+		if ($idx !== null)
+		{
+			return isset($this->_plugins[$idx]);
+		}
+
+		return $this->_plugins;
+	}
+
+	/**
+	 * Check a user's authorization
+	 * 
+	 * @param      string $action Action to check
+	 * @return     boolean True if authorized, false if not
+	 */
 	public function access($action='view')
 	{
 		if (!$this->_authorized)
