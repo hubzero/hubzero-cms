@@ -313,7 +313,7 @@ WYKIWYG.converter = function() {
 							innerHTML = innerHTML.replace(/^\s+/, '');
 							innerHTML = innerHTML.replace(/\n\n/g, '\n\n		');
 							// indent nested lists
-							innerHTML = innerHTML.replace(/\n([ ]*)+(\*|\d+\.) /g, '\n$1		$2 ');
+							innerHTML = innerHTML.replace(/\n([ ]*)+(\*|#|\d+\.) /g, '\n$1 $2 ');
 							return prefix + innerHTML;
 						});
 					}
@@ -889,7 +889,8 @@ WYKIWYG.converter = function() {
 			text += "~0";
 
 			// Re-usable pattern to match any entirel ul or ol list:
-			var whole_list = /^(([ ]{0,3}([*\*]|[*\#])[ \t]+)[^\r]+?(~0|\n{2,}(?=\S)(?![ \t]*(?:[*\*]|[*\#])[ \t]+)))/gm;
+			//var whole_list = /^(([ ]+([*\*]|[*\#]|\d\.)[ \t]+)[^\r]+?(~0|\n{2,}(?=\S)(?![ \t]*(?:[*\*]|[*\#]|\d\.)[ \t]+)))/gm;
+			var whole_list = /^(([ ]+([*#]|\d\.)[ \t]+)[^\r]+?(~0|\n{2,}(?=\S)(?![ \t]*(?:[*#]|\d\.)[ \t]+)))/gm;
 
 			if (g_list_level) {
 				text = text.replace(whole_list,function(wholeMatch,m1,m2) {
@@ -910,12 +911,14 @@ WYKIWYG.converter = function() {
 					return result;
 				});
 			} else {
-				whole_list = /(\n|^\n?)(([ ]{0,3}([*\*]|[*\#])[ \t]+)[^\r]+?(~0|\n{2,}(?=\S)(?![ \t]*(?:[*\*]|[*\#])[ \t]+)))/g;
+				//whole_list = /(\n|^\n?)(([ ]+([*\*]|[*\#]|\d\.)[ \t]+)[^\r]+?(~0|\n{2,}(?=\S)(?![ \t]*(?:[*\*]|[*\#]|\d\.)[ \t]+)))/g;
+				//whole_list = /(\n|^\n?)(([ ]+([*#]|\d\.)[ \t]+)[^\r]+?(~0|\n{2,}(?=\S)(?![ \t]*(?:[*#]|\d\.)[ \t]+)))/g;
+				whole_list = /(\n?)(([ ]+([*#]|\d\.)[ \t]+)[^\r]+?(~0|\n+)(?![ \t]+([*#]|\d\.)))/g;
 				text = text.replace(whole_list,function(wholeMatch,m1,m2,m3) {
 					var runup = m1;
 					var list = m2;
 
-					var list_type = (m3.search(/[*\*]/g)>-1) ? "ul" : "ol";
+					var list_type = (m3.search(/[*]/g)>-1) ? "ul" : "ol";
 					// Turn double returns into triple returns, so that we can make a
 					// paragraph for the last item in a list, if necessary:
 					var list = list.replace(/\n{2,}/g,"\n\n\n");;
@@ -964,7 +967,8 @@ WYKIWYG.converter = function() {
 			//  add sentinel to emulate \z
 			list_str += "~0";
 
-			list_str = list_str.replace(/(\n)?(^[ \t]*)([*\*]|[*\#])[ \t]+([^\r]+?(\n{1,2}))(?=\n*(~0|\2([*\*]|[*\#])[ \t]+))/gm,
+			//list_str = list_str.replace(/(\n)?(^[ \t]*)([*\*]|[*\#])[ \t]+([^\r]+?(\n{1,2}))(?=\n*(~0|\2([*\*]|[*\#])[ \t]+))/gm,
+			list_str = list_str.replace(/(\n)?(^[ \t]*)([*#]|\d\.)[ \t]+([^\r]+?(\n{1,2}))(?=\n*(~0|\2([*#]|\d\.)[ \t]+))/gm,
 				function(wholeMatch,m1,m2,m3,m4){
 					var item = m4;
 					var leading_line = m1;

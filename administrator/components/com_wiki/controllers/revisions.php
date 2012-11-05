@@ -104,7 +104,7 @@ class WikiControllerRevisions extends Hubzero_Controller
 		$this->view->page = new WikiPage($this->database);
 		if ($this->view->filters['pageid']) 
 		{
-			$this->view->page->load($this->view->filters['pageid']);
+			$this->view->page->loadById($this->view->filters['pageid']);
 		}
 
 		$r = new WikiPageRevision($this->database);
@@ -176,7 +176,7 @@ class WikiControllerRevisions extends Hubzero_Controller
 		}
 
 		$this->view->page = new WikiPage($this->database);
-		$this->view->page->load($pageid);
+		$this->view->page->loadById($pageid);
 
 		if (is_object($row))
 		{
@@ -238,7 +238,7 @@ class WikiControllerRevisions extends Hubzero_Controller
 		}
 
 		$page = new WikiPage($this->database);
-		$page->load($row->pageid);
+		$page->loadById($row->pageid);
 
 		// Parse text
 		$wikiconfig = array(

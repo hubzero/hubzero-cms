@@ -208,7 +208,7 @@ class WikiParser
 			$camelcase = 0;
 		}
 
-		$text = trim($text);
+		$text = rtrim($text);
 		$text = "\n" . $text;
 
 		// Clean out any carriage returns.
@@ -549,11 +549,95 @@ class WikiParser
 			return '<link></link>';
 		}
 
-		$cls = 'wiki';
+		$cls = 'wiki int-link';
 
 		$bits = explode('/', $href);
 
-		if ($namespace == 'wiki:' && substr($href, 0, strlen('&#8220;')) == '&#8220;')
+		switch (strtolower($namespace))
+		{
+			case 'page:':
+			case 'wiki:':
+				if (substr($href, 0, strlen('&#8220;')) == '&#8220;')
+				{
+					$title = substr($matches[1], strlen('[wiki:&#8220;'));
+					$title = substr($title, 0, -strlen('&#8221;]'));
+					$href = '#';
+					$p = WikiPage::getInstance($title, $this->scope);
+					if ($p->id) 
+					{
+						$href = $p->pagename;
+					}
+				}
+				else
+				{
+					$pagename = $href;
+					$scope = $this->scope;
+					if (strstr($href, '/'))
+					{
+						if (count($bits) > 1) 
+						{
+							$pagename = array_pop($bits);
+							$scope = implode('/', $bits);
+						} 
+						else 
+						{
+							$pagename = end($bits);
+							$scope = $this->scope;
+						}
+						if (substr($pagename, 0, strlen($namespace)) == $namespace)
+						{
+							$pagename = substr($pagename, strlen($namespace));
+						}
+						if (substr($scope, 0, strlen($this->scope)) != $this->scope)
+						{
+							$scope = $this->scope . DS . ltrim($scope, DS);
+						}
+					}
+					$p = WikiPage::getInstance($pagename, $scope);
+				}
+				//$namespace = '';
+			break;
+			
+			case 'help:':
+			case 'special:':
+			case 'template:':
+			default:
+				
+			break;
+		}
+		if (!is_object($p) || !$p->id)
+		{
+			if (count($bits) > 1) 
+			{
+				$pagename = array_pop($bits);
+				$scope = implode('/', $bits);
+			} 
+			else 
+			{
+				$pagename = end($bits);
+				$scope = $this->scope;
+			}
+			switch (strtolower($namespace))
+			{
+				case 'page:':
+				case 'wiki:':
+					if (substr($pagename, 0, strlen($namespace)) == $namespace)
+					{
+						$pagename = substr($pagename, strlen($namespace));
+					}
+				break;
+				default:
+					$pagename = ucfirst(strtolower($namespace)) . $pagename;
+				break;
+			}
+			if (substr($scope, 0, strlen($this->scope)) != $this->scope)
+			{
+				$scope = $this->scope . DS . ltrim($scope, DS);
+			}
+
+			$p = WikiPage::getInstance($pagename, $scope);
+		}
+		/*if ($namespace == 'wiki:' && substr($href, 0, strlen('&#8220;')) == '&#8220;')
 		{
 			$title = substr($matches[1], strlen('[wiki:&#8220;'));
 			$title = substr($title, 0, -strlen('&#8221;]'));
@@ -564,6 +648,7 @@ class WikiParser
 			{
 				$href = $p->pagename;
 			}
+			$namespace = '';
 		}
 		else 
 		{
@@ -580,9 +665,9 @@ class WikiParser
 
 			$pagename = ucfirst(strtolower($namespace)) . $pagename;
 			$p = WikiPage::getInstance($pagename, $scope);
-		}
+		}*/
 
-		if (!$p->id) 
+		if (!$p->id && !in_array(substr($href, 0, 1), array('#', '?', '/'))) 
 		{
 			if (in_array(trim(strtolower($namespace)), array('special:', 'help:', 'image:', 'file:')))
 			{
@@ -593,10 +678,31 @@ class WikiParser
 				$cls .= (substr($href, 0, 1) != '?') ? ' missing' : '';
 			}
 			$p->scope = ($p->scope) ? $p->scope : $this->scope;
+			$p->pagename = $href;
+
+			$UpperPtn = "[A-Z]"; //"[A-Z\xc0-\xde]";
+			$LowerPtn = "[a-z]"; //"[a-z\xdf-\xfe]";
+			$AlphaPtn = "[A-Za-z]"; //"[A-Za-z\xc0-\xfe]";
+
+			$LinkPtn  = $UpperPtn . $AlphaPtn . '*' . $LowerPtn . '+' . $UpperPtn . $AlphaPtn . '*(?:(?:\\/' . $UpperPtn . $AlphaPtn . '*)+)?';
+
+			$ptn = "/(^|[^A-Za-z])(!?\\/?$LinkPtn)((\#[A-Za-z]([-A-Za-z0-9_:.]*[-A-Za-z0-9_])?)?)(\"\")?/e";
+			if (preg_match($ptn, $href))
+			{
+				$href = JRoute::_('index.php?option=' . $this->option . '&scope=' . $p->scope . '&pagename=' . $p->pagename);
+
+				$l = '<a class="wiki missing" href="' . $href . '">' . trim($title) . '</a>';
+				array_push($this->links, $l);
+				return '<link></link>';
+			}
+
+			array_push($this->links, $matches[0]);
+			return '<link></link>';
 		} 
 		else 
 		{
-			$cls .= ' int-link';
+			//$title = ($title == $href) ? $p->title;
+			$cls .= '';
 		}
 
 		$href = JRoute::_('index.php?option=' . $this->option . '&scope=' . $p->scope . '&pagename=' . $p->pagename);

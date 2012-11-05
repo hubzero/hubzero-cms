@@ -88,7 +88,7 @@ class WikiControllerComments extends Hubzero_Controller
 		);
 
 		$this->view->entry = new WikiPage($this->database);
-		$this->view->entry->load($this->view->filters['pageid']);
+		$this->view->entry->loadById($this->view->filters['pageid']);
 
 		// Instantiate our HelloEntry object
 		$obj = new WikiPageComment($this->database);

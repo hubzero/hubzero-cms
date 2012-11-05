@@ -307,22 +307,22 @@ WYKIWYG.converter = function() {
 				var lis = innerHTML.split('</li>');
 				lis.splice(lis.length - 1, 1);
 				for (i = 0, len = lis.length; i < len; i++) {
-					if(lis[i]) {
+					if (lis[i]) {
 						var prefix = (listType === 'ol') ? " # " : " * ";
 						lis[i] = lis[i].replace(/\s*<li[^>]*>([\s\S]*)/i, function(str, innerHTML) {
 							innerHTML = innerHTML.replace(/^\s+/, '');
 							innerHTML = innerHTML.replace(/\n\n/g, '\n\n		');
 							// indent nested lists
-							innerHTML = innerHTML.replace(/\n([ ]*)+(\*|\d+\.) /g, '\n$1		$2 ');
+							innerHTML = innerHTML.replace(/\n([ ]*)+(\*|#|\d+\.) /g, '\n$1 $2 ');
 							return prefix + innerHTML;
 						});
 					}
 				}
 				return lis.join('\n');
 			});
-			return '\n\n' + html.replace(/[ \t]+\n|\s+$/g, '');
+			return html.replace(/[ \t]+\n|\s+$/g, '');
 		}
-		
+
 		// Converts lists that have no child lists (of same type) first, then works it's way up
 		var noDefChildrenRegex = /<(dl)\b[^>]*>(?:(?!<dl)[\s\S])*?<\/\1>/gi;
 		while(string.match(noDefChildrenRegex)) {
@@ -889,9 +889,11 @@ WYKIWYG.converter = function() {
 			text += "~0";
 
 			// Re-usable pattern to match any entirel ul or ol list:
-			var whole_list = /^(([ ]{0,3}([*\*]|[*\#])[ \t]+)[^\r]+?(~0|\n{2,}(?=\S)(?![ \t]*(?:[*\*]|[*\#])[ \t]+)))/gm;
+			//var whole_list = /^(([ ]+([*\*]|[*\#]|\d\.)[ \t]+)[^\r]+?(~0|\n{2,}(?=\S)(?![ \t]*(?:[*\*]|[*\#]|\d\.)[ \t]+)))/gm;
+			var whole_list = /^(([ ]+([*#]|\d\.)[ \t]+)[^\r]+?(~0|\n{2,}(?=\S)(?![ \t]*(?:[*#]|\d\.)[ \t]+)))/gm;
 
 			if (g_list_level) {
+				console.log('list level');
 				text = text.replace(whole_list,function(wholeMatch,m1,m2) {
 					var list = m1;
 					var list_type = (m2.search(/[*+\*]/g)>-1) ? "ul" : "ol";
@@ -910,15 +912,18 @@ WYKIWYG.converter = function() {
 					return result;
 				});
 			} else {
-				whole_list = /(\n|^\n?)(([ ]{0,3}([*\*]|[*\#])[ \t]+)[^\r]+?(~0|\n{2,}(?=\S)(?![ \t]*(?:[*\*]|[*\#])[ \t]+)))/g;
+				//whole_list = /(\n|^\n?)(([ ]+([*\*]|[*\#]|\d\.)[ \t]+)[^\r]+?(~0|\n{2,}(?=\S)(?![ \t]*(?:[*\*]|[*\#]|\d\.)[ \t]+)))/g;
+				//whole_list = /(\n|^\n?)(([ ]+([*#]|\d\.)[ \t]+)[^\r]+?(~0|\n{2,}(?=\S)(?![ \t]*(?:[*#]|\d\.)[ \t]+)))/g;
+				whole_list = /(\n?)(([ ]+([*#]|\d\.)[ \t]+)[^\r]+?(~0|\n+)(?![ \t]+([*#]|\d\.)))/g;
 				text = text.replace(whole_list,function(wholeMatch,m1,m2,m3) {
 					var runup = m1;
 					var list = m2;
 
-					var list_type = (m3.search(/[*\*]/g)>-1) ? "ul" : "ol";
+					//var list_type = (m3.search(/[*\*]/g)>-1) ? "ul" : "ol";
+					var list_type = (m3.search(/[*]/g)>-1) ? "ul" : "ol";
 					// Turn double returns into triple returns, so that we can make a
 					// paragraph for the last item in a list, if necessary:
-					var list = list.replace(/\n{2,}/g,"\n\n\n");;
+					var list = list.replace(/\n{2,}/g,"\n\n\n");
 					var result = _ProcessListItems(list);
 					result = runup + "<"+list_type+">\n" + result + "</"+list_type+">\n\n";	
 					return result;
@@ -964,7 +969,8 @@ WYKIWYG.converter = function() {
 			//  add sentinel to emulate \z
 			list_str += "~0";
 
-			list_str = list_str.replace(/(\n)?(^[ \t]*)([*\*]|[*\#])[ \t]+([^\r]+?(\n{1,2}))(?=\n*(~0|\2([*\*]|[*\#])[ \t]+))/gm,
+			//list_str = list_str.replace(/(\n)?(^[ \t]*)([*\*]|[*\#]|\d\.)[ \t]+([^\r]+?(\n{1,2}))(?=\n*(~0|\2([*\*]|[*\#]|\d\.)[ \t]+))/gm,
+			list_str = list_str.replace(/(\n)?(^[ \t]*)([*#]|\d\.)[ \t]+([^\r]+?(\n{1,2}))(?=\n*(~0|\2([*#]|\d\.)[ \t]+))/gm,
 				function(wholeMatch,m1,m2,m3,m4){
 					var item = m4;
 					var leading_line = m1;
@@ -975,7 +981,8 @@ WYKIWYG.converter = function() {
 					}
 					else {
 						// Recursion for sub-lists:
-						item = _DoLists(_Outdent(item));
+						//console.log(_Outdent(item));
+						item = _DoLists(item);
 						item = item.replace(/\n$/,""); // chomp(item)
 						item = _RunSpanGamut(item);
 					}

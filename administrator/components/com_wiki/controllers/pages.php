@@ -170,7 +170,7 @@ class WikiControllerPages extends Hubzero_Controller
 		{
 			// Load the article
 			$this->view->row = new WikiPage($this->database);
-			$this->view->row->load($id);
+			$this->view->row->loadById($id);
 		}
 		
 		if (!$id) 
@@ -461,7 +461,7 @@ class WikiControllerPages extends Hubzero_Controller
 
 		// Load the article
 		$row = new WikiPage($this->database);
-		$row->load($id);
+		$row->loadById($id);
 		$row->access = $access;
 
 		// Check and store the changes
@@ -515,7 +515,7 @@ class WikiControllerPages extends Hubzero_Controller
 
 		// Load and reset the article's hits
 		$page = new WikiPage($this->database);
-		$page->load($id);
+		$page->loadById($id);
 		$page->hits = 0;
 
 		if (!$page->check()) 
@@ -569,7 +569,7 @@ class WikiControllerPages extends Hubzero_Controller
 
 		// Load and reset the article's hits
 		$page = new WikiPage($this->database);
-		$page->load($id);
+		$page->loadById($id);
 		$page->state = JRequest::getInt('state', 0);
 
 		if (!$page->check()) 

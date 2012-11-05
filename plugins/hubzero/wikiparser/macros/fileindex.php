@@ -85,18 +85,30 @@ class FileIndexMacro extends WikiMacro
 				$config->set('filepath', $this->filepath);
 			}
 
+			ximport('Hubzero_View_Helper_Html');
+
 			// Build and return the link
 			$html = '<ul>';
 			foreach ($rows as $row)
 			{
 				$link = $live_site . DS . trim($config->get('filepath', '/site/wiki'), DS) . DS . $this->pageid . DS . $row->filename;
+				$fpath = JPATH_ROOT . DS . trim($config->get('filepath', '/site/wiki'), DS) . DS . $this->pageid . DS . $row->filename;
 
 				/*$html .= ' * ['.$url;
 				$html .= ($row->title) ? ' '.stripslashes($row->title) : ' '.$row->pagename;
 				$html .= ']'."\n";*/
-				$html .= '<li><a href="' . JRoute::_($link) . '">' . $row->filename;
-				$html .= ($row->description) ? '<br /><span>' . stripslashes($row->description) . '</span>' : '';
-				$html .= '</a></li>' . "\n";
+				$html .= '<li><a href="' . JRoute::_($link) . '">' . $row->filename . '</a> (' . Hubzero_View_Helper_Html::formatSize(filesize($fpath)) . ') ';
+				$huser = JUser::getInstance($row->created_by);
+				if ($huser->get('id'))
+				{
+					$html .= '- added by <a href="' . JRoute::_('index.php?option=com_members&id=' . $huser->get('id')) . '">' . stripslashes($huser->get('name')) . '</a> ';
+				}
+				if ($row->created && $row->created != '0000-00-00 00:00:00')
+				{
+					$html .= Hubzero_View_Helper_Html::timeAgo($row->created) . '. ';
+				}
+				$html .= ($row->description) ? '<span>"' . stripslashes($row->description) . '"</span>' : '';
+				$html .= '</li>' . "\n";
 			}
 			$html .= '</ul>';
 

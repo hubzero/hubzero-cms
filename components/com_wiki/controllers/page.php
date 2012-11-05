@@ -702,7 +702,7 @@ class WikiControllerPage extends Hubzero_Controller
 		$page = JRequest::getVar('page', array(), 'post', 'none', 2);
 
 		$this->page = new WikiPage($this->database);
-		$this->page->load($rev['pageid']);
+		$this->page->loadById($rev['pageid']);
 		$this->page->title    = (isset($page['title']))  ? trim($page['title'])    : '';
 		$this->page->pagename = trim(JRequest::getVar('pagename', '', 'post'));
 		$this->page->scope    = trim(JRequest::getVar('scope', '', 'post'));

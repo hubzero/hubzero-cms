@@ -243,7 +243,7 @@ class WikiPage extends JTable
 	public function loadByTitle($oid=NULL, $scope='')
 	{
 		$s = "";
-		if ($oid !== NULL && !is_numeric($oid)) 
+		if ($oid !== NULL) // && !is_numeric($oid)) 
 		{
 			$this->_tbl_key = 'title';
 			$s = "AND scope='$scope'";
@@ -274,6 +274,17 @@ class WikiPage extends JTable
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
+	}
+
+	/**
+	 * Loads a database record into the current object
+	 *
+	 * @param 	integer 	$oid
+	 * @return 	boolean		True if data successfully loaded into object
+	 */
+	public function loadById($oid=NULL)
+	{
+		return parent::load($oid);
 	}
 
 	/**

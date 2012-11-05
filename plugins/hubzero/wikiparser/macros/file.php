@@ -111,7 +111,7 @@ class FileMacro extends WikiMacro
 
 		// Get single attributes
 		// EX: [[Image(myimage.png, nolink, right)]]
-		$argues = preg_replace_callback('/[, ](left|right|top|center|bottom|[0-9]+(px|%|em)(?:[, ]|$)/i', array(&$this, 'parseSingleAttribute'), $content);
+		$argues = preg_replace_callback('/[, ](left|right|top|center|bottom|[0-9]+(px|%|em))(?:[, ]|$)/i', array(&$this, 'parseSingleAttribute'), $content);
 		// Get quoted attribute/value pairs
 		// EX: [[Image(myimage.png, desc="My description, contains, commas")]]
 		$argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap)=(?:["\'])([^"]*)(?:["\'])/i', array(&$this, 'parseAttributeValuePair'), $content);
