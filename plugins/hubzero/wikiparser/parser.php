@@ -515,6 +515,7 @@ class WikiParser
 	public function linkInternal($matches)
 	{
 		$nolink = false;
+		$p = null;
 
 		$href  = $matches[4];
 		$title = (isset($matches[5])) ? $matches[5] : $href;
