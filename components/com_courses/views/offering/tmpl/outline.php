@@ -137,6 +137,30 @@ if (!$this->course->offering()->access('view')) {
 			</ul>
 <?php
 		}
+		// Loop through the assets
+		//if (count($assets) > 0)
+		if ($agt->assets()->total())
+		{
+?>
+			<ul>
+<?php
+			foreach ($agt->assets() as $a)
+			{
+				$href = $a->path($this->course->get('id'));
+				if ($a->get('type') == 'video')
+				{
+					$href = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=outline&a=' . $unit->get('alias') . '&b=' . $agt->get('alias'));
+				}
+				echo '<li><a class="" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+			}
+?>
+			</ul>
+<?php
+		}
+		else
+		{
+			echo ''; //"<li><small>" . JText::_('COURSES_NO_ASSETS_FOR_GROUPING') . "</small></li>";
+		}
 ?>
 		</div><!-- / .weekSection -->
 <?php
