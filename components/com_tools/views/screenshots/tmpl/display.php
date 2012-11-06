@@ -173,7 +173,7 @@ for ($i=0, $n=count($images); $i < $n; $i++)
 		{
 			$els .= '<li style="width:20px;top:40px;">';
 				$els .= '<a href="/index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;task=order&amp;pid='.$this->rid.'&amp;fl='.$images[$i+1]['img'].'&amp;fr='.$images[$i]['img'].'&amp;ol='.($i+1).'&amp;or='.$i.'&amp;version='.$this->version.'&amp;tmpl=component">';
-					$els .= '<img src="components'.DS.$this->option.DS.'images/reorder.gif" alt="" />';
+					$els .= '<img src="components'.DS.$this->option.DS.'assets/img/contribute/reorder.gif" alt="" />';
 				$els .= '</a>';
 			$els .= '</li>'."\n";
 		}
