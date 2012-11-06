@@ -134,7 +134,7 @@ class EventsControllerRespondents extends Hubzero_Controller
 	 * 
 	 * @return     void
 	 */
-	protected function downloadTask()
+	public function downloadTask()
 	{
 		EventsHtml::downloadlist($this->getRespondents(), $this->_option);
 	}
