@@ -3,8 +3,8 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 JToolBarHelper::title( '<a href="index.php?option=com_events">'.JText::_( 'EVENTS' ).'</a>: <small><small>[ '.JText::_('RESPONDANTS').' ]</small></small>', 'user.png' );
-JToolBarHelper::custom('downloadList', 'upload', JText::_('DOWNLOAD_CSV'), JText::_('DOWNLOAD_CSV'), false, false);
-JToolBarHelper::deleteList( '', 'removerespondent', JText::_('Delete') );
+JToolBarHelper::custom('download', 'upload', JText::_('DOWNLOAD_CSV'), JText::_('DOWNLOAD_CSV'), false, false);
+JToolBarHelper::deleteList( '', 'remove', JText::_('Delete') );
 JToolBarHelper::cancel();
 
 $rows = $this->resp->getRecords();

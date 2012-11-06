@@ -369,7 +369,7 @@ class EventsHtml
 		'arrival' => 6, 'departure' => 7, 'website' => 8, 'gender' => 9, 'disability' => 10,
 		'dietary' => 11, 'dinner' => 12, 'abstract' => 13, 'comments' => 14, 'degree' => 15,
 		'race' => 16,
-		'fax' => 17, 'title' => 18 // folded into previous entries
+		'fax' => 17, 'title' => 18, 'registered' => 19 // folded into previous entries
 	);
 
 	/**
@@ -431,7 +431,7 @@ class EventsHtml
 		$ee = new EventsEvent( $database );
 		header('Content-type: text/comma-separated-values');
 		header('Content-disposition: attachment; filename="eventrsvp.csv"');
-		$fields = array_merge($ee->getDefinedFields(JRequest::getVar('id', array())), array('name'));
+		$fields = array('name', 'registered', 'affiliation', 'email', 'telephone', 'arrival', 'departure', 'disability', 'dietary', 'dinner'); //array_merge($ee->getDefinedFields(JRequest::getVar('id', array())), array('name'));
 		// Output header
 		usort($fields, array('EventsHtml', 'fieldSorter'));
 		echo EventsHtml::quoteCsvRow(array_map('ucfirst', $fields));
@@ -454,6 +454,14 @@ class EventsHtml
 		// Output rows
 		foreach ($rows as $re)
 		{
+			if (!isset($re->last_name) || !$re->last_name)
+			{
+				$re->last_name = '[unknown]';
+			}
+			if (!isset($re->first_name) || !$re->first_name)
+			{
+				$re->first_name = '[unknown]';
+			}
 			$row = array(
 				$re->last_name . ', ' . $re->first_name
 			);
@@ -479,7 +487,14 @@ class EventsHtml
 					case 'dietary': $row[] = $re->dietary_needs; break;
 					case 'dinner': $row[] = $re->attending_dinner ? 'Yes' : 'No'; break;
 					default:
-						$row[] = $re->$field;
+						if (isset($re->$field))
+						{
+							$row[] = $re->$field;
+						}
+						else
+						{
+							$row[] = '';
+						}
 					break;
 				}
 			}
