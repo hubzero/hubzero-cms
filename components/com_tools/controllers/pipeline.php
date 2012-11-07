@@ -923,7 +923,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 
 		$exportmap  = array(
 			'@OPEN'   => null,
-			'@GRO UP' => null,
+			'@GROUP'  => null,
 			'@US'     => 'us',
 			'@us'     => 'us',
 			'@PU'     => 'pu',
