@@ -311,7 +311,9 @@ class TagsTag extends JTable
 		$query .= " FROM $this->_tbl AS t";
 		if ($filters['search']) 
 		{
-			$query .= " WHERE (LOWER(t.raw_tag) LIKE '%" . $filters['search'] . "%' OR LOWER(t.tag) LIKE '%" . $filters['search'] . "%')";
+			// Used to also query using unfiltered search text agains the rawtag and the tag.
+			// Figured this was safer
+			$query .= " WHERE (LOWER(t.tag) LIKE '%" . $this->normalize($filters['search']) . "%')";
 			if ($filter) 
 			{
 				$query .= " AND $filter";
