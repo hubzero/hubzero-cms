@@ -95,11 +95,11 @@ if ($sq->conditions)
 			{
 				if (isset($rows[$key - 1]))
 				{
-					$prev = $rows[$key - 1];
+					$next = $rows[$key - 1];
 				}
 				if (isset($rows[$key + 1]))
 				{
-					$next = $rows[$key + 1];
+					$prev = $rows[$key + 1];
 				}
 				break;
 			}
