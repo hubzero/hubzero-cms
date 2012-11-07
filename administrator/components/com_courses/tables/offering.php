@@ -36,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
  * Course Instances table class
  * 
  */
-class CoursesTableInstance extends JTable
+class CoursesTableOffering extends JTable
 {
 
 	/**
@@ -138,7 +138,7 @@ class CoursesTableInstance extends JTable
 	 */
 	public function __construct(&$db)
 	{
-		parent::__construct('#__course_instances', 'id', $db);
+		parent::__construct('#__courses_offerings', 'id', $db);
 	}
 
 	/**
@@ -162,7 +162,7 @@ class CoursesTableInstance extends JTable
 
 		if (!isset($instances[$alias])) 
 		{
-			$inst = new CoursesTableInstance(JFactory::getDBO());
+			$inst = new CoursesTableOffering(JFactory::getDBO());
 			$inst->load($alias);
 
 			$instances[$alias] = $inst;
@@ -250,7 +250,7 @@ class CoursesTableInstance extends JTable
 	 * @param  array $filters
 	 * @return object Return course units
 	 */
-	public function getCourseInstances($filters=array())
+	public function getCourseOfferings($filters=array())
 	{
 		$query  = "SELECT ci.*";
 		$query .= $this->buildquery($filters);

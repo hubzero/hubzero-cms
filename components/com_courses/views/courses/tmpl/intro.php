@@ -139,7 +139,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				</div><!-- / .four columns first -->
 				<div class="four columns second third fourth">
 					<div class="clearfix top">
-						<?php echo Hubzero_Course_Helper::listCourses(JText::_('COM_COURSES_MY_COURSES'),$this->config,$this->mycourses['members'],2,true,true,0); ?>
+						<?php echo Hubzero_Course_Helper::listCourses(JText::_('COM_COURSES_MY_COURSES'),$this->config,array(),2,true,true,0); ?>
 					</div>
 				</div><!-- / .four columns second third fourth -->
 			</div><!-- /.clearfix -->

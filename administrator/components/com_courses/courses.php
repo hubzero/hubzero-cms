@@ -56,31 +56,31 @@ else
 		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 	}
 
-	require_once(JPATH_COMPONENT . DS . 'models' . DS . 'course.php');
-	require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'course.php');
+	//require_once(JPATH_COMPONENT . DS . 'models' . DS . 'course.php');
+	//require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'course.php');
 }
 
 // Include scripts
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'courses.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'log.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'reason.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'pages.php');
+//require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'course.php');
+//require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'instance.php');
+//require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'unit.php');
 
 //Hubzero Libraries
-ximport('Hubzero_Course');
-ximport('Hubzero_Course_Helper');
-ximport('Hubzero_User_Helper');
+//ximport('Hubzero_Course');
+//ximport('Hubzero_Course_Helper');
+//ximport('Hubzero_User_Helper');
 
-$controllerName = JRequest::getCmd('controller', 'manage');
+$controllerName = JRequest::getCmd('controller', 'courses');
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
 {
-	$controllerName = 'manage';
+	$controllerName = 'courses';
 }
 
 JSubMenuHelper::addEntry(
 	JText::_('Manage'), 
-	'index.php?option=' .  $option . '&controller=manage', 
-	$controllerName == 'manage'
+	'index.php?option=' .  $option . '&controller=courses', 
+	$controllerName == 'courses'
 );
 
 require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');

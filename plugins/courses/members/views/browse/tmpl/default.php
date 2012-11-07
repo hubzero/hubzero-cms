@@ -31,125 +31,61 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$filters = array(
-	'members' => 'Members',
-	'managers' => 'Managers',
-	'pending' => 'Pending Requests',
-	'invitees' => 'Invitees'
-);
-
-if($this->filter == '') {
-	$this->filter = 'members';
-}
-
-$role_id = '';
-$role_name = '';
-
-if($this->role_filter) {
-	foreach($this->member_roles as $role) {
-		if($role['id'] == $this->role_filter) {
-			$role_id = $role['id'];
-			$role_name = $role['role'];
-			break;
-		}
-	}
-}
+$offering = $this->course->offering();
 ?>
 <div class="course_members">
 	<a name="members"></a>
 	<h3 class="heading"><?php echo JText::_('COURSES_MEMBERS'); ?></h3>
-		<div class="aside">
-			<div class="container">
-				<h4>Member Roles</h4>
-				<?php if(count($this->member_roles) > 0) { ?>
-					<ul class="roles">
-						<?php foreach($this->member_roles as $role) { ?>
-							<?php $cls = ($role['id'] == $this->role_filter) ? 'active' : ''; ?>
-							<li>
-								<a class="role <?php echo $cls; ?>" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->course->cn.'&active=members&role_filter='.$role['id']); ?>"><?php echo $role['role']; ?></a>
-								<?php if($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
-									<?php if($this->membership_control == 1) { ?>
-										<span class="remove-role">
-											<a href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->course->cn.'&active=members&task=removerole&role='.$role['id']); ?>">x</a>
-										</span>
-									<?php } ?>	
-								<?php } ?>
-							</li>
-						<?php } ?>
-					</ul>
-				<?php } else { ?>
-					<p class="starter">Currently there are no member roles.</p>
-				<?php }?>
-			</div><!-- / .container -->
-			
-			<?php if($this->membership_control == 1) { ?>
-				<?php if($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
-					<div class="container" id="addrole">
-						<form name="add-role" action="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->course->cn.'&active=members&task=addrole'); ?>" method="post">
-							<h4>Add a Member Role</h4>
-							<input type="text" name="role">
-							<input type="submit" name="submit-role" value="Add">
-							<input type="hidden" name="gid" value="<?php echo $this->course->gidNumber; ?>" />
-						</form>
-					</div>
-					<p class="invite"><a href="/courses/<?php echo $this->course->cn ?>/invite">Invite Members to Course</a></p>
-				<?php } ?>
-			<?php } ?>
-		</div><!-- / .aside -->
 		
-		<form action="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->course->cn.'&active=members&filter='.$this->filter); ?>" method="post">
+		<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&offering=' . $offering->get('alias') . '&active=members&filter='.$this->filter); ?>" method="post">
 		<div class="subject">
-			<div class="entries-filters">
-				<ul class="entries-menu">
-					<?php foreach($filters as $filter => $name) { ?>
-						<?php $active = ($this->filter == $filter) ? ' active': ''; ?>
-						<?php 
-							if(($filter == 'pending' || $filter == 'invitees') && $this->membership_control == 0) {
-								continue;
-							}
-						?>
-						<?php if($filter != 'pending' && $filter != 'invitees' || ($this->authorized == 'admin' || $this->authorized == 'manager')) { ?>
-								<li>
-									<a class="<?php echo $filter . $active; ?>" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->course->cn.'&active=members&filter='.$filter); ?>"><?php echo $name; ?> 
-										<?php 
-											if($filter == 'pending') {
-												echo '('.count($this->course->get('applicants')).')';
-											} elseif($filter == 'invitees') {
-												//get invite emails
-												echo '('.(count($this->course->get('invitees')) + count($this->current_inviteemails)).')';
-											} else {
-												echo '('.count($this->course->get($filter)).')';
-											}
-										?>
-									</a>
-								</li>
-							
-						<?php } ?>
-					<?php } ?>
+			<div class="container">
+				<ul class="entries-menu filter-options">
+				<?php 
+					$filter = null;
+					foreach ($offering->roles() as $role) 
+					{ 
+						$active = '';
+						if ($this->filter == $role->alias) 
+						{
+							$filter = $role->title;
+							$active = ' active';
+						} 
+
+						if (!$offering->access('manage')) 
+						{
+							continue;
+						}
+				?>
+					<li>
+						<a class="<?php echo $role->alias . $active; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&offering=' . $offering->get('alias') . '&active=members&filter='.$role->alias); ?>">
+							<?php echo $this->escape(stripslashes($role->title)); ?> (<?php echo $role->total; ?>)
+						</a>
+					</li>
+				<?php
+					}
+				?>
 				</ul>
 				<div class="entries-search">
 					<fieldset>
-						<input type="text" name="q" value="<?php echo htmlentities($this->q,ENT_COMPAT,'UTF-8'); ?>" />
+						<input type="text" name="q" value="<?php echo $this->escape($this->q); ?>" />
 						<input type="submit" name="search_members" value="" />
 					</fieldset>
 				</div>
-			</div><!-- / .entries-filters -->
-			
-			<div class="container">
-				<table class="courses entries" summary="Courses this person is a member of">
+				<div class="clearfix"></div>
+
+				<table class="courses entries" summary="Members of this course">
 					<caption>
 						<?php 
-							if($this->role_filter) {
- 								echo $role_name;
-							} elseif($this->q) {
-								echo 'Search: '.htmlentities($this->q,ENT_COMPAT,'UTF-8');
-							} else {
-								echo ucfirst($this->filter);
-							}
+							if ($this->q) 
+							{
+								echo 'Search: "' . $this->escape($this->q) . '" in ';
+							} 
+							echo $this->escape(stripslashes($filter));
 						?>
-						<span>(<?php echo count($this->courseusers); ?>)</span>
+						<span>(<?php echo $offering->members(array('count' => true)); ?>)</span>
 						
-						<?php if (($this->authorized == 'manager' || $this->authorized == 'admin') && count($this->courseusers) > 0) { ?>
+						<?php /*if (($this->authorized == 'manager' || $this->authorized == 'admin') && count($this->courseusers) > 0) { ?>
 							<span class="message-all">
 								<?php if($this->messages_acl != 'nobody') { ?>
 								<?php
@@ -182,13 +118,19 @@ if($this->role_filter) {
 								<a class="message tooltips" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->course->cn.'&active=messages&task=new'.$append); ?>" title="Message :: <?php echo $title; ?>">Message All</a>
 								<?php } ?>
 							</span><!-- / .message-all -->
-						<?php } ?>
+						<?php }*/ ?>
 					</caption>
 					<tbody>
 						<?php
-						if ($this->courseusers) {
+						if ($offering->members(array('role' => $this->filter))) 
+						{
+							ximport('Hubzero_User_Profile_Helper');
+							foreach ($offering->members() as $member)
+							{
+								$cls = '';
+								$u = Hubzero_User_Profile::getInstance($member->get('user_id'));
 							// Path to users' thumbnails
-							$config =& JComponentHelper::getParams( 'com_members' );
+							/*$config =& JComponentHelper::getParams( 'com_members' );
 							$thumb = $config->get('webpath');
 							if (substr($thumb, 0, 1) != DS) {
 								$thumb = DS.$thumb;
@@ -212,8 +154,8 @@ if($this->role_filter) {
 							$html = '';
 							if ($this->limit == 0) {
 								$this->limit = 500;
-							}
-							for ($i=0, $n=$this->limit; $i < $n; $i++)
+							}*/
+							/*for ($i=0, $n=$this->limit; $i < $n; $i++)
 							{
 								$inviteemail = false;
 
@@ -272,13 +214,20 @@ if($this->role_filter) {
 
 								if ($juser->get('id') == $u->get('uidNumber')) {
 									$cls .= ' me';
-								}
-
-								$html .= "\t\t\t".'<tr class="'.$cls.'">'."\n";
-								$html .= "\t\t\t\t".'<td class="photo"><img width="50" height="50" src="'.$p.'" alt="Photo for '.htmlentities($u->get('name'),ENT_COMPAT,'UTF-8').'" /></td>'."\n";
-								$html .= "\t\t\t\t".'<td>';
-
-								if($inviteemail) {
+								}*/
+?>
+						<tr class="<?php echo $cls; ?>">
+							<td class="photo">
+								<img width="50" height="50" src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($u); ?>" alt="Photo for <?php echo $this->escape(stripslashes($u->get('name'))); ?>" /></td>
+							<td>
+							<td>
+								<?php echo $this->escape(stripslashes($u->get('name'))); ?>
+							</td>
+							<td>
+								<?php echo $this->escape(stripslashes($member->get('role'))); ?>
+							</td>
+<?php
+								/*if($inviteemail) {
 									$html .= '<span class="name"><a href="mailto:'.$guser.'">'.$guser.'</a></span>';
 									$html .= '<span class="status">Invite Sent to Email</span><br />';
 								} else {
@@ -397,25 +346,31 @@ if($this->role_filter) {
 									} else {
 										$html .= "\t\t\t\t".'<td class="message-member"></td>'."\n";
 									}
-								}
-								$html .= "\t\t\t".'</tr>'."\n";
-							}
-							echo $html;
-						} else { ?>
-										<tr class="odd">
-											<td><?php echo JText::_('PLG_COURSES_MEMBERS_NO_RESULTS'); ?></td>
-										</tr>
+								}*/?>
+						</tr>
+						<?php } ?>
+						<?php } else { ?>
+						<tr class="odd">
+							<td><?php echo JText::_('PLG_COURSES_MEMBERS_NO_RESULTS'); ?></td>
+						</tr>
 						<?php } ?>
 					</tbody>
 				</table>
-			</div><!-- / .container -->
+			
 			<?php 
-			$pn = $this->pageNav->getListFooter();
-			$pn = str_replace('courses/?','courses/'.$this->course->cn.'/members?',$pn);
-			$pn = str_replace('?start=','?limit=' . $this->limit . '&limitstart=',$pn);
-			$pn = str_replace('&amp;start=','&amp;limit=' . $this->limit . '&limitstart=',$pn);
-			echo $pn;
+			jimport('joomla.html.pagination');
+			$pageNav = new JPagination(
+				count($offering->get('members')), 
+				$this->start, 
+				$this->limit
+			);
+			$pageNav->setAdditionalUrlParam('gid', $this->course->get('alias'));
+			$pageNav->setAdditionalUrlParam('offering', $offering->get('alias'));
+			$pageNav->setAdditionalUrlParam('active', 'members');
+			echo $pageNav->getListFooter();
 			?>
+				<div class="clearfix"></div>
+			</div><!-- / .container -->
 		</div><!-- / .subject -->
 		<div class="clear"></div>
 	

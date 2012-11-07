@@ -85,7 +85,7 @@ class plgCoursesMembers extends JPlugin
 	 * @param      array   $areas      Active area(s)
 	 * @return     array
 	 */
-	public function onCourse($config, $course, $instance, $action='', $access, $areas=null)
+	public function onCourse($config, $course, $offering, $action='', $access, $areas=null)
 	{
 		/*if (!$course->offering()->access('manage'))
 		{
@@ -107,17 +107,17 @@ class plgCoursesMembers extends JPlugin
 		$this->course = $course;
 
 		// Get a student count
-		$arr['metadata']['count'] = count($this->course->offering()->get('members'));
+		$arr['metadata']['count'] = $this->course->offering()->members(array('count' => true));
 
 		// Do we have any pending requests?
-		$pending = count($this->course->offering()->get('applicants'));
+		/*$pending = count($this->course->offering()->get('applicants'));
 		if ($pending)
 		{
 			$alert  = '<a class="alrt" href="' . JRoute::_('index.php?option=' . $this->option . '&controller=instance&gid=' . $this->course->get('alias') . '&active=members&filter=pending') . '">';
 			$alert .= '<span><h5>Member Alert</h5>' . JText::sprintf('%s has <strong>%s</strong> pending membership request.', $this->course->offering()->get('title'), $pending) . '</span>';
 			$alert .= '</a>';
 			$arr['metadata']['alert'] = $alert;
-		}
+		}*/
 
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array($areas)) 
@@ -127,10 +127,10 @@ class plgCoursesMembers extends JPlugin
 				return $arr;
 			}
 		}
-$returnhtml = false;
+
 		// Only perform the following if this is the active tab/plugin
-		if ($returnhtml) 
-		{
+		//if ($returnhtml) 
+		//{
 			$this->config = $config;
 
 			//set course members plugin access level
@@ -148,13 +148,13 @@ $returnhtml = false;
 
 			// Set the page title
 			$document =& JFactory::getDocument();
-			$document->setTitle(JText::_(strtoupper($this->_name)).': '.$this->course->description.': '.JText::_('PLG_COURSES_MEMBERS'));
+			$document->setTitle($document->getTitle() . ': ' . JText::_('PLG_COURSES_MEMBERS'));
 
 			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('courses', 'members');
 			Hubzero_Document::addPluginScript('courses', 'members');
 
-			$paramsClass = 'JParameter';
+			/*$paramsClass = 'JParameter';
 			if (version_compare(JVERSION, '1.6', 'ge'))
 			{
 				$paramsClass = 'JRegistry';
@@ -177,7 +177,7 @@ $returnhtml = false;
 				case 'global':
 					$this->display_system_users = $this->display_system_users;
 				break;
-			}
+			}*/
 
 			// Do we need to perform any actions?
 			if ($action) 
@@ -208,17 +208,17 @@ $returnhtml = false;
 					)
 				);
 
-				$view->membership_control = $this->membership_control;
+				//$view->membership_control = $this->membership_control;
 
 				$view->option = $this->option;
 				$view->course = $course;
 				//$view->authorized = $authorized;
 
 				$view->q = JRequest::getVar('q', '');
-				$view->filter = JRequest::getVar('filter', '');
+				$view->filter = JRequest::getVar('filter', 'student');
 				$view->role_filter = JRequest::getVar('role_filter','');
 
-				if ($view->authorized != 'manager' && $view->authorized != 'admin') 
+				/*if ($view->authorized != 'manager' && $view->authorized != 'admin') 
 				{
 					$view->filter = ($view->filter == 'managers') ? $view->filter : 'members';
 				}
@@ -236,7 +236,7 @@ $returnhtml = false;
 				$course_inviteemails = new Hubzero_Course_Invite_Email($this->database);
 				$view->current_inviteemails = $course_inviteemails->getInviteEmails($this->course->get('gidNumber'), true);
 
-				switch ($view->filter)
+				/*switch ($view->filter)
 				{
 					case 'invitees':
 						$view->courseusers = ($view->q) ? $course->search('invitees', $view->q) : $course->get('invitees');
@@ -258,33 +258,27 @@ $returnhtml = false;
 					case 'members':
 					default:
 						$view->courseusers = ($view->q) ? $course->search('members', $view->q) : $course->get('members');
-						$view->courseusers = ($view->role_filter) ? Hubzero_Course_Helper::search_roles($course, $view->role_filter) : $view->courseusers;
+						//$view->courseusers = ($view->role_filter) ? Hubzero_Course_Helper::search_roles($course, $view->role_filter) : $view->courseusers;
 						$view->managers   = $course->get('managers');
-					break;
-				}
-
-				//callback to check if user is system user
-				function isSystemUser($user) 
-				{
-					return (is_numeric($user) && $user < 1000) ? false : true;
-				}
+				//break;
+				//}
 
 				//if we dont want to display system users
 				//filter values through callback above and then reset array keys
 				if ($this->display_system_users == 'no' && is_array($view->courseusers)) 
 				{
 					$view->courseusers = array_values(array_filter($view->courseusers, "isSystemUser"));
-				}
+				}*/
 
 				$view->limit = JRequest::getInt('limit', $this->params->get('display_limit', 50));
 				$view->start = JRequest::getInt('limitstart', 0);
 				$view->start = ($view->limit == 0) ? 0 : $view->start;
-				$view->no_html = JRequest::getInt('no_html', 0);
+				/*$view->no_html = JRequest::getInt('no_html', 0);
 				$view->params = $this->params;
 
 				// Initiate paging
 				jimport('joomla.html.pagination');
-				$view->pageNav = new JPagination(count($view->courseusers), $view->start, $view->limit);
+				$view->pageNav = new JPagination(count($view->courseusers), $view->start, $view->limit);*/
 
 				if ($this->getError()) 
 				{
@@ -293,7 +287,7 @@ $returnhtml = false;
 
 				$arr['html'] = $view->loadTemplate();
 			}
-		}
+		//}
 
 		// Return the output
 		return $arr;

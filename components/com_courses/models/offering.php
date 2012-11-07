@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'instance.php');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'offering.php');
 
 /**
  * Courses model class for a course
@@ -50,7 +50,7 @@ class CoursesModelOffering extends JObject
 	 * 
 	 * @var object
 	 */
-	public $offering = NULL;
+	public $_tbl = NULL;
 
 	/**
 	 * CoursesModelIterator
@@ -65,6 +65,27 @@ class CoursesModelOffering extends JObject
 	 * @var object
 	 */
 	public $unit = NULL;
+
+	/**
+	 * JUser
+	 * 
+	 * @var object
+	 */
+	private $_roles = NULL;
+
+	/**
+	 * JUser
+	 * 
+	 * @var object
+	 */
+	private $_members = NULL;
+
+	/**
+	 * JUser
+	 * 
+	 * @var object
+	 */
+	private $_member = NULL;
 
 	/**
 	 * JUser
@@ -106,7 +127,7 @@ class CoursesModelOffering extends JObject
 	 *
 	 * @var array
 	 */
-	static $_list_keys = array('members', 'managers', 'applicants', 'invitees');
+	static $_list_keys = array('members');
 
 	/**
 	 * Constructor
@@ -118,19 +139,19 @@ class CoursesModelOffering extends JObject
 	{
 		$this->_db = JFactory::getDBO();
 
-		$this->offering = new CoursesTableInstance($this->_db);
+		$this->_tbl = new CoursesTableOffering($this->_db);
 
 		if (is_numeric($oid) || is_string($oid))
 		{
-			$this->offering->load($oid);
+			$this->_tbl->load($oid);
 		}
 		else if (is_object($oid))
 		{
-			$this->offering->bind($oid);
+			$this->_tbl->bind($oid);
 		}
 		else if (is_array($oid))
 		{
-			$this->offering->bind($oid);
+			$this->_tbl->bind($oid);
 		}
 
 		$this->params = JComponentHelper::getParams('com_courses');
@@ -206,9 +227,9 @@ class CoursesModelOffering extends JObject
 	 */
 	/*public function __get($property)
 	{
-		if (isset($this->offering->$property)) 
+		if (isset($this->_tbl->$property)) 
 		{
-			return $this->offering->$property;
+			return $this->_tbl->$property;
 		}
 		else if (isset($this->_data[$property])) 
 		{
@@ -230,53 +251,33 @@ class CoursesModelOffering extends JObject
 	{
 		if (in_array($property, self::$_list_keys))
 		{
-			if (!array_key_exists($property, get_object_vars($this->offering)))
+			if (!array_key_exists($property, get_object_vars($this->_tbl)))
 			{
 				if (is_object($this->_db))
 				{
-					$membership = array(
-						'applicants' => array(), 
-						'invitees'   => array(), 
-						'members'    => array(), 
-						'managers'   => array()
-					);
+					/*$this->_db->setQuery("SELECT m.*, r.role, r.permissions AS role_permissions from #__courses_offering_members AS m LEFT JOIN #__courses_roles AS r ON r.id=m.role_id WHERE m.`offering_id`=" . $this->_db->Quote($this->_tbl->get('id')));
 
-					foreach ($membership as $key => $data)
+					if (($results = $this->_db->loadResultArray()))
 					{
-						$this->offering->set($key, $data);
-					}
-
-					$query = "(select uidNumber, 'invitees' AS role from #__courses_invitees where gidNumber=" . $this->_db->Quote($this->offering->get('id')) . ")
-						UNION
-							(select uidNumber, 'applicants' AS role from #__courses_applicants where gidNumber=" . $this->_db->Quote($this->offering->get('id')) . ")
-						UNION
-							(select uidNumber, 'members' AS role from #__courses_members where gidNumber=" . $this->_db->Quote($this->offering->get('id')) . ")
-						UNION
-							(select uidNumber, 'managers' AS role from #__courses_managers where gidNumber=" . $this->_db->Quote($this->offering->get('id')) . ")";
-
-					$this->_db->setQuery($query);
-
-					if (($results = $this->_db->loadObjectList()))
-					{
+						$data = array();
 						foreach ($results as $result)
 						{
-							if (isset($membership[$result->role]))
-							{
-								$membership[$result->role][] = $result->uidNumber;
-							}
+							$data[$result->user_id] = new CoursesModelMember($result);
 						}
+						$this->_tbl->$property = $data;
+					}*/
+					$this->_db->setQuery("SELECT user_id from #__courses_offering_members WHERE offering_id=" . $this->_db->Quote($this->_tbl->get('id')));
 
-						foreach ($membership as $key => $data)
-						{
-							$this->offering->set($key, $data);
-						}
+					if (($results = $this->_db->loadResultArray()))
+					{
+						$this->_tbl->$property = $results;
 					}
 				}
 			}
 		}
-		if (isset($this->offering->$property)) 
+		if (isset($this->_tbl->$property)) 
 		{
-			return $this->offering->$property;
+			return $this->_tbl->$property;
 		}
 		return $default;
 	}
@@ -293,8 +294,8 @@ class CoursesModelOffering extends JObject
 	 */
 	public function set($property, $value = null)
 	{
-		$previous = isset($this->offering->$property) ? $this->offering->$property : null;
-		$this->offering->$property = $value;
+		$previous = isset($this->_tbl->$property) ? $this->_tbl->$property : null;
+		$this->_tbl->$property = $value;
 		return $previous;
 	}
 
@@ -326,7 +327,7 @@ class CoursesModelOffering extends JObject
 	{
 		if (!isset($this->_creator) || !is_object($this->_creator))
 		{
-			$this->_creator = JUser::getInstance($this->offering->created_by);
+			$this->_creator = JUser::getInstance($this->get('created_by'));
 		}
 		if ($property && is_a($this->_creator, 'JUser'))
 		{
@@ -349,7 +350,7 @@ class CoursesModelOffering extends JObject
 	{
 		if (!isset($this->_instructor) || !is_object($this->_instructor))
 		{
-			$this->_instructor = JUser::getInstance($this->offering->instructor_id);
+			$this->_instructor = JUser::getInstance($this->_tbl->instructor_id);
 		}
 		if ($property && is_a($this->_instructor, 'JUser'))
 		{
@@ -428,31 +429,6 @@ class CoursesModelOffering extends JObject
 	}
 
 	/**
-	 * Check if the current user has manager access
-	 * This is just a shortcut for the access check
-	 * 
-	 * @return     boolean
-	 */
-	public function manager()
-	{
-		return $this->access('manage'); //in_array(JFactory::getUser()->get('id'), $this->get('managers'));
-	}
-
-	/**
-	 * Check if the current user is enrolled
-	 * 
-	 * @return     boolean
-	 */
-	public function enrolled($id=0)
-	{
-		if (!$id)
-		{
-			$id = JFactory::getUser()->get('id');
-		}
-		return in_array($id, $this->get('members'));
-	}
-
-	/**
 	 * Method to get/set the current unit
 	 *
 	 * @param     mixed $id ID or alias of specific unit
@@ -465,14 +441,23 @@ class CoursesModelOffering extends JObject
 		{
 			$this->unit = null;
 
-			foreach ($this->units() as $key => $unit)
+			if (isset($this->units))
 			{
-				if ((int) $unit->get('id') == $id || (string) $unit->get('alias') == $id)
+				foreach ($this->units() as $key => $unit)
 				{
-					$this->unit = $unit;
-					$this->unit->siblings($this->units());
-					break;
+					if ((int) $unit->get('id') == $id || (string) $unit->get('alias') == $id)
+					{
+						$this->unit = $unit;
+						$this->unit->siblings($this->units());
+						break;
+					}
 				}
+			}
+			else
+			{
+				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'unit.php');
+
+				$this->unit = CoursesModelUnit::getInstance($id);
 			}
 		}
 		return $this->unit;
@@ -506,11 +491,6 @@ class CoursesModelOffering extends JObject
 				{
 					$results[$key] = new CoursesModelUnit($result);
 				}
-				//$this->units = new CoursesModelIterator($results);
-				/*
-				$this->units = new CoursesModelIterator();
-				$this->units->add(new CoursesModelUnit($result, $this->units));
-				*/
 			}
 			else
 			{
@@ -520,60 +500,157 @@ class CoursesModelOffering extends JObject
 			$this->units = new CoursesModelIterator($results);
 		}
 
-		/*if ($idx !== null)
-		{
-			if (is_numeric($idx))
-			{
-				if (isset($this->units[$idx]))
-				{
-					return $this->units[$idx];
-				}
-				else
-				{
-					$this->setError(JText::_('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
-					return false;
-				}
-			}
-			else if (is_string($idx))
-			{
-				$idx = strtolower(trim($idx));
-				switch ($idx)
-				{
-					case 'id':
-						$ids = array();
-						foreach ($this->units as $unit)
-						{
-							$ids[] = (int) $unit->id;
-						}
-						return $ids;
-					break;
-
-					case 'alias':
-						$aliases = array();
-						foreach ($this->units as $unit)
-						{
-							$aliases[] = stripslashes($unit->alias);
-						}
-						return $aliases;
-					break;
-
-					case 'title':
-						$title = array();
-						foreach ($this->units as $unit)
-						{
-							$title[] = stripslashes($unit->title);
-						}
-						return $title;
-					break;
-
-					default:
-						return $this->units;
-					break;
-				}
-			}
-		}*/
-
 		return $this->units;
+	}
+
+	/**
+	 * Check if the current user has manager access
+	 * This is just a shortcut for the access check
+	 * 
+	 * @return     boolean
+	 */
+	public function manager()
+	{
+		return $this->access('manage'); //in_array(JFactory::getUser()->get('id'), $this->get('managers'));
+	}
+
+	/**
+	 * Check if the current user is enrolled
+	 * 
+	 * @return     boolean
+	 */
+	public function member($user_id=null)
+	{
+		if (!isset($this->_member) 
+		 || ($user_id !== null && (int) $this->_member->get('user_id') != $user_id))
+		{
+			$this->_member = null;
+
+			/*if (!$user_id)
+			{
+				$user_id = JFactory::getUser()->get('id');
+			}*/
+		//$user_id = (int) $user_id;
+
+		/*$this->_db->setQuery(
+			"SELECT m.*, r.role, r.permissions AS role_permissions 
+			FROM #__courses_offering_members AS m 
+			LEFT JOIN #__courses_roles AS r ON r.id=m.role_id 
+			WHERE m.`offering_id`=" . $this->_db->Quote($this->get('id')) . " AND m.`user_id`=" . $this->_db->Quote($id)
+		);*/
+			if (isset($this->_members) && isset($this->_members[$user_id]))
+			{
+				$this->_member = $this->_members[$user_id];
+			}
+		}
+
+		if (!$this->_member)
+		{
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'member.php');
+
+			$this->_member = CoursesModelMember::getInstance($user_id, $this->get('id'));
+		}
+
+		return $this->_member; 
+	}
+
+	/**
+	 * Get a list of units for an offering
+	 *   Accepts either a numeric array index or a string [id, name]
+	 *   If index, it'll return the entry matching that index in the list
+	 *   If string, it'll return either a list of IDs or names
+	 * 
+	 * @param      array   $filters Filters to build query from
+	 * @param      boolean $clear   Force a new dataset?
+	 * @return     mixed
+	 */
+	public function members($filters=array(), $clear=false)
+	{
+		//if (is_string($filters))
+		if (isset($filters['count']) && $filters['count'])
+		{
+			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.php');
+
+			$tbl = new CoursesTableMember($this->_db);
+
+			$filters['offering_id'] = (int) $this->get('id');
+
+			return $tbl->count($filters);
+		}
+		if (!isset($this->_members) || !is_array($this->_members) || $clear)
+		{
+			//require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
+			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.php');
+
+			$tbl = new CoursesTableMember($this->_db);
+
+			$filters['offering_id'] = (int) $this->get('id');
+
+			$results = array();
+
+			if (($data = $tbl->find($filters)))
+			{
+				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'member.php');
+
+				foreach ($data as $key => $result)
+				{
+					$results[$result->user_id] = new CoursesModelMember($result, $this->get('id'));
+				}
+			}
+
+			$this->_members = $results; //new CoursesModelIterator($results);
+		}
+
+		return $this->_members;
+	}
+
+	/**
+	 * Get a list of units for an offering
+	 *   Accepts either a numeric array index or a string [id, name]
+	 *   If index, it'll return the entry matching that index in the list
+	 *   If string, it'll return either a list of IDs or names
+	 * 
+	 * @param      array   $filters Filters to build query from
+	 * @param      boolean $clear   Force a new dataset?
+	 * @return     mixed
+	 */
+	public function roles($filters=array(), $clear=false)
+	{
+		//if (is_string($filters))
+		if (isset($filters['count']) && $filters['count'])
+		{
+			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'role.php');
+
+			$tbl = new CoursesTableMember($this->_db);
+
+			$filters['offering_id'] = (int) $this->get('id');
+
+			return $tbl->count($filters);
+		}
+		if (!isset($this->_roles) || !is_array($this->_roles) || $clear)
+		{
+			//require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
+			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'role.php');
+
+			$tbl = new CoursesTableRole($this->_db);
+
+			$filters['offering_id'] = array(0, (int) $this->get('id'));  // 0 = default roles
+
+			if (!($results = $tbl->find($filters)))
+			{
+				/*require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'member.php');
+
+				foreach ($data as $key => $result)
+				{
+					$results[$result->user_id] = new CoursesModelMember($result, $this->get('id'));
+				}*/
+				$results = array();
+			}
+
+			$this->_roles = $results; //new CoursesModelIterator($results);
+		}
+
+		return $this->_roles;
 	}
 
 	/**
@@ -587,28 +664,17 @@ class CoursesModelOffering extends JObject
 	 */
 	public function pages($idx=null)
 	{
-		if (!$this->exists()) 
-		{
-			return array();
-		}
-
 		if (!isset($this->pages) || !is_array($this->pages))
 		{
-			$this->pages = array();
-
 			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'pages.php');
 
 			$tbl = new CoursesTablePage($this->_db);
-			if (($results = $tbl->getPages($this->get('course_id'), true)))
-			{
-				$this->pages = $results;
-			}
-			/*else
+			if (!($results = $tbl->getPages($this->get('course_id'), true)))
 			{
 				$results = array();
 			}
 
-			$this->pages = $results;*/
+			$this->pages = $results;
 		}
 
 		if ($idx !== null)
@@ -725,8 +791,7 @@ class CoursesModelOffering extends JObject
 						$this->params->set('access-edit-own-offering', true);
 					}
 					// Check if they're the offering creator or offering manager
-					else if ($this->get('created_by') == $juser->get('id') 
-						  || in_array($juser->get('id'), $this->get('managers'))) 
+					else if ($this->get('created_by') == $juser->get('id'))
 					{
 						// Give full access
 						$this->params->set('access-view-offering', true);
@@ -737,16 +802,121 @@ class CoursesModelOffering extends JObject
 						$this->params->set('access-edit-state-offering', true);
 						$this->params->set('access-edit-own-offering', true);
 					}
-					else if (in_array($juser->get('id'), $this->get('members')))
+					else
+					{
+						//$member = CoursesModelMember::getInstance($this->get('id'), $juser->get('id'));
+						$this->params->merge($this->member($juser->get('id'))->access());
+					}
+					/*else if (in_array($juser->get('id'), $this->get('members')))
 					{
 						$this->params->set('access-view-offering', true);
-					}
+					}*/
 				}
 
 				$this->_authorized = true;
 			}
 		}
 		return $this->params->get('access-' . strtolower($action) . '-offering');
+	}
+
+	/**
+	 * Short description for 'getPluginAccess'
+	 * Long description (if any) ...
+	 *
+	 * @param string $get_plugin Parameter description (if any) ...
+	 * @return mixed Return description (if any) ...
+	 */
+	public function getPluginAccess($get_plugin = '')
+	{
+		// Get plugins
+		JPluginHelper::importPlugin('courses');
+		$dispatcher = & JDispatcher::getInstance();
+
+		// Trigger the functions that return the areas we'll be using
+		//then add overview to array
+		$hub_course_plugins = $dispatcher->trigger('onCourseAreas', array());
+		array_unshift($hub_course_plugins, array(
+			'name' => 'outline', 
+			'title' => 'Outline', 
+			'default_access' => 'members'
+		));
+
+		//array to store plugin preferences when after retrieved from db
+		$active_course_plugins = array();
+
+		//get the course plugin preferences
+		//returns array of tabs and their access level (ex. [overview] => 'anyone', [messages] => 'registered')
+		$course_plugins = $this->get('plugins');
+
+		/*$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+		$course_plugins = new $paramsClass($this->get('plugins'));*/
+
+		if ($course_plugins)
+		{
+			$course_plugins = explode(',', $course_plugins);
+
+			foreach ($course_plugins as $plugin)
+			{
+				$temp = explode('=', trim($plugin));
+
+				if ($temp[0])
+				{
+					$active_course_plugins[$temp[0]] = trim($temp[1]);
+				}
+			}
+		}
+
+		//array to store final course plugin preferences
+		//array of acceptable access levels
+		$course_plugin_access = array();
+		$acceptable_levels = array('nobody', 'anyone', 'registered', 'members');
+
+		//if we have already set some
+		if ($active_course_plugins)
+		{
+			//for each plugin that is active on the hub
+			foreach ($hub_course_plugins as $hgp)
+			{
+				//if course defined access level is not an acceptable value or not set use default value that is set per plugin
+				//else use course defined access level
+				if (!isset($active_course_plugins[$hgp['name']]) || !in_array($active_course_plugins[$hgp['name']], $acceptable_levels))
+				{
+					$value = $hgp['default_access'];
+				}
+				else
+				{
+					$value = $active_course_plugins[$hgp['name']];
+				}
+
+				//store final  access level in array of access levels
+				$course_plugin_access[$hgp['name']] = $value;
+			}
+		}
+		else
+		{
+			//for each plugin that is active on the hub
+			foreach ($hub_course_plugins as $hgp)
+			{
+				$value = $hgp['default_access'];
+
+				//store final  access level in array of access levels
+				$course_plugin_access[$hgp['name']] = $value;
+			}
+		}
+
+		//if we wanted to return only a specific level return that otherwise return all access levels
+		if ($get_plugin != '')
+		{
+			return $course_plugin_access[$get_plugin];
+		}
+		else
+		{
+			return $course_plugin_access;
+		}
 	}
 }
 

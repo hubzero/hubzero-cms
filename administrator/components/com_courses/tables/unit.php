@@ -116,7 +116,7 @@ class CoursesTableUnit extends JTable
 	 */
 	public function __construct(&$db)
 	{
-		parent::__construct('#__course_units', 'id', $db);
+		parent::__construct('#__courses_units', 'id', $db);
 	}
 
 	/**

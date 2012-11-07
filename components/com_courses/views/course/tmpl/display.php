@@ -62,7 +62,7 @@ $database =& JFactory::getDBO();
 		//$gt = new CoursesTags($database);
 		//echo $gt->get_tag_cloud(0,0,$this->course->get('gidNumber'));
 
-		echo $this->parser->parse(stripslashes($this->course->get('private_desc')), $this->wikiconfig);
+		echo $this->parser->parse(stripslashes($this->course->get('description')), $this->wikiconfig);
 ?>
 	<table>
 		<thead>

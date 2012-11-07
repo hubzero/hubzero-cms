@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'course.php');
+
 /**
  * Courses model class for a course
  */
@@ -56,6 +58,13 @@ class CoursesModelCourses extends JObject
 	 * @var object
 	 */
 	private $_courses = null;
+
+	/**
+	 * CoursesModelCourse
+	 * 
+	 * @var object
+	 */
+	private $_course = null;
 
 	/**
 	 * Constructor
@@ -97,31 +106,72 @@ class CoursesModelCourses extends JObject
 	}
 
 	/**
-	 * Get a list of offerings for a course
-	 *   Accepts either a numeric array index or a string [id, name]
-	 *   If index, it'll return the entry matching that index in the list
-	 *   If string, it'll return either a list of IDs or names
+	 * Method to get/set the current unit
+	 *
+	 * @param     mixed $id ID or alias of specific unit
+	 * @return    object CoursesModelUnit
+	 */
+	public function course($id=null)
+	{
+		if (!isset($this->_course) 
+		 || ($id !== null && (int) $this->_course->get('id') != $id && (string) $this->_course->get('alias') != $id))
+		{
+			$this->_course = null;
+
+			if (isset($this->_courses))
+			{
+				foreach ($this->courses() as $key => $course)
+				{
+					if ((int) $course->get('id') == $id || (string) $course->get('alias') == $id)
+					{
+						$this->_course = $course;
+						break;
+					}
+				}
+			}
+			else
+			{
+				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
+
+				$this->_course = CoursesModelCourse::getInstance($id);
+			}
+		}
+		return $this->_course;
+	}
+
+	/**
+	 * Get a list of courses
+	 *   Accepts an array of filters to build query from
 	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @param      array $filters Filters to build query from
+	 * @return     mixed
 	 */
 	public function courses($filters=array())
 	{
-		if (!isset($this->_courses) || $this->_courses === null)
+		if (isset($filters['count']) && $filters['count'])
 		{
-			$this->_courses = array();
+			return $this->_tbl->getCount($filters);
+		}
+
+		if (!isset($this->_courses) || !is_a($this->_courses, 'CoursesModelIterator'))
+		{
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
 
 			if (($results = $this->_tbl->getRecords($filters)))
 			{
 				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
 
 				foreach ($results as $key => $result)
 				{
 					$results[$key] = new CoursesModelCourse($result);
 				}
-				$this->_courses = new CoursesModelIterator($results);
 			}
+			else
+			{
+				$results = array();
+			}
+
+			$this->_courses = new CoursesModelIterator($results);
 		}
 
 		return $this->_courses;

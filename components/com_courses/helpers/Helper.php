@@ -62,8 +62,8 @@ class Hubzero_Course_Helper
 		$database =& JFactory::getDBO();
 		
 		//query
-		$sql = "SELECT g.id, g.alias, g.title, g.public_desc, 
-				(SELECT COUNT(*) FROM #__courses_members AS gm WHERE gm.gidNumber=g.id) AS members
+		$sql = "SELECT g.id, g.alias, g.title, g.blurb, 
+				(SELECT COUNT(*) FROM #__courses_offering_members AS gm WHERE gm.course_id=g.id) AS members
 				FROM #__courses AS g 
 				WHERE g.type=1
 				AND g.state=1
@@ -107,7 +107,7 @@ class Hubzero_Course_Helper
 		}
 		
 		//query the databse for all published, type "HUB" courses
-		$sql = "SELECT g.id, g.alias, g.title, g.public_desc 
+		$sql = "SELECT g.id, g.alias, g.title, g.blurb 
 				FROM #__courses AS g
 				WHERE g.type=1
 				AND g.state=1";

@@ -64,16 +64,16 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'log.php');
 //require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'reason.php');
 //require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'pages.php');
 //require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'unit.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'asset.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'asset.group.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'asset.association.php');
+//require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'asset.php');
+//require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'asset.group.php');
+//require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'asset.association.php');
 //require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'course.php');
 //require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'instance.php');
 
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'Helper.php');
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'InviteEmail.php');
 
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'course.php');
+//require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'course.php');
 require_once(JPATH_COMPONENT . DS . 'models' . DS . 'course.php');
 
 //build controller path and name

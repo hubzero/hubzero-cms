@@ -125,6 +125,74 @@ class CoursesControllerOffering extends Hubzero_Controller
 	}
 
 	/**
+	 * Method to set the document path
+	 * 
+	 * @param      array $course_pages List of roup pages
+	 * @return     void
+	 */
+	public function _buildPathway()
+	{
+		$pathway =& JFactory::getApplication()->getPathway();
+
+		if (count($pathway->getPathWay()) <= 0) 
+		{
+			$pathway->addItem(
+				JText::_(strtoupper($this->_option)),
+				'index.php?option=' . $this->_option
+			);
+		}
+
+		if ($this->course->exists()) 
+		{
+			$pathway->addItem(
+				stripslashes($this->course->get('title')),
+				'index.php?option=' . $this->_option . '&gid=' . $this->course->get('alias')
+			);
+
+			if ($this->course->offering()->exists()) 
+			{
+				$pathway->addItem(
+					stripslashes($this->course->offering()->get('title')),
+					'index.php?option=' . $this->_option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias')
+				);
+				
+				if ($this->active && $this->active != 'overview') 
+				{
+					$pathway->addItem(
+						JText::_('COURSE_' . strtoupper($this->active)), 
+						'index.php?option=' . $this->_option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=' . $this->active
+					);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Method to build and set the document title
+	 * 
+	 * @return     void
+	 */
+	public function _buildTitle()
+	{
+		//set title used in view
+		$this->_title = JText::_(strtoupper($this->_option));
+
+		if ($this->course->exists()) 
+		{
+			$this->_title .= ': ' . stripslashes($this->course->get('title'));
+
+			if ($this->course->offering()->exists()) 
+			{
+				$this->_title .= ': ' . stripslashes($this->course->offering()->get('title'));
+			}
+		}
+
+		//set title of browser window
+		$document =& JFactory::getDocument();
+		$document->setTitle($this->_title);
+	}
+
+	/**
 	 * Redirect to login page
 	 * 
 	 * @return     void
@@ -211,14 +279,22 @@ class CoursesControllerOffering extends Hubzero_Controller
 		array_unshift($plugins, array(
 			'name'             => 'outline',
 			'title'            => JText::_('Outline'),
-			//'default_access'   => 'anyone',
+			'default_access'   => 'anyone',
 			'display_menu_tab' => true
 		));
 
 		// Get plugin access
-		$course_plugin_access = Hubzero_Course_Helper::getPluginAccess($this->course);
+		/*$course_plugin_access = Hubzero_Course_Helper::getPluginAccess($this->course);
 
 		// If active tab not overview and an not one of available tabs
+		if ($this->view->active != 'outline' && !in_array($this->view->active, array_keys($course_plugin_access))) 
+		{
+			$this->view->active = 'outline';
+		}*/
+		foreach ($plugins as $plugin)
+		{
+			$course_plugin_access[$plugin['name']] = $plugin['default_access'];
+		}
 		if ($this->view->active != 'outline' && !in_array($this->view->active, array_keys($course_plugin_access))) 
 		{
 			$this->view->active = 'outline';

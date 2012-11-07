@@ -95,7 +95,7 @@ class CoursesTableAsset extends JTable
 	 */
 	public function __construct(&$db)
 	{
-		parent::__construct('#__course_assets', 'id', $db);
+		parent::__construct('#__courses_assets', 'id', $db);
 	}
 
 	/**
@@ -117,8 +117,8 @@ class CoursesTableAsset extends JTable
 	public function buildQuery($filters=array())
 	{
 		$query = " FROM $this->_tbl AS ca";
-		$query .= " LEFT JOIN #__course_asset_associations AS caa ON caa.course_asset_id = ca.id";
-		$query .= " LEFT JOIN #__course_asset_groups AS cag ON caa.scope_id = cag.id";
+		$query .= " LEFT JOIN #__courses_asset_associations AS caa ON caa.course_asset_id = ca.id";
+		$query .= " LEFT JOIN #__courses_asset_groups AS cag ON caa.scope_id = cag.id";
 
 		return $query;
 	}

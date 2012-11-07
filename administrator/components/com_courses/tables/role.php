@@ -1,0 +1,186 @@
+<?php
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2011 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+/**
+ * Table class for course membership reason
+ */
+class CoursesTableRole extends JTable
+{
+	/**
+	 * int(11) Primary key
+	 * 
+	 * @var integer
+	 */
+	var $id       = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $offering_id = NULL;
+
+	/**
+	 * varchar(150)
+	 * 
+	 * @var string
+	 */
+	var $alias = NULL;
+
+	/**
+	 * varchar(150)
+	 * 
+	 * @var string
+	 */
+	var $title = NULL;
+
+	/**
+	 * text
+	 * 
+	 * @var string
+	 */
+	var $permissions   = NULL;
+
+	/**
+	 * Constructor
+	 * 
+	 * @param      object &$db JDatabase
+	 * @return     void
+	 */
+	public function __construct(&$db)
+	{
+		parent::__construct('#__courses_roles', 'id', $db);
+	}
+
+	/**
+	 * Validate data
+	 * 
+	 * @return     boolean True if data is valid
+	 */
+	public function check()
+	{
+		$this->role = trim($this->role);
+		if (!$this->role) 
+		{
+			$this->setError(JText::_('Missing role'));
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Build query method
+	 * 
+	 * @param  array $filters
+	 * @return $query database query
+	 */
+	private function _buildQuery($filters=array())
+	{
+		$query = " FROM $this->_tbl AS r";
+
+		$where = array();
+		if (isset($filters['offering_id']))
+		{
+			if (is_array($filters['offering_id']))
+			{
+				$filters['offering_id'] = array_map('intval', $filters['offering_id']);
+				$filters['offering_id'] = implode(',', $filters['offering_id']);
+			}
+			else
+			{
+				$filters['offering_id'] = intval($filters['offering_id']);
+			}
+			$where[] = "r.`offering_id` IN (" . $filters['offering_id'] . ")";
+		}
+		if (isset($filters['alias']) && $filters['alias'])
+		{
+			$where[] = "r.`alias`=" . $this->_db->Quote(intval($filters['alias']));
+		}
+		if (isset($filters['search']) && $filters['search'])
+		{
+			$where[] = "LOWER(r.`title`) LIKE '%" . $filters['title'] . "%'";
+		}
+
+		if (count($where) > 0)
+		{
+			$query .= " WHERE " . implode(" AND ", $where);
+		}
+
+		return $query;
+	}
+
+	/**
+	 * Get an object list of course units
+	 * 
+	 * @param  array $filters
+	 * @return object Return course units
+	 */
+	public function count($filters=array())
+	{
+		$query  = "SELECT COUNT(*) ";
+		$query .= $this->_buildquery($filters);
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadResult();
+	}
+
+	/**
+	 * Get an object list of course units
+	 * 
+	 * @param  array $filters
+	 * @return object Return course units
+	 */
+	public function find($filters=array())
+	{
+		$query  = "SELECT r.*, (SELECT COUNT(m.user_id) FROM #__courses_offering_members AS m WHERE m.role_id=r.id AND m.offering_id=r.offering_id) AS total";
+		$query .= $this->_buildquery($filters);
+
+		if (!empty($filters['start']) && !empty($filters['limit']))
+		{
+			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+		}
+		if (isset($filters['sort']) && $filters['sort'])
+		{
+			if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC')))
+			{
+				$filters['sort_Dir'] = 'ASC';
+			}
+			$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+		}
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
+}
+

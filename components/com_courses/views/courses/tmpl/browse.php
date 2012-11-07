@@ -152,37 +152,26 @@ foreach ($letters as $letter)
 					</thead>
 					<tbody>
 <?php
-if ($this->courses) {
+if ($this->courses) 
+{
 	foreach ($this->courses as $course)
 	{
 		//
-		$g = CoursesCourse::getInstance($course->id);
-		$invitees = $g->get('invitees');
-		$applicants = $g->get('applicants');
-		$members = $g->get('members');
-		$managers = $g->get('managers');
+		//$g = CoursesCourse::getInstance($course->id);
+		//$invitees = $course->get('invitees');
+		//$applicants = $g->get('applicants');
+		//$members = $g->get('members');
+		//$managers = $course->get('managers');
 		
 		//get status
 		$status = '';
 		
 		//determine course status
-		if ($g->get('state'))
+		if ($course->get('state') == 1)
 		{
-			if(in_array($juser->get('id'), $managers))
+			if ($course->access('manage'))
 			{
 				$status = 'manager';
-			}
-			elseif(in_array($juser->get('id'), $members))
-			{
-				$status = 'member';
-			}
-			elseif(in_array($juser->get('id'), $invitees))
-			{
-				$status = 'invitee';
-			}
-			elseif(in_array($juser->get('id'), $applicants))
-			{
-				$status = 'pending';
 			}
 		}
 		else
@@ -192,24 +181,24 @@ if ($this->courses) {
 ?>
 						<tr<?php echo ($status) ? ' class="'.$status.'"' : ''; ?>>
 							<th>
-								<span class="entry-id"><?php echo $course->id; ?></span>
+								<span class="entry-id"><?php echo $course->get('id'); ?></span>
 							</th>
 							<td>
-								<a class="entry-title" href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$course->alias); ?>"><?php echo $this->escape(stripslashes($course->title)); ?></a><br />
+								<a class="entry-title" href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$course->get('alias')); ?>"><?php echo $this->escape(stripslashes($course->get('title'))); ?></a><br />
 								<span class="entry-details">
-									<span class="entry-alias"><?php echo $course->alias; ?></span>
+									<span class="entry-alias"><?php echo $course->get('alias'); ?></span>
 								</span>
 							</td>
 							<td>
 								<?php
-								switch ($course->join_policy)
+								/*switch ($course->join_policy)
 								{
 									case 3: echo '<span class="closed join-policy">'.JText::_('Closed').'</span>'."\n"; break;
 									case 2: echo '<span class="inviteonly join-policy">'.JText::_('Invite Only').'</span>'."\n"; break;
 									case 1: echo '<span class="restricted join-policy">'.JText::_('Restricted').'</span>'."\n";  break;
 									case 0:
 									default: echo '<span class="open join-policy">'.JText::_('Open').'</span>'."\n"; break;
-								}
+								}*/
 ?>
 							</td>
 <?php if ($this->config->get('access-admin-component')) { ?>

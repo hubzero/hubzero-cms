@@ -33,6 +33,9 @@ defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Controller');
 
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
+//require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
+
 /**
  * Courses controller class
  */
@@ -147,7 +150,7 @@ class CoursesControllerCourses extends Hubzero_Controller
 		if (is_object($profile))
 		{
 			//get users tags
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'tags.php');
+			/*include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'tags.php');
 			$mt = new MembersTags($this->database);
 			$mytags = $mt->get_tag_string($profile->get("uidNumber"));
 
@@ -158,11 +161,11 @@ class CoursesControllerCourses extends Hubzero_Controller
 			$mycourses = array_filter($mycourses);
 
 			//get courses user may be interested in
-			$interestingcourses = Hubzero_Course_Helper::getCoursesMatchingTagString($mytags, Hubzero_User_Helper::getCourses($profile->get("uidNumber")));
+			$interestingcourses = Hubzero_Course_Helper::getCoursesMatchingTagString($mytags, Hubzero_User_Helper::getCourses($profile->get("uidNumber")));*/
 		}
 
 		//get the popular courses
-		$popularcourses = Hubzero_Course_Helper::getPopularCourses(3);
+		$popularcourses = array(); //Hubzero_Course_Helper::getPopularCourses(3);
 
 		// Output HTML
 		//$this->view->option = $this->_option;
@@ -184,23 +187,27 @@ class CoursesControllerCourses extends Hubzero_Controller
 	 */
 	public function browseTask()
 	{
-		// Push some styles to the template
-		$this->_getStyles($this->_option, $this->_task . '.css');
+		$jconfig = JFactory::getConfig();
 
 		// Incoming
 		$this->view->filters = array();
-		$this->view->filters['type']   = array(1,3);
-		$this->view->filters['authorized'] = "";
+		//$this->view->filters['type']   = array(1,3);
+		//$this->view->filters['authorized'] = "";
 
 		// Filters for getting a result count
-		$this->view->filters['limit']  = 'all';
-		$this->view->filters['fields'] = array('COUNT(*)');
+		//$this->view->filters['limit']  = 'all';
+		//$this->view->filters['fields'] = array('COUNT(*)');
+		$this->view->filters['state'] = 1;
 		$this->view->filters['search'] = JRequest::getVar('search', '');
 		$this->view->filters['sortby'] = strtolower(JRequest::getWord('sortby', 'title'));
 		if (!in_array($this->view->filters['sortby'], array('alias', 'title')))
 		{
 			$this->view->filters['sortby'] = 'title';
 		}
+		// Filters for returning results
+		$this->view->filters['limit']  = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
+		$this->view->filters['limit']  = ($this->view->filters['limit']) ? $this->view->filters['limit'] : 'all';
+		$this->view->filters['start']  = JRequest::getInt('limitstart', 0);
 		$this->view->filters['policy'] = strtolower(JRequest::getWord('policy', ''));
 		if (!in_array($this->view->filters['policy'], array('open', 'restricted', 'invite', 'closed')))
 		{
@@ -208,20 +215,15 @@ class CoursesControllerCourses extends Hubzero_Controller
 		}
 		$this->view->filters['index']  = htmlentities(JRequest::getVar('index', ''));
 
+		$model = CoursesModelCourses::getInstance();
+
 		// Get a record count
-		$this->view->total = CoursesCourse::find($this->view->filters);
+		$this->view->filters['count'] = true;
+		$this->view->total   = $model->courses($this->view->filters);
 
-		// Get configuration
-		$jconfig = JFactory::getConfig();
-
-		// Filters for returning results
-		$this->view->filters['limit']  = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
-		$this->view->filters['limit']  = ($this->view->filters['limit']) ? $this->view->filters['limit'] : 'all';
-		$this->view->filters['start']  = JRequest::getInt('limitstart', 0);
-		$this->view->filters['fields'] = array('alias', 'title', 'state', 'id', 'type', 'public_desc', 'join_policy');
-
-		// Get a list of all courses
-		$this->view->courses = CoursesCourse::find($this->view->filters);
+		// Get records
+		$this->view->filters['count'] = false;
+		$this->view->courses = $model->courses($this->view->filters);
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
@@ -233,10 +235,13 @@ class CoursesControllerCourses extends Hubzero_Controller
 
 		// Run through the master list of courses and mark the user's status in that course
 		//$this->view->authorized = $this->_authorize();
-		if (!$this->juser->get('guest') && $this->view->courses) 
+		/*if (!$this->juser->get('guest') && $this->view->courses) 
 		{
 			$this->view->courses = $this->_getCourses($this->view->courses);
-		}
+		}*/
+
+		// Push some styles to the template
+		$this->_getStyles($this->_option, $this->_task . '.css');
 
 		//build the title
 		$this->_buildTitle();

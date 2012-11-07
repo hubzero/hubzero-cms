@@ -90,14 +90,14 @@ class CoursesTableCourse extends JTable
 	 * 
 	 * @var integer
 	 */
-	var $public_desc = NULL;
+	var $blurb = NULL;
 
 	/**
 	 * int(11)
 	 * 
 	 * @var integer
 	 */
-	var $private_desc = NULL;
+	var $description = NULL;
 
 	/**
 	 * int(11)
@@ -264,10 +264,25 @@ class CoursesTableCourse extends JTable
 	 */
 	public function check()
 	{
-		if (trim($this->cn) == '') 
+		$this->title = trim($this->title);
+
+		if (!$this->title) 
 		{
-			$this->setError(JText::_('COM_COURSES_ERROR_EMPTY_TITLE'));
+			$this->setError(JText::_('Please provide a title.'));
 			return false;
+		}
+
+		if (!$this->alias)
+		{
+			$this->alias = str_replace(' ', '-', strtolower($this->title));
+		}
+		$this->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', $this->alias);
+
+		if (!$this->id)
+		{
+			$juser =& JFactory::getUser();
+			$this->created = date('Y-m-d H:i:s', time());
+			$this->created_by = $juser->get('id');
 		}
 		return true;
 	}
@@ -277,7 +292,7 @@ class CoursesTableCourse extends JTable
 	 * 
 	 * @return     boolean
 	 */
-	public function save()
+	/*public function save()
 	{
 		$this->setError('You\'re doing it wrong!');
 		return false;
@@ -288,7 +303,7 @@ class CoursesTableCourse extends JTable
 	 * 
 	 * @return     boolean
 	 */
-	public function store()
+	/*public function store()
 	{
 		$this->setError('You\'re doing it wrong!');
 		return false;
@@ -324,6 +339,86 @@ class CoursesTableCourse extends JTable
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
+	}
+
+	/**
+	 * Build a query based off of filters passed
+	 * 
+	 * @param      array $filters Filters to construct query from
+	 * @return     string SQL
+	 */
+	protected function _buildQuery($filters=array())
+	{
+		$query  = " FROM $this->_tbl AS c";
+
+		$where = array();
+
+		if (isset($filters['state'])) 
+		{
+			$where[] = "c.state=" . $this->_db->Quote($filters['state']);
+		}
+
+		if (isset($filters['search']) && $filters['search'] != '') 
+		{
+			$where[] = "(LOWER(c.title) LIKE '%" . strtolower($filters['search']) . "%' 
+					OR LOWER(c.alias) LIKE '%" . strtolower($filters['search']) . "%')";
+		}
+
+		if (count($where) > 0)
+		{
+			$query .= " WHERE ";
+			$query .= implode(" AND ", $where);
+		}
+
+		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		{
+			if (!isset($filters['sort']) || !$filters['sort']) 
+			{
+				$filters['sort'] = 'title';
+			}
+			if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+			{
+				$filters['sort_Dir'] = 'DESC';
+			}
+			$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+		}
+
+		return $query;
+	}
+
+	/**
+	 * Get a record count
+	 * 
+	 * @param      array $filters Filters to construct query from
+	 * @return     integer
+	 */
+	public function getCount($filters=array())
+	{
+		$filters['limit'] = 0;
+
+		$query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadResult();
+	}
+
+	/**
+	 * Get records
+	 * 
+	 * @param      array $filters Filters to construct query from
+	 * @return     array
+	 */
+	public function getRecords($filters=array())
+	{
+		$query = "SELECT c.*" . $this->_buildQuery($filters);
+
+		if ($filters['limit'] != 0) 
+		{
+			$query .= ' LIMIT ' . intval($filters['start']) . ',' . intval($filters['limit']);
+		}
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
 	}
 }
 

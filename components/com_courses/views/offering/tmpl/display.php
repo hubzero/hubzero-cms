@@ -94,11 +94,11 @@ if (!$no_html) : ?>
 						<li><span class="course-inviteonly">Course is Invite Only</span></li>
 					<?php else*/
 					if (!$this->course->offering()->access('view')) : ?>
-						<?php if($membership_control == 1) : ?> 
+						<?php //if ($membership_control == 1) : ?> 
 							<li>
 								<a class="course-join" href="/courses/<?php echo $this->course->get('alias'); ?>/join">Enroll</a>
 							</li>
-						<?php endif; ?> 
+						<?php //endif; ?> 
 					<?php /*elseif ($this->course->get('join_policy') == 1 && !in_array($this->user->get('id'), $this->course->offering()->get('members'))) : ?>
 						<?php if($membership_control == 1) : ?>
 							<?php if(in_array($this->user->get('id'), $this->course->get("applicants"))) : ?>
@@ -220,8 +220,8 @@ if (!$no_html) : ?>
 										}
 									}
 
-									$menu_item .= "</ul>";
-									$menu_item .= "</li>";
+									$menu_item .= '</ul>';
+									$menu_item .= '</li>';
 								}
 								else
 								{
@@ -239,16 +239,16 @@ if (!$no_html) : ?>
 										$meta_alert = (isset($metadata['alert']) && $metadata['alert'] != '') ? $metadata['alert'] : '';
 
 										//create menu item
-										$menu_item  = "<li class=\"{$li_cls} course-{$cls}-tab\">";
-										$menu_item .= "<a class=\"{$cls}\" title=\"".$this->course->get('description')."'s {$title} Page\" href=\"{$link}\">{$title}</a>";
-										$menu_item .= "<span class=\"meta\">";
+										$menu_item  = '<li class="' . $li_cls . ' course-' . $cls . '-tab">';
+										$menu_item .= '<a class="' . $cls . '" title="' . $this->course->get('title') . '"\'s ' . $title . ' Page" href="' . $link . '">' . $title . '</a>';
+										$menu_item .= '<span class="meta">';
 										if ($meta_count)
 										{
-											$menu_item .= "<span class=\"count\">" . $meta_count . "</span>";
+											$menu_item .= '<span class="count">' . $meta_count . '</span>';
 										}
-										$menu_item .= "</span>";
+										$menu_item .= '</span>';
 										$menu_item .= $meta_alert;
-										$menu_item .= "</li>";
+										$menu_item .= '</li>';
 									}
 								} 
 

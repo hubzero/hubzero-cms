@@ -31,12 +31,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.php');
 
 /**
  * Courses model class for a course
  */
-class CoursesModelAsset extends JObject
+class CoursesModelMember extends JObject
 {
 	/**
 	 * CoursesTableAsset
@@ -50,7 +50,7 @@ class CoursesModelAsset extends JObject
 	 * 
 	 * @var object
 	 */
-	private $_creator = NULL;
+	private $_permissions = NULL;
 
 	/**
 	 * JDatabase
@@ -60,11 +60,11 @@ class CoursesModelAsset extends JObject
 	private $_db = NULL;
 
 	/**
-	 * Container for properties
-	 * 
+	 * Description for '_list_keys'
+	 *
 	 * @var array
 	 */
-	public $params = null;
+	static $_list_keys = array('role', 'role_permissions');
 
 	/**
 	 * Constructor
@@ -73,26 +73,56 @@ class CoursesModelAsset extends JObject
 	 * @param      object  &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct($oid)
+	public function __construct($uid, $oid=0)
 	{
 		$this->_db = JFactory::getDBO();
 
-		$this->_tbl = new CoursesTableAsset($this->_db);
+		$this->_tbl = new CoursesTableMember($this->_db);
 
-		if (is_numeric($oid) || is_string($oid))
+		if (is_numeric($uid) || is_string($uid))
 		{
-			$this->_tbl->load($oid);
+			$this->_tbl->load($uid, $oid);
 		}
-		else if (is_object($oid))
+		else if (is_object($uid))
 		{
-			$this->_tbl->bind($oid);
+			$this->_tbl->bind($uid);
+			if (isset($uid->role))
+			{
+				$this->_tbl->set('role', $uid->role);
+			}
+			if (isset($uid->role_permissions))
+			{
+				$this->_tbl->set('role_permissions', $uid->role_permissions);
+			}
 		}
-		else if (is_array($oid))
+		else if (is_array($uid))
 		{
-			$this->_tbl->bind($oid);
+			$this->_tbl->bind($uid);
+			if (isset($uid['role']))
+			{
+				$this->_tbl->set('role', $uid['role']);
+			}
+			if (isset($uid['role_permissions']))
+			{
+				$this->_tbl->set('role_permissions', $uid['role_permissions']);
+			}
 		}
 
-		$this->params = JComponentHelper::getParams('com_courses');
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+
+		$permissions = new $paramsClass($this->get('role_permissions'));
+		$permissions->merge(new $paramsClass($this->get('permissions')));
+
+		if ($this->exists())
+		{
+			$permissions->set('access-view-offering', true);
+		}
+
+		$this->set('permissions', $permissions);
 	}
 
 	/**
@@ -105,7 +135,7 @@ class CoursesModelAsset extends JObject
 	 * @param      string $scope    The page scope
 	 * @return     object WikiPage
 	 */
-	static function &getInstance($oid=null)
+	static function &getInstance($uid=null, $oid=0)
 	{
 		static $instances;
 
@@ -114,12 +144,12 @@ class CoursesModelAsset extends JObject
 			$instances = array();
 		}
 
-		if (!isset($instances[$oid])) 
+		if (!isset($instances[$oid . '_' . $uid])) 
 		{
-			$instances[$oid] = new CoursesModelAsset($oid);
+			$instances[$oid . '_' . $uid] = new CoursesModelMember($uid, $oid);
 		}
 
-		return $instances[$oid];
+		return $instances[$oid . '_' . $uid];
 	}
 
 	/**
@@ -168,6 +198,30 @@ class CoursesModelAsset extends JObject
  	 */
 	public function get($property, $default=null)
 	{
+		if (in_array($property, self::$_list_keys))
+		{
+			if (!array_key_exists($property, get_object_vars($this->_tbl)))
+			{
+				if (is_object($this->_db))
+				{
+					require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'role.php');
+
+					$result = new CoursesTableRole($this->_db);
+					if ($result->load($this->_tbl->get('role_id')))
+					{
+						$this->_tbl->set('role', $result->title);
+						$this->_tbl->set('role_permissions', $result->permissions);
+					}
+					/*$this->_db->setQuery("SELECT r.* FROM #__courses_roles AS r WHERE r.`id`=" . $this->_db->Quote($this->_tbl->get('role_id')));
+
+					if (($result = $this->_db->loadObject()))
+					{
+						$this->_tbl->role = $result->role;
+						$this->_tbl->role_permissions = $result->permissions;
+					}*/
+				}
+			}
+		}
 		if (isset($this->_tbl->$property)) 
 		{
 			return $this->_tbl->$property;
@@ -197,24 +251,11 @@ class CoursesModelAsset extends JObject
 	 */
 	public function exists()
 	{
-		if ($this->get('id') && (int) $this->get('id') > 0) 
+		if ((int) $this->get('offering_id') && (int) $this->get('user_id')) 
 		{
 			return true;
 		}
 		return false;
-	}
-
-	/**
-	 * Check if the resource exists
-	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
-	 */
-	public function path($course=0)
-	{
-		// /site/courses/{course ID}/{asset ID}/{asset file}
-		$path = DS . trim($this->params->get('uploadpath', '/site/courses'), DS) . DS . $course . DS . $this->get('id') . DS . ltrim($this->get('url'), DS);
-		return $path;
 	}
 
 	/**
@@ -258,9 +299,13 @@ class CoursesModelAsset extends JObject
 	 * @param      string $action Action to check
 	 * @return     boolean True if authorized, false if not
 	 */
-	public function access($action='view')
+	public function access($action='')
 	{
-		return $this->params->get('access-' . strtolower($action) . '-offering');
+		if (!$action)
+		{
+			return $this->get('permissions');
+		}
+		return $this->get('permissions')->get('access-' . strtolower($action) . '-offering');
 	}
 }
 

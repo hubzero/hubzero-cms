@@ -69,33 +69,7 @@ function submitbutton(pressbutton)
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('COM_COURSES_SEARCH'); ?>:</label> 
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" />
-		
-		<label for="filter-type"><?php echo JText::_('COM_COURSES_TYPE'); ?>:</label> 
-		<select name="type" id="filter-type">
-			<option value="all"<?php echo ($this->filters['type'][0] == 'all') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Type...'); ?></option>
-			<option value="hub"<?php echo ($this->filters['type'][0] == 'hub') ? ' selected="selected"' : ''; ?>>Hub</option>
-			<option value="system"<?php echo ($this->filters['type'][0] == 'system') ? ' selected="selected"' : ''; ?>>System</option>
-			<option value="project"<?php echo ($this->filters['type'][0] == 'project') ? ' selected="selected"' : ''; ?>>Project</option>
-			<option value="partner"<?php echo ($this->filters['type'][0] == 'partner') ? ' selected="selected"' : ''; ?>>Partner</option>
-		</select>
-		
-		<label for="filter-privacy"><?php echo JText::_('Privacy'); ?>:</label> 
-		<select name="privacy" id="filter-privacy">
-			<option value=""<?php echo ($this->filters['privacy'] == '-1') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Privacy level...'); ?></option>
-			<option value="public"<?php echo ($this->filters['privacy'] == 'public') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Public'); ?></option>
-			<option value="protected"<?php echo ($this->filters['privacy'] == 'protected') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Protected'); ?></option>
-			<option value="private"<?php echo ($this->filters['privacy'] == 'private') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Private'); ?></option>
-		</select>
-		
-		<label for="filter-policy"><?php echo JText::_('Policy'); ?>:</label> 
-		<select name="policy" id="filter-policy">
-			<option value=""<?php echo ($this->filters['policy'] == '') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Policy type...'); ?></option>
-			<option value="open"<?php echo ($this->filters['policy'] == 'open') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Open'); ?></option>
-			<option value="restricted"<?php echo ($this->filters['policy'] == 'restricted') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Restricted'); ?></option>
-			<option value="invite"<?php echo ($this->filters['policy'] == 'invite') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Invite only'); ?></option>
-			<option value="closed"<?php echo ($this->filters['policy'] == 'closed') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Closed'); ?></option>
-		</select>
-		
+
 		<input type="submit" value="<?php echo JText::_('COM_COURSES_GO'); ?>" />
 	</fieldset>
 	<div class="clr"></div>
@@ -103,14 +77,13 @@ function submitbutton(pressbutton)
 	<table class="adminlist" summary="<?php echo JText::_('COM_COURSES_TABLE_SUMMARY'); ?>">
 		<thead>
 		 	<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo JText::_('COM_COURSES_ID'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_COURSES_NAME'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_COURSES_CN'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_COURSES_TYPE'); ?></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
+				<th scope="col"><?php echo JText::_('ID'); ?></th>
+				<th scope="col"><?php echo JText::_('Title'); ?></th>
+				<th scope="col"><?php echo JText::_('Alias'); ?></th>
 				<th scope="col"><?php echo JText::_('COM_COURSES_PUBLISHED'); ?></th>
 				<th scope="col"><?php echo JText::_('COM_COURSES_MEMBERS'); ?></th>
-				<th scope="col"><?php echo JText::_('Pages'); ?></th>
+				<th scope="col"><?php echo JText::_('Offerings'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -120,12 +93,11 @@ function submitbutton(pressbutton)
 		</tfoot>
 		<tbody>
 <?php
+$i = 0;
 $k = 0;
-for ($i=0, $n=count($this->rows); $i < $n; $i++)
+foreach ($this->rows as $row)
 {
-	$row = &$this->rows[$i];
-
-	$course = new Hubzero_Course();
+	/*$course = new Hubzero_Course();
 	//$course->gidNumber = $row->gidNumber;
 	//$course->cn = $row->cn;
 	$course->read($row->gidNumber);
@@ -145,48 +117,48 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	$tip .= '<tr><th>' . JText::_('COM_COURSES_MANAGERS') . '</th><td>' . count($course->get('managers')) . '</td></tr>';
 	$tip .= '<tr><th>' . JText::_('COM_COURSES_APPLICANTS') . '</th><td>' . count($course->get('applicants')) . '</td></tr>';
 	$tip .= '<tr><th>' . JText::_('COM_COURSES_INVITEES') . '</th><td>' . count($course->get('invitees')) . '</td></tr>';
-	$tip .= '</tbody></table>';
+	$tip .= '</tbody></table>';*/
+	$tip = '[coming soon]';
+	$members = 0;
+	$offerings = 0;
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->cn ?>" onclick="isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->get('alias'); ?>" onclick="isChecked(this.checked);" />
 				</td>
 				<td>
-					<?php echo $this->escape($row->gidNumber); ?>
+					<?php echo $this->escape($row->get('id')); ?>
 				</td>
 				<td>
 <?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<? echo $row->cn; ?>">
-						<?php echo $this->escape(stripslashes($row->description)); ?>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('alias'); ?>">
+						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 					</a>
 <?php } else { ?>
 					<span>
-						<?php echo $this->escape(stripslashes($row->description)); ?>
+						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 					</span>
 <?php } ?>
 				</td>
 				<td>
 <?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<? echo $row->cn; ?>">
-						<?php echo $this->escape($row->cn); ?>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('alias'); ?>">
+						<?php echo $this->escape($row->get('alias')); ?>
 					</a>
 <?php } else { ?>
-					<?php echo $this->escape($row->cn); ?>
+					<?php echo $this->escape($row->get('alias')); ?>
 <?php } ?>
 				</td>
 				<td>
-					<?php echo $type; ?>
-				</td>
-				<td>
 <?php if ($canDo->get('core.edit.state')) { ?>
-					<?php if ($row->published) { ?>
-					<a class="jgrid" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=unpublish&amp;id[]=<?php echo $row->cn; ?>" title="<?php echo JText::_('Unpublish Course'); ?>">
+					<?php if ($row->get('state')) { ?>
+					<a class="jgrid" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=unpublish&amp;id[]=<?php echo $row->get('alias'); ?>" title="<?php echo JText::_('Unpublish Course'); ?>">
 						<span class="state publish">
 							<span class="text"><?php echo JText::_('Published'); ?></span>
 						</span>
 					</a>
 					<?php } else { ?>
-					<a class="jgrid" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=publish&amp;id[]=<?php echo $row->cn; ?>" title="<?php echo JText::_('Publish Course'); ?>">
+					<a class="jgrid" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=publish&amp;id[]=<?php echo $row->get('alias'); ?>" title="<?php echo JText::_('Publish Course'); ?>">
 						<span class="state unpublish">
 							<span class="text"><?php echo JText::_('Unpublished'); ?></span>
 						</span>
@@ -196,7 +168,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 <?php if ($canDo->get('core.manage')) { ?>
-					<a class="glyph member hasTip" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;gid=<?php echo $row->cn; ?>" title="<?php echo JText::_('Manage membership') . '::' . $tip; ?>">
+					<a class="glyph member hasTip" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;gid=<?php echo $row->get('alias'); ?>" title="<?php echo JText::_('Manage membership') . '::' . $tip; ?>">
 						<?php echo $members; ?>
 					</a>
 <?php } else { ?>
@@ -207,12 +179,15 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.manage')) { ?>
-						<a href="index.php?option=<?php echo $this->option ?>&amp;controller=pages&amp;gid=<?php echo $row->cn; ?>">Course Pages</a>
+						<a class="glyph list" href="index.php?option=<?php echo $this->option; ?>&amp;controller=offerings&amp;gid=<?php echo $row->get('alias'); ?>">
+							<?php echo $offerings; ?>
+						</a>
 					<?php } ?>
 				</td>
 			</tr>
 <?php
 	$k = 1 - $k;
+	$i++;
 }
 ?>
 		</tbody>
