@@ -362,7 +362,7 @@ class CoursesModelAssetgroup extends JObject
 
 			$tbl = new CoursesTableAsset($this->_db);
 
-			if (($results = $tbl->getCourseAssets(array('w' => $filters))))
+			if (($results = $tbl->find(array('w' => $filters))))
 			{
 				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
 

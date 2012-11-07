@@ -337,6 +337,16 @@ class CoursesModelCourse extends JObject
 	 */
 	public function offerings($filters=array())
 	{
+		if (isset($filters['count']) && $filters['count'])
+		{
+			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'role.php');
+
+			$tbl = new CoursesTableOffering($this->_db);
+
+			$filters['course_id'] = (int) $this->get('id');
+
+			return $tbl->count($filters);
+		}
 		// Is the data is not set OR is it not the right type?
 		if (!isset($this->offerings) || !is_a($this->offerings, 'CoursesModelIterator'))
 		{
@@ -349,7 +359,7 @@ class CoursesModelCourse extends JObject
 			$filters['course_id'] = (int) $this->get('id');
 
 			// Attempt to get database results
-			if (($results = $tbl->getCourseOfferings($filters)))
+			if (($results = $tbl->find($filters)))
 			{
 				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
 

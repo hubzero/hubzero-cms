@@ -120,6 +120,24 @@ class CoursesTableAsset extends JTable
 		$query .= " LEFT JOIN #__courses_asset_associations AS caa ON caa.course_asset_id = ca.id";
 		$query .= " LEFT JOIN #__courses_asset_groups AS cag ON caa.scope_id = cag.id";
 
+		/*$where = array();
+
+		if (isset($filters['course_instance_id']) && $filters['course_instance_id']) 
+		{
+			$where[] = "cu.course_instance_id=" . $this->_db->Quote($filters['course_instance_id']);
+		}
+
+		if (isset($filters['search']) && $filters['search']) 
+		{
+			$where[] = "(LOWER(cu.url) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 
+					OR LOWER(cu.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
+		}
+
+		if (count($where) > 0)
+		{
+			$query .= " WHERE " . implode(" AND ", $where);
+		}*/
+
 		return $query;
 	}
 
@@ -129,7 +147,7 @@ class CoursesTableAsset extends JTable
 	 * @param  array $filters
 	 * @return object Return course units
 	 */
-	public function getCourseAssets($filters=array())
+	public function find($filters=array())
 	{
 		$query  = "SELECT ca.*, caa.ordering";
 		$query .= $this->buildquery($filters);

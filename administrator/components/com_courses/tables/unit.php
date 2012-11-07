@@ -126,7 +126,34 @@ class CoursesTableUnit extends JTable
 	 */
 	public function check()
 	{
-		parent::check();
+		$this->course_instance_id = intval($this->course_instance_id);
+		if (!$this->course_instance_id)
+		{
+			$this->setError(JText::_('Please provide a course offering ID.'));
+			return false;
+		}
+
+		$this->title = trim($this->title);
+		if (!$this->title) 
+		{
+			$this->setError(JText::_('Please provide a title.'));
+			return false;
+		}
+
+		if (!$this->alias)
+		{
+			$this->alias = strtolower($this->title);
+		}
+		$this->alias = preg_replace("/[^a-zA-Z0-9\-_]/", '', $this->alias);
+
+		if (!$this->id)
+		{
+			$juser =& JFactory::getUser();
+			$this->created = date('Y-m-d H:i:s', time());
+			$this->created_by = $juser->get('id');
+		}
+
+		return true;
 	}
 
 	/**
@@ -135,23 +162,54 @@ class CoursesTableUnit extends JTable
 	 * @param  array $filters
 	 * @return $query database query
 	 */
-	public function buildQuery($filters=array())
+	private function _buildQuery($filters=array())
 	{
 		$query = " FROM $this->_tbl AS cu";
+
+		if (isset($filters['course_instance_id']) && $filters['course_instance_id']) 
+		{
+			$where[] = "cu.course_instance_id=" . $this->_db->Quote($filters['course_instance_id']);
+		}
+
+		if (isset($filters['search']) && $filters['search']) 
+		{
+			$where[] = "(LOWER(cu.alias) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 
+					OR LOWER(cu.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
+		}
+
+		if (count($where) > 0)
+		{
+			$query .= " WHERE " . implode(" AND ", $where);
+		}
 
 		return $query;
 	}
 
 	/**
-	 * Get an object list of course units
+	 * Get a count of course offering units
 	 * 
 	 * @param  array $filters
 	 * @return object Return course units
 	 */
-	public function getCourseUnits($filters=array())
+	public function count($filters=array())
+	{
+		$query  = "SELECT COUNT(cu.id)";
+		$query .= $this->_buildQuery($filters);
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadResult();
+	}
+
+	/**
+	 * Get an object list of course offering units
+	 * 
+	 * @param  array $filters
+	 * @return object Return course units
+	 */
+	public function find($filters=array())
 	{
 		$query  = "SELECT cu.*";
-		$query .= $this->buildquery($filters);
+		$query .= $this->_buildQuery($filters);
 
 		if (!empty($filters['start']) && !empty($filters['limit']))
 		{

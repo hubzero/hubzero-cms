@@ -142,7 +142,7 @@ class CoursesTableAssetGroup extends JTable
 	 * @param  array $filters
 	 * @return object Return course units
 	 */
-	public function getCourseAssetGroups($filters=array())
+	public function find($filters=array())
 	{
 		$query  = "SELECT cag.*";
 		$query .= $this->buildquery($filters);

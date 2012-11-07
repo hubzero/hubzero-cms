@@ -483,7 +483,7 @@ class CoursesModelOffering extends JObject
 
 			$filters['course_instance_id'] = (int) $this->get('id');
 
-			if (($results = $tbl->getCourseUnits($filters)))
+			if (($results = $tbl->find($filters)))
 			{
 				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'unit.php');
 
