@@ -1179,7 +1179,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		$tconfig =& JComponentHelper::getParams('com_tools');
 
 		// Record the hit
-		$this->model->resource->hit($id);
+		$this->model->resource->hit();
 
 		// Get Resources plugins
 		JPluginHelper::importPlugin('resources');
