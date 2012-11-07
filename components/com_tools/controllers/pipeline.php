@@ -655,7 +655,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			);
 		}
 
-		$hztv = Hubzero_Tool_Version::getInstance($id);
+		$hztv = Hubzero_Tool_VersionHelper::getDevelopmentToolVersion($id);
 
 		$this->license_choice = array(
 			'text'      => JRequest::getVar('license', ''),
