@@ -664,7 +664,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		);
 
 		$hztv->codeaccess = JRequest::getVar('t_code', '@OPEN');
-		$action = JRequest::getInt('action', 'dev');
+		$action = JRequest::getWord('action', 'dev');
 
 		$error = '';
 
