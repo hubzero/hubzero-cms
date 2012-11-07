@@ -163,7 +163,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 
 		// Get single attributes
 		// EX: [[Image(myimage.png, nolink, right)]]
-		$argues = preg_replace_callback('/[, ](left|right|top|center|bottom|[0-9]+(px|%|em))(?:[, ]|$)/i', array(&$this, 'parseSingleAttribute'), $content);
+		$argues = preg_replace_callback('/[, ](left|right|top|center|bottom|[0-9]+(px|%|em)?)(?:[, ]|$)/i', array(&$this, 'parseSingleAttribute'), $content);
 		// Get quoted attribute/value pairs
 		// EX: [[Image(myimage.png, desc="My description, contains, commas")]]
 		$argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap)=(?:["\'])([^"]*)(?:["\'])/i', array(&$this, 'parseAttributeValuePair'), $content);
@@ -200,7 +200,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 				$attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : '';
 				if (!$attr['desc'])
 				{
-					$attr['desc'] = ($attach->description) ? stripslashes($attach->description) : $attach->filename;
+					$attr['desc'] = ($attach->description) ? stripslashes($attach->description) : ''; //$attach->filename;
 				}
 
 				$ret = true;
@@ -209,7 +209,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 		// Check for file existence
 		else if (file_exists($this->_path($file)) || file_exists($this->_path($file, true))) 
 		{
-			$attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : $file;
+			$attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : ''; //$file;
 
 			$ret = true;
 		} 

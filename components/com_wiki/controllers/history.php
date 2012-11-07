@@ -64,8 +64,6 @@ class WikiControllerHistory extends Hubzero_Controller
 			$this->_group = $config['group'];
 		}
 
-		$this->registerTask('deleterevision', 'delete');
-
 		parent::__construct($config);
 	}
 
@@ -105,7 +103,9 @@ class WikiControllerHistory extends Hubzero_Controller
 			);
 			return;
 		}
-		
+
+		$this->registerTask('deleterevision', 'delete');
+
 		parent::execute();
 	}
 

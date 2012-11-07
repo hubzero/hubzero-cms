@@ -176,6 +176,7 @@ class plgGroupsWiki extends JPlugin
 				case 'history':
 				case 'compare':
 				case 'approve':
+				case 'deleterevision':
 					$controllerName = 'history';
 				break;
 
