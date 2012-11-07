@@ -747,14 +747,14 @@ class ResourcesResource extends JTable
 		}
 		if (isset($filters['author'])) 
 		{
-			$query .= "AND (aa.authorid='" . $filters['author'] . "') "; // "' OR r.created_by=". $filters['author'] .") "; - SS - globalHub #622 - Mourad was the creator of a bunch of resources he was not listed as a contributor to in jos_author_assoc, making his profile page look wildly incorrect
+			$query .= "AND (aa.authorid='" . intval($filters['author']) . "') "; // "' OR r.created_by=". $filters['author'] .") "; - SS - globalHub #622 - Mourad was the creator of a bunch of resources he was not listed as a contributor to in jos_author_assoc, making his profile page look wildly incorrect
 		}
 		if (isset($filters['favorite'])) 
 		{
 			$query .= "AND xf.uid='" . $filters['favorite'] . "' AND r.id=xf.oid AND xf.tbl='resources' ";
 		}
 		if (isset($filters['tag'])) {
-			$query .= "AND t.objectid=r.id AND t.tbl='resources' AND t.tagid=tg.id AND (tg.tag='" . $filters['tag'] . "' OR tg.alias='" . $filters['tag'] . "') ";
+			$query .= "AND t.objectid=r.id AND t.tbl='resources' AND t.tagid=tg.id AND (tg.tag='" . $this->_db->getEscaped($filters['tag']) . "' OR tg.alias='" . $this->_db->getEscaped($filters['tag']) . "') ";
 		}
 		if (isset($filters['tags'])) 
 		{
@@ -768,7 +768,7 @@ class ResourcesResource extends JTable
 
 		if (isset($filters['group']) && $filters['group'] != '') 
 		{
-			$query .= "AND (r.group_owner='" . $filters['group'] . "' OR r.group_access LIKE '%;" . $filters['group'] . ";%') ";
+			$query .= "AND (r.group_owner='" . $this->_db->getEscaped($filters['group']) . "' OR r.group_access LIKE '%;" . $this->_db->getEscaped($filters['group']) . ";%') ";
 			if (!$filters['authorized']) 
 			{
 				switch ($filters['access'])
@@ -838,16 +838,16 @@ class ResourcesResource extends JTable
 
 		if (isset($filters['now'])) 
 		{
-			$query .= "AND (r.publish_up = '0000-00-00 00:00:00' OR r.publish_up <= '" . $filters['now'] . "') ";
-			$query .= "AND (r.publish_down = '0000-00-00 00:00:00' OR r.publish_down >= '" . $filters['now'] . "') ";
+			$query .= "AND (r.publish_up = '0000-00-00 00:00:00' OR r.publish_up <= " . $this->_db->Quote($filters['now']) . ") ";
+			$query .= "AND (r.publish_down = '0000-00-00 00:00:00' OR r.publish_down >= " . $this->_db->Quote($filters['now']) . ") ";
 		}
 		if (isset($filters['startdate'])) 
 		{
-			$query .= "AND r.publish_up > '" . $filters['startdate'] . "' ";
+			$query .= "AND r.publish_up > " . $this->_db->Quote($filters['startdate']) . " ";
 		}
 		if (isset($filters['enddate'])) 
 		{
-			$query .= "AND r.publish_up < '" . $filters['enddate'] . "' ";
+			$query .= "AND r.publish_up < " . $this->_db->Quote($filters['enddate']) . " ";
 		}
 
 		if (isset($filters['search']) && $filters['search'] != '') 

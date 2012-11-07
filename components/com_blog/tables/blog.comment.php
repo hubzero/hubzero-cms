@@ -374,25 +374,25 @@ class BlogComment extends JTable
 			"c.created_by=u.uidNumber"
 		);
 
-		if (isset($filters['created_by']) && $filters['created_by'] != 0) 
+		if (isset($filters['created_by']) && (int) $filters['created_by'] != 0) 
 		{
-			$where[] = "c.created_by=" . $filters['created_by'];
+			$where[] = "c.created_by=" . $this->_db->Quote(intval($filters['created_by']));
 		}
-		if (isset($filters['entry_id']) && $filters['entry_id'] != 0) 
+		if (isset($filters['entry_id']) && (int) $filters['entry_id'] != 0) 
 		{
-			$where[] = "c.entry_id=" . $filters['entry_id'];
+			$where[] = "c.entry_id=" . $this->_db->Quote(intval($filters['entry_id']));
 		}
-		if (isset($filters['parent']) && $filters['parent'] != '') 
+		if (isset($filters['parent'])) 
 		{
-			$where[] = "c.parent='" . $filters['parent'] . "'";
+			$where[] = "c.parent=" . $this->_db->Quote(intval($filters['parent'])) . "'";
 		}
-		if (isset($filters['anonymous']) && $filters['anonymous'] != '') 
+		if (isset($filters['anonymous'])) 
 		{
-			$where[] = "c.anonymous='" . $filters['anonymous'] . "'";
+			$where[] = "c.anonymous=" . $this->_db->Quote(intval($filters['anonymous'])) . "'";
 		}
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
-			$where[] = "LOWER(c.content) LIKE '%" . strtolower($filters['search']) . "%'";
+			$where[] = "LOWER(c.content) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'";
 		}
 
 		if (count($where) > 0)
@@ -404,7 +404,7 @@ class BlogComment extends JTable
 		{
 			$filters['sort'] = 'created';
 		}
-		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+		if (!isset($filters['sort_Dir'])|| !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'))) 
 		{
 			$filters['sort_Dir'] = 'DESC';
 		}

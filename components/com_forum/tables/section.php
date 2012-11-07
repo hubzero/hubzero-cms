@@ -290,17 +290,17 @@ class ForumSection extends JTable
 
 		if (isset($filters['state'])) 
 		{
-			$where[] = "c.state=" . $this->_db->Quote($filters['state']);
+			$where[] = "c.state=" . $this->_db->Quote(intval($filters['state']));
 		}
 
-		if (isset($filters['group']) && $filters['group'] >= 0) 
+		if (isset($filters['group']) && (int) $filters['group'] >= 0) 
 		{
-			$where[] = "c.group_id=" . $this->_db->Quote($filters['group']);
+			$where[] = "c.group_id=" . $this->_db->Quote(intval($filters['group']));
 		}
 
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
-			$where[] = "LOWER(c.title) LIKE '%" . strtolower($filters['search']) . "%'";
+			$where[] = "LOWER(c.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'";
 		}
 
 		if (count($where) > 0)

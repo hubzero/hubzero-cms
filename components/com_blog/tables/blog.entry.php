@@ -427,7 +427,7 @@ class BlogEntry extends JTable
 
 		$query  = "FROM $this->_tbl AS m,
 					#__xprofiles AS u  
-					WHERE m.scope='" . $filters['scope'] . "' AND m.created_by=u.uidNumber ";
+					WHERE m.scope='" . $this->_db->getEscaped($filters['scope']) . "' AND m.created_by=u.uidNumber ";
 
 		if (isset($filters['year']) && $filters['year'] != 0) 
 		{
@@ -462,13 +462,13 @@ class BlogEntry extends JTable
 			$query .= "AND (m.publish_up = " . $this->_db->Quote($nullDate) . " OR m.publish_up <= " . $this->_db->Quote($now) . ") 
 					AND (m.publish_down = " . $this->_db->Quote($nullDate) . " OR m.publish_down >= " . $this->_db->Quote($now) . ")";
 		}
-		if (isset($filters['created_by']) && $filters['created_by'] != 0) 
+		if (isset($filters['created_by']) && (int) $filters['created_by'] != 0) 
 		{
-			$query .= " AND m.created_by=" . $filters['created_by'];
+			$query .= " AND m.created_by=" . $this->_db->Quote(intval($filters['created_by']));
 		}
-		if (isset($filters['group_id']) && $filters['group_id'] != 0) 
+		if (isset($filters['group_id']) && (int) $filters['group_id'] != 0) 
 		{
-			$query .= " AND m.group_id=" . $filters['group_id'];
+			$query .= " AND m.group_id=" . $this->_db->Quote(intval($filters['group_id']));
 		}
 		if (isset($filters['state']) && $filters['state'] != '') 
 		{
@@ -491,7 +491,7 @@ class BlogEntry extends JTable
 		}
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
-			$filters['search'] = strtolower(stripslashes($filters['search']));
+			$filters['search'] = $this->_db->getEscaped(strtolower(stripslashes($filters['search'])));
 			$query .= " AND (LOWER(m.title) LIKE '%" . $filters['search'] . "%' OR LOWER(m.content) LIKE '%" . $filters['search'] . "%')";
 		}
 		if (isset($filters['order']) && $filters['order'] != '') 

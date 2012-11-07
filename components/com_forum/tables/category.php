@@ -340,24 +340,24 @@ class ForumCategory extends JTable
 		$where = array();
 		if (isset($filters['state'])) 
 		{
-			$where[] = "c.state=" . $this->_db->Quote($filters['state']);
+			$where[] = "c.state=" . $this->_db->Quote(intval($filters['state']));
 		}
 		if (isset($filters['closed'])) 
 		{
-			$where[] = "c.closed=" . $this->_db->Quote($filters['closed']);
+			$where[] = "c.closed=" . $this->_db->Quote(intval($filters['closed']));
 		}
-		if (isset($filters['group']) && $filters['group'] >= 0) 
+		if (isset($filters['group']) && (int) $filters['group'] >= 0) 
 		{
-			$where[] = "c.group_id=" . $this->_db->Quote($filters['group']);
+			$where[] = "c.group_id=" . $this->_db->Quote(intval($filters['group']));
 		}
-		if (isset($filters['section_id']) && $filters['section_id'] >= 0) 
+		if (isset($filters['section_id']) && (int) $filters['section_id'] >= 0) 
 		{
-			$where[] = "c.section_id=" . $this->_db->Quote($filters['section_id']);
+			$where[] = "c.section_id=" . $this->_db->Quote(intval($filters['section_id']));
 		}
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
-			$where[] = "(LOWER(c.title) LIKE '%" . strtolower($filters['search']) . "%' 
-				OR LOWER(c.description) LIKE '%" . strtolower($filters['search']) . "%')";
+			$where[] = "(LOWER(c.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 
+				OR LOWER(c.description) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
 		}
 		
 		if (count($where) > 0)

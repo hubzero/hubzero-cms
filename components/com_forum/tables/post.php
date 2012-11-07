@@ -297,16 +297,16 @@ class ForumPost extends JTable
 		}
 		if (isset($filters['parent']) && $filters['parent'] != 0) 
 		{
-			$query .= " WHERE (c.parent=" . $this->_db->Quote($filters['parent']) . " OR c.id=" . $this->_db->Quote($filters['parent']) . ")";
+			$query .= " WHERE (c.parent=" . $this->_db->Quote(intval($filters['parent'])) . " OR c.id=" . $this->_db->Quote(intval($filters['parent'])) . ")";
 			if (isset($filters['state'])) 
 			{
-				$query .= " AND c.state=" . $this->_db->Quote($filters['state']);
+				$query .= " AND c.state=" . $this->_db->Quote(intval($filters['state']));
 			}
 			if (!isset($filters['sort']) || !$filters['sort']) 
 			{
 				$filters['sort'] = 'c.created';
 			}
-			if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+			if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'))) 
 			{
 				$filters['sort_Dir'] = 'ASC';
 			}
@@ -318,31 +318,31 @@ class ForumPost extends JTable
 			
 			if (isset($filters['state'])) 
 			{
-				$where[] = "c.state=" . $this->_db->Quote($filters['state']);
+				$where[] = "c.state=" . $this->_db->Quote(intval($filters['state']));
 			}
-			if (isset($filters['sticky']) && $filters['sticky'] != 0) 
+			if (isset($filters['sticky']) && (int) $filters['sticky'] != 0) 
 			{
-				$where[] = "c.sticky=" . $this->_db->Quote($filters['sticky']);
+				$where[] = "c.sticky=" . $this->_db->Quote(intval($filters['sticky']));
 			}
-			if (isset($filters['group']) && $filters['group'] >= 0) 
+			if (isset($filters['group']) && (int) $filters['group'] >= 0) 
 			{
-				$where[] = "c.group_id=" . $this->_db->Quote($filters['group']);
+				$where[] = "c.group_id=" . $this->_db->Quote(intval($filters['group']));
 			}
-			if (isset($filters['category_id']) && $filters['category_id'] >= 0) 
+			if (isset($filters['category_id']) && (int) $filters['category_id'] >= 0) 
 			{
-				$where[] = "c.category_id=" . $this->_db->Quote($filters['category_id']);
+				$where[] = "c.category_id=" . $this->_db->Quote(intval($filters['category_id']));
 			}
 			//if (!isset($filters['authorized']) || !$filters['authorized']) {
 			//	$query .= "c.access=0 AND ";
 			//}
 			if (isset($filters['search']) && $filters['search'] != '') 
 			{
-				$where[] = "(LOWER(c.title) LIKE '%" . strtolower($filters['search']) . "%' 
-						OR LOWER(c.comment) LIKE '%" . strtolower($filters['search']) . "%')";
+				$where[] = "(LOWER(c.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 
+						OR LOWER(c.comment) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
 			}
-			if (isset($filters['parent']) && $filters['parent'] >= 0) 
+			if (isset($filters['parent']) && (int) $filters['parent'] >= 0) 
 			{
-				$where[] = "c.parent=" . $this->_db->Quote($filters['parent']);
+				$where[] = "c.parent=" . $this->_db->Quote(intval($filters['parent']));
 			}
 			
 			if (count($where) > 0)
@@ -359,7 +359,7 @@ class ForumPost extends JTable
 					{
 						$filters['sort'] = 'activity DESC, c.created';
 					}
-					if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+					if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'))) 
 					{
 						$filters['sort_Dir'] = 'DESC';
 					}

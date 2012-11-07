@@ -722,13 +722,13 @@ class WikiPage extends JTable
 		$where = array();
 		if (isset($filters['search']) && $filters['search']) 
 		{
-			$where[] = "(LOWER(t.pagename) LIKE '%" . $filters['search'] . "%' OR LOWER(t.title) LIKE '%" . $filters['search'] . "%')";
+			$where[] = "(LOWER(t.pagename) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' OR LOWER(t.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
 		}
 		if (isset($filters['group'])) // && $filters['group'] != '' 
 		{
 			if ($filters['group'] != '')
 			{
-				$where[] = "t.`group_cn`='" . $filters['group'] . "'";
+				$where[] = "t.`group_cn`='" . $this->_db->getEscaped($filters['group']) . "'";
 			}
 			else 
 			{
@@ -848,7 +848,7 @@ class WikiPage extends JTable
 
 		if (isset($filters['author'])) 
 		{
-			$where[] = "(w.created_by='" . $filters['author'] . "' OR " . $filters['author'] . " IN (SELECT user_id FROM #__wiki_page_author WHERE page_id=w.id))";
+			$where[] = "(w.created_by=" . $this->_db->Quote(intval($filters['author'])) . " OR " . intval($filters['author']) . " IN (SELECT user_id FROM #__wiki_page_author WHERE page_id=w.id))";
 		}
 
 		if (isset($filters['tags'])) 
@@ -918,7 +918,7 @@ class WikiPage extends JTable
 					{
 						foreach ($ugs as $ug)
 						{
-							$groups[] = $ug->cn;
+							$groups[] = $this->_db->getEscaped($ug->cn);
 						}
 					}
 
@@ -932,11 +932,11 @@ class WikiPage extends JTable
 		}
 		if (isset($filters['startdate'])) 
 		{
-			$where[] = "v.created > '" . $filters['startdate'] . "'";
+			$where[] = "v.created > " . $this->_db->Quote($filters['startdate']);
 		}
 		if (isset($filters['enddate'])) 
 		{
-			$where[] = "v.created < '" . $filters['enddate'] . "'";
+			$where[] = "v.created < " . $this->_db->Quote($filters['enddate']);
 		}
 
 		if (!empty($where))

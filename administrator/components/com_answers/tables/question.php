@@ -191,6 +191,7 @@ class AnswersQuestion extends JTable
 			$words   = explode(' ', $filters['q']);
 			foreach ($words as $word)
 			{
+				$word = $this->_db->getEscaped(strtolower($word));
 				$query .= "AND ((LOWER(C.subject) LIKE '%$word%') 
 					OR (LOWER(C.question) LIKE '%$word%') 
 					OR (SELECT COUNT(*) FROM #__answers_responses AS a WHERE a.state!=2 AND a.qid=C.id AND (LOWER(a.answer) LIKE '%$word%')) > 0)";
@@ -198,15 +199,15 @@ class AnswersQuestion extends JTable
 		}
 		if (isset($filters['mine']) && $filters['mine'] != 0) 
 		{
-			$query .= " AND C.created_by='" . $juser->get('username') . "' ";
+			$query .= " AND C.created_by=" . $this->_db->Quote($juser->get('username')) . " ";
 		}
 		if (isset($filters['mine']) && $filters['mine'] == 0) 
 		{
-			$query .= " AND C.created_by!='" . $juser->get('username') . "' ";
+			$query .= " AND C.created_by!=" . $this->_db->Quote($juser->get('username')) . " ";
 		}
 		if (isset($filters['created_before']) && $filters['created_before'] != '') 
 		{
-			$query .= " AND C.created <='" . $filters['created_before'] . "' ";
+			$query .= " AND C.created <= " . $this->_db->Quote($filters['created_before']) . " ";
 		}
 		if ($filters['tag']) 
 		{
@@ -302,7 +303,7 @@ class AnswersQuestion extends JTable
 		//$query.= "\n FROM $this->_tbl AS a, #__answers_tags AS t, #__tags AS tg";
 		$query .= " FROM $this->_tbl AS a, #__tags_object AS RTA ";
 		$query .= " INNER JOIN #__tags AS TA ON TA.id=RTA.tagid ";
-		$query .= " WHERE RTA.objectid=a.id AND RTA.tbl='answers' AND (TA.tag='" . strtolower($tag) . "' OR TA.raw_tag='" . $tag . "' OR TA.alias='" . $tag . "')";
+		$query .= " WHERE RTA.objectid=a.id AND RTA.tbl='answers' AND (TA.tag='" . $this->_db->getEscaped(strtolower($tag)) . "' OR TA.raw_tag='" . $this->_db->getEscaped($tag) . "')";
 
 		$query .= " ORDER BY a.created DESC";
 		$query .= ($limit) ? " LIMIT " . $limit : "";

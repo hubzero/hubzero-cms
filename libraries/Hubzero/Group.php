@@ -1165,7 +1165,7 @@ class Hubzero_Group
 				$where_clause = "WHERE";
 			}
 			
-			$where_clause .= " (LOWER(description) LIKE '%" . $filters['search'] . "%' OR LOWER(cn) LIKE '%" . $filters['search'] . "%')";
+			$where_clause .= " (LOWER(description) LIKE '%" . $db->getEscaped(strtolower($filters['search'])) . "%' OR LOWER(cn) LIKE '%" . $db->getEscaped(strtolower($filters['search'])) . "%')";
 		}
 
 		if (isset($filters['index']) && $filters['index'] != '')
@@ -1179,7 +1179,7 @@ class Hubzero_Group
 				$where_clause = "WHERE";
 			}
 			
-			$where_clause .= " (LOWER(description) LIKE '" . $filters['index'] . "%') ";
+			$where_clause .= " (LOWER(description) LIKE '" . $db->getEscaped(strtolower($filters['index'])) . "%') ";
 		}
 
 		if (isset($filters['authorized']) && $filters['authorized'] === 'admin')
