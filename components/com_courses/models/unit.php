@@ -391,7 +391,7 @@ class CoursesModelUnit extends JObject
 		{
 			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.group.php');
 
-			$filters['course_unit_id'] = (int) $this->get('id');
+			$filters['unit_id'] = (int) $this->get('id');
 
 			$tbl = new CoursesTableAssetGroup($this->_db);
 			if (($results = $tbl->find(array('w' => $filters))))
@@ -754,8 +754,8 @@ class CoursesModelUnit extends JObject
 		{
 			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
 
-			$filters['course_asset_scope_id'] = (int) $this->get('id');
-			$filters['course_asset_scope']    = 'unit';
+			$filters['asset_scope_id'] = (int) $this->get('id');
+			$filters['asset_scope']    = 'unit';
 
 			$tbl = new CoursesTableAsset($this->_db);
 

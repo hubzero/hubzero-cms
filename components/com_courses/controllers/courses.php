@@ -69,14 +69,14 @@ class CoursesControllerCourses extends Hubzero_Controller
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_name)),
+				JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 
 			if ($this->_task == 'new') 
 			{
 				$pathway->addItem(
-					JText::_(strtoupper($this->_name) . '_' . strtoupper($this->_task)),
+					JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
 					'index.php?option=' . $this->_option . '&task=' . $this->_task
 				);
 			}
@@ -91,11 +91,11 @@ class CoursesControllerCourses extends Hubzero_Controller
 	public function _buildTitle()
 	{
 		//set title used in view
-		$this->_title = JText::_(strtoupper($this->_name));
+		$this->_title = JText::_(strtoupper($this->_option));
 
 		if ($this->_task && $this->_task != 'intro') 
 		{
-			$this->_title = JText::_(strtoupper($this->_name . '_' . $this->_task));
+			$this->_title = JText::_(strtoupper($this->_option . '_' . $this->_task));
 		}
 
 		//set title of browser window

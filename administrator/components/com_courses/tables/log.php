@@ -48,7 +48,14 @@ class CoursesTableLog extends JTable
 	 * 
 	 * @var integer
 	 */
-	var $gid       = NULL;
+	var $scope_id  = NULL;
+
+	/**
+	 * varchar(100)
+	 * 
+	 * @var string
+	 */
+	var $scope = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
@@ -62,7 +69,7 @@ class CoursesTableLog extends JTable
 	 * 
 	 * @var integer
 	 */
-	var $uid       = NULL;
+	var $user_id   = NULL;
 
 	/**
 	 * varchar(50)
@@ -83,7 +90,7 @@ class CoursesTableLog extends JTable
 	 * 
 	 * @var integer
 	 */
-	var $actorid   = NULL;
+	var $actor_id   = NULL;
 
 	/**
 	 * Constructor
@@ -103,15 +110,24 @@ class CoursesTableLog extends JTable
 	 */
 	public function check()
 	{
-		if (trim($this->gid) == '') 
+		$this->scope_id = intval($this->scope_id);
+		if (!$this->scope_id) 
 		{
-			$this->setError(JText::_('COURSES_LOGS_MUST_HAVE_COURSE_ID'));
+			$this->setError(JText::_('COM_COURSES_LOGS_MUST_HAVE_scope_id'));
 			return false;
 		}
 
-		if (trim($this->uid) == '') 
+		$this->scope = trim($this->scope);
+		if (!$this->scope) 
 		{
-			$this->setError(JText::_('COURSES_LOGS_MUST_HAVE_USER_ID'));
+			$this->setError(JText::_('COM_COURSES_LOGS_MUST_HAVE_scope'));
+			return false;
+		}
+
+		$this->user_id = intval($this->user_id);
+		if (!$this->user_id) 
+		{
+			$this->setError(JText::_('COM_COURSES_LOGS_MUST_HAVE_USER_ID'));
 			return false;
 		}
 
@@ -121,22 +137,29 @@ class CoursesTableLog extends JTable
 	/**
 	 * Get logs for a course
 	 * 
-	 * @param      integer $gid   Course ID
-	 * @param      integer $limit Number of records to return
+	 * @param      integer $scope_id   Object ID
+	 * @param      string  $scope Object type (course, offering, etc)
+	 * @param      integer $limit       Number of records to return
 	 * @return     array
 	 */
-	public function getLogs($gid=null, $limit=5)
+	public function getLogs($scope_id=null, $scope='course', $limit=5)
 	{
-		if (!$gid) 
+		if (!$scope_id) 
 		{
-			$gid = $this->gid;
+			$scope_id = $this->scope_id;
 		}
-		if (!$gid) 
+		if (!$scope) 
+		{
+			$scope = $this->scope;
+		}
+		$scope_id = intval($scope_id);
+		$scope = trim($scope);
+		if (!$scope_id || !$scope) 
 		{
 			return null;
 		}
 
-		$query = "SELECT * FROM $this->_tbl WHERE gid=$gid ORDER BY `timestamp` DESC";
+		$query = "SELECT * FROM $this->_tbl WHERE `scope_id`=" . $this->_db->Quote($scope_id) . " AND `scope`=" . $this->_db->Quote($scope) . " ORDER BY `timestamp` DESC";
 		if ($limit) 
 		{
 			$query .= " LIMIT " . $limit;
@@ -149,22 +172,29 @@ class CoursesTableLog extends JTable
 	/**
 	 * Get a log for a course and bind to $this
 	 * 
-	 * @param      integer $gid   Course ID
-	 * @param      string  $which Log to get [first or last (default)]
+	 * @param      integer $scope_id   Object ID
+	 * @param      string  $scope Object type (course, offering, etc)
+	 * @param      string  $which       Log to get [first or last (default)]
 	 * @return     boolean True on success
 	 */
-	public function getLog($gid=null, $which='first')
+	public function getLog($scope_id=null, $scope='course', $which='first')
 	{
-		if (!$gid) 
+		if (!$scope_id) 
 		{
-			$gid = $this->gid;
+			$scope_id = $this->scope_id;
 		}
-		if (!$gid) 
+		if (!$scope) 
+		{
+			$scope = $this->scope;
+		}
+		$scope_id = intval($scope_id);
+		$scope = trim($scope);
+		if (!$scope_id || !$scope) 
 		{
 			return null;
 		}
 
-		$query = "SELECT * FROM $this->_tbl WHERE gid=$gid ";
+		$query = "SELECT * FROM $this->_tbl WHERE `scope_id`=" . $this->_db->Quote($scope_id) . " AND `scope`=" . $this->_db->Quote($scope) . " ";
 		if ($which == 'first') 
 		{
 			$query .= "ORDER BY `timestamp` ASC LIMIT 1";
@@ -189,21 +219,28 @@ class CoursesTableLog extends JTable
 	/**
 	 * Delete logs for a course
 	 * 
-	 * @param      integer $gid    Course ID
+	 * @param      integer $scope_id   Object ID
+	 * @param      string  $scope Object type (course, offering, etc)
 	 * @return     boolean True on success
 	 */
-	public function deleteLogs($gid=null)
+	public function deleteLogs($scope_id=null, $scope='course')
 	{
-		if (!$gid) 
+		if (!$scope_id) 
 		{
-			$gid = $this->gid;
+			$scope_id = $this->scope_id;
 		}
-		if (!$gid) 
+		if (!$scope) 
 		{
-			return false;
+			$scope = $this->scope;
+		}
+		$scope_id = intval($scope_id);
+		$scope = trim($scope);
+		if (!$scope_id || !$scope) 
+		{
+			return null;
 		}
 
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE gid=" . $gid);
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE `scope_id`=" . $this->_db->Quote($scope_id) . " AND `scope`=" . $this->_db->Quote($scope));
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -215,22 +252,29 @@ class CoursesTableLog extends JTable
 	/**
 	 * Get a record count of logs for a course
 	 * 
-	 * @param      integer $gid    Course ID
-	 * @param      string  $action Action to filters results by
+	 * @param      integer $scope_id   Object ID
+	 * @param      string  $scope Object type (course, offering, etc)
+	 * @param      string  $action      Action to filters results by
 	 * @return     integer
 	 */
-	public function logCount($gid=null, $action='')
+	public function logCount($scope_id=null, $scope='course', $action='')
 	{
-		if (!$gid) 
+		if (!$scope_id) 
 		{
-			$gid = $this->gid;
+			$scope_id = $this->scope_id;
 		}
-		if (!$gid) 
+		if (!$scope) 
+		{
+			$scope = $this->scope;
+		}
+		$scope_id = intval($scope_id);
+		$scope = trim($scope);
+		if (!$scope_id || !$scope) 
 		{
 			return null;
 		}
 
-		$query = "SELECT COUNT(*) FROM $this->_tbl WHERE gid=$gid";
+		$query = "SELECT COUNT(*) FROM $this->_tbl WHERE `scope_id`=" . $this->_db->Quote($scope_id) . " AND `scope`=" . $this->_db->Quote($scope);
 		if ($action) 
 		{
 			$query .= " AND action='$action'";

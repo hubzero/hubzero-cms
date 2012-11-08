@@ -357,8 +357,8 @@ class CoursesModelAssetgroup extends JObject
 		{
 			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
 
-			$filters['course_asset_scope_id'] = (int) $this->get('id');
-			$filters['course_asset_scope']    = 'asset_group';
+			$filters['asset_scope_id'] = (int) $this->get('id');
+			$filters['asset_scope']    = 'asset_group';
 
 			$tbl = new CoursesTableAsset($this->_db);
 

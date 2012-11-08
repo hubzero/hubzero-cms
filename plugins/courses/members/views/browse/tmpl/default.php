@@ -31,6 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$juser = JFactory::getUser();
 $offering = $this->course->offering();
 ?>
 <div class="course_members">
@@ -46,7 +47,7 @@ $offering = $this->course->offering();
 					foreach ($offering->roles() as $role) 
 					{ 
 						$active = '';
-						if ($this->filter == $role->alias) 
+						if ($this->filters['role'] == $role->alias) 
 						{
 							$filter = $role->title;
 							$active = ' active';
@@ -68,7 +69,7 @@ $offering = $this->course->offering();
 				</ul>
 				<div class="entries-search">
 					<fieldset>
-						<input type="text" name="q" value="<?php echo $this->escape($this->q); ?>" />
+						<input type="text" name="q" value="<?php echo $this->escape($this->filters['search']); ?>" />
 						<input type="submit" name="search_members" value="" />
 					</fieldset>
 				</div>
@@ -77,13 +78,15 @@ $offering = $this->course->offering();
 				<table class="courses entries" summary="Members of this course">
 					<caption>
 						<?php 
-							if ($this->q) 
+							if ($this->filters['search']) 
 							{
-								echo 'Search: "' . $this->escape($this->q) . '" in ';
+								echo 'Search: "' . $this->escape($this->filters['search']) . '" in ';
 							} 
 							echo $this->escape(stripslashes($filter));
+							
+							$total = $offering->members(array('count' => true, 'role' => $this->filters['role']));
 						?>
-						<span>(<?php echo $offering->members(array('count' => true)); ?>)</span>
+						<span>(<?php echo $total; ?>)</span>
 						
 						<?php /*if (($this->authorized == 'manager' || $this->authorized == 'admin') && count($this->courseusers) > 0) { ?>
 							<span class="message-all">
@@ -122,247 +125,69 @@ $offering = $this->course->offering();
 					</caption>
 					<tbody>
 						<?php
-						if ($offering->members(array('role' => $this->filter))) 
+						if ($offering->members(array('role' => $this->filters['role']))) 
 						{
 							ximport('Hubzero_User_Profile_Helper');
 							foreach ($offering->members() as $member)
 							{
 								$cls = '';
 								$u = Hubzero_User_Profile::getInstance($member->get('user_id'));
-							// Path to users' thumbnails
-							/*$config =& JComponentHelper::getParams( 'com_members' );
-							$thumb = $config->get('webpath');
-							if (substr($thumb, 0, 1) != DS) {
-								$thumb = DS.$thumb;
-							}
-							if (substr($thumb, -1, 1) == DS) {
-								$thumb = substr($thumb, 0, (strlen($thumb) - 1));
-							}
 
-							// Default thumbnail
-							$dfthumb = $config->get('defaultpic');
-							if (substr($dfthumb, 0, 1) != DS) {
-								$dfthumb = DS.$dfthumb;
-							}
-							$dfthumb = plgCoursesMembers::thumbit($dfthumb);
-							$emailthumb = '/components/com_courses/assets/img/emailthumb.png';
-
-							// Some needed libraries
-							ximport('Hubzero_User_Profile');
-							$juser =& JFactory::getUser();
-							// Loop through the results
-							$html = '';
-							if ($this->limit == 0) {
-								$this->limit = 500;
-							}*/
-							/*for ($i=0, $n=$this->limit; $i < $n; $i++)
-							{
-								$inviteemail = false;
-
-								if (($i+$this->start) >= count($this->courseusers)) {
-									break;
-								}
-								$guser = $this->courseusers[($i+$this->start)];
-
-								$u = new Hubzero_User_Profile();
-								$u->load( $guser );
-								if (!is_object($u)) {
-									continue;
-								} elseif(preg_match("/^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $guser)) {
-									$inviteemail = true;
-								}
-
-								$cls = '';
-								//$cls = (($cls == 'even') ? 'odd' : 'even');
-
-								// User photo
-								$uthumb = '';
-								if ($u->get('picture')) {
-									$uthumb = $thumb.DS.plgCoursesMembers::niceidformat($u->get('uidNumber')).DS.$u->get('picture');
-									$uthumb = plgCoursesMembers::thumbit($uthumb);
-								}
-
-								if ($uthumb && is_file(JPATH_ROOT.$uthumb)) {
-									$p = $uthumb;
-								} elseif($inviteemail === true) {
-									 $p = $emailthumb;
-								} else {
-									$p = $dfthumb;
-								}
-
-								switch ($this->filter)
+								if ($juser->get('id') == $u->get('uidNumber')) 
 								{
-									case 'invitees':
-										$status = JText::_('PLG_COURSES_MEMBERS_STATUS_INVITEE');
-									break;
-									case 'pending':
-										$status = JText::_('PLG_COURSES_MEMBERS_STATUS_PENDING');
-									break;
-									case 'managers':
-										$status = JText::_('PLG_COURSES_MEMBERS_STATUS_MANAGER');
-										$cls .= ' manager';
-									break;
-									case 'members':
-									default:
-										$status = 'Member';
-										if (in_array($guser,$this->managers)) {
-											$status = JText::_('PLG_COURSES_MEMBERS_STATUS_MANAGER');
-											$cls .= ' manager';
-										}
-									break;
-								}
-
-								if ($juser->get('id') == $u->get('uidNumber')) {
 									$cls .= ' me';
-								}*/
+								}
 ?>
 						<tr class="<?php echo $cls; ?>">
 							<td class="photo">
 								<img width="50" height="50" src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($u); ?>" alt="Photo for <?php echo $this->escape(stripslashes($u->get('name'))); ?>" /></td>
 							<td>
 							<td>
-								<?php echo $this->escape(stripslashes($u->get('name'))); ?>
+								<span class="member-name">
+									<?php echo $this->escape(stripslashes($u->get('name'))); ?>
+								</span>
+								<?php if ($u->get('organization')) { ?>
+									<span class="member-organization">
+										<?php echo $this->escape(stripslashes($u->get('organization'))); ?>
+									</span>
+								<?php } ?>
 							</td>
 							<td>
-								<?php echo $this->escape(stripslashes($member->get('role'))); ?>
+								<span class="member-role">
+									<?php echo $this->escape(stripslashes($member->get('role'))); ?>
+								</span>
 							</td>
-<?php
-								/*if($inviteemail) {
-									$html .= '<span class="name"><a href="mailto:'.$guser.'">'.$guser.'</a></span>';
-									$html .= '<span class="status">Invite Sent to Email</span><br />';
-								} else {
-									$html .= '<span class="name"><a href="'.JRoute::_('index.php?option=com_members&id='.$u->get('uidNumber')).'">'.$u->get('name').'</a></span> <span class="status">'.$status.'</span><br />';
-
-									if ($u->get('organization')) {
-										$html .= '<span class="organization">'.$u->get('organization').'</span><br />';
-									}
-								}
-
-								if($this->filter == 'members' || $this->filter == 'managers') {
-									$html .= '<span class="roles">';
-									$all_roles = '';
-									$roles = $u->getCourseMemberRoles($u->get('uidNumber'),$this->course->gidNumber);
-
-									if($roles) {
-										$html .= '<strong>Member Roles:</strong> ';
-										foreach($roles as $role) {
-											$all_roles .= ', <span><a href="'.JRoute::_('index.php?option=com_courses&gid='.$this->course->cn.'&active=members&filter='.$this->filter.'&role_filter='.$role['id']).'">'.$role['role'].'</a>';
-
-											if($this->authorized == 'manager' || $this->authorized == 'admin') {
-												if($this->membership_control == 1) {
-													$all_roles .= '<span class="delete-role"><a href="'.JRoute::_('index.php?option=com_courses&gid='.$this->course->cn.'&active=members&task=deleterole&uid='.$u->get('uidNumber').'&role='.$role['id']).'">x</a></span></span>';
-												}
-											} else {
-												$all_roles .= '</span>';
-											}
-										}
-
-										$html .= '<span class="roles-list" id="roles-list-'.$u->get('uidNumber').'">'.substr($all_roles,2).'</span>';
-
-										if ($this->authorized == 'manager' || $this->authorized == 'admin') {
-											if($this->membership_control == 1) {
-												$html .= ', <a class="assign-role" href="'.JRoute::_('index.php?option=com_courses&gid='.$this->course->cn.'&active=members&task=assignrole&uid='.$u->get('uidNumber')).'">Assign Role &rsaquo;</a>';
-											}
-										}
-
-									}
-
-									if($this->membership_control == 1) {
-										if(($this->authorized == 'manager' || $this->authorized == 'admin') && !$roles) {
-											$html .= '<strong>Member Roles:</strong> ';
-											$html .= '<span class="roles-list" id="roles-list-'.$u->get('uidNumber').'"></span>';
-											$html .= ' <a class="assign-role" href="'.JRoute::_('index.php?option=com_courses&gid='.$this->course->cn.'&active=members&task=assignrole&uid='.$u->get('uidNumber')).'">Assign Role &rsaquo;</a>';
-										}
-									}
-									$html .= '</span>';
-
-								}
-
-								if ($this->filter == 'pending') {
-									$database =& JFactory::getDBO();
-									$row = new CoursesReason( $database );
-									$row->loadReason($u->get('uidNumber'), $this->course->gidNumber);
-
-									if ($row) {
-										$html .= '<span class="reason">'.stripslashes($row->reason).'</span>';
-									}
-								} else {
-									//$html .= '<span class="activity">Activity: </span>';
-								}
-
-								$html .= '</td>'."\n";
-								if ($this->authorized == 'manager' || $this->authorized == 'admin') {
-									switch ($this->filter)
-									{
-										case 'invitees':
-											if($this->membership_control == 1) {
-												if(!$inviteemail) {
-													$html .= "\t\t\t\t".'<td class="remove-member"><a class="cancel tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->course->cn.'&active=members&task=cancel&users[]='.$guser.'&filter='.$this->filter).'" title="'.JText::sprintf('PLG_COURSES_MEMBERS_CANCEL_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_COURSES_MEMBERS_CANCEL').'</a></td>'."\n";
-												} else {
-													$html .= "\t\t\t\t".'<td class="remove-member"><a class="cancel tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->course->cn.'&active=members&task=cancel&users[]='.$guser.'&filter='.$this->filter).'" title="'.JText::sprintf('PLG_COURSES_MEMBERS_CANCEL_MEMBER',htmlentities($guser,ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_COURSES_MEMBERS_CANCEL').'</a></td>'."\n";
-												}
-											}
-											$html .= "\t\t\t\t".'<td class="approve-member"> </td>'."\n";
-										break;
-										case 'pending':
-											if($this->membership_control == 1) {
-												$html .= "\t\t\t\t".'<td class="decline-member"><a class="decline tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->course->cn.'&active=members&task=deny&users[]='.$guser.'&filter='.$this->filter).'" title="'.JText::sprintf('PLG_COURSES_MEMBERS_DECLINE_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_COURSES_MEMBERS_DENY').'</a></td>'."\n";
-												$html .= "\t\t\t\t".'<td class="approve-member"><a class="approve tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->course->cn.'&active=members&task=approve&users[]='.$guser.'&filter='.$this->filter).'" title="'.JText::sprintf('PLG_COURSES_MEMBERS_APPROVE_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_COURSES_MEMBERS_APPROVE').'</a></td>'."\n";
-											}
-										break;
-										case 'managers':
-										case 'members':
-										default:
-											if($this->membership_control == 1) {
-												if (!in_array($guser,$this->managers) || (in_array($guser,$this->managers) && count($this->managers) > 1)) {
-													$html .= "\t\t\t\t".'<td class="remove-member"><a class="remove tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->course->cn.'&active=members&task=remove&users[]='.$guser.'&filter='.$this->filter).'" title="'.JText::sprintf('PLG_COURSES_MEMBERS_REMOVE_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_COURSES_MEMBERS_REMOVE').'</a></td>'."\n";
-												} else {
-													$html .= "\t\t\t\t".'<td class="remove-member"> </td>'."\n";
-												}
-
-												if (in_array($guser,$this->managers)) {
-													//force admins to use backend to demote manager if only 1
-													//if ($this->authorized == 'admin' || count($this->managers) > 1) {
-													if (count($this->managers) > 1) {
-														$html .= "\t\t\t\t".'<td class="demote-member"><a class="demote tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->course->cn.'&active=members&task=demote&users[]='.$guser.'&filter='.$this->filter.'&limit='.$this->limit.'&limitstart='.$this->start).'" title="'.JText::sprintf('PLG_COURSES_MEMBERS_DEMOTE_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_COURSES_MEMBERS_DEMOTE').'</a></td>'."\n";
-													} else {
-														$html .= "\t\t\t\t".'<td class="demote-member"> </td>'."\n";
-													}
-												} else {
-													$html .= "\t\t\t\t".'<td class="promote-member"><a class="promote tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->course->cn.'&active=members&task=promote&users[]='.$guser.'&filter='.$this->filter.'&limit='.$this->limit.'&limitstart='.$this->start).'" title="'.JText::sprintf('PLG_COURSES_MEMBERS_PROMOTE_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_COURSES_MEMBERS_PROMOTE').'</a></td>'."\n";
-												}
-											}
-										break;
-									}
-								} else {
-									$html .= "\t\t\t\t".'<td class="remove-member"> </td>'."\n";
-									$html .= "\t\t\t\t".'<td class="demote-member"> </td>'."\n";
-								}
-								if ($juser->get('id') == $u->get('uidNumber') || $this->filter == 'invitees' || $this->filter == 'pending') {
-									$html .= "\t\t\t\t".'<td class="message-member"> </td>'."\n";
-								} else {
-									if(!$inviteemail && ($this->authorized == 'manager' || $this->authorized == 'admin') && $this->messages_acl != 'nobody') {
-										$html .= "\t\t\t\t".'<td class="message-member"><a class="message tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->course->cn.'&active=messages&task=new&users[]='.$guser).'" title="Message :: Send a message to '.htmlentities($u->get('name'),ENT_COMPAT,'UTF-8').'">'.JText::_('PLG_COURSES_MEMBERS_MESSAGE').'</a></td>'."\n";
-									} else {
-										$html .= "\t\t\t\t".'<td class="message-member"></td>'."\n";
-									}
-								}*/?>
+							<td>
+								manage course: <?php echo ($member->access('manage', 'course')) ? 'yes' : 'no'; ?><br />
+								<br />
+								view offering: <?php echo (intval($member->access('view'))) ? 'yes' : 'no'; ?><br />
+								admin offering: <?php echo (intval($member->access('admin'))) ? 'yes' : 'no'; ?><br />
+								manage offering: <?php echo (intval($member->access('manage'))) ? 'yes' : 'no'; ?><br />
+								delete offering: <?php echo (intval($member->access('delete'))) ? 'yes' : 'no'; ?><br />
+								edit offering: <?php echo ($member->access('edit')) ? 'yes' : 'no'; ?><br />
+								edit state offering: <?php echo ($member->access('edit-state')) ? 'yes' : 'no'; ?><br />
+								<br />
+								manage student: <?php echo ($member->access('manage', 'student')) ? 'yes' : 'no'; ?><br />
+								delete student: <?php echo ($member->access('delete', 'student')) ? 'yes' : 'no'; ?><br />
+								edit student: <?php echo ($member->access('edit', 'student')) ? 'yes' : 'no'; ?><br />
+								create student: <?php echo ($member->access('create', 'student')) ? 'yes' : 'no'; ?><br />
+							</td>
 						</tr>
 						<?php } ?>
-						<?php } else { ?>
+					<?php } else { ?>
 						<tr class="odd">
 							<td><?php echo JText::_('PLG_COURSES_MEMBERS_NO_RESULTS'); ?></td>
 						</tr>
-						<?php } ?>
+					<?php } ?>
 					</tbody>
 				</table>
 			
 			<?php 
 			jimport('joomla.html.pagination');
 			$pageNav = new JPagination(
-				count($offering->get('members')), 
-				$this->start, 
-				$this->limit
+				$total, 
+				$this->filters['start'], 
+				$this->filters['limit']
 			);
 			$pageNav->setAdditionalUrlParam('gid', $this->course->get('alias'));
 			$pageNav->setAdditionalUrlParam('offering', $offering->get('alias'));

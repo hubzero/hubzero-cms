@@ -73,10 +73,10 @@ function CoursesBuildRoute(&$query)
 			unset($query['task']);
 		}
 	}
-	if (!empty($query['a'])) 
+	if (!empty($query['unit'])) 
 	{
-		$segments[] = $query['a'];
-		unset($query['a']);
+		$segments[] = $query['unit'];
+		unset($query['unit']);
 	}
 	if (!empty($query['b'])) 
 	{

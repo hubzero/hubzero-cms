@@ -50,7 +50,7 @@ class CoursesTableUnit extends JTable
 	 * 
 	 * @var int(11)
 	 */
-	var $course_instance_id = NULL;
+	var $offering_id = NULL;
 
 	/**
 	 * Alias
@@ -126,8 +126,8 @@ class CoursesTableUnit extends JTable
 	 */
 	public function check()
 	{
-		$this->course_instance_id = intval($this->course_instance_id);
-		if (!$this->course_instance_id)
+		$this->offering_id = intval($this->offering_id);
+		if (!$this->offering_id)
 		{
 			$this->setError(JText::_('Please provide a course offering ID.'));
 			return false;
@@ -166,9 +166,11 @@ class CoursesTableUnit extends JTable
 	{
 		$query = " FROM $this->_tbl AS cu";
 
-		if (isset($filters['course_instance_id']) && $filters['course_instance_id']) 
+		$where = array();
+
+		if (isset($filters['offering_id']) && $filters['offering_id']) 
 		{
-			$where[] = "cu.course_instance_id=" . $this->_db->Quote($filters['course_instance_id']);
+			$where[] = "cu.offering_id=" . $this->_db->Quote($filters['offering_id']);
 		}
 
 		if (isset($filters['search']) && $filters['search']) 

@@ -42,6 +42,8 @@ $isNowOnManager = ($isManager) ? true : false;
 
 $this->database = JFactory::getDBO();
 
+$base = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias');
+
 if (!$this->course->offering()->access('view')) {
 ?>
 	<p class="info"><?php echo JText::_('Access to the "Syllabus" section of this course is restricted to members only. You must be a member to view the content.'); ?></p>
@@ -75,7 +77,6 @@ if (!$this->course->offering()->access('view')) {
 	$i = 0;
 ?>
 
-	<!-- <ol id="timeline" class="instance"> -->
 	<div id="course-outline">
 <?php foreach ($this->course->offering->units() as $unit) { ?>
 		<div class="unit<?php echo ($i == 0) ? ' active' : ''; ?>">
@@ -85,10 +86,10 @@ if (!$this->course->offering()->access('view')) {
 						<span><?php echo $this->escape(stripslashes($unit->title)); ?></span> 
 						<?php echo $this->escape(stripslashes($unit->description)); ?>
 					</h3>
-<?php if (!$unit->started()) { ?>
+	<?php if (!$unit->started()) { ?>
 					<div class="comingSoon">
 						<p class="status">Coming soon</p>
-<?php } else { ?>
+	<?php } else { ?>
 					<div>
 						<p class="status posted">Posted</p>
 
@@ -109,9 +110,9 @@ if (!$this->course->offering()->access('view')) {
 		{
 ?>
 			<h5>
-				<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=outline&a=' . $unit->get('alias') . '&b=' . $ag->get('alias')); ?>">
+				<!-- <a href="<?php echo JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias')); ?>"> -->
 					<?php echo $this->escape(stripslashes($ag->get('title'))); ?>
-				</a>
+				<!-- </a> -->
 			</h5>
 			<ul>
 <?php
@@ -124,15 +125,15 @@ if (!$this->course->offering()->access('view')) {
 						$href = $a->path($this->course->get('id'));
 						if ($a->get('type') == 'video')
 						{
-							$href = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=outline&a=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
+							$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
 						}
 						echo '<li><a class="" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 					}
 				}
-				else
+				/*else
 				{
-					echo "<li><small>" . JText::_('COURSES_NO_ASSETS_FOR_GROUPING') . "</small></li>";
-				}
+					echo '<li><small>' . JText::_('COM_COURSES_NO_ASSETS_FOR_GROUPING') . '</small></li>';
+				}*/
 ?>
 			</ul>
 <?php
@@ -149,18 +150,18 @@ if (!$this->course->offering()->access('view')) {
 				$href = $a->path($this->course->get('id'));
 				if ($a->get('type') == 'video')
 				{
-					$href = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=outline&a=' . $unit->get('alias') . '&b=' . $agt->get('alias'));
+					$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $agt->get('alias'));
 				}
-				echo '<li><a class="" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+				echo '<li><a class="asset-type ' . $a->get('type') . '" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 			}
 ?>
 			</ul>
 <?php
 		}
-		else
+		/*else
 		{
-			echo ''; //"<li><small>" . JText::_('COURSES_NO_ASSETS_FOR_GROUPING') . "</small></li>";
-		}
+			echo "<li><small>" . JText::_('COURSES_NO_ASSETS_FOR_GROUPING') . "</small></li>";
+		}*/
 ?>
 		</div><!-- / .weekSection -->
 <?php
@@ -181,7 +182,7 @@ if (!$this->course->offering()->access('view')) {
 							$href = $a->path($this->course->get('id'));
 							if ($a->get('type') == 'video')
 							{
-								$href = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=outline&a=' . $unit->get('alias'));
+								$href = JRoute::_($base . '&active=outline&a=' . $unit->get('alias'));
 							}
 							echo '<li><a class="" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 						}

@@ -45,38 +45,19 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 	$jacl->addACL($option, 'manage', 'users', 'manager');
 }
 
-//import needed joomla libs
-jimport('joomla.filesystem.folder');
-jimport('joomla.application.component.view');
-
-//import needed HUBzero libs
-//ximport('Hubzero_Course');
-//ximport('Hubzero_Course_Helper');
-//ximport('Hubzero_Course_InviteEmail');
+// import needed HUBzero libs
 ximport('Hubzero_User_Helper');
 ximport('Hubzero_User_Profile');
 ximport('Hubzero_View_Helper_Html');
 ximport('Hubzero_Plugin_Params');
 
-//require needed files
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'tags.php');
+// require needed files
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'log.php');
-//require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'reason.php');
-//require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'pages.php');
-//require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'unit.php');
-//require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'asset.php');
-//require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'asset.group.php');
-//require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'asset.association.php');
-//require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'course.php');
-//require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'instance.php');
-
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'Helper.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'InviteEmail.php');
-
-//require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'course.php');
+//require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'InviteEmail.php');
 require_once(JPATH_COMPONENT . DS . 'models' . DS . 'course.php');
 
-//build controller path and name
+// build controller path and name
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'courses'));
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
 {

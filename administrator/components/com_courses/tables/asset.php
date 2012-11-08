@@ -114,10 +114,10 @@ class CoursesTableAsset extends JTable
 	 * @param  array $filters
 	 * @return $query database query
 	 */
-	public function buildQuery($filters=array())
+	private function _buildQuery($filters=array())
 	{
 		$query = " FROM $this->_tbl AS ca";
-		$query .= " LEFT JOIN #__courses_asset_associations AS caa ON caa.course_asset_id = ca.id";
+		$query .= " LEFT JOIN #__courses_asset_associations AS caa ON caa.asset_id = ca.id";
 		$query .= " LEFT JOIN #__courses_asset_groups AS cag ON caa.scope_id = cag.id";
 
 		/*$where = array();
@@ -150,23 +150,23 @@ class CoursesTableAsset extends JTable
 	public function find($filters=array())
 	{
 		$query  = "SELECT ca.*, caa.ordering";
-		$query .= $this->buildquery($filters);
+		$query .= $this->_buildQuery($filters);
 
 		if (!empty($filters['w']))
 		{
 			$first = true;
 
-			if (!empty($filters['w']['course_asset_scope_id']))
+			if (!empty($filters['w']['asset_scope_id']))
 			{
 				$query .= ($first) ? ' WHERE' : ' AND';
-				$query .= " cag.id = " . $this->_db->Quote($filters['w']['course_asset_scope_id']);
+				$query .= " cag.id = " . $this->_db->Quote($filters['w']['asset_scope_id']);
 
 				$first = false;
 			}
-			if (!empty($filters['w']['course_asset_scope']))
+			if (!empty($filters['w']['asset_scope']))
 			{
 				$query .= ($first) ? ' WHERE' : ' AND';
-				$query .= " caa.scope = " . $this->_db->Quote($filters['w']['course_asset_scope']);
+				$query .= " caa.scope = " . $this->_db->Quote($filters['w']['asset_scope']);
 
 				$first = false;
 			}

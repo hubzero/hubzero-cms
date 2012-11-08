@@ -38,7 +38,6 @@ defined('_JEXEC') or die('Restricted access');
  */
 class CoursesTableOffering extends JTable
 {
-
 	/**
 	 * ID, primary key for course instances table
 	 * 
@@ -80,13 +79,6 @@ class CoursesTableOffering extends JTable
 	 * @var int(11)
 	 */
 	var $section = NULL;
-
-	/**
-	 * Instance instructor id (would default to course creator id) - (references #__users.id)
-	 * 
-	 * @var int(11)
-	 */
-	var $instructor_id = NULL;
 
 	/**
 	 * Start date for instance

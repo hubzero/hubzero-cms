@@ -163,7 +163,21 @@ class CoursesTableRole extends JTable
 	 */
 	public function find($filters=array())
 	{
-		$query  = "SELECT r.*, (SELECT COUNT(m.user_id) FROM #__courses_offering_members AS m WHERE m.role_id=r.id AND m.offering_id=r.offering_id) AS total";
+		$query  = "SELECT r.*, (SELECT COUNT(m.user_id) FROM #__courses_offering_members AS m WHERE m.role_id=r.id";
+		if (isset($filters['offering_id']))
+		{
+			if (is_array($filters['offering_id']))
+			{
+				$filters['offering_id'] = array_map('intval', $filters['offering_id']);
+				$filters['offering_id'] = implode(',', $filters['offering_id']);
+			}
+			else
+			{
+				$filters['offering_id'] = intval($filters['offering_id']);
+			}
+			$query .= " AND m.`offering_id` IN (" . $filters['offering_id'] . ")";
+		}
+		$query .= ") AS total";
 		$query .= $this->_buildquery($filters);
 
 		if (!empty($filters['start']) && !empty($filters['limit']))

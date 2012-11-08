@@ -129,22 +129,51 @@ class plgCoursesMembers extends JPlugin
 		}
 
 		// Only perform the following if this is the active tab/plugin
-		//if ($returnhtml) 
-		//{
-			$this->config = $config;
+		$this->config = $config;
 
-			//set course members plugin access level
-			//$course_plugin_acl = $access[$active];
+		//Create user object
+		$juser =& JFactory::getUser();
 
-			//Create user object
-			$juser =& JFactory::getUser();
+		// Do we need to perform any actions?
+		if ($action) 
+		{
+			$action = strtolower(trim($action));
 
-			//check to see if user is member and plugin access requires members
-			/*if (!$this->config->get('access-manage-instance')) 
+			// Perform the action
+			$this->$action();
+
+			// Did the action return anything? (HTML)
+			if (isset($this->_output) && $this->_output != '') 
 			{
-				$arr['html'] = '<p class="info">' . JText::sprintf('COURSES_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
-				return $arr;
-			}*/
+				$arr['html'] = $this->_output;
+			}
+		}
+
+		if (!$arr['html']) 
+		{
+			// Get course members based on their status
+			// Note: this needs to happen *after* any potential actions ar performed above
+			ximport('Hubzero_Plugin_View');
+			$view = new Hubzero_Plugin_View(
+				array(
+					'folder'  => 'courses',
+					'element' => $this->_name,
+					'name'    => 'browse'
+				)
+			);
+
+			$view->option = $this->option;
+			$view->course = $course;
+
+			$view->filters = array();
+			$view->filters['search'] = JRequest::getVar('q', '');
+			$view->filters['role'] = JRequest::getVar('filter', 'student');
+
+			$view->filters['limit'] = JRequest::getInt('limit', $this->params->get('display_limit', 50));
+			$view->filters['start'] = JRequest::getInt('limitstart', 0);
+			$view->filters['start'] = ($view->filters['limit'] == 0) ? 0 : $view->filters['start'];
+			$view->no_html = JRequest::getInt('no_html', 0);
+			$view->params = $this->params;
 
 			// Set the page title
 			$document =& JFactory::getDocument();
@@ -154,140 +183,13 @@ class plgCoursesMembers extends JPlugin
 			Hubzero_Document::addPluginStylesheet('courses', 'members');
 			Hubzero_Document::addPluginScript('courses', 'members');
 
-			/*$paramsClass = 'JParameter';
-			if (version_compare(JVERSION, '1.6', 'ge'))
+			if ($this->getError()) 
 			{
-				$paramsClass = 'JRegistry';
+				$view->setError($this->getError());
 			}
 
-			$gparams = new $paramsClass($course->get('params'));
-			$this->membership_control = $gparams->get('membership_control', 1);
-			
-			//$this->config = JComponentHelper::getParams($this->option); 
-			$this->display_system_users = $config->get('display_system_users', 'no');
-
-			switch ($gparams->get('display_system_users', "global"))
-			{
-				case 'yes':
-					$this->display_system_users = 'yes';
-				break;
-				case 'no':
-					$this->display_system_users = 'no';
-				break;
-				case 'global':
-					$this->display_system_users = $this->display_system_users;
-				break;
-			}*/
-
-			// Do we need to perform any actions?
-			if ($action) 
-			{
-				$action = strtolower(trim($action));
-
-				// Perform the action
-				$this->$action();
-
-				// Did the action return anything? (HTML)
-				if (isset($this->_output) && $this->_output != '') 
-				{
-					$arr['html'] = $this->_output;
-				}
-			}
-
-			if (!$arr['html']) 
-			{
-				// Get course members based on their status
-				// Note: this needs to happen *after* any potential actions ar performed above
-
-				ximport('Hubzero_Plugin_View');
-				$view = new Hubzero_Plugin_View(
-					array(
-						'folder'  => 'courses',
-						'element' => $this->_name,
-						'name'    => 'browse'
-					)
-				);
-
-				//$view->membership_control = $this->membership_control;
-
-				$view->option = $this->option;
-				$view->course = $course;
-				//$view->authorized = $authorized;
-
-				$view->q = JRequest::getVar('q', '');
-				$view->filter = JRequest::getVar('filter', 'student');
-				$view->role_filter = JRequest::getVar('role_filter','');
-
-				/*if ($view->authorized != 'manager' && $view->authorized != 'admin') 
-				{
-					$view->filter = ($view->filter == 'managers') ? $view->filter : 'members';
-				}
-
-				//get messages plugin access level
-				ximport("Hubzero_Course_Helper");
-				$view->messages_acl = Hubzero_Course_Helper::getPluginAccess($course, 'messages');
-
-				//get all member roles
-				$db =& JFactory::getDBO();
-				$sql = "SELECT * FROM #__courses_roles WHERE gidNumber='".$course->get('gidNumber')."'";
-				$db->setQuery($sql);
-				$view->member_roles = $db->loadAssocList();
-
-				$course_inviteemails = new Hubzero_Course_Invite_Email($this->database);
-				$view->current_inviteemails = $course_inviteemails->getInviteEmails($this->course->get('gidNumber'), true);
-
-				/*switch ($view->filter)
-				{
-					case 'invitees':
-						$view->courseusers = ($view->q) ? $course->search('invitees', $view->q) : $course->get('invitees');
-						foreach ($view->current_inviteemails as $ie) 
-						{
-							$view->courseusers[] = $ie;
-						}
-						$view->managers = array();
-					break;
-					case 'pending':
-						$view->courseusers = ($view->q) ? $course->search('applicants', $view->q) : $course->get('applicants');
-						$view->managers   = array();
-					break;
-					case 'managers':
-						$view->courseusers = ($view->q) ? $course->search('managers', $view->q) : $course->get('managers');
-						$view->courseusers = ($view->role_filter) ? Hubzero_Course_Helper::search_roles($course, $view->role_filter) : $view->courseusers;
-						$view->managers   = $course->get('managers');
-					break;
-					case 'members':
-					default:
-						$view->courseusers = ($view->q) ? $course->search('members', $view->q) : $course->get('members');
-						//$view->courseusers = ($view->role_filter) ? Hubzero_Course_Helper::search_roles($course, $view->role_filter) : $view->courseusers;
-						$view->managers   = $course->get('managers');
-				//break;
-				//}
-
-				//if we dont want to display system users
-				//filter values through callback above and then reset array keys
-				if ($this->display_system_users == 'no' && is_array($view->courseusers)) 
-				{
-					$view->courseusers = array_values(array_filter($view->courseusers, "isSystemUser"));
-				}*/
-
-				$view->limit = JRequest::getInt('limit', $this->params->get('display_limit', 50));
-				$view->start = JRequest::getInt('limitstart', 0);
-				$view->start = ($view->limit == 0) ? 0 : $view->start;
-				/*$view->no_html = JRequest::getInt('no_html', 0);
-				$view->params = $this->params;
-
-				// Initiate paging
-				jimport('joomla.html.pagination');
-				$view->pageNav = new JPagination(count($view->courseusers), $view->start, $view->limit);*/
-
-				if ($this->getError()) 
-				{
-					$view->setError($this->getError());
-				}
-
-				$arr['html'] = $view->loadTemplate();
-			}
-		//}
+			$arr['html'] = $view->loadTemplate();
+		}
 
 		// Return the output
 		return $arr;

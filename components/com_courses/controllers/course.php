@@ -33,6 +33,8 @@ defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Controller');
 
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
+
 /**
  * Courses controller class
  */
@@ -45,8 +47,6 @@ class CoursesControllerCourse extends Hubzero_Controller
 	 */
 	public function execute()
 	{
-		//$this->gid    = JRequest::getVar('gid', '');
-
 		// Load the course page
 		$this->course = CoursesModelCourse::getInstance(JRequest::getVar('gid', ''));
 
@@ -467,7 +467,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		$message = str_replace("\n", "\r\n", $message);
 
 		// Set the course changes and save
-		$this->course->set('cn', $g_cn);
+		$this->course->set('alias', $g_cn);
 		if ($isNew) 
 		{
 			$this->course->create();
@@ -488,7 +488,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		$this->course->set('restrict_msg',$g_restrict_msg);
 		$this->course->set('join_policy',$g_join_policy);
 		$this->course->set('discussion_email_autosubscribe', $g_discussion_email_autosubscribe);
-		$this->course->update();
+		$this->course->store();
 
 		// Process tags
 		$gt = new CoursesTags($this->database);

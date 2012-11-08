@@ -197,47 +197,6 @@ class CoursesModelOffering extends JObject
 	}
 
 	/**
-	 * Check if a property is set
-	 * 
-	 * @param      string $property Name of property to set
-	 * @return     boolean True if set
-	 */
-	/*public function __isset($property)
-	{
-		return isset($this->_data[$property]);
-	}
-
-	/**
-	 * Set a property
-	 * 
-	 * @param      string $property Name of property to set
-	 * @param      mixed  $value    Value to set property to
-	 * @return     void
-	 */
-	/*public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-
-	/**
-	 * Get a property
-	 * 
-	 * @param      string $property Name of property to retrieve
-	 * @return     mixed
-	 */
-	/*public function __get($property)
-	{
-		if (isset($this->_tbl->$property)) 
-		{
-			return $this->_tbl->$property;
-		}
-		else if (isset($this->_data[$property])) 
-		{
-			return $this->_data[$property];
-		}
-	}
-
-	/**
 	 * Returns a property of the object or the default value if the property is not set.
 	 *
 	 * @access	public
@@ -255,17 +214,6 @@ class CoursesModelOffering extends JObject
 			{
 				if (is_object($this->_db))
 				{
-					/*$this->_db->setQuery("SELECT m.*, r.role, r.permissions AS role_permissions from #__courses_offering_members AS m LEFT JOIN #__courses_roles AS r ON r.id=m.role_id WHERE m.`offering_id`=" . $this->_db->Quote($this->_tbl->get('id')));
-
-					if (($results = $this->_db->loadResultArray()))
-					{
-						$data = array();
-						foreach ($results as $result)
-						{
-							$data[$result->user_id] = new CoursesModelMember($result);
-						}
-						$this->_tbl->$property = $data;
-					}*/
 					$this->_db->setQuery("SELECT user_id from #__courses_offering_members WHERE offering_id=" . $this->_db->Quote($this->_tbl->get('id')));
 
 					if (($results = $this->_db->loadResultArray()))
@@ -335,29 +283,6 @@ class CoursesModelOffering extends JObject
 		}
 		return $this->_creator;
 	}
-
-	/**
-	 * Get the instructor of this entry
-	 * 
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire JUser object
-	 * 
-	 * @param      string $property JUser property to return
-	 * @return     mixed
-	 */
-	/*public function instructor($property=null)
-	{
-		if (!isset($this->_instructor) || !is_object($this->_instructor))
-		{
-			$this->_instructor = JUser::getInstance($this->_tbl->instructor_id);
-		}
-		if ($property && is_a($this->_instructor, 'JUser'))
-		{
-			return $this->_instructor->get($property);
-		}
-		return $this->_instructor;
-	}*/
 
 	/**
 	 * Has the offering started?
@@ -481,7 +406,7 @@ class CoursesModelOffering extends JObject
 
 			$tbl = new CoursesTableUnit($this->_db);
 
-			$filters['course_instance_id'] = (int) $this->get('id');
+			$filters['offering_id'] = (int) $this->get('id');
 
 			if (($results = $tbl->find($filters)))
 			{
@@ -666,10 +591,10 @@ class CoursesModelOffering extends JObject
 	{
 		if (!isset($this->pages) || !is_array($this->pages))
 		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'pages.php');
+			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'page.php');
 
 			$tbl = new CoursesTablePage($this->_db);
-			if (!($results = $tbl->getPages($this->get('course_id'), true)))
+			if (!($results = $tbl->find($this->get('id'), true)))
 			{
 				$results = array();
 			}
@@ -728,7 +653,7 @@ class CoursesModelOffering extends JObject
 	 * @param      string $action Action to check
 	 * @return     boolean True if authorized, false if not
 	 */
-	public function access($action='view')
+	public function access($action='view', $item='offering')
 	{
 		if (!$this->_authorized)
 		{
@@ -760,6 +685,12 @@ class CoursesModelOffering extends JObject
 						$this->params->set('access-edit-offering', true);
 						$this->params->set('access-edit-state-offering', true);
 						$this->params->set('access-edit-own-offering', true);
+
+						$this->params->set('access-admin-student', true);
+						$this->params->set('access-manage-student', true);
+						$this->params->set('access-create-student', true);
+						$this->params->set('access-delete-student', true);
+						$this->params->set('access-edit-student', true);
 					}
 				}
 				else 
@@ -772,6 +703,12 @@ class CoursesModelOffering extends JObject
 					$this->params->set('access-edit-offering', $juser->authorise('core.manage', $this->get('course_id')));
 					$this->params->set('access-edit-state-offering', $juser->authorise('core.manage', $this->get('course_id')));
 					$this->params->set('access-edit-own-offering', $juser->authorise('core.manage', $this->get('course_id')));
+
+					$this->params->set('access-admin-student', $juser->authorise('core.manage', $this->get('course_id')));
+					$this->params->set('access-manage-student', $juser->authorise('core.manage', $this->get('course_id')));
+					$this->params->set('access-create-student', $juser->authorise('core.manage', $this->get('course_id')));
+					$this->params->set('access-delete-student', $juser->authorise('core.manage', $this->get('course_id')));
+					$this->params->set('access-edit-student', $juser->authorise('core.manage', $this->get('course_id')));
 				}
 
 				// If they're not an admin
@@ -789,8 +726,14 @@ class CoursesModelOffering extends JObject
 						$this->params->set('access-edit-offering', true);
 						$this->params->set('access-edit-state-offering', true);
 						$this->params->set('access-edit-own-offering', true);
+	
+						$this->params->set('access-admin-student', true);
+						$this->params->set('access-manage-student', true);
+						$this->params->set('access-create-student', true);
+						$this->params->set('access-delete-student', true);
+						$this->params->set('access-edit-student', true);
 					}
-					// Check if they're the offering creator or offering manager
+					// Check if they're the offering creator
 					else if ($this->get('created_by') == $juser->get('id'))
 					{
 						// Give full access
@@ -816,7 +759,7 @@ class CoursesModelOffering extends JObject
 				$this->_authorized = true;
 			}
 		}
-		return $this->params->get('access-' . strtolower($action) . '-offering');
+		return $this->params->get('access-' . strtolower($action) . '-' . $item);
 	}
 
 	/**

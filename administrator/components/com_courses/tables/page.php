@@ -47,7 +47,7 @@ Class CoursesTablePage extends JTable
 	 * 
 	 * @var string
 	 */
-	var $gid = NULL;
+	var $offering_id = NULL;
 
 	/**
 	 * varchar(100)
@@ -105,21 +105,21 @@ Class CoursesTablePage extends JTable
 	/**
 	 * Get pages for a course
 	 * 
-	 * @param      string  $gid    Course alias (cn)
+	 * @param      string  $offering_id    Course alias (cn)
 	 * @param      boolean $active Parameter description (if any) ...
 	 * @return     array
 	 */
-	public function getPages($gid, $active = false)
+	public function find($offering_id, $active = false)
 	{
 		$final = array();
 
 		if ($active) 
 		{
-			$sql = "SELECT * FROM $this->_tbl WHERE gid='$gid' AND active=1 ORDER BY porder ASC";
+			$sql = "SELECT * FROM $this->_tbl WHERE offering_id=" . $this->_db->Quote(intval($offering_id)) . " AND active=1 ORDER BY porder ASC";
 		}
 		else 
 		{
-			$sql = "SELECT * FROM $this->_tbl WHERE gid='$gid' ORDER BY porder ASC";
+			$sql = "SELECT * FROM $this->_tbl WHERE offering_id=" . $this->_db->Quote(intval($offering_id)) . " ORDER BY porder ASC";
 		}
 
 		$this->_db->setQuery($sql);
@@ -129,15 +129,7 @@ Class CoursesTablePage extends JTable
 		{
 			foreach ($pages as $page) 
 			{
-				$final[$page['url']] = array(
-					'id'      => $page['id'],
-					'url'     => $page['url'],
-					'title'   => $page['title'],
-					'content' => $page['content'],
-					'order'   => $page['porder'],
-					'active'  => $page['active'],
-					'privacy' => $page['privacy']
-				);
+				$final[$page['url']] = $page;
 			}
 		}
 
@@ -147,12 +139,12 @@ Class CoursesTablePage extends JTable
 	/**
 	 * Get the last page in the ordering
 	 * 
-	 * @param      string  $gid    Course alias (cn)
+	 * @param      string  $offering_id    Course alias (cn)
 	 * @return     integer
 	 */
-	public function getHighestPageOrder($gid)
+	public function getHighestPageOrder($offering_id)
 	{
-		$sql = "SELECT porder from $this->_tbl WHERE gid='$gid' ORDER BY porder DESC LIMIT 1";
+		$sql = "SELECT porder from $this->_tbl WHERE offering_id=" . $this->_db->Quote(intval($offering_id)) . " ORDER BY porder DESC LIMIT 1";
 		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
 	}
@@ -251,7 +243,7 @@ Class CoursesTablePage extends JTable
 		//mark page hit
 		if ($this->tab == 'overview' || array_key_exists($this->tab, $this->pages)) 
 		{
-			$this->pageHit($pID);
+			$this->pageHit($this->course->offer()->get('id'), $pID);
 		}
 
 		//return the page content
@@ -369,17 +361,26 @@ Class CoursesTablePage extends JTable
 	 * @param      integer $pid Page ID
 	 * @return     void
 	 */
-	private function pageHit($pid)
+	public function hit($offering_id=null, $page_id=null)
 	{
-		//query to insert page hit
-		$sql = "INSERT INTO #__courses_pages_hits(gid,pid,uid,datetime,ip)
-				VALUES('" . $this->course->get('gidNumber') . "','" . $pid . "','" . $this->juser->get('id') . "',NOW(),'" . $_SERVER['REMOTE_ADDR'] . "')";
+		if (!$offering_id)
+		{
+			$offering_id = $this->offering_id;
+		}
+		if (!$page_id)
+		{
+			$page_id = $this->page_id;
+		}
 
-		//set the query
-		$this->_db->setQuery($sql);
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'page.hit.php');
 
-		//perform query
-		$this->_db->query();
+		$tbl = new CoursesTablePageHit($this->_db);
+		if (!$tbl->hit($offering_id, $page_id))
+		{
+			$this->setError($tbl->getError());
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -406,7 +407,7 @@ Class CoursesTablePage extends JTable
 		}
 
 		//build path to users profile
-		$path = ltrim(rtrim($config->get('webpath'), DS), DS);
+		$path = ltrim(rtrim($config->get('webpath', '/site/courses'), DS), DS);
 		$path .= DS . Hubzero_View_Helper_Html::niceidformat($user->get('uidNumber')) . DS;
 
 		//build path to old uploaded thumbs

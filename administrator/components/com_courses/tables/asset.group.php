@@ -50,7 +50,7 @@ class CoursesTableAssetGroup extends JTable
 	 * 
 	 * @var int(11)
 	 */
-	var $course_unit_id = NULL;
+	var $unit_id = NULL;
 
 	/**
 	 * Alias
@@ -128,10 +128,10 @@ class CoursesTableAssetGroup extends JTable
 	 * @param  array $filters
 	 * @return $query database query
 	 */
-	public function buildQuery($filters=array())
+	private function _buildQuery($filters=array())
 	{
 		$query =  " FROM $this->_tbl AS cag";
-		$query .= " LEFT JOIN #__courses_units AS cu ON cu.id = cag.course_unit_id";
+		$query .= " LEFT JOIN #__courses_units AS cu ON cu.id = cag.unit_id";
 
 		return $query;
 	}
@@ -145,16 +145,16 @@ class CoursesTableAssetGroup extends JTable
 	public function find($filters=array())
 	{
 		$query  = "SELECT cag.*";
-		$query .= $this->buildquery($filters);
+		$query .= $this->_buildQuery($filters);
 
 		if (!empty($filters['w']))
 		{
 			$first = true;
 
-			if (!empty($filters['w']['course_unit_id']))
+			if (!empty($filters['w']['unit_id']))
 			{
 				$query .= ($first) ? ' WHERE' : ' AND';
-				$query .= " cu.id = " . $this->_db->Quote($filters['w']['course_unit_id']);
+				$query .= " cu.id = " . $this->_db->Quote($filters['w']['unit_id']);
 
 				$first = false;
 			}
@@ -185,10 +185,10 @@ class CoursesTableAssetGroup extends JTable
 		{
 			$first = true;
 
-			if (!empty($filters['w']['course_unit_id']))
+			if (!empty($filters['w']['unit_id']))
 			{
 				$query .= ($first) ? ' WHERE' : ' AND';
-				$query .= " cu.id = " . $this->_db->Quote($filters['w']['course_unit_id']);
+				$query .= " cu.id = " . $this->_db->Quote($filters['w']['unit_id']);
 
 				$first = false;
 			}

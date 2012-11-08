@@ -82,6 +82,16 @@ class CoursesModelMember extends JObject
 		if (is_numeric($uid) || is_string($uid))
 		{
 			$this->_tbl->load($uid, $oid);
+			if ((int) $this->_tbl->get('user_id'))
+			{
+				// See if a manager record exist for this user
+				$this->_db->setQuery("SELECT cm.user_id FROM #__courses_managers AS cm JOIN #__courses_offerings AS co ON cm.course_id=co.course_id WHERE co.id=" . $this->_db->Quote($this->_tbl->get('offering_id')) . " AND cm.user_id=" . $this->_db->Quote($this->_tbl->get('user_id')));
+
+				if (($result = $this->_db->loadResult()))
+				{
+					$this->_tbl->set('course_manager', $result);
+				}
+			}
 		}
 		else if (is_object($uid))
 		{
@@ -93,6 +103,10 @@ class CoursesModelMember extends JObject
 			if (isset($uid->role_permissions))
 			{
 				$this->_tbl->set('role_permissions', $uid->role_permissions);
+			}
+			if (isset($uid->course_manager))
+			{
+				$this->_tbl->set('course_manager', $uid->course_manager);
 			}
 		}
 		else if (is_array($uid))
@@ -106,6 +120,10 @@ class CoursesModelMember extends JObject
 			{
 				$this->_tbl->set('role_permissions', $uid['role_permissions']);
 			}
+			if (isset($uid['course_manager']))
+			{
+				$this->_tbl->set('course_manager', $uid['course_manager']);
+			}
 		}
 
 		$paramsClass = 'JParameter';
@@ -114,8 +132,38 @@ class CoursesModelMember extends JObject
 			$paramsClass = 'JRegistry';
 		}
 
+		//$permissions = clone(JComponentHelper::getParams('com_courses'));
+		//$permissions->merge(new $paramsClass($this->get('role_permissions')));
+
 		$permissions = new $paramsClass($this->get('role_permissions'));
 		$permissions->merge(new $paramsClass($this->get('permissions')));
+
+		if ($this->_tbl->get('course_manager'))
+		{
+			$permissions->set('access-view-course', true);
+			$permissions->set('access-admin-course', true);
+			$permissions->set('access-manage-course', true);
+			$permissions->set('access-create-course', true);
+			$permissions->set('access-delete-course', true);
+			$permissions->set('access-edit-course', true);
+			$permissions->set('access-edit-state-course', true);
+			$permissions->set('access-edit-own-course', true);
+
+			$permissions->set('access-view-offering', true);
+			$permissions->set('access-admin-offering', true);
+			$permissions->set('access-manage-offering', true);
+			$permissions->set('access-create-offering', true);
+			$permissions->set('access-delete-offering', true);
+			$permissions->set('access-edit-offering', true);
+			$permissions->set('access-edit-state-offering', true);
+			$permissions->set('access-edit-own-offering', true);
+
+			$permissions->set('access-admin-student', true);
+			$permissions->set('access-manage-student', true);
+			$permissions->set('access-create-student', true);
+			$permissions->set('access-delete-student', true);
+			$permissions->set('access-edit-student', true);
+		}
 
 		if ($this->exists())
 		{
@@ -299,13 +347,13 @@ class CoursesModelMember extends JObject
 	 * @param      string $action Action to check
 	 * @return     boolean True if authorized, false if not
 	 */
-	public function access($action='')
+	public function access($action='', $item='offering')
 	{
 		if (!$action)
 		{
 			return $this->get('permissions');
 		}
-		return $this->get('permissions')->get('access-' . strtolower($action) . '-offering');
+		return $this->get('permissions')->get('access-' . strtolower($action) . '-' . $item);
 	}
 }
 

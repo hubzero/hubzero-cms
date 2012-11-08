@@ -50,7 +50,7 @@ class CoursesTableAssetAssociation extends JTable
 	 * 
 	 * @var int(11)
 	 */
-	var $course_asset_id = NULL;
+	var $asset_id = NULL;
 
 	/**
 	 * Course asset group id (references #__course_asset_groups.id)
@@ -91,7 +91,28 @@ class CoursesTableAssetAssociation extends JTable
 	 */
 	public function check()
 	{
-		parent::check();
+		$this->asset_id = intval($this->asset_id);
+		if (!$this->asset_id) 
+		{
+			$this->setError(JText::_('COM_COURSES_MUST_HAVE_ASSET_ID'));
+			return false;
+		}
+
+		$this->scope_id = intval($this->scope_id);
+		if (!$this->scope_id) 
+		{
+			$this->setError(JText::_('COM_COURSES_MUST_HAVE_SCOPE_ID'));
+			return false;
+		}
+
+		$this->scope = trim($this->scope);
+		if (!$this->scope) 
+		{
+			$this->setError(JText::_('COM_COURSES_MUST_HAVE_SCOPE'));
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
@@ -100,7 +121,7 @@ class CoursesTableAssetAssociation extends JTable
 	 * @param  array $filters
 	 * @return $query database query
 	 */
-	public function buildQuery($filters=array())
+	private function _buildQuery($filters=array())
 	{
 		$query = " FROM $this->_tbl AS caa";
 
@@ -113,10 +134,10 @@ class CoursesTableAssetAssociation extends JTable
 	 * @param  array $filters
 	 * @return object Return course units
 	 */
-	public function getCourseAssetAssociations($filters=array())
+	public function find($filters=array())
 	{
 		$query  = "SELECT caa.*";
-		$query .= $this->buildquery($filters);
+		$query .= $this->_buildQuery($filters);
 
 		if (!empty($filters['start']) && !empty($filters['limit']))
 		{

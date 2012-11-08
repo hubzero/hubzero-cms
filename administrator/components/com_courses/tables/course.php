@@ -104,56 +104,7 @@ class CoursesTableCourse extends JTable
 	 * 
 	 * @var integer
 	 */
-	var $restrict_msg = NULL;
-
-	/**
-	 * int(11)
-	 * 
-	 * @var integer
-	 */
-	var $join_policy = NULL;
-
-	/**
-	 * int(11)
-	 * 
-	 * @var integer
-	 */
-	var $privacy = NULL;
-
-	/**
-	 * int(11)
-	 * 
-	 * @var integer
-	 */
-	var $discussion_email_autosubscribe = NULL;
-
-	/**
-	 * int(11)
-	 * 
-	 * @var integer
-	 */
 	var $logo = NULL;
-
-	/**
-	 * int(11)
-	 * 
-	 * @var integer
-	 */
-	var $overview_type = NULL;
-
-	/**
-	 * int(11)
-	 * 
-	 * @var integer
-	 */
-	var $overview_content = NULL;
-
-	/**
-	 * int(11)
-	 * 
-	 * @var integer
-	 */
-	var $plugins = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
