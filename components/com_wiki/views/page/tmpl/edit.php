@@ -254,6 +254,7 @@ if ($templates) {
 	<?php if ($this->config->get('access-edit')) { ?>
 		<label for="title">
 			<?php echo JText::_('WIKI_FIELD_TITLE'); ?>:
+			<span class="required"><?php echo JText::_('WIKI_REQUIRED'); ?></span>
 			<input type="text" name="page[title]" id="title" value="<?php echo $this->escape($this->page->title); ?>" size="38" />
 		</label>
 	<?php } else { ?>
