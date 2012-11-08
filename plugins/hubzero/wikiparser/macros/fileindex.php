@@ -64,12 +64,12 @@ class FileIndexMacro extends WikiMacro
 		{
 			$et = strip_tags($et);
 			// Get pages with a prefix
-			$sql  = "SELECT * FROM #__wiki_attachments WHERE LOWER(filename) LIKE '" . strtolower($et) . "%' AND pageid='" . $this->pageid . "' ORDER BY filename ASC";
+			$sql  = "SELECT * FROM #__wiki_attachments WHERE LOWER(filename) LIKE '" . strtolower($et) . "%' AND pageid='" . $this->pageid . "' ORDER BY created ASC";
 		} 
 		else 
 		{
 			// Get all pages
-			$sql  = "SELECT * FROM #__wiki_attachments WHERE pageid='" . $this->pageid . "' ORDER BY filename ASC";
+			$sql  = "SELECT * FROM #__wiki_attachments WHERE pageid='" . $this->pageid . "' ORDER BY created ASC";
 		}
 
 		// Perform query
