@@ -76,9 +76,12 @@ JHTML::_('behavior.tooltip');
 				<ul class="views">
 			<?php } ?>
 			<?php if ($i == 2) { ?>
+					</li>
 				</ul>
-			<?php } ?>
 			</li>
+			<?php } else if ($i > 2) { ?>
+			</li>
+			<?php } ?>
 		<?php 
 		$i++;
 	} 
@@ -298,7 +301,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<span class="ticket-id">
 						<?php echo $row->id; ?>
 					</span>
-					<span class="<?php echo $status; ?> status hasTip" title="<?php echo JText::_('Details'); ?>::<?php echo '<strong>' . JText::_('SUPPORT_COL_STATUS') . ':</strong> ' . $status; echo ($row->open == 0) ? ' (' . $this->escape($row->resolved) . ')' : ''; echo '<br /><strong>' . JText::_('Priority') . ':</strong> ' . $this->escape($row->severity); ?>">
+					<span class="<?php echo $status; ?> status hasTip" title="<?php echo JText::_('Details'); ?> :: <?php echo '<strong>' . JText::_('SUPPORT_COL_STATUS') . ':</strong> ' . $status; echo ($row->open == 0) ? ' (' . $this->escape($row->resolved) . ')' : ''; ?>">
 						<?php echo $status; echo ($row->open == 0) ? ' (' . $this->escape($row->resolved) . ')' : ''; ?>
 					</span>
 				</th>
@@ -345,7 +348,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 <?php } ?>
 				</td>
 				<td class="tkt-severity">
-					<span class="ticket-severity <?php echo $this->escape($row->severity); ?>">
+					<span class="ticket-severity <?php echo $this->escape($row->severity); ?> hasTip" title="<?php echo '<strong>' . JText::_('Priority') . ':</strong>&nbsp;' . $this->escape($row->severity); ?>">
 						<span><?php echo $this->escape($row->severity); ?></span>
 					</span>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" />

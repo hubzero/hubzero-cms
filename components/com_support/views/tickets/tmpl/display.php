@@ -83,9 +83,12 @@ Hubzero_Document::addComponentStylesheet($this->option, 'assets/css/conditions.c
 					<ul class="views">
 				<?php } ?>
 				<?php if ($i == 2) { ?>
+						</li>
 					</ul>
-				<?php } ?>
 				</li>
+				<?php } else if ($i > 2) { ?>
+				</li>
+				<?php } ?>
 			<?php 
 			$i++;
 		} 
