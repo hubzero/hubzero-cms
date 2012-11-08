@@ -203,31 +203,21 @@ class ToolsControllerVersions extends Hubzero_Controller
 		if (!$row)
 		{
 			JRequest::setVar('id', $fields['id']);
-			JRequest::setVar('vserion', $fields['version']);
+			JRequest::setVar('version', $fields['version']);
 			$this->addComponentMessage(JText::_('Tool instance not found'), 'error');
 			$this->editTask();
 			return;
 		}
 
 		$row->vnc_command = trim($fields['vnc_command']);
-		$row->vnc_timeout = intval(trim($fields['vnc_command']));
-		$row->hostreq = trim($fields['hostreq']);
+		$row->vnc_timeout = ($fields['vnc_timeout'] != 0) ? intval(trim($fields['vnc_timeout'])) : NULL;
+		$row->hostreq     = trim($fields['hostreq']);
+		$row->mw          = trim($fields['mw']);
+		$row->params      = trim($fields['params']);
 
 		if (!$row->vnc_command)
 		{
 			$this->addComponentMessage(JText::_('No command value'), 'error');
-			$this->editTask($row);
-			return;
-		}
-		if (!$row->vnc_timeout && $row->vnc_timeout !== 0)
-		{
-			$this->addComponentMessage(JText::_('No timeout value'), 'error');
-			$this->editTask($row);
-			return;
-		}
-		if (!$row->hostreq)
-		{
-			$this->addComponentMessage(JText::_('No hostreq value'), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -239,7 +229,7 @@ class ToolsControllerVersions extends Hubzero_Controller
 		{
 			if (!empty($req))
 			{
-			    $hostreq[] = $req;
+				$hostreq[] = $req;
 			}
 		}
 
