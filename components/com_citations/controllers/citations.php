@@ -112,6 +112,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 		$this->view->title    = JText::_(strtoupper($this->_name));
 		$this->view->database = $this->database;
 		$this->view->config   = $this->config;
+		$this->view->isAdmin  = ($this->juser->get("usertype") == "Super Administrator") ? true : false;
 		
 		//get the earliest year we have citations for
 		$query = "SELECT c.year FROM #__citations as c WHERE published=1 ORDER BY c.year ASC LIMIT 1";
@@ -126,24 +127,65 @@ class CitationsControllerCitations extends Hubzero_Controller
 		$this->view->filters['start']   = JRequest::getInt('limitstart', 0, 'get');
 		
 		//search/filtering params
-		$this->view->filters['tag']			= trim(JRequest::getVar('tag', '', 'request', 'none', 2));
-		$this->view->filters['search']		= $this->database->getEscaped(JRequest::getVar('search', ''));
-		$this->view->filters['type']		= JRequest::getVar('type', '');
-		$this->view->filters['author']		= JRequest::getVar('author', '');
-		$this->view->filters['publishedin']	= JRequest::getVar('publishedin', '');
-		$this->view->filters['year_start']	= JRequest::getInt('year_start', $earliest_year);
-		$this->view->filters['year_end']	= JRequest::getInt('year_end', date("Y"));
-		$this->view->filters['filter']		= JRequest::getVar('filter', '');
-		$this->view->filters['sort']		= JRequest::getVar('sort', 'sec_cnt DESC');
-		$this->view->filters['reftype']		= JRequest::getVar('reftype', array('research' => 1, 'education' => 1, 'eduresearch' => 1, 'cyberinfrastructure' => 1));
-		$this->view->filters['geo']			= JRequest::getVar('geo', array('us' => 1, 'na' => 1,'eu' => 1, 'as' => 1));
-		$this->view->filters['aff']			= JRequest::getVar('aff', array('university' => 1, 'industry' => 1, 'government' => 1));
-		
+		$this->view->filters['tag']             = trim(JRequest::getVar('tag', '', 'request', 'none', 2));
+		$this->view->filters['search']          = $this->database->getEscaped(JRequest::getVar('search', ''));
+		$this->view->filters['type']            = JRequest::getVar('type', '');
+		$this->view->filters['author']          = JRequest::getVar('author', '');
+		$this->view->filters['publishedin']     = JRequest::getVar('publishedin', '');
+		$this->view->filters['year_start']      = JRequest::getInt('year_start', $earliest_year);
+		$this->view->filters['year_end']        = JRequest::getInt('year_end', date("Y"));
+		$this->view->filters['filter']          = JRequest::getVar('filter', '');
+		$this->view->filters['sort']            = JRequest::getVar('sort', 'sec_cnt DESC');
+		$this->view->filters['reftype']         = JRequest::getVar('reftype', array('research' => 1, 'education' => 1, 'eduresearch' => 1, 'cyberinfrastructure' => 1));
+		$this->view->filters['geo']             = JRequest::getVar('geo', array('us' => 1, 'na' => 1,'eu' => 1, 'as' => 1));
+		$this->view->filters['aff']             = JRequest::getVar('aff', array('university' => 1, 'industry' => 1, 'government' => 1));
+		$this->view->filters['startuploaddate'] = JRequest::getVar('startuploaddate', 0);
+		$this->view->filters['enduploaddate']   = JRequest::getVar('enduploaddate', 0);
+
+		// Handling ids of the the boxes checked for download
+		$referer = (isset($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : '';
+		$session =& JFactory::getSession();
+
+		// If it's new search remove all user citation checkmarks
+		if(isset($_POST['filter']))
+		{
+			$this->view->filters['idlist'] = "";
+			$session->set('idlist', $this->view->filters['idlist']);
+		}
+		else
+		{
+			$this->view->filters['idlist'] = JRequest::getVar('idlist', $session->get('idlist')); 
+			$session->set('idlist', $this->view->filters['idlist']);
+		}
+
+		// Reset the filter if the user came from a different section
+		if(strpos($referer, "/citations/browse") == false)
+		{
+			$this->view->filters['idlist'] = "";
+			$session->set('idlist', $this->view->filters['idlist']); 
+		}
+
+		//Convert upload dates to correct time format
+		$this->view->filters['startuploaddate'] = strftime("%Y-%m-%d %H:%M:%S",strtotime($this->view->filters['startuploaddate']));
+		$this->view->filters['enduploaddate']   = strftime("%Y-%m-%d %H:%M:%S",strtotime($this->view->filters['enduploaddate']));
+		if($this->view->filters['enduploaddate'] == "1969-12-31 19:00:00")
+		{ 
+			$this->view->filters['enduploaddate'] = date('Y-m-d H:i:s', time());
+		}
+
+		//Make sure the end date for the upload search isn't before the start date
+		if($this->view->filters['startuploaddate'] > $this->view->filters['enduploaddate'])
+		{
+			$this->addComponentMessage("The end date cannot be before the start date.", "error");
+			$this->_redirect = JRoute::_('index.php?option=com_citations&task=browse');
+			return; 
+		}
+
 		// Instantiate a new citations object
 		$obj = new CitationsCitation($this->database);
 
 		// Get a record count
-		$total = $obj->getCount($this->view->filters, false);
+		$total = $obj->getCount($this->view->filters, $this->view->isAdmin);
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
@@ -154,25 +196,28 @@ class CitationsControllerCitations extends Hubzero_Controller
 		);
 
 		// Get records
-		$this->view->citations = $obj->getRecords($this->view->filters, false);
+		$this->view->citations = $obj->getRecords($this->view->filters, $this->view->isAdmin);
 
 		// Add some data to our view for form filtering/sorting
 		$ct = new CitationsType($this->database);
 		$this->view->types = $ct->getType();
 
+		// Affiliation filter
 		$this->view->filter = array(
 			'all'    => JText::_('ALL'),
 			'aff'    => JText::_('AFFILIATE'),
 			'nonaff' => JText::_('NONAFFILIATE')
 		);
 
+		// Sort Filter
 		$this->view->sorts = array(
 			'sec_cnt DESC' => JText::_('Cited by'),
 			'year DESC'    => JText::_('YEAR'),
 			'created DESC' => JText::_('NEWEST'),
 			'title ASC'    => JText::_('TITLE'),
 			'author ASC'   => JText::_('AUTHORS'),
-			'journal ASC'  => JText::_('JOURNAL')
+			'journal ASC'  => JText::_('JOURNAL'),
+			'created DESC' =>JText::_("Date uploaded")
 		);
 		
 		//get the users id to make lookup
@@ -265,7 +310,6 @@ class CitationsControllerCitations extends Hubzero_Controller
 		//are we allowing importing
 		$this->view->allow_import = $this->config->get('citation_import', 1);
 		$this->view->allow_bulk_import = $this->config->get('citation_bulk_import', 1);
-		$this->view->isAdmin = ($this->juser->get('usertype') == 'Super Administrator') ? true : false;
 		$this->view->display();
 	}
 	
@@ -324,6 +368,9 @@ class CitationsControllerCitations extends Hubzero_Controller
 			$this->loginTask();
 			return;
 		}
+
+		// Check if admin
+		$isAdmin = ($this->juser->get("usertype") == "Super Administrator") ? true : false;
 
 		//are we allowing user to add citation
 		$allowImport = $this->config->get('citation_import', 1);
@@ -389,14 +436,10 @@ class CitationsControllerCitations extends Hubzero_Controller
 		$this->view->config = $this->config;
 
 		// Incoming - expecting an array id[]=4232
-		$id = JRequest::getVar('id', array());
+		$id = JRequest::getInt('id', 0);
 
-		// Get the single ID we're working with
-		if (is_array($id) && !empty($id)) 
-		{
-			$id = $id[0];
-		} 
-		else 
+		// Non-admins can't edit citations
+		if(!$isAdmin)
 		{
 			$id = 0;
 		}
@@ -424,7 +467,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 		else 
 		{
 			// Get the associations
-			$this->view->assocs = $assoc->getRecords(array('cid' => $id));
+			$this->view->assocs = $assoc->getRecords(array('cid' => $id), $isAdmin);
 
 			//get the citations tags and badges
 			$t = new TagsTag($this->database);
@@ -575,7 +618,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&task=browse',
-			JText::_('You have successfully added a new citation.')
+			JText::_('You have successfully saved the citation.')
 		);
 		return;
 	}
@@ -611,14 +654,15 @@ class CitationsControllerCitations extends Hubzero_Controller
 			foreach ($ids as $id)
 			{
 				// Fetch and delete all the associations to this citation
-				$assocs = $assoc->getRecords(array('cid' => $id));
+				$isAdmin = ($this->juser->get("usertype") == "Super Administrator") ? true : false;
+				$assocs = $assoc->getRecords(array('cid' => $id), $isAdmin);
 				foreach ($assocs as $a)
 				{
 					$assoc->delete($a->id);
 				}
 
 				// Fetch and delete all the authors to this citation
-				$authors = $author->getRecords(array('cid' => $id));
+				$authors = $author->getRecords(array('cid' => $id), $isAdmin);
 				foreach ($authors as $a)
 				{
 					$author->delete($a->id);
@@ -700,7 +744,9 @@ class CitationsControllerCitations extends Hubzero_Controller
 		$download = JRequest::getVar('download', '', 'post');
 
 		//get the citations we want to export
-		$citations = JRequest::getVar('download_marker', array(), 'post');
+		//$citations = JRequest::getVar('download_marker', array(), 'post');
+		$citationsString = JRequest::getVar("idlist", '' , "post");
+		$citations       = explode("-", $citationsString);
 
 		//return to browse mode if we really dont wanna download
 		if (strtolower($download) != 'endnote' 

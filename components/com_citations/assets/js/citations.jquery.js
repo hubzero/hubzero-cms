@@ -35,6 +35,8 @@ HUB.Citations = {
 	
 	initialize: function()
 	{
+		var $ = this.jQuery;
+
 		//citation import functionality
 		HUB.Citations.bulkimport();
 		
@@ -46,6 +48,29 @@ HUB.Citations = {
 		
 		//
 		HUB.Citations.rollovers();
+
+
+		// Checks the boxes of the already selected citations when the page is done loading
+		var checkList = $("input[name=idlist]").val();
+		if(checkList) {
+			var checkArray = checkList.split("-");
+
+			$(".download-marker").each(function() {
+				var value = $(this).val();
+				var i = 0;
+				for(i = 0; i < checkArray.length; i++) {
+					// If the value is in the array check the checkbox
+					if(value == checkArray[i]) {
+						$(this).prop("checked", true);
+					}
+				}
+			});
+
+			// If they're all checked, check the allchecked checkbox
+			if (!$('input.download-marker[type=checkbox]:not(:checked)').length) {
+				$(".checkall-download").prop("checked", true);
+			}
+		}
 	},
 	
 	//-----
@@ -56,10 +81,10 @@ HUB.Citations = {
 		var newNode = tbody.rows[0].cloneNode(true);
 		
 		var newField = newNode.childNodes;
-		for (var i=0;i<newField.length;i++) 
+		for (var i=0;i<newField.length;i++)
 		{
 			var inputs = newField[i].childNodes;
-			for (var k=0;k<inputs.length;k++) 
+			for (var k=0;k<inputs.length;k++)
 			{
 				var theName = inputs[k].name;
 				if (theName) {
@@ -112,7 +137,7 @@ HUB.Citations = {
 		//uncheck/check checkall depending if all sub checkboxes are checked
 		$(".check-single").bind("click", function(e) {
 			var checkboxes = $(this).parents("table.upload-list tbody").find("input[type=checkbox]");
-			var allchecked = (checkboxes.filter(":not(:checked)").length > 0) ? false : true
+			var allchecked = (checkboxes.filter(":not(:checked)").length > 0) ? false : true;
 			$(this).parents("table.upload-list").find(".checkall").attr("checked", allchecked);
 		});
 
@@ -133,7 +158,7 @@ HUB.Citations = {
 					break;
 				case "both":
 					parent.find(".new").addClass("insert").removeClass("delete");
-					parent.find(".old").addClass("insert").removeClass("delete");;
+					parent.find(".old").addClass("insert").removeClass("delete");
 					break;
 			}
 		});
@@ -149,16 +174,131 @@ HUB.Citations = {
 		$(".checkall-download").bind("click", function(e) {
 			var tbody = $(this).parents("table.citations").children("tbody");
 			tbody.find("input[type=checkbox]").attr("checked", this.checked);
+
+			// True if all box is being checked, false if it's being unchecked
+			var isChecked = $('.checkall-download').attr('checked')?true : false;
+
+			// currentList is a string of ids delimited by "-" of
+			// citations the user has checked
+			var currentList = $("input[name=idlist]").val();
+			// Since the array is actually a string delimited by "-" it needs split up
+			var idArray = currentList.split("-");
+
+			// If the box is being checked add the id for each citation on the page to the id list
+			// if it's not already there
+			if(isChecked) {
+				$(".download-marker").each(function() {
+					var value = $(this).val();
+					var i = 0;
+					for(i = 0; i < idArray.length; i++) {
+						// If the current id is found in the list, don't add it
+						if(idArray[i] == value) {
+							break;
+						}
+					}
+
+					if(currentList != "") {
+						currentList = currentList + "-" + value;
+					} else {
+						currentList = value;
+					}
+				});
+
+				// Update the list stored on the page
+				$("input[name=idlist]").val(currentList);
+			}
+			// If the box is being unchecked remove the id for each citation on the page from the list
+			else {
+				$(".download-marker").each(function() {
+					var value = $(this).val();
+					var i = 0;
+					for(i = 0; i < idArray.length; i++) {
+						// If the current id is found in the list, remove it
+						if(idArray[i] == value) {
+							idArray.splice(i, 1);
+						}
+					}
+				});
+				currentList = idArray.join("-");
+				$("input[name=idlist]").val(currentList);
+			}
+
+			// Sends the new id list to the server
+			$.ajax({
+				url: 'index.php?option=com_citations&task=browse',
+				method:'post',
+				data: {'idlist': $("input[name=idlist]").val()}
+			});
 		});
 
 		//uncheck/check checkall depending if all sub checkboxes are checked
 		$(".download-marker").bind("click", function(e) {
 			var checkboxes = $(this).parents("table.citations tbody").find("input[type=checkbox]");
-			var allchecked = (checkboxes.filter(":not(:checked)").length > 0) ? false : true
-			$(this).parents("table.citations").find(".checkall-download").attr("checked", allchecked);
+			//var allchecked = (checkboxes.filter(":not(:checked)").length > 0) ? false : true;
+			//$(this).parents("table.citations").find(".checkall-download").attr("checked", allchecked);
+
+			// value is the id associated checkbox clicked on
+			var value = $(this).val();
+			// currentList is a string of ids delimited by "-" of
+			// citations the user has checked
+			// input[name=idlist] references the hidden input  that
+			// manages the boxes that have been selected
+			var currentList = $("input[name=idlist]").val();
+
+			// If there are items in the current list
+			if(currentList != '') {
+				// Since the array is actually a string delimited by "-" it needs split up
+				var idArray = currentList.split("-");
+				var i = 0;
+				// Check to make sure the item doesn't need removed from the array
+				// by seeing if the id selected is already in the array
+				for(i = 0; i < idArray.length; i++) {
+				// If it is in the array remove it from the array
+				// and put the new array back in the input value
+					if(idArray[i] == value) {
+						idArray.splice(i, 1);
+						currentList = idArray.join("-");
+						$("input[name=idlist]").val(currentList);
+
+						// Sends the new id list to the server
+						$.ajax({
+							url: 'index.php?option=com_citations&task=browse',
+							method:'post',
+							data: {'idlist': $("input[name=idlist]").val()}
+						});
+
+						// All the checkboxes can't be checked, so uncheck the select all checkbox
+						$(".checkall-download").prop("checked", false);
+
+						return;
+					}
+				}
+
+				currentList = currentList + "-" + value;
+			}
+			// If the currentList is empty, then there can't be any other checked boxes
+			// so add the value to the array of selected items
+			else {
+				currentList = value;
+			}
+
+			// Put the new list back in the input value
+			$("input[name=idlist]").val(currentList);
+
+			// Sends the new id list to the server
+			$.ajax({
+				url: 'index.php?option=com_citations&task=browse',
+				method:'post',
+				data: {'idlist': $("input[name=idlist]").val()}
+			});
+
+			// If they're all checked, check the allchecked checkbox
+			if (!$('input.download-marker[type=checkbox]:not(:checked)').length) {
+				$(".checkall-download").prop("checked", true);
+			}
 		});
 
-		//download 
+		//download
 		$(".download-endnote, .download-bibtex").bind("click", function(e) {
 			var markers = countDownloadMarkers();
 			if(markers < 1) {
@@ -166,7 +306,7 @@ HUB.Citations = {
 				e.preventDefault();
 			}
 
-			if(!$("#download-batch-input").length) 
+			if(!$("#download-batch-input").length)
 			{
 				$("#citeform").append("<input type=\"hidden\" name=\"task\" value=\"downloadbatch\" id=\"download-batch-input\" />");
 			}
@@ -178,7 +318,7 @@ HUB.Citations = {
 		$(document.body).click(function(e) {
 			var target = e.target.className;
 			if($("#download-batch-input").length && target != 'download-endnote' && target != 'download-bibtex') {
-				$("#download-batch-input").remove()
+				$("#download-batch-input").remove();
 				$("#citeform").attr("method", "GET");
 			}
 		});
@@ -199,7 +339,7 @@ HUB.Citations = {
 	{
 		var $ = this.jQuery;
 		
-	   	function hideCitationFields( display )
+		function hideCitationFields( display )
 		{
 			$(".add-citation fieldset:first label").each(function(i, el){
 				var forinput = $(this).attr("for");
@@ -210,13 +350,16 @@ HUB.Citations = {
 			});
 		}
 
-		//hide all fields initially
-		hideCitationFields("none");
+		// Hide all the fields initially if there is no initial
+		// citiation type selected
+		if($(".add-citation #type").val() == '') {
+			hideCitationFields("none");
+		}
 
 		//on change of citation show fields we want
 		$(".add-citation #type").bind("change", function(e) {
 			hideCitationFields("none");
-	    	var type = this.options[this.selectedIndex].text;
+			var type = this.options[this.selectedIndex].text;
 			type = type.replace(/\s+/g, "").toLowerCase();
 
 			if(fields[type])
@@ -229,13 +372,13 @@ HUB.Citations = {
 				});
 			}
 			else
-			{       
+			{
 				if(this.value != "")
 				{
 					hideCitationFields("block");
 				}
 			}
-		}); 
+		});
 	},
 	
 	//-----
@@ -249,7 +392,7 @@ HUB.Citations = {
 				$note = $(this).find(".citation-notes");
 				
 			if($note.length)
-			{	
+			{
 				$title
 					.append($note)
 					.tooltip({

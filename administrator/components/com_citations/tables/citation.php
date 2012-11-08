@@ -579,7 +579,11 @@ class CitationsCitation extends JTable
 		{
 			$query .= " AND r.year <=" . $filter['year_end'];
 		}
-		
+		if(isset($filter['startuploaddate']) && isset($filter['enduploaddate']))
+		{
+			$query .= " AND r.created >= '" . $filter['startuploaddate'] . "' AND r.created <= '" . $filter['enduploaddate'] ."'";
+		}
+
 		//affiated? filter
 		if(isset($filter['filter']) && $filter['filter'] != '')
 		{

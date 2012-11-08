@@ -77,6 +77,9 @@
 		border-bottom: 1px solid #efefef;
 		padding: 10px 0;
 	}
+	.citations tbody tr td.col-edit {
+		padding: 10px;
+	}
 	.citations tbody tr:nth-child(odd) td {
 		border-bottom: none;
 	}

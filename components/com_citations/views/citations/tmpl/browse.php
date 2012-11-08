@@ -111,12 +111,34 @@ if ($label == "none") {
 					to
 					<input type="text" name="year_end" class="half" value="<?php echo $this->filters['year_end']; ?>" />
 				</label>
+				<?php if($this->isAdmin) { ?>
+					<fieldset>
+						<label>
+							<?php echo JText::_('Uploaded Between'); ?>
+							<input type="text" name="startuploaddate" value="" />
+							<span class="hint">YYYY-MM-DD</span>
+						</label>
+						<label>
+							<?php echo JText::_('and'); ?><br/>
+							<input type="text" name="enduploaddate" value="" />
+							<span class="hint">YYYY-MM-DD</span>
+						</label>
+					</fieldset>
+				<?php } ?>
 				<label>
 					<?php echo JText::_('SORT_BY'); ?>
 					<select name="sort" id="sort" class="">
 						<?php foreach($this->sorts as $k => $v) : ?>
-							<?php $sel = ($k == $this->filters['sort']) ? "selected" : ""; ?>
-							<option <?php echo $sel; ?> value="<?php echo $k; ?>"><?php echo $v; ?></option>
+							<?php $sel = ($k == $this->filters['sort']) ? "selected" : "";
+							if(($this->isAdmin !== true) && ($v == "Date uploaded"))
+							{
+								// Do nothing
+							}
+							else
+							{
+							?>
+ 								<option <?php echo $sel; ?> value="<?php echo $k; ?>"><?php echo $v; ?></option>
+							<?php } ?>
 						<?php endforeach; ?>
 					</select>
 				</label>
@@ -173,7 +195,10 @@ if ($label == "none") {
 						<?php echo JText::_('Government'); ?>
 					</label>
 				</fieldset>
-				
+
+				<input type="hidden" name="idlist" value="<?php echo $this->filters['idlist']; ?>"/>   
+				<input type="hidden" name="referer" value="<?php echo @$_SERVER['HTTP_REFERER']; ?>" />
+
 				<p class="submit">
 					<input type="submit" value="Filter" />
 				</p>
@@ -235,7 +260,14 @@ if ($label == "none") {
 						$formatter = new CitationFormat();
 						$formatter->setTemplate($template);
 
-						$counter = 1;
+						// Fixes the counter so it starts counting at the current citation number instead of restarting on 1 at every page
+						$counter = $this->filters['start'];
+
+						if($counter == '')
+						{
+							$counter = 1;
+						}
+
 					?>
 					<table class="citations entries">
 						<thead>
@@ -245,10 +277,14 @@ if ($label == "none") {
 										<input type="checkbox" class="checkall-download" />
 									</th>
 								<?php endif; ?>
-								<th colspan="2">Citations</th>
+								<th colspan="3">Citations</th>
 							</tr>
+							<?php if($this->isAdmin) : ?>
+								<tr class="hidden"></tr>
+							<?php endif; ?>
 						</thead>
 						<tbody>
+							<?php $x = 0; ?>
 							<?php foreach($this->citations as $cite) : ?>
 								<tr>
 									<?php if ($batch_download) : ?>
@@ -313,6 +349,9 @@ if ($label == "none") {
 											</div>
 										<?php endif; ?>
 									</td>
+									<?php if($this->isAdmin === true) { ?>
+										<td class="col-edit"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=edit&id='.$cite->id); ?>">Edit</a></td>
+									<?php } ?>
 								</tr>
 								<tr>
 									<td colspan="<?php if ($label == "none") { echo 2; } else { echo 3; }; ?>" class="citation-details">
@@ -341,6 +380,7 @@ if ($label == "none") {
 						switch ($key)
 						{
 							case 'limit':
+							case 'idlist';
 							case 'start':
 							break;
 
