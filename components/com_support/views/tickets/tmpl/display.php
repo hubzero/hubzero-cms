@@ -314,7 +314,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 							<span class="ticket-id">
 								<?php echo $row->id; ?>
 							</span>
-							<span class="<?php echo $status; ?> status hasTip" title="<?php echo JText::_('Details'); ?>::<?php echo '<strong>' . JText::_('SUPPORT_COL_STATUS') . ':</strong> ' . $status; echo ($row->open == 0) ? ' (' . $this->escape($row->resolved) . ')' : ''; echo '<br /><strong>' . JText::_('Priority') . ':</strong> ' . $this->escape($row->severity); ?>">
+							<span class="<?php echo $status; ?> status hasTip" title="<?php echo JText::_('Details'); ?> :: <?php echo '<strong>' . JText::_('SUPPORT_COL_STATUS') . ':</strong> ' . $status; echo ($row->open == 0) ? ' (' . $this->escape($row->resolved) . ')' : ''; ?>">
 								<?php echo $status; echo ($row->open == 0) ? ' (' . $this->escape($row->resolved) . ')' : ''; ?>
 							</span>
 						</td>
@@ -362,7 +362,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						</td>
 						<td class="tkt-severity">
 <?php if ($this->acl->check('delete', 'tickets')) { ?>
-							<span class="ticket-severity <?php echo $this->escape($row->severity); ?>">
+							<span class="ticket-severity <?php echo $this->escape($row->severity); ?> hasTip" title="<strong><?php echo JText::_('Priority'); ?>:</strong>&nbsp;<?php echo $this->escape($row->severity); ?>">
 								<span><?php echo $this->escape($row->severity); ?></span>
 							</span>
 							<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=delete&id=' . $row->id); ?>" title="<?php echo JText::_('SUPPORT_DELETE'); ?>">
