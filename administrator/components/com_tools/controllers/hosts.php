@@ -85,6 +85,7 @@ class ToolsControllerHosts extends Hubzero_Controller
 			$config->getValue('config.list_limit'), 
 			'int'
 		);
+		$this->view->filters['limit']        = ($this->view->filters['limit'] == 'all') ? 0 : $this->view->filters['limit'];
 		$this->view->filters['start']        = $app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.limitstart', 
 			'limitstart', 

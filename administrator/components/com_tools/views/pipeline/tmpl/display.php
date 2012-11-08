@@ -4,6 +4,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 JToolBarHelper::title( JText::_( 'Tools' ), 'tools.png' );
 JToolBarHelper::preferences('com_tools', '550');
+
+JHTML::_('behavior.tooltip');
 ?>
 
 <script type="text/javascript">
@@ -88,7 +90,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					</a>
 				</td>
 				<td>
-					<span class="state <?php echo $state; ?>" title="<?php echo $this->escape(JText::_(strtoupper($this->option) . '_' . strtoupper($state))); ?>">
+					<span class="state <?php echo $state; ?> hasTip" title="<?php echo $this->escape(JText::_(strtoupper($this->option) . '_' . strtoupper($state))); ?>">
 						<span><?php echo $this->escape(JText::_(strtoupper($this->option) . '_' . strtoupper($state))); ?></span>
 					</span>
 				</td>
