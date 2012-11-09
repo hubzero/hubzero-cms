@@ -696,7 +696,7 @@ class plgUsageTools extends JPlugin
 		$html .= "\t\t\t".JText::_('PLG_USAGE_SHOW_DATA_FOR') . ': ' . "\n";
 		$html .= "\t\t\t" . '<select name="top">' . "\n";
 
-		$sql = "SELECT DISTINCT id, name FROM #__stats_tops ORDER BY id";
+		$sql = "SELECT * FROM #__stats_tops ORDER BY id";
 		$database->setQuery($sql);
 		$results = $database->loadObjectList();
 		if ($results) 
@@ -709,6 +709,10 @@ class plgUsageTools extends JPlugin
 				if ($s_top == $top) 
 				{
 					$html .= "\t\t\t\t" . '<option value="' . $data[$top]['id'] . '" selected="selected">' . htmlentities($data[$top]['name']) . '</option>' . "\n";
+					if ($row->description)
+					{
+						$description = $row->description;
+					}
 				} 
 				else 
 				{
@@ -733,6 +737,10 @@ class plgUsageTools extends JPlugin
 			$s_top_name = $data[$s_top]['name'];
 			$html .= '<table summary="' . $s_top_name . '">' . "\n";
 			$html .= "\t" . '<caption>' . $s_top_name . '</caption>' . "\n";
+			if(!empty($description))
+			{
+				$html .= "\t" . '<p class="info">' . $description . '</p>' . "\n";	
+			}
 
 			if ($s_top == '9') 
 			{
