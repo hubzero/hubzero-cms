@@ -116,12 +116,12 @@ if ($label == "none") {
 						<label>
 							<?php echo JText::_('Uploaded Between'); ?>
 							<input type="text" name="startuploaddate" value="" />
-							<span class="hint">YYYY-MM-DD</span>
+							<div class="hint">YYYY-MM-DD</div>
 						</label>
 						<label>
 							<?php echo JText::_('and'); ?><br/>
 							<input type="text" name="enduploaddate" value="" />
-							<span class="hint">YYYY-MM-DD</span>
+							<div class="hint">YYYY-MM-DD</div>
 						</label>
 					</fieldset>
 				<?php } ?>
