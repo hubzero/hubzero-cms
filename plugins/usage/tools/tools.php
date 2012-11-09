@@ -74,7 +74,7 @@ class plgUsageTools extends JPlugin
 	 * @param      string $s_top    Top value
 	 * @return     string HTML
 	 */
-	private function gettoplist($database, $period, $dthis, $s_top)
+	private function gettoplist($database, $period, $dthis, $s_top, $table_header='Value')
 	{
 		$html = '';
 
@@ -87,10 +87,11 @@ class plgUsageTools extends JPlugin
 		$html .= "\t\t" . '<tr>' . "\n";
 		$html .= "\t\t\t" . '<th class="numerical-data">' . JText::_('#') . '</th>' . "\n";
 		$html .= "\t\t\t" . '<th>' . JText::_('Tool') . '</th>' . "\n";
-		$html .= "\t\t\t" . '<th class="numerical-data">' . JText::_('Value') . '</th>' . "\n";
+		$html .= "\t\t\t" . '<th class="numerical-data">' . JText::_($table_header) . '</th>' . "\n";
 		$html .= "\t\t\t" . '<th class="numerical-data">' . JText::_('Percent') . '</th>' . "\n";
 		$html .= "\t\t" . '</tr>' . "\n";
 		$html .= "\t" . '</thead>' . "\n";
+		$count = 0;
 
 		if ($results) 
 		{
@@ -128,6 +129,13 @@ class plgUsageTools extends JPlugin
 					{
 						$value = number_format($row->value);
 					}
+
+					if ($value == 0)
+					{
+						continue;
+					}
+					$count++;
+
 					$html .= "\t\t" . '<tr class="' . $cls . '">' . "\n";
 					$html .= "\t\t\t" . '<td>' . $row->rank . '</td>' . "\n";
 					$html .= "\t\t\t" . '<td class="textual-data"><a href="'.JRoute::_('index.php?option=com_resources&id=' . $name[0] . '&active=usage') . '">' . $name[1] . '</a></td>' . "\n";
@@ -135,6 +143,14 @@ class plgUsageTools extends JPlugin
 					$html .= "\t\t\t" . '<td>' . number_format((($row->value/$total)*100) ,2) . '%</td>' . "\n";
 					$html .= "\t\t" . '</tr>' . "\n";
 				}
+			}
+
+			if ($count == 0)
+			{
+				$html .= "\t" . '<tbody>' . "\n";
+				$html .= "\t\t" . '<tr class="odd">' . "\n";
+				$html .= "\t\t\t" . '<td colspan="4">No data available to display.</td>' . "\n";
+				$html .= "\t\t" . '</tr>' . "\n";
 			}
 		} 
 		else 
@@ -180,6 +196,12 @@ class plgUsageTools extends JPlugin
 			{
 				$cls = ($cls == 'even') ? 'odd' : 'even';
 				$ranking = round($row->ranking,2);
+
+				if ($ranking == 0)
+				{
+					continue;
+				}
+
 				if ($row->published == "1") {
 					$html .= "\t\t" . '<tr class="' . $cls . '">' . "\n";
 					$html .= "\t\t\t" . '<td>' . $count . '</td>' . "\n";
@@ -198,6 +220,11 @@ class plgUsageTools extends JPlugin
 				$count++;
 			}
 			$html .= "\t" . '</tbody>' . "\n";
+		}
+
+		if ($count == 1)
+		{
+			$html = "\t". '<p>No Data Available to Display</p>'. "\n";
 		}
 
 		return $html;
@@ -247,6 +274,10 @@ class plgUsageTools extends JPlugin
 			foreach ($results as $row)
 			{
 				$cls = ($cls == 'even') ? 'odd' : 'even';
+				if ($row->citations == 0)
+				{
+					continue;
+				}
 
 				if ($row->published == "1") 
 				{
@@ -265,8 +296,13 @@ class plgUsageTools extends JPlugin
 					$html .= "\t\t" . '</tr>' . "\n";
 				}
 				$count++;
-	    	}
+			}
 			$html .= "\t" . '</tbody>' . "\n";
+		}
+
+		if ($count == 1)
+		{
+			$html = "\t". 'No Data Available to Display'. "\n";
 		}
 
 		return $html;
@@ -691,10 +727,13 @@ class plgUsageTools extends JPlugin
 		$html .= "\t" . '</fieldset>' . "\n";
 		$html .= '</form>' . "\n";
 
+		$s_top_name = '';
 		if ($s_top) 
 		{
-			$html .= '<table summary="' . $data[$s_top]['name'] . '">' . "\n";
-			$html .= "\t" . '<caption>' . $data[$s_top]['name'] . '</caption>' . "\n";
+			$s_top_name = $data[$s_top]['name'];
+			$html .= '<table summary="' . $s_top_name . '">' . "\n";
+			$html .= "\t" . '<caption>' . $s_top_name . '</caption>' . "\n";
+
 			if ($s_top == '9') 
 			{
 				$html .= $this->gettopcited_tools($database);
@@ -705,7 +744,10 @@ class plgUsageTools extends JPlugin
 			} 
 			else 
 			{
-				$html .= $this->gettoplist($database, $period, $dthis, $s_top);
+				// Retrieve the header based on $s_top_name.  This is really a hack:
+				// Depends on the drop-down item being "Top Tools by ...", and selects everything after that.
+				$table_header = substr($s_top_name, 13);
+				$html .= $this->gettoplist($database, $period, $dthis, $s_top, $table_header);
 			}
 			$html .= '</table>' . "\n";
 		} 
