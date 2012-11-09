@@ -724,7 +724,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 		}
 
 		// Write the contents to a file
-		$fp = fopen($path . $file, "w") or die("can't open file");
+		$fp = fopen($path . DS . $file, "w") or die("can't open file");
 		fwrite($fp, $doc);
 		fclose($fp);
 
@@ -855,7 +855,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 		//header("Content-Encoding: none");
 		//header("Vary: none");
 
-		$this->_readfile_chunked($p . $f);
+		$this->_readfile_chunked($p . DS . $f);
 		// The caller MUST 'die();'
 	}
 
