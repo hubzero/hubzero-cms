@@ -476,16 +476,18 @@ class CitationsCitation extends JTable
 		
 		if(isset($filter['tag']) && $filter['tag'] != '')
 		{
-			$query  = "SELECT DISTINCT r.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string, COUNT(DISTINCT tag.tag) AS uniques 
+			$query  = "SELECT DISTINCT r.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string, u.username, COUNT(DISTINCT tag.tag) AS uniques 
 						FROM $this->_tbl AS r 
+						LEFT JOIN #__users AS u ON u.id = r.uid
 						LEFT JOIN #__citations_secondary as CS ON r.id=CS.cid
 						JOIN #__tags_object as tago ON tago.objectid=r.id
 						JOIN #__tags as tag ON tag.id=tago.tagid";
 		}
 		else
 		{
-			$query  = "SELECT DISTINCT r.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string 
+			$query  = "SELECT DISTINCT r.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string, u.username 
 						FROM $this->_tbl AS r 
+						LEFT JOIN #__users AS u ON u.id = r.uid
 						LEFT JOIN #__citations_secondary as CS ON r.id=CS.cid";
 		}
 		
@@ -534,8 +536,15 @@ class CitationsCitation extends JTable
 		if(isset($filter['search']) && $filter['search'] != '')
 		{
 			$query .= " AND (MATCH(r.title, r.isbn, r.doi, r.abstract, r.author, r.publisher) AGAINST ('" . $filter['search'] . "') > 0)";
+
+			if($admin = true)
+			{
+				$query .= " OR LOWER(u.username) = '" . strtolower($filter['search']) . "'
+							OR r.uid = '" . $filter['search'] . "'";
+			}
+
 		}
-		
+
 		//tag search
 		if(isset($filter['tag']) && $filter['tag'] != '')
 		{
@@ -804,16 +813,18 @@ class CitationsCitation extends JTable
 	{
 		if(isset($filter['tag']) && $filter['tag'] != '')
 		{
-			$query  = "SELECT DISTINCT r.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string, COUNT(DISTINCT tag.tag) AS uniques 
+			$query  = "SELECT DISTINCT r.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string, u.username, COUNT(DISTINCT tag.tag) AS uniques 
 						FROM $this->_tbl AS r 
+						LEFT JOIN #__users AS u ON u.id = r.uid
 						LEFT JOIN #__citations_secondary as CS ON r.id=CS.cid
 						JOIN #__tags_object as tago ON tago.objectid=r.id
 						JOIN #__tags as tag ON tag.id=tago.tagid";
 		}
 		else
 		{
-			$query  = "SELECT DISTINCT r.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string 
-						FROM $this->_tbl AS r 
+			$query  = "SELECT DISTINCT r.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string, u.username 
+						FROM $this->_tbl AS r
+						LEFT JOIN #__users AS u ON u.id = r.uid
 						LEFT JOIN #__citations_secondary as CS ON r.id=CS.cid";
 		}
 		
@@ -883,9 +894,10 @@ class CitationsCitation extends JTable
 	{
 		$ca = new CitationsAssociation( $this->_db );
 
-		$sql = "SELECT DISTINCT c.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string 
+		$sql = "SELECT DISTINCT c.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string, u.username 
 				FROM $this->_tbl AS c 
 				LEFT JOIN #__citations_secondary as CS ON c.id=CS.cid, $ca->_tbl AS a 
+				LEFT JOIN #__users AS u ON u.id = r.uid
 				WHERE c.published=1 AND a.tbl='".$tbl."' AND a.oid='".$oid."' AND a.cid=c.id 
 				ORDER BY affiliated ASC, year DESC";
 
