@@ -756,6 +756,15 @@ class WikiControllerPage extends Hubzero_Controller
 		}
 
 		// Check content
+		// First, make sure the pagetext isn't empty
+		if (empty($this->revision->pagetext)) 
+		{
+			$this->setError(JText::_('Page text is required'));
+			$this->editTask();
+			return;
+		}
+
+		// Then make sure all checks pass concerning the page
 		if (!$this->page->check()) 
 		{
 			$this->setError($this->page->getError());
