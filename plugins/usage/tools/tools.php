@@ -685,12 +685,14 @@ class plgUsageTools extends JPlugin
 		$dthis  = JRequest::getVar('dthis', date('Y') . '-'.date('m'));
 		$s_top  = JRequest::getVar('top', '2');
 
+		$html = '';
+
 		// Build the HTML
 		if ($s_top < 9)
 		{
-			$html  = $this->navlinks($period, $s_top);
+			$html .= $this->navlinks($period, $s_top);
 		}
-		$html  = '<form method="post" action="' . JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task . '&period=' . $period) . '">' . "\n";
+		$html .= '<form method="post" action="' . JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task . '&period=' . $period) . '">' . "\n";
 		$html .= "\t" . '<fieldset class="filters">' . "\n";
 		$html .= "\t\t" . '<label>' . "\n";
 		$html .= "\t\t\t".JText::_('PLG_USAGE_SHOW_DATA_FOR') . ': ' . "\n";
