@@ -203,7 +203,7 @@ class WikiPage extends JTable
 		if ($oid !== NULL && !is_numeric($oid)) 
 		{
 			$this->_tbl_key = 'pagename';
-			$s = "AND scope='$scope'";
+			$s = "AND scope='" . mysql_real_escape_string($scope) . "'";		
 		}
 		$k = $this->_tbl_key;
 		if ($oid !== NULL) 
@@ -216,7 +216,7 @@ class WikiPage extends JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE $this->_tbl_key='$oid' $s");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE $this->_tbl_key='" . mysql_real_escape_string($oid) . "' $s");
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			$res = $this->bind($result);
