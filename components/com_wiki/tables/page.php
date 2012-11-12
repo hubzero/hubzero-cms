@@ -62,10 +62,11 @@ class WikiPage extends JTable
 		$s = "";
 		if ($oid !== NULL && !is_numeric($oid)) {
 			$this->_tbl_key = 'pagename';
-			$s = "AND scope='$scope'";
+			$s = "AND scope='" . mysql_real_escape_string($scope) . "'";		
 		}
 		$k = $this->_tbl_key;
 		if ($oid !== NULL) {
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE $this->_tbl_key='" . mysql_real_escape_string($oid) . "' $s");
 			$this->$k = $oid;
 		}
 		$oid = $this->$k;
