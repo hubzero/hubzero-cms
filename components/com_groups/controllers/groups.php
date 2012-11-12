@@ -1740,6 +1740,8 @@ class GroupsController extends Hubzero_Controller
 			if ($process && !$confirmdel) 
 			{
 				$this->setNotification(JText::_('GROUPS_ERROR_CONFIRM_DELETION'), 'error');
+				$this->_redirect = JRoute::_('index.php?option=com_groups&gid=' . $group->get('cn') . '&task=delete');
+				return;
 			}
 
 			$log = JText::sprintf('GROUPS_MEMBERS_LOG',count($members));
