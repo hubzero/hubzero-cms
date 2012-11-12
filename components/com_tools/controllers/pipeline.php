@@ -71,14 +71,15 @@ class ToolsControllerPipeline extends Hubzero_Controller
 	 */
 	public function execute()
 	{
-		if (!$this->juser->authorize($this->_option, 'manage')) 
+		// The following seems redundant and effectively eliminates non-admins from creating a tool
+		/*if (!$this->juser->authorize($this->_option, 'manage')) 
 		{
 			// Redirect to home page
 			$this->setRedirect(
 				$this->config->get('contribtool_redirect', '/home')
 			);
 			return;
-		}
+		}*/
 
 		$this->_authorize();
 
