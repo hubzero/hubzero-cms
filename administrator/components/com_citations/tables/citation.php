@@ -894,11 +894,11 @@ class CitationsCitation extends JTable
 	{
 		$ca = new CitationsAssociation( $this->_db );
 
-		$sql = "SELECT DISTINCT c.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string, u.username 
-				FROM $this->_tbl AS c 
-				LEFT JOIN #__citations_secondary as CS ON c.id=CS.cid, $ca->_tbl AS a 
+		$sql = "SELECT DISTINCT r.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string, u.username 
+				FROM $this->_tbl AS r
 				LEFT JOIN #__users AS u ON u.id = r.uid
-				WHERE c.published=1 AND a.tbl='".$tbl."' AND a.oid='".$oid."' AND a.cid=c.id 
+				LEFT JOIN #__citations_secondary as CS ON r.id=CS.cid, $ca->_tbl AS a
+				WHERE r.published=1 AND a.tbl='".$tbl."' AND a.oid='".$oid."' AND a.cid=r.id 
 				ORDER BY affiliated ASC, year DESC";
 
 		$this->_db->setQuery( $sql );
