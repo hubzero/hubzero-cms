@@ -1345,6 +1345,8 @@ class Hubzero_Tool
 		$db = &JFactory::getDBO();
 
 		$query = "SELECT count(DISTINCT t.toolname) FROM #__tool AS t ";
+		$query .= "WHERE 1=1 ";
+		$query .= self::buildQuerySearch($filters, $admin);
 		$query .= ";";
 		$db->setQuery($query);
 
