@@ -850,6 +850,7 @@
 	}
 	#commentform .submit {
 		margin-top: 1em;
+		text-align: center;
 	}
 /* Thank you Message */
 	#ticket-number {
