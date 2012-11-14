@@ -99,10 +99,10 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		);
 
 		// Get a record count
-		$this->view->total = Hubzero_Tool::getToolCount($this->filters, true);
+		$this->view->total = Hubzero_Tool::getToolCount($this->view->filters, true);
 
 		// Get records
-		$this->view->rows = Hubzero_Tool::getToolSummaries($this->filters, true);
+		$this->view->rows = Hubzero_Tool::getToolSummaries($this->view->filters, true);
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
