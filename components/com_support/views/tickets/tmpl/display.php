@@ -284,7 +284,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		{
 			//echo 'ffff';
 			$targetuser =& JUser::getInstance($row->login);
-			if ($targetuser->get('id'))
+			if (is_object($targetuser) && $targetuser->get('id'))
 			{
 				$users[$row->login] = $targetuser;
 				$lnk = JRoute::_('index.php?option=com_members&id=' . $targetuser->get('id'));
