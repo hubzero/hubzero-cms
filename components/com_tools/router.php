@@ -126,6 +126,14 @@ function toolsParseRoute($segments)
 				$vars['controller'] = 'storage';
 			break;
 
+			case 'reorder':
+			case 'delete':
+			case 'save':
+				$vars['option'] = 'com_tools';
+				$vars['controller'] = 'attachments';
+				$vars['task'] = $segments[0];
+			break;
+
 			default:
 				// This is an alias
 				// /tools/mytool => /resources/mytool
