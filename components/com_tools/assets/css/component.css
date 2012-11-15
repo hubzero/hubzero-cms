@@ -25,10 +25,10 @@
 		padding: 0;
 	}
 	.up {
-		background: url("/components/com_contribute/images/order_up.gif") 0 0 no-repeat;
+		background: url("/components/com_resources/assets/img/order_up.gif") 0 0 no-repeat;
 	}
 	.down {
-		background: url("/components/com_contribute/images/order_down.gif") 0 0 no-repeat;
+		background: url("/components/com_resources/assets/img/order_down.gif") 0 0 no-repeat;
 	}
 	.order:hover {
 		border: none;
