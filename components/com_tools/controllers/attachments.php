@@ -376,7 +376,7 @@ class ToolsControllerAttachments extends Hubzero_Controller
 		else 
 		{
 			// Attempt to delete the file
-			if (!JFile::delete($path)) 
+			if (!JFolder::delete($path)) 
 			{
 				$this->setError(JText::_('UNABLE_TO_DELETE_DIRECTORY'));
 			}
