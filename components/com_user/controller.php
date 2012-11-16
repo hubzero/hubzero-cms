@@ -618,7 +618,7 @@ class UserController extends JController
 		if ($model->completeReset($password1, $password2) === false)
 		{
 			$message = JText::sprintf('PASSWORD_RESET_FAILED', $model->getError());
-			$this->setRedirect(JRoute::_('index.php?option=com_user&view=reset&layout=complete'), $message);
+			$this->setRedirect(JRoute::_('index.php?option=com_user&view=reset&layout=complete'), $message, 'error');
 			return false;
 		}
 
