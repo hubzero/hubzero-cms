@@ -568,7 +568,21 @@ class SupportTicket extends JTable
 		}
 		$sql .= $having;
 
-		$sql .= " ORDER BY `" . $filters['sort'] . '` ' . $filters['sortdir'];
+		if($filters['sort'] == 'severity')
+		{
+			$sql .= " ORDER BY CASE severity ";
+			$sql .= " WHEN 'critical' THEN 5";
+			$sql .= " WHEN 'major'    THEN 4";
+			$sql .= " WHEN 'normal'   THEN 3";
+			$sql .= " WHEN 'minor'    THEN 2";
+			$sql .= " WHEN 'trivial'  THEN 1";
+			$sql .= " END " . $filters['sortdir'];
+		}
+		else
+		{
+			$sql .= " ORDER BY `" . $filters['sort'] . '` ' . $filters['sortdir'];
+		}
+
 		$sql .= ($filters['limit']) ? " LIMIT " . intval($filters['start']) . "," . intval($filters['limit']) : "";
 
 		$this->_db->setQuery($sql);
