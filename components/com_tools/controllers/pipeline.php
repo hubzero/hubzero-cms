@@ -1111,6 +1111,10 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			$hzg = new Hubzero_Group();
 			$hzg->cn =  $group_prefix . strtolower($tool['toolname']);
 			$hzg->create();
+			$hzg->set('type', 2);
+			$hzg->set('description', "{$tool['title']} Development Group");
+			$hzg->set('created', date("Y-m-d H:i:s"));
+			$hzg->set('created_by', $this->juser->get('id'));
 		}
 		else
 		{
