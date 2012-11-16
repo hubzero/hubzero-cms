@@ -348,10 +348,12 @@ class ResourcesModelResource extends JObject
 		if (!$this->params->get('access-admin-resource') 
 		 && !$this->params->get('access-manage-resource'))
 		{
-			// If logged in and resource is published
-			if ($this->published() && $this->resource->access == 1)
+			// If logged in and resource is published and public or registered
+			if ($this->published() && ($this->resource->access == 0 || $this->resource->access == 1))
 			{
+				// Allow view access
 				$this->params->set('access-view-resource', true);
+				$this->params->set('access-view-all-resource', true);
 			}
 
 			// Check if they're the resource creator
@@ -383,6 +385,12 @@ class ResourcesModelResource extends JObject
 			// Check group access
 			else if ($this->resource->group_owner && ($this->resource->access == 3 || $this->resource->access == 4))
 			{
+				// For protected resources, make sure users can see abstract
+				if ($this->resource->access == 3)
+				{
+					$this->params->set('access-view-resource', true);
+				}
+
 				// Get the groups the user has access to
 				ximport('Hubzero_User_Helper');
 				$xgroups = Hubzero_User_Helper::getGroups($juser->get('id'), 'all');
