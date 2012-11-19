@@ -343,7 +343,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		$this->view->total = 0;
 		$this->view->rows = array();
 
-		$this->view->filters = array();
+		$this->view->filters = $this->_getFilters();
 		// Paging
 		$this->view->filters['limit'] = $app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.limit',
@@ -402,7 +402,7 @@ class SupportControllerTickets extends Hubzero_Controller
 					$query->query = $sq->getQuery($query->conditions);
 				}
 				// Get a record count
-				$this->view->queries[$key][$k]->count = $obj->getCount($query->query);
+				$this->view->queries[$key][$k]->count = $obj->getCount($query->query, $this->view->filters);
 				// The query is the current active query
 				// get records
 				if ($query->id == $this->view->filters['show'])

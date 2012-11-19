@@ -347,10 +347,12 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 									<?php echo $tags; ?>
 								</span>
 		<?php } ?>
-		<?php if ($row->group) { ?>
-								<span class="ticket-group">
-									<?php echo $this->escape(stripslashes($row->group)); ?>
-								</span>
+		<?php if ($row->group) { 
+			$group = '<a href="' . JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=display&show=1&find='.urlencode('group:'.$this->escape(stripslashes($row->group)))).'">' . $this->escape(stripslashes($row->group)) . '</a>';
+		?>
+						<span class="ticket-group">
+							<?php echo $group; ?>
+						</span>
 		<?php } ?>
 		<?php if ($row->owner) { 
 					$owner = Hubzero_User_Profile::getInstance($row->owner);

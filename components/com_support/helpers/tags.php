@@ -142,7 +142,7 @@ class SupportTags extends TagsHandler
 				switch ($showsizes)
 				{
 					case 3:
-						$bits[] = '<a' . $class . ' href="'.JRoute::_('index.php?option=com_support&task=tickets&find=status:open tag:' . $tag->tag) . '">' . $tag->raw_tag . '</a>';
+						$bits[] = '<a' . $class . ' href="'.JRoute::_('index.php?option=com_support&task=tickets&show=1&find=tag:' . $tag->tag) . '">' . $tag->raw_tag . '</a>';
 					break;
 
 					case 2:

@@ -465,7 +465,7 @@ class SupportTicket extends JTable
 	 * @param      string  $query Filters to build query from
 	 * @return     integer
 	 */
-	public function getCount($query)
+	public function getCount($query, $filters=array())
 	{
 		if (!$query)
 		{
@@ -486,13 +486,13 @@ class SupportTicket extends JTable
 		}
 
 		$sql .= "FROM $this->_tbl AS f";
-		if (strstr($query, 't.`tag`'))
+		if (strstr($query, 't.`tag`') || (isset($filters['tag']) && $filters['tag'] != ''))
 		{
 			$sql .= " LEFT JOIN #__tags_object AS st on st.objectid=f.id AND st.tbl='support' 
 					LEFT JOIN #__tags AS t ON st.tagid=t.id";
 		}
 
-		$sql .= " WHERE " . $query;
+		$sql .= $this->parseFind($filters) . " AND " . $query;
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
 			$sql .= " AND ";
@@ -546,12 +546,12 @@ class SupportTicket extends JTable
 			$sql .= ", COUNT(DISTINCT t.tag) AS uniques ";
 		}
 		$sql .= "FROM $this->_tbl AS f";
-		if (strstr($query, 't.`tag`'))
+		if (strstr($query, 't.`tag`') || (isset($filters['tag']) && $filters['tag'] != ''))
 		{
 			$sql .= " LEFT JOIN #__tags_object AS st on st.objectid=f.id AND st.tbl='support' 
 					LEFT JOIN #__tags AS t ON st.tagid=t.id";
 		}
-		$sql .= " WHERE " . $query;
+		$sql .= $this->parseFind($filters) . " AND " . $query;
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
 			$sql .= " AND ";
@@ -587,6 +587,30 @@ class SupportTicket extends JTable
 
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
+	}
+
+	/**
+	 * Add tag and group filters previously supported in ticket system
+	 * (ex: when clicking a tag within the ticket system)
+	 * 
+	 * @param      array   $filters Filters to build query from
+	 * @return     string SQL
+	 */
+	public function parseFind($filters)
+	{
+		$filter = " WHERE report!=''";
+
+		if (isset($filters['group']) && $filters['group'] != '') 
+		{
+			$filter .= " AND `group`='" . $this->_db->getEscaped($filters['group']) . "'";
+		}
+
+		if (isset($filters['tag']) && $filters['tag'] != '') 
+		{
+			$filter .= " AND st.objectid=f.id AND st.tbl='support' AND st.tagid=t.id AND t.tag='" . $this->_db->getEscaped($filters['tag']) . "'";
+		}
+
+		return $filter;
 	}
 
 	/**
