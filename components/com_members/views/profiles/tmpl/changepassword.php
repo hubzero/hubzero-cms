@@ -45,7 +45,9 @@ ximport('Hubzero_User_Password');
 
 <div class="main section">
 	<?php if ($this->getError()) { ?>
-		<p class="error"><?php echo $this->getError(); ?> </p>
+		<p class="error" id="errors"><?php echo $this->getError(); ?> </p>
+	<?php } else { ?>
+		<p id="errors"></p>
 	<?php } ?>
 
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->profile->get('uidNumber').'&task=changepassword'); ?>" method="post" id="hubForm">
@@ -92,7 +94,7 @@ ximport('Hubzero_User_Password');
 			</div>
 <?php
 			if (count($this->password_rules) > 0) {
-				echo "\t\t<ul>\n";
+				echo "\t\t<ul id=\"passrules\">\n";
 				foreach ($this->password_rules as $rule) {
 					if (!empty($rule)) {
 						if (is_array($this->validated)) {
@@ -117,7 +119,9 @@ ximport('Hubzero_User_Password');
 ?>
 		</fieldset><div class="clear"></div>
 		<p class="submit">
-			<input name="change" type="submit" value="<?php echo JText::_('CHANGEPASSWORD'); ?>" />
+			<input type="hidden" id="pass_no_html" name="no_html" value="0" />
+			<input type="hidden" name="change" value="1" />
+			<input name="submit" id="password-change-save" type="submit" value="<?php echo JText::_('CHANGEPASSWORD'); ?>" />
 		</p>
 	</form>
 </div><!-- / .main section -->

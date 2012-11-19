@@ -575,6 +575,7 @@ class MembersControllerProfiles extends Hubzero_Controller
 
 		// Include some needed styles and scripts
 		$this->_getStyles();
+		$this->_getScripts('assets/js/changepassword');
 
 		// Add to the pathway
 		$pathway->addItem(
@@ -726,6 +727,12 @@ class MembersControllerProfiles extends Hubzero_Controller
 		// Redirect user back to main account page
 		if (JRequest::getInt('no_html', 0))
 		{
+			if ($session->get('badpassword','0') || $session->get('expiredpassword','0'))
+			{
+				$session->set('badpassword','0');
+				$session->set('expiredpassword','0');
+			}
+
 			echo json_encode(array("success" => true));
 			exit();
 		}

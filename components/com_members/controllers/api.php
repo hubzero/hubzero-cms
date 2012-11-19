@@ -14,6 +14,7 @@ class MembersApiController extends Hubzero_Api_Controller
 			case 'mygroups':		$this->mygroups();					break;
 			case 'mysessions':		$this->mysessions();				break;
 			case 'recenttools':		$this->recenttools();				break;
+			case 'checkpass':		$this->checkpass();					break;
 			default:				$this->not_found();
 		}
 	}
@@ -259,6 +260,77 @@ class MembersApiController extends Hubzero_Api_Controller
 		}
 
 		return $shots;
+	}
+
+	//------
+
+	private function checkpass()
+	{
+		$userid = JFactory::getApplication()->getAuthn('user_id');
+		$result = Hubzero_User_Profile::getInstance($userid);
+
+		if ($result === false)	return $this->not_found();
+
+		// Get the password rules
+		ximport('Hubzero_Password_Rule');
+		$password_rules = Hubzero_Password_Rule::getRules();
+
+		$pw_rules = array();
+
+		// Get the password rule descriptions
+		foreach($password_rules as $rule)
+		{
+			if (!empty($rule['description']))
+			{
+				$pw_rules[] = $rule['description'];
+			}
+		}
+
+		// Get the password
+		$pw = JRequest::getCmd('password1', null, 'post');
+
+		// Validate the password
+		if (!empty($pw))
+		{
+			$msg = Hubzero_Password_Rule::validate($pw, $password_rules, $result);
+		}
+		else
+		{
+			$msg = array();
+		}
+
+		$html = '';
+
+		// Iterate through the rules and add the appropriate classes (passed/error)
+		if (count($pw_rules) > 0) {
+			foreach ($pw_rules as $rule)
+			{
+				if (!empty($rule))
+				{
+					if (!empty($msg) && is_array($msg)) {
+						$err = in_array($rule, $msg);
+					} else {
+						$err = '';
+					}
+					$mclass = ($err)  ? ' class="error"' : 'class="passed"';
+					$html .= "<li $mclass>".$rule."</li>";
+				}
+			}
+			if (!empty($msg) && is_array($msg)) {
+				foreach ($msg as $message)
+				{
+					if (!in_array($message, $pw_rules)) {
+						$html .= '<li class="error">'.$message."</li>";
+					}
+				}
+			}
+		}
+
+		// Encode sessions for return
+		$object = new stdClass();
+		$object->html = $html;
+		$this->setMessageType("json");
+		$this->setMessage($object);
 	}
 
 	//------
