@@ -73,7 +73,7 @@ Hubzero_Document::addComponentStylesheet($this->option, 'assets/css/conditions.c
 		{ 
 			?>
 				<li<?php if (intval($this->filters['show']) == $query->id) { echo ' class="active"'; }?>>
-					<a class="common-<?php echo strtolower(preg_replace("/[^a-zA-Z0-9]/", '', stripslashes($query->title))); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $query->id); ?>">
+					<a class="common-<?php echo strtolower(preg_replace("/[^a-zA-Z0-9]/", '', stripslashes($query->title))); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $query->id . '&limitstart=0'); ?>">
 						<?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->count; ?></span>
 					</a>
 					<a class="modal copy" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=edit&id=' . $query->id); ?>" title="<?php echo JText::_('Edit'); ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
@@ -105,7 +105,7 @@ Hubzero_Document::addComponentStylesheet($this->option, 'assets/css/conditions.c
 	<?php if (count($this->queries['mine']) > 0) { ?>
 		<?php foreach ($this->queries['mine'] as $query) { ?>
 				<li<?php if (intval($this->filters['show']) == $query->id) { echo ' class="active"'; }?>>
-					<a class="my-<?php echo strtolower(preg_replace("/[^a-zA-Z0-9]/", '', stripslashes($query->title))); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $query->id); ?>">
+					<a class="my-<?php echo strtolower(preg_replace("/[^a-zA-Z0-9]/", '', stripslashes($query->title))); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $query->id . '&limitstart=0'); ?>">
 						<?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->count; ?></span>
 					</a>
 					<a class="modal copy" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=edit&id=' . $query->id); ?>" title="<?php echo JText::_('Edit'); ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
@@ -125,7 +125,7 @@ Hubzero_Document::addComponentStylesheet($this->option, 'assets/css/conditions.c
 	<?php if (count($this->queries['custom']) > 0) { ?>
 		<?php foreach ($this->queries['custom'] as $query) { ?>
 				<li<?php if (intval($this->filters['show']) == $query->id) { echo ' class="active"'; }?>>
-					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $query->id); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $query->id . '&limitstart=0'); ?>">
 						<?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->count; ?></span>
 					</a>
 					<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=remove&id=' . $query->id); ?>" title="<?php echo JText::_('Delete'); ?>">
@@ -161,32 +161,32 @@ Hubzero_Document::addComponentStylesheet($this->option, 'assets/css/conditions.c
 						</th>
 						<th scope="col">
 							<?php $direction = (strtolower($this->filters['sortdir']) == 'desc') ? 'asc' : 'desc'; ?>
-							<a class="sort-age<?php if ($this->filters['sort'] == 'created') { echo ' active ' . strtolower($this->filters['sortdir']); } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=created&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>" title="Click to sort by this column">
+							<a class="sort-age<?php if ($this->filters['sort'] == 'created') { echo ' active ' . strtolower($this->filters['sortdir']); } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=created&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0'); ?>" title="Click to sort by this column">
 								<?php echo JText::_('SUPPORT_COL_AGE'); ?>
 							</a>
 						</th>
 						<th scope="col">
-							<a class="sort-status<?php if ($this->filters['sort'] == 'status') { echo ' active ' . strtolower($this->filters['sortdir']); } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=status&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>" title="Click to sort by this column">
+							<a class="sort-status<?php if ($this->filters['sort'] == 'status') { echo ' active ' . strtolower($this->filters['sortdir']); } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=status&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0'); ?>" title="Click to sort by this column">
 								<?php echo JText::_('SUPPORT_COL_STATUS'); ?>
 							</a>
 						</th>
 						<th scope="col">
-							<a class="sort-severity<?php if ($this->filters['sort'] == 'severity') { echo ' active ' . strtolower($this->filters['sortdir']); } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=severity&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>" title="Click to sort by this column">
+							<a class="sort-severity<?php if ($this->filters['sort'] == 'severity') { echo ' active ' . strtolower($this->filters['sortdir']); } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=severity&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0'); ?>" title="Click to sort by this column">
 								<?php echo JText::_('SUPPORT_COL_SEVERITY'); ?>
 							</a>
 						</th>
 						<th scope="col">
-							<a class="sort-summary<?php if ($this->filters['sort'] == 'summary') { echo ' active ' . strtolower($this->filters['sortdir']); } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=summary&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>" title="Click to sort by this column">
+							<a class="sort-summary<?php if ($this->filters['sort'] == 'summary') { echo ' active ' . strtolower($this->filters['sortdir']); } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=summary&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0'); ?>" title="Click to sort by this column">
 								<?php echo JText::_('SUPPORT_COL_SUMMARY'); ?>
 							</a>
 						</th>
 						<th scope="col">
-							<a class="sort-group<?php if ($this->filters['sort'] == 'group') { echo ' active ' . strtolower($this->filters['sortdir']); } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=group&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>" title="Click to sort by this column">
+							<a class="sort-group<?php if ($this->filters['sort'] == 'group') { echo ' active ' . strtolower($this->filters['sortdir']); } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=group&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0'); ?>" title="Click to sort by this column">
 								<?php echo JText::_('SUPPORT_COL_GROUP'); ?>
 							</a>
 						</th>
 						<th scope="col">
-							<a class="sort-owner<?php if ($this->filters['sort'] == 'owner') { echo ' active ' . strtolower($this->filters['sortdir']); } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=owner&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>" title="Click to sort by this column">
+							<a class="sort-owner<?php if ($this->filters['sort'] == 'owner') { echo ' active ' . strtolower($this->filters['sortdir']); } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=owner&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0'); ?>" title="Click to sort by this column">
 								<?php echo JText::_('SUPPORT_COL_OWNER'); ?>
 							</a>
 						</th>
