@@ -348,7 +348,15 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 								</span>
 		<?php } ?>
 		<?php if ($row->group) { 
-			$group = '<a href="' . JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=display&show=1&find='.urlencode('group:'.$this->escape(stripslashes($row->group)))).'">' . $this->escape(stripslashes($row->group)) . '</a>';
+			if($this->acl->check('read', 'tickets'))
+			{
+				$queryid = $this->queries['common'][0]->id;
+			}
+			else
+			{
+				$queryid = $this->queries['mine'][0]->id;
+			}
+			$group = '<a href="' . JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=display&show='.$queryid.'&find='.urlencode('group:'.$this->escape(stripslashes($row->group)))).'">' . $this->escape(stripslashes($row->group)) . '</a>';
 		?>
 						<span class="ticket-group">
 							<?php echo $group; ?>
