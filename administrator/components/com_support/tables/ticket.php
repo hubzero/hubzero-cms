@@ -711,7 +711,7 @@ class SupportTicket extends JTable
 				AND type='$type'";
 		if (!$group) 
 		{
-			$sql .= " AND (`group`='' OR `group` IS NULL)";
+			//$sql .= " AND (`group`='' OR `group` IS NULL)";
 		} 
 		else 
 		{
@@ -747,7 +747,7 @@ class SupportTicket extends JTable
 				AND k.created>='" . $year . "-" . $month . "-" . $day . " 00:00:00'";
 		if (!$group) 
 		{
-			$sql .= " AND (f.`group`='' OR f.`group` IS NULL)";
+			//$sql .= " AND (f.`group`='' OR f.`group` IS NULL)";
 		} 
 		else 
 		{
@@ -779,7 +779,7 @@ class SupportTicket extends JTable
 				AND open=1";
 		if (!$group) 
 		{
-			$sql .= " AND (`group`='' OR `group` IS NULL)";
+			//$sql .= " AND (`group`='' OR `group` IS NULL)";
 		} 
 		else 
 		{
@@ -820,7 +820,7 @@ class SupportTicket extends JTable
 				AND k.created<'" . $nextyear . "-" . $nextmonth . "-01 00:00:00'";
 		if (!$group) 
 		{
-			$sql .= " AND (f.`group`='' OR f.`group` IS NULL)";
+			//$sql .= " AND (f.`group`='' OR f.`group` IS NULL)";
 		} 
 		else 
 		{
@@ -855,7 +855,7 @@ class SupportTicket extends JTable
 				AND created<'" . $nextyear . "-" . $nextmonth . "-01 00:00:00'";
 		if (!$group) 
 		{
-			$sql .= " AND (`group`='' OR `group` IS NULL)";
+			//$sql .= " AND (`group`='' OR `group` IS NULL)";
 		} 
 		else 
 		{
@@ -887,7 +887,7 @@ class SupportTicket extends JTable
 				AND f.created>='" . $year . "-01-01 00:00:00'";
 		if (!$group) 
 		{
-			$sql .= " AND (f.`group`='' OR f.`group` IS NULL)";
+			//$sql .= " AND (f.`group`='' OR f.`group` IS NULL)";
 		} 
 		else 
 		{
