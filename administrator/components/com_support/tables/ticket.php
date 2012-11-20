@@ -755,7 +755,7 @@ class SupportTicket extends JTable
 		}
 		if ($username) 
 		{
-			$sql .= " AND k.created_by='" . $username . "'";
+			$sql .= " AND f.owner='" . $username . "'";
 		}
 
 		$this->_db->setQuery($sql);
