@@ -454,6 +454,7 @@ class SupportControllerTickets extends Hubzero_Controller
 
 		// Get some needed scripts
 		$this->_getScripts('assets/js/' . $this->_name);
+		Hubzero_Document::addSystemScript('jquery.hoverIntent');
 
 		$this->view->acl = $this->acl;
 

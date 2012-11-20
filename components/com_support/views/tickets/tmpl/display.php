@@ -336,7 +336,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		<?php } ?>
 							</p>
 							<p>
-								<a class="ticket-content hasTip" title="<?php echo $this->escape(stripslashes($row->report)); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=' . $row->id . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
+								<a class="ticket-content" title="<?php echo $this->escape(stripslashes($row->report)); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=' . $row->id . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
 									<?php echo $this->escape(stripslashes($row->summary)); ?>
 								</a>
 							</p>

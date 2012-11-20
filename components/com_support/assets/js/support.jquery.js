@@ -58,6 +58,24 @@ HUB.Support = {
 				}
 			});
 		}
+
+		// Add customized tooltip (with delay so it doesn't popup when moving mouse down the screen)
+		$('.ticket-content').tooltip({
+			position: 'top center',
+			effect: 'fade',
+			delay: 250,
+			predelay: 750,
+			offset: [-4, 0],
+			onBeforeShow: function(event, position) {
+				var tip = this.getTip(),
+					tipText = tip[0].innerHTML;
+					
+				if (tipText.indexOf('::') != -1) {
+					var parts = tipText.split('::');
+					tip[0].innerHTML = '<span class="tooltip-title">' + parts[0] + '</span><span class="tooltip-text">' + parts[1] + '</span>';
+				}
+			}
+		});
 	},
 
 	addEditQueryEvent: function() {
