@@ -1646,17 +1646,18 @@ class SupportControllerTickets extends Hubzero_Controller
 			if ($comment) 
 			{
 				// If a comment was posted to a closed ticket, re-open it.
-				if ($old->status == 2 && $row->status == 2) 
+				if ($old->open == 0 && $row->open == 0) 
 				{
-					$row->status = 0;
+					$row->open = 1;
+					$row->status = 1;
 					$row->resolved = '';
 					$row->store();
 				}
 				// If a comment was posted by the ticket submitter to a "waiting user response" ticket, change status.
 				$ccreated_by = JRequest::getVar('username', '');
-				if ($row->status == 1 && $ccreated_by == $row->login) 
+				if ($row->status == 2 && $ccreated_by == $row->login) 
 				{
-					$row->status = 0;
+					$row->status = 1;
 					$row->resolved = '';
 					$row->store();
 				}
