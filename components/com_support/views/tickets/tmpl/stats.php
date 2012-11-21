@@ -210,10 +210,10 @@ $max = ceil($number/10)*10;
 		<table class="support-stats-people" summary="Breakdown of people and the number of tickets closed">
 			<thead>
 				<tr>
-					<th scope="col"><a<?php if ($this->sort == 'name') { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&amp;task=stats&amp;type='.$type.'&amp;sort=name&amp;group='.$this->group.'&amp;year='.$this->year); ?>" title="Sort by name">&darr; Person</a></th>
-					<th scope="col"><a<?php if ($this->sort == 'year') { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&amp;task=stats&amp;type='.$type.'&amp;sort=year&amp;group='.$this->group.'&amp;year='.$this->year); ?>" title="Sort by year count">&darr; Closed this year</a></th>
-					<th scope="col"><a<?php if ($this->sort == 'month') { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&amp;task=stats&amp;type='.$type.'&amp;sort=month&amp;group='.$this->group.'&amp;year='.$this->year); ?>" title="Sort by month count">&darr; Closed this month</a></th>
-					<th scope="col"><a<?php if ($this->sort == 'week') { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&amp;task=stats&amp;type='.$type.'&amp;sort=week&amp;group='.$this->group.'&amp;year='.$this->year); ?>" title="Sort by week count">&darr; Closed this week</a></th>
+					<th scope="col"><a<?php if ($this->sort == 'name') { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&amp;task=stats&amp;type='.$this->type.'&amp;sort=name&amp;group='.$this->group.'&amp;year='.$this->year); ?>" title="Sort by name">&darr; Person</a></th>
+					<th scope="col"><a<?php if ($this->sort == 'year') { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&amp;task=stats&amp;type='.$this->type.'&amp;sort=year&amp;group='.$this->group.'&amp;year='.$this->year); ?>" title="Sort by year count">&darr; Closed this year</a></th>
+					<th scope="col"><a<?php if ($this->sort == 'month') { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&amp;task=stats&amp;type='.$this->type.'&amp;sort=month&amp;group='.$this->group.'&amp;year='.$this->year); ?>" title="Sort by month count">&darr; Closed this month</a></th>
+					<th scope="col"><a<?php if ($this->sort == 'week') { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&amp;task=stats&amp;type='.$this->type.'&amp;sort=week&amp;group='.$this->group.'&amp;year='.$this->year); ?>" title="Sort by week count">&darr; Closed this week</a></th>
 				</tr>
 			</thead>
 			<tbody>
