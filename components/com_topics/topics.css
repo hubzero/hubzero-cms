@@ -101,20 +101,20 @@
 		height: 16px;
 		overflow: hidden;
 		text-indent: -555em;
-		background: url("images/icons/unknown.png") 0 0 no-repeat;
+		background: url("/components/com_wiki/assets/img/icons/unknown.png") 0 0 no-repeat;
 	}
 	.png,
 	.gif {
-		background: url("images/icons/gif.png") 0 0 no-repeat;
+		background: url("/components/com_wiki/assets/img/icons/gif.png") 0 0 no-repeat;
 	}
 	.jpg,
 	.jpe,
 	.jpeg {
-		background: url("images/icons/jpg.png") 0 0 no-repeat;
+		background: url("/components/com_wiki/assets/img/icons/jpg.png") 0 0 no-repeat;
 	}
 	.bmp,
 	.tiff {
-		background: url("images/icons/tiff.png") 0 0 no-repeat;
+		background: url("/components/com_wiki/assets/img/icons/tiff.png") 0 0 no-repeat;
 	}
 	
 	.timestamp,
@@ -149,10 +149,10 @@
 		padding-left: 20px;
 	}
 	.page-options li.article {
-		background: url("images/page.png") 0 0 no-repeat;
+		background: url("/components/com_wiki/assets/img/page.png") 0 0 no-repeat;
 	}
 	.page-options li.comments {
-		background: url("images/comments.png") 0 0 no-repeat;
+		background: url("/components/com_wiki/assets/img/comments.png") 0 0 no-repeat;
 	}
 	.page-options li.edit,
 	.page-options li.delete {
@@ -279,11 +279,11 @@
 	}
 	/* Options */
 	.abuse {
-		background: url("/components/com_wiki/images/abuse.gif") 0 0 no-repeat;
+		background: url("/components/com_wiki/assets/img/abuse.gif") 0 0 no-repeat;
 		padding-left: 15px;
 	}
 	.reply {
-		background: url("/components/com_wiki/images/reply.gif") 0 0 no-repeat;
+		background: url("/components/com_wiki/assets/img/reply.gif") 0 0 no-repeat;
 		padding-left: 15px;
 	}
 	.abuse:hover,
@@ -318,7 +318,7 @@
 	    color: #777;
 	    font-size: 11px;
 	    text-align: right;
-		background: url("/components/com_wiki/images/comment-arrow.gif") right 15px no-repeat;
+		background: url("/components/com_wiki/assets/img/comment-arrow.gif") right 15px no-repeat;
 	}
 	/* Content */
 	ol.comments .comment-content {
@@ -351,7 +351,7 @@
 	}
 	ol.comments .author ol.comments p.comment-member-photo,
 	ol.comments .author ol.comments .author ol.comments p.comment-member-photo {
-		background: url("/components/com_wiki/images/comment-arrow.gif") right 15px no-repeat;
+		background: url("/components/com_wiki/assets/img/comment-arrow.gif") right 15px no-repeat;
 	}
 	/* Chosen comments */
 	ol.comments .chosen .comment-content {
@@ -359,7 +359,7 @@
 		border-color: #eeecf9;
 	}
 	ol.comments .chosen p.comment-member-photo {
-		background: url("/components/com_wiki/images/comment-arrow.gif") right -57px no-repeat;
+		background: url("/components/com_wiki/assets/img/comment-arrow.gif") right -57px no-repeat;
 	}
 	/* Details (date, time) */
 	ol.comments span.comment-details {
@@ -455,7 +455,7 @@
 		color: #777;
 		font-size: 11px;
 		text-align: right;
-		background: url("/components/com_wiki/images/comment-arrow.gif") right -201px no-repeat;
+		background: url("/components/com_wiki/assets/img/comment-arrow.gif") right -201px no-repeat;
 	}
 	#commentform .sidenote {
 		border: 1px solid #edf0e8;
@@ -540,7 +540,7 @@
 	}
 	
 	.article-tags {
-		background: #F4F4F4 url("images/tag_orange.png") 0.5em 0.5em no-repeat;
+		background: #F4F4F4 url("/components/com_wiki/assets/img/tag_orange.png") 0.5em 0.5em no-repeat;
 		margin: 0 0 1em 0;
 		padding: 0.5em 0.5em 0.4em 2em;
 	}
@@ -711,11 +711,11 @@
 	}*/
 /* Links */
 	a.ext-link {
-		background: url("/components/com_wiki/images/extlink.gif") 0 0.4em no-repeat;
+		background: url("/components/com_wiki/assets/img/extlink.gif") 0 0.4em no-repeat;
 		padding-left: 15px;
 	}
 	a.missing {
-		background: url("/components/com_wiki/images/missinglink.gif") 0 0.4em no-repeat;
+		background: url("/components/com_wiki/assets/img/missinglink.gif") 0 0.4em no-repeat;
 		padding-left: 7px;
 	}
 /* Preview */
@@ -728,7 +728,7 @@
 		border: 2px solid #eee;
 		padding: 1em;
 		margin: 1em 1em 0 0;
-		background: url("/components/com_wiki/images/draft.gif");
+		background: url("/components/com_wiki/assets/img/draft.gif");
 	}
 /* Admonitions */
 	div.admon-caution, 
@@ -753,25 +753,25 @@
 		margin-top: 8px; /*to align text with bg graphic*/
 	}
 	div.admon-tip { 
-		background-image: url("/components/com_wiki/images/admon-tip.png"); 
+		background-image: url("/components/com_wiki/assets/img/admon-tip.png"); 
 	}
 	div.admon-note { 
-		background-image: url("/components/com_wiki/images/admon-note.png"); 
+		background-image: url("/components/com_wiki/assets/img/admon-note.png"); 
 	}
 	div.admon-important { 
-		background-image: url("/components/com_wiki/images/admon-important.png"); 
+		background-image: url("/components/com_wiki/assets/img/admon-important.png"); 
 	}
 	div.admon-caution { 
-		background-image: url("/components/com_wiki/images/admon-caution.png"); 
+		background-image: url("/components/com_wiki/assets/img/admon-caution.png"); 
 	}
 	div.admon-warning { 
-		background-image: url("/components/com_wiki/images/admon-warning.png"); 
+		background-image: url("/components/com_wiki/assets/img/admon-warning.png"); 
 	}
 /* Introduction page */
 	#introduction {
 		margin: 0 -15px 3em -15px;
 		padding: 25px 15px 25px 120px;
-		background: #fbf8ea url("/components/com_wiki/images/topics-large.gif") 30px 25px no-repeat;
+		background: #fbf8ea url("/components/com_wiki/assets/img/topics-large.gif") 30px 25px no-repeat;
 		border-top: 2px solid #e7dac4;
 		border-bottom: 2px solid #e7dac4;
 		color: #7c7266;
@@ -801,7 +801,7 @@
 	#introduction li {
 		margin: 0;
 		padding: 0 0 0 15px;
-		background: transparent url("/components/com_wiki/images/bullets/arrow.gif") 0 50% no-repeat;
+		background: transparent url("/components/com_wiki/assets/img/bullets/arrow.gif") 0 50% no-repeat;
 	}
 /* Four Columns */
 	.com_topics .four {
