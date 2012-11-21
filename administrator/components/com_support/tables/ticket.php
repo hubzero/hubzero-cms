@@ -762,7 +762,11 @@ class SupportTicket extends JTable
 				// If username is an array, we'll use that to grab the 'everybody else' list
 				// Start by impoloding the array
 				$usernames = implode("','", $username);
-				$sql .= " AND f.owner NOT IN ('" . $usernames . "')";
+				$sql .= " AND (";
+					$sql .= "f.owner NOT IN ('" . $usernames . "')";
+					// Include unassigned tickets in this number
+					$sql .= " OR f.owner IS NULL OR f.owner = ''";
+				$sql .= ")";
 			}
 			else
 			{
