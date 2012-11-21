@@ -61,6 +61,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<select name="year">
 <?php
 			$y = date("Y");
+			$year = $y;
 			$y++;
 			for ($i=2004, $n=$y; $i < $n; $i++)
 			{
@@ -100,8 +101,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<tbody>
 			<tr>
 				<td><?php echo $this->opened['year']; ?></td>
-				<td><?php echo $this->opened['month']; ?></td>
-				<td><?php echo $this->opened['week']; ?></td>
+				<td><?php echo ($year == $this->year) ? $this->opened['month'] : '-'; ?></td>
+				<td><?php echo ($year == $this->year) ? $this->opened['week'] : '-'; ?></td>
 				<td class="major"><?php echo $this->opened['open']; ?></td>
 				<td class="critical"><?php echo $this->opened['unassigned']; ?></td>
 			</tr>
@@ -120,8 +121,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<tbody>
 			<tr>
 				<td><?php echo $this->closed['year']; ?></td>
-				<td><?php echo $this->closed['month']; ?></td>
-				<td><?php echo $this->closed['week']; ?></td>
+				<td><?php echo ($year == $this->year) ? $this->closed['month'] : '-'; ?></td>
+				<td><?php echo ($year == $this->year) ? $this->closed['week'] : '-'; ?></td>
 				<td colspan="2" class="block"><?php echo (isset($this->lifetime[0])) ? $this->lifetime[0] : 0; ?> <span>days</span> <?php echo (isset($this->lifetime[1])) ? $this->lifetime[1] : 0; ?> <span>hours</span> <?php echo (isset($this->lifetime[2])) ? $this->lifetime[2] : 0; ?> <span>minutes</span></td>
 			</tr>
 		</tbody>
@@ -226,8 +227,8 @@ if ($this->users) {
 				<tr class="<?php echo $cls; ?>">
 					<th scope="row"><?php echo stripslashes($user->name); ?></th>
 					<td class="group"><?php echo $user->closed['year']; ?></td>
-					<td><?php echo $user->closed['month']; ?></td>
-					<td class="group"><?php echo $user->closed['week']; ?></td>
+					<td><?php echo ($year == $this->year) ? $user->closed['month'] : '-'; ?></td>
+					<td class="group"><?php echo ($year == $this->year) ? $user->closed['week'] : '-'; ?></td>
 				</tr>
 <?php
 	}
