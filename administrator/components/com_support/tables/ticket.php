@@ -704,6 +704,7 @@ class SupportTicket extends JTable
 	public function getCountOfTicketsOpened($type=0, $year='', $month='01', $day='01', $group=null)
 	{
 		$year = ($year) ? $year : date("Y");
+		$endyear = intval($year) + 1;
 
 		$sql = "SELECT count(*) 
 				FROM $this->_tbl 
@@ -717,7 +718,7 @@ class SupportTicket extends JTable
 		{
 			$sql .= " AND `group`='$group'";
 		}
-		$sql .= " AND created>='" . $year . "-" . $month . "-" . $day . " 00:00:00'";
+		$sql .= " AND created BETWEEN '" . $year . "-" . $month . "-" . $day . " 00:00:00' AND '" . $endyear . "-" . $month . "-" . $day . " 00:00:00'";
 
 		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
@@ -737,6 +738,7 @@ class SupportTicket extends JTable
 	public function getCountOfTicketsClosed($type=0, $year='', $month='01', $day='01', $username=null, $group=null)
 	{
 		$year = ($year) ? $year : date("Y");
+		$endyear = intval($year) + 1;
 
 		$sql = "SELECT COUNT(DISTINCT k.ticket) 
 				FROM #__support_comments AS k, $this->_tbl AS f
@@ -744,7 +746,7 @@ class SupportTicket extends JTable
 				AND f.type='$type' 
 				AND f.open=0 
 				AND k.ticket=f.id 
-				AND k.created>='" . $year . "-" . $month . "-" . $day . " 00:00:00'";
+				AND k.created BETWEEN '" . $year . "-" . $month . "-" . $day . " 00:00:00' AND '" . $endyear . "-" . $month . "-" . $day . " 00:00:00'";
 		if (!$group) 
 		{
 			//$sql .= " AND (f.`group`='' OR f.`group` IS NULL)";
