@@ -244,6 +244,25 @@ class SupportControllerTickets extends Hubzero_Controller
 		$users = $this->database->loadObjectList();
 		if ($users) 
 		{
+			// Make an array of admins (we'll use this to create, in essence, an 'everyone else' entry on the stats page)
+			if (!$this->view->group)
+			{
+				$admins = array();
+				foreach ($users as $user)
+				{
+					$admins[] = $user->username;
+				}
+
+				// Add the list as a 'user'
+				$adminsObj = new stdClass();
+				$adminsObj->username = $admins;
+				// This seems counter intuative, but the display name of this is 'non-adminsrators'
+				// This is because we're using this list for our query to pull all users that are NOT getting otherwise included
+				$adminsObj->name     = 'Non-Administrators';
+				$adminsObj->id       = null;
+				$users[] = $adminsObj;
+			}
+
 			$u = array();
 			$p = array();
 			$g = array();

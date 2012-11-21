@@ -757,7 +757,17 @@ class SupportTicket extends JTable
 		}
 		if ($username) 
 		{
-			$sql .= " AND f.owner='" . $username . "'";
+			if (is_array($username))
+			{
+				// If username is an array, we'll use that to grab the 'everybody else' list
+				// Start by impoloding the array
+				$usernames = implode("','", $username);
+				$sql .= " AND f.owner NOT IN ('" . $usernames . "')";
+			}
+			else
+			{
+				$sql .= " AND f.owner='" . $username . "'";
+			}
 		}
 
 		$this->_db->setQuery($sql);
