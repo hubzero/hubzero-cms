@@ -54,29 +54,29 @@ class ResourcesControllerRoles extends Hubzero_Controller
 		// Incoming
 		$this->view->filters = array();
 		$this->view->filters['limit']    = $app->getUserStateFromRequest(
-			$this->_option . '.licenses.limit',
+			$this->_option . '.' . $this->_controller . '.limit',
 			'limit',
 			$config->getValue('config.list_limit'),
 			'int'
 		);
 		$this->view->filters['start']    = $app->getUserStateFromRequest(
-			$this->_option . '.licenses.limitstart',
+			$this->_option . '.' . $this->_controller . '.limitstart',
 			'limitstart',
 			0,
 			'int'
 		);
 		$this->view->filters['search']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.licenses.search',
+			$this->_option . '.' . $this->_controller . '.search',
 			'search',
 			''
 		));
 		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.licenses.sort',
+			$this->_option . '.' . $this->_controller . '.sort',
 			'filter_order',
 			'title'
 		));
 		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.licenses.sortdir',
+			$this->_option . '.' . $this->_controller . '.sortdir',
 			'filter_order_Dir',
 			'ASC'
 		));
