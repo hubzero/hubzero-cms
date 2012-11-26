@@ -163,23 +163,44 @@ function submitbutton(pressbutton)
 						<td>
 							<?php 
 							$editor = JUser::getInstance($this->row->created_by);
-							echo $this->escape($editor->get('name')); 
+							echo $this->escape(stripslashes($editor->get('name'))); 
 							?>
-							<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->row->created_by; ?>" />
+							<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->created_by); ?>" />
 						</td>
 					</tr>
 					<tr>
 						<th class="key"><?php echo JText::_('Created Date'); ?>:</th>
 						<td>
 							<?php echo $this->row->created; ?>
-							<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->row->created; ?>" />
+							<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->created); ?>" />
 						</td>
 					</tr>
 					<tr>
 						<th class="key"><?php echo JText::_('Hits'); ?>:</th>
 						<td>
 							<?php echo $this->row->hits; ?>
-							<input type="hidden" name="fields[hits]" id="field-hits" value="<?php echo $this->row->hits; ?>" />
+							<input type="hidden" name="fields[hits]" id="field-hits" value="<?php echo $this->escape($this->row->hits); ?>" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</fieldset>
+		
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('Publishing'); ?></span></legend>
+
+			<table class="admintable">
+				<tbody>
+					<tr>
+						<th class="key"><?php echo JText::_('Publish up'); ?>:</th>
+						<td>
+							<input type="text" name="fields[publish_up]" id="field-publish_up" value="<?php echo $this->escape($this->row->publish_up); ?>" />
+						</td>
+					</tr>
+					<tr>
+						<th class="key"><?php echo JText::_('Publish down'); ?>:</th>
+						<td>
+							<input type="text" name="fields[publish_down]" id="field-publish_down" value="<?php echo $this->escape($this->row->publish_down); ?>" />
 						</td>
 					</tr>
 				</tbody>

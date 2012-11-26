@@ -260,6 +260,11 @@ class BlogEntry extends JTable
 			$this->publish_up = $this->created;
 		}
 
+		if (!$this->publish_down) 
+		{
+			$this->publish_down = '0000-00-00 00:00:00';
+		}
+
 		return true;
 	}
 

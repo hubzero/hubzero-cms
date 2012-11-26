@@ -36,6 +36,11 @@ JPluginHelper::importPlugin( 'hubzero' );
 $dispatcher =& JDispatcher::getInstance();
 $tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->tags)) );
 
+if ($this->entry->publish_down && $this->entry->publish_down == '0000-00-00 00:00:00')
+{
+	$this->entry->publish_down = '';
+}
+
 ximport('Hubzero_Wiki_Editor');
 $editor =& Hubzero_Wiki_Editor::getInstance();
 ?>
@@ -138,6 +143,18 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 					<option value="2"<?php if ($this->entry->state == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Registered (any logged-in site member can see)'); ?></option>
 					<option value="0"<?php if ($this->entry->state == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Private (only group members can see)'); ?></option>
 				</select>
+			</label>
+		</div>
+		
+		<div class="group">
+			<label for="field-publish_up">
+				<?php echo JText::_('PLG_GROUPS_BLOG_PUBLISH_UP'); ?>
+				<input type="text" name="entry[publish_up]" id="field-publish_up" size="35" value="<?php echo $this->escape(stripslashes($this->entry->publish_up)); ?>" />
+			</label>
+
+			<label for="field-publish_down">
+				<?php echo JText::_('PLG_GROUPS_BLOG_PUBLISH_DOWN'); ?>
+				<input type="text" name="entry[publish_down]" id="field-publish_down" size="35" value="<?php echo $this->escape(stripslashes($this->entry->publish_down)); ?>" />
 			</label>
 		</div>
 	</fieldset>
