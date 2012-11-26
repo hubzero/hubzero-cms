@@ -86,4 +86,33 @@ class plgSupportBlog extends JPlugin
 		}
 		return $rows;
 	}
+
+	/**
+	 * Retrieves a row from the database
+	 * 
+	 * @param      string $refid    ID of the database table row
+	 * @param      string $parent   If the element has a parent element
+	 * @param      string $category Element type (determines table to look in)
+	 * @param      string $message  If the element has a parent element
+	 * @return     array
+	 */
+	public function deleteReportedItem($refid, $parent, $category, $message)
+	{
+		if ($category != 'blog') 
+		{
+			return null;
+		}
+
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'blog.comment.php');
+
+		$database =& JFactory::getDBO();
+
+		$comment = new BlogComment($database);
+		$comment->load($refid);
+		$comment->anonymous = 1;
+		$comment->content = '[[Span(This comment was found to contain objectionable material and was removed by the administrator., class="warning")]]';
+		$comment->store();
+
+		return '';
+	}
 }
