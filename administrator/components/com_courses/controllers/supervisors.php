@@ -33,12 +33,12 @@ defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Controller');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
 
 /**
  * Manage a course's manager entries
  */
-class CoursesControllerManagers extends Hubzero_Controller
+class CoursesControllerSupervisors extends Hubzero_Controller
 {
 	/**
 	 * Short description for 'addmanager'
@@ -59,10 +59,12 @@ class CoursesControllerManagers extends Hubzero_Controller
 			return;
 		}
 
-		// Load the profile
-		$course = CoursesModelCourse::getInstance($id);
+		$role_id = JRequest::getInt('role', 0);
 
-		$managers = $course->get('managers');
+		// Load the profile
+		$model = CoursesModelOffering::getInstance($id);
+
+		$managers = $model->members(array('role' => '!student'));
 
 		// Incoming host
 		$m = JRequest::getVar('usernames', '', 'post');
@@ -95,16 +97,16 @@ class CoursesControllerManagers extends Hubzero_Controller
 			}
 		}
 
-		$course->add($users);
+		$model->add($users, $role_id);
 
 		// Save changes
-		if (!$course->store())
+		if (!$model->store())
 		{
-			$this->setError($course->getError());
+			$this->setError($model->getError());
 		}
 
 		// Push through to the hosts view
-		$this->displayTask($course);
+		$this->displayTask($model);
 	}
 
 	/**
@@ -126,9 +128,9 @@ class CoursesControllerManagers extends Hubzero_Controller
 			return;
 		}
 
-		$course = CoursesModelCourse::getInstance($id);
+		$model = CoursesModelOffering::getInstance($id);
 
-		$managers = $course->get('managers');
+		$managers = $model->members(array('role' => '!student'));
 
 		$mbrs = JRequest::getVar('users', array(0), 'post');
 
@@ -154,24 +156,61 @@ class CoursesControllerManagers extends Hubzero_Controller
 			}
 		}
 
-		if (count($users) >= count($managers))
-		{
-			$this->setError(JText::_('COM_COURSES_LAST_MANAGER'));
-		}
-		else
-		{
-			// Remove users from managers list
-			$course->remove($users);
-		}
+		// Remove users from managers list
+		$model->remove($users);
 
 		// Save changes
-		if (!$course->store())
+		if (!$model->update())
 		{
-			$this->setError($course->getError());
+			$this->setError($model->getError());
 		}
 
 		// Push through to the hosts view
-		$this->displayTask($course);
+		$this->displayTask($model);
+	}
+
+	/**
+	 * Remove one or more users from the course manager list
+	 * 
+	 * @return     void
+	 */
+	public function updateTask()
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming member ID
+		$id = JRequest::getInt('id', 0);
+		if (!$id) 
+		{
+			$this->setError(JText::_('COURSES_NO_ID'));
+			$this->displayTask();
+			return;
+		}
+
+		$model = CoursesModelOffering::getInstance($id);
+
+		//$managers = $model->members(array('role' => '!student'));
+
+		$users = JRequest::getVar('entries', array(0), 'post');
+		$roles = JRequest::getVar('roles', array(0), 'post');
+
+		require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'role.php');
+
+		foreach ($users as $key => $id)
+		{
+			// Retrieve user's account info
+			$tbl = new CoursesTableRole($this->database);
+			$tbl->load($id);
+			$tbl->role_id = isset($roles[$key]) ? $roles[$key] : 0;
+			if (!$tbl->store())
+			{
+				$this->setError($tbl->getError());
+			}
+		}
+
+		// Push through to the hosts view
+		$this->displayTask($model);
 	}
 
 	/**
@@ -180,19 +219,19 @@ class CoursesControllerManagers extends Hubzero_Controller
 	 * @param      object $profile Hubzero_User_Profile
 	 * @return     void
 	 */
-	public function displayTask($course=null)
+	public function displayTask($model=null)
 	{
 		$this->view->setLayout('display');
 
 		// Incoming
-		if (!$course) 
+		if (!$model) 
 		{
 			$id = JRequest::getInt('id', 0, 'get');
 
-			$course = CoursesModelCourse::getInstance($id);
+			$model = CoursesModelOffering::getInstance($id);
 		}
 
-		$this->view->course = $course;
+		$this->view->model = $model;
 
 		// Set any errors
 		if ($this->getError()) 

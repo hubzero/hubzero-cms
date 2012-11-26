@@ -40,7 +40,7 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 	$jacl->addACL($option, 'manage', 'users', 'super administrator');
 	$jacl->addACL($option, 'manage', 'users', 'administrator');
 	$jacl->addACL($option, 'manage', 'users', 'manager');
-	
+
 	// Authorization check
 	$user = JFactory::getUser();
 	if (!$user->authorize($option, 'manage'))
@@ -55,21 +55,11 @@ else
 	{
 		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 	}
-
-	//require_once(JPATH_COMPONENT . DS . 'models' . DS . 'course.php');
-	//require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'course.php');
 }
 
 // Include scripts
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'courses.php');
-//require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'course.php');
-//require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'instance.php');
-//require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'unit.php');
-
-//Hubzero Libraries
-//ximport('Hubzero_Course');
-//ximport('Hubzero_Course_Helper');
-//ximport('Hubzero_User_Helper');
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'log.php');
 
 $controllerName = JRequest::getCmd('controller', 'courses');
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
@@ -78,9 +68,14 @@ if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '
 }
 
 JSubMenuHelper::addEntry(
-	JText::_('Manage'), 
+	JText::_('Courses'), 
 	'index.php?option=' .  $option . '&controller=courses', 
-	$controllerName == 'courses'
+	$controllerName != 'roles'
+);
+JSubMenuHelper::addEntry(
+	JText::_('Roles'), 
+	'index.php?option=' .  $option . '&controller=roles', 
+	$controllerName == 'roles'
 );
 
 require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');

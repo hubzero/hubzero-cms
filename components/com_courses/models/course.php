@@ -339,7 +339,7 @@ class CoursesModelCourse extends JObject
 	{
 		if (isset($filters['count']) && $filters['count'])
 		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'role.php');
+			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'offering.php');
 
 			$tbl = new CoursesTableOffering($this->_db);
 
@@ -568,10 +568,13 @@ class CoursesModelCourse extends JObject
 
 		$aNewUserCourseEnrollments = array();
 
-		if (!$this->_tbl->check())
+		if ($check)
 		{
-			$this->setError($this->_tbl->getError());
-			return false;
+			if (!$this->_tbl->check())
+			{
+				$this->setError($this->_tbl->getError());
+				return false;
+			}
 		}
 
 		if (!$this->_tbl->store())

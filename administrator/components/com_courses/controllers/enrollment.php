@@ -33,12 +33,12 @@ defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Controller');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
 
 /**
  * Manage a course's manager entries
  */
-class CoursesControllerManagers extends Hubzero_Controller
+class CoursesControllerEnrollment extends Hubzero_Controller
 {
 	/**
 	 * Short description for 'addmanager'
@@ -98,7 +98,7 @@ class CoursesControllerManagers extends Hubzero_Controller
 		$course->add($users);
 
 		// Save changes
-		if (!$course->store())
+		if (!$course->update())
 		{
 			$this->setError($course->getError());
 		}
@@ -165,7 +165,7 @@ class CoursesControllerManagers extends Hubzero_Controller
 		}
 
 		// Save changes
-		if (!$course->store())
+		if (!$course->update())
 		{
 			$this->setError($course->getError());
 		}

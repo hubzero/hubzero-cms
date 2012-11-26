@@ -125,11 +125,18 @@ class CoursesTableRole extends JTable
 		}
 		if (isset($filters['alias']) && $filters['alias'])
 		{
-			$where[] = "r.`alias`=" . $this->_db->Quote(intval($filters['alias']));
+			if (substr($filters['alias'], 0, 1) == '!')
+			{
+				$where[] = "r.`alias`!=" . $this->_db->Quote(ltrim($filters['alias'], '!'));
+			}
+			else
+			{
+				$where[] = "r.`alias`=" . $this->_db->Quote($filters['alias']);
+			}
 		}
 		if (isset($filters['search']) && $filters['search'])
 		{
-			$where[] = "LOWER(r.`title`) LIKE '%" . $filters['title'] . "%'";
+			$where[] = "LOWER(r.`title`) LIKE '%" . $this->_db->getEscaped(strtolower($filters['title'])) . "%'";
 		}
 
 		if (count($where) > 0)

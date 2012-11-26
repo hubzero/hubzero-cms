@@ -34,6 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Controller');
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
 
 /**
  * Courses controller class for managing membership and course info
@@ -107,105 +108,6 @@ class CoursesControllerCourses extends Hubzero_Controller
 	}
 
 	/**
-	 * Manage course memberships
-	 *
-	 * @return void
-	 */
-	public function manageTask()
-	{
-		// Incoming
-		$gid = JRequest::getVar('gid', '');
-
-		// Ensure we have a course ID
-		if (!$gid)
-		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_COURSES_MISSING_ID'),
-				'error'
-			);
-			return;
-		}
-
-		// Load the course page
-		$course = new Hubzero_Course();
-		$course->read($gid);
-
-		$this->gid = $gid;
-		$this->course = $course;
-
-		$action = JRequest::getVar('action','');
-
-		$this->action = $action;
-		$this->authorized = 'admin';
-
-		// Do we need to perform any actions?
-		$out = '';
-		if ($action)
-		{
-			$action = strtolower(trim($action));
-			$action = str_replace(' ', '', $action);
-
-			// Perform the action
-			if (in_array($action, $this->_taskMap))
-			{
-				$action .= 'Task';
-				$this->$action();
-			}
-
-			// Did the action return anything? (HTML)
-			if ($this->output != '')
-			{
-				$out = $this->output;
-			}
-		}
-
-		// Get course members based on their status
-		// Note: this needs to happen *after* any potential actions ar performed above
-		$invitees = $course->get('invitees');
-		$pending  = $course->get('applicants');
-		$members  = $course->get('members');
-		$managers = $course->get('managers');
-
-		// Get a members list without the managers
-		$memberss = array();
-		foreach ($members as $m)
-		{
-			if (!in_array($m,$managers))
-			{
-				$memberss[] = $m;
-			}
-		}
-
-		// Output HTML
-		if ($out == '')
-		{
-			$this->view->course      = $course;
-			$this->view->invitees   = $invitees;
-			$this->view->pending    = $pending;
-			$this->view->members    = $memberss;
-			$this->view->managers   = $managers;
-			$this->view->authorized = 'admin';
-
-			// Set any errors
-			if ($this->getError())
-			{
-				foreach ($this->getErrors() as $error)
-				{
-					$this->view->setError($error);
-				}
-			}
-
-			// Output the HTML
-			$this->view->display();
-		}
-		else
-		{
-			echo $out;
-		}
-	}
-
-	/**
 	 * Create a new course
 	 *
 	 * @return	void
@@ -243,8 +145,9 @@ class CoursesControllerCourses extends Hubzero_Controller
 		else 
 		{
 			// load infor from database
-			$this->view->row = new CoursesTableCourse($this->database);
-			$this->view->row->load($id);
+			//$this->view->row = new CoursesTableCourse($this->database);
+			//$this->view->row->load($id);
+			$this->view->row = CoursesModelCourse::getInstance($id);
 		}
 
 		// Set any errors
@@ -267,7 +170,7 @@ class CoursesControllerCourses extends Hubzero_Controller
 	 * @param  $arr  array  Array to process
 	 * @return array
 	 */
-	protected function _multiArrayMap($func, $arr)
+	/*protected function _multiArrayMap($func, $arr)
 	{
 		$newArr = array();
 
@@ -277,7 +180,7 @@ class CoursesControllerCourses extends Hubzero_Controller
 	    }
 
 		return $newArr;
-	}
+	}*/
 
 	/**
 	 * Saves changes to a course or saves a new entry if creating
@@ -344,6 +247,8 @@ class CoursesControllerCourses extends Hubzero_Controller
 			$ids = array();
 		}
 
+		$num = 0;
+
 		// Do we have any IDs?
 		if (!empty($ids))
 		{
@@ -357,13 +262,13 @@ class CoursesControllerCourses extends Hubzero_Controller
 				$course = Hubzero_Course::getInstance($id);
 
 				// Ensure we found the course info
-				if (!$course)
+				if (!$course->exists())
 				{
 					continue;
 				}
 
 				// Get number of course members
-				$courseusers    = $course->get('members');
+				/*$courseusers    = $course->get('members');
 				$coursemanagers = $course->get('managers');
 				$members = array_merge($courseusers, $coursemanagers);
 
@@ -399,14 +304,30 @@ class CoursesControllerCourses extends Hubzero_Controller
 				if (count($logs) > 0)
 				{
 					$log .= implode('', $logs);
-				}
+				}*/
+				
 
 				// Delete course
 				if (!$course->delete())
 				{
-					JError::raiseError(500, 'Unable to delete course');
+					JError::raiseError(500, JText::_('Unable to delete course'));
 					return;
 				}
+
+				// Log the course approval
+				$log = new CoursesTableLog($this->database);
+				$log->scope_id  = $course->get('id');
+				$log->scope     = 'course';
+				$log->user_id   = $this->juser->get('id');
+				$log->timestamp = date('Y-m-d H:i:s', time());
+				$log->action    = 'course_deleted';
+				$log->actor_id  = $this->juser->get('id');
+				if (!$log->store())
+				{
+					$this->setError($log->getError());
+				}
+
+				$num++;
 			}
 		}
 
@@ -469,6 +390,7 @@ class CoursesControllerCourses extends Hubzero_Controller
 		}
 
 		// Do we have any IDs?
+		$num = 0;
 		if (!empty($ids))
 		{
 			// foreach course id passed in
@@ -478,67 +400,50 @@ class CoursesControllerCourses extends Hubzero_Controller
 				$course = CoursesModelCourse::getInstance($id);
 
 				// Ensure we found the course info
-				if (!$course)
+				if (!$course->exists())
 				{
 					continue;
 				}
 
 				//set the course to be published and update
-				$course->set('published', $state);
-				$course->update();
+				$course->set('state', $state);
+				if (!$course->store())
+				{
+					$this->setError(JText::_('Unable to set state for course #' . $id . '.'));
+					continue;
+				}
 
 				// Log the course approval
-				$log = new CoursesLog($this->database);
-				$log->gid       = $course->get('id');
-				$log->uid       = $this->juser->get('id');
+				$log = new CoursesTableLog($this->database);
+				$log->scope_id  = $course->get('id');
+				$log->scope     = 'course';
+				$log->user_id   = $this->juser->get('id');
 				$log->timestamp = date('Y-m-d H:i:s', time());
 				$log->action    = $state ? 'course_published' : 'course_unpublished';
-				$log->actorid   = $this->juser->get('id');
+				$log->actor_id  = $this->juser->get('id');
 				if (!$log->store())
 				{
 					$this->setError($log->getError());
 				}
+				$num++;
 			}
 		}
 
-		// Output messsage and redirect
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('COM_COURSES_UNPUBLISHED')
-		);
-	}
-
-	/**
-	 * Checks if a CN (alias) is valid
-	 *
-	 * @return boolean True if CN is valid
-	 */
-	private function _validCn($name, $type)
-	{
-		if ($type == 1)
+		if ($this->getErrors())
 		{
-			$admin = false;
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				implode('<br />', $this->getErrors()),
+				'error'
+			);
 		}
 		else
 		{
-			$admin = true;
-		}
-
-		if (($admin && preg_match("/^[0-9a-zA-Z\-]+[_0-9a-zA-Z\-]*$/i", $name))
-		 || (!$admin && preg_match("/^[0-9a-zA-Z]+[_0-9a-zA-Z]*$/i", $name)))
-		{
-			if (is_numeric($name) && intval($name) == $name && $name >= 0)
-			{
-				return false;
-			}
-			else
-			{
-				return true;
-			}
-		}
-		else
-		{
-			return false;
+			// Output messsage and redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				($state ? JText::sprintf('%s item(s) published', $num) : JText::sprintf('%s item(s) unpublished', $num))
+			);
 		}
 	}
 }

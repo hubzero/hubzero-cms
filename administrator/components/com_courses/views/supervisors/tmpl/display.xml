@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           administrator/components/com_courses/views/manage/tmpl/table.xml
+@file           administrator/components/com_members/views/member/tmpl/groups.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Manage Course Layout">
+	<layout title="Standard Member Groups Layout">
 		<message>
-			<![CDATA[STANDARD MANAGE COURSE DESC]]>
+			<![CDATA[STANDARD MEMBER GROUPS DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Manage Course Layout</name>
-		<description>STANDARD MANAGE COURSE DESC</description>
+		<name>Standard Member Groups Layout</name>
+		<description>STANDARD MEMBER GROUPS DESC</description>
 		<params>
 		</params>
 	</state>

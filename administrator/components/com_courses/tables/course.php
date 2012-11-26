@@ -225,9 +225,16 @@ class CoursesTableCourse extends JTable
 
 		if (!$this->alias)
 		{
-			$this->alias = str_replace(' ', '-', strtolower($this->title));
+			$this->alias = str_replace(' ', '_', strtolower($this->title));
 		}
-		$this->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', $this->alias);
+		$this->alias = preg_replace("/[^a-zA-Z0-9_]/", '', $this->alias);
+		if (is_numeric($this->alias) 
+		 && intval($this->alias) == $this->alias 
+		 && $this->alias >= 0)
+		{
+			$this->setError(JText::_('Invalid alias.'));
+			return false;
+		}
 
 		if (!$this->id)
 		{

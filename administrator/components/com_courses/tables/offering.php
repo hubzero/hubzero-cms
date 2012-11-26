@@ -74,11 +74,11 @@ class CoursesTableOffering extends JTable
 	var $term = NULL;
 
 	/**
-	 * Instance section number
+	 * int(11)
 	 * 
-	 * @var int(11)
+	 * @var integer
 	 */
-	var $section = NULL;
+	var $state = NULL;
 
 	/**
 	 * Start date for instance
@@ -252,6 +252,11 @@ class CoursesTableOffering extends JTable
 		else if (isset($filters['course_id']) && $filters['course_id']) 
 		{
 			$where[] = "c.id=" . $this->_db->Quote(intval($filters['course_id']));
+		}
+
+		if (isset($filters['state'])) 
+		{
+			$where[] = "ci.state=" . $this->_db->Quote(intval($filters['state']));
 		}
 
 		if (isset($filters['search']) && $filters['search']) 

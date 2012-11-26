@@ -50,11 +50,11 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 {
 	$paramsClass = 'JRegistry';
 }
-$gparams = new $paramsClass($this->row->get('params'));
-*/
-//$membership_control = $gparams->get('membership_control', 1);
+$gparams = new $paramsClass($this->offering->params);
 
-//$display_system_users = $gparams->get('display_system_users', 'global');
+$membership_control = $gparams->get('membership_control', 1);
+
+$display_system_users = $gparams->get('display_system_users', 'global');*/
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -85,6 +85,7 @@ function submitbutton(pressbutton)
 			<legend><span><?php echo JText::_('COM_COURSES_DETAILS'); ?></span></legend>
 			
 			<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
+			<input type="hidden" name="fields[course_id]" value="<?php echo $this->row->get('course_id'); ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 			<input type="hidden" name="task" value="save" />
@@ -99,11 +100,37 @@ function submitbutton(pressbutton)
 						<td class="key"><label for="field-title"><?php echo JText::_('COM_COURSES_TITLE'); ?>:</label></td>
 						<td><input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" size="50" /></td>
 					</tr>
-		 			<tr>
-						<td class="key" valign="top"><label for="field-description"><?php echo JText::_('Description'); ?>:</label></td>
+				</tbody>
+			</table>
+		</fieldset>
+
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('Publishing'); ?></span></legend>
+			
+			<table class="admintable">
+				<tbody>
+					<tr>
+						<td class="paramlist_key"><label for="publish_up">Offering starts:</label></th>
 						<td>
-							<span class="hint"><?php echo JText::_('COM_COURSES_EDIT_PUBLIC_TEXT_HINT'); ?></span>
-							<?php echo $editor->display('fields[description]', $this->escape(stripslashes($this->row->get('description'))), '', '', '40', '15'); ?>
+							<?php echo JHTML::_('calendar', $this->row->get('publish_up'), 'fields[publish_up]', 'publish_up', "%Y-%m-%d", array('class' => 'inputbox')); ?>
+						</td>
+					</tr>
+					<tr>
+						<td class="paramlist_key"><label for="publish_down">Start live:</label></th>
+						<td>
+							<?php echo JHTML::_('calendar', $this->row->get('start_date'), 'fields[start_date]', 'start_date', "%Y-%m-%d", array('class' => 'inputbox')); ?>
+						</td>
+					</tr>
+					<tr>
+						<td class="paramlist_key"><label for="publish_down">Finish live:</label></th>
+						<td>
+							<?php echo JHTML::_('calendar', $this->row->get('end_date'), 'fields[end_date]', 'end_date', "%Y-%m-%d", array('class' => 'inputbox')); ?>
+						</td>
+					</tr>
+					<tr>
+						<td class="paramlist_key"><label for="publish_down">Offering ends:</label></th>
+						<td>
+							<?php echo JHTML::_('calendar', $this->row->get('publish_down'), 'fields[publish_down]', 'publish_down', "%Y-%m-%d", array('class' => 'inputbox')); ?>
 						</td>
 					</tr>
 				</tbody>
@@ -113,7 +140,7 @@ function submitbutton(pressbutton)
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Managers'); ?></span></legend>
 <?php if ($this->row->get('id')) { ?>
-			<iframe width="100%" height="400" name="managers" id="managers" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=managers&amp;tmpl=component&amp;id=<?php echo $this->row->get('id'); ?>"></iframe>
+			<iframe width="100%" height="400" name="managers" id="managers" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=supervisors&amp;tmpl=component&amp;id=<?php echo $this->row->get('id'); ?>"></iframe>
 <?php } else { ?>
 			<p><?php echo JText::_('Course must be saved before managers can be added.'); ?></p>
 <?php } ?>
@@ -123,8 +150,8 @@ function submitbutton(pressbutton)
 		<table class="meta" summary="<?php echo JText::_('COM_COURSES_META_SUMMARY'); ?>">
 			<tbody>
 				<tr>
-					<th><?php echo JText::_('Group ID'); ?></th>
-					<td><?php echo $this->escape($this->row->get('group_id')); ?></td>
+					<th><?php echo JText::_('Course ID'); ?></th>
+					<td><?php echo $this->escape($this->row->get('course_id')); ?></td>
 				</tr>
 				<tr>
 					<th><?php echo JText::_('ID'); ?></th>
@@ -146,40 +173,8 @@ function submitbutton(pressbutton)
 <?php } ?>
 			</tbody>
 		</table>
-		
-		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Publishing'); ?></span></legend>
-			
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key" valign="top"><label for="field-state"><?php echo JText::_('State'); ?>:</label></td>
-						<td>
-							<select name="fields[state]" id="field-state">
-								<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Unpublished'); ?></option>
-								<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Published'); ?></option>
-								<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Deleted'); ?></option>
-							</select>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</fieldset>
 	</div>
 	<div class="clr"></div>
-
-<?php if (version_compare(JVERSION, '1.6', 'ge')) { ?>
-	<?php if ($canDo->get('core.admin')): ?>
-	<div class="col width-100 fltlft">
-		<fieldset class="panelform">
-			<legend><span><?php echo JText::_('COM_COURSES_FIELDSET_RULES'); ?></span></legend>
-			<?php echo $this->form->getLabel('rules'); ?>
-			<?php echo $this->form->getInput('rules'); ?>
-		</fieldset>
-	</div>
-	<div class="clr"></div>
-	<?php endif; ?>
-<?php } ?>
 
 	<?php echo JHTML::_('form.token'); ?>
 </form>

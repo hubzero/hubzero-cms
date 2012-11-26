@@ -174,7 +174,14 @@ class CoursesTableMember extends JTable
 		}
 		if (isset($filters['role']))
 		{
-			$where[] = "r.`alias`=" . $this->_db->Quote($filters['role']);
+			if (substr($filters['role'], 0, 1) == '!')
+			{
+				$where[] = "r.`alias`!=" . $this->_db->Quote(ltrim($filters['role'], '!'));
+			}
+			else
+			{
+				$where[] = "r.`alias`=" . $this->_db->Quote($filters['role']);
+			}
 		}
 
 		if (count($where) > 0)

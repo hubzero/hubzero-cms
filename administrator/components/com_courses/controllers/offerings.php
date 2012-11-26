@@ -33,10 +33,13 @@ defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Controller');
 
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
+
 /**
  * Courses controller class for managing membership and course info
  */
-class CoursesControllerManage extends Hubzero_Controller
+class CoursesControllerOfferings extends Hubzero_Controller
 {
 	/**
 	 * Displays a list of courses
@@ -51,56 +54,65 @@ class CoursesControllerManage extends Hubzero_Controller
 
 		// Incoming
 		$this->view->filters = array();
-		$this->view->filters['type']    = array(trim($app->getUserStateFromRequest(
-			$this->_option . '.browse.type',
-			'type',
-			'all'
-		)));
+		$this->view->filters['course']    = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.course',
+			'course',
+			0
+		);
+
+		$this->view->course = CoursesModelCourse::getInstance($this->view->filters['course']);
+		if (!$this->view->course->exists())
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=courses'
+			);
+			return;
+		}
+
 		$this->view->filters['search']  = urldecode(trim($app->getUserStateFromRequest(
-			$this->_option . '.browse.search',
+			$this->_option . '.' . $this->_controller . '.search',
 			'search',
 			''
 		)));
-		$this->view->filters['privacy'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.browse.privacy',
-			'privacy',
-			''
-		));
-		$this->view->filters['policy']  = trim($app->getUserStateFromRequest(
-			$this->_option . '.browse.policy',
-			'policy',
-			''
-		));
-
-		// Filters for getting a result count
-		$this->view->filters['limit'] = 'all';
-		$this->view->filters['fields'] = array('COUNT(*)');
-		$this->view->filters['authorized'] = 'admin';
-
-		// Get a record count
-		$this->view->total = Hubzero_Course::find($this->view->filters);
-
 		// Filters for returning results
 		$this->view->filters['limit']  = $app->getUserStateFromRequest(
-			$this->_option . '.browse.limit',
+			$this->_option . '.' . $this->_controller . '.limit',
 			'limit',
 			$config->getValue('config.list_limit'),
 			'int'
 		);
 		$this->view->filters['start']  = $app->getUserStateFromRequest(
-			$this->_option . '.browse.limitstart',
+			$this->_option . '.' . $this->_controller . '.limitstart',
 			'limitstart',
 			0,
 			'int'
 		);
-		$this->view->filters['fields'] = array('cn', 'description', 'published', 'gidNumber', 'type');
+
+		$this->view->filters['count'] = true;
+
+		$this->view->total = $this->view->course->offerings($this->view->filters);
+
+		$this->view->filters['count'] = false;
+
+		$this->view->rows = $this->view->course->offerings($this->view->filters);
+
+		// Filters for getting a result count
+		//$this->view->filters['limit'] = 'all';
+		//$this->view->filters['fields'] = array('COUNT(*)');
+		//$this->view->filters['authorized'] = 'admin';
+
+		// Get a record count
+		//$this->view->total = Hubzero_Course::find($this->view->filters);
+
+		
+		//$this->view->filters['fields'] = array('cn', 'description', 'published', 'gidNumber', 'type');
 
 		// Get a list of all courses
-		$this->view->rows = null;
+		/*$this->view->rows = null;
 		if ($this->view->total > 0)
 		{
 			$this->view->rows = Hubzero_Course::find($this->view->filters);
-		}
+		}*/
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
@@ -124,105 +136,6 @@ class CoursesControllerManage extends Hubzero_Controller
 	}
 
 	/**
-	 * Manage course memberships
-	 *
-	 * @return void
-	 */
-	public function manageTask()
-	{
-		// Incoming
-		$gid = JRequest::getVar('gid', '');
-
-		// Ensure we have a course ID
-		if (!$gid)
-		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_COURSES_MISSING_ID'),
-				'error'
-			);
-			return;
-		}
-
-		// Load the course page
-		$course = new Hubzero_Course();
-		$course->read($gid);
-
-		$this->gid = $gid;
-		$this->course = $course;
-
-		$action = JRequest::getVar('action','');
-
-		$this->action = $action;
-		$this->authorized = 'admin';
-
-		// Do we need to perform any actions?
-		$out = '';
-		if ($action)
-		{
-			$action = strtolower(trim($action));
-			$action = str_replace(' ', '', $action);
-
-			// Perform the action
-			if (in_array($action, $this->_taskMap))
-			{
-				$action .= 'Task';
-				$this->$action();
-			}
-
-			// Did the action return anything? (HTML)
-			if ($this->output != '')
-			{
-				$out = $this->output;
-			}
-		}
-
-		// Get course members based on their status
-		// Note: this needs to happen *after* any potential actions ar performed above
-		$invitees = $course->get('invitees');
-		$pending  = $course->get('applicants');
-		$members  = $course->get('members');
-		$managers = $course->get('managers');
-
-		// Get a members list without the managers
-		$memberss = array();
-		foreach ($members as $m)
-		{
-			if (!in_array($m,$managers))
-			{
-				$memberss[] = $m;
-			}
-		}
-
-		// Output HTML
-		if ($out == '')
-		{
-			$this->view->course      = $course;
-			$this->view->invitees   = $invitees;
-			$this->view->pending    = $pending;
-			$this->view->members    = $memberss;
-			$this->view->managers   = $managers;
-			$this->view->authorized = 'admin';
-
-			// Set any errors
-			if ($this->getError())
-			{
-				foreach ($this->getErrors() as $error)
-				{
-					$this->view->setError($error);
-				}
-			}
-
-			// Output the HTML
-			$this->view->display();
-		}
-		else
-		{
-			echo $out;
-		}
-	}
-
-	/**
 	 * Create a new course
 	 *
 	 * @return	void
@@ -237,27 +150,40 @@ class CoursesControllerManage extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	public function editTask()
+	public function editTask($model=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
 		$this->view->setLayout('edit');
 
-		// Incoming
-		$ids = JRequest::getVar('id', array());
-
-		// Get the single ID we're working with
-		if (is_array($ids))
+		if (is_object($model))
 		{
-			$id = (!empty($ids)) ? $ids[0] : '';
+			$this->view->row = $model;
 		}
 		else
 		{
-			$id = '';
+			// Incoming
+			$ids = JRequest::getVar('id', array());
+
+			// Get the single ID we're working with
+			if (is_array($ids))
+			{
+				$id = (!empty($ids)) ? $ids[0] : '';
+			}
+			else
+			{
+				$id = '';
+			}
+
+			$this->view->row = CoursesModelOffering::getInstance($id);
 		}
 
-		$this->view->course = new Hubzero_Course();
-		$this->view->course->read($id);
+		if (!$this->view->row->get('course_id'))
+		{
+			$this->view->row->set('course_id', JRequest::getInt('course', 0));
+		}
+
+		$this->view->course = CoursesModelOffering::getInstance($this->view->row->get('course_id'));
 
 		// Set any errors
 		if ($this->getError())
@@ -273,25 +199,6 @@ class CoursesControllerManage extends Hubzero_Controller
 	}
 
 	/**
-	 * Recursive array_map
-	 *
-	 * @param  $func string Function to map
-	 * @param  $arr  array  Array to process
-	 * @return array
-	 */
-	protected function _multiArrayMap($func, $arr)
-	{
-		$newArr = array();
-
-		foreach ($arr as $key => $value)
-		{
-			$newArr[$key] = (is_array($value) ? $this->_multiArrayMap($func, $value) : $func($value));
-	    }
-
-		return $newArr;
-	}
-
-	/**
 	 * Saves changes to a course or saves a new entry if creating
 	 *
 	 * @return void
@@ -302,141 +209,31 @@ class CoursesControllerManage extends Hubzero_Controller
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$g = JRequest::getVar('course', array(), 'post');
-		$g = $this->_multiArrayMap('trim', $g);
+		$fields = JRequest::getVar('fields', array(), 'post');
 
 		// Instantiate an Hubzero_Course object
-		$course = new Hubzero_Course();
+		$model = CoursesModelOffering::getInstance($fields['id']);
 
-		// Is this a new entry or updating?
-		$isNew = false;
-		if (!$g['gidNumber'])
+		if (!$model->bind($fields))
 		{
-			$isNew = true;
-
-			// Set the task - if anything fails and we re-enter edit mode 
-			// we need to know if we were creating new or editing existing
-			$this->_task = 'new';
-		}
-		else
-		{
-			$this->_task = 'edit';
-
-			// Load the course
-			$course->read($g['gidNumber']);
-		}
-
-		// Check for any missing info
-		if (!$g['cn'])
-		{
-			$this->setError(JText::_('COM_COURSES_ERROR_MISSING_INFORMATION') . ': ' . JText::_('COM_COURSES_ID'));
-		}
-		if (!$g['description'])
-		{
-			$this->setError(JText::_('COM_COURSES_ERROR_MISSING_INFORMATION') . ': ' . JText::_('COM_COURSES_TITLE'));
-		}
-
-		// Push back into edit mode if any errors
-		if ($this->getError())
-		{
-			$this->view->setLayout('edit');
-			$this->view->course = $course;
-
-			// Set any errors
-			if ($this->getError())
-			{
-				$this->view->setError($this->getError());
-			}
-
-			// Output the HTML
-			$this->view->display();
+			$this->addComponentMessage($model->getError());
+			$this->editTask($model);
 			return;
 		}
 
-		$g['cn'] = strtolower($g['cn']);
-
-		// Ensure the data passed is valid
-		if (!$this->_validCn($g['cn'], $g['type']))
+		if (!$model->check())
 		{
-			$this->setError(JText::_('COM_COURSES_ERROR_INVALID_ID'));
-		}
-		if ($isNew && Hubzero_Course::exists($g['cn']))
-		{
-			$this->setError(JText::_('COM_COURSES_ERROR_COURSE_ALREADY_EXIST'));
-		}
-
-		// Push back into edit mode if any errors
-		if ($this->getError())
-		{
-			$this->view->setLayout('edit');
-			$this->view->course = $course;
-
-			// Set any errors
-			if ($this->getError())
-			{
-				$this->view->setError($this->getError());
-			}
-
-			// Output the HTML
-			$this->view->display();
+			$this->addComponentMessage($model->getError());
+			$this->editTask($model);
 			return;
 		}
 
-		// course params
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
+		if (!$model->store())
 		{
-			$paramsClass = 'JRegistry';
+			$this->addComponentMessage($model->getError());
+			$this->editTask($model);
+			return;
 		}
-		$gparams = new $paramsClass($course->get('params'));
-
-		// set membership control param
-		$membership_control = (isset($g['params']['membership_control'])) ? 1 : 0;
-		$gparams->set('membership_control', $membership_control);
-
-		// make array of params
-		$gparams = $gparams->toArray();
-
-		// array to hold params
-		$params = array();
-
-		// create key=val from each param
-		foreach ($gparams as $key => $val)
-		{
-			$params[] = $key . '=' . $val;
-		}
-
-		//each param must have its own line
-		$params = implode("\n", $params);
-
-		// Set the course changes and save
-		$course->set('cn', $g['cn']);
-		$course->set('type', $g['type']);
-		if ($isNew)
-		{
-			$course->create();
-
-			$course->set('published', 1);
-			$course->set('created', date("Y-m-d H:i:s"));
-			$course->set('created_by', $this->juser->get('id'));
-
-			$course->add('managers', array($this->juser->get('id')));
-			$course->add('members', array($this->juser->get('id')));
-		}
-		$course->set('description', $g['description']);
-		$course->set('privacy', $g['privacy']);
-		$course->set('access', $g['access']);
-		$course->set('join_policy', $g['join_policy']);
-		$course->set('public_desc', $g['public_desc']);
-		$course->set('private_desc', $g['private_desc']);
-		$course->set('restrict_msg', $g['restrict_msg']);
-		$course->set('logo', $g['logo']);
-		$course->set('overview_type', $g['overview_type']);
-		$course->set('overview_content', $g['overview_content']);
-		$course->set('plugins', $g['plugins']);
-		$course->set('params', $params);
-
-		$course->update();
 
 		// Output messsage and redirect
 		$this->setRedirect(
@@ -464,26 +261,28 @@ class CoursesControllerManage extends Hubzero_Controller
 			$ids = array();
 		}
 
+		$num = 0;
+
 		// Do we have any IDs?
 		if (!empty($ids))
 		{
 			// Get plugins
-			JPluginHelper::importPlugin('courses');
-			$dispatcher =& JDispatcher::getInstance();
+			//JPluginHelper::importPlugin('courses');
+			//$dispatcher =& JDispatcher::getInstance();
 
 			foreach ($ids as $id)
 			{
 				// Load the course page
-				$course = Hubzero_Course::getInstance($id);
+				$model = CoursesModelOffering::getInstance($id);
 
 				// Ensure we found the course info
-				if (!$course)
+				if (!$model->exists())
 				{
 					continue;
 				}
 
 				// Get number of course members
-				$courseusers    = $course->get('members');
+				/*$courseusers    = $course->get('members');
 				$coursemanagers = $course->get('managers');
 				$members = array_merge($courseusers, $coursemanagers);
 
@@ -519,21 +318,36 @@ class CoursesControllerManage extends Hubzero_Controller
 				if (count($logs) > 0)
 				{
 					$log .= implode('', $logs);
-				}
+				}*/
 
 				// Delete course
-				if (!$course->delete())
+				if (!$model->delete())
 				{
-					JError::raiseError(500, 'Unable to delete course');
+					JError::raiseError(500, JText::_('Unable to delete offering'));
 					return;
 				}
+
+				// Log the course approval
+				$log = new CoursesTableLog($this->database);
+				$log->scope_id  = $course->get('id');
+				$log->scope     = 'course_offering';
+				$log->user_id   = $this->juser->get('id');
+				$log->timestamp = date('Y-m-d H:i:s', time());
+				$log->action    = 'offering_deleted';
+				$log->actor_id  = $this->juser->get('id');
+				if (!$log->store())
+				{
+					$this->setError($log->getError());
+				}
+
+				$num++;
 			}
 		}
 
 		// Redirect back to the courses page
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('COM_COURSES_REMOVED')
+			JText::sprintf('%s Item(s) removed.', $num)
 		);
 	}
 
@@ -555,6 +369,26 @@ class CoursesControllerManage extends Hubzero_Controller
 	 * @return void
 	 */
 	public function publishTask()
+	{
+		$this->stateTask(1);
+	}
+
+	/**
+	 * Unpublish a course
+	 *
+	 * @return void
+	 */
+	public function unpublishTask()
+	{
+		$this->stateTask(0);
+	}
+
+	/**
+	 * Set the state of a course
+	 *
+	 * @return void
+	 */
+	public function stateTask($state=0)
 	{
 		// Check for request forgeries
 		//JRequest::checkToken() or jexit('Invalid Token');
@@ -604,66 +438,6 @@ class CoursesControllerManage extends Hubzero_Controller
 				$this->setRedirect(
 					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
 					JText::_('Course has been published.')
-				);
-			}
-		}
-	}
-
-	/**
-	 * Unpublish a course
-	 *
-	 * @return void
-	 */
-	public function unpublishTask()
-	{
-		// Check for request forgeries
-		//JRequest::checkToken() or jexit('Invalid Token');
-
-		// Incoming
-		$ids = JRequest::getVar('id', array());
-
-		// Get the single ID we're working with
-		if (!is_array($ids))
-		{
-			$ids = array();
-		}
-
-		// Do we have any IDs?
-		if (!empty($ids))
-		{
-			// foreach course id passed in
-			foreach ($ids as $id)
-			{
-				// Load the course page
-				$course = new Hubzero_Course();
-				$course->read($id);
-
-				// Ensure we found the course info
-				if (!$course)
-				{
-					continue;
-				}
-
-				//set the course to be published and update
-				$course->set('published', 0);
-				$course->update();
-
-				// Log the course approval
-				$log = new XCourseLog($this->database);
-				$log->gid       = $course->get('gidNumber');
-				$log->uid       = $this->juser->get('id');
-				$log->timestamp = date('Y-m-d H:i:s', time());
-				$log->action    = 'course_unpublished';
-				$log->actorid   = $this->juser->get('id');
-				if (!$log->store())
-				{
-					$this->setError($log->getError());
-				}
-
-				// Output messsage and redirect
-				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-					JText::_('COM_COURSES_UNPUBLISHED')
 				);
 			}
 		}

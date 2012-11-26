@@ -399,6 +399,16 @@ class CoursesModelOffering extends JObject
 	 */
 	public function units($filters=array())
 	{
+		if (isset($filters['count']) && $filters['count'])
+		{
+			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'unit.php');
+
+			$tbl = new CoursesTableUnit($this->_db);
+
+			$filters['offering_id'] = (int) $this->get('id');
+
+			return $tbl->count($filters);
+		}
 		if (!isset($this->units) || !is_a($this->units, 'CoursesModelIterator'))
 		{
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
@@ -760,6 +770,221 @@ class CoursesModelOffering extends JObject
 			}
 		}
 		return $this->params->get('access-' . strtolower($action) . '-' . $item);
+	}
+
+	/**
+	 * Add one or more user IDs or usernames to the managers list
+	 *
+	 * @param     array $value List of IDs or usernames
+	 * @return    void
+	 */
+	public function add($data = array(), $role_id=0)
+	{
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'member.php');
+
+		foreach ($data as $result)
+		{
+			$user_id = $this->_userId($result);
+			$this->_members[$user_id] = new CoursesModelMember($result, $this->get('id'));
+			$this->_members[$user_id]->set('role_id', $role_id);
+		}
+	}
+
+	/**
+	 * Remove one or more user IDs or usernames to the managers list
+	 *
+	 * @param     array $value List of IDs or usernames
+	 * @return    void
+	 */
+	public function remove($data = array())
+	{
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'member.php');
+
+		foreach ($data as $result)
+		{
+			$user_id = $this->_userId($result);
+
+			if (isset($this->_members[$user_id]))
+			{
+				unset($this->_members[$user_id]);
+			}
+		}
+	}
+
+	/**
+	 * Return an ID for a user
+	 *
+	 * @param     mixed $user User ID or username
+	 * @return    integer
+	 */
+	private function _userId($user)
+	{
+		if (is_numeric($user))
+		{
+			return $user;
+		}
+
+		$this->_db->setQuery("SELECT id FROM #__users WHERE username='$user';");
+
+		if (($result = $this->_db->loadResult()))
+		{
+			return $result;
+		}
+
+		return 0;
+	}
+
+	/**
+	 * Short title for 'update'
+	 * Long title (if any) ...
+	 *
+	 * @param unknown $course_id Parameter title (if any) ...
+	 * @param array $data Parameter title (if any) ...
+	 * @return boolean Return title (if any) ...
+	 */
+	public function store($check=true)
+	{
+		if (empty($this->_db))
+		{
+			return false;
+		}
+
+		$first = true;
+
+		$affected = 0;
+
+		$aNewUserCourseEnrollments = array();
+
+		if ($check)
+		{
+			if (!$this->_tbl->check())
+			{
+				$this->setError($this->_tbl->getError());
+				return false;
+			}
+		}
+
+		if (!$this->_tbl->store())
+		{
+			$this->setError($this->_tbl->getError());
+			return false;
+		}
+
+		/*$affected = $this->_db->getAffectedRows();
+
+		foreach (self::$_list_keys as $property)
+		{
+			$query = '';
+
+			$aux_table = "#__courses_" . $property;
+
+			$list = $this->get($property);
+
+			if (!is_null($list) && !is_array($list))
+			{
+				$list = array($list);
+			}
+
+			$ulist = null;
+			$tlist = null;
+
+			foreach ($list as $value)
+			{
+				if (!is_null($ulist))
+				{
+					$ulist .= ',';
+					$tlist .= ',';
+				}
+
+				$ulist .= $this->_db->Quote($value);
+				$tlist .= '(' . $this->_db->Quote($this->get('id')) . ',' . $this->_db->Quote($value) . ')';
+			}
+
+			// @FIXME: I don't have a better solution yet. But the next refactoring of this class
+			// should eliminate the ability to read the entire member table due to problems with
+			// scale on a large (thousands of members) courses. The add function should track the members
+			// being added to a course, but would need to be verified to handle adding members
+			// already in course. *njk*
+
+			// @FIXME: Not neat, but because all course membership is resaved every time even for single additions
+			// there is no nice way to detect only *new* additions without this check. I don't want to 
+			// fire off an 'onUserCourseEnrollment' event for users unless they are really being enrolled. *drb*
+
+			if (in_array($property, array('managers')))
+			{
+				$query = "SELECT user_id FROM #__courses_$property WHERE course_id=" . $this->get('id');
+				$this->_db->setQuery($query);
+
+				// compile current list of members in this course
+				$aExistingUserMembership = array();
+
+				if (($results = $this->_db->loadAssoc()))
+				{
+					foreach ($results as $uid)
+					{
+						$aExistingUserMembership[] = $uid;
+					}
+				}
+
+				// see who is missing
+				$aNewUserCourseEnrollments = array_diff($list, $aExistingUserMembership);
+			}
+
+			if (is_array($list) && count($list) > 0)
+			{
+				if (in_array($property, array('managers')))
+				{
+					$query = "REPLACE INTO $aux_table (course_id, user_id) VALUES $tlist;";
+
+					$this->_db->setQuery($query);
+
+					if ($this->_db->query())
+					{
+						$affected += $this->_db->getAffectedRows();
+					}
+				}
+			}
+
+			if (!is_array($list) || count($list) == 0)
+			{
+				if (in_array($property, array('managers')))
+				{
+					$query = "DELETE FROM $aux_table WHERE course_id=" . $this->_db->Quote($this->id) . ";";
+				}
+			}
+			else
+			{
+				if (in_array($property, array('managers')))
+				{
+					$query = "DELETE m FROM #__courses_$property AS m WHERE " . " m.course_id=" . 
+						$this->_db->Quote($this->get('id')) . " AND m.user_id NOT IN (" . $ulist . ");";
+				}
+			}
+
+			if ($query)
+			{
+				$this->_db->setQuery($query);
+
+				if ($this->_db->query())
+				{
+					$affected += $this->_db->getAffectedRows();
+				}
+			}
+		}*/
+
+		/*$log = new CoursesTableLog($this->database);
+		$log->gid       = $this->get('id');
+		$log->uid       = $juser->get('id');
+		$log->timestamp = date('Y-m-d H:i:s', time());
+		$log->action    = 'course_deleted';
+		$log->comments  = $log;
+		$log->actorid   = $juser->get('id');
+		if (!$log->store()) 
+		{
+			$this->setError($log->getError());
+		}*/
+
+		return true;
 	}
 
 	/**

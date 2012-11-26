@@ -36,6 +36,7 @@ JToolBarHelper::title(JText::_('COM_COURSES'), 'courses.png');
 if ($canDo->get('core.admin')) 
 {
 	JToolBarHelper::preferences('com_courses', '550');
+	JToolBarHelper::spacer();
 }
 if ($canDo->get('core.create')) 
 {
@@ -82,7 +83,7 @@ function submitbutton(pressbutton)
 				<th scope="col"><?php echo JText::_('Title'); ?></th>
 				<th scope="col"><?php echo JText::_('Alias'); ?></th>
 				<th scope="col"><?php echo JText::_('COM_COURSES_PUBLISHED'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_COURSES_MEMBERS'); ?></th>
+				<th scope="col"><?php echo JText::_('Managers'); ?></th>
 				<th scope="col"><?php echo JText::_('Offerings'); ?></th>
 			</tr>
 		</thead>
@@ -97,41 +98,18 @@ $i = 0;
 $k = 0;
 foreach ($this->rows as $row)
 {
-	/*$course = new Hubzero_Course();
-	//$course->gidNumber = $row->gidNumber;
-	//$course->cn = $row->cn;
-	$course->read($row->gidNumber);
-
-	switch ($row->type)
-	{
-		case '0': $type = 'System';  break;
-		case '1': $type = 'Hub';     break;
-		case '2': $type = 'Project'; break;
-		case '3': $type = 'Partner'; break;
-	}
-
-	$members = count($course->get('members'));
-
-	$tip  = '<table><tbody>';
-	$tip .= '<tr><th>' . JText::_('COM_COURSES_MEMBERS') . '</th><td>' . $members . '</td></tr>';
-	$tip .= '<tr><th>' . JText::_('COM_COURSES_MANAGERS') . '</th><td>' . count($course->get('managers')) . '</td></tr>';
-	$tip .= '<tr><th>' . JText::_('COM_COURSES_APPLICANTS') . '</th><td>' . count($course->get('applicants')) . '</td></tr>';
-	$tip .= '<tr><th>' . JText::_('COM_COURSES_INVITEES') . '</th><td>' . count($course->get('invitees')) . '</td></tr>';
-	$tip .= '</tbody></table>';*/
-	$tip = '[coming soon]';
-	$members = 0;
-	$offerings = 0;
+	$offerings = $row->offerings(array('count' => true));
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->get('alias'); ?>" onclick="isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('alias'); ?>" onclick="isChecked(this.checked);" />
 				</td>
 				<td>
 					<?php echo $this->escape($row->get('id')); ?>
 				</td>
 				<td>
 <?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('alias'); ?>">
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>">
 						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 					</a>
 <?php } else { ?>
@@ -142,7 +120,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 <?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('alias'); ?>">
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>">
 						<?php echo $this->escape($row->get('alias')); ?>
 					</a>
 <?php } else { ?>
@@ -152,13 +130,13 @@ foreach ($this->rows as $row)
 				<td>
 <?php if ($canDo->get('core.edit.state')) { ?>
 					<?php if ($row->get('state')) { ?>
-					<a class="jgrid" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=unpublish&amp;id[]=<?php echo $row->get('alias'); ?>" title="<?php echo JText::_('Unpublish Course'); ?>">
+					<a class="jgrid" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=unpublish&amp;id[]=<?php echo $row->get('id'); ?>" title="<?php echo JText::_('Unpublish Course'); ?>">
 						<span class="state publish">
 							<span class="text"><?php echo JText::_('Published'); ?></span>
 						</span>
 					</a>
 					<?php } else { ?>
-					<a class="jgrid" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=publish&amp;id[]=<?php echo $row->get('alias'); ?>" title="<?php echo JText::_('Publish Course'); ?>">
+					<a class="jgrid" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=publish&amp;id[]=<?php echo $row->get('id'); ?>" title="<?php echo JText::_('Publish Course'); ?>">
 						<span class="state unpublish">
 							<span class="text"><?php echo JText::_('Unpublished'); ?></span>
 						</span>
@@ -167,21 +145,23 @@ foreach ($this->rows as $row)
 <?php } ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.manage')) { ?>
-					<a class="glyph member hasTip" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;gid=<?php echo $row->get('alias'); ?>" title="<?php echo JText::_('Manage membership') . '::' . $tip; ?>">
-						<?php echo $members; ?>
-					</a>
-<?php } else { ?>
-					<span class="glyph member" title="<?php echo JText::_('Manage membership') . '::' . $tip; ?>">
-						<?php echo $members; ?>
+					<span class="glyph member" title="<?php echo JText::_('Manage membership'); ?>">
+						<?php echo count($row->get('managers')); ?>
 					</span>
-<?php } ?>
 				</td>
 				<td>
-					<?php if ($canDo->get('core.manage')) { ?>
-						<a class="glyph list" href="index.php?option=<?php echo $this->option; ?>&amp;controller=offerings&amp;gid=<?php echo $row->get('alias'); ?>">
+					<?php if ($canDo->get('core.manage') && $offerings > 0) { ?>
+						<a class="glyph list" href="index.php?option=<?php echo $this->option; ?>&amp;controller=offerings&amp;course=<?php echo $row->get('id'); ?>">
 							<?php echo $offerings; ?>
 						</a>
+					<?php } else { ?>
+						<?php echo $offerings; ?>
+						<?php if ($canDo->get('core.manage')) { ?>
+						&nbsp;
+						<a class="state add" href="index.php?option=<?php echo $this->option; ?>&amp;controller=offerings&amp;course=<?php echo $row->get('id'); ?>&amp;task=add">
+							<span><?php echo JText::_('[ + ]'); ?></span>
+						</a>
+						<?php } ?>
 					<?php } ?>
 				</td>
 			</tr>
