@@ -1012,7 +1012,7 @@ class WikiPage extends JTable
 	 */
 	public function normalize($txt)
 	{
-		return preg_replace("/[^\:a-zA-Z0-9]/", '', $txt);
+		return preg_replace("/[^\:a-zA-Z0-9_]/", '', $txt);
 	}
 
 	/**
