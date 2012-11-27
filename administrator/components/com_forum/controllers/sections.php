@@ -137,6 +137,7 @@ class ForumControllerSections extends Hubzero_Controller
 
 		// Incoming
 		$ids = JRequest::getVar('id', array());
+		$id = 0;
 		if (is_array($ids) && !empty($ids)) 
 		{
 			$id = intval($ids[0]);
@@ -151,6 +152,11 @@ class ForumControllerSections extends Hubzero_Controller
 			// load infor from database
 			$this->view->row = new ForumSection($this->database);
 			$this->view->row->load($id);
+		}
+
+		if (!$this->view->row->id)
+		{
+			$this->view->row->created_by = $this->juser->get('id');
 		}
 
 		if (version_compare(JVERSION, '1.6', 'ge'))
