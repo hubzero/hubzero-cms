@@ -170,16 +170,16 @@ class plgProjectsTeam extends JPlugin
 			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginScript('projects', 'team');
 			Hubzero_Document::addPluginStylesheet('projects', 'team');
-
+			
 			switch($this->_task) 
 			{	
 				case 'edit': 
-				case 'setup': 
-					
+				case 'setup': 	
+				
 					// Do we need to incule extra scripts?
 					$plugin 		= JPluginHelper::getPlugin( 'system', 'jquery' );
 					$p_params 		= $plugin ? new JParameter($plugin->params) : NULL;
-					
+
 					if (!$plugin || $p_params->get('noconflictSite'))
 					{
 						$document->addScript('plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'observer.js');
@@ -187,7 +187,7 @@ class plgProjectsTeam extends JPlugin
 						$document->addScript('plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.js');
 						$document->addStyleSheet('plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.css');
 					}
-					
+								
 					$arr['html'] = $this->view( 1 ); 
 					break;
 				
@@ -356,7 +356,7 @@ class plgProjectsTeam extends JPlugin
 		// Get current authors
 		$pa = new PublicationAuthor($this->_database);
 		$view->authors = $pa->getAuthors($versionid);
-			
+							
 		// Exclude any owners?
 		$view->exclude = array();
 		
@@ -610,24 +610,26 @@ class plgProjectsTeam extends JPlugin
 			$this->_message = array('message' => $this->_msg, 'type' => 'success');
 		}
 		
-		// Pass success or error message
-		if ($this->getError()) 
+		if ($authors && $pid)
 		{
-			$this->_message = array('message' => $this->getError(), 'type' => 'error');
+			// Build pub url
+			$route = $this->_project->provisioned 
+				? 'index.php?option=com_publications' . a . 'task=submit'
+				: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias . a . 'active=publications';
+			$url = JRoute::_($route . a . 'pid=' . $pid).'/?edit=authors';
+			$this->_redirect = $url;
+			return;			
 		}
-		elseif (isset($this->_msg) && $this->_msg) 
+		else
 		{
-			$this->_message = array('message' => $this->_msg, 'type' => 'success');
+			$this->_redirect = $setup 
+							? JRoute::_('index.php?option=' . $this->_option 
+							. a . 'alias=' . $this->_project->alias . a . 'task=setup' . a . 'step=1')
+							: JRoute::_('index.php?option=' . $this->_option 
+							. a . 'alias=' . $this->_project->alias . a . 'task=edit' . a . 'edit=team');
 		}
 		
-		$this->_redirect = $setup 
-						? JRoute::_('index.php?option=' . $this->_option 
-						. a . 'alias=' . $this->_project->alias . a . 'task=setup' . a . 'step=1')
-						: JRoute::_('index.php?option=' . $this->_option 
-						. a . 'alias=' . $this->_project->alias . a . 'task=edit' . a . 'edit=team');
-
 		return; // redirect				
-
 	}
 	
 	/**
@@ -826,7 +828,13 @@ class plgProjectsTeam extends JPlugin
 		// Incoming
 		$checked 	= JRequest::getVar( 'owner', '', 'request', 'array' );
 		$groups 	= JRequest::getVar( 'group', '', 'request', 'array' );
+		$owner 		= JRequest::getVar( 'owner', '');
 		$role 		= JRequest::getInt ( 'role', 0 );
+		
+		if ($owner)
+		{
+			$checked = array($owner);
+		}
 		
 		// Are we setting up project?
 		$setup_complete = $this->_config->get('confirm_step', 0) ? 3 : 2;

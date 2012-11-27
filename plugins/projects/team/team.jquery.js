@@ -262,18 +262,20 @@ HUB.ProjectTeam = {
 		}
 		
 		$(el).after('<form id="' + form + '" class="editable" action="index.php">' + 
+			'<input type="hidden" name="option" value="com_projects" />' +
+			'<input type="hidden" name="id" value="' + $('#pid').val() + '" />' +
+			'<input type="hidden" name="task" value="view" />' +
+			'<input type="hidden" name="active" value="team" />' +
+			'<input type="hidden" name="action" value="assignrole" />' +
 			'<label>' + 
 				'<select name="role">' + 
 					'<option value="1" ' + m_selected + '>manager</option>' + 
 					'<option value="0" ' + c_selected + '>collaborator</option>' + 
 				'<select>' + 
-			'</label>' + 
-			'<input type="hidden" name="option" value="com_projects" />' +
-			'<input type="hidden" name="active" value="team" />' +
-			'<input type="hidden" name="action" value="assignrole" />' +
+			'</label>' +
 			'<input type="hidden" name="ajax" value="1" />' +
 			'<input type="hidden" name="no_html" value="1" />' +
-			'<input type="hidden" name="owner[]" value="' + owner + '" />' +
+			'<input type="hidden" name="owner" value="' + owner + '" />' +
 			'<input type="submit" id="' + save + '" value="save" />' +
 			'<input type="button" class="cancel" id="' + cancel + '" value="cancel" />' +
 		'</form>');
@@ -286,7 +288,7 @@ HUB.ProjectTeam = {
 		
 		$('#' + save).on('click', function(e){
 			e.preventDefault();
-			$.ajax({type:'POST', url: 'index.php', data:$('#' + form).serialize(), success: function(response) {
+			$.ajax({ type:'POST', url: 'index.php', data:$('#' + form).serialize(), success: function(response) {
 			      $('#cbody').html(response);
 				  HUB.ProjectTeam.initialize();
 			}});
