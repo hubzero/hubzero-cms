@@ -314,9 +314,9 @@ window.addEvent('domready', Fields.initialise);
 		<table class="admintable" id="fields">
 			<thead>
 				<tr>
-<?php if ($this->row->id) { ?>
+<?php //if ($this->row->id) { ?>
 					<th><?php echo JText::_('RESOURCES_TYPES_REORDER'); ?></th>
-<?php } ?>
+<?php //} ?>
 					<th><?php echo JText::_('RESOURCES_TYPES_FIELD'); ?></th>
 					<th><?php echo JText::_('RESOURCES_TYPES_TYPE'); ?></th>
 					<th><?php echo JText::_('RESOURCES_TYPES_REQUIRED'); ?></th>
@@ -325,7 +325,7 @@ window.addEvent('domready', Fields.initialise);
 			</thead>
 			<tfoot>
 				<tr>
-					<td colspan="<?php echo ($this->row->id) ? '5' : '4'; ?>">
+					<td colspan="<?php echo '5';//($this->row->id) ? '5' : '4'; ?>">
 						<button id="add-custom-field" href="#addRow">
 							<span><?php echo JText::_('+ Add new row'); ?></span>
 						</button>

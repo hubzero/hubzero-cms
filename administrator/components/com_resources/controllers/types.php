@@ -205,13 +205,13 @@ class ResourcesControllerTypes extends Hubzero_Controller
 				{
 					$element = new stdClass();
 					$element->default  = (isset($val['default'])) ? $val['default'] : '';
-					$element->name     = (isset($val['name'])) ? $val['name'] : $this->_normalize(trim($val['title']));
+					$element->name     = (isset($val['name']) && trim($val['name']) != '') ? $val['name'] : $this->_normalize(trim($val['title']));
 					$element->label    = $val['title'];
-					$element->type     = (isset($val['type']))     ? $val['type']     : 'text';
+					$element->type     = (isset($val['type']) && trim($val['type']) != '')     ? $val['type']     : 'text';
 					$element->required = (isset($val['required'])) ? $val['required'] : '0';
 					foreach ($val as $key => $v)
 					{
-						if (!in_array($key, array('default', 'type', 'title', 'required', 'options')))
+						if (!in_array($key, array('default', 'type', 'title', 'name', 'required', 'options')))
 						{
 							$element->$key = $v;
 						}
@@ -252,10 +252,15 @@ class ResourcesControllerTypes extends Hubzero_Controller
 		}
 
 		// Check content
+		if (!$row->category)
+		{
+			$this->addComponentMessage(JText::_('Please choose a category.'), 'error');
+			$this->editTask($row);
+			return;
+		}
 		if (!$row->check())
 		{
-			$this->_message = $row->getError();
-			$this->_messageType = 'error';
+			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -263,8 +268,7 @@ class ResourcesControllerTypes extends Hubzero_Controller
 		// Store new content
 		if (!$row->store())
 		{
-			$this->_message = $row->getError();
-			$this->_messageType = 'error';
+			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
