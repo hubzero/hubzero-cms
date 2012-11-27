@@ -348,7 +348,7 @@ class CitationsControllerImport extends Hubzero_Controller
 						$type = $t['id'];
 					}
 				}
-				$cra['type'] = ($type) ? $type : '';
+				$cra['type'] = ($type) ? $type : '1';
 
 				switch ($citations_action_attention[$k])
 				{
@@ -394,82 +394,85 @@ class CitationsControllerImport extends Hubzero_Controller
 		}
 
 		//
-		foreach ($cites_require_no_attention as $k => $crna)
+		if($cites_require_no_attention)
 		{
-			// new citation object
-			$cc = new CitationsCitation($this->database);
-
-			// add a couple of needed keys
-			$crna['uid'] = $user;
-			$crna['created'] = $now;
-
-			// reset tags and badges
-			$tags = '';
-			$badges = '';
-
-			// remove errors
-			unset($crna['errors']);
-
-			// if tags were sent over
-			if (array_key_exists('tags', $crna)) 
+			foreach ($cites_require_no_attention as $k => $crna)
 			{
-				$tags = $crna['tags'];
-				unset($crna['tags']);
-			}
+				// new citation object
+				$cc = new CitationsCitation($this->database);
 
-			// if badges were sent over
-			if (array_key_exists('badges', $crna)) 
-			{
-				$badges = $crna['badges'];
-				unset($crna['badges']);
-			}
+				// add a couple of needed keys
+				$crna['uid'] = $user;
+				$crna['created'] = $now;
 
-			// verify we haad this one checked to be submitted
-			if ($citations_action_no_attention[$k] != 1) 
-			{
-				$citations_not_saved[] = $crna;
-				continue;
-			}
+				// reset tags and badges
+				$tags = '';
+				$badges = '';
 
-			// take care fo type
-			$ct = new CitationsType($this->database);
-			$types = $ct->getType();
+				// remove errors
+				unset($crna['errors']);
 
-			$type = '';
-			foreach ($types as $t) 
-			{
-				// TODO: undefined index type? I just suppressed the error b/c I'm not sure what the logic is supposed to be /SS
-				if (strtolower($t['type_title']) == strtolower($crna['type'])) 
+				// if tags were sent over
+				if (array_key_exists('tags', $crna)) 
 				{
-					$type = $t['id'];
-				}
-			}
-			$crna['type'] = ($type) ? $type : '';
-
-			// remove duplicate flag
-			unset($crna['duplicate']);
-
-			// save the citation
-			if (!$cc->save($crna)) 
-			{
-				$citations_error[] = $crna;
-			} 
-			else
-			{
-				// tags
-				if ($allow_tags == 'yes' && isset($tags)) 
-				{
-					$this->_tagCitation($user, $cc->id, $tags, '');
+					$tags = $crna['tags'];
+					unset($crna['tags']);
 				}
 
-				// badges
-				if ($allow_badges == 'yes' && isset($badges)) 
+				// if badges were sent over
+				if (array_key_exists('badges', $crna)) 
 				{
-					$this->_tagCitation($user, $cc->id, $badges, 'badge');
+					$badges = $crna['badges'];
+					unset($crna['badges']);
 				}
 
-				// add the citattion to the saved 
-				$citations_saved[] = $cc->id;
+				// verify we haad this one checked to be submitted
+				if ($citations_action_no_attention[$k] != 1) 
+				{
+					$citations_not_saved[] = $crna;
+					continue;
+				}
+
+				// take care fo type
+				$ct = new CitationsType($this->database);
+				$types = $ct->getType();
+
+				$type = '';
+				foreach ($types as $t) 
+				{
+					// TODO: undefined index type? I just suppressed the error b/c I'm not sure what the logic is supposed to be /SS
+					if (strtolower($t['type_title']) == strtolower($crna['type'])) 
+					{
+						$type = $t['id'];
+					}
+				}
+				$crna['type'] = ($type) ? $type : '1';
+
+				// remove duplicate flag
+				unset($crna['duplicate']);
+
+				// save the citation
+				if (!$cc->save($crna)) 
+				{
+					$citations_error[] = $crna;
+				} 
+				else
+				{
+					// tags
+					if ($allow_tags == 'yes' && isset($tags)) 
+					{
+						$this->_tagCitation($user, $cc->id, $tags, '');
+					}
+
+					// badges
+					if ($allow_badges == 'yes' && isset($badges)) 
+					{
+						$this->_tagCitation($user, $cc->id, $badges, 'badge');
+					}
+
+					// add the citattion to the saved 
+					$citations_saved[] = $cc->id;
+				}
 			}
 		}
 

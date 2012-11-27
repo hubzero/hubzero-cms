@@ -110,12 +110,14 @@ class plgCitationEndnote extends JPlugin
 
 		$raw_citation = array();
 		$raw_citations = array();
-
-		foreach ($raw_citations_text as $line)
+		
+		foreach ($raw_citations_text as $k => $line)
 		{
 			//$line = $this->_cleanText(trim($line));
 			$line = trim($line);
-			if ($line == '')
+			$nextline = trim($raw_citations_text[$k + 1]);
+			
+			if ($line == '' && $nextline == '')
 			{
 				$raw_citations[] = $raw_citation;
 				$raw_citation = array();
@@ -124,7 +126,7 @@ class plgCitationEndnote extends JPlugin
 			$raw_citation[] = $line;
 		}
 		$raw_citations[] = $raw_citation;
-
+		
 		//remove empties
 		$raw_citations = array_values(array_filter($raw_citations));
 
