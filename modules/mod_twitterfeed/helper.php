@@ -68,11 +68,11 @@ class modTwitterFeedHelper
 
 		//set options for parsing feed
 		$options = array(
-			'rssUrl' => 'http://twitter.com/statuses/user_timeline/' . $twitterID . '.rss'  //Declare Twitter user rss feed with TwitterID from Module Manager
+			'rssUrl' => 'https://api.twitter.com/1/statuses/user_timeline.rss?screen_name=' . $twitterID //Declare Twitter user rss feed with TwitterID from Module Manager
 		);
 
 		//Parse the rss feed
-		$twitter =& JFactory::getXMLparser('rss', $options);
+		$twitter =& JFactory::getXMLParser('rss', $options);
 
 		// Check to make sure the RSS feed was parsed corectly
 		if (!isset($twitter) && $tweets['error'] == '') 
