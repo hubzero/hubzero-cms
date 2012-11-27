@@ -534,7 +534,8 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							$tel = htmlentities($this->profile->get('phone'),ENT_COMPAT,'UTF-8');
 							//$tel = str_replace(".","-",$tel);
 							$tel = str_replace(" ","-",$tel);
-							$tel = ($tel) ? "<a class=\"phone\" href=\"{$tel}\">{$tel}</a>" : JText::_('Enter your Phone Number');
+							//$tel = ($tel) ? "<a class=\"phone\" href=\"tel:{$tel}\">{$tel}</a>" : JText::_('Enter your Phone Number');
+							$tel = ($tel) ? $tel : JText::_('Enter your Phone Number');
 						?>
 						<div class="value"><?php echo $tel; ?></div>
 						<br class="clear" />
