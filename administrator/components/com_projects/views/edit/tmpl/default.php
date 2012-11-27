@@ -39,6 +39,9 @@ $sysgroup = $this->config->get('group_prefix', 'pr-').$this->obj->alias;
 $quota = $this->params->get('quota');
 $quota = $quota ? $quota : ProjectsHtml::convertSize( floatval($this->config->get('defaultQuota', '1')), 'GB', 'b');
 
+JPluginHelper::importPlugin( 'hubzero' );
+$dispatcher =& JDispatcher::getInstance();
+
 ?>
 <script type="text/javascript">
 
@@ -95,6 +98,19 @@ function submitbutton(pressbutton)
 				<tr>
 					<td class="key"><label for="about"><?php echo JText::_('COM_PROJECTS_ABOUT'); ?>:</label></td>
 					<td><textarea name="about" id="about" rows="10" cols="50"><?php echo $this->obj->about; ?></textarea></td>
+				</tr>
+				<tr>
+					<td class="key"><label for="tags"><?php echo JText::_('COM_PROJECTS_TAGS'); ?>:</label></td>
+					<td>
+							<?php 
+							$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->tags)) );
+
+							if (count($tf) > 0) {
+								echo $tf[0];
+							} else { ?>
+								<input type="text" name="tags" id="tags" value="<?php echo $this->escape($this->tags); ?>" />
+							<?php } ?>	
+					</td>
 				</tr>
 				<?php if(JPluginHelper::isEnabled('projects', 'apps') or $this->publishing) { ?>
 				<tr>

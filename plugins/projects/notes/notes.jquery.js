@@ -60,11 +60,11 @@ HUB.ProjectNotes = {
 		}
 		
 		// Remove file uploader button
-		if ($('#file-uploader'))
+		if ($('#file-uploader').length > 0)
 		{
 			$('#file-uploader').addClass('hidden');	
 		}
-		if ($('#file-uploader-list'))
+		if ($('#file-uploader-list').length > 0)
 		{
 			$('#file-uploader-list').remove();	
 		}

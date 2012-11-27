@@ -25,156 +25,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-// Perform some text replacement for wiki to work with projects
-$content = str_replace('/groups/projects/', 
-						'/projects/', 
-						$this->content);
+$content = $this->content;
 $content = str_replace('projects/projects/', 
 						'projects/', 
 						$content);
-$content = str_replace('action="/projects/'.$this->project->alias.'/notes"', 
-						'', 
-						$content);
-$content = str_replace('?task=', 
-						'?action=', 
-						$content);
-$content = str_replace('name="option" value="com_groups"', 
-						'name="option" value="com_projects"', 
-						$content );
-$content = str_replace('<input type="hidden" name="id"', '<input type="hidden" name="versionid"', $content );
-$content = str_replace('<input type="hidden" name="active" value="wiki" />', 
-						'<input type="hidden" name="active" value="notes" />'."\n".
-						'<input type="hidden" name="alias" value="'.$this->project->alias.'" />', 
-						$content );
-$content = str_replace('<input type="hidden" name="pagename" value="NewNote" />', 
-						'<input type="hidden" name="pagename" value="" />', 
-						$content);
-$content = str_replace('New PROJECTS', 
-						'New Note', 
-						$content);
-$content = str_replace('New PROJECTS', 
-						'New Note', 
-						$content);
-
-// New page creation: hide top menu (confusing)
-if($this->task == 'new') {
-	$content = str_replace('<div id="sub-section-menu">', 
-						   '<div id="sub-section-menu" class="hidden">', 
-						    $content);
-	$content = str_replace('value="New Note"', 
-						   'value=""', 
-							$content);
-/*
-	$content = str_replace('Title:', 
-						   'Title: <span class="required">required</span>', 
-							$content); */
-}
-$content = str_replace('<input type="text" name="title"', 
-					   '<input type="text" name="title" id="notetitle"', 
-					   $content);
-
-// Replace tasks by action
-$content = str_replace('<input type="hidden" name="task" value="save" />', 
-						'<input type="hidden" name="action" value="save" />', 
-						$content );
-$content = str_replace('<input type="hidden" name="task" value="delete" />', 
-						'<input type="hidden" name="action" value="delete" />', 
-						$content );
-$content = str_replace('<input type="hidden" name="task" value="saverename" />', 
-						'<input type="hidden" name="action" value="saverename" />', 
-						$content );
-$content = str_replace('<input type="hidden" name="task" value="savecomment" />', 
-						'<input type="hidden" name="action" value="savecomment" />', 
-						$content );
-$content = str_replace('<input type="hidden" name="task" value="comments" />', 
-						'<input type="hidden" name="action" value="comments" />', 
-						$content );
-$content = str_replace('<input type="hidden" name="task" value="compare" />', 
-						'<input type="hidden" name="action" value="compare" />', 
-						$content );
-
-// Fix up scope						
-$content = preg_replace('/<label for="parent">(.*?)<\/label>/is',
-                           '<input type="hidden" name="scope" value="' . $this->scope . '" />',
-                           $content);
-$content = str_replace('"/projects?scope=&amp;pagename="', 
-						'"'.JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.'&active=notes&scope='. $this->scope).'"', 
-						$content );
-						
-// Remove unnecessary tabs
-$content = preg_replace('/<li class="page-index">(.*?)<\/li>/is',
-                           '',
-                           $content);
-$content = preg_replace('/<li class="page-main">(.*?)<\/li>/is',
-                           '',
-                           $content);
-if ($this->task == 'view' or $this->task == 'page') 
-{
-	$content = preg_replace('/<li class="page-delete">(.*?)<\/li>/is',
-                           '',
-                           $content);
-}
-if ($this->task == 'new')
-{
-	$content = str_replace('class="sub-menu"', 
-							'class="sub-menu hidden"', 
-							$content );
-}
-$content = preg_replace('/<ul id="page_options">(.*?)<\/ul>/is',
-                       '',
-                       $content);
-
-// Make sure info links open up
-$content = str_replace('Help:WikiMacros/view#image">[[Image(filename.jpg)]]</a>', 
-						'Help:WikiMacros/view#image" rel="external">[[Image(filename.jpg)]]</a>', 
-						$content );
-$content = str_replace('Help:WikiMacros/view#file">[[File(filename.pdf)]]</a>', 
-						'Help:WikiMacros/view#file" rel="external">[[File(filename.pdf)]]</a>', 
-						$content );
-
-// Add wiki reference and some extra helpful info
-$about_templates  = '<h4 class="wiki-tips">'.JText::_('COM_PROJECTS_NOTES_ABOUT_TEMPLATES').'</h4>';
-$about_templates .= '<p>'.JText::_('COM_PROJECTS_NOTES_ABOUT_TEMPLATES_EXPLAIN');
-$about_templates .= count($this->templates) == 0 ? ' <a href="'.JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.'&active=notes').'?action=new&pagename=Template:New">'.JText::_('COM_PROJECTS_NOTES_ABOUT_TEMPLATES_START').'</a>' : '';
-$about_templates .= '</p>';
-
-$wiki_reference   = '';
-$include_images   = '<h4 class="wiki-tips">'.JText::_('COM_PROJECTS_NOTES_INCLUDE_FILES').'</h4>';
-$include_images  .= '<p>'.JText::_('COM_PROJECTS_NOTES_INCLUDE_FILES_EXPLAIN').'</p>';
-$content		  = preg_replace( "'<iframe[^>]*>.*?</iframe>'si", "", $content );
-
-// Edit page
-if ($this->task == 'edit')
-{
-	
-	// Newest wiki
-/*
-	$content = preg_replace('/<p>(.*?)<\/p>/is',
-	                       '<div class="explaination">' . $about_templates . $wiki_reference . $include_images . '</div>',
-	                       $content);
-	// New wiki
-	$content = str_replace('rename">here</a>.</p>', 'rename">here</a>.</p>'
-			. $about_templates . $wiki_reference . $include_images, $content );
-			
-	// Old wiki
-	$content = str_replace('renamepage">here</a>.</p>', 'renamepage">here</a>.</p>'
-			. $about_templates . $wiki_reference . $include_images, $content );
-*/
-}
-
-// New page
-if ($this->task == 'new')
-{
-	/*
-	$content = str_replace('id="hubForm">' . "\n" . t. '<div class="explaination">'
-			, 'id="hubForm">' . "\n" . t. '<div class="explaination">' . $about_templates . $wiki_reference 
-			. $include_images, $content );
-	*/
-}
-
 // Breadcrumbs
 $bcrumb = '';
-if($this->parent_notes && count($this->parent_notes) > 0) {
+if ($this->parent_notes && count($this->parent_notes) > 0) {
 	foreach($this->parent_notes as $parent) {
 		$bcrumb .= ' &raquo; <span class="subheader"><a href="'.JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.a.'active=notes'.a.'scope='.$parent->scope.a.'pagename='.$parent->pagename).'">'. $parent->title.'</a></span>';
 	}
@@ -196,7 +53,7 @@ $notes = array();
 $order = array();
 $thirdlevel = array();
 
-if($this->notes) 
+if ($this->notes) 
 {
 	foreach ($this->notes as $note) 
 	{ 

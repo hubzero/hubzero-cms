@@ -118,6 +118,43 @@ class ProjectsHtml
 	}
 	
 	/**
+	 * Specially formatted time display
+	 * 
+	 * @param      string 	$time
+	 * @param      boolean 	$full	Return detailed date/time?
+	 * @return     string
+	 */
+	public function formatTime($time, $full = false) 
+	{
+		$parsed 	= date_parse($time);
+		$timestamp	= strtotime($time);
+
+		$now = date( 'Y-m-d H:i:s' );
+		$current  	= date_parse($now);
+		
+		if ($full)
+		{
+			return date('g:i A M j, Y', $timestamp);
+		}
+		
+		if ($current['year'] == $parsed['year'])
+		{
+			if ($current['month'] == $parsed['month'] && $current['day'] == $parsed['day'])
+			{
+				return date('g:i A', $timestamp);
+			}
+			else
+			{
+				return date('M j', $timestamp);
+			}
+		}
+		else
+		{
+			return date('M j, Y', $timestamp);
+		}
+	}
+	
+	/**
 	 * Time elapsed from moment
 	 * 
 	 * @param      string $timestamp
@@ -397,6 +434,51 @@ class ProjectsHtml
 	}
 	
 	/**
+	 * Get google icon image
+	 * 
+	 * @param      string $mimeType
+	 * @param      boolean $include_dir
+	 * @param      string $icon
+	 * @return     string
+	 */
+	public function getGoogleIcon ($mimeType, $include_dir = 1, $icon = '') 
+	{
+		switch (strtolower($mimeType)) 
+		{
+			case 'application/vnd.google-apps.presentation':
+				$icon = 'presentation';
+				break;
+				
+			case 'application/vnd.google-apps.spreadsheet':
+				$icon = 'sheet';
+				break;
+				
+			case 'application/vnd.google-apps.document':
+				$icon = 'doc';
+				break;
+				
+			case 'application/vnd.google-apps.drawing':
+				$icon = 'drawing';
+				break;
+				
+			case 'application/vnd.google-apps.form':
+				$icon = 'form';
+				break;
+						
+			default: 
+				$icon = 'gdrive';
+				break;				
+		}
+		
+		if ($include_dir)
+		{
+			$icon = "/plugins/projects/files/images/google/" . $icon . '.gif';
+		}
+		return $icon;
+		
+	}
+	
+	/**
 	 * Get file icon image
 	 * 
 	 * @param      string $ext
@@ -481,6 +563,9 @@ class ProjectsHtml
 			case 'docx':
 				$icon = 'page_white_word';
 				break;
+			case 'folder':
+				$icon = 'folder';
+				break;
 			default: 
 				$icon = 'page_white';
 				break;
@@ -505,7 +590,7 @@ class ProjectsHtml
 	 */
 	public function embedProjectImage( $view )
 	{ 
-		$path   = ProjectsHtml::getImagePath( $view->project->id, $view->project->alias, $view->config);
+		$path = DS . trim($view->config->get('imagepath', '/site/projects'), DS) . DS . $view->project->alias . DS . 'images';
 		$image  = $view->project->picture 
 			&& file_exists( JPATH_ROOT . $path . DS . $view->project->picture ) 
 			? $path . DS . $view->project->picture 
@@ -665,13 +750,13 @@ class ProjectsHtml
 	public function getThumbSrc( $id, $alias, $picname = '', $config )
 	{		
 		$src  = '';
-		$path = ProjectsHtml::getImagePath( $id, $alias, $config);
+		$path = DS . trim($config->get('imagepath', '/site/projects'), DS) . DS . $alias . DS . 'images';
 	
 		if ($picname) 
 		{
 			$ih = new ProjectsImgHandler();
 			$thumb = $ih->createThumbName($picname);
-			$src = $thumb && file_exists( JPATH_ROOT.$path.DS.$thumb ) ? $path.DS.$thumb :  '';
+			$src = $thumb && file_exists( JPATH_ROOT . $path . DS . $thumb ) ? $path . DS . $thumb :  '';
 		}
 		if (!$src) 
 		{
@@ -681,41 +766,6 @@ class ProjectsHtml
 		return $src;
 	}
 	
-	/**
-	 * Get project image path
-	 * 
-	 * @param      int $id
-	 * @param      string $alias
-	 * @param      array $config
-	 * @return     string HTML
-	 */
-	public function getImagePath( $id, $alias, $config ) 
-	{		
-		$path = '';
-		
-		// Use if or alias?
-		if ($config->get('use_alias') && $alias) 
-		{
-			$dir = $alias;	
-		}
-		else 
-		{
-			$dir = Hubzero_View_Helper_Html::niceidformat( $id );
-		}
-		$webdir = $config->get('imagepath', '/site/projects');
-		if (substr($webdir, 0, 1) != DS) 
-		{
-			$webdir = DS.$webdir;
-		}
-		if (substr($webdir, -1, 1) == DS) 
-		{
-			$webdir = substr($webdir, 0, (strlen($webdir) - 1));
-		}
-		$path   = $webdir . DS . $dir . DS . 'images';
-	
-		return $path;
-	}
-
 	//----------------------------------------------------------
 	// Misc
 	//----------------------------------------------------------
@@ -804,12 +854,16 @@ class ProjectsHtml
         }
 
         foreach ($haystack as $key => $value) 
-{
+		{
             $exists = 0;
-            foreach ($needle as $nkey => $nvalue) {
-                if (!empty($value->$nkey) && $value->$nkey == $nvalue) {
+            foreach ($needle as $nkey => $nvalue) 
+			{
+                if (!empty($value->$nkey) && $value->$nkey == $nvalue) 
+				{
                     $exists = 1;
-                } else {
+                } 
+				else 
+				{
                     $exists = 0;
                 }
             }

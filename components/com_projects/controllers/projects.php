@@ -32,6 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 ximport('Hubzero_Controller');
+ximport('Hubzero_Environment');
 
 /**
  * Primary component controller (extends Hubzero_Controller)
@@ -80,7 +81,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 				.'com_publications' . DS . 'tables' . DS . 'publication.php')
 			&& JPluginHelper::isEnabled('projects', 'publications')
 			? 1 : 0;
-		
+					
 		// Enable publication management
 		if ($this->_publishing)
 		{						
@@ -98,8 +99,6 @@ class ProjectsControllerProjects extends Hubzero_Controller
 				.'com_publications' . DS . 'tables' . DS . 'author.php');
 			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 				.'com_publications' . DS . 'tables' . DS . 'license.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'tool.php');
 			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 				.'com_publications' . DS . 'tables' . DS . 'category.php');
 			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
@@ -130,8 +129,9 @@ class ProjectsControllerProjects extends Hubzero_Controller
 				$document = JFactory::getDocument();
 				$document->addScript('templates' . DS . $app->getTemplate() . DS .  'js' . DS . 'modal.js');			
 			}
+			$this->_getStyles('', 'jquery.fancybox.css', true); // add fancybox styling
 		}
-				
+								
 		switch ( $this->_task ) 
 		{
 			// Setup
@@ -209,8 +209,13 @@ class ProjectsControllerProjects extends Hubzero_Controller
 				
 			case 'wikipreview':			
 				$this->_wikiPreview(); 	
+				break;				
+			
+			// Authentication for outside services	
+			case 'auth':			
+				$this->_auth(); 	
 				break;
-						
+									
 			default: 
 				$this->_task = 'intro';
 				$this->_intro(); 									
@@ -284,8 +289,15 @@ class ProjectsControllerProjects extends Hubzero_Controller
 	protected function _login() 
 	{		
 		$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
+		
+		// Fix for weird bug refusing to redirect to /files
+		if (substr($rtrn, -6, 6) == '/files')
+		{
+			$rtrn .= DS;
+		}
+		
 		$this->setRedirect(
-			JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn)),
+			JRoute::_('index.php?option=com_login').'?return=' . base64_encode($rtrn),
 			$this->_msg,
 			'warning'
 		);
@@ -336,6 +348,9 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$this->_buildTitle(null);
 		$view->title = $this->title;
 		
+		// Log activity
+		$this->_logActivity();
+		
 		// Output HTML
 		$view->option 	= $this->_option;
 		$view->config 	= $this->_config;
@@ -375,6 +390,9 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		// Set the page title
 		$this->_buildTitle(null);
 		$view->title = $this->title;
+		
+		// Log activity
+		$this->_logActivity();
 						
 		// Output HTML
 		$view->option = $this->_option;
@@ -480,6 +498,9 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$view->pageNav = new JPagination( $view->total, $view->filters['start'], $view->filters['limit'] );
+		
+		// Log activity
+		$this->_logActivity(0, 'general', $layout);
 		
 		// Output HTML
 		$view->option 		= $this->_option;
@@ -644,6 +665,9 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$members = urldecode(trim(JRequest::getVar( 'newmember', '' )));
 		$groups = urldecode(trim(JRequest::getVar( 'newgroup', '' )));
 		
+		// Get user session
+		$jsession =& JFactory::getSession();
+				
 		if ($members or $groups) 
 		{
 			// Get plugin
@@ -688,7 +712,11 @@ class ProjectsControllerProjects extends Hubzero_Controller
 				{
 					$obj->saveStage($this->_identifier, $save_stage);
 				}
-				$stage = $save_stage;					
+				$stage = $save_stage;
+				
+				// Log activity
+				$this->_logActivity($pid, 'setup', $what, 'save', $authorized);
+				$jsession->set('projects-nolog', 1);
 				
 				// Redirect to next stage (for prettier URL)
 				if ($stage == 0) 
@@ -721,6 +749,16 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			$this->_redirect 	= JRoute::_('index.php?option=' . $this->_option . a . 'alias=' . $obj->alias);			
 			return;
 		}
+		
+		// Log activity
+		if (!$jsession->get('projects-nolog'))
+		{
+			$logAction = !$pid ? 'start' : 'edit';
+			$this->_logActivity($pid, 'setup', $layout, $logAction, $authorized);		
+		}
+		
+		// Allow future logging
+		$jsession->set('projects-nolog', 0);
 		
 		// Do we need to ask about restricted data up front?
 		if ($this->_config->get('restricted_upfront', 0) == 1 && !$this->_identifier) 
@@ -849,7 +887,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$preview 		=  JRequest::getInt( 'preview', 0 );
 		$this->active 	=  JRequest::getVar( 'active', 'feed' );
 		$ajax 			=  JRequest::getInt( 'ajax', 0 );
-		$action  		= JRequest::getVar( 'action', '' );
+		$action  		=  JRequest::getVar( 'action', '' );
 		$sync 			=  0;
 		
 		// Stop ajax action if user got logged put
@@ -895,7 +933,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			$pid 	= $project->id;
 			$alias  = $project->alias;
 		}
-		
+						
 		// Add the CSS to the template
 		$this->_getStyles();
 		
@@ -997,8 +1035,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$role = $project->owner && $project->role == 0 ? 4 : $project->role;
 		$authorized = $project->owner ? $role : 0;
 
-		// Do we need to login?
-		$action  = JRequest::getVar( 'action', '' );		
+		// Do we need to login?		
 		if ($this->juser->get('guest') && $action == 'login') 
 		{
 			$this->_msg = JText::_('COM_PROJECTS_LOGIN_TO_VIEW_PROJECT');
@@ -1215,6 +1252,18 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			}
 		}
 		
+		// Get latest log from user session
+		$jsession =& JFactory::getSession();
+		
+		// Log activity
+		if (!$jsession->get('projects-nolog'))
+		{
+			$this->_logActivity($pid, 'project', $this->active, $action, $authorized);		
+		}
+		
+		// Allow future logging
+		$jsession->set('projects-nolog', 0);
+		
 		// Go through plugins
 		$view->content = '';
 		if ($layout == 'internal') 
@@ -1327,6 +1376,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 						}
 						elseif (isset($section['referer']) && $section['referer'] != '') 
 						{
+							$jsession->set('projects-nolog', 1); // log only once for this request
 							$this->_redirect = $section['referer'];
 							return;
 						}
@@ -1412,8 +1462,8 @@ class ProjectsControllerProjects extends Hubzero_Controller
 						
 			$view->side_modules      = isset($side_modules) ? $side_modules : '';
 			$view->notification      = isset($notification) ? $notification : '';
-		}		
-										
+		}
+												
 		// Output HTML
 		$view->title  		= $this->title;
 		$view->active 		= $this->active;
@@ -1424,12 +1474,14 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$view->uid 			= $this->juser->get('id');
 		$view->guest 		= $this->juser->get('guest');
 		$view->msg 			= $this->getNotifications('success');
+		
 		if ($layout == 'invited')
 		{
 			$view->confirmcode  = $confirmcode;
 			$view->email		= $email;
-		}		
-		$error 				= $this->getError() ? $this->getError() : $this->getNotifications('error');
+		}
+				
+		$error 	= $this->getError() ? $this->getError() : $this->getNotifications('error');
 		if ($error) 
 		{
 			$view->setError( $error );
@@ -1450,7 +1502,8 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$updated = 0;
 		
 		// Cannot proceed without project id/alias
-		if (!$this->_identifier) {
+		if (!$this->_identifier) 
+		{
 			$this->_buildPathway();
 			$this->_buildTitle();
 			JError::raiseError( 404, JText::_('COM_PROJECTS_PROJECT_NOT_FOUND') );
@@ -1523,7 +1576,20 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
 			return;
 		}
+			
+		// Get user session
+		$jsession =& JFactory::getSession();
 		
+		// Log activity
+		if (!$jsession->get('projects-nolog'))
+		{
+			$logAction = $save ? 'save' : 'edit';
+			$this->_logActivity($pid, 'project', $this->active, $logAction, $authorized);		
+		}
+		
+		// Allow future logging
+		$jsession->set('projects-nolog', 0);
+				
 		// Instantiate a new view
 		$view = new JView( array('name'=>'edit') );		
 		$view->project = $project;
@@ -1614,6 +1680,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 					. $this->_option . a . 'alias=' . $project->alias . a . 'active=info'), 'project' );
 			}
 			
+			$jsession->set('projects-nolog', 1); // Log only once
 			$url = JRoute::_('index.php?option=' . $this->_option
 				. a . 'task=edit' . a . 'alias='.$project->alias) . '?edit=' . $this->active;
 			$this->_redirect = $url;
@@ -1663,12 +1730,15 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		// Instantiate needed classes
 		$obj 	= new Project( $this->database );
 		$objT 	= new ProjectType( $this->database );
-		$objO 	= new ProjectOwner( $this->database );			
-		
+		$objO 	= new ProjectOwner( $this->database );
+						
 		switch ( $what ) 
 		{
 			case 'info': // save basic info 
 						
+				$name = preg_replace('/ /', '', $name);
+				$name = strtolower($name);
+				
 				// Check incoming data
 				if (!$this->_verify(0) && $setup) 
 				{
@@ -1679,7 +1749,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 				{
 					$this->setError( JText::_('COM_PROJECTS_ERROR_TITLE_SHORT_OR_EMPTY') );
 					return false;
-				}
+				}			
 							
 				// Load existing project
 				if ($obj->loadProject($pid)) 
@@ -2104,6 +2174,9 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$name  = trim(JRequest::getVar( 'new-alias', '', 'post' ));
 		$title = trim(JRequest::getVar( 'title', '', 'post' ));
 		$pubid = trim(JRequest::getInt( 'pubid', 0, 'post' ));
+		
+		$name = preg_replace('/ /', '', $name);
+		$name = strtolower($name);
 						
 		// Check incoming data
 		if (!$this->_verify(0, $name, $project->id)) 
@@ -2200,6 +2273,9 @@ class ProjectsControllerProjects extends Hubzero_Controller
 				$obj->checkin();
 			}	
 		}
+		
+		// Log activity
+		$this->_logActivity($obj->id, 'provisioned', 'activate', 'save', 1);
 		
 		// Send to continue setup
 		$this->_identifier 	= $obj->id;
@@ -2323,6 +2399,9 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			return false;
 		}
 		
+		// Log activity
+		$this->_logActivity($obj->id, 'project', 'status', $this->_task, $authorized);
+		
 		// Add activity
 		if ($this->_task != 'fixownership')	
 		{
@@ -2343,6 +2422,68 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$this->_view();	
 	}
 	
+	/**
+	 * Authenticate for outside services
+	 * 
+	 * @return     void
+	 */
+	protected function _auth() 
+	{				
+		// Incoming
+		$error  = JRequest::getVar( 'error', '', 'get' );
+		$code   = JRequest::getVar( 'code', '', 'get' );
+		
+		$state  = JRequest::getVar( 'state', '', 'get' );
+		$json	=  base64_decode($state);
+		$json 	=  json_decode($json);
+		
+		$service = $json->service ? $json->service : 'google';
+		$this->_identifier = $json->alias;
+		
+		// Cannot proceed without project id/alias
+		if (!$this->_identifier) 
+		{
+			$this->_buildPathway();
+			$this->_buildTitle();
+			JError::raiseError( 404, JText::_('COM_PROJECTS_PROJECT_NOT_FOUND') );
+			return;
+		}
+		
+		// Load project
+		$obj = new Project( $this->database );
+		if (!$obj->loadProject($this->_identifier) )
+		{
+			$this->_buildPathway();
+			$this->_buildTitle();
+			JError::raiseError( 404, JText::_('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
+			return;
+		}
+		
+		// Successful authorization grant, fetch the access token
+		if ($code)
+		{
+			$return	= JRoute::_('index.php?option=' . $this->_option . a . 'alias=' 
+				. $this->_identifier . a . 'active=files') . '?action=connect';
+			$return .= a . 'service=' . $service;
+			$return .= a . 'code=' . $code;	
+		}
+		else
+		{
+			$return .= $json->return . a . 'service=' . $service;
+		}
+		
+		// Catch errors
+		if ($error)
+		{
+			$this->setNotification($error, 'error');
+			print_r($error);
+			return false;	
+		}
+		
+		$this->_redirect = $return;
+		return;		
+	}
+	
 	//----------------------------------------------------------
 	// Reviewers
 	//----------------------------------------------------------
@@ -2359,7 +2500,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$action  	= JRequest::getVar( 'action', '' );
 		$comment  	= JRequest::getVar( 'comment', '' );
 		$approve  	= JRequest::getInt( 'approve', 0 );
-		$filterby  	= JRequest::getVar( 'filterby', 'pending' );
+		$filterby  	= JRequest::getVar( ' ', 'pending' );
 		$notify 	= JRequest::getVar( 'notify', 0, 'post' );
 		
 		// Instantiate a project and related classes
@@ -2401,7 +2542,10 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		$this->_getProjectScripts();
 		
 		// Get project params
-		$params = new JParameter( $obj->params );		
+		$params = new JParameter( $obj->params );	
+		
+		// Log activity
+		$this->_logActivity($pid, 'reviewer', $reviewer, $action, $authorized);	
 		
 		if ($action == 'save' && !$this->getError() && $obj->id)
 		{
@@ -2751,7 +2895,7 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			$name = preg_replace('/ /', '', $name);
 			$name = strtolower($name);
 		}
-		
+
 		// Cannot be empty
 		if (!$name) 
 		{
@@ -3843,6 +3987,47 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		{ 
 			return $count; 
 		}
+	}
+	
+	/**
+	 * Log project activity
+	 * 
+	 * @param  int 		$pid		Project ID
+	 * @param  string 	$section	Major category of activity
+	 * @param  string 	$layout		Plugin or layout name
+	 * @param  string 	$action		Task name
+	 * @param  int 		$owner		Project owner ID if project owner
+	 * @return void
+	 */
+	protected function _logActivity ($pid = 0, $section = 'general', $layout = '', $action = '', $owner = 0)
+	{		
+		// Is logging enabled?
+		$enabled = $this->_config->get('logging', 0);		
+		if (!$enabled)
+		{
+			return false;
+		}
+		
+		// Is this an ajax call?
+		$ajax = JRequest::getInt( 'ajax', 0 );
+		if ($ajax && $enabled == 1)
+		{
+			return false;
+		}
+		
+		// Log activity
+		$objLog  				= new ProjectLog( $this->database );
+		$objLog->projectid 		= $pid;
+		$objLog->userid 		= $this->juser->get('id');
+		$objLog->owner 			= intval($owner);
+		$objLog->ip 			= Hubzero_Environment::ipAddress();
+		$objLog->section 		= $section;
+		$objLog->layout 		= $layout ? $layout : $this->_task;
+		$objLog->action 		= $action ? $action : 'view';
+		$objLog->time 			= date('Y-m-d H:i:s');
+		$objLog->request_uri 	= $_SERVER['REQUEST_URI'];
+		$objLog->ajax 			= $ajax;
+		$objLog->store();
 	}
 	
 	/**

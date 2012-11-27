@@ -32,8 +32,7 @@ function submitbutton(pressbutton)
 		<label for="search">
 			<?php echo JText::_('Search'); ?>: 
 			<input type="text" name="search" id="search" value="<?php echo $this->filters['search']; ?>" />
-		</label>
-	
+		</label>	
 		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo JText::_('Go'); ?>" />
 	</fieldset>
 	<table class="adminlist" id="projects-admin">
@@ -45,7 +44,6 @@ function submitbutton(pressbutton)
 				<th><?php echo JHTML::_('grid.sort', 'Title', 'title', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th colspan="2"><?php echo JHTML::_('grid.sort', 'Owner', 'owner', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th><?php echo JHTML::_('grid.sort', 'Status', 'status', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
-				<th><?php echo JHTML::_('grid.sort', 'Type', 'type', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th><?php echo JHTML::_('grid.sort', 'Privacy', 'privacy', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th><?php echo JText::_('Activity count'); ?></th>
 			</tr>
@@ -62,6 +60,9 @@ function submitbutton(pressbutton)
 
 			$database =& JFactory::getDBO();
 			$now = date( "Y-m-d H:i:s" );
+			
+			$database =& JFactory::getDBO();
+			$pt = new ProjectTags($database);
 			
 			for ($i=0, $n=count( $this->rows ); $i < $n; $i++) 
 			{
@@ -92,6 +93,8 @@ function submitbutton(pressbutton)
 				else if($row->state == 5) {
 					$status = '<span class="inactive">'.JText::_('Pending approval').'</span> ';
 				}
+				
+				$tags = $pt->get_tag_cloud(3, 1, $row->id);
 	
 			?>
 						<tr class="<?php echo "row$k"; ?>">
@@ -100,11 +103,15 @@ function submitbutton(pressbutton)
 							<td style="width: 30px;"><?php echo '<img src="'.$thumb.'" width="30" height="30" alt="'.htmlentities($row->alias).'" />'; ?></td>
 							<td>
 								<a href="index.php?option=<?php echo $this->option ?>&amp;task=edit&amp;id[]=<?php echo $row->id;  echo $filterstring; ?>"><?php echo stripslashes($row->title); ?></a><br /><strong><?php echo stripslashes($row->alias); ?></strong>
+								<?php if ($tags) { ?>
+														<span class="project-tags block">
+															<?php echo $tags; ?>
+														</span>
+								<?php } ?>
 							</td>
 							<td style="width: 20px;"><?php echo $ownerclass; ?></td>
 							<td><?php echo $owner; ?></td>
-							<td><?php echo $status; ?></td>
-							<td class="faded"><?php echo $row->projecttype; ?></td>							
+							<td><?php echo $status; ?></td>						
 							<td><?php echo ($row->private == 1) ? '<span class="private">&nbsp;</span>' : ''; ?></td>
 							<td class="centeralign"><?php echo $row->activity; ?></td>
 						</tr>

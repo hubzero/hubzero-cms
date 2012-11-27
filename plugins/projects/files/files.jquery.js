@@ -36,6 +36,7 @@ HUB.ProjectFiles = {
 	bselected: new Array(),
 	bfolders: new Array(),
 	pub: 0,
+	remote: 0,
 	dir: 0,
 	
 	initialize: function() 
@@ -44,11 +45,12 @@ HUB.ProjectFiles = {
 			boxes = $('.checkasset'),
 			toggle = $('#toggle');
 		
-		var bchecked = this.bchecked;
-		var bselected = this.bselected;
-		var bfolders = this.bfolders;
-		var pub = this.pub;
-		var dir = this.dir;
+		var bchecked 	= 0;
+		var bselected 	= new Array();
+		var bfolders 	= new Array();
+		var pub 		= 0;
+		var dir 		= 0;
+		var remote 		= 0;
 														
 		// Enable confirmations on actions
 		HUB.ProjectFiles.addConfirms();
@@ -64,7 +66,7 @@ HUB.ProjectFiles = {
 		
 		// Check what's uploaded
 		HUB.ProjectFiles.checkWhatsUploaded();
-					
+		
 		// File management
 		if ($('#file-manage').length) 
 		{
@@ -80,31 +82,151 @@ HUB.ProjectFiles = {
 			boxes.each(function(i, item) 
 			{	
 				$(item).on('click', function(e) {
-					HUB.ProjectFiles.collectSelections(item);
+					HUB.ProjectFiles.collectSelections(item, 0);
 					HUB.ProjectFiles.watchSelections();
 				});				  												  
 			});						
 		}
 		
+		// Toggle
 		if (toggle.length > 0) {
-			toggle.on('click', function(e) {
+			toggle.on('click', function(e) {								
+				var tog = toggle.attr('checked') == 'checked' ? 2 : 3;
+				HUB.ProjectFiles.remote = 0;
 				boxes.each(function(i, item) 
 				{	
 					if (toggle.attr('checked') == 'checked') {
-						$(item).attr('checked','checked');
+						$(item).attr('checked','checked');						
 					}
 					else
 					{
 						$(item).removeAttr("checked");
 					}
-					HUB.ProjectFiles.collectSelections(item);	
-					HUB.ProjectFiles.watchSelections();		  												  
-				});				
+					
+					HUB.ProjectFiles.collectSelections(item, tog);
+					HUB.ProjectFiles.watchSelections();							  												  
+				});		
 			});
 		}
 		
 		// Activate file management buttons
-		HUB.ProjectFiles.activateFileOptions();					
+		HUB.ProjectFiles.activateFileOptions();	
+		
+		// Load shared files info
+		HUB.ProjectFiles.loadSharedFiles();	
+		
+		// Show more/less version history
+		HUB.ProjectFiles.showRevisions();			
+	},
+	
+	showRevisions: function() 
+	{
+		var $ = this.jQuery
+			showmore = $('.showmore'),
+			showless = $('.showless');
+			
+		if (showmore.length > 0)
+		{
+			showmore.each(function(i, item) 
+			{	
+				$(item).on('click', function(e) {
+					var id = $(item).parent().attr('id').replace('short-', '');
+					var longtxt = $('#long-' + id);
+					var shorttxt = $('#short-' + id);
+					
+					if (longtxt.length > 0 && shorttxt.length > 0)
+					{
+						shorttxt.addClass('hidden');
+						longtxt.removeClass('hidden');
+					}
+				});				  												  
+			});
+			
+			showless.each(function(i, item) 
+			{	
+				$(item).on('click', function(e) {
+					var id = $(item).parent().attr('id').replace('long-', '');
+					var longtxt = $('#long-' + id);
+					var shorttxt = $('#short-' + id);
+					
+					if (longtxt.length > 0 && shorttxt.length > 0)
+					{
+						longtxt.addClass('hidden');
+						shorttxt.removeClass('hidden');
+					}
+				});				  												  
+			});
+		}		
+	},
+		
+	loadSharedFiles: function() 
+	{
+		var $ = this.jQuery;
+		var sharing 	= $('#sharing').length ? $('#sharing').val() : 0;
+		var sync 		= $('#sync').length ? $('#sync').val() : 0;
+		var subdir	 	= $('#subdir').length ? $('#subdir').val() : '';
+
+		if (sharing == 1 && sync == 1)
+		{				
+			var projectid = $('#projectid') ? $('#projectid').val() : 0;
+			var url = '/projects/' + projectid + '/files/?sync=1';
+			url = url + '&no_html=1&ajax=1';
+			url = url + '&subdir=' + subdir;
+			
+			var keyupTimer = setTimeout((function() 
+			{  	
+				// Set loading msg
+				var log = $('#status-msg').empty().addClass('ajax-loading');
+				$('#status-msg').css({'opacity':100});
+				$('#status-msg').html(HUB.ProjectFiles.loadingIma('Syncing with remote service... Please wait'));
+				
+				var ajax = $.get(url, {}, function(data) 
+				{					
+					if (data) 
+					{
+						$('#plg-content').html(data);
+						$('#status-msg').empty().removeClass('ajax-loading');
+
+						// Make sure everything works again
+						HUB.Projects.initialize();
+						HUB.ProjectFiles.initialize();
+						HUB.ProjectFiles.preSelect();
+						
+						if ($('#sync-msg').length > 0)
+						{
+							$('#status-msg').html($('#sync-msg').html());
+						}
+					}
+				});	
+			}), 500);
+		}		
+	},
+	
+	preSelect: function() 
+	{
+		var $ = this.jQuery
+			boxes = $('.checkasset');
+		var idx = -1;
+			
+		if (HUB.ProjectFiles.bchecked > 0 && boxes.length > 0)
+		{
+			boxes.each(function(i, el) 
+			{	
+				if ($(el).hasClass('dir')) {
+					var idx = HUB.ProjectFiles.bfolders.indexOf($(el).val());
+				}
+				else {
+					var idx = HUB.ProjectFiles.bselected.indexOf($(el).val());
+				}
+				
+				if (idx != -1 && $(el).attr('checked') != 'checked')
+				{
+					$(el).attr('checked', 'checked');
+					HUB.ProjectFiles.collectSelections(el, 0);
+					HUB.ProjectFiles.watchSelections();	
+				}		  												  
+			});						
+		}
 	},
 	
 	addQuestion: function() 
@@ -160,7 +282,8 @@ HUB.ProjectFiles = {
 		{
 			return;
 		}
-		var log = $('#status-msg').empty().addClass('ajax-loading');	
+		var log = $('#status-msg').empty().addClass('ajax-loading');
+		$('#status-msg').css({'opacity':100});	
 		
 		if (!txt)
 		{
@@ -168,24 +291,34 @@ HUB.ProjectFiles = {
 		}
 		
 		// Add element
-		$('#status-msg').html('<span id="fbwrap">' + 
+		$('#status-msg').html(HUB.ProjectFiles.loadingIma(txt));
+	},
+	
+	loadingIma: function(txt)
+	{
+		var $ = this.jQuery;
+		
+		var html = '<span id="fbwrap">' + 
 			'<span id="facebookG">' +
 			' <span id="blockG_1" class="facebook_blockG"></span>' +
 			' <span id="blockG_2" class="facebook_blockG"></span>' +
 			' <span id="blockG_3" class="facebook_blockG"></span> ' +
 			txt +
 			'</span>' +
-		'</span>');
+		'</span>';
+		
+		return html;
 	},
 	
 	activateFileOptions: function ()
 	{
 		var $ = this.jQuery;
-		var bchecked = this.bchecked;
-		var bselected = this.bselected;
-		var bfolders = this.bfolders;
-		var pub = this.pub;
-		var dir = this.dir;
+		var bchecked 	= this.bchecked;
+		var bselected 	= this.bselected;
+		var bfolders 	= this.bfolders;
+		var pub 		= this.pub;
+		var dir 		= this.dir;
+		var remote 		= this.remote;
 		
 		var manage = $('#file-manage'),
 			ops = $('.fmanage')
@@ -194,12 +327,24 @@ HUB.ProjectFiles = {
 		ops.each(function(i, item) 
 		{	
 			// disable options until a box is checked
-			if ($(item).attr('id') != 'a-folder') {
+			var aid = $(item).attr('id');
+			if (aid != 'a-folder' && aid != 'a-upload') 
+			{
 				$(item).addClass('inactive');
 			}
 			
-			// Everything other than download happens in a light box 
-			if ($(item).attr('id') != 'a-download') 
+			var connected = true;
+			if (aid == 'a-share')
+			{
+				if (!$(item).hasClass('connection-active'))
+				{
+					connected = false;
+				}
+			}
+						
+			// Not every action happens in a light box 
+			if (aid != 'a-download' && aid != 'a-history' 
+				&& aid != 'a-folder' && connected == true) 
 			{
 				var href = $(item).attr('href');
 				if (href.search('&no_html=1') == -1) {
@@ -211,20 +356,24 @@ HUB.ProjectFiles = {
 				$(item).attr('href', href);
 			}
 			
-			$(item).on('click', function(e) {
+			$(item).on('click', function(e) 
+			{
 				var aid = $(item).attr('id');
-				if (aid != 'a-download') 
+				if (aid != 'a-download' && aid != 'a-history' 
+					&& aid != 'a-folder' && connected == true) 
 				{
 					e.preventDefault();
 				}
 
 				if ($(item).hasClass('inactive')) {
-					// do nothing
+					e.preventDefault();
 				}
-				else {	
+				else if (aid != 'a-folder') 
+				{	
 					// Clean up url
 					var clean = $(item).attr('href').split('&asset[]=', 1);
 					$(item).attr('href', clean);	
+					
 					var clean = $(item).attr('href').split('&folder[]=', 1);
 					$(item).attr('href', clean);			
 
@@ -254,7 +403,7 @@ HUB.ProjectFiles = {
 					}
 					
 					// make AJAX call
-					if (aid != 'a-download') 
+					if (aid != 'a-download' && aid != 'a-history' && connected == true)  
 					{
 						$.fancybox(this,{
 							type: 'ajax',
@@ -263,22 +412,40 @@ HUB.ProjectFiles = {
 							autoSize: false,
 							fitToView: false,
 							wrapCSS: 'sbp-window',
-							afterShow: function() {
+							afterShow: function() 
+							{
 								if ($('#cancel-action')) {
 									$('#cancel-action').on('click', function(e) {
 										$.fancybox.close();
 									});
 								}
+								var proceed = 1;
 								
-								$('#hubForm-ajax').submit(function() {
-								    $.fancybox.close();
-									var txt = '';
-									if (aid == 'a-delete')
-									{
-										txt = 'Deleting file(s)...';
-									}
-									HUB.ProjectFiles.submitViaAjax($('#hubForm-ajax'), txt);
-								});
+								// Close box if no file to upload
+								if (aid == 'a-upload' && $('#f-upload').length > 0)
+								{
+									$('#f-upload').on('click', function(e) {
+										if ($('#uploader').val() == '') 
+										{
+											$.fancybox.close();
+											e.preventDefault();
+											proceed = 0;
+										}
+									});
+								}
+								
+								if (proceed == 1)
+								{
+									$('#hubForm-ajax').submit(function() {
+									    $.fancybox.close();
+										var txt = '';
+										if (aid == 'a-delete')
+										{
+											txt = 'Deleting file(s)...';
+										}
+										HUB.ProjectFiles.submitViaAjax($('#hubForm-ajax'), txt);
+									});
+								}
 							}
 						});
 					}												
@@ -286,7 +453,7 @@ HUB.ProjectFiles = {
 			});								  												  
 		});
 	},
-	
+			
 	checkWhatsUploaded: function ()
 	{
 		var $ = this.jQuery;
@@ -296,7 +463,8 @@ HUB.ProjectFiles = {
 		if (bu) {
 			bu.on('click', function(e) {
 				e.preventDefault();
-				if ($('#uploader').val() != '') {
+				if ($('#uploader').val() != '') 
+				{
 					// Check extension
 					var re = /[^.]+$/;
 				    var ext = $('#uploader').val().match(re);
@@ -317,11 +485,13 @@ HUB.ProjectFiles = {
 						// Confirm further action - extract files?
 						HUB.ProjectFiles.addQuestion();
 					}
-					else if ($('#plg-form')) {						
+					else if ($('#plg-form')) 
+					{						
 						if ($('#plg-form').hasClass('submit-ajax'))
 						{
 							HUB.ProjectFiles.submitViaAjax($('#plg-form'), 'Uploading file(s)... Please wait');
 						}
+
 						$('#plg-form').submit();
 					}				
 				}
@@ -347,7 +517,8 @@ HUB.ProjectFiles = {
 							var dir = '';
 							var file = '';
 
-							for ( i=classes.length-1; i>=0; i-- ) {
+							for ( i=classes.length-1; i>=0; i-- ) 
+							{
 								if (classes[i].indexOf("file:") >= 0)
 								{
 									file = classes[i].split(":")[1];
@@ -407,21 +578,52 @@ HUB.ProjectFiles = {
 		});		
 	},
 	
-	collectSelections: function (el) 
+	collectSelections: function (el, tog) 
 	{
 		var $ = this.jQuery;
-		var bchecked = this.bchecked;
-		var bselected = this.bselected;
-		var bfolders = this.bfolders;
-		var pub = this.pub;
-		var dir = this.dir;
-		
+		var bchecked 	= this.bchecked;
+		var bselected 	= this.bselected;
+		var bfolders 	= this.bfolders;
+		var pub 		= this.pub;
+		var dir 		= this.dir;
+		var remote 		= this.remote;
+				
 		// Is item checked?
-		if ($(el).attr('checked') != 'checked') {
-			bchecked = bchecked - 1;
-		 	
+		if ($(el).attr('checked') == 'checked' || tog == 2) 
+		{
+			if ($(el).hasClass('publ')) {
+				pub = pub + 1;
+			}
+			if ($(el).hasClass('remote')) {
+				remote = remote + 1;
+			}
+			if ($(el).hasClass('dir')) 
+			{	
+				var idx = bfolders.indexOf($(el).val());
+
+				if (idx == -1) 
+				{
+					dir = dir + 1;
+					bfolders.push($(el).val());	
+				}
+			}
+			else {
+				var idx = bselected.indexOf($(el).val());
+				if (idx == -1) 
+				{
+					bselected.push($(el).val());
+				}
+			}
+			// Add class to tr
+			$(el).parent().parent().addClass("i-selected");
+		}
+		else 
+		{		 	
 			if ($(el).hasClass('publ')) {
 				pub = pub - 1;
+			}
+			if ($(el).hasClass('remote')) {
+				remote = remote - 1;
 			}
 			if ($(el).hasClass('dir')) {
 				dir = dir - 1;
@@ -432,19 +634,9 @@ HUB.ProjectFiles = {
 				var idx = bselected.indexOf($(el).val());
 				if (idx!=-1) bselected.splice(idx, 1);
 			}
-		}
-		else {
-			bchecked = bchecked + 1;
-			if ($(el).hasClass('publ')) {
-				pub = pub + 1;
-			}
-			if ($(el).hasClass('dir')) {
-				dir = dir + 1;
-				bfolders.push($(el).val());
-			}
-			else {
-				bselected.push($(el).val());
-			}
+			
+			// Remove class from tr
+			$(el).parent().parent().removeClass("i-selected");
 		}
 
 		if (pub <= 0) {
@@ -453,13 +645,17 @@ HUB.ProjectFiles = {
 		if (dir <= 0) {
 			dir = 0;
 		}
+		if (remote <= 0) {
+			remote = 0;
+		}
 		
 		// Record new values
-		HUB.ProjectFiles.bchecked = bchecked;
+		HUB.ProjectFiles.bchecked = bselected.length + bfolders.length;
 		HUB.ProjectFiles.bselected = bselected;
 		HUB.ProjectFiles.bfolders = bfolders;
 		HUB.ProjectFiles.dir = dir;
 		HUB.ProjectFiles.pub = pub;
+		HUB.ProjectFiles.remote = remote;
 	},
 	
 	addConfirms: function ()
@@ -482,7 +678,7 @@ HUB.ProjectFiles = {
 		var $ = this.jQuery;
 		
 		// Disk usage indicator
-		if ($('#indicator-area')) {
+		if ($('#indicator-area').length) {
 			var percentage = $('#indicator-area').attr('class');
 			percentage = percentage.replace('used:', '');
 			if (isNaN(percentage)) {
@@ -507,16 +703,48 @@ HUB.ProjectFiles = {
 		var div = $('#preview-window');
 		var keyupTimer2 = '';
 		var preview_open = 0;
+		var in_preview = 0;
+		
+		if ($('#plg-content').length > 0 && div.length > 0)
+		{
+			$('#plg-content').on('mouseout', function(e) {
+				div.css('display', 'none');
+				preview_open = 0;					
+			});
+		}
+		
+		var sharing 	= $('#sharing').length ? $('#sharing').val() : 0;
+		var sync 		= $('#sync').length ? $('#sync').val() : 0;
 		
 		preview.each(function(i, item) 
 		{
+			$(item).on('click', function(e) 
+			{
+				if (sync == 1 && sharing == 1) 
+				{
+					// Can't download file while syncing with remote service
+					e.preventDefault();
+				}
+			});
+			
 			$(item).on('mouseover', function(e) 
 			{
 				e.preventDefault();
 				var coord = $(item).position();
+				if (keyupTimer2) {
+					clearTimeout(keyupTimer2);
+				}
 				
-				if (div) {
+				if (div.length) {
 					div.empty();
+					
+					if ($(item).parent().parent().hasClass('google-resource'))
+					{
+						div.append('<p class="ajax-loading">' + HUB.ProjectFiles.loadingIma('Fetching remote data') + '</p>');
+						div.css('display', 'block');
+					}
+					
+					in_preview = $(item).attr('id');
 					var left = $(item).innerWidth() + coord.left; // safe margin
 					var top = coord.top ;
 					div.css({'width': '300px', 'top': top, 'left': left });
@@ -525,22 +753,20 @@ HUB.ProjectFiles = {
 					var href = $(item).attr('href') + '&render=preview&no_html=1&ajax=1';
 					preview_open = 1;
 					
-					$.get( href, {}, function(data) {
+					$.get( href, {}, function(data) 
+					{							
 						if(data)
 						{
-							if(keyupTimer2) {
-								clearTimeout(keyupTimer2);
-							}
 							$(item).attr('href', original);
-							div.html(data);
-							
-							if (preview_open == 1) 
+														
+							if (preview_open == 1 && (in_preview == $(item).attr('id'))) 
 							{
+								div.html(data);
 								div.css('display', 'block');
 								keyupTimer2 = setTimeout((function() {  
 									div.css('display', 'none');				
 								}), 5000);
-							}
+							}							
 						}
 					});
 				}					
@@ -559,18 +785,36 @@ HUB.ProjectFiles = {
 	watchSelections: function () 
 	{
 		var $ = this.jQuery;
-		var bchecked = this.bchecked;
-		var bselected = this.bselected;
-		var bfolders = this.bfolders;
-		var pub = this.pub;
-		var dir = this.dir;	
+		var bchecked 	= this.bchecked;
+		var bselected 	= this.bselected;
+		var bfolders 	= this.bfolders;
+		var pub 		= this.pub;
+		var dir 		= this.dir;
+		var remote 		= this.remote;
 		var ops = $('.fmanage');
+		
+		// Is selected file remote?
+		if (remote > 0 && $('#a-share').length > 0 && bchecked == 1)
+		{
+			$('#a-share').addClass('stop-sharing');
+			$('#a-share').attr('title', 'Stop sharing');
+		}
+		else if ($('#a-share').length > 0)
+		{
+			$('#a-share').removeClass('stop-sharing');
+			$('#a-share').attr('title', 'Share remotely');
+		}
+		
 		if (bchecked == 0) {
 			ops.each(function(i, w) {
-				if (!$(w).hasClass('inactive') && $(w).attr('id') != 'a-folder') {	
+				if (!$(w).hasClass('inactive') && $(w).attr('id') != 'a-folder' && $(w).attr('id') != 'a-upload') {	
 					$(w).addClass('inactive');
 				}	
 			});
+			
+			if ($('#a-folder').length && $('#a-folder').hasClass('inactive')) {
+				$('#a-folder').removeClass('inactive');
+			}
 		}
 		else if (bchecked == 1) {
 			if ($('#a-delete') && $('#a-delete').hasClass('inactive')) {
@@ -581,6 +825,15 @@ HUB.ProjectFiles = {
 			}	
 			if ($('#a-download') && $('#a-download').hasClass('inactive') && dir == 0) {
 				$('#a-download').removeClass('inactive');
+			}
+			if ($('#a-history') && $('#a-history').hasClass('inactive') && dir == 0) {
+				$('#a-history').removeClass('inactive');
+			}
+			if ($('#a-folder').length && !$('#a-folder').hasClass('inactive')) {
+				$('#a-folder').addClass('inactive');
+			}
+			if ($('#a-share').length && $('#a-share').hasClass('inactive')) {
+				$('#a-share').removeClass('inactive');
 			}
 		}
 		else if (bchecked > 1) {
@@ -596,6 +849,15 @@ HUB.ProjectFiles = {
 			else if($('#a-download') && !$('#a-download').hasClass('inactive') && dir != 0)
 			{
 				$('#a-download').addClass('inactive');
+			}
+			if ($('#a-history').length && !$('#a-history').hasClass('inactive')) {
+				$('#a-history').addClass('inactive');
+			}
+			if ($('#a-folder').length && !$('#a-folder').hasClass('inactive')) {
+				$('#a-folder').addClass('inactive');
+			}
+			if ($('#a-share').length && !$('#a-share').hasClass('inactive')) {
+				$('#a-share').addClass('inactive');
 			}
 		}
 	}

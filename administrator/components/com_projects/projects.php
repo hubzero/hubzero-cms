@@ -69,6 +69,7 @@ require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.owne
 require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.type.php' );
 require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.todo.php' );
 include_once( JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'helper.php' );
+include_once( JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'tags.php' );
 
 // Check to make sure component is installed
 $database =& JFactory::getDBO();
@@ -80,17 +81,12 @@ if (!in_array($database->_table_prefix . 'projects', $tables))
 	$installHelper->runInstall();
 }
 
-// Check for new db fields
-$fields = $database->getTableFields($database->_table_prefix . 'project_owners');
-if (!array_key_exists('prev_visit', $fields[$database->_table_prefix . 'project_owners'] )) 
+// Latest: enable project logs
+if (!in_array($database->_table_prefix . 'project_logs', $tables)) 
 {
-	$database->setQuery( "ALTER TABLE `jos_project_owners` 
-		ADD `prev_visit` datetime DEFAULT '0000-00-00 00:00:00'" );
-	if (!$database->query()) 
-	{
-		echo $database->getErrorMsg();
-		return false;
-	}
+	include_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'install.php' );
+	$installHelper = new ProjectsInstall($database, $tables);
+	$installHelper->installLogs();
 }
 
 ximport('Hubzero_View_Helper_Html');

@@ -74,8 +74,6 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 				.'com_publications' . DS . 'tables' . DS . 'license.php');
 			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'tool.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 				.'com_publications' . DS . 'tables' . DS . 'category.php');
 			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 				.'com_publications' . DS . 'tables' . DS . DS.'master.type.php');
@@ -89,20 +87,6 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		
 		$this->_task = strtolower(JRequest::getVar('task', '','request'));
 		parent::execute();
-		
-		/*	
-		switch ($this->_task) 
-		{
-			case 'browse':   	 $this->_browse();   	  break;
-			case 'add':          $this->_edit();          break;
-			case 'edit':         $this->_edit();          break;
-			case 'save':         $this->_save();          break;
-			case 'cancel':       $this->_cancel();        break;
-			case 'erase':        $this->_erase();         break;
-			
-			default: $this->_browse(); break;
-		}
-		*/
 	}
 
 	/**
@@ -280,6 +264,10 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			$view->setError( $this->getError() );
 		}
 		
+		// Get tags on this item
+		$tagsHelper = new ProjectTags( $this->database);
+		$view->tags = $tagsHelper->get_tag_string($id, 0, 0, NULL, 0, 1);
+		
 		// Output the HTML
 		$view->obj = $obj;
 		$view->publishing	= $this->_publishing;
@@ -388,6 +376,13 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			$this->setError( $obj->getError() );
 			return false;
 		}
+		
+		// Incoming tags
+		$tags = JRequest::getVar('tags', '', 'post');
+
+		// Save the tags
+		$rt = new ProjectTags($this->database);
+		$rt->tag_object($this->juser->get('id'), $obj->id, $tags, 1, 1);
 		
 		// Save params
 		$incoming   = JRequest::getVar( 'params', array() );

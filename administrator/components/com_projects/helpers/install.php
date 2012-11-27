@@ -63,6 +63,34 @@ class ProjectsInstall extends JObject {
 	}
 	
 	/**
+	 * Install project logs
+	 * 
+	 * @return     void
+	 */	
+	public function installLogs( ) 
+	{
+		// Create jos_project_activity
+		$query = "CREATE TABLE `jos_project_logs` (
+		  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+		  `projectid` int(11) unsigned NOT NULL DEFAULT '0',
+		  `userid` int(11) NOT NULL DEFAULT '0',
+		  `ajax` tinyint(1) DEFAULT '0',
+		  `owner` int(11) unsigned DEFAULT '0',
+		  `ip` varchar(15) DEFAULT '0',
+		  `section` varchar(100) DEFAULT 'general',
+		  `layout` varchar(100) DEFAULT '',
+		  `action` varchar(100) DEFAULT '',
+		  `time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+		  `request_uri` tinytext,
+		  PRIMARY KEY (`id`),
+		  KEY `projectid` (`projectid`)
+		) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8";
+		
+		$this->_db->setQuery( $query );
+		$this->_db->query();
+	}
+	
+	/**
 	 * Install project tables
 	 * 
 	 * @return     void

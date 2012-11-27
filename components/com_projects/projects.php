@@ -61,10 +61,13 @@ require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.comm
 require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.owner.php' );
 require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.type.php' );
 require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.todo.php' );
+require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.log.php' );
+
 include_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php' );
 include_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'imghandler.php' );
 include_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'autocomplete.php' );
 include_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'helper.php' );
+include_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'tags.php' );
 
 $controllerName = JRequest::getCmd('controller', 'projects');
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))

@@ -149,7 +149,7 @@ class plgProjectsFiles extends JPlugin
 		// Is the user logged in?
 		if (!$authorized && !$project->owner) 
 		{
-			return;
+			return $arr;
 		}
 		
 		$this->_project = $project;	
@@ -257,6 +257,10 @@ class plgProjectsFiles extends JPlugin
 				case 'history':
 					$arr['html'] = $this->history(); 
 					break;
+					
+				case 'upload':
+					$arr['html'] 	= $this->upload(); 
+					break;							
 				
 				case 'browser': 
 					$arr['html'] = $this->browser(); 
@@ -272,7 +276,6 @@ class plgProjectsFiles extends JPlugin
 					$arr['html'] = $this->blank(); 
 					break;
 				
-				case 'page': 
 				case 'browse':
 				case 'newdir':
 				default: 
@@ -331,8 +334,7 @@ class plgProjectsFiles extends JPlugin
 		$this->iniGit($path);
 			
 		// Are we in a subdirectory?
-		$subdir = $this->subdir ? $this->subdir : urldecode(JRequest::getVar('subdir', ''));
-		$subdir = $this->formatPath($subdir);
+		$subdir = $this->subdir ? $this->subdir : trim(urldecode(JRequest::getVar('subdir', '')), DS);
 		
 		// Does subdirectory exist?
 		if (!is_dir($this->prefix . $path . DS . $subdir)) 
@@ -453,13 +455,7 @@ class plgProjectsFiles extends JPlugin
 				
 			// Build upload path
 			$dir  = Hubzero_View_Helper_Html::niceidformat( $this->_uid );
-			$path = JPATH_ROOT;
-			
-			if (substr($mconfig->get('webpath', '/site/members'), 0, 1) != DS) 
-			{
-				$path .= DS;
-			}
-			$path .= $mconfig->get('webpath', '/site/members') . DS . $dir . DS . 'files';
+			$path = JPATH_ROOT . DS . trim($mconfig->get('webpath', '/site/members'), DS) . DS . $dir . DS . 'files';
 
 			if (!is_dir( $path )) 
 			{
@@ -478,8 +474,7 @@ class plgProjectsFiles extends JPlugin
 		}	
 
 		// Are we in a subdirectory?
-		$subdir = urldecode(JRequest::getVar('subdir', ''));
-		$subdir = $this->formatPath($subdir);
+		$subdir = trim(urldecode(JRequest::getVar('subdir', '')), DS);
 		
 		// Does subdirectory exist?
 		if (!is_dir($this->prefix. $path. DS . $subdir)) 
@@ -573,6 +568,48 @@ class plgProjectsFiles extends JPlugin
 	}
 	
 	/**
+	 * Upload view
+	 * 
+	 * @return     void, redirect
+	 */
+	public function upload() 
+	{		
+		// Are we in a subdirectory?
+		$subdir = trim(urldecode(JRequest::getVar('subdir', '')), DS);
+		
+		// Get path and initialize Git
+		$path = $this->getProjectPath($this->_project->alias, $this->_case);
+		$this->iniGit($path);
+		
+		// Output HTML
+		$view = new Hubzero_Plugin_View(
+			array(
+				'folder'=>'projects',
+				'element'=>'files',
+				'name'=>'upload'
+			)
+		);
+		
+		$view->option 		= $this->_option;
+		$view->database 	= $this->_database;
+		$view->project 		= $this->_project;
+		$view->authorized 	= $this->_authorized;
+		$view->uid 			= $this->_uid;
+		$view->subdir 		= $subdir;
+		$view->case 		= $this->_case;
+		$view->config 		= $this->_config;
+		$view->sizelimit 	= ProjectsHtml::formatSize($this->_config->get('maxUpload', '104857600'));
+		
+		// Get messages	and errors	
+		$view->msg = $this->_msg;
+		if ($this->getError()) 
+		{
+			$view->setError( $this->getError() );
+		}
+		return $view->loadTemplate();
+	}
+	
+	/**
 	 * Upload file(s) and check into Git
 	 * 
 	 * @return     void, redirect
@@ -593,8 +630,7 @@ class plgProjectsFiles extends JPlugin
 		$uploaded = array();
 		
 		// Are we in a subdirectory?
-		$subdir = urldecode(JRequest::getVar('subdir', ''));
-		$subdir = $this->formatPath($subdir);
+		$subdir = trim(urldecode(JRequest::getVar('subdir', '')), DS);
 		
 		$prefix = $this->_task == 'saveprov' ? '' : $this->prefix;
 		
@@ -608,14 +644,9 @@ class plgProjectsFiles extends JPlugin
 			$mconfig =& JComponentHelper::getParams('com_members');
 
 			// Build upload path
-			$dir  = Hubzero_View_Helper_Html::niceidformat( $this->_uid );
-			$path = JPATH_ROOT;
-			if (substr($mconfig->get('webpath', '/site/members'), 0, 1) != DS) 
-			{
-				$path .= DS;
-			}
-			$path .= $mconfig->get('webpath', '/site/members') . DS . $dir . DS . 'files';
-
+			$dir   = Hubzero_View_Helper_Html::niceidformat( $this->_uid );
+			$path .= JPATH_ROOT . DS . trim($mconfig->get('webpath', '/site/members'), DS) . DS . $dir . DS . 'files';
+			
 			if (!is_dir( $path )) 
 			{
 				if (!JFolder::create($path, 0777)) 
@@ -922,8 +953,7 @@ class plgProjectsFiles extends JPlugin
 		$newdir = JRequest::getVar('newdir', '', 'post');
 		
 		// Are we in a subdirectory?
-		$subdir = urldecode(JRequest::getVar('subdir', ''));
-		$subdir = $this->formatPath($subdir);
+		$subdir = trim(urldecode(JRequest::getVar('subdir', '')), DS);
 		
 		// Get path and initialize Git
 		$path = $this->getProjectPath();
@@ -997,16 +1027,14 @@ class plgProjectsFiles extends JPlugin
 	protected function _deleteDir()
 	{
 		// Incoming
-		$dir = urldecode(JRequest::getVar('dir', ''));
-		$dir = $this->formatPath($dir);
+		$dir = trim(urldecode(JRequest::getVar('dir', '')), DS);
 		
 		// Get path and initialize Git
 		$path = $this->getProjectPath();
 		$this->iniGit($path);
 		
 		// Are we in a subdirectory?
-		$subdir = urldecode(JRequest::getVar('subdir', ''));
-		$subdir = $this->formatPath($subdir);
+		$subdir = trim(urldecode(JRequest::getVar('subdir', '')), DS);
 		
 		// cd
 		chdir($this->prefix . $path);
@@ -1081,8 +1109,7 @@ class plgProjectsFiles extends JPlugin
 		chdir($this->prefix . $path);
 		
 		// Are we in a subdirectory?
-		$subdir = urldecode(JRequest::getVar('subdir', ''));
-		$subdir = $this->formatPath($subdir);
+		$subdir = trim(urldecode(JRequest::getVar('subdir', '')), DS);
 		
 		if ($this->_task == 'delete') 
 		{
@@ -1120,16 +1147,25 @@ class plgProjectsFiles extends JPlugin
 			
 			// Get author profile
 			$author  = $this->getGitAuthor();
+			
+			// Start commit message
+			$commit_message = '';	
 
 			// Delete checked folders
 			foreach($folders as $folder) 
 			{
+				if (trim($folder) == '')
+				{
+					continue;
+				}
+				
 				$folder = urldecode($folder);
 				$folder = $subdir ? $subdir . DS . $folder : $folder;
 				if ($folder != '' && is_dir($this->prefix . $path . DS . $folder)) 
 				{
 					exec($this->gitpath . ' rm -r ' . escapeshellarg($folder) . ' 2>&1', $out);
 					$fdel ++;
+					$commit_message .= 'Deleted folder '.escapeshellarg($folder) . "\n";
 				}
 			}		
 			
@@ -1142,15 +1178,12 @@ class plgProjectsFiles extends JPlugin
 				{
 					exec($this->gitpath . ' rm ' . escapeshellarg($file) . ' 2>&1', $out);
 					$del ++;
+					$commit_message .= 'Deleted file '.escapeshellarg($file) . "\n";
 				}
 			}
 			
 			// Commit changes
-			exec($this->gitpath . ' commit -a -m "Deleted ' . $del
-				. ' ' . JText::_('COM_PROJECTS_FILES_S')
-				. ' ' . JText::_('COM_PROJECTS_AND') . $fdel
-				. ' ' . JText::_('COM_PROJECTS_FOLDERS')  
-				. '" --author="' . $author . '" 2>&1', $out);
+			exec($this->gitpath . ' commit -a -m "' . $commit_message . '" --author="' . $author . '" 2>&1', $out);
 						
 			// Output message
 			$msg  = JText::_('COM_PROJECTS_DELETED');
@@ -1199,8 +1232,7 @@ class plgProjectsFiles extends JPlugin
 		$this->iniGit($path);
 		
 		// Are we in a subdirectory?
-		$subdir = urldecode(JRequest::getVar('subdir', ''));
-		$subdir = $this->formatPath($subdir);
+		$subdir = trim(urldecode(JRequest::getVar('subdir', '')), DS);
 		
 		chdir($this->prefix . $path);
 		$fpath = $subdir ? $subdir . DS . $file : $file;
@@ -1227,8 +1259,8 @@ class plgProjectsFiles extends JPlugin
 			{
 				$out1 = array();
 				$out2 = array();
-				$versions[$i]['date']   = $this->whatChanged($path, $hash, 'date');
-				$versions[$i]['author'] = $this->whatChanged($path, $hash, 'author');
+				$versions[$i]['date']   = $this->gitLog($path, '', $hash, 'date');
+				$versions[$i]['author'] = $this->gitLog($path, '', $hash, 'author');
 				$versions[$i]['hash']   = $hash;
 				
 				// Was file restored?
@@ -1303,8 +1335,7 @@ class plgProjectsFiles extends JPlugin
 		$this->iniGit($path);
 		
 		// Are we in a subdirectory?
-		$subdir = urldecode(JRequest::getVar('subdir', ''));
-		$subdir = $this->formatPath($subdir);
+		$subdir = trim(urldecode(JRequest::getVar('subdir', '')), DS);
 		
 		if (!$newname)
 		{
@@ -1423,8 +1454,7 @@ class plgProjectsFiles extends JPlugin
 		$this->iniGit($path);
 		
 		// Are we in a subdirectory?
-		$subdir = urldecode(JRequest::getVar('subdir', ''));
-		$subdir = $this->formatPath($subdir);
+		$subdir = trim(urldecode(JRequest::getVar('subdir', '')), DS);
 				
 		if ($this->_task == 'move') 
 		{
@@ -1464,8 +1494,7 @@ class plgProjectsFiles extends JPlugin
 			chdir($this->prefix . $path);
 			
 			// Get new path
-			$newpath = urldecode(JRequest::getVar('newpath', ''));
-			$newpath = $this->formatPath($newpath);
+			$newpath = trim(urldecode(JRequest::getVar('newpath', '')), DS);
 			
 			// New directory to be created?
 			$newdir = JRequest::getVar('newdir', '');
@@ -1488,6 +1517,9 @@ class plgProjectsFiles extends JPlugin
 			
 			// Get author profile
 			$author  = $this->getGitAuthor();
+			
+			// Start commit message
+			$commit_message = '';				
 				
 			if (($newpath != $subdir or $newdir) && !$this->getError()) 
 			{
@@ -1509,6 +1541,7 @@ class plgProjectsFiles extends JPlugin
 					{				
 						exec($this->gitpath . ' mv ' . escapeshellarg($file)
 							. ' ' . escapeshellarg($where) . ' -f 2>&1', $out);
+						$commit_message .= 'Moved file '.escapeshellarg($file) .' to ' . escapeshellarg($where) . "\n";
 						$mv ++;
 					}
 				}
@@ -1533,6 +1566,7 @@ class plgProjectsFiles extends JPlugin
 					{				
 						exec($this->gitpath . ' mv ' . escapeshellarg($folder)
 							. ' ' . escapeshellarg($where) . ' -f 2>&1', $out);
+						$commit_message .= 'Moved folder '.escapeshellarg($folder) .' to ' . escapeshellarg($where) . "\n";
 						$mv ++;
 					}
 				}
@@ -1555,8 +1589,8 @@ class plgProjectsFiles extends JPlugin
 			if ($mv) 
 			{
 				// Commit changes
-				exec($this->gitpath. ' commit -a -m "Moved ' . $mv . ' ' . JText::_('COM_PROJECTS_FILES_S'). '" --author="' . $author. '" 2>&1', $out);
-				
+				exec($this->gitpath. ' commit -a -m "' . $commit_message . '" --author="' . $author. '" 2>&1', $out);
+					
 				// Output message
 				$this->_msg = JText::_('COM_PROJECTS_MOVED'). ' ' . $mv . ' ' . JText::_('COM_PROJECTS_FILES_S');
 			}			
@@ -1606,8 +1640,7 @@ class plgProjectsFiles extends JPlugin
 		chdir($this->prefix. $path);
 
 		// Are we in a subdirectory?
-		$subdir = urldecode(JRequest::getVar('subdir', ''));
-		$subdir = $this->formatPath($subdir);
+		$subdir = trim(urldecode(JRequest::getVar('subdir', '')), DS);
 
 		if (!$file) 
 		{
@@ -1657,7 +1690,7 @@ class plgProjectsFiles extends JPlugin
 			$fpath = $subdir ? $subdir. DS . $file : $file;
 			
 			// Get git object
-			$hash = $this->whatChanged($path, $fpath, 'hash');
+			$hash = $this->gitLog($path, $fpath, '', 'hash');
 			
 			// Get file extention
 			$ext = explode('.', $fpath);
@@ -1769,19 +1802,26 @@ class plgProjectsFiles extends JPlugin
 			}			
 			else
 			{
-				$fpath = $subdir ? $subdir. DS . $file : $file;
-				
-				// Get latest commit hash
-				$last = $this->whatChanged($path, $fpath, 'hash');
-
 				if ($hash) 
-				{
-					exec($this->gitpath . ' checkout ' . $hash . ' ' . escapeshellarg($fpath) . ' 2>&1', $out);
+				{					
+					// Viewing revisions					
+					$parts = explode('/', $file);
+					$serveas = trim(end($parts));
+					
+					$temppath = 'temp-' . ProjectsHtml::generateCode (4 ,4 ,0 ,1 ,0 ) . $serveas;
+					$fullpath = $this->prefix. $path . DS .$temppath;
+					
+					// Get file content
+					exec($this->gitpath . ' show  ' . $hash . ':' . escapeshellarg($file) 
+						. ' > ' . escapeshellarg($temppath) . ' 2>&1 ', $out);
 				}
-
-				// Download file
-				$fullpath = $this->prefix. $path . DS . $fpath;
-				$serveas = $file;
+				else
+				{
+					// Viewing current file
+					$fpath 		= $subdir ? $subdir. DS . $file : $file;
+					$serveas 	= urldecode(JRequest::getVar('serveas', $file));
+					$fullpath	= $this->prefix. $path . DS . $fpath;
+				}
 			}
 			
 			// Ensure the file exist
@@ -1799,12 +1839,12 @@ class plgProjectsFiles extends JPlugin
 			$xserver->filename($fullpath);
 			$xserver->disposition('attachment');
 			$xserver->acceptranges(false);
-			$xserver->saveas($file);
+			$xserver->saveas($serveas);
 			$result = $xserver->serve_attachment($fullpath, $serveas, false);
 			
-			if($multifile)
+			if ($multifile || $hash)
 			{
-				// Delete downloaded zip			
+				// Delete temp file			
 				JFile::delete($fullpath);
 			}
 
@@ -1814,12 +1854,7 @@ class plgProjectsFiles extends JPlugin
 				JError::raiseError( 404, JText::_('COM_PROJECTS_SERVER_ERROR') );
 			} 
 			else 
-			{
-				if ($hash) 
-				{
-					exec($this->gitpath . ' checkout ' . $last . ' ' . escapeshellarg($fpath) . ' 2>&1', $out);
-				}
-				
+			{				
 				exit;
 			}
 		}
@@ -2066,34 +2101,10 @@ class plgProjectsFiles extends JPlugin
 	{							
 		// Build .git repo
 		$gitRepoBase = $this->prefix . $path . DS . '.git';
-			
+
 		// Need to create .git repository if not yet there
 		if (!is_dir($gitRepoBase)) 
-		{			
-			$webdir = $this->_config->get('webpath');
-			if (substr($webdir, 0, 1) != DS) 
-			{
-				$webdir = DS . $webdir;
-			}
-			if (substr($webdir, -1, 1) == DS) 
-			{
-				$webdir = substr($webdir, 0, (strlen($webdir) - 1));
-			}
-			$clone = $this->_config->get('gitclone');
-			$clone = $clone ? JPATH_ROOT . $clone : $this->prefix . $webdir . DS . 'clone' . DS . '.git';
-			
-			/*
-			if (!is_dir($clone))
-			{
-				$this->setError( JText::_('COM_PROJECTS_CLONE_DIR_DOES_NOT_EXIST') );
-				return false;	
-			}
-
-			if (!JFolder::copy($clone, $gitRepoBase)) 
-			{
-				$this->setError( JText::_('COM_PROJECTS_UNABLE_TO_CREATE_GIT_REPO') );
-				return false;
-			}*/
+		{	
 			if (!is_dir($this->prefix . $path))
 			{
 				return false;
@@ -2101,65 +2112,146 @@ class plgProjectsFiles extends JPlugin
 			chdir($this->prefix . $path);
 			exec($this->gitpath . ' init 2>&1', $out);
 		}
-							
+
 		return true;			
 	}
 	
 	/**
-	 * Get info on file in working directory
+	 * Show commit log detail
 	 * 
-	 * @param      string	$path
-	 * @param      string  	$file
+	 * @param      string	$path		repository path
+	 * @param      string  	$file		file name or commit hash
+	 * @param      string  	$file		file name or commit hash
 	 * @param      string  	$return
 	 *
 	 * @return     string
 	 */
-	public function whatChanged ($path = '', $file = '', $return = 'date') 
+	public function gitLog ($path = '', $file = '', $hash = '', $return = 'date') 
 	{
 		chdir($this->prefix . $path);
-
-		if ($return == 'date') 
+		$what = '';
+		
+		// Set exec command for retrieving different commit information
+		switch ( $return ) 
 		{
-			exec($this->gitpath . ' whatchanged --pretty=format:%cd ' . escapeshellarg($file). ' 2>&1', $out);
+			case 'date':
+			default:
+				$exec = ' log --pretty=format:%ci ';
+				break;
+				
+			case 'timestamp':
+				$exec = ' log --pretty=format:%ct ';
+				break;
+				
+			case 'num':
+				$exec = ' log --diff-filter=AMR --pretty=format:%H ';
+				break;
+				
+			case 'author':
+				$exec = ' log --pretty=format:%an ';
+				break;
+			
+			case 'email':
+				$exec = ' log --pretty=format:%ae ';
+				break;
+				
+			case 'hash':
+				$exec = ' log --pretty=format:%H ';
+				break;
+				
+			case 'message':
+				$exec = ' log --pretty=format:%s ';
+				break;
+				
+			case 'size':
+				$exec = ' cat-file -s ';
+				$what = $hash . ':' . escapeshellarg($file);
+				break;
+				
+			case 'content':
+				$exec = ' diff -M -C  ';
+				$what = $hash . '^ ' . $hash . ' -- '. escapeshellarg($file);
+				break;
+								
+			case 'rename':
+				$exec = ' log --oneline --name-only --follow -M  ';
+				break;
+							
+			case 'namestatus':
+				$exec = ' diff -M -C --name-status ';
+				$what = $hash . '^ ' . $hash . ' -- '. escapeshellarg($file);
+				break;
+		}
+					
+		if (!$what)
+		{
+			$what = $hash ? $hash : '';
+			$what.= $hash && $file ? ' ' : '';
+			$what.= $file ? ' -- ' .escapeshellarg($file) : '';
+		}
+		
+		// Exec command
+		exec($this->gitpath . ' '. $exec . ' ' . $what . ' 2>&1', $out);
+		
+		// Parse returned array of data
+		if (empty($out))
+		{
+			return NULL;
+		}
+		if ($return == 'content')
+		{
+			return $out;
+		}		
+		if ($return == 'date')
+		{
 			$arr = explode("\t", $out[0]);
 			$timestamp = strtotime($arr[0]);
 			return date ('m/d/Y g:i A', $timestamp);
 		}
-		elseif ($return == 'num') 
+		elseif ($return == 'num')
 		{
-			exec($this->gitpath . ' log --diff-filter=AMR --pretty=format:%H ' . escapeshellarg($file). ' 2>&1', $out);
 			return count($out);
 		}
-		elseif ($return == 'author') 
+		elseif ($return == 'namestatus')
 		{
-			exec($this->gitpath . ' whatchanged --pretty=format:%an ' . escapeshellarg($file). ' 2>&1', $out);
-			$arr = explode("\t", $out[0]);
-			return $arr[0];
-		}		
-		elseif ($return == 'hash') 
+			$n = substr($out[0], 0, 1);
+			return $n == 'f' ? 'A' : $n;
+		}
+		elseif ($return == 'rename')
 		{
-			exec($this->gitpath . ' whatchanged --pretty=format:%H ' . escapeshellarg($file). ' 2>&1', $out);
+			if (count($out) > 0) 
+			{
+				$names = array();
+				$hashes = array();
+				$k = 0;
+				
+				foreach ($out as $o)
+				{
+					if ($k % 2 == 0)
+					{
+						$hashes[] = substr($o, 0, 7);
+					}
+					else
+					{
+						$names[] = $o;
+					}
+					$k++;
+				}
+				
+				return array_combine($hashes, $names);
+			}
+			else
+			{
+				return NULL;
+			}
+		}
+		else
+		{	
 			$arr = explode("\t", $out[0]);
 			return $arr[0];
 		}
 	}
-	
-	/**
-	 * Get date of last commit
-	 * 
-	 * @param      string	$path
-	 * @param      array  	$out
-	 *
-	 * @return     string
-	 */
-	function getLastCommit( $path = '', $out = array() )    
-	{
-		chdir($this->prefix. $path);
-        $date = exec($this->gitpath 
-			. " rev-list  --header --max-count=1 HEAD | grep -a committer | cut -f5-6 -d' '", &$out);
-        return date("D n/j/y G:i", (int)$date);
-	}
-	
+		
 	/**
 	 * Git status
 	 *
@@ -2219,7 +2311,7 @@ class plgProjectsFiles extends JPlugin
 	public function getFolders($path = '', $subdir = '', $recurse = false, $fullpath = false, $exclude = array('.git')) 
 	{
 		// Check path format
-		$subdir = $this->formatPath($subdir);
+		$subdir = trim($subdir, DS);
 		
 		// Make full path
 		$path = $path . DS . $subdir;
@@ -2253,9 +2345,9 @@ class plgProjectsFiles extends JPlugin
 			$entry['bites']		= filesize($this->prefix . $fullpath . DS . $e);
 			$entry['size']		= ProjectsHtml::getFileAttribs( $e, $fullpath, 'size', $this->prefix );
 			$entry['ext']		= ProjectsHtml::getFileAttribs( $entry['name'], $fullpath, 'ext' );
-			$entry['date']  	= $this->whatChanged($path, $fpath, 'date');
-			$entry['revisions'] = $this->whatChanged($path, $fpath, 'num');
-			$entry['author'] 	= $this->whatChanged($path, $fpath, 'author');
+			$entry['date']  	= $this->gitLog($path, $fpath, '', 'date');
+			$entry['revisions'] = $this->gitLog($path, $fpath, '', 'num');
+			$entry['author'] 	= $this->gitLog($path, $fpath, '', 'author');
 			
 			// Is file linked with a publication?
 			if ($pA) 
@@ -2282,7 +2374,7 @@ class plgProjectsFiles extends JPlugin
 	public function getMemberFiles($path = '', $subdir = '', $recurse = true) 
 	{	
 		// Check path format
-		$subdir = $this->formatPath($subdir);
+		$subdir = trim($subdir, DS);
 		$fullpath = $subdir ? $path. DS . $subdir : $path;
 		
 		$files = array();
@@ -2441,7 +2533,7 @@ class plgProjectsFiles extends JPlugin
 		$sortby = '', $sortdir = 'ASC') 
 	{					
 		// Check path format
-		$subdir = $this->formatPath($subdir);
+		$subdir = trim($subdir, DS);
 		$fullpath = $subdir ? $path . DS . $subdir : $path;
 		
 		$files 		= array();
@@ -2640,29 +2732,6 @@ class plgProjectsFiles extends JPlugin
 		$author  = escapeshellarg($name . ' <' . $email . '> ');
 		
 		return $author;
-	}
-	
-	/**
-	 * Format path
-	 * 
-	 * @param      string	$subdir
-	 *
-	 * @return     string
-	 */
-	public function formatPath($subdir = '') 
-	{					
-		if ($subdir) 
-		{
-			if (substr($subdir, 0, 1) == DS) 
-			{
-				$subdir = substr($subdir, 1, (strlen($subdir)));
-			}
-			if (substr($subdir, -1, 1) == DS) 
-			{
-				$subdir = substr($subdir, 0, (strlen($subdir) - 1));
-			}
-		}
-		return $subdir;
 	}
 	
 	/**

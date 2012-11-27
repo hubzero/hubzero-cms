@@ -83,6 +83,11 @@
 		<param name="img_maxAllowed" type="text" menu="hide" default="5242880" label="Max image upload (bytes)" description="Maximum upload file size for project images in bytes" />
 		<param name="img_file_ext" type="text" menu="hide" label="Image extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif" description="Allowed file types for uploaded images" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="logging" type="list" default="0" label="Log activity" description="Enable detailed activity logging">
+			<option value="0">Do not log</option>
+			<option value="1">Log all activity except for AJAX calls</option>
+			<option value="2">Log all activity</option>
+		</param>
 		<param name="messaging" type="list" default="0" label="Messaging" description="Enable hub messaging">
 			<option value="0">OFF</option>
 			<option value="1">ON</option>

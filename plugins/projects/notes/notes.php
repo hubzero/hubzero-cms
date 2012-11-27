@@ -222,6 +222,7 @@ class plgProjectsNotes extends JPlugin
 				case 'history':
 				case 'compare':
 				case 'approve':
+				case 'deleterevision':
 					$controllerName = 'history';
 				break;
 
@@ -231,6 +232,12 @@ class plgProjectsNotes extends JPlugin
 				case 'removecomment':
 				case 'comments':
 					$controllerName = 'comments';
+					
+					$cid = JRequest::getVar('cid', 0);
+					if ($cid)
+					{
+						JRequest::setVar('id', $cid);
+					}					
 				break;
 
 				case 'delete':
@@ -323,14 +330,16 @@ class plgProjectsNotes extends JPlugin
 		// Are we saving?
 		$save = $this->_task == 'save' ? 1 : 0;
 		$rename = $this->_task == 'saverename' ? 1 : 0;
-	
+			
 		// Load requested page
-		$page = new WikiPage( $this->_database );
+		$page = new WikiPage( $this->_database );		
 		$page->load( $pagename, $scope );
+				
+		// Fix up saved page
 		if ($page->exist()) 
 		{
 			$exists = 1;
-			$_REQUEST['listdir'] = $page->id;
+			$_REQUEST['lid'] = $page->id;
 			
 			// Check that we have a version
 			$revision = new WikiPageRevision($this->_database);
@@ -471,7 +480,7 @@ class plgProjectsNotes extends JPlugin
 		
 		// Instantiate controller
 		$controller = new $this->_controllerName(array(
-			'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_wiki',
+			'base_path' => JPATH_ROOT . DS . 'plugins' . DS . 'projects' . DS . 'notes',
 			'name'      => 'projects',
 			'sub'       => 'notes',
 			'group'     => $this->_group
@@ -521,14 +530,26 @@ class plgProjectsNotes extends JPlugin
 			)
 		);
 		
-		// Fix pathway
+		// Fix pathway (com_wiki screws it up)
 		$app =& JFactory::getApplication();
 		$pathway =& $app->getPathway();
-		$pnames = $pathway->getPathwayNames();
-		if (isset($pnames[4]) && $pnames[4] == 'New PROJECTS') 
-		{
-			$pathway->setItemName(3, 'New Note');
-		}	
+		$pathway->setPathway(array());
+		
+		$pathway->addItem(
+			JText::_('COMPONENT_LONG_NAME'),
+			JRoute::_('index.php?option=' . $this->_option)
+		);
+		
+		$pathway->addItem(
+			stripslashes($this->_project->title),
+			JRoute::_('index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias)
+		);
+		
+		$pathway->addItem(
+			ucfirst(JText::_('COM_PROJECTS_TAB_NOTES')),
+			JRoute::_('index.php?option=' . $this->_option . a . 'alias='
+			. $this->_project->alias . a . 'active=notes')
+		);
 		
 		// Get all notes
 		$view->notes = $projectsHelper->getNotes($this->_group, $masterscope);

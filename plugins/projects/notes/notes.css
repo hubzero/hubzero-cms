@@ -113,7 +113,6 @@
 		padding: 0.3em 0;
 	}
 	#notes-wrap .sidebox li.active {
-		background: #FFFFFF;
 		font-weight: bold;
 	}
 	#notes-wrap .sidebox li.active a {
@@ -157,7 +156,7 @@
 	.note {
 		padding: 0.3em 0;
 		padding-left: 20px;
-		background: transparent url("images/wikipage.png") 0 center no-repeat;
+		background: transparent url("images/wikipage.png") 0 center no-repeat !important;
 	}
 	.wikitemplate {
 		padding: 0.3em 0;
@@ -166,7 +165,7 @@
 	}
 	.wikilevel_2, .wikilevel_3, .wikilevel_4 {
 		margin-left: 2em;
-		background: url("images/childlink.gif") 0 0 no-repeat;
+		background: url("images/childlink.gif") 0 0 no-repeat !important;
 	}
 	.wikilevel_3 {
 		margin-left: 4em;
