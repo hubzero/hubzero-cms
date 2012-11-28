@@ -180,6 +180,14 @@ function CoursesParseRoute($segments)
 			case 'invite':
 			case 'customize':
 			case 'manage':
+				if(isset($segments[2]))
+				{
+					$vars['task'] = 'editoutline';
+					$vars['offering'] = $segments[2];
+				}
+				$vars['controller'] = 'offering';
+			break;
+
 			case 'editoutline':
 			case 'offerings':
 			//case 'managemodules':

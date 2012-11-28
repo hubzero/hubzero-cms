@@ -124,7 +124,7 @@ if (!$no_html) : ?>
 									<?php endif; ?>
 									<!-- <li><a class="course-edit" href="/courses/<?php echo $this->course->get('alias'); ?>/edit">Edit Course Settings</a></li>
 									<li><a class="course-customize" href="/courses/<?php echo $this->course->get('alias'); ?>/customize">Customize Course</a></li> -->
-									<li><a class="course-outline" href="/courses/<?php echo $this->course->get('alias'); ?>/editoutline">Edit Outline</a></li>
+									<li><a class="course-outline" href="/courses/<?php echo $this->course->get('alias'); ?>/manage/<?php echo $this->course->offering()->get('alias'); ?>">Edit Outline</a></li>
 									<li><a class="course-pages" href="/courses/<?php echo $this->course->get('alias'); ?>/managepages">Manage Pages</a></li>
 									<?php if ($membership_control == 1) : ?> 
 										<li class="divider"></li>

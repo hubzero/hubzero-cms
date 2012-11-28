@@ -451,6 +451,40 @@ class CoursesControllerOffering extends Hubzero_Controller
 	}
 
 	/**
+	 * Show a form for editing a coure offering outline
+	 * 
+	 * @return     void
+	 */
+	public function editoutlineTask()
+	{
+		// Push some needed styles to the template
+		$this->_getStyles($this->_option, $this->_controller . '.css');
+		$this->_getStyles($this->_option, $this->_task . '.css');
+
+		// Push some needed scripts to the template
+		$this->_getScripts('/assets/js/courses.outline');
+
+		// Build the title
+		$this->_buildTitle();
+
+		// Build pathway
+		$this->_buildPathway($this->course->offering()->pages());
+
+		// Setup view
+		$this->view->setLayout('editoutline');
+
+		$this->view->title         = 'Edit Outline';
+		$this->view->option        = $this->_option;
+		$this->view->controller    = $this->_controller;
+		$this->view->tab           = $this->active;
+		$this->view->course        = $this->course;
+		$this->view->database      = $this->database;
+		$this->view->config        = $this->config;
+		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
+		$this->view->display();
+	}
+
+	/**
 	 * Save a course
 	 * 
 	 * @return     void

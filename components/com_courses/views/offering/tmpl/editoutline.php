@@ -30,6 +30,9 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$base = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias');
+
 ?>
 
 <div id="content-header" class="full">
@@ -39,106 +42,131 @@ defined('_JEXEC') or die( 'Restricted access' );
 <div id="content-header-extra">
 	<ul id="useroptions">
 		<li class="last">
-			<a class="course" href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->get('cn')); ?>">
-				<?php echo JText::_('Back to Course'); ?>
+			<a class="course btn" href="<?php echo JRoute::_($base); ?>">
+				<?php echo JText::sprintf('MY_COURSE', $this->course->get('title')); ?>
 			</a>
 		</li>
 	</ul>
 </div><!-- / #content-header-extra -->
 
 <?php
-	foreach($this->notifications as $notification) {
+	foreach($this->notifications as $notification)
+	{
 		echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
 	}
 ?>
 
-<div class="main section">
-<form name="coursePages" action="index.php" method="POST" id="hubForm">
+<div class="outline-main">
+	<form name="editoutline" action="index.php" method="POST" id="">
 
+		<ul class="unit sortable">
+			<div class="add first"></div>
 <?php 
-	// Get the course units
-	$unitsTbl = new CourseUnits($this->database);
-	$units    = $unitsTbl->getCourseUnits();
-?>
-
-<ul class="sortable"><div class="add first"></div>
-
-<?php foreach ($units as $unit) { ?>
-	<li>
-		<span class="title"><?php echo $unit->title; ?></span>
-<?php
-	// Get the course asset groups
-	$assetGroupsTbl = new CourseAssetGroups($this->database);
-
-	// Get the unique asset group types (this will build our sub-headings)
-	$assetGroupTypes = $assetGroupsTbl->getUniqueCourseAssetGroupTypes($filters=array(
-		"w"=>array(
-			"course_unit_id"=>$unit->id
-		)
-	));
-
-	echo "<ul class=\"sortable\"><div class=\"add\"></div>";
-
-	if(count($assetGroupTypes > 0))
-	{
-		// Loop through the asset group types
-		foreach($assetGroupTypes as $agt)
-		{
-			// Now grab all of the individual asset groups
-			$assetGroups = $assetGroupsTbl->getCourseAssetGroups($filters=array(
-				"w"=>array(
-					"course_unit_id"=>$unit->id
-				)
-			));
-
-			echo "<li><span class=\"title\">{$agt['type']}</span>";
-			echo "<ul class=\"sortable\"><div class=\"add\"></div>";
-
-			if(count($assetGroups > 0))
+			foreach ($this->course->offering->units() as $unit)
 			{
-				// Loop through the asset groups
-				foreach($assetGroups as $ag)
-				{
-					if($ag->type == $agt['type'])
-					{
-						echo "<li><span class=\"title\">{$ag->title}</span>";
-
-						// Get the course assets
-						$assetsTbl = new CourseAssets($this->database);
-						$assets    = $assetsTbl->getCourseAssets($filters=array(
-							"w"=>array(
-								"course_asset_scope_id" => $ag->id,
-								"course_asset_scope" => "asset_group"
-							)
-						));
-
-						// Start our list
-						echo "<ul class=\"sortable\"><div class=\"add\"></div>";
-
-						// Loop through the assets
-						if(count($assets) > 0)
-						{
-							foreach($assets as $a)
-							{
-								echo "<li><span class=\"title\">{$a->title}</span>";
-								echo "<span class=\"drag-n-drop\">drag file here</span>";
-							}
-						}
-						// End the list
-						echo "</ul>";
-						echo "</li>";
-					}
-				}
-			}
-			echo "</ul>";
-			echo "</li>";
-		}
-	}
-	echo "</ul>";
 ?>
+			<li class="unit-item">
+				<div class="title unit-title"><?php echo $unit->title; ?>: <?php echo $unit->description; ?></div>
+				<div class="progress-container">
+					<div class="progress-indicator"></div>
+				</div>
+				<div class="clear"></div>
+				<ul class="asset-group-type-list sortable">
+					<div class="add"></div>
+<?php
+				foreach($unit->assetgroups() as $agt)
+				{
+?>
+					<li>
+						<div class="asset-group-title title"><?php echo $agt->get('title'); ?></div>
+						<div class="clear"></div>
+						<ul class="asset-group sortable">
+							<div class="add"></div>
+<?php
+					foreach($agt->children() as $ag)
+					{
+?>
+							<li class="asset-group-item">
+								<div class="asset-group-item-title editable title"><?php echo $ag->get('title'); ?></div>
+								<div class="uploadfiles">Drag files here to upload</div>
+								<div class="clear"></div>
+<?php
+						// Loop through the assets
+						if ($ag->assets()->total())
+						{
+?>
+								<ul class="sortable">
+<?php
+								foreach ($ag->assets() as $a)
+								{
+									$href = $a->path($this->course->get('id'));
+									if ($a->get('type') == 'video')
+									{
+										$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
+									}
+									echo '<li class="asset-item asset ' . $a->get('type') . '">' . $this->escape(stripslashes($a->get('title'))) . ' (<a class="" href="' . $href . '">preview</a>)</li>';
+								}
+?>
+								</ul>
+<?php
+						}
+?>
+							</li>
+<?php
+					}
+?>
+						</ul>
+<?php
+					if ($agt->assets()->total())
+					{
+?>
+						<ul class="sortable">
+<?php
+						foreach ($agt->assets() as $a)
+						{
+							$href = $a->path($this->course->get('id'));
+							if ($a->get('type') == 'video')
+							{
+								$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $agt->get('alias'));
+							}
+							echo '<li><a class="asset ' . $a->get('type') . '" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+						}
+?>
+						</ul>
+<?php
+					}
+?>
+					</li>
+<?php
+				}
+?>
+				</ul>
+<?php
+				if ($unit->assets()->total())
+				{
+?>
+					<ul>
+<?php
+					foreach ($unit->assets() as $a)
+					{
+						$href = $a->path($this->course->get('id'));
+						if ($a->get('type') == 'video')
+						{
+							$href = JRoute::_($base . '&active=outline&a=' . $unit->get('alias'));
+						}
+						echo '<li><a class="asset ' . $a.get('type') . '" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+					}
+?>
+					</ul>
+<?php
+				}
+?>
+			</li>
+<?php
+			}
+?>
+			<li class="add-new unit-item">Add a new unit</li>
+		</ul>
 
-<?php } // close foreach ?>
-
-</ul>
-</form>
+	</form>
 </div>
