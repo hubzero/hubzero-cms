@@ -1802,6 +1802,7 @@ class plgProjectsFiles extends JPlugin
 			}			
 			else
 			{
+				$fpath 		= $subdir ? $subdir. DS . $file : $file;
 				if ($hash) 
 				{					
 					// Viewing revisions					
@@ -1812,13 +1813,12 @@ class plgProjectsFiles extends JPlugin
 					$fullpath = $this->prefix. $path . DS .$temppath;
 					
 					// Get file content
-					exec($this->gitpath . ' show  ' . $hash . ':' . escapeshellarg($file) 
+					exec($this->gitpath . ' show  ' . $hash . ':' . escapeshellarg($fpath) 
 						. ' > ' . escapeshellarg($temppath) . ' 2>&1 ', $out);
 				}
 				else
 				{
 					// Viewing current file
-					$fpath 		= $subdir ? $subdir. DS . $file : $file;
 					$serveas 	= urldecode(JRequest::getVar('serveas', $file));
 					$fullpath	= $this->prefix. $path . DS . $fpath;
 				}
