@@ -1,141 +1,212 @@
 /**
  * @package     hubzero-cms
- * @file        components/com_courses/assets/css/managepages.css
+ * @file        components/com_courses/assets/css/editoutline.css
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http: //www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-.com_courses .sortable li {
+.outline-main {
 	margin: 10px;
-	padding: 5px 5px 5px 35px;
-	border: 1px solid #999;
-	position: relative;
-	cursor: move;
-	zoom: 1;
-	vertical-align: baseline;
-	outline: none;
-	text-align: left;
-	text-decoration: none;
-	font-weight: bold;
-	white-space: nowrap;
-	word-wrap: normal;
-	line-height: 1.8em;
-	-webkit-border-radius: 0.25em;
-	-moz-border-radius: 0.25em;
-	border-radius: 0.25em;
-	-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
-	-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
-	box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
-	color: #666;
-	border: 1px solid #B2B2B2;
-	background: #F2F2F2;
-	background: -webkit-gradient(linear, left top, left bottom, from(#F2F2F2), to(#E5E5E5));
-	background: -webkit-linear-gradient(#F2F2F2, #E5E5E5);
-	background: -moz-linear-gradient(center top, #F2F2F2 0%, #E5E5E5 100%);
-	background: -moz-gradient(center top, #F2F2F2 0%, #E5E5E5 100%);
-	background: -o-linear-gradient(#F2F2F2, #E5E5E5);
-	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#F2F2F2,endColorstr=#E5E5E5);
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#F2F2F2, endColorstr=#E5E5E5)";
+	padding: 10px;
 }
-/*.com_courses .sortable li:hover {
-	text-decoration: none;
-	color: #fff;
-	text-decoration: none;
-	-webkit-box-shadow: inset 0 0 1px #fff, 2px 2px 2px rgba(0, 0, 0, 0.35);
-	-moz-box-shadow: inset 0 0 1px #fff, 2px 2px 2px rgba(0, 0, 0, 0.35);
-	-ms-box-shadow: inset 0 0 1px #fff, 2px 2px 2px rgba(0, 0, 0, 0.35);
-	box-shadow: inset 0 0 1px #fff, 2px 2px 2px rgba(0, 0, 0, 0.35);
-	background: #888;
-	background: -webkit-gradient(linear, left top, left bottom, from(#888), to(#777));
-	background: -webkit-linear-gradient(#888, #777);
-	background: -moz-linear-gradient(center top, #888 0%, #777 100%);
-	background: -moz-gradient(center top, #888 0%, #777 100%);
-	background: -o-linear-gradient(#888, #777);
-	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#888,endColorstr=#777);
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#888, endColorstr=#777)";
+.placeholder {
+	border: 1px dotted #AAA;
+	background: #FFF;
+	min-height: 40px;
+	margin: 15px 0;
+
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
 }
-.com_courses .sortable li:active {
-	-webkit-box-shadow: inset 0 0 1px #fff, 2px 2px 2px rgba(0, 0, 0, 0.35);
-	-moz-box-shadow: inset 0 0 1px #fff, 2px 2px 2px rgba(0, 0, 0, 0.35);
-	-ms-box-shadow: inset 0 0 1px #fff, 2px 2px 2px rgba(0, 0, 0, 0.35);
-	box-shadow: inset 0 0 1px #fff, 2px 2px 2px rgba(0, 0, 0, 0.35);
-}*/
-.com_courses .sortable li:before {
-	font-family: fontcons;
-	font-size: 20px;
-	content: "\f03a";
-	position: absolute;
-	top: 6px;
-	left: 10px;
+.course:before {
+	content: "\f09c";
 }
-.com_courses .sortable {
+.add {
+	display: none;
+}
+.sortable {
 	list-style: none;
+	padding: 0;
+	margin: 0;
 }
-.com_courses .sortable .placeholder {
-	background: white;
-	border: 2px dotted #999;
-	height: 20px;
-	-webkit-box-shadow: none;
-	-moz-box-shadow: none;
-	-ms-box-shadow: none;
-	box-shadow: none;
+.progress-container {
+	width: 200px;
+	float: right;
+	padding-top: 2px;
 }
-.com_courses .sortable .placeholder:before {
+.unit-item {
+	margin-bottom: 15px;
+	padding: 10px;
+	border: 1px solid #AAA;
+	background: #FFF;
+
+	-webkit-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+	box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+}
+.unit-title {
+	font-weight: bold;
+	font-size: 14px;
+	position: relative;
+	padding-left: 20px;
+	float: left;
+	cursor: pointer;
+}
+.unit-title:before,
+.uploadfiles:before {
+	font-family: "fontcons";
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+.unit-title:before {
+	content: "\f0da";
+}
+.unit-title-active:before {
+	content: "\f0d7";
+}
+.asset-group-type-list {
+	padding-left: 30px;
+}
+.asset-group-title {
+	font-size: 14px;
+	font-style: italic;
+}
+.asset-group-item-title {
+	display: block;
+	float: left;
+}
+.asset-group-item {
+	position: relative;
+	padding-left: 20px;
+}
+.asset-group-item:before {
+	font-size: 15px;
+	font-family: "fontcons";
+	position: absolute;
+	top: 0;
+	left: 0;
 	content: "";
 }
-.com_courses .sortable span.title {
-	cursor: pointer;
+.hasitem:before {
+	color: #49BF0A;
+	content: "\f058";
 }
-.com_courses span {
-	line-height: 25px;
+.noitem:before {
+	color: #BFB100;
+	content: "\26a0";
 }
-.com_courses #hubForm .sortable input[type=text] {
-	margin: 0 10px 0 0;
-	padding: 2px 5px;
-	border-radius: 3px;
-	border: 1px solid #c5c3c3;
-	background: #FFF;
-	width: auto;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-.com_courses #hubForm .sortable input[type=submit],
-.com_courses #hubForm .sortable input[type=reset] {
-	width: 75px;
-	border: 1px solid #E78F08;
-	border-radius: 3px;
-	background: #F6A828;
-	color: #FFF;
-	font-weight: normal;
-	font-size: 11px;
-	padding: 2px 10px;
-	margin-left: 10px;
-}
-.com_courses #hubForm .sortable input[type=reset] {
-	background: #999;
-	border: 1px solid #777;
-}
-.com_courses .sortable div.add {
+.uploadfiles {
+	position: relative;
+	background: #FAFAFA;
+	border: 1px dotted #AAA;
+	padding: 7px 7px 7px 27px;
+	margin: 5px 0 15px 0;
 	display: none;
-	position: absolute;
-	bottom: 5px;
-	right: 5px;
-	font-size: 18px;
+	float: left;
+	font-style: italic;
+
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	border-radius: 7px;
+}
+.uploadfiles:before {
+	font-style: normal;
+	left: 7px;
+	top: 7px;
+	content: "\f093";
+}
+.add-new {
+	opacity: .9;
+	padding-left: 30px;
+	position: relative;
+	border: 1px dotted #AAA;
 	cursor: pointer;
+
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
 }
-.com_courses div.add.first {
-	display: inline;
+.add-new:hover {
+	opacity: 1;
 }
-.com_courses span.drag-n-drop {
-	float: right;
-	font-size: 10px;
-	line-height: 18px;
-	opacity: .8;
-	padding: 2px 15px;
-	margin-right: 20px;
-	border: 2px dotted #c5c3c3;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
+.add-new:before {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	font-family: "fontcons";
+	content: "\2295";
+}
+.asset-group {
+	padding-left: 10px;
+}
+
+/* Asset types */
+.asset {
+	margin-left: 10px;
+	position: relative;
+	padding-left: 15px;
+}
+.asset:before {
+	position: absolute;
+	top: 0;
+	left: 0;
+	font-family: "fontcons";
+	content: "";
+}
+.video:before {
+	content: "\f008";
+}
+.file:before {
+	content: "\f016"
+}
+.exam:before {
+	content: "\270e";
+}
+
+/* Progress bar style overrides (from ui defaults) */
+.ui-progressbar {
+	height: 1em;
+}
+.stop .ui-widget-header {
+	border: 1px solid #7F0000;
+	background: #FF0000;
+	background: -webkit-gradient(linear, left top, left bottom, from(#FF0000), to(#BF0000));
+	background: -webkit-linear-gradient(#FF0000, #BF0000);
+	background: -moz-linear-gradient(center top, #FF0000 0%, #BF0000 100%);
+	background: -moz-gradient(center top, #FF0000 0%, #BF0000 100%);
+	background: -o-linear-gradient(#FF0000, #BF0000);
+	background-image: -ms-linear-gradient(top, #FF0000 0%, #BF0000 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FF0000,endColorstr=#BF0000);
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FF0000, endColorstr=#BF0000)";
+}
+.yield .ui-widget-header {
+	border: 1px solid #7F7600;
+	background: #FFEC00;
+	background: -webkit-gradient(linear, left top, left bottom, from(#FFEC00), to(#BFB100));
+	background: -webkit-linear-gradient(#FFEC00, #BFB100);
+	background: -moz-linear-gradient(center top, #FFEC00 0%, #BFB100 100%);
+	background: -moz-gradient(center top, #FFEC00 0%, #BFB100 100%);
+	background: -o-linear-gradient(#FFEC00, #BFB100);
+	background-image: -ms-linear-gradient(top, #FFEC00 0%, #BFB100 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FFEC00,endColorstr=#BFB100);
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FFEC00, endColorstr=#BFB100)";
+}
+.go .ui-widget-header {
+	border: 1px solid #317F07;
+	background: #59E80C;
+	background: -webkit-gradient(linear, left top, left bottom, from(#59E80C), to(#49BF0A));
+	background: -webkit-linear-gradient(#59E80C, #49BF0A);
+	background: -moz-linear-gradient(center top, #59E80C 0%, #49BF0A 100%);
+	background: -moz-gradient(center top, #59E80C 0%, #49BF0A 100%);
+	background: -o-linear-gradient(#59E80C, #49BF0A);
+	background-image: -ms-linear-gradient(top, #59E80C 0%, #49BF0A 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#59E80C,endColorstr=#49BF0A);
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#59E80C, endColorstr=#49BF0A)";
 }

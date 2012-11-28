@@ -71,17 +71,97 @@ if (!$this->course->offering()->access('view')) { ?>
 			<h3>
 				<?php echo $lecture->get('title'); ?>
 			</h3>
-			<img src="/components/com_courses/assets/img/video.png" width="640" height="390" />
+
+<?php
+	if ($lecture->assets()->total())
+	{
+		$videos    = array();
+		$video_mp4 = array();
+		$subs      = array();
+
+		// Loop through the assets looking for videos and subtitle files
+		foreach ($lecture->assets() as $a)
+		{
+			$path = $a->path($this->course->get('id'));
+			$info = pathinfo($path);
+
+			// For the HTML5 video player, we only want videos with these extensions
+			if(in_array(strtolower($info['extension']), array('mp4', 'ogv', 'webm')))
+			{
+				$videos[] = $info;
+			}
+
+			// For the flashplayer fallback, we need just the mp4
+			if(strtolower($info['extension']) == 'mp4')
+			{
+				$video_mp4[] = $info;
+			}
+
+			// Finally, check for subtitle files
+			if(in_array(strtolower($info['extension']), array('srt')))
+			{
+				$subs[] = $info;
+			}
+		}
+	}
+
+	// If there was a video, let's put it in the page
+	if(isset($videos) && !empty($videos))
+	{
+		// Add the required javascript and CSS files
+		if(!JPluginHelper::isEnabled('system', 'jquery'))
+		{
+			// Only add these when the JQuery plugin isn't on
+			// Create the document object
+			$doc =& JFactory::getDocument();
+
+			$doc->addScript("https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js");
+			$doc->addScript("https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js");
+		}
+
+		Hubzero_Document::addComponentScript($this->option, "/assets/presenter/js/flowplayer");
+		Hubzero_Document::addComponentScript($this->option, "/assets/js/video");
+		Hubzero_Document::addComponentStylesheet($this->option, "/assets/css/video.css");
+
+		// @TODO: it might be nice to detect the native resolution of the video?
+		$width = 854;
+		$height = 480;
+
+		// Instantiate a new view
+		$view = new JView(array(
+			'name'   => 'course', 
+			'layout' => 'video'
+		));
+
+		// Set some things for the view
+		$view->videos    = $videos;
+		$view->video_mp4 = $video_mp4;
+		$view->subs      = $subs;
+		$view->width     = $width;
+		$view->height    = $height;
+
+		// Output HTML
+		if ($this->getError()) 
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$view->setError($error);
+			}
+		}
+		$view->display();
+	}
+	else
+	{
+		echo "<p class=\"warning\">There are no playable videos associated with this lecture</p>";
+	}
+?>
+
 			<p>
-				<?php // $unit->assetgroups() refers to the groupings (lectures, homeworks). We need children() for individual lectures. 
-				//echo $unit->assetgroup()->key();
-				//echo $this->group; 
-				//echo $current;
-				$lecture->key($current);
-				//var_dump($unit->isFirst());
-				//print_r($lecture->key()); ?>
+
 <?php 
 //if ($this->course->offering()->units()->isFirst() && $unit->assetgroups()->isFirst()) { 
+$lecture->key($current);
+
 if ($unit->isFirst() && $lecture->isFirst()) { ?>
 				<span class="prev btn">
 					Prev
@@ -176,7 +256,7 @@ if (!$uAlias || !$gAlias) { ?>
 					<li class="comment odd" id="c1">
 						<a name="#c1"></a>
 						<p class="comment-member-photo">
-							<img src="/site/members/01058/Batman-by-Alex-Ross2_thumb.jpg" alt="" />
+							<img src="/components/com_members/assets/img/profile.gif" alt="" />
 						</p>
 						<div class="comment-content">
 							<p class="comment-title">
@@ -196,7 +276,7 @@ if (!$uAlias || !$gAlias) { ?>
 					<li class="comment even" id="c2">
 						<a name="#c2"></a>
 						<p class="comment-member-photo">
-							<img src="/site/members/01059/4960213_f520_thumb.jpg" alt="" />
+							<img src="/components/com_members/assets/img/profile.gif" alt="" />
 						</p>
 						<div class="comment-content">
 							<p class="comment-title">
@@ -220,7 +300,7 @@ if (!$uAlias || !$gAlias) { ?>
 					<li class="comment odd author" id="c4">
 						<a name="#c4"></a>
 						<p class="comment-member-photo">
-							<img src="/site/members/01008/z_thumb.png" alt="" />
+							<img src="/components/com_members/assets/img/profile.gif" alt="" />
 						</p>
 						<div class="comment-content">
 							<p class="comment-title">
@@ -242,7 +322,7 @@ if (!$uAlias || !$gAlias) { ?>
 					<li class="comment even" id="c3">
 						<a name="#c3"></a>
 						<p class="comment-member-photo">
-							<img src="/site/members/01059/4960213_f520_thumb.jpg" alt="" />
+							<img src="/components/com_members/assets/img/profile.gif" alt="" />
 						</p>
 						<div class="comment-content">
 							<p class="comment-title">
