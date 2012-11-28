@@ -108,9 +108,11 @@ Hubzero_Document::addComponentStylesheet($this->option, 'assets/css/conditions.c
 					<a class="my-<?php echo strtolower(preg_replace("/[^a-zA-Z0-9]/", '', stripslashes($query->title))); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $query->id . '&limitstart=0'); ?>">
 						<?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->count; ?></span>
 					</a>
+				<?php if ($this->acl->check('read', 'tickets')) { ?>
 					<a class="modal copy" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=edit&id=' . $query->id); ?>" title="<?php echo JText::_('Edit'); ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
 						<?php echo JText::_('Edit'); ?>
 					</a>
+				<?php } ?>
 				</li>
 		<?php } ?>
 	<?php } else { ?>
