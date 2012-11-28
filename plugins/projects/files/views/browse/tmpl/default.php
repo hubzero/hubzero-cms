@@ -135,7 +135,7 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
 					<input type="hidden" name="active" value="files" />
 					<input type="hidden" name="case" id="case" value="<?php echo $this->case; ?>" />
 					<input type="hidden" name="action" value="save" />
-					<input type="hidden" name="subdir" id="subdir" value="<?php echo $this->subdir; ?>" />
+					<input type="hidden" name="subdir" id="subdir" value="<?php echo urlencode($this->subdir); ?>" />
 					<input type="hidden" name="expand_zip" id="expand_zip" value="0" />
 					<input type="submit" value="<?php echo JText::_('COM_PROJECTS_UPLOAD'); ?>" class="btn yesbtn" id="f-upload" />
 			</span>	
