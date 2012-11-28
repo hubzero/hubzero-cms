@@ -391,15 +391,18 @@ class SupportControllerTickets extends Hubzero_Controller
 		));
 
 		$sq = new SupportQuery($this->database);
-		$this->view->queries = array(
-			'common' => $sq->getCommon(),
-			'mine'   => $sq->getMine(),
-			'custom' => $sq->getCustom($this->juser->get('id'))
-		);
-		if (!$this->view->queries['common'] || count($this->view->queries['common']) <= 0)
+		$this->view->queries = array();
+		if ($this->acl->check('read', 'tickets')) 
 		{
-			$this->view->queries['common'] = $sq->populateDefaults('common');
+			$this->view->queries['common'] = $sq->getCommon();
+			if (!$this->view->queries['common'] || count($this->view->queries['common']) <= 0)
+			{
+				$this->view->queries['common'] = $sq->populateDefaults('common');
+			}
 		}
+		$this->view->queries['mine']   = $sq->getMine();
+		$this->view->queries['custom'] = $sq->getCustom($this->juser->get('id'));
+
 		if (!$this->view->queries['mine'] || count($this->view->queries['mine']) <= 0)
 		{
 			$this->view->queries['mine'] = $sq->populateDefaults('mine');
@@ -407,7 +410,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		// If no query is set, default to the first one in the list
 		if (!$this->view->filters['show'])
 		{
-			if ($this->acl->check('read', 'tickets'))
+			if ($this->acl->check('read', 'tickets')) 
 			{
 				$this->view->filters['show'] = $this->view->queries['common'][0]->id;
 			}
