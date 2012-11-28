@@ -305,6 +305,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	{
 		$row->summary .= '...';
 	}
+	if (!trim($row->summary))
+	{
+		$row->summary = JText::_('(no content found)');
+	}
 
 	$tags = '';
 	if (isset($alltags[$row->id]))

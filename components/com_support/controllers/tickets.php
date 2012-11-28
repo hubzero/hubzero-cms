@@ -1287,7 +1287,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		$this->view->row = new SupportTicket($this->database);
 		$this->view->row->load($id);
 
-		if (!$this->view->row->report) 
+		if (!$this->view->row->id) 
 		{
 			JError::raiseError(404, JText::_('SUPPORT_TICKET_NOT_FOUND'));
 			return;

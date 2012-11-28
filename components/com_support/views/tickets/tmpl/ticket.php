@@ -108,6 +108,11 @@ if ($sq->conditions)
 	}
 }
 
+if (!trim($this->row->report))
+{
+	$this->row->report = JText::_('(no content found)');
+}
+
 ximport('Hubzero_User_Profile_Helper');
 ?>
 <div id="content-header">
