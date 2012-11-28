@@ -33,6 +33,10 @@ defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Controller');
 
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'page.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
+
 /**
  * Courses controller class for managing course pages
  */
@@ -45,79 +49,60 @@ class CoursesControllerPages extends Hubzero_Controller
 	 */
 	public function displayTask()
 	{
-		// Incoming
-		$gid = JRequest::getVar('gid', '');
+		// Get configuration
+		$app =& JFactory::getApplication();
+		$config = JFactory::getConfig();
 
-		// Ensure we have a course ID
-		if (!$gid)
+		// Incoming
+		$this->view->filters = array();
+		$this->view->filters['offering']    = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.offering',
+			'offering',
+			0
+		);
+
+		$this->view->offering = CoursesModelOffering::getInstance($this->view->filters['offering']);
+		if (!$this->view->offering->exists())
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=manage',
-				JText::_('COM_COURSES_MISSING_ID'),
-				'error'
+				'index.php?option=' . $this->_option . '&controller=courses'
 			);
 			return;
 		}
+		$this->view->course = CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
 
-		// Load the course page
-		$this->view->course = new Hubzero_Course();
-		$this->view->course->read($gid);
+		$this->view->filters['search']  = urldecode(trim($app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.search',
+			'search',
+			''
+		)));
+		// Filters for returning results
+		$this->view->filters['limit']  = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.limit',
+			'limit',
+			$config->getValue('config.list_limit'),
+			'int'
+		);
+		$this->view->filters['start']  = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.limitstart',
+			'limitstart',
+			0,
+			'int'
+		);
 
-		//$this->gid = $gid;
-		//$this->course = $course;
+		$list = $this->view->offering->pages();
 
-		$action = JRequest::getVar('action','');
+		$this->view->total = count($list);
 
-		$this->action = $action;
-		$this->authorized = 'admin';
+		$this->view->rows = array_slice($list, $this->view->filters['start'], $this->view->filters['limit']);
 
-		// Do we need to perform any actions?
-		$out = '';
-		if ($action)
-		{
-			$action = strtolower(trim($action));
-			$action = str_replace(' ', '', $action);
-
-			// Perform the action
-			if (in_array($action, $this->_taskMap))
-			{
-				$action .= 'Task';
-				$this->$action();
-			}
-
-			// Did the action return anything? (HTML)
-			if ($this->output != '')
-			{
-				$out = $this->output;
-			}
-		}
-
-		//get the course pages
-		$gp = new CoursePages($this->database);
-		$this->view->pages = $gp->getPages($this->view->course->get('gidNumber'), false);
-
-		// Output HTML
-		/*if ($out == '')
-		{
-			$this->view->course      = $course;
-			//$this->view->authorized = 'admin';
-			$this->view->pages      = $pages;
-			// Set any errors
-			if ($this->getError())
-			{
-				foreach ($this->getErrors() as $error)
-				{
-					$this->view->setError($error);
-				}
-			}
-
-			// Output the HTML
-			$this->view->display();
-		}
-		else
-		{
-			echo $out;
-		}*/
+		// Initiate paging
+		jimport('joomla.html.pagination');
+		$this->view->pageNav = new JPagination(
+			$this->view->total,
+			$this->view->filters['start'],
+			$this->view->filters['limit']
+		);
 
 		// Set any errors
 		if ($this->getError())
@@ -147,41 +132,41 @@ class CoursesControllerPages extends Hubzero_Controller
 	 *
 	 * @return void
 	 */
-	public function editTask($page = null)
+	public function editTask($model = null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
 		$this->view->setLayout('edit');
 
-		// Incoming
-		$gid = JRequest::getVar('gid', '');
-		$p   = JRequest::getVar('page', '');
-
-		// Check to make sure we have an id if we're editing
-		if (!$p && $this->task == 'edit')
+		if (is_object($model))
 		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $gid,
-				JText::_('Missing page ID'),
-				'error'
-			);
-			return;
+			$this->view->row = $model;
+		}
+		else
+		{
+			// Incoming
+			$ids = JRequest::getVar('id', array());
+
+			// Get the single ID we're working with
+			if (is_array($ids))
+			{
+				$id = (!empty($ids)) ? $ids[0] : 0;
+			}
+			else
+			{
+				$id = 0;
+			}
+
+			$this->view->row = new CoursesTablePage($this->database);
+			$this->view->row->load($id);
 		}
 
-		// load course page data
-		if (is_object($page))
+		if (!$this->view->row->get('offering_id'))
 		{
-			$this->view->page = $page;
-		}
-		else 
-		{
-			$this->view->page = new CoursePages($this->database);
-			$this->view->page->load($p);
+			$this->view->row->set('offering_id', JRequest::getInt('offering', 0));
 		}
 
-		// Load the course page
-		$this->view->course = new Hubzero_Course();
-		$this->view->course->read($gid);
+		$this->view->offering = CoursesModelOffering::getInstance($this->view->row->get('offering_id'));
 
 		// Set any errors
 		if ($this->getError())
@@ -203,51 +188,41 @@ class CoursesControllerPages extends Hubzero_Controller
 	 */
 	public function saveTask()
 	{
-		// load the request vars
-		$page = JRequest::getVar('page', array());
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
 
-		// instatiate course page object for saving
-		$db =& JFactory::getDBO();
-		$Gpage = new CoursePages($db);
+		// load the request vars
+		$fields = JRequest::getVar('fields', array(), 'post');
 
 		// Load the course page
-		$gid = JRequest::getVar('gid','');
-		$course = new Hubzero_Course();
-		$course->read($gid);
+		//$offering = CoursesModelOffering::getInstance($fields['offering_id']);
 
-		// new page
-		if (!$page['id'])
+		// instatiate course page object for saving
+		$row = new CoursesTablePage($this->database);
+
+		if (!$row->bind($fields))
 		{
-			$high = $Gpage->getHighestPageOrder($course->get('gidNumber'));
-			$page['porder'] = ($high + 1);
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
+			return;
 		}
 
-		// check to see if user supplied url
-		if (isset($page['url']) && $page['url'] != '')
+		if (!$row->check())
 		{
-			$page['url'] = strtolower(str_replace(' ', '_', trim($page['url'])));
-		}
-		else
-		{
-			$page['url'] = strtolower(str_replace(' ', '_', trim($page['title'])));
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
+			return;
 		}
 
-		// remove unwanted chars
-		$invalid_chrs = array("?","!",">","<",",",".",";",":","`","~","@","#","$","%","^","&","*","(",")","-","=","+","/","\/","|","{","}","[","]");
-		$page['url'] = str_replace("'", "", $page['url']);
-		$page['url'] = str_replace('"', '', $page['url']);
-		$page['url'] = str_replace($invalid_chrs, '', $page['url']);
-
-		// save page
-		if (!$Gpage->save($page))
+		if (!$row->store())
 		{
-			$this->addComponentMessage(JText::_('Error occurred'), 'error');
-			$this->editTask($Gpage);
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
 			return;
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $gid
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $fields['offering_id']
 		);
 	}
 
@@ -259,7 +234,7 @@ class CoursesControllerPages extends Hubzero_Controller
 	public function cancelTask()
 	{
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . JRequest::getVar('gid', '')
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . JRequest::getVar('offering', '')
 		);
 	}
 }

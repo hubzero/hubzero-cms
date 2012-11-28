@@ -33,13 +33,14 @@ defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Controller');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'unit.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
 
 /**
  * Courses controller class for managing membership and course info
  */
-class CoursesControllerCourses extends Hubzero_Controller
+class CoursesControllerUnits extends Hubzero_Controller
 {
 	/**
 	 * Displays a list of courses
@@ -54,12 +55,27 @@ class CoursesControllerCourses extends Hubzero_Controller
 
 		// Incoming
 		$this->view->filters = array();
+		$this->view->filters['offering']    = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.offering',
+			'offering',
+			0
+		);
+
+		$this->view->offering = CoursesModelOffering::getInstance($this->view->filters['offering']);
+		if (!$this->view->offering->exists())
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=courses'
+			);
+			return;
+		}
+		$this->view->course = CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
+
 		$this->view->filters['search']  = urldecode(trim($app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.search',
 			'search',
 			''
 		)));
-
 		// Filters for returning results
 		$this->view->filters['limit']  = $app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.limit',
@@ -74,17 +90,31 @@ class CoursesControllerCourses extends Hubzero_Controller
 			'int'
 		);
 
-		//$tbl = new CoursesTableCourse($this->database);
-
-		$model = CoursesModelCourses::getInstance();
-
 		$this->view->filters['count'] = true;
 
-		$this->view->total = $model->courses($this->view->filters); //$tbl->getCount($this->view->filters);
+		$this->view->total = $this->view->offering->units($this->view->filters);
 
 		$this->view->filters['count'] = false;
 
-		$this->view->rows  = $model->courses($this->view->filters); //$tbl->getRecords($this->view->filters);
+		$this->view->rows = $this->view->offering->units($this->view->filters);
+
+		// Filters for getting a result count
+		//$this->view->filters['limit'] = 'all';
+		//$this->view->filters['fields'] = array('COUNT(*)');
+		//$this->view->filters['authorized'] = 'admin';
+
+		// Get a record count
+		//$this->view->total = Hubzero_Course::find($this->view->filters);
+
+		
+		//$this->view->filters['fields'] = array('cn', 'description', 'published', 'gidNumber', 'type');
+
+		// Get a list of all courses
+		/*$this->view->rows = null;
+		if ($this->view->total > 0)
+		{
+			$this->view->rows = Hubzero_Course::find($this->view->filters);
+		}*/
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
@@ -122,31 +152,40 @@ class CoursesControllerCourses extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	public function editTask($row=null)
+	public function editTask($model=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
 		$this->view->setLayout('edit');
 
-		// Incoming
-		$ids = JRequest::getVar('id', array());
+		if (is_object($model))
+		{
+			$this->view->row = $model;
+		}
+		else
+		{
+			// Incoming
+			$ids = JRequest::getVar('id', array());
 
-		// Incoming
-		$ids = JRequest::getVar('id', array());
-		$id = 0;
-		if (is_array($ids) && !empty($ids)) 
-		{
-			$id = $ids[0];
+			// Get the single ID we're working with
+			if (is_array($ids))
+			{
+				$id = (!empty($ids)) ? $ids[0] : 0;
+			}
+			else
+			{
+				$id = 0;
+			}
+
+			$this->view->row = CoursesModelUnit::getInstance($id);
 		}
 
-		if (is_object($row))
+		if (!$this->view->row->get('offering_id'))
 		{
-			$this->view->row = $row;
+			$this->view->row->set('offering_id', JRequest::getInt('offering', 0));
 		}
-		else 
-		{
-			$this->view->row = CoursesModelCourse::getInstance($id);
-		}
+
+		$this->view->offering = CoursesModelOffering::getInstance($this->view->row->get('offering_id'));
 
 		// Set any errors
 		if ($this->getError())
@@ -162,25 +201,6 @@ class CoursesControllerCourses extends Hubzero_Controller
 	}
 
 	/**
-	 * Recursive array_map
-	 *
-	 * @param  $func string Function to map
-	 * @param  $arr  array  Array to process
-	 * @return array
-	 */
-	/*protected function _multiArrayMap($func, $arr)
-	{
-		$newArr = array();
-
-		foreach ($arr as $key => $value)
-		{
-			$newArr[$key] = (is_array($value) ? $this->_multiArrayMap($func, $value) : $func($value));
-	    }
-
-		return $newArr;
-	}*/
-
-	/**
 	 * Saves changes to a course or saves a new entry if creating
 	 *
 	 * @return void
@@ -192,30 +212,28 @@ class CoursesControllerCourses extends Hubzero_Controller
 
 		// Incoming
 		$fields = JRequest::getVar('fields', array(), 'post');
-		$fields = array_map('trim', $fields);
 
-		// Initiate extended database class
-		$row = new CoursesTableCourse($this->database);
-		if (!$row->bind($fields)) 
+		// Instantiate an Hubzero_Course object
+		$model = CoursesModelOffering::getInstance($fields['id']);
+
+		if (!$model->bind($fields))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
-		}
-		
-		// Check content
-		if (!$row->check()) 
-		{
-			$this->addComponentMessage($row->getError(), 'error');
-			$this->editTask($row);
+			$this->addComponentMessage($model->getError(), 'error');
+			$this->editTask($model);
 			return;
 		}
 
-		// Store content
-		if (!$row->store()) 
+		if (!$model->check())
 		{
-			$this->addComponentMessage($row->getError(), 'error');
-			$this->editTask($row);
+			$this->addComponentMessage($model->getError(), 'error');
+			$this->editTask($model);
+			return;
+		}
+
+		if (!$model->store())
+		{
+			$this->addComponentMessage($model->getError(), 'error');
+			$this->editTask($model);
 			return;
 		}
 
@@ -251,16 +269,16 @@ class CoursesControllerCourses extends Hubzero_Controller
 		if (!empty($ids))
 		{
 			// Get plugins
-			JPluginHelper::importPlugin('courses');
-			$dispatcher =& JDispatcher::getInstance();
+			//JPluginHelper::importPlugin('courses');
+			//$dispatcher =& JDispatcher::getInstance();
 
 			foreach ($ids as $id)
 			{
 				// Load the course page
-				$course = Hubzero_Course::getInstance($id);
+				$model = CoursesModelOffering::getInstance($id);
 
 				// Ensure we found the course info
-				if (!$course->exists())
+				if (!$model->exists())
 				{
 					continue;
 				}
@@ -303,22 +321,21 @@ class CoursesControllerCourses extends Hubzero_Controller
 				{
 					$log .= implode('', $logs);
 				}*/
-				
 
 				// Delete course
-				if (!$course->delete())
+				if (!$model->delete())
 				{
-					JError::raiseError(500, JText::_('Unable to delete course'));
+					JError::raiseError(500, JText::_('Unable to delete offering'));
 					return;
 				}
 
 				// Log the course approval
 				$log = new CoursesTableLog($this->database);
 				$log->scope_id  = $course->get('id');
-				$log->scope     = 'course';
+				$log->scope     = 'course_offering';
 				$log->user_id   = $this->juser->get('id');
 				$log->timestamp = date('Y-m-d H:i:s', time());
-				$log->action    = 'course_deleted';
+				$log->action    = 'offering_deleted';
 				$log->actor_id  = $this->juser->get('id');
 				if (!$log->store())
 				{
@@ -332,7 +349,7 @@ class CoursesControllerCourses extends Hubzero_Controller
 		// Redirect back to the courses page
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('COM_COURSES_REMOVED')
+			JText::sprintf('%s Item(s) removed.', $num)
 		);
 	}
 
@@ -346,102 +363,5 @@ class CoursesControllerCourses extends Hubzero_Controller
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 		);
-	}
-
-	/**
-	 * Publish a course
-	 *
-	 * @return void
-	 */
-	public function publishTask()
-	{
-		$this->stateTask(1);
-	}
-
-	/**
-	 * Unpublish a course
-	 *
-	 * @return void
-	 */
-	public function unpublishTask()
-	{
-		$this->stateTask(0);
-	}
-
-	/**
-	 * Set the state of a course
-	 *
-	 * @return void
-	 */
-	public function stateTask($state=0)
-	{
-		// Check for request forgeries
-		//JRequest::checkToken() or jexit('Invalid Token');
-
-		// Incoming
-		$ids = JRequest::getVar('id', array());
-
-		// Get the single ID we're working with
-		if (!is_array($ids))
-		{
-			$ids = array();
-		}
-
-		// Do we have any IDs?
-		$num = 0;
-		if (!empty($ids))
-		{
-			// foreach course id passed in
-			foreach ($ids as $id)
-			{
-				// Load the course page
-				$course = CoursesModelCourse::getInstance($id);
-
-				// Ensure we found the course info
-				if (!$course->exists())
-				{
-					continue;
-				}
-
-				//set the course to be published and update
-				$course->set('state', $state);
-				if (!$course->store())
-				{
-					$this->setError(JText::_('Unable to set state for course #' . $id . '.'));
-					continue;
-				}
-
-				// Log the course approval
-				$log = new CoursesTableLog($this->database);
-				$log->scope_id  = $course->get('id');
-				$log->scope     = 'course';
-				$log->user_id   = $this->juser->get('id');
-				$log->timestamp = date('Y-m-d H:i:s', time());
-				$log->action    = $state ? 'course_published' : 'course_unpublished';
-				$log->actor_id  = $this->juser->get('id');
-				if (!$log->store())
-				{
-					$this->setError($log->getError());
-				}
-				$num++;
-			}
-		}
-
-		if ($this->getErrors())
-		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				implode('<br />', $this->getErrors()),
-				'error'
-			);
-		}
-		else
-		{
-			// Output messsage and redirect
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				($state ? JText::sprintf('%s item(s) published', $num) : JText::sprintf('%s item(s) unpublished', $num))
-			);
-		}
 	}
 }

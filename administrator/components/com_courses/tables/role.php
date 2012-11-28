@@ -89,12 +89,18 @@ class CoursesTableRole extends JTable
 	 */
 	public function check()
 	{
-		$this->role = trim($this->role);
-		if (!$this->role) 
+		$this->title = trim($this->title);
+		if (!$this->title) 
 		{
-			$this->setError(JText::_('Missing role'));
+			$this->setError(JText::_('Missing title'));
 			return false;
 		}
+
+		if (!$this->alias)
+		{
+			$this->alias = strtolower($this->title);
+		}
+		$this->alias = preg_replace("/[^a-zA-Z0-9\-_]/", '', $this->alias);
 
 		return true;
 	}

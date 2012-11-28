@@ -70,6 +70,21 @@ function submitbutton(pressbutton)
 			<table class="admintable">
 				<tbody>
 					<tr>
+						<td class="key"><label for="field-offering_id"><?php echo JText::_('Offering'); ?>:</label></td>
+						<td>
+							<select name="fields[offering_id]" id="field-offering_id">
+								<option value="0"<?php if (0 == $this->row->offering_id) { echo ' selected="selected"'; } ?>><?php echo JText::_('[none]'); ?></option>
+<?php foreach ($this->courses as $course) { ?>
+								<optgroup label="<?php echo $course->get('alias'); ?>">
+	<?php foreach ($course->offerings() as $offering) { ?>
+								<option value="<?php echo $offering->get('id'); ?>"<?php if ($offering->get('id') == $this->row->offering_id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($offering->get('title'))); ?></option>
+	<?php } ?>
+								</optgroup>
+<?php } ?>
+							</select>
+						</td>
+					</tr>
+					<tr>
 						<td class="key"><label for="field-title"><?php echo JText::_('Title'); ?>:</label></td>
 						<td><input type="text" name="fields[title]" id="field-title" size="50" value="<?php echo $this->escape($this->row->title); ?>" /></td>
 					</tr>

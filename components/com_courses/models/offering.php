@@ -71,6 +71,20 @@ class CoursesModelOffering extends JObject
 	 * 
 	 * @var object
 	 */
+	private $_page = NULL;
+
+	/**
+	 * JUser
+	 * 
+	 * @var object
+	 */
+	private $_pages = NULL;
+
+	/**
+	 * JUser
+	 * 
+	 * @var object
+	 */
 	private $_roles = NULL;
 
 	/**
@@ -260,6 +274,17 @@ class CoursesModelOffering extends JObject
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Check if the course exists
+	 * 
+	 * @param      mixed $idx Index value
+	 * @return     array
+	 */
+	public function bind($data=null)
+	{
+		return $this->_tbl->bind($data);
 	}
 
 	/**
@@ -556,7 +581,7 @@ class CoursesModelOffering extends JObject
 		{
 			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'role.php');
 
-			$tbl = new CoursesTableMember($this->_db);
+			$tbl = new CoursesTableRole($this->_db);
 
 			$filters['offering_id'] = (int) $this->get('id');
 
@@ -589,6 +614,27 @@ class CoursesModelOffering extends JObject
 	}
 
 	/**
+	 * Check if the current user is enrolled
+	 * 
+	 * @return     boolean
+	 */
+	public function page($url=null)
+	{
+		if (!isset($this->_page) 
+		 || ($url !== null && (int) $this->_page['url'] != $url))
+		{
+			$this->_page = null;
+
+			if (isset($this->_pages) && is_array($this->_pages) && isset($this->_pages[$url]))
+			{
+				$this->_page = $this->_pages[$url];
+			}
+		}
+
+		return $this->_page; 
+	}
+
+	/**
 	 * Get a list of units for an offering
 	 *   Accepts either a numeric array index or a string [id, name]
 	 *   If index, it'll return the entry matching that index in the list
@@ -597,31 +643,36 @@ class CoursesModelOffering extends JObject
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
-	public function pages($idx=null)
+	public function pages($filters=array())
 	{
-		if (!isset($this->pages) || !is_array($this->pages))
+		if (isset($filters['count']) && $filters['count'])
 		{
 			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'page.php');
 
 			$tbl = new CoursesTablePage($this->_db);
-			if (!($results = $tbl->find($this->get('id'), true)))
+
+			$filters['offering_id'] = (int) $this->get('id');
+
+			return $tbl->count($filters);
+		}
+
+		if (!isset($this->_pages) || !is_array($this->_pages))
+		{
+			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'page.php');
+
+			$tbl = new CoursesTablePage($this->_db);
+
+			$filters['offering_id'] = (int) $this->get('id');
+
+			if (!($results = $tbl->find($filters)))
 			{
 				$results = array();
 			}
 
-			$this->pages = $results;
+			$this->_pages = $results;
 		}
 
-		if ($idx !== null)
-		{
-			if (isset($this->pages[$idx]))
-			{
-				return $this->pages[$idx];
-			}
-			return null;
-		}
-
-		return $this->pages;
+		return $this->_pages;
 	}
 
 	/**
@@ -785,6 +836,7 @@ class CoursesModelOffering extends JObject
 		foreach ($data as $result)
 		{
 			$user_id = $this->_userId($result);
+
 			$this->_members[$user_id] = new CoursesModelMember($result, $this->get('id'));
 			$this->_members[$user_id]->set('role_id', $role_id);
 		}
@@ -798,8 +850,6 @@ class CoursesModelOffering extends JObject
 	 */
 	public function remove($data = array())
 	{
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'member.php');
-
 		foreach ($data as $result)
 		{
 			$user_id = $this->_userId($result);
@@ -849,11 +899,11 @@ class CoursesModelOffering extends JObject
 			return false;
 		}
 
-		$first = true;
+		//$first = true;
 
-		$affected = 0;
+		//$affected = 0;
 
-		$aNewUserCourseEnrollments = array();
+		//$aNewUserCourseEnrollments = array();
 
 		if ($check)
 		{
@@ -869,6 +919,15 @@ class CoursesModelOffering extends JObject
 			$this->setError($this->_tbl->getError());
 			return false;
 		}
+
+		/*if (isset($this->_members) && is_array($this->_members))
+		{
+			foreach ($this->_members as $member)
+			{
+				$member->store();
+			}
+		}*/
+		$affected = 0;
 
 		/*$affected = $this->_db->getAffectedRows();
 
@@ -928,37 +987,46 @@ class CoursesModelOffering extends JObject
 
 				// see who is missing
 				$aNewUserCourseEnrollments = array_diff($list, $aExistingUserMembership);
+			}*/
+			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.php');
+
+			$tbl = new CoursesTableMember($this->_db);
+			$aux_table = $tbl->getTableName(); //'#__courses_offering_members';
+
+			$ulist = null;
+			$tlist = null;
+
+			foreach ($this->members() as $member)
+			{
+				if (!is_null($ulist))
+				{
+					$ulist .= ',';
+					$tlist .= ',';
+				}
+
+				$ulist .= $this->_db->Quote($member->get('user_id'));
+				$tlist .= '(' . $this->_db->Quote($this->get('id')) . ',' . $this->_db->Quote($member->get('user_id'))  . ',' . $this->_db->Quote($member->get('role_id')) . ',' . $this->_db->Quote($member->get('permissions')->toString()) . ')';
 			}
 
-			if (is_array($list) && count($list) > 0)
+			if (count($this->members()) > 0)
 			{
-				if (in_array($property, array('managers')))
+				$query = "REPLACE INTO $aux_table (offering_id, user_id, role_id, permissions) VALUES $tlist;";
+
+				$this->_db->setQuery($query);
+
+				if ($this->_db->query())
 				{
-					$query = "REPLACE INTO $aux_table (course_id, user_id) VALUES $tlist;";
-
-					$this->_db->setQuery($query);
-
-					if ($this->_db->query())
-					{
-						$affected += $this->_db->getAffectedRows();
-					}
+					$affected += $this->_db->getAffectedRows();
 				}
 			}
 
-			if (!is_array($list) || count($list) == 0)
+			if (count($this->members()) == 0)
 			{
-				if (in_array($property, array('managers')))
-				{
-					$query = "DELETE FROM $aux_table WHERE course_id=" . $this->_db->Quote($this->id) . ";";
-				}
+				$query = "DELETE FROM $aux_table WHERE offering_id=" . $this->_db->Quote($this->get('id')) . ";";
 			}
 			else
 			{
-				if (in_array($property, array('managers')))
-				{
-					$query = "DELETE m FROM #__courses_$property AS m WHERE " . " m.course_id=" . 
-						$this->_db->Quote($this->get('id')) . " AND m.user_id NOT IN (" . $ulist . ");";
-				}
+				$query = "DELETE FROM $aux_table WHERE offering_id=" . $this->_db->Quote($this->get('id')) . " AND user_id NOT IN (" . $ulist . ");";
 			}
 
 			if ($query)
@@ -969,7 +1037,7 @@ class CoursesModelOffering extends JObject
 				{
 					$affected += $this->_db->getAffectedRows();
 				}
-			}
+			}/*
 		}*/
 
 		/*$log = new CoursesTableLog($this->database);

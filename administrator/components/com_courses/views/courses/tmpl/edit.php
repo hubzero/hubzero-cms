@@ -93,7 +93,10 @@ function submitbutton(pressbutton)
 				<tbody>
 					<tr>
 						<td class="key"><label for="field-alias"><?php echo JText::_('Alias'); ?>:</label></td>
-						<td><input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" size="50" /></td>
+						<td>
+							<input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" size="50" />
+							<span class="hint"><?php echo JText::_('Alpha-numeric characters only. If left blank, alias will be generated from the title.'); ?></span>
+						</td>
 					</tr>
 					<tr>
 						<td class="key"><label for="field-title"><?php echo JText::_('COM_COURSES_TITLE'); ?>:</label></td>
@@ -102,8 +105,7 @@ function submitbutton(pressbutton)
 		 			<tr>
 						<td class="key" valign="top"><label for="field-description"><?php echo JText::_('Description'); ?>:</label></td>
 						<td>
-							<span class="hint"><?php echo JText::_('COM_COURSES_EDIT_PUBLIC_TEXT_HINT'); ?></span>
-							<?php echo $editor->display('fields[description]', $this->escape(stripslashes($this->row->get('description'))), '', '', '40', '15'); ?>
+							<textarea name="fields[description]" id="field-description" cols="40" rows="15"><?php echo $this->escape(stripslashes($this->row->get('description'))); ?></textarea>
 						</td>
 					</tr>
 				</tbody>

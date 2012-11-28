@@ -152,6 +152,10 @@ class CoursesControllerRoles extends Hubzero_Controller
 			$this->view->row->created = date('Y-m-d H:i:s', time());
 		}
 
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
+		$model = CoursesModelCourses::getInstance();
+		$this->view->courses = $model->courses();
+
 		// Set any errors
 		if ($this->getError())
 		{

@@ -132,20 +132,24 @@ class CoursesControllerSupervisors extends Hubzero_Controller
 
 		$managers = $model->members(array('role' => '!student'));
 
-		$mbrs = JRequest::getVar('users', array(0), 'post');
+		$mbrs = JRequest::getVar('entries', array(0), 'post');
 
 		$users = array();
 		foreach ($mbrs as $mbr)
 		{
+			if (!isset($mbr['select']))
+			{
+				continue;
+			}
 			// Retrieve user's account info
-			$targetuser =& JUser::getInstance($mbr);
+			$targetuser =& JUser::getInstance($mbr['user_id']);
 
 			// Ensure we found an account
 			if (is_object($targetuser))
 			{
 				$uid = $targetuser->get('id');
 
-				if (in_array($uid, $managers))
+				if (isset($managers[$uid]))
 				{
 					$users[] = $uid;
 				}
@@ -160,7 +164,7 @@ class CoursesControllerSupervisors extends Hubzero_Controller
 		$model->remove($users);
 
 		// Save changes
-		if (!$model->update())
+		if (!$model->store())
 		{
 			$this->setError($model->getError());
 		}
@@ -190,20 +194,21 @@ class CoursesControllerSupervisors extends Hubzero_Controller
 
 		$model = CoursesModelOffering::getInstance($id);
 
-		//$managers = $model->members(array('role' => '!student'));
+		$entries = JRequest::getVar('entries', array(0), 'post');
 
-		$users = JRequest::getVar('entries', array(0), 'post');
-		$roles = JRequest::getVar('roles', array(0), 'post');
+		require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'member.php');
 
-		require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'role.php');
-
-		foreach ($users as $key => $id)
+		foreach ($entries as $key => $data)
 		{
 			// Retrieve user's account info
-			$tbl = new CoursesTableRole($this->database);
-			$tbl->load($id);
-			$tbl->role_id = isset($roles[$key]) ? $roles[$key] : 0;
-			if (!$tbl->store())
+			$tbl = new CoursesTableMember($this->database);
+			$tbl->load($data['user_id'], $data['offering_id']);
+			if ($tbl->role_id == $data['role_id'])
+			{
+				continue;
+			}
+			$tbl->role_id = $data['role_id'];
+			if (!$tbl->save())
 			{
 				$this->setError($tbl->getError());
 			}

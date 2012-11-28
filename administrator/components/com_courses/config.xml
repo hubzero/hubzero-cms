@@ -31,32 +31,13 @@ HUBzero is a registered trademark of Purdue University.
 	<params>
 		<param name="uploadpath" type="text" menu="hide" default="/site/courses" label="Upload path" description="File path for pictures" size="50" />
 
-		<param name="join_policy" type="list" default="0" label="Default Join Policy" description="The default default join policy for new courses.">
-			<option value="0">Public</option>
-			<option value="1">Restricted</option>
-			<option value="2">Invite Only</option>
-			<option value="3">Closed</option>
-		</param>
-		<param name="privacy" type="list" default="0" label="Default Privacy" description="The default privacy setting for new courses.">
-			<option value="0">Public</option>
-			<option value="1">Protected</option>
-			<option value="4">Private</option>
-		</param>
-		<!--<param name="access" type="list" default="0" label="Default Content Privacy" description="The default privacy setting for content associated with courses.">
-			<option value="0">Public</option>
-			<option value="3">Protected</option>
-			<option value="4">Private</option>
-		</param>-->
 		<param type="spacer" />
 		<param name="auto_approve" type="list" default="1" label="Auto Approve Courses:?" description="Courses are auto approved at creation. Otherwise Hub administrator must manually approve course.">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
+
 		<param type="spacer" />
-		<param name="display_system_users" type="list" default="no" label="Display System Users?" description="Display system users in course member lists?">
-			<option value="no">No</option>
-			<option value="yes">Yes</option>
-		</param>        
 		<param name="email_comment_processing" type="list" default="0" label="Enable discussion comments via E-mail" description="Enable logic to send course discussion comments via email and process and add responses via email">
 			<option value="0">No</option>
 			<option value="1">Yes</option>

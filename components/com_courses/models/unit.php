@@ -778,5 +778,49 @@ class CoursesModelUnit extends JObject
 
 		return $this->assets;
 	}
+
+	/**
+	 * Check if the course exists
+	 * 
+	 * @param      mixed $idx Index value
+	 * @return     array
+	 */
+	public function bind($data=null)
+	{
+		return $this->_tbl->bind($data);
+	}
+
+	/**
+	 * Short title for 'update'
+	 * Long title (if any) ...
+	 *
+	 * @param unknown $course_id Parameter title (if any) ...
+	 * @param array $data Parameter title (if any) ...
+	 * @return boolean Return title (if any) ...
+	 */
+	public function store($check=true)
+	{
+		if (empty($this->_db))
+		{
+			return false;
+		}
+
+		if ($check)
+		{
+			if (!$this->_tbl->check())
+			{
+				$this->setError($this->_tbl->getError());
+				return false;
+			}
+		}
+
+		if (!$this->_tbl->store())
+		{
+			$this->setError($this->_tbl->getError());
+			return false;
+		}
+
+		return true;
+	}
 }
 

@@ -145,7 +145,16 @@ class CoursesTableMember extends JTable
 	 */
 	public function save()
 	{
-		return false;
+		$this->_db->setQuery("UPDATE $this->_tbl 
+			SET `role_id`=" . $this->_db->Quote($this->role_id) . ", `permissions`=" . $this->_db->Quote($this->permissions) . " 
+			WHERE `offering_id`=" . $this->_db->Quote($this->offering_id) . " 
+			AND `user_id`=" . $this->_db->Quote($this->user_id));
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		return true;
 	}
 
 	/**

@@ -108,8 +108,9 @@ foreach ($roles as $key => $role)
 ?>
 				<tr>
 					<td>
-						<input type="hidden" name="entries[<?php echo $i; ?>]" value="<?php echo $manager->get('id'); ?>" />
-						<input type="checkbox" name="users[<?php echo $i; ?>]" value="<?php echo $u->get('id'); ?>" />
+						<input type="hidden" name="entries[<?php echo $i; ?>][offering_id]" value="<?php echo $this->model->get('id'); ?>" />
+						<input type="hidden" name="entries[<?php echo $i; ?>][user_id]" value="<?php echo $u->get('id'); ?>" />
+						<input type="checkbox" name="entries[<?php echo $i; ?>][select]" value="<?php echo $u->get('id'); ?>" />
 					</td>
 					<td class="paramlist_key">
 						<a href="index.php?option=com_members&amp;controller=members&amp;task=edit&amp;id[]=<?php echo $u->get('id'); ?>" target="_parent">
@@ -120,7 +121,7 @@ foreach ($roles as $key => $role)
 						<a href="mailto:<?php echo $this->escape($u->get('email')); ?>"><?php echo $this->escape($u->get('email')); ?></a>
 					</td>
 					<td>
-						<select name="roles[<?php echo $i; ?>]" onchange="update();">
+						<select name="entries[<?php echo $i; ?>][role_id]" onchange="update();">
 <?php foreach ($roles as $role) { ?>
 							<option value="<?php echo $role->id; ?>"<?php if ($manager->get('role_id') == $role->id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
 <?php } ?>

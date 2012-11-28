@@ -43,57 +43,72 @@ JToolBarHelper::cancel();
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="item-form">
-	<div class="col width-100">
+	<div class="col width-70">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Course Page'); ?></span></legend>
+			<legend><span><?php echo JText::_('Page details'); ?></span></legend>
 
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-			<input type="hidden" name="gid" value="<?php echo $this->course->get('cn'); ?>" />
+			<input type="hidden" name="offering" value="<?php echo $this->offering->get('id'); ?>" />
 			<input type="hidden" name="task" value="save" />
-			<input type="hidden" name="page[id]" value="<?php echo $this->page->id; ?>" />
-			<input type="hidden" name="page[gid]" value="<?php echo $this->course->get('gidNumber'); ?>" />
+			<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
+			<input type="hidden" name="fields[offering_id]" value="<?php echo $this->offering->get('id'); ?>" />
 
 			<table class="admintable">
 				<tbody>
 					<tr>
 						<td class="key"><label for="field-title"><?php echo JText::_('Title'); ?>:</label></td>
 						<td>
-							<input type="text" name="page[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->page->title)); ?>" />
+							<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
 						</td>
 					</tr>
 					<tr>
 						<td class="key"><label for="field-url"><?php echo JText::_('URL'); ?>:</label></td>
 						<td>
-							<input type="text" name="page[url]" id="field-url" value="<?php echo $this->escape(stripslashes($this->page->url)); ?>" />
+							<input type="text" name="fields[url]" id="field-url" value="<?php echo $this->escape(stripslashes($this->row->url)); ?>" />
 						</td>
 					</tr>
 					<tr>
-						<td class="key"><label for="field-content"><?php echo JText::_('Content'); ?>:</label></td>
-						<td>
-							<textarea name="page[content]" id="field-content" rows="10" columns="10"><?php echo $this->escape(stripslashes($this->page->content)); ?></textarea>
-						</td>
-					</tr>
-					<tr>
-						<td class="key"><label for="content"><?php echo JText::_('Active'); ?>:</label></td>
-						<td>
-							<input type="radio" name="page[active]" id="field-active_yes" value="1" <?php if ($this->page->active) { echo 'checked="checked"'; } ?> /> <label for="field-active_yes"><?php echo JText::_('Yes'); ?></label>
-							<input type="radio" name="page[active]" id="field-active_no" value="0" <?php if (!$this->page->active) { echo 'checked="checked"'; } ?> /> <label for="field-active_no"><?php echo JText::_('No'); ?></label>
-						</td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-privacy"><?php echo JText::_('Privacy'); ?>:</label></td>
-						<td>
-							<select name="page[privacy]" id="field-privacy">
-								<option value="default" <?php if ($this->page->privacy == 'default') { echo 'selected="selected"'; } ?>><?php echo JText::_('Inherit Overview Tabs Privacy'); ?></option>
-								<option value="members" <?php if ($this->page->privacy == 'members') { echo 'selected="selected"'; } ?>><?php echo JText::_('Members Only'); ?></option>
-							</select>
+						<td colspan="2">
+							<label for="field-content"><?php echo JText::_('Content'); ?>:</label><br />
+							<textarea name="fields[content]" id="field-content" rows="35" columns="40"><?php echo $this->escape(stripslashes($this->row->content)); ?></textarea>
 						</td>
 					</tr>
 				</tbody>
 			</table>
 		</fieldset>
 	</div>
+	<div class="col width-30 fltrt">
+		<table class="meta" summary="<?php echo JText::_('COM_COURSES_META_SUMMARY'); ?>">
+			<tbody>
+				<tr>
+					<th><?php echo JText::_('Offering ID'); ?></th>
+					<td><?php echo $this->escape($this->row->get('offering_id')); ?></td>
+				</tr>
+				<tr>
+					<th><?php echo JText::_('ID'); ?></th>
+					<td><?php echo $this->escape($this->row->get('id')); ?></td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('Publishing'); ?></span></legend>
+			
+			<table class="admintable">
+				<tbody>
+					<tr>
+						<td class="key"><label for="content"><?php echo JText::_('Active'); ?>:</label></td>
+						<td>
+							<input type="radio" name="fields[active]" id="field-active_yes" value="1" <?php if ($this->row->active) { echo 'checked="checked"'; } ?> /> <label for="field-active_yes"><?php echo JText::_('Yes'); ?></label>
+							<input type="radio" name="fields[active]" id="field-active_no" value="0" <?php if (!$this->row->active) { echo 'checked="checked"'; } ?> /> <label for="field-active_no"><?php echo JText::_('No'); ?></label>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</fieldset>
+	</div>
+	<div class="clr"></div>
 
 	<?php echo JHTML::_('form.token'); ?>
 </form>

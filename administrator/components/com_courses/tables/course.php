@@ -370,7 +370,7 @@ class CoursesTableCourse extends JTable
 	{
 		$query = "SELECT c.*" . $this->_buildQuery($filters);
 
-		if ($filters['limit'] != 0) 
+		if (isset($filters['limit']) && $filters['limit'] != 0) 
 		{
 			$query .= ' LIMIT ' . intval($filters['start']) . ',' . intval($filters['limit']);
 		}

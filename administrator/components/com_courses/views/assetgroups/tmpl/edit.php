@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
 
-$canDo = CoursesHelper::getActions('course');
+$canDo = CoursesHelper::getActions('unit');
 
 JToolBarHelper::title(JText::_('COM_COURSES').': <small><small>[ ' . $text . ' ]</small></small>', 'courses.png');
 if ($canDo->get('core.edit')) 
@@ -42,19 +42,7 @@ if ($canDo->get('core.edit'))
 JToolBarHelper::cancel();
 
 jimport('joomla.html.editor');
-
 $editor =& JEditor::getInstance();
-
-/*$paramsClass = 'JParameter';
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$paramsClass = 'JRegistry';
-}
-$gparams = new $paramsClass($this->offering->params);
-
-$membership_control = $gparams->get('membership_control', 1);
-
-$display_system_users = $gparams->get('display_system_users', 'global');*/
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -77,81 +65,60 @@ function submitbutton(pressbutton)
 }
 </script>
 <?php if ($this->getError()) { ?>
-	<p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
+	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_COURSES_DETAILS'); ?></span></legend>
-			
+
 			<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
-			<input type="hidden" name="fields[course_id]" value="<?php echo $this->row->get('course_id'); ?>" />
+			<input type="hidden" name="fields[unit_id]" value="<?php echo $this->row->get('unit_id'); ?>" />
+			<input type="hidden" name="unit" value="<?php echo $this->row->get('unit_id'); ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 			<input type="hidden" name="task" value="save" />
-			
+
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<td class="key"><label for="field-alias"><?php echo JText::_('Alias'); ?>:</label></td>
-						<td><input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" size="50" /></td>
+						<td class="key"><label for="field-parent"><?php echo JText::_('Parent'); ?>:</label></td>
+						<td>
+							<select name="fields[parent]" id="field-parent">
+								<option value="0"<?php if (0 == $this->row->get('parent')) { echo ' selected="selected"'; } ?>><?php echo JText::_('(none)'); ?></option>
+<?php foreach ($this->assetgroups as $assetgroup) { ?>
+								<option value="<?php echo $assetgroup->get('id'); ?>"<?php if ($assetgroup->get('id') == $this->row->get('parent')) { echo ' selected="selected"'; } ?>><?php echo $assetgroup->treename . $this->escape(stripslashes($assetgroup->get('title'))); ?></option>
+<?php } ?>
+							</select>
+						</td>
 					</tr>
 					<tr>
 						<td class="key"><label for="field-title"><?php echo JText::_('COM_COURSES_TITLE'); ?>:</label></td>
 						<td><input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" size="50" /></td>
 					</tr>
-				</tbody>
-			</table>
-		</fieldset>
-
-		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Publishing'); ?></span></legend>
-			
-			<table class="admintable">
-				<tbody>
 					<tr>
-						<td class="paramlist_key"><label for="publish_up">Offering starts:</label></th>
+						<td class="key"><label for="field-alias"><?php echo JText::_('Alias'); ?>:</label></td>
 						<td>
-							<?php echo JHTML::_('calendar', $this->row->get('publish_up'), 'fields[publish_up]', 'publish_up', "%Y-%m-%d", array('class' => 'inputbox')); ?>
+							<input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" size="50" />
+							<span class="hint"><?php echo JText::_('Alhpa-numeric characters only. If no alias is provided, one will be generated from the title.'); ?></span>
 						</td>
 					</tr>
 					<tr>
-						<td class="paramlist_key"><label for="publish_down">Start live:</label></th>
+						<td class="key" valign="top"><label for="field-description"><?php echo JText::_('Description'); ?>:</label></td>
 						<td>
-							<?php echo JHTML::_('calendar', $this->row->get('start_date'), 'fields[start_date]', 'start_date', "%Y-%m-%d", array('class' => 'inputbox')); ?>
-						</td>
-					</tr>
-					<tr>
-						<td class="paramlist_key"><label for="publish_down">Finish live:</label></th>
-						<td>
-							<?php echo JHTML::_('calendar', $this->row->get('end_date'), 'fields[end_date]', 'end_date', "%Y-%m-%d", array('class' => 'inputbox')); ?>
-						</td>
-					</tr>
-					<tr>
-						<td class="paramlist_key"><label for="publish_down">Offering ends:</label></th>
-						<td>
-							<?php echo JHTML::_('calendar', $this->row->get('publish_down'), 'fields[publish_down]', 'publish_down', "%Y-%m-%d", array('class' => 'inputbox')); ?>
+							<textarea name="fields[description]" id="field-description" cols="40" rows="5"><?php echo $this->escape(stripslashes($this->row->get('description'))); ?></textarea>
 						</td>
 					</tr>
 				</tbody>
 			</table>
-		</fieldset>
-
-		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Managers'); ?></span></legend>
-<?php if ($this->row->get('id')) { ?>
-			<iframe width="100%" height="400" name="managers" id="managers" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=supervisors&amp;tmpl=component&amp;id=<?php echo $this->row->get('id'); ?>"></iframe>
-<?php } else { ?>
-			<p><?php echo JText::_('Course must be saved before managers can be added.'); ?></p>
-<?php } ?>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
 		<table class="meta" summary="<?php echo JText::_('COM_COURSES_META_SUMMARY'); ?>">
 			<tbody>
 				<tr>
-					<th><?php echo JText::_('Course ID'); ?></th>
-					<td><?php echo $this->escape($this->row->get('course_id')); ?></td>
+					<th><?php echo JText::_('Unit ID'); ?></th>
+					<td><?php echo $this->escape($this->row->get('unit_id')); ?></td>
 				</tr>
 				<tr>
 					<th><?php echo JText::_('ID'); ?></th>

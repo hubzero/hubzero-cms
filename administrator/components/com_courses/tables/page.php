@@ -103,24 +103,125 @@ Class CoursesTablePage extends JTable
 	}
 
 	/**
+	 * Validate data
+	 * 
+	 * @return     boolean True if data is valid
+	 */
+	public function check()
+	{
+		$this->title = trim($this->title);
+		if (!$this->title) 
+		{
+			$this->setError(JText::_('Missing title'));
+			return false;
+		}
+
+		if (!$this->content) 
+		{
+			$this->setError(JText::_('Missing content'));
+			return false;
+		}
+
+		if (!$this->url)
+		{
+			$this->url = strtolower(str_replace(' ', '_', trim($this->title)));
+		}
+		$this->url = preg_replace("/[^a-zA-Z0-9\-_]/", '', $this->url);
+
+		if (!$this->id)
+		{
+			$high = $this->getHighestPageOrder($this->offering_id);
+			$this->porder = ($high + 1);
+		}
+
+		return true;
+	}
+
+	/**
+	 * Build query method
+	 * 
+	 * @param  array $filters
+	 * @return $query database query
+	 */
+	private function _buildQuery($filters=array())
+	{
+		$query = " FROM $this->_tbl AS r";
+
+		$where = array();
+		if (isset($filters['offering_id']))
+		{
+			if (is_array($filters['offering_id']))
+			{
+				$filters['offering_id'] = array_map('intval', $filters['offering_id']);
+				$filters['offering_id'] = implode(',', $filters['offering_id']);
+			}
+			else
+			{
+				$filters['offering_id'] = intval($filters['offering_id']);
+			}
+			$where[] = "r.`offering_id` IN (" . $filters['offering_id'] . ")";
+		}
+		if (isset($filters['url']) && $filters['url'])
+		{
+			if (substr($filters['url'], 0, 1) == '!')
+			{
+				$where[] = "r.`url`!=" . $this->_db->Quote(ltrim($filters['url'], '!'));
+			}
+			else
+			{
+				$where[] = "r.`url`=" . $this->_db->Quote($filters['url']);
+			}
+		}
+		if (isset($filters['search']) && $filters['search'])
+		{
+			$where[] = "LOWER(r.`title`) LIKE '%" . $this->_db->getEscaped(strtolower($filters['title'])) . "%'";
+		}
+		if (isset($filters['active']))
+		{
+			$where[] = "r.`active`=" . $this->_db->getEscaped(intval($filters['active']));
+		}
+
+		if (count($where) > 0)
+		{
+			$query .= " WHERE " . implode(" AND ", $where);
+		}
+
+		return $query;
+	}
+
+	/**
+	 * Get an object list of course units
+	 * 
+	 * @param  array $filters
+	 * @return object Return course units
+	 */
+	public function count($filters=array())
+	{
+		$query  = "SELECT COUNT(*) ";
+		$query .= $this->_buildquery($filters);
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadResult();
+	}
+
+	/**
 	 * Get pages for a course
 	 * 
 	 * @param      string  $offering_id    Course alias (cn)
 	 * @param      boolean $active Parameter description (if any) ...
 	 * @return     array
 	 */
-	public function find($offering_id, $active = false)
+	public function find($filters=array())
 	{
 		$final = array();
 
-		if ($active) 
+		$sql = "SELECT r.*" . $this->_buildquery($filters);
+
+		/*if ($active) 
 		{
-			$sql = "SELECT * FROM $this->_tbl WHERE offering_id=" . $this->_db->Quote(intval($offering_id)) . " AND active=1 ORDER BY porder ASC";
+			$sql .= " AND active=1";
 		}
-		else 
-		{
-			$sql = "SELECT * FROM $this->_tbl WHERE offering_id=" . $this->_db->Quote(intval($offering_id)) . " ORDER BY porder ASC";
-		}
+		$sql .= " ORDER BY porder ASC";*/
 
 		$this->_db->setQuery($sql);
 		$pages = $this->_db->loadAssocList();

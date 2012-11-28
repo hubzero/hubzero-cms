@@ -119,7 +119,50 @@ class CoursesTableAssetGroup extends JTable
 	 */
 	public function check()
 	{
-		parent::check();
+		$this->unit_id = intval($this->unit_id);
+		if (!$this->unit_id) 
+		{
+			$this->setError(JText::_('Missing unit ID'));
+			return false;
+		}
+
+		$this->title = trim($this->title);
+		if (!$this->title) 
+		{
+			$this->setError(JText::_('Missing title'));
+			return false;
+		}
+
+		if (!$this->alias)
+		{
+			$this->alias = strtolower($this->title);
+		}
+		$this->alias = preg_replace("/[^a-zA-Z0-9\-_]/", '', $this->alias);
+
+		if (!$this->id)
+		{
+			$high = $this->getHighestOrder($this->unit_id);
+			$this->ordering = ($high + 1);
+
+			$juser =& JFactory::getUser();
+			$this->created = date('Y-m-d H:i:s', time());
+			$this->created_by = $juser->get('id');
+		}
+
+		return true;
+	}
+
+	/**
+	 * Get the last page in the ordering
+	 * 
+	 * @param      string  $offering_id    Course alias (cn)
+	 * @return     integer
+	 */
+	public function getHighestOrder($unit_id)
+	{
+		$sql = "SELECT ordering from $this->_tbl WHERE `unit_id`=" . $this->_db->Quote(intval($unit_id)) . " ORDER BY ordering DESC LIMIT 1";
+		$this->_db->setQuery($sql);
+		return $this->_db->loadResult();
 	}
 
 	/**

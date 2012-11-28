@@ -58,7 +58,7 @@ class CoursesModelAssetgroup extends JObject
 	 * 
 	 * @var object
 	 */
-	public $assetgroup = NULL;
+	private $_tbl = NULL;
 
 	/**
 	 * CoursesTableInstance
@@ -101,19 +101,19 @@ class CoursesModelAssetgroup extends JObject
 
 		$this->_db = JFactory::getDBO();
 
-		$this->assetgroup = new CoursesTableAssetGroup($this->_db);
+		$this->_tbl = new CoursesTableAssetGroup($this->_db);
 
 		if (is_numeric($oid) || is_string($oid))
 		{
-			$this->assetgroup->load($oid);
+			$this->_tbl->load($oid);
 		}
 		else if (is_object($oid))
 		{
-			$this->assetgroup->bind($oid);
+			$this->_tbl->bind($oid);
 		}
 		else if (is_array($oid))
 		{
-			$this->assetgroup->bind($oid);
+			$this->_tbl->bind($oid);
 		}
 
 		/*if (is_a($parent, 'CoursesModelUnit'))
@@ -199,9 +199,9 @@ class CoursesModelAssetgroup extends JObject
  	 */
 	public function get($property, $default=null)
 	{
-		if (isset($this->assetgroup->$property)) 
+		if (isset($this->_tbl->$property)) 
 		{
-			return $this->assetgroup->$property;
+			return $this->_tbl->$property;
 		}
 		return $default;
 	}
@@ -215,8 +215,8 @@ class CoursesModelAssetgroup extends JObject
 	 */
 	public function set($property, $value = null)
 	{
-		$previous = isset($this->assetgroup->$property) ? $this->assetgroup->$property : null;
-		$this->assetgroup->$property = $value;
+		$previous = isset($this->_tbl->$property) ? $this->_tbl->$property : null;
+		$this->_tbl->$property = $value;
 		return $previous;
 	}
 
@@ -511,6 +511,50 @@ class CoursesModelAssetgroup extends JObject
 			break;
 		}
 		return null;
+	}
+
+	/**
+	 * Check if the course exists
+	 * 
+	 * @param      mixed $idx Index value
+	 * @return     array
+	 */
+	public function bind($data=null)
+	{
+		return $this->_tbl->bind($data);
+	}
+
+	/**
+	 * Short title for 'update'
+	 * Long title (if any) ...
+	 *
+	 * @param unknown $course_id Parameter title (if any) ...
+	 * @param array $data Parameter title (if any) ...
+	 * @return boolean Return title (if any) ...
+	 */
+	public function store($check=true)
+	{
+		if (empty($this->_db))
+		{
+			return false;
+		}
+
+		if ($check)
+		{
+			if (!$this->_tbl->check())
+			{
+				$this->setError($this->_tbl->getError());
+				return false;
+			}
+		}
+
+		if (!$this->_tbl->store())
+		{
+			$this->setError($this->_tbl->getError());
+			return false;
+		}
+
+		return true;
 	}
 }
 
