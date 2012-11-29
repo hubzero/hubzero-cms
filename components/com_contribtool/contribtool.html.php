@@ -939,7 +939,7 @@ class ContribtoolHtml
                             <input type="hidden" name="newstate" value="<?php echo ContribtoolHtml::getStatusNum('Approved') ?>" />
                             <input type="hidden" name="id" value="<?php echo $status['toolid'] ?>" />
                             <div>
-                             <h4>Tool Information <a class="edit button"   href="<?php echo $editpath ?>" title="Edit this version information">Edit</a></h4> 		 
+                             <h4>....Tool Information <a class="edit button"   href="<?php echo $editpath ?>" title="Edit this version information">Edit</a></h4> 		 
                                     <p><span class="heading"><?php echo JText::_('TITLE'); ?>: </span><span class="desc"><?php echo $status['title']; ?></span></p>
                                     <p><span class="heading"><?php echo JText::_('VERSION'); ?>: </span><span class="desc"><?php echo $status['version']; ?></span><span class="actionlink">[<a href="index.php?option=<?php echo $option ?>&amp;task=versions&amp;toolid=<?php echo $status['toolid'] ?>&amp;action=confirm">edit</a>]</span></p>
                                     <p><span class="heading"><?php echo JText::_('DESCRIPTION'); ?>: </span><span class="desc"><?php echo $status['description']; ?></span></p>
@@ -1336,7 +1336,7 @@ class ContribtoolHtml
 						</tr>
                         <tr>
 				   			<th><?php echo JText::_('TITLE'); ?></th>
-				   			<td><?php echo stripslashes($status['title']).' ('.$status['toolname'].' - '.strtolower(JText::_('ID')).' #'.$status['toolid'].')'; ?></td>
+				   			<td><?php echo htmlspecialchars(stripslashes($status['title'])) . ' ('.$status['toolname'].' - '.strtolower(JText::_('ID')).' #'.$status['toolid'].')'; ?></td>
 				  		</tr>
 				 		<tr>
 				   			<th><?php echo JText::_('VERSION'); ?></th>
@@ -1348,7 +1348,7 @@ class ContribtoolHtml
 				  		</tr>
 				 		<tr>
 				   			<th><?php echo JText::_('AT_A_GLANCE'); ?></th>
-				   			<td><?php echo stripslashes($status['description']); ?></td>
+				   			<td><?php echo htmlspecialchars(stripslashes($status['description'])); ?></td>
 				  		</tr>
                         <tr>
 				   			<th><?php echo JText::_('DESCRIPTION'); ?></th>
