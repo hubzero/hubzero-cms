@@ -433,7 +433,7 @@ class CitationFormat
 		}
 		
 		//percent encode chars
-		$chars = array(' ', '', '/', ':', '"', '&amp;');
+		$chars = array(' ', '%', '/', ':', '"', '&amp;');
 		$replace = array("%20", "%20", "%2F", "%3A", "%22", "%26");
 		$coins_data = str_replace($chars, $replace, implode('&', $coins_data));
 		
