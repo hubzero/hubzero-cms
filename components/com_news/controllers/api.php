@@ -10,8 +10,8 @@ class NewsApiController extends Hubzero_Api_Controller
 
 		switch($this->segments[0]) 
 		{
-			case 'news':		$this->index();		break;
-			default:			$this->index();
+			case 'index':		$this->index();		break;
+			default:			$this->not_found();
 		}
 	}
 	
@@ -52,7 +52,7 @@ class NewsApiController extends Hubzero_Api_Controller
 		$database->setQuery($query);
 		$rows = $database->loadObjectList();
 		
-		//sleep(15);
+		//sleep(5);
 		
 		$obj = new stdClass();
 		$obj->news = $rows;

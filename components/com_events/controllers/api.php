@@ -10,8 +10,8 @@ class EventsApiController extends Hubzero_Api_Controller
 		
 		switch($this->segments[0]) 
 		{
-			case 'latest':		$this->index();		break;
-			default:			$this->index();
+			case 'index':		$this->index();			break;
+			default:			$this->not_found();
 		}
 	}
 	

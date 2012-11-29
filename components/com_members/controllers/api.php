@@ -35,16 +35,49 @@ class MembersApiController extends Hubzero_Api_Controller
 	
 	function myprofile()
 	{
+		//get the userid from authentication token
+		//load user profile from userid
 		$userid = JFactory::getApplication()->getAuthn('user_id');
 		$result = Hubzero_User_Profile::getInstance($userid);
-
+		
+		//check to make sure we have a profile
 		if ($result === false)	return $this->not_found();
-
-		$profile = array();
+		
+		//
+		ximport("Hubzero_User_Profile_Helper");
+		
+		//get any request vars
+		$format = JRequest::getVar('format', 'json');
+		
+		//
+		$profile = array(
+			'id' => $result->get('uidNumber'),
+			'username' => $result->get('username'),
+			'name' => $result->get('name'),
+			'first_name' => $result->get('givenName'),
+			'middle_name' => $result->get('middleName'),
+			'last_name' => $result->get('surname'),
+			'bio' => $result->get('bio'),
+			'email' => $result->get('email'),
+			'phone' => $result->get('phone'),
+			'url' => $result->get('url'),
+			'gender' => $result->get('gender'),
+			'organization' => $result->get('organization'),
+			'organization_type' => $result->get('orgtype'),
+			'country_resident' => $result->get('countryresident'),
+			'country_origin' => $result->get('countryorigin'),
+			'member_since' => $result->get('registerDate'),
+			'picture' => array(
+				'thumb' => Hubzero_User_Profile_Helper::getMemberPhoto( $result, 0, true ),
+				'full' => Hubzero_User_Profile_Helper::getMemberPhoto( $result, 0, false )
+			)
+		);
+		
+		/*
 		$public_keys = array("uidNumber","name","picture","givenName","middleName","surname","registerDate");
 		$private_keys = array("username","bio","email","phone","url","homeDirectory","orgtype","organization","countryresident","countryorigin","gender");
 
-		ximport("Hubzero_User_Profile_Helper");
+		
 
 		$member_pic = Hubzero_User_Profile_Helper::getMemberPhoto( $result, 0, false );
 		$member_pic_thumb = Hubzero_User_Profile_Helper::getMemberPhoto( $result, 0, true );
@@ -66,14 +99,15 @@ class MembersApiController extends Hubzero_Api_Controller
 		{
 			$profile[$pri] = ($result->get($pri) != "") ? $result->get($pri) : "";
 		}
+		*/
 		
 		//sleep(5);
 		
 		//encode and return result
-		$obj = new stdClass();
-		$obj->profile = $profile;
-		$this->setMessageType("application/json");
-		$this->setMessage($obj);
+		$object = new stdClass();
+		$object->profile = $profile;
+		$this->setMessageType( $format );
+		$this->setMessage( $object );
 	}
 	
 	private function mygroups()
@@ -152,7 +186,7 @@ class MembersApiController extends Hubzero_Api_Controller
 			$result[] = $r;
 		}
 
-		//sleep(10);
+		//sleep(5);
 
 		//encode sessions for return
 		$object = new stdClass();
@@ -177,15 +211,23 @@ class MembersApiController extends Hubzero_Api_Controller
 		JLoader::import("joomla.database.table");
 		$database =& JFactory::getDBO();
 		
+		//get the supported tag
+		$rconfig = JComponentHelper::getParams('com_resources');
+		$supportedtag = $rconfig->get('supportedtag', '');
+
+		//get supportedtag usage
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
+		$this->rt = new ResourcesTags($database);
+		$supportedtagusage = $this->rt->getTagUsage($supportedtag, 'alias');
+	
 		//load users recent tools
-		$sql = "SELECT r.id, r.title, r.alias, r.introtext as description, r.fulltxt as abstract FROM jos_recent_tools as rt, jos_resources as r WHERE rt.uid={$result->get("uidNumber")} AND rt.tool=r.alias AND r.published=1 ORDER BY rt.created";
+		$sql = "SELECT r.alias, r.title as name, r.introtext as description FROM jos_recent_tools as rt, jos_resources as r WHERE rt.uid={$result->get("uidNumber")} AND rt.tool=r.alias AND r.published=1 ORDER BY rt.created";
 		$database->setQuery($sql);
 		$recent = $database->loadObjectList();
 		
-		//remove slashes and html code from abstract
-		for($i=0, $n=count($recent); $i < $n; $i++)
+		foreach($recent as $k => $r)
 		{
-			$recent[$i]->abstract = stripslashes(strip_tags($recent[$i]->abstract));
+			$recent[$k]->supported = (in_array($r->alias, $supportedtagusage)) ? 1 : 0;
 		}
 		
 		//encode sessions for return

@@ -7,11 +7,11 @@ class WhatsnewApiController extends Hubzero_Api_Controller
 	{
 		JLoader::import('joomla.environment.request');
 		JLoader::import('joomla.application.component.helper');
-
+		
 		switch($this->segments[0]) 
 		{
 			case 'index':		$this->index();			break;
-			default:			$this->index();
+			default:			$this->not_found();
 		}
 	}
 	
@@ -35,11 +35,11 @@ class WhatsnewApiController extends Hubzero_Api_Controller
 		}
 		
 		//get the request vars
-		$period = JRequest::getVar("period", "month");
+		$period = JRequest::getVar("period", "year");
 		$category = JRequest::getVar("category", "all");
 		$limit = JRequest::getVar("limit", 25);
 		$limitstart = JRequest::getVar("limitstart", 0);
-		$content = JRequest::getVar("content", 1);
+		$content = JRequest::getVar("content", 0);
 		$order = JRequest::getVar("order", "desc");
 		
 		//import joomla plugin helper
