@@ -22,11 +22,12 @@ if (!jq) {
 HUB.CoursesOutline = {
 	jQuery: jq,
 	
-	initialize: function() 
+	initialize: function()
 	{
 		HUB.CoursesOutline.toggleUnits();
 		HUB.CoursesOutline.showProgressIndicator();
 		HUB.CoursesOutline.makeSortable();
+		HUB.CoursesOutline.makeUniform();
 	},
 
 	toggleUnits: function()
@@ -69,11 +70,8 @@ HUB.CoursesOutline = {
 			$(this).find('.asset-group-item').each(function(){
 				count += 1;
 
-				if($(this).find('.asset-item').length >= 1){
+				if($(this).find('.asset-item:not(.nofiles)').length >= 1){
 					haveitems += 1;
-					$(this).addClass('hasitem');
-				} else {
-					$(this).addClass('noitem');
 				}
 
 				// Calculate percentage of asset groups with assets
@@ -107,6 +105,16 @@ HUB.CoursesOutline = {
 		var $ = this.jQuery;
 
 		//$('.asset-group-item').not('.hasitem').find('.uploadfiles').show();
+
+		$('.asset-group-item').each(function(){
+			var high = $(this).height();
+				high -= $(this).children('.uploadfiles').css('margin-top').replace("px", "");
+				high -= $(this).children('.uploadfiles').css('margin-bottom').replace("px", "");
+				high -= $(this).css('padding-top').replace("px", "");
+				high -= $(this).css('padding-bottom').replace("px", "");
+
+			$(this).children('.uploadfiles').css('height', high);
+		});
 	},
 
 	makeSortable: function()
@@ -120,43 +128,54 @@ HUB.CoursesOutline = {
 			tolerance: 'pointer',
 			opacity: '0.8',
 			items: 'li:not(.add-new)',
-			axis: 'y',
 			start: function(){
 				$(".placeholder").css('height', $(event.target).height());
 			}
 		});
 
+		// Hide inputs and show plain text
+		$('.editable').show();
+		$('.asset-group-item-title-edit').hide();
+
 		// Turn div "titles" into editable fields
-		$(".sortable").on('click', "div.editable", function(event){
+		$(".sortable").on('click', ".editable", function(event){
 			event.stopPropagation();
 			event.preventDefault();
 			var parent = $(this).parent();
 			var width  = $(this).width();
-			var value  = $(this).html();
 
-			$(this).replaceWith('<div><input type="text" value="' + value + '" />');
+			$(this).hide();
+			parent.find('.asset-group-item-title-edit').show();
 
-			var input = parent.find('input[type="text"]:first');
-			input.css("width", width+20);
-			input.after('<input type="submit" value="Save" /><input type="reset" value="Cancel" /></div>');
-
-			// Store away the previous val in the div data
-			div = parent.find("div:first");
-			div.data('prevVal', value);
+			parent.find('input[type="text"]:first').css("width", width+20);
 		});
 
 		// Turn editable fields back into divs on cancel
-		$(".sortable").on('click', "input[type='reset']", function(){
+		$(".sortable").on('click', "input[type='reset']", function(event){
+			event.stopPropagation();
 			event.preventDefault();
-			var parent = $(this).parent("div");
-			parent.replaceWith('<div class="asset-group-item-title editable title">' + parent.data('prevVal') + '</div>');
+
+			var parent = $(this).parents('.asset-group-item-container');
+
+			// Hide inputs and show plain text
+			parent.find('.editable').show();
+			parent.find('.asset-group-item-title-edit').hide();
+
+			parent.find('input[type="text"]:first').val(parent.find('.editable').html());
 		});
 
 		// Save editable fields on save
 		$(".sortable").on('click', "input[type='submit']", function(event){
+			event.stopPropagation();
 			event.preventDefault();
-			var parent = $(this).parent("div");
-			parent.replaceWith('<div class="asset-group-item-title editable title">' + parent.find("input[type='text']:first").val() + '</div>');
+
+			var parent = $(this).parents(".asset-group-item-container");
+
+			parent.find('.editable').html(parent.find('input[type="text"]:first').val());
+
+			// Hide inputs and show plain text
+			parent.find('.editable').show();
+			parent.find('.asset-group-item-title-edit').hide();
 		});
 
 		// Add a new list item when clicking 'add'
@@ -181,6 +200,13 @@ HUB.CoursesOutline = {
 				value: 1
 			});
 		});
+	},
+
+	makeUniform: function()
+	{
+		var $ = this.jQuery;
+
+		$('.uniform').uniform();
 	}
 };
 

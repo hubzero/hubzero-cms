@@ -464,6 +464,10 @@ class CoursesControllerOffering extends Hubzero_Controller
 		// Push some needed scripts to the template
 		$this->_getScripts('/assets/js/courses.outline');
 
+		// Add 'uniform' js and css
+		Hubzero_Document::addSystemStylesheet('uniform.css');
+		Hubzero_Document::addSystemScript('jquery.uniform');
+
 		// Build the title
 		$this->_buildTitle();
 

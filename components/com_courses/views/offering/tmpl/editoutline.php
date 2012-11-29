@@ -60,7 +60,6 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 	<form name="editoutline" action="index.php" method="POST" id="">
 
 		<ul class="unit sortable">
-			<div class="add first"></div>
 <?php 
 			foreach ($this->course->offering->units() as $unit)
 			{
@@ -71,8 +70,8 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 					<div class="progress-indicator"></div>
 				</div>
 				<div class="clear"></div>
+
 				<ul class="asset-group-type-list sortable">
-					<div class="add"></div>
 <?php
 				foreach($unit->assetgroups() as $agt)
 				{
@@ -81,37 +80,74 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 						<div class="asset-group-title title"><?php echo $agt->get('title'); ?></div>
 						<div class="clear"></div>
 						<ul class="asset-group sortable">
-							<div class="add"></div>
 <?php
 					foreach($agt->children() as $ag)
 					{
 ?>
 							<li class="asset-group-item">
-								<div class="asset-group-item-title editable title"><?php echo $ag->get('title'); ?></div>
 								<div class="uploadfiles">Drag files here to upload</div>
-								<div class="clear"></div>
+								<div class="asset-group-item-container">
+									<div class="asset-group-item-title editable title"><?php echo $ag->get('title'); ?></div>
+									<div class="asset-group-item-title-edit">
+										<input class="uniform" type="text" value="<?php echo $ag->get('title'); ?>" />
+										<input class="uniform" type="submit" value="Save" />
+										<input class="uniform" type="reset" value="Cancel" />
+									</div>
 <?php
-						// Loop through the assets
-						if ($ag->assets()->total())
-						{
+							// Loop through the assets
+							if ($ag->assets()->total())
+							{
+?>
+									<ul class="sortable">
+<?php
+									foreach ($ag->assets() as $a)
+									{
+										$href = $a->path($this->course->get('id'));
+										if ($a->get('type') == 'video')
+										{
+											$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
+										}
+?>
+										<li class="asset-item asset <?php echo $a->get('type'); echo ($a->get('state') == 0) ? ' notpublished' : ' published'; ?>">
+											<?php echo $this->escape(stripslashes($a->get('title'))); ?>
+											(<a class="" href="<?php echo $href; ?>">preview</a>)
+
+											<span class="next-step-publish">
+												<label for="published">
+													<?php echo ($a->get('state') == 0) ? 'Mark as reviewed and publish?' : 'Published'; ?>
+													<input 
+														class="uniform"
+														name="published"
+														id="published-checkbox"
+														type="checkbox"
+														<?php echo ($a->get('state') == 0) ? '' : 'checked="checked"'; ?> />
+												</label>
+											</span>
+
+										</li>
+<?php
+									}
+?>
+									</ul>
+<?php
+							}
+							else // no assets in this asset group
+							{
 ?>
 								<ul class="sortable">
-<?php
-								foreach ($ag->assets() as $a)
-								{
-									$href = $a->path($this->course->get('id'));
-									if ($a->get('type') == 'video')
-									{
-										$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
-									}
-									echo '<li class="asset-item asset ' . $a->get('type') . '">' . $this->escape(stripslashes($a->get('title'))) . ' (<a class="" href="' . $href . '">preview</a>)</li>';
-								}
-?>
+									<li class="asset-item asset missing nofiles">
+										No files
+										<span class="next-step-upload">
+											Upload files &rarr;
+										</span>
+									</li>
 								</ul>
 <?php
-						}
+							}
 ?>
+								</div>
 							</li>
+							<div class="clear"></div>
 <?php
 					}
 ?>

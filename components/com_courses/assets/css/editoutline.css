@@ -12,7 +12,6 @@
 .placeholder {
 	border: 1px dotted #AAA;
 	background: #FFF;
-	min-height: 40px;
 	margin: 15px 0;
 
 	-webkit-border-radius: 4px;
@@ -22,8 +21,9 @@
 .course:before {
 	content: "\f09c";
 }
-.add {
-	display: none;
+.asset-item a {
+	border-bottom: none;
+	text-decoration: none;
 }
 .sortable {
 	list-style: none;
@@ -34,6 +34,10 @@
 	width: 200px;
 	float: right;
 	padding-top: 2px;
+}
+.whatsnext {
+	float: right;
+	margin-right: 250px;
 }
 .unit-item {
 	margin-bottom: 15px;
@@ -80,37 +84,32 @@
 }
 .asset-group-item-title {
 	display: block;
-	float: left;
 }
 .asset-group-item {
 	position: relative;
-	padding-left: 20px;
+	overflow: hidden;
+	padding: 10px;
+	border: 1px dotted #AAA;
+	margin: 10px 0 0 0;
+	cursor: move;
+	background: #FAFAFA;
 }
-.asset-group-item:before {
-	font-size: 15px;
-	font-family: "fontcons";
-	position: absolute;
-	top: 0;
-	left: 0;
-	content: "";
+.editable {
+	display: none;
+	cursor: pointer;
 }
-.hasitem:before {
-	color: #49BF0A;
-	content: "\f058";
-}
-.noitem:before {
-	color: #BFB100;
-	content: "\26a0";
+.asset-group-item-container {
+	margin-right: 210px;
 }
 .uploadfiles {
 	position: relative;
-	background: #FAFAFA;
-	border: 1px dotted #AAA;
+	background: #FFF;
+	border: 2px dotted #AAA;
 	padding: 7px 7px 7px 27px;
-	margin: 5px 0 15px 0;
-	display: none;
-	float: left;
+	margin: 5px;
 	font-style: italic;
+	text-align: center;
+	float: right;
 
 	-webkit-border-radius: 7px;
 	-moz-border-radius: 7px;
@@ -121,6 +120,10 @@
 	left: 7px;
 	top: 7px;
 	content: "\f093";
+}
+.next-step-publish,
+.next-step-upload {
+	float: right;
 }
 .add-new {
 	opacity: .9;
@@ -144,32 +147,57 @@
 	content: "\2295";
 }
 .asset-group {
-	padding-left: 10px;
+	width: 100%;
+	overflow: hidden;
 }
 
 /* Asset types */
 .asset {
 	margin-left: 10px;
 	position: relative;
-	padding-left: 15px;
+	padding-left: 40px;
+	border-bottom: 1px dotted #AAA;
 }
-.asset:before {
+.asset:before,
+.asset:after {
 	position: absolute;
 	top: 0;
-	left: 0;
+	left: 25px;
 	font-family: "fontcons";
 	content: "";
 }
-.video:before {
+.asset:before {
+	top: 0;
+	left: 0;
+}
+.published:before {
+	color: #49BF0A;
+	content: "\f058";
+}
+.notpublished:before {
+	color: #BFB100;
+	content: "\26a0";
+}
+.nofiles:before {
+	color: #BF0000;
+	content: "\2757";
+}
+.video:after {
 	content: "\f008";
 }
-.file:before {
-	content: "\f016"
+.file:after {
+	content: "\f016";
 }
-.exam:before {
+.missing:after {
+	content: "\2298"
+}
+.exam:after {
 	content: "\270e";
 }
 
+.asset-group-item .checker {
+	margin-right: 0;
+}
 /* Progress bar style overrides (from ui defaults) */
 .ui-progressbar {
 	height: 1em;
