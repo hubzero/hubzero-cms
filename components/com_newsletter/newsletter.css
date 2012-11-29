@@ -1,0 +1,21 @@
+.newsletter {
+	width:700px;
+	}
+.newsletter table {
+	border:none;
+	}
+.newsletter .display-browser {
+	display:none;
+	}
+
+.aside {
+	margin:17px 0 0 0;
+	padding:0;
+	border:1px solid #777;
+	}
+.aside h4 {
+	margin:0;
+	padding:5px;
+	background:#777;
+	color:#FFF;
+	}		
