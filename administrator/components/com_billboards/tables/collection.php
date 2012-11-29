@@ -112,7 +112,7 @@ class BillboardsCollection extends JTable
 	}
 	
 	
-	public function getBillboards($filters)
+	public function getBillboards( $filters )
 	{
 		$query 	= "SELECT b.name, b.learn_more_target, b.background_img FROM jos_billboards as b, jos_billboard_collection as c WHERE c.id=b.collection_id";
 		$query .= " AND published=" . $filters['published'];
@@ -120,7 +120,28 @@ class BillboardsCollection extends JTable
 		$query .= " ORDER BY `ordering` ASC";
 		
 		$this->_db->setQuery($query);
-		return $this->_db->loadAssocList();
+		$result = $this->_db->loadAssocList();
+		
+		if(isset($filters['include_retina']) && $filters['include_retina'])
+		{
+			for($i=0,$n=count($result); $i<$n; $i++)
+			{
+				$image = $result[$i]['background_img'];
+				$image_info = pathinfo($image);
+				
+				$retina_image = $image_info['dirname'] . DS . $image_info['filename'] . "@2x." . $image_info['extension'];
+				if(file_exists( JPATH_ROOT . DS . $retina_image ))
+				{
+					$result[$i]['retina_background_img'] = $retina_image;
+				}
+				else
+				{
+					$result[$i]['retina_background_img'] = $image;
+				}
+			}
+		}
+		
+		return $result;
 	}
 }
 
