@@ -498,7 +498,7 @@ class MembersControllerMedia extends Hubzero_Controller
 		}
 
 		// Push through to the image view
-		$this->img($file, $id);
+		$this->displayTask($file, $id);
 	}
 
 	/**
@@ -541,6 +541,7 @@ class MembersControllerMedia extends Hubzero_Controller
 				$this->view->setError($error);
 			}
 		}
+		$this->view->setLayout('display');
 		$this->view->display();
 	}
 

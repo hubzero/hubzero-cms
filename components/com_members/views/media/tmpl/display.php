@@ -42,7 +42,7 @@ $app =& JFactory::getApplication();
 <?php if (is_file(JPATH_ROOT.DS.'templates'.DS. $app->getTemplate() .DS.'html'.DS.$this->option.DS.'members.css')) { ?>
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo DS.'templates'.DS. $app->getTemplate() .DS.'html'.DS.$this->option.DS; ?>members.css" />
 <?php } else { ?>
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo DS.'components'.DS.$this->option.DS; ?>members.css" />
+		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo DS.'components'.DS.'com_members'.DS.'assets'.DS.'css'.DS.'members.css'; ?>" />
 <?php } ?>
 	</head>
 	<body id="member-picture">
@@ -51,6 +51,7 @@ $app =& JFactory::getApplication();
 				<legend><?php echo JText::_('UPLOAD'); ?> <?php echo JText::_('WILL_REPLACE_EXISTING_IMAGE'); ?></legend>
 
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+				<input type="hidden" name="controller" value="media" />
 				<input type="hidden" name="no_html" value="1" />
 				<input type="hidden" name="task" value="upload" />
 				<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
@@ -92,7 +93,7 @@ $app =& JFactory::getApplication();
 					</tr>
 					<tr>
 						<td><input type="hidden" name="currentfile" value="<?php echo $this->file; ?>" /></td>
-						<td><a href="index.php?option=<?php echo $this->option; ?>&amp;no_html=1&amp;task=deleteimg&amp;file=<?php echo $this->file; ?>&amp;id=<?php echo $this->id; ?>">[ <?php echo JText::_('DELETE'); ?> ]</a></td>
+						<td><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;task=deleteimg&amp;file=<?php echo $this->file; ?>&amp;id=<?php echo $this->id; ?>&amp;no_html=1">[ <?php echo JText::_('DELETE'); ?> ]</a></td>
 					</tr>
 <?php } else { ?>
 					<tr>
