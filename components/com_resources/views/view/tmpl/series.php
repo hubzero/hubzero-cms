@@ -127,15 +127,77 @@ $juser =& JFactory::getUser();
 		{
 			echo ResourcesHtml::primary_child($this->option, $this->model->resource, '', '');
 		}
+		
+		$video = 0;
+		$audio = 0;
+		$notes = 0;
+
+		$children = $this->model->children('standalone');
+		foreach ($children as $child)
+		{
+			$rhelper = new ResourcesHelper($child->id, $this->database);
+			$rhelper->getChildren();
+			if ($rhelper->children && count($rhelper->children) > 0) 
+			{
+				foreach ($rhelper->children as $grandchild)
+				{
+					switch (ResourcesHtml::getFileExtension($grandchild->path))
+					{
+						case 'm4v':
+						case 'mp4':
+						case 'wmv':
+						case 'mov':
+						case 'qt':
+						case 'mpg':
+						case 'mpeg':
+						case 'mpe':
+						case 'mp2':
+						case 'mpv2':
+							$videos++;
+						break;
+
+						case 'mp3':
+						case 'm4a':
+						case 'aiff':
+						case 'aif':
+						case 'wav':
+						case 'ra':
+						case 'ram':
+							$audio++;
+						break;
+
+						case 'ppt':
+						case 'pps':
+						case 'pdf':
+						case 'doc':
+						case 'txt':
+						case 'html':
+						case 'htm':
+							$notes++;
+						break;
+					}
+				}
+			}
+		}
 
 		$live_site = rtrim(JURI::base(),'/');
+		
+		if ($notes || $audio || $video) 
+		{
 ?>
 					<p>
+					<?php if ($audio) { ?>
 						<a class="feed" id="resource-audio-feed" href="<?php echo $live_site .'/resources/'.$this->model->resource->id.'/feed.rss?format=audio'; ?>"><?php echo JText::_('Audio podcast'); ?></a><br />
+					<?php } ?>
+					<?php if ($video) { ?>
 						<a class="feed" id="resource-video-feed" href="<?php echo $live_site .'/resources/'.$this->model->resource->id.'/feed.rss?format=video'; ?>"><?php echo JText::_('Video podcast'); ?></a><br />
+					<?php } ?>
+					<?php if ($notes) { ?>
 						<a class="feed" id="resource-slides-feed" href="<?php echo $live_site . '/resources/'.$this->model->resource->id.'/feed.rss?format=slides'; ?>"><?php echo JText::_('Slides/Notes podcast'); ?></a>
+					<?php } ?>
 					</p>
 <?php
+		}
 		if ($this->tab != 'play')
 		{
 			echo ResourcesHtml::license($this->model->params->get('license', ''));
