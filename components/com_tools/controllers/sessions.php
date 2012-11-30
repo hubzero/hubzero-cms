@@ -764,7 +764,8 @@ class ToolsControllerSessions extends Hubzero_Controller
 		$dispatcher->trigger('onAfterSessionStart', array($toolname, $tv->revision));
 
 		// Set the layout
-		$this->view->setLayout('session');
+		$sublayout = strtolower(JRequest::getWord('layout', ''));
+		$this->view->setLayout('session' . ($sublayout ? '_' . $sublayout : ''));
 
 		// Set the page title
 		$title  = JText::_('Resources').': '.JText::_('Tools');
@@ -1141,10 +1142,6 @@ class ToolsControllerSessions extends Hubzero_Controller
 					if (preg_match("/^<param name=\"ENCODING\" value=\"?(.+)\"?>/i", $line, $param))
 					{
 						$output->encoding = trim($param[1], '"');
-					}
-					if (preg_match("/^<param name=\"ShowLocalCursor\" value=\"?(.+)\"?>/i", $line, $param))
-					{
-						$output->showlocalcursor = trim($param[1], '"');
 					}
 				}
 			}
