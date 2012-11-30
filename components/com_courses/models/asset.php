@@ -123,43 +123,6 @@ class CoursesModelAsset extends JObject
 	}
 
 	/**
-	 * Check if a property is set
-	 * 
-	 * @param      string $property Name of property to set
-	 * @return     boolean True if set
-	 */
-	/*public function __isset($property)
-	{
-		return isset($this->_data[$property]);
-	}
-
-	/**
-	 * Set a property
-	 * 
-	 * @param      string $property Name of property to set
-	 * @param      mixed  $value    Value to set property to
-	 * @return     void
-	 */
-	/*public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-
-	/**
-	 * Get a property
-	 * 
-	 * @param      string $property Name of property to retrieve
-	 * @return     mixed
-	 */
-	/*public function __get($property)
-	{
-		if (isset($this->_tbl->$property)) 
-		{
-			return $this->_tbl->$property;
-		}
-	}
-
-	/**
 	 * Returns a property of the object or the default value if the property is not set.
 	 *
 	 * @param	string $property The name of the property
@@ -261,6 +224,27 @@ class CoursesModelAsset extends JObject
 	public function access($action='view')
 	{
 		return $this->params->get('access-' . strtolower($action) . '-offering');
+	}
+
+	/**
+	 * Check a user's authorization
+	 * 
+	 * @param      string $action Action to check
+	 * @return     boolean True if authorized, false if not
+	 */
+	public function render()
+	{
+		$type = strtolower($this->get('type'));
+
+		$view = new JView(array(
+			'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_courses',
+			'name'      => 'assets',
+			'layout'    => $type
+		));
+		$view->option = 'com_courses';
+		$view->asset  = $this->_tbl;
+
+		return $view->loadTemplate();
 	}
 }
 
