@@ -121,11 +121,18 @@ class ForumPost extends JTable
 	var $hits       = NULL;
 
 	/**
+	 * varchar(100)
+	 * 
+	 * @var string
+	 */
+	var $scope = NULL;
+
+	/**
 	 * int(11)
 	 * 
 	 * @var integer
 	 */
-	var $group_id = NULL;
+	var $scope_id = NULL;
 
 	/**
 	 * tinyint(2)  0=public, 1=registered, 2=special, 3=protected, 4=private
@@ -262,6 +269,9 @@ class ForumPost extends JTable
 		}
 		$this->sticky = ($this->sticky) ? $this->sticky : 0;
 
+		$this->scope = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($this->scope));
+		$this->scope_id = intval($this->scope_id);
+
 		$juser =& JFactory::getUser();
 		if (!$this->id) 
 		{
@@ -286,7 +296,10 @@ class ForumPost extends JTable
 	public function buildQuery($filters=array())
 	{
 		$query  = " FROM $this->_tbl AS c";
-		$query .= " LEFT JOIN #__xgroups AS g ON g.gidNumber=c.group_id";
+		if (isset($filters['group']) && (int) $filters['group'] >= 0) 
+		{
+			$query .= " LEFT JOIN #__xgroups AS g ON g.gidNumber=c.scope_id";
+		}
 		if (version_compare(JVERSION, '1.6', 'lt'))
 		{
 			$query .= " LEFT JOIN #__groups AS a ON c.access=a.id";
@@ -326,7 +339,15 @@ class ForumPost extends JTable
 			}
 			if (isset($filters['group']) && (int) $filters['group'] >= 0) 
 			{
-				$where[] = "c.group_id=" . $this->_db->Quote(intval($filters['group']));
+				$where[] = "(c.scope_id=" . $this->_db->Quote(intval($filters['group'])) . " AND c.scope=" . $this->_db->Quote('group') . ")";
+			}
+			if (isset($filters['scope']) && (string) $filters['scope']) 
+			{
+				$where[] = "c.scope=" . $this->_db->Quote(strtolower($filters['scope']));
+			}
+			if (isset($filters['scope_id']) && (int) $filters['scope_id'] >= 0) 
+			{
+				$where[] = "c.scope_id=" . $this->_db->Quote(intval($filters['scope_id']));
 			}
 			if (isset($filters['category_id']) && (int) $filters['category_id'] >= 0) 
 			{
@@ -398,7 +419,11 @@ class ForumPost extends JTable
 	 */
 	public function getRecords($filters=array())
 	{
-		$query = "SELECT c.*, g.cn AS group_alias";
+		$query = "SELECT c.*";
+		if (isset($filters['group']) && (int) $filters['group'] >= 0) 
+		{
+			$query .= ", g.cn AS group_alias";
+		}
 		if (!isset($filters['parent']) || $filters['parent'] == 0) 
 		{
 			$query .= ", (SELECT COUNT(*) FROM $this->_tbl AS r WHERE r.parent=c.id AND r.state<2) AS replies ";
@@ -484,14 +509,15 @@ class ForumPost extends JTable
 	 * @param      integer $category_id Category ID
 	 * @return     object
 	 */
-	public function getLastActivity($group_id=null, $category_id=null)
+	public function getLastActivity($scope_id=null, $scope='site', $category_id=null)
 	{
 		$query = "SELECT r.* FROM $this->_tbl AS r";
 		$where = array();
-		if ($group_id !== null)
+		if ($scope_id !== null)
 		{
-			$where[] = "r.group_id=$group_id";
+			$where[] = "r.scope_id=$scope_id";
 		}
+		$where[] = "r.scope='$scope'";
 		if ($category_id !== null)
 		{
 			$where[] = "r.category_id=$category_id";
@@ -590,7 +616,7 @@ class ForumPost extends JTable
 	 * @param      integer $group_id Group ID
 	 * @return     boolean True on success
 	 */
-	public function updateCategory($old=null, $nw=null, $group_id=0)
+	public function updateCategory($old=null, $nw=null, $group_id=0, $scope='site')
 	{
 		if ($old === null) 
 		{
@@ -601,7 +627,7 @@ class ForumPost extends JTable
 			return false;
 		}
 
-		$this->_db->setQuery("UPDATE $this->_tbl SET category_id=$nw WHERE category_id=$old AND group_id=$group_id");
+		$this->_db->setQuery("UPDATE $this->_tbl SET category_id=$nw WHERE category_id=$old AND scope_id=$scope_id AND scope='$scope'");
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());

@@ -244,17 +244,17 @@ class ForumControllerThreads extends Hubzero_Controller
 		$doc->category    = JText::_('COM_FORUM_RSS_CATEGORY');
 
 		// get all forum posts on site forum
-		$this->database->setQuery("SELECT f.* FROM #__forum_posts f WHERE f.group_id='0' AND f.state='1'");
+		$this->database->setQuery("SELECT f.* FROM #__forum_posts f WHERE f.scope_id='0' AND scope='site' AND f.state='1'");
 		$site_forum = $this->database->loadAssocList();
 
 		// get any group posts
-		$this->database->setQuery("SELECT f.* FROM #__forum_posts f WHERE f.group_id<>'0' AND f.state='1'");
+		$this->database->setQuery("SELECT f.* FROM #__forum_posts f WHERE f.scope_id<>'0' AND scope='group' AND f.state='1'");
 		$group_forum = $this->database->loadAssocList();
 
 		// make sure that the group for each forum post has the right privacy setting
 		foreach ($group_forum as $k => $gf) 
 		{
-			$group = Hubzero_Group::getInstance($gf['group_id']);
+			$group = Hubzero_Group::getInstance($gf['scope_id']);
 			if (is_object($group)) 
 			{
 				ximport("Hubzero_Group_Helper");
@@ -322,13 +322,13 @@ class ForumControllerThreads extends Hubzero_Controller
 				$title = html_entity_decode($title);
 
 				// Get URL
-				if ($row['group_id'] == 0) 
+				if ($row['scope_id'] == 0) 
 				{
 					$link = 'index.php?option=com_forum&section=' . $categories[$row['category_id']]->section . '&category=' . $categories[$row['category_id']]->alias . '&thread=' . ($row['parent'] ? $row['parent'] : $row['id']);
 				} 
 				else 
 				{
-					$group = Hubzero_Group::getInstance($row['group_id']);
+					$group = Hubzero_Group::getInstance($row['scope_id']);
 					$link = 'index.php?option=com_groups&gid=' . $group->get('cn') . '&active=forum&scope=' .  $categories[$row['category_id']]->section . '/' . $categories[$row['category_id']]->alias . '/' . ($row['parent'] ? $row['parent'] : $row['id']);
 				}
 				$link = JRoute::_($link);
@@ -351,7 +351,7 @@ class ForumControllerThreads extends Hubzero_Controller
 				$item->link        = $link;
 				$item->description = $description;
 				$item->date        = $date;
-				$item->category    = ($row['group_id'] == 0) ? JText::_('Site-Wide Forum') : stripslashes($group->get('description'));
+				$item->category    = ($row['scope_id'] == 0) ? JText::_('Site-Wide Forum') : stripslashes($group->get('description'));
 				$item->author      = $author;
 
 				// Loads item info into rss array
@@ -436,7 +436,8 @@ class ForumControllerThreads extends Hubzero_Controller
 
 		$this->view->sections = $this->view->section->getRecords(array(
 			'state' => 1,
-			'group' => 0
+			'scope' => 'site',
+			'scope_id' => 0
 		));
 		if (!$this->view->sections || count($this->view->sections) <= 0)
 		{
@@ -455,7 +456,8 @@ class ForumControllerThreads extends Hubzero_Controller
 		{
 			$this->view->sections[$key]->categories = $cModel->getRecords(array(
 				'section_id' => $sect->id,
-				'group'      => 0,
+				'scope'      => 'site',
+				'scope_id'   => 0,
 				'state'      => 1
 			));
 		}

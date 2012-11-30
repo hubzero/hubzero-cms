@@ -303,7 +303,8 @@ class plgGroupsForum extends Hubzero_Plugin
 		$tModel = new ForumPost($this->database);
 		
 		$arr['metadata']['count'] = $tModel->getCount(array(
-			'group' => $this->group->get('gidNumber'),
+			'scope' => 'group',
+			'scope_id' => $this->group->get('gidNumber'),
 			'state' => 1,
 			'parent' => 0
 		));
@@ -421,7 +422,8 @@ class plgGroupsForum extends Hubzero_Plugin
 		// Incoming
 		$view->filters = array();
 		$view->filters['authorized'] = 1;
-		$view->filters['group']      = $this->group->get('gidNumber');
+		$view->filters['scope']      = 'group';
+		$view->filters['scope_id']   = $this->group->get('gidNumber');
 		$view->filters['search']     = JRequest::getVar('q', '');
 		$view->filters['section_id'] = 0;
 		$view->filters['state']      = 1;
@@ -431,8 +433,9 @@ class plgGroupsForum extends Hubzero_Plugin
 		// Get Sections
 		$sModel = new ForumSection($this->database);
 		$view->sections = $sModel->getRecords(array(
-			'state' => 1, 
-			'group' => $this->group->get('gidNumber')
+			'state' => 1,
+			'scope' => 'group', 
+			'scope_id' => $this->group->get('gidNumber')
 		));
 
 		$model = new ForumCategory($this->database);
@@ -446,7 +449,8 @@ class plgGroupsForum extends Hubzero_Plugin
 			$dSection->title = JText::_('Default Section');
 			$dSection->alias = str_replace(' ', '-', $dSection->title);
 			$dSection->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($dSection->title));
-			$dSection->group_id = $this->group->get('gidNumber');
+			$dSection->scope = 'group';
+			$dSection->scope_id = $this->group->get('gidNumber');
 			$dSection->state = 1;
 			if ($dSection->check())
 			{
@@ -460,7 +464,8 @@ class plgGroupsForum extends Hubzero_Plugin
 			$dCategory->alias = str_replace(' ', '-', $dCategory->title);
 			$dCategory->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($dCategory->title));
 			$dCategory->section_id = $dSection->id;
-			$dCategory->group_id = $this->group->get('gidNumber');
+			$dCategory->scope = 'group';
+			$dCategory->scope_id = $this->group->get('gidNumber');
 			$dCategory->state = 1;
 			if ($dCategory->check())
 			{
@@ -476,7 +481,8 @@ class plgGroupsForum extends Hubzero_Plugin
 
 			$view->sections = $sModel->getRecords(array(
 				'state' => 1, 
-				'group' => $this->group->get('gidNumber')
+				'scope' => 'group', 
+				'scope_id' => $this->group->get('gidNumber')
 			));
 		}
 
@@ -518,7 +524,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		}
 
 		$post = new ForumPost($this->database);
-		$view->lastpost = $post->getLastActivity($this->group->get('gidNumber'));
+		$view->lastpost = $post->getLastActivity($this->group->get('gidNumber'), 'group');
 
 		//get authorization
 		$this->_authorize('section');
@@ -613,7 +619,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		
 		// Load the section
 		$model = new ForumSection($this->database);
-		$model->loadByAlias($alias, $this->group->get('gidNumber'));
+		$model->loadByAlias($alias, $this->group->get('gidNumber'), 'group');
 		
 		// Make the sure the section exist
 		if (!$model->id) 
@@ -642,7 +648,8 @@ class plgGroupsForum extends Hubzero_Plugin
 		$cModel = new ForumCategory($this->database);
 		$categories = $cModel->getRecords(array(
 			'section_id' => $model->id,
-			'group'      => $this->group->get('gidNumber')
+			'scope'      => 'group', 
+			'scope_id'   => $this->group->get('gidNumber')
 		));
 		if ($categories)
 		{
@@ -712,16 +719,17 @@ class plgGroupsForum extends Hubzero_Plugin
 		$view->filters['section']  = JRequest::getVar('section', '');
 		$view->filters['category'] = JRequest::getVar('category', '');
 		$view->filters['search']   = JRequest::getVar('q', '');
-		$view->filters['group']    = $this->group->get('gidNumber');
+		$view->filters['scope']    = 'group';
+		$view->filters['scope_id'] = $this->group->get('gidNumber');
 		$view->filters['state']    = 1;
 		$view->filters['parent']   = 0;
 		
 		$view->section = new ForumSection($this->database);
-		$view->section->loadByAlias($view->filters['section'], $this->group->get('gidNumber'));
+		$view->section->loadByAlias($view->filters['section'], $this->group->get('gidNumber'), 'group');
 		$view->filters['section_id'] = $view->section->id;
 
 		$view->category = new ForumCategory($this->database);
-		$view->category->loadByAlias($view->filters['category'], $view->section->id, $this->group->get('gidNumber'));
+		$view->category->loadByAlias($view->filters['category'], $view->section->id, $this->group->get('gidNumber'), 'group');
 		$view->filters['category_id'] = $view->category->id;
 
 		if (!$view->category->id)
@@ -792,7 +800,8 @@ class plgGroupsForum extends Hubzero_Plugin
 		$this->view->filters['limit']  = JRequest::getInt('limit', 25);
 		$this->view->filters['start']  = JRequest::getInt('limitstart', 0);
 		$this->view->filters['search'] = JRequest::getVar('q', '');
-		$this->view->filters['group']  = $this->group->get('gidNumber');
+		$this->view->filters['scope']    = 'group';
+		$this->view->filters['scope_id'] = $this->group->get('gidNumber');
 
 		$this->view->section = new ForumSection($this->database);
 		$this->view->section->title = JText::_('Posts');
@@ -802,7 +811,8 @@ class plgGroupsForum extends Hubzero_Plugin
 		// Get all sections
 		$sections = $this->view->section->getRecords(array(
 			'state' => 1, 
-			'group' => $this->view->filters['group']
+			'scope' => 'group',
+			'scope_id' => $this->view->filters['scope_id']
 		));
 		$s = array();
 		foreach ($sections as $section)
@@ -819,7 +829,8 @@ class plgGroupsForum extends Hubzero_Plugin
 		// Get all categories
 		$categories = $this->view->category->getRecords(array(
 			'state' => 1, 
-			'group' => $this->view->filters['group']
+			'scope' => 'group',
+			'scope_id' => $this->view->filters['scope_id']
 		));
 		$c = array();
 		foreach ($categories as $category)
@@ -896,7 +907,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		}
 
 		$sModel = new ForumSection($this->database);
-		$sModel->loadByAlias($section, $this->group->get('gidNumber'));
+		$sModel->loadByAlias($section, $this->group->get('gidNumber'), 'group');
 
 		// Incoming
 		if (is_object($model))
@@ -906,7 +917,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		else 
 		{
 			$this->view->model = new ForumCategory($this->database);
-			$this->view->model->loadByAlias($category, $sModel->id, $this->group->get('gidNumber'));
+			$this->view->model->loadByAlias($category, $sModel->id, $this->group->get('gidNumber'), 'group');
 		}
 
 		$this->_authorize('category', $this->view->model->id);
@@ -926,7 +937,8 @@ class plgGroupsForum extends Hubzero_Plugin
 
 		$this->view->sections = $sModel->getRecords(array(
 			'state' => 1,
-			'group' => $this->group->get('gidNumber')
+			'scope' => 'group',
+			'scope_id' => $this->group->get('gidNumber')
 		));
 		if (!$this->view->sections || count($this->view->sections) <= 0)
 		{
@@ -1035,11 +1047,11 @@ class plgGroupsForum extends Hubzero_Plugin
 		
 		$section = JRequest::getVar('section', '');
 		$sModel = new ForumSection($this->database);
-		$sModel->loadByAlias($section, $this->group->get('gidNumber'));
+		$sModel->loadByAlias($section, $this->group->get('gidNumber'), 'group');
 
 		// Initiate a forum object
 		$model = new ForumCategory($this->database);
-		$model->loadByAlias($category, $sModel->id, $this->group->get('gidNumber'));
+		$model->loadByAlias($category, $sModel->id, $this->group->get('gidNumber'), 'group');
 
 		// Check if user is authorized to delete entries
 		$this->_authorize('category', $model->id);
@@ -1105,7 +1117,8 @@ class plgGroupsForum extends Hubzero_Plugin
 		$view->filters['category'] = JRequest::getVar('category', '');
 		$view->filters['parent']   = JRequest::getInt('thread', 0);
 		$view->filters['state']    = 1;
-		$view->filters['group']    = $this->group->get('gidNumber');
+		$view->filters['scope']    = 'group';
+		$view->filters['scope_id'] = $this->group->get('gidNumber');
 
 		if ($view->filters['parent'] == 0) 
 		{
@@ -1113,11 +1126,11 @@ class plgGroupsForum extends Hubzero_Plugin
 		}
 
 		$view->section = new ForumSection($this->database);
-		$view->section->loadByAlias($view->filters['section'], $this->group->get('gidNumber'));
+		$view->section->loadByAlias($view->filters['section'], $this->group->get('gidNumber'), 'group');
 		$view->filters['section_id'] = $view->section->id;
 
 		$view->category = new ForumCategory($this->database);
-		$view->category->loadByAlias($view->filters['category'], $view->section->id, $this->group->get('gidNumber'));
+		$view->category->loadByAlias($view->filters['category'], $view->section->id, $this->group->get('gidNumber'), 'group');
 		$view->filters['category_id'] = $view->category->id;
 
 		if (!$view->category->id)
@@ -1213,7 +1226,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		}
 
 		$this->view->category = new ForumCategory($this->database);
-		$this->view->category->loadByAlias($category);
+		$this->view->category->loadByAlias($category, null, $this->group->get('gidNumber'), 'group');
 
 		// Incoming
 		if (is_object($post))
@@ -1242,13 +1255,14 @@ class plgGroupsForum extends Hubzero_Plugin
 		$sModel = new ForumSection($this->database);
 		$this->view->sections = $sModel->getRecords(array(
 			'state' => 1, 
-			'group' => $this->group->get('gidNumber')
+			'scope' => 'group',
+			'scope_id' => $this->group->get('gidNumber')
 		));
 
 		if (!$this->view->sections || count($this->view->sections) <= 0)
 		{
 			$this->view->sections = array();
-			
+
 			$default = new stdClass;
 			$default->id = 0;
 			$default->title = JText::_('Categories');
@@ -1262,7 +1276,8 @@ class plgGroupsForum extends Hubzero_Plugin
 		{
 			$this->view->sections[$key]->categories = $cModel->getRecords(array(
 				'section_id' => $section->id,
-				'group'      => $this->group->get('gidNumber'),
+				'scope'      => 'group',
+				'scope_id'   => $this->group->get('gidNumber'),
 				'state'      => 1
 			));
 		}
@@ -1367,14 +1382,14 @@ class plgGroupsForum extends Hubzero_Plugin
 				$model->updateReplies(array('category_id' => $fields['category_id']), $model->id);
 			}
 		}
-		
+
 		$category = new ForumCategory($this->database);
 		$category->load(intval($model->category_id));
-		
+
 		$tags = JRequest::getVar('tags', '', 'post');
 		$tagger = new ForumTags($this->database);
 		$tagger->tag_object($this->juser->get('id'), $model->id, $tags, 1);
-		
+
 		// Determine post save message 
 		// Also, get subject of post for outgoing email, either the title of parent post (for replies), or title of current post (for new threads)
 		if (!$fields['id'])
@@ -1387,7 +1402,7 @@ class plgGroupsForum extends Hubzero_Plugin
 			else 
 			{
 				$message = JText::_('PLG_GROUPS_FORUM_POST_ADDED');
-				
+
 				/* @var $parentForumPost ForumPost */
 				$parentForumPost = new ForumPost($this->database);
 				$parentForumPost->load(intval($fields['parent']));
@@ -1398,7 +1413,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		{
 			$message = ($model->modified_by) ? JText::_('PLG_GROUPS_FORUM_POST_EDITED') : JText::_('PLG_GROUPS_FORUM_POST_ADDED');
 		}
-		
+
 		// Determine route
 		if ($model->parent) 
 		{
@@ -1408,7 +1423,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		{
 			$thread = $model->id;
 		}
-		
+
 		// Build outgoing email message
 		$juser =& JFactory::getUser();
 		$prependtext = "~!~!~!~!~!~!~!~!~!~!\r\n";
@@ -1690,7 +1705,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		$thread = JRequest::getInt('thread', 0);
 		$post = JRequest::getInt('post', 0);
 		$file = JRequest::getVar('file', '');
-		
+
 		// Check logged in status
 		if ($this->juser->get('guest')) 
 		{
@@ -1707,7 +1722,7 @@ class plgGroupsForum extends Hubzero_Plugin
 			JError::raiseError(500, JText::_('PLG_GROUPS_FORUM_DATABASE_NOT_FOUND'));
 			return;
 		}
-		
+
 		// Instantiate an attachment object
 		$attach = new ForumAttachment($this->database);
 		if (!$post)
@@ -1850,7 +1865,8 @@ class plgGroupsForum extends Hubzero_Plugin
 
 		$sModel = new ForumSection($this->database);
 		$sections = $sModel->getRecords(array(
-			'group' => $group->get('gidNumber')
+			'scope'    => 'group',
+			'scope_id' => $group->get('gidNumber')
 		));
 
 		// Do we have any IDs?
@@ -1863,9 +1879,10 @@ class plgGroupsForum extends Hubzero_Plugin
 				$cModel = new ForumCategory($this->database);
 				$categories = $cModel->getRecords(array(
 					'section_id' => $section->id,
-					'group'      => $group->get('gidNumber')
+					'scope'      => 'group',
+					'scope_id'   => $group->get('gidNumber')
 				));
-				
+
 				if ($categories)
 				{
 					// Build an array of category IDs

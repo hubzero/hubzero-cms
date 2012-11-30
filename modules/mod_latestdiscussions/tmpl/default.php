@@ -49,12 +49,12 @@ $c = 0;
 			<?php foreach ($this->posts as $post) : ?>
 				<?php if ($c < $this->limit) : ?>
 					<?php
-						if ($post['group_id'] == 0) {
+						if ($post['scope_id'] == 0) {
 							$url = 'index.php?option=com_forum&section=' . $this->categories[$post['category_id']]->section . '&category=' . $this->categories[$post['category_id']]->alias . '&thread=' . ($post['parent'] ? $post['parent'] : $post['id']);
 							$location = '<a href="' . JRoute::_('index.php?option=com_forum') . '">' . JText::_('Site-Wide Forum') . '</a>';
 						} else {
 							ximport('Hubzero_Group');
-							$group = Hubzero_Group::getInstance($post['group_id']);
+							$group = Hubzero_Group::getInstance($post['scope_id']);
 							$url = 'index.php?option=com_groups&gid=' . $group->get('cn') . '&active=forum&scope=' .  $this->categories[$post['category_id']]->section . '/' . $this->categories[$post['category_id']]->alias . '/' . ($post['parent'] ? $post['parent'] : $post['id']);
 							$location = '<a href="' . JRoute::_('index.php?option=com_groups&gid=' . $group->get('cn')) . '">' . stripslashes($group->get("description")) . '</a>';
 						}

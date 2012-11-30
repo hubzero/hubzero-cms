@@ -175,7 +175,8 @@ if ($this->post->id) {
 			<input type="hidden" name="fields[parent]" value="<?php echo $this->post->parent; ?>" />
 			<input type="hidden" name="fields[state]" value="1" />
 			<input type="hidden" name="fields[id]" value="<?php echo $this->post->id; ?>" />
-			<input type="hidden" name="fields[group_id]" value="<?php echo $this->group->get('gidNumber'); ?>" />
+			<input type="hidden" name="fields[scope]" value="group" />
+			<input type="hidden" name="fields[scope_id]" value="<?php echo $this->group->get('gidNumber'); ?>" />
 	
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />

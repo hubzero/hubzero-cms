@@ -39,105 +39,113 @@ class ForumCategory extends JTable
 	/**
 	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $id         = NULL;
 
 	/**
 	 * varchar(255)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $title      = NULL;
 	
 	/**
 	 * varchar(255)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $alias      = NULL;
 
 	/**
 	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $description    = NULL;
 
 	/**
 	 * datetime (0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $created    = NULL;
 
 	/**
 	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $created_by = NULL;
 
 	/**
 	 * datetime (0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
 	var $modified   = NULL;
 
 	/**
 	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $modified_by = NULL;
 
 	/**
 	 * int(2)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $state      = NULL;
 
 	/**
 	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $hits       = NULL;
 
 	/**
+	 * varchar(100)
+	 * 
+	 * @var string
+	 */
+	var $scope = NULL;
+
+	/**
 	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $group_id = NULL;
+	var $scope_id = NULL;
 
 	/**
 	 * tinyint(2)  0=public, 1=registered, 2=special, 3=protected, 4=private
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $access     = NULL;
 	
 	/**
 	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $section_id = NULL;
 	
 	/**
 	 * tinyint(2)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
 	var $closed = null;
 	
 	/**
+	 * int(11)
 	 * ID for ACL asset (J1.6+)
 	 * 
-	 * @var int(11)
+	 * @var integer
 	 */
 	var $asset_id = NULL;
 
@@ -228,7 +236,7 @@ class ForumCategory extends JTable
 	 * @param      string $oid Record alias
 	 * @return     boolean True on success
 	 */
-	public function loadByAlias($oid=NULL, $section_id=null, $group_id=null)
+	public function loadByAlias($oid=NULL, $section_id=null, $scope_id=null, $scope='site')
 	{
 		if ($oid === NULL) 
 		{
@@ -241,9 +249,9 @@ class ForumCategory extends JTable
 		{
 			$query .= " AND section_id=" . $section_id;
 		}
-		if ($group_id !== null)
+		if ($scope_id !== null)
 		{
-			$query .= " AND group_id=" . $group_id;
+			$query .= " AND scope_id=" . $scope_id . " AND scope='$scope'";
 		}
 
 		$this->_db->setQuery($query);
@@ -264,21 +272,22 @@ class ForumCategory extends JTable
 	 * @param      integer $group ID of group the data belongs to
 	 * @return     boolean True if data is bound to $this object
 	 */
-	public function loadDefault($group=0)
+	public function loadDefault($scope_id=0, $scope='site')
 	{
 		$result = array(
-			'id' => 0,
-			'title' => JText::_('Discussions'),
+			'id'          => 0,
+			'title'       => JText::_('Discussions'),
 			'description' => JText::_('Default category for all discussions in this forum.'),
-			'section_id' => 0,
-			'created_by' => 0,
-			'group_id' => $group,
-			'state' => 1,
-			'access' => 1
+			'section_id'  => 0,
+			'created_by'  => 0,
+			'scope'       => $scope,
+			'scope_id'    => $scope_id,
+			'state'       => 1,
+			'access'      => 1
 		);
 		$result['alias'] = str_replace(' ', '-', $result['title']);
 		$result['alias'] = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($result['alias']));
-		
+
 		return $this->bind($result);
 	}
 
@@ -290,19 +299,22 @@ class ForumCategory extends JTable
 	public function check()
 	{
 		$this->title = trim($this->title);
-		
+
 		if (!$this->title) 
 		{
 			$this->setError(JText::_('Please provide a title.'));
 			return false;
 		}
-		
+
 		if (!$this->alias)
 		{
 			$this->alias = str_replace(' ', '-', strtolower($this->title));
 		}
 		$this->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', $this->alias);
-		
+
+		$this->scope = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($this->scope));
+		$this->scope_id = intval($this->scope_id);
+
 		$juser =& JFactory::getUser();
 		if (!$this->id)
 		{
@@ -314,7 +326,7 @@ class ForumCategory extends JTable
 			$this->modified = date('Y-m-d H:i:s', time());
 			$this->modified_by = $juser->get('id');
 		}
-		
+
 		return true;
 	}
 
@@ -327,7 +339,10 @@ class ForumCategory extends JTable
 	protected function _buildQuery($filters=array())
 	{
 		$query  = "FROM $this->_tbl AS c";
-		$query .= " LEFT JOIN #__xgroups AS g ON g.gidNumber=c.group_id";
+		if (isset($filters['group']) && (int) $filters['group'] >= 0) 
+		{
+			$query .= " LEFT JOIN #__xgroups AS g ON g.gidNumber=c.scope_id";
+		}
 		if (version_compare(JVERSION, '1.6', 'lt'))
 		{
 			$query .= " LEFT JOIN #__groups AS a ON c.access=a.id";
@@ -348,7 +363,15 @@ class ForumCategory extends JTable
 		}
 		if (isset($filters['group']) && (int) $filters['group'] >= 0) 
 		{
-			$where[] = "c.group_id=" . $this->_db->Quote(intval($filters['group']));
+			$where[] = "(c.scope_id=" . $this->_db->Quote(intval($filters['group'])) . " AND c.scope=" . $this->_db->Quote('group') . ")";
+		}
+		if (isset($filters['scope']) && (string) $filters['scope']) 
+		{
+			$where[] = "c.scope=" . $this->_db->Quote(strtolower($filters['scope']));
+		}
+		if (isset($filters['scope_id']) && (int) $filters['scope_id'] >= 0) 
+		{
+			$where[] = "c.scope_id=" . $this->_db->Quote(intval($filters['scope_id']));
 		}
 		if (isset($filters['section_id']) && (int) $filters['section_id'] >= 0) 
 		{
@@ -395,14 +418,22 @@ class ForumCategory extends JTable
 	{
 		if (isset($filters['admin']))
 		{
-			$query  = "SELECT c.*, g.cn AS group_alias, 
-						(SELECT COUNT(*) FROM #__forum_posts AS r WHERE r.category_id=c.id AND r.parent=0) AS threads,
+			$query  = "SELECT c.*";
+			if (isset($filters['group']) && (int) $filters['group'] >= 0) 
+			{
+				$query .= ", g.cn AS group_alias";
+			}
+			$query .= ", (SELECT COUNT(*) FROM #__forum_posts AS r WHERE r.category_id=c.id AND r.parent=0) AS threads,
 						(SELECT COUNT(*) FROM #__forum_posts AS r WHERE r.category_id=c.id) AS posts";
 		}
 		else 
 		{
-			$query  = "SELECT c.*, g.cn AS group_alias, 
-						(SELECT COUNT(*) FROM #__forum_posts AS r WHERE r.category_id=c.id AND r.parent=0 AND r.state=1) AS threads,
+			$query  = "SELECT c.*";
+			if (isset($filters['group']) && (int) $filters['group'] >= 0) 
+			{
+				$query .= ", g.cn AS group_alias";
+			}
+			$query .= ", (SELECT COUNT(*) FROM #__forum_posts AS r WHERE r.category_id=c.id AND r.parent=0 AND r.state=1) AS threads,
 						(SELECT COUNT(*) FROM #__forum_posts AS r WHERE r.category_id=c.id AND r.state=1) AS posts";
 		}
 		if (version_compare(JVERSION, '1.6', 'lt'))
@@ -441,7 +472,7 @@ class ForumCategory extends JTable
 	 * @param      integer $group_id Group ID
 	 * @return     array
 	 */
-	public function getThreadCount($oid=null, $group_id=0)
+	public function getThreadCount($oid=null, $scope_id=0, $scope='site')
 	{
 		$k = $this->_tbl_key;
 		if ($oid !== null) 
@@ -449,7 +480,7 @@ class ForumCategory extends JTable
 			$this->$k = intval($oid);
 		}
 
-		$query = "SELECT COUNT(*) FROM #__forum_posts WHERE category_id=" . $this->$k . " AND group_id=$group_id AND parent=0 AND state < 2";
+		$query = "SELECT COUNT(*) FROM #__forum_posts WHERE category_id=" . $this->$k . " AND scope_id=$scope_id AND scope='$scope' AND parent=0 AND state < 2";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -462,7 +493,7 @@ class ForumCategory extends JTable
 	 * @param      integer $group_id Group ID
 	 * @return     array
 	 */
-	public function getPostCount($oid=null, $group_id=0)
+	public function getPostCount($oid=null, $scope_id=0, $scope='site')
 	{
 		$k = $this->_tbl_key;
 		if ($oid !== null) 
@@ -471,7 +502,7 @@ class ForumCategory extends JTable
 		}
 
 		//$query = "SELECT COUNT(*) FROM #__forum_posts WHERE parent IN (SELECT r.id FROM #__forum_posts AS r WHERE r.category_id=" . $this->$k . " AND group_id=$group_id AND parent=0 AND state < 2)";
-		$query = "SELECT COUNT(*) FROM #__forum_posts AS r WHERE r.category_id=" . $this->$k . " AND group_id=$group_id AND parent=0 AND state < 2";
+		$query = "SELECT COUNT(*) FROM #__forum_posts AS r WHERE r.category_id=" . $this->$k . " AND scope_id=$scope_id AND scope='$scope' AND parent=0 AND state < 2";
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}

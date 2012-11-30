@@ -86,6 +86,17 @@
 		font-family: "Fontcons";
 		content: "\f07b";
 	}
+	#forum-options {
+		margin-top: 2em;
+	}
+	#forum-options fieldset {
+		border: 1px solid #ddd;
+		padding: 1em;
+	}
+	#forum-options fieldset legend {
+		margin: 0 1em;
+		padding: 0 1em;
+	}
 /* Article Listing 
 	.main h3,
 	.below h3 {

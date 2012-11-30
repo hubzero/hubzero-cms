@@ -125,7 +125,8 @@ if (count($this->sections) > 0) {
 					<input type="text" name="fields[title]" value="<?php echo $this->escape(stripslashes($section->title)); ?>" />
 					<input type="submit" value="<?php echo JText::_('Save'); ?>" />
 					<input type="hidden" name="fields[id]" value="<?php echo $section->id; ?>" />
-					<input type="hidden" name="fields[group_id]" value="<?php echo $this->group->get('gidNumber'); ?>" />
+					<input type="hidden" name="fields[scope]" value="group" />
+					<input type="hidden" name="fields[scope_id]" value="<?php echo $this->group->get('gidNumber'); ?>" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
 					<input type="hidden" name="action" value="savesection" />
@@ -245,7 +246,8 @@ if ($section->categories) {
 
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
-					<input type="hidden" name="fields[group_id]" value="<?php echo $this->group->get('gidNumber'); ?>" />
+					<input type="hidden" name="fields[scope]" value="group" />
+					<input type="hidden" name="fields[scope_id]" value="<?php echo $this->group->get('gidNumber'); ?>" />
 					<input type="hidden" name="active" value="forum" />
 					<input type="hidden" name="task" value="savesection" />
 				</fieldset>

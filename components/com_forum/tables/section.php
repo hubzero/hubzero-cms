@@ -80,11 +80,18 @@ class ForumSection extends JTable
 	var $state = NULL;
 
 	/**
+	 * varchar(100)
+	 * 
+	 * @var string
+	 */
+	var $scope = NULL;
+
+	/**
 	 * Group the entry belongs to
 	 * 
 	 * @var integer int(11)
 	 */
-	var $group_id = NULL;
+	var $scope_id = NULL;
 
 	/**
 	 * tinyint(2)
@@ -189,7 +196,7 @@ class ForumSection extends JTable
 	 * @param      string $oid Record alias
 	 * @return     boolean True upon success, False if errors
 	 */
-	public function loadByAlias($oid=NULL, $group_id=null)
+	public function loadByAlias($oid=NULL, $scope_id=null, $scope='site')
 	{
 		if ($oid === NULL) 
 		{
@@ -198,9 +205,9 @@ class ForumSection extends JTable
 		$oid = trim($oid);
 
 		$query = "SELECT * FROM $this->_tbl WHERE alias='$oid'";
-		if ($group_id !== null)
+		if ($scope_id !== null)
 		{
-			$query .= " AND group_id=" . $group_id;
+			$query .= " AND scope_id=" . $scope_id . " AND scope='$scope'";
 		}
 
 		$this->_db->setQuery($query);
@@ -256,6 +263,9 @@ class ForumSection extends JTable
 		}
 		$this->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', $this->alias);
 
+		$this->scope = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($this->scope));
+		$this->scope_id = intval($this->scope_id);
+
 		if (!$this->id)
 		{
 			$juser = JFactory::getUser();
@@ -276,7 +286,10 @@ class ForumSection extends JTable
 	public function buildQuery($filters=array())
 	{
 		$query  = "FROM $this->_tbl AS c";
-		$query .= " LEFT JOIN #__xgroups AS g ON g.gidNumber=c.group_id";
+		if (isset($filters['group']) && (int) $filters['group'] >= 0) 
+		{
+			$query .= " LEFT JOIN #__xgroups AS g ON g.gidNumber=c.scope_id";
+		}
 		if (version_compare(JVERSION, '1.6', 'lt'))
 		{
 			$query .= " LEFT JOIN #__groups AS a ON c.access=a.id";
@@ -295,7 +308,16 @@ class ForumSection extends JTable
 
 		if (isset($filters['group']) && (int) $filters['group'] >= 0) 
 		{
-			$where[] = "c.group_id=" . $this->_db->Quote(intval($filters['group']));
+			$where[] = "(c.scope_id=" . $this->_db->Quote(intval($filters['group'])) . " AND c.scope=" . $this->_db->Quote('group') . ")";
+		}
+
+		if (isset($filters['scope']) && (string) $filters['scope']) 
+		{
+			$where[] = "c.scope=" . $this->_db->Quote(strtolower($filters['scope']));
+		}
+		if (isset($filters['scope_id']) && (int) $filters['scope_id'] >= 0) 
+		{
+			$where[] = "c.scope_id=" . $this->_db->Quote(intval($filters['scope_id']));
 		}
 
 		if (isset($filters['search']) && $filters['search'] != '') 
@@ -336,7 +358,11 @@ class ForumSection extends JTable
 	 */
 	public function getRecords($filters=array())
 	{
-		$query  = "SELECT c.*, g.cn AS group_alias";
+		$query  = "SELECT c.*";
+		if (isset($filters['group']) && (int) $filters['group'] >= 0) 
+		{
+			$query .= ", g.cn AS group_alias";
+		}
 		if (version_compare(JVERSION, '1.6', 'lt'))
 		{
 			$query .= ", a.name AS access_level";

@@ -104,7 +104,8 @@ $juser = JFactory::getUser();
 					</p>
 					<input type="hidden" name="task" value="save" />
 					<input type="hidden" name="controller" value="sections" />
-					<input type="hidden" name="fields[group_id]" value="0" />
+					<input type="hidden" name="fields[scope]" value="site" />
+					<input type="hidden" name="fields[scope_id]" value="0" />
 				</fieldset>
 			</form>
 		</div>
@@ -142,7 +143,8 @@ foreach ($this->sections as $section)
 					<input type="text" name="fields[title]" value="<?php echo $this->escape(stripslashes($section->title)); ?>" />
 					<input type="submit" value="<?php echo JText::_('Save'); ?>" />
 					<input type="hidden" name="fields[id]" value="<?php echo $section->id; ?>" />
-					<input type="hidden" name="fields[group_id]" value="0" />
+					<input type="hidden" name="fields[scope]" value="site" />
+					<input type="hidden" name="fields[scope_id]" value="0" />
 					<input type="hidden" name="controller" value="sections" />
 					<input type="hidden" name="task" value="save" />
 					</form>

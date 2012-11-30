@@ -44,7 +44,8 @@ class ForumControllerSections extends Hubzero_Controller
 		// Incoming
 		$this->view->filters = array();
 		$this->view->filters['authorized'] = 1;
-		$this->view->filters['group'] = 0;
+		$this->view->filters['scope'] = 'site';
+		$this->view->filters['scope_id'] = 0;
 		$this->view->filters['search'] = JRequest::getVar('q', '');
 		$this->view->filters['section_id'] = 0;
 		$this->view->filters['state'] = 1;
@@ -55,7 +56,8 @@ class ForumControllerSections extends Hubzero_Controller
 		$sModel = new ForumSection($this->database);
 		$this->view->sections = $sModel->getRecords(array(
 			'state' => 1, 
-			'group' => $this->view->filters['group']
+			'scope' => $this->view->filters['scope'],
+			'scope_id' => $this->view->filters['scope_id']
 		));
 
 		$model = new ForumCategory($this->database);
@@ -69,7 +71,8 @@ class ForumControllerSections extends Hubzero_Controller
 			$dSection->title = JText::_('Default Section');
 			$dSection->alias = str_replace(' ', '-', $dSection->title);
 			$dSection->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($dSection->title));
-			$dSection->group_id = 0;
+			$dSection->scope = 'site';
+			$dSection->scope_id = 0;
 			if ($dSection->check())
 			{
 				$dSection->store();
@@ -82,7 +85,8 @@ class ForumControllerSections extends Hubzero_Controller
 			$dCategory->alias = str_replace(' ', '-', $dCategory->title);
 			$dCategory->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($dCategory->title));
 			$dCategory->section_id = $dSection->id;
-			$dCategory->group_id = 0;
+			$dCategory->scope = 'site';
+			$dCategory->scope_id = 0;
 			if ($dCategory->check())
 			{
 				$dCategory->store();
@@ -97,7 +101,8 @@ class ForumControllerSections extends Hubzero_Controller
 
 			$this->view->sections = $sModel->getRecords(array(
 				'state' => 1, 
-				'group' => $this->view->filters['group']
+				'scope' => $this->view->filters['scope'],
+				'scope_id' => $this->view->filters['scope_id']
 			));
 		}
 
@@ -142,8 +147,8 @@ class ForumControllerSections extends Hubzero_Controller
 				$default->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($default->title));
 				$default->section_id = 0;
 				$default->created_by = 0;
-				$default->threads = $model->getThreadCount(0, $this->view->filters['group']);
-				$default->posts = $model->getPostCount(0, $this->view->filters['group']);
+				$default->threads = $model->getThreadCount(0, $this->view->filters['scope_id']);
+				$default->posts = $model->getPostCount(0, $this->view->filters['scope_id']);
 				
 				$this->view->sections[0]->categories = array($default);
 			}*/
@@ -168,10 +173,10 @@ class ForumControllerSections extends Hubzero_Controller
 		$this->_authorize('category');
 
 		$this->view->config = $this->config;
-		
+
 		// Push CSS to the tmeplate
 		$this->_getStyles();
-		
+
 		// Push scripts to the template
 		$this->_getScripts('assets/js/' . $this->_name);
 
@@ -281,7 +286,8 @@ class ForumControllerSections extends Hubzero_Controller
 		$cModel = new ForumCategory($this->database);
 		$categories = $cModel->getRecords(array(
 			'section_id' => $model->id,
-			'group'      => 0
+			'scope'      => 'site',
+			'scope_id'   => 0
 		));
 		if ($categories)
 		{

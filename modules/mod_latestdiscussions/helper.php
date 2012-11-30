@@ -104,17 +104,17 @@ class modLatestDiscussions extends JObject
 		$include = $this->params->get('forum', 'both');
 
 		//get all forum posts on site forum
-		$database->setQuery("SELECT f.* FROM #__forum_posts f WHERE f.group_id='0' AND f.state='1'");
+		$database->setQuery("SELECT f.* FROM #__forum_posts f WHERE f.scope_id='0' AND scope='site' AND f.state='1'");
 		$site_forum = $database->loadAssocList();
 
 		//get any group posts
-		$database->setQuery("SELECT f.* FROM #__forum_posts f WHERE f.group_id<>'0' AND f.state='1'");
+		$database->setQuery("SELECT f.* FROM #__forum_posts f WHERE f.scope_id<>'0' AND scope='group' AND f.state='1'");
 		$group_forum = $database->loadAssocList();
 
 		//make sure that the group for each forum post has the right privacy setting
 		foreach ($group_forum as $k => $gf) 
 		{
-			$group = Hubzero_Group::getInstance($gf['group_id']);
+			$group = Hubzero_Group::getInstance($gf['scope_id']);
 			if (is_object($group)) 
 			{
 				$forum_access = Hubzero_Group_Helper::getPluginAccess($group, 'forum');

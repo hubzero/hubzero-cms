@@ -102,7 +102,8 @@ class ForumControllerCategories extends Hubzero_Controller
 		$this->view->filters['section']  = JRequest::getVar('section', '');
 		$this->view->filters['category'] = JRequest::getVar('category', '');
 		$this->view->filters['search']   = JRequest::getVar('q', '');
-		$this->view->filters['group']    = 0;
+		$this->view->filters['scope']    = 'site';
+		$this->view->filters['scope_id'] = 0;
 		$this->view->filters['state']    = 1;
 		$this->view->filters['parent']   = 0;
 
@@ -130,7 +131,7 @@ class ForumControllerCategories extends Hubzero_Controller
 		$this->view->rows = $this->view->forum->getRecords($this->view->filters);
 
 		// Get the last post
-		$this->view->lastpost = $this->view->forum->getLastActivity(0, $this->view->category->id);
+		$this->view->lastpost = $this->view->forum->getLastActivity(0, 'site', $this->view->category->id);
 
 		//get authorization
 		$this->_authorize('category');
@@ -184,10 +185,11 @@ class ForumControllerCategories extends Hubzero_Controller
 		// Incoming
 		$this->view->filters = array();
 		$this->view->filters['authorized'] = 1;
-		$this->view->filters['limit']  = JRequest::getInt('limit', 25);
-		$this->view->filters['start']  = JRequest::getInt('limitstart', 0);
-		$this->view->filters['search'] = JRequest::getVar('q', '');
-		$this->view->filters['group']  = 0;
+		$this->view->filters['limit']    = JRequest::getInt('limit', 25);
+		$this->view->filters['start']    = JRequest::getInt('limitstart', 0);
+		$this->view->filters['search']   = JRequest::getVar('q', '');
+		$this->view->filters['scope']    = 'site';
+		$this->view->filters['scope_id'] = 0;
 
 		$this->view->section = new ForumSection($this->database);
 		$this->view->section->title = JText::_('Posts');
@@ -197,7 +199,8 @@ class ForumControllerCategories extends Hubzero_Controller
 		// Get all sections
 		$sections = $this->view->section->getRecords(array(
 			'state' => 1, 
-			'group' => $this->view->filters['group']
+			'scope' => $this->view->filters['scope'],
+			'scope_id' => $this->view->filters['scope_id']
 		));
 		$s = array();
 		foreach ($sections as $section)
@@ -214,7 +217,8 @@ class ForumControllerCategories extends Hubzero_Controller
 		// Get all categories
 		$categories = $this->view->category->getRecords(array(
 			'state' => 1, 
-			'group' => $this->view->filters['group']
+			'scope' => $this->view->filters['scope'],
+			'scope_id' => $this->view->filters['scope_id']
 		));
 		$c = array();
 		foreach ($categories as $category)
@@ -331,15 +335,16 @@ class ForumControllerCategories extends Hubzero_Controller
 			);
 			return;
 		}
-		
+
 		$this->view->sections = $this->view->section->getRecords(array(
 			'state' => 1,
-			'group' => 0
+			'scope' => 'site',
+			'scope_id' => 0
 		));
 		if (!$this->view->sections || count($this->view->sections) <= 0)
 		{
 			$this->view->sections = array();
-			
+
 			$default = new ForumSection($this->database);
 			$default->id = 0;
 			$default->title = JText::_('Categories');
