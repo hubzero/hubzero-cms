@@ -232,7 +232,7 @@ class CoursesModelAsset extends JObject
 	 * @param      string $action Action to check
 	 * @return     boolean True if authorized, false if not
 	 */
-	public function render()
+	public function render($course=null, $option='com_courses')
 	{
 		$type = strtolower($this->get('type'));
 
@@ -241,8 +241,10 @@ class CoursesModelAsset extends JObject
 			'name'      => 'assets',
 			'layout'    => $type
 		));
-		$view->option = 'com_courses';
-		$view->asset  = $this->_tbl;
+		$view->asset   = $this->_tbl;
+		$view->model   = $this;
+		$view->course  = $course;
+		$view->option  = $option;
 
 		return $view->loadTemplate();
 	}

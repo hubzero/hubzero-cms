@@ -17,7 +17,7 @@ a:focus {
 	Overlay
 ---------------------------------------------------------------*/
 #overlayer {
-	position:fixed;
+	position: absolute;
 	top:0;
 	left:0;
 	background:#000 url('../img/ajax-loader-1.gif') no-repeat 50% 50%;
@@ -77,6 +77,7 @@ a:focus {
     Container
 ---------------------------------------------------------------*/
 #presenter-container {
+	position: relative;
 	background: #FFF;
 	width: 960px;
 	margin: 20px auto;
@@ -112,6 +113,7 @@ a:focus {
     Header
 ---------------------------------------------------------------*/	
 #presenter-header {
+	display: none;
 	padding:10px;
 	overflow:hidden; 
 	background:none;

@@ -67,93 +67,26 @@ if (!$this->course->offering()->access('view')) { ?>
 	</div>
 	
 	<div class="video container" style="text-align: center;">
-		<div class="video-wrap" style="width: 640px; margin: 0 auto; text-align: left;">
+		<div class="video-wrap" style="margin: 0 auto; text-align: left;">
 			<h3>
 				<?php echo $lecture->get('title'); ?>
 			</h3>
 
 <?php
-	if ($lecture->assets()->total())
+if($lecture->assets()->total())
+{
+	// Render video
+	foreach ($lecture->assets() as $a)
 	{
-		$videos    = array();
-		$video_mp4 = array();
-		$subs      = array();
-
-		// Loop through the assets looking for videos and subtitle files
-		foreach ($lecture->assets() as $a)
+		if($a->get('type') == 'video')
 		{
-			$path = $a->path($this->course->get('id'));
-			$info = pathinfo($path);
+			echo $a->render($this->course);
 
-			// For the HTML5 video player, we only want videos with these extensions
-			if(in_array(strtolower($info['extension']), array('mp4', 'ogv', 'webm')))
-			{
-				$videos[] = $info;
-			}
-
-			// For the flashplayer fallback, we need just the mp4
-			if(strtolower($info['extension']) == 'mp4')
-			{
-				$video_mp4[] = $info;
-			}
-
-			// Finally, check for subtitle files
-			if(in_array(strtolower($info['extension']), array('srt')))
-			{
-				$subs[] = $info;
-			}
+			// Break - only 'render' first video available (should we do something about multiple video assets?)
+			break;
 		}
 	}
-
-	// If there was a video, let's put it in the page
-	if(isset($videos) && !empty($videos))
-	{
-		// Add the required javascript and CSS files
-		if(!JPluginHelper::isEnabled('system', 'jquery'))
-		{
-			// Only add these when the JQuery plugin isn't on
-			// Create the document object
-			$doc =& JFactory::getDocument();
-
-			$doc->addScript("https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js");
-			$doc->addScript("https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js");
-		}
-
-		Hubzero_Document::addComponentScript($this->option, "/assets/presenter/js/flowplayer");
-		Hubzero_Document::addComponentScript($this->option, "/assets/js/video");
-		Hubzero_Document::addComponentStylesheet($this->option, "/assets/css/video.css");
-
-		// @TODO: it might be nice to detect the native resolution of the video?
-		$width = 854;
-		$height = 480;
-
-		// Instantiate a new view
-		$view = new JView(array(
-			'name'   => 'course', 
-			'layout' => 'video'
-		));
-
-		// Set some things for the view
-		$view->videos    = $videos;
-		$view->video_mp4 = $video_mp4;
-		$view->subs      = $subs;
-		$view->width     = $width;
-		$view->height    = $height;
-
-		// Output HTML
-		if ($this->getError()) 
-		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
-		}
-		$view->display();
-	}
-	else
-	{
-		echo "<p class=\"warning\">There are no playable videos associated with this lecture</p>";
-	}
+}
 ?>
 
 			<p>
