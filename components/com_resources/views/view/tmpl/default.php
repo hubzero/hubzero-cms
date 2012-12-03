@@ -138,7 +138,7 @@ $juser =& JFactory::getUser();
 		$fctype = is_object($firstchild) ? ResourcesHtml::getFileExtension($firstchild->path) : '';
 $supdocs = '';
 		// Single out featured children resources
-		if ($children) 
+		if ($children && count($children) > 1) 
 		{
 			$supln  = '<ul class="supdocln">'."\n";
 			$supli  = array();
@@ -231,7 +231,7 @@ $supdocs = '';
 			} 
 			else if (!$supdocs && $realdocs > 0 && $this->tab != 'play' && is_object($firstchild)) 
 			{
-				$html .= "\t\t".'<p class="supdocs"><span class="viewalldocs"><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->model->resource->id.'&active=supportingdocs').'">'.JText::_('Additional materials available').' ('.$realdocs.')</a></span></p>'."\n";
+				$html .= "\t\t".'<p class="supdocs"><span class="viewalldocs"><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->model->resource->id.'&active=supportingdocs').'">'.JText::_('Additional materials available').' ('.($realdocs - 1).')</a></span></p>'."\n";
 			}
 
 			$supln .= '</ul>'."\n";
