@@ -386,7 +386,7 @@ class ResourcesModelResource extends JObject
 			else if ($this->resource->group_owner && ($this->resource->access == 3 || $this->resource->access == 4))
 			{
 				// For protected resources, make sure users can see abstract
-				if ($this->resource->access == 3)
+				if ($this->resource->access <= 3)
 				{
 					$this->params->set('access-view-resource', true);
 				}
@@ -419,6 +419,11 @@ class ResourcesModelResource extends JObject
 					$this->params->set('access-view-resource', true);
 					$this->params->set('access-view-all-resource', true);
 				}
+			}
+			else
+			{
+				$this->params->set('access-view-resource', true);
+				$this->params->set('access-view-all-resource', true);
 			}
 		}
 
