@@ -102,6 +102,8 @@ class SliderMacro extends WikiMacro
 			//check to see if image is external
 			if (strpos($slide, 'http') === false) 
 			{
+				$slide = trim($slide);
+				
 				//check if internal file actually exists
 				if (is_file(JPATH_ROOT . $base_url . DS . $slide)) 
 				{

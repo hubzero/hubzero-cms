@@ -7,6 +7,9 @@
 	text-align:center;
 	max-height:250px;
 	}
+.wiki_slider img {
+	max-width:100%;
+	}
 .wiki_slider_pager {
 	position:absolute;
 	bottom:5px;
