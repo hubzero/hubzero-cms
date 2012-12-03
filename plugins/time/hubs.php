@@ -426,7 +426,13 @@ class plgTimeHubs extends Hubzero_Plugin
 
 		// Check if the hub has an active tasks
 		$tasks = new TimeTasks($this->db);
-		$count = $tasks->getCount($filters = array('hub_id'=>$hub));
+		$filters = array('q' => array());
+		$filters['q'][0] = array(
+			'column' => 'hub_id',
+			'o'      => '=',
+			'value'  => $hub
+		);
+		$count = $tasks->getCount($filters);
 
 		// If delete a record from a page other than the first, take the user back to that page after deletion
 		$startnum = $this->mainframe->getUserState("$this->option.$this->active.start");
