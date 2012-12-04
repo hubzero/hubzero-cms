@@ -175,7 +175,7 @@
 -------------------------*/
 #time_content input[type=text],
 #time_content textarea,
-#time_content select { 
+#time_content select:not(.wykiwyg-style) { 
 	margin: 0;
 	padding: 7px;
 	border-radius: 3px;
