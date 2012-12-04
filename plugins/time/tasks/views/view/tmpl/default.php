@@ -40,8 +40,6 @@ $dir     = $this->mainframe->getUserStateFromRequest("$this->option.$this->activ
 $newdir  = ($dir == 'asc') ? 'desc' : 'asc';
 ?>
 
-<div id="dialog-confirm"></div>
-
 <div id="plg_time_tasks">
 	<?php if(count($this->notifications) > 0) {
 		foreach ($this->notifications as $notification) { ?>
@@ -178,12 +176,7 @@ $newdir  = ($dir == 'asc') ? 'desc' : 'asc';
 						<td><?php echo $task->aname; ?></td>
 						<td><?php echo $task->lname; ?></td>
 						<td><?php echo ($task->start_date != '0000-00-00') ? JHTML::_('date', $task->start_date, '%m/%d/%Y', 0) : ''; ?></td>
-						<td><?php echo ($task->end_date != '0000-00-00') ? JHTML::_('date', $task->end_date, '%m/%d/%Y', 0) : ''; ?>
-							<div class="modifiers">
-								<a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=tasks&action=edit&id='.$task->id); ?>"></a>
-								<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=tasks&action=delete&id='.$task->id); ?>"></a>
-							</div>
-						</td>
+						<td><?php echo ($task->end_date != '0000-00-00') ? JHTML::_('date', $task->end_date, '%m/%d/%Y', 0) : ''; ?></td>
 					</tr>
 					<?php } // close foreach
 				} else { // else count > 0 ?>

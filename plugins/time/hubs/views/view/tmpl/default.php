@@ -40,9 +40,6 @@ $dir     = $this->mainframe->getUserStateFromRequest("$this->option.$this->activ
 $newdir  = ($dir == 'asc') ? 'desc' : 'asc';
 ?>
 
-<div id="dialog-confirm"></div>
-<div id="dialog-message"></div>
-
 <div id="plg_time_hubs">
 	<?php if(count($this->notifications) > 0) {
 		foreach ($this->notifications as $notification) { ?>
@@ -100,12 +97,7 @@ $newdir  = ($dir == 'asc') ? 'desc' : 'asc';
 						</td>
 						<td><?php echo $hub->liaison; ?></td>
 						<td><?php echo ($hub->anniversary_date != '0000-00-00') ? JHTML::_('date', $hub->anniversary_date, '%m/%d/%Y', 0) : ''; ?></td>
-						<td><?php echo $hub->support_level; ?>
-							<div class="modifiers">
-								<a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=hubs&action=edit&id='.$hub->id); ?>"></a>
-								<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=hubs&action=delete&id='.$hub->id); ?>"></a>
-							</div>
-						</td>
+						<td><?php echo $hub->support_level; ?></td>
 					</tr>
 					<?php } // close foreach
 				} else { // else count > 0 ?>

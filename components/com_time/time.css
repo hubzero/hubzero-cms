@@ -8,7 +8,9 @@
 #time_container {
 	padding: 15px;
 }
-
+#content-header-extra {
+	width: 325px;
+}
 /*-------------------------
 	Menu structure
 -------------------------*/

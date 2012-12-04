@@ -5,36 +5,6 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-/*----------------------------------
-	Edit, Delete, and view buttons
-------------------------------------*/
-#plg_time_hubs .modifiers {
-	float: right;
-	width: 50px;
-	height: 20px;
-	}
-#plg_time_hubs .edit,
-#plg_time_hubs .delete {
-	padding-top: 3px;
-	border-bottom: none;
-	}
-#plg_time_hubs tr .edit,
-#plg_time_hubs tr .delete {
-	visibility: hidden;
-	opacity: .4;
-	}
-#plg_time_hubs tr:hover .edit,
-#plg_time_hubs tr:hover .delete {
-	visibility: visible;
-	}
-#plg_time_hubs tr .edit:hover,
-#plg_time_hubs tr .delete:hover {
-	opacity: 1;
-	}
-#plg_time_hubs tr .edit {
-	padding-right: 10px;
-	}
-
 /*-------------------------
 	Tables
 -------------------------*/

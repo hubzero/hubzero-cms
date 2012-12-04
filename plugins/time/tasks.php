@@ -293,7 +293,7 @@ class plgTimeTasks extends Hubzero_Plugin
 		if($count > 0)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&active=tasks' . $start),
+				JRoute::_('index.php?option=' . $this->_option . '&active=tasks&action=edit&id=' . $tid),
 				JText::_('PLG_TIME_TASK_DELETE_HAS_ASSOCIATED_RECORDS'),
 				'warning'
 			);

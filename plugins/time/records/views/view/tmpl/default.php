@@ -40,8 +40,6 @@ $dir     = $this->mainframe->getUserStateFromRequest("$this->option.$this->activ
 $newdir  = ($dir == 'asc') ? 'desc' : 'asc';
 ?>
 
-<div id="dialog-confirm"></div>
-
 <div id="plg_time_records">
 	<?php if(count($this->notifications) > 0) {
 		foreach ($this->notifications as $notification) { ?>
@@ -174,25 +172,16 @@ $newdir  = ($dir == 'asc') ? 'desc' : 'asc';
 						}
 						?>
 					<tr<?php if($record->billed == 1) { echo ' class="finalized" title="'.JText::_('PLG_TIME_RECORDS_FINALIZED').'"'; } ?>>
-						<td><?php echo ($record->billed == 0)
-								? '<a href="'.JRoute::_('index.php?option='.$this->option.'&active=records&action=readonly&id='.$record->id).'">'.$record->id."</a>"
-								: '<img src="/components/com_time/images/lock.png" />'; ?></td>
+						<td>
+							<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=records&action=readonly&id='.$record->id); ?>">
+								<?php echo $record->id; ?>
+							</a>
+						</td>
 						<td><?php echo $record->uname; ?></td>
 						<td class="col-time"><?php echo $record->time; ?></td>
 						<td><?php echo JHTML::_('date', $record->date, '%m/%d/%Y', 0); ?></td>
 						<td><?php echo $record->pname; ?></td>
-						<td class="last"><?php echo $record->description; ?>
-							<?php if($record->billed == 0 && ($this->juser->get('id') == $record->uid || in_array($record->uid, $this->subordinates))) { ?>
-								<div class="modifiers">
-									<a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=records&action=edit&id='.$record->id); ?>"></a>
-									<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=records&action=delete&id='.$record->id); ?>"></a>
-								</div>
-							<?php } else { // close if record billed = 0 or if current user is the same as the record creator ?>
-								<div class="modifiers">
-									<a class="view" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=records&action=readonly&id='.$record->id); ?>"></a>
-								</div>
-							<?php } // else if record billed = 0 or if current user is the same as the record creator ?>
-						</td>
+						<td class="last"><?php echo $record->description; ?></td>
 					</tr>
 					<?php } // close foreach
 				} else { // else count > 0 ?>

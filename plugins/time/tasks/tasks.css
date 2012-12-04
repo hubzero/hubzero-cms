@@ -5,44 +5,6 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-/*----------------------------------
-	Edit, Delete, and view buttons
-------------------------------------*/
-#plg_time_tasks .modifiers {
-	float: right;
-	width: 50px;
-	height: 20px;
-	}
-#plg_time_tasks .modifiers .view {
-	background: url("/components/com_time/images/eye.png") 0 0 no-repeat;
-	padding-left: 20px;
-	}
-#plg_time_tasks .edit,
-#plg_time_tasks .delete,
-#plg_time_tasks .view {
-	padding-top: 3px;
-	border-bottom: none;
-	}
-#plg_time_tasks tr .edit,
-#plg_time_tasks tr .delete,
-#plg_time_tasks tr .view {
-	visibility: hidden;
-	opacity: .4;
-	}
-#plg_time_tasks tr:hover .edit,
-#plg_time_tasks tr:hover .delete,
-#plg_time_tasks tr:hover .view {
-	visibility: visible;
-	}
-#plg_time_tasks tr .edit:hover,
-#plg_time_tasks tr .delete:hover,
-#plg_time_tasks tr .view:hover {
-	opacity: 1;
-	}
-#plg_time_tasks tr .edit {
-	padding-right: 10px;
-	}
-
 /*-------------------------
 	Tables
 -------------------------*/

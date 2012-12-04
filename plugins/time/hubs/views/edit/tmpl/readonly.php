@@ -35,6 +35,9 @@ defined('_JEXEC') or die('Restricted access');
 $ccount = (count($this->contacts) > 0) ? true : false;
 ?>
 
+<div id="dialog-confirm"></div>
+<div id="dialog-message"></div>
+
 <div id="plg_time_hubs">
 	<?php if(count($this->notifications) > 0) {
 		foreach ($this->notifications as $notification) { ?>
@@ -48,9 +51,14 @@ $ccount = (count($this->contacts) > 0) ? true : false;
 					<?php echo JText::_('PLG_TIME_HUBS_ALL_HUBS'); ?>
 				</a>
 			</li>
-			<li class="last">
+			<li>
 				<a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=hubs&action=edit&id='.$this->row->id); ?>">
 					<?php echo JText::_('PLG_TIME_HUBS_EDIT'); ?>
+				</a>
+			</li>
+			<li class="last">
+				<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=hubs&action=delete&id='.$this->row->id); ?>">
+					<?php echo JText::_('PLG_TIME_HUBS_DELETE'); ?>
 				</a>
 			</li>
 		</ul>

@@ -32,6 +32,8 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
+<div id="dialog-confirm"></div>
+
 <div id="plg_time_records">
 	<?php if(count($this->notifications) > 0) {
 		foreach ($this->notifications as $notification) { ?>
@@ -40,20 +42,34 @@ defined('_JEXEC') or die('Restricted access');
 	} // close if count ?>
 	<div id="content-header-extra">
 		<ul id="useroptions">
-			<li>
-				<a class="back" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=records'.$this->start); ?>">
-					<?php echo JText::_('PLG_TIME_RECORDS_ALL_RECORDS'); ?>
-				</a>
-			</li>
-			<li class="last">
-				<?php if($this->row->billed == 0 && ($this->juser->get('id') == $this->row->user_id || in_array($this->row->user_id, $this->subordinates))) { ?>
+			<?php if($this->row->billed == 0 && ($this->juser->get('id') == $this->row->user_id || in_array($this->row->user_id, $this->subordinates))) { ?>
+				<li>
+					<a class="back" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=records'.$this->start); ?>">
+						<?php echo JText::_('PLG_TIME_RECORDS_ALL_RECORDS'); ?>
+					</a>
+				</li>
+				<li>
 					<a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=records&action=edit&id='.$this->row->id); ?>">
 						<?php echo JText::_('PLG_TIME_RECORDS_EDIT'); ?>
 					</a>
-				<?php } // close if record billed = 0 or if current user is the same as the record creator ?>
-			</li>
+				</li>
+				<li class="last">
+					<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=records&action=delete&id='.$this->row->id); ?>">
+						<?php echo JText::_('PLG_TIME_RECORDS_DELETE'); ?>
+					</a>
+				</li>
+			<?php } else { ?>
+				<li class="last">
+					<a class="back" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=records'.$this->start); ?>">
+						<?php echo JText::_('PLG_TIME_RECORDS_ALL_RECORDS'); ?>
+					</a>
+				</li>
+			<?php } ?>
 		</ul>
 	</div>
+	<?php if($this->row->billed == 1) : ?>
+		<p class="info"><?php echo JText::_('PLG_TIME_RECORDS_RECORD_BILLED'); ?></p>
+	<?php endif; ?>
 	<div class="readonly two columns first">
 		<h3 class="headings"><?php echo JText::_('PLG_TIME_RECORDS_DETAILS'); ?></h3>
 		<div class="grouping" id="uname-group">

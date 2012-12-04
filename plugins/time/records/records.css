@@ -5,41 +5,6 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-/*----------------------------------
-	Edit, Delete, and view buttons
-------------------------------------*/
-#plg_time_records .modifiers {
-	position: absolute;
-	width: 50px;
-	height: 20px;
-	right: 0px;
-	top: 30%;
-	}
-#plg_time_records .modifiers .view {
-	background: url("/components/com_time/images/eye.png") 0 0 no-repeat;
-	padding-left: 20px;
-	}
-#plg_time_records tr .edit,
-#plg_time_records tr .delete,
-#plg_time_records tr .view {
-	visibility: hidden;
-	opacity: .4;
-	border-bottom: none;
-	}
-#plg_time_records tr:hover .edit,
-#plg_time_records tr:hover .delete,
-#plg_time_records tr:hover .view {
-	visibility: visible;
-	}
-#plg_time_records tr .edit:hover,
-#plg_time_records tr .delete:hover,
-#plg_time_records tr .view:hover {
-	opacity: 1;
-	}
-#plg_time_records tr .edit {
-	padding-right: 10px;
-	}
-
 /*-------------------------
 	Tables
 -------------------------*/

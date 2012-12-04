@@ -442,7 +442,7 @@ class plgTimeHubs extends Hubzero_Plugin
 		if($count > 0)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&active=hubs' . $start),
+				JRoute::_('index.php?option=' . $this->_option . '&active=hubs&action=readonly&id=' . $hub),
 				JText::_('PLG_TIME_HUBS_DELETE_HAS_ASSOCIATED_TASKS'),
 				'warning'
 			);

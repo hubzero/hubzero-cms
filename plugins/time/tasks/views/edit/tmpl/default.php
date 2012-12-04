@@ -32,6 +32,8 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
+<div id="dialog-confirm"></div>
+
 <div id="plg_time_tasks">
 	<?php if(count($this->notifications) > 0) {
 		foreach ($this->notifications as $notification) { ?>
@@ -40,9 +42,14 @@ defined('_JEXEC') or die('Restricted access');
 	} // close if count ?>
 	<div id="content-header-extra">
 		<ul id="useroptions">
-			<li class="last">
+			<li>
 				<a class="back" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=tasks'.$this->start); ?>">
 					<?php echo JText::_('PLG_TIME_TASKS_ALL_TASKS'); ?>
+				</a>
+			</li>
+			<li class="last">
+				<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=tasks&action=delete&id='.$this->row->id); ?>">
+					<?php echo JText::_('PLG_TIME_TASKS_DELETE'); ?>
 				</a>
 			</li>
 		</ul>
