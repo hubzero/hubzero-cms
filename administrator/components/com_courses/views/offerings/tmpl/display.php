@@ -178,7 +178,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 <?php if ($canDo->get('core.manage')) { ?>
-					<a class="glyph member hasTip" href="index.php?option=<?php echo $this->option ?>&amp;controller=enrollment&amp;id=<?php echo $row->get('id'); ?>" title="<?php echo JText::_('Manage enrollment') . '::' . $tip; ?>">
+					<a class="glyph member hasTip" href="index.php?option=<?php echo $this->option ?>&amp;controller=students&amp;offering=<?php echo $row->get('id'); ?>" title="<?php echo JText::_('Manage enrollment') . '::' . $tip; ?>">
 						<?php echo $students; ?>
 					</a>
 <?php } else { ?>

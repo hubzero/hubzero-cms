@@ -344,7 +344,7 @@ class CoursesControllerOffering extends Hubzero_Controller
 		$this->_buildPathway($this->course->offering()->pages());
 
 		// Add the default "About" section to the beginning of the lists
-		if (($page = $this->course->offering()->pages($active)))
+		if (($page = $this->course->offering()->page($active)))
 		{
 			$wikiconfig = array(
 				'option'   => $this->_option,

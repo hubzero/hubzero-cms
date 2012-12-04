@@ -88,6 +88,13 @@ class CoursesTableAsset extends JTable
 	var $state = NULL;
 
 	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $course_id = NULL;
+
+	/**
 	 * Contructor method for JTable class
 	 * 
 	 * @param  database object
@@ -105,7 +112,7 @@ class CoursesTableAsset extends JTable
 	 */
 	public function check()
 	{
-		parent::check();
+		return true;
 	}
 
 	/**
@@ -116,29 +123,54 @@ class CoursesTableAsset extends JTable
 	 */
 	private function _buildQuery($filters=array())
 	{
-		$query = " FROM $this->_tbl AS ca";
+		$query  = " FROM $this->_tbl AS ca";
 		$query .= " LEFT JOIN #__courses_asset_associations AS caa ON caa.asset_id = ca.id";
 		$query .= " LEFT JOIN #__courses_asset_groups AS cag ON caa.scope_id = cag.id";
 
-		/*$where = array();
+		$where = array();
 
-		if (isset($filters['course_instance_id']) && $filters['course_instance_id']) 
+		if (!empty($filters['w']))
 		{
-			$where[] = "cu.course_instance_id=" . $this->_db->Quote($filters['course_instance_id']);
-		}
-
-		if (isset($filters['search']) && $filters['search']) 
-		{
-			$where[] = "(LOWER(cu.url) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 
-					OR LOWER(cu.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
+			if (!empty($filters['w']['asset_scope_id']))
+			{
+				$where[] = "cag.id=" . $this->_db->Quote((int) $filters['w']['asset_scope_id']);
+			}
+			if (!empty($filters['w']['asset_scope']))
+			{
+				$where[] = "caa.scope=" . $this->_db->Quote((string) $filters['w']['asset_scope']);
+			}
+			if (!empty($filters['w']['course_id']))
+			{
+				$where[] = "ca.course_id=" . $this->_db->Quote((int) $filters['w']['course_id']);
+			}
+			if (isset($filters['search']) && $filters['search']) 
+			{
+				$where[] = "(LOWER(ca.url) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 
+						OR LOWER(ca.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
+			}
 		}
 
 		if (count($where) > 0)
 		{
 			$query .= " WHERE " . implode(" AND ", $where);
-		}*/
+		}
 
 		return $query;
+	}
+
+	/**
+	 * Get an object list of course units
+	 * 
+	 * @param  array $filters
+	 * @return object Return course units
+	 */
+	public function count($filters=array())
+	{
+		$query  = "SELECT COUNT(*)";
+		$query .= $this->_buildQuery($filters);
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadResult();
 	}
 
 	/**
@@ -151,26 +183,6 @@ class CoursesTableAsset extends JTable
 	{
 		$query  = "SELECT ca.*, caa.ordering";
 		$query .= $this->_buildQuery($filters);
-
-		if (!empty($filters['w']))
-		{
-			$first = true;
-
-			if (!empty($filters['w']['asset_scope_id']))
-			{
-				$query .= ($first) ? ' WHERE' : ' AND';
-				$query .= " cag.id = " . $this->_db->Quote($filters['w']['asset_scope_id']);
-
-				$first = false;
-			}
-			if (!empty($filters['w']['asset_scope']))
-			{
-				$query .= ($first) ? ' WHERE' : ' AND';
-				$query .= " caa.scope = " . $this->_db->Quote($filters['w']['asset_scope']);
-
-				$first = false;
-			}
-		}
 
 		if (!empty($filters['start']) && !empty($filters['limit']))
 		{

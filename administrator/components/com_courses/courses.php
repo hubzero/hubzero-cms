@@ -73,6 +73,11 @@ JSubMenuHelper::addEntry(
 	$controllerName != 'roles'
 );
 JSubMenuHelper::addEntry(
+	JText::_('Students'), 
+	'index.php?option=' .  $option . '&controller=students', 
+	$controllerName == 'students'
+);
+JSubMenuHelper::addEntry(
 	JText::_('Roles'), 
 	'index.php?option=' .  $option . '&controller=roles', 
 	$controllerName == 'roles'

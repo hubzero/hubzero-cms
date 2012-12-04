@@ -112,7 +112,26 @@ class CoursesTableAssetAssociation extends JTable
 			return false;
 		}
 
+		if (!$this->id)
+		{
+			$high = $this->getHighestOrdering($this->scope_id, $this->scope);
+			$this->ordering = ($high + 1);
+		}
+
 		return true;
+	}
+
+	/**
+	 * Get the last page in the ordering
+	 * 
+	 * @param      string  $offering_id    Course alias (cn)
+	 * @return     integer
+	 */
+	public function getHighestOrdering($scope_id, $scope)
+	{
+		$sql = "SELECT ordering FROM $this->_tbl WHERE scope_id=" . $this->_db->Quote(intval($scope_id)) . " AND scope=" . $this->_db->Quote($scope) . " ORDER BY ordering DESC LIMIT 1";
+		$this->_db->setQuery($sql);
+		return $this->_db->loadResult();
 	}
 
 	/**

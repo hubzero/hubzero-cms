@@ -33,15 +33,13 @@ defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Controller');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'assetgroup.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'unit.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
 
 /**
  * Courses controller class for managing membership and course info
  */
-class CoursesControllerAssetgroups extends Hubzero_Controller
+class CoursesControllerStudents extends Hubzero_Controller
 {
 	/**
 	 * Displays a list of courses
@@ -56,21 +54,20 @@ class CoursesControllerAssetgroups extends Hubzero_Controller
 
 		// Incoming
 		$this->view->filters = array();
-		$this->view->filters['unit']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.unit',
-			'unit',
+		$this->view->filters['offering']    = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.offering',
+			'offering',
 			0
 		);
 
-		$this->view->unit = CoursesModelUnit::getInstance($this->view->filters['unit']);
-		if (!$this->view->unit->exists())
+		$this->view->offering = CoursesModelOffering::getInstance($this->view->filters['offering']);
+		if (!$this->view->offering->exists())
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=courses'
 			);
 			return;
 		}
-		$this->view->offering = CoursesModelOffering::getInstance($this->view->unit->get('offering_id'));
 		$this->view->course = CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
 
 		$this->view->filters['search']  = urldecode(trim($app->getUserStateFromRequest(
@@ -91,42 +88,15 @@ class CoursesControllerAssetgroups extends Hubzero_Controller
 			0,
 			'int'
 		);
+		$this->view->filters['role'] = 'student';
 
-		/*$this->view->filters['count'] = true;
+		$this->view->filters['count'] = true;
 
-		$this->view->total = $this->view->unit->assetgroups(null, $this->view->filters);
+		$this->view->total = $this->view->offering->members($this->view->filters);
 
 		$this->view->filters['count'] = false;
 
-		$this->view->rows = $this->view->unit->assetgroups(null, $this->view->filters);*/
-		$rows = $this->view->unit->assetgroups(null, $this->view->filters);
-
-		// establish the hierarchy of the menu
-		$children = array(
-			0 => array()
-		);
-
-		$levellimit = ($this->view->filters['limit'] == 0) ? 500 : $this->view->filters['limit'];
-
-		// first pass - collect children
-		foreach ($rows as $v)
-		{
-			$children[0][] = $v;
-			$children[$v->get('id')] = $v->children();
-			
-			//$v->set('name', '');
-			/*$pt      = $v->get('parent');
-			$list    = @$children[$pt] ? $children[$pt] : array();
-			array_push($list, $v);
-			$children[$pt] = $list;*/
-		}
-
-		// second pass - get an indent list of the items
-		$list = $this->treeRecurse(0, '', array(), $children, max(0, $levellimit-1));
-
-		$this->view->total = count($list);
-
-		$this->view->rows = array_slice($list, $this->view->filters['start'], $this->view->filters['limit']);
+		$this->view->rows = $this->view->offering->members($this->view->filters);
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
@@ -147,77 +117,6 @@ class CoursesControllerAssetgroups extends Hubzero_Controller
 
 		// Output the HTML
 		$this->view->display();
-	}
-
-	/**
-	 * Recursive function to build tree
-	 * 
-	 * @param      integer $id       Parent ID
-	 * @param      string  $indent   Indent text
-	 * @param      array   $list     List of records
-	 * @param      array   $children Container for parent/children mapping
-	 * @param      integer $maxlevel Maximum levels to descend
-	 * @param      integer $level    Indention level
-	 * @param      integer $type     Indention type
-	 * @return     void
-	 */
-	public function treeRecurse($id, $indent, $list, $children, $maxlevel=9999, $level=0, $type=1)
-	{
-		if (@$children[$id] && $level <= $maxlevel)
-		{
-			foreach ($children[$id] as $v)
-			{
-				$id = $v->get('id');
-
-				if ($type) 
-				{
-					$pre    = '<span class="treenode">&#8970;</span>&nbsp;';
-					$spacer = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-				} 
-				else 
-				{
-					$pre    = '- ';
-					$spacer = '&nbsp;&nbsp;';
-				}
-
-				/*if (!is_a($v, 'stdClass'))
-				{
-					$data = $v->toArray();
-				}
-				else 
-				{
-					foreach (get_object_vars($v) as $key => $val) 
-					{
-						if (substr($key, 0, 1) != '_') 
-						{
-							$data[$key] = $val;
-						}
-					}
-				}
-
-				$k = new stdClass;
-				foreach ($data as $key => $val)
-				{
-					$k->$key = $val;
-				}*/
-
-				if ($v->get('parent') == 0) 
-				{
-					$txt = '';
-				} 
-				else 
-				{
-					$txt = $pre;
-				}
-				$pt = $v->get('parent');
-
-				$list[$id] = $v;
-				$list[$id]->treename = "$indent$txt";
-				$list[$id]->children = count(@$children[$id]);
-				$list = $this->treeRecurse($id, $indent . $spacer, $list, $children, $maxlevel, $level+1, $type);
-			}
-		}
-		return $list;
 	}
 
 	/**
@@ -260,36 +159,15 @@ class CoursesControllerAssetgroups extends Hubzero_Controller
 				$id = '';
 			}
 
-			$this->view->row = CoursesModelAssetgroup::getInstance($id);
+			$this->view->row = CoursesModelOffering::getInstance($id);
 		}
 
-		if (!$this->view->row->get('unit_id'))
+		if (!$this->view->row->get('course_id'))
 		{
-			$this->view->row->set('unit_id', JRequest::getInt('unit', 0));
+			$this->view->row->set('course_id', JRequest::getInt('course', 0));
 		}
 
-		$this->view->unit = CoursesModelUnit::getInstance($this->view->row->get('unit_id'));
-
-		$this->view->offering = CoursesModelOffering::getInstance($this->view->unit->get('offering_id'));
-
-		$rows = $this->view->unit->assetgroups();
-
-		// establish the hierarchy of the menu
-		$children = array(
-			0 => array()
-		);
-
-		$levellimit = 500;
-
-		// first pass - collect children
-		foreach ($rows as $v)
-		{
-			$children[0][] = $v;
-			$children[$v->get('id')] = $v->children();
-		}
-
-		// second pass - get an indent list of the items
-		$this->view->assetgroups = $this->treeRecurse(0, '', array(), $children, max(0, $levellimit-1));
+		$this->view->course = CoursesModelCourse::getInstance($this->view->row->get('course_id'));
 
 		// Set any errors
 		if ($this->getError())
@@ -318,28 +196,26 @@ class CoursesControllerAssetgroups extends Hubzero_Controller
 		$fields = JRequest::getVar('fields', array(), 'post');
 
 		// Instantiate an Hubzero_Course object
-		$model = CoursesModelAssetgroup::getInstance($fields['id']);
+		$model = CoursesModelOffering::getInstance($fields['id']);
 
 		if (!$model->bind($fields))
 		{
-			$this->setError('failed bind');
-			$this->addComponentMessage($model->getError(), 'error');
+			$this->addComponentMessage($model->getError());
 			$this->editTask($model);
 			return;
 		}
 
 		if (!$model->store())
 		{
-			$this->setError('failed store' . $model->getError());
-			$this->addComponentMessage($model->getError(), 'error');
+			$this->addComponentMessage($model->getError());
 			$this->editTask($model);
 			return;
 		}
 
 		// Output messsage and redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&unit=' . $model->get('unit_id'),
-			JText::_('COM_COURSES_UNIT_SAVED')
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::_('COM_COURSES_SAVED')
 		);
 	}
 
@@ -367,10 +243,14 @@ class CoursesControllerAssetgroups extends Hubzero_Controller
 		// Do we have any IDs?
 		if (!empty($ids))
 		{
+			// Get plugins
+			//JPluginHelper::importPlugin('courses');
+			//$dispatcher =& JDispatcher::getInstance();
+
 			foreach ($ids as $id)
 			{
 				// Load the course page
-				$model = CoursesModelAssetgroup::getInstance($id);
+				$model = CoursesModelOffering::getInstance($id);
 
 				// Ensure we found the course info
 				if (!$model->exists())
@@ -378,20 +258,59 @@ class CoursesControllerAssetgroups extends Hubzero_Controller
 					continue;
 				}
 
+				// Get number of course members
+				/*$courseusers    = $course->get('members');
+				$coursemanagers = $course->get('managers');
+				$members = array_merge($courseusers, $coursemanagers);
+
+				// Start log
+				$log  = JText::_('COM_COURSES_SUBJECT_COURSE_DELETED');
+				$log .= JText::_('COM_COURSES_TITLE') . ': ' . $course->get('description') . "\n";
+				$log .= JText::_('COM_COURSES_ID') . ': ' . $course->get('cn') . "\n";
+				$log .= JText::_('COM_COURSES_PRIVACY') . ': ' . $course->get('access') . "\n";
+				$log .= JText::_('COM_COURSES_PUBLIC_TEXT') . ': ' . stripslashes($course->get('public_desc')) . "\n";
+				$log .= JText::_('COM_COURSES_PRIVATE_TEXT') . ': ' . stripslashes($course->get('private_desc')) . "\n";
+				$log .= JText::_('COM_COURSES_RESTRICTED_MESSAGE') . ': ' . stripslashes($course->get('restrict_msg')) . "\n";
+
+				// Log ids of course members
+				if ($courseusers)
+				{
+					$log .= JText::_('COM_COURSES_MEMBERS') . ': ';
+					foreach ($courseusers as $gu)
+					{
+						$log .= $gu . ' ';
+					}
+					$log .=  "\n";
+				}
+				$log .= JText::_('COM_COURSES_MANAGERS') . ': ';
+				foreach ($coursemanagers as $gm)
+				{
+					$log .= $gm . ' ';
+				}
+				$log .= "\n";
+
+				// Trigger the functions that delete associated content
+				// Should return logs of what was deleted
+				$logs = $dispatcher->trigger('onCourseDelete', array($course));
+				if (count($logs) > 0)
+				{
+					$log .= implode('', $logs);
+				}*/
+
 				// Delete course
 				if (!$model->delete())
 				{
-					JError::raiseError(500, JText::_('Unable to delete asset group'));
+					JError::raiseError(500, JText::_('Unable to delete offering'));
 					return;
 				}
 
 				// Log the course approval
 				$log = new CoursesTableLog($this->database);
 				$log->scope_id  = $course->get('id');
-				$log->scope     = 'course_assetgroup';
+				$log->scope     = 'course_offering';
 				$log->user_id   = $this->juser->get('id');
 				$log->timestamp = date('Y-m-d H:i:s', time());
-				$log->action    = 'assetgroup_deleted';
+				$log->action    = 'offering_deleted';
 				$log->actor_id  = $this->juser->get('id');
 				if (!$log->store())
 				{
@@ -404,7 +323,7 @@ class CoursesControllerAssetgroups extends Hubzero_Controller
 
 		// Redirect back to the courses page
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&unit=' . JRequest::getInt('unit', 0),
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
 			JText::sprintf('%s Item(s) removed.', $num)
 		);
 	}
@@ -417,7 +336,7 @@ class CoursesControllerAssetgroups extends Hubzero_Controller
 	public function cancelTask()
 	{
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&unit=' . JRequest::getInt('unit', 0)
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 		);
 	}
 }
