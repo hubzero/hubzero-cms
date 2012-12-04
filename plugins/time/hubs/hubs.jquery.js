@@ -42,7 +42,7 @@ HUB.Plugins.TimeHubs = {
 		$(".new_contact").focusin(function(){
 
 			// Save the previous value before clearing the field in case we want to use it later
-			var focus_text = $(this).val();
+			focus_text = $(this).val();
 
 			// Only clear the field if the text is the placeholder text
 			if(focus_text == 'name' || focus_text == 'phone' || focus_text == 'email' || focus_text == 'role'){
