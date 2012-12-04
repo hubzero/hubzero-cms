@@ -31,27 +31,29 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$item = $this->entry->item();
+
 ximport('Hubzero_Wiki_Editor');
 $editor =& Hubzero_Wiki_Editor::getInstance();
 ?>
 
 		<div id="post-link" class="fieldset">
 			<a name="link"></a>
-			<label for="field-title"<?php if ($this->task == 'save' && !$this->entry->title) { echo ' class="fieldWithErrors"'; } ?>>
+			<label for="field-title"<?php if ($this->task == 'save' && !$item->get('title')) { echo ' class="fieldWithErrors"'; } ?>>
 				<?php echo JText::_('Title'); ?> <span class="optional">optional</span>
-				<input type="text" name="fields[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($this->entry->title)); ?>" />
+				<input type="text" name="fields[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($item->get('title'))); ?>" />
 			</label>
-			<?php if ($this->task == 'save' && !$this->entry->title) { ?>
+			<?php if ($this->task == 'save' && !$item->get('title')) { ?>
 				<p class="error"><?php echo JText::_('PLG_GROUPS_' . strtoupper($this->name) . '_ERROR_PROVIDE_TITLE'); ?></p>
 			<?php } ?>
 
 			<label for="field-url">
 				<?php echo JText::_('URL'); ?>
-				<input type="text" name="fields[url]" id="field-url" size="35" value="<?php echo $this->escape(stripslashes($this->entry->url)); ?>" />
+				<input type="text" name="fields[url]" id="field-url" size="35" value="<?php echo $this->escape(stripslashes($item->get('url'))); ?>" />
 			</label>
 			
 			<p>
-				<a class="add btn toggle" rel="field_description-label" data-text-show="Add a description" data-text-hide="Don't add a description" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->name . '&task=new&type=link&show=1'); ?>">Add a description</a>
+				<a class="add btn toggle" rel="field_description-label" data-text-show="Add a description" data-text-hide="Don't add a description" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name . '&task=new&type=link&show=1'); ?>">Add a description</a>
 			</p>
 			<label id="field_description-label" for="field_description"<?php if (!JRequest::getInt('show', 0)) { echo ' class="hide"'; } ?>>
 				<?php echo JText::_('Post'); ?>
@@ -87,10 +89,10 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 						</tr>
 					</tbody>
 				</table>">Wiki formatting</a> is allowed.</span>
-				<?php echo $editor->display('fields[description]', 'field_description', $this->escape(stripslashes($this->entry->description)), '', '50', '10'); ?>
+				<?php echo $editor->display('fields[description]', 'field_description', $this->escape(stripslashes($item->get('description'))), '', '50', '10'); ?>
 			</label>
 			
-			<?php if ($this->task == 'save' && !$this->entry->url) { ?>
+			<?php if ($this->task == 'save' && !$item->get('url')) { ?>
 				<p class="error"><?php echo JText::_('PLG_GROUPS_' . strtoupper($this->name) . '_ERROR_PROVIDE_CONTENT'); ?></p>
 			<?php } ?>
 			<input type="hidden" name="fields[type]" value="link" />

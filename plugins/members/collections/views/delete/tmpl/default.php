@@ -34,33 +34,30 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->cn.'&active=blog&task=delete&entry='.$this->entry->id); ?>" method="post" id="hubForm">
-		<div class="explaination">
-<?php if ($this->authorized) { ?>
-			<p><a class="add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->cn.'&active=blog&task=new'); ?>"><?php echo JText::_('New entry'); ?></a></p>
-<?php } ?>
-		</div>
-		<fieldset>
-			<legend><?php echo JText::_('PLG_GROUPS_BLOG_DELETE_HEADER'); ?></legend>
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name . '&task=post/' . $this->post->get('id') . '/delete'); ?>" method="post" id="hubForm" class="full">
 
-	 		<p class="warning"><?php echo JText::sprintf('PLG_GROUPS_BLOG_DELETE_WARNING',$this->entry->title); ?></p>
+		<fieldset>
+			<legend><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_DELETE_HEADER'); ?></legend>
+
+	 		<p class="warning"><?php echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_DELETE_WARNING', $this->escape(stripslashes($this->post->item()->get('title')))); ?></p>
 
 			<label>
 				<input type="checkbox" class="option" name="confirmdel" value="1" /> 
-				<?php echo JText::_('PLG_GROUPS_BLOG_DELETE_CONFIRM'); ?>
+				<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_DELETE_CONFIRM'); ?>
 			</label>
 		</fieldset>
 		<div class="clear"></div>
-		
-		<input type="hidden" name="gid" value="<?php echo $this->group->cn; ?>" />
+
+		<input type="hidden" name="id" value="<?php echo $this->member->get('uidNumber'); ?>" />
 		<input type="hidden" name="process" value="1" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="active" value="blog" />
-		<input type="hidden" name="task" value="delete" />
-		<input type="hidden" name="entry" value="<?php echo $this->entry->id; ?>" />
+		<input type="hidden" name="active" value="<?php echo $this->name; ?>" />
+		<input type="hidden" name="action" value="delete" />
+		<input type="hidden" name="post" value="<?php echo $this->post->get('id'); ?>" />
+		<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
 		
 		<p class="submit">
-			<input type="submit" value="<?php echo JText::_('PLG_GROUPS_BLOG_DELETE'); ?>" />
-			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->entry->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->entry->publish_up, '%m', 0).'/'.$this->entry->alias); ?>">Cancel</a>
+			<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_DELETE'); ?>" />
+			<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name . '&task=' . $this->collection->get('alias')); ?>">Cancel</a>
 		</p>
 	</form>

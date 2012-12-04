@@ -71,13 +71,13 @@
 	html.opera .bulletin {
 		width: 327px;
 	}
-	.bulletin.board {
+	.bulletin.collection {
 		/*float: left;*/
 		z-index: 1;
 		background: #fff;
 	}
-	.bulletin.board:before,
-	.bulletin.board:after {
+	.bulletin.collection:before,
+	.bulletin.collection:after {
 		z-index: -1;
 		position: absolute;
 		bottom: -4px;
@@ -86,25 +86,15 @@
 		content: '';
 		height: 2px;
 		display: block;
-		/*-webkit-box-shadow: 0 1px 2px rgba(25, 25, 25, 0.4);
-		-moz-box-shadow: 0 1px 2px rgba(25, 25, 25, 0.4);
-		-ms-box-shadow: 0 1px 2px rgba(25, 25, 25, 0.4);
-		-o-box-shadow: 0 1px 2px rgba(25, 25, 25, 0.4);
-		box-shadow: 0 1px 2px rgba(25, 25, 25, 0.4);*/
 		background-color: #f0f0f0;
 		border: 1px solid #ccc;
 		border-top: none;
 	}
-	.bulletin.board:after {
+	.bulletin.collection:after {
 		z-index: -2;
 		bottom: -7px;
 		left: 8px;
 		right: 8px;
-		/*-webkit-box-shadow: 0 0px 1px rgba(25, 25, 25, 0.4);
-		-moz-box-shadow: 0 0px 1px rgba(25, 25, 25, 0.4);
-		-ms-box-shadow: 0 0px 1px rgba(25, 25, 25, 0.4);
-		-o-box-shadow: 0 0px 1px rgba(25, 25, 25, 0.4);
-		box-shadow: 0 0px 1px rgba(25, 25, 25, 0.4);*/
 		border: 1px solid #ccc;
 	}
 	.full {
@@ -364,7 +354,7 @@
 		vertical-align: middle;
 		text-shadow: 0 1px 1px #fff;
 	}
-	.btn.board:before {
+	.btn.collection:before {
 		content: "\f00a";
 	}
 	.btn.repost {
@@ -399,7 +389,7 @@
 		color: #9c9c9c;
 		border-top: 1px solid #fafafa;
 	}
-	.reposted {
+	.attribution + .reposted {
 		border-top: 1px solid #d4d4d4;
 	}
 	
@@ -439,7 +429,7 @@
 	.image .content:after {
 		content: "\f03e";
 	}
-	.board .content:after {
+	.collection .content:after {
 		content: "\f00a";
 	}
 	.deleted {

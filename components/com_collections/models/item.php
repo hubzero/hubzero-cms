@@ -110,6 +110,10 @@ class CollectionsModelItem extends JObject
 			{
 				$this->set('comments', $oid->comments);
 			}
+			if (isset($oid->voted))
+			{
+				$this->set('voted', $oid->voted);
+			}
 		}
 		else if (is_array($oid))
 		{
@@ -121,6 +125,10 @@ class CollectionsModelItem extends JObject
 			if (isset($oid['comments']))
 			{
 				$this->set('comments', $oid['comments']);
+			}
+			if (isset($oid['voted']))
+			{
+				$this->set('voted', $oid['voted']);
 			}
 		}
 	}
@@ -311,12 +319,35 @@ class CollectionsModelItem extends JObject
 	}
 
 	/**
-	 * Check if the resource exists
+	 * Remove an asset from the list
 	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @param      integer $asset
+	 * @return     void
 	 */
-	public function tags()
+	public function removeAsset($asset)
+	{
+		// Remove the asset
+		$tbl = new CollectionsTableAsset($this->_db);
+		if (!$tbl->remove($asset))
+		{
+			$this->setError(JText::_('Failed to remove asset.'));
+			return false;
+		}
+
+		// Reset the asset list so the next time assets 
+		// are called, the list if fresh
+		$this->_assets = null;
+
+		return true;
+	}
+
+	/**
+	 * Get tags on an item
+	 * 
+	 * @param      string $as How to return data
+	 * @return     mixed Returns an array of tags by default
+	 */
+	public function tags($as='array')
 	{
 		if (!isset($this->_tags) || !is_array($this->_tags))
 		{
@@ -329,7 +360,7 @@ class CollectionsModelItem extends JObject
 			$bt = new CollectionsTags($this->_db);
 			if (($tags = $bt->getTagsForIds($ids)))
 			{
-				$results = isset($tags[$this->get('item_id')]) ? $tags[$this->get('item_id')] : array();
+				$results = isset($tags[$this->get('id')]) ? $tags[$this->get('id')] : array();
 			}
 			else
 			{
@@ -337,7 +368,22 @@ class CollectionsModelItem extends JObject
 			}
 			$this->_tags = $results;
 		}
-		return $this->_tags;
+		switch (strtolower(trim($as)))
+		{
+			case 'string':
+				$tags = array();
+				foreach ($this->_tags as $tag)
+				{
+					$tags[] = $tag->raw_tag;
+				}
+				return implode(', ', $tags);
+			break;
+
+			case 'array':
+			default:
+				return $this->_tags;
+			break;
+		}
 	}
 
 	/**
@@ -362,6 +408,109 @@ class CollectionsModelItem extends JObject
 		else if ($tag !== null)
 		{
 			$this->_tags[] = $tag;
+		}
+	}
+
+	/**
+	 * Vote for this item
+	 * 
+	 * @return     boolean True on success, false on error
+	 */
+	public function vote()
+	{
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'vote.php');
+
+		$juser = JFactory::getUser();
+
+		$vote = new CollectionsTableVote($this->_db);
+		$vote->loadByBulletin($this->get('id'), $juser->get('id'));
+
+		$like = true;
+
+		if (!$vote->id)
+		{
+			$vote->user_id = $juser->get('id');
+			$vote->item_id = $this->get('id');
+			// Store the record
+			if (!$vote->check())
+			{
+				$this->setError($vote->getError());
+				return false;
+			}
+			else
+			{
+				if (!$vote->store())
+				{
+					$this->setError(JText::_('Error occurred while saving vote'));
+					return false;
+				}
+			}
+		}
+		else
+		{
+			$like = false;
+			// Load the vote record
+			if (!$vote->delete())
+			{
+				$this->setError($vote->getError());
+				return false;
+			}
+		}
+
+		if ($like)
+		{
+			// Increase like count
+			$this->set('positive', ($this->get('positive') + 1));
+		}
+		else if ($this->get('positive') > 0) // Make sure we don't go below 0
+		{
+			// Decrease like count
+			$this->set('positive', ($this->get('positive') - 1));
+		}
+		$this->_tbl->store();
+
+		return true;
+	}
+
+	/**
+	 * Check if the course exists
+	 * 
+	 * @param      mixed $idx Index value
+	 * @return     array
+	 */
+	public function bind($data=null)
+	{
+		return $this->_tbl->bind($data);
+	}
+
+	/**
+	 * Short title for 'update'
+	 * Long title (if any) ...
+	 *
+	 * @param unknown $course_id Parameter title (if any) ...
+	 * @param array $data Parameter title (if any) ...
+	 * @return boolean Return title (if any) ...
+	 */
+	public function store($check=true)
+	{
+		if (empty($this->_db))
+		{
+			return false;
+		}
+
+		if ($check)
+		{
+			if (!$this->_tbl->check())
+			{
+				$this->setError($this->_tbl->getError());
+				return false;
+			}
+		}
+
+		if (!$this->_tbl->store())
+		{
+			$this->setError($this->_tbl->getError());
+			return false;
 		}
 	}
 }

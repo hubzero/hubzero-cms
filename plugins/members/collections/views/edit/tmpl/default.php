@@ -31,12 +31,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//tag editor
-JPluginHelper::importPlugin( 'hubzero' );
-$dispatcher =& JDispatcher::getInstance();
-$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->tags)) );
-
 $item = $this->entry->item();
+
+//tag editor
+JPluginHelper::importPlugin('hubzero');
+$dispatcher =& JDispatcher::getInstance();
+$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags','', $item->tags('string'))));
 
 $type = strtolower(JRequest::getWord('type', $item->get('type')));
 if (!in_array($type, array('file', 'image', 'text', 'link')))
@@ -92,7 +92,7 @@ if (!in_array($type, array('file', 'image', 'text', 'link')))
 		$view->params     = $this->params;
 		$view->task       = $this->task;
 
-		$view->item  = $item;
+		$view->entry      = $this->entry;
 		$view->collection = $this->collection;
 
 		$view->display();
@@ -102,14 +102,14 @@ if (!in_array($type, array('file', 'image', 'text', 'link')))
 		<!-- <label for="field-access">
 			<?php echo JText::_('Privacy'); ?>
 			<select name="fields[access]" id="field-access">
-				<option value="0"<?php if ($item->get('access') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public (can be reposted to any board)'); ?></option>
-				<option value="4"<?php if ($item->get('access') == 4) { echo ' selected="selected"'; } ?>><?php echo JText::_('Private (can only be reposted my boards)'); ?></option>
+				<option value="0"<?php if ($item->get('access') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public (can be reposted to any collection)'); ?></option>
+				<option value="4"<?php if ($item->get('access') == 4) { echo ' selected="selected"'; } ?>><?php echo JText::_('Private (can only be reposted my collections)'); ?></option>
 			</select>
 		</label> -->
 		<div class="group">
-		<label for="field-board">
-			<?php echo JText::_('Board'); ?>
-			<select name="fields[board_id]" id="field-board">
+		<label for="field-collection_id">
+			<?php echo JText::_('Collections'); ?>
+			<select name="fields[collection_id]" id="field-collection_id">
 <?php 
 if ($this->collections->total() > 0)
 {
@@ -122,15 +122,16 @@ if ($this->collections->total() > 0)
 }
 ?>
 			</select>
-			<span class="hint"><?php echo JText::_('Select from the list of boards you have access to.'); ?></span>
+			<span class="hint"><?php echo JText::_('Select from the list of collections you have access to.'); ?></span>
 		</label>
 
 		<label>
 			<?php echo JText::_('PLG_MEMBERS_' . strtoupper($this->name) . '_FIELD_TAGS'); ?> <span class="optional">optional</span>
-			<?php if (count($tf) > 0) {
+			<?php 
+			if (count($tf) > 0) {
 				echo $tf[0];
 			} else { ?>
-				<input type="text" name="tags" value="<?php echo $this->tags; ?>" />
+				<input type="text" name="tags" value="<?php echo $item->tags('string'); ?>" />
 			<?php } ?>
 			<span class="hint"><?php echo JText::_('PLG_MEMBERS_' . strtoupper($this->name) . '_FIELD_TAGS_HINT'); ?></span>
 		</label>

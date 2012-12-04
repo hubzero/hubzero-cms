@@ -31,16 +31,18 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$item = $this->entry->item();
+
 ximport('Hubzero_Wiki_Editor');
 $editor =& Hubzero_Wiki_Editor::getInstance();
 ?>
 		<div id="post-text" class="fieldset">
 			<a name="text"></a>
-			<label for="field-title"<?php if ($this->task == 'save' && !$this->entry->title) { echo ' class="fieldWithErrors"'; } ?>>
+			<label for="field-title"<?php if ($this->task == 'save' && !$item->get('title')) { echo ' class="fieldWithErrors"'; } ?>>
 				<?php echo JText::_('Title'); ?> <span class="optional">optional</span>
-				<input type="text" name="fields[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($this->entry->title)); ?>" />
+				<input type="text" name="fields[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($item->get('title'))); ?>" />
 			</label>
-			<?php if ($this->task == 'save' && !$this->entry->title) { ?>
+			<?php if ($this->task == 'save' && !$item->get('title')) { ?>
 				<p class="error"><?php echo JText::_('PLG_GROUPS_' . strtoupper($this->name) . '_ERROR_PROVIDE_TITLE'); ?></p>
 			<?php } ?>
 
@@ -78,9 +80,9 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 						</tr>
 					</tbody>
 				</table>">Wiki formatting</a> is allowed.</span>
-				<?php echo $editor->display('fields[description]', 'field_description', $this->escape(stripslashes($this->entry->description)), '', '50', '10'); ?>
+				<?php echo $editor->display('fields[description]', 'field_description', $this->escape(stripslashes($item->get('description'))), '', '50', '10'); ?>
 			</label>
-			<?php if ($this->task == 'save' && !$this->entry->description) { ?>
+			<?php if ($this->task == 'save' && !$item->get('description')) { ?>
 				<p class="error"><?php echo JText::_('PLG_GROUPS_' . strtoupper($this->name) . '_ERROR_PROVIDE_CONTENT'); ?></p>
 			<?php } ?>
 			<input type="hidden" name="fields[type]" value="text" />

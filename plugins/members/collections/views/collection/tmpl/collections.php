@@ -86,7 +86,7 @@ if ($this->rows)
 	{
 		//$counts = $board->getPostTypeCount($row->get('id'));
 ?>
-		<div class="bulletin board <?php echo ($row->get('access') == 4) ? 'private' : 'public'; echo ($row->get('is_default')) ? ' default' : ''; ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>">
+		<div class="bulletin collection <?php echo ($row->get('access') == 4) ? 'private' : 'public'; echo ($row->get('is_default')) ? ' default' : ''; ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>">
 			<div class="content">
 				<?php
 						$view = new Hubzero_Plugin_View(
@@ -94,7 +94,7 @@ if ($this->rows)
 								'folder'  => 'members',
 								'element' => $this->name,
 								'name'    => 'entry',
-								'layout'  => '_board'
+								'layout'  => '_collection'
 							)
 						);
 						//$view->name       = $this->name;

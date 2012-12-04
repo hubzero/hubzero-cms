@@ -244,10 +244,9 @@ class CollectionsModelPost extends JObject
 	}
 
 	/**
-	 * Check if the resource exists
+	 * Check if the post is the original (first) post
 	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @return     boolean True if original, false if not
 	 */
 	public function original()
 	{
@@ -256,6 +255,54 @@ class CollectionsModelPost extends JObject
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Remove a post
+	 * 
+	 * @return     boolean True on success, false on error
+	 */
+	public function remove()
+	{
+		if ($this->original()) 
+		{
+			$this->setError(JText::_('Original posts must be deleted or moved.'));
+			return false;
+		}
+
+		if (!$this->_tbl->delete($this->get('id'))) 
+		{
+			$this->setError($this->_tbl->getError());
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Remove a post
+	 * 
+	 * @return     boolean True on success, false on error
+	 */
+	public function move($collection_id)
+	{
+		$collection_id = intval($collection_id);
+
+		if (!$collection_id)
+		{
+			$this->setError(JText::_('Empty collection ID.'));
+			return false;
+		}
+
+		$this->set('collection_id', $collection_id);
+
+		if (!$this->_tbl->store()) 
+		{
+			$this->setError($this->_tbl->getError());
+			return false;
+		}
+
+		return true;
 	}
 
 	/**

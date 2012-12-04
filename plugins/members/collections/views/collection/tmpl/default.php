@@ -201,6 +201,7 @@ if ($this->rows)
 				</div><!-- / .meta -->
 
 				<?php $huser = Hubzero_User_Profile::getInstance($item->get('created_by')); ?>
+<?php if ($row->original() || $item->get('created_by') != $this->member->get('uidNumber')) { ?>
 				<div class="convo attribution clearfix">
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>" class="img-link">
 						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($huser, 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>" />
@@ -217,7 +218,8 @@ if ($this->rows)
 						</span>
 					</p>
 				</div><!-- / .attribution -->
-<?php if ($item->get('created_by') != $this->member->get('uidNumber')) { ?>
+<?php } ?>
+<?php if (!$row->original()) {//if ($item->get('created_by') != $this->member->get('uidNumber')) { ?>
 				<div class="convo attribution reposted clearfix">
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" class="img-link">
 						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($this->member, 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" />

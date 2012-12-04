@@ -558,12 +558,8 @@ class plgMembersCollections extends JPlugin
 	 */
 	private function _edit()
 	{
-		//$board = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name);
 		if ($this->juser->get('guest')) 
 		{
-			/*$app->enqueueMessage(JText::_('MEMBERS_LOGIN_NOTICE'), 'warning');
-			$app->redirect('/login?return=' . base64_encode($board));
-			return;*/
 			return $this->_login();
 		}
 
@@ -609,32 +605,22 @@ class plgMembersCollections extends JPlugin
 		$view->member     = $this->member;
 		$view->task       = $this->action;
 		$view->params     = $this->params;
-		$view->dateFormat  = $this->dateFormat;
-		$view->timeFormat  = $this->timeFormat;
-		$view->tz          = $this->tz;
+		$view->dateFormat = $this->dateFormat;
+		$view->timeFormat = $this->timeFormat;
+		$view->tz         = $this->tz;
 
 		$id = JRequest::getInt('post', 0);
 
-		$view->entry = CollectionsModelPost::getInstance($id);
-
-		//$view->board_id = JRequest::getVar('board', 0);
-
-		$view->collection = $this->model->collection(JRequest::getVar('board', 0)); //new BulletinboardBoard($this->database);
-		if (!$view->collection->exists())
-		{
-			
-		}
+		$view->collection = $this->model->collection(JRequest::getVar('board', 0));
 
 		$view->entry = $view->collection->post($id);
-		/*$view->board->loadDefault($this->member->get('uidNumber'), 'member');
-		if (!$view->board->id)
-		{
-			$view->board->setup($this->member->get('uidNumber'), 'member');
-		}*/
+
 		if ($remove = JRequest::getInt('remove', 0))
 		{
-			$attachment = new CollectionsTableAsset($this->database);
-			$attachment->remove($remove);
+			if (!$view->item->removeAsset($remove))
+			{
+				$view->setError($view->item->getError());
+			}
 		}
 
 		if ($no_html)
@@ -644,23 +630,14 @@ class plgMembersCollections extends JPlugin
 		}
 		else
 		{
-			/*$view->boards = $view->board->getRecords(array(
-				'object_type' => 'member',
-				'object_id'   => $this->member->get('uidNumber'),
-				'state'       => 1
-			));*/
 			$view->collections = $this->model->collections();
 			if (!$view->collections)
 			{
 				$view->collection->setup($this->member->get('uidNumber'), 'member');
-				//$view->collections = array($view->board);
 				$view->collections = $this->model->collections();
 			}
 	
 			Hubzero_Document::addPluginScript('members', $this->_name);
-
-			//$bt = new CollectionsTags($this->database);
-			$view->tags = ''; //$bt->get_tag_string($view->entry->id);
 
 			return $view->loadTemplate();
 		}
@@ -689,7 +666,6 @@ class plgMembersCollections extends JPlugin
 	{
 		if ($this->juser->get('guest')) 
 		{
-			//$this->setError(JText::_('MEMBERS_LOGIN_NOTICE'));
 			return $this->_login();
 		}
 
@@ -762,14 +738,14 @@ class plgMembersCollections extends JPlugin
 			}
 		}
 
-		$stick = new CollectionsTablePost($this->database);
-		$stick->bulletin_id = $row->id;
-		$stick->board_id    = $fields['board_id'];
-		$stick->original    = 1;
-		if ($stick->check()) 
+		$post = new CollectionsTablePost($this->database);
+		$post->bulletin_id = $row->id;
+		$post->board_id    = $fields['board_id'];
+		$post->original    = 1;
+		if ($post->check()) 
 		{
 			// Store new content
-			if (!$stick->store()) 
+			if (!$post->store()) 
 			{
 				$this->setError($stick->getError());
 			}
@@ -808,10 +784,10 @@ class plgMembersCollections extends JPlugin
 			$row->load($collection_id, $this->member->get('uidNumber'), 'member');
 
 			$b = new CollectionsTableItem($this->database);
-			$b->loadType($row->id, 'board');
+			$b->loadType($row->id, 'collection');
 			if (!$b->id)
 			{
-				$b->type        = 'board';
+				$b->type        = 'collection';
 				$b->object_id   = $row->id;
 				$b->title       = $row->title;
 				$b->description = $row->description;
@@ -930,12 +906,12 @@ class plgMembersCollections extends JPlugin
 			$post->item_id       = $item_id;
 			$post->collection_id = $collection_id;
 			$post->description   = JRequest::getVar('description', '');
-			if ($stick->check()) 
+			if ($post->check()) 
 			{
 				// Store new content
-				if (!$stick->store()) 
+				if (!$post->store()) 
 				{
-					$this->setError($stick->getError());
+					$this->setError($post->getError());
 				}
 			}
 		}
@@ -943,7 +919,7 @@ class plgMembersCollections extends JPlugin
 		// Display updated bulletin stats if called via AJAX
 		if ($no_html)
 		{
-			echo JText::sprintf('%s reposts', $stick->getCount(array('bulletin_id' => $stick->bulletin_id, 'original' => 0)));
+			echo JText::sprintf('%s reposts', $post->getCount(array('bulletin_id' => $post->bulletin_id, 'original' => 0)));
 			exit;
 		}
 
@@ -960,7 +936,6 @@ class plgMembersCollections extends JPlugin
 	{
 		if ($this->juser->get('guest')) 
 		{
-			//$this->setError(JText::_('GROUPS_LOGIN_NOTICE'));
 			return $this->_login();
 		}
 
@@ -971,12 +946,11 @@ class plgMembersCollections extends JPlugin
 		}
 
 		// Incoming
-		$post_id = JRequest::getInt('post', 0);
-		$no_html = JRequest::getInt('no_html', 0);
+		//$post_id = JRequest::getInt('post', 0);
 
 		// Try loading the current collection/item to see
 		// if this has already been posted to the collection (i.e., no duplicates)
-		$post = new CollectionsTablePost($this->database);
+		/*$post = new CollectionsTablePost($this->database);
 		$post->load($post_id);
 
 		$collection = $this->model->collection($post->collection_id);
@@ -988,16 +962,26 @@ class plgMembersCollections extends JPlugin
 			{
 				$this->setError($post->getError());
 			}
+		}*/
+		$post = CollectionsModelPost::getInstance(JRequest::getInt('post', 0));
+
+		$collection = $this->model->collection($post->get('collection_id'));
+
+		if (!$post->remove())
+		{
+			$this->setError($post->getError());
 		}
 
-		if ($no_html)
+		$route = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name . '&task=' . $collection->get('alias'));
+
+		if (($no_html = JRequest::getInt('no_html', 0)))
 		{
-			echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name . '&task=' . $collection->get('alias'));
+			echo $route;
 			exit;
 		}
 
 		$app =& JFactory::getApplication();
-		$app->redirect(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name . '&task=' . $collection->get('alias')));
+		$app->redirect($route);
 	}
 
 	/**
@@ -1007,20 +991,21 @@ class plgMembersCollections extends JPlugin
 	 */
 	private function _move()
 	{
+		// Login check
 		if ($this->juser->get('guest')) 
 		{
 			return $this->_login();
 		}
 
-		if (!$this->params->get('access-create-item')) 
+		// Authorization check
+		if (!$this->params->get('access-edit-item')) 
 		{
 			$this->setError(JText::_('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
-			return $this->_board();
+			return $this->_boards();
 		}
 
 		// Incoming
-		$post_id = JRequest::getInt('post', 0);
-		$no_html = JRequest::getInt('no_html', 0);
+		/*$post_id = JRequest::getInt('post', 0);
 
 		$stick = new CollectionsTablePost($this->database);
 		$stick->load($post_id);
@@ -1032,16 +1017,24 @@ class plgMembersCollections extends JPlugin
 			{
 				$this->setError($stick->getError());
 			}
+		}*/
+		$post = CollectionsModelPost::getInstance(JRequest::getInt('post', 0));
+
+		if (!$post->move(JRequest::getInt('board', 0)))
+		{
+			$this->setError($post->getError());
 		}
 
-		if ($no_html)
+		$route = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name);
+
+		if (($no_html = JRequest::getInt('no_html', 0)))
 		{
-			echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name);
+			echo $route;
 			exit;
 		}
 
 		$app =& JFactory::getApplication();
-		$app->redirect(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name));
+		$app->redirect($route);
 	}
 
 	/**
@@ -1051,31 +1044,37 @@ class plgMembersCollections extends JPlugin
 	 */
 	private function _delete()
 	{
+		// Login check
 		if ($this->juser->get('guest')) 
 		{
 			return $this->_login();
 		}
 
+		// Access check
 		if (!$this->params->get('access-delete-item')) 
 		{
 			$this->setError(JText::_('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
-			return $this->_board();
+			return $this->_boards();
 		}
 
 		// Incoming
 		$no_html = JRequest::getInt('no_html', 0);
-		$id = JRequest::getInt('post', 0);
-		if (!$id) 
+		//$id = JRequest::getInt('post', 0);
+		
+		$post = CollectionsModelPost::getInstance(JRequest::getInt('post', 0));
+		if (!$post->get('id')) 
 		{
-			return $this->_board();
+			return $this->_boards();
 		}
 
 		$process = JRequest::getVar('process', '');
 		$confirmdel = JRequest::getVar('confirmdel', '');
 
 		// Initiate a whiteboard entry object
-		$bulletin = new CollectionsTableItem($this->database);
-		$bulletin->load($id);
+		//$bulletin = new CollectionsTableItem($this->database);
+		//$bulletin->load($post->id);
+
+		$collection = $this->model->collection($post->get('collection_id'));
 
 		// Did they confirm delete?
 		if (!$process || !$confirmdel) 
@@ -1098,9 +1097,10 @@ class plgMembersCollections extends JPlugin
 			$view->member   = $this->member;
 			$view->task     = $this->action;
 			$view->params   = $this->params;
-			$view->bulletin = $bulletin;
+			$view->post     = $post;
 			$view->no_html  = $no_html;
 			$view->name     = $this->_name;
+			$view->collection = $collection;
 
 			if ($this->getError()) 
 			{
@@ -1113,21 +1113,24 @@ class plgMembersCollections extends JPlugin
 		}
 
 		// Mark the entry as deleted
-		$bulletin->state = 2;
-
-		if (!$bulletin->store()) 
+		$item = $post->item();
+		$item->set('state', 2);
+		if (!$item->store()) 
 		{
-			$this->setError($bulletin->getError());
+			$this->setError($item->getError());
 		}
+
+		// Redirect to collection
+		$route = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name . '&task=' . $collection->get('alias'));
 
 		if ($no_html)
 		{
-			echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name);
+			echo $route;
 			exit;
 		}
 
 		$app =& JFactory::getApplication();
-		$app->redirect(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name));
+		$app->redirect($route);
 	}
 
 	/**
@@ -1219,68 +1222,34 @@ class plgMembersCollections extends JPlugin
 	 */
 	private function _vote()
 	{
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'post.php');
+
+		// Incoming
 		$id = JRequest::getInt('post', 0);
 
-		// Create a vote record
-		$vote = new CollectionsTableVote($this->database);
-		$vote->loadByBulletin($id, $this->juser->get('id'));
+		// Get the post model
+		$post = CollectionsModelPost::getInstance($id);
 
-		$like = true;
-
-		if (!$vote->id)
+		// Record the vote
+		if (!$post->item()->vote())
 		{
-			$vote->bulletin_id = $id;
-			// Store the record
-			if (!$vote->check())
-			{
-				$this->setError($vote->getError());
-			}
-			else
-			{
-				if (!$vote->store())
-				{
-					$this->setError(JText::_('Error occurred while saving vote'));
-				}
-			}
-		}
-		else
-		{
-			$like = false;
-			// Load the vote record
-			if (!$vote->delete())
-			{
-				$this->setError($vote->getError());
-			}
+			$this->setError($post->item()->getError());
 		}
 
-		// Load the bulletin
-		$bulletin = new CollectionsTableItem($this->database);
-		$bulletin->load($id);
-		if (!$this->getError())
-		{
-			if ($like)
-			{
-				// Increase like count
-				$bulletin->positive++;
-			}
-			else if ($bulletin->positive > 0) // Make sure we don't go below 0
-			{
-				// Decrease like count
-				$bulletin->positive--;
-			}
-			$bulletin->store();
-		}
-
-		// Display updated bulletin stats if called via AJAX
+		// Display updated item stats if called via AJAX
 		$no_html = JRequest::getInt('no_html', 0);
 		if ($no_html)
 		{
-			echo JText::sprintf('%s likes', $bulletin->positive);
+			echo JText::sprintf('%s likes', $post->item()->get('positive'));
 			exit;
 		}
 
+		// Get the collection model
+		$collection = $this->model->collection($post->get('collection_id'));
+
 		// Display the main listing
-		return $this->_browse();
+		$app =& JFactory::getApplication();
+		$app->redirect(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name . '&task=' . $collection->get('alias')));
 	}
 
 	/**
@@ -1298,10 +1267,9 @@ class plgMembersCollections extends JPlugin
 		}
 
 		// Ensure we have an ID to work with
-		//$listdir = JRequest::getInt('listdir', 0, 'post');
 		if (!$listdir) 
 		{
-			$this->setError(JText::_('WIKI_NO_ID'));
+			$this->setError(JText::_('PLG_MEMBERS_COLLECTIONS_NO_ID'));
 			return false;
 		}
 
@@ -1324,7 +1292,7 @@ class plgMembersCollections extends JPlugin
 			//$file = JRequest::getVar('upload', '', 'files', 'array');
 			if (!$files['name'][$i]) 
 			{
-				$this->setError(JText::_('WIKI_NO_FILE'));
+				$this->setError(JText::_('PLG_MEMBERS_COLLECTIONS_NO_FILE'));
 				return false;
 			}
 
@@ -1351,7 +1319,7 @@ class plgMembersCollections extends JPlugin
 			{
 				// Create database entry
 				$attachment = new CollectionsTableAsset($this->database);
-				$attachment->bulletin_id = $listdir;
+				$attachment->item_id     = $listdir;
 				$attachment->filename    = $files['name'][$i];
 				$attachment->description = (isset($descriptions[$i])) ? $descriptions[$i] : '';
 
@@ -1392,6 +1360,7 @@ class plgMembersCollections extends JPlugin
 
 		$collection = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name);
 
+		// Login check
 		if ($this->juser->get('guest')) 
 		{
 			$app->enqueueMessage(JText::_('MEMBERS_LOGIN_NOTICE'), 'warning');
@@ -1399,14 +1368,13 @@ class plgMembersCollections extends JPlugin
 			return;
 		}
 
+		// Access check
 		if (!$this->params->get('access-create-collection') && !$this->params->get('access-edit-collection')) 
 		{
 			$app->enqueueMessage(JText::_('You are not authorized to edit this collection.'), 'error');
 			$app->redirect($collection);
 			return;
 		}
-
-		$no_html = JRequest::getInt('no_html', 0);
 
 		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
@@ -1417,12 +1385,12 @@ class plgMembersCollections extends JPlugin
 				'layout'  => 'edit'
 			)
 		);
-
-		$view->name       = $this->_name;
-		$view->option     = $this->option;
-		$view->member     = $this->member;
-		$view->task       = $this->action;
-		$view->params     = $this->params;
+		$view->name    = $this->_name;
+		$view->option  = $this->option;
+		$view->member  = $this->member;
+		$view->task    = $this->action;
+		$view->params  = $this->params;
+		$view->no_html = JRequest::getInt('no_html', 0);
 
 		if (is_object($row))
 		{
@@ -1430,9 +1398,7 @@ class plgMembersCollections extends JPlugin
 		}
 		else
 		{
-			$id = JRequest::getVar('board', '');
-
-			$view->entry = $this->model->collection($id); //CollectionsModelCollection::getInstance($id);
+			$view->entry = $this->model->collection(JRequest::getVar('board', ''));
 		}
 
 		if ($this->getError()) 
@@ -1443,7 +1409,7 @@ class plgMembersCollections extends JPlugin
 			}
 		}
 
-		if ($no_html)
+		if ($view->no_html)
 		{
 			$view->display();
 			exit;
@@ -1459,39 +1425,29 @@ class plgMembersCollections extends JPlugin
 	 */
 	private function _saveboard()
 	{
+		// Login check
 		if ($this->juser->get('guest')) 
 		{
-			//$this->setError(JText::_('MEMBERS_LOGIN_NOTICE'));
 			return $this->_login();
 		}
 
+		// Access check
 		if (!$this->params->get('access-edit-collection') || !$this->params->get('access-create-collection')) 
 		{
 			$this->setError(JText::_('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
 			return $this->_board();
 		}
 
+		// Incoming
 		$fields = JRequest::getVar('fields', array(), 'post');
 
+		// Bind new content
 		$row = new CollectionsModelCollection();
 		if (!$row->bind($fields)) 
 		{
 			$this->setError($row->getError());
 			return $this->_editboard($row);
 		}
-
-		/*$isNew = false;
-		if (!$row->exists())
-		{
-			$isNew = true;
-		}
-
-		// Check content
-		if (!$row->check()) 
-		{
-			$this->setError($row->getError());
-			return $this->_editboard($row);
-		}*/
 
 		// Store new content
 		if (!$row->store()) 
@@ -1500,28 +1456,9 @@ class plgMembersCollections extends JPlugin
 			return $this->_editboard($row);
 		}
 
-		/*$bulletin = new CollectionsTableItem($this->database);
-		$bulletin->loadType($row->id, 'board');
-		if (!$bulletin->id)
-		{
-			$bulletin->type = 'board';
-			$bulletin->object_id = $row->id;
-			$bulletin->title = $row->title;
-			$bulletin->description = $row->description;
-			//$bulletin->url = '/' . $row->object_type . 's/' . $object_id . '/' . $this->_name;
-			if (!$bulletin->check()) 
-			{
-				$this->setError($bulletin->getError());
-			}
-			// Store new content
-			if (!$bulletin->store()) 
-			{
-				$this->setError($bulletin->getError());
-			}
-		}*/
-
+		// Redirect to collection
 		$app =& JFactory::getApplication();
-		$app->redirect(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name . '&task=boards/' . $row->get('id')));
+		$app->redirect(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name . '&task=' . $row->get('alias')));
 	}
 
 	/**
@@ -1531,30 +1468,34 @@ class plgMembersCollections extends JPlugin
 	 */
 	private function _deleteboard()
 	{
+		// Login check
 		if ($this->juser->get('guest')) 
 		{
 			return $this->_login();
 		}
 
+		// Access check
 		if (!$this->params->get('access-delete-collection')) 
 		{
 			$this->setError(JText::_('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
-			return $this->_board();
+			return $this->_boards();
 		}
 
 		// Incoming
 		$no_html = JRequest::getInt('no_html', 0);
 		$id = JRequest::getVar('board', 0);
+
+		// Ensure we have an ID to work with
 		if (!$id) 
 		{
-			return $this->_board();
+			return $this->_boards();
 		}
 
 		$process = JRequest::getVar('process', '');
 		$confirmdel = JRequest::getVar('confirmdel', '');
 
-		// Initiate a whiteboard entry object
-		$collection = $this->model->collection($id); //CollectionsModelCollection::getInstance($id);
+		// Get the collection model
+		$collection = $this->model->collection($id);
 
 		// Did they confirm delete?
 		if (!$process || !$confirmdel) 
@@ -1594,20 +1535,22 @@ class plgMembersCollections extends JPlugin
 
 		// Mark the entry as deleted
 		$collection->set('state', 2);
-
 		if (!$collection->store()) 
 		{
 			$this->setError($collection->getError());
 		}
 
+		// Redirect to main view
+		$route = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name);
+
 		if ($no_html)
 		{
-			echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name);
+			echo $route;
 			exit;
 		}
 
 		$app =& JFactory::getApplication();
-		$app->redirect(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name));
+		$app->redirect($route);
 	}
 
 	/**

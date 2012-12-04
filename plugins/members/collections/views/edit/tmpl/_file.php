@@ -31,8 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//$ba = new CollectionsTableAsset(JFactory::getDBO());
-$assets = $this->item->assets(); //$ba->getRecords(array('item_id' => $this->entry->id));
+$item = $this->entry->item();
 
 //tag editor
 ximport('Hubzero_Wiki_Editor');
@@ -42,13 +41,14 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 			<a name="file"></a>
 			<div class="field-wrap">
 <?php 
+	$assets = $item->assets();
 	if ($assets->total() > 0) 
 	{ 
 		foreach ($assets as $asset)
 		{
 ?>
 					<p class="file-drop">
-						<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name . '&task=post/' . $this->item->get('id') . '/edit&remove=' . $asset->get('id')); ?>">delete</a>
+						<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name . '&task=post/' . $item->get('id') . '/edit&remove=' . $asset->get('id')); ?>">delete</a>
 						<?php echo $this->escape(stripslashes($asset->get('filename'))); ?>
 						<input type="hidden" name="asset[<?php echo $asset->get('id'); ?>][id]" value="<?php echo $asset->get('id'); ?>" />
 						<span><input type="text" name="asset[<?php echo $asset->get('id'); ?>][description]" size="35" value="<?php echo $this->escape(stripslashes($asset->get('description'))); ?>" placeholder="Brief description" /></span>
@@ -106,9 +106,9 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 					</tbody>
 				</table>">Wiki formatting</a> is allowed.</span>
 				<?php //echo $editor->display('fields[description]', 'field_description', $this->escape(stripslashes($this->entry->description)), '', '50', '5'); ?>
-				<textarea name="fields[description]" id="field_description" cols="50" rows="5"><?php echo $this->escape(stripslashes($this->item->get('description'))); ?></textarea>
+				<textarea name="fields[description]" id="field_description" cols="50" rows="5"><?php echo $this->escape(stripslashes($item->get('description'))); ?></textarea>
 			</label>
-			<?php if ($this->task == 'save' && !$this->item->get('description')) { ?>
+			<?php if ($this->task == 'save' && !$item->get('description')) { ?>
 				<p class="error"><?php echo JText::_('PLG_GROUPS_' . strtoupper($this->name) . '_ERROR_PROVIDE_CONTENT'); ?></p>
 			<?php } ?>
 			<input type="hidden" name="fields[type]" value="file" />
