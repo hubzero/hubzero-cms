@@ -87,7 +87,7 @@ class plgAuthenticationGoogle extends JPlugin
 		global $mainframe;
 
 		// Included needed google api class
-		require_once(JPATH_SITE.DS.'libraries'.DS.'google-api-php-client'.DS.'src'.DS.'apiClient.php');
+		require_once(JPATH_SITE.DS.'libraries'.DS.'google-api-php-client'.DS.'src'.DS.'Google_Client.php');
 
 		// Check the state for our return variable
 		if($return = JRequest::getVar('state', '', 'method', 'base64'))
@@ -110,7 +110,7 @@ class plgAuthenticationGoogle extends JPlugin
 		$task  = ($juser->get('guest')) ? 'login' : 'link';
 
 		// Set up the config for the google api instance
-		$client = new apiClient();
+		$client = new Google_Client();
 		$client->setClientId($this->params->get('app_id'));
 		$client->setClientSecret($this->params->get('app_secret'));
 		$client->setRedirectUri($service . '/index.php?option=com_user&task=' . $task . '&authenticator=google');
@@ -147,8 +147,8 @@ class plgAuthenticationGoogle extends JPlugin
 		global $mainframe;
 
 		// Included needed google api classes
-		require_once(JPATH_SITE.DS.'libraries'.DS.'google-api-php-client'.DS.'src'.DS.'apiClient.php');
-		require_once(JPATH_SITE.DS.'libraries'.DS.'google-api-php-client'.DS.'src'.DS.'contrib'.DS.'apiOauth2Service.php');
+		require_once(JPATH_SITE.DS.'libraries'.DS.'google-api-php-client'.DS.'src'.DS.'Google_Client.php');
+		require_once(JPATH_SITE.DS.'libraries'.DS.'google-api-php-client'.DS.'src'.DS.'contrib'.DS.'Google_Oauth2Service.php');
 
 		// Get the hub url
 		$juri    =& JURI::getInstance();
@@ -159,7 +159,7 @@ class plgAuthenticationGoogle extends JPlugin
 		$task  = ($juser->get('guest')) ? 'login' : 'link';
 
 		// Set up the config for the google api instance
-		$client = new apiClient();
+		$client = new Google_Client();
 		$client->setClientId($this->params->get('app_id'));
 		$client->setClientSecret($this->params->get('app_secret'));
 		$client->setRedirectUri($service . '/index.php?option=com_user&task=' . $task . '&authenticator=google');
@@ -169,7 +169,7 @@ class plgAuthenticationGoogle extends JPlugin
 		$client->setScopes('https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile');
 
 		// Create Oauth2 instance
-		$oauth2 = new apiOauth2Service($client);
+		$oauth2 = new Google_Oauth2Service($client);
 
 		// Create and follow the authorization URL
 		$authUrl = $client->createAuthUrl();
@@ -188,16 +188,16 @@ class plgAuthenticationGoogle extends JPlugin
 	public function onAuthenticate($credentials, $options, &$response)
 	{
 		// Included needed google api classes
-		require_once(JPATH_SITE.DS.'libraries'.DS.'google-api-php-client'.DS.'src'.DS.'apiClient.php');
-		require_once(JPATH_SITE.DS.'libraries'.DS.'google-api-php-client'.DS.'src'.DS.'contrib'.DS.'apiOauth2Service.php');
+		require_once(JPATH_SITE.DS.'libraries'.DS.'google-api-php-client'.DS.'src'.DS.'Google_Client.php');
+		require_once(JPATH_SITE.DS.'libraries'.DS.'google-api-php-client'.DS.'src'.DS.'contrib'.DS.'Google_Oauth2Service.php');
 
 		// Set up the config for the google api instance
-		$client = new apiClient();
+		$client = new Google_Client();
 		$client->setClientId($this->params->get('app_id'));
 		$client->setClientSecret($this->params->get('app_secret'));
 
 		// Create OAuth2 Instance
-		$oauth2 = new apiOauth2Service($client);
+		$oauth2 = new Google_Oauth2Service($client);
 
 		// Check if there's an active token in the session
 		$jsession =& JFactory::getSession();
@@ -261,8 +261,8 @@ class plgAuthenticationGoogle extends JPlugin
 		global $mainframe;
 
 		// Included needed google api classes
-		require_once(JPATH_SITE.DS.'libraries'.DS.'google-api-php-client'.DS.'src'.DS.'apiClient.php');
-		require_once(JPATH_SITE.DS.'libraries'.DS.'google-api-php-client'.DS.'src'.DS.'contrib'.DS.'apiOauth2Service.php');
+		require_once(JPATH_SITE.DS.'libraries'.DS.'google-api-php-client'.DS.'src'.DS.'Google_Client.php');
+		require_once(JPATH_SITE.DS.'libraries'.DS.'google-api-php-client'.DS.'src'.DS.'contrib'.DS.'Google_Oauth2Service.php');
 
 		$juser = JFactory::getUser();
 
@@ -271,13 +271,13 @@ class plgAuthenticationGoogle extends JPlugin
 		$service = trim($juri->base(), DS);
 
 		// Set up the config for the google api instance
-		$client = new apiClient();
+		$client = new Google_Client();
 		$client->setClientId($this->params->get('app_id'));
 		$client->setClientSecret($this->params->get('app_secret'));
 		$client->setRedirectUri($service . '/index.php?option=com_user&task=link&authenticator=google');
 
 		// Create OAuth2 Instance
-		$oauth2 = new apiOauth2Service($client);
+		$oauth2 = new Google_Oauth2Service($client);
 
 		// If we have this code, we know we have a successful return from google
 		if (JRequest::getVar('code', NULL))
