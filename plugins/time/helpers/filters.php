@@ -55,7 +55,7 @@ class TimeFilters
 		if(JRequest::getVar('q', NULL))
 		{
 			$incoming = JRequest::getVar('q', NULL);
-			if(!empty($incoming['column']) && !empty($incoming['operator']) && !empty($incoming['value']))
+			if(!is_null($incoming['column']) && !is_null($incoming['operator']) && !is_null($incoming['value']))
 			{
 				$q[] = $incoming;
 			}
@@ -128,7 +128,16 @@ class TimeFilters
 		{
 			if(!in_array($c, $exclude))
 			{
-				$human = str_replace('_', ' ', $c);
+				$human = $c;
+
+				// Try to be tricky and remove id from column names
+				if(strpos($human, '_id') > 0)
+				{
+					$human = str_replace('_id', '', $human);
+				}
+
+				// Now replace other instances of '_' with spaces
+				$human = str_replace('_', ' ', $human);
 				$human = ucwords($human);
 				$columns[] = array("raw" => $c, "human" => $human);
 			}
@@ -246,6 +255,11 @@ class TimeFilters
 						$val['o']              = self::translateOperator($val['operator']);
 						$val['human_operator'] = self::mapOperator($val['o']);
 						$val['human_value']    = JFactory::getUser($val['value'])->name;
+
+						if(is_null($val['human_value']))
+						{
+							$val['human_value'] = 'Unidentified';
+						}
 						$filters[]  = $val;
 					}
 					// Augment task_id information
@@ -340,6 +354,11 @@ class TimeFilters
 			{
 				$x['value'] = $value;
 				$x['display'] = JFactory::getUser($value)->get('name');
+
+				if($value == 0)
+				{
+					$x['display'] = 'No User';
+				}
 			}
 			elseif($column == 'hub_id')
 			{
@@ -348,9 +367,24 @@ class TimeFilters
 				$x['value'] = $value;
 				$x['display'] = $hub->name;
 			}
+			elseif($column == 'active')
+			{
+				$x['value'] = $value;
+				$x['display'] = ($value) ? 'Yes' : 'No';
+			}
 
 			$return[] = $x;
 		}
+
+		// Get an array of kays for sorting purposes
+		// We do this here, as opposed to in the query, because the data could have been modified at this point by the overrides above
+		foreach ($return as $key => $row)
+		{
+			$display[$key] = $row['display'];
+		}
+
+		// Do the sort
+		array_multisort($display, SORT_ASC, $return);
 
 		return $return;
 	}
