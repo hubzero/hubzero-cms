@@ -428,25 +428,17 @@ HUB.Members.Profile = {
 			var w = $identity.find("img").width() + 2;
 			w = (w < 165) ? 165 : w;
 			
-			$identity.find("img").load(function(){
-				$change
-					.css('width',  w)
-					.attr("href", window.location.href.replace("profile","ajaxupload"))
-					.appendTo($identity);
+			$change
+				.css('width',  w)
+				.attr("href", window.location.href.replace("profile","ajaxupload"))
+				.appendTo($identity);
 					
-				//edit picture	
-				$('.com_members')
-					.on("mouseenter", "#page_identity", function(event) {
-						//$change.fadeIn("slow");
-					})
-					.on("mouseleave", "#page_identity", function(event) {
-						//$change.fadeOut("slow");
-					})
-					.on("click", "#page_identity_change", function(event) {
-						HUB.Members.Profile.editProfilePicturePopup();
-						event.preventDefault();
-					});
-			});	
+			//edit picture	
+			$('.com_members')
+				.on("click", "#page_identity_change", function(event) {
+					HUB.Members.Profile.editProfilePicturePopup();
+					event.preventDefault();
+				});	
 		}
 	},
 	
