@@ -30,31 +30,23 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+//
+
+$canDo = CoursesHelper::getActions('asset');
+
 $text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
-
-$canDo = CoursesHelper::getActions('course');
-
-JToolBarHelper::title(JText::_('COM_COURSES').': <small><small>[ ' . $text . ' ]</small></small>', 'courses.png');
-if ($canDo->get('core.edit')) 
+if (!$this->tmpl) 
 {
-	JToolBarHelper::save();
+	JToolBarHelper::title(JText::_('COM_COURSES').': <small><small>[ ' . $text . ' ]</small></small>', 'courses.png');
+	if ($canDo->get('core.edit')) 
+	{
+		JToolBarHelper::save();
+	}
+	JToolBarHelper::cancel();
 }
-JToolBarHelper::cancel();
 
-jimport('joomla.html.editor');
-
-$editor =& JEditor::getInstance();
-
-/*$paramsClass = 'JParameter';
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$paramsClass = 'JRegistry';
-}
-$gparams = new $paramsClass($this->offering->params);
-
-$membership_control = $gparams->get('membership_control', 1);
-
-$display_system_users = $gparams->get('display_system_users', 'global');*/
+//jimport('joomla.html.editor');
+//$editor =& JEditor::getInstance();
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -80,99 +72,87 @@ function submitbutton(pressbutton)
 	<p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
 <form action="index.php" method="post" name="adminForm" id="item-form">
-	<div class="col width-60 fltlft">
+<?php if ($this->tmpl == 'component') { ?>
+	<fieldset>
+		<div style="float: right">
+			<button type="button" onclick="saveAndUpdate();"><?php echo JText::_('Save'); ?></button>
+			<button type="button" onclick="window.parent.document.getElementById('sbox-window').close();"><?php echo JText::_('Cancel'); ?></button>
+		</div>
+		<div class="configuration">
+			<?php echo $text; ?>
+		</div>
+	</fieldset>
+<?php } ?>
+	<div class="col width-100">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_COURSES_DETAILS'); ?></span></legend>
-			
-			<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
-			<input type="hidden" name="fields[course_id]" value="<?php echo $this->row->get('course_id'); ?>" />
-			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
+
+			<input type="hidden" name="fields[id]" value="<?php echo $this->escape($this->row->get('id')); ?>" />
+			<input type="hidden" name="fields[course_id]" value="<?php echo $this->escape($this->course_id); ?>" />
+			<input type="hidden" name="fields[scope]" value="<?php echo $this->escape($this->scope); ?>" />
+			<input type="hidden" name="fields[scope_id]" value="<?php echo $this->escape($this->scope_id); ?>" />
+
+			<input type="hidden" name="tmpl" value="<?php echo $this->escape($this->tmpl); ?>" />
+			<input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
+			<input type="hidden" name="controller" value="<?php echo $this->escape($this->controller); ?>">
 			<input type="hidden" name="task" value="save" />
-			
+
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<td class="key"><label for="field-alias"><?php echo JText::_('Alias'); ?>:</label></td>
-						<td><input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" size="50" /></td>
+						<th><?php echo JText::_('ID'); ?></th>
+						<td><?php echo $this->escape($this->row->get('id')); ?></td>
+
+						<th><?php echo JText::_('Course ID'); ?></th>
+						<td><?php echo $this->escape($this->course_id); ?></td>
+					</tr>
+	<?php if ($this->row->get('created')) { ?>
+					<tr>
+						<th><?php echo JText::_('Created'); ?></th>
+						<td colspan="3"><?php echo $this->escape($this->row->get('created')); ?></td>
+					</tr>
+	<?php } ?>
+	<?php if ($this->row->get('created_by')) { ?>
+					<tr>
+						<th><?php echo JText::_('Creator'); ?></th>
+						<td colspan="3"><?php 
+						$creator = JUser::getInstance($this->row->get('created_by'));
+						echo $this->escape(stripslashes($creator->get('name'))); ?></td>
+					</tr>
+	<?php } ?>
+					<tr>
+						<td class="key"><label for="field-type"><?php echo JText::_('Type'); ?>:</label></td>
+						<td colspan="3">
+							<select name="fields[type]" id="field-type">
+								<option value="video"<?php if ($this->row->get('type') == 'video') { echo ' selected="selected"'; } ?>><?php echo JText::_('Video'); ?></option>
+								<option value="file"<?php if ($this->row->get('type') == 'file') { echo ' selected="selected"'; } ?>><?php echo JText::_('File'); ?></option>
+								<option value="test"<?php if ($this->row->get('type') == 'test') { echo ' selected="selected"'; } ?>><?php echo JText::_('Quiz/Test'); ?></option>
+								<option value="note"<?php if ($this->row->get('type') == 'note') { echo ' selected="selected"'; } ?>><?php echo JText::_('Note'); ?></option>
+								<option value="link"<?php if ($this->row->get('type') == 'link') { echo ' selected="selected"'; } ?>><?php echo JText::_('Link'); ?></option>
+							</select>
+						</td>
 					</tr>
 					<tr>
 						<td class="key"><label for="field-title"><?php echo JText::_('COM_COURSES_TITLE'); ?>:</label></td>
-						<td><input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" size="50" /></td>
-					</tr>
-				</tbody>
-			</table>
-		</fieldset>
-
-		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Publishing'); ?></span></legend>
-			
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="paramlist_key"><label for="publish_up">Offering starts:</label></th>
-						<td>
-							<?php echo JHTML::_('calendar', $this->row->get('publish_up'), 'fields[publish_up]', 'publish_up', "%Y-%m-%d", array('class' => 'inputbox')); ?>
-						</td>
+						<td colspan="3"><input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" size="50" /></td>
 					</tr>
 					<tr>
-						<td class="paramlist_key"><label for="publish_down">Start live:</label></th>
-						<td>
-							<?php echo JHTML::_('calendar', $this->row->get('start_date'), 'fields[start_date]', 'start_date', "%Y-%m-%d", array('class' => 'inputbox')); ?>
-						</td>
+						<td class="key"><label for="field-url"><?php echo JText::_('URL'); ?>:</label></td>
+						<td colspan="3"><input type="text" name="fields[url]" id="field-url" value="<?php echo $this->escape(stripslashes($this->row->get('url'))); ?>" size="50" /></td>
 					</tr>
 					<tr>
-						<td class="paramlist_key"><label for="publish_down">Finish live:</label></th>
-						<td>
-							<?php echo JHTML::_('calendar', $this->row->get('end_date'), 'fields[end_date]', 'end_date', "%Y-%m-%d", array('class' => 'inputbox')); ?>
-						</td>
+						<td class="key"><label for="upload"><?php echo JText::_('File'); ?>:</label></td>
+						<td colspan="3"><input type="file" name="upload" id="upload" /></td>
 					</tr>
 					<tr>
-						<td class="paramlist_key"><label for="publish_down">Offering ends:</label></th>
-						<td>
-							<?php echo JHTML::_('calendar', $this->row->get('publish_down'), 'fields[publish_down]', 'publish_down', "%Y-%m-%d", array('class' => 'inputbox')); ?>
+						<td class="key"><label for="field-description"><?php echo JText::_('Description'); ?>:</label></td>
+						<td colspan="3">
+							<textarea name="fields[description]" id="field-description" rows="5" cols="35"><?php echo $this->escape(stripslashes($this->row->get('description'))); ?></textarea>
 						</td>
 					</tr>
 				</tbody>
 			</table>
 		</fieldset>
-
-		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Managers'); ?></span></legend>
-<?php if ($this->row->get('id')) { ?>
-			<iframe width="100%" height="400" name="managers" id="managers" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=supervisors&amp;tmpl=component&amp;id=<?php echo $this->row->get('id'); ?>"></iframe>
-<?php } else { ?>
-			<p><?php echo JText::_('Course must be saved before managers can be added.'); ?></p>
-<?php } ?>
-		</fieldset>
-	</div>
-	<div class="col width-40 fltrt">
-		<table class="meta" summary="<?php echo JText::_('COM_COURSES_META_SUMMARY'); ?>">
-			<tbody>
-				<tr>
-					<th><?php echo JText::_('Course ID'); ?></th>
-					<td><?php echo $this->escape($this->row->get('course_id')); ?></td>
-				</tr>
-				<tr>
-					<th><?php echo JText::_('ID'); ?></th>
-					<td><?php echo $this->escape($this->row->get('id')); ?></td>
-				</tr>
-<?php if ($this->row->get('created')) { ?>
-				<tr>
-					<th><?php echo JText::_('Created'); ?></th>
-					<td><?php echo $this->escape($this->row->get('created')); ?></td>
-				</tr>
-<?php } ?>
-<?php if ($this->row->get('created_by')) { ?>
-				<tr>
-					<th><?php echo JText::_('Creator'); ?></th>
-					<td><?php 
-					$creator = JUser::getInstance($this->row->get('created_by'));
-					echo $this->escape(stripslashes($creator->get('name'))); ?></td>
-				</tr>
-<?php } ?>
-			</tbody>
-		</table>
 	</div>
 	<div class="clr"></div>
 

@@ -99,17 +99,17 @@ window.addEvent("domready", function() {
 			SqueezeBox.fromElement(el);
 		});
 	});
-});
+});*/
 window.addEvent('domready', function() {
-			window.top.document.updateUploader && window.top.document.updateUploader();
-			$$('a.img-preview').each(function(el) {
-				el.addEvent('click', function(e) {
-					new Event(e).stop();
-					window.top.document.preview.fromElement(el);
-				});
-			});
+	//window.top.document.updateUploader && window.top.document.updateUploader();
+	$$('a.').each(function(el) {
+		el.addEvent('click', function(e) {
+			new Event(e).stop();
+			window.top.document.assetform.fromElement(el);
 		});
-*/
+	});
+});
+
 </script>
 
 <form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
@@ -135,7 +135,7 @@ window.addEvent('domready', function() {
 					<input type="submit" value="<?php echo JText::_('Add asset'); ?>" onclick="setTask('link');" />
 				</th>
 				<th colspan="2">
-					<a href="#" class="modal" rel="{handler: 'iframe', size: {x: 570, y: 550}}">Create asset</a>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=add&amp;scope=<?php echo $this->filters['asset_scope']; ?>&amp;scope_id=<?php echo $this->filters['asset_scope_id']; ?>&amp;course_id=<?php echo $this->filters['course_id']; ?>&amp;tmpl=<?php echo $this->filters['tmpl']; ?>" class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}">Create asset</a>
 				</th>
 			</tr>
 			<tr>
@@ -166,7 +166,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 <?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
+					<a class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>&amp;scope=<?php echo $this->filters['asset_scope']; ?>&amp;scope_id=<?php echo $this->filters['asset_scope_id']; ?>&amp;course_id=<?php echo $this->filters['course_id']; ?>&amp;tmpl=<?php echo $this->filters['tmpl']; ?>">
 						<?php echo $this->escape(stripslashes($row->title)); ?>
 					</a>
 <?php } else { ?>

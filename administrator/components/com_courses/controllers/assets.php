@@ -57,7 +57,7 @@ class CoursesControllerAssets extends Hubzero_Controller
 		$this->view->filters['tmpl']    = $app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.tmpl',
 			'tmpl',
-			'component'
+			''
 		);
 		$this->view->filters['asset_scope']    = $app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.scope',
@@ -168,7 +168,7 @@ class CoursesControllerAssets extends Hubzero_Controller
 
 		// Incoming
 		$asset_id  = JRequest::getInt('asset', 0);
-		$tmpl      = JRequest::getVar('tmpl', 'component');
+		$tmpl      = JRequest::getVar('tmpl', '');
 		$scope     = JRequest::getVar('scope', 'asset_group');
 		$scope_id  = JRequest::getInt('scope_id', 0);
 		$course_id = JRequest::getInt('course_id', 0);
@@ -232,16 +232,20 @@ class CoursesControllerAssets extends Hubzero_Controller
 				$id = 0;
 			}
 
-			$this->view->row = new CoursesTablePage($this->database);
+			$this->view->row = new CoursesTableAsset($this->database);
 			$this->view->row->load($id);
 		}
 
-		if (!$this->view->row->get('offering_id'))
+		/*if (!$this->view->row->get('offering_id'))
 		{
 			$this->view->row->set('offering_id', JRequest::getInt('offering', 0));
 		}
 
-		$this->view->offering = CoursesModelOffering::getInstance($this->view->row->get('offering_id'));
+		$this->view->offering = CoursesModelOffering::getInstance($this->view->row->get('offering_id'));*/
+		$this->view->tmpl      = JRequest::getVar('tmpl', '');
+		$this->view->scope     = JRequest::getVar('scope', 'asset_group');
+		$this->view->scope_id  = JRequest::getInt('scope_id', 0);
+		$this->view->course_id = JRequest::getInt('course_id', 0);
 
 		// Set any errors
 		if ($this->getError())
@@ -268,12 +272,10 @@ class CoursesControllerAssets extends Hubzero_Controller
 
 		// load the request vars
 		$fields = JRequest::getVar('fields', array(), 'post');
-
-		// Load the course page
-		//$offering = CoursesModelOffering::getInstance($fields['offering_id']);
+		$tmpl   = JRequest::getVar('tmpl', '');
 
 		// instatiate course page object for saving
-		$row = new CoursesTablePage($this->database);
+		$row = new CoursesTableAsset($this->database);
 
 		if (!$row->bind($fields))
 		{
@@ -296,8 +298,33 @@ class CoursesControllerAssets extends Hubzero_Controller
 			return;
 		}
 
+		$fields['asset_id'] = $row->get('id');
+
+		$row2 = new CoursesTableAssetAssociation($this->database);
+
+		if (!$row2->bind($fields))
+		{
+			$this->addComponentMessage($row2->getError(), 'error');
+			$this->editTask($row);
+			return;
+		}
+
+		if (!$row2->check())
+		{
+			$this->addComponentMessage($row2->getError(), 'error');
+			$this->editTask($row);
+			return;
+		}
+
+		if (!$row2->store())
+		{
+			$this->addComponentMessage($row2->getError(), 'error');
+			$this->editTask($row);
+			return;
+		}
+
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $fields['offering_id']
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $fields['scope'] . '&scope_id=' . $fields['scope_id'] . '&course_id=' . $fields['course_id']
 		);
 	}
 
@@ -335,7 +362,7 @@ class CoursesControllerAssets extends Hubzero_Controller
 		$id = JRequest::getVar('id', array());
 		$id = $id[0];
 
-		$tmpl      = JRequest::getVar('tmpl', 'component');
+		$tmpl      = JRequest::getVar('tmpl', '');
 		$scope     = JRequest::getVar('scope', 'asset_group');
 		$scope_id  = JRequest::getInt('scope_id', 0);
 		$course_id = JRequest::getInt('course_id', 0);
@@ -356,8 +383,13 @@ class CoursesControllerAssets extends Hubzero_Controller
 	 */
 	public function cancelTask()
 	{
+		$tmpl      = JRequest::getVar('tmpl', '');
+		$scope     = JRequest::getVar('scope', 'asset_group');
+		$scope_id  = JRequest::getInt('scope_id', 0);
+		$course_id = JRequest::getInt('course_id', 0);
+
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . JRequest::getVar('offering', '')
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id
 		);
 	}
 }

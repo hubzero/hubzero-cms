@@ -41,6 +41,8 @@ if ($canDo->get('core.edit'))
 }
 JToolBarHelper::cancel();
 
+JHTML::_('behavior.modal');
+
 jimport('joomla.html.editor');
 $editor =& JEditor::getInstance();
 ?>
@@ -63,6 +65,10 @@ function submitbutton(pressbutton)
 		submitform(pressbutton);
 	}
 }
+window.addEvent("domready", function() {
+	SqueezeBox.initialize({});
+	document.assetform = SqueezeBox;
+});
 </script>
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
