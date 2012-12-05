@@ -891,3 +891,7 @@
 		margin-top: 0;
 		padding-top: 0;
 	}
+/* Support ticket tooltip */
+	.tooltip {
+		z-index: 600;
+	}
