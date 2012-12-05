@@ -77,22 +77,13 @@ class CoursesControllerAssets extends Hubzero_Controller
 			'int'
 		);
 
-		/*$this->view->unit = CoursesModelUnit::getInstance($this->view->filters['unit']);
-		if (!$this->view->unit->exists())
-		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=courses'
-			);
-			return;
-		}
-		$this->view->offering = CoursesModelOffering::getInstance($this->view->unit->get('offering_id'));
-		$this->view->course = CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
-
+		/*
 		$this->view->filters['search']  = urldecode(trim($app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.search',
 			'search',
 			''
 		)));*/
+
 		// Filters for returning results
 		$this->view->filters['limit']  = $app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.limit',
@@ -109,7 +100,6 @@ class CoursesControllerAssets extends Hubzero_Controller
 
 		$tbl = new CoursesTableAsset($this->database);
 
-		//$this->view->rows = $tbl->find(array('w' => $filters))
 		$this->view->rows = $tbl->find(array(
 			'w' => $this->view->filters
 		));
@@ -117,21 +107,6 @@ class CoursesControllerAssets extends Hubzero_Controller
 		$this->view->assets = $tbl->find(array(
 			'w' => array('course_id' => $this->view->filters['course_id'])
 		));
-		/*if ($this->view->rows)
-		{
-			$this->view->assets = $tbl->find(array(
-				'w' => array('course_id' => $this->view->rows[0]->course_id)
-			));
-		}
-		else
-		{
-			$unit = CoursesModelUnit::getInstance($this->view->filters['unit']);
-			
-
-			$this->view->assets = $tbl->find(array(
-				'w' => array('course_id' => $this->view->offering->get('course_id'))
-			));
-		}*/
 
 		$this->view->total = count($this->view->rows);
 
@@ -157,7 +132,7 @@ class CoursesControllerAssets extends Hubzero_Controller
 	}
 
 	/**
-	 * Create a course page
+	 * Link an asset to an object
 	 *
 	 * @return void
 	 */
@@ -183,6 +158,37 @@ class CoursesControllerAssets extends Hubzero_Controller
 			$this->setError($tbl->getError());
 		}
 		if (!$tbl->store())
+		{
+			$this->setError($tbl->getError());
+		}
+
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id
+		);
+	}
+
+	/**
+	 * Unlink an asset from an object
+	 *
+	 * @return void
+	 */
+	public function unlinkTask()
+	{
+		// Check for request forgeries
+		JRequest::checkToken('get') or jexit('Invalid Token');
+
+		// Incoming
+		$asset_id  = JRequest::getInt('asset', 0);
+		$tmpl      = JRequest::getVar('tmpl', '');
+		$scope     = JRequest::getVar('scope', 'asset_group');
+		$scope_id  = JRequest::getInt('scope_id', 0);
+		$course_id = JRequest::getInt('course_id', 0);
+
+		// Get the element moving down - item 1
+		$tbl = new CoursesTableAssetAssociation($this->database);
+		$tbl->loadByAssetScope($asset_id, $scope_id, $scope);
+
+		if (!$tbl->delete())
 		{
 			$this->setError($tbl->getError());
 		}
@@ -247,6 +253,8 @@ class CoursesControllerAssets extends Hubzero_Controller
 		$this->view->scope_id  = JRequest::getInt('scope_id', 0);
 		$this->view->course_id = JRequest::getInt('course_id', 0);
 
+		$this->view->config = $this->config;
+
 		// Set any errors
 		if ($this->getError())
 		{
@@ -301,25 +309,123 @@ class CoursesControllerAssets extends Hubzero_Controller
 		$fields['asset_id'] = $row->get('id');
 
 		$row2 = new CoursesTableAssetAssociation($this->database);
-
-		if (!$row2->bind($fields))
+		$row2->loadByAssetScope($fields['asset_id'], $fields['scope_id'], $fields['scope']);
+		if (!$row2->id)
 		{
-			$this->addComponentMessage($row2->getError(), 'error');
-			$this->editTask($row);
-			return;
+			if (!$row2->bind($fields))
+			{
+				$this->addComponentMessage($row2->getError(), 'error');
+				$this->editTask($row);
+				return;
+			}
+
+			if (!$row2->check())
+			{
+				$this->addComponentMessage($row2->getError(), 'error');
+				$this->editTask($row);
+				return;
+			}
+
+			if (!$row2->store())
+			{
+				$this->addComponentMessage($row2->getError(), 'error');
+				$this->editTask($row);
+				return;
+			}
 		}
 
-		if (!$row2->check())
+		// Rename the temporary upload directory if it exist
+		$lid = $fields['lid'];
+		if ($lid != $row->get('id')) 
 		{
-			$this->addComponentMessage($row2->getError(), 'error');
-			$this->editTask($row);
-			return;
+			$pth = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $fields['course_id'];
+			if (is_dir($path . DS . $lid)) 
+			{
+				jimport('joomla.filesystem.folder');
+				if (!JFolder::move($path . DS . $lid, $path . DS . $row->get('id'))) 
+				{
+					$this->setError(JFolder::move($path . DS . $lid, $path . DS . $row->get('id')));
+				}
+			}
 		}
 
-		if (!$row2->store())
+		// Incoming file
+		/*$file = JRequest::getVar('upload', '', 'files', 'array');
+		if ($file['name'])
 		{
-			$this->addComponentMessage($row2->getError(), 'error');
-			$this->editTask($row);
+			$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $fields['course_id'] . DS . $row->id;
+			// Make sure the upload path exist
+			if (!is_dir($path))
+			{
+				jimport('joomla.filesystem.folder');
+				if (!JFolder::create($path, 0777))
+				{
+					$this->setError(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH').' '.$path);
+					$this->editTask($row);
+					return;
+				}
+			}
+
+			// Make the filename safe
+			jimport('joomla.filesystem.file');
+			$file['name'] = JFile::makeSafe($file['name']);
+			// Ensure file names fit.
+			$ext = JFile::getExt($file['name']);
+			$file['name'] = str_replace(' ', '_', $file['name']);
+			if (strlen($file['name']) > 230)
+			{
+				$file['name'] = substr($file['name'], 0, 230);
+				$file['name'] .= '.' . $ext;
+			}
+
+			// Perform the upload
+			if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
+			{
+				$this->setError(JText::_('ERROR_UPLOADING'));
+			}
+			else
+			{
+				if (strtolower($ext) == 'zip')
+				{
+					require_once(JPATH_ROOT . DS . 'administrator' . DS . 'includes' . DS . 'pcl' . DS . 'pclzip.lib.php');
+
+					if (!extension_loaded('zlib'))
+					{
+						$this->setError(JText::_('ZLIB_PACKAGE_REQUIRED'));
+					}
+					else
+					{
+						$zip = new PclZip($path . DS . $file['name']);
+
+						// unzip the file
+						if (!($do = $zip->extract($path)))
+						{
+							$this->setError(JText::_('UNABLE_TO_EXTRACT_PACKAGE'));
+						}
+						else
+						{
+							@unlink($path . DS . $file['name']);
+							$file['name'] = 'presentation.json';
+						}
+					}
+				}
+
+				// Set the url
+				$row->set('url', $file['name']);
+				$row->store();
+			}
+		}*/
+
+		if ($tmpl == 'component')
+		{
+			if ($this->getError())
+			{
+				echo '<p class="error">' . $this->getError() . '</p>';
+			}
+			else
+			{
+				echo '<p class="message">' . JText::_('Entry successfully saved') . '</p>';
+			}
 			return;
 		}
 
@@ -335,7 +441,7 @@ class CoursesControllerAssets extends Hubzero_Controller
 	 */
 	public function orderdownTask()
 	{
-		$this->reorderTask(-1);
+		$this->reorderTask(1);
 	}
 
 	/**
@@ -345,7 +451,7 @@ class CoursesControllerAssets extends Hubzero_Controller
 	 */
 	public function orderupTask()
 	{
-		$this->reorderTask(1);
+		$this->reorderTask(-1);
 	}
 
 	/**
@@ -368,8 +474,14 @@ class CoursesControllerAssets extends Hubzero_Controller
 		$course_id = JRequest::getInt('course_id', 0);
 
 		// Get the element moving down - item 1
-		$tbl = new CoursesTableAsset($this->database);
-		$tbl->move($move, "id=" . $id);
+		$tbl = new CoursesTableAssetAssociation($this->database);
+		$tbl->loadByAssetScope($id, $scope_id, $scope);
+
+		if (!$tbl->move($move, "scope=" . $this->database->Quote($scope) . " AND scope_id=" . $this->database->Quote(intval($scope_id))))
+		{
+			echo $tbl->getError();
+			return;
+		}
 
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id

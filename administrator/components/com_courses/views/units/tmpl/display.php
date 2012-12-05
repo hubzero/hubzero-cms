@@ -74,15 +74,13 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th colspan="10">
-					(<a href="index.php?option=<?php echo $this->option ?>&amp;controller=courses&amp;task=edit&amp;id[]=<?php echo $this->course->get('id'); ?>">
+					(<a href="index.php?option=<?php echo $this->option ?>&amp;controller=offerings&amp;course=<?php echo $this->course->get('id'); ?>">
 						<?php echo $this->escape(stripslashes($this->course->get('alias'))); ?>
 					</a>) 
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=courses&amp;task=edit&amp;id[]=<?php echo $this->course->get('id'); ?>">
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=offerings&amp;course=<?php echo $this->course->get('id'); ?>">
 						<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
 					</a>: 
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=offerings&amp;task=edit&amp;id[]=<?php echo $this->offering->get('id'); ?>">
-						<?php echo $this->escape(stripslashes($this->offering->get('title'))); ?>
-					</a>
+					<?php echo $this->escape(stripslashes($this->offering->get('title'))); ?>
 				</th>
 			</tr>
 			<tr>

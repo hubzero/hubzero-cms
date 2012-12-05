@@ -102,7 +102,7 @@ window.addEvent("domready", function() {
 });*/
 window.addEvent('domready', function() {
 	//window.top.document.updateUploader && window.top.document.updateUploader();
-	$$('a.').each(function(el) {
+	$$('a.edit-asset').each(function(el) {
 		el.addEvent('click', function(e) {
 			new Event(e).stop();
 			window.top.document.assetform.fromElement(el);
@@ -119,6 +119,7 @@ window.addEvent('domready', function() {
 			<tr>
 				<th colspan="4">
 					<select name="asset">
+						<option value="0"><?php echo JText::_('Select asset...'); ?></option>
 <?php if ($this->assets) { ?>
 	<?php 
 	foreach ($this->assets as $asset) 
@@ -132,9 +133,9 @@ window.addEvent('domready', function() {
 	<?php } ?>
 <?php } ?>
 					</select>
-					<input type="submit" value="<?php echo JText::_('Add asset'); ?>" onclick="setTask('link');" />
+					<input type="submit" value="<?php echo JText::_('Attach asset'); ?>" onclick="setTask('link');" />
 				</th>
-				<th colspan="2">
+				<th colspan="4" style="text-align:right;">
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=add&amp;scope=<?php echo $this->filters['asset_scope']; ?>&amp;scope_id=<?php echo $this->filters['asset_scope_id']; ?>&amp;course_id=<?php echo $this->filters['course_id']; ?>&amp;tmpl=<?php echo $this->filters['tmpl']; ?>" class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}">Create asset</a>
 				</th>
 			</tr>
@@ -143,7 +144,8 @@ window.addEvent('domready', function() {
 				<th scope="col"><?php echo JText::_('Title'); ?></th>
 				<th scope="col"><?php echo JText::_('Type'); ?></th>
 				<th scope="col"><?php echo JText::_('Created'); ?></th>
-				<th scope="col" colspan="2"><?php echo JText::_('Ordering'); ?></th>
+				<th scope="col" colspan="3"><?php echo JText::_('Ordering'); ?></th>
+				<th scope="col">X</th>
 			</tr>
 		</thead>
 		<!-- <tfoot>
@@ -188,6 +190,16 @@ foreach ($this->rows as $row)
 				<td>
 					<?php 
 					echo $this->pageNav->orderDownIcon( $i, $n, ($row->ordering != @$this->rows[$i+1]->ordering) ); ?>
+				</td>
+				<td>
+					<?php echo $this->escape(stripslashes($row->ordering)); ?>
+				</td>
+				<td>
+<?php if ($canDo->get('core.edit')) { ?>
+					<a class="state unpublish" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=unlink&amp;asset=<?php echo $row->id; ?>&amp;scope=<?php echo $this->filters['asset_scope']; ?>&amp;scope_id=<?php echo $this->filters['asset_scope_id']; ?>&amp;course_id=<?php echo $this->filters['course_id']; ?>&amp;tmpl=<?php echo $this->filters['tmpl']; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
+						<span><?php echo JText::_('[ x ]'); ?></span>
+					</a>
+<?php } ?>
 				</td>
 			</tr>
 <?php

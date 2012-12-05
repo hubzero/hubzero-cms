@@ -141,7 +141,7 @@ class CoursesTableAssetGroup extends JTable
 
 		if (!$this->id)
 		{
-			$high = $this->getHighestOrder($this->unit_id);
+			$high = $this->getHighestOrder($this->unit_id, $this->parent);
 			$this->ordering = ($high + 1);
 
 			$juser =& JFactory::getUser();
@@ -158,9 +158,9 @@ class CoursesTableAssetGroup extends JTable
 	 * @param      string  $offering_id    Course alias (cn)
 	 * @return     integer
 	 */
-	public function getHighestOrder($unit_id)
+	public function getHighestOrder($unit_id, $parent=0)
 	{
-		$sql = "SELECT ordering from $this->_tbl WHERE `unit_id`=" . $this->_db->Quote(intval($unit_id)) . " ORDER BY ordering DESC LIMIT 1";
+		$sql = "SELECT ordering from $this->_tbl WHERE `unit_id`=" . $this->_db->Quote(intval($unit_id)) . " AND `parent`=" . $this->_db->Quote(intval($parent)) . " ORDER BY ordering DESC LIMIT 1";
 		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
 	}

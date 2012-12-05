@@ -74,18 +74,16 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th colspan="6">
-					(<a href="index.php?option=<?php echo $this->option ?>&amp;controller=courses&amp;task=edit&amp;id[]=<?php echo $this->course->get('id'); ?>">
+					(<a href="index.php?option=<?php echo $this->option ?>&amp;controller=offerings&amp;course=<?php echo $this->course->get('id'); ?>">
 						<?php echo $this->escape(stripslashes($this->course->get('alias'))); ?>
 					</a>) 
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=courses&amp;task=edit&amp;id[]=<?php echo $this->course->get('id'); ?>">
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=offerings&amp;course=<?php echo $this->course->get('id'); ?>">
 						<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
 					</a>: 
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=offerings&amp;task=edit&amp;id[]=<?php echo $this->offering->get('id'); ?>">
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=units&amp;offering=<?php echo $this->unit->get('offering_id'); ?>">
 						<?php echo $this->escape(stripslashes($this->offering->get('title'))); ?>
 					</a>: 
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=units&amp;offering=<?php echo $this->unit->get('offering_id'); ?>">
-						<?php echo $this->escape(stripslashes($this->unit->get('title'))); ?>
-					</a>
+					<?php echo $this->escape(stripslashes($this->unit->get('title'))); ?>
 				</th>
 			</tr>
 			<tr>
@@ -145,9 +143,11 @@ foreach ($this->rows as $row)
 <?php } ?>
 				</td>
 				<td class="order" style="whitespace:nowrap">
+					<?php echo $row->treename; ?>
+					<?php echo $row->get('ordering'); ?>
 					<span><?php //echo $this->pageNav->orderUpIcon( $i, $row->get('parent') == 0 || $row->get('parent') == @$this->rows[$i-1]->get('parent'), 'orderup', 'Move Up', $ordering ); ?></span>
 					<span><?php //echo $this->pageNav->orderDownIcon( $i, $n, $row->get('parent') == 0 || $row->get('parent') == @$this->rows[$i+1]->get('parent'), 'orderdown', 'Move Down', $ordering ); ?></span>
-					<?php echo $row->get('ordering'); ?>
+					
 				</td>
 				<td>
 <?php if ($canDo->get('core.edit')) { ?>

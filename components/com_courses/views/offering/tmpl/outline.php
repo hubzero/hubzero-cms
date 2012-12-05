@@ -147,6 +147,10 @@ if (!$this->course->offering()->access('view')) {
 <?php
 			foreach ($agt->assets() as $a)
 			{
+				if ($a->get('type') == 'note')
+				{
+					continue;
+				}
 				$href = $a->path($this->course->get('id'));
 				if ($a->get('type') == 'video')
 				{
@@ -157,6 +161,15 @@ if (!$this->course->offering()->access('view')) {
 ?>
 			</ul>
 <?php
+			$agt->assets()->rewind();
+			foreach ($agt->assets() as $a)
+			{
+				if ($a->get('type') != 'note')
+				{
+					continue;
+				}
+				echo '<p class="note">' . stripslashes($a->get('description')) . '</p>';
+			}
 		}
 		/*else
 		{

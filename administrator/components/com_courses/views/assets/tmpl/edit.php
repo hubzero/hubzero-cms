@@ -45,6 +45,14 @@ if (!$this->tmpl)
 	JToolBarHelper::cancel();
 }
 
+if ($this->row->get('id')) 
+{
+	$id = $this->row->get('id');
+} 
+else 
+{
+	$id = 'tmp' . time() . rand(0, 10000);
+}
 //jimport('joomla.html.editor');
 //$editor =& JEditor::getInstance();
 ?>
@@ -59,19 +67,26 @@ function submitbutton(pressbutton)
 	}
 	
 	// form field validation
-	if ($('field-alias').value == '') {
-		alert('<?php echo JText::_('COM_COURSES_ERROR_MISSING_INFORMATION'); ?>');
-	} else if ($('field-title').value == '') {
+	if ($('field-title').value == '') {
 		alert('<?php echo JText::_('COM_COURSES_ERROR_MISSING_INFORMATION'); ?>');
 	} else {
 		submitform(pressbutton);
 	}
 }
+function saveAndUpdate()
+{
+	submitbutton('save');
+	window.top.setTimeout(function(){
+		window.parent.document.getElementById('sbox-window').close();
+		var src = window.parent.document.getElementById('assets').src;
+		window.parent.document.getElementById('assets').src = src;
+	}, 700);
+}
 </script>
 <?php if ($this->getError()) { ?>
-	<p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
+	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-<form action="index.php" method="post" name="adminForm" id="item-form">
+<form action="index.php" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
 <?php if ($this->tmpl == 'component') { ?>
 	<fieldset>
 		<div style="float: right">
@@ -92,6 +107,8 @@ function submitbutton(pressbutton)
 			<input type="hidden" name="fields[scope]" value="<?php echo $this->escape($this->scope); ?>" />
 			<input type="hidden" name="fields[scope_id]" value="<?php echo $this->escape($this->scope_id); ?>" />
 
+			<input type="hidden" name="fields[lid]" value="<?php echo $this->escape($id); ?>" />
+
 			<input type="hidden" name="tmpl" value="<?php echo $this->escape($this->tmpl); ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->escape($this->controller); ?>">
@@ -99,7 +116,7 @@ function submitbutton(pressbutton)
 
 			<table class="admintable">
 				<tbody>
-					<tr>
+<!-- 					<tr>
 						<th><?php echo JText::_('ID'); ?></th>
 						<td><?php echo $this->escape($this->row->get('id')); ?></td>
 
@@ -109,49 +126,54 @@ function submitbutton(pressbutton)
 	<?php if ($this->row->get('created')) { ?>
 					<tr>
 						<th><?php echo JText::_('Created'); ?></th>
-						<td colspan="3"><?php echo $this->escape($this->row->get('created')); ?></td>
-					</tr>
+						<td<?php echo (!$this->row->get('created_by')) ? ' colspan="3"' : ''; ?>><?php echo $this->escape($this->row->get('created')); ?></td>
 	<?php } ?>
 	<?php if ($this->row->get('created_by')) { ?>
-					<tr>
 						<th><?php echo JText::_('Creator'); ?></th>
-						<td colspan="3"><?php 
+						<td><?php 
 						$creator = JUser::getInstance($this->row->get('created_by'));
 						echo $this->escape(stripslashes($creator->get('name'))); ?></td>
+	<?php } ?>
+	<?php if ($this->row->get('created') || $this->row->get('created_by')) { ?>
 					</tr>
 	<?php } ?>
+-->
 					<tr>
-						<td class="key"><label for="field-type"><?php echo JText::_('Type'); ?>:</label></td>
+						<th class="key"><label for="field-type"><?php echo JText::_('Type'); ?>:</label></th>
 						<td colspan="3">
 							<select name="fields[type]" id="field-type">
 								<option value="video"<?php if ($this->row->get('type') == 'video') { echo ' selected="selected"'; } ?>><?php echo JText::_('Video'); ?></option>
 								<option value="file"<?php if ($this->row->get('type') == 'file') { echo ' selected="selected"'; } ?>><?php echo JText::_('File'); ?></option>
-								<option value="test"<?php if ($this->row->get('type') == 'test') { echo ' selected="selected"'; } ?>><?php echo JText::_('Quiz/Test'); ?></option>
+								<option value="exam"<?php if ($this->row->get('type') == 'exam') { echo ' selected="selected"'; } ?>><?php echo JText::_('Quiz/Exam'); ?></option>
 								<option value="note"<?php if ($this->row->get('type') == 'note') { echo ' selected="selected"'; } ?>><?php echo JText::_('Note'); ?></option>
 								<option value="link"<?php if ($this->row->get('type') == 'link') { echo ' selected="selected"'; } ?>><?php echo JText::_('Link'); ?></option>
 							</select>
 						</td>
 					</tr>
 					<tr>
-						<td class="key"><label for="field-title"><?php echo JText::_('COM_COURSES_TITLE'); ?>:</label></td>
+						<th class="key"><label for="field-title"><?php echo JText::_('COM_COURSES_TITLE'); ?>:</label></th>
 						<td colspan="3"><input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" size="50" /></td>
 					</tr>
 					<tr>
-						<td class="key"><label for="field-url"><?php echo JText::_('URL'); ?>:</label></td>
+						<th class="key"><label for="field-url"><?php echo JText::_('URL'); ?>:</label></th>
 						<td colspan="3"><input type="text" name="fields[url]" id="field-url" value="<?php echo $this->escape(stripslashes($this->row->get('url'))); ?>" size="50" /></td>
 					</tr>
-					<tr>
+					<!-- <tr>
 						<td class="key"><label for="upload"><?php echo JText::_('File'); ?>:</label></td>
 						<td colspan="3"><input type="file" name="upload" id="upload" /></td>
-					</tr>
+					</tr> -->
 					<tr>
-						<td class="key"><label for="field-description"><?php echo JText::_('Description'); ?>:</label></td>
+						<th class="key"><label for="field-description"><?php echo JText::_('Description'); ?>:</label></th>
 						<td colspan="3">
-							<textarea name="fields[description]" id="field-description" rows="5" cols="35"><?php echo $this->escape(stripslashes($this->row->get('description'))); ?></textarea>
+							<textarea name="fields[description]" id="field-description" rows="4" cols="35"><?php echo $this->escape(stripslashes($this->row->get('description'))); ?></textarea>
 						</td>
 					</tr>
 				</tbody>
 			</table>
+		<!-- </fieldset>
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('Files'); ?> - <?php echo DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $this->course_id . DS . $id; ?></span></legend> -->
+			<iframe width="100%" height="225" name="filelist" id="filelist" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;tmpl=component&amp;listdir=<?php echo $id; ?>&amp;course=<?php echo $this->escape($this->course_id); ?>"></iframe>
 		</fieldset>
 	</div>
 	<div class="clr"></div>

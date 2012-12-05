@@ -122,6 +122,35 @@ class CoursesTableAssetAssociation extends JTable
 	}
 
 	/**
+	 * Load a record and bind to $this
+	 * 
+	 * @param      integer $asset_id Asset ID
+	 * @param      integer $scope_id Scope ID
+	 * @param      string  $scope    Scope
+	 * @return     boolean True on success
+	 */
+	public function loadByAssetScope($asset_id=NULL, $scope_id=NULL, $scope=NULL)
+	{
+		if ($asset_id === NULL || $scope_id === NULL || $scope === NULL) 
+		{
+			return false;
+		}
+
+		$query = "SELECT * FROM $this->_tbl WHERE asset_id=" . $this->_db->Quote(intval($asset_id)) . " AND scope_id=" . $this->_db->Quote(intval($scope_id)) . " AND scope=" . $this->_db->Quote($scope);
+
+		$this->_db->setQuery($query);
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+	}
+
+	/**
 	 * Get the last page in the ordering
 	 * 
 	 * @param      string  $offering_id    Course alias (cn)

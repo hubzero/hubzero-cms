@@ -53,6 +53,13 @@ class CoursesTableAsset extends JTable
 	var $title = NULL;
 
 	/**
+	 * mediumtext
+	 * 
+	 * @var text
+	 */
+	var $description = NULL;
+
+	/**
 	 * Assets type
 	 * 
 	 * @var varchar(255)
@@ -112,6 +119,48 @@ class CoursesTableAsset extends JTable
 	 */
 	public function check()
 	{
+		$this->course_id = intval($this->course_id);
+		if (!$this->course_id)
+		{
+			$this->setError(JText::_('Please provide a course ID.'));
+			return false;
+		}
+
+		$this->title = trim($this->title);
+		if (!$this->title) 
+		{
+			$this->setError(JText::_('Please provide a title.'));
+			return false;
+		}
+
+		if (!$this->url && $this->description)
+		{
+			$this->type = 'note';
+		}
+		else
+		{
+			/*$ext = '';
+			switch ($ext)
+			{
+				case 'm4v':
+				case 'avi':
+				case 'qt':
+					$this->type = 'video';
+				break;
+
+				default:
+					$this->type = 'file';
+				break;
+			}*/
+		}
+
+		if (!$this->id)
+		{
+			$juser =& JFactory::getUser();
+			$this->created = date('Y-m-d H:i:s', time());
+			$this->created_by = $juser->get('id');
+		}
+
 		return true;
 	}
 
