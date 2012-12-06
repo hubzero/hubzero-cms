@@ -110,6 +110,17 @@ class Hubzero_User_Profile_Helper
 	{
 		$config =& JComponentHelper::getParams('com_members');
 
+		if (is_a($member, 'JUser'))
+		{
+			ximport('Hubzero_User_Profile');
+			$member = Hubzero_User_Profile::getInstance($member->get('id'));
+		}
+		else if (is_numeric($member) || is_string($member))
+		{
+			ximport('Hubzero_User_Profile');
+			$member = Hubzero_User_Profile::getInstance($member);
+		}
+
 		$thumb = '';
 		$thumbAlt = '';
 		if (!$anonymous && $member->get('picture')) 
