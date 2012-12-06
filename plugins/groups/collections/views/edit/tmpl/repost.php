@@ -40,20 +40,24 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->name . '&task=repost'); ?>" method="post" id="hubForm" class="full">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->name . '&scope=repost'); ?>" method="post" id="hubForm" class="full">
 	<fieldset>
 		<legend><?php echo JText::_('Repost'); ?></legend>
 
-		<label for="field-board">
-			<?php echo JText::_('Board'); ?>
-			<select name="board" id="field-board">
-				<option value="0"><?php echo JText::_('Select a board...'); ?></option>
-				<optgroup label="<?php echo JText::_('My boards'); ?>">
+		<label for="field-collection">
+			<?php echo JText::_('Collection'); ?>
+			<select name="collection" id="field-collection">
+				<option value="0"><?php echo JText::_('Select a collection...'); ?></option>
+				<optgroup label="<?php echo JText::_('My collections'); ?>">
 <?php 
 if ($this->myboards)
 {
 	foreach ($this->myboards as $board)
 	{
+		if ($board->id == $this->collection_id)
+		{
+			continue;
+		}
 ?>
 					<option value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
 <?php
@@ -71,6 +75,10 @@ if ($this->groupboards)
 <?php
 		foreach ($boards as $board)
 		{
+			if ($board->id == $this->collection_id)
+			{
+				continue;
+			}
 ?>
 					<option value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
 <?php
@@ -122,10 +130,11 @@ if ($this->groupboards)
 		</label>
 	</fieldset>
 
-	<input type="hidden" name="bulletin" value="<?php echo $this->bulletin_id; ?>" />
+	<input type="hidden" name="post" value="<?php echo $this->post_id; ?>" />
+	<input type="hidden" name="item" value="<?php echo $this->item_id; ?>" />
 	<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
 
-	<input type="hidden" name="gid" value="<?php echo $this->group->cn; ?>" />
+	<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="active" value="<?php echo $this->name; ?>" />
 	<input type="hidden" name="task" value="repost" />

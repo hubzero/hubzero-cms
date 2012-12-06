@@ -30,14 +30,16 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+$item = $this->row->item();
 ?>
 		<p class="link">
-			<a href="<?php echo stripslashes($this->row->url); ?>">
-				<?php echo ($this->row->title) ? $this->escape(stripslashes($this->row->title)) : $this->escape(stripslashes($this->row->url)); ?>
+			<a href="<?php echo stripslashes($item->get('url')); ?>">
+				<?php echo ($item->get('title')) ? $this->escape(stripslashes($item->get('title'))) : $this->escape(stripslashes($item->get('url'))); ?>
 			</a>
 		</p>
-<?php if ($this->row->description) { ?>
+<?php if ($item->get('description') || $this->row->get('description')) { ?>
 		<p class="description">
-			<?php echo $this->escape(stripslashes($this->row->description)); ?>
+			<?php echo ($this->row->get('description')) ? $this->escape(stripslashes($this->row->get('description'))) : $this->escape(stripslashes($item->get('description'))); ?>
 		</p>
 <?php } ?>

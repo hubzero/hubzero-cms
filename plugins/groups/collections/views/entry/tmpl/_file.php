@@ -33,33 +33,30 @@ defined('_JEXEC') or die('Restricted access');
 
 //$ba = new BulletinboardAsset(JFactory::getDBO());
 //$assets = $ba->getRecords(array('bulletin_id' => $this->row->id, 'limit' => 50, 'start' => 0));
+$item = $this->row->item();
 
-$path = DS . trim($this->params->get('filepath', '/site/bulletins'), DS) . DS . $this->row->id;
+$path = DS . trim($this->params->get('filepath', '/site/collections'), DS) . DS . $item->get('id');
 $base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->name;
 
-if ($this->assets)
+if ($item->assets()->total() > 0)
 {
 ?>
 		<ul class="file-list">
 <?php
-		foreach ($this->assets as $asset)
+		foreach ($item->assets() as $asset)
 		{
-			if ($asset->bulletin_id != $this->row->id)
-			{
-				continue;
-			}
 ?>
 				<li>
-					<a href="<?php echo $path . DS . ltrim($asset->filename, DS); ?>">
-						<?php echo $asset->filename; ?>
+					<a href="<?php echo $path . DS . ltrim($asset->get('filename'), DS); ?>">
+						<?php echo $asset->get('filename'); ?>
 					</a>
 					<span class="file-meta">
 						<span class="file-size">
-							<?php echo Hubzero_View_Helper_Html::formatSize(filesize(JPATH_ROOT . $path . DS . ltrim($asset->filename, DS))); ?>
+							<?php echo Hubzero_View_Helper_Html::formatSize(filesize(JPATH_ROOT . $path . DS . ltrim($asset->get('filename'), DS))); ?>
 						</span>
-				<?php if ($asset->description) { ?>
+				<?php if ($asset->get('description')) { ?>
 						<span class="file-description">
-							<?php echo Hubzero_View_Helper_Html::formatSize(filesize(JPATH_ROOT . $path . DS . ltrim($asset->filename, DS))); ?>
+							<?php echo Hubzero_View_Helper_Html::formatSize(filesize(JPATH_ROOT . $path . DS . ltrim($asset->get('filename'), DS))); ?>
 						</span>
 				<?php } ?>
 					</span>
@@ -71,8 +68,8 @@ if ($this->assets)
 <?php
 }
 ?>
-<?php if ($this->row->description) { ?>
+<?php if ($item->get('description') || $this->row->get('description')) { ?>
 		<p class="description">
-			<?php echo $this->escape(stripslashes($this->row->description)); ?>
+			<?php echo ($this->row->get('description')) ? $this->escape(stripslashes($this->row->get('description'))) : $this->escape(stripslashes($item->get('description'))); ?>
 		</p>
 <?php } ?>

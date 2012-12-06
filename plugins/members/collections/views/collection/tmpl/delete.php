@@ -31,18 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<?php /*if (!$this->no_html) { ?>
-<ul id="page_options">
-	<li>
-		<a class="board btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name); ?>">
-			<?php echo JText::_('Collections'); ?>
-		</a>
-	</li>
-</ul>
-<?php }*/ ?>
 
 <?php if ($this->getError()) { ?>
-	<p class="error"><?php echo $this->getError(); ?></p>
+	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
 	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name . '&task=collection/' . $this->collection->get('id') . '/delete'); ?>" method="post" id="hubForm" class="full">
 

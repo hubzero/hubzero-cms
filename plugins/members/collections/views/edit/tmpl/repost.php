@@ -32,6 +32,11 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 //tag editor
+$task = 'post/' . $this->post_id . '/repost';
+if ($this->collection_id)
+{
+	$task = JRequest::getVar('board', 0) . '/repost';
+}
 
 ximport('Hubzero_Wiki_Editor');
 $editor =& Hubzero_Wiki_Editor::getInstance();
@@ -40,13 +45,13 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name . '&task=post/' . $this->post_id . '/repost'); ?>" method="post" id="hubForm" class="full">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name . '&task=' . $task); ?>" method="post" id="hubForm" class="full">
 	<fieldset>
 		<legend><?php echo JText::_('Repost'); ?></legend>
 
-		<label for="field-collection">
+		<label for="field-collection_id">
 			<?php echo JText::_('Collection'); ?>
-			<select name="collection" id="field-collection">
+			<select name="collection_id" id="field-collection_id">
 				<option value="0"><?php echo JText::_('Select a collection...'); ?></option>
 				<optgroup label="<?php echo JText::_('My collections'); ?>">
 <?php 
@@ -126,8 +131,10 @@ if ($this->groupboards)
 		</label>
 	</fieldset>
 
-	<input type="hidden" name="post" value="<?php echo $this->post_id; ?>" />
-	<input type="hidden" name="item" value="<?php echo $this->item_id; ?>" />
+	<input type="hidden" name="post_id" value="<?php echo $this->post_id; ?>" />
+	<input type="hidden" name="repost" value="1" />
+
+	<input type="hidden" name="item_id" value="<?php echo $this->item_id; ?>" />
 	<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
 
 	<input type="hidden" name="id" value="<?php echo $this->member->get('uidNumber'); ?>" />

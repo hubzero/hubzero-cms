@@ -19,14 +19,14 @@
 -->
 
 <metadata>
-	<layout title="Standard Browse Blog Entries Layout">
+	<layout title="Delete collection">
 		<message>
-			<![CDATA[STANDARD BROWSE BLOG ENTRIES LAYOUT DESC]]>
+			<![CDATA[Delete collection confirmation form]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Browse Blog Entries Layout</name>
-		<description>STANDARD BROWSE BLOG ENTRIES LAYOUT DESC</description>
+		<name>Delete collection</name>
+		<description>Delete collection confirmation form</description>
 		<params>
 		</params>
 	</state>

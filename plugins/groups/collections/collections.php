@@ -104,10 +104,13 @@ class plgGroupsCollections extends JPlugin
 			}
 		}
 
+		$this->group    = $group;
 		$this->juser    = JFactory::getUser();
 		$this->database = JFactory::getDBO();
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'item.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'collections.php');
+
+		$this->model = new CollectionsModel('group', $this->group->get('gidNumber'));
 
 		//are we returning html
 		if ($return == 'html') 
@@ -157,7 +160,7 @@ class plgGroupsCollections extends JPlugin
 			$this->authorized = $authorized;
 
 			//group vars
-			$this->group      = $group;
+			
 			$this->members    = $members;
 
 			// Set some variables so other functions have access
@@ -169,8 +172,8 @@ class plgGroupsCollections extends JPlugin
 			$p = new Hubzero_Plugin_Params($this->database);
 			$this->params = $p->getParams($group->gidNumber, 'groups', $this->_name);
 
-			$this->_authorize('board');
-			$this->_authorize('bulletin');
+			$this->_authorize('collection');
+			$this->_authorize('item');
 
 			//push the css to the doc
 			ximport('Hubzero_Document');
@@ -192,11 +195,11 @@ class plgGroupsCollections extends JPlugin
 				$this->tz = true;
 			}
 
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'collection.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'post.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'asset.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'vote.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'helpers' . DS . 'tags.php');
+			//include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'collection.php');
+			//include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'post.php');
+			//include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'asset.php');
+			//include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'vote.php');
+			//include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'helpers' . DS . 'tags.php');
 
 			$task = '';
 			$controller = 'board';
@@ -210,7 +213,7 @@ class plgGroupsCollections extends JPlugin
 				$path = ltrim($path, DS);
 				$bits = explode('/', $path);
 
-				$this->action = (isset($bits[0])) ? $bits[0] : $this->action;
+				/*$this->action = (isset($bits[0])) ? $bits[0] : $this->action;
 				if (isset($bits[1]))
 				{
 					if (is_numeric($bits[1]))
@@ -261,9 +264,53 @@ class plgGroupsCollections extends JPlugin
 			if ($controller == 'posts' && $id)
 			{
 				JRequest::setVar('bulletin', $id);
+				}*/
+				if (isset($bits[0]) && $bits[0])
+				{
+					if ($bits[0] == 'post')
+					{
+						$this->action = 'post';
+						if (isset($bits[1]))
+						{
+							if ($bits[1] == 'new')
+							{
+								$this->action = $bits[1] . $this->action;
+							}
+							else
+							{
+								JRequest::setVar('post', $bits[1]);
+								if (isset($bits[2]))
+								{
+									if (in_array($bits[2], array('post', 'vote', 'repost', 'remove', 'move', 'comment')))
+									{
+										$this->action = $bits[2];
+									}
+									else
+									{
+										$this->action = $bits[2] . $this->action;
+									}
+								}
+							}
+						}
+					}
+					else if ($bits[0] == 'new')
+					{
+						$this->action = 'newboard';
+					}
+					else
+					{
+						$this->action = 'board';
+						JRequest::setVar('board', $bits[0]);
+
+						if (isset($bits[1]))
+						{
+							$this->action = $bits[1] . $this->action;
+						}
+					}
+				}
 			}
 			
-			$this->action = ($this->action) ? $this->action : $task . $controller;*/
+			//$this->action = ($this->action) ? $this->action : $task . $controller;
 			/*if (is_numeric($this->action)) 
 			{
 				$this->action = 'entry';
@@ -287,46 +334,31 @@ class plgGroupsCollections extends JPlugin
 				case 'post':   $arr['html'] = $this->_post();   break;
 				case 'vote':   $arr['html'] = $this->_vote();   break;
 				case 'repost': $arr['html'] = $this->_repost(); break;
-				case 'unpost': $arr['html'] = $this->_unpost(); break;
+				case 'remove': $arr['html'] = $this->_remove(); break;
 				case 'move':   $arr['html'] = $this->_move();   break;
 
-				case 'repostboard': $arr['html'] = $this->_repostboard(); break;
+				case 'repostboard': $arr['html'] = $this->_repost(); break;
 				case 'newboard':    $arr['html'] = $this->_newboard();    break;
 				case 'editboard':   $arr['html'] = $this->_editboard();   break;
 				case 'saveboard':   $arr['html'] = $this->_saveboard();   break;
 				case 'deleteboard': $arr['html'] = $this->_deleteboard(); break;
-
 				case 'boards': $arr['html'] = $this->_boards(); break;
 
-				case 'board':
-				default: $arr['html'] = $this->_board(); break;
+				case 'board': $arr['html'] = $this->_board(); break;
+
+				default: $arr['html'] = $this->_boards(); break;
 			}
 		}
 
-		/*$filters = array();
-		$filters['object_type'] = 'group';
-		$filters['object_id']   = $group->get('gidNumber');
-		$filters['state']       = 1;
-
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) 
+		// Get a count of all the collections
+		$filters = array(
+			'count' => true
+		);
+		if (!$this->params->get('access-manage-collection')) 
 		{
 			$filters['access'] = 0;
-		} 
-		else 
-		{
-			if ($authorized != 'member' 
-			 && $authorized != 'manager' 
-			 && $authorized != 'admin') 
-			{
-				$filters['access'] = array(1, 0);
-			}
 		}
-
-		$bulletin = new CollectionsTableItem($this->database);
-
-		// Build the HTML meant for the "profile" tab's metadata overview
-		$arr['metadata']['count'] = $bulletin->getCount($filters);*/
+		$arr['metadata']['count'] = $this->model->collections($filters);
 
 		return $arr;
 	}
@@ -343,8 +375,8 @@ class plgGroupsCollections extends JPlugin
 			array(
 				'folder'  => 'groups',
 				'element' => $this->_name,
-				'name'    => 'board',
-				'layout'  => 'boards'
+				'name'    => 'collection',
+				'layout'  => 'collections'
 			)
 		);
 		$view->name        = $this->_name;
@@ -360,28 +392,50 @@ class plgGroupsCollections extends JPlugin
 		$view->filters = array();
 		//$view->filters['limit']       = JRequest::getInt('limit', 25);
 		//$view->filters['start']       = JRequest::getInt('limitstart', 0);
-		$view->filters['user_id']     = JFactory::getUser()->get('id');
-		$view->filters['object_type'] = 'group';
-		$view->filters['object_id']   = $this->group->get('gidNumber');
+		$view->filters['user_id']     = $this->juser->get('id');
+		//$view->filters['object_type'] = 'group';
+		//$view->filters['object_id']   = $this->group->get('gidNumber');
 		//$view->filters['search']      = JRequest::getVar('search', '');
 		$view->filters['state']       = 1;
 		//$view->filters['board_id']    = JRequest::getInt('board', 0);
 
-		$view->board = new CollectionsTableCollection($this->database);
+		/*$view->board = new CollectionsTableCollection($this->database);
 
 		$filters = array(
 			'object_type' => $view->filters['object_type'],
 			'object_id'   => $view->filters['object_id'],
 			'state'       => 1
 		);
-		if (!$this->params->get('access-manage-board')) 
+		if (!$this->params->get('access-manage-collection')) 
 		{
 			$filters['access'] = 0;
 		}
 		$view->rows = $view->board->getRecords($filters);
 
 		$bulletin = new CollectionsTableItem($this->database);
-		$view->bulletins = $bulletin->getCount($view->filters);
+		$view->bulletins = $bulletin->getCount($view->filters);*/
+		$filters = array();
+		if (!$this->params->get('access-manage-collection')) 
+		{
+			$filters['access'] = 0;
+		}
+
+		$filters['count'] = true;
+		$view->total = $this->model->collections($filters);
+
+		$filters['count'] = false;
+		$view->rows = $this->model->collections($filters);
+
+		$view->posts = 0;
+		if ($view->rows) 
+		{
+			foreach ($view->rows as $row)
+			{
+				$view->posts += $row->get('posts');
+			}
+		}
+
+		$view->likes = 0;
 
 		if ($this->getError()) 
 		{
@@ -405,7 +459,7 @@ class plgGroupsCollections extends JPlugin
 			array(
 				'folder'  => 'groups',
 				'element' => $this->_name,
-				'name'    => 'board'
+				'name'    => 'collection'
 			)
 		);
 		$view->name        = $this->_name;
@@ -426,13 +480,13 @@ class plgGroupsCollections extends JPlugin
 		$view->filters['limit']       = JRequest::getInt('limit', 25);
 		$view->filters['start']       = JRequest::getInt('limitstart', 0);
 		$view->filters['user_id']     = JFactory::getUser()->get('id');
-		$view->filters['object_type'] = 'group';
-		$view->filters['object_id']   = $this->group->get('gidNumber');
+		//$view->filters['object_type'] = 'group';
+		//$view->filters['object_id']   = $this->group->get('gidNumber');
 		$view->filters['search']      = JRequest::getVar('search', '');
 		$view->filters['state']       = 1;
-		$view->filters['board_id']    = JRequest::getInt('board', 0);
+		$view->filters['collection_id'] = JRequest::getVar('board', 0);
 
-		$view->board = new CollectionsTableCollection($this->database);
+		/*$view->board = new CollectionsTableCollection($this->database);
 		if (!$view->filters['board_id'])
 		{
 			$view->board->loadDefault($view->filters['object_id'], $view->filters['object_type']);
@@ -444,23 +498,28 @@ class plgGroupsCollections extends JPlugin
 		if (!$view->board->id)
 		{
 			$view->board->setup($view->filters['object_id'], $view->filters['object_type']);
+		}*/
+		$view->collection = $this->model->collection($view->filters['collection_id']);
+		if (!$view->collection->exists())
+		{
+			$view->collection->setup($this->model->get('object_id'), $this->model->get('object_type'));
 		}
 
-		$view->boards = $view->board->getCount(array(
+		/*$view->boards = $view->board->getCount(array(
 			'object_type' => $view->filters['object_type'],
 			'object_id'   => $view->filters['object_id'],
 			'state'       => 1
 		));
-		/*$view->boards = $view->board->getRecords(array(
+		$view->boards = $view->board->getRecords(array(
 			'object_type' => $view->filters['object_type'],
 			'object_id'   => $view->filters['object_id'],
 			'state'       => 1
 		));*/
 
-		$view->filters['board_id'] = $view->board->id;
+		//$view->filters['board_id'] = $view->board->id;
 
-		$bulletin = new CollectionsTableItem($this->database);
-		$view->rows = $bulletin->getRecords($view->filters);
+		//$bulletin = new CollectionsTableItem($this->database);
+		$view->rows = $view->collection->posts($view->filters); //$bulletin->getRecords($view->filters);
 
 		if ($this->getError()) 
 		{
@@ -852,13 +911,13 @@ class plgGroupsCollections extends JPlugin
 			$row->load($collection_id, $this->group->get('gidNumber'), 'group');
 
 			$b = new CollectionsTableItem($this->database);
-			$b->loadType($board_id, 'board');
+			$b->loadType($row->id, 'board');
 			if (!$b->id)
 			{
-				$row = new CollectionsTableCollection($this->database);
-				$row->load($board_id);
+				//$row = new CollectionsTableCollection($this->database);
+				//$row->load($collection_id);
 
-				$b->type        = 'board';
+				$b->type        = 'collection';
 				$b->object_id   = $row->id;
 				$b->title       = $row->title;
 				$b->description = $row->description;
@@ -1453,7 +1512,7 @@ class plgGroupsCollections extends JPlugin
 		}
 
 		// Access check
-		if (!$this->params->get('access-create-board') && !$this->params->get('access-edit-board')) 
+		if (!$this->params->get('access-create-collection') && !$this->params->get('access-edit-collection')) 
 		{
 			$board = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->_name);
 			$app =& JFactory::getApplication();
@@ -1467,7 +1526,7 @@ class plgGroupsCollections extends JPlugin
 			array(
 				'folder'  => 'groups',
 				'element' => $this->_name,
-				'name'    => 'board',
+				'name'    => 'collection',
 				'layout'  => 'edit'
 			)
 		);
@@ -1517,7 +1576,7 @@ class plgGroupsCollections extends JPlugin
 			return $this->_login();
 		}
 
-		if (!$this->params->get('access-edit-board') || !$this->params->get('access-create-board')) 
+		if (!$this->params->get('access-edit-collection') || !$this->params->get('access-create-collection')) 
 		{
 			$this->setError(JText::_('PLG_GROUPS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
 			return $this->_board();
@@ -1566,13 +1625,13 @@ class plgGroupsCollections extends JPlugin
 				$this->params->set('access-view-' . $assetType, true);
 			}
 			// Set asset to NOT viewable if unpublished
-			if (isset($this->model) && is_object($this->model))
+			/*if (isset($this->model) && $this->model->collection()->exists())
 			{
-				if (!$this->model->state)
+				if (!$this->model->collection()->get('state'))
 				{
 					$this->params->set('access-view-' . $assetType, false);
 				}
-			}
+			}*/
 			// Can NOT create, delete, or edit by default
 			$this->params->set('access-create-' . $assetType, false);
 			$this->params->set('access-delete-' . $assetType, false);

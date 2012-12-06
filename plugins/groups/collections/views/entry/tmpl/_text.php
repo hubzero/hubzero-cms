@@ -30,12 +30,14 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+$item = $this->row->item();
 ?>
-<?php if ($this->row->title) { ?>
+<?php if ($item->get('title')) { ?>
 		<h4>
-			<?php echo $this->escape(stripslashes($this->row->title)); ?>
+			<?php echo $this->escape(stripslashes($item->get('title'))); ?>
 		</h4>
 <?php } ?>
 		<p class="description">
-			<?php echo $this->escape(stripslashes($this->row->description)); ?>
+			<?php echo $this->escape(stripslashes($item->get('description'))); ?>
 		</p>

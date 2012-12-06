@@ -19,14 +19,14 @@
 -->
 
 <metadata>
-	<layout title="Standard Edit Blog Entry Layout">
+	<layout title="Repost item">
 		<message>
-			<![CDATA[STANDARD EDIT BLOG ENTRY LAYOUT DESC]]>
+			<![CDATA[Repost item form]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Edit Blog Entry Layout</name>
-		<description>STANDARD EDIT BLOG ENTRY LAYOUT DESC</description>
+		<name>Repost item</name>
+		<description>Repost item form</description>
 		<params>
 		</params>
 	</state>

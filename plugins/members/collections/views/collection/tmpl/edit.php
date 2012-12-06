@@ -31,20 +31,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 ?>
-<!-- <ul id="page_options">
-	<li>
-		<a class="board btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name); ?>">
-			<?php echo JText::_('Collections'); ?>
-		</a>
-	</li>
-</ul> -->
 
 <?php if ($this->getError()) { ?>
-	<p class="error"><?php echo $this->getError(); ?></p>
+	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
 <form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name . '&task=saveboard'); ?>" method="post" id="hubForm" class="full" enctype="multipart/form-data">
 	<fieldset>
-		<legend><?php echo JText::_('New board'); ?></legend>
+		<legend><?php echo JText::_('New collection'); ?></legend>
 
 		<label for="field-access">
 			<?php echo JText::_('Privacy'); ?>
@@ -79,6 +72,6 @@ defined('_JEXEC') or die('Restricted access');
 		
 	<p class="submit">
 		<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_' . strtoupper($this->name) . '_SAVE'); ?>" />
-		<!-- <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name); ?>">Cancel</a> -->
+		<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name); ?>">Cancel</a>
 	</p>
 </form>

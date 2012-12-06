@@ -152,7 +152,7 @@ if ($this->collections->total() > 0)
 	<p class="submit">
 		<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_' . strtoupper($this->name) . '_SAVE'); ?>" />
 		<?php if ($item->get('id')) { ?>
-			<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name); ?>">Cancel</a>
+			<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name . ($item->get('id') ? '&task=' . $this->collection->get('alias') : '')); ?>">Cancel</a>
 		<?php } ?>
 	</p>
 </form>

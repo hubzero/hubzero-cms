@@ -32,18 +32,18 @@
 defined('_JEXEC') or die('Restricted access');
 
 //import helper class
-ximport('Hubzero_View_Helper_Html');
-ximport('Hubzero_Document');
+//ximport('Hubzero_View_Helper_Html');
+//ximport('Hubzero_Document');
 
-$assets = array();
-$ids = array();
+//$assets = array();
+//$ids = array();
 $likes = 0;
 if ($this->rows) 
 {
 	foreach ($this->rows as $row)
 	{
-		$likes += $row->positive;
-		$ids[] = $row->id;
+		$likes += $row->item()->get('positive', 0);
+		//$ids[] = $row->id;
 	}
 }
 
@@ -52,57 +52,56 @@ $this->juser = JFactory::getUser();
 
 $base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->name;
 ?>
-<ul id="page_options">
-	<li>
-		<a class="board btn" href="<?php echo JRoute::_($base . '&scope=boards'); ?>">
-			<?php echo JText::_('Boards'); ?>
-		</a>
-	</li>
-</ul>
 
-<form method="get" action="<?php echo JRoute::_($base . '&scope=boards/' . $this->board->id); ?>" id="bulletinboard">
+<form method="get" action="<?php echo JRoute::_($base . '&scope=' . $this->collection->get('alias')); ?>" id="bulletinboard">
 
 	<fieldset class="filters">
 		<!-- <label for="fielter-search">Search</label>
 		<input type="text" name="search" id="fielter-search" value="<?php echo $this->escape($this->filters['search']); ?>" />
-		<input type="hidden" name="board" value="<?php echo $this->board->id; ?>" />
+		<input type="hidden" name="board" value="<?php echo $this->collection->get('id'); ?>" />
 		<input type="submit" value="Go" /> -->
-		<span class="post count">
-			"<?php echo $this->escape(stripslashes($this->board->title)); ?>" has <strong><?php echo count($this->rows); ?></strong> posts
+		<span class="title count">
+			"<?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>" 
 		</span>
-<?php if ($this->rows && $this->params->get('access-create-bulletin')) { ?>
-		<a class="add btn" href="<?php echo JRoute::_($base . '&scope=posts/new&boards=' . $this->board->id); ?>">
+		<span class="post count">
+			<strong><?php echo $this->rows->total(); ?></strong> posts
+		</span>
+<?php if (!$this->juser->get('guest')) { ?>
+		<a class="repost btn tooltips" title="Repost :: Repost this collection" href="<?php echo JRoute::_($base . '&scope=' . $this->collection->get('alias') . '/repost'); ?>">
+			<?php echo JText::_('Repost collection'); ?>
+		</a>
+	<?php if ($this->rows && $this->params->get('access-create-item')) { ?>
+		<a class="add btn" href="<?php echo JRoute::_($base . '&scope=post/new&board=' . $this->collection->get('alias')); ?>">
 			<?php echo JText::_('New post'); ?>
 		</a>
+	<?php } ?>
 <?php } ?>
 		<div class="clear"></div>
 	</fieldset>
 
 	<div id="bulletins">
 <?php 
-if ($this->rows) 
+if ($this->rows->total() > 0) 
 {
 	ximport('Hubzero_User_Profile');
 	ximport('Hubzero_User_Profile_Helper');
 
-	$ba = new BulletinboardAsset($database);
-	$assets = $ba->getRecords(array('bulletin_id' => $ids));
+	//$ba = new BulletinboardAsset($database);
+	//$assets = $ba->getRecords(array('bulletin_id' => $ids));
 
-	$bt = new BulletinboardTags($database);
-	$tags = $bt->getTagsForIds($ids); //$bt->get_tag_cloud(0, 0, $row->id);
+	//$bt = new CollectionsTags($database);
+	//$tags = $bt->getTagsForIds($ids); //$bt->get_tag_cloud(0, 0, $row->id);
 
 	foreach ($this->rows as $row)
 	{
-		$huser = Hubzero_User_Profile::getInstance($row->poster);
+		$item = $row->item();
 
-		//$tags = $bt->get_tag_cloud(0, 0, $row->id);
-
-		if ($row->state == 2)
+		if ($item->get('state') == 2)
 		{
-			$row->type = 'deleted';
+			$item->set('type', 'deleted');
 		}
 ?>
-		<div class="bulletin <?php echo $row->type; ?>" id="b<?php echo $row->id; ?>" data-id="<?php echo $row->id; ?>" data-closeup-url="<?php echo JRoute::_($base . '&scope=posts/' . $row->id); ?>" data-width="600" data-height="350">
+		<div class="bulletin <?php echo $item->get('type'); ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo JRoute::_($base . '&scope=post/' . $row->get('id')); ?>" data-width="600" data-height="350">
 			<div class="content">
 <?php
 		$view = new Hubzero_Plugin_View(
@@ -110,7 +109,7 @@ if ($this->rows)
 				'folder'  => 'groups',
 				'element' => $this->name,
 				'name'    => 'entry',
-				'layout'  => '_' . $row->type
+				'layout'  => '_' . $item->get('type')
 			)
 		);
 		$view->name       = $this->name;
@@ -124,83 +123,95 @@ if ($this->rows)
 		$view->timeFormat = $this->timeFormat;
 		$view->tz         = $this->tz;
 		
-		$view->assets = $assets;
+		//$view->assets = $assets;
 		$view->row   = $row;
-		$view->board = $this->board;
+		$view->board = $this->collection;
 		
 		$view->display();
 ?>
-<?php if (isset($tags[$row->id])) { ?>
+<?php if (count($item->tags()) > 0) { ?>
 				<div class="tags-wrap">
-					<?php echo $bt->buildCloud($tags[$row->id]); ?>
+					<?php echo $item->tags('render'); ?>
 				</div>
 <?php } ?>
 				<div class="meta">
 					<p class="stats">
 						<span class="likes">
-							<?php echo JText::sprintf('%s likes', $row->positive); ?>
+							<?php echo JText::sprintf('%s likes', $item->get('positive', 0)); ?>
 						</span>
 						<span class="comments">
-<?php if (isset($row->comments) && $row->comments) { ?>
-							<?php echo JText::sprintf('%s comments', $row->comments); ?>
-<?php } else { ?>
-							<?php echo JText::sprintf('%s comments', 0); ?>
-<?php } ?>
+							<?php echo JText::sprintf('%s comments', $item->get('comments', 0)); ?>
 						</span>
 						<span class="reposts">
-<?php if ($row->reposts) { ?>
-							<?php echo JText::sprintf('%s reposts', $row->reposts); ?>
-<?php } else { ?>
-							<?php echo JText::sprintf('%s reposts', 0); ?>
-<?php } ?>
+							<?php echo JText::sprintf('%s reposts', $item->get('reposts', 0)); ?>
 						</span>
 					</p>
 					<div class="actions">
-<?php if ($row->created_by == $this->juser->get('id')) { ?>
-						<a class="edit" data-id="<?php echo $row->id; ?>" href="<?php echo JRoute::_($base . '&scope=posts/' . $row->id . '/edit'); ?>">
+<?php if ($item->get('created_by') == $this->juser->get('id')) { ?>
+						<a class="edit" data-id="<?php echo $row->id; ?>" href="<?php echo JRoute::_($base . '&scope=post/' . $row->get('id') . '/edit'); ?>">
 							<span><?php echo JText::_('Edit'); ?></span>
 						</a>
 <?php } else { ?>
-						<a class="vote <?php echo ($row->voted) ? 'unlike' : 'like'; ?>" data-id="<?php echo $row->id; ?>" data-text-like="<?php echo JText::_('Like'); ?>" data-text-unlike="<?php echo JText::_('Unlike'); ?>" href="<?php echo JRoute::_($base . '&scope=posts/' . $row->id . '/vote'); ?>">
-							<span><?php echo ($row->voted) ? JText::_('Unlike') : JText::_('Like'); ?></span>
+						<a class="vote <?php echo ($item->get('voted')) ? 'unlike' : 'like'; ?>" data-id="<?php echo $row->get('id'); ?>" data-text-like="<?php echo JText::_('Like'); ?>" data-text-unlike="<?php echo JText::_('Unlike'); ?>" href="<?php echo JRoute::_($base . '&scope=post/' . $row->get('id') . '/vote'); ?>">
+							<span><?php echo ($item->get('voted')) ? JText::_('Unlike') : JText::_('Like'); ?></span>
 						</a>
 <?php } ?>
-						<a class="comment" data-id="<?php echo $row->id; ?>" href="<?php echo JRoute::_($base . '&scope=posts/' . $row->id . '/comment'); ?>">
+						<a class="comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&scope=post/' . $row->get('id') . '/comment'); ?>">
 							<span><?php echo JText::_('Comment'); ?></span>
 						</a>
-						<a class="repost" data-id="<?php echo $row->id; ?>" href="<?php echo JRoute::_($base . '&scope=posts/' . $row->id . '/repost'); ?>">
+						<a class="repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&scope=post/' . $row->get('id') . '/repost'); ?>">
 							<span><?php echo JText::_('Repost'); ?></span>
 						</a>
-<?php if ($row->original && ($row->created_by == $this->juser->get('id') || $this->params->get('access-delete-bulletin'))) { ?>
-						<a class="delete" data-id="<?php echo $row->id; ?>" href="<?php echo JRoute::_($base . '&scope=posts/' . $row->id . '/delete'); ?>">
+<?php if ($row->get('original') && ($item->get('created_by') == $this->juser->get('id') || $this->params->get('access-delete-item'))) { ?>
+						<a class="delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&scope=post/' . $row->get('id') . '/delete'); ?>">
 							<span><?php echo JText::_('Delete'); ?></span>
 						</a>
-<?php } else if ($row->poster == $this->juser->get('id') || $this->params->get('access-edit-bulletin')) { ?>
-						<a class="unpost" data-id="<?php echo $row->id; ?>" href="<?php echo JRoute::_($base . '&scope=posts/' . $row->post_id . '/unpost'); ?>">
-							<span><?php echo JText::_('Unpost'); ?></span>
+<?php } else if ($row->get('created_by') == $this->juser->get('id') || $this->params->get('access-edit-item')) { ?>
+						<a class="unpost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&scope=post/' . $row->get('id') . '/remove'); ?>">
+							<span><?php echo JText::_('Remove'); ?></span>
 						</a>
 <?php } ?>
 					</div><!-- / .actions -->
 				</div><!-- / .meta -->
+<?php if ($row->original() || $item->get('created_by') != $this->juser->get('id')) { ?>
 				<div class="convo attribution clearfix">
-					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->poster); ?>" title="<?php echo $this->escape(stripslashes($row->name)); ?>" class="img-link">
-						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($huser, 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($row->name)); ?>" />
+					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>" class="img-link">
+						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($item->creator(), 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>" />
 					</a>
 					<p>
-						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->poster); ?>">
-							<?php echo $this->escape(stripslashes($row->name)); ?>
+						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')); ?>">
+							<?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>
 						</a> 
-						onto 
-						<a href="<?php echo JRoute::_($base); ?>">
-							<?php echo $this->escape(stripslashes($this->board->title)); ?>
-						</a>
+						posted 
 						<br />
 						<span class="entry-date">
-							<span class="entry-date-at">@</span> <span class="date"><?php echo JHTML::_('date', $row->posted, $this->timeFormat, $this->tz); ?></span> 
-							<span class="entry-date-on">on</span> <span class="time"><?php echo JHTML::_('date', $row->posted, $this->dateFormat, $this->tz); ?></span>
+							<span class="entry-date-at">@</span> <span class="date"><?php echo JHTML::_('date', $item->get('created'), $this->timeFormat, $this->tz); ?></span> 
+							<span class="entry-date-on">on</span> <span class="time"><?php echo JHTML::_('date', $item->get('created'), $this->dateFormat, $this->tz); ?></span>
 						</span>
 					</p>
 				</div><!-- / .attribution -->
+<?php } ?>
+<?php if (!$row->original()) {//if ($item->get('created_by') != $this->member->get('uidNumber')) { ?>
+				<div class="convo attribution reposted clearfix">
+					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" class="img-link">
+						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($row->creator(), 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" />
+					</a>
+					<p>
+						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('created_by')); ?>">
+							<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
+						</a> 
+						onto 
+						<a href="<?php echo JRoute::_($base . ($this->collection->get('is_default') ? '' : '/' . $this->collection->get('alias'))); ?>">
+							<?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>
+						</a>
+						<br />
+						<span class="entry-date">
+							<span class="entry-date-at">@</span> <span class="date"><?php echo JHTML::_('date', $row->get('created'), $this->timeFormat, $this->tz); ?></span> 
+							<span class="entry-date-on">on</span> <span class="time"><?php echo JHTML::_('date', $row->get('created'), $this->dateFormat, $this->tz); ?></span>
+						</span>
+					</p>
+				</div><!-- / .attribution -->
+<?php } ?>
 			</div><!-- / .content -->
 		</div><!-- / .bulletin -->
 <?php
@@ -210,7 +221,7 @@ else
 {
 ?>
 		<div id="bb-introduction">
-<?php if ($this->params->get('access-create-bulletin')) { ?>
+<?php if ($this->params->get('access-create-item')) { ?>
 			<div class="instructions">
 				<ol>
 					<li>Find an image, file, link or text you want to share.</li>
@@ -221,21 +232,21 @@ else
 			</div>
 			<ul class="post-type">
 				<li class="post-image">
-					<a class="tooltips" href="<?php echo JRoute::_($base . '&scope=posts/new&type=image&board=' . $this->board->id); ?>" rel="post-image" title="Post an image">Image</a>
+					<a class="tooltips" href="<?php echo JRoute::_($base . '&scope=post/new&type=image&board=' . $this->collection->get('alias')); ?>" rel="post-image" title="Post an image">Image</a>
 				</li>
 				<li class="post-file">
-					<a class="tooltips" href="<?php echo JRoute::_($base . '&scope=posts/new&type=file&board=' . $this->board->id); ?>" rel="post-file" title="Post a file">File</a>
+					<a class="tooltips" href="<?php echo JRoute::_($base . '&scope=post/new&type=file&board=' . $this->collection->get('alias')); ?>" rel="post-file" title="Post a file">File</a>
 				</li>
 				<li class="post-text">
-					<a class="tooltips" href="<?php echo JRoute::_($base . '&scope=posts/new&type=text&board=' . $this->board->id); ?>" rel="post-text" title="Post some text">Text</a>
+					<a class="tooltips" href="<?php echo JRoute::_($base . '&scope=post/new&type=text&board=' . $this->collection->get('alias')); ?>" rel="post-text" title="Post some text">Text</a>
 				</li>
 				<li class="post-link">
-					<a class="tooltips" href="<?php echo JRoute::_($base . '&scope=posts/new&type=link&board=' . $this->board->id); ?>" rel="post-link" title="Post a link">Link</a>
+					<a class="tooltips" href="<?php echo JRoute::_($base . '&scope=post/new&type=link&board=' . $this->collection->get('alias')); ?>" rel="post-link" title="Post a link">Link</a>
 				</li>
 			</ul>
 <?php } else { ?>
 			<div class="instructions">
-				<p>No bulletins available for this board.</p>
+				<p>No posts available for this collection.</p>
 			</div>
 <?php } ?>
 		</div>

@@ -37,30 +37,23 @@ ximport('Hubzero_Document');
 
 //$assets = array();
 //$ids = array();
-$likes = 0;
+/*$likes = 0;
 if ($this->rows) 
 {
 	foreach ($this->rows as $row)
 	{
-		$likes += $row->item()->get('positive');
+		$likes += $row->item()->get('positive', 0);
 		//$ids[] = $row->id;
 	}
-}
+}*/
 
 $database = JFactory::getDBO();
 $this->juser = JFactory::getUser();
 
 $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name;
 ?>
-<!-- <ul id="page_options">
-	<li>
-		<a class="board btn" href="<?php echo JRoute::_($base . '&task=boards'); ?>">
-			<?php echo JText::_('Collections'); ?>
-		</a>
-	</li>
-</ul> -->
 
-<form method="get" action="<?php echo JRoute::_($base . '&task=board/' . $this->collection->get('alias')); ?>" id="bulletinboard">
+<form method="get" action="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias')); ?>" id="collections">
 
 	<fieldset class="filters">
 		<!-- <label for="fielter-search">Search</label>
@@ -73,7 +66,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 		<span class="title count">
 			"<?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>"
 		</span>
-		<span class="post count">
+		<span class="posts count">
 			<strong><?php echo $this->rows->total(); ?></strong> posts
 		</span>
 		<!-- <span class="like count">
@@ -83,128 +76,104 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 		<a class="repost btn tooltips" title="Repost :: Repost this collection" href="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias') . '/repost'); ?>">
 			<?php echo JText::_('Repost collection'); ?>
 		</a>
-	<?php //} ?>
 	<?php if ($this->rows && $this->params->get('access-create-item')) { ?>
 		<a class="add btn tooltips" title="New post :: Add a new post to this collection" href="<?php echo JRoute::_($base . '&task=post/new&board=' . $this->collection->get('alias')); ?>">
 			<?php echo JText::_('New post'); ?>
 		</a>
-	<?php } //else { ?>
+	<?php } ?>
 <?php } ?>
 		<div class="clear"></div>
 	</fieldset>
 
-	<div id="bulletins">
+	<div id="posts">
 <?php 
-if ($this->rows) 
+if ($this->rows->total() > 0) 
 {
 	ximport('Hubzero_User_Profile');
 	ximport('Hubzero_User_Profile_Helper');
 
-	//$ba = new BulletinboardAsset($database);
-	//$assets = $ba->getRecords(array('bulletin_id' => $ids));
-
-	$bt = new CollectionsTags($database);
-	//$tags = $bt->getTagsForIds($ids); //$bt->get_tag_cloud(0, 0, $row->id);
-
 	foreach ($this->rows as $row)
 	{
 		$item = $row->item();
-
-		//$tags = $bt->get_tag_cloud(0, 0, $row->id);
 
 		if ($item->get('state') == 2)
 		{
 			$item->set('type', 'deleted');
 		}
 ?>
-		<div class="bulletin <?php echo $item->get('type'); ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo JRoute::_($base . '&task=posts/' . $row->get('id')); ?>" data-width="600" data-height="350">
+		<div class="post <?php echo $item->get('type'); ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo JRoute::_($base . '&task=post/' . $row->get('id')); ?>" data-width="600" data-height="350">
 			<div class="content">
-<?php
-		$view = new Hubzero_Plugin_View(
-			array(
-				'folder'  => 'members',
-				'element' => $this->name,
-				'name'    => 'entry',
-				'layout'  => '_' . $item->get('type')
-			)
-		);
-		$view->name       = $this->name;
-		//$view->juser      = $this->juser;
-		$view->option     = $this->option;
-		$view->member     = $this->member;
-		$view->params     = $this->params;
-		//$view->authorized = $this->authorized;
-		
-		$view->dateFormat = $this->dateFormat;
-		$view->timeFormat = $this->timeFormat;
-		$view->tz         = $this->tz;
-		
-		//$view->assets = $item->assets();
-		$view->row    = $row;
-		$view->board  = $this->collection;
-		
-		$view->display();
-?>
-<?php if (count($item->tags()) > 0) { ?>
+			<?php
+				$view = new Hubzero_Plugin_View(
+					array(
+						'folder'  => 'members',
+						'element' => $this->name,
+						'name'    => 'entry',
+						'layout'  => '_' . $item->get('type')
+					)
+				);
+				$view->name       = $this->name;
+				$view->option     = $this->option;
+				$view->member     = $this->member;
+				$view->params     = $this->params;
+				$view->dateFormat = $this->dateFormat;
+				$view->timeFormat = $this->timeFormat;
+				$view->tz         = $this->tz;
+				$view->row        = $row;
+				$view->board      = $this->collection;
+				$view->display();
+			?>
+			<?php if (count($item->tags()) > 0) { ?>
 				<div class="tags-wrap">
-					<?php echo $bt->buildCloud($item->tags()); ?>
+					<?php echo $item->tags('render'); ?>
 				</div>
-<?php } ?>
+			<?php } ?>
 				<div class="meta">
 					<p class="stats">
 						<span class="likes">
-							<?php echo JText::sprintf('%s likes', $item->get('positive')); ?>
+							<?php echo JText::sprintf('%s likes', $item->get('positive', 0)); ?>
 						</span>
 						<span class="comments">
-<?php if ($item->get('comments')) { ?>
-							<?php echo JText::sprintf('%s comments', $item->get('comments')); ?>
-<?php } else { ?>
-							<?php echo JText::sprintf('%s comments', 0); ?>
-<?php } ?>
+							<?php echo JText::sprintf('%s comments', $item->get('comments', 0)); ?>
 						</span>
 						<span class="reposts">
-<?php if ($item->get('reposts')) { ?>
-							<?php echo JText::sprintf('%s reposts', $item->get('reposts')); ?>
-<?php } else { ?>
-							<?php echo JText::sprintf('%s reposts', 0); ?>
-<?php } ?>
+							<?php echo JText::sprintf('%s reposts', $item->get('reposts', 0)); ?>
 						</span>
 					</p>
-<?php if (!$this->juser->get('guest')) { ?>
+			<?php if (!$this->juser->get('guest')) { ?>
 					<div class="actions">
-<?php if ($item->get('created_by') == $this->juser->get('id')) { ?>
+				<?php if ($item->get('created_by') == $this->juser->get('id')) { ?>
 						<a class="edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/edit'); ?>">
 							<span><?php echo JText::_('Edit'); ?></span>
 						</a>
-<?php } else { ?>
+				<?php } else { ?>
 						<a class="vote <?php echo ($item->get('voted')) ? 'unlike' : 'like'; ?>" data-id="<?php echo $row->get('id'); ?>" data-text-like="<?php echo JText::_('Like'); ?>" data-text-unlike="<?php echo JText::_('Unlike'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/vote'); ?>">
 							<span><?php echo ($item->get('voted')) ? JText::_('Unlike') : JText::_('Like'); ?></span>
 						</a>
-<?php } ?>
+				<?php } ?>
 						<a class="comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/comment'); ?>">
 							<span><?php echo JText::_('Comment'); ?></span>
 						</a>
 						<a class="repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/repost'); ?>">
 							<span><?php echo JText::_('Repost'); ?></span>
 						</a>
-<?php if ($row->get('original') && ($item->get('created_by') == $this->juser->get('id') || $this->params->get('access-delete-item'))) { ?>
+				<?php if ($row->get('original') && ($item->get('created_by') == $this->juser->get('id') || $this->params->get('access-delete-item'))) { ?>
 						<a class="delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/delete'); ?>">
 							<span><?php echo JText::_('Delete'); ?></span>
 						</a>
-<?php } else if ($row->get('created_by') == $this->juser->get('id') || $this->params->get('access-edit-item')) { ?>
+				<?php } else if ($row->get('created_by') == $this->juser->get('id') || $this->params->get('access-edit-item')) { ?>
 						<a class="unpost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/remove'); ?>">
 							<span><?php echo JText::_('Remove'); ?></span>
 						</a>
-<?php } ?>
+				<?php } ?>
 					</div><!-- / .actions -->
-<?php } ?>
+			<?php } ?>
 				</div><!-- / .meta -->
 
-				<?php $huser = Hubzero_User_Profile::getInstance($item->get('created_by')); ?>
-<?php if ($row->original() || $item->get('created_by') != $this->member->get('uidNumber')) { ?>
+			<?php if ($row->original() || $item->get('created_by') != $this->member->get('uidNumber')) { ?>
 				<div class="convo attribution clearfix">
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>" class="img-link">
-						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($huser, 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>" />
+						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($item->creator(), 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>" />
 					</a>
 					<p>
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')); ?>">
@@ -218,8 +187,8 @@ if ($this->rows)
 						</span>
 					</p>
 				</div><!-- / .attribution -->
-<?php } ?>
-<?php if (!$row->original()) {//if ($item->get('created_by') != $this->member->get('uidNumber')) { ?>
+			<?php } ?>
+			<?php if (!$row->original()) {//if ($item->get('created_by') != $this->member->get('uidNumber')) { ?>
 				<div class="convo attribution reposted clearfix">
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" class="img-link">
 						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($this->member, 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" />
@@ -239,7 +208,7 @@ if ($this->rows)
 						</span>
 					</p>
 				</div><!-- / .attribution -->
-<?php } ?>
+			<?php } ?>
 			</div><!-- / .content -->
 		</div><!-- / .bulletin -->
 <?php
@@ -249,7 +218,7 @@ else
 {
 ?>
 		<div id="bb-introduction">
-<?php if ($this->params->get('access-create-item')) { ?>
+	<?php if ($this->params->get('access-create-item')) { ?>
 			<div class="instructions">
 				<ol>
 					<li>Find an image, file, link or text you want to share.</li>
@@ -272,11 +241,11 @@ else
 					<a class="tooltips" href="<?php echo JRoute::_($base . '&task=post/new&type=link&board=' . $this->collection->get('alias')); ?>" rel="post-link" title="Post a link">Link</a>
 				</li>
 			</ul>
-<?php } else { ?>
+	<?php } else { ?>
 			<div class="instructions">
-				<p>No posts available for this board.</p>
+				<p>No posts available for this collection.</p>
 			</div>
-<?php } ?>
+	<?php } ?>
 		</div>
 <?php
 }

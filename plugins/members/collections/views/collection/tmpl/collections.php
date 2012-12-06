@@ -35,58 +35,36 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_View_Helper_Html');
 ximport('Hubzero_Document');
 
-/*$posts = 0;
-if ($this->rows) 
-{
-	foreach ($this->rows as $row)
-	{
-		$posts += $row->posts;
-	}
-}*/
+$base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name;
 ?>
 
-<?php /*if ($this->rows && $this->params->get('access-create-bulletin')) { ?>
-<ul id="page_options">
-	<li>
-		<a class="add btn" href="<?php echo JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn').'&active=' . $this->name . '&scope=posts/new'); ?>">
-			<?php echo JText::_('New post'); ?>
-		</a>
-	</li>
-</ul>
-<?php }*/ ?>
-
-<form method="get" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name); ?>" id="bulletinboards">
+<form method="get" action="<?php echo JRoute::_($base); ?>" id="collections">
 	<fieldset class="filters">
-		<span class="board count">
+		<span class="collections count">
 			<strong><?php echo $this->rows->total(); ?></strong> collections
 		</span>
-		<span class="post count">
+		<span class="posts count">
 			<strong><?php echo $this->posts; ?></strong> posts
 		</span>
-		<span class="like count">
+		<!-- <span class="like count">
 			<strong><?php echo $this->likes; ?></strong> likes
-		</span>
+		</span> -->
 <?php if ($this->params->get('access-create-collection')) { ?>
-		<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name . '&task=new'); ?>">
+		<a class="add btn" href="<?php echo JRoute::_($base . '&task=new'); ?>">
 			<?php echo JText::_('New collection'); ?>
 		</a>
 <?php } ?>
 		<div class="clear"></div>
 	</fieldset>
 
-	<div id="boards">
+	<div id="posts">
 <?php 
-if ($this->rows) 
+if ($this->rows->total() > 0) 
 {
-	$base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name;
-
-	//$board = new CollectionsTableCollection(JFactory::getDBO());
-
 	foreach ($this->rows as $row)
 	{
-		//$counts = $board->getPostTypeCount($row->get('id'));
 ?>
-		<div class="bulletin collection <?php echo ($row->get('access') == 4) ? 'private' : 'public'; echo ($row->get('is_default')) ? ' default' : ''; ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>">
+		<div class="post collection <?php echo ($row->get('access') == 4) ? 'private' : 'public'; echo ($row->get('is_default')) ? ' default' : ''; ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>">
 			<div class="content">
 				<?php
 						$view = new Hubzero_Plugin_View(
@@ -97,54 +75,33 @@ if ($this->rows)
 								'layout'  => '_collection'
 							)
 						);
-						//$view->name       = $this->name;
-						//$view->option     = $this->option;
-						//$view->member     = $this->member;
-						//$view->params     = $this->params;
-
-						//$view->dateFormat = $this->dateFormat;
-						//$view->timeFormat = $this->timeFormat;
-						//$view->tz         = $this->tz;
-
 						$view->row        = $row;
 						$view->collection = $row;
-
 						$view->display();
 				?>
 				<div class="meta">
 					<p class="stats">
 						<span class="likes">
-							<?php echo JText::sprintf('%s likes', $row->get('positive')); ?>
+							<?php echo JText::sprintf('%s likes', $row->get('positive', 0)); ?>
 						</span>
-						<!-- <span class="comments">
-<?php /*if (isset($row->comments) && $row->comments) { ?>
-							<?php echo JText::sprintf('%s comments', $row->comments); ?>
-<?php } else { ?>
-							<?php echo JText::sprintf('%s comments', 0); ?>
-<?php }*/ ?>
-						</span> -->
 						<span class="reposts">
-<?php if ($row->get('posts')) { ?>
-							<?php echo JText::sprintf('%s reposts', $row->get('posts')); ?>
-<?php } else { ?>
-							<?php echo JText::sprintf('%s reposts', 0); ?>
-<?php } ?>
+							<?php echo JText::sprintf('%s reposts', $row->get('posts', 0)); ?>
 						</span>
 					</p>
-<?php if (!$this->juser->get('guest')) { ?>
+				<?php if (!$this->juser->get('guest')) { ?>
 					<div class="actions">
-<?php if ($this->params->get('access-edit-collection')) { ?>
+					<?php if ($this->params->get('access-edit-collection')) { ?>
 						<a class="edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=' . $row->get('alias') . '/edit'); ?>">
 							<span><?php echo JText::_('Edit'); ?></span>
 						</a>
-<?php } ?>
-<?php if (!$row->get('is_default') && $this->params->get('access-delete-collection')) { ?>
+					<?php } ?>
+					<?php if (!$row->get('is_default') && $this->params->get('access-delete-collection')) { ?>
 						<a class="delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=' . $row->get('alias') . '/delete'); ?>">
 							<span><?php echo JText::_('Delete'); ?></span>
 						</a>
-<?php } ?>
+					<?php } ?>
 					</div><!-- / .actions -->
-<?php } ?>
+				<?php } ?>
 				</div><!-- / .meta -->
 			</div><!-- / .content -->
 		</div><!-- / .board -->
@@ -154,20 +111,20 @@ if ($this->rows)
 else
 {
 ?>
-		<div id="bb-introduction">
-<?php if ($this->params->get('access-create-collection')) { ?>
+		<div id="collection-introduction">
+		<?php if ($this->params->get('access-create-collection')) { ?>
 			<div class="instructions">
 				<ol>
-					<li>Click on the "new board" button.</li>
+					<li>Click on the "new collection" button.</li>
 					<li>Add a title and maybe a description.</li>
 					<li>Done!</li>
 				</ol>
 			</div>
-<?php } else { ?>
+		<?php } else { ?>
 			<div class="instructions">
-				<p>No boards available.</p>
+				<p>No collections available.</p>
 			</div>
-<?php } ?>
+		<?php } ?>
 		</div>
 <?php
 }

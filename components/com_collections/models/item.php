@@ -89,7 +89,7 @@ class CollectionsModelItem extends JObject
 	 * @param      object  &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct($oid)
+	public function __construct($oid=null)
 	{
 		$this->_db = JFactory::getDBO();
 
@@ -379,6 +379,13 @@ class CollectionsModelItem extends JObject
 				return implode(', ', $tags);
 			break;
 
+			case 'html':
+			case 'render':
+				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'helpers' . DS . 'tags.php');
+				$bt = new CollectionsTags($this->_db);
+				return $bt->buildCloud($this->_tags);
+			break;
+
 			case 'array':
 			default:
 				return $this->_tags;
@@ -473,10 +480,10 @@ class CollectionsModelItem extends JObject
 	}
 
 	/**
-	 * Check if the course exists
+	 * Bind data to the model's table object
 	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @param      mixed $data Array or object
+	 * @return     boolean True on success, false if errors
 	 */
 	public function bind($data=null)
 	{
@@ -484,12 +491,11 @@ class CollectionsModelItem extends JObject
 	}
 
 	/**
-	 * Short title for 'update'
-	 * Long title (if any) ...
+	 * Store content
+	 * Can be passed a boolean to turn off check() method
 	 *
-	 * @param unknown $course_id Parameter title (if any) ...
-	 * @param array $data Parameter title (if any) ...
-	 * @return boolean Return title (if any) ...
+	 * @param     boolean $check Call check() method?
+	 * @return    boolean True on success, false if errors
 	 */
 	public function store($check=true)
 	{
@@ -512,6 +518,100 @@ class CollectionsModelItem extends JObject
 			$this->setError($this->_tbl->getError());
 			return false;
 		}
+
+		if ($this->get('_files'))
+		{
+			$config = JComponentHelper::getParams('com_collections');
+
+			// Build the upload path if it doesn't exist
+			$path = JPATH_ROOT . DS . trim($config->get('filepath', '/site/collections'), DS) . DS . $this->get('id');
+
+			if (!is_dir($path)) 
+			{
+				jimport('joomla.filesystem.folder');
+				if (!JFolder::create($path, 0777)) 
+				{
+					$this->setError(JText::_('Error uploading. Unable to create path.'));
+					return false;
+				}
+			}
+
+			$files = $this->get('_files');
+			$descriptions = $this->get('_descriptions', array());
+
+			foreach ($files['name'] as $i => $file)
+			{
+				// Incoming file
+				//$file = JRequest::getVar('upload', '', 'files', 'array');
+				if (!$files['name'][$i]) 
+				{
+					$this->setError(JText::sprintf('No file found: %s', $files['name'][$i]));
+					//return false;
+					continue;
+				}
+
+				/*$ext = strtolower(JFile::getExt($files['name'][$i]));
+				if ($type == 'image' && !in_array($ext, array('jpg', 'jpeg', 'jpe', 'gif', 'png')))
+				{
+					continue;
+				}*/
+
+				// Make the filename safe
+				jimport('joomla.filesystem.file');
+				$files['name'][$i] = urldecode($files['name'][$i]);
+				$files['name'][$i] = JFile::makeSafe($files['name'][$i]);
+				$files['name'][$i] = str_replace(' ', '_', $files['name'][$i]);
+
+				// Upload new files
+				if (!JFile::upload($files['tmp_name'][$i], $path . DS . $files['name'][$i])) 
+				{
+					$this->setError(JText::_('ERROR_UPLOADING') . ': ' . $files['name'][$i]);
+					//return false;
+				}
+				// File was uploaded 
+				else 
+				{
+					$asset = new CollectionsModelAsset();
+					//$asset->set('_file', $file);
+					$asset->set('item_id', $this->get('id'));
+					$asset->set('filename', $files['name'][$i]);
+					$asset->set('description', (isset($descriptions[$i]) ? $descriptions[$i] : ''));
+					if (!$asset->store())
+					{
+						$this->setError($asset->getError());
+					}
+					// Create database entry
+					/*$attachment = new CollectionsTableAsset($this->_db);
+					$attachment->item_id     = $this->get('id');
+					$attachment->filename    = $files['name'][$i];
+					$attachment->description = (isset($descriptions[$i])) ? $descriptions[$i] : '';
+
+					if (!$attachment->check()) 
+					{
+						$this->setError($attachment->getError());
+						return false;
+					}
+					if (!$attachment->store()) 
+					{
+						$this->setError($attachment->getError());
+						return false;
+					}*/
+				}
+			}
+
+			if ($this->getError())
+			{
+				return false;
+			}
+		}
+
+		// Process tags
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'helpers' . DS . 'tags.php');
+
+		$bt = new CollectionsTags($this->_db);
+		$bt->tag_object($this->get('created_by'), $this->get('id'), $this->get('_tags', ''), 1, 1);
+
+		return true;
 	}
 }
 

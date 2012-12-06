@@ -50,15 +50,8 @@ if ($this->row->state == 2)
 	$this->row->type = 'deleted';
 }
 ?>
-<ul id="page_options">
-	<li>
-		<a class="board btn" href="<?php echo JRoute::_($base . '&task=boards'); ?>">
-			<?php echo JText::_('Boards'); ?>
-		</a>
-	</li>
-</ul>
 
-<div class="bulletin full <?php echo $this->row->type; ?>" id="b<?php echo $this->row->id; ?>" data-id="<?php echo $this->row->id; ?>" data-closeup-url="<?php echo JRoute::_($base . '&task=posts/' . $this->row->id); ?>" data-width="600" data-height="350">
+<div class="post full <?php echo $this->row->type; ?>" id="b<?php echo $this->row->id; ?>" data-id="<?php echo $this->row->id; ?>" data-closeup-url="<?php echo JRoute::_($base . '&task=post/' . $this->row->get('id')); ?>" data-width="600" data-height="350">
 	<div class="content">
 		<div class="creator attribution clearfix">
 			<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->row->created_by); ?>" title="<?php echo $this->escape(stripslashes($huser->get('name'))); ?>" class="img-link">
@@ -123,27 +116,27 @@ $view->display();
 			</p>
 			<div class="actions">
 <?php if ($this->row->created_by == $this->juser->get('id')) { ?>
-				<a class="edit" data-id="<?php echo $this->row->id; ?>" href="<?php echo JRoute::_($base . '&task=posts/' . $this->row->id . '/edit'); ?>">
+				<a class="edit" data-id="<?php echo $this->row->id; ?>" href="<?php echo JRoute::_($base . '&task=post/' . $this->row->id . '/edit'); ?>">
 					<span><?php echo JText::_('Edit'); ?></span>
 				</a>
 <?php } else { ?>
-				<a class="vote <?php echo ($this->row->voted) ? 'unlike' : 'like'; ?>" data-id="<?php echo $this->row->id; ?>" data-text-like="<?php echo JText::_('Like'); ?>" data-text-unlike="<?php echo JText::_('Unlike'); ?>" href="<?php echo JRoute::_($base . '&task=posts/' . $this->row->id . '/vote'); ?>">
+				<a class="vote <?php echo ($this->row->voted) ? 'unlike' : 'like'; ?>" data-id="<?php echo $this->row->id; ?>" data-text-like="<?php echo JText::_('Like'); ?>" data-text-unlike="<?php echo JText::_('Unlike'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $this->row->id . '/vote'); ?>">
 					<span><?php echo ($this->row->voted) ? JText::_('Unlike') : JText::_('Like'); ?></span>
 				</a>
 <?php } ?>
-				<a class="comment" data-id="<?php echo $this->row->id; ?>" href="<?php echo JRoute::_($base . '&task=posts/' . $this->row->id . '/comment'); ?>">
+				<a class="comment" data-id="<?php echo $this->row->id; ?>" href="<?php echo JRoute::_($base . '&task=post/' . $this->row->id . '/comment'); ?>">
 					<span><?php echo JText::_('Comment'); ?></span>
 				</a>
-				<a class="repost" data-id="<?php echo $this->row->id; ?>" href="<?php echo JRoute::_($base . '&task=posts/' . $this->row->id . '/repost'); ?>">
+				<a class="repost" data-id="<?php echo $this->row->id; ?>" href="<?php echo JRoute::_($base . '&task=post/' . $this->row->id . '/repost'); ?>">
 					<span><?php echo JText::_('Repost'); ?></span>
 				</a>
 <?php if ($this->post->original && $this->row->created_by == $this->juser->get('id') || $this->params->get('access-delete-bulletin')) { ?>
-				<a class="delete" data-id="<?php echo $this->row->id; ?>" href="<?php echo JRoute::_($base . '&task=posts/' . $this->row->id . '/delete'); ?>">
+				<a class="delete" data-id="<?php echo $this->row->id; ?>" href="<?php echo JRoute::_($base . '&task=post/' . $this->row->id . '/delete'); ?>">
 					<span><?php echo JText::_('Delete'); ?></span>
 				</a>
 <?php } else if ($this->post->created_by == $this->juser->get('id') || $this->params->get('access-edit-bulletin')) { ?>
-				<a class="unpost" data-id="<?php echo $this->row->id; ?>" href="<?php echo JRoute::_($base . '&task=posts/' . $this->row->id . '/unpost'); ?>">
-					<span><?php echo JText::_('Unpost'); ?></span>
+				<a class="unpost" data-id="<?php echo $this->row->id; ?>" href="<?php echo JRoute::_($base . '&task=post/' . $this->row->id . '/remove'); ?>">
+					<span><?php echo JText::_('Remove'); ?></span>
 				</a>
 <?php } ?>
 			</div><!-- / .actions -->

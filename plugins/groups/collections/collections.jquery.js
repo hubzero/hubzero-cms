@@ -142,6 +142,12 @@ HUB.Plugins.GroupsBulletinboard = {
 	initialize: function() {
 		var $ = this.jQuery;
 
+		if ($('#boards').length > 0) {
+			$('#boards').masonry({
+				itemSelector: '.bulletin'
+			});
+		}
+
 		if ($('#bulletins').length > 0) {
 			//$('#bulletins').imagesLoaded(function(){
 				$('#bulletins').masonry({
@@ -182,9 +188,9 @@ HUB.Plugins.GroupsBulletinboard = {
 				});
 			});
 			
-			$('#bulletins a.repost').fancybox({
+			$('#page_content a.repost').fancybox({
 				type: 'ajax',
-				width: 700,
+				width: 500,
 				height: 'auto',
 				autoSize: false,
 				fitToView: false,
@@ -209,39 +215,6 @@ HUB.Plugins.GroupsBulletinboard = {
 							$.post($(this).attr('action'), $(this).serialize(), function(data) {
 								$('#b' + $(el).attr('data-id') + ' .reposts').text(data);
 								$.fancybox.close();
-							});
-						});
-					}
-				}
-			});
-
-			$('#bulletins a.delete').fancybox({
-				type: 'ajax',
-				width: 300,
-				height: 'auto',
-				autoSize: false,
-				fitToView: false,
-				titleShow: false,
-				tpl: {
-					wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
-				},
-				beforeLoad: function() {
-					href = $(this).attr('href');
-					if (href.indexOf('?') == -1) {
-						href += '?no_html=1';
-					} else {
-						href += '&no_html=1';
-					}
-					$(this).attr('href', href);	
-				},
-				afterShow: function() {
-					var el = this.element;
-					if ($('#hubForm')) {
-						$('#hubForm').submit(function(e) {
-							e.preventDefault();
-							$.post($(this).attr('action'), $(this).serialize(), function(data) {
-								$.fancybox.close();
-								window.location = data;
 							});
 						});
 					}

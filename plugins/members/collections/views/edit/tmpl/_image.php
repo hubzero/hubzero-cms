@@ -48,7 +48,7 @@ if ($assets->total() > 0)
 ?>
 				<p class="file-drop">
 					<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name . '&task=post/' . $item->get('id') . '/edit&remove=' . $asset->get('id')); ?>">delete</a>
-					<?php echo $this->escape(stripslashes($asset->filename)); ?>
+					<?php echo $this->escape(stripslashes($asset->get('filename'))); ?>
 					<input type="hidden" name="asset[<?php echo $asset->get('id'); ?>][id]" value="<?php echo $asset->get('id'); ?>" />
 					<span><input type="text" name="asset[<?php echo $asset->get('id'); ?>][description]" size="35" value="<?php echo $this->escape(stripslashes($asset->get('description'))); ?>" placeholder="Brief description" /></span>
 				</p>

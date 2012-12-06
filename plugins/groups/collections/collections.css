@@ -13,8 +13,10 @@
 
 */
 
-
-	#page_menu li .bulletinboard:before {
+	#sbox-content #hubForm.full fieldset {
+		margin: 0;
+	}
+	#page_menu li .collections:before {
 		content: "\f08d";
 	}
 	#bulletinboards fieldset,
@@ -25,10 +27,16 @@
 	}
 	#bulletins {
 	}
+	.com_groups .clearfix {
+		line-height: inherit;
+		height: auto;
+		clear: left;
+	}
 	
 	fieldset.filters a,
 	fieldset.filters a {
 		float: right;
+		margin-left: 1em;
 	}
 	fieldset.filters .count {
 		margin-right: 1em;
@@ -50,31 +58,48 @@
 		font-size: 90%;
 		background-color: #fff;
 		-webkit-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
-		-moz-box-shadow: 0 1px 2px rgba(25, 25, 25, 0.4);
+		-moz-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
 		-ms-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
 		-o-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
 		box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
 		
 		/*width: 28.5em;*/
-		margin: 0 1em 2em 1em;
+		margin: 0 10px 20px 10px;
 		
 		width: 332px;
 	}
-	.board {
-		float: left;
+	html.opera .bulletin {
+		width: 327px;
+	}
+	.bulletin.collection {
+		/*float: left;*/
+		z-index: 1;
+		background: #fff;
+	}
+	.bulletin.collection:before,
+	.bulletin.collection:after {
+		z-index: -1;
+		position: absolute;
+		bottom: -4px;
+		left: 4px;
+		right: 4px;
+		content: '';
+		height: 2px;
+		display: block;
+		background-color: #f0f0f0;
+		border: 1px solid #ccc;
+		border-top: none;
+	}
+	.bulletin.collection:after {
+		z-index: -2;
+		bottom: -7px;
+		left: 8px;
+		right: 8px;
+		border: 1px solid #ccc;
 	}
 	.full {
 		width: auto;
 	}
-/*@media only screen and (max-width: 1064px) {
-	.bulletin {
-		width: 47%;
-		margin: 0 1.5% 1.5em 1.5%;
-		
-		width: 28.5em;
-		margin: 0 1em 2em 1em;
-	}
-}*/
 
 	.bulletin:hover {
 		-webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
@@ -98,10 +123,19 @@
 	}
 	.private .content:after {
 		position: absolute;
-		bottom: 1em;
+		bottom: 0.7em;
 		right: 1.4em;
 		font-family: "Fontcons";
 		content: "\f023";
+		color: #9c9c9c;
+		text-shadow: 0 1px 1px #fff;
+	}
+	.default .content:after {
+		position: absolute;
+		bottom: 0.7em;
+		right: 1.4em;
+		font-family: "Fontcons";
+		content: "\2605";
 		color: #9c9c9c;
 		text-shadow: 0 1px 1px #fff;
 	}
@@ -112,8 +146,6 @@
 
 	.bulletin .stats {
 		overflow: hidden;
-		/*border-top: 1px solid #f0f0f0;
-		border-top: 1px solid #fafafa;*/
 		border-bottom: 1px solid #d4d4d4;
 		background-color: #f0f0f0;
 		color: #bbb;
@@ -126,7 +158,6 @@
 		display: none;
 	}
 	.bulletin .stats span {
-		/*float: left;*/
 		margin-right: 10px;
 	}
 	.bulletin h4 {
@@ -174,8 +205,6 @@
 		background-color: #f0f0f0;
 	}
 	.bulletin .actions a {
-		/*clear: both;
-		float: left;*/
 		display: inline-block;
 		margin: 0.5em 0.4em 0 0.4em;
 		padding: 0.3em .7em;
@@ -218,10 +247,10 @@
 		content: "\2298";
 	}
 	.bulletin .actions a.like:before {
-		content: "\2665"; /*"\f087";*/
+		content: "\2665";
 	}
 	.bulletin .actions a.unlike:before {
-		content: "\2661"; /*"\f088"; */
+		content: "\2661";
 	}
 	.bulletin .actions a.comment:before {
 		content: "\f075";
@@ -239,7 +268,6 @@
 		margin: 0 auto;
 	}
 	.bulletin .img-link img {
-		/*max-width: 192px;*/
 		opacity: 1;
 		-webkit-transition: opacity 0.3s;
 		width: 100%;
@@ -280,9 +308,11 @@
 		margin: 0;
 	}
 	.creator p {
-		margin: 0 0 0 36px;
+		margin: 0 0 0 56px;
 		overflow: hidden;
 		word-wrap: break-word;
+		font-size: 1.5em;
+		line-height: 1.7em;
 	}
 	.creator .img-link {
 		float: left;
@@ -290,6 +320,9 @@
 		margin-right: 1em;
 		width: 30px;
 		border: none;
+	}
+	.creator .img-link {
+		width: 50px;
 	}
 	.creator .img-link img {
 		width: 50px;
@@ -318,12 +351,10 @@
 	}
 	.attribution p {
 		display: table-cell;
-		/*max-width: 170px;
-		height: 30px;*/
 		vertical-align: middle;
 		text-shadow: 0 1px 1px #fff;
 	}
-	.btn.board:before {
+	.btn.collection:before {
 		content: "\f00a";
 	}
 	.btn.repost {
@@ -351,23 +382,20 @@
 		border-radius: 0.25em 0 0 0.25em;
 		content: "\21BB";
 	}
-	/*.attribution .entry-date {
-		display: block;
-		margin: 0;
-		padding: 0;
-	}*/
 	.attribution p span {
 		margin-right: 1em;
 	}
 	.attribution {
-		/*margin-top: 10px;*/
 		color: #9c9c9c;
 		border-top: 1px solid #fafafa;
+	}
+	.attribution + .reposted {
+		border-top: 1px solid #d4d4d4;
 	}
 	
 	.colormuted, 
 	.colormuted a {
-		color: #4d4d4d;
+	color: #4d4d4d;
 	}
 	.comments {
 		margin: 0 -15px;
@@ -401,7 +429,7 @@
 	.image .content:after {
 		content: "\f03e";
 	}
-	.board .content:after {
+	.collection .content:after {
 		content: "\f00a";
 	}
 	.deleted {
@@ -516,42 +544,6 @@
 	#hubForm ul.post-type {
 		font-size: 2em;
 	}
-	/*#hubForm ul.post-type li a:before {
-		top: 50%;
-		margin-top: -0.5em;
-	}
-	#hubForm ul.post-type {
-		margin: 0;
-		padding: 0;
-		list-style: none;
-		text-align: center;
-		background: #f0f0f0;
-		font-size: 3em;
-		border-bottom: 1px solid #ddd;
-		line-height: 1;
-	}
-	#hubForm ul.post-type li {
-		display: inline-block;
-		border-left: 1px solid #ddd;
-		border-right: 1px solid #ddd;
-		border-top: 1px solid #ddd;
-		margin: 0 0 -1px 0;
-		padding: 0;
-		overflow: hidden;
-	}
-	#hubForm ul.post-type li a {
-		display: block;
-		width: 2em;
-		height: 1.1em;
-		overflow: hidden;
-		border: none;
-		margin: 0;
-		color: #666;
-		padding: 0;
-		position: relative;
-		text-indent: 555em;
-		background: #ddd;
-	}*/
 	ul.post-type li a.active {
 		background: #fff;
 		border: 3px solid #333;
@@ -619,7 +611,57 @@
 	}
 	#hubForm label span.syntax {
 		float: right;
-		/*position: absolute;
-		right: 1.618em;
-		top: 1em;*/
+		line-height: inherit;
+	}
+	
+	.bulletin table {
+		border: none;
+		margin: 0;
+	}
+	.bulletin table tr td {
+		text-align: center;
+		border: none;
+		border-top: 1px solid #f0f0f0;
+		border-left: 1px solid #f0f0f0;
+		font-size: 1.2em;
+		color: #999;
+	}
+	.bulletin table tr td:first-child {
+		border-left: none;
+	}
+	.bulletin table strong {
+		font-size: 2em;
+		font-weight: normal;
+	}
+	.bulletin table span {
+		margin: 0;
+		padding: 0;
+		display: inline-block;
+		width: 1em;
+		height: 1em;
+		overflow: hidden;
+		line-height: 1;
+	}
+	.bulletin table span:before {
+		content: "";
+		font-family: "Fontcons";
+		margin-right: 1em;
+		color: #bbb;
+	}
+	.bulletin table span.link:before {
+		content: "\26D3";
+	}
+	.bulletin table span.link {
+		margin: 0;
+		padding: 0;
+		font-size: 1em;
+	}
+	.bulletin table span.file:before {
+		content: "\f016";
+	}
+	.bulletin table span.text:before {
+		content: "\f036";
+	}
+	.bulletin table span.image:before {
+		content: "\f03e";
 	}

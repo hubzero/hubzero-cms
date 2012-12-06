@@ -88,7 +88,7 @@ class CollectionsModel extends JObject
 	 * @param      object  &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct($object_type=null, $object_id=0)
+	public function __construct($object_type='', $object_id=0)
 	{
 		$this->_db = JFactory::getDBO();
 
@@ -106,7 +106,7 @@ class CollectionsModel extends JObject
 	 * @param      string $scope    The page scope
 	 * @return     object WikiPage
 	 */
-	static function &getInstance($object_type=null, $object_id=0)
+	static function &getInstance($object_type='', $object_id=0)
 	{
 		static $instances;
 
@@ -134,9 +134,10 @@ class CollectionsModel extends JObject
  	 */
 	public function get($property, $default=null)
 	{
-		if (isset($this->_tbl->$property)) 
+		$property = '_' . $property;
+		if (isset($this->$property)) 
 		{
-			return $this->_tbl->$property;
+			return $this->$property;
 		}
 		return $default;
 	}
@@ -150,8 +151,9 @@ class CollectionsModel extends JObject
 	 */
 	public function set($property, $value = null)
 	{
-		$previous = isset($this->_tbl->$property) ? $this->_tbl->$property : null;
-		$this->_tbl->$property = $value;
+		$property = '_' . $property;
+		$previous = isset($this->$property) ? $this->$property : null;
+		$this->$property = $value;
 		return $previous;
 	}
 
@@ -231,12 +233,85 @@ class CollectionsModel extends JObject
 			}
 			else
 			{
-				$results = array();
+				$tbl->setup($filters['object_id'], $filters['object_type']);
+				if (!($results = $tbl->getRecords($filters)))
+				{
+					$results = array();
+				}
 			}
 
 			$this->_collections = new CollectionsModelIterator($results);
 		}
 
 		return $this->_collections;
+	}
+
+	/**
+	 * Get a list of resource types
+	 *   Accepts either a numeric array index or a string [id, name]
+	 *   If index, it'll return the entry matching that index in the list
+	 *   If string, it'll return either a list of IDs or names
+	 * 
+	 * @param      mixed $idx Index value
+	 * @return     array
+	 */
+	public function mine($type='')
+	{
+		$juser = JFactory::getUser();
+
+		$tbl = new CollectionsTableCollection($this->_db);
+
+		switch (strtolower(trim($type)))
+		{
+			case 'group':
+			case 'groups':
+				$collections = array();
+
+				ximport('Hubzero_User_Profile');
+				$member = Hubzero_User_Profile::getInstance($juser->get('id'));
+
+				$usergroups = $member->getGroups('members');
+				if ($usergroups)
+				{
+					foreach ($usergroups as $usergroup)
+					{
+						$groups = $tbl->getRecords(array(
+							'object_type' => 'group',
+							'object_id'   => $usergroup->gidNumber,
+							'state'       => 1
+						));
+						if ($groups)
+						{
+							foreach ($groups as $s)
+							{
+								if (!isset($collections[$s->group_alias]))
+								{
+									$collections[$s->group_alias] = array();
+								}
+								if ($s->access == 4 && !$usergroup->manager)
+								{
+									continue;
+								}
+								$collections[$s->group_alias][] = $s;
+								asort($collections[$s->group_alias]);
+							}
+						}
+					}
+				}
+
+				asort($collections);
+			break;
+
+			case 'member':
+			default:
+				$collections = $tbl->getRecords(array(
+					'object_type' => 'member',
+					'object_id'   => $juser->get('id'),
+					'state'       => 1
+				));
+			break;
+		}
+
+		return $collections;
 	}
 }

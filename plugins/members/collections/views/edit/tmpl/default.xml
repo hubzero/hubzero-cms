@@ -19,14 +19,14 @@
 -->
 
 <metadata>
-	<layout title="Standard Edit Blog Entry Layout">
+	<layout title="Edit item">
 		<message>
-			<![CDATA[STANDARD EDIT BLOG ENTRY LAYOUT DESC]]>
+			<![CDATA[Edit item form]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Edit Blog Entry Layout</name>
-		<description>STANDARD EDIT BLOG ENTRY LAYOUT DESC</description>
+		<name>Edit item</name>
+		<description>Edit item form</description>
 		<params>
 		</params>
 	</state>

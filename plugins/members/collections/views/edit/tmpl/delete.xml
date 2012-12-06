@@ -19,14 +19,14 @@
 -->
 
 <metadata>
-	<layout title="Standard Delete Blog Entry Layout">
+	<layout title="Delete item">
 		<message>
-			<![CDATA[STANDARD DELETE BLOG ENTRY LAYOUT DESC]]>
+			<![CDATA[Delete item confirmation form]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Delete Blog Entry Layout</name>
-		<description>STANDARD DELETE BLOG ENTRY LAYOUT DESC</description>
+		<name>Delete item</name>
+		<description>Delete item confirmation form</description>
 		<params>
 		</params>
 	</state>

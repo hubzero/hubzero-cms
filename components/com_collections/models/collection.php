@@ -76,13 +76,20 @@ class CollectionsModelCollection extends JObject
 	private $_post = null;
 
 	/**
+	 * Container for properties
+	 * 
+	 * @var array
+	 */
+	private $_item = null;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      integer $id  Resource ID or alias
 	 * @param      object  &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct($oid, $object_id=0, $object_type='member')
+	public function __construct($oid=null, $object_id=0, $object_type='member')
 	{
 		$this->_db = JFactory::getDBO();
 
@@ -242,7 +249,7 @@ class CollectionsModelCollection extends JObject
 
 		$item = new CollectionsTableItem($this->_db);
 		$item->loadType($this->get('id'), 'collection');
-		if (!$item->id)
+		if (!$item->get('id'))
 		{
 			$item->type        = 'collection';
 			$item->object_id   = $this->get('id');
@@ -261,6 +268,55 @@ class CollectionsModelCollection extends JObject
 		}
 
 		return true;
+	}
+
+	/**
+	 * Get the item entry for a collection
+	 * 
+	 * @return     void
+	 */
+	public function item()
+	{
+		if (!isset($this->_item) || !is_a($this->_item, 'CollectionsModelItem'))
+		{
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'item.php');
+
+			$item = new CollectionsTableItem($this->_db);
+			$item->loadType($this->get('id'), 'collection');
+			if (!$item->get('id'))
+			{
+				$item->type        = 'collection';
+				$item->object_id   = $this->get('id');
+				$item->title       = $this->get('title');
+				$item->description = $this->get('description');
+
+				if (!$item->check()) 
+				{
+					$this->setError($item->getError());
+				}
+				// Store new content
+				if (!$item->store()) 
+				{
+					$this->setError($item->getError());
+				}
+			}
+
+			$this->_item = new CollectionsModelItem($item);
+		}
+		return $this->_item;
+	}
+
+	/**
+	 * Set and get a specific offering
+	 * 
+	 * @return     void
+	 */
+	public function reposts()
+	{
+		//$post = new CollectionsTablePost($this->_db);
+		//$post->loadByBoard($this->get('id'), $this->item()->get('id'));
+
+		return null;
 	}
 
 	/**

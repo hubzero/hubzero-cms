@@ -163,7 +163,7 @@ class plgMembersCollections extends JPlugin
 						$this->action = 'post';
 						if (isset($bits[1]))
 						{
-							if ($bits[1] == 'new')
+							if ($bits[1] == 'new' || $bits[1] == 'save')
 							{
 								$this->action = $bits[1] . $this->action;
 							}
@@ -199,48 +199,7 @@ class plgMembersCollections extends JPlugin
 						}
 					}
 				}
-				/*$this->action = (isset($bits[0])) ? $bits[0] : $this->action;
-				if (isset($bits[1]))
-				{
-					if (is_numeric($bits[1]))
-					{
-						$id = intval($bits[1]);
-						$task = (isset($bits[2])) ? $bits[2] : $task;
-					}
-					else
-					{
-						$task = (isset($bits[1])) ? $bits[1] : $task;
-					}
-				}*/
 			}
-
-			/*if ($this->action == 'collection')
-			{
-				if ($id)
-				{
-					$this->action = 'board';
-					JRequest::setVar('board', $id);
-				}
-				else if ($task)
-				{
-					$this->action = 'board';
-				}
-				$this->action = ($task) ? $task . $this->action : $this->action;
-			}
-
-			if ($this->action == 'posts')
-			{
-				$this->action = 'post';
-				if (in_array($task, array('post', 'vote', 'repost', 'unpost', 'move', 'comment')))
-				{
-					$this->action = '';
-				}
-				if ($id)
-				{
-					JRequest::setVar('post', $id);
-				}
-				$this->action = ($task) ? $task . $this->action : $this->action;
-			}*/
 
 			switch ($this->action)
 			{
@@ -290,6 +249,20 @@ class plgMembersCollections extends JPlugin
 	}
 
 	/**
+	 * Redirect to the login form
+	 * 
+	 * @return     void
+	 */
+	private function _login()
+	{
+		$board = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name);
+		$app =& JFactory::getApplication();
+		$app->enqueueMessage(JText::_('MEMBERS_LOGIN_NOTICE'), 'warning');
+		$app->redirect(JRoute::_('index.php?option=com_login&return=' . base64_encode($board)));
+		return;
+	}
+
+	/**
 	 * Display a list of latest whiteboard entries
 	 * 
 	 * @return     string
@@ -323,23 +296,18 @@ class plgMembersCollections extends JPlugin
 		//$view->filters['object_id']   = $this->member->get('uidNumber');
 		//$view->filters['search']      = JRequest::getVar('search', '');
 		$view->filters['state']       = 1;
-		//$view->filters['board_id']    = JRequest::getInt('board', 0);
 
-		/*$view->board = new BulletinboardBoard($this->database);
-
-		$filters = array(
-			'object_type' => $view->filters['object_type'],
-			'object_id'   => $view->filters['object_id'],
-			'state'       => 1
-		);*/
 		$filters = array();
 		if (!$this->params->get('access-manage-collection')) 
 		{
 			$filters['access'] = 0;
 		}
-		$view->rows = $this->model->collections($filters); //$view->board->getRecords($filters);
 
-		//$view->filters['collection_id'] = array();
+		$filters['count'] = true;
+		$view->total = $this->model->collections($filters);
+
+		$filters['count'] = false;
+		$view->rows = $this->model->collections($filters);
 
 		$view->posts = 0;
 		if ($view->rows) 
@@ -347,14 +315,9 @@ class plgMembersCollections extends JPlugin
 			foreach ($view->rows as $row)
 			{
 				$view->posts += $row->get('posts');
-				//$view->filters['collection_id'][] = $row->get('id');
 			}
 		}
 
-		//$bulletin = new CollectionsTableItem($this->database);
-		//$view->bulletins = 0;//$bulletin->getCount($view->filters);
-
-		//$vote = new CollectionsTableVote($this->database);
 		$view->likes = 0; //$vote->getLikes($view->filters);
 
 		if ($this->getError()) 
@@ -405,19 +368,10 @@ class plgMembersCollections extends JPlugin
 		$view->filters['state']       = 1;
 		$view->filters['collection_id'] = JRequest::getVar('board', 0);
 
-		/*$view->board = new BulletinboardBoard($this->database);
-		if (!$view->filters['board_id'])
-		{
-			$view->board->loadDefault($view->filters['object_id'], $view->filters['object_type']);
-		}
-		else
-		{
-			$view->board->load($view->filters['board_id']);
-		}*/
 		$view->collection = $this->model->collection($view->filters['collection_id']);
 		if (!$view->collection->exists())
 		{
-			$view->collection->setup($view->filters['object_id'], $view->filters['object_type']);
+			$view->collection->setup($this->model->get('object_id'), $this->model->get('object_type'));
 		}
 
 		// Is the board restricted to logged-in users only?
@@ -433,16 +387,7 @@ class plgMembersCollections extends JPlugin
 			return;
 		}
 
-		/*$view->boards = $view->board->getCount(array(
-			'object_type' => $view->filters['object_type'],
-			'object_id'   => $view->filters['object_id'],
-			'state'       => 1
-		));*/
-
-		//$view->filters['collection_id'] = $view->collection->get('id');
-
-		//$bulletin = new CollectionsTableItem($this->database);
-		$view->rows = $view->collection->posts($view->filters); //$bulletin->getRecords($view->filters);
+		$view->rows = $view->collection->posts($view->filters);
 
 		if ($this->getError()) 
 		{
@@ -614,12 +559,16 @@ class plgMembersCollections extends JPlugin
 		$view->collection = $this->model->collection(JRequest::getVar('board', 0));
 
 		$view->entry = $view->collection->post($id);
+		if (!$view->collection->exists() && $view->entry->exists())
+		{
+			$view->collection = $this->model->collection($view->entry->get('collection_id'));
+		}
 
 		if ($remove = JRequest::getInt('remove', 0))
 		{
-			if (!$view->item->removeAsset($remove))
+			if (!$view->entry->item()->removeAsset($remove))
 			{
-				$view->setError($view->item->getError());
+				$view->setError($view->entry->item()->getError());
 			}
 		}
 
@@ -631,7 +580,7 @@ class plgMembersCollections extends JPlugin
 		else
 		{
 			$view->collections = $this->model->collections();
-			if (!$view->collections)
+			if (!$view->collections->total())
 			{
 				$view->collection->setup($this->member->get('uidNumber'), 'member');
 				$view->collections = $this->model->collections();
@@ -641,20 +590,6 @@ class plgMembersCollections extends JPlugin
 
 			return $view->loadTemplate();
 		}
-	}
-
-	/**
-	 * Redirect to the login form
-	 * 
-	 * @return     void
-	 */
-	private function _login()
-	{
-		$board = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name);
-		$app =& JFactory::getApplication();
-		$app->enqueueMessage(JText::_('MEMBERS_LOGIN_NOTICE'), 'warning');
-		$app->redirect(JRoute::_('index.php?option=com_login&return=' . base64_encode($board)));
-		return;
 	}
 
 	/**
@@ -675,89 +610,52 @@ class plgMembersCollections extends JPlugin
 			return $this->_browse();
 		}
 
+		// Incoming
 		$fields = JRequest::getVar('fields', array(), 'post');
+		$files  = JRequest::getVar('fls', '', 'files', 'array');
+		$descriptions = JRequest::getVar('description', array(), 'post');
 
-		$row = new CollectionsTableItem($this->database);
+		// Get model
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'item.php');
+		$row = new CollectionsModelItem();
+
+		// Bind content
 		if (!$row->bind($fields)) 
 		{
 			$this->setError($row->getError());
-			return $this->_edit();
+			return $this->_edit($row);
 		}
 
-		$files = JRequest::getVar('fls', '', 'files', 'array');
-		if ($row->type == 'image' || $row->type == 'file')
-		{
-			if (!$files || count($files['name']) <= 0)
-			{
-				$this->setError(JText::_('Please provide a file'));
-				return $this->_edit();
-			}
-		}
-
-		// Check content
-		if (!$row->check()) 
-		{
-			$this->setError($row->getError());
-			return $this->_edit();
-		}
+		// Add some data
+		$row->set('_files', $files);
+		$row->set('_descriptions', $descriptions);
+		$row->set('_tags', trim(JRequest::getVar('tags', '')));
 
 		// Store new content
 		if (!$row->store()) 
 		{
 			$this->setError($row->getError());
-			return $this->_edit();
+			return $this->_edit($row);
 		}
 
-		if ($row->type == 'image' || $row->type == 'file')
+		// Create a post entry linking the item to the board
+		$post = new CollectionsModelPost();
+		$post->set('item_id', $row->get('id'));
+		$post->set('collection_id', $fields['collection_id']);
+		$post->set('original', 1);
+		if (!$post->store()) 
 		{
-			$descriptions = JRequest::getVar('description', array(), 'post');
-			if (!$this->_upload($files, $row->id, $row->type, $descriptions))
-			{
-				return $this->_edit();
-			}
-
-			$assets = JRequest::getVar('asset', array(), 'post');
-			if ($assets && count($assets) > 0)
-			{
-				foreach ($assets as $asset)
-				{
-					$attachment = new CollectionsTableAsset($this->database);
-					$attachment->load(intval($asset['id']));
-					$attachment->description = (isset($asset['description'])) ? trim($asset['description']) : '';
-
-					if (!$attachment->check()) 
-					{
-						$this->setError($attachment->getError());
-						continue;
-					}
-					if (!$attachment->store()) 
-					{
-						$this->setError($attachment->getError());
-					}
-				}
-			}
+			$this->setError($post->getError());
 		}
 
-		$post = new CollectionsTablePost($this->database);
-		$post->bulletin_id = $row->id;
-		$post->board_id    = $fields['board_id'];
-		$post->original    = 1;
-		if ($post->check()) 
+		// Check for any errors
+		if ($this->getError())
 		{
-			// Store new content
-			if (!$post->store()) 
-			{
-				$this->setError($stick->getError());
-			}
+			return $this->_edit($row);
 		}
-
-		// Process tags
-		$tags = trim(JRequest::getVar('tags', ''));
-		$bt = new CollectionsTags($this->database);
-		$bt->tag_object($this->juser->get('id'), $row->id, $tags, 1, 1);
 
 		$app =& JFactory::getApplication();
-		$app->redirect(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name . '&task=boards/' . $fields['board_id']));
+		$app->redirect(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name . '&task=' . $fields['collection_id']));
 	}
 
 	/**
@@ -767,56 +665,41 @@ class plgMembersCollections extends JPlugin
 	 */
 	private function _repost()
 	{
-		// Incoming
-		$post_id       = JRequest::getInt('post', 0);
-		$collection_id = JRequest::getVar('board', 0);
-		$no_html       = JRequest::getInt('no_html', 0);
-
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'item.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'post.php');
-		//include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'asset.php');
-		//include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'vote.php');
-		//include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'helpers' . DS . 'tags.php');
-
-		if (!$post_id && $collection_id)
+		if ($this->juser->get('guest')) 
 		{
-			$row = new CollectionsTableCollection($this->database);
-			$row->load($collection_id, $this->member->get('uidNumber'), 'member');
-
-			$b = new CollectionsTableItem($this->database);
-			$b->loadType($row->id, 'collection');
-			if (!$b->id)
-			{
-				$b->type        = 'collection';
-				$b->object_id   = $row->id;
-				$b->title       = $row->title;
-				$b->description = $row->description;
-				if (!$b->check()) 
-				{
-					$this->setError($b->getError());
-				}
-				// Store new content
-				if (!$b->store()) 
-				{
-					$this->setError($b->getError());
-				}
-			}
-			$item_id = $b->id;
-			$col = $b->object_id;
-			$collection_id = 0;
+			return $this->_login();
 		}
-		else
+
+		if (!$this->params->get('access-create-item')) 
 		{
-			$post = new CollectionsTablePost($this->database);
-			$post->load($post_id);
-
-			$item_id = $post->item_id;
-			$col = 0;
+			$this->setError(JText::_('PLG_GROUPS_BULLETINBOARD_NOT_AUTHORIZED'));
+			return $this->_boards();
 		}
+
+		$no_html = JRequest::getInt('no_html', 0);
 
 		// No board ID selected so present repost form
-		if (!$collection_id)
+		$repost = JRequest::getInt('repost', 0);
+		if (!$repost)
 		{
+			// Incoming
+			$post_id       = JRequest::getInt('post', 0);
+			$collection_id = JRequest::getVar('board', 0);
+
+			if (!$post_id && $collection_id)
+			{
+				$collection = $this->model->collection($collection_id);
+
+				$item_id       = $collection->item()->get('id');
+				$collection_id = $collection->item()->get('object_id');
+			}
+			else
+			{
+				$post = CollectionsModelPost::getInstance($post_id);
+
+				$item_id = $post->get('item_id');
+			}
+
 			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
 				array(
@@ -827,63 +710,16 @@ class plgMembersCollections extends JPlugin
 				)
 			);
 
-			$board = new CollectionsTableCollection($this->database);
+			$view->myboards      = $this->model->mine();
+			$view->groupboards   = $this->model->mine('groups');
 
-			$view->myboards = $board->getRecords(array(
-				'object_type' => 'member',
-				'object_id'   => $this->juser->get('id'),
-				'state'       => 1
-			));
-			if (!$view->myboards)
-			{
-				$board->setup($this->juser->get('id'), 'member');
-				$view->myboards = array($board);
-			}
-
-			$view->groupboards = array();
-
-			$usergroups = $this->member->getGroups('members');
-			if ($usergroups)
-			{
-				foreach ($usergroups as $usergroup)
-				{
-					$groups = $board->getRecords(array(
-						'object_type' => 'group',
-						'object_id'   => $usergroup->gidNumber,
-						'state'       => 1
-					));
-					if ($groups)
-					{
-						foreach ($groups as $s)
-						{
-							if (!isset($view->groupboards[$s->group_alias]))
-							{
-								$view->groupboards[$s->group_alias] = array();
-							}
-							if ($s->access == 4 && !$usergroup->manager)
-							{
-								continue;
-							}
-							$view->groupboards[$s->group_alias][] = $s;
-							asort($view->groupboards[$s->group_alias]);
-						}
-					}
-				}
-			}
-
-			asort($view->groupboards);
-
-			$view->name        = $this->_name;
-			$view->option      = $this->option;
-			$view->member      = $this->member;
-			//$view->task        = $this->action;
-			//$view->params      = $this->params;
-			//$view->authorized  = $this->authorized;
-
-			$view->no_html     = $no_html;
-			$view->post_id  = $post_id;
-			$view->collection_id = $col;
-			$view->item_id  = $item_id;
+			$view->name          = $this->_name;
+			$view->option        = $this->option;
+			$view->member        = $this->member;
+			$view->no_html       = $no_html;
+			$view->post_id       = $post_id;
+			$view->collection_id = $collection_id;
+			$view->item_id       = $item_id;
 
 			if ($no_html)
 			{
@@ -896,11 +732,16 @@ class plgMembersCollections extends JPlugin
 			}
 		}
 
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'post.php');
+
+		$collection_id = JRequest::getInt('collection_id', 0);
+		$item_id       = JRequest::getInt('item_id', 0);
+
 		// Try loading the current board/bulletin to see
 		// if this has already been posted to the board (i.e., no duplicates)
 		$post = new CollectionsTablePost($this->database);
 		$post->loadByBoard($collection_id, $item_id);
-		if (!$post->id)
+		if (!$post->get('id'))
 		{
 			// No record found -- we're OK to add one
 			$post->item_id       = $item_id;
@@ -908,18 +749,23 @@ class plgMembersCollections extends JPlugin
 			$post->description   = JRequest::getVar('description', '');
 			if ($post->check()) 
 			{
-				// Store new content
-				if (!$post->store()) 
-				{
-					$this->setError($post->getError());
-				}
+				$this->setError($post->getError());
+			}
+			// Store new content
+			if (!$post->store()) 
+			{
+				$this->setError($post->getError());
 			}
 		}
+		if ($this->getError())
+		{
+			return $this->getError();
+		}
 
-		// Display updated bulletin stats if called via AJAX
+		// Display updated item stats if called via AJAX
 		if ($no_html)
 		{
-			echo JText::sprintf('%s reposts', $post->getCount(array('bulletin_id' => $post->bulletin_id, 'original' => 0)));
+			echo JText::sprintf('%s reposts', $post->getCount(array('item_id' => $post->get('item_id'), 'original' => 0)));
 			exit;
 		}
 
@@ -934,11 +780,13 @@ class plgMembersCollections extends JPlugin
 	 */
 	private function _remove()
 	{
+		// Login check
 		if ($this->juser->get('guest')) 
 		{
 			return $this->_login();
 		}
 
+		// Access check
 		if (!$this->params->get('access-create-item')) 
 		{
 			$this->setError(JText::_('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
@@ -946,23 +794,6 @@ class plgMembersCollections extends JPlugin
 		}
 
 		// Incoming
-		//$post_id = JRequest::getInt('post', 0);
-
-		// Try loading the current collection/item to see
-		// if this has already been posted to the collection (i.e., no duplicates)
-		/*$post = new CollectionsTablePost($this->database);
-		$post->load($post_id);
-
-		$collection = $this->model->collection($post->collection_id);
-
-		// Can't remove original posts. They must be deleted instead.
-		if (!$post->original)
-		{
-			if (!$post->delete()) 
-			{
-				$this->setError($post->getError());
-			}
-		}*/
 		$post = CollectionsModelPost::getInstance(JRequest::getInt('post', 0));
 
 		$collection = $this->model->collection($post->get('collection_id'));
@@ -1005,19 +836,6 @@ class plgMembersCollections extends JPlugin
 		}
 
 		// Incoming
-		/*$post_id = JRequest::getInt('post', 0);
-
-		$stick = new CollectionsTablePost($this->database);
-		$stick->load($post_id);
-		$stick->collection_id = JRequest::getInt('board', 0);
-		if ($stick->check()) 
-		{
-			// Store new content
-			if (!$stick->store()) 
-			{
-				$this->setError($stick->getError());
-			}
-		}*/
 		$post = CollectionsModelPost::getInstance(JRequest::getInt('post', 0));
 
 		if (!$post->move(JRequest::getInt('board', 0)))
@@ -1090,7 +908,8 @@ class plgMembersCollections extends JPlugin
 				array(
 					'folder'  => 'members',
 					'element' => $this->_name,
-					'name'    => 'delete'
+					'name'    => 'edit',
+					'layout'  => 'delete'
 				)
 			);
 			$view->option   = $this->option;
@@ -1216,7 +1035,7 @@ class plgMembersCollections extends JPlugin
 	}
 
 	/**
-	 * Upload a file
+	 * Vote for an item
 	 * 
 	 * @return     void
 	 */
@@ -1250,93 +1069,6 @@ class plgMembersCollections extends JPlugin
 		// Display the main listing
 		$app =& JFactory::getApplication();
 		$app->redirect(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name . '&task=' . $collection->get('alias')));
-	}
-
-	/**
-	 * Upload a file
-	 * 
-	 * @return     void
-	 */
-	private function _upload($files, $listdir, $type, $descriptions)
-	{
-		// Ensure the user is logged in
-		if ($this->juser->get('guest')) 
-		{
-			$this->setError(JText::_('MEMBERS_LOGIN_NOTICE'));
-			return false;
-		}
-
-		// Ensure we have an ID to work with
-		if (!$listdir) 
-		{
-			$this->setError(JText::_('PLG_MEMBERS_COLLECTIONS_NO_ID'));
-			return false;
-		}
-
-		// Build the upload path if it doesn't exist
-		$path = JPATH_ROOT . DS . trim($this->params->get('filepath', '/site/bulletins'), DS) . DS . $listdir;
-
-		if (!is_dir($path)) 
-		{
-			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path, 0777)) 
-			{
-				$this->setError(JText::_('Error uploading. Unable to create path.'));
-				return false;
-			}
-		}
-		jimport('joomla.filesystem.file');
-		foreach ($files['name'] as $i => $file)
-		{
-			// Incoming file
-			//$file = JRequest::getVar('upload', '', 'files', 'array');
-			if (!$files['name'][$i]) 
-			{
-				$this->setError(JText::_('PLG_MEMBERS_COLLECTIONS_NO_FILE'));
-				return false;
-			}
-
-			$ext = strtolower(JFile::getExt($files['name'][$i]));
-			if ($type == 'image' && !in_array($ext, array('jpg', 'jpeg', 'jpe', 'gif', 'png')))
-			{
-				continue;
-			}
-
-			// Make the filename safe
-			jimport('joomla.filesystem.file');
-			$files['name'][$i] = urldecode($files['name'][$i]);
-			$files['name'][$i] = JFile::makeSafe($files['name'][$i]);
-			$files['name'][$i] = str_replace(' ', '_', $files['name'][$i]);
-
-			// Upload new files
-			if (!JFile::upload($files['tmp_name'][$i], $path . DS . $files['name'][$i])) 
-			{
-				$this->setError(JText::_('ERROR_UPLOADING'));
-				return false;
-			}
-			// File was uploaded 
-			else 
-			{
-				// Create database entry
-				$attachment = new CollectionsTableAsset($this->database);
-				$attachment->item_id     = $listdir;
-				$attachment->filename    = $files['name'][$i];
-				$attachment->description = (isset($descriptions[$i])) ? $descriptions[$i] : '';
-
-				if (!$attachment->check()) 
-				{
-					$this->setError($attachment->getError());
-					return false;
-				}
-				if (!$attachment->store()) 
-				{
-					$this->setError($attachment->getError());
-					return false;
-				}
-			}
-		}
-
-		return true;
 	}
 
 	/**

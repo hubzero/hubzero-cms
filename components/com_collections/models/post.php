@@ -74,7 +74,7 @@ class CollectionsModelPost extends JObject
 	 * @param      object  &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct($oid)
+	public function __construct($oid=null)
 	{
 		$this->_db = JFactory::getDBO();
 
@@ -125,7 +125,7 @@ class CollectionsModelPost extends JObject
 			}
 		}
 
-		if (isset($oid->title))
+		if (is_object($oid) && isset($oid->title))
 		{
 			$this->item($oid);
 			$this->set('item_id', $this->item()->get('id'));
@@ -325,6 +325,49 @@ class CollectionsModelPost extends JObject
 			return $this->_creator->get($property);
 		}*/
 		return $this->_creator;
+	}
+
+	/**
+	 * Bind data to the model's table object
+	 * 
+	 * @param      mixed $data Array or object
+	 * @return     boolean True on success, false if errors
+	 */
+	public function bind($data=null)
+	{
+		return $this->_tbl->bind($data);
+	}
+
+	/**
+	 * Store content
+	 * Can be passed a boolean to turn off check() method
+	 *
+	 * @param     boolean $check Call check() method?
+	 * @return    boolean True on success, false if errors
+	 */
+	public function store($check=true)
+	{
+		if (empty($this->_db))
+		{
+			return false;
+		}
+
+		if ($check)
+		{
+			if (!$this->_tbl->check())
+			{
+				$this->setError($this->_tbl->getError());
+				return false;
+			}
+		}
+
+		if (!$this->_tbl->store())
+		{
+			$this->setError($this->_tbl->getError());
+			return false;
+		}
+
+		return true;
 	}
 }
 

@@ -66,7 +66,7 @@ class CollectionsModelAsset extends JObject
 	 * @param      object  &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct($oid)
+	public function __construct($oid=null)
 	{
 		$this->_db = JFactory::getDBO();
 
@@ -197,6 +197,83 @@ class CollectionsModelAsset extends JObject
 			return $this->_creator->get($property);
 		}*/
 		return $this->_creator;
+	}
+
+	/**
+	 * Bind data to the model's table object
+	 * 
+	 * @param      mixed $data Array or object
+	 * @return     boolean True on success, false if errors
+	 */
+	public function bind($data=null)
+	{
+		return $this->_tbl->bind($data);
+	}
+
+	/**
+	 * Store content
+	 * Can be passed a boolean to turn off check() method
+	 *
+	 * @param     boolean $check Call check() method?
+	 * @return    boolean True on success, false if errors
+	 */
+	public function store($check=true)
+	{
+		if (empty($this->_db))
+		{
+			return false;
+		}
+
+		if ($this->get('_file'))
+		{
+			$config = JComponentHelper::getParams('com_collections');
+
+			$path = JPATH_ROOT . DS . trim($config->get('filepath', '/site/collections'), DS) . DS . $this->get('item_id');
+
+			if (!is_dir($path)) 
+			{
+				jimport('joomla.filesystem.folder');
+				if (!JFolder::create($path, 0777)) 
+				{
+					$this->setError(JText::_('Error uploading. Unable to create path.'));
+					return false;
+				}
+			}
+
+			$file = $this->get('_file');
+
+			// Make the filename safe
+			jimport('joomla.filesystem.file');
+			$file['name'] = urldecode($files['name']);
+			$file['name'] = JFile::makeSafe($file['name']);
+			$file['name'] = str_replace(' ', '_', $file['name']);
+
+			// Upload new files
+			if (!JFile::upload($file['tmp_name'], $path . DS . $file['name'])) 
+			{
+				$this->setError(JText::_('ERROR_UPLOADING') . ': ' . $file['name']);
+				return false;
+			}
+
+			$this->set('filename', $file['name']);
+		}
+
+		if ($check)
+		{
+			if (!$this->_tbl->check())
+			{
+				$this->setError($this->_tbl->getError());
+				return false;
+			}
+		}
+
+		if (!$this->_tbl->store())
+		{
+			$this->setError($this->_tbl->getError());
+			return false;
+		}
+
+		return true;
 	}
 }
 

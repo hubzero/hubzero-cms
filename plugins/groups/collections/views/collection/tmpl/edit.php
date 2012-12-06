@@ -31,46 +31,39 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 ?>
-<ul id="page_options">
-	<li>
-		<a class="board btn" href="<?php echo JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=' . $this->name . '&scope=boards'); ?>">
-			<?php echo JText::_('Boards'); ?>
-		</a>
-	</li>
-</ul>
 
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 <form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->name . '&scope=saveboard'); ?>" method="post" id="hubForm" class="full" enctype="multipart/form-data">
 	<fieldset>
-		<legend><?php echo JText::_('New board'); ?></legend>
+		<legend><?php echo JText::_('New collection'); ?></legend>
 <?php /*if ($this->params->get('access-manage-board')) { ?>
 		<label for="field-access">
 			<?php echo JText::_('Privacy'); ?>
 			<select name="fields[access]" id="field-access">
-				<option value="0"<?php if ($this->entry->access == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public (any group member can see this board)'); ?></option>
-				<option value="4"<?php if ($this->entry->access == 4) { echo ' selected="selected"'; } ?>><?php echo JText::_('Private (only group managers can see this board)'); ?></option>
+				<option value="0"<?php if ($this->entry->access == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public (any group member can see this collection)'); ?></option>
+				<option value="4"<?php if ($this->entry->access == 4) { echo ' selected="selected"'; } ?>><?php echo JText::_('Private (only group managers can see this collection)'); ?></option>
 			</select>
 		</label>
 <?php }*/ ?>
-		<label for="field-title"<?php if ($this->task == 'save' && !$this->entry->title) { echo ' class="fieldWithErrors"'; } ?>>
+		<label for="field-title"<?php if ($this->task == 'save' && !$this->entry->get('title')) { echo ' class="fieldWithErrors"'; } ?>>
 			<?php echo JText::_('Title'); ?>
-			<input type="text" name="fields[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($this->entry->title)); ?>" />
+			<input type="text" name="fields[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('title'))); ?>" />
 		</label>
 
 		<label for="field-description">
 			<?php echo JText::_('Description'); ?> <span class="optional">optional</span>
-			<textarea name="fields[description]" id="field-description" cols="35" rows="5"><?php echo $this->escape(stripslashes($this->entry->description)); ?></textarea>
+			<textarea name="fields[description]" id="field-description" cols="35" rows="5"><?php echo $this->escape(stripslashes($this->entry->get('description'))); ?></textarea>
 		</label>
 	</fieldset>
 
-	<input type="hidden" name="fields[id]" value="<?php echo $this->entry->id; ?>" />
-	<input type="hidden" name="fields[object_id]" value="<?php echo $this->group->gidNumber; ?>" />
+	<input type="hidden" name="fields[id]" value="<?php echo $this->entry->get('id'); ?>" />
+	<input type="hidden" name="fields[object_id]" value="<?php echo $this->group->get('gidNumber'); ?>" />
 	<input type="hidden" name="fields[object_type]" value="group" />
-	<input type="hidden" name="fields[created]" value="<?php echo $this->entry->created; ?>" />
-	<input type="hidden" name="fields[created_by]" value="<?php echo $this->entry->created_by; ?>" />
-	<input type="hidden" name="fields[state]" value="<?php echo $this->entry->state; ?>" />
+	<input type="hidden" name="fields[created]" value="<?php echo $this->entry->get('created'); ?>" />
+	<input type="hidden" name="fields[created_by]" value="<?php echo $this->entry->get('created_by'); ?>" />
+	<input type="hidden" name="fields[state]" value="<?php echo $this->entry->get('state'); ?>" />
 	<input type="hidden" name="fields[access]" value="<?php echo $this->params->get('access-plugin'); ?>" />
 
 	<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />

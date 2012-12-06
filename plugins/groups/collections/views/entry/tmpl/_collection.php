@@ -31,47 +31,51 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$board = new BulletinboardBoard(JFactory::getDBO());
-$board->load($this->row->object_id);
+if (isset($this->collection))
+{
+	$collection = $this->collection;
+}
+else
+{
+	$collection = CollectionsModelCollection::getInstance($this->row->item()->get('object_id'));
+}
 
-$counts = $board->getPostTypeCount();
-
-switch ($board->object_type)
+switch ($collection->get('object_type'))
 {
 	case 'member':
-		$url = 'index.php?option=com_members&id=' . $board->object_id . '&active=bulletinboard&task=boards/' . $board->id;
+		$url = 'index.php?option=com_members&id=' . $collection->get('object_id') . '&active=collections&task=' . $collection->get('alias');
 	break;
-	
+
 	case 'group':
 		ximport('Hubzero_Group');
 		$group = new Hubzero_Group();
-		$group->read($board->object_id);
-		$url = 'index.php?option=com_groups&gid=' . $group->get('cn') . '&active=bulletinboard&scope=boards/' . $board->id;
+		$group->read($collection->get('object_id'));
+		$url = 'index.php?option=com_groups&gid=' . $group->get('cn') . '&active=collections&scope=' . $collection->get('alias');
 	break;
 }
 ?>
 		<h4>
 			<a href="<?php echo JRoute::_($url); ?>">
-				<?php echo ($board->title) ? $this->escape(stripslashes($board->title)) : $this->escape(stripslashes($this->row->title)); ?>
+				<?php echo ($collection->get('title')) ? $this->escape(stripslashes($collection->get('title'))) : $this->escape(stripslashes($this->row->get('title'))); ?>
 			</a>
 		</h4>
 		<p class="description">
-			<?php echo ($this->row->description) ? $this->escape(stripslashes($this->row->description)) : $this->escape(stripslashes($board->description)); ?>
+			<?php echo ($this->row->get('description')) ? $this->escape(stripslashes($this->row->get('description'))) : $this->escape(stripslashes($collection->get('description'))); ?>
 		</p>
 		<table summary="Board content counts">
 			<tbody>
 				<tr>
 					<td>
-						<strong><?php echo (isset($counts['image'])) ? $counts['image'] : 0; ?></strong> <span class="post-type image">images</span>
+						<strong><?php echo $collection->count('image'); ?></strong> <span class="post-type image">images</span>
 					</td>
 					<td>
-						<strong><?php echo (isset($counts['file'])) ? $counts['file'] : 0; ?></strong> <span class="post-type file">files</span>
+						<strong><?php echo $collection->count('file'); ?></strong> <span class="post-type file">files</span>
 					</td>
 					<td>
-						<strong><?php echo (isset($counts['text'])) ? $counts['text'] : 0; ?></strong> <span class="post-type text">texts</span>
+						<strong><?php echo $collection->count('text'); ?></strong> <span class="post-type text">texts</span>
 					</td>
 					<td>
-						<strong><?php echo (isset($counts['link'])) ? $counts['link'] : 0; ?></strong> <span class="post-type link">links</span>
+						<strong><?php echo $collection->count('link'); ?></strong> <span class="post-type link">links</span>
 					</td>
 				</tr>
 			</tbody>

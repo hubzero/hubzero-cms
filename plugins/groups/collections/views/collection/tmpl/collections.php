@@ -30,48 +30,25 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-//import helper class
-ximport('Hubzero_View_Helper_Html');
-ximport('Hubzero_Document');
-
-$posts = 0;
-if ($this->rows) 
-{
-	foreach ($this->rows as $row)
-	{
-		$posts += $row->posts;
-	}
-}
 ?>
-
-<?php if ($this->rows && $this->params->get('access-create-bulletin')) { ?>
-<ul id="page_options">
-	<li>
-		<a class="add btn" href="<?php echo JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn').'&active=' . $this->name . '&scope=posts/new'); ?>">
-			<?php echo JText::_('New post'); ?>
-		</a>
-	</li>
-</ul>
-<?php } ?>
 
 <form method="get" action="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->get('cn').'&active=' . $this->name); ?>" id="bulletinboards">
 	<fieldset class="filters">
 		<span class="board count">
-			<strong><?php echo count($this->rows); ?></strong> boards
+			<strong><?php echo $this->total; ?></strong> boards
 		</span>
 		<span class="post count">
-			<strong><?php echo $posts; ?></strong> posts
+			<strong><?php echo $this->posts; ?></strong> posts
 		</span>
-<?php if ($this->params->get('access-create-board')) { ?>
-		<a class="add btn" href="<?php echo JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=' . $this->name . '&scope=boards/new'); ?>">
-			<?php echo JText::_('New board'); ?>
+<?php if ($this->params->get('access-create-collection')) { ?>
+		<a class="add btn" href="<?php echo JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=' . $this->name . '&scope=new'); ?>">
+			<?php echo JText::_('New collection'); ?>
 		</a>
 <?php } ?>
 		<div class="clear"></div>
 	</fieldset>
 
-	<div id="boards">
+	<div id="bulletins">
 <?php 
 if ($this->rows) 
 {
@@ -80,46 +57,39 @@ if ($this->rows)
 	foreach ($this->rows as $row)
 	{
 ?>
-		<div class="bulletin board <?php echo ($row->access == 4) ? 'private' : 'public'; ?>" id="b<?php echo $row->id; ?>" data-id="<?php echo $row->id; ?>">
+		<div class="bulletin collection <?php echo ($row->get('access') == 4) ? 'private' : 'public'; ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>">
 			<div class="content">
-				<h4>
-					<a href="<?php echo JRoute::_($base . '&scope=boards/' . $row->id); ?>">
-						<?php echo ($row->title) ? $this->escape(stripslashes($row->title)) : $this->escape(stripslashes($row->url)); ?>
-					</a>
-				</h4>
-		<?php if ($row->description) { ?>
-				<p class="description">
-					<?php echo $this->escape(stripslashes($row->description)); ?>
-				</p>
-		<?php } ?>
+				<?php
+						$view = new Hubzero_Plugin_View(
+							array(
+								'folder'  => 'members',
+								'element' => $this->name,
+								'name'    => 'entry',
+								'layout'  => '_collection'
+							)
+						);
+						$view->row        = $row;
+						$view->collection = $row;
+						$view->display();
+				?>
 				<div class="meta">
 					<p class="stats">
-<?php /*						<span class="likes">
-							<?php echo JText::sprintf('%s likes', $row->positive); ?>
-						</span>
-						<span class="comments">
-<?php if (isset($row->comments) && $row->comments) { ?>
-							<?php echo JText::sprintf('%s comments', $row->comments); ?>
-<?php } else { ?>
-							<?php echo JText::sprintf('%s comments', 0); ?>
-<?php } ?>
-						</span> */ ?>
 						<span class="reposts">
-<?php if ($row->posts) { ?>
-							<?php echo JText::sprintf('%s posts', $row->posts); ?>
+<?php if ($row->get('posts')) { ?>
+							<?php echo JText::sprintf('%s posts', $row->get('posts')); ?>
 <?php } else { ?>
 							<?php echo JText::sprintf('%s posts', 0); ?>
 <?php } ?>
 						</span>
 					</p>
 					<div class="actions">
-<?php if ($this->params->get('access-edit-board')) { ?>
-						<a class="edit" data-id="<?php echo $row->id; ?>" href="<?php echo JRoute::_($base . '&scope=boards/' . $row->id . '/edit'); ?>">
+<?php if ($this->params->get('access-edit-collection')) { ?>
+						<a class="edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $row->get('alias') . '/edit'); ?>">
 							<span><?php echo JText::_('Edit'); ?></span>
 						</a>
 <?php } ?>
-<?php if (!$row->is_default && $this->params->get('access-delete-board')) { ?>
-						<a class="delete" data-id="<?php echo $row->id; ?>" href="<?php echo JRoute::_($base . '&scope=boards/' . $row->id . '/delete'); ?>">
+<?php if (!$row->get('is_default') && $this->params->get('access-delete-collection')) { ?>
+						<a class="delete" data-id="<?php echo $row->id; ?>" href="<?php echo JRoute::_($base . '&scope=' . $row->get('alias') . '/delete'); ?>">
 							<span><?php echo JText::_('Delete'); ?></span>
 						</a>
 <?php } ?>
@@ -134,17 +104,17 @@ else
 {
 ?>
 		<div id="bb-introduction">
-<?php if ($this->params->get('access-create-board')) { ?>
+<?php if ($this->params->get('access-create-collection')) { ?>
 			<div class="instructions">
 				<ol>
-					<li>Click on the "new board" button.</li>
+					<li>Click on the "new collection" button.</li>
 					<li>Add a title and maybe a description.</li>
 					<li>Done!</li>
 				</ol>
 			</div>
 <?php } else { ?>
 			<div class="instructions">
-				<p>No boards available.</p>
+				<p>No collections available.</p>
 			</div>
 <?php } ?>
 		</div>

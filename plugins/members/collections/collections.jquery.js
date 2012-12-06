@@ -142,22 +142,22 @@ HUB.Plugins.GroupsBulletinboard = {
 	initialize: function() {
 		var $ = this.jQuery;
 
-		if ($('#boards').length > 0) {
+		/*if ($('#boards').length > 0) {
 			$('#boards').masonry({
-				itemSelector: '.bulletin'
+				itemSelector: '.post'
 			});
-		}
+		}*/
 
-		if ($('#bulletins').length > 0) {
+		if ($('#posts').length > 0) {
 			//$('#bulletins').imagesLoaded(function(){
-				$('#bulletins').masonry({
-					itemSelector: '.bulletin'/*,
+				$('#posts').masonry({
+					itemSelector: '.post'/*,
 					columnWidth: function(containerWidth) {
 						return containerWidth / 3;
 					}*/
 				});
 			//});
-			$('#bulletins a.vote').each(function(i, el){
+			$('#posts a.vote').each(function(i, el){
 				$(el).on('click', function(e){
 					e.preventDefault();
 
