@@ -407,7 +407,8 @@ class plgGroupsBlog extends JPlugin
 		$filters['scope'] = 'group';
 		$filters['group_id'] = $this->group->get('gidNumber');
 		$filters['search'] = JRequest::getVar('search','');
-
+		$filters['state'] = 'public';
+		
 		$juri =& JURI::getInstance();
 		$path = $juri->getPath();
 		if (strstr($path, '/')) 
@@ -418,31 +419,18 @@ class plgGroupsBlog extends JPlugin
 			$filters['year']  = (isset($bits[0])) ? $bits[0] : $filters['year'];
 			$filters['month'] = (isset($bits[1])) ? $bits[1] : $filters['month'];
 		}
+		
+		//get blog results
+		$be = new BlogEntry($this->database);
+		$rows = $be->getRecords($filters);
 
 		// Build some basic RSS document information
 		$jconfig =& JFactory::getConfig();
 		$doc->title  = $jconfig->getValue('config.sitename').': '.JText::_('Groups').': '.stripslashes($this->group->description).': '.JText::_('Blog');
-		//$doc->title .= ($filters['year']) ? ': '.$filters['year'] : '';
-		//$doc->title .= ($filters['month']) ? ': '.sprintf("%02d",$filters['month']) : '';
-
 		$doc->description = JText::sprintf('PLG_GROUPS_BLOG_RSS_DESCRIPTION',$jconfig->getValue('config.sitename'));
 		$doc->copyright = JText::sprintf('PLG_GROUPS_BLOG_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
 		$doc->category = JText::_('PLG_GROUPS_BLOG_RSS_CATEGORY');
-
-		//$view->canpost = $this->_getPostingPermissions();
-
-		//$juser =& JFactory::getUser();
-		//if ($juser->get('guest')) {
-			$filters['state'] = 'public';
-		//} else {
-			//if ($this->authorized != 'member' && $this->authorized != 'manager' && $this->authorized != 'admin') {
-				//$filters['state'] = 'registered';
-			//}
-		//}
-
-		$be = new BlogEntry($this->database);
-
-		$rows = $be->getRecords($filters);
+		
 
 		// Start outputing results if any found
 		if (count($rows) > 0) 

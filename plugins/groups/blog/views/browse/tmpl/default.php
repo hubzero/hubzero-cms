@@ -187,11 +187,12 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 						$path .= ($this->year)  ? '&year=' . $this->year   : '';
 						$path .= ($this->month) ? '&month=' . $this->month : '';
 						$feed = JRoute::_($path);
+						$live_site = 'https://' . $_SERVER['HTTP_HOST'];
 						if (substr($feed, 0, 4) != 'http') 
 						{
 							$feed = rtrim($live_site, DS) . DS . ltrim($feed, DS);
 						}
-						$feed = str_replace('https:://', 'http://', $feed);
+						$feed = str_replace('https://', 'http://', $feed);
 				?>
 				<a class="feed" href="<?php echo $feed; ?>">
 					<?php echo JText::_('RSS Feed'); ?>
