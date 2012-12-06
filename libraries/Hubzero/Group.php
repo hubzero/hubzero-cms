@@ -262,22 +262,54 @@ class Hubzero_Group
 	}
 
 	/**
-	 * Short description for 'getInstance'
-	 * Long description (if any) ...
+	 * Returns a reference to a group object
 	 *
-	 * @param unknown $group Parameter description (if any) ...
-	 * @return mixed Return description (if any) ...
+	 * @param     mixed $group A string (cn) or integer (ID)
+	 * @return    mixed Object if instance found, false if not
 	 */
 	static public function getInstance($group)
 	{
-		$hzg = new Hubzero_Group();
+		static $instances;
 
-		if ($hzg->read($group) === false)
+		// Set instances array
+		if (!isset($instances)) 
 		{
-			return false;
+			$instances = array();
 		}
 
-		return $hzg;
+		// Do we have a matching instance?
+		if (!isset($instances[$group])) 
+		{
+			// If an ID is passed, check for a match in existing instances
+			if (is_numeric($group))
+			{
+				foreach ($instances as $instance)
+				{
+					if ($instance && $instance->get('gidNumber') == $group)
+					{
+						// Match found
+						return $instance;
+						break;
+					}
+				}
+			}
+
+			// No matches
+			// Create group object
+			$hzg = new Hubzero_Group();
+
+			if ($hzg->read($group) === false)
+			{
+				$instances[$group] = false;
+			}
+			else
+			{
+				$instances[$group] = $hzg;
+			}
+		}
+
+		// Return instance
+		return $instances[$group];
 	}
 
 	/**
