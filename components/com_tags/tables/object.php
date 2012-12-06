@@ -84,6 +84,13 @@ class TagsObject extends JTable
 	 * @var string
 	 */
 	var $tbl      = NULL;
+	
+	/**
+	 * varchar(255)
+	 * 
+	 * @var string
+	 */
+	var $label    = NULL;
 
 	/**
 	 * Constructor
@@ -260,6 +267,10 @@ class TagsObject extends JTable
 				FROM $this->_tbl AS rt 
 				INNER JOIN #__tags AS t ON (rt.tagid = t.id)
 				WHERE rt.objectid='$objectid' AND rt.tbl='$tbl'";
+		if(isset($this->label) && $this->label != '')
+		{
+			$sql .= " AND rt.label='" . $this->label . "'"; 
+		}
 		switch ($state)
 		{
 			case 0: $sql .= " AND t.admin=0"; break;
@@ -270,7 +281,6 @@ class TagsObject extends JTable
 		{
 			$sql .= " LIMIT $offset, $limit";
 		}
-
 		$this->_db->setQuery($sql);
 		return $this->_db->loadAssocList();
 	}

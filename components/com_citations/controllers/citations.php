@@ -600,21 +600,21 @@ class CitationsControllerCitations extends Hubzero_Controller
 				}
 			}
 		}
-
+		
 		//check if we are allowing tags
 		if ($this->config->get('citation_allow_tags', 'no') == 'yes') 
 		{
-			$ct = new CitationTags($this->database);
-			$ct->tag_object($this->juser->get('id'), $row->id, $tags, 1, false, '');
+			$ct1 = new CitationTags($this->database);
+			$ct1->tag_object($this->juser->get('id'), $row->id, $tags, 1, false, '');
 		}
 
 		//check if we are allowing badges
 		if ($this->config->get('citation_allow_badges', 'no') == 'yes') 
 		{
-			$ct = new CitationTags($this->database);
-			$ct->tag_object($this->juser->get('id'), $row->id, $badges, 1, false, 'badge');
+			$ct2 = new CitationTags($this->database);
+			$ct2->tag_object($this->juser->get('id'), $row->id, $badges, 1, false, 'badge');
 		}
-
+		
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&task=browse',
@@ -903,6 +903,42 @@ class CitationsControllerCitations extends Hubzero_Controller
 	public function getformatTask()
 	{
 		echo 'format' . JRequest::getVar('format', 'apa');
+	}
+	
+	public function downloadimageTask()
+	{
+		// get the image we want to serve
+		$image = JRequest::getVar('image', '');
+		
+		// if we dont have an image were done
+		if($image == '') return;
+		
+		// read in file
+		$image_file = readfile($image);
+		
+		// file details
+		$image_details = pathinfo($image);
+		
+		switch( $image_details['extension'] )
+		{
+			case 'gif':
+				$image_resource = imagecreatefromgif($image_file);
+				header('Content-Type: image/gif');
+				imagegif($image_resource);
+				break;
+			case 'jpg':
+			case 'jpeg':
+				$image_resource = imagecreatefromjpeg($image_file);
+				header('Content-Type: image/jpeg');
+				imagegif($image_resource);
+				break;
+			case 'png':
+				$image_resource = imagecreatefrompng($image_file);
+				header('Content-Type: image/png');
+				imagepng($image_resource);
+				break;
+		}
+		exit();
 	}
 }
 

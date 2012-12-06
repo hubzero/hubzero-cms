@@ -582,11 +582,11 @@ class CitationsCitation extends JTable
 		//year filter
 		if(isset($filter['year_start']) && is_numeric($filter['year_start']) && $filter['year_start'] > 0)
 		{
-			$query .= " AND r.year >=" . $filter['year_start'];
+			$query .= " AND (r.year >=" . $filter['year_start'] . " OR r.year IS NULL OR r.year=0)";
 		}
 		if(isset($filter['year_end']) && is_numeric($filter['year_end']) && $filter['year_end'] > 0)
 		{
-			$query .= " AND r.year <=" . $filter['year_end'];
+			$query .= " AND (r.year <=" . $filter['year_end'] . " OR r.year IS NULL OR r.year=0)";
 		}
 		if(isset($filter['startuploaddate']) && isset($filter['enduploaddate']))
 		{
@@ -851,7 +851,6 @@ class CitationsCitation extends JTable
 		}
 		
 		$query .= $this->buildQuery( $filter, $admin );
-		
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}

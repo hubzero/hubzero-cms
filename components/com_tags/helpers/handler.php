@@ -103,7 +103,7 @@ class TagsHandler extends JObject
 	 * @param      integer $admin     Has admin access?
 	 * @return     array 
 	 */
-	public function get_tags_on_object($object_id, $offset=0, $limit=10, $tagger_id=NULL, $strength=0, $admin=0)
+	public function get_tags_on_object($object_id, $offset=0, $limit=10, $tagger_id=NULL, $strength=0, $admin=0, $label='')
 	{
 		if (!isset($object_id)) 
 		{
@@ -116,7 +116,8 @@ class TagsHandler extends JObject
 		$to->tbl = $this->_tbl;
 		$to->strength = $strength;
 		$to->taggerid = $tagger_id;
-
+		$to->label = $label;
+		
 		$tags = $to->getTagsOnObject($object_id, $this->_tbl, $admin, $offset, $limit);
 		if (!$tags) 
 		{
@@ -139,7 +140,7 @@ class TagsHandler extends JObject
 	 * @param      integer $strength  Tag strength
 	 * @return     boolean True on success, false if errors
 	 */
-	public function safe_tag($tagger_id, $object_id, $tag, $strength=1)
+	public function safe_tag($tagger_id, $object_id, $tag, $strength=1, $label='')
 	{
 		if (!isset($tagger_id) || !isset($object_id) || !isset($tag)) 
 		{
@@ -155,6 +156,7 @@ class TagsHandler extends JObject
 		$to = new TagsObject($this->_db);
 		$to->objectid = $object_id;
 		$to->tbl = $this->_tbl;
+		$to->label = $label;
 
 		// First see if the tag exists.
 		$t = new TagsTag($this->_db);
@@ -214,17 +216,17 @@ class TagsHandler extends JObject
 	 * @param      boolean $admin      Has admin access?
 	 * @return     boolean True on success, false if errors
 	 */
-	public function tag_object($tagger_id, $object_id, $tag_string, $strength, $admin=false)
+	public function tag_object($tagger_id, $object_id, $tag_string, $strength, $admin=false, $label='')
 	{
 		$tagArray  = $this->_parse_tags($tag_string);   // array of normalized tags
 		$tagArray2 = $this->_parse_tags($tag_string, 1); // array of normalized => raw tags
 		if ($admin) 
 		{
-			$oldTags = $this->get_tags_on_object($object_id, 0, 0, 0, 0, 1); // tags currently assigned to an object
+			$oldTags = $this->get_tags_on_object($object_id, 0, 0, 0, 0, 1, $label); // tags currently assigned to an object
 		} 
 		else 
 		{
-			$oldTags = $this->get_tags_on_object($object_id, 0, 0, $tagger_id, 0, 0); // tags currently assigned to an object
+			$oldTags = $this->get_tags_on_object($object_id, 0, 0, $tagger_id, 0, 0, $label); // tags currently assigned to an object
 		}
 
 		$preserveTags = array();
@@ -257,7 +259,7 @@ class TagsHandler extends JObject
 					$tag = addslashes($tag);
 				}
 				$thistag = $tagArray2[$tag];
-				$this->safe_tag($tagger_id, $object_id, $thistag, $strength);
+				$this->safe_tag($tagger_id, $object_id, $thistag, $strength, $label);
 			}
 		}
 		return true;
