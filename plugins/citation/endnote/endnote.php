@@ -113,10 +113,16 @@ class plgCitationEndnote extends JPlugin
 		
 		foreach ($raw_citations_text as $k => $line)
 		{
-			//$line = $this->_cleanText(trim($line));
+			// get this lines content
 			$line = trim($line);
-			$nextline = trim($raw_citations_text[$k + 1]);
 			
+			// check to see if we can get the next lines content
+			if(isset($raw_citations_text[$k + 1]))
+			{
+				$nextline = trim($raw_citations_text[$k + 1]);
+			}
+			
+			// if we have two line breaks in a row that means next citation
 			if ($line == '' && $nextline == '')
 			{
 				$raw_citations[] = $raw_citation;
@@ -125,45 +131,45 @@ class plgCitationEndnote extends JPlugin
 			}
 			$raw_citation[] = $line;
 		}
+		
+		// append each citation as a single citation
 		$raw_citations[] = $raw_citation;
 		
-		//remove empties
+		// remove empty citations
 		$raw_citations = array_values(array_filter($raw_citations));
-
+		
 		foreach ($raw_citations as $k => $rc) 
 		{
 			foreach ($rc as $r => $line) 
 			{
-				//echo $line .'<br>';
 				$raw_citations[$k] .= $line . "\r\n";
 			}
 		}
-
-		//vars used 
+		
+		// var to hold citation data
 		$citations = array();
-
-		//loop through each citations raw data
-		for ($i=0; $i<count($raw_citations); $i++) 
+		
+		// loop through each citations raw data
+		for ($i=0, $n=count($raw_citations); $i<$n; $i++) 
 		{
 			//split citation data match % sign followed by char
-			$citation_data = preg_split('/%.\s{1}/', $raw_citations[$i], NULL, PREG_SPLIT_OFFSET_CAPTURE);
-
+			//$citation_data = preg_split('/%.\s{1}/', $raw_citations[$i], NULL, PREG_SPLIT_OFFSET_CAPTURE);
+			$citation_data = preg_split('/%.{1}/', $raw_citations[$i], NULL, PREG_SPLIT_OFFSET_CAPTURE);
+			
 			//array to hold each citation
 			$citation = array();
-
+			
 			//build array of citation data
 			foreach ($citation_data as $cd) 
 			{
 				if (!empty($cd[0])) 
 				{
-					$key = substr($raw_citations[$i], ($cd[1]-3), 2);
+					//$key = substr($raw_citations[$i], ($cd[1]-3), 2);
+					$key = substr($raw_citations[$i], ($cd[1]-2), 2);
 					if (array_key_exists($key, $citation)) 
 					{
 						switch($key)
 						{
-							//case "%A": $citation[$key] .= "; " . htmlentities(trim($cd[0])); break;
-							//case "%E": $citation[$key] .= "; " . htmlentities(trim($cd[0])); break;
-							//case "%Z": $citation[$key] .= "\n" . htmlentities(trim($cd[0])); break;
 							case "%A": $citation[$key] .= "; " . htmlspecialchars(trim($cd[0])); break;
 							case "%E": $citation[$key] .= "; " . htmlspecialchars(trim($cd[0])); break;
 							case "%Z": $citation[$key] .= "\n" . htmlspecialchars(trim($cd[0])); break;
@@ -171,21 +177,30 @@ class plgCitationEndnote extends JPlugin
 					} 
 					else 
 					{
-						//$citation[$key] = htmlentities(trim($cd[0]));
-						$citation[$key] = htmlspecialchars(trim($cd[0]));
+						if($key == "%K")
+						{
+							$keywords = str_replace(",", " ", $cd[0]);
+							$keywords = str_replace("\r\n", "\n", $keywords);
+							$keywords = preg_replace('/[\r|\n|\r\n]/', ",\n", $keywords);
+							$citation[$key] = $keywords;
+						}
+						else
+						{
+							$citation[$key] = htmlspecialchars(trim($cd[0]));
+						}
 					}
 				}
 			}
-
+			
 			$citations[] = $citation;
 		}
-
+		
 		//get the citation objects vars
 		$citation_vars = $this->getCitationVars();
-
+		
 		//get the endnote tags
 		$endnote_tags = $this->getEndnoteTags();
-
+		
 		//array to hold final citations
 		$final_citations = array();
 
@@ -193,23 +208,32 @@ class plgCitationEndnote extends JPlugin
 		foreach ($citations as $citation) 
 		{
 			$cite = array();
-			foreach ($endnote_tags as $k => $v) 
+			foreach($endnote_tags as $tag => $keys) 
 			{
-				//make sure the var exists in our citation
-				if (array_key_exists($v, $citation)) 
+				//loop through each key, we might have more than one key that we want as a var (ie. %K & %< to be tags)
+				foreach($keys as $key)
 				{
-					$cite[$k] = $citation[$v];
-				}
-
-				//if we have fields in our imported citation data that dont exist in the database report errors
-				if (!in_array($k, $citation_vars) && array_key_exists($v, $citation)) 
-				{
-					$cite['errors'][] = "Failed to add '{$k}' to this citation.";
+					//make sure the var exists in our citation
+					if(array_key_exists($key, $citation)) 
+					{
+						// trim the value 
+						$value = trim(trim($citation[$key],':;,'));
+						
+						//append the data if we have already set that variable
+						if(isset($cite[$tag]))
+						{
+							$cite[$tag] .= "\n" . $value;
+						}
+						else
+						{
+							$cite[$tag] = $value;
+						}
+					}
 				}
 			}
 			$final_citations[] = $cite;
 		}
-
+		
 		//check for duplicates
 		for ($i = 0; $i < count($final_citations); $i++) 
 		{
@@ -265,33 +289,33 @@ class plgCitationEndnote extends JPlugin
 	protected function getEndnoteTags()
 	{
 		$tags = array(
-			'author'           => '%A',
-			'editor'           => '%E',
-			'type'             => '%0',
-			'journal'          => '%J',
-			'booktitle'        => '%B',
-			'title'            => '%T',
-			'address'          => '%C',
-			'publisher'        => '%I',
-			'number'           => '%N',
-			'pages'            => '%P',
-			'url'              => '%U',
-			'volume'           => '%V',
-			'notes'            => '%Z',
-			'edition'          => '%7',
-			'month'            => '%8',
-			'year'             => '%D',
-			'isbn'             => '%@',
-			'doi'              => '%1',
-			'abstract'         => '%X',
-			'keywords'         => '%K',
-			'label'            => '%F',
-			'language'         => '%G',
-			'call_number'      => '%L',
-			'accession_number' => '%M',
-			'short_title'      => '%!',
-			'research_notes'   => '%<',
-			'author_address'   => '%+'
+			'author'           => array('%A'),
+			'editor'           => array('%E'),
+			'type'             => array('%0'),
+			'journal'          => array('%J'),
+			'booktitle'        => array('%B'),
+			'title'            => array('%T'),
+			'address'          => array('%C'),
+			'publisher'        => array('%I'),
+			'number'           => array('%N'),
+			'pages'            => array('%P'),
+			'url'              => array('%U'),
+			'volume'           => array('%V'),
+			'notes'            => array('%Z'),
+			'edition'          => array('%7'),
+			'month'            => array('%8'),
+			'year'             => array('%D'),
+			'isbn'             => array('%@'),
+			'doi'              => array('%1'),
+			'abstract'         => array('%X'),
+			'keywords'         => array('%K'),
+			'label'            => array('%F'),
+			'language'         => array('%G'),
+			'call_number'      => array('%L'),
+			'accession_number' => array('%M'),
+			'short_title'      => array('%!'),
+			'research_notes'   => array('%<'),
+			'author_address'   => array('%+')
 		);
 
 		//get any custom tags that we want to use
@@ -304,7 +328,7 @@ class plgCitationEndnote extends JPlugin
 			if ($ct) 
 			{
 				$parts = explode('-', $ct);
-				$tags[$parts[0]] = $parts[1];
+				$tags[$parts[0]] = array($parts[1]);
 			}
 		}
 
