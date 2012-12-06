@@ -243,11 +243,10 @@ class GroupsController extends Hubzero_Controller
 				JText::_(strtoupper($this->_name)),
 				'index.php?option=' . $this->_option
 			);
-
+		}
 			if ($this->gid) 
 			{
-				$group = new Hubzero_Group();
-				$group->read($this->gid);
+				$group = Hubzero_Group::getInstance($this->gid);
 
 				$pathway->addItem(
 					stripslashes($group->get('description')),
@@ -287,7 +286,6 @@ class GroupsController extends Hubzero_Controller
 					'index.php?option=' . $this->_option . '&gid=' . $this->gid . '&active=' . $this->active
 				);
 			}
-		}
 	}
 
 	/**
@@ -309,8 +307,7 @@ class GroupsController extends Hubzero_Controller
 
 		if ($this->gid) 
 		{
-			$group = new Hubzero_Group();
-			$group->read($this->gid);
+			$group = Hubzero_Group::getInstance($this->gid);
 
 			$this->_title = JText::_('GROUP') . ': ' . stripslashes($group->get('description'));
 		}
@@ -510,8 +507,6 @@ class GroupsController extends Hubzero_Controller
 		// Ensure we found the group info
 		if (!is_object($group) || (!$group->get('gidNumber') && !$group->get('cn'))) 
 		{
-			/*JError::raiseError(404, JText::_('GROUPS_NO_GROUP_FOUND'));*/
-			//$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&task=new' . (is_numeric($this->gid) ? '' : '&cn=' . $this->gid));
 			$view = new JView(array('name' => 'error'));
 			$view->title = JText::_('GROUPS_NO_GROUP_FOUND');
 			$view->notifications = array(array(
