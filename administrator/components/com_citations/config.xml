@@ -104,7 +104,7 @@
 			<option value="yes">Yes</option>
 		</param>
 		
-		<param name="citation_show_badges" type="list" default="no" label="Show Badges?" description="Show badges that are attaches to citations? Badges are basically tags used for labeling purposes only.">
+		<param name="citation_show_badges" type="list" default="no" label="Show Badges?" description="Show badges that are attached to citations? Badges are basically tags used for labeling purposes only.">
 			<option value="no">No</option>
 			<option value="yes">Yes</option>
 		</param>
