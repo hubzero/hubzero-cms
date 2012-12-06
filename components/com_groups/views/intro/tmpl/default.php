@@ -139,7 +139,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 				</div><!-- / .four columns first -->
 				<div class="four columns second third fourth">
 					<div class="clearfix top">
-						<?php echo Hubzero_Group_Helper::listGroups(JText::_('COM_GROUPS_MY_GROUPS'),$this->config,$this->mygroups['members'],2,true,true,0); ?>
+						<?php
+							$mygroups_members = (isset($this->mygroups['members'])) ? $this->mygroups['members'] : array();
+							echo Hubzero_Group_Helper::listGroups(JText::_('COM_GROUPS_MY_GROUPS'),$this->config,$mygroups_members,2,true,true,0); ?>
 					</div>
 				</div><!-- / .four columns second third fourth -->
 			</div><!-- /.clearfix -->
