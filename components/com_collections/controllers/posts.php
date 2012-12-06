@@ -45,8 +45,8 @@ class CollectionsControllerPosts extends Hubzero_Controller
 	 */
 	public function execute()
 	{
-		$this->_authorize('board');
-		$this->_authorize('bulletin');
+		$this->_authorize('collection');
+		$this->_authorize('item');
 
 		$this->dateFormat = '%d %b %Y';
 		$this->timeFormat = '%I:%M %p';

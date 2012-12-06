@@ -37,7 +37,7 @@ defined('_JEXEC') or die( 'Restricted access' );
  * @param  array &$query Parameter description (if any) ...
  * @return array Return description (if any) ...
  */
-function BulletinboardBuildRoute(&$query)
+function CollectionsBuildRoute(&$query)
 {
 	$segments = array();
 
@@ -71,7 +71,7 @@ function BulletinboardBuildRoute(&$query)
  * @param  array $segments Parameter description (if any) ...
  * @return array Return description (if any) ...
  */
-function BulletinboardParseRoute($segments)
+function CollectionsParseRoute($segments)
 {
 	$vars = array();
 

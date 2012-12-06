@@ -47,17 +47,12 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 
 ximport('Hubzero_View_Helper_Html');
 
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'board.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'bulletin.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'stick.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'asset.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'vote.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'tags.php');
+require_once(JPATH_COMPONENT . DS . 'models' . DS . 'collection.php');
 
-$controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'boards'));
+$controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'collections'));
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
 {
-	$controllerName = 'boards';
+	$controllerName = 'collections';
 }
 require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'CollectionsController' . ucfirst(strtolower($controllerName));

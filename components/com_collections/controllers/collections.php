@@ -36,7 +36,7 @@ ximport('Hubzero_Controller');
 /**
  * Controller class for bulletin boards
  */
-class CollectionsControllerBoards extends Hubzero_Controller
+class CollectionsControllerCollections extends Hubzero_Controller
 {
 	/**
 	 * Determines task being called and attempts to execute it
@@ -45,8 +45,8 @@ class CollectionsControllerBoards extends Hubzero_Controller
 	 */
 	public function execute()
 	{
-		$this->_authorize('board');
-		$this->_authorize('bulletin');
+		$this->_authorize('collection');
+		$this->_authorize('item');
 
 		$this->dateFormat = '%d %b %Y';
 		$this->timeFormat = '%I:%M %p';
@@ -98,12 +98,15 @@ class CollectionsControllerBoards extends Hubzero_Controller
 		}
 		$this->view->filters['access'] = 0;
 
-		$this->view->board = new BulletinboardBoard($this->database);
+		/*$this->view->board = new BulletinboardBoard($this->database);
 		$this->view->title = JText::_('Popular');
 		$this->view->id = 0;
 
 		$bulletin = new BulletinboardBulletin($this->database);
-		$this->view->rows = $bulletin->getRecords($this->view->filters);
+		$this->view->rows = $bulletin->getRecords($this->view->filters);*/
+		$this->view->collection = new CollectionsModelCollection();
+
+		$this->view->rows = $this->view->collection->posts($this->view->filters);
 
 		if ($this->getError()) 
 		{
