@@ -89,7 +89,7 @@ class CollectionsModelPost extends JObject
 			$this->_tbl->bind($oid);
 			if (isset($oid->user_description) && $oid->user_description)
 			{
-				$this->set('description', $oid->description);
+				$this->set('description', $oid->user_description);
 			}
 			if (isset($oid->posted))
 			{
@@ -125,7 +125,7 @@ class CollectionsModelPost extends JObject
 			$this->_tbl->bind($oid);
 			if (isset($oid['user_description']) && $oid['user_description'])
 			{
-				$this->set('description', $oid['description']);
+				$this->set('description', $oid['user_description']);
 			}
 			if (isset($oid['posted']))
 			{
