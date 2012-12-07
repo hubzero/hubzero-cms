@@ -30,30 +30,24 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+$base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->name;
 ?>
 
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->name . '&scope=saveboard'); ?>" method="post" id="hubForm" class="full" enctype="multipart/form-data">
+<form action="<?php echo JRoute::_($base . '&scope=saveboard'); ?>" method="post" id="hubForm" class="full" enctype="multipart/form-data">
 	<fieldset>
 		<legend><?php echo JText::_('New collection'); ?></legend>
-<?php /*if ($this->params->get('access-manage-board')) { ?>
-		<label for="field-access">
-			<?php echo JText::_('Privacy'); ?>
-			<select name="fields[access]" id="field-access">
-				<option value="0"<?php if ($this->entry->access == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public (any group member can see this collection)'); ?></option>
-				<option value="4"<?php if ($this->entry->access == 4) { echo ' selected="selected"'; } ?>><?php echo JText::_('Private (only group managers can see this collection)'); ?></option>
-			</select>
-		</label>
-<?php }*/ ?>
+
 		<label for="field-title"<?php if ($this->task == 'save' && !$this->entry->get('title')) { echo ' class="fieldWithErrors"'; } ?>>
 			<?php echo JText::_('Title'); ?>
 			<input type="text" name="fields[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('title'))); ?>" />
 		</label>
 
 		<label for="field-description">
-			<?php echo JText::_('Description'); ?> <span class="optional">optional</span>
+			<?php echo JText::_('Description'); ?> <span class="optional"><?php echo JText::_('optional'); ?></span>
 			<textarea name="fields[description]" id="field-description" cols="35" rows="5"><?php echo $this->escape(stripslashes($this->entry->get('description'))); ?></textarea>
 		</label>
 	</fieldset>

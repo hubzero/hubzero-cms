@@ -99,9 +99,25 @@ class CollectionsModelPost extends JObject
 			{
 				$this->set('created_by', $oid->poster);
 			}
+			if (isset($oid->poster_name))
+			{
+				$this->set('name', $oid->poster_name);
+			}
 			if (isset($oid->post_id))
 			{
 				$this->set('id', $oid->post_id);
+			}
+			if (isset($oid->board_title))
+			{
+				$this->set('collection', $oid->board_title);
+			}
+			if (isset($oid->object_type))
+			{
+				$this->set('object_type', $oid->object_type);
+			}
+			if (isset($oid->object_id))
+			{
+				$this->set('object_id', $oid->object_id);
 			}
 		}
 		else if (is_array($oid))
@@ -119,9 +135,25 @@ class CollectionsModelPost extends JObject
 			{
 				$this->set('created_by', $oid['poster']);
 			}
+			if (isset($oid['poster_name']))
+			{
+				$this->set('name', $oid['poster_name']);
+			}
 			if (isset($oid['post_id']))
 			{
 				$this->set('id', $oid['post_id']);
+			}
+			if (isset($oid['board_title']))
+			{
+				$this->set('collection', $oid['board_title']);
+			}
+			if (isset($oid['object_type']))
+			{
+				$this->set('object_type', $oid['object_type']);
+			}
+			if (isset($oid['object_id']))
+			{
+				$this->set('object_id', $oid['object_id']);
 			}
 		}
 

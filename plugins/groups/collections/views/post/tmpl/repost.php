@@ -32,10 +32,10 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 //tag editor
-$task = 'post/' . $this->post_id . '/repost';
+$task = 'post/' . $this->post_id . '/collect';
 if ($this->collection_id)
 {
-	$task = JRequest::getVar('board', 0) . '/repost';
+	$task = JRequest::getVar('board', 0) . '/collect';
 }
 
 ximport('Hubzero_Wiki_Editor');
@@ -45,9 +45,9 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name . '&task=' . $task); ?>" method="post" id="hubForm" class="full">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->name . '&scope=' . $task); ?>" method="post" id="hubForm" class="full">
 	<fieldset>
-		<legend><?php echo JText::_('Repost'); ?></legend>
+		<legend><?php echo JText::_('Collect'); ?></legend>
 
 		<label for="field-collection_id">
 			<?php echo JText::_('Collection'); ?>
@@ -80,6 +80,10 @@ if ($this->groupboards)
 <?php
 		foreach ($boards as $board)
 		{
+			if ($board->id == $this->collection_id)
+			{
+				continue;
+			}
 ?>
 					<option value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
 <?php
@@ -137,12 +141,12 @@ if ($this->groupboards)
 	<input type="hidden" name="item_id" value="<?php echo $this->item_id; ?>" />
 	<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
 
-	<input type="hidden" name="id" value="<?php echo $this->member->get('uidNumber'); ?>" />
+	<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="active" value="<?php echo $this->name; ?>" />
-	<input type="hidden" name="action" value="repost" />
+	<input type="hidden" name="task" value="collect" />
 
 	<p class="submit">
-		<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_' . strtoupper($this->name) . '_POST'); ?>" />
+		<input type="submit" value="<?php echo JText::_('PLG_GROUPS_' . strtoupper($this->name) . '_POST'); ?>" />
 	</p>
 </form>

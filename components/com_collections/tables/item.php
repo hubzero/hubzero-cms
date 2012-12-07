@@ -367,7 +367,7 @@ class CollectionsTableItem extends JTable
 	 */
 	public function getRecords($filters=array())
 	{
-		$query = "SELECT b.*, u.name, s.description AS user_description, s.created AS posted, s.created_by AS poster, s.original, s.id AS post_id,
+		$query = "SELECT b.*, u.name AS poster_name, s.description AS user_description, s.created AS posted, s.created_by AS poster, s.original, s.id AS post_id,
 				(SELECT COUNT(*) FROM #__collections_posts AS s WHERE s.item_id=b.id AND s.original=0) AS reposts,
 				(SELECT COUNT(*) FROM #__item_comments AS c WHERE c.item_id=b.id AND c.item_type='bulletin' AND c.state IN (1, 3)) AS comments";
 		if (isset($filters['user_id']) && $filters['user_id']) 
@@ -376,7 +376,7 @@ class CollectionsTableItem extends JTable
 		}
 		if (!isset($filters['collection_id']) || !$filters['collection_id'])
 		{
-			$query .= ", d.id AS collection_id, d.title AS board_title ";
+			$query .= ", d.id AS collection_id, d.title AS board_title, d.object_id, d.object_type ";
 		}
 		$query .= $this->buildQuery($filters);
 

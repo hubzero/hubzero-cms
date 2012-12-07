@@ -31,21 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//$ba = new BulletinboardAsset(JFactory::getDBO());
-//$assets = $ba->getRecords(array('bulletin_id' => $this->row->id, 'limit' => 50, 'start' => 0));
-
-/*$assets = array();
-if ($this->assets)
-{
-	foreach ($this->assets as $asset)
-	{
-		if ($asset->bulletin_id != $this->row->id)
-		{
-			continue;
-		}
-		$assets[] = $asset;
-	}
-}*/
 $item = $this->row->item();
 
 $path = DS . trim($this->params->get('filepath', '/site/collections'), DS) . DS . $item->get('id');

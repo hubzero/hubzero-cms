@@ -32,6 +32,11 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 //tag editor
+$task = 'post/' . $this->post_id . '/collect';
+if ($this->collection_id)
+{
+	$task = JRequest::getVar('board', 0) . '/collect';
+}
 
 ximport('Hubzero_Wiki_Editor');
 $editor =& Hubzero_Wiki_Editor::getInstance();
@@ -40,13 +45,13 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->name . '&scope=repost'); ?>" method="post" id="hubForm" class="full">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name . '&task=' . $task); ?>" method="post" id="hubForm" class="full">
 	<fieldset>
-		<legend><?php echo JText::_('Repost'); ?></legend>
+		<legend><?php echo JText::_('Collect'); ?></legend>
 
-		<label for="field-collection">
+		<label for="field-collection_id">
 			<?php echo JText::_('Collection'); ?>
-			<select name="collection" id="field-collection">
+			<select name="collection_id" id="field-collection_id">
 				<option value="0"><?php echo JText::_('Select a collection...'); ?></option>
 				<optgroup label="<?php echo JText::_('My collections'); ?>">
 <?php 
@@ -75,10 +80,6 @@ if ($this->groupboards)
 <?php
 		foreach ($boards as $board)
 		{
-			if ($board->id == $this->collection_id)
-			{
-				continue;
-			}
 ?>
 					<option value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
 <?php
@@ -126,20 +127,22 @@ if ($this->groupboards)
 					</tr>
 				</tbody>
 			</table>">Wiki formatting</a> is allowed.</span>
-			<?php echo $editor->display('description', 'field_description', '', '', '50', '10'); ?>
+			<?php echo $editor->display('description', 'field_description', '', '', '50', '5'); ?>
 		</label>
 	</fieldset>
 
-	<input type="hidden" name="post" value="<?php echo $this->post_id; ?>" />
-	<input type="hidden" name="item" value="<?php echo $this->item_id; ?>" />
+	<input type="hidden" name="post_id" value="<?php echo $this->post_id; ?>" />
+	<input type="hidden" name="repost" value="1" />
+
+	<input type="hidden" name="item_id" value="<?php echo $this->item_id; ?>" />
 	<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
 
-	<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
+	<input type="hidden" name="id" value="<?php echo $this->member->get('uidNumber'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="active" value="<?php echo $this->name; ?>" />
-	<input type="hidden" name="task" value="repost" />
+	<input type="hidden" name="action" value="collect" />
 
 	<p class="submit">
-		<input type="submit" value="<?php echo JText::_('PLG_GROUPS_' . strtoupper($this->name) . '_POST'); ?>" />
+		<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_' . strtoupper($this->name) . '_POST'); ?>" />
 	</p>
 </form>

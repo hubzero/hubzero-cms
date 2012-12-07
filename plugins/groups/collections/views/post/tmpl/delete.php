@@ -29,31 +29,33 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-?>
-<?php if (!$this->no_html && $this->params->get('access-create-bulletin')) { ?>
-<ul id="page_options">
-	<li>
-		<a class="add btn" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->get('cn').'&active=' . $this->name . '&task=new'); ?>">
-			<?php echo JText::_('New post'); ?>
-		</a>
-	</li>
-</ul>
-<?php } ?>
+defined('_JEXEC') or die('Restricted access');
 
+$base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->name;
+
+$identifier = $this->post->item()->get('title');
+if (!$identifier)
+{
+	$identifier = $this->post->item()->get('description');
+	if (!$identifier)
+	{
+		$identifier = '#' . $this->post->item()->get('id');
+	}
+}
+?>
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=' . $this->name . '&task=delete&entry='.$this->bulletin->id); ?>" method="post" id="hubForm" class="full">
+	<form action="<?php echo JRoute::_($base . '&scope=post/' . $this->post->get('id') . '/delete'); ?>" method="post" id="hubForm" class="full">
 
 		<fieldset>
-			<legend><?php echo JText::_('PLG_GROUPS_BULLETINBOARD_DELETE_HEADER'); ?></legend>
+			<legend><?php echo JText::_('PLG_GROUPS_COLLECTIONS_DELETE_HEADER'); ?></legend>
 
-			<p class="warning"><?php echo JText::_('PLG_GROUPS_BULLETINBOARD_DELETE_WARNING'); ?></p>
+			<p class="warning"><?php echo JText::_('PLG_GROUPS_COLLECTIONS_DELETE_WARNING'); ?></p>
 
 			<label>
 				<input type="checkbox" class="option" name="confirmdel" value="1" /> 
-				<?php echo JText::_('PLG_GROUPS_BULLETINBOARD_DELETE_CONFIRM'); ?>
+				<?php echo JText::_('PLG_GROUPS_COLLECTIONS_DELETE_CONFIRM'); ?>
 			</label>
 		</fieldset>
 		<div class="clear"></div>
@@ -63,13 +65,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="active" value="<?php echo $this->name; ?>" />
 		<input type="hidden" name="task" value="delete" />
-		<input type="hidden" name="bulletin" value="<?php echo $this->bulletin->id; ?>" />
+		<input type="hidden" name="post" value="<?php echo $this->post->get('id'); ?>" />
 		<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
 
 		<p class="submit">
-			<input type="submit" value="<?php echo JText::_('PLG_GROUPS_BULLETINBOARD_DELETE'); ?>" />
+			<input type="submit" value="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_DELETE'); ?>" />
 <?php if (!$this->no_html) { ?>
-			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=' . $this->name); ?>">Cancel</a>
+			<a href="<?php echo JRoute::_($base . '&scope=' . $this->collection->get('alias')); ?>">Cancel</a>
 <?php } ?>
 		</p>
 	</form>

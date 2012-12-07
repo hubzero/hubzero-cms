@@ -53,7 +53,7 @@ $this->juser = JFactory::getUser();
 $base = 'index.php?option=' . $this->option;
 ?>
 <div id="content-header">
-	<h2><?php echo JText::_('Bulletin Boards'); ?></h2>
+	<h2><?php echo JText::_('Collections'); ?></h2>
 </div>
 
 <div id="content-header-extra">
@@ -69,25 +69,25 @@ $base = 'index.php?option=' . $this->option;
 <div id="sub-menu">
 	<ul>
 		<li<?php if ($this->task == 'popular') { echo ' class="active"'; } ?>>
-			<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=popular'); ?>">
+			<a href="<?php echo JRoute::_($base . '&controller=' . $this->controller . '&task=popular'); ?>">
 				<span><?php echo JText::_('Popular posts'); ?></span>
 			</a>
 		</li>
 		<li<?php if ($this->task == 'recent') { echo ' class="active"'; } ?>>
-			<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=recent'); ?>">
+			<a href="<?php echo JRoute::_($base . '&controller=' . $this->controller . '&task=recent'); ?>">
 				<span><?php echo JText::_('Recent posts'); ?></span>
 			</a>
 		</li>
 		<li<?php if ($this->task == 'spotlight') { echo ' class="active"'; } ?>>
-			<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=spotlight'); ?>">
-				<span><?php echo JText::_('Spotlight'); ?></span>
+			<a href="<?php echo JRoute::_($base . '&controller=' . $this->controller . '&task=spotlight'); ?>">
+				<span><?php echo JText::_('Collection Spotlight'); ?></span>
 			</a>
 		</li>
 	</ul>
 	<div class="clear"></div>
 </div>
 
-<form method="get" action="<?php echo JRoute::_($base . '&scope=boards/' . $this->collection->get('alias')); ?>" id="bulletinboard">
+<form method="get" action="<?php echo JRoute::_($base . '&controller=' . $this->controller . '&task=' . $this->task); ?>" id="collections">
 	<!-- <fieldset class="filters">
 <?php if (!$this->filters['trending']) { ?>
 		<span class="post count">
@@ -108,110 +108,118 @@ $base = 'index.php?option=' . $this->option;
 <?php }*/ ?>
 		<div class="clear"></div>
 	</fieldset> -->
-<div class="main section" id="bulletins">
+<div class="main section" id="posts">
 <?php 
 if ($this->rows->total() > 0) 
 {
 	ximport('Hubzero_User_Profile');
 	ximport('Hubzero_User_Profile_Helper');
 
-	//$ba = new BulletinboardAsset($database);
-	//$assets = $ba->getRecords(array('bulletin_id' => $ids));
-
-	//$bt = new BulletinboardTags($database);
-	//$tags = $bt->getTagsForIds($ids); //$bt->get_tag_cloud(0, 0, $row->id);
-
 	foreach ($this->rows as $row)
 	{
 		$item = $row->item();
-		$huser = Hubzero_User_Profile::getInstance($row->get('created_by'));
-
-		//$tags = $bt->get_tag_cloud(0, 0, $row->id);
 
 		if ($item->get('state') == 2)
 		{
 			$item->set('type', 'deleted');
 		}
 ?>
-		<div class="bulletin <?php echo $row->get('type'); ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo JRoute::_($base . '&controller=posts&id=' . $row->get('id')); ?>" data-width="600" data-height="350">
+		<div class="post <?php echo $item->get('type'); ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo JRoute::_($base . '&controller=posts&id=' . $row->get('id')); ?>" data-width="600" data-height="350">
 			<div class="content">
-<?php
-		/*$view = new JView(
-			array(
-				'name'    => 'posts',
-				'layout'  => 'display_' . $item->get('type')
-			)
-		);
-		//$view->juser      = $this->juser;
-		$view->option     = $this->option;
-		$view->config     = $this->config;
-		//$view->authorized = $this->authorized;
-		
-		$view->dateFormat = $this->dateFormat;
-		$view->timeFormat = $this->timeFormat;
-		$view->tz         = $this->tz;
-		
-		//$view->assets = $assets;
-		$view->row   = $row;
-		$view->collection = $this->collection;
-		
-		$view->display();*/
-?>
-<?php if (count($item->tags()) > 0) { ?>
+				<?php
+					$type = $item->get('type');
+					if (!in_array($type, array('collection', 'deleted', 'image', 'file', 'text', 'link')))
+					{
+						$type = 'link';
+					}
+					/*if (strstr($type, ':'))
+					{
+						$type = substr($type, strrpos($type, ':'));
+					}*/
+					$view = new JView(
+						array(
+							'name'    => 'posts',
+							'layout'  => 'display_' . $type
+						)
+					);
+					$view->option     = $this->option;
+					$view->params     = $this->config;
+					$view->dateFormat = $this->dateFormat;
+					$view->timeFormat = $this->timeFormat;
+					$view->tz         = $this->tz;
+					$view->row        = $row;
+					$view->collection = $this->collection;
+					$view->display();
+				?>
+			<?php if (count($item->tags()) > 0) { ?>
 				<div class="tags-wrap">
 					<?php echo $item->tags('render'); ?>
 				</div>
-<?php } ?>
+			<?php } ?>
 				<div class="meta">
 					<p class="stats">
 						<span class="likes">
-							<?php echo JText::sprintf('%s likes', $row->get('positive', 0)); ?>
+							<?php echo JText::sprintf('%s likes', $item->get('positive', 0)); ?>
 						</span>
 						<span class="comments">
-							<?php echo JText::sprintf('%s comments', $row->get('comments', 0)); ?>
+							<?php echo JText::sprintf('%s comments', $item->get('comments', 0)); ?>
 						</span>
 						<span class="reposts">
-							<?php echo JText::sprintf('%s reposts', $row->get('reposts')); ?>
+							<?php echo JText::sprintf('%s reposts', $item->get('reposts', 0)); ?>
 						</span>
 					</p>
 					<div class="actions">
-<?php if ($row->get('created_by') == $this->juser->get('id')) { ?>
+				<?php if ($row->get('created_by') == $this->juser->get('id')) { ?>
 						<a class="edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&controller=posts&id=' . $row->get('id') . '&task=edit'); ?>">
 							<span><?php echo JText::_('Edit'); ?></span>
 						</a>
-<?php } else { ?>
+				<?php } else { ?>
 						<a class="vote <?php echo ($row->get('voted')) ? 'unlike' : 'like'; ?>" data-id="<?php echo $row->get('id'); ?>" data-text-like="<?php echo JText::_('Like'); ?>" data-text-unlike="<?php echo JText::_('Unlike'); ?>" href="<?php echo JRoute::_($base . '&controller=posts&id=' . $row->get('id') . '&task=vote'); ?>">
 							<span><?php echo ($row->get('voted')) ? JText::_('Unlike') : JText::_('Like'); ?></span>
 						</a>
-<?php } ?>
+				<?php } ?>
 						<a class="comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&controller=posts&id=' . $row->get('id') . '&task=comment'); ?>">
 							<span><?php echo JText::_('Comment'); ?></span>
 						</a>
 						<a class="repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&controller=posts&id=' . $row->get('id') . '&task=repost'); ?>">
 							<span><?php echo JText::_('Repost'); ?></span>
 						</a>
-<?php if ($row->get('original') && ($row->get('created_by') == $this->juser->get('id') || $this->config->get('access-delete-bulletin'))) { ?>
+				<?php if ($row->get('original') && ($row->get('created_by') == $this->juser->get('id') || $this->config->get('access-delete-bulletin'))) { ?>
 						<a class="delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&controller=posts&id=' . $row->get('id') . '&task=delete'); ?>">
 							<span><?php echo JText::_('Delete'); ?></span>
 						</a>
-<?php } /*else if ($row->poster == $this->juser->get('id') || $this->config->get('access-edit-bulletin')) { ?>
+				<?php } /*else if ($row->poster == $this->juser->get('id') || $this->config->get('access-edit-bulletin')) { ?>
 						<a class="unpost" data-id="<?php echo $row->id; ?>" href="<?php echo JRoute::_($base . '&controller=posts&id=' . $row->post_id . '&task=unpost'); ?>">
 							<span><?php echo JText::_('Unpost'); ?></span>
 						</a>
-<?php }*/ ?>
+				<?php }*/ ?>
 					</div><!-- / .actions -->
 				</div><!-- / .meta -->
 				<div class="convo attribution clearfix">
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->creator()->get('id')); ?>" title="<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" class="img-link">
-						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($huser, 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" />
+						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($row->creator(), 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" />
 					</a>
 					<p>
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->creator()->get('id')); ?>">
 							<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
 						</a> 
 						onto 
-						<a href="<?php echo JRoute::_($base . '&controller=boards&id=' . $row->get('collection_id')); ?>">
-							<?php echo $this->escape(stripslashes($row->get('board_title'))); ?>
+						<?php
+							switch ($row->get('object_type'))
+							{
+								case 'group':
+									$col = 'index.php?option=com_groups&gid=' . $row->get('object_id') . '&active=collections&scope=' . $row->get('collection_id');
+								break;
+								case 'member':
+									$col = 'index.php?option=com_members&id=' . $row->get('object_id') . '&active=collections&task=' . $row->get('collection_id');
+								break;
+								default:
+									$col = $base . '&controller=boards&id=' . $row->get('collection_id');
+								break;
+							}
+						?>
+						<a href="<?php echo JRoute::_($col); ?>">
+							<?php echo $this->escape(stripslashes($row->get('collection'))); ?>
 						</a>
 						<br />
 						<span class="entry-date">
@@ -229,7 +237,7 @@ else
 {
 ?>
 		<div id="bb-introduction">
-<?php if ($this->config->get('access-create-bulletin')) { ?>
+	<?php if ($this->config->get('access-create-bulletin')) { ?>
 			<div class="instructions">
 				<ol>
 					<li>Find an image, file, link or text you want to share.</li>
@@ -252,11 +260,11 @@ else
 					<a class="tooltips" href="<?php echo JRoute::_($base . '&controller=posts&task=new&type=link&board=' . $this->collection->get('alias')); ?>" rel="post-link" title="Post a link">Link</a>
 				</li>
 			</ul>
-<?php } else { ?>
+	<?php } else { ?>
 			<div class="instructions">
 				<p>No bulletins available for this board.</p>
 			</div>
-<?php } ?>
+	<?php } ?>
 		</div>
 <?php
 }

@@ -30,42 +30,42 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+$base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->name;
 ?>
 
-<form method="get" action="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->get('cn').'&active=' . $this->name); ?>" id="bulletinboards">
+<form method="get" action="<?php echo JRoute::_($base); ?>" id="collections">
 	<fieldset class="filters">
-		<span class="board count">
+		<span class="collections count">
 			<strong><?php echo $this->total; ?></strong> boards
 		</span>
-		<span class="post count">
+		<span class="posts count">
 			<strong><?php echo $this->posts; ?></strong> posts
 		</span>
 <?php if ($this->params->get('access-create-collection')) { ?>
-		<a class="add btn" href="<?php echo JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=' . $this->name . '&scope=new'); ?>">
+		<a class="add btn" href="<?php echo JRoute::_($base . '&scope=new'); ?>">
 			<?php echo JText::_('New collection'); ?>
 		</a>
 <?php } ?>
 		<div class="clear"></div>
 	</fieldset>
 
-	<div id="bulletins">
+	<div id="posts">
 <?php 
-if ($this->rows) 
+if ($this->rows->total() > 0) 
 {
-	$base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->name;
-
 	foreach ($this->rows as $row)
 	{
 ?>
-		<div class="bulletin collection <?php echo ($row->get('access') == 4) ? 'private' : 'public'; ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>">
+		<div class="post collection <?php echo ($row->get('access') == 4) ? 'private' : 'public'; ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>">
 			<div class="content">
 				<?php
 						$view = new Hubzero_Plugin_View(
 							array(
 								'folder'  => 'members',
 								'element' => $this->name,
-								'name'    => 'entry',
-								'layout'  => '_collection'
+								'name'    => 'post',
+								'layout'  => 'default_collection'
 							)
 						);
 						$view->row        = $row;
@@ -74,36 +74,37 @@ if ($this->rows)
 				?>
 				<div class="meta">
 					<p class="stats">
+						<span class="likes">
+							<?php echo JText::sprintf('%s likes', $row->get('positive', 0)); ?>
+						</span>
 						<span class="reposts">
-<?php if ($row->get('posts')) { ?>
-							<?php echo JText::sprintf('%s posts', $row->get('posts')); ?>
-<?php } else { ?>
-							<?php echo JText::sprintf('%s posts', 0); ?>
-<?php } ?>
+							<?php echo JText::sprintf('%s posts', $row->get('posts', 0)); ?>
 						</span>
 					</p>
+				<?php if (!$this->juser->get('guest')) { ?>
 					<div class="actions">
-<?php if ($this->params->get('access-edit-collection')) { ?>
+					<?php if ($this->params->get('access-edit-collection')) { ?>
 						<a class="edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $row->get('alias') . '/edit'); ?>">
 							<span><?php echo JText::_('Edit'); ?></span>
 						</a>
-<?php } ?>
-<?php if (!$row->get('is_default') && $this->params->get('access-delete-collection')) { ?>
-						<a class="delete" data-id="<?php echo $row->id; ?>" href="<?php echo JRoute::_($base . '&scope=' . $row->get('alias') . '/delete'); ?>">
+					<?php } ?>
+					<?php if (!$row->get('is_default') && $this->params->get('access-delete-collection')) { ?>
+						<a class="delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $row->get('alias') . '/delete'); ?>">
 							<span><?php echo JText::_('Delete'); ?></span>
 						</a>
-<?php } ?>
+					<?php } ?>
 					</div><!-- / .actions -->
+				<?php } ?>
 				</div><!-- / .meta -->
 			</div><!-- / .content -->
-		</div><!-- / .board -->
+		</div><!-- / .post -->
 <?php
 	}
 }
 else
 {
 ?>
-		<div id="bb-introduction">
+		<div id="collection-introduction">
 <?php if ($this->params->get('access-create-collection')) { ?>
 			<div class="instructions">
 				<ol>
@@ -111,16 +112,16 @@ else
 					<li>Add a title and maybe a description.</li>
 					<li>Done!</li>
 				</ol>
-			</div>
+			</div><!-- / .instructions -->
 <?php } else { ?>
 			<div class="instructions">
 				<p>No collections available.</p>
-			</div>
+			</div><!-- / .instructions -->
 <?php } ?>
-		</div>
+		</div><!-- / #collection-introduction -->
 <?php
 }
 ?>
 		<div class="clear"></div>
-	</div>
+	</div><!-- / #posts -->
 </form>

@@ -39,20 +39,17 @@ $dispatcher =& JDispatcher::getInstance();
 $tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags','', $item->tags('string'))));
 
 $type = strtolower(JRequest::getWord('type', $item->get('type')));
-if (!in_array($type, array('file', 'image', 'text', 'link')))
+if (!$type)
 {
 	$type = 'file';
+}
+if ($type && !in_array($type, array('file', 'image', 'text', 'link')))
+{
+	$type = 'link';
 }
 //ximport('Hubzero_Wiki_Editor');
 //$editor =& Hubzero_Wiki_Editor::getInstance();
 ?>
-<!-- <ul id="page_options">
-	<li>
-		<a class="board btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name . '&task=boards'); ?>">
-			<?php echo JText::_('Boards'); ?>
-		</a>
-	</li>
-</ul> -->
 
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
@@ -82,8 +79,8 @@ if (!in_array($type, array('file', 'image', 'text', 'link')))
 			array(
 				'folder'  => 'members',
 				'element' => $this->name,
-				'name'    => 'edit',
-				'layout'  => '_' . $type
+				'name'    => 'post',
+				'layout'  => 'edit_' . $type
 			)
 		);
 		$view->name       = $this->name;
@@ -139,7 +136,6 @@ if ($this->collections->total() > 0)
 		<div class="clear"></div>
 	</fieldset>
 
-
 	<input type="hidden" name="fields[id]" value="<?php echo $item->get('id'); ?>" />
 	<input type="hidden" name="fields[created]" value="<?php echo $item->get('created'); ?>" />
 	<input type="hidden" name="fields[created_by]" value="<?php echo $item->get('created_by'); ?>" />
@@ -147,8 +143,8 @@ if ($this->collections->total() > 0)
 	<input type="hidden" name="id" value="<?php echo $this->member->get('uidNumber'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="active" value="<?php echo $this->name; ?>" />
-	<input type="hidden" name="action" value="savepost" />
-		
+	<input type="hidden" name="action" value="save" />
+
 	<p class="submit">
 		<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_' . strtoupper($this->name) . '_SAVE'); ?>" />
 		<?php if ($item->get('id')) { ?>

@@ -34,47 +34,55 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_User_Profile');
 ximport('Hubzero_User_Profile_Helper');
 
+$item = $this->post->item();
+
 $database = JFactory::getDBO();
 $this->juser = JFactory::getUser();
-$bt = new BulletinboardTags($database);
+//$bt = new BulletinboardTags($database);
 
-$creator = Hubzero_User_Profile::getInstance($this->row->created_by);
-$huser = Hubzero_User_Profile::getInstance($this->post->created_by);
+//$creator = Hubzero_User_Profile::getInstance($this->post->created_by);
+//$huser = Hubzero_User_Profile::getInstance($this->post->created_by);
 
-$tags = $bt->get_tag_cloud(0, 0, $this->row->id);
+//$tags = $bt->get_tag_cloud(0, 0, $this->post->id);
 
 $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name;
 
-if ($this->row->state == 2)
+if ($item->get('state') == 2)
 {
-	$this->row->type = 'deleted';
+	$item->set('type', 'deleted');
 }
 ?>
 
-<div class="post full <?php echo $this->row->type; ?>" id="b<?php echo $this->row->id; ?>" data-id="<?php echo $this->row->id; ?>" data-closeup-url="<?php echo JRoute::_($base . '&task=post/' . $this->row->get('id')); ?>" data-width="600" data-height="350">
+<div class="post full <?php echo $item->get('type'); ?>" id="b<?php echo $this->post->get('id'); ?>" data-id="<?php echo $this->post->get('id'); ?>" data-closeup-url="<?php echo JRoute::_($base . '&task=post/' . $this->post->get('id')); ?>" data-width="600" data-height="350">
 	<div class="content">
 		<div class="creator attribution clearfix">
-			<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->row->created_by); ?>" title="<?php echo $this->escape(stripslashes($huser->get('name'))); ?>" class="img-link">
-				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($huser, 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($huser->get('name'))); ?>" />
+			<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>" class="img-link">
+				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($item->creator(), 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>" />
 			</a>
 			<p>
-				<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->row->created_by); ?>">
-					<?php echo $this->escape(stripslashes($huser->get('name'))); ?>
+				<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')); ?>">
+					<?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>
 				</a> created this post
 				<br />
 				<span class="entry-date">
-					<span class="entry-date-at">@</span> <span class="date"><?php echo JHTML::_('date', $this->row->created, $this->timeFormat, $this->tz); ?></span> 
-					<span class="entry-date-on">on</span> <span class="time"><?php echo JHTML::_('date', $this->row->created, $this->dateFormat, $this->tz); ?></span>
+					<span class="entry-date-at">@</span> <span class="date"><?php echo JHTML::_('date', $item->get('created'), $this->timeFormat, $this->tz); ?></span> 
+					<span class="entry-date-on">on</span> <span class="time"><?php echo JHTML::_('date', $item->get('created'), $this->dateFormat, $this->tz); ?></span>
 				</span>
 			</p>
 		</div><!-- / .attribution -->
 <?php
+$type = $item->get('type');
+if (!in_array($type, array('collection', 'deleted', 'image', 'file', 'text', 'link')))
+{
+	$type = 'link';
+}
+
 $view = new Hubzero_Plugin_View(
 	array(
 		'folder'  => 'members',
 		'element' => $this->name,
-		'name'    => 'entry',
-		'layout'  => '_' . $this->row->type
+		'name'    => 'post',
+		'layout'  => 'default_' . $type
 	)
 );
 
@@ -89,82 +97,81 @@ $view->dateFormat = $this->dateFormat;
 $view->timeFormat = $this->timeFormat;
 $view->tz         = $this->tz;
 
-$view->row   = $this->row;
-$view->board = $this->board;
+$view->row        = $this->post;
+$view->collection = $this->collection;
 
 $view->display();
 ?>
+	<?php if (count($item->tags()) > 0) { ?>
+		<div class="tags-wrap">
+			<?php echo $item->tags('render'); ?>
+		</div>
+	<?php } ?>
 		<div class="meta">
 			<p class="stats">
 				<span class="likes">
-					<?php echo JText::sprintf('%s likes', $this->row->positive); ?>
+					<?php echo JText::sprintf('%s likes', $item->get('positive', 0)); ?>
 				</span>
 				<span class="comments">
-<?php if (isset($this->row->comments) && $this->row->comments) { ?>
-					<?php echo JText::sprintf('%s comments', $this->row->comments); ?>
-<?php } else { ?>
-					<?php echo JText::sprintf('%s comments', 0); ?>
-<?php } ?>
+					<?php echo JText::sprintf('%s comments', $item->get('comments', 0)); ?>
 				</span>
 				<span class="reposts">
-<?php if ($this->row->reposts) { ?>
-					<?php echo JText::sprintf('%s reposts', $this->row->reposts); ?>
-<?php } else { ?>
-					<?php echo JText::sprintf('%s reposts', 0); ?>
-<?php } ?>
+					<?php echo JText::sprintf('%s reposts', $item->get('reposts', 0)); ?>
 				</span>
 			</p>
+	<?php if (!$this->juser->get('guest')) { ?>
 			<div class="actions">
-<?php if ($this->row->created_by == $this->juser->get('id')) { ?>
-				<a class="edit" data-id="<?php echo $this->row->id; ?>" href="<?php echo JRoute::_($base . '&task=post/' . $this->row->id . '/edit'); ?>">
+		<?php if ($item->get('created_by') == $this->juser->get('id')) { ?>
+				<a class="edit" data-id="<?php echo $this->post->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $this->post->get('id') . '/edit'); ?>">
 					<span><?php echo JText::_('Edit'); ?></span>
 				</a>
-<?php } else { ?>
-				<a class="vote <?php echo ($this->row->voted) ? 'unlike' : 'like'; ?>" data-id="<?php echo $this->row->id; ?>" data-text-like="<?php echo JText::_('Like'); ?>" data-text-unlike="<?php echo JText::_('Unlike'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $this->row->id . '/vote'); ?>">
-					<span><?php echo ($this->row->voted) ? JText::_('Unlike') : JText::_('Like'); ?></span>
+		<?php } else { ?>
+				<a class="vote <?php echo ($item->get('voted')) ? 'unlike' : 'like'; ?>" data-id="<?php echo $this->post->get('id'); ?>" data-text-like="<?php echo JText::_('Like'); ?>" data-text-unlike="<?php echo JText::_('Unlike'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $this->post->get('id') . '/vote'); ?>">
+					<span><?php echo ($item->get('voted')) ? JText::_('Unlike') : JText::_('Like'); ?></span>
 				</a>
-<?php } ?>
-				<a class="comment" data-id="<?php echo $this->row->id; ?>" href="<?php echo JRoute::_($base . '&task=post/' . $this->row->id . '/comment'); ?>">
+		<?php } ?>
+				<a class="comment" data-id="<?php echo $this->post->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $this->post->get('id') . '/comment'); ?>">
 					<span><?php echo JText::_('Comment'); ?></span>
 				</a>
-				<a class="repost" data-id="<?php echo $this->row->id; ?>" href="<?php echo JRoute::_($base . '&task=post/' . $this->row->id . '/repost'); ?>">
-					<span><?php echo JText::_('Repost'); ?></span>
+				<a class="repost" data-id="<?php echo $this->post->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $this->post->get('id') . '/collect'); ?>">
+					<span><?php echo JText::_('Collect'); ?></span>
 				</a>
-<?php if ($this->post->original && $this->row->created_by == $this->juser->get('id') || $this->params->get('access-delete-bulletin')) { ?>
-				<a class="delete" data-id="<?php echo $this->row->id; ?>" href="<?php echo JRoute::_($base . '&task=post/' . $this->row->id . '/delete'); ?>">
+		<?php if ($this->post->get('original') && ($item->get('created_by') == $this->juser->get('id') || $this->params->get('access-delete-item'))) { ?>
+				<a class="delete" data-id="<?php echo $this->post->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $this->post->get('id') . '/delete'); ?>">
 					<span><?php echo JText::_('Delete'); ?></span>
 				</a>
-<?php } else if ($this->post->created_by == $this->juser->get('id') || $this->params->get('access-edit-bulletin')) { ?>
-				<a class="unpost" data-id="<?php echo $this->row->id; ?>" href="<?php echo JRoute::_($base . '&task=post/' . $this->row->id . '/remove'); ?>">
+		<?php } else if ($this->post->get('created_by') == $this->juser->get('id') || $this->params->get('access-edit-item')) { ?>
+				<a class="unpost" data-id="<?php echo $this->post->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $this->post->get('id') . '/remove'); ?>">
 					<span><?php echo JText::_('Remove'); ?></span>
 				</a>
-<?php } ?>
+		<?php } ?>
 			</div><!-- / .actions -->
+	<?php } ?>
 		</div><!-- / .meta -->
-<?php //if ($this->row->created_by != $this->post->created_by) { ?>
+<?php //if ($this->post->created_by != $this->post->created_by) { ?>
 		<div class="convo attribution clearfix">
-			<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->row->created_by); ?>" title="<?php echo $this->escape(stripslashes($huser->get('name'))); ?>" class="img-link">
-				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($huser, 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($huser->get('name'))); ?>" />
+			<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->post->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($this->post->creator()->get('name'))); ?>" class="img-link">
+				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($this->post->creator(), 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($this->post->creator()->get('name'))); ?>" />
 			</a>
 			<p>
-				<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->row->created_by); ?>">
-					<?php echo $this->escape(stripslashes($huser->get('name'))); ?>
+				<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->post->get('created_by')); ?>">
+					<?php echo $this->escape(stripslashes($this->post->creator()->get('name'))); ?>
 				</a> 
 				onto 
-				<a href="<?php echo JRoute::_($base); ?>">
-					<?php echo $this->escape(stripslashes($this->board->title)); ?>
+				<a href="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias')); ?>">
+					<?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>
 				</a>
 				<br />
 				<span class="entry-date">
-					<span class="entry-date-at">@</span> <span class="date"><?php echo JHTML::_('date', $this->post->created, $this->timeFormat, $this->tz); ?></span> 
-					<span class="entry-date-on">on</span> <span class="time"><?php echo JHTML::_('date', $this->post->created, $this->dateFormat, $this->tz); ?></span>
+					<span class="entry-date-at">@</span> <span class="date"><?php echo JHTML::_('date', $this->post->get('created'), $this->timeFormat, $this->tz); ?></span> 
+					<span class="entry-date-on">on</span> <span class="time"><?php echo JHTML::_('date', $this->post->get('created'), $this->dateFormat, $this->tz); ?></span>
 				</span>
 			</p>
 		</div><!-- / .attribution -->
 <?php 
-if ($this->comments) 
+if ($item->get('comments')) 
 { 
-	foreach ($this->comments as $comment)
+	foreach ($item->comments() as $comment)
 	{
 		$cuser = Hubzero_User_Profile::getInstance($comment->created_by);
 ?>

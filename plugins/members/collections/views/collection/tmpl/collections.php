@@ -47,7 +47,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 			<strong><?php echo $this->posts; ?></strong> posts
 		</span>
 		<!-- <span class="like count">
-			<strong><?php echo $this->likes; ?></strong> likes
+			<strong><?php //echo $this->likes; ?></strong> likes
 		</span> -->
 <?php if ($this->params->get('access-create-collection')) { ?>
 		<a class="add btn" href="<?php echo JRoute::_($base . '&task=new'); ?>">
@@ -71,8 +71,8 @@ if ($this->rows->total() > 0)
 							array(
 								'folder'  => 'members',
 								'element' => $this->name,
-								'name'    => 'entry',
-								'layout'  => '_collection'
+								'name'    => 'post',
+								'layout'  => 'default_collection'
 							)
 						);
 						$view->row        = $row;
@@ -85,7 +85,7 @@ if ($this->rows->total() > 0)
 							<?php echo JText::sprintf('%s likes', $row->get('positive', 0)); ?>
 						</span>
 						<span class="reposts">
-							<?php echo JText::sprintf('%s reposts', $row->get('posts', 0)); ?>
+							<?php echo JText::sprintf('%s posts', $row->get('posts', 0)); ?>
 						</span>
 					</p>
 				<?php if (!$this->juser->get('guest')) { ?>
@@ -104,7 +104,7 @@ if ($this->rows->total() > 0)
 				<?php } ?>
 				</div><!-- / .meta -->
 			</div><!-- / .content -->
-		</div><!-- / .board -->
+		</div><!-- / .post -->
 <?php
 	}
 }
@@ -119,16 +119,16 @@ else
 					<li>Add a title and maybe a description.</li>
 					<li>Done!</li>
 				</ol>
-			</div>
+			</div><!-- / .instructions -->
 		<?php } else { ?>
 			<div class="instructions">
 				<p>No collections available.</p>
-			</div>
+			</div><!-- / .instructions -->
 		<?php } ?>
-		</div>
+		</div><!-- / #collection-introduction -->
 <?php
 }
 ?>
 		<div class="clear"></div>
-	</div>
+	</div><!-- / #posts -->
 </form>

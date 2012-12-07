@@ -35,18 +35,6 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_View_Helper_Html');
 ximport('Hubzero_Document');
 
-//$assets = array();
-//$ids = array();
-/*$likes = 0;
-if ($this->rows) 
-{
-	foreach ($this->rows as $row)
-	{
-		$likes += $row->item()->get('positive', 0);
-		//$ids[] = $row->id;
-	}
-}*/
-
 $database = JFactory::getDBO();
 $this->juser = JFactory::getUser();
 
@@ -56,13 +44,6 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 <form method="get" action="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias')); ?>" id="collections">
 
 	<fieldset class="filters">
-		<!-- <label for="fielter-search">Search</label>
-		<input type="text" name="search" id="fielter-search" value="<?php //echo $this->escape($this->filters['search']); ?>" />
-		<input type="hidden" name="board" value="<?php //echo $this->board->id; ?>" />
-		<input type="submit" value="Go" />
-		<span class="board count">
-			<strong><?php //echo count($this->boards); ?></strong> boards
-		</span> -->
 		<span class="title count">
 			"<?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>"
 		</span>
@@ -73,8 +54,8 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 			<strong><?php //echo $likes; ?></strong> likes
 		</span> -->
 <?php if (!$this->juser->get('guest')) { ?>
-		<a class="repost btn tooltips" title="Repost :: Repost this collection" href="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias') . '/repost'); ?>">
-			<?php echo JText::_('Repost collection'); ?>
+		<a class="repost btn tooltips" title="Repost :: Collect this collection" href="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias') . '/collect'); ?>">
+			<?php echo JText::_('Collect'); //Repost collection ?>
 		</a>
 	<?php if ($this->rows && $this->params->get('access-create-item')) { ?>
 		<a class="add btn tooltips" title="New post :: Add a new post to this collection" href="<?php echo JRoute::_($base . '&task=post/new&board=' . $this->collection->get('alias')); ?>">
@@ -104,12 +85,17 @@ if ($this->rows->total() > 0)
 		<div class="post <?php echo $item->get('type'); ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo JRoute::_($base . '&task=post/' . $row->get('id')); ?>" data-width="600" data-height="350">
 			<div class="content">
 			<?php
+				$type = $item->get('type');
+				if (!in_array($type, array('collection', 'deleted', 'image', 'file', 'text', 'link')))
+				{
+					$type = 'link';
+				}
 				$view = new Hubzero_Plugin_View(
 					array(
 						'folder'  => 'members',
 						'element' => $this->name,
-						'name'    => 'entry',
-						'layout'  => '_' . $item->get('type')
+						'name'    => 'post',
+						'layout'  => 'default_' . $type
 					)
 				);
 				$view->name       = $this->name;
@@ -154,8 +140,8 @@ if ($this->rows->total() > 0)
 						<a class="comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/comment'); ?>">
 							<span><?php echo JText::_('Comment'); ?></span>
 						</a>
-						<a class="repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/repost'); ?>">
-							<span><?php echo JText::_('Repost'); ?></span>
+						<a class="repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/collect'); ?>">
+							<span><?php echo JText::_('Collect'); ?></span>
 						</a>
 				<?php if ($row->get('original') && ($item->get('created_by') == $this->juser->get('id') || $this->params->get('access-delete-item'))) { ?>
 						<a class="delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $row->get('id') . '/delete'); ?>">
@@ -210,14 +196,14 @@ if ($this->rows->total() > 0)
 				</div><!-- / .attribution -->
 			<?php } ?>
 			</div><!-- / .content -->
-		</div><!-- / .bulletin -->
+		</div><!-- / .post -->
 <?php
 	}
 }
 else
 {
 ?>
-		<div id="bb-introduction">
+		<div id="collection-introduction">
 	<?php if ($this->params->get('access-create-item')) { ?>
 			<div class="instructions">
 				<ol>
@@ -226,7 +212,7 @@ else
 					<li>Add anything extra you want (tags are nice).</li>
 					<li>Done!</li>
 				</ol>
-			</div>
+			</div><!-- / .instructions -->
 			<ul class="post-type">
 				<li class="post-image">
 					<a class="tooltips" href="<?php echo JRoute::_($base . '&task=post/new&type=image&board=' . $this->collection->get('alias')); ?>" rel="post-image" title="Post an image">Image</a>
@@ -240,15 +226,15 @@ else
 				<li class="post-link">
 					<a class="tooltips" href="<?php echo JRoute::_($base . '&task=post/new&type=link&board=' . $this->collection->get('alias')); ?>" rel="post-link" title="Post a link">Link</a>
 				</li>
-			</ul>
+			</ul><!-- / .post-type -->
 	<?php } else { ?>
 			<div class="instructions">
 				<p>No posts available for this collection.</p>
-			</div>
+			</div><!-- / .instructions -->
 	<?php } ?>
-		</div>
+		</div><!-- / #collection-introduction -->
 <?php
 }
 ?>
-	</div>
+	</div><!-- / #posts -->
 </form>

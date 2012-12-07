@@ -31,48 +31,41 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//$ba = new BulletinboardAsset(JFactory::getDBO());
-//$assets = $ba->getRecords(array('bulletin_id' => $this->row->id, 'limit' => 50, 'start' => 0));
+$item = $this->row->item();
 
-$assets = array();
-if ($this->assets)
-{
-	foreach ($this->assets as $asset)
-	{
-		if ($asset->bulletin_id != $this->row->id)
-		{
-			continue;
-		}
-		$assets[] = $asset;
-	}
-}
-
-$path = DS . trim($this->config->get('filepath', '/site/bulletins'), DS) . DS . $this->row->id;
+$path = DS . trim($this->params->get('filepath', '/site/collections'), DS) . DS . $item->get('id');
 $base = 'index.php?option=' . $this->option;
 
-if ($assets)
-{
-	$first = array_shift($assets);
+$assets = $item->assets();
 
-	list($originalWidth, $originalHeight) = getimagesize(JPATH_ROOT . $path . DS . ltrim($first->filename, DS));
+if ($assets->total() > 0)
+{
+	//$assets->rewind();
+	$first = $assets->fetch('first'); //array_shift($assets);
+
+	list($originalWidth, $originalHeight) = getimagesize(JPATH_ROOT . $path . DS . ltrim($first->get('filename'), DS));
 	$ratio = $originalWidth / $originalHeight;
 ?>
 		<div class="holder">
-			<a rel="lightbox" href="<?php echo $path . DS . ltrim($first->filename, DS); ?>" class="img-link">
-				<img src="<?php echo $path . DS . ltrim($first->filename, DS); ?>" alt="<?php echo ($first->description) ? $this->escape(stripslashes($first->description)) : ''; ?>" class="img" style="height: <?php echo round(300 / $ratio, 0, PHP_ROUND_HALF_UP); ?>px;" />
+			<a rel="lightbox" href="<?php echo $path . DS . ltrim($first->get('filename'), DS); ?>" class="img-link">
+				<img src="<?php echo $path . DS . ltrim($first->get('filename'), DS); ?>" alt="<?php echo ($first->get('description')) ? $this->escape(stripslashes($first->get('description'))) : ''; ?>" class="img" style="height: <?php echo round(300 / $ratio, 0, PHP_ROUND_HALF_UP); ?>px;" />
 			</a>
 		</div>
 <?php
-	if (count($assets) > 0)
+	if ($assets->total() > 1)
 	{
 ?>
 		<div class="gallery">
 <?php
-		foreach ($assets as $asset)
+		foreach ($assets as $key => $asset)
 		{
+			if ($key == 0)
+			{
+				continue;
+			}
 ?>
-			<a rel="lightbox" href="<?php echo $path . DS . ltrim($asset->filename, DS); ?>" class="img-link">
-				<img src="<?php echo $path . DS . ltrim($asset->filename, DS); ?>" alt="<?php echo ($asset->description) ? $this->escape(stripslashes($asset->description)) : ''; ?>" class="img" />
+			<a rel="lightbox" href="<?php echo $path . DS . ltrim($asset->get('filename'), DS); ?>" class="img-link">
+				<img src="<?php echo $path . DS . ltrim($asset->get('filename'), DS); ?>" alt="<?php echo ($asset->get('description')) ? $this->escape(stripslashes($asset->get('description'))) : ''; ?>" class="img" />
 			</a>
 <?php
 		}
@@ -83,8 +76,8 @@ if ($assets)
 	}
 }
 ?>
-<?php if ($this->row->description) { ?>
+<?php if ($item->get('description') || $this->row->get('description')) { ?>
 		<p class="description">
-			<?php echo $this->escape(stripslashes($this->row->description)); ?>
+			<?php echo ($this->row->get('description')) ? $this->escape(stripslashes($this->row->get('description'))) : $this->escape(stripslashes($item->get('description'))); ?>
 		</p>
 <?php } ?>

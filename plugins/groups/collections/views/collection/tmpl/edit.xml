@@ -19,14 +19,14 @@
 -->
 
 <metadata>
-	<layout title="Standard Browse Blog Entries Layout">
+	<layout title="Edit collection">
 		<message>
-			<![CDATA[STANDARD BROWSE BLOG ENTRIES LAYOUT DESC]]>
+			<![CDATA[Edit collection form]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Browse Blog Entries Layout</name>
-		<description>STANDARD BROWSE BLOG ENTRIES LAYOUT DESC</description>
+		<name>Edit collection</name>
+		<description>Edit collection form</description>
 		<params>
 		</params>
 	</state>

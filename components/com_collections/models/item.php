@@ -83,6 +83,13 @@ class CollectionsModelItem extends JObject
 	private $_tags = null;
 
 	/**
+	 * Container for properties
+	 * 
+	 * @var array
+	 */
+	private $_comments = null;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      integer $id  Resource ID or alias
@@ -185,11 +192,35 @@ class CollectionsModelItem extends JObject
  	 */
 	public function get($property, $default=null)
 	{
-		if (isset($this->_tbl->$property)) 
+		/*if (isset($this->_tbl->$property)) 
 		{
 			return $this->_tbl->$property;
 		}
-		return $default;
+		return $default;*/
+		switch (strtolower($property))
+		{
+			case 'reposts':
+				if (!isset($this->_tbl->$property)) 
+				{
+					$this->set($property, $this->_tbl->getReposts());
+				}
+			break;
+			case 'voted':
+				if (!isset($this->_tbl->$property)) 
+				{
+					$this->set($property, $this->_tbl->getVote());
+				}
+			break;
+			case 'comments':
+				if (!isset($this->_tbl->$property)) 
+				{
+					$this->comments();
+				}
+			break;
+			default:
+			break;
+		}
+		return $this->_tbl->get($property, $default);
 	}
 
 	/**
@@ -204,9 +235,10 @@ class CollectionsModelItem extends JObject
 	 */
 	public function set($property, $value = null)
 	{
-		$previous = isset($this->_tbl->$property) ? $this->_tbl->$property : null;
+		/*$previous = isset($this->_tbl->$property) ? $this->_tbl->$property : null;
 		$this->_tbl->$property = $value;
-		return $previous;
+		return $previous;*/
+		return $this->_tbl->set($property, $value);
 	}
 
 	/**
@@ -266,6 +298,49 @@ class CollectionsModelItem extends JObject
 			return $this->_creator->get($property);
 		}*/
 		return $this->_modifier;
+	}
+
+	/**
+	 * Get the comments on an item
+	 * 
+	 * @return     array
+	 */
+	public function comments()
+	{
+		if (!isset($this->_comments) || !is_array($this->_comments))
+		{
+			$total = 0;
+
+			ximport('Hubzero_Item_Comment');
+			$bc = new Hubzero_Item_Comment($this->_db);
+
+			if (($results = $bc->getComments($this->get('id'))))
+			{
+				foreach ($results as $com)
+				{
+					$total++;
+					if ($com->replies) 
+					{
+						foreach ($com->replies as $rep)
+						{
+							$total++;
+							if ($rep->replies) 
+							{
+								$total += count($rep->replies);
+							}
+						}
+					}
+				}
+			}
+			else
+			{
+				$results = array();
+			}
+
+			$this->set('comments', $total);
+			$this->_comments = $results;
+		}
+		return $this->_comments;
 	}
 
 	/**

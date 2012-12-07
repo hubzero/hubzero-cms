@@ -29,18 +29,21 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
+
+$base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name;
 ?>
 
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name . '&task=collection/' . $this->collection->get('id') . '/delete'); ?>" method="post" id="hubForm" class="full">
-
+	<form action="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias') . '/delete'); ?>" method="post" id="hubForm" class="full">
 		<fieldset>
 			<legend><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_DELETE_HEADER'); ?></legend>
 
-			<p class="warning"><?php echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_DELETE_COLLECTION_WARNING', $this->escape(stripslashes($this->collection->get('title')))); ?></p>
+			<p class="warning">
+				<?php echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_DELETE_COLLECTION_WARNING', $this->escape(stripslashes($this->collection->get('title')))); ?>
+			</p>
 
 			<label>
 				<input type="checkbox" class="option" name="confirmdel" value="1" /> 
@@ -60,7 +63,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<p class="submit">
 			<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_DELETE'); ?>" />
 <?php if (!$this->no_html) { ?>
-			<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name); ?>">Cancel</a>
+			<a href="<?php echo JRoute::_($base); ?>"><?php echo JText::_('Cancel'); ?></a>
 <?php } ?>
 		</p>
 	</form>

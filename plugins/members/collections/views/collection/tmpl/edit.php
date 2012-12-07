@@ -30,12 +30,14 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+$base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name;
 ?>
 
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name . '&task=saveboard'); ?>" method="post" id="hubForm" class="full" enctype="multipart/form-data">
+<form action="<?php echo JRoute::_($base . '&task=saveboard'); ?>" method="post" id="hubForm" class="full" enctype="multipart/form-data">
 	<fieldset>
 		<legend><?php echo JText::_('New collection'); ?></legend>
 
@@ -53,7 +55,7 @@ defined('_JEXEC') or die('Restricted access');
 		</label>
 
 		<label for="field-description">
-			<?php echo JText::_('Description'); ?> <span class="optional">optional</span>
+			<?php echo JText::_('Description'); ?> <span class="optional"><?php echo JText::_('optional'); ?></span>
 			<textarea name="fields[description]" id="field-description" cols="35" rows="5"><?php echo $this->escape(stripslashes($this->entry->get('description'))); ?></textarea>
 		</label>
 	</fieldset>
@@ -69,9 +71,9 @@ defined('_JEXEC') or die('Restricted access');
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="active" value="<?php echo $this->name; ?>" />
 	<input type="hidden" name="action" value="saveboard" />
-		
+
 	<p class="submit">
 		<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_' . strtoupper($this->name) . '_SAVE'); ?>" />
-		<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name); ?>">Cancel</a>
+		<a href="<?php echo JRoute::_($base); ?>"><?php echo JText::_('Cancel'); ?></a>
 	</p>
 </form>
