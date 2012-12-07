@@ -617,7 +617,6 @@ class CollectionsModelItem extends JObject
 			foreach ($files['name'] as $i => $file)
 			{
 				// Incoming file
-				//$file = JRequest::getVar('upload', '', 'files', 'array');
 				if (!$files['name'][$i]) 
 				{
 					$this->setError(JText::sprintf('No file found: %s', $files['name'][$i]));
@@ -641,7 +640,6 @@ class CollectionsModelItem extends JObject
 				if (!JFile::upload($files['tmp_name'][$i], $path . DS . $files['name'][$i])) 
 				{
 					$this->setError(JText::_('ERROR_UPLOADING') . ': ' . $files['name'][$i]);
-					//return false;
 				}
 				// File was uploaded 
 				else 
@@ -655,28 +653,29 @@ class CollectionsModelItem extends JObject
 					{
 						$this->setError($asset->getError());
 					}
-					// Create database entry
-					/*$attachment = new CollectionsTableAsset($this->_db);
-					$attachment->item_id     = $this->get('id');
-					$attachment->filename    = $files['name'][$i];
-					$attachment->description = (isset($descriptions[$i])) ? $descriptions[$i] : '';
-
-					if (!$attachment->check()) 
-					{
-						$this->setError($attachment->getError());
-						return false;
-					}
-					if (!$attachment->store()) 
-					{
-						$this->setError($attachment->getError());
-						return false;
-					}*/
 				}
 			}
 
 			if ($this->getError())
 			{
 				return false;
+			}
+		}
+
+		if ($this->get('_dir') && $this->get('_dir') != $this->get('id'))
+		{
+			$config = JComponentHelper::getParams('com_collections');
+
+			// Build the upload path if it doesn't exist
+			$path = JPATH_ROOT . DS . trim($config->get('filepath', '/site/collections'), DS);
+
+			if (is_dir($path . DS . $this->get('_dir'))) 
+			{
+				jimport('joomla.filesystem.folder');
+				if (!JFolder::move($path . DS . $this->get('_dir'), $path . DS . $this->get('id'))) 
+				{
+					$this->setError(JFolder::move($path . DS . $this->get('_dir'), $path . DS . $this->get('id')));
+				}
 			}
 		}
 

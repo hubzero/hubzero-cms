@@ -47,29 +47,37 @@ if ($type && !in_array($type, array('file', 'image', 'text', 'link')))
 {
 	$type = 'link';
 }
+
+$base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name;
 //ximport('Hubzero_Wiki_Editor');
 //$editor =& Hubzero_Wiki_Editor::getInstance();
+
+$dir = $item->get('id');
+if (!$dir)
+{
+	$dir = 'tmp' . time() . rand(0, 10000);
+}
 ?>
 
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name . '&task=post/save'); ?>" method="post" id="hubForm" class="full" enctype="multipart/form-data">
+<form action="<?php echo JRoute::_($base . '&task=post/save'); ?>" method="post" id="hubForm" class="full" enctype="multipart/form-data">
 	<fieldset>
 		<legend><?php echo JText::_('New post'); ?></legend>
 
 		<ul class="post-type">
 			<li class="post-image">
-				<a class="tooltips<?php if ($type == 'image') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id=' . $this->member->get('uidNumber') . '&active=' . $this->name . '&task=post/new&type=image'); ?>" rel="post-image" title="Post an image">Image</a>
+				<a class="tooltips<?php if ($type == 'image') { echo ' active'; } ?>" href="<?php echo JRoute::_($base . '&task=post/new&type=image'); ?>" rel="post-image" title="Post an image">Image</a>
 			</li>
 			<li class="post-file">
-				<a class="tooltips<?php if ($type == 'file') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id=' . $this->member->get('uidNumber') . '&active=' . $this->name . '&task=post/new&type=file'); ?>" rel="post-file" title="Post a file">File</a>
+				<a class="tooltips<?php if ($type == 'file') { echo ' active'; } ?>" href="<?php echo JRoute::_($base . '&task=post/new&type=file'); ?>" rel="post-file" title="Post a file">File</a>
 			</li>
 			<li class="post-text">
-				<a class="tooltips<?php if ($type == 'text') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id=' . $this->member->get('uidNumber') . '&active=' . $this->name . '&task=post/new&type=text'); ?>" rel="post-text" title="Post some text">Text</a>
+				<a class="tooltips<?php if ($type == 'text') { echo ' active'; } ?>" href="<?php echo JRoute::_($base . '&task=post/new&type=text'); ?>" rel="post-text" title="Post some text">Text</a>
 			</li>
 			<li class="post-link">
-				<a class="tooltips<?php if ($type == 'link') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id=' . $this->member->get('uidNumber') . '&active=' . $this->name . '&task=post/new&type=link'); ?>" rel="post-link" title="Post a link">Link</a>
+				<a class="tooltips<?php if ($type == 'link') { echo ' active'; } ?>" href="<?php echo JRoute::_($base . '&task=post/new&type=link'); ?>" rel="post-link" title="Post a link">Link</a>
 			</li>
 		</ul>
 
@@ -103,6 +111,21 @@ if ($type && !in_array($type, array('file', 'image', 'text', 'link')))
 				<option value="4"<?php if ($item->get('access') == 4) { echo ' selected="selected"'; } ?>><?php echo JText::_('Private (can only be reposted my collections)'); ?></option>
 			</select>
 		</label> -->
+		<?php /*<div class="field-wrap">
+		<?php if (JPluginHelper::isEnabled('system', 'jquery')) { ?>
+			<div id="ajax-uploader" data-action="<?php echo JRoute::_($base . '&task=ajaxupload&dir=' . $dir . '&no_html=1'); ?>">
+				<noscript>
+					<p><input type="file" name="upload" id="upload" /></p>
+					<p><input type="submit" value="<?php echo JText::_('UPLOAD'); ?>" /></p>
+				</noscript>
+			</div>
+			<script src="/media/system/js/jquery.fileuploader.js"></script>
+			<script src="/plugins/members/collections/fileupload.jquery.js"></script>
+		<?php } else { ?>
+			<p><input type="file" name="upload" id="upload" /></p>
+		<?php } ?>
+		</div> */ ?>
+
 		<div class="group">
 		<label for="field-collection_id">
 			<?php echo JText::_('Collections'); ?>
@@ -139,6 +162,7 @@ if ($this->collections->total() > 0)
 	<input type="hidden" name="fields[id]" value="<?php echo $item->get('id'); ?>" />
 	<input type="hidden" name="fields[created]" value="<?php echo $item->get('created'); ?>" />
 	<input type="hidden" name="fields[created_by]" value="<?php echo $item->get('created_by'); ?>" />
+	<input type="hidden" name="fields[dir]" value="<?php echo $dir; ?>" />
 
 	<input type="hidden" name="id" value="<?php echo $this->member->get('uidNumber'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -148,7 +172,7 @@ if ($this->collections->total() > 0)
 	<p class="submit">
 		<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_' . strtoupper($this->name) . '_SAVE'); ?>" />
 		<?php if ($item->get('id')) { ?>
-			<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name . ($item->get('id') ? '&task=' . $this->collection->get('alias') : '')); ?>">Cancel</a>
+			<a href="<?php echo JRoute::_($base . ($item->get('id') ? '&task=' . $this->collection->get('alias') : '')); ?>">Cancel</a>
 		<?php } ?>
 	</p>
 </form>

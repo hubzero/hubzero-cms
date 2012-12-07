@@ -656,3 +656,92 @@
 	.post table span.image:before {
 		content: "\f03e";
 	}
+	
+	.qq-uploading {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 107px;
+		color: #fff;
+		font-size: 18px;
+		padding: 75px 0 0 0;
+		text-align: center;
+		background: rgba(0,0,0,0.75);
+	}
+
+	/*.qq-upload-button {
+		background: #222;
+		background-image: -webkit-linear-gradient(top, #444, #222);
+		background-image: -moz-linear-gradient(top, #444, #222);
+		background-image: -o-linear-gradient(top, #444, #222);
+		background-image: -ms-linear-gradient(top, #444, #222);
+		background-image: linear-gradient(top, #444, #222);
+		padding: 10px;
+		position: relative;
+		color: #FFF;
+		text-align: center;
+		text-indent: 20px;
+		-webkit-border-radius: 3px;
+		-moz-border-radius: 3px;
+		-ms-border-radius: 3px;
+		-o-border-radius: 3px;
+		border-radius: 3px;
+		border: 1px solid #000;
+		border-top: 1px solid #666;
+		margin: 10px 0;
+	}
+	.qq-upload-button:active {
+		background-image: -webkit-linear-gradient(top, #222, #444);
+		background-image: -moz-linear-gradient(top, #222, #444);
+		background-image: -o-linear-gradient(top, #222, #444);
+		background-image: -ms-linear-gradient(top, #222, #444);
+		background-image: linear-gradient(top, #222, #444);
+	}	
+	.qq-upload-button:before {
+		content: "\f01b";
+		position: absolute;
+		left: 30px;
+		top: 10px;
+		width: 24px;
+		height: 24px;
+		font-size: 20px;
+		font-family: 'Fontcons';
+		color: #FFF;
+	}*/
+	.qq-uploader {
+		position: relative;
+		margin: 0;
+		padding: 0;
+	}
+	.qq-upload-button,
+	.qq-upload-drop-area {
+		background: #f7f7f7;
+		border: 3px dashed #ddd;
+		text-align: center;
+		font-size: 1.5em;
+		color: #bbb;
+		text-shadow: 0 1px 0 #FFF;
+		padding: 0.8em 0;
+		-webkit-border-radius: 3px;
+		-moz-border-radius: 3px;
+		-ms-border-radius: 3px;
+		-o-border-radius: 3px;
+		border-radius: 3px;
+	}
+	.qq-upload-button:hover,
+	.qq-upload-drop-area:hover,
+	.qq-upload-drop-area-active {
+		/*background: #fdfce4;*/
+		border: 3px solid #333;
+		color: #333;
+	}
+	.qq-upload-drop-area {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+	}
+	.qq-upload-list {
+		display: none;
+	}
