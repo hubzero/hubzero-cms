@@ -104,6 +104,8 @@ class ToolsControllerVersions extends Hubzero_Controller
 			0, 
 			'int'
 		);
+		// In case limit has been changed, adjust limitstart accordingly
+		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 		
 		$this->view->tool = Hubzero_Tool::getInstance($this->view->filters['id']);
 		$this->view->total = count($this->view->tool->version);

@@ -92,6 +92,8 @@ class ToolsControllerHosts extends Hubzero_Controller
 			0, 
 			'int'
 		);
+		// In case limit has been changed, adjust limitstart accordingly
+		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
 		// Get the middleware database
 		$mwdb =& MwUtils::getMWDBO();

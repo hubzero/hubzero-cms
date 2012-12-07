@@ -83,6 +83,8 @@ class TagsControllerEntries extends Hubzero_Controller
 			'filter_order_Dir', 
 			'ASC'
 		));
+		// In case limit has been changed, adjust limitstart accordingly
+		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
 		$t = new TagsTag($this->database);
 
