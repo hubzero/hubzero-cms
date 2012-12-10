@@ -37,7 +37,7 @@
 		
 		<param type="spacer" /> 
 		
-		<param name="citation_import" type="list" default="1" label="Allow Import" description="Allow importing of citations">
+		<param name="citation_import" type="list" default="1" label="Allow Single Submission" description="Allow single submission of citations.">
 			<option value="0">Not Allowed</option>
 			<option value="1">All Users</option>
 			<option value="2">Only Site Admins</option>
