@@ -135,7 +135,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 		$this->view->filters['year_start']      = JRequest::getInt('year_start', $earliest_year);
 		$this->view->filters['year_end']        = JRequest::getInt('year_end', date("Y"));
 		$this->view->filters['filter']          = JRequest::getVar('filter', '');
-		$this->view->filters['sort']            = JRequest::getVar('sort', 'sec_cnt DESC');
+		$this->view->filters['sort']            = JRequest::getVar('sort', 'created DESC');
 		$this->view->filters['reftype']         = JRequest::getVar('reftype', array('research' => 1, 'education' => 1, 'eduresearch' => 1, 'cyberinfrastructure' => 1));
 		$this->view->filters['geo']             = JRequest::getVar('geo', array('us' => 1, 'na' => 1,'eu' => 1, 'as' => 1));
 		$this->view->filters['aff']             = JRequest::getVar('aff', array('university' => 1, 'industry' => 1, 'government' => 1));
