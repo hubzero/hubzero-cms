@@ -55,7 +55,7 @@ var twitter_feed = 0;
 		}, options);
 		
 		//url for getting user tweets
-		var user_url = "https://api.twitter.com/statuses/user_timeline/{USER}.json?callback=?";
+		var user_url = "https://api.twitter.com/1/statuses/user_timeline.json?screen_name={USER}&callback=?";
 		
 		//url for searching tweets by trend 
 		var trend_url = "https://search.twitter.com/search.json?q={TREND}&callback=?";

@@ -52,7 +52,7 @@ HUB.Twitter = new Class ({
 	},
 	
 	//url for getting user tweets
-	user_url: "https://api.twitter.com/statuses/user_timeline/{USER}.json?callback=Format",
+	user_url: "https://api.twitter.com/1/statuses/user_timeline.json?screen_name={USER}&callback=?",
 	
 	//url for searching tweets by trend
 	trend_url: "https://search.twitter.com/search.json?q={TREND}&callback=Format",
