@@ -115,11 +115,19 @@
 	-moz-border-radius: 7px;
 	border-radius: 7px;
 }
+.uploadfiles p {
+	margin: 0;
+	padding: 0;
+}
 .uploadfiles:before {
 	font-style: normal;
 	left: 7px;
 	top: 7px;
 	content: "\f093";
+}
+.bar {
+	height: 18px;
+	background: green;
 }
 .next-step-publish,
 .next-step-upload {
@@ -198,6 +206,24 @@
 .asset-group-item .checker {
 	margin-right: 0;
 }
+.bar {
+	height: 15px;
+
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+
+	background: #59E80C;
+	background: -webkit-gradient(linear, left top, left bottom, from(#59E80C), to(#49BF0A));
+	background: -webkit-linear-gradient(#59E80C, #49BF0A);
+	background: -moz-linear-gradient(center top, #59E80C 0%, #49BF0A 100%);
+	background: -moz-gradient(center top, #59E80C 0%, #49BF0A 100%);
+	background: -o-linear-gradient(#59E80C, #49BF0A);
+	background-image: -ms-linear-gradient(top, #59E80C 0%, #49BF0A 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#59E80C,endColorstr=#49BF0A);
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#59E80C, endColorstr=#49BF0A)";
+}
+
 /* Progress bar style overrides (from ui defaults) */
 .ui-progressbar {
 	height: 1em;

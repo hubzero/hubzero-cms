@@ -27,7 +27,11 @@ HUB.CoursesOutline = {
 		HUB.CoursesOutline.toggleUnits();
 		HUB.CoursesOutline.showProgressIndicator();
 		HUB.CoursesOutline.makeSortable();
+		HUB.CoursesOutline.makeTitlesEditable();
 		HUB.CoursesOutline.makeUniform();
+		HUB.CoursesOutline.togglePublished();
+		HUB.CoursesOutline.setupFileUploader();
+		HUB.CoursesOutline.resizeFileUploader();
 	},
 
 	toggleUnits: function()
@@ -70,7 +74,7 @@ HUB.CoursesOutline = {
 			$(this).find('.asset-group-item').each(function(){
 				count += 1;
 
-				if($(this).find('.asset-item:not(.nofiles)').length >= 1){
+				if($(this).find('.asset-item').not('.nofiles, .notpublished').length >= 1){
 					haveitems += 1;
 				}
 
@@ -78,33 +82,29 @@ HUB.CoursesOutline = {
 				percentage = (haveitems/count) * 100;
 			});
 
-			if((percentage >= 1) && (percentage <= 33)) {
+			if((percentage >= 1) && (percentage <= 49)) {
 				pclass = 'stop';
-			} else if((percentage >= 34) && (percentage <= 66)) {
+			} else if((percentage >= 50) && (percentage <= 99)) {
 				pclass = 'yield';
-			} else if((percentage >= 67) && (percentage <= 100)) {
+			} else if(percentage == 100) {
 				pclass = 'go';
 			} else {
 				percentage = 1;
 				pclass     = 'stop';
 			}
 
-			$(this).find('.progress-indicator').addClass(pclass);
+			$(this).find('.progress-indicator').removeClass('stop go yield').addClass(pclass);
 
-			// Setup jquery ui progress bar
 			$(this).find('.progress-indicator').progressbar({
 				value: percentage
 			});
-		});
 
-		HUB.CoursesOutline.toggleFileUploader();
+		});
 	},
 
-	toggleFileUploader: function()
+	resizeFileUploader: function()
 	{
 		var $ = this.jQuery;
-
-		//$('.asset-group-item').not('.hasitem').find('.uploadfiles').show();
 
 		$('.asset-group-item').each(function(){
 			var high = $(this).height();
@@ -132,7 +132,10 @@ HUB.CoursesOutline = {
 				$(".placeholder").css('height', $(event.target).height());
 			}
 		});
+	},
 
+	makeTitlesEditable: function()
+	{
 		// Hide inputs and show plain text
 		$('.editable').show();
 		$('.asset-group-item-title-edit').hide();
@@ -147,7 +150,7 @@ HUB.CoursesOutline = {
 			$(this).hide();
 			parent.find('.asset-group-item-title-edit').show();
 
-			parent.find('input[type="text"]:first').css("width", width+20);
+			parent.find('input[type="text"]:first').css("width", width);
 		});
 
 		// Turn editable fields back into divs on cancel
@@ -207,6 +210,133 @@ HUB.CoursesOutline = {
 		var $ = this.jQuery;
 
 		$('.uniform').uniform();
+	},
+
+	togglePublished: function()
+	{
+		var $ = this.jQuery;
+
+		var replacement = '';
+
+		// When clicking publish checkbox
+		$('.unit').on('click', '.published-checkbox', function(){
+			var label = $(this).parents('label').find('span.published-label-text');
+			var item  = $(this).parents('.asset-item');
+			var id    = item.find('.asset_id').val();
+
+			// Create ajax call to change info in the database
+			// @FIXME: remove 'nanotransistors'
+			$.ajax({
+				url: "/courses/nanotransistors/togglepublished",
+				data: "asset_id="+id,
+				dataType: "json",
+				type: 'POST',
+				cache: false,
+				success: function(data){
+					if(data.success) {
+						if(label.html() == 'Published') {
+							replacement = 'Mark as reviewed and publish?';
+							item.removeClass('published').addClass('notpublished');
+						} else {
+							replacement = 'Published';
+							item.removeClass('notpublished').addClass('published');
+						}
+						label.html(replacement);
+
+						HUB.CoursesOutline.showProgressIndicator();
+					} else {
+						// Display the error message
+						HUB.CoursesOutline.errorMessage(data.error);
+					}
+				}
+			});
+		});
+	},
+
+	setupFileUploader: function()
+	{
+		var $ = this.jQuery;
+
+		// Disable default browser drag and drop event
+		$(document).bind('drop dragover', function (e) {
+			e.preventDefault();
+		});
+
+		// Hide the file input
+		$('.uploadfiles input').hide();
+
+		// Set up file uploader on our file upload boxes
+		$('.uploadfiles').each(function(){
+			var assetslist = $(this).parent('.asset-group-item').find('.assets-list');
+			var bar        = $(this).find('.bar');
+
+			$(this).fileupload({
+				dropZone: $(this),
+				dataType: 'json',
+				// @FIXME: remove 'nanotransistors'
+				url: '/courses/nanotransistors/assetupload',
+				done: function (e, data) {
+					if(data.result.success) {
+						if(assetslist.find('li:first').hasClass('nofiles'))
+						{
+							assetslist.find('li:first').remove();
+						}
+						$.each(data.result.files, function (index, file) {
+							var li = '';
+								li += '<li class="asset-item asset ' + file.type + ' notpublished">';
+								li += file.filename;
+								li += ' (<a class="" href="' + file.url + '">preview</a>)';
+								li += '<span class="next-step-publish">';
+								li += '<label class="published-label" for="published">';
+								li += '<span class="published-label-text">Mark as reviewed and publish?</span>';
+								li += '<input class="uniform published-checkbox" name="published" type="checkbox" />';
+								li += '<input type="hidden" class="asset_id" name="' + file.id + '[id]" value="' + file.id + '" />';
+								li += '</label>';
+								li += '</span>';
+								li += '</li>';
+
+							assetslist.append(li);
+
+							assetslist.find('.uniform:last').uniform();
+							HUB.CoursesOutline.showProgressIndicator();
+
+							// Reset progress bar after 2 seconds
+							setTimeout( function(){
+								bar.css('width', '0');
+							},2000);
+						});
+					} else {
+						// Display the error message
+						HUB.CoursesOutline.errorMessage(data.result.error);
+
+						// Reset progress bar
+						bar.css('width', '0');
+					}
+				},
+				progressall: function (e, data) {
+					var progress = parseInt(data.loaded / data.total * 100, 10);
+					$(this).find('.bar').css(
+						'width',
+						progress + '%'
+					);
+				}
+			});
+		});
+	},
+
+	errorMessage: function(message)
+	{
+		var $ = this.jQuery;
+
+		var info = $('#info-message');
+		var msg = '<p>' + message + '</p>';
+
+		// Set dialog box message and title
+		info.html(msg);
+		info.attr('title','Error');
+		info.dialog({
+			modal : true
+		});
 	}
 };
 

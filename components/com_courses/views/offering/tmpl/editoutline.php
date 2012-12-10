@@ -39,6 +39,8 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 	<h2><?php echo $this->title; ?></h2>
 </div>
 
+<div id="info-message"></div>
+
 <div id="content-header-extra">
 	<ul id="useroptions">
 		<li class="last">
@@ -57,152 +59,197 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 ?>
 
 <div class="outline-main">
-	<form name="editoutline" action="index.php" method="POST" id="">
-
-		<ul class="unit sortable">
+	<ul class="unit sortable">
 <?php 
-			foreach ($this->course->offering->units() as $unit)
+		foreach ($this->course->offering->units() as $unit)
+		{
+?>
+		<li class="unit-item">
+			<div class="title unit-title"><?php echo $unit->title; ?>: <?php echo $unit->description; ?></div>
+			<div class="progress-container">
+				<div class="progress-indicator"></div>
+			</div>
+			<div class="clear"></div>
+
+			<ul class="asset-group-type-list sortable">
+<?php
+			foreach($unit->assetgroups() as $agt)
 			{
 ?>
-			<li class="unit-item">
-				<div class="title unit-title"><?php echo $unit->title; ?>: <?php echo $unit->description; ?></div>
-				<div class="progress-container">
-					<div class="progress-indicator"></div>
-				</div>
-				<div class="clear"></div>
-
-				<ul class="asset-group-type-list sortable">
+				<li>
+					<div class="asset-group-title title"><?php echo $agt->get('title'); ?></div>
+					<div class="clear"></div>
+					<ul class="asset-group sortable">
 <?php
-				foreach($unit->assetgroups() as $agt)
+				foreach($agt->children() as $ag)
 				{
 ?>
-					<li>
-						<div class="asset-group-title title"><?php echo $agt->get('title'); ?></div>
-						<div class="clear"></div>
-						<ul class="asset-group sortable">
+						<li class="asset-group-item">
+							<div class="uploadfiles">
+								<p>Drag files here to upload</p>
+								<form action="" class="uploadfiles-form">
+									<input type="file" name="files[]" class="fileupload" multiple />
+									<input type="hidden" name="course_id" value="<?php echo $this->course->get('id') ?>" />
+									<input type="hidden" name="scope_id" value="<?php echo $ag->get('id'); ?>" />
+								</form>
+								<div class="uploadfiles-progress">
+									<div class="bar" style="width: 0%;"></div>
+								</div>
+							</div>
+							<div class="asset-group-item-container">
+								<div class="asset-group-item-title editable title"><?php echo $ag->get('title'); ?></div>
+								<div class="asset-group-item-title-edit">
+									<input class="uniform" type="text" value="<?php echo $ag->get('title'); ?>" />
+									<input class="uniform" type="submit" value="Save" />
+									<input class="uniform" type="reset" value="Cancel" />
+								</div>
 <?php
-					foreach($agt->children() as $ag)
-					{
+						// Loop through the assets
+						if ($ag->assets()->total())
+						{
 ?>
-							<li class="asset-group-item">
-								<div class="uploadfiles">Drag files here to upload</div>
-								<div class="asset-group-item-container">
-									<div class="asset-group-item-title editable title"><?php echo $ag->get('title'); ?></div>
-									<div class="asset-group-item-title-edit">
-										<input class="uniform" type="text" value="<?php echo $ag->get('title'); ?>" />
-										<input class="uniform" type="submit" value="Save" />
-										<input class="uniform" type="reset" value="Cancel" />
-									</div>
+								<ul class="sortable assets-list">
 <?php
-							// Loop through the assets
-							if ($ag->assets()->total())
-							{
-?>
-									<ul class="sortable">
-<?php
-									foreach ($ag->assets() as $a)
+								foreach ($ag->assets() as $a)
+								{
+									$href = $a->path($this->course->get('id'));
+									if ($a->get('type') == 'video')
 									{
-										$href = $a->path($this->course->get('id'));
-										if ($a->get('type') == 'video')
-										{
-											$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
-										}
-?>
-										<li class="asset-item asset <?php echo $a->get('type'); echo ($a->get('state') == 0) ? ' notpublished' : ' published'; ?>">
-											<?php echo $this->escape(stripslashes($a->get('title'))); ?>
-											(<a class="" href="<?php echo $href; ?>">preview</a>)
-
-											<span class="next-step-publish">
-												<label for="published">
-													<?php echo ($a->get('state') == 0) ? 'Mark as reviewed and publish?' : 'Published'; ?>
-													<input 
-														class="uniform"
-														name="published"
-														id="published-checkbox"
-														type="checkbox"
-														<?php echo ($a->get('state') == 0) ? '' : 'checked="checked"'; ?> />
-												</label>
-											</span>
-
-										</li>
-<?php
+										$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
 									}
 ?>
-									</ul>
-<?php
-							}
-							else // no assets in this asset group
-							{
-?>
-								<ul class="sortable">
-									<li class="asset-item asset missing nofiles">
-										No files
-										<span class="next-step-upload">
-											Upload files &rarr;
+									<li class="asset-item asset <?php echo $a->get('type'); echo ($a->get('state') == 0) ? ' notpublished' : ' published'; ?>">
+										<?php echo $this->escape(stripslashes($a->get('title'))); ?>
+										(<a class="" href="<?php echo $href; ?>">preview</a>)
+
+										<span class="next-step-publish">
+											<label class="published-label" for="published">
+												<span class="published-label-text"><?php echo ($a->get('state') == 0) ? 'Mark as reviewed and publish?' : 'Published'; ?></span>
+												<input 
+													class="uniform published-checkbox"
+													name="published"
+													type="checkbox"
+													<?php echo ($a->get('state') == 0) ? '' : 'checked="checked"'; ?> />
+												<input type="hidden" class="asset_id" name="<?php echo $a->get('id'); ?>[id]" value="<?php echo $a->get('id'); ?>" />
+											</label>
 										</span>
+
 									</li>
+<?php
+								}
+?>
 								</ul>
 <?php
-							}
-?>
-								</div>
-							</li>
-							<div class="clear"></div>
-<?php
-					}
-?>
-						</ul>
-<?php
-					if ($agt->assets()->total())
-					{
-?>
-						<ul class="sortable">
-<?php
-						foreach ($agt->assets() as $a)
+						}
+						else // no assets in this asset group
 						{
-							$href = $a->path($this->course->get('id'));
-							if ($a->get('type') == 'video')
-							{
-								$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $agt->get('alias'));
-							}
-							echo '<li><a class="asset ' . $a->get('type') . '" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+?>
+							<ul class="sortable assets-list">
+								<li class="asset-item asset missing nofiles">
+									No files
+									<span class="next-step-upload">
+										Upload files &rarr;
+									</span>
+								</li>
+							</ul>
+<?php
 						}
 ?>
-						</ul>
-<?php
-					}
-?>
-					</li>
+							</div>
+						</li>
+						<div class="clear"></div>
 <?php
 				}
 ?>
-				</ul>
+					</ul>
 <?php
-				if ($unit->assets()->total())
+				if ($agt->assets()->total())
 				{
 ?>
-					<ul>
+					<li class="asset-group-item">
+						<div class="uploadfiles">
+							<p>Drag files here to upload</p>
+							<form action="" class="uploadfiles-form">
+								<input type="file" name="files[]" class="fileupload" multiple />
+								<input type="hidden" name="course_id" value="<?php echo $this->course->get('id') ?>" />
+								<input type="hidden" name="scope_id" value="<?php echo $ag->get('id'); ?>" />
+							</form>
+							<div class="uploadfiles-progress">
+								<div class="bar" style="width: 0%;"></div>
+							</div>
+						</div>
+						<div class="asset-group-item-container">
+							<div class="asset-group-item-title editable title"><?php echo $ag->get('title'); ?></div>
+							<div class="asset-group-item-title-edit">
+								<input class="uniform" type="text" value="<?php echo $ag->get('title'); ?>" />
+								<input class="uniform" type="submit" value="Save" />
+								<input class="uniform" type="reset" value="Cancel" />
+							</div>
+							<ul class="sortable assets-list">
 <?php
-					foreach ($unit->assets() as $a)
+					foreach ($agt->assets() as $a)
 					{
 						$href = $a->path($this->course->get('id'));
 						if ($a->get('type') == 'video')
 						{
-							$href = JRoute::_($base . '&active=outline&a=' . $unit->get('alias'));
+							$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
 						}
-						echo '<li><a class="asset ' . $a.get('type') . '" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+?>
+								<li class="asset-item asset <?php echo $a->get('type'); echo ($a->get('state') == 0) ? ' notpublished' : ' published'; ?>">
+									<?php echo $this->escape(stripslashes($a->get('title'))); ?>
+									(<a class="" href="<?php echo $href; ?>">preview</a>)
+
+									<span class="next-step-publish">
+										<label class="published-label" for="published">
+											<span class="published-label-text"><?php echo ($a->get('state') == 0) ? 'Mark as reviewed and publish?' : 'Published'; ?></span>
+											<input 
+												class="uniform published-checkbox"
+												name="published"
+												type="checkbox"
+												<?php echo ($a->get('state') == 0) ? '' : 'checked="checked"'; ?> />
+											<input type="hidden" class="asset_id" name="<?php echo $a->get('id'); ?>[id]" value="<?php echo $a->get('id'); ?>" />
+										</label>
+									</span>
+
+								</li>
+<?php
 					}
 ?>
-					</ul>
+							</ul>
+						</div>
+					</li>
 <?php
 				}
 ?>
-			</li>
+				</li>
 <?php
 			}
 ?>
-			<li class="add-new unit-item">Add a new unit</li>
-		</ul>
-
-	</form>
+			</ul>
+<?php
+			if ($unit->assets()->total())
+			{
+?>
+				<ul class="assets-list">
+<?php
+				foreach ($unit->assets() as $a)
+				{
+					$href = $a->path($this->course->get('id'));
+					if ($a->get('type') == 'video')
+					{
+						$href = JRoute::_($base . '&active=outline&a=' . $unit->get('alias'));
+					}
+					echo '<li class="asset-group-item"><a class="asset ' . $a.get('type') . '" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+				}
+?>
+				</ul>
+<?php
+			}
+?>
+		</li>
+<?php
+		}
+?>
+		<li class="add-new unit-item">Add a new unit</li>
+	</ul>
 </div>
