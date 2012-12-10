@@ -173,10 +173,14 @@ class CoursesModelAsset extends JObject
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
-	public function path($course=0)
+	public function path($course=0, $withUrl=true)
 	{
 		// /site/courses/{course ID}/{asset ID}/{asset file}
-		$path = DS . trim($this->params->get('uploadpath', '/site/courses'), DS) . DS . $course . DS . $this->get('id') . DS . ltrim($this->get('url'), DS);
+		$path = DS . trim($this->params->get('uploadpath', '/site/courses'), DS) . DS . $course . DS . $this->get('id');
+		if ($withUrl)
+		{
+			$path .= DS . ltrim($this->get('url'), DS);
+		}
 		return $path;
 	}
 

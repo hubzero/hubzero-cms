@@ -120,6 +120,38 @@ class CoursesTableUnit extends JTable
 	}
 
 	/**
+	 * Populate the current object with a database record if found
+	 * Accepts either an alias or an ID
+	 * 
+	 * @param      mixed $oid Unique ID or alias of object to retrieve
+	 * @return     boolean True on success
+	 */
+	public function load($oid=NULL)
+	{
+		if (empty($oid)) 
+		{
+			return false;
+		}
+
+		if (is_numeric($oid)) 
+		{
+			return parent::load($oid);
+		}
+
+		$sql  = "SELECT * FROM $this->_tbl WHERE `alias`='$oid' LIMIT 1";
+		$this->_db->setQuery($sql);
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+	}
+
+	/**
 	 * Override the check function to do a little input cleanup
 	 * 
 	 * @return return true

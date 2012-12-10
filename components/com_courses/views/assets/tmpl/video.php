@@ -36,7 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 $hubpresenter = false;
 
 // Set the path
-$path = rtrim($this->model->path($this->course->get('id')), DS);
+$path = rtrim($this->model->path($this->course->get('id'), false), DS);
 
 // Check to make sure we have a presentation document defining cuepoints, slides, and media
 $manifest_path_json = JPATH_ROOT . $path . DS . 'presentation.json';
@@ -76,7 +76,7 @@ else
 }
 
 // Add Jquery to the page if the system plugin isn't enabled
-if(!JPluginHelper::isEnabled('system', 'jquery'))
+if (!JPluginHelper::isEnabled('system', 'jquery'))
 {
 	// Create the document object
 	$doc =& JFactory::getDocument();
@@ -86,7 +86,7 @@ if(!JPluginHelper::isEnabled('system', 'jquery'))
 }
 
 // If the video type is 'hubpresenter'
-if($hubpresenter)
+if ($hubpresenter)
 {
 	// Set media path
 	$media_path = JPATH_ROOT . $path;
@@ -135,7 +135,7 @@ if($hubpresenter)
 				$this->setError(JText::_('Video Slides must be Uploaded in the Three Standard Formats. You currently only have ' . count($v) . " ({$k}." . implode(", {$k}.", array_keys($v)) . ').'));
 			}
 
-			if (!file_exists($slide_path . DS . $k .'.png')) 
+			if (!file_exists($slide_path . DS . $k . '.png')) 
 			{
 				$this->setError(JText::_('Slides containing video must have a still image of the slide for mobile suport. Please upload an image with the filename "' . $k . '.png".'));
 			}
@@ -171,17 +171,17 @@ else // Not hubpresenter, now try standard HTML5 video
 	$subs      = array();
 
 	// Look for video files and subtitle files in our path
-	$videos    = JFolder::files(JPATH_ROOT . DS . $path, '.mp4|.MP4|.ogv|.OGV|.webm|.WEBM');
-	$video_mp4 = JFolder::files(JPATH_ROOT . DS . $path, '.mp4|.MP4');
+	$videos    = JFolder::files(JPATH_ROOT . DS . $path, '.m4v|.M4V|.mpeg|.MPEG|.mp4|.MP4|.ogv|.OGV|.webm|.WEBM');
+	$video_mp4 = JFolder::files(JPATH_ROOT . DS . $path, '.mp4|.MP4|.m4v|.M4V');
 	$subs      = JFolder::files(JPATH_ROOT . DS . $path, '.srt|.SRT');
 
 	// If there was a video, let's put it in the page
-	if(isset($videos) && !empty($videos))
+	if (isset($videos) && !empty($videos))
 	{
 		// Add HTML5 video-specific scripts and css
-		Hubzero_Document::addComponentScript($this->option, "/assets/presenter/js/flowplayer");
-		Hubzero_Document::addComponentScript($this->option, "/assets/js/video");
-		Hubzero_Document::addComponentStylesheet($this->option, "/assets/css/video.css");
+		Hubzero_Document::addComponentScript($this->option, '/assets/presenter/js/flowplayer');
+		Hubzero_Document::addComponentScript($this->option, '/assets/js/video');
+		Hubzero_Document::addComponentStylesheet($this->option, '/assets/css/video.css');
 
 		// @TODO: it might be nice to detect the native resolution of the video?
 		$width = 854;
@@ -190,19 +190,20 @@ else // Not hubpresenter, now try standard HTML5 video
 }
 ?>
 
-<?php if(!$hubpresenter) : ?>
+<?php if (!$hubpresenter) : ?>
 	<div id="video-container">
-		<?php if(isset($videos) && count($videos) > 0) : ?>
+		<?php if (isset($videos) && is_array($videos) && count($videos) > 0) : ?>
 			<video controls="controls" id="video-player">
-				<?php foreach($videos as $v) : ?>
+				<?php foreach ($videos as $v) : ?>
 					<?php
 						$info = pathinfo($v);
-						$type = "";
-						switch( $info['extension'] )
+						$type = '';
+						switch (strtolower($info['extension']))
 						{
-							case 'mp4': 	$type = 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"';	break;
-							case 'ogv':		$type = 'video/ogg; codecs="theora, vorbis"';			break;
-							case 'webm':	$type = 'video/webm; codecs="vp8, vorbis"';				break;
+							case 'm4v':
+							case 'mp4':  $type = 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"'; break;
+							case 'ogv':  $type = 'video/ogg; codecs="theora, vorbis"';         break;
+							case 'webm': $type = 'video/webm; codecs="vp8, vorbis"';           break;
 						}
 					?>
 					<source src="<?php echo $path . DS . $v; ?>" type="<?php echo $type; ?>" />
@@ -210,8 +211,8 @@ else // Not hubpresenter, now try standard HTML5 video
 			
 				<a href="<?php echo $path . DS . $video_mp4[0]; ?>" id="video-flowplayer" style="<?php echo "width:{$width}px;height:{$height}px;"; ?>"></a>
 			
-				<?php if(count($subs) > 0) : ?>
-					<?php foreach($subs as $s) : ?>
+				<?php if (count($subs) > 0) : ?>
+					<?php foreach ($subs as $s) : ?>
 						<?php $info2 = pathinfo($s); ?>
 						<div data-type="subtitle" data-lang="<?php echo $info2['filename']; ?>" data-src="<?php echo $path . DS . $s; ?>"></div>
 					<?php endforeach; ?>
@@ -245,18 +246,18 @@ else // Not hubpresenter, now try standard HTML5 video
 				<div id="slides">
 					<ul class="no-js">
 						<?php $counter = 0; ?>
-						<?php foreach($presentation->slides as $slide) : ?>
+						<?php foreach ($presentation->slides as $slide) : ?>
 							<li id="slide_<?php echo $counter; ?>" title="<?php echo $slide->title; ?>" time="<?php echo $slide->time; ?>">
-								<?php if($slide->type == 'Image') : ?>
-									<img src="<?php echo $content_folder.DS.$slide->media; ?>" alt="<?php echo $slide->title; ?>" />
+								<?php if ($slide->type == 'Image') : ?>
+									<img src="<?php echo $content_folder . DS . $slide->media; ?>" alt="<?php echo $slide->title; ?>" />
 								<?php else : ?>
 									<video class="slidevideo">  
-										<?php foreach($slide->media as $source): ?>
-											<source src="<?php echo $content_folder.DS.$source->source; ?>" /> 
+										<?php foreach ($slide->media as $source): ?>
+											<source src="<?php echo $content_folder . DS . $source->source; ?>" /> 
 										<?php endforeach; ?>
-										<a href="<?php echo $content_folder.DS.$slide->media[0]->source; ?>" class="flowplayer_slide" id="flowplayer_slide_<?php echo $counter; ?>"></a> 
+										<a href="<?php echo $content_folder . DS . $slide->media[0]->source; ?>" class="flowplayer_slide" id="flowplayer_slide_<?php echo $counter; ?>"></a> 
 									</video>
-									<img src="<?php echo $content_folder.DS.$slide->media[3]->source; ?>" alt="<?php echo $slide->title; ?>" class="imagereplacement">
+									<img src="<?php echo $content_folder . DS . $slide->media[3]->source; ?>" alt="<?php echo $slide->title; ?>" class="imagereplacement">
 								<?php endif; ?>
 							</li>
 							<?php $counter++; ?>
@@ -285,37 +286,37 @@ else // Not hubpresenter, now try standard HTML5 video
 							&& strtolower($presentation->type) == 'video') ? "move-left": ""; ?>
 			<div id="presenter-right">
 				<div id="media" class="<?php echo $cls; ?>">
-					<?php if(strtolower($presentation->type) == 'video') : ?>
+					<?php if (strtolower($presentation->type) == 'video') : ?>
 						<video id="player" preload="auto" controls="controls">
-							<?php foreach($presentation->media as $source): ?>
+							<?php foreach ($presentation->media as $source): ?>
 							   	<?php
-									switch( $source->type )
+									switch (strtolower($source->type))
 									{
-										case 'mp4': 	$type = 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"';	break;
-										case 'ogv':		$type = 'video/ogg; codecs="theora, vorbis"';			break;
-										case 'webm':	$type = 'video/webm; codecs="vp8, vorbis"';				break;
+										case 'mp4':  $type = 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"'; break;
+										case 'ogv':  $type = 'video/ogg; codecs="theora, vorbis"';         break;
+										case 'webm': $type = 'video/webm; codecs="vp8, vorbis"';           break;
 									}
 								?>
-							   	<source src="<?php echo $content_folder.DS.$source->source; ?>" type='<?php echo $type; ?>'>
+								<source src="<?php echo $content_folder . DS . $source->source; ?>" type='<?php echo $type; ?>'>
 							<?php endforeach; ?>
-							<a href="<?php echo $content_folder.DS.$presentation->media[0]->source; ?>" id="flowplayer"></a>
+							<a href="<?php echo $content_folder . DS . $presentation->media[0]->source; ?>" id="flowplayer"></a>
 						</video>
 					<?php else : ?>
 						<audio id="player" preload="auto" controls="controls">
-							<?php foreach($presentation->media as $source): ?>
-								<source src="<?php echo $content_folder.DS.$source->source; ?>" />
+							<?php foreach ($presentation->media as $source): ?>
+								<source src="<?php echo $content_folder . DS . $source->source; ?>" />
 							<?php endforeach; ?>
-							<a href="<?php echo $content_folder.DS.$presentation->media[0]->source; ?>" id="flowplayer" duration="<?php if($presentation->duration) { echo $presentation->duration; } ?>"></a>
+							<a href="<?php echo $content_folder . DS . $presentation->media[0]->source; ?>" id="flowplayer" duration="<?php if ($presentation->duration) { echo $presentation->duration; } ?>"></a>
 						</audio>
 					<?php endif; ?>
 				</div>
 				<div id="list">
 					<ul id="list_items">
 						<?php $num = 0; $counter = 0; $last_slide_id = 0; ?>
-						<?php foreach($presentation->slides as $slide) : ?>
-							<?php if((int)$slide->slide != $last_slide_id) : ?>
+						<?php foreach ($presentation->slides as $slide) : ?>
+							<?php if ((int)$slide->slide != $last_slide_id) : ?>
 								<li id="list_<?php echo $counter; ?>">
-									<img src="<?php echo $content_folder.DS.$slide->media; ?>" alt="<?php echo $slide->title; ?>" />
+									<img src="<?php echo $content_folder . DS . $slide->media; ?>" alt="<?php echo $slide->title; ?>" />
 									<span>
 										<?php 
 											$num++;
@@ -324,7 +325,7 @@ else // Not hubpresenter, now try standard HTML5 video
 											echo ($num) . ". ";
 											echo substr($slide->title, 0, $max);
 
-											if(strlen($slide->title) > $max)
+											if (strlen($slide->title) > $max)
 												echo $elipsis;
 										?>
 									</span>

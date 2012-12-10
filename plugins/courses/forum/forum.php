@@ -286,6 +286,95 @@ class plgCoursesForum extends Hubzero_Plugin
 	/**
 	 * Set redirect and message
 	 * 
+	 * @param      object $url  URL to redirect to
+	 * @param      object $msg  Message to send
+	 * @return     void
+	 */
+	public function onCourseAfterLecture($course, $unit, $lecture)
+	{
+		$database = JFactory::getDBO();
+
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'category.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'section.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'attachment.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
+		//require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'pagination.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'tags.php');
+
+		ximport('Hubzero_Plugin_View');
+		$view = new Hubzero_Plugin_View(
+			array(
+				'folder'  => 'courses',
+				'element' => $this->_name,
+				'name'    => 'threads',
+				'layout'  => 'lecture'
+			)
+		);
+
+		$view->course  = $course;
+		$view->unit    = $unit;
+		$view->lecture = $lecture;
+		$view->option  = 'com_courses';
+		$view->notifications = $this->getPluginMessage();
+
+		// Incoming
+		$view->filters = array();
+		$view->filters['limit']    = JRequest::getInt('limit', 25);
+		$view->filters['start']    = JRequest::getInt('limitstart', 0);
+		$view->filters['section']  = JRequest::getVar('section', '');
+		$view->filters['category'] = JRequest::getVar('category', '');
+		$view->filters['parent']   = 0; //JRequest::getInt('thread', 0);
+		$view->filters['state']    = 1;
+		$view->filters['scope']    = 'course';
+		$view->filters['scope_id'] = $course->get('id');
+
+		$view->post = new ForumPost($database);
+
+		$view->total = 0;
+		$view->rows = null;
+		// Load the topic
+		/*$view->post->load($view->filters['parent']);
+
+		// Get reply count
+		$view->total = $view->post->getCount($view->filters);
+
+		// Get replies
+		$view->rows = $view->post->getRecords($view->filters);
+
+		// Record the hit
+		$view->participants = $view->post->getParticipants($view->filters);
+
+		// Get attachments
+		$view->attach = new ForumAttachment($this->database);
+		$view->attachments = $view->attach->getAttachments($view->post->id);
+
+		// Get tags on this article
+		$view->tModel = new ForumTags($this->database);
+		$view->tags = $view->tModel->get_tag_cloud(0, 0, $view->post->id);*/
+
+		// Initiate paging
+		jimport('joomla.html.pagination');
+		$view->pageNav = new JPagination(
+			$view->total, 
+			$view->filters['start'], 
+			$view->filters['limit']
+		);
+
+		// Set any errors
+		if ($this->getError()) 
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
+		}
+
+		return $view->loadTemplate();
+	}
+
+	/**
+	 * Set redirect and message
+	 * 
 	 * @param      string $url  URL to redirect to
 	 * @param      string $msg  Message to send
 	 * @param      string $type Message type (message, error, warning, info)
