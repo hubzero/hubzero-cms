@@ -26,7 +26,7 @@
 			<option value="both">Number and Type</option>
 			<option value="none">None</option>
 		</param>
-		<param name="citation_rollover" type="list" default="no" label="Citations Rollover" description="Display citation notes when mousing over each citation. Can be overridden per citation.">
+		<param name="citation_rollover" type="list" default="no" label="Citations Rollover" description="Display citation 'Abstract' when mousing over each citation. Can be overridden per citation.">
 			<option value="no">No</option>
 			<option value="yes">Yes</option>
 		</param>
