@@ -223,7 +223,7 @@ if ($label == "none") {
 				<input class="entry-search-submit" type="submit" value="Search" />
 				<fieldset class="entry-search">
 					<legend>Search Citations</legend>
-					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->filters['search']; ?>" placeholder="Search Citations by Title, Author, ISBN, DOI, Publisher, and Abstract" />
+					<input type="text" name="search" id="entry-search-field" value="<?php echo stripslashes($this->filters['search']); ?>" placeholder="Search Citations by Title, Author, ISBN, DOI, Publisher, and Abstract" />
 				</fieldset>
 			</div><!-- /.container .data-entry -->
 			<div class="container">
