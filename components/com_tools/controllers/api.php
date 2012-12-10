@@ -10,12 +10,16 @@ class ToolsApiController extends Hubzero_Api_Controller
 
 		switch($this->segments[0]) 
 		{
-			case 'info':		$this->info();		break;
-			case 'list':		$this->listTools();	break;
-			case 'invoke':		$this->invoke();	break;
-			case 'view':		$this->view();		break;
-			case 'stop':		$this->stop();		break;
-			case 'storage':		$this->storage();	break;
+			case 'storage':		$this->storage();				break;
+			case 'purge':		$this->purge();					break;
+			
+			case 'info':		$this->info();					break;
+			case 'list':		$this->listTools();				break;
+			case 'screenshot':	$this->sessionScreenshot();		break;
+			case 'invoke':		$this->invoke();				break;
+			case 'view':		$this->view();					break;
+			case 'stop':		$this->stop();					break;
+			
 			default:			$this->listTools();
 		}
 	}
@@ -55,7 +59,8 @@ class ToolsApiController extends Hubzero_Api_Controller
 		$path = DS . $com_tools_params->get('storagepath', 'webdav' . DS . 'home') . DS . $result->get('username');
 		
 		jimport('joomla.filesystem.folder');
-		$files = JFolder::files( $path, '.', true, true, array('.svn', 'CVS') );
+		$files = array();
+		//$files = JFolder::files( $path, '.', true, true, array('.svn', 'CVS') );
 		
 		//return result
 		$object = new stdClass();
@@ -63,6 +68,75 @@ class ToolsApiController extends Hubzero_Api_Controller
 		$this->setMessageType( $format );
 		$this->setMessage( $object );
 	}
+	
+	private function purge()
+	{
+		//get the userid and attempt to load user profile
+		$userid = JFactory::getApplication()->getAuthn('user_id');
+		$result = Hubzero_User_Profile::getInstance($userid);
+		
+		//make sure we have a user
+		if ($result === false)	return $this->not_found();
+		
+		//get request vars
+		$format = JRequest::getVar('format', 'application/json');
+		$degree = JRequest::getVar('degree', '');
+		
+		//get the hubs storage host
+		$tool_params = JComponentHelper::getParams('com_tools');
+		$storage_host = $tool_params->get('storagehost', '');
+		
+		//check to make sure we have a storage host
+		if($storage_host == '')
+		{
+			die('no storage host');
+		}
+		
+		//check to make sure we have a degree
+		$accepted_degrees = array(
+			'default' => 'Minimally',
+			'olderthan1' => 'Older than 1 Day',
+			'olderthan7' => 'Older than 7 Days',
+			'olderthan30' => 'Older than 30 Days',
+			'all' => 'All'
+		);
+		if($degree == '' || !in_array($degree, array_keys($accepted_degrees)))
+		{
+			die('no degree supplied');
+		}
+		
+		//var to hold purge info
+		$info = array();
+		
+		//open stream
+		if (!$fp = stream_socket_client($storage_host, $error_num, $error_str, 30)) 
+		{
+			die("$error_str ($error_num)");
+		}
+		else 
+		{
+			fwrite($fp, 'purge user=' . $result->get('username') . ",degree=$degree \n");
+			while (!feof($fp))
+			{
+				$info[] = fgets($fp, 1024) . "\n";
+			}
+			fclose($fp);
+		}
+		
+		//trim array values
+		$info = array_map("trim", $info);
+		
+		//
+		if(in_array('Success.', $info))
+		{
+			//return result
+			$object = new stdClass();
+			$object->purge = array('degree' => $accepted_degrees[$degree], 'success' => 1);
+			$this->setMessageType( $format );
+			$this->setMessage( $object );
+		}
+	}
+	
 	
 	private function info()
 	{
@@ -197,6 +271,76 @@ class ToolsApiController extends Hubzero_Api_Controller
 		$this->setMessage( $object );
 	}
 	
+	private function sessionScreenshot()
+	{
+		//get the userid and attempt to load user profile
+		$userid = JFactory::getApplication()->getAuthn('user_id');
+		$result = Hubzero_User_Profile::getInstance($userid);
+		
+		//make sure we have a user
+		if ($result === false)	return $this->not_found();
+		
+		//get any request vars
+		$format = JRequest::getVar('format', 'png');
+		$sessionid = JRequest::getVar('sessionid', '');
+		
+		$f = IMAGETYPE_PNG;
+		if($format == 'jpeg' || $format == 'jpg')
+		{
+			$f = IMAGETYPE_JPEG;
+		}
+		else if($format == 'gif')
+		{
+			$f = IMAGETYPE_GIF;
+		}
+		
+		//check to make sure we have a valid sessionid
+		if($sessionid == '' || !is_numeric($sessionid))
+		{
+			die("no session id");
+		}
+		
+		//import HUBzero image lib
+		ximport('Hubzero_Image');
+		
+		// check to make sure we have a home directory
+		$home_directory = DS .'webdav' . DS . 'home' . DS . strtolower($result->get('username'));
+		if(!is_dir($home_directory))
+		{
+			die("no home dir");
+		}
+		
+		//check to make sure we have a sessions dir
+		$home_directory .= DS . 'data' . DS . 'sessions';
+		if(!is_dir($home_directory))
+		{
+			die("no sessions dir");
+		}
+		
+		//check to make sure we have an active session with the ID supplied
+		$home_directory .= DS . $sessionid . 'L';
+		if(!is_dir($home_directory))
+		{
+			$response = $this->getResponse();
+			$response->setErrorMessage(404,"No Session with the ID: " . $sessionid);
+			return;
+		}
+		
+		// check to make sure we have a screenshot
+		$screenshot = $home_directory . DS . 'screenshot.png';
+		if(!file_exists($screenshot))
+		{
+			$response = $this->getResponse();
+			$response->setErrorMessage(404, 'No screenshot Found');
+			return;
+		}
+		
+		//load image and serve up
+		$image = new Hubzero_image( $screenshot );
+		$this->setMessageType( 'image/' . $format );
+		$image->setImageType( $f );
+		$image->display();
+	}
 	
 	private function invoke()
 	{
