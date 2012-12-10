@@ -51,16 +51,16 @@
 		
 		<param type="spacer" />
 		
-		<param name="citation_download" type="list" default="1" label="Allow Download" description="Allow downloading of citations">
+		<param name="citation_download" type="list" default="1" label="Allow Single Export" description="Allow downloading of single citation">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
 		
-		<param name="citation_batch_download" type="list" default="1" label="Allow Batch Download" description="Allow batch downloading of citations">
+		<param name="citation_batch_download" type="list" default="1" label="Allow Bulk Export" description="Allow bulk downloading of citations">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param> 
-		<param name="citation_download_exclude" type="textarea" rows="5" cols="50" default="" label="Exclude from Download" description="Fields to exclude from export." />
+		<param name="citation_download_exclude" type="textarea" rows="5" cols="50" default="" label="Exclude from Export" description="Fields to exclude from export." />
 		
 		<param type="spacer" />
 		

@@ -256,6 +256,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 		$citation = JRequest::getVar('citation', array(), 'post');
 		$citation = array_map('trim', $citation);
 		$exclude = JRequest::getVar('exclude', '', 'post');
+		$rollover = JRequest::getInt("rollover", 0);
 
 		// Bind incoming data to object
 		$row = new CitationsCitation($this->database);
@@ -275,6 +276,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 		//set params
 		$cparams = new $paramsClass($this->_getParams($row->id));
 		$cparams->set('exclude', $exclude);
+		$cparams->set('rollover', $rollover);
 		$row->params = $cparams->toString();
 
 		// New entry so set the created date

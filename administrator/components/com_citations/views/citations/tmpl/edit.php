@@ -418,12 +418,53 @@ function submitbutton(pressbutton)
 		<?php endif; ?>
 		
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Exclude from Download'); ?></span></legend>
+			<legend><span><?php echo JText::_('Exclude from Export'); ?></span></legend>
 			<table class="adminform">
 				<tbody>
 					<tr>
 						<td>
 							<textarea name="exclude" rows="10" style="width:98%;"><?php echo $this->params->get('exclude'); ?></textarea>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</fieldset>
+		
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('Abstract Rollover'); ?></span></legend>
+			<table class="adminform">
+				<tbody>
+					<tr>
+						<td>
+							<?php
+								$rollovers = $this->config->get("citation_rollover", "no");
+								$rollover = $this->params->get("rollover");
+								
+								//check the the global setting
+								if($rollovers == 'yes')
+								{
+									$ckd = 'checked="checked"';
+								}
+								else
+								{
+									$ckd = '';
+								}
+								
+								//check this citations setting
+								if($rollover == 1) 
+								{
+									$ckd = 'checked="checked"';
+								}
+								elseif($rollover == 0 && is_numeric($rollover))
+								{
+									$ckd = '';
+								}
+								else
+								{
+									$ckd = $ckd;
+								}
+							?>
+							<input type="checkbox" name="rollover" value="1" <?php echo $ckd; ?> />Show Abstract in Rollover
 						</td>
 					</tr>
 				</tbody>

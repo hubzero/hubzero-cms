@@ -37,6 +37,7 @@ ximport('Hubzero_View_Helper_Html');
 //citation params
 $label = $this->config->get("citation_label", "number");
 $rollover = $this->config->get("citation_rollover", "no");
+$rollover = ($rollover == "yes") ? 1 : 0;
 $template = $this->config->get("citation_format", "");
 
 //batch downloads
@@ -322,8 +323,12 @@ if ($label == "none") {
 									<?php endif; ?>
 									<td class="citation-container">
 										<?php echo $formatter->formatCitation($cite, $this->filters['search'], $coins, $this->config); ?>
-
-										<?php if ($rollover == "yes" && $cite->abstract != "") : ?>
+										<?php
+											//get this citations rollover param
+											$params = new JParameter($cite->params);
+											$citation_rollover = $params->get('rollover', $rollover);
+										?>
+										<?php if ($citation_rollover && $cite->abstract != "") : ?>
 											<div class="citation-notes">
 												<?php
 													$cs = new CitationsSponsor($this->database);
