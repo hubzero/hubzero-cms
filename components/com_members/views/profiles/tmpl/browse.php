@@ -166,7 +166,9 @@ if (count($this->rows) > 0)
 
 	$dfthumb = DS . ltrim($config->get('defaultpic'), DS);
 	$dfthumb = Hubzero_View_Helper_Html::thumbit($dfthumb);
-
+echo "<pre>";
+print_r($dfthumb);
+echo "</pre>";
 	// User messaging
 	$messaging = false;
 	if ($this->config->get('user_messaging') > 0 && !$juser->get('guest')) 
@@ -256,9 +258,9 @@ if (count($this->rows) > 0)
 
 		// User picture
 		$uthumb = '';
-		if ($row->picture) {
-			$uthumb = $thumb . DS . Hubzero_View_Helper_Html::niceidformat($row->uidNumber) . DS . $row->picture;
-			$uthumb = Hubzero_View_Helper_Html::thumbit($uthumb);
+		if ($row->picture) 
+		{
+			$uthumb = $thumb . DS . Hubzero_View_Helper_Html::niceidformat($row->uidNumber) . DS . 'thumb.png';
 		}
 
 		if ($uthumb && is_file(JPATH_ROOT . $uthumb)) 
