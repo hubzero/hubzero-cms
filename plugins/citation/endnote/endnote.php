@@ -328,7 +328,14 @@ class plgCitationEndnote extends JPlugin
 			if ($ct) 
 			{
 				$parts = explode('-', $ct);
-				$tags[$parts[0]] = array($parts[1]);
+				if(in_array($parts[0], array_keys($tags)))
+				{
+					$tags[$parts[0]][] = $parts[1];
+				}
+				else
+				{
+					$tags[$parts[0]] = array($parts[1]);
+				}
 			}
 		}
 
