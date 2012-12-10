@@ -78,6 +78,7 @@ class CitationFormat
 		"eprint" => "{E-PRINT}",
 		"note" => "{TEXT SNIPPET/NOTES}",
 		"organization" => "{ORGANIZATION}",
+		"abstract" => "{ABSTRACT}",
 		"year" => "{YEAR}",
 		"month" => "{MONTH}",
 		"search_string" => "{SECONDARY LINK}",
