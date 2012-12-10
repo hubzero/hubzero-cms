@@ -281,6 +281,18 @@
 
 /* [!] HACKS - Firefox 3.4 and older */
 @-moz-document url-prefix() {
+	html.firefox3 .passed:before,
+	html.firefox3 #system-message dd.message:before,
+	html.firefox3 .help:before,
+	html.firefox3 #system-message dd.help:before,
+	html.firefox3 .error:before,
+	html.firefox3 #system-message dd.error:before,
+	html.firefox3 .warning:before,
+	html.firefox3 #system-message dd.warning:before,
+	html.firefox3 .info:before,
+	html.firefox3 #system-message dd.info:before {
+		content: "";
+	}
 	html.firefox3 .help,
 	html.firefox3 #system-message dd.help { 
 		background-image: url("/media/system/images/help.png");
