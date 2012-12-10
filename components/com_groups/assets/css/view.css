@@ -726,6 +726,7 @@
 		padding: 0;
 		background: transparent;
 		text-align: center;
+		max-width:99%;
 	}
 	#page_content .figcaption {
 		display: block;
