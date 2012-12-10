@@ -1,0 +1,93 @@
+<?php
+/**
+ * Basic Template
+ *
+ * Template used for Special Groups. Will now be auto-created 
+ * when admin switches group from type HUB to type Special.
+ *
+ * @author 		Christopher Smoak
+ * @copyright	December 2012
+ */
+
+
+/**
+ * Import Needed HUBzero Libraries
+ */
+ximport("Hubzero_Document");
+
+
+/**
+ * Instantiate Needed Joomla Objects
+ */
+$uri 			=& JFactory::getURI();
+$user 			=& JFactory::getUser();
+$database 		=& JFactory::getDBO();
+$document 		=& JFactory::getDocument();
+$application 	=& JFactory::getApplication();
+
+
+/**
+ * Get Request Vars
+ */
+$no_html = JRequest::getVar("no_html", 0);
+
+
+/**
+ * Get Vars From View
+ */
+$tab = $this->tab;
+$group = $this->group;
+
+?>
+
+<?php if (!$no_html) : ?>
+<div class="special-group">
+	<div class="special-group-header">
+		<h1>
+			<a href="/groups/<?php echo $group->get('cn'); ?>"><?php echo $group->get('description'); ?> <span>[<?php echo $group->get('cn'); ?>]</span></a>
+		</h1>
+		<ul class="special-group-toolbar clearfix">
+			<?php if($user->get('guest') == 1) : ?>
+				<li>
+					<a href="/login?return=<?php echo base64_encode(DS . 'groups' . DS . $group->get('cn')); ?>">Login</a>
+				</li>
+			<?php elseif(!in_array($user->get('id'), $group->get('members'))) : ?>
+				<li>
+					<a href="/groups/<?php echo $group->get('cn'); ?>/join">Join Group</a>
+				</li>
+			<?php else : ?>
+				<li>
+					<a href="/logout?return=<?php echo base64_encode(DS . 'groups' . DS . $group->get('cn')); ?>">Logout (<?php echo $user->get('name'); ?>)</a>
+				</li>
+			<?php endif; ?>
+		</ul>
+	</div>
+	<ul class="special-group-menu clearfix">
+		<?php
+			/**
+			 * DONT EDIT UNLESS WANTING TO REMOVE AUTOMATIC MENU
+			 *
+			 * Comment out line if you want to create your own static menu
+			 */
+			echo Hubzero_Group_Helper::displayGroupMenu($this->group,$this->sections,$this->hub_group_plugins,$this->group_plugin_access,$this->pages,$this->tab); 
+		?>
+	</ul>
+	<div class="special-group-content-container">
+		<div class="special-group-content-title">
+			<h2><?php echo ucfirst($tab); ?></h2>
+		</div>
+		<div class="special-group-content group_<?php echo $tab; ?>">
+<?php endif; ?>
+			<?php
+				/**
+				 * DO NOT EDIT UNLESS WANTING TO REMOVE AUTOMATIC CONTENT
+				 * 
+				 * Comment out line if you want to display your own content
+				 */
+				echo Hubzero_Group_Helper::displayGroupContent($this->sections,$this->hub_group_plugins,$this->tab);
+			?>
+<?php if (!$no_html) : ?>
+		</div>
+	</div>
+</div>
+<?php endif; ?>

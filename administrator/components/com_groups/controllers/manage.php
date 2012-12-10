@@ -461,7 +461,7 @@ class GroupsControllerManage extends Hubzero_Controller
 		}
 		$group->set('description', $g['description']);
 		$group->set('privacy', $g['privacy']);
-		$group->set('access', $g['access']);
+		//$group->set('access', $g['access']);
 		$group->set('join_policy', $g['join_policy']);
 		$group->set('public_desc', $g['public_desc']);
 		$group->set('private_desc', $g['private_desc']);
@@ -473,14 +473,70 @@ class GroupsControllerManage extends Hubzero_Controller
 		$group->set('params', $params);
 
 		$group->update();
-
+		
+		// handle special groups
+		if($this->checkSpecialGroupTask( $group ))
+		{
+			$this->handleSpecialGroupTask( $group );
+		}
+		
 		// Output messsage and redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
 			JText::_('COM_GROUPS_SAVED')
 		);
 	}
-
+	
+	private function checkSpecialGroupTask( $group )
+	{
+		return ($group->get('type') == 3) ? true : false;
+	}
+	
+	private function handleSpecialGroupTask( $group )
+	{
+		//get the upload path for groups
+		$upload_path = trim($this->config->get('uploadpath', '/site/groups'), DS);
+		
+		//path to the template
+		$template_path = JPATH_ROOT . DS . $upload_path . DS . $group->get('gidNumber') . DS . 'template';
+		
+		//paths to default php & css files
+		$php_file = JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_groups' . DS . 'special' . DS . 'default.php.txt';
+		$css_file = JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_groups' . DS . 'special' . DS . 'default.css.txt';
+		$js_file = JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_groups' . DS . 'special' . DS . 'default.js.txt';
+		
+		//check tempalte folder already exists then do nothing
+		if(is_dir($template_path))
+		{
+			return;
+		}
+		
+		//create template directory and add basic special group template
+		if(!mkdir($template_path, 0770, true))
+		{
+			die('Failed to make template directory.');
+		}
+		
+		//copy over basic PHP
+		if(!copy($php_file, $template_path . DS . 'default.php'))
+		{
+			die('Failed to copy the default PHP template file.');
+		}
+		
+		//copy over basic CSS
+		if(!copy($css_file, $template_path . DS . 'default.css'))
+		{
+			die('Failed to copy the default CSS template file.');
+		}
+		
+		//copy over basic JS
+		if(!copy($js_file, $template_path . DS . 'default.js'))
+		{
+			die('Failed to copy the default Javascript template file.');
+		}
+	}
+	
+	
 	/**
 	 * Removes a group and all associated information
 	 *
