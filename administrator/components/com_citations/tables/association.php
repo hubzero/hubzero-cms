@@ -94,6 +94,11 @@ class CitationsAssociation extends JTable
 			$this->setError(JText::_('ASSOCIATION_MUST_HAVE_CITATION_ID'));
 			return false;
 		}
+		if (trim($this->tbl) == '') 
+		{
+			$this->setError(JText::_('Association must have a citation type.'));
+			return false;
+		}
 		if (trim($this->oid) == '') 
 		{
 			$this->setError(JText::_('ASSOCIATION_MUST_HAVE_OBJECT_ID'));

@@ -307,14 +307,24 @@ class CitationsControllerCitations extends Hubzero_Controller
 		foreach ($arr as $a)
 		{
 			$a = array_map('trim',$a);
-
+			
 			// Initiate extended database class
 			$assoc = new CitationsAssociation($this->database);
-
-			if (!$this->_isempty($a, $ignored)) 
+			
+			//check to see if we should delete
+			if(isset($a['id']) && $a['tbl'] == '' && $a['oid'] == '')
+			{
+				// Delete the row
+				if (!$assoc->delete($a['id'])) 
+				{
+					JError::raiseError(500, $assoc->getError());
+					return;
+				}
+			}
+			else if($a['tbl'] != '' || $a['oid'] != '')
 			{
 				$a['cid'] = $row->id;
-
+				
 				// bind the data
 				if (!$assoc->bind($a)) 
 				{
@@ -335,23 +345,17 @@ class CitationsControllerCitations extends Hubzero_Controller
 					JError::raiseError(500, $assoc->getError());
 					return;
 				}
-			} 
-			elseif ($this->_isEmpty($a, $ignored) && !empty($a['id'])) 
-			{
-				// Delete the row
-				if (!$assoc->delete($a['id'])) 
-				{
-					JError::raiseError(500, $assoc->getError());
-					return;
-				}
 			}
 		}
 
 		//save sponsors on citation
 		$sponsors = JRequest::getVar('sponsors', array(), 'post');
-		$cs = new CitationsSponsor($this->database);
-		$cs->addSponsors($row->id, $sponsors);
-
+		if($sponsors)
+		{
+			$cs = new CitationsSponsor($this->database);
+			$cs->addSponsors($row->id, $sponsors);
+		}
+		
 		//citation tags object
 		$ct = new CitationTags($this->database);
 

@@ -472,10 +472,6 @@ class CitationFormat
 		$downloading = $config->get('citation_download', 1);
 		$openurls = $config->get('citation_openurl', 1);
 
-		$internally_cited_image = $config->get('citation_cited', 0);
-		$internally_cited_image_single = $config->get('citation_cited_single', '');    
-		$internally_cited_image_multiple = $config->get('citation_cited_multiple', '');
-
 		$html  = '';
 
 		//are we allowing downloading
@@ -493,7 +489,7 @@ class CitationFormat
 		}
 		
 		//citation association - to HUB resources
-		$html .= $this->citationAssociation( $citation );
+		$html .= $this->citationAssociation( $config, $citation );
 		
 		return $html;
 	}
@@ -602,9 +598,13 @@ class CitationFormat
 		return $html;
 	}
 	
-	public function citationAssociation( $citation )
+	public function citationAssociation( $config, $citation )
 	{
 		$html = "";
+		
+		$internally_cited_image = $config->get('citation_cited', 0);
+		$internally_cited_image_single = $config->get('citation_cited_single', '');    
+		$internally_cited_image_multiple = $config->get('citation_cited_multiple', '');
 		
 		//database
 		$database =& JFactory::getDBO();

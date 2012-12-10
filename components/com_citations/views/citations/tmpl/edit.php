@@ -348,9 +348,9 @@ $badges_list = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'badg
 			<table id="assocs">
 				<thead>
 					<tr>
-						<th><?php echo JText::_('ID'); ?></th>
 						<th><?php echo JText::_('TYPE'); ?></th>
-						<th><?php echo JText::_('TABLE'); ?></th>
+						<th><?php echo JText::_('ID'); ?></th>
+						<!--<th><?php //echo JText::_('TABLE'); ?></th>-->
 					</tr>
 				</thead>
 				<tfoot>
@@ -377,22 +377,22 @@ $badges_list = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'badg
 								$this->assocs[$i]->tbl = NULL;
 							}
 							echo "\t\t\t".'  <tr>'."\n";
-							echo "\t\t\t".'   <td><input type="text" name="assocs['.$i.'][oid]" value="'.$this->assocs[$i]->oid.'" /></td>'."\n";
-							echo "\t\t\t".'   <td><input type="text" name="assocs['.$i.'][type]" value="'.$this->assocs[$i]->type.'" /></td>'."\n";
-							echo "\t\t\t".'   <td><select name="assocs['.$i.'][table]">'."\n";
+							//echo "\t\t\t".'   <td><input type="text" name="assocs['.$i.'][type]" value="'.$this->assocs[$i]->type.'" /></td>'."\n";
+							echo "\t\t\t".'   <td><select name="assocs['.$i.'][tbl]">'."\n";
 							echo ' <option value=""';
 							echo ($this->assocs[$i]->tbl == '') ? ' selected="selected"': '';
 							echo '>'.JText::_('SELECT').'</option>'."\n";
-							echo ' <option value="content"';
-							echo ($this->assocs[$i]->tbl == 'content') ? ' selected="selected"': '';
-							echo '>'.JText::_('CONTENT').'</option>'."\n";
+							//echo ' <option value="content"';
+							//echo ($this->assocs[$i]->tbl == 'content') ? ' selected="selected"': '';
+							//echo '>'.JText::_('CONTENT').'</option>'."\n";
 							echo ' <option value="resource"';
 							echo ($this->assocs[$i]->tbl == 'resource') ? ' selected="selected"': '';
 							echo '>'.JText::_('RESOURCE').'</option>'."\n";
-							echo ' <option value="topic"';
-							echo ($this->assocs[$i]->tbl == 'topic') ? ' selected="selected"': '';
-							echo '>'.JText::_('TOPIC').'</option>'."\n";
-							echo '</select>'."\n";
+							//echo ' <option value="topic"';
+							//echo ($this->assocs[$i]->tbl == 'topic') ? ' selected="selected"': '';
+							//echo '>'.JText::_('TOPIC').'</option>'."\n";
+							echo '</select></td>'."\n";
+							echo "\t\t\t".'   <td><input type="text" name="assocs['.$i.'][oid]" value="'.$this->assocs[$i]->oid.'" /></td>'."\n";
 							echo "\t\t\t\t".'<input type="hidden" name="assocs['.$i.'][id]" value="'.$this->assocs[$i]->id.'" />'."\n";
 							echo "\t\t\t\t".'<input type="hidden" name="assocs['.$i.'][cid]" value="'.$this->assocs[$i]->cid.'" /></td>'."\n";
 							echo "\t\t\t".'  </tr>'."\n";

@@ -276,9 +276,9 @@ function submitbutton(pressbutton)
 			<table class="admintable" id="assocs">
 				<thead>
 					<tr>
-						<th><?php echo JText::_('ID'); ?></th>
 						<th><?php echo JText::_('TYPE'); ?></th>
-						<th><?php echo JText::_('TABLE'); ?></th>
+						<th><?php echo JText::_('ID'); ?></th>
+						<!--<th><?php //echo JText::_('TABLE'); ?></th>-->
 					</tr>
 				</thead>
 				<tfoot>
@@ -306,22 +306,22 @@ function submitbutton(pressbutton)
 								$assocs[$i]->tbl = NULL;
 							}
 							echo '  <tr>'."\n";
-							echo '   <td><input type="text" name="assocs['.$i.'][oid]" value="'.$assocs[$i]->oid.'" size="5" /></td>'."\n";
-							echo '   <td><input type="text" name="assocs['.$i.'][type]" value="'.$assocs[$i]->type.'" size="5" /></td>'."\n";
-							echo '   <td><select name="assocs['.$i.'][table]">'."\n";
+							//echo '   <td><input type="text" name="assocs['.$i.'][type]" value="'.$assocs[$i]->type.'" size="5" /></td>'."\n";
+							echo '   <td><select name="assocs['.$i.'][tbl]">'."\n";
 							echo ' <option value=""';
 							echo ($assocs[$i]->tbl == '') ? ' selected="selected"': '';
 							echo '>'.JText::_('SELECT').'</option>'."\n";
-							echo ' <option value="content"';
-							echo ($assocs[$i]->tbl == 'content') ? ' selected="selected"': '';
-							echo '>'.JText::_('CONTENT').'</option>'."\n";
+							//echo ' <option value="content"';
+							//echo ($assocs[$i]->tbl == 'content') ? ' selected="selected"': '';
+							//echo '>'.JText::_('CONTENT').'</option>'."\n";
 							echo ' <option value="resource"';
 							echo ($assocs[$i]->tbl == 'resource') ? ' selected="selected"': '';
 							echo '>'.JText::_('RESOURCE').'</option>'."\n";
-							echo ' <option value="topic"';
-							echo ($assocs[$i]->tbl == 'topic') ? ' selected="selected"': '';
-							echo '>'.JText::_('TOPIC').'</option>'."\n";
+							//echo ' <option value="topic"';
+							//echo ($assocs[$i]->tbl == 'topic') ? ' selected="selected"': '';
+							//echo '>'.JText::_('TOPIC').'</option>'."\n";
 							echo '</select>'."\n";
+							echo '   <td><input type="text" name="assocs['.$i.'][oid]" value="'.$assocs[$i]->oid.'" size="5" /></td>'."\n";
 							echo '<input type="hidden" name="assocs['.$i.'][id]" value="'.$assocs[$i]->id.'" />'."\n";
 							echo '<input type="hidden" name="assocs['.$i.'][cid]" value="'.$assocs[$i]->cid.'" /></td>'."\n";
 							echo '  </tr>'."\n";

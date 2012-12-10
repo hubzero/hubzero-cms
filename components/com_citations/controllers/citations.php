@@ -561,10 +561,21 @@ class CitationsControllerCitations extends Hubzero_Controller
 			// Initiate extended database class
 			$assoc = new CitationsAssociation($this->database);
 
-			if (!$this->_isempty($a, $ignored)) 
+			//check to see if we should delete
+			if(isset($a['id']) && $a['tbl'] == '' && $a['oid'] == '')
+			{
+				// Delete the row
+				if (!$assoc->delete($a['id'])) 
+				{
+					$this->setError($assoc->getError());
+					$this->editTask();
+					return;
+				}
+			}
+			else if($a['tbl'] != '' || $a['oid'] != '')
 			{
 				$a['cid'] = $row->id;
-
+				
 				// bind the data
 				if (!$assoc->bind($a)) 
 				{
@@ -583,16 +594,6 @@ class CitationsControllerCitations extends Hubzero_Controller
 
 				// Store new content
 				if (!$assoc->store()) 
-				{
-					$this->setError($assoc->getError());
-					$this->editTask();
-					return;
-				}
-			} 
-			elseif ($this->_isempty($a, $ignored) && !empty($a['id'])) 
-			{
-				// Delete the row
-				if (!$assoc->delete($a['id'])) 
 				{
 					$this->setError($assoc->getError());
 					$this->editTask();
@@ -832,8 +833,8 @@ class CitationsControllerCitations extends Hubzero_Controller
 		// Clean all output buffers (needs PHP > 4.2.0)
 		while (@ob_end_clean());
 
-		$fsize = filesize($p . $f);
-		$mod_date = date('r', filemtime($p . $f));
+		$fsize = filesize($p . DS. $f);
+		$mod_date = date('r', filemtime($p . DS . $f));
 
 		$cont_dis = $inline ? 'inline' : 'attachment';
 
