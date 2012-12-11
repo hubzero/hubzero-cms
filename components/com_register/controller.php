@@ -741,7 +741,9 @@ class RegisterController extends Hubzero_Controller
 
 		if (!$this->juser->get('guest') && !$this->juser->get('tmp_user')) 
 		{
-			return JError::raiseError(500, JText::_('COM_REGISTER_ERROR_NONGUEST_SESSION_CREATION'));
+			$app =& JFactory::getApplication();
+			$app->redirect("/members/myaccount", JText::_('COM_REGISTER_ERROR_NONGUEST_SESSION_CREATION'), "warning");
+			return;
 		}
 
 		if ($this->juser->get('auth_link_id')) 
