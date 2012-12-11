@@ -24,8 +24,10 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+$reveal = strtolower(JRequest::getWord('reveal', ''));
 ?>
-<div id="hubzilla" style="top: <?php echo $this->params->get('posTop', 'auto'); ?>; right: <?php echo $this->params->get('posRight', '5px'); ?>; bottom: <?php echo $this->params->get('posBottom', '5px'); ?>; left: <?php echo $this->params->get('posLeft', 'auto'); ?>;">
+<div id="hubzilla"<?php if ($reveal == 'eastereggs') { echo ' class="revealed"'; } ?> style="top: <?php echo $this->params->get('posTop', 'auto'); ?>; right: <?php echo $this->params->get('posRight', '5px'); ?>; bottom: <?php echo $this->params->get('posBottom', '5px'); ?>; left: <?php echo $this->params->get('posLeft', 'auto'); ?>;">
 	<audio preload="auto" id="hubzilla-roar">
 		<source src="/modules/mod_hubzilla/sounds/roar.ogg" type="audio/ogg" />
 		<source src="/modules/mod_hubzilla/sounds/roar.mp3" type="audio/mp3" />

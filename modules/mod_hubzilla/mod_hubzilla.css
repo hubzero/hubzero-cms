@@ -28,3 +28,6 @@
 		width: 320px;
 		height: 280px;
 	}
+	.revealed {
+		border: 1px solid #c00;
+	}
