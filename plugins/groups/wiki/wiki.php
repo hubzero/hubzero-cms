@@ -104,6 +104,28 @@ class plgGroupsWiki extends JPlugin
 		}
 
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'revision.php');
+
+		$page = new WikiPage(JFactory::getDBO());
+		$arr['metadata']['count'] = $page->getPagesCount(array(
+			'group' => $group->get('cn')
+		));
+		if ($arr['metadata']['count'] <= 0)
+		{
+			define('WIKI_SUBPAGE_SEPARATOR', '/');
+			define('WIKI_MAX_PAGENAME_LENGTH', 100);
+
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'setup.php');
+
+			$result = WikiSetup::initialize('com_groups', $group->get('cn'));
+			if ($result) 
+			{
+				$this->setError($result);
+			}
+			$arr['metadata']['count'] = $page->getPagesCount(array(
+				'group' => $group->get('cn')
+			));
+		}
 
 		// Determine if we need to return any HTML (meaning this is the active plugin)
 		if ($return == 'html') 
@@ -157,7 +179,6 @@ class plgGroupsWiki extends JPlugin
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'author.php');
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'comment.php');
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'log.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'revision.php');
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'page.php');
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'html.php');
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'setup.php');
@@ -238,11 +259,6 @@ class plgGroupsWiki extends JPlugin
 			// Return the content
 			$arr['html'] = $content;
 		}
-
-		$page = new WikiPage(JFactory::getDBO());
-		$arr['metadata']['count'] = $page->getPagesCount(array(
-			'group' => $group->get('cn')
-		));
 
 		// Return the output
 		return $arr;
