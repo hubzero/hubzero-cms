@@ -228,11 +228,19 @@ if ($this->role_filter)
 								}
 								$guser = $this->groupusers[($i+$this->start)];
 
-								$u = Hubzero_User_Profile::getInstance($guser);
-								if (!is_object($u)) {
-									continue;
-								} elseif (preg_match("/^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $guser)) {
+								$u = Hubzero_User_Profile::getInstance($guser);	
+								if (preg_match("/^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $guser)) 
+								{
 									$inviteemail = true;
+									$pic = '/components/com_groups/assets/img/emailthumb.png';
+								}
+								else if(!is_object($u))
+								{
+									continue;
+								}
+								else
+								{
+									$pic = Hubzero_User_Profile_Helper::getMemberPhoto($u, 0);
 								}
 
 								switch ($this->filter)
@@ -257,13 +265,13 @@ if ($this->role_filter)
 									break;
 								}
 
-								if ($juser->get('id') == $u->get('uidNumber')) {
+								if (is_object($u) && $juser->get('id') == $u->get('uidNumber')) {
 									$cls .= ' me';
 								}
 ?>
 						<tr<?php echo ($cls) ? ' class="' . $cls . '"' : ''; ?>>
 							<td class="photo">
-								<img width="50" height="50" src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($u, 0); ?>" alt="Photo for <?php echo $this->escape(stripslashes($u->get('name'))); ?>" />
+								<img width="50" height="50" src="<?php echo $pic; ?>" alt="Photo for <?php //echo $this->escape(stripslashes($u->get('name'))); ?>" />
 							</td>
 							<td>
 								<?php if ($inviteemail) { ?>
@@ -387,7 +395,7 @@ if ($this->role_filter)
 									$html .= "\t\t\t\t".'<td class="remove-member"> </td>'."\n";
 									$html .= "\t\t\t\t".'<td class="demote-member"> </td>'."\n";
 								}
-								if ($juser->get('id') == $u->get('uidNumber') || $this->filter == 'invitees' || $this->filter == 'pending') {
+								if (is_object($u) && $juser->get('id') == $u->get('uidNumber') || $this->filter == 'invitees' || $this->filter == 'pending') {
 									$html .= "\t\t\t\t".'<td class="message-member"> </td>'."\n";
 								} else {
 									if (!$inviteemail && ($this->authorized == 'manager' || $this->authorized == 'admin') && $this->messages_acl != 'nobody') {

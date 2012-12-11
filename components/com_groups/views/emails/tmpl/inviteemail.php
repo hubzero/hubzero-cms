@@ -48,8 +48,8 @@ if ($this->msg) {
 }
 
 $message .= "If you already have a registered account on ".$this->sitename.", click or copy and paste the link below into a browser window. \r\n";
-//$sef = JRoute::_('index.php?option='.$this->option.'&gid='. $this->group->get('cn').'&task=accept&token='.$this->token);
-$sef = JRoute::_('index.php?option='.$this->option.'&gid='. $this->group->get('cn').'&task=accept');
+$sef = JRoute::_('index.php?option='.$this->option.'&gid='. $this->group->get('cn').'&task=accept&token='.$this->token);
+//$sef = JRoute::_('index.php?option='.$this->option.'&gid='. $this->group->get('cn').'&task=accept');
 if (substr($sef,0,1) == '/') {
 	$sef = substr($sef,1,strlen($sef));
 }
@@ -72,8 +72,8 @@ $message .= "--------------------------------------------\n\n";
 
 $message .= "If you DO NOT have an account on " . $this->sitename . ", please follow this link! \n\n";
 
-//$return = DS . "groups" . DS . $this->group->get('cn') . DS . "accept?token=" . $this->token;
-$return = DS . "groups" . DS . $this->group->get('cn') . DS . "accept";
+$return = DS . "groups" . DS . $this->group->get('cn') . DS . "accept?token=" . $this->token;
+//$return = DS . "groups" . DS . $this->group->get('cn') . DS . "accept";
 
 $sef = JRoute::_('index.php?option=com_register');
 if (substr($sef,0,1) == '/') {
