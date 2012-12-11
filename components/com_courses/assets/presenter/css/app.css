@@ -82,7 +82,7 @@ a:focus {
 	width: 960px;
 	margin: 20px auto;
 	border: 5px solid #222;
-	-webkit-border-radius: 5px;
+	/*-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	-o-border-radius: 5px;
 	-ms-border-radius: 5px;
@@ -90,7 +90,7 @@ a:focus {
 	border-radius: 5px;
 	-webkit-box-shadow: 0 0 5px #000;
 	-moz-box-shadow: 0 0 5px #000;
-	box-shadow: 0 0 5px #000;
+	box-shadow: 0 0 5px #000;*/
 	}
 #presenter-content {
 	overflow:hidden;
@@ -107,7 +107,20 @@ a:focus {
 	float:left;
 	width:320px;
 	}
-
+/* Hide the sidebar if the page is too narrow */
+@media only screen and (max-width: 1064px) {
+	#presenter-container {
+		width: 640px;
+	}
+	#presenter-right {
+		width: 640px;
+	}
+	#presenter-right #media,
+	#presenter-right #list {
+		float: left;
+		width: 320px;
+	}
+}
 
 /*---------------------------------------------------------------
     Header

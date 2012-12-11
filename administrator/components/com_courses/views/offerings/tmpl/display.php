@@ -30,6 +30,16 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$dateFormat = '%d %b %Y';
+$timeFormat = '%I:%M %p';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M Y';
+	$timeFormat = 'H:i p';
+	$tz = true;
+}
+
 $canDo = CoursesHelper::getActions('offering');
 
 JToolBarHelper::title(JText::_('COM_COURSES'), 'courses.png');
@@ -140,7 +150,7 @@ foreach ($this->rows as $row)
 <?php } ?>
 				</td> -->
 				<td>
-					<?php echo JHTML::_('date', $row->get('publish_up'), '%d %b %Y'); ?>
+					<?php echo JHTML::_('date', $row->get('publish_up'), $dateFormat, $tz); ?>
 				</td>
 				<td>
 <?php /*if ($canDo->get('core.edit.state')) { ?>
@@ -158,12 +168,12 @@ foreach ($this->rows as $row)
 					</a>
 					<?php } ?>
 <?php }*/ ?>
-					<?php echo JHTML::_('date', $row->get('start_date'), '%d %b %Y'); ?>
+					<?php echo JHTML::_('date', $row->get('start_date'), $dateFormat, $tz); ?>
 					 - 
-					<?php echo JHTML::_('date', $row->get('end_date'), '%d %b %Y'); ?>
+					<?php echo JHTML::_('date', $row->get('end_date'), $dateFormat, $tz); ?>
 				</td>
 				<td>
-					<?php echo ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('publish_down'), '%d %b %Y') : JText::_('(never)'); ?>
+					<?php echo ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('publish_down'), $dateFormat, $tz) : JText::_('(never)'); ?>
 				</td>
 				<td>
 <?php if ($canDo->get('core.manage')) { ?>

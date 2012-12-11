@@ -533,7 +533,10 @@ class CoursesModelOffering extends JObject
 
 			$tbl = new CoursesTableMember($this->_db);
 
-			$filters['offering_id'] = (int) $this->get('id');
+			if (!isset($filters['offering_id']))
+			{
+				$filters['offering_id'] = (int) $this->get('id');
+			}
 
 			return $tbl->count($filters);
 		}
@@ -544,7 +547,10 @@ class CoursesModelOffering extends JObject
 
 			$tbl = new CoursesTableMember($this->_db);
 
-			$filters['offering_id'] = (int) $this->get('id');
+			if (!isset($filters['offering_id']))
+			{
+				$filters['offering_id'] = (int) $this->get('id');
+			}
 
 			$results = array();
 
@@ -583,7 +589,10 @@ class CoursesModelOffering extends JObject
 
 			$tbl = new CoursesTableRole($this->_db);
 
-			$filters['offering_id'] = (int) $this->get('id');
+			if (!isset($filters['offering_id']))
+			{
+				$filters['offering_id'] = array(0, (int) $this->get('id'));  // 0 = default roles
+			}
 
 			return $tbl->count($filters);
 		}
@@ -594,7 +603,10 @@ class CoursesModelOffering extends JObject
 
 			$tbl = new CoursesTableRole($this->_db);
 
-			$filters['offering_id'] = array(0, (int) $this->get('id'));  // 0 = default roles
+			if (!isset($filters['offering_id']))
+			{
+				$filters['offering_id'] = array(0, (int) $this->get('id'));  // 0 = default roles
+			}
 
 			if (!($results = $tbl->find($filters)))
 			{
@@ -651,7 +663,10 @@ class CoursesModelOffering extends JObject
 
 			$tbl = new CoursesTablePage($this->_db);
 
-			$filters['offering_id'] = (int) $this->get('id');
+			if (!isset($filters['offering_id']))
+			{
+				$filters['offering_id'] = (int) $this->get('id');
+			}
 
 			return $tbl->count($filters);
 		}
@@ -662,7 +677,10 @@ class CoursesModelOffering extends JObject
 
 			$tbl = new CoursesTablePage($this->_db);
 
-			$filters['offering_id'] = (int) $this->get('id');
+			if (!isset($filters['offering_id']))
+			{
+				$filters['offering_id'] = (int) $this->get('id');
+			}
 
 			if (!($results = $tbl->find($filters)))
 			{

@@ -65,6 +65,20 @@ class CoursesTableMember extends JTable
 	var $permissions = NULL;
 
 	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $section_id = NULL;
+
+	/**
+	 * datetime(0000-00-00 00:00:00)
+	 * 
+	 * @var string
+	 */
+	var $enrolled = NULL;
+
+	/**
 	 * Contructor method for JTable class
 	 * 
 	 * @param  database object

@@ -35,6 +35,7 @@ ximport('Hubzero_Controller');
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'member.php');
 
 /**
  * Courses controller class for managing membership and course info
@@ -61,13 +62,13 @@ class CoursesControllerStudents extends Hubzero_Controller
 		);
 
 		$this->view->offering = CoursesModelOffering::getInstance($this->view->filters['offering']);
-		if (!$this->view->offering->exists())
+		/*if (!$this->view->offering->exists())
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=courses'
 			);
 			return;
-		}
+		}*/
 		$this->view->course = CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
 
 		$this->view->filters['search']  = urldecode(trim($app->getUserStateFromRequest(
@@ -140,6 +141,9 @@ class CoursesControllerStudents extends Hubzero_Controller
 
 		$this->view->setLayout('edit');
 
+		$offering = JRequest::getInt('offering', 0);
+		$this->view->offering = CoursesModelOffering::getInstance($offering);
+
 		if (is_object($model))
 		{
 			$this->view->row = $model;
@@ -152,22 +156,17 @@ class CoursesControllerStudents extends Hubzero_Controller
 			// Get the single ID we're working with
 			if (is_array($ids))
 			{
-				$id = (!empty($ids)) ? $ids[0] : '';
+				$id = (!empty($ids)) ? $ids[0] : 0;
 			}
 			else
 			{
-				$id = '';
+				$id = 0;
 			}
 
-			$this->view->row = CoursesModelOffering::getInstance($id);
+			$this->view->row = CoursesModelMember::getInstance($id, $offering);
 		}
 
-		if (!$this->view->row->get('course_id'))
-		{
-			$this->view->row->set('course_id', JRequest::getInt('course', 0));
-		}
-
-		$this->view->course = CoursesModelCourse::getInstance($this->view->row->get('course_id'));
+		$this->view->course = CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
 
 		// Set any errors
 		if ($this->getError())

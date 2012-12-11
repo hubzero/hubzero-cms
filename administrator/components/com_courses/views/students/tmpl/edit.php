@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
 
-$canDo = CoursesHelper::getActions('course');
+$canDo = CoursesHelper::getActions('member');
 
 JToolBarHelper::title(JText::_('COM_COURSES').': <small><small>[ ' . $text . ' ]</small></small>', 'courses.png');
 if ($canDo->get('core.edit')) 
@@ -67,9 +67,9 @@ function submitbutton(pressbutton)
 	}
 	
 	// form field validation
-	if ($('field-alias').value == '') {
+	if ($('field-user_id').value == '') {
 		alert('<?php echo JText::_('COM_COURSES_ERROR_MISSING_INFORMATION'); ?>');
-	} else if ($('field-title').value == '') {
+	} else if ($('field-offering_id').value == '') {
 		alert('<?php echo JText::_('COM_COURSES_ERROR_MISSING_INFORMATION'); ?>');
 	} else {
 		submitform(pressbutton);
@@ -84,21 +84,21 @@ function submitbutton(pressbutton)
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_COURSES_DETAILS'); ?></span></legend>
 			
-			<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
-			<input type="hidden" name="fields[course_id]" value="<?php echo $this->row->get('course_id'); ?>" />
+			<input type="hidden" name="fields[section_id]" value="<?php echo $this->row->get('section_id'); ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 			<input type="hidden" name="task" value="save" />
+			<input type="hidden" name="offering" value="<?php echo $this->row->get('offering_id'); ?>" />
 			
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<td class="key"><label for="field-alias"><?php echo JText::_('Alias'); ?>:</label></td>
-						<td><input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" size="50" /></td>
+						<td class="key"><label for="field-user_id"><?php echo JText::_('User ID'); ?>:</label></td>
+						<td><input type="text" name="fields[user_id]" id="field-user_id" value="<?php echo $this->escape(stripslashes($this->row->get('user_id'))); ?>" size="50" /></td>
 					</tr>
 					<tr>
-						<td class="key"><label for="field-title"><?php echo JText::_('COM_COURSES_TITLE'); ?>:</label></td>
-						<td><input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" size="50" /></td>
+						<td class="key"><label for="field-offering_id"><?php echo JText::_('Offering ID'); ?>:</label></td>
+						<td><input type="text" name="fields[offering_id]" id="field-offering_id" value="<?php echo $this->escape(stripslashes($this->row->get('offering_id'))); ?>" size="50" /></td>
 					</tr>
 				</tbody>
 			</table>
@@ -110,65 +110,34 @@ function submitbutton(pressbutton)
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<td class="paramlist_key"><label for="publish_up">Offering starts:</label></th>
+						<td class="paramlist_key"><label for="enrolled">Offering starts:</label></th>
 						<td>
-							<?php echo JHTML::_('calendar', $this->row->get('publish_up'), 'fields[publish_up]', 'publish_up', "%Y-%m-%d", array('class' => 'inputbox')); ?>
-						</td>
-					</tr>
-					<tr>
-						<td class="paramlist_key"><label for="publish_down">Start live:</label></th>
-						<td>
-							<?php echo JHTML::_('calendar', $this->row->get('start_date'), 'fields[start_date]', 'start_date', "%Y-%m-%d", array('class' => 'inputbox')); ?>
-						</td>
-					</tr>
-					<tr>
-						<td class="paramlist_key"><label for="publish_down">Finish live:</label></th>
-						<td>
-							<?php echo JHTML::_('calendar', $this->row->get('end_date'), 'fields[end_date]', 'end_date', "%Y-%m-%d", array('class' => 'inputbox')); ?>
-						</td>
-					</tr>
-					<tr>
-						<td class="paramlist_key"><label for="publish_down">Offering ends:</label></th>
-						<td>
-							<?php echo JHTML::_('calendar', $this->row->get('publish_down'), 'fields[publish_down]', 'publish_down', "%Y-%m-%d", array('class' => 'inputbox')); ?>
+							<?php echo JHTML::_('calendar', $this->row->get('enrolled'), 'fields[enrolled]', 'enrolled', "%Y-%m-%d", array('class' => 'inputbox')); ?>
 						</td>
 					</tr>
 				</tbody>
 			</table>
-		</fieldset>
-
-		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Managers'); ?></span></legend>
-<?php if ($this->row->get('id')) { ?>
-			<iframe width="100%" height="400" name="managers" id="managers" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=supervisors&amp;tmpl=component&amp;id=<?php echo $this->row->get('id'); ?>"></iframe>
-<?php } else { ?>
-			<p><?php echo JText::_('Course must be saved before managers can be added.'); ?></p>
-<?php } ?>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
 		<table class="meta" summary="<?php echo JText::_('COM_COURSES_META_SUMMARY'); ?>">
 			<tbody>
 				<tr>
-					<th><?php echo JText::_('Course ID'); ?></th>
-					<td><?php echo $this->escape($this->row->get('course_id')); ?></td>
+					<th><?php echo JText::_('Offering ID'); ?></th>
+					<td><?php echo $this->escape($this->row->get('offering_id')); ?></td>
+				</tr>
+				<tr>
+					<th><?php echo JText::_('Section ID'); ?></th>
+					<td><?php echo $this->escape($this->row->get('section_id')); ?></td>
 				</tr>
 				<tr>
 					<th><?php echo JText::_('ID'); ?></th>
-					<td><?php echo $this->escape($this->row->get('id')); ?></td>
+					<td><?php echo $this->escape($this->row->get('user_id')); ?></td>
 				</tr>
-<?php if ($this->row->get('created')) { ?>
+<?php if ($this->row->get('enrolled')) { ?>
 				<tr>
-					<th><?php echo JText::_('Created'); ?></th>
-					<td><?php echo $this->escape($this->row->get('created')); ?></td>
-				</tr>
-<?php } ?>
-<?php if ($this->row->get('created_by')) { ?>
-				<tr>
-					<th><?php echo JText::_('Creator'); ?></th>
-					<td><?php 
-					$creator = JUser::getInstance($this->row->get('created_by'));
-					echo $this->escape(stripslashes($creator->get('name'))); ?></td>
+					<th><?php echo JText::_('Enrolled'); ?></th>
+					<td><?php echo $this->escape($this->row->get('enrolled')); ?></td>
 				</tr>
 <?php } ?>
 			</tbody>
