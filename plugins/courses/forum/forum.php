@@ -81,7 +81,7 @@ class plgCoursesForum extends Hubzero_Plugin
 	 * @param      array   $areas      Active area(s)
 	 * @return     array
 	 */
-	public function onCourse($config, $course, $instance, $action='', $access, $areas=null)
+	public function onCourse($config, $course, $offering, $action='', $access, $areas=null)
 	{
 		$return = 'html';
 		$active = $this->_name;
@@ -89,7 +89,7 @@ class plgCoursesForum extends Hubzero_Plugin
 
 		// The output array we're returning
 		$arr = array(
-			'html'=>'',
+			'html' => '',
 			'name' => $active
 		);
 
@@ -104,10 +104,45 @@ class plgCoursesForum extends Hubzero_Plugin
 				return $arr;
 			}
 		}
+
 		$this->config = $config;
+		$this->course = $course;
+		$this->offering = $offering;
+		$this->database = JFactory::getDBO();
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'section.php');
+
+		$this->section = new ForumSection($this->database);
+		/*$sections = $this->section->getRecords(array(
+			'state'    => 1, 
+			'scope'    => 'course',
+			'scope_id' => $offering->get('id')
+		));
+		if (!$sections || count($sections) < 1)*/
+		if (!$this->section->loadByAlias($this->offering->get('alias'), $this->offering->get('id'), 'course'))
+		{
+			// Create a default section
+			$this->section->title    = $offering->get('title');
+			$this->section->alias    = $offering->get('alias');
+			$this->section->scope    = 'course';
+			$this->section->scope_id = $offering->get('id');
+			$this->section->state    = 1;
+			if ($this->section->check())
+			{
+				$this->section->store();
+			}
+		}
+
 		// Determine if we need to return any HTML (meaning this is the active plugin)
 		if ($return == 'html') 
 		{
+			//include 
+			//require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'category.php');
+			//require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'section.php');
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'attachment.php');
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'pagination.php');
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'tags.php');
 			//set course members plugin access level
 			//$course_plugin_acl = $access[$active];
 
@@ -115,34 +150,117 @@ class plgCoursesForum extends Hubzero_Plugin
 			$this->juser = JFactory::getUser();
 
 			//get the course members
-			$members = $course->get('members');
+			//$members = $course->get('members');
 
 			//if set to nobody make sure cant access
-			if (!$this->config->get('access-view-instance')) 
+			if (!$this->offering->access('view')) 
 			{
 				$arr['html'] = '<p class="info">' . JText::sprintf('COURSES_PLUGIN_REQUIRES_MEMBER', JText::_('PLG_COURSES_' . strtoupper($this->_name))) . '</p>';
 				return $arr;
 			}
 
-			//user vars
-			$this->authorized = $authorized;
+			// Load the section
+			//$section = new ForumSection($this->database);
+			//$section->loadByAlias($this->offering->get('alias'), $this->offering->get('id'), 'course');
 
-			//course vars
-			$this->course = $course;
-			$this->members = $members;
+			// Get a category count
+			// There should be a category for each unit
+			$category = new ForumCategory($this->database);
+			if (!$category->getCount(array('section_id' => $this->section->get('id'))))
+			{
+				if ($this->offering->units()->total() > 0)
+				{
+					foreach ($this->offering->units() as $unit)
+					{
+						$cat = new ForumCategory($this->database);
+						$cat->section_id = $this->section->get('id');
+						$cat->title = $unit->get('title');
+						$cat->alias = $unit->get('alias');
+						$cat->description = JText::sprintf('Discussions for %s', $unit->get('title'));
+						$cat->state = 1;
+						$cat->scope = 'course';
+						$cat->scope_id = $this->offering->get('id');
+						if ($cat->check())
+						{
+							$cat->store();
+						}
+					}
+				}
+			}
 
 			//option and paging vars
-			$this->option = $option;
-			$this->name = substr($option, 4, strlen($option));
+			$this->option = 'com_courses';
+			$this->name = 'courses';
 			$this->limitstart = JRequest::getInt('limitstart', 0);
 			$this->limit = JRequest::getInt('limit', 20);
-			$this->database = JFactory::getDBO();
+			//$this->database = JFactory::getDBO();
 
-			$juri = JURI::getInstance();
+			JRequest::setVar('section', $offering->get('alias'));
+
+			$u = JRequest::getVar('unit', '');
+			switch ($u)
+			{
+				case 'edit':
+					$action = 'editsection';
+				break;
+				case 'delete':
+					$action = 'deletesection';
+				break;
+				case 'new':
+					$action = 'editcategory';
+				break;
+				default:
+					if ($u)
+					{
+						JRequest::setVar('category', $u);
+						$action = 'categories';
+					}
+				break;
+			}
+
+			$b = JRequest::getVar('b', '');
+			switch ($b)
+			{
+				case 'edit':
+					$action = 'editcategory';
+				break;
+				case 'delete':
+					$action = 'deletecategory';
+				break;
+				case 'new':
+					$action = 'editthread';
+				break;
+				default:
+					if ($b)
+					{
+						JRequest::setVar('thread', $b);
+						$action = 'threads';
+					}
+				break;
+			}
+
+			$c = JRequest::getVar('c', '');
+			switch ($c)
+			{
+				case 'edit':
+					$action = 'editthread';
+				break;
+				case 'delete':
+					$action = 'deletethread';
+				break;
+				default:
+					if ($c)
+					{
+						JRequest::setVar('post', $c);
+					}
+				break;
+			}
+
+			/*$juri = JURI::getInstance();
 			$path = $juri->getPath();
 			if (strstr($path, '/')) 
 			{
-				$path = str_replace('/courses/' . $this->course->get('cn') . '/forum', '', $path);
+				$path = str_replace('/courses/' . $this->course->get('alias') . '/forum', '', $path);
 				$path = ltrim($path, DS);
 
 				$bits = explode('/', $path);
@@ -222,62 +340,46 @@ class plgCoursesForum extends Hubzero_Plugin
 					JRequest::setVar('file', $bits[4]);
 					$action = 'download';
 				}
-			}
+			}*/
 			$action = JRequest::getVar('action', $action, 'post');
 
 			//push the stylesheet to the view
 			ximport('Hubzero_Document');
-			Hubzero_Document::addPluginStylesheet('courses', 'forum');
-			Hubzero_Document::addPluginScript('courses', 'forum');
+			Hubzero_Document::addPluginStylesheet('courses', $this->_name);
+			Hubzero_Document::addPluginScript('courses', $this->_name);
 
-			//include 
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'category.php');
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'section.php');
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'attachment.php');
-			
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'pagination.php');
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'tags.php');
-
-			/*$controllerName = JRequest::getCmd('cntrl', 'sections');
-			if (!file_exists(JPATH_ROOT . DS . 'plugins' . DS . 'courses' . DS . 'forum' . DS . 'controllers' . DS . $controllerName . '.php'))
-			{
-				$controllerName = 'sections';
-			}
-			require_once(JPATH_ROOT . DS . 'plugins' . DS . 'courses' . DS . 'forum' . DS . 'controllers' . DS . $controllerName . '.php');
-			$controllerName = 'PlgForumController' . ucfirst(strtolower($controllerName));
-
-			// Instantiate controller
-			$controller = new $controllerName();
-			$controller->course = $course;
-			$controller->authorized = $authorized;
-			$controller->option = $option;
-			$arr['html'] .= $controller->execute($action);
-			$controller->redirect();*/
-			
 			switch ($action)
 			{
 				case 'sections':       $arr['html'] .= $this->sections();       break;
 				case 'savesection':    $arr['html'] .= $this->savesection();    break;
 				case 'deletesection':  $arr['html'] .= $this->deletesection();  break;
-				
+
 				case 'categories':     $arr['html'] .= $this->categories();     break;
 				case 'savecategory':   $arr['html'] .= $this->savecategory();   break;
 				case 'newcategory':    $arr['html'] .= $this->editcategory();   break;
 				case 'editcategory':   $arr['html'] .= $this->editcategory();   break;
 				case 'deletecategory': $arr['html'] .= $this->deletecategory(); break;
-				
+
 				case 'threads':        $arr['html'] .= $this->threads();        break;
 				case 'savethread':     $arr['html'] .= $this->savethread();     break;
 				case 'editthread':     $arr['html'] .= $this->editthread();     break;
 				case 'deletethread':   $arr['html'] .= $this->deletethread();   break;
-				
+
 				case 'download':       $arr['html'] .= $this->download();       break;
 				case 'search':         $arr['html'] .= $this->search();         break;
 
 				default: $arr['html'] .= $this->sections(); break;
 			}
 		}
+
+		$tModel = new ForumPost($this->database);
+
+		$arr['metadata']['count'] = $tModel->getCount(array(
+			'scope'    => 'course',
+			'scope_id' => $offering->get('id'),
+			'state'    => 1,
+			'parent'   => 0
+		));
 
 		// Return the output
 		return $arr;
@@ -402,7 +504,7 @@ class plgCoursesForum extends Hubzero_Plugin
 		if (!$this->juser->get('guest')) 
 		{
 			$this->params->set('access-view-' . $assetType, false);
-			if (in_array($this->juser->get('id'), $this->members))
+			if (in_array($this->juser->get('id'), $this->offering->members()))
 			{
 				$this->params->set('access-view-' . $assetType, true);
 			}
@@ -413,7 +515,7 @@ class plgCoursesForum extends Hubzero_Plugin
 					$this->params->set('access-view-' . $assetType, false);
 				}
 			}
-			
+
 			$this->params->set('access-create-' . $assetType, false);
 			$this->params->set('access-delete-' . $assetType, false);
 			$this->params->set('access-edit-' . $assetType, false);
@@ -421,7 +523,7 @@ class plgCoursesForum extends Hubzero_Plugin
 			{
 				case 'thread':
 					$this->params->set('access-create-' . $assetType, true);
-					if ($this->authorized == 'admin' || $this->authorized == 'manager')
+					if ($this->offering->access('manage'))
 					{
 						$this->params->set('access-delete-' . $assetType, true);
 						$this->params->set('access-edit-' . $assetType, true);
@@ -429,7 +531,7 @@ class plgCoursesForum extends Hubzero_Plugin
 					}
 				break;
 				case 'category':
-					if ($this->authorized == 'admin' || $this->authorized == 'manager')
+					if ($this->offering->access('manage'))
 					{
 						$this->params->set('access-create-' . $assetType, true);
 						$this->params->set('access-delete-' . $assetType, true);
@@ -438,7 +540,7 @@ class plgCoursesForum extends Hubzero_Plugin
 					}
 				break;
 				case 'section':
-					if ($this->authorized == 'admin' || $this->authorized == 'manager')
+					if ($this->offering->access('manage'))
 					{
 						$this->params->set('access-create-' . $assetType, true);
 						$this->params->set('access-delete-' . $assetType, true);
@@ -448,7 +550,7 @@ class plgCoursesForum extends Hubzero_Plugin
 				break;
 				case 'component':
 				default:
-					if ($this->authorized == 'admin' || $this->authorized == 'manager')
+					if ($this->offering->access('manage'))
 					{
 						$this->params->set('access-create-' . $assetType, true);
 						$this->params->set('access-delete-' . $assetType, true);
@@ -472,7 +574,7 @@ class plgCoursesForum extends Hubzero_Plugin
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'courses',
-				'element' => 'forum',
+				'element' => $this->_name,
 				'name'    => 'sections',
 				'layout'  => 'display'
 			)
@@ -481,7 +583,8 @@ class plgCoursesForum extends Hubzero_Plugin
 		// Incoming
 		$view->filters = array();
 		$view->filters['authorized'] = 1;
-		$view->filters['course']      = $this->course->get('gidNumber');
+		$view->filters['scope']      = 'course';
+		$view->filters['scope_id']   = $this->course->offering()->get('id');
 		$view->filters['search']     = JRequest::getVar('q', '');
 		$view->filters['section_id'] = 0;
 		$view->filters['state']      = 1;
@@ -489,24 +592,26 @@ class plgCoursesForum extends Hubzero_Plugin
 		$view->edit = JRequest::getVar('section', '');
 
 		// Get Sections
-		$sModel = new ForumSection($this->database);
-		$view->sections = $sModel->getRecords(array(
-			'state' => 1, 
-			'course' => $this->course->get('gidNumber')
+		//$sModel = new ForumSection($this->database);
+		$view->sections = $this->section->getRecords(array(
+			'state' => 1,
+			'scope' => 'course', 
+			'scope_id' => $this->course->offering()->get('id')
 		));
 
 		$model = new ForumCategory($this->database);
 
 		// Check if there are uncategorized posts
 		// This should mean legacy data
-		if (($posts = $model->getPostCount(0, $this->course->get('gidNumber'))) || !$view->sections || !count($view->sections))
+		/*if (($posts = $model->getPostCount(0, $this->offering->get('id'))) || !$view->sections || !count($view->sections))
 		{
 			// Create a default section
 			$dSection = new ForumSection($this->database);
 			$dSection->title = JText::_('Default Section');
 			$dSection->alias = str_replace(' ', '-', $dSection->title);
 			$dSection->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($dSection->title));
-			$dSection->group_id = $this->course->get('gidNumber');
+			$dSection->scope = 'course';
+			$dSection->scope_id = $this->offering->get('id');
 			$dSection->state = 1;
 			if ($dSection->check())
 			{
@@ -520,7 +625,8 @@ class plgCoursesForum extends Hubzero_Plugin
 			$dCategory->alias = str_replace(' ', '-', $dCategory->title);
 			$dCategory->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($dCategory->title));
 			$dCategory->section_id = $dSection->id;
-			$dCategory->group_id = $this->course->get('gidNumber');
+			$dCategory->scope = 'course';
+			$dCategory->scope_id = $this->offering->get('id');
 			$dCategory->state = 1;
 			if ($dCategory->check())
 			{
@@ -531,14 +637,15 @@ class plgCoursesForum extends Hubzero_Plugin
 			{
 				// Update all the uncategorized posts to the new default
 				$tModel = new ForumPost($this->database);
-				$tModel->updateCategory(0, $dCategory->id, $this->course->get('gidNumber'));
+				$tModel->updateCategory(0, $dCategory->id, $this->offering->get('id'));
 			}
 
 			$view->sections = $sModel->getRecords(array(
 				'state' => 1, 
-				'course' => $this->course->get('gidNumber')
+				'scope' => 'course', 
+				'scope_id' => $this->offering->get('id')
 			));
-		}
+		}*/
 
 		$view->stats = new stdClass;
 		$view->stats->categories = 0;
@@ -550,21 +657,6 @@ class plgCoursesForum extends Hubzero_Plugin
 			$view->filters['section_id'] = $section->id;
 
 			$view->sections[$key]->categories = $model->getRecords($view->filters);
-			/*if ($view->sections[$key]->id == 0 && !$view->sections[$key]->categories)
-			{
-				$default = new ForumCategory($this->database);
-				$default->id = 0;
-				$default->title = JText::_('Discussions');
-				$default->description = JText::_('Default category for all discussions in this forum.');
-				$default->alias = str_replace(' ', '-', $default->title);
-				$default->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($default->title));
-				$default->section_id = 0;
-				$default->created_by = 0;
-				$default->threads = $model->getThreadCount(0, $this->course->get('gidNumber'));
-				$default->posts = $model->getPostCount(0, $this->course->get('gidNumber'));
-				
-				$view->sections[$key]->categories = array($default);
-			}*/
 	
 			$view->stats->categories += count($view->sections[$key]->categories);
 			if ($view->sections[$key]->categories)
@@ -578,23 +670,24 @@ class plgCoursesForum extends Hubzero_Plugin
 		}
 
 		$post = new ForumPost($this->database);
-		$view->lastpost = $post->getLastActivity($this->course->get('gidNumber'));
+		$view->lastpost = $post->getLastActivity($this->offering->get('id'), 'course');
 
 		//get authorization
 		$this->_authorize('section');
 		$this->_authorize('category');
 		$view->config = $this->params;
 		$view->course = $this->course;
+		$view->offering = $this->offering;
 		$view->option = $this->option;
 		$view->notifications = $this->getPluginMessage();
 
 		// email settings data
-		include_once(JPATH_ROOT . DS . 'plugins' . DS . 'courses' . DS . 'memberoptions' . DS . 'memberoption.class.php');
+		include_once(JPATH_ROOT . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions' . DS . 'memberoption.class.php');
 		$user = & JFactory::getUser();
 
 		$database = & JFactory::getDBO();
-		$recvEmailOption = new courses_MemberOption($database);
-		$recvEmailOption->loadRecord($this->course->get('gidNumber'), $user->id, COURSES_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION);
+		$recvEmailOption = new XGroups_MemberOption($database);
+		$recvEmailOption->loadRecord($this->course->offering()->get('id'), $user->id, GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION);
 
 		if ($recvEmailOption->id) 
 		{
@@ -632,7 +725,7 @@ class plgCoursesForum extends Hubzero_Plugin
 		if (!$model->bind($fields))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum')
+				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=forum')
 			);
 			return;
 		}
@@ -646,7 +739,7 @@ class plgCoursesForum extends Hubzero_Plugin
 
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum')
+			JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=forum')
 		);
 	}
 
@@ -661,8 +754,8 @@ class plgCoursesForum extends Hubzero_Plugin
 		if ($this->juser->get('guest')) 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum'))),
-				JText::_('PLG_COURSES_FORUM_LOGIN_NOTICE'),
+				JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=forum'))),
+				JText::_('PLG_GROUPS_FORUM_LOGIN_NOTICE'),
 				'warning'
 			);
 			return;
@@ -673,14 +766,14 @@ class plgCoursesForum extends Hubzero_Plugin
 		
 		// Load the section
 		$model = new ForumSection($this->database);
-		$model->loadByAlias($alias, $this->course->get('gidNumber'));
+		$model->loadByAlias($alias, $this->course->offering()->get('id'), 'group');
 		
 		// Make the sure the section exist
 		if (!$model->id) 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum'),
-				JText::_('PLG_COURSES_FORUM_MISSING_ID'),
+				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=forum'),
+				JText::_('PLG_GROUPS_FORUM_MISSING_ID'),
 				'error'
 			);
 			return;
@@ -691,8 +784,8 @@ class plgCoursesForum extends Hubzero_Plugin
 		if (!$this->params->get('access-delete-section')) 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum'),
-				JText::_('PLG_COURSES_FORUM_NOT_AUTHORIZED'),
+				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=forum'),
+				JText::_('PLG_GROUPS_FORUM_NOT_AUTHORIZED'),
 				'warning'
 			);
 			return;
@@ -702,7 +795,8 @@ class plgCoursesForum extends Hubzero_Plugin
 		$cModel = new ForumCategory($this->database);
 		$categories = $cModel->getRecords(array(
 			'section_id' => $model->id,
-			'course'      => $this->course->get('gidNumber')
+			'scope'      => 'group', 
+			'scope_id'   => $this->course->offering()->get('id')
 		));
 		if ($categories)
 		{
@@ -732,7 +826,7 @@ class plgCoursesForum extends Hubzero_Plugin
 		if (!$model->store()) 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum'),
+				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=forum'),
 				$model->getError(),
 				'error'
 			);
@@ -741,8 +835,8 @@ class plgCoursesForum extends Hubzero_Plugin
 
 		// Redirect to main listing
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum'),
-			JText::_('PLG_COURSES_FORUM_SECTION_DELETED'),
+			JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=forum'),
+			JText::_('PLG_GROUPS_FORUM_SECTION_DELETED'),
 			'passed'
 		);
 	}
@@ -758,7 +852,7 @@ class plgCoursesForum extends Hubzero_Plugin
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'courses',
-				'element' => 'forum',
+				'element' => $this->_name,
 				'name'    => 'categories',
 				'layout'  => 'display'
 			)
@@ -772,16 +866,17 @@ class plgCoursesForum extends Hubzero_Plugin
 		$view->filters['section']  = JRequest::getVar('section', '');
 		$view->filters['category'] = JRequest::getVar('category', '');
 		$view->filters['search']   = JRequest::getVar('q', '');
-		$view->filters['course']    = $this->course->get('gidNumber');
+		$view->filters['scope'] = 'course';
+		$view->filters['scope_id']   = $this->offering->get('id');
 		$view->filters['state']    = 1;
 		$view->filters['parent']   = 0;
 		
 		$view->section = new ForumSection($this->database);
-		$view->section->loadByAlias($view->filters['section'], $this->course->get('gidNumber'));
+		$view->section->loadByAlias($view->filters['section'], $this->offering->get('id'), 'course');
 		$view->filters['section_id'] = $view->section->id;
 
 		$view->category = new ForumCategory($this->database);
-		$view->category->loadByAlias($view->filters['category'], $view->section->id, $this->course->get('gidNumber'));
+		$view->category->loadByAlias($view->filters['category'], $view->section->id, $this->offering->get('id'), 'course');
 		$view->filters['category_id'] = $view->category->id;
 
 		if (!$view->category->id)
@@ -803,9 +898,10 @@ class plgCoursesForum extends Hubzero_Plugin
 		//get authorization
 		$this->_authorize('category');
 		$this->_authorize('thread');
-		
+
 		$view->config = $this->params;
 		$view->course = $this->course;
+		$view->offering = $this->offering;
 		$view->option = $this->option;
 		$view->notifications = $this->getPluginMessage();
 
@@ -840,7 +936,7 @@ class plgCoursesForum extends Hubzero_Plugin
 		$this->view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'courses',
-				'element' => 'forum',
+				'element' => $this->_name,
 				'name'    => 'categories',
 				'layout'  => 'search'
 			)
@@ -852,7 +948,8 @@ class plgCoursesForum extends Hubzero_Plugin
 		$this->view->filters['limit']  = JRequest::getInt('limit', 25);
 		$this->view->filters['start']  = JRequest::getInt('limitstart', 0);
 		$this->view->filters['search'] = JRequest::getVar('q', '');
-		$this->view->filters['course']  = $this->course->get('gidNumber');
+		$this->view->filters['scope']  = 'course';
+		$this->view->filters['scope_id'] = $this->offering->get('id');
 
 		$this->view->section = new ForumSection($this->database);
 		$this->view->section->title = JText::_('Posts');
@@ -862,7 +959,8 @@ class plgCoursesForum extends Hubzero_Plugin
 		// Get all sections
 		$sections = $this->view->section->getRecords(array(
 			'state' => 1, 
-			'course' => $this->view->filters['course']
+			'scope' => $this->view->filters['scope'],
+			'scope_id' => $this->view->filters['scope_id']
 		));
 		$s = array();
 		foreach ($sections as $section)
@@ -879,7 +977,8 @@ class plgCoursesForum extends Hubzero_Plugin
 		// Get all categories
 		$categories = $this->view->category->getRecords(array(
 			'state' => 1, 
-			'course' => $this->view->filters['course']
+			'scope' => $this->view->filters['scope'],
+			'scope_id' => $this->view->filters['scope_id']
 		));
 		$c = array();
 		foreach ($categories as $category)
@@ -938,7 +1037,7 @@ class plgCoursesForum extends Hubzero_Plugin
 		$this->view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'courses',
-				'element' => 'forum',
+				'element' => $this->_name,
 				'name'    => 'categories',
 				'layout'  => 'edit'
 			)
@@ -948,7 +1047,7 @@ class plgCoursesForum extends Hubzero_Plugin
 		$section = JRequest::getVar('section', '');
 		if ($this->juser->get('guest')) 
 		{
-			$return = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum');
+			$return = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=forum');
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_login&return=' . base64_encode($return))
 			);
@@ -956,7 +1055,7 @@ class plgCoursesForum extends Hubzero_Plugin
 		}
 
 		$sModel = new ForumSection($this->database);
-		$sModel->loadByAlias($section, $this->course->get('gidNumber'));
+		$sModel->loadByAlias($section, $this->offering->get('id'), 'course');
 
 		// Incoming
 		if (is_object($model))
@@ -966,7 +1065,7 @@ class plgCoursesForum extends Hubzero_Plugin
 		else 
 		{
 			$this->view->model = new ForumCategory($this->database);
-			$this->view->model->loadByAlias($category, $sModel->id, $this->course->get('gidNumber'));
+			$this->view->model->loadByAlias($category, $sModel->id, $this->offering->get('id'), 'course');
 		}
 
 		$this->_authorize('category', $this->view->model->id);
@@ -979,14 +1078,14 @@ class plgCoursesForum extends Hubzero_Plugin
 		elseif ($this->view->model->created_by != $this->juser->get('id') && !$this->params->get('access-create-category')) 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum')
+				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=forum')
 			);
 			return;
 		}
 
 		$this->view->sections = $sModel->getRecords(array(
 			'state' => 1,
-			'course' => $this->course->get('gidNumber')
+			'course' => $this->course->get('id')
 		));
 		if (!$this->view->sections || count($this->view->sections) <= 0)
 		{
@@ -1039,7 +1138,7 @@ class plgCoursesForum extends Hubzero_Plugin
 		{
 			// Set the redirect
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum')
+				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=forum')
 			);
 		}
 		$model->closed = (isset($fields['closed']) && $fields['closed']) ? 1 : 0;
@@ -1059,7 +1158,7 @@ class plgCoursesForum extends Hubzero_Plugin
 
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum')
+			JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=forum')
 		);
 	}
 
@@ -1074,7 +1173,7 @@ class plgCoursesForum extends Hubzero_Plugin
 		if ($this->juser->get('guest')) 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum'))),
+				JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=forum'))),
 				JText::_('PLG_COURSES_FORUM_LOGIN_NOTICE'),
 				'warning'
 			);
@@ -1086,7 +1185,7 @@ class plgCoursesForum extends Hubzero_Plugin
 		if (!$category) 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum'),
+				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=forum'),
 				JText::_('PLG_COURSES_FORUM_MISSING_ID'),
 				'error'
 			);
@@ -1095,18 +1194,18 @@ class plgCoursesForum extends Hubzero_Plugin
 		
 		$section = JRequest::getVar('section', '');
 		$sModel = new ForumSection($this->database);
-		$sModel->loadByAlias($section, $this->course->get('gidNumber'));
+		$sModel->loadByAlias($section, $this->course->get('id'));
 
 		// Initiate a forum object
 		$model = new ForumCategory($this->database);
-		$model->loadByAlias($category, $sModel->id, $this->course->get('gidNumber'));
+		$model->loadByAlias($category, $sModel->id, $this->course->get('id'));
 
 		// Check if user is authorized to delete entries
 		$this->_authorize('category', $model->id);
 		if (!$this->params->get('access-delete-category')) 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum'),
+				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=forum'),
 				JText::_('PLG_COURSES_FORUM_NOT_AUTHORIZED'),
 				'warning'
 			);
@@ -1125,7 +1224,7 @@ class plgCoursesForum extends Hubzero_Plugin
 		if (!$model->store()) 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum'),
+				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=forum'),
 				$model->getError(),
 				'error'
 			);
@@ -1134,7 +1233,7 @@ class plgCoursesForum extends Hubzero_Plugin
 
 		// Redirect to main listing
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum'),
+			JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=forum'),
 			JText::_('PLG_COURSES_FORUM_CATEGORY_DELETED'),
 			'passed'
 		);
@@ -1151,7 +1250,7 @@ class plgCoursesForum extends Hubzero_Plugin
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'courses',
-				'element' => 'forum',
+				'element' => $this->_name,
 				'name'    => 'threads',
 				'layout'  => 'display'
 			)
@@ -1165,7 +1264,7 @@ class plgCoursesForum extends Hubzero_Plugin
 		$view->filters['category'] = JRequest::getVar('category', '');
 		$view->filters['parent']   = JRequest::getInt('thread', 0);
 		$view->filters['state']    = 1;
-		$view->filters['course']    = $this->course->get('gidNumber');
+		$view->filters['course']    = $this->course->get('id');
 
 		if ($view->filters['parent'] == 0) 
 		{
@@ -1173,11 +1272,11 @@ class plgCoursesForum extends Hubzero_Plugin
 		}
 
 		$view->section = new ForumSection($this->database);
-		$view->section->loadByAlias($view->filters['section'], $this->course->get('gidNumber'));
+		$view->section->loadByAlias($view->filters['section'], $this->course->get('id'));
 		$view->filters['section_id'] = $view->section->id;
 
 		$view->category = new ForumCategory($this->database);
-		$view->category->loadByAlias($view->filters['category'], $view->section->id, $this->course->get('gidNumber'));
+		$view->category->loadByAlias($view->filters['category'], $view->section->id, $this->course->get('id'));
 		$view->filters['category_id'] = $view->category->id;
 
 		if (!$view->category->id)
@@ -1249,7 +1348,7 @@ class plgCoursesForum extends Hubzero_Plugin
 		$this->view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'courses',
-				'element' => 'forum',
+				'element' => $this->_name,
 				'name'    => 'threads',
 				'layout'  => 'edit'
 			)
@@ -1261,10 +1360,10 @@ class plgCoursesForum extends Hubzero_Plugin
 
 		if ($this->juser->get('guest')) 
 		{
-			$return = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum&scope=' . $section . '/' . $category . '/new');
+			$return = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=forum&scope=' . $section . '/' . $category . '/new');
 			if ($id)
 			{
-				$return = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum&scope=' . $section . '/' . $category . '/' . $id . '/edit');
+				$return = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=forum&scope=' . $section . '/' . $category . '/' . $id . '/edit');
 			}
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_login&return=' . base64_encode($return))
@@ -1295,14 +1394,14 @@ class plgCoursesForum extends Hubzero_Plugin
 		}
 		elseif ($this->view->post->created_by != $this->juser->get('id') && !$this->params->get('access-edit-thread')) 
 		{
-			$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum&scope=' . $section . '/' . $category));
+			$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=forum&scope=' . $section . '/' . $category));
 			return;
 		}
 
 		$sModel = new ForumSection($this->database);
 		$this->view->sections = $sModel->getRecords(array(
 			'state' => 1, 
-			'course' => $this->course->get('gidNumber')
+			'course' => $this->course->get('id')
 		));
 
 		if (!$this->view->sections || count($this->view->sections) <= 0)
@@ -1322,7 +1421,7 @@ class plgCoursesForum extends Hubzero_Plugin
 		{
 			$this->view->sections[$key]->categories = $cModel->getRecords(array(
 				'section_id' => $section->id,
-				'course'      => $this->course->get('gidNumber'),
+				'course'      => $this->course->get('id'),
 				'state'      => 1
 			));
 		}
@@ -1359,7 +1458,7 @@ class plgCoursesForum extends Hubzero_Plugin
 		if ($this->juser->get('guest')) 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum')))
+				JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=forum')))
 			);
 			return;
 		}
@@ -1380,7 +1479,7 @@ class plgCoursesForum extends Hubzero_Plugin
 		 || (!$fields['id'] && !$this->params->get('access-create-thread')))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum'),
+				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=forum'),
 				JText::_('You are not authorized to perform this action.'),
 				'warning'
 			);
@@ -1486,7 +1585,7 @@ class plgCoursesForum extends Hubzero_Plugin
 			'option'   => $this->option,
 			'scope'    => 'course' . DS . 'forum',
 			'pagename' => 'course',
-			'pageid'   => $this->course->get('gidNumber'),
+			'pageid'   => $this->course->get('id'),
 			'filepath' => '',
 			'domain'   => ''
 		);
@@ -1515,7 +1614,7 @@ class plgCoursesForum extends Hubzero_Plugin
 					// Find the user's course settings, do they want to get email (0 or 1)?
 					$courseMemberOption = new courses_MemberOption($this->database);
 					$courseMemberOption->loadRecord(
-						$this->course->get('gidNumber'), 
+						$this->course->get('id'), 
 						$user->id, 
 						COURSES_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION
 					);
@@ -1547,14 +1646,14 @@ class plgCoursesForum extends Hubzero_Plugin
 				// Version, type, userid, xforumid
 				$token = $encryptor->buildEmailToken(1, 2, $userID, $parent);
 
-				$subject = ' - ' . $this->course->get('cn') . ' - ' . $posttitle;
+				$subject = ' - ' . $this->course->get('alias') . ' - ' . $posttitle;
 				
 				$from = array();
 				$from['name']  = $jconfig->getValue('config.sitename') . ' ';
 				$from['email'] = $jconfig->getValue('config.mailfrom');
 				$from['replytoemail'] = 'hgm-' . $token;
 
-				if (!$dispatcher->trigger('onSendMessage', array('course_message', $subject, $forum_message, $from, array($userID), $this->option, null, '', $this->course->get('gidNumber')))) 
+				if (!$dispatcher->trigger('onSendMessage', array('course_message', $subject, $forum_message, $from, array($userID), $this->option, null, '', $this->course->get('id')))) 
 				{
 					$this->setError(JText::_('COM_COURSES_ERROR_EMAIL_MEMBERS_FAILED'));
 				}
@@ -1563,7 +1662,7 @@ class plgCoursesForum extends Hubzero_Plugin
 		
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum&scope=' . $section . '/' . $category->alias . '/' . $thread . '#c' . $model->id),
+			JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=forum&scope=' . $section . '/' . $category->alias . '/' . $thread . '#c' . $model->id),
 			$message,
 			'passed'
 		);
@@ -1583,7 +1682,7 @@ class plgCoursesForum extends Hubzero_Plugin
 		if ($this->juser->get('guest')) 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum&scope=' . $section . '/' . $category),
+				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=forum&scope=' . $section . '/' . $category),
 				JText::_('PLG_COURSES_FORUM_LOGIN_NOTICE'),
 				'warning'
 			);
@@ -1601,7 +1700,7 @@ class plgCoursesForum extends Hubzero_Plugin
 		if (!$model->id) 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum&scope=' . $section . '/' . $category),
+				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=forum&scope=' . $section . '/' . $category),
 				JText::_('PLG_COURSES_FORUM_MISSING_ID'),
 				'error'
 			);
@@ -1613,7 +1712,7 @@ class plgCoursesForum extends Hubzero_Plugin
 		if (!$this->params->get('access-delete-thread'))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum&scope=' . $section . '/' . $category),
+				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=forum&scope=' . $section . '/' . $category),
 				JText::_('PLG_COURSES_FORUM_NOT_AUTHORIZED'),
 				'warning'
 			);
@@ -1634,7 +1733,7 @@ class plgCoursesForum extends Hubzero_Plugin
 		if (!$model->store()) 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum&scope=' . $section . '/' . $category),
+				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=forum&scope=' . $section . '/' . $category),
 				$forum->getError(),
 				'error'
 			);
@@ -1643,7 +1742,7 @@ class plgCoursesForum extends Hubzero_Plugin
 
 		// Redirect to main listing
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum&scope=' . $section . '/' . $category),
+			JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=forum&scope=' . $section . '/' . $category),
 			JText::_('PLG_COURSES_FORUM_THREAD_DELETED'),
 			'passed'
 		);
@@ -1716,10 +1815,10 @@ class plgCoursesForum extends Hubzero_Plugin
 			// Create database entry
 			$row = new ForumAttachment($this->database);
 			$row->bind(array(
-				'id' => 0,
-				'parent' => $listdir,
-				'post_id' => $post_id,
-				'filename' => $file['name'],
+				'id'          => 0,
+				'parent'      => $listdir,
+				'post_id'     => $post_id,
+				'filename'    => $file['name'],
 				'description' => $description
 			));
 			if (!$row->check()) 
@@ -1746,11 +1845,11 @@ class plgCoursesForum extends Hubzero_Plugin
 		$thread = JRequest::getInt('thread', 0);
 		$post = JRequest::getInt('post', 0);
 		$file = JRequest::getVar('file', '');
-		
+
 		// Check logged in status
 		if ($this->juser->get('guest')) 
 		{
-			$return = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum&scope=' . $section . '/' . $category . '/' . $thread . '/' . $post . '/' . $file);
+			$return = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=forum&scope=' . $section . '/' . $category . '/' . $thread . '/' . $post . '/' . $file);
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_login&return=' . base64_encode($return))
 			);
@@ -1763,7 +1862,7 @@ class plgCoursesForum extends Hubzero_Plugin
 			JError::raiseError(500, JText::_('PLG_COURSES_FORUM_DATABASE_NOT_FOUND'));
 			return;
 		}
-		
+
 		// Instantiate an attachment object
 		$attach = new ForumAttachment($this->database);
 		if (!$post)
@@ -1896,7 +1995,7 @@ class plgCoursesForum extends Hubzero_Plugin
 	public function onCourseDelete($course)
 	{
 		$log = JText::_('PLG_COURSES_FORUM') . ': ';
-		
+
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'category.php');
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'section.php');
@@ -1906,7 +2005,8 @@ class plgCoursesForum extends Hubzero_Plugin
 
 		$sModel = new ForumSection($this->database);
 		$sections = $sModel->getRecords(array(
-			'course' => $course->get('gidNumber')
+			'scope'    => 'course',
+			'scope_id' => $course->offering()->get('id')
 		));
 
 		// Do we have any IDs?
@@ -1919,9 +2019,10 @@ class plgCoursesForum extends Hubzero_Plugin
 				$cModel = new ForumCategory($this->database);
 				$categories = $cModel->getRecords(array(
 					'section_id' => $section->id,
-					'course'      => $course->get('gidNumber')
+					'scope'      => 'course',
+					'scope_id'   => $course->offering()->get('id')
 				));
-				
+
 				if ($categories)
 				{
 					// Build an array of category IDs
