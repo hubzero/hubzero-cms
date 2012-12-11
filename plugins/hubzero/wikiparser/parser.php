@@ -554,7 +554,7 @@ class WikiParser
 
 		$bits = explode('/', $href);
 
-		switch (strtolower($namespace))
+		switch (trim(strtolower($namespace)))
 		{
 			case 'page:':
 			case 'wiki:':
@@ -636,6 +636,10 @@ class WikiParser
 				$scope = $this->scope . DS . ltrim($scope, DS);
 			}
 
+			if (trim(strtolower($namespace)) == 'help:')
+			{
+				$scope = '';
+			}
 			$p = WikiPage::getInstance($pagename, $scope);
 		}
 		/*if ($namespace == 'wiki:' && substr($href, 0, strlen('&#8220;')) == '&#8220;')
@@ -673,6 +677,7 @@ class WikiParser
 			if (in_array(trim(strtolower($namespace)), array('special:', 'help:', 'image:', 'file:')))
 			{
 				$cls .= '';
+				$href = $namespace . $href;
 			}
 			else
 			{
@@ -692,7 +697,7 @@ class WikiParser
 			{
 				$href = JRoute::_('index.php?option=' . $this->option . '&scope=' . $p->scope . '&pagename=' . $p->pagename);
 
-				$l = '<a class="wiki missing" href="' . $href . '">' . trim($title) . '</a>';
+				$l = '<a class="wiki' . $cls . '" href="' . $href . '">' . trim($title) . '</a>';
 				array_push($this->links, $l);
 				return '<link></link>';
 			}
