@@ -45,7 +45,7 @@
 		padding: 0;
 		margin: 0 0 2em 0;
 	}
-	#group-owner .group-description {
+	#group-owner .group-withlogo {
 		position: absolute;
 		bottom: 0;
 		left: 0;
@@ -70,7 +70,7 @@
 		color: #fff;
 		text-shadow: 0 1px 0 #121212;
 	}
-	#group-owner .group-content:hover .group-description {
+	#group-owner .group-content:hover .group-withlogo {
 		filter: alpha(opacity=@opacity * 100);
 		-khtml-opacity: 1;
 		-moz-opacity: 1;

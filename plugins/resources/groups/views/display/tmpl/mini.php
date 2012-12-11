@@ -38,17 +38,21 @@ if ($this->group->get('logo'))
 }
 else 
 {
-	$logo = '/components/com_groups/assets/img/group_default_logo.png';
+	$logo = ''; //'/components/com_groups/assets/img/group_default_logo.png';
 }
 ?>
 <div id="group-owner" class="container">
 	<h3><?php echo $this->escape(stripslashes($this->group->get('description'))); ?></h3>
 	<div class="group-content">
+<?php if ($logo) { ?>
 		<p class="group-img">
 			<a href="<?php echo JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn')); ?>">
 				<img src="<?php echo $logo; ?>" width="50" alt="<?php echo $this->escape(stripslashes($this->group->get('description'))); ?> group image" />
 			</a>
 		</p>
+		<p class="group-description group-withlogo"><?php echo JText::sprintf('This resource belongs to the %s group.', '<a href="' . JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn')) . '">' . $this->escape(stripslashes($this->group->get('description'))) . '</a>'); ?></p>
+<?php } else { ?>
 		<p class="group-description"><?php echo JText::sprintf('This resource belongs to the %s group.', '<a href="' . JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn')) . '">' . $this->escape(stripslashes($this->group->get('description'))) . '</a>'); ?></p>
+<?php } ?>
 	</div>
 </div>
