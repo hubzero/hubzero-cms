@@ -105,6 +105,7 @@ $juser =& JFactory::getUser();
 
 				<div class="aside launcharea">
 <?php
+	$html = '';
 	// Private/Public resource access check
 	if (!$this->model->access('view-all')) 
 	{
@@ -125,7 +126,7 @@ $juser =& JFactory::getUser();
 		//$this->helper->getFirstChild();
 		$firstchild = $this->model->children(0);
 
-		$html = $this->tab != 'play' && is_object($firstchild) ? ResourcesHtml::primary_child($this->option, $this->model->resource, $firstchild, '') : '';
+		$html .= $this->tab != 'play' && is_object($firstchild) ? ResourcesHtml::primary_child($this->option, $this->model->resource, $firstchild, '') : '';
 
 		// Display some supporting documents
 		$children = $this->model->children();
@@ -136,7 +137,7 @@ $juser =& JFactory::getUser();
 		$realdocs = 0;
 		//$fctype = is_object($this->helper->firstChild) ? ResourcesHtml::getFileExtension($this->helper->firstChild->path) : '';
 		$fctype = is_object($firstchild) ? ResourcesHtml::getFileExtension($firstchild->path) : '';
-$supdocs = '';
+		$supdocs = '';
 		// Single out featured children resources
 		if ($children && count($children) > 1) 
 		{
