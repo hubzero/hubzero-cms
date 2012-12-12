@@ -179,7 +179,7 @@ class plgResourcesReviews extends JPlugin
 			if (!$h->loggedin) 
 			{
 				// Instantiate a view
-				$rtrn = JRequest::getVat('REQUEST_URI', JRoute::_('index.php?option=' . $option . '&id=' . $model->resource->id . '&active=reviews'), 'server');
+				$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $option . '&id=' . $model->resource->id . '&active=reviews'), 'server');
 				$this->_redirect = JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn));
 				return;
 			} 
