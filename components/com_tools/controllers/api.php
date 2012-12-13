@@ -573,6 +573,9 @@ class ToolsApiController extends Hubzero_Api_Controller
 		// Trigger any events that need to be called after session start
 		$dispatcher->trigger('onAfterSessionStart', array($toolname, $tv->revision));
 		
+		//add the session id to the result
+		$output->sessionid = $session;
+		
 		//return result
 		if($status)
 		{
