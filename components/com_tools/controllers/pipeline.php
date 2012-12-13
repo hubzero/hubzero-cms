@@ -799,7 +799,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		$this->view->editversion = ($this->view->editversion == 'current') ? 'current' : 'dev'; // do not allow to edit all versions just yet, will default to dev
 
 		// check access rights
-		if (!$this->_checkAccess($this->_toolid)) 
+		if ($this->_toolid && !$this->_checkAccess($this->_toolid)) 
 		{
 			JError::raiseError(403, JText::_('ALERTNOTAUTH'));
 			return;
@@ -808,7 +808,7 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		// get tool status
 		$obj->getToolStatus($this->_toolid, $this->_option, $status, $this->view->editversion);
 
-		if (!$status) 
+		if ($this->_toolid && !$status) 
 		{
 			JError::raiseError(404, JText::_('ERR_EDIT_CANNOT_FIND'));
 			return;
