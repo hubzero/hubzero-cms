@@ -59,7 +59,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 ?>
 
 <div class="outline-main">
-	<ul class="unit sortable">
+	<ul class="unit">
 <?php 
 		foreach ($this->course->offering->units() as $unit)
 		{
@@ -71,7 +71,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 			</div>
 			<div class="clear"></div>
 
-			<ul class="asset-group-type-list sortable">
+			<ul class="asset-group-type-list">
 <?php
 			foreach($unit->assetgroups() as $agt)
 			{
@@ -85,6 +85,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 				{
 ?>
 						<li class="asset-group-item">
+							<div class="sortable-handle"></div>
 							<div class="uploadfiles">
 								<p>Drag files here to upload</p>
 								<form action="" class="uploadfiles-form">
@@ -108,7 +109,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 						if ($ag->assets()->total())
 						{
 ?>
-								<ul class="sortable assets-list">
+								<ul class="assets-list">
 <?php
 								foreach ($ag->assets() as $a)
 								{
@@ -144,7 +145,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 						else // no assets in this asset group
 						{
 ?>
-							<ul class="sortable assets-list">
+							<ul class="assets-list">
 								<li class="asset-item asset missing nofiles">
 									No files
 									<span class="next-step-upload">
@@ -160,67 +161,67 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 						<div class="clear"></div>
 <?php
 				}
-?>
-					</ul>
-<?php
 				if ($agt->assets()->total())
 				{
 ?>
-					<li class="asset-group-item">
-						<div class="uploadfiles">
-							<p>Drag files here to upload</p>
-							<form action="" class="uploadfiles-form">
-								<input type="file" name="files[]" class="fileupload" multiple />
-								<input type="hidden" name="course_id" value="<?php echo $this->course->get('id') ?>" />
-								<input type="hidden" name="scope_id" value="<?php echo $ag->get('id'); ?>" />
-							</form>
-							<div class="uploadfiles-progress">
-								<div class="bar" style="width: 0%;"></div>
+						<li class="asset-group-item">
+							<div class="sortable-handle"></div>
+							<div class="uploadfiles">
+								<p>Drag files here to upload</p>
+								<form action="" class="uploadfiles-form">
+									<input type="file" name="files[]" class="fileupload" multiple />
+									<input type="hidden" name="course_id" value="<?php echo $this->course->get('id') ?>" />
+									<input type="hidden" name="scope_id" value="<?php echo $ag->get('id'); ?>" />
+								</form>
+								<div class="uploadfiles-progress">
+									<div class="bar" style="width: 0%;"></div>
+								</div>
 							</div>
-						</div>
-						<div class="asset-group-item-container">
-							<div class="asset-group-item-title editable title"><?php echo $ag->get('title'); ?></div>
-							<div class="asset-group-item-title-edit">
-								<input class="uniform" type="text" value="<?php echo $ag->get('title'); ?>" />
-								<input class="uniform" type="submit" value="Save" />
-								<input class="uniform" type="reset" value="Cancel" />
-							</div>
-							<ul class="sortable assets-list">
+							<div class="asset-group-item-container">
+								<div class="asset-group-item-title editable title"><?php echo $ag->get('title'); ?></div>
+								<div class="asset-group-item-title-edit">
+									<input class="uniform" type="text" value="<?php echo $ag->get('title'); ?>" />
+									<input class="uniform" type="submit" value="Save" />
+									<input class="uniform" type="reset" value="Cancel" />
+								</div>
+								<ul class="assets-list">
 <?php
 					foreach ($agt->assets() as $a)
 					{
-						$href = $a->path($this->course->get('id'));
+							$href = $a->path($this->course->get('id'));
 						if ($a->get('type') == 'video')
 						{
-							$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
+								$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
 						}
 ?>
-								<li class="asset-item asset <?php echo $a->get('type'); echo ($a->get('state') == 0) ? ' notpublished' : ' published'; ?>">
-									<?php echo $this->escape(stripslashes($a->get('title'))); ?>
-									(<a class="" href="<?php echo $href; ?>">preview</a>)
+									<li class="asset-item asset <?php echo $a->get('type'); echo ($a->get('state') == 0) ? ' notpublished' : ' published'; ?>">
+										<?php echo $this->escape(stripslashes($a->get('title'))); ?>
+										(<a class="" href="<?php echo $href; ?>">preview</a>)
 
-									<span class="next-step-publish">
-										<label class="published-label" for="published">
-											<span class="published-label-text"><?php echo ($a->get('state') == 0) ? 'Mark as reviewed and publish?' : 'Published'; ?></span>
-											<input 
-												class="uniform published-checkbox"
-												name="published"
-												type="checkbox"
-												<?php echo ($a->get('state') == 0) ? '' : 'checked="checked"'; ?> />
-											<input type="hidden" class="asset_id" name="<?php echo $a->get('id'); ?>[id]" value="<?php echo $a->get('id'); ?>" />
-										</label>
-									</span>
+										<span class="next-step-publish">
+											<label class="published-label" for="published">
+												<span class="published-label-text"><?php echo ($a->get('state') == 0) ? 'Mark as reviewed and publish?' : 'Published'; ?></span>
+												<input 
+													class="uniform published-checkbox"
+													name="published"
+													type="checkbox"
+													<?php echo ($a->get('state') == 0) ? '' : 'checked="checked"'; ?> />
+												<input type="hidden" class="asset_id" name="<?php echo $a->get('id'); ?>[id]" value="<?php echo $a->get('id'); ?>" />
+											</label>
+										</span>
 
-								</li>
+									</li>
 <?php
 					}
 ?>
-							</ul>
-						</div>
-					</li>
+								</ul>
+							</div>
+						</li>
 <?php
 				}
 ?>
+						<li class="add-new asset-group-item">Add a new <?php echo strtolower(rtrim($agt->get('title'), 's')); ?></li>
+					</ul>
 				</li>
 <?php
 			}

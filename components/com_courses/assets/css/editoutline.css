@@ -12,11 +12,6 @@
 .placeholder {
 	border: 1px dotted #AAA;
 	background: #FFF;
-	margin: 15px 0;
-
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
 }
 .course:before {
 	content: "\f09c";
@@ -25,10 +20,23 @@
 	border-bottom: none;
 	text-decoration: none;
 }
-.sortable {
+ul {
 	list-style: none;
 	padding: 0;
 	margin: 0;
+}
+.sortable-handle {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	background: transparent;
+	background: rgba(0, 0, 0, 0.05);
+	border-right: 1px dotted #AAA;
+	float: left;
+	width: 50px;
+	overflow: hidden;
+	cursor: move;
 }
 .progress-container {
 	width: 200px;
@@ -62,7 +70,8 @@
 	cursor: pointer;
 }
 .unit-title:before,
-.uploadfiles:before {
+.uploadfiles:before,
+.asset-group-item:before {
 	font-family: "fontcons";
 	content: "";
 	position: absolute;
@@ -76,11 +85,15 @@
 	content: "\f0d7";
 }
 .asset-group-type-list {
-	padding-left: 30px;
+	padding-left: 20px;
 }
 .asset-group-title {
-	font-size: 14px;
+	font-size: 13px;
 	font-style: italic;
+	font-weight: bold;
+	text-align: center;
+	text-transform: uppercase;
+	text-decoration: underline;
 }
 .asset-group-item-title {
 	display: block;
@@ -88,32 +101,38 @@
 .asset-group-item {
 	position: relative;
 	overflow: hidden;
-	padding: 10px;
 	border: 1px dotted #AAA;
 	margin: 10px 0 0 0;
-	cursor: move;
 	background: #FAFAFA;
+	padding-left: 60px;
+}
+.asset-group-item:before {
+	content: '\f0dc';
+	font-size: 20px;
+	color: #999;
+	left: 16px;
+	top: 40%;
 }
 .editable {
 	display: none;
 	cursor: pointer;
 }
 .asset-group-item-container {
-	margin-right: 210px;
+	margin: 10px 210px 10px 10px;
 }
 .uploadfiles {
 	position: relative;
 	background: #FFF;
 	border: 2px dotted #AAA;
 	padding: 7px 7px 7px 27px;
-	margin: 5px;
+	margin: 10px 10px 10px 5px;
 	font-style: italic;
 	text-align: center;
 	float: right;
 
-	-webkit-border-radius: 7px;
-	-moz-border-radius: 7px;
-	border-radius: 7px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
 }
 .uploadfiles p {
 	margin: 0;
@@ -135,23 +154,20 @@
 }
 .add-new {
 	opacity: .9;
-	padding-left: 30px;
+	padding: 5px 5px 5px 30px;
 	position: relative;
 	border: 1px dotted #AAA;
 	cursor: pointer;
-
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
 }
 .add-new:hover {
 	opacity: 1;
 }
 .add-new:before {
 	position: absolute;
-	top: 10px;
+	top: 5px;
 	left: 10px;
 	font-family: "fontcons";
+	font-size: 14px;
 	content: "\2295";
 }
 .asset-group {

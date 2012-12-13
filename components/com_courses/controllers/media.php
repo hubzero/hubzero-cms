@@ -317,6 +317,8 @@ class CoursesControllerMedia extends Hubzero_Controller
 		// Build the upload path if it doesn't exist
 		$uploadDirectory = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $row->course_id . DS . $row2->asset_id . DS;
 
+		// @FIXME: cleanup asset and asset association if directory creation fails
+
 		// Make sure upload directory is writable
 		if (!is_dir($uploadDirectory))
 		{

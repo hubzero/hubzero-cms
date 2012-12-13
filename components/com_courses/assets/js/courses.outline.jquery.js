@@ -28,6 +28,7 @@ HUB.CoursesOutline = {
 		HUB.CoursesOutline.showProgressIndicator();
 		HUB.CoursesOutline.makeSortable();
 		HUB.CoursesOutline.makeTitlesEditable();
+		HUB.CoursesOutline.addNewItem();
 		HUB.CoursesOutline.makeUniform();
 		HUB.CoursesOutline.togglePublished();
 		HUB.CoursesOutline.setupFileUploader();
@@ -71,7 +72,7 @@ HUB.CoursesOutline = {
 			var percentage  = 0;
 			var pclass      = 'stop';
 
-			$(this).find('.asset-group-item').each(function(){
+			$(this).find('.asset-group-item:not(.add-new)').each(function(){
 				count += 1;
 
 				if($(this).find('.asset-item').not('.nofiles, .notpublished').length >= 1){
@@ -106,12 +107,13 @@ HUB.CoursesOutline = {
 	{
 		var $ = this.jQuery;
 
-		$('.asset-group-item').each(function(){
+		$('.asset-group-item:not(.add-new)').each(function(){
 			var high = $(this).height();
 				high -= $(this).children('.uploadfiles').css('margin-top').replace("px", "");
 				high -= $(this).children('.uploadfiles').css('margin-bottom').replace("px", "");
-				high -= $(this).css('padding-top').replace("px", "");
-				high -= $(this).css('padding-bottom').replace("px", "");
+				high -= $(this).children('.uploadfiles').css('padding-bottom').replace("px", "");
+				high -= $(this).children('.uploadfiles').css('padding-top').replace("px", "");
+				high -= 4; // For borders?
 
 			$(this).children('.uploadfiles').css('height', high);
 		});
@@ -123,13 +125,18 @@ HUB.CoursesOutline = {
 
 		$(".sortable").sortable({
 			placeholder: "placeholder",
+			handle: '.sortable-handle',
+			axis: "y",
 			forcePlaceholderSize: true,
 			revert: true,
 			tolerance: 'pointer',
-			opacity: '0.8',
+			opacity: '0.6',
 			items: 'li:not(.add-new)',
 			start: function(){
-				$(".placeholder").css('height', $(event.target).height());
+				$(".placeholder").css({'height': $(event.target).parent('asset-group-item').outerHeight(), 'margin': $(event.target).parent('asset-group-item').css('margin')});
+			},
+			update: function(){
+				// @TODO: save new order to the database
 			}
 		});
 	},
@@ -141,7 +148,7 @@ HUB.CoursesOutline = {
 		$('.asset-group-item-title-edit').hide();
 
 		// Turn div "titles" into editable fields
-		$(".sortable").on('click', ".editable", function(event){
+		$(".unit").on('click', ".editable", function(event){
 			event.stopPropagation();
 			event.preventDefault();
 			var parent = $(this).parent();
@@ -154,7 +161,7 @@ HUB.CoursesOutline = {
 		});
 
 		// Turn editable fields back into divs on cancel
-		$(".sortable").on('click', "input[type='reset']", function(event){
+		$(".unit").on('click', "input[type='reset']", function(event){
 			event.stopPropagation();
 			event.preventDefault();
 
@@ -168,7 +175,7 @@ HUB.CoursesOutline = {
 		});
 
 		// Save editable fields on save
-		$(".sortable").on('click', "input[type='submit']", function(event){
+		$(".unit").on('click', "input[type='submit']", function(event){
 			event.stopPropagation();
 			event.preventDefault();
 
@@ -180,28 +187,37 @@ HUB.CoursesOutline = {
 			parent.find('.editable').show();
 			parent.find('.asset-group-item-title-edit').hide();
 		});
+	},
+
+	// Add a new item to the page
+	addNewItem: function()
+	{
+		var $ = this.jQuery;
 
 		// Add a new list item when clicking 'add'
-		$(".sortable").on('click', ".add-new", function(event){
+		$(".unit").on('click', ".add-new", function(event){
+			// Stop default event and propagation
 			event.preventDefault();
 			event.stopPropagation();
 
-			var text  = '<li class="unit-item">';
-				text += '<div class="title unit-title">New Unit</div>';
-				text += '<div class="progress-container">';
-				text += '<div class="progress-indicator"></div>';
-				text += '</div>';
-				text += '<div class="clear"></div>';
-				text += '</li>';
+			// Get our class and grab HTML based on that
+			var itemClass = $(this).attr('class').replace('add-new ', '');
+			var text      = HUB.CoursesOutline.renderHtml(itemClass);
 
+			// Insert in our HTML
 			$(this).before(text);
 
-			$(this).prev('li').find('.progress-indicator').addClass('stop');
+			// Create a variable pointing to the new item just inserted
+			var newAssetGroupItem = $(this).parent('.asset-group').find('.asset-group-item:not(.add-new):last');
 
-			// Setup jquery ui progress bar
-			$(this).prev('li').find('.progress-indicator').progressbar({
-				value: 1
-			});
+			// Make that item look/function like the rest of them
+			newAssetGroupItem.find('.uniform').uniform();
+			newAssetGroupItem.find('.editable').show();
+			newAssetGroupItem.find('.asset-group-item-title-edit').hide();
+
+			// Set up file upload and update progress bar based on the recently added item
+			HUB.CoursesOutline.setupFileUploader();
+			HUB.CoursesOutline.showProgressIndicator();
 		});
 	},
 
@@ -299,6 +315,7 @@ HUB.CoursesOutline = {
 
 							assetslist.find('.uniform:last').uniform();
 							HUB.CoursesOutline.showProgressIndicator();
+							HUB.CoursesOutline.resizeFileUploader();
 
 							// Reset progress bar after 2 seconds
 							setTimeout( function(){
@@ -337,6 +354,59 @@ HUB.CoursesOutline = {
 		info.dialog({
 			modal : true
 		});
+	},
+
+	renderHtml: function(key)
+	{
+		// Sam: Keep the linter from complaining about multi-line strings
+		/*jshint multistr:true */
+
+		var $ = this.jQuery;
+
+		key = key.replace(/-/g, '');
+
+		var html = [];
+
+		html['assetslist'] = ' \
+			<ul class="assets-list"> \
+				<li class="asset-item asset missing nofiles"> \
+					No files \
+					<span class="next-step-upload"> \
+						Upload files &rarr; \
+					</span> \
+				</li> \
+			</ul> \
+		';
+
+		// @FIXME: we need to get course_id and scope_id here
+		html['assetgroupitem'] = ' \
+			<li class="asset-group-item"> \
+				<div class="sortable-handle"></div> \
+				<div class="uploadfiles"> \
+					<p>Drag files here to upload</p> \
+					<form action="" class="uploadfiles-form"> \
+						<input type="file" name="files[]" class="fileupload" multiple /> \
+						<input type="hidden" name="course_id" value="" /> \
+						<input type="hidden" name="scope_id" value="" /> \
+					</form> \
+					<div class="uploadfiles-progress"> \
+						<div class="bar" style="width: 0%;"></div> \
+					</div> \
+				</div> \
+				<div class="asset-group-item-container"> \
+					<div class="asset-group-item-title editable title">New asset group</div> \
+					<div class="asset-group-item-title-edit"> \
+						<input class="uniform" type="text" value="New asset group" /> \
+						<input class="uniform" type="submit" value="Save" /> \
+						<input class="uniform" type="reset" value="Cancel" /> \
+					</div> \
+					' + html['assetslist'] + ' \
+				</div> \
+			</li> \
+			<div class="clear"></div> \
+		';
+
+		return html[key];
 	}
 };
 
