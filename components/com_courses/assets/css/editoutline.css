@@ -222,6 +222,62 @@ ul {
 .asset-group-item .checker {
 	margin-right: 0;
 }
+.error-box {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 999;
+	background-color: #BA4A3B;
+	color: #FFD2C3;
+	border: 1px solid #7F0000;
+	margin: 20px;
+	padding: 10px;
+	overflow: hidden;
+	font-weight: bold;
+	zoom: 1;
+	-webkit-border-radius: 0.27em;
+	-moz-border-radius: 0.27em;
+	-ms-border-radius: 0.27em;
+	-o-border-radius: 0.27em;
+	border-radius: 0.27em;
+	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+	background-image: url("/media/system/images/light-stripes.png");
+	background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(255, 255, 255, .065)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .065)), color-stop(.75, rgba(255, 255, 255, .065)), color-stop(.75, transparent), to(transparent));
+	background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .065) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .065) 50%, rgba(255, 255, 255, .065) 75%, transparent 75%, transparent);
+	background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .065) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .065) 50%, rgba(255, 255, 255, .065) 75%, transparent 75%, transparent);
+	background-image: -ms-linear-gradient(-45deg, rgba(255, 255, 255, .065) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .065) 50%, rgba(255, 255, 255, .065) 75%, transparent 75%, transparent);
+	background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .065) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .065) 50%, rgba(255, 255, 255, .065) 75%, transparent 75%, transparent);
+	background-image: linear-gradient(-45deg, rgba(255, 255, 255, .065) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .065) 50%, rgba(255, 255, 255, .065) 75%, transparent 75%, transparent);
+	-webkit-background-size: 30px 30px;
+	-moz-background-size: 30px 30px;
+	-ms-background-size: 30px 30px;
+	-o-background-size: 30px 30px;
+	background-size: 30px 30px;
+	-webkit-box-shadow: 2px 2px 2px #7F0000;
+	-moz-box-shadow: 2px 2px 2px #7F0000;
+	box-shadow: 2px 2px 2px #7F0000;
+}
+.error-message {
+	margin: 10px 40px 10px 20px;
+}
+.error-close {
+	position: relative;
+	display: block;
+	float: right;
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+}
+.error-close:after {
+	font-family: "fontcons";
+	font-size: 20px;
+	content: "\f094";
+	position: absolute;
+	right: 0;
+	top: 0;
+}
 .bar {
 	height: 15px;
 

@@ -39,7 +39,10 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 	<h2><?php echo $this->title; ?></h2>
 </div>
 
-<div id="info-message"></div>
+<div class="error-box">
+	<p class="error-close"></p>
+	<p class="error-message">There was an error</p>
+</div>
 
 <div id="content-header-extra">
 	<ul id="useroptions">

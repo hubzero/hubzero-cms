@@ -33,6 +33,7 @@ HUB.CoursesOutline = {
 		HUB.CoursesOutline.togglePublished();
 		HUB.CoursesOutline.setupFileUploader();
 		HUB.CoursesOutline.resizeFileUploader();
+		HUB.CoursesOutline.setupErrorMessage();
 	},
 
 	toggleUnits: function()
@@ -218,6 +219,9 @@ HUB.CoursesOutline = {
 			// Set up file upload and update progress bar based on the recently added item
 			HUB.CoursesOutline.setupFileUploader();
 			HUB.CoursesOutline.showProgressIndicator();
+
+			// Finally, show the new item
+			newAssetGroupItem.slideDown('fast', 'linear');
 		});
 	},
 
@@ -271,6 +275,9 @@ HUB.CoursesOutline = {
 
 	setupFileUploader: function()
 	{
+		// Sam: Keep the linter from complaining about multi-line strings
+		/*jshint multistr:true */
+
 		var $ = this.jQuery;
 
 		// Disable default browser drag and drop event
@@ -298,18 +305,19 @@ HUB.CoursesOutline = {
 							assetslist.find('li:first').remove();
 						}
 						$.each(data.result.files, function (index, file) {
-							var li = '';
-								li += '<li class="asset-item asset ' + file.type + ' notpublished">';
-								li += file.filename;
-								li += ' (<a class="" href="' + file.url + '">preview</a>)';
-								li += '<span class="next-step-publish">';
-								li += '<label class="published-label" for="published">';
-								li += '<span class="published-label-text">Mark as reviewed and publish?</span>';
-								li += '<input class="uniform published-checkbox" name="published" type="checkbox" />';
-								li += '<input type="hidden" class="asset_id" name="' + file.id + '[id]" value="' + file.id + '" />';
-								li += '</label>';
-								li += '</span>';
-								li += '</li>';
+							var li = ' \
+								<li class="asset-item asset ' + file.type + ' notpublished"> \
+								' + file.filename + ' \
+								(<a class="" href="' + file.url + '">preview</a>) \
+								<span class="next-step-publish"> \
+								<label class="published-label" for="published"> \
+								<span class="published-label-text">Mark as reviewed and publish?</span> \
+								<input class="uniform published-checkbox" name="published" type="checkbox" /> \
+								<input type="hidden" class="asset_id" name="' + file.id + '[id]" value="' + file.id + '" /> \
+								</label> \
+								</span> \
+								</li> \
+							';
 
 							assetslist.append(li);
 
@@ -341,19 +349,28 @@ HUB.CoursesOutline = {
 		});
 	},
 
+	setupErrorMessage: function()
+	{
+		var $ = this.jQuery;
+
+		var errorBox   = $('.error-box');
+		var errorClose = $('.error-close');
+
+		errorClose.on('click', function(){
+			errorBox.fadeOut('fast');
+		});
+	},
+
 	errorMessage: function(message)
 	{
 		var $ = this.jQuery;
 
-		var info = $('#info-message');
-		var msg = '<p>' + message + '</p>';
+		var errorBox = $('.error-box');
+		var error    = $('.error-message');
 
-		// Set dialog box message and title
-		info.html(msg);
-		info.attr('title','Error');
-		info.dialog({
-			modal : true
-		});
+		error.html(message);
+		errorBox.fadeIn('fast');
+
 	},
 
 	renderHtml: function(key)
@@ -363,10 +380,13 @@ HUB.CoursesOutline = {
 
 		var $ = this.jQuery;
 
+		// Get rid of the dashes from the class name passed in as the key
 		key = key.replace(/-/g, '');
 
+		// Create our html array for our html elements
 		var html = [];
 
+		// Assets list html
 		html['assetslist'] = ' \
 			<ul class="assets-list"> \
 				<li class="asset-item asset missing nofiles"> \
@@ -378,9 +398,10 @@ HUB.CoursesOutline = {
 			</ul> \
 		';
 
+		// Asset group item html
 		// @FIXME: we need to get course_id and scope_id here
 		html['assetgroupitem'] = ' \
-			<li class="asset-group-item"> \
+			<li class="asset-group-item" style="display:none;"> \
 				<div class="sortable-handle"></div> \
 				<div class="uploadfiles"> \
 					<p>Drag files here to upload</p> \
@@ -406,6 +427,7 @@ HUB.CoursesOutline = {
 			<div class="clear"></div> \
 		';
 
+		// Return the requested key
 		return html[key];
 	}
 };
