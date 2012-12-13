@@ -1,0 +1,63 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/members/groups/groups.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Members Groups plugin CSS
+	-- -- -- -- -- -- --
+
+*/
+/* Group member status */
+	/* Table column */
+	.adminlist tbody .status {
+		font-size: 85%;
+		font-weight: bold;
+		display: inline-block;
+		background-color: #6a0;
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		-ms-border-radius: 0.25em;
+		-o-border-radius: 0.25em;
+		border-radius: 0.25em;
+		margin: 0;
+		padding: 0em 0.4em;
+		color: #fff;
+		white-space: nowrap;
+		text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.2);
+	}
+	.adminlist tbody .member {
+		background-color: #66AA00;
+	}
+	.adminlist tbody .member:before {
+		content: "";
+		display: none;
+	}
+	.adminlist tbody .manager {
+		background-color: #ff1177;
+	}
+	.adminlist tbody .pending {
+		background-color: #AA3300;
+	}
+	.adminlist tbody .invitee {
+		background-color: #aaaaaa;
+	}
+
+	.toolbar-box .icon-32-promote:before,
+	.state.promote:before {
+		content: "\2191";
+	}
+	.state.promote:hover:before {
+		color: #7F913C;
+	}
+	.toolbar-box .icon-32-demote:before,
+	.state.demote:before {
+		content: "\2193";
+	}
+	.state.demote:hover:before {
+		color: #c55500;
+	}

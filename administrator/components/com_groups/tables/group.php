@@ -185,5 +185,114 @@ class GroupsGroup extends JTable
 			return false;
 		}
 	}
+
+	/**
+	 * Build query method
+	 * 
+	 * @param  array $filters
+	 * @return $query database query
+	 */
+	private function _buildMembersQuery($filters=array())
+	{
+		$query = " FROM #__xgroups_members AS m 
+				LEFT JOIN #__users AS u ON u.id=m.uidNumber
+				LEFT JOIN #__xgroups_managers AS mg on mg.uidNumber=m.uidNumber AND mg.gidNumber=m.gidNumber
+				LEFT JOIN #__xgroups_applicants AS ma on ma.uidNumber=m.uidNumber AND ma.gidNumber=m.gidNumber
+				LEFT JOIN #__xgroups_invitees AS mi on mi.uidNumber=m.uidNumber AND mi.gidNumber=m.gidNumber";
+
+		$where = array();
+		if (isset($filters['gidNumber']))
+		{
+			$where[] = "m.`gidNumber`=" . $this->_db->Quote(intval($filters['gidNumber']));
+		}
+		if (isset($filters['uidNumber']))
+		{
+			$where[] = "m.`uidNumber`=" . $this->_db->Quote(intval($filters['uidNumber']));
+		}
+		if (isset($filters['status']))
+		{
+			switch ($filters['status'])
+			{
+				case 'manager':
+					$where[] = "mg.`uidNumber` > 0";
+				break;
+
+				case 'applicant':
+					$where[] = "ma.`uidNumber` > 0";
+				break;
+
+				case 'invitee':
+					$where[] = "mi.`uidNumber` > 0";
+				break;
+
+				default:
+				break;
+			}
+		}
+		if (isset($filters['search']) && $filters['search'])
+		{
+			if (is_numeric($filters['search']))
+			{
+				$where[] = "m.`uidNumber`=" . $this->_db->Quote(intval($filters['search']));
+			}
+			else
+			{
+				$where[] = "(LOWER(u.name) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 
+						OR LOWER(u.username) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
+						OR LOWER(u.email) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
+			}
+		}
+
+		if (count($where) > 0)
+		{
+			$query .= " WHERE " . implode(" AND ", $where);
+		}
+
+		return $query;
+	}
+
+	/**
+	 * Get an object list of course units
+	 * 
+	 * @param  array $filters
+	 * @return object Return course units
+	 */
+	public function countMembers($filters=array())
+	{
+		$query  = "SELECT COUNT(*) ";
+		$query .= $this->_buildMembersQuery($filters);
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadResult();
+	}
+
+	/**
+	 * Get an object list of course units
+	 * 
+	 * @param  array $filters
+	 * @return object Return course units
+	 */
+	public function findMembers($filters=array())
+	{
+		$query  = "SELECT DISTINCT m.*, u.name, u.username, u.email, mg.uidNumber AS manager, ma.uidNumber AS applicant, mi.uidNumber AS invitee ";
+		$query .= $this->_buildMembersQuery($filters);
+
+		if (!isset($filters['sort']) || !$filters['sort']) 
+		{
+			$filters['sort'] = 'name';
+		}
+		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+		{
+			$filters['sort_Dir'] = 'ASC';
+		}
+		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+		if (!empty($filters['start']) && !empty($filters['limit']))
+		{
+			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+		}
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
 }
 

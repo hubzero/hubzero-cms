@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           administrator/components/com_groups/views/manage/tmpl/default.xml
+@file           administrator/components/com_groups/views/groups/tmpl/default.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Manage Group Layout">
+	<layout title="Standard Groups Layout">
 		<message>
-			<![CDATA[STANDARD MANAGE GROUP DESC]]>
+			<![CDATA[STANDARD GROUPS DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Manage Group Layout</name>
-		<description>STANDARD MANAGE GROUP DESC</description>
+		<name>Standard Groups Layout</name>
+		<description>STANDARD GROUPS DESC</description>
 		<params>
 		</params>
 	</state>

@@ -145,110 +145,6 @@ class GroupsControllerManage extends Hubzero_Controller
 	}
 
 	/**
-	 * Manage group memberships
-	 *
-	 * @return void
-	 */
-	public function manageTask()
-	{
-		// Incoming
-		$gid = JRequest::getVar('gid', '');
-
-		// Ensure we have a group ID
-		if (!$gid)
-		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_GROUPS_MISSING_ID'),
-				'error'
-			);
-			return;
-		}
-
-		// Load the group page
-		$group = new Hubzero_Group();
-		$group->read($gid);
-
-		if (!$this->_authorize($group)) 
-		{
-			return;
-		}
-
-		$this->gid = $gid;
-		$this->group = $group;
-
-		$action = JRequest::getVar('action','');
-
-		$this->action = $action;
-		$this->authorized = 'admin';
-
-		// Do we need to perform any actions?
-		$out = '';
-		if ($action)
-		{
-			$action = strtolower(trim($action));
-			$action = str_replace(' ', '', $action);
-
-			// Perform the action
-			if (in_array($action, $this->_taskMap))
-			{
-				$action .= 'Task';
-				$this->$action();
-			}
-
-			// Did the action return anything? (HTML)
-			if ($this->output != '')
-			{
-				$out = $this->output;
-			}
-		}
-
-		// Get group members based on their status
-		// Note: this needs to happen *after* any potential actions ar performed above
-		$invitees = $group->get('invitees');
-		$pending  = $group->get('applicants');
-		$members  = $group->get('members');
-		$managers = $group->get('managers');
-
-		// Get a members list without the managers
-		$memberss = array();
-		foreach ($members as $m)
-		{
-			if (!in_array($m,$managers))
-			{
-				$memberss[] = $m;
-			}
-		}
-
-		// Output HTML
-		if ($out == '')
-		{
-			$this->view->group      = $group;
-			$this->view->invitees   = $invitees;
-			$this->view->pending    = $pending;
-			$this->view->members    = $memberss;
-			$this->view->managers   = $managers;
-			$this->view->authorized = 'admin';
-
-			// Set any errors
-			if ($this->getError())
-			{
-				foreach ($this->getErrors() as $error)
-				{
-					$this->view->setError($error);
-				}
-			}
-
-			// Output the HTML
-			$this->view->display();
-		}
-		else
-		{
-			echo $out;
-		}
-	}
-
-	/**
 	 * Create a new group
 	 *
 	 * @return	void
@@ -473,70 +369,81 @@ class GroupsControllerManage extends Hubzero_Controller
 		$group->set('params', $params);
 
 		$group->update();
-		
+
 		// handle special groups
-		if($this->checkSpecialGroupTask( $group ))
+		if ($this->_isSpecial($group))
 		{
-			$this->handleSpecialGroupTask( $group );
+			$this->_handleSpecialGroup($group);
 		}
-		
+
 		// Output messsage and redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
 			JText::_('COM_GROUPS_SAVED')
 		);
 	}
-	
-	private function checkSpecialGroupTask( $group )
+
+	/**
+	 * Check if a group is special or not
+	 *
+	 * @param     object $group Hubzero_Group
+	 * @return    void
+	 */
+	private function _isSpecial($group)
 	{
 		return ($group->get('type') == 3) ? true : false;
 	}
-	
-	private function handleSpecialGroupTask( $group )
+
+	/**
+	 * Generate default template files for special groups
+	 *
+	 * @param     object $group Hubzero_Group
+	 * @return    void
+	 */
+	private function _handleSpecialGroup($group)
 	{
 		//get the upload path for groups
 		$upload_path = trim($this->config->get('uploadpath', '/site/groups'), DS);
-		
+
 		//path to the template
 		$template_path = JPATH_ROOT . DS . $upload_path . DS . $group->get('gidNumber') . DS . 'template';
-		
+
 		//paths to default php & css files
 		$php_file = JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_groups' . DS . 'special' . DS . 'default.php.txt';
 		$css_file = JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_groups' . DS . 'special' . DS . 'default.css.txt';
-		$js_file = JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_groups' . DS . 'special' . DS . 'default.js.txt';
-		
+		$js_file  = JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_groups' . DS . 'special' . DS . 'default.js.txt';
+
 		//check tempalte folder already exists then do nothing
-		if(is_dir($template_path))
+		if (is_dir($template_path))
 		{
 			return;
 		}
-		
+
 		//create template directory and add basic special group template
-		if(!mkdir($template_path, 0770, true))
+		if (!mkdir($template_path, 0770, true))
 		{
 			die('Failed to make template directory.');
 		}
-		
+
 		//copy over basic PHP
-		if(!copy($php_file, $template_path . DS . 'default.php'))
+		if (!copy($php_file, $template_path . DS . 'default.php'))
 		{
 			die('Failed to copy the default PHP template file.');
 		}
-		
+
 		//copy over basic CSS
-		if(!copy($css_file, $template_path . DS . 'default.css'))
+		if (!copy($css_file, $template_path . DS . 'default.css'))
 		{
 			die('Failed to copy the default CSS template file.');
 		}
-		
+
 		//copy over basic JS
-		if(!copy($js_file, $template_path . DS . 'default.js'))
+		if (!copy($js_file, $template_path . DS . 'default.js'))
 		{
 			die('Failed to copy the default Javascript template file.');
 		}
 	}
-	
-	
+
 	/**
 	 * Removes a group and all associated information
 	 *
@@ -763,500 +670,6 @@ class GroupsControllerManage extends Hubzero_Controller
 				);
 			}
 		}
-	}
-
-	/**
-	 * Add user(s) to a group members list (invitee, applicant, member, manager)
-	 *
-	 * @return void
-	 */
-	public function addusersTask()
-	{
-		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
-
-		// Set a flag for emailing any changes made
-		$users = array();
-
-		$tbl = JRequest::getVar('tbl', '', 'post');
-
-		// Get all invitees of this group
-		$invitees = $this->group->get('invitees');
-
-		// Get all applicants of this group
-		$applicants = $this->group->get('applicants');
-
-		// Get all normal members (non-managers) of this group
-		$members = $this->group->get('members');
-
-		// Get all nmanagers of this group
-		$managers = $this->group->get('managers');
-
-		// Incoming array of users to add
-		$m = JRequest::getVar('usernames', '', 'post');
-		$mbrs = explode(',', $m);
-
-		jimport('joomla.user.helper');
-
-		foreach ($mbrs as $mbr)
-		{
-			// Retrieve user's account info
-			$mbr = trim($mbr);
-			$uid = JUserHelper::getUserId($mbr);
-
-			// Ensure we found an account
-			if ($uid)
-			{
-				// Loop through existing members and make sure the user isn't already a member
-				if (in_array($uid, $invitees)
-				 || in_array($uid, $applicants)
-				 || in_array($uid, $members))
-				{
-					$this->setError(JText::sprintf('ALREADY_A_MEMBER_OF_TABLE', $mbr));
-					continue;
-				}
-
-				// They user is not already a member, so we can go ahead and add them
-				$users[] = $uid;
-			}
-			else
-			{
-				$this->setError(JText::_('COM_GROUPS_USER_NOTFOUND') . ' ' . $mbr);
-			}
-		}
-		// Remove the user from any other lists they may be apart of
-		$this->group->remove('invitees', $users);
-		$this->group->remove('applicants', $users);
-		$this->group->remove('members', $users);
-		$this->group->remove('managers', $users);
-
-		// Add users to the list that was chosen
-		$this->group->add($tbl, $users);
-		if ($tbl == 'managers')
-		{
-			// Ensure they're added to the members list as well if they're a manager
-			$this->group->add('members', $users);
-		}
-
-		// Save changes
-		$this->group->update();
-
-		$this->_message = JText::sprintf('User(s) added to group as %s.', $tbl);
-	}
-
-	/**
-	 * Accepts membership invite for user(s) 
-	 *
-	 * @return void
-	 */
-	public function acceptTask()
-	{
-		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
-
-		// Set a flag for emailing any changes made
-		$users = array();
-
-		// Get all normal members (non-managers) of this group
-		$members = $this->group->get('members');
-
-		// Incoming array of users to promote
-		$mbrs = JRequest::getVar('users', array(0), 'post');
-
-		foreach ($mbrs as $mbr)
-		{
-			// Retrieve user's account info
-			$targetuser =& JUser::getInstance($mbr);
-
-			// Ensure we found an account
-			if (is_object($targetuser))
-			{
-				$uid = $targetuser->get('id');
-
-				// Loop through existing members and make sure the user isn't already a member
-				if (in_array($uid, $members))
-				{
-					$this->setError(JText::sprintf('ALREADY_A_MEMBER', $mbr));
-					continue;
-				}
-
-				// Remove record of reason wanting to join group
-				//$reason = new GroupsReason($this->database);
-				//$reason->deleteReason($targetuser->get('username'), $this->group->get('cn'));
-
-				// They user is not already a member, so we can go ahead and add them
-				$users[] = $uid;
-			}
-			else
-			{
-				$this->setError(JText::_('COM_GROUPS_USER_NOTFOUND') . ' ' . $mbr);
-			}
-		}
-
-		// Remove users from applicants list
-		$this->group->remove('invitees', $users);
-
-		// Add users to members list
-		$this->group->add('members', $users);
-
-		// Save changes
-		$this->group->update();
-
-		$this->_message = JText::sprintf('User(s) invite accepted.');
-	}
-
-	/**
-	 * Approves requested membership for user(s)
-	 *
-	 * @return void
-	 */
-	private function approveTask()
-	{
-		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
-
-		// Set a flag for emailing any changes made
-		$users = array();
-
-		// Get all normal members (non-managers) of this group
-		$members = $this->group->get('members');
-
-		// Incoming array of users to promote
-		$mbrs = JRequest::getVar('users', array(0), 'post');
-
-		foreach ($mbrs as $mbr)
-		{
-			// Retrieve user's account info
-			$targetuser =& JUser::getInstance($mbr);
-
-			// Ensure we found an account
-			if (is_object($targetuser))
-			{
-				$uid = $targetuser->get('id');
-
-				// Loop through existing members and make sure the user isn't already a member
-				if (in_array($uid, $members))
-				{
-					$this->setError(JText::sprintf('ALREADY_A_MEMBER', $mbr));
-					continue;
-				}
-
-				// Remove record of reason wanting to join group
-				$reason = new GroupsReason($this->database);
-				$reason->deleteReason($targetuser->get('username'), $this->group->get('cn'));
-
-				// They user is not already a member, so we can go ahead and add them
-				$users[] = $uid;
-			}
-			else
-			{
-				$this->setError(JText::_('COM_GROUPS_USER_NOTFOUND') . ' ' . $mbr);
-			}
-		}
-
-		// Remove users from applicants list
-		$this->group->remove('applicants', $users);
-
-		// Add users to members list
-		$this->group->add('members', $users);
-
-		// Save changes
-		$this->group->update();
-
-		$this->_message = JText::sprintf('User(s) membership approved.');
-	}
-
-	/**
-	 * Promotes member(s) to manager status
-	 *
-	 * @return void
-	 */
-	public function promoteTask()
-	{
-		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
-
-		$users = array();
-
-		// Get all managers of this group
-		$managers = $this->group->get('managers');
-
-		// Incoming array of users to promote
-		$mbrs = JRequest::getVar('users', array(0), 'post');
-
-		foreach ($mbrs as $mbr)
-		{
-			// Retrieve user's account info
-			$targetuser =& JUser::getInstance($mbr);
-
-			// Ensure we found an account
-			if (is_object($targetuser))
-			{
-				$uid = $targetuser->get('id');
-
-				// Loop through existing managers and make sure the user isn't already a manager
-				if (in_array($uid, $managers))
-				{
-					$this->setError(JText::sprintf('ALREADY_A_MANAGER', $mbr));
-					continue;
-				}
-
-				// They user is not already a manager, so we can go ahead and add them
-				$users[] = $uid;
-			}
-			else
-			{
-				$this->setError(JText::_('COM_GROUPS_USER_NOTFOUND') . ' ' . $mbr);
-			}
-		}
-
-		// Add users to managers list
-		$this->group->add('managers', $users);
-
-		// Save changes
-		$this->group->update();
-
-		$this->_message = JText::sprintf('Member(s) promoted.');
-	}
-
-	/**
-	 * Demotes group manager(s) to "member" status
-	 * Disallows demotion of last manager (group must have at least one)
-	 *
-	 * @return void
-	 */
-	public function demoteTask()
-	{
-		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
-
-		$authorized = $this->authorized;
-
-		// Get all managers of this group
-		$managers = $this->group->get('managers');
-
-		// Get a count of the number of managers
-		$nummanagers = count($managers);
-
-		// Only admins can demote the last manager
-		if ($authorized != 'admin' && $nummanagers <= 1)
-		{
-			$this->setError(JText::_('COM_GROUPS_LAST_MANAGER'));
-			return;
-		}
-
-		$users = array();
-
-		// Incoming array of users to demote
-		$mbrs = JRequest::getVar('users', array(0), 'post');
-
-		foreach ($mbrs as $mbr)
-		{
-			// Retrieve user's account info
-			$targetuser =& JUser::getInstance($mbr);
-
-			// Ensure we found an account
-			if (is_object($targetuser))
-			{
-				$users[] = $targetuser->get('id');
-			}
-			else
-			{
-				$this->setError(JText::_('COM_GROUPS_USER_NOTFOUND') . ' ' . $mbr);
-			}
-		}
-
-		// Make sure there's always at least one manager left
-		if ($authorized != 'admin' && count($users) >= count($managers))
-		{
-			$this->setError(JText::_('COM_GROUPS_LAST_MANAGER'));
-			return;
-		}
-
-		// Remove users from managers list
-		$this->group->remove('managers', $users);
-
-		// Save changes
-		$this->group->update();
-
-		$this->_message = JText::sprintf('Member(s) demoted.');
-	}
-
-	/**
-	 * Remove member(s) from a group
-	 * Disallows removal of last manager (group must have at least one)
-	 *
-	 * @return void
-	 */
-	public function removeTask()
-	{
-		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
-
-		$authorized = $this->authorized;
-
-		// Get all the group's managers
-		$managers = $this->group->get('managers');
-
-		// Get all the group's managers
-		$members = $this->group->get('members');
-
-		// Get a count of the number of managers
-		$nummanagers = count($managers);
-
-		// Only admins can demote the last manager
-		if ($authorized != 'admin' && $nummanagers <= 1)
-		{
-			$this->setError(JText::_('COM_GROUPS_LAST_MANAGER'));
-			return;
-		}
-
-		$users_mem = array();
-		$users_man = array();
-
-		// Incoming array of users to demote
-		$mbrs = JRequest::getVar('users', array(0), 'post');
-
-		foreach ($mbrs as $mbr)
-		{
-			// Retrieve user's account info
-			$targetuser =& JUser::getInstance($mbr);
-
-			// Ensure we found an account
-			if (is_object($targetuser))
-			{
-				$uid = $targetuser->get('id');
-
-				if (in_array($uid, $members))
-				{
-					$users_mem[] = $uid;
-				}
-
-				if (in_array($uid, $managers))
-				{
-					$users_man[] = $uid;
-				}
-			}
-			else
-			{
-				$this->setError(JText::_('COM_GROUPS_USER_NOTFOUND') . ' ' . $mbr);
-			}
-		}
-
-		// Remove users from members list
-		$this->group->remove('members', $users_mem);
-
-		// Make sure there's always at least one manager left
-		if ($authorized !== 'admin' && count($users_man) >= count($managers))
-		{
-			$this->setError(JText::_('COM_GROUPS_LAST_MANAGER'));
-		}
-		else
-		{
-			// Remove users from managers list
-			$this->group->remove('managers', $users_man);
-		}
-
-		// Save changes
-		$this->group->update();
-
-		$this->_message = JText::sprintf('Member(s) removed.');
-	}
-
-	/**
-	 * Cancels invite(s)
-	 *
-	 * @return void
-	 */
-	public function uninviteTask()
-	{
-		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
-
-		$authorized = $this->authorized;
-
-		$users = array();
-
-		// Get all the group's invitees
-		$invitees = $this->group->get('invitees');
-
-		// Incoming array of users to demote
-		$mbrs = JRequest::getVar('users', array(0), 'post');
-
-		foreach ($mbrs as $mbr)
-		{
-			// Retrieve user's account info
-			$targetuser =& JUser::getInstance($mbr);
-
-			// Ensure we found an account
-			if (is_object($targetuser))
-			{
-				$uid = $targetuser->get('id');
-
-				if (in_array($uid,$invitees))
-				{
-					$users[] = $uid;
-				}
-			}
-			else
-			{
-				$this->setError(JText::_('COM_GROUPS_USER_NOTFOUND') . ' ' . $mbr);
-			}
-		}
-
-		// Remove users from members list
-		$this->group->remove('invitees', $users);
-
-		// Save changes
-		$this->group->update();
-
-		$this->_message = JText::sprintf('Member(s) uninvited.');
-	}
-
-	/**
-	 * Denies user(s) group membership
-	 *
-	 * @return void
-	 */
-	public function denyTask()
-	{
-		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
-
-		// An array for the users we're going to deny
-		$users = array();
-
-		// Incoming array of users to demote
-		$mbrs = JRequest::getVar('users', array(0), 'post');
-
-		foreach ($mbrs as $mbr)
-		{
-			// Retrieve user's account info
-			$targetuser =& JUser::getInstance($mbr);
-
-			// Ensure we found an account
-			if (is_object($targetuser))
-			{
-				// Remove record of reason wanting to join group
-				$reason = new GroupsReason($this->database);
-				$reason->deleteReason($targetuser->get('username'), $this->group->get('cn'));
-
-				// Add them to the array of users to deny
-				$users[] = $targetuser->get('id');
-			}
-			else
-			{
-				$this->setError(JText::_('COM_GROUPS_USER_NOTFOUND') . ' ' . $mbr);
-			}
-		}
-
-		// Remove users from managers list
-		$this->group->remove('applicants', $users);
-
-		// Save changes
-		$this->group->update();
-
-		$this->_message = JText::sprintf('Users(s) denied membership.');
 	}
 
 	/**
