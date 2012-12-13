@@ -115,7 +115,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 		$this->view->isAdmin  = ($this->juser->get("usertype") == "Super Administrator") ? true : false;
 		
 		//get the earliest year we have citations for
-		$query = "SELECT c.year FROM #__citations as c WHERE published=1 ORDER BY c.year ASC LIMIT 1";
+		$query = "SELECT c.year FROM #__citations as c WHERE c.published=1 AND c.year <> 0 AND c.year IS NOT NULL ORDER BY c.year ASC LIMIT 1";
 		$this->view->database->setQuery( $query );
 		$earliest_year = $this->view->database->loadResult();
 		$earliest_year = ($earliest_year) ? $earliest_year : 1990;
