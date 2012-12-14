@@ -153,7 +153,7 @@
 	#page_menu li .outline:before { content: "\f0ae"; }
 	#page_menu li .members:before { content: "\f007"; }
 	#page_menu li .wiki:before { content: "\f072"; }
-	#page_menu li .resources:before { content: "\f02d"; }
+	#page_menu li .announcements:before { content: "\f095"; }
 	#page_menu li .messages:before { content: "\2709"; }
 	#page_menu li .forum:before { content: "\f086"; }
 	#page_menu li .syllabus:before { content: "\f05a"; } /*  \f0cb \f071*/
@@ -423,7 +423,7 @@
 	.course-info ul li .label {
 	    font-weight: bold;
 		font-size: 11px;
-		color: #444;    
+		color: #444;
 		display: block;
 	}
 	.course-info ul li .label:after {

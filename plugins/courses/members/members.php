@@ -107,7 +107,7 @@ class plgCoursesMembers extends JPlugin
 		$this->course = $course;
 
 		// Get a student count
-		$arr['metadata']['count'] = $this->course->offering()->members(array('count' => true));
+		$arr['metadata']['count'] = $this->course->offering()->members(array('count' => true, 'role' => 'student'));
 
 		// Do we have any pending requests?
 		/*$pending = count($this->course->offering()->get('applicants'));

@@ -40,42 +40,40 @@ $isMember       = $this->course->access('view'); //$this->config->get('access-vi
 $isManager      = $this->course->access('manage'); //$this->config->get('access-manage-course');
 $isNowOnManager = ($isManager) ? true : false;
 
+if (JRequest::getInt('nonadmin', 0) == 1) 
+{ 
+	$isNowOnManager = false;
+}
+
 $this->database = JFactory::getDBO();
 
 $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias');
 
-if (!$this->course->offering()->access('view')) {
-?>
+// Get the current time
+$now = date("Y-m-d H:i:s");
+
+$i = 0;
+
+if (!$this->course->offering()->access('view')) { ?>
 	<p class="info"><?php echo JText::_('Access to the "Syllabus" section of this course is restricted to members only. You must be a member to view the content.'); ?></p>
-<?php 
-} else {
-// Check to make sure we should display the course outline
-/*
-?>
+<?php } else { ?>
 
-<div class="course-content-header">
-	<h3><?php echo JText::_('COURSES_COURSE_OUTLINE'); ?></h3>
-	<div class="course-content-header-extra">
-		<a href="<?php echo JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('cn') . '&active=syllabus'); ?>"><?php echo JText::_('VIEW_SYLLABUS'); ?> &rarr;</a>
-	</div>
-</div>
+	<?php /*if ($isNowOnManager) : ?>
+		<p class="info">You're viewing this page as a course admin, <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?nonadmin=1">click</a> to view it as a student</p>
+	<?php elseif ($isManager && !$isNowOnManager) : ?>
+		<p class="info">You're viewing this page in student view, <a href="<?php echo str_replace('?nonadmin=1', '', $_SERVER['REQUEST_URI']); ?>">click</a> to view it as an admin</p>
+	<?php endif;*/ ?>
 
-<?php */ /*if(JRequest::getInt('nonadmin') == '1') { $isNowOnManager = false; } ?>
-
-<?php if ($isNowOnManager) : ?>
-	<p class="info">You're viewing this page as a course admin, <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?nonadmin=1">click</a> to view it as a student</p>
-<?php elseif ($isManager && !$isNowOnManager) : ?>
-	<p class="info">You're viewing this page in student view, <a href="<?php echo str_replace('?nonadmin=1', '', $_SERVER['REQUEST_URI']); ?>">click</a> to view it as an admin</p>
-<?php endif;*/ ?>
-
-
-
-<?php 
-	// Get the current time
-	$now = date("Y-m-d H:i:s");
-	
-	$i = 0;
-?>
+	<?php
+		// Trigger event
+		$dispatcher =& JDispatcher::getInstance();
+		$results = $dispatcher->trigger('onCourseBeforeOutline', array(
+			$this->course,
+			$this->course->offering()
+		));
+		// Output results
+		echo implode("\n", $results);
+	?>
 
 	<div id="course-outline">
 <?php foreach ($this->course->offering->units() as $unit) { ?>
@@ -87,10 +85,10 @@ if (!$this->course->offering()->access('view')) {
 						<?php echo $this->escape(stripslashes($unit->description)); ?>
 					</h3>
 	<?php if (!$unit->started()) { ?>
-					<div class="comingSoon">
+					<div class="unit-availability comingSoon">
 						<p class="status">Coming soon</p>
 	<?php } else { ?>
-					<div>
+					<div class="unit-availability">
 						<p class="status posted">Posted</p>
 
 						<div class="details">
@@ -205,13 +203,22 @@ if (!$this->course->offering()->access('view')) {
 					}
 ?>
 <?php } // close else ?>
-</div>
-				</div>
-			</div>
-		</div>
+					</div><!-- / .unit-availability -->
+				</div><!-- / .unit-content -->
+			</div><!-- / .unit-wrap -->
+		</div><!-- / .unit -->
 		<div class="clear"></div>
 <?php } // close foreach ?>
-	</div>
-<?php
-}
-?>
+	</div><!-- / #course-outline -->
+
+	<?php
+		// Trigger event
+		$results = $dispatcher->trigger('onCourseAfterOutline', array(
+			$this->course,
+			$this->course->offering()
+		));
+		// Output results
+		echo implode("\n", $results);
+	?>
+
+<?php } // end if ?>

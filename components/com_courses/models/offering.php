@@ -85,6 +85,13 @@ class CoursesModelOffering extends JObject
 	 * 
 	 * @var object
 	 */
+	private $_announcements = NULL;
+
+	/**
+	 * JUser
+	 * 
+	 * @var object
+	 */
 	private $_roles = NULL;
 
 	/**
@@ -691,6 +698,58 @@ class CoursesModelOffering extends JObject
 		}
 
 		return $this->_pages;
+	}
+
+	/**
+	 * Get a list of announcements for an offering
+	 *   Accepts an array of filters to retrieve data by
+	 * 
+	 * @param      array $filters
+	 * @return     mixed
+	 */
+	public function announcements($filters=array())
+	{
+		if (!isset($filters['offering_id']))
+		{
+			$filters['offering_id'] = (int) $this->get('id');
+		}
+		if (!isset($filters['state']))
+		{
+			$filters['state'] = 1;
+		}
+
+		if (isset($filters['count']) && $filters['count'])
+		{
+			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'announcement.php');
+
+			$tbl = new CoursesTableAnnouncement($this->_db);
+
+			return $tbl->count($filters);
+		}
+
+		if (!isset($this->_announcements) || !is_array($this->_announcements))
+		{
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
+			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'announcement.php');
+
+			$tbl = new CoursesTableAnnouncement($this->_db);
+
+			$results = array();
+
+			if (($data = $tbl->find($filters)))
+			{
+				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'announcement.php');
+
+				foreach ($data as $key => $result)
+				{
+					$results[] = new CoursesModelAnnouncement($result);
+				}
+			}
+
+			$this->_announcements = new CoursesModelIterator($results);
+		}
+
+		return $this->_announcements;
 	}
 
 	/**
