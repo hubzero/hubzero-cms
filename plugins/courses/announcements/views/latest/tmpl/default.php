@@ -31,7 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$rows = $this->offering->announcements(array('limit' => 3));
+$dateFormat  = '%d %b, %Y';
+$timeFormat  = '%I:%M %p';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat  = 'd M, Y';
+	$timeFormat  = 'h:i a';
+	$tz = true;
+}
+
+$rows = $this->offering->announcements(array('limit' => $this->params->get('display_limit', 3)));
 
 if ($rows->total() > 0) 
 {
@@ -44,6 +54,19 @@ if ($rows->total() > 0)
 			?>
 			<div class="announcement<?php if ($row->get('priority')) { echo ' high'; } ?>">
 				<?php echo stripslashes($row->get('content')); ?>
+				<dl class="entry-meta">
+					<dt class="entry-id"><?php echo $row->get('id'); ?></dt> 
+					<dd class="time">
+						<time datetime="<?php echo $row->get('created'); ?>">
+							<?php echo JHTML::_('date', $row->get('created'), $timeFormat, $tz); ?>
+						</time>
+					</dd>
+					<dd class="date">
+						<time datetime="<?php echo $row->get('created'); ?>">
+							<?php echo JHTML::_('date', $row->get('created'), $dateFormat, $tz); ?>
+						</time>
+					</dd>
+				</dl>
 			</div>
 			<?php
 		}

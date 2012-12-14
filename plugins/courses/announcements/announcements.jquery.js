@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        plugins/courses/members/members.js
+ * @file        plugins/courses/announcements/announcements.jquery.js
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -16,21 +16,30 @@ if (!HUB.Plugins) {
 }
 
 //----------------------------------------------------------
-// Resource Ranking pop-ups
+// Announcements scripts
 //----------------------------------------------------------
 if (!jq) {
 	var jq = $;
 }
 
-HUB.Plugins.CoursesMembers = {
+HUB.Plugins.CoursesAnnouncements = {
 	jQuery: jq,
 	
 	initialize: function() {
 		var $ = this.jQuery;
 
+		$('a.delete').each(function(i, el) {
+			$(el).on('click', function(e) {
+				var res = confirm('Are you sure you wish to delete this item?');
+				if (!res) {
+					e.preventDefault();
+				}
+				return res;
+			});
+		});
 	} //end initialize
 }
 
 jQuery(document).ready(function($){
-	HUB.Plugins.CoursesMembers.initialize();
+	HUB.Plugins.CoursesAnnouncements.initialize();
 });

@@ -43,7 +43,14 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 
 $juser = JFactory::getUser();
 //$offering = $this->course->offering();
-$rows = $this->offering->announcements($this->filters);
+$filters = $this->filters;
+$filters['count'] = true;
+
+$total = $this->offering->announcements($filters);
+
+$filters['count'] = false;
+
+$rows = $this->offering->announcements($filters);
 $manager = $this->offering->access('manage');
 ?>
 <div class="course_members">
@@ -52,78 +59,68 @@ $manager = $this->offering->access('manage');
 		
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&offering=' . $this->offering->get('alias') . '&active=announcements'); ?>" method="post">
 		<div class="subject">
+			
+			<div class="container data-entry">
+				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
+				<fieldset class="entry-search">
+					<legend><?php echo JText::_('Search announcements'); ?></legend>
+					<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
+					<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" />
+				</fieldset>
+			</div><!-- / .container -->
+			<?php if ($manager) { ?>
+				<p class="btn-container">
+					<a class="add btn" href="<?php echo JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=announcements&action=new'); ?>">
+						<?php echo JText::_('New announcement'); ?>
+					</a>
+				</p>
+			<?php } ?>
 			<div class="container">
-
-				<div class="entries-search">
-					<fieldset>
-						<input type="text" name="q" value="<?php echo $this->escape($this->filters['search']); ?>" />
-						<input type="submit" name="search_members" value="" />
-					</fieldset>
-				</div>
-				<div class="clearfix"></div>
-
-				<table class="courses entries" summary="Members of this course">
-					<caption>
-						<?php 
-							if ($this->filters['search']) 
-							{
-								echo 'Search: "' . $this->escape($this->filters['search']) . '" in ';
-							} 
-						?>
-						Announcements
-					</caption>
-					<tbody>
+				
 <?php if ($rows->total() > 0) { ?>
 	<?php foreach ($rows as $row) { ?>
-						<tr class="odd">
-							<td class="entry-content">
-								<?php echo stripslashes($row->get('content')); ?>
-								<span class="entry-details">
+						<div class="announcement<?php if ($row->get('priority')) { echo ' high'; } ?>">
+							<?php echo stripslashes($row->get('content')); ?>
+							<dl class="entry-meta">
+								<dt class="entry-id"><?php echo $row->get('id'); ?></dt> 
 								<?php if ($manager) { ?>
-									<span class="entry-author">
+									<dd class="entry-author">
 										<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
-									</span>
+									</dd>
 								<?php } ?>
-									<span class="entry-date-at">@</span> 
-									<span class="time">
-										<time datetime="<?php echo $row->publish_up; ?>">
-											<?php echo JHTML::_('date', $row->get('created'), $timeFormat, $tz); ?>
-										</time>
-									</span>
-									<span class="entry-date-on">on</span> 
-									<span class="date">
-										<time datetime="<?php echo $row->publish_up; ?>">
-											<?php echo JHTML::_('date', $row->get('created'), $dateFormat, $tz); ?>
-										</time>
-									</span>
-								</span>
-							</td>
+								<dd class="time">
+									<time datetime="<?php echo $row->get('created'); ?>">
+										<?php echo JHTML::_('date', $row->get('created'), $timeFormat, $tz); ?>
+									</time>
+								</dd>
+								<dd class="date">
+									<time datetime="<?php echo $row->get('created'); ?>">
+										<?php echo JHTML::_('date', $row->get('created'), $dateFormat, $tz); ?>
+									</time>
+								</dd>
 						<?php if ($manager) { ?>
-							<td class="entry-options">
+								<dd class="entry-options">
 								<?php if ($juser->get('id') == $row->get('created_by')) { ?>
-														<a class="edit" href="<?php echo JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=announcements&task=edit&entry='.$row->get('id')); ?>" title="<?php echo JText::_('Edit'); ?>">
-															<?php echo JText::_('Edit'); ?>
-														</a>
-														<a class="delete" href="<?php echo JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=announcements&task=delete&entry='.$row->get('id')); ?>" title="<?php echo JText::_('Delete'); ?>">
-															<?php echo JText::_('Delete'); ?>
-														</a>
+									<a class="edit" href="<?php echo JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=announcements&action=edit&entry=' . $row->get('id')); ?>" title="<?php echo JText::_('Edit'); ?>">
+										<?php echo JText::_('Edit'); ?>
+									</a>
+									<a class="delete" href="<?php echo JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=announcements&action=delete&entry=' . $row->get('id')); ?>" title="<?php echo JText::_('Delete'); ?>">
+										<?php echo JText::_('Delete'); ?>
+									</a>
 								<?php } ?>
-							</td>
+								</dd>
 						<?php } ?>
-						</tr>
+							</dl>
+						</div>
 	<?php } ?>
 <?php } else { ?>
-						<tr class="odd">
-							<td><?php echo JText::_('PLG_COURSES_MEMBERS_NO_RESULTS'); ?></td>
-						</tr>
+							<p><?php echo JText::_('PLG_COURSES_MEMBERS_NO_RESULTS'); ?></p>
 <?php } ?>
-					</tbody>
-				</table>
 			
 			<?php 
 			jimport('joomla.html.pagination');
 			$pageNav = new JPagination(
-				0, 
+				$total, 
 				$this->filters['start'], 
 				$this->filters['limit']
 			);

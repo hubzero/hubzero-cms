@@ -21,123 +21,7 @@
 	.entries .entry-options { 
 		white-space: nowrap;
 	}
-	/*.entries .reason { 
-		color: #aaa;
-		font-style: italic;
-	}
-	.entries .roles { 
-		color: #777;
-		font-size: 0.85em;
-	}
-	.entries .roles .roles-list a {
-		color: #777;
-		border-bottom: 1px dotted #777;
-	}	
-	.entries .roles .roles-list a:hover {
-		color: #000;
-		border-bottom: none;
-	}
-	.entries .roles .roles-list .delete-role {
-		margin-left: 3px;
-	}
-	.entries .roles .roles-list .delete-role a {
-		background-color: #FFF;
-		color: #d72828;
-		padding: 0 2px;
-		border-bottom: 0px;
-	}
-	.entries .roles .roles-list .delete-role a:hover {
-		background-color: #d72828;
-		color: #FFF;
-	}
-	.entries .status {
-		display: none;
-	}
-	.entries .manager .status { 
-		float: right;
-		display: block;
-		background-color: #F17;
-		font-size: 0.85em;
-		color: #FFF;
-		-webkit-border-radius: 5px;
-		-moz-border-radius: 5px;
-		border-radius: 5px;
-		padding: 0 5px;
-	}
-	.message-all,
-	.entries .remove-member,
-	.entries .demote-member,
-	.entries .promote-member,
-	.entries .message-member,
-	.entries .decline-member,
-	.entries .approve-member {
-		width: 5%;
-	}
-	.message-all a.message,
-	.entries .remove-member a,
-	.entries .demote-member a,
-	.entries .promote-member a,
-	.entries .message-member a,
-	.entries .decline-member a,
-	.entries .approve-member a {
-		display: block;
-		color: transparent;
-		width: 20px;
-		border-bottom: none;
-		text-decoration: none;
-		position: relative;
-	}
-	.message-all a.message:hover,
-	.entries .remove-member a:hover,
-	.entries .demote-member a:hover,
-	.entries .promote-member a:hover,
-	.entries .message-member a:hover,
-	.entries .decline-member a:hover,
-	.entries .approve-member a:hover {
-		border: none;
-	}
-	.message-all a.message:before,
-	.entries .remove-member a:before,
-	.entries .demote-member a:before,
-	.entries .promote-member a:before,
-	.entries .message-member a:before,
-	.entries .decline-member a:before,
-	.entries .approve-member a:before {
-		position: absolute;
-		font-family: 'Fontcons';
-		font-size: 22px;
-		top: 0;
-		left: 0;
-		width: 20px;
-		height: 20px;
-		content: '';
-		color: #777;
-	}
-	.message-all {
-		height: 20px;
-		width: 20px;
-	}
-	.message-all a.message:before {
-		content: '\2709';
-	}
-	.entries .remove-member a:before {
-		content: '\f057'
-	}
-	.entries .demote-member a:before {
-		content: '\2193';
-	}
-	.entries .promote-member a:before {
-		content: '\2191';
-	}
-	.entries .message-member a:before {
-		content: '\2709';
-	}
-	.entries .decline-member a:before {
-		content: '\2296';
-	}
-	.entries .approve-member a:before {
-		content: '\2295';
-	}*/
+
 	.announcement {
 		margin: 0 0 1em 0;
 		padding: 0.61803399em 0.61803399em 0.61803399em 3em;
@@ -196,6 +80,61 @@
 	.announcement p:last-child {
 		margin-bottom: 0;
 	}
+
+	dl.entry-meta {
+		margin: 0;
+		padding: 0;
+		color: #999;
+		font-size: 11px;
+	}
+	dl.entry-meta dt {
+		display: none;
+	}
+	dl.entry-meta dd {
+		margin: 0 1.5em 0 0;
+		padding: 0;
+		display: inline;
+	}
+	dl.entry-meta dd a {
+		color: #666;
+		border-bottom: 1px dotted #666;
+	}
+	dl.entry-meta dd a:hover {
+		color: #111;
+		border-bottom: 1px solid #111;
+	}
+	dl.entry-meta {
+		position: relative;
+	}
+	dl.entry-meta dd.entry-options a {
+		margin-left: 1.5em;
+	}
+	dl.entry-meta dd.entry-options a.edit,
+	dl.entry-meta dd.entry-options a.delete {
+		display: block;
+		width: 1.4em;
+		height: 1.4em;
+		font-size: 1.4em;
+		line-height: 1;
+		overflow: hidden;
+		border: none;
+		top: 0;
+		right: 0;
+		position: absolute;
+		white-space: nowrap;
+		color: #999;
+	}
+	dl.entry-meta dd.entry-options a:before,
+	dl.entry-meta dd.entry-options a:before {
+		margin-right: 1em;
+	}
+	dl.entry-meta dd.entry-options a:hover:before,
+	dl.entry-meta dd.entry-options a:hover:before {
+		color: #111;
+	}
+	dl.entry-meta dd.entry-options a.delete {
+		right: 2em;
+	}
 	/*.announcement.low {
 		background-color: #84A7DB;
 		color: #e8f1fe !important;
@@ -215,6 +154,12 @@
 		color: #ffffc0 !important;
 		border-color: #ac8416;
 	}
+	.announcement.high dl.entry-meta {
+		color: #ffffc0 !important;
+	}
+	.announcement.high dl.entry-meta dd a {
+		color: #fff;
+	}
 	.announcement:before {
 		content: "\f095";
 		position: absolute;
@@ -228,53 +173,7 @@
 		font-family: 'Fontcons';
 	}
 
-/* Aside */
-	.aside .roles {
-		list-style: none;
-		margin: 0.5em 0;
-	}
-	.aside .roles .role {
-		float: left;
-		border-bottom: 1px solid #F4F4ee;
-	}
-	.aside .roles .role:hover {
-		border-bottom: 1px solid #f60;
-	}
-	.aside .roles li .active {
-		color: #777;
-		font-weight: bold;
-	}
-	.aside .roles .remove-role {
-		float: right;
-	}
-	.aside .roles .remove-role a {
-		background-color: transparent;
-		color: #777;
-		padding: 0 3px;
-		border: none;
-	}
-	.aside .roles .remove-role a:before {
-		display: none;
-	}
-	.aside .roles .remove-role a:hover {
-		background-color: #777;
-		color: #fff;
-		border: none;
-	}
-
 /* Entries Menu */
-	.entries-filters {
-		overflow: hidden;
-		margin-bottom: 0.5em;
-	}
-	.entries-menu {
-		list-style: none;
-		float:left;
-		padding: 0;
-		margin:0;
-		font-size: 85%;
-		width:80%;
-	}
 	.list-footer,
 	.entries-menu {
 		min-height: 1px;
@@ -282,46 +181,7 @@
 	.list-footer {
 		margin-bottom:20px;
 	}
-	.entries-menu li {
-		float: left;
-		margin: 0;
-	}
-	.entries-menu li a {
-		color: #888;
-		display: block;
-		cursor: pointer;
-		font-weight: normal;
-		line-height: 1em;
-		border: none;
-		margin:0 5px 0 0;
-		padding: 5px 10px;
-		text-shadow: 0px 1px 1px #fff;
-		-webkit-border-radius: 5px;
-		-moz-border-radius: 5px;
-		border-radius:5px;
-	}
-	.entries-menu a:hover {
-		color: #fff;
-	    background-color: #636166;
-		text-shadow: 0 1px 1px rgba(0,0,0,.3);
-		text-decoration: none;
-	}
-	.entries-menu .active { 
-		color:#ffffff; 
-		text-shadow: 0 1px 1px rgba(0,0,0,.3); 
-	}
-	.entries-menu .active.managers { 
-		background-color:#F17; 
-	}
-	.entries-menu .active.members { 
-		background-color:#6A0; 
-	}
-	.entries-menu .active.pending { 
-		background-color:#A30; 
-	}
-	.entries-menu .active.invitees { 
-		background-color:#AAA; 
-	}
+
 	.entries-search {
 		float:left;
 		background-color:#fff;
@@ -346,96 +206,63 @@
 		background:#fff url('/components/com_groups/assets/img/search.png') no-repeat 50% 50%;
 	}
 
-/* Message AJAX */
-	#sbox-content .hub-mail {
-		background: url("/plugins/members/messages/images/mail_bg.png") repeat 0 0;
-		padding: 10px;
-		width: auto;
-		min-height: 380px;
+	.btn-container {
+		text-align: right;
 	}
-	#sbox-content .hub-mail .cont {
-		background-color: #FFF;
-		border: 1px solid #efefef;
+
+	.course_announcements #hubForm .submit {
+		clear: both;
+		margin: -1.5em 1.618em 0 0;
+		padding: 0;
+		text-align: right;
 	}
-	#sbox-content .hub-mail .cont label {
-		padding: 0.5em 0;
-		margin: 0 10px;
-		border-bottom: none;
-		color: #777;
-		display: block;
-	}
-	#sbox-content .hub-mail .cont h3 {
-		background: none;
-		border: none;
-		text-shadow: none;
-		padding: 0.5em 0;
-		margin: 5px 10px 0 10px;
-		filter: none;
-	}
-	#sbox-content .hub-mail .cont #msg-to {
-		width: 350px;
-		display: block;
-	}
-	#sbox-content .hub-mail .cont input[type=submit] {
+	.course_announcements #hubForm .submit input,
+	.course_announcements #hubForm .option {
 		width: auto;
 	}
-	#sbox-content .hub-mail .cont .hint {
-		font-size: 0.85em;
-		color: #999;
-		display: block;
-	}
-	#sbox-content .hub-mail .cont .required {
-		color: #f00;
-		font-size: 0.6em;
-		text-transform: uppercase;
-	}		
-	#sbox-content .hub-mail #members {
-		display: block;
+	.course_announcements #hubForm #priority-label {
 		width: 50%;
-	}
-	#sbox-content .hub-mail .width-65{
-		width: 65%;
-	}
-	#sbox-content .hub-mail .smallinput {
-		width: 1px;
 	}
 
 /* Hide the sidebar if the page is too narrow */
 @media only screen and (max-width: 1064px) {
-	.course_members .aside,
-	.course_members .subject {
+	.course_announcements #hubForm .explaination {
+		display: none;
+	}
+	.course_announcements .aside,
+	.course_announcements .subject {
 		float: none;
 	}
-	.course_members .aside .container {
+	.course_announcements .aside .container {
 		width: 47.5%;
 		float: left;
 		margin: 1em 2.5% 1em 0;
 		padding: 0;
 		background: transparent;
 	}
-	.course_members .aside #addrole {
+	.course_announcements .aside #addrole {
 		margin-left: 2.5%;
 		margin-right: 0;
 	}
-	.course_members .aside .container h4 {
+	.course_announcements .aside .container h4 {
 		margin: 0 0 1em 0;
 		padding: 1em 0 0 0;
 	}
-	.course_members .aside .container ul {
+	.course_announcements .aside .container ul {
 		padding: 0 0 1em 0;
 		border: none;
 	}
-	.course_members .aside:before,
-	.course_members .aside:after,
-	.course_members .subject:after {
+	.course_announcements .aside:before,
+	.course_announcements .aside:after,
+	.course_announcements .subject:after {
 		display: none;
 	}
-	.course_members .aside {
+	.course_announcements .aside {
 		margin: 0;
 		padding: 0;
 		width: auto;
 	}
-	.course_members .subject {
+	.course_announcements .subject {
 		padding-left: 0;
 		padding-right: 0;
 		margin-right: 0;
