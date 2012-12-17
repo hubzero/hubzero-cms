@@ -313,7 +313,7 @@ CREATE TABLE `#__bannertrack` (
 
 CREATE TABLE `#__billboard_collection` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET latin1 DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
