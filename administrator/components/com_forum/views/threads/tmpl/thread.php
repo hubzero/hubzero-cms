@@ -104,7 +104,7 @@ function submitbutton(pressbutton) {
 				<th><?php echo JHTML::_('grid.sort', 'ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
                 <th><?php echo JHTML::_('grid.sort', 'Title', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th><?php echo JHTML::_('grid.sort', 'State', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th><?php echo JHTML::_('grid.sort', 'Group', 'group_alias', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th><?php echo JHTML::_('grid.sort', 'Scope', 'scope', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th><?php echo JHTML::_('grid.sort', 'Creator', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th><?php echo JHTML::_('grid.sort', 'Created', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
@@ -169,8 +169,8 @@ if ($this->results)
 <?php } ?>
 				</td>
 				<td>
-					<span class="group">
-						<?php echo $this->escape($row->group_alias); ?>
+					<span class="scope">
+						<span><?php echo $this->escape($row->scope); ?> <?php echo ($row->scope_id) ? '(' . $this->escape($row->scope_id) . ')' : ''; ?></span>
 					</span>
 				</td>
 				<td>

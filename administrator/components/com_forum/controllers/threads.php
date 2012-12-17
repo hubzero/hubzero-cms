@@ -138,23 +138,24 @@ class ForumControllerThreads extends Hubzero_Controller
 		{
 			foreach ($sections as $s)
 			{
-				if (!$s->group_alias)
+				$ky = $s->scope . ' (' . $s->scope_id . ')';
+				if ($s->scope == 'site')
 				{
-					$s->group_alias = '[ no group ]';
+					$ky = '[ site ]';
 				}
-				if (!isset($this->view->sections[$s->group_alias]))
+				if (!isset($this->view->sections[$ky]))
 				{
-					$this->view->sections[$s->group_alias] = array();
+					$this->view->sections[$ky] = array();
 				}
 				$s->categories = (isset($this->view->cateories[$s->id])) ? $this->view->cateories[$s->id] : array(); //$this->view->category->getRecords(array('section_id'=>$s->id));
-				$this->view->sections[$s->group_alias][] = $s;
-				asort($this->view->sections[$s->group_alias]);
+				$this->view->sections[$ky][] = $s;
+				asort($this->view->sections[$ky]);
 			}
 		}
 		else 
 		{
 			$default = new ForumSection($this->database);
-			$default->loadDefault($this->view->section->group_id);
+			$default->loadDefault($this->view->section->scope, $this->view->section->scope_id);
 
 			$this->view->sections[] = $default;
 		}
@@ -287,23 +288,24 @@ class ForumControllerThreads extends Hubzero_Controller
 		{
 			foreach ($sections as $s)
 			{
-				if (!$s->group_alias)
+				$ky = $s->scope . ' (' . $s->scope_id . ')';
+				if ($s->scope == 'site')
 				{
-					$s->group_alias = '[ none ]';
+					$ky = '[ site ]';
 				}
-				if (!isset($this->view->sections[$s->group_alias]))
+				if (!isset($this->view->sections[$ky]))
 				{
-					$this->view->sections[$s->group_alias] = array();
+					$this->view->sections[$ky] = array();
 				}
 				$s->categories = (isset($this->view->cateories[$s->id])) ? $this->view->cateories[$s->id] : array(); //$this->view->category->getRecords(array('section_id'=>$s->id));
-				$this->view->sections[$s->group_alias][] = $s;
-				asort($this->view->sections[$s->group_alias]);
+				$this->view->sections[$ky][] = $s;
+				asort($this->view->sections[$ky]);
 			}
 		}
 		else 
 		{
 			$default = new ForumSection($this->database);
-			$default->loadDefault($this->view->section->group_id);
+			$default->loadDefault($this->view->section->scope, $this->view->section->scope_id);
 
 			$this->view->sections[] = $default;
 		}
@@ -439,23 +441,24 @@ class ForumControllerThreads extends Hubzero_Controller
 		{
 			foreach ($sections as $s)
 			{
-				if (!$s->group_alias)
+				$ky = $s->scope . ' (' . $s->scope_id . ')';
+				if ($s->scope == 'site')
 				{
-					$s->group_alias = '[ none ]';
+					$ky = '[ site ]';
 				}
-				if (!isset($this->view->sections[$s->group_alias]))
+				if (!isset($this->view->sections[$ky]))
 				{
-					$this->view->sections[$s->group_alias] = array();
+					$this->view->sections[$ky] = array();
 				}
 				$s->categories = (isset($this->view->cateories[$s->id])) ? $this->view->cateories[$s->id] : array(); //$this->view->category->getRecords(array('section_id'=>$s->id));
-				$this->view->sections[$s->group_alias][] = $s;
-				asort($this->view->sections[$s->group_alias]);
+				$this->view->sections[$ky][] = $s;
+				asort($this->view->sections[$ky]);
 			}
 		}
 		else 
 		{
 			$default = new ForumSection($this->database);
-			$default->loadDefault($this->view->section->group_id);
+			$default->loadDefault($this->view->section->scope, $this->view->section->scope_id);
 
 			$this->view->sections[] = $default;
 		}

@@ -220,8 +220,12 @@ function submitbutton(pressbutton)
 						</td>
 					</tr>
 					<tr>
-						<td class="key"><label for="field-group_id"><?php echo JText::_('COM_FORUM_FIELD_GROUP'); ?>:</label></td>
-						<td><input type="text" name="fields[group_id]" id="field-group_id" size="11" maxlength="11" value="<?php echo $this->escape($this->row->group_id); ?>" /></td>
+						<td class="key"><label for="field-scope"><?php echo JText::_('Scope'); ?>:</label></td>
+						<td><input type="text" name="fields[scope]" id="field-scope" size="35" maxlength="150" value="<?php echo $this->escape($this->row->scope); ?>" /></td>
+					</tr>
+					<tr>
+						<td class="key"><label for="field-scope_id"><?php echo JText::_('Scope ID'); ?>:</label></td>
+						<td><input type="text" name="fields[scope_id]" id="field-scope_id" size="11" maxlength="11" value="<?php echo $this->escape($this->row->scope_id); ?>" /></td>
 					</tr>
 				</tbody>
 			</table>
@@ -248,7 +252,7 @@ function submitbutton(pressbutton)
 		<input type="hidden" name="fields[parent]" value="<?php echo $this->row->parent; ?>" />
 	<?php } ?>
 	<!-- <input type="hidden" name="fields[group_id]" value="<?php echo $this->row->group_id; ?>" /> -->
-	<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
+	<input type="hidden" name="authorid" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />

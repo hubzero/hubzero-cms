@@ -110,6 +110,15 @@ class ForumSection extends JTable
 	var $asset_id = NULL;
 
 	/**
+	 * int(11)
+	 * Used to associate another object such as a 
+	 * course lecture to a specific entry
+	 * 
+	 * @var integer
+	 */
+	var $object_id = NULL;
+
+	/**
 	 * Constructor
 	 *
 	 * @param      object &$db JDatabase
@@ -204,10 +213,42 @@ class ForumSection extends JTable
 		}
 		$oid = trim($oid);
 
-		$query = "SELECT * FROM $this->_tbl WHERE alias='$oid'";
+		$query = "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($oid);
 		if ($scope_id !== null)
 		{
-			$query .= " AND scope_id=" . $scope_id . " AND scope='$scope'";
+			$query .= " AND scope_id=" . $this->_db->Quote($scope_id) . " AND scope=" . $this->_db->Quote($scope);
+		}
+
+		$this->_db->setQuery($query);
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+	}
+
+	/**
+	 * Load a record by its alias and bind data to $this
+	 * 
+	 * @param      string $oid Record alias
+	 * @return     boolean True upon success, False if errors
+	 */
+	public function loadByObject($oid=NULL, $scope_id=null, $scope='site')
+	{
+		if ($oid === NULL) 
+		{
+			return false;
+		}
+		$oid = intval($oid);
+
+		$query = "SELECT * FROM $this->_tbl WHERE object_id=" . $this->_db->Quote($oid);
+		if ($scope_id !== null)
+		{
+			$query .= " AND scope_id=" . $this->_db->Quote($scope_id) . " AND scope=" . $this->_db->Quote($scope);
 		}
 
 		$this->_db->setQuery($query);
@@ -228,13 +269,14 @@ class ForumSection extends JTable
 	 * @param      integer $group ID of group the data belongs to
 	 * @return     boolean True if data is bound to $this object
 	 */
-	public function loadDefault($group=0)
+	public function loadDefault($scope='site', $scope_id=0)
 	{
 		$result = array(
 			'id' => 0,
 			'title' => JText::_('Categories'),
 			'created_by' => 0,
-			'group_id' => $group,
+			'scope'    => $scope,
+			'scope_id' => $scope_id,
 			'state' => 1,
 			'access' => 1
 		);
@@ -318,6 +360,10 @@ class ForumSection extends JTable
 		if (isset($filters['scope_id']) && (int) $filters['scope_id'] >= 0) 
 		{
 			$where[] = "c.scope_id=" . $this->_db->Quote(intval($filters['scope_id']));
+		}
+		if (isset($filters['object_id']) && (int) $filters['object_id'] >= 0) 
+		{
+			$where[] = "c.object_id=" . $this->_db->Quote(intval($filters['object_id']));
 		}
 
 		if (isset($filters['search']) && $filters['search'] != '') 
@@ -409,7 +455,7 @@ class ForumSection extends JTable
 			return null;
 		}
 
-		$query = "SELECT r.* FROM $this->_tbl AS r WHERE r.parent=$parent ORDER BY created DESC LIMIT 1";
+		$query = "SELECT r.* FROM $this->_tbl AS r WHERE r.parent=" . $this->_db->Quote($parent) . " ORDER BY created DESC LIMIT 1";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
@@ -432,7 +478,7 @@ class ForumSection extends JTable
 			return null;
 		}
 
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent=$parent");
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent=" . $this->_db->Quote($parent));
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());

@@ -65,10 +65,10 @@ function submitbutton(pressbutton) {
 		<select name="category_id" id="field-category_id" onchange="document.adminForm.submit( );">
 			<option value="-1"><?php echo JText::_('COM_FORUM_FIELD_CATEGORY_SELECT'); ?></option>
 <?php
-	foreach ($this->sections as $group => $sections)
+	foreach ($this->sections as $scope => $sections)
 	{
 ?>
-			<optgroup label="<?php echo $this->escape(stripslashes($group)); ?>">
+			<optgroup label="<?php echo $this->escape(stripslashes($scope)); ?>">
 <?php
 			foreach ($sections as $section)
 			{
@@ -103,7 +103,7 @@ function submitbutton(pressbutton) {
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'State', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Sticky', 'sticky', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Access', 'access', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Group', 'group_alias', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'Scope', 'scope', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Creator', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Created', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
@@ -232,8 +232,8 @@ if ($this->results)
 					<!-- </a> -->
 				</td>
 				<td>
-					<span class="group">
-						<?php echo $this->escape($row->group_alias); ?>
+					<span class="scope">
+						<span><?php echo $this->escape($row->scope); ?> <?php echo ($row->scope_id) ? '(' . $this->escape($row->scope_id) . ')' : ''; ?></span>
 					</span>
 				</td>
 				<td>

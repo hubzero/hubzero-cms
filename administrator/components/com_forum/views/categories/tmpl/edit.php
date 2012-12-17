@@ -210,7 +210,8 @@ function submitbutton(pressbutton)
 	<?php endif; ?>
 <?php } ?>
 
-	<input type="hidden" name="fields[group_id]" value="<?php echo $this->row->group_id; ?>" />
+	<input type="hidden" name="fields[scope]" value="<?php echo $this->row->scope; ?>" />
+	<input type="hidden" name="fields[scope_id]" value="<?php echo $this->row->scope_id; ?>" />
 	<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

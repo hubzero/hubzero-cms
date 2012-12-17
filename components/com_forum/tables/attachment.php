@@ -119,7 +119,7 @@ class ForumAttachment extends JTable
 			return false;
 		}
 		$parent = intval($parent);
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE parent='$parent' AND filename='$filename' LIMIT 1");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE parent=" . $this->_db->Quote($parent) . " AND filename=" . $this->_db->Quote($filename) . " LIMIT 1");
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			return $this->bind($result);
@@ -138,12 +138,14 @@ class ForumAttachment extends JTable
 	 */
 	public function check() 
 	{
-		if ($this->post_id == NULL) 
+		$this->post_id = intval($this->post_id);
+		if (!$this->post_id) 
 		{
 			$this->setError(JText::_('COM_FORUM_ERROR_NO_POST_ID'));
 			return false;
 		}
-		if (trim($this->filename) == '') 
+		$this->filename = trim($this->filename);
+		if (!$this->filename) 
 		{
 			$this->setError(JText::_('COM_FORUM_ERROR_NO_FILENAME'));
 			return false;

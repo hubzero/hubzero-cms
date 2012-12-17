@@ -150,6 +150,15 @@ class ForumCategory extends JTable
 	var $asset_id = NULL;
 
 	/**
+	 * int(11)
+	 * Used to associate another object such as a 
+	 * course lecture to a specific entry
+	 * 
+	 * @var integer
+	 */
+	var $object_id = NULL;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      object &$db JDatabase
@@ -201,12 +210,12 @@ class ForumCategory extends JTable
 	{
 		// Initialise variables.
 		$assetId = null;
-		$db		= $this->getDbo();
+		$db = $this->getDbo();
 
 		if ($assetId === null) 
 		{
 			// Build the query to get the asset id for the parent category.
-			$query	= $db->getQuery(true);
+			$query = $db->getQuery(true);
 			$query->select('id');
 			$query->from('#__assets');
 			$query->where('name = ' . $db->quote('com_forum'));
@@ -244,14 +253,50 @@ class ForumCategory extends JTable
 		}
 		$oid = trim($oid);
 		
-		$query = "SELECT * FROM $this->_tbl WHERE alias='$oid'";
+		$query = "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($oid);
 		if ($section_id !== null)
 		{
-			$query .= " AND section_id=" . $section_id;
+			$query .= " AND section_id=" . $this->_db->Quote($section_id);
 		}
 		if ($scope_id !== null)
 		{
-			$query .= " AND scope_id=" . $scope_id . " AND scope='$scope'";
+			$query .= " AND scope_id=" . $this->_db->Quote($scope_id) . " AND scope=" . $this->_db->Quote($scope);
+		}
+
+		$this->_db->setQuery($query);
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+	}
+
+	/**
+	 * Load a record by its alias and bind data to $this
+	 * 
+	 * @param      string $oid Record alias
+	 * @return     boolean True upon success, False if errors
+	 */
+	public function loadByObject($oid=NULL, $section_id=null, $scope_id=null, $scope='site')
+	{
+		if ($oid === NULL) 
+		{
+			return false;
+		}
+		$oid = intval($oid);
+
+		$query = "SELECT * FROM $this->_tbl WHERE object_id=" . $this->_db->Quote($oid);
+		if ($section_id !== null)
+		{
+			$query .= " AND section_id=" . $this->_db->Quote($section_id);
+		}
+		if ($scope_id !== null)
+		{
+			$query .= " AND scope_id=" . $this->_db->Quote($scope_id) . " AND scope=" . $this->_db->Quote($scope);
 		}
 
 		$this->_db->setQuery($query);
@@ -377,6 +422,10 @@ class ForumCategory extends JTable
 		{
 			$where[] = "c.section_id=" . $this->_db->Quote(intval($filters['section_id']));
 		}
+		if (isset($filters['object_id']) && (int) $filters['object_id'] >= 0) 
+		{
+			$where[] = "c.object_id=" . $this->_db->Quote(intval($filters['object_id']));
+		}
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
 			$where[] = "(LOWER(c.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 
@@ -480,7 +529,7 @@ class ForumCategory extends JTable
 			$this->$k = intval($oid);
 		}
 
-		$query = "SELECT COUNT(*) FROM #__forum_posts WHERE category_id=" . $this->$k . " AND scope_id=$scope_id AND scope='$scope' AND parent=0 AND state < 2";
+		$query = "SELECT COUNT(*) FROM #__forum_posts WHERE category_id=" . $this->_db->Quote($this->$k) . " AND scope_id=" . $this->_db->Quote($scope_id) . " AND scope=" . $this->_db->Quote($scope) . " AND parent=0 AND state < 2";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -502,7 +551,7 @@ class ForumCategory extends JTable
 		}
 
 		//$query = "SELECT COUNT(*) FROM #__forum_posts WHERE parent IN (SELECT r.id FROM #__forum_posts AS r WHERE r.category_id=" . $this->$k . " AND group_id=$group_id AND parent=0 AND state < 2)";
-		$query = "SELECT COUNT(*) FROM #__forum_posts AS r WHERE r.category_id=" . $this->$k . " AND scope_id=$scope_id AND scope='$scope' AND parent=0 AND state < 2";
+		$query = "SELECT COUNT(*) FROM #__forum_posts AS r WHERE r.category_id=" . $this->_db->Quote($this->$k) . " AND scope_id=" . $this->_db->Quote($scope_id) . " AND scope=" . $this->_db->Quote($scope) . " AND parent=0 AND state < 2";
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
@@ -559,7 +608,7 @@ class ForumCategory extends JTable
 			$section = intval($section);
 		}
 		
-		$this->_db->setQuery("UPDATE $this->_tbl SET state=$state WHERE section_id IN ($section)");
+		$this->_db->setQuery("UPDATE $this->_tbl SET state=" . $this->_db->Quote($state) . " WHERE section_id IN ($section)");
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());

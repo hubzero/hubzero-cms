@@ -100,7 +100,8 @@ class ForumControllerCategories extends Hubzero_Controller
 		// Set the group ID from the secton, if a section is selected
 		if ($this->view->filters['section_id'] && $this->view->section->id)
 		{
-			$this->view->filters['group'] = $this->view->section->group_id;
+			$this->view->filters['scope'] = $this->view->section->scope;
+			$this->view->filters['scope_id'] = $this->view->section->scope_id;
 		}
 
 		// Get the sections for this group
@@ -111,22 +112,23 @@ class ForumControllerCategories extends Hubzero_Controller
 		{
 			foreach ($sections as $s)
 			{
-				if (!$s->group_alias)
+				$ky = $s->scope . ' (' . $s->scope_id . ')';
+				if ($s->scope == 'site')
 				{
-					$s->group_alias = '[ no group ]';
+					$ky = '[ site ]';
 				}
-				if (!isset($this->view->sections[$s->group_alias]))
+				if (!isset($this->view->sections[$ky]))
 				{
-					$this->view->sections[$s->group_alias] = array();
+					$this->view->sections[$ky] = array();
 				}
-				$this->view->sections[$s->group_alias][] = $s;
-				asort($this->view->sections[$s->group_alias]);
+				$this->view->sections[$ky][] = $s;
+				asort($this->view->sections[$ky]);
 			}
 		}
 		else 
 		{
 			$default = new ForumSection($this->database);
-			$default->loadDefault($this->view->section->group_id);
+			$default->loadDefault($this->view->section->scope, $this->view->section->scope_id);
 
 			$this->view->sections[] = $default;
 		}
@@ -214,22 +216,23 @@ class ForumControllerCategories extends Hubzero_Controller
 		{
 			foreach ($sections as $s)
 			{
-				if (!$s->group_alias)
+				$ky = $s->scope . ' (' . $s->scope_id . ')';
+				if ($s->scope == 'site')
 				{
-					$s->group_alias = '[ no group ]';
+					$ky = '[ site ]';
 				}
-				if (!isset($this->view->sections[$s->group_alias]))
+				if (!isset($this->view->sections[$ky]))
 				{
-					$this->view->sections[$s->group_alias] = array();
+					$this->view->sections[$ky] = array();
 				}
-				$this->view->sections[$s->group_alias][] = $s;
-				asort($this->view->sections[$s->group_alias]);
+				$this->view->sections[$ky][] = $s;
+				asort($this->view->sections[$ky]);
 			}
 		}
 		else 
 		{
 			$default = new ForumSection($this->database);
-			$default->loadDefault($this->view->section->group_id);
+			$default->loadDefault($this->view->section->scope, $this->view->section->scope_id);
 
 			$this->view->sections[] = $default;
 		}
@@ -274,11 +277,12 @@ class ForumControllerCategories extends Hubzero_Controller
 			return;
 		}
 
-		if (!$model->group_id)
+		if (!$model->scope)
 		{
 			$section = new ForumSection($this->database);
 			$section->load($filters['section_id']);
-			$model->group_id = $section->group_id;
+			$model->scope    = $section->scope;
+			$model->scope_id = $section->scope_id;
 		}
 
 		// Check content

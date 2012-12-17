@@ -62,7 +62,42 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="group"><?php echo JText::_('Group:'); ?></label> 
+		<label for="scopeinfo"><?php echo JText::_('Scope:'); ?></label> 
+		<select name="scopeinfo" id="scopeinfo" style="max-width: 20em;" onchange="document.adminForm.submit();">
+			<option value=""<?php if ($this->filters['scopeinfo'] == '') { echo ' selected="selected"'; } ?>><?php echo JText::_('Select...'); ?></option>
+			<option value="site:0"<?php if ($this->filters['scopeinfo'] == 'site:0') { echo ' selected="selected"'; } ?>><?php echo JText::_('[ None ]'); ?></option>
+			<?php
+			/*ximport('Hubzero_Group');
+			$filters = array();
+			$filters['authorized'] = 'admin';
+			$filters['fields'] = array('cn','description','published','gidNumber','type');
+			$filters['type'] = array(1,3);
+			$filters['sortby'] = 'description';
+			$groups = Hubzero_Group::find($filters);*/
+
+			$html = '';
+			if ($this->results) 
+			{
+				foreach ($this->results as $result)
+				{
+					if ($result->scope == 'site')
+					{
+						continue;
+					}
+					$html .= ' <option value="' . $result->scope . ':' . $result->scope_id . '"';
+					if ($this->filters['scopeinfo'] == $result->scope . ':' . $result->scope_id) 
+					{
+						$html .= ' selected="selected"';
+					}
+					$html .= '>' . $this->escape(stripslashes($result->scope));
+					$html .= ($result->scope_id) ? ' (' . $this->escape(stripslashes($result->scope_id)) . ')' : '';
+					$html .= '</option>'."\n";
+				}
+			}
+			echo $html;
+			?>
+		</select>
+		<!-- <label for="group"><?php echo JText::_('Group:'); ?></label> 
 		<select name="group" id="group" style="max-width: 20em;" onchange="document.adminForm.submit( );">
 			<option value="-1"<?php if ($this->filters['group'] == -1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Select...'); ?></option>
 			<option value="0"<?php if ($this->filters['group'] == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('[ None ]'); ?></option>
@@ -90,7 +125,7 @@ function submitbutton(pressbutton)
 			}
 			echo $html;
 			?>
-		</select>
+		</select> -->
 	</fieldset>
 	<div class="clr"></div>
 
@@ -102,7 +137,7 @@ function submitbutton(pressbutton)
                 <th scope="col"><?php echo JHTML::_('grid.sort', 'Title', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'State', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Access', 'access', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Group', 'group_alias', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'Scope', 'scope', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JText::_('Categories'); ?></th>
 			</tr>
 		</thead>
@@ -207,11 +242,11 @@ if ($this->results)
 					<!-- </a> -->
 				</td>
 				<td>
-<?php if ($this->escape($row->group_alias)) { ?>
-					<span class="group">
-						<span><?php echo $this->escape($row->group_alias); ?></span>
+<?php //if ($this->escape($row->scope)) { ?>
+					<span class="scope">
+						<span><?php echo $this->escape($row->scope); ?> <?php echo ($row->scope_id) ? '(' . $this->escape($row->scope_id) . ')' : ''; ?></span>
 					</span>
-<?php } ?>
+<?php //} ?>
 				</td>
 				<td>
 <?php if ($row->categories > 0) { ?>

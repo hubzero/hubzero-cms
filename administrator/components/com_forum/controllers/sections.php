@@ -77,6 +77,17 @@ class ForumControllerSections extends Hubzero_Controller
 			'filter_order_Dir', 
 			'DESC'
 		));
+		$this->view->filters['scopeinfo']     = trim($app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.scopeinfo', 
+			'scopeinfo', 
+			''
+		));
+		if (strstr($this->view->filters['scopeinfo'], ':'))
+		{
+			$bits = explode(':', $this->view->filters['scopeinfo']);
+			$this->view->filters['scope'] = $bits[0];
+			$this->view->filters['scope_id'] = intval(end($bits));
+		}
 
 		$model = new ForumSection($this->database);
 		

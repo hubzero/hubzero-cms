@@ -81,10 +81,15 @@ function submitbutton(pressbutton)
 						<td><input type="text" name="fields[alias]" id="field-alias" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->alias)); ?>" /></td>
 					</tr>
 					<tr>
-						<td class="key"><label for="field-group_id"><?php echo JText::_('Group'); ?>:</label></td>
+						<td class="key"><label for="field-scope]"><?php echo JText::_('Scope'); ?>:</label></td>
+						<td><input type="text" name="fields[scope]" id="field-scope]" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->scope)); ?>" /></td>
+					</tr>
+					<tr>
+						<td class="key"><label for="field-scope_id"><?php echo JText::_('Scope ID'); ?>:</label></td>
 						<td>
+							<input type="text" name="fields[scope_id]" id="field-scope_id" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->scope_id)); ?>" />
 							<?php
-							ximport('Hubzero_Group');
+							/*ximport('Hubzero_Group');
 							$filters = array();
 							$filters['authorized'] = 'admin';
 							$filters['fields'] = array('cn','description','published','gidNumber','type');
@@ -112,7 +117,7 @@ function submitbutton(pressbutton)
 								}
 							}
 							$html .= '</select>'."\n";
-							echo $html;
+							echo $html;*/
 							?>
 						</td>
 					</tr>

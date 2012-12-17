@@ -163,6 +163,15 @@ class ForumPost extends JTable
 	var $asset_id = NULL;
 
 	/**
+	 * int(11)
+	 * Used to associate another object such as a 
+	 * course lecture to a specific entry
+	 * 
+	 * @var integer
+	 */
+	var $object_id = NULL;
+
+	/**
 	 * Constructor
 	 *
 	 * @param      object &$db JDatabase
@@ -241,6 +250,38 @@ class ForumPost extends JTable
 		else 
 		{
 			return parent::_getAssetParentId($table, $id);
+		}
+	}
+
+	/**
+	 * Load a record by its alias and bind data to $this
+	 * 
+	 * @param      string $oid Record alias
+	 * @return     boolean True upon success, False if errors
+	 */
+	public function loadByObject($oid=NULL, $scope_id=null, $scope='site')
+	{
+		if ($oid === NULL) 
+		{
+			return false;
+		}
+		$oid = intval($oid);
+
+		$query = "SELECT * FROM $this->_tbl WHERE object_id=" . $this->_db->Quote($oid);
+		if ($scope_id !== null)
+		{
+			$query .= " AND scope_id=" . $this->_db->Quote($scope_id) . " AND scope=" . $this->_db->Quote($scope) . " AND parent=0";
+		}
+
+		$this->_db->setQuery($query);
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
 		}
 	}
 
@@ -352,6 +393,10 @@ class ForumPost extends JTable
 			if (isset($filters['category_id']) && (int) $filters['category_id'] >= 0) 
 			{
 				$where[] = "c.category_id=" . $this->_db->Quote(intval($filters['category_id']));
+			}
+			if (isset($filters['object_id']) && (int) $filters['object_id'] >= 0) 
+			{
+				$where[] = "c.object_id=" . $this->_db->Quote(intval($filters['object_id']));
 			}
 			//if (!isset($filters['authorized']) || !$filters['authorized']) {
 			//	$query .= "c.access=0 AND ";
@@ -491,7 +536,7 @@ class ForumPost extends JTable
 			return null;
 		}
 
-		$query = "SELECT r.* FROM $this->_tbl AS r WHERE r.parent=$parent ORDER BY created DESC LIMIT 1";
+		$query = "SELECT r.* FROM $this->_tbl AS r WHERE r.parent=" . $this->_db->Quote($parent) . " ORDER BY created DESC LIMIT 1";
 
 		$this->_db->setQuery($query);
 		$obj = $this->_db->loadObject();
@@ -515,12 +560,12 @@ class ForumPost extends JTable
 		$where = array();
 		if ($scope_id !== null)
 		{
-			$where[] = "r.scope_id=$scope_id";
+			$where[] = "r.scope_id=" . $this->_db->Quote($scope_id);
 		}
-		$where[] = "r.scope='$scope'";
+		$where[] = "r.scope=" . $this->_db->Quote($scope);
 		if ($category_id !== null)
 		{
-			$where[] = "r.category_id=$category_id";
+			$where[] = "r.category_id=" . $this->_db->Quote($category_id);
 		}
 		if (count($where) > 0) 
 		{
@@ -554,7 +599,7 @@ class ForumPost extends JTable
 			return null;
 		}
 
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent=$parent");
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent=" . $this->_db->Quote($parent));
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -596,7 +641,7 @@ class ForumPost extends JTable
 		}
 		$values = implode(', ', $set);
 
-		$this->_db->setQuery("UPDATE $this->_tbl SET $values WHERE parent=$parent");
+		$this->_db->setQuery("UPDATE $this->_tbl SET $values WHERE parent=" . $this->_db->Quote($parent));
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -627,7 +672,7 @@ class ForumPost extends JTable
 			return false;
 		}
 
-		$this->_db->setQuery("UPDATE $this->_tbl SET category_id=$nw WHERE category_id=$old AND scope_id=$scope_id AND scope='$scope'");
+		$this->_db->setQuery("UPDATE $this->_tbl SET category_id=" . $this->_db->Quote($nw) . " WHERE category_id=" . $this->_db->Quote($old) . " AND scope_id=" . $this->_db->Quote($scope_id) . " AND scope=" . $this->_db->Quote($scope));
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -721,7 +766,7 @@ class ForumPost extends JTable
 			$cat = intval($cat);
 		}
 		
-		$this->_db->setQuery("UPDATE $this->_tbl SET state=$state WHERE category_id IN ($cat)");
+		$this->_db->setQuery("UPDATE $this->_tbl SET state=" . $this->_db->Quote($state) . " WHERE category_id IN ($cat)");
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());

@@ -182,6 +182,8 @@ if ($this->post->id) {
 			<input type="hidden" name="fields[state]" value="1" />
 			<input type="hidden" name="fields[group_id]" value="0" />
 			<input type="hidden" name="fields[id]" value="<?php echo $this->post->id; ?>" />
+			<input type="hidden" name="fields[scope]" value="site" />
+			<input type="hidden" name="fields[scope_id]" value="0" />
 	
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="threads" />
