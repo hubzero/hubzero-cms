@@ -43,6 +43,10 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 	$jacl->addACL($option, 'manage', 'users', 'super administrator');
 	$jacl->addACL($option, 'manage', 'users', 'administrator');
 	$jacl->addACL($option, 'manage', 'users', 'manager');
+	
+	//add acl for importing citations - for admins and super admins
+	$jacl->addACL($option, 'import', 'users', 'super administrator');
+	$jacl->addACL($option, 'import', 'users', 'administrator');
 }
 
 jimport('joomla.application.component.helper');

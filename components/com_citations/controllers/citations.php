@@ -93,8 +93,12 @@ class CitationsControllerCitations extends Hubzero_Controller
 		//are we allowing importing
 		$this->view->allow_import = $this->config->get('citation_import', 1);
 		$this->view->allow_bulk_import = $this->config->get('citation_bulk_import', 1);
-		$this->view->isAdmin = ($this->juser->get('usertype') == 'Super Administrator') ? true : false;
-
+		$this->view->isAdmin = false;
+		if($this->juser->authorize($this->_option, 'import'))
+		{
+			$this->view->isAdmin = true;
+		}
+		
 		// Output HTML
 		$this->view->messages = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
 
@@ -112,7 +116,11 @@ class CitationsControllerCitations extends Hubzero_Controller
 		$this->view->title    = JText::_(strtoupper($this->_name));
 		$this->view->database = $this->database;
 		$this->view->config   = $this->config;
-		$this->view->isAdmin  = ($this->juser->get("usertype") == "Super Administrator") ? true : false;
+		$this->view->isAdmin = false;
+		if($this->juser->authorize($this->_option, 'import'))
+		{
+			$this->view->isAdmin = true;
+		}
 		
 		//get the earliest year we have citations for
 		$query = "SELECT c.year FROM #__citations as c WHERE c.published=1 AND c.year <> 0 AND c.year IS NOT NULL ORDER BY c.year ASC LIMIT 1";
@@ -224,7 +232,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 		$users_ip = $this->getIP();
 		
 		//get the param for ip regex to use machine ip
-		$ip_regex = array_filter(array_map("trim", explode(";", $this->view->config->get("citation_openurl_ip", '10.\d{2,5}.\d{2,5}.\d{2,5}')))); 
+		$ip_regex = array('10.\d{2,5}.\d{2,5}.\d{2,5}'); 
 		
 		$use_machine_ip = false;
 		foreach($ip_regex as $ipr)
@@ -370,7 +378,11 @@ class CitationsControllerCitations extends Hubzero_Controller
 		}
 
 		// Check if admin
-		$isAdmin = ($this->juser->get("usertype") == "Super Administrator") ? true : false;
+		$isAdmin = false;
+		if($this->juser->authorize($this->_option, 'manage'))
+		{
+			$isAdmin = true;
+		}
 
 		//are we allowing user to add citation
 		$allowImport = $this->config->get('citation_import', 1);

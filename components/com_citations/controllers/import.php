@@ -85,7 +85,7 @@ class CitationsControllerImport extends Hubzero_Controller
 		}
 
 		//are we only allowing admins?
-		$isAdmin = $this->juser->authorize($this->_option, 'manage');
+		$isAdmin = $this->juser->authorize($this->_option, 'import');
 		if ($importParam == 2 && !$isAdmin) 
 		{
 			$this->setRedirect(

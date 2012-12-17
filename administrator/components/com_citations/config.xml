@@ -73,7 +73,7 @@
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
-		<param name="citation_openurl_ip" type="text" default="10.x.x.x" label="Open URL Lookup IP" description="Uses HUB's IP to lookup Resolver when users ip matches these formats" />
+		<!--<param name="citation_openurl_ip" type="text" default="10.x.x.x" label="Open URL Lookup IP" description="Uses HUB's IP to lookup Resolver when users ip matches these formats" />-->
 		
 		<param type="spacer" />
 		
