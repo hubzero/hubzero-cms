@@ -19,9 +19,14 @@ if (!jq) {
 	var jq = $;
 }
 
+// Create a global variable for course alias and id
+// @FIXME: how do we assign these?  Is there a better way?
+var courseAlias = 'nanotransistors';
+var courseId    = '4';
+
 HUB.CoursesOutline = {
 	jQuery: jq,
-	
+
 	initialize: function()
 	{
 		HUB.CoursesOutline.toggleUnits();
@@ -129,7 +134,7 @@ HUB.CoursesOutline = {
 			handle: '.sortable-handle',
 			axis: "y",
 			forcePlaceholderSize: true,
-			revert: true,
+			revert: false,
 			tolerance: 'pointer',
 			opacity: '0.6',
 			items: 'li:not(.add-new)',
@@ -176,17 +181,32 @@ HUB.CoursesOutline = {
 		});
 
 		// Save editable fields on save
-		$(".unit").on('click', "input[type='submit']", function(event){
-			event.stopPropagation();
+		$(".unit").on('submit', '.save-asset-group-title', function(event){
 			event.preventDefault();
 
+			var form   = $(this);
 			var parent = $(this).parents(".asset-group-item-container");
 
-			parent.find('.editable').html(parent.find('input[type="text"]:first').val());
+			// Update the asset group in the database
+			$.ajax({
+				url: form.attr('action'),
+				data: form.serialize(),
+				dataType: "json",
+				type: 'POST',
+				cache: false,
+				success: function(data){
+					if(data.success) {
+						parent.find('.editable').html(parent.find('input[type="text"]:first').val());
 
-			// Hide inputs and show plain text
-			parent.find('.editable').show();
-			parent.find('.asset-group-item-title-edit').hide();
+						// Hide inputs and show plain text
+						parent.find('.editable').show();
+						parent.find('.asset-group-item-title-edit').hide();
+					} else {
+						// Display the error message
+						HUB.CoursesOutline.errorMessage(data.error);
+					}
+				}
+			});
 		});
 	},
 
@@ -202,26 +222,51 @@ HUB.CoursesOutline = {
 			event.stopPropagation();
 
 			// Get our class and grab HTML based on that
+			var addNew    = $(this);
 			var itemClass = $(this).attr('class').replace('add-new ', '');
 			var text      = HUB.CoursesOutline.renderHtml(itemClass);
+			var form      = $(this).find('form');
 
-			// Insert in our HTML
-			$(this).before(text);
+			if(itemClass == 'asset-group-item') {
+				// @TODO: perform the asset group creation
+				$.ajax({
+					url: '/courses/'+courseAlias+'/saveassetgroup',
+					data: form.serialize(),
+					dataType: "json",
+					type: 'POST',
+					cache: false,
+					success: function(data){
+						if(data.success) {
+							// Insert in our HTML
+							addNew.before(text);
 
-			// Create a variable pointing to the new item just inserted
-			var newAssetGroupItem = $(this).parent('.asset-group').find('.asset-group-item:not(.add-new):last');
+							// Create a variable pointing to the new item just inserted
+							var newAssetGroupItem = addNew.parent('.asset-group').find('.asset-group-item:not(.add-new):last');
 
-			// Make that item look/function like the rest of them
-			newAssetGroupItem.find('.uniform').uniform();
-			newAssetGroupItem.find('.editable').show();
-			newAssetGroupItem.find('.asset-group-item-title-edit').hide();
+							// Insert the new asset group ID into the scope id field and course ID
+							newAssetGroupItem.find('input[name="scope_id"]').val(data.objId);
+							newAssetGroupItem.find('input[name="id"]').val(data.objId);
+							newAssetGroupItem.find('input[name="course_id"]').val(courseId);
 
-			// Set up file upload and update progress bar based on the recently added item
-			HUB.CoursesOutline.setupFileUploader();
-			HUB.CoursesOutline.showProgressIndicator();
+							// Make that item look/function like the rest of them
+							newAssetGroupItem.find('.uniform').uniform();
+							newAssetGroupItem.find('.editable').show();
+							newAssetGroupItem.find('.asset-group-item-title-edit').hide();
 
-			// Finally, show the new item
-			newAssetGroupItem.slideDown('fast', 'linear');
+							// Set up file upload and update progress bar based on the recently added item
+							HUB.CoursesOutline.setupFileUploader();
+							HUB.CoursesOutline.showProgressIndicator();
+
+							// Finally, show the new item
+							newAssetGroupItem.slideDown('fast', 'linear');
+						} else {
+							// Display the error message
+							HUB.CoursesOutline.errorMessage(data.error);
+						}
+					}
+				});
+			}
+
 		});
 	},
 
@@ -240,15 +285,14 @@ HUB.CoursesOutline = {
 
 		// When clicking publish checkbox
 		$('.unit').on('click', '.published-checkbox', function(){
-			var label = $(this).parents('label').find('span.published-label-text');
-			var item  = $(this).parents('.asset-item');
-			var id    = item.find('.asset_id').val();
+			var form  = $(this).parents('form');
+			var label = form.find('span.published-label-text');
+			var item  = form.parent('.asset-item');
 
 			// Create ajax call to change info in the database
-			// @FIXME: remove 'nanotransistors'
 			$.ajax({
-				url: "/courses/nanotransistors/togglepublished",
-				data: "asset_id="+id,
+				url: form.attr('action'),
+				data: form.serialize(),
 				dataType: "json",
 				type: 'POST',
 				cache: false,
@@ -292,12 +336,11 @@ HUB.CoursesOutline = {
 		$('.uploadfiles').each(function(){
 			var assetslist = $(this).parent('.asset-group-item').find('.assets-list');
 			var bar        = $(this).find('.bar');
+			var barBorder  = $(this).find('.bar-border');
 
 			$(this).fileupload({
 				dropZone: $(this),
 				dataType: 'json',
-				// @FIXME: remove 'nanotransistors'
-				url: '/courses/nanotransistors/assetupload',
 				done: function (e, data) {
 					if(data.result.success) {
 						if(assetslist.find('li:first').hasClass('nofiles'))
@@ -307,15 +350,17 @@ HUB.CoursesOutline = {
 						$.each(data.result.files, function (index, file) {
 							var li = ' \
 								<li class="asset-item asset ' + file.type + ' notpublished"> \
-								' + file.filename + ' \
-								(<a class="" href="' + file.url + '">preview</a>) \
-								<span class="next-step-publish"> \
-								<label class="published-label" for="published"> \
-								<span class="published-label-text">Mark as reviewed and publish?</span> \
-								<input class="uniform published-checkbox" name="published" type="checkbox" /> \
-								<input type="hidden" class="asset_id" name="' + file.id + '[id]" value="' + file.id + '" /> \
-								</label> \
-								</span> \
+									' + file.filename + ' \
+									(<a class="" href="' + file.url + '">preview</a>) \
+									<form action="/courses/' + courseAlias + '/togglepublished" class="next-step-publish"> \
+										<span class="next-step-publish"> \
+										<label class="published-label" for="published"> \
+											<span class="published-label-text">Mark as reviewed and publish?</span> \
+											<input class="uniform published-checkbox" name="published" type="checkbox" /> \
+											<input type="hidden" class="asset_id" name="asset_id" value="' + file.id + '" /> \
+										</label> \
+										</span> \
+									</form> \
 								</li> \
 							';
 
@@ -328,6 +373,7 @@ HUB.CoursesOutline = {
 							// Reset progress bar after 2 seconds
 							setTimeout( function(){
 								bar.css('width', '0');
+								barBorder.css('border', 'none');
 							},2000);
 						});
 					} else {
@@ -336,7 +382,13 @@ HUB.CoursesOutline = {
 
 						// Reset progress bar
 						bar.css('width', '0');
+						barBorder.css('border', 'none');
 					}
+				},
+				drop: function(e) {
+					$(this).find('.bar-border').css({
+						'border': '1px solid #999'
+					});
 				},
 				progressall: function (e, data) {
 					var progress = parseInt(data.loaded / data.total * 100, 10);
@@ -357,7 +409,7 @@ HUB.CoursesOutline = {
 		var errorClose = $('.error-close');
 
 		errorClose.on('click', function(){
-			errorBox.fadeOut('fast');
+			errorBox.slideUp('fast');
 		});
 	},
 
@@ -369,7 +421,7 @@ HUB.CoursesOutline = {
 		var error    = $('.error-message');
 
 		error.html(message);
-		errorBox.fadeIn('fast');
+		errorBox.slideDown('fast');
 
 	},
 
@@ -405,21 +457,24 @@ HUB.CoursesOutline = {
 				<div class="sortable-handle"></div> \
 				<div class="uploadfiles"> \
 					<p>Drag files here to upload</p> \
-					<form action="" class="uploadfiles-form"> \
+					<form action="/courses/' + courseAlias + '/assetupload" class="uploadfiles-form"> \
 						<input type="file" name="files[]" class="fileupload" multiple /> \
 						<input type="hidden" name="course_id" value="" /> \
 						<input type="hidden" name="scope_id" value="" /> \
 					</form> \
 					<div class="uploadfiles-progress"> \
-						<div class="bar" style="width: 0%;"></div> \
+						<div class="bar-border"><div class="bar"></div></div> \
 					</div> \
 				</div> \
 				<div class="asset-group-item-container"> \
 					<div class="asset-group-item-title editable title">New asset group</div> \
 					<div class="asset-group-item-title-edit"> \
-						<input class="uniform" type="text" value="New asset group" /> \
-						<input class="uniform" type="submit" value="Save" /> \
-						<input class="uniform" type="reset" value="Cancel" /> \
+						<form action="/courses/' + courseAlias + '/saveassetgroup" class="save-asset-group-title"> \
+							<input class="uniform" name="title" type="text" value="New asset group" /> \
+							<input type="hidden" name="id" value="" /> \
+							<input class="uniform" type="submit" value="Save" /> \
+							<input class="uniform" type="reset" value="Cancel" /> \
+						</form> \
 					</div> \
 					' + html['assetslist'] + ' \
 				</div> \

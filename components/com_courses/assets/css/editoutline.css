@@ -10,6 +10,7 @@
 	padding: 10px;
 }
 .placeholder {
+	margin-top: 10px;
 	border: 1px dotted #AAA;
 	background: #FFF;
 }
@@ -37,6 +38,7 @@ ul {
 	width: 50px;
 	overflow: hidden;
 	cursor: move;
+	cursor: ns-resize;
 }
 .progress-container {
 	width: 200px;
@@ -88,12 +90,12 @@ ul {
 	padding-left: 20px;
 }
 .asset-group-title {
-	font-size: 13px;
-	font-style: italic;
+	font-size: 14px;
+	color: #003385;
 	font-weight: bold;
-	text-align: center;
+	text-align: left;
 	text-transform: uppercase;
-	text-decoration: underline;
+	margin-top: 20px;
 }
 .asset-group-item-title {
 	display: block;
@@ -232,16 +234,10 @@ ul {
 	background-color: #BA4A3B;
 	color: #FFD2C3;
 	border: 1px solid #7F0000;
-	margin: 20px;
 	padding: 10px;
 	overflow: hidden;
 	font-weight: bold;
 	zoom: 1;
-	-webkit-border-radius: 0.27em;
-	-moz-border-radius: 0.27em;
-	-ms-border-radius: 0.27em;
-	-o-border-radius: 0.27em;
-	border-radius: 0.27em;
 	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
 	background-image: url("/media/system/images/light-stripes.png");
 	background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(255, 255, 255, .065)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .065)), color-stop(.75, rgba(255, 255, 255, .065)), color-stop(.75, transparent), to(transparent));
@@ -255,9 +251,6 @@ ul {
 	-ms-background-size: 30px 30px;
 	-o-background-size: 30px 30px;
 	background-size: 30px 30px;
-	-webkit-box-shadow: 2px 2px 2px #7F0000;
-	-moz-box-shadow: 2px 2px 2px #7F0000;
-	box-shadow: 2px 2px 2px #7F0000;
 }
 .error-message {
 	margin: 10px 40px 10px 20px;
@@ -278,22 +271,21 @@ ul {
 	right: 0;
 	top: 0;
 }
+.bar-border {
+	width: 100%;
+
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
 .bar {
 	height: 15px;
+	width: 0;
+	background-image: url('/media/system/images/upload-ui/progressbar.gif');
 
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
-
-	background: #59E80C;
-	background: -webkit-gradient(linear, left top, left bottom, from(#59E80C), to(#49BF0A));
-	background: -webkit-linear-gradient(#59E80C, #49BF0A);
-	background: -moz-linear-gradient(center top, #59E80C 0%, #49BF0A 100%);
-	background: -moz-gradient(center top, #59E80C 0%, #49BF0A 100%);
-	background: -o-linear-gradient(#59E80C, #49BF0A);
-	background-image: -ms-linear-gradient(top, #59E80C 0%, #49BF0A 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#59E80C,endColorstr=#49BF0A);
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#59E80C, endColorstr=#49BF0A)";
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
 }
 
 /* Progress bar style overrides (from ui defaults) */

@@ -91,21 +91,24 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 							<div class="sortable-handle"></div>
 							<div class="uploadfiles">
 								<p>Drag files here to upload</p>
-								<form action="" class="uploadfiles-form">
+								<form action="/courses/<?php echo $this->course->get('alias'); ?>/assetupload" class="uploadfiles-form">
 									<input type="file" name="files[]" class="fileupload" multiple />
 									<input type="hidden" name="course_id" value="<?php echo $this->course->get('id') ?>" />
 									<input type="hidden" name="scope_id" value="<?php echo $ag->get('id'); ?>" />
 								</form>
 								<div class="uploadfiles-progress">
-									<div class="bar" style="width: 0%;"></div>
+									<div class="bar-border"><div class="bar"></div></div>
 								</div>
 							</div>
 							<div class="asset-group-item-container">
 								<div class="asset-group-item-title editable title"><?php echo $ag->get('title'); ?></div>
 								<div class="asset-group-item-title-edit">
-									<input class="uniform" type="text" value="<?php echo $ag->get('title'); ?>" />
-									<input class="uniform" type="submit" value="Save" />
-									<input class="uniform" type="reset" value="Cancel" />
+									<form action="/courses/<?php echo $this->course->get('alias'); ?>/saveassetgroup" class="save-asset-group-title">
+										<input class="uniform" name="title" type="text" value="<?php echo $ag->get('title'); ?>" />
+										<input type="hidden" name="id" value="<?php echo $ag->get('id'); ?>" />
+										<input class="uniform" type="submit" value="Save" />
+										<input class="uniform" type="reset" value="Cancel" />
+									</form>
 								</div>
 <?php
 						// Loop through the assets
@@ -126,17 +129,19 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 										<?php echo $this->escape(stripslashes($a->get('title'))); ?>
 										(<a class="" href="<?php echo $href; ?>">preview</a>)
 
-										<span class="next-step-publish">
-											<label class="published-label" for="published">
-												<span class="published-label-text"><?php echo ($a->get('state') == 0) ? 'Mark as reviewed and publish?' : 'Published'; ?></span>
-												<input 
-													class="uniform published-checkbox"
-													name="published"
-													type="checkbox"
-													<?php echo ($a->get('state') == 0) ? '' : 'checked="checked"'; ?> />
-												<input type="hidden" class="asset_id" name="<?php echo $a->get('id'); ?>[id]" value="<?php echo $a->get('id'); ?>" />
-											</label>
-										</span>
+										<form action="/courses/<?php echo $this->course->get('alias'); ?>/togglepublished" class="next-step-publish">
+											<span class="next-step-publish">
+												<label class="published-label" for="published">
+													<span class="published-label-text"><?php echo ($a->get('state') == 0) ? 'Mark as reviewed and publish?' : 'Published'; ?></span>
+													<input 
+														class="uniform published-checkbox"
+														name="published"
+														type="checkbox"
+														<?php echo ($a->get('state') == 0) ? '' : 'checked="checked"'; ?> />
+													<input type="hidden" class="asset_id" name="asset_id" value="<?php echo $a->get('id'); ?>" />
+												</label>
+											</span>
+										</form>
 
 									</li>
 <?php
@@ -171,21 +176,24 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 							<div class="sortable-handle"></div>
 							<div class="uploadfiles">
 								<p>Drag files here to upload</p>
-								<form action="" class="uploadfiles-form">
+								<form action="/courses/<?php echo $this->course->get('alias'); ?>/assetupload" class="uploadfiles-form">
 									<input type="file" name="files[]" class="fileupload" multiple />
 									<input type="hidden" name="course_id" value="<?php echo $this->course->get('id') ?>" />
-									<input type="hidden" name="scope_id" value="<?php echo $ag->get('id'); ?>" />
+									<input type="hidden" name="scope_id" value="<?php echo $agt->get('id'); ?>" />
 								</form>
 								<div class="uploadfiles-progress">
-									<div class="bar" style="width: 0%;"></div>
+									<div class="bar-border"><div class="bar"></div></div>
 								</div>
 							</div>
 							<div class="asset-group-item-container">
-								<div class="asset-group-item-title editable title"><?php echo $ag->get('title'); ?></div>
+								<div class="asset-group-item-title editable title"><?php echo $agt->get('title'); ?></div>
 								<div class="asset-group-item-title-edit">
-									<input class="uniform" type="text" value="<?php echo $ag->get('title'); ?>" />
-									<input class="uniform" type="submit" value="Save" />
-									<input class="uniform" type="reset" value="Cancel" />
+									<form action="/courses/<?php echo $this->course->get('alias'); ?>/saveassetgroup" class="save-asset-group-title">
+										<input class="uniform" name="title" type="text" value="<?php echo $agt->get('title'); ?>" />
+										<input type="hidden" name="id" value="<?php echo $agt->get('id'); ?>" />
+										<input class="uniform" type="submit" value="Save" />
+										<input class="uniform" type="reset" value="Cancel" />
+									</form>
 								</div>
 								<ul class="assets-list">
 <?php
@@ -194,24 +202,26 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 							$href = $a->path($this->course->get('id'));
 						if ($a->get('type') == 'video')
 						{
-								$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
+								$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $agt->get('alias'));
 						}
 ?>
 									<li class="asset-item asset <?php echo $a->get('type'); echo ($a->get('state') == 0) ? ' notpublished' : ' published'; ?>">
 										<?php echo $this->escape(stripslashes($a->get('title'))); ?>
 										(<a class="" href="<?php echo $href; ?>">preview</a>)
 
-										<span class="next-step-publish">
-											<label class="published-label" for="published">
-												<span class="published-label-text"><?php echo ($a->get('state') == 0) ? 'Mark as reviewed and publish?' : 'Published'; ?></span>
-												<input 
-													class="uniform published-checkbox"
-													name="published"
-													type="checkbox"
-													<?php echo ($a->get('state') == 0) ? '' : 'checked="checked"'; ?> />
-												<input type="hidden" class="asset_id" name="<?php echo $a->get('id'); ?>[id]" value="<?php echo $a->get('id'); ?>" />
-											</label>
-										</span>
+										<form action="/courses/<?php echo $this->course->get('alias'); ?>/togglepublished" class="next-step-publish">
+											<span class="next-step-publish">
+												<label class="published-label" for="published">
+													<span class="published-label-text"><?php echo ($a->get('state') == 0) ? 'Mark as reviewed and publish?' : 'Published'; ?></span>
+													<input 
+														class="uniform published-checkbox"
+														name="published"
+														type="checkbox"
+														<?php echo ($a->get('state') == 0) ? '' : 'checked="checked"'; ?> />
+													<input type="hidden" class="asset_id" name="asset_id" value="<?php echo $a->get('id'); ?>" />
+												</label>
+											</span>
+										</form>
 
 									</li>
 <?php
@@ -223,7 +233,13 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 <?php
 				}
 ?>
-						<li class="add-new asset-group-item">Add a new <?php echo strtolower(rtrim($agt->get('title'), 's')); ?></li>
+						<li class="add-new asset-group-item">
+							Add a new <?php echo strtolower(rtrim($agt->get('title'), 's')); ?>
+							<form>
+								<input type="hidden" name="unit_id" value="<?php echo $unit->get('id'); ?>" />
+								<input type="hidden" name="parent" value="<?php echo $agt->get('id'); ?>" />
+							</form>
+						</li>
 					</ul>
 				</li>
 <?php

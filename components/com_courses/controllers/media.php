@@ -282,11 +282,24 @@ class CoursesControllerMedia extends Hubzero_Controller
 			exit();
 		}
 
+		// Assign type based on extension
+		switch ($ext)
+		{
+			case 'mp4':
+			case 'zip':
+				$type = 'video';
+				break;
+
+			default:
+				$type = 'file';
+				break;
+		}
+
 		// Create our asset table object
 		$assetObj = new CoursesTableAsset($this->database);
 
 		$row->title      = $file;
-		$row->type       = 'file';
+		$row->type       = $type;
 		$row->url        = $file;
 		$row->created    = date('Y-m-d H:i:s');
 		$row->created_by = JFactory::getUser()->get('id');
@@ -355,6 +368,21 @@ class CoursesControllerMedia extends Hubzero_Controller
 		else
 		{
 			move_uploaded_file($_FILES['files']['tmp_name'][0], $file);
+
+			// Exapand zip file if applicable - we're assuming zips are hubpresenter videos
+			if($ext == 'zip')
+			{
+				if(shell_exec("unzip $file -d $uploadDirectory"))
+				{
+					// Remove original archive
+					jimport('joomla.filesystem.file');
+					JFile::delete($file);
+
+					// Remove MACOSX dirs if there
+					jimport('joomla.filesystem.folder');
+					JFolder::delete($uploadDirectory . '__MACOSX');
+				}
+			}
 		}
 
 		$files = array('id'=>$row2->asset_id, 'filename'=>$row->title, 'type'=>$row->type, 'url'=>$file);
@@ -398,6 +426,56 @@ class CoursesControllerMedia extends Hubzero_Controller
 		}
 
 		echo json_encode(array('success'=>true));
+		exit();
+	}
+
+	/**
+	 * Save an asset group
+	 * 
+	 * @return     void
+	 */
+	public function saveassetgroupTask()
+	{
+		// @TODO: check authorization
+
+		// Get our asset group object
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.group.php');
+
+		$assetGroupObj = new CoursesTableAssetGroup($this->database);
+
+		if($id = JRequest::getInt('id', false))
+		{
+			if (!$assetGroupObj->load($id))
+			{
+				echo json_encode(array('error' => "Loading asset group $id failed"));
+				exit();
+			}
+		}
+
+		// We'll always save the title again, even if it's just to the same thing
+		$title            = (!empty($assetGroupObj->title)) ? $assetGroupObj->title : 'New asset group';
+		$row->title       = JRequest::getString('title', $title);
+		$row->title       = preg_replace("/[^a-zA-Z0-9 \-\:\.]/", "", $row->title);
+		$row->alias       = strtolower(str_replace(' ', '', $row->title));
+		$row->description = '';
+
+		// When creating a new asset group
+		if(!$id)
+		{
+			$row->unit_id     = JRequest::getInt('unit_id', 0);
+			$row->parent      = JRequest::getInt('parent', 0);
+			$row->created     = date('Y-m-d H:i:s');
+			$row->created_by  = JFactory::getUser()->get('id');
+		}
+
+		// Save the asset group
+		if (!$assetGroupObj->save($row))
+		{
+			echo json_encode(array('error' => "Asset group save failed"));
+			exit();
+		}
+
+		echo json_encode(array('success'=>true, 'objId'=>$assetGroupObj->id));
 		exit();
 	}
 
