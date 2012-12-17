@@ -192,8 +192,6 @@ function CoursesParseRoute($segments)
 			case 'offerings':
 			//case 'managemodules':
 			case 'assetupload':
-			case 'saveassetgroup':
-			case 'togglepublished':
 			case 'ajaxupload':
 				$vars['task'] = $segments[1];
 				$vars['controller'] = 'media';

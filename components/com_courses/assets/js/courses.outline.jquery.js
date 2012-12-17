@@ -56,12 +56,12 @@ HUB.CoursesOutline = {
 		assetlist.not(':first').hide();
 
 		// On title click, toggle display of content
-		$('.outline-main').on('click', '.unit-title', function(){
+		/*$('.outline-main').on('click', '.unit-title', function(){
 			$(this).siblings('.asset-group-type-list').slideToggle(500);
 
 			// Toggle class for arrow (active gives down arrow indicating expanded list)
 			$(this).toggleClass('unit-title-active');
-		});
+		});*/
 	},
 
 	showProgressIndicator: function()
@@ -150,42 +150,48 @@ HUB.CoursesOutline = {
 	makeTitlesEditable: function()
 	{
 		// Hide inputs and show plain text
-		$('.editable').show();
-		$('.asset-group-item-title-edit').hide();
+		$('.toggle-editable').show();
+		$('.title-edit').hide();
 
 		// Turn div "titles" into editable fields
-		$(".unit").on('click', ".editable", function(event){
+		$(".unit").on('click', ".toggle-editable", function(event){
 			event.stopPropagation();
 			event.preventDefault();
-			var parent = $(this).parent();
+			var parent = $(this).parents('li:first');
 			var width  = $(this).width();
+			var title  = parent.find('.title-edit:first');
 
+			// Show the form
 			$(this).hide();
-			parent.find('.asset-group-item-title-edit').show();
+			title.show();
 
-			parent.find('input[type="text"]:first').css("width", width);
+			// Set the width of the form text input
+			title.find('.title-text').css("width", width);
 		});
 
 		// Turn editable fields back into divs on cancel
-		$(".unit").on('click', "input[type='reset']", function(event){
+		$(".unit").on('click', ".title-reset", function(event){
 			event.stopPropagation();
 			event.preventDefault();
 
-			var parent = $(this).parents('.asset-group-item-container');
+			var parent = $(this).parents('li:first');
+			var toggle = parent.find('.toggle-editable:first');
+			var title  = parent.find('.title-edit:first');
 
 			// Hide inputs and show plain text
-			parent.find('.editable').show();
-			parent.find('.asset-group-item-title-edit').hide();
+			toggle.show();
+			title.hide();
 
-			parent.find('input[type="text"]:first').val(parent.find('.editable').html());
+			title.find('.title-text:first').val(toggle.html());
 		});
 
 		// Save editable fields on save
-		$(".unit").on('submit', '.save-asset-group-title', function(event){
+		$(".unit").on('submit', '.title-form', function(event){
+			event.stopPropagation();
 			event.preventDefault();
 
 			var form   = $(this);
-			var parent = $(this).parents(".asset-group-item-container");
+			var parent = $(this).parents('li:first');
 
 			// Update the asset group in the database
 			$.ajax({
@@ -194,16 +200,21 @@ HUB.CoursesOutline = {
 				dataType: "json",
 				type: 'POST',
 				cache: false,
-				success: function(data){
-					if(data.success) {
-						parent.find('.editable').html(parent.find('input[type="text"]:first').val());
+				statusCode: {
+					201: function(data){
+						parent.find('.toggle-editable:first').html(parent.find('.title-text:first').val());
 
 						// Hide inputs and show plain text
-						parent.find('.editable').show();
-						parent.find('.asset-group-item-title-edit').hide();
-					} else {
+						parent.find('.toggle-editable:first').show();
+						parent.find('.title-edit:first').hide();
+					},
+					500: function(data){
 						// Display the error message
-						HUB.CoursesOutline.errorMessage(data.error);
+						HUB.CoursesOutline.errorMessage(data.responseText);
+					},
+					401: function(data){
+						// Display the error message
+						HUB.CoursesOutline.errorMessage(data.responseText);
 					}
 				}
 			});
@@ -228,15 +239,14 @@ HUB.CoursesOutline = {
 			var form      = $(this).find('form');
 
 			if(itemClass == 'asset-group-item') {
-				// @TODO: perform the asset group creation
 				$.ajax({
-					url: '/courses/'+courseAlias+'/saveassetgroup',
+					url: form.attr('action'),
 					data: form.serialize(),
 					dataType: "json",
 					type: 'POST',
 					cache: false,
-					success: function(data){
-						if(data.success) {
+					statusCode: {
+						201: function(data){
 							// Insert in our HTML
 							addNew.before(text);
 
@@ -246,12 +256,12 @@ HUB.CoursesOutline = {
 							// Insert the new asset group ID into the scope id field and course ID
 							newAssetGroupItem.find('input[name="scope_id"]').val(data.objId);
 							newAssetGroupItem.find('input[name="id"]').val(data.objId);
-							newAssetGroupItem.find('input[name="course_id"]').val(courseId);
+							newAssetGroupItem.find('input[name="course_id"]').val(data.course_id);
 
 							// Make that item look/function like the rest of them
 							newAssetGroupItem.find('.uniform').uniform();
 							newAssetGroupItem.find('.editable').show();
-							newAssetGroupItem.find('.asset-group-item-title-edit').hide();
+							newAssetGroupItem.find('.title-edit').hide();
 
 							// Set up file upload and update progress bar based on the recently added item
 							HUB.CoursesOutline.setupFileUploader();
@@ -259,9 +269,14 @@ HUB.CoursesOutline = {
 
 							// Finally, show the new item
 							newAssetGroupItem.slideDown('fast', 'linear');
-						} else {
+						},
+						500: function(data){
 							// Display the error message
-							HUB.CoursesOutline.errorMessage(data.error);
+							HUB.CoursesOutline.errorMessage(data.responseText);
+						},
+						401: function(data){
+							// Display the error message
+							HUB.CoursesOutline.errorMessage(data.responseText);
 						}
 					}
 				});
@@ -296,8 +311,8 @@ HUB.CoursesOutline = {
 				dataType: "json",
 				type: 'POST',
 				cache: false,
-				success: function(data){
-					if(data.success) {
+				statusCode: {
+					201: function(data){
 						if(label.html() == 'Published') {
 							replacement = 'Mark as reviewed and publish?';
 							item.removeClass('published').addClass('notpublished');
@@ -308,9 +323,14 @@ HUB.CoursesOutline = {
 						label.html(replacement);
 
 						HUB.CoursesOutline.showProgressIndicator();
-					} else {
+					},
+					500: function(data){
 						// Display the error message
-						HUB.CoursesOutline.errorMessage(data.error);
+						HUB.CoursesOutline.errorMessage(data.responseText);
+					},
+					401: function(data){
+						// Display the error message
+						HUB.CoursesOutline.errorMessage(data.responseText);
 					}
 				}
 			});
@@ -352,12 +372,13 @@ HUB.CoursesOutline = {
 								<li class="asset-item asset ' + file.type + ' notpublished"> \
 									' + file.filename + ' \
 									(<a class="" href="' + file.url + '">preview</a>) \
-									<form action="/courses/' + courseAlias + '/togglepublished" class="next-step-publish"> \
+									<form action="/api/courses/assettogglepublished" class="next-step-publish"> \
 										<span class="next-step-publish"> \
 										<label class="published-label" for="published"> \
 											<span class="published-label-text">Mark as reviewed and publish?</span> \
 											<input class="uniform published-checkbox" name="published" type="checkbox" /> \
 											<input type="hidden" class="asset_id" name="asset_id" value="' + file.id + '" /> \
+											<input type="hidden" name="course_id" value="' + courseId + '" /> \
 										</label> \
 										</span> \
 									</form> \
@@ -467,13 +488,14 @@ HUB.CoursesOutline = {
 					</div> \
 				</div> \
 				<div class="asset-group-item-container"> \
-					<div class="asset-group-item-title editable title">New asset group</div> \
-					<div class="asset-group-item-title-edit"> \
-						<form action="/courses/' + courseAlias + '/saveassetgroup" class="save-asset-group-title"> \
-							<input class="uniform" name="title" type="text" value="New asset group" /> \
+					<div class="asset-group-item-title title toggle-editable">New asset group</div> \
+					<div class="title-edit"> \
+						<form action="/api/courses/assetgroupsave" class="title-form"> \
+							<input class="uniform title-text" name="title" type="text" value="New asset group" /> \
+							<input class="uniform title-save" type="submit" value="Save" /> \
+							<input class="uniform title-reset" type="reset" value="Cancel" /> \
+							<input type="hidden" name="course_id" value="" /> \
 							<input type="hidden" name="id" value="" /> \
-							<input class="uniform" type="submit" value="Save" /> \
-							<input class="uniform" type="reset" value="Cancel" /> \
 						</form> \
 					</div> \
 					' + html['assetslist'] + ' \

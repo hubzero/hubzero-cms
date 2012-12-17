@@ -73,7 +73,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 			if ($this->course->exists()) 
 			{
 				$pathway->addItem(
-					stripslashes($this->course->get('description')),
+					stripslashes($this->course->get('title')),
 					'index.php?option=' . $this->_option . '&gid=' . $this->course->get('id')
 				);
 

@@ -68,7 +68,16 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 		{
 ?>
 		<li class="unit-item">
-			<div class="title unit-title"><?php echo $unit->title; ?>: <?php echo $unit->description; ?></div>
+			<div class="title unit-title toggle-editable"><?php echo $unit->title; ?></div>
+			<div class="title-edit">
+				<form action="/api/courses/unitsave" class="title-form">
+					<input class="uniform title-text" name="title" type="text" value="<?php echo $unit->get('title'); ?>" />
+					<input class="uniform title-save" type="submit" value="Save" />
+					<input class="uniform title-reset" type="reset" value="Cancel" />
+					<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
+					<input type="hidden" name="id" value="<?php echo $unit->get('id'); ?>" />
+				</form>
+			</div>
 			<div class="progress-container">
 				<div class="progress-indicator"></div>
 			</div>
@@ -101,13 +110,14 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 								</div>
 							</div>
 							<div class="asset-group-item-container">
-								<div class="asset-group-item-title editable title"><?php echo $ag->get('title'); ?></div>
-								<div class="asset-group-item-title-edit">
-									<form action="/courses/<?php echo $this->course->get('alias'); ?>/saveassetgroup" class="save-asset-group-title">
-										<input class="uniform" name="title" type="text" value="<?php echo $ag->get('title'); ?>" />
+								<div class="asset-group-item-title title toggle-editable"><?php echo $ag->get('title'); ?></div>
+								<div class="title-edit">
+									<form action="/api/courses/assetgroupsave" class="title-form">
+										<input class="uniform title-text" name="title" type="text" value="<?php echo $ag->get('title'); ?>" />
+										<input class="uniform title-save" type="submit" value="Save" />
+										<input class="uniform title-reset" type="reset" value="Cancel" />
+										<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
 										<input type="hidden" name="id" value="<?php echo $ag->get('id'); ?>" />
-										<input class="uniform" type="submit" value="Save" />
-										<input class="uniform" type="reset" value="Cancel" />
 									</form>
 								</div>
 <?php
@@ -129,7 +139,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 										<?php echo $this->escape(stripslashes($a->get('title'))); ?>
 										(<a class="" href="<?php echo $href; ?>">preview</a>)
 
-										<form action="/courses/<?php echo $this->course->get('alias'); ?>/togglepublished" class="next-step-publish">
+										<form action="/api/courses/assettogglepublished" class="next-step-publish">
 											<span class="next-step-publish">
 												<label class="published-label" for="published">
 													<span class="published-label-text"><?php echo ($a->get('state') == 0) ? 'Mark as reviewed and publish?' : 'Published'; ?></span>
@@ -139,6 +149,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 														type="checkbox"
 														<?php echo ($a->get('state') == 0) ? '' : 'checked="checked"'; ?> />
 													<input type="hidden" class="asset_id" name="asset_id" value="<?php echo $a->get('id'); ?>" />
+													<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
 												</label>
 											</span>
 										</form>
@@ -186,13 +197,14 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 								</div>
 							</div>
 							<div class="asset-group-item-container">
-								<div class="asset-group-item-title editable title"><?php echo $agt->get('title'); ?></div>
-								<div class="asset-group-item-title-edit">
-									<form action="/courses/<?php echo $this->course->get('alias'); ?>/saveassetgroup" class="save-asset-group-title">
-										<input class="uniform" name="title" type="text" value="<?php echo $agt->get('title'); ?>" />
+								<div class="asset-group-item-title title toggle-editable"><?php echo $agt->get('title'); ?></div>
+								<div class="title-edit">
+									<form action="/api/courses/assetgroupsave" class="title-form">
+										<input class="uniform title-text" name="title" type="text" value="<?php echo $agt->get('title'); ?>" />
+										<input class="uniform title-save" type="submit" value="Save" />
+										<input class="uniform title-reset" type="reset" value="Cancel" />
+										<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
 										<input type="hidden" name="id" value="<?php echo $agt->get('id'); ?>" />
-										<input class="uniform" type="submit" value="Save" />
-										<input class="uniform" type="reset" value="Cancel" />
 									</form>
 								</div>
 								<ul class="assets-list">
@@ -209,7 +221,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 										<?php echo $this->escape(stripslashes($a->get('title'))); ?>
 										(<a class="" href="<?php echo $href; ?>">preview</a>)
 
-										<form action="/courses/<?php echo $this->course->get('alias'); ?>/togglepublished" class="next-step-publish">
+										<form action="/api/courses/assettogglepublished" class="next-step-publish">
 											<span class="next-step-publish">
 												<label class="published-label" for="published">
 													<span class="published-label-text"><?php echo ($a->get('state') == 0) ? 'Mark as reviewed and publish?' : 'Published'; ?></span>
@@ -219,6 +231,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 														type="checkbox"
 														<?php echo ($a->get('state') == 0) ? '' : 'checked="checked"'; ?> />
 													<input type="hidden" class="asset_id" name="asset_id" value="<?php echo $a->get('id'); ?>" />
+													<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
 												</label>
 											</span>
 										</form>
@@ -235,7 +248,8 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 ?>
 						<li class="add-new asset-group-item">
 							Add a new <?php echo strtolower(rtrim($agt->get('title'), 's')); ?>
-							<form>
+							<form action="/api/courses/assetgroupsave">
+								<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
 								<input type="hidden" name="unit_id" value="<?php echo $unit->get('id'); ?>" />
 								<input type="hidden" name="parent" value="<?php echo $agt->get('id'); ?>" />
 							</form>
