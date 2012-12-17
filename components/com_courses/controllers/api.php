@@ -65,6 +65,7 @@ class CoursesApiController extends Hubzero_Api_Controller
 			case 'assetgroupsave':         $this->assetGroupSave();           break;
 
 			// Assets
+			case 'assetnew':               $this->assetNew();                 break;
 			case 'assettogglepublished':   $this->assetTogglePublished();     break;
 
 			default:                       $this->method_not_found();         break;
@@ -197,6 +198,200 @@ class CoursesApiController extends Hubzero_Api_Controller
 	//--------------------------
 	// Asset functions
 	//--------------------------
+
+	/**
+	 * Upload a file, creating an asset and asset association
+	 * 
+	 * @return 201 created on success
+	 */
+	private function assetNew()
+	{
+		// Set the responce type
+		$this->setMessageType($this->format);
+
+		// @TODO: clean up after errors if we've already created assets or asset groups
+		// @TODO: add virus scan
+
+		// Require authorization
+		$authorized = $this->authorize();
+		if(!$authorized['manage'])
+		{
+			$this->setMessage('You don\'t have permission to do this', 401, 'Unauthorized');
+			return;
+		}
+
+		// Include needed files
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
+
+		// @FIXME: should these come from the global settings, or should they be courses specific
+		// Get config
+		$config =& JComponentHelper::getParams('com_media');
+
+		// Allowed extensions for uplaod
+		$allowedExtensions = array_values(array_filter(explode(',', $config->get('upload_extensions'))));
+
+		// Max upload size
+		$sizeLimit = $config->get('upload_maxsize');
+
+		// Get the file
+		if (isset($_GET['files']))
+		{
+			$stream = true;
+			$file = $_GET['files'];
+			$size = (int) $_SERVER["CONTENT_LENGTH"];
+		}
+		elseif (isset($_FILES['files']))
+		{
+			$stream = false;
+			$file = $_FILES['files']['name'][0];
+			$size = (int) $_FILES['files']['size'];
+		}
+		else
+		{
+			$this->setMessage("No files given", 500, 'Internal server error');
+			return;
+		}
+
+		// Get the file extension
+		$pathinfo = pathinfo($file);
+		$filename = $pathinfo['filename'];
+		$ext = $pathinfo['extension'];
+
+		// Check to make sure we have an allowable file extension
+		if ($allowedExtensions && !in_array(strtolower($ext), $allowedExtensions))
+		{
+			$these = implode(', ', $allowedExtensions);
+			$this->setMessage("File has an invalid extension, it should be one of $these", 500, 'Internal server error');
+			return;
+		}
+		// Check to make sure we have a file and its not too big
+		if ($size == 0) 
+		{
+			$this->setMessage("File is empty", 500, 'Internal server error');
+			return;
+		}
+		if ($size > $sizeLimit) 
+		{
+			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Hubzero_View_Helper_Html::formatSize($sizeLimit));
+			$this->setMessage("File is too large. Max file upload size is $max", 500, 'Internal server error');
+			return;
+		}
+
+		// Assign type based on extension
+		switch ($ext)
+		{
+			case 'mp4':
+			case 'zip':
+				$type = 'video';
+				break;
+
+			default:
+				$type = 'file';
+				break;
+		}
+
+		// Create our asset table object
+		$assetObj = new CoursesTableAsset($this->db);
+
+		$row->title      = $filename;
+		$row->type       = $type;
+		$row->url        = $file;
+		$row->created    = date('Y-m-d H:i:s');
+		$row->created_by = JFactory::getApplication()->getAuthn('user_id');
+		$row->state      = 0; // unpublished
+		$row->course_id  = JRequest::getInt('course_id', 0);
+
+		// Save the asset
+		if (!$assetObj->save($row))
+		{
+			$this->setMessage("Asset save failed", 500, 'Internal server error');
+			return;
+		}
+
+		// Create asset assoc object
+		$assocObj = new CoursesTableAssetAssociation($this->db);
+
+		$row2->asset_id  = $assetObj->get('id');
+		$row2->scope     = JRequest::getCmd('scope', 'asset_group');
+		$row2->scope_id  = JRequest::getInt('scope_id', 0);
+
+		// Save the asset association
+		if (!$assocObj->save($row2))
+		{
+			$this->setMessage("Asset association save failed", 500, 'Internal server error');
+			return;
+		}
+
+		// Get courses config
+		$cconfig =& JComponentHelper::getParams('com_courses');
+
+		// Build the upload path if it doesn't exist
+		$uploadDirectory = JPATH_ROOT . DS . trim($cconfig->get('uploadpath', '/site/courses'), DS) . DS . $row->course_id . DS . $row2->asset_id . DS;
+
+		// @FIXME: cleanup asset and asset association if directory creation fails
+
+		// Make sure upload directory is writable
+		if (!is_dir($uploadDirectory))
+		{
+			jimport('joomla.filesystem.folder');
+			if (!JFolder::create($uploadDirectory))
+			{
+				$this->setMessage("Server error. Unable to create upload directory", 500, 'Internal server error');
+				return;
+			}
+		}
+		if (!is_writable($uploadDirectory))
+		{
+			$this->setMessage("Server error. Upload directory isn't writable", 500, 'Internal server error');
+			return;
+		}
+
+		// Get the final file path
+		$file = $uploadDirectory . $filename . '.' . $ext;
+
+		// Save the file
+		if ($stream)
+		{
+			// Read the php input stream to upload file
+			$input = fopen("php://input", "r");
+			$temp = tmpfile();
+			$realSize = stream_copy_to_stream($input, $temp);
+			fclose($input);
+
+			// Move from temp location to target location which is user folder
+			$target = fopen($file , "w");
+			fseek($temp, 0, SEEK_SET);
+			stream_copy_to_stream($temp, $target);
+			fclose($target);
+		}
+		else
+		{
+			move_uploaded_file($_FILES['files']['tmp_name'][0], $file);
+
+			// Exapand zip file if applicable - we're assuming zips are hubpresenter videos
+			if($ext == 'zip')
+			{
+				$escaped_file = escapeshellarg($file);
+				// @FIXME: check for symlinks and other potential security concerns
+				if(shell_exec("unzip $escaped_file -d $uploadDirectory"))
+				{
+					// Remove original archive
+					jimport('joomla.filesystem.file');
+					JFile::delete($file);
+
+					// Remove MACOSX dirs if there
+					jimport('joomla.filesystem.folder');
+					JFolder::delete($uploadDirectory . '__MACOSX');
+				}
+			}
+		}
+
+		$files = array('id'=>$row2->asset_id, 'filename'=>$row->title, 'type'=>$row->type, 'url'=>$file, 'course_id'=>$row->course_id);
+
+		// Return message
+		$this->setMessage(array('files'=>array($files)), 201, 'Created');
+	}
 
 	/**
 	 * Toggle the published state of an asset

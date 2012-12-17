@@ -100,7 +100,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 							<div class="sortable-handle"></div>
 							<div class="uploadfiles">
 								<p>Drag files here to upload</p>
-								<form action="/courses/<?php echo $this->course->get('alias'); ?>/assetupload" class="uploadfiles-form">
+								<form action="/api/courses/assetnew" class="uploadfiles-form">
 									<input type="file" name="files[]" class="fileupload" multiple />
 									<input type="hidden" name="course_id" value="<?php echo $this->course->get('id') ?>" />
 									<input type="hidden" name="scope_id" value="<?php echo $ag->get('id'); ?>" />
@@ -187,7 +187,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 							<div class="sortable-handle"></div>
 							<div class="uploadfiles">
 								<p>Drag files here to upload</p>
-								<form action="/courses/<?php echo $this->course->get('alias'); ?>/assetupload" class="uploadfiles-form">
+								<form action="/api/courses/assetnew" class="uploadfiles-form">
 									<input type="file" name="files[]" class="fileupload" multiple />
 									<input type="hidden" name="course_id" value="<?php echo $this->course->get('id') ?>" />
 									<input type="hidden" name="scope_id" value="<?php echo $agt->get('id'); ?>" />

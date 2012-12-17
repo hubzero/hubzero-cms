@@ -19,11 +19,6 @@ if (!jq) {
 	var jq = $;
 }
 
-// Create a global variable for course alias and id
-// @FIXME: how do we assign these?  Is there a better way?
-var courseAlias = 'nanotransistors';
-var courseId    = '4';
-
 HUB.CoursesOutline = {
 	jQuery: jq,
 
@@ -208,11 +203,14 @@ HUB.CoursesOutline = {
 						parent.find('.toggle-editable:first').show();
 						parent.find('.title-edit:first').hide();
 					},
-					500: function(data){
+					401: function(data){
 						// Display the error message
 						HUB.CoursesOutline.errorMessage(data.responseText);
 					},
-					401: function(data){
+					404: function(data){
+						HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
+					},
+					500: function(data){
 						// Display the error message
 						HUB.CoursesOutline.errorMessage(data.responseText);
 					}
@@ -270,11 +268,14 @@ HUB.CoursesOutline = {
 							// Finally, show the new item
 							newAssetGroupItem.slideDown('fast', 'linear');
 						},
-						500: function(data){
+						401: function(data){
 							// Display the error message
 							HUB.CoursesOutline.errorMessage(data.responseText);
 						},
-						401: function(data){
+						404: function(data){
+							HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
+						},
+						500: function(data){
 							// Display the error message
 							HUB.CoursesOutline.errorMessage(data.responseText);
 						}
@@ -324,11 +325,14 @@ HUB.CoursesOutline = {
 
 						HUB.CoursesOutline.showProgressIndicator();
 					},
-					500: function(data){
+					401: function(data){
 						// Display the error message
 						HUB.CoursesOutline.errorMessage(data.responseText);
 					},
-					401: function(data){
+					404: function(data){
+						HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
+					},
+					500: function(data){
 						// Display the error message
 						HUB.CoursesOutline.errorMessage(data.responseText);
 					}
@@ -361,13 +365,13 @@ HUB.CoursesOutline = {
 			$(this).fileupload({
 				dropZone: $(this),
 				dataType: 'json',
-				done: function (e, data) {
-					if(data.result.success) {
+				statusCode: {
+					201: function(data){
 						if(assetslist.find('li:first').hasClass('nofiles'))
 						{
 							assetslist.find('li:first').remove();
 						}
-						$.each(data.result.files, function (index, file) {
+						$.each(data.files, function (index, file) {
 							var li = ' \
 								<li class="asset-item asset ' + file.type + ' notpublished"> \
 									' + file.filename + ' \
@@ -378,7 +382,7 @@ HUB.CoursesOutline = {
 											<span class="published-label-text">Mark as reviewed and publish?</span> \
 											<input class="uniform published-checkbox" name="published" type="checkbox" /> \
 											<input type="hidden" class="asset_id" name="asset_id" value="' + file.id + '" /> \
-											<input type="hidden" name="course_id" value="' + courseId + '" /> \
+											<input type="hidden" name="course_id" value="' + file.course_id + '" /> \
 										</label> \
 										</span> \
 									</form> \
@@ -397,9 +401,25 @@ HUB.CoursesOutline = {
 								barBorder.css('border', 'none');
 							},2000);
 						});
-					} else {
+					},
+					401: function(data){
 						// Display the error message
-						HUB.CoursesOutline.errorMessage(data.result.error);
+						HUB.CoursesOutline.errorMessage(data.responseText);
+
+						// Reset progress bar
+						bar.css('width', '0');
+						barBorder.css('border', 'none');
+					},
+					404: function(data){
+						HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
+
+						// Reset progress bar
+						bar.css('width', '0');
+						barBorder.css('border', 'none');
+					},
+					500: function(data){
+						// Display the error message
+						HUB.CoursesOutline.errorMessage(data.responseText);
 
 						// Reset progress bar
 						bar.css('width', '0');
@@ -478,7 +498,7 @@ HUB.CoursesOutline = {
 				<div class="sortable-handle"></div> \
 				<div class="uploadfiles"> \
 					<p>Drag files here to upload</p> \
-					<form action="/courses/' + courseAlias + '/assetupload" class="uploadfiles-form"> \
+					<form action="/api/courses/assetnew" class="uploadfiles-form"> \
 						<input type="file" name="files[]" class="fileupload" multiple /> \
 						<input type="hidden" name="course_id" value="" /> \
 						<input type="hidden" name="scope_id" value="" /> \
