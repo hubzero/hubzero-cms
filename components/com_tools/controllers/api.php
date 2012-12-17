@@ -541,8 +541,6 @@ class ToolsApiController extends Hubzero_Api_Controller
 			JRequest::setVar('version', $v);
 		}
 		
-		
-		
 		//
 		$tv = new ToolVersion($database);
 		$parent_toolname = $tv->getToolname($row->appname);
@@ -574,7 +572,7 @@ class ToolsApiController extends Hubzero_Api_Controller
 		$dispatcher->trigger('onAfterSessionStart', array($toolname, $tv->revision));
 		
 		//add the session id to the result
-		$output->sessionid = $session;
+		$output->session = $session;
 		
 		//return result
 		if($status)
