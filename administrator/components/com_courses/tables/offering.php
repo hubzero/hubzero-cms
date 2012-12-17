@@ -169,7 +169,7 @@ class CoursesTableOffering extends JTable
 	 * @param      string $oid Record alias
 	 * @return     boolean True on success
 	 */
-	public function load($oid=NULL)
+	public function load($oid=NULL, $course_id=null)
 	{
 		if ($oid === NULL) 
 		{
@@ -181,7 +181,7 @@ class CoursesTableOffering extends JTable
 		}
 		$oid = trim($oid);
 
-		$query = "SELECT * FROM $this->_tbl WHERE alias='$oid'";
+		$query = "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($oid) . " AND course_id=" . $this->_db->Quote(intval($course_id));
 
 		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc()) 

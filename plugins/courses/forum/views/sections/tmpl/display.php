@@ -258,7 +258,7 @@ if ($section->categories) {
 <?php }*/ ?>
 
 <?php 
-$params =& JComponentHelper::getParams('com_groups');
+/*$params =& JComponentHelper::getParams('com_groups');
 if ($params->get('email_comment_processing'))
 { ?>
 			<form method="post" action="<?php echo JRoute::_($base); ?>" id="forum-options">
@@ -276,7 +276,7 @@ if ($params->get('email_comment_processing'))
 					<input class="option" type="submit" value="<?php echo JText::_('Save'); ?>" />
 				</fieldset>
 			</form>
-<?php } ?>
+<?php }*/ ?>
 
 	</div><!-- /.subject -->
 </div><!-- /.main -->

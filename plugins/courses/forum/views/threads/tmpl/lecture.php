@@ -49,9 +49,9 @@ ximport('Hubzero_User_Profile_Helper');
 ?>
 
 <div class="below section">
-	<h3 class="post-comment-title">
+	<h4 class="post-comment-title">
 		<?php echo JText::_('PLG_COURSES_FORUM_ADD_COMMENT'); ?>
-	</h3>
+	</h4>
 	<!-- <div class="aside">
 		<table class="wiki-reference" summary="Wiki Syntax Reference">
 			<caption>Wiki Syntax Reference</caption>
@@ -88,7 +88,7 @@ ximport('Hubzero_User_Profile_Helper');
 		</table>
 	</div><- /.aside -
 	<div class="subject"> -->
-		<form action="<?php echo JRoute::_($base); ?>" method="post" id="commentform" enctype="multipart/form-data">
+		<form action="<?php echo JRoute::_($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias')); ?>" method="post" id="commentform" enctype="multipart/form-data">
 			<p class="comment-member-photo">
 				<a class="comment-anchor" name="commentform"></a>
 				<?php
@@ -120,7 +120,7 @@ ximport('Hubzero_User_Profile_Helper');
 					<?php
 					ximport('Hubzero_Wiki_Editor');
 					$editor = Hubzero_Wiki_Editor::getInstance();
-					echo $editor->display('fields[comment]', 'field_comment', '', '', '35', '10');
+					echo $editor->display('fields[comment]', 'field_comment', '', '', '35', '5');
 					?>
 				</label>
 				
@@ -138,22 +138,27 @@ ximport('Hubzero_User_Profile_Helper');
 			echo '<input type="text" name="tags" value="' . $tags . '" />';
 		}
 ?>
-				</label> 
+				</label> */ ?>
 
-				<fieldset>
+				<label for="field-upload">
+					<?php echo JText::_('PLG_COURSES_FORUM_LEGEND_ATTACHMENTS'); ?>:
+					<input type="file" name="upload" id="field-upload" />
+				</label>
+
+				<!-- <fieldset>
 					<legend><?php echo JText::_('PLG_COURSES_FORUM_LEGEND_ATTACHMENTS'); ?></legend>
-					<div class="courseing">
-						<label>
+					<div class="grouping">
+						<label for="field-upload">
 							<?php echo JText::_('PLG_COURSES_FORUM_FIELD_FILE'); ?>:
-							<input type="file" name="upload" id="upload" />
+							<input type="file" name="upload" id="field-upload" />
 						</label>
 
-						<label>
+						<label for="field-description">
 							<?php echo JText::_('PLG_COURSES_FORUM_FIELD_DESCRIPTION'); ?>:
-							<input type="text" name="description" value="" />
+							<input type="text" name="description" id="field-description" value="" />
 						</label>
 					</div>
-				</fieldset>*/ ?>
+				</fieldset> -->
 
 				<label for="field-anonymous" id="comment-anonymous-label">
 					<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" /> 
@@ -164,21 +169,14 @@ ximport('Hubzero_User_Profile_Helper');
 					<input type="submit" value="<?php echo JText::_('PLG_COURSES_FORUM_SUBMIT'); ?>" />
 				</p>
 			<?php } ?>
-<!-- 
-				<div class="sidenote">
-					<p>
-						<strong><?php echo JText::_('PLG_COURSES_FORUM_KEEP_POLITE'); ?></strong>
-					</p>
-					<p>
-						<?php echo JText::_('PLG_COURSES_FORUM_WIKI_HINT'); ?>
-					</p>
-				</div> -->
 			</fieldset>
 			<input type="hidden" name="fields[category_id]" value="<?php echo $this->post->get('category_id'); ?>" />
 			<input type="hidden" name="fields[parent]" value="<?php echo $this->post->get('id'); ?>" />
 			<input type="hidden" name="fields[state]" value="1" />
-			<input type="hidden" name="fields[course_id]" value="<?php echo $this->course->get('gidNumber'); ?>" />
+			<input type="hidden" name="fields[scope]" value="course" />
+			<input type="hidden" name="fields[scope_id]" value="<?php echo $this->post->get('scope_id'); ?>" />
 			<input type="hidden" name="fields[id]" value="" />
+			<input type="hidden" name="fields[object_id]" value="<?php echo $this->post->get('object_id'); ?>" />
 	
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
@@ -186,6 +184,7 @@ ximport('Hubzero_User_Profile_Helper');
 			<input type="hidden" name="active" value="forum" />
 			<input type="hidden" name="action" value="savethread" />
 			<input type="hidden" name="section" value="<?php echo $this->filters['section']; ?>" />
+			<input type="hidden" name="return" value="<?php echo base64_encode(JRoute::_($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias'))); ?>" />
 		</form>
 	<!-- </div>/ .subject -->
 	<div class="clear"></div>
@@ -199,12 +198,12 @@ ximport('Hubzero_User_Profile_Helper');
 
 	<div class="comments-wrap">
 		<h4 class="comments-title">
-			<?php echo JText::_('PLG_COURSES_FORUM_COMMENTS'); ?>
+			<?php echo JText::_('PLG_COURSES_FORUM_COMMENTS'); ?> <span class="comment-count">(<?php echo $this->total - 1; ?>)</span>
 		</h4>
-		<form action="<?php echo JRoute::_($base); ?>" method="get">
+		<form action="<?php echo JRoute::_($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias')); ?>" method="get">
 			<ol class="comments">
 			<?php
-			if ($this->rows) {
+			if ($this->rows && count($this->rows) > 1) {
 				ximport('Hubzero_User_Profile');
 				ximport('Hubzero_Wiki_Parser');
 
@@ -221,6 +220,10 @@ ximport('Hubzero_User_Profile_Helper');
 
 				foreach ($this->rows as $row)
 				{
+					if (!$row->parent)
+					{
+						continue;
+					}
 					$name = JText::_('PLG_COURSES_FORUM_ANONYMOUS');
 					$huser = '';
 					if (!$row->anonymous) 
@@ -233,10 +236,10 @@ ximport('Hubzero_User_Profile_Helper');
 						}
 					}
 
-					$comment  = $p->parse("\n" . stripslashes($row->comment), $wikiconfig);
+					$comment  = $p->parse(stripslashes($row->comment), $wikiconfig);
 					$comment .= $this->attach->getAttachment(
 						$row->id, 
-						$base . '/' . $row->id . '/', 
+						$base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $row->id, 
 						$this->config
 					);
 					
@@ -250,12 +253,14 @@ ximport('Hubzero_User_Profile_Helper');
 					<div class="comment-content">
 						<p class="comment-title">
 							<strong><?php echo $name; ?></strong> 
-							<a class="permalink" href="<?php echo JRoute::_($base . '/' . $this->post->id . '#c' . $row->id); ?>" title="<?php echo JText::_('PLG_COURSES_FORUM_PERMALINK'); ?>">@
-								<span class="time"><?php echo JHTML::_('date', $row->created, $timeFormat, $tz); ?></span> <?php echo JText::_('PLG_COURSES_FORUM_ON'); ?> 
+							<a class="permalink" href="<?php echo JRoute::_($base . '&active=forum&unit=' . $this->unit->get('alias') . '&b=' . $this->post->id . '#c' . $row->id); ?>" title="<?php echo JText::_('PLG_COURSES_FORUM_PERMALINK'); ?>">
+								<span class="comment-date-at">@</span>
+								<span class="time"><?php echo JHTML::_('date', $row->created, $timeFormat, $tz); ?></span> 
+								<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_FORUM_ON'); ?></span> 
 								<span class="date"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?></span>
 								<?php if ($row->modified && $row->modified != '0000-00-00 00:00:00') { ?>
 									&mdash; <?php echo JText::_('PLG_COURSES_FORUM_EDITED'); ?>
-									<span class="time"><?php echo JHTML::_('date', $row->modified, $timeFormat, $tz); ?></span> <?php echo JText::_('PLG_COURSES_FORUM_ON'); ?> 
+									<span class="time"><?php echo JHTML::_('date', $row->modified, $timeFormat, $tz); ?></span> <span class="comment-date-on"><?php echo JText::_('PLG_COURSES_FORUM_ON'); ?></span> 
 									<span class="date"><?php echo JHTML::_('date', $row->modified, $dateFormat, $tz); ?></span>
 								<?php } ?>
 							</a>
@@ -264,12 +269,12 @@ ximport('Hubzero_User_Profile_Helper');
 						<?php if ($this->config->get('access-edit-thread') || $juser->get('id') == $row->created_by) { ?>
 						<p class="comment-options">
 							<?php if ($this->config->get('access-delete-thread')) { ?>
-							<a class="delete" href="<?php echo JRoute::_($base . '/' . $row->id . '/delete'); ?>">
+							<a class="delete" href="<?php echo JRoute::_($base . '&active=forum&unit=' . $this->unit->get('alias') . '&b=' . $row->id . '&c=delete'); ?>">
 								<?php echo JText::_('PLG_COURSES_FORUM_DELETE'); ?>
 							</a>
 							<?php } ?>
 							<?php if ($this->config->get('access-edit-thread')) { ?>
-							<a class="edit" href="<?php echo JRoute::_($base . '/' . $row->id . '/edit'); ?>">
+							<a class="edit" href="<?php echo JRoute::_($base . '&active=forum&unit=' . $this->unit->get('alias') . '&b=' . $row->id . '&c=edit'); ?>">
 								<?php echo JText::_('PLG_COURSES_FORUM_EDIT'); ?>
 							</a>
 							<?php } ?>
@@ -285,11 +290,9 @@ ximport('Hubzero_User_Profile_Helper');
 		<?php 
 		$this->pageNav->setAdditionalUrlParam('gid', $this->course->get('alias'));
 		$this->pageNav->setAdditionalUrlParam('offering', $this->course->offering()->get('alias'));
+		$this->pageNav->setAdditionalUrlParam('active', 'outline');
 		$this->pageNav->setAdditionalUrlParam('unit', $this->unit->get('alias'));
 		$this->pageNav->setAdditionalUrlParam('b', $this->lecture->get('alias'));
-
-		//$this->pageNav->setAdditionalUrlParam('active', 'forum');
-		//$this->pageNav->setAdditionalUrlParam('scope', $this->filters['section'] . '/' . $this->category->alias . '/' . $this->post->id);
 
 		echo $this->pageNav->getListFooter();
 		?>

@@ -13,10 +13,16 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 }
 
 ximport('Hubzero_User_Profile_Helper');
+
+$base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=forum';
 ?>
-<div id="content-header-extra">
-	<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias); ?>"><?php echo JText::_('&larr; All discussions'); ?></a></p>
-</div>
+<!-- <ul id="page_options">
+	<li>
+		<a class="comments" href="<?php echo JRoute::_($base . '&unit=' . $this->filters['section'] . '&b=' . $this->category->alias); ?>">
+			<?php echo JText::_('All discussions'); ?>
+		</a>
+	</li>
+</ul> -->
 
 <div class="main section">
 	<h3 class="thread-title">
@@ -68,7 +74,7 @@ ximport('Hubzero_User_Profile_Helper');
 			{
 				$title = ($attachment->description) ? $attachment->description : $attachment->filename;
 ?>
-				<li><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias . '/' . $attachment->parent . '/' . $attachment->post_id . '/' . $attachment->filename); ?>"><?php echo $this->escape($title); ?></a></li>
+				<li><a href="<?php echo JRoute::_($base . '&unit=' . $this->category->alias . '&b=' . $attachment->parent . '&c=' . $attachment->post_id . '/' . $attachment->filename); ?>"><?php echo $this->escape($title); ?></a></li>
 <?php 		} ?>
 			</ul>
 <?php } ?>
@@ -76,10 +82,10 @@ ximport('Hubzero_User_Profile_Helper');
 	</div><!-- / .aside  -->
 
 	<div class="subject">
-		<h4 class="comments-title">
+		<!-- <h4 class="comments-title">
 			<?php echo JText::_('PLG_COURSES_FORUM_COMMENTS'); ?>
-		</h4>
-		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias . '/' . $this->post->id); ?>" method="get">
+		</h4> -->
+		<form action="<?php echo JRoute::_($base . '&unit=' . $this->category->alias . '&b=' . $this->post->id); ?>" method="get">
 		<ol class="comments">
 			<?php
 			if ($this->rows) {
@@ -103,18 +109,17 @@ ximport('Hubzero_User_Profile_Helper');
 					$huser = '';
 					if (!$row->anonymous) 
 					{
-						$huser = new Hubzero_User_Profile();
-						$huser->load($row->created_by);
+						$huser = Hubzero_User_Profile::getInstance($row->created_by);
 						if (is_object($huser) && $huser->get('name')) 
 						{
 							$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $row->created_by) . '">' . $this->escape(stripslashes($huser->get('name'))) . '</a>';
 						}
 					}
 
-					$comment  = $p->parse("\n" . stripslashes($row->comment), $wikiconfig);
+					$comment  = $p->parse(stripslashes($row->comment), $wikiconfig, false);
 					$comment .= $this->attach->getAttachment(
 						$row->id, 
-						'index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias . '/' . $this->post->id . '/' . $row->id . '/', 
+						$base . '&unit=' . $this->category->alias . '&b=' . $this->post->id . '&c=' . $row->id, 
 						$this->config
 					);
 					
@@ -128,13 +133,13 @@ ximport('Hubzero_User_Profile_Helper');
 					<div class="comment-content">
 						<p class="comment-title">
 							<strong><?php echo $name; ?></strong> 
-							<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias . '/' . $this->post->id . '#c' . $row->id); ?>" title="<?php echo JText::_('PLG_COURSES_FORUM_PERMALINK'); ?>">@
-								<span class="time"><?php echo JHTML::_('date', $row->created, $timeFormat, $tz); ?></span> <?php echo JText::_('PLG_COURSES_FORUM_ON'); ?> 
-								<span class="date"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?></span>
+							<a class="permalink" href="<?php echo JRoute::_($base . '&unit=' . $this->category->alias . '&b=' . $this->post->id . '#c' . $row->id); ?>" title="<?php echo JText::_('PLG_COURSES_FORUM_PERMALINK'); ?>"><span class="comment-date-at">@</span> 
+								<span class="time"><time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $timeFormat, $tz); ?></time></span> <span class="comment-date-on"><?php echo JText::_('PLG_COURSES_FORUM_ON'); ?></span> 
+								<span class="date"><time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?></time></span>
 								<?php if ($row->modified && $row->modified != '0000-00-00 00:00:00') { ?>
 									&mdash; <?php echo JText::_('PLG_COURSES_FORUM_EDITED'); ?>
-									<span class="time"><?php echo JHTML::_('date', $row->modified, $timeFormat, $tz); ?></span> <?php echo JText::_('PLG_COURSES_FORUM_ON'); ?> 
-									<span class="date"><?php echo JHTML::_('date', $row->modified, $dateFormat, $tz); ?></span>
+									<span class="time"><time datetime="<?php echo $row->modified; ?>"><?php echo JHTML::_('date', $row->modified, $timeFormat, $tz); ?></time></span> <span class="comment-date-on"><?php echo JText::_('PLG_COURSES_FORUM_ON'); ?></span> 
+									<span class="date"><time datetime="<?php echo $row->modified; ?>"><?php echo JHTML::_('date', $row->modified, $dateFormat, $tz); ?></time></span>
 								<?php } ?>
 							</a>
 						</p>
@@ -142,12 +147,12 @@ ximport('Hubzero_User_Profile_Helper');
 						<?php if ($this->config->get('access-edit-thread') || $juser->get('id') == $row->created_by) { ?>
 						<p class="comment-options">
 							<?php if ($this->config->get('access-delete-thread')) { ?>
-							<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias . '/' . $row->id . '/delete'); ?>">
+							<a class="delete" href="<?php echo JRoute::_($base . '&unit=' . $this->category->alias . '&b=' . $row->id . '&c=delete'); ?>">
 								<?php echo JText::_('PLG_COURSES_FORUM_DELETE'); ?>
 							</a>
 							<?php } ?>
 							<?php if ($this->config->get('access-edit-thread')) { ?>
-							<a class="edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias . '/' . $row->id . '/edit'); ?>">
+							<a class="edit" href="<?php echo JRoute::_($base . '&unit=' . $this->category->alias . '&b=' . $row->id . '&c=edit'); ?>">
 								<?php echo JText::_('PLG_COURSES_FORUM_EDIT'); ?>
 							</a>
 							<?php } ?>
@@ -166,33 +171,24 @@ ximport('Hubzero_User_Profile_Helper');
 			<li><p><?php echo JText::_('PLG_COURSES_FORUM_NO_REPLIES_FOUND'); ?></p></li>
 		<?php } ?>
 		</ol>
-	    <?php 
-            // @FIXME: Nick's Fix Based on Resources View
-            //echo '<input type="hidden" name="topic" value="' . $this->post->id . '" />';
-            $pf = $this->pageNav->getListFooter();
-            //$nm = str_replace('com_','',$this->option);
-            $pf = str_replace('?controller=threads&amp;', '/' . $this->category->alias . '/' . $this->post->id . '?', $pf);
-			//if (strstr('&amp;limitstart=', $pf) && !strstr('&amp;limit=', $pf) && !strstr('?limit=', $pf))
-			//{
-				//$pf = str_replace('limit=', '?limit=', $pf);
-			//}
-			$pf = str_replace('?&amp;', '?', $pf);
-			$pf = preg_replace('/\?task=([A-Za-z0-9]*)(&amp;)?/i', '/$1' . '/' . $this->category->alias . '/' . $this->post->id . '?', $pf);
-			$pf = str_replace('?start=', '?limit=' . $this->pageNav->limit . '&amp;limitstart=' . intval($this->pageNav->limitstart), $pf);
-            $pf = str_replace($this->filters['section'] . 'limit', $this->filters['section'], $pf);
-			echo $pf;
-            //echo $this->pageNav->getListFooter(); 
-            // @FIXME: End Nick's Fix
-        ?>
+<?php 
+		$this->pageNav->setAdditionalUrlParam('gid', $this->course->get('alias'));
+		$this->pageNav->setAdditionalUrlParam('offering', $this->offering->get('alias'));
+		$this->pageNav->setAdditionalUrlParam('active', 'forum');
+		$this->pageNav->setAdditionalUrlParam('unit', $this->category->alias);
+		$this->pageNav->setAdditionalUrlParam('b', $this->post->id);
+
+		echo $this->pageNav->getListFooter();
+?>
 		</form>
- 	</div><!-- / .subject -->
+	</div><!-- / .subject -->
 	<div class="clear"></div>
 </div><!-- / .main section -->
 
 <div class="below section">
 	<h3 class="post-comment-title">
 		<?php echo JText::_('PLG_COURSES_FORUM_ADD_COMMENT'); ?>
-	</h3>			
+	</h3>
 	<div class="aside">
 		<table class="wiki-reference" summary="Wiki Syntax Reference">
 			<caption>Wiki Syntax Reference</caption>
@@ -229,28 +225,19 @@ ximport('Hubzero_User_Profile_Helper');
 		</table>
 	</div><!-- /.aside -->
 	<div class="subject">
-		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias . '/' . $this->post->id); ?>" method="post" id="commentform" enctype="multipart/form-data">
+		<form action="<?php echo JRoute::_($base . '&unit=' . $this->category->alias . '&b=' . $this->post->id); ?>" method="post" id="commentform" enctype="multipart/form-data">
 			<p class="comment-member-photo">
 				<a class="comment-anchor" name="commentform"></a>
 <?php
+				$anon = 1;
+				$jxuser = Hubzero_User_Profile::getInstance($juser->get('id'));
 				if (!$juser->get('guest')) 
 				{
-					$jxuser = new Hubzero_User_Profile();
-					$jxuser->load($juser->get('id'));
-					$thumb = Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, 0);
-				} 
-				else 
-				{
-					$config = JComponentHelper::getParams('com_members');
-					$thumb = $config->get('defaultpic');
-					if (substr($thumb, 0, 1) != DS) 
-					{
-						$thumb = DS . $dfthumb;
-					}
-					$thumb = Hubzero_User_Profile_Helper::thumbit($thumb);
+					$anon = 0;
 				}
+				$now = date('Y-m-d H:i:s', time());
 ?>
-				<img src="<?php echo $thumb; ?>" alt="" />
+				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, $anon); ?>" alt="" />
 			</p>
 	
 			<fieldset>
@@ -261,9 +248,9 @@ ximport('Hubzero_User_Profile_Helper');
 					<strong>
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape($juser->get('name')); ?></a>
 					</strong> 
-					<span class="permalink">@
-						<span class="time"><?php echo JHTML::_('date', date('Y-m-d H:i:s', time()), $timeFormat, $tz); ?></span> <?php echo JText::_('PLG_COURSES_FORUM_ON'); ?> 
-						<span class="date"><?php echo JHTML::_('date', date('Y-m-d H:i:s', time()), $dateFormat, $tz); ?></span>
+					<span class="permalink"><span class="comment-date-at">@</span>
+						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, $timeFormat, $tz); ?></time></span> <span class="comment-date-on"><?php echo JText::_('PLG_COURSES_FORUM_ON'); ?></span> 
+						<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, $dateFormat, $tz); ?></time></span>
 					</span>
 				</p>
 				
@@ -294,7 +281,7 @@ ximport('Hubzero_User_Profile_Helper');
 				
 				<fieldset>
 					<legend><?php echo JText::_('PLG_COURSES_FORUM_LEGEND_ATTACHMENTS'); ?></legend>
-					<div class="courseing">
+					<div class="grouping">
 						<label>
 							<?php echo JText::_('PLG_COURSES_FORUM_FIELD_FILE'); ?>:
 							<input type="file" name="upload" id="upload" />
@@ -329,11 +316,13 @@ ximport('Hubzero_User_Profile_Helper');
 			<input type="hidden" name="fields[category_id]" value="<?php echo $this->post->category_id; ?>" />
 			<input type="hidden" name="fields[parent]" value="<?php echo $this->post->id; ?>" />
 			<input type="hidden" name="fields[state]" value="1" />
-			<input type="hidden" name="fields[course_id]" value="<?php echo $this->course->get('gidNumber'); ?>" />
+			<input type="hidden" name="fields[scope]" value="course" />
+			<input type="hidden" name="fields[scope_id]" value="<?php echo $this->offering->get('id'); ?>" />
 			<input type="hidden" name="fields[id]" value="" />
 	
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="gid" value="<?php echo $this->course->get('cn'); ?>" />
+			<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
+			<input type="hidden" name="offering" value="<?php echo $this->offering->get('alias'); ?>" />
 			<input type="hidden" name="active" value="forum" />
 			<input type="hidden" name="action" value="savethread" />
 			<input type="hidden" name="section" value="<?php echo $this->filters['section']; ?>" />

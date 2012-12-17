@@ -156,7 +156,7 @@ class CoursesModelOffering extends JObject
 	 * @param      integer $id Course offering ID or alias
 	 * @return     void
 	 */
-	public function __construct($oid)
+	public function __construct($oid, $course_id=null)
 	{
 		$this->_db = JFactory::getDBO();
 
@@ -164,7 +164,7 @@ class CoursesModelOffering extends JObject
 
 		if (is_numeric($oid) || is_string($oid))
 		{
-			$this->_tbl->load($oid);
+			$this->_tbl->load($oid, $course_id);
 		}
 		else if (is_object($oid))
 		{
@@ -187,7 +187,7 @@ class CoursesModelOffering extends JObject
 	 * @param      mixed $oid ID (int) or alias (string)
 	 * @return     object CoursesModelOffering
 	 */
-	static function &getInstance($oid=null)
+	static function &getInstance($oid=null, $course_id=null)
 	{
 		static $instances;
 
@@ -211,7 +211,7 @@ class CoursesModelOffering extends JObject
 
 		if (!isset($instances[$key])) 
 		{
-			$instances[$key] = new CoursesModelOffering($oid);
+			$instances[$key] = new CoursesModelOffering($oid, $course_id);
 		}
 
 		return $instances[$key];

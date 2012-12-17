@@ -215,9 +215,9 @@ function CoursesParseRoute($segments)
 	{
 		$vars['group'] = $segments[4];
 	}
-	if (isset($segments[4])) 
+	if (isset($segments[5])) 
 	{
-		$vars['asset'] = $segments[4];
+		$vars['asset'] = $segments[5];
 	}
 
 	return $vars;

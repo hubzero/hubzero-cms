@@ -2,15 +2,16 @@
 defined('_JEXEC') or die( 'Restricted access' );
 $juser = JFactory::getUser();
 
+$base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=forum';
 if ($this->post->id) {
-	$action = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum&scope=' . $this->section . '/' . $this->category->alias . '/' . $this->post->id;
+	$action = $base . '&unit=' . $this->category->alias . '&b=' . $this->post->id;
 } else {
-	$action = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum&scope=' . $this->section . '/' . $this->category->alias;
+	$action = $base . '&unit=' . $this->category->alias;
 }
 ?>
-<div id="content-header-extra">
-	<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum&scope=' . $this->section . '/' . $this->category->alias); ?>"><?php echo JText::_('&larr; All discussions'); ?></a></p>
-</div>
+<!-- <div id="content-header-extra">
+	<p><a class="comment btn" href="<?php echo JRoute::_($base . '&unit=' . $this->category->alias); ?>"><?php echo JText::_('All discussions'); ?></a></p>
+</div> -->
 
 <div class="main section">
 <?php foreach ($this->notifications as $notification) { ?>
@@ -175,10 +176,13 @@ if ($this->post->id) {
 			<input type="hidden" name="fields[parent]" value="<?php echo $this->post->parent; ?>" />
 			<input type="hidden" name="fields[state]" value="1" />
 			<input type="hidden" name="fields[id]" value="<?php echo $this->post->id; ?>" />
-			<input type="hidden" name="fields[course_id]" value="<?php echo $this->course->get('gidNumber'); ?>" />
+			<input type="hidden" name="fields[scope]" value="course" />
+			<input type="hidden" name="fields[scope_id]" value="<?php echo $this->offering->get('id'); ?>" />
+			<input type="hidden" name="fields[object_id]" value="<?php echo $this->row->object_id; ?>" />
 	
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="gid" value="<?php echo $this->course->get('cn'); ?>" />
+			<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
+			<input type="hidden" name="offering" value="<?php echo $this->offering->get('alias'); ?>" />
 			<input type="hidden" name="active" value="forum" />
 			<input type="hidden" name="action" value="savethread" />
 			<input type="hidden" name="section" value="<?php echo $this->section; ?>" />

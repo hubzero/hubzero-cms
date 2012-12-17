@@ -321,7 +321,7 @@ class CoursesModelCourse extends JObject
 				// Get current offering
 				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
 
-				$this->offering = CoursesModelOffering::getInstance($id);
+				$this->offering = CoursesModelOffering::getInstance($id, $this->get('id'));
 			}
 		}
 		// Return current offering
