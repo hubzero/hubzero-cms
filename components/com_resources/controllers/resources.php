@@ -879,7 +879,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 					$this->setError(JText::_('Video Slides must be Uploaded in the Three Standard Formats. You currently only have ' . count($v) . " ({$k}." . implode(", {$k}.", array_keys($v)) . ').'));
 				}
 
-				if (!file_exists($slide_path . DS . $k .'.png')) 
+				if (!file_exists($slide_path . DS . $k .'.png') && !file_exists($slide_path . DS . $k .'.jpg')) 
 				{
 					$this->setError(JText::_('Slides containing video must have a still image of the slide for mobile suport. Please upload an image with the filename "' . $k . '.png".'));
 				}
