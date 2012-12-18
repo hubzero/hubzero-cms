@@ -307,6 +307,8 @@ class plgUserXusers extends JPlugin
 		else {
 			$update = false;
 
+			$params =& JComponentHelper::getParams('com_members');
+
 			if ($xprofile->get('username') != $user['username']) {
 				$xprofile->set('username', $user['username']);
 				$update = true;
@@ -325,6 +327,35 @@ class plgUserXusers extends JPlugin
 
 			if ($xprofile->get('emailConfirmed') == '')	{
 				$xprofile->set('emailConfirmed', '3');
+				$update = true;
+			}
+
+			if ($xprofile->get('gid') == '')
+			{
+				$xprofile->set('gid', $params->get('gid', 'users'));
+				$update = true;
+			}
+
+			if ($xprofile->get('gidNumber') == '')
+			{
+				$xprofile->set('gidNumber', $params->get('gidNumber', '100'));
+				$update = true;
+			}
+
+			if ($xprofile->get('loginShell') == '')
+			{
+				$xprofile->set('loginShell', '/bin/bash');
+				$update = true;
+			}
+
+			if ($xprofile->get('ftpShell') == '')
+			{
+				$xprofile->set('ftpShell', '/usr/lib/sftp-server');
+
+				// This isn't right, but we're using an empty shell as an indicator that we should also update jobs allowed and default privacy
+				$xprofile->set('jobsAllowed', 3);
+				$xprofile->set('public', $params->get('privacy', 0));
+
 				$update = true;
 			}
 
