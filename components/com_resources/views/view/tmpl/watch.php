@@ -46,7 +46,7 @@ $rr = new ResourcesResource( $this->database );
 $rr->load( $this->resid );
 
 //get the parent resource
-$rh = new ResourcesHelper( $this->pid, $this->database );
+$rh = new ResourcesHelper( $this->resid, $this->database );
 $rh->getParents();
 $parent = $rh->parents[0];
 
@@ -184,7 +184,7 @@ if ($author_ids && is_array($author_ids))
 				</div>
 			</div><!-- /#control-box -->
 		</div><!-- /#left -->
-		<?php $cls = ($presentation->videoPosition == "left" && strtolower($presentation->type) == 'video') ? "move-left": ""; ?>
+		<?php $cls = (isset($presentation->videoPosition) && $presentation->videoPosition == "left" && strtolower($presentation->type) == 'video') ? "move-left": ""; ?>
 		<div id="presenter-right">
 			<div id="media" class="<?php echo $cls; ?>">
 				<?php if(strtolower($presentation->type) == 'video') : ?>
@@ -217,7 +217,15 @@ if ($author_ids && is_array($author_ids))
 					<?php foreach($presentation->slides as $slide) : ?>
 						<?php if((int)$slide->slide != $last_slide_id) : ?>
 							<li id="list_<?php echo $counter; ?>">
-								<img src="<?php echo $content_folder.DS.$slide->media; ?>" alt="<?php echo $slide->title; ?>" />
+								<?php
+									//use thumb if possible
+									$thumb = $content_folder.DS.$slide->media;
+									if(file_exists(JPATH_ROOT . $content_folder.DS.$slide->thumb))
+									{
+										$thumb = $content_folder.DS.$slide->thumb;
+									}
+								?>
+								<img src="<?php echo $thumb; ?>" alt="<?php echo $slide->title; ?>" />
 								<span>
 									<?php 
 										$num++;
