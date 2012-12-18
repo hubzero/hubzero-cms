@@ -63,6 +63,7 @@ class CoursesApiController extends Hubzero_Api_Controller
 
 			// Asset groups
 			case 'assetgroupsave':         $this->assetGroupSave();           break;
+			case 'assetgroupreorder':      $this->assetGroupReorder();        break;
 
 			// Assets
 			case 'assetnew':               $this->assetNew();                 break;
@@ -114,7 +115,7 @@ class CoursesApiController extends Hubzero_Api_Controller
 		$row->title = preg_replace("/[^a-zA-Z0-9 \-\:\.]/", "", $row->title);
 		$row->alias = strtolower(str_replace(' ', '', $row->title));
 
-		// When creating a new asset group
+		// When creating a new unit
 		if(!$id)
 		{
 			$row->offering_id = JRequest::getInt('offering_id', 0);
@@ -122,15 +123,63 @@ class CoursesApiController extends Hubzero_Api_Controller
 			$row->created_by  = JFactory::getApplication()->getAuthn('user_id');
 		}
 
-		// Save the asset group
+		// Save the unit
 		if (!$unitObj->save($row))
 		{
 			$this->setMessage("Saving unit $id failed", 500, 'Internal server error');
 			return;
 		}
 
+		// Create a placeholder for our return object
+		$assetGroups = array();
+
+		// If this is a new unit, give it some default asset groups
+		// Create a top level asset group for each of lectures, homework, and exam
+		if(!$id)
+		{
+			// Get our asset group object
+			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.group.php');
+
+			foreach (array('Lectures', 'Homework', 'Exam') as $key)
+			{
+				$assetGroupObj = new CoursesTableAssetGroup($this->db);
+
+				$row = new stdclass();
+
+				$row->id          = null;
+				$row->title       = $key;
+				$row->alias       = strtolower(str_replace(' ', '', $row->title));
+				$row->unit_id     = $unitObj->id;
+				$row->parent      = 0;
+				$row->created     = date('Y-m-d H:i:s');
+				$row->created_by  = JFactory::getApplication()->getAuthn('user_id');
+
+				// Save the asset group
+				if (!$assetGroupObj->save($row))
+				{
+					$this->setMessage("Asset group save failed", 500, 'Internal server error');
+					return;
+				}
+
+				$return = new stdclass();
+				$return->assetgroup_id      = $assetGroupObj->id;
+				$return->assetgroup_title   = $assetGroupObj->title;
+				$return->course_id          = $this->course_id;
+				$return->assetgroup_style   = '';
+
+				$assetGroups[] = $return;
+			}
+		}
+
 		// Return message
-		$this->setMessage('Unit successfully saved', 201, 'Created');
+		$this->setMessage(
+			array(
+				'unit_id'     => $unitObj->id,
+				'unit_title'  => $unitObj->title,
+				'course_id'   => $this->course_id,
+				'assetgroups' => $assetGroups
+			),
+			201, 'Created');
 	}
 
 	//--------------------------
@@ -192,7 +241,62 @@ class CoursesApiController extends Hubzero_Api_Controller
 		}
 
 		// Return message
-		$this->setMessage(array('objId'=>$assetGroupObj->id, 'course_id'=>$this->course_id), 201, 'Created');
+		$this->setMessage(
+			array(
+				'assetgroup_id'   =>$assetGroupObj->id,
+				'assetgroup_title'=>$assetGroupObj->title,
+				'assetgroup_style'=>'display:none',
+				'course_id'       =>$this->course_id),
+			201, 'Created');
+	}
+
+	/**
+	 * Reorder assets
+	 * 
+	 * @return 201 created on success
+	 */
+	private function assetGroupReorder()
+	{
+		// Set the responce type
+		$this->setMessageType($this->format);
+
+		// Require authorization
+		/*$authorized = $this->authorize();
+		if(!$authorized['manage'])
+		{
+			$this->setMessage('You don\'t have permission to do this', 401, 'Unauthorized');
+			return;
+		}*/
+
+		// Get our asset group object
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.group.php');
+		$assetGroupObj = new CoursesTableAssetGroup($this->db);
+
+		$groups = JRequest::getVar('assetgroupitem', array());
+
+		$order = 1;
+
+		foreach ($groups as $id)
+		{
+			if (!$assetGroupObj->load($id))
+			{
+				$this->setMessage("Loading asset group $id failed", 500, 'Internal server error');
+				return;
+			}
+
+			// Save the asset group
+			if (!$assetGroupObj->save(array('ordering'=>$order)))
+			{
+				$this->setMessage("Asset group save failed", 500, 'Internal server error');
+				return;
+			}
+
+			$order++;
+		}
+
+
+		// Return message
+		$this->setMessage('New order saved', 201, 'Created');
 	}
 
 	//--------------------------
@@ -374,7 +478,9 @@ class CoursesApiController extends Hubzero_Api_Controller
 			{
 				$escaped_file = escapeshellarg($file);
 				// @FIXME: check for symlinks and other potential security concerns
-				if(shell_exec("unzip $escaped_file -d $uploadDirectory"))
+				// @FIXME: also need to handle zip files where the hubpresenter contents are in a directory,
+				//         as opposed to dirctly in the zip file
+				if($result = shell_exec("unzip $escaped_file -d $uploadDirectory"))
 				{
 					// Remove original archive
 					jimport('joomla.filesystem.file');

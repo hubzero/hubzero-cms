@@ -461,6 +461,9 @@ class CoursesControllerOffering extends Hubzero_Controller
 		$this->_getStyles($this->_option, $this->_controller . '.css');
 		$this->_getStyles($this->_option, $this->_task . '.css');
 
+		// Add underscore
+		Hubzero_Document::addSystemScript('underscore-min');
+
 		// Push some needed scripts to the template
 		$this->_getScripts('/assets/js/courses.outline');
 

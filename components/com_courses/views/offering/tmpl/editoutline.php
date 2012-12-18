@@ -68,6 +68,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 		{
 ?>
 		<li class="unit-item">
+			<div class="unit-title-arrow"></div>
 			<div class="title unit-title toggle-editable"><?php echo $unit->title; ?></div>
 			<div class="title-edit">
 				<form action="/api/courses/unitsave" class="title-form">
@@ -96,7 +97,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 				foreach($agt->children() as $ag)
 				{
 ?>
-						<li class="asset-group-item">
+						<li class="asset-group-item" id="assetgroupitem_<?php echo $ag->get('id'); ?>">
 							<div class="sortable-handle"></div>
 							<div class="uploadfiles">
 								<p>Drag files here to upload</p>
@@ -183,7 +184,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 				if ($agt->assets()->total())
 				{
 ?>
-						<li class="asset-group-item">
+						<li class="asset-group-item" id="assetgroupitem_<?php echo $agt->get('id'); ?>">
 							<div class="sortable-handle"></div>
 							<div class="uploadfiles">
 								<p>Drag files here to upload</p>
@@ -284,6 +285,12 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 <?php
 		}
 ?>
-		<li class="add-new unit-item">Add a new unit</li>
+		<li class="add-new unit-item">
+			Add a new unit
+			<form action="/api/courses/unitsave">
+				<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
+				<input type="hidden" name="offering_id" value="<?php echo $this->course->offering()->get('id'); ?>" />
+			</form>
+		</li>
 	</ul>
 </div>

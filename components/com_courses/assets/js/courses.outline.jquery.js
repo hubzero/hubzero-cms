@@ -42,21 +42,23 @@ HUB.CoursesOutline = {
 
 		// Establish Variable
 		var unit      = $('.unit-item');
-		var title     = $('.unit-title');
+		var title     = $('.unit-title-arrow');
 		var assetlist = $('.asset-group-type-list');
 
 		// Add the active class to the first unit (giving the expanded down arrow next to the title)
-		title.first().toggleClass('unit-title-active');
+		title.first().addClass('unit-title-arrow-active');
 		// Hide all of the units except for the first one
 		assetlist.not(':first').hide();
 
 		// On title click, toggle display of content
-		/*$('.outline-main').on('click', '.unit-title', function(){
-			$(this).siblings('.asset-group-type-list').slideToggle(500);
+		$('.outline-main').on('click', '.unit-title-arrow', function(){
+			assetlist.slideUp(500);
+			title.removeClass('unit-title-arrow-active');
+			$(this).siblings('.asset-group-type-list').slideDown(500);
 
 			// Toggle class for arrow (active gives down arrow indicating expanded list)
-			$(this).toggleClass('unit-title-active');
-		});*/
+			$(this).addClass('unit-title-arrow-active');
+		});
 	},
 
 	showProgressIndicator: function()
@@ -114,7 +116,7 @@ HUB.CoursesOutline = {
 				high -= $(this).children('.uploadfiles').css('margin-bottom').replace("px", "");
 				high -= $(this).children('.uploadfiles').css('padding-bottom').replace("px", "");
 				high -= $(this).children('.uploadfiles').css('padding-top').replace("px", "");
-				high -= 4; // For borders?
+				high -= 4; // For borders - this is hacky
 
 			$(this).children('.uploadfiles').css('height', high);
 		});
@@ -134,10 +136,40 @@ HUB.CoursesOutline = {
 			opacity: '0.6',
 			items: 'li:not(.add-new)',
 			start: function(){
-				$(".placeholder").css({'height': $(event.target).parent('asset-group-item').outerHeight(), 'margin': $(event.target).parent('asset-group-item').css('margin')});
+				// Style the placeholdwer based on the size of the item grabbed
+				$(".placeholder").css({
+					'height': $(event.target).parent('asset-group-item').outerHeight(),
+					'margin': $(event.target).parent('asset-group-item').css('margin')
+				});
 			},
 			update: function(){
-				// @TODO: save new order to the database
+				// Save new order to the database
+				var sorted = $(this).sortable('serialize');
+
+				// Update the asset group ordering
+				$.ajax({
+					url: '/api/courses/assetgroupreorder',
+					data: sorted,
+					dataType: "json",
+					type: 'POST',
+					cache: false,
+					statusCode: {
+						201: function(data){
+							// Report a message?
+						},
+						401: function(data){
+							// Display the error message
+							HUB.CoursesOutline.errorMessage(data.responseText);
+						},
+						404: function(data){
+							HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
+						},
+						500: function(data){
+							// Display the error message
+							HUB.CoursesOutline.errorMessage(data.responseText);
+						}
+					}
+				});
 			}
 		});
 	},
@@ -233,56 +265,85 @@ HUB.CoursesOutline = {
 			// Get our class and grab HTML based on that
 			var addNew    = $(this);
 			var itemClass = $(this).attr('class').replace('add-new ', '');
-			var text      = HUB.CoursesOutline.renderHtml(itemClass);
 			var form      = $(this).find('form');
+			var text      = '';
+			var key       = itemClass.replace(/-/g, '');
 
-			if(itemClass == 'asset-group-item') {
-				$.ajax({
-					url: form.attr('action'),
-					data: form.serialize(),
-					dataType: "json",
-					type: 'POST',
-					cache: false,
-					statusCode: {
-						201: function(data){
-							// Insert in our HTML
+			//addNew.before(_.template(HUB.CoursesOutline.Templates.test, {name: 'sam'}));
+
+			$.ajax({
+				url: form.attr('action'),
+				data: form.serialize(),
+				dataType: "json",
+				type: 'POST',
+				cache: false,
+				statusCode: {
+					201: function(data){
+						if(itemClass == 'asset-group-item') {
+							// Insert in our HTML (uses "underscore.js")
+							text = _.template(HUB.CoursesOutline.Templates.assetgroupitem, data);
 							addNew.before(text);
 
 							// Create a variable pointing to the new item just inserted
 							var newAssetGroupItem = addNew.parent('.asset-group').find('.asset-group-item:not(.add-new):last');
 
-							// Insert the new asset group ID into the scope id field and course ID
-							newAssetGroupItem.find('input[name="scope_id"]').val(data.objId);
-							newAssetGroupItem.find('input[name="id"]').val(data.objId);
-							newAssetGroupItem.find('input[name="course_id"]').val(data.course_id);
-
 							// Make that item look/function like the rest of them
 							newAssetGroupItem.find('.uniform').uniform();
-							newAssetGroupItem.find('.editable').show();
+							newAssetGroupItem.find('.toggle-editable').show();
 							newAssetGroupItem.find('.title-edit').hide();
 
 							// Set up file upload and update progress bar based on the recently added item
 							HUB.CoursesOutline.setupFileUploader();
 							HUB.CoursesOutline.showProgressIndicator();
 
+							// Refresh the sortable list
+							$('.sortable').sortable('refresh');
+
 							// Finally, show the new item
 							newAssetGroupItem.slideDown('fast', 'linear');
-						},
-						401: function(data){
-							// Display the error message
-							HUB.CoursesOutline.errorMessage(data.responseText);
-						},
-						404: function(data){
-							HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
-						},
-						500: function(data){
-							// Display the error message
-							HUB.CoursesOutline.errorMessage(data.responseText);
 						}
-					}
-				});
-			}
+						else if(itemClass == 'unit-item') {
+							// Insert in our HTML (uses "underscore.js")
+							text = _.template(HUB.CoursesOutline.Templates.unititem, data);
+							addNew.before(text);
 
+							// Create a variable pointing to the new item just inserted
+							var newUnit = addNew.parent('.unit').find('.unit-item:not(.add-new):last');
+
+							// Make that item look/function like the rest of them
+							newUnit.find('.uniform').uniform();
+							newUnit.find('.toggle-editable').show();
+							newUnit.find('.title-edit').hide();
+
+							// Set up file upload and update progress bar based on the recently added item
+							HUB.CoursesOutline.setupFileUploader();
+							HUB.CoursesOutline.showProgressIndicator();
+
+							// Refresh the sortable list
+							HUB.CoursesOutline.makeSortable();
+
+							$('.asset-group-type-list').delay(500).slideUp(500, function(){
+								$('.unit-title-arrow').removeClass('unit-title-arrow-active');
+								newUnit.find('.asset-group-type-list').slideDown(500);
+
+								// Toggle class for arrow (active gives down arrow indicating expanded list)
+								newUnit.find('.unit-title-arrow').addClass('unit-title-arrow-active');
+							});
+						}
+					},
+					401: function(data){
+						// Display the error message
+						HUB.CoursesOutline.errorMessage(data.responseText);
+					},
+					404: function(data){
+						HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
+					},
+					500: function(data){
+						// Display the error message
+						HUB.CoursesOutline.errorMessage(data.responseText);
+					}
+				}
+			});
 		});
 	},
 
@@ -466,66 +527,84 @@ HUB.CoursesOutline = {
 
 	},
 
-	renderHtml: function(key)
-	{
-		// Sam: Keep the linter from complaining about multi-line strings
-		/*jshint multistr:true */
+	Templates: {
+		assetgroupitem : [
+			'<li class="asset-group-item" id="assetgroupitem_<%= assetgroup_id %>" style="<%= assetgroup_style %>">',
+				'<div class="sortable-handle"></div>',
+				'<div class="uploadfiles">',
+					'<p>Drag files here to upload</p>',
+					'<form action="/api/courses/assetnew" class="uploadfiles-form">',
+						'<input type="file" name="files[]" class="fileupload" multiple />',
+						'<input type="hidden" name="course_id" value="<%= course_id %>" />',
+						'<input type="hidden" name="scope_id" value="<%= assetgroup_id %>" />',
+					'</form>',
+					'<div class="uploadfiles-progress">',
+						'<div class="bar-border"><div class="bar"></div></div>',
+					'</div>',
+				'</div>',
+				'<div class="asset-group-item-container">',
+					'<div class="asset-group-item-title title toggle-editable"><%= assetgroup_title %></div>',
+					'<div class="title-edit">',
+						'<form action="/api/courses/assetgroupsave" class="title-form">',
+							'<input class="uniform title-text" name="title" type="text" value="<%= assetgroup_title %>" />',
+							'<input class="uniform title-save" type="submit" value="Save" />',
+							'<input class="uniform title-reset" type="reset" value="Cancel" />',
+							'<input type="hidden" name="course_id" value="<%= course_id %>" />',
+							'<input type="hidden" name="id" value="<%= assetgroup_id %>" />',
+						'</form>',
+					'</div>',
+					'<ul class="assets-list">',
+						'<li class="asset-item asset missing nofiles">',
+							'No files',
+							'<span class="next-step-upload">',
+								'Upload files &rarr;',
+							'</span>',
+						'</li>',
+					'</ul>',
+				'</div>',
+			'</li>',
+			'<div class="clear"></div>'
+		].join("\n"),
 
-		var $ = this.jQuery;
-
-		// Get rid of the dashes from the class name passed in as the key
-		key = key.replace(/-/g, '');
-
-		// Create our html array for our html elements
-		var html = [];
-
-		// Assets list html
-		html['assetslist'] = ' \
-			<ul class="assets-list"> \
-				<li class="asset-item asset missing nofiles"> \
-					No files \
-					<span class="next-step-upload"> \
-						Upload files &rarr; \
-					</span> \
-				</li> \
-			</ul> \
-		';
-
-		// Asset group item html
-		// @FIXME: we need to get course_id and scope_id here
-		html['assetgroupitem'] = ' \
-			<li class="asset-group-item" style="display:none;"> \
-				<div class="sortable-handle"></div> \
-				<div class="uploadfiles"> \
-					<p>Drag files here to upload</p> \
-					<form action="/api/courses/assetnew" class="uploadfiles-form"> \
-						<input type="file" name="files[]" class="fileupload" multiple /> \
-						<input type="hidden" name="course_id" value="" /> \
-						<input type="hidden" name="scope_id" value="" /> \
-					</form> \
-					<div class="uploadfiles-progress"> \
-						<div class="bar-border"><div class="bar"></div></div> \
-					</div> \
-				</div> \
-				<div class="asset-group-item-container"> \
-					<div class="asset-group-item-title title toggle-editable">New asset group</div> \
-					<div class="title-edit"> \
-						<form action="/api/courses/assetgroupsave" class="title-form"> \
-							<input class="uniform title-text" name="title" type="text" value="New asset group" /> \
-							<input class="uniform title-save" type="submit" value="Save" /> \
-							<input class="uniform title-reset" type="reset" value="Cancel" /> \
-							<input type="hidden" name="course_id" value="" /> \
-							<input type="hidden" name="id" value="" /> \
-						</form> \
-					</div> \
-					' + html['assetslist'] + ' \
-				</div> \
-			</li> \
-			<div class="clear"></div> \
-		';
-
-		// Return the requested key
-		return html[key];
+		unititem : [
+			'<li class="unit-item">',
+				'<div class="unit-title-arrow"></div>',
+				'<div class="title unit-title toggle-editable"><%= unit_title %></div>',
+				'<div class="title-edit">',
+					'<form action="/api/courses/unitsave" class="title-form">',
+						'<input class="uniform title-text" name="title" type="text" value="<%= unit_title %>" />',
+						'<input class="uniform title-save" type="submit" value="Save" />',
+						'<input class="uniform title-reset" type="reset" value="Cancel" />',
+						'<input type="hidden" name="course_id" value="<%= course_id %>" />',
+						'<input type="hidden" name="id" value="<%= unit_id %>" />',
+					'</form>',
+				'</div>',
+				'<div class="progress-container">',
+					'<div class="progress-indicator"></div>',
+				'</div>',
+				'<div class="clear"></div>',
+				'<ul class="asset-group-type-list" style="display:none">',
+					'<% _.each(assetgroups, function(assetgroup){ %>',
+						'<li>',
+							'<div class="asset-group-title title"><%= assetgroup.assetgroup_title %></div>',
+							'<div class="clear"></div>',
+							'<ul class="asset-group sortable">',
+								// @FIXME: do we want to create some placeholder asset groups? (see next line)
+								//'<% print(_.template(HUB.CoursesOutline.Templates.assetgroupitem, assetgroup)); %>',
+								'<li class="add-new asset-group-item">',
+									'Add a new <% print(assetgroup.assetgroup_title.toLowerCase().replace(/s$/, "")) %>',
+									'<form action="/api/courses/assetgroupsave">',
+										'<input type="hidden" name="course_id" value="<%= course_id %>" />',
+										'<input type="hidden" name="unit_id" value="<%= unit_id %>" />',
+										'<input type="hidden" name="parent" value="<%= assetgroup.assetgroup_id %>" />',
+									'</form>',
+								'</li>',
+							'</ul>',
+						'</li>',
+					'<% }) %>',
+				'</ul>',
+			'</li>'
+		].join("\n")
 	}
 };
 

@@ -50,6 +50,7 @@ ul {
 	margin-right: 250px;
 }
 .unit-item {
+	position: relative;
 	margin-bottom: 15px;
 	padding: 10px;
 	border: 1px solid #AAA;
@@ -67,11 +68,14 @@ ul {
 	font-weight: bold;
 	font-size: 14px;
 	position: relative;
-	padding-left: 20px;
+	margin-left: 20px;
 	float: left;
 	cursor: pointer;
 }
-.unit-title:before,
+.unit-title-arrow {
+	cursor: pointer;
+}
+.unit-title-arrow:before,
 .uploadfiles:before,
 .asset-group-item:before {
 	font-family: "fontcons";
@@ -80,11 +84,20 @@ ul {
 	top: 0;
 	left: 0;
 }
-.unit-title:before {
+.unit-title-arrow:before,
+.unit-title-arrow-active:before {
+	height: 14px;
+	width: 14px;
+	top: 10px;
+	left: 10px;
 	content: "\f0da";
 }
-.unit-title-active:before {
+.unit-title-arrow-active:before {
 	content: "\f0d7";
+}
+.unit-item>.title-edit {
+	margin-left: 20px;
+	float: left;
 }
 .asset-group-type-list {
 	padding-left: 20px;
@@ -115,7 +128,7 @@ ul {
 	left: 16px;
 	top: 40%;
 }
-.editable {
+.toggle-editable {
 	display: none;
 	cursor: pointer;
 }

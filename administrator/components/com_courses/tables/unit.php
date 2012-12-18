@@ -183,6 +183,11 @@ class CoursesTableUnit extends JTable
 			$juser =& JFactory::getUser();
 			$this->created = date('Y-m-d H:i:s', time());
 			$this->created_by = $juser->get('id');
+
+			if(!$this->ordering)
+			{
+				$this->ordering = $this->getHighestOrdering($this->offering_id);
+			}
 		}
 
 		return true;
@@ -254,5 +259,18 @@ class CoursesTableUnit extends JTable
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
+	}
+
+	/**
+	 * Get the last page in the ordering
+	 * 
+	 * @param      string  $offering_id
+	 * @return     integer
+	 */
+	public function getHighestOrdering($offering_id)
+	{
+		$sql = "SELECT max(ordering)+1 FROM $this->_tbl WHERE offering_id=" . $this->_db->Quote(intval($offering_id));
+		$this->_db->setQuery($sql);
+		return $this->_db->loadResult();
 	}
 }
