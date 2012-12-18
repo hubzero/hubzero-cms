@@ -29,7 +29,7 @@ HUB.TagBrowser = {
 	//isIE: false,
 	col1active: '',
 	col2active: '',
-	baseURI: 'index.php?option=com_resources&task=browser&no_html=1',
+	baseURI: '/index.php?option=com_resources&task=browser&no_html=1',
 
 	detect: function() {
 		var $ = this.jQuery;
