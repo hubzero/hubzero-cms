@@ -34,12 +34,12 @@ HUB.YSearch = {
 				if ($(list).css('display') == 'block')
 				{
 					$(list).hide();
-					$(this).css('background', 'url(\'/components/com_ysearch/images/expand.gif\') no-repeat 0 0');
+					$(this).css('background', 'url(\'/components/com_ysearch/assets/img/expand.gif\') no-repeat 0 0');
 				}
 				else
 				{
 					$(list).show();
-					$(this).css('background', 'url(\'/components/com_ysearch/images/expand.gif\') no-repeat -20px 0');
+					$(this).css('background', 'url(\'/components/com_ysearch/assets/img/expand.gif\') no-repeat -20px 0');
 				}
 			});
 		});
