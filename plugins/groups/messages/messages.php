@@ -368,6 +368,8 @@ class plgGroupsMessages extends JPlugin
 			return false;
 		}
 
+		$message = JText::sprintf('PLG_GROUPS_MESSAGES_FROM_GROUP', $this->group->get('cn')); 
+
 		// Incoming array of users to message
 		$mbrs = JRequest::getVar('users', array(0), 'post');
 		switch ($mbrs[0])
@@ -388,18 +390,22 @@ class plgGroupsMessages extends JPlugin
 				$group_id = $this->group->get('gidNumber');
 			break;
 			case 'all':
+				$message = JText::sprintf('PLG_GROUPS_MESSAGES_FOR_GROUP', $this->group->get('cn')); 
+
 				$mbrs = $this->group->get('members');
 				$action = 'group_members_message';
 				$group_id = $this->group->get('gidNumber');
 			break;
 			default:
+				$message = JText::sprintf('PLG_GROUPS_MESSAGES_FOR_GROUP_MEMBER', $this->group->get('cn')); 
+
 				foreach ($mbrs as $mbr) 
 				{
 					if (strstr($mbr, '_')) 
 					{
 						$role = explode('_', $mbr);
 						$db =& JFactory::getDBO();
-						$sql = "SELECT uidNumber FROM #__xgroups_member_roles WHERE role='".$role[1]."'";
+						$sql = "SELECT uidNumber FROM #__xgroups_member_roles WHERE role=" . $db->Quote($role[1]);
 						$db->setQuery($sql);
 						$member_roles = $db->loadAssocList();
 						foreach ($member_roles as $member) 
@@ -420,9 +426,11 @@ class plgGroupsMessages extends JPlugin
 			break;
 		}
 
+		$message .= "\r\n------------------------------------------------\r\n\r\n";
+
 		// Incoming message and subject
 		$subject = JRequest::getVar('subject', JText::_('PLG_GROUPS_MESSAGES_SUBJECT'));
-		$message = JRequest::getVar('message', '');
+		$message .= JRequest::getVar('message', '');
 
 		// Ensure we have a message
 		if (!$subject || !$message) 
