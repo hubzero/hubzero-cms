@@ -566,8 +566,8 @@ class plgMembersCollections extends JPlugin
 
 		// Incoming
 		$fields = JRequest::getVar('fields', array(), 'post');
-		$files  = JRequest::getVar('fls', '', 'files', 'array');
-		$descriptions = JRequest::getVar('description', array(), 'post');
+		/*$files  = JRequest::getVar('fls', '', 'files', 'array');
+		$descriptions = JRequest::getVar('description', array(), 'post');*/
 
 		// Get model
 		$row = new CollectionsModelItem();
@@ -580,9 +580,10 @@ class plgMembersCollections extends JPlugin
 		}
 
 		// Add some data
-		$row->set('_files', $files);
-		$row->set('_descriptions', $descriptions);
+		//$row->set('_files', $files);
+		//$row->set('_descriptions', $descriptions);
 		$row->set('_tags', trim(JRequest::getVar('tags', '')));
+		$row->set('state', 1);
 
 		// Store new content
 		if (!$row->store()) 
@@ -592,13 +593,16 @@ class plgMembersCollections extends JPlugin
 		}
 
 		// Create a post entry linking the item to the board
-		$post = new CollectionsModelPost();
-		$post->set('item_id', $row->get('id'));
-		$post->set('collection_id', $fields['collection_id']);
-		$post->set('original', 1);
-		if (!$post->store()) 
+		$post = new CollectionsModelPost($fields['post']);
+		if (!$post->exists())
 		{
-			$this->setError($post->getError());
+			$post->set('item_id', $row->get('id'));
+			$post->set('collection_id', $fields['collection_id']);
+			$post->set('original', 1);
+			if (!$post->store()) 
+			{
+				$this->setError($post->getError());
+			}
 		}
 
 		// Check for any errors

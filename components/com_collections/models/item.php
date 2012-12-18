@@ -676,6 +676,12 @@ class CollectionsModelItem extends JObject
 				{
 					$this->setError(JFolder::move($path . DS . $this->get('_dir'), $path . DS . $this->get('id')));
 				}
+				$asset = new CollectionsModelAsset();
+				//$asset->set('item_id', $this->get('id'));
+				if (!$asset->update('item_id', intval($this->get('_dir')), $this->get('id')))
+				{
+					$this->setError($asset->getError());
+				}
 			}
 		}
 

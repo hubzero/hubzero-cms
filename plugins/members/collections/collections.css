@@ -487,6 +487,13 @@
 	#collection-introduction .instructions {
 		padding: 1em 1.4em;
 	}
+	#hubForm fieldset legend {
+		
+	}
+	#hubForm fieldset legend + .field-wrap {
+		clear: right;
+		padding-top: 1em;
+	}
 	#hubForm ul.post-type,
 	ul.post-type {
 		margin: 0;
@@ -580,8 +587,19 @@
 		position: absolute;
 		right: 1em;
 		top: 1em;
-		top: 0.75em;
+		/*top: 0.75em;*/
 		font-size: 90%;
+	}
+	#hubForm .file-drop .delete {
+		font-size: 1.7em;
+		display: block;
+		overflow: hidden;
+		width: 1em;
+		height: 1em;
+		border: none;
+	}
+	#hubForm .file-drop .delete:before {
+		margin-right: 1em;
 	}
 	#hubForm .file-add {
 		margin: 1em 0 2em 0;
@@ -728,6 +746,21 @@
 		-ms-border-radius: 3px;
 		-o-border-radius: 3px;
 		border-radius: 3px;
+	}
+	.qq-upload-button span,
+	.qq-upload-drop-area span {
+		position: relative;
+	}
+	.qq-upload-button span:before,
+	.qq-upload-drop-area span:before {
+		display: block;
+		position: absolute;
+		top: -0.2em;
+		left: -1.1em;
+		font-family: "Fontcons";
+		content: "\f046";
+		font-size: 1.7em;
+		line-height: 1;
 	}
 	.qq-upload-button:hover,
 	.qq-upload-drop-area:hover,

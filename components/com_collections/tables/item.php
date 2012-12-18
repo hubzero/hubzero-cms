@@ -173,6 +173,11 @@ class CollectionsTableItem extends JTable
 		{
 			$this->modified = date('Y-m-d H:i:s', time());  // use gmdate() ?
 			$this->modified_by = $juser->get('id');
+			if (!$this->created_by)
+			{
+				$this->created    = $this->modified;
+				$this->created_by = $this->modified_by;
+			}
 		}
 
 		return true;

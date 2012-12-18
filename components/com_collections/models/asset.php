@@ -200,6 +200,39 @@ class CollectionsModelAsset extends JObject
 	}
 
 	/**
+	 * Is an asset an image?
+	 *
+	 * @return    boolean True if image, false if not
+	 */
+	public function image()
+	{
+		jimport('joomla.filesystem.file');
+		$ext = strtolower(JFile::getExt($this->get('filename')));
+
+		if (in_array($ext, array('jpg', 'jpe', 'jpeg', 'gif', 'png')))
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Remove a record
+	 *
+	 * @return    boolean True on success, false if errors
+	 */
+	public function remove()
+	{
+		if (!$this->_tbl->remove($this->get('id')))
+		{
+			$this->setError($this->_tbl->getError());
+			return false;
+		}
+		return true;
+	}
+
+	/**
 	 * Bind data to the model's table object
 	 * 
 	 * @param      mixed $data Array or object
@@ -208,6 +241,24 @@ class CollectionsModelAsset extends JObject
 	public function bind($data=null)
 	{
 		return $this->_tbl->bind($data);
+	}
+
+	/**
+	 * Store content
+	 * Can be passed a boolean to turn off check() method
+	 *
+	 * @param     boolean $check Call check() method?
+	 * @return    boolean True on success, false if errors
+	 */
+	public function update($field, $before, $after)
+	{
+		if (!$this->_tbl->updateField($field, $before, $after))
+		{
+			$this->setError($this->_tbl->getError());
+			return false;
+		}
+
+		return true;
 	}
 
 	/**

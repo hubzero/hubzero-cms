@@ -22,8 +22,7 @@ if (!jq) {
 HUB.Plugins.GroupsFileUpload = {
 	jQuery: jq,
 
-	initialize: function() 
-	{
+	initialize: function() {
 		var $ = this.jQuery;
 
 		if ($("#ajax-uploader").length) {
@@ -49,13 +48,14 @@ HUB.Plugins.GroupsFileUpload = {
 					});
 				}
 			});*/
+
 			var uploader = new qq.FileUploader({
 				element: $("#ajax-uploader")[0],
-				action: $("#ajax-uploader").attr("data-action"),
+				action: $("#ajax-uploader").attr("data-action") + $('#field-dir').val(),
 				multiple: true,
-				debug: false,
+				debug: true,
 				template: '<div class="qq-uploader">' +
-							'<div class="qq-upload-button">Click or drop file</div>' + 
+							'<div class="qq-upload-button"><span>Click or drop file</span></div>' + 
 							'<div class="qq-upload-drop-area"><span>Click or drop file</span></div>' +
 							'<ul class="qq-upload-list"></ul>' + 
 						   '</div>',
@@ -63,9 +63,33 @@ HUB.Plugins.GroupsFileUpload = {
 					//$("#ajax-upload-left").append("<div id=\"ajax-upload-uploading\" />");
 				},
 				onComplete: function(id, file, response) {
-					//$('.qq-upload-list').empty();
-					//HUB.Wiki.updateFileList();
+					if (response.id != $('#field-dir').val()) {
+						$('#field-id').val(response.id);
+						$('#field-dir').val(response.id);
+					}
+
+					HUB.Plugins.GroupsFileUpload.updateFileList();
 				}
+			});
+		}
+	},
+	
+	updateFileList: function() {
+		var $ = HUB.Plugins.GroupsFileUpload.jQuery;
+		
+		if ($('#ajax-uploader')) {
+			//$('.qq-upload-list').empty();
+
+			$.get($('#ajax-uploader').attr('data-list') + $('#field-dir').val(), {}, function(data) {
+				$('#ajax-uploader-list').html(data);
+				$('a.delete')
+					.unbind('click')
+					.on('click', function(event){
+						event.preventDefault();
+						$.get($(this).attr('href'), {}, function(data) {
+							HUB.Plugins.GroupsFileUpload.updateFileList();
+						});
+					});
 			});
 		}
 	}
