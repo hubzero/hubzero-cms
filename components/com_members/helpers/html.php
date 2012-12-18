@@ -76,9 +76,9 @@ class MembersHtml
 	public function selectAccess($name, $value, $class='', $id='')
 	{
 		$arr = array(
-			JText::_('Public') => JText::_(' (anyone can see)'),
-			JText::_('Registered users') => JText::_(' (only logged in members can see)'), 
-			JText::_('Private') => JText::_(' (only you can see)')
+			0 => JText::_('Public') . JText::_(' (anyone can see)'),
+			1 => JText::_('Registered users') . JText::_(' (only logged in members can see)'), 
+			2 => JText::_('Private') . JText::_(' (only you can see)')
 		);
 
 		$html  = '<select name="' . $name . '"';
@@ -90,7 +90,7 @@ class MembersHtml
 			$selected = ($k == $value)
 					  ? ' selected="selected"'
 					  : '';
-			$html .= ' <option value="' . $k . '"' . $selected . '>' . $k . $v . '</option>' . "\n";
+			$html .= ' <option value="' . $k . '"' . $selected . '>' . $v . '</option>' . "\n";
 		}
 		$html .= '</select>' . "\n";
 		return $html;

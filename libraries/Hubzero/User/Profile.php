@@ -902,6 +902,12 @@ class Hubzero_User_Profile extends JObject
 				$first = false;
 			}
 			
+			if($property == 'params')
+			{
+				$query .= "params='".str_replace("", "",$this->_params->toString())."'";
+				continue;
+			}
+			
 			if ($this->get($property) == null)
 			{
 				$query .= "$property=NULL";
