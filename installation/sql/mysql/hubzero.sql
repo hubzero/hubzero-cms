@@ -984,10 +984,12 @@ CREATE TABLE `#__forum_categories` (
   `modified_by` int(11) NOT NULL DEFAULT '0',
   `access` tinyint(2) NOT NULL DEFAULT '0',
   `state` tinyint(3) NOT NULL DEFAULT '0',
-  `group_id` int(11) NOT NULL DEFAULT '0',
+  `scope` varchar(100)  NOT NULL  DEFAULT 'site',
+  `scope_id` int(11) NOT NULL DEFAULT '0',
   `section_id` int(11) NOT NULL DEFAULT '0',
   `closed` tinyint(2) NOT NULL DEFAULT '0',
   `asset_id` int(11) NOT NULL DEFAULT '0',
+  `object_id` INT(11)  NOT NULL  DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -1002,13 +1004,15 @@ CREATE TABLE `#__forum_posts` (
   `sticky` tinyint(2) NOT NULL DEFAULT '0',
   `parent` int(11) NOT NULL DEFAULT '0',
   `hits` int(11) NOT NULL DEFAULT '0',
-  `group_id` int(11) NOT NULL DEFAULT '0',
+  `scope` varchar(100)  NOT NULL  DEFAULT 'site',
+  `scope_id` int(11) NOT NULL DEFAULT '0',
   `access` tinyint(2) NOT NULL DEFAULT '0',
   `anonymous` tinyint(2) NOT NULL DEFAULT '0',
   `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified_by` int(11) NOT NULL DEFAULT '0',
   `last_activity` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `asset_id` int(11) NOT NULL DEFAULT '0',
+  `object_id` INT(11)  NOT NULL  DEFAULT '0',
   PRIMARY KEY (`id`),
   FULLTEXT KEY `question` (`comment`),
   FULLTEXT KEY `comment_title_fidx` (`comment`, `title`) 
@@ -1022,8 +1026,10 @@ CREATE TABLE `#__forum_sections` (
   `created_by` int(11) NOT NULL DEFAULT '0',
   `access` tinyint(2) NOT NULL DEFAULT '0',
   `state` tinyint(3) NOT NULL DEFAULT '0',
-  `group_id` int(11) NOT NULL DEFAULT '0',
+  `scope` varchar(100)  NOT NULL  DEFAULT 'site',
+  `scope_id` int(11) NOT NULL DEFAULT '0',
   `asset_id` int(11) NOT NULL DEFAULT '0',
+  `object_id` INT(11)  NOT NULL  DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -2535,6 +2541,19 @@ CREATE TABLE `#__users_transactions` (
   KEY `#__users_transactions_referenceid_categroy_type_idx` (`referenceid`,`category`,`type`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+CREATE TABLE `#__venue` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `venue` varchar(40),
+  `network` varchar(40),
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__venue_countries` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `countrySHORT` varchar(40),
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 CREATE TABLE `#__vote_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `referenceid` int(11) NOT NULL DEFAULT '0',
@@ -2630,6 +2649,8 @@ CREATE TABLE `#__wiki_page` (
   `access` tinyint(2) DEFAULT '0',
   `group_cn` varchar(255) DEFAULT NULL,
   `state` tinyint(2) DEFAULT '0',
+  `modified` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00',
+  `version_id` INT(11)  NOT NULL  DEFAULT '0',
   PRIMARY KEY (`id`),
   FULLTEXT KEY `title` (`title`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -2661,6 +2682,7 @@ CREATE TABLE `#__wiki_version` (
   `pagehtml` text,
   `approved` int(1) NOT NULL DEFAULT '0',
   `summary` varchar(255) DEFAULT NULL,
+  `length` INT(11)  NOT NULL  DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `#__wiki_version_pageid_idx` (`pageid`),
   FULLTEXT KEY `pagetext` (`pagetext`)
