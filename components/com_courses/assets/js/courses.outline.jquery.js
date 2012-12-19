@@ -52,12 +52,17 @@ HUB.CoursesOutline = {
 
 		// On title click, toggle display of content
 		$('.outline-main').on('click', '.unit-title-arrow', function(){
-			assetlist.slideUp(500);
-			title.removeClass('unit-title-arrow-active');
-			$(this).siblings('.asset-group-type-list').slideDown(500);
+			if($(this).hasClass('unit-title-arrow-active')){
+				$(this).siblings('.asset-group-type-list').slideUp(500);
+				$(this).removeClass('unit-title-arrow-active');
+			} else {
+				$('.asset-group-type-list').slideUp(500);
+				$('.unit-title-arrow').removeClass('unit-title-arrow-active');
+				$(this).siblings('.asset-group-type-list').slideDown(500);
 
-			// Toggle class for arrow (active gives down arrow indicating expanded list)
-			$(this).addClass('unit-title-arrow-active');
+				// Toggle class for arrow (active gives down arrow indicating expanded list)
+				$(this).addClass('unit-title-arrow-active');
+			}
 		});
 	},
 
