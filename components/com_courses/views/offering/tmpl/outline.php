@@ -76,6 +76,7 @@ if (!$this->course->offering()->access('view')) { ?>
 	?>
 
 	<div id="course-outline">
+<?php if($this->course->offering->units()->total() > 0) : ?>
 <?php foreach ($this->course->offering->units() as $unit) { ?>
 		<div class="unit<?php echo ($i == 0) ? ' active' : ''; ?>">
 			<div class="unit-wrap">
@@ -209,6 +210,9 @@ if (!$this->course->offering()->access('view')) { ?>
 		</div><!-- / .unit -->
 		<div class="clear"></div>
 <?php } // close foreach ?>
+<?php else: ?>
+		<p class="info">Your outline is currently empty. Go to the <a href="<?php echo JRoute::_('/courses/' . $this->course->get('alias') . '/manage/' . $this->course->offering()->get('alias')); ?>">Outline Manager</a> to being creating your course outline</p>
+<?php endif; ?>
 	</div><!-- / #course-outline -->
 
 	<?php
