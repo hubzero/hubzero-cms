@@ -47,6 +47,21 @@ ul {
 	cursor: move;
 	cursor: ns-resize;
 }
+.sortable-assets-handle {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	background: transparent;
+	float: left;
+	width: 30px;
+	overflow: hidden;
+	cursor: move;
+	cursor: ns-resize;
+}
+.sortable-assets-handle:before {
+	content: '\f0dc';
+}
 .progress-container {
 	width: 200px;
 	float: right;
@@ -84,7 +99,8 @@ ul {
 }
 .unit-title-arrow:before,
 .uploadfiles:before,
-.asset-group-item:before {
+.asset-group-item:before,
+.sortable-assets-handle {
 	font-family: "fontcons";
 	content: "";
 	position: absolute;
@@ -201,20 +217,20 @@ ul {
 .asset {
 	margin-left: 10px;
 	position: relative;
-	padding-left: 40px;
+	padding-left: 70px;
 	border-bottom: 1px dotted #AAA;
 }
 .asset:before,
 .asset:after {
 	position: absolute;
 	top: 0;
-	left: 25px;
+	left: 50px;
 	font-family: "fontcons";
 	content: "";
 }
 .asset:before {
 	top: 0;
-	left: 0;
+	left: 30px;
 }
 .published:before {
 	color: #49BF0A;

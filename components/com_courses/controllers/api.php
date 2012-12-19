@@ -67,7 +67,8 @@ class CoursesApiController extends Hubzero_Api_Controller
 
 			// Assets
 			case 'assetnew':               $this->assetNew();                 break;
-			case 'assetsave':              $this->assetSave();                 break;
+			case 'assetsave':              $this->assetSave();                break;
+			case 'assetsreorder':          $this->assetsReorder();            break;
 			case 'assettogglepublished':   $this->assetTogglePublished();     break;
 
 			default:                       $this->method_not_found();         break;
@@ -565,6 +566,57 @@ class CoursesApiController extends Hubzero_Api_Controller
 				'asset_title' =>$assetObj->title,
 				'course_id'   =>$this->course_id),
 			201, 'Created');
+	}
+
+	/**
+	 * Reorder assets
+	 * 
+	 * @return 201 created on success
+	 */
+	private function assetsReorder()
+	{
+		// Set the responce type
+		$this->setMessageType($this->format);
+
+		// Require authorization
+		/*$authorized = $this->authorize();
+		if(!$authorized['manage'])
+		{
+			$this->setMessage('You don\'t have permission to do this', 401, 'Unauthorized');
+			return;
+		}*/
+
+		// Get our asset group object
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php');
+		$assetAssocationObj = new CoursesTableAssetAssociation($this->db);
+
+		$assets   = JRequest::getVar('asset', array());
+		$scope_id = JRequest::getInt('scope_id', 0);
+		$scope    = JRequest::getWord('scope', 'asset_group');
+
+		$order = 1;
+
+		foreach ($assets as $asset_id)
+		{
+			if (!$assetAssocationObj->loadByAssetScope($asset_id, $scope_id, $scope))
+			{
+				$this->setMessage("Loading asset association $asset_id failed", 500, 'Internal server error');
+				return;
+			}
+
+			// Save the asset group
+			if (!$assetAssocationObj->save(array('ordering'=>$order)))
+			{
+				$this->setMessage("Asset asssociation save failed", 500, 'Internal server error');
+				return;
+			}
+
+			$order++;
+		}
+
+
+		// Return message
+		$this->setMessage('New asset order saved', 201, 'Created');
 	}
 
 	/**

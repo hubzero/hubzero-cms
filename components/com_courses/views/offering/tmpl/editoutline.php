@@ -126,7 +126,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 						if ($ag->assets()->total())
 						{
 ?>
-								<ul class="assets-list">
+								<ul class="assets-list sortable-assets">
 <?php
 								foreach ($ag->assets() as $a)
 								{
@@ -136,7 +136,8 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 										$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
 									}
 ?>
-									<li class="asset-item asset <?php echo $a->get('type'); echo ($a->get('state') == 0) ? ' notpublished' : ' published'; ?>">
+									<li id="asset_<?php echo $a->get('id'); ?>" class="asset-item asset <?php echo $a->get('type'); echo ($a->get('state') == 0) ? ' notpublished' : ' published'; ?>">
+										<div class="sortable-assets-handle"></div>
 										<div class="asset-item-title title toggle-editable"><?php echo $this->escape(stripslashes($a->get('title'))); ?></div>
 										<div class="title-edit">
 											<form action="/api/courses/assetsave" class="title-form">
@@ -218,7 +219,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 										<input type="hidden" name="id" value="<?php echo $agt->get('id'); ?>" />
 									</form>
 								</div>
-								<ul class="assets-list">
+								<ul class="assets-list sortable-assets">
 <?php
 					foreach ($agt->assets() as $a)
 					{
@@ -228,7 +229,8 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 								$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $agt->get('alias'));
 						}
 ?>
-									<li class="asset-item asset <?php echo $a->get('type'); echo ($a->get('state') == 0) ? ' notpublished' : ' published'; ?>">
+									<li id="asset_<?php echo $a->get('id'); ?>" class="asset-item asset <?php echo $a->get('type'); echo ($a->get('state') == 0) ? ' notpublished' : ' published'; ?>">
+										<div class="sortable-assets-handle"></div>
 										<div class="asset-item-title title toggle-editable"><?php echo $this->escape(stripslashes($a->get('title'))); ?></div>
 										<div class="title-edit">
 											<form action="/api/courses/assetsave" class="title-form">

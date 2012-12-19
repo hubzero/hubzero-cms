@@ -26,7 +26,8 @@ HUB.CoursesOutline = {
 	{
 		HUB.CoursesOutline.toggleUnits();
 		HUB.CoursesOutline.showProgressIndicator();
-		HUB.CoursesOutline.makeSortable();
+		HUB.CoursesOutline.makeUnitsSortable();
+		HUB.CoursesOutline.makeAssetsSortable();
 		HUB.CoursesOutline.makeTitlesEditable();
 		HUB.CoursesOutline.addNewItem();
 		HUB.CoursesOutline.makeUniform();
@@ -127,7 +128,7 @@ HUB.CoursesOutline = {
 		});
 	},
 
-	makeSortable: function()
+	makeUnitsSortable: function()
 	{
 		var $ = this.jQuery;
 
@@ -155,6 +156,53 @@ HUB.CoursesOutline = {
 				$.ajax({
 					url: '/api/courses/assetgroupreorder',
 					data: sorted,
+					dataType: "json",
+					type: 'POST',
+					cache: false,
+					statusCode: {
+						201: function(data){
+							// Report a message?
+						},
+						401: function(data){
+							// Display the error message
+							HUB.CoursesOutline.errorMessage(data.responseText);
+						},
+						404: function(data){
+							HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
+						},
+						500: function(data){
+							// Display the error message
+							HUB.CoursesOutline.errorMessage(data.responseText);
+						}
+					}
+				});
+			}
+		});
+	},
+
+	makeAssetsSortable: function()
+	{
+		var $ = this.jQuery;
+
+		$(".sortable-assets").sortable({
+			placeholder: "placeholder-assets",
+			handle: '.sortable-assets-handle',
+			axis: "y",
+			forcePlaceholderSize: true,
+			revert: false,
+			tolerance: 'pointer',
+			opacity: '0.6',
+			items: 'li',
+			update: function(){
+				// Save new order to the database
+				var sorted   = $(this).sortable('serialize');
+				var scope_id = $(this).parents('.asset-group-item').find('input[name="scope_id"]').val();
+				var scope    = 'asset_group';
+
+				// Update the asset group ordering
+				$.ajax({
+					url: '/api/courses/assetsreorder',
+					data: sorted+"&scope_id="+scope_id+"&scope="+scope,
 					dataType: "json",
 					type: 'POST',
 					cache: false,
@@ -325,7 +373,7 @@ HUB.CoursesOutline = {
 							HUB.CoursesOutline.showProgressIndicator();
 
 							// Refresh the sortable list
-							HUB.CoursesOutline.makeSortable();
+							HUB.CoursesOutline.makeUnitsSortable();
 
 							$('.asset-group-type-list').delay(500).slideUp(500, function(){
 								$('.unit-title-arrow').removeClass('unit-title-arrow-active');
@@ -446,6 +494,7 @@ HUB.CoursesOutline = {
 							newAsset.find('.title-edit').hide();
 							HUB.CoursesOutline.showProgressIndicator();
 							HUB.CoursesOutline.resizeFileUploader();
+							HUB.CoursesOutline.makeAssetsSortable();
 
 							// Reset progress bar after 2 seconds
 							setTimeout( function(){
@@ -520,7 +569,8 @@ HUB.CoursesOutline = {
 
 	Templates: {
 		asset : [
-			'<li class="asset-item asset <%= asset_type %> notpublished">',
+			'<li id="asset_<%= asset_id %>" class="asset-item asset <%= asset_type %> notpublished">',
+				'<div class="sortable-assets-handle"></div>',
 				'<div class="asset-item-title title toggle-editable"><%= asset_title %></div>',
 				'<div class="title-edit">',
 					'<form action="/api/courses/assetsave" class="title-form">',
