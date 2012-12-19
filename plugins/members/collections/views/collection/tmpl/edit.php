@@ -37,15 +37,15 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-<form action="<?php echo JRoute::_($base . '&task=saveboard'); ?>" method="post" id="hubForm" class="full" enctype="multipart/form-data">
+<form action="<?php echo JRoute::_($base . '&task=save'); ?>" method="post" id="hubForm" class="full" enctype="multipart/form-data">
 	<fieldset>
 		<legend><?php echo JText::_('New collection'); ?></legend>
 
 		<label for="field-access">
 			<?php echo JText::_('Privacy'); ?>
 			<select name="fields[access]" id="field-access">
-				<option value="0"<?php if ($this->entry->get('access') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public (anyone can see this board)'); ?></option>
-				<option value="4"<?php if ($this->entry->get('access') == 4) { echo ' selected="selected"'; } ?>><?php echo JText::_('Private (only I can see this board)'); ?></option>
+				<option value="0"<?php if ($this->entry->get('access') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public (anyone can see this collection)'); ?></option>
+				<option value="4"<?php if ($this->entry->get('access') == 4) { echo ' selected="selected"'; } ?>><?php echo JText::_('Private (only I can see this collection)'); ?></option>
 			</select>
 		</label>
 
@@ -70,7 +70,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 	<input type="hidden" name="id" value="<?php echo $this->member->get('uidNumber'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="active" value="<?php echo $this->name; ?>" />
-	<input type="hidden" name="action" value="saveboard" />
+	<input type="hidden" name="action" value="savecollection" />
 
 	<p class="submit">
 		<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_' . strtoupper($this->name) . '_SAVE'); ?>" />

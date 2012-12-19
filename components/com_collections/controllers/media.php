@@ -145,11 +145,66 @@ class CollectionsControllerMedia extends Hubzero_Controller
 	}
 
 	/**
+	 * Upload a file to the wiki
+	 * 
+	 * @return     void
+	 */
+	public function createTask()
+	{
+		if (JRequest::getVar('no_html', 0))
+		{
+			return $this->ajaxCreateTask();
+		}
+
+		// Check if they're logged in
+		if ($this->juser->get('guest')) 
+		{
+			$this->displayTask();
+			return;
+		}
+
+		// Ensure we have an ID to work with
+		$listdir = JRequest::getInt('dir', 0, 'post');
+		if (!$listdir) 
+		{
+			$this->setError(JText::_('COM_COLLECTIONS_NO_ID'));
+			$this->displayTask();
+			return;
+		}
+
+		if (substr($listdir, 0, 3) == 'tmp')
+		{
+			$item = new CollectionsModelItem($listdir);
+			$item->set('state', 0);
+			$item->set('description', $listdir);
+			if ($item->store())
+			{
+				$listdir = $item->get('id');
+			}
+		}
+
+		// Create database entry
+		$asset = new CollectionsModelAsset();
+		$asset->set('item_id', intval($listdir));
+		$asset->set('filename', 'http://');
+		$asset->set('description', JRequest::getVar('description', '', 'post'));
+		$asset->set('state', 1);
+		$asset->set('type', 'link');
+
+		if (!$asset->store()) 
+		{
+			$this->setError($asset->getError());
+		}
+
+		$this->displayTask();
+	}
+
+	/**
 	 * Upload a file to the wiki via AJAX
 	 * 
 	 * @return     string
 	 */
-	public function ajaxUploadTask()
+	public function ajaxCreateTask()
 	{
 		// Check if they're logged in
 		if ($this->juser->get('guest')) 
@@ -175,6 +230,65 @@ class CollectionsControllerMedia extends Hubzero_Controller
 			{
 				$listdir = $item->get('id');
 			}
+		}
+
+		// Create database entry
+		$asset = new CollectionsModelAsset();
+		$asset->set('item_id', intval($listdir));
+		$asset->set('filename', 'http://');
+		$asset->set('description', JRequest::getVar('description', '', 'post'));
+		$asset->set('state', 1);
+		$asset->set('type', 'link');
+
+		if (!$asset->store()) 
+		{
+			$this->setError($asset->getError());
+		}
+
+		//echo result
+		echo json_encode(array(
+			'success'   => true, 
+			'file'      => 'http://',
+			'directory' => '',
+			'id'        => $listdir
+		));
+	}
+
+	/**
+	 * Upload a file to the wiki via AJAX
+	 * 
+	 * @return     string
+	 */
+	public function ajaxUploadTask()
+	{
+		// Check if they're logged in
+		if ($this->juser->get('guest')) 
+		{
+			echo json_encode(array('error' => JText::_('Must be logged in.')));
+			return;
+		}
+
+		// Ensure we have an ID to work with
+		$listdir = strtolower(JRequest::getVar('dir', ''));
+		if (!$listdir) 
+		{
+			echo json_encode(array('error' => JText::_('COM_COLLECTIONS_NO_ID')));
+			return;
+		}
+
+		if (substr($listdir, 0, 3) == 'tmp')
+		{
+			$item = new CollectionsModelItem();
+			$item->set('state', 0);
+			$item->set('description', $listdir);
+			if (!$item->store())
+			{
+				echo json_encode(array(
+					'error' => $item->getError()
+				));
+				return;
+			}
+			$listdir = $item->get('id');
 		}
 
 		//allowed extensions for uplaod
@@ -279,10 +393,14 @@ class CollectionsControllerMedia extends Hubzero_Controller
 		$asset->set('filename', $filename . '.' . $ext);
 		$asset->set('description', JRequest::getVar('description', '', 'post'));
 		$asset->set('state', 1);
+		$asset->set('type', 'file');
 
 		if (!$asset->store()) 
 		{
-			$this->setError($asset->getError());
+			echo json_encode(array(
+				'error' => $asset->getError()
+			));
+			return;
 		}
 
 		//echo result
@@ -360,75 +478,17 @@ class CollectionsControllerMedia extends Hubzero_Controller
 		else 
 		{
 			// Create database entry
-			$attachment = new WikiPageAttachment($this->database);
-			$attachment->pageid      = $listdir;
-			$attachment->filename    = $file['name'];
-			$attachment->description = trim(JRequest::getVar('description', '', 'post'));
-			$attachment->created     = date('Y-m-d H:i:s', time());
-			$attachment->created_by  = $this->juser->get('id');
+			$asset = new CollectionsModelAsset();
+			$asset->set('item_id', intval($listdir));
+			$asset->set('filename', $file['name']);
+			$asset->set('description', JRequest::getVar('description', '', 'post'));
+			$asset->set('state', 1);
+			$asset->set('type', 'file');
 
-			if (!$attachment->check()) 
+			if (!$asset->store()) 
 			{
-				$this->setError($attachment->getError());
+				$this->setError($asset->getError());
 			}
-			if (!$attachment->store()) 
-			{
-				$this->setError($attachment->getError());
-			}
-		}
-
-		// Push through to the media view
-		$this->displayTask();
-	}
-
-	/**
-	 * Delete a folder in the wiki
-	 * 
-	 * @return     void
-	 */
-	public function deletefolderTask()
-	{
-		// Check if they're logged in
-		if ($this->juser->get('guest')) 
-		{
-			$this->displayTask();
-			return;
-		}
-
-		// Incoming group ID
-		$listdir = JRequest::getInt('dir', 0, 'get');
-		if (!$listdir) 
-		{
-			$this->setError(JText::_('COM_COLLECTIONS_NO_ID'));
-			$this->displayTask();
-			return;
-		}
-
-		// Incoming folder
-		$folder = trim(JRequest::getVar('folder', '', 'get'));
-		if (!$folder) 
-		{
-			$this->setError(JText::_('COM_COLLECTIONS_NO_DIRECTORY'));
-			$this->displayTask();
-			return;
-		}
-
-		// Build the file path
-		$path = JPATH_ROOT . DS . trim($this->config->get('filepath', '/site/collections'), DS) . DS . $listdir . DS . $folder;
-
-		// Delete the folder
-		if (is_dir($path)) 
-		{
-			// Attempt to delete the file
-			jimport('joomla.filesystem.file');
-			if (!JFolder::delete($path)) 
-			{
-				$this->setError(JText::_('UNABLE_TO_DELETE_DIRECTORY'));
-			}
-		} 
-		else 
-		{
-			$this->setError(JText::_('COM_COLLECTIONS_NO_DIRECTORY'));
 		}
 
 		// Push through to the media view
@@ -440,8 +500,13 @@ class CollectionsControllerMedia extends Hubzero_Controller
 	 * 
 	 * @return     void
 	 */
-	public function deletefileTask()
+	public function deleteTask()
 	{
+		if (JRequest::getVar('no_html', 0))
+		{
+			return $this->ajaxDeleteTask();
+		}
+
 		// Check if they're logged in
 		if ($this->juser->get('guest')) 
 		{
@@ -458,37 +523,16 @@ class CollectionsControllerMedia extends Hubzero_Controller
 			return;
 		}
 
-		// Incoming file
-		$file = trim(JRequest::getVar('file', '', 'get'));
-		if (!$file) 
-		{
-			$this->setError(JText::_('COM_COLLECTIONS_NO_FILE'));
-			$this->displayTask();
-			return;
-		}
+		// Incoming asset
+		$id = JRequest::getInt('asset', 0, 'get');
 
-		// Build the file path
-		$path = JPATH_ROOT . DS . trim($this->config->get('filepath', '/site/collections'), DS) . DS . $listdir;
+		$model = new CollectionsModelAsset($id);
 
-		// Delete the file
-		if (!file_exists($path . DS . $file) or !$file) 
+		if ($model->exists())
 		{
-			$this->setError(JText::_('FILE_NOT_FOUND'));
-			$this->displayTask();
-		} 
-		else 
-		{
-			// Attempt to delete the file
-			jimport('joomla.filesystem.file');
-			if (!JFile::delete($path . DS . $file)) 
+			if (!$model->remove())
 			{
-				$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
-			} 
-			else 
-			{
-				// Delete the database entry for the file
-				$attachment = new CollectionsTableAsset($this->database);
-				$attachment->deleteFile($file, $listdir);
+				$this->setError($model->getError());
 			}
 		}
 
@@ -501,7 +545,7 @@ class CollectionsControllerMedia extends Hubzero_Controller
 	 * 
 	 * @return     void
 	 */
-	public function removeTask()
+	public function ajaxDeleteTask()
 	{
 		// Incoming
 		$id = JRequest::getInt('id', 0);
@@ -514,12 +558,21 @@ class CollectionsControllerMedia extends Hubzero_Controller
 			{
 				if (!$model->remove())
 				{
-					$this->setError($model->getError());
+					echo json_encode(array(
+						'success' => false,
+						'error'   => $model->getError()
+					));
+					return;
+					//$this->setError($model->getError());
 				}
 			}
 		}
 
-		$this->view->display();
+		//echo result
+		echo json_encode(array(
+			'success' => true, 
+			'asset'   => $id
+		));
 	}
 
 	/**
@@ -563,49 +616,6 @@ class CollectionsControllerMedia extends Hubzero_Controller
 			$this->setError(JText::_('COM_COLLECTIONS_NO_ID'));
 		}
 
-		/*$path = JPATH_ROOT . DS . trim($this->config->get('filepath', '/site/collections'), DS) . DS . $listdir;
-
-		$folders = array();
-		$docs    = array();
-
-		if (is_dir($path))
-		{
-			// Loop through all files and separate them into arrays of images, folders, and other
-			$dirIterator = new DirectoryIterator($path);
-			foreach ($dirIterator as $file)
-			{
-				if ($file->isDot())
-				{
-					continue;
-				}
-
-				if ($file->isDir())
-				{
-					$name = $file->getFilename();
-					$folders[$path . DS . $name] = $name;
-					continue;
-				}
-
-				if ($file->isFile())
-				{
-					$name = $file->getFilename();
-					if (('cvs' == strtolower($name))
-					 || ('.svn' == strtolower($name)))
-					{
-						continue;
-					}
-
-					$docs[$path . DS . $name] = $name;
-				}
-			}
-
-			ksort($folders);
-			ksort($docs);
-		}
-
-		$this->view->docs    = $docs;
-		$this->view->folders = $folders;*/
-
 		$this->view->item    = CollectionsModelItem::getInstance($listdir);
 		if (!$this->view->item->exists())
 		{
@@ -614,8 +624,6 @@ class CollectionsControllerMedia extends Hubzero_Controller
 
 		$this->view->config  = $this->config;
 		$this->view->listdir = $listdir;
-		//$this->view->name    = $this->_name;
-		//$this->view->sub     = $this->_sub;
 
 		$this->_getStyles();
 

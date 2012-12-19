@@ -86,6 +86,13 @@ class CollectionsTableAsset extends JTable
 	var $state = NULL;
 
 	/**
+	 * varchar(50)
+	 * 
+	 * @var string
+	 */
+	var $type = NULL;
+
+	/**
 	 * Constructor
 	 *
 	 * @param      object &$db JDatabase
@@ -107,7 +114,7 @@ class CollectionsTableAsset extends JTable
 
 		if (!$this->item_id) 
 		{
-			$this->setError(JText::_('Please provide a bulletin ID'));
+			$this->setError(JText::_('Please provide an item ID'));
 			return false;
 		}
 
@@ -119,6 +126,12 @@ class CollectionsTableAsset extends JTable
 		}
 
 		$this->description = trim($this->description);
+
+		$this->type = strtolower(trim($this->type));
+		if (!in_array($this->type, array('file', 'link')))
+		{
+			$this->type = 'file';
+		}
 
 		if (!$this->id) 
 		{
@@ -185,19 +198,6 @@ class CollectionsTableAsset extends JTable
 			$query .= implode(" AND ", $where);
 		}
 
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
-		{
-			if (!isset($filters['sort']) || !$filters['sort']) 
-			{
-				$filters['sort'] = 'a.created';
-			}
-			if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
-			{
-				$filters['sort_Dir'] = 'ASC';
-			}
-			$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
-		}
-
 		return $query;
 	}
 
@@ -209,8 +209,6 @@ class CollectionsTableAsset extends JTable
 	 */
 	public function getCount($filters=array())
 	{
-		$filters['limit'] = 0;
-
 		$query = "SELECT COUNT(*) " . $this->buildQuery($filters);
 
 		$this->_db->setQuery($query);
@@ -227,6 +225,16 @@ class CollectionsTableAsset extends JTable
 	{
 		$query = "SELECT a.*, u.name";
 		$query .= $this->buildQuery($filters);
+
+		if (!isset($filters['sort']) || !$filters['sort']) 
+		{
+			$filters['sort'] = 'a.created';
+		}
+		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+		{
+			$filters['sort_Dir'] = 'ASC';
+		}
+		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
 
 		if (isset($filters['limit']) && $filters['limit'] != 0) 
 		{
@@ -264,30 +272,37 @@ class CollectionsTableAsset extends JTable
 			return false;
 		}
 
-		jimport('joomla.filesystem.file');
+		//$UrlPtn = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)(?:[^ |\\/\"\']*\\/)*[^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]";
 
-		$config = JComponentHelper::getParams('com_collections');
-		$path = JPATH_ROOT . DS . trim($config->get('filepath', '/site/collections'), DS) . DS . $this->item_id;
-
-		$ext = JFile::getExt($this->filename);
-		$fileRemoved = JFile::stripExt($this->filename) . uniqid('_d') . '.' . $ext;
-
-		$file = $path . DS . $this->filename;
-
-		if (!file_exists($file) or !$file) 
+		//if (!preg_match("/$UrlPtn/", $this->filename) && $this->filename != 'http://') 
+		if ($this->type == 'file')
 		{
-			$this->setError(JText::_('FILE_NOT_FOUND'));
-			return false;
-		}
+			jimport('joomla.filesystem.file');
 
-		if (!JFile::move($file, $path . DS . $fileRemoved)) 
-		{
-			$this->setError(JText::_('Unable to rename file'));
-			return false;
+			$config = JComponentHelper::getParams('com_collections');
+			$path = JPATH_ROOT . DS . trim($config->get('filepath', '/site/collections'), DS) . DS . $this->item_id;
+
+			$ext = JFile::getExt($this->filename);
+			$fileRemoved = JFile::stripExt($this->filename) . uniqid('_d') . '.' . $ext;
+
+			$file = $path . DS . $this->filename;
+
+			if (!file_exists($file) or !$file) 
+			{
+				$this->setError(JText::_('FILE_NOT_FOUND'));
+				return false;
+			}
+
+			if (!JFile::move($file, $path . DS . $fileRemoved)) 
+			{
+				$this->setError(JText::_('Unable to rename file'));
+				return false;
+			}
+
+			$this->filename = $fileRemoved;
 		}
 
 		$this->state = 2;
-		$this->filename = $fileRemoved;
 
 		if (!$this->store())
 		{

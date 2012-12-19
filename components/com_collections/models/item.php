@@ -355,7 +355,10 @@ class CollectionsModelItem extends JObject
 		{
 			$tbl = new CollectionsTableAsset($this->_db);
 
-			$filters['item_id'] = $this->get('id');
+			if (!isset($filters['item_id']))
+			{
+				$filters['item_id'] = $this->get('id');
+			}
 
 			if (($results = $tbl->getRecords($filters)))
 			{
@@ -594,7 +597,25 @@ class CollectionsModelItem extends JObject
 			return false;
 		}
 
-		if ($this->get('_files'))
+		if ($this->get('_assets'))
+		{
+			foreach ($this->get('_assets') as $i => $asset)
+			{
+				$a = new CollectionsModelAsset($asset['id']);
+				if (!$a->exists())
+				{
+					continue;
+				}
+				$a->set('filename', $asset['filename']);
+				//$a->set('description', $asset['description']);
+				if (!$a->store())
+				{
+					$this->setError($a->getError());
+				}
+			}
+		}
+
+		/*if ($this->get('_files'))
 		{
 			$config = JComponentHelper::getParams('com_collections');
 
@@ -616,20 +637,6 @@ class CollectionsModelItem extends JObject
 
 			foreach ($files['name'] as $i => $file)
 			{
-				// Incoming file
-				if (!$files['name'][$i]) 
-				{
-					$this->setError(JText::sprintf('No file found: %s', $files['name'][$i]));
-					//return false;
-					continue;
-				}
-
-				/*$ext = strtolower(JFile::getExt($files['name'][$i]));
-				if ($type == 'image' && !in_array($ext, array('jpg', 'jpeg', 'jpe', 'gif', 'png')))
-				{
-					continue;
-				}*/
-
 				// Make the filename safe
 				jimport('joomla.filesystem.file');
 				$files['name'][$i] = urldecode($files['name'][$i]);
@@ -681,6 +688,17 @@ class CollectionsModelItem extends JObject
 				if (!$asset->update('item_id', intval($this->get('_dir')), $this->get('id')))
 				{
 					$this->setError($asset->getError());
+				}
+			}
+		}*/
+		$trashed = $this->assets(array('state' => 2));
+		if ($trashed->total() > 0)
+		{
+			foreach ($trashed as $trash)
+			{
+				if ($trash->get('filename') == 'http://')
+				{
+					$trash->remove();
 				}
 			}
 		}

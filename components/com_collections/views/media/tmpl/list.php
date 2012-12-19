@@ -31,20 +31,34 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$no_html = JRequest::getInt('no_html', 0);
+
 $assets = $this->item->assets();
 if ($assets->total() > 0) 
 { 
+	$i = 0;
 	foreach ($assets as $asset)
 	{
 ?>
-		<p class="file-drop">
-			<?php echo $this->escape(stripslashes($asset->get('filename'))); ?>
-			<input type="hidden" name="asset[<?php echo $asset->get('id'); ?>][id]" value="<?php echo $asset->get('id'); ?>" />
-			<span>
-				<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=remove&id=' . $asset->get('id')); ?>">delete</a>
-				<!-- <input type="text" name="asset[<?php echo $asset->get('id'); ?>][description]" size="35" value="<?php echo $this->escape(stripslashes($asset->get('description'))); ?>" placeholder="Brief description" /> -->
+		<p class="item-asset">
+			<span class="asset-file">
+			<?php if ($asset->get('type') == 'link') { ?>
+				<input type="text" name="assets[<?php echo $i; ?>][filename]" size="35" value="<?php echo $this->escape(stripslashes($asset->get('filename'))); ?>" placeholder="http://" />
+			<?php } else { ?>
+				<?php echo $this->escape(stripslashes($asset->get('filename'))); ?>
+				<input type="hidden" name="assets[<?php echo $i; ?>][filename]" value="<?php echo $this->escape(stripslashes($asset->get('filename'))); ?>" />
+			<?php } ?>
+			</span>
+			<span class="asset-description">
+				<input type="hidden" name="assets[<?php echo $i; ?>][type]" value="<?php echo $asset->get('type'); ?>" />
+				<input type="hidden" name="assets[<?php echo $i; ?>][id]" value="<?php echo $asset->get('id'); ?>" />
+				<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=delete&id=' . $asset->get('id') . '&no_html=' . $no_html); ?>" title="<?php echo JText::_('Delete this asset'); ?>">
+					delete
+				</a>
+				<!-- <input type="text" name="assets[<?php echo $i; ?>][description]" size="35" value="<?php echo $this->escape(stripslashes($asset->get('description'))); ?>" placeholder="Brief description" /> -->
 			</span>
 		</p>
 <?php 
+		$i++;
 	}
 }

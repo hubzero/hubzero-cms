@@ -106,7 +106,7 @@ class plgMembersCollections extends JPlugin
 			$this->juser      = $user;
 
 			// Set some variables so other functions have access
-			$this->action     = JRequest::getVar('action', 'boards');
+			$this->action     = JRequest::getVar('action', 'collections');
 			$this->option     = $option;
 			$this->name       = substr($option, 4, strlen($option));
 			$this->database   = JFactory::getDBO();
@@ -172,13 +172,13 @@ class plgMembersCollections extends JPlugin
 							}
 						}
 					}
-					else if ($bits[0] == 'new')
+					else if ($bits[0] == 'new' || $bits[0] == 'save')
 					{
-						$this->action = 'newboard';
+						$this->action = $bits[0] . 'collection';
 					}
 					else
 					{
-						$this->action = 'board';
+						$this->action = 'collection';
 						JRequest::setVar('board', $bits[0]);
 
 						if (isset($bits[1]))
@@ -210,14 +210,14 @@ class plgMembersCollections extends JPlugin
 				case 'remove': $arr['html'] = $this->_remove(); break;
 				case 'move':   $arr['html'] = $this->_move();   break;
 
-				case 'collectboard': $arr['html'] = $this->_repost();      break;
-				case 'newboard':    $arr['html'] = $this->_newcollection();    break;
-				case 'editboard':   $arr['html'] = $this->_editcollection();   break;
-				case 'saveboard':   $arr['html'] = $this->_savecollection();   break;
-				case 'deleteboard': $arr['html'] = $this->_deletecollection(); break;
-				case 'boards':      $arr['html'] = $this->_collections();      break;
+				case 'collectcollection': $arr['html'] = $this->_repost();      break;
+				case 'newcollection':    $arr['html'] = $this->_newcollection();    break;
+				case 'editcollection':   $arr['html'] = $this->_editcollection();   break;
+				case 'savecollection':   $arr['html'] = $this->_savecollection();   break;
+				case 'deletecollection': $arr['html'] = $this->_deletecollection(); break;
+				case 'collections':      $arr['html'] = $this->_collections();      break;
 
-				case 'board': $arr['html'] = $this->_collection(); break;
+				case 'collection': $arr['html'] = $this->_collection(); break;
 
 				default: $arr['html'] = $this->_collections(); break;
 			}
@@ -349,12 +349,13 @@ class plgMembersCollections extends JPlugin
 		$view->filters['user_id']     = $this->member->get('uidNumber');
 		$view->filters['search']      = JRequest::getVar('search', '');
 		$view->filters['state']       = 1;
-		$view->filters['collection_id'] = JRequest::getVar('board', 0);
+		$view->filters['collection_id'] = JRequest::getVar('board', '');
 
 		$view->collection = $this->model->collection($view->filters['collection_id']);
 		if (!$view->collection->exists())
 		{
-			$view->collection->setup($this->model->get('object_id'), $this->model->get('object_type'));
+			return $this->_collections();
+			//$view->collection->setup($this->model->get('object_id'), $this->model->get('object_type'));
 		}
 
 		// Is the board restricted to logged-in users only?
@@ -581,7 +582,7 @@ class plgMembersCollections extends JPlugin
 
 		// Add some data
 		//$row->set('_files', $files);
-		//$row->set('_descriptions', $descriptions);
+		$row->set('_assets', JRequest::getVar('assets', array(), 'post'));
 		$row->set('_tags', trim(JRequest::getVar('tags', '')));
 		$row->set('state', 1);
 
@@ -597,12 +598,12 @@ class plgMembersCollections extends JPlugin
 		if (!$post->exists())
 		{
 			$post->set('item_id', $row->get('id'));
-			$post->set('collection_id', $fields['collection_id']);
 			$post->set('original', 1);
-			if (!$post->store()) 
-			{
-				$this->setError($post->getError());
-			}
+		}
+		$post->set('collection_id', $fields['collection_id']);
+		if (!$post->store()) 
+		{
+			$this->setError($post->getError());
 		}
 
 		// Check for any errors
@@ -612,7 +613,7 @@ class plgMembersCollections extends JPlugin
 		}
 
 		$app =& JFactory::getApplication();
-		$app->redirect(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name . '&task=' . $fields['collection_id']));
+		$app->redirect(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name . '&task=' . $this->model->collection($fields['collection_id'])->get('alias')));
 	}
 
 	/**

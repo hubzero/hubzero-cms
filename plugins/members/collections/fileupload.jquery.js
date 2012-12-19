@@ -19,35 +19,41 @@ if (!jq) {
 	var jq = $;
 }
 
-HUB.Plugins.GroupsFileUpload = {
+HUB.Plugins.MembersFileUpload = {
 	jQuery: jq,
 
 	initialize: function() {
 		var $ = this.jQuery;
 
 		if ($("#ajax-uploader").length) {
-			/*var uploader = new qq.FileUploader({
-				element: $("#ajax-uploader")[0],
-				action: $("#ajax-uploader").attr("data-action"),
-				multiple: true,
-				showDrop: true,
-				template: '<div class="qq-uploader">' +
-							'<div class="qq-upload-button">Upload a file</div>' + 
-							'<div class="qq-upload-drop-area" style="display:block;"><span>or drop files here to upload</span></div>' +
-							'<ul class="qq-upload-list"></ul>' + 
-						   '</div>',
-				onSubmit: function(id, file) {
-					if (!$(".qq-uploading").length) {
-						$("#themanager").append('<div class="qq-uploading">Uploading...</div>');
-					}
-				},
-				onComplete: function(id, file, response) {
-					$("#imgManager").attr("src", $("#imgManager").attr("src"));
-					$(".qq-uploading").fadeOut("slow", function() {
-						$(".qq-uploading").remove();
+
+			if ($('#link-adder').length > 0) {
+				$('#link-adder').append(
+					'<div class="linker">' +
+						'<div class="linker-button"><span>Click to add link</span></div>' + 
+					'</div>'
+				);
+				$('.linker-button').on('click', function(){
+					/*$('#ajax-uploader-list').append(
+						'<p class="item-asset">' +
+							'<span class="asset-file">' + 
+								'<input type="text" name="asset[' + i + '][description]" size="35" value="http://" />' +
+								'<input type="text" name="asset[' + i + '][description]" size="35" value="http://" />' +
+							'</span>' + 
+						'</p>'
+					);*/
+					$.get($('#link-adder').attr('data-action') + $('#field-dir').val(), {}, function(data){
+						var response = jQuery.parseJSON(data);
+
+						if (response.id != $('#field-dir').val()) {
+							$('#field-id').val(response.id);
+							$('#field-dir').val(response.id);
+						}
+
+						HUB.Plugins.MembersFileUpload.updateFileList();
 					});
-				}
-			});*/
+				});
+			}
 
 			var uploader = new qq.FileUploader({
 				element: $("#ajax-uploader")[0],
@@ -68,14 +74,14 @@ HUB.Plugins.GroupsFileUpload = {
 						$('#field-dir').val(response.id);
 					}
 
-					HUB.Plugins.GroupsFileUpload.updateFileList();
+					HUB.Plugins.MembersFileUpload.updateFileList();
 				}
 			});
 		}
 	},
 	
 	updateFileList: function() {
-		var $ = HUB.Plugins.GroupsFileUpload.jQuery;
+		var $ = HUB.Plugins.MembersFileUpload.jQuery;
 		
 		if ($('#ajax-uploader')) {
 			//$('.qq-upload-list').empty();
@@ -87,7 +93,7 @@ HUB.Plugins.GroupsFileUpload = {
 					.on('click', function(event){
 						event.preventDefault();
 						$.get($(this).attr('href'), {}, function(data) {
-							HUB.Plugins.GroupsFileUpload.updateFileList();
+							HUB.Plugins.MembersFileUpload.updateFileList();
 						});
 					});
 			});
@@ -96,5 +102,5 @@ HUB.Plugins.GroupsFileUpload = {
 };
 
 jQuery(document).ready(function($){
-	HUB.Plugins.GroupsFileUpload.initialize();
+	HUB.Plugins.MembersFileUpload.initialize();
 });

@@ -35,6 +35,12 @@ defined('_JEXEC') or die('Restricted access');
 //$assets = $ba->getRecords(array('bulletin_id' => $this->row->id, 'limit' => 50, 'start' => 0));
 $item = $this->row->item();
 
+if ($item->get('title')) { ?>
+		<h4>
+			<?php echo $this->escape(stripslashes($item->get('title'))); ?>
+		</h4>
+<?php } 
+
 $path = DS . trim($this->params->get('filepath', '/site/collections'), DS) . DS . $item->get('id');
 $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name;
 
@@ -98,13 +104,17 @@ if ($assets->total() > 0)
 		foreach ($files as $asset)
 		{
 ?>
-				<li>
-					<a href="<?php echo $path . DS . ltrim($asset->get('filename'), DS); ?>">
+				<li class="type-<?php echo $asset->get('type'); ?>">
+					<a href="<?php echo ($asset->get('type') == 'link') ? $asset->get('filename') : $path . DS . ltrim($asset->get('filename'), DS); ?>">
 						<?php echo $asset->get('filename'); ?>
 					</a>
 					<span class="file-meta">
 						<span class="file-size">
+				<?php if ($asset->get('type') != 'link') { ?>
 							<?php echo Hubzero_View_Helper_Html::formatSize(filesize(JPATH_ROOT . $path . DS . ltrim($asset->get('filename'), DS))); ?>
+				<?php } else { ?>
+							<?php echo JText::_('link'); ?>
+				<?php } ?>
 						</span>
 				<?php if ($asset->get('description')) { ?>
 						<span class="file-description">
