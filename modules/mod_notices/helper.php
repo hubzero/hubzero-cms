@@ -265,8 +265,8 @@ class modNotices extends JObject
 			Hubzero_Document::addModuleStylesheet($this->module->module);
 
 			// Get some parameters
-			$this->moduleid   = $this->params->get('moduleid');
-			$this->alertlevel = $this->params->get('alertlevel');
+			$this->moduleid   = $this->params->get('moduleid', 'sitenotice');
+			$this->alertlevel = $this->params->get('alertlevel', 'medium');
 			$timezone         = $this->params->get('timezone');
 			$message          = $this->params->get('message');
 
