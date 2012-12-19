@@ -313,8 +313,9 @@ class CoursesApiController extends Hubzero_Api_Controller
 		// Set the responce type
 		$this->setMessageType($this->format);
 
-		// @TODO: clean up after errors if we've already created assets or asset groups
+		// @TODO: clean up after errors if we've already created assets or asset groups but something in the upload fails
 		// @TODO: add virus scan
+		// @TODO: add multi-file support
 
 		// Require authorization
 		$authorized = $this->authorize();

@@ -39,14 +39,14 @@ $hubpresenter = false;
 $path = rtrim($this->model->path($this->course->get('id'), false), DS);
 
 // Check to make sure we have a presentation document defining cuepoints, slides, and media
-$manifest_path_json = JPATH_ROOT . $path . DS . 'presentation.json';
-$manifest_path_xml  = JPATH_ROOT . $path . DS . 'presentation.xml';
+$manifest_path_json = JFolder::files(JPATH_ROOT . $path, 'presentation.json', true, true);
+$manifest_path_xml  = JFolder::files(JPATH_ROOT . $path, 'presentation.xml', true, true);
 
 // Check if the formatted json exists (for hubpresenter)
-if (!file_exists($manifest_path_json))
+if (empty($manifest_path_json))
 {
 	// We don't have the JSON manifest, but check to see if we just havent converted it yet
-	if (!file_exists($manifest_path_xml))
+	if (empty($manifest_path_xml))
 	{
 		// This is redundant, but reinforcing that we're not trying to display a hubpresenter video
 		$hubpresenter = false;
@@ -58,7 +58,7 @@ if (!file_exists($manifest_path_json))
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'assets' . DS . 'presenter' . DS . 'lib' . DS . 'helper.php');
 
 		// Try to create json manifest
-		$job = PresenterHelper::createJsonManifest($path, $manifest_path_xml);
+		$job = PresenterHelper::createJsonManifest(rtrim($manifest_path_xml[0], 'presentation.xml'), $manifest_path_xml[0]);
 		if ($job != '') 
 		{
 			$this->setError($job);
@@ -89,7 +89,7 @@ if (!JPluginHelper::isEnabled('system', 'jquery'))
 if ($hubpresenter)
 {
 	// Set media path
-	$media_path = JPATH_ROOT . $path;
+	$media_path = rtrim($manifest_path_json[0], 'presentation.json');
 
 	// Check if path exists
 	if (is_dir($media_path))
@@ -108,7 +108,7 @@ if ($hubpresenter)
 		}
 
 		// Make sure if any slides are video we have three formats of video and backup image for mobile
-		$slide_path = $media_path . DS . 'slides';
+		$slide_path = $media_path . 'slides';
 		$slides = JFolder::files($slide_path, '', false, false);
 
 		// Array to hold slides with video clips
@@ -143,10 +143,10 @@ if ($hubpresenter)
 	}
 
 	// Get the manifest for the presentation
-	$contents = file_get_contents($manifest_path_json);
+	$contents = file_get_contents($manifest_path_json[0]);
 
 	// Content folder
-	$content_folder = $path;
+	$content_folder = ltrim(rtrim($media_path), JPATH_ROOT);
 
 	// Decode the json formatted manifest so we can use the information
 	$presentation = json_decode($contents);
