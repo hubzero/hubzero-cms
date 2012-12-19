@@ -198,7 +198,7 @@ HUB.CoursesOutline = {
 			title.show();
 
 			// Set the width of the form text input
-			title.find('.title-text').css("width", width);
+			title.find('.title-text').css("width", width+20);
 		});
 
 		// Turn editable fields back into divs on cancel
@@ -409,9 +409,6 @@ HUB.CoursesOutline = {
 
 	setupFileUploader: function()
 	{
-		// Sam: Keep the linter from complaining about multi-line strings
-		/*jshint multistr:true */
-
 		var $ = this.jQuery;
 
 		// Disable default browser drag and drop event
@@ -438,26 +435,15 @@ HUB.CoursesOutline = {
 							assetslist.find('li:first').remove();
 						}
 						$.each(data.files, function (index, file) {
-							var li = ' \
-								<li class="asset-item asset ' + file.type + ' notpublished"> \
-									' + file.filename + ' \
-									(<a class="" href="' + file.url + '">preview</a>) \
-									<form action="/api/courses/assettogglepublished" class="next-step-publish"> \
-										<span class="next-step-publish"> \
-										<label class="published-label" for="published"> \
-											<span class="published-label-text">Mark as reviewed and publish?</span> \
-											<input class="uniform published-checkbox" name="published" type="checkbox" /> \
-											<input type="hidden" class="asset_id" name="asset_id" value="' + file.id + '" /> \
-											<input type="hidden" name="course_id" value="' + file.course_id + '" /> \
-										</label> \
-										</span> \
-									</form> \
-								</li> \
-							';
-
+							// Insert in our HTML (uses "underscore.js")
+							var li = _.template(HUB.CoursesOutline.Templates.asset, file);
 							assetslist.append(li);
 
-							assetslist.find('.uniform:last').uniform();
+							var newAsset = assetslist.find('.asset-item');
+
+							newAsset.find('.uniform').uniform();
+							newAsset.find('.toggle-editable').show();
+							newAsset.find('.title-edit').hide();
 							HUB.CoursesOutline.showProgressIndicator();
 							HUB.CoursesOutline.resizeFileUploader();
 
@@ -533,6 +519,34 @@ HUB.CoursesOutline = {
 	},
 
 	Templates: {
+		asset : [
+			'<li class="asset-item asset <%= asset_type %> notpublished">',
+				'<div class="asset-item-title title toggle-editable"><%= asset_title %></div>',
+				'<div class="title-edit">',
+					'<form action="/api/courses/assetsave" class="title-form">',
+						'<input class="uniform title-text" name="title" type="text" value="<%= asset_title %>" />',
+						'<input class="uniform title-save" type="submit" value="Save" />',
+						'<input class="uniform title-reset" type="reset" value="Cancel" />',
+						'<input type="hidden" name="course_id" value="<%= course_id %>" />',
+						'<input type="hidden" name="id" value="<%= asset_id %>" />',
+					'</form>',
+				'</div>',
+				'<div class="asset-preview">',
+					'(<a class="" href="<%= asset_url %>">preview</a>)',
+				'</div>',
+				'<form action="/api/courses/assettogglepublished" class="next-step-publish">',
+					'<span class="next-step-publish">',
+					'<label class="published-label" for="published">',
+						'<span class="published-label-text">Mark as reviewed and publish?</span>',
+						'<input class="uniform published-checkbox" name="published" type="checkbox" />',
+						'<input type="hidden" class="asset_id" name="asset_id" value="<%= asset_id %>" />',
+						'<input type="hidden" name="course_id" value="<%= course_id %>" />',
+					'</label>',
+					'</span>',
+				'</form>',
+			'</li>'
+		].join("\n"),
+
 		assetgroupitem : [
 			'<li class="asset-group-item" id="assetgroupitem_<%= assetgroup_id %>" style="<%= assetgroup_style %>">',
 				'<div class="sortable-handle"></div>',

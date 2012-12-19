@@ -21,6 +21,13 @@
 	border-bottom: none;
 	text-decoration: none;
 }
+.asset-item-title {
+	float: left;
+	margin-right: 5px;
+}
+.asset-preview {
+	display: inline-block;
+}
 ul {
 	list-style: none;
 	padding: 0;

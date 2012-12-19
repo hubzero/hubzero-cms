@@ -67,6 +67,7 @@ class CoursesApiController extends Hubzero_Api_Controller
 
 			// Assets
 			case 'assetnew':               $this->assetNew();                 break;
+			case 'assetsave':              $this->assetSave();                 break;
 			case 'assettogglepublished':   $this->assetTogglePublished();     break;
 
 			default:                       $this->method_not_found();         break;
@@ -494,10 +495,76 @@ class CoursesApiController extends Hubzero_Api_Controller
 			}
 		}
 
-		$files = array('id'=>$row2->asset_id, 'filename'=>$row->title, 'type'=>$row->type, 'url'=>$file, 'course_id'=>$row->course_id);
+		$files = array(
+			'asset_id'    => $row2->asset_id,
+			'asset_title' => $row->title,
+			'asset_type'  => $row->type,
+			'asset_url'   => $file,
+			'course_id'   => $row->course_id
+		);
 
 		// Return message
 		$this->setMessage(array('files'=>array($files)), 201, 'Created');
+	}
+
+	/**
+	 * Save an asset
+	 * 
+	 * @return 201 created on success
+	 */
+	private function assetSave()
+	{
+		// Set the responce type
+		$this->setMessageType($this->format);
+
+		// Require authorization
+		$authorized = $this->authorize();
+		if(!$authorized['manage'])
+		{
+			$this->setMessage('You don\'t have permission to do this', 401, 'Unauthorized');
+			return;
+		}
+
+		// Get our asset object
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
+		$assetObj = new CoursesTableAsset($this->db);
+
+		if($id = JRequest::getInt('id', false))
+		{
+			if (!$assetObj->load($id))
+			{
+				$this->setMessage("Loading asset $id failed", 500, 'Internal server error');
+				return;
+			}
+		}
+
+		// We'll always save the title again, even if it's just to the same thing
+		$title            = (!empty($assetObj->title)) ? $assetObj->title : 'New asset';
+		$row->title       = JRequest::getString('title', $title);
+		$row->title       = preg_replace("/[^a-zA-Z0-9 \-\:\.]/", "", $row->title);
+
+		// When creating a new asset (which probably won't happen via this method, but rather the assetNew method above)
+		if(!$id)
+		{
+			$row->course_id   = JRequest::getInt('course_id', 0);
+			$row->created     = date('Y-m-d H:i:s');
+			$row->created_by  = JFactory::getApplication()->getAuthn('user_id');
+		}
+
+		// Save the asset
+		if (!$assetObj->save($row))
+		{
+			$this->setMessage("Asset group save failed", 500, 'Internal server error');
+			return;
+		}
+
+		// Return message
+		$this->setMessage(
+			array(
+				'asset_id'    =>$assetObj->id,
+				'asset_title' =>$assetObj->title,
+				'course_id'   =>$this->course_id),
+			201, 'Created');
 	}
 
 	/**

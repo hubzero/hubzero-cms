@@ -137,9 +137,19 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 									}
 ?>
 									<li class="asset-item asset <?php echo $a->get('type'); echo ($a->get('state') == 0) ? ' notpublished' : ' published'; ?>">
-										<?php echo $this->escape(stripslashes($a->get('title'))); ?>
-										(<a class="" href="<?php echo $href; ?>">preview</a>)
-
+										<div class="asset-item-title title toggle-editable"><?php echo $this->escape(stripslashes($a->get('title'))); ?></div>
+										<div class="title-edit">
+											<form action="/api/courses/assetsave" class="title-form">
+												<input class="uniform title-text" name="title" type="text" value="<?php echo $a->get('title'); ?>" />
+												<input class="uniform title-save" type="submit" value="Save" />
+												<input class="uniform title-reset" type="reset" value="Cancel" />
+												<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
+												<input type="hidden" name="id" value="<?php echo $a->get('id'); ?>" />
+											</form>
+										</div>
+										<div class="asset-preview">
+											(<a class="" href="<?php echo $href; ?>">preview</a>)
+										</div>
 										<form action="/api/courses/assettogglepublished" class="next-step-publish">
 											<span class="next-step-publish">
 												<label class="published-label" for="published">
@@ -219,9 +229,19 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 						}
 ?>
 									<li class="asset-item asset <?php echo $a->get('type'); echo ($a->get('state') == 0) ? ' notpublished' : ' published'; ?>">
-										<?php echo $this->escape(stripslashes($a->get('title'))); ?>
-										(<a class="" href="<?php echo $href; ?>">preview</a>)
-
+										<div class="asset-item-title title toggle-editable"><?php echo $this->escape(stripslashes($a->get('title'))); ?></div>
+										<div class="title-edit">
+											<form action="/api/courses/assetsave" class="title-form">
+												<input class="uniform title-text" name="title" type="text" value="<?php echo $a->get('title'); ?>" />
+												<input class="uniform title-save" type="submit" value="Save" />
+												<input class="uniform title-reset" type="reset" value="Cancel" />
+												<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
+												<input type="hidden" name="id" value="<?php echo $a->get('id'); ?>" />
+											</form>
+										</div>
+										<div class="asset-preview">
+											(<a class="" href="<?php echo $href; ?>">preview</a>)
+										</div>
 										<form action="/api/courses/assettogglepublished" class="next-step-publish">
 											<span class="next-step-publish">
 												<label class="published-label" for="published">
