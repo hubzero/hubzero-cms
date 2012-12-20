@@ -1758,7 +1758,11 @@ WYKIWYG.editor = function() {
 		this.i.frameBorder = 0;
 		this.i.style.width = '100%'; //(obj.width || (this.t.offsetWidth || '500') - 8); 
 		//this.i.height = (obj.height || (this.t.offsetHeight || '250') - 8);
-		this.i.height = (obj.height || ((this.t.rows * parseInt(this.t.getStyle("font-size"))) || '250') - 8);
+		if (obj.footer) {
+			this.i.height = (obj.height || ((this.t.rows * parseInt($(this.t).css("font-size"))) || '250') - 8);
+		} else {
+			this.i.height = (obj.height || ((this.t.rows * parseInt($(this.t).css("font-size"))) || '250') + 50); // Add extra to account for footer height
+		}
 		this.ie = T$$$();
 		h.className = obj.rowclass || 'wykiwyg-header';
 		p.className = obj.cssclass || 'wykiwyg';
@@ -2064,19 +2068,34 @@ wykiwygs = [];
 window.addEvent('domready', function(){
 	$$('.wiki-toolbar-content').each(function(textarea) {
 		var id = $(textarea).getProperty('id');
-		
+
+		var controls = [
+			'bold','italic','underline','strikethrough','|',
+			'subscript','superscript','|',
+			'orderedlist','unorderedlist','|',
+			'outdent','indent','|',
+			'unformat','|',
+			'style','|',
+			'hr','link','unlink'
+		];
+		if ($(this).hasClass('minimal')) {
+			controls = [
+				'bold','italic','underline','strikethrough','|',
+				'subscript','superscript','|',
+				'unformat','|',
+				'link','unlink'
+			];
+		}
+
+		var footer = true;
+		if ($(this).hasClass('no-footer')) {
+			footer = false;
+		}
+
 		var edtr = new WYKIWYG.editor.edit('editor' + id,{
 			id: id,
-			controls: [
-						'bold','italic','underline','strikethrough','|',
-						'subscript','superscript','|',
-						'orderedlist','unorderedlist','|',
-						'outdent','indent','|',
-						'unformat','|',
-						'style','|',
-						'hr','link','unlink'
-					],
-			footer: true,
+			controls: controls,
+			footer: footer,
 			toggle: true,
 			resize: true,
 			xhtml: true,
