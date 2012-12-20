@@ -205,11 +205,12 @@ if (!$dir)
 									</tr>
 								</tbody>
 							</table>">Wiki formatting</a> is allowed.</span>
-					<?php //echo $editor->display('fields[description]', 'field_description', $this->escape(stripslashes($this->entry->description)), '', '50', '5'); ?>
 				<?php if ($this->entry->get('original')) { ?>
-					<textarea name="fields[description]" id="field_description" cols="50" rows="5"><?php echo $this->escape(stripslashes($item->get('description'))); ?></textarea>
+					<?php echo $editor->display('fields[description]', 'field_description', $this->escape(stripslashes($item->get('description'))), 'minimal no-footer', '50', '5'); ?>
+					<!-- <textarea name="fields[description]" id="field_description" cols="50" rows="5"><?php echo $this->escape(stripslashes($item->get('description'))); ?></textarea> -->
 				<?php } else { ?>
-					<textarea name="post[description]" id="field_description" cols="50" rows="5"><?php echo $this->escape(stripslashes($this->entry->get('description'))); ?></textarea>
+					<?php echo $editor->display('post[description]', 'field_description', $this->escape(stripslashes($this->entry->get('description'))), 'minimal no-footer', '50', '5'); ?>
+					<!-- <textarea name="post[description]" id="field_description" cols="50" rows="5"><?php echo $this->escape(stripslashes($this->entry->get('description'))); ?></textarea> -->
 				<?php } ?>
 				</label>
 			<?php if ($this->task == 'save' && !$item->get('description')) { ?>
