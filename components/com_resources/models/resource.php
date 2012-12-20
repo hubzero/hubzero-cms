@@ -138,7 +138,7 @@ class ResourcesModelResource extends JObject
 
 				$tconfig =& JComponentHelper::getParams('com_tools');
 				// Replace resource info with requested version
-				$tv->compileResource($this->thistool, $this->curtool, &$this->resource, $revision, $tconfig);
+				$tv->compileResource($this->thistool, $this->curtool, $this->resource, $revision, $tconfig);
 			}
 			$this->revision = $revision;
 		}
@@ -664,7 +664,7 @@ class ResourcesModelResource extends JObject
 						{
 							$this->toolauthors = array();
 
-							$sql = "SELECT n.uidNumber AS id, t.name AS name, n.name AS xname, n.organization AS xorg, n.givenName AS firstname, n.middleName AS middlename, n.surname AS lastname, t.organization AS org, t.*, NULL as role"
+							$sql = "SELECT n.uidNumber AS id, t.name AS name, n.name AS xname, n.organization AS xorg, n.givenName, n.givenName AS firstname, n.middleName AS middlename, n.surname, n.surname AS lastname, t.organization AS org, t.*, NULL as role"
 								 . " FROM #__tool_authors AS t, #__xprofiles AS n, #__tool_version AS v "
 								 . " WHERE n.uidNumber=t.uid AND t.toolname='" . $this->resource->alias . "' AND v.id=t.version_id and v.state<>3"
 								 . " AND t.revision='" . $this->resource->revision . "'"
