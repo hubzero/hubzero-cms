@@ -326,44 +326,6 @@ class CollectionsTableItem extends JTable
 		return $this->_db->loadResult();
 	}
 
-	public function getReposts($id=null)
-	{
-		if (!$id)
-		{
-			$id = $this->id;
-		}
-		$id = intval($id);
-		if (!$id)
-		{
-			return false;
-		}
-
-		$query = "SELECT COUNT(*) FROM #__collections_posts AS s WHERE s.item_id=" . $this->_db->Quote($id) . " AND s.original=" . $this->_db->Quote('0');
-		
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
-	}
-
-	public function getVote($id=null)
-	{
-		if (!$id)
-		{
-			$id = $this->id;
-		}
-		$id = intval($id);
-		if (!$id)
-		{
-			return false;
-		}
-
-		$juser = JFactory::getUser();
-
-		$query = "SELECT v.id FROM #__collections_votes AS v WHERE v.item_id=" . $this->_db->Quote($id) . " AND v.user_id=" . $this->_db->Quote($juser->get('id'));
-
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
-	}
-
 	/**
 	 * Get records
 	 * 
@@ -392,6 +354,56 @@ class CollectionsTableItem extends JTable
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
+	}
+
+	/**
+	 * Get a record count
+	 * 
+	 * @param      array $filters Filters to construct query from
+	 * @return     integer
+	 */
+	public function getReposts($id=null)
+	{
+		if (!$id)
+		{
+			$id = $this->id;
+		}
+		$id = intval($id);
+		if (!$id)
+		{
+			return false;
+		}
+
+		$query = "SELECT COUNT(*) FROM #__collections_posts AS s WHERE s.item_id=" . $this->_db->Quote($id) . " AND s.original=" . $this->_db->Quote('0');
+		
+		$this->_db->setQuery($query);
+		return $this->_db->loadResult();
+	}
+
+	/**
+	 * Get a record count
+	 * 
+	 * @param      array $filters Filters to construct query from
+	 * @return     integer
+	 */
+	public function getVote($id=null)
+	{
+		if (!$id)
+		{
+			$id = $this->id;
+		}
+		$id = intval($id);
+		if (!$id)
+		{
+			return false;
+		}
+
+		$juser = JFactory::getUser();
+
+		$query = "SELECT v.id FROM #__collections_votes AS v WHERE v.item_id=" . $this->_db->Quote($id) . " AND v.user_id=" . $this->_db->Quote($juser->get('id'));
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadResult();
 	}
 
 	/**

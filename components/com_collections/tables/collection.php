@@ -350,7 +350,7 @@ class CollectionsTableCollection extends JTable
 		}
 		if (isset($filters['created_by']) && $filters['created_by']) 
 		{
-			$where[] = "b.created_by=" . $this->_db->Quote($filters['created_by']);
+			$where[] = "b.created_by=" . $this->_db->Quote(intval($filters['created_by']));
 		}
 
 		if (isset($filters['search']) && $filters['search'] != '') 
@@ -442,7 +442,7 @@ class CollectionsTableCollection extends JTable
 		$query = "SELECT b.id, b.type
 				FROM #__collections_items AS b 
 				INNER JOIN #__collections_posts AS s ON s.item_id=b.id
-				WHERE s.collection_id=$collection_id";
+				WHERE s.collection_id=" . $this->_db->Quote(intval($collection_id));
 
 		$this->_db->setQuery($query);
 
@@ -451,6 +451,10 @@ class CollectionsTableCollection extends JTable
 		{
 			foreach ($items as $item)
 			{
+				if (!in_array($item->type, array('collection', 'file', 'text', 'link', 'image')))
+				{
+					$item->type = 'link';
+				}
 				if (!isset($counts[$item->type]))
 				{
 					$counts[$item->type] = 0;

@@ -32,14 +32,23 @@
 defined('_JEXEC') or die('Restricted access');
 
 $base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->name;
+
+if (!$this->entry->exists())
+{
+	$legend = 'New collection';
+}
+else
+{
+	$legend = 'Edit collection';
+}
 ?>
 
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-<form action="<?php echo JRoute::_($base . '&scope=saveboard'); ?>" method="post" id="hubForm" class="full" enctype="multipart/form-data">
+<form action="<?php echo JRoute::_($base . '&scope=save'); ?>" method="post" id="hubForm" class="full" enctype="multipart/form-data">
 	<fieldset>
-		<legend><?php echo JText::_('New collection'); ?></legend>
+		<legend><?php echo JText::_($legend); ?></legend>
 
 		<label for="field-title"<?php if ($this->task == 'save' && !$this->entry->get('title')) { echo ' class="fieldWithErrors"'; } ?>>
 			<?php echo JText::_('Title'); ?>
@@ -63,7 +72,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') 
 	<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="active" value="<?php echo $this->name; ?>" />
-	<input type="hidden" name="task" value="saveboard" />
+	<input type="hidden" name="task" value="savecollection" />
 		
 	<p class="submit">
 		<input type="submit" value="<?php echo JText::_('PLG_GROUPS_' . strtoupper($this->name) . '_SAVE'); ?>" />

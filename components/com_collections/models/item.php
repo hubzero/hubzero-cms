@@ -405,11 +405,22 @@ class CollectionsModelItem extends JObject
 	public function removeAsset($asset)
 	{
 		// Remove the asset
-		$tbl = new CollectionsTableAsset($this->_db);
-		if (!$tbl->remove($asset))
+		if (is_a($asset, 'CollectionsModelAsset'))
 		{
-			$this->setError(JText::_('Failed to remove asset.'));
-			return false;
+			if (!$asset->remove())
+			{
+				$this->setError(JText::_('Failed to remove asset.'));
+				return false;
+			}
+		}
+		else
+		{
+			$tbl = new CollectionsTableAsset($this->_db);
+			if (!$tbl->remove($asset))
+			{
+				$this->setError(JText::_('Failed to remove asset.'));
+				return false;
+			}
 		}
 
 		// Reset the asset list so the next time assets 

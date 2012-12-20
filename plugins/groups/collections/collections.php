@@ -229,13 +229,13 @@ class plgGroupsCollections extends JPlugin
 							}
 						}
 					}
-					else if ($bits[0] == 'new')
+					else if ($bits[0] == 'new' || $bits[0] == 'save')
 					{
-						$this->action = 'newboard';
+						$this->action = $bits[0] . 'collection';
 					}
 					else
 					{
-						$this->action = 'board';
+						$this->action = 'collection';
 						JRequest::setVar('board', $bits[0]);
 
 						if (isset($bits[1]))
@@ -267,14 +267,14 @@ class plgGroupsCollections extends JPlugin
 				case 'remove': $arr['html'] = $this->_remove(); break;
 				case 'move':   $arr['html'] = $this->_move();   break;
 
-				case 'collectboard': $arr['html'] = $this->_repost(); break;
-				case 'newboard':    $arr['html'] = $this->_newcollection();    break;
-				case 'editboard':   $arr['html'] = $this->_editcollection();   break;
-				case 'saveboard':   $arr['html'] = $this->_savecollection();   break;
-				case 'deleteboard': $arr['html'] = $this->_deletecollection(); break;
-				case 'boards': $arr['html'] = $this->_collections(); break;
+				case 'collectcollection': $arr['html'] = $this->_repost();      break;
+				case 'newcollection':    $arr['html'] = $this->_newcollection();    break;
+				case 'editcollection':   $arr['html'] = $this->_editcollection();   break;
+				case 'savecollection':   $arr['html'] = $this->_savecollection();   break;
+				case 'deletecollection': $arr['html'] = $this->_deletecollection(); break;
+				case 'collections':      $arr['html'] = $this->_collections();      break;
 
-				case 'board': $arr['html'] = $this->_collection(); break;
+				case 'collection': $arr['html'] = $this->_collection(); break;
 
 				default: $arr['html'] = $this->_collections(); break;
 			}
@@ -412,7 +412,8 @@ class plgGroupsCollections extends JPlugin
 		$view->collection = $this->model->collection($view->filters['collection_id']);
 		if (!$view->collection->exists())
 		{
-			$view->collection->setup($this->model->get('object_id'), $this->model->get('object_type'));
+			return $this->_collections();
+			//$view->collection->setup($this->model->get('object_id'), $this->model->get('object_type'));
 		}
 
 		$view->rows = $view->collection->posts($view->filters);
@@ -608,8 +609,8 @@ class plgGroupsCollections extends JPlugin
 
 		// Incoming
 		$fields = JRequest::getVar('fields', array(), 'post');
-		$files  = JRequest::getVar('fls', '', 'files', 'array');
-		$descriptions = JRequest::getVar('description', array(), 'post');
+		/*$files  = JRequest::getVar('fls', '', 'files', 'array');
+		$descriptions = JRequest::getVar('description', array(), 'post');*/
 
 		// Get model
 		$row = new CollectionsModelItem();
@@ -622,9 +623,10 @@ class plgGroupsCollections extends JPlugin
 		}
 
 		// Add some data
-		$row->set('_files', $files);
-		$row->set('_descriptions', $descriptions);
+		//$row->set('_files', $files);
+		$row->set('_assets', JRequest::getVar('assets', array(), 'post'));
 		$row->set('_tags', trim(JRequest::getVar('tags', '')));
+		$row->set('state', 1);
 
 		// Store new content
 		if (!$row->store()) 
@@ -634,10 +636,19 @@ class plgGroupsCollections extends JPlugin
 		}
 
 		// Create a post entry linking the item to the board
-		$post = new CollectionsModelPost();
-		$post->set('item_id', $row->get('id'));
-		$post->set('collection_id', $fields['collection_id']);
-		$post->set('original', 1);
+		$p = JRequest::getVar('post', array(), 'post');
+
+		$post = new CollectionsModelPost($p['id']);
+		if (!$post->exists())
+		{
+			$post->set('item_id', $row->get('id'));
+			$post->set('original', 1);
+		}
+		$post->set('collection_id', $p['collection_id']);
+		if (isset($p['description']))
+		{
+			$post->set('description', $p['description']);
+		}
 		if (!$post->store()) 
 		{
 			$this->setError($post->getError());

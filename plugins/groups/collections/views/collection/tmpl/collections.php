@@ -37,10 +37,10 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') 
 <form method="get" action="<?php echo JRoute::_($base); ?>" id="collections">
 	<fieldset class="filters">
 		<span class="collections count">
-			<strong><?php echo $this->total; ?></strong> boards
+			<?php echo JText::sprintf('<strong>%s</strong> collections', $this->rows->total()); ?>
 		</span>
 		<span class="posts count">
-			<strong><?php echo $this->posts; ?></strong> posts
+			<?php echo JText::sprintf('<strong>%s</strong> posts', $this->posts); ?>
 		</span>
 <?php if ($this->params->get('access-create-collection')) { ?>
 		<a class="add btn" href="<?php echo JRoute::_($base . '&scope=new'); ?>">
@@ -62,7 +62,7 @@ if ($this->rows->total() > 0)
 				<?php
 						$view = new Hubzero_Plugin_View(
 							array(
-								'folder'  => 'members',
+								'folder'  => 'groups',
 								'element' => $this->name,
 								'name'    => 'post',
 								'layout'  => 'default_collection'
@@ -105,19 +105,19 @@ else
 {
 ?>
 		<div id="collection-introduction">
-<?php if ($this->params->get('access-create-collection')) { ?>
+		<?php if ($this->params->get('access-create-collection')) { ?>
 			<div class="instructions">
 				<ol>
-					<li>Click on the "new collection" button.</li>
-					<li>Add a title and maybe a description.</li>
-					<li>Done!</li>
+					<li><?php echo JText::_('Click on the "new collection" button.'); ?></li>
+					<li><?php echo JText::_('Add a title and maybe a description.'); ?></li>
+					<li><?php echo JText::_('Done!'); ?></li>
 				</ol>
 			</div><!-- / .instructions -->
-<?php } else { ?>
+		<?php } else { ?>
 			<div class="instructions">
-				<p>No collections available.</p>
+				<p><?php echo JText::_('No collections available.'); ?></p>
 			</div><!-- / .instructions -->
-<?php } ?>
+		<?php } ?>
 		</div><!-- / #collection-introduction -->
 <?php
 }

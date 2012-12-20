@@ -31,24 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//import helper class
-ximport('Hubzero_View_Helper_Html');
-ximport('Hubzero_Document');
-
 $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name;
 ?>
 
 <form method="get" action="<?php echo JRoute::_($base); ?>" id="collections">
 	<fieldset class="filters">
 		<span class="collections count">
-			<strong><?php echo $this->rows->total(); ?></strong> collections
+			<?php echo JText::sprintf('<strong>%s</strong> collections', $this->rows->total()); ?>
 		</span>
 		<span class="posts count">
-			<strong><?php echo $this->posts; ?></strong> posts
+			<?php echo JText::sprintf('<strong>%s</strong> posts', $this->posts); ?>
 		</span>
-		<!-- <span class="like count">
-			<strong><?php //echo $this->likes; ?></strong> likes
-		</span> -->
 <?php if ($this->params->get('access-create-collection')) { ?>
 		<a class="add btn" href="<?php echo JRoute::_($base . '&task=new'); ?>">
 			<?php echo JText::_('New collection'); ?>
@@ -115,14 +108,14 @@ else
 		<?php if ($this->params->get('access-create-collection')) { ?>
 			<div class="instructions">
 				<ol>
-					<li>Click on the "new collection" button.</li>
-					<li>Add a title and maybe a description.</li>
-					<li>Done!</li>
+					<li><?php echo JText::_('Click on the "new collection" button.'); ?></li>
+					<li><?php echo JText::_('Add a title and maybe a description.'); ?></li>
+					<li><?php echo JText::_('Done!'); ?></li>
 				</ol>
 			</div><!-- / .instructions -->
 		<?php } else { ?>
 			<div class="instructions">
-				<p>No collections available.</p>
+				<p><?php echo JText::_('No collections available.'); ?></p>
 			</div><!-- / .instructions -->
 		<?php } ?>
 		</div><!-- / #collection-introduction -->

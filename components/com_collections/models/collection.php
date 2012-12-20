@@ -446,6 +446,7 @@ class CollectionsModelCollection extends JObject
 		$what = strtolower(trim($what));
 		switch ($what)
 		{
+			case 'collection':
 			case 'image':
 			case 'text':
 			case 'file':

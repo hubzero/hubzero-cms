@@ -31,9 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_View_Helper_Html');
-ximport('Hubzero_Document');
-
 $database = JFactory::getDBO();
 $this->juser = JFactory::getUser();
 
@@ -47,14 +44,14 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') 
 			"<?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>" 
 		</span>
 		<span class="posts count">
-			<strong><?php echo $this->rows->total(); ?></strong> posts
+			<?php echo JText::sprintf('<strong>%s</strong> posts', $this->rows->total()); ?>
 		</span>
 <?php if (!$this->juser->get('guest')) { ?>
-		<a class="repost btn tooltips" title="Repost :: Collect this collection" href="<?php echo JRoute::_($base . '&scope=' . $this->collection->get('alias') . '/collect'); ?>">
+		<a class="repost btn tooltips" title="<?php echo JText::_('Repost :: Collect this collection'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $this->collection->get('alias') . '/collect'); ?>">
 			<?php echo JText::_('Collect'); ?>
 		</a>
 	<?php if ($this->rows && $this->params->get('access-create-item')) { ?>
-		<a class="add btn" href="<?php echo JRoute::_($base . '&scope=post/new&board=' . $this->collection->get('alias')); ?>">
+		<a class="add btn tooltips" title="<?php echo JText::_('New post :: Add a new post to this collection'); ?>" href="<?php echo JRoute::_($base . '&scope=post/new&board=' . $this->collection->get('alias')); ?>">
 			<?php echo JText::_('New post'); ?>
 		</a>
 	<?php } ?>
@@ -77,8 +74,13 @@ if ($this->rows->total() > 0)
 		{
 			$item->set('type', 'deleted');
 		}
+		$type = $item->get('type');
+		if (!in_array($type, array('collection', 'deleted', 'image', 'file', 'text', 'link')))
+		{
+			$type = 'link';
+		}
 ?>
-		<div class="post <?php echo $item->get('type'); ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo JRoute::_($base . '&scope=post/' . $row->get('id')); ?>" data-width="600" data-height="350">
+		<div class="post <?php echo $type; ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo JRoute::_($base . '&scope=post/' . $row->get('id')); ?>" data-width="600" data-height="350">
 			<div class="content">
 			<?php
 				$type = $item->get('type');
@@ -202,29 +204,19 @@ else
 	<?php if ($this->params->get('access-create-item')) { ?>
 			<div class="instructions">
 				<ol>
-					<li>Find an image, file, link or text you want to share.</li>
-					<li>Click on the appropriate type of post.</li>
-					<li>Add anything extra you want (tags are nice).</li>
-					<li>Done!</li>
+					<li><?php echo JText::_('Find images, files, links or text you want to share.'); ?></li>
+					<li><?php echo JText::_('Click on "New post" button.'); ?></li>
+					<li><?php echo JText::_('Add anything extra you want (tags are nice).'); ?></li>
+					<li><?php echo JText::_('Done!'); ?></li>
 				</ol>
 			</div><!-- / .instructions -->
-			<ul class="post-type">
-				<li class="post-image">
-					<a class="tooltips" href="<?php echo JRoute::_($base . '&scope=post/new&type=image&board=' . $this->collection->get('alias')); ?>" rel="post-image" title="Post an image">Image</a>
-				</li>
-				<li class="post-file">
-					<a class="tooltips" href="<?php echo JRoute::_($base . '&scope=post/new&type=file&board=' . $this->collection->get('alias')); ?>" rel="post-file" title="Post a file">File</a>
-				</li>
-				<li class="post-text">
-					<a class="tooltips" href="<?php echo JRoute::_($base . '&scope=post/new&type=text&board=' . $this->collection->get('alias')); ?>" rel="post-text" title="Post some text">Text</a>
-				</li>
-				<li class="post-link">
-					<a class="tooltips" href="<?php echo JRoute::_($base . '&scope=post/new&type=link&board=' . $this->collection->get('alias')); ?>" rel="post-link" title="Post a link">Link</a>
-				</li>
-			</ul><!-- / .post-type -->
+			<!-- <div class="questions">
+				<p><strong>What is the "Collect" button for?</strong></p>
+				<p>This is how you can add other content on the site to a collection. You can collect wiki pages, resources, and more. You can even collect other collections!<p>
+			</div><!- / .post-type -->
 		<?php } else { ?>
 			<div class="instructions">
-				<p>No posts available for this collection.</p>
+				<p><?php echo JText::_('No posts available for this collection.'); ?></p>
 			</div><!-- / .instructions -->
 		<?php } ?>
 		</div><!-- / #collection-introduction -->

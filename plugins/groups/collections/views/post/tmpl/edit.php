@@ -33,12 +33,18 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $item = $this->entry->item();
 
+if (!$this->entry->exists())
+{
+	$this->entry->set('original', 1);
+}
+
 //tag editor
-JPluginHelper::importPlugin( 'hubzero' );
+JPluginHelper::importPlugin('hubzero');
 $dispatcher =& JDispatcher::getInstance();
+
 $tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags','', $item->tags('string'))));
 
-$type = strtolower(JRequest::getWord('type', $item->get('type')));
+$type = 'file'; //strtolower(JRequest::getWord('type', $item->get('type')));
 if (!$type)
 {
 	$type = 'file';
@@ -49,8 +55,15 @@ if ($type && !in_array($type, array('file', 'image', 'text', 'link')))
 }
 
 $base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->name;
-//ximport('Hubzero_Wiki_Editor');
-//$editor =& Hubzero_Wiki_Editor::getInstance();
+
+ximport('Hubzero_Wiki_Editor');
+$editor =& Hubzero_Wiki_Editor::getInstance();
+
+$dir = $item->get('id');
+if (!$dir)
+{
+	$dir = 'tmp' . time(); // . rand(0, 100);
+}
 ?>
 
 <?php if ($this->getError()) { ?>
@@ -58,60 +71,161 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') 
 <?php } ?>
 <form action="<?php echo JRoute::_($base . 'scope=posts/save'); ?>" method="post" id="hubForm" class="full" enctype="multipart/form-data">
 	<fieldset>
-		<legend><?php echo JText::_('New post'); ?></legend>
+		<legend><?php echo $item->get('id') ? JText::_('Edit post') : JText::_('New post'); ?></legend>
 
-		<ul class="post-type">
-			<li class="post-image">
-				<a class="tooltips<?php if ($type == 'image') { echo ' active'; } ?>" href="<?php echo JRoute::_($base . '&scope=post/new&type=image'); ?>" rel="post-image" title="Post an image">Image</a>
-			</li>
-			<li class="post-file">
-				<a class="tooltips<?php if ($type == 'file') { echo ' active'; } ?>" href="<?php echo JRoute::_($base . '&scope=post/new&type=file'); ?>" rel="post-file" title="Post a file">File</a>
-			</li>
-			<li class="post-text">
-				<a class="tooltips<?php if ($type == 'text') { echo ' active'; } ?>" href="<?php echo JRoute::_($base . '&scope=post/new&type=text'); ?>" rel="post-text" title="Post some text">Text</a>
-			</li>
-			<li class="post-link">
-				<a class="tooltips<?php if ($type == 'link') { echo ' active'; } ?>" href="<?php echo JRoute::_($base . '&scope=post/new&type=link'); ?>" rel="post-link" title="Post a link">Link</a>
-			</li>
-		</ul>
+<?php if ($this->entry->get('original')) { ?>
+		<div class="field-wrap">
+			<div class="asset-uploader">
+				<div class="two columns first">
+		<?php if (JPluginHelper::isEnabled('system', 'jquery')) { ?>
+					<div id="ajax-uploader" data-action="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=upload&amp;dir=<?php //echo $dir; ?>" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir; ?>">
+						<noscript>
+							<label for="upload">
+								<?php echo JText::_('File:'); ?>
+								<input type="file" name="upload" id="upload" />
+							</label>
+						</noscript>
+					</div>
+					<script src="/media/system/js/jquery.fileuploader.js"></script>
+					<script src="/plugins/groups/collections/fileupload.jquery.js"></script>
+		<?php } else { ?>
+					<label for="upload">
+						<?php echo JText::_('File:'); ?>
+						<input type="file" name="upload" id="upload" />
+					</label>
+		<?php } ?>
+				</div><!-- / .two columns first -->
+				<div class="two columns second">
+		<?php if (JPluginHelper::isEnabled('system', 'jquery')) { ?>
+					<div id="link-adder" data-action="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=create&amp;dir=<?php //echo $dir; ?>" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir; ?>">
+						<noscript>
+							<label for="add-link">
+								<?php echo JText::_('Add a link:'); ?>
+								<input type="text" name="assets[-1][filename]" id="add-link" value="http://" />
+								<input type="hidden" name="assets[-1][id]" value="0" />
+								<input type="hidden" name="assets[-1][type]" value="link" />
+							</label>
+						</noscript>
+						<!-- <div class="linker">
+							<div class="linker-button"><span>Click to add link</span></div>
+						</div> -->
+					</div>
+		<?php } else { ?>
+					<label for="add-link">
+						<?php echo JText::_('Add a link:'); ?>
+						<input type="text" name="assets[-1][filename]" id="add-link" value="http://" />
+						<input type="hidden" name="assets[-1][id]" value="0" />
+						<input type="hidden" name="assets[-1][type]" value="link" />
+					</label>
+		<?php } ?>
+				</div><!-- / .two columns second -->
+				<div class="clear"></div>
+			</div><!-- / .asset-uploader -->
+		</div><!-- / .field-wrap -->
+<?php } ?>
 
 		<div id="post-type-form">
-<?php
-		$view = new Hubzero_Plugin_View(
-			array(
-				'folder'  => 'groups',
-				'element' => $this->name,
-				'name'    => 'post',
-				'layout'  => 'edit_' . $type
-			)
-		);
-		$view->name       = $this->name;
-		$view->option     = $this->option;
-		$view->group      = $this->group;
-		$view->params     = $this->params;
-		$view->task       = $this->task;
+			<div id="post-file" class="fieldset">
+				<a name="file"></a>
 
-		$view->entry      = $this->entry;
-		$view->collection = $this->collection;
+<?php if ($this->entry->get('original')) { ?>
+				<div class="field-wrap" id="ajax-uploader-list">
+			<?php 
+				$assets = $item->assets();
+				if ($assets->total() > 0) 
+				{
+					$i = 0;
+					foreach ($assets as $asset)
+					{
+			?>
+					<p class="item-asset">
+						<span class="asset-file">
+						<?php if ($asset->get('type') == 'link') { ?>
+							<input type="text" name="assets[<?php echo $i; ?>][filename]" size="35" value="<?php echo $this->escape(stripslashes($asset->get('filename'))); ?>" placeholder="http://" />
+						<?php } else { ?>
+							<?php echo $this->escape(stripslashes($asset->get('filename'))); ?>
+							<input type="hidden" name="assets[<?php echo $i; ?>][filename]" value="<?php echo $this->escape(stripslashes($asset->get('filename'))); ?>" />
+						<?php } ?>
+						</span>
+						<span class="asset-description">
+							<input type="hidden" name="assets[<?php echo $i; ?>][type]" value="<?php echo $this->escape(stripslashes($asset->get('type'))); ?>" />
+							<input type="hidden" name="assets[<?php echo $i; ?>][id]" value="<?php echo $this->escape($asset->get('id')); ?>" />
+							<a class="delete" href="<?php echo JRoute::_($base . '&scope=post/' . $this->entry->get('id') . '/edit&remove=' . $asset->get('id')); ?>" title="<?php echo JText::_('Delete this asset'); ?>">
+								<?php echo JText::_('delete'); ?>
+							</a>
+							<!-- <input type="text" name="assets[<?php echo $i; ?>][description]" size="35" value="<?php echo $this->escape(stripslashes($asset->get('description'))); ?>" placeholder="Brief description" /> -->
+						</span>
+					</p>
+			<?php 
+						$i++;
+					}
+				}
+			?>
+				</div><!-- / .field-wrap -->
 
-		$view->display();
-?>
-		</div>
-
-		<!-- 
-				<label for="field-access">
-					<?php echo JText::_('Privacy'); ?>
-					<select name="fields[access]" id="field-access">
-						<option value="0"<?php if ($item->get('access') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public (can be reposted to any collection)'); ?></option>
-						<option value="4"<?php if ($item->get('access') == 4) { echo ' selected="selected"'; } ?>><?php echo JText::_('Private (can only be reposted my collections)'); ?></option>
-					</select>
+				<label for="field-title">
+					<?php echo JText::_('Title'); ?> <!-- <span class="optional">optional</span> -->
+					<input type="text" name="fields[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($item->get('title'))); ?>" />
 				</label>
-		 -->
+<?php } ?>
+				<label for="field_description">
+					<?php echo JText::_('Description'); ?> <!-- <span class="optional">optional</span> -->
+					<span class="syntax hint">limited <a class="tooltips" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>" title="Syntax Reference :: <table class=&quot;wiki-reference&quot;>
+								<tbody>
+									<tr>
+										<td>'''bold'''</td>
+										<td><b>bold</b></td>
+									</tr>
+									<tr>
+										<td>''italic''</td>
+										<td><i>italic</i></td>
+									</tr>
+									<tr>
+										<td>__underline__</td>
+										<td><span style=&quot;text-decoration:underline;&quot;>underline</span></td>
+									</tr>
+									<tr>
+										<td>{{{monospace}}}</td>
+										<td><code>monospace</code></td>
+									</tr>
+									<tr>
+										<td>~~strike-through~~</td>
+										<td><del>strike-through</del></td>
+									</tr>
+									<tr>
+										<td>^superscript^</td>
+										<td><sup>superscript</sup></td>
+									</tr>
+									<tr>
+										<td>,,subscript,,</td>
+										<td><sub>subscript</sub></td>
+									</tr>
+									<tr>
+										<td>[http://hubzero.org A link]</td>
+										<td><a href=&quot;http://hubzero.org&quot;>A link</a></td>
+									</tr>
+								</tbody>
+							</table>">Wiki formatting</a> is allowed.</span>
+					<?php //echo $editor->display('fields[description]', 'field_description', $this->escape(stripslashes($this->entry->description)), '', '50', '5'); ?>
+				<?php if ($this->entry->get('original')) { ?>
+					<textarea name="fields[description]" id="field_description" cols="50" rows="5"><?php echo $this->escape(stripslashes($item->get('description'))); ?></textarea>
+				<?php } else { ?>
+					<textarea name="post[description]" id="field_description" cols="50" rows="5"><?php echo $this->escape(stripslashes($this->entry->get('description'))); ?></textarea>
+				<?php } ?>
+				</label>
+			<?php if ($this->task == 'save' && !$item->get('description')) { ?>
+				<p class="error"><?php echo JText::_('PLG_GROUPS_' . strtoupper($this->name) . '_ERROR_PROVIDE_CONTENT'); ?></p>
+			<?php } ?>
+				<input type="hidden" name="fields[type]" value="file" />
+			</div><!-- / #post-file -->
+		</div><!-- / #post-type-form -->
 
+<?php if ($this->entry->get('original')) { ?>
 		<div class="group">
-			<label for="field-collection_id">
-				<?php echo JText::_('Collections'); ?>
-				<select name="fields[collection_id]" id="field-collection_id">
+<?php } ?>
+			<label for="post-collection_id">
+				<?php echo JText::_('Collection'); ?>
+				<select name="post[collection_id]" id="post-collection_id">
 <?php 
 if ($this->collections->total() > 0)
 {
@@ -124,11 +238,13 @@ if ($this->collections->total() > 0)
 }
 ?>
 				</select>
+				<span class="hint"><?php echo JText::_('Select from the list of collections you have access to.'); ?></span>
 			</label>
-
+<?php if ($this->entry->get('original')) { ?>
 			<label>
-				<?php echo JText::_('PLG_GROUPS_' . strtoupper($this->name) . '_FIELD_TAGS'); ?>
-				<?php if (count($tf) > 0) {
+				<?php echo JText::_('PLG_GROUPS_' . strtoupper($this->name) . '_FIELD_TAGS'); ?> <!-- <span class="optional">optional</span> -->
+				<?php 
+				if (count($tf) > 0) {
 					echo $tf[0];
 				} else { ?>
 					<input type="text" name="tags" value="<?php echo $item->tags('string'); ?>" />
@@ -137,11 +253,16 @@ if ($this->collections->total() > 0)
 			</label>
 		</div>
 		<div class="clear"></div>
+<?php } ?>
 	</fieldset>
 
-	<input type="hidden" name="fields[id]" value="<?php echo $item->get('id'); ?>" />
+	<input type="hidden" name="fields[id]" id="field-id" value="<?php echo $item->get('id'); ?>" />
 	<input type="hidden" name="fields[created]" value="<?php echo $item->get('created'); ?>" />
 	<input type="hidden" name="fields[created_by]" value="<?php echo $item->get('created_by'); ?>" />
+	<input type="hidden" name="fields[dir]" id="field-dir" value="<?php echo $dir; ?>" />
+
+	<input type="hidden" name="post[id]" value="<?php echo $this->entry->get('id'); ?>" />
+	<input type="hidden" name="post[item_id]" id="post-item_id" value="<?php echo $this->entry->get('item_id'); ?>" />
 
 	<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -151,7 +272,7 @@ if ($this->collections->total() > 0)
 	<p class="submit">
 		<input type="submit" value="<?php echo JText::_('PLG_GROUPS_' . strtoupper($this->name) . '_SAVE'); ?>" />
 		<?php if ($item->get('id')) { ?>
-			<a href="<?php echo JRoute::_($base. ($item->get('id') ? '&scope=' . $this->collection->get('alias') : '')); ?>">Cancel</a>
+			<a href="<?php echo JRoute::_($base. ($item->get('id') ? '&scope=' . $this->collection->get('alias') : '')); ?>"><?php echo JText::_('Cancel'); ?></a>
 		<?php } ?>
 	</p>
 </form>

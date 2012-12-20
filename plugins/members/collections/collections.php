@@ -594,13 +594,19 @@ class plgMembersCollections extends JPlugin
 		}
 
 		// Create a post entry linking the item to the board
-		$post = new CollectionsModelPost($fields['post']);
+		$p = JRequest::getVar('post', array(), 'post');
+
+		$post = new CollectionsModelPost($p['id']);
 		if (!$post->exists())
 		{
 			$post->set('item_id', $row->get('id'));
 			$post->set('original', 1);
 		}
-		$post->set('collection_id', $fields['collection_id']);
+		$post->set('collection_id', $p['collection_id']);
+		if (isset($p['description']))
+		{
+			$post->set('description', $p['description']);
+		}
 		if (!$post->store()) 
 		{
 			$this->setError($post->getError());

@@ -62,20 +62,20 @@ switch ($collection->get('object_type'))
 		<p class="description">
 			<?php echo ($this->row->get('description')) ? $this->escape(stripslashes($this->row->get('description'))) : $this->escape(stripslashes($collection->get('description'))); ?>
 		</p>
-		<table summary="Board content counts">
+		<table summary="<?php echo JText::_('Board content counts'); ?>">
 			<tbody>
 				<tr>
-					<td>
+					<!-- <td>
 						<strong><?php echo $collection->count('image'); ?></strong> <span class="post-type image">images</span>
+					</td> -->
+					<td>
+						<strong><?php echo $collection->count('file'); ?></strong> <span class="post-type file"><?php echo JText::_('files'); ?></span>
 					</td>
 					<td>
-						<strong><?php echo $collection->count('file'); ?></strong> <span class="post-type file">files</span>
+						<strong><?php echo $collection->count('collection'); ?></strong> <span class="post-type collection"><?php echo JText::_('collections'); ?></span>
 					</td>
 					<td>
-						<strong><?php echo $collection->count('text'); ?></strong> <span class="post-type text">texts</span>
-					</td>
-					<td>
-						<strong><?php echo $collection->count('link'); ?></strong> <span class="post-type link">links</span>
+						<strong><?php echo $collection->count('link'); ?></strong> <span class="post-type link"><?php echo JText::_('links'); ?></span>
 					</td>
 				</tr>
 			</tbody>

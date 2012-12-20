@@ -32,6 +32,15 @@
 defined('_JEXEC') or die('Restricted access');
 
 $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name;
+
+if (!$this->entry->exists())
+{
+	$legend = 'New collection';
+}
+else
+{
+	$legend = 'Edit collection';
+}
 ?>
 
 <?php if ($this->getError()) { ?>
@@ -39,7 +48,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 <?php } ?>
 <form action="<?php echo JRoute::_($base . '&task=save'); ?>" method="post" id="hubForm" class="full" enctype="multipart/form-data">
 	<fieldset>
-		<legend><?php echo JText::_('New collection'); ?></legend>
+		<legend><?php echo JText::_($legend); ?></legend>
 
 		<label for="field-access">
 			<?php echo JText::_('Privacy'); ?>

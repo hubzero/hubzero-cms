@@ -31,10 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//import helper class
-ximport('Hubzero_View_Helper_Html');
-ximport('Hubzero_Document');
-
 $database = JFactory::getDBO();
 $this->juser = JFactory::getUser();
 
@@ -48,17 +44,14 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 			"<?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>"
 		</span>
 		<span class="posts count">
-			<strong><?php echo $this->rows->total(); ?></strong> posts
+			<?php echo JText::sprintf('<strong>%s</strong> posts', $this->rows->total()); ?>
 		</span>
-		<!-- <span class="like count">
-			<strong><?php //echo $likes; ?></strong> likes
-		</span> -->
 <?php if (!$this->juser->get('guest')) { ?>
-		<a class="repost btn tooltips" title="Repost :: Collect this collection" href="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias') . '/collect'); ?>">
+		<a class="repost btn tooltips" title="<?php echo JText::_('Repost :: Collect this collection'); ?>" href="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias') . '/collect'); ?>">
 			<?php echo JText::_('Collect'); //Repost collection ?>
 		</a>
 	<?php if ($this->rows && $this->params->get('access-create-item')) { ?>
-		<a class="add btn tooltips" title="New post :: Add a new post to this collection" href="<?php echo JRoute::_($base . '&task=post/new&board=' . $this->collection->get('alias')); ?>">
+		<a class="add btn tooltips" title="<?php echo JText::_('New post :: Add a new post to this collection'); ?>" href="<?php echo JRoute::_($base . '&task=post/new&board=' . $this->collection->get('alias')); ?>">
 			<?php echo JText::_('New post'); ?>
 		</a>
 	<?php } ?>

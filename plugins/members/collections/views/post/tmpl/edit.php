@@ -33,6 +33,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $item = $this->entry->item();
 
+if (!$this->entry->exists())
+{
+	$this->entry->set('original', 1);
+}
+
 //tag editor
 JPluginHelper::importPlugin('hubzero');
 $dispatcher =& JDispatcher::getInstance();
@@ -68,6 +73,7 @@ if (!$dir)
 	<fieldset>
 		<legend><?php echo $item->get('id') ? JText::_('Edit post') : JText::_('New post'); ?></legend>
 
+<?php if ($this->entry->get('original')) { ?>
 		<div class="field-wrap">
 			<div class="asset-uploader">
 				<div class="two columns first">
@@ -116,10 +122,12 @@ if (!$dir)
 				<div class="clear"></div>
 			</div><!-- / .asset-uploader -->
 		</div><!-- / .field-wrap -->
-
+<?php } ?>
 		<div id="post-type-form">
 			<div id="post-file" class="fieldset">
 				<a name="file"></a>
+
+<?php if ($this->entry->get('original')) { ?>
 				<div class="field-wrap" id="ajax-uploader-list">
 			<?php 
 				$assets = $item->assets();
@@ -142,7 +150,7 @@ if (!$dir)
 							<input type="hidden" name="assets[<?php echo $i; ?>][type]" value="<?php echo $this->escape(stripslashes($asset->get('type'))); ?>" />
 							<input type="hidden" name="assets[<?php echo $i; ?>][id]" value="<?php echo $this->escape($asset->get('id')); ?>" />
 							<a class="delete" href="<?php echo JRoute::_($base . '&task=post/' . $this->entry->get('id') . '/edit&remove=' . $asset->get('id')); ?>" title="<?php echo JText::_('Delete this asset'); ?>">
-								delete
+								<?php echo JText::_('delete'); ?>
 							</a>
 							<!-- <input type="text" name="assets[<?php echo $i; ?>][description]" size="35" value="<?php echo $this->escape(stripslashes($asset->get('description'))); ?>" placeholder="Brief description" /> -->
 						</span>
@@ -158,7 +166,7 @@ if (!$dir)
 					<?php echo JText::_('Title'); ?> <!-- <span class="optional">optional</span> -->
 					<input type="text" name="fields[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($item->get('title'))); ?>" />
 				</label>
-
+<?php } ?>
 				<label for="field_description">
 					<?php echo JText::_('Description'); ?> <!-- <span class="optional">optional</span> -->
 					<span class="syntax hint">limited <a class="tooltips" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>" title="Syntax Reference :: <table class=&quot;wiki-reference&quot;>
@@ -198,7 +206,11 @@ if (!$dir)
 								</tbody>
 							</table>">Wiki formatting</a> is allowed.</span>
 					<?php //echo $editor->display('fields[description]', 'field_description', $this->escape(stripslashes($this->entry->description)), '', '50', '5'); ?>
+				<?php if ($this->entry->get('original')) { ?>
 					<textarea name="fields[description]" id="field_description" cols="50" rows="5"><?php echo $this->escape(stripslashes($item->get('description'))); ?></textarea>
+				<?php } else { ?>
+					<textarea name="post[description]" id="field_description" cols="50" rows="5"><?php echo $this->escape(stripslashes($this->entry->get('description'))); ?></textarea>
+				<?php } ?>
 				</label>
 			<?php if ($this->task == 'save' && !$item->get('description')) { ?>
 				<p class="error"><?php echo JText::_('PLG_MEMBERS_' . strtoupper($this->name) . '_ERROR_PROVIDE_CONTENT'); ?></p>
@@ -207,20 +219,12 @@ if (!$dir)
 			</div><!-- / #post-file -->
 		</div><!-- / #post-type-form -->
 
-		<!-- 
-		<label for="field-access">
-			<?php echo JText::_('Privacy'); ?>
-			<select name="fields[access]" id="field-access">
-				<option value="0"<?php if ($item->get('access') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public (can be reposted to any collection)'); ?></option>
-				<option value="4"<?php if ($item->get('access') == 4) { echo ' selected="selected"'; } ?>><?php echo JText::_('Private (can only be reposted my collections)'); ?></option>
-			</select>
-		</label>
-		 -->
-
+<?php if ($this->entry->get('original')) { ?>
 		<div class="group">
-			<label for="field-collection_id">
+<?php } ?>
+			<label for="post-collection_id">
 				<?php echo JText::_('Collection'); ?>
-				<select name="fields[collection_id]" id="field-collection_id">
+				<select name="post[collection_id]" id="post-collection_id">
 <?php 
 if ($this->collections->total() > 0)
 {
@@ -235,7 +239,7 @@ if ($this->collections->total() > 0)
 				</select>
 				<span class="hint"><?php echo JText::_('Select from the list of collections you have access to.'); ?></span>
 			</label>
-
+<?php if ($this->entry->get('original')) { ?>
 			<label>
 				<?php echo JText::_('PLG_MEMBERS_' . strtoupper($this->name) . '_FIELD_TAGS'); ?> <!-- <span class="optional">optional</span> -->
 				<?php 
@@ -248,13 +252,16 @@ if ($this->collections->total() > 0)
 			</label>
 		</div>
 		<div class="clear"></div>
+<?php } ?>
 	</fieldset>
 
 	<input type="hidden" name="fields[id]" id="field-id" value="<?php echo $item->get('id'); ?>" />
 	<input type="hidden" name="fields[created]" value="<?php echo $item->get('created'); ?>" />
 	<input type="hidden" name="fields[created_by]" value="<?php echo $item->get('created_by'); ?>" />
 	<input type="hidden" name="fields[dir]" id="field-dir" value="<?php echo $dir; ?>" />
-	<input type="hidden" name="fields[post]" value="<?php echo $this->entry->get('id'); ?>" />
+
+	<input type="hidden" name="post[id]" value="<?php echo $this->entry->get('id'); ?>" />
+	<input type="hidden" name="post[item_id]" id="post-item_id" value="<?php echo $this->entry->get('item_id'); ?>" />
 
 	<input type="hidden" name="id" value="<?php echo $this->member->get('uidNumber'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -264,7 +271,7 @@ if ($this->collections->total() > 0)
 	<p class="submit">
 		<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_' . strtoupper($this->name) . '_SAVE'); ?>" />
 		<?php if ($item->get('id')) { ?>
-			<a href="<?php echo JRoute::_($base . ($item->get('id') ? '&task=' . $this->collection->get('alias') : '')); ?>">Cancel</a>
+			<a href="<?php echo JRoute::_($base . ($item->get('id') ? '&task=' . $this->collection->get('alias') : '')); ?>"><?php echo JText::_('Cancel'); ?></a>
 		<?php } ?>
 	</p>
 </form>

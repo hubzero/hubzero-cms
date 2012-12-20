@@ -33,11 +33,11 @@ defined('_JEXEC') or die('Restricted access');
 
 $item = $this->row->item();
 ?>
-		<p class="link">
+		<h4>
 			<a href="<?php echo stripslashes($item->get('url')); ?>">
 				<?php echo ($item->get('title')) ? $this->escape(stripslashes($item->get('title'))) : $this->escape(stripslashes($item->get('url'))); ?>
 			</a>
-		</p>
+		</h4>
 <?php if ($item->get('description') || $this->row->get('description')) { ?>
 		<p class="description">
 			<?php echo ($this->row->get('description')) ? $this->escape(stripslashes($this->row->get('description'))) : $this->escape(stripslashes($item->get('description'))); ?>

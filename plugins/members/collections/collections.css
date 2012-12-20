@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        plugins/members/blog/blog.css
+ * @file        plugins/members/collections/collections.css
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -8,16 +8,22 @@
 /*
 
 	-- -- -- -- -- -- --
-	Members Blog plugin CSS
+	Members Collections plugin CSS
 	-- -- -- -- -- -- --
 
 */
 
+	/*#page_content.member_collections {
+		background-color: #f9f9f9;
+	}*/
 	#sbox-content #hubForm.full fieldset {
 		margin: 0;
 	}
+	#sbox-content #hubForm.full fieldset legend {
+		margin-bottom: 0.618em;
+	}
 	#page_menu li .collections:before {
-		content: "\f08d";
+		content: "\f005"; /*"\f08d";*/
 	}
 	#collections fieldset,
 	#collection fieldset {
@@ -320,6 +326,9 @@
 	.post table span.image:before {
 		content: "\f03e";
 	}
+	.post table span.collection:before {
+		content: "\f005";
+	}
 	/* Comments */
 	.convo {
 		margin: 0 -15px;
@@ -491,7 +500,7 @@
 		content: "\f03e";
 	}
 	.collection .content:after {
-		content: "\f00a";
+		content: "\f005"; /*"\f00a";*/
 	}
 	.deleted .content:after {
 		content: "\f014";
