@@ -59,7 +59,7 @@ HUB.Members = {
 					$('#hubForm-ajax').submit(function(e) {
 						e.preventDefault();
 						$.post($(this).attr('action'), $(this).serialize(), function(returndata) {
-							$.fancybox().close();
+							$.fancybox.close();
 						});
 					});
 				}
