@@ -396,16 +396,23 @@ class ResourcesControllerAttachments extends Hubzero_Controller
 		{
 			$dbh =& JFactory::getDBO();
 
-			$hash = sha1_file($path . DS . $file['name']);
-			$dbh->setQuery('SELECT id FROM #__document_text_data WHERE hash = \'' . $hash . '\'');
-			if (!($doc_id = $dbh->loadResult()))
+			if (is_readable($path . DS . $file['name'])
 			{
-				$dbh->execute('INSERT INTO #__document_text_data(hash) VALUES (\'' . $hash . '\')');
-				$doc_id = $dbh->insertId();
-			}
+				$hash = @sha1_file($path . DS . $file['name']);
 
-			$dbh->execute('INSERT IGNORE INTO #__document_resource_rel(document_id, resource_id) VALUES (' . (int)$doc_id . ', ' . (int)$row->id . ')');
-			system('/usr/local/bin/textifier ' . escapeshellarg($path . DS . $file['name']) . ' >/dev/null');
+				if (!empty($hash))
+				{
+					$dbh->setQuery('SELECT id FROM #__document_text_data WHERE hash = \'' . $hash . '\'');
+					if (!($doc_id = $dbh->loadResult()))
+						{
+						$dbh->execute('INSERT INTO #__document_text_data(hash) VALUES (\'' . $hash . '\')');
+						$doc_id = $dbh->insertId();
+					}
+
+					$dbh->execute('INSERT IGNORE INTO #__document_resource_rel(document_id, resource_id) VALUES (' . (int)$doc_id . ', ' . (int)$row->id . ')');
+					system('/usr/bin/textifier ' . escapeshellarg($path . DS . $file['name']) . ' >/dev/null');
+				}
+			}
 		}
 
 		// Push through to the attachments view
