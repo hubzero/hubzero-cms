@@ -323,10 +323,6 @@ function submitbutton(pressbutton)
 					<th><?php echo $this->profile->get('countryresident'); ?></th>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('COL_HOMEDIRECTORY'); ?></th>
-					<td><?php echo $this->profile->get('homeDirectory'); ?></td>
-				</tr>
-				<tr>
 					<th><?php echo JText::_('COL_REGHOST'); ?></th>
 					<td><?php 
 						echo ($this->profile->get('regHost')) ? $this->profile->get('regHost').'<br />' : '';
@@ -407,6 +403,14 @@ function submitbutton(pressbutton)
 					<tr class="odd">
 						<td class="key"><?php echo JText::_('COL_JOBS_ALLOWED'); ?></td>
 						<td><input type="text" name="profile[jobsAllowed]" id="jobsAllowed" value="<?php echo $this->profile->get('jobsAllowed'); ?>" size="10" /></td>
+					</tr>
+					<tr class="even">
+						<td class="key"><?php echo JText::_('COL_HOMEDIRECTORY'); ?></th>
+						<td><input type="text" name="profile[homeDirectory]" id="homeDirectory" value="<?php echo $this->profile->get('homeDirectory'); ?>" size="10" /></td>
+					</tr>
+					<tr class="even">
+						<td class="key"><?php echo JText::_('COL_LOGINSHELL'); ?></th>
+						<td><input type="text" name="profile[loginShell]" id="loginShell" value="<?php echo $this->profile->get('loginShell'); ?>" size="10" /></td>
 					</tr>
 					<tr class="even">
 						<td class="key"><?php echo JText::_('COL_ADMINISTRATOR'); ?></td>

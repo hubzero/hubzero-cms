@@ -268,6 +268,10 @@ class MembersControllerMembers extends Hubzero_Controller
 
 		$profile->set('jobsAllowed', intval(trim($p['jobsAllowed'])));
 
+		$profile->set('homeDirectory', trim($p['homeDirectory']));
+
+		$profile->set('loginShell', trim($p['loginShell']));
+
 		$ec = JRequest::getInt('emailConfirmed', 0, 'post');
 		if ($ec) 
 		{
