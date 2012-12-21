@@ -544,9 +544,17 @@ class CoursesApiController extends Hubzero_Api_Controller
 		$row->title       = JRequest::getString('title', $title);
 		$row->title       = preg_replace("/[^a-zA-Z0-9 \-\:\.]/", "", $row->title);
 
+		// If we have an incoming url, update the url, otherwise, leave it alone
+		if($url = JRequest::getCmd('url', false))
+		{
+			$row->url = $url;
+		}
+
 		// When creating a new asset (which probably won't happen via this method, but rather the assetNew method above)
 		if(!$id)
 		{
+			$row->type        = 'file';
+			$row->state       = 0;
 			$row->course_id   = JRequest::getInt('course_id', 0);
 			$row->created     = date('Y-m-d H:i:s');
 			$row->created_by  = JFactory::getApplication()->getAuthn('user_id');
@@ -559,12 +567,43 @@ class CoursesApiController extends Hubzero_Api_Controller
 			return;
 		}
 
+		$files = array();
+
+		// If we're creating a new asset, we should also create a new asset association
+		if(!$id)
+		{
+			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php');
+
+			// Create asset assoc object
+			$assocObj = new CoursesTableAssetAssociation($this->db);
+
+			$row2->asset_id  = $assetObj->get('id');
+			$row2->scope     = JRequest::getCmd('scope', 'asset_group');
+			$row2->scope_id  = JRequest::getInt('scope_id', 0);
+
+			// Save the asset association
+			if (!$assocObj->save($row2))
+			{
+				$this->setMessage("Asset association save failed", 500, 'Internal server error');
+				return;
+			}
+
+			$files = array(
+				'asset_id'    => $row2->asset_id,
+				'asset_title' => $row->title,
+				'asset_type'  => $row->type,
+				'asset_url'   => $assetObj->url,
+				'course_id'   => $row->course_id
+			);
+		}
+
 		// Return message
 		$this->setMessage(
 			array(
-				'asset_id'    =>$assetObj->id,
-				'asset_title' =>$assetObj->title,
-				'course_id'   =>$this->course_id),
+				'asset_id'    => $assetObj->id,
+				'asset_title' => $assetObj->title,
+				'course_id'   => $this->course_id,
+				'files'       => array($files)),
 			201, 'Created');
 	}
 

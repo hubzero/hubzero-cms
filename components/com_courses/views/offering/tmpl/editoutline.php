@@ -89,7 +89,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 			foreach($unit->assetgroups() as $agt)
 			{
 ?>
-				<li>
+				<li class="asset-group-type-item">
 					<div class="asset-group-title title"><?php echo $agt->get('title'); ?></div>
 					<div class="clear"></div>
 					<ul class="asset-group sortable">

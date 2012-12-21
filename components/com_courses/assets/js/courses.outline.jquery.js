@@ -140,7 +140,7 @@ HUB.CoursesOutline = {
 			revert: false,
 			tolerance: 'pointer',
 			opacity: '0.6',
-			items: 'li:not(.add-new)',
+			items: 'li:not(.add-new, .asset)',
 			start: function(){
 				// Style the placeholdwer based on the size of the item grabbed
 				$(".placeholder").css({
@@ -322,8 +322,6 @@ HUB.CoursesOutline = {
 			var text      = '';
 			var key       = itemClass.replace(/-/g, '');
 
-			//addNew.before(_.template(HUB.CoursesOutline.Templates.test, {name: 'sam'}));
-
 			$.ajax({
 				url: form.attr('action'),
 				data: form.serialize(),
@@ -469,14 +467,81 @@ HUB.CoursesOutline = {
 
 		// Set up file uploader on our file upload boxes
 		$('.uploadfiles').each(function(){
-			var assetslist = $(this).parent('.asset-group-item').find('.assets-list');
-			var bar        = $(this).find('.bar');
-			var barBorder  = $(this).find('.bar-border');
+			var assetslist      = $(this).parent('.asset-group-item').find('.assets-list');
+			var progressBar     = $(this).find('.uploadfiles-progress');
+			var assetGroupTitle = $(this).parents('.asset-group-type-item').find('.asset-group-title').html();
+			var form            = $(this).find('form');
 
 			$(this).fileupload({
 				dropZone: $(this),
 				dataType: 'json',
 				statusCode: {
+					200: function(data){
+						if(assetGroupTitle == 'Exam') {
+							if(data.success) {
+								// Open up pdf2form in a lightbox
+								$.fancybox({
+									fitToView: false,
+									autoResize: false,
+									autoSize: false,
+									height: ($(window).height())*2/3,
+									type: 'iframe',
+									href: '/pdf2form?task=layout&formId='+data.id+'&tmpl=component',
+									beforeClose: function() {
+										// Create ajax call to change info in the database
+										$.ajax({
+											url: '/api/courses/assetsave',
+											data: form.serialize()+'&title=Exam',
+											dataType: "json",
+											type: 'POST',
+											cache: false,
+											statusCode: {
+												201: function(data){
+													if(assetslist.find('li:first').hasClass('nofiles'))
+													{
+														assetslist.find('li:first').remove();
+													}
+													$.each(data.files, function (index, file) {
+														// Insert in our HTML (uses "underscore.js")
+														var li = _.template(HUB.CoursesOutline.Templates.asset, file);
+														assetslist.append(li);
+
+														var newAsset = assetslist.find('.asset-item:last');
+
+														newAsset.find('.uniform').uniform();
+														newAsset.find('.toggle-editable').show();
+														newAsset.find('.title-edit').hide();
+														HUB.CoursesOutline.showProgressIndicator();
+														HUB.CoursesOutline.resizeFileUploader();
+														HUB.CoursesOutline.makeAssetsSortable();
+
+														// Reset progress bar after 2 seconds
+														setTimeout(function(){
+															progressBar.find('.bar').css('width', '0');
+															progressBar.find('.bar-border').css('border', 'none');
+														},2000);
+													});
+												},
+												401: function(data){
+													// Display the error message
+													HUB.CoursesOutline.errorMessage(data.responseText);
+												},
+												404: function(data){
+													HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
+												},
+												500: function(data){
+													// Display the error message
+													HUB.CoursesOutline.errorMessage(data.responseText);
+												}
+											}
+										});
+									}
+								});
+							}
+						} else {
+							// Nothing right now...
+						}
+					},
 					201: function(data){
 						if(assetslist.find('li:first').hasClass('nofiles'))
 						{
@@ -487,7 +552,7 @@ HUB.CoursesOutline = {
 							var li = _.template(HUB.CoursesOutline.Templates.asset, file);
 							assetslist.append(li);
 
-							var newAsset = assetslist.find('.asset-item');
+							var newAsset = assetslist.find('.asset-item:last');
 
 							newAsset.find('.uniform').uniform();
 							newAsset.find('.toggle-editable').show();
@@ -497,9 +562,9 @@ HUB.CoursesOutline = {
 							HUB.CoursesOutline.makeAssetsSortable();
 
 							// Reset progress bar after 2 seconds
-							setTimeout( function(){
-								bar.css('width', '0');
-								barBorder.css('border', 'none');
+							setTimeout(function(){
+								progressBar.find('.bar').css('width', '0');
+								progressBar.find('.bar-border').css('border', 'none');
 							},2000);
 						});
 					},
@@ -508,29 +573,38 @@ HUB.CoursesOutline = {
 						HUB.CoursesOutline.errorMessage(data.responseText);
 
 						// Reset progress bar
-						bar.css('width', '0');
-						barBorder.css('border', 'none');
+						HUB.CoursesOutline.resetProgresBar(progressBar);
 					},
 					404: function(data){
 						HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
 
 						// Reset progress bar
-						bar.css('width', '0');
-						barBorder.css('border', 'none');
+						HUB.CoursesOutline.resetProgresBar(progressBar);
 					},
 					500: function(data){
 						// Display the error message
 						HUB.CoursesOutline.errorMessage(data.responseText);
 
 						// Reset progress bar
-						bar.css('width', '0');
-						barBorder.css('border', 'none');
+						HUB.CoursesOutline.resetProgresBar(progressBar);
 					}
 				},
 				drop: function(e) {
 					$(this).find('.bar-border').css({
 						'border': '1px solid #999'
 					});
+				},
+				add: function(e, data) {
+					// If this is an exam, pass the file to pdf2form
+					if(assetGroupTitle == 'Exam') {
+						data.url       = '/pdf2form?task=upload&tmpl=component';
+						data.paramName = 'pdf';
+
+						data.submit();
+					} else {
+						// Otherwise, submit as normal
+						data.submit();
+					}
 				},
 				progressall: function (e, data) {
 					var progress = parseInt(data.loaded / data.total * 100, 10);
@@ -541,6 +615,15 @@ HUB.CoursesOutline = {
 				}
 			});
 		});
+	},
+
+	resetProgresBar: function(context)
+	{
+		var bar       = context.find('.bar');
+		var barBorder = context.find('.bar-border');
+
+		bar.css('width', '0');
+		barBorder.css('border', 'none');
 	},
 
 	setupErrorMessage: function()
@@ -654,7 +737,7 @@ HUB.CoursesOutline = {
 				'<div class="clear"></div>',
 				'<ul class="asset-group-type-list" style="display:none">',
 					'<% _.each(assetgroups, function(assetgroup){ %>',
-						'<li>',
+						'<li class="asset-group-type-item">',
 							'<div class="asset-group-title title"><%= assetgroup.assetgroup_title %></div>',
 							'<div class="clear"></div>',
 							'<ul class="asset-group sortable">',
