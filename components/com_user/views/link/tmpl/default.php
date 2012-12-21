@@ -38,8 +38,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <div class="main section" id="link-existing">
 	<p class="passed">
-		You've logged in successfully with your <?php echo $this->display_name; ?> account, 
-		but it doesn't seem to be linked to a current hub account. You can:
+		You've logged in successfully with your <?php echo $this->display_name; ?> account.
+	</p>
+
+	<p class="warning">
+		BUT, it doesn't seem to be linked to a current hub account. You can:
 	</p>
 
 	<div id="option1-link-existing" class="options">

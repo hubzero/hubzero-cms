@@ -37,6 +37,12 @@ if (!empty($error_message))
 	echo '<p class="error">'. $error_message . '</p>';
 }
 
+// If an account is being linked, and the authenticator is hubzero, give a message
+if (!$this->multiAuth && JRequest::getWord('authenticator') == 'hubzero')
+{
+	echo '<p class="warning">To link your two accounts, you need to login with your ' . $mainframe->getCfg('sitename') . ' account</p>';
+}
+
 ?>
 
 <div id="authentication" class="<?php echo ($this->multiAuth) ? 'multiAuth' : 'singleAuth'; ?>">
