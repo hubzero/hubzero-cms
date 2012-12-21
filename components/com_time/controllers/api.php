@@ -275,7 +275,7 @@ class TimeApiController extends Hubzero_Api_Controller
 		// Incoming data
 		$hub_id  = JRequest::getInt('hid', NULL);
 		$active  = JRequest::getInt('pactive', NULL);
-		$limit   = JRequest::getInt('limit', 100);
+		$limit   = JRequest::getInt('limit', 1000);
 		$start   = JRequest::getInt('start', 0);
 
 		// Filters for the query
