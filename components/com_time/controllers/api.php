@@ -93,6 +93,9 @@ class TimeApiController extends Hubzero_Api_Controller
 	 */
 	private function indexRecords()
 	{
+		// Set message format
+		$this->setMessageType($this->format);
+
 		// Require authorization
 		if(!$this->authorize())
 		{
@@ -131,7 +134,6 @@ class TimeApiController extends Hubzero_Api_Controller
 		$obj->records = $records;
 
 		// Return object
-		$this->setMessageType($this->format);
 		$this->setMessage($obj, 200, 'OK');
 	}
 
@@ -142,6 +144,9 @@ class TimeApiController extends Hubzero_Api_Controller
 	 */
 	private function indexRecordsForBill()
 	{
+		// Set message format
+		$this->setMessageType($this->format);
+
 		// Require authorization
 		if(!$this->authorize())
 		{
@@ -210,7 +215,6 @@ class TimeApiController extends Hubzero_Api_Controller
 		}
 
 		// Return results
-		$this->setMessageType($this->format);
 		$this->setMessage($masterList, 200, 'OK');
 	}
 
@@ -222,6 +226,9 @@ class TimeApiController extends Hubzero_Api_Controller
 	 */
 	private function saveRecord()
 	{
+		// Set message format
+		$this->setMessageType($this->format);
+
 		// Require authorization
 		if(!$this->authorize())
 		{
@@ -250,7 +257,6 @@ class TimeApiController extends Hubzero_Api_Controller
 		}
 
 		// Return message
-		$this->setMessageType($this->format);
 		$this->setMessage('Record successfully created', 201, 'Created');
 	}
 
@@ -265,6 +271,9 @@ class TimeApiController extends Hubzero_Api_Controller
 	 */
 	private function indexTasks()
 	{
+		// Set message format
+		$this->setMessageType($this->format);
+
 		// Require authorization
 		if(!$this->authorize())
 		{
@@ -297,7 +306,6 @@ class TimeApiController extends Hubzero_Api_Controller
 		$obj->tasks = $tasks;
 
 		// Return object
-		$this->setMessageType($this->format);
 		$this->setMessage($obj, 200, 'OK');
 	}
 
@@ -312,6 +320,9 @@ class TimeApiController extends Hubzero_Api_Controller
 	 */
 	private function indexHubs()
 	{
+		// Set message format
+		$this->setMessageType($this->format);
+
 		// Require authorization
 		if(!$this->authorize())
 		{
@@ -336,7 +347,6 @@ class TimeApiController extends Hubzero_Api_Controller
 		$obj->hubs = $hubs;
 
 		// Return object
-		$this->setMessageType($this->format);
 		$this->setMessage($obj, 200, 'OK');
 	}
 
@@ -347,6 +357,9 @@ class TimeApiController extends Hubzero_Api_Controller
 	 */
 	private function showHub()
 	{
+		// Set message format
+		$this->setMessageType($this->format);
+
 		// Require authorization
 		if(!$this->authorize())
 		{
@@ -386,7 +399,6 @@ class TimeApiController extends Hubzero_Api_Controller
 			$obj->hub = $result;
 
 			// Return object
-			$this->setMessageType($this->format);
 			$this->setMessage($obj, 200, 'OK');
 		}
 	}
@@ -402,6 +414,9 @@ class TimeApiController extends Hubzero_Api_Controller
 	 */
 	private function saveContact()
 	{
+		// Set message format
+		$this->setMessageType($this->format);
+
 		// Require authorization
 		if(!$this->authorize())
 		{
@@ -428,7 +443,6 @@ class TimeApiController extends Hubzero_Api_Controller
 		}
 
 		// Return message (include $contact object for use again by the javascript)
-		$this->setMessageType($this->format);
 		$this->setMessage($contacts->id, 201, 'Created');
 	}
 
@@ -439,6 +453,9 @@ class TimeApiController extends Hubzero_Api_Controller
 	 */
 	private function indexTimeUsers()
 	{
+		// Set message format
+		$this->setMessageType($this->format);
+
 		// Require authorization
 		if(!$this->authorize())
 		{
@@ -463,7 +480,6 @@ class TimeApiController extends Hubzero_Api_Controller
 		$obj->users = $users;
 
 		// Return object
-		$this->setMessageType($this->format);
 		$this->setMessage($obj, 200, 'OK');
 	}
 
@@ -474,6 +490,9 @@ class TimeApiController extends Hubzero_Api_Controller
 	 */
 	private function getValues()
 	{
+		// Set message format
+		$this->setMessageType($this->format);
+
 		// Require authorization
 		if(!$this->authorize())
 		{
@@ -514,7 +533,6 @@ class TimeApiController extends Hubzero_Api_Controller
 		$obj->values = $values;
 
 		// Return object
-		$this->setMessageType($this->format);
 		$this->setMessage($obj, 200, 'OK');
 	}
 
