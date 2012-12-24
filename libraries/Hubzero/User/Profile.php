@@ -904,7 +904,14 @@ class Hubzero_User_Profile extends JObject
 			
 			if($property == 'params')
 			{
-				$query .= "params='".str_replace("", "",$this->_params->toString())."'";
+				if (is_object($this->_params))
+				{
+					$query .= "params='".str_replace("", "",$this->_params->toString())."'";
+				}
+				else
+				{
+					$query .= "params=''";
+				}
 				continue;
 			}
 			
