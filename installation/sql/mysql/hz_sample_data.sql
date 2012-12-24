@@ -248,7 +248,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `#__forum_categories` WRITE;
 /*!40000 ALTER TABLE `#__forum_categories` DISABLE KEYS */;
-INSERT INTO `#__forum_categories` (`id`, `title`, `alias`, `description`, `created`, `created_by`, `modified`, `modified_by`, `access`, `state`, `group_id`, `section_id`, `closed`, `asset_id`) VALUES (1,'Discussions','discussions','Default category for all discussions in this forum.','2012-05-24 17:33:36',1000,'0000-00-00 00:00:00',0,0,0,0,1,0,0);
+INSERT INTO `#__forum_categories` (`id`, `title`, `alias`, `description`, `created`, `created_by`, `modified`, `modified_by`, `access`, `state`, `scope`, `scope_id`, `section_id`, `closed`, `asset_id`, `object_id`) VALUES (1,'Discussions','discussions','Default category for all discussions in this forum.','2012-05-24 17:33:36',0,'0000-00-00 00:00:00',0,0,0,'site',0,1,0,0,0);
 /*!40000 ALTER TABLE `#__forum_categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -258,7 +258,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `#__forum_sections` WRITE;
 /*!40000 ALTER TABLE `#__forum_sections` DISABLE KEYS */;
-INSERT INTO `#__forum_sections` (`id`, `title`, `alias`, `created`, `created_by`, `access`, `state`, `group_id`, `asset_id`) VALUES (1,'Default Section','defaultsection','2012-05-24 17:33:36',1000,0,1,0,0);
+INSERT INTO `#__forum_sections` (`id`, `title`, `alias`, `created`, `created_by`, `access`, `state`, `scope`, `scope_id`, `asset_id`, `object_id`) VALUES (1,'Default Section','defaultsection','2012-05-24 17:33:36',0,0,1,'site',0,0,0);
 /*!40000 ALTER TABLE `#__forum_sections` ENABLE KEYS */;
 UNLOCK TABLES;
 
