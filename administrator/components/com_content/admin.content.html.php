@@ -189,7 +189,14 @@ class ContentView
 						<?php echo $page->getRowOffset( $i ); ?>
 					</td>
 					<td align="center">
-						<?php echo $checked; ?>
+						<?php 
+						/* [HUBZERO] - (01/06/2013) Modified to display checkedout lock icon for the user that checked the row out */
+						if ($row->checked_out && $user->get('id') == $row->checked_out) {
+							echo JHTMLGrid::_checkedOut( $row );
+						} else {
+							echo $checked; 
+						}
+						?>
 					</td>
 					<td>
 					<?php
