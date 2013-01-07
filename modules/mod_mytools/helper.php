@@ -252,7 +252,7 @@ class modToolList extends JObject
 					}
 
 					// Launch tool link
-					if ($this->can_launch) 
+					if ($this->can_launch && $tool->middleware != 'download') 
 					{
 						$html .= "\t\t\t" . ' <a href="'.$url.'" class="launchtool" title="Launch '.$tool->caption.'">Launch '.$tool->caption.'</a>' . "\n";
 					}
