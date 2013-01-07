@@ -153,11 +153,11 @@ if (!$juser->get('guest')) {
 	<div class="four columns second third fourth">
 		<div class="two columns first">
 			<h3>Intellectual Property Considerations</h3>
-			<p>All materials contributed must have <strong>clearly defined rights and privileges</strong>. Online presentations and instructional material are normally licensed under <a href="/legal/cc/" title="Learn more about Creative Commons">Creative Commons 3</a>. Read <a href="/legal/licensing/">more details</a> about our licensing policies.</p>
+			<p>All materials contributed must have <strong>clearly defined rights and privileges</strong>. Online presentations and instructional material are normally licensed under <a href="/legal/cc" title="Learn more about Creative Commons">Creative Commons 3</a>. Read <a href="/legal/licensing">more details</a> about our licensing policies.</p>
 		</div>
 		<div class="two columns second">
 			<h3>Questions or concerns?</h3>
-			<p>We hope that our self-service upload process is intuitive and easy to use. If you encounter any problems during the upload process or need assistance of any kind, please <a href="/feedback/report_problems/">file a trouble report</a>.</p>
+			<p>We hope that our self-service upload process is intuitive and easy to use. If you encounter any problems during the upload process or need assistance of any kind, please <a href="/support/ticket/new">file a trouble report</a>.</p>
 		</div>
 	</div><!-- / .four columns second third fourth -->
 	<div class="clear"></div>
