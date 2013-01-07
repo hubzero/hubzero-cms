@@ -51,8 +51,8 @@ switch( $user_messaging )
 		$mssaging = false;
 		break;
 	case 1:
-		$common = Hubzero_User_Helper::getCommonGroups( $juser->get("id"), $this->profile->get("uidNumber") );
-		if(count($common) > 0) {
+		$common = Hubzero_User_Helper::getCommonGroups( $juser->get("id"), $this->profile->get('uidNumber') );
+		if (count($common) > 0) {
 			$messaging = true;
 		}
 		break;
@@ -62,8 +62,8 @@ switch( $user_messaging )
 }
 
 //if user is this member turn on editing and password change, turn off messaging
-if($this->profile->get("uidNumber") == $juser->get("id")) {
-	if($this->tab == "profile") 
+if ($this->profile->get('uidNumber') == $juser->get("id")) {
+	if ($this->tab == "profile") 
 	{
 		$edit = true;
 		$password = true;
@@ -73,7 +73,7 @@ if($this->profile->get("uidNumber") == $juser->get("id")) {
 }
 
 //no messaging if guest
-if($juser->get("guest"))
+if ($juser->get("guest"))
 {
 	$messaging = false;
 }
@@ -92,27 +92,38 @@ if (!$no_html) {
 					<img src="<?php echo $src; ?>" />
 				</a>
 			</div><!-- /#page_identity --> 
-			
+			<?php if ($messaging): ?>
+			<ul id="member_options">
+				<li>
+					<a class="message tooltips" title="Message :: Send a message to <?php echo stripslashes($this->profile->get('name')); ?>" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get("id") . '&active=messages&task=new&to[]=' . $this->profile->get('uidNumber')); ?>">
+						<?php echo JText::_('Message'); ?>
+					</a>
+				</li>
+			</ul>
+			<?php endif; ?>
 			<ul id="page_menu">
 				<?php foreach($this->cats as $k => $c) : ?>
 					<?php 
 						$key = key($c); 
-						if(!$key) { continue; }
+						if (!$key) 
+						{
+							continue;
+						}
 						$name = $c[$key];
 						$url = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->profile->get('uidNumber') . '&active=' . $key);
-						$cls = ($this->tab == $key) ? "active" : "";
+						$cls = ($this->tab == $key) ? 'active' : '';
 						$tab_name = ($this->tab == $key) ? $name : $tab_name;
 						
 						$metadata = $this->sections[$k]['metadata'];
 						$meta_count = (isset($metadata['count']) && $metadata['count'] != "") ? $metadata['count'] : "";
-						if(isset($metadata['alert']) && $metadata['alert'] != "") 
+						if (isset($metadata['alert']) && $metadata['alert'] != "") 
 						{
 							$meta_alert = $metadata['alert'];
-							$cls .= " with-alert";
+							$cls .= ' with-alert';
 						}
 						else
 						{
-							$meta_alert = "";
+							$meta_alert = '';
 						}
 					?>
 					<li class="<?php echo $cls; ?>">
@@ -120,7 +131,7 @@ if (!$no_html) {
 							<?php echo $name; ?>
 						</a>
 						<span class="meta">
-							<?php if($meta_count) : ?>
+							<?php if ($meta_count) : ?>
 								<span class="count"><?php echo $meta_count; ?></span>
 							<?php endif; ?>
 						</span>
@@ -130,10 +141,10 @@ if (!$no_html) {
 			</ul><!-- /#page_menu -->
 			
 			<?php
-				$thumb = "/site/stats/contributor_impact/impact_".$this->profile->get("uidNumber")."_th.gif";
-				$full = "/site/stats/contributor_impact/impact_".$this->profile->get("uidNumber").".gif"
+				$thumb = '/site/stats/contributor_impact/impact_'.$this->profile->get('uidNumber').'_th.gif';
+				$full = '/site/stats/contributor_impact/impact_'.$this->profile->get('uidNumber').'.gif';
 			?>
-			<?php if(file_exists(JPATH_ROOT . $thumb)) : ?>
+			<?php if (file_exists(JPATH_ROOT . $thumb)) : ?>
 				<a id="member-stats-graph" rel="lightbox" title="<?php echo $this->profile->get("name")."'s Impact Graph"; ?>" data-name="<?php echo $this->profile->get("name"); ?>" data-type="Impact Graph" href="<?php echo $full; ?>">
 					<img src="<?php echo $thumb; ?>" alt="<?php echo $this->profile->get("name")."'s Impact Graph"; ?>" />
 				</a>
@@ -141,31 +152,31 @@ if (!$no_html) {
 			
 		</div><!-- /#page_sidebar -->
 		<div id="page_main">
-<?php if ($edit || $password || $messaging) : ?>
+<?php if ($edit || $password) : ?>
 			<ul id="page_options">
-				<?php if($edit) : ?>
-					<?php $edit_url = JRoute::_('index.php?option=com_members&id='.$this->profile->get("uidNumber").'&task=edit'); ?>
-					<li><a class="edit tooltips" id="edit-profile" title="Edit Profile :: Edit <?php if($this->profile->get("uidNumber") == $juser->get("id")) { echo "my"; } else { echo $this->profile->get("name") . "'s"; } ?> profile." href="<?php echo $edit_url; ?>"><?php echo JText::_('Edit profile'); ?></a></li>
+				<?php if ($edit) : ?>
+					<li>
+						<a class="edit tooltips" id="edit-profile" title="Edit Profile :: Edit <?php if ($this->profile->get('uidNumber') == $juser->get("id")) { echo "my"; } else { echo $this->profile->get("name") . "'s"; } ?> profile." href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->profile->get('uidNumber').'&task=edit'); ?>">
+							<?php echo JText::_('Edit profile'); ?>
+						</a>
+					</li>
 				<?php endif; ?>
-				
-				<?php if($password) : ?>
-					<?php $pass_url = JRoute::_('index.php?option=com_members&task=changepassword&id=' . $this->profile->get("uidNumber")); ?>
-						<li><a class="password tooltips" id="change-password" title="Change Password :: Change your password" href="<?php echo $pass_url; ?>"><?php echo JText::_('Change Password'); ?></a></li>
-				<?php endif; ?>
-				
-				<?php if($messaging): ?>
-					<?php $msg_url = JRoute::_('index.php?option=com_members&id=' . $juser->get("id") . '&active=messages&task=new&to[]=' . $this->profile->get('uidNumber')); ?>
-					<li><a class="message tooltips" title="Message :: Send a message to <?php echo stripslashes($this->profile->get('name')); ?>" href="<?php echo $msg_url; ?>"><?php echo JText::_('Message'); ?></a></li>
+				<?php if ($password) : ?>
+					<li>
+						<a class="password tooltips" id="change-password" title="Change Password :: Change your password" href="<?php echo JRoute::_('index.php?option=com_members&task=changepassword&id=' . $this->profile->get('uidNumber')); ?>">
+							<?php echo JText::_('Change Password'); ?>
+						</a>
+					</li>
 				<?php endif; ?>
 			</ul>
 <?php endif; ?>
 			<div id="page_header">
-				<?php if($this->profile->get("uidNumber") == $juser->get("id")) : ?>
+				<?php if ($this->profile->get('uidNumber') == $juser->get("id")) : ?>
 					<?php
-						$cls = "";
+						$cls = '';
 						$span_title = "Public Profile :: Your profile is currently public.";
 						$title = "Public Profile :: Click here to set your profile private.";
-						if($this->profile->get("public") != 1)
+						if ($this->profile->get('public') != 1)
 						{
 							$cls = "private";
 							$span_title = "Private Profile :: Your profile is currently private.";
@@ -173,20 +184,20 @@ if (!$no_html) {
 						}
 					?>
 					
-					<?php if($this->tab == "profile") : ?>
-						<a id="profile-privacy" href="javascript:void(0);" data-uidnumber="<?php echo $this->profile->get("uidNumber"); ?>" class="<?php echo $cls; ?> tooltips" title="<?php echo $title; ?>">
+					<?php if ($this->tab == 'profile') : ?>
+						<a id="profile-privacy" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->profile->get('uidNumber')); ?>" data-uidnumber="<?php echo $this->profile->get('uidNumber'); ?>" class="<?php echo $cls; ?> tooltips" title="<?php echo $title; ?>">
 							<?php echo $title; ?>
 						</a>
 					<?php else: ?>
-						<span id="profile-privacy" class="" title="<?php //echo $span_title; ?>">
+						<span id="profile-privacy">
 							<?php echo $span_title; ?>
 						</span>
 					<?php endif; ?>
 				<?php endif; ?>
 				
 				<h2>
-					<a href="/members/<?php echo $this->profile->get("uidNumber"); ?>">
-						<?php echo stripslashes($this->profile->get('name')); ?>
+					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->profile->get('uidNumber')); ?>">
+						<?php echo $this->escape(stripslashes($this->profile->get('name'))); ?>
 					</a>
 				</h2>
 				<span>►</span>
@@ -194,22 +205,24 @@ if (!$no_html) {
 			</div>
 			<div id="page_notifications">
 				<?php
-					if($this->getError()) {
-						echo "<p class=\"error\">" . $this->getError() . "</p>";
+					if ($this->getError()) {
+						echo '<p class="error">' . implode('<br />', $this->getErrors()) . '</p>';
 					}
 				?>
 			</div>
 			<div id="page_content" class="member_<?php echo $this->tab; ?>">
 				<?php
 		 			} 
-		            if($this->overwrite_content)
+		            if ($this->overwrite_content)
 					{
 						echo $this->overwrite_content;
 					}
 					else
 					{
-						foreach($this->sections as $s) {
-							if($s['html'] != "") {
+						foreach ($this->sections as $s) 
+						{
+							if ($s['html'] != '') 
+							{
 								echo $s['html'];
 							}
 						}
