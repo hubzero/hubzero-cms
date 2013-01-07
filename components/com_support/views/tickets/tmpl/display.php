@@ -222,7 +222,7 @@ if ($this->rows)
 	{
 		$ids[] = $row->id;
 	}
-}
+
 
 // Pull out the last activity date for all the IDs
 $lastactivities = array();
@@ -354,7 +354,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 								</span>
 		<?php } ?>
 		<?php if ($row->group) { 
-			if($this->acl->check('read', 'tickets'))
+			if ($this->acl->check('read', 'tickets'))
 			{
 				$queryid = $this->queries['common'][0]->id;
 			}
@@ -364,9 +364,9 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 			}
 			$group = '<a href="' . JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=display&show='.$queryid.'&find='.urlencode('group:'.$this->escape(stripslashes($row->group)))).'">' . $this->escape(stripslashes($row->group)) . '</a>';
 		?>
-						<span class="ticket-group">
-							<?php echo $group; ?>
-						</span>
+							<span class="ticket-group">
+									<?php echo $group; ?>
+								</span>
 		<?php } ?>
 		<?php if ($row->owner) { 
 					$owner = Hubzero_User_Profile::getInstance($row->owner);
@@ -392,6 +392,15 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					</tr>
 <?php
 	$k = 1 - $k;
+}
+} else {
+?>
+					<tr class="odd noresults">
+						<td colspan="7">
+							<?php echo JText::_('No results found.'); ?>
+						</td>
+					</tr>
+<?php 
 }
 ?>
 				</tbody>

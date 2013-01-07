@@ -419,19 +419,26 @@ class SupportControllerTickets extends Hubzero_Controller
 				$this->view->filters['show'] = $this->view->queries['mine'][0]->id;
 			}
 		}
+
 		// Loop through each grouping
 		foreach ($this->view->queries as $key => $queries)
 		{
 			// Loop through each query in a group
 			foreach ($queries as $k => $query)
 			{
+				$filters = $this->view->filters;
+
 				// Build the query from the condition set
 				if (!$query->query)
 				{
 					$query->query = $sq->getQuery($query->conditions);
 				}
+				if ($query->id != $this->view->filters['show'])
+				{
+					$filters['search'] = '';
+				}
 				// Get a record count
-				$this->view->queries[$key][$k]->count = $obj->getCount($query->query, $this->view->filters);
+				$this->view->queries[$key][$k]->count = $obj->getCount($query->query, $filters);
 				// The query is the current active query
 				// get records
 				if ($query->id == $this->view->filters['show'])

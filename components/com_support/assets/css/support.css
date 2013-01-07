@@ -354,6 +354,11 @@
 		padding-right: 0;
 		padding-top: 0;
 	}
+	#tktlist tbody tr.noresults td,
+	#tktlist tbody tr.noresults td:last-child {
+		padding-right: 1.61803399em;
+		padding-top: 1.61803399em;
+	}
 	#tktlist thead tr th.tkt-severity,
 	#tktlist tbody tr td.tkt-severity {
 
