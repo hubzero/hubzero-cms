@@ -292,6 +292,7 @@
 	html.firefox3 .info:before,
 	html.firefox3 #system-message dd.info:before {
 		content: "";
+		display: none;
 	}
 	html.firefox3 .help,
 	html.firefox3 #system-message dd.help { 
