@@ -109,4 +109,14 @@ class SupportApiController extends Hubzero_Api_Controller
 		$this->setMessageType($format);
 		$this->setMessage($obj);
 	}
+
+	/**
+	 * Create a new ticket
+	 *
+	 * @return     void
+	 */
+	private function create()
+	{
+		$this->getResponse()->setErrorMessage(404, 'Not Found');
+	}
 }
