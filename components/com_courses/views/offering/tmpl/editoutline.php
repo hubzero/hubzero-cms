@@ -135,6 +135,10 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 									{
 										$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
 									}
+									elseif ($a->get('type') == 'exam')
+									{
+										$href = JRoute::_($a->get('url'));
+									}
 ?>
 									<li id="asset_<?php echo $a->get('id'); ?>" class="asset-item asset <?php echo $a->get('type'); echo ($a->get('state') == 0) ? ' notpublished' : ' published'; ?>">
 										<div class="sortable-assets-handle"></div>
@@ -176,7 +180,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 						else // no assets in this asset group
 						{
 ?>
-							<ul class="assets-list">
+							<ul class="assets-list sortable-assets">
 								<li class="asset-item asset missing nofiles">
 									No files
 									<span class="next-step-upload">
@@ -227,6 +231,10 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 						if ($a->get('type') == 'video')
 						{
 								$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $agt->get('alias'));
+						}
+						elseif ($a->get('type') == 'exam')
+						{
+							$href = JRoute::_($a->get('url'));
 						}
 ?>
 									<li id="asset_<?php echo $a->get('id'); ?>" class="asset-item asset <?php echo $a->get('type'); echo ($a->get('state') == 0) ? ' notpublished' : ' published'; ?>">
@@ -295,6 +303,10 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 					if ($a->get('type') == 'video')
 					{
 						$href = JRoute::_($base . '&active=outline&a=' . $unit->get('alias'));
+					}
+					elseif ($a->get('type') == 'exam')
+					{
+						$href = JRoute::_($a->get('url'));
 					}
 					echo '<li class="asset-group-item"><a class="asset ' . $a.get('type') . '" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 				}

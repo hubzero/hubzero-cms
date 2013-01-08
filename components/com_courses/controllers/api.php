@@ -545,15 +545,15 @@ class CoursesApiController extends Hubzero_Api_Controller
 		$row->title       = preg_replace("/[^a-zA-Z0-9 \-\:\.]/", "", $row->title);
 
 		// If we have an incoming url, update the url, otherwise, leave it alone
-		if($url = JRequest::getCmd('url', false))
+		if($url = JRequest::getVar('url', false))
 		{
-			$row->url = $url;
+			$row->url = urldecode($url);
 		}
 
 		// When creating a new asset (which probably won't happen via this method, but rather the assetNew method above)
 		if(!$id)
 		{
-			$row->type        = 'file';
+			$row->type        = JRequest::getWord('type', 'file');
 			$row->state       = 0;
 			$row->course_id   = JRequest::getInt('course_id', 0);
 			$row->created     = date('Y-m-d H:i:s');

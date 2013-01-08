@@ -42,6 +42,16 @@ function CoursesBuildRoute(&$query)
 
 	if (!empty($query['controller'])) 
 	{
+		if($query['controller'] == 'form')
+		{
+			$segments[] = $query['controller'];
+
+			if(!empty($query['task']))
+			{
+				$segments[] = $query['task'];
+				unset($query['task']);
+			}
+		}
 		unset($query['controller']);
 	}
 
@@ -114,7 +124,12 @@ function CoursesParseRoute($segments)
 			$vars['controller'] = 'courses';
 			$vars['task'] = $segments[0];
 		}
-		else 
+		elseif ($segments[0] == 'form')
+		{
+			$vars['task'] = 'index';
+			$vars['controller'] = $segments[0];
+		}
+		else
 		{
 			if ($segments[0] == 'new')
 			{
@@ -195,6 +210,17 @@ function CoursesParseRoute($segments)
 				$vars['task'] = $segments[1];
 				$vars['controller'] = 'media';
 			break;
+
+			// Forms routes
+			case 'index':
+			case 'layout':
+			case 'upload':
+			case 'showDeployment';
+				$vars['controller'] = 'form';
+				$vars['task']       = $segments[1];
+			break;
+
+			// Defaults
 			default:
 				$vars['offering'] = $segments[1];
 				$vars['controller'] = 'offering';
@@ -204,8 +230,16 @@ function CoursesParseRoute($segments)
 
 	if (isset($segments[2])) 
 	{
-		$vars['active'] = $segments[2];
-		$vars['controller'] = 'offering';
+		if($segments[0] == 'form')
+		{
+			$vars['formId'] = $segments[2];
+			$vars['controller'] = 'form';
+		}
+		else
+		{
+			$vars['active'] = $segments[2];
+			$vars['controller'] = 'offering';
+		}
 	}
 	if (isset($segments[3])) 
 	{

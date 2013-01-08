@@ -1,3 +1,4 @@
+
 /**
  * @package     hubzero-cms
  * @file        components/com_courses/assets/js/courses.outline.jquery.js
@@ -479,19 +480,19 @@ HUB.CoursesOutline = {
 					200: function(data){
 						if(assetGroupTitle == 'Exam') {
 							if(data.success) {
-								// Open up pdf2form in a lightbox
+								// Open up forms in a lightbox
 								$.fancybox({
 									fitToView: false,
 									autoResize: false,
 									autoSize: false,
 									height: ($(window).height())*2/3,
 									type: 'iframe',
-									href: '/pdf2form?task=layout&formId='+data.id+'&tmpl=component',
+									href: '/courses/form?task=layout&formId='+data.id+'&tmpl=component',
 									beforeClose: function() {
 										// Create ajax call to change info in the database
 										$.ajax({
 											url: '/api/courses/assetsave',
-											data: form.serialize()+'&title=Exam',
+											data: form.serialize()+'&title=Exam&type=exam&url='+encodeURIComponent('/courses/form/layout/'+data.id),
 											dataType: "json",
 											type: 'POST',
 											cache: false,
@@ -516,10 +517,7 @@ HUB.CoursesOutline = {
 														HUB.CoursesOutline.makeAssetsSortable();
 
 														// Reset progress bar after 2 seconds
-														setTimeout(function(){
-															progressBar.find('.bar').css('width', '0');
-															progressBar.find('.bar-border').css('border', 'none');
-														},2000);
+														HUB.CoursesOutline.resetProgresBar(progressBar, 2000);
 													});
 												},
 												401: function(data){
@@ -562,10 +560,8 @@ HUB.CoursesOutline = {
 							HUB.CoursesOutline.makeAssetsSortable();
 
 							// Reset progress bar after 2 seconds
-							setTimeout(function(){
-								progressBar.find('.bar').css('width', '0');
-								progressBar.find('.bar-border').css('border', 'none');
-							},2000);
+							HUB.CoursesOutline.resetProgresBar(progressBar, 2000);
+
 						});
 					},
 					401: function(data){
@@ -573,20 +569,20 @@ HUB.CoursesOutline = {
 						HUB.CoursesOutline.errorMessage(data.responseText);
 
 						// Reset progress bar
-						HUB.CoursesOutline.resetProgresBar(progressBar);
+						HUB.CoursesOutline.resetProgresBar(progressBar, 0);
 					},
 					404: function(data){
 						HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
 
 						// Reset progress bar
-						HUB.CoursesOutline.resetProgresBar(progressBar);
+						HUB.CoursesOutline.resetProgresBar(progressBar, 0);
 					},
 					500: function(data){
 						// Display the error message
 						HUB.CoursesOutline.errorMessage(data.responseText);
 
 						// Reset progress bar
-						HUB.CoursesOutline.resetProgresBar(progressBar);
+						HUB.CoursesOutline.resetProgresBar(progressBar, 0);
 					}
 				},
 				drop: function(e) {
@@ -595,14 +591,15 @@ HUB.CoursesOutline = {
 					});
 				},
 				add: function(e, data) {
-					// If this is an exam, pass the file to pdf2form
-					if(assetGroupTitle == 'Exam') {
-						data.url       = '/pdf2form?task=upload&tmpl=component';
+					// If this is an exam, pass the file to forms
+					if(assetGroupTitle == 'Exam' && data.files[0].type == 'application/pdf') {
+						data.url       = '/courses/form/upload?no_html=1';
 						data.paramName = 'pdf';
 
+						// Submit data
 						data.submit();
 					} else {
-						// Otherwise, submit as normal
+						// Otherwise, submit as normal with no modifications
 						data.submit();
 					}
 				},
@@ -617,13 +614,15 @@ HUB.CoursesOutline = {
 		});
 	},
 
-	resetProgresBar: function(context)
+	resetProgresBar: function(context, timeout)
 	{
 		var bar       = context.find('.bar');
 		var barBorder = context.find('.bar-border');
 
-		bar.css('width', '0');
-		barBorder.css('border', 'none');
+		setTimeout(function(){
+			bar.css('width', '0');
+			barBorder.css('border', 'none');
+		},timeout);
 	},
 
 	setupErrorMessage: function()
@@ -705,7 +704,7 @@ HUB.CoursesOutline = {
 							'<input type="hidden" name="id" value="<%= assetgroup_id %>" />',
 						'</form>',
 					'</div>',
-					'<ul class="assets-list">',
+					'<ul class="assets-list sortable-assets">',
 						'<li class="asset-item asset missing nofiles">',
 							'No files',
 							'<span class="next-step-upload">',
