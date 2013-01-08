@@ -1847,11 +1847,8 @@ class SupportControllerTickets extends Hubzero_Controller
 
 					$juri =& JURI::getInstance();
 					$sef = JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=ticket&id=' . $row->id);
-					if (substr($sef,0,1) == '/') 
-					{
-						$sef = substr($sef,1,strlen($sef));
-					}
-					$message .= $juri->base() . $sef . "\r\n";
+
+					$message .= $juri->base() . ltrim($sef, DS) . "\r\n";
 
 					// An array for all the addresses to be e-mailed outside of the hub messaging system
 					$emails = array();
@@ -2221,25 +2218,34 @@ class SupportControllerTickets extends Hubzero_Controller
 
 		if ($ticket) 
 		{
-			$log = '';
+			$changelog = '';
 
 			// open existing ticket if closed
 			$oldticket = new SupportTicket($this->database);
 			$oldticket->load($ticket);
 			$oldticket->instances++;
-			if ($oldticket->status == 2) 
+			if ($oldticket->open == 0) 
 			{
-				$oldticket->status = 0;
+				$oldticket->open = 1;
+				$oldticket->status = 1;
 				$oldticket->resolved = 'reopened';
 
-				$changelog = array();
-				$changelog[] = '<li><strong>'.JText::_('TICKET_FIELD_STATUS').'</strong> '.JText::_('TICKET_CHANGED_FROM').' <em>closed</em> '.JText::_('TO').' <em>open</em></li>';
-				$changelog[] = '<li><strong>'.JText::_('TICKET_FIELD_INSTANCE').'</strong> increased</li>';
-				$log = implode("\n", $changelog);
-				if ($log != '') 
-				{
-					$log = '<ul>'."\n".$log.'</ul>'."\n";
-				}
+				$log = array(
+					'changes' => array(),
+					'notifications' => array()
+				);
+
+				$log['changes'][] = array(
+					'field'  => JText::_('TICKET_FIELD_STATUS'),
+					'before' => SupportHtml::getStatus(0, 1),
+					'after'  => SupportHtml::getStatus($oldticket->open, $oldticket->status)
+				);
+				$log['changes'][] = array(
+					'field'  => JText::_('TICKET_FIELD_INSTANCE'),
+					'before' => ($oldticket->instances - 1),
+					'after'  => $oldticket->instances
+				);
+				$changelog = json_encode($log);
 			}
 
 			// check content
@@ -2255,14 +2261,14 @@ class SupportControllerTickets extends Hubzero_Controller
 			}
 
 			// make a log note if we had to reopen the ticket
-			if ($log) 
+			if ($changelog) 
 			{
 				$rowc = new SupportComment($this->database);
 				$rowc->ticket     = $ticket;
 				$rowc->comment    = '';
 				$rowc->created    = date('Y-m-d H:i:s', time());
 				$rowc->created_by = $row->login;
-				$rowc->changelog  = $log;
+				$rowc->changelog  = $changelog;
 				$rowc->access     = 1;
 
 				if ($rowc->check()) 
@@ -2274,7 +2280,7 @@ class SupportControllerTickets extends Hubzero_Controller
 				}
 			}
 
-			$status = ($oldticket->resolved) ? $oldticket->resolved : 'open';
+			$status = (!$oldticket->open && $oldticket->resolved) ? $oldticket->resolved : 'open';
 			$count  = $oldticket->instances;
 		} 
 		else 
