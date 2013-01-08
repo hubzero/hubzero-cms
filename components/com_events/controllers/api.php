@@ -46,8 +46,6 @@ class EventsApiController extends Hubzero_Api_Controller
 					AND approved=1
 					LIMIT {$limit}";
 					
-		//sleep(10);
-					
 		$database->setQuery($query);
 		$rows = $database->loadObjectList();
 		

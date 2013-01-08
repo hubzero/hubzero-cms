@@ -200,7 +200,7 @@ class MembersApiController extends Hubzero_Api_Controller
 					break;
 			}
 		}
-
+		
 		//encode sessions for return
 		$object = new stdClass();
 		$object->sessions = $result;

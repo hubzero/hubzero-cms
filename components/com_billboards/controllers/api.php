@@ -92,8 +92,6 @@ class BillboardsApiController extends Hubzero_Api_Controller
 			'billboards' => $BillboardsCollections->getBillboards( array("collection"=>$BillboardsCollections->id, "published"=>1, "include_retina" => true) )
 		);
 		
-		//sleep(15);
-		
 		$obj = new stdClass();
 		$obj->collection = $collection;
 		$this->setMessageType("application/json");

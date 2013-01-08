@@ -169,6 +169,9 @@ class ToolsApiController extends Hubzero_Api_Controller
 		$database->setQuery($sql);
 		$t = $database->loadObject();
 		
+		//add alias
+		$t->alias = $tool;
+		
 		//veryify we have result
 		if($t == null)
 		{
@@ -180,6 +183,15 @@ class ToolsApiController extends Hubzero_Api_Controller
 		//remove tags and slashes
 		$t->abstract = stripslashes(strip_tags($t->abstract));
 		
+		//get the supported tag
+		$rconfig = JComponentHelper::getParams('com_resources');
+		$supportedtag = $rconfig->get('supportedtag', '');
+		
+		//get supportedtag usage
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
+		$this->rt = new ResourcesTags($database);
+		$supportedtagusage = $this->rt->getTagUsage($supportedtag, 'alias');
+		$t->supported = (in_array($t->alias, $supportedtagusage)) ? 1 : 0;
 		
 		//get screenshots
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'screenshot.php');
@@ -350,33 +362,47 @@ class ToolsApiController extends Hubzero_Api_Controller
 		
 		//make sure we have a user
 		if ($result === false)	return $this->not_found();
-
-		//get request vars
-		$app = new stdClass;
-		$app->name    = trim(str_replace(':', '-', JRequest::getVar('app', '')));
-		$app->version = JRequest::getVar('version', 'default');
-		$app->ip = $_SERVER["REMOTE_ADDR"];
-		error_log($app->ip);
 		
-		//check to make sure we have an app
+		//get request vars
+		$tool_name 			= JRequest::getVar('app', '');
+		$tool_version 		= JRequest::getVar('version', 'default');
+		$response_format 	= JRequest::getVar('format', 'json');
+		
+		//build application object
+		$app		 	= new stdClass;
+		$app->name		= trim(str_replace(':', '-', $tool_name));
+		$app->version 	= $tool_version;
+		$app->ip 		= $_SERVER["REMOTE_ADDR"];
+		
+		//check to make sure we have an app to invoke
 		if (!$app->name)
 		{
+			//build error code and message
+			$object = new stdClass();
+			$object->error->code = 400;
+			$object->error->message = 'You Must Supply a Valid Tool Name to Invoke.';
+			
+			//set http status code and reason
 			$response = $this->getResponse();
-			$response->setErrorMessage( 400, 'Bad Request: Tool Doesn\'t Exist' );
+			$response->setErrorMessage( $object->error->code, $object->error->message );
+			
+			//add error to message body
+			$this->setMessageType( $response_format );
+			$this->setMessage( $object );
 			return;
 		}
 		
-		//
-		JLoader::import("joomla.database.table");
+		//include needed tool libraries
 		include_once( JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php' );
 		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php' );
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php' );
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php');
 		
-		//
+		//create database object
+		JLoader::import("joomla.database.table");
 		$database =& JFactory::getDBO();
 		
-		//
+		//load the tool version
 		$tv = new ToolVersion($database);
 		switch ($app->version)
 		{
@@ -417,12 +443,48 @@ class ToolsApiController extends Hubzero_Api_Controller
 		$tv->loadFromInstance($app->name);
 		$app->caption = stripslashes($tv->title);
 		$app->title   = stripslashes($tv->title);
-
-		// Check if they have access to run this tool
-		//$hasaccess = $this->_getToolAccess($app->name);
+		
+		//make sure we have a valid tool
+		if ($app->title == '' || $app->toolname == '')
+		{
+			//build error code and message
+			$object = new stdClass();
+			$object->error->code = 400;
+			$object->error->message = 'The Tool "' . $tool_name . '" does not exist on the HUB.';
+			
+			//set http status code and reason
+			$response = $this->getResponse();
+			$response->setErrorMessage( $object->error->code, $object->error->message );
+			
+			//add error to message body
+			$this->setMessageType( $response_format );
+			$this->setMessage( $object );
+			return;
+		}
+		
+		//get tool access
+		$toolAccess = ToolsHelperUtils::getToolAccess( $app->name, $result->get('username') );
+		
+		//do we have access
+		if($toolAccess->valid != 1)
+		{
+			//build error code and message
+			$object = new stdClass();
+			$object->error->code = 400;
+			$object->error->message = $toolAccess->error->message;
+			
+			//set http status code and reason
+			$response = $this->getResponse();
+			$response->setErrorMessage( $object->error->code, $object->error->message );
+			
+			//add error to message body
+			$this->setMessageType( $response_format );
+			$this->setMessage( $object );
+			return;
+		}
 		
 		// Log the launch attempt
-		//$this->_recordUsage($app->toolname, $this->juser->get('id'));
+		//$this->_recordUsage($app->toolname, $result->get('id'));
 
 		// Get the middleware database
 		$mwdb =& ToolsHelperUtils::getMWDBO();
@@ -437,7 +499,19 @@ class ToolsApiController extends Hubzero_Api_Controller
 		//can we open another session
 		if($remain <= 0)
 		{
+			//build error code and message
+			$object = new stdClass();
+			$object->error->code = 401;
+			$object->error->message = 'You are using all (' . $jobs . ') your available job slots.';
 			
+			//set http status code and reason
+			$response = $this->getResponse();
+			$response->setErrorMessage( $object->error->code, $object->error->message );
+			
+			//add error to message body
+			$this->setMessageType( $response_format );
+			$this->setMessage( $object );
+			return;
 		}
 		
 		//import joomla plugin helpers
@@ -453,6 +527,25 @@ class ToolsApiController extends Hubzero_Api_Controller
 		// We've passed all checks so let's actually start the session
 		$status = $this->middleware("start user=" . $result->get('username') . " ip=" . $app->ip . " app=" . $app->name . " version=" . $app->version, $output);
 		
+		//make sure we got a valid session back from the middleware
+		if(!isset($output->session))
+		{
+			//build error code and message
+			$object = new stdClass();
+			$object->error->code = 500;
+			$object->error->message = 'There was a issue while trying to start the tool session. Please try again later.';
+			
+			//set http status code and reason
+			$response = $this->getResponse();
+			$response->setErrorMessage( $object->error->code, $object->error->message );
+			
+			//add error to message body
+			$this->setMessageType( $response_format );
+			$this->setMessage( $object );
+			return;
+		}
+		
+		//set session output
 		$app->sess = $output->session;
 		
 		// Trigger any events that need to be called after session invoke
@@ -473,15 +566,32 @@ class ToolsApiController extends Hubzero_Api_Controller
 		$ms->sessname = $app->caption;
 		if (!$ms->store()) 
 		{
-			echo $ms->getError();
+			//build error code and message
+			$object = new stdClass();
+			$object->error->code = 500;
+			$object->error->message = 'There was a issue while trying to start the tool session. Please try again later.';
+			
+			//set http status code and reason
+			$response = $this->getResponse();
+			$response->setErrorMessage( $object->error->code, $object->error->message );
+			
+			//add error to message body
+			$this->setMessageType( $response_format );
+			$this->setMessage( $object );
+			return;
 		}
 		
+		//add tool title to output
+		//add session title to ouput
+		$output->tool = $app->title;
+		$output->session_title = $app->caption;
+		
 		//return result
-		if($status)
+		if( $status )
 		{
-			$obj = new stdClass();
-			$this->setMessageType("application/json");
-			$this->setMessage($output);
+			$object = new stdClass();
+			$this->setMessageType( $response_format );
+			$this->setMessage( $output );
 		}
 	}
 	
@@ -573,6 +683,10 @@ class ToolsApiController extends Hubzero_Api_Controller
 		
 		//add the session id to the result
 		$output->session = $session;
+		
+		//add tool title to result
+		$output->tool = $tv->title;
+		$output->session_title = $app->caption;
 		
 		//return result
 		if($status)
