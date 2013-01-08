@@ -98,6 +98,9 @@ if (!$mode || ($mode && $mode != 'static')) {
 	$view->display();
 	
 	$first = $this->page->getRevision(1);
+
+	$obj = new WikiTags(JFactory::getDBO());
+	$tags = $obj->get_tag_cloud(0, $this->config->get('admin', 0), $this->page->id);
 ?>
 <div class="main section">
 		<div class="wikipage">
@@ -111,12 +114,12 @@ if (!$mode || ($mode && $mode != 'static')) {
 			</span>
 			<?php } ?>
 		</p>
+<?php if ($tags) { ?>
 		<div class="article-tags">
 			<h3><?php echo JText::_('WIKI_PAGE_TAGS'); ?></h3>
-			<?php 
-			$obj = new WikiTags(JFactory::getDBO());
-			echo $obj->get_tag_cloud(0, $this->config->get('admin', 0), $this->page->id); ?>
+			<?php echo $tags; ?>
 		</div>
+<?php } ?>
 </div><!-- / .main section -->
 <?php
 } else {
@@ -124,4 +127,3 @@ if (!$mode || ($mode && $mode != 'static')) {
 }
 
 echo $this->page->event->afterDisplayContent;
-?>
