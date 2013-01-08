@@ -43,7 +43,7 @@ function BlogBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (!empty($query['task'])) 
+	if (!empty($query['task']) && $query['task'] != 'feed.rss' && $query['task'] != 'feed') 
 	{
 		$segments[] = $query['task'];
 		unset($query['task']);
@@ -61,6 +61,11 @@ function BlogBuildRoute(&$query)
 	{
 		$segments[] = $query['month'];
 		unset($query['month']);
+	}
+	if (!empty($query['task']) && ($query['task'] == 'feed.rss' || $query['task'] == 'feed')) 
+	{
+		$segments[] = $query['task'];
+		unset($query['task']);
 	}
 	if (!empty($query['alias'])) 
 	{
