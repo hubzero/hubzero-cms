@@ -262,6 +262,34 @@ class CitationsDownloadEndnote extends CitationsDownloadAbstract
 			$st = (!preg_match('!\S!u', $st)) ? utf8_encode($st) : $st;
 			$doc .= "%! " . htmlspecialchars_decode(trim($st)) . "\r\n";
 		}
+		
+		//get the endnote import params
+		//we want to get the endnote key used for importing badges to export them
+		ximport('Hubzero_Plugin');
+		$endnote_import_plugin_params = Hubzero_Plugin::getParams( 'endnote', 'citation' );
+		$custom_tags = explode("\n", $endnote_import_plugin_params->get('custom_tags'));
+		
+		$citation_endnote_tags = array();
+		$citation_badges_key = "";
+		foreach($custom_tags  as $ct)
+		{
+			$citation_endnote_tags[] = explode("-", trim($ct));
+		}
+
+		foreach($citation_endnote_tags as $cet)
+		{
+			if($cet[0] == 'badges')
+			{
+				$citation_badges_key = $cet[1];
+			}
+		}
+	
+		//if we found a key to export badges then add to export
+		if($row->badges && !in_array('badges', $exclude) && $citation_badges_key != '')
+		{
+			$doc .= $citation_badges_key . " " . $row->badges;
+		}
+		
 		$doc .= "\r\n";
 		return $doc;
 	}

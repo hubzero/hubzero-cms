@@ -713,7 +713,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 		// Load the citation
 		$row = new CitationsCitation($this->database);
 		$row->load($id);
-
+		
 		// Set the write path
 		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/citations'), DS);
 
@@ -776,7 +776,11 @@ class CitationsControllerCitations extends Hubzero_Controller
 		{
 			$cc = new CitationsCitation($this->database);
 			$cc->load($c);
-
+			
+			//get the badges
+			$ct = new CitationTags($this->database);
+			$cc->badges = $ct->get_tag_string($cc->id, 0, 0, NULL, 0, 0, 'badge');
+			
 			$cd = new CitationsDownload();
 			$cd->setFormat(strtolower($download));
 			$doc .= $cd->formatReference($cc) . "\r\n\r\n";
