@@ -110,7 +110,7 @@ class TagsHandler extends JObject
 			$this->setError('get_tags_on_object argument missing');
 			return array();
 		}
-
+		
 		$to = new TagsObject($this->_db);
 		$to->objectid = $object_id;
 		$to->tbl = $this->_tbl;
@@ -495,9 +495,9 @@ class TagsHandler extends JObject
 	 * @param      integer $admin     Admin tags?
 	 * @return     string
 	 */
-	public function get_tag_string($oid, $offset=0, $limit=0, $tagger_id=NULL, $strength=0, $admin=0)
+	public function get_tag_string($oid, $offset=0, $limit=0, $tagger_id=NULL, $strength=0, $admin=0, $label='')
 	{
-		$tags = $this->get_tags_on_object($oid, $offset, $limit, $tagger_id, $strength, $admin);
+		$tags = $this->get_tags_on_object($oid, $offset, $limit, $tagger_id, $strength, $admin, $label);
 
 		if ($tags && count($tags) > 0) 
 		{
