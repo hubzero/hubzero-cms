@@ -89,10 +89,7 @@ class plgAuthenticationPUCAS extends JPlugin
 		phpCAS::setFixedServiceURL($service . '/index.php?option=com_user&view=login&authenticator=pucas' . $return);
 		phpCAS::setNoCasServerValidation();
 
-		if (phpCAS::isAuthenticated() || phpCAS::checkAuthentication())
-		{
-			phpCAS::logoutWithRedirectService($service . '/index.php?option=com_user&task=logout&authenticator=pucas' . $return);
-		}
+		phpCAS::logoutWithRedirectService($service);
 	}
 
 	/**
