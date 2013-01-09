@@ -210,7 +210,7 @@ class plgWhatsnewResources extends JPlugin
 
 			// Check the area of return. If we are returning results for a specific area/category
 			// we'll need to modify the query a bit
-			if (count($areas) == 1 && $areas[0] != 'resources') 
+			if (count($areas) == 1 && isset($areas[0]) && $areas[0] != 'resources') 
 			{
 				$filters['type'] = $cats[$areas[0]]['id'];
 			}

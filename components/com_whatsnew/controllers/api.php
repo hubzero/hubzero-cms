@@ -57,11 +57,27 @@ class WhatsnewApiController extends Hubzero_Api_Controller
 			$areas = array_merge($areas, $area);
 		}
 		
+		//parse our categories
+		//make sure we have a category
+		$category = ($category == '') ? 'all' : $category;
+		$category = array_filter(array_values(explode(',', $category)));
+		
+		//if we have an array of categories lets remove any areas not passed in
+		if(!in_array('all', $category))
+		{
+			foreach($areas as $k => $area)
+			{
+				if(!in_array($k, $category))
+				{
+					unset($areas[$k]);
+				}
+			}
+		}
+		
 		//parse the period
 		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_whatsnew' . DS . 'helpers' . DS . 'period.php');
 		$p = new WhatsnewPeriod( $period );
 		$p->process();
-		
 		
 		$results = $dispatcher->trigger(
 			'onWhatsnew', 
@@ -79,14 +95,14 @@ class WhatsnewApiController extends Hubzero_Api_Controller
 			foreach($results_section as $result)
 			{
 				$item = array();
-				$item['title'] = $result->title;
+				$item['title'] = stripslashes($result->title);
 				$item['link'] = $result->href;
 				$item['date'] = @$result->created;
 				switch($result->section)
 				{
-					case "resources":	$item['section'] = $result->area;			break;
-					case "content":		$item['section'] = "content articles";		break;
-					default:			$item['section'] = $result->section;		break;
+					case "resources":	$item['section'] = stripslashes($result->area);			break;
+					case "content":		$item['section'] = "content articles";					break;
+					default:			$item['section'] = stripslashes($result->section);		break;
 				}
 				if($content)
 					$item['text'] = $result->text;
