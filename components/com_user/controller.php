@@ -316,6 +316,8 @@ class UserController extends JController
 	{
 		global $mainframe;
 
+		$juser = JFactory::getUser();
+
 		$authenticator = JRequest::getVar('authenticator', '', 'method');
 
 		// If a specific authenticator is specified try to call the logout method for that plugin
@@ -352,6 +354,24 @@ class UserController extends JController
 
 		if(!JError::isError($error))
 		{
+			// If the authenticator is empty, but they have an active third party session,
+			// redirect to a page indicating this and offering complete signout
+			if($juser->auth_link_id && empty($authenticator))
+			{
+				ximport('Hubzero_Auth_Link');
+				ximport('Hubzero_Auth_Domain');
+				$auth_domain_id   = Hubzero_Auth_Link::find_by_id($juser->auth_link_id)->auth_domain_id;
+				$auth_domain_name = Hubzero_Auth_Domain::find_by_id($auth_domain_id)->authenticator;
+
+				// Redirect to user third party signout view
+				// Only do this for PUCAS for the time being (it's the one that doesn't lose session info after hub logout)
+				if($auth_domain_name == 'pucas')
+				{
+					$mainframe->redirect(JRoute::_('index.php?option=com_user&view=endsinglesignon&authenticator=' . $auth_domain_name, false));
+					return;
+				}
+			}
+
 			if ($return = JRequest::getVar('return', '', 'method', 'base64')) {
 				$return = base64_decode($return);
 				if (!JURI::isInternal($return)) {
