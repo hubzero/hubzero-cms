@@ -73,12 +73,12 @@ function submitbutton(pressbutton)
 						</td>
 					</tr>
 					<tr>
-						<td class="key"><?php echo JText::_('Status'); ?>:</td>
+						<td class="key"><?php echo JText::_('State'); ?>:</td>
 						<td>
-							<label for="status-up"><input class="option" type="radio" name="fields[status]" id="status-up" size="30" value="up"<?php if ($this->row->status == 'up') { echo ' checked="checked"'; } ?> /> <?php echo JText::_('up'); ?></label>
+							<label for="state-up"><input class="option" type="radio" name="fields[state]" id="state-up" size="30" value="up"<?php if ($this->row->state == 'up') { echo ' checked="checked"'; } ?> /> <?php echo JText::_('up'); ?></label>
 						</td>
 						<td>
-							<label for="status-down"><input class="option" type="radio" name="fields[status]" id="status-down" size="30" value="down"<?php if ($this->row->status == 'down') { echo ' checked="checked"'; } ?> /> <?php echo JText::_('down'); ?></label>
+							<label for="state-down"><input class="option" type="radio" name="fields[state]" id="state-down" size="30" value="down"<?php if ($this->row->state == 'down') { echo ' checked="checked"'; } ?> /> <?php echo JText::_('down'); ?></label>
 						</td>
 					</tr>
 					<tr>
@@ -139,8 +139,8 @@ function submitbutton(pressbutton)
 					<td><?php echo $this->escape($this->row->id); ?></td>
 				</tr>
 				<tr>
-					<th scope="row"><?php echo JText::_('Status'); ?></th>
-					<td><?php echo $this->escape($this->row->status); ?></td>
+					<th scope="row"><?php echo JText::_('State'); ?></th>
+					<td><?php echo $this->escape($this->row->state); ?></td>
 				</tr>
 			</tbody>
 		</table>

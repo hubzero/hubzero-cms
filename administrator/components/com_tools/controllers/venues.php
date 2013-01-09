@@ -166,7 +166,7 @@ class ToolsControllerVenues extends Hubzero_Controller
 		}
 		if (!$this->view->row->id)
 		{
-			$this->view->row->status = 'down';
+			$this->view->row->state = 'down';
 		}
 
 		$vl = new MwVenueLocation($mwdb);
@@ -293,20 +293,20 @@ class ToolsControllerVenues extends Hubzero_Controller
 	}
 
 	/**
-	 * Toggle a venue's status
+	 * Toggle a venue's state
 	 * 
 	 * @return     void
 	 */
-	public function statusTask()
+	public function stateTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken('get') or jexit('Invalid Token');
 
 		// Incoming
 		$id = JRequest::getInt('id', 0);
-		$status = strtolower(JRequest::getWord('status', 'up'));
+		$state = strtolower(JRequest::getWord('state', 'up'));
 
-		if ($status != 'up' && $status != 'down')
+		if ($state != 'up' && $state != 'down')
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
@@ -319,12 +319,12 @@ class ToolsControllerVenues extends Hubzero_Controller
 		$row = new MwVenue($mwdb);
 		if ($row->load($id))
 		{
-			$row->status = $status;
+			$row->state = $state;
 			if (!$row->store())
 			{
 				$this->setRedirect(
 					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-					JText::_('Status update failed.'),
+					JText::_('State update failed.'),
 					'error'
 				);
 				return;

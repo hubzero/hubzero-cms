@@ -55,7 +55,7 @@ class MwVenue extends JTable
 	 * 
 	 * @var string
 	 */
-	var $status;
+	var $state;
 
 	/**
 	 * varchar(255)
@@ -94,15 +94,15 @@ class MwVenue extends JTable
 			$this->setError(JText::_('No master provided'));
 			return false;
 		}
-		$this->status = strtolower(trim($this->status));
-		if (!$this->status) 
+		$this->state = strtolower(trim($this->state));
+		if (!$this->state) 
 		{
-			$this->setError(JText::_('No status provided.'));
+			$this->setError(JText::_('No state provided.'));
 			return false;
 		}
-		if (!in_array($this->status, array('up', 'down')))
+		if (!in_array($this->state, array('up', 'down')))
 		{
-			$this->setError(JText::_('Invalid status provided.'));
+			$this->setError(JText::_('Invalid state provided.'));
 			return false;
 		}
 
@@ -143,9 +143,9 @@ class MwVenue extends JTable
 	{
 		$where = array();
 
-		if (isset($filters['status']) && $filters['status'] != '') 
+		if (isset($filters['state']) && $filters['state'] != '') 
 		{
-			$where[] = "c.`status`='" . $filters['status'] . "'";
+			$where[] = "c.`state`='" . $filters['state'] . "'";
 		}
 		if (isset($filters['master']) && $filters['master'] != '') 
 		{
