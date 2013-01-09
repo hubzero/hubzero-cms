@@ -91,7 +91,7 @@ class plgAuthenticationPUCAS extends JPlugin
 
 		if (phpCAS::isAuthenticated() || phpCAS::checkAuthentication())
 		{
-			phpCAS::logoutWithRedirectService($service);
+			phpCAS::logoutWithRedirectService($service . '/index.php?option=com_user&task=logout&authenticator=pucas' . $return);
 		}
 	}
 
