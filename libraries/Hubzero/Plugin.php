@@ -156,5 +156,33 @@ class Hubzero_Plugin extends JPlugin
 
 		return $this->pluginMessageQueue;
 	}
+	
+	/**
+	 * Method to get plugin params
+	 *
+	 * @return	array
+	 */
+	public function getParams( $name, $folder )
+	{
+		//vars
+		$database =& JFactory::getDBO();
+		$table = "#__plugins";
+		
+		//load the params from databse
+		$sql = "SELECT params FROM {$table} WHERE folder='" . $folder . "' AND element='" . $name . "' AND published=1";
+		$database->setQuery( $sql );
+		$result = $database->loadResult();
+		
+		//params object
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
+		{
+			$paramsClass = 'JRegistry';
+		}
+		
+		//return params object
+		$params = new $paramsClass($result);
+		return $params;
+	}
 }
 
