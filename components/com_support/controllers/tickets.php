@@ -708,9 +708,39 @@ class SupportControllerTickets extends Hubzero_Controller
 			// Output form with error messages
 			$this->view->setLayout('new');
 			$this->view->task       = 'new';
+			$this->view->acl        = $this->acl;
 			$this->view->reporter   = $reporter;
 			$this->view->problem    = $problem;
 			$this->view->verified   = $verified;
+
+
+			if ($this->view->verified && $this->acl->check('update', 'tickets') > 0) 
+			{
+				$this->view->lists = array();
+				if (trim($this->config->get('group'))) 
+				{
+					$this->view->lists['owner'] = $this->_userSelectGroup(
+						'problem[owner]',
+						$problem['owner'], 
+						1, 
+						'', 
+						trim($this->config->get('group'))
+					);
+				} 
+				else 
+				{
+					$this->view->lists['owner'] = $this->_userSelect(
+						'problem[owner]', 
+						$problem['owner'], 
+						1
+					);
+				}
+				$this->view->lists['severities'] = SupportUtilities::getSeverities($this->config->get('severities'));
+				// Get resolutions
+				$sr = new SupportResolution($this->database);
+				$this->view->lists['resolutions'] = $sr->getResolutions();
+			}
+
 			$this->view->captchas   = $dispatcher->trigger('onGetComponentCaptcha');
 			$this->view->file_types = $this->config->get('file_ext');
 			$this->view->setError(2);
