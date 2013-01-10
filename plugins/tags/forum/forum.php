@@ -167,7 +167,7 @@ class plgTagsForum extends JPlugin
 		// Build the query
 		$e_count = "SELECT COUNT(f.id) FROM (SELECT e.id, COUNT(DISTINCT t.tagid) AS uniques";
 		$e_fields = "SELECT e.id, e.title, e.id AS alias, e.comment AS itext, e.comment AS ftext, e.state, e.created, e.created_by, e.modified, e.created AS publish_up, NULL AS publish_down, 
-					(CASE WHEN e.group_id > 0 THEN
+					(CASE WHEN e.scope_id > 0 AND e.scope='group' THEN
 						concat('/groups/', g.cn, concat('/forum/', coalesce(concat(s.alias, '/', coalesce(concat(c.alias, '/'), ''))), CASE WHEN e.parent > 0 THEN e.parent ELSE e.id END))
 					ELSE
 						concat('/forum/', coalesce(concat(s.alias, '/', coalesce(concat(c.alias, '/'), ''))), CASE WHEN e.parent > 0 THEN e.parent ELSE e.id END)
@@ -176,7 +176,7 @@ class plgTagsForum extends JPlugin
 		$e_from  = " FROM #__forum_posts AS e
 		 			LEFT JOIN #__forum_categories c ON c.id = e.category_id
 					LEFT JOIN #__forum_sections s ON s.id = c.section_id
-					LEFT JOIN #__xgroups g ON g.gidNumber = e.group_id
+					LEFT JOIN #__xgroups g ON g.gidNumber = e.scope_id
 					LEFT JOIN #__tags_object AS t ON t.objectid=e.id AND t.tbl='forum' AND t.tagid IN ($ids)";
 		$e_where  = " WHERE e.state=1 AND e.parent=0" . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '');
 		$e_where .= " GROUP BY e.id HAVING uniques=" . count($tags);

@@ -183,8 +183,6 @@ class plgTagsMembers extends JPlugin
 	 */
 	public function documents()
 	{
-		ximport('Hubzero_User_Profile');
-		ximport('Hubzero_User_Profile_helper');
 		ximport('Hubzero_Document');
 		Hubzero_Document::addComponentStylesheet('com_members');
 	}
@@ -197,6 +195,8 @@ class plgTagsMembers extends JPlugin
 	 */
 	public function out($row)
 	{
+		ximport('Hubzero_User_Profile');
+		ximport('Hubzero_User_Profile_Helper');
 		$member = Hubzero_User_Profile::getInstance($row->id);
 
 		if (strstr($row->href, 'index.php')) 
