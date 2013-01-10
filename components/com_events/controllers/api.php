@@ -35,9 +35,10 @@ class EventsApiController extends Hubzero_Api_Controller
 		}
 		
 		//get the request vars
-		$limit = JRequest::getVar("limit", 5);
+		$limit 	= JRequest::getVar('limit', 5);
+		$format = JRequest::getVar('format', 'json');
 		
-		//load up the
+		//load up the events
 		$database =& JFactory::getDBO();
 		$query = "SELECT * FROM #__events as e 
 					WHERE publish_up <= NOW() 
@@ -49,10 +50,11 @@ class EventsApiController extends Hubzero_Api_Controller
 		$database->setQuery($query);
 		$rows = $database->loadObjectList();
 		
-		$obj = new stdClass();
-		$obj->events = $rows;
-		$this->setMessageType("application/json");
-		$this->setMessage($obj);
+		//return results
+		$object = new stdClass();
+		$object->events = $rows;
+		$this->setMessageType( $format );
+		$this->setMessage( $object );
 	}
 	
 

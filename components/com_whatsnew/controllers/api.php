@@ -52,7 +52,7 @@ class WhatsnewApiController extends Hubzero_Api_Controller
 		//get the search areas
 		$areas = array();
 		$searchareas = $dispatcher->trigger('onWhatsNewAreas');
-		foreach ($searchareas as $area)
+		foreach($searchareas as $area)
 		{
 			$areas = array_merge($areas, $area);
 		}

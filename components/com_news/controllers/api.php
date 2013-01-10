@@ -35,11 +35,12 @@ class NewsApiController extends Hubzero_Api_Controller
 		}
 		
 		//get the request vars
-		$limit 		= JRequest::getVar("limit", 5);
-		$section 	= JRequest::getVar("section", 'news');
-		$category 	= JRequest::getVar("category", 'latest');
+		$limit 		= JRequest::getVar('limit', 5);
+		$section 	= JRequest::getVar('section', 'news');
+		$category 	= JRequest::getVar('category', 'latest');
+		$format 	= JRequest::getVar('format', 'json');
 		
-		//load up the
+		//load up the news articles
 		$database =& JFactory::getDBO();
 		$query = "SELECT c.* FROM #__content as c, #__sections as s, #__categories as cat 
 					WHERE s.alias='{$section}' 
@@ -52,12 +53,11 @@ class NewsApiController extends Hubzero_Api_Controller
 		$database->setQuery($query);
 		$rows = $database->loadObjectList();
 		
-		//sleep(5);
-		
-		$obj = new stdClass();
-		$obj->news = $rows;
-		$this->setMessageType("application/json");
-		$this->setMessage($obj);
+		//return the results
+		$object = new stdClass();
+		$object->news = $rows;
+		$this->setMessageType( $format );
+		$this->setMessage( $object );
 	}
 	
 

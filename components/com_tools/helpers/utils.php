@@ -258,7 +258,44 @@ class ToolsHelperUtils
 		return $logins;
 	}
 	
+	/**
+	 * Return a path to resource
+	 *
+	 * @param	$createdDate	Resource creation date
+	 * @param	$resourceId		Resource ID
+	 * @param	$versionId		Resource Version ID
+	 * 
+	 * @return     path
+	 */
+	public function getResourcePath( $createdDate, $resourceId, $versionId )
+	{
+		//include the resources html helper file
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
+		
+		//get resource upload path
+		$resourceParams = JComponentHelper::getParams('com_resources');
+		$path = DS . trim($resourceParams->get("uploadpath"), DS);
+		
+		//build path based on resource creation date and id
+		$path .= ResourcesHtml::build_path( $createdDate, $resourceId, '');
+		
+		//append version id if we have one
+		if($versionId)
+		{
+			$path .= DS . $versionId;
+		}
+		
+		return $path;
+	}
 	
+	/**
+	 * Return tool access
+	 *
+	 * @param	$tool	Tool name we are getting access rights to
+	 * @param	$login	User Login name
+	 * 
+	 * @return     BOOL
+	 */
 	public static function getToolAccess( $tool, $login = '')
 	{
 		//import needed HUBzero libraries
@@ -419,6 +456,13 @@ class ToolsHelperUtils
 	}
 	
 	
+	/**
+	 * Return a tool export access
+	 *
+	 * @param	$export_control 	Export control level for tool
+	 * 
+	 * @return     BOOL
+	 */
 	public function getToolExportAccess( $export_control )
 	{
 		//include needed HUBzero libraries
@@ -491,5 +535,86 @@ class ToolsHelperUtils
 		//passed all checks
 		$export_access->valid = 1;
 		return $export_access;
+	}
+	
+	
+	/**
+	 * Run Middleware Scripts
+	 *
+	 * @param	$comm		Command to run on middleware
+	 * @param	$output		Output to be returned from middleware
+	 * 
+	 * @return     mixed
+	 */
+	public function middleware($comm, &$output)
+	{
+		$retval = true; // Assume success.
+		$output = new stdClass();
+		$cmd = "/bin/sh ". JPATH_SITE . "/components/com_tools/scripts/mw $comm 2>&1 </dev/null";
+
+		exec($cmd, $results, $status);
+
+		// Check exec status
+		if ($status != 0) 
+		{
+			// Uh-oh. Something went wrong...
+			$retval = false;
+			//$this->setError($results[0]);
+		}
+
+		if (is_array($results))
+		{
+			// HTML
+			// Print out the applet tags or the error message, as the case may be.
+			foreach ($results as $line)
+			{
+				$line = trim($line);
+
+				// If it's a new session, catch the session number...
+				if ($retval && preg_match("/^Session is ([0-9]+)/", $line, $sess)) 
+				{
+					$retval = $sess[1];
+					$output->session = $sess[1];
+				} 
+				else 
+				{
+					if (preg_match("/width=\"(\d+)\"/i", $line, $param))
+					{
+						$output->width = trim($param[1], '"');
+					}
+					if (preg_match("/height=\"(\d+)\"/i", $line, $param))
+					{
+						$output->height = trim($param[1], '"');
+					}
+					if (preg_match("/^<param name=\"PORT\" value=\"?(\d+)\"?>/i", $line, $param))
+					{
+						$output->port = trim($param[1], '"');
+					}
+					if (preg_match("/^<param name=\"ENCPASSWORD\" value=\"?(.+)\"?>/i", $line, $param))
+					{
+						$output->password = trim($param[1], '"');
+					}
+					if (preg_match("/^<param name=\"CONNECT\" value=\"?(.+)\"?>/i", $line, $param))
+					{
+						$output->connect = trim($param[1], '"');
+					}
+					if (preg_match("/^<param name=\"ENCODING\" value=\"?(.+)\"?>/i", $line, $param))
+					{
+						$output->encoding = trim($param[1], '"');
+					}
+				}
+			}
+		}
+		else 
+		{
+			// JSON
+			$output = json_decode($results);
+			if ($output == null)
+			{
+				$retval = false;
+			}
+		}
+
+		return $retval;
 	}
 }

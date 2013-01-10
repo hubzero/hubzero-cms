@@ -7,20 +7,23 @@ class ToolsApiController extends Hubzero_Api_Controller
 	{
 		JLoader::import('joomla.environment.request');
 		JLoader::import('joomla.application.component.helper');
-
+		
+		//include tool utils
+		include_once( JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php' );
+		
 		switch($this->segments[0]) 
 		{
-			case 'storage':		$this->storage();				break;
-			case 'purge':		$this->purge();					break;
+			case 'index':		$this->index();				break;
+			case 'info':		$this->info();				break;
+			case 'screenshot':	$this->screenshot();		break;
+			case 'invoke':		$this->invoke();			break;
+			case 'view':		$this->view();				break;
+			case 'stop':		$this->stop();				break;
 			
-			case 'info':		$this->info();					break;
-			case 'list':		$this->listTools();				break;
-			case 'screenshot':	$this->sessionScreenshot();		break;
-			case 'invoke':		$this->invoke();				break;
-			case 'view':		$this->view();					break;
-			case 'stop':		$this->stop();					break;
+			case 'storage':		$this->storage();			break;
+			case 'purge':		$this->purge();				break;
 			
-			default:			$this->listTools();
+			default:			$this->index();
 		}
 	}
 	
@@ -34,42 +37,40 @@ class ToolsApiController extends Hubzero_Api_Controller
 	private function not_found()
 	{
 		$response = $this->getResponse();
-	
 		$response->setErrorMessage(404,'Not Found');
 	}
 	
-	private function storage()
+	/**
+	 * Method to report errors. creates error node for response body as well
+	 *
+	 * @param	$code		Error Code
+	 * @param	$message	Error Message
+	 * @param	$format		Error Response Format
+	 *
+	 * @return     void
+	 */
+	private function errorMessage( $code, $message, $format = 'json' )
 	{
-		//get the userid and attempt to load user profile
-		$userid = JFactory::getApplication()->getAuthn('user_id');
-		$result = Hubzero_User_Profile::getInstance($userid);
-		
-		//get request vars
-		$format = JRequest::getVar('format', 'application/json');
-		$type = JRequest::getVar('type', 'soft');
-		
-		//make sure we have a user
-		if ($result === false)	return $this->not_found();
-		
-		//get storage quota
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php' );
-		$disk_usage = ToolsHelperUtils::getDiskUsage( $result->get('username') );
-		
-		$com_tools_params = JComponentHelper::getParams('com_tools');
-		$path = DS . $com_tools_params->get('storagepath', 'webdav' . DS . 'home') . DS . $result->get('username');
-		
-		jimport('joomla.filesystem.folder');
-		$files = array();
-		//$files = JFolder::files( $path, '.', true, true, array('.svn', 'CVS') );
-		
-		//return result
+		//build error code and message
 		$object = new stdClass();
-		$object->storage = array('quota' => $disk_usage, 'files' => $files);
+		$object->error->code = $code;
+		$object->error->message = $message;
+		
+		//set http status code and reason
+		$response = $this->getResponse();
+		$response->setErrorMessage( $object->error->code, $object->error->message );
+		
+		//add error to message body
 		$this->setMessageType( $format );
 		$this->setMessage( $object );
 	}
 	
-	private function purge()
+	/**
+	 * Method to get list of tools
+	 *
+	 * @return     void
+	 */
+	private function index()
 	{
 		//get the userid and attempt to load user profile
 		$userid = JFactory::getApplication()->getAuthn('user_id');
@@ -78,195 +79,27 @@ class ToolsApiController extends Hubzero_Api_Controller
 		//make sure we have a user
 		if ($result === false)	return $this->not_found();
 		
-		//get request vars
-		$format = JRequest::getVar('format', 'application/json');
-		$degree = JRequest::getVar('degree', '');
+		//include needed tool libraries
+		ximport('Hubzero_Tool');
+		ximport('Hubzero_Tool_Version');
 		
-		//get the hubs storage host
-		$tool_params = JComponentHelper::getParams('com_tools');
-		$storage_host = $tool_params->get('storagehost', '');
-		
-		//check to make sure we have a storage host
-		if($storage_host == '')
-		{
-			die('no storage host');
-		}
-		
-		//check to make sure we have a degree
-		$accepted_degrees = array(
-			'default' => 'Minimally',
-			'olderthan1' => 'Older than 1 Day',
-			'olderthan7' => 'Older than 7 Days',
-			'olderthan30' => 'Older than 30 Days',
-			'all' => 'All'
-		);
-		if($degree == '' || !in_array($degree, array_keys($accepted_degrees)))
-		{
-			die('no degree supplied');
-		}
-		
-		//var to hold purge info
-		$info = array();
-		
-		//open stream
-		if (!$fp = stream_socket_client($storage_host, $error_num, $error_str, 30)) 
-		{
-			die("$error_str ($error_num)");
-		}
-		else 
-		{
-			fwrite($fp, 'purge user=' . $result->get('username') . ",degree=$degree \n");
-			while (!feof($fp))
-			{
-				$info[] = fgets($fp, 1024) . "\n";
-			}
-			fclose($fp);
-		}
-		
-		//trim array values
-		$info = array_map("trim", $info);
-		
-		//
-		if(in_array('Success.', $info))
-		{
-			//return result
-			$object = new stdClass();
-			$object->purge = array('degree' => $accepted_degrees[$degree], 'success' => 1);
-			$this->setMessageType( $format );
-			$this->setMessage( $object );
-		}
-	}
-	
-	
-	private function info()
-	{
-		//get the userid and attempt to load user profile
-		$userid = JFactory::getApplication()->getAuthn('user_id');
-		$result = Hubzero_User_Profile::getInstance($userid);
-		
-		//make sure we have a user
-		if ($result === false)	return $this->not_found();
-		
-		//get request vars
-		$format = JRequest::getVar('format', 'json');
-		$tool = JRequest::getVar('tool', '');
-		$version = JRequest::getVar('version', 'current');
-		
-		//we need a tool
-		if($tool == '')
-		{
-			$response = $this->getResponse();
-			$response->setErrorMessage( 400, 'Bad Request: Tool Alias Required' );
-			return;
-		}
-		
-		//load database object
-		JLoader::import("joomla.database.table");
-		$database =& JFactory::getDBO();
-		
-		//poll database for tool matching alias
-		$sql = "SELECT r.id, r.title, r.introtext as description, r.fulltxt as abstract, r.created FROM jos_resources as r WHERE r.published=1 AND r.alias='{$tool}'";
-		$database->setQuery($sql);
-		$t = $database->loadObject();
-		
-		//add alias
-		$t->alias = $tool;
-		
-		//veryify we have result
-		if($t == null)
-		{
-			$response = $this->getResponse();
-			$response->setErrorMessage( 404, 'Not Found: No Tool Found Matching the Alias: "' . $tool . '"' );
-			return;
-		}
-		
-		//remove tags and slashes
-		$t->abstract = stripslashes(strip_tags($t->abstract));
-		
-		//get the supported tag
-		$rconfig = JComponentHelper::getParams('com_resources');
-		$supportedtag = $rconfig->get('supportedtag', '');
-		
-		//get supportedtag usage
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
-		$this->rt = new ResourcesTags($database);
-		$supportedtagusage = $this->rt->getTagUsage($supportedtag, 'alias');
-		$t->supported = (in_array($t->alias, $supportedtagusage)) ? 1 : 0;
-		
-		//get screenshots
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'screenshot.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
-		$ts = new ResourcesScreenshot($database);
-		$tv = new ToolVersion($database);
-		$vid = $tv->getVersionIdFromResource($t->id, $version);
-		$shots = $ts->getScreenshots($t->id, $vid);
-		
-		//get base path
-		$path = $this->getResourcePath( $t->created, $t->id, $vid );
-		
-		//add full path to screenshot
-		$s = array();
-		foreach($shots as $shot)
-		{
-			$s[] = $path . DS . $shot->filename;
-		}
-		$t->screenshots = $s;
-		
-		//return result
-		$object = new stdClass();
-		$object->tool = $t;
-		$this->setMessageType( $format );
-		$this->setMessage( $object );
-	}
-	
-	private function getResourcePath( $createdDate, $resourceId, $versionId )
-	{
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
-		
-		//get resource upload path
-		$resourceParams = JComponentHelper::getParams('com_resources');
-		$path = DS . trim($resourceParams->get("uploadpath"), DS);
-		
-		//build path based on resource creation date and id
-		$path .= ResourcesHtml::build_path( $createdDate, $resourceId, '');
-		
-		//append version id if we have one
-		if($versionId)
-		{
-			$path .= DS . $versionId;
-		}
-		
-		return $path;
-	}
-	
-	private function listTools()
-	{
-		//get the userid and attempt to load user profile
-		$userid = JFactory::getApplication()->getAuthn('user_id');
-		$result = Hubzero_User_Profile::getInstance($userid);
-		
-		//make sure we have a user
-		if ($result === false)	return $this->not_found();
+		// Create a Tool & database objects
+		$database = JFactory::getDBO();
+		$tools = Hubzero_Tool::getMyTools();
 		
 		//get any request vars
 		$format = JRequest::getVar('format', 'json');
 		
-		ximport('Hubzero_Tool');
-		ximport('Hubzero_Tool_Version');
-		
-		// Create a Tool object
-		$database = JFactory::getDBO();
-		$tools = Hubzero_Tool::getMyTools();
-		
 		//get the supported tag
 		$rconfig = JComponentHelper::getParams('com_resources');
 		$supportedtag = $rconfig->get('supportedtag', '');
 		
 		//get supportedtag usage
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
-		$this->rt = new ResourcesTags($database);
-		$supportedtagusage = $this->rt->getTagUsage($supportedtag, 'alias');
+		$resource_tags = new ResourcesTags($database);
+		$supportedtagusage = $resource_tags->getTagUsage($supportedtag, 'alias');
 		
+		//create list of tools
 		$t = array();
 		foreach($tools as $k => $tool)
 		{
@@ -283,7 +116,12 @@ class ToolsApiController extends Hubzero_Api_Controller
 		$this->setMessage( $object );
 	}
 	
-	private function sessionScreenshot()
+	/**
+	 * Method to get tool information
+	 *
+	 * @return     void
+	 */
+	private function info()
 	{
 		//get the userid and attempt to load user profile
 		$userid = JFactory::getApplication()->getAuthn('user_id');
@@ -292,68 +130,164 @@ class ToolsApiController extends Hubzero_Api_Controller
 		//make sure we have a user
 		if ($result === false)	return $this->not_found();
 		
-		//get any request vars
-		$format = JRequest::getVar('format', 'png');
-		$sessionid = JRequest::getVar('sessionid', '');
+		//get request vars
+		$tool 		= JRequest::getVar('tool', '');
+		$version 	= JRequest::getVar('version', 'current');
+		$format 	= JRequest::getVar('format', 'json');
 		
-		$f = IMAGETYPE_PNG;
-		if($format == 'jpeg' || $format == 'jpg')
+		//we need a tool to continue
+		if($tool == '')
 		{
-			$f = IMAGETYPE_JPEG;
+			$this->errorMessage(400, 'Tool Alias Required.');
+			return;
 		}
-		else if($format == 'gif')
+		
+		//instantiate database object
+		$database =& JFactory::getDBO();
+		
+		//poll database for tool matching alias
+		$sql = "SELECT r.id, r.title, r.introtext as description, r.fulltxt as abstract, r.created FROM jos_resources as r WHERE r.published=1 AND r.alias='{$tool}'";
+		$database->setQuery($sql);
+		$tool_info = $database->loadObject();
+		
+		//veryify we have result
+		if($tool_info == null)
 		{
-			$f = IMAGETYPE_GIF;
+			$this->errorMessage(404, 'No Tool Found Matching the Alias: "' . $tool . '"');
+			return;
+		}
+		
+		//add tool alias to tool info from db
+		$tool_info->alias = $tool;
+		
+		//remove tags and slashes from abastract
+		$tool_info->abstract = stripslashes(strip_tags($tool_info->abstract));
+		
+		//get the supported tag
+		$rconfig = JComponentHelper::getParams('com_resources');
+		$supportedtag = $rconfig->get('supportedtag', '');
+		
+		//get supportedtag usage
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
+		$this->rt = new ResourcesTags($database);
+		$supportedtagusage = $this->rt->getTagUsage($supportedtag, 'alias');
+		$tool_info->supported = (in_array($tool_info->alias, $supportedtagusage)) ? 1 : 0;
+		
+		//get screenshots
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'screenshot.php');
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
+		$ts = new ResourcesScreenshot($database);
+		$tv = new ToolVersion($database);
+		$vid = $tv->getVersionIdFromResource($tool_info->id, $version);
+		$shots = $ts->getScreenshots($tool_info->id, $vid);
+		
+		//get base path
+		$path = ToolsHelperUtils::getResourcePath( $tool_info->created, $tool_info->id, $vid );
+		
+		//add full path to screenshot
+		$s = array();
+		foreach($shots as $shot)
+		{
+			$s[] = $path . DS . $shot->filename;
+		}
+		$tool_info->screenshots = $s;
+		
+		//return result
+		$object = new stdClass();
+		$object->tool = $tool_info;
+		$this->setMessageType( $format );
+		$this->setMessage( $object );
+	}
+	
+	/**
+	 * Method to return session screenshot
+	 *
+	 * @return     void
+	 */
+	private function screenshot()
+	{
+		//get the userid and attempt to load user profile
+		$userid = JFactory::getApplication()->getAuthn('user_id');
+		$result = Hubzero_User_Profile::getInstance($userid);
+		
+		//make sure we have a user
+		if ($result === false)	return $this->not_found();
+		
+		//import HUBzero image lib
+		ximport('Hubzero_Image');
+		
+		//get any request vars
+		$type 		= JRequest::getVar('type', 'png');
+		$sessionid 	= JRequest::getVar('sessionid', '');
+		$format 	= JRequest::getVar('format', 'json');
+		
+		$image_type = IMAGETYPE_PNG;
+		if($type == 'jpeg' || $type == 'jpg')
+		{
+			$image_type = IMAGETYPE_JPEG;
+		}
+		else if($type == 'gif')
+		{
+			$image_type = IMAGETYPE_GIF;
 		}
 		
 		//check to make sure we have a valid sessionid
 		if($sessionid == '' || !is_numeric($sessionid))
 		{
-			die("no session id");
+			$this->errorMessage(401, 'No session ID Specified.');
+			return;
 		}
-		
-		//import HUBzero image lib
-		ximport('Hubzero_Image');
 		
 		// check to make sure we have a home directory
 		$home_directory = DS .'webdav' . DS . 'home' . DS . strtolower($result->get('username'));
 		if(!is_dir($home_directory))
 		{
-			die("no home dir");
+			$this->errorMessage(500, 'Unable to find users home directory.');
+			return;
 		}
 		
 		//check to make sure we have a sessions dir
 		$home_directory .= DS . 'data' . DS . 'sessions';
 		if(!is_dir($home_directory))
 		{
-			die("no sessions dir");
+			$this->errorMessage(500, 'Unable to find users sessions directory.');
+			return;
 		}
 		
 		//check to make sure we have an active session with the ID supplied
-		$home_directory .= DS . $sessionid . 'L';
-		if(!is_dir($home_directory))
+		$home_directory .= DS . $sessionid . '{,L,D}';
+		$directories = glob($home_directory, GLOB_BRACE);
+		if(empty($directories))
 		{
-			$response = $this->getResponse();
-			$response->setErrorMessage(404,"No Session with the ID: " . $sessionid);
+			$this->errorMessage(404, "No Session directory with the ID: " . $sessionid);
 			return;
+		}
+		else
+		{
+			$home_directory = $directories[0];
 		}
 		
 		// check to make sure we have a screenshot
 		$screenshot = $home_directory . DS . 'screenshot.png';
 		if(!file_exists($screenshot))
 		{
-			$response = $this->getResponse();
-			$response->setErrorMessage(404, 'No screenshot Found');
+			$this->errorMessage(404,'No screenshot Found.');
 			return;
 		}
 		
 		//load image and serve up
 		$image = new Hubzero_image( $screenshot );
-		$this->setMessageType( 'image/' . $format );
-		$image->setImageType( $f );
+		$this->setMessageType( 'image/' . $type );
+		$image->setImageType( $image_type );
 		$image->display();
 	}
 	
+	
+	/**
+	 * Method to invoke new tools session
+	 *
+	 * @return     void
+	 */
 	private function invoke()
 	{
 		//get the userid and attempt to load user profile
@@ -366,7 +300,7 @@ class ToolsApiController extends Hubzero_Api_Controller
 		//get request vars
 		$tool_name 			= JRequest::getVar('app', '');
 		$tool_version 		= JRequest::getVar('version', 'default');
-		$response_format 	= JRequest::getVar('format', 'json');
+		$format 	= JRequest::getVar('format', 'json');
 		
 		//build application object
 		$app		 	= new stdClass;
@@ -377,23 +311,11 @@ class ToolsApiController extends Hubzero_Api_Controller
 		//check to make sure we have an app to invoke
 		if (!$app->name)
 		{
-			//build error code and message
-			$object = new stdClass();
-			$object->error->code = 400;
-			$object->error->message = 'You Must Supply a Valid Tool Name to Invoke.';
-			
-			//set http status code and reason
-			$response = $this->getResponse();
-			$response->setErrorMessage( $object->error->code, $object->error->message );
-			
-			//add error to message body
-			$this->setMessageType( $response_format );
-			$this->setMessage( $object );
+			$this->errorMessage(400, 'You Must Supply a Valid Tool Name to Invoke.');
 			return;
 		}
 		
 		//include needed tool libraries
-		include_once( JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php' );
 		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php' );
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php' );
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php');
@@ -447,18 +369,7 @@ class ToolsApiController extends Hubzero_Api_Controller
 		//make sure we have a valid tool
 		if ($app->title == '' || $app->toolname == '')
 		{
-			//build error code and message
-			$object = new stdClass();
-			$object->error->code = 400;
-			$object->error->message = 'The Tool "' . $tool_name . '" does not exist on the HUB.';
-			
-			//set http status code and reason
-			$response = $this->getResponse();
-			$response->setErrorMessage( $object->error->code, $object->error->message );
-			
-			//add error to message body
-			$this->setMessageType( $response_format );
-			$this->setMessage( $object );
+			$this->errorMessage(400, 'The tool "' . $tool_name . '" does not exist on the HUB.');
 			return;
 		}
 		
@@ -468,18 +379,7 @@ class ToolsApiController extends Hubzero_Api_Controller
 		//do we have access
 		if($toolAccess->valid != 1)
 		{
-			//build error code and message
-			$object = new stdClass();
-			$object->error->code = 400;
-			$object->error->message = $toolAccess->error->message;
-			
-			//set http status code and reason
-			$response = $this->getResponse();
-			$response->setErrorMessage( $object->error->code, $object->error->message );
-			
-			//add error to message body
-			$this->setMessageType( $response_format );
-			$this->setMessage( $object );
+			$this->errorMessage(400, $toolAccess->error->message);
 			return;
 		}
 		
@@ -499,18 +399,7 @@ class ToolsApiController extends Hubzero_Api_Controller
 		//can we open another session
 		if($remain <= 0)
 		{
-			//build error code and message
-			$object = new stdClass();
-			$object->error->code = 401;
-			$object->error->message = 'You are using all (' . $jobs . ') your available job slots.';
-			
-			//set http status code and reason
-			$response = $this->getResponse();
-			$response->setErrorMessage( $object->error->code, $object->error->message );
-			
-			//add error to message body
-			$this->setMessageType( $response_format );
-			$this->setMessage( $object );
+			$this->errorMessage(401, 'You are using all (' . $jobs . ') your available job slots.');
 			return;
 		}
 		
@@ -525,23 +414,12 @@ class ToolsApiController extends Hubzero_Api_Controller
 		$dispatcher->trigger('onBeforeSessionInvoke', array($app->toolname, $app->version));
 		
 		// We've passed all checks so let's actually start the session
-		$status = $this->middleware("start user=" . $result->get('username') . " ip=" . $app->ip . " app=" . $app->name . " version=" . $app->version, $output);
+		$status = ToolsHelperUtils::middleware("start user=" . $result->get('username') . " ip=" . $app->ip . " app=" . $app->name . " version=" . $app->version, $output);
 		
 		//make sure we got a valid session back from the middleware
 		if(!isset($output->session))
 		{
-			//build error code and message
-			$object = new stdClass();
-			$object->error->code = 500;
-			$object->error->message = 'There was a issue while trying to start the tool session. Please try again later.';
-			
-			//set http status code and reason
-			$response = $this->getResponse();
-			$response->setErrorMessage( $object->error->code, $object->error->message );
-			
-			//add error to message body
-			$this->setMessageType( $response_format );
-			$this->setMessage( $object );
+			$this->errorMessage(500, 'There was a issue while trying to start the tool session. Please try again later.');
 			return;
 		}
 		
@@ -566,18 +444,7 @@ class ToolsApiController extends Hubzero_Api_Controller
 		$ms->sessname = $app->caption;
 		if (!$ms->store()) 
 		{
-			//build error code and message
-			$object = new stdClass();
-			$object->error->code = 500;
-			$object->error->message = 'There was a issue while trying to start the tool session. Please try again later.';
-			
-			//set http status code and reason
-			$response = $this->getResponse();
-			$response->setErrorMessage( $object->error->code, $object->error->message );
-			
-			//add error to message body
-			$this->setMessageType( $response_format );
-			$this->setMessage( $object );
+			$this->errorMessage(500, 'There was a issue while trying to start the tool session. Please try again later.');
 			return;
 		}
 		
@@ -589,12 +456,17 @@ class ToolsApiController extends Hubzero_Api_Controller
 		//return result
 		if( $status )
 		{
-			$object = new stdClass();
-			$this->setMessageType( $response_format );
+			$this->setMessageType( $format );
 			$this->setMessage( $output );
 		}
 	}
 	
+	
+	/**
+	 * Method to view tool session
+	 *
+	 * @return     void
+	 */
 	private function view()
 	{
 		//get the userid and attempt to load user profile
@@ -604,46 +476,44 @@ class ToolsApiController extends Hubzero_Api_Controller
 		//make sure we have a user
 		if ($result === false)	return $this->not_found();
 		
-		//get the session id we want to stop
-		$session = JRequest::getVar("session", "");
-		
-		//make sure we have the session
-		if(!$session)
-		{
-			$response = $this->getResponse();
-			$response->setErrorMessage( 400, 'Bad Request: Session ID Needed' );
-			return;
-		}
-		
-		//
-		JLoader::import("joomla.database.table");
-		include_once( JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php' );
+		//include needed tool libs
 		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php' );
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php' );
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php');
 		
-		//get request vars
-		$app = new stdClass;
-		$app->sess	= $session;
-		$app->ip 	= $_SERVER["REMOTE_ADDR"];
-		
-		//
+		//instantiate db objects
 		$database =& JFactory::getDBO();
 		$mwdb =& ToolsHelperUtils::getMWDBO();
 		
-		//
-		$ms = new MwSession($mwdb);
-		$row = $ms->loadSession($app->sess, 'admin'); // fix this shit
+		//get request vars
+		$sessionid 	= JRequest::getVar('sessionid', '');
+		$format 	= JRequest::getVar('format', 'json');
+		$ip			= $_SERVER["REMOTE_ADDR"];
 		
-		//
-		if (!is_object($row) || !$row->appname) 
+		//make sure we have the session
+		if(!$sessionid)
 		{
-			$response = $this->getResponse();
-			$response->setErrorMessage( 400, 'Bad Request: Session Doesn\'t Exist' );
+			$this->errorMessage(400, 'Session ID Needed');
 			return;
 		}
 		
-		//
+		//create app object
+		$app = new stdClass;
+		$app->sess	= $sessionid;
+		$app->ip 	= $ip;
+		
+		//load the session
+		$ms = new MwSession($mwdb);
+		$row = $ms->loadSession($app->sess, 'admin');
+		
+		//if we didnt find a session
+		if (!is_object($row) || !$row->appname) 
+		{
+			$this->errorMessage(400, 'Session Doesn\'t Exist.');
+			return;
+		}
+		
+		//get the version
 		if (strstr($row->appname, '_')) 
 		{
 			$v = substr(strrchr($row->appname, '_'), 1);
@@ -651,16 +521,16 @@ class ToolsApiController extends Hubzero_Api_Controller
 			JRequest::setVar('version', $v);
 		}
 		
-		//
+		//load tool version
 		$tv = new ToolVersion($database);
 		$parent_toolname = $tv->getToolname($row->appname);
 		$toolname = ($parent_toolname) ? $parent_toolname : $row->appname;
 		$tv->loadFromInstance($row->appname);
 		
-		//
+		//command to run on middleware
 		$command = "view user=" . $result->get('username') . " ip=" . $app->ip . " sess=" . $app->sess;
-		//error_log(var_export($command, true));
-		//
+		
+		//app vars
 		$app->caption  = $row->sessname;
 		$app->name     = $row->appname;
 		$app->username = $row->username;
@@ -676,13 +546,13 @@ class ToolsApiController extends Hubzero_Api_Controller
 		$dispatcher->trigger('onBeforeSessionStart', array($toolname, $tv->revision));
 
 		// Call the view command
-		$status = $this->middleware($command, $output);
+		$status = ToolsHelperUtils::middleware($command, $output);
 		
 		// Trigger any events that need to be called after session start
 		$dispatcher->trigger('onAfterSessionStart', array($toolname, $tv->revision));
 		
 		//add the session id to the result
-		$output->session = $session;
+		$output->session = $sessionid;
 		
 		//add tool title to result
 		$output->tool = $tv->title;
@@ -691,12 +561,17 @@ class ToolsApiController extends Hubzero_Api_Controller
 		//return result
 		if($status)
 		{
-			$obj = new stdClass();
-			$this->setMessageType("application/json");
-			$this->setMessage($output);
+			$this->setMessageType( $format );
+			$this->setMessage( $output );
 		}
 	}
 	
+	
+	/**
+	 * Method to stop tool session
+	 *
+	 * @return     void
+	 */
 	private function stop()
 	{
 		//get the userid and attempt to load user profile
@@ -706,33 +581,31 @@ class ToolsApiController extends Hubzero_Api_Controller
 		//make sure we have a user
 		if ($result === false)	return $this->not_found();
 		
-		//get the session id we want to stop
-		$session = JRequest::getVar("session", "");
-		
-		//make sure we have the session
-		if(!$session)
-		{
-			$response = $this->getResponse();
-			$response->setErrorMessage( 400, 'Bad Request: Session ID Needed' );
-			return;
-		}
-		
 		//include needed libraries
-		include_once( JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php' );
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php' );
 		
 		//instantiate middleware database object
 		$mwdb =& ToolsHelperUtils::getMWDBO();
 		
+		//get request vars
+		$sessionid 	= JRequest::getVar('sessionid', '');
+		$format 	= JRequest::getVar('format', 'json');
+		
+		//make sure we have the session
+		if(!$sessionid)
+		{
+			$this->errorMessage(400, 'Missing session ID.');
+			return;
+		}
+		
 		//load the session we are trying to stop
 		$ms = new MwSession($mwdb);
-		$ms->load($session, $result->get("username"));
+		$ms->load($sessionid, $result->get("username"));
 		
 		//check to make sure session exists and it belongs to the user
 		if(!$ms->username || $ms->username != $result->get("username"))
 		{
-			$response = $this->getResponse();
-			$response->setErrorMessage( 400, 'Bad Request: Session Doesn\'t Exist or Does Not Belong to User' );
+			$this->errorMessage(400, 'Session Doesn\'t Exist or Does Not Belong to User');
 			return;
 		}
 		
@@ -747,7 +620,7 @@ class ToolsApiController extends Hubzero_Api_Controller
 		$dispatcher->trigger('onBeforeSessionStop', array($ms->appname));
 		
 		//run command to stop session
-		$status = $this->middleware("stop $session", $out);
+		$status = ToolsHelperUtils::middleware("stop $sessionid", $out);
 		
 		// Trigger any events that need to be called after session stop
 		$dispatcher->trigger('onAfterSessionStop', array($ms->appname));
@@ -755,82 +628,127 @@ class ToolsApiController extends Hubzero_Api_Controller
 		// was the session stopped successfully
 		if($status == 1)
 		{
-			$obj = new stdClass();
-			$obj->session = array("session" => $session, "status" => "stopped", "stopped" => date("Y-m-d H:i:s"));
-			$this->setMessageType("application/json");
-			$this->setMessage($obj);
+			$object = new stdClass();
+			$object->session = array("session" => $sessionid, "status" => "stopped", "stopped" => date("Y-m-d H:i:s"));
+			$this->setMessageType( $format );
+			$this->setMessage( $object );
 		}
 	}
 	
-	public function middleware($comm, &$output)
+	
+	/**
+	 * Method to return users storage results
+	 *
+	 * @return     void
+	 */
+	private function storage()
 	{
-		$retval = true; // Assume success.
-		$output = new stdClass();
-		$cmd = "/bin/sh ". JPATH_SITE . "/components/com_tools/scripts/mw $comm 2>&1 </dev/null";
-
-		exec($cmd, $results, $status);
-
-		// Check exec status
-		if ($status != 0) 
+		//get the userid and attempt to load user profile
+		$userid = JFactory::getApplication()->getAuthn('user_id');
+		$result = Hubzero_User_Profile::getInstance($userid);
+		
+		//make sure we have a user
+		if ($result === false)	return $this->not_found();
+		
+		//get request vars
+		$type 	= JRequest::getVar('type', 'soft');
+		$format = JRequest::getVar('format', 'json');
+		
+		//get storage quota
+		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php' );
+		$disk_usage = ToolsHelperUtils::getDiskUsage( $result->get('username') );
+		
+		//get the tools storage path
+		$com_tools_params = JComponentHelper::getParams('com_tools');
+		$path = DS . $com_tools_params->get('storagepath', 'webdav' . DS . 'home') . DS . $result->get('username');
+		
+		//get a list of files
+		jimport('joomla.filesystem.folder');
+		$files = array();
+		//$files = JFolder::files( $path, '.', true, true, array('.svn', 'CVS') );
+		
+		//return result
+		$object = new stdClass();
+		$object->storage = array('quota' => $disk_usage, 'files' => $files);
+		$this->setMessageType( $format );
+		$this->setMessage( $object );
+	}
+	
+	
+	/**
+	 * Method to purge users storage
+	 *
+	 * @return     void
+	 */
+	private function purge()
+	{
+		//get the userid and attempt to load user profile
+		$userid = JFactory::getApplication()->getAuthn('user_id');
+		$result = Hubzero_User_Profile::getInstance($userid);
+		
+		//make sure we have a user
+		if($result === false)	return $this->not_found();
+		
+		//get request vars
+		$degree = JRequest::getVar('degree', '');
+		$format = JRequest::getVar('format', 'json');
+		
+		//get the hubs storage host
+		$tool_params = JComponentHelper::getParams('com_tools');
+		$storage_host = $tool_params->get('storagehost', '');
+		
+		//check to make sure we have a storage host
+		if($storage_host == '')
 		{
-			// Uh-oh. Something went wrong...
-			$retval = false;
-			//$this->setError($results[0]);
+			$this->errorMessage(500, 'Unable to find storage host.');
+			return;
 		}
-
-		if (is_array($results))
+		
+		//list of acceptable purge degrees
+		$accepted_degrees = array(
+			'default' => 'Minimally',
+			'olderthan1' => 'Older than 1 Day',
+			'olderthan7' => 'Older than 7 Days',
+			'olderthan30' => 'Older than 30 Days',
+			'all' => 'All'
+		);
+		
+		//check to make sure we have a degree
+		if($degree == '' || !in_array($degree, array_keys($accepted_degrees)))
 		{
-			// HTML
-			// Print out the applet tags or the error message, as the case may be.
-			foreach ($results as $line)
-			{
-				$line = trim($line);
-
-				// If it's a new session, catch the session number...
-				if ($retval && preg_match("/^Session is ([0-9]+)/", $line, $sess)) 
-				{
-					$retval = $sess[1];
-					$output->session = $sess[1];
-				} 
-				else 
-				{
-					if (preg_match("/width=\"(\d+)\"/i", $line, $param))
-					{
-						$output->width = trim($param[1], '"');
-					}
-					if (preg_match("/height=\"(\d+)\"/i", $line, $param))
-					{
-						$output->height = trim($param[1], '"');
-					}
-					if (preg_match("/^<param name=\"PORT\" value=\"?(\d+)\"?>/i", $line, $param))
-					{
-						$output->port = trim($param[1], '"');
-					}
-					if (preg_match("/^<param name=\"ENCPASSWORD\" value=\"?(.+)\"?>/i", $line, $param))
-					{
-						$output->password = trim($param[1], '"');
-					}
-					if (preg_match("/^<param name=\"CONNECT\" value=\"?(.+)\"?>/i", $line, $param))
-					{
-						$output->connect = trim($param[1], '"');
-					}
-					if (preg_match("/^<param name=\"ENCODING\" value=\"?(.+)\"?>/i", $line, $param))
-					{
-						$output->encoding = trim($param[1], '"');
-					}
-				}
-			}
+			$this->errorMessage(401, 'No purge level supplied.');
+			return;
+		}
+		
+		//var to hold purge info
+		$purge_info = array();
+		
+		//open stream to purge files
+		if (!$fp = stream_socket_client($storage_host, $error_num, $error_str, 30)) 
+		{
+			die("$error_str ($error_num)");
 		}
 		else 
 		{
-			// JSON
-			$output = json_decode($results);
-			if ($output == null)
+			fwrite($fp, 'purge user=' . $result->get('username') . ",degree=$degree \n");
+			while (!feof($fp))
 			{
-				$retval = false;
+				$purge_info[] = fgets($fp, 1024) . "\n";
 			}
+			fclose($fp);
 		}
-
-		return $retval;
+		
+		//trim array values
+		$purge_info = array_map("trim", $purge_info);
+		
+		//check to make sure the purge was successful
+		if(in_array('Success.', $purge_info))
+		{
+			//return result
+			$object = new stdClass();
+			$object->purge = array('degree' => $accepted_degrees[$degree], 'success' => 1);
+			$this->setMessageType( $format );
+			$this->setMessage( $object );
+		}
 	}
 }
