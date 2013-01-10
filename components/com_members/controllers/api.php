@@ -240,7 +240,6 @@ class MembersApiController extends Hubzero_Api_Controller
 		if ($result === false)	return $this->not_found();
 		
 		//load database object
-		JLoader::import("joomla.database.table");
 		$database =& JFactory::getDBO();
 		
 		//get the supported tag
@@ -253,18 +252,34 @@ class MembersApiController extends Hubzero_Api_Controller
 		$supportedtagusage = $this->rt->getTagUsage($supportedtag, 'alias');
 		
 		//load users recent tools
-		$sql = "SELECT r.alias, r.title as name, r.introtext as description FROM jos_recent_tools as rt, jos_resources as r WHERE rt.uid={$result->get("uidNumber")} AND rt.tool=r.alias AND r.published=1 ORDER BY rt.created";
-		$database->setQuery($sql);
-		$recent = $database->loadObjectList();
+		$sql = "SELECT r.alias, tv.toolname, tv.title, tv.description, tv.toolaccess as access, tv.mw, tv.instance, tv.revision 
+				FROM #__resources as r, #__recent_tools as rt, #__tool_version as tv 
+				WHERE r.published=1
+				AND r.type=7
+				AND r.standalone=1
+				AND r.access!=4
+				AND r.alias=tv.toolname
+				AND tv.state=1
+				AND rt.uid={$result->get("uidNumber")}
+				AND rt.tool=r.alias
+				ORDER BY rt.created";
 		
-		foreach($recent as $k => $r)
+		$database->setQuery($sql);
+		$recent_tools = $database->loadObjectList();
+		
+		$r = array();
+		foreach($recent_tools as $k => $recent)
 		{
-			$recent[$k]->supported = (in_array($r->alias, $supportedtagusage)) ? 1 : 0;
+			$r[$k]['alias'] = $recent->alias;
+			$r[$k]['title'] = $recent->title;
+			$r[$k]['description'] = $recent->description;
+			$r[$k]['version'] = $recent->revision;
+			$r[$k]['supported'] = (in_array($recent->alias, $supportedtagusage)) ? 1 : 0;
 		}
 		
 		//encode sessions for return
 		$object = new stdClass();
-		$object->recenttools = $recent;
+		$object->recenttools = $r;
 		$this->setMessageType( "json" );
 		$this->setMessage( $object );
 	}

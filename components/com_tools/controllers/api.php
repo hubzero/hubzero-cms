@@ -83,12 +83,14 @@ class ToolsApiController extends Hubzero_Api_Controller
 		ximport('Hubzero_Tool');
 		ximport('Hubzero_Tool_Version');
 		
-		// Create a Tool & database objects
+		//instantiate database object
 		$database = JFactory::getDBO();
-		$tools = Hubzero_Tool::getMyTools();
 		
 		//get any request vars
 		$format = JRequest::getVar('format', 'json');
+		
+		//get list of tools
+		$tools = Hubzero_Tool::getMyTools();
 		
 		//get the supported tag
 		$rconfig = JComponentHelper::getParams('com_resources');
@@ -103,10 +105,11 @@ class ToolsApiController extends Hubzero_Api_Controller
 		$t = array();
 		foreach($tools as $k => $tool)
 		{
-			$t[$k]['alias'] = $tool->alias;
-			$t[$k]['name'] = $tool->title;
-			$t[$k]['description'] = $tool->description;
-			$t[$k]['supported'] = (in_array($tool->alias, $supportedtagusage)) ? 1 : 0;
+			$t[$k]['alias']			= $tool->alias;
+			$t[$k]['title']			= $tool->title;
+			$t[$k]['description'] 	= $tool->description;
+			$t[$k]['version'] 		= $tool->revision;
+			$t[$k]['supported'] 	= (in_array($tool->alias, $supportedtagusage)) ? 1 : 0;
 		}
 		
 		//encode and return result
@@ -130,6 +133,9 @@ class ToolsApiController extends Hubzero_Api_Controller
 		//make sure we have a user
 		if ($result === false)	return $this->not_found();
 		
+		//instantiate database object
+		$database =& JFactory::getDBO();
+		
 		//get request vars
 		$tool 		= JRequest::getVar('tool', '');
 		$version 	= JRequest::getVar('version', 'current');
@@ -142,11 +148,16 @@ class ToolsApiController extends Hubzero_Api_Controller
 			return;
 		}
 		
-		//instantiate database object
-		$database =& JFactory::getDBO();
-		
 		//poll database for tool matching alias
-		$sql = "SELECT r.id, r.title, r.introtext as description, r.fulltxt as abstract, r.created FROM jos_resources as r WHERE r.published=1 AND r.alias='{$tool}'";
+		$sql = "SELECT r.id, r.alias, tv.toolname, tv.title, tv.description, tv.toolaccess as access, tv.mw, tv.instance, tv.revision, r.fulltxt as abstract, r.created 
+				FROM #__resources as r, #__tool_version as tv
+				WHERE r.published=1
+				AND r.type=7
+				AND r.standalone=1
+				AND r.access!=4
+				AND r.alias=tv.toolname
+				AND tv.state=1
+				AND r.alias='{$tool}'";
 		$database->setQuery($sql);
 		$tool_info = $database->loadObject();
 		
@@ -300,7 +311,7 @@ class ToolsApiController extends Hubzero_Api_Controller
 		//get request vars
 		$tool_name 			= JRequest::getVar('app', '');
 		$tool_version 		= JRequest::getVar('version', 'default');
-		$format 	= JRequest::getVar('format', 'json');
+		$format 			= JRequest::getVar('format', 'json');
 		
 		//build application object
 		$app		 	= new stdClass;
