@@ -414,43 +414,106 @@ HUB.CoursesOutline = {
 
 		// When clicking publish checkbox
 		$('.unit').on('click', '.published-checkbox', function(){
-			var form  = $(this).parents('form');
-			var label = form.find('span.published-label-text');
-			var item  = form.parent('.asset-item');
+			var distLink        = false;
+			var form            = $(this).parents('form');
+			var label           = form.find('span.published-label-text');
+			var item            = form.parent('.asset-item');
+			var assetGroupTitle = $(this).parents('.asset-group-type-item').find('.asset-group-title').html();
 
-			// Create ajax call to change info in the database
-			$.ajax({
-				url: form.attr('action'),
-				data: form.serialize(),
-				dataType: "json",
-				type: 'POST',
-				cache: false,
-				statusCode: {
-					201: function(data){
-						if(label.html() == 'Published') {
-							replacement = 'Mark as reviewed and publish?';
-							item.removeClass('published').addClass('notpublished');
+			// If this is an Exam, we also want to set deployment info
+			// @FIXME: only do this if it isn't already deployed
+			if(assetGroupTitle == 'Exam' && item.hasClass('notpublished')){
+				// @FIXME: add a better method for getting form id (mainly because this one doesn't work once you publish the form)
+				var assetA    = item.find('.asset-preview a');
+				var assetHref = assetA.attr('href');
+				var formId    = assetHref.substr(assetHref.length - 1);
+
+				$.fancybox({
+					fitToView: false,
+					autoResize: false,
+					autoSize: false,
+					height: ($(window).height())*2/3,
+					type: 'iframe',
+					href: '/courses/form?task=deploy&formId='+formId+'&tmpl=component',
+					beforeClose: function() {
+						// Grab the distribution link
+						distLink = $('.fancybox-iframe').contents().find('.distribution-link a').attr('href');
+					},
+					afterClose: function() {
+						if(distLink && distLink.length){
+							// Update URL for asset to have proper link
+							// @FIXME: combine this call with the toggle publish call
+							$.ajax({
+								url: '/api/courses/assetsave',
+								data: form.serialize()+'&url='+encodeURIComponent(distLink),
+								dataType: "json",
+								type: 'POST',
+								cache: false,
+								statusCode: {
+									201: function(data){
+										// Update the link
+										assetA.attr('href', distLink);
+									},
+									401: function(data){
+										// Display the error message
+										HUB.CoursesOutline.errorMessage(data.responseText);
+									},
+									404: function(data){
+										HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
+									},
+									500: function(data){
+										// Display the error message
+										HUB.CoursesOutline.errorMessage(data.responseText);
+									}
+								}
+							});
+
+							// And toggle the published state
+							toggleState();
 						} else {
-							replacement = 'Published';
-							item.removeClass('notpublished').addClass('published');
+							// @FIXME: uncheck box?
 						}
-						label.html(replacement);
-
-						HUB.CoursesOutline.showProgressIndicator();
-					},
-					401: function(data){
-						// Display the error message
-						HUB.CoursesOutline.errorMessage(data.responseText);
-					},
-					404: function(data){
-						HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
-					},
-					500: function(data){
-						// Display the error message
-						HUB.CoursesOutline.errorMessage(data.responseText);
 					}
-				}
-			});
+				});
+			} else {
+				toggleState();
+			}
+
+			function toggleState() {
+				// Create ajax call to change info in the database
+				$.ajax({
+					url: form.attr('action'),
+					data: form.serialize(),
+					dataType: "json",
+					type: 'POST',
+					cache: false,
+					statusCode: {
+						201: function(data){
+							if(label.html() == 'Published') {
+								replacement = 'Mark as reviewed and publish?';
+								item.removeClass('published').addClass('notpublished');
+							} else {
+								replacement = 'Published';
+								item.removeClass('notpublished').addClass('published');
+							}
+							label.html(replacement);
+
+							HUB.CoursesOutline.showProgressIndicator();
+						},
+						401: function(data){
+							// Display the error message
+							HUB.CoursesOutline.errorMessage(data.responseText);
+						},
+						404: function(data){
+							HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
+						},
+						500: function(data){
+							// Display the error message
+							HUB.CoursesOutline.errorMessage(data.responseText);
+						}
+					}
+				});
+			}
 		});
 	},
 
@@ -468,6 +531,7 @@ HUB.CoursesOutline = {
 
 		// Set up file uploader on our file upload boxes
 		$('.uploadfiles').each(function(){
+			// Initialize a few variables
 			var assetslist      = $(this).parent('.asset-group-item').find('.assets-list');
 			var progressBar     = $(this).find('.uploadfiles-progress');
 			var assetGroupTitle = $(this).parents('.asset-group-type-item').find('.asset-group-title').html();
@@ -477,6 +541,8 @@ HUB.CoursesOutline = {
 				dropZone: $(this),
 				dataType: 'json',
 				statusCode: {
+					// 200 OK
+					// This is returned by the pdf upload at the moment
 					200: function(data){
 						if(assetGroupTitle == 'Exam') {
 							if(data.success) {
@@ -537,21 +603,31 @@ HUB.CoursesOutline = {
 								});
 							}
 						} else {
-							// Nothing right now...
+							// Display the error message
+							HUB.CoursesOutline.errorMessage(data.responseText);
+
+							// Reset progress bar
+							HUB.CoursesOutline.resetProgresBar(progressBar, 0);
 						}
 					},
+					// 201 created - this is returned by the standard asset upload
 					201: function(data){
+						// If this is an empty asset group, remove the "no files" list item first
 						if(assetslist.find('li:first').hasClass('nofiles'))
 						{
 							assetslist.find('li:first').remove();
 						}
+
+						// Loop through the uploaded files and add li for them
 						$.each(data.files, function (index, file) {
 							// Insert in our HTML (uses "underscore.js")
 							var li = _.template(HUB.CoursesOutline.Templates.asset, file);
 							assetslist.append(li);
 
+							// Get a pointer to our new asset item
 							var newAsset = assetslist.find('.asset-item:last');
 
+							// Update a few things after adding the new asset (reset the progress bar, make them sortable, etc...)
 							newAsset.find('.uniform').uniform();
 							newAsset.find('.toggle-editable').show();
 							newAsset.find('.title-edit').hide();
@@ -571,6 +647,7 @@ HUB.CoursesOutline = {
 						// Reset progress bar
 						HUB.CoursesOutline.resetProgresBar(progressBar, 0);
 					},
+					// 404 - this could come from a method not found, or the api not being configured at all
 					404: function(data){
 						HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
 
@@ -592,6 +669,7 @@ HUB.CoursesOutline = {
 				},
 				add: function(e, data) {
 					// If this is an exam, pass the file to forms
+					// @FIXME: only allow 1 exam upload at a time
 					if(assetGroupTitle == 'Exam' && data.files[0].type == 'application/pdf') {
 						data.url       = '/courses/form/upload?no_html=1';
 						data.paramName = 'pdf';
@@ -616,6 +694,8 @@ HUB.CoursesOutline = {
 
 	resetProgresBar: function(context, timeout)
 	{
+		var $ = this.jQuery;
+
 		var bar       = context.find('.bar');
 		var barBorder = context.find('.bar-border');
 
@@ -671,7 +751,7 @@ HUB.CoursesOutline = {
 					'<label class="published-label" for="published">',
 						'<span class="published-label-text">Mark as reviewed and publish?</span>',
 						'<input class="uniform published-checkbox" name="published" type="checkbox" />',
-						'<input type="hidden" class="asset_id" name="asset_id" value="<%= asset_id %>" />',
+						'<input type="hidden" class="asset_id" name="id" value="<%= asset_id %>" />',
 						'<input type="hidden" name="course_id" value="<%= course_id %>" />',
 					'</label>',
 					'</span>',

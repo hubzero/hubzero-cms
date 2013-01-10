@@ -44,19 +44,6 @@ class CoursesControllerForm extends Hubzero_Controller {
 	 */
 	public function execute()
 	{
-		// @FIXME: what's this? Is this when a test is completed?
-		if ($this->_task == 'index' && preg_match('#^/pdf2form/([-a-zA-Z0-9]{20})(?:$|\?)#', isset($_SERVER['SCRIPT_URL']) ? $_SERVER['SCRIPT_URL'] : $_SERVER['REDIRECT_SCRIPT_URL'], $ma))
-		{
-			$params = $_SERVER['argv']; 
-			$location = "/courses?controller=form&task=complete&crumb=".$ma[1];
-			if($params)
-			{
-				$location .= "&".implode("&", $params);
-			}
-			header("Location: {$location}");
-			exit();
-		}
-
 		// Get the user
 		$this->juser = JFactory::getUser();
 
@@ -254,15 +241,16 @@ class CoursesControllerForm extends Hubzero_Controller {
 		}
 		else
 		{
-			if ($_GET['tmpl'] == 'component')
+			if (JRequest::getInt('no_html', false))
 			{
 				echo json_encode(array('success'=>true, 'id'=>$dep->save(), 'formId'=>$pdf->getId()));
 				exit();
 			}
 			else
 			{
+				$tmpl = (JRequest::getWord('tmpl', false)) ? '&tmpl=component' : '';
 				$this->setRedirect(
-					JRoute::_('index.php?option=com_courses&controller=form&task=showDeployment&id='.$dep->save().'&formId='.$pdf->getId(), false),
+					JRoute::_('index.php?option=com_courses&controller=form&task=showDeployment&id='.$dep->save().'&formId='.$pdf->getId().$tmpl, false),
 					JText::_('Deployment successfully created'),
 					'passed'
 				);
@@ -335,20 +323,33 @@ class CoursesControllerForm extends Hubzero_Controller {
 			JError::raiseError(422);
 		}
 
-		$dep = PdfFormDeployment::fromCrumb($crumb);
+		$this->view->dep = PdfFormDeployment::fromCrumb($crumb);
 		$dbg = JRequest::getVar('dbg', false);
 
-		switch ($dep->getState())
+		switch ($this->view->dep->getState())
 		{
 			case 'pending': 
-				throw new ForbiddenError('This deployment is not yet available');
+				JError::raiseError(422, 'This deployment is not yet available');
 			case 'expired': 
-				require '../views/results/'.$dep->getResultsClosed().'.php'; 
+				require '../views/results/'.$this->view->dep->getResultsClosed().'.php'; 
 			break;
 			case 'active':
-				$incomplete = array();
-				$resp = $dep->getRespondent();
-				require $resp->getEndTime() ? 'views/results/'.$dep->getResultsOpen().'.php' : 'views/complete.php';
+				$this->view->incomplete = array();
+				$resp = $this->view->dep->getRespondent();
+				if($resp->getEndTime())
+				{
+					'views/results/'.$this->view->dep->getResultsOpen().'.php';
+				}
+				else
+				{
+					$this->_getStyles($this->_option, $this->_controller . '.css');
+					$this->_getScripts('assets/js/' . $this->_task);
+
+					//$title = $pdf->getTitle();
+					//$doc->setTitle($title);
+					//$path->addItem(htmlentities($title), $_SERVER['REQUEST_URI']);
+					$this->view->display();
+				}
 		}
 	}
 
@@ -703,7 +704,7 @@ class PdfFormDeployment
 	}
 
 	public function getLink() {
-		return 'https://'.$_SERVER['HTTP_HOST'].'/pdf2form/'.$this->crumb;
+		return 'https://'.$_SERVER['HTTP_HOST'].'/courses/form/complete?crumb='.$this->crumb;
 	}
 
 	public function getStartTime() {

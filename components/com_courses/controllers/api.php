@@ -679,7 +679,7 @@ class CoursesApiController extends Hubzero_Api_Controller
 		}
 
 		// Get the asset id
-		$id = JRequest::getInt('asset_id', 0);
+		$id = JRequest::getInt('id', 0);
 
 		// Get our asset object
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');

@@ -164,7 +164,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 														name="published"
 														type="checkbox"
 														<?php echo ($a->get('state') == 0) ? '' : 'checked="checked"'; ?> />
-													<input type="hidden" class="asset_id" name="asset_id" value="<?php echo $a->get('id'); ?>" />
+													<input type="hidden" class="asset_id" name="id" value="<?php echo $a->get('id'); ?>" />
 													<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
 												</label>
 											</span>
@@ -261,7 +261,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 														name="published"
 														type="checkbox"
 														<?php echo ($a->get('state') == 0) ? '' : 'checked="checked"'; ?> />
-													<input type="hidden" class="asset_id" name="asset_id" value="<?php echo $a->get('id'); ?>" />
+													<input type="hidden" class="asset_id" name="id" value="<?php echo $a->get('id'); ?>" />
 													<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
 												</label>
 											</span>

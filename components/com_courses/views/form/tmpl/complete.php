@@ -1,20 +1,17 @@
 <?
-$pdf = $dep->getForm();
-$title = $pdf->getTitle();
-$doc->setTitle($title);
-$doc->addScript('/components/com_pdf2form/resources/complete.js');
-$path->addItem(htmlentities($title), $_SERVER['REQUEST_URI']);
-$resp = $dep->getRespondent();
+$pdf = $this->dep->getForm();
+$resp = $this->dep->getRespondent();
 $progress = $resp->getProgress();
-$realLimit = $dep->getRealTimeLimit();
+$realLimit = $this->dep->getRealTimeLimit();
+$incomplete = $this->incomplete;
 
-if (($limit = $dep->getTimeLimit()) && is_null($resp->getStartTime())):
+if (($limit = $this->dep->getTimeLimit()) && is_null($resp->getStartTime())):
 	require 'timed_landing.php';
 else:
-	if ($dep->getTimeLimit()):
+	if ($this->dep->getTimeLimit()):
 ?>
 <script type="text/javascript">
-	window.timeLeft = <? echo  max(($dep->getTimeLimit() * 60) - (time() - strtotime($resp->getStartTime())), 0); ?>;
+	window.timeLeft = <? echo  max(($this->dep->getTimeLimit() * 60) - (time() - strtotime($resp->getStartTime())), 0); ?>;
 </script>
 <?
 	endif;
@@ -47,7 +44,7 @@ else:
 <fieldset>
 	<p>
 		<input type="hidden" name="task" value="submit" />
-		<input type="hidden" name="crumb" value="<?= $dep->getCrumb() ?>" />
+		<input type="hidden" name="crumb" value="<?= $this->dep->getCrumb() ?>" />
 		<button type="submit">Submit</button>
 	</p>
 </fieldset>

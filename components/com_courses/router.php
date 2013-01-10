@@ -215,7 +215,8 @@ function CoursesParseRoute($segments)
 			case 'index':
 			case 'layout':
 			case 'upload':
-			case 'showDeployment';
+			case 'showDeployment':
+			case 'complete':
 				$vars['controller'] = 'form';
 				$vars['task']       = $segments[1];
 			break;
