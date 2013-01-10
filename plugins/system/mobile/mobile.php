@@ -66,6 +66,8 @@ class plgSystemMobile extends JPlugin
 			$session->set("mobile", false);
 			JRequest::setVar("tmpl", "");
 			
+			$app =& JFactory::getApplication();
+			$app->redirect($_SERVER['SCRIPT_URI']);
 		}
 	}
 }
