@@ -1883,6 +1883,13 @@ class ResourcesHtml
 					$html .= self::primaryButton('link_disabled', '', 'Launch Tool', '', '', '', 1, $pop);
 					return $html;
 				}
+				
+				//are we on the iPad
+				$isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'], 'iPad');
+				
+				//get tool params
+				$params = JComponentHelper::getParams('com_tools');
+				$launchOnIpad = $params->get('launch_ipad', 0);
 
 				// Generate the URL that launches a tool session
 				$lurl ='';
@@ -1897,16 +1904,38 @@ class ResourcesHtml
 
 						$sess = $resource->tool ? $resource->tool : $resource->alias . '_r' . $resource->revision;
 						$v = (!isset($resource->revision) or $resource->revision=='dev') ? 'test' : $resource->revision;
-						$lurl = 'index.php?option=com_tools&app=' . $resource->alias . '&task=invoke&version=' . $v;
+						if($isiPad && $launchOnIpad)
+						{
+							$lurl = 'nanohub://tools/invoke/' . $resource->alias . '/' . $v;
+						}
+						else
+						{
+							$lurl = 'index.php?option=com_tools&app=' . $resource->alias . '&task=invoke&version=' . $v;
+						}
+						
 					} 
 					elseif (!isset($resource->revision) or $resource->revision=='dev') 
 					{ // serve dev version
-						$lurl = 'index.php?option=com_tools&app=' . $resource->alias . '&task=invoke&version=dev';
+						if($isiPad && $launchOnIpad)
+						{
+							$lurl = 'nanohub://tools/invoke/' . $resource->alias . '/dev';
+						}
+						else
+						{
+							$lurl = 'index.php?option=com_tools&app=' . $resource->alias . '&task=invoke&version=dev';
+						}
 					}
 				} 
 				else 
 				{
-					$lurl = 'index.php?option=com_tools&task=invoke&app=' . $resource->alias;
+					if($isiPad && $launchOnIpad)
+					{
+						$lurl = 'nanohub://tools/invoke/' . $resource->alias;
+					}
+					else
+					{
+						$lurl = 'index.php?option=com_tools&task=invoke&app=' . $resource->alias;
+					}
 				}
 
 				// Import a few things to look up the tool

@@ -218,7 +218,23 @@ class modToolList extends JObject
 
 					// from sep 28-07 version (svn revision) number is supplied at the end of the invoke command
 					//$url = 'index.php?option=com_mw&task=invoke&sess='.$tool->name.'&version='.$tool->revision;
-					$url = 'index.php?option=com_tools&task=invoke&app='.$tool->toolname.'&version='.$tool->revision;
+					
+					//are we on the iPad
+					$isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'], 'iPad');
+					
+					//get tool params
+					$params = JComponentHelper::getParams('com_tools');
+					$launchOnIpad = $params->get('launch_ipad', 0);
+					
+					//if we are on the ipad and we want to launch nanohub app
+					if($isiPad && $launchOnIpad)
+					{
+						$url = 'nanohub://tools/invoke/' . $tool->toolname . '/' . $tool->revision;
+					}
+					else
+					{
+						$url = 'index.php?option=com_tools&task=invoke&app='.$tool->toolname.'&version='.$tool->revision;
+					}
 
 					$cls = '';
 					// Build the HTML
@@ -254,6 +270,8 @@ class modToolList extends JObject
 					// Launch tool link
 					if ($this->can_launch && $tool->middleware != 'download') 
 					{
+						
+						
 						$html .= "\t\t\t" . ' <a href="'.$url.'" class="launchtool" title="Launch '.$tool->caption.'">Launch '.$tool->caption.'</a>' . "\n";
 					}
 					$html .= "\t\t" . ' </li>' . "\n";
