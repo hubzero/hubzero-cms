@@ -37,7 +37,9 @@ $text = ($this->task == 'edit' ? JText::_('COM_WISHLIST_EDIT') : JText::_('COM_W
 JToolBarHelper::title(JText::_('COM_WISHLIST') . ': ' . JText::_('COM_WISHLIST_LIST') . ': <small><small>[ ' . $text . ' ]</small></small>', 'generic.png');
 if ($canDo->get('core.edit')) 
 {
+	JToolBarHelper::apply();
 	JToolBarHelper::save();
+	JToolBarHelper::spacer();
 }
 JToolBarHelper::cancel();
 
@@ -50,34 +52,28 @@ JHTML::_('behavior.tooltip');
 var ownerassignees = new Array;
 <?php
 $i = 0;
-foreach ($ownerassignees as $k => $items) 
+if ($this->ownerassignees)
 {
-	foreach ($items as $v) 
+	foreach ($this->ownerassignees as $k => $items) 
 	{
-		echo 'ownerassignees[' . $i++ . "] = new Array( '$k','" . addslashes($v->id) . "','" . addslashes($v->name) . "' );\n\t\t";
+		foreach ($items as $v) 
+		{
+			echo 'ownerassignees[' . $i++ . "] = new Array( '$k','" . addslashes($v->id) . "','" . addslashes($v->name) . "' );\n\t\t";
+		}
 	}
 }
 ?>
 
 function submitbutton(pressbutton) 
 {
-	if (pressbutton =='resethits') {
-		if (confirm(<?php echo JText::_('COM_WISHLIST_RESET_HITS_WARNING'); ?>)){
-			submitform(pressbutton);
-			return;
-		} else {
-			return;
-		}
-	}
-
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
 		return;
 	}
 
 	// do field validation
-	if (document.getElementById('field-title').value == ''){
-		alert(<?php echo JText::_('COM_WISHLIST_ERROR_MISSING_TITLE'); ?>);
+	if (document.getElementById('field-about').value == ''){
+		alert(<?php echo JText::_('COM_WISHLIST_ERROR_MISSING_TEXT'); ?>);
 	} else {
 		submitform(pressbutton);
 	}
@@ -94,7 +90,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<th class="key"><label for="field-wishlist"><?php echo JText::_('COM_WISHLIST_CATEGORY'); ?>:</label></th>
 						<td>
-							<select name="fields[wishlist]" id="field-wishlist" onchange="changeDynaList('field-assigned', ownerassignees, document.getElementById('field-wishlist').options[document.getElementById('field-wishlist').selectedIndex].value, 0, 0);">
+							<select name="fields[wishlist]" id="field-wishlist" onchange="changeDynaList('fieldassigned', ownerassignees, document.getElementById('field-wishlist').options[document.getElementById('field-wishlist').selectedIndex].value, 0, 0);">
 								<option value="0"<?php echo ($this->row->wishlist == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('[none]'); ?></option>
 <?php if ($this->lists) { ?>
 	<?php foreach ($this->lists as $list) { ?>
@@ -119,17 +115,35 @@ function submitbutton(pressbutton)
 				</tbody>
 			</table>
 		</fieldset>
-<?php /*
+
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_WISHLIST_PLAN'); ?></span></legend>
 
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<th class="key"><label for="field-assigned"><?php echo JText::_('COM_WISHLIST_ASSIGNED'); ?>:</label></th>
+						<th class="key"><?php echo JText::_('COM_WISHLIST_DUE'); ?>:</th>
 						<td>
-							<select name="fields[assigned]" id="field-assigned">
-								<option value="0"<?php echo ($this->row->assigned == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('[none]'); ?></option>
+							<label for="field-due-never">
+								<input class="option" type="radio" name="fields[due]" id="field-due-never" value="0" <?php echo ($this->row->due == '' || $this->row->due == '0000-00-00 00:00:00') ? 'checked="checked"' : ''; ?> /> 
+								<?php echo JText::_('COM_WISHLIST_DUE_NEVER'); ?>
+							</label>
+						</td>
+						<th class="key"><?php echo JText::_('COM_WISHLIST_OR'); ?></th>
+						<td>
+							<label for="field-due-on">
+								<input class="option" type="radio" name="fields[due]" id="field-due-on" value="0" <?php echo ($this->row->due != '' && $this->row->due != '0000-00-00 00:00:00') ? 'checked="checked"' : ''; ?> /> 
+								<?php echo JText::_('COM_WISHLIST_DUE_ON'); ?>
+							</label>
+							<label for="field-due">
+								<input class="option" type="text" name="fields[due]" id="field-due" size="10" maxlength="10" value="<?php echo $this->escape($this->row->due); ?>" />
+							</label>
+						</td>
+					</tr>
+					<tr>
+						<th class="key"><label for="fieldassigned"><?php echo JText::_('COM_WISHLIST_ASSIGNED'); ?>:</label></th>
+						<td colspan="3">
+							<select name="fields[assigned]" id="fieldassigned">
 <?php if ($this->assignees) { ?>
 	<?php foreach ($this->assignees as $assignee) { ?>
 								<option value="<?php echo $assignee->id; ?>"<?php echo ($this->row->assigned == $assignee->id) ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($assignee->name)); ?></option>
@@ -139,14 +153,15 @@ function submitbutton(pressbutton)
 						</td>
 					</tr>
 					<tr>
-						<th class="key"><label for="field-pagetext"><?php echo JText::_('COM_WISHLIST_DESCRIPTION'); ?>:</label></th>
-						<td><textarea name="fields[pagetext]" id="field-pagetext" cols="35" rows="30"><?php echo $this->escape(stripslashes($this->plan->pagetext)); ?></textarea></td>
+						<th class="key"><label for="plan-pagetext"><?php echo JText::_('COM_WISHLIST_PAGETEXT'); ?>:</label></th>
+						<td colspan="3">
+							<textarea name="plan[pagetext]" id="plan-pagetext" cols="35" rows="30"><?php echo $this->escape(stripslashes($this->plan->pagetext)); ?></textarea>
+							<input type="hidden" name="plan[id]" id="plan-id" value="<?php echo $this->plan->id; ?>" />
+						</td>
 					</tr>
 				</tbody>
 			</table>
 		</fieldset>
-		*/
-?>
 	</div>
 	<div class="col width-40 fltrt">
 		<table class="meta" summary="<?php echo JText::_('Metadata'); ?>">

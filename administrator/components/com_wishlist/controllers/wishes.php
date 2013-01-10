@@ -201,7 +201,12 @@ class WishlistControllerWishes extends Hubzero_Controller
 
 		$this->view->ownerassignees = array();
 		$this->view->ownerassignees[-1] = array();
-		$this->view->ownerassignees[-1][] = JHTML::_('select.option', '-1', JText::_( 'Select Category' ), 'id', 'title');
+		$none = new stdClass;
+		$none->id = '-1';
+		$none->name = JText::_('Select Category');
+		$this->view->ownerassignees[-1][] = $none;//JHTML::_('select.option', '-1', JText::_( 'Select Category' ), 'id', 'title');
+
+		$this->view->assignees = null;
 
 		if ($this->view->lists)
 		{
@@ -220,11 +225,23 @@ class WishlistControllerWishes extends Hubzero_Controller
 				{
 					$query = "SELECT a.id, a.name FROM #__users AS a WHERE a.block = '0' AND a.id IN (" . implode(',', $owners['individuals']) . ") ORDER BY a.name";
 					$this->database->setQuery($query);
+					
 					$users = $this->database->loadObjectList();
 
+					$none = new stdClass;
+					$none->id = '0';
+					$none->name = JText::_('[none]');
+
+					$this->view->ownerassignees[$list->id][] = $none;
 					foreach ($users as $row2) 
 					{
-						$this->view->ownerassignees[$list->id][] = JHTML::_('select.option', $row2->id, $row2->name, 'id', 'title');
+						$this->view->ownerassignees[$list->id][] = $row2;//JHTML::_('select.option', $row2->id, $row2->name, 'id', 'title');
+					}
+					//$this->view->ownerassignees[$list->id] = $this->database->loadObjectList();
+
+					if ($list->id == $this->view->row->wishlist)
+					{
+						$this->view->assignees = $this->view->ownerassignees[$list->id];
 					}
 				}
 			}
@@ -234,12 +251,15 @@ class WishlistControllerWishes extends Hubzero_Controller
 		//$wishlist->advisory = $owners['advisory'];
 		//$wishlist->groups   = $owners['groups'];
 
+		// Get the plan for this wish
+		$objPlan = new WishlistPlan($this->database);
+		$plan = $objPlan->getPlan($this->view->row->id);
+		$this->view->plan = $plan ? $plan[0] : $objPlan;
+
 		// Get tags on this wish
 		include_once(JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'helpers' . DS . 'tags.php');
 		$tagging = new WishTags($this->database);
 		$this->view->tags = $tagging->get_tag_string($this->view->row->id);
-
-		$this->view->assignees = null;
 
 		// Set any errors
 		if ($this->getError()) 
