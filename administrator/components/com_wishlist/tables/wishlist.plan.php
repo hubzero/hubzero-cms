@@ -131,9 +131,9 @@ class WishlistPlan extends JTable
 		}
 
 		$query  = "SELECT *, xp.name AS authorname ";
-		$query .= "FROM #__wishlist_implementation AS p  ";
+		$query .= "FROM #__wishlist_implementation AS p ";
 		$query .= "JOIN #__xprofiles AS xp ON xp.uidNumber=p.created_by ";
-		$query .= "WHERE p.wishid = '" . $wishid . "' ORDER BY p.created DESC LIMIT 1";
+		$query .= "WHERE p.wishid = " . $this->_db->Quote($wishid) . " ORDER BY p.created DESC LIMIT 1";
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
@@ -151,7 +151,7 @@ class WishlistPlan extends JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE id='$oid'");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE id=" . $this->_db->Quote($oid));
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			return $this->bind($result);
@@ -176,8 +176,7 @@ class WishlistPlan extends JTable
 			return false;
 		}
 
-		$query = "DELETE FROM $this->_tbl WHERE wishid='" . $wishid . "'";
-		$this->_db->setQuery($query);
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE wishid=" . $this->_db->Quote($wishid));
 		$this->_db->query();
 		return true;
 	}

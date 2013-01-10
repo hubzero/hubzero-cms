@@ -186,6 +186,61 @@ class WishlistControllerWishes extends Hubzero_Controller
 			$this->view->form = $m->getForm();
 		}
 
+		$obj = new Wishlist($this->database);
+		$filters = array();
+		$filters['sort'] = 'title';
+		$filters['sort_Dir'] = 'ASC';
+		$this->view->lists = $obj->getRecords($filters);
+
+		// who are list owners?
+		$this->admingroup = $this->config->get('group', 'hubadmin');
+
+		$objOwner = new WishlistOwner($this->database);
+		$objG     = new WishlistOwnerGroup($this->database);
+		//$owners   = $objOwner->get_owners($wishlist->id, $this->admingroup, $wishlist);
+
+		$this->view->ownerassignees = array();
+		$this->view->ownerassignees[-1] = array();
+		$this->view->ownerassignees[-1][] = JHTML::_('select.option', '-1', JText::_( 'Select Category' ), 'id', 'title');
+
+		if ($this->view->lists)
+		{
+			foreach ($this->view->lists as $k => $list)
+			{
+				if ($list->category == 'resource')
+				{
+					include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
+					$list->resource = new ResourcesResource($this->database);
+					$list->resource->load($list->referenceid);
+				}
+				$this->view->ownerassignees[$list->id] = array();
+
+				$owners = $objOwner->get_owners($list->id, $this->admingroup, $list);
+				if (count($owners['individuals']) > 0) 
+				{
+					$query = "SELECT a.id, a.name FROM #__users AS a WHERE a.block = '0' AND a.id IN (" . implode(',', $owners['individuals']) . ") ORDER BY a.name";
+					$this->database->setQuery($query);
+					$users = $this->database->loadObjectList();
+
+					foreach ($users as $row2) 
+					{
+						$this->view->ownerassignees[$list->id][] = JHTML::_('select.option', $row2->id, $row2->name, 'id', 'title');
+					}
+				}
+			}
+		}
+
+		//$wishlist->owners   = $owners['individuals'];
+		//$wishlist->advisory = $owners['advisory'];
+		//$wishlist->groups   = $owners['groups'];
+
+		// Get tags on this wish
+		include_once(JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'helpers' . DS . 'tags.php');
+		$tagging = new WishTags($this->database);
+		$this->view->tags = $tagging->get_tag_string($this->view->row->id);
+
+		$this->view->assignees = null;
+
 		// Set any errors
 		if ($this->getError()) 
 		{

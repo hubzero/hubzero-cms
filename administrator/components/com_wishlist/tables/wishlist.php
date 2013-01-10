@@ -147,8 +147,8 @@ class Wishlist extends JTable
 
 		// get individuals
 		$sql = "SELECT id"
-			. "\n FROM $this->_tbl "
-			. "\n WHERE referenceid='" . $rid . "' AND category='" . $cat . "' ORDER BY id DESC LIMIT 1";
+			. " FROM $this->_tbl "
+			. " WHERE referenceid=" . $this->_db->Quote($rid) . " AND category=" . $this->_db->Quote($cat) . " ORDER BY id DESC LIMIT 1";
 
 		$this->_db->setQuery($sql);
 		return  $this->_db->loadResult();
@@ -263,7 +263,7 @@ class Wishlist extends JTable
 		{
 			return false;
 		}
-		$sql = "SELECT w.title FROM $this->_tbl AS w WHERE w.id=" . $id;
+		$sql = "SELECT w.title FROM $this->_tbl AS w WHERE w.id=" . $this->_db->Quote($id);
 
 		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
@@ -281,7 +281,7 @@ class Wishlist extends JTable
 		{
 			return false;
 		}
-		$sql = "SELECT w.* FROM $this->_tbl AS w WHERE w.id=" . $id . " AND w.referenceid=1 AND w.category='general'";
+		$sql = "SELECT w.* FROM $this->_tbl AS w WHERE w.id=" . $this->_db->Quote($id) . " AND w.referenceid=1 AND w.category='general'";
 
 		$this->_db->setQuery($sql);
 		$bingo = $this->_db->loadResult();
@@ -321,21 +321,21 @@ class Wishlist extends JTable
 		//if($cat == 'resource') {
 			//$sql .= "\n , r.title as resourcetitle, r.type as resourcetype, r.alias, r.introtext";
 		//}
-			$sql .= "\n FROM $this->_tbl AS w";
+			$sql .= " FROM $this->_tbl AS w";
 		//if($cat == 'resource') {
 			//$sql .= "\n JOIN #__resources AS r ON r.id=w.referenceid";	
 		//}
 		if ($id) 
 		{
-			$sql .=	"\n WHERE w.id=" . $id;
+			$sql .= " WHERE w.id=" . $this->_db->Quote($id);
 		} 
 		else if ($refid && $cat) 
 		{
-			$sql .=	"\n WHERE w.referenceid=" . $refid . " AND w.category='" . $cat . "'";
+			$sql .= " WHERE w.referenceid=" . $this->_db->Quote($refid) . " AND w.category=" . $this->_db->Quote($cat);
 		} 
 		else if ($primary) 
 		{
-			$sql .=	"\n WHERE w.referenceid=1 AND w.category='general'";
+			$sql .= " WHERE w.referenceid=1 AND w.category='general'";
 		}
 
 		$this->_db->setQuery($sql);
@@ -371,7 +371,7 @@ class Wishlist extends JTable
 		// currently for tools only
 		if ($type == 7) 
 		{
-			$query  = "SELECT v.id FROM #__tool_version as v JOIN #__resources as r ON r.alias = v.toolname WHERE r.id='" . $rid . "'";
+			$query  = "SELECT v.id FROM #__tool_version as v JOIN #__resources as r ON r.alias = v.toolname WHERE r.id=" . $this->_db->Quote($rid);
 			$query .= " AND v.state=3 ";
 			$query .= " OR v.state!=3 ORDER BY state DESC, revision DESC LIMIT 3";
 			$this->_db->setQuery($query);
@@ -395,9 +395,9 @@ class Wishlist extends JTable
 		if ($cat == 'resource') 
 		{
 			$sql = "SELECT r.title, r.type, r.alias, r.introtext, t.type as typetitle"
-				. "\n FROM #__resources AS r"
-				. "\n LEFT JOIN #__resource_types AS t ON t.id=r.type "
-				. "\n WHERE r.id='" . $refid . "'";
+				. " FROM #__resources AS r"
+				. " LEFT JOIN #__resource_types AS t ON t.id=r.type "
+				. " WHERE r.id=" . $this->_db->Quote($refid);
 			$this->_db->setQuery($sql);
 			$res  = $this->_db->loadObjectList();
 			$resource = ($res) ? $res[0]: array();
@@ -415,10 +415,10 @@ class Wishlist extends JTable
 	public function getCons($refid)
 	{
 		$sql = "SELECT n.uidNumber AS id"
-			 . "\n FROM #__xprofiles AS n"
-			 . "\n JOIN #__author_assoc AS a ON n.uidNumber=a.authorid"
-			 . "\n WHERE a.subtable = 'resources'"
-			 . "\n AND a.subid=" . $refid;
+			 . " FROM #__xprofiles AS n"
+			 . " JOIN #__author_assoc AS a ON n.uidNumber=a.authorid"
+			 . " WHERE a.subtable = 'resources'"
+			 . " AND a.subid=" . $this->_db->Quote($refid);
 
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
@@ -437,7 +437,7 @@ class Wishlist extends JTable
 		$query .= "JOIN #__xgroups AS xg ON g.cn=xg.cn ";
 		$query .= " JOIN #__tool AS t ON g.toolid=t.id ";
 		$query .= " JOIN #__resources as r ON r.alias = t.toolname";
-		$query .= " WHERE r.id = '" . $refid . "' AND g.role=1 ";
+		$query .= " WHERE r.id = " . $this->_db->Quote($refid) . " AND g.role=1 ";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -456,19 +456,19 @@ class Wishlist extends JTable
 		$w = array();
 		if (isset($filters['category']) && $filters['category']) 
 		{
-			$w[] = "m.category=" . $filters['category'];
+			$w[] = "m.category=" . $this->_db->Quote($filters['category']);
 		}
 		if (isset($filters['referenceid']) && $filters['referenceid']) 
 		{
-			$w[] = "m.referenceid=" . $filters['referenceid'];
+			$w[] = "m.referenceid=" . $this->_db->Quote($filters['referenceid']);
 		}
 		if (isset($filters['state'])) 
 		{
-			$w[] = "m.state=" . $filters['state'];
+			$w[] = "m.state=" . $this->_db->Quote($filters['state']);
 		}
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
-			$w[] = "m.title LIKE '%" . $filters['search'] . "%'";
+			$w[] = "m.title LIKE '%" . $this->_db->getEscaped($filters['search']) . "%'";
 		}
 
 		$sql .= (count($w) > 0) ? "WHERE " : "";
