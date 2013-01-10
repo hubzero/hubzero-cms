@@ -324,6 +324,46 @@ class WishlistControllerWishes extends Hubzero_Controller
 			return;
 		}
 
+		//$create_revision = JRequest::getInt('create_revision', 0, 'post');
+		$plan = JRequest::getVar('plan', array(), 'post');
+
+		// Initiate extended database class
+		$page = new WishlistPlan($this->database);
+		if (!$fields['id']) 
+		{
+			// New page - save it to the database
+			$old = new WishlistPlan($this->database);
+		} 
+		else 
+		{
+			// Existing page - load it up
+			$page->load($fields['id']);
+
+			// Get the revision before changes
+			$old = $page;
+		}
+
+		$page->bind($plan);
+
+		if ($plan['create_revision'] && rtrim(stripslashes($old->pagetext)) != rtrim(stripslashes($page->pagetext))) 
+		{
+			$page->version = $page->version + 1;
+			$page->id = 0;
+		}
+
+		if (!$page->store()) 
+		{
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
+			return;
+		}
+
+		//$page->wishid     = $wishid;
+		//$page->created_by = JRequest::getInt('created_by', $juser->get('id'), 'post');
+		//$page->created    = date('Y-m-d H:i:s', time());
+		//$page->approved   = 1;
+		//$page->pagetext   = rtrim($_POST['pagetext']);
+
 		if ($redirect) 
 		{
 			// Redirect

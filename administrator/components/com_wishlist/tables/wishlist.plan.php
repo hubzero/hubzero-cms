@@ -118,6 +118,39 @@ class WishlistPlan extends JTable
 	}
 
 	/**
+	 * Validate data
+	 * 
+	 * @return     boolean True if data is valid
+	 */
+	public function check()
+	{
+		$this->pagetext = rtrim($this->pagetext);
+		if (!$this->pagetext) 
+		{
+			$this->setError(JText::_('Please provide a plan'));
+			return false;
+		}
+
+		$this->version = intval($this->version);
+
+		$this->wishid = intval($this->wishid);
+		if (!$this->wishid) 
+		{
+			$this->setError(JText::_('Please provide a wish ID'));
+			return false;
+		}
+
+		if (!$this->id) 
+		{
+			$juser =& JFactory::getUser();
+			$this->created = date('Y-m-d H:i:s', time());  // use gmdate() ?
+			$this->created_by = $juser->get('id');
+		}
+
+		return true;
+	}
+
+	/**
 	 * Get a record for a wish
 	 * 
 	 * @param      integer $wishid Wish ID

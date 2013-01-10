@@ -34,7 +34,7 @@ $canDo = WishlistHelper::getActions('list');
 
 $text = ($this->task == 'edit' ? JText::_('COM_WISHLIST_EDIT') : JText::_('COM_WISHLIST_NEW'));
 
-JToolBarHelper::title(JText::_('COM_WISHLIST') . ': ' . JText::_('COM_WISHLIST_LIST') . ': <small><small>[ ' . $text . ' ]</small></small>', 'generic.png');
+JToolBarHelper::title(JText::_('COM_WISHLIST') . ': ' . JText::_('COM_WISHLIST_WISH') . ': <small><small>[ ' . $text . ' ]</small></small>', 'wishlist.png');
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::apply();
@@ -121,6 +121,14 @@ function submitbutton(pressbutton)
 
 			<table class="admintable">
 				<tbody>
+					<?php if ($this->plan->id) { ?>
+					<tr>
+						<th class="key"><label for="plan-create_revision"><?php echo JText::_('PLAN_NEW_REVISION'); ?></label></th>
+						<td>
+							<input type="checkbox" class="option" name="plan[create_revision]" id="plan-create_revision" value="1" />
+						</td>
+					</tr>
+					<?php } ?>
 					<tr>
 						<th class="key"><?php echo JText::_('COM_WISHLIST_DUE'); ?>:</th>
 						<td>
@@ -156,11 +164,18 @@ function submitbutton(pressbutton)
 						<th class="key"><label for="plan-pagetext"><?php echo JText::_('COM_WISHLIST_PAGETEXT'); ?>:</label></th>
 						<td colspan="3">
 							<textarea name="plan[pagetext]" id="plan-pagetext" cols="35" rows="30"><?php echo $this->escape(stripslashes($this->plan->pagetext)); ?></textarea>
-							<input type="hidden" name="plan[id]" id="plan-id" value="<?php echo $this->plan->id; ?>" />
 						</td>
 					</tr>
 				</tbody>
 			</table>
+			
+			<input type="hidden" name="plan[id]" id="plan-id" value="<?php echo $this->plan->id; ?>" />
+			<input type="hidden" name="plan[wishid]" value="<?php echo $this->row->id; ?>" />
+			<input type="hidden" name="plan[version]" value="<?php echo $this->plan->version; ?>" />
+			<input type="hidden" name="plan[approved]" value="<?php echo $this->plan->approved; ?>" />
+			<?php if (!$this->plan->id) { ?>
+				<input type="checkbox" class="option" name="plan[create_revision]" id="plan-create_revision" value="0" />
+			<?php } ?>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
