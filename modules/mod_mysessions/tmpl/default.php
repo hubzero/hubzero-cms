@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'], 'iPad');
-
 $juser =& JFactory::getUser();
 ?>
 <div class="<?php echo $this->moduleclass_sfx; ?>sessionlist">
@@ -76,18 +74,20 @@ $juser =& JFactory::getUser();
 				$cls .= 'session';
 			}
 
-			$href = JRoute::_('index.php?option=com_tools&task=session&sess='.$app->sessnum.'&app='.$appname);
-			if ($isiPad && $this->params->get('hubvnc', ''))
+			//are we on the iPad
+			$isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'], 'iPad');
+			
+			//get tool params
+			$params = JComponentHelper::getParams('com_tools');
+			$launchOnIpad = $params->get('launch_ipad', 0);
+			
+			if($isiPad && $launchOnIpad)
 			{
-				$hubvnc = rtrim($this->params->get('hubvnc', ''), DS);
-				$href = str_replace('{sessnum}', $app->sessnum, $hubvnc);
-				$href = str_replace('{viewtoken}', $app->viewtoken, $href);
-				$href = str_replace('{viewuser}', $app->viewuser, $href);
-				$href = str_replace('{geometry}', $app->geometry, $href);
-				$href = str_replace('{fwhost}', $app->fwhost, $href);
-				$href = str_replace('{fwport}', $app->fwport, $href);
-				$href = str_replace('{vncpass}', $app->vncpass, $href);
-				$href = str_replace('{readonly}', $app->readonly, $href);
+				$href = 'nanohub://tools/session/' . $app->sessnum;
+			}
+			else
+			{
+				$href = JRoute::_('index.php?option=com_tools&task=session&sess='.$app->sessnum.'&app='.$appname);
 			}
 ?>
 		<li class="<?php echo $cls; ?>">
