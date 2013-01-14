@@ -128,7 +128,7 @@ class plgTagsForum extends JPlugin
 			$gids = $this->_getGroupIds($juser->get('id'));
 			if (!$juser->authorise('core.view', 'com_forum'))
 			{
-				$addtl_where[] = 'e.group_id IN (0' . ($gids ? ',' . join(',', $gids) : '') . ')';
+				$addtl_where[] = 'e.scope_id IN (0' . ($gids ? ',' . join(',', $gids) : '') . ')';
 			}
 			else 
 			{

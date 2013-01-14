@@ -74,7 +74,7 @@ class plgYSearchForum extends YSearchPlugin
 			$gids = $authz->get_group_ids();
 			if (!$juser->authorise('core.view', 'com_groups'))
 			{
-				$addtl_where[] = 'f.group_id IN (0' . ($gids ? ',' . join(',', $gids) : '') . ')';
+				$addtl_where[] = 'f.scope_id IN (0' . ($gids ? ',' . join(',', $gids) : '') . ')';
 			}
 			else 
 			{
@@ -82,7 +82,7 @@ class plgYSearchForum extends YSearchPlugin
 
 				if ($gids)
 				{
-					$addtl_where[] = '(f.access IN (' . $viewlevels . ') OR ((f.access = 4 OR f.access = 5) AND f.group_id IN (0,' . join(',', $gids) . ')))';
+					$addtl_where[] = '(f.access IN (' . $viewlevels . ') OR ((f.access = 4 OR f.access = 5) AND f.scope_id IN (0,' . join(',', $gids) . ')))';
 				}
 				else 
 				{
@@ -113,8 +113,8 @@ class plgYSearchForum extends YSearchPlugin
 		$rows = new YSearchResultSQL(
 			"SELECT 
 				f.title,
-				coalesce(f.comment, '') AS description, f.group_id, s.alias as sect, c.alias as cat, CASE WHEN f.parent > 0 THEN f.parent ELSE f.id END as thread,
-				(CASE WHEN f.group_id > 0 THEN
+				coalesce(f.comment, '') AS description, f.scope_id, s.alias as sect, c.alias as cat, CASE WHEN f.parent > 0 THEN f.parent ELSE f.id END as thread,
+				(CASE WHEN f.scope_id > 0 AND f.scope='group' THEN
 					concat('/groups/', g.cn, '/forum/')
 				ELSE
 					concat('/forum/', coalesce(concat(s.alias, '/', coalesce(concat(c.alias, '/'), ''))), CASE WHEN f.parent > 0 THEN f.parent ELSE f.id END)
@@ -128,7 +128,7 @@ class plgYSearchForum extends YSearchPlugin
 			LEFT JOIN jos_forum_sections s
 				ON s.id = c.section_id
 			LEFT JOIN jos_xgroups g
-				ON g.gidNumber = f.group_id
+				ON g.gidNumber = f.scope_id
 			WHERE 
 				f.state = 1 AND 
 				$weight > 0".
