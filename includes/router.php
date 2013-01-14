@@ -171,7 +171,7 @@ class JRouterSite extends JRouter
 					return $vars;
 				}
 
-				if ($vars['option'] == 'com_user' && $vars['view'] == 'logout') {
+				if ($vars['option'] == 'com_user' && ($vars['view'] == 'logout' || $vars['task'] == 'logout' || JRequest::getWord('task') == 'logout')) {
 					return $vars;
 				}
 
