@@ -396,7 +396,7 @@ class ResourcesControllerAttachments extends Hubzero_Controller
 		{
 			$dbh =& JFactory::getDBO();
 
-			if (is_readable($path . DS . $file['name'])
+			if (is_readable($path . DS . $file['name']))
 			{
 				$hash = @sha1_file($path . DS . $file['name']);
 
