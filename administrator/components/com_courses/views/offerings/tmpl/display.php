@@ -97,9 +97,10 @@ function submitbutton(pressbutton)
 				<th scope="col"><?php echo JText::_('ID'); ?></th>
 				<th scope="col"><?php echo JText::_('Title'); ?></th>
 				<th scope="col"><?php echo JText::_('Starts'); ?></th>
-				<th scope="col"><?php echo JText::_('Live'); ?></th>
+				<!-- <th scope="col"><?php echo JText::_('Live'); ?></th> -->
 				<th scope="col"><?php echo JText::_('Ends'); ?></th>
 				<th scope="col"><?php echo JText::_('Managers'); ?></th>
+				<th scope="col"><?php echo JText::_('Sections'); ?></th>
 				<th scope="col"><?php echo JText::_('Enrollment'); ?></th>
 				<th scope="col"><?php echo JText::_('Units'); ?></th>
 				<th scope="col"><?php echo JText::_('Pages'); ?></th>
@@ -140,38 +141,14 @@ foreach ($this->rows as $row)
 					</span>
 <?php } ?>
 				</td>
-				<!-- <td>
-<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>">
-						<?php echo $this->escape($row->get('alias')); ?>
-					</a>
-<?php } else { ?>
-					<?php echo $this->escape($row->get('alias')); ?>
-<?php } ?>
-				</td> -->
 				<td>
 					<?php echo JHTML::_('date', $row->get('publish_up'), $dateFormat, $tz); ?>
 				</td>
-				<td>
-<?php /*if ($canDo->get('core.edit.state')) { ?>
-					<?php if ($row->get('state')) { ?>
-					<a class="jgrid" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=unpublish&amp;id[]=<?php echo $row->get('id'); ?>" title="<?php echo JText::_('Unpublish offering'); ?>">
-						<span class="state publish">
-							<span class="text"><?php echo JText::_('Published'); ?></span>
-						</span>
-					</a>
-					<?php } else { ?>
-					<a class="jgrid" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=publish&amp;id[]=<?php echo $row->get('id'); ?>" title="<?php echo JText::_('Publish offering'); ?>">
-						<span class="state unpublish">
-							<span class="text"><?php echo JText::_('Unpublished'); ?></span>
-						</span>
-					</a>
-					<?php } ?>
-<?php }*/ ?>
+				<!-- <td>
 					<?php echo JHTML::_('date', $row->get('start_date'), $dateFormat, $tz); ?>
 					 - 
 					<?php echo JHTML::_('date', $row->get('end_date'), $dateFormat, $tz); ?>
-				</td>
+				</td> -->
 				<td>
 					<?php echo ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('publish_down'), $dateFormat, $tz) : JText::_('(never)'); ?>
 				</td>
@@ -185,6 +162,9 @@ foreach ($this->rows as $row)
 						<?php echo $managers; ?>
 					</span>
 <?php } ?>
+				</td>
+				<td>
+					0
 				</td>
 				<td>
 <?php if ($canDo->get('core.manage')) { ?>
