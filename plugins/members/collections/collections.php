@@ -619,7 +619,7 @@ class plgMembersCollections extends JPlugin
 		}
 
 		$app =& JFactory::getApplication();
-		$app->redirect(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name . '&task=' . $this->model->collection($post['collection_id'])->get('alias')));
+		$app->redirect(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name . '&task=' . $this->model->collection($p['collection_id'])->get('alias')));
 	}
 
 	/**

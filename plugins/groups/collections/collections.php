@@ -661,7 +661,7 @@ class plgGroupsCollections extends JPlugin
 		}
 
 		$app =& JFactory::getApplication();
-		$app->redirect(JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $this->model->collection($post['collection_id'])->get('alias')));
+		$app->redirect(JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $this->model->collection($p['collection_id'])->get('alias')));
 	}
 
 	/**

@@ -224,12 +224,21 @@ class CollectionsControllerMedia extends Hubzero_Controller
 		if (substr($listdir, 0, 3) == 'tmp')
 		{
 			$item = new CollectionsModelItem($listdir);
+			$item->set('id', 0);
 			$item->set('state', 0);
 			$item->set('description', $listdir);
-			if ($item->store())
+			if (!$item->store())
 			{
-				$listdir = $item->get('id');
+				echo json_encode(array(
+					'success'   => false, 
+					'errors'    => $item->getErrors(),
+					'file'      => 'http://',
+					'directory' => '',
+					'id'        => $listdir
+				));
+				return;
 			}
+			$listdir = $item->get('id');
 		}
 
 		// Create database entry
@@ -242,7 +251,15 @@ class CollectionsControllerMedia extends Hubzero_Controller
 
 		if (!$asset->store()) 
 		{
-			$this->setError($asset->getError());
+			//$this->setError($asset->getError());
+			echo json_encode(array(
+				'success'   => false, 
+				'errors'    => $asset->getErrors(),
+				'file'      => 'http://',
+				'directory' => '',
+				'id'        => $listdir
+			));
+			return;
 		}
 
 		//echo result
