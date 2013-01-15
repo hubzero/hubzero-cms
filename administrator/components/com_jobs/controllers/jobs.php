@@ -98,8 +98,8 @@ class JobsControllerJobs extends Hubzero_Controller
 		$obj = new Job($this->database);
 		$this->view->rows = $obj->get_openings($this->view->filters, $this->juser->get('id'), 1);
 
-		$this->view->total = $obj->get_openings($this->view->filters, $this->juser->get('id'), 1, 1);
-
+		$this->view->total = $obj->get_openings($this->view->filters, $this->juser->get('id'), 1, '', 1);
+		
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
