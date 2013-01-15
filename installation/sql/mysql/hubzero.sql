@@ -2541,18 +2541,27 @@ CREATE TABLE `#__users_transactions` (
   KEY `#__users_transactions_referenceid_categroy_type_idx` (`referenceid`,`category`,`type`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE `#__venue` (
+CREATE TABLE `venue` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `venue` varchar(40),
-  `network` varchar(40),
+  `venue` varchar(40) DEFAULT NULL,
+  `state` varchar(15) DEFAULT NULL,
+  `type` varchar(10) DEFAULT NULL,
+  `mw_version` varchar(3) DEFAULT NULL,
+  `ssh_key_path` varchar(200) DEFAULT NULL,
+  `latitude` double DEFAULT NULL,
+  `longitude` double DEFAULT NULL,
+  `master` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE `#__venue_countries` (
+CREATE TABLE `venue_countries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `countrySHORT` varchar(40),
+  `venue_id` int(11) NOT NULL,
+  `countrySHORT` char(2) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
 
 CREATE TABLE `#__vote_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
