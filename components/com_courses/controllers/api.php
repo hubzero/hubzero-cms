@@ -342,6 +342,7 @@ class CoursesApiController extends Hubzero_Api_Controller
 		// Include needed files
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php');
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
 
 		// @FIXME: should these come from the global settings, or should they be courses specific
 		// Get config
@@ -493,8 +494,6 @@ class CoursesApiController extends Hubzero_Api_Controller
 			{
 				$escaped_file = escapeshellarg($file);
 				// @FIXME: check for symlinks and other potential security concerns
-				// @FIXME: also need to handle zip files where the hubpresenter contents are in a directory,
-				//         as opposed to dirctly in the zip file
 				if($result = shell_exec("unzip $escaped_file -d $uploadDirectory"))
 				{
 					// Remove original archive
@@ -508,11 +507,14 @@ class CoursesApiController extends Hubzero_Api_Controller
 			}
 		}
 
+		// Get the path to the new asset
+		$path = CoursesModelAsset::getInstance($row2->asset_id)->path($this->course_id);
+
 		$files = array(
 			'asset_id'    => $row2->asset_id,
 			'asset_title' => $row->title,
 			'asset_type'  => $row->type,
-			'asset_url'   => $file,
+			'asset_url'   => $path,
 			'course_id'   => $row->course_id
 		);
 

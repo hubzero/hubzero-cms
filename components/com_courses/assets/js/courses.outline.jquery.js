@@ -37,6 +37,7 @@ HUB.CoursesOutline = {
 		HUB.CoursesOutline.resizeFileUploader();
 		HUB.CoursesOutline.setupErrorMessage();
 		HUB.CoursesOutline.calendar();
+		HUB.CoursesOutline.preview();
 	},
 
 	toggleUnits: function()
@@ -768,6 +769,23 @@ HUB.CoursesOutline = {
 						});
 					});
 				}
+			});
+		});
+	},
+
+	preview: function()
+	{
+		var $ = this.jQuery;
+
+		// Setup preview links to open in lightbox
+		$('.unit').on('click', '.asset-preview a', function(e){
+			e.preventDefault();
+
+			$.fancybox({
+				type: 'iframe',
+				autoSize: true,
+				width: ($(window).width())*5/6,
+				href: $(this).attr('href')
 			});
 		});
 	},
