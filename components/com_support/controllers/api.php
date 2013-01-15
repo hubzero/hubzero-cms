@@ -51,14 +51,11 @@ class SupportApiController extends Hubzero_Api_Controller
 		JLoader::import('joomla.environment.request');
 		JLoader::import('joomla.application.component.helper');
 
-		$this->segments = $this->getRouteSegments();
-		$this->response = $this->getResponse();
-
 		$this->config = JComponentHelper::getParams('com_support');
 		$this->database = JFactory::getDBO();
 
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'acl.php');
-		$this->acl = SupportACL::getACL();
+		//include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'acl.php');
+		//$this->acl = SupportACL::getACL();
 
 		switch ($this->segments[0]) 
 		{
@@ -71,15 +68,28 @@ class SupportApiController extends Hubzero_Api_Controller
 	}
 
 	/**
-	 * Short description for 'not_found'
+	 * Method to report errors. creates error node for response body as well
 	 *
-	 * Long description (if any) ...
+	 * @param	$code		Error Code
+	 * @param	$message	Error Message
+	 * @param	$format		Error Response Format
 	 *
 	 * @return     void
 	 */
-	private function error()
+	private function errorMessage($code, $message, $format = 'json')
 	{
-		$this->getResponse()->setErrorMessage(404, 'Not Found');
+		//build error code and message
+		$object = new stdClass();
+		$object->error->code    = $code;
+		$object->error->message = $message;
+
+		//set http status code and reason
+		$this->getResponse()
+		     ->setErrorMessage($object->error->code, $object->error->message);
+
+		//add error to message body
+		$this->setMessageType($format);
+		$this->setMessage($object);
 	}
 
 	/**
@@ -188,25 +198,10 @@ class SupportApiController extends Hubzero_Api_Controller
 
 		$limit = JRequest::getInt('limit', 25);
 		$start = JRequest::getInt('limitstart', 0);
-		//$period = JRequest::getVar('period', 'month');
-		//$category = JRequest::getVar('category', '');
-
-		/*if ($this->acl->check('read', 'tickets')) 
-		{
-		}
-
-		ximport('Hubzero_Whatsnew');
-		JLoader::import('joomla.plugin.helper');
-
-		//encode results and return response
-		$object = new stdClass();
-		$object->tickets = Hubzero_Whatsnew::getWhatsNewBasedOnPeriodAndCategory( $period, $category, $limit );*/
 
 		$obj = new SupportTicket($this->database);
 		$obj->tickets = null;
 
-		//$this->response->setResponseProvides($format);
-		//$this->response->setMessage($object);
 		$this->setMessageType($format);
 		$this->setMessage($obj);
 	}
@@ -233,10 +228,7 @@ class SupportApiController extends Hubzero_Api_Controller
 		$ticket->report   = JRequest::getVar('report', '', 'post', 'none', 2);
 		if (!$ticket->report)
 		{
-			$msg->success = false;
-			$msg->errors  = array(JText::_('Error: Report contains no text.'));
-
-			$this->setMessage($msg);
+			$this->errorMessage(500, JText::_('Error: Report contains no text.'));
 			return;
 		}
 		$ticket->os        = JRequest::getVar('os', 'unknown', 'post');
@@ -269,20 +261,14 @@ class SupportApiController extends Hubzero_Api_Controller
 		// Check the data
 		if (!$ticket->check()) 
 		{
-			$msg->success = false;
-			$msg->errors  = $row->getErrors();
-
-			$this->setMessage($msg);
+			$this->errorMessage(500, $ticket->getErrors());
 			return;
 		}
 
 		// Save the data
 		if (!$ticket->store()) 
 		{
-			$msg->success = false;
-			$msg->errors  = $row->getErrors();
-
-			$this->setMessage($msg);
+			$this->errorMessage(500, $ticket->getErrors());
 			return;
 		}
 
