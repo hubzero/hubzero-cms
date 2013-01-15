@@ -81,7 +81,7 @@ class CoursesModelMember extends JObject
 
 		if (is_numeric($uid) || is_string($uid))
 		{
-			$this->_tbl->load($uid, $oid);
+			$this->_tbl->loadByOffering($uid, $oid);
 			if ((int) $this->_tbl->get('user_id'))
 			{
 				// See if a manager record exist for this user

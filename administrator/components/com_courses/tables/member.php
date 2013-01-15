@@ -37,6 +37,13 @@ defined('_JEXEC') or die('Restricted access');
 class CoursesTableMember extends JTable
 {
 	/**
+	 * int(11) Primary key
+	 * 
+	 * @var integer
+	 */
+	var $id = NULL;
+
+	/**
 	 * int(11)
 	 * 
 	 * @var integer
@@ -86,7 +93,7 @@ class CoursesTableMember extends JTable
 	 */
 	public function __construct(&$db)
 	{
-		parent::__construct('#__courses_offering_members', 'offering_id', $db);
+		parent::__construct('#__courses_offering_members', 'id', $db);
 	}
 
 	/**
@@ -95,14 +102,41 @@ class CoursesTableMember extends JTable
 	 * @param      string $oid Record alias
 	 * @return     boolean True on success
 	 */
-	public function load($uid=null, $oid=NULL)
+	public function loadBySection($uid=null, $oid=NULL)
 	{
 		if ($uid === NULL || $oid === NULL) 
 		{
 			return false;
 		}
 
-		$query = "SELECT * FROM $this->_tbl WHERE `user_id`=" . $this->_db->Quote((int) $uid) . " AND `offering_id`=" . $this->_db->Quote((int) $oid);
+		$query = "SELECT * FROM $this->_tbl WHERE `user_id`=" . $this->_db->Quote((int) $uid) . " AND `section_id`=" . $this->_db->Quote((int) $oid) . " LIMIT 1";
+
+		$this->_db->setQuery($query);
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+	}
+
+	/**
+	 * Load a record and bind to $this
+	 * 
+	 * @param      string $oid Record alias
+	 * @return     boolean True on success
+	 */
+	public function loadByOffering($uid=null, $oid=NULL)
+	{
+		if ($uid === NULL || $oid === NULL) 
+		{
+			return false;
+		}
+
+		$query = "SELECT * FROM $this->_tbl WHERE `user_id`=" . $this->_db->Quote((int) $uid) . " AND `offering_id`=" . $this->_db->Quote((int) $oid) . " LIMIT 1";
 
 		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc()) 
@@ -130,6 +164,13 @@ class CoursesTableMember extends JTable
 			return false;
 		}
 
+		$this->section_id = intval($this->section_id);
+		if (!$this->section_id)
+		{
+			$this->setError(JText::_('Missing section ID'));
+			return false;
+		}
+
 		$this->user_id = intval($this->user_id);
 		if (!$this->user_id)
 		{
@@ -147,17 +188,17 @@ class CoursesTableMember extends JTable
 	 * 
 	 * @return     boolean True on success
 	 */
-	public function store()
+	/*public function store()
 	{
 		return false;
-	}
+	}*/
 
 	/**
 	 * Save data
 	 * 
 	 * @return     boolean True on success
 	 */
-	public function save()
+	/*public function save()
 	{
 		$this->_db->setQuery("UPDATE $this->_tbl 
 			SET `role_id`=" . $this->_db->Quote($this->role_id) . ", `permissions`=" . $this->_db->Quote($this->permissions) . " 
@@ -169,7 +210,7 @@ class CoursesTableMember extends JTable
 			return false;
 		}
 		return true;
-	}
+	}*/
 
 	/**
 	 * Build query method
@@ -186,6 +227,10 @@ class CoursesTableMember extends JTable
 		if (isset($filters['offering_id']))
 		{
 			$where[] = "m.`offering_id`=" . $this->_db->Quote(intval($filters['offering_id']));
+		}
+		if (isset($filters['section_id']))
+		{
+			$where[] = "m.`section_id`=" . $this->_db->Quote(intval($filters['section_id']));
 		}
 		if (isset($filters['user_id']))
 		{

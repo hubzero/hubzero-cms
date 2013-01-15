@@ -32,6 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'section.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'member.php');
 
 /**
  * Courses model class for a course
@@ -50,7 +51,7 @@ class CoursesModelSection extends JObject
 	 * 
 	 * @var object
 	 */
-	public $_tbl = NULL;
+	private $_tbl = NULL;
 
 	/**
 	 * JUser
@@ -72,13 +73,6 @@ class CoursesModelSection extends JObject
 	 * @var object
 	 */
 	private $_member = NULL;
-
-	/**
-	 * JUser
-	 * 
-	 * @var object
-	 */
-	//private $_instructor = NULL;
 
 	/**
 	 * JUser
@@ -173,21 +167,6 @@ class CoursesModelSection extends JObject
  	 */
 	public function get($property, $default=null)
 	{
-		if ($property == 'members')
-		{
-			if (!array_key_exists($property, get_object_vars($this->_tbl)))
-			{
-				if (is_object($this->_db))
-				{
-					$this->_db->setQuery("SELECT user_id from #__courses_offering_members WHERE offering_id=" . $this->_db->Quote($this->_tbl->get('id')));
-
-					if (($results = $this->_db->loadResultArray()))
-					{
-						$this->_tbl->$property = $results;
-					}
-				}
-			}
-		}
 		if (isset($this->_tbl->$property)) 
 		{
 			return $this->_tbl->$property;
@@ -330,53 +309,19 @@ class CoursesModelSection extends JObject
 	}
 
 	/**
-	 * Get a list of units for an offering
-	 *   Accepts either a numeric array index or a string [id, name]
-	 *   If index, it'll return the entry matching that index in the list
-	 *   If string, it'll return either a list of IDs or names
+	 * Check if the current user has manager access
+	 * This is just a shortcut for the access check
 	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @return     boolean
 	 */
-	public function units($filters=array())
+	public function isMember($id=null)
 	{
-		if (isset($filters['count']) && $filters['count'])
+		if (!$id)
 		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'unit.php');
-
-			$tbl = new CoursesTableUnit($this->_db);
-
-			$filters['offering_id'] = (int) $this->get('id');
-
-			return $tbl->count($filters);
+			$juser = JFactory::getUser();
+			$id = $juser->get('id');
 		}
-		if (!isset($this->units) || !is_a($this->units, 'CoursesModelIterator'))
-		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'unit.php');
-
-			$tbl = new CoursesTableUnit($this->_db);
-
-			$filters['offering_id'] = (int) $this->get('id');
-
-			if (($results = $tbl->find($filters)))
-			{
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'unit.php');
-
-				foreach ($results as $key => $result)
-				{
-					$results[$key] = new CoursesModelUnit($result);
-				}
-			}
-			else
-			{
-				$results = array();
-			}
-
-			$this->units = new CoursesModelIterator($results);
-		}
-
-		return $this->units;
+		return $this->member($id)->exists();
 	}
 
 	/**
@@ -385,9 +330,9 @@ class CoursesModelSection extends JObject
 	 * 
 	 * @return     boolean
 	 */
-	public function manager()
+	public function isManager()
 	{
-		return $this->access('manage'); //in_array(JFactory::getUser()->get('id'), $this->get('managers'));
+		return $this->access('manage');
 	}
 
 	/**
@@ -422,8 +367,6 @@ class CoursesModelSection extends JObject
 
 		if (!$this->_member)
 		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'member.php');
-
 			$this->_member = CoursesModelMember::getInstance($user_id, $this->get('id'));
 		}
 
@@ -442,38 +385,28 @@ class CoursesModelSection extends JObject
 	 */
 	public function members($filters=array(), $clear=false)
 	{
-		//if (is_string($filters))
+		if (!isset($filters['section_id']))
+		{
+			$filters['section_id'] = (int) $this->get('id');
+		}
+
 		if (isset($filters['count']) && $filters['count'])
 		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.php');
-
 			$tbl = new CoursesTableMember($this->_db);
-
-			if (!isset($filters['offering_id']))
-			{
-				$filters['offering_id'] = (int) $this->get('id');
-			}
 
 			return $tbl->count($filters);
 		}
+
 		if (!isset($this->_members) || !is_array($this->_members) || $clear)
 		{
 			//require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.php');
 
 			$tbl = new CoursesTableMember($this->_db);
-
-			if (!isset($filters['offering_id']))
-			{
-				$filters['offering_id'] = (int) $this->get('id');
-			}
 
 			$results = array();
 
 			if (($data = $tbl->find($filters)))
 			{
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'member.php');
-
 				foreach ($data as $key => $result)
 				{
 					$results[$result->user_id] = new CoursesModelMember($result, $this->get('id'));
@@ -609,14 +542,24 @@ class CoursesModelSection extends JObject
 	 */
 	public function add($data = array(), $role_id=0)
 	{
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'member.php');
-
 		foreach ($data as $result)
 		{
 			$user_id = $this->_userId($result);
 
-			$this->_members[$user_id] = new CoursesModelMember($result, $this->get('id'));
-			$this->_members[$user_id]->set('role_id', $role_id);
+			// Create the entry
+			$model = new CoursesModelMember($result, $this->get('id'));
+			$model->set('role_id', $role_id);
+			if (!$model->store())
+			{
+				$this->setError($model->getError());
+				continue;
+			}
+
+			// Append to the members list
+			if (isset($this->_members) && is_array($this->_members))
+			{
+				$this->_members[$user_id] = $model;
+			}
 		}
 	}
 
@@ -631,6 +574,13 @@ class CoursesModelSection extends JObject
 		foreach ($data as $result)
 		{
 			$user_id = $this->_userId($result);
+
+			$model = CoursesModelMember::getInstance($user_id, $this->get('id'));
+			if (!$model->delete())
+			{
+				$this->setError($model->getError());
+				continue;
+			}
 
 			if (isset($this->_members[$user_id]))
 			{
@@ -652,7 +602,7 @@ class CoursesModelSection extends JObject
 			return $user;
 		}
 
-		$this->_db->setQuery("SELECT id FROM #__users WHERE username='$user';");
+		$this->_db->setQuery("SELECT id FROM #__users WHERE username=" . $this->_db->Quote($user));
 
 		if (($result = $this->_db->loadResult()))
 		{
@@ -675,6 +625,8 @@ class CoursesModelSection extends JObject
 			return false;
 		}
 
+		$exists = $this->get('id');
+
 		if ($check)
 		{
 			if (!$this->_tbl->check())
@@ -690,137 +642,80 @@ class CoursesModelSection extends JObject
 			return false;
 		}
 
-		/*if (isset($this->_members) && is_array($this->_members))
+		if (($affected = $this->_db->getAffectedRows()))
 		{
-			foreach ($this->_members as $member)
+			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'log.php');
+
+			$log = new CoursesTableLog($this->_db);
+			$log->scope_id  = $this->get('id');
+			$log->scope     = 'course_section';
+			$log->user_id   = $juser->get('id');
+			$log->timestamp = date('Y-m-d H:i:s', time());
+			$log->action    = (!$exists) ? 'section_created' : 'section_updated';
+			//$log->comments  = $log;
+			$log->actor_id  = $juser->get('id');
+			if (!$log->store()) 
 			{
-				$member->store();
+				$this->setError($log->getError());
 			}
-		}*/
-		$affected = 0;
+		}
 
-		/*$affected = $this->_db->getAffectedRows();
+		return true;
+	}
 
-		foreach (self::$_list_keys as $property)
+	/**
+	 * Store changes to this offering
+	 *
+	 * @param     boolean $check Perform data validation check?
+	 * @return    boolean False if error, True on success
+	 */
+	public function delete()
+	{
+		// Remove associated date data
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'section.date.php');
+
+		$sd = new CoursesTableSectionDate($this->_db);
+		if (!$sd->deleteBySection($this->get('id')))
 		{
-			$query = '';
+			$this->setError($sd->getError());
+			return false;
+		}
 
-			$aux_table = "#__courses_" . $property;
+		// Remove associated member data
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.php');
 
-			$list = $this->get($property);
+		$sm = new CoursesTableMember($this->_db);
+		if (!$sm->deleteBySection($this->get('id')))
+		{
+			$this->setError($sm->getError());
+			return false;
+		}
 
-			if (!is_null($list) && !is_array($list))
-			{
-				$list = array($list);
-			}
+		// Get some data for the log
+		$log = json_encode($this->_tbl);
 
-			$ulist = null;
-			$tlist = null;
+		// Remove section
+		if (!$this->_tbl->delete())
+		{
+			$this->setError($this->_tbl->getError());
+			return false;
+		}
 
-			foreach ($list as $value)
-			{
-				if (!is_null($ulist))
-				{
-					$ulist .= ',';
-					$tlist .= ',';
-				}
+		// Log the event
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'log.php');
 
-				$ulist .= $this->_db->Quote($value);
-				$tlist .= '(' . $this->_db->Quote($this->get('id')) . ',' . $this->_db->Quote($value) . ')';
-			}
-
-			// @FIXME: I don't have a better solution yet. But the next refactoring of this class
-			// should eliminate the ability to read the entire member table due to problems with
-			// scale on a large (thousands of members) courses. The add function should track the members
-			// being added to a course, but would need to be verified to handle adding members
-			// already in course. *njk*
-
-			// @FIXME: Not neat, but because all course membership is resaved every time even for single additions
-			// there is no nice way to detect only *new* additions without this check. I don't want to 
-			// fire off an 'onUserCourseEnrollment' event for users unless they are really being enrolled. *drb*
-
-			if (in_array($property, array('managers')))
-			{
-				$query = "SELECT user_id FROM #__courses_$property WHERE course_id=" . $this->get('id');
-				$this->_db->setQuery($query);
-
-				// compile current list of members in this course
-				$aExistingUserMembership = array();
-
-				if (($results = $this->_db->loadAssoc()))
-				{
-					foreach ($results as $uid)
-					{
-						$aExistingUserMembership[] = $uid;
-					}
-				}
-
-				// see who is missing
-				$aNewUserCourseEnrollments = array_diff($list, $aExistingUserMembership);
-			}*/
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.php');
-
-			$tbl = new CoursesTableMember($this->_db);
-			$aux_table = $tbl->getTableName(); //'#__courses_offering_members';
-
-			$ulist = null;
-			$tlist = null;
-
-			foreach ($this->members() as $member)
-			{
-				if (!is_null($ulist))
-				{
-					$ulist .= ',';
-					$tlist .= ',';
-				}
-
-				$ulist .= $this->_db->Quote($member->get('user_id'));
-				$tlist .= '(' . $this->_db->Quote($this->get('id')) . ',' . $this->_db->Quote($member->get('user_id'))  . ',' . $this->_db->Quote($member->get('role_id')) . ',' . $this->_db->Quote($member->get('permissions')->toString()) . ')';
-			}
-
-			if (count($this->members()) > 0)
-			{
-				$query = "REPLACE INTO $aux_table (offering_id, user_id, role_id, permissions) VALUES $tlist;";
-
-				$this->_db->setQuery($query);
-
-				if ($this->_db->query())
-				{
-					$affected += $this->_db->getAffectedRows();
-				}
-			}
-
-			if (count($this->members()) == 0)
-			{
-				$query = "DELETE FROM $aux_table WHERE offering_id=" . $this->_db->Quote($this->get('id')) . ";";
-			}
-			else
-			{
-				$query = "DELETE FROM $aux_table WHERE offering_id=" . $this->_db->Quote($this->get('id')) . " AND user_id NOT IN (" . $ulist . ");";
-			}
-
-			if ($query)
-			{
-				$this->_db->setQuery($query);
-
-				if ($this->_db->query())
-				{
-					$affected += $this->_db->getAffectedRows();
-				}
-			}/*
-		}*/
-
-		/*$log = new CoursesTableLog($this->database);
-		$log->gid       = $this->get('id');
-		$log->uid       = $juser->get('id');
+		$log = new CoursesTableLog($this->_db);
+		$log->scope_id  = $this->get('id');
+		$log->scope     = 'course_section';
+		$log->user_id   = $juser->get('id');
 		$log->timestamp = date('Y-m-d H:i:s', time());
-		$log->action    = 'course_deleted';
+		$log->action    = 'section_deleted';
 		$log->comments  = $log;
-		$log->actorid   = $juser->get('id');
+		$log->actor_id  = $juser->get('id');
 		if (!$log->store()) 
 		{
 			$this->setError($log->getError());
-		}*/
+		}
 
 		return true;
 	}

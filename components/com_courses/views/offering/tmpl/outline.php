@@ -76,8 +76,8 @@ if (!$this->course->offering()->access('view')) { ?>
 	?>
 
 	<div id="course-outline">
-<?php if($this->course->offering->units()->total() > 0) : ?>
-<?php foreach ($this->course->offering->units() as $unit) { ?>
+<?php if($this->course->offering()->units()->total() > 0) : ?>
+<?php foreach ($this->course->offering()->units() as $unit) { ?>
 		<div class="unit<?php echo ($i == 0) ? ' active' : ''; ?>">
 			<div class="unit-wrap">
 				<div class="unit-content<?php echo ($unit->available()) ? ' open' : ''; ?>">

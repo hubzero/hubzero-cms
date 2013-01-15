@@ -33,6 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $juser = JFactory::getUser();
 $offering = $this->course->offering();
+$section = $offering->section();
 ?>
 <div class="course_members">
 	<a name="members"></a>
@@ -84,7 +85,7 @@ $offering = $this->course->offering();
 							} 
 							echo $this->escape(stripslashes($filter));
 							
-							$total = $offering->members(array('count' => true, 'role' => $this->filters['role']));
+							$total = $section->members(array('count' => true, 'role' => $this->filters['role']));
 						?>
 						<span>(<?php echo $total; ?>)</span>
 						
@@ -125,10 +126,10 @@ $offering = $this->course->offering();
 					</caption>
 					<tbody>
 						<?php
-						if ($offering->members(array('role' => $this->filters['role']))) 
+						if (($members = $section->members(array('role' => $this->filters['role'])))) 
 						{
 							ximport('Hubzero_User_Profile_Helper');
-							foreach ($offering->members() as $member)
+							foreach ($members as $member)
 							{
 								$cls = '';
 								$u = Hubzero_User_Profile::getInstance($member->get('user_id'));
@@ -147,7 +148,7 @@ $offering = $this->course->offering();
 									<?php echo $this->escape(stripslashes($u->get('name'))); ?>
 								</span>
 								<?php if ($u->get('organization')) { ?>
-									<span class="member-organization">
+									<br /><span class="member-organization">
 										<?php echo $this->escape(stripslashes($u->get('organization'))); ?>
 									</span>
 								<?php } ?>
@@ -158,6 +159,9 @@ $offering = $this->course->offering();
 								</span>
 							</td>
 							<td>
+								<time datetime="<?php echo $member->get('enrolled'); ?>"><?php echo $member->get('enrolled'); ?></time>
+							</td>
+							<!-- <td>
 								manage course: <?php echo ($member->access('manage', 'course')) ? 'yes' : 'no'; ?><br />
 								<br />
 								view offering: <?php echo (intval($member->access('view'))) ? 'yes' : 'no'; ?><br />
@@ -171,7 +175,7 @@ $offering = $this->course->offering();
 								delete student: <?php echo ($member->access('delete', 'student')) ? 'yes' : 'no'; ?><br />
 								edit student: <?php echo ($member->access('edit', 'student')) ? 'yes' : 'no'; ?><br />
 								create student: <?php echo ($member->access('create', 'student')) ? 'yes' : 'no'; ?><br />
-							</td>
+							</td> -->
 						</tr>
 						<?php } ?>
 					<?php } else { ?>

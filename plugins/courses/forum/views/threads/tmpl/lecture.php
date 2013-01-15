@@ -97,6 +97,7 @@ ximport('Hubzero_User_Profile_Helper');
 				{
 					$anon = 0;
 				}
+				$now = date('Y-m-d H:i:s', time());
 				?>
 				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($juser, $anon); ?>" alt="<?php echo JText::_('User photo'); ?>" />
 			</p>
@@ -109,18 +110,19 @@ ximport('Hubzero_User_Profile_Helper');
 					<strong>
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape($juser->get('name')); ?></a>
 					</strong> 
-					<span class="permalink">@
-						<span class="time"><?php echo JHTML::_('date', date('Y-m-d H:i:s', time()), $timeFormat, $tz); ?></span> <?php echo JText::_('PLG_COURSES_FORUM_ON'); ?> 
-						<span class="date"><?php echo JHTML::_('date', date('Y-m-d H:i:s', time()), $dateFormat, $tz); ?></span>
+					<span class="permalink">
+						<span class="comment-date-at">@</span>
+						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, $timeFormat, $tz); ?></time></span> <span class="comment-date-on"><?php echo JText::_('PLG_COURSES_FORUM_ON'); ?></span> 
+						<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, $dateFormat, $tz); ?></time></span>
 					</span>
 				</p>
 
 				<label for="field_comment">
-					<?php echo JText::_('PLG_COURSES_FORUM_FIELD_COMMENTS'); ?>
+					<span class="label-text"><?php echo JText::_('PLG_COURSES_FORUM_FIELD_COMMENTS'); ?></span>
 					<?php
 					ximport('Hubzero_Wiki_Editor');
 					$editor = Hubzero_Wiki_Editor::getInstance();
-					echo $editor->display('fields[comment]', 'field_comment', '', '', '35', '5');
+					echo $editor->display('fields[comment]', 'field_comment', '', 'minimal no-footer', '35', '5');
 					?>
 				</label>
 				
@@ -141,7 +143,7 @@ ximport('Hubzero_User_Profile_Helper');
 				</label> */ ?>
 
 				<label for="field-upload">
-					<?php echo JText::_('PLG_COURSES_FORUM_LEGEND_ATTACHMENTS'); ?>:
+					<span class="label-text"><?php echo JText::_('PLG_COURSES_FORUM_LEGEND_ATTACHMENTS'); ?>:</span>
 					<input type="file" name="upload" id="field-upload" />
 				</label>
 
@@ -255,13 +257,13 @@ ximport('Hubzero_User_Profile_Helper');
 							<strong><?php echo $name; ?></strong> 
 							<a class="permalink" href="<?php echo JRoute::_($base . '&active=forum&unit=' . $this->unit->get('alias') . '&b=' . $this->post->id . '#c' . $row->id); ?>" title="<?php echo JText::_('PLG_COURSES_FORUM_PERMALINK'); ?>">
 								<span class="comment-date-at">@</span>
-								<span class="time"><?php echo JHTML::_('date', $row->created, $timeFormat, $tz); ?></span> 
+								<span class="time"><time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $timeFormat, $tz); ?></time></span> 
 								<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_FORUM_ON'); ?></span> 
-								<span class="date"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?></span>
+								<span class="date"><time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?></time></span>
 								<?php if ($row->modified && $row->modified != '0000-00-00 00:00:00') { ?>
 									&mdash; <?php echo JText::_('PLG_COURSES_FORUM_EDITED'); ?>
-									<span class="time"><?php echo JHTML::_('date', $row->modified, $timeFormat, $tz); ?></span> <span class="comment-date-on"><?php echo JText::_('PLG_COURSES_FORUM_ON'); ?></span> 
-									<span class="date"><?php echo JHTML::_('date', $row->modified, $dateFormat, $tz); ?></span>
+									<span class="time"><time datetime="<?php echo $row->modified; ?>"><?php echo JHTML::_('date', $row->modified, $timeFormat, $tz); ?></time></span> <span class="comment-date-on"><?php echo JText::_('PLG_COURSES_FORUM_ON'); ?></span> 
+									<span class="date"><time datetime="<?php echo $row->modified; ?>"><?php echo JHTML::_('date', $row->modified, $dateFormat, $tz); ?></time></span>
 								<?php } ?>
 							</a>
 						</p>

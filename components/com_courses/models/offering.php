@@ -243,7 +243,7 @@ class CoursesModelOffering extends JObject
  	 */
 	public function get($property, $default=null)
 	{
-		if (in_array($property, self::$_list_keys))
+		/*if (in_array($property, self::$_list_keys))
 		{
 			if (!array_key_exists($property, get_object_vars($this->_tbl)))
 			{
@@ -257,7 +257,7 @@ class CoursesModelOffering extends JObject
 					}
 				}
 			}
-		}
+		}*/
 		if (isset($this->_tbl->$property)) 
 		{
 			return $this->_tbl->$property;
@@ -453,7 +453,7 @@ class CoursesModelOffering extends JObject
 		{
 			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'section.php');
 
-			$tbl = new CoursesTableUnit($this->_db);
+			$tbl = new CoursesTableSection($this->_db);
 
 			return $tbl->count($filters);
 		}

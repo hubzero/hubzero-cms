@@ -33,14 +33,14 @@ defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Controller');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'unit.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'section.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
 
 /**
  * Courses controller class for managing membership and course info
  */
-class CoursesControllerUnits extends Hubzero_Controller
+class CoursesControllerSections extends Hubzero_Controller
 {
 	/**
 	 * Displays a list of courses
@@ -94,29 +94,11 @@ class CoursesControllerUnits extends Hubzero_Controller
 
 		$this->view->filters['count'] = true;
 
-		$this->view->total = $this->view->offering->units($this->view->filters);
+		$this->view->total = $this->view->offering->sections($this->view->filters);
 
 		$this->view->filters['count'] = false;
 
-		$this->view->rows = $this->view->offering->units($this->view->filters);
-
-		// Filters for getting a result count
-		//$this->view->filters['limit'] = 'all';
-		//$this->view->filters['fields'] = array('COUNT(*)');
-		//$this->view->filters['authorized'] = 'admin';
-
-		// Get a record count
-		//$this->view->total = Hubzero_Course::find($this->view->filters);
-
-		
-		//$this->view->filters['fields'] = array('cn', 'description', 'published', 'gidNumber', 'type');
-
-		// Get a list of all courses
-		/*$this->view->rows = null;
-		if ($this->view->total > 0)
-		{
-			$this->view->rows = Hubzero_Course::find($this->view->filters);
-		}*/
+		$this->view->rows = $this->view->offering->sections($this->view->filters);
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
@@ -179,7 +161,7 @@ class CoursesControllerUnits extends Hubzero_Controller
 				$id = 0;
 			}
 
-			$this->view->row = CoursesModelUnit::getInstance($id);
+			$this->view->row = CoursesModelSection::getInstance($id);
 		}
 
 		if (!$this->view->row->get('offering_id'))
@@ -216,7 +198,7 @@ class CoursesControllerUnits extends Hubzero_Controller
 		$fields = JRequest::getVar('fields', array(), 'post');
 
 		// Instantiate an Hubzero_Course object
-		$model = CoursesModelUnit::getInstance($fields['id']);
+		$model = CoursesModelSection::getInstance($fields['id']);
 
 		if (!$model->bind($fields))
 		{
@@ -235,7 +217,7 @@ class CoursesControllerUnits extends Hubzero_Controller
 		// Output messsage and redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('COM_COURSES_UNIT_SAVED')
+			JText::_('COM_COURSES_SECTION_SAVED')
 		);
 	}
 
@@ -270,7 +252,7 @@ class CoursesControllerUnits extends Hubzero_Controller
 			foreach ($ids as $id)
 			{
 				// Load the course page
-				$model = CoursesModelUnit::getInstance($id);
+				$model = CoursesModelSection::getInstance($id);
 
 				// Ensure we found the course info
 				if (!$model->exists())
@@ -281,17 +263,17 @@ class CoursesControllerUnits extends Hubzero_Controller
 				// Delete course
 				if (!$model->delete())
 				{
-					JError::raiseError(500, JText::_('Unable to delete unit'));
+					JError::raiseError(500, JText::_('Unable to delete section'));
 					return;
 				}
 
 				// Log the course approval
 				$log = new CoursesTableLog($this->database);
 				$log->scope_id  = $course->get('id');
-				$log->scope     = 'course_unit';
+				$log->scope     = 'course_section';
 				$log->user_id   = $this->juser->get('id');
 				$log->timestamp = date('Y-m-d H:i:s', time());
-				$log->action    = 'unit_deleted';
+				$log->action    = 'section_deleted';
 				$log->actor_id  = $this->juser->get('id');
 				if (!$log->store())
 				{
