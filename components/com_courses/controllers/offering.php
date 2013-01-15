@@ -457,6 +457,28 @@ class CoursesControllerOffering extends Hubzero_Controller
 	 */
 	public function editoutlineTask()
 	{
+		// If we have a scope set, we're loading a specific outline piece (ex: a unit)
+		if($scope = JRequest::getWord('scope', false))
+		{
+			// Setup view
+			$this->setView('manage', "edit{$scope}");
+
+			$this->_getStyles($this->_option, $this->_task . '.css');
+
+			$this->view->title         = "Edit {$scope}";
+			$this->view->scope         = $scope;
+			$this->view->scope_id      = JRequest::getInt('scope_id');
+
+			$this->view->tab           = $this->active;
+			$this->view->course        = $this->course;
+			$this->view->database      = $this->database;
+			$this->view->config        = $this->config;
+			$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
+			$this->view->display();
+
+			return;
+		}
+
 		// Push some needed styles to the template
 		$this->_getStyles($this->_option, $this->_controller . '.css');
 		$this->_getStyles($this->_option, $this->_task . '.css');
@@ -483,11 +505,9 @@ class CoursesControllerOffering extends Hubzero_Controller
 		$this->_buildPathway($this->course->offering()->pages());
 
 		// Setup view
-		$this->view->setLayout('editoutline');
+		$this->setView('manage', 'editoutline');
 
 		$this->view->title         = 'Edit Outline';
-		$this->view->option        = $this->_option;
-		$this->view->controller    = $this->_controller;
 		$this->view->tab           = $this->active;
 		$this->view->course        = $this->course;
 		$this->view->database      = $this->database;

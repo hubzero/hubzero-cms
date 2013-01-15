@@ -79,6 +79,12 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 					<input type="hidden" name="id" value="<?php echo $unit->get('id'); ?>" />
 				</form>
 			</div>
+			<div class="calendar">
+				<form action="/courses/<?php echo $this->course->get('alias'); ?>/manage/<?php echo $this->course->offering()->get('alias'); ?>" class="calendar-form">
+					<input type="hidden" name="scope" value="unit" />
+					<input type="hidden" name="scope_id" value="<?php echo $unit->id; ?>" />
+				</form>
+			</div>
 			<div class="progress-container">
 				<div class="progress-indicator"></div>
 			</div>
@@ -324,6 +330,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 			<form action="/api/courses/unitsave">
 				<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
 				<input type="hidden" name="offering_id" value="<?php echo $this->course->offering()->get('id'); ?>" />
+				<input type="hidden" name="offering_alias" value="<?php echo $this->course->offering()->get('alias'); ?>" />
 			</form>
 		</li>
 	</ul>

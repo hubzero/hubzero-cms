@@ -36,6 +36,7 @@ HUB.CoursesOutline = {
 		HUB.CoursesOutline.setupFileUploader();
 		HUB.CoursesOutline.resizeFileUploader();
 		HUB.CoursesOutline.setupErrorMessage();
+		HUB.CoursesOutline.calendar();
 	},
 
 	toggleUnits: function()
@@ -717,6 +718,60 @@ HUB.CoursesOutline = {
 		});
 	},
 
+	calendar: function()
+	{
+		var $ = this.jQuery;
+
+		$('.unit').on('click', '.calendar', function(){
+			var form = $(this).find('form');
+
+			$.fancybox({
+				type: 'ajax',
+				autoSize: false,
+				width: '305',
+				height: '190',
+				href: form.attr('action')+'?'+form.serialize()+'&tmpl=component',
+				afterShow: function() {
+					$('.datepicker').datepicker({
+						dateFormat: 'yy-mm-dd'
+					});
+
+					var detailsForm = $('.unit-details-form');
+					detailsForm.submit(function(e){
+						e.preventDefault();
+
+						$.ajax({
+							url: detailsForm.attr('action'),
+							data: detailsForm.serialize(),
+							dataType: "json",
+							type: 'POST',
+							cache: false,
+							statusCode: {
+								201: function(data){
+									$.fancybox.close();
+								},
+								401: function(data){
+									// Display the error message
+									HUB.CoursesOutline.errorMessage(data.responseText);
+									return false;
+								},
+								404: function(data){
+									HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
+									return false;
+								},
+								500: function(data){
+									// Display the error message
+									HUB.CoursesOutline.errorMessage(data.responseText);
+									return false;
+								}
+							}
+						});
+					});
+				}
+			});
+		});
+	},
+
 	errorMessage: function(message)
 	{
 		var $ = this.jQuery;
@@ -808,6 +863,12 @@ HUB.CoursesOutline = {
 						'<input class="uniform title-reset" type="reset" value="Cancel" />',
 						'<input type="hidden" name="course_id" value="<%= course_id %>" />',
 						'<input type="hidden" name="id" value="<%= unit_id %>" />',
+					'</form>',
+				'</div>',
+				'<div class="calendar">',
+					'<form action="/courses/<%= course_alias %>/manage/<%= offering_alias %>" class="calendar-form">',
+						'<input type="hidden" name="scope" value="unit" />',
+						'<input type="hidden" name="scope_id" value="<%= unit_id %>" />',
 					'</form>',
 				'</div>',
 				'<div class="progress-container">',

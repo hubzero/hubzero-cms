@@ -117,6 +117,16 @@ class CoursesApiController extends Hubzero_Api_Controller
 		$row->title = preg_replace("/[^a-zA-Z0-9 \-\:\.]/", "", $row->title);
 		$row->alias = strtolower(str_replace(' ', '', $row->title));
 
+		// If we have dates coming in, save those
+		if($start_date = JRequest::getCmd('start_date', false))
+		{
+			$row->start_date = $start_date;
+		}
+		if($end_date = JRequest::getCmd('end_date', false))
+		{
+			$row->end_date = $end_date;
+		}
+
 		// When creating a new unit
 		if(!$id)
 		{
@@ -176,10 +186,12 @@ class CoursesApiController extends Hubzero_Api_Controller
 		// Return message
 		$this->setMessage(
 			array(
-				'unit_id'     => $unitObj->id,
-				'unit_title'  => $unitObj->title,
-				'course_id'   => $this->course_id,
-				'assetgroups' => $assetGroups
+				'unit_id'        => $unitObj->id,
+				'unit_title'     => $unitObj->title,
+				'course_id'      => $this->course_id,
+				'assetgroups'    => $assetGroups,
+				'course_alias'   => $this->course->get('alias'),
+				'offering_alias' => JRequest::getWord('offering_alias', '')
 			),
 			201, 'Created');
 	}
@@ -756,6 +768,7 @@ class CoursesApiController extends Hubzero_Api_Controller
 		// Load the course page
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
 		$course = CoursesModelCourse::getInstance($this->course_id);
+		$this->course = $course;
 
 		if (in_array($user_id, $course->get('managers')))
 		{
