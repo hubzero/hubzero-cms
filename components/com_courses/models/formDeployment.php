@@ -118,6 +118,10 @@ class PdfFormDeployment
 		return $this->id;
 	}
 
+	public function setId($id) {
+		$this->id = $id;
+	}
+
 	public function getLink() {
 		return 'https://'.$_SERVER['HTTP_HOST'].'/courses/form/complete?crumb='.$this->crumb;
 	}
@@ -183,7 +187,7 @@ class PdfFormDeployment
 				}
 				$this->errors['endTime'][] = 'The deployment would already be expired with this end time';
 			}
-			if (!$update && $this->endTime && $this->startTime && strtotime($this->endTime) <= strtotime($this->startTime)) {
+			if ($this->endTime && $this->startTime && strtotime($this->endTime) <= strtotime($this->startTime)) {
 				if (!isset($this->errors['endTime'])) {
 					$this->errors['endTime'] = array();
 				}

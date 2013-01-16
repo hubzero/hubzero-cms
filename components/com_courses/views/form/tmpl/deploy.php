@@ -9,7 +9,9 @@
 			<input type="hidden" name="controller" value="form" />
 			<input type="hidden" name="task" value="createDeployment" />
 			<input type="hidden" name="formId" value="<?= $this->pdf->getId() ?>" />
-			<input type="hidden" name="tmpl" value="<?php echo JRequest::getWord('tmpl', ''); ?>" />
+			<? if($tmpl = JRequest::getWord('tmpl', false)): ?>
+				<input type="hidden" name="tmpl" value="<?php echo $tmpl; ?>" />
+			<? endif; ?>
 			<button type="submit">Create deployment</button>
 		</fieldset>
 	</form>

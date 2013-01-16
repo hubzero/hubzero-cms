@@ -11,6 +11,7 @@
 			<input type="hidden" name="task" value="updateDeployment" />
 			<input type="hidden" name="formId" value="<?= $this->pdf->getId() ?>" />
 			<input type="hidden" name="deploymentId" value="<?= $this->dep->getId() ?>" />
+			<input type="hidden" name="id" value="<?= $this->dep->getId() ?>" />
 			<button type="submit">Update deployment</button>
 		</fieldset>
 	</form>

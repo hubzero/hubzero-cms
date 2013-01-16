@@ -178,7 +178,11 @@ input[type=number] {
 }
 #deployment .error {
 	display: block;
-	padding-left: 5em;
+	padding-left: 3em;
+}
+#deployment .error li {
+	margin: 0;
+	list-style: none;
 }
 .distribution-link {
 	font-size: medium;

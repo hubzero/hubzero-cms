@@ -39,7 +39,7 @@ require_once(JPATH_COMPONENT . DS . 'models' . DS . 'formRespondent.php');
 require_once(JPATH_COMPONENT . DS . 'models' . DS . 'formDeployment.php');
 
 /**
- * Courses controller class
+ * Courses form controller class
  */
 class CoursesControllerForm extends Hubzero_Controller {
 	/**
@@ -184,6 +184,11 @@ class CoursesControllerForm extends Hubzero_Controller {
 		}
 	}
 
+	/**
+	 * PDF layout view, annotate rendered images
+	 * 
+	 * @return     void
+	 */
 	public function layoutTask()
 	{
 		// Check authorization
@@ -202,6 +207,11 @@ class CoursesControllerForm extends Hubzero_Controller {
 		$this->view->display();
 	}
 
+	/**
+	 * Save layout
+	 * 
+	 * @return     void
+	 */
 	public function saveLayoutTask()
 	{
 		// Check authorization
@@ -219,7 +229,12 @@ class CoursesControllerForm extends Hubzero_Controller {
 		exit();
 	}
 
-	public function deployTask()
+	/**
+	 * Deploy form view
+	 * 
+	 * @return     void
+	 */
+	public function deployTask($dep=NULL)
 	{
 		// Check authorization
 		$this->authorize();
@@ -237,16 +252,18 @@ class CoursesControllerForm extends Hubzero_Controller {
 		Hubzero_Document::addSystemStylesheet('tablesorter.themes.blue.css');
 		Hubzero_Document::addSystemScript('jquery.tablesorter.min');
 
-		$this->view->pdf = $this->assertExistentForm();
-		$this->view->dep = new PdfFormDeployment;
-
+		$this->view->pdf   = $this->assertExistentForm();
+		$this->view->dep   = ($dep) ? $dep : new PdfFormDeployment;
 		$this->view->title = $this->view->pdf->getTitle();
-
-		//$path->addItem('Deploy: '.htmlentities($title), $_SERVER['REQUEST_URI']);
 
 		$this->view->display();
 	}
 
+	/**
+	 * Create deployment
+	 * 
+	 * @return     void
+	 */
 	public function createDeploymentTask()
 	{
 		if(!$deployment = JRequest::getVar('deployment'))
@@ -259,7 +276,10 @@ class CoursesControllerForm extends Hubzero_Controller {
 
 		if ($dep->hasErrors())
 		{
-			$this->deployTask();
+			$this->setView('form', 'deploy');
+			$this->view->task = 'deployTask';
+			$this->deployTask($dep);
+			return;
 		}
 		else
 		{
@@ -281,7 +301,11 @@ class CoursesControllerForm extends Hubzero_Controller {
 		}
 	}
 
-
+	/**
+	 * Update an existing deployment
+	 * 
+	 * @return     void
+	 */
 	public function updateDeploymentTask()
 	{
 		if(!$deployment = JRequest::getVar('deployment'))
@@ -299,7 +323,10 @@ class CoursesControllerForm extends Hubzero_Controller {
 
 		if ($dep->hasErrors(NULL, TRUE))
 		{
-			$this->showDeployment();
+			$this->setView('form', 'showDeployment');
+			$dep->setId($deploymentId);
+			$this->showDeploymentTask($dep);
+			return;
 		}
 		else
 		{
@@ -312,7 +339,12 @@ class CoursesControllerForm extends Hubzero_Controller {
 		}
 	}
 
-	public function showDeploymentTask()
+	/**
+	 * Show deployment
+	 * 
+	 * @return     void
+	 */
+	public function showDeploymentTask($dep=NULL)
 	{
 		if(!$id = JRequest::getInt('id', false))
 		{
@@ -326,6 +358,7 @@ class CoursesControllerForm extends Hubzero_Controller {
 		// Add styles and scripts
 		$this->_getStyles($this->_option, $this->_controller . '.css');
 		$this->_getScripts('assets/js/' . $this->_task);
+		$this->_getScripts('assets/js/deploy');
 		$this->_getScripts('assets/js/timepicker');
 
 		// Add tablesorter
@@ -334,12 +367,17 @@ class CoursesControllerForm extends Hubzero_Controller {
 
 		$this->view->pdf   = $this->assertExistentForm();
 		$this->view->title = $this->view->pdf->getTitle();
-		$this->view->dep   = PdfFormDeployment::load($id);
+		$this->view->dep   = ($dep) ? $dep : PdfFormDeployment::load($id);
 
 		// Display
 		$this->view->display();
 	}
 
+	/**
+	 * Take a form/exam
+	 * 
+	 * @return     void
+	 */
 	public function completeTask()
 	{
 		if(!$crumb = JRequest::getVar('crumb', false))
@@ -404,12 +442,17 @@ class CoursesControllerForm extends Hubzero_Controller {
 					$this->view->pdf   = $dep->getForm();
 					$this->view->title = $this->view->pdf->getTitle();
 					$this->view->dep   = $dep;
-					$this->view->incomplete = array();
+					$this->view->incomplete = (isset($this->view->incomplete)) ? $this->view->incomplete : array();
 					$this->view->display();
 				}
 		}
 	}
 
+	/**
+	 * Mark the start of a time form
+	 * 
+	 * @return     void
+	 */
 	public function startWorkTask()
 	{
 		if(!$crumb = JRequest::getVar('crumb', false))
@@ -419,21 +462,35 @@ class CoursesControllerForm extends Hubzero_Controller {
 
 		PdfFormDeployment::fromCrumb($crumb)->getRespondent()->markStart();
 
-		header('Location: /courses?controller=form&task=complete&crumb='.$_POST['crumb'].(isset($_POST['tmpl']) ? '&tmpl='.$_POST['tmpl'] : ''));
-		exit();
+		$tmpl = (JRequest::getWord('tmpl', false)) ? '&tmpl=' . JRequest::getWord('tmpl') : '';
+
+		$this->setRedirect(
+			JRoute::_('index.php?option=com_courses&controller=form&task=complete&crumb=' . $_POST['crumb'] . $tmpl, false)
+		);
+		return;
 	}
 
+	/**
+	 * Save progress, called via JS ajax
+	 * 
+	 * @return     void
+	 */
 	public function saveProgressTask()
 	{
 		if (!isset($_POST['crumb']) || !isset($_POST['question']) || !isset($_POST['answer'])) {
 			throw new UnprocessableEntityError();
 		}
 		PdfFormDeployment::fromCrumb($_POST['crumb'])->getRespondent()->saveProgress($_POST['question'], $_POST['answer']);
-		header('Content-type: application/json');
-		echo '{"result":"success"}';
+
+		echo json_encode(array("result"=>"success"));
 		exit();
 	}
 
+	/**
+	 * Submit and save a form response
+	 * 
+	 * @return     void
+	 */
 	public function submitTask()
 	{
 		if(!$crumb = JRequest::getVar('crumb', false))
@@ -450,13 +507,14 @@ class CoursesControllerForm extends Hubzero_Controller {
 			$resp = $dep->getRespondent();
 			$resp->saveAnswers($_POST)->markEnd();
 
-			$this->setRedirect(JRoute::_('index.php?option=com_courses&controller=form&task=complete&crumb='.$crumb));
+			$this->setRedirect(JRoute::_('index.php?option=com_courses&controller=form&task=complete&crumb='.$crumb, false));
 			return;
 		}
 		else
 		{
+			$this->setView('form', 'complete');
 			$this->view->incomplete = array_filter($answers, function($ans) { return is_null($ans[0]); });
-			$this->complete();
+			$this->completeTask();
 		}
 	}
 
@@ -491,6 +549,11 @@ class CoursesControllerForm extends Hubzero_Controller {
 		}
 	}
 
+	/**
+	 * Get form ID
+	 * 
+	 * @return     int
+	 */
 	public function assertFormId()
 	{
 		if (isset($_POST['formId']))
@@ -505,6 +568,11 @@ class CoursesControllerForm extends Hubzero_Controller {
 		JError::raiseError(422, 'No form identifier supplied');
 	}
 
+	/**
+	 * Check that form ID exists
+	 * 
+	 * @return     object
+	 */
 	public function assertExistentForm()
 	{
 		$pdf = new PdfForm($this->assertFormId());
@@ -518,14 +586,22 @@ class CoursesControllerForm extends Hubzero_Controller {
 	}
 }
 
+/**
+ * Form Helper class
+ */
 class FormHelper {
+	/**
+	 * Time remaining (in human readable language)
+	 * 
+	 * @return     string
+	 */
 	public function timeDiff($secs) {
 		$seconds = array(1, 'second');
 		$minutes = array(60 * $seconds[0], 'minute');
 		$hours   = array(60 * $minutes[0], 'hour');
 		$days    = array(24 * $hours[0],   'day');
 		$weeks   = array(7  * $days[0],    'week');
-		$rv = array();
+		$rv      = array();
 
 		foreach (array($weeks, $days, $hours, $minutes, $seconds) as $step)
 		{
