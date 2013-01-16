@@ -578,7 +578,7 @@ if ($juser->get('guest')) {
 				if (!$juser->get('guest')) {
 					ximport('Hubzero_Wiki_Editor');
 					$editor =& Hubzero_Wiki_Editor::getInstance();
-					echo $editor->display('comment[content]', 'commentcontent', '', '', '40', '15');
+					echo $editor->display('comment[content]', 'commentcontent', '', 'minimal', '40', '15');
 				} else {
 					$rtrn = JRoute::_('index.php?option=' . $this->option . '&task='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz) . '/' . $this->row->alias.'#post-comment');
 ?>
