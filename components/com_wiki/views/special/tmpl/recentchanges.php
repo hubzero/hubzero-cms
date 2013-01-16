@@ -57,6 +57,7 @@ $query = "SELECT COUNT(*)
 				ON wp.id = wv.pageid 
 			WHERE wv.approved = 1 
 				AND wp.scope = '{$this->page->scope}' 
+				AND wp.state < 2
 				AND wp.access != 1";
 
 $database->setQuery($query);
@@ -68,6 +69,7 @@ $query = "SELECT wv.pageid, wp.title, wp.pagename, wp.scope, wp.group_cn, wp.acc
 				ON wp.id = wv.pageid 
 			WHERE wv.approved = 1 
 				AND wp.scope = '{$this->page->scope}' 
+				AND wp.state < 2
 				AND wp.access != 1 
 			ORDER BY created DESC";
 if ($limit && $limit != 'all')

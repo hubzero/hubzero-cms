@@ -961,19 +961,19 @@ class WikiControllerPage extends Hubzero_Controller
 		switch ($confirmed)
 		{
 			case 1:
-				$page = new WikiPage($this->database);
+				//$page = new WikiPage($this->database);
 
-				$data = new stdClass();
+				/*$data = new stdClass();
 				$data->pagename = $this->page->pagename;
 				$data->scope    = $this->page->scope;
 				$data->group_cn = $this->page->group_cn;
-				$data->revisions = array();
+				$data->revisions = array();*/
 
 				// Delete the page's history, tags, comments, etc.
-				$page->deleteBits($this->page->id);
+				/*$page->deleteBits($this->page->id);
 
 				// Finally, delete the page itself
-				$page->delete($this->page->id);
+				//$page->delete($this->page->id);
 
 				// Delete the page's files
 				$path = DS . trim($this->config->get('filepath', '/site/wiki'), DS);
@@ -984,12 +984,12 @@ class WikiControllerPage extends Hubzero_Controller
 					{
 						$this->setError(JText::_('COM_WIKI_UNABLE_TO_DELETE_FOLDER'));
 					}
-				}
-				/*$page->state = 2;
-				if (!$page->store())
+				}*/
+				$this->page->state = 2;
+				if (!$this->page->store())
 				{
 					$this->setError(JText::_('COM_WIKI_UNABLE_TO_DELETE'));
-				}*/
+				}
 
 				// Log the action
 				$log = new WikiLog($this->database);
@@ -998,7 +998,7 @@ class WikiControllerPage extends Hubzero_Controller
 				$log->timestamp = date('Y-m-d H:i:s', time());
 				$log->action    = 'page_removed';
 				$log->actorid   = $this->juser->get('id');
-				$log->comments  = json_encode($data);
+				$log->comments  = json_encode($this->page);
 				if (!$log->store()) 
 				{
 					$this->setError($log->getError());

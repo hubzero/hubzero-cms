@@ -216,7 +216,7 @@ class WikiPage extends JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE $this->_tbl_key='" . $this->_db->getEscaped($oid) . "' $s");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE $this->_tbl_key='" . $this->_db->getEscaped($oid) . "' $s ORDER BY state ASC LIMIT 1");
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			$res = $this->bind($result);
@@ -308,7 +308,7 @@ class WikiPage extends JTable
 	 */
 	public function getID()
 	{
-		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE pagename='" . $this->pagename . "' AND scope='" . $this->scope . "'");
+		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE pagename=" . $this->_db->Quote($this->pagename) . " AND scope=" . $this->_db->Quote($this->scope));
 		$this->id = $this->_db->loadResult();
 		return $this->id;
 	}
@@ -320,7 +320,7 @@ class WikiPage extends JTable
 	 */
 	public function exist()
 	{
-		if ($this->id !== NULL) 
+		if ($this->id !== NULL && $this->state != 2) 
 		{
 			return true;
 		}
@@ -491,7 +491,7 @@ class WikiPage extends JTable
 	 */
 	public function getTemplates()
 	{
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE `pagename` LIKE 'Template:%' AND `group_cn`='$this->group_cn' ORDER BY `pagename`");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE `pagename` LIKE 'Template:%' AND `group_cn`=" . $this->_db->Quote($this->group_cn) . " ORDER BY `pagename`");
 		return $this->_db->loadObjectList();
 	}
 
@@ -654,7 +654,7 @@ class WikiPage extends JTable
 		$query = "SELECT COUNT(*) FROM $this->_tbl";
 		if ($group_cn)
 		{
-			$query .= " WHERE `group_cn`='$group_cn'";
+			$query .= " WHERE `group_cn`=" . $this->_db->Quote($group_cn);
 		}
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -669,7 +669,7 @@ class WikiPage extends JTable
 	public function getGroups($filters=array())
 	{
 		$query = "SELECT DISTINCT g.gidNumber, g.cn, g.description FROM #__xgroups AS g, #__wiki_page AS w WHERE w.group_cn=g.cn ORDER BY g.cn";
-		
+
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
@@ -719,6 +719,7 @@ class WikiPage extends JTable
 			$query = "SELECT t.*, (SELECT COUNT(*) FROM #__wiki_version AS tt WHERE tt.pageid=t.id) AS revisions";
 		}
 		$query .= " FROM $this->_tbl AS t";
+
 		$where = array();
 		if (isset($filters['search']) && $filters['search']) 
 		{
@@ -728,13 +729,18 @@ class WikiPage extends JTable
 		{
 			if ($filters['group'] != '')
 			{
-				$where[] = "t.`group_cn`='" . $this->_db->getEscaped($filters['group']) . "'";
+				$where[] = "t.`group_cn`=" . $this->_db->Quote($filters['group']);
 			}
 			else 
 			{
 				$where[] = "(t.`group_cn`='' OR t.`group_cn` IS NULL)";
 			}
 		}
+		if (isset($filters['state']))
+		{
+			$where[] = "t.`state`=" . $this->_db->Quote($filters['state']);
+		}
+
 		if (count($where) > 0)
 		{
 			$query .= " WHERE " . implode(' AND ', $where);

@@ -121,19 +121,27 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	$row =& $this->rows[$i];
 	switch ($row->state)
 	{
+		case 2:
+			$color_access = 'style="color: #000;"';
+			$class = 'trash';
+			$task = '0';
+			$alt = JText::_('Trashed');
+		break;
+
 		case 1:
 			$color_access = 'style="color: red;"';
 			$class = 'locked';
 			$task = '0';
 			$alt = JText::_('Locked');
-			break;
+		break;
+
 		case 0:
 		default:
 			$color_access = 'style="color: green;"';
 			$class = 'open';
 			$task = '1';
 			$alt = JText::_('Open');
-			break;
+		break;
 	}
 
 	if (!$row->title)

@@ -67,7 +67,7 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr>
 						<td class="key"><label><?php echo JText::_('Group'); ?>:</label></td>
-						<td><input type="text" name="page[group]" id="pagegroup" size="30" maxlength="255" value="<?php echo stripslashes($this->row->group_cn); ?>" /></td>
+						<td><input type="text" name="page[group_cn]" id="pagegroup" size="30" maxlength="255" value="<?php echo stripslashes($this->row->group_cn); ?>" /></td>
 					</tr>
 				</tbody>
 			</table>
@@ -115,8 +115,14 @@ function submitbutton(pressbutton)
 						<td><input type="text" name="page[authors]" id="pageauthors" value="<?php echo htmlentities($this->row->authors); ?>" /></td>
 					</tr>
 					<tr>
-						<td class="key"><label for="state"><?php echo JText::_('Locked'); ?>:</label></td>
-						<td><input type="checkbox" name="page[state]" id="pagestate" value="1" <?php echo $this->row->state ? 'checked="checked"' : ''; ?> /> <?php echo JText::_('Only admins/group managers can edit'); ?></td>
+						<td class="key"><label for="state"><?php echo JText::_('State'); ?>:</label></td>
+						<td>
+							<select name="page[state]" id="pagestate">
+								<option value="0"<?php echo ($this->row->state == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Public'); ?></option>
+								<option value="1"<?php echo ($this->row->state == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Locked'); ?></option>
+								<option value="2"<?php echo ($this->row->state == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Trashed'); ?></option>
+							</select>
+						</td>
 					</tr>
 					<tr>
 						<td class="key" style="vertical-align: top;"><?php echo JText::_('Access Level'); ?>:</td>

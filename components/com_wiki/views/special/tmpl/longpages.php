@@ -51,6 +51,7 @@ $query = "SELECT COUNT(*)
 				ON wp.id = wv.pageid 
 			WHERE wv.approved = 1 
 				AND wp.scope = '{$this->page->scope}' 
+				AND wp.state < 2
 				AND wp.access != 1 
 				AND wv.id = (SELECT MIN(wv2.id) FROM #__wiki_version AS wv2 WHERE wv2.pageid = wv.pageid)";
 
@@ -63,6 +64,7 @@ $query = "SELECT wv.pageid, wp.title, wv.length, wp.pagename, wp.scope, wp.group
 				ON wp.id = wv.pageid 
 			WHERE wv.approved = 1 
 				AND wp.scope = '{$this->page->scope}' 
+				AND wp.state < 2
 				AND wp.access != 1 
 				AND wv.id = (SELECT MIN(wv2.id) FROM #__wiki_version AS wv2 WHERE wv2.pageid = wv.pageid)
 			ORDER BY length DESC";

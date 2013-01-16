@@ -79,7 +79,7 @@ if (!$juser->get('guest')) { ?>
 				<span><?php echo JText::_('WIKI_TAB_HISTORY'); ?></span>
 			</a>
 		</li>
-	<?php if ($this->config->get('access-delete')) { ?>
+	<?php if (($this->page->state == 1 && $this->config->get('access-manage')) || ($this->page->state != 1 && $this->config->get('access-delete'))) { ?>
 		<li class="page-delete<?php if ($this->controller == 'page' && $this->task == 'delete') { echo ' active'; } ?>">
 			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=delete'); ?>">
 				<span><?php echo JText::_('WIKI_DELETE_PAGE'); ?></span>
