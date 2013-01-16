@@ -221,7 +221,7 @@ class BlogControllerEntries extends Hubzero_Controller
 
 		// Incoming
 		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
-		$fields = array_map('trim', $fields);
+		//$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
 		$row = new BlogEntry($this->database);
