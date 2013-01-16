@@ -74,14 +74,14 @@ class CoursesControllerForm extends Hubzero_Controller {
 
 		$pathway->addItem(
 			JText::_('Forms'),
-			'index.php?option=' . $this->_option . '&controller=forms&task=index'
+			'index.php?option=' . $this->_option . '&controller=form'
 		);
 
 		if($this->_task != 'index')
 		{
 			$pathway->addItem(
-				JText::_($this->_task),
-				'index.php?option=' . $this->_option . '&controller=forms&task=' . $this->_task
+				JText::_(ucfirst($this->_task)),
+				'index.php?option=' . $this->_option . '&controller=form&task=' . $this->_task
 			);
 		}
 	}
@@ -91,10 +91,15 @@ class CoursesControllerForm extends Hubzero_Controller {
 	 * 
 	 * @return     void
 	 */
-	public function _buildTitle()
+	public function _buildTitle($append='')
 	{
 		// Set the title used in the view
 		$this->_title = JText::_('Forms');
+
+		if(!empty($append))
+		{
+			$this->_title .= ': ' . $append;
+		}
 
 		//set title of browser window
 		$document =& JFactory::getDocument();
@@ -121,13 +126,15 @@ class CoursesControllerForm extends Hubzero_Controller {
 		Hubzero_Document::addSystemScript('jquery.tablesorter.min');
 
 		// Set the title and pathway
-		$this->_buildTitle();
+		$this->_buildTitle('Upload a PDF');
 		$this->_buildPathway();
 
 		if(!isset($this->view->errors))
 		{
 			$this->view->errors = array();
 		}
+
+		$this->view->title = $this->_title;
 
 		// Display
 		$this->view->display();
@@ -190,11 +197,8 @@ class CoursesControllerForm extends Hubzero_Controller {
 		$this->_buildTitle();
 		$this->_buildPathway();
 
-		$this->view->pdf = new PdfForm($this->assertFormId());
-
+		$this->view->pdf   = new PdfForm($this->assertFormId());
 		$this->view->title = $this->view->pdf->getTitle();
-		//$path->addItem(($title ? htmlentities($title) : 'Layout: new form'), $_SERVER['REQUEST_URI']);
-
 		$this->view->display();
 	}
 
@@ -220,10 +224,18 @@ class CoursesControllerForm extends Hubzero_Controller {
 		// Check authorization
 		$this->authorize();
 
+		// Set the title and pathway
+		$this->_buildTitle();
+		$this->_buildPathway();
+
 		// Add stylesheets and scripts
 		$this->_getStyles($this->_option, $this->_controller . '.css');
 		$this->_getScripts('assets/js/timepicker');
 		$this->_getScripts('assets/js/' . $this->_task);
+
+		// Add tablesorter
+		Hubzero_Document::addSystemStylesheet('tablesorter.themes.blue.css');
+		Hubzero_Document::addSystemScript('jquery.tablesorter.min');
 
 		$this->view->pdf = $this->assertExistentForm();
 		$this->view->dep = new PdfFormDeployment;
@@ -307,6 +319,11 @@ class CoursesControllerForm extends Hubzero_Controller {
 			JError::raiseError(422, 'No form identifier supplied');
 		}
 
+		// Set the title and pathway
+		$this->_buildTitle();
+		$this->_buildPathway();
+
+		// Add styles and scripts
 		$this->_getStyles($this->_option, $this->_controller . '.css');
 		$this->_getScripts('assets/js/' . $this->_task);
 		$this->_getScripts('assets/js/timepicker');
@@ -315,14 +332,11 @@ class CoursesControllerForm extends Hubzero_Controller {
 		Hubzero_Document::addSystemStylesheet('tablesorter.themes.blue.css');
 		Hubzero_Document::addSystemScript('jquery.tablesorter.min');
 
-		$this->view->pdf = $this->assertExistentForm();
+		$this->view->pdf   = $this->assertExistentForm();
+		$this->view->title = $this->view->pdf->getTitle();
+		$this->view->dep   = PdfFormDeployment::load($id);
 
-		$this->view->title = 'Deployment: '.htmlentities($this->view->pdf->getTitle());
-		//$doc->setTitle($title);
-		//$path->addItem($title, $_SERVER['REQUEST_URI']);
-
-		$this->view->dep = PdfFormDeployment::load($id);
-
+		// Display
 		$this->view->display();
 	}
 
@@ -333,31 +347,64 @@ class CoursesControllerForm extends Hubzero_Controller {
 			JError::raiseError(422);
 		}
 
-		$this->view->dep = PdfFormDeployment::fromCrumb($crumb);
+		$dep = PdfFormDeployment::fromCrumb($crumb);
 		$dbg = JRequest::getVar('dbg', false);
 
-		switch ($this->view->dep->getState())
+		switch ($dep->getState())
 		{
-			case 'pending': 
+			case 'pending':
 				JError::raiseError(422, 'This deployment is not yet available');
-			case 'expired': 
-				require '../views/results/'.$this->view->dep->getResultsClosed().'.php'; 
+			case 'expired':
+				$this->setView('results', $dep->getResultsClosed());
+
+				// Set the title and pathway
+				$this->_buildTitle();
+				$this->_buildPathway();
+
+				$this->_getStyles($this->_option, $this->_controller . '.css');
+				$this->_getScripts('assets/js/' . $this->_task);
+
+				$this->view->dep   = $dep;
+				$this->view->pdf   = $dep->getForm();
+				$this->view->title = $this->view->pdf->getTitle();
+				$this->view->dep   = $dep;
+
+				// Display
+				$this->view->display();
 			break;
 			case 'active':
-				$this->view->incomplete = array();
-				$resp = $this->view->dep->getRespondent();
+				$resp = $dep->getRespondent();
 				if($resp->getEndTime())
 				{
-					'views/results/'.$this->view->dep->getResultsOpen().'.php';
-				}
-				else
-				{
+					$this->setView('results', $dep->getResultsOpen());
+
+					// Set the title and pathway
+					$this->_buildTitle();
+					$this->_buildPathway();
+
 					$this->_getStyles($this->_option, $this->_controller . '.css');
 					$this->_getScripts('assets/js/' . $this->_task);
 
-					//$title = $pdf->getTitle();
-					//$doc->setTitle($title);
-					//$path->addItem(htmlentities($title), $_SERVER['REQUEST_URI']);
+					$this->view->incomplete = array();
+					$this->view->pdf = $dep->getForm();
+					$this->view->title = $this->view->pdf->getTitle();
+					$this->view->dep = $dep;
+					$this->view->display();
+					return;
+				}
+				else
+				{
+					// Set the title and pathway
+					$this->_buildTitle();
+					$this->_buildPathway();
+
+					$this->_getStyles($this->_option, $this->_controller . '.css');
+					$this->_getScripts('assets/js/' . $this->_task);
+
+					$this->view->pdf   = $dep->getForm();
+					$this->view->title = $this->view->pdf->getTitle();
+					$this->view->dep   = $dep;
+					$this->view->incomplete = array();
 					$this->view->display();
 				}
 		}
@@ -408,8 +455,8 @@ class CoursesControllerForm extends Hubzero_Controller {
 		}
 		else
 		{
-			$incomplete = array_filter($answers, function($ans) { return is_null($ans[0]); });
-			require '../views/complete.php';
+			$this->view->incomplete = array_filter($answers, function($ans) { return is_null($ans[0]); });
+			$this->complete();
 		}
 	}
 
@@ -468,5 +515,39 @@ class CoursesControllerForm extends Hubzero_Controller {
 		}
 
 		return $pdf;
+	}
+}
+
+class FormHelper {
+	public function timeDiff($secs) {
+		$seconds = array(1, 'second');
+		$minutes = array(60 * $seconds[0], 'minute');
+		$hours   = array(60 * $minutes[0], 'hour');
+		$days    = array(24 * $hours[0],   'day');
+		$weeks   = array(7  * $days[0],    'week');
+		$rv = array();
+
+		foreach (array($weeks, $days, $hours, $minutes, $seconds) as $step)
+		{
+			list($sec, $unit) = $step;
+			$times = floor($secs / $sec);
+
+			if ($times > 0)
+			{
+				$secs -= $sec * $times;
+				$rv[] = $times . ' ' . $unit . ($times == 1 ? '' : 's');
+
+				if (count($rv) == 2)
+				{
+					break;
+				}
+			}
+			else if (count($rv))
+			{
+				break;
+			}
+		}
+
+		return join(', ', $rv);
 	}
 }

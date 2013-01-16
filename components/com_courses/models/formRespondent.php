@@ -1,6 +1,6 @@
 <?php
 
-class FormRespondent
+class PdfFormRespondent
 {
 	private $id, $started, $finished;
 

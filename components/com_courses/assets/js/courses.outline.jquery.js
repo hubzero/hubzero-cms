@@ -524,7 +524,7 @@ HUB.CoursesOutline = {
 		var $ = this.jQuery;
 
 		// Disable default browser drag and drop event
-		$(document).bind('drop dragover', function (e) {
+		$(document).bind('drop dragover', function(e) {
 			e.preventDefault();
 		});
 
@@ -556,6 +556,14 @@ HUB.CoursesOutline = {
 									height: ($(window).height())*2/3,
 									type: 'iframe',
 									href: '/courses/form?task=layout&formId='+data.id+'&tmpl=component',
+									afterShow: function() {
+										// Highjack the 'done' button to close the iframe
+										$('.fancybox-iframe').contents().find('#done').bind('click', function(e) {
+											e.preventDefault();
+
+											$.fancybox.close();
+										});
+									},
 									beforeClose: function() {
 										// Create ajax call to change info in the database
 										$.ajax({

@@ -1,14 +1,15 @@
 jQuery(function($) {
 	var pages = $('#pages li'),
 		tabs = $('#page-tabs li a'),
-	currentPage = $('#page-1');
+		currentPage = $('#page-1');
 	// pagination
 	tabs.click(function(evt) {
-		pages.hide('slow');
+		pages.hide();
 		$('#page-tabs .current').removeClass('current');
 		$(evt.target).addClass('current');
 		currentPage = $($(evt.target).attr('href'));
-		currentPage.show('slow');
+		currentPage.show();
+		currentPage.css('display', 'block');
 		return false;
 	});
 	$(pages[0]).css('display', 'block');
@@ -173,6 +174,7 @@ jQuery(function($) {
 			el.hide();
 		});
 		currentPage.show();
+		currentPage.css('display', 'block');
 
 		if (!errors) {
 			$('.error').hide();
@@ -184,7 +186,7 @@ jQuery(function($) {
 						$('#saved-notification').slideUp('slow');
 					}, 3000);
 				}
-			});
+			}, 'JSON');
 		}
 	});
 });

@@ -35,11 +35,11 @@ jQuery(function($) {
         }
 	$('.placeholder').change(function(evt) {
 		var inp = $(evt.target);
-		$.post('/pdf2form', {
-			    'task': 'saveProgress',
-			   'crumb': window.location.search.toString().match(/crumb=([^&]+)/)[1],
+		$.post('/courses/form', {
+                        'task': 'saveProgress',
+                        'crumb': window.location.search.toString().match(/crumb=([^&]+)/)[1],
 			'question': inp.attr('name').match(/\d+/)[0],
-			  'answer': inp.val()
+                        'answer': inp.val()
 		});
 	});
 });

@@ -95,8 +95,41 @@ input.placeholder {
 .tablesorter tr:hover td {
 	background: #f0f0f0;
 }
-#save {
-	margin-right: 5px;
+.buttons {
+	margin-top: 20px;
+}
+.buttons a {
+	width: 100%;
+	border: 1px solid #888;
+	border-radius: 4px;
+	color: #fff;
+	font-size: 13px;
+	padding: 7px;
+	margin-right: 10px;
+	-webkit-transition: all ease-in-out 0.1s;
+	-moz-transition: all ease-in-out 0.1s;
+	-o-transition: all ease-in-out 0.1s;
+	-ms-transition: all ease-in-out 0.1s;
+	transition: all ease-in-out 0.1s;
+	background: #333;
+	background: -webkit-gradient(linear, left top, left bottom, from(#666666), to(#333333));
+	background: -webkit-linear-gradient(#666666, #333333);
+	background: -moz-linear-gradient(center top, #666 0%, #333 100%);
+	background: -moz-gradient(center top, #666 0%, #333 100%);
+	background: -o-linear-gradient(#666, #333);
+	background-image: -ms-linear-gradient(top, #666 0%, #333 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#666666,endColorstr=#333333);
+	-ms-filter:"progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#666666, endColorstr=#333333)";
+}
+.button a:hover {
+	-webkit-box-shadow: inset 0 2px 7px #999;
+	-moz-box-shadow: inset 0 2px 7px #999;
+	box-shadow: inset 0 2px 7px #999;
+}
+.button a:active {
+	-webkit-box-shadow: inset 1px 2px 3px #111;
+	-moz-box-shadow: inset 1px 2px 3px #111;
+	box-shadow: inset 0 2px 2px #111;
 }
 #saved-notification {
 	position: fixed;
@@ -106,8 +139,27 @@ input.placeholder {
 	z-index: 999;
 	display: none;
 	background: #efe;
+	border: 1px solid #7F0000;
+	background-color: #619926;
+	color: #e9ffae !important;
+	border-color: #3f7704;
+	padding: 10px;
+	overflow: hidden;
 	font-weight: bold;
-	padding: 6px;
+	zoom: 1;
+	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+	background-image: url("/media/system/images/light-stripes.png");
+	background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(255, 255, 255, .065)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .065)), color-stop(.75, rgba(255, 255, 255, .065)), color-stop(.75, transparent), to(transparent));
+	background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .065) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .065) 50%, rgba(255, 255, 255, .065) 75%, transparent 75%, transparent);
+	background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .065) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .065) 50%, rgba(255, 255, 255, .065) 75%, transparent 75%, transparent);
+	background-image: -ms-linear-gradient(-45deg, rgba(255, 255, 255, .065) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .065) 50%, rgba(255, 255, 255, .065) 75%, transparent 75%, transparent);
+	background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .065) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .065) 50%, rgba(255, 255, 255, .065) 75%, transparent 75%, transparent);
+	background-image: linear-gradient(-45deg, rgba(255, 255, 255, .065) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .065) 50%, rgba(255, 255, 255, .065) 75%, transparent 75%, transparent);
+	-webkit-background-size: 30px 30px;
+	-moz-background-size: 30px 30px;
+	-ms-background-size: 30px 30px;
+	-o-background-size: 30px 30px;
+	background-size: 30px 30px;
 }
 input[type=number] {
 	width: 60px;
@@ -175,6 +227,7 @@ input[type=number] {
 	color: #000;
 	font-weight: bold;
 	text-decoration: none;
+	box-shadow: inset 0 0 7px #AAA;
 }
 .answer-marker {
 	position: absolute;

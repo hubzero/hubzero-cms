@@ -1,10 +1,18 @@
-<?
-$pdf = $this->dep->getForm();
+<?php
+$pdf = $this->pdf;
 $resp = $this->dep->getRespondent();
 $progress = $resp->getProgress();
 $realLimit = $this->dep->getRealTimeLimit();
 $incomplete = $this->incomplete;
+?>
 
+<div id="content-header" class="full">
+	<h2><?= htmlentities($this->title) ?></h2>
+</div>
+
+<div class="main section">
+
+<?php
 if (($limit = $this->dep->getTimeLimit()) && is_null($resp->getStartTime())):
 	require 'timed_landing.php';
 else:
@@ -43,10 +51,14 @@ else:
 </ol>
 <fieldset>
 	<p>
+		<input type="hidden" name="option" value="com_courses" />
+		<input type="hidden" name="controller" value="form" />
 		<input type="hidden" name="task" value="submit" />
 		<input type="hidden" name="crumb" value="<?= $this->dep->getCrumb() ?>" />
 		<button type="submit">Submit</button>
 	</p>
 </fieldset>
 </form>
-<? endif;
+<? endif; ?>
+
+</div>
