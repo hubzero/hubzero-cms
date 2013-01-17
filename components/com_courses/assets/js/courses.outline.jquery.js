@@ -437,6 +437,15 @@ HUB.CoursesOutline = {
 					height: ($(window).height())*2/3,
 					type: 'iframe',
 					href: '/courses/form?task=deploy&formId='+formId+'&tmpl=component',
+					afterShow: function() {
+						$('.fancybox-iframe').load(function() {
+							var iframeTask = $(this)[0].contentWindow.location.pathname.match(/\/courses\/form\/([a-zA-Z]+)/);
+							if(iframeTask[1] == 'showDeployment')
+							{
+								$.fancybox.close();
+							}
+						});
+					},
 					beforeClose: function() {
 						// Grab the distribution link
 						distLink = $('.fancybox-iframe').contents().find('.distribution-link a').attr('href');
