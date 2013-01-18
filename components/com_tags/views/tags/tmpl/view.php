@@ -46,7 +46,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 </div><!-- / #content-header-extra -->
 
 <div class="main section">
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=view'); //.'&tag='.$this->tagstring); ?>" method="get">
+	<form action="<?php echo JRoute::_('index.php?option='.$this->option); //.'&tag='.$this->tagstring); ?>" method="get">
 		
 	<div class="aside">
 		<div class="container">

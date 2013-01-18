@@ -148,7 +148,7 @@ class TagsControllerTags extends Hubzero_Controller
 		if ($tagstring) 
 		{
 			// Break the string into individual tags
-			$tgs = explode(' ', $tagstring);
+			$tgs = explode(',', $tagstring);
 			$tgs = array_map('trim', $tgs);
 		} 
 		else 
