@@ -203,7 +203,7 @@ class FileMacro extends WikiMacro
 		$key = strtolower(trim($matches[1]));
 		$val = trim($matches[2]);
 
-		$size   = '/[0-9+](%|px|em)?$/';
+		$size   = '/^[0-9]+(%|px|em)?$/';
 		$attrs  = '/(alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap)=(.+)/';
 		$quoted = "/(?:[\"'])(.*)(?:[\"'])$/";
 
