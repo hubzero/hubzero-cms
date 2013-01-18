@@ -2734,9 +2734,18 @@ class GroupsController extends Hubzero_Controller
 		$page = JRequest::getVar('page',array(),'post','none',2);
 
 		// Check if the page title is set
-		if ($page['title'] == '') 
+		if (trim($page['title']) == '') 
 		{
 			$this->setNotification('You must enter a page title.','error');
+			$this->page = $page;
+			$this->editPage($group);
+			return;
+		}
+
+		// Check if the page title is set
+		if (trim($page['content']) == '') 
+		{
+			$this->setNotification('You must enter page content.','error');
 			$this->page = $page;
 			$this->editPage($group);
 			return;
