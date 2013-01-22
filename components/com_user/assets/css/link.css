@@ -17,8 +17,8 @@
 }
 #link-existing .options {
 	position: relative;
-	background: #FFFFEB;
-	border: 1px dotted #999;
+	background: #FFF;
+	border: 2px dotted #6685b2;
 	color: #999;
 	padding: 0;
 	margin-bottom: 10px;
@@ -28,11 +28,17 @@
 	border-radius: 4px;
 }
 #link-existing .options:hover {
-	border: 1px solid #888;
+	border: 2px solid #6685b2;
 	color: #666;
 }
 #link-existing #option2-inner {
 	padding-top: 20px;
+}
+#link-existing .or {
+	font-size: 15px;
+	font-style: italic;
+	color: #6685b2;
+	padding-left: 20px;
 }
 #link-existing .options .clickable:before {
 	content: "";

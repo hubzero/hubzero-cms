@@ -60,3 +60,23 @@
 	#hubForm .group p.hint.notok {
 		color: #900;
 	}
+
+/* Third party auth plugins */
+	#providers {
+		margin-top: 10px;
+	}
+	#providers a {
+		color: #fff;
+		font-size: 17px;
+		font-weight: normal;
+		text-align: center;
+	}
+	#providers .account-group {
+		margin-left: 26px;
+	}
+	#providers .account-group:before {
+		padding: 15px 0.3em;
+	}
+	#providers .account-group p {
+		margin: 0;
+	}

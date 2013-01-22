@@ -101,6 +101,47 @@ defined('_JEXEC') or die('Restricted access');
 
 	$emailusers = Hubzero_User_Profile_Helper::find_by_email($this->registration['email']);
 
+	if($this->task == 'create' && empty($this->xregistration->_invalid) && empty($this->xregistration->_missing)) {
+		// Check to see if third party auth plugins are enabled
+		$plugins        = JPluginHelper::getPlugin('authentication');
+		$authenticators = array();
+
+		foreach($plugins as $p)
+		{
+			if($p->name != 'hubzero')
+			{
+				$paramsClass = 'JParameter';
+				if (version_compare(JVERSION, '1.6', 'ge'))
+				{
+					$paramsClass = 'JRegistry';
+				}
+
+				$pparams = new $paramsClass($p->params);
+				$display = $pparams->get('display_name', ucfirst($p->name));
+				$authenticators[] = array('name' => $p->name, 'display' => $display);
+			}
+		}
+
+		// There are third party plugins, so show them on the registration form
+		if(!empty($authenticators))
+		{
+			$doc =& JFactory::getDocument();
+			$doc->addStylesheet(DS . 'components' . DS . 'com_user' . DS . 'assets' . DS . 'css' . DS . 'providers.css');
+			$html .= '<fieldset>';
+			$html .= '<legend>Linked Accounts</legend>';
+			$html .= '<p class="info">You can choose to log in via one of these services, and we\'ll help you fill in the info below!</p>';
+			$html .= '<div id="providers">';
+			foreach($authenticators as $a)
+			{
+				$html .= '<a class="account-group" id="'.$a['name'].'" href="'.JRoute::_('index.php?option=com_user&view=login&authenticator='.$a['name']).'">';
+				$html .= '<p>'.$a['display'].' account</p>';
+				$html .= '</a><br />';
+			}
+			$html .= '</div>';
+			$html .= '</fieldset>';
+		}
+	}
+
 	if (($this->task == 'create' || $this->task == 'proxycreate') && $emailusers) {
 		$html .= '<div class="error">'."\n";
 		$html .= "\t".'<p>The email address "' . htmlentities($this->registration['email'],ENT_COMPAT,'UTF-8') . '" is already registered. If you have lost or forgotten this ' . $this->sitename . ' login information, we can resend it to you at that email address now:</p>'."\n";

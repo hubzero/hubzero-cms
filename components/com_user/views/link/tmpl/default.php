@@ -37,12 +37,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 </div>
 
 <div class="main section" id="link-existing">
-	<p class="passed">
-		You've logged in successfully with your <?php echo $this->display_name; ?> account.
-	</p>
-
-	<p class="warning">
-		BUT, it doesn't seem to be linked to a current hub account. You can:
+	<p class="info">
+		You have successfully connected to <?php echo $this->sitename; ?> with your <?php echo $this->display_name; ?> account.<br />
+		BUT, it isn't currently linked to an existing <?php echo $this->sitename; ?> account.  To proceed, either:
 	</p>
 
 	<div id="option1-link-existing" class="options">
@@ -104,6 +101,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</div><!-- / #other-links -->
 		</div><!-- / #option1-inner -->
 	</div><!-- / #option1-link-existing -->
+
+	<p class="or">OR</p>
 
 	<div id="option2-create-new" class="options">
 		<div class="clickable">Create a new account using your <?php echo $this->display_name; ?> identity</div>
