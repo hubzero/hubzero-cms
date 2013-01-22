@@ -63,19 +63,21 @@
 
 /* Third party auth plugins */
 	#providers {
-		margin-top: 10px;
+		margin-top: 20px;
+		margin-left: 26px;
 	}
 	#providers a {
 		color: #fff;
 		font-size: 17px;
 		font-weight: normal;
 		text-align: center;
-	}
-	#providers .account-group {
-		margin-left: 26px;
+		padding: 0.5em 1em 0.5em 60px;
 	}
 	#providers .account-group:before {
-		padding: 15px 0.3em;
+		padding: 9px 0.3em;
+	}
+	#providers .account-group {
+		min-width: 175px;
 	}
 	#providers .account-group p {
 		margin: 0;
