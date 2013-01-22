@@ -127,18 +127,19 @@ defined('_JEXEC') or die('Restricted access');
 		{
 			$doc =& JFactory::getDocument();
 			$doc->addStylesheet(DS . 'components' . DS . 'com_user' . DS . 'assets' . DS . 'css' . DS . 'providers.css');
+			$html .= '<div class="explaination"><p class="info">You can choose to log in via one of these services, and we\'ll help you fill in the info below!</p></div>';
 			$html .= '<fieldset>';
 			$html .= '<legend>Linked Accounts</legend>';
-			$html .= '<p class="info">You can choose to log in via one of these services, and we\'ll help you fill in the info below!</p>';
 			$html .= '<div id="providers">';
 			foreach($authenticators as $a)
 			{
 				$html .= '<a class="account-group" id="'.$a['name'].'" href="'.JRoute::_('index.php?option=com_user&view=login&authenticator='.$a['name']).'">';
 				$html .= '<p>'.$a['display'].' account</p>';
-				$html .= '</a><br />';
+				$html .= '</a>';
 			}
 			$html .= '</div>';
 			$html .= '</fieldset>';
+			$html .= '<div class="clear"></div>';
 		}
 	}
 
