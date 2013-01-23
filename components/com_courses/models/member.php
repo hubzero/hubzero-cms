@@ -32,6 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.php');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'role.php');
 
 /**
  * Courses model class for a course
@@ -205,43 +206,6 @@ class CoursesModelMember extends JObject
 	}
 
 	/**
-	 * Check if a property is set
-	 * 
-	 * @param      string $property Name of property to set
-	 * @return     boolean True if set
-	 */
-	/*public function __isset($property)
-	{
-		return isset($this->_data[$property]);
-	}
-
-	/**
-	 * Set a property
-	 * 
-	 * @param      string $property Name of property to set
-	 * @param      mixed  $value    Value to set property to
-	 * @return     void
-	 */
-	/*public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-
-	/**
-	 * Get a property
-	 * 
-	 * @param      string $property Name of property to retrieve
-	 * @return     mixed
-	 */
-	/*public function __get($property)
-	{
-		if (isset($this->_tbl->$property)) 
-		{
-			return $this->_tbl->$property;
-		}
-	}
-
-	/**
 	 * Returns a property of the object or the default value if the property is not set.
 	 *
 	 * @param	string $property The name of the property
@@ -256,21 +220,12 @@ class CoursesModelMember extends JObject
 			{
 				if (is_object($this->_db))
 				{
-					require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'role.php');
-
 					$result = new CoursesTableRole($this->_db);
 					if ($result->load($this->_tbl->get('role_id')))
 					{
 						$this->_tbl->set('role', $result->title);
 						$this->_tbl->set('role_permissions', $result->permissions);
 					}
-					/*$this->_db->setQuery("SELECT r.* FROM #__courses_roles AS r WHERE r.`id`=" . $this->_db->Quote($this->_tbl->get('role_id')));
-
-					if (($result = $this->_db->loadObject()))
-					{
-						$this->_tbl->role = $result->role;
-						$this->_tbl->role_permissions = $result->permissions;
-					}*/
 				}
 			}
 		}

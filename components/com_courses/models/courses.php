@@ -31,7 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'course.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
 
 /**
  * Courses model class for a course
@@ -53,7 +54,7 @@ class CoursesModelCourses extends JObject
 	private $_db = NULL;
 
 	/**
-	 * JDatabase
+	 * CoursesModelIterator
 	 * 
 	 * @var object
 	 */
@@ -131,8 +132,6 @@ class CoursesModelCourses extends JObject
 			}
 			else
 			{
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
-
 				$this->_course = CoursesModelCourse::getInstance($id);
 			}
 		}
@@ -155,12 +154,8 @@ class CoursesModelCourses extends JObject
 
 		if (!isset($this->_courses) || !is_a($this->_courses, 'CoursesModelIterator'))
 		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
-
 			if (($results = $this->_tbl->getRecords($filters)))
 			{
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
-
 				foreach ($results as $key => $result)
 				{
 					$results[$key] = new CoursesModelCourse($result);

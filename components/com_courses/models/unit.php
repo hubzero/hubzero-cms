@@ -33,42 +33,37 @@ defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'unit.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'assetgroup.php');
 
 /**
- * Courses model class for a course
+ * Courses model class for a unit
  */
 class CoursesModelUnit extends JObject
 {
 	/**
-	 * CoursesTableInstance
+	 * CoursesTableUnit
 	 * 
 	 * @var object
 	 */
-	public $unit = NULL;
+	private $_tbl = NULL;
 
 	/**
-	 * CoursesTableInstance
+	 * CoursesModelAssetgroup
 	 * 
 	 * @var object
 	 */
 	public $group = NULL;
 
 	/**
-	 * CoursesTableInstance
-	 * 
-	 * @var object
-	 */
-	//public $params = NULL;
-
-	/**
-	 * CoursesTableInstance
+	 * CoursesTableIterator
 	 * 
 	 * @var object
 	 */
 	public $assetgroups = NULL;
 
 	/**
-	 * CoursesTableInstance
+	 * JUser
 	 * 
 	 * @var object
 	 */
@@ -82,11 +77,11 @@ class CoursesModelUnit extends JObject
 	private $_db = NULL;
 
 	/**
-	 * Container for properties
+	 * JDatabase
 	 * 
-	 * @var array
+	 * @var object
 	 */
-	private $_data = array();
+	private $_siblings = NULL;
 
 	/**
 	 * Constructor
@@ -99,22 +94,20 @@ class CoursesModelUnit extends JObject
 	{
 		$this->_db = JFactory::getDBO();
 
-		$this->unit = new CoursesTableUnit($this->_db);
+		$this->_tbl = new CoursesTableUnit($this->_db);
 
 		if (is_numeric($oid) || is_string($oid))
 		{
-			$this->unit->load($oid);
+			$this->_tbl->load($oid);
 		}
 		else if (is_object($oid))
 		{
-			$this->unit->bind($oid);
+			$this->_tbl->bind($oid);
 		}
 		else if (is_array($oid))
 		{
-			$this->unit->bind($oid);
+			$this->_tbl->bind($oid);
 		}
-
-		//$this->params = JComponentHelper::getParams('com_courses');
 	}
 
 	/**
@@ -145,47 +138,6 @@ class CoursesModelUnit extends JObject
 	}
 
 	/**
-	 * Check if a property is set
-	 * 
-	 * @param      string $property Name of property to set
-	 * @return     boolean True if set
-	 */
-	public function __isset($property)
-	{
-		return isset($this->_data[$property]);
-	}
-
-	/**
-	 * Set a property
-	 * 
-	 * @param      string $property Name of property to set
-	 * @param      mixed  $value    Value to set property to
-	 * @return     void
-	 */
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-
-	/**
-	 * Get a property
-	 * 
-	 * @param      string $property Name of property to retrieve
-	 * @return     mixed
-	 */
-	public function __get($property)
-	{
-		if (isset($this->unit->$property)) 
-		{
-			return $this->unit->$property;
-		}
-		else if (isset($this->_data[$property])) 
-		{
-			return $this->_data[$property];
-		}
-	}
-
-	/**
 	 * Returns a property of the object or the default value if the property is not set.
 	 *
 	 * @access	public
@@ -197,9 +149,9 @@ class CoursesModelUnit extends JObject
  	 */
 	public function get($property, $default=null)
 	{
-		if (isset($this->unit->$property)) 
+		if (isset($this->_tbl->$property)) 
 		{
-			return $this->unit->$property;
+			return $this->_tbl->$property;
 		}
 		return $default;
 	}
@@ -216,8 +168,8 @@ class CoursesModelUnit extends JObject
 	 */
 	public function set($property, $value = null)
 	{
-		$previous = isset($this->unit->$property) ? $this->unit->$property : null;
-		$this->unit->$property = $value;
+		$previous = isset($this->_tbl->$property) ? $this->_tbl->$property : null;
+		$this->_tbl->$property = $value;
 		return $previous;
 	}
 
@@ -387,17 +339,16 @@ class CoursesModelUnit extends JObject
 	 */
 	public function assetgroups($idx=null, $filters=array())
 	{
+		if (!isset($filters['unit_id']))
+		{
+			$filters['unit_id'] = (int) $this->get('id');
+		}
+
 		if (!isset($this->assetgroups) || !is_a($this->assetgroups, 'CoursesModelIterator'))
 		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.group.php');
-
-			$filters['unit_id'] = (int) $this->get('id');
-
 			$tbl = new CoursesTableAssetGroup($this->_db);
 			if (($results = $tbl->find(array('w' => $filters))))
 			{
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'assetgroup.php');
-
 				$list = array();
 
 				// First pass - collect children
@@ -429,51 +380,12 @@ class CoursesModelUnit extends JObject
 		{
 			if (is_numeric($idx))
 			{
-				/*if (isset($this->assetgroups[$idx]))
-				{
-					return $this->assetgroups[$idx];
-				}
-				else
-				{
-					$this->setError(JText::_('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
-					return false;
-				}*/
 				return $this->assetgroups->fetch($idx);
 			}
-			/*else if (is_array($idx))
-			{
-				$res = array();
-				foreach ($this->assetgroups as $group)
-				{
-					$obj = new stdClass;
-					foreach ($idx as $property)
-					{
-						$property = strtolower(trim($property));
-						if (isset($group->$property))
-						{
-							$obj->$property = $group->$property;
-						}
-					}
-					if ($found)
-					{
-						$res[] = $obj;
-					}
-				}
-				return $res;
-			}*/
 			else if (is_string($idx))
 			{
 				$idx = strtolower(trim($idx));
 
-				/*$res = array();
-				foreach ($this->assetgroups as $group)
-				{
-					if (isset($group->$idx))
-					{
-						$res[] = $group->$idx;
-					}
-				}
-				return $res;*/
 				foreach ($this->assetgroups as $group)
 				{
 					if ($group->get('alias') == $idx)
@@ -500,142 +412,12 @@ class CoursesModelUnit extends JObject
 	}
 
 	/**
-	 * Method to set the article id
+	 * Set seblings
 	 *
-	 * @param	int	Article ID number
+	 * @return     boolean
 	 */
-	/*public function assetgrouptype($id=null)
-	{
-		if (!isset($this->grouptype) || $this->grouptype->id != $id)
-		{
-			$this->grouptype = null;
-
-			foreach ($this->assetgrouptypes() as $key => $grouptype)
-			{
-				if ($grouptype->id == $id)
-				{
-					if (!is_a($grouptype, 'CoursesModelAssetgrouptype'))
-					{
-						$grouptype = new CoursesModelAssetgrouptype($grouptype);
-						// Set the offering to the model
-						$this->assetgrouptypes($key, $grouptype);
-					}
-					$this->grouptype = $grouptype;
-					break;
-				}
-			}
-		}
-		return $this->grouptype;
-	}*/
-
-	/**
-	 * Get a list of assetgroups for an offering
-	 *   Accepts either a numeric array index or a string [id, name]
-	 *   If index, it'll return the entry matching that index in the list
-	 *   If string, it'll return either a list of IDs or names
-	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
-	 */
-	/*public function assetgrouptypes($idx=null, $model=null)
-	{
-		if (!$this->exists()) 
-		{
-			return array();
-		}
-
-		if (!isset($this->assetgrouptypes) || !is_array($this->assetgrouptypes))
-		{
-			$this->assetgrouptypes = array();
-
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.group.php');
-
-			$tbl = new CoursesTableAssetGroup($this->_db);
-
-			// Get the unique asset group types (this will build our sub-headings)
-			$results = $tbl->getUniqueCourseAssetGroupTypes(
-				array(
-					'w' => array(
-						'course_unit_id' => $this->unit->id
-					)
-				)
-			);
-			if ($results)
-			{
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'assetgrouptype.php');
-
-				foreach ($results as $key => $result)
-				{
-					$results[$key] = new CoursesModelAssetgrouptype($result);
-				}
-				$this->assetgrouptypes = $results;
-			}
-		}
-
-		if ($idx !== null)
-		{
-			if (is_numeric($idx))
-			{
-				if (isset($this->assetgrouptypes[$idx]))
-				{
-					if ($model && is_a($model, 'CoursesModelAssetgrouptype'))
-					{
-						$this->assetgrouptypes[$idx] = $model;
-					}
-					return $this->assetgrouptypes[$idx];
-				}
-				else
-				{
-					$this->setError(JText::_('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
-					return false;
-				}
-			}
-			else if (is_array($idx))
-			{
-				$res = array();
-				foreach ($this->assetgrouptypes as $grouptype)
-				{
-					$obj = new stdClass;
-					foreach ($idx as $property)
-					{
-						$property = strtolower(trim($property));
-						if (isset($grouptype->$property))
-						{
-							$obj->$property = $grouptype->$property;
-						}
-					}
-					if ($found)
-					{
-						$res[] = $obj;
-					}
-				}
-				return $res;
-			}
-			else if (is_string($idx))
-			{
-				$idx = strtolower(trim($idx));
-
-				$res = array();
-				foreach ($this->assetgrouptypes as $grouptype)
-				{
-					if (isset($grouptype->$idx))
-					{
-						$res[] = $grouptype->$idx;
-					}
-				}
-				return $res;
-			}
-		}
-
-		return $this->assetgrouptypes;
-	}*/
-
 	public function siblings(&$siblings) 
 	{
-		/*if (is_array($siblings) && !is_a($siblings, 'CoursesModelIterator'))
-		{
-			$siblings = new CoursesModelIterator($siblings);
-		}*/
 		if (is_a($siblings, 'CoursesModelIterator'))
 		{
 			$this->_siblings = $siblings;
@@ -752,8 +534,6 @@ class CoursesModelUnit extends JObject
 	{
 		if (!isset($this->assets) || !is_a($this->assets, 'CoursesModelIterator'))
 		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
-
 			$filters['asset_scope_id'] = (int) $this->get('id');
 			$filters['asset_scope']    = 'unit';
 
@@ -761,8 +541,6 @@ class CoursesModelUnit extends JObject
 
 			if (($results = $tbl->find(array('w' => $filters))))
 			{
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
-
 				foreach ($results as $key => $result)
 				{
 					$results[$key] = new CoursesModelAsset($result);
@@ -780,10 +558,10 @@ class CoursesModelUnit extends JObject
 	}
 
 	/**
-	 * Check if the course exists
+	 * Bind data to the this model
 	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @param      mixed $data Data to bind (array or object)
+	 * @return     boolean
 	 */
 	public function bind($data=null)
 	{
@@ -791,12 +569,10 @@ class CoursesModelUnit extends JObject
 	}
 
 	/**
-	 * Short title for 'update'
-	 * Long title (if any) ...
+	 * Save data to the database
 	 *
-	 * @param unknown $course_id Parameter title (if any) ...
-	 * @param array $data Parameter title (if any) ...
-	 * @return boolean Return title (if any) ...
+	 * @param     boolean $check Perform data validation check?
+	 * @return    boolean False if errors, True on success
 	 */
 	public function store($check=true)
 	{

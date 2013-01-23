@@ -82,8 +82,8 @@ if (!$this->course->offering()->access('view')) { ?>
 			<div class="unit-wrap">
 				<div class="unit-content<?php echo ($unit->available()) ? ' open' : ''; ?>">
 					<h3>
-						<span><?php echo $this->escape(stripslashes($unit->title)); ?></span> 
-						<?php echo $this->escape(stripslashes($unit->description)); ?>
+						<span><?php echo $this->escape(stripslashes($unit->get('title'))); ?></span> 
+						<?php echo $this->escape(stripslashes($unit->get('description'))); ?>
 					</h3>
 	<?php if (!$unit->started()) { ?>
 					<div class="unit-availability comingSoon">

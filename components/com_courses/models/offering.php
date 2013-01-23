@@ -32,7 +32,15 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'offering.php');
+
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'section.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'unit.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'member.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'announcement.php');
+
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'page.php');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'role.php');
 
 /**
  * Courses model class for a course
@@ -243,21 +251,6 @@ class CoursesModelOffering extends JObject
  	 */
 	public function get($property, $default=null)
 	{
-		/*if (in_array($property, self::$_list_keys))
-		{
-			if (!array_key_exists($property, get_object_vars($this->_tbl)))
-			{
-				if (is_object($this->_db))
-				{
-					$this->_db->setQuery("SELECT user_id from #__courses_offering_members WHERE offering_id=" . $this->_db->Quote($this->_tbl->get('id')));
-
-					if (($results = $this->_db->loadResultArray()))
-					{
-						$this->_tbl->$property = $results;
-					}
-				}
-			}
-		}*/
 		if (isset($this->_tbl->$property)) 
 		{
 			return $this->_tbl->$property;
@@ -425,8 +418,6 @@ class CoursesModelOffering extends JObject
 			}
 			else
 			{
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'section.php');
-
 				$this->_section = CoursesModelSection::getInstance($id, $this->get('id'));
 			}
 		}
@@ -451,23 +442,17 @@ class CoursesModelOffering extends JObject
 
 		if (isset($filters['count']) && $filters['count'])
 		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'section.php');
-
 			$tbl = new CoursesTableSection($this->_db);
 
 			return $tbl->count($filters);
 		}
+
 		if (!isset($this->_sections) || !is_a($this->_sections, 'CoursesModelIterator'))
 		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'section.php');
-
 			$tbl = new CoursesTableSection($this->_db);
 
 			if (($results = $tbl->find($filters)))
 			{
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'section.php');
-
 				foreach ($results as $key => $result)
 				{
 					$results[$key] = new CoursesModelSection($result);
@@ -511,8 +496,6 @@ class CoursesModelOffering extends JObject
 			}
 			else
 			{
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'unit.php');
-
 				$this->unit = CoursesModelUnit::getInstance($id);
 			}
 		}
@@ -530,29 +513,24 @@ class CoursesModelOffering extends JObject
 	 */
 	public function units($filters=array())
 	{
+		if (!isset($filters['offering_id']))
+		{
+			$filters['offering_id'] = (int) $this->get('id');
+		}
+
 		if (isset($filters['count']) && $filters['count'])
 		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'unit.php');
-
 			$tbl = new CoursesTableUnit($this->_db);
-
-			$filters['offering_id'] = (int) $this->get('id');
 
 			return $tbl->count($filters);
 		}
+
 		if (!isset($this->units) || !is_a($this->units, 'CoursesModelIterator'))
 		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'unit.php');
-
 			$tbl = new CoursesTableUnit($this->_db);
-
-			$filters['offering_id'] = (int) $this->get('id');
 
 			if (($results = $tbl->find($filters)))
 			{
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'unit.php');
-
 				foreach ($results as $key => $result)
 				{
 					$results[$key] = new CoursesModelUnit($result);
@@ -592,18 +570,6 @@ class CoursesModelOffering extends JObject
 		{
 			$this->_member = null;
 
-			/*if (!$user_id)
-			{
-				$user_id = JFactory::getUser()->get('id');
-			}*/
-		//$user_id = (int) $user_id;
-
-		/*$this->_db->setQuery(
-			"SELECT m.*, r.role, r.permissions AS role_permissions 
-			FROM #__courses_offering_members AS m 
-			LEFT JOIN #__courses_roles AS r ON r.id=m.role_id 
-			WHERE m.`offering_id`=" . $this->_db->Quote($this->get('id')) . " AND m.`user_id`=" . $this->_db->Quote($id)
-		);*/
 			if (isset($this->_members) && isset($this->_members[$user_id]))
 			{
 				$this->_member = $this->_members[$user_id];
@@ -612,8 +578,6 @@ class CoursesModelOffering extends JObject
 
 		if (!$this->_member)
 		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'member.php');
-
 			$this->_member = CoursesModelMember::getInstance($user_id, $this->get('id'));
 		}
 
@@ -643,8 +607,6 @@ class CoursesModelOffering extends JObject
 
 		if (isset($filters['count']) && $filters['count'])
 		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.php');
-
 			$tbl = new CoursesTableMember($this->_db);
 
 			return $tbl->count($filters);
@@ -652,16 +614,12 @@ class CoursesModelOffering extends JObject
 
 		if (!isset($this->_members) || !is_array($this->_members) || $clear)
 		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.php');
-
 			$tbl = new CoursesTableMember($this->_db);
 
 			$results = array();
 
 			if (($data = $tbl->find($filters)))
 			{
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'member.php');
-
 				foreach ($data as $key => $result)
 				{
 					$results[$result->user_id] = new CoursesModelMember($result, $this->get('id'));
@@ -686,40 +644,23 @@ class CoursesModelOffering extends JObject
 	 */
 	public function roles($filters=array(), $clear=false)
 	{
-		//if (is_string($filters))
+		if (!isset($filters['offering_id']))
+		{
+			$filters['offering_id'] = array(0, (int) $this->get('id'));  // 0 = default roles
+		}
+
 		if (isset($filters['count']) && $filters['count'])
 		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'role.php');
-
 			$tbl = new CoursesTableRole($this->_db);
-
-			if (!isset($filters['offering_id']))
-			{
-				$filters['offering_id'] = array(0, (int) $this->get('id'));  // 0 = default roles
-			}
 
 			return $tbl->count($filters);
 		}
 		if (!isset($this->_roles) || !is_array($this->_roles) || $clear)
 		{
-			//require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'role.php');
-
 			$tbl = new CoursesTableRole($this->_db);
-
-			if (!isset($filters['offering_id']))
-			{
-				$filters['offering_id'] = array(0, (int) $this->get('id'));  // 0 = default roles
-			}
 
 			if (!($results = $tbl->find($filters)))
 			{
-				/*require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'member.php');
-
-				foreach ($data as $key => $result)
-				{
-					$results[$result->user_id] = new CoursesModelMember($result, $this->get('id'));
-				}*/
 				$results = array();
 			}
 
@@ -761,30 +702,21 @@ class CoursesModelOffering extends JObject
 	 */
 	public function pages($filters=array())
 	{
+		if (!isset($filters['offering_id']))
+		{
+			$filters['offering_id'] = (int) $this->get('id');
+		}
+
 		if (isset($filters['count']) && $filters['count'])
 		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'page.php');
-
 			$tbl = new CoursesTablePage($this->_db);
-
-			if (!isset($filters['offering_id']))
-			{
-				$filters['offering_id'] = (int) $this->get('id');
-			}
 
 			return $tbl->count($filters);
 		}
 
 		if (!isset($this->_pages) || !is_array($this->_pages))
 		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'page.php');
-
 			$tbl = new CoursesTablePage($this->_db);
-
-			if (!isset($filters['offering_id']))
-			{
-				$filters['offering_id'] = (int) $this->get('id');
-			}
 
 			if (!($results = $tbl->find($filters)))
 			{
@@ -817,8 +749,6 @@ class CoursesModelOffering extends JObject
 
 		if (isset($filters['count']) && $filters['count'])
 		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'announcement.php');
-
 			$tbl = new CoursesTableAnnouncement($this->_db);
 
 			return $tbl->count($filters);
@@ -826,17 +756,12 @@ class CoursesModelOffering extends JObject
 
 		if (!isset($this->_announcements) || !is_array($this->_announcements))
 		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'announcement.php');
-
 			$tbl = new CoursesTableAnnouncement($this->_db);
 
 			$results = array();
 
 			if (($data = $tbl->find($filters)))
 			{
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'announcement.php');
-
 				foreach ($data as $key => $result)
 				{
 					$results[] = new CoursesModelAnnouncement($result);
@@ -1005,8 +930,6 @@ class CoursesModelOffering extends JObject
 	 */
 	public function add($data = array(), $role_id=0)
 	{
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'member.php');
-
 		foreach ($data as $result)
 		{
 			$user_id = $this->_userId($result);
@@ -1072,12 +995,6 @@ class CoursesModelOffering extends JObject
 		{
 			return false;
 		}
-
-		//$first = true;
-
-		//$affected = 0;
-
-		//$aNewUserCourseEnrollments = array();
 
 		if ($check)
 		{
@@ -1162,7 +1079,6 @@ class CoursesModelOffering extends JObject
 				// see who is missing
 				$aNewUserCourseEnrollments = array_diff($list, $aExistingUserMembership);
 			}*/
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.php');
 
 			$tbl = new CoursesTableMember($this->_db);
 			$aux_table = $tbl->getTableName(); //'#__courses_offering_members';

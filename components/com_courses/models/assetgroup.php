@@ -31,37 +31,38 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.group.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
 
 /**
- * Courses model class for a course
+ * Courses model class for an asset group
  */
 class CoursesModelAssetgroup extends JObject
 {
 	/**
-	 * CoursesTableInstance
+	 * CoursesModelIterator
 	 * 
 	 * @var array
 	 */
 	public $assets = null;
 
 	/**
-	 * CoursesTableInstance
+	 * CoursesModelIterator
 	 * 
 	 * @var array
 	 */
 	public $children = null;
 
 	/**
-	 * CoursesTableInstance
+	 * CoursesTableAssetGroup
 	 * 
 	 * @var object
 	 */
 	private $_tbl = NULL;
 
 	/**
-	 * CoursesTableInstance
+	 * JUser
 	 * 
 	 * @var object
 	 */
@@ -75,7 +76,7 @@ class CoursesModelAssetgroup extends JObject
 	private $_db = NULL;
 
 	/**
-	 * JDatabase
+	 * CoursesModelAssetGroup
 	 * 
 	 * @var object
 	 */
@@ -115,11 +116,6 @@ class CoursesModelAssetgroup extends JObject
 		{
 			$this->_tbl->bind($oid);
 		}
-
-		/*if (is_a($parent, 'CoursesModelUnit'))
-		{
-			$this->_parent = $parent;
-		}*/
 	}
 
 	/**
@@ -147,47 +143,6 @@ class CoursesModelAssetgroup extends JObject
 		}
 
 		return $instances[$oid];
-	}
-
-	/**
-	 * Check if a property is set
-	 * 
-	 * @param      string $property Name of property to set
-	 * @return     boolean True if set
-	 */
-	/*public function __isset($property)
-	{
-		return isset($this->_data[$property]);
-	}
-
-	/**
-	 * Set a property
-	 * 
-	 * @param      string $property Name of property to set
-	 * @param      mixed  $value    Value to set property to
-	 * @return     void
-	 */
-	/*public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-
-	/**
-	 * Get a property
-	 * 
-	 * @param      string $property Name of property to retrieve
-	 * @return     mixed
-	 */
-	/*public function __get($property)
-	{
-		if (isset($this->asset->$property)) 
-		{
-			return $this->asset->$property;
-		}
-		else if (isset($this->_data[$property])) 
-		{
-			return $this->_data[$property];
-		}
 	}
 
 	/**
@@ -355,8 +310,6 @@ class CoursesModelAssetgroup extends JObject
 	{
 		if (!isset($this->assets) || !is_a($this->assets, 'CoursesModelIterator'))
 		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
-
 			$filters['asset_scope_id'] = (int) $this->get('id');
 			$filters['asset_scope']    = 'asset_group';
 
@@ -364,8 +317,6 @@ class CoursesModelAssetgroup extends JObject
 
 			if (($results = $tbl->find(array('w' => $filters))))
 			{
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
-
 				foreach ($results as $key => $result)
 				{
 					$results[$key] = new CoursesModelAsset($result);
@@ -379,66 +330,16 @@ class CoursesModelAssetgroup extends JObject
 			$this->assets = new CoursesModelIterator($results);
 		}
 
-		/*if ($idx !== null)
-		{
-			if (is_numeric($idx))
-			{
-				if (isset($this->assets[$idx]))
-				{
-					return $this->assets[$idx];
-				}
-				else
-				{
-					$this->setError(JText::_('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
-					return false;
-				}
-			}
-			else if (is_array($idx))
-			{
-				$res = array();
-				foreach ($this->assets as $asset)
-				{
-					$obj = new stdClass;
-					foreach ($idx as $property)
-					{
-						$property = strtolower(trim($property));
-						if (isset($asset->$property))
-						{
-							$obj->$property = $asset->$property;
-						}
-					}
-					if ($found)
-					{
-						$res[] = $obj;
-					}
-				}
-				return $res;
-			}
-			else if (is_string($idx))
-			{
-				$idx = strtolower(trim($idx));
-
-				$res = array();
-				foreach ($this->assets as $asset)
-				{
-					if (isset($asset->$idx))
-					{
-						$res[] = $asset->$idx;
-					}
-				}
-				return $res;
-			}
-		}*/
-
 		return $this->assets;
 	}
 
+	/**
+	 * Set siblings
+	 *
+	 * @return     void
+	 */
 	public function siblings(&$siblings) 
 	{
-		/*if (is_array($siblings) && !is_a($siblings, 'CoursesModelIterator'))
-		{
-			$siblings = new CoursesModelIterator($siblings);
-		}*/
 		if (is_a($siblings, 'CoursesModelIterator'))
 		{
 			$this->_siblings = $siblings;
@@ -525,12 +426,10 @@ class CoursesModelAssetgroup extends JObject
 	}
 
 	/**
-	 * Short title for 'update'
-	 * Long title (if any) ...
+	 * Save data to the database
 	 *
-	 * @param unknown $course_id Parameter title (if any) ...
-	 * @param array $data Parameter title (if any) ...
-	 * @return boolean Return title (if any) ...
+	 * @param     boolean $check Perform data validation before save?
+	 * @return    boolean False if errors, True on success
 	 */
 	public function store($check=true)
 	{

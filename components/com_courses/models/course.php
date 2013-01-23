@@ -32,6 +32,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'course.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
 
 /**
  * Courses model class for a course
@@ -39,28 +41,28 @@ require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_c
 class CoursesModelCourse extends JObject
 {
 	/**
-	 * JUser
+	 * CoursesTableCourse
 	 * 
 	 * @var object
 	 */
 	private $_tbl = NULL;
 
 	/**
-	 * JUser
+	 * CoursesModelOffering
 	 * 
 	 * @var object
 	 */
 	public $offering = NULL;
 
 	/**
-	 * JUser
+	 * CoursesModelIterator
 	 * 
 	 * @var object
 	 */
 	public $offerings = NULL;
 
 	/**
-	 * JUser
+	 * JParameter
 	 * 
 	 * @var object
 	 */
@@ -88,7 +90,7 @@ class CoursesModelCourse extends JObject
 	private $_db = NULL;
 
 	/**
-	 * Description for '_list_keys'
+	 * List of keys that require special handling for get()
 	 *
 	 * @var array
 	 */
@@ -127,8 +129,6 @@ class CoursesModelCourse extends JObject
 
 		$this->params = JComponentHelper::getParams('com_courses');
 		$this->params->merge(new $paramsClass($this->get('params')));
-
-		//$this->params = new $paramsClass($this->course->get('params'));
 	}
 
 	/**
@@ -238,11 +238,6 @@ class CoursesModelCourse extends JObject
 	 */
 	public function isManager($user_id=0)
 	{
-		/*require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'manager.php');
-
-		$tbl = new CoursesTableManager($this->_db);
-
-		return $tbl->find($this->get('id'), $user_id); //in_array(JFactory::getUser()->get('id'), $this->get('managers'));*/
 		if ((int) $user_id)
 		{
 			// Check if we've already grabbed the list of managers
@@ -319,8 +314,6 @@ class CoursesModelCourse extends JObject
 			else
 			{
 				// Get current offering
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
-
 				$this->offering = CoursesModelOffering::getInstance($id, $this->get('id'));
 			}
 		}
@@ -337,32 +330,27 @@ class CoursesModelCourse extends JObject
 	 */
 	public function offerings($filters=array())
 	{
+		if (!isset($filters['course_id']))
+		{
+			$filters['course_id'] = (int) $this->get('id');
+		}
+
+		// Perform a record count?
 		if (isset($filters['count']) && $filters['count'])
 		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'offering.php');
-
 			$tbl = new CoursesTableOffering($this->_db);
-
-			$filters['course_id'] = (int) $this->get('id');
 
 			return $tbl->count($filters);
 		}
+
 		// Is the data is not set OR is it not the right type?
 		if (!isset($this->offerings) || !is_a($this->offerings, 'CoursesModelIterator'))
 		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'offering.php');
-
 			$tbl = new CoursesTableOffering($this->_db);
-
-			// Set the course ID
-			$filters['course_id'] = (int) $this->get('id');
 
 			// Attempt to get database results
 			if (($results = $tbl->find($filters)))
 			{
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
-
 				// Loop through each result and turn into a model object
 				foreach ($results as $key => $result)
 				{
