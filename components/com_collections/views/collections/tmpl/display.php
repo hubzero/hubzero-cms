@@ -56,7 +56,7 @@ $base = 'index.php?option=' . $this->option;
 	<h2><?php echo JText::_('Collections'); ?></h2>
 </div>
 
-<div id="content-header-extra">
+<!-- <div id="content-header-extra">
 	<ul>
 		<li>
 			<a class="board btn" href="<?php echo JRoute::_($base . '&controller=boards'); ?>">
@@ -64,7 +64,7 @@ $base = 'index.php?option=' . $this->option;
 			</a>
 		</li>
 	</ul>
-</div>
+</div> -->
 
 <div id="sub-menu">
 	<ul>

@@ -43,7 +43,7 @@ function CollectionsBuildRoute(&$query)
 
 	if (!empty($query['controller'])) 
 	{
-		$segments[] = $query['controller'];
+		//$segments[] = $query['controller'];
 		unset($query['controller']);
 	}
 	if (!empty($query['id'])) 
