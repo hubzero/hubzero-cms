@@ -50,9 +50,7 @@ if (!JPluginHelper::isEnabled('system', 'jquery'))
 }
 $document->addScript(DS . 'plugins' . DS . 'resources' . DS . 'usage' . DS . 'js' . DS . 'flot' . DS . 'jquery.flot.min.js');
 $document->addScript(DS . 'plugins' . DS . 'resources' . DS . 'usage' . DS . 'js' . DS . 'flot' . DS . 'jquery.flot.selection.js');
-$document->addScript(DS . 'plugins' . DS . 'resources' . DS . 'usage' . DS . 'js' . DS . 'flot' . DS . 'jquery.flot.pie.min.js');
 $document->addScript(DS . 'plugins' . DS . 'resources' . DS . 'usage' . DS . 'js' . DS . 'flot' . DS . 'jquery.flot.crosshair.min.js');
-
 
 // Set the base URL
 if ($this->resource->alias) {
@@ -114,57 +112,49 @@ if ($results)
 	}
 
 	$min = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $results[0]->datetime));
+
+	$current = end($results);
 }
 ?>
-<h3 id="plg-usage-header">
-	<a name="usage"></a>
-	<?php echo JText::_('PLG_RESOURCES_USAGE'); ?> 
-</h3>
-<form method="get" action="<?php echo JRoute::_($url); ?>">
-	<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="<?php echo DS . 'plugins' . DS . 'resources' . DS . 'usage' . DS . 'js' . DS . 'excanvas' . DS; ?>excanvas.min.js"></script><![endif]-->
-	<div id="u-placeholder-wrapper">
-		<div id="u-users-placeholder" style="width:710px;height:200px">
-			<h4><?php echo JText::_('PLG_RESOURCES_USAGE_SIMULATION_USERS'); ?></h4>
-			<strong id="user-overview-total"><?php echo number_format($this->stats->users); ?></strong>
-			<div id="user-overview">
-			<?php
-			if ($results)
-			{
-				// Find the highest value
-				$vals = array();
-				foreach ($results as $result)
-				{
-					$vals[] = $result->users;
-				}
-				asort($vals);
+	<h3 id="plg-usage-header">
+		<a name="usage"></a>
+		<?php echo JText::_('PLG_RESOURCES_USAGE'); ?> 
+	</h3>
+	<form method="get" action="<?php echo JRoute::_($url); ?>">
+	<?php
+	$tool_map = '/site/stats/resource_maps/' . $this->resource->id;
+	if (file_exists(JPATH_ROOT . $tool_map . '.gif')) { ?>
+		<div id="geo-overview-wrap" class="usage-wrap">
+			<div class="four columns first">
+				<h4><?php echo JText::_('World usage'); ?></h4>
+				<p><?php echo JText::sprintf('PLG_RESOURCES_USAGE_MAP_EXPLANATION', stripslashes($this->resource->title)); ?></p>
+			</div><!-- / .four columns first -->
+			<div class="four columns second third fourth">
+				<p>
+					<a href="<?php echo $tool_map; ?>.png" title="<?php echo JText::_('PLG_RESOURCES_USAGE_MAP_LARGER'); ?>">
+						<img style="width:100%;max-width:510px;" src="<?php echo $tool_map; ?>.gif" alt="<?php echo JText::_('PLG_RESOURCES_USAGE_MAP'); ?>" />
+					</a>
+				</p>
+			</div><!-- / .four columns second third fourth -->
+			<div style="clear:left;"></div>
+		</div>
+	<?php } ?>
 
-				$highest = array_pop($vals);
-				
-				$sparkline  = '<span class="sparkline">' . "\n";
-				foreach ($results as $result)
-				{
-					$height = round(($result->users / $highest)*100);
-					$sparkline .= "\t" . '<span class="index">';
-					$sparkline .= '<span class="count" style="height: ' . $height . '%;" title="' . JHTML::_('date', $result->datetime, $dateFormat, $tz) . ': ' . $result->users . '">';
-					$sparkline .= $result->users; //trim($this->_fmt_result($result->value, $result->valfmt));
-					$sparkline .= '</span> ';
-					$sparkline .= '</span>' . "\n";
-				}
-				$sparkline .= '</span>' . "\n";
-				echo $sparkline;
-			} 
-			?>
-				<div class="clear"></div>
-			</div>
-		</div><!-- / #u-users-placeholder -->
-		
-		<div id="u-runs-placeholder" style="width:710px;height:200px">
-			<h4><?php echo JText::_('PLG_RESOURCES_USAGE_SIMULATION_RUNS'); ?></h4>
-			<strong id="runs-overview-total"><?php echo number_format($this->stats->jobs); ?></strong>
-			<div id="runs-overview">
-			<?php
-				if ($results)
-				{
+	<?php if ($results) { ?>
+		<div id="runs-overview-wrap" class="usage-wrap">
+			<div class="four columns first">
+				<h4><?php echo JText::_('PLG_RESOURCES_USAGE_SIMULATION_RUNS'); ?></h4>
+				<p class="total"><strong id="runs-overview-total"><?php echo number_format($current->jobs); ?></strong></p>
+			</div><!-- / .four columns first -->
+			<div class="four columns second third fourth">
+				<p class="zoom-controls" id="set-selection-runs">
+					<?php echo JText::_('Zoom'); ?>
+					<a class="set-selection selected" rel="<?php echo $from; ?> <?php echo $to; ?>" href="<?php echo JRoute::_($url . '&period=12&dthis=' . $this->dthis); ?>" title="<?php echo JText::_('Year to date'); ?>"><?php echo JText::_('YTD'); ?></a>
+					<a class="set-selection" rel="<?php echo $half; ?> <?php echo $to; ?>" href="<?php echo JRoute::_($url . '&period=13&dthis=' . $this->dthis); ?>" title="<?php echo JText::_('6 months'); ?>"><?php echo JText::_('6m'); ?></a>
+					<a class="set-selection" rel="<?php echo $qrtr; ?> <?php echo $to; ?>" href="<?php echo JRoute::_($url . '&period=3&dthis=' . $this->dthis); ?>" title="<?php echo JText::_('3 months'); ?>"><?php echo JText::_('3m'); ?></a>
+				</p>
+				<div id="runs-overview" style="min-width:400px;height:250px;">
+				<?php
 					// Find the highest value
 					$vals = array();
 					foreach ($results as $result)
@@ -181,892 +171,811 @@ if ($results)
 						$height = round(($result->jobs / $highest)*100);
 						$sparkline .= "\t" . '<span class="index">';
 						$sparkline .= '<span class="count" style="height: ' . $height . '%;" title="' . JHTML::_('date', $result->datetime, $dateFormat, $tz) . ': ' . $result->jobs . '">';
-						$sparkline .= $result->jobs; //trim($this->_fmt_result($result->value, $result->valfmt));
+						$sparkline .= number_format($result->jobs); //trim($this->_fmt_result($result->value, $result->valfmt));
 						$sparkline .= '</span> ';
 						$sparkline .= '</span>' . "\n";
 					}
 					$sparkline .= '</span>' . "\n";
 					echo $sparkline;
-				} 
-			?>
-				<div class="clear"></div>
-			</div>
-		</div><!-- / #u-runs-placeholder -->
-		
-		<div id="u-overview-wrapper">
-			<div id="u-overview" style="width:710;height:100px;"></div>
-		</div><!-- / #u-overview-wrapper -->
-		
-		<p id="u-instructions">
-			<?php echo JText::_('Click data point to view breakdowns below'); ?>
-		</p>
-		
-		<p id="set-selection">
-			<a class="set-selection selected" rel="<?php echo $from; ?> <?php echo $to; ?>" href="<?php echo JRoute::_($url . '&period=12&dthis=' . $this->dthis); ?>"><?php echo JText::_('Year'); ?></a>
-			<a class="set-selection" rel="<?php echo $half; ?> <?php echo $to; ?>" href="<?php echo JRoute::_($url . '&period=13&dthis=' . $this->dthis); ?>"><?php echo JText::_('6 months'); ?></a>
-			<a class="set-selection" rel="<?php echo $qrtr; ?> <?php echo $to; ?>" href="<?php echo JRoute::_($url . '&period=3&dthis=' . $this->dthis); ?>"><?php echo JText::_('Quarter'); ?></a>
-		</p>
-	</div>
+				?>
+				</div>
+				<div id="runs-overview-timeline" style="width:700;height:100px;margin-top: -7px">
+					<!-- blank -->
+				</div>
+				
+				<table summary="<?php echo JText::_('PLG_RESOURCES_USAGE_TBL_1_CAPTION'); ?>" id="pie-runs-data" class="pie-chart">
+					<caption><?php echo JText::_('PLG_RESOURCES_USAGE_TBL_1_CAPTION'); ?></caption>
+					<thead>
+						<tr>
+							<th scope="col" class="numerical-data"></th>
+							<th scope="col" class="numerical-data"><?php echo JText::_('Average'); ?></th>
+							<th scope="col" class="numerical-data"><?php echo JText::_('Total'); ?></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th>
+								<?php echo JText::_('PLG_RESOURCES_USAGE_WALL_TIME'); ?>
+							</th>
+							<td>
+								<?php echo plgResourcesUsage::timeUnits($current->avg_wall); ?>
+							</td>
+							<td>
+								<?php echo plgResourcesUsage::timeUnits($current->tot_wall); ?>
+							</td>
+						</tr>
+						<tr>
+							<th>
+								<?php echo JText::_('PLG_RESOURCES_USAGE_CPU_TIME'); ?>
+							</th>
+							<td>
+								<?php echo plgResourcesUsage::timeUnits($current->avg_cpu); ?>
+							</td>
+							<td>
+								<?php echo plgResourcesUsage::timeUnits($current->tot_cpu); ?>
+							</td>
+						</tr>
+						<tr>
+							<th>
+								<?php echo JText::_('PLG_RESOURCES_USAGE_INTERACTION_TIME'); ?>
+							</th>
+							<td>
+								<?php echo plgResourcesUsage::timeUnits($current->avg_view); ?>
+							</td>
+							<td>
+								<?php echo plgResourcesUsage::timeUnits($current->tot_view); ?>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div><!-- / .four columns second third fourth -->
+			<div style="clear:left;"></div>
+		</div><!-- / #runs-overview-wrap -->
+
+		<div id="user-overview-wrap" class="usage-wrap">
+			<div class="four columns first">
+				<h4><?php echo JText::_('PLG_RESOURCES_USAGE_SIMULATION_USERS'); ?></h4>
+				<p class="total"><strong id="users-overview-total"><?php echo number_format($current->users); ?></strong></p>
+			</div><!-- / .four columns first -->
+			<div class="four columns second third fourth">
+				<p class="zoom-controls" id="set-selection-users">
+					<?php echo JText::_('Zoom'); ?>
+					<a class="set-selection selected" rel="<?php echo $from; ?> <?php echo $to; ?>" href="<?php echo JRoute::_($url . '&period=12&dthis=' . $this->dthis); ?>" title="<?php echo JText::_('Year to date'); ?>"><?php echo JText::_('YTD'); ?></a>
+					<a class="set-selection" rel="<?php echo $half; ?> <?php echo $to; ?>" href="<?php echo JRoute::_($url . '&period=13&dthis=' . $this->dthis); ?>" title="<?php echo JText::_('6 months'); ?>"><?php echo JText::_('6m'); ?></a>
+					<a class="set-selection" rel="<?php echo $qrtr; ?> <?php echo $to; ?>" href="<?php echo JRoute::_($url . '&period=3&dthis=' . $this->dthis); ?>" title="<?php echo JText::_('3 months'); ?>"><?php echo JText::_('3m'); ?></a>
+				</p>
+				<div id="users-overview" style="min-width:400px;height:250px;">
+				<?php
+					// Find the highest value
+					$vals = array();
+					foreach ($results as $result)
+					{
+						$vals[] = $result->users;
+					}
+					asort($vals);
+
+					$highest = array_pop($vals);
+
+					$sparkline  = '<span class="sparkline">' . "\n";
+					foreach ($results as $result)
+					{
+						$height = round(($result->users / $highest)*100);
+						$sparkline .= "\t" . '<span class="index">';
+						$sparkline .= '<span class="count" style="height: ' . $height . '%;" title="' . JHTML::_('date', $result->datetime, $dateFormat, $tz) . ': ' . $result->users . '">';
+						$sparkline .= number_format($result->users); //trim($this->_fmt_result($result->value, $result->valfmt));
+						$sparkline .= '</span> ';
+						$sparkline .= '</span>' . "\n";
+					}
+					$sparkline .= '</span>' . "\n";
+					echo $sparkline;
+				?>
+				</div>
+				<div id="users-overview-timeline" style="width:700;height:100px;margin-top: -7px">
+					<!-- blank -->
+				</div>
+
+				<table summary="<?php echo JText::_('PLG_RESOURCES_USAGE_TBL_2_CAPTION'); ?>" id="pie-org-data" class="pie-chart">
+					<caption><?php echo JText::_('PLG_RESOURCES_USAGE_TBL_2_CAPTION'); ?></caption>
+					<thead>
+						<tr>
+							<!-- <th scope="col" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_NUM'); ?></th> -->
+							<th scope="col"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_TYPE'); ?></th>
+							<th scope="col" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_USERS'); ?></th>
+							<th scope="col" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_PERCENT'); ?></th>
+						</tr>
+					</thead>
+					<tbody>
+					<?php 
+				$colors = array(
+					$this->params->get('pie_chart_color1', '#7c7c7c'),
+					$this->params->get('pie_chart_color2', '#515151'),
+					$this->params->get('pie_chart_color3', '#d9d9d9'),
+					$this->params->get('pie_chart_color4', '#3d3d3d'),
+					$this->params->get('pie_chart_color5', '#797979'),
+					$this->params->get('pie_chart_color6', '#595959'),
+					$this->params->get('pie_chart_color7', '#e5e5e5'),
+					$this->params->get('pie_chart_color8', '#828282'),
+					$this->params->get('pie_chart_color9', '#404040'),
+					$this->params->get('pie_chart_color10', '#6a6a6a'),
+					$this->params->get('pie_chart_color1', '#bcbcbc'),
+					$this->params->get('pie_chart_color2', '#515151'),
+					$this->params->get('pie_chart_color3', '#d9d9d9'),
+					$this->params->get('pie_chart_color4', '#3d3d3d'),
+					$this->params->get('pie_chart_color5', '#797979'),
+					$this->params->get('pie_chart_color6', '#595959'),
+					$this->params->get('pie_chart_color7', '#e5e5e5'),
+					$this->params->get('pie_chart_color8', '#828282'),
+					$this->params->get('pie_chart_color9', '#404040'),
+					$this->params->get('pie_chart_color10', '#3a3a3a'),
+				);
+
+				$datetime = str_replace('-00 00:00:00', '', $current->datetime);
+
+				$tid = plgResourcesUsage::getTid($this->resource->id, $datetime);
+
+
+				if (intval($this->params->get('cache', 1)))
+				{
+					$cache =& JFactory::getCache('callback');
+					$cache->setCaching(1);
+					$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
+					$results = $cache->call(array('plgResourcesUsage', 'getTopValue'), $this->resource->id, 3, $tid, $datetime);
+				}
+				else 
+				{
+					$results = plgResourcesUsage::getTopValue($this->resource->id, 3, $tid, $datetime);
+
+				}
+				//$data = array();
+				$r = array();
+				//$results = null;
+				$total = 0;
+				$cls = 'even';
+				//$tot = '';
+				//$pieOrg = array();
+				//$toporgs = null;
+				if ($results)
+				{
+					$i = 0;
+					//$data = array();
+					$r = array();
+
+					foreach ($results as $row)
+					{
+						$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
+
+						//if (!isset($data[$ky]))
+						if (!isset($r[$ky]))
+						{
+							$i = 0;
+							//$data[$ky] = array();
+							$r[$ky] = array();
+						}
+
+						//$data[$ky][] = $row;
+
+						if (!isset($colors[$i]))
+						{
+							$i = 0;
+						}
+						$r[$ky][] = '{label: \''.addslashes($row->name).'\', data: '.number_format($row->value).', color: \''.$colors[$i].'\'}';
+
+						if ($row->rank != '0') 
+						{
+							$total += $row->value;
+						}
+
+						$i++;
+					}
+
+					$i = 0;
+					foreach ($results as $row)
+					{
+						if ($row->rank == '0') 
+						{
+							continue;
+						}
+
+						if ($row->name == '?') 
+						{
+							$row->name = JText::_('PLG_RESOURCES_USAGE_UNIDENTIFIED');
+						}
+
+						$cls = ($cls == 'even') ? 'odd' : 'even';
+						?>
+						<tr rel="<?php echo $row->name; ?>">
+							<!-- <th><span style="background-color: <?php echo $colors[$i]; ?>"><?php echo $row->rank; ?></span></th> -->
+							<td class="textual-data"><?php echo $row->name; ?></td>
+							<td><?php echo number_format($row->value); ?></td>
+							<td><?php echo round((($row->value/$total)*100),2); ?></td>
+						</tr>
+						<?php
+						$i++;
+					}
+				}
+				else 
+				{
+				?>
+						<tr>
+							<td colspan="3" class="textual-data"><?php echo JText::sprintf('No data found for the month of %s', $datetime); ?></td>
+						</tr>
+				<?php
+				}
+				?>
+					</tbody>
+				</table>
+				<script type="text/javascript">
+					var orgData = {
+						<?php
+						$z = array();
+						foreach ($r as $k => $d)
+						{
+							$z[] = "\t'$k': [" . implode(',', $d) . "]" . "\n";
+						}
+						echo implode(',', $z);
+						?>
+					};
+				</script>
+
+				<table summary="<?php echo JText::_('PLG_RESOURCES_USAGE_TBL_3_CAPTION'); ?>" id="pie-country-data" class="pie-chart">
+					<caption><?php echo JText::_('PLG_RESOURCES_USAGE_TBL_3_CAPTION'); ?></caption>
+					<thead>
+						<tr>
+							<th scope="col"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_COUNTRY'); ?></th>
+							<th scope="col" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_USERS'); ?></th>
+							<th scope="col" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_PERCENT'); ?></th>
+						</tr>
+					</thead>
+					<tbody>
+					<?php 
+					if (intval($this->params->get('cache', 1)))
+					{
+						$cache =& JFactory::getCache('callback');
+						$cache->setCaching(1);
+						$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
+						$results = $cache->call(array('plgResourcesUsage', 'getTopValue'), $this->resource->id, 1, $tid, $datetime);
+					}
+					else 
+					{
+						$results = plgResourcesUsage::getTopValue($this->resource->id, 1, $tid, $datetime);
+					}
+
+					$total = 0;
+					$i = 0;
+					if ($results)
+					{
+						//$data = array();
+						$r = array();
+						foreach ($results as $row)
+						{
+							$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
+							//if (!isset($data[$ky]))
+							if (!isset($r[$ky]))
+							{
+								$i = 0;
+								//$data[$ky] = array();
+								$r[$ky] = array();
+							}
+							//$data[$ky][] = $row;
+							if (!isset($colors[$i]))
+							{
+								$i = 0;
+							}
+
+							$r[$ky][] = '{label: \''.addslashes($row->name).'\', data: '.number_format($row->value).', color: \''.$colors[$i].'\'}'."\n";
+
+							if ($row->rank != '0') 
+							{
+								$total += $row->value;
+							}
+
+							$i++;
+						}
+
+						$cls = 'even';
+						//$pie = array();
+						$i = 0;
+
+						foreach ($results as $row)
+						{
+							if ($row->rank == '0') 
+							{
+								continue;
+							}
+
+							if ($row->name == '?') 
+							{
+								$row->name = JText::_('PLG_RESOURCES_USAGE_UNIDENTIFIED');
+							}
+
+							$cls = ($cls == 'even') ? 'odd' : 'even';
+							?>
+						<tr rel="<?php echo $row->name; ?>">
+							<!-- <th><span style="background-color: <?php echo $colors[$i]; ?>"><?php echo $row->rank; ?></span></th> -->
+							<td class="textual-data"><?php echo $row->name; ?></td>
+							<td><?php echo number_format($row->value); ?></td>
+							<td><?php echo round((($row->value/$total)*100),2); ?></td>
+						</tr>
+							<?php
+							$i++;
+						}
+					}
+					else 
+					{
+					?>
+						<tr>
+							<td colspan="3" class="textual-data"><?php echo JText::sprintf('No data found for the month of %s', $datetime); ?></td>
+						</tr>
+					<?php
+					}
+					?>
+					</tbody>
+				</table>
+				<script type="text/javascript">
+					var countryData = {
+						<?php
+						$z = array();
+						foreach ($r as $k => $d)
+						{
+							$z[] = "\t'$k': [" . implode(',', $d) . "]" . "\n";
+						}
+						echo implode(',', $z);
+						?>
+					};
+				</script>
+
+				<table summary="<?php echo JText::_('PLG_RESOURCES_USAGE_TBL_4_CAPTION'); ?>" id="pie-domains-data" class="pie-chart">
+					<caption><?php echo JText::_('PLG_RESOURCES_USAGE_TBL_4_CAPTION'); ?></caption>
+					<thead>
+						<tr>
+							<!-- <th scope="col" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_NUM'); ?></th> -->
+							<th scope="col"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_DOMAINS'); ?></th>
+							<th scope="col" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_USERS'); ?></th>
+							<th scope="col" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_PERCENT'); ?></th>
+						</tr>
+					</thead>
+					<tbody>
+					<?php 
+					if (intval($this->params->get('cache', 1)))
+					{
+						$cache =& JFactory::getCache('callback');
+						$cache->setCaching(1);
+						$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
+						$results = $cache->call(array('plgResourcesUsage', 'getTopValue'), $this->resource->id, 2, $tid, $datetime);
+					}
+					else 
+					{
+						$results = plgResourcesUsage::getTopValue($this->resource->id, 2, $tid, $datetime);
+					}
+
+					$total = 0;
+					$i = 0;
+					if ($results)
+					{
+						//$data = array();
+						$r = array();
+						foreach ($results as $row)
+						{
+							$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
+							//if (!isset($data[$ky]))
+							if (!isset($r[$ky]))
+							{
+								$i = 0;
+								//$data[$ky] = array();
+								$r[$ky] = array();
+							}
+							//$data[$ky][] = $row;
+							if (!isset($colors[$i]))
+							{
+								$i = 0;
+							}
+							$r[$ky][] = '{label: \''.addslashes($row->name).'\', data: '.number_format($row->value).', color: \''.$colors[$i].'\'}';
+
+							if ($row->rank != '0') 
+							{
+								$total += $row->value;
+							}
+
+							$i++;
+						}
+
+						$cls = 'even';
+						$tot = '';
+
+						$i = 0;
+						foreach ($results as $row)
+						{
+							if ($row->rank == '0') 
+							{
+								continue;
+							}
+
+							if ($row->name == '?') 
+							{
+								$row->name = JText::_('PLG_RESOURCES_USAGE_UNIDENTIFIED');
+							}
+
+							$cls = ($cls == 'even') ? 'odd' : 'even';
+							?>
+						<tr rel="<?php echo $row->name; ?>">
+							<!-- <th><span style="background-color: <?php echo $colors[$i]; ?>"><?php echo $row->rank; ?></span></th> -->
+							<td class="textual-data"><?php echo $row->name; ?></td>
+							<td><?php echo number_format($row->value); ?></td>
+							<td><?php echo round((($row->value/$total)*100),2); ?></td>
+						</tr>
+							<?php
+							$i++;
+						}
+					}
+					else 
+					{
+				?>
+						<tr>
+							<td colspan="3" class="textual-data"><?php echo JText::sprintf('No data found for the month of %s', $datetime); ?></td>
+						</tr>
+				<?php
+					}
+				?>
+					</tbody>
+				</table>
+				<script type="text/javascript">
+					var domainData = {
+						<?php
+						$z = array();
+						foreach ($r as $k => $d)
+						{
+							$z[] = "\t'$k': [" . implode(',', $d) . "]" . "\n";
+						}
+						echo implode(',', $z);
+						?>
+					};
+				</script>
+			</div><!-- / .four columns second third fourth -->
+			<div style="clear:left;"></div>
+		</div><!-- / #user-overview-wrap -->
 		<script type="text/javascript">
-	if (!jq) {
-		var jq = $;
-	}
-	if (jQuery()) {
-		var $ = jq;
-		
-		dataurl = '/index.php?option=com_resources&id=<?php echo $this->resource->id; ?>&active=usage&action=top&datetime=';
-		
-		$(function () {
-			var datasets = [
-				{
-					lines: { fillColor: '<?php echo $this->params->get("chart_color_fill", "rgba(0, 0, 0, 0.1)"); ?>' },
-					color: '<?php echo $this->params->get("chart_color_line", "#999"); ?>', //#93ACCA
-					label: "<?php echo JText::_('PLG_RESOURCES_USAGE_SIMULATION_USERS'); ?>",
-					data: [<?php echo implode(',', $users); ?>]
-				},
-				{
-					lines: {fillColor: '<?php echo $this->params->get("chart_color_fill2", "rgba(207, 207, 171, 0.3)"); ?>' },
-					color: '<?php echo $this->params->get("chart_color_line2", "#CFCFAB"); ?>', //#CFCFAB
-					label: "<?php echo JText::_('PLG_RESOURCES_USAGE_SIMULATION_RUNS'); ?>",
-					data: [<?php echo implode(',', $runs); ?>]
-				}
-			];
-
-			var options = {
-				series: {
-					lines: { 
-						show: true,
-						fill: true
-					},
-					points: { show: true },
-					shadowSize: 0
-				},
-				crosshair: { mode: "x" },
-				grid: {
-					borderWidth: 1,
-					borderColor: 'rgba(0, 0, 0, 0.6)',
-					hoverable: true, 
-					clickable: true
-				},
-				legend: { show: true },
-				xaxis: { position: 'top', mode: "time", min: new Date('<?php echo $from; ?>'), max: new Date('<?php echo $to; ?>'), tickDecimals: 0 },
-				yaxis: { min: 0, labelWidth: 25 }
-			};
-
-			var choiceContainer = $("#choices");
-
-			// Function for populating a (pie chart) table
-			function populateTable(id, data) {
-				var tbl = $('#' + id + ' tbody');
-
-				tbl.empty();
-
-				var footer = data.shift();
-				var total = footer['data'];
-				for (var i=0; i < data.length; i++)
-				{
-					tbl.append(
-						'<tr>' +
-							'<th><span style="background-color: ' + data[i]['color'] + '">' + i + '</span></th>' + 
-							'<td class="textual-data">' + data[i]['label'] + '</td>' + 
-							'<td>' + data[i]['data'] + '</td>' + 
-							'<td>' + Math.round(((data[i]['data']/total)*100),2) + '</td>' + 
-						'</tr>'
-					);
-				}
-				tbl.append('<tr class="summary">' +
-					'<td> </td>' + 
-					'<td class="textual-data">Total Users</td>' + 
-					'<td>' + total + '</td>' + 
-					'<td>100</td>' + 
-				'</tr>');
-				data.unshift(footer);
+			if (!jq) {
+				var jq = $;
 			}
-			
-			// Function for showing tooltips
-			function showTooltip(x, y, contents) {
-				$('<div id="u-tooltip">' + contents + '</div>').css({
-					position: 'absolute',
-					display: 'none',
-					top: y + 5,
-					left: x + 5
-	 			}).appendTo("body").fadeIn(200);
-			}
-			
-			var previousPoint = null;
-			var latestPosition = null;
-			
-			function plotAccordingToChoices() {
-					// User plot
-					// ---------
-					var placeholderU = $("#u-users-placeholder");
-					// Bind the selection area so the chart updates
-					placeholderU.bind("plotselected", function (event, ranges) {
-						if (ranges.xaxis.to - ranges.xaxis.from < 0.00001) {
-							ranges.xaxis.to = ranges.xaxis.from + 0.00001;
-						}
-						if (ranges.yaxis.to - ranges.yaxis.from < 0.00001) {
-							ranges.yaxis.to = ranges.yaxis.from + 0.00001;
-						}
-						plotU = $.plot($("#u-users-placeholder"), [datasets[0]],
-							$.extend(true, {}, options, {
-								xaxis: { min: ranges.xaxis.from, max: ranges.xaxis.to }
-							}));
+			if (jQuery()) {
+				var $ = jq;
 
-						// don't fire event on the overview to prevent eternal loop
-						overview.setSelection(ranges, true);
-					});
-					// Bind click events to update pie graphs when a plot point is selected
-					placeholderU.bind("plotclick", function (event, pos, item) {
-						if (item) {
-							var mm = item.series.data[item.dataIndex][0].getMonth()+1; // January is 0!
-							var yyyy = item.series.data[item.dataIndex][0].getFullYear();
-							// Prepend 0s
-							if (mm < 10) {
-								mm = '0' + mm
-							}
-							// Update organizations pie chart
-							/*if (orgData[yyyy + '/' + mm + '/01'].length > 0) {
-								populateTable('pie-org-data', orgData[yyyy + '/' + mm + '/01']);
-								$.plot($("#pie-org"), orgData[yyyy + '/' + mm + '/01'].slice(1), pieOptions);
-							}
-							// Update countries pie chart
-							if (countryData[yyyy + '/' + mm + '/01'].length > 0) {
-								populateTable('pie-country-data', countryData[yyyy + '/' + mm + '/01']);
-								$.plot($("#pie-country"), countryData[yyyy + '/' + mm + '/01'].slice(1), pieOptions);
-							}
-							// Update domains pie chart
-							if (domainData[yyyy + '/' + mm + '/01'].length > 0) {
-								populateTable('pie-domains-data', domainData[yyyy + '/' + mm + '/01']);
-								$.plot($("#pie-domains"), domainData[yyyy + '/' + mm + '/01'].slice(1), pieOptions);
-							}*/
-							$.getJSON(dataurl + yyyy + '-' + mm, function(series){
-								if (!orgData[yyyy + '/' + mm + '/01']) {
-									orgData[yyyy + '/' + mm + '/01'] = series.orgs[yyyy + '/' + mm + '/01'];
-								}
-								if (!countryData[yyyy + '/' + mm + '/01']) {
-									countryData[yyyy + '/' + mm + '/01'] = series.countries[yyyy + '/' + mm + '/01'];
-								}
-								if (!domainData[yyyy + '/' + mm + '/01']) {
-									domainData[yyyy + '/' + mm + '/01'] = series.domains[yyyy + '/' + mm + '/01'];
-								}
-								// Update organizations pie chart
-								if (orgData[yyyy + '/' + mm + '/01'].length > 0) {
-									populateTable('pie-org-data', orgData[yyyy + '/' + mm + '/01']);
-									$.plot($("#pie-org"), orgData[yyyy + '/' + mm + '/01'].slice(1), pieOptions);
-								}
-								// Update countries pie chart
-								if (countryData[yyyy + '/' + mm + '/01'].length > 0) {
-									populateTable('pie-country-data', countryData[yyyy + '/' + mm + '/01']);
-									$.plot($("#pie-country"), countryData[yyyy + '/' + mm + '/01'].slice(1), pieOptions);
-								}
-								// Update domains pie chart
-								if (domainData[yyyy + '/' + mm + '/01'].length > 0) {
-									populateTable('pie-domains-data', domainData[yyyy + '/' + mm + '/01']);
-									$.plot($("#pie-domains"), domainData[yyyy + '/' + mm + '/01'].slice(1), pieOptions);
-								}
-							});
+				var month_short = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-							// Unhighlight any previously clicked points
-							plotU.unhighlight();
-							plotR.unhighlight();
-							// Highlight the current point
-							plotU.highlight(item.series, item.datapoint);
+				dataurl = '/index.php?option=com_resources&id=<?php echo $this->resource->id; ?>&active=usage&action=top&datetime=';
+
+				function updateTables(yyyy, mm) {
+					var ky = yyyy + '/' + mm + '/01';
+
+					$.getJSON(dataurl + yyyy + '-' + mm, function(series){
+						if (!orgData[ky]) {
+							orgData[ky] = series.orgs[ky];
+						}
+						if (!countryData[ky]) {
+							countryData[ky] = series.countries[ky];
+						}
+						if (!domainData[ky]) {
+							domainData[ky] = series.domains[ky];
+						}
+						// Update organizations pie chart
+						if (orgData[ky].length > 0) {
+							populateTable('pie-org-data', orgData[ky]);
+						}
+						// Update countries pie chart
+						if (countryData[ky].length > 0) {
+							populateTable('pie-country-data', countryData[ky]);
+						}
+						// Update domains pie chart
+						if (domainData[ky].length > 0) {
+							populateTable('pie-domains-data', domainData[ky]);
 						}
 					});
-					placeholderU.bind("plothover", function (event, pos, item) {
-						if (item) {
-							if (previousPoint != item.dataIndex) {
-								previousPoint = item.dataIndex;
+				}
 
-								$("#u-tooltip").remove();
-								var x = item.datapoint[0].toFixed(2),
-									y = item.datapoint[1].toFixed(2);
+				function populateTable(id, data) {
+					var tbl = $('#' + id + ' tbody'),
+						footer = data.shift();
 
-								showTooltip(item.pageX, item.pageY, datasets[0].data[item.dataIndex][1]);
-							}
-						} else {
-							$("#u-tooltip").remove();
-							previousPoint = null;
+					var total = footer['data'];
+
+					tbl.empty();
+
+					for (var i=0; i < data.length; i++)
+					{
+						tbl.append(
+							'<tr>' +
+								'<td class="textual-data">' + data[i]['label'] + '</td>' + 
+								'<td>' + data[i]['data'] + '</td>' + 
+								'<td>' + Math.round(((data[i]['data']/total)*100),2) + '</td>' + 
+							'</tr>'
+						);
+					}
+					data.unshift(footer);
+				}
+
+				$(function () {
+					var datasets = [
+						{
+							lines: { fillColor: '<?php echo "rgba(0, 0, 0, 0.1)"; //$this->params->get("chart_color_fill", "rgba(0, 0, 0, 0.1)"); ?>' },
+							color: '<?php echo "#656565"; //$this->params->get("chart_color_line", "#999"); ?>', //#93ACCA
+							label: "<?php echo JText::_('PLG_RESOURCES_USAGE_SIMULATION_USERS'); ?>",
+							data: [<?php echo implode(',', $users); ?>]
+						},
+						{
+							lines: {fillColor: '<?php echo "rgba(0, 0, 0, 0.1)"; //$this->params->get("chart_color_fill2", "rgba(207, 207, 171, 0.3)"); ?>' },
+							color: '<?php echo "#656565"; //$this->params->get("chart_color_line2", "#CFCFAB"); ?>', //#CFCFAB
+							label: "<?php echo JText::_('PLG_RESOURCES_USAGE_SIMULATION_RUNS'); ?>",
+							data: [<?php echo implode(',', $runs); ?>]
 						}
-						//sync crosshairs of the other two plots
-						plotR.setCrosshair(pos);
-					});
-					// Generate the plot
-					var plotU = $.plot(placeholderU, [datasets[0]], options);
+					];
 
-					// Runs (jobs) plot
-					// ----------------
-					var placeholderR = $("#u-runs-placeholder");
-					// Bind the selection area so the chart updates
-					placeholderR.bind("plotselected", function (event, ranges) {
-						if (ranges.xaxis.to - ranges.xaxis.from < 0.00001) {
-							ranges.xaxis.to = ranges.xaxis.from + 0.00001;
-						}
-						if (ranges.yaxis.to - ranges.yaxis.from < 0.00001) {
-							ranges.yaxis.to = ranges.yaxis.from + 0.00001;
-						}
-						plotR = $.plot($("#u-runs-placeholder"), [datasets[1]],
-							$.extend(true, {}, options, {
-								xaxis: { min: ranges.xaxis.from, max: ranges.xaxis.to }
-							}));
-
-						// don't fire event on the overview to prevent eternal loop
-						overview.setSelection(ranges, true);
-					});
-					// Bind click events to update pie graphs when a plot point is selected
-					placeholderR.bind("plotclick", function (event, pos, item) {
-						if (item) {
-							var mm = item.series.data[item.dataIndex][0].getMonth()+1; // January is 0!
-							var yyyy = item.series.data[item.dataIndex][0].getFullYear();
-							// Prepend 0s
-							if (mm < 10) {
-								mm = '0' + mm
-							}
-
-							$.getJSON(dataurl + yyyy + '-' + mm, function(series){
-								if (!orgData[yyyy + '/' + mm + '/01']) {
-									orgData[yyyy + '/' + mm + '/01'] = series.orgs[yyyy + '/' + mm + '/01'];
-								}
-								if (!countryData[yyyy + '/' + mm + '/01']) {
-									countryData[yyyy + '/' + mm + '/01'] = series.countries[yyyy + '/' + mm + '/01'];
-								}
-								if (!domainData[yyyy + '/' + mm + '/01']) {
-									domainData[yyyy + '/' + mm + '/01'] = series.domains[yyyy + '/' + mm + '/01'];
-								}
-								// Update organizations pie chart
-								if (orgData[yyyy + '/' + mm + '/01'].length > 0) {
-									populateTable('pie-org-data', orgData[yyyy + '/' + mm + '/01']);
-									$.plot($("#pie-org"), orgData[yyyy + '/' + mm + '/01'].slice(1), pieOptions);
-								}
-								// Update countries pie chart
-								if (countryData[yyyy + '/' + mm + '/01'].length > 0) {
-									populateTable('pie-country-data', countryData[yyyy + '/' + mm + '/01']);
-									$.plot($("#pie-country"), countryData[yyyy + '/' + mm + '/01'].slice(1), pieOptions);
-								}
-								// Update domains pie chart
-								if (domainData[yyyy + '/' + mm + '/01'].length > 0) {
-									populateTable('pie-domains-data', domainData[yyyy + '/' + mm + '/01']);
-									$.plot($("#pie-domains"), domainData[yyyy + '/' + mm + '/01'].slice(1), pieOptions);
-								}
-							});
-
-							// Update organizations pie chart
-							/*if (orgData[yyyy + '/' + mm + '/01'].length > 0) {
-								populateTable('pie-org-data', orgData[yyyy + '/' + mm + '/01']);
-								$.plot($("#pie-org"), orgData[yyyy + '/' + mm + '/01'].slice(1), pieOptions);
-							}
-							// Update countries pie chart
-							if (countryData[yyyy + '/' + mm + '/01'].length > 0) {
-								populateTable('pie-country-data', countryData[yyyy + '/' + mm + '/01']);
-								$.plot($("#pie-country"), countryData[yyyy + '/' + mm + '/01'].slice(1), pieOptions);
-							}
-							// Update domains pie chart
-							if (domainData[yyyy + '/' + mm + '/01'].length > 0) {
-								populateTable('pie-domains-data', domainData[yyyy + '/' + mm + '/01']);
-								$.plot($("#pie-domains"), domainData[yyyy + '/' + mm + '/01'].slice(1), pieOptions);
-							}*/
-							// Unhighlight any previously clicked points
-							plotU.unhighlight();
-							plotR.unhighlight();
-							// Highlight the current point
-							plotR.highlight(item.series, item.datapoint);
-						}
-					});
-					placeholderR.bind("plothover", function (event, pos, item) {
-						if (item) {
-							if (previousPoint != item.dataIndex) {
-								previousPoint = item.dataIndex;
-
-								$("#u-tooltip").remove();
-								var x = item.datapoint[0].toFixed(2),
-									y = item.datapoint[1].toFixed(2);
-
-								showTooltip(item.pageX, item.pageY, datasets[1].data[item.dataIndex][1]);
-							}
-						} else {
-							$("#u-tooltip").remove();
-							previousPoint = null;
-						}
-						//sync crosshairs of the other two plots
-						plotU.setCrosshair(pos);
-					});
-					// Generate the plot
-					var plotR = $.plot(placeholderR, [datasets[1]], options);
-
-					//var legends = $("#u-placeholder-wrapper .legendLabel");
-
-					// Overview plot
-					// -------------
-					var overview = $.plot($("#u-overview"), datasets, {
-						legend: { show: false },
+					var options = {
 						series: {
-							points: { show: false },
-							lines: {
-								show: true, 
-								lineWidth: 1,
-								fill: true, 
-								fillColor: '<?php echo $this->params->get("chart_color_fill", "rgba(0, 0, 0, 0.085)"); ?>'
+							lines: { 
+								show: true,
+								fill: true
 							},
+							points: { show: true },
 							shadowSize: 0
 						},
+						crosshair: { mode: "x" },
 						grid: {
+							//color: 'rgba(0, 0, 0, 0.6)',
 							borderWidth: 1,
-							borderColor: 'rgba(0, 0, 0, 0.6)'
+							//borderColor: 'transparent',
+							hoverable: true, 
+							clickable: true
 						},
-						xaxis: { mode: "time", min: new Date('<?php echo $min; ?>'), max: new Date('<?php echo $to; ?>'), tickDecimals: 0 },
-						yaxis: { color: '#fff', min: 0, autoscaleMargin: 0.1, labelWidth: 25 },
-						selection: { 
-							mode: "x", 
-							color: '<?php echo $this->params->get("chart_color_selection", "rgba(0, 0, 0, 0.3)"); ?>', 
-							navigate: true 
-						}
-					});
-					overview.setSelection({ 
-							xaxis: {
-								from: new Date('<?php echo $from; ?>'),
-								to: new Date('<?php echo $to; ?>')
+						legend: { show: false },
+						xaxis: { 
+							position: 'top', 
+							mode: "time", 
+							//tickLength: 0, 
+							min: new Date('<?php echo $from; ?>'), 
+							max: new Date('<?php echo $to; ?>'), 
+							tickFormatter: function (val, axis) {
+								var d = new Date(val);
+								return month_short[d.getUTCMonth()] + " '" + d.getUTCFullYear().toString().substr(2);//d.getUTCDate() + "/" + (d.getUTCMonth() + 1);
+							},
+							tickDecimals: 0 
+						},
+						yaxis: { min: 0, labelWidth: 25 }
+					};
+
+					$(document).ready(function() {
+						var placeholderU = $("#users-overview");
+						// Bind the selection area so the chart updates
+						placeholderU.bind("plotselected", function (event, ranges) {
+							if (ranges.xaxis.to - ranges.xaxis.from < 0.00001) {
+								ranges.xaxis.to = ranges.xaxis.from + 0.00001;
 							}
-						}, 
-						true
-					);
-					$("#u-overview").unbind("plotselected");
-					$("#u-overview").unbind("plotnavigating");
+							if (ranges.yaxis.to - ranges.yaxis.from < 0.00001) {
+								ranges.yaxis.to = ranges.yaxis.from + 0.00001;
+							}
+							plotU = $.plot(placeholderU, [datasets[0]],
+								$.extend(true, {}, options, {
+									xaxis: { min: ranges.xaxis.from, max: ranges.xaxis.to }
+								})
+							);
 
-					$("#u-overview").bind("plotselected", function (event, ranges) {
-						plotU.setSelection(ranges);
-						plotR.setSelection(ranges);
-					});
-					$("#u-overview").bind("plotnavigating", function (event, ranges) {
-						$("#u-tooltip").remove();
-						previousPoint = null;
-						overview.getPlaceholder().css('cursor', 'col-resize');
-						plotU.setSelection(ranges);
-						plotR.setSelection(ranges);
-					});
-					$("#u-overview").bind("plotnavigated", function (event, ranges) {
-						overview.getPlaceholder().css('cursor', 'default');
-					});
-
-					// Allow for window resixing
-					//overview.resize();
-					$(window).resize(function() {
-						if (this.resizeTO) clearTimeout(this.resizeTO);
-						this.resizeTO = setTimeout(function() {
-							$(this).trigger('resizeEnd');
-						}, 100);
-					});
-					$(window).bind('resizeEnd', function() {
-						if (plotU) {
-							plotU.resize();
-							plotU.setupGrid();
-							$('#u-users-placeholder .tickLabels').each(function(i, item){
-								if (i == 0) {
-									$(item).remove();
-								}
-							});
-							plotU.draw();
-						}
-						if (plotR) {
-							plotR.resize();
-							plotR.setupGrid();
-							$('#u-runs-placeholder .tickLabels').each(function(i, item){
-								if (i == 0) {
-									$(item).remove();
-								}
-							});
-							plotR.draw();
-						}
-						if (overview) {
-							overview.resize();
-							overview.setupGrid();
-							$('#u-overview .tickLabels').each(function(i, item){
-								if (i == 0) {
-									$(item).remove();
-								}
-							});
-							overview.draw();
-						}
-					});
-					
-					$('.set-selection').click(function (e) {
-						e.preventDefault();
-
-						$('.set-selection').each(function(i, el) {
-							$(el).removeClass('selected');
+							// don't fire event on the overview to prevent eternal loop
+							plotUO.setSelection(ranges, true);
 						});
-						$(this).addClass('selected');
+						placeholderU.bind("plotclick", function (event, pos, item) {
+							if (item) {
+								var mm = item.series.data[item.dataIndex][0].getMonth()+1; // January is 0!
+								var yyyy = item.series.data[item.dataIndex][0].getFullYear();
+								// Prepend 0s
+								if (mm < 10) {
+									mm = '0' + mm
+								}
 
-						var sizeTokens = $(this).attr('rel').split(' ');
-						var from = sizeTokens[0];
-						var to = sizeTokens[1];
+								$('#users-overview-total').text(item.datapoint[1]);
+								$('#runs-overview-total').text(datasets[1].data[item.dataIndex][1]);
 
-						plotU = $.plot($("#u-users-placeholder"), [datasets[0]],
-							$.extend(true, {}, options, {
-								xaxis: { min: new Date(from), max: new Date(to) }
-							}));
-						plotR = $.plot($("#u-runs-placeholder"), [datasets[1]],
-							$.extend(true, {}, options, {
-								xaxis: { min: new Date(from), max: new Date(to) }
-							}));
+								updateTables(yyyy, mm);
 
-						// don't fire event on the overview to prevent eternal loop
-						overview.setSelection({
+								// Unhighlight any previously clicked points
+								plotU.unhighlight();
+								plotR.unhighlight();
+								// Highlight the current point
+								plotU.highlight(item.series, item.datapoint);
+								plotR.highlight(0, item.dataIndex);
+							}
+						});
+						var plotU = $.plot(placeholderU, [datasets[0]], options);
+
+						var uoTimeline = $("#users-overview-timeline");
+						var plotUO = $.plot(uoTimeline, [datasets[0]], {
+							legend: { show: false },
+							series: {
+								points: { show: false },
+								lines: {
+									show: true, 
+									lineWidth: 1,
+									fill: true, 
+									fillColor: '<?php echo $this->params->get("chart_color_fill", "rgba(0, 0, 0, 0.085)"); ?>'
+								},
+								shadowSize: 0
+							},
+							grid: {
+								borderWidth: 1,
+								borderColor: 'rgba(0, 0, 0, 0.6)'
+							},
+							xaxis: { mode: "time", min: new Date('<?php echo $min; ?>'), max: new Date('<?php echo $to; ?>'), tickDecimals: 0, 
+								tickFormatter: function (val, axis) {
+									var d = new Date(val);
+									return month_short[d.getUTCMonth()] + " '" + d.getUTCFullYear().toString().substr(2);//d.getUTCDate() + "/" + (d.getUTCMonth() + 1);
+								}
+							},
+							yaxis: { color: '#fff', min: 0, autoscaleMargin: 0.1, labelWidth: 25 },
+							selection: { 
+								mode: "x", 
+								color: '<?php echo $this->params->get("chart_color_selection", "rgba(0, 0, 0, 0.3)"); ?>', 
+								navigate: true 
+							}
+						});
+						plotUO.setSelection({ 
 								xaxis: {
-									from: new Date(from), 
-									to: new Date(to)
+									from: new Date('<?php echo $from; ?>'),
+									to: new Date('<?php echo $to; ?>')
 								}
 							}, 
 							true
 						);
+						uoTimeline
+							.unbind("plotselected")
+							.bind("plotselected", function (event, ranges) {
+								plotU.setSelection(ranges);
+								plotR.setSelection(ranges);
+							})
+							.unbind("plotnavigating")
+							.bind("plotnavigating", function (event, ranges) {
+								//previousPoint = null;
+								plotU.setSelection(ranges);
+								plotR.setSelection(ranges);
+							});
+
+
+						var placeholderR = $("#runs-overview");
+						// Bind the selection area so the chart updates
+						placeholderR.bind("plotselected", function (event, ranges) {
+							if (ranges.xaxis.to - ranges.xaxis.from < 0.00001) {
+								ranges.xaxis.to = ranges.xaxis.from + 0.00001;
+							}
+							if (ranges.yaxis.to - ranges.yaxis.from < 0.00001) {
+								ranges.yaxis.to = ranges.yaxis.from + 0.00001;
+							}
+							plotR = $.plot(placeholderR, [datasets[1]],
+								$.extend(true, {}, options, {
+									xaxis: { min: ranges.xaxis.from, max: ranges.xaxis.to }
+								})
+							);
+
+							// don't fire event on the overview to prevent eternal loop
+							plotRO.setSelection(ranges, true);
+						});
+						placeholderR.bind("plotclick", function (event, pos, item) {
+							if (item) {
+								var mm = item.series.data[item.dataIndex][0].getMonth()+1; // January is 0!
+								var yyyy = item.series.data[item.dataIndex][0].getFullYear();
+								// Prepend 0s
+								if (mm < 10) {
+									mm = '0' + mm
+								}
+
+								$('#runs-overview-total').text(item.datapoint[1]);
+								$('#users-overview-total').text(datasets[0].data[item.dataIndex][1]);
+
+								updateTables(yyyy, mm);
+
+								// Unhighlight any previously clicked points
+								plotU.unhighlight();
+								plotR.unhighlight();
+								// Highlight the current point
+								plotR.highlight(item.series, item.datapoint);
+								plotU.highlight(0, item.dataIndex);
+							}
+						});
+						var plotR = $.plot(placeholderR, [datasets[1]], options);
+
+						var roTimeline = $("#runs-overview-timeline");
+						var plotRO = $.plot(roTimeline, [datasets[1]], {
+							legend: { show: false },
+							series: {
+								points: { show: false },
+								lines: {
+									show: true, 
+									lineWidth: 1,
+									fill: true, 
+									fillColor: '<?php echo $this->params->get("chart_color_fill", "rgba(0, 0, 0, 0.085)"); ?>'
+								},
+								shadowSize: 0
+							},
+							grid: {
+								borderWidth: 1,
+								borderColor: 'rgba(0, 0, 0, 0.6)'
+							},
+							xaxis: { mode: "time", min: new Date('<?php echo $min; ?>'), max: new Date('<?php echo $to; ?>'), tickDecimals: 0, 
+								tickFormatter: function (val, axis) {
+									var d = new Date(val);
+									return month_short[d.getUTCMonth()] + " '" + d.getUTCFullYear().toString().substr(2);//d.getUTCDate() + "/" + (d.getUTCMonth() + 1);
+								}
+							},
+							yaxis: { color: '#fff', min: 0, autoscaleMargin: 0.1, labelWidth: 25 },
+							selection: { 
+								mode: "x", 
+								color: '<?php echo $this->params->get("chart_color_selection", "rgba(0, 0, 0, 0.3)"); ?>', 
+								navigate: true 
+							}
+						});
+						plotRO.setSelection({ 
+								xaxis: {
+									from: new Date('<?php echo $from; ?>'),
+									to: new Date('<?php echo $to; ?>')
+								}
+							}, 
+							true
+						);
+						roTimeline
+							.unbind("plotselected")
+							.bind("plotselected", function (event, ranges) {
+								plotR.setSelection(ranges);
+								plotU.setSelection(ranges);
+							})
+							.unbind("plotnavigating")
+							.bind("plotnavigating", function (event, ranges) {
+								//previousPoint = null;
+								plotR.setSelection(ranges);
+								plotU.setSelection(ranges);
+							});
+						
+						$('.set-selection').click(function (e) {
+							e.preventDefault();
+
+							$('.set-selection').each(function(i, el) {
+								$(el).removeClass('selected');
+							});
+							$(this).addClass('selected');
+
+							var sizeTokens = $(this).attr('rel').split(' ');
+							var from = sizeTokens[0];
+							var to = sizeTokens[1];
+
+							plotU = $.plot(placeholderU, [datasets[0]],
+								$.extend(true, {}, options, {
+									xaxis: { min: new Date(from), max: new Date(to) }
+								}));
+							plotR = $.plot(placeholderR, [datasets[1]],
+								$.extend(true, {}, options, {
+									xaxis: { min: new Date(from), max: new Date(to) }
+								}));
+
+							// don't fire event on the overview to prevent eternal loop
+							plotUO.setSelection({
+									xaxis: {
+										from: new Date(from), 
+										to: new Date(to)
+									}
+								}, 
+								true
+							);
+							plotRO.setSelection({
+									xaxis: {
+										from: new Date(from), 
+										to: new Date(to)
+									}
+								}, 
+								true
+							);
+						});
 					});
-				//}
+				});
 			}
-
-			plotAccordingToChoices();
-		});
-	}
 		</script>
-
-		<div style="clear:left;"></div>
-
-		<div class="two columns first">
-			<table summary="<?php echo JText::_('PLG_RESOURCES_USAGE_TBL_2_CAPTION'); ?>" id="pie-org-data" class="pie-chart">
-				<caption><?php echo JText::_('PLG_RESOURCES_USAGE_TBL_2_CAPTION'); ?></caption>
-				<thead>
-					<tr>
-						<th scope="col" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_NUM'); ?></th>
-						<th scope="col"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_TYPE'); ?></th>
-						<th scope="col" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_USERS'); ?></th>
-						<th scope="col" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_PERCENT'); ?></th>
-					</tr>
-				</thead>
-				<tbody>
-<?php 
-
-$colors = array(
-	$this->params->get('pie_chart_color1', '#7c7c7c'),
-	$this->params->get('pie_chart_color2', '#515151'),
-	$this->params->get('pie_chart_color3', '#d9d9d9'),
-	$this->params->get('pie_chart_color4', '#3d3d3d'),
-	$this->params->get('pie_chart_color5', '#797979'),
-	$this->params->get('pie_chart_color6', '#595959'),
-	$this->params->get('pie_chart_color7', '#e5e5e5'),
-	$this->params->get('pie_chart_color8', '#828282'),
-	$this->params->get('pie_chart_color9', '#404040'),
-	$this->params->get('pie_chart_color10', '#6a6a6a'),
-	$this->params->get('pie_chart_color1', '#bcbcbc'),
-	$this->params->get('pie_chart_color2', '#515151'),
-	$this->params->get('pie_chart_color3', '#d9d9d9'),
-	$this->params->get('pie_chart_color4', '#3d3d3d'),
-	$this->params->get('pie_chart_color5', '#797979'),
-	$this->params->get('pie_chart_color6', '#595959'),
-	$this->params->get('pie_chart_color7', '#e5e5e5'),
-	$this->params->get('pie_chart_color8', '#828282'),
-	$this->params->get('pie_chart_color9', '#404040'),
-	$this->params->get('pie_chart_color10', '#3a3a3a'),
-);
-
-$datetime = date("Y") . '-' . date("m");
-$tid = plgResourcesUsage::getTid($this->resource->id, $datetime);
-
-if (intval($this->params->get('cache', 1)))
-{
-	$cache =& JFactory::getCache('callback');
-	$cache->setCaching(1);
-	$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
-	$results = $cache->call(array('plgResourcesUsage', 'getTopValue'), $this->resource->id, 3, $tid, $datetime);
-}
-else 
-{
-	$results = plgResourcesUsage::getTopValue($this->resource->id, 3, $tid, $datetime);
-}
-$data = array();
-$r = array();
-$results = null;
-$total = 0;
-$cls = 'even';
-$tot = '';
-$pieOrg = array();
-$toporgs = null;
-if ($results)
-{
-	$i = 0;
-	$data = array();
-	$r = array();
-	foreach ($results as $row)
-	{
-		$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
-		if (!isset($data[$ky]))
-		{
-			$i = 0;
-			$data[$ky] = array();
-			$r[$ky] = array();
-		}
-		$data[$ky][] = $row;
-		if (!isset($colors[$i]))
-		{
-			$i = 0;
-		}
-		$r[$ky][] = '{label: \''.addslashes($row->name).'\', data: '.number_format($row->value).', color: \''.$colors[$i].'\'}';
-		$i++;
-	}
-	$toporgs = end($data);
-}
-
-//$toporgs = $topvals->getTopCountryRes($this->stats->id, 3);
-$nd = '';
-if ($toporgs) {
-	$i = 0;
-	foreach ($toporgs as $row)
-	{
-		$total += $row->value;
-	}
-	foreach ($toporgs as $row)
-	{
-		if ($row->name == '?') {
-			$row->name = JText::_('PLG_RESOURCES_USAGE_UNIDENTIFIED');
-		}
-
-		if ($row->rank == '0') {
-			$nd = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
-			$total = $row->value;
-			if ($total) {
-				$tot = '<tr class="summary">
-					<td> </td>
-					<td class="textual-data">'.$row->name.'</td>
-					<td>'.number_format($row->value).'</td>
-					<td>'.round((($row->value/$total)*100),2).'</td>
-				</tr>';
-			}
-		} else {
-			$cls = ($cls == 'even') ? 'odd' : 'even';
-?>
-					<tr rel="<?php echo $row->name; ?>">
-						<th><span style="background-color: <?php echo $colors[$i]; ?>"><?php echo $row->rank; ?></span></th>
-						<td class="textual-data"><?php echo $row->name; ?></td>
-						<td><?php echo number_format($row->value); ?></td>
-						<td><?php echo round((($row->value/$total)*100),2); ?></td>
-					</tr>
-<?php
-			$i++;
-		}
-	}
-}
-else 
-{
-?>
-					<tr>
-						<td colspan="4" class="textual-data"><?php echo JText::sprintf('No data found for the month of %s', $to); ?></td>
-					</tr>
-<?php
-}
-//echo $tot;
-?>
-				</tbody>
-			</table>
+	<?php } else { ?>
+		<div id="no-usage">
+			<p><?php echo JText::_('No usage data was found.'); ?></p>
 		</div>
-		<div class="two columns second">
-			<div style="text-align: center; margin-top: 5em; position: relative;">
-				<div id="pie-org" style="width:320px; height:320px"></div>
-			</div>
-			<script>
-			if (jQuery()) {
-				var $ = jq;
-				var pieOptions = {
-					legend: { 
-						show: false 
-					},
-					series: {
-						pie: { 
-							innerRadius: 0.5,
-							show: true,
-							label: { show: false }
-						}
-					},
-					grid: {
-						hoverable: false
-					}
-				};
-				
-				var orgData = {
-				<?php
-				$z = array();
-				foreach ($r as $k => $d)
-				{
-					$z[] = "\t'$k': [" . implode(',', $d) . "]" . "\n";
-				}
-				echo implode(',', $z);
-				?>
-				};
-
-				if (typeof orgData['<?php echo $nd; ?>'] != 'undefined' && orgData['<?php echo $nd; ?>'].length > 0) {
-					$.plot($("#pie-org"), orgData['<?php echo $nd; ?>'], pieOptions);
-				}
-			}
-			</script>
-		</div>
-		<div class="clear"></div>
-		
-		<div class="two columns first">
-			<table summary="<?php echo JText::_('PLG_RESOURCES_USAGE_TBL_3_CAPTION'); ?>" id="pie-country-data" class="pie-chart">
-				<caption><?php echo JText::_('PLG_RESOURCES_USAGE_TBL_3_CAPTION'); ?></caption>
-				<thead>
-					<tr>
-						<th scope="col" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_NUM'); ?></th>
-						<th scope="col"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_COUNTRY'); ?></th>
-						<th scope="col" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_USERS'); ?></th>
-						<th scope="col" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_PERCENT'); ?></th>
-					</tr>
-				</thead>
-				<tbody>
-<?php 
-//$topcountries = $topvals->getTopCountryRes($this->stats->id, 1);
-
-if (intval($this->params->get('cache', 1)))
-{
-	$cache =& JFactory::getCache('callback');
-	$cache->setCaching(1);
-	$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
-	$results = $cache->call(array('plgResourcesUsage', 'getTopValue'), $this->resource->id, 1, $tid, $datetime);
-}
-else 
-{
-	$results = plgResourcesUsage::getTopValue($this->resource->id, 1, $tid, $datetime);
-}
-$results = null;
-$topcountries = null;
-$i = 0;
-if ($results)
-{
-	$data = array();
-	$r = array();
-	foreach ($results as $row)
-	{
-		$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
-		if (!isset($data[$ky]))
-		{
-			$i = 0;
-			$data[$ky] = array();
-			$r[$ky] = array();
-		}
-		$data[$ky][] = $row;
-		if (!isset($colors[$i]))
-		{
-			$i = 0;
-		}
-		$r[$ky][] = '{label: \''.addslashes($row->name).'\', data: '.number_format($row->value).', color: \''.$colors[$i].'\'}'."\n";
-		$i++;
-	}
-	$topcountries = end($data);
-}
-
-$total = '';
-$cls = 'even';
-$tot = '';
-$pie = array();
-$i = 0;
-if ($topcountries && count($topcountries) > 0) 
-{
-	foreach ($topcountries as $row)
-	{
-		if ($row->name == '?') {
-			$row->name = JText::_('PLG_RESOURCES_USAGE_UNIDENTIFIED');
-		}
-
-		if ($row->rank == '0') {
-			$nd = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
-			$total = $row->value;
-			if ($total) {
-				$tot = '<tr class="summary">
-					<td> </td>
-					<td class="textual-data">'.$row->name.'</td>
-					<td>'.number_format($row->value).'</td>
-					<td>'.round((($row->value/$total)*100),2).'</td>
-				</tr>';
-			}
-		} else {
-			$cls = ($cls == 'even') ? 'odd' : 'even';
-?>
-					<tr rel="<?php echo $row->name; ?>">
-						<th><span style="background-color: <?php echo $colors[$i]; ?>"><?php echo $row->rank; ?></span></th>
-						<td class="textual-data"><?php echo $row->name; ?></td>
-						<td><?php echo number_format($row->value); ?></td>
-						<td><?php echo round((($row->value/$total)*100),2); ?></td>
-					</tr>
-<?php
-			$i++;
-		}
-	}
-}
-else 
-{
-?>
-					<tr>
-						<td colspan="4" class="textual-data"><?php echo JText::sprintf('No data found for the month of %s', $to); ?></td>
-					</tr>
-<?php
-}
-echo $tot;
-?>
-				</tbody>
-			</table>
-		</div>
-		<div class="two columns second">
-			<div style="text-align: center; margin-top: 5em; position: relative;">
-				<div id="pie-country" style="width:320px; height:320px"></div>
-			</div>
-			<script>
-			if (jQuery()) {
-				var $ = jq;
-
-				var countryData = {
-					<?php
-					$z = array();
-					foreach ($r as $k => $d)
-					{
-						$z[] = "\t'$k': [" . implode(',', $d) . "]" . "\n";
-					}
-					echo implode(',', $z);
-					?>
-				};
-
-				if (typeof countryData['<?php echo $nd; ?>'] != 'undefined' && countryData['<?php echo $nd; ?>'].length > 0) {
-					$.plot($("#pie-country"), countryData['<?php echo $nd; ?>'], pieOptions);
-				}
-			}
-			</script>
-		</div>
-		<div class="clear"></div>
-		
-		<div class="two columns first">
-			<table summary="<?php echo JText::_('PLG_RESOURCES_USAGE_TBL_4_CAPTION'); ?>" id="pie-domains-data" class="pie-chart">
-				<caption><?php echo JText::_('PLG_RESOURCES_USAGE_TBL_4_CAPTION'); ?></caption>
-				<thead>
-					<tr>
-						<th scope="col" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_NUM'); ?></th>
-						<th scope="col"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_DOMAINS'); ?></th>
-						<th scope="col" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_USERS'); ?></th>
-						<th scope="col" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_PERCENT'); ?></th>
-					</tr>
-				</thead>
-				<tbody>
-<?php 
-//$topdoms = $topvals->getTopCountryRes($this->stats->id, 2);
-
-if (intval($this->params->get('cache', 1)))
-{
-	$cache =& JFactory::getCache('callback');
-	$cache->setCaching(1);
-	$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
-	$results = $cache->call(array('plgResourcesUsage', 'getTopValue'), $this->resource->id, 2, $tid, $datetime);
-}
-else 
-{
-	$results = plgResourcesUsage::getTopValue($this->resource->id, 2, $tid, $datetime);
-}
-$results = null;
-$topdoms = null;
-$i = 0;
-if ($results)
-{
-	$data = array();
-	$r = array();
-	foreach ($results as $row)
-	{
-		$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
-		if (!isset($data[$ky]))
-		{
-			$i = 0;
-			$data[$ky] = array();
-			$r[$ky] = array();
-		}
-		$data[$ky][] = $row;
-		if (!isset($colors[$i]))
-		{
-			$i = 0;
-		}
-		$r[$ky][] = '{label: \''.addslashes($row->name).'\', data: '.number_format($row->value).', color: \''.$colors[$i].'\'}';
-		$i++;
-	}
-	$topdoms = end($data);
-}
-
-$total = '';
-$cls = 'even';
-$tot = '';
-$pie = array();
-$i = 0;
-if ($topdoms) {
-	foreach ($topdoms as $row)
-	{
-		if ($row->name == '?') {
-			$row->name = JText::_('PLG_RESOURCES_USAGE_UNIDENTIFIED');
-		}
-
-		if ($row->rank == '0') {
-			$nd = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
-			$total = $row->value;
-			if ($total) {
-				$tot = '<tr class="summary">
-					<td> </td>
-					<td class="textual-data">'.$row->name.'</td>
-					<td>'.number_format($row->value).'</td>
-					<td>'.round((($row->value/$total)*100),2).'</td>
-				</tr>';
-			}
-		} else {
-			//$pie[] = '{label: \''.$row->name.'\', data: '.number_format($row->value).', color: \''.$colors[$i].'\'}';
-			$cls = ($cls == 'even') ? 'odd' : 'even';
-?>
-				<tr rel="<?php echo $row->name; ?>">
-					<th><span style="background-color: <?php echo $colors[$i]; ?>"><?php echo $row->rank; ?></span></th>
-					<td class="textual-data"><?php echo $row->name; ?></td>
-					<td><?php echo number_format($row->value); ?></td>
-					<td><?php echo round((($row->value/$total)*100),2); ?></td>
-				</tr>
-<?php
-			$i++;
-		}
-	}
-}
-else 
-{
-?>
-					<tr>
-						<td colspan="4" class="textual-data"><?php echo JText::sprintf('No data found for the month of %s', $to); ?></td>
-					</tr>
-<?php
-}
-echo $tot;
-?>
-				</tbody>
-			</table>
-		</div>
-		<div class="two columns second">
-			<div style="text-align: center; margin-top: 5em; position: relative;">
-				<div id="pie-domains" style="width:320px; height:320px"></div>
-			</div>
-			<script>
-			if (jQuery()) {
-				var $ = jq;
-				
-				var domainData = {
-				<?php
-				$z = array();
-				foreach ($r as $k => $d)
-				{
-					$z[] = "\t'$k': [" . implode(',', $d) . "]" . "\n";
-				}
-				echo implode(',', $z);
-				?>
-				};
-
-				if (typeof domainData['<?php echo $nd; ?>'] != 'undefined' && domainData['<?php echo $nd; ?>'].length > 0) {
-					$.plot($("#pie-domains"), domainData['<?php echo $nd; ?>'], pieOptions);
-				}
-			}
-			</script>
-		</div>
-		<div class="clear"></div>
-</form>
+	<?php } ?>
+	</form>
