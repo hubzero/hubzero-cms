@@ -101,7 +101,7 @@ class PdfForm
 		if (!isset($_FILES[$name])) {
 			$pdf->errors[] = 'Upload not posted (server error)';
 		}
-		else if ($_FILES[$name]['error']) {
+		else if ($_FILES[$name]['error'][0]) {
 			switch ($_FILES[$name]['error']) {
 				case UPLOAD_ERR_INI_SIZE: case UPLOAD_ERR_FORM_SIZE:
 					$pdf->errors[] = 'Upload failed, the file exceeds the maximum allowable size'; 
@@ -120,7 +120,7 @@ class PdfForm
 			}
 		}
 		else {
-			$pdf->fname = $_FILES[$name]['tmp_name'];
+			$pdf->fname = $_FILES[$name]['tmp_name'][0];
 		}
 		return $pdf;
 	}

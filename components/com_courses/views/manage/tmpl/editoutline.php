@@ -39,6 +39,8 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 	<h2><?php echo $this->title; ?></h2>
 </div>
 
+<div id="dialog-confirm" class="dialog">This is a dialog box</div>
+
 <div class="error-box">
 	<p class="error-close"></p>
 	<p class="error-message">There was an error</p>

@@ -15,6 +15,9 @@
 	border: 1px dotted #AAA;
 	background: #FFF;
 }
+.dialog {
+	display: none;
+}
 .course:before {
 	content: "\f09c";
 }
@@ -33,6 +36,23 @@ ul {
 	list-style: none;
 	padding: 0;
 	margin: 0;
+}
+.dialog-button {
+	cursor: pointer;
+	margin: .5em .4em .5em 0;
+	border: 1px solid #d3d3d3;
+	background: #e6e6e6 url("/media/system/images/ui/ui-bg_glass_75_e6e6e6_1x400.png") 50% 50% repeat-x;
+	font-weight: normal;
+	color: #555;
+}
+.dialog-button:hover {
+	border: 1px solid #999;
+	background: #dadada url("/media/system/images/ui/ui-bg_glass_75_dadada_1x400.png") 50% 50% repeat-x;
+	font-weight: normal;
+	color: #212121;
+}
+.dialog-button:active {
+	background: #fff;
 }
 .sortable-handle {
 	position: absolute;
@@ -154,7 +174,7 @@ ul {
 	position: relative;
 	overflow: hidden;
 	border: 1px dotted #AAA;
-	margin: 10px 0 0 0;
+	margin: 10px 0 1px 0;
 	background: #FAFAFA;
 	padding-left: 60px;
 }

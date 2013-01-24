@@ -494,7 +494,6 @@ class CoursesControllerOffering extends Hubzero_Controller
 		Hubzero_Document::addSystemScript('jquery.uniform');
 
 		// Add file uploader JS
-		Hubzero_Document::addSystemScript('jquery.ui.widget');
 		Hubzero_Document::addSystemScript('jquery.iframe.transport');
 		Hubzero_Document::addSystemScript('jquery.fileupload');
 

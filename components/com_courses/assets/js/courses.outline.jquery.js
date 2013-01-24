@@ -547,117 +547,70 @@ HUB.CoursesOutline = {
 			var progressBar     = $(this).find('.uploadfiles-progress');
 			var assetGroupTitle = $(this).parents('.asset-group-type-item').find('.asset-group-title').html();
 			var form            = $(this).find('form');
+			var fileupload      = $(this);
+			var message         = '';
+			var dialog          = $("#dialog-confirm");
+			var targetName      = '';
+			var ulCount         = 0;
+			var counter         = 0;
+
+			// Setup dialog
+			dialog.dialog({
+				resizable: false,
+				width: 450,
+				modal: true,
+				autoOpen: false,
+				title: 'How do you want to make these files available?',
+				close: function(event, ui) {
+					// Clear the message
+					message = '';
+					dialog.html('');
+				},
+				buttons: {
+					Cancel: function() {
+						// Close the dialog box
+						$(this).dialog("close");
+					}
+				}
+			});
 
 			$(this).fileupload({
 				dropZone: $(this),
 				dataType: 'json',
 				statusCode: {
-					// 200 OK
-					// This is returned by the pdf upload at the moment
-					200: function(data){
-						if(assetGroupTitle == 'Exam') {
-							if(data.success) {
-								// Open up forms in a lightbox
-								$.fancybox({
-									fitToView: false,
-									autoResize: false,
-									autoSize: false,
-									height: ($(window).height())*2/3,
-									type: 'iframe',
-									href: '/courses/form?task=layout&formId='+data.id+'&tmpl=component',
-									afterShow: function() {
-										// Highjack the 'done' button to close the iframe
-										$('.fancybox-iframe').contents().find('#done').bind('click', function(e) {
-											e.preventDefault();
-
-											$.fancybox.close();
-										});
-									},
-									beforeClose: function() {
-										// Create ajax call to change info in the database
-										$.ajax({
-											url: '/api/courses/assetsave',
-											data: form.serialize()+'&title=Exam&type=exam&url='+encodeURIComponent('/courses/form/layout/'+data.id),
-											dataType: "json",
-											type: 'POST',
-											cache: false,
-											statusCode: {
-												201: function(data){
-													if(assetslist.find('li:first').hasClass('nofiles'))
-													{
-														assetslist.find('li:first').remove();
-													}
-													$.each(data.files, function (index, file) {
-														// Insert in our HTML (uses "underscore.js")
-														var li = _.template(HUB.CoursesOutline.Templates.asset, file);
-														assetslist.append(li);
-
-														var newAsset = assetslist.find('.asset-item:last');
-
-														newAsset.find('.uniform').uniform();
-														newAsset.find('.toggle-editable').show();
-														newAsset.find('.title-edit').hide();
-														HUB.CoursesOutline.showProgressIndicator();
-														HUB.CoursesOutline.resizeFileUploader();
-														HUB.CoursesOutline.makeAssetsSortable();
-
-														// Reset progress bar after 2 seconds
-														HUB.CoursesOutline.resetProgresBar(progressBar, 2000);
-													});
-												},
-												401: function(data){
-													// Display the error message
-													HUB.CoursesOutline.errorMessage(data.responseText);
-												},
-												404: function(data){
-													HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
-												},
-												500: function(data){
-													// Display the error message
-													HUB.CoursesOutline.errorMessage(data.responseText);
-												}
-											}
-										});
-									}
-								});
-							}
-						} else {
-							// Display the error message
-							HUB.CoursesOutline.errorMessage(data.responseText);
-
-							// Reset progress bar
-							HUB.CoursesOutline.resetProgresBar(progressBar, 0);
-						}
-					},
 					// 201 created - this is returned by the standard asset upload
 					201: function(data){
-						// If this is an empty asset group, remove the "no files" list item first
-						if(assetslist.find('li:first').hasClass('nofiles'))
-						{
-							assetslist.find('li:first').remove();
+						if(data.assets.js) {
+							eval(data.assets.js);
+						} else {
+							// If this is an empty asset group, remove the "no files" list item first
+							if(assetslist.find('li:first').hasClass('nofiles'))
+							{
+								assetslist.find('li:first').remove();
+							}
+
+							// Loop through the uploaded files and add li for them
+							$.each(data.assets, function (index, asset) {
+								// Insert in our HTML (uses "underscore.js")
+								var li = _.template(HUB.CoursesOutline.Templates.asset, asset);
+								assetslist.append(li);
+
+								// Get a pointer to our new asset item
+								var newAsset = assetslist.find('.asset-item:last');
+
+								// Update a few things after adding the new asset (reset the progress bar, make them sortable, etc...)
+								newAsset.find('.uniform').uniform();
+								newAsset.find('.toggle-editable').show();
+								newAsset.find('.title-edit').hide();
+								HUB.CoursesOutline.showProgressIndicator();
+								HUB.CoursesOutline.resizeFileUploader();
+								HUB.CoursesOutline.makeAssetsSortable();
+
+								// Reset progress bar after 2 seconds
+								HUB.CoursesOutline.resetProgresBar(progressBar, 2000);
+							});
 						}
 
-						// Loop through the uploaded files and add li for them
-						$.each(data.files, function (index, file) {
-							// Insert in our HTML (uses "underscore.js")
-							var li = _.template(HUB.CoursesOutline.Templates.asset, file);
-							assetslist.append(li);
-
-							// Get a pointer to our new asset item
-							var newAsset = assetslist.find('.asset-item:last');
-
-							// Update a few things after adding the new asset (reset the progress bar, make them sortable, etc...)
-							newAsset.find('.uniform').uniform();
-							newAsset.find('.toggle-editable').show();
-							newAsset.find('.title-edit').hide();
-							HUB.CoursesOutline.showProgressIndicator();
-							HUB.CoursesOutline.resizeFileUploader();
-							HUB.CoursesOutline.makeAssetsSortable();
-
-							// Reset progress bar after 2 seconds
-							HUB.CoursesOutline.resetProgresBar(progressBar, 2000);
-
-						});
 					},
 					401: function(data){
 						// Display the error message
@@ -687,18 +640,93 @@ HUB.CoursesOutline = {
 					});
 				},
 				add: function(e, data) {
-					// If this is an exam, pass the file to forms
-					// @FIXME: only allow 1 exam upload at a time
-					if(assetGroupTitle == 'Exam' && data.files[0].type == 'application/pdf') {
-						data.url       = '/courses/form/upload?no_html=1';
-						data.paramName = 'pdf';
+					// Get asset handlers for this file type
+					$.ajax({
+						url: '/api/courses/assethandlers',
+						data: 'name=' + data.files[0].name,
+						dataType: "json",
+						type: 'POST',
+						cache: false,
+						success: function(json) {
+							// Make sure the file isn't too large (this is checking against the minimum of PHP's post and max upload limit)
+							if(json.max_upload < (data.files[0].size / 1000000)) {
+								HUB.CoursesOutline.errorMessage('Sorry, the file that you uploaded ("' + data.files[0].name + '") exceedes the upload limit of ' + json.max_upload + ' MB');
 
-						// Submit data
-						data.submit();
-					} else {
-						// Otherwise, submit as normal with no modifications
-						data.submit();
-					}
+								// Reset progress bar
+								HUB.CoursesOutline.resetProgresBar(progressBar, 0);
+							// Make sure we know what to do with this file type
+							} else if(!json.handlers.length) {
+								HUB.CoursesOutline.errorMessage('Sorry, we don\'t know what to do with files of type "' + json.ext + '"');
+
+								// Reset progress bar
+								HUB.CoursesOutline.resetProgresBar(progressBar, 0);
+							// Check to see if there are multiple ways of handling this file type
+							} else if(json.handlers.length > 1) {
+								// Iterate counter (for uniqueness - in case someone uploads two files with the same name)
+								counter += 1;
+
+								// Handle multiple handlers for extension
+								message += '<ul>';
+								message += '<p>' + data.files[0].name + '</p>';
+								$.each(json.handlers, function(index, value){
+									message += '<li>';
+									message += '<button type="button" id="' + (data.files[0].name + '_' + value.classname + counter).replace(/[. ]/g, '_') + '" class="dialog-button">';
+									message += value.message;
+									message += '</button>';
+									message += '</li>';
+								});
+								message += '</ul>';
+
+								// Add the message to the dialog box
+								dialog.html(message);
+
+								// Bind click events to the message buttons
+								$.each(json.handlers, function(index, value){
+									targetName = '#'+(data.files[0].name+'_'+value.classname + counter).replace(/[. ]/g, '_');
+									dialog.on('click', targetName, function(){
+										fileupload.fileupload(
+											'option',
+											'formData',
+											function (form) {
+												var formData = form.serializeArray();
+												// Add an explicit handler to the submitted data
+												formData.push({
+													'name':'handler',
+													'value': value.classname
+												});
+
+												return formData;
+											});
+										data.submit();
+
+										// Remove the ul for this file
+										$(this).parents('ul').slideUp();
+										$(this).parents('ul').remove();
+
+										ulCount = dialog.find('ul').length;
+
+										if(ulCount === 0) {
+											// Close the dialog box
+											dialog.dialog("close");
+										}
+									});
+								});
+
+								// Open the dialog box (if it isn't already)
+								if(!dialog.dialog("isOpen")) {
+									dialog.dialog("open");
+								}
+							} else {
+								// Submit the file upload request as normal
+								data.submit();
+							}
+						}
+					});
+				},
+				progress: function (e, data) {
+					// Show progress bars for all pending uploads
+					// @TODO: implement me!
+					//var progress = parseInt(data.loaded / data.total * 100, 10);
 				},
 				progressall: function (e, data) {
 					var progress = parseInt(data.loaded / data.total * 100, 10);

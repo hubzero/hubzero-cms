@@ -66,6 +66,7 @@ class CoursesApiController extends Hubzero_Api_Controller
 			case 'assetgroupreorder':      $this->assetGroupReorder();        break;
 
 			// Assets
+			case 'assethandlers':          $this->assetHandlers();            break;
 			case 'assetnew':               $this->assetNew();                 break;
 			case 'assetsave':              $this->assetSave();                break;
 			case 'assetsreorder':          $this->assetsReorder();            break;
@@ -318,7 +319,37 @@ class CoursesApiController extends Hubzero_Api_Controller
 	//--------------------------
 
 	/**
-	 * Upload a file, creating an asset and asset association
+	 * Get the asset handlers for a given extension
+	 * 
+	 * @return 200 ok
+	 */
+	private function assetHandlers()
+	{
+		// Set the responce type
+		$this->setMessageType($this->format);
+
+		// Get the incomming file name
+		$name = JRequest::getCmd('name');
+
+		// Get the file extension
+		$ext = strtolower(array_pop(explode('.', $name)));
+
+		// Initiate our file handler
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'assets' . DS . 'assethandler.php');
+		$assetHandler = new AssetHandler($this->db, $ext);
+
+		// Get the handlers
+		$handlers = $assetHandler->getHandlers();
+
+		// Also check the PHP max post and upload values
+		$max_upload = min((int)(ini_get('upload_max_filesize')), (int)(ini_get('post_max_size')));
+
+		// Return message
+		$this->setMessage(array('ext'=>$ext, 'handlers'=>$handlers, 'max_upload'=>$max_upload), 200, 'OK');
+	}
+
+	/**
+	 * Create a new asset
 	 * 
 	 * @return 201 created on success
 	 */
@@ -326,10 +357,6 @@ class CoursesApiController extends Hubzero_Api_Controller
 	{
 		// Set the responce type
 		$this->setMessageType($this->format);
-
-		// @TODO: clean up after errors if we've already created assets or asset groups but something in the upload fails
-		// @TODO: add virus scan
-		// @TODO: add multi-file support
 
 		// Require authorization
 		$authorized = $this->authorize();
@@ -339,33 +366,29 @@ class CoursesApiController extends Hubzero_Api_Controller
 			return;
 		}
 
-		// Include needed files
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
-
-		// @FIXME: should these come from the global settings, or should they be courses specific
-		// Get config
-		$config =& JComponentHelper::getParams('com_media');
-
-		// Allowed extensions for uplaod
-		$allowedExtensions = array_values(array_filter(explode(',', $config->get('upload_extensions'))));
-
-		// Max upload size
-		$sizeLimit = $config->get('upload_maxsize');
-
-		// Get the file
-		if (isset($_GET['files']))
+		// @FIXME: not all assets will be files...
+		// Grab the incoming file
+		if (isset($_FILES['files']))
 		{
-			$stream = true;
-			$file = $_GET['files'];
-			$size = (int) $_SERVER["CONTENT_LENGTH"];
-		}
-		elseif (isset($_FILES['files']))
-		{
-			$stream = false;
-			$file = $_FILES['files']['name'][0];
-			$size = (int) $_FILES['files']['size'];
+			$file_name = $_FILES['files']['name'][0];
+			$file_size = (int) $_FILES['files']['size'];
+
+			// Get the extension
+			$pathinfo = pathinfo($file_name);
+			$ext      = $pathinfo['extension'];
+
+			// Initiate our file handler
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'assets' . DS . 'assethandler.php');
+			$assetHandler = new AssetHandler($this->db, $ext);
+
+			// Create the new asset
+			$return = $assetHandler->create(JRequest::getWord('handler', null));
+
+			if(array_key_exists('error', $return))
+			{
+				$this->setMessage($return['error'], 500, 'Internal server error');
+				return;
+			}
 		}
 		else
 		{
@@ -373,153 +396,8 @@ class CoursesApiController extends Hubzero_Api_Controller
 			return;
 		}
 
-		// Get the file extension
-		$pathinfo = pathinfo($file);
-		$filename = $pathinfo['filename'];
-		$ext = $pathinfo['extension'];
-
-		// Check to make sure we have an allowable file extension
-		if ($allowedExtensions && !in_array(strtolower($ext), $allowedExtensions))
-		{
-			$these = implode(', ', $allowedExtensions);
-			$this->setMessage("File has an invalid extension, it should be one of $these", 500, 'Internal server error');
-			return;
-		}
-		// Check to make sure we have a file and its not too big
-		if ($size == 0) 
-		{
-			$this->setMessage("File is empty", 500, 'Internal server error');
-			return;
-		}
-		if ($size > $sizeLimit) 
-		{
-			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Hubzero_View_Helper_Html::formatSize($sizeLimit));
-			$this->setMessage("File is too large. Max file upload size is $max", 500, 'Internal server error');
-			return;
-		}
-
-		// Assign type based on extension
-		switch ($ext)
-		{
-			case 'mp4':
-			case 'zip':
-				$type = 'video';
-				break;
-
-			default:
-				$type = 'file';
-				break;
-		}
-
-		// Create our asset table object
-		$assetObj = new CoursesTableAsset($this->db);
-
-		$row->title      = $filename;
-		$row->type       = $type;
-		$row->url        = $file;
-		$row->created    = date('Y-m-d H:i:s');
-		$row->created_by = JFactory::getApplication()->getAuthn('user_id');
-		$row->state      = 0; // unpublished
-		$row->course_id  = JRequest::getInt('course_id', 0);
-
-		// Save the asset
-		if (!$assetObj->save($row))
-		{
-			$this->setMessage("Asset save failed", 500, 'Internal server error');
-			return;
-		}
-
-		// Create asset assoc object
-		$assocObj = new CoursesTableAssetAssociation($this->db);
-
-		$row2->asset_id  = $assetObj->get('id');
-		$row2->scope     = JRequest::getCmd('scope', 'asset_group');
-		$row2->scope_id  = JRequest::getInt('scope_id', 0);
-
-		// Save the asset association
-		if (!$assocObj->save($row2))
-		{
-			$this->setMessage("Asset association save failed", 500, 'Internal server error');
-			return;
-		}
-
-		// Get courses config
-		$cconfig =& JComponentHelper::getParams('com_courses');
-
-		// Build the upload path if it doesn't exist
-		$uploadDirectory = JPATH_ROOT . DS . trim($cconfig->get('uploadpath', '/site/courses'), DS) . DS . $row->course_id . DS . $row2->asset_id . DS;
-
-		// @FIXME: cleanup asset and asset association if directory creation fails
-
-		// Make sure upload directory is writable
-		if (!is_dir($uploadDirectory))
-		{
-			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($uploadDirectory))
-			{
-				$this->setMessage("Server error. Unable to create upload directory", 500, 'Internal server error');
-				return;
-			}
-		}
-		if (!is_writable($uploadDirectory))
-		{
-			$this->setMessage("Server error. Upload directory isn't writable", 500, 'Internal server error');
-			return;
-		}
-
-		// Get the final file path
-		$file = $uploadDirectory . $filename . '.' . $ext;
-
-		// Save the file
-		if ($stream)
-		{
-			// Read the php input stream to upload file
-			$input = fopen("php://input", "r");
-			$temp = tmpfile();
-			$realSize = stream_copy_to_stream($input, $temp);
-			fclose($input);
-
-			// Move from temp location to target location which is user folder
-			$target = fopen($file , "w");
-			fseek($temp, 0, SEEK_SET);
-			stream_copy_to_stream($temp, $target);
-			fclose($target);
-		}
-		else
-		{
-			move_uploaded_file($_FILES['files']['tmp_name'][0], $file);
-
-			// Exapand zip file if applicable - we're assuming zips are hubpresenter videos
-			if($ext == 'zip')
-			{
-				$escaped_file = escapeshellarg($file);
-				// @FIXME: check for symlinks and other potential security concerns
-				if($result = shell_exec("unzip $escaped_file -d $uploadDirectory"))
-				{
-					// Remove original archive
-					jimport('joomla.filesystem.file');
-					JFile::delete($file);
-
-					// Remove MACOSX dirs if there
-					jimport('joomla.filesystem.folder');
-					JFolder::delete($uploadDirectory . '__MACOSX');
-				}
-			}
-		}
-
-		// Get the path to the new asset
-		$path = CoursesModelAsset::getInstance($row2->asset_id)->path($this->course_id);
-
-		$files = array(
-			'asset_id'    => $row2->asset_id,
-			'asset_title' => $row->title,
-			'asset_type'  => $row->type,
-			'asset_url'   => $path,
-			'course_id'   => $row->course_id
-		);
-
 		// Return message
-		$this->setMessage(array('files'=>array($files)), 201, 'Created');
+		$this->setMessage(array('assets'=>$return), 201, 'Created');
 	}
 
 	/**
