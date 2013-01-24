@@ -650,7 +650,11 @@ class plgMembersDashboard extends JPlugin
 		if (in_array($mid, $mods))
 		{
 			// This module already exists
-			return 'ERROR';
+			$app =& JFactory::getApplication();
+			if (!$app->isAdmin())
+			{
+				return 'ERROR';
+			}
 		}
 
 		$this->getmodule(true, 'customize');
@@ -979,7 +983,12 @@ class plgMembersDashboard extends JPlugin
 	 */
 	protected function addmoduleTask()
 	{
-		$this->addmodule();
+		ximport('Hubzero_User_Profile');
+		$this->member = Hubzero_User_Profile::getInstance(JFactory::getUser()->get('id'));
+		if ($this->addmodule() == 'ERROR')
+		{
+			return 'ERROR';
+		}
 		return $this->view->loadTemplate();
 	}
 }
