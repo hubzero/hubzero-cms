@@ -240,7 +240,7 @@ class CoursesTableSection extends JTable
 
 		if (isset($filters['offering_id']) && $filters['offering_id']) 
 		{
-			$where[] = "os.id=" . $this->_db->Quote(intval($filters['offering_id']));
+			$where[] = "os.offering_id=" . $this->_db->Quote(intval($filters['offering_id']));
 		}
 
 		if (isset($filters['state'])) 

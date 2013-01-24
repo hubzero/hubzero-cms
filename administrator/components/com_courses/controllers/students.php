@@ -60,6 +60,11 @@ class CoursesControllerStudents extends Hubzero_Controller
 			'offering',
 			0
 		);
+		$this->view->filters['section_id']    = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.section',
+			'section',
+			0
+		);
 
 		$this->view->offering = CoursesModelOffering::getInstance($this->view->filters['offering']);
 		/*if (!$this->view->offering->exists())

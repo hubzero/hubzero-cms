@@ -55,8 +55,32 @@ $gparams = new $paramsClass($this->offering->params);
 $membership_control = $gparams->get('membership_control', 1);
 
 $display_system_users = $gparams->get('display_system_users', 'global');*/
+$js = '';
 ?>
 <script type="text/javascript">
+var offeringsections = new Array;
+<?php
+/*$i = 0;
+
+$this->view->offeringsections = array();
+$this->view->offeringsections[-1] = array();
+$none = new stdClass;
+$none->id = '-1';
+$none->title = JText::_('Select Section');
+$this->view->offeringsections[-1][] = $none;
+
+if ($this->offeringsections)
+{
+	foreach ($this->offeringsections as $k => $items) 
+	{
+		foreach ($items as $v) 
+		{
+			echo 'ownerassignees[' . $i++ . "] = new Array( '$k','" . addslashes($v->id) . "','" . addslashes($v->title) . "' );\n\t\t";
+		}
+	}
+}*/
+?>
+
 function submitbutton(pressbutton) 
 {
 	var form = document.adminForm;
@@ -93,26 +117,76 @@ function submitbutton(pressbutton)
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<td class="key"><label for="field-user_id"><?php echo JText::_('User ID'); ?>:</label></td>
-						<td><input type="text" name="fields[user_id]" id="field-user_id" value="<?php echo $this->escape(stripslashes($this->row->get('user_id'))); ?>" size="50" /></td>
+						<td class="key"><label for="field-offering_id"><?php echo JText::_('Offering'); ?>:</label></td>
+						<td>
+							<select name="fields[offering_id]" id="field-offering_id" onchange="changeDynaList('field-section_id', offeringsections, document.getElementById('field-offering_id').options[document.getElementById('field-offering_id').selectedIndex].value, 0, 0);">
+								<option value="0"><?php echo JText::_('(none)'); ?></option>
+					<?php
+						//$offerings = array();
+						require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
+						$model = CoursesModelCourses::getInstance();
+						if ($model->courses()->total() > 0)
+						{
+							foreach ($model->courses() as $course)
+							{
+					?>
+								<optgroup label="<?php echo $this->escape(stripslashes($course->get('alias'))); ?>">
+					<?php
+								foreach ($course->offerings() as $i => $offering)
+								{
+									foreach ($offering->sections() as $k => $section)
+									{
+										$js .= 'offeringsections[' . $i . "] = new Array( '$k','" . addslashes($section->get('id')) . "','" . addslashes($section->get('title')) . "' );\n\t\t";
+									}
+									//$offerings[$offering->get('id')] = $course->get('alias') . ' : ' . $offering->get('alias');
+					?>
+									<option value="<?php echo $this->escape(stripslashes($offering->get('id'))); ?>"<?php if ($offering->get('id') == $this->row->get('offering_id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($offering->get('alias'))); ?></option>
+					<?php
+								}
+					?>
+								</optgroup>
+					<?php 
+							}
+						}
+					?>
+							</select>
+						</td>
 					</tr>
 					<tr>
-						<td class="key"><label for="field-offering_id"><?php echo JText::_('Offering ID'); ?>:</label></td>
-						<td><input type="text" name="fields[offering_id]" id="field-offering_id" value="<?php echo $this->escape(stripslashes($this->row->get('offering_id'))); ?>" size="50" /></td>
+						<td class="key"><label for="field-section_id"><?php echo JText::_('Section'); ?>:</label></td>
+						<td>
+							<select name="fields[section_id]" id="field-section_id">
+								<option value="-1"><?php echo JText::_('Select Section'); ?></option>
+								<?php
+								foreach ($this->offering->sections() as $k => $section)
+								{
+								?>
+								<option value="<?php echo $this->escape(stripslashes($section->get('id'))); ?>"<?php if ($section->get('id') == $this->row->get('section_id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
+								<?php
+								}
+								?>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td class="paramlist_key"><label for="enrolled">Enrolled:</label></th>
+						<td>
+							<?php echo JHTML::_('calendar', $this->row->get('enrolled'), 'fields[enrolled]', 'enrolled', "%Y-%m-%d", array('class' => 'inputbox')); ?>
+						</td>
 					</tr>
 				</tbody>
 			</table>
 		</fieldset>
 
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Publishing'); ?></span></legend>
+			<legend><span><?php echo JText::_('Progress'); ?></span></legend>
 			
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<td class="paramlist_key"><label for="enrolled">Offering starts:</label></th>
+						<td class="paramlist_key"><label for="enrolled">Key:</label></th>
 						<td>
-							<?php echo JHTML::_('calendar', $this->row->get('enrolled'), 'fields[enrolled]', 'enrolled', "%Y-%m-%d", array('class' => 'inputbox')); ?>
+							--
 						</td>
 					</tr>
 				</tbody>
@@ -123,27 +197,21 @@ function submitbutton(pressbutton)
 		<table class="meta" summary="<?php echo JText::_('COM_COURSES_META_SUMMARY'); ?>">
 			<tbody>
 				<tr>
-					<th><?php echo JText::_('Offering ID'); ?></th>
-					<td><?php echo $this->escape($this->row->get('offering_id')); ?></td>
-				</tr>
-				<tr>
-					<th><?php echo JText::_('Section ID'); ?></th>
-					<td><?php echo $this->escape($this->row->get('section_id')); ?></td>
-				</tr>
-				<tr>
 					<th><?php echo JText::_('ID'); ?></th>
+					<td><?php echo $this->escape($this->row->get('id')); ?></td>
+				</tr>
+				<tr>
+					<th><?php echo JText::_('User ID'); ?></th>
 					<td><?php echo $this->escape($this->row->get('user_id')); ?></td>
 				</tr>
-<?php if ($this->row->get('enrolled')) { ?>
-				<tr>
-					<th><?php echo JText::_('Enrolled'); ?></th>
-					<td><?php echo $this->escape($this->row->get('enrolled')); ?></td>
-				</tr>
-<?php } ?>
 			</tbody>
 		</table>
 	</div>
 	<div class="clr"></div>
+	<script type="text/javascript">
+	var offeringsections = new Array;
+	<?php echo $js; ?>
+	</script>
 
 	<?php echo JHTML::_('form.token'); ?>
 </form>

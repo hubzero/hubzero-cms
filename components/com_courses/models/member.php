@@ -129,7 +129,10 @@ class CoursesModelMember extends JObject
 			}
 			$this->_tbl->set('user_id', $uid['user_id']);
 		}
-		$this->_tbl->set('offering_id', $oid);
+		if ($oid)
+		{
+			$this->_tbl->set('offering_id', $oid);
+		}
 
 		$paramsClass = 'JParameter';
 		if (version_compare(JVERSION, '1.6', 'ge'))

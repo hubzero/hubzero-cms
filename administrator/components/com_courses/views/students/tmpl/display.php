@@ -73,10 +73,12 @@ function submitbutton(pressbutton)
 
 <form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
+		<div class="col width-30">
 		<label for="filter_search"><?php echo JText::_('COM_COURSES_SEARCH'); ?>:</label> 
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" />
-
-		<label for="filter_search"><?php echo JText::_('Offering'); ?>:</label> 
+		</div>
+		<div class="col width-70">
+		<label for="filter_offering"><?php echo JText::_('Offering'); ?>:</label> 
 		<select name="offering" id="filter_offering">
 			<option value="0"><?php echo JText::_('(none)'); ?></option>
 <?php
@@ -105,7 +107,25 @@ function submitbutton(pressbutton)
 ?>
 		</select>
 
+<?php if ($this->filters['offering']) { ?>
+		<label for="filter_section"><?php echo JText::_('Section'); ?>:</label> 
+		<select name="section" id="filter_section">
+			<option value="0"><?php echo JText::_('(none)'); ?></option>
+		<?php
+		if ($this->offering->sections()->total() > 0)
+		{
+			foreach ($this->offering->sections() as $section)
+			{
+		?>
+			<option value="<?php echo $this->escape(stripslashes($section->get('id'))); ?>"<?php if ($section->get('id') == $this->filters['section_id']) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
+		<?php
+			}
+		}
+		?>
+		</select>
+<?php } ?>
 		<input type="submit" value="<?php echo JText::_('COM_COURSES_GO'); ?>" />
+		</div>
 	</fieldset>
 	<div class="clr"></div>
 
@@ -155,6 +175,8 @@ foreach ($this->rows as $row)
 	{
 		continue;
 	}
+
+	$section = CoursesModelSection::getInstance($row->get('section_id'));
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
@@ -191,7 +213,7 @@ foreach ($this->rows as $row)
 				</td>
 <?php } ?>
 				<td>
-					<?php echo ($row->get('section_id')) ? $row->get('section_id') : JText::_('(none)'); ?>
+					<?php echo ($section->exists()) ? $this->escape(stripslashes($section->get('title'))) : JText::_('(none)'); ?>
 				</td>
 				<td>
 				<?php if ($row->get('enrolled') && $row->get('enrolled') != '0000-00-00 00:00:00') { ?>

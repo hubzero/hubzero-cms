@@ -224,11 +224,11 @@ class CoursesTableMember extends JTable
 				LEFT JOIN #__courses_roles AS r ON r.id=m.role_id";
 
 		$where = array();
-		if (isset($filters['offering_id']))
+		if (isset($filters['offering_id']) && $filters['offering_id'])
 		{
 			$where[] = "m.`offering_id`=" . $this->_db->Quote(intval($filters['offering_id']));
 		}
-		if (isset($filters['section_id']))
+		if (isset($filters['section_id']) && $filters['section_id'])
 		{
 			$where[] = "m.`section_id`=" . $this->_db->Quote(intval($filters['section_id']));
 		}
