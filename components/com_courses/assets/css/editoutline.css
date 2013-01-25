@@ -18,6 +18,7 @@
 .dialog {
 	display: none;
 }
+
 .course:before {
 	content: "\f09c";
 }
@@ -376,7 +377,6 @@ ul {
 	-moz-border-radius: 3px;
 	border-radius: 3px;
 }
-
 .filename {
 	color: #000;
 	font-size: 12px;
@@ -384,6 +384,18 @@ ul {
 	top: 0;
 	bottom: 0;
 	left: 5px;
+}
+.handlers-list .asset {
+	padding-left: 20px;
+}
+.handlers-list .asset:after {
+	left: 0;
+}
+.handler-item {
+	margin: 0;
+}
+.handler-item button {
+	margin-left: 30px;
 }
 
 /* Progress bar style overrides (from ui defaults) */
@@ -425,6 +437,29 @@ ul {
 	background-image: -ms-linear-gradient(top, #59E80C 0%, #49BF0A 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#59E80C,endColorstr=#49BF0A);
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#59E80C, endColorstr=#49BF0A)";
+}
+
+/* Dialog style overrides (from ui defaults) */
+.ui-dialog {
+	padding: 0;
+
+	-webkit-box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), inset 0 0 1px rgba(255, 255, 255, 0.6);
+	-moz-box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), inset 0 0 1px rgba(255, 255, 255, 0.6);
+	-ms-box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), inset 0 0 1px rgba(255, 255, 255, 0.6);
+	-o-box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), inset 0 0 1px rgba(255, 255, 255, 0.6);
+	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), inset 0 0 1px rgba(255, 255, 255, 0.6);
+}
+.ui-dialog.ui-widget-content {
+	border: none;
+}
+.ui-dialog.ui-corner-all,
+.ui-dialog-titlebar.ui-corner-all {
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+}
+.ui-dialog .ui-dialog-buttonpane {
+	border-width: 0;
 }
 
 /* Styles for popup edit pages */

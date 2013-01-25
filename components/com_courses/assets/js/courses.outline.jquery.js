@@ -563,11 +563,6 @@ HUB.CoursesOutline = {
 				modal: true,
 				autoOpen: false,
 				title: 'How do you want to make these files available?',
-				close: function(event, ui) {
-					// Clear the message
-					message = '';
-					dialog.html('');
-				},
 				buttons: {
 					Cancel: function() {
 						// Close the dialog box
@@ -661,10 +656,10 @@ HUB.CoursesOutline = {
 								counter += 1;
 
 								// Handle multiple handlers for extension
-								message += '<ul>';
-								message += '<p>' + data.files[0].name + '</p>';
+								message += '<ul class="handlers-list">';
+								message += '<p class="asset file">' + data.files[0].name + '</p>';
 								$.each(json.handlers, function(index, value){
-									message += '<li>';
+									message += '<li class="handler-item">';
 									message += '<button type="button" id="' + (data.files[0].name + '_' + value.classname + counter).replace(/[. ]/g, '_') + '" class="dialog-button">';
 									message += value.message;
 									message += '</button>';
@@ -673,7 +668,6 @@ HUB.CoursesOutline = {
 								message += '</ul>';
 
 								// Add the message to the dialog box
-								// @FIXME: make the dialog boxes prettier
 								dialog.html(message);
 
 								// Bind click events to the message buttons
@@ -707,6 +701,13 @@ HUB.CoursesOutline = {
 											dialog.dialog("close");
 										}
 									});
+								});
+
+								// Add close event to clear message box text
+								dialog.on('dialogclose', function() {
+									// Clear the message
+									message = '';
+									dialog.html('');
 								});
 
 								// Open the dialog box (if it isn't already)
