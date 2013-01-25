@@ -2497,7 +2497,9 @@ class WishlistController extends JObject
 		// did user make selections?
 		if (!$effort or !$importance) 
 		{
-			JError::raiseError(500, JText::_('ERROR_MAKE_SELECTION'));
+			$this->_message     = 'Please be sure to provide both an importance and an effort';
+			$this->_messageType = 'error';
+			$this->_redirect    = JRoute::_('index.php?option=' . $this->_option . '&task=wish&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid . '&wishid=' . $wishid);
 			return;
 		}
 

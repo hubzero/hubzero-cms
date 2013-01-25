@@ -416,7 +416,7 @@ if ($this->wishlist && $this->wish) {
 												<th>Effort</th>
 <?php
 													// My opinion is available for list owners/advisory committee only
-											if ($this->admin==2) 
+											if ($this->admin==2 || $this->admin==3) 
 											{
 												$effort = array(
 													''=>JText::_('SELECT_EFFORT'),
