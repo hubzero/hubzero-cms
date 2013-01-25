@@ -37,14 +37,10 @@ $canDo = CoursesHelper::getActions('member');
 JToolBarHelper::title(JText::_('COM_COURSES').': <small><small>[ ' . $text . ' ]</small></small>', 'courses.png');
 if ($canDo->get('core.edit')) 
 {
-	JToolBarHelper::apply();
 	JToolBarHelper::save();
 	JToolBarHelper::spacer();
 }
 JToolBarHelper::cancel();
-
-ximport('Hubzero_User_Profile');
-$profile = Hubzero_User_Profile::getInstance($this->row->get('user_id'));
 
 $js = '';
 
@@ -70,7 +66,7 @@ function submitbutton(pressbutton)
 	}
 	
 	// form field validation
-	if ($('field-user_id').value == '') {
+	if ($('acmembers').value == '') {
 		alert('<?php echo JText::_('COM_COURSES_ERROR_MISSING_INFORMATION'); ?>');
 	} else if ($('offering_id').value == '') {
 		alert('<?php echo JText::_('COM_COURSES_ERROR_MISSING_INFORMATION'); ?>');
@@ -90,12 +86,35 @@ function submitbutton(pressbutton)
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 			<input type="hidden" name="task" value="save" />
-			<input type="hidden" name="offering" value="<?php echo $this->row->get('offering_id'); ?>" />
-			<input type="hidden" name="section" value="<?php echo $this->row->get('section_id'); ?>" />
-			<input type="hidden" name="fields[role_id]" value="<?php echo $this->row->get('role_id'); ?>" />
+			<input type="hidden" name="offering" value="<?php echo $this->offering->get('id'); ?>" />
+			<input type="hidden" name="fields[role_id]" value="<?php echo $this->row->get('role_id', $role_id); ?>" />
 			
 			<table class="admintable">
 				<tbody>
+					<tr>
+						<td class="key"><label for="acmembers">User:</label></th>
+						<td>
+							<?php 
+							JPluginHelper::importPlugin('hubzero');
+							$dispatcher =& JDispatcher::getInstance();
+
+							$mc = $dispatcher->trigger('onGetMultiEntry', array(
+								array(
+									'members',   // The component to call
+									'fields[user_id]',        // Name of the input field
+									'acmembers', // ID of the input field
+									'',          // CSS class(es) for the input field
+									'' // The value of the input field
+								)
+							));
+							if (count($mc) > 0) {
+								echo $mc[0] . '<span class="hint">Enter usernames, IDs, or look up users by name</span>';
+							} else { ?>
+							<input type="text" name="fields[user_id]" id="acmembers" value="" size="35" />
+							<span class="hint">Enter a comma-separated list of usernames or IDs</span>
+							<?php } ?>
+						</td>
+					</tr>
 					<tr>
 						<td class="key"><label for="offering_id"><?php echo JText::_('Offering'); ?>:</label></td>
 						<td>
@@ -156,21 +175,6 @@ function submitbutton(pressbutton)
 				</tbody>
 			</table>
 		</fieldset>
-
-		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Progress'); ?></span></legend>
-			
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="paramlist_key"><label for="enrolled">Key:</label></th>
-						<td>
-							--
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
 		<table class="meta" summary="<?php echo JText::_('COM_COURSES_META_SUMMARY'); ?>">
@@ -178,22 +182,6 @@ function submitbutton(pressbutton)
 				<tr>
 					<th><?php echo JText::_('ID'); ?></th>
 					<td><?php echo $this->escape($this->row->get('id')); ?></td>
-				</tr>
-				<tr>
-					<th><?php echo JText::_('User ID'); ?></th>
-					<td><?php echo $this->escape($this->row->get('user_id')); ?></td>
-				</tr>
-				<tr>
-					<th><?php echo JText::_('Name'); ?></th>
-					<td><?php echo $this->escape(stripslashes($profile->get('name'))); ?></td>
-				</tr>
-				<tr>
-					<th><?php echo JText::_('Username'); ?></th>
-					<td><?php echo $this->escape(stripslashes($profile->get('username'))); ?></td>
-				</tr>
-				<tr>
-					<th><?php echo JText::_('Email'); ?></th>
-					<td><?php echo $this->escape(stripslashes($profile->get('email'))); ?></td>
 				</tr>
 			</tbody>
 		</table>

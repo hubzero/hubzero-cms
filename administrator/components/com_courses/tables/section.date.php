@@ -130,7 +130,7 @@ class CoursesTableSectionDate extends JTable
 			return parent::load($oid);
 		}
 
-		$query = "SELECT * FROM $this->_tbl WHERE scope=" . $this->_db->Quote(trim($scope)) . " AND scope_id=" . $this->_db->Quote(intval($oid) . " AND section_id=" . $this->_db->Quote(intval($section_id));
+		$query = "SELECT * FROM $this->_tbl WHERE scope=" . $this->_db->Quote(trim($scope)) . " AND scope_id=" . $this->_db->Quote(intval($oid)) . " AND section_id=" . $this->_db->Quote(intval($section_id));
 
 		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc()) 
@@ -191,7 +191,7 @@ class CoursesTableSectionDate extends JTable
 	private function _buildQuery($filters=array())
 	{
 		$query  = " FROM $this->_tbl AS sd";
-		$query .= " INNER JOIN #__courses_offerings AS o ON o.id=os.offering_id";
+		//$query .= " INNER JOIN #__courses_offerings AS o ON o.id=os.offering_id";
 
 		$where = array();
 
@@ -227,7 +227,7 @@ class CoursesTableSectionDate extends JTable
 	 */
 	public function count($filters=array())
 	{
-		$query  = "SELECT COUNT(os.id)";
+		$query  = "SELECT COUNT(sd.id)";
 		$query .= $this->_buildquery($filters);
 
 		$this->_db->setQuery($query);
@@ -242,7 +242,7 @@ class CoursesTableSectionDate extends JTable
 	 */
 	public function find($filters=array())
 	{
-		$query  = "SELECT os.*";
+		$query  = "SELECT sd.*";
 		$query .= $this->_buildquery($filters);
 
 		if (!isset($filters['sort']) || $filters['sort'] == '') 

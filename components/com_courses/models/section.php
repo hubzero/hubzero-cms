@@ -32,6 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'section.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'sectiondate.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'member.php');
 
 /**
@@ -422,6 +423,77 @@ class CoursesModelSection extends JObject
 	}
 
 	/**
+	 * Check if the current user is enrolled
+	 * 
+	 * @return     boolean
+	 */
+	public function date($scope=null, $scope_id=null)
+	{
+		if (!isset($this->_date) 
+		 || ((int) $this->_date->get('scope_id') != $scope_id && (string) $this->_date->get('scope') != $scope))
+		{
+			$this->_date = new CoursesModelSectionDate();
+
+			foreach ($this->dates() as $dt)
+			{
+				if ($dt->get('scope') == $scope
+				 && $dt->get('scope_id') == $scope_id)
+				{
+					$this->_date = $dt;
+				}
+			}
+		}
+
+		return $this->_date; 
+	}
+
+	/**
+	 * Get a list of units for an offering
+	 *   Accepts either a numeric array index or a string [id, name]
+	 *   If index, it'll return the entry matching that index in the list
+	 *   If string, it'll return either a list of IDs or names
+	 * 
+	 * @param      array   $filters Filters to build query from
+	 * @param      boolean $clear   Force a new dataset?
+	 * @return     mixed
+	 */
+	public function dates($filters=array(), $clear=false)
+	{
+		if (!isset($filters['section_id']))
+		{
+			$filters['section_id'] = (int) $this->get('id');
+		}
+
+		if (isset($filters['count']) && $filters['count'])
+		{
+			$tbl = new CoursesTableSectionDate($this->_db);
+
+			return $tbl->count($filters);
+		}
+
+		if (!isset($this->_dates) || !is_array($this->_dates) || $clear)
+		{
+			$tbl = new CoursesTableSectionDate($this->_db);
+
+			if (($results = $tbl->find($filters)))
+			{
+				foreach ($results as $key => $result)
+				{
+					$results[$key] = new CoursesModelSectionDate($result);
+				}
+			}
+			else
+			{
+				$results = array();
+			}
+
+			$this->_dates = new CoursesModelIterator($results);
+		}
+
+		return $this->_dates;
+	}
+
+	/**
 	 * Check a user's authorization
 	 * 
 	 * @param      string $action Action to check
@@ -696,6 +768,8 @@ class CoursesModelSection extends JObject
 		// Get some data for the log
 		$log = json_encode($this->_tbl);
 
+		$scope_id = $this->get('id');
+
 		// Remove section
 		if (!$this->_tbl->delete())
 		{
@@ -706,8 +780,10 @@ class CoursesModelSection extends JObject
 		// Log the event
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'log.php');
 
+		$juser = JFactory::getUser();
+
 		$log = new CoursesTableLog($this->_db);
-		$log->scope_id  = $this->get('id');
+		$log->scope_id  = $scope_id;
 		$log->scope     = 'course_section';
 		$log->user_id   = $juser->get('id');
 		$log->timestamp = date('Y-m-d H:i:s', time());

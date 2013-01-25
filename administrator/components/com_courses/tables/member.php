@@ -180,6 +180,11 @@ class CoursesTableMember extends JTable
 
 		$this->role_id = intval($this->role_id);
 
+		if (!$this->id)
+		{
+			$this->enrolled = date('Y-m-d H:i:s', time());
+		}
+
 		return true;
 	}
 

@@ -84,12 +84,12 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th colspan="10">
-					(<a href="index.php?option=<?php echo $this->option ?>&amp;controller=courses&amp;task=edit&amp;id[]=<?php echo $this->course->get('id'); ?>">
+					(<!-- <a href="index.php?option=<?php echo $this->option ?>&amp;controller=courses&amp;task=edit&amp;id[]=<?php echo $this->course->get('id'); ?>"> -->
 						<?php echo $this->escape(stripslashes($this->course->get('alias'))); ?>
-					</a>) 
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=courses&amp;task=edit&amp;id[]=<?php echo $this->course->get('id'); ?>">
+					<!-- </a> -->) 
+					<!-- <a href="index.php?option=<?php echo $this->option ?>&amp;controller=courses&amp;task=edit&amp;id[]=<?php echo $this->course->get('id'); ?>"> -->
 						<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
-					</a>
+					<!-- </a> -->
 				</th>
 			</tr>
 			<tr>
@@ -155,36 +155,42 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 <?php if ($canDo->get('core.manage')) { ?>
-					<a class="glyph member hasTip" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>" title="<?php echo JText::_('Manage membership') . '::' . $tip; ?>">
+					<a class="glyph member" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>">
 						<?php echo $managers; ?>
 					</a>
 <?php } else { ?>
-					<span class="glyph member" title="<?php echo JText::_('Manage membership') . '::' . $tip; ?>">
+					<span class="glyph member">
 						<?php echo $managers; ?>
 					</span>
 <?php } ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.manage')) { ?>
-					<a class="glyph category hasTip" href="index.php?option=<?php echo $this->option ?>&amp;controller=sections&amp;offering=<?php echo $row->get('id'); ?>" title="<?php echo JText::_('Manage sections'); ?>">
-						<?php echo $sections; ?>
-					</a>
-<?php } else { ?>
-					<span class="glyph category" title="<?php echo JText::_('Manage sections'); ?>">
-						<?php echo $sections; ?>
-					</span>
-<?php } ?>
+					<?php if ($canDo->get('core.manage') && $sections > 0) { ?>
+						<a class="glyph category" href="index.php?option=<?php echo $this->option ?>&amp;controller=sections&amp;offering=<?php echo $row->get('id'); ?>">
+							<?php echo $sections; ?>
+						</a>
+					<?php } else { ?>
+						<span class="glyph category">
+							<?php echo $sections; ?>
+						</span>
+						<?php if ($canDo->get('core.manage')) { ?>
+						&nbsp;
+						<a class="state add" href="index.php?option=<?php echo $this->option; ?>&amp;controller=sections&amp;offering=<?php echo $row->get('id'); ?>&amp;task=add">
+							<span><?php echo JText::_('[ + ]'); ?></span>
+						</a>
+						<?php } ?>
+					<?php } ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.manage')) { ?>
-					<a class="glyph member hasTip" href="index.php?option=<?php echo $this->option ?>&amp;controller=students&amp;offering=<?php echo $row->get('id'); ?>" title="<?php echo JText::_('Manage enrollment') . '::' . $tip; ?>">
-						<?php echo $students; ?>
-					</a>
-<?php } else { ?>
-					<span class="glyph member" title="<?php echo JText::_('Manage enrollment') . '::' . $tip; ?>">
-						<?php echo $students; ?>
-					</span>
-<?php } ?>
+					<?php if ($canDo->get('core.manage')) { ?>
+						<a class="glyph member" href="index.php?option=<?php echo $this->option ?>&amp;controller=students&amp;offering=<?php echo $row->get('id'); ?>&amp;section=0">
+							<?php echo $students; ?>
+						</a>
+					<?php } else { ?>
+						<span class="glyph member">
+							<?php echo $students; ?>
+						</span>
+					<?php } ?>
 				</td>
 				<td>
 					<?php if ($canDo->get('core.manage') && $units > 0) { ?>

@@ -132,7 +132,28 @@ class CoursesControllerStudents extends Hubzero_Controller
 	 */
 	public function addTask()
 	{
-		$this->editTask();
+		JRequest::setVar('hidemainmenu', 1);
+
+		$offering = JRequest::getInt('offering', 0);
+		$this->view->offering = CoursesModelOffering::getInstance($offering);
+
+		$id = 0;
+
+		$this->view->row = CoursesModelMember::getInstance($id, $offering);
+
+		$this->view->course = CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
+
+		// Set any errors
+		if ($this->getError())
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
+		}
+
+		// Output the HTML
+		$this->view->display();
 	}
 
 	/**
@@ -187,11 +208,21 @@ class CoursesControllerStudents extends Hubzero_Controller
 	}
 
 	/**
-	 * Saves changes to a course or saves a new entry if creating
+	 * Saves data to database and return to the edit form
 	 *
 	 * @return void
 	 */
-	public function saveTask()
+	public function applyTask()
+	{
+		$this->saveTask(false);
+	}
+
+	/**
+	 * Saves data to the database
+	 *
+	 * @return void
+	 */
+	public function saveTask($redirect=true)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -199,28 +230,66 @@ class CoursesControllerStudents extends Hubzero_Controller
 		// Incoming
 		$fields = JRequest::getVar('fields', array(), 'post');
 
-		// Instantiate an Hubzero_Course object
-		$model = CoursesModelOffering::getInstance($fields['id']);
-
-		if (!$model->bind($fields))
+		if (strstr($fields['user_id'], ','))
 		{
-			$this->addComponentMessage($model->getError());
-			$this->editTask($model);
+			$user_ids = explode(',', $fields['user_id']);
+			$user_ids = array_map('trim', $user_ids);
+		}
+		else
+		{
+			$user_ids = array($fields['user_id']);
+		}
+
+		$offering = JRequest::getInt('offering', 0);
+
+		foreach ($user_ids as $user_id)
+		{
+			if (!is_int($user_id))
+			{
+				$user = JUser::getInstance($user_id);
+				$fields['user_id'] = $user->get('id');
+			}
+			else
+			{
+				$fields['user_id'] = $user_id;
+			}
+			// Instantiate the model
+			$model = CoursesModelMember::getInstance($fields['user_id'], $offering);
+
+			// Bind posted data
+			if (!$model->bind($fields))
+			{
+				$this->addComponentMessage($model->getError());
+				$this->editTask($model);
+				return;
+			}
+			// Store data
+			if (!$model->store())
+			{
+				$this->addComponentMessage($model->getError());
+				$this->editTask($model);
+				return;
+			}
+		}
+
+		if (count($user_ids) > 1)
+		{
+			$redirect = true;
+		}
+
+		// Are we redirecting?
+		if ($redirect)
+		{
+			// Output messsage and redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $fields['offering_id'] . '&section=' . $fields['section_id'],
+				JText::_('COM_COURSES_SAVED')
+			);
 			return;
 		}
 
-		if (!$model->store())
-		{
-			$this->addComponentMessage($model->getError());
-			$this->editTask($model);
-			return;
-		}
-
-		// Output messsage and redirect
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('COM_COURSES_SAVED')
-		);
+		// Display edit form with posted data
+		$this->editTask($model);
 	}
 
 	/**
@@ -235,6 +304,7 @@ class CoursesControllerStudents extends Hubzero_Controller
 
 		// Incoming
 		$ids = JRequest::getVar('id', array());
+		$offering_id = JRequest::getInt('offering', 0);
 
 		// Get the single ID we're working with
 		if (!is_array($ids))
@@ -247,14 +317,10 @@ class CoursesControllerStudents extends Hubzero_Controller
 		// Do we have any IDs?
 		if (!empty($ids))
 		{
-			// Get plugins
-			//JPluginHelper::importPlugin('courses');
-			//$dispatcher =& JDispatcher::getInstance();
-
 			foreach ($ids as $id)
 			{
 				// Load the course page
-				$model = CoursesModelOffering::getInstance($id);
+				$model = CoursesModelMember::getInstance($id);
 
 				// Ensure we found the course info
 				if (!$model->exists())
@@ -262,60 +328,24 @@ class CoursesControllerStudents extends Hubzero_Controller
 					continue;
 				}
 
-				// Get number of course members
-				/*$courseusers    = $course->get('members');
-				$coursemanagers = $course->get('managers');
-				$members = array_merge($courseusers, $coursemanagers);
-
-				// Start log
-				$log  = JText::_('COM_COURSES_SUBJECT_COURSE_DELETED');
-				$log .= JText::_('COM_COURSES_TITLE') . ': ' . $course->get('description') . "\n";
-				$log .= JText::_('COM_COURSES_ID') . ': ' . $course->get('cn') . "\n";
-				$log .= JText::_('COM_COURSES_PRIVACY') . ': ' . $course->get('access') . "\n";
-				$log .= JText::_('COM_COURSES_PUBLIC_TEXT') . ': ' . stripslashes($course->get('public_desc')) . "\n";
-				$log .= JText::_('COM_COURSES_PRIVATE_TEXT') . ': ' . stripslashes($course->get('private_desc')) . "\n";
-				$log .= JText::_('COM_COURSES_RESTRICTED_MESSAGE') . ': ' . stripslashes($course->get('restrict_msg')) . "\n";
-
-				// Log ids of course members
-				if ($courseusers)
-				{
-					$log .= JText::_('COM_COURSES_MEMBERS') . ': ';
-					foreach ($courseusers as $gu)
-					{
-						$log .= $gu . ' ';
-					}
-					$log .=  "\n";
-				}
-				$log .= JText::_('COM_COURSES_MANAGERS') . ': ';
-				foreach ($coursemanagers as $gm)
-				{
-					$log .= $gm . ' ';
-				}
-				$log .= "\n";
-
-				// Trigger the functions that delete associated content
-				// Should return logs of what was deleted
-				$logs = $dispatcher->trigger('onCourseDelete', array($course));
-				if (count($logs) > 0)
-				{
-					$log .= implode('', $logs);
-				}*/
+				$data = json_encode($model);
 
 				// Delete course
 				if (!$model->delete())
 				{
-					JError::raiseError(500, JText::_('Unable to delete offering'));
+					JError::raiseError(500, JText::_('Unable to delete member'));
 					return;
 				}
 
 				// Log the course approval
 				$log = new CoursesTableLog($this->database);
-				$log->scope_id  = $course->get('id');
-				$log->scope     = 'course_offering';
+				$log->scope_id  = $id;
+				$log->scope     = 'section_member';
 				$log->user_id   = $this->juser->get('id');
 				$log->timestamp = date('Y-m-d H:i:s', time());
 				$log->action    = 'offering_deleted';
 				$log->actor_id  = $this->juser->get('id');
+				$log->comment   = $data;
 				if (!$log->store())
 				{
 					$this->setError($log->getError());
@@ -327,7 +357,7 @@ class CoursesControllerStudents extends Hubzero_Controller
 
 		// Redirect back to the courses page
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $offering_id . '&section=' . $section_id,
 			JText::sprintf('%s Item(s) removed.', $num)
 		);
 	}
@@ -339,8 +369,11 @@ class CoursesControllerStudents extends Hubzero_Controller
 	 */
 	public function cancelTask()
 	{
+		$offering_id = JRequest::getInt('offering', 0);
+		$section_id  = JRequest::getInt('section', 0);
+
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($offering_id ? '&offering=' . $offering_id : '') . ($section_id ? '&section=' . $section_id : '')
 		);
 	}
 }

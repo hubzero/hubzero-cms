@@ -214,9 +214,34 @@ class CoursesControllerSections extends Hubzero_Controller
 			return;
 		}
 
+		$dates = JRequest::getVar('dates', array(), 'post');
+		foreach ($dates as $dt)
+		{
+			$dt['section_id'] = $model->get('id');
+			$dtmodel = CoursesModelSectionDate::getInstance($dt['id']);
+			if (!$dtmodel->bind($dt))
+			{
+				$this->setError($dtmodel->getError());
+				continue;
+			}
+
+			if (!$dtmodel->store(true))
+			{
+				$this->setError($dtmodel->getError());
+				continue;
+			}
+		}
+
+		if ($this->getError())
+		{
+			$this->addComponentMessage(implode('<br />', $this->getErrors()), 'error');
+			$this->editTask($model);
+			return;
+		}
+
 		// Output messsage and redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $model->get('offering_id'),
 			JText::_('COM_COURSES_SECTION_SAVED')
 		);
 	}
@@ -233,6 +258,7 @@ class CoursesControllerSections extends Hubzero_Controller
 
 		// Incoming
 		$ids = JRequest::getVar('id', array());
+		$offering_id = JRequest::getInt('offering', 0);
 
 		// Get the single ID we're working with
 		if (!is_array($ids))
@@ -286,7 +312,7 @@ class CoursesControllerSections extends Hubzero_Controller
 
 		// Redirect back to the courses page
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $offering_id,
 			JText::sprintf('%s Item(s) removed.', $num)
 		);
 	}
@@ -298,8 +324,10 @@ class CoursesControllerSections extends Hubzero_Controller
 	 */
 	public function cancelTask()
 	{
+		$offering_id = JRequest::getInt('offering', 0);
+
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $offering_id
 		);
 	}
 }

@@ -269,15 +269,58 @@ class CoursesModelMember extends JObject
 	}
 
 	/**
-	 * Delete an asset
-	 *   Deleted asset_associations until there is only one
-	 *   association left, then it deletes the association,
-	 *   the asset record, and asset file(s)
+	 * Check if the course exists
+	 * 
+	 * @param      mixed $idx Index value
+	 * @return     array
+	 */
+	public function bind($data=null)
+	{
+		return $this->_tbl->bind($data);
+	}
+
+	/**
+	 * Save data to the database
+	 *
+	 * @param     boolean $check Validate data?
+	 * @return    boolean False on errors, True on success
+	 */
+	public function store($check=true)
+	{
+		if (empty($this->_db))
+		{
+			return false;
+		}
+
+		if ($check)
+		{
+			if (!$this->_tbl->check())
+			{
+				$this->setError($this->_tbl->getError());
+				return false;
+			}
+		}
+
+		if (!$this->_tbl->store())
+		{
+			$this->setError($this->_tbl->getError());
+			return false;
+		}
+	}
+
+	/**
+	 * Delete an entry and associated data
 	 * 
 	 * @return     boolean True on success, false on error
 	 */
 	public function delete()
 	{
+		if (!$this->_tbl->delete())
+		{
+			$this->setError($this->_tbl->getError());
+			return false;
+		}
+
 		return true;
 	}
 
