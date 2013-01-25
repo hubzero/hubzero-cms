@@ -175,10 +175,7 @@
 		margin: 0;
 		width: auto;
 	}
-	#answerform .submit {
-		text-align: right;
-		clear: both;
-		margin-right: 40%;
+	#commentform .submit {
 		padding-top: 1em;
 	}
 	#answerform .submit input {
