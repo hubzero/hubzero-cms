@@ -34,8 +34,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias');
 
 $unit       = $this->course->offering->unit($this->scope_id);
-$start_date = (!is_null($unit->start_date) && $unit->start_date != '0000-00-00')? $unit->start_date : '';
-$end_date   = (!is_null($unit->end_date) && $unit->end_date != '0000-00-00')? $unit->end_date : '';
+$start_date = (!is_null($unit->get('start_date')) && $unit->get('start_date') != '0000-00-00')? $unit->get('start_date') : '';
+$end_date   = (!is_null($unit->get('end_date')) && $unit->get('end_date') != '0000-00-00')? $unit->get('end_date') : '';
 ?>
 
 <div class="main section <?php echo $this->scope; ?>-edit">

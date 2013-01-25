@@ -127,7 +127,7 @@ HUB.CoursesOutline = {
 				high -= $(this).children('.uploadfiles').css('padding-top').replace("px", "");
 				high -= 4; // For borders - this is hacky
 
-			$(this).children('.uploadfiles').css('height', high);
+			$(this).children('.uploadfiles').css('min-height', high);
 		});
 	},
 
@@ -354,7 +354,9 @@ HUB.CoursesOutline = {
 							$('.sortable').sortable('refresh');
 
 							// Finally, show the new item
-							newAssetGroupItem.slideDown('fast', 'linear');
+							newAssetGroupItem.slideDown('fast', 'linear', function() {
+								HUB.CoursesOutline.resizeFileUploader();
+							});
 						}
 						else if(itemClass == 'unit-item') {
 							// Insert in our HTML (uses "underscore.js")
@@ -424,6 +426,7 @@ HUB.CoursesOutline = {
 
 			// If this is an Exam, we also want to set deployment info
 			// @FIXME: only do this if it isn't already deployed
+			// @FIXME: handle this with our new asset handlers
 			if(assetGroupTitle == 'Exam' && item.hasClass('notpublished')){
 				// @FIXME: add a better method for getting form id (mainly because this one doesn't work once you publish the form)
 				var assetA    = item.find('.asset-preview a');
@@ -544,7 +547,6 @@ HUB.CoursesOutline = {
 		$('.uploadfiles').each(function(){
 			// Initialize a few variables
 			var assetslist      = $(this).parent('.asset-group-item').find('.assets-list');
-			var progressBar     = $(this).find('.uploadfiles-progress');
 			var assetGroupTitle = $(this).parents('.asset-group-type-item').find('.asset-group-title').html();
 			var form            = $(this).find('form');
 			var fileupload      = $(this);
@@ -554,7 +556,7 @@ HUB.CoursesOutline = {
 			var ulCount         = 0;
 			var counter         = 0;
 
-			// Setup dialog
+			// Setup dialog message box
 			dialog.dialog({
 				resizable: false,
 				width: 450,
@@ -579,7 +581,7 @@ HUB.CoursesOutline = {
 				dataType: 'json',
 				statusCode: {
 					// 201 created - this is returned by the standard asset upload
-					201: function(data){
+					201: function(data, textStatus, jqXHR){
 						if(data.assets.js) {
 							eval(data.assets.js);
 						} else {
@@ -607,7 +609,7 @@ HUB.CoursesOutline = {
 								HUB.CoursesOutline.makeAssetsSortable();
 
 								// Reset progress bar after 2 seconds
-								HUB.CoursesOutline.resetProgresBar(progressBar, 2000);
+								HUB.CoursesOutline.resetProgresBar(asset.asset_title+'.'+asset.asset_ext, 2000);
 							});
 						}
 
@@ -617,27 +619,25 @@ HUB.CoursesOutline = {
 						HUB.CoursesOutline.errorMessage(data.responseText);
 
 						// Reset progress bar
-						HUB.CoursesOutline.resetProgresBar(progressBar, 0);
+						// @FIXME: need to return filename even with errors!
+						HUB.CoursesOutline.resetProgresBar(data.files[0].name, 0);
 					},
 					// 404 - this could come from a method not found, or the api not being configured at all
 					404: function(data){
 						HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
 
 						// Reset progress bar
-						HUB.CoursesOutline.resetProgresBar(progressBar, 0);
+						// @FIXME: need to return filename even with errors!
+						HUB.CoursesOutline.resetProgresBar(data.files[0].name, 0);
 					},
 					500: function(data){
 						// Display the error message
 						HUB.CoursesOutline.errorMessage(data.responseText);
 
 						// Reset progress bar
-						HUB.CoursesOutline.resetProgresBar(progressBar, 0);
+						// @FIXME: need to return filename even with errors!
+						HUB.CoursesOutline.resetProgresBar(data.files[0].name, 0);
 					}
-				},
-				drop: function(e) {
-					$(this).find('.bar-border').css({
-						'border': '1px solid #999'
-					});
 				},
 				add: function(e, data) {
 					// Get asset handlers for this file type
@@ -650,16 +650,11 @@ HUB.CoursesOutline = {
 						success: function(json) {
 							// Make sure the file isn't too large (this is checking against the minimum of PHP's post and max upload limit)
 							if(json.max_upload < (data.files[0].size / 1000000)) {
+								// Warn about file being too large
 								HUB.CoursesOutline.errorMessage('Sorry, the file that you uploaded ("' + data.files[0].name + '") exceedes the upload limit of ' + json.max_upload + ' MB');
-
-								// Reset progress bar
-								HUB.CoursesOutline.resetProgresBar(progressBar, 0);
 							// Make sure we know what to do with this file type
 							} else if(!json.handlers.length) {
 								HUB.CoursesOutline.errorMessage('Sorry, we don\'t know what to do with files of type "' + json.ext + '"');
-
-								// Reset progress bar
-								HUB.CoursesOutline.resetProgresBar(progressBar, 0);
 							// Check to see if there are multiple ways of handling this file type
 							} else if(json.handlers.length > 1) {
 								// Iterate counter (for uniqueness - in case someone uploads two files with the same name)
@@ -678,6 +673,7 @@ HUB.CoursesOutline = {
 								message += '</ul>';
 
 								// Add the message to the dialog box
+								// @FIXME: make the dialog boxes prettier
 								dialog.html(message);
 
 								// Bind click events to the message buttons
@@ -698,9 +694,10 @@ HUB.CoursesOutline = {
 												return formData;
 											});
 										data.submit();
+										// @FIXME: impliment cancel button
+										HUB.CoursesOutline.assetProgressBar(data.files[0].name, fileupload);
 
 										// Remove the ul for this file
-										$(this).parents('ul').slideUp();
 										$(this).parents('ul').remove();
 
 										ulCount = dialog.find('ul').length;
@@ -719,36 +716,59 @@ HUB.CoursesOutline = {
 							} else {
 								// Submit the file upload request as normal
 								data.submit();
+								// @FIXME: impliment cancel button
+								HUB.CoursesOutline.assetProgressBar(data.files[0].name, fileupload);
 							}
 						}
 					});
 				},
 				progress: function (e, data) {
+					var id = data.files[0].name.replace(/[. ]/g, '_') + '_progressbar';
+
 					// Show progress bars for all pending uploads
-					// @TODO: implement me!
-					//var progress = parseInt(data.loaded / data.total * 100, 10);
-				},
-				progressall: function (e, data) {
 					var progress = parseInt(data.loaded / data.total * 100, 10);
-					$(this).find('.bar').css(
+					$(this).find("#"+id + " .bar").css(
 						'width',
 						progress + '%'
 					);
+
+					// If progress is 100% and extension is zip, let's add some explanation
+					if(progress == 100) {
+						var extension = data.files[0].name.split('.');
+
+						if(extension[extension.length - 1] == 'zip') {
+							$(this).find("#"+id + " .filename").html('unzipping...');
+						}
+					}
 				}
 			});
 		});
 	},
 
-	resetProgresBar: function(context, timeout)
+	assetProgressBar: function(filename, fileupload)
 	{
 		var $ = this.jQuery;
 
-		var bar       = context.find('.bar');
-		var barBorder = context.find('.bar-border');
+		var id = filename.replace(/[. ]/g, '_') + '_progressbar';
+		var html = '';
+			html += '<div id="' + id + '" class="uploadfiles-progress">';
+			html += '<div class="bar-border">';
+			html += '<span class="filename">' + filename + '</span>';
+			html += '<div class="bar"></div>';
+			html += '</div>';
+			html += '</div>';
+
+		fileupload.append(html);
+	},
+
+	resetProgresBar: function(filename, timeout)
+	{
+		var $ = this.jQuery;
+
+		var id = filename.replace(/[. ]/g, '_') + '_progressbar';
 
 		setTimeout(function(){
-			bar.css('width', '0');
-			barBorder.css('border', 'none');
+			$("#"+id).remove();
 		},timeout);
 	},
 
@@ -887,9 +907,6 @@ HUB.CoursesOutline = {
 						'<input type="hidden" name="course_id" value="<%= course_id %>" />',
 						'<input type="hidden" name="scope_id" value="<%= assetgroup_id %>" />',
 					'</form>',
-					'<div class="uploadfiles-progress">',
-						'<div class="bar-border"><div class="bar"></div></div>',
-					'</div>',
 				'</div>',
 				'<div class="asset-group-item-container">',
 					'<div class="asset-group-item-title title toggle-editable"><%= assetgroup_title %></div>',

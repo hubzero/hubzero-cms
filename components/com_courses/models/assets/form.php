@@ -88,7 +88,7 @@ class FormAssetHandler extends AssetHandler
 									HUB.CoursesOutline.makeAssetsSortable();
 
 									// Reset progress bar after 2 seconds
-									HUB.CoursesOutline.resetProgresBar(progressBar, 2000);
+									HUB.CoursesOutline.resetProgresBar(asset.asset_title+'.'+asset.asset_ext, 2000);
 								});
 							},
 							401: function(data){
