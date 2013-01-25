@@ -120,7 +120,7 @@ if (!$juser->get('guest')) {
 	}
 	if ($juser->get('id') == $this->item->proposed_by) {
 		$like_title = $dislike_title = JText::_('You cannot vote for your own wish.');
-		$this->item->positive = 0;
+		//$this->item->positive = 0;
 	}
 	if ($this->item->status == 1 || $this->item->status == 3 || $this->item->status == 4) { 
 		$like_title = $dislike_title = JText::_('Voting is closed for this wish.');
@@ -128,7 +128,7 @@ if (!$juser->get('guest')) {
 } else {
 	// Not logged in
 	$like_title = $dislike_title = JText::_('Please login to vote.');
-	$this->item->positive = 0;
+	//$this->item->positive = 0;
 }
 ?>
 <span class="vote-like<?php echo $lcls; ?>">
