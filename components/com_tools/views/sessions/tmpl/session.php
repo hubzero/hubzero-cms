@@ -49,6 +49,9 @@ if ($this->app->params->get('noPopoutMaximize', 0)) {
 if ($this->app->params->get('noRefresh', 0)) { 
 	$cls[] = 'no-refresh';
 }
+
+JPluginHelper::importPlugin('mw');
+$dispatcher =& JDispatcher::getInstance();
 ?>
 <div id="session">
 <?php
@@ -81,32 +84,6 @@ if (!$this->app->sess) {
 			</ul>
 <?php } ?>
 		</div><!-- #app-header -->
-<?php
-	JPluginHelper::importPlugin('mw');
-	$dispatcher =& JDispatcher::getInstance();
-	$output = $dispatcher->trigger(
-		'onSessionView', 
-		array(
-			$this->option, 
-			$this->toolname,
-			$this->app->sess
-		)
-	);
-	
-	if (count($output) > 0) 
-	{
-?>
-		<div id="app-info">
-<?php 
-		foreach ($output as $out) 
-		{
-			echo $out;
-		} 
-?>
-		</div><!-- #app-info -->
-<?php
-	}
-?>
 		<noscript>
 			<p class="warning">
 				This site works best when Javascript is enabled in your browser (<a href="/kb/misc/javascript/">How do I do this?</a>).
@@ -338,4 +315,32 @@ if (!$this->app->sess) {
 <?php if ($this->config->get('access-manage-session')) { ?>
 	<p id="app-manager"><?php echo JText::sprintf('Administrator viewing <span class="username"><strong>username:</strong> %s</span>, <span class="ip"><strong>IP:</strong> %s</span>, <span class="sess"><strong>session:</strong> %s</span>', $this->app->username, $this->app->ip, $this->app->sess); ?></p>
 <?php } ?>
+
+<?php
+	$output = $dispatcher->trigger(
+		'onSessionView', 
+		array(
+			$this->option, 
+			$this->toolname,
+			$this->app->sess
+		)
+	);
+
+	if (count($output) > 0) 
+	{
+?>
+		<div id="app-info">
+			<h2>App info</h2>
+			<div id="app-info-content">
+<?php 
+		foreach ($output as $out) 
+		{
+			echo $out;
+		} 
+?>
+			</div>
+		</div><!-- #app-info -->
+<?php
+	}
+?>
 </div><!-- / .main section #session-section -->
