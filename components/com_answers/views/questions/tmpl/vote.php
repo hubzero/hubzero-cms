@@ -41,7 +41,11 @@ $juser = JFactory::getUser();
 			<?php echo $votes; ?><span> Like</span>
 		</span>
 	<?php } else { ?>
-		<?php if ($this->voted) { ?>
+		<?php if ($this->question->created_by == $juser->get('username')) { ?>
+			<span class="vote-button <?php echo ($votes > 0) ? 'like' : 'neutral'; ?> tooltips" title="Vote :: You cannot vote for your own entry.">
+				<?php echo $votes; ?><span> Like</span>
+			</span>
+		<?php } elseif ($this->voted) { ?>
 			<span class="vote-button <?php echo ($votes > 0) ? 'like' : 'neutral'; ?> tooltips" title="Voted Up :: You already voted this up.">
 				<?php echo $votes; ?><span> Like</span>
 			</span>

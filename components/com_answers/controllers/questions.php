@@ -1643,11 +1643,19 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		// check if user is rating his own question
 		if ($row->created_by == $this->juser->get('username')) 
 		{
-			$this->addComponentMessage(JText::_('COM_ANSWERS_NOTICE_RECOMMEND_OWN_QUESTION'), 'warning');
-			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&task=question&id=' . $id . '&note=9')
-			);
-			return;
+			if ($no_html)
+			{
+				return;
+			}
+			else
+			{
+				$this->addComponentMessage(JText::_('COM_ANSWERS_NOTICE_RECOMMEND_OWN_QUESTION'), 'warning');
+				$this->setRedirect(
+					JRoute::_('index.php?option=' . $this->_option . '&task=question&id=' . $id . '&note=9')
+				);
+				return;
+			}
+
 		}
 
 		// record vote
