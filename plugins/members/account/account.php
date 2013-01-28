@@ -133,6 +133,7 @@ class plgMembersAccount extends Hubzero_Plugin
 			// Add stylesheet
 			Hubzero_Document::addPluginStylesheet('members', 'account');
 			Hubzero_Document::addPluginScript('members', 'account');
+			Hubzero_Document::addSystemScript('jquery.hoverintent');
 
 			// Add providers stylesheet
 			$doc =& JFactory::getDocument();

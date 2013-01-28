@@ -235,6 +235,15 @@
 }
 
 /* other */
+#members-account-section .account-group.active {
+	vertical-align: top;
+}
+#members-account-section .account-group.active:before {
+	padding: 12px 0.3em;
+}
+#members-account-section .account-group.active .account-id {
+	display: none;
+}
 #members-account-section .account-group .x {
 	position: absolute;
 	top: 10px;

@@ -37,6 +37,28 @@ HUB.Plugins.MembersAccount = {
 		var password2         = $('#password2');
 		var passsave          = $('#password-change-save');
 
+
+		// Expand the submit button on hover (not necessary, just fun...)
+		if($.isFunction($().hoverIntent)){
+			$('.account-group.active').hoverIntent({
+				over: function(){
+					$(this).find('.account-id').slideDown('fast');
+				},
+				timeout: 500,
+				interval: 300,
+				out: function(){
+					$(this).find('.account-id').slideUp('fast');
+				}
+			});
+		} else {
+			// Add hover to account group
+			$('.account-group.active').hover(function() {
+				$(this).find('.account-id').show();
+			}, function() {
+				$(this).find('.account-id').hide();
+			});
+		}
+
 		// Augment cancel button in password box
 		passcancel.on('click', function(){
 			$('#section-edit-errors').slideUp('fast');

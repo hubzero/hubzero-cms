@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 
 <div id="content-header" class="full">
-	<h2>Linked Accounts</h2>
+	<h2>Connect With</h2>
 </div>
 
 <div class="main section" id="link-existing">

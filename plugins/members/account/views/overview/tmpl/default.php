@@ -68,10 +68,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 							$this->member->get('uidNumber') .
 							'&active=account&action=unlink&hzal_id=' .
 							$hzala['id']); ?>">x</a></div>
-					<p>
-						<?php echo JText::_('PLG_MEMBERS_ACCOUNT_ACCOUNT_TYPE'); ?>: <?php echo $display_name; ?><br />
-						<?php echo JText::_('PLG_MEMBERS_ACCOUNT_ACCOUNT_ID'); ?>: <?php echo $hzala['username']; ?>
-					</p>
+					<div class="account-type"><?php echo JText::_('PLG_MEMBERS_ACCOUNT_ACCOUNT_TYPE'); ?>: <?php echo $display_name; ?></div>
+					<div class="account-id"><?php echo JText::_('PLG_MEMBERS_ACCOUNT_ACCOUNT_ID'); ?>: <?php echo $hzala['username']; ?></div>
 				</div>
 <?php
 			}
@@ -96,10 +94,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 				<a href="<?php echo JRoute::_('index.php?option=com_user&view=login&authenticator=' . $domain->name); ?>">
 					<div class="account-group inactive" id="<?php echo $domain->name; ?>">
-						<p>
-							<?php echo JText::_('PLG_MEMBERS_ACCOUNT_ACCOUNT_TYPE'); ?>: <?php echo $display_name; ?><br />
-							<?php echo JText::_('PLG_MEMBERS_ACCOUNT_CLICK_TO_LINK'); ?>
-						</p>
+						<div class="account-type"><?php echo JText::_('PLG_MEMBERS_ACCOUNT_ACCOUNT_TYPE'); ?>: <?php echo $display_name; ?></div>
+						<div class="account-id"><?php echo JText::_('PLG_MEMBERS_ACCOUNT_CLICK_TO_LINK'); ?></div>
 					</div>
 				</a>
 <?php

@@ -129,7 +129,7 @@ defined('_JEXEC') or die('Restricted access');
 			$doc->addStylesheet(DS . 'components' . DS . 'com_user' . DS . 'assets' . DS . 'css' . DS . 'providers.css');
 			$html .= '<div class="explaination"><p class="info">You can choose to log in via one of these services, and we\'ll help you fill in the info below!</p></div>';
 			$html .= '<fieldset>';
-			$html .= '<legend>Linked Accounts</legend>';
+			$html .= '<legend>Connect With</legend>';
 			$html .= '<div id="providers">';
 			foreach($authenticators as $a)
 			{
