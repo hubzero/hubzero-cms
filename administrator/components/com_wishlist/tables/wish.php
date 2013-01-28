@@ -309,6 +309,8 @@ class Wish extends JTable
 
 		if ($filters['tag']) 
 		{
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'helpers' . DS . 'tags.php');
+
 			$tagging = new WishTags($this->_db);
 			$tags = $tagging->_parse_tags($filters['tag']);
 
