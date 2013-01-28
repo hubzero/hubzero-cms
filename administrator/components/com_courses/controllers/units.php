@@ -100,24 +100,6 @@ class CoursesControllerUnits extends Hubzero_Controller
 
 		$this->view->rows = $this->view->offering->units($this->view->filters);
 
-		// Filters for getting a result count
-		//$this->view->filters['limit'] = 'all';
-		//$this->view->filters['fields'] = array('COUNT(*)');
-		//$this->view->filters['authorized'] = 'admin';
-
-		// Get a record count
-		//$this->view->total = Hubzero_Course::find($this->view->filters);
-
-		
-		//$this->view->filters['fields'] = array('cn', 'description', 'published', 'gidNumber', 'type');
-
-		// Get a list of all courses
-		/*$this->view->rows = null;
-		if ($this->view->total > 0)
-		{
-			$this->view->rows = Hubzero_Course::find($this->view->filters);
-		}*/
-
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
@@ -203,11 +185,22 @@ class CoursesControllerUnits extends Hubzero_Controller
 	}
 
 	/**
-	 * Saves changes to a course or saves a new entry if creating
+	 * Saves data to the database and return to the editing form
 	 *
-	 * @return void
+	 * @return    void
 	 */
-	public function saveTask()
+	public function applyTask()
+	{
+		$this->saveTask(false);
+	}
+
+	/**
+	 * Saves data to the database
+	 *
+	 * @param     $redirect boolean Redirect after saving?
+	 * @return    void
+	 */
+	public function saveTask($redirect=true)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -232,11 +225,16 @@ class CoursesControllerUnits extends Hubzero_Controller
 			return;
 		}
 
-		// Output messsage and redirect
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('COM_COURSES_UNIT_SAVED')
-		);
+		if ($redirect)
+		{
+			// Output messsage and redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . JRequest::getInt('offering', 0),
+				JText::_('COM_COURSES_UNIT_SAVED')
+			);
+		}
+
+		$this->editTask($model);
 	}
 
 	/**
@@ -263,10 +261,6 @@ class CoursesControllerUnits extends Hubzero_Controller
 		// Do we have any IDs?
 		if (!empty($ids))
 		{
-			// Get plugins
-			//JPluginHelper::importPlugin('courses');
-			//$dispatcher =& JDispatcher::getInstance();
-
 			foreach ($ids as $id)
 			{
 				// Load the course page
@@ -287,7 +281,7 @@ class CoursesControllerUnits extends Hubzero_Controller
 
 				// Log the course approval
 				$log = new CoursesTableLog($this->database);
-				$log->scope_id  = $course->get('id');
+				$log->scope_id  = $id;
 				$log->scope     = 'course_unit';
 				$log->user_id   = $this->juser->get('id');
 				$log->timestamp = date('Y-m-d H:i:s', time());
@@ -304,7 +298,7 @@ class CoursesControllerUnits extends Hubzero_Controller
 
 		// Redirect back to the courses page
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . JRequest::getInt('offering', 0),
 			JText::sprintf('%s Item(s) removed.', $num)
 		);
 	}
@@ -317,7 +311,7 @@ class CoursesControllerUnits extends Hubzero_Controller
 	public function cancelTask()
 	{
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . JRequest::getInt('offering', 0)
 		);
 	}
 }

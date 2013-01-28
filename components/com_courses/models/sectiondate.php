@@ -324,10 +324,10 @@ class CoursesModelSectionDate extends JObject
 
 		$log = new CoursesTableLog($this->_db);
 		$log->scope_id  = $scope_id;
-		$log->scope     = 'course_section_date';
+		$log->scope     = 'section_date';
 		$log->user_id   = $juser->get('id');
 		$log->timestamp = date('Y-m-d H:i:s', time());
-		$log->action    = 'section_date_deleted';
+		$log->action    = 'deleted';
 		$log->comments  = $log;
 		$log->actor_id  = $juser->get('id');
 		if (!$log->store()) 

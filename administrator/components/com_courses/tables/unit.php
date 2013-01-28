@@ -85,14 +85,14 @@ class CoursesTableUnit extends JTable
 	 * 
 	 * @var date
 	 */
-	var $start_date = NULL;
+	//var $start_date = NULL;
 
 	/**
 	 * End date for unit
 	 * 
 	 * @var date
 	 */
-	var $end_date = NULL;
+	//var $end_date = NULL;
 
 	/**
 	 * Created date for unit
@@ -201,7 +201,8 @@ class CoursesTableUnit extends JTable
 	 */
 	private function _buildQuery($filters=array())
 	{
-		$query = " FROM $this->_tbl AS cu";
+		$query = " FROM $this->_tbl AS cu 
+					LEFT JOIN #__courses_offering_section_dates AS sd ON sd.scope='unit' AND sd.scope_id=cu.id";
 
 		$where = array();
 
@@ -247,7 +248,7 @@ class CoursesTableUnit extends JTable
 	 */
 	public function find($filters=array())
 	{
-		$query  = "SELECT cu.*";
+		$query  = "SELECT cu.*, sd.publish_up, sd.publish_down";
 		$query .= $this->_buildQuery($filters);
 
 		if (!empty($filters['start']) && !empty($filters['limit']))

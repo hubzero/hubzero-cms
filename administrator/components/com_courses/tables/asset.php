@@ -173,30 +173,28 @@ class CoursesTableAsset extends JTable
 	private function _buildQuery($filters=array())
 	{
 		$query  = " FROM $this->_tbl AS ca";
+		$query .= " LEFT JOIN #__courses_offering_section_dates AS sd ON sd.scope='asset' AND sd.scope_id=ca.id";
 		$query .= " LEFT JOIN #__courses_asset_associations AS caa ON caa.asset_id = ca.id";
 		$query .= " LEFT JOIN #__courses_asset_groups AS cag ON caa.scope_id = cag.id";
 
 		$where = array();
 
-		if (!empty($filters['w']))
+		if (!empty($filters['asset_scope_id']))
 		{
-			if (!empty($filters['w']['asset_scope_id']))
-			{
-				$where[] = "cag.id=" . $this->_db->Quote((int) $filters['w']['asset_scope_id']);
-			}
-			if (!empty($filters['w']['asset_scope']))
-			{
-				$where[] = "caa.scope=" . $this->_db->Quote((string) $filters['w']['asset_scope']);
-			}
-			if (!empty($filters['w']['course_id']))
-			{
-				$where[] = "ca.course_id=" . $this->_db->Quote((int) $filters['w']['course_id']);
-			}
-			if (isset($filters['search']) && $filters['search']) 
-			{
-				$where[] = "(LOWER(ca.url) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 
-						OR LOWER(ca.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
-			}
+			$where[] = "cag.id=" . $this->_db->Quote((int) $filters['asset_scope_id']);
+		}
+		if (!empty($filters['asset_scope']))
+		{
+			$where[] = "caa.scope=" . $this->_db->Quote((string) $filters['asset_scope']);
+		}
+		if (!empty($filters['course_id']))
+		{
+			$where[] = "ca.course_id=" . $this->_db->Quote((int) $filters['course_id']);
+		}
+		if (isset($filters['search']) && $filters['search']) 
+		{
+			$where[] = "(LOWER(ca.url) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 
+					OR LOWER(ca.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
 		}
 
 		if (count($where) > 0)
@@ -215,8 +213,12 @@ class CoursesTableAsset extends JTable
 	 */
 	public function count($filters=array())
 	{
+		if (!isset($filters['w']))
+		{
+			$filters['w'] = array();
+		}
 		$query  = "SELECT COUNT(*)";
-		$query .= $this->_buildQuery($filters);
+		$query .= $this->_buildQuery($filters['w']);
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -230,8 +232,12 @@ class CoursesTableAsset extends JTable
 	 */
 	public function find($filters=array())
 	{
-		$query  = "SELECT ca.*, caa.ordering";
-		$query .= $this->_buildQuery($filters);
+		if (!isset($filters['w']))
+		{
+			$filters['w'] = array();
+		}
+		$query  = "SELECT ca.*, caa.ordering, sd.publish_up, sd.publish_down";
+		$query .= $this->_buildQuery($filters['w']);
 
 		if (!empty($filters['start']) && !empty($filters['limit']))
 		{

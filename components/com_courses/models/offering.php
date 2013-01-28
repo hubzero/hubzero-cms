@@ -989,14 +989,17 @@ class CoursesModelOffering extends JObject
 	 * @param array $data Parameter title (if any) ...
 	 * @return boolean Return title (if any) ...
 	 */
-	public function store($check=true)
+	public function store($validate=true)
 	{
 		if (empty($this->_db))
 		{
 			return false;
 		}
 
-		if ($check)
+		//$exists = $this->get('id');
+
+		// Validate data?
+		if ($validate)
 		{
 			if (!$this->_tbl->check())
 			{
@@ -1005,19 +1008,33 @@ class CoursesModelOffering extends JObject
 			}
 		}
 
+		// Store data
 		if (!$this->_tbl->store())
 		{
 			$this->setError($this->_tbl->getError());
 			return false;
 		}
 
-		/*if (isset($this->_members) && is_array($this->_members))
+		// Check for sections
+		// An offering MUST have at least one __default section
+		if ($validate && $this->sections()->total() <= 0)
 		{
-			foreach ($this->_members as $member)
+			$section = new CoursesModelSection('__default', $this->get('id'));
+			$section->set('offering_id', $this->get('id'));
+			$section->set('alias', '__default');
+			$section->set('title', JText::_('Default'));
+			$section->set('state', 1);
+			$section->set('start_date', $this->get('start_date'));
+			$section->set('end_date', $this->get('end_date'));
+			$section->set('publish_up', $this->get('publish_up'));
+			$section->set('publish_down', $this->get('publish_down'));
+			if (!$section->store())
 			{
-				$member->store();
+				$this->setError($section->getError());
+				return false;
 			}
-		}*/
+		}
+
 		$affected = 0;
 
 		/*$affected = $this->_db->getAffectedRows();
@@ -1078,10 +1095,10 @@ class CoursesModelOffering extends JObject
 
 				// see who is missing
 				$aNewUserCourseEnrollments = array_diff($list, $aExistingUserMembership);
-			}*/
+			}
 
 			$tbl = new CoursesTableMember($this->_db);
-			$aux_table = $tbl->getTableName(); //'#__courses_offering_members';
+			$aux_table = $tbl->getTableName();
 
 			$ulist = null;
 			$tlist = null;
@@ -1127,19 +1144,27 @@ class CoursesModelOffering extends JObject
 				{
 					$affected += $this->_db->getAffectedRows();
 				}
-			}/*
+			}
 		}*/
 
-		/*$log = new CoursesTableLog($this->database);
-		$log->gid       = $this->get('id');
-		$log->uid       = $juser->get('id');
-		$log->timestamp = date('Y-m-d H:i:s', time());
-		$log->action    = 'course_deleted';
-		$log->comments  = $log;
-		$log->actorid   = $juser->get('id');
-		if (!$log->store()) 
+		/*if (($affected = $this->_db->getAffectedRows()))
 		{
-			$this->setError($log->getError());
+			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'log.php');
+
+			$juser = JFactory::getUser();
+
+			$log = new CoursesTableLog($this->_db);
+			$log->scope_id  = $this->get('id');
+			$log->scope     = 'offering';
+			$log->user_id   = $juser->get('id');
+			$log->timestamp = date('Y-m-d H:i:s', time());
+			$log->action    = (!$exists) ? 'created' : 'updated';
+			//$log->comments  = $log;
+			$log->actor_id  = $juser->get('id');
+			if (!$log->store()) 
+			{
+				$this->setError($log->getError());
+			}
 		}*/
 
 		return true;

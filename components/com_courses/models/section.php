@@ -699,7 +699,7 @@ class CoursesModelSection extends JObject
 			return false;
 		}
 
-		$exists = $this->get('id');
+		//$exists = $this->get('id');
 
 		if ($check)
 		{
@@ -716,23 +716,25 @@ class CoursesModelSection extends JObject
 			return false;
 		}
 
-		if (($affected = $this->_db->getAffectedRows()))
+		/*if (($affected = $this->_db->getAffectedRows()))
 		{
 			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'log.php');
 
+			$juser = JFactory::getUser();
+
 			$log = new CoursesTableLog($this->_db);
 			$log->scope_id  = $this->get('id');
-			$log->scope     = 'course_section';
+			$log->scope     = 'section';
 			$log->user_id   = $juser->get('id');
 			$log->timestamp = date('Y-m-d H:i:s', time());
-			$log->action    = (!$exists) ? 'section_created' : 'section_updated';
+			$log->action    = (!$exists) ? 'created' : 'updated';
 			//$log->comments  = $log;
 			$log->actor_id  = $juser->get('id');
 			if (!$log->store()) 
 			{
 				$this->setError($log->getError());
 			}
-		}
+		}*/
 
 		return true;
 	}
@@ -784,10 +786,10 @@ class CoursesModelSection extends JObject
 
 		$log = new CoursesTableLog($this->_db);
 		$log->scope_id  = $scope_id;
-		$log->scope     = 'course_section';
+		$log->scope     = 'section';
 		$log->user_id   = $juser->get('id');
 		$log->timestamp = date('Y-m-d H:i:s', time());
-		$log->action    = 'section_deleted';
+		$log->action    = 'deleted';
 		$log->comments  = $log;
 		$log->actor_id  = $juser->get('id');
 		if (!$log->store()) 

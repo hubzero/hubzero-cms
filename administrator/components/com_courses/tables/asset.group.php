@@ -39,65 +39,65 @@ defined('_JEXEC') or die('Restricted access');
 class CoursesTableAssetGroup extends JTable
 {
 	/**
-	 * ID, primary key for course asset grouping table
+	 * int(11) ID, primary key for course asset grouping table
 	 * 
-	 * @var int(11)
+	 * @var integer
 	 */
 	var $id = NULL;
 
 	/**
-	 * Course unit id of this asset group (references #__course_units.gidNumber)
+	 * int(11) Course unit id of this asset group (references #__course_units.gidNumber)
 	 * 
-	 * @var int(11)
+	 * @var integer
 	 */
 	var $unit_id = NULL;
 
 	/**
-	 * Alias
+	 * varchar(255) Alias
 	 * 
-	 * @var varchar(255)
+	 * @var string
 	 */
 	var $alias = NULL;
 
 	/**
-	 * Asset grouping title
+	 * varchar(255) Asset grouping title
 	 * 
-	 * @var varchar(255)
+	 * @var string
 	 */
 	var $title = NULL;
 
 	/**
-	 * Asset group description
+	 * varchar(255) Asset group description
 	 * 
-	 * @var varchar(255)
+	 * @var string
 	 */
 	var $description = NULL;
 
 	/**
-	 * Ordering
+	 * int(11) Ordering
 	 * 
-	 * @var int(11)
+	 * @var integer
 	 */
 	var $ordering = NULL;
 
 	/**
-	 * Asset group type
+	 * varchar(255) Asset group type
 	 * 
-	 * @var varchar(255)
+	 * @var string
 	 */
 	var $parent = NULL;
 
 	/**
-	 * Created date for unit
+	 * datetime Created date for unit
 	 * 
-	 * @var datetime
+	 * @var string
 	 */
 	var $created = NULL;
 
 	/**
-	 * Who created the unit (reference #__users.id)
+	 * int(11) Who created the unit (reference #__users.id)
 	 * 
-	 * @var int(11)
+	 * @var integer
 	 */
 	var $created_by = NULL;
 
@@ -173,24 +173,65 @@ class CoursesTableAssetGroup extends JTable
 	 */
 	private function _buildQuery($filters=array())
 	{
-		$query =  " FROM $this->_tbl AS cag";
+		$query  = " FROM $this->_tbl AS cag";
+		$query .= " LEFT JOIN #__courses_offering_section_dates AS sd ON sd.scope='asset_group' AND sd.scope_id=cag.id";
 		$query .= " LEFT JOIN #__courses_units AS cu ON cu.id = cag.unit_id";
+
+		$where = array();
+
+		if (isset($filters['unit_id']) && $filters['unit_id']) 
+		{
+			$where[] = "cag.unit_id=" . $this->_db->Quote($filters['unit_id']);
+		}
+		if (isset($filters['parent']) && $filters['parent']) 
+		{
+			$where[] = "cag.parent=" . $this->_db->Quote($filters['parent']);
+		}
+		if (isset($filters['alias']) && $filters['alias']) 
+		{
+			$where[] = "cag.alias=" . $this->_db->Quote($filters['alias']);
+		}
+		if (isset($filters['search']) && $filters['search']) 
+		{
+			$where[] = "(LOWER(cag.alias) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 
+					OR LOWER(cag.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
+		}
+
+		if (count($where) > 0)
+		{
+			$query .= " WHERE " . implode(" AND ", $where);
+		}
 
 		return $query;
 	}
 
 	/**
-	 * Get an object list of course asset groups
+	 * Get a record count
 	 * 
-	 * @param  array $filters
-	 * @return object Return course units
+	 * @param     array $filters Filters to build query from
+	 * @return    integer
+	 */
+	public function count($filters=array())
+	{
+		$query  = "SELECT COUNT(cag.id)";
+		$query .= $this->_buildQuery($filters['w']);
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadResult();
+	}
+
+	/**
+	 * Get a list of course asset groups
+	 * 
+	 * @param     array $filters Filters to build query from
+	 * @return    array
 	 */
 	public function find($filters=array())
 	{
-		$query  = "SELECT cag.*";
-		$query .= $this->_buildQuery($filters);
+		$query  = "SELECT cag.*, sd.publish_up, sd.publish_down";
+		$query .= $this->_buildQuery($filters['w']);
 
-		if (!empty($filters['w']))
+		/*if (!empty($filters['w']))
 		{
 			$first = true;
 
@@ -201,7 +242,7 @@ class CoursesTableAssetGroup extends JTable
 
 				$first = false;
 			}
-		}
+		}*/
 
 		if (!empty($filters['start']) && !empty($filters['limit']))
 		{
@@ -219,7 +260,7 @@ class CoursesTableAssetGroup extends JTable
 	 * 
 	 * @return array of unique asset group types
 	 */
-	public function getUniqueCourseAssetGroupTypes($filters=array())
+	/*public function getUniqueCourseAssetGroupTypes($filters=array())
 	{
 		$query  = "SELECT DISTINCT(cag.type)";
 		$query .= $this->buildquery();
@@ -239,5 +280,5 @@ class CoursesTableAssetGroup extends JTable
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadAssocList();
-	}
+	}*/
 }

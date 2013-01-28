@@ -88,8 +88,8 @@ function submitbutton(pressbutton)
 				<th scope="col"><?php echo JText::_('ID'); ?></th>
 				<th scope="col"><?php echo JText::_('Title'); ?></th>
 				<th scope="col"><?php echo JText::_('Alias'); ?></th>
-				<th scope="col"><?php echo JText::_('Starts'); ?></th>
-				<th scope="col"><?php echo JText::_('Ends'); ?></th>
+				<!-- <th scope="col"><?php echo JText::_('Starts'); ?></th>
+				<th scope="col"><?php echo JText::_('Ends'); ?></th> -->
 				<th scope="col" colspan="2"><?php echo JText::_('Ordering'); ?></th>
 				<th scope="col"><?php echo JText::_('Asset groups'); ?></th>
 				<th scope="col"><?php echo JText::_('Assets'); ?></th>
@@ -140,12 +140,12 @@ foreach ($this->rows as $row)
 					</span>
 <?php } ?>
 				</td>
-				<td>
+				<?php /*<td>
 					<?php echo JHTML::_('date', $row->get('start_date'), '%d %b %Y'); ?>
 				</td>
 				<td>
 					<?php echo ($row->get('end_date') && $row->get('end_date') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('end_date'), '%d %b %Y') : JText::_('(never)'); ?>
-				</td>
+				</td>*/ ?>
 				<td>
 					<?php 
 					$prv = $this->rows->fetch('prev');

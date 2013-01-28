@@ -99,14 +99,34 @@ class CoursesModelUnit extends JObject
 		if (is_numeric($oid) || is_string($oid))
 		{
 			$this->_tbl->load($oid);
+			/*foreach ($this->_tbl->getProperties() as $k => $v)
+			{
+				$this->set($k, $v);
+			}*/
 		}
 		else if (is_object($oid))
 		{
 			$this->_tbl->bind($oid);
+			if (isset($oid->publish_up))
+			{
+				$this->set('publish_up', $oid->publish_up);
+			}
+			if (isset($oid->publish_down))
+			{
+				$this->set('publish_down', $oid->publish_down);
+			}
 		}
 		else if (is_array($oid))
 		{
 			$this->_tbl->bind($oid);
+			if (isset($oid['publish_up']))
+			{
+				$this->set('publish_up', $oid['publish_up']);
+			}
+			if (isset($oid['publish_down']))
+			{
+				$this->set('publish_down', $oid['publish_down']);
+			}
 		}
 	}
 
@@ -224,9 +244,9 @@ class CoursesModelUnit extends JObject
 
 		$now = date('Y-m-d H:i:s', time());
 
-		if ($this->get('start_date') 
-		 && $this->get('start_date') != '0000-00-00 00:00:00' 
-		 && $this->get('start_date') > $now) 
+		if ($this->get('publish_up') 
+		 && $this->get('publish_up') != '0000-00-00 00:00:00' 
+		 && $this->get('publish_up') > $now) 
 		{
 			return false;
 		}
@@ -248,9 +268,9 @@ class CoursesModelUnit extends JObject
 
 		$now = date('Y-m-d H:i:s', time());
 
-		if ($this->get('end_date') 
-		 && $this->get('end_date') != '0000-00-00 00:00:00' 
-		 && $this->get('end_date') <= $now) 
+		if ($this->get('publish_down') 
+		 && $this->get('publish_down') != '0000-00-00 00:00:00' 
+		 && $this->get('publish_down') <= $now) 
 		{
 			return true;
 		}
