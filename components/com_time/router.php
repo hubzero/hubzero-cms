@@ -72,9 +72,18 @@ function TimeParseRoute($segments)
 		return $vars;
 	}
 
-	$vars['active'] = $segments[0];
-	$vars['action'] = $segments[1];
-	$vars['id']     = $segments[2];
+	if(isset($segments[0]))
+	{
+		$vars['active'] = $segments[0];
+	}
+	if(isset($segments[1]))
+	{
+		$vars['action'] = $segments[1];
+	}
+	if(isset($segments[2]))
+	{
+		$vars['id']     = $segments[2];
+	}
 
 	return $vars;
 }
