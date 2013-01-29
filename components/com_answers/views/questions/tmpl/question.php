@@ -116,7 +116,10 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	<div class="aside">
 	<?php if ($this->question->state == 0 && $this->responding != 1 && $reports == 0) { ?>
 	<?php //if ($this->question->state == 0 && $this->responding != 1 && $reports == 0 && $this->question->created_by != $this->juser->get('username')) { ?>
-		<p class="answer-question"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=answer&id=' . $this->question->id); ?>"><?php echo JText::_('COM_ANSWERS_ANSWER_THIS'); ?></a></p>
+		<p class="answer-question"><a href="<?php 
+		$route = JRoute::_('index.php?option=' . $this->option . '&task=answer&id=' . $this->question->id);
+		echo ($this->juser->get('guest') ? JRoute::_('index.php?option=com_login&return=' . base64_encode($route)) : $route);
+		?>"><?php echo JText::_('COM_ANSWERS_ANSWER_THIS'); ?></a></p>
 	<?php } ?>
 		<div class="status_display">
 			<p class="intro">
@@ -248,12 +251,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 		<div class="subject">
 			<div class="subject-wrap">
 			<p class="error"><?php echo JText::_('COM_ANSWERS_NOTICE_CONFIRM_DELETE'); ?></p>
-			<!-- 
-			<p>
-				<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=delete_q&qid=' . $this->question->id); ?>"><?php echo JText::_('COM_ANSWERS_YES_DELETE'); ?></a> | 
-				<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=question&id=' . $this->question->id); ?>"><?php echo JText::_('COM_ANSWERS_NO_DELETE'); ?></a>
-			</p>
-			 -->
+
 			<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=delete'); ?>" method="post" id="deleteForm">
 				<input type="hidden" name="qid" value="<?php echo $this->question->id; ?>" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -379,6 +377,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 			</table>
 		</div><!-- / .aside -->
 		<div class="subject">
+			<?php if (!$this->juser->get('guest')) { ?>
 			<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" id="commentform">
 				<p class="comment-member-photo">
 					<span class="comment-anchor"><a name="answerform"></a></span>
@@ -425,6 +424,11 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 					</div>
 				</fieldset>
 			</form>
+			<?php } else { ?>
+				<p>
+					Please <a href="<?php echo JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->option . '&task=answer&id=' . $this->question->id))); ?>">login</a> to answer this question.
+				</p>
+			<?php } ?>
 		</div><!-- / .subject -->
 		<div class="clear"></div>
 	</div><!-- / .below section -->
@@ -653,7 +657,10 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 
 		<div class="aside">
 		<?php if ($this->question->state == 0 && $this->responding!=1 && $reports == 0 && $this->question->created_by != $this->juser->get('username')) { ?>
-			<p class="answer-question"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=answer&id='.$this->question->id); ?>"><?php echo JText::_('COM_ANSWERS_ANSWER_THIS'); ?></a></p>
+			<p class="answer-question"><a href="<?php 
+			$route = JRoute::_('index.php?option=' . $this->option . '&task=answer&id=' . $this->question->id);
+			echo ($this->juser->get('guest') ? JRoute::_('index.php?option=com_login&return=' . base64_encode($route)) : $route);
+			?>"><?php echo JText::_('COM_ANSWERS_ANSWER_THIS'); ?></a></p>
 		<?php } ?>
 		
 		<?php if ($this->juser->get('username') == $this->question->created_by && $this->question->state == 0) { ?>
