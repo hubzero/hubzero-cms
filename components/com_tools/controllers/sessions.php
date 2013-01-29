@@ -1143,6 +1143,10 @@ class ToolsControllerSessions extends Hubzero_Controller
 					{
 						$output->encoding = trim($param[1], '"');
 					}
+					if (preg_match("/^<param name=\"ShowLocalCursor\" value=\"?(.+)\"?>/i", $line, $param))
+					{
+						$output->showlocalcursor = trim($param[1], '"');
+					}
 				}
 			}
 		}
