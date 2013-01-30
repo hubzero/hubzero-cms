@@ -77,8 +77,12 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	
 	switch ($row->iscore)
 	{
+		case 4: 
+			$iscore = JText::_('common (not in ACL)');
+		break;
+
 		case 2: 
-			$iscore = JText::_('common');
+			$iscore = JText::_('common (in ACL)');
 		break;
 		
 		case 1:

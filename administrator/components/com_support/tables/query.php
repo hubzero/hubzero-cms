@@ -232,6 +232,24 @@ class SupportQuery extends JTable
 	 * 
 	 * @return     array
 	 */
+	public function getCommonNotInACL()
+	{
+		$filters = array(
+			'iscore'   => 4,
+			'sort'     => 'id',
+			'sort_Dir' => 'asc'
+		);
+
+		$query = "SELECT *" . $this->_buildQuery($filters);
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
+
+	/**
+	 * Get common queries
+	 * 
+	 * @return     array
+	 */
 	public function getCommon()
 	{
 		$filters = array(
@@ -496,6 +514,16 @@ class SupportQuery extends JTable
 					(null,'Awaiting User Action','{\"operator\":\"AND\",\"expressions\":[{\"fldval\":\"open\",\"flddisp\":\"Open/Closed\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"1\"},{\"fldval\":\"type\",\"flddisp\":\"Type\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"0\"},{\"fldval\":\"status\",\"flddisp\":\"Status\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"2\"}],\"nestedexpressions\":[]}',NULL,0,'created','desc','2012-08-09 00:00:00',3),
 					(null,'Closed tickets','{\"operator\":\"AND\",\"expressions\":[{\"fldval\":\"open\",\"flddisp\":\"Open/Closed\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"0\"},{\"fldval\":\"type\",\"flddisp\":\"Type\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"0\"}],\"nestedexpressions\":[]}',NULL,0,'created','desc','2012-08-09 00:00:00',2),
 					(null,'All tickets','{\"operator\":\"AND\",\"expressions\":[{\"fldval\":\"type\",\"flddisp\":\"Type\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"0\"}],\"nestedexpressions\":[]}',NULL,0,'created','desc','2012-08-09 00:00:00',3);";
+			break;
+
+			case 'commonnotacl':
+				$method = 'getCommonNotInACL';
+				$sql = "INSERT INTO $this->_tbl (`id`, `title`, `conditions`, `query`, `user_id`, `sort`, `sort_dir`, `created`, `iscore`)
+				VALUES
+					(null,'Open tickets','{\"operator\":\"AND\",\"expressions\":[{\"fldval\":\"open\",\"flddisp\":\"Open/Closed\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"1\"},{\"fldval\":\"type\",\"flddisp\":\"Type\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"0\"}],\"nestedexpressions\":[{\"operator\":\"OR\",\"expressions\":[{\"fldval\":\"group\",\"flddisp\":\"Group\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"*\"},{\"fldval\":\"owner\",\"flddisp\":\"Owner\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"$me\"},{\"fldval\":\"login\",\"flddisp\":\"Submitter\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"$me\"}],\"nestedexpressions\":[]}]}',NULL,0,'created','desc','2013-01-30 08:06:10',4),
+					(null,'New tickets','{\"operator\":\"AND\",\"expressions\":[{\"fldval\":\"open\",\"flddisp\":\"Open/Closed\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"1\"},{\"fldval\":\"type\",\"flddisp\":\"Type\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"0\"},{\"fldval\":\"status\",\"flddisp\":\"Status\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"0\"}],\"nestedexpressions\":[{\"operator\":\"OR\",\"expressions\":[{\"fldval\":\"group\",\"flddisp\":\"Group\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"*\"},{\"fldval\":\"owner\",\"flddisp\":\"Owner\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"$me\"},{\"fldval\":\"login\",\"flddisp\":\"Submitter\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"$me\"}],\"nestedexpressions\":[]}]}',NULL,0,'created','desc','2013-01-30 08:32:25',4),
+					(null,'Unassigned','{\"operator\":\"AND\",\"expressions\":[{\"fldval\":\"open\",\"flddisp\":\"Open/Closed\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"1\"},{\"fldval\":\"type\",\"flddisp\":\"Type\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"0\"}],\"nestedexpressions\":[{\"operator\":\"OR\",\"expressions\":[{\"fldval\":\"group\",\"flddisp\":\"Group\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"*\"},{\"fldval\":\"login\",\"flddisp\":\"Submitter\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"$me\"}],\"nestedexpressions\":[]},{\"operator\":\"OR\",\"expressions\":[{\"fldval\":\"owner\",\"flddisp\":\"Owner\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"\"},{\"fldval\":\"owner\",\"flddisp\":\"Owner\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"NULL\"}],\"nestedexpressions\":[]}]}',NULL,0,'created','desc','2013-01-30 08:42:42',4),
+					(null,'Closed tickets','{\"operator\":\"AND\",\"expressions\":[{\"fldval\":\"open\",\"flddisp\":\"Open/Closed\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"0\"},{\"fldval\":\"type\",\"flddisp\":\"Type\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"0\"}],\"nestedexpressions\":[{\"operator\":\"OR\",\"expressions\":[{\"fldval\":\"group\",\"flddisp\":\"Group\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"*\"},{\"fldval\":\"owner\",\"flddisp\":\"Owner\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"$me\"},{\"fldval\":\"login\",\"flddisp\":\"Submitter\",\"opval\":\"=\",\"opdisp\":\"is\",\"val\":\"$me\"}],\"nestedexpressions\":[]}]}',NULL,0,'created','desc','2013-01-30 08:32:25',4);";
 			break;
 
 			case 'mine':

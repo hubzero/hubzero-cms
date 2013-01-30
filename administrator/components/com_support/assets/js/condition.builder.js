@@ -72,13 +72,14 @@ var Conditions = {
 		
 		var q = $(sel).find('fieldset');
 		var l = q.length;
-		if (l < 1) {
+
+		//if (l < 1) {
 			$(sel).append(rootcondition);
 			q = $(sel).find('fieldset');
 			l = q.length;
 		//} else {
 			//rootcondition = q;
-		}
+		//}
 		var elem = q;
 
 		if (l > 1) {

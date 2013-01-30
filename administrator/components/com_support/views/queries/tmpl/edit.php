@@ -64,9 +64,12 @@ $juser = JFactory::getUser();
 							<td class="key"><label for="field-iscore"><?php echo JText::_('Type:'); ?></label></td>
 							<td colspan="2">
 								<select name="fields[iscore]" id="field-iscore">
-									<option value="2"<?php if ($this->row->iscore == 2) { echo ' selected="selected"'; }; ?>>Common</option>
-									<option value="1"<?php if ($this->row->iscore == 1) { echo ' selected="selected"'; }; ?>>Mine</option>
-									<option value="0"<?php if ($this->row->iscore == 0) { echo ' selected="selected"'; }; ?>>Custom</option>
+									<optgroup label="<?php echo JText::_('Common'); ?>">
+										<option value="2"<?php if ($this->row->iscore == 2) { echo ' selected="selected"'; }; ?>><?php echo JText::_('In ACL'); ?></option>
+										<option value="4"<?php if ($this->row->iscore == 4) { echo ' selected="selected"'; }; ?>><?php echo JText::_('Not in ACL'); ?></option>
+									</optgroup>
+									<option value="1"<?php if ($this->row->iscore == 1) { echo ' selected="selected"'; }; ?>><?php echo JText::_('Mine'); ?></option>
+									<option value="0"<?php if ($this->row->iscore == 0) { echo ' selected="selected"'; }; ?>><?php echo JText::_('Custom'); ?></option>
 								</select>
 							</td>
 						</tr>

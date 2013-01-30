@@ -400,6 +400,14 @@ class SupportControllerTickets extends Hubzero_Controller
 				$this->view->queries['common'] = $sq->populateDefaults('common');
 			}
 		}
+		else
+		{
+			$this->view->queries['common'] = $sq->getCommonNotInACL();
+			if (!$this->view->queries['common'] || count($this->view->queries['common']) <= 0)
+			{
+				$this->view->queries['common'] = $sq->populateDefaults('commonnotacl');
+			}
+		}
 		$this->view->queries['mine']   = $sq->getMine();
 		$this->view->queries['custom'] = $sq->getCustom($this->juser->get('id'));
 

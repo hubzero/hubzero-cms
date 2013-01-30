@@ -72,7 +72,7 @@ class SupportControllerQueries extends Hubzero_Controller
 			'filter_order_Dir', 
 			'ASC'
 		));
-		$this->view->filters['iscore']   = array(2, 1);
+		$this->view->filters['iscore']   = array(4, 2, 1);
 
 		$obj = new SupportQuery($this->database);
 

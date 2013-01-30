@@ -63,7 +63,7 @@ Hubzero_Document::addComponentStylesheet($this->option, 'assets/css/conditions.c
 
 				<input type="submit" value="<?php echo JText::_('GO'); ?>" />
 			</fieldset>
-<?php if ($this->acl->check('read', 'tickets')) { ?>
+<?php //if ($this->acl->check('read', 'tickets')) { ?>
 			<h3><span>Common</span></h3>
 			<ul id="common-views" class="views">
 	<?php if (count($this->queries['common']) > 0) { ?>
@@ -76,9 +76,11 @@ Hubzero_Document::addComponentStylesheet($this->option, 'assets/css/conditions.c
 					<a class="common-<?php echo strtolower(preg_replace("/[^a-zA-Z0-9]/", '', stripslashes($query->title))); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $query->id . '&limitstart=0'); ?>">
 						<?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->count; ?></span>
 					</a>
+				<?php if ($this->acl->check('read', 'tickets')) { ?>
 					<a class="modal copy" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=edit&id=' . $query->id); ?>" title="<?php echo JText::_('Edit'); ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
 						<?php echo JText::_('Edit'); ?>
 					</a>
+				<?php } ?>
 				<?php if ($i == 0) { ?>
 					<ul class="views">
 				<?php } ?>
@@ -99,7 +101,7 @@ Hubzero_Document::addComponentStylesheet($this->option, 'assets/css/conditions.c
 				</li>
 	<?php } ?>
 			</ul>
-<?php } ?>
+<?php //} ?>
 			<h3><span>Mine</span></h3>
 			<ul id="my-views" class="views">
 	<?php if (count($this->queries['mine']) > 0) { ?>
@@ -346,7 +348,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 									<?php echo $this->escape(stripslashes($row->summary)); ?>
 								</a>
 							</p>
-		<?php if ($tags || $row->owner) { ?>
+		<?php if ($tags || $row->owner || $row->group) { ?>
 							<p class="ticket-details">
 		<?php if ($tags) { ?>
 								<span class="ticket-tags">
