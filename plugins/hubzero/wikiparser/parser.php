@@ -638,9 +638,13 @@ class WikiParser
 
 			if (trim(strtolower($namespace)) == 'help:')
 			{
-				$scope = '';
+				$p = WikiPage::getInstance($pagename, '');
+				$p->scope = $scope;
 			}
-			$p = WikiPage::getInstance($pagename, $scope);
+			else
+			{
+				$p = WikiPage::getInstance($pagename, $scope);
+			}
 		}
 		/*if ($namespace == 'wiki:' && substr($href, 0, strlen('&#8220;')) == '&#8220;')
 		{
@@ -709,6 +713,7 @@ class WikiParser
 		{
 			//$title = ($title == $href) ? $p->title;
 			$cls .= '';
+			$p->scope = $this->scope;
 		}
 
 		$href = JRoute::_('index.php?option=' . $this->option . '&scope=' . $p->scope . '&pagename=' . $p->pagename);
