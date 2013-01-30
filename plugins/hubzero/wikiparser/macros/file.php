@@ -114,10 +114,10 @@ class FileMacro extends WikiMacro
 		$argues = preg_replace_callback('/[, ](left|right|top|center|bottom|[0-9]+(px|%|em)?)(?:[, ]|$)/i', array(&$this, 'parseSingleAttribute'), $content);
 		// Get quoted attribute/value pairs
 		// EX: [[Image(myimage.png, desc="My description, contains, commas")]]
-		$argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap)=(?:["\'])([^"]*)(?:["\'])/i', array(&$this, 'parseAttributeValuePair'), $content);
+		$argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=(?:["\'])([^"]*)(?:["\'])/i', array(&$this, 'parseAttributeValuePair'), $content);
 		// Get non-quoted attribute/value pairs
 		// EX: [[Image(myimage.png, width=100)]]
-		$argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap)=([^"\',]*)(?:[, ]|$)/i', array(&$this, 'parseAttributeValuePair'), $content);
+		$argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=([^"\',]*)(?:[, ]|$)/i', array(&$this, 'parseAttributeValuePair'), $content);
 
 		$attr = $this->attr;
 
@@ -170,7 +170,7 @@ class FileMacro extends WikiMacro
 				$attr['created_by'] = $attach->created_by;
 			}
 
-			$attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : $file;
+			$attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : ''; //$file;
 
 			$ret = true;
 		} 

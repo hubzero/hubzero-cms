@@ -166,10 +166,10 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 		$argues = preg_replace_callback('/[, ](left|right|top|center|bottom|[0-9]+(px|%|em)?)(?:[, ]|$)/i', array(&$this, 'parseSingleAttribute'), $content);
 		// Get quoted attribute/value pairs
 		// EX: [[Image(myimage.png, desc="My description, contains, commas")]]
-		$argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap)=(?:["\'])([^"]*)(?:["\'])/i', array(&$this, 'parseAttributeValuePair'), $content);
+		$argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=(?:["\'])([^"]*)(?:["\'])/i', array(&$this, 'parseAttributeValuePair'), $content);
 		// Get non-quoted attribute/value pairs
 		// EX: [[Image(myimage.png, width=100)]]
-		$argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap)=([^"\',]*)(?:[, ]|$)/i', array(&$this, 'parseAttributeValuePair'), $content);
+		$argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=([^"\',]*)(?:[, ]|$)/i', array(&$this, 'parseAttributeValuePair'), $content);
 
 		$attr = $this->attr;
 
