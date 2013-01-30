@@ -57,7 +57,7 @@ class RandomPageMacro extends WikiMacro
 	public function render()
 	{
 		// Perform query
-		$this->_db->setQuery("SELECT pagename, scope, title FROM #__wiki_page ORDER BY rand() LIMIT 1");
+		$this->_db->setQuery("SELECT pagename, scope, title FROM #__wiki_page WHERE state < 2 ORDER BY rand() LIMIT 1");
 		$a = $this->_db->loadRow();
 
 		// Did we get a result from the database?

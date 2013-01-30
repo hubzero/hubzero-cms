@@ -94,6 +94,7 @@ class RecentPageMacro extends WikiMacro
 						AND wp.group_cn = '$this->domain' 
 						AND wp.scope = '$this->scope' 
 						AND wp.access != 1 
+						AND wp.state < 2 
 						AND wv.id = (SELECT MAX(wv2.id) FROM #__wiki_version AS wv2 WHERE wv2.pageid = wv.pageid)
 					ORDER BY created DESC
 					LIMIT $limitstart, $limit";

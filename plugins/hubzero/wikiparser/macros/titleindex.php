@@ -83,12 +83,12 @@ class TitleIndexMacro extends WikiMacro
 		switch ($sort)
 		{
 			case 'sort=modified':
-				$sql = "SELECT p.`id`, p.`pagename`, p.`scope`, p.`group_cn`, (CASE WHEN (p.`title` IS NOT NULL AND p.`title` !='') THEN p.`title` ELSE p.`pagename` END) AS `title`, MAX(v.`created`) AS `modified`, MAX(v.`version`) FROM #__wiki_page AS p, #__wiki_version AS v WHERE v.pageid=p.id AND v.approved=1 AND ";
+				$sql = "SELECT p.`id`, p.`pagename`, p.`scope`, p.`group_cn`, (CASE WHEN (p.`title` IS NOT NULL AND p.`title` !='') THEN p.`title` ELSE p.`pagename` END) AS `title`, MAX(v.`created`) AS `modified`, MAX(v.`version`) FROM #__wiki_page AS p, #__wiki_version AS v WHERE v.pageid=p.id AND v.approved=1 AND p.state < 2 AND ";
 			break;
 			case 'sort=created':
 			case 'sort=title':
 			default:
-				$sql = "SELECT p.`id`, p.`pagename`, p.`scope`, p.`group_cn`, (CASE WHEN (p.`title` IS NOT NULL AND p.`title` !='') THEN p.`title` ELSE p.`pagename` END) AS `title`, v.`created`, MAX(v.`version`) FROM #__wiki_page AS p, #__wiki_version AS v WHERE v.pageid=p.id AND v.approved=1 AND ";
+				$sql = "SELECT p.`id`, p.`pagename`, p.`scope`, p.`group_cn`, (CASE WHEN (p.`title` IS NOT NULL AND p.`title` !='') THEN p.`title` ELSE p.`pagename` END) AS `title`, v.`created`, MAX(v.`version`) FROM #__wiki_page AS p, #__wiki_version AS v WHERE v.pageid=p.id AND v.approved=1 AND p.state < 2 AND ";
 			break;
 		}
 
