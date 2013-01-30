@@ -819,7 +819,7 @@ class SupportTicket extends JTable
 	 * @param      string  $group Group to calculate data for
 	 * @return     integer
 	 */
-	public function getCountOfTicketsClosedInMonth($type=0, $year='', $month='01', $group=null)
+	public function getCountOfTicketsClosedInMonth($type=0, $year='', $month='01', $group=null, $username=null)
 	{
 		$year = ($year) ? $year : date("Y");
 
@@ -841,6 +841,10 @@ class SupportTicket extends JTable
 		else 
 		{
 			$sql .= " AND f.`group`='$group'";
+		}
+		if ($username) 
+		{
+			$sql .= " AND k.created_by='" . $username . "'";
 		}
 
 		$this->_db->setQuery($sql);
