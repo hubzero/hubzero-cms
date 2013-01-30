@@ -2027,6 +2027,13 @@ class ResourcesControllerResources extends Hubzero_Controller
 			return;
 		}
 
+		jimport('joomla.filesystem.file');
+		$ext = strtolower(JFile::getExt($filename));
+		if (!in_array($ext, array('jpg', 'jpeg', 'jpe', 'gif', 'png', 'pdf', 'htm', 'html', 'txt', 'json', 'xml')))
+		{
+			$d = 'attachment';
+		}
+
 		// Initiate a new content server and serve up the file
 		$xserver = new Hubzero_Content_Server();
 		$xserver->filename($filename);
