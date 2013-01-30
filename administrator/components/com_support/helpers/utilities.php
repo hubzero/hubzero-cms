@@ -265,5 +265,39 @@ class SupportUtilities
 		// Return the array
 		return $filters;
 	}
+
+	/**
+	 * Calculate the average life of a ticket
+	 * 
+	 * @param      array $data A list of ticket's opened and closed dates
+	 * @return     array [days, hours, minutes]
+	 */
+	public function calculateAverageLife($data=null)
+	{
+		$lifetime = array();
+
+		if ($data && is_array($data)) 
+		{
+			$count = 0;
+			$lt = 0;
+			foreach ($data as $tim)
+			{
+				$lt += $tim->closed - $tim->opened;
+				$count++;
+			}
+			$difference = ($lt / $count);
+			if ($difference < 0) 
+			{
+				$difference = 0;
+			}
+
+			$days = floor($difference/60/60/24);
+			$hours = floor(($difference - $days*60*60*24)/60/60);
+			$minutes = floor(($difference - $days*60*60*24 - $hours*60*60)/60);
+
+			$lifetime = array($days, $hours, $minutes);
+		}
+		return $lifetime;
+	}
 }
 
