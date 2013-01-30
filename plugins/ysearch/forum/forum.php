@@ -101,7 +101,7 @@ class plgYSearchForum extends YSearchPlugin
 				$groups = array_map('intval', $authz->get_group_ids());
 				if ($groups)
 				{
-					$addtl_where[] = '(f.access = 0 OR f.access = 1 OR ((f.access = 3 OR f.access = 4) AND f.group_id IN (0,' . join(',', $groups) . ')))';
+					$addtl_where[] = '(f.access = 0 OR f.access = 1 OR ((f.access = 3 OR f.access = 4) AND f.scope_id IN (0,' . join(',', $groups) . ')))';
 				}
 				else
 				{
