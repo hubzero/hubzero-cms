@@ -418,14 +418,15 @@ class SupportControllerTickets extends Hubzero_Controller
 		// If no query is set, default to the first one in the list
 		if (!$this->view->filters['show'])
 		{
-			if ($this->acl->check('read', 'tickets')) 
+			$this->view->filters['show'] = $this->view->queries['common'][0]->id;
+			/*if ($this->acl->check('read', 'tickets')) 
 			{
 				$this->view->filters['show'] = $this->view->queries['common'][0]->id;
 			}
 			else
 			{
 				$this->view->filters['show'] = $this->view->queries['mine'][0]->id;
-			}
+			}*/
 		}
 
 		// Loop through each grouping
