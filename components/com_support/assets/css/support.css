@@ -612,6 +612,7 @@
 	}
 	.ticket .entry-details table tbody td {
 		padding: .61803399em 2em;
+		white-space: pre-wrap;
 	}
 	/* Status */
 	.ticket-status {
