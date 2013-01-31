@@ -191,6 +191,10 @@ class CoursesTableAsset extends JTable
 		{
 			$where[] = "ca.course_id=" . $this->_db->Quote((int) $filters['course_id']);
 		}
+		if (!empty($filters['asset_type']))
+		{
+			$where[] = "ca.type=" . $this->_db->Quote((string) $filters['asset_type']);
+		}
 		if (isset($filters['search']) && $filters['search']) 
 		{
 			$where[] = "(LOWER(ca.url) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 

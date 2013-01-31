@@ -114,13 +114,19 @@ class plgCoursesProgress extends JPlugin
 			return $arr;
 		}
 
+		// Add some styles to the view
+		ximport('Hubzero_Document');
+		Hubzero_Document::addPluginStylesheet('courses','progress');
+		Hubzero_Document::addPluginScript('courses','progress');
+
 		// Instantiate a vew
 		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
 				'folder'  => 'courses',
 				'element' => $this->_name,
-				'name'    => 'report'
+				'name'    => 'report',
+				'layout'  => ($course->offering()->access('manage')) ? 'instructor' : 'student'
 			)
 		);
 		$view->course = $course;

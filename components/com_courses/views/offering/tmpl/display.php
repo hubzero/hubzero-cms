@@ -111,7 +111,7 @@ if (!$no_html) : ?>
 						<?php endif;*/ ?>
 					<?php else : ?>
 						<?php $isManager = $this->course->offering()->access('manage'); ?>
-						<?php $canCancel = (($isManager && count($this->course->get("managers")) > 1) || (!$isManager && in_array($this->user->get('id'), $this->course->offering()->get('members')))) ? true : false; ?>
+						<?php $canCancel = (($isManager && count($this->course->get("managers")) > 1) || (!$isManager && in_array($this->user->get('id'), $this->course->offering()->section()->members()))) ? true : false; ?>
 						<li class="no-float">
 							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias')); ?>" class="dropdown course-<?php echo ($isManager) ? 'manager' : 'member'; ?>">
 								<?php echo ($isManager) ? 'Manager' : 'Member'; ?>

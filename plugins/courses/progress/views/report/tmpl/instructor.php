@@ -31,13 +31,41 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// Return the content
-if ($this->course->offering()->access('manage')) 
-{
-	echo 'View student progress';
-}
-else
-{
-	echo 'My progress report';
-}
+// @TODO: implement for instructors, not just managers (i.e. manager sees all, instructor only sees their section)
+// @TODO: implement method for getting actual exam scores from form controller
+
+// Get all section members
+$members = $this->course->offering()->section()->members();
+
+$tbl = new CoursesTableAsset(JFactory::getDBO());
+
+$assets = $tbl->find(array(
+	'w' => array(
+		'course_id'  => $this->course->get('id'),
+		'asset_type' => 'exam'
+	)
+));
+
 ?>
+
+<table class="entries">
+	<caption>Student Progress</caption>
+	<thead>
+		<tr>
+			<td>Name</td>
+			<? foreach($assets as $a) : ?>
+				<td><?= $a->title; ?></td>
+			<? endforeach; ?>
+		</tr>
+	</thead>
+	<tbody>
+		<? foreach($members as $m) : ?>
+			<tr>
+				<td><?= JFactory::getUser($m->get('user_id'))->get('name'); ?></td>
+				<? foreach($assets as $a) : ?>
+					<td><?= rand(0, 100) . '%' ?></td>
+				<? endforeach; ?>
+			</tr>
+		<? endforeach; ?>
+	</tbody>
+</table>

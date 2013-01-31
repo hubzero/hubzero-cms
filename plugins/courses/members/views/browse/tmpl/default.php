@@ -39,7 +39,7 @@ $section = $offering->section();
 	<a name="members"></a>
 	<h3 class="heading"><?php echo JText::_('COURSES_MEMBERS'); ?></h3>
 		
-		<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&offering=' . $offering->get('alias') . '&active=members&filter='.$this->filter); ?>" method="post">
+		<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&offering=' . $offering->get('alias') . '&active=members&filter='.$this->filters); ?>" method="post">
 		<div class="subject">
 			<div class="container">
 				<ul class="entries-menu filter-options">
@@ -204,9 +204,9 @@ $section = $offering->section();
 		<div class="clear"></div>
 	
 		
-		<input type="hidden" name="gid" value="<?php echo $this->course->cn; ?>" />
+		<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
 		<input type="hidden" name="active" value="members" />
 		<input type="hidden" name="option" value="<?php echo $option; ?>" />
-		<input type="hidden" name="filter" value="<?php echo $this->filter; ?>" />
+		<input type="hidden" name="filter" value="<?php echo $this->filters; ?>" />
 	</form>
 </div><!--/ #course_members -->

@@ -1,737 +1,225 @@
 /**
  * @package	 hubzero-cms
- * @file		plugins/courses/wiki/wiki.css
+ * @file		plugins/courses/progress/progress.css
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license	 http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-	.course_wiki {
-	}
-	.course_wiki #hubForm fieldset {
-		padding-left:2%;
-		width:66%;
-	}
-	.course_wiki #hubForm h3 {
-		display:none;
-	}
-	.com_courses .course_wiki h3 {
-		display:block;
-	}
-	.course_wiki #commentform .subject {
-		background:none;
-		padding:10px 0 0 0;
-	}
-	.course_wiki .subject {
-		margin-top:1em;
-	}
-	.course_wiki .main,
-	.course_wiki .section {
-		border:none;
-	}
-	.course_wiki .section {
-		padding:0;
-	}
-	.course_wiki .avgrating { 
-		background: url("../../../templates/hubbasic/images/stars/stars.gif") right 0 no-repeat;  
-	}
-/* Wiki Reference */
-	table.wiki-reference {
-		border: none;
-		font-size: 11px;
-		margin: 0;
-	}
-	table.wiki-reference caption {
-		font-weight: bold;
-	}
-	table.wiki-reference tbody td {
-		border-top: 1px solid #efefef;
-		border-bottom: 1px solid #efefef;
-	}
-/* Comment form */
-	#commentform {
-		margin: 0 0 4em 0;
-		padding: 0;
-	}
-	#commentform fieldset {
-		background: #F5F7F2;
-		border: 10px solid #DEE4CD;
-		margin: 0;
-		padding: 0 1em 0em 1em;
-		text-align: left;
-		color: #777;
-	}
-	#commentform fieldset fieldset {
-		border-width: 1px;
-		padding: 0 1em 1em 1em;
-		margin: 1em 0;
-	}
-	#commentform p.comment-member-photo {
-		float: left;
-		margin: 0;
-		padding: 0 20px 0 0;
-		width: 50px; /*105px;*/
-		height: 50px;
-		overflow: hidden;
-		color: #777;
-		font-size: 11px;
-		text-align: right;
-		background: url("/components/com_wiki/assets/img/comment-arrow.gif") right -201px no-repeat;
-	}
-	#commentform .sidenote {
-		border: 1px solid #edf0e8;
-		padding: 0 1em;
-		margin: 0 -1em 0 -1em;
-		color: #aaa;
-		background-color: #edf0e8;
-	}
-	#commentform .required,
-	#commentform .optional {
-		text-transform: uppercase;
-		font-size: xx-small;
-	}
-	#commentform .required {
-		color: red;
-	}
-	#commentform .optional {
-		color: #999;
-	}
-	#commentform label {
-		padding-top: 1em;
-		position: relative;
-		display: block;
-	}
-	/*#commentform label span {
-		position: absolute;
-		top: 1.5em;
-		right: 0;
-	}*/
-	#commentform .courseing {
-		position: relative;
-		margin-left: -3em;
-		padding: 0 0 1.5em 5em;
-		overflow: hidden;
-		top: 1em;
-		left: 1.5em;
-	}
-	#commentform .courseing label {
-		padding: 0;
-		float: left;
-		width: 50%;
-	}
-	#commentform .courseing label:first-child {
-		margin: 0 2em 0 -3.5em;
-	}
-	#commentform .courseing label span {
-		top: 0;
-	}
-	#commentform input, 
-	#commentform select, 
-	#commentform textarea {
-		margin-top: 0.25em;
-		width: 100%;
-	}
-	#commentform .submit {
-		clear: both;
-		margin: -1.5em 0 1em 0;
-		padding: 0;
-		text-align: right;
-	}
-	#commentform .submit input,
-	#commentform .option {
-		width: auto;
-	}
-	#commentform #comment-anonymous-label {
-		width: 50%;
-	}
-/* Attachments */
-	#attachments {
-		margin: 0;
-		padding: 0;
-		min-width: 100px;
-		background: #fff;
-	}
-	#attachments form,
-	#attachments fieldset,
-	#attachments table {
-		padding: 0;
-		margin: 0;
-	}
-	#attachments table {
-		width: auto;
-	}
-	#attachments tbody td {
-		padding: 0.2em 0.4em;
-	}
-	#attachments .delete {
-		padding-left: 0;
-		background: transparent;
-	}
-/* Comments */
-	.course_wiki .below .subject {
-		background: transparent;
-		padding: 1em 0 0 0;
-		border-bottom: none;
-	}
-	#commentlist-title,
-	#commentform-title,
-	.below h3 {
-		margin-left: 70px;
-	}
-	.com_wiki .main .subject ol.comments,
-	ol.comments {
-		list-style-type: none !important;
-		margin: 0;
-		padding: 0;
-		background: transparent;
-	border:0;
-	}
-	.com_wiki .main .subject ol.comments li,
-	ol.comments li {
-		clear: left;
-		margin: 0;
-		padding: 0;
-		border-top: 1px solid #fff;
-	}
-	.com_wiki .main .subject ol.comments ol,
-	ol.comments ol {
-		margin: 0;
-		padding: 0;
-	}
-	.com_wiki .main .subject ol.comments li li,
-	ol.comments li li {
-		margin: 0;
-		padding-left: 70px !important;
-	}
-	/* Options */
-	.abuse {
-		background: url("/components/com_wiki/assets/img/abuse.gif") 0 0 no-repeat;
-		padding-left: 15px;
-	}
-	.reply {
-		background: url("/components/com_wiki/assets/img/reply.gif") 0 0 no-repeat;
-		padding-left: 15px;
-	}
-	.abuse:hover,
-	.reply:hover {
-		background-position: 0 -20px;
-	}
-	.comment-options {
-		color: #fff;
-		font-size: 90%;
-		visibility: hidden;
-	}
-	ol.comments .comment-content:hover .comment-options {
-		visibility: visible;
-	}
-	.comment-options a {
-		margin-right: 1em;
-	}	   
-	.comment-options a span {
-		display: none;
-	}
-	ol.comments dl.comment-details {
-		display: none;
-	}
-	/* Member photo */
-	ol.comments p.comment-member-photo {
-		float: left;
-		margin: 0;
-		padding: 0 20px 0 0; /*105px;*/
-		width: 50px;
-		height: 50px;
-		overflow: hidden;
-		color: #777;
-		font-size: 11px;
-		text-align: right;
-		background: url("/components/com_wiki/assets/img/comment-arrow.gif") right 15px no-repeat;
-	}
-	/* Content */
-	ol.comments .comment-content {
-		margin: 0 0 1em 70px; /*125px;*/
-		background-color: #fafafa;
-		border: 10px solid #f2f2f2;
-		padding: 0 1em;
-	}
-	ol.comments .comment-voting {
-		margin: 0;
-		padding: 0;
-	}
-	ol.comments .comment-voting .thumbsvote {
-		margin-top: 0.5em;
-	}
-	/* Author comments */
-	ol.comments .author .comment-content,
-	ol.comments .author ol.comments .author .comment-content {
-		background-color: #fdfbf8;
-		border-color: #f9f2ec;
-	}
-	ol.comments .author p.comment-member-photo,
-	ol.comments .author ol.comments .author p.comment-member-photo {
-		background: url("/components/com_wiki/assets/img/comment-arrow.gif") right -129px no-repeat;
-	}
-	ol.comments .author ol.comments .comment-content,
-	ol.comments .author ol.comments .author ol.comments .comment-content {
-		background-color: #fafafa;
-		border-color: #f2f2f2;
-	}
-	ol.comments .author ol.comments p.comment-member-photo,
-	ol.comments .author ol.comments .author ol.comments p.comment-member-photo {
-		background: url("/components/com_wiki/assets/img/comment-arrow.gif") right 15px no-repeat;
-	}
-	/* Chosen comments */
-	ol.comments .chosen .comment-content {
-		background-color: #f9f8fd;
-		border-color: #eeecf9;
-	}
-	ol.comments .chosen p.comment-member-photo {
-		background: url("/components/com_wiki/assets/img/comment-arrow.gif") right -57px no-repeat;
-	}
-	/* Details (date, time) */
-	ol.comments span.comment-details {
-		color: #bfbfbf;
-	}
-/* Permalink */
-	ol.comments .permalink {
-		border: none;
-		color: #bfbfbf;
-	}
-	ol.comments .permalink:hover {
-		color: #000;
-		border: none;
-	}
-	ol.comments .odd,
-	ol.comments .even {
-		background: transparent;
-	}
-	ol.comments .comment-none {
-		color: #ccc;
-	}
-/* Stars */
-	ol.comments .no-stars        { background-position: 0 0; }
-	ol.comments .half-stars      { background-position: 0 -40px; }
-	ol.comments .one-stars       { background-position: 0 -80px; }
-	ol.comments .onehalf-stars   { background-position: 0 -120px; }
-	ol.comments .two-stars       { background-position: 0 -160px; }
-	ol.comments .twohalf-stars   { background-position: 0 -200px; }
-	ol.comments .three-stars     { background-position: 0 -240px; }
-	ol.comments .threehalf-stars { background-position: 0 -280px; }
-	ol.comments .four-stars      { background-position: 0 -320px; }
-	ol.comments .fourhalf-stars  { background-position: 0 -360px; }
-	ol.comments .five-stars      { background-position: 0 -400px; }
-/* (sub) Tabs */
-	#sub-section-menu {
-		height: auto;
-		padding: 0;
-		background: none;
-		border: 3px double #ccc;
-	}
-	#sub-section-menu ul {
-		background: none;
-		border: none;
-		height: auto;
-		padding: 0;
-		margin: 0;
-	}
-	#sub-section-menu li {
-		height: auto;
-		padding: 0.2em 1em;
-		float: left;
-		display: block;
-		margin: 0;
-		background-image: none;
-	}
-	#sub-section-menu li a {
-		background: none;
-		height: auto;
-		padding: 0;
-		color: #BA7A75;
-	}
-	#sub-section-menu li a span {
-		background: none;
-		height: auto;
-		padding: 0;
-	}
-	#sub-section-menu li.active a {
-		color: #333;
-		border: none;
-	}
-	#sub-menu li.page-delete,
-	#sub-section-menu li.page-delete {
-		float: right;
-	}
-/* User options */
-	#section-useroptions {
-		list-style: none;
-		float: right;
-		margin: -2.5em 0 0 0;
-		padding: 0;
-	}
-	#section-useroptions a {
-		border: none;
-		color: #7F7F7F;
-	}
-	#section-useroptions a:hover {
-		border: none;
-		color: #000;
-	}
-	#section-useroptions li { 
-		margin: 0 0 0 2em;
-		padding: 0.2em 0;
-		float: left;
-		background-image: none;
-	}
-/* Table of contents */
-	.article-toc,
-	.article-search {
-		background-color: #eee;
-		margin: 0 0 1em 0;
-		padding: 0.5em;
-	}
-	.article-toc h3,
-	.article-search h3 {
-		margin: 0;
-		padding: 0.4em;
-		color: #fff;
-		background: #777;
-		font-size: 1em;
-		font-weight: bold;
-	}
-	.article-toc ul {
-		margin: 0;
-		padding: 0.4em;
-		max-height: 300px;
-		overflow: auto;
-		border: 1px solid #aaa;
-		background: #fff;
-	}
-	.article-toc ul li {
-		background-image: none;
-	}
-	.article-toc ul ul {
-		max-height: none;
-		border: none;
-		margin: 0 0 0 1em;
-		padding: 0;
-	}
-	.article-toc li {
-		margin: 0;
-		padding: 0.2em;
-	}
-	.tocnumber {
-		display: none;
-	}
-	.article-tags {
-		background: #F4F4F4 url("/components/com_wiki/assets/img/tag_orange.png") 0.5em 0.5em no-repeat;
-		margin: 0 0 1em 0;
-		padding: 0.5em 0.5em 0.4em 2em;
-	}
-	.com_courses .course_wiki .article-tags h3 {
-		display: none;
-	}
-	.article-tags ol {
-		margin: 0;
-		padding: 0;
-		max-height: none;
-		font-size: 90%;
-	}
-	.article-tags p {
-		margin: 0;
-		padding: 0;
-	}
-/* Timestamp */
-	.timestamp {
-		margin: 4em 0 1em 0;
-		padding: 0.5em 0.7em;
-		border-top: 1px solid #eee;
-		font-size: 90%;
-		color: #aaa;
-		background-color: #f4f4f4;
-		text-align: left;
-	}
-	.timestamp .article-usage {
-		float: right;
-	}
-	a.ext-link {
-		background: url("/components/com_courses/assets/img/extlink.gif") 0 0.4em no-repeat;
-		padding-left: 15px;
-	}
-	a.missing {
-		background: url("/components/com_courses/assets/img/missinglink.gif") 0 0.4em no-repeat;
-		padding-left: 7px;
-	}
-/* Diffs */
-	.diff-versions {
-		margin: 0;
-	}
-	.diff-versions dt {
-		font-weight: bold;
-		margin-top: 0.5em;
-	}
-	.diffs {
-		margin: 1em 0;
-		border: 2px solid #ccc;
-	}
-	.com_courses .main .subject table.diffs td, 
-	.com_courses .main .subject table.diffs th,
-	.diffs td, 
-	.diffs th {
-		border: 1px solid #fff;
-		margin: 0;
-		padding: 0.2em 0.8em;
-	}
-	.diffs th {
-		text-align: right;
-		background-color: #efefef;
-	}
-	.diff-marker {
-		width: 1em;
-		text-align: center;
-	}
-	.diff-deletedline {
-		border: 1px solid #EFCCC2; 
-		background: #FFF2EF;
-		margin: 1em 0;
-		padding: 1em;
-		color: #CC0000;
-	}
-	.diff-addedline {
-		border: 1px solid #DAE6DA;
-		background: #F2FFF2;
-		margin: 1em 0;
-		padding: 1em;
-		color: #360;
-	}
-	del.diffchange {
-		color: #CC0000;
-	}
-	ins.diffchange {
-		color: #360;
-	}
-	#file-uploader .qq-upload-button {
-		background:#222;
-		background-image: -webkit-linear-gradient(top, #444, #222);
-		background-image: -moz-linear-gradient(top, #444, #222);
-		background-image: -o-linear-gradient(top, #444, #222);
-		background-image: -ms-linear-gradient(top, #444, #222);
-		background-image: linear-gradient(top, #444, #222);
-		padding:10px;
-		position:relative;
-		color:#FFF;
-		text-align:center;
-		-webkit-border-radius:3px;
-		-moz-border-radius:3px;
-		border-radius:3px;
-		border:1px solid #000;
-		border-top:1px solid #666;
-		margin:0 0 10px 0;
-	}
-	#file-uploader .qq-upload-button:active {
-		background-image: -webkit-linear-gradient(top, #222, #444);
-		background-image: -moz-linear-gradient(top, #222, #444);
-		background-image: -o-linear-gradient(top, #222, #444);
-		background-image: -ms-linear-gradient(top, #222, #444);
-		background-image: linear-gradient(top, #222, #444);
-	}
-	#file-uploader .qq-upload-drop-area {
-		padding: 0.7em;
-		border: 1px solid #ccc;
-		-webkit-border-radius:3px;
-		-moz-border-radius:3px;
-		border-radius:3px;
-		background: #666;
-		color: #fff;
-		text-align: center;
-	}
-	#hubForm .explaination #file-uploader ul.qq-upload-list {
-		margin: 0;
-	}
-	#file-uploader .qq-upload-size {
-		margin: 0 0 0 2em;
-	}
-	#file-uploader .qq-upload-failed-text {
-		display: none;
-	}
+/* Overall styles */
+.progress {
+	padding: 15px;
+}
+.progress h3 {
+	margin-bottom: .5em;
+}
+.progress h4 {
+	text-transform: uppercase;
+	font-weight: bold;
+	margin: 0 0 1em 0;
+}
+/* Course progress chart */
+.progress-timeline .unit,
+.progress-timeline .start,
+.progress-timeline .end {
+	display: block;
+	float: left;
+	width: 12.8%;
+	height: 135px;
+	text-align: center;
+	font-size: 14px;
+	line-height: 50px;
+	position: relative;
+}
+.progress-timeline .unit-inner,
+.progress-timeline .start-inner,
+.progress-timeline .end-inner {
+	display: block;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: #EFEFEF;
+	border-top: 2px dotted #888;
+	height: 50px;
+}
+.progress-timeline .start-inner,
+.progress-timeline .past {
+	border-top: 3px solid blue;
+}
+.progress-timeline .past,
+.progress-timeline .current {
+	background: #AAA;
+	color: #FFF;
+	font-style: italic;
+}
+.progress-timeline .first, 
+.progress-timeline .unit-inner,
+.progress-timeline .end {
+	border-left: 2px solid #FFF;
+}
+.progress-timeline .start,
+.progress-timeline .end {
+	width: 5%;
+}
+.progress-timeline .start {
+	background: url('/components/com_courses/assets/img/person.png') 50% 0 no-repeat;
+}
+.progress-timeline .end {
+	background: url('/components/com_courses/assets/img/jumping.png') 50% 0 no-repeat;
+}
+.progress-timeline .current {
+	background: url('/components/com_courses/assets/img/running.png') 50% 2px no-repeat;
+}
+.progress-timeline .start-inner,
+.progress-timeline .end-inner {
+	width: 100%;
+	height: 50px;
+	background: #EFEFEF;
+}
+.progress-timeline .start-inner {
+	border-bottom-left-radius: 5px;
+}
+.progress-timeline .end-inner {
+	border-bottom-right-radius: 5px;
+}
+.progress-timeline .unit-inner:before,
+.progress-timeline .unit-inner:after {
+	content: "";
+	position: absolute;
+	border-style: solid;
+}
+.progress-timeline .unit-inner:before {
+	top: -10px;
+	left: 50%;
+	margin-left: -7px;
+	bottom: auto;
+	border-color: #999;
+	border-width: 8px;
+	border-radius: 8px;
+}
+.progress-timeline .past:before {
+	border-color: blue;
+}
+.progress-timeline .unit-inner:after {
+	top: -8px;
+	left: 50%;
+	margin-left: -5px;
+	bottom: auto;
+	border-color: #FFF;
+	border-width: 6px;
+	border-radius: 6px;
+}
+.progress-timeline .past:after {
+	border-color: #EFEFEF;
+}
+.progress-timeline .current .unit-inner:before {
+	border-color: #FFF;
+}
+.progress-timeline .current .unit-inner:after {
+	border-color: blue;
+}
 
-	#attachments {
-		margin: 0;
-		padding: 0;
-		min-width: 100px;
-		background: #fff;
-	}
-	#hubForm .explaination #attachments {
-		border: 1px solid #ccc;
-		max-height: 300px;
-		overflow: scroll;
-	}
-	#hubForm .explaination #attachments p {
-		margin: 0;
-		padding: 0.2em 0.5em;
-	}
-	#attachments form,
-	#attachments fieldset,
-	#attachments table {
-		padding: 0;
-		margin: 0;
-	}
-	#attachments table {
-		width: auto;
-	}
-	#attachments tbody td {
-		padding: 0.2em 0.4em;
-	}
-	#attachments tbody td span {
-		display: block;
-		overflow: scroll;
-		max-width: 180px;
-		word-wrap: break-word;
-	}
-	#attachments .delete {
-		padding-left: 0;
-		background: transparent;
-	}
-/* Admonitions */
-	div.admon-caution, 
-	div.admon-important, 
-	div.admon-note, 
-	div.admon-tip, 
-	div.admon-warning {
-		border: 1pt solid #E5E5E5;
-		background-color: #F9F9FF;
-		color: black;
-		margin: 10pt 30pt 10pt 30pt;
-		background-repeat: no-repeat;
-		background-position: 8px 8px;
-		min-height: 64px; /*64=48+8+8 but doesn't work with IE*/
-		padding-left: 64px;
-	}
-	div.admon-caution p, 
-	div.admon-important p, 
-	div.admon-note p, 
-	div.admon-tip p, 
-	div.admon-warning p {
-		margin-top: 8px; /*to align text with bg graphic*/
-	}
-	div.admon-tip { 
-		background-image: url("/components/com_wiki/assets/img/admon-tip.png"); 
-	}
-	div.admon-note { 
-		background-image: url("/components/com_wiki/assets/img/admon-note.png"); 
-	}
-	div.admon-important { 
-		background-image: url("/components/com_wiki/assets/img/admon-important.png"); 
-	}
-	div.admon-caution { 
-		background-image: url("/components/com_wiki/assets/img/admon-caution.png"); 
-	}
-	div.admon-warning { 
-		background-image: url("/components/com_wiki/assets/img/admon-warning.png"); 
-	}
+/* Current scores/grades */
+.grades {
+	margin-top: 20px;
+	border-top: 2px solid #CCC;
+	border-bottom: 2px solid #CCC;
+	overflow: hidden;
+	padding: 10px 0;
+}
+.grades .current-score {
+	display: block;
+	float: left;
+	width: 40%;
+}
+.grades .quizzes,
+.grades .homeworks,
+.grades .exams {
+	display: block;
+	float: left;
+	width: 20%;
+}
+.grades .quizzes-inner,
+.grades .homeworks-inner,
+.grades .exams-inner {
+	padding: 0 10px;
+	border-left: 2px solid #CCC;
+	text-align: center;
+}
+.grades p {
+	margin: 0;
+}
+.grades .title {
+	text-transform: uppercase;
+	padding-bottom: 7px;
+}
+.grades .score {
+	font-size: 3em;
+	padding-bottom: 7px;
+}
+.grades .current-score .score {
+	color: blue;
+}
+.grades .toggle-grade-details {
+	position: relative;
+	padding-left: 15px;
+	border-bottom: none;
+	text-decoration: none;
+	color: #666;
+}
+.grades .toggle-grade-details:before {
+	font-family: "fontcons";
+	content: "\f0da";
+	position: absolute;
+	left: 0;
+	top: -1px;
+}
+.grades .toggle-grade-details-open:before {
+	content: "\f0d7";
+}
+.grades .grade-details table {
+	margin-top: 20px;
+}
+.grades .grade-details table caption {
+	text-align: center;
+	text-transform: uppercase;
+}
+.grades .grade-details thead td {
+	text-transform: uppercase;
+}
+.grades .grade-details-date,
+.grades .grade-details-score {
+	text-align: center;
+	width: 100px;
+}
+.grades .go {
+	background-color: #AFFFAF;
+	background-color: rgba(0, 255, 0, 0.1);
+}
+.grades .yield {
+	background-color: #FFFFAF;
+	background-color: rgba(255, 255, 0, 0.1);
+}
+.grades .stop {
+	background-color: #FFAFAF;
+	background-color: rgba(255, 0, 0, 0.1);
+}
 
-	.com_wiki .wiki .modified-date {
-		color: #aaa;
-		font-size: 90%;
-	}
-/* Wiki pages */
-	.wikipage {
-		margin: 0;
-		padding: 1em 0 0 18px;
-	}
-	.wikipage h1,
-	.wikipage h1,
-	.wikipage h2,
-	.wikipage h3,
-	.wikipage h4,
-	.wikipage h5,
-	.wikipage h6 {
-		color: #333;
-		text-shadow: none;
-		font-weight: bold;
-		padding: 0;
-		margin: 0.618em 0;
-		border: none;
-		line-height: 1.2;
-	}
-	.wikipage h1 {
-		font-size: 1.8em;
-	}
-	.wikipage h2 span {
-		color: #333;
-	}
-	.wikipage h1, 
-	.wikipage h2, 
-	.wikipage h3 {
-		margin-left: -18px;
-	}
-	.wikipage ul,
-	.wikipage ol {
-		padding: 0;
-		margin: 0 0 1em 0;
-	}
-	.wikipage ul {
-		list-style-type: disc;
-	}
-	.wikipage ol {
-		list-style-type: decimal;
-	}
-	.wikipage li {
-		padding: 0;
-		margin: 0em 0 0em 2em;
-	}
-	.wikipage ul li {
-	}
-	.wikipage dd {
-		color: #888;
-	}
-	.wikipage table {
-		border: 2px solid #ccc;
-		width: auto;
-	}
-	.wikipage table td, 
-	.wikipage table th {
-		border: 1px solid #ccc;
-		margin: 0;
-		padding: 0.2em 0.4em;
-	}
-	.wikipage blockquote {
-		margin: 2em 0 2.5em 0;
-		padding: 5px 0 5px 10px;
-	}
-	.wikipage pre {
-		font-family: "Bitstream Vera Sans Mono", Courier, Monaco, ProFont, "American Typewriter", "Andale Mono", monospace;
-		color: #555;
-		background: #f7f7f7;
-		border: 1px solid #d7d7d7;
-		margin: 1em 1.75em;
-		padding: .25em;
-		overflow: auto;
-		font-size: 0.85em;
-		line-height: 1.95em;
-		white-space: pre;
-		white-space: pre-wrap;
-		word-wrap: break-word;
-		white-space: -moz-pre-wrap;
-		white-space: -pre-wrap;
-		white-space: -o-pre-wrap;
-		
-	}
-/* Figures */
-	.wikipage .figure img {
-		margin: 0.5em;
-		padding: 0;
-		background: transparent;
-		text-align: center;
-	}
-	.wikipage .figure {
-		display: inline-block;
-		background: #fff;
-		border: 1px solid #eaeaea;
-	}
-	.wikipage .figure a {
-		border: none;
-	}
-	.wikipage .figcaption {
-		display: block;
-		margin: 0;
-		padding: 0.5em;
-		background: #efefef;
-	}
+/* Badges */
+.badge {
+	margin-top: 20px;
+	padding: 20px;
+	overflow: hidden;
+	border: 2px solid #CCC;
+	box-shadow: 0 0 3px #AAA;
+	background: url('/components/com_courses/assets/img/samplebadge.png') 10px 8px no-repeat;
+	border-radius: 5px;
+}
+.badge h3 {
+	padding-left: 100px;
+	margin: 0;
+}
+.badge p {
+	padding-left: 100px;
+	margin-bottom: 0;
+}
