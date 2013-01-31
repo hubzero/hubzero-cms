@@ -54,7 +54,7 @@ if (count($tags) > 0)
 	$html .= '</ol>' . "\n";
 	if ($this->morelnk) 
 	{
-		$html .= '<p class="more"><a href="'.JRoute::_('index.php?option=com_tags') . '">' . JText::_('MOD_TOPTAGS_MORE') . ' <span>' . $tag->tcount . '</span></a></p>' . "\n";
+		$html .= '<p class="more"><a href="'.JRoute::_('index.php?option=com_tags') . '">' . JText::_('MOD_TOPTAGS_MORE') . '</a></p>' . "\n";
 	}
 } 
 else 
