@@ -433,7 +433,11 @@ class ForumPost extends JTable
 				} 
 				else 
 				{
-					$query .= " ORDER BY c.sticky DESC, activity DESC, c.created DESC";
+					if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'))) 
+					{
+						$filters['sort_Dir'] = 'DESC';
+					}
+					$query .= " ORDER BY c.sticky DESC, activity DESC, c.created " . $filters['sort_Dir'];
 				}
 			}
 		}
