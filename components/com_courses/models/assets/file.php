@@ -123,14 +123,15 @@ class FileAssetHandler extends AssetHandler
 		move_uploaded_file($_FILES['files']['tmp_name'][0], $target_path);
 
 		$return_info = array(
-			'asset_id'    => $this->assoc['asset_id'],
-			'asset_title' => $this->asset['title'],
-			'asset_type'  => $this->asset['type'],
-			'asset_url'   => CoursesModelAsset::getInstance($this->assoc['asset_id'])->path($this->asset['course_id']),
-			'course_id'   => $this->asset['course_id'],
-			'asset_ext'   => $ext,
-			'upload_path' => $uploadDirectory,
-			'target_path' => $target_path
+			'asset_id'       => $this->assoc['asset_id'],
+			'asset_title'    => $this->asset['title'],
+			'asset_type'     => $this->asset['type'],
+			'asset_url'      => CoursesModelAsset::getInstance($this->assoc['asset_id'])->path($this->asset['course_id']),
+			'course_id'      => $this->asset['course_id'],
+			'offering_alias' => JRequest::getCmd('offering', ''),
+			'asset_ext'      => $ext,
+			'upload_path'    => $uploadDirectory,
+			'target_path'    => $target_path
 		);
 
 		// Return info

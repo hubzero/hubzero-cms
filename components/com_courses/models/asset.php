@@ -181,6 +181,13 @@ class CoursesModelAsset extends JObject
 		{
 			$path .= DS . ltrim($this->get('url'), DS);
 		}
+
+		// Override path for exam type assets
+		if($this->get('type') == 'exam')
+		{
+			$path = $this->get('url');
+		}
+
 		return $path;
 	}
 

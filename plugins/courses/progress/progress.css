@@ -23,7 +23,7 @@
 .progress-timeline .end {
 	display: block;
 	float: left;
-	width: 12.8%;
+	width: 10%;
 	height: 135px;
 	text-align: center;
 	font-size: 14px;
@@ -54,7 +54,7 @@
 }
 .progress-timeline .first, 
 .progress-timeline .unit-inner,
-.progress-timeline .end {
+.progress-timeline .end-inner {
 	border-left: 2px solid #FFF;
 }
 .progress-timeline .start,
@@ -118,6 +118,17 @@
 .progress-timeline .current .unit-inner:after {
 	border-color: blue;
 }
+/* Timeline widths (less the 5% on each side for start and end (10% total) */
+.length_1 .unit { width: 90%; }
+.length_2 .unit { width: 45%; }
+.length_3 .unit { width: 30%; }
+.length_4 .unit { width: 22.5%; }
+.length_5 .unit { width: 18%; }
+.length_6 .unit { width: 5.625%; }
+.length_7 .unit { width: 12.85%; }
+.length_8 .unit { width: 11.25%; }
+.length_9 .unit { width: 10%; }
+.length_10 .unit { width: 9%; }
 
 /* Current scores/grades */
 .grades {
@@ -190,7 +201,7 @@
 .grades .grade-details-date,
 .grades .grade-details-score {
 	text-align: center;
-	width: 100px;
+	width: 200px;
 }
 .grades .go {
 	background-color: #AFFFAF;

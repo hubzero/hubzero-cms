@@ -192,7 +192,7 @@ class CoursesApiController extends Hubzero_Api_Controller
 				'course_id'      => $this->course_id,
 				'assetgroups'    => $assetGroups,
 				'course_alias'   => $this->course->get('alias'),
-				'offering_alias' => JRequest::getWord('offering_alias', '')
+				'offering_alias' => $this->offering_alias
 			),
 			201, 'Created');
 	}
@@ -258,10 +258,11 @@ class CoursesApiController extends Hubzero_Api_Controller
 		// Return message
 		$this->setMessage(
 			array(
-				'assetgroup_id'   =>$assetGroupObj->id,
-				'assetgroup_title'=>$assetGroupObj->title,
-				'assetgroup_style'=>'display:none',
-				'course_id'       =>$this->course_id),
+				'assetgroup_id'    => $assetGroupObj->id,
+				'assetgroup_title' => $assetGroupObj->title,
+				'assetgroup_style' => 'display:none',
+				'course_id'        => $this->course_id,
+				'offering_alias'   => $this->offering_alias),
 			201, 'Created');
 	}
 
@@ -276,6 +277,7 @@ class CoursesApiController extends Hubzero_Api_Controller
 		$this->setMessageType($this->format);
 
 		// Require authorization
+		// @FIXME: implement this!  Need to add course_id and offering_alias to form submission
 		/*$authorized = $this->authorize();
 		if(!$authorized['manage'])
 		{
@@ -481,11 +483,12 @@ class CoursesApiController extends Hubzero_Api_Controller
 			}
 
 			$files = array(
-				'asset_id'    => $row2->asset_id,
-				'asset_title' => $row->title,
-				'asset_type'  => $row->type,
-				'asset_url'   => $assetObj->url,
-				'course_id'   => $row->course_id
+				'asset_id'       => $row2->asset_id,
+				'asset_title'    => $row->title,
+				'asset_type'     => $row->type,
+				'asset_url'      => $assetObj->url,
+				'course_id'      => $row->course_id,
+				'offering_alias' => JRequest::getCmd('offering', '')
 			);
 		}
 
@@ -643,20 +646,21 @@ class CoursesApiController extends Hubzero_Api_Controller
 		}
 
 		// Get the course id
-		$this->course_id = JRequest::getInt('course_id', 0);
+		$this->course_id      = JRequest::getInt('course_id', 0);
+		$this->offering_alias = JRequest::getCmd('offering', '');
 
 		// Load the course page
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
 		$course = CoursesModelCourse::getInstance($this->course_id);
 		$this->course = $course;
 
-		if (in_array($user_id, $course->get('managers')))
+		if ($course->access('manage') || $course->offering($this->offering_alias)->access('manage'))
 		{
 			$authorized['view']   = true;
 			$authorized['manage'] = true;
 			$authorized['admin']  = true;
 		}
-		elseif (in_array($user_id, $course->get('members')))
+		elseif ($course->offering($this->offering_alias)->access('view'))
 		{
 			$authorized['view'] = true;
 		}

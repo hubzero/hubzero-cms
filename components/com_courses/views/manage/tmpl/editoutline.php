@@ -78,6 +78,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 					<input class="uniform title-save" type="submit" value="Save" />
 					<input class="uniform title-reset" type="reset" value="Cancel" />
 					<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
+					<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
 					<input type="hidden" name="id" value="<?php echo $unit->get('id'); ?>" />
 				</form>
 			</div>
@@ -112,6 +113,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 								<form action="/api/courses/assetnew" class="uploadfiles-form">
 									<input type="file" name="files[]" class="fileupload" multiple />
 									<input type="hidden" name="course_id" value="<?php echo $this->course->get('id') ?>" />
+									<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
 									<input type="hidden" name="scope_id" value="<?php echo $ag->get('id'); ?>" />
 								</form>
 							</div>
@@ -123,6 +125,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 										<input class="uniform title-save" type="submit" value="Save" />
 										<input class="uniform title-reset" type="reset" value="Cancel" />
 										<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
+										<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
 										<input type="hidden" name="id" value="<?php echo $ag->get('id'); ?>" />
 									</form>
 								</div>
@@ -140,10 +143,6 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 									{
 										$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
 									}
-									elseif ($a->get('type') == 'exam')
-									{
-										$href = JRoute::_($a->get('url'));
-									}
 ?>
 									<li id="asset_<?php echo $a->get('id'); ?>" class="asset-item asset <?php echo $a->get('type'); echo ($a->get('state') == 0) ? ' notpublished' : ' published'; ?>">
 										<div class="sortable-assets-handle"></div>
@@ -154,6 +153,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 												<input class="uniform title-save" type="submit" value="Save" />
 												<input class="uniform title-reset" type="reset" value="Cancel" />
 												<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
+												<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
 												<input type="hidden" name="id" value="<?php echo $a->get('id'); ?>" />
 											</form>
 										</div>
@@ -171,6 +171,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 														<?php echo ($a->get('state') == 0) ? '' : 'checked="checked"'; ?> />
 													<input type="hidden" class="asset_id" name="id" value="<?php echo $a->get('id'); ?>" />
 													<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
+													<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
 												</label>
 											</span>
 										</form>
@@ -211,6 +212,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 								<form action="/api/courses/assetnew" class="uploadfiles-form">
 									<input type="file" name="files[]" class="fileupload" multiple />
 									<input type="hidden" name="course_id" value="<?php echo $this->course->get('id') ?>" />
+									<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
 									<input type="hidden" name="scope_id" value="<?php echo $agt->get('id'); ?>" />
 								</form>
 							</div>
@@ -222,6 +224,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 										<input class="uniform title-save" type="submit" value="Save" />
 										<input class="uniform title-reset" type="reset" value="Cancel" />
 										<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
+										<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
 										<input type="hidden" name="id" value="<?php echo $agt->get('id'); ?>" />
 									</form>
 								</div>
@@ -234,10 +237,6 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 						{
 								$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $agt->get('alias'));
 						}
-						elseif ($a->get('type') == 'exam')
-						{
-							$href = JRoute::_($a->get('url'));
-						}
 ?>
 									<li id="asset_<?php echo $a->get('id'); ?>" class="asset-item asset <?php echo $a->get('type'); echo ($a->get('state') == 0) ? ' notpublished' : ' published'; ?>">
 										<div class="sortable-assets-handle"></div>
@@ -248,6 +247,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 												<input class="uniform title-save" type="submit" value="Save" />
 												<input class="uniform title-reset" type="reset" value="Cancel" />
 												<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
+												<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
 												<input type="hidden" name="id" value="<?php echo $a->get('id'); ?>" />
 											</form>
 										</div>
@@ -265,6 +265,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 														<?php echo ($a->get('state') == 0) ? '' : 'checked="checked"'; ?> />
 													<input type="hidden" class="asset_id" name="id" value="<?php echo $a->get('id'); ?>" />
 													<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
+													<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
 												</label>
 											</span>
 										</form>
@@ -283,6 +284,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 							Add a new <?php echo strtolower(rtrim($agt->get('title'), 's')); ?>
 							<form action="/api/courses/assetgroupsave">
 								<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
+								<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
 								<input type="hidden" name="unit_id" value="<?php echo $unit->get('id'); ?>" />
 								<input type="hidden" name="parent" value="<?php echo $agt->get('id'); ?>" />
 							</form>
@@ -306,10 +308,6 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 					{
 						$href = JRoute::_($base . '&active=outline&a=' . $unit->get('alias'));
 					}
-					elseif ($a->get('type') == 'exam')
-					{
-						$href = JRoute::_($a->get('url'));
-					}
 					echo '<li class="asset-group-item"><a class="asset ' . $a.get('type') . '" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 				}
 ?>
@@ -326,7 +324,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 			<form action="/api/courses/unitsave">
 				<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
 				<input type="hidden" name="offering_id" value="<?php echo $this->course->offering()->get('id'); ?>" />
-				<input type="hidden" name="offering_alias" value="<?php echo $this->course->offering()->get('alias'); ?>" />
+				<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
 			</form>
 		</li>
 	</ul>

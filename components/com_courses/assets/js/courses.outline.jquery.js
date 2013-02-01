@@ -422,16 +422,15 @@ HUB.CoursesOutline = {
 			var form            = $(this).parents('form');
 			var label           = form.find('span.published-label-text');
 			var item            = form.parent('.asset-item');
-			var assetGroupTitle = $(this).parents('.asset-group-type-item').find('.asset-group-title').html();
 
 			// If this is an Exam, we also want to set deployment info
 			// @FIXME: only do this if it isn't already deployed
 			// @FIXME: handle this with our new asset handlers
-			if(assetGroupTitle == 'Exam' && item.hasClass('notpublished')){
+			if(item.hasClass('exam') && item.hasClass('notpublished')){
 				// @FIXME: add a better method for getting form id (mainly because this one doesn't work once you publish the form)
 				var assetA    = item.find('.asset-preview a');
 				var assetHref = assetA.attr('href');
-				var formId    = assetHref.substr(assetHref.length - 1);
+				var formId    = assetHref.match(/\/courses\/form\/layout\/([0-9]+)/);
 
 				$.fancybox({
 					fitToView: false,
@@ -439,7 +438,7 @@ HUB.CoursesOutline = {
 					autoSize: false,
 					height: ($(window).height())*2/3,
 					type: 'iframe',
-					href: '/courses/form?task=deploy&formId='+formId+'&tmpl=component',
+					href: '/courses/form?task=deploy&formId='+formId[1]+'&tmpl=component',
 					afterShow: function() {
 						$('.fancybox-iframe').load(function() {
 							var iframeTask = $(this)[0].contentWindow.location.pathname.match(/\/courses\/form\/([a-zA-Z]+)/);
@@ -451,22 +450,22 @@ HUB.CoursesOutline = {
 					},
 					beforeClose: function() {
 						// Grab the distribution link
-						distLink = $('.fancybox-iframe').contents().find('.distribution-link a').attr('href');
+						distLink = $('.fancybox-iframe').contents().find('.distribution-link a').attr('href').match(/\.org(\/.*)/);
 					},
 					afterClose: function() {
-						if(distLink && distLink.length){
+						if(distLink[1] && distLink[1].length){
 							// Update URL for asset to have proper link
 							// @FIXME: combine this call with the toggle publish call
 							$.ajax({
 								url: '/api/courses/assetsave',
-								data: form.serialize()+'&url='+encodeURIComponent(distLink),
+								data: form.serialize()+'&url='+encodeURIComponent(distLink[1]),
 								dataType: "json",
 								type: 'POST',
 								cache: false,
 								statusCode: {
 									201: function(data){
 										// Update the link
-										assetA.attr('href', distLink);
+										assetA.attr('href', distLink[1]);
 									},
 									401: function(data){
 										// Display the error message
@@ -547,7 +546,6 @@ HUB.CoursesOutline = {
 		$('.uploadfiles').each(function(){
 			// Initialize a few variables
 			var assetslist      = $(this).parent('.asset-group-item').find('.assets-list');
-			var assetGroupTitle = $(this).parents('.asset-group-type-item').find('.asset-group-title').html();
 			var form            = $(this).find('form');
 			var fileupload      = $(this);
 			var message         = '';
@@ -879,6 +877,7 @@ HUB.CoursesOutline = {
 						'<input class="uniform title-save" type="submit" value="Save" />',
 						'<input class="uniform title-reset" type="reset" value="Cancel" />',
 						'<input type="hidden" name="course_id" value="<%= course_id %>" />',
+						'<input type="hidden" name="offering" value="<%= offering_alias %>" />',
 						'<input type="hidden" name="id" value="<%= asset_id %>" />',
 					'</form>',
 				'</div>',
@@ -892,6 +891,7 @@ HUB.CoursesOutline = {
 						'<input class="uniform published-checkbox" name="published" type="checkbox" />',
 						'<input type="hidden" class="asset_id" name="id" value="<%= asset_id %>" />',
 						'<input type="hidden" name="course_id" value="<%= course_id %>" />',
+						'<input type="hidden" name="offering" value="<%= offering_alias %>" />',
 					'</label>',
 					'</span>',
 				'</form>',
@@ -906,6 +906,7 @@ HUB.CoursesOutline = {
 					'<form action="/api/courses/assetnew" class="uploadfiles-form">',
 						'<input type="file" name="files[]" class="fileupload" multiple />',
 						'<input type="hidden" name="course_id" value="<%= course_id %>" />',
+						'<input type="hidden" name="offering" value="<%= offering_alias %>" />',
 						'<input type="hidden" name="scope_id" value="<%= assetgroup_id %>" />',
 					'</form>',
 				'</div>',
@@ -917,6 +918,7 @@ HUB.CoursesOutline = {
 							'<input class="uniform title-save" type="submit" value="Save" />',
 							'<input class="uniform title-reset" type="reset" value="Cancel" />',
 							'<input type="hidden" name="course_id" value="<%= course_id %>" />',
+							'<input type="hidden" name="offering" value="<%= offering_alias %>" />',
 							'<input type="hidden" name="id" value="<%= assetgroup_id %>" />',
 						'</form>',
 					'</div>',
@@ -943,6 +945,7 @@ HUB.CoursesOutline = {
 						'<input class="uniform title-save" type="submit" value="Save" />',
 						'<input class="uniform title-reset" type="reset" value="Cancel" />',
 						'<input type="hidden" name="course_id" value="<%= course_id %>" />',
+						'<input type="hidden" name="offering" value="<%= offering_alias %>" />',
 						'<input type="hidden" name="id" value="<%= unit_id %>" />',
 					'</form>',
 				'</div>',
@@ -968,6 +971,7 @@ HUB.CoursesOutline = {
 									'Add a new <% print(assetgroup.assetgroup_title.toLowerCase().replace(/s$/, "")) %>',
 									'<form action="/api/courses/assetgroupsave">',
 										'<input type="hidden" name="course_id" value="<%= course_id %>" />',
+										'<input type="hidden" name="offering" value="<%= offering_alias %>" />',
 										'<input type="hidden" name="unit_id" value="<%= unit_id %>" />',
 										'<input type="hidden" name="parent" value="<%= assetgroup.assetgroup_id %>" />',
 									'</form>',

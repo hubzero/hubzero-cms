@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
+ * @author    Sam Wilson <samwilson@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -33,6 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $tbl = new CoursesTableAsset(JFactory::getDBO());
 
+// Get all of the assets of type exam (these are not asset models, but just a standard array of objects)
 $assets = $tbl->find(array(
 	'w' => array(
 		'course_id'  => $this->course->get('id'),
@@ -40,56 +41,254 @@ $assets = $tbl->find(array(
 	)
 ));
 
+$quizzes_total       = 0;
+$homeworks_total     = 0;
+$exams_total         = 0;
+$quizzes_taken       = 0;
+$homeworks_submitted = 0;
+$exams_taken         = 0;
+
+$forms           = array();
+$current_score   = array();
+$current_score_i = 0;
+
+foreach ($assets as $asset)
+{
+	$increment_count_taken = false;
+	$crumb                 = false;
+
+	// Check for result for given student on form
+	preg_match('/\?crumb=([-a-zA-Z0-9]{20})/', $asset->url, $matches);
+
+	if(isset($matches[1]))
+	{
+		$crumb = $matches[1];
+	}
+
+	if(!$crumb)
+	{
+		// Break foreach, this is not a valid form!
+		break;
+	}
+
+	require_once(JPATH_COMPONENT . DS . 'models' . DS . 'form.php');
+	require_once(JPATH_COMPONENT . DS . 'models' . DS . 'formRespondent.php');
+	require_once(JPATH_COMPONENT . DS . 'models' . DS . 'formDeployment.php');
+
+	$dep = PdfFormDeployment::fromCrumb($crumb);
+
+	switch ($dep->getState())
+	{
+		// Form isn't available yet
+		case 'pending':
+			$forms[] = array('title'=>$asset->title, 'score'=>'Not yet open', 'date'=>'N/A', 'url'=>$asset->url);
+		break;
+
+		// Form availability has expired
+		case 'expired':
+			// Get whether or not we should show scores at this point
+			$results_closed = $dep->getResultsClosed();
+
+			// Grab the response
+			$resp = $dep->getRespondent();
+
+			// Form is still active and they are allowed to see their score
+			if($results_closed == 'score' || $results_closed == 'details')
+			{
+				$record          = $resp->getAnswers();
+				$score           = $record['summary']['score'];
+				$current_score[] = $score;
+				++$current_score_i;
+			}
+			else
+			{
+				// Score has been withheld by form creator
+				$score = 'Withheld';
+			}
+
+			// Get the date of the completion
+			$date = date('r', strtotime($resp->getEndTime()));
+
+			// They have completed this form, therefore set increment_count_taken equal to true
+			$increment_count_taken = true;
+
+			$forms[] = array('title'=>$asset->title, 'score'=>$score, 'date'=>$date, 'url'=>$asset->url);
+		break;
+
+		// Form is still active
+		case 'active':
+		if(isset($resp))
+		{
+			unset($resp);
+		}
+			$resp = $dep->getRespondent();
+
+			// Form is active and they have completed it!
+			if($resp->getEndTime())
+			{
+				// Get whether or not we should show scores at this point
+				$results_open = $dep->getResultsOpen();
+
+				// Form is still active and they are allowed to see their score
+				if($results_open == 'score' || $results_open == 'details')
+				{
+					$record          = $resp->getAnswers();
+					$score           = $record['summary']['score'];
+					$current_score[] = $score;
+					++$current_score_i;
+				}
+				else
+				{
+					// Score is not yet available at this point
+					$score = 'Not yet available';
+				}
+
+				// Get the date of the completion
+				$date = date('r', strtotime($resp->getEndTime()));
+
+				// They have completed this form, therefor set increment_count_taken equal to true
+				$increment_count_taken = true;
+			}
+			// Form is active and they haven't finished it yet!
+			else
+			{
+				$score = 'Not completed';
+				$date  = 'N/A';
+
+				// For sanities sake - they have NOT completed the form yet!
+				$increment_count_taken = false;
+			}
+
+			$forms[] = array('title'=>$asset->title, 'score'=>$score, 'date'=>$date, 'url'=>$asset->url);
+		break;
+	}
+
+	// Increment total count for this type
+	// @FIXME: probably need a better way of identifying types of form/exam assets
+	if(strpos(strtolower($asset->title), 'quiz'))
+	{
+		++$quizzes_total;
+
+		// If increment is set (i.e. they completed the from), increment the taken number as well
+		if($increment_count_taken)
+		{
+			++$quizzes_taken;
+		}
+	}
+	elseif(strpos(strtolower($asset->title), 'homework'))
+	{
+		++$homeworks_total;
+
+		// If increment is set (i.e. they completed the from), increment the taken number as well
+		if($increment_count_taken)
+		{
+			++$homeworks_submitted;
+		}
+	}
+	elseif(strpos(strtolower($asset->title), 'exam'))
+	{
+		++$exams_total;
+
+		// If increment is set (i.e. they completed the from), increment the taken number as well
+		if($increment_count_taken)
+		{
+			++$exams_taken;
+		}
+	}
+}
+
+// Calculate the student's current score
+$current_score = array_sum($current_score) / $current_score_i;
+
+// Get the status of the course (e.x. not started, in progress, completed, etc...)
+$section = $this->course->offering()->section();
+if(!$section->available() && !$section->ended())
+{
+	$h3 = JText::_('Course begins ') . date('M jS, Y', strtotime($section->get('start_date')));
+}
+elseif ($section->available())
+{
+	$h3 = JText::_('Course currently in progress');
+}
+else
+{
+	$h3 = JText::_('Course ended ') . date('M jS, Y', strtotime($section->get('end_date')));
+}
+
+// Get the number of units in the course and figure out which is the current one
+$units     = $this->course->offering()->units();
+$num_units = $units->total();
+$index     = 1;
+$current_i = 0;
+
+// Build the progress timeline bar
+$progress_timeline  = "<div class=\"progress-timeline length_{$num_units}\">";
+$progress_timeline .= '<div class="start"><div class="start-inner"></div></div>';
+foreach ($units as $unit)
+{
+	$first   = ($index == 1) ? ' first' : '';
+	$last    = ($index == $num_units) ? ' last' : '';
+	$past    = ($unit->started()) ? ' past' : '';
+	$current = '';
+
+	if($unit->available())
+	{
+		$current   = ' current';
+		// Set the index for the currently available unit (this will result in the latter of the available units if multiple are available)
+		// @FIXME: how do we handle an asynchrones course?  Current would be at spot of farthest form taken?
+		$current_i = $index;
+	}
+
+	$progress_timeline .= "<div class=\"unit{$current}\"><div class=\"unit-inner{$first}{$last}{$past}\">Unit {$index}</div></div>";
+
+	++$index;
+}
+$progress_timeline .= '<div class="end"><div class="end-inner"></div></div>';
+$progress_timeline .= '</div>';
+
+// Check/get info about whether or not a badge is offerred for this course
+// @TODO: attach badge to offering?
+
 ?>
 
 <div class="progress">
-	<h3>Course in progress</h3>
-	<h4>Unit 3 of 7</h4>
+	<h3><?= $h3 ?></h3>
+	<h4><?= JText::sprintf('Unit %d of %d', $current_i, $num_units) ?></h4>
 
-	<div class="progress-timeline">
-		<div class="start"><div class="start-inner"></div></div>
-		<div class="unit"><div class="unit-inner first past">Unit 1</div></div>
-		<div class="unit"><div class="unit-inner past">Unit 2</div></div>
-		<div class="unit current"><div class="unit-inner past">Unit 3</div></div>
-		<div class="unit"><div class="unit-inner">Unit 4</div></div>
-		<div class="unit"><div class="unit-inner">Unit 5</div></div>
-		<div class="unit"><div class="unit-inner">Unit 6</div></div>
-		<div class="unit"><div class="unit-inner last">Unit 7</div></div>
-		<div class="end"><div class="end-inner"></div></div>
-	</div>
+	<?= $progress_timeline ?>
 
 	<div class="clear"></div>
 
 	<div class="grades">
 		<div class="current-score">
 			<div class="current-score-inner">
-				<p class="title">Your current score</p>
-				<p class="score">70%</p>
-				<a href="#" class="toggle-grade-details toggle-grade-details-open">grade details</a>
+				<p class="title"><?= JText::_('Your current score') ?></p>
+				<p class="score"><?= $current_score . '%' ?></p>
+				<a href="#" class="toggle-grade-details toggle-grade-details-open"><?= JText::_('grade details') ?></a>
 			</div>
 		</div>
 
 		<div class="quizzes">
 			<div class="quizzes-inner">
-				<p class="title">Quizzes taken</p>
-				<p class="score">4</p>
-				<p>out of 25</p>
+				<p class="title"><?= JText::_('Quizzes taken') ?></p>
+				<p class="score"><?= $quizzes_taken ?></p>
+				<p><?= JText::sprintf('out of %d', $quizzes_total) ?></p>
 			</div>
 		</div>
 
 		<div class="homeworks">
 			<div class="homeworks-inner">
-				<p class="title">Homeworks submitted</p>
-				<p class="score">3</p>
-				<p>out of 8</p>
+				<p class="title"><?= JText::_('Homeworks submitted') ?></p>
+				<p class="score"><?= $homeworks_submitted ?></p>
+				<p><?= JText::sprintf('out of %d', $homeworks_total) ?></p>
 			</div>
 		</div>
 
 		<div class="exams">
 			<div class="exams-inner">
-				<p class="title">Exams taken</p>
-				<p class="score">1</p>
-				<p>out of 3</p>
+				<p class="title"><?= JText::_('Exams taken') ?></p>
+				<p class="score"><?= $exams_taken ?></p>
+				<p><?= JText::sprintf('out of %d', $exams_total) ?></p>
 			</div>
 		</div>
 
@@ -97,35 +296,38 @@ $assets = $tbl->find(array(
 
 		<div class="grade-details">
 			<table class="entries">
-				<caption>Grade Details</caption>
+				<caption><?= ucfirst(JText::_('grade details')) ?></caption>
 				<thead>
 					<tr>
-						<td class="grade-details-title">Assignment</td>
-						<td class="grade-details-score">Score</td>
-						<td class="grade-details-date">Date taken</td>
+						<td class="grade-details-title"><?= JText::_('Assignment') ?></td>
+						<td class="grade-details-score"><?= JText::_('Score') ?></td>
+						<td class="grade-details-date"><?= JText::_('Date taken') ?></td>
 					</tr>
 				</thead>
 				<tbody>
-					<? foreach($assets as $a) : ?>
+					<? foreach($forms as $form) : ?>
 						<? 
-							$grade = rand(50, 100);
-							if($grade < 60)
+							if(is_numeric($form['score']) && $form['score'] < 60)
 							{
 								$class = 'stop';
 							}
-							elseif($grade >= 60 && $grade <70)
+							elseif(is_numeric($form['score']) && $form['score'] >= 60 && $form['score'] < 70)
 							{
 								$class = 'yield';
 							}
-							else
+							elseif(is_numeric($form['score']) && $form['score'] >= 70)
 							{
 								$class = 'go';
 							}
+							else
+							{
+								$class = 'neutral';
+							}
 						?>
 						<tr class="<?= $class ?>">
-							<td class="grade-details-title"><a href="<?= $a->url ?>"><?= $a->title ?></a></td>
-							<td class="grade-details-score"><?= $grade . '%' ?></td>
-							<td class="grade-details-date"><?= date('M jS, Y') ?></td>
+							<td class="grade-details-title"><a href="<?= $form['url'] ?>"><?= $form['title'] ?></a></td>
+							<td class="grade-details-score"><?= $form['score'] . (is_numeric($form['score']) ? '%' : '') ?></td>
+							<td class="grade-details-date"><?= $form['date'] ?></td>
 						</tr>
 					<? endforeach; ?>
 				</tbody>
