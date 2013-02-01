@@ -240,7 +240,7 @@ if (!$no_html) : ?>
 
 										//create menu item
 										$menu_item  = '<li class="' . $li_cls . ' course-' . $cls . '-tab">';
-										$menu_item .= '<a class="' . $cls . '" title="' . $this->course->get('title') . '"\'s ' . $title . ' Page" href="' . $link . '">' . $title . '</a>';
+										$menu_item .= '<a class="' . $cls . '" title="' . $this->escape(stripslashes($this->course->get('title'))) . '\'s ' . $this->escape(stripslashes($title)) . ' Page" href="' . $link . '">' . $title . '</a>';
 										$menu_item .= '<span class="meta">';
 										if ($meta_count)
 										{
