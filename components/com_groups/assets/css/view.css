@@ -586,7 +586,7 @@
 		font-size: 12px;
 		line-height: 18px;
 		color: #333333;
-		white-space: nowrap;
+		/*white-space: nowrap;*/
 		position: relative;
 		border: none;
 	}
