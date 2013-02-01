@@ -784,7 +784,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		$errors = array();
 
 		//inlude the HUBpresenter library
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'presenter' . DS . 'lib' . DS . 'helper.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'hubpresenter.php');
 
 		//get the presentation id
 		//$id = JRequest::getVar('id', '');
@@ -819,7 +819,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 			} 
 			else 
 			{
-				$job = PresenterHelper::createJsonManifest($path, $manifest_path_xml);
+				$job = HUBpresenterHelper::createJsonManifest($path, $manifest_path_xml);
 				if ($job != '') 
 				{
 					$this->setError($job);
@@ -843,7 +843,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 			{
 				$ext[] = array_pop(explode('.', $m));
 			}
-
+			
 			//if we dont have all the necessary media formats
 			if ((in_array('mp4', $ext) && count($ext) < 3) || (in_array('mp3', $ext) && count($ext) < 2)) 
 			{
@@ -881,7 +881,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 
 				if (!file_exists($slide_path . DS . $k .'.png') && !file_exists($slide_path . DS . $k .'.jpg')) 
 				{
-					$this->setError(JText::_('Slides containing video must have a still image of the slide for mobile suport. Please upload an image with the filename "' . $k . '.png".'));
+					$this->setError(JText::_('Slides containing video must have a still image of the slide for mobile support. Please upload an image with the filename "' . $k . '.png" or "' . $k . '.jpg".'));
 				}
 			}
 		}
@@ -902,22 +902,20 @@ class ResourcesControllerResources extends Hubzero_Controller
 	protected function watch()
 	{
 		//document object
-		$jdoc =& JFactory::getDocument();
+		$document =& JFactory::getDocument();
 
 		//add the HUBpresenter stylesheet
-		$jdoc->addStyleSheet("/components/" . $this->_option . "/presenter/css/app.css");
+		$document->addStyleSheet('/components/' . $this->_option . '/assets/css/hubpresenter.css');
 
 		//add the HUBpresenter required javascript files
-		$jdoc->addScript("https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js");
-		$jdoc->addScript("https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js");
-		$jdoc->addScript("/components/" . $this->_option . "/presenter/js/jquery.easing.js");
-		$jdoc->addScript("/components/" . $this->_option . "/presenter/js/flash.detect.js");
-		$jdoc->addScript("/components/" . $this->_option . "/presenter/js/jquery.scrollto.js");
-		$jdoc->addScript("/components/" . $this->_option . "/presenter/js/jquery.touch-punch.js");
-		$jdoc->addScript("/components/" . $this->_option . "/presenter/js/jquery.hotkeys.js");
-		$jdoc->addScript("/components/" . $this->_option . "/presenter/js/flowplayer.js");
-		$jdoc->addScript("/components/" . $this->_option . "/presenter/js/app.js");
-
+		if(!JPluginHelper::isEnabled('system', 'jquery'))
+		{
+			$document->addScript("https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js");
+			$document->addScript("https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js");
+		}
+		$document->addScript('/components/' . $this->_option . '/assets/js/jquery.hubpresenter.js');
+		$document->addScript('/components/' . $this->_option . '/assets/js/jquery.hubpresenter.plugins.js');
+		
 		//do we have javascript?
 		$js = JRequest::getVar("tmpl", "");
 		if ($js != '') 
@@ -936,21 +934,21 @@ class ResourcesControllerResources extends Hubzero_Controller
 			//if we have no errors
 			if (count($errors) > 0) 
 			{
-				echo PresenterHelper::errorMessage($errors);
+				echo HUBpresenterHelper::errorMessage($errors);
 			} 
 			else 
 			{
 				// Instantiate a new view
-				$view = new JView(array('name'=>'view', 'layout'=>'watch'));
-				$view->option   = $this->_option;
-				$view->config   = $this->config;
-				$view->database = $this->database;
-				$view->manifest = $manifest;
-				$view->content_folder = $content_folder;
-				$view->pid      = $this->_id;
-				$view->resid    = JRequest::getVar('resid', '');
-				$view->doc      = $jdoc;
-
+				$view 					= new JView(array('name'=>'view', 'layout'=>'watch'));
+				$view->option 			= $this->_option;
+				$view->config			= $this->config;
+				$view->database 		= $this->database;
+				$view->doc 				= $document;
+				$view->manifest 		= $manifest;
+				$view->content_folder 	= $content_folder;
+				$view->pid 				= $this->_id;
+				$view->resid 			= JRequest::getVar('resid', '');
+				
 				// Output HTML
 				if ($this->getError()) 
 				{

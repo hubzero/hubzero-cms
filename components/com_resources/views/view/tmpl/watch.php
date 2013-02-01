@@ -91,6 +91,7 @@ $this->database->setQuery( $sql );
 $author_ids = $this->database->loadResultArray();
 
 //get the author names from ids
+$authors = array();
 if ($author_ids && is_array($author_ids))
 {
 	foreach ($author_ids as $ai) 
@@ -137,7 +138,8 @@ if ($author_ids && is_array($author_ids))
 	</dl>
 </div>
 
-<div id="presenter-container">
+<?php $presenationFormat = (isset($presentation->format) && strtoupper($presentation->format) == 'HD') ? 'presentation-hd' : ''; ?>
+<div id="presenter-container" class="<?php echo $presenationFormat; ?>">
 	<div id="presenter-header">
 		<div id="title"><?php echo $rr->title; ?></div>
 		<div id="author"><?php if($authors) { echo "by: " . implode(", ", $authors); } ?></div>

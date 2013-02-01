@@ -142,7 +142,7 @@ HUB.Presenter = {
 		} else {               
 			//flash fallback stuff
 			if(audio) {
-				flowplayer("flowplayer", {src: "/components/com_resources/presenter/swf/flowplayer-3.2.7.swf", wmode: "transparent"}, {
+				flowplayer("flowplayer", {src: "/components/com_resources/assets/swf/flowplayer-3.2.7.swf", wmode: "transparent"}, {
 					clip: {
 						duration: flash_audio_duration
 					}, 
@@ -158,7 +158,7 @@ HUB.Presenter = {
 					}
 				});
 			} else {
-				flowplayer("flowplayer", {src: "/components/com_resources/presenter/swf/flowplayer-3.2.7.swf", wmode: "transparent"}, { 
+				flowplayer("flowplayer", {src: "/components/com_resources/assets/swf/flowplayer-3.2.7.swf", wmode: "transparent"}, { 
 				   	plugins: {                                             
 					   controls: null
 					}, 
@@ -179,7 +179,7 @@ HUB.Presenter = {
 	
 	slidePlayer: function() 
 	{
-	 	flowplayer(".flowplayer_slide", {src: "/components/com_resources/presenter/swf/flowplayer-3.2.7.swf", wmode: "transparent"}, {
+	 	flowplayer(".flowplayer_slide", {src: "/components/com_resources/assets/swf/flowplayer-3.2.7.swf", wmode: "transparent"}, {
 			 plugins: {                                             
 			   controls: null
 			}
@@ -199,6 +199,19 @@ HUB.Presenter = {
 		//set the passed in slide to be visible
 		jQ('#slide_' + slide).css('display','block');
 		
+		//center slide vertically
+		slideContainerHeight = jQ("#slides").height();
+		slideHeight = jQ("#slides ul li").height();
+		if(slideContainerHeight > slideHeight)
+		{
+			diff = slideContainerHeight - slideHeight;
+			if(diff < 100)
+			{
+				margin = diff / 2;
+				jQ("#slides ul").css('margin-top', margin);
+			}
+		}
+		
 		//get the type of element for the current slide
 		var slide_child = jQ('#slide_' + slide).children(),
 			slide_child_type = jQ(slide_child).get(0).tagName;
@@ -206,7 +219,8 @@ HUB.Presenter = {
 		//if the slide is video play video
 		if(slide_child_type == 'VIDEO') {
 			if(!flash) {
-				jQ(".slidevideo").get(0).play();
+				slide_child.first().get(0).play()
+				//jQ(".slidevideo").get(0).play();
 			} else {
 				//flowplayer("flowplayer_slide_" + slide).play();
 			}
@@ -525,11 +539,11 @@ HUB.Presenter = {
 			player = HUB.Presenter.getPlayer();         
 	            	
 		if( paused ) {
-			jQ("#play-pause").css('background','url(/components/com_resources/presenter/img/play.png)');
+			jQ("#play-pause").css('background','url(/components/com_resources/assets/img/hubpresenter/play.png)');
 			if( click ) 
 				player.play();
 		} else {
-			jQ("#play-pause").css('background','url(/components/com_resources/presenter/img/pause.png)'); 
+			jQ("#play-pause").css('background','url(/components/com_resources/assets/img/hubpresenter/pause.png)'); 
 			if( click )
 				player.pause();
 		}  
@@ -592,6 +606,8 @@ HUB.Presenter = {
 			jQ("#media").prependTo("#presenter-left");
 			jQ("#slides").prependTo("#presenter-right");
 		}
+		
+		jQ("#slides ul").css('margin-top', 0);
 		
 		if(!paused) {
 			player.play();
@@ -782,8 +798,8 @@ HUB.Presenter = {
 							<div id=\"title\"></div> \
 							<div id=\"link\"> \
 								<span>Share:</span><input type=\"text\" id=\"replay-link\" value=" + window.location + " /> \
-								<a href=\"http://www.facebook.com/share.php?u=" + window.location + "\" id=\"facebook\" title=\"Share on Facebook\">Facebook</a> \
-								<a href=\"http://twitter.com/home?status=Currently Watching: " + window.location +"\" id=\"twitter\" title=\"Share on Twitter\">Twitter</a> \
+								<a target='_blank' href=\"http://www.facebook.com/share.php?u=" + window.location + "\" id=\"facebook\" title=\"Share on Facebook\">Facebook</a> \
+								<a target='_blank' href=\"http://twitter.com/home?status=Currently Watching: " + window.location +"\" id=\"twitter\" title=\"Share on Twitter\">Twitter</a> \
 							</div> \
 						</div> \
 						<a id=\"replay-back\" href=\"#\">&laquo; Back to site</a> \
@@ -1109,7 +1125,7 @@ if(mobile) {
 
 function preload( images )
 {                       
-	var base = "/components/com_resources/presenter/img/",
+	var base = "/components/com_resources/assets/img/hubpresenter/",
 		image = new Image();     
 		
 	for(i=0; i<images.length; i++) {

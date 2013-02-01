@@ -36,7 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
  * 
  * Long description (if any) ...
  */
-class PresenterHelper extends JObject
+class HUBpresenterHelper extends JObject
 {
 	/**
 	 * Displays Error Messages to the User
