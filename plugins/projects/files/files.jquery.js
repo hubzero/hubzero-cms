@@ -212,11 +212,13 @@ HUB.ProjectFiles = {
 		{
 			boxes.each(function(i, el) 
 			{	
-				if ($(el).hasClass('dir')) {
-					var idx = HUB.ProjectFiles.bfolders.indexOf($(el).val());
+				if ($(el).hasClass('dirr')) {
+					var idx = HUB.Projects.getArrayIndex($(el).val(), bfolders);
+					//var idx = HUB.ProjectFiles.bfolders.indexOf($(el).val());
 				}
 				else {
-					var idx = HUB.ProjectFiles.bselected.indexOf($(el).val());
+					var idx = HUB.Projects.getArrayIndex($(el).val(), bselected);
+					//var idx = HUB.ProjectFiles.bselected.indexOf($(el).val());
 				}
 				
 				if (idx != -1 && $(el).attr('checked') != 'checked')
@@ -519,11 +521,11 @@ HUB.ProjectFiles = {
 
 							for ( i=classes.length-1; i>=0; i-- ) 
 							{
-								if (classes[i].indexOf("file:") >= 0)
+								if (classes[i].search("file:") >= 0)
 								{
 									file = classes[i].split(":")[1];
 								}
-								if (classes[i].indexOf("dir:") >= 0)
+								if (classes[i].search("dir:") >= 0)
 								{
 									dir = classes[i].split(":")[1];
 								}
@@ -597,9 +599,10 @@ HUB.ProjectFiles = {
 			if ($(el).hasClass('remote')) {
 				remote = remote + 1;
 			}
-			if ($(el).hasClass('dir')) 
+			if ($(el).hasClass('dirr')) 
 			{	
-				var idx = bfolders.indexOf($(el).val());
+				//var idx = bfolders.indexOf($(el).val());
+				var idx = HUB.Projects.getArrayIndex($(el).val(), bfolders);
 
 				if (idx == -1) 
 				{
@@ -608,7 +611,8 @@ HUB.ProjectFiles = {
 				}
 			}
 			else {
-				var idx = bselected.indexOf($(el).val());
+				//var idx = bselected.indexOf($(el).val());
+				var idx = HUB.Projects.getArrayIndex($(el).val(), bselected);
 				if (idx == -1) 
 				{
 					bselected.push($(el).val());
@@ -625,13 +629,15 @@ HUB.ProjectFiles = {
 			if ($(el).hasClass('remote')) {
 				remote = remote - 1;
 			}
-			if ($(el).hasClass('dir')) {
+			if ($(el).hasClass('dirr')) {
 				dir = dir - 1;
-				var idx = bfolders.indexOf($(el).val());
+				//var idx = bfolders.indexOf($(el).val());
+				var idx = HUB.Projects.getArrayIndex($(el).val(), bfolders);
 				if (idx!=-1) bfolders.splice(idx, 1);
 			}
 			else {
-				var idx = bselected.indexOf($(el).val());
+				//var idx = bselected.indexOf($(el).val());
+				var idx = HUB.Projects.getArrayIndex($(el).val(), bselected);
 				if (idx!=-1) bselected.splice(idx, 1);
 			}
 			

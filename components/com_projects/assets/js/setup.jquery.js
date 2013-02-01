@@ -184,7 +184,7 @@ HUB.ProjectSetup = {
 							$('#verificationarea').html(out);
 						}
 
-						if (data.indexOf("passed") >= 0) { 
+						if (data.search("passed") >= 0) { 
 							$('#verified').val(1);
 						} else { 
 							$('#verified').val(0);
@@ -222,7 +222,7 @@ HUB.ProjectSetup = {
 							$('#verify-alias').html(out);
 						}
 
-						if (data.indexOf("passed") >= 0) { 
+						if (data.search("passed") >= 0) { 
 							$('#verified').val(1);
 						} else { 
 							$('#verified').val(0);

@@ -90,7 +90,7 @@ HUB.ProjectTeam = {
 					var classes = $(item).attr('class').split(" ");
 					for (k=classes.length-1;k>=0;k--) 
 					{
-						if (classes[k].indexOf("group:") >= 0)
+						if (classes[k].search("group:") >= 0)
 						{
 							var group = classes[k].split(":")[1];	
 						}
@@ -100,11 +100,13 @@ HUB.ProjectTeam = {
 					if ($(item).attr('checked') != 'checked') 
 					{
 					 	bchecked = bchecked - 1;
-						var idx = bselected.indexOf($(item).val());
+						//var idx = bselected.indexOf($(item).val());
+						var idx = HUB.Projects.getArrayIndex($(item).val(), bselected);
 						if (idx!=-1) bselected.splice(idx, 1);
 						if (group)
 						{
-							var gidx = bgroups.indexOf(group);
+							//var gidx = bgroups.indexOf(group);
+							var gidx = HUB.Projects.getArrayIndex(group, bgroups);
 							if (gidx!=-1) 
 							{
 								HUB.ProjectTeam.selectGroup(group, 'uncheck');
@@ -138,7 +140,7 @@ HUB.ProjectTeam = {
 		{
 			boxes.each(function(i, item) 
 			{			
-				if ($(item).attr('class').indexOf('group:' + group) >= 0)
+				if ($(item).attr('class').search('group:' + group) >= 0)
 				{
 					if (action == 'check')
 					{
@@ -237,11 +239,11 @@ HUB.ProjectTeam = {
 		var role = '';
 
 		for ( i=classes.length-1; i>=0; i-- ) {
-			if (classes[i].indexOf("owner:") >= 0)
+			if (classes[i].search("owner:") >= 0)
 			{
 				owner = classes[i].split(":")[1];
 			}
-			if (classes[i].indexOf("role:") >= 0)
+			if (classes[i].search("role:") >= 0)
 			{
 				role = classes[i].split(":")[1];
 			}

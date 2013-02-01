@@ -46,6 +46,9 @@ HUB.Projects = {
 		
 		// Reviewers
 		HUB.Projects.addFiltering();
+		
+		// Fade-out status message
+		HUB.Projects.addMessageFade();
 	},
 	
 	addFiltering: function()
@@ -59,6 +62,23 @@ HUB.Projects = {
 				}
 			});
 		});
+	},
+
+	addMessageFade: function()
+	{
+		var $ = this.jQuery;
+		
+		if ($("#status-msg").length > 0)
+		{
+			var keyupTimer = setTimeout((function() {  
+				if (!$("#status-msg").hasClass('ajax-loading'))
+				{
+					$("#status-msg").animate({opacity:0.0}, 2000, function() {
+					    $('#status-msg').html('');
+					 });	
+				}
+			}), 2000);
+		}		
 	},
 	
 	addConfirms: function()
@@ -282,6 +302,78 @@ HUB.Projects = {
 		}, 2000);
 		
 		$('#confirm-box').css('left', coord.left).css('top', coord.top + 200);
+	},
+	
+	loadingIma: function(txt)
+	{
+		var html = '<span id="fbwrap">' + 
+			'<span id="facebookG">' +
+			' <span id="blockG_1" class="facebook_blockG"></span>' +
+			' <span id="blockG_2" class="facebook_blockG"></span>' +
+			' <span id="blockG_3" class="facebook_blockG"></span> ';
+		
+		if (txt)
+		{
+			html = html + txt;
+		}
+		
+		html = html + 
+			'</span>' +
+		'</span>';
+		
+		return html;
+	},
+	
+	setStatusMessage: function (txt, loading)
+	{
+		var $ = this.jQuery;	
+
+		var log = $('#status-msg').empty();
+		
+		if (loading == 1)
+		{
+			$('#status-msg').addClass('ajax-loading');
+			
+			if (!txt)
+			{
+				txt = 'Please wait while we are performing your request...';	
+			} 
+			
+			var html = HUB.Projects.loadingIma(txt);
+		}
+		else
+		{
+			var html = txt;
+		}
+				
+		// Add element
+		if (txt)
+		{
+			$('#status-msg').html(html);
+			$('#status-msg').css({'opacity':100});	
+		}
+		else
+		{
+			$('#status-msg').css('opacity', 0);
+			return;
+		}		
+	},
+	
+	getArrayIndex: function (obj, arr)
+	{
+		if (!Array.indexOf)
+		{
+			// Fix for indexOf in IE browsers
+			for (var i = 0, j = arr.length; i < j; i++) 
+			{
+			   if (arr[i] === obj) { return i; }
+			}
+			return -1;
+		}
+		else
+		{
+			return arr.indexOf(obj);
+		}
 	}
 }		
 	

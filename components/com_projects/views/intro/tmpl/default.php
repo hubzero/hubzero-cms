@@ -53,7 +53,7 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 		<div class="two columns first">
 			<h3><?php echo JText::_('COM_PROJECTS_INTRO_COLLABORATION_MADE_EASY'); ?></h3>
 			<p><?php echo JText::_('COM_PROJECTS_INTRO_COLLABORATION_HOW'); ?></p>
-			<p class="emphasized"><a href="<?php echo JRoute::_('index.php?option='.$option.a.'task=start'); ?>"><?php echo JText::_('COM_PROJECTS_START_PROJECT'); ?></a></p>
+			<p class="emphasized"><a href="<?php echo JRoute::_('index.php?option='.$option.a.'task=start'); ?>" id="projects-intro-start"><?php echo JText::_('COM_PROJECTS_START_PROJECT'); ?></a></p>
 		</div>
 		<div class="two columns second">
 			<h3><?php echo JText::_('COM_PROJECTS_INTRO_WHAT_YOU_GET'); ?></h3>
@@ -65,7 +65,7 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 				<li><?php echo JText::_('COM_PROJECTS_INTRO_GET_PUBLISHING'); ?></li>
 			</ul>
 			<p class="subnote">*<?php echo JText::_('COM_PROJECTS_INTRO_PUBLISHING_NOTE'); ?></p>
-			<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=features'); ?>"><?php echo JText::_('COM_PROJECTS_LEARN_MORE'); ?></a></p>
+			<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=features'); ?>" id="projects-intro-features"><?php echo JText::_('COM_PROJECTS_LEARN_MORE'); ?></a></p>
 		</div>
 	<div class="clear"></div>
 	</div>
@@ -93,7 +93,7 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 				<?php }	?>
 			</ul>
 		<?php } else { ?>
-			<div class="noresults"><?php echo ($this->guest) ? JText::_('COM_PROJECTS_PLEASE').' <a href="'.JRoute::_('index.php?option='.$this->option.a.'task=intro').'/?action=login">'.JText::_('COM_PROJECTS_LOGIN').'</a> '.JText::_('COM_PROJECTS_TO_VIEW_YOUR_PROJECTS') : JText::_('COM_PROJECTS_YOU_DONT_HAVE_PROJECTS'); ?></div>
+			<div class="noresults"><?php echo ($this->guest) ? JText::_('COM_PROJECTS_PLEASE').' <a href="'.JRoute::_('index.php?option='.$this->option.a.'task=intro').'/?action=login" id="projects-intro-login">'.JText::_('COM_PROJECTS_LOGIN').'</a> '.JText::_('COM_PROJECTS_TO_VIEW_YOUR_PROJECTS') : JText::_('COM_PROJECTS_YOU_DONT_HAVE_PROJECTS'); ?></div>
 		<?php }	?>
 	</div>
 	<div class="clear"></div>

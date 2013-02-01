@@ -2798,6 +2798,98 @@ class plgProjectsFiles extends JPlugin
 		}
 		return 0;				
 	}
+	
+	/**
+	 * Get files stats for all projects
+	 * 
+	 * @param      array 	$aliases	Project aliases for which to compute stats
+	 * @param      string 	$get
+	 *
+	 * @return     mixed
+	 */
+	public function getStats($aliases = array(), $get = 'total') 
+	{
+		if (empty($aliases))
+		{
+			return false;
+		}
+		
+		$files = 0;
+		$diskSpace = 0;
+		$commits = 0;
+		$usage = 0;
+		
+		foreach ($aliases as $alias)
+		{
+			$path = $this->getProjectPath($alias, 'files');
+			
+			if ($get == 'diskspace')
+			{
+				$diskSpace = $diskSpace + $this->getDiskUsage($path);
+			}
+			elseif ($get == 'commitCount')
+			{
+				// cd
+				chdir($this->prefix . $path);
+				exec($this->gitpath . ' log | grep "^commit" | wc -l', $out);
+				
+				$c =  end($out);
+				$commits = $commits + $c;
+			}
+			else
+			{
+				$count = $this->getFiles($path, '', 0, 1);
+				$files = $files + $count;
+
+				if ($count > 1)
+				{
+					$usage++;
+				}	
+			}			
+		}
+		
+		if ($get == 'total')
+		{
+			return $files;
+		}
+		elseif ($get == 'usage')
+		{
+			return $usage;
+		}
+		elseif ($get == 'diskspace')
+		{
+			return $diskSpace;
+		}
+		elseif ($get == 'commitCount')
+		{
+			return $commits;
+		}
+	}
+	
+	/**
+	 * Get used disk space in path
+	 * 
+	 * @param      string 	$path
+	 *
+	 * @return     mixed
+	 */
+	public function getDiskUsage($path = '') 
+	{
+		$used = 0;
+		if ($path && is_dir($this->prefix . $path))
+		{
+			chdir($this->prefix . $path);
+			exec('du -sk .git', $out);
+			
+			if ($out && isset($out[0]))
+			{
+				$kb = str_replace('.git', '', trim($out[0]));
+				$used = $kb * 1024;
+			}
+		}
+		
+		return $used;		
+	}
 }
 
 //--------------------------------------
