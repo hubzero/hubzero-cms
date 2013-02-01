@@ -310,7 +310,13 @@ class plgCoursesForum extends Hubzero_Plugin
 	 */
 	public function onCourseAfterLecture($course, $unit, $lecture)
 	{
+		ximport('Hubzero_Document');
+		Hubzero_Document::addPluginStylesheet('courses', $this->_name);
+		Hubzero_Document::addPluginScript('courses', $this->_name);
+
 		$database = JFactory::getDBO();
+		$this->juser = JFactory::getUser();
+		$this->offering = $course->offering();
 
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'category.php');
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'section.php');
@@ -328,6 +334,9 @@ class plgCoursesForum extends Hubzero_Plugin
 				'layout'  => 'lecture'
 			)
 		);
+
+		$this->_authorize('category');
+		$this->_authorize('thread');
 
 		$view->course  = $course;
 		$view->unit    = $unit;
@@ -375,6 +384,7 @@ class plgCoursesForum extends Hubzero_Plugin
 			$view->post->set('state', 1);
 			$view->post->set('parent', 0);
 			$view->post->set('anonymous', 1);
+			$view->post->set('sticky', 1);
 			$view->post->set('scope', $view->filters['scope']);
 			$view->post->set('scope_id', $view->filters['scope_id']);
 			$view->post->set('object_id', $lecture->get('id'));
