@@ -81,7 +81,7 @@ class plgCoursesForum extends Hubzero_Plugin
 	 * @param      array   $areas      Active area(s)
 	 * @return     array
 	 */
-	public function onCourse($config, $course, $offering, $action='', $access, $areas=null)
+	public function onCourse($config, $course, $offering, $action='', $areas=null)
 	{
 		$return = 'html';
 		$active = $this->_name;
@@ -267,8 +267,8 @@ class plgCoursesForum extends Hubzero_Plugin
 			switch ($action)
 			{
 				case 'sections':       $arr['html'] .= $this->sections();       break;
-				case 'savesection':    $arr['html'] .= $this->savesection();    break;
-				case 'deletesection':  $arr['html'] .= $this->deletesection();  break;
+				//case 'savesection':    $arr['html'] .= $this->savesection();    break;
+				//case 'deletesection':  $arr['html'] .= $this->deletesection();  break;
 
 				case 'categories':     $arr['html'] .= $this->categories();     break;
 				case 'savecategory':   $arr['html'] .= $this->savecategory();   break;
@@ -346,7 +346,21 @@ class plgCoursesForum extends Hubzero_Plugin
 		$view->filters['state']    = 1;
 		$view->filters['scope']    = 'course';
 		$view->filters['scope_id'] = $course->offering()->get('id');
-		$view->filters['sort_Dir'] = 'DESC';
+		$view->filters['sticky'] = false;
+		$sort = JRequest::getVar('sort', 'newest');
+		switch ($sort)
+		{
+			case 'oldest':
+				$view->filters['sort_Dir'] = 'ASC';
+			break;
+
+			case 'newest':
+			default:
+				$view->filters['sort_Dir'] = 'DESC';
+			break;
+		}
+		$view->filters['sort'] = 'c.created';
+		$view->filters['object_id'] = $lecture->get('id');
 
 		$view->post = new ForumPost($database);
 
@@ -404,24 +418,73 @@ class plgCoursesForum extends Hubzero_Plugin
 				$view->post->store();
 			}
 		}
-		$view->filters['parent'] = $view->post->get('id');
+		//$view->filters['parent'] = $view->post->get('id');
 
 		// Get reply count
 		$view->total = $view->post->getCount($view->filters);
 
 		// Get replies
-		$view->rows = $view->post->getRecords($view->filters);
+		$rows = $view->post->getRecords($view->filters);
+
+		$children = array(
+			0 => array()
+		);
+
+		$levellimit = ($view->filters['limit'] == 0) ? 500 : $view->filters['limit'];
+
+		// first pass - collect children
+		foreach ($rows as $v)
+		{
+			/*$children[0][] = $v;
+			$children[$v->get('id')] = $v->children();*/
+			
+			//$v->set('name', '');
+			$pt      = $v->parent;
+			$list    = @$children[$pt] ? $children[$pt] : array();
+			array_push($list, $v);
+			$children[$pt] = $list;
+		}
+		// second pass - get an indent list of the items
+		//$list = $this->treeRecurse(0, '', array(), $children, max(0, $levellimit-1));
+		if (isset($children[$view->post->get('id')]))
+		{
+			$view->rows = $this->treeRecurse($children[$view->post->get('id')], $children);
+		}
+
+//$view->rows = null;
+		//$view->total = count($list);
+
+		//$view->rows = array_slice($list, $view->filters['start'], $view->filters['limit']);
+		/*if ($view->rows && count($view->rows) > 0)
+		{
+			$filters = $view->filters['parent'];
+			$filters['limit'] = 0;
+			foreach ($view->rows as $k => $row)
+			{
+				$filters['parent'] = $row->id;
+				$view->rows[$k]->replies = $this->getRecords($filters);
+				if ($view->rows[$k]->replies && count($view->rows[$k]->replies) > 0)
+				{
+					foreach ($view->rows[$k]->replies as $j => $reply)
+					{
+						$filters['parent'] = $reply->id;
+						$view->rows[$k]->replies[$j]->replies = $this->getRecords($filters);
+					}
+				}
+			}
+		}*/
+		//$view->filters['parent'] = $view->post->get('id');
 
 		// Record the hit
-		$view->participants = $view->post->getParticipants($view->filters);
+		//$view->participants = $view->post->getParticipants($view->filters);
 
 		// Get attachments
-		$view->attach = new ForumAttachment($this->database);
+		$view->attach = new ForumAttachment($database);
 		$view->attachments = $view->attach->getAttachments($view->post->id);
 
 		// Get tags on this article
-		$view->tModel = new ForumTags($this->database);
-		$view->tags = $view->tModel->get_tag_cloud(0, 0, $view->post->id);
+		//$view->tModel = new ForumTags($this->database);
+		//$view->tags = $view->tModel->get_tag_cloud(0, 0, $view->post->id);
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
@@ -441,6 +504,33 @@ class plgCoursesForum extends Hubzero_Plugin
 		}
 
 		return $view->loadTemplate();
+	}
+
+	/**
+	 * Recursive function to build tree
+	 * 
+	 * @param      integer $id       Parent ID
+	 * @param      string  $indent   Indent text
+	 * @param      array   $list     List of records
+	 * @param      array   $children Container for parent/children mapping
+	 * @param      integer $maxlevel Maximum levels to descend
+	 * @param      integer $level    Indention level
+	 * @param      integer $type     Indention type
+	 * @return     void
+	 */
+	public function treeRecurse($children, $list, $maxlevel=9999, $level=0)
+	{
+		if ($level <= $maxlevel)
+		{
+			foreach ($children as $v => $child)
+			{
+				if (isset($list[$child->id]))
+				{
+					$children[$v]->replies = $this->treeRecurse($list[$child->id], $list, $maxlevel, $level+1);
+				}
+			}
+		}
+		return $children;
 	}
 
 	/**
@@ -683,7 +773,7 @@ class plgCoursesForum extends Hubzero_Plugin
 	 * 
 	 * @return     void
 	 */
-	public function savesection()
+	/*public function savesection()
 	{
 		// Incoming posted data
 		$fields = JRequest::getVar('fields', array(), 'post');
@@ -710,14 +800,14 @@ class plgCoursesForum extends Hubzero_Plugin
 		$this->setRedirect(
 			JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=forum')
 		);
-	}
+	}*/
 
 	/**
 	 * Deletes a section and redirects to main page afterwards
 	 * 
 	 * @return     void
 	 */
-	public function deletesection()
+	/*public function deletesection()
 	{
 		// Is the user logged in?
 		if ($this->juser->get('guest')) 
@@ -778,20 +868,20 @@ class plgCoursesForum extends Hubzero_Plugin
 
 			// Set all the threads/posts in all the categories to "deleted"
 			$tModel = new ForumPost($this->database);
-			if (!$tModel->setStateByCategory($cats, 2))  /* 0 = unpublished, 1 = published, 2 = deleted */
+			if (!$tModel->setStateByCategory($cats, 2))  // 0 = unpublished, 1 = published, 2 = deleted 
 			{
 				$this->setError($tModel->getError());
 			}
 
 			// Set all the categories to "deleted"
-			if (!$cModel->setStateBySection($model->id, 2))  /* 0 = unpublished, 1 = published, 2 = deleted */
+			if (!$cModel->setStateBySection($model->id, 2))  // 0 = unpublished, 1 = published, 2 = deleted 
 			{
 				$this->setError($cModel->getError());
 			}
 		}
 
 		// Set the section to "deleted"
-		$model->state = 2;  /* 0 = unpublished, 1 = published, 2 = deleted */
+		$model->state = 2;  // 0 = unpublished, 1 = published, 2 = deleted 
 		if (!$model->store()) 
 		{
 			$this->setRedirect(
@@ -808,7 +898,7 @@ class plgCoursesForum extends Hubzero_Plugin
 			JText::_('PLG_GROUPS_FORUM_SECTION_DELETED'),
 			'passed'
 		);
-	}
+	}*/
 
 	/**
 	 * Short description for 'topics'
@@ -839,6 +929,8 @@ class plgCoursesForum extends Hubzero_Plugin
 		$view->filters['scope_id'] = $this->offering->get('id');
 		$view->filters['state']    = 1;
 		$view->filters['parent']   = 0;
+		//$view->filters['sticky'] = false;
+		$view->filters['sort_Dir'] = 'ASC';
 		
 		$view->section = new ForumSection($this->database);
 		$view->section->loadByAlias($view->filters['section'], $this->offering->get('id'), 'course');
@@ -1053,9 +1145,11 @@ class plgCoursesForum extends Hubzero_Plugin
 			return;
 		}
 
-		$this->view->sections = $sModel->getRecords(array(
+		$this->view->section = $sModel;
+		/*$this->view->sections = $sModel->getRecords(array(
 			'state' => 1,
-			'course' => $this->course->get('id')
+			'scope_id' => $this->course->get('id'),
+			'scope' => 'course'
 		));
 		if (!$this->view->sections || count($this->view->sections) <= 0)
 		{
@@ -1067,7 +1161,7 @@ class plgCoursesForum extends Hubzero_Plugin
 			$default->alias = str_replace(' ', '-', $default->title);
 			$default->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($default->title));
 			$this->view->sections[] = $default;
-		}
+		}*/
 
 		$this->view->notifications = $this->getPluginMessage();
 		$this->view->config = $this->params;
@@ -1233,15 +1327,20 @@ class plgCoursesForum extends Hubzero_Plugin
 		$view->filters['start']    = JRequest::getInt('limitstart', 0);
 		$view->filters['section']  = $this->offering->get('alias'); //JRequest::getVar('section', '');
 		$view->filters['category'] = JRequest::getVar('category', '');
-		$view->filters['parent']   = JRequest::getInt('thread', 0);
+		//$view->filters['parent']   = JRequest::getInt('thread', 0);
 		$view->filters['state']    = 1;
 		$view->filters['scope']    = 'course';
 		$view->filters['scope_id'] = $this->offering->get('id');
 
-		if ($view->filters['parent'] == 0) 
+		$thread   = JRequest::getInt('thread', 0);
+
+		
+		//$view->filters['object_id'] = $lecture->get('id');
+
+		/*if ($view->filters['parent'] == 0) 
 		{
 			return $this->categories();
-		}
+		}*/
 
 		$view->section = new ForumSection($this->database);
 		$view->section->loadByAlias($view->filters['section'], $this->offering->get('id'), 'course');
@@ -1261,13 +1360,59 @@ class plgCoursesForum extends Hubzero_Plugin
 		$view->post = new ForumPost($this->database);
 
 		// Load the topic
-		$view->post->load($view->filters['parent']);
+		$view->post->load($thread);
+		//$view->post->loadByObject($lecture->get('id'), $view->filters['scope_id'], $view->filters['scope']);
+		$view->filters['object_id'] = $view->post->object_id;
+
+		$view->unit = $this->offering->unit($view->filters['category']);
+		$view->lecture = $view->unit->assetgroup($view->filters['object_id']);
 
 		// Get reply count
 		$view->total = $view->post->getCount($view->filters);
 
 		// Get replies
-		$view->rows = $view->post->getRecords($view->filters);
+		//$view->rows = $view->post->getRecords($view->filters);
+		// Get replies
+		//$view->filters['parent'] = 0;
+		$rows = $view->post->getRecords($view->filters);
+
+		$children = array(
+			0 => array()
+		);
+
+		$levellimit = ($view->filters['limit'] == 0) ? 500 : $view->filters['limit'];
+
+		// first pass - collect children
+		foreach ($rows as $v)
+		{
+			/*$children[0][] = $v;
+			$children[$v->get('id')] = $v->children();*/
+			
+			//$v->set('name', '');
+			$pt      = $v->parent;
+			$list    = @$children[$pt] ? $children[$pt] : array();
+			array_push($list, $v);
+			$children[$pt] = $list;
+		}
+		
+		// second pass - get an indent list of the items
+		//$list = $this->treeRecurse(0, '', array(), $children, max(0, $levellimit-1));
+		$view->rows = array();
+		if (isset($children[$view->post->get('id')]))
+		{
+			$view->rows = $this->treeRecurse($children[$view->post->get('id')], $children);
+		}
+		/*if (!$view->rows)
+		{
+			$view->rows = array();
+		}*/
+		if (isset($children[0]) && !$children[0][0]->object_id)
+		{
+			array_unshift($view->rows, $children[0][0]);
+		}
+		
+
+		$view->filters['parent']   = $view->post->id;
 
 		// Record the hit
 		$view->participants = $view->post->getParticipants($view->filters);

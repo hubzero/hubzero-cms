@@ -51,7 +51,7 @@ ximport('Hubzero_User_Profile_Helper');
 		</table>
 	</div><!-- /.aside -->
 	<div class="subject">
-		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum'); ?>" method="post" id="commentform">
+		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=forum'); ?>" method="post" id="commentform">
 			<p class="comment-member-photo">
 				<a class="comment-anchor" name="commentform"></a>
 <?php
@@ -63,7 +63,7 @@ ximport('Hubzero_User_Profile_Helper');
 			</p>
 	
 			<fieldset>
-				<label for="field-section_id">
+				<?php /*<label for="field-section_id">
 					<?php echo JText::_('PLG_COURSES_FORUM_FIELD_SECTION'); ?>
 					<select name="fields[section_id]" id="field-section_id">
 						<option value="0"><?php echo JText::_('PLG_COURSES_FORUM_FIELD_SECTION_SELECT'); ?></option>
@@ -76,7 +76,7 @@ ximport('Hubzero_User_Profile_Helper');
 				}
 ?>
 					</select>
-				</label>
+				</label>*/ ?>
 				
 				<label for="field-title">
 					<?php echo JText::_('PLG_COURSES_FORUM_FIELD_TITLE'); ?>
@@ -85,7 +85,12 @@ ximport('Hubzero_User_Profile_Helper');
 				
 				<label for="field-description">
 					<?php echo JText::_('PLG_COURSES_FORUM_FIELD_DESCRIPTION'); ?>
-					<textarea name="fields[description]" id="field-description" cols="35" rows="5"><?php echo $this->escape(stripslashes($this->model->description)); ?></textarea>
+					<?php
+					ximport('Hubzero_Wiki_Editor');
+					$editor = Hubzero_Wiki_Editor::getInstance();
+					echo $editor->display('fields[description]', 'field-description', $this->escape(stripslashes($this->model->description)), 'minimal no-footer', '35', '5');
+					?>
+					<!-- <textarea name="fields[description]" id="field-description" cols="35" rows="5"><?php echo $this->escape(stripslashes($this->model->description)); ?></textarea> -->
 				</label>
 		
 				<label for="field-closed" id="comment-anonymous-label">
@@ -106,12 +111,15 @@ ximport('Hubzero_User_Profile_Helper');
 			<input type="hidden" name="fields[alias]" value="<?php echo $this->model->alias; ?>" />
 			<input type="hidden" name="fields[id]" value="<?php echo $this->model->id; ?>" />
 			<input type="hidden" name="fields[state]" value="1" />
-			<input type="hidden" name="fields[group_id]" value="<?php echo $this->course->get('gidNumber'); ?>" />
+			<input type="hidden" name="fields[scope]" value="course" />
+			<input type="hidden" name="fields[scope_id]" value="<?php echo $this->offering->get('id'); ?>" />
+			<input type="hidden" name="fields[section_id]" value="<?php echo $this->section->id; ?>" />
 	
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="gid" value="<?php echo $this->course->get('cn'); ?>" />
+			<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
+			<input type="hidden" name="offering" value="<?php echo $this->offering->get('alias'); ?>" />
 			<input type="hidden" name="active" value="forum" />
-			<input type="hidden" name="task" value="savecategory" />
+			<input type="hidden" name="action" value="savecategory" />
 		</form>
 	</div><!-- / .subject -->
 	<div class="clear"></div>

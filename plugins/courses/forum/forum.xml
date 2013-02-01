@@ -49,7 +49,8 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="nobody">Disabled/Off</option>
 				</field>
 				<field type="spacer" />
-				<field name="display_limit" type="text" size="5" default="50" label="Display Limit" description="Number of items to return"/>
+				<field name="display_limit" type="text" size="5" default="50" label="Display Limit" description="The number of records to display at a time."/>
+				<field name="comments_depth" type="text" size="3" default="3" label="Depth" description="The number of levels comments can be nested. 1 level would be just comments, no replies to comments."/>
 			</fieldset>
 		</fields>
 	</config>

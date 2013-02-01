@@ -14,6 +14,20 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 
 ximport('Hubzero_User_Profile_Helper');
 
+ximport('Hubzero_User_Profile');
+ximport('Hubzero_Wiki_Parser');
+
+$wikiconfig = array(
+	'option'   => $this->option,
+	'scope'    => 'forum',
+	'pagename' => 'forum',
+	'pageid'   => $this->post->id,
+	'filepath' => '',
+	'domain'   => $this->post->id
+);
+
+$p =& Hubzero_Wiki_Parser::getInstance();
+
 $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=forum';
 ?>
 <!-- <ul id="page_options">
@@ -86,91 +100,58 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 			<?php echo JText::_('PLG_COURSES_FORUM_COMMENTS'); ?>
 		</h4> -->
 		<form action="<?php echo JRoute::_($base . '&unit=' . $this->category->alias . '&b=' . $this->post->id); ?>" method="get">
-		<ol class="comments">
+			<?php if (!$this->post->object_id) {
+				/*$view = new Hubzero_Plugin_View(
+					array(
+						'folder'  => 'courses',
+						'element' => 'forum',
+						'name'    => 'threads',
+						'layout'  => 'comment'
+					)
+				);
+				$view->option     = $this->option;
+				$view->comment    = $this->post;
+				$view->post       = $this->post;
+				$view->unit       = $this->unit;
+				$view->lecture    = $this->lecture;
+				$view->config     = $this->config;
+				$view->depth      = 0;
+				$view->cls        = 'even';
+				$view->base       = $base;
+				$view->parser     = $p;
+				$view->wikiconfig = $wikiconfig;
+				$view->attach     = $this->attach;
+				$view->course     = $this->course;
+				$view->display();*/
+				
+			} ?>
 			<?php
 			if ($this->rows) {
-				ximport('Hubzero_User_Profile');
-				ximport('Hubzero_Wiki_Parser');
-
-				$wikiconfig = array(
-					'option'   => $this->option,
-					'scope'    => 'forum',
-					'pagename' => 'forum',
-					'pageid'   => $this->post->id,
-					'filepath' => '',
-					'domain'   => $this->post->id
+				$view = new Hubzero_Plugin_View(
+					array(
+						'folder'  => 'courses',
+						'element' => 'forum',
+						'name'    => 'threads',
+						'layout'  => 'list'
+					)
 				);
-
-				$p =& Hubzero_Wiki_Parser::getInstance();
-
-				foreach ($this->rows as $row)
-				{
-					$name = JText::_('PLG_COURSES_FORUM_ANONYMOUS');
-					$huser = '';
-					if (!$row->anonymous) 
-					{
-						$huser = Hubzero_User_Profile::getInstance($row->created_by);
-						if (is_object($huser) && $huser->get('name')) 
-						{
-							$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $row->created_by) . '">' . $this->escape(stripslashes($huser->get('name'))) . '</a>';
-						}
-					}
-
-					$comment  = $p->parse(stripslashes($row->comment), $wikiconfig, false);
-					$comment .= $this->attach->getAttachment(
-						$row->id, 
-						$base . '&unit=' . $this->category->alias . '&b=' . $this->post->id . '&c=' . $row->id, 
-						$this->config
-					);
-					
-					//$tags = $this->tag->get_tags_on_object($row->id, 0, 0, $row->created_by);
-			?>
-				<li class="comment<?php if (!$row->parent) { echo ' start'; } ?>" id="c<?php echo $row->id; ?>">
-					<p class="comment-member-photo">
-						<a class="comment-anchor" name="c<?php echo $row->id; ?>"></a>
-						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($huser, $row->anonymous); ?>" alt="" />
-					</p>
-					<div class="comment-content">
-						<p class="comment-title">
-							<strong><?php echo $name; ?></strong> 
-							<a class="permalink" href="<?php echo JRoute::_($base . '&unit=' . $this->category->alias . '&b=' . $this->post->id . '#c' . $row->id); ?>" title="<?php echo JText::_('PLG_COURSES_FORUM_PERMALINK'); ?>"><span class="comment-date-at">@</span> 
-								<span class="time"><time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $timeFormat, $tz); ?></time></span> <span class="comment-date-on"><?php echo JText::_('PLG_COURSES_FORUM_ON'); ?></span> 
-								<span class="date"><time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?></time></span>
-								<?php if ($row->modified && $row->modified != '0000-00-00 00:00:00') { ?>
-									&mdash; <?php echo JText::_('PLG_COURSES_FORUM_EDITED'); ?>
-									<span class="time"><time datetime="<?php echo $row->modified; ?>"><?php echo JHTML::_('date', $row->modified, $timeFormat, $tz); ?></time></span> <span class="comment-date-on"><?php echo JText::_('PLG_COURSES_FORUM_ON'); ?></span> 
-									<span class="date"><time datetime="<?php echo $row->modified; ?>"><?php echo JHTML::_('date', $row->modified, $dateFormat, $tz); ?></time></span>
-								<?php } ?>
-							</a>
-						</p>
-						<?php echo $comment; ?>
-						<?php if ($this->config->get('access-edit-thread') || $juser->get('id') == $row->created_by) { ?>
-						<p class="comment-options">
-							<?php if ($this->config->get('access-delete-thread')) { ?>
-							<a class="delete" href="<?php echo JRoute::_($base . '&unit=' . $this->category->alias . '&b=' . $row->id . '&c=delete'); ?>">
-								<?php echo JText::_('PLG_COURSES_FORUM_DELETE'); ?>
-							</a>
-							<?php } ?>
-							<?php if ($this->config->get('access-edit-thread')) { ?>
-							<a class="edit" href="<?php echo JRoute::_($base . '&unit=' . $this->category->alias . '&b=' . $row->id . '&c=edit'); ?>">
-								<?php echo JText::_('PLG_COURSES_FORUM_EDIT'); ?>
-							</a>
-							<?php } ?>
-						</p>
-						<?php } ?>
-					</div>
-<?php /*if (count($tags) > 0) { ?>
-					<div class="comment-tags">
-						<p><?php echo JText::_('PLG_COURSES_FORUM_TAGS'); ?>:</p>
-						<?php echo $this->tag->buildCloud($tags); ?>
-					</div><!-- / .comment-tags -->
-<?php }*/ ?>
-				</li>
-			<?php } ?>
-		<?php } else { ?>
-			<li><p><?php echo JText::_('PLG_COURSES_FORUM_NO_REPLIES_FOUND'); ?></p></li>
+				$view->option     = $this->option;
+				$view->comments   = $this->rows;
+				$view->post       = $this->post;
+				$view->unit       = $this->category->alias;//$this->unit->get('alias');
+				$view->lecture    = $this->post->id;
+				$view->config     = $this->config;
+				$view->depth      = 0;
+				$view->cls        = 'odd';
+				$view->base       = $base;
+				$view->parser     = $p;
+				$view->wikiconfig = $wikiconfig;
+				$view->attach     = $this->attach;
+				$view->course     = $this->course;
+				$view->display();
+			} else { ?>
+				<p><?php echo JText::_('PLG_COURSES_FORUM_NO_REPLIES_FOUND'); ?></p>
 		<?php } ?>
-		</ol>
 <?php 
 		$this->pageNav->setAdditionalUrlParam('gid', $this->course->get('alias'));
 		$this->pageNav->setAdditionalUrlParam('offering', $this->offering->get('alias'));
@@ -259,10 +240,10 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 					<?php
 					ximport('Hubzero_Wiki_Editor');
 					$editor = Hubzero_Wiki_Editor::getInstance();
-					echo $editor->display('fields[comment]', 'field_comment', '', '', '35', '15');
+					echo $editor->display('fields[comment]', 'field_comment', '', 'minimal no-footer', '35', '15');
 					?>
 				</label>
-				
+				<!-- 
 				<label>
 					<?php echo JText::_('PLG_COURSES_FORUM_FIELD_YOUR_TAGS'); ?>:
 <?php 
@@ -278,7 +259,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 		}
 ?>
 				</label>
-				
+				-->
 				<fieldset>
 					<legend><?php echo JText::_('PLG_COURSES_FORUM_LEGEND_ATTACHMENTS'); ?></legend>
 					<div class="grouping">
@@ -303,7 +284,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 					<input type="submit" value="<?php echo JText::_('PLG_COURSES_FORUM_SUBMIT'); ?>" />
 				</p>
 			<?php } ?>
-		
+			<!-- 
 				<div class="sidenote">
 					<p>
 						<strong><?php echo JText::_('PLG_COURSES_FORUM_KEEP_POLITE'); ?></strong>
@@ -312,6 +293,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 						<?php echo JText::_('PLG_COURSES_FORUM_WIKI_HINT'); ?>
 					</p>
 				</div>
+				-->
 			</fieldset>
 			<input type="hidden" name="fields[category_id]" value="<?php echo $this->post->category_id; ?>" />
 			<input type="hidden" name="fields[parent]" value="<?php echo $this->post->id; ?>" />

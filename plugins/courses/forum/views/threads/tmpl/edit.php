@@ -122,10 +122,10 @@ if ($this->post->id) {
 					<?php
 					ximport('Hubzero_Wiki_Editor');
 					$editor = Hubzero_Wiki_Editor::getInstance();
-					echo $editor->display('fields[comment]', 'field_comment', stripslashes($this->post->comment), 'no-file-macro no-image-macro', '35', '15');
+					echo $editor->display('fields[comment]', 'field_comment', stripslashes($this->post->comment), 'minimal no-footer', '35', '15');
 					?>
 				</label>
-<?php //if (!$this->post->parent) { ?>
+<?php /*if (!$this->post->parent) { ?>
 				<label>
 					<?php echo JText::_('PLG_COURSES_FORUM_FIELD_TAGS'); ?>:
 <?php 
@@ -139,10 +139,14 @@ if ($this->post->id) {
 		}
 ?>
 				</label>
-<?php //} ?>
+<?php }*/ ?>
+				<!-- <label for="field_upload">
+					<span class="label-text"><?php echo JText::_('PLG_COURSES_FORUM_LEGEND_ATTACHMENTS'); ?>:</span>
+					<input type="file" name="upload" id="field_upload" />
+				</label> -->
 				<fieldset>
 					<legend><?php echo JText::_('PLG_COURSES_FORUM_LEGEND_ATTACHMENTS'); ?></legend>
-					<div class="courseing">
+					<div class="grouping">
 						<label>
 							<?php echo JText::_('PLG_COURSES_FORUM_FIELD_FILE'); ?>:
 							<input type="file" name="upload" id="upload" />

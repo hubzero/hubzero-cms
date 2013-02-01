@@ -128,14 +128,16 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 									<span class="entry-date">
 										<time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?></time>
 									</span>
+								<?php /*
 									<?php echo JText::_('by'); ?>
 									<span class="entry-author">
 										<?php echo $name; ?>
 									</span>
+									*/ ?>
 								</span>
 							</td>
 							<td>
-								<span><?php echo ($row->replies + 1); ?></span>
+								<span><?php echo ($row->object_id ? $row->replies : $row->replies + 1); ?></span>
 								<span class="entry-details">
 									<?php echo JText::_('Comments'); ?>
 								</span>

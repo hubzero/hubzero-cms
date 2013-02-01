@@ -37,6 +37,25 @@ HUB.Plugins.CoursesForum = {
 				return res;
 			});
 		});
+
+		$('.reply').each(function(i, item) {
+			$(item).click(function (e) {
+				e.preventDefault();
+				var frm = '#' + $(this).attr('rel');
+				if ($(frm).hasClass('hide')) {
+					$(frm).removeClass('hide');
+				} else {
+					$(frm).addClass('hide');
+				}
+			});
+		});
+		
+		$('.cancelreply').each(function(i, item) {
+			$(item).click(function (e) {
+				e.preventDefault();
+				$(this).closest('.comment-add').addClass('hide');
+			});
+		});
 	} // end initialize
 }
 
