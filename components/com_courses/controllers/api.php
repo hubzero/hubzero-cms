@@ -436,7 +436,7 @@ class CoursesApiController extends Hubzero_Api_Controller
 		// We'll always save the title again, even if it's just to the same thing
 		$title            = (!empty($assetObj->title)) ? $assetObj->title : 'New asset';
 		$row->title       = JRequest::getString('title', $title);
-		$row->title       = preg_replace("/[^a-zA-Z0-9 \-\:\.]/", "", $row->title);
+		$row->title       = preg_replace("/[^a-zA-Z0-9 \_\-\:\.]/", "", $row->title);
 
 		// If we have an incoming url, update the url, otherwise, leave it alone
 		if($url = JRequest::getVar('url', false))

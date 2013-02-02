@@ -576,6 +576,7 @@ HUB.CoursesOutline = {
 					// 201 created - this is returned by the standard asset upload
 					201: function(data, textStatus, jqXHR){
 						if(data.assets.js) {
+							// If our asset handler returns JS, we'll run that
 							eval(data.assets.js);
 						} else {
 							// If this is an empty asset group, remove the "no files" list item first

@@ -25,6 +25,21 @@ class FormAssetHandler extends AssetHandler
 		// Include needed files
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'form.php');
 
+		// Check to make sure a file was provided
+		if (isset($_FILES['files']))
+		{
+			$file = $_FILES['files']['name'][0];
+
+			// Get the file extension
+			$pathinfo = pathinfo($file);
+			$filename = $pathinfo['filename'];
+			$ext      = $pathinfo['extension'];
+		}
+		else
+		{
+			return array('error' => 'No files provided');
+		}
+
 		// Instantiate form object
 		$pdf = PdfForm::fromPostedFile('files');
 
@@ -63,7 +78,7 @@ class FormAssetHandler extends AssetHandler
 					// Create ajax call to change info in the database
 					$.ajax({
 						url: '/api/courses/assetsave',
-						data: form.serialize()+'&title=Exam&type=exam&url='+encodeURIComponent('/courses/form/layout/" . $id . "'),
+						data: form.serialize()+'&title=" . $filename . "&type=exam&url='+encodeURIComponent('/courses/form/layout/" . $id . "'),
 						dataType: 'json',
 						type: 'POST',
 						cache: false,
@@ -89,7 +104,7 @@ class FormAssetHandler extends AssetHandler
 
 									// Reset progress bar after 2 seconds
 									// @FIXME: asset_title and asset_ext are defined for forms
-									HUB.CoursesOutline.resetProgresBar(file.asset_title+'.'+file.asset_ext, 2000);
+									HUB.CoursesOutline.resetProgresBar(file.asset_title+'.pdf', 2000);
 								});
 							},
 							401: function(data){
