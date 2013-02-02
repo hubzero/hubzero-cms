@@ -291,6 +291,12 @@ ul {
 .exam:after {
 	content: "\270e";
 }
+.note:after {
+	content: "\f02a";
+}
+.link:after {
+	content: "\26D3";
+}
 
 .asset-group-item .checker {
 	margin-right: 0;
@@ -367,6 +373,18 @@ ul {
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
 	border-radius: 3px;
+
+	box-shadow: inset 1px 1px 1px #999;
+
+	background: #EFEFEF;
+	background: -webkit-gradient(linear, left top, left bottom, from(#EFEFEF), to(#CCCCCC));
+	background: -webkit-linear-gradient(#EFEFEF, #CCCCCC);
+	background: -moz-linear-gradient(center top, #EFEFEF 0%, #CCCCCC 100%);
+	background: -moz-gradient(center top, #EFEFEF 0%, #CCCCCC 100%);
+	background: -o-linear-gradient(#EFEFEF, #CCCCCC);
+	background-image: -ms-linear-gradient(top, #EFEFEF 0%, #CCCCCC 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#EFEFEF,endColorstr=#CCCCCC);
+	-ms-filter:"progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#EFEFEF, endColorstr=#CCCCCC)";
 }
 .bar {
 	height: 20px;
