@@ -149,15 +149,21 @@ if ($this->post->id) {
 					<legend><?php echo JText::_('COM_FORUM_LEGEND_ATTACHMENTS'); ?></legend>
 					<div class="grouping">
 						<label>
-							<?php echo JText::_('COM_FORUM_FIELD_FILE'); ?>:
+							<?php echo JText::_('COM_FORUM_FIELD_FILE'); ?>: <?php if ($this->attach->filename) { echo '<strong>' . $this->escape(stripslashes($this->attach->filename)) . '</strong>'; } ?>
 							<input type="file" name="upload" id="upload" />
 						</label>
 
 						<label>
 							<?php echo JText::_('COM_FORUM_FIELD_DESCRIPTION'); ?>:
-							<input type="text" name="description" value="" />
+							<input type="text" name="description" value="<?php echo $this->escape(stripslashes($this->attach->description)); ?>" />
 						</label>
+						<input type="hidden" name="attachment" value="<?php echo $this->escape(stripslashes($this->attach->id)); ?>" />
 					</div>
+					<?php if ($this->attach->id) { ?>
+						<p class="warning">
+							Selecting a new file will replace the current file.
+						</p>
+					<?php } ?>
 				</fieldset>
 				
 				<label for="field-anonymous" id="comment-anonymous-label">

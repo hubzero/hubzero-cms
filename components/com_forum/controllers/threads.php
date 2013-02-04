@@ -466,6 +466,9 @@ class ForumControllerThreads extends Hubzero_Controller
 		$this->view->tModel = new ForumTags($this->database);
 		$this->view->tags = $this->view->tModel->get_tag_string($this->view->post->id, 0, 0, $this->view->post->created_by);
 
+		$this->view->attach = new ForumAttachment($this->database);
+		$this->view->attach->loadByPost($id);
+
 		$this->view->authorized = $this->_authorize();
 
 		// Push CSS to the template
@@ -858,15 +861,29 @@ class ForumControllerThreads extends Hubzero_Controller
 			return;
 		}
 
+		$row = new ForumAttachment($this->database);
+		$row->load(JRequest::getInt('attachment', 0));
+		$row->description = trim(JRequest::getVar('description', ''));
+		$row->post_id = $post_id;
+		$row->parent = $listdir;
+
 		// Incoming file
 		$file = JRequest::getVar('upload', '', 'files', 'array');
 		if (!$file['name']) 
 		{
+			if ($row->id)
+			{
+				if (!$row->check()) 
+				{
+					$this->setError($row->getError());
+				}
+				if (!$row->store()) 
+				{
+					$this->setError($row->getError());
+				}
+			}
 			return;
 		}
-
-		// Incoming
-		$description = trim(JRequest::getVar('description', ''));
 
 		// Construct our file path
 		$path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/forum'), DS) . DS . $listdir;
@@ -902,14 +919,16 @@ class ForumControllerThreads extends Hubzero_Controller
 		{
 			// File was uploaded
 			// Create database entry
-			$row = new ForumAttachment($this->database);
-			$row->bind(array(
-				'id'          => 0,
+			//$row = new ForumAttachment($this->database);
+			$row->filename = $file['name'];
+			
+			/*$row->bind(array(
+				'id'          => $id,
 				'parent'      => $listdir,
 				'post_id'     => $post_id,
 				'filename'    => $file['name'],
 				'description' => $description
-			));
+			));*/
 			if (!$row->check()) 
 			{
 				$this->setError($row->getError());
