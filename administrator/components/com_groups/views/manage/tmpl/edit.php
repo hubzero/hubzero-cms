@@ -221,11 +221,10 @@ function submitbutton(pressbutton)
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<td class="key"><label for="privacy"><?php echo JText::_('COM_GROUPS_PRIVACY'); ?>:</label></td>
+						<td class="key"><label for="privacy"><?php echo JText::_('Discoverability'); ?>:</label></td>
 						<td>
-							<input type="radio" name="group[privacy]" value="0"<?php if ($this->group->privacy == 0) { echo ' checked="checked"'; } ?> /> <?php echo JText::_('COM_GROUPS_ACCESS_PUBLIC'); ?><br />
-							<input type="radio" name="group[privacy]" value="1"<?php if ($this->group->privacy == 1) { echo ' checked="checked"'; } ?> /> <?php echo JText::_('COM_GROUPS_ACCESS_PROTECTED'); ?><br />
-							<input type="radio" name="group[privacy]" value="4"<?php if ($this->group->privacy == 4) { echo ' checked="checked"'; } ?> /> <?php echo JText::_('COM_GROUPS_ACCESS_PRIVATE'); ?>
+							<input type="radio" name="group[privacy]" value="0"<?php if ($this->group->privacy == 0) { echo ' checked="checked"'; } ?> /> <?php echo JText::_('Visible'); ?><br />
+							<input type="radio" name="group[privacy]" value="1"<?php if ($this->group->privacy == 1) { echo ' checked="checked"'; } ?> /> <?php echo JText::_('Hidden'); ?>
 						</td>
 					</tr>
 					<tr>

@@ -532,8 +532,25 @@ class GroupsController extends Hubzero_Controller
 		// Ensure the group has been published or has been approved
 		if ($group->get('published') != 1) 
 		{
-			JError::raiseError(404, JText::_('GROUPS_NOT_PUBLISHED'));
-			return;
+			$managers = $group->get('managers');
+			$members = $group->get('members');
+			
+			$juser =& JFactory::getUser();
+			
+			if(in_array($juser->get('id'), $managers) || in_array($juser->get('id'), $members))
+			{
+				$this->_getGroupStyles($group->get('type'));
+				
+				$view = new JView(array('name' => 'view', 'layout' => 'unapproved'));
+				$view->group = $group;
+				$view->display();
+				return;
+			}
+			else
+			{
+				JError::raiseError(404, JText::_('GROUPS_NOT_PUBLISHED'));
+				return;
+			}
 		}
 
 		$paramsClass = 'JParameter';
@@ -1542,7 +1559,7 @@ class GroupsController extends Hubzero_Controller
 		{
 			$group->create();
 			$group->set('type', 1);
-			$group->set('published', $g_published);
+			$group->set('published', $this->config->get('auto_approve', 1));
 			$group->set('created', date("Y-m-d H:i:s"));
 			$group->set('created_by', $this->juser->get('id'));
 
@@ -1610,7 +1627,7 @@ class GroupsController extends Hubzero_Controller
 
 		// Get the administrator e-mail
 		$emailadmin = $jconfig->getValue('config.mailfrom');
-
+		
 		// Get the "from" info
 		$from = array();
 		$from['name']  = $jconfig->getValue('config.sitename') . ' ' . JText::_(strtoupper($this->_name));
@@ -1619,10 +1636,38 @@ class GroupsController extends Hubzero_Controller
 		// Get plugins
 		JPluginHelper::importPlugin('xmessage');
 		$dispatcher =& JDispatcher::getInstance();
-		if (!$dispatcher->trigger('onSendMessage', array($type, $subject, $message, $from, $group->get('managers'), $this->_option))) 
+		
+		if($type == 'groups_changed')
 		{
-			$this->setNotification(JText::_('GROUPS_ERROR_EMAIL_MANAGERS_FAILED'), 'error');
+			if (!$dispatcher->trigger('onSendMessage', array($type, $subject, $message, $from, $group->get('managers'), $this->_option))) 
+			{
+				$this->setNotification(JText::_('GROUPS_ERROR_EMAIL_MANAGERS_FAILED'), 'error');
+			}
 		}
+		else
+		{
+			//only inform site admin if the group wasnt auto-approved
+			if(!$this->config->get('auto_approve', 1))
+			{
+				$to = $emailadmin;
+				$subject = $jconfig->getValue('config.sitename') . ' Group Waiting Approval';
+				$message  = 'Group "' . $group->get('description') . '" (' . 'https://' . trim($_SERVER['HTTP_HOST'], DS) . DS . 'groups' . DS . $group->get('cn') . ') is waiting for approval by HUB administrator.';
+				$message .= "\n\n" . 'Please log into the administrator back-end of HUB to approve group: ' . "\n" . 'https://' . trim($_SERVER['HTTP_HOST'], DS) . DS . 'administrator';
+				
+				$headers  = "MIME-Version: 1.0\n";
+				$headers .= "Content-type: text/plain; charset=utf-8\n";
+				$headers .= "From: " . $from['name'] . " <" . $from['email'] . ">\n";
+				$headers .= "Reply-To: " . $from['name'] . " <" . $from['email'] . ">\n";
+				$headers .= "X-Priority: 3\n";
+				$headers .= "X-MSMail-Priority: High\n";
+				$headers .= "X-Mailer: " . $from['name'] . "\n";
+				
+				$args = "-f '" . $from['email'] . "'";
+				
+				mail($to, $subject, $message, $headers, $args);
+			}
+		}
+		
 
 		if ($this->getNotifications()) 
 		{

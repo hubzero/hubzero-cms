@@ -875,3 +875,39 @@
 		margin-right: 0;
 	}
 }
+
+
+/* Not Approved Group */
+.group-unapproved {
+	width:60%;
+	margin:0 auto;
+	padding:30px 0 50px 0;
+	text-align:center;
+	}
+.group-unapproved .name {
+	font-size: 8em;
+	text-align: center;
+	color: #ddd;
+	text-shadow: 0 1px 1px rgba(255, 255, 255, 0.9), 0 -1px 1px rgba(0, 0, 0, 0.2);
+	margin: 0;
+	padding: 0;
+	line-height: 1.2em;
+	font-family: 'ArvoRegular', Georgia, 'Times New Roman', 'Times', Serif;
+	font-weight: normal;
+	}
+.group-unapproved .description {
+	display:block;
+	font-size: 2em;
+	text-align: center;
+	color: #555;
+	margin: 0;
+	padding: 0;
+	line-height: 1.2em;
+	font-family: 'ArvoRegular', Georgia, 'Times New Roman', 'Times', Serif;
+	font-weight: normal;
+	}
+.group-unapproved .all-groups,
+.group-unapproved .my-groups {
+	display:inline-block;
+	padding:20px 0 0 0;
+	}
