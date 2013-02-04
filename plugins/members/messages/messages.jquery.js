@@ -89,6 +89,12 @@ HUB.MembersMsg = {
 				}
 				$(this).attr('href', href);
 			},
+			afterLoad: function(upcomingObject, currentObject) {
+				var dom = $(upcomingObject.content);
+				dom.filter('script').each(function() {
+					$.globalEval(this.text || this.textContent || this.innerHTML || '');
+				});
+			},
 			afterShow: function() {
 				if ($('#hubForm-ajax')) {
 					$('#hubForm-ajax').submit(function(e) {
