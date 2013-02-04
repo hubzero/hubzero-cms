@@ -537,6 +537,92 @@ class ToolsHelperUtils
 		return $export_access;
 	}
 	
+	/**
+	 * Record Tool Usage
+	 *
+	 * @param		$tool		Alias of tool
+	 * @param		$userid		User ID 
+	 * 
+	 * @return 		BOOL
+	 */
+	public function recordToolUsage( $tool, $userid = '' )
+	{
+		//include needed files
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'recent.php');
+		
+		//instantiate needed objects
+		$juser =& JFactory::getUser();
+		$database =& JFactory::getDBO();
+		
+		//load tool version
+		$toolVersion = new ToolVersion( $database );
+		$toolVersion->loadFromName( $tool );
+		
+		//make sure we have a user id
+		if(!$userid)
+		{
+			$userid = $juser->get('id');
+		}
+		
+		//get recent tools
+		$recentTool = new ToolRecent( $database );
+		$rows = $recentTool->getRecords( $userid );
+		
+		//check to see if any recently used tools are this one
+		$thisapp = 0;
+		for ($i=0, $n=count($rows); $i < $n; $i++)
+		{
+			if ($tool == trim($rows[$i]->tool)) 
+			{
+				$thisapp = $rows[$i]->id;
+			}
+		}
+
+		// Get the oldest entry. We may need this later.
+		$oldest = end($rows);
+		
+		//createed date
+		$created = date('Y-m-d H:i:s', time());
+		
+		// Check if any recent tools are the same as the one just launched
+		if ($thisapp) 
+		{
+			// There was one, so just update its creation time
+			$recentTool->id 		= $thisapp;
+			$recentTool->uid 		= $userid;
+			$recentTool->tool 		= $tool;
+			$recentTool->created 	= $created;
+		} 
+		else 
+		{
+			// Check if we've reached 5 recent tools or not
+			if (count($rows) < 5) 
+			{
+				// Still under 5, so insert a new record
+				$recentTool->uid 		= $userid;
+				$recentTool->tool 		= $tool;
+				$recentTool->created 	= $created;
+			} 
+			else 
+			{
+				// We reached the limit, so update the oldest entry effectively replacing it
+				$recentTool->id 		= $oldest->id;
+				$recentTool->uid 		= $userid;
+				$recentTool->tool 		= $tool;
+				$recentTool->created 	= $created;
+			}
+		}
+		
+		//store usage
+		if(!$recentTool->store())
+		{
+			return false;
+		}
+		
+		return true;
+	}
+	
 	
 	/**
 	 * Run Middleware Scripts

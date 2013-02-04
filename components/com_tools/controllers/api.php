@@ -249,20 +249,16 @@ class ToolsApiController extends Hubzero_Api_Controller
 			return;
 		}
 		
-		// check to make sure we have a home directory
-		$home_directory = DS .'webdav' . DS . 'home' . DS . strtolower($result->get('username'));
-		if(!is_dir($home_directory))
-		{
-			$this->errorMessage(500, 'Unable to find users home directory.');
-			return;
-		}
-		
 		//check to make sure we have a sessions dir
-		$home_directory .= DS . 'data' . DS . 'sessions';
+		$home_directory = DS .'webdav' . DS . 'home' . DS . strtolower($result->get('username')) . DS . 'data' . DS . 'sessions';
 		if(!is_dir($home_directory))
 		{
-			$this->errorMessage(500, 'Unable to find users sessions directory.');
-			return;
+			clearstatcache();
+			if(!is_dir($home_directory))
+			{
+				$this->errorMessage(500, 'Unable to find users sessions directory. - ' . $home_directory);
+				return;
+			}
 		}
 		
 		//check to make sure we have an active session with the ID supplied

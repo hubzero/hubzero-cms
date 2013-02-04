@@ -262,7 +262,7 @@ class MembersApiController extends Hubzero_Api_Controller
 				AND tv.state=1
 				AND rt.uid={$result->get("uidNumber")}
 				AND rt.tool=r.alias
-				ORDER BY rt.created";
+				ORDER BY rt.created DESC";
 		
 		$database->setQuery($sql);
 		$recent_tools = $database->loadObjectList();
