@@ -136,7 +136,7 @@ class plgTagsForum extends JPlugin
 
 				if ($gids)
 				{
-					$addtl_where[] = '(e.access IN (' . $viewlevels . ') OR ((e.access = 4 OR e.access = 5) AND e.group_id IN (0,' . join(',', $gids) . ')))';
+					$addtl_where[] = '(e.access IN (' . $viewlevels . ') OR ((e.access = 4 OR e.access = 5) AND e.scope_id IN (0,' . join(',', $gids) . ')))';
 				}
 				else 
 				{
@@ -155,7 +155,7 @@ class plgTagsForum extends JPlugin
 				$groups = $this->_getGroupIds($juser->get('id'));
 				if ($groups)
 				{
-					$addtl_where[] = '(e.access = 0 OR e.access = 1 OR ((e.access = 3 OR e.access = 4) AND e.group_id IN (0,' . join(',', $groups) . ')))';
+					$addtl_where[] = '(e.access = 0 OR e.access = 1 OR ((e.access = 3 OR e.access = 4) AND e.scope_id IN (0,' . join(',', $groups) . ')))';
 				}
 				else
 				{
