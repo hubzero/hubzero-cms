@@ -280,6 +280,14 @@ class WikiControllerPage extends Hubzero_Controller
 
 		// Up the hit counter
 		//$this->page->hit();
+		if (JRequest::getVar('format', '') == 'raw')
+		{
+			JRequest::setVar('no_html', 1);
+
+			echo nl2br($this->view->revision->pagetext);
+			return;
+			/*$this->view->setLayout('markup');*/
+		}
 
 		// Load the wiki parser
 		$wikiconfig = array(

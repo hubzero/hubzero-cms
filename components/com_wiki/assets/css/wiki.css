@@ -662,3 +662,22 @@
 		background: #efefef;
 		font-size: 0.85em;
 	}
+
+	a.markup {
+		display: inline-block;
+		width: 1em;
+		height: 1em;
+		overflow: hidden;
+		border: none;
+		color: #999;
+		margin-left: 1em;
+	}
+	a.markup:before {
+		content: "\f036";
+		font-family: "Fontcons";
+		font-size: 1.2em;
+	}
+	a.markup:hover {
+		color: #333;
+		border: none;
+	}

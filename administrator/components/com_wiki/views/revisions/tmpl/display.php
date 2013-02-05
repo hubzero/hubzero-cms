@@ -86,6 +86,13 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 
 	switch ($row->approved) 
 	{
+		case '2':
+			$color_access = 'style="color: black;"';
+			$class = 'trashed';
+			$task = '0';
+			$alt = JText::_('Trashed');
+		break;
+		
 		case '1':
 			$color_access = 'style="color: green;"';
 			$class = 'approved';

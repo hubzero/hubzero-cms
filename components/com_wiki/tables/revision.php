@@ -253,7 +253,7 @@ class WikiPageRevision extends JTable
 		{
 			$pageid = $this->pageid;
 		}
-		return $this->getRecords(array('pageid' => $pageid));
+		return $this->getRecords(array('pageid' => $pageid, 'approved' => array(0, 1)));
 	}
 
 	/**
@@ -294,12 +294,35 @@ class WikiPageRevision extends JTable
 	 */
 	public function buildQuery($filters)
 	{
-		$query = " FROM $this->_tbl AS r,
-					#__users AS u 
-					WHERE r.created_by=u.id AND r.pageid='" . (int) $filters['pageid'] . "'";
+		$query = " FROM $this->_tbl AS r
+					LEFT JOIN #__users AS u ON r.created_by=u.id";
+
+		$where = array();
+
+		if (isset($filters['pageid'])) 
+		{
+			$where[] = "r.pageid=" . $this->_db->Quote((int) $filters['pageid']);
+		}
 		if (isset($filters['search']) && $filters['search']) 
 		{
-			$query .= " AND LOWER(r.pagehtml) LIKE '%" . strtolower($filters['search']) . "%'";
+			$where[] = "LOWER(r.pagehtml) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'";
+		}
+		if (isset($filters['approved']) && $filters['approved']) 
+		{
+			if (is_array($filters['approved']))
+			{
+				$filters['approved'] = array_map('intval', $filters['approved']);
+				$where[] = "r.approved IN (" . implode(',', $filters['approved']) . ")";
+			}
+			else
+			{
+				$where[] = "r.approved=" . $this->_db->Quote($filters['approved']);
+			}
+		}
+
+		if (count($where) > 0)
+		{
+			$query .= " WHERE " . implode(" AND ", $where);
 		}
 
 		if (isset($filters['sortby']) && $filters['sortby'] != '') 

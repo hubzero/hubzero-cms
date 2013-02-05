@@ -307,7 +307,10 @@ class WikiControllerHistory extends Hubzero_Controller
 		}
 
 		// Delete it
-		if (!$revision->delete($id))
+		$revision->approved = 2;
+
+		//if (!$revision->delete($id))
+		if (!$revision->store())
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&scope=' . $this->page->scope . 'pagename=' . $this->page->pagename . '&task=history'),

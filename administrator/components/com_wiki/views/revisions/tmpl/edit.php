@@ -124,8 +124,14 @@ function submitbutton(pressbutton)
 						<td><input type="checkbox" name="revision[minor_edit]" id="minor_edit" value="1" <?php echo $this->revision->minor_edit ? 'checked="checked"' : ''; ?> /></td>
 					</tr>
 					<tr>
-						<td class="key"><label for="approved"><?php echo JText::_('Approves'); ?>:</label></td>
-						<td><input type="checkbox" name="revision[approved]" id="approved" value="1" <?php echo $this->revision->approved ? 'checked="checked"' : ''; ?> /></td>
+						<td class="key"><label for="approved"><?php echo JText::_('State'); ?>:</label></td>
+						<td>
+							<select name="revision[approved]" id="approved">
+								<option value="0"<?php echo $this->revision->approved == 0 ? ' selected="selected"' : ''; ?>><?php echo JText::_('Not approved'); ?></option>
+								<option value="1"<?php echo $this->revision->approved == 1 ? ' selected="selected"' : ''; ?>><?php echo JText::_('Approved'); ?></option>
+								<option value="2"<?php echo $this->revision->approved == 2 ? ' selected="selected"' : ''; ?>><?php echo JText::_('Trashed'); ?></option>
+							</select>
+						</td>
 					</tr>
 					<tr>
 						<td class="key"><label><?php echo JText::_('Creator'); ?>:</label></td>

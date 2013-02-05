@@ -117,7 +117,7 @@ $first = end($this->revisions);
 							<th scope="col"><?php echo JText::_('WIKI_HISTORY_COL_MADE_BY'); ?></th>
 							<th scope="col"><?php echo JText::_('WIKI_HISTORY_COL_LENGTH'); ?></th>
 							<th scope="col"><?php echo JText::_('WIKI_HISTORY_COL_STATUS'); ?></th>
-<?php if ($this->config->get('access-manage')) { ?>
+<?php if (($this->page->state == 1 && $this->config->get('access-manage')) || ($this->page->state != 1 && $this->config->get('access-delete'))) { ?>
 							<th scope="col"></th>
 <?php } ?>
 						</tr>
@@ -206,6 +206,9 @@ foreach ($this->revisions as $revision)
 								<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&version='.$revision->version); ?>" class="tooltips" title="<?php echo JText::_('WIKI_REVISION_SUMMARY').' :: '.$summary; ?>">
 									<time datetime="<?php echo $revision->created; ?>"><?php echo $this->escape($revision->created); ?></time>
 								</a>
+								<a class="tooltips markup" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&version='.$revision->version.'&format=raw'); ?>" title="<?php echo JText::_('Markup').' :: '.JText::_('View the markup for this version'); ?>">
+									<?php echo JText::_('markup'); ?>
+								</a>
 							</td>
 							<td>
 								<?php echo $this->escape($xname); ?>
@@ -222,7 +225,7 @@ foreach ($this->revisions as $revision)
 								</a>
 					<?php } ?>
 							</td>
-					<?php if ($this->config->get('access-manage')) { ?>
+					<?php if (($this->page->state == 1 && $this->config->get('access-manage')) || ($this->page->state != 1 && $this->config->get('access-delete'))) { ?>
 							<td>
 								<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=deleterevision&oldid='.$revision->id); ?>" title="<?php echo JText::_('WIKI_REVISION_DELETE'); ?>">
 									<?php echo JText::_('DELETE'); ?>

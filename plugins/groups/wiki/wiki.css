@@ -546,6 +546,35 @@
 		background: #efefef;
 		font-size: 0.85em;
 	}
+	
+	.page-length {
+		color: #ccc;
+	}
+	.page-length.increase {
+		color: green;
+	}
+	.page-length.decrease {
+		color: red;
+	}
+
+	a.markup {
+		display: inline-block;
+		width: 1em;
+		height: 1em;
+		overflow: hidden;
+		border: none;
+		color: #999;
+		margin-left: 1em;
+	}
+	a.markup:before {
+		content: "\f036";
+		font-family: "Fontcons";
+		font-size: 1.2em;
+	}
+	a.markup:hover {
+		color: #333;
+		border: none;
+	}
 
 /* Hide the sidebar if the page is too narrow */
 @media only screen and (max-width: 1064px) {
