@@ -30,10 +30,12 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-$juser =& JFactory::getUser();
 ?>
-<div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : '';?>>
-	<p><?php echo JText::_('MOD_MYCOURSES_NO_RESULTS'); ?></p>
-</div>
+<h3 class="section-header">
+	<a name="courses"></a>
+	<?php echo JText::_('PLG_MEMBERS_COURSES'); ?>
+</h3>
 
+<form method="get" action="<?php JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=courses'); ?>">
+	<p>coming soon</p>
+</form>

@@ -33,7 +33,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Module class for displaying a list of courses for a user
+ * Module class for displaying a list of groups for a user
  */
 class modMyCourses
 {
@@ -84,110 +84,6 @@ class modMyCourses
 	}
 
 	/**
-	 * Get courses for a user
-	 * 
-	 * @param      integer $uid  User ID
-	 * @param      string  $type Membership type to return courses for
-	 * @return     array
-	 */
-	private function _getCourses($uid, $type='all')
-	{
-		$db =& JFactory::getDBO();
-
-		// Get all courses the user is a member of
-		$query1 = "SELECT g.published, g.description, g.cn, '1' AS registered, '0' AS regconfirmed, '0' AS manager 
-				   FROM #__courses AS g, #__courses_applicants AS m 
-				   WHERE (g.type='1' || g.type='3') AND m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
-
-		$query2 = "SELECT g.published, g.description, g.cn, '1' AS registered, '1' AS regconfirmed, '0' AS manager 
-				   FROM #__courses AS g, #__courses_members AS m 
-				   WHERE (g.type='1' || g.type='3') AND m.uidNumber NOT IN 
-						(SELECT uidNumber 
-						 FROM #__courses_managers AS manager
-						 WHERE manager.gidNumber = m.gidNumber)
-				   AND m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
-
-		$query3 = "SELECT g.published, g.description, g.cn, '1' AS registered, '1' AS regconfirmed, '1' AS manager 
-				   FROM #__courses AS g, #__courses_managers AS m 
-				   WHERE (g.type='1' || g.type='3') AND m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
-
-		$query4 = "SELECT g.published, g.description, g.cn, '0' AS registered, '1' AS regconfirmed, '0' AS manager 
-				   FROM #__courses AS g, #__courses_invitees AS m 
-				   WHERE (g.type='1' || g.type='3') AND m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
-
-		switch ($type)
-		{
-			case 'all':
-				$query = "( $query1 ) UNION ( $query2 ) UNION ( $query3 ) UNION ( $query4 ) ORDER BY cn ASC";
-			break;
-			case 'applicants':
-				$query = $query1;
-			break;
-			case 'members':
-				$query = $query2;
-			break;
-			case 'managers':
-				$query = $query3;
-			break;
-			case 'invitees':
-				$query = $query4;
-			break;
-		}
-
-		$db->setQuery($query);
-		$db->query();
-
-		$result = $db->loadObjectList();
-
-		if (empty($result))
-		{
-			return array();
-		}
-
-		return $result;
-	}
-
-	/**
-	 * Get the user's status in the gorup
-	 * 
-	 * @param      object $course Course to check status in
-	 * @return     string
-	 */
-	public function getStatus($course)
-	{
-		if ($course->manager) 
-		{
-			$status = 'manager';
-		} 
-		else 
-		{
-			if ($course->registered) 
-			{
-				if ($course->regconfirmed) 
-				{
-					$status = 'member';
-				} 
-				else 
-				{
-					$status = 'pending';
-				}
-			} 
-			else 
-			{
-				if ($course->regconfirmed) 
-				{
-					$status = 'invitee';
-				} 
-				else 
-				{
-					$status = '';
-				}
-			}
-		}
-		return $status;
-	}
-
-	/**
 	 * Display module contents
 	 * 
 	 * @return     void
@@ -199,16 +95,6 @@ class modMyCourses
 		// Get the module parameters
 		$this->moduleclass = $this->params->get('moduleclass');
 		$this->limit = intval($this->params->get('limit', 10));
-
-		// Get the user's courses
-		$members = $this->_getCourses($juser->get('id'), 'all');
-
-		$courses = array();
-		foreach ($members as $mem)
-		{
-			$courses[] = $mem;
-		}
-		$this->courses = $courses;
 
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');
