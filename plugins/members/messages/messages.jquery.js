@@ -78,7 +78,7 @@ HUB.MembersMsg = {
 			fitToView: false,  
 			titleShow: false,
 			tpl: {
-				wrap:'<div class="fancybox-wrap"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div>'
+				wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
 			},
 			beforeLoad: function() {
 				href = $(this).attr('href');
@@ -114,7 +114,7 @@ HUB.MembersMsg = {
 						}
 						
 						$.post($(this).attr('action'),$(this).serialize(), function(data) {
-							$.fancybox().close();  
+							$.fancybox.close();  
 						});
 					});
 				}

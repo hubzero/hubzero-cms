@@ -43,7 +43,7 @@ HUB.Members = {
 			fitToView: false,
 			titleShow: false,
 			tpl: {
-				wrap:'<div class="fancybox-wrap"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div>'
+				wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
 			},
 			beforeLoad: function() {
 				href = $(this).attr('href');
@@ -53,6 +53,12 @@ HUB.Members = {
 					href += '&no_html=1';
 				}
 				$(this).attr('href', href);	
+			},
+			afterLoad: function(upcomingObject, currentObject) {
+				var dom = $(upcomingObject.content);
+				dom.filter('script').each(function() {
+					$.globalEval(this.text || this.textContent || this.innerHTML || '');
+				});
 			},
 			afterShow: function() {
 				if ($('#hubForm-ajax')) {
