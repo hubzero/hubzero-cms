@@ -550,6 +550,8 @@ class CoursesModelCourse extends JObject
 			return false;
 		}
 
+		$isNew = ($this->get('id') ? false : true);
+
 		$first = true;
 
 		$affected = 0;
@@ -680,12 +682,9 @@ class CoursesModelCourse extends JObject
 		// After SQL is done and has no errors, fire off onCourseUserEnrolledEvents 
 		// for every user added to this course
 		JPluginHelper::importPlugin('courses');
-		$dispatcher = & JDispatcher::getInstance();
-
-		/*foreach ($aNewUserCourseEnrollments as $userid)
-		{
-			$dispatcher->trigger('onCourseUserEnrollment', array($this->get('id'), $userid));
-		}*/
+		
+		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher->trigger('onAfterSaveCourse', array($this, $isNew));
 
 		if ($affected > 0)
 		{
@@ -696,17 +695,23 @@ class CoursesModelCourse extends JObject
 			$dispatcher->trigger('onAfterStoreCourse', array($this));
 		}
 
-		/*$log = new CoursesTableLog($this->database);
-		$log->gid       = $this->get('id');
-		$log->uid       = $juser->get('id');
-		$log->timestamp = date('Y-m-d H:i:s', time());
-		$log->action    = 'course_deleted';
-		$log->comments  = $log;
-		$log->actorid   = $juser->get('id');
-		if (!$log->store()) 
+		if ($isNew)
 		{
-			$this->setError($log->getError());
-		}*/
+			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'log.php');
+
+			$log = new CoursesTableLog($this->database);
+			$log->scope_id  = $this->get('id');
+			$log->scope     = 'course';
+			$log->user_id   = $juser->get('id');
+			$log->timestamp = date('Y-m-d H:i:s', time());
+			$log->action    = 'created';
+			//$log->comments  = $log;
+			$log->actor_id  = $juser->get('id');
+			if (!$log->store()) 
+			{
+				$this->setError($log->getError());
+			}
+		}
 
 		return true;
 	}
@@ -720,7 +725,6 @@ class CoursesModelCourse extends JObject
 	{
 		// Get some data for the log
 		$log = json_encode($this->_tbl);
-
 		$scope_id = $this->get('id');
 
 		if (!$this->_tbl->delete())
@@ -728,6 +732,11 @@ class CoursesModelCourse extends JObject
 			$this->setError($this->_tbl->getError());
 			return false;
 		}
+
+		JPluginHelper::importPlugin('courses');
+
+		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher->trigger('onAfterDeleteCourse', array($this));
 
 		// Log the event
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'log.php');

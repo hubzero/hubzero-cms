@@ -996,7 +996,7 @@ class CoursesModelOffering extends JObject
 			return false;
 		}
 
-		//$exists = $this->get('id');
+		$isNew = ($this->get('id') ? false : true);
 
 		// Validate data?
 		if ($validate)
@@ -1166,6 +1166,71 @@ class CoursesModelOffering extends JObject
 				$this->setError($log->getError());
 			}
 		}*/
+		JPluginHelper::importPlugin('courses');
+
+		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher->trigger('onAfterSaveOffering', array($this, $isNew));
+
+		if ($isNew)
+		{
+			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'log.php');
+
+			$log = new CoursesTableLog($this->database);
+			$log->scope_id  = $this->get('id');
+			$log->scope     = 'course';
+			$log->user_id   = $juser->get('id');
+			$log->timestamp = date('Y-m-d H:i:s', time());
+			$log->action    = 'created';
+			//$log->comments  = $log;
+			$log->actor_id  = $juser->get('id');
+			if (!$log->store()) 
+			{
+				$this->setError($log->getError());
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Delete an entry and associated data
+	 * 
+	 * @return     boolean True on success, false on error
+	 */
+	public function delete()
+	{
+		// Get some data for the log
+		$log = json_encode($this->_tbl);
+		$scope_id = $this->get('id');
+
+		if (!$this->_tbl->delete())
+		{
+			$this->setError($this->_tbl->getError());
+			return false;
+		}
+
+		JPluginHelper::importPlugin('courses');
+
+		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher->trigger('onAfterDeleteOffering', array($this));
+
+		// Log the event
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'log.php');
+
+		$juser = JFactory::getUser();
+
+		$log = new CoursesTableLog($this->_db);
+		$log->scope_id  = $scope_id;
+		$log->scope     = 'offering';
+		$log->user_id   = $juser->get('id');
+		$log->timestamp = date('Y-m-d H:i:s', time());
+		$log->action    = 'deleted';
+		$log->comments  = $log;
+		$log->actor_id  = $juser->get('id');
+		if (!$log->store()) 
+		{
+			$this->setError($log->getError());
+		}
 
 		return true;
 	}

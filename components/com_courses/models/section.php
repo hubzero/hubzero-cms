@@ -699,7 +699,7 @@ class CoursesModelSection extends JObject
 			return false;
 		}
 
-		//$exists = $this->get('id');
+		$isNew = ($this->get('id') ? false : true);
 
 		if ($check)
 		{
@@ -716,25 +716,28 @@ class CoursesModelSection extends JObject
 			return false;
 		}
 
-		/*if (($affected = $this->_db->getAffectedRows()))
+		JPluginHelper::importPlugin('courses');
+
+		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher->trigger('onAfterSaveSection', array($this, $isNew));
+
+		if ($isNew)
 		{
 			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'log.php');
 
-			$juser = JFactory::getUser();
-
-			$log = new CoursesTableLog($this->_db);
+			$log = new CoursesTableLog($this->database);
 			$log->scope_id  = $this->get('id');
 			$log->scope     = 'section';
 			$log->user_id   = $juser->get('id');
 			$log->timestamp = date('Y-m-d H:i:s', time());
-			$log->action    = (!$exists) ? 'created' : 'updated';
+			$log->action    = 'created';
 			//$log->comments  = $log;
 			$log->actor_id  = $juser->get('id');
 			if (!$log->store()) 
 			{
 				$this->setError($log->getError());
 			}
-		}*/
+		}
 
 		return true;
 	}
@@ -778,6 +781,11 @@ class CoursesModelSection extends JObject
 			$this->setError($this->_tbl->getError());
 			return false;
 		}
+
+		JPluginHelper::importPlugin('courses');
+
+		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher->trigger('onAfterDeleteSection', array($this));
 
 		// Log the event
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'log.php');
