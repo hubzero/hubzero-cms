@@ -202,10 +202,31 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 		<?php if ($this->rows) { ?>
 			<ol class="blog-entries">
 <?php 
+			ximport('Hubzero_Wiki_Parser');
+			$p =& Hubzero_Wiki_Parser::getInstance();
+
 			$cls = 'even';
 			foreach ($this->rows as $row)
 			{
 				$cls = ($cls == 'even') ? 'odd' : 'even';
+				
+				$wikiconfig = array(
+					'option'   => $this->option,
+					'scope'    => 'blog',
+					'pagename' => $row->alias,
+					'pageid'   => 0,
+					'filepath' => $this->config->get('uploadpath'),
+					'domain'   => ''
+				);
+				$row->content = $p->parse(stripslashes($row->content), $wikiconfig);
+				if ($this->config->get('cleanintro', 1)) {
+					$row->content = Hubzero_View_Helper_Html::shortenText(stripslashes($row->content), $this->config->get('introlength', 300), 0, 1);
+				} else {
+					$row->content = Hubzero_View_Helper_Html::shortenText(stripslashes($row->content), $this->config->get('introlength', 300), 0, 0);
+				}
+				if (substr($row->content, -7) == '&#8230;') {
+					$row->content .= '</p>';
+				}
 				
 				switch ($row->state)
 				{
@@ -281,12 +302,13 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 						</dd>
 					</dl>
 					<div class="entry-content">
-						<p>
-							<?php 
-							$content = plgGroupsBlog::stripWiki($row->content);
-							echo Hubzero_View_Helper_Html::shortenText($content, 300, 0);
-							?> 
-						</p>
+						<?php if ($this->config->get('cleanintro', 1)) { ?>
+								<p>
+									<?php echo $row->content; ?> 
+								</p>
+						<?php } else { ?>
+								<?php echo $row->content; ?>
+						<?php } ?>
 					</div>
 				</li>
 	<?php } ?>

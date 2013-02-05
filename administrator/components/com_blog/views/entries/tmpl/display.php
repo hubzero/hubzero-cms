@@ -288,7 +288,7 @@ for ($i=0, $n=count($rows); $i < $n; $i++)
 <?php if ($this->filters['scope'] == 'group') { ?>
 				<td>
 					<span>
-						<?php echo $this->escape($row->scope); ?>
+						<?php echo $this->escape($row->group_id); ?>
 					</span>
 				</td>
 <?php } ?>
