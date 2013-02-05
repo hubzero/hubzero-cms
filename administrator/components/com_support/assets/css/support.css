@@ -753,65 +753,85 @@
 		margin-top: 0;
 		border-bottom: 1px solid #ccc;
 	}
-	/*#line1 {
-		border: 1px solid #c00;
-	}*/
+
+	.legend table {
+		background: transparent;
+		width: auto;
+		border: none;
+	}
+	.legend table tr {
+		background: transparent;
+	}
+	.legend table td {
+		padding: 0.2em;
+		background: transparent;
+		border: none;
+	}
+
+	#flotTip {
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		-ms-border-radius: 0.25em;
+		-o-border-radius: 0.25em;
+		border-radius: 0.25em;
+		background: #111111;
+		background: -webkit-gradient(linear, left top, left bottom, from(#333333), to(#111111));
+		background: -webkit-linear-gradient(#333333, #111111);
+		background: -moz-linear-gradient(center top, #333333 0%, #111111 100%);
+		background: -moz-gradient(center top, #333333 0%, #111111 100%);
+		background: -o-linear-gradient(#333333, #111111);
+		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#333333,endColorstr=#111111);
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#333333, endColorstr=#111111)";
+		font-size: 0.85em;
+		padding: 0.5em 1em;
+		color: #eee;
+	}
+
+	.support-stats-filter {
+		 text-align: right;
+	}
 	.support-stats-overview {
-		border-top: none;
-		border-bottom: none;
-		margin: 1em 0;
-		width: 100%;
-		text-align: left;
-		font-size: 1em;
-		border-collapse: collapse;
+		border: none;
+		margin: 0;
 	}
 	.support-stats-overview thead th {
-		font-size: 85%;
-		color: #aaa;
+		color: #999;
 		font-weight: normal;
-		border-left: 1px solid #eee;
-		border-right: 1px solid #eee;
-		/*border-top: 1px solid #eee;*/
 		border-bottom: none;
-		padding: 5px 10px;
 		padding-bottom: 0;
-		width: 20%;
+		padding-top: 1em;
+		border: none;
 	}
 	.support-stats-overview tbody td {
-		padding: 5px 10px;
-		padding-top: 0;
-		font-size: 3em;
-		font-weight: bold;
-		border-left: 1px solid #eee;
-		border-right: 1px solid #eee;
+		padding: 0 0.2em 0.4em 0.2em;
+		font-size: 2.5em;
+		line-height: 1;
+		font-weight: normal;
 		color: #777;
-		border-bottom: 1px solid #eee;
-		width: 20%;
+		border: none;
 	}
-	.closed-tickets {
-		border-top: 1px solid #eee;
+	.entry-content .support-stats-overview {
+		margin-top: 1.5em;
 	}
-	table.support-stats-overview thead tr th:first-child, 
-	table.support-stats-overview thead tr td:first-child, 
-	table.support-stats-overview tbody tr th:first-child, 
-	table.support-stats-overview tbody tr td:first-child {
-		padding-left: 10px;
+	.entry-content .support-stats-overview tbody td {
+		font-size: 2em;
 	}
-	.support-stats-overview thead th.block,
-	.support-stats-overview tbody td.block {
-		width: 40%;
+	.entry-content .support-stats-overview thead th {
+		border-top: 2px solid #efefef;
 	}
 	.support-stats-overview tbody td.block {
 		color: #b18fbc;
+		color: #777;
 	}
-	.open-tickets tbody td.critical {
+	.support-stats-overview tbody td.critical {
 		color: red;
 	}
-	.open-tickets tbody td.major {
-		color: #ce7d7d;
+	.support-stats-overview thead th.major {
+		padding-right: 0;
 	}
-	.closed-tickets tbody td {
-		color: green;
+	.support-stats-overview tbody td.major {
+		color: #ce7d7d;
+		padding-right: 0;
 	}
 	.support-stats-overview tbody td span {
 		color: #aaa;
@@ -821,49 +841,45 @@
 		margin: 0 1.5em 0 0;
 		padding: 0;
 	}
+	.entry-content .support-stats-overview tbody td span {
+		margin: 0 1em 0 0;
+	}
 	
-	.support-stats-people {
-		border-top: none;
-		border-bottom: none;
-		margin: 1em 0;
-		width: 100%;
-		text-align: left;
+	.entry-head {
+		position: relative;
+		margin: 0;
+		border-bottom: 2px solid #efefef;
 	}
-	.support-stats-people thead th {
-		font-size: 85%;
-		color: #aaa;
-		font-weight: normal;
-		border-bottom: 1px solid #eee;
+	.entry-rank {
+		position: absolute;
+		top: 0;
+		right: 0;
+		font-size: 1.5em;
+		line-height: 1;
+		margin: 0;
+		padding: 0;
+		color: #666;
 	}
-	.support-stats-people tbody th {
-		font-weight: bold;
-		border-bottom: 1px solid #eee;
-		text-align: left;
+	.entry-title {
+		margin-top: 0;
 	}
-	.support-stats-people .active {
-		color: #aaa;
+	.entry-member-photo {
+		float: left;
+		margin: 0 1em 1em 0;
+		padding: 0;
 	}
-	.support-stats-people thead th.group {
-		background-image: none;
-		padding-left: 10px;
+	.entry-member-photo img {
+		width: 40px;
+		height: 40px;
 	}
-	.support-stats-people tbody td {
-		font-weight: normal;
-		border-bottom: 1px solid #eee;
+	.entry-title span {
+		color: #999;
 	}
-	.support-stats-people tbody tr.odd {
-		background-color: transparent; /*#f6f6f1;*/
+
+	fieldset .breakdown {
+		padding: 20px;
 	}
-	.support-stats-people tbody tr.odd .group {
-		background-color: transparent; /*#eeeee9;*/
-		background-image: none;
-		padding-left: 10px;
-	}
-	.support-stats-people tbody tr.even .group {
-		background-color: transparent; /*#f7f7f7;*/
-		background-image: none;
-		padding-left: 10px;
-	}
+
 	#ticketForm {
 		padding-top: 1px;
 		margin: -2.23606798em;

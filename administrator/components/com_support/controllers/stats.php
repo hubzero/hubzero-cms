@@ -62,7 +62,7 @@ class SupportControllerStats extends Hubzero_Controller
 		$this->view->sort = JRequest::getVar('sort', 'name');
 
 		// Set up some dates
-		$jconfig =& JFactory::getConfig();
+		/*$jconfig =& JFactory::getConfig();
 		$this->offset = $jconfig->getValue('config.offset');
 
 		$year  = JRequest::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
@@ -209,12 +209,296 @@ class SupportControllerStats extends Hubzero_Controller
 				sprintf("%02d",$i),
 				$this->view->group
 			);
+		}*/
+		$jconfig =& JFactory::getConfig();
+		$this->offset = $jconfig->getValue('config.offset');
+
+		$year  = JRequest::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
+		$month = strftime("%m", time()+($this->offset*60*60));
+		/*$day   = strftime("%d", time()+($this->offset*60*60));
+		if ($day <= "9"&preg_match("#(^[1-9]{1})#",$day)) 
+		{
+			$day = "0$day";
 		}
+		if ($month <= "9"&preg_match("#(^[1-9]{1})#",$month)) 
+		{
+			$month = "0$month";
+		}
+
+		$startday = 0;
+		$numday = ((date("w",mktime(0,0,0,$month,$day,$year))-$startday)%7);
+		if ($numday == -1) 
+		{
+			$numday = 6;
+		}
+		$week_start = mktime(0, 0, 0, $month, ($day - $numday), $year);
+		$week = strftime("%d", $week_start);*/
+
+		$this->view->year = $year;
+		$this->view->opened = array();
+		$this->view->closed = array();
+
+		$st = new SupportTicket($this->database);
+
+		$sql = "SELECT DISTINCT(s.`group`), g.description 
+				FROM #__support_tickets AS s
+				LEFT JOIN #__xgroups AS g ON g.cn=s.`group`
+				WHERE s.`group` !='' AND s.`group` IS NOT NULL 
+				AND s.type=" . $this->view->type . "
+				ORDER BY g.description ASC";
+		$this->database->setQuery($sql);
+		$this->view->groups = $this->database->loadObjectList();
+
+		// Users
+		$this->view->users = null;
+
+		if ($this->view->group) 
+		{
+			$query = "SELECT a.username, a.name, a.id"
+				. "\n FROM #__users AS a, #__xgroups AS g, #__xgroups_members AS gm"
+				. "\n WHERE g.cn='".$this->view->group."' AND g.gidNumber=gm.gidNumber AND gm.uidNumber=a.id"
+				. "\n ORDER BY a.name";
+		} 
+		else 
+		{
+			/*$query = "SELECT a.username, a.name, a.id"
+				. "\n FROM #__users AS a"
+				. "\n INNER JOIN #__core_acl_aro AS aro ON aro.value = a.id"	// map user to aro
+				. "\n INNER JOIN #__core_acl_groups_aro_map AS gm ON gm.aro_id = aro.id"	// map aro to group
+				. "\n INNER JOIN #__core_acl_aro_groups AS g ON g.id = gm.group_id"
+				. "\n WHERE a.block = '0' AND g.id=25"
+				. "\n ORDER BY a.name";*/
+			$query = "SELECT DISTINCT a.username, a.name, a.id"
+				. "\n FROM #__users AS a"
+				. "\n INNER JOIN #__support_tickets AS s ON s.owner = a.username"	// map user to aro
+				. "\n WHERE a.block = '0' AND s.type=" . $this->view->type . ""
+				. "\n ORDER BY a.name";
+		}
+
+		$this->database->setQuery($query);
+		$users = $this->database->loadObjectList();
+
+		// Get avgerage lifetime
+		//$this->view->lifetime = $st->getAverageLifeOfTicket($this->view->type, $year, $this->view->group);
+
+		// First ticket
+		$sql = "SELECT YEAR(created) 
+				FROM #__support_tickets
+				WHERE report!='' 
+				AND type='{$this->view->type}' ORDER BY created ASC LIMIT 1";
+		$this->database->setQuery($sql);
+		$first = intval($this->database->loadResult());
+
+		// Opened tickets
+		$sql = "SELECT id, created, YEAR(created) AS `year`, MONTH(created) AS `month`, status, owner 
+				FROM #__support_tickets
+				WHERE report!='' 
+				AND type=" . $this->view->type . " AND open=1";
+		if (!$this->view->group) 
+		{
+			$sql .= " AND (`group`='' OR `group` IS NULL)";
+		} 
+		else 
+		{
+			$sql .= " AND `group`='{$this->view->group}'";
+		}
+		$sql .= " ORDER BY created ASC";
+		$this->database->setQuery($sql);
+		$openTickets = $this->database->loadObjectList();
+		
+		$owners = array();
+
+		$open = array();
+		$this->view->opened['open'] = 0;
+		$this->view->opened['new'] = 0;
+		$this->view->opened['unassigned'] = 0;
+		foreach ($openTickets as $o)
+		{
+			if (!isset($open[$o->year]))
+			{
+				$open[$o->year] = array();
+			}
+			if (!isset($open[$o->year][$o->month]))
+			{
+				$open[$o->year][$o->month] = 0;
+			}
+			$open[$o->year][$o->month]++;
+
+			$this->view->opened['open']++;
+
+			if (!$o->status)
+			{
+				$this->view->opened['new']++;
+			}
+			if (!$o->owner)
+			{
+				$this->view->opened['unassigned']++;
+			}
+			else
+			{
+				if (!isset($owners[$o->owner]))
+				{
+					$owners[$o->owner] = 0;
+				}
+				$owners[$o->owner]++;
+			}
+		}
+
+		// Closed tickets
+		$sql = "SELECT c.ticket, c.created_by, c.created, YEAR(c.created) AS `year`, MONTH(c.created) AS `month`, UNIX_TIMESTAMP(t.created) AS opened, UNIX_TIMESTAMP(c.created) AS closed
+				FROM #__support_comments AS c 
+				LEFT JOIN #__support_tickets AS t ON c.ticket=t.id
+				WHERE t.report!=''
+				AND type=" . $this->view->type . " AND open=0";
+		if (!$this->view->group) 
+		{
+			$sql .= " AND (`group`='' OR `group` IS NULL)";
+		} 
+		else 
+		{
+			$sql .= " AND `group`=" . $this->database->Quote($this->view->group);
+		}
+		$sql .= " ORDER BY c.created ASC";
+		$this->database->setQuery($sql);
+		$clsd = $this->database->loadObjectList();
+
+		$this->view->opened['closed'] = 0;
+		$closedTickets = array();
+		foreach ($clsd as $closed)
+		{
+			if (!isset($closedTickets[$closed->ticket]))
+			{
+				$closedTickets[$closed->ticket] = $closed;
+			}
+			else
+			{
+				if ($closedTickets[$closed->ticket]->created < $closed->created)
+				{
+					$closedTickets[$closed->ticket] = $closed;
+				}
+			}
+		}
+		$this->view->closedTickets = $closedTickets;
+		$closed = array();
+		foreach ($closedTickets as $o)
+		{
+			if (!isset($closed[$o->year]))
+			{
+				$closed[$o->year] = array();
+			}
+			if (!isset($closed[$o->year][$o->month]))
+			{
+				$closed[$o->year][$o->month] = 0;
+			}
+			$closed[$o->year][$o->month]++;
+			$this->view->opened['closed']++;
+		}
+
+		// Group data by year and gather some info for each user
+		$y = date("Y");
+		$y++;
+		$this->view->closedmonths = array();
+		$this->view->openedmonths = array();
+		for ($k=$first, $n=$y; $k < $n; $k++)
+		{
+			$this->view->closedmonths[$k] = array();
+			$this->view->openedmonths[$k] = array();
+
+			for ($i = 1; $i <= 12; $i++)
+			{
+				if ($k == $year && $i > $month)
+				{
+					break;
+					//$this->view->closedmonths[$k][$i] = 'null';
+					//$this->view->openedmonths[$k][$i] = 'null';
+				}
+				else
+				{
+					$this->view->closedmonths[$k][$i] = (isset($closed[$k]) && isset($closed[$k][$i])) ? $closed[$k][$i] : 0; //$st->getCountOfTicketsClosedInMonth($this->view->type, $k, sprintf("%02d",$i), $this->view->group);
+					$this->view->openedmonths[$k][$i] = (isset($open[$k]) && isset($open[$k][$i]))     ? $open[$k][$i]   : 0; //$st->getCountOfTicketsOpenedInMonth($this->view->type, $k, sprintf("%02d",$i), $this->view->group);
+				}
+
+				foreach ($users as $j => $user)
+				{
+					if (!isset($user->total))
+					{
+						$user->total = 0;
+					}
+					if (!isset($user->tickets))
+					{
+						$user->tickets = array();
+					}
+					if (!isset($user->closed))
+					{
+						$user->closed = array();
+					}
+					if (!isset($user->closed[$k]))
+					{
+						$user->closed[$k] = array();
+					}
+
+					if ($i <= "9"&preg_match("#(^[1-9]{1})#",$i)) 
+					{
+						$month = "0$i";
+					}
+					if ($k == $year && $i > $month)
+					{
+						$user->closed[$k][$i] = 'null';
+					}
+					else
+					{
+						$user->closed[$k][$i] = 0;
+						foreach ($clsd as $c)
+						{
+							if (intval($c->year) == intval($k) && intval($c->month) == intval($i))
+							{
+								if ($c->created_by == $user->username)
+								{
+									$user->closed[$k][$i]++;
+									$user->total++;
+									$user->tickets[] = $c;
+								}
+							}
+						}
+					}
+					
+					$users[$j] = $user;
+				}
+			}
+		}
+
+		// Sort users by number of tickets closed
+		$u = array();
+		foreach ($users as $k => $user)
+		{
+			$user->assigned = 0;
+			if (isset($owners[$user->username]))
+			{
+				$user->assigned = $owners[$user->username];
+			}
+
+			$key = (string) $user->total;
+			if (isset($u[$key]))
+			{
+				$key .= '.' . $k;
+			}
+			$u[$key] = $user;
+		}
+		krsort($u);
+		$this->view->users  = $u;//$users;
+
+		// Set the config
+		$this->view->config = $this->config;
+		$this->view->first  = $first;
+		$this->view->month  = $month;
 
 		// Output HTML
 		if ($this->getError())
 		{
-			$this->view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 		$this->view->display();
 	}

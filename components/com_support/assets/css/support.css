@@ -741,7 +741,7 @@
 	}
 
 /* Stats */
-	#ticket-stats {
+	/*#ticket-stats {
 		border-top: 1px solid #fff;
 	}
 	#ticket-stats h3 {
@@ -750,7 +750,7 @@
 	#ticket-stats .aside {
 		width: 475px;
 		padding-top: 1em;
-	}
+	}*/
 	#ticket-stats .subject {
 		margin-right: 505px;
 		padding-top: 1em;
@@ -761,46 +761,91 @@
 		margin-top: 0;
 		border-bottom: 1px solid #ccc;
 	}
+	.legend table {
+		background: transparent;
+		width: auto;
+		border: none;
+	}
+	.legend table tr {
+		background: transparent;
+	}
+	.legend table td {
+		padding: 0.2em;
+		background: transparent;
+		border: none;
+	}
+	#flotTip {
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		-ms-border-radius: 0.25em;
+		-o-border-radius: 0.25em;
+		border-radius: 0.25em;
+		background: #111111;
+		background: -webkit-gradient(linear, left top, left bottom, from(#333333), to(#111111));
+		background: -webkit-linear-gradient(#333333, #111111);
+		background: -moz-linear-gradient(center top, #333333 0%, #111111 100%);
+		background: -moz-gradient(center top, #333333 0%, #111111 100%);
+		background: -o-linear-gradient(#333333, #111111);
+		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#333333,endColorstr=#111111);
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#333333, endColorstr=#111111)";
+		font-size: 0.85em;
+		padding: 0.5em 1em;
+		color: #eee;
+	}
+	.breakdown {
+		margin-bottom: 2em;
+	}
+	h3.time-range {
+		margin-top: 0;
+		padding-top: 0;
+	}
+	.support-stats-filter {
+		 text-align: right;
+	}
 	.support-stats-overview {
-		border-top: none;
-		border-bottom: none;
-		margin: 1em 0;
+		border: none;
+		margin: 0;
+		/*border-top: 1px solid rgba(0, 0, 0, 0.1);*/
 	}
 	.support-stats-overview thead th {
-		font-size: 85%;
-		color: #aaa;
+		color: #999;
 		font-weight: normal;
-		border-left: 1px solid #eee;
-		border-right: 1px solid #eee;
 		border-bottom: none;
 		padding-bottom: 0;
-		width: 20%;
+		padding-top: 1em;
 	}
 	.support-stats-overview tbody td {
-		padding-top: 0;
-		font-size: 3em;
-		font-weight: bold;
-		border-left: 1px solid #eee;
-		border-right: 1px solid #eee;
+		padding: 0 0.2em 0.4em 0.2em;
+		font-size: 2.5em;
+		line-height: 1;
+		font-weight: normal;
 		color: #777;
-		border-bottom: 1px solid #eee;
-		width: 20%;
+		border: none;
+		/*border-bottom: 1px solid rgba(0, 0, 0, 0.1);*/
 	}
-	.support-stats-overview thead th.block,
-	.support-stats-overview tbody td.block {
-		width: 40%;
+	.entry-content .support-stats-overview {
+		margin-top: 1.5em;
+	}
+	.entry-content .support-stats-overview tbody td {
+		font-size: 2em;
+		/*border-bottom: 1px solid rgba(0, 0, 0, 0.1);*/
+	}
+	.entry-content .support-stats-overview thead th {
+		border-top: 2px solid #efefef;
 	}
 	.support-stats-overview tbody td.block {
 		color: #b18fbc;
+		color: #777;
 	}
-	.open-tickets tbody td.critical {
+	.support-stats-overview tbody td.critical {
 		color: red;
 	}
-	.open-tickets tbody td.major {
-		color: #ce7d7d;
+	.support-stats-overview thead th.major {
+		padding-right: 0;
 	}
-	.closed-tickets tbody td {
-		color: green;
+	.support-stats-overview tbody td.major {
+		color: #ce7d7d;
+		padding-right: 0;
 	}
 	.support-stats-overview tbody td span {
 		color: #aaa;
@@ -810,7 +855,10 @@
 		margin: 0 1.5em 0 0;
 		padding: 0;
 	}
-	.support-stats-people {
+	.entry-content .support-stats-overview tbody td span {
+		margin: 0 1em 0 0;
+	}
+	/*.support-stats-people {
 		border-top: none;
 		border-bottom: none;
 		margin: 1em 0;
@@ -848,6 +896,39 @@
 		background-color: transparent;
 		background-image: none;
 		padding-left: 10px;
+	}*/
+	.entry-head {
+		position: relative;
+		margin: 0;
+		border-bottom: 2px solid #efefef;
+	}
+	.entry-rank {
+		position: absolute;
+		top: 0;
+		right: 0;
+		font-size: 1.5em;
+		line-height: 1;
+		margin: 0;
+		padding: 0;
+		color: #666;
+	}
+	.entry-title {
+		margin-top: 0;
+	}
+	.entry-member-photo {
+		float: left;
+		margin: 0 1em 1em 0;
+		padding: 0;
+	}
+	.entry-member-photo img {
+		width: 40px;
+		height: 40px;
+	}
+	.entry-title span {
+		color: #999;
+	}
+	.pies h3 {
+		text-align: center;
 	}
 
 /* Comment form */
