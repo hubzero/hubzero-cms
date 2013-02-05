@@ -182,6 +182,7 @@ class Hubzero_Registration
 		$this->_registration['usageAgreement'] = null;
 		$this->_registration['mailPreferenceOption'] = null;
 		$this->_registration['captcha'] = null;
+		$this->_registration['interests'] = null;
 	}
 
 	/**
@@ -403,6 +404,7 @@ class Hubzero_Registration
 		$this->_registration['usageAgreement'] = JRequest::getVar('usageAgreement', null, 'post');
 		$this->_registration['mailPreferenceOption'] = JRequest::getVar('mailPreferenceOption', null, 'post');
 		$this->_registration['sex'] = JRequest::getVar('sex', null, 'post');
+		$this->_registration['interests'] = JRequest::getVar('interests',null,'post');
         
 		if ($this->_registration['sex'] !== null)
 			if ($this->_registration['sex'] == 'unspecified')
@@ -435,6 +437,12 @@ class Hubzero_Registration
 		if (!is_object($xprofile)) {
 			return;
 		}
+		
+		//get user tags
+		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'tags.php' );
+		$database =& JFactory::getDBO();
+		$mt = new MembersTags($database);
+		$tag_string = $mt->get_tag_string( $xprofile->get('uidNumber') );
 
 		$this->set('countryresident', $xprofile->get('countryresident'));
 		$this->set('countryorigin', $xprofile->get('countryorigin'));
@@ -463,6 +471,7 @@ class Hubzero_Registration
 		$this->set('sex', $xprofile->get('gender'));
 		$this->set('usageAgreement', $xprofile->get('usageAgreement'));
 		$this->set('mailPreferenceOption', $xprofile->get('mailPreferenceOption'));
+		$this->set('interests', $tag_string);
 
 		$this->_checked = false;
 	}
@@ -1028,7 +1037,7 @@ class Hubzero_Registration
 
 		if ($registrationInterests == REG_REQUIRED)
 		{
-			if (empty($registration['edulevel']) && empty($registration['role']))
+			if (empty($registration['interests']) || $registration['interests'] == '')
 			{
 				$this->_missing['interests'] = 'Interests';
 				$this->_invalid['interests'] = 'Please select materials your are interested in';
