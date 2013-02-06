@@ -145,9 +145,19 @@
 		padding-right: 5%;
 		border-top: 1px solid #e0e0e0;
 		margin-bottom: 3em;
+		width: 26.25%;
 	}
-	#content .fourth {
+	#content .fourth,
+	#content .third.fourth,
+	#content .second.third.fourth {
 		padding-right: 0;
+		width: 21.25%;
+	}
+	#content .third.fourth {
+		width: 47.5%;
+	}
+	#content .second.third.fourth {
+		width: 73.75%;
 	}
 	#content .four h3 { 
 		color: #000; 
