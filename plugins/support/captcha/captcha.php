@@ -201,11 +201,12 @@ class plgSupportCaptcha extends JPlugin
 		$this->loadLanguage();
 
 		$juser =& JFactory::getUser();
+
 		if (!$juser->get('guest')) 
 		{
 			ximport('Hubzero_User_Profile');
 			$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
-			if ($profile->get('emailConfirmed') == 1) 
+			if ($profile->get('emailConfirmed') == 1 || $profile->get('emailConfirmed') == 3) 
 			{
 				$this->_verified = true;
 			}

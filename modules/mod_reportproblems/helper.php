@@ -108,7 +108,7 @@ class modReportProblems
 		{
 			ximport('Hubzero_User_Profile');
 			$profile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
-			if ($profile->get('emailConfirmed') == 1) 
+			if ($profile->get('emailConfirmed') == 1 || $profile->get('emailConfirmed') == 3) 
 			{
 				$this->verified = 1;
 			}
