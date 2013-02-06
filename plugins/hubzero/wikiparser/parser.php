@@ -697,7 +697,7 @@ class WikiParser
 			$LinkPtn  = $UpperPtn . $AlphaPtn . '*' . $LowerPtn . '+' . $UpperPtn . $AlphaPtn . '*(?:(?:\\/' . $UpperPtn . $AlphaPtn . '*)+)?';
 
 			$ptn = "/(^|[^A-Za-z])(!?\\/?$LinkPtn)((\#[A-Za-z]([-A-Za-z0-9_:.]*[-A-Za-z0-9_])?)?)(\"\")?/e";
-			if (preg_match($ptn, $href))
+			if (preg_match($ptn, $href) || in_array(trim(strtolower($namespace)), array('special:', 'help:', 'image:', 'file:')))
 			{
 				$href = JRoute::_('index.php?option=' . $this->option . '&scope=' . $p->scope . '&pagename=' . $p->pagename);
 

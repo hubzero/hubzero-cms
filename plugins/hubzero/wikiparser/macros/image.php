@@ -180,8 +180,8 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 			$this->config->set('filepath', $this->filepath);
 		}
 		$imgs = explode(',', $this->config->get('img_ext', 'jpg, jpeg, jpe, gif, png'));
-		array_map('trim', $imgs);
-		array_map('strtolower', $imgs);
+		$imgs = array_map('trim', $imgs);
+		$imgs = array_map('strtolower', $imgs);
 		$this->imgs = $imgs;
 
 		$ret = false;
