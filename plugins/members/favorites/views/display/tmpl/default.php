@@ -97,8 +97,13 @@ foreach ($this->cats as $cat)
 <?php if (!$this->total) { ?>
 
 	<div class="info">
+	<?php if (JFactory::getUser()->get('id') == $this->member->get('uidNumber')) { ?>
 		<h4><?php echo JText::_('Your Favorites'); ?></h4>
 		<p><?php echo JText::_('Here you will find resources, content, and items of interest you marked as a "favorite".'); ?></p>
+	<?php } else { ?>
+		<h4><?php echo JText::_('Favorites'); ?></h4>
+		<p><?php echo JText::_('Here you will find resources, content, and items of interest this member marked as a "favorite".'); ?></p>
+	<?php } ?>
 	</div>
 
 <?php } else { ?>
