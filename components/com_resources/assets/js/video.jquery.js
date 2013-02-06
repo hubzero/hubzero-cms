@@ -77,7 +77,7 @@ HUB.Video = {
 		}
 		
 		//set video Volume
-		HUB.Video.setVolume(0);
+		HUB.Video.setVolume(0.75);
 		
 		//control bar
 		HUB.Video.controlBar();
@@ -97,7 +97,8 @@ HUB.Video = {
 			//player events
 			$jQ('#video-player').bind({
 				timeupdate: function() {
-					HUB.Video.setProgress();
+					if(!seeking) 
+						HUB.Video.setProgress();
 				},
 				volumechange: function( e ) {
 					 HUB.Video.syncVolume();
@@ -106,7 +107,10 @@ HUB.Video = {
 					HUB.Video.doneLoading();
 					HUB.Video.locationHash();
 				},
-				seeked: function( e ) { }
+				seeked: function( e ) {
+					seeking = true;
+					var timeout = setTimeout("seeking=false;", 1000);
+				}
 			});
 		} else {
 			
@@ -132,6 +136,7 @@ HUB.Video = {
 					<div id=\"volume-icon\"></div> \
 					<div id=\"volume-bar\"></div> \
 					<a id=\"play-pause\" href=\"#\" title=\"Play Video\">Pause</a> \
+					<a id=\"link\" href=\"#\" title=\"Link to this Spot in Presentation\">Link</a> \
 					<a id=\"full-screen\" href=\"#\" title=\"Full Screen\">Full Screen</a> \
 					<div id=\"progress-bar\"></div> \
 					<div id=\"media-progress\">00:00</div> \
@@ -156,6 +161,12 @@ HUB.Video = {
 		//play pause functionality
 		$jQ('#play-pause').bind('click', function(e) {
 			HUB.Video.playPause(true);
+			e.preventDefault();
+		});
+		
+		//play pause functionality
+		$jQ('#link').bind('click', function(e) {
+			HUB.Video.linkVideo();
 			e.preventDefault();
 		});
 		
@@ -299,6 +310,7 @@ HUB.Video = {
 		//insert times into sections in toolbar
 		$jQ("#media-progress").html( progress );
 		$jQ("#media-remainder").html( "-" + remainder );
+		$jQ("#progress-bar").slider('value', ((current / duration) * 100));
 	},
 	
 	//-----
@@ -411,6 +423,21 @@ HUB.Video = {
 	
 	//-----
 	
+	linkVideo: function()
+	{
+		var time_hash,
+			url = window.location,
+			time = HUB.Video.getCurrent();
+			
+		//make time usable
+		time = HUB.Video.formatTime( time );
+		parts = time.split(":");
+		
+		//create hash based on current time and then prompt user with link
+		time_hash = "#time-" + ( (parseInt(parts[0]) * 60) + parseInt(parts[1]) ) + ":" + parts[2];
+		prompt("Link to Current Position in Presentation", url + time_hash);
+	},
+	
 	locationHash: function()
 	{
 		var time, time_parts, time_min, time_sec, time_total,
@@ -425,6 +452,7 @@ HUB.Video = {
 			time_sec = parseInt(time_parts[1]);
 			time_total = ( time_min * 60 ) + time_sec;
 			HUB.Video.seek( time_total );
+			HUB.Video.setProgress( time_total );
 		}
 	},
 	

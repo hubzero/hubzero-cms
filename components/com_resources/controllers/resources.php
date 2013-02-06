@@ -913,8 +913,8 @@ class ResourcesControllerResources extends Hubzero_Controller
 			$document->addScript("https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js");
 			$document->addScript("https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js");
 		}
-		$document->addScript('/components/' . $this->_option . '/assets/js/jquery.hubpresenter.js');
-		$document->addScript('/components/' . $this->_option . '/assets/js/jquery.hubpresenter.plugins.js');
+		$document->addScript('/components/' . $this->_option . '/assets/js/hubpresenter.jquery.js');
+		$document->addScript('/components/' . $this->_option . '/assets/js/hubpresenter.plugins.jquery.js');
 		
 		//do we have javascript?
 		$js = JRequest::getVar("tmpl", "");
@@ -973,30 +973,33 @@ class ResourcesControllerResources extends Hubzero_Controller
 	 */
 	protected function video()
 	{
+		//get the document to push resources to
+		$document =& JFactory::getDocument();
+		
+		//add the video css
+		$this->_getStyles($this->_option,'video.css');
+		
+		//add the HUBpresenter required javascript files
+		if(!JPluginHelper::isEnabled('system', 'jquery'))
+		{
+			$document->addScript("https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js");
+			$document->addScript("https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js");
+		}
+		$document->addScript('/components/' . $this->_option . "/assets/js/video.jquery.js");
+		$document->addScript('/components/' . $this->_option . "/assets/js/hubpresenter.plugins.jquery.js");
+		
+		//get the request vars
 		$parent = JRequest::getInt("id", "");
 		$child = JRequest::getVar("resid", "");
-
-		//document object
-		$jdoc =& JFactory::getDocument();
-		$jdoc->_scripts = array();
-
-		//add the HUBpresenter stylesheet
-		$jdoc->addStyleSheet("/components/" . $this->_option . "/assets/css/resources.css");
-
-		//add the required javascript files
-		$jdoc->addScript("https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js");
-		$jdoc->addScript("https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js");
-		$jdoc->addScript("/components/" . $this->_option . "/presenter/js/flowplayer.js");
-		$jdoc->addScript("/components/" . $this->_option . "/video/js/video.js");
-		$jdoc->addStyleSheet("/components/" . $this->_option . "/video/css/video.css");
-
+		
 		//load resource
 		$activechild = new ResourcesResource($this->database);
 		$activechild->load($child);
 
 		//base url for the resource
 		$base = DS . trim($this->config->get('uploadpath'), DS);
-
+		
+		//param object
 		$paramsClass = 'JParameter';
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
@@ -1028,6 +1031,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 
 		$view->path     = $path;
 		$view->videos   = $videos;
+		$view->mp4		= $video_mp4;
 		$view->subs     = $subs;
 
 		$view->width    = $width;

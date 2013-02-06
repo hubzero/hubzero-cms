@@ -16,6 +16,7 @@ HUB.Presenter = {
 		flash = false;
 		seeking = false;
 		mouseover = false;
+		track = null;
 		
 		//add class presenter to body
 		jQ("body").addClass("presenter");
@@ -54,7 +55,7 @@ HUB.Presenter = {
 		}
 		                                           
 		//hide the control bar after 3 seconds
-		jQ("#control-box").delay(3000).fadeOut("slow");                        
+		jQ("#control-box").delay(3000).fadeOut("slow");
 	},
 	
 	//-----
@@ -103,7 +104,10 @@ HUB.Presenter = {
 		if( jQ("#media").hasClass("move-left") )
 		{
 			HUB.Presenter.switchVideo();
-		}                                       
+		}
+		
+		//handle subtitles
+		HUB.Presenter.subtitles();
 	},
 	
 	//-----
@@ -122,7 +126,7 @@ HUB.Presenter = {
 				canplay: function( e ) {
 					HUB.Presenter.doneLoading();
 					
-					//seeek to time if in hash
+					//seek to time if in hash
 					HUB.Presenter.locationHash();
 				},
 				seeked: function( e ) {
@@ -277,7 +281,7 @@ HUB.Presenter = {
 		HUB.Presenter.slideListProgressUpdate( HUB.Presenter.activeSlide );
 		
 		//projess bar set position
-		jQ('#progress-bar').slider( "option", "value", total_progress );
+		jQ('#progress-bar').slider( "value", total_progress );
 		
 		//loop through all slides and get max slide based on current time
 		jQ('#slides ul li').each(function( index, element ) {
@@ -434,7 +438,8 @@ HUB.Presenter = {
 		
 		//if we are not seeking set the current progress in slider and in text
 		if(!seeking) {
-			jQ(".list-slider").slider("option","value", (slide_progress * 100));
+			jQ(".list-slider").slider({range:'min'});
+			jQ(".list-slider").slider( "value", (slide_progress * 100));
 			time = HUB.Presenter.formatTime( current - start ).substr(3) + "/" + HUB.Presenter.formatTime( end - start ).substr(3);
 			jQ(".list-progress").text( time );
 		}
@@ -1092,8 +1097,218 @@ HUB.Presenter = {
 			time_total = ( time_min * 60 ) + time_sec;
 			HUB.Presenter.seek( time_total );
 		}
-	}
+	},
+	
+	
+	subtitles: function()
+	{
+		var sub_titles = [];
+		var auto = false;
+		
+		sub_titles = HUB.Presenter.getSubtitles();
+		
+		//create elements on page to hold subtitles
+		if(sub_titles.length > 0) {
+			jQ("#control-box").after("<div id=\"video-subtitles\"></div>");
+			jQ("#switch").after("<ul id=\"subtitle-picker\"><li><a href=\"javascript:void(0);\">CC</a><ul id=\"cc\"><li><a class=\"active\" rel=\"\" href=\"#\">None</a></ul></li></ul>");
 
+			for(n=0; n<sub_titles.length; n++) {
+				var sub = sub_titles[n];
+				var sub_lang = sub.lang;
+				
+				//do we automatically want to show a sub
+				if( sub_lang.substr(sub_lang.length - 4) == "auto" ) {
+					lang_text = sub_lang.substr(0, (sub_lang.length - 5))
+					track = sub_lang;
+					auto = true;
+				} else {
+					lang_text = sub_lang
+				}
+				
+				jQ("#video-subtitles").append("<div id=\"" + sub_lang + "\"></div>");
+				jQ("#cc").append("<li><a rel=\"" + sub_lang + "\" class=\"" + sub_lang + "\" href=\"javascript:void(0);\">" + HUB.Presenter.ucfirst(lang_text) + "</a></li>");
+			}
+			
+			//if we are auto showing subs make sure picker reflects that
+			if(auto) {
+				jQ("#subtitle-picker a").addClass("active");
+				jQ("#cc a").removeClass("active");
+				jQ("#cc a." + track).addClass("active");
+			}
+			
+			
+			jQ("#subtitle-picker ul a").live("click", function(e) {
+				track = this.rel;
+				
+				if(track != "") {
+					jQ("#subtitle-picker a").addClass("active");
+				} else {
+					jQ("#subtitle-picker a").removeClass("active");
+				}
+				
+				jQ("#cc a").removeClass("active");
+				jQ(this).addClass("active");
+				
+				e.preventDefault();
+			});
+			
+			var syncInterval = setInterval( 
+				function() {
+					HUB.Presenter.syncSubtitles( sub_titles );
+				}, 100);
+		}
+	},
+	
+	//-----
+	
+	syncSubtitles: function( sub_titles )
+	{
+		current = HUB.Presenter.getCurrent();
+		
+		//get the subs for the track we have selected
+		for(i in sub_titles) {
+			if(sub_titles[i].lang == track) {
+				var subs = sub_titles[i].subs;
+			}
+		}
+		
+		//clear the subtitle tracks between 
+		jQ("#video-subtitles div").html("");
+		
+		for(i in subs) {
+			start = subs[i].start;
+			end = subs[i].end;
+			text = subs[i].text;
+			if(current >= start && current <= end) {
+				jQ("#video-subtitles #" + track).html( text.replace( "\n","<br />") );
+			}
+		}
+	},
+	
+	//-----
+	
+	getSubtitles: function()
+	{
+		var count = 0,
+			parsed = "",
+			subs = new Array(),
+			sub_files = jQ("#player div[data-type=subtitle]");
+		
+		//loop through each subs file and get the contents then add to subs object
+		sub_files.each(function(i){
+			var lang = jQ(this).attr("data-lang").toLowerCase(),
+				src = jQ(this).attr("data-src");
+			
+			jQ.ajax({
+				url: src,
+				async: false,
+				success: function( content ) {
+					parsed = HUB.Presenter.parseSubtitles( content );
+					sub = { "lang" : lang, "subs" : parsed };
+					subs.push(sub);
+					count++;
+				}
+			});
+		});
+		
+		//return subs object
+		if(count == sub_files.length) {
+			return subs;
+		}
+	},
+	
+	//-----
+	
+	parseSubtitles: function( subtitle_content )
+	{	
+		var content = "",
+			srt 	= [],
+			parts	= [],
+			id		= "",
+			start	= "",
+			end		= "",
+			text	= ""
+			subtitles = [];
+			
+			
+		//replace carriage returns
+		content = subtitle_content.replace(/\r\n|\r|\n/g, '\n');
+		
+		//strip out empty spaces
+		content = HUB.Presenter.strip( content );
+		
+		//split up each
+		srt = content.split("\n\n");
+		
+		//for each individual subtitle
+		for(n=0; n<srt.length; n++) {
+			parts = srt[n].split("\n");
+			
+			id = parseInt(parts[0]);
+			
+			//get the sub start time
+			start = parts[1].split(' --> ')[0];
+			start = HUB.Presenter.strip( start );
+			start = HUB.Presenter.toSeconds( start );
+			
+			//get the sub end time
+			end = parts[1].split(' --> ')[1];
+			end = HUB.Presenter.strip( end );
+		 	end = HUB.Presenter.toSeconds( end );
+			
+			//get the sub text
+			if(parts.length > 3) {
+				for(i=2,text="";i<parts.length;i++) {
+					text += parts[i] + "\n";
+				}
+			} else {
+				text = parts[2];
+			}
+			
+			//remove extra chars
+			text = text.replace(">>","");
+			
+			//create object for each sub
+			subtitle = { "start" : start, "end" : end, "text" : text };
+			subtitles.push(subtitle);
+		}
+		
+		//return subtitles 
+		return subtitles;
+	},
+	
+	//-----
+	
+	strip: function( content )
+	{
+		return content.replace(/^\s+|\s+$/g,"");
+	},
+	
+	//-----
+	
+	toSeconds: function( time )
+	{
+		var parts = [],
+			seconds = 0.0;
+			
+		if( time ) {
+			parts = time.split(':');
+			
+			for( i=0; i < parts.length; i++ ) {
+	        	seconds = seconds * 60 + parseFloat(parts[i].replace(',', '.'))
+			}
+		}
+		
+		return seconds;
+	},
+	
+	//-----
+	
+	ucfirst: function( string )
+	{
+		var first = string.substr(0, 1);
+		return first.toUpperCase() + string.substr(1);
+	}
 }
 
 //---------------------------------------------------------

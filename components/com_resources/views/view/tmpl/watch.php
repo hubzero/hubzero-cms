@@ -82,6 +82,9 @@ if($rt->type == "Series" || $rt->type == "Courses") {
 	$children = NULL;
 }
 
+//get all subtitles
+$subs = JFolder::files(JPATH_ROOT . DS . $content_folder, '.srt|.SRT');
+
 //get the contributors for the resource
 $sql = "SELECT authorid FROM #__author_assoc "
 	 . "WHERE subtable='resources' "
@@ -203,6 +206,12 @@ if ($author_ids && is_array($author_ids))
 						   	<source src="<?php echo $content_folder.DS.$source->source; ?>" type='<?php echo $type; ?>'>
 						<?php endforeach; ?>
 						<a href="<?php echo $content_folder.DS.$presentation->media[0]->source; ?>" id="flowplayer"></a>
+							
+						<?php foreach($subs as $sub) : ?>
+							<?php $info2 = pathinfo($sub); ?>
+							<div data-type="subtitle" data-lang="<?php echo $info2['filename']; ?>" data-src="<?php echo $content_folder . DS . $sub; ?>"></div>
+						<?php endforeach; ?>
+						
 					</video>
 				<?php else : ?>
 					<audio id="player" preload="auto" controls="controls">          

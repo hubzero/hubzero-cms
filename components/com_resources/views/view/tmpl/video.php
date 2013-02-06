@@ -50,7 +50,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<source src="<?php echo $this->path . DS . $v; ?>" type="<?php echo $type; ?>" />
 			<?php endforeach; ?>
 		
-			<a href="<?php echo $this->path . DS . $this->video_mp4[0]; ?>" id="video-flowplayer" style="<?php echo "width:{$this->width}px;height:{$this->height}px;"; ?>"></a>
+			<a href="<?php echo $this->path . DS . $this->mp4[0]; ?>" id="video-flowplayer" style="<?php echo "width:{$this->width}px;height:{$this->height}px;"; ?>"></a>
 		
 			<?php if(count($this->subs) > 0) : ?>
 				<?php foreach($this->subs as $s) : ?>
