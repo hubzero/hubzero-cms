@@ -84,6 +84,7 @@ HUB.MembersChangePassword = {
 						error.slideDown('fast');
 						error.delay(2000).slideUp('fast', function(){
 							$('#oldpass').val('');
+							$('#newpass').val('');
 							$('#newpass1').val('');
 							$('#newpass2').val('');
 							error.removeClass('passed').addClass('error');
@@ -97,6 +98,11 @@ HUB.MembersChangePassword = {
 					else
 					{
 						// Add error message
+						$('html, body').animate({'scrollTop':0}, 500);
+						$('#oldpass').val('').focus();
+						$('#newpass').val('');
+						$('#newpass1').val('');
+						$('#newpass2').val('');
 						error.addClass('error');
 						error.html(returned._missing.password);
 						error.slideDown('fast');
