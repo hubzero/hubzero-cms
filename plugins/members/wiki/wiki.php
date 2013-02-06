@@ -213,11 +213,11 @@ class plgMembersWiki extends JPlugin
 		$html .= "\t\t" . '<p class="details">';
 		if (isset($row->area) && isset($row->category)) 
 		{
-			$html .= JText::_('PLG_MEMBERS_TOPICS_GROUP_WIKI') . ': ' . $row->area;
+			$html .= JText::_('PLG_MEMBERS_GROUP_WIKI') . ': ' . $row->area;
 		} 
 		else 
 		{
-			$html .= JText::_('PLG_MEMBERS_TOPICS');
+			$html .= JText::_('PLG_MEMBERS_WIKI');
 		}
 		$html .= '</p>' . "\n";
 		if ($row->text) 
