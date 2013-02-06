@@ -51,7 +51,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="3">Display events for +-'days' range</option>
 			<option value="4">Events for current month</option>
 		</param>
-		<param name="announcements" type="list" default="0" label="Announcments" description="Exclude events listed as announcments from the list.">
+		<param name="announcements" type="list" default="0" label="Announcements" description="Exclude events listed as announcments from the list.">
 			<option value="0">Include All</option>
 			<option value="1">Exclude Announcements</option>
 			<option value="2">Announcements Only</option>
