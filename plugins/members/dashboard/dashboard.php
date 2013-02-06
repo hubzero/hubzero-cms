@@ -30,11 +30,12 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.plugin.plugin');
+ximport('Hubzero_Plugin');
 
 /**
  * Members Plugin class for dashboard
  */
-class plgMembersDashboard extends JPlugin
+class plgMembersDashboard extends Hubzero_Plugin
 {
 	/**
 	 * Constructor
@@ -926,6 +927,125 @@ class plgMembersDashboard extends JPlugin
 		}
 
 		return $this->view->loadTemplate();
+	}
+
+	/**
+	 * Select a module to push to all users
+	 * 
+	 * @return     string
+	 */
+	public function selectTask()
+	{
+		$this->view = new Hubzero_Plugin_View(
+			array(
+				'folder'  => 'members',
+				'element' => 'dashboard',
+				'name'    => 'admin',
+				'layout'  => 'select'
+			)
+		);
+		$this->view->option = $this->option;
+		$this->view->controller = $this->controller;
+		$this->view->task = $this->task;
+		$this->view->juser = $this->juser;
+
+		// Include a needed file
+		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'database' . DS . 'table' . DS . 'module.php');
+		$jmodule = new JTableModule($this->database);
+
+		$position = $this->params->get('position', 'myhub');
+
+		// Select all available modules
+		$this->database->setQuery("SELECT m.id, m.title FROM " . $jmodule->getTableName() . " AS m WHERE m.position='$position'");
+		$this->view->modules = $this->database->loadObjectList();
+
+		// Set any errors
+		if ($this->getError()) 
+		{
+			$this->view->setError($this->getError());
+		}
+
+		// Output the HTML
+		return $this->view->loadTemplate();
+	}
+
+	/**
+	 * Push a module to all users
+	 * 
+	 * @return     string
+	 */
+	public function pushTask() 
+	{
+		// Incoming
+		$module   = JRequest::getInt('module', 0);
+		$column   = JRequest::getInt('column', 1);
+		$position = JRequest::getVar('position', 'first');
+
+		// Ensure we have a module
+		if (!$module) 
+		{
+			echo "<script type=\"text/javascript\"> alert('".JText::_('Error: no module selected')."'); window.history.go(-1); </script>\n";
+			return;
+		}
+
+		// Get all entries that do NOT have the selected module
+		$mp = new MyhubPrefs($this->database);
+		$rows = $mp->getPrefs($module);
+
+		// Did we get any results?
+		if ($rows) 
+		{
+			// Loop through the results
+			foreach ($rows as $row) 
+			{
+				// Break the prefs into their columns
+				$bits = explode(';', $row->prefs);
+
+				// Determine the position and column the module needs to be added to
+				if ($position == 'first') 
+				{
+					$bits[$column] = $module . ',' . $bits[$column];
+				} 
+				else 
+				{
+					$bits[$column] .= ',' . $module;
+				}
+				$prefs = implode(';', $bits);
+
+				// Save the updated prefs
+				$myhub = new MyhubPrefs($this->database);
+				$myhub->uid   = $row->uid;
+				$myhub->prefs = $prefs;
+				if (!$myhub->check()) 
+				{
+					$this->setError($myhub->getError());
+				}
+				if (!$myhub->store()) 
+				{
+					$this->setError($myhub->getError());
+				}
+			}
+		}
+
+		// Redirect
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&plugin=dashboard',
+			JText::_('Module successfully pushed')
+		);
+	}
+
+	/**
+	 * Redirect
+	 *
+	 * @return	void
+	 */
+	public function setRedirect($url, $msg=null, $type='message')
+	{
+		if ($msg !== null)
+		{
+			$this->addPluginMessage($msg, $type);
+		}
+		$this->redirect($url);
 	}
 
 	/**

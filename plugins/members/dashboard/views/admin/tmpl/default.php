@@ -51,6 +51,12 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="uid" id="uid" value="<?php echo $this->juser->get('id'); ?>" />
 	<input type="hidden" name="serials" id="serials" value="<?php echo $this->usermods[0].';'.$this->usermods[1].';'.$this->usermods[2]; ?>" />
 	
+	<fieldset id="filter-bar">
+		<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;plugin=dashboard&amp;action=select">
+			<?php echo JText::_('Push module to users'); ?>
+		</a>
+	</fieldset>
+	
 	<table id="droppables" class="adminlist" summary="<?php echo JText::_('PLG_MEMBERS_DASHBOARD_MY_MODULES'); ?>">
 		<thead>
 			<tr>
