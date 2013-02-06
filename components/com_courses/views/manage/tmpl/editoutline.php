@@ -33,6 +33,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias');
 
+define('COURSES_ASSET_UNPUBLISHED', 0);
+define('COURSES_ASSET_PUBLISHED',   1);
+define('COURSES_ASSET_DELETED',     2);
+
 ?>
 
 <div id="content-header" class="full">
@@ -64,6 +68,68 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 ?>
 
 <div class="outline-main">
+	<div class="delete-tray">
+		<div class="delete-tray-handle"></div>
+		<div class="delete-tray-target">
+			<ul class="assets-deleted">
+<?php
+				foreach ($this->course->offering->units() as $unit) :
+					foreach($unit->assetgroups() as $agt) :
+						foreach($agt->children() as $ag) :
+							if ($ag->assets()->total()) :
+								foreach ($ag->assets() as $a) :
+									if($a->get('state') == COURSES_ASSET_DELETED) :
+										$href = $a->path($this->course->get('id'));
+										if ($a->get('type') == 'video')
+										{
+											$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
+										}
+?>
+										<li id="asset_<?php echo $a->get('id'); ?>" class="asset-item asset <?php echo $a->get('type'); echo ($a->get('state') == 0) ? ' notpublished' : ' published'; ?>">
+											<div class="sortable-assets-handle"></div>
+											<div class="asset-item-title title toggle-editable"><?php echo $this->escape(stripslashes($a->get('title'))); ?></div>
+											<div class="title-edit">
+												<form action="/api/courses/assetsave" class="title-form">
+													<input class="uniform title-text" name="title" type="text" value="<?php echo $a->get('title'); ?>" />
+													<input class="uniform title-save" type="submit" value="Save" />
+													<input class="uniform title-reset" type="reset" value="Cancel" />
+													<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
+													<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
+													<input type="hidden" name="id" value="<?php echo $a->get('id'); ?>" />
+												</form>
+											</div>
+											<div class="asset-preview">
+												(<a class="" href="<?php echo $href; ?>">preview</a>)
+											</div>
+											<form action="/api/courses/assettogglepublished" class="next-step-publish">
+												<span class="next-step-publish">
+													<label class="published-label" for="published">
+														<span class="published-label-text"><?php echo ($a->get('state') == 0) ? 'Mark as reviewed and publish?' : 'Published'; ?></span>
+														<input 
+															class="uniform published-checkbox"
+															name="published"
+															type="checkbox"
+															<?php echo ($a->get('state') == 0) ? '' : 'checked="checked"'; ?> />
+														<input type="hidden" class="asset_id" name="id" value="<?php echo $a->get('id'); ?>" />
+														<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
+														<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
+													</label>
+												</span>
+											</form>
+
+										</li>
+<?php
+									endif;
+								endforeach;
+							endif;
+						endforeach;
+					endforeach;
+				endforeach;
+?>
+			</ul>
+		</div>
+	</div>
+
 	<ul class="unit">
 <?php 
 		foreach ($this->course->offering->units() as $unit)
@@ -138,46 +204,50 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 <?php
 								foreach ($ag->assets() as $a)
 								{
-									$href = $a->path($this->course->get('id'));
-									if ($a->get('type') == 'video')
+									// Don't put deleted assets here
+									if($a->get('state') != COURSES_ASSET_DELETED)
 									{
-										$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
-									}
+										$href = $a->path($this->course->get('id'));
+										if ($a->get('type') == 'video')
+										{
+											$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
+										}
 ?>
-									<li id="asset_<?php echo $a->get('id'); ?>" class="asset-item asset <?php echo $a->get('type'); echo ($a->get('state') == 0) ? ' notpublished' : ' published'; ?>">
-										<div class="sortable-assets-handle"></div>
-										<div class="asset-item-title title toggle-editable"><?php echo $this->escape(stripslashes($a->get('title'))); ?></div>
-										<div class="title-edit">
-											<form action="/api/courses/assetsave" class="title-form">
-												<input class="uniform title-text" name="title" type="text" value="<?php echo $a->get('title'); ?>" />
-												<input class="uniform title-save" type="submit" value="Save" />
-												<input class="uniform title-reset" type="reset" value="Cancel" />
-												<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
-												<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
-												<input type="hidden" name="id" value="<?php echo $a->get('id'); ?>" />
-											</form>
-										</div>
-										<div class="asset-preview">
-											(<a class="" href="<?php echo $href; ?>">preview</a>)
-										</div>
-										<form action="/api/courses/assettogglepublished" class="next-step-publish">
-											<span class="next-step-publish">
-												<label class="published-label" for="published">
-													<span class="published-label-text"><?php echo ($a->get('state') == 0) ? 'Mark as reviewed and publish?' : 'Published'; ?></span>
-													<input 
-														class="uniform published-checkbox"
-														name="published"
-														type="checkbox"
-														<?php echo ($a->get('state') == 0) ? '' : 'checked="checked"'; ?> />
-													<input type="hidden" class="asset_id" name="id" value="<?php echo $a->get('id'); ?>" />
+										<li id="asset_<?php echo $a->get('id'); ?>" class="asset-item asset <?php echo $a->get('type'); echo ($a->get('state') == 0) ? ' notpublished' : ' published'; ?>">
+											<div class="sortable-assets-handle"></div>
+											<div class="asset-item-title title toggle-editable"><?php echo $this->escape(stripslashes($a->get('title'))); ?></div>
+											<div class="title-edit">
+												<form action="/api/courses/assetsave" class="title-form">
+													<input class="uniform title-text" name="title" type="text" value="<?php echo $a->get('title'); ?>" />
+													<input class="uniform title-save" type="submit" value="Save" />
+													<input class="uniform title-reset" type="reset" value="Cancel" />
 													<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
 													<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
-												</label>
-											</span>
-										</form>
+													<input type="hidden" name="id" value="<?php echo $a->get('id'); ?>" />
+												</form>
+											</div>
+											<div class="asset-preview">
+												(<a class="" href="<?php echo $href; ?>">preview</a>)
+											</div>
+											<form action="/api/courses/assettogglepublished" class="next-step-publish">
+												<span class="next-step-publish">
+													<label class="published-label" for="published">
+														<span class="published-label-text"><?php echo ($a->get('state') == 0) ? 'Mark as reviewed and publish?' : 'Published'; ?></span>
+														<input 
+															class="uniform published-checkbox"
+															name="published"
+															type="checkbox"
+															<?php echo ($a->get('state') == 0) ? '' : 'checked="checked"'; ?> />
+														<input type="hidden" class="asset_id" name="id" value="<?php echo $a->get('id'); ?>" />
+														<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
+														<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
+													</label>
+												</span>
+											</form>
 
-									</li>
+										</li>
 <?php
+									}
 								}
 ?>
 								</ul>
@@ -232,46 +302,50 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 <?php
 					foreach ($agt->assets() as $a)
 					{
-							$href = $a->path($this->course->get('id'));
-						if ($a->get('type') == 'video')
+						// Don't put deleted assets here
+						if($a->get('stat') != COURSES_ASSET_DELETED)
 						{
-								$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $agt->get('alias'));
-						}
+							$href = $a->path($this->course->get('id'));
+							if ($a->get('type') == 'video')
+							{
+									$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $agt->get('alias'));
+							}
 ?>
-									<li id="asset_<?php echo $a->get('id'); ?>" class="asset-item asset <?php echo $a->get('type'); echo ($a->get('state') == 0) ? ' notpublished' : ' published'; ?>">
-										<div class="sortable-assets-handle"></div>
-										<div class="asset-item-title title toggle-editable"><?php echo $this->escape(stripslashes($a->get('title'))); ?></div>
-										<div class="title-edit">
-											<form action="/api/courses/assetsave" class="title-form">
-												<input class="uniform title-text" name="title" type="text" value="<?php echo $a->get('title'); ?>" />
-												<input class="uniform title-save" type="submit" value="Save" />
-												<input class="uniform title-reset" type="reset" value="Cancel" />
-												<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
-												<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
-												<input type="hidden" name="id" value="<?php echo $a->get('id'); ?>" />
-											</form>
-										</div>
-										<div class="asset-preview">
-											(<a class="" href="<?php echo $href; ?>">preview</a>)
-										</div>
-										<form action="/api/courses/assettogglepublished" class="next-step-publish">
-											<span class="next-step-publish">
-												<label class="published-label" for="published">
-													<span class="published-label-text"><?php echo ($a->get('state') == 0) ? 'Mark as reviewed and publish?' : 'Published'; ?></span>
-													<input 
-														class="uniform published-checkbox"
-														name="published"
-														type="checkbox"
-														<?php echo ($a->get('state') == 0) ? '' : 'checked="checked"'; ?> />
-													<input type="hidden" class="asset_id" name="id" value="<?php echo $a->get('id'); ?>" />
-													<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
-													<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
-												</label>
-											</span>
-										</form>
+							<li id="asset_<?php echo $a->get('id'); ?>" class="asset-item asset <?php echo $a->get('type'); echo ($a->get('state') == 0) ? ' notpublished' : ' published'; ?>">
+								<div class="sortable-assets-handle"></div>
+								<div class="asset-item-title title toggle-editable"><?php echo $this->escape(stripslashes($a->get('title'))); ?></div>
+								<div class="title-edit">
+									<form action="/api/courses/assetsave" class="title-form">
+										<input class="uniform title-text" name="title" type="text" value="<?php echo $a->get('title'); ?>" />
+										<input class="uniform title-save" type="submit" value="Save" />
+										<input class="uniform title-reset" type="reset" value="Cancel" />
+										<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
+										<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
+										<input type="hidden" name="id" value="<?php echo $a->get('id'); ?>" />
+									</form>
+								</div>
+								<div class="asset-preview">
+									(<a class="" href="<?php echo $href; ?>">preview</a>)
+								</div>
+								<form action="/api/courses/assettogglepublished" class="next-step-publish">
+									<span class="next-step-publish">
+										<label class="published-label" for="published">
+											<span class="published-label-text"><?php echo ($a->get('state') == 0) ? 'Mark as reviewed and publish?' : 'Published'; ?></span>
+											<input 
+												class="uniform published-checkbox"
+												name="published"
+												type="checkbox"
+												<?php echo ($a->get('state') == 0) ? '' : 'checked="checked"'; ?> />
+											<input type="hidden" class="asset_id" name="id" value="<?php echo $a->get('id'); ?>" />
+											<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
+											<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
+										</label>
+									</span>
+								</form>
 
-									</li>
+							</li>
 <?php
+						}
 					}
 ?>
 								</ul>

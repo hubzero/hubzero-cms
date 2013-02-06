@@ -253,4 +253,28 @@ class CoursesTableAsset extends JTable
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
+
+	/**
+	 * Check to see if this asset has any associations connected to it
+	 * 
+	 * @param  array $filters
+	 * @return object Return course units
+	 */
+	public function isOrphaned()
+	{
+		if(!$this->id)
+		{
+			return false;
+		}
+
+		$query  = "SELECT caa.id";
+		$query .= " FROM $this->_tbl AS ca";
+		$query .= " LEFT JOIN #__courses_asset_associations AS caa ON caa.asset_id = ca.id";
+		$query .= " WHERE ca.id = " . $this->_db->Quote($id);
+
+		$this->_db->setQuery($query);
+		$result = $this->_db->loadObjectList();
+
+		return ($result) ? false : true;
+	}
 }

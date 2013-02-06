@@ -9,16 +9,80 @@
 .outline-main {
 	margin: 10px;
 	padding: 10px;
+	overflow: hidden;
+	position: relative;
 }
 .placeholder {
 	margin-top: 10px;
 	border: 1px dotted #AAA;
 	background: #FFF;
 }
+.placeholder-assets-delete {
+	background: #EFEFEF;
+}
 .dialog {
 	display: none;
 }
+.unit {
+	margin-left: 30px;
+}
+.delete-tray {
+	position: absolute;
+	left: 10px;
+	top: 15px;
+	width: 20px;
+	height: 50px;
+}
+.delete-tray-handle {
+	display: block;
+	float: right;
+	height: 100%;
+	width: 20px;
+	cursor: pointer;
 
+	background-color: #f5f5f5;
+	background-image: -webkit-gradient(linear,left top,left bottom,from(#f5f5f5),to(#f1f1f1));
+	background-image: -webkit-linear-gradient(top,#f5f5f5,#f1f1f1);
+	background-image: -moz-linear-gradient(top,#f5f5f5,#f1f1f1);
+	background-image: -ms-linear-gradient(top,#f5f5f5,#f1f1f1);
+	background-image: -o-linear-gradient(top,#f5f5f5,#f1f1f1);
+	background-image: linear-gradient(top,#f5f5f5,#f1f1f1);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#f5f5f5',EndColorStr='#f1f1f1');
+
+	border: 1px solid #dcdcdc;
+	border-color: rgba(0,0,0,.1);
+	font-size: 11px;
+
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+.delete-tray-target {
+	display: none;
+	height: 100%;
+	border: 2px dotted #AAA;
+	background: #FFF;
+	padding: 5px;
+
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+.delete-tray-target .asset {
+	padding-left: 50px;
+}
+.delete-tray-target .asset:before {
+	display: none;
+}
+.delete-tray-target .asset:after {
+	left: 30px;
+}
+.delete-tray-target .next-step-publish {
+	display: none;
+}
+.delete-tray-target .toggle-editable {
+	cursor: default;
+}
 .course:before {
 	content: "\f09c";
 }
@@ -40,20 +104,8 @@ ul {
 }
 .dialog-button {
 	cursor: pointer;
-	margin: .5em .4em .5em 0;
-	border: 1px solid #d3d3d3;
-	background: #e6e6e6 url("/media/system/images/ui/ui-bg_glass_75_e6e6e6_1x400.png") 50% 50% repeat-x;
 	font-weight: normal;
 	color: #555;
-}
-.dialog-button:hover {
-	border: 1px solid #999;
-	background: #dadada url("/media/system/images/ui/ui-bg_glass_75_dadada_1x400.png") 50% 50% repeat-x;
-	font-weight: normal;
-	color: #212121;
-}
-.dialog-button:active {
-	background: #fff;
 }
 .sortable-handle {
 	position: absolute;
@@ -184,7 +236,10 @@ ul {
 	font-size: 20px;
 	color: #999;
 	left: 16px;
-	top: 40%;
+	top: 50%;
+}
+.asset-group-item:not(.add-new):before {
+	margin-top: -10px;
 }
 .toggle-editable {
 	display: none;
@@ -410,7 +465,7 @@ ul {
 	left: 0;
 }
 .handler-item {
-	margin: 0;
+	margin: 0 0 5px 30px;
 }
 .handler-item button {
 	margin-left: 30px;

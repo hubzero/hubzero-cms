@@ -29,6 +29,7 @@ HUB.CoursesOutline = {
 		HUB.CoursesOutline.showProgressIndicator();
 		HUB.CoursesOutline.makeUnitsSortable();
 		HUB.CoursesOutline.makeAssetsSortable();
+		HUB.CoursesOutline.makeAssetsDeletable();
 		HUB.CoursesOutline.makeTitlesEditable();
 		HUB.CoursesOutline.addNewItem();
 		HUB.CoursesOutline.makeUniform();
@@ -129,6 +130,9 @@ HUB.CoursesOutline = {
 
 			$(this).children('.uploadfiles').css('min-height', high);
 		});
+
+		// Also increase the size of the deletion tray
+		$('.delete-tray').css('height', $('.unit').height());
 	},
 
 	makeUnitsSortable: function()
@@ -138,7 +142,6 @@ HUB.CoursesOutline = {
 		$(".sortable").sortable({
 			placeholder: "placeholder",
 			handle: '.sortable-handle',
-			axis: "y",
 			forcePlaceholderSize: true,
 			revert: false,
 			tolerance: 'pointer',
@@ -188,14 +191,15 @@ HUB.CoursesOutline = {
 		var $ = this.jQuery;
 
 		$(".sortable-assets").sortable({
-			placeholder: "placeholder-assets",
+			placeholder: ".placeholder-assets",
 			handle: '.sortable-assets-handle',
-			axis: "y",
 			forcePlaceholderSize: true,
 			revert: false,
 			tolerance: 'pointer',
 			opacity: '0.6',
 			items: 'li',
+			connectWith: '.delete-tray-target',
+			zIndex: 1000,
 			update: function(){
 				// Save new order to the database
 				var sorted   = $(this).sortable('serialize');
@@ -230,8 +234,41 @@ HUB.CoursesOutline = {
 		});
 	},
 
+	makeAssetsDeletable: function()
+	{
+		var $ = this.jQuery;
+
+		// Toggle tray
+		$('.delete-tray-handle').on('click', function() {
+			if($('.delete-tray-target').css('display') == 'none') {
+				$('.delete-tray-target').css('width', $(window).width()*0.3-55);
+				$('.unit').animate({'margin-left':$(window).width()*0.3}, 500);
+				$('.delete-tray').animate({'width':$(window).width()*0.3-10}, 500);
+				$('.delete-tray-target').show('slide', 'linear', 500);
+			} else {
+				$('.unit').animate({'margin-left':30}, 500);
+				$('.delete-tray').animate({'width':20}, 500);
+				$('.delete-tray-target').hide('slide', 'linear', 500);
+			}
+		});
+
+		$('.delete-tray-target').sortable({
+			placeholder: ".placeholder-assets-delete",
+			handle: '.sortable-assets-handle',
+			forcePlaceholderSize: true,
+			revert: false,
+			tolerance: 'pointer',
+			opacity: '0.6',
+			items: 'li',
+			connectWith: '.sortable-assets',
+			zIndex: 1000
+		});
+	},
+
 	makeTitlesEditable: function()
 	{
+		var $ = this.jQuery;
+
 		// Hide inputs and show plain text
 		$('.toggle-editable').show();
 		$('.title-edit').hide();
@@ -659,9 +696,9 @@ HUB.CoursesOutline = {
 								message += '<p class="asset file">' + data.files[0].name + '</p>';
 								$.each(json.handlers, function(index, value){
 									message += '<li class="handler-item">';
-									message += '<button type="button" id="' + (data.files[0].name + '_' + value.classname + counter).replace(/[. ]/g, '_') + '" class="dialog-button">';
+									message += '<a id="' + (data.files[0].name + '_' + value.classname + counter).replace(/[. ]/g, '_') + '" class="dialog-button">';
 									message += value.message;
-									message += '</button>';
+									message += '</a>';
 									message += '</li>';
 								});
 								message += '</ul>';
@@ -749,6 +786,7 @@ HUB.CoursesOutline = {
 	{
 		var $ = this.jQuery;
 
+		// @FIXME: come up with a better way of tracking the this div through the upload process
 		var id = filename.replace(/[. ]/g, '_') + '_progressbar';
 		var html = '';
 			html += '<div id="' + id + '" class="uploadfiles-progress">';

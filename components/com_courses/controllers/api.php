@@ -69,6 +69,7 @@ class CoursesApiController extends Hubzero_Api_Controller
 			case 'assethandlers':          $this->assetHandlers();            break;
 			case 'assetnew':               $this->assetNew();                 break;
 			case 'assetsave':              $this->assetSave();                break;
+			case 'assetdelete':            $this->assetDelete();              break;
 			case 'assetsreorder':          $this->assetsReorder();            break;
 			case 'assettogglepublished':   $this->assetTogglePublished();     break;
 
@@ -487,6 +488,7 @@ class CoursesApiController extends Hubzero_Api_Controller
 				'asset_title'    => $row->title,
 				'asset_type'     => $row->type,
 				'asset_url'      => $assetObj->url,
+				'scope_id'       => $row2->scope_id,
 				'course_id'      => $row->course_id,
 				'offering_alias' => JRequest::getCmd('offering', '')
 			);
@@ -500,6 +502,111 @@ class CoursesApiController extends Hubzero_Api_Controller
 				'course_id'   => $this->course_id,
 				'files'       => array($files)),
 			201, 'Created');
+	}
+
+	/**
+	 * Delete an asset
+	 * 
+	 * @return 200 ok on success
+	 */
+	private function assetDelete()
+	{
+		// Set the responce type
+		$this->setMessageType($this->format);
+
+		// Require authorization
+		$authorized = $this->authorize();
+		if(!$authorized['manage'])
+		{
+			$this->setMessage('You don\'t have permission to do this', 401, 'Unauthorized');
+			return;
+		}
+
+		// Include needed files
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'  . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'  . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
+
+		// First, delete the asset association
+		$assocObj = new CoursesTableAssetAssociation($this->db);
+
+		// Get vars
+		$asset_id  = JRequest::getInt('asset_id', 0);
+		$scope     = JRequest::getCmd('scope', 'asset_group');
+		$scope_id  = JRequest::getInt('scope_id', 0);
+
+		// Make sure we're not missing anything
+		if(!$asset_id || !$scope || !$scope_id)
+		{
+			// Missing needed variables to identify asset association
+			$this->setMessage("Missing one of asset id, scope, or scope id", 422, 'Unprocessable Entity');
+			return;
+		}
+		else
+		{
+			// Try to load the association
+			if (!$assocObj->loadByAssetScope($asset_id, $scope_id, $scope))
+			{
+				$this->setMessage("Loading asset association failed", 500, 'Internal server error');
+				return;
+			}
+			else
+			{
+				// Delete the association
+				if (!$assocObj->delete())
+				{
+					$this->setMessage($assocObj->getError(), 500, 'Internal server error');
+					return;
+				}
+			}
+		}
+
+		// Then, lookup whether or not there are other assocations connected to this asset
+		$assetObj = new CoursesTableAsset($this->db);
+
+		if (!$assetObj->load($asset_id))
+		{
+			$this->setMessage("Loading asset $id failed", 500, 'Internal server error');
+			return;
+		}
+
+		// See if the asset is orphaned
+		if (!$assetObj->isOrphaned())
+		{
+			// Asset isn't an orphan (i.e. it's still being used elsewhere), so we're done
+			$this->setMessage(array('asset_id' => $assetObj->id), 200, 'OK');
+			return;
+		}
+
+		// If no other associations exist, we'll delete the asset file and folder on the file system
+		jimport('joomla.filesystem.folder');
+		jimport('joomla.filesystem.file');
+
+		$deleted = array();
+		$params  =& JComponentHelper::getParams('com_courses');
+		$path    = DS . trim($params->get('uploadpath', '/site/courses'), DS) . DS . $this->course_id . DS . $assetObj->id;
+
+		// If the path exists, delete it!
+		if(JFolder::exists($path))
+		{
+			$deleted = JFolder::listFolderTree($path);
+			JFolder::delete($path);
+		}
+
+		// Then we'll delete the asset entry itself
+		if (!$assetObj->delete())
+		{
+			$this->setMessage($assetObj->getError(), 500, 'Internal server error');
+			return;
+		}
+
+		// Return message
+		$this->setMessage(
+			array(
+				'asset_id' => $assetObj->id,
+				'deleted'  => $deleted
+			),
+			200, 'OK');
+		return;
 	}
 
 	/**
