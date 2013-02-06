@@ -1018,8 +1018,20 @@ class Hubzero_Registration
 
 		if ($registrationRace == REG_REQUIRED)
 		{
-			if (empty($registration['race']) && strtolower($registration['countryorigin']) == 'us')
+			if($task == 'edit')
 			{
+				$corigin_incoming = (in_array('countryorigin', $field_to_check)) ? true : false;
+				$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
+			}
+			else
+			{
+				$corigin_incoming = true;
+			}
+
+			if (empty($registration['race'])
+				&& (($corigin_incoming && strtolower($registration['countryorigin']) == 'us')
+					|| (!$corigin_incoming && isset($profile) && strtolower($profile->get('countryorigin')) == 'us'))
+			){
 				$this->_missing['race'] = 'Racial Background';
 				$this->_invalid['race'] = 'Please make a selection or choose not to reveal.';
 			}
