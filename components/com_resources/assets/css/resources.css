@@ -23,7 +23,16 @@
 		padding-right: 5%;
 	}
 	.com_resources .three {
+		width: 35%;
+	}
+	.com_resources .four {
+		width: 25%;
+	}
+	.com_resources .three {
 		margin-top: -1px;
+	}
+	.com_resources .four .third {
+		width: 30%;
 	}
 	.com_resources .four .third,
 	.com_resources .fourth {
