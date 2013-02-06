@@ -198,7 +198,7 @@ foreach ($assets as $asset)
 }
 
 // Calculate the student's current score
-$current_score = array_sum($current_score) / $current_score_i;
+$current_score = round(array_sum($current_score) / $current_score_i, 2);
 
 // Get the status of the course (e.x. not started, in progress, completed, etc...)
 $section = $this->course->offering()->section();

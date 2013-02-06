@@ -65,7 +65,7 @@
 	background: url('/components/com_courses/assets/img/person.png') 50% 0 no-repeat;
 }
 .progress-timeline .end {
-	background: url('/components/com_courses/assets/img/jumping.png') 50% 0 no-repeat;
+	background: url('/components/com_courses/assets/img/jumping_incomplete.png') 50% 0 no-repeat;
 }
 .progress-timeline .current {
 	background: url('/components/com_courses/assets/img/running.png') 50% 2px no-repeat;
