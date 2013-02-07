@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'post.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'following.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'collection.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'iterator.php');
 
@@ -80,6 +82,13 @@ class CollectionsModel extends JObject
 	 * @var array
 	 */
 	private $_collection = null;
+
+
+	private $_followers = null;
+	
+	private $_following = null;
+	
+	private $_followed = null;
 
 	/**
 	 * Constructor
@@ -219,6 +228,7 @@ class CollectionsModel extends JObject
 
 			return $tbl->getCount($filters);
 		}
+
 		if (!isset($this->_collections) || !is_a($this->_collections, 'CollectionsModelIterator'))
 		{
 			$tbl = new CollectionsTableCollection($this->_db);
@@ -230,20 +240,184 @@ class CollectionsModel extends JObject
 				{
 					$results[$key] = new CollectionsModelCollection($result);
 				}
-			}
+			/*}
 			else
 			{
 				$tbl->setup($filters['object_id'], $filters['object_type']);
 				if (!($results = $tbl->getRecords($filters)))
 				{
 					$results = array();
-				}
+				}*/
 			}
 
 			$this->_collections = new CollectionsModelIterator($results);
 		}
 
 		return $this->_collections;
+	}
+
+	/**
+	 * Get a list of resource types
+	 *   Accepts either a numeric array index or a string [id, name]
+	 *   If index, it'll return the entry matching that index in the list
+	 *   If string, it'll return either a list of IDs or names
+	 * 
+	 * @param      mixed $idx Index value
+	 * @return     array
+	 */
+	public function followers($filters=array())
+	{
+		$filters['following_id']   = $this->_object_id;
+		$filters['following_type'] = $this->_object_type;
+
+		if (isset($filters['count']) && $filters['count'])
+		{
+			$tbl = new CollectionsTableFollowing($this->_db);
+
+			return $tbl->count($filters);
+		}
+		if (!isset($this->_followers) || !is_a($this->_followers, 'CollectionsModelIterator'))
+		{
+			$tbl = new CollectionsTableFollowing($this->_db);
+
+			if (($results = $tbl->find($filters)))
+			{
+				// Loop through all the items and push assets and tags
+				foreach ($results as $key => $result)
+				{
+					$results[$key] = new CollectionsModelFollowing($result);
+				}
+			}
+
+			$this->_followers = new CollectionsModelIterator($results);
+		}
+
+		return $this->_followers;
+	}
+
+	/**
+	 * Get a list of resource types
+	 *   Accepts either a numeric array index or a string [id, name]
+	 *   If index, it'll return the entry matching that index in the list
+	 *   If string, it'll return either a list of IDs or names
+	 * 
+	 * @param      mixed $idx Index value
+	 * @return     array
+	 */
+	public function following($filters=array(), $what='all')
+	{
+		$filters['follower_id']   = $this->_object_id;
+		$filters['follower_type'] = $this->_object_type;
+
+		if (isset($filters['count']) && $filters['count'])
+		{
+			$tbl = new CollectionsTableFollowing($this->_db);
+
+			return $tbl->count($filters);
+		}
+
+		if ($what == 'first')
+		{
+			$filters['limit'] = 1;
+		}
+
+		if (!isset($this->_following) || !is_a($this->_following, 'CollectionsModelIterator'))
+		{
+			$tbl = new CollectionsTableFollowing($this->_db);
+
+			if (($results = $tbl->find($filters)))
+			{
+				// Loop through all the items and push assets and tags
+				foreach ($results as $key => $result)
+				{
+					$results[$key] = new CollectionsModelFollowing($result);
+				}
+			}
+
+			$this->_following = new CollectionsModelIterator($results);
+		}
+
+		if ($what == 'collections')
+		{
+			$ids = array();
+			$members = array();
+			$groups = array();
+			foreach ($this->_following as $following)
+			{
+				if ($following->get('following_type') == 'collection')
+				{
+					$ids[] = $following->get('following_id');
+				}
+				else
+				{
+					if ($following->get('following_type') == 'member')
+					{
+						$members[] = $following->get('following_id');
+					}
+					else if ($following->get('following_type') == 'group')
+					{
+						$groups[] = $following->get('following_id');
+					}
+				}
+				
+			}
+			if (count($members) > 0 || count($groups) > 0)
+			{
+				if (count($members) > 0)
+				{
+					$query1 = "SELECT id FROM #__collections WHERE object_id IN (" . implode(',', $members) . ") AND object_type='member'";
+				}
+				if (count($groups) > 0)
+				{
+					$query2 = "SELECT id FROM #__collections WHERE object_id IN (" . implode(',', $groups) . ") AND object_type='group'";
+				}
+				if (count($members) > 0 && count($groups) > 0)
+				{
+					$query = "( $query1 ) UNION ( $query2 );";
+				} 
+				else if (count($members) > 0)
+				{
+					$query = $query1;
+				}
+				else if (count($groups) > 0)
+				{
+					$query = $query2;
+				}
+
+				$this->_db->setQuery($query);
+				$ids = array_merge($ids, $this->_db->loadResultArray());
+			}
+			
+			return $ids;
+		}
+
+		return $this->_following;
+	}
+
+	/**
+	 * Get a list of resource types
+	 *   Accepts either a numeric array index or a string [id, name]
+	 *   If index, it'll return the entry matching that index in the list
+	 *   If string, it'll return either a list of IDs or names
+	 * 
+	 * @param      mixed $idx Index value
+	 * @return     array
+	 */
+	public function posts($filters=array())
+	{
+		$filters['object_id']   = $this->_object_id;
+		$filters['object_type'] = $this->_object_type;
+		if (!isset($filters['state']))
+		{
+			$filters['state'] = 1;
+		}
+
+		if (isset($filters['count']) && $filters['count'])
+		{
+			$tbl = new CollectionsTablePost($this->_db);
+
+			return $tbl->getCount($filters);
+		}
 	}
 
 	/**
@@ -313,5 +487,87 @@ class CollectionsModel extends JObject
 		}
 
 		return $collections;
+	}
+
+	/**
+	 * Check if someone or a group is following this collection
+	 * 
+	 * @param      integer $follower_id   ID of the follower
+	 * @param      string  $follower_type Type of the follower [member, group]
+	 * @return     boolean
+	 */
+	public function isFollowing($follower_id=null, $follower_type='member')
+	{
+		if (!isset($this->_followed))
+		{
+			$this->_followed = false;
+
+			if (!$follower_id && $follower_type == 'member')
+			{
+				$follower_id = JFactory::getUser()->get('id');
+			}
+
+			$follow = new CollectionsModelFollowing($this->_object_id, $this->_object_type, $follower_id, $follower_type);
+			if ($follow->exists())
+			{
+				$this->_followed = true;
+			}
+		}
+		return $this->_followed;
+	}
+
+	/**
+	 * Unfollow this collection
+	 * 
+	 * @param      integer $follower_id   ID of the follower
+	 * @param      string  $follower_type Type of the follower [member, group]
+	 * @return     boolean
+	 */
+	public function unfollow($id, $what='collection', $follower_id=0, $follower_type='member')
+	{
+		$follow = new CollectionsModelFollowing($id, $what, $follower_id, $follower_type);
+
+		if (!$follow->exists())
+		{
+			$this->setError(JText::_('Item is not being followed'));
+			return true;
+		}
+
+		if (!$follow->delete())
+		{
+			$this->setError($follow->getError());
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Follow this collection
+	 * 
+	 * @param      integer $follower_id   ID of the follower
+	 * @param      string  $follower_type Type of the follower [member, group]
+	 * @return     boolean
+	 */
+	public function follow($id, $what='collection', $follower_id=0, $follower_type='member')
+	{
+		$follow = new CollectionsModelFollowing($id, $what, $follower_id, $follower_type);
+
+		if (!$follow->exists())
+		{
+			$follow->bind(array(
+				'following_id'   => $id,
+				'following_type' => $what,
+				'follower_id'    => $follower_id,
+				'follower_type'  => $follower_type
+			));
+			if (!$follow->store(true))
+			{
+				$this->setError($follow->getError());
+				return false;
+			}
+		}
+
+		return true;
 	}
 }

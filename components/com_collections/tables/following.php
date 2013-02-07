@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Table class for forum posts
  */
-class CollectionsTablePost extends JTable
+class CollectionsTableFollowing extends JTable
 {
 	/**
 	 * int(11) Primary key
@@ -44,18 +44,18 @@ class CollectionsTablePost extends JTable
 	var $id         = NULL;
 
 	/**
-	 * int(11)
+	 * text
 	 * 
-	 * @var integer 
+	 * @var string
 	 */
-	var $collection_id = NULL;
+	var $follower_type = NULL;
 
 	/**
 	 * int(11)
 	 * 
 	 * @var integer 
 	 */
-	var $item_id = NULL;
+	var $follower_id = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
@@ -65,25 +65,18 @@ class CollectionsTablePost extends JTable
 	var $created    = NULL;
 
 	/**
-	 * int(11)
-	 * 
-	 * @var integer 
-	 */
-	var $created_by = NULL;
-
-	/**
 	 * text
 	 * 
 	 * @var string
 	 */
-	var $description = NULL;
+	var $following_type = NULL;
 
 	/**
-	 * tinyint(2)
+	 * int(11)
 	 * 
 	 * @var integer 
 	 */
-	var $original = NULL;
+	var $following_id = NULL;
 
 	/**
 	 * Constructor
@@ -93,26 +86,38 @@ class CollectionsTablePost extends JTable
 	 */
 	public function __construct(&$db)
 	{
-		parent::__construct('#__collections_posts', 'id', $db);
+		parent::__construct('#__collections_following', 'id', $db);
 	}
 
 	/**
-	 * Load a record by its bulletin and user IDs
+	 * Load a record and bind to $this
 	 * 
-	 * @param      integer $item_id Bulletin ID
-	 * @param      integer $user_id     User ID
-	 * @return     boolean True upon success, False if errors
+	 * @param      string $oid Record alias
+	 * @return     boolean True on success
 	 */
-	public function loadByBoard($collection_id=null, $item_id=null)
+	public function load($oid=NULL, $following_type=null, $follower_id=null, $follower_type=null)
 	{
-		if (!$item_id || !$collection_id) 
+		if ($oid === NULL) 
 		{
 			return false;
 		}
-		$item_id = intval($item_id);
-		$collection_id = intval($collection_id);
 
-		$query = "SELECT * FROM $this->_tbl WHERE item_id=" . $this->_db->Quote($item_id) . " AND collection_id=" . $this->_db->Quote($collection_id);
+		if (!$following_type && !$follower_id && !$follower_type)
+		{
+			return parent::load($oid);
+		}
+
+		$oid = trim($oid);
+
+		$query = "SELECT * FROM $this->_tbl WHERE following_id=" . $this->_db->Quote($oid) . " AND following_type=" . $this->_db->Quote($following_type);
+		if ($follower_id !== null)
+		{
+			$query .= " AND follower_id=" . $this->_db->Quote(intval($follower_id));
+		}
+		if ($follower_type !== null)
+		{
+			$query .= " AND follower_type=" . $this->_db->Quote(strtolower(trim($follower_type)));
+		}
 
 		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc()) 
@@ -133,19 +138,34 @@ class CollectionsTablePost extends JTable
 	 */
 	public function check()
 	{
-		$this->collection_id = intval($this->collection_id);
+		$juser =& JFactory::getUser();
 
-		if (!$this->collection_id) 
+		$this->follower_id = intval($this->follower_id);
+		if (!$this->follower_id) 
 		{
-			$this->setError(JText::_('Please provide a collection ID'));
+			//$this->setError(JText::_('Please provide a user ID'));
+			//return false;
+			$this->follower_type = 'member';
+			$this->follower_id = $juser->get('id');
+		}
+
+		$this->following_id = intval($this->following_id);
+		if (!$this->following_id) 
+		{
+			$this->setError(JText::_('Please provide a following ID'));
 			return false;
 		}
 
-		$juser =& JFactory::getUser();
+		$this->following_type = trim($this->following_type);
+		if (!$this->following_type) 
+		{
+			$this->setError(JText::_('Please provide a following type'));
+			return false;
+		}
+
 		if (!$this->id) 
 		{
 			$this->created = date('Y-m-d H:i:s', time());  // use gmdate() ?
-			$this->created_by = $juser->get('id');
 		}
 
 		return true;
@@ -157,64 +177,33 @@ class CollectionsTablePost extends JTable
 	 * @param      array $filters Filters to construct query from
 	 * @return     string SQL
 	 */
-	public function buildQuery($filters=array())
+	private function _buildQuery($filters=array())
 	{
-		$query  = " FROM $this->_tbl AS s";
-		$query .= " LEFT JOIN #__collections AS c ON c.id=s.collection_id";
-		$query .= " LEFT JOIN #__users AS u ON s.created_by=u.id";
+		$query  = " FROM $this->_tbl AS f";
 
 		$where = array();
 
-		if (isset($filters['collection_id']) && $filters['collection_id']) 
+		if (isset($filters['following_id']) && $filters['following_id']) 
 		{
-			if (is_array($filters['collection_id']))
-			{
-				$filters['collection_id'] = array_map('intval', $filters['collection_id']);
-				$where[] = "s.collection_id IN (" . implode(',', $filters['collection_id']) . ")";
-			}
-			else
-			{
-				$where[] = "s.collection_id=" . $this->_db->Quote($filters['collection_id']);
-			}
+			$where[] = "f.following_id=" . $this->_db->Quote($filters['following_id']);
 		}
-		if (isset($filters['object_id']) && $filters['object_id']) 
+		if (isset($filters['following_type']) && $filters['following_type']) 
 		{
-			$where[] = "c.object_id=" . $this->_db->Quote($filters['object_id']);
+			$where[] = "f.following_type=" . $this->_db->Quote($filters['following_type']);
 		}
-		if (isset($filters['object_type']) && $filters['object_type']) 
+		if (isset($filters['follower_id']) && $filters['follower_id']) 
 		{
-			$where[] = "c.object_type=" . $this->_db->Quote($filters['object_type']);
+			$where[] = "f.follower_id=" . $this->_db->Quote($filters['follower_id']);
 		}
-		if (isset($filters['created_by']) && $filters['created_by']) 
+		if (isset($filters['follower_type']) && $filters['follower_type']) 
 		{
-			$where[] = "s.created_by=" . $this->_db->Quote($filters['created_by']);
-		}
-		if (isset($filters['item_id']) && $filters['item_id']) 
-		{
-			$where[] = "s.item_id=" . $this->_db->Quote($filters['item_id']);
-		}
-		if (isset($filters['original'])) 
-		{
-			$where[] = "s.original=" . $this->_db->Quote($filters['original']);
+			$where[] = "f.follower_type=" . $this->_db->Quote($filters['follower_type']);
 		}
 
 		if (count($where) > 0)
 		{
 			$query .= " WHERE ";
 			$query .= implode(" AND ", $where);
-		}
-
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
-		{
-			if (!isset($filters['sort']) || !$filters['sort']) 
-			{
-				$filters['sort'] = 's.created';
-			}
-			if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
-			{
-				$filters['sort_Dir'] = 'DESC';
-			}
-			$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
 		}
 
 		return $query;
@@ -226,11 +215,11 @@ class CollectionsTablePost extends JTable
 	 * @param      array $filters Filters to construct query from
 	 * @return     integer
 	 */
-	public function getCount($filters=array())
+	public function count($filters=array())
 	{
 		$filters['limit'] = 0;
 
-		$query = "SELECT COUNT(*) " . $this->buildQuery($filters);
+		$query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -242,12 +231,22 @@ class CollectionsTablePost extends JTable
 	 * @param      array $filters Filters to construct query from
 	 * @return     array
 	 */
-	public function getRecords($filters=array())
+	public function find($filters=array())
 	{
-		$query = "SELECT s.*, c.alias, c.title, u.name";
-		$query .= $this->buildQuery($filters);
+		$query = "SELECT f.*";
+		$query .= $this->_buildQuery($filters);
 
-		if ($filters['limit'] != 0) 
+		if (!isset($filters['sort']) || !$filters['sort']) 
+		{
+			$filters['sort'] = 'f.created';
+		}
+		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+		{
+			$filters['sort_Dir'] = 'DESC';
+		}
+		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+
+		if (isset($filters['limit']) && $filters['limit'] != 0) 
 		{
 			$query .= ' LIMIT ' . intval($filters['start']) . ',' . intval($filters['limit']);
 		}

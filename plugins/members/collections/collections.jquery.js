@@ -220,6 +220,42 @@ HUB.Plugins.GroupsBulletinboard = {
 					}
 				}
 			});
+			
+			$('#page_content a.follow, #page_content a.unfollow').on('click', function(e){
+				e.preventDefault();
+
+				var el = $(this);
+
+				href = $(this).attr('href');
+				if (href.indexOf('?') == -1) {
+					href += '?no_html=1';
+				} else {
+					href += '&no_html=1';
+				}
+				$(this).attr('href', href);
+				
+				$.getJSON($(this).attr('href'), {}, function(data) {
+					if (data.success) {
+						//var unfollow = $(el).attr('data-href-unfollow');
+						var follow = $(el).attr('data-text-follow'),
+							unfollow = $(el).attr('data-text-unfollow');
+
+						if ($(el).children('span').text() == follow) {
+							$(el).removeClass('follow')
+								.addClass('unfollow')
+								.children('span')
+								.text(unfollow)
+								.attr('href', data.href);
+						} else {
+							$(el).removeClass('unfollow')
+								.addClass('follow')
+								.children('span')
+								.text(follow)
+								.attr('href', data.href);
+						}
+					}
+				});
+			});
 		}
 		
 		HUB.Plugins.GroupsBulletinboard.formOptions(false);

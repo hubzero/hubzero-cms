@@ -217,26 +217,14 @@ class CollectionsTableCollection extends JTable
 	 */
 	public function setup($object_id=0, $object_type='')
 	{
-	/*	switch ($object_type)
-		{
-			case 'group':
-				$title = JText::_('Favo');
-				$description = JText::_('Post files, images, text, and links or repost content from around the hub.');
-			break;
-			
-			case 'member':
-			default:*/
-				$title = JText::_('Favorites');
-				$description = JText::_('This board is a collection of favorite content from around the hub.');
-			//break;
-		//}
 		$result = array(
 			'id'          => 0,
-			'title'       => $title,
-			'description' => $description,
+			'title'       => JText::_('Favorites'),
+			'description' => JText::_('This board is a collection of favorite content from around the hub.'),
 			'object_id'   => $object_id,
 			'object_type' => $object_type,
-			'is_default'  => 1
+			'is_default'  => 1,
+			'created_by'  => $object_id
 		);
 		if (!$this->bind($result))
 		{
@@ -321,6 +309,11 @@ class CollectionsTableCollection extends JTable
 	public function buildQuery($filters=array())
 	{
 		$query  = " FROM $this->_tbl AS b";
+		$query .= " LEFT JOIN #__collections_following AS f ON f.following_type=" . $this->_db->Quote('collection') . " AND f.following_id=b.id";
+		if (isset($filters['user_id']) && $filters['user_id']) 
+		{
+			$query .= " AND f.follower_type='member' AND f.follower_id=" . $this->_db->Quote($filters['user_id']);
+		}
 		if (isset($filters['object_type']) && $filters['object_type'] == 'group') 
 		{
 			$query .= " LEFT JOIN #__xgroups AS g ON g.gidNumber=b.object_id AND b.object_type=" . $this->_db->Quote('group');
@@ -336,14 +329,24 @@ class CollectionsTableCollection extends JTable
 		{
 			$where[] = "b.access=" . $this->_db->Quote(intval($filters['access']));
 		}
-		if (isset($filters['object_id']) && $filters['object_id']) 
+
+		/*if (isset($filters['object_id']) && $filters['object_id'] && isset($filters['object_type']) && $filters['object_type']) 
 		{
-			$where[] = "b.object_id=" . $this->_db->Quote(intval($filters['object_id']));
+			$where[] = "((b.object_id=" . $this->_db->Quote(intval($filters['object_id'])) . " AND b.object_type=" . $this->_db->Quote($filters['object_type']) . ") 
+						OR b.id IN (SELECT following_id FROM #__collections_following WHERE follower_id=" . $this->_db->Quote(intval($filters['object_id'])) . " AND follower_type=" . $this->_db->Quote($filters['object_type'])  . " AND following_type='collection'))";
 		}
-		if (isset($filters['object_type']) && $filters['object_type']) 
-		{
-			$where[] = "b.object_type=" . $this->_db->Quote($filters['object_type']);
-		}
+		else
+		{*/
+			if (isset($filters['object_id']) && $filters['object_id']) 
+			{
+				$where[] = "b.object_id=" . $this->_db->Quote(intval($filters['object_id']));
+			}
+			if (isset($filters['object_type']) && $filters['object_type']) 
+			{
+				$where[] = "b.object_type=" . $this->_db->Quote($filters['object_type']);
+			}
+		//}
+		
 		if (isset($filters['created']) && $filters['created']) 
 		{
 			$where[] = "b.created=" . $this->_db->Quote($filters['created']);
@@ -404,7 +407,7 @@ class CollectionsTableCollection extends JTable
 	 */
 	public function getRecords($filters=array())
 	{
-		$query = "SELECT b.*, (SELECT COUNT(*) FROM #__collections_posts AS s WHERE s.collection_id=b.id) AS posts";
+		$query = "SELECT DISTINCT b.*, f.following_id AS following, (SELECT COUNT(*) FROM #__collections_posts AS s WHERE s.collection_id=b.id) AS posts";
 		if (isset($filters['object_type']) && $filters['object_type'] == 'group') 
 		{
 			$query .= ", g.cn AS group_alias";

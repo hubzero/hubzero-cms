@@ -249,11 +249,18 @@ class CollectionsTableItem extends JTable
 		}
 		else
 		{
-			$where[] = "d.access=0";
-			$where[] = "s.id = (SELECT MAX(s2.id) FROM #__collections_posts s2 WHERE s.item_id = s2.item_id)";
-			if (isset($filters['trending']))
+			if (isset($filters['created_by']) && $filters['created_by']) 
 			{
-				$where[] = "s.created >= DATE_FORMAT(NOW(), '%Y-%m-01 00:00:00')";
+				$where[] = "b.created_by=" . $this->_db->Quote($filters['created_by']);
+			}
+			else
+			{
+				$where[] = "d.access=0";
+				$where[] = "s.id = (SELECT MAX(s2.id) FROM #__collections_posts s2 WHERE s.item_id = s2.item_id)";
+				if (isset($filters['trending']))
+				{
+					$where[] = "s.created >= DATE_FORMAT(NOW(), '%Y-%m-01 00:00:00')";
+				}
 			}
 		}
 
@@ -334,7 +341,7 @@ class CollectionsTableItem extends JTable
 	 */
 	public function getRecords($filters=array())
 	{
-		$query = "SELECT b.*, u.name AS poster_name, s.description AS user_description, s.created AS posted, s.created_by AS poster, s.original, s.id AS post_id,
+		$query = "SELECT b.*, u.name AS poster_name, s.description AS user_description, s.created AS posted, s.created_by AS poster, s.original, s.id AS post_id, s.collection_id, 
 				(SELECT COUNT(*) FROM #__collections_posts AS s WHERE s.item_id=b.id AND s.original=0) AS reposts,
 				(SELECT COUNT(*) FROM #__item_comments AS c WHERE c.item_id=b.id AND c.item_type='bulletin' AND c.state IN (1, 3)) AS comments";
 		if (isset($filters['user_id']) && $filters['user_id']) 

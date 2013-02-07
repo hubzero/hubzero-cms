@@ -84,8 +84,12 @@ class plgMembersCollections extends JPlugin
 	 */
 	public function onMembers($user, $member, $option, $areas)
 	{
+		$arr = array(
+			'html'     => '',
+			'metadata' => ''
+		);
 		$returnhtml = true;
-		$returnmeta = true;
+		//$returnmeta = true;
 
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array($areas)) 
@@ -97,42 +101,41 @@ class plgMembersCollections extends JPlugin
 			}
 		}
 
-		$arr = array(
-			'html' => '',
-			'metadata' => ''
-		);
+		$this->member = $member;
+		$this->juser  = $user;
 
-			//user vars
-			$this->juser      = $user;
+		$this->_authorize('collection');
 
-			// Set some variables so other functions have access
-			$this->action     = JRequest::getVar('action', 'collections');
-			$this->option     = $option;
-			$this->name       = substr($option, 4, strlen($option));
-			$this->database   = JFactory::getDBO();
-			$this->member     = $member;
-
-			$this->_authorize('collection');
-			$this->_authorize('item');
-
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'collections.php');
-
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'collections.php');
 		$this->model = new CollectionsModel('member', $this->member->get('uidNumber'));
 
 		//are we returning html
 		if ($returnhtml) 
 		{
+			// Set some variables so other functions have access
+			$this->option   = $option;
+			$this->database = JFactory::getDBO();
+
+			$this->_authorize('item');
+
+			$default = 'feed';
+			if ($this->juser->get('id') != $member->get('uidNumber'))
+			{
+				$default = 'collections';
+			}
+			$this->action = JRequest::getVar('action', $default);
+
 			//push the css to the doc
 			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('members', $this->_name);
 
-			$this->dateFormat  = '%d %b, %Y';
-			$this->timeFormat  = '%I:%M %p';
+			$this->dateFormat = '%d %b, %Y';
+			$this->timeFormat = '%I:%M %p';
 			$this->tz = 0;
 			if (version_compare(JVERSION, '1.6', 'ge'))
 			{
-				$this->dateFormat  = 'd M, Y';
-				$this->timeFormat  = 'h:i a';
+				$this->dateFormat = 'd M, Y';
+				$this->timeFormat = 'h:i a';
 				$this->tz = true;
 			}
 
@@ -146,7 +149,64 @@ class plgMembersCollections extends JPlugin
 
 				if (isset($bits[0]) && $bits[0])
 				{
-					if ($bits[0] == 'post')
+					$bits[0] = strtolower(trim($bits[0]));
+					switch ($bits[0])
+					{
+						case 'post':
+							$this->action = 'post';
+							if (isset($bits[1]))
+							{
+								if ($bits[1] == 'new' || $bits[1] == 'save')
+								{
+									$this->action = $bits[1] . $this->action;
+								}
+								else
+								{
+									JRequest::setVar('post', $bits[1]);
+									if (isset($bits[2]))
+									{
+										if (in_array($bits[2], array('post', 'vote', 'collect', 'remove', 'move', 'comment')))
+										{
+											$this->action = $bits[2];
+										}
+										else
+										{
+											$this->action = $bits[2] . $this->action;
+										}
+									}
+								}
+							}
+						break;
+						
+						case 'all':
+						case 'posts':
+						case 'followers':
+						case 'following':
+						case 'follow':
+						case 'unfollow':
+							$this->action = $bits[0];
+						break;
+						
+						case 'new':
+						case 'save':
+							$this->action = $bits[0] . 'collection';
+							if (isset($bits[1]))
+							{
+								JRequest::setVar('unfollow', $bits[1]);
+							}
+						break;
+						
+						default:
+							$this->action = 'collection';
+							JRequest::setVar('board', $bits[0]);
+
+							if (isset($bits[1]))
+							{
+								$this->action = $bits[1] . $this->action;
+							}
+						break;
+					}
+					/*if ($bits[0] == 'post')
 					{
 						$this->action = 'post';
 						if (isset($bits[1]))
@@ -172,9 +232,17 @@ class plgMembersCollections extends JPlugin
 							}
 						}
 					}
-					else if ($bits[0] == 'new' || $bits[0] == 'save')
+					else if (in_array($bits[0], array('all', 'posts', 'followers', 'following', 'follow', 'unfollow')))
+					{
+						$this->action = $bits[0];
+					}
+					else if (in_array($bits[0], array('new', 'save')))
 					{
 						$this->action = $bits[0] . 'collection';
+						if (isset($bits[1]))
+						{
+							JRequest::setVar('unfollow', $bits[1]);
+						}
 					}
 					else
 					{
@@ -185,7 +253,7 @@ class plgMembersCollections extends JPlugin
 						{
 							$this->action = $bits[1] . $this->action;
 						}
-					}
+					}*/
 				}
 			}
 
@@ -197,29 +265,39 @@ class plgMembersCollections extends JPlugin
 				case 'editcomment':   $arr['html'] = $this->_editcomment();   break;
 				case 'deletecomment': $arr['html'] = $this->_deletecomment(); break;
 
+				case 'followers': $arr['html'] = $this->_followers(); break;
+				case 'following': $arr['html'] = $this->_following(); break;
+				case 'follow':    $arr['html'] = $this->_follow('member');    break;
+				case 'unfollow':  $arr['html'] = $this->_unfollow('member');  break;
+
 				// Entries
 				case 'savepost':   $arr['html'] = $this->_save();   break;
 				case 'newpost':    $arr['html'] = $this->_new();    break;
 				case 'editpost':   $arr['html'] = $this->_edit();   break;
 				case 'deletepost': $arr['html'] = $this->_delete(); break;
+				case 'posts':      $arr['html'] = $this->_posts();  break;
 
 				case 'comment':
-				case 'post':   $arr['html'] = $this->_post();   break;
-				case 'vote':   $arr['html'] = $this->_vote();   break;
+				case 'post':    $arr['html'] = $this->_post();   break;
+				case 'vote':    $arr['html'] = $this->_vote();   break;
 				case 'collect': $arr['html'] = $this->_repost(); break;
-				case 'remove': $arr['html'] = $this->_remove(); break;
-				case 'move':   $arr['html'] = $this->_move();   break;
+				case 'remove':  $arr['html'] = $this->_remove(); break;
+				case 'move':    $arr['html'] = $this->_move();   break;
 
-				case 'collectcollection': $arr['html'] = $this->_repost();      break;
-				case 'newcollection':    $arr['html'] = $this->_newcollection();    break;
-				case 'editcollection':   $arr['html'] = $this->_editcollection();   break;
-				case 'savecollection':   $arr['html'] = $this->_savecollection();   break;
-				case 'deletecollection': $arr['html'] = $this->_deletecollection(); break;
+				case 'followcollection': $arr['html'] = $this->_follow('collection'); break;
+				case 'unfollowcollection': $arr['html'] = $this->_unfollow('collection'); break;
+				case 'collectcollection':  $arr['html'] = $this->_repost();           break;
+				case 'newcollection':      $arr['html'] = $this->_newcollection();    break;
+				case 'editcollection':     $arr['html'] = $this->_editcollection();   break;
+				case 'savecollection':     $arr['html'] = $this->_savecollection();   break;
+				case 'deletecollection':   $arr['html'] = $this->_deletecollection(); break;
+				
+				case 'all':
 				case 'collections':      $arr['html'] = $this->_collections();      break;
 
 				case 'collection': $arr['html'] = $this->_collection(); break;
 
-				default: $arr['html'] = $this->_collections(); break;
+				default: $arr['html'] = $this->_feed(); break;
 			}
 		}
 
@@ -256,6 +334,193 @@ class plgMembersCollections extends JPlugin
 	 * 
 	 * @return     string
 	 */
+	private function _followers()
+	{
+		ximport('Hubzero_Plugin_View');
+		$view = new Hubzero_Plugin_View(
+			array(
+				'folder'  => 'members',
+				'element' => $this->_name,
+				'name'    => 'follow',
+				'layout'  => 'followers'
+			)
+		);
+		$view->name        = $this->_name;
+		$view->juser       = $this->juser;
+		$view->option      = $this->option;
+		$view->member      = $this->member;
+		$view->params      = $this->params;
+
+		Hubzero_Document::addPluginScript('members', $this->_name);
+
+		$this->app = JFactory::getApplication();
+		$this->jconfig = JFactory::getConfig();
+
+		$view->filters = array();
+		$view->filters['limit'] = $this->app->getUserStateFromRequest(
+			$this->option . '.plugin.messages.limit',
+			'limit',
+			$this->jconfig->getValue('config.list_limit'),
+			'int'
+		);
+		$view->filters['start'] = $this->app->getUserStateFromRequest(
+			$this->option . '.plugin.messages.limitstart',
+			'limitstart',
+			0,
+			'int'
+		);
+
+		$filters = array();
+		$filters['user_id'] = $this->juser->get('id');
+		$filters['state']   = 1;
+
+		$filters = array();
+		if (!$this->params->get('access-manage-collection')) 
+		{
+			$filters['access'] = 0;
+		}
+
+		$filters['count'] = true;
+		$view->collections = $this->model->collections($filters);
+
+		$filters['count'] = false;
+		$view->rows = $this->model->collections($filters);
+
+		$view->posts = 0;
+		if ($view->rows) 
+		{
+			foreach ($view->rows as $row)
+			{
+				$view->posts += $row->get('posts');
+			}
+		}
+
+		$view->following = $this->model->following(array('count' => true));
+
+		$view->total = $this->model->followers(array('count' => true));
+
+		$view->rows = $this->model->followers($view->filters);
+
+		jimport('joomla.html.pagination');
+		$view->pageNav = new JPagination(
+			$view->total, 
+			$view->filters['start'], 
+			$view->filters['limit']
+		);
+
+		$view->pageNav->setAdditionalUrlParam('id', $this->member->get('uidNumber'));
+		$view->pageNav->setAdditionalUrlParam('active', $this->_name);
+		$view->pageNav->setAdditionalUrlParam('task', 'followers');
+
+		if ($this->getError()) 
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$view->setError($error);
+			}
+		}
+		return $view->loadTemplate();
+	}
+
+	/**
+	 * Display a list of collections
+	 * 
+	 * @return     string
+	 */
+	private function _following()
+	{
+		ximport('Hubzero_Plugin_View');
+		$view = new Hubzero_Plugin_View(
+			array(
+				'folder'  => 'members',
+				'element' => $this->_name,
+				'name'    => 'follow',
+				'layout'  => 'following'
+			)
+		);
+		$view->name        = $this->_name;
+		$view->juser       = $this->juser;
+		$view->option      = $this->option;
+		$view->member      = $this->member;
+		$view->params      = $this->params;
+
+		Hubzero_Document::addPluginScript('members', $this->_name);
+
+		$this->app = JFactory::getApplication();
+		$this->jconfig = JFactory::getConfig();
+
+		$view->filters = array();
+		$view->filters['limit'] = $this->app->getUserStateFromRequest(
+			$this->option . '.plugin.messages.limit',
+			'limit',
+			$this->jconfig->getValue('config.list_limit'),
+			'int'
+		);
+		$view->filters['start'] = $this->app->getUserStateFromRequest(
+			$this->option . '.plugin.messages.limitstart',
+			'limitstart',
+			0,
+			'int'
+		);
+
+		$filters = array();
+		$filters['user_id'] = $this->juser->get('id');
+		$filters['state']   = 1;
+
+		$filters = array();
+		if (!$this->params->get('access-manage-collection')) 
+		{
+			$filters['access'] = 0;
+		}
+
+		//$filters['count'] = true;
+		$view->collections = $this->model->collections(array('count' => true));
+
+		/*$filters['count'] = false;
+		$view->rows = $this->model->collections($filters);
+
+		$view->posts = 0;
+		if ($view->rows) 
+		{
+			foreach ($view->rows as $row)
+			{
+				$view->posts += $row->get('posts');
+			}
+		}*/
+		$view->posts = $this->model->posts(array('count' => true));
+
+		$view->followers = $this->model->followers(array('count' => true));
+
+		$view->total = $this->model->followers(array('count' => true));
+
+		$view->rows = $this->model->following($view->filters);
+
+		jimport('joomla.html.pagination');
+		$view->pageNav = new JPagination(
+			$view->total, 
+			$view->filters['start'], 
+			$view->filters['limit']
+		);
+
+		$view->pageNav->setAdditionalUrlParam('id', $this->member->get('uidNumber'));
+		$view->pageNav->setAdditionalUrlParam('active', $this->_name);
+		$view->pageNav->setAdditionalUrlParam('task', 'followers');
+
+		if ($this->getError()) 
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$view->setError($error);
+			}
+		}
+		return $view->loadTemplate();
+	}
+
+	/**
+	 * Display a list of collections
+	 * 
+	 * @return     string
+	 */
 	private function _collections()
 	{
 		ximport('Hubzero_Plugin_View');
@@ -272,17 +537,18 @@ class plgMembersCollections extends JPlugin
 		$view->option      = $this->option;
 		$view->member      = $this->member;
 		$view->params      = $this->params;
+		$view->model = $this->model;
 
 		//Hubzero_Document::addPluginScript('members', $this->_name, 'jquery.masonry');
 		Hubzero_Document::addComponentScript('com_collections', 'assets/js/jquery.masonry');
 		Hubzero_Document::addPluginScript('members', $this->_name);
 
 		// Filters for returning results
-		$view->filters = array();
-		$view->filters['user_id'] = $this->juser->get('id');
-		$view->filters['state']   = 1;
-
 		$filters = array();
+		$filters['user_id'] = $this->juser->get('id');
+		$filters['state']   = 1;
+
+		//$filters = array();
 		if (!$this->params->get('access-manage-collection')) 
 		{
 			$filters['access'] = 0;
@@ -302,6 +568,10 @@ class plgMembersCollections extends JPlugin
 				$view->posts += $row->get('posts');
 			}
 		}
+
+		$view->followers = $this->model->followers(array('count' => true));
+
+		$view->following = $this->model->following(array('count' => true));
 
 		$view->likes = 0; //$vote->getLikes($view->filters);
 
@@ -371,6 +641,350 @@ class plgMembersCollections extends JPlugin
 			return;
 		}
 
+		$view->filters['collection_id'] = $view->collection->get('id');
+		$view->rows = $view->collection->posts($view->filters);
+
+		if ($this->getError()) 
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$view->setError($error);
+			}
+		}
+		return $view->loadTemplate();
+	}
+
+	/**
+	 * Display a list of items in a collection
+	 * 
+	 * @return     string
+	 */
+	private function _follow($what='collection')
+	{
+		// Is the board restricted to logged-in users only?
+		if ($this->juser->get('guest'))
+		{
+			return $this->_login();
+		}
+
+		// Is it a private board?
+		/*if ($this->juser->get('id') != $this->member->get('uidNumber'))
+		{
+			JError::raiseError(403, JText::_('Your are not authorized to access this content.'));
+			return;
+		}*/
+
+		if ($this->juser->get('id') == $this->member->get('uidNumber'))
+		{
+			JError::raiseError(500, JText::_('Your cannot follow your own content.'));
+			return;
+		}
+
+		$sfx = '';
+		switch ($what)
+		{
+			case 'group':
+				$id = $this->group->get('gidNumber');
+			break;
+
+			case 'member':
+				$id = $this->member->get('uidNumber');
+			break;
+
+			case 'collection':
+				$collection = $this->model->collection(JRequest::getVar('board', ''));
+				if (!$collection->exists())
+				{
+					JError::raiseError(400, JText::_('Collection does not exist'));
+					return;
+				}
+				$id = $collection->get('id');
+				$sfx = '&task=' . $collection->get('alias') . '/unfollow';
+			break;
+		}
+
+		if (!$this->model->follow($id, $what, $this->juser->get('id'), 'member'))
+		{
+			$this->setError($this->model->getError());
+		}
+
+		if (JRequest::getInt('no_html', 0))
+		{
+			$response = new stdClass;
+			$response->href = JRoute::_('index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=collections' . $sfx);
+			$response->success = true;
+			if ($this->getError())
+			{
+				$response->success = false;
+				$response->error = $this->getError();
+			}
+			echo json_encode($response);
+			exit;
+		}
+		else
+		{
+			return $this->_feed();
+		}
+	}
+
+	/**
+	 * Display a list of items in a collection
+	 * 
+	 * @return     string
+	 */
+	private function _unfollow($what='collection')
+	{
+		// Is the board restricted to logged-in users only?
+		if ($this->juser->get('guest'))
+		{
+			return $this->_login();
+		}
+
+		// Is it a private board?
+		if ($this->juser->get('id') == $this->member->get('uidNumber'))
+		{
+			JError::raiseError(500, JText::_('Your cannot unfollow your own content.'));
+			return;
+		}
+
+		$sfx = '';
+		switch ($what)
+		{
+			case 'group':
+				$id = $this->group->get('gidNumber');
+			break;
+
+			case 'member':
+				$id = $this->member->get('uidNumber');
+			break;
+
+			case 'collection':
+				$collection = $this->model->collection(JRequest::getVar('board', ''));
+				if (!$collection->exists())
+				{
+					JError::raiseError(400, JText::_('Collection does not exist'));
+					return;
+				}
+				$id = $collection->get('id');
+				$sfx = '&task=' . $collection->get('alias') . '/follow';
+			break;
+		}
+
+		if (!$this->model->unfollow($id, $what, $this->juser->get('id'), 'member'))
+		{
+			$this->setError($this->model->getError());
+		}
+
+		if (JRequest::getInt('no_html', 0))
+		{
+			$response = new stdClass;
+			$response->href = JRoute::_('index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=collections' . $sfx);
+			$response->success = true;
+			if ($this->getError())
+			{
+				$response->success = false;
+				$response->error = $this->getError();
+			}
+			echo json_encode($response);
+			exit;
+		}
+		else
+		{
+			return $this->_feed();
+		}
+	}
+
+	/**
+	 * Display a list of items in a collection
+	 * 
+	 * @return     string
+	 */
+	private function _feed()
+	{
+		ximport('Hubzero_Plugin_View');
+		$view = new Hubzero_Plugin_View(
+			array(
+				'folder'  => 'members',
+				'element' => $this->_name,
+				'name'    => 'collection',
+				'layout'  => 'feed'
+			)
+		);
+		$view->name       = $this->_name;
+		$view->member     = $this->member;
+		$view->option     = $this->option;
+		$view->params     = $this->params;
+		$view->dateFormat = $this->dateFormat;
+		$view->timeFormat = $this->timeFormat;
+		$view->tz         = $this->tz;
+
+		//Hubzero_Document::addPluginScript('members', $this->_name, 'jquery.masonry');
+		Hubzero_Document::addComponentScript('com_collections', 'assets/js/jquery.masonry');
+		Hubzero_Document::addPluginScript('members', $this->_name);
+
+		// Filters for returning results
+		$view->filters = array();
+		$view->filters['limit']       = JRequest::getInt('limit', 25);
+		$view->filters['start']       = JRequest::getInt('limitstart', 0);
+		$view->filters['user_id']     = $this->member->get('uidNumber');
+		$view->filters['created_by']     = $this->member->get('uidNumber');
+		$view->filters['search']      = JRequest::getVar('search', '');
+		$view->filters['state']       = 1;
+		$view->filters['collection_id'] = JRequest::getVar('board', '');
+
+		// Filters for returning results
+		/*$filters = array();
+		if (!$this->params->get('access-manage-collection')) 
+		{
+			$filters['access'] = 0;
+		}*/
+
+		//$filters['count'] = true;
+		$view->collections = $this->model->collections(array('count' => true));
+
+		/*$filters['count'] = false;
+		$rows = $this->model->collections($filters);
+
+		$view->posts = 0;
+		if ($rows) 
+		{
+			foreach ($rows as $row)
+			{
+				$view->posts += $row->get('posts');
+			}
+		}*/
+		$view->posts = $this->model->posts(array('count' => true));
+
+		$view->followers = $this->model->followers(array('count' => true));
+
+		$view->following = $this->model->following(array('count' => true));
+
+
+		$view->filters['collection_id'] = $this->model->following(array(), 'collections');
+
+		$view->collection = CollectionsModelCollection::getInstance();
+
+		// Is the board restricted to logged-in users only?
+		/*if ($view->collection->get('access') != 0 && $this->juser->get('guest'))
+		{
+			return $this->_login();
+		}
+
+		// Is it a private board?
+		if ($view->collection->get('access') == 4 && $this->juser->get('id') != $this->member->get('uidNumber'))
+		{
+			JError::raiseError(403, JText::_('Your are not authorized to access this content.'));
+			return;
+		}*/
+		if (count($view->filters['collection_id']) <= 0)
+		{
+			$view->filters['collection_id'][] = -1;
+		}
+
+		$view->rows = $view->collection->posts($view->filters);
+
+		if ($this->getError()) 
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$view->setError($error);
+			}
+		}
+		return $view->loadTemplate();
+	}
+
+	/**
+	 * Display a list of items in a collection
+	 * 
+	 * @return     string
+	 */
+	private function _posts()
+	{
+		ximport('Hubzero_Plugin_View');
+		$view = new Hubzero_Plugin_View(
+			array(
+				'folder'  => 'members',
+				'element' => $this->_name,
+				'name'    => 'collection',
+				'layout'  => 'posts'
+			)
+		);
+		$view->name       = $this->_name;
+		$view->member     = $this->member;
+		$view->option     = $this->option;
+		$view->params     = $this->params;
+		$view->dateFormat = $this->dateFormat;
+		$view->timeFormat = $this->timeFormat;
+		$view->tz         = $this->tz;
+
+		//Hubzero_Document::addPluginScript('members', $this->_name, 'jquery.masonry');
+		Hubzero_Document::addComponentScript('com_collections', 'assets/js/jquery.masonry');
+		Hubzero_Document::addPluginScript('members', $this->_name);
+
+		// Filters for returning results
+		$view->filters = array();
+		$view->filters['limit']       = JRequest::getInt('limit', 25);
+		$view->filters['start']       = JRequest::getInt('limitstart', 0);
+		//$view->filters['user_id']     = $this->member->get('uidNumber');
+		$view->filters['created_by']     = $this->member->get('uidNumber');
+		$view->filters['search']      = JRequest::getVar('search', '');
+		$view->filters['state']       = 1;
+		//$view->filters['collection_id'] = JRequest::getVar('board', '');
+
+		// Filters for returning results
+		/*$filters = array();
+		if (!$this->params->get('access-manage-collection')) 
+		{
+			$filters['access'] = 0;
+		}*/
+
+		//$filters['count'] = true;
+		$view->collections = $this->model->collections(array('count' => true));
+
+		/*$filters['count'] = false;
+		$rows = $this->model->collections($filters);
+
+		$view->posts = 0;
+		if ($rows) 
+		{
+			foreach ($rows as $row)
+			{
+				$view->posts += $row->get('posts');
+			}
+		}*/
+		$view->posts = $this->model->posts(array('count' => true));
+
+		$view->followers = $this->model->followers(array('count' => true));
+
+		$view->following = $this->model->following(array('count' => true));
+
+
+		//$view->filters['collection_id'] = $this->model->following(array(), 'collections');
+
+		$view->collection = CollectionsModelCollection::getInstance();
+
+		// Is the board restricted to logged-in users only?
+		/*if ($view->collection->get('access') != 0 && $this->juser->get('guest'))
+		{
+			return $this->_login();
+		}
+
+		// Is it a private board?
+		if ($view->collection->get('access') == 4 && $this->juser->get('id') != $this->member->get('uidNumber'))
+		{
+			JError::raiseError(403, JText::_('Your are not authorized to access this content.'));
+			return;
+		}
+		if (count($view->filters['collection_id']) <= 0)
+		{
+			$view->filters['collection_id'][] = -1;
+		}*/
+		//$filters = array();
+		//$filters['object_id']   = $this->member->get('uidNumber');
+		//$filters['object_type'] = 'member';
+		//$filters['created_by']   = $this->member->get('uidNumber');
+
+		//$view->rows = $this->model->posts();
 		$view->rows = $view->collection->posts($view->filters);
 
 		if ($this->getError()) 
@@ -634,11 +1248,11 @@ class plgMembersCollections extends JPlugin
 			return $this->_login();
 		}
 
-		if (!$this->params->get('access-create-item')) 
+		/*if (!$this->params->get('access-create-item')) 
 		{
 			$this->setError(JText::_('PLG_GROUPS' . strtoupper($this->_name) . 'NOT_AUTHORIZED'));
 			return $this->_collections();
-		}
+		}*/
 
 		$no_html = JRequest::getInt('no_html', 0);
 

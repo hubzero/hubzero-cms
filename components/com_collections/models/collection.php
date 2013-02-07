@@ -83,6 +83,13 @@ class CollectionsModelCollection extends JObject
 	private $_item = null;
 
 	/**
+	 * Container for properties
+	 * 
+	 * @var array
+	 */
+	private $_following = null;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      integer $id  Resource ID or alias
@@ -106,6 +113,10 @@ class CollectionsModelCollection extends JObject
 			{
 				$this->_tbl->set('posts', $oid->posts);
 			}
+			if (isset($oid->following))
+			{
+				$this->_following = $oid->following ? true : false;
+			}
 		}
 		else if (is_array($oid))
 		{
@@ -113,6 +124,10 @@ class CollectionsModelCollection extends JObject
 			if (isset($oid['posts']))
 			{
 				$this->_tbl->set('posts', $oid['posts']);
+			}
+			if (isset($oid['following']))
+			{
+				$this->_following = $oid['following'] ? true : false;
 			}
 		}
 	}
@@ -200,6 +215,24 @@ class CollectionsModelCollection extends JObject
 	public function setup($object_id, $object_type)
 	{
 		return $this->_tbl->setup($object_id, $object_type);
+	}
+
+	/**
+	 * Get the creator of this entry
+	 * 
+	 * Accepts an optional property name. If provided
+	 * it will return that property value. Otherwise,
+	 * it returns the entire JUser object
+	 *
+	 * @return     mixed
+	 */
+	public function creator()
+	{
+		if (!isset($this->_creator) || !is_object($this->_creator))
+		{
+			$this->_creator = JUser::getInstance($this->get('created_by'));
+		}
+		return $this->_creator;
 	}
 
 	/**
@@ -373,7 +406,10 @@ class CollectionsModelCollection extends JObject
 
 			$tbl = new CollectionsTableItem($this->_db);
 
-			$filters['collection_id'] = $this->get('id');
+			if (!isset($filters['collection_id']))
+			{
+				$filters['collection_id'] = $this->get('id');
+			}
 
 			if (($results = $tbl->getRecords($filters)))
 			{
@@ -469,5 +505,83 @@ class CollectionsModelCollection extends JObject
 				return 0;
 			break;
 		}
+	}
+
+	/**
+	 * Check if someone or a group is following this collection
+	 * 
+	 * @param      integer $follower_id   ID of the follower
+	 * @param      string  $follower_type Type of the follower [member, group]
+	 * @return     boolean
+	 */
+	public function isFollowing($follower_id=null, $follower_type='member')
+	{
+		if (!isset($this->_following))
+		{
+			$this->_following = false;
+
+			if (!$follower_id && $follower_type == 'member')
+			{
+				$follower_id = JFactory::getUser()->get('id');
+			}
+
+			$follow = new CollectionsModelFollowing($this->get('id'), 'collection', $follower_id, $follower_type);
+			if ($follow->exists())
+			{
+				$this->_following = true;
+			}
+		}
+		return $this->_following;
+	}
+
+	/**
+	 * Unfollow this collection
+	 * 
+	 * @param      integer $follower_id   ID of the follower
+	 * @param      string  $follower_type Type of the follower [member, group]
+	 * @return     boolean
+	 */
+	public function unfollow($follower_id=null, $follower_type='member')
+	{
+		$follow = new CollectionsModelFollowing($this->get('id'), 'collection', $follower_id, $follower_type);
+
+		if (!$follow->exists())
+		{
+			$this->setError(JText::_('Item is not being followed'));
+			return false;
+		}
+
+		if (!$follow->delete())
+		{
+			$this->setError($follow->getError());
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Follow this collection
+	 * 
+	 * @param      integer $follower_id   ID of the follower
+	 * @param      string  $follower_type Type of the follower [member, group]
+	 * @return     boolean
+	 */
+	public function follow($follower_id=null, $follower_type='member')
+	{
+		$follow = new CollectionsModelFollowing();
+		$follow->bind(array(
+			'following_id'   => $this->get('id'),
+			'following_type' => 'collection',
+			'follower_id'    => $follower_id,
+			'follower_type'  => $follower_type
+		));
+		if (!$follow->store(true))
+		{
+			$this->setError($follow->getError());
+			return false;
+		}
+
+		return true;
 	}
 }
