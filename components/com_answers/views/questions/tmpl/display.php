@@ -238,8 +238,8 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 							}
 ?>
 								<span class="entry-details">
-									<?php echo JText::sprintf('COM_ANSWERS_ASKED_BY', $name); ?> @ 
-									<span class="entry-time"><time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $timeFormat, $tz); ?></time></span> on 
+									<?php echo JText::sprintf('COM_ANSWERS_ASKED_BY', $name); ?> <span class="entry-date-at">@</span> 
+									<span class="entry-time"><time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $timeFormat, $tz); ?></time></span> <span class="entry-date-on">on</span> 
 									<span class="entry-date"><time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?></time></span>
 									<span class="entry-details-divider">&bull;</span>
 									<span class="entry-state">
@@ -292,19 +292,11 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 					</tbody>
 				</table>
 				<?php 
-				$pagenavhtml = $this->pageNav->getListFooter();
-				$pagenavhtml = str_replace('&amp;&amp;', '&amp;', $pagenavhtml);
-				$pagenavhtml = str_replace('?&amp;', '?', $pagenavhtml);
-				if (!strstr($pagenavhtml, 'filterby=')) {
-					$pagenavhtml = str_replace('?', '?filterby='.urlencode($this->filters['filterby']).'&amp;', $pagenavhtml);
-				}
-				if (!strstr($pagenavhtml, 'sortby=')) {
-					$pagenavhtml = str_replace('?', '?sortby='.urlencode($this->filters['sortby']).'&amp;', $pagenavhtml);
-				}
-				if (!strstr($pagenavhtml, 'area=')) {
-					$pagenavhtml = str_replace('?', '?area='.urlencode($this->filters['area']).'&amp;', $pagenavhtml);
-				}
-				echo $pagenavhtml;
+				$this->pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);
+				$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
+				$this->pageNav->setAdditionalUrlParam('area', $this->filters['area']);
+
+				echo $this->pageNav->getListFooter();
 				?>
 				<div class="clearfix"></div>
 			</div><!-- / .container -->
