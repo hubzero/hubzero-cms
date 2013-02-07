@@ -84,6 +84,86 @@ class modMyCourses
 	}
 
 	/**
+	 * Get groups for a user
+	 * 
+	 * @param      integer $uid  User ID
+	 * @param      string  $type Membership type to return groups for
+	 * @return     array
+	 */
+	private function _getCourses($uid, $type='all')
+	{
+		$db =& JFactory::getDBO();
+
+		// Get all groups the user is a member of
+		$query1 = "SELECT c.id, c.alias, c.title, c.created AS enrolled, NULL AS starts, NULL AS ends, 'manager' AS role, NULL AS offering_alias, NULL AS offering_title, NULL AS section_alias, NULL AS section_title
+					FROM #__courses AS c 
+					JOIN #__courses_managers AS m ON m.course_id=c.id
+					WHERE m.user_id=" . $uid;
+
+		$query2 = "SELECT c.id, c.alias, c.title, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title
+					FROM #__courses AS c 
+					JOIN #__courses_offerings AS o ON o.course_id=c.id
+					JOIN #__courses_offering_sections AS s on s.offering_id=o.id
+					JOIN #__courses_offering_members AS m ON m.section_id=s.id
+					JOIN #__courses_roles AS r ON r.id=m.role_id
+					WHERE m.user_id=" . $uid . " AND s.id=m.section_id AND r.alias='manager'";
+
+		$query3 = "SELECT c.id, c.alias, c.title, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title
+					FROM #__courses AS c 
+					JOIN #__courses_offerings AS o ON o.course_id=c.id
+					JOIN #__courses_offering_sections AS s on s.offering_id=o.id
+					JOIN #__courses_offering_members AS m ON m.section_id=s.id
+					JOIN #__courses_roles AS r ON r.id=m.role_id
+					WHERE m.user_id=" . $uid . " AND s.id=m.section_id AND r.alias='instructor'";
+
+		$query4 = "SELECT c.id, c.alias, c.title, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title
+					FROM #__courses AS c 
+					JOIN #__courses_offerings AS o ON o.course_id=c.id
+					JOIN #__courses_offering_sections AS s on s.offering_id=o.id
+					JOIN #__courses_offering_members AS m ON m.section_id=s.id
+					JOIN #__courses_roles AS r ON r.id=m.role_id
+					WHERE m.user_id=" . $uid . " AND s.id=m.section_id AND r.alias='student' AND c.state=1";
+
+		$query5 = "SELECT c.id, c.alias, c.title, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title
+					FROM #__courses AS c 
+					JOIN #__courses_offerings AS o ON o.course_id=c.id
+					JOIN #__courses_offering_sections AS s on s.offering_id=o.id
+					JOIN #__courses_offering_members AS m ON m.section_id=s.id
+					JOIN #__courses_roles AS r ON r.id=m.role_id
+					WHERE m.user_id=" . $uid . " AND s.id=m.section_id AND r.alias='ta' AND c.state=1";
+
+		switch ($type)
+		{
+			case 'all':
+				$query = "( $query1 ) UNION ( $query2 ) UNION ( $query3 ) UNION ( $query4 ) ORDER BY title ASC";
+			break;
+			case 'manager':
+				$query = "( $query1 ) UNION ( $query2 )";
+			break;
+			case 'instructor':
+				$query = $query3;
+			break;
+			case 'student':
+				$query = $query4;
+			break;
+			case 'ta':
+				$query = $query5;
+			break;
+		}
+
+		$db->setQuery($query);
+
+		$result = $db->loadObjectList();
+
+		if (empty($result))
+		{
+			return array();
+		}
+
+		return $result;
+	}
+
+	/**
 	 * Display module contents
 	 * 
 	 * @return     void
@@ -95,6 +175,16 @@ class modMyCourses
 		// Get the module parameters
 		$this->moduleclass = $this->params->get('moduleclass');
 		$this->limit = intval($this->params->get('limit', 10));
+
+		// Get the user's groups
+		$this->courses = $this->_getCourses($juser->get('id'), 'all');
+
+		/*$groups = array();
+		foreach ($members as $mem)
+		{
+			$groups[] = $mem;
+		}
+		$this->$courses = $groups;*/
 
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');

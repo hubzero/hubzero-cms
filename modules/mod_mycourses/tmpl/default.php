@@ -32,8 +32,44 @@
 defined('_JEXEC') or die('Restricted access');
 
 $juser =& JFactory::getUser();
+
 ?>
 <div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : '';?>>
-	<p><?php echo JText::_('MOD_MYCOURSES_NO_RESULTS'); ?></p>
-</div>
+<?php if ($this->courses && count($this->courses) > 0) { ?>
+	<ul class="compactlist">
+<?php
+	$i = 0;
+	foreach ($this->courses as $course)
+	{
+		if ($i < $this->limit) {
+			$sfx = '';
 
+			if (isset($course->offering_alias))
+			{
+				$sfx .= '&offering=' . $course->offering_alias;
+			}
+			if (isset($course->section_alias) && $course->section_alias != '__default')
+			{
+				$sfx .= ':' . $course->section_alias;
+			}
+			//$status = $this->getStatus($group);
+?>
+		<li class="course">
+			<a href="<?php echo JRoute::_('index.php?option=com_courses&gid=' . $course->alias . $sfx); ?>"><?php echo stripslashes($course->title); ?></a>
+			<span><span class="<?php echo $course->role; ?> status"><?php echo $course->role; ?></span></span>
+		</li>
+<?php
+			$i++;
+		}
+	}
+?>
+	</ul>
+<?php } else { ?>
+	<p><?php echo JText::_('MOD_MYCOURSES_NO_RESULTS'); ?></p>
+<?php } ?>
+
+	<ul class="module-nav">
+		<li><a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=courses'); ?>"><?php echo JText::_('MOD_MYCOURSES_ALL_MY_COURSES'); ?></a></li>
+		<li><a href="<?php echo JRoute::_('index.php?option=com_courses'); ?>"><?php echo JText::_('MOD_MYCOURSES_ALL_COURSES'); ?></a></li>
+	</ul>
+</div>
