@@ -218,6 +218,8 @@ class CoursesModelOffering extends JObject
 			$instances = array();
 		}
 
+		$key = 0;
+
 		if (is_numeric($oid) || is_string($oid))
 		{
 			$key = $oid;

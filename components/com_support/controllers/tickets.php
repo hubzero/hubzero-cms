@@ -230,7 +230,28 @@ class SupportControllerTickets extends Hubzero_Controller
 		}
 
 		$this->database->setQuery($query);
-		$users = $this->database->loadObjectList();
+		$usrs = $this->database->loadObjectList();
+
+		$users = array();
+		if ($usrs)
+		{
+			foreach ($usrs as $j => $user)
+			{
+				if (!isset($user->total))
+				{
+					$user->total = 0;
+				}
+				if (!isset($user->tickets))
+				{
+					$user->tickets = array();
+				}
+				if (!isset($user->closed))
+				{
+					$user->closed = array();
+				}
+				$users[$user->username] = $user;
+			}
+		}
 
 		// Get avgerage lifetime
 		//$this->view->lifetime = $st->getAverageLifeOfTicket($this->view->type, $year, $this->view->group);
@@ -244,10 +265,10 @@ class SupportControllerTickets extends Hubzero_Controller
 		$first = intval($this->database->loadResult());
 
 		// Opened tickets
-		$sql = "SELECT id, created, YEAR(created) AS `year`, MONTH(created) AS `month`, status, owner 
+		$sql = "SELECT id, created, YEAR(created) AS `year`, MONTH(created) AS `month`, open, status, owner 
 				FROM #__support_tickets
 				WHERE report!='' 
-				AND type=" . $this->view->type . " AND open=1";
+				AND type=" . $this->view->type; // . " AND open=1";
 		if (!$this->view->group) 
 		{
 			$sql .= " AND (`group`='' OR `group` IS NULL)";
@@ -280,21 +301,24 @@ class SupportControllerTickets extends Hubzero_Controller
 
 			$this->view->opened['open']++;
 
-			if (!$o->status)
+			if ($o->open)
 			{
-				$this->view->opened['new']++;
-			}
-			if (!$o->owner)
-			{
-				$this->view->opened['unassigned']++;
-			}
-			else
-			{
-				if (!isset($owners[$o->owner]))
+				if (!$o->status)
 				{
-					$owners[$o->owner] = 0;
+					$this->view->opened['new']++;
 				}
-				$owners[$o->owner]++;
+				if (!$o->owner)
+				{
+					$this->view->opened['unassigned']++;
+				}
+				else
+				{
+					if (!isset($owners[$o->owner]))
+					{
+						$owners[$o->owner] = 0;
+					}
+					$owners[$o->owner]++;
+				}
 			}
 		}
 
@@ -317,6 +341,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		$clsd = $this->database->loadObjectList();
 
 		$this->view->opened['closed'] = 0;
+		// First we need to loop through all the entries and reove some potential duplicates
 		$closedTickets = array();
 		foreach ($clsd as $closed)
 		{
@@ -333,6 +358,7 @@ class SupportControllerTickets extends Hubzero_Controller
 			}
 		}
 		$this->view->closedTickets = $closedTickets;
+		// Loop through info and divide into years/months
 		$closed = array();
 		foreach ($closedTickets as $o)
 		{
@@ -363,29 +389,15 @@ class SupportControllerTickets extends Hubzero_Controller
 				if ($k == $year && $i > $month)
 				{
 					break;
-					//$this->view->closedmonths[$k][$i] = 'null';
-					//$this->view->openedmonths[$k][$i] = 'null';
 				}
 				else
 				{
-					$this->view->closedmonths[$k][$i] = (isset($closed[$k]) && isset($closed[$k][$i])) ? $closed[$k][$i] : 0; //$st->getCountOfTicketsClosedInMonth($this->view->type, $k, sprintf("%02d",$i), $this->view->group);
-					$this->view->openedmonths[$k][$i] = (isset($open[$k]) && isset($open[$k][$i]))     ? $open[$k][$i]   : 0; //$st->getCountOfTicketsOpenedInMonth($this->view->type, $k, sprintf("%02d",$i), $this->view->group);
+					$this->view->closedmonths[$k][$i] = (isset($closed[$k]) && isset($closed[$k][$i])) ? $closed[$k][$i] : 0;
+					$this->view->openedmonths[$k][$i] = (isset($open[$k]) && isset($open[$k][$i]))     ? $open[$k][$i]   : 0;
 				}
 
 				foreach ($users as $j => $user)
 				{
-					if (!isset($user->total))
-					{
-						$user->total = 0;
-					}
-					if (!isset($user->tickets))
-					{
-						$user->tickets = array();
-					}
-					if (!isset($user->closed))
-					{
-						$user->closed = array();
-					}
 					if (!isset($user->closed[$k]))
 					{
 						$user->closed[$k] = array();
@@ -402,22 +414,31 @@ class SupportControllerTickets extends Hubzero_Controller
 					else
 					{
 						$user->closed[$k][$i] = 0;
-						foreach ($clsd as $c)
-						{
-							if (intval($c->year) == intval($k) && intval($c->month) == intval($i))
-							{
-								if ($c->created_by == $user->username)
-								{
-									$user->closed[$k][$i]++;
-									$user->total++;
-									$user->tickets[] = $c;
-								}
-							}
-						}
 					}
 					
 					$users[$j] = $user;
 				}
+			}
+		}
+
+		foreach ($closedTickets as $c)
+		{
+			if (isset($users[$c->created_by]))
+			{
+				$y = intval($c->year);
+				$m = intval($c->month);
+
+				if (!isset($users[$c->created_by]->closed[$y]))
+				{
+					$users[$c->created_by]->closed[$y] = array();
+				}
+				if (!isset($users[$c->created_by]->closed[$y][$m]))
+				{
+					$users[$c->created_by]->closed[$y][$m] = 0;
+				}
+				$users[$c->created_by]->closed[$y][$m]++;
+				$users[$c->created_by]->total++;
+				$users[$c->created_by]->tickets[] = $c;
 			}
 		}
 
@@ -430,7 +451,6 @@ class SupportControllerTickets extends Hubzero_Controller
 			{
 				$user->assigned = $owners[$user->username];
 			}
-
 			$key = (string) $user->total;
 			if (isset($u[$key]))
 			{

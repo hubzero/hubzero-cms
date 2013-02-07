@@ -326,7 +326,7 @@ function getMonthName($month)
 		<div class="container breakdown pies">
 			<div class="two columns first">
 				<h3><?php echo JText::_('Tickets by severity'); ?></h3>
-				<div id="severities-container" style="min-width: 300px; height: 300px;">
+				<div id="severities-container" style="min-width: 270px; height: 270px;">
 					<table class="support-stats-resolutions" summary="<?php echo JText::_('Breakdown of number of tickets for each severity'); ?>">
 						<thead>
 							<tr>
@@ -338,26 +338,27 @@ function getMonthName($month)
 						<tbody>
 							<?php
 								$colors = array(
-									'#7c7c7c',
-									'#515151',
-									'#404040',//'#d9d9d9',
-									'#3d3d3d',
-									'#797979',
-									'#595959',
-									'#e5e5e5',
-									'#828282',
-									'#404040',
-									'#6a6a6a',
-									'#bcbcbc',
-									'#515151',
-									'#d9d9d9',
-									'#3d3d3d',
-									'#797979',
-									'#595959',
-									'#e5e5e5',
-									'#828282',
-									'#404040',
-									'#3a3a3a'
+									'#656565',
+									'#7c94c2', //'#7c7c7c',
+									'#c67c6b', //'#515151',
+									'#d8aa65', //'#404040',//'#d9d9d9',
+									'#5f9c63', //'#3d3d3d',
+									'#9b569b', //'#797979',
+									'#5ca1b6', //'#595959',
+									'#ce89a0', //'#e5e5e5',
+									'#86a558', //'#828282',
+									'#b57676', //'#404040',
+									'#738aa0', //'#6a6a6a',
+									'#dfe6ef', //'#7c7c7c',
+									'#93ACCA', //'#515151',
+									'#83ae92', //'#404040',//'#d9d9d9',
+									'#4a6f81', //'#3d3d3d',
+									'#dfbd5b', //'#797979',
+									'#e88f87', //'#595959',
+									'#CFCFAB', //'#e5e5e5',
+									'#598ba4', //'#828282',
+									'#82b5c6', //'#404040',
+									'#99B1A5' //'#6a6a6a',
 								);
 
 								$severities = SupportUtilities::getSeverities($this->config->get('severities'));
@@ -365,7 +366,20 @@ function getMonthName($month)
 								$cls = 'odd';
 								$data = array();
 								$i = 0;
-								foreach ($severities as $severity)
+								
+								$severtes = array();
+								foreach ($severities as $k => $severity)
+								{
+									$key = (isset($sev[$severity])) ? (string) $sev[$severity] : '0';
+									if (isset($severtes[$key]))
+									{
+										$key .= '.' . $k;
+									}
+									$severtes[$key] = $severity;
+								}
+								krsort($severtes);
+
+								foreach ($severtes as $severity)
 								{
 									$r  = "{label: '" . $this->escape(addslashes($severity)) . "', data: ";
 									$r .= (isset($sev[$severity])) ? round(($sev[$severity]/$total)*100, 2) : 0;
@@ -390,14 +404,26 @@ function getMonthName($month)
 				<script type="text/javascript">
 				if (jQuery()) {
 					var $ = jq, severityPie;
+					
+					function labelFormatter(label, series) {
+						return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>" + label + "<br/>" + Math.round(series.percent) + "%</div>";
+					}
+					
 					$(document).ready(function() {
 						severityPie = $.plot($("#severities-container"), [<?php echo implode(',' . "\n", $data); ?>], {
-							legend: { 
+							/*legend: { 
 								show: false
-							},
+							},*/
 							series: {
 								pie: { 
 									/*innerRadius: 0.5,*/
+									radius: 1,
+									label: {
+										show: true,
+										radius: 2/3,
+										formatter: labelFormatter,
+										threshold: 0.03
+									},
 									show: true,
 									stroke: {
 										color: '#efefef'
@@ -414,7 +440,7 @@ function getMonthName($month)
 			</div><!-- / .two columns first -->
 			<div class="two columns second">
 				<h3><?php echo JText::_('Tickets by resolution'); ?></h3>
-				<div id="resolutions-container" style="min-width: 300px; height: 300px;">
+				<div id="resolutions-container" style="min-width: 270px; height: 270px;">
 					<table class="support-stats-resolutions" summary="<?php echo JText::_('Breakdown of people and the number of tickets closed'); ?>">
 						<thead>
 							<tr>
@@ -434,11 +460,23 @@ function getMonthName($month)
 							$resolutions = $sr->getResolutions();
 
 							$cls = 'odd';
-							$data = array(
-								"{label: '" . JText::_('No resolution') . "', data: " . (isset($res['noresolution']) ? $res['noresolution']/$total : '0') . ", color: '" . $colors[0] . "'}"
-							);
-							$i = 1;
-							foreach ($resolutions as $resolution)
+							
+							$i = 0;
+							$data = array();
+
+							$resolutns = array();
+							foreach ($resolutions as $k => $resolution)
+							{
+								$key = (isset($res[$resolution->alias])) ? (string) $res[$resolution->alias] : '0';
+								if (isset($resolutns[$key]))
+								{
+									$key .= '.' . $k;
+								}
+								$resolutns[$key] = $resolution;
+							}
+							krsort($resolutns);
+
+							foreach ($resolutns as $resolution)
 							{
 								$r  = "{label: '" . $this->escape(addslashes($resolution->title)) . "', data: ";
 								$r .= (isset($res[$resolution->alias])) ? round(($res[$resolution->alias]/$total)*100, 2) : 0;
@@ -455,6 +493,8 @@ function getMonthName($month)
 						<?php
 								$i++;
 							}
+							$nores = "{label: '" . JText::_('No resolution') . "', data: " . (isset($res['noresolution']) ? $res['noresolution']/$total : '0') . ", color: '" . $colors[$i] . "'}";
+							array_push($data, $nores);
 						?>
 						</tbody>
 					</table>
@@ -464,12 +504,19 @@ function getMonthName($month)
 					var $ = jq, resolutionPie;
 					$(document).ready(function() {
 						resolutionPie = $.plot($("#resolutions-container"), [<?php echo implode(',' . "\n", $data); ?>], {
-							legend: { 
+							/*legend: { 
 								show: false
-							},
+							},*/
 							series: {
 								pie: { 
 									/*innerRadius: 0.5,*/
+									radius: 1,
+									label: {
+										show: true,
+										radius: 2/3,
+										formatter: labelFormatter,
+										threshold: 0.03
+									},
 									show: true,
 									stroke: {
 										color: '#efefef'
