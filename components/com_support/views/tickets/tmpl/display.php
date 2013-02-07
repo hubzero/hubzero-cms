@@ -366,7 +366,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 			}
 			$group = '<a href="' . JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=display&show='.$queryid.'&find='.urlencode('group:'.$this->escape(stripslashes($row->group)))).'">' . $this->escape(stripslashes($row->group)) . '</a>';
 		?>
-							<span class="ticket-group">
+								<span class="ticket-group">
 									<?php echo $group; ?>
 								</span>
 		<?php } ?>
@@ -382,14 +382,14 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		<?php } ?>
 						</td>
 						<td class="tkt-severity">
-<?php if ($this->acl->check('delete', 'tickets')) { ?>
 							<span class="ticket-severity <?php echo $this->escape($row->severity); ?> hasTip" title="<strong><?php echo JText::_('Priority'); ?>:</strong>&nbsp;<?php echo $this->escape($row->severity); ?>">
 								<span><?php echo $this->escape($row->severity); ?></span>
 							</span>
+		<?php if ($this->acl->check('delete', 'tickets')) { ?>
 							<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=delete&id=' . $row->id); ?>" title="<?php echo JText::_('SUPPORT_DELETE'); ?>">
 								<?php echo JText::_('SUPPORT_DELETE'); ?>
 							</a>
-<?php } ?>
+		<?php } ?>
 						</td>
 					</tr>
 <?php
