@@ -170,7 +170,7 @@ class FileMacro extends WikiMacro
 				$attr['created_by'] = $attach->created_by;
 			}
 
-			$attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : ''; //$file;
+			$attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : $file;
 
 			$ret = true;
 		} 
