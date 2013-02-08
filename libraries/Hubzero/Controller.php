@@ -396,7 +396,12 @@ class Hubzero_Controller extends JObject
 
 		return $this->componentMessageQueue;
 	}
-
+	
+	public function clearComponentMessage()
+	{
+		$this->componentMessageQueue = array();
+	}
+	
 	/**
 	 * Method to add stylesheets to the document.
 	 * Defaults to current component and stylesheet name the same as component.
