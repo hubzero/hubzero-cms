@@ -187,6 +187,9 @@ a:focus {
 	border-bottom:1px solid #444;
 	background:transparent url("../img/hubpresenter/speaker.png") no-repeat 50% 50%;
 	}
+#media #placeholder {
+	width:100%;
+	}
 #presenter-left #media {
 	border:none;
 	height:480px;

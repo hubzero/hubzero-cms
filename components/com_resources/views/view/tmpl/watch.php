@@ -216,10 +216,21 @@ if ($author_ids && is_array($author_ids))
 				<?php else : ?>
 					<audio id="player" preload="auto" controls="controls">          
 						<?php foreach($presentation->media as $source): ?>
-							<source src="<?php echo $content_folder.DS.$source->source; ?>" />
+							<?php
+								switch( $source->type )
+								{
+									case 'mp3':		$type = 'audio/mp3';	break;
+									case 'ogg':		$type = 'audio/ogg';	break;
+								}
+							?>
+							<source src="<?php echo $content_folder.DS.$source->source; ?>" type="<?php echo $type; ?>" />
 						<?php endforeach; ?>
 						<a href="<?php echo $content_folder.DS.$presentation->media[0]->source; ?>" id="flowplayer" duration="<?php if($presentation->duration) { echo $presentation->duration; } ?>"></a>
 					</audio>
+					
+					<?php if($presentation->placeholder) : ?>
+						<img src="<?php echo $content_folder.DS.$presentation->placeholder; ?>" title="" id="placeholder" />
+					<?php endif; ?>
 				<?php endif; ?>
 			</div>
 			<div id="list">

@@ -838,7 +838,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		else 
 		{
 			//get all files matching  /.mp4|.webs|.ogv|.m4v|.mp3/
-			$media = JFolder::files($media_path, '.mp4|.webm|.ogv|.m4v|.mp3', false, false);
+			$media = JFolder::files($media_path, '.mp4|.webm|.ogv|.m4v|.mp3|.ogg', false, false);
 			foreach ($media as $m) 
 			{
 				$ext[] = array_pop(explode('.', $m));
@@ -905,7 +905,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		$document =& JFactory::getDocument();
 
 		//add the HUBpresenter stylesheet
-		$document->addStyleSheet('/components/' . $this->_option . '/assets/css/hubpresenter.css');
+		$this->_getStyles($this->_option,'hubpresenter.css');
 
 		//add the HUBpresenter required javascript files
 		if(!JPluginHelper::isEnabled('system', 'jquery'))
@@ -1019,7 +1019,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		$videos = JFolder::files(JPATH_ROOT . DS . $path, '.mp4|.MP4|.ogv|.OGV|.webm|.WEBM');
 		$video_mp4 = JFolder::files(JPATH_ROOT . DS . $path, '.mp4|.MP4');
 		$subs = JFolder::files(JPATH_ROOT . DS . $path, '.srt|.SRT');
-
+		
 		// Instantiate a new view
 		$view = new JView(array(
 			'name'   => 'view', 
