@@ -61,9 +61,9 @@ class GroupsControllerManage extends Hubzero_Controller
 			'search',
 			''
 		)));
-		$this->view->filters['privacy'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.browse.privacy',
-			'privacy',
+		$this->view->filters['discoverability'] = trim($app->getUserStateFromRequest(
+			$this->_option . '.browse.discoverability',
+			'discoverability',
 			''
 		));
 		$this->view->filters['policy']  = trim($app->getUserStateFromRequest(
@@ -95,6 +95,15 @@ class GroupsControllerManage extends Hubzero_Controller
 				);
 			}
 		}
+		
+		//approved filter
+		$this->view->filters['approved'] = JRequest::getVar('approved', 1);
+		
+		//published filter
+		$this->view->filters['published'] = JRequest::getVar('published', 1);
+		
+		//created filter
+		$this->view->filters['created'] = JRequest::getVar('created', '');
 
 		// Get a record count
 		$this->view->total = Hubzero_Group::find($this->view->filters);
@@ -349,6 +358,7 @@ class GroupsControllerManage extends Hubzero_Controller
 			$group->create();
 
 			$group->set('published', 1);
+			$group->set('approved', 1);
 			$group->set('created', date("Y-m-d H:i:s"));
 			$group->set('created_by', $this->juser->get('id'));
 
@@ -356,8 +366,7 @@ class GroupsControllerManage extends Hubzero_Controller
 			$group->add('members', array($this->juser->get('id')));
 		}
 		$group->set('description', $g['description']);
-		$group->set('privacy', $g['privacy']);
-		//$group->set('access', $g['access']);
+		$group->set('discoverability', $g['discoverability']);
 		$group->set('join_policy', $g['join_policy']);
 		$group->set('public_desc', $g['public_desc']);
 		$group->set('private_desc', $g['private_desc']);
@@ -669,6 +678,63 @@ class GroupsControllerManage extends Hubzero_Controller
 					JText::_('COM_GROUPS_UNPUBLISHED')
 				);
 			}
+		}
+	}
+	
+	/**
+	 * Approve a group
+	 *
+	 * @return void
+	 */
+	public function approveTask()
+	{
+		// Incoming
+		$ids = JRequest::getVar('id', array());
+
+		// Get the single ID we're working with
+		if (!is_array($ids))
+		{
+			$ids = array();
+		}
+		
+		// Do we have any IDs?
+		if (!empty($ids))
+		{
+			// foreach group id passed in
+			foreach ($ids as $id)
+			{
+				// Load the group page
+				$group = new Hubzero_Group();
+				$group->read($id);
+
+				// Ensure we found the group info
+				if (!$group)
+				{
+					continue;
+				}
+				
+				//set the group to be published and update
+				$group->set('approved', 1);
+				$group->update();
+				
+				// Log the group approval
+				$log = new XGroupLog($this->database);
+				$log->gid       = $group->get('gidNumber');
+				$log->uid       = $this->juser->get('id');
+				$log->timestamp = date('Y-m-d H:i:s', time());
+				$log->action    = 'group_approved';
+				$log->actorid   = $this->juser->get('id');
+				if (!$log->store())
+				{
+					$this->setError($log->getError());
+				}
+			}
+			
+			// Output messsage and redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('Group has been Approved.')
+			);
 		}
 	}
 

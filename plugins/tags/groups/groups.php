@@ -128,7 +128,7 @@ class plgTagsGroups extends JPlugin
 					a.params, NULL AS rcount, NULL AS data1, NULL AS data2, NULL AS data3 ";
 		$f_from = " FROM #__xgroups AS a $from 
 					JOIN #__tags_object AS t
-					WHERE a.type=1 AND a.privacy<=1
+					WHERE a.type=1 AND a.discoverability=0
 					AND a.gidNumber=t.objectid 
 					AND t.tbl='groups' 
 					AND t.tagid IN ($ids)";

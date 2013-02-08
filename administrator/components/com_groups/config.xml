@@ -37,16 +37,10 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="2">Invite Only</option>
 			<option value="3">Closed</option>
 		</param>
-		<param name="privacy" type="list" default="0" label="Default Privacy" description="The default privacy setting for new groups.">
-			<option value="0">Public</option>
-			<option value="1">Protected</option>
-			<option value="4">Private</option>
+		<param name="discoverability" type="list" default="0" label="Default Discoverability" description="The default discoverability setting for new groups.">
+			<option value="0">Visible</option>
+			<option value="1">Hidden</option>
 		</param>
-		<!--<param name="access" type="list" default="0" label="Default Content Privacy" description="The default privacy setting for content associated with groups.">
-			<option value="0">Public</option>
-			<option value="3">Protected</option>
-			<option value="4">Private</option>
-		</param>-->
 		<param type="spacer" />
 		<param name="auto_approve" type="list" default="1" label="Auto Approve Groups:?" description="Groups are auto approved at creation. Otherwise Hub administrator must manually approve group.">
 			<option value="0">No</option>

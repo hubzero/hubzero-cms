@@ -85,6 +85,9 @@
 	.groups tbody .invitee {
 		background-color: #aaaaaa;
 	}
+	.groups tbody .pending-approval {
+		background-color:#FF9900;
+	}
 	/* Table row */
 	.groups tbody tr.pending {
 		background: #ffe url("images/light-stripes.png");

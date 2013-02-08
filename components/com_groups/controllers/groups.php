@@ -528,29 +528,48 @@ class GroupsController extends Hubzero_Controller
 			JError::raiseError(404, JText::_('GROUPS_NO_GROUP_FOUND'));
 			return;
 		}
+		
+		//ensure the group is published
+		if($group->get('published') != 1)
+		{
+			JError::raiseError(404, JText::_('GROUPS_NO_GROUP_FOUND'));
+			return;
+		}
 
 		// Ensure the group has been published or has been approved
-		if ($group->get('published') != 1) 
+		if ($group->get('approved') != 1) 
 		{
+			//get list of members & managers
 			$managers = $group->get('managers');
 			$members = $group->get('members');
+			$invitees = $group->get('invitees');
 			
+			//get the juser object
 			$juser =& JFactory::getUser();
 			
-			if(in_array($juser->get('id'), $managers) || in_array($juser->get('id'), $members))
+			//if user is not member, manager, or invitee deny access
+			if(!in_array($juser->get('id'), $managers) && !in_array($juser->get('id'), $members) && !in_array($juser->get('id'), $invitees))
 			{
+				JError::raiseError(404, JText::_('GROUPS_NO_GROUP_FOUND'));
+				return;
+			}
+			
+			//if user is NOT manager but member or invitee
+			if(!in_array($juser->get('id'), $managers) && (in_array($juser->get('id'), $members) || in_array($juser->get('id'), $invitees)))
+			{
+				//get group styles for unapproved template
 				$this->_getGroupStyles($group->get('type'));
 				
+				//display unapproved group template
 				$view = new JView(array('name' => 'view', 'layout' => 'unapproved'));
 				$view->group = $group;
 				$view->display();
 				return;
 			}
-			else
-			{
-				JError::raiseError(404, JText::_('GROUPS_NOT_PUBLISHED'));
-				return;
-			}
+			
+			//set notification and clear after
+			$this->setNotification( JText::_('GROUPS_STATUS_NEW_GROUP'), 'warning' );
+			$this->clearComponentMessage();
 		}
 
 		$paramsClass = 'JParameter';
@@ -934,7 +953,14 @@ class GroupsController extends Hubzero_Controller
 		{
 			$this->setError(JText::_('GROUPS_ERROR_EMAIL_MANAGERS_FAILED') . ' ' . $emailadmin);
 		}
-
+		
+		//if group isnt approved or not published
+		if(!$group->get('approved') || !$group->get('published'))
+		{
+			$app->redirect( JRoute::_('/members/myaccount/groups'), 'You have successfully canceled your group membership.', 'message', true);
+			return;
+		}
+		
 		// Action Complete. Redirect to appropriate page
 		if ($return == 'browse') 
 		{
@@ -1277,11 +1303,11 @@ class GroupsController extends Hubzero_Controller
 		// Action Complete. Redirect to appropriate page
 		if ($return == 'browse') 
 		{
-			$app->redirect(JRoute::_('index.php?option=' . $this->_option), '', 'message', true);
+			$app->redirect(JRoute::_('index.php?option=' . $this->_option), 'You have successfully accepted your group invite.', 'message', true);
 		} 
 		else 
 		{
-			$app->redirect(JRoute::_('index.php?option=' . $this->_option . '&gid='. $group->get('cn')), '', 'message', true);
+			$app->redirect(JRoute::_('index.php?option=' . $this->_option . '&gid='. $group->get('cn')), 'You have successfully accepted your group invite.', 'message', true);
 		}
 	}
 
@@ -1346,8 +1372,7 @@ class GroupsController extends Hubzero_Controller
 		{
 			$group->set('cn', JRequest::getVar('cn', ''));
 			$group->set('join_policy', $this->config->get('join_policy'));
-			$group->set('privacy', $this->config->get('privacy'));
-			$group->set('access', $this->config->get('access'));
+			$group->set('discoverability', $this->config->get('discoverability', 0));
 			$group->set('published', $this->config->get('auto_approve'));
 
 			$title = 'Create New Group';
@@ -1405,18 +1430,18 @@ class GroupsController extends Hubzero_Controller
 		}
 
 		// Incoming
-		$g_cn           = strtolower(trim(JRequest::getVar('cn', '', 'post')));
-		$g_description  = preg_replace('/\s+/', ' ',trim(JRequest::getVar('description', JText::_('NONE'), 'post')));
-		$g_privacy      = JRequest::getInt('privacy', 0, 'post');
-		$g_gidNumber    = JRequest::getInt('gidNumber', 0, 'post');
-		$g_published    = JRequest::getInt('published', 0, 'post');
-		$g_public_desc  = trim(JRequest::getVar('public_desc',  '', 'post', 'none', 2));
-		$g_private_desc = trim(JRequest::getVar('private_desc', '', 'post', 'none', 2));
-		$g_restrict_msg = trim(JRequest::getVar('restrict_msg', '', 'post', 'none', 2));
-		$g_join_policy  = JRequest::getInt('join_policy', 0, 'post');
-		$tags = trim(JRequest::getVar('tags', ''));
+		$g_cn           	= strtolower(trim(JRequest::getVar('cn', '', 'post')));
+		$g_description  	= preg_replace('/\s+/', ' ',trim(JRequest::getVar('description', JText::_('NONE'), 'post')));
+		$g_discoverability	= JRequest::getInt('discoverability', 0, 'post');
+		$g_gidNumber    	= JRequest::getInt('gidNumber', 0, 'post');
+		$g_public_desc  	= trim(JRequest::getVar('public_desc',  '', 'post', 'none', 2));
+		$g_private_desc 	= trim(JRequest::getVar('private_desc', '', 'post', 'none', 2));
+		$g_restrict_msg 	= trim(JRequest::getVar('restrict_msg', '', 'post', 'none', 2));
+		$g_join_policy  	= JRequest::getInt('join_policy', 0, 'post');
+		$tags 				= trim(JRequest::getVar('tags', ''));
+		$lid 				= JRequest::getInt('lid', 0, 'post');
+		
 		$g_discussion_email_autosubscribe = JRequest::getInt('discussion_email_autosubscribe', 0, 'post');
-		$lid = JRequest::getInt('lid', 0, 'post');
 
 		//Check authorization
 		if ($this->_authorize() != 'manager' && $g_gidNumber != 0) 
@@ -1459,10 +1484,8 @@ class GroupsController extends Hubzero_Controller
 		// Push back into edit mode if any errors
 		if ($this->getNotifications()) 
 		{
-			$group->set('published', $g_published);
 			$group->set('description', $g_description);
-			//$group->set('access', $g_access);
-			$group->set('privacy', $g_privacy);
+			$group->set('discoverability', $g_discoverability);
 			$group->set('public_desc', $g_public_desc);
 			$group->set('private_desc', $g_private_desc);
 			$group->set('restrict_msg', $g_restrict_msg);
@@ -1494,10 +1517,8 @@ class GroupsController extends Hubzero_Controller
 		// Push back into edit mode if any errors
 		if ($this->getNotifications()) 
 		{
-			$group->set('published', $g_published);
 			$group->set('description', $g_description);
-			//$group->set('access', $g_access);
-			$group->set('privacy', $g_privacy);
+			$group->set('discoverability', $g_discoverability);
 			$group->set('public_desc', $g_public_desc);
 			$group->set('private_desc', $g_private_desc);
 			$group->set('restrict_msg', $g_restrict_msg);
@@ -1543,8 +1564,7 @@ class GroupsController extends Hubzero_Controller
 		$eview->group = $group;
 		$eview->isNew = $isNew;
 		$eview->g_description = $g_description;
-		//$eview->g_access = $g_access;
-		$eview->g_privacy = $g_privacy;
+		$eview->g_discoverability = $g_discoverability;
 		$eview->g_public_desc = $g_public_desc;
 		$eview->g_private_desc = $g_private_desc;
 		$eview->g_restrict_msg = $g_restrict_msg;
@@ -1559,7 +1579,8 @@ class GroupsController extends Hubzero_Controller
 		{
 			$group->create();
 			$group->set('type', 1);
-			$group->set('published', $this->config->get('auto_approve', 1));
+			$group->set('published', 1);
+			$group->set('approved', $this->config->get('auto_approve', 1));
 			$group->set('created', date("Y-m-d H:i:s"));
 			$group->set('created_by', $this->juser->get('id'));
 
@@ -1568,8 +1589,7 @@ class GroupsController extends Hubzero_Controller
 		}
 
 		$group->set('description', $g_description);
-		//$group->set('access', $g_access);
-		$group->set('privacy', $g_privacy);
+		$group->set('discoverability', $g_discoverability);
 		$group->set('public_desc', $g_public_desc);
 		$group->set('private_desc', $g_private_desc);
 		$group->set('restrict_msg',$g_restrict_msg);
@@ -1810,7 +1830,7 @@ class GroupsController extends Hubzero_Controller
 		$log  = JText::sprintf('GROUPS_SUBJECT_GROUP_DELETED', $group->get('cn'));
 		$log .= JText::_('GROUPS_TITLE') . ': ' . $group->get('description') . "\n";
 		$log .= JText::_('GROUPS_ID') . ': ' . $group->get('cn') . "\n";
-		$log .= JText::_('GROUPS_PRIVACY') . ': ' . $group->get('access') . "\n";
+		$log .= JText::_('Discoverability') . ': ' . $group->get('discoverability') . "\n";
 		$log .= JText::_('GROUPS_PUBLIC_TEXT') . ': ' . stripslashes($group->get('public_desc'))  . "\n";
 		$log .= JText::_('GROUPS_PRIVATE_TEXT') . ': ' . stripslashes($group->get('private_desc'))  . "\n";
 		$log .= JText::_('GROUPS_RESTRICTED_MESSAGE') . ': ' . stripslashes($group->get('restrict_msg')) . "\n";

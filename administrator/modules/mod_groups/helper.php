@@ -112,15 +112,12 @@ class modGroups
 			case '3': $this->type = 'partner'; break;
 		}
 
-		// Privacy
-		$this->database->setQuery("SELECT count(*) FROM #__xgroups WHERE published=1 AND privacy=0 AND type='$type'");
-		$this->public = $this->database->loadResult();
+		// Discoverability
+		$this->database->setQuery("SELECT count(*) FROM #__xgroups WHERE approved=1 AND discoverability=0 AND type='$type'");
+		$this->visible = $this->database->loadResult();
 
-		$this->database->setQuery("SELECT count(*) FROM #__xgroups WHERE published=1 AND privacy=1 AND type='$type'");
-		$this->protected = $this->database->loadResult();
-
-		$this->database->setQuery("SELECT count(*) FROM #__xgroups WHERE published=1 AND privacy=4 AND type='$type'");
-		$this->private = $this->database->loadResult();
+		$this->database->setQuery("SELECT count(*) FROM #__xgroups WHERE approved=1 AND discoverability=1 AND type='$type'");
+		$this->hidden = $this->database->loadResult();
 
 		// Join policy
 		$this->database->setQuery("SELECT count(*) FROM #__xgroups WHERE join_policy=3 AND type='$type'");
@@ -136,10 +133,10 @@ class modGroups
 		$this->open = $this->database->loadResult();
 
 		// Approved
-		$this->database->setQuery("SELECT count(*) FROM #__xgroups WHERE published=1 AND type='$type'");
+		$this->database->setQuery("SELECT count(*) FROM #__xgroups WHERE approved=1 AND type='$type'");
 		$this->approved = $this->database->loadResult();
 
-		$this->database->setQuery("SELECT count(*) FROM #__xgroups WHERE published=0 AND type='$type'");
+		$this->database->setQuery("SELECT count(*) FROM #__xgroups WHERE approved=0 AND type='$type'");
 		$this->pending = $this->database->loadResult();
 
 		// Last 24 hours

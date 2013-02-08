@@ -82,12 +82,11 @@ function submitbutton(pressbutton)
 			<option value="course"<?php echo ($this->filters['type'][0] == 'course') ? ' selected="selected"' : ''; ?>>Course</option>
 		</select>
 		
-		<label for="filter-privacy"><?php echo JText::_('Privacy'); ?>:</label> 
-		<select name="privacy" id="filter-privacy">
-			<option value=""<?php echo ($this->filters['privacy'] == '-1') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Privacy level...'); ?></option>
-			<option value="public"<?php echo ($this->filters['privacy'] == 'public') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Public'); ?></option>
-			<option value="protected"<?php echo ($this->filters['privacy'] == 'protected') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Protected'); ?></option>
-			<option value="private"<?php echo ($this->filters['privacy'] == 'private') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Private'); ?></option>
+		<label for="filter-discoverability"><?php echo JText::_('Discoverability'); ?>:</label> 
+		<select name="discoverability" id="filter-discoverability">
+			<option value=""<?php echo ($this->filters['discoverability'] == null) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Discoverability...'); ?></option>
+			<option value="0"<?php echo ($this->filters['discoverability'] == 0 && $this->filters['discoverability'] != null) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Visible'); ?></option>
+			<option value="1"<?php echo ($this->filters['discoverability'] == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Hidden'); ?></option>
 		</select>
 		
 		<label for="filter-policy"><?php echo JText::_('Policy'); ?>:</label> 
@@ -100,6 +99,8 @@ function submitbutton(pressbutton)
 		</select>
 		
 		<input type="submit" value="<?php echo JText::_('COM_GROUPS_GO'); ?>" />
+		|
+		<a href="/administrator/index.php?option=com_groups&amp;controller=manage&amp;type=hub&amp;discoverability=&amp;policy=&amp;approved=&amp;published=&amp;created=" style="-webkit-appearance: push-button">Reset</a>
 	</fieldset>
 	<div class="clr"></div>
 	
@@ -112,6 +113,7 @@ function submitbutton(pressbutton)
 				<th scope="col"><?php echo JText::_('COM_GROUPS_CN'); ?></th>
 				<th scope="col"><?php echo JText::_('COM_GROUPS_TYPE'); ?></th>
 				<th scope="col"><?php echo JText::_('COM_GROUPS_PUBLISHED'); ?></th>
+				<th scope="col"><?php echo JText::_('Approved'); ?></th>
 				<th scope="col"><?php echo JText::_('COM_GROUPS_MEMBERS'); ?></th>
 				<th scope="col"><?php echo JText::_('Pages'); ?></th>
 			</tr>
@@ -195,6 +197,21 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 							<span class="text"><?php echo JText::_('Unpublished'); ?></span>
 						</span>
 					</a>
+					<?php } ?>
+<?php } ?>
+				</td>
+				<td>
+<?php if ($canDo->get('core.edit.state')) { ?>
+					<?php if (!$group->get('approved')) { ?>
+					<a class="jgrid" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=approve&amp;id[]=<?php echo $row->cn; ?>" title="<?php echo JText::_('Approve Group'); ?>">
+						<span class="not-approved">
+							<span class="text"><?php echo JText::_('Not Approved'); ?></span>
+						</span>
+					</a>
+					<?php } else { ?>
+						<span class="approved">
+							<span class="text"><?php echo JText::_('Approved'); ?></span>
+						</span>
 					<?php } ?>
 <?php } ?>
 				</td>

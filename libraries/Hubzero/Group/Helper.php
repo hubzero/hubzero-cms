@@ -67,7 +67,7 @@ class Hubzero_Group_Helper
 				FROM #__xgroups AS g 
 				WHERE g.type=1
 				AND g.published=1
-				AND g.privacy=0
+				AND g.discoverability=0
 				ORDER BY members DESC";
 		
 		//do we want to limit return
@@ -110,7 +110,8 @@ class Hubzero_Group_Helper
 		$sql = "SELECT g.gidNumber, g.cn, g.description, g.public_desc 
 				FROM #__xgroups AS g
 				WHERE g.type=1
-				AND g.published=1";
+				AND g.published=1
+				AND g.discoverability=0";
 		$database->setQuery( $sql );
 		
 		//get all groups

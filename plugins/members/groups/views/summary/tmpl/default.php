@@ -56,49 +56,39 @@ defined('_JEXEC') or die( 'Restricted access' );
 	foreach ($this->groups as $group)
 	{
 		$status = '';
-		if ($group->manager && $group->published) 
+		$options = '';
+		$approved = false;
+		
+		if($group->manager)
 		{
 			$status = 'manager';
-
-			$opt  = '<a class="manage tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&gid=' . $group->cn . '&active=members') .'" title="Manager Options :: Manage group membership">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_MANAGE').'</a>';
-			$opt .= ' <a class="customize tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&gid=' . $group->cn . '&task=edit') .'" title="Manager Options :: Edit this group">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_EDIT').'</a>';
-			$opt .= ' <a class="delete tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&gid=' . $group->cn . '&task=delete') .'" title="Manager Options :: Delete this group">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_DELETE').'</a>';
-		} 
-		else 
-		{
-			if (!$group->published) 
-			{
-				$status = 'new';
-			} 
-			else 
-			{
-				if ($group->registered) 
-				{
-					if ($group->regconfirmed) 
-					{
-						$status = 'member';
-					} 
-					else 
-					{
-						$status = 'pending';
-					}
-					$opt = '<a class="cancel tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&gid=' . $group->cn . '&task=cancel') .'" title="Membership Options :: Cancel membership to this group">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</a>';
-				} 
-				else 
-				{
-					if ($group->regconfirmed) 
-					{
-						$status = 'invitee';
-						$opt  = '<a class="accept tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&gid=' . $group->cn . '&task=accept') .'" title="Membership Options :: Accept membership to this group">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_ACCEPT').'</a>';
-						$opt .= ' <a class="cancel tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&gid=' . $group->cn . '&task=cancel') .'" title="Membership Options :: Cancel membership to this group">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</a>';
-					} 
-					else 
-					{
-						$opt = '';
-					}
-				}
-			}
+			
+			$options  = '<a class="manage tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&gid=' . $group->cn . '&active=members') .'" title="Manager Options :: Manage group membership">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_MANAGE').'</a>';
+			$options .= ' <a class="customize tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&gid=' . $group->cn . '&task=edit') .'" title="Manager Options :: Edit this group">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_EDIT').'</a>';
+			$options .= ' <a class="delete tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&gid=' . $group->cn . '&task=delete') .'" title="Manager Options :: Delete this group">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_DELETE').'</a>';
 		}
+		else if($group->registered && $group->regconfirmed)
+		{
+			$status = 'member';
+			
+			$options = '<a class="cancel tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&gid=' . $group->cn . '&task=cancel') .'" title="Membership Options :: Cancel membership to this group">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</a>';
+		}
+		else if($group->registered && !$group->regconfirmed)
+		{
+			$status = 'pending';
+			
+			$options = '<a class="cancel tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&gid=' . $group->cn . '&task=cancel') .'" title="Membership Options :: Cancel membership to this group">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</a>';
+		}
+		else if(!$group->registered && $group->regconfirmed)
+		{
+			$status = 'invitee';
+			
+			$options  = '<a class="accept tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&controller=groups&gid=' . $group->cn . '&task=accept') .'" title="Membership Options :: Accept membership to this group">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_ACCEPT').'</a>';
+			$options .= ' <a class="cancel tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&controller=groups&gid=' . $group->cn . '&task=cancel') .'" title="Membership Options :: Cancel membership to this group">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</a>';
+		}
+		
+		//do we have a new unpublished group
+		$approved = (!$group->approved) ? true : false;
 ?>
 				<tr>
 					<th>
@@ -125,20 +115,26 @@ defined('_JEXEC') or die( 'Restricted access' );
 						?>
 					</td>
 					<td>
-						<span class="<?php echo $status; ?> status"><?php
-							switch ($status)
-							{
-								case 'manager': echo JText::_('PLG_MEMBERS_GROUPS_STATUS_MANAGER');   break;
-								case 'new':     echo JText::_('PLG_MEMBERS_GROUPS_STATUS_NEW_GROUP'); break;
-								case 'member':  echo JText::_('PLG_MEMBERS_GROUPS_STATUS_APPROVED');  break;
-								case 'pending': echo JText::_('PLG_MEMBERS_GROUPS_STATUS_PENDING');   break;
-								case 'invitee': echo JText::_('PLG_MEMBERS_GROUPS_STATUS_INVITED');   break;
-								default: break;
-							}
-						?></span>
+						<span class="<?php echo $status; ?> status">
+							<?php
+								switch ($status)
+								{
+									case 'manager': echo JText::_('PLG_MEMBERS_GROUPS_STATUS_MANAGER');   	break;
+									case 'member':  echo JText::_('PLG_MEMBERS_GROUPS_STATUS_MEMBER');  	break;
+									case 'pending': echo JText::_('PLG_MEMBERS_GROUPS_STATUS_PENDING');   	break;
+									case 'invitee': echo JText::_('PLG_MEMBERS_GROUPS_STATUS_INVITED');   	break;
+									default: break;
+								}
+							?>
+						</span>
+					</td>
+					<td>
+						<?php if($approved) : ?>
+							<span class="pending-approval status"><?php echo JText::_('PLG_MEMBERS_GROUPS_STATUS_NEW_GROUP'); ?>
+						<?php endif; ?>
 					</td>
 					<td class="user-options">
-						<?php echo $opt; ?>
+						<?php echo $options; ?>
 					</td>
 				</tr>
 <?php

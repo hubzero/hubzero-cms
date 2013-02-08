@@ -78,7 +78,7 @@ class plgYSearchGroups extends YSearchPlugin
 				'Groups' AS section
 			FROM jos_xgroups g $from
 			WHERE
-				(g.type = 1 OR g.type = 3) AND g.privacy = 0 AND $weight > 0" .
+				(g.type = 1 OR g.type = 3) AND g.discoverability = 0 AND $weight > 0" .
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
 			" ORDER BY $weight DESC"
 		));

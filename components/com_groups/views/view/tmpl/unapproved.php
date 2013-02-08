@@ -30,10 +30,19 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+$juser =& JFactory::getUser();
+$invitees = $this->group->get('invitees');
 ?>
 
 <div class="group-unapproved">
 	<span class="name"><?php echo $this->group->get('description'); ?></span>
 	<span class="description">Group has not yet been approved by an administrator</span>
+	
+	<?php if(in_array($juser->get('id'), $invitees)) : ?>
+		<hr />
+		<a href="<?php echo JRoute::_('index.php?option=com_groups&controller=groups&gid='.$this->group->get('cn').'&task=accept'); ?>" class="group-invited">Accept Group Invite</a>
+		<hr />
+	<?php endif; ?>
+	
 	<a class="all-groups" href="/groups">&lsaquo; Go Back to Groups</a> | <a class="my-groups" href="/members/myaccount/groups">Go to My Groups &rsaquo;</a>
 </div>

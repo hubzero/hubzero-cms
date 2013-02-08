@@ -849,7 +849,8 @@ class WikiPage extends JTable
 		$where = array();
 		//$where[] = "w.id=v.pageid";
 		$where[] = "v.approved=1";
-		$where[] = "(w.group_cn='' OR g.access<>4)";
+		//$where[] = "(w.group_cn='' OR g.discoverability=0)";
+		$where[] = "(w.group_cn='')";
 		$where[] = "w.state<2";
 
 		if (isset($filters['author'])) 
@@ -981,7 +982,7 @@ class WikiPage extends JTable
 		{
 			$query .= ") AS f";
 		}
-
+		
 		return $query;
 	}
 

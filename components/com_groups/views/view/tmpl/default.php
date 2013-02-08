@@ -58,6 +58,13 @@ $no_html = JRequest::getInt( 'no_html', 0 );
 
 					//if logo exists and file is uploaded use that logo instead of default
 					$src = ($this->group->get('logo') != '' && is_file(JPATH_ROOT.$path)) ? $path : $default_logo;
+					
+					//check to make sure were a member to show logo for hidden group
+					$members_and_invitees = array_merge($this->group->get('members'), $this->group->get('invitees'));
+					if( $this->group->get('discoverability') == 1 && !in_array($this->user->get("id"), $members_and_invitees) )
+					{
+						$src = $default_logo;
+					}
 				?>
 				<div id="page_identity">
 					<a href="<?php echo $link; ?>" title="<?php echo $this->group->get('description'); ?> Home">
@@ -148,12 +155,12 @@ $no_html = JRequest::getInt( 'no_html', 0 );
 							default: $policy = JText::_('Open'); break;
 						}
 
-						// Determine the privacy
-						switch ($this->group->get('privacy'))
+						// Determine the discoverability
+						switch ($this->group->get('discoverability'))
 						{
-							case 1: $privacy = JText::_('Hidden'); break;
+							case 1: $discoverability = JText::_('Hidden'); break;
 							case 0:
-							default: $privacy = JText::_('Visible'); break;
+							default: $discoverability = JText::_('Visible'); break;
 						}
 						
 						// Get the group creation date
@@ -175,7 +182,7 @@ $no_html = JRequest::getInt( 'no_html', 0 );
 						<ul>
 							<li class="info-discoverability">
 								<span class="label">Discoverability</span>
-								<span class="value"><?php echo $privacy; ?></span>
+								<span class="value"><?php echo $discoverability; ?></span>
 							</li>
 							<li class="info-join-policy">
 								<span class="label">Join Policy</span>

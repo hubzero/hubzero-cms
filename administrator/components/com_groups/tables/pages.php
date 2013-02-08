@@ -176,7 +176,7 @@ Class GroupPages extends JTable
 		$overview_access = Hubzero_Group_Helper::getPluginAccess($this->group, 'overview');
 
 		//get group discoverability
-		$discoverability = $this->group->get('privacy');
+		$discoverability = $this->group->get('discoverability');
 
 		//get the group members
 		$members = $this->group->get('members');

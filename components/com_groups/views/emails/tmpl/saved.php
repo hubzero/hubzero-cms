@@ -58,13 +58,13 @@ if ($this->isNew) {
 		default: $policy = JText::_('GROUPS_POLICY_OPEN');    break;
 	}
 	$message .= "\t" . JText::_('GROUPS_JOIN_POLICY').': '. $policy ."\n";
-	switch ($this->group->get('privacy'))
+	switch ($this->group->get('discoverability'))
 	{
-		case 1: $privacy = JText::_('Hidden');   break;
+		case 1: $discoverability = JText::_('Hidden');   break;
 		case 0: 
-		default: $privacy = JText::_('Visible');    break;
+		default: $discoverability = JText::_('Visible');    break;
 	}
-	$message .= "\t" . JText::_('Discoverability').': '. $privacy ."\n";
+	$message .= "\t" . JText::_('Discoverability').': '. $discoverability ."\n";
 
 	$message .= "\n";
 	$message .= JText::_('GROUPS_NOW_DEFINED_AS').':'."\n\n";
@@ -79,13 +79,13 @@ switch ($this->g_join_policy)
 	default: $policy = JText::_('GROUPS_POLICY_OPEN');    break;
 }
 $message .= "\t" . JText::_('GROUPS_JOIN_POLICY').': '. $policy ."\n";
-switch ($this->g_privacy)
+switch ($this->g_discoverability)
 {
-	case 1: $privacy = JText::_('Hidden');   break;
+	case 1: $discoverability = JText::_('Hidden');   break;
 	case 0: 
-	default: $privacy = JText::_('Visible');    break;
+	default: $discoverability = JText::_('Visible');    break;
 }
-$message .= "\t" . JText::_('Discoverability').': '. $privacy ."\n";
+$message .= "\t" . JText::_('Discoverability').': '. $discoverability ."\n";
 
 $message .= "\n";
 $message .= JText::_('GROUPS_USE_LINK_TO_REVIEW_GROUP')."\n";

@@ -71,18 +71,18 @@ class Hubzero_Group
 	private $published = null;
 	
 	/**
+	 * Description for 'approved'
+	 *
+	 * @var unknown
+	 */
+	private $approved = null;
+	
+	/**
 	 * Description for 'type'
 	 *
 	 * @var unknown
 	 */
 	private $type = null;
-	
-	/**
-	 * Description for 'access'
-	 *
-	 * @var unknown
-	 */
-	private $access = null;
 	
 	/**
 	 * Description for 'public_desc'
@@ -113,11 +113,11 @@ class Hubzero_Group
 	private $join_policy = null;
 	
 	/**
-	 * Description for 'privacy'
+	 * Description for 'discoverability'
 	 *
 	 * @var unknown
 	 */
-	private $privacy = null;
+	private $discoverability = null;
 	
 	/**
 	 * Description for 'discussion_email_autosubscribe'
@@ -1216,7 +1216,7 @@ class Hubzero_Group
 
 		if (isset($filters['authorized']) && $filters['authorized'] === 'admin')
 		{
-			if (isset($filters['privacy']) && $filters['privacy'])
+			if (isset($filters['discoverability']) && $filters['discoverability'] != '')
 			{
 				if ($where_clause != '')
 				{
@@ -1227,16 +1227,13 @@ class Hubzero_Group
 					$where_clause .= "WHERE";
 				}
 
-				switch ($filters['privacy'])
+				switch ($filters['discoverability'])
 				{
-					case 'private':
-						$where_clause .= " privacy=4";
+					case 0:
+						$where_clause .= " discoverability=0";
 						break;
-					case 'protected':
-						$where_clause .= " privacy=1";
-						break;
-					case 'public':
-						$where_clause .= " privacy=0";
+					case 1:
+						$where_clause .= " discoverability=1";
 						break;
 				}
 			}
@@ -1256,7 +1253,7 @@ class Hubzero_Group
 				$where_clause .= "WHERE";
 			}
 
-			$where_clause .= " privacy=0";
+			$where_clause .= " discoverability=0";
 		}
 
 		if (isset($filters['policy']) && $filters['policy'])
@@ -1287,7 +1284,40 @@ class Hubzero_Group
 					break;
 			}
 		}
-
+		
+		if (isset($filters['approved']) && $filters['approved'] != '')
+		{
+			if ($where_clause != '')
+			{
+				$where_clause .= " AND";
+			}
+			else
+			{
+				$where_clause .= "WHERE";
+			}
+			
+			$where_clause .= " approved=".$filters['approved'];
+		}
+		
+		if (isset($filters['created']) && $filters['created'] != '')
+		{
+			if ($where_clause != '')
+			{
+				$where_clause .= " AND";
+			}
+			else
+			{
+				$where_clause .= "WHERE";
+			}
+			
+			if($filters['created'] == 'pastday')
+			{
+				$pastDay = date("Y-m-d H:i:s", strtotime('-1 DAY'));
+				$where_clause .= " created >= '" . $pastDay . "'";
+			}
+		}
+		
+		
 		if (empty($filters['fields']))
 		{
 			$filters['fields'][] = 'cn';

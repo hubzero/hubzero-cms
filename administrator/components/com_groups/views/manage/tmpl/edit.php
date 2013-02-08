@@ -168,10 +168,18 @@ function submitbutton(pressbutton)
 					<th><?php echo JText::_('COM_GROUPS_ID'); ?></th>
 					<td><?php echo $this->escape($this->group->gidNumber); ?></td>
 				</tr>
+				<tr>
+					<th><?php echo JText::_('Published'); ?></th>
+					<td><?php echo ($this->group->published) ? 'Yes' : 'No'; ?></td>
+				</tr>
+				<tr>
+					<th><?php echo JText::_('Approved'); ?></th>
+					<td><?php echo ($this->group->approved) ? 'Yes' : 'No'; ?></td>
+				</tr>
 <?php if ($this->group->created) { ?>
 				<tr>
 					<th><?php echo JText::_('Created'); ?></th>
-					<td><?php echo $this->escape($this->group->created); ?></td>
+					<td><?php echo $this->escape(date("l F d, Y @ g:ia", strtotime($this->group->created))); ?></td>
 				</tr>
 <?php } ?>
 <?php if ($this->group->created_by) { ?>
@@ -223,8 +231,8 @@ function submitbutton(pressbutton)
 					<tr>
 						<td class="key"><label for="privacy"><?php echo JText::_('Discoverability'); ?>:</label></td>
 						<td>
-							<input type="radio" name="group[privacy]" value="0"<?php if ($this->group->privacy == 0) { echo ' checked="checked"'; } ?> /> <?php echo JText::_('Visible'); ?><br />
-							<input type="radio" name="group[privacy]" value="1"<?php if ($this->group->privacy == 1) { echo ' checked="checked"'; } ?> /> <?php echo JText::_('Hidden'); ?>
+							<input type="radio" name="group[discoverability]" value="0"<?php if ($this->group->discoverability == 0) { echo ' checked="checked"'; } ?> /> <?php echo JText::_('Visible'); ?><br />
+							<input type="radio" name="group[discoverability]" value="1"<?php if ($this->group->discoverability == 1) { echo ' checked="checked"'; } ?> /> <?php echo JText::_('Hidden'); ?>
 						</td>
 					</tr>
 					<tr>

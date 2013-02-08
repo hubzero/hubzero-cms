@@ -180,11 +180,11 @@ else
 			<fieldset>
 				<legend><?php echo JText::_('GROUPS_PRIVACY'); ?> <span class="required"><?php echo JText::_('GROUPS_REQUIRED'); ?></span></legend>
 				<label>
-					<input type="radio" class="option" name="privacy" value="0"<?php if ($this->group->get('privacy') == 0) { echo ' checked="checked"'; } ?> /> 
+					<input type="radio" class="option" name="discoverability" value="0"<?php if ($this->group->get('discoverability') == 0) { echo ' checked="checked"'; } ?> /> 
 					<strong><?php echo JText::_('GROUPS_ACCESS_VISIBLE'); ?></strong> <br /><span class="indent">Group can be found in searches and by browsing groups.</span>
 				</label>
 				<label>
-					<input type="radio" class="option" name="privacy" value="1"<?php if ($this->group->get('privacy') == 1) { echo ' checked="checked"'; } ?> /> 
+					<input type="radio" class="option" name="discoverability" value="1"<?php if ($this->group->get('discoverability') == 1) { echo ' checked="checked"'; } ?> /> 
 					<strong><?php echo JText::_('GROUPS_ACCESS_HIDDEN'); ?></strong> <br /><span class="indent">Group can not be found through searches and only viewable by group members.</span>
 				</label>
 			</fieldset>
