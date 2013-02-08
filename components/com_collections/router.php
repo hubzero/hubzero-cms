@@ -82,7 +82,7 @@ function CollectionsParseRoute($segments)
 
 	if (isset($segments[0])) 
 	{
-		$vars['controller'] = $segments[0];
+		$vars['task'] = $segments[0];
 	}
 	if (isset($segments[1])) 
 	{

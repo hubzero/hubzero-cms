@@ -108,7 +108,8 @@ $base = 'index.php?option=' . $this->option;
 <?php }*/ ?>
 		<div class="clear"></div>
 	</fieldset> -->
-<div class="main section" id="posts">
+	<div class="main section">
+		<div id="posts">
 <?php 
 if ($this->rows->total() > 0) 
 {
@@ -205,7 +206,7 @@ if ($this->rows->total() > 0)
 						</a> 
 						onto 
 						<?php
-							switch ($row->get('object_type'))
+							/*switch ($row->get('object_type'))
 							{
 								case 'group':
 									$col = 'index.php?option=com_groups&gid=' . $row->get('object_id') . '&active=collections&scope=' . $row->get('collection_id');
@@ -216,10 +217,10 @@ if ($this->rows->total() > 0)
 								default:
 									$col = $base . '&controller=boards&id=' . $row->get('collection_id');
 								break;
-							}
+							}*/
 						?>
-						<a href="<?php echo JRoute::_($col); ?>">
-							<?php echo $this->escape(stripslashes($row->get('collection'))); ?>
+						<a href="<?php echo JRoute::_($row->link()); ?>">
+							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 						</a>
 						<br />
 						<span class="entry-date">
@@ -269,5 +270,8 @@ else
 <?php
 }
 ?>
+		</div>
+		<?php if ($this->total > $this->filters['limit']) { echo $this->pageNav->getListFooter(); } ?>
+		<div class="clear"></div>
 	</div>
 </form>

@@ -80,6 +80,7 @@ class CollectionsControllerCollections extends Hubzero_Controller
 		$this->_getStyles();
 
 		$this->_getScripts('assets/js/jquery.masonry');
+		$this->_getScripts('assets/js/jquery.infinitescroll');
 		$this->_getScripts('assets/js/' . $this->_name);
 
 		// Filters for returning results
@@ -89,7 +90,7 @@ class CollectionsControllerCollections extends Hubzero_Controller
 		$this->view->filters['search'] = JRequest::getVar('search', '');
 		$this->view->filters['id']     = JRequest::getInt('id', 0);
 		$this->view->filters['user_id'] = $this->juser->get('id');
-		$this->view->filters['sort']   = 'positive';
+		$this->view->filters['sort']   = 'i.positive';
 		//$this->view->filters['trending'] = true;
 		$this->view->filters['board_id'] = 0;
 		if ($this->view->filters['id'])
@@ -98,15 +99,21 @@ class CollectionsControllerCollections extends Hubzero_Controller
 		}
 		$this->view->filters['access'] = 0;
 
-		/*$this->view->board = new BulletinboardBoard($this->database);
-		$this->view->title = JText::_('Popular');
-		$this->view->id = 0;
-
-		$bulletin = new BulletinboardBulletin($this->database);
-		$this->view->rows = $bulletin->getRecords($this->view->filters);*/
 		$this->view->collection = new CollectionsModelCollection();
 
+		$this->view->filters['count'] = true;
+		$this->view->total = $this->view->collection->posts($this->view->filters);
+
+		$this->view->filters['count'] = false;
 		$this->view->rows = $this->view->collection->posts($this->view->filters);
+
+		// Initiate paging
+		jimport('joomla.html.pagination');
+		$this->view->pageNav = new JPagination(
+			$this->view->total, 
+			$this->view->filters['start'], 
+			$this->view->filters['limit']
+		);
 
 		if ($this->getError()) 
 		{
@@ -135,6 +142,7 @@ class CollectionsControllerCollections extends Hubzero_Controller
 		$this->_getStyles();
 
 		$this->_getScripts('assets/js/jquery.masonry');
+		$this->_getScripts('assets/js/jquery.infinitescroll');
 		$this->_getScripts('assets/js/' . $this->_name);
 
 		// Filters for returning results
@@ -144,8 +152,8 @@ class CollectionsControllerCollections extends Hubzero_Controller
 		$this->view->filters['search'] = JRequest::getVar('search', '');
 		$this->view->filters['id']     = JRequest::getInt('id', 0);
 		$this->view->filters['user_id'] = $this->juser->get('id');
-		$this->view->filters['sort']   = 'created';
-		$this->view->filters['trending'] = true;
+		$this->view->filters['sort']   = 'p.created';
+		//$this->view->filters['trending'] = true;
 		$this->view->filters['board_id'] = 0;
 		if ($this->view->filters['id'])
 		{
@@ -153,12 +161,21 @@ class CollectionsControllerCollections extends Hubzero_Controller
 		}
 		$this->view->filters['access'] = 0;
 
-		$this->view->board = new BulletinboardBoard($this->database);
-		$this->view->title = JText::_('Recent');
-		$this->view->id = 0;
+		$this->view->collection = new CollectionsModelCollection();
 
-		$bulletin = new BulletinboardBulletin($this->database);
-		$this->view->rows = $bulletin->getRecords($this->view->filters);
+		$this->view->filters['count'] = true;
+		$this->view->total = $this->view->collection->posts($this->view->filters);
+
+		$this->view->filters['count'] = false;
+		$this->view->rows = $this->view->collection->posts($this->view->filters);
+
+		// Initiate paging
+		jimport('joomla.html.pagination');
+		$this->view->pageNav = new JPagination(
+			$this->view->total, 
+			$this->view->filters['start'], 
+			$this->view->filters['limit']
+		);
 
 		if ($this->getError()) 
 		{

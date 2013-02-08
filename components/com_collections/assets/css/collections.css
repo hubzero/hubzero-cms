@@ -23,9 +23,13 @@
 		padding: 1em 20px;
 		margin: 0;
 	}
+	.main {
+		padding: 0px 30px 30px 30px;
+	}
 	
 	#posts {
-		padding: 30px 20px;
+		padding: 0;
+		margin: 0 -10px;
 	}
 	
 	fieldset.filters a,
