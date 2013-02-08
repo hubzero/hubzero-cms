@@ -55,7 +55,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 			</li>
 			<li>
 				<a class="posts active count" href="<?php echo JRoute::_($base . '&task=posts'); ?>">
-					<span><?php echo JText::sprintf('<strong>%s</strong> posts', $this->rows->total()); ?></span>
+					<span><?php echo JText::sprintf('<strong>%s</strong> posts', $this->posts); ?></span>
 				</a>
 			</li>
 			<li>
@@ -79,10 +79,12 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 		<div class="clear"></div>
 	</fieldset>
 
-	<div id="posts">
 <?php 
 if ($this->rows->total() > 0) 
 {
+	?>
+	<div id="posts">
+	<?php
 	ximport('Hubzero_User_Profile');
 	ximport('Hubzero_User_Profile_Helper');
 
@@ -169,7 +171,7 @@ if ($this->rows->total() > 0)
 			<?php } ?>
 				</div><!-- / .meta -->
 
-			<?php if ($row->original() || $item->get('created_by') != $this->member->get('uidNumber')) { ?>
+			<?php /*if ($row->original() || $item->get('created_by') != $this->member->get('uidNumber')) { ?>
 				<div class="convo attribution clearfix">
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>" class="img-link">
 						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($item->creator(), 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>" />
@@ -178,7 +180,10 @@ if ($this->rows->total() > 0)
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')); ?>">
 							<?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>
 						</a> 
-						posted 
+						onto 
+						<a href="<?php echo JRoute::_($row->link()); ?>">
+							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+						</a>
 						<br />
 						<span class="entry-date">
 							<span class="entry-date-at">@</span> <span class="date"><time datetime="<?php echo $item->get('created'); ?>"><?php echo JHTML::_('date', $item->get('created'), $this->timeFormat, $this->tz); ?></time></span> 
@@ -187,21 +192,7 @@ if ($this->rows->total() > 0)
 					</p>
 				</div><!-- / .attribution -->
 			<?php } ?>
-			<?php if (!$row->original()) {
-				//if ($item->get('created_by') != $this->member->get('uidNumber')) {
-					$collection = CollectionsModelCollection::getInstance($row->get('collection_id'));
-					switch ($collection->get('object_type'))
-					{
-						case 'group':
-							$href = 'index.php?option=com_groups&gid=' . $collection->get('object_id') . '&active=collections&scope=' . $collection->get('alias');
-						break;
-
-						case 'member':
-						default:
-							$href = 'index.php?option=com_members&id=' . $collection->get('object_id') . '&active=collections&task=' . $collection->get('alias');
-						break;
-					}
-				?>
+			<?php if (!$row->original()) {*/ ?>
 				<div class="convo attribution reposted clearfix">
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" class="img-link">
 						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($row->creator(), 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" />
@@ -211,8 +202,8 @@ if ($this->rows->total() > 0)
 							<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
 						</a> 
 						onto 
-						<a href="<?php echo JRoute::_($href); ?>">
-							<?php echo $this->escape(stripslashes($collection->get('title'))); ?>
+						<a href="<?php echo JRoute::_($row->link()); ?>">
+							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 						</a>
 						<br />
 						<span class="entry-date">
@@ -221,15 +212,14 @@ if ($this->rows->total() > 0)
 						</span>
 					</p>
 				</div><!-- / .attribution -->
-			<?php } ?>
+			<?php //} ?>
 			</div><!-- / .content -->
 		</div><!-- / .post -->
-<?php
-	}
-}
-else
-{
-?>
+	<?php } ?>
+	</div><!-- / #posts -->
+	<?php if ($this->posts > $this->filters['limit']) { echo $this->pageNav->getListFooter(); } ?>
+	<div class="clear"></div>
+<?php } else { ?>
 		<div id="collection-introduction">
 	<?php if ($this->params->get('access-create-item')) { ?>
 			<div class="instructions">
@@ -250,8 +240,5 @@ else
 			</div><!-- / .instructions -->
 	<?php } ?>
 		</div><!-- / #collection-introduction -->
-<?php
-}
-?>
-	</div><!-- / #posts -->
+<?php } ?>
 </form>

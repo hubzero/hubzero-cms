@@ -38,12 +38,6 @@ $item = $this->post->item();
 
 $database = JFactory::getDBO();
 $this->juser = JFactory::getUser();
-//$bt = new BulletinboardTags($database);
-
-//$creator = Hubzero_User_Profile::getInstance($this->post->created_by);
-//$huser = Hubzero_User_Profile::getInstance($this->post->created_by);
-
-//$tags = $bt->get_tag_cloud(0, 0, $this->post->id);
 
 $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name;
 
@@ -86,6 +80,7 @@ $view = new Hubzero_Plugin_View(
 	)
 );
 
+$view->actual = true;
 $view->name       = $this->name;
 //$view->juser      = $this->juser;
 $view->option     = $this->option;
@@ -119,7 +114,7 @@ $view->display();
 					<?php echo JText::sprintf('%s reposts', $item->get('reposts', 0)); ?>
 				</span>
 			</p>
-	<?php if (!$this->juser->get('guest')) { ?>
+	<?php /*if (!$this->juser->get('guest')) { ?>
 			<div class="actions">
 		<?php if ($item->get('created_by') == $this->juser->get('id')) { ?>
 				<a class="edit" data-id="<?php echo $this->post->get('id'); ?>" href="<?php echo JRoute::_($base . '&task=post/' . $this->post->get('id') . '/edit'); ?>">
@@ -146,7 +141,7 @@ $view->display();
 				</a>
 		<?php } ?>
 			</div><!-- / .actions -->
-	<?php } ?>
+	<?php }*/ ?>
 		</div><!-- / .meta -->
 <?php //if ($this->post->created_by != $this->post->created_by) { ?>
 		<div class="convo attribution clearfix">
@@ -171,17 +166,21 @@ $view->display();
 <?php 
 if ($item->get('comments')) 
 { 
+	?>
+		<div class="commnts">
+	<?php
 	foreach ($item->comments() as $comment)
 	{
 		$cuser = Hubzero_User_Profile::getInstance($comment->created_by);
 ?>
-		<div class="commnts">
+		
 			<div class="comment convo clearfix" id="c<?php echo $comment->id; ?>">
 				<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $comment->created_by); ?>" class="img-link">
 					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($cuser, $comment->anonymous); ?>" class="profile user_image" alt="Profile picture of <?php echo $this->escape(stripslashes($cuser->get('name'))); ?>" />
 				</a>
 				<p>
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $comment->created_by); ?>"><?php echo $this->escape(stripslashes($cuser->get('name'))); ?></a> 
+					said
 					<br />
 					<span class="entry-date">
 						<span class="entry-date-at">@</span> <span class="date"><?php echo JHTML::_('date', $comment->created, $this->timeFormat, $this->tz); ?></span> 
@@ -192,9 +191,11 @@ if ($item->get('comments'))
 					<p><?php echo stripslashes($comment->content); ?></p>
 				</blockquote>
 			</div>
-		</div>
 <?php 
 	}
+	?>
+		</div>
+	<?php
 } 
 $now = date('Y-m-d H:i:s', time());
 ?>
@@ -205,15 +206,24 @@ $now = date('Y-m-d H:i:s', time());
 				</a>
 				<p>
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id')); ?>"><?php echo $this->escape(stripslashes($this->juser->get('name'))); ?></a> 
+					will say
 					<br />
 					<span class="entry-date">
 						<span class="entry-date-at">@</span> <span class="date"><?php echo JHTML::_('date', $now, $this->timeFormat, $this->tz); ?></span> 
 						<span class="entry-date-on">on</span> <span class="time"><?php echo JHTML::_('date', $now, $this->dateFormat, $this->tz); ?></span>
 					</span>
 				</p>
+				<form action="<?php echo JRoute::_($base . '&task=post/' . $this->post->get('id') . '/savecomment'); ?>" method="post" enctype="multipart/form-data">
 				<fieldset>
-					<textarea name="comment[content]" cols="35" rows="5"></textarea>
+					<input type="hidden" name="comment[id]" value="0" />
+					<input type="hidden" name="comment[item_id]" value="<?php echo $item->get('id'); ?>" />
+					<input type="hidden" name="comment[item_type]" value="collection" />
+					<input type="hidden" name="comment[state]" value="1" />
+					
+					<textarea name="comment[content]" cols="35" rows="3"></textarea>
+					<input type="submit" value="<?php echo JText::_('Save'); ?>" />
 				</fieldset>
+				</form>
 			</div>
 		</div>
 	</div><!-- / .content -->

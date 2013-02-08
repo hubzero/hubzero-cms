@@ -72,10 +72,12 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 		<div class="clear"></div>
 	</fieldset>
 
-	<div id="posts">
 <?php 
 if ($this->rows->total() > 0) 
 {
+	?>
+	<div id="posts">
+	<?php
 	ximport('Hubzero_User_Profile');
 	ximport('Hubzero_User_Profile_Helper');
 
@@ -197,7 +199,7 @@ if ($this->rows->total() > 0)
 				</div><!-- / .attribution -->
 			<?php } ?>
 			<?php if (!$row->original()) {//if ($item->get('created_by') != $this->member->get('uidNumber')) { */
-				$collection = CollectionsModelCollection::getInstance($row->get('collection_id'));
+				/*$collection = CollectionsModelCollection::getInstance($row->get('collection_id'));
 				switch ($collection->get('object_type'))
 				{
 					case 'group':
@@ -208,7 +210,7 @@ if ($this->rows->total() > 0)
 					default:
 						$href = 'index.php?option=com_members&id=' . $collection->get('object_id') . '&active=collections&task=' . $collection->get('alias');
 					break;
-				}
+				}*/
 				?>
 				<div class="convo attribution reposted clearfix">
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" class="img-link">
@@ -219,8 +221,8 @@ if ($this->rows->total() > 0)
 							<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
 						</a> 
 						onto 
-						<a href="<?php echo JRoute::_($href); ?>">
-							<?php echo $this->escape(stripslashes($collection->get('title'))); ?>
+						<a href="<?php echo JRoute::_($row->link()); ?>">
+							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 						</a>
 						<br />
 						<span class="entry-date">
@@ -232,12 +234,11 @@ if ($this->rows->total() > 0)
 			<?php //} ?>
 			</div><!-- / .content -->
 		</div><!-- / .post -->
-<?php
-	}
-}
-else
-{
-?>
+<?php } ?>
+	</div><!-- / #posts -->
+	<?php if ($this->total > $this->filters['limit']) { echo $this->pageNav->getListFooter(); } ?>
+	<div class="clear"></div>
+<?php } else { ?>
 		<div id="collection-introduction">
 			<div class="instructions">
 	<?php if ($this->params->get('access-create-item')) { ?>
@@ -276,8 +277,5 @@ else
 			</div><!-- / .instructions -->
 	<?php } ?>
 		</div><!-- / #collection-introduction -->
-<?php
-}
-?>
-	</div><!-- / #posts -->
+<?php } ?>
 </form>

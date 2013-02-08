@@ -110,6 +110,8 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 	<?php } ?>
 			</tbody>
 		</table>
+		<?php echo $this->pageNav->getListFooter(); ?>
+		<div class="clear"></div>
 	</div><!-- / .container -->
 <?php } else { ?>
 		<div id="collection-introduction">

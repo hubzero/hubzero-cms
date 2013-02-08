@@ -165,7 +165,7 @@ class plgMembersCollections extends JPlugin
 									JRequest::setVar('post', $bits[1]);
 									if (isset($bits[2]))
 									{
-										if (in_array($bits[2], array('post', 'vote', 'collect', 'remove', 'move', 'comment')))
+										if (in_array($bits[2], array('post', 'vote', 'collect', 'remove', 'move', 'comment', 'savecomment', 'deletecomment')))
 										{
 											$this->action = $bits[2];
 										}
@@ -297,6 +297,7 @@ class plgMembersCollections extends JPlugin
 
 				case 'collection': $arr['html'] = $this->_collection(); break;
 
+				case 'feed':
 				default: $arr['html'] = $this->_feed(); break;
 			}
 		}
@@ -353,22 +354,12 @@ class plgMembersCollections extends JPlugin
 
 		Hubzero_Document::addPluginScript('members', $this->_name);
 
-		$this->app = JFactory::getApplication();
 		$this->jconfig = JFactory::getConfig();
 
+		// Filters for returning results
 		$view->filters = array();
-		$view->filters['limit'] = $this->app->getUserStateFromRequest(
-			$this->option . '.plugin.messages.limit',
-			'limit',
-			$this->jconfig->getValue('config.list_limit'),
-			'int'
-		);
-		$view->filters['start'] = $this->app->getUserStateFromRequest(
-			$this->option . '.plugin.messages.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
+		$view->filters['limit']       = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
+		$view->filters['start']       = JRequest::getInt('limitstart', 0);
 
 		$filters = array();
 		$filters['user_id'] = $this->juser->get('id');
@@ -446,22 +437,12 @@ class plgMembersCollections extends JPlugin
 
 		Hubzero_Document::addPluginScript('members', $this->_name);
 
-		$this->app = JFactory::getApplication();
 		$this->jconfig = JFactory::getConfig();
 
+		// Filters for returning results
 		$view->filters = array();
-		$view->filters['limit'] = $this->app->getUserStateFromRequest(
-			$this->option . '.plugin.messages.limit',
-			'limit',
-			$this->jconfig->getValue('config.list_limit'),
-			'int'
-		);
-		$view->filters['start'] = $this->app->getUserStateFromRequest(
-			$this->option . '.plugin.messages.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
+		$view->filters['limit']       = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
+		$view->filters['start']       = JRequest::getInt('limitstart', 0);
 
 		$filters = array();
 		$filters['user_id'] = $this->juser->get('id');
@@ -539,8 +520,16 @@ class plgMembersCollections extends JPlugin
 		$view->params      = $this->params;
 		$view->model = $this->model;
 
+		$this->jconfig = JFactory::getConfig();
+
+		// Filters for returning results
+		$view->filters = array();
+		$view->filters['limit']       = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
+		$view->filters['start']       = JRequest::getInt('limitstart', 0);
+
 		//Hubzero_Document::addPluginScript('members', $this->_name, 'jquery.masonry');
 		Hubzero_Document::addComponentScript('com_collections', 'assets/js/jquery.masonry');
+		Hubzero_Document::addComponentScript('com_collections', 'assets/js/jquery.infinitescroll');
 		Hubzero_Document::addPluginScript('members', $this->_name);
 
 		// Filters for returning results
@@ -573,7 +562,18 @@ class plgMembersCollections extends JPlugin
 
 		$view->following = $this->model->following(array('count' => true));
 
-		$view->likes = 0; //$vote->getLikes($view->filters);
+		//$view->likes = 0; //$vote->getLikes($view->filters);
+
+		jimport('joomla.html.pagination');
+		$view->pageNav = new JPagination(
+			$view->total, 
+			$view->filters['start'], 
+			$view->filters['limit']
+		);
+
+		$view->pageNav->setAdditionalUrlParam('id', $view->member->get('uidNumber'));
+		$view->pageNav->setAdditionalUrlParam('active', $this->_name);
+		$view->pageNav->setAdditionalUrlParam('task', 'all');
 
 		if ($this->getError()) 
 		{
@@ -610,11 +610,14 @@ class plgMembersCollections extends JPlugin
 
 		//Hubzero_Document::addPluginScript('members', $this->_name, 'jquery.masonry');
 		Hubzero_Document::addComponentScript('com_collections', 'assets/js/jquery.masonry');
+		Hubzero_Document::addComponentScript('com_collections', 'assets/js/jquery.infinitescroll');
 		Hubzero_Document::addPluginScript('members', $this->_name);
+
+		$this->jconfig = JFactory::getConfig();
 
 		// Filters for returning results
 		$view->filters = array();
-		$view->filters['limit']       = JRequest::getInt('limit', 25);
+		$view->filters['limit']       = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
 		$view->filters['start']       = JRequest::getInt('limitstart', 0);
 		$view->filters['user_id']     = $this->member->get('uidNumber');
 		$view->filters['search']      = JRequest::getVar('search', '');
@@ -642,7 +645,23 @@ class plgMembersCollections extends JPlugin
 		}
 
 		$view->filters['collection_id'] = $view->collection->get('id');
+
+		$view->filters['count'] = true;
+		$view->posts = $view->collection->posts($view->filters);
+
+		$view->filters['count'] = null;
 		$view->rows = $view->collection->posts($view->filters);
+
+		jimport('joomla.html.pagination');
+		$view->pageNav = new JPagination(
+			$view->posts, 
+			$view->filters['start'], 
+			$view->filters['limit']
+		);
+
+		$view->pageNav->setAdditionalUrlParam('id', $view->member->get('uidNumber'));
+		$view->pageNav->setAdditionalUrlParam('active', $this->_name);
+		$view->pageNav->setAdditionalUrlParam('task', $view->collection->get('alias'));
 
 		if ($this->getError()) 
 		{
@@ -820,72 +839,60 @@ class plgMembersCollections extends JPlugin
 
 		//Hubzero_Document::addPluginScript('members', $this->_name, 'jquery.masonry');
 		Hubzero_Document::addComponentScript('com_collections', 'assets/js/jquery.masonry');
+		Hubzero_Document::addComponentScript('com_collections', 'assets/js/jquery.infinitescroll');
 		Hubzero_Document::addPluginScript('members', $this->_name);
 
 		// Filters for returning results
+		$this->jconfig = JFactory::getConfig();
+
 		$view->filters = array();
-		$view->filters['limit']       = JRequest::getInt('limit', 25);
+		$view->filters['limit']       = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
 		$view->filters['start']       = JRequest::getInt('limitstart', 0);
 		$view->filters['user_id']     = $this->member->get('uidNumber');
-		$view->filters['created_by']     = $this->member->get('uidNumber');
+		//$view->filters['created_by']     = $this->member->get('uidNumber');
 		$view->filters['search']      = JRequest::getVar('search', '');
 		$view->filters['state']       = 1;
 		$view->filters['collection_id'] = JRequest::getVar('board', '');
 
 		// Filters for returning results
-		/*$filters = array();
-		if (!$this->params->get('access-manage-collection')) 
-		{
-			$filters['access'] = 0;
-		}*/
-
+		$filters = array();
 		$filters['count'] = true;
 		if (!$this->params->get('access-manage-collection')) 
 		{
 			$filters['access'] = 0;
 		}
+
 		$view->collections = $this->model->collections($filters);
 
-		/*$filters['count'] = false;
-		$rows = $this->model->collections($filters);
-
-		$view->posts = 0;
-		if ($rows) 
-		{
-			foreach ($rows as $row)
-			{
-				$view->posts += $row->get('posts');
-			}
-		}*/
 		$view->posts = $this->model->posts(array('count' => true));
 
 		$view->followers = $this->model->followers(array('count' => true));
 
 		$view->following = $this->model->following(array('count' => true));
 
-
 		$view->filters['collection_id'] = $this->model->following(array(), 'collections');
-
 		$view->collection = CollectionsModelCollection::getInstance();
-
-		// Is the board restricted to logged-in users only?
-		/*if ($view->collection->get('access') != 0 && $this->juser->get('guest'))
-		{
-			return $this->_login();
-		}
-
-		// Is it a private board?
-		if ($view->collection->get('access') == 4 && $this->juser->get('id') != $this->member->get('uidNumber'))
-		{
-			JError::raiseError(403, JText::_('Your are not authorized to access this content.'));
-			return;
-		}*/
 		if (count($view->filters['collection_id']) <= 0)
 		{
 			$view->filters['collection_id'][] = -1;
 		}
 
+		$view->filters['count'] = true;
+		$view->total = $view->collection->posts($view->filters);
+
+		$view->filters['count'] = null;
 		$view->rows = $view->collection->posts($view->filters);
+
+		jimport('joomla.html.pagination');
+		$view->pageNav = new JPagination(
+			$view->total, 
+			$view->filters['start'], 
+			$view->filters['limit']
+		);
+
+		$view->pageNav->setAdditionalUrlParam('id', $view->member->get('uidNumber'));
+		$view->pageNav->setAdditionalUrlParam('active', $this->_name);
+		//$view->pageNav->setAdditionalUrlParam('task', 'feed');
 
 		if ($this->getError()) 
 		{
@@ -923,24 +930,27 @@ class plgMembersCollections extends JPlugin
 
 		//Hubzero_Document::addPluginScript('members', $this->_name, 'jquery.masonry');
 		Hubzero_Document::addComponentScript('com_collections', 'assets/js/jquery.masonry');
+		Hubzero_Document::addComponentScript('com_collections', 'assets/js/jquery.infinitescroll');
 		Hubzero_Document::addPluginScript('members', $this->_name);
+
+		$this->jconfig = JFactory::getConfig();
 
 		// Filters for returning results
 		$view->filters = array();
-		$view->filters['limit']       = JRequest::getInt('limit', 25);
+		$view->filters['limit']       = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
 		$view->filters['start']       = JRequest::getInt('limitstart', 0);
 		//$view->filters['user_id']     = $this->member->get('uidNumber');
-		$view->filters['created_by']     = $this->member->get('uidNumber');
+		$view->filters['created_by']  = $this->member->get('uidNumber');
 		$view->filters['search']      = JRequest::getVar('search', '');
 		$view->filters['state']       = 1;
 		//$view->filters['collection_id'] = JRequest::getVar('board', '');
 
 		// Filters for returning results
-		/*$filters = array();
+		//$filters = array();
 		if (!$this->params->get('access-manage-collection')) 
 		{
-			$filters['access'] = 0;
-		}*/
+			$view->filters['access'] = 0;
+		}
 
 		//$filters['count'] = true;
 		$view->collections = $this->model->collections(array('count' => true));
@@ -987,9 +997,23 @@ class plgMembersCollections extends JPlugin
 		//$filters['object_id']   = $this->member->get('uidNumber');
 		//$filters['object_type'] = 'member';
 		//$filters['created_by']   = $this->member->get('uidNumber');
+		$view->filters['user_id']     = $this->member->get('uidNumber');
 
 		//$view->rows = $this->model->posts();
+		//$view->total = $view->collection->posts($view->filters);
+
 		$view->rows = $view->collection->posts($view->filters);
+
+		jimport('joomla.html.pagination');
+		$view->pageNav = new JPagination(
+			$view->posts, 
+			$view->filters['start'], 
+			$view->filters['limit']
+		);
+
+		$view->pageNav->setAdditionalUrlParam('id', $view->member->get('uidNumber'));
+		$view->pageNav->setAdditionalUrlParam('active', $this->_name);
+		$view->pageNav->setAdditionalUrlParam('task', 'posts');
 
 		if ($this->getError()) 
 		{

@@ -142,21 +142,41 @@ HUB.Plugins.GroupsBulletinboard = {
 	initialize: function() {
 		var $ = this.jQuery;
 
-		/*if ($('#boards').length > 0) {
-			$('#boards').masonry({
+		var container = $('#posts');
+
+		if (container.length > 0) {
+			container.masonry({
 				itemSelector: '.post'
 			});
-		}*/
 
-		if ($('#posts').length > 0) {
-			//$('#bulletins').imagesLoaded(function(){
-				$('#posts').masonry({
-					itemSelector: '.post'/*,
-					columnWidth: function(containerWidth) {
-						return containerWidth / 3;
-					}*/
-				});
-			//});
+			container.infinitescroll({
+					navSelector  : '.list-footer',    // selector for the paged navigation
+					nextSelector : '.list-footer .next a',  // selector for the NEXT link (to page 2)
+					itemSelector : '#posts div.post',     // selector for all items you'll retrieve
+					loading: {
+						finishedMsg: 'No more pages to load.',
+						img: '/6RMhx.gif'
+					},
+					path: function(index) {
+						var path = $('.list-footer .next a').attr('href');
+						limit = path.match(/limit[-=]([0-9]*)/).slice(1);
+						start = path.match(/start[-=]([0-9]*)/).slice(1);
+						//console.log(path.replace(/start[-=]([0-9]*)/, 'no_html=1&start=' + (limit * index - limit)));
+						return path.replace(/start[-=]([0-9]*)/, 'no_html=1&start=' + (limit * index - limit));
+					},
+					debug: false
+				},
+				// trigger Masonry as a callback
+				function(newElements) {
+					// hide new items while they are loading
+					var $newElems = $(newElements).css({ opacity: 0 });
+
+					// show elems now they're ready
+					$newElems.animate({ opacity: 1 });
+					container.masonry('appended', $newElems, true);
+				}
+			);
+
 			$('#posts a.vote').each(function(i, el){
 				$(el).on('click', function(e){
 					e.preventDefault();

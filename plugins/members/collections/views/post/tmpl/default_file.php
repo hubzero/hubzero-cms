@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//$ba = new BulletinboardAsset(JFactory::getDBO());
-//$assets = $ba->getRecords(array('bulletin_id' => $this->row->id, 'limit' => 50, 'start' => 0));
 $item = $this->row->item();
 
 if ($item->get('title')) { ?>
@@ -72,7 +70,7 @@ if ($assets->total() > 0)
 		?>
 			<div class="holder">
 				<a rel="lightbox" href="<?php echo $path . DS . ltrim($first->get('filename'), DS); ?>" class="img-link">
-					<img src="<?php echo $path . DS . ltrim($first->get('filename'), DS); ?>" alt="<?php echo ($first->get('description')) ? $this->escape(stripslashes($first->get('description'))) : ''; ?>" class="img" style="height: <?php echo round(300 / $ratio, 0, PHP_ROUND_HALF_UP); ?>px;" />
+					<img src="<?php echo $path . DS . ltrim($first->get('filename'), DS); ?>" alt="<?php echo ($first->get('description')) ? $this->escape(stripslashes($first->get('description'))) : ''; ?>" class="img" <?php if (!isset($this->actual) || !$this->actual) { echo 'style="height: ' . round(300 / $ratio, 0, PHP_ROUND_HALF_UP) . 'px;"'; } ?> />
 				</a>
 			</div>
 		<?php

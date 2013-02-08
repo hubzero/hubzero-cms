@@ -44,7 +44,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 			"<?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>"
 		</span>
 		<span class="posts count">
-			<?php echo JText::sprintf('<strong>%s</strong> posts', $this->rows->total()); ?>
+			<?php echo JText::sprintf('<strong>%s</strong> posts', $this->posts); ?>
 		</span>
 <?php if (!$this->juser->get('guest')) { ?>
 	<?php if ($this->rows && $this->params->get('access-create-item')) { ?>
@@ -63,10 +63,12 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 		<span class="clear"></span>
 	</p>
 
-	<div id="posts">
 <?php 
 if ($this->rows->total() > 0) 
 {
+	?>
+	<div id="posts">
+	<?php
 	ximport('Hubzero_User_Profile');
 	ximport('Hubzero_User_Profile_Helper');
 
@@ -153,7 +155,7 @@ if ($this->rows->total() > 0)
 			<?php } ?>
 				</div><!-- / .meta -->
 
-			<?php if ($row->original() || $item->get('created_by') != $this->member->get('uidNumber')) { 
+			<?php /*if ($row->original() || $item->get('created_by') != $this->member->get('uidNumber')) { 
 				$collection = CollectionsModelCollection::getInstance($row->get('collection_id'));
 				switch ($collection->get('object_type'))
 				{
@@ -186,8 +188,8 @@ if ($this->rows->total() > 0)
 						</span>
 					</p>
 				</div><!-- / .attribution -->
-			<?php } ?>
-			<?php if (!$row->original()) {//if ($item->get('created_by') != $this->member->get('uidNumber')) { ?>
+			<?php }*/ ?>
+			<?php //if (!$row->original()) {//if ($item->get('created_by') != $this->member->get('uidNumber')) { ?>
 				<div class="convo attribution reposted clearfix">
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" class="img-link">
 						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($this->member, 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" />
@@ -207,15 +209,14 @@ if ($this->rows->total() > 0)
 						</span>
 					</p>
 				</div><!-- / .attribution -->
-			<?php } ?>
+			<?php //} ?>
 			</div><!-- / .content -->
 		</div><!-- / .post -->
-<?php
-	}
-}
-else
-{
-?>
+	<?php } ?>
+	</div><!-- / #posts -->
+	<?php if ($this->total > $this->filters['limit']) { echo $this->pageNav->getListFooter(); } ?>
+	<div class="clear"></div>
+<?php } else { ?>
 		<div id="collection-introduction">
 	<?php if ($this->params->get('access-create-item')) { ?>
 			<div class="instructions">
@@ -236,8 +237,5 @@ else
 			</div><!-- / .instructions -->
 	<?php } ?>
 		</div><!-- / #collection-introduction -->
-<?php
-}
-?>
-	</div><!-- / #posts -->
+<?php } ?>
 </form>

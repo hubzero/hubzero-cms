@@ -117,9 +117,9 @@ class CollectionsModelItem extends JObject
 			{
 				$this->set('comments', $oid->comments);
 			}
-			if (isset($oid->voted))
+			if (property_exists($oid, 'voted'))
 			{
-				$this->set('voted', $oid->voted);
+				$this->set('voted', ($oid->voted ? $oid->voted : 0));
 			}
 		}
 		else if (is_array($oid))
@@ -269,7 +269,8 @@ class CollectionsModelItem extends JObject
 	{
 		if (!isset($this->_creator) || !is_object($this->_creator))
 		{
-			$this->_creator = JUser::getInstance($this->get('created_by'));
+			ximport('Hubzero_User_Profile');
+			$this->_creator = Hubzero_User_Profile::getInstance($this->get('created_by'));
 		}
 		/*if ($property && is_a($this->_creator, 'JUser'))
 		{
@@ -291,7 +292,8 @@ class CollectionsModelItem extends JObject
 	{
 		if (!isset($this->_modifier) || !is_object($this->_modifier))
 		{
-			$this->_modifier = JUser::getInstance($this->get('modified_by'));
+			ximport('Hubzero_User_Profile');
+			$this->_modifier = Hubzero_User_Profile::getInstance($this->get('modified_by'));
 		}
 		/*if ($property && is_a($this->_creator, 'JUser'))
 		{
@@ -314,7 +316,7 @@ class CollectionsModelItem extends JObject
 			ximport('Hubzero_Item_Comment');
 			$bc = new Hubzero_Item_Comment($this->_db);
 
-			if (($results = $bc->getComments($this->get('id'))))
+			if (($results = $bc->getComments('collection', $this->get('id'))))
 			{
 				foreach ($results as $com)
 				{
@@ -383,17 +385,20 @@ class CollectionsModelItem extends JObject
 	 * @param      object $asset
 	 * @return     void
 	 */
-	public function addAsset($asset)
+	public function addAsset($asset=null)
 	{
 		if (!isset($this->_assets) || !is_a($this->_assets, 'CollectionsModelIterator'))
 		{
 			$this->_assets = new CollectionsModelIterator(array());
 		}
-		if (!is_a($asset, 'CollectionsModelAsset'))
+		if ($asset)
 		{
-			$asset = new CollectionsModelAsset($asset);
+			if (!is_a($asset, 'CollectionsModelAsset'))
+			{
+				$asset = new CollectionsModelAsset($asset);
+			}
+			$this->_assets->add($asset);
 		}
-		$this->_assets->add($asset);
 	}
 
 	/**

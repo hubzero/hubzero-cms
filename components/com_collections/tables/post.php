@@ -159,9 +159,15 @@ class CollectionsTablePost extends JTable
 	 */
 	public function buildQuery($filters=array())
 	{
-		$query  = " FROM $this->_tbl AS s";
-		$query .= " LEFT JOIN #__collections AS c ON c.id=s.collection_id";
-		$query .= " LEFT JOIN #__users AS u ON s.created_by=u.id";
+		$query  = " FROM $this->_tbl AS p";
+		$query .= " INNER JOIN #__collections AS c ON c.id=p.collection_id";
+		$query .= " INNER JOIN #__collections_items AS i ON p.item_id=i.id";
+		$query .= " LEFT JOIN #__users AS u ON p.created_by=u.id";
+
+		if (isset($filters['user_id']) && $filters['user_id']) 
+		{
+			$query .= " LEFT JOIN #__collections_votes AS v ON v.item_id=p.item_id AND v.user_id=" . $this->_db->Quote($filters['user_id']);
+		}
 
 		$where = array();
 
@@ -170,11 +176,11 @@ class CollectionsTablePost extends JTable
 			if (is_array($filters['collection_id']))
 			{
 				$filters['collection_id'] = array_map('intval', $filters['collection_id']);
-				$where[] = "s.collection_id IN (" . implode(',', $filters['collection_id']) . ")";
+				$where[] = "p.collection_id IN (" . implode(',', $filters['collection_id']) . ")";
 			}
 			else
 			{
-				$where[] = "s.collection_id=" . $this->_db->Quote($filters['collection_id']);
+				$where[] = "p.collection_id=" . $this->_db->Quote($filters['collection_id']);
 			}
 		}
 		if (isset($filters['object_id']) && $filters['object_id']) 
@@ -187,15 +193,23 @@ class CollectionsTablePost extends JTable
 		}
 		if (isset($filters['created_by']) && $filters['created_by']) 
 		{
-			$where[] = "s.created_by=" . $this->_db->Quote($filters['created_by']);
+			$where[] = "p.created_by=" . $this->_db->Quote($filters['created_by']);
 		}
 		if (isset($filters['item_id']) && $filters['item_id']) 
 		{
-			$where[] = "s.item_id=" . $this->_db->Quote($filters['item_id']);
+			$where[] = "p.item_id=" . $this->_db->Quote($filters['item_id']);
+		}
+		if (isset($filters['state'])) 
+		{
+			$where[] = "i.state=" . $this->_db->Quote($filters['state']);
+		}
+		if (isset($filters['access'])) 
+		{
+			$where[] = "i.access=" . $this->_db->Quote($filters['access']);
 		}
 		if (isset($filters['original'])) 
 		{
-			$where[] = "s.original=" . $this->_db->Quote($filters['original']);
+			$where[] = "p.original=" . $this->_db->Quote($filters['original']);
 		}
 
 		if (count($where) > 0)
@@ -208,7 +222,7 @@ class CollectionsTablePost extends JTable
 		{
 			if (!isset($filters['sort']) || !$filters['sort']) 
 			{
-				$filters['sort'] = 's.created';
+				$filters['sort'] = 'p.created';
 			}
 			if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
 			{
@@ -244,7 +258,22 @@ class CollectionsTablePost extends JTable
 	 */
 	public function getRecords($filters=array())
 	{
-		$query = "SELECT s.*, c.alias, c.title, u.name";
+		$query = "SELECT p.*, c.alias, c.title, c.object_type, c.object_id, u.name,
+				i.title AS item_title, 
+				i.description AS item_description, 
+				i.url AS item_url, 
+				i.created AS item_created, 
+				i.created_by AS item_created_by,
+				i.positive AS item_positive, 
+				i.negative AS item_negative, 
+				i.type AS item_type, 
+				i.object_id As item_object_id,
+				(SELECT COUNT(*) FROM #__collections_posts AS s WHERE s.item_id=p.item_id AND s.original=0) AS item_reposts,
+				(SELECT COUNT(*) FROM #__item_comments AS ct WHERE ct.item_id=p.item_id AND ct.item_type='collection' AND ct.state IN (1, 3)) AS item_comments";
+		if (isset($filters['user_id']) && $filters['user_id']) 
+		{
+			$query .= ", v.id AS item_voted ";
+		}
 		$query .= $this->buildQuery($filters);
 
 		if ($filters['limit'] != 0) 

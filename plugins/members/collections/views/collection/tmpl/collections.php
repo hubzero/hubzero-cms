@@ -102,25 +102,12 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 		<div class="clear"></div>
 	</fieldset>
 
-	<!-- <fieldset class="filters">
-		<span class="collections count">
-			<?php echo JText::sprintf('<strong>%s</strong> collections', $this->rows->total()); ?>
-		</span>
-		<span class="posts count">
-			<?php echo JText::sprintf('<strong>%s</strong> posts', $this->posts); ?>
-		</span>
-<?php if ($this->params->get('access-create-collection')) { ?>
-		<a class="add btn" href="<?php echo JRoute::_($base . '&task=new'); ?>">
-			<?php echo JText::_('New collection'); ?>
-		</a>
-<?php } ?>
-		<div class="clear"></div>
-	</fieldset> -->
-
-	<div id="posts">
 <?php 
 if ($this->rows->total() > 0) 
 {
+	?>
+	<div id="posts">
+	<?php
 	foreach ($this->rows as $row)
 	{
 ?>
@@ -198,12 +185,11 @@ if ($this->rows->total() > 0)
 				<?php } ?>
 			</div><!-- / .content -->
 		</div><!-- / .post -->
-<?php
-	}
-}
-else
-{
-?>
+	<?php } ?>
+	</div><!-- / #posts -->
+	<?php if ($this->total > $this->filters['limit']) { echo $this->pageNav->getListFooter(); } ?>
+	<div class="clear"></div>
+<?php } else { ?>
 		<div id="collection-introduction">
 		<?php if ($this->params->get('access-create-collection')) { ?>
 			<div class="instructions">
@@ -219,9 +205,5 @@ else
 			</div><!-- / .instructions -->
 		<?php } ?>
 		</div><!-- / #collection-introduction -->
-<?php
-}
-?>
-		<div class="clear"></div>
-	</div><!-- / #posts -->
+<?php } ?>
 </form>

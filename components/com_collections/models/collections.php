@@ -555,6 +555,10 @@ class CollectionsModel extends JObject
 
 		if (!$follow->exists())
 		{
+			/*if ($what == 'collection')
+			{
+				$follow = new CollectionsModelFollowing($id, $what, $follower_id, $follower_type);
+			}*/
 			$follow->bind(array(
 				'following_id'   => $id,
 				'following_type' => $what,

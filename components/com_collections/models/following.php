@@ -110,19 +110,11 @@ class CollectionsModelFollowing extends JObject
 					$this->_tbl->set($key, $property);
 				}
 			}
-
-			/*if (isset($oid->posts))
-			{
-				$this->_tbl->set('posts', $oid->posts);
-			}*/
 		}
 		else if (is_array($oid))
 		{
 			$this->_tbl->bind($oid);
-			/*if (isset($oid['posts']))
-			{
-				$this->_tbl->set('posts', $oid['posts']);
-			}*/
+
 			$properties = get_object_vars($this->_tbl);
 			foreach (array_keys($oid) as $property)
 			{
@@ -132,7 +124,6 @@ class CollectionsModelFollowing extends JObject
 				}
 			}
 		}
-		//$this->_obj = new CollectionsModelFollow($this->get('following_id'));
 	}
 
 	/**

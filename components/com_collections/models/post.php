@@ -80,6 +80,8 @@ class CollectionsModelPost extends JObject
 
 		$this->_tbl = new CollectionsTablePost($this->_db);
 
+		$item = null;
+
 		if (is_numeric($oid) || is_string($oid))
 		{
 			$this->_tbl->load($oid);
@@ -87,80 +89,51 @@ class CollectionsModelPost extends JObject
 		else if (is_object($oid))
 		{
 			$this->_tbl->bind($oid);
-			if (isset($oid->user_description) && $oid->user_description)
+
+			$item = new stdClass;
+
+			$properties = get_object_vars($this->_tbl);
+			foreach (get_object_vars($oid) as $key => $property)
 			{
-				$this->set('description', $oid->user_description);
-			}
-			if (isset($oid->posted))
-			{
-				$this->set('created', $oid->posted);
-			}
-			if (isset($oid->poster))
-			{
-				$this->set('created_by', $oid->poster);
-			}
-			if (isset($oid->poster_name))
-			{
-				$this->set('name', $oid->poster_name);
-			}
-			if (isset($oid->post_id))
-			{
-				$this->set('id', $oid->post_id);
-			}
-			if (isset($oid->board_title))
-			{
-				$this->set('collection', $oid->board_title);
-			}
-			if (isset($oid->object_type))
-			{
-				$this->set('object_type', $oid->object_type);
-			}
-			if (isset($oid->object_id))
-			{
-				$this->set('object_id', $oid->object_id);
+				if (substr($key, 0, strlen('item_')) == 'item_')
+				{
+					$nk = substr($key, strlen('item_'));
+					$item->$nk = $property;
+					continue;
+				}
+				if (!array_key_exists($key, $properties))
+				{
+					$this->_tbl->set($key, $property);
+				}
 			}
 		}
 		else if (is_array($oid))
 		{
 			$this->_tbl->bind($oid);
-			if (isset($oid['user_description']) && $oid['user_description'])
+
+			$item = new stdClass;
+
+			$properties = get_object_vars($this->_tbl);
+			foreach (array_keys($oid) as $key)
 			{
-				$this->set('description', $oid['user_description']);
-			}
-			if (isset($oid['posted']))
-			{
-				$this->set('created', $oid['posted']);
-			}
-			if (isset($oid['poster']))
-			{
-				$this->set('created_by', $oid['poster']);
-			}
-			if (isset($oid['poster_name']))
-			{
-				$this->set('name', $oid['poster_name']);
-			}
-			if (isset($oid['post_id']))
-			{
-				$this->set('id', $oid['post_id']);
-			}
-			if (isset($oid['board_title']))
-			{
-				$this->set('collection', $oid['board_title']);
-			}
-			if (isset($oid['object_type']))
-			{
-				$this->set('object_type', $oid['object_type']);
-			}
-			if (isset($oid['object_id']))
-			{
-				$this->set('object_id', $oid['object_id']);
+				if (substr($key, 0, strlen('item_')) == 'item_')
+				{
+					$nk = substr($key, strlen('item_'));
+					$item->$nk = $oid[$key];
+					continue;
+				}
+				if (!array_key_exists($key, $properties))
+				{
+					$this->_tbl->set($key, $oid[$key]);
+				}
 			}
 		}
 
-		if (is_object($oid) && isset($oid->title))
+		//if (is_object($oid) && isset($oid->title))
+		if (is_object($item))
 		{
-			$this->item($oid);
-			$this->set('item_id', $this->item()->get('id'));
+			$this->item($item);
+			//$this->set('item_id', $this->item()->get('id'));
 		}
 	}
 
@@ -257,6 +230,7 @@ class CollectionsModelPost extends JObject
 
 			$this->_data = new CollectionsModelItem($oid);
 		}
+
 		return $this->_data;
 	}
 
@@ -350,7 +324,8 @@ class CollectionsModelPost extends JObject
 	{
 		if (!isset($this->_creator) || !is_object($this->_creator))
 		{
-			$this->_creator = JUser::getInstance($this->get('created_by'));
+			ximport('Hubzero_User_Profile');
+			$this->_creator = Hubzero_User_Profile::getInstance($this->get('created_by'));
 		}
 		/*if ($property && is_a($this->_creator, 'JUser'))
 		{
@@ -400,6 +375,27 @@ class CollectionsModelPost extends JObject
 		}
 
 		return true;
+	}
+
+	/**
+	 * Get the URL for this group
+	 *
+	 * @return     string
+	 */
+	public function link()
+	{
+		switch ($this->get('object_type'))
+		{
+			case 'group':
+				$href = 'index.php?option=com_groups&gid=' . $this->get('object_id') . '&active=collections&scope=' . $this->get('alias');
+			break;
+
+			case 'member':
+			default:
+				$href = 'index.php?option=com_members&id=' . $this->get('object_id') . '&active=collections&task=' . $this->get('alias');
+			break;
+		}
+		return $href;
 	}
 }
 

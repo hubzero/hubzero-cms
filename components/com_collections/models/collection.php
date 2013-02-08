@@ -400,23 +400,30 @@ class CollectionsModelCollection extends JObject
 	 */
 	public function posts($filters=array())
 	{
+		if (!isset($filters['collection_id']))
+		{
+			$filters['collection_id'] = $this->get('id');
+		}
+
+		if (isset($filters['count']) && $filters['count'])
+		{
+			$tbl = new CollectionsTablePost($this->_db);
+
+			return $tbl->getCount($filters);
+		}
+
 		if (!isset($this->_posts) || !is_a($this->_posts, 'CollectionsModelIterator'))
 		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'item.php');
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'post.php');
 
-			$tbl = new CollectionsTableItem($this->_db);
-
-			if (!isset($filters['collection_id']))
-			{
-				$filters['collection_id'] = $this->get('id');
-			}
+			$tbl = new CollectionsTablePost($this->_db);
 
 			if (($results = $tbl->getRecords($filters)))
 			{
 				$ids = array();
 				foreach ($results as $key => $result)
 				{
-					$ids[] = $result->id;
+					$ids[] = $result->item_id;
 				}
 
 				// Get all the assets for this list of items
@@ -436,6 +443,7 @@ class CollectionsModelCollection extends JObject
 				{
 					$results[$key] = new CollectionsModelPost($result);
 					//$results[$key]->item($result);
+
 					if ($assets)
 					{
 						foreach ($assets as $asset)
@@ -444,8 +452,17 @@ class CollectionsModelCollection extends JObject
 							{
 								$results[$key]->item()->addAsset($asset);
 							}
+							else
+							{
+								$results[$key]->item()->addAsset(null);
+							}
 						}
 					}
+					else
+					{
+						$results[$key]->item()->addAsset(null);
+					}
+
 					if (isset($tags[$results[$key]->get('item_id')])) 
 					{
 						$results[$key]->item()->addTag($tags[$results[$key]->get('item_id')]);
