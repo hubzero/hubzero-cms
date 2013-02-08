@@ -68,37 +68,36 @@ define('COURSES_ASSET_DELETED',     2);
 ?>
 
 <div class="outline-main">
-	<div class="delete-tray">
-		<div class="delete-tray-handle"></div>
-		<div class="delete-tray-target">
-			<ul class="assets-deleted">
+	<div class="delete-tray closed">
+		<div class="lock unlocked"></div>
+		<h4>&nbsp; D e l e t e d &nbsp; A s s e t s</h4>
+		<ul class="assets-deleted">
 <?php
-				foreach ($this->course->offering->units() as $unit) :
-					foreach($unit->assetgroups() as $agt) :
-						foreach($agt->children() as $ag) :
-							if ($ag->assets()->total()) :
-								foreach ($ag->assets() as $a) :
-									if($a->get('state') == COURSES_ASSET_DELETED) :
-										$view = new JView(
-												array(
-													'name'      => 'manage',
-													'layout'    => 'asset_partial')
-											);
-										$view->base   = $base;
-										$view->course = $this->course;
-										$view->unit   = $unit;
-										$view->ag     = $ag;
-										$view->a      = $a;
-										$view->display();
-									endif;
-								endforeach;
-							endif;
-						endforeach;
+			foreach ($this->course->offering->units() as $unit) :
+				foreach($unit->assetgroups() as $agt) :
+					foreach($agt->children() as $ag) :
+						if ($ag->assets()->total()) :
+							foreach ($ag->assets() as $a) :
+								if($a->get('state') == COURSES_ASSET_DELETED) :
+									$view = new JView(
+											array(
+												'name'      => 'manage',
+												'layout'    => 'asset_partial')
+										);
+									$view->base   = $base;
+									$view->course = $this->course;
+									$view->unit   = $unit;
+									$view->ag     = $ag;
+									$view->a      = $a;
+									$view->display();
+								endif;
+							endforeach;
+						endif;
 					endforeach;
 				endforeach;
+			endforeach;
 ?>
-			</ul>
-		</div>
+		</ul>
 	</div>
 
 	<ul class="unit">

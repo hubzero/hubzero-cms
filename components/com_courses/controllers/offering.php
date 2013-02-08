@@ -491,6 +491,7 @@ class CoursesControllerOffering extends Hubzero_Controller
 
 		// Add underscore
 		Hubzero_Document::addSystemScript('underscore-min');
+		Hubzero_Document::addSystemScript('jquery.hoverIntent');
 
 		// Push some needed scripts to the template
 		$this->_getScripts('/assets/js/courses.outline');

@@ -17,9 +17,6 @@
 	border: 1px dotted #AAA;
 	background: #FFF;
 }
-.placeholder-assets-delete {
-	background: #EFEFEF;
-}
 .dialog {
 	display: none;
 }
@@ -30,58 +27,140 @@
 	position: absolute;
 	left: 10px;
 	top: 15px;
-	width: 20px;
+	width: 300px;
+	margin-left: -285px;
 	height: 50px;
+	border: 1px solid #AAA;
+	background: #FFF;
+
+	-webkit-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+	box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
+
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
 }
-.delete-tray-handle {
+.closed h4 {
 	display: block;
 	float: right;
-	height: 100%;
-	width: 20px;
+	width: 1em;
+	margin: 10px 5px;
+	font-size: 16px;
+	text-align: center;
+	text-transform: uppercase;
+}
+.closed:hover {
+	-webkit-transition: box-shadow 0.25s, left 0.25s;
+	-moz-transition: box-shadow 0.25s, left 0.25s;
+	-ms-transition: box-shadow 0.25s, left 0.25s;
+	-o-transition: box-shadow 0.25s, left 0.25s;
+	transition: box-shadow 0.25s, left 0.25s;
+
+	cursor: default;
+	left: 15px;
+	box-shadow: 0 0 0.25em rgba(0, 0, 255, 0.5);
+}
+.open h4 {
+	margin: 0;
+	padding: 1em 0;
+	font-size: 16px;
+	text-align: center;
+	text-transform: uppercase;
+	background: #FAFAFA;
+	background: rgba(0, 0, 0, 0.05);
+	border-bottom: 1px dotted #AAA;
+	letter-spacing: -2px;
+}
+.delete-tray h4:before {
+	font-family: "fontcons";
+	content: "\f014";
+	position: relative;
+	top: 0;
+	left: 1px;
+}
+.open h4:before {
+	left: 0;
+}
+.delete-tray .placeholder-assets {
+	background: #FAFAFA;
+	border: 1px dotted #AAA;
+	z-index: 2;
+}
+.delete-tray .lock {
+	display: none;
+	position: absolute;
+	top: 12px;
+	right: 12px;
+	height: 26px;
+	width: 26px;
+	z-index: 1;
+	border: 1px solid #DCDCDC;
+	box-shadow: 0 0 1px #AAA;
+	opacity: .7;
 	cursor: pointer;
 
-	background-color: #f5f5f5;
-	background-image: -webkit-gradient(linear,left top,left bottom,from(#f5f5f5),to(#f1f1f1));
-	background-image: -webkit-linear-gradient(top,#f5f5f5,#f1f1f1);
-	background-image: -moz-linear-gradient(top,#f5f5f5,#f1f1f1);
-	background-image: -ms-linear-gradient(top,#f5f5f5,#f1f1f1);
-	background-image: -o-linear-gradient(top,#f5f5f5,#f1f1f1);
-	background-image: linear-gradient(top,#f5f5f5,#f1f1f1);
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#f5f5f5',EndColorStr='#f1f1f1');
-
-	border: 1px solid #dcdcdc;
-	border-color: rgba(0,0,0,.1);
-	font-size: 11px;
-
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	border-radius: 5px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
 }
-.delete-tray-target {
+.open .lock {
+	display: block;
+}
+.delete-tray .lock:hover {
+	-webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+	-ms-transition: all 0.5s;
+	-o-transition: all 0.5s;
+	transition: all 0.5s;
+
+	box-shadow: 0 0 3px #AAA;
+	opacity: 1;
+}
+.delete-tray .unlocked {
+	background: #FFF url('/components/com_courses/assets/img/unlocked.png') 3px 3px no-repeat;
+}
+.delete-tray .locked {
+	background: #FFF url('/components/com_courses/assets/img/locked.png') 3px 3px no-repeat;
+	box-shadow: 0 0 3px blue;
+}
+.delete-tray .locked:hover {
+	box-shadow: 0 0 5px blue;
+}
+.delete-tray .lock:active {
+	box-shadow: inset 1px 1px 0 #666;
+}
+.delete-tray .assets-deleted {
 	display: none;
+	margin: 10px 5px;
+	list-style: none;
 	height: 100%;
-	border: 2px dotted #AAA;
-	background: #FFF;
-	padding: 5px;
-
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
 }
-.delete-tray-target .asset {
-	padding-left: 50px;
+.open .assets-deleted {
+	display: inherit;
 }
-.delete-tray-target .asset:before {
+.delete-tray .asset {
+	padding-left: 15px;
+}
+.delete-tray .asset:before {
 	display: none;
 }
-.delete-tray-target .asset:after {
-	left: 30px;
+.delete-tray .asset:after {
+	left: 0;
 }
-.delete-tray-target .next-step-publish {
+.delete-tray .next-step-publish {
 	display: none;
 }
-.delete-tray-target .toggle-editable {
+.delete-tray .toggle-editable {
 	cursor: default;
+}
+.delete-tray .sortable-assets-handle {
+	display: none;
+}
+.delete-tray .restore {
+	display: block;
+	margin-top: -2px;
+	float: right;
 }
 .course:before {
 	content: "\f09c";
@@ -225,11 +304,12 @@ ul {
 }
 .asset-group-item {
 	position: relative;
-	overflow: hidden;
+	overflow: visible;
 	border: 1px dotted #AAA;
 	margin: 10px 0 1px 0;
 	background: #FAFAFA;
 	padding-left: 60px;
+	min-height: 59px;
 }
 .asset-group-item:before {
 	content: '\f0dc';
@@ -280,6 +360,9 @@ ul {
 .next-step-upload {
 	float: right;
 }
+.restore {
+	display: none;
+}
 .add-new {
 	opacity: .9;
 	padding: 5px 5px 5px 30px;
@@ -300,7 +383,7 @@ ul {
 }
 .asset-group {
 	width: 100%;
-	overflow: hidden;
+	overflow: visible;
 }
 
 /* Asset types */

@@ -445,6 +445,12 @@ class CoursesApiController extends Hubzero_Api_Controller
 			$row->url = urldecode($url);
 		}
 
+		// If we have an state
+		if($state = JRequest::getInt('state', false))
+		{
+			$row->state = $state;
+		}
+
 		// When creating a new asset (which probably won't happen via this method, but rather the assetNew method above)
 		if(!$id)
 		{
@@ -695,6 +701,7 @@ class CoursesApiController extends Hubzero_Api_Controller
 		}
 
 		$state = ($assetObj->state == 1) ? 0 : 1;
+		$state = ($assetObj->state == 2) ? 0 : $state;
 
 		// Save the asset state
 		if (!$assetObj->save(array('state'=>$state)))

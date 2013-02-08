@@ -67,8 +67,13 @@ if ($this->a->get('type') == 'video')
 					<?= ($this->a->get('state') == 0) ? '' : 'checked="checked"' ?> />
 				<input type="hidden" class="asset_id" name="id" value="<?= $this->a->get('id') ?>" />
 				<input type="hidden" name="course_id" value="<?= $this->course->get('id') ?>" />
+				<input type="hidden" name="scope_id" value="<?= $this->ag->get('id') ?>" />
+				<input type="hidden" name="scope" value="asset_group" />
 				<input type="hidden" name="offering" value="<?= $this->course->offering()->get('alias') ?>" />
 			</label>
 		</span>
 	</form>
+	<div class="restore">
+		<button>Restore</button>
+	</div>
 </li>

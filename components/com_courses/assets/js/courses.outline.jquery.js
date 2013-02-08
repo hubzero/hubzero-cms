@@ -191,15 +191,58 @@ HUB.CoursesOutline = {
 		var $ = this.jQuery;
 
 		$(".sortable-assets").sortable({
-			placeholder: ".placeholder-assets",
+			placeholder: "placeholder-assets",
 			handle: '.sortable-assets-handle',
 			forcePlaceholderSize: true,
 			revert: false,
 			tolerance: 'pointer',
 			opacity: '0.6',
 			items: 'li',
-			connectWith: '.delete-tray-target',
-			zIndex: 1000,
+			connectWith: '.assets-deleted',
+			zIndex: 10000,
+			remove: function(event, ui){
+				// Get count of assets remaining
+				var assetCount = $(this).find('li').length;
+
+				if(assetCount === 0) {
+					// Add an empty asset back
+					$(this).append(_.template(HUB.CoursesOutline.Templates.emptyasset));
+				}
+
+				// @FIXME: we should only resize the one we're currently changing
+				HUB.CoursesOutline.resizeFileUploader();
+
+				// Get the form data (we're just stealing the info from another form)
+				var form = ui.item.find('.title-form').serializeArray();
+
+				// Set state equal to 2 for deleted
+				form.push({'name':'state', 'value':2});
+
+				// Now actually mark the asset as deleted
+				$.ajax({
+					url: '/api/courses/assetsave',
+					data: form,
+					dataType: "json",
+					type: 'POST',
+					cache: false,
+					statusCode: {
+						201: function(data){
+							// Report a message?
+						},
+						401: function(data){
+							// Display the error message
+							HUB.CoursesOutline.errorMessage(data.responseText);
+						},
+						404: function(data){
+							HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
+						},
+						500: function(data){
+							// Display the error message
+							HUB.CoursesOutline.errorMessage(data.responseText);
+						}
+					}
+				});
+			},
 			update: function(){
 				// Save new order to the database
 				var sorted   = $(this).sortable('serialize');
@@ -238,31 +281,94 @@ HUB.CoursesOutline = {
 	{
 		var $ = this.jQuery;
 
-		// Toggle tray
-		$('.delete-tray-handle').on('click', function() {
-			if($('.delete-tray-target').css('display') == 'none') {
-				$('.delete-tray-target').css('width', $(window).width()*0.3-55);
-				$('.unit').animate({'margin-left':$(window).width()*0.3}, 500);
-				$('.delete-tray').animate({'width':$(window).width()*0.3-10}, 500);
-				$('.delete-tray-target').show('slide', 'linear', 500);
-			} else {
-				$('.unit').animate({'margin-left':30}, 500);
-				$('.delete-tray').animate({'width':20}, 500);
-				$('.delete-tray-target').hide('slide', 'linear', 500);
+		// Var to hold whether the delete tray has been locked open
+		var locked = false;
+
+		// Expand the submit button on hover (not necessary, just fun...)
+		if($.isFunction($().hoverIntent)){
+			$('.delete-tray').hoverIntent({
+				over: function(){
+					if(!locked) {
+						$('.unit').animate({'margin-left':315}, 500);
+						$('.delete-tray').animate({'margin-left':0}, 500, function() {
+							$('.delete-tray').toggleClass('closed').toggleClass('open');
+						});
+					}
+				},
+				out: function(){
+					if(!locked) {
+						$('.unit').animate({'margin-left':30}, 500);
+						$('.delete-tray').animate({'margin-left':-285}, 500, function() {
+							$('.delete-tray').toggleClass('closed').toggleClass('open');
+						});
+					}
+				},
+				timeout: 1000,
+				interval: 250
+			});
+		}
+
+		// Make this a sortable list (even though we won't actually sort the trash), so that we can connect with the assets list
+		$('.assets-deleted').sortable({
+			'handle': '.sortable-assets-handle',
+			over: function(){
+				// @FIXME: we should only resize the one we're currently changing
+				HUB.CoursesOutline.resizeFileUploader();
 			}
 		});
 
-		$('.delete-tray-target').sortable({
-			placeholder: ".placeholder-assets-delete",
-			handle: '.sortable-assets-handle',
-			forcePlaceholderSize: true,
-			revert: false,
-			tolerance: 'pointer',
-			opacity: '0.6',
-			items: 'li',
-			connectWith: '.sortable-assets',
-			zIndex: 1000
+		// Toggle the delete tray lock
+		$('.delete-tray .lock').on('click', function() {
+			$(this).toggleClass('locked').toggleClass('unlocked');
+			locked = (!locked) ? true : false;
 		});
+
+		// Restore an asset when clicking restore
+		$('.delete-tray').on('click', '.restore', function() {
+			var form = $(this).siblings('.next-step-publish');
+			var li   = $(this).parents('li');
+
+			// Now actually mark the asset as deleted
+			$.ajax({
+				url: '/api/courses/assettogglepublished',
+				data: form.serializeArray(),
+				dataType: "json",
+				type: 'POST',
+				cache: false,
+				statusCode: {
+					201: function(data){
+						// Report a message?
+						li.fadeOut('fast', function() {
+							var html  = li.clone();
+							var scope = li.find('input[name="scope_id"]').val();
+
+							li.remove();
+
+							$('#assetgroupitem_'+scope+' .assets-list').append(html);
+
+							html.find('span.published-label-text').html('Mark as reviewed and publish?');
+							html.removeClass('published').addClass('notpublished');
+
+							html.slideDown('fast', 'linear', function(){
+								HUB.CoursesOutline.resizeFileUploader();
+							});
+						});
+					},
+					401: function(data){
+						// Display the error message
+						HUB.CoursesOutline.errorMessage(data.responseText);
+					},
+					404: function(data){
+						HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
+					},
+					500: function(data){
+						// Display the error message
+						HUB.CoursesOutline.errorMessage(data.responseText);
+					}
+				}
+			});
+		});
+
 	},
 
 	makeTitlesEditable: function()
@@ -930,10 +1036,24 @@ HUB.CoursesOutline = {
 						'<input class="uniform published-checkbox" name="published" type="checkbox" />',
 						'<input type="hidden" class="asset_id" name="id" value="<%= asset_id %>" />',
 						'<input type="hidden" name="course_id" value="<%= course_id %>" />',
+						'<input type="hidden" name="scope_id" value="<%= scope_id %>" />',
+						'<input type="hidden" name="scope" value="asset_group" />',
 						'<input type="hidden" name="offering" value="<%= offering_alias %>" />',
 					'</label>',
 					'</span>',
 				'</form>',
+				'<div class="restore">',
+					'<button>Restore</button>',
+				'</div>',
+			'</li>'
+		].join("\n"),
+
+		emptyasset : [
+			'<li class="asset-item asset missing nofiles">',
+				'No files',
+				'<span class="next-step-upload">',
+					'Upload files &rarr;',
+				'</span>',
 			'</li>'
 		].join("\n"),
 
