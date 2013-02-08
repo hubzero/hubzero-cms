@@ -101,19 +101,38 @@ class CollectionsModelFollowing extends JObject
 		else if (is_object($oid))
 		{
 			$this->_tbl->bind($oid);
-			if (isset($oid->posts))
+
+			$properties = get_object_vars($this->_tbl);
+			foreach (get_object_vars($oid) as $key => $property)
+			{
+				if (!array_key_exists($key, $properties))
+				{
+					$this->_tbl->set($key, $property);
+				}
+			}
+
+			/*if (isset($oid->posts))
 			{
 				$this->_tbl->set('posts', $oid->posts);
-			}
+			}*/
 		}
 		else if (is_array($oid))
 		{
 			$this->_tbl->bind($oid);
-			if (isset($oid['posts']))
+			/*if (isset($oid['posts']))
 			{
 				$this->_tbl->set('posts', $oid['posts']);
+			}*/
+			$properties = get_object_vars($this->_tbl);
+			foreach (array_keys($oid) as $property)
+			{
+				if (!array_key_exists($property, $properties))
+				{
+					$this->_tbl->set($property, $oid[$property]);
+				}
 			}
 		}
+		//$this->_obj = new CollectionsModelFollow($this->get('following_id'));
 	}
 
 	/**
@@ -199,14 +218,22 @@ class CollectionsModelFollowing extends JObject
 	{
 		if (!isset($this->_follower) || !is_object($this->_follower))
 		{
-			if ($this->get('follower_type') == 'group')
+			$path = JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'following';
+
+			if (is_file($path . DS . $this->get('follower_type') . '.php'))
 			{
-				$this->_follower = Hubzero_Group::getInstance($this->get('follower_id'));
+				require_once($path . DS . $this->get('follower_type') . '.php');
+
+				$cls = 'CollectionsModelFollowing' . ucfirst(strtolower($this->get('follower_type')));
 			}
 			else
 			{
-				$this->_follower = Hubzero_User_Profile::getInstance($this->get('follower_id'));
+				require_once($path . DS . 'abstract.php');
+
+				$cls = 'CollectionsModelFollowingAbstract';
 			}
+
+			$this->_follower = new $cls($this->get('follower_id'));
 		}
 		return $this->_follower;
 	}
@@ -218,24 +245,26 @@ class CollectionsModelFollowing extends JObject
 	 */
 	public function following()
 	{
-		if (!isset($this->_follower) || !is_object($this->_follower))
+		if (!isset($this->_following) || !is_object($this->_following))
 		{
-			switch ($this->get('following_type'))
+			$path = JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'following';
+
+			if (is_file($path . DS . $this->get('following_type') . '.php'))
 			{
-				case 'group':
-					$this->_follower = Hubzero_Group::getInstance($this->get('following_id'));
-				break;
+				require_once($path . DS . $this->get('following_type') . '.php');
 
-				case 'member':
-					$this->_follower = JUser::getInstance($this->get('following_id'));
-				break;
-
-				case 'collection':
-					$this->_follower = CollectionsModelCollection::getInstance($this->get('following_id'));
-				break;
+				$cls = 'CollectionsModelFollowing' . ucfirst(strtolower($this->get('following_type')));
 			}
+			else
+			{
+				require_once($path . DS . 'abstract.php');
+
+				$cls = 'CollectionsModelFollowingAbstract';
+			}
+
+			$this->_following = new $cls($this->get('following_id'));
 		}
-		return $this->_follower;
+		return $this->_following;
 	}
 
 	/**
@@ -245,29 +274,65 @@ class CollectionsModelFollowing extends JObject
 	 */
 	public function count($what='following')
 	{
-		$value = 0;
+		$what = strtolower(trim($what));
 
-		switch (strtolower(trim($what)))
+		$value = $this->get($what);
+
+		switch ($what)
 		{
 			case 'following':
-				$value = $this->_tbl->count(array(
-					'follower_type' => $this->get('following_type'),
-					'follower_id' => $this->get('following_id')
-				));
+				if ($value === null)
+				{
+					$value = $this->_tbl->count(array(
+						'follower_type' => $this->get('following_type'),
+						'follower_id'   => $this->get('following_id')
+					));
+					$this->set($what, $value);
+				}
 			break;
 
 			case 'followers':
-				$value = $this->_tbl->count(array(
-					'following_type' => $this->get('following_type'),
-					'following_id' => $this->get('following_id')
-				));
+				if ($value === null)
+				{
+					$value = $this->_tbl->count(array(
+						'following_type' => $this->get('following_type'),
+						'following_id'   => $this->get('following_id')
+					));
+					$this->set($what, $value);
+				}
 			break;
 
 			case 'collections':
+				if ($value === null && $thi->get('following_type') != 'collection')
+				{
+					$model = CollectionsModelCollections::getInstance($this->get('following_type'), $this->get('following_id'));
+					$value = $model->collections(array('count'));
+					$this->set($what, $value);
+				}
 			break;
 
 			case 'posts':
+				if ($value === null)
+				{
+					if ($thi->get('following_type') != 'collection')
+					{
+						$model = CollectionsModelCollections::getInstance($this->get('following_type'), $this->get('following_id'));
+						$value = $model->posts(array('count'));
+						$this->set($what, $value);
+					}
+					else
+					{
+						$model = CollectionsModelCollection::getInstance($this->get('following_id'));
+						$value = $model->posts(array('count'));
+						$this->set($what, $value);
+					}
+				}
 			break;
+		}
+
+		if ($value === null)
+		{
+			$value = 0;
 		}
 
 		return $value;
@@ -361,22 +426,5 @@ class CollectionsModelFollowing extends JObject
 		}
 
 		return true;
-	}
-
-	/**
-	 * Get the item entry for a collection
-	 * 
-	 * @return     void
-	 */
-	public function posts()
-	{
-		switch ($this->get('following_type'))
-		{
-			case 'member':
-			break;
-
-			case 'collection':
-			break;
-		}
 	}
 }

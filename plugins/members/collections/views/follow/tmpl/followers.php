@@ -50,24 +50,31 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 
 	<fieldset class="filters">
 		<ul>
+<?php if ($this->params->get('access-manage-collection')) { ?>
+			<li>
+				<a class="livefeed tooltips" href="<?php echo JRoute::_($base); ?>" title="<?php echo JText::_('Live feed :: View posts from everything you\'re following'); ?>">
+					<span><?php echo JText::_('Feed'); ?></span>
+				</a>
+			</li>
+<?php } ?>
 			<li>
 				<a class="collections count" href="<?php echo JRoute::_($base . '&task=all'); ?>">
-					<?php echo JText::sprintf('<strong>%s</strong> collections', $this->collections); ?>
+					<span><?php echo JText::sprintf('<strong>%s</strong> collections', $this->collections); ?></span>
 				</a>
 			</li>
 			<li>
 				<a class="posts count" href="<?php echo JRoute::_($base . '&task=posts'); ?>">
-					<?php echo JText::sprintf('<strong>%s</strong> posts', $this->posts); ?>
+					<span><?php echo JText::sprintf('<strong>%s</strong> posts', $this->posts); ?></span>
 				</a>
 			</li>
 			<li>
 				<a class="followers count active" href="<?php echo JRoute::_($base . '&task=followers'); ?>">
-					<?php echo JText::sprintf('<strong>%s</strong> followers', $this->total); ?>
+					<span><?php echo JText::sprintf('<strong>%s</strong> followers', $this->total); ?></span>
 				</a>
 			</li>
 			<li>
 				<a class="following count" href="<?php echo JRoute::_($base . '&task=following'); ?>">
-					<?php echo JText::sprintf('<strong>%s</strong> following', $this->following); ?>
+					<span><?php echo JText::sprintf('<strong>%s</strong> following', $this->following); ?></span>
 				</a>
 			</li>
 		</ul>
@@ -82,24 +89,14 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 			</caption>
 			<tbody>
 	<?php foreach ($this->rows as $row) { ?>
-				<tr>
-				<?php if ($row->get('follower_type') == 'member') { ?>
+				<tr class="<?php echo $row->get('follower_type'); ?>">
 					<th class="entry-img">
-						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($row->get('follower_id'), 0); ?>" width="40" height="40" alt="Profile picture of <?php echo $this->escape(stripslashes($row->follower()->get('name'))); ?>" />
+						<img src="<?php echo $row->follower()->image(); ?>" width="40" height="40" alt="Profile picture of <?php echo $this->escape(stripslashes($row->follower()->title())); ?>" />
 					</th>
 					<td>
-						<a class="entry-title" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('follower_id')); ?>">
-							<?php echo $this->escape(stripslashes($row->follower()->get('name'))); ?>
+						<a class="entry-title" href="<?php echo JRoute::_($row->follower()->link()); ?>">
+							<?php echo $this->escape(stripslashes($row->follower()->title())); ?>
 						</a>
-				<?php } else if ($row->get('follower_type') == 'group') { ?>
-					<th class="entry-img">
-						<img src="<?php echo $row->follower()->get('logo'); ?>" width="40" height="40" alt="Profile picture of <?php echo $this->escape(stripslashes($row->follower()->get('description'))); ?>" />
-					</th>
-					<td>
-						<a class="entry-title" href="<?php echo JRoute::_('index.php?option=com_groups&gid=' . $row->follower()->get('cn')); ?>">
-							<?php echo $this->escape(stripslashes($row->follower()->get('name'))); ?>
-						</a>
-				<?php } ?>
 						<br />
 						<span class="entry-details">
 							<span class="follower count"><?php echo JText::sprintf('<strong>%s</strong> followers', $row->count('followers')); ?></span>

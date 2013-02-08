@@ -50,24 +50,31 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 
 	<fieldset class="filters">
 		<ul>
+<?php if ($this->params->get('access-manage-collection')) { ?>
+			<li>
+				<a class="livefeed tooltips" href="<?php echo JRoute::_($base); ?>" title="<?php echo JText::_('Live feed :: View posts from everything you\'re following'); ?>">
+					<span><?php echo JText::_('Feed'); ?></span>
+				</a>
+			</li>
+<?php } ?>
 			<li>
 				<a class="collections count active" href="<?php echo JRoute::_($base . '&task=all'); ?>">
-					<?php echo JText::sprintf('<strong>%s</strong> collections', $this->rows->total()); ?>
+					<span><?php echo JText::sprintf('<strong>%s</strong> collections', $this->rows->total()); ?></span>
 				</a>
 			</li>
 			<li>
 				<a class="posts count" href="<?php echo JRoute::_($base . '&task=posts'); ?>">
-					<?php echo JText::sprintf('<strong>%s</strong> posts', $this->posts); ?>
+					<span><?php echo JText::sprintf('<strong>%s</strong> posts', $this->posts); ?></span>
 				</a>
 			</li>
 			<li>
 				<a class="followers count" href="<?php echo JRoute::_($base . '&task=followers'); ?>">
-					<?php echo JText::sprintf('<strong>%s</strong> followers', $this->followers); ?>
+					<span><?php echo JText::sprintf('<strong>%s</strong> followers', $this->followers); ?></span>
 				</a>
 			</li>
 			<li>
 				<a class="following count" href="<?php echo JRoute::_($base . '&task=following'); ?>">
-					<?php echo JText::sprintf('<strong>%s</strong> following', $this->following); ?>
+					<span><?php echo JText::sprintf('<strong>%s</strong> following', $this->following); ?></span>
 				</a>
 			</li>
 		</ul>

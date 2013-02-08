@@ -41,24 +41,31 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 
 	<fieldset class="filters">
 		<ul>
+<?php if ($this->params->get('access-manage-collection')) { ?>
+			<li>
+				<a class="livefeed tooltips" href="<?php echo JRoute::_($base); ?>" title="<?php echo JText::_('Live feed :: View posts from everything you\'re following'); ?>">
+					<span><?php echo JText::_('Feed'); ?></span>
+				</a>
+			</li>
+<?php } ?>
 			<li>
 				<a class="collections count" href="<?php echo JRoute::_($base . '&task=all'); ?>">
-					<?php echo JText::sprintf('<strong>%s</strong> collections', $this->collections); ?>
+					<span><?php echo JText::sprintf('<strong>%s</strong> collections', $this->collections); ?></span>
 				</a>
 			</li>
 			<li>
 				<a class="posts count" href="<?php echo JRoute::_($base . '&task=posts'); ?>">
-					<?php echo JText::sprintf('<strong>%s</strong> posts', $this->posts); ?>
+					<span><?php echo JText::sprintf('<strong>%s</strong> posts', $this->posts); ?></span>
 				</a>
 			</li>
 			<li>
 				<a class="followers count" href="<?php echo JRoute::_($base . '&task=followers'); ?>">
-					<?php echo JText::sprintf('<strong>%s</strong> followers', $this->followers); ?>
+					<span><?php echo JText::sprintf('<strong>%s</strong> followers', $this->followers); ?></span>
 				</a>
 			</li>
 			<li>
 				<a class="following count active" href="<?php echo JRoute::_($base . '&task=following'); ?>">
-					<?php echo JText::sprintf('<strong>%s</strong> following', $this->rows->total()); ?>
+					<span><?php echo JText::sprintf('<strong>%s</strong> following', $this->rows->total()); ?></span>
 				</a>
 			</li>
 		</ul>
@@ -74,91 +81,27 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 				<tbody>
 		<?php foreach ($this->rows as $row) { ?>
 					<tr class="<?php echo $row->get('following_type'); ?>">
-		<?php 
-			switch ($row->get('following_type'))
-			{
-				case 'group':
-					ximport('Hubzero_Group');
-					$group = Hubzero_Group::getInstance($row->get('following_id'));
-					
-					$unfollow = 'index.php?option=com_groups&gid=' . $row->get('following_id') . '&active=collections&scope=unfollow';
-					?>
 						<th>
+						<?php if ($row->following()->image()) { ?>
+							<img src="<?php echo $row->following()->image(); ?>" width="40" height="40" alt="Profile picture of <?php echo $this->escape(stripslashes($row->following()->title())); ?>" />
+						<?php } else { ?>
 							<span class="entry-id">
 								<?php echo $row->get('following_id'); ?>
 							</span>
+						<?php } ?>
 						</th>
 						<td>
-							<a class="entry-title" href="<?php echo JRoute::_('index.php?option=com_groups&gid=' . $group->get('cn') . '&active=collections'); ?>">
-								<?php echo $this->escape(stripslashes($group->get('description'))); ?>
+							<a class="entry-title" href="<?php echo JRoute::_($row->following()->link()); ?>">
+								<?php echo $this->escape(stripslashes($row->following()->title())); ?>
 							</a><br />
 							<span class="entry-details">
 								<span class="follower count"><?php echo JText::sprintf('<strong>%s</strong> followers', $row->count('followers')); ?></span>
 								<span class="following count"><?php echo JText::sprintf('<strong>%s</strong> following', $row->count('following')); ?></span>
 							</span>
 						</td>
-					<?php
-				break;
-
-				case 'member':
-					ximport('Hubzero_User_Profile');
-					$member = Hubzero_User_Profile::getInstance($row->get('following_id'));
-					
-					$unfollow = 'index.php?option=com_members&id=' . $row->get('following_id') . '&active=collections&task=unfollow';
-					?>
-						<th>
-							<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($member, 0); ?>" width="40" height="40" alt="Profile picture of <?php echo $this->escape(stripslashes($member->get('name'))); ?>" />
-						</th>
-						<td>
-							<a class="entry-title" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=collections'); ?>">
-								<?php echo $this->escape(stripslashes($member->get('name'))); ?>
-							</a><br />
-							<span class="entry-details">
-								<span class="follower count"><?php echo JText::sprintf('<strong>%s</strong> followers', $row->count('followers')); ?></span>
-								<span class="following count"><?php echo JText::sprintf('<strong>%s</strong> following', $row->count('following')); ?></span>
-							</span>
-						</td>
-					<?php
-				break;
-				
-				case 'collection':
-				default:
-					$collection = CollectionsModelCollection::getInstance($row->get('following_id'));
-					switch ($collection->get('object_type'))
-					{
-						case 'group':
-							$unfollow = 'index.php?option=com_groups&gid=' . $collection->get('object_id') . '&active=collections&scope=' . $collection->get('alias') . '/unfollow';
-							$href = 'index.php?option=com_groups&gid=' . $collection->get('object_id') . '&active=collections&scope=' . $collection->get('alias');
-						break;
-
-						case 'member':
-						default:
-							//$unfollow = $base . '&task=unfollow/' . $row->get('following_type') . '/' . $row->get('following_id');
-							$unfollow = 'index.php?option=com_members&id=' . $collection->get('object_id') . '&active=collections&task=' . $collection->get('alias') . '/unfollow';
-							$href = 'index.php?option=com_members&id=' . $collection->get('object_id') . '&active=collections&task=' . $collection->get('alias');
-						break;
-					}
-		?>
-						<th>
-							<span class="entry-id">
-								<?php echo $row->get('following_id'); ?>
-							</span>
-						</th>
-						<td>
-							<a class="entry-title" href="<?php echo JRoute::_($href); ?>">
-								<?php echo $this->escape(stripslashes($collection->get('title'))); ?>
-							</a><br />
-							<span class="entry-details">
-								<span class="follower count"><?php echo JText::sprintf('<strong>%s</strong> followers', $row->count('followers')); ?></span>
-							</span>
-						</td>
-		<?php
-				break;
-			}
-		?>
 					<?php if ($this->params->get('access-manage-collection')) { ?>
 						<td>
-							<a class="unfollow btn" data-id="<?php echo $row->get('following_id'); ?>" data-text-follow="<?php echo JText::_('Follow'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow'); ?>" href="<?php echo JRoute::_($unfollow); ?>">
+							<a class="unfollow btn" data-id="<?php echo $row->get('following_id'); ?>" data-text-follow="<?php echo JText::_('Follow'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow'); ?>" href="<?php echo JRoute::_($row->following()->link('unfollow')); ?>">
 								<span><?php echo JText::_('Unfollow'); ?></span>
 							</a>
 						</td>

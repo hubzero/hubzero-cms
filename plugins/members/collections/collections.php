@@ -839,8 +839,12 @@ class plgMembersCollections extends JPlugin
 			$filters['access'] = 0;
 		}*/
 
-		//$filters['count'] = true;
-		$view->collections = $this->model->collections(array('count' => true));
+		$filters['count'] = true;
+		if (!$this->params->get('access-manage-collection')) 
+		{
+			$filters['access'] = 0;
+		}
+		$view->collections = $this->model->collections($filters);
 
 		/*$filters['count'] = false;
 		$rows = $this->model->collections($filters);

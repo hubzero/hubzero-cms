@@ -112,6 +112,15 @@
 	fieldset.filters .count {
 		margin-right: 1em;
 	}*/
+	fieldset.filters li a.livefeed span {
+		display: none;
+	}
+	fieldset.filters li a.livefeed:before {
+		content: "\f056";
+		font-family: "Fontcons";
+		font-size: 1.2em;
+		line-height: 2em;
+	}
 	p.overview .count strong,
 	fieldset.filters .count strong {
 		font-size: 1.2em;
