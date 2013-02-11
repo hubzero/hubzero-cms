@@ -699,9 +699,14 @@ class WikiControllerPage extends Hubzero_Controller
 
 		$this->revision = new WikiPageRevision($this->database);
 		$this->revision->pageid     = $rev['pageid'];
+		
+		$this->revision->loadByVersion($this->revision->pageid);
+		$this->revision->id = 0;
+		$this->revision->version++;
+		
 		$this->revision->created    = date('Y-m-d H:i:s', time());
 		$this->revision->created_by = $this->juser->get('id');
-		$this->revision->version    = (isset($rev['version']))    ? intval($rev['version'])    : 0;
+		//$this->revision->version    = (isset($rev['version']))    ? intval($rev['version'])    : 0;
 		$this->revision->summary    = (isset($rev['summary']))    ? preg_replace('/\s+/', ' ', trim($rev['summary'])) : '';
 		$this->revision->minor_edit = (isset($rev['minor_edit'])) ? intval($rev['minor_edit']) : 0;
 		$this->revision->pagetext   = (isset($rev['pagetext']))   ? rtrim($rev['pagetext'])    : '';
