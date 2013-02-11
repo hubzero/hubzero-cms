@@ -32,6 +32,18 @@
 	div.draggable .compactlist li span span.invitee {
 		color: #aaaaaa;
 	}
+	div.draggable .compactlist li span.pending-approval {
+		background-color:#FF9900;
+		color:#FFF;
+		-moz-border-radius: 3px;
+		-webkit-border-radius: 3px;
+		-khtml-border-radius: 3px;	
+		border-radius: 3px;
+		margin:0;
+		padding:3px 5px;
+		font-weight:bold;
+		font-size:0.9em;
+	}
 	div.draggable .compactlist li.group .actions {
 		text-align: left;
 		display: block;

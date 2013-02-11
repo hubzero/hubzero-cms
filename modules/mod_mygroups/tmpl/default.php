@@ -47,12 +47,17 @@ $groups = $this->groups;
 		<li class="group">
 			<a href="<?php echo JRoute::_('index.php?option=com_groups&gid=' . $group->cn); ?>"><?php echo stripslashes($group->description); ?></a>
 			<span><span class="<?php echo $status; ?> status"><?php echo JText::_('MOD_MYGROUPS_STATUS_' . strtoupper($status)); ?></span></span>
-<?php if ($group->regconfirmed && !$group->registered) { ?>
-			<span class="actions">
-				<a class="action-accept" href="<?php echo JRoute::_('index.php?option=com_groups&gid=' . $group->cn . '&task=accept'); ?>"><?php echo JText::_('MOD_MYGROUPS_ACTION_ACCEPT'); ?></a> 
-<?php /*				<a class="action-cancel" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$group->cn.'&task=cancel'); ?>"><?php echo JText::_('MOD_MYGROUPS_ACTION_CANCEL'); ?></a> */ ?>
-			</span>
-<?php } ?>
+			<?php if(!$group->approved): ?>
+				<br />
+				<span class="status pending-approval"><?php echo JText::_('Group Pending Approval'); ?></span>
+			<?php endif; ?>
+			<?php if ($group->regconfirmed && !$group->registered) : ?>
+				<span class="actions">
+					<a class="action-accept" href="<?php echo JRoute::_('index.php?option=com_groups&gid=' . $group->cn . '&task=accept'); ?>">
+						<?php echo JText::_('MOD_MYGROUPS_ACTION_ACCEPT'); ?> &rsaquo;
+					</a>
+				</span>
+			<?php endif; ?>
 		</li>
 <?php
 			$i++;
