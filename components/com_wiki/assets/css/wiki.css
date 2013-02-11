@@ -233,9 +233,9 @@
 
 /* Tags */
 	.article-tags {
-		background: #F4F4F4 url("/components/com_wiki/assets/img/tag_orange.png") 0.5em 0.5em no-repeat;
+		background: #F4F4F4; /* url("/components/com_wiki/assets/img/tag_orange.png") 0.5em 0.5em no-repeat;*/
 		margin: 0 0 1em 0;
-		padding: 0.5em 0.5em 0.4em 2em;
+		padding: 0.5em;
 	}
 	.article-tags h3 {
 		display: none;

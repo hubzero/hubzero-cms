@@ -105,9 +105,9 @@
 
 /* Tags */
 	.article-tags {
-		background: #F4F4F4 url("/components/com_wiki/assets/img/tag_orange.png") 0.5em 0.5em no-repeat;
+		background: #F4F4F4; /* url("/components/com_wiki/assets/img/tag_orange.png") 0.5em 0.5em no-repeat;*/
 		margin: 0 0 1em 0;
-		padding: 0.5em 0.5em 0.4em 2em;
+		padding: 0.5em;
 	}
 	.com_groups .group_wiki .article-tags h3 {
 		display: none;
@@ -176,6 +176,17 @@
 	.wikipage .article-toc li {
 		margin: 0;
 		padding: 0.2em;
+	}
+
+	.wikipage fieldset {
+		border: 1px solid #ccc;
+		background: #fff;
+		margin: 1em -18px;
+		padding: 1em;
+	}
+	.wikipage fieldset legend {
+		margin: 0 1em;
+		padding: 0 1em;
 	}
 
 /* Diffs */
