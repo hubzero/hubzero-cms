@@ -205,7 +205,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php if (!$group->get('approved')) { ?>
 					<a class="jgrid" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=approve&amp;id[]=<?php echo $row->cn; ?>" title="<?php echo JText::_('Approve Group'); ?>">
 						<span class="not-approved">
-							<span class="text"><?php echo JText::_('Not Approved'); ?></span>
+							<span class="text"><?php echo JText::_('Approve Group'); ?></span>
 						</span>
 					</a>
 					<?php } else { ?>
