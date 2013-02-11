@@ -301,6 +301,7 @@ if ($results)
 					}
 
 					$i = 0;
+					$total = ($total) ? $total : 1;
 					foreach ($dataset as $row)
 					{
 						if ($row->rank == '0') 
@@ -413,6 +414,7 @@ if ($results)
 						$cls = 'even';
 						//$pie = array();
 						$i = 0;
+						$total = ($total) ? $total : 1;
 
 						foreach ($dataset as $row)
 						{
@@ -715,6 +717,7 @@ if ($results)
 
 					var footer = data.shift();
 					var total = footer['data'];
+					total = (total > 0) ? total : 1;
 
 					for (var i=0; i < data.length; i++)
 					{
