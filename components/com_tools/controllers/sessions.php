@@ -749,6 +749,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 		$app->caption  = $row->sessname;
 		$app->name     = $row->appname;
 		$app->username = $row->username;
+		$app->owns     = $ms->checkSession($app->sess);
 
 		// Get plugins
 		JPluginHelper::importPlugin('mw', $app->name);

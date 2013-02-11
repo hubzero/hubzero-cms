@@ -76,11 +76,19 @@ if (!$this->app->sess) {
 						<span><?php echo JText::_('Keep for later'); ?></span>
 					</a>
 				</li>
+			<?php if ($this->app->owns) { ?>
 				<li>
 					<a id="app-btn-close" class="terminate sessiontips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=stop&sess='.$this->app->sess.'&return='.$this->rtrn); ?>" title="Warning! :: This will end your session.">
 						<span><?php echo JText::_('Terminate'); ?></span>
 					</a>
 				</li>
+			<?php } else { ?>
+				<li>
+					<a id="app-btn-close" class="terminate sessiontips" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=unshare&sess=' . $this->app->sess.'&username='.$juser->get('username').'&return='.$this->rtrn); ?>" title="Warning! :: This will end your session.">
+						<span><?php echo JText::_('Stop sharing'); ?></span>
+					</a>
+				</li>
+			<?php } ?>
 			</ul>
 <?php } ?>
 		</div><!-- #app-header -->
