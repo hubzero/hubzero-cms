@@ -159,6 +159,11 @@ class plgResourcesUsage extends JPlugin
 				$this->getTopValues($model->resource->id, JRequest::getVar('datetime', '0000-00-00 00:00:00'));
 				return;
 			}
+			if ($action == 'overview')
+			{
+				$this->getValues($model->resource->id, JRequest::getInt('period', 13));
+				return;
+			}
 			ximport('Hubzero_Document');
 			Hubzero_Document::addComponentStylesheet('com_usage');
 	
@@ -247,14 +252,14 @@ class plgResourcesUsage extends JPlugin
 	 * @param      integer $id  Resource ID
 	 * @return     array
 	 */
-	public static function getOverview($id)
+	public static function getOverview($id, $period=1)
 	{
 		$database =& JFactory::getDBO();
 
 		$sql = "SELECT * 
 				FROM #__resource_stats_tools 
 				WHERE resid = '$id' 
-				AND period = '1'
+				AND period = '$period'
 				ORDER BY `datetime` ASC";
 		$database->setQuery($sql);
 		return $database->loadObjectList();
@@ -285,7 +290,7 @@ class plgResourcesUsage extends JPlugin
 				AND t.period = '1'
 				AND t.datetime = '" . $datetime . "-00 00:00:00'
 				AND t.id = $tid
-				AND v.top = '3'
+				AND v.top = '$top'
 				ORDER BY v.id, v.rank";
 		$database->setQuery($sql);
 		return $database->loadObjectList();
@@ -306,6 +311,55 @@ class plgResourcesUsage extends JPlugin
 		$sql = "SELECT t.id FROM #__resource_stats_tools AS t WHERE t.resid = '$id' AND t.period = '1' AND t.datetime = '" . $datetime . "-00 00:00:00' ORDER BY t.id LIMIT 1";
 		$database->setQuery($sql);
 		return $database->loadResult();
+	}
+
+	/**
+	 * Get data for orgs, countries, domains for a given time period
+	 * (1 = country, 2 = domain, 3 = org)
+	 * 
+	 * @param      integer $id       Resource ID
+	 * @param      string  $datetime Timestamp YYYY-MM-DD
+	 * @return     array
+	 */
+	public function getValues($id, $period)
+	{
+		$results = $this->getOverview($id, $period);
+		
+		$users = array();
+		//$interactive = array();
+		//$sessions = array();
+		$runs = array();
+		
+		$data = new stdClass;
+		$data->points = array();
+		//$data->runs = array();
+		
+		foreach ($results as $result)
+		{
+			//$point = new stdClass;
+			$result->datetime = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime)) . ' 00:00:00';
+			//$point->users = $result->users;
+			//$point->users = $result->users;
+	
+			//$data->users[]       = "[Date.parse('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime)) . " 00:00:00')," . $result->users . "]";
+			//$interactive[] = "[Date.parse('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime)) . " 00:00:00')," . $result->sessions . "]";
+			//$sessions[]    = "[Date.parse('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime)) . " 00:00:00')," . $result->simulations . "]";
+			//$data->runs[]        = "[Date.parse('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime)) . " 00:00:00')," . $result->jobs . "]";
+			$data->points[] = $result;
+
+			//$usersTop = ($result->users > $usersTop) ? $result->users : $usersTop;
+			//$runsTop = ($result->jobs > $runsTop) ? $result->jobs : $runsTop;
+		}
+		
+		/*$data = 'data = {
+			users: [' . implode(',', $users) . '],
+			runs: [' . implode(',', $runs) . ']
+		}';*/
+		
+		ob_clean();
+
+		echo json_encode($data);
+		die();
 	}
 
 	/**
@@ -370,6 +424,7 @@ class plgResourcesUsage extends JPlugin
 				$obj->label = $row->name;
 				$obj->data  = (int) number_format($row->value);
 				$obj->color = $colors[$i];
+				$obj->code  = '';
 
 				$r[$ky][] = $obj; //'{label: \'' . addslashes($row->name) . '\', data: ' . number_format($row->value) . ', color: \'' . $colors[$i] . '\'}';
 				$i++;
@@ -381,6 +436,15 @@ class plgResourcesUsage extends JPlugin
 		$r = array();
 		if ($countries)
 		{
+			$names = array();
+			foreach ($countries as $row)
+			{
+				$names[] = $row->name;
+			}
+
+			ximport('Hubzero_Geo');
+			$codes = Hubzero_Geo::getCodesByNames($names);
+
 			$i = 0;
 			foreach ($countries as $row)
 			{
@@ -400,6 +464,7 @@ class plgResourcesUsage extends JPlugin
 				$obj->label = $row->name;
 				$obj->data  = (int) number_format($row->value);
 				$obj->color = $colors[$i];
+				$obj->code  = (isset($codes[$row->name]) ? strtolower($codes[$row->name]['code']) : '');
 
 				$r[$ky][] = $obj; //'{label: \'' . addslashes($row->name) . '\', data: ' . number_format($row->value) . ', color: \'' . $colors[$i] . '\'}';
 				$i++;
@@ -430,6 +495,7 @@ class plgResourcesUsage extends JPlugin
 				$obj->label = $row->name;
 				$obj->data  = (int) number_format($row->value);
 				$obj->color = $colors[$i];
+				$obj->code  = '';
 
 				$r[$ky][] = $obj; //'{label: \'' . addslashes($row->name) . '\', data: ' . number_format($row->value) . ', color: \'' . $colors[$i] . '\'}';
 				$i++;
