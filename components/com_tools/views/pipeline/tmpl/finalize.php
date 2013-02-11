@@ -51,7 +51,7 @@ $wikiaccess = ToolsHelperHtml::getWikiAccess($this->status['wiki']);
 	<?php } ?>
 	
 	<h4><?php echo JText::_('CONTRIBTOOL_FINAL_REVIEW'); ?>:</h4>
-	<form action="index.php" method="post" id="versionForm" name="versionForm">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=finalizeversion&app=' . $this->status['toolname']); ?>" method="post" id="versionForm" name="versionForm">
 		<fieldset class="versionfield">
 			<div class="two columns first">
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

@@ -74,20 +74,20 @@ if ($this->licenses)
 		<h3>
 			<?php echo ($this->action == 'edit') ? JText::_('Specify license for next tool release:') : JText::_('Please confirm your license for this tool release:'); ?>
 		</h3>
-		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=license'); ?>" method="post" id="versionForm" name="versionForm">
+		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=license&app=' . $this->status['toolname']); ?>" method="post" id="versionForm" name="versionForm">
 			<fieldset class="versionfield">
 				<label><?php echo JText::_('CODE_ACCESS'); ?>:</label> 
 				<?php echo ToolsHelperHtml::formSelect('t_code', 't_code', $codeChoices, $this->code, 'shifted', ''); ?>
 				
 				<div id="lic_cl"><?php echo JText::_('LICENSE'); ?>:</div>
 				<div class="licinput" >
-					<textarea name="license" cols="50" rows="15" id="license"><?php echo stripslashes($this->license_choice['text']); ?></textarea>
+					<textarea name="license" cols="50" rows="15" id="license"><?php echo $this->escape(stripslashes($this->license_choice['text'])); ?></textarea>
 					<?php 
 					if ($this->licenses) 
 					{
 						foreach ($this->licenses as $l) 
 						{
-							echo '<input type="hidden" name="' . $l->name . '" id="' . $l->name . '" value="'.stripslashes(htmlentities($l->text)).'" />' . "\n";
+							echo '<input type="hidden" name="' . $l->name . '" id="' . $l->name . '" value="'.$this->escape(stripslashes($l->text)).'" />' . "\n";
 						}
 					} 
 					?>
