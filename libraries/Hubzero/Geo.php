@@ -127,6 +127,51 @@ class Hubzero_Geo
 	}
 
 	/**
+	 * Get a list of countries by continent
+	 * 
+	 * @param      array $names Parameter description (if any) ...
+	 * @return     array
+	 */
+	public function getCodesByNames($names=array())
+	{
+		if (!($gdb = Hubzero_Geo::getGeoDBO())) 
+		{
+			return array();
+		}
+		$names = array_map('strtolower', $names);
+
+		$gdb->setQuery("SELECT DISTINCT name, code FROM countries WHERE LOWER(name) IN ('" . implode("','", $names) . "')");
+		$values = $gdb->loadAssocList('name');
+		if (!is_array($values))
+		{
+			$values = array();
+		}
+		return $values;
+	}
+
+	/**
+	 * Get country based on short code
+	 * 
+	 * @param      string $code Short code (ex: us, de, fr, jp)
+	 * @return     string 
+	 */
+	public function getCodeByName($name='')
+	{
+		$code = '';
+		if ($name) 
+		{
+			if (!($gdb = Hubzero_Geo::getGeoDBO()))
+			{
+				return $code;
+			}
+
+			$gdb->setQuery("SELECT code FROM countries WHERE LOWER(name) = " . $gdb->Quote(strtolower($name)));
+			$code = stripslashes($gdb->loadResult());
+		}
+		return $code;
+	}
+
+	/**
 	 * Get country based on short code
 	 * 
 	 * @param      string $code Short code (ex: us, de, fr, jp)
