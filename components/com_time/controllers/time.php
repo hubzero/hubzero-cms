@@ -166,6 +166,9 @@ class TimeController extends Hubzero_Controller
 		{
 			$this->_getScripts();
 		}
+
+		ximport('Hubzero_Document');
+		Hubzero_Document::addSystemScript('jquery.infinitescroll');
 	}
 
 	/**

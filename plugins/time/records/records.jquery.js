@@ -35,6 +35,31 @@ HUB.Plugins.TimeRecords = {
 		// Show add filters box
 		$('#add-filters').css('display', 'block');
 
+		// Set page count var
+		var pageCount = 0;
+
+		// Enable infinite scroll
+		$('.container').infinitescroll({
+			navSelector     : '.list-footer',
+			nextSelector    : '.list-footer .next a',
+			itemSelector    : '.entries tbody tr',
+			contentSelector : '.entries tbody',
+			path: function(index) {
+				// Set page cound
+				pageCount = $('.list-footer .page').length;
+
+				var path  = $('.list-footer .next a').attr('href');
+				var limit = path.match(/limit[\-=]([0-9]*)/).slice(1);
+				var start = path.match(/start[\-=]([0-9]*)/).slice(1);
+				return  path.replace(/start[\-=]([0-9]*)/, 'no_html=1&start=' + (limit * index - limit));
+			}
+		}, function(html, opts) {
+			// Callback function to disable infite scrolling if we've reached the end
+			if(opts.state.currPage >= pageCount) {
+				opts.state.isDone = true;
+			}
+		});
+
 		// Expand the submit button on hover (not necessary, just fun...)
 		if($.isFunction($().hoverIntent)){
 			filter_sub.hoverIntent({
