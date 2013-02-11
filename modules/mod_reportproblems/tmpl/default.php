@@ -115,6 +115,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 							<?php echo JText::_('Attach a screenshot'); ?>: <span class="optional"><?php echo JText::_('MOD_REPORTPROBLEMS_OPTIONAL'); ?></span>
 							<input type="file" name="upload" id="trUpload" />
 							<span class="filetypes">(.<?php echo str_replace(',', ', .', $this->supportParams->get('file_ext', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif')); ?>)</span>
+							<script type="text/javascript">
+								var _validFileExtensions = ['.<?php echo str_replace(',', "','.", $this->supportParams->get('file_ext', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif')); ?>'];
+							</script>
 						</label>
 						
 						<input type="hidden" name="problem[topic]" value="???" />

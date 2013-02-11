@@ -137,8 +137,8 @@ HUB.Modules.ReportProblems = {
 
 	validateFields: function() {
 		var ticket = this,
-            $ = this.jQuery,
-            settings = this.settings,
+		$ = this.jQuery,
+			settings = this.settings,
 			whiteSpace = /^[\s]+$/;
 
 		if ($(settings.fields.problem).val() == '' || whiteSpace.test($(settings.fields.problem).val()) ) {
@@ -157,6 +157,23 @@ HUB.Modules.ReportProblems = {
 			alert("Please provide a valid email address.");
 			$(settings.fields.email).focus();
 			return false;
+		}
+		
+		if ($(settings.fields.upload).val()) {
+			var validExt = false,
+				file = $(settings.fields.upload).val();
+		
+			for (var j = 0; j < _validFileExtensions.length; j++) {
+				var sCurExtension = _validFileExtensions[j];
+				if (file.substr(file.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
+					validExt = true;
+					break;
+				}
+			}
+			if (!validExt) {
+				alert("Invalid file extension.");
+				return false;
+			}
 		}
 		
 		//return ticket.sendReport();

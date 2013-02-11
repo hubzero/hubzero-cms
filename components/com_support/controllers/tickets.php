@@ -2707,8 +2707,8 @@ class SupportControllerTickets extends Hubzero_Controller
 		//make sure that file is acceptable type
 		if (!in_array($ext, explode(',', $this->config->get('file_ext')))) 
 		{
-			$this->setError(JText::_('Incorrect file type.'));
-			return '';
+			$this->setError(JText::_('ATTACHMENT: Incorrect file type.'));
+			return JText::_('ATTACHMENT: Incorrect file type.');
 		}
 
 		// Perform the upload
@@ -2726,8 +2726,8 @@ class SupportControllerTickets extends Hubzero_Controller
 			{
 				if (JFile::delete($path)) 
 				{
-					$this->setError(JText::_('File rejected because the anti-virus scan failed.'));
-					return '';
+					$this->setError(JText::_('ATTACHMENT: File rejected because the anti-virus scan failed.'));
+					return JText::_('ATTACHMENT: File rejected because the anti-virus scan failed.');
 				}
 			}
 

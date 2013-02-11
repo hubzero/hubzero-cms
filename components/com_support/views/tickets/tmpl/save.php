@@ -33,6 +33,9 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <?php if ($this->no_html) { ?>
 	<div id="report-response">
+		<?php if ($this->getError()) { ?>
+			<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
+		<?php } ?>
 		<div>
 			<p><?php echo JText::_('COM_SUPPORT_YOUR_TICKET'); ?> # <span><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=' . $this->ticket); ?>" title="View ticket"><?php echo $this->ticket; ?></a></span></p>
 			<p><button onclick="javascript:HUB.Modules.ReportProblems.resetForm();" title="<?php echo JText::_('COM_SUPPORT_NEW_REPORT'); ?>"><?php echo JText::_('COM_SUPPORT_NEW_REPORT'); ?></button></p>
@@ -45,6 +48,9 @@ defined('_JEXEC') or die('Restricted access');
 	<script type="text/javascript">window.top.window.<?php if (JPluginHelper::isEnabled('system', 'jquery')) { ?>HUB.Modules.ReportProblems.hideTimer();<?php } else { ?>HUB.ReportProblem.hideTimer();<?php } ?></script>
 <?php } else { ?>
 	<div class="main section">
+		<?php if ($this->getError()) { ?>
+			<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
+		<?php } ?>
 		<div class="two columns first">
 			<div id="ticket-number">
 				<h2>
