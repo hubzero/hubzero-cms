@@ -309,6 +309,8 @@ ul {
 	margin: 10px 0 1px 0;
 	background: #FAFAFA;
 	padding-left: 60px;
+}
+.asset-group-item:not(.add-new) {
 	min-height: 59px;
 }
 .asset-group-item:before {

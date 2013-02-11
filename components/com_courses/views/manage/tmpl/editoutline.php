@@ -139,131 +139,34 @@ define('COURSES_ASSET_DELETED',     2);
 					<div class="clear"></div>
 					<ul class="asset-group sortable">
 <?php
+				// Loop through our asset groups
 				foreach($agt->children() as $ag)
 				{
-?>
-						<li class="asset-group-item" id="assetgroupitem_<?php echo $ag->get('id'); ?>">
-							<div class="sortable-handle"></div>
-							<div class="uploadfiles">
-								<p>Drag files here to upload</p>
-								<form action="/api/courses/assetnew" class="uploadfiles-form">
-									<input type="file" name="files[]" class="fileupload" multiple />
-									<input type="hidden" name="course_id" value="<?php echo $this->course->get('id') ?>" />
-									<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
-									<input type="hidden" name="scope_id" value="<?php echo $ag->get('id'); ?>" />
-								</form>
-							</div>
-							<div class="asset-group-item-container">
-								<div class="asset-group-item-title title toggle-editable"><?php echo $ag->get('title'); ?></div>
-								<div class="title-edit">
-									<form action="/api/courses/assetgroupsave" class="title-form">
-										<input class="uniform title-text" name="title" type="text" value="<?php echo $ag->get('title'); ?>" />
-										<input class="uniform title-save" type="submit" value="Save" />
-										<input class="uniform title-reset" type="reset" value="Cancel" />
-										<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
-										<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
-										<input type="hidden" name="id" value="<?php echo $ag->get('id'); ?>" />
-									</form>
-								</div>
-<?php
-						// Loop through the assets
-						if ($ag->assets()->total())
-						{
-?>
-								<ul class="assets-list sortable-assets">
-<?php
-								foreach ($ag->assets() as $a)
-								{
-									// Don't put deleted assets here
-									if($a->get('state') != COURSES_ASSET_DELETED)
-									{
-										$view = new JView(
-												array(
-													'name'      => 'manage',
-													'layout'    => 'asset_partial')
-											);
-										$view->base   = $base;
-										$view->course = $this->course;
-										$view->unit   = $unit;
-										$view->ag     = $ag;
-										$view->a      = $a;
-										$view->display();
-									}
-								}
-?>
-								</ul>
-<?php
-						}
-						else // no assets in this asset group
-						{
-?>
-							<ul class="assets-list sortable-assets">
-								<li class="asset-item asset missing nofiles">
-									No files
-									<span class="next-step-upload">
-										Upload files &rarr;
-									</span>
-								</li>
-							</ul>
-<?php
-						}
-?>
-							</div>
-						</li>
-						<div class="clear"></div>
-<?php
+					$view = new JView(
+							array(
+								'name'      => 'manage',
+								'layout'    => 'asset_group_partial')
+						);
+					$view->base   = $base;
+					$view->course = $this->course;
+					$view->unit   = $unit;
+					$view->ag     = $ag;
+					$view->display();
 				}
+
+				// Now display assets directly attached to the asset group type
 				if ($agt->assets()->total())
 				{
-?>
-						<li class="asset-group-item" id="assetgroupitem_<?php echo $agt->get('id'); ?>">
-							<div class="sortable-handle"></div>
-							<div class="uploadfiles">
-								<p>Drag files here to upload</p>
-								<form action="/api/courses/assetnew" class="uploadfiles-form">
-									<input type="file" name="files[]" class="fileupload" multiple />
-									<input type="hidden" name="course_id" value="<?php echo $this->course->get('id') ?>" />
-									<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
-									<input type="hidden" name="scope_id" value="<?php echo $agt->get('id'); ?>" />
-								</form>
-							</div>
-							<div class="asset-group-item-container">
-								<div class="asset-group-item-title title toggle-editable"><?php echo $agt->get('title'); ?></div>
-								<div class="title-edit">
-									<form action="/api/courses/assetgroupsave" class="title-form">
-										<input class="uniform title-text" name="title" type="text" value="<?php echo $agt->get('title'); ?>" />
-										<input class="uniform title-save" type="submit" value="Save" />
-										<input class="uniform title-reset" type="reset" value="Cancel" />
-										<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
-										<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
-										<input type="hidden" name="id" value="<?php echo $agt->get('id'); ?>" />
-									</form>
-								</div>
-								<ul class="assets-list sortable-assets">
-<?php
-									foreach ($agt->assets() as $a)
-									{
-										// Don't put deleted assets here
-										if($a->get('stat') != COURSES_ASSET_DELETED)
-										{
-											$view = new JView(
-													array(
-														'name'      => 'manage',
-														'layout'    => 'asset_partial')
-												);
-											$view->base   = $base;
-											$view->course = $this->course;
-											$view->unit   = $unit;
-											$view->ag     = $agt;
-											$view->a      = $a;
-											$view->display();
-										}
-									}
-?>
-								</ul>
-							</div>
-						</li>
-<?php
+					$view = new JView(
+							array(
+								'name'      => 'manage',
+								'layout'    => 'asset_group_partial')
+						);
+					$view->base   = $base;
+					$view->course = $this->course;
+					$view->unit   = $unit;
+					$view->ag     = $agt;
+					$view->display();
 				}
 ?>
 						<li class="add-new asset-group-item">

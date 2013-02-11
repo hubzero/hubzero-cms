@@ -344,10 +344,20 @@ HUB.CoursesOutline = {
 
 							li.remove();
 
-							$('#assetgroupitem_'+scope+' .assets-list').append(html);
+							var assetslist = $('#assetgroupitem_'+scope+' .assets-list');
+
+							assetslist.append(html);
+
+							if(assetslist.find('li:first').hasClass('nofiles'))
+							{
+								assetslist.find('li:first').remove();
+							}
 
 							html.find('span.published-label-text').html('Mark as reviewed and publish?');
 							html.removeClass('published').addClass('notpublished');
+							html.find('input.uniform').attr('checked', false);
+							$.uniform.restore(html.find('.uniform'));
+							html.find('.uniform').uniform();
 
 							html.slideDown('fast', 'linear', function(){
 								HUB.CoursesOutline.resizeFileUploader();
