@@ -54,22 +54,9 @@ class UserViewLink extends JView
 		}
 
 		// Get and add the js and extra css to the page
-		$assets = DS."components".DS."com_user".DS."assets".DS;
-		$js     = $assets.DS."js".DS."link.jquery.js";
-		$css    = $assets.DS."css".DS."link.css";
-		$p_css  = $assets.DS."css".DS."providers.css";
-		if(file_exists(JPATH_BASE . $js))
-		{
-			$document->addScript($js);
-		}
-		if(file_exists(JPATH_BASE . $css))
-		{
-			$document->addStyleSheet($css);
-		}
-		if(file_exists(JPATH_BASE . $p_css))
-		{
-			$document->addStyleSheet($p_css);
-		}
+		Hubzero_Document::addComponentStylesheet('com_user', 'link.css');
+		Hubzero_Document::addComponentStylesheet('com_user', 'providers.css');
+		Hubzero_Document::addComponentScript('com_user', 'assets/js/link');
 
 		// Import a few things
 		ximport('Hubzero_Auth_Link');
@@ -105,9 +92,8 @@ class UserViewLink extends JView
 			{
 				$user_id    = JUserHelper::getUserId($p);
 				$juser      = JFactory::getUser($user_id);
-				$dname      = (Hubzero_Auth_Link::find_by_user_id($user->id)->auth_domain_name) ? 
-								Hubzero_Auth_Link::find_by_user_id($user->id)->auth_domain_name : 
-								'hubzero';
+				$auth_link  = Hubzero_Auth_Link::find_by_user_id($juser->id);
+				$dname      = (is_object($auth_link) && $auth_link->auth_domain_name) ? $auth_link->auth_domain_name : 'hubzero';
 				$conflict[] = array("auth_domain_name" => $dname, "name" => $juser->name, "email" => $juser->email);
 			}
 		}
