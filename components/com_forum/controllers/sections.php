@@ -216,16 +216,33 @@ class ForumControllerSections extends Hubzero_Controller
 		if (!$model->bind($fields))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option)
+				JRoute::_('index.php?option=' . $this->_option),
+				$model->getError(),
+				'error'
 			);
 			return;
 		}
 
 		// Check content
-		if ($model->check()) 
+		if (!$model->check()) 
 		{
-			// Store new content
-			$model->store();
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option),
+				$model->getError(),
+				'error'
+			);
+			return;
+		}
+
+		// Store new content
+		if (!$model->store()) 
+		{
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option),
+				$model->getError(),
+				'error'
+			);
+			return;
 		}
 
 		// Set the redirect

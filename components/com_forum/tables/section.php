@@ -304,6 +304,11 @@ class ForumSection extends JTable
 			$this->alias = str_replace(' ', '-', strtolower($this->title));
 		}
 		$this->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', $this->alias);
+		if (!$this->alias)
+		{
+			$this->setError(JText::_('Alias cannot be all punctuation or blank.'));
+			return false;
+		}
 
 		$this->scope = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($this->scope));
 		$this->scope_id = intval($this->scope_id);
