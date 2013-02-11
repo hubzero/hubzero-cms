@@ -136,7 +136,7 @@ $.fn.imagesLoaded = function( callback ) {
 //----------------------------------------------------------
 // Resource Ranking pop-ups
 //----------------------------------------------------------
-HUB.Plugins.GroupsBulletinboard = {
+HUB.Plugins.MembersCollections = {
 	jQuery: jq,
 	
 	initialize: function() {
@@ -176,7 +176,7 @@ HUB.Plugins.GroupsBulletinboard = {
 					container.masonry('appended', $newElems, true);
 				}
 			);
-
+			
 			$('#posts a.vote').each(function(i, el){
 				$(el).on('click', function(e){
 					e.preventDefault();
@@ -240,10 +240,10 @@ HUB.Plugins.GroupsBulletinboard = {
 					}
 				}
 			});
-			
-			/*$('#page_content a.comment').fancybox({
+
+			$('#posts a.delete').fancybox({
 				type: 'ajax',
-				width: 500,
+				width: 300,
 				height: 'auto',
 				autoSize: false,
 				fitToView: false,
@@ -261,9 +261,18 @@ HUB.Plugins.GroupsBulletinboard = {
 					$(this).attr('href', href);	
 				},
 				afterShow: function() {
-					 
+					var el = this.element;
+					if ($('#hubForm')) {
+						$('#hubForm').submit(function(e) {
+							e.preventDefault();
+							$.post($(this).attr('action'), $(this).serialize(), function(data) {
+								$.fancybox.close();
+								window.location = data;
+							});
+						});
+					}
 				}
-			});*/
+			});
 			
 			$('#page_content a.follow, #page_content a.unfollow').on('click', function(e){
 				e.preventDefault();
@@ -302,7 +311,7 @@ HUB.Plugins.GroupsBulletinboard = {
 			});
 		}
 		
-		HUB.Plugins.GroupsBulletinboard.formOptions(false);
+		HUB.Plugins.MembersCollections.formOptions(false);
 		
 		$('#hubForm .post-type a').each(function(i, el){
 			$(el).on('click', function(e){
@@ -323,7 +332,7 @@ HUB.Plugins.GroupsBulletinboard = {
 				
 				$.get($(this).attr('href'), {}, function(data){
 					$('#post-type-form').html(data);
-					HUB.Plugins.GroupsBulletinboard.formOptions(true);
+					HUB.Plugins.MembersCollections.formOptions(true);
 				});
 			});
 		});
@@ -373,5 +382,5 @@ HUB.Plugins.GroupsBulletinboard = {
 }
 
 jQuery(document).ready(function($){
-	HUB.Plugins.GroupsBulletinboard.initialize();
+	HUB.Plugins.MembersCollections.initialize();
 });
