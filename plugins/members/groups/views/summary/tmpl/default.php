@@ -89,52 +89,69 @@ defined('_JEXEC') or die( 'Restricted access' );
 		
 		//do we have a new unpublished group
 		$approved = (!$group->approved) ? true : false;
+		
+		//are we published
+		$published = ($group->published) ? true : false;
 ?>
-				<tr>
+				<tr class=" <?php echo (!$published) ? 'notpublished' : '' ?>">
 					<th>
 						<span class="entry-id"><?php echo $group->gidNumber; ?></span>
 					</th>
 					<td>
-						<a class="entry-title" rel="<?php echo $group->gidNumber; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid='. $group->cn); ?>">
-							<?php echo $this->escape(stripslashes($group->description)); ?>
-						</a><br />
+						<?php if($published) : ?>
+							<a class="entry-title" rel="<?php echo $group->gidNumber; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid='. $group->cn); ?>">
+								<?php echo $this->escape(stripslashes($group->description)); ?>
+							</a><br />
+						<?php else : ?>
+							<span class="entry-title">
+								<?php echo $this->escape(stripslashes($group->description)); ?>
+							</span><br />
+						<?php endif; ?>
 						<span class="entry-details">
 							<span class="entry-alias"><?php echo $this->escape($group->cn); ?></span>
 						</span>
 					</td>
 					<td>
 						<?php
-						switch ($group->join_policy)
-						{
-							case 3: echo '<span class="closed join-policy">' . JText::_('Closed') . '</span>'."\n"; break;
-							case 2: echo '<span class="inviteonly join-policy">' . JText::_('Invite Only') . '</span>'."\n"; break;
-							case 1: echo '<span class="restricted join-policy">' . JText::_('Restricted') . '</span>'."\n";  break;
-							case 0:
-							default: echo '<span class="open join-policy">' . JText::_('Open') . '</span>'."\n"; break;
-						}
+							if($published) :
+								switch ($group->join_policy)
+								{
+									case 3: echo '<span class="closed join-policy">' . JText::_('Closed') . '</span>'."\n"; break;
+									case 2: echo '<span class="inviteonly join-policy">' . JText::_('Invite Only') . '</span>'."\n"; break;
+									case 1: echo '<span class="restricted join-policy">' . JText::_('Restricted') . '</span>'."\n";  break;
+									case 0:
+									default: echo '<span class="open join-policy">' . JText::_('Open') . '</span>'."\n"; break;
+								}
+							endif;
 						?>
 					</td>
 					<td>
-						<span class="<?php echo $status; ?> status">
-							<?php
-								switch ($status)
-								{
-									case 'manager': echo JText::_('PLG_MEMBERS_GROUPS_STATUS_MANAGER');   	break;
-									case 'member':  echo JText::_('PLG_MEMBERS_GROUPS_STATUS_MEMBER');  	break;
-									case 'pending': echo JText::_('PLG_MEMBERS_GROUPS_STATUS_PENDING');   	break;
-									case 'invitee': echo JText::_('PLG_MEMBERS_GROUPS_STATUS_INVITED');   	break;
-									default: break;
-								}
-							?>
-						</span>
+						<?php if($published) : ?>
+							<span class="<?php echo $status; ?> status">
+								<?php
+									switch ($status)
+									{
+										case 'manager': echo JText::_('PLG_MEMBERS_GROUPS_STATUS_MANAGER');   	break;
+										case 'member':  echo JText::_('PLG_MEMBERS_GROUPS_STATUS_MEMBER');  	break;
+										case 'pending': echo JText::_('PLG_MEMBERS_GROUPS_STATUS_PENDING');   	break;
+										case 'invitee': echo JText::_('PLG_MEMBERS_GROUPS_STATUS_INVITED');   	break;
+										default: break;
+									}
+								?>
+							</span>
+						<?php endif; ?>
 					</td>
 					<td>
-						<?php if($approved) : ?>
-							<span class="pending-approval status"><?php echo JText::_('PLG_MEMBERS_GROUPS_STATUS_NEW_GROUP'); ?>
+						<?php if(!$published) : ?>
+							<span class="not-published status"><?php echo JText::_('PLG_MEMBERS_GROUPS_STATUS_NOT_PUBLISHED_GROUP'); ?></span>
+						<?php elseif($approved) : ?>
+							<span class="pending-approval status"><?php echo JText::_('PLG_MEMBERS_GROUPS_STATUS_NEW_GROUP'); ?></span>
 						<?php endif; ?>
 					</td>
 					<td class="user-options">
-						<?php echo $options; ?>
+						<?php if($published) : ?>
+							<?php echo $options; ?>
+						<?php endif; ?>
 					</td>
 				</tr>
 <?php

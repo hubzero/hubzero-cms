@@ -88,6 +88,9 @@
 	.groups tbody .pending-approval {
 		background-color:#FF9900;
 	}
+	.groups tbody .not-published {
+		background-color:#555;
+	}
 	/* Table row */
 	.groups tbody tr.pending {
 		background: #ffe url("images/light-stripes.png");
@@ -129,4 +132,7 @@
 	}
 	.groups tbody .closed {
 		background-color: #c00;
+	}
+	.groups tbody .notpublished {
+		background-color:#f1f1f1;
 	}
