@@ -34,6 +34,7 @@ HUB.CoursesOutline = {
 		HUB.CoursesOutline.addNewItem();
 		HUB.CoursesOutline.makeUniform();
 		HUB.CoursesOutline.togglePublished();
+		HUB.CoursesOutline.setupUrlAttach();
 		HUB.CoursesOutline.setupFileUploader();
 		HUB.CoursesOutline.resizeFileUploader();
 		HUB.CoursesOutline.setupErrorMessage();
@@ -683,6 +684,21 @@ HUB.CoursesOutline = {
 		});
 	},
 
+	setupUrlAttach: function() {
+		var $ = this.jQuery;
+
+		// Add a click to show URL attach form
+		$('.unit').on('click', '.attach-a-link a', function(e) {
+			e.preventDefault();
+			$(this).siblings('.url').fadeToggle();
+		});
+
+		$('.unit').on('click', '.attach-a-link .attach-link-cancel', function(e) {
+			e.preventDefault();
+			$(this).parents('form').fadeOut();
+		});
+	},
+
 	setupFileUploader: function()
 	{
 		var $ = this.jQuery;
@@ -693,7 +709,7 @@ HUB.CoursesOutline = {
 		});
 
 		// Hide the file input
-		$('.uploadfiles input').hide();
+		$('.uploadfiles .fileupload').hide();
 
 		// Set up file uploader on our file upload boxes
 		$('.uploadfiles').each(function(){
@@ -1072,6 +1088,18 @@ HUB.CoursesOutline = {
 				'<div class="sortable-handle"></div>',
 				'<div class="uploadfiles">',
 					'<p>Drag files here to upload</p>',
+					'<p>or</p>',
+					'<div class="attach-a-link">',
+						'<form action="/api/courses/assetnew" class="url">',
+							'<input class="uniform input-url" type="text" name="url" placeholder="URL" />',
+							'<input class="uniform attach-link-submit" type="submit" value="Add" />',
+							'<input class="uniform attach-link-cancel" type="reset" value="Cancel" />',
+							'<input type="hidden" name="course_id" value="<%= course_id %>" />',
+							'<input type="hidden" name="offering" value="<%= offering_alias %>" />',
+							'<input type="hidden" name="scope_id" value="<%= assetgroup_id %>" />',
+						'</form>',
+						'<a href="#" class="">Attach a link</a>',
+					'</div>',
 					'<form action="/api/courses/assetnew" class="uploadfiles-form">',
 						'<input type="file" name="files[]" class="fileupload" multiple />',
 						'<input type="hidden" name="course_id" value="<%= course_id %>" />',

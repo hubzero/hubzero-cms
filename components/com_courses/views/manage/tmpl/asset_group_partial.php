@@ -36,6 +36,18 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<div class="sortable-handle"></div>
 	<div class="uploadfiles">
 		<p>Drag files here to upload</p>
+		<p>or</p>
+		<div class="attach-a-link">
+			<form action="/api/courses/assetnew" class="url">
+				<input class="uniform input-url" type="text" name="url" placeholder="URL" />
+				<input class="uniform attach-link-submit" type="submit" value="Add" />
+				<input class="uniform attach-link-cancel" type="reset" value="Cancel" />
+				<input type="hidden" name="course_id" value="<?= $this->course->get('id') ?>" />
+				<input type="hidden" name="offering" value="<?= $this->course->offering()->get('alias') ?>" />
+				<input type="hidden" name="scope_id" value="<?= $this->ag->get('id') ?>" />
+			</form>
+			<a href="#" class="">Attach a link</a>
+		</div>
 		<form action="/api/courses/assetnew" class="uploadfiles-form">
 			<input type="file" name="files[]" class="fileupload" multiple />
 			<input type="hidden" name="course_id" value="<?= $this->course->get('id') ?>" />

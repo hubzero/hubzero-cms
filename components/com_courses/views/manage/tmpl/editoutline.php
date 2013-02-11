@@ -60,18 +60,16 @@ define('COURSES_ASSET_DELETED',     2);
 	</ul>
 </div><!-- / #content-header-extra -->
 
-<?php
-	foreach($this->notifications as $notification)
-	{
-		echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
-	}
-?>
+<? foreach($this->notifications as $notification) : ?>
+	<p class="<?= $notification['type'] ?>"><?= $notification['message'] ?></p>
+<? endforeach; ?>
 
 <div class="outline-main">
 	<div class="delete-tray closed">
 		<div class="lock unlocked"></div>
 		<h4>&nbsp; D e l e t e d &nbsp; A s s e t s</h4>
 		<ul class="assets-deleted">
+
 <?php
 			foreach ($this->course->offering->units() as $unit) :
 				foreach($unit->assetgroups() as $agt) :
@@ -97,14 +95,13 @@ define('COURSES_ASSET_DELETED',     2);
 				endforeach;
 			endforeach;
 ?>
+
 		</ul>
 	</div>
 
 	<ul class="unit">
-<?php 
-		foreach ($this->course->offering->units() as $unit)
-		{
-?>
+
+		<? foreach ($this->course->offering->units() as $unit) : ?>
 		<li class="unit-item">
 			<div class="unit-title-arrow"></div>
 			<div class="title unit-title toggle-editable"><?php echo $unit->get('title'); ?></div>
@@ -130,14 +127,14 @@ define('COURSES_ASSET_DELETED',     2);
 			<div class="clear"></div>
 
 			<ul class="asset-group-type-list">
-<?php
-			foreach($unit->assetgroups() as $agt)
-			{
-?>
+
+			<? foreach($unit->assetgroups() as $agt) : ?>
+
 				<li class="asset-group-type-item">
 					<div class="asset-group-title title"><?php echo $agt->get('title'); ?></div>
 					<div class="clear"></div>
 					<ul class="asset-group sortable">
+
 <?php
 				// Loop through our asset groups
 				foreach($agt->children() as $ag)
@@ -169,6 +166,7 @@ define('COURSES_ASSET_DELETED',     2);
 					$view->display();
 				}
 ?>
+
 						<li class="add-new asset-group-item">
 							Add a new <?php echo strtolower(rtrim($agt->get('title'), 's')); ?>
 							<form action="/api/courses/assetgroupsave">
@@ -180,9 +178,9 @@ define('COURSES_ASSET_DELETED',     2);
 						</li>
 					</ul>
 				</li>
-<?php
-			}
-?>
+
+			<? endforeach; // foreach asset groups ?>
+
 			</ul>
 <?php
 			if ($unit->assets()->total())
@@ -205,9 +203,9 @@ define('COURSES_ASSET_DELETED',     2);
 			}
 ?>
 		</li>
-<?php
-		}
-?>
+
+		<? endforeach; // foreach unit ?>
+
 		<li class="add-new unit-item">
 			Add a new unit
 			<form action="/api/courses/unitsave">

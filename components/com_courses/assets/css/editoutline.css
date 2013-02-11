@@ -162,6 +162,86 @@
 	margin-top: -2px;
 	float: right;
 }
+.attach-a-link {
+	position: relative;
+	margin: 5px auto 0 auto;
+}
+.attach-a-link form {
+	display: none;
+	background: #FFF;
+	position: absolute;
+	right: 140px;
+	top: -24px;
+	z-index: 5;
+	padding: 12px;
+	border: 4px solid #666;
+	width: 400px;
+
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	border-radius: 7px;
+}
+.attach-a-link form:before,
+.attach-a-link form:after {
+	content: "";
+	position: absolute;
+	border-style: solid;
+}
+.attach-a-link form:before {
+	top: 18px;
+	right: -28px;
+	bottom: auto;
+	border-color: transparent transparent transparent #666;
+	border-width: 12px;
+}
+.attach-a-link form:after {
+	top: 18px;
+	right: -22px;
+	bottom: auto;
+	border-color: transparent transparent transparent #FFF;
+	border-width: 12px;
+}
+.attach-a-link form .input-url {
+	width: 100%;
+}
+.attach-a-link a {
+	border: 1px solid #DCDCDC;
+	box-shadow: 0 0 1px #AAA;
+	padding: 5px 10px;
+	opacity: .9;
+	cursor: pointer;
+	text-decoration: none;
+	color: #666;
+
+	background: #FAFAFA;
+	background: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#F1F1F1));
+	background: -webkit-linear-gradient(#FAFAFA, #F1F1F1);
+	background: -moz-linear-gradient(center top, #FAFAFA 0%, #F1F1F1 100%);
+	background: -moz-gradient(center top, #FAFAFA 0%, #F1F1F1 100%);
+	background: -o-linear-gradient(#FAFAFA, #F1F1F1);
+	background-image: -ms-linear-gradient(top, #FAFAFA 0%, #F1F1F1 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FAFAFA,endColorstr=#F1F1F1);
+	-ms-filter:"progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FAFAFA, endColorstr=#F1F1F1)";
+
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+}
+.attach-a-link a:hover {
+	-webkit-transition: all 0.25s;
+	-moz-transition: all 0.25s;
+	-ms-transition: all 0.25s;
+	-o-transition: all 0.25s;
+	transition: all 0.25s;
+
+	box-shadow: 0 0 2px #888;
+	opacity: 1;
+}
+.attach-a-link a:before {
+	font-family: "fontcons";
+	content: "\26D3";
+	margin-right: 4px;
+}
 .course:before {
 	content: "\f09c";
 }
@@ -311,7 +391,7 @@ ul {
 	padding-left: 60px;
 }
 .asset-group-item:not(.add-new) {
-	min-height: 59px;
+	min-height: 110px;
 }
 .asset-group-item:before {
 	content: '\f0dc';
