@@ -216,6 +216,11 @@
 	#attachments .delete {
 		padding-left: 0;
 		background: transparent;
+		border: none;
+	}
+	#attachments .delete:before {
+		display: none;
+		content: "";
 	}
 
 	/* Stars */
