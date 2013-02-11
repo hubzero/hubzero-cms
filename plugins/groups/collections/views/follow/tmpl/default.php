@@ -44,7 +44,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 			"<?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>"
 		</span>
 		<span class="posts count">
-			<?php echo JText::sprintf('<strong>%s</strong> posts', $this->posts); ?>
+			<?php echo JText::sprintf('<strong>%s</strong> posts', $this->rows->total()); ?>
 		</span>
 <?php if (!$this->juser->get('guest')) { ?>
 	<?php if ($this->rows && $this->params->get('access-create-item')) { ?>
@@ -52,23 +52,18 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 			<?php echo JText::_('New post'); ?>
 		</a>
 	<?php } else { ?>
-		<a class="follow btn tooltips" title="<?php echo JText::_('Follow :: Follow this collection'); ?>" href="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias') . '/follow'); ?>">
+		<a class="follow btn tooltips" title="<?php echo JText::_('Repost :: Watch this collection'); ?>" href="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias') . '/follow'); ?>">
 			<?php echo JText::_('Follow'); //Repost collection ?>
-		</a>
-		<a class="repost btn tooltips" title="<?php echo JText::_('Collect :: Add this collection to one of your own'); ?>" href="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias') . '/collect'); ?>">
-			<?php echo JText::_('Collect'); //Repost collection ?>
 		</a>
 	<?php } ?>
 <?php } ?>
 		<span class="clear"></span>
 	</p>
 
+	<div id="posts">
 <?php 
 if ($this->rows->total() > 0) 
 {
-	?>
-	<div id="posts">
-	<?php
 	ximport('Hubzero_User_Profile');
 	ximport('Hubzero_User_Profile_Helper');
 
@@ -155,47 +150,31 @@ if ($this->rows->total() > 0)
 			<?php } ?>
 				</div><!-- / .meta -->
 
-			<?php /*if ($row->original() || $item->get('created_by') != $this->member->get('uidNumber')) { 
-				$collection = CollectionsModelCollection::getInstance($row->get('collection_id'));
-				switch ($collection->get('object_type'))
-				{
-					case 'group':
-						$href = 'index.php?option=com_groups&gid=' . $collection->get('object_id') . '&active=collections&scope=' . $collection->get('alias');
-					break;
-
-					case 'member':
-					default:
-						$href = 'index.php?option=com_members&id=' . $collection->get('object_id') . '&active=collections&task=' . $collection->get('alias');
-					break;
-				}
-				?>
+			<?php if ($row->original() || $item->get('created_by') != $this->member->get('uidNumber')) { ?>
 				<div class="convo attribution clearfix">
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>" class="img-link">
 						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($item->creator(), 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>" />
 					</a>
 					<p>
-						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by') . '&active=collections'); ?>">
+						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')); ?>">
 							<?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>
 						</a> 
-						posted
-						<!-- <a href="<?php echo JRoute::_($href); ?>">
-							<?php echo $this->escape(stripslashes($collection->get('title'))); ?>
-						</a> -->
+						posted 
 						<br />
 						<span class="entry-date">
-							<span class="entry-date-at">@</span> <span class="date"><time datetime="<?php echo $item->get('created'); ?>"><?php echo JHTML::_('date', $item->get('created'), $this->timeFormat, $this->tz); ?></time></span> 
-							<span class="entry-date-on">on</span> <span class="time"><time datetime="<?php echo $item->get('created'); ?>"><?php echo JHTML::_('date', $item->get('created'), $this->dateFormat, $this->tz); ?></time></span>
+							<span class="entry-date-at">@</span> <span class="date"><?php echo JHTML::_('date', $item->get('created'), $this->timeFormat, $this->tz); ?></span> 
+							<span class="entry-date-on">on</span> <span class="time"><?php echo JHTML::_('date', $item->get('created'), $this->dateFormat, $this->tz); ?></span>
 						</span>
 					</p>
 				</div><!-- / .attribution -->
-			<?php }*/ ?>
-			<?php //if (!$row->original()) {//if ($item->get('created_by') != $this->member->get('uidNumber')) { ?>
+			<?php } ?>
+			<?php if (!$row->original()) {//if ($item->get('created_by') != $this->member->get('uidNumber')) { ?>
 				<div class="convo attribution reposted clearfix">
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" class="img-link">
 						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($this->member, 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" />
 					</a>
 					<p>
-						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('created_by') . '&active=collections'); ?>">
+						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('created_by')); ?>">
 							<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
 						</a> 
 						onto 
@@ -204,19 +183,20 @@ if ($this->rows->total() > 0)
 						</a>
 						<br />
 						<span class="entry-date">
-							<span class="entry-date-at">@</span> <span class="date"><time datetime="<?php echo $row->get('created'); ?>"><?php echo JHTML::_('date', $row->get('created'), $this->timeFormat, $this->tz); ?></time></span> 
-							<span class="entry-date-on">on</span> <span class="time"><time datetime="<?php echo $row->get('created'); ?>"><?php echo JHTML::_('date', $row->get('created'), $this->dateFormat, $this->tz); ?></time></span>
+							<span class="entry-date-at">@</span> <span class="date"><?php echo JHTML::_('date', $row->get('created'), $this->timeFormat, $this->tz); ?></span> 
+							<span class="entry-date-on">on</span> <span class="time"><?php echo JHTML::_('date', $row->get('created'), $this->dateFormat, $this->tz); ?></span>
 						</span>
 					</p>
 				</div><!-- / .attribution -->
-			<?php //} ?>
+			<?php } ?>
 			</div><!-- / .content -->
 		</div><!-- / .post -->
-	<?php } ?>
-	</div><!-- / #posts -->
-	<?php if ($this->posts > $this->filters['limit']) { echo $this->pageNav->getListFooter(); } ?>
-	<div class="clear"></div>
-<?php } else { ?>
+<?php
+	}
+}
+else
+{
+?>
 		<div id="collection-introduction">
 	<?php if ($this->params->get('access-create-item')) { ?>
 			<div class="instructions">
@@ -237,5 +217,8 @@ if ($this->rows->total() > 0)
 			</div><!-- / .instructions -->
 	<?php } ?>
 		</div><!-- / #collection-introduction -->
-<?php } ?>
+<?php
+}
+?>
+	</div><!-- / #posts -->
 </form>

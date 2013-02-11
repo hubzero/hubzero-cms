@@ -136,21 +136,47 @@ $.fn.imagesLoaded = function( callback ) {
 //----------------------------------------------------------
 // Resource Ranking pop-ups
 //----------------------------------------------------------
-HUB.Plugins.GroupsBulletinboard = {
+HUB.Plugins.MembersCollections = {
 	jQuery: jq,
 	
 	initialize: function() {
 		var $ = this.jQuery;
 
-		if ($('#posts').length > 0) {
-			//$('#bulletins').imagesLoaded(function(){
-				$('#posts').masonry({
-					itemSelector: '.post'/*,
-					columnWidth: function(containerWidth) {
-						return containerWidth / 3;
-					}*/
-				});
-			//});
+		var container = $('#posts');
+
+		if (container.length > 0) {
+			container.masonry({
+				itemSelector: '.post'
+			});
+
+			container.infinitescroll({
+					navSelector  : '.list-footer',    // selector for the paged navigation
+					nextSelector : '.list-footer .next a',  // selector for the NEXT link (to page 2)
+					itemSelector : '#posts div.post',     // selector for all items you'll retrieve
+					loading: {
+						finishedMsg: 'No more pages to load.',
+						img: '/6RMhx.gif'
+					},
+					path: function(index) {
+						var path = $('.list-footer .next a').attr('href');
+						limit = path.match(/limit[-=]([0-9]*)/).slice(1);
+						start = path.match(/start[-=]([0-9]*)/).slice(1);
+						//console.log(path.replace(/start[-=]([0-9]*)/, 'no_html=1&start=' + (limit * index - limit)));
+						return path.replace(/start[-=]([0-9]*)/, 'no_html=1&start=' + (limit * index - limit));
+					},
+					debug: false
+				},
+				// trigger Masonry as a callback
+				function(newElements) {
+					// hide new items while they are loading
+					var $newElems = $(newElements).css({ opacity: 0 });
+
+					// show elems now they're ready
+					$newElems.animate({ opacity: 1 });
+					container.masonry('appended', $newElems, true);
+				}
+			);
+			
 			$('#posts a.vote').each(function(i, el){
 				$(el).on('click', function(e){
 					e.preventDefault();
@@ -247,9 +273,45 @@ HUB.Plugins.GroupsBulletinboard = {
 					}
 				}
 			});
+			
+			$('#page_content a.follow, #page_content a.unfollow').on('click', function(e){
+				e.preventDefault();
+
+				var el = $(this);
+
+				href = $(this).attr('href');
+				if (href.indexOf('?') == -1) {
+					href += '?no_html=1';
+				} else {
+					href += '&no_html=1';
+				}
+				$(this).attr('href', href);
+				
+				$.getJSON($(this).attr('href'), {}, function(data) {
+					if (data.success) {
+						//var unfollow = $(el).attr('data-href-unfollow');
+						var follow = $(el).attr('data-text-follow'),
+							unfollow = $(el).attr('data-text-unfollow');
+
+						if ($(el).children('span').text() == follow) {
+							$(el).removeClass('follow')
+								.addClass('unfollow')
+								.children('span')
+								.text(unfollow)
+								.attr('href', data.href);
+						} else {
+							$(el).removeClass('unfollow')
+								.addClass('follow')
+								.children('span')
+								.text(follow)
+								.attr('href', data.href);
+						}
+					}
+				});
+			});
 		}
 		
-		HUB.Plugins.GroupsBulletinboard.formOptions(false);
+		HUB.Plugins.MembersCollections.formOptions(false);
 		
 		$('#hubForm .post-type a').each(function(i, el){
 			$(el).on('click', function(e){
@@ -270,7 +332,7 @@ HUB.Plugins.GroupsBulletinboard = {
 				
 				$.get($(this).attr('href'), {}, function(data){
 					$('#post-type-form').html(data);
-					HUB.Plugins.GroupsBulletinboard.formOptions(true);
+					HUB.Plugins.MembersCollections.formOptions(true);
 				});
 			});
 		});
@@ -320,5 +382,5 @@ HUB.Plugins.GroupsBulletinboard = {
 }
 
 jQuery(document).ready(function($){
-	HUB.Plugins.GroupsBulletinboard.initialize();
+	HUB.Plugins.MembersCollections.initialize();
 });

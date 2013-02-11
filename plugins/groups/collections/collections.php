@@ -203,45 +203,62 @@ class plgGroupsCollections extends JPlugin
 
 				if (isset($bits[0]) && $bits[0])
 				{
-					if ($bits[0] == 'post')
+					$bits[0] = strtolower(trim($bits[0]));
+					switch ($bits[0])
 					{
-						$this->action = 'post';
-						if (isset($bits[1]))
-						{
-							if ($bits[1] == 'new' || $bits[1] == 'save')
+						case 'post':
+							$this->action = 'post';
+							if (isset($bits[1]))
 							{
-								$this->action = $bits[1] . $this->action;
-							}
-							else
-							{
-								JRequest::setVar('post', $bits[1]);
-								if (isset($bits[2]))
+								if ($bits[1] == 'new' || $bits[1] == 'save')
 								{
-									if (in_array($bits[2], array('post', 'vote', 'collect', 'remove', 'move', 'comment')))
+									$this->action = $bits[1] . $this->action;
+								}
+								else
+								{
+									JRequest::setVar('post', $bits[1]);
+									if (isset($bits[2]))
 									{
-										$this->action = $bits[2];
-									}
-									else
-									{
-										$this->action = $bits[2] . $this->action;
+										if (in_array($bits[2], array('post', 'vote', 'collect', 'remove', 'move', 'comment', 'savecomment', 'deletecomment')))
+										{
+											$this->action = $bits[2];
+										}
+										else
+										{
+											$this->action = $bits[2] . $this->action;
+										}
 									}
 								}
 							}
-						}
-					}
-					else if ($bits[0] == 'new' || $bits[0] == 'save')
-					{
-						$this->action = $bits[0] . 'collection';
-					}
-					else
-					{
-						$this->action = 'collection';
-						JRequest::setVar('board', $bits[0]);
+						break;
+						
+						case 'all':
+						case 'posts':
+						case 'followers':
+						case 'following':
+						case 'follow':
+						case 'unfollow':
+							$this->action = $bits[0];
+						break;
+						
+						case 'new':
+						case 'save':
+							$this->action = $bits[0] . 'collection';
+							if (isset($bits[1]))
+							{
+								JRequest::setVar('unfollow', $bits[1]);
+							}
+						break;
+						
+						default:
+							$this->action = 'collection';
+							JRequest::setVar('board', $bits[0]);
 
-						if (isset($bits[1]))
-						{
-							$this->action = $bits[1] . $this->action;
-						}
+							if (isset($bits[1]))
+							{
+								$this->action = $bits[1] . $this->action;
+							}
+						break;
 					}
 				}
 			}
@@ -254,11 +271,17 @@ class plgGroupsCollections extends JPlugin
 				case 'editcomment':   $arr['html'] = $this->_editcomment();   break;
 				case 'deletecomment': $arr['html'] = $this->_deletecomment(); break;
 
+				case 'followers': $arr['html'] = $this->_followers(); break;
+				case 'following': $arr['html'] = $this->_following(); break;
+				case 'follow':    $arr['html'] = $this->_follow('member');    break;
+				case 'unfollow':  $arr['html'] = $this->_unfollow('member');  break;
+
 				// Entries
 				case 'savepost':   $arr['html'] = $this->_save();   break;
 				case 'newpost':    $arr['html'] = $this->_new();    break;
 				case 'editpost':   $arr['html'] = $this->_edit();   break;
 				case 'deletepost': $arr['html'] = $this->_delete(); break;
+				case 'posts':      $arr['html'] = $this->_posts();  break;
 
 				case 'comment':
 				case 'post':   $arr['html'] = $this->_post();   break;
@@ -267,11 +290,14 @@ class plgGroupsCollections extends JPlugin
 				case 'remove': $arr['html'] = $this->_remove(); break;
 				case 'move':   $arr['html'] = $this->_move();   break;
 
+				case 'followcollection': $arr['html'] = $this->_follow('collection'); break;
+				case 'unfollowcollection': $arr['html'] = $this->_unfollow('collection'); break;
 				case 'collectcollection': $arr['html'] = $this->_repost();      break;
 				case 'newcollection':    $arr['html'] = $this->_newcollection();    break;
 				case 'editcollection':   $arr['html'] = $this->_editcollection();   break;
 				case 'savecollection':   $arr['html'] = $this->_savecollection();   break;
 				case 'deletecollection': $arr['html'] = $this->_deletecollection(); break;
+				case 'all':
 				case 'collections':      $arr['html'] = $this->_collections();      break;
 
 				case 'collection': $arr['html'] = $this->_collection(); break;
@@ -329,17 +355,26 @@ class plgGroupsCollections extends JPlugin
 		$view->option      = $this->option;
 		$view->group       = $this->group;
 		$view->params      = $this->params;
+		$view->model       = $this->model;
 
-		//Hubzero_Document::addPluginScript('groups', $this->_name, 'jquery.masonry');
-		Hubzero_Document::addComponentScript('com_collections', 'assets/js/jquery.masonry');
-		Hubzero_Document::addPluginScript('groups', $this->_name);
+		$this->jconfig = JFactory::getConfig();
 
 		// Filters for returning results
 		$view->filters = array();
-		$view->filters['user_id']     = $this->juser->get('id');
-		$view->filters['state']       = 1;
+		$view->filters['limit']       = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
+		$view->filters['start']       = JRequest::getInt('limitstart', 0);
 
+		//Hubzero_Document::addPluginScript('groups', $this->_name, 'jquery.masonry');
+		Hubzero_Document::addComponentScript('com_collections', 'assets/js/jquery.masonry');
+		Hubzero_Document::addComponentScript('com_collections', 'assets/js/jquery.infinitescroll');
+		Hubzero_Document::addPluginScript('groups', $this->_name);
+
+		// Filters for returning results
 		$filters = array();
+		$filters['user_id']     = $this->juser->get('id');
+		$filters['state']       = 1;
+
+		//$filters = array();
 		if (!$this->params->get('access-manage-collection')) 
 		{
 			$filters['access'] = 0;
@@ -360,7 +395,25 @@ class plgGroupsCollections extends JPlugin
 			}
 		}
 
-		$view->likes = 0;
+		$view->followers = $this->model->followers(array('count' => true));
+
+		if ($this->params->get('access-can-follow')) 
+		{
+			$view->following = $this->model->following(array('count' => true));
+		}
+
+		//$view->likes = 0; //$vote->getLikes($view->filters);
+
+		jimport('joomla.html.pagination');
+		$view->pageNav = new JPagination(
+			$view->total, 
+			$view->filters['start'], 
+			$view->filters['limit']
+		);
+
+		$view->pageNav->setAdditionalUrlParam('gid', $view->group->get('cn'));
+		$view->pageNav->setAdditionalUrlParam('active', $this->_name);
+		$view->pageNav->setAdditionalUrlParam('scope', 'all');
 
 		if ($this->getError()) 
 		{
@@ -398,11 +451,14 @@ class plgGroupsCollections extends JPlugin
 
 		//Hubzero_Document::addPluginScript('groups', $this->_name, 'jquery.masonry');
 		Hubzero_Document::addComponentScript('com_collections', 'assets/js/jquery.masonry');
+		Hubzero_Document::addComponentScript('com_collections', 'assets/js/jquery.infinitescroll');
 		Hubzero_Document::addPluginScript('groups', $this->_name);
+
+		$this->jconfig = JFactory::getConfig();
 
 		// Filters for returning results
 		$view->filters = array();
-		$view->filters['limit']       = JRequest::getInt('limit', 25);
+		$view->filters['limit']       = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
 		$view->filters['start']       = JRequest::getInt('limitstart', 0);
 		$view->filters['user_id']     = JFactory::getUser()->get('id');
 		$view->filters['search']      = JRequest::getVar('search', '');
@@ -416,7 +472,249 @@ class plgGroupsCollections extends JPlugin
 			//$view->collection->setup($this->model->get('object_id'), $this->model->get('object_type'));
 		}
 
+		$view->filters['collection_id'] = $view->collection->get('id');
+
+		$view->filters['count'] = true;
+		$view->posts = $view->collection->posts($view->filters);
+
+		$view->filters['count'] = null;
 		$view->rows = $view->collection->posts($view->filters);
+
+		jimport('joomla.html.pagination');
+		$view->pageNav = new JPagination(
+			$view->posts, 
+			$view->filters['start'], 
+			$view->filters['limit']
+		);
+
+		$view->pageNav->setAdditionalUrlParam('gid', $view->group->get('cn'));
+		$view->pageNav->setAdditionalUrlParam('active', $this->_name);
+		$view->pageNav->setAdditionalUrlParam('scope', $view->collection->get('alias'));
+
+		if ($this->getError()) 
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$view->setError($error);
+			}
+		}
+		return $view->loadTemplate();
+	}
+
+	/**
+	 * Display a list of items in a collection
+	 * 
+	 * @return     string
+	 */
+	private function _follow($what='collection')
+	{
+		// Is the board restricted to logged-in users only?
+		if ($this->juser->get('guest'))
+		{
+			return $this->_login();
+		}
+
+		// Is it a private board?
+		/*if ($this->juser->get('id') != $this->member->get('uidNumber'))
+		{
+			JError::raiseError(403, JText::_('Your are not authorized to access this content.'));
+			return;
+		}
+
+		if ($this->juser->get('id') == $this->member->get('uidNumber'))
+		{
+			JError::raiseError(500, JText::_('Your cannot follow your own content.'));
+			return;
+		}*/
+
+		$sfx = '';
+		switch ($what)
+		{
+			case 'group':
+				$id = $this->group->get('gidNumber');
+			break;
+
+			case 'member':
+				$id = $this->member->get('uidNumber');
+			break;
+
+			case 'collection':
+				$collection = $this->model->collection(JRequest::getVar('board', ''));
+				if (!$collection->exists())
+				{
+					JError::raiseError(400, JText::_('Collection does not exist'));
+					return;
+				}
+				$id = $collection->get('id');
+				$sfx = '&scope=' . $collection->get('alias') . '/unfollow';
+			break;
+		}
+
+		if (!$this->model->follow($id, $what, $this->juser->get('id'), 'member'))
+		{
+			$this->setError($this->model->getError());
+		}
+
+		if (JRequest::getInt('no_html', 0))
+		{
+			$response = new stdClass;
+			$response->href = JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=collections' . $sfx);
+			$response->success = true;
+			if ($this->getError())
+			{
+				$response->success = false;
+				$response->error = $this->getError();
+			}
+			echo json_encode($response);
+			exit;
+		}
+		else
+		{
+			return $this->_feed();
+		}
+	}
+
+	/**
+	 * Display a list of items in a collection
+	 * 
+	 * @return     string
+	 */
+	private function _unfollow($what='collection')
+	{
+		// Is the board restricted to logged-in users only?
+		if ($this->juser->get('guest'))
+		{
+			return $this->_login();
+		}
+
+		// Is it a private board?
+		/*if ($this->juser->get('id') == $this->member->get('uidNumber'))
+		{
+			JError::raiseError(500, JText::_('Your cannot unfollow your own content.'));
+			return;
+		}*/
+
+		$sfx = '';
+		switch ($what)
+		{
+			case 'group':
+				$id = $this->group->get('gidNumber');
+			break;
+
+			case 'member':
+				$id = $this->member->get('uidNumber');
+			break;
+
+			case 'collection':
+				$collection = $this->model->collection(JRequest::getVar('board', ''));
+				if (!$collection->exists())
+				{
+					JError::raiseError(400, JText::_('Collection does not exist'));
+					return;
+				}
+				$id = $collection->get('id');
+				$sfx = '&scope=' . $collection->get('alias') . '/follow';
+			break;
+		}
+
+		if (!$this->model->unfollow($id, $what, $this->juser->get('id'), 'member'))
+		{
+			$this->setError($this->model->getError());
+		}
+
+		if (JRequest::getInt('no_html', 0))
+		{
+			$response = new stdClass;
+			$response->href = JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=collections' . $sfx);
+			$response->success = true;
+			if ($this->getError())
+			{
+				$response->success = false;
+				$response->error = $this->getError();
+			}
+			echo json_encode($response);
+			exit;
+		}
+		else
+		{
+			return $this->_feed();
+		}
+	}
+
+	/**
+	 * Display a list of items in a collection
+	 * 
+	 * @return     string
+	 */
+	private function _posts()
+	{
+		ximport('Hubzero_Plugin_View');
+		$view = new Hubzero_Plugin_View(
+			array(
+				'folder'  => 'groups',
+				'element' => $this->_name,
+				'name'    => 'collection',
+				'layout'  => 'posts'
+			)
+		);
+		$view->name       = $this->_name;
+		$view->group      = $this->group;
+		$view->option     = $this->option;
+		$view->params     = $this->params;
+		$view->dateFormat = $this->dateFormat;
+		$view->timeFormat = $this->timeFormat;
+		$view->tz         = $this->tz;
+
+		Hubzero_Document::addComponentScript('com_collections', 'assets/js/jquery.masonry');
+		Hubzero_Document::addComponentScript('com_collections', 'assets/js/jquery.infinitescroll');
+		Hubzero_Document::addPluginScript('members', $this->_name);
+
+		$this->jconfig = JFactory::getConfig();
+
+		// Filters for returning results
+		$view->filters = array();
+		$view->filters['limit']       = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
+		$view->filters['start']       = JRequest::getInt('limitstart', 0);
+		//$view->filters['user_id']     = $this->member->get('uidNumber');
+		//$view->filters['created_by']  = $this->member->get('uidNumber');
+		$view->filters['search']      = JRequest::getVar('search', '');
+		$view->filters['state']       = 1;
+		$view->filters['object_type']  = 'group';
+		$view->filters['object_id']  = $this->group->get('gidNumber');
+
+		// Filters for returning results
+		if (!$this->params->get('access-manage-collection')) 
+		{
+			$view->filters['access'] = 0;
+		}
+
+		$view->collections = $this->model->collections(array('count' => true));
+
+		$view->posts = $this->model->posts(array('count' => true));
+
+		$view->followers = $this->model->followers(array('count' => true));
+
+		if ($this->params->get('access-can-follow')) 
+		{
+			$view->following = $this->model->following(array('count' => true));
+		}
+
+		$view->collection = CollectionsModelCollection::getInstance();
+
+		$view->filters['user_id']     = JFactory::getUser()->get('id');
+
+		$view->rows = $view->collection->posts($view->filters);
+
+		jimport('joomla.html.pagination');
+		$view->pageNav = new JPagination(
+			$view->posts, 
+			$view->filters['start'], 
+			$view->filters['limit']
+		);
+
+		$view->pageNav->setAdditionalUrlParam('gid', $view->group->get('cn'));
+		$view->pageNav->setAdditionalUrlParam('active', $this->_name);
+		$view->pageNav->setAdditionalUrlParam('scope', 'posts');
 
 		if ($this->getError()) 
 		{
@@ -1284,6 +1582,7 @@ class plgGroupsCollections extends JPlugin
 	{
 		// Everyone can view by default
 		$this->params->set('access-view', true);
+		$this->params->set('access-can-follow', false);
 		if (!$this->juser->get('guest')) 
 		{
 			// Set asset to viewable

@@ -142,6 +142,11 @@
 		margin: 0 10px 20px 10px;
 		width: 332px;
 	}
+	@-moz-document url-prefix() {
+		.post {
+			width: 326px;
+		}
+	}
 	/* ipad portrait  and (orientation:portrait) */
 	@media all and (device-width: 768px) and (device-height: 1024px) {
 		.post {
@@ -250,6 +255,7 @@
 		margin: 0;
 		padding: 1em 1.2em 0em 1.2em;
 		font-size: 1.2em;
+		/*border-bottom: 1px solid #f0f0f0;*/
 	}
 	.post .holder {
 		padding: 1em 1.4em 1em 1.4em;
@@ -635,8 +641,34 @@
 		content: "\f03e";
 	}
 	.collection .content:after {
+		/*position: absolute;
+		bottom: 1em;
+		right: 1.4em;
+		color: #9c9c9c;
+		padding: 0.2em 0.5em;
+		display: block;
+		text-shadow: 0 1px 1px #fff;
+		font-weight: normal;
+
+		color: #fff;
+		background: #666;*/
 		content: "\f005"; /*"\f00a";*/
 	}
+	/*.collection .content:after {
+		background-color: #a00;
+		overflow: hidden;
+		position: absolute;
+		left: -3em;
+		top: 2.5em;
+		-moz-transform: rotate(-45deg);
+		-webkit-transform: rotate(-45deg);
+		transform: rotate(-45deg);
+		-moz-box-shadow: 0 0 1em #888;
+		-webkit-box-shadow: 0 0 1em #888;
+		box-shadow: 0 0 1em #888;
+		content: "collection";
+	}*/
+	
 	.deleted .content:after {
 		content: "\f014";
 	}

@@ -39,7 +39,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') 
 
 <form method="get" action="<?php echo JRoute::_($base . '&scope=' . $this->collection->get('alias')); ?>" id="collections">
 
-	<fieldset class="filters">
+	<p class="overview">
 		<span class="title count">
 			"<?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>" 
 		</span>
@@ -47,22 +47,28 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') 
 			<?php echo JText::sprintf('<strong>%s</strong> posts', $this->rows->total()); ?>
 		</span>
 <?php if (!$this->juser->get('guest')) { ?>
-		<a class="repost btn tooltips" title="<?php echo JText::_('Repost :: Collect this collection'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $this->collection->get('alias') . '/collect'); ?>">
-			<?php echo JText::_('Collect'); ?>
-		</a>
 	<?php if ($this->rows && $this->params->get('access-create-item')) { ?>
 		<a class="add btn tooltips" title="<?php echo JText::_('New post :: Add a new post to this collection'); ?>" href="<?php echo JRoute::_($base . '&scope=post/new&board=' . $this->collection->get('alias')); ?>">
 			<?php echo JText::_('New post'); ?>
 		</a>
-	<?php } ?>
+	<?php } //else { ?>
+		<a class="follow btn tooltips" title="<?php echo JText::_('Follow :: Follow this collection'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $this->collection->get('alias') . '/follow'); ?>">
+			<?php echo JText::_('Follow'); //Repost collection ?>
+		</a>
+		<!-- <a class="repost btn tooltips" title="<?php echo JText::_('Repost :: Collect this collection'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $this->collection->get('alias') . '/collect'); ?>">
+			<?php echo JText::_('Collect'); ?>
+		</a> -->
+	<?php //} ?>
 <?php } ?>
-		<div class="clear"></div>
-	</fieldset>
+		<span class="clear"></span>
+	</p>
 
-	<div id="posts">
 <?php 
 if ($this->rows->total() > 0) 
 {
+	?>
+	<div id="posts">
+	<?php
 	ximport('Hubzero_User_Profile');
 	ximport('Hubzero_User_Profile_Helper');
 
@@ -153,7 +159,7 @@ if ($this->rows->total() > 0)
 					</div><!-- / .actions -->
 				<?php } ?>
 				</div><!-- / .meta -->
-			<?php if ($row->original() || $item->get('created_by') != $this->juser->get('id')) { ?>
+			<?php /*if ($row->original() || $item->get('created_by') != $this->juser->get('id')) { ?>
 				<div class="convo attribution clearfix">
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>" class="img-link">
 						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($item->creator(), 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>" />
@@ -170,8 +176,8 @@ if ($this->rows->total() > 0)
 						</span>
 					</p>
 				</div><!-- / .attribution -->
-			<?php } ?>
-			<?php if (!$row->original()) {//if ($item->get('created_by') != $this->member->get('uidNumber')) { ?>
+			<?php }*/ ?>
+			<?php //if (!$row->original()) {//if ($item->get('created_by') != $this->member->get('uidNumber')) { ?>
 				<div class="convo attribution reposted clearfix">
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" class="img-link">
 						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($row->creator(), 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" />
@@ -191,15 +197,14 @@ if ($this->rows->total() > 0)
 						</span>
 					</p>
 				</div><!-- / .attribution -->
-			<?php } ?>
+			<?php //} ?>
 			</div><!-- / .content -->
 		</div><!-- / .bulletin -->
-<?php
-	}
-}
-else
-{
-?>
+	<?php } ?>
+	</div><!-- / #posts -->
+	<?php if ($this->posts > $this->filters['limit']) { echo $this->pageNav->getListFooter(); } ?>
+	<div class="clear"></div>
+<?php } else { ?>
 		<div id="collection-introduction">
 	<?php if ($this->params->get('access-create-item')) { ?>
 			<div class="instructions">
@@ -220,8 +225,5 @@ else
 			</div><!-- / .instructions -->
 		<?php } ?>
 		</div><!-- / #collection-introduction -->
-<?php
-}
-?>
-	</div><!-- / #posts -->
+<?php } ?>
 </form>

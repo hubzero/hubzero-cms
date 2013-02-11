@@ -241,6 +241,30 @@ HUB.Plugins.GroupsBulletinboard = {
 				}
 			});
 			
+			/*$('#page_content a.comment').fancybox({
+				type: 'ajax',
+				width: 500,
+				height: 'auto',
+				autoSize: false,
+				fitToView: false,
+				titleShow: false,
+				tpl: {
+					wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
+				},
+				beforeLoad: function() {
+					href = $(this).attr('href');
+					if (href.indexOf('?') == -1) {
+						href += '?no_html=1';
+					} else {
+						href += '&no_html=1';
+					}
+					$(this).attr('href', href);	
+				},
+				afterShow: function() {
+					 
+				}
+			});*/
+			
 			$('#page_content a.follow, #page_content a.unfollow').on('click', function(e){
 				e.preventDefault();
 

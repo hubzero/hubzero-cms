@@ -111,7 +111,19 @@ if ($assets->total() > 0)
 				<?php if ($asset->get('type') != 'link') { ?>
 							<?php echo Hubzero_View_Helper_Html::formatSize(filesize(JPATH_ROOT . $path . DS . ltrim($asset->get('filename'), DS))); ?>
 				<?php } else { ?>
-							<?php echo JText::_('link'); ?>
+							<?php 
+							$UrlPtn  = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)" .
+							           "(?:[^ |\\/\"\']*\\/)*[^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]";
+
+							if (preg_match("/$UrlPtn/", $asset->get('filename'))) 
+							{
+								echo JText::_('external link');
+							}
+							else
+							{
+								echo JText::_('internal link');
+							}
+							?>
 				<?php } ?>
 						</span>
 				<?php if ($asset->get('description')) { ?>

@@ -36,27 +36,57 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') 
 
 <form method="get" action="<?php echo JRoute::_($base); ?>" id="collections">
 	<fieldset class="filters">
-		<span class="collections count">
-			<?php echo JText::sprintf('<strong>%s</strong> collections', $this->rows->total()); ?>
-		</span>
-		<span class="posts count">
-			<?php echo JText::sprintf('<strong>%s</strong> posts', $this->posts); ?>
-		</span>
-<?php if ($this->params->get('access-create-collection')) { ?>
-		<a class="add btn" href="<?php echo JRoute::_($base . '&scope=new'); ?>">
-			<?php echo JText::_('New collection'); ?>
-		</a>
-<?php } ?>
+		<ul>
+			<li>
+				<a class="collections count active" href="<?php echo JRoute::_($base . '&scope=all'); ?>">
+					<span><?php echo JText::sprintf('<strong>%s</strong> collections', $this->rows->total()); ?></span>
+				</a>
+			</li>
+			<li>
+				<a class="posts count" href="<?php echo JRoute::_($base . '&scope=posts'); ?>">
+					<span><?php echo JText::sprintf('<strong>%s</strong> posts', $this->posts); ?></span>
+				</a>
+			</li>
+			<li>
+				<a class="followers count" href="<?php echo JRoute::_($base . '&scope=followers'); ?>">
+					<span><?php echo JText::sprintf('<strong>%s</strong> followers', $this->followers); ?></span>
+				</a>
+			</li>
+		<?php if ($this->params->get('access-can-follow')) { ?>
+			<li>
+				<a class="following count" href="<?php echo JRoute::_($base . '&scope=following'); ?>">
+					<span><?php echo JText::sprintf('<strong>%s</strong> following', $this->following); ?></span>
+				</a>
+			</li>
+		<?php } ?>
+		</ul>
+	<?php if (!$this->juser->get('guest')) { ?>
+		<?php if ($this->params->get('access-create-collection')) { ?>
+		<p>
+			<a class="add btn" href="<?php echo JRoute::_($base . '&scope=new'); ?>">
+				<span><?php echo JText::_('New collection'); ?></span>
+			</a>
+		</p>
+		<?php } else { ?>
+		<p>
+			<?php if ($this->model->isFollowing()) { ?>
+				<a class="unfollow btn tooltips" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" title="<?php echo JText::_('Unfollow All :: Stop following everything this user posts'); ?>" href="<?php echo JRoute::_($base . '&scope=unfollow'); ?>">
+					<span><?php echo JText::_('Unfollow All'); ?></span>
+				</a>
+			<?php } else { ?>
+				<a class="follow btn tooltips" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" title="<?php echo JText::_('Follow All :: Follow everything this user posts'); ?>" href="<?php echo JRoute::_($base . '&scope=follow'); ?>">
+					<span><?php echo JText::_('Follow All'); ?></span>
+				</a>
+			<?php } ?>
+		</p>
+		<?php } ?>
+	<?php } ?>
 		<div class="clear"></div>
 	</fieldset>
 
+<?php if ($this->rows->total() > 0) { ?>
 	<div id="posts">
-<?php 
-if ($this->rows->total() > 0) 
-{
-	foreach ($this->rows as $row)
-	{
-?>
+	<?php foreach ($this->rows as $row) { ?>
 		<div class="post collection <?php echo ($row->get('access') == 4) ? 'private' : 'public'; ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>">
 			<div class="content">
 				<?php
@@ -83,27 +113,41 @@ if ($this->rows->total() > 0)
 					</p>
 				<?php if (!$this->juser->get('guest')) { ?>
 					<div class="actions">
-					<?php if ($this->params->get('access-edit-collection')) { ?>
-						<a class="edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $row->get('alias') . '/edit'); ?>">
-							<span><?php echo JText::_('Edit'); ?></span>
-						</a>
-					<?php } ?>
-					<?php if (!$row->get('is_default') && $this->params->get('access-delete-collection')) { ?>
-						<a class="delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $row->get('alias') . '/delete'); ?>">
-							<span><?php echo JText::_('Delete'); ?></span>
-						</a>
+					<?php if ($this->params->get('access-manage-collection')) { ?>
+						<?php if ($this->params->get('access-edit-collection')) { ?>
+							<a class="edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $row->get('alias') . '/edit'); ?>">
+								<span><?php echo JText::_('Edit'); ?></span>
+							</a>
+						<?php } ?>
+						<?php if ($this->params->get('access-delete-collection')) { ?>
+							<a class="delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $row->get('alias') . '/delete'); ?>">
+								<span><?php echo JText::_('Delete'); ?></span>
+							</a>
+						<?php } ?>
+					<?php } else { ?>
+							<a class="repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $row->get('alias') . '/collect'); ?>">
+								<span><?php echo JText::_('Collect'); ?></span>
+							</a>
+						<?php if ($row->isFollowing()) { ?>
+							<a class="unfollow" data-id="<?php echo $row->get('id'); ?>" data-text-follow="<?php echo JText::_('Follow'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $row->get('alias') . '/unfollow'); ?>">
+								<span><?php echo JText::_('Unfollow'); ?></span>
+							</a>
+						<?php } else { ?>
+							<a class="follow" data-id="<?php echo $row->get('id'); ?>" data-text-follow="<?php echo JText::_('Follow'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $row->get('alias') . '/follow'); ?>">
+								<span><?php echo JText::_('Follow'); ?></span>
+							</a>
+						<?php } ?>
 					<?php } ?>
 					</div><!-- / .actions -->
 				<?php } ?>
 				</div><!-- / .meta -->
 			</div><!-- / .content -->
 		</div><!-- / .post -->
-<?php
-	}
-}
-else
-{
-?>
+	<?php } ?>
+	</div><!-- / #posts -->
+	<?php if ($this->total > $this->filters['limit']) { echo $this->pageNav->getListFooter(); } ?>
+	<div class="clear"></div>
+<?php } else { ?>
 		<div id="collection-introduction">
 		<?php if ($this->params->get('access-create-collection')) { ?>
 			<div class="instructions">
@@ -119,9 +163,5 @@ else
 			</div><!-- / .instructions -->
 		<?php } ?>
 		</div><!-- / #collection-introduction -->
-<?php
-}
-?>
-		<div class="clear"></div>
-	</div><!-- / #posts -->
+<?php } ?>
 </form>
