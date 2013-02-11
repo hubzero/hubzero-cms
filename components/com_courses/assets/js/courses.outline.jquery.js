@@ -291,7 +291,7 @@ HUB.CoursesOutline = {
 					if(!locked) {
 						$('.unit').animate({'margin-left':315}, 500);
 						$('.delete-tray').animate({'margin-left':0}, 500, function() {
-							$('.delete-tray').toggleClass('closed').toggleClass('open');
+							$('.delete-tray').removeClass('closed').addClass('open');
 						});
 					}
 				},
@@ -299,7 +299,7 @@ HUB.CoursesOutline = {
 					if(!locked) {
 						$('.unit').animate({'margin-left':30}, 500);
 						$('.delete-tray').animate({'margin-left':-285}, 500, function() {
-							$('.delete-tray').toggleClass('closed').toggleClass('open');
+							$('.delete-tray').addClass('closed').removeClass('open');
 						});
 					}
 				},
