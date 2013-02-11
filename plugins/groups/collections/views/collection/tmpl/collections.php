@@ -61,14 +61,12 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') 
 		<?php } ?>
 		</ul>
 	<?php if (!$this->juser->get('guest')) { ?>
-		<?php if ($this->params->get('access-create-collection')) { ?>
 		<p>
+		<?php if ($this->params->get('access-create-collection')) { ?>
 			<a class="add btn" href="<?php echo JRoute::_($base . '&scope=new'); ?>">
 				<span><?php echo JText::_('New collection'); ?></span>
 			</a>
-		</p>
-		<?php } else { ?>
-		<p>
+		<?php } //else { ?>
 			<?php if ($this->model->isFollowing()) { ?>
 				<a class="unfollow btn tooltips" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" title="<?php echo JText::_('Unfollow All :: Stop following everything this user posts'); ?>" href="<?php echo JRoute::_($base . '&scope=unfollow'); ?>">
 					<span><?php echo JText::_('Unfollow All'); ?></span>
@@ -78,8 +76,8 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') 
 					<span><?php echo JText::_('Follow All'); ?></span>
 				</a>
 			<?php } ?>
+		<?php //} ?>
 		</p>
-		<?php } ?>
 	<?php } ?>
 		<div class="clear"></div>
 	</fieldset>
@@ -128,6 +126,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') 
 							<a class="repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $row->get('alias') . '/collect'); ?>">
 								<span><?php echo JText::_('Collect'); ?></span>
 							</a>
+					<?php } ?>
 						<?php if ($row->isFollowing()) { ?>
 							<a class="unfollow" data-id="<?php echo $row->get('id'); ?>" data-text-follow="<?php echo JText::_('Follow'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $row->get('alias') . '/unfollow'); ?>">
 								<span><?php echo JText::_('Unfollow'); ?></span>
@@ -137,7 +136,6 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') 
 								<span><?php echo JText::_('Follow'); ?></span>
 							</a>
 						<?php } ?>
-					<?php } ?>
 					</div><!-- / .actions -->
 				<?php } ?>
 				</div><!-- / .meta -->

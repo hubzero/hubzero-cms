@@ -286,7 +286,7 @@ HUB.Plugins.MembersCollections = {
 					href += '&no_html=1';
 				}
 				$(this).attr('href', href);
-				
+
 				$.getJSON($(this).attr('href'), {}, function(data) {
 					if (data.success) {
 						//var unfollow = $(el).attr('data-href-unfollow');
@@ -296,15 +296,15 @@ HUB.Plugins.MembersCollections = {
 						if ($(el).children('span').text() == follow) {
 							$(el).removeClass('follow')
 								.addClass('unfollow')
+								.attr('href', data.href)
 								.children('span')
-								.text(unfollow)
-								.attr('href', data.href);
+								.text(unfollow);
 						} else {
 							$(el).removeClass('unfollow')
 								.addClass('follow')
+								.attr('href', data.href)
 								.children('span')
-								.text(follow)
-								.attr('href', data.href);
+								.text(follow);
 						}
 					}
 				});

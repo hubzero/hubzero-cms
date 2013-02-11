@@ -49,14 +49,20 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') 
 <?php if (!$this->juser->get('guest')) { ?>
 	<?php if ($this->rows && $this->params->get('access-create-item')) { ?>
 		<a class="add btn tooltips" title="<?php echo JText::_('New post :: Add a new post to this collection'); ?>" href="<?php echo JRoute::_($base . '&scope=post/new&board=' . $this->collection->get('alias')); ?>">
-			<?php echo JText::_('New post'); ?>
+			<span><?php echo JText::_('New post'); ?></span>
 		</a>
 	<?php } //else { ?>
-		<a class="follow btn tooltips" title="<?php echo JText::_('Follow :: Follow this collection'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $this->collection->get('alias') . '/follow'); ?>">
-			<?php echo JText::_('Follow'); //Repost collection ?>
-		</a>
+		<?php if ($this->collection->isFollowing()) { ?>
+			<a class="unfollow btn tooltips" data-text-follow="<?php echo JText::_('Follow'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow'); ?>" title="<?php echo JText::_('Unfollow :: Unfollow this collection'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $this->collection->get('alias') . '/unfollow'); ?>">
+				<span><?php echo JText::_('Unfollow'); ?></span>
+			</a>
+		<?php } else { ?>
+			<a class="follow btn tooltips" data-text-follow="<?php echo JText::_('Follow'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow'); ?>" title="<?php echo JText::_('Follow :: Follow this collection'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $this->collection->get('alias') . '/follow'); ?>">
+				<span><?php echo JText::_('Follow'); ?></span>
+			</a>
+		<?php } ?>
 		<!-- <a class="repost btn tooltips" title="<?php echo JText::_('Repost :: Collect this collection'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $this->collection->get('alias') . '/collect'); ?>">
-			<?php echo JText::_('Collect'); ?>
+			<span><?php echo JText::_('Collect'); ?></span>
 		</a> -->
 	<?php //} ?>
 <?php } ?>

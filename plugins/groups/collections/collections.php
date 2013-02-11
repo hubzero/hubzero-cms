@@ -339,6 +339,89 @@ class plgGroupsCollections extends JPlugin
 	 * 
 	 * @return     string
 	 */
+	private function _followers()
+	{
+		ximport('Hubzero_Plugin_View');
+		$view = new Hubzero_Plugin_View(
+			array(
+				'folder'  => 'groups',
+				'element' => $this->_name,
+				'name'    => 'follow',
+				'layout'  => 'followers'
+			)
+		);
+		$view->name        = $this->_name;
+		$view->juser       = $this->juser;
+		$view->option      = $this->option;
+		$view->group       = $this->group;
+		$view->params      = $this->params;
+
+		Hubzero_Document::addPluginScript('members', $this->_name);
+
+		$this->jconfig = JFactory::getConfig();
+
+		// Filters for returning results
+		$view->filters = array();
+		$view->filters['limit']       = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
+		$view->filters['start']       = JRequest::getInt('limitstart', 0);
+
+		$filters = array();
+		$filters['user_id'] = $this->juser->get('id');
+		$filters['state']   = 1;
+
+		$filters = array();
+		if (!$this->params->get('access-manage-collection')) 
+		{
+			$filters['access'] = 0;
+		}
+
+		$filters['count'] = true;
+		$view->collections = $this->model->collections($filters);
+
+		$filters['count'] = false;
+		$view->rows = $this->model->collections($filters);
+
+		$view->posts = 0;
+		if ($view->rows) 
+		{
+			foreach ($view->rows as $row)
+			{
+				$view->posts += $row->get('posts');
+			}
+		}
+
+		$view->following = $this->model->following(array('count' => true));
+
+		$view->total = $this->model->followers(array('count' => true));
+
+		$view->rows = $this->model->followers($view->filters);
+
+		jimport('joomla.html.pagination');
+		$view->pageNav = new JPagination(
+			$view->total, 
+			$view->filters['start'], 
+			$view->filters['limit']
+		);
+
+		$view->pageNav->setAdditionalUrlParam('gid', $this->group->get('gidNumber'));
+		$view->pageNav->setAdditionalUrlParam('active', $this->_name);
+		$view->pageNav->setAdditionalUrlParam('scope', 'followers');
+
+		if ($this->getError()) 
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$view->setError($error);
+			}
+		}
+		return $view->loadTemplate();
+	}
+
+	/**
+	 * Display a list of collections
+	 * 
+	 * @return     string
+	 */
 	private function _collections()
 	{
 		ximport('Hubzero_Plugin_View');

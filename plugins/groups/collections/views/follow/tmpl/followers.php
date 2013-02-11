@@ -43,20 +43,13 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 
 ximport('Hubzero_User_Profile_Helper');
 
-$base = 'index.php?option=' . $this->option . '&id=' . $this->group->get('gidNumber') . '&active=' . $this->name;
+$base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->name;
 ?>
 
 <form method="get" action="<?php echo JRoute::_($base . '&scope=followers'); ?>" id="collections">
 
 	<fieldset class="filters">
 		<ul>
-<?php if ($this->params->get('access-manage-collection')) { ?>
-			<li>
-				<a class="livefeed tooltips" href="<?php echo JRoute::_($base); ?>" title="<?php echo JText::_('Live feed :: View posts from everything you\'re following'); ?>">
-					<span><?php echo JText::_('Feed'); ?></span>
-				</a>
-			</li>
-<?php } ?>
 			<li>
 				<a class="collections count" href="<?php echo JRoute::_($base . '&scope=all'); ?>">
 					<span><?php echo JText::sprintf('<strong>%s</strong> collections', $this->collections); ?></span>
