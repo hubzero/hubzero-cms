@@ -43,8 +43,12 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">50/50</option>
 			<option value="1">80/20</option>
 		</param>
+		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="webpath" type="text" menu="hide" default="/site/wishlist" label="Web path for storing attachments" description="Specify directory for attachment storage" />
-		 <param name="show_percentage_granted" type="radio" default="0" label="Show percentage granted?" description="Allow/Disallow diplay of percentage of granted wishes in selection">
+		<param name="maxAllowed" type="text" menu="hide" default="40000000" label="Max upload" description="Maximum upload file size" />
+		<param name="file_ext" type="textarea" rows="10" cols="30" menu="hide" label="Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz" description="Allowed file types" />
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="show_percentage_granted" type="radio" default="0" label="Show percentage granted?" description="Allow/Disallow diplay of percentage of granted wishes in selection">
 			<option value="1">yes</option>
 			<option value="0">no</option>
 		</param>

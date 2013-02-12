@@ -74,6 +74,12 @@ function WishlistBuildRoute(&$query)
 		unset($query['wishid']);
 	}
 
+	if (!empty($query['file'])) 
+	{
+		$segments[] = $query['file'];
+		unset($query['file']);
+	}
+
 	return $segments;
 }
 
@@ -123,6 +129,11 @@ function WishlistParseRoute($segments)
 			if (!empty($segments[2])) 
 			{
 				$vars['wishid'] = $segments[2];
+				if (!empty($segments[3])) 
+				{
+					$vars['file'] = $segments[3];
+					$vars['task'] = 'download';
+				}
 			}
 		}
 		else 
@@ -156,6 +167,11 @@ function WishlistParseRoute($segments)
 					if (!empty($segments[3])) 
 					{
 						$vars['wishid'] = $segments[3];
+					}
+					if (!empty($segments[4])) 
+					{
+						$vars['file'] = $segments[4];
+						$vars['task'] = 'download';
 					}
 				break;
 			}

@@ -118,8 +118,7 @@ class WishAttachment extends JTable
 	 */
 	public function parse($text)
 	{
-		$f = '/\{attachment#[0-9]*\}/sU';
-		return preg_replace_callback($f, array(&$this,'getAttachment'), $text);
+		return preg_replace_callback('/{attachment#[0-9]*}/sU', array(&$this,'getAttachment'), $text);
 	}
 
 	/**
@@ -131,32 +130,44 @@ class WishAttachment extends JTable
 	public function getAttachment($matches)
 	{
 		$match = $matches[0];
+		
+		if (!$match)
+		{
+			return '';
+		}
+		
 		$tokens = explode('#', $match);
 		$id = intval(end($tokens));
 
-		$this->_db->setQuery("SELECT filename, description FROM $this->_tbl WHERE id=" . $id);
+		$this->_db->setQuery("SELECT a.filename, a.description, a.wish, l.category, l.referenceid 
+							FROM $this->_tbl AS a 
+							JOIN #__wishlist_item AS i ON i.id=a.wish 
+							JOIN #__wishlist AS l ON l.id=i.wishlist 
+							WHERE a.id=" . $id);
 		$a = $this->_db->loadRow();
 
 		if ($this->output == 'web') 
 		{
 			if (is_file($this->uppath . DS . $a[0])) 
 			{
+				$path = rtrim(JRoute::_('index.php?option=com_wishlist&task=wish&category='.$a[3].'&rid='.$a[4].'&wishid='.$a[2]), DS);
+
 				if (preg_match("/bmp|gif|jpg|jpe|jpeg|tif|tiff|png/i", $a[0])) 
 				{
 					$size = getimagesize($this->uppath . DS . $a[0]);
 					if ($size[0] > 300) 
 					{
-						$img = '<a href="' . $this->webpath . '/' . $a[0] . '" rel="lightbox" title="' . $a[1] . '"><img src="' . $this->webpath . '/' . $a[0] . '" alt="' . $a[1] . '" width="300" /></a>';
+						$img = '<a href="' . $path . '/' . $a[0] . '" rel="lightbox" title="' . $a[1] . '"><img src="' . $path . '/' . $a[0] . '" alt="' . $a[1] . '" width="300" /></a>';
 					} 
 					else 
 					{
-						$img = '<img src="' . $this->webpath . '/' . $a[0] . '" alt="' . $a[1] . '" />';
+						$img = '<img src="' . $path . '/' . $a[0] . '" alt="' . $a[1] . '" />';
 					}
 					$this->description = $img;
 				} 
 				else 
 				{
-					$html  = '<a href="' . $this->webpath . '/' . $a[0] . '" title="' . $a[1] . '">';
+					$html  = '<a href="' . $path . '/' . $a[0] . '" title="' . $a[1] . '">';
 					$html .= ($a[1]) ? $a[1] : $a[0];
 					$html .= '</a>';
 					$this->description = $html;

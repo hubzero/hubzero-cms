@@ -249,6 +249,7 @@ class WishlistController extends JObject
 			case 'autocomplete': $this->autocomplete(); break;
 
 			case 'upload':     $this->upload();     break;
+			case 'download':     $this->download();     break;
 
 			default: $this->wishlist(); break;
 		}
@@ -3193,6 +3194,7 @@ class WishlistController extends JObject
 				$comment->comment = stripslashes($comment->comment);
 				if (!$skipattachments) 
 				{
+					$attach->description = '';
 					if (!strstr($comment->comment, '</p>') && !strstr($comment->comment, '<pre class="wiki">')) 
 					{
 						$comment->comment = preg_replace('/<br\\s*?\/??>/i', '', $comment->comment);
@@ -3631,15 +3633,46 @@ class WishlistController extends JObject
 		jimport('joomla.filesystem.file');
 		$file['name'] = JFile::makeSafe($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
+		$ext = strtolower(JFile::getExt($file['name']));
+
+		//make sure that file is acceptable type
+		if (!in_array($ext, explode(',', $this->config->get('file_ext', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz')))) 
+		{
+			$this->setError(JText::_('ATTACHMENT: Incorrect file type.'));
+			return JText::_('ATTACHMENT: Incorrect file type.');
+		}
+
+		// Build the path if it doesn't exist
+		if (!is_dir($path)) 
+		{
+			jimport('joomla.filesystem.folder');
+			if (!JFolder::create($path, 0777)) 
+			{
+				$this->setError(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'));
+				return 'ATTACHMENT: ' . JText::_('UNABLE_TO_CREATE_UPLOAD_PATH');
+			}
+		}
 
 		// Perform the upload
 		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name'])) 
 		{
 			$this->setError(JText::_('ERROR_UPLOADING'));
-			return '';
+			return 'ATTACHMENT: ' . JText::_('ERROR_UPLOADING');
 		} 
 		else 
 		{
+			// Scan for viruses
+			$path = $path . DS . $file['name']; //JPATH_ROOT . DS . 'virustest';
+			exec("clamscan -i --no-summary --block-encrypted $path", $output, $status);
+			if ($status == 1)
+			{
+				if (JFile::delete($path)) 
+				{
+					$this->setError(JText::_('ATTACHMENT: File rejected because the anti-virus scan failed.'));
+					return JText::_('ATTACHMENT: File rejected because the anti-virus scan failed.');
+				}
+			}
+
 			// File was uploaded
 			$description = htmlspecialchars($description);
 
@@ -3666,6 +3699,99 @@ class WishlistController extends JObject
 
 			return '{attachment#' . $row->id . '}';
 		}
+	}
+
+	/**
+	 * Download an attachment
+	 * 
+	 * @return     void
+	 */
+	public function download()
+	{
+		// Get some needed libraries
+		ximport('Hubzero_Content_Server');
+
+		$database =& JFactory::getDBO();
+
+		$file = JRequest::getVar('file', '');
+		$wishid = JRequest::getInt('wishid', 0);
+
+		$wish = new Wish($database);
+		$wish->load($wishid);
+
+		// Ensure we have a path
+		if (!$wish->id || $wish->status == 2 || $wish->status == 4) 
+		{
+			JError::raiseError(404, JText::_('COM_WISHLIST_FILE_NOT_FOUND'));
+			return;
+		}
+
+		$wa = new WishAttachment($database);
+		$attachment = $wa->loadAttachment($file, $wishid);
+
+		// Ensure we have a path
+		if (!$attachment->wish || empty($attachment->filename)) 
+		{
+			JError::raiseError(404, JText::_('COM_WISHLIST_FILE_NOT_FOUND'));
+			return;
+		}
+		if (preg_match("/^\s*http[s]{0,1}:/i", $attachment->filename)) 
+		{
+			JError::raiseError(404, JText::_('COM_WISHLIST_BAD_FILE_PATH'));
+			return;
+		}
+		if (preg_match("/^\s*[\/]{0,1}index.php\?/i", $attachment->filename)) 
+		{
+			JError::raiseError(404, JText::_('COM_WISHLIST_BAD_FILE_PATH'));
+			return;
+		}
+		// Disallow windows drive letter
+		if (preg_match("/^\s*[.]:/", $attachment->filename)) 
+		{
+			JError::raiseError(404, JText::_('COM_WISHLIST_BAD_FILE_PATH'));
+			return;
+		}
+		// Disallow \
+		if (strpos('\\', $attachment->filename)) 
+		{
+			JError::raiseError(404, JText::_('COM_WISHLIST_BAD_FILE_PATH'));
+			return;
+		}
+		// Disallow ..
+		if (strpos('..', $attachment->filename)) 
+		{
+			JError::raiseError(404, JText::_('COM_WISHLIST_BAD_FILE_PATH'));
+			return;
+		}
+
+		$attachment->filename = DS . ltrim($attachment->filename, DS);
+
+		// Add JPATH_ROOT
+		$filename = JPATH_ROOT . $this->getWebPath($attachment->wish) . $attachment->filename;
+
+		// Ensure the file exist
+		if (!file_exists($filename)) 
+		{
+			JError::raiseError(404, JText::_('COM_WISHLIST_FILE_NOT_FOUND') . ' ' . $filename);
+			return;
+		}
+
+		// Initiate a new content server and serve up the file
+		$xserver = new Hubzero_Content_Server();
+		$xserver->filename($filename);
+		$xserver->disposition('attachment');
+		$xserver->acceptranges(false); // @TODO fix byte range support
+
+		if (!$xserver->serve()) 
+		{
+			// Should only get here on error
+			JError::raiseError(404, JText::_('COM_WISHLIST_SERVER_ERROR'));
+		} 
+		else 
+		{
+			exit;
+		}
+		return;
 	}
 
 	/**
