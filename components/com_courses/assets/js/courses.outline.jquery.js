@@ -693,9 +693,76 @@ HUB.CoursesOutline = {
 			$(this).siblings('.url').fadeToggle();
 		});
 
+		// Hide for on cancel click
 		$('.unit').on('click', '.attach-a-link .attach-link-cancel', function(e) {
 			e.preventDefault();
 			$(this).parents('form').fadeOut();
+		});
+
+		// Submit form
+		$('.unit').on('click', '.attach-a-link .attach-link-submit', function(e) {
+			e.preventDefault();
+
+			var form       = $(this).parents('form');
+			var assetslist = $(this).parents('.asset-group-item').find('.assets-list');
+			var data       = form.serialize();
+
+			// Create ajax call to change info in the database
+			$.ajax({
+				url: form.attr('action'),
+				data: data,
+				dataType: "json",
+				type: 'POST',
+				cache: false,
+				statusCode: {
+					// 201 created - this is returned by the standard asset upload
+					201: function(data, textStatus, jqXHR){
+						if(data.assets.js) {
+							// If our asset handler returns JS, we'll run that
+							eval(data.assets.js);
+						} else {
+							// If this is an empty asset group, remove the "no files" list item first
+							if(assetslist.find('li:first').hasClass('nofiles'))
+							{
+								assetslist.find('li:first').remove();
+							}
+
+							// Loop through the uploaded files and add li for them
+							$.each(data.assets, function (index, asset) {
+								// Insert in our HTML (uses "underscore.js")
+								var li = _.template(HUB.CoursesOutline.Templates.asset, asset);
+								assetslist.append(li);
+
+								// Get a pointer to our new asset item
+								var newAsset = assetslist.find('.asset-item:last');
+
+								// Update a few things after adding the new asset (reset the progress bar, make them sortable, etc...)
+								newAsset.find('.uniform').uniform();
+								newAsset.find('.toggle-editable').show();
+								newAsset.find('.title-edit').hide();
+								HUB.CoursesOutline.showProgressIndicator();
+								HUB.CoursesOutline.resizeFileUploader();
+								HUB.CoursesOutline.makeAssetsSortable();
+
+								// Hide the form again
+								form.fadeOut();
+							});
+						}
+
+					},
+					401: function(data){
+						// Display the error message
+						HUB.CoursesOutline.errorMessage(data.responseText);
+					},
+					404: function(data){
+						HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
+					},
+					500: function(data){
+						// Display the error message
+						HUB.CoursesOutline.errorMessage(data.responseText);
+					}
+				}
+			});
 		});
 	},
 

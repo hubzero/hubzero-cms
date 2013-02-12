@@ -569,7 +569,7 @@ ul {
 	top: 0;
 }
 .uploadfiles-progress {
-	margin-bottom: 5px;
+	margin-top: 5px;
 	position: relative;
 }
 .uploadfiles-progress:before {

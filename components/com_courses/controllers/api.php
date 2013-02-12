@@ -369,9 +369,8 @@ class CoursesApiController extends Hubzero_Api_Controller
 			return;
 		}
 
-		// @FIXME: not all assets will be files...
 		// Grab the incoming file
-		if (isset($_FILES['files']))
+		if(isset($_FILES['files']))
 		{
 			$file_name = $_FILES['files']['name'][0];
 			$file_size = (int) $_FILES['files']['size'];
@@ -379,23 +378,28 @@ class CoursesApiController extends Hubzero_Api_Controller
 			// Get the extension
 			$pathinfo = pathinfo($file_name);
 			$ext      = $pathinfo['extension'];
-
-			// Initiate our file handler
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'assets' . DS . 'assethandler.php');
-			$assetHandler = new AssetHandler($this->db, $ext);
-
-			// Create the new asset
-			$return = $assetHandler->create(JRequest::getWord('handler', null));
-
-			if(array_key_exists('error', $return))
-			{
-				$this->setMessage($return['error'], 500, 'Internal server error');
-				return;
-			}
+		}
+		elseif($url = JRequest::getVar('url', false))
+		{
+			$ext = 'url';
 		}
 		else
 		{
-			$this->setMessage("No files given", 500, 'Internal server error');
+			$this->setMessage("No assets given", 500, 'Internal server error');
+			return;
+		}
+
+		// Initiate our file handler
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'assets' . DS . 'assethandler.php');
+		$assetHandler = new AssetHandler($this->db, $ext);
+
+		// Create the new asset
+		$return = $assetHandler->create(JRequest::getWord('handler', null));
+
+		// Check for errors in response
+		if(array_key_exists('error', $return))
+		{
+			$this->setMessage($return['error'], 500, 'Internal server error');
 			return;
 		}
 

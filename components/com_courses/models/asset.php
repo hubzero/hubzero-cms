@@ -188,6 +188,12 @@ class CoursesModelAsset extends JObject
 			$path = $this->get('url');
 		}
 
+		// Override path for url/link type assets
+		if($this->get('type') == 'link' || $this->get('type') == 'url')
+		{
+			$path = $this->get('url');
+		}
+
 		return $path;
 	}
 
