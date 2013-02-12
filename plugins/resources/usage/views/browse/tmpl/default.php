@@ -50,6 +50,7 @@ if (!JPluginHelper::isEnabled('system', 'jquery'))
 }
 $document->addScript(DS . 'media' . DS . 'system' . DS . 'js' . DS . 'flot' . DS . 'jquery.flot.min.js');
 $document->addScript(DS . 'media' . DS . 'system' . DS . 'js' . DS . 'flot' . DS . 'jquery.flot.selection.js');
+$document->addScript(DS . 'media' . DS . 'system' . DS . 'js' . DS . 'flot' . DS . 'jquery.flot.resize.min.js');
 $document->addScript(DS . 'media' . DS . 'system' . DS . 'js' . DS . 'flot' . DS . 'jquery.flot.crosshair.min.js');
 
 // Set the base URL
@@ -202,7 +203,7 @@ if ($results)
 				}
 				?>
 				</div>
-				<div id="users-overview-timeline" style="width:700;height:100px;margin-top: -7px">
+				<div id="users-overview-timeline" style="min-width:400px;height:100px;margin-top: -7px">
 					<!-- blank -->
 				</div>
 
@@ -619,7 +620,7 @@ if ($results)
 					echo $sparkline;
 				?>
 				</div>
-				<div id="runs-overview-timeline" style="width:700;height:100px;margin-top: -7px">
+				<div id="runs-overview-timeline" style="min-width:400px;height:100px;margin-top: -7px">
 					<!-- blank -->
 				</div>
 				
@@ -781,7 +782,8 @@ if ($results)
 						yaxis: { min: 0, labelWidth: 25 }
 					};
 
-					$(document).ready(function() {
+					
+					function plotCharts() {
 						var placeholderU = $("#users-overview");
 						// Bind the selection area so the chart updates
 						placeholderU.bind("plotselected", function (event, ranges) {
@@ -824,7 +826,7 @@ if ($results)
 						});
 						var plotU = $.plot(placeholderU, [datasets[0]], options);
 
-						var uoTimeline = $("#users-overview-timeline");
+						
 						var timelineOptions = {
 							legend: { show: false },
 							series: {
@@ -847,34 +849,14 @@ if ($results)
 									return month_short[d.getUTCMonth()] + " '" + d.getUTCFullYear().toString().substr(2);//d.getUTCDate() + "/" + (d.getUTCMonth() + 1);
 								}
 							},
-							yaxis: { color: '#fff', min: 0, autoscaleMargin: 0.1, labelWidth: 25 },
+							yaxis: { color: 'transparent', min: 0, autoscaleMargin: 0.1, labelWidth: 25 },
 							selection: { 
 								mode: "x", 
 								color: '<?php echo $this->params->get("chart_color_selection", "rgba(0, 0, 0, 0.3)"); ?>', 
 								navigate: true 
 							}
 						};
-						var plotUO = $.plot(uoTimeline, [datasets[0]], timelineOptions);
-						plotUO.setSelection({ 
-								xaxis: {
-									from: new Date('<?php echo $from; ?>'),
-									to: new Date('<?php echo $to; ?>')
-								}
-							}, 
-							true
-						);
-						uoTimeline
-							.unbind("plotselected")
-							.bind("plotselected", function (event, ranges) {
-								plotU.setSelection(ranges);
-								plotR.setSelection(ranges);
-							})
-							.unbind("plotnavigating")
-							.bind("plotnavigating", function (event, ranges) {
-								//previousPoint = null;
-								plotU.setSelection(ranges);
-								plotR.setSelection(ranges);
-							});
+						
 
 
 						var placeholderR = $("#runs-overview");
@@ -919,6 +901,33 @@ if ($results)
 						});
 						var plotR = $.plot(placeholderR, [datasets[1]], options);
 
+
+						var uoTimeline = $("#users-overview-timeline");
+						var plotUO = $.plot(uoTimeline, [datasets[0]], timelineOptions);
+						plotUO.setSelection({ 
+								xaxis: {
+									from: new Date('<?php echo $from; ?>'),
+									to: new Date('<?php echo $to; ?>')
+								}
+							}, 
+							true
+						);
+						uoTimeline
+							.unbind("plotselected")
+							.bind("plotselected", function (event, ranges) {
+								plotU.setSelection(ranges);
+								ranges.yaxis.to = <?php echo $runsTop; ?>;
+								plotR.setSelection(ranges);
+							})
+							.unbind("plotnavigating")
+							.bind("plotnavigating", function (event, ranges) {
+								//previousPoint = null;
+								plotU.setSelection(ranges);
+								ranges.yaxis.to = <?php echo $runsTop; ?>;
+								plotR.setSelection(ranges);
+							});
+
+
 						var roTimeline = $("#runs-overview-timeline");
 						var plotRO = $.plot(roTimeline, [datasets[1]], timelineOptions);
 						plotRO.setSelection({ 
@@ -933,12 +942,14 @@ if ($results)
 							.unbind("plotselected")
 							.bind("plotselected", function (event, ranges) {
 								plotR.setSelection(ranges);
+								ranges.yaxis.to = <?php echo $usersTop; ?>;
 								plotU.setSelection(ranges);
 							})
 							.unbind("plotnavigating")
 							.bind("plotnavigating", function (event, ranges) {
 								//previousPoint = null;
 								plotR.setSelection(ranges);
+								ranges.yaxis.to = <?php echo $usersTop; ?>;
 								plotU.setSelection(ranges);
 							});
 						
@@ -1031,8 +1042,33 @@ if ($results)
 							});
 							return false;
 						});
-
+					}
+					$(document).ready(function() {
+						plotCharts();
 					});
+
+						$(window).resize(function() {
+							if (this.resizeTO) clearTimeout(this.resizeTO);
+							this.resizeTO = setTimeout(function() {
+								$(this).trigger('resizeEnd');
+							}, 100);
+						});
+						$(window).bind('resizeEnd', function() {
+							//plotCharts();
+							if (plotU) {
+								plotU.resize();
+								plotU.setupGrid();
+								plotU.draw();
+							}
+							if (plotR) {
+								plotR.resize();
+								plotR.setupGrid();
+								plotR.draw();
+							}
+							
+						});
+
+					
 				});
 			}
 		</script>
