@@ -116,6 +116,7 @@ if ($results)
 
 	$current = end($results);
 }
+
 ?>
 	<h3 id="plg-usage-header">
 		<a name="usage"></a>
@@ -672,6 +673,7 @@ if ($results)
 			</div><!-- / .four columns second third fourth -->
 			<div style="clear:left;"></div>
 		</div><!-- / #runs-overview-wrap -->
+		
 		<script type="text/javascript">
 			if (!jq) {
 				var jq = $;
@@ -826,7 +828,7 @@ if ($results)
 						});
 						var plotU = $.plot(placeholderU, [datasets[0]], options);
 
-						
+
 						var timelineOptions = {
 							legend: { show: false },
 							series: {
@@ -906,7 +908,7 @@ if ($results)
 						var plotUO = $.plot(uoTimeline, [datasets[0]], timelineOptions);
 						plotUO.setSelection({ 
 								xaxis: {
-									from: new Date('<?php echo $from; ?>'),
+									from: new Date('<?php echo $min; ?>'),
 									to: new Date('<?php echo $to; ?>')
 								}
 							}, 
@@ -932,7 +934,7 @@ if ($results)
 						var plotRO = $.plot(roTimeline, [datasets[1]], timelineOptions);
 						plotRO.setSelection({ 
 								xaxis: {
-									from: new Date('<?php echo $from; ?>'),
+									from: new Date('<?php echo $min; ?>'),
 									to: new Date('<?php echo $to; ?>')
 								}
 							}, 
