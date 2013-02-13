@@ -31,16 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$tbl = new CoursesTableAsset(JFactory::getDBO());
-
-// Get all of the assets of type exam (these are not asset models, but just a standard array of objects)
-$assets = $tbl->find(array(
-	'w' => array(
-		'course_id'  => $this->course->get('id'),
-		'asset_type' => 'exam'
-	)
-));
-
 $quizzes_total       = 0;
 $homeworks_total     = 0;
 $exams_total         = 0;
@@ -52,153 +42,160 @@ $forms           = array();
 $current_score   = array();
 $current_score_i = 0;
 
-foreach ($assets as $asset)
+foreach($this->course->offering()->units() as $unit)
 {
-	$increment_count_taken = false;
-	$crumb                 = false;
-
-	// Check for result for given student on form
-	preg_match('/\?crumb=([-a-zA-Z0-9]{20})/', $asset->url, $matches);
-
-	if(isset($matches[1]))
+	foreach($unit->assetgroups() as $agt)
 	{
-		$crumb = $matches[1];
-	}
-
-	if(!$crumb)
-	{
-		// Break foreach, this is not a valid form!
-		break;
-	}
-
-	require_once(JPATH_COMPONENT . DS . 'models' . DS . 'form.php');
-	require_once(JPATH_COMPONENT . DS . 'models' . DS . 'formRespondent.php');
-	require_once(JPATH_COMPONENT . DS . 'models' . DS . 'formDeployment.php');
-
-	$dep = PdfFormDeployment::fromCrumb($crumb);
-
-	switch ($dep->getState())
-	{
-		// Form isn't available yet
-		case 'pending':
-			$forms[] = array('title'=>$asset->title, 'score'=>'Not yet open', 'date'=>'N/A', 'url'=>$asset->url);
-		break;
-
-		// Form availability has expired
-		case 'expired':
-			// Get whether or not we should show scores at this point
-			$results_closed = $dep->getResultsClosed();
-
-			// Grab the response
-			$resp = $dep->getRespondent();
-
-			// Form is still active and they are allowed to see their score
-			if($results_closed == 'score' || $results_closed == 'details')
-			{
-				$record          = $resp->getAnswers();
-				$score           = $record['summary']['score'];
-				$current_score[] = $score;
-				++$current_score_i;
-			}
-			else
-			{
-				// Score has been withheld by form creator
-				$score = 'Withheld';
-			}
-
-			// Get the date of the completion
-			$date = date('r', strtotime($resp->getEndTime()));
-
-			// They have completed this form, therefore set increment_count_taken equal to true
-			$increment_count_taken = true;
-
-			$forms[] = array('title'=>$asset->title, 'score'=>$score, 'date'=>$date, 'url'=>$asset->url);
-		break;
-
-		// Form is still active
-		case 'active':
-		if(isset($resp))
+		foreach($agt->children() as $ag)
 		{
-			unset($resp);
-		}
-			$resp = $dep->getRespondent();
-
-			// Form is active and they have completed it!
-			if($resp->getEndTime())
+			foreach($ag->assets() as $asset)
 			{
-				// Get whether or not we should show scores at this point
-				$results_open = $dep->getResultsOpen();
-
-				// Form is still active and they are allowed to see their score
-				if($results_open == 'score' || $results_open == 'details')
-				{
-					$record          = $resp->getAnswers();
-					$score           = $record['summary']['score'];
-					$current_score[] = $score;
-					++$current_score_i;
-				}
-				else
-				{
-					// Score is not yet available at this point
-					$score = 'Not yet available';
-				}
-
-				// Get the date of the completion
-				$date = date('r', strtotime($resp->getEndTime()));
-
-				// They have completed this form, therefor set increment_count_taken equal to true
-				$increment_count_taken = true;
-			}
-			// Form is active and they haven't finished it yet!
-			else
-			{
-				$score = 'Not completed';
-				$date  = 'N/A';
-
-				// For sanities sake - they have NOT completed the form yet!
 				$increment_count_taken = false;
+				$crumb                 = false;
+
+				// Check for result for given student on form
+				preg_match('/\?crumb=([-a-zA-Z0-9]{20})/', $asset->get('url'), $matches);
+
+				if(isset($matches[1]))
+				{
+					$crumb = $matches[1];
+				}
+
+				if(!$crumb || $asset->get('state') != COURSES_ASSET_PUBLISHED)
+				{
+					// Break foreach, this is not a valid form!
+					continue;
+				}
+
+				require_once(JPATH_COMPONENT . DS . 'models' . DS . 'form.php');
+				require_once(JPATH_COMPONENT . DS . 'models' . DS . 'formRespondent.php');
+				require_once(JPATH_COMPONENT . DS . 'models' . DS . 'formDeployment.php');
+
+				$dep = PdfFormDeployment::fromCrumb($crumb);
+
+				switch ($dep->getState())
+				{
+					// Form isn't available yet
+					case 'pending':
+						$forms[] = array('title'=>$asset->get('title'), 'score'=>'Not yet open', 'date'=>'N/A', 'url'=>$asset->get('url'));
+					break;
+
+					// Form availability has expired
+					case 'expired':
+						// Get whether or not we should show scores at this point
+						$results_closed = $dep->getResultsClosed();
+
+						// Grab the response
+						$resp = $dep->getRespondent();
+
+						// Form is still active and they are allowed to see their score
+						if($results_closed == 'score' || $results_closed == 'details')
+						{
+							$record          = $resp->getAnswers();
+							$score           = $record['summary']['score'];
+							$current_score[] = $score;
+							++$current_score_i;
+						}
+						else
+						{
+							// Score has been withheld by form creator
+							$score = 'Withheld';
+						}
+
+						// Get the date of the completion
+						$date = date('r', strtotime($resp->getEndTime()));
+
+						// They have completed this form, therefore set increment_count_taken equal to true
+						$increment_count_taken = true;
+
+						$forms[] = array('title'=>$asset->get('title'), 'score'=>$score, 'date'=>$date, 'url'=>$asset->get('url'));
+					break;
+
+					// Form is still active
+					case 'active':
+						$resp = $dep->getRespondent();
+
+						// Form is active and they have completed it!
+						if($resp->getEndTime() && $resp->getEndTime() != '')
+						{
+							// Get whether or not we should show scores at this point
+							$results_open = $dep->getResultsOpen();
+
+							// Form is still active and they are allowed to see their score
+							if($results_open == 'score' || $results_open == 'details')
+							{
+								$record          = $resp->getAnswers();
+								$score           = $record['summary']['score'];
+								$current_score[] = $score;
+								++$current_score_i;
+							}
+							else
+							{
+								// Score is not yet available at this point
+								$score = 'Not yet available';
+							}
+
+							// Get the date of the completion
+							$date = date('r', strtotime($resp->getEndTime()));
+
+							// They have completed this form, therefor set increment_count_taken equal to true
+							$increment_count_taken = true;
+						}
+						// Form is active and they haven't finished it yet!
+						else
+						{
+							$score = 'Not taken';
+							$date  = 'N/A';
+
+							// For sanities sake - they have NOT completed the form yet!
+							$increment_count_taken = false;
+						}
+
+						$forms[] = array('title'=>$asset->get('title'), 'score'=>$score, 'date'=>$date, 'url'=>$asset->get('url'));
+					break;
+				}
+
+				// Increment total count for this type
+				// @FIXME: probably need a better way of identifying types of form/exam assets
+				if(strpos(strtolower($asset->get('title')), 'quiz'))
+				{
+					++$quizzes_total;
+
+					// If increment is set (i.e. they completed the from), increment the taken number as well
+					if($increment_count_taken)
+					{
+						++$quizzes_taken;
+					}
+				}
+				elseif(strpos(strtolower($asset->get('title')), 'homework'))
+				{
+					++$homeworks_total;
+
+					// If increment is set (i.e. they completed the from), increment the taken number as well
+					if($increment_count_taken)
+					{
+						++$homeworks_submitted;
+					}
+				}
+				elseif(strpos(strtolower($asset->get('title')), 'exam'))
+				{
+					++$exams_total;
+
+					// If increment is set (i.e. they completed the from), increment the taken number as well
+					if($increment_count_taken)
+					{
+						++$exams_taken;
+					}
+				}
 			}
-
-			$forms[] = array('title'=>$asset->title, 'score'=>$score, 'date'=>$date, 'url'=>$asset->url);
-		break;
-	}
-
-	// Increment total count for this type
-	// @FIXME: probably need a better way of identifying types of form/exam assets
-	if(strpos(strtolower($asset->title), 'quiz'))
-	{
-		++$quizzes_total;
-
-		// If increment is set (i.e. they completed the from), increment the taken number as well
-		if($increment_count_taken)
-		{
-			++$quizzes_taken;
-		}
-	}
-	elseif(strpos(strtolower($asset->title), 'homework'))
-	{
-		++$homeworks_total;
-
-		// If increment is set (i.e. they completed the from), increment the taken number as well
-		if($increment_count_taken)
-		{
-			++$homeworks_submitted;
-		}
-	}
-	elseif(strpos(strtolower($asset->title), 'exam'))
-	{
-		++$exams_total;
-
-		// If increment is set (i.e. they completed the from), increment the taken number as well
-		if($increment_count_taken)
-		{
-			++$exams_taken;
 		}
 	}
 }
 
+// @FIXME: order assets
+
 // Calculate the student's current score
-$current_score = round(array_sum($current_score) / $current_score_i, 2);
+$current_score = ($current_score_i > 0) ? round(array_sum($current_score) / $current_score_i, 2) : 0;
 
 // Get the status of the course (e.x. not started, in progress, completed, etc...)
 $section = $this->course->offering()->section();
