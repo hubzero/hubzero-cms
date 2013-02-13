@@ -2,6 +2,18 @@
 
 class Hubzero_Ldap
 {
+	private static $errors  = array(
+		'errors'   => true,
+		'fatal'    => array(),
+		'warnings' => array()
+		);
+	private static $success = array(
+		'success'  => true,
+		'added'    => 0,
+		'deleted'  => 0,
+		'modified' => 0
+		);
+
 	public static function getLDO($debug = 0)
 	{
 		static $conn = false;
@@ -155,6 +167,7 @@ class Hubzero_Ldap
 	
 		if (empty($db))
 		{
+			self::$errors['fatal'][] = 'Error connecting to the database';
 			return false;
 		}
 		
@@ -162,9 +175,10 @@ class Hubzero_Ldap
 	
 		if (empty($conn))
 		{
+			self::$errors['fatal'][] = 'LDAP connection failed';
 			return false;
 		}
-		
+
 		$query = "SELECT u.id AS uidNumber, u.username AS uid, u.name AS cn, " .
 				" p.gidNumber, p.homeDirectory, p.loginShell, " .
 				" pwd.passhash AS userPassword, pwd.shadowLastChange, pwd.shadowMin, pwd.shadowMax, pwd.shadowWarning, " .
@@ -239,15 +253,28 @@ class Hubzero_Ldap
 
 			if (empty($entry['uid']) || empty($entry['cn']) || empty($entry['gidNumber']))
 			{
+				self::$errors['warning'] = "User {$dbinfo['uid']} missing one of uid, cn, or gidNumber";
 				return false;
 			}
 				
 			if (empty($entry['homeDirectory']) || empty($entry['uidNumber']))
 			{
+				self::$errors['warning'] = "User {$dbinfo['uid']} missing one of homeDirectory or uidNumber";
 				return false;
 			}
 			
-			return @ldap_add($conn, $dn, $entry);
+			$result = @ldap_add($conn, $dn, $entry);
+
+			if($result !== true)
+			{
+				self::$errors['warning'][] = @ldap_error($conn);
+				return false;
+			}
+			else
+			{
+				++self::$success['added'];
+				return true;
+			}
 		}
 	
 		$ldapinfo = null;
@@ -296,7 +323,18 @@ class Hubzero_Ldap
 		{
 			$dn = "uid=" . $ldapinfo['uid'] . ",ou=users," . $hubLDAPBaseDN;
 	
-			return @ldap_delete($conn, $dn);
+			$result = @ldap_delete($conn, $dn);
+
+			if($result !== true)
+			{
+				self::$errors['warning'][] = @ldap_error($conn);
+				return false;
+			}
+			else
+			{
+				++self::$success['deleted'];
+				return true;
+			}
 		}
 	
 		/* Otherwise update the ldap entry */
@@ -320,7 +358,18 @@ class Hubzero_Ldap
 	
 		$dn = "uid=" . $ldapinfo['uid'] . ",ou=users," . $hubLDAPBaseDN;
 		
-		return @ldap_modify($conn, $dn, $entry);
+		$result = @ldap_modify($conn, $dn, $entry);
+
+		if($result !== true)
+		{
+			self::$errors['warning'][] = @ldap_error($conn);
+			return false;
+		}
+		else
+		{
+			++self::$success['modified'];
+			return true;
+		}
 	}
 	
 	static function syncGroup($group)
@@ -329,6 +378,7 @@ class Hubzero_Ldap
 	
 		if (empty($db))
 		{
+			self::$errors['fatal'][] = 'Error connecting to the database';
 			return false;
 		}
 	
@@ -336,6 +386,7 @@ class Hubzero_Ldap
 	
 		if (empty($conn))
 		{
+			self::$errors['fatal'][] = 'LDAP connection failed';
 			return false;
 		}
 	
@@ -402,7 +453,18 @@ class Hubzero_Ldap
 				}
 			}
 
-			return @ldap_add($conn, $dn, $entry);
+			$result = @ldap_add($conn, $dn, $entry);
+
+			if($result !== true)
+			{
+				self::$errors['warning'][] = @ldap_error($conn);
+				return false;
+			}
+			else
+			{
+				++self::$success['added'];
+				return true;
+			}
 		}
 
 		$ldapinfo = null;
@@ -453,7 +515,18 @@ class Hubzero_Ldap
 		{
 			$dn = "cn=" . $ldapinfo['cn'] . ",ou=groups," . $hubLDAPBaseDN;
 
-			return @ldap_delete($conn, $dn);
+			$result = @ldap_delete($conn, $dn);
+
+			if($result !== true)
+			{
+				self::$errors['warning'][] = @ldap_error($conn);
+				return false;
+			}
+			else
+			{
+				++self::$success['deleted'];
+				return true;
+			}
 		}
 
 		/* Otherwise update the ldap entry */
@@ -475,7 +548,18 @@ class Hubzero_Ldap
 			}
 		}
 
-		return @ldap_modify($conn, $dn, $entry);
+		$result = @ldap_modify($conn, $dn, $entry);
+
+		if($result !== true)
+		{
+			self::$errors['warning'][] = @ldap_error($conn);
+			return false;
+		}
+		else
+		{
+			++self::$success['modified'];
+			return true;
+		}
 	}
 	
 	static function addGroupMemberships($group, $members)
@@ -644,12 +728,27 @@ class Hubzero_Ldap
 		{
 			return false;
 		}
-	
-		foreach($result as $row) 
+
+		foreach($result as $row)
 		{
-			self::syncGroup($row);	
+			self::syncGroup($row);
+
+			if(is_array(self::$errors['fatal']) && !empty(self::$errors['fatal'][0]))
+			{
+				// If there's a fatal error, go ahead and stop
+				return self::$errors;
+			}
 		}
-	}				
+
+		if(!empty(self::$errors['fatal'][0]) || !empty(self::$errors['warning'][0]))
+		{
+			return self::$errors;
+		}
+		else
+		{
+			return self::$success;
+		}
+	}
 
 	/**
 	 * Short description for 'syncAllGroups'
@@ -678,6 +777,21 @@ class Hubzero_Ldap
 		foreach($result as $row)
 		{
 			self::syncUser($row);
+
+			if(is_array(self::$errors['fatal']) && !empty(self::$errors['fatal'][0]))
+			{
+				// If there's a fatal error, go ahead and stop
+				return self::$errors;
+			}
+		}
+
+		if(!empty(self::$errors['fatal'][0]) || !empty(self::$errors['warning'][0]))
+		{
+			return self::$errors;
+		}
+		else
+		{
+			return self::$success;
 		}
 	}
 	
@@ -687,7 +801,8 @@ class Hubzero_Ldap
 	    
 	    if (empty($conn))
 	    {
-	    	return false;
+			self::$errors['fatal'][] = 'LDAP connection failed';
+			return self::$errors;
 	    }
 	    
 	    /* delete all old hubGroup schema based group entries */
@@ -728,7 +843,16 @@ class Hubzero_Ldap
         
         foreach($gids as $giddn)
         {
-        	@ldap_delete($conn, $giddn);
+			$result = @ldap_delete($conn, $giddn);
+
+			if($result !== true)
+			{
+				self::$errors['warning'][] = @ldap_error($conn);
+			}
+			else
+			{
+				++self::$success['deleted'];
+			}
         }
         
         /* delete all entries that have mysql counterparts */
@@ -751,7 +875,16 @@ class Hubzero_Ldap
         foreach($result as $row)
         {
         	$dn = "cn=$row," .  "ou=groups," . $hubLDAPBaseDN;
-        	@ldap_delete($conn, $dn);
+			$result = @ldap_delete($conn, $dn);
+
+			if($result !== true)
+			{
+				self::$errors['warning'][] = @ldap_error($conn);
+			}
+			else
+			{
+				++self::$success['deleted'];
+			}
         }
         
         /* delete any remaining items with gid > 1000 */
@@ -783,10 +916,26 @@ class Hubzero_Ldap
         foreach($gids as $gid)
         {
         	$dn = "gid=$gid," . "ou=groups," . $hubLDAPBaseDN;
-        	@ldap_delete($conn, $dn);
-        }
-        
-        return true;
+			$result = @ldap_delete($conn, $dn);
+
+			if($result !== true)
+			{
+				self::$errors['warning'][] = @ldap_error($conn);
+			}
+			else
+			{
+				++self::$success['deleted'];
+			}
+		}
+
+		if(!empty(self::$errors['fatal'][0]) || !empty(self::$errors['warning'][0]))
+		{
+			return self::$errors;
+		}
+		else
+		{
+			return self::$success;
+		}
    	}
 	
 	public static function deleteAllUsers()
@@ -795,7 +944,8 @@ class Hubzero_Ldap
 	    
 	    if (empty($conn))
 	    {
-	    	return false;
+			self::$errors['fatal'][] = 'LDAP connection failed';
+			return self::$errors;
 	    }
 	    
 	    /* delete all old hubAccount schema based user entries */
@@ -830,7 +980,16 @@ class Hubzero_Ldap
         foreach($uids as $uid)
         {
         	$dn = "uid=$uid," . "ou=users," . $hubLDAPBaseDN;
-        	@ldap_delete($conn, $dn);
+			$result = @ldap_delete($conn, $dn);
+
+			if($result !== true)
+			{
+				self::$errors['warning'][] = @ldap_error($conn);
+			}
+			else
+			{
+				++self::$success['deleted'];
+			}
         }
         
         /* delete all entries that have mysql counterparts */
@@ -853,7 +1012,16 @@ class Hubzero_Ldap
         foreach($result as $row)
         {
         	$dn = "uid=$row," .  "ou=users," . $hubLDAPBaseDN;
-        	@ldap_delete($conn, $dn);
+			$result = @ldap_delete($conn, $dn);
+
+			if($result !== true)
+			{
+				self::$errors['warning'][] = @ldap_error($conn);
+			}
+			else
+			{
+				++self::$success['deleted'];
+			}
         }
         
         /* delete any remaining items with gid > 1000 */
@@ -885,7 +1053,25 @@ class Hubzero_Ldap
         foreach($uids as $uid)
         {
         	$dn = "uid=$uid," . "ou=users," . $hubLDAPBaseDN;
-        	@ldap_delete($conn, $dn);
+			$result = @ldap_delete($conn, $dn);
+
+			if($result !== true)
+			{
+				self::$errors['warning'][] = @ldap_error($conn);
+			}
+			else
+			{
+				++self::$success['deleted'];
+			}
         }
+
+		if(!empty(self::$errors['fatal'][0]) || !empty(self::$errors['warning'][0]))
+		{
+			return self::$errors;
+		}
+		else
+		{
+			return self::$success;
+		}
 	}
 }

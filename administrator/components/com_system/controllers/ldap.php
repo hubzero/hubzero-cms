@@ -100,11 +100,31 @@ class SystemControllerLdap extends Hubzero_Controller
 	{
 		ximport('Hubzero_Ldap');
 
-		Hubzero_Ldap::deleteAllGroups();
+		$result = Hubzero_Ldap::deleteAllGroups();
+
+		$messageType = 'info';
+		$message     = 'We are unable to decisivly say the result of the previous request';
+
+		if(isset($result['errors']) && isset($result['fatal']) && !empty($result['fatal'][0]))
+		{
+			$messageType = 'error';
+			$message     = JText::_('LDAP export failed: ' . $result['fatal'][0]);
+		}
+		elseif(isset($result['errors']) && isset($result['warning']) && !empty($result['warning'][0]))
+		{
+			$messageType = 'warning';
+			$message     = JText::_('The operation completed, but ' . count($result['warning']) . ' warning(s) occured');
+		}
+		elseif(isset($result['success']))
+		{
+			$messageType = 'passed';
+			$message     = JText::_("All ({$result['deleted']}) LDAP Group Entries Deleted");
+		}
 
 		$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('All LDAP Group Entries Deleted')
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			$message,
+			$messageType
 		);
 	}
 
@@ -117,11 +137,31 @@ class SystemControllerLdap extends Hubzero_Controller
 	{
 		ximport('Hubzero_Ldap');
 
-		Hubzero_Ldap::deleteAllUsers();
+		$result = Hubzero_Ldap::deleteAllUsers();
+
+		$messageType = 'info';
+		$message     = 'We are unable to decisivly say the result of the previous request';
+
+		if(isset($result['errors']) && isset($result['fatal']) && !empty($result['fatal'][0]))
+		{
+			$messageType = 'error';
+			$message     = JText::_('LDAP export failed: ' . $result['fatal'][0]);
+		}
+		elseif(isset($result['errors']) && isset($result['warning']) && !empty($result['warning'][0]))
+		{
+			$messageType = 'warning';
+			$message     = JText::_('The operation completed, but ' . count($result['warning']) . ' warning(s) occured');
+		}
+		elseif(isset($result['success']))
+		{
+			$messageType = 'passed';
+			$message     = JText::_("All ({$result['deleted']}) LDAP User Entries Deleted");
+		}
 
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('All LDAP User Entries Deleted')
+			$message,
+			$messageType
 		);
 	}
 
@@ -134,11 +174,31 @@ class SystemControllerLdap extends Hubzero_Controller
 	{
 		ximport('Hubzero_Ldap');
 
-		Hubzero_Ldap::syncAllGroups();
+		$result = Hubzero_Ldap::syncAllGroups();
+
+		$messageType = 'info';
+		$message     = 'We are unable to decisivly say the result of the previous request';
+
+		if(isset($result['errors']) && isset($result['fatal']) && !empty($result['fatal'][0]))
+		{
+			$messageType = 'error';
+			$message     = JText::_('LDAP export failed: ' . $result['fatal'][0]);
+		}
+		elseif(isset($result['errors']) && isset($result['warning']) && !empty($result['warning'][0]))
+		{
+			$messageType = 'warning';
+			$message     = JText::_('The operation completed, but ' . count($result['warning']) . ' warning(s) occured');
+		}
+		elseif(isset($result['success']))
+		{
+			$messageType = 'passed';
+			$message     = JText::_("Groups have been exported to LDAP ({$result['added']} added, {$result['modified']} modified, and {$result['deleted']} deleted)");
+		}
 
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Groups have been exported to LDAP')
+			$message,
+			$messageType
 		);
 	}
 
@@ -151,11 +211,31 @@ class SystemControllerLdap extends Hubzero_Controller
 	{
 		ximport('Hubzero_Ldap');
 
-		Hubzero_Ldap::syncAllUsers();
+		$result = Hubzero_Ldap::syncAllUsers();
+
+		$messageType = 'info';
+		$message     = 'We are unable to decisivly say the result of the previous request';
+
+		if(isset($result['errors']) && isset($result['fatal']) && !empty($result['fatal'][0]))
+		{
+			$messageType = 'error';
+			$message     = JText::_('LDAP export failed: ' . $result['fatal'][0]);
+		}
+		elseif(isset($result['errors']) && isset($result['warning']) && !empty($result['warning'][0]))
+		{
+			$messageType = 'warning';
+			$message     = JText::_('The operation completed, but ' . count($result['warning']) . ' warning(s) occured');
+		}
+		elseif(isset($result['success']))
+		{
+			$messageType = 'passed';
+			$message     = JText::_("Users have been exported to LDAP ({$result['added']} added, {$result['modified']} modified, and {$result['deleted']} deleted)");
+		}
 
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Users have been exported to LDAP')
+			$message,
+			$messageType
 		);
 	}
 }
