@@ -61,7 +61,7 @@ foreach($this->course->offering()->units() as $unit)
 					$crumb = $matches[1];
 				}
 
-				if(!$crumb || $asset->get('state') != COURSES_ASSET_PUBLISHED)
+				if(!$crumb || $asset->get('state') != COURSES_STATE_PUBLISHED)
 				{
 					// Break foreach, this is not a valid form!
 					continue;

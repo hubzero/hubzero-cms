@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
+ * @author    Sam Wilson <samwilson@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -52,7 +52,7 @@ foreach($this->course->offering()->units() as $unit)
 			foreach($ag->assets() as $a)
 			{
 				// Only interested in forms/exams
-				if($a->get('type') != 'exam' || $a->get('state') != COURSES_ASSET_PUBLISHED)
+				if($a->get('type') != 'exam' || $a->get('state') != COURSES_STATE_PUBLISHED)
 				{
 					continue;
 				}

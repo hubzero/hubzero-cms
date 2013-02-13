@@ -121,7 +121,7 @@ if (!$this->course->offering()->access('view')) { ?>
 				{
 					foreach ($ag->assets() as $a)
 					{
-						if($a->get('state') == COURSES_ASSET_PUBLISHED)
+						if($a->get('state') == COURSES_STATE_PUBLISHED)
 						{
 							$href = $a->path($this->course->get('id'));
 							if ($a->get('type') == 'video')
@@ -149,7 +149,7 @@ if (!$this->course->offering()->access('view')) { ?>
 <?php
 			foreach ($agt->assets() as $a)
 			{
-				if($a->get('state') == COURSES_ASSET_PUBLISHED)
+				if($a->get('state') == COURSES_STATE_PUBLISHED)
 				{
 					if ($a->get('type') == 'note')
 					{
@@ -169,7 +169,7 @@ if (!$this->course->offering()->access('view')) { ?>
 			$agt->assets()->rewind();
 			foreach ($agt->assets() as $a)
 			{
-				if($a->get('state') == COURSES_ASSET_PUBLISHED)
+				if($a->get('state') == COURSES_STATE_PUBLISHED)
 				{
 					if ($a->get('type') != 'note')
 					{
@@ -200,7 +200,7 @@ if (!$this->course->offering()->access('view')) { ?>
 <?php
 						foreach ($unit->assets() as $a)
 						{
-							if($a->get('state') == COURSES_ASSET_PUBLISHED)
+							if($a->get('state') == COURSES_STATE_PUBLISHED)
 							{
 								$href = $a->path($this->course->get('id'));
 								if ($a->get('type') == 'video')

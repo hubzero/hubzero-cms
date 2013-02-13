@@ -72,7 +72,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 					foreach($agt->children() as $ag) :
 						if ($ag->assets()->total()) :
 							foreach ($ag->assets() as $a) :
-								if($a->get('state') == COURSES_ASSET_DELETED) :
+								if($a->get('state') == COURSES_STATE_DELETED) :
 									$view = new JView(
 											array(
 												'name'      => 'manage',
