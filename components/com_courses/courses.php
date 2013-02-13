@@ -51,6 +51,10 @@ ximport('Hubzero_User_Profile');
 ximport('Hubzero_View_Helper_Html');
 ximport('Hubzero_Plugin_Params');
 
+define('COURSES_ASSET_UNPUBLISHED', 0);
+define('COURSES_ASSET_PUBLISHED',   1);
+define('COURSES_ASSET_DELETED',     2);
+
 // require needed files
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'log.php');
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'Helper.php');

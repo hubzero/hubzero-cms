@@ -51,7 +51,7 @@ class PdfFormRespondent
 			++$rv['summary']['total'];
 			$rv['detail'][$answer['question_id']] = $answer;
 		}
-		$rv['summary']['score'] = number_format($rv['summary']['correct']*100/$rv['summary']['total'], 1);
+		$rv['summary']['score'] = ($rv['summary']['total']>0) ? number_format($rv['summary']['correct']*100/$rv['summary']['total'], 1) : 0;
 		return $rv;
 	}
 

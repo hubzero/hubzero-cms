@@ -65,6 +65,7 @@ HUB.CoursesOutline = {
 				$('.asset-group-type-list').slideUp(500);
 				$('.unit-title-arrow').removeClass('unit-title-arrow-active');
 				$(this).siblings('.asset-group-type-list').slideDown(500);
+				HUB.CoursesOutline.resizeFileUploader();
 
 				// Toggle class for arrow (active gives down arrow indicating expanded list)
 				$(this).addClass('unit-title-arrow-active');

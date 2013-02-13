@@ -61,7 +61,7 @@ class PdfFormDeployment
 	public function getResults() {
 		$dbh = self::getDBH();
 		$dbh->setQuery(
-			'SELECT name, email, started, finished, version, count(pfa.id)*100/count(pfr2.id) AS score
+			'SELECT name, email, started, finished, version, u.id as user_id, count(pfa.id)*100/count(pfr2.id) AS score
 			FROM #__courses_form_respondents pfr 
 			INNER JOIN #__users u ON u.id = pfr.user_id 
 			LEFT JOIN #__courses_form_latest_responses_view pfr2 ON pfr2.respondent_id = pfr.id

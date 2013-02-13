@@ -121,12 +121,15 @@ if (!$this->course->offering()->access('view')) { ?>
 				{
 					foreach ($ag->assets() as $a)
 					{
-						$href = $a->path($this->course->get('id'));
-						if ($a->get('type') == 'video')
+						if($a->get('state') == COURSES_ASSET_PUBLISHED)
 						{
-							$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
+							$href = $a->path($this->course->get('id'));
+							if ($a->get('type') == 'video')
+							{
+								$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
+							}
+							echo '<li><a class="" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 						}
-						echo '<li><a class="" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 					}
 				}
 				/*else
@@ -146,16 +149,19 @@ if (!$this->course->offering()->access('view')) { ?>
 <?php
 			foreach ($agt->assets() as $a)
 			{
-				if ($a->get('type') == 'note')
+				if($a->get('state') == COURSES_ASSET_PUBLISHED)
 				{
-					continue;
+					if ($a->get('type') == 'note')
+					{
+						continue;
+					}
+					$href = $a->path($this->course->get('id'));
+					if ($a->get('type') == 'video')
+					{
+						$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $agt->get('alias'));
+					}
+					echo '<li><a class="asset-type ' . $a->get('type') . '" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 				}
-				$href = $a->path($this->course->get('id'));
-				if ($a->get('type') == 'video')
-				{
-					$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $agt->get('alias'));
-				}
-				echo '<li><a class="asset-type ' . $a->get('type') . '" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 			}
 ?>
 			</ul>
@@ -163,11 +169,14 @@ if (!$this->course->offering()->access('view')) { ?>
 			$agt->assets()->rewind();
 			foreach ($agt->assets() as $a)
 			{
-				if ($a->get('type') != 'note')
+				if($a->get('state') == COURSES_ASSET_PUBLISHED)
 				{
-					continue;
+					if ($a->get('type') != 'note')
+					{
+						continue;
+					}
+					echo '<p class="note">' . stripslashes($a->get('description')) . '</p>';
 				}
-				echo '<p class="note">' . stripslashes($a->get('description')) . '</p>';
 			}
 		}
 		/*else
@@ -191,12 +200,15 @@ if (!$this->course->offering()->access('view')) { ?>
 <?php
 						foreach ($unit->assets() as $a)
 						{
-							$href = $a->path($this->course->get('id'));
-							if ($a->get('type') == 'video')
+							if($a->get('state') == COURSES_ASSET_PUBLISHED)
 							{
-								$href = JRoute::_($base . '&active=outline&a=' . $unit->get('alias'));
+								$href = $a->path($this->course->get('id'));
+								if ($a->get('type') == 'video')
+								{
+									$href = JRoute::_($base . '&active=outline&a=' . $unit->get('alias'));
+								}
+								echo '<li><a class="" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 							}
-							echo '<li><a class="" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 						}
 ?>
 						</ul>

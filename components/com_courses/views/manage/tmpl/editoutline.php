@@ -33,10 +33,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias');
 
-define('COURSES_ASSET_UNPUBLISHED', 0);
-define('COURSES_ASSET_PUBLISHED',   1);
-define('COURSES_ASSET_DELETED',     2);
-
 ?>
 
 <div id="content-header" class="full">
