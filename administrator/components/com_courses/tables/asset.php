@@ -248,7 +248,14 @@ class CoursesTableAsset extends JTable
 			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
 
-		$query .= " ORDER BY caa.ordering";
+		if (!empty($filters['order_by']) && !empty($filters['order_dir']))
+		{
+			$query .= " ORDER BY " . $filters['order_by'] . " " . $filters['order_dir'];
+		}
+		else
+		{
+			$query .= " ORDER BY caa.ordering";
+		}
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
