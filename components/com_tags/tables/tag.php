@@ -508,7 +508,7 @@ class TagsTag extends JTable
 		} 
 		else 
 		{
-			$sql .= ($exclude_private) ? " AND ((tj.tbl='resources' AND R.access!=4) OR (tj.tbl='wiki' AND P.access=0) OR (tj.tbl='xprofiles' AND XP.public=0) OR (tj.tbl!='xprofiles' AND tj.tbl!='wiki' AND tj.tbl!='resources' AND tj.tbl!='wishlist' AND tj.tbl!='support')) " : "";
+			$sql .= ($exclude_private) ? " AND ((tj.tbl='resources' AND R.access!=4 AND R.published=1) OR (tj.tbl='wiki' AND P.access=0 AND P.state<2) OR (tj.tbl='xprofiles' AND XP.public=0) OR tj.tbl NOT IN ('xprofiles','wiki','resources','wishlist','support')) " : "";
 		}
 		$sql .= "GROUP BY tagid ";
 		$sql .= "ORDER BY $order ";

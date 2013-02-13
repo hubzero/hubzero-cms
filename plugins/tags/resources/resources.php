@@ -325,7 +325,7 @@ class plgTagsResources extends JPlugin
 		$query .= "WHERE r.standalone=1 ";
 		if ($juser->get('guest') || (isset($filters['authorized']) && !$filters['authorized'])) 
 		{
-			$query .= "AND r.published=1 ";
+			$query .= "AND r.published=1 AND r.access<4 ";
 		}
 		if (isset($filters['tag'])) 
 		{
