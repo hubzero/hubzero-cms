@@ -234,3 +234,51 @@
 	padding-left: 100px;
 	margin-bottom: 0;
 }
+
+/* instructor interface styles */
+
+.student-progress tbody td {
+	padding: 10px 0;
+}
+.student-progress .student-name {
+	width: 200px;
+	padding-left: 10px;
+}
+.student-progress .unit {
+	text-align: center;
+	font-size: 11px;
+}
+.student-progress tbody td,
+.student-progress {
+	border-bottom: none;
+}
+.student-progress tbody .unit:not(:last-child) {
+	border-right: 1px solid #DADADA;
+}
+.student-progress tbody .unit-progress {
+	display: block;
+	line-height: 18px;
+	color: #FAFAFA;
+	text-shadow: 1px 1px 0 #666;
+
+	background: #0000FF;
+	background: -webkit-gradient(linear, left top, left bottom, from(#0000FF), to(#0000BF));
+	background: -webkit-linear-gradient(#0000FF, #0000BF);
+	background: -moz-linear-gradient(center top, #0000FF 0%, #0000BF 100%);
+	background: -moz-gradient(center top, #0000FF 0%, #0000BF 100%);
+	background: -o-linear-gradient(#0000FF, #0000BF);
+	background-image: -ms-linear-gradient(top, #0000FF 0%, #0000BF 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#0000FF,endColorstr=#0000BF);
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#0000FF, endColorstr=#0000BF)";
+}
+.student-details table {
+	margin: 10px 0;
+	border: none;
+}
+.student-details tbody td {
+	padding: 5px;
+}
+.student-progress tbody tr.active,
+.student-details.active {
+	background: #F1F1F1;
+}

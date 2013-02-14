@@ -87,7 +87,9 @@ foreach($this->course->offering()->units() as $unit)
 					}
 
 					// Store the score
-					$progress[$result['user_id']][$unit->get('id')][$dep->getId()]['score'] = $result['score'];
+					$progress[$result['user_id']][$unit->get('id')]['forms'][$dep->getId()]['score']    = $result['score'];
+					$progress[$result['user_id']][$unit->get('id')]['forms'][$dep->getId()]['finished'] = $result['finished'];
+					$progress[$result['user_id']][$unit->get('id')]['forms'][$dep->getId()]['title']    = $a->get('title');
 
 					// Track the sum of scores for this unit and iterate the count
 					$progress[$result['user_id']][$unit->get('id')]['sum'] += $result['score'];
@@ -100,14 +102,14 @@ foreach($this->course->offering()->units() as $unit)
 
 ?>
 
-<table>
+<table class="student-progress">
 	<caption>Student Progress</caption>
 	<thead>
 		<tr>
 			<td>Name</td>
 			<? $i = 1 ?>
 			<? foreach($this->course->offering()->units() as $unit) : ?>
-				<td>Unit <?= $i ?></td>
+				<td class="unit">Unit <?= $i ?></td>
 				<? ++$i ?>
 			<? endforeach; ?>
 		</tr>
@@ -115,14 +117,33 @@ foreach($this->course->offering()->units() as $unit)
 	<tbody>
 		<? foreach($members as $m) : ?>
 			<tr>
-				<td><?= JFactory::getUser($m->get('user_id'))->get('name'); ?></td>
+				<td class="student-name"><?= JFactory::getUser($m->get('user_id'))->get('name'); ?></td>
 				<? foreach($this->course->offering()->units() as $unit) : ?>
-					<td>
+					<td class="unit">
 						<? if(isset($progress[$m->get('user_id')]) && isset($progress[$m->get('user_id')][$unit->get('id')])) : ?>
-							<?= round($progress[$m->get('user_id')][$unit->get('id')]['sum'] / $progress[$m->get('user_id')][$unit->get('id')]['form_count'], 2) . '%' ?>
+							<div class="unit-progress">
+								<?= round($progress[$m->get('user_id')][$unit->get('id')]['sum'] / $progress[$m->get('user_id')][$unit->get('id')]['form_count'], 2) . '%' ?>
+							</div>
 						<? endif; ?>
 					</td>
 				<? endforeach; ?>
+			</tr>
+			<tr class="student-details">
+				<td colspan="<?= $this->course->offering()->units()->total()+1 ?>">
+					<table>
+						<? foreach($this->course->offering()->units() as $unit) : ?>
+							<? if(isset($progress[$m->get('user_id')]) && isset($progress[$m->get('user_id')][$unit->get('id')])) : ?>
+								<? foreach($progress[$m->get('user_id')][$unit->get('id')]['forms'] as $form) : ?>
+									<tr>
+										<td><?= $form['title'] ?></td>
+										<td><?= round($form['score'], 2) . '%' ?></td>
+										<td><?= $form['finished'] ?></td>
+									</tr>
+								<? endforeach; ?>
+							<? endif; ?>
+						<? endforeach; ?>
+					</table>
+				</td>
 			</tr>
 		<? endforeach; ?>
 	</tbody>

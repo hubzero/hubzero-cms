@@ -104,10 +104,12 @@ class plgCoursesProgress extends JPlugin
 			}
 		}
 
-		//Create user object
+		$layout = ($course->offering()->access('manage')) ? 'instructor' : 'student';
+
+		// Create user object
 		$juser = JFactory::getUser();
-		//$this->config = $config;
-		//check to see if user is member and plugin access requires members
+
+		// Check to see if user is member and plugin access requires members
 		if (!$course->offering()->access('view')) 
 		{
 			$arr['html'] = '<p class="info">' . JText::sprintf('COURSES_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
@@ -116,8 +118,8 @@ class plgCoursesProgress extends JPlugin
 
 		// Add some styles to the view
 		ximport('Hubzero_Document');
-		Hubzero_Document::addPluginStylesheet('courses','progress');
-		Hubzero_Document::addPluginScript('courses','progress');
+		Hubzero_Document::addPluginStylesheet('courses', 'progress');
+		Hubzero_Document::addPluginScript('courses', 'progress', $layout.'progress');
 
 		// Instantiate a vew
 		ximport('Hubzero_Plugin_View');
@@ -126,7 +128,7 @@ class plgCoursesProgress extends JPlugin
 				'folder'  => 'courses',
 				'element' => $this->_name,
 				'name'    => 'report',
-				'layout'  => ($course->offering()->access('manage')) ? 'instructor' : 'student'
+				'layout'  => $layout
 			)
 		);
 		$view->course = $course;
