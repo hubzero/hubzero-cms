@@ -120,7 +120,7 @@ class plgXMessageHandler extends JPlugin
 	 * @param      integer $group_id    Parameter description (if any) ...
 	 * @return     mixed   True if no errors else error message
 	 */
-	public function onSendMessage($type, $subject, $message, $from=array(), $to=array(), $component='', $element=null, $description='', $group_id=0)
+	public function onSendMessage($type, $subject, $message, $from=array(), $to=array(), $component='', $element=null, $description='', $group_id=0, $bypassGroupsCheck = false)
 	{
 		ximport('Hubzero_Message');
 
@@ -224,7 +224,7 @@ class plgXMessageHandler extends JPlugin
 			$mconfig = JComponentHelper::getParams('com_members');
 
 			// Get all the sender's groups
-			if ($mconfig->get('user_messaging', 1) == 1)
+			if ($mconfig->get('user_messaging', 1) == 1 && !$bypassGroupsCheck)
 			{
 				$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
 				$xgroups = $profile->getGroups('all');
@@ -278,10 +278,13 @@ class plgXMessageHandler extends JPlugin
 						}
 					}
 					// Find the common groups
-					$common = array_intersect($usersgroups, $profilesgroups);
-					if (count($common) <= 0) 
+					if (!$bypassGroupsCheck)
 					{
-						continue;
+						$common = array_intersect($usersgroups, $profilesgroups);
+						if (count($common) <= 0) 
+						{
+							continue;
+						}
 					}
 				}
 
