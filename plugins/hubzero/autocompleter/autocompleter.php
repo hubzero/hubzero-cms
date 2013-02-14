@@ -158,7 +158,7 @@ class plgHubzeroAutocompleter extends JPlugin
 		$html .= ($class) ? ' class="' . trim($class) . '"' : '';
 		$html .= ($size)  ? ' size="' . $size . '"'         : '';
 		$html .= ($dsabl) ? ' readonly="readonly"'          : '';
-		$html .= ' value="' . htmlentities($value, ENT_QUOTES) . '" autocomplete="off" data-css="" />'  . "\n";
+		$html .= ' value="' . htmlentities($value, ENT_COMPAT, 'UTF-8') . '" autocomplete="off" data-css="" />'  . "\n";
 		$html .= $scripts;
 		
 		/*$json = '';

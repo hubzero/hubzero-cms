@@ -160,11 +160,11 @@ class TagsHandler extends JObject
 
 		// First see if the tag exists.
 		$t = new TagsTag($this->_db);
-		$t->loadTag($this->normalize_tag($tag));
+		$t->loadTag($t->normalize($tag));
 		if (!$t->id) 
 		{
 			// Add new tag! 
-			$t->tag = $this->normalize_tag($tag);
+			$t->tag = $t->normalize($tag);
 			$t->raw_tag = addslashes($tag);
 
 			if (!$t->store()) 
@@ -330,7 +330,8 @@ class TagsHandler extends JObject
 	 */
 	public function normalize_tag($tag)
 	{
-		return strtolower(preg_replace("/[^a-zA-Z0-9]/", '', $tag));
+		$t = new TagsTag($this->_db);
+		return $t->normalize($tag);
 	}
 
 	/**
@@ -348,7 +349,7 @@ class TagsHandler extends JObject
 		}
 
 		$t = new TagsTag($this->_db);
-		$t->loadTag($this->normalize_tag($tag));
+		$t->loadTag($t->normalize($tag));
 		return $t->id;
 	}
 
