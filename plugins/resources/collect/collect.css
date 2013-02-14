@@ -1,0 +1,44 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/resources/abouttool/abouttool.css
+ * @copyright   Copyright 2005-2012 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Resources abouttool plugin CSS
+	-- -- -- -- -- -- --
+
+*/
+
+	#sbox-content #hubForm.full fieldset {
+		margin: 0;
+	}
+	#sbox-content.fancybox-inner {
+		border: none;
+	}
+	#fav {
+		position: absolute;
+		top: -2.7em;
+		right: 30px;
+		padding: 0.5em 1em;
+		background: rgba(255, 255, 255, 0.8);
+		-webkit-border-radius: 0.25em 0.25em 0 0;
+		-moz-border-radius: 0.25em 0.25em 0 0;
+		-ms-border-radius: 0.25em 0.25em 0 0;
+		-o-border-radius: 0.25em 0.25em 0 0;
+		border-radius: 0.25em 0.25em 0 0;
+	}
+	#fav:hover {
+		background: #fff;
+	}
+	#fav a {
+		color: #333;
+		border: none;
+	}
+	#fav .collect:before {
+		content: "\f005";
+		font-family: "Fontcons";
+	}

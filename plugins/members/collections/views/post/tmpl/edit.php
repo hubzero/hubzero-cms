@@ -78,7 +78,7 @@ if (!$dir)
 			<div class="asset-uploader">
 				<div class="two columns first">
 		<?php if (JPluginHelper::isEnabled('system', 'jquery')) { ?>
-					<div id="ajax-uploader" data-action="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=upload&amp;dir=<?php //echo $dir; ?>" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir; ?>">
+					<div id="ajax-uploader" data-action="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=upload<?php //echo &amp;dir=$dir; ?>" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir; ?>">
 						<noscript>
 							<label for="upload">
 								<?php echo JText::_('File:'); ?>

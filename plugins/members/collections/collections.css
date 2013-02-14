@@ -30,6 +30,13 @@
 		height: auto;
 		clear: left;
 	}
+	.com_members #hubForm.full fieldset {
+		width: auto;
+		float: none;
+	}
+	.com_members #hubForm.full .submit {
+		margin-right: 0;
+	}
 	
 	p.overview,
 	fieldset.filters {
@@ -52,6 +59,9 @@
 	p.overview a {
 		float: right;
 		margin-left: 1em;
+	}
+	p.overview a span {
+		margin-right: 0em;
 	}
 	fieldset.filters ul {
 		list-style: none;
@@ -240,7 +250,7 @@
 	.post .stats {
 		overflow: hidden;
 		border-bottom: 1px solid #d4d4d4;
-		background-color: #f0f0f0;
+		background: #f0f0f0;
 		color: #bbb;
 		padding: 0.7em 1.4em;
 		margin: 0;
@@ -730,6 +740,9 @@
 	#collection-introduction .questions {
 		padding: 1em 1.4em;
 		background-color: #f0f0f0;
+	}
+	#collection-introduction ol {
+		list-style: decimal;
 	}
 
 	/*#hubForm ul.post-type,

@@ -242,10 +242,10 @@ if ($this->rows->total() > 0)
 		<div id="collection-introduction">
 			<div class="instructions">
 	<?php if ($this->params->get('access-create-item')) { ?>
-			<?php if ($this->filters['collection_id'][0] == -1) { ?>
-				<p>
+			<?php if ($this->following <= 0) { ?>
+				<!-- <p>
 					<?php echo JText::_('You are not following anyone or any collections.'); ?>
-				</p>
+				</p> -->
 				<ol>
 					<li><?php echo JText::_('Find a member or collection you like.'); ?></li>
 					<li><?php echo JText::_('Click on the "follow" button.'); ?></li>
@@ -253,8 +253,10 @@ if ($this->rows->total() > 0)
 				</ol>
 			</div><!-- / .instructions -->
 			<div class="questions">
-				<p><strong><?php echo JText::_('What is following?'); ?></strong></p>
-				<p><?php echo JText::_('"Following" someone means you\'ll see that person\'s posts on this page in real time. If he/she creates a new collection, you\’ll automatically follow the new collection as well.'); ?><p>
+				<p><strong><?php echo JText::_('What is this page?'); ?></strong></p>
+				<p><?php echo JText::_('This is a live feed of posts from the members and collections you\'re following. Since you\'re seeing this message, it means you are currently not following anyone or any collections.'); ?><p>
+				<p><strong><?php echo JText::_('OK. So, what is "following"?'); ?></strong></p>
+				<p><?php echo JText::_('"Following" someone means you\'ll see that person\'s posts on this page in real time. If he/she creates a new collection, you\'ll automatically follow the new collection as well.'); ?><p>
 				<p><?php echo JText::_('You can follow individual collections if you\'re only interested in seeing posts being added to specific collections.'); ?><p>
 				<p><?php echo JText::_('You can unfollow other people or collections at any time.'); ?></p>
 			</div>

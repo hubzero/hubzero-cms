@@ -57,7 +57,8 @@ HUB.Plugins.MembersFileUpload = {
 
 			var uploader = new qq.FileUploader({
 				element: $("#ajax-uploader")[0],
-				action: $("#ajax-uploader").attr("data-action") + $('#field-dir').val(),
+				action: $("#ajax-uploader").attr("data-action"), // + $('#field-dir').val()
+				params: {dir: $('#field-dir').val()},
 				multiple: true,
 				debug: true,
 				template: '<div class="qq-uploader">' +
@@ -72,6 +73,8 @@ HUB.Plugins.MembersFileUpload = {
 					if (response.id != $('#field-dir').val()) {
 						$('#field-id').val(response.id);
 						$('#field-dir').val(response.id);
+
+						uploader.setParams({dir: $('#field-dir').val()});
 					}
 
 					HUB.Plugins.MembersFileUpload.updateFileList();
@@ -84,8 +87,6 @@ HUB.Plugins.MembersFileUpload = {
 		var $ = HUB.Plugins.MembersFileUpload.jQuery;
 		
 		if ($('#ajax-uploader')) {
-			//$('.qq-upload-list').empty();
-
 			$.get($('#ajax-uploader').attr('data-list') + $('#field-dir').val(), {}, function(data) {
 				$('#ajax-uploader-list').html(data);
 				$('a.delete')

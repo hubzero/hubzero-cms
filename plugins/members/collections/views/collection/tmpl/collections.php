@@ -196,7 +196,7 @@ if ($this->rows->total() > 0)
 				<ol>
 					<li><?php echo JText::_('Click on the "new collection" button.'); ?></li>
 					<li><?php echo JText::_('Add a title and maybe a description.'); ?></li>
-					<li><?php echo JText::_('Done!'); ?></li>
+					<li><?php echo JText::_('Start adding content!'); ?></li>
 				</ol>
 			</div><!-- / .instructions -->
 		<?php } else { ?>

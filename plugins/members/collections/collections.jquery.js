@@ -176,7 +176,7 @@ HUB.Plugins.MembersCollections = {
 					container.masonry('appended', $newElems, true);
 				}
 			);
-			
+
 			$('#posts a.vote').each(function(i, el){
 				$(el).on('click', function(e){
 					e.preventDefault();
@@ -240,10 +240,10 @@ HUB.Plugins.MembersCollections = {
 					}
 				}
 			});
-
-			$('#posts a.delete').fancybox({
+			
+			/*$('#page_content a.comment').fancybox({
 				type: 'ajax',
-				width: 300,
+				width: 500,
 				height: 'auto',
 				autoSize: false,
 				fitToView: false,
@@ -261,19 +261,10 @@ HUB.Plugins.MembersCollections = {
 					$(this).attr('href', href);	
 				},
 				afterShow: function() {
-					var el = this.element;
-					if ($('#hubForm')) {
-						$('#hubForm').submit(function(e) {
-							e.preventDefault();
-							$.post($(this).attr('action'), $(this).serialize(), function(data) {
-								$.fancybox.close();
-								window.location = data;
-							});
-						});
-					}
+					 
 				}
-			});
-			
+			});*/
+		}
 			$('#page_content a.follow, #page_content a.unfollow').on('click', function(e){
 				e.preventDefault();
 
@@ -296,20 +287,19 @@ HUB.Plugins.MembersCollections = {
 						if ($(el).children('span').text() == follow) {
 							$(el).removeClass('follow')
 								.addClass('unfollow')
+								.attr('href', data.href)
 								.children('span')
-								.text(unfollow)
-								.attr('href', data.href);
+								.text(unfollow);
 						} else {
 							$(el).removeClass('unfollow')
 								.addClass('follow')
+								.attr('href', data.href)
 								.children('span')
-								.text(follow)
-								.attr('href', data.href);
+								.text(follow);
 						}
 					}
 				});
 			});
-		}
 		
 		HUB.Plugins.MembersCollections.formOptions(false);
 		

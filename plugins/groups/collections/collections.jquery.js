@@ -273,7 +273,7 @@ HUB.Plugins.MembersCollections = {
 					}
 				}
 			});
-			
+		}
 			$('#page_content a.follow, #page_content a.unfollow').on('click', function(e){
 				e.preventDefault();
 
@@ -309,7 +309,6 @@ HUB.Plugins.MembersCollections = {
 					}
 				});
 			});
-		}
 		
 		HUB.Plugins.MembersCollections.formOptions(false);
 		

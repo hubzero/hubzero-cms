@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -31,24 +31,4 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
-
-/**
- * Answers Tagging class
- */
-class BulletinboardTags extends TagsHandler
-{
-	/**
-	 * Constructor
-	 * 
-	 * @param      object $db     JDatabase
-	 * @param      array  $config Optional configurations
-	 * @return     void
-	 */
-	public function __construct($db, $config=array())
-	{
-		$this->_db  = $db;
-		$this->_tbl = 'bulletinboard';
-	}
-}
-
+include_once(JPATH_ROOT . DS . 'plugins' . DS . 'content' . DS . 'collect' . DS . 'collect.php');

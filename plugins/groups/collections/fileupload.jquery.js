@@ -57,7 +57,8 @@ HUB.Plugins.GroupsFileUpload = {
 
 			var uploader = new qq.FileUploader({
 				element: $("#ajax-uploader")[0],
-				action: $("#ajax-uploader").attr("data-action") + $('#field-dir').val(),
+				action: $("#ajax-uploader").attr("data-action"),
+				params: {dir: $('#field-dir').val()},
 				multiple: true,
 				debug: true,
 				template: '<div class="qq-uploader">' +
@@ -72,6 +73,8 @@ HUB.Plugins.GroupsFileUpload = {
 					if (response.id != $('#field-dir').val()) {
 						$('#field-id').val(response.id);
 						$('#field-dir').val(response.id);
+						
+						uploader.setParams({dir: $('#field-dir').val()});
 					}
 
 					HUB.Plugins.GroupsFileUpload.updateFileList();

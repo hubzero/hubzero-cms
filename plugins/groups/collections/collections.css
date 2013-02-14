@@ -25,6 +25,13 @@
 	#page_menu li .collections:before {
 		content: "\f005"; /*"\f08d";*/
 	}
+	.com_groups #hubForm.full fieldset {
+		width: auto;
+		float: none;
+	}
+	.com_groups #hubForm.full .submit {
+		margin-right: 0;
+	}
 	/*#collections fieldset,
 	#collection fieldset {
 		background: #e1e1e1;
