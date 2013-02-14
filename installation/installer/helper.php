@@ -361,7 +361,7 @@ class JInstallationHelper
 		}
 
 		// add the basic profile
-		$query = "INSERT INTO #__xprofiles (uidNumber,name,givenName,username,gidNumber,gid,homeDirectory,email,userPassword,registerDate,modifiedDate,emailConfirmed,jobsAllowed) VALUES (62, 'Administrator', 'Administrator', 'admin', '3000', 'public', " . $db->Quote("/home/admin") . ", " . $db->Quote($adminEmail).", ".$db->Quote($cryptpass).", '$installdate', '$nullDate', '1','3')";
+		$query = "INSERT INTO #__xprofiles (uidNumber,name,givenName,username,gidNumber,gid,homeDirectory,email,userPassword,registerDate,modifiedDate,emailConfirmed,jobsAllowed) VALUES (62, 'Administrator', 'Administrator', 'admin', '100', 'public', " . $db->Quote("/home/admin") . ", " . $db->Quote($adminEmail).", ".$db->Quote($cryptpass).", '$installdate', '$nullDate', '1','3')";
 		$db->setQuery($query);
 		if (!$db->query())
 		{
