@@ -438,7 +438,7 @@ class ToolStats extends ResourcesUsage
 				$this->tot_wall = $row->tot_wall;
 				$this->avg_cpu  = $row->avg_cpu;
 				$this->tot_cpu  = $row->tot_cpu;
-				$this->datetime = $row->datetime;
+				$this->datetime = $row->processed_on;
 
 				// Changed by Swaroop on 06/25/2007: Avg. exec. time = Avg. wall time
 				if ($this->avg_cpu == 0) 
@@ -588,7 +588,7 @@ class AndmoreStats extends ResourcesUsage
 			{
 				$this->users    = $row->users;
 				$this->views    = $row->jobs;
-				$this->datetime = $row->datetime;
+				$this->datetime = $row->processed_on;
 
 				if ($row->avg_cpu == 0) 
 				{
