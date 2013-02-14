@@ -131,24 +131,38 @@ HUB.Base = {
 		//if we dont have placeholder support mimic it with focus and blur events
 		if(!placeholder_supported)
 		{
-			var active = document.activeElement;
-			$(':text').focus(function () {
-				if ($(this).attr('placeholder') != '' && $(this).val() == $(this).attr('placeholder')) 
+			$('input[type=text]').each(function(i, el) {
+				var placeholderText = $(this).attr('placeholder');
+				
+				//make sure we have placeholder text
+				if(placeholderText != '' && placeholderText != null)
 				{
-					$(this).val('').removeClass('hasPlaceholder');
-				}
-			}).blur(function () {
-				if ($(this).attr('placeholder') != '' && ($(this).val() == '' || $(this).val() == $(this).attr('placeholder'))) 
-				{
-					$(this).val($(this).attr('placeholder')).addClass('hasPlaceholder');
+					//add plceholder text and class
+					if($(this).val() == '')
+					{
+						$(this).addClass('placeholder-support').val( placeholderText );
+					}
+					
+					//attach event listeners to input
+					$(this).focus(function() {
+						if($(this).val() == placeholderText)
+						{
+							$(this).removeClass('placeholder-support').val('');
+						}
+					})
+					.blur(function(){
+						if($(this).val() == '')
+						{
+							$(this).addClass('placeholder-support').val( placeholderText );
+						}
+					});
 				}
 			});
-
-			$(':text').blur();
-			$(active).focus();
-
-			$('form').submit(function () {
-				$(this).find('.hasPlaceholder').each(function() { $(this).val(''); });
+			
+			$('form').submit(function(event){
+				$('.placeholder-support').each(function(i, el){
+					$(this).val('');
+				});
 			});
 		}
 	}

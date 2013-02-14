@@ -59,6 +59,9 @@
 	sup {
 		line-height: 1;
 	}
+	.placeholder-support {
+		color:#aaa;
+	}
 /* Links */
 	a, 
 	a:link, 
