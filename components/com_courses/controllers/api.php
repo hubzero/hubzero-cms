@@ -379,9 +379,21 @@ class CoursesApiController extends Hubzero_Api_Controller
 			$pathinfo = pathinfo($file_name);
 			$ext      = $pathinfo['extension'];
 		}
-		elseif($url = JRequest::getVar('url', false))
+		elseif($contentType = JRequest::getWord('type', false))
 		{
-			$ext = 'url';
+			// @FIXME: having this hear breaks the responder model idea
+			switch ($contentType)
+			{
+				case 'link':
+					$ext = 'url';
+					break;
+				case 'object':
+					$ext = 'object';
+					break;
+				case 'note':
+					$ext = 'note';
+					break;
+			}
 		}
 		else
 		{

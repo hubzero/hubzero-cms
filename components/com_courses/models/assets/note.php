@@ -3,11 +3,11 @@
 /**
 * Url Asset handler class
 */
-class UrlAssetHandler extends AssetHandler
+class NoteAssetHandler extends AssetHandler
 {
 	private static $info = array(
-			'action_message' => 'As a standard link',
-			'responds_to'    => array('url')
+			'action_message' => 'A textual note',
+			'responds_to'    => array('note')
 		);
 
 	public static function getMessage()
@@ -30,18 +30,13 @@ class UrlAssetHandler extends AssetHandler
 		// Create our asset table object
 		$assetObj = new CoursesTableAsset($this->db);
 
-		$url = JRequest::getVar('content');
+		$note = JRequest::getVar('content');
 
-		preg_match('/http[s]*\:\/\/([0-9A-Za-z\.]+)[\/]*/', $url, $matches);
+		// @FIXME: make note safe?
 
-		if(!isset($matches[1]))
-		{
-			return array('error'=>'Content did not match the pre-defined filter');
-		}
-
-		$this->asset['title']      = $matches[1];
-		$this->asset['type']       = (!empty($this->asset['type'])) ? $this->asset['type'] : 'link';
-		$this->asset['url']        = JRequest::getVar('content');
+		$this->asset['title']      = substr($note, 0, 25);
+		$this->asset['type']       = (!empty($this->asset['type'])) ? $this->asset['type'] : 'note';
+		$this->asset['content']    = $note;
 		$this->asset['created']    = date('Y-m-d H:i:s');
 		$this->asset['created_by'] = JFactory::getApplication()->getAuthn('user_id');
 		$this->asset['course_id']  = JRequest::getInt('course_id', 0);

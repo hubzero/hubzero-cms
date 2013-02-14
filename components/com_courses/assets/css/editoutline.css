@@ -162,15 +162,15 @@
 	margin-top: -2px;
 	float: right;
 }
-.attach-a-link {
+.aux-attachments {
 	position: relative;
 	margin: 5px auto 0 auto;
 }
-.attach-a-link form {
+.aux-attachments form {
 	display: none;
 	background: #FFF;
 	position: absolute;
-	right: 140px;
+	right: 153px;
 	top: -24px;
 	z-index: 5;
 	padding: 12px;
@@ -181,33 +181,45 @@
 	-moz-border-radius: 7px;
 	border-radius: 7px;
 }
-.attach-a-link form:before,
-.attach-a-link form:after {
+.aux-attachments form.attach-link {
+	right: 153px;
+}
+.aux-attachments form.attach-object {
+	right: 118px;
+}
+.aux-attachments form.attach-note {
+	right: 82px;
+}
+.aux-attachments form.browse-files {
+	right: 46px;
+}
+.aux-attachments form:before,
+.aux-attachments form:after {
 	content: "";
 	position: absolute;
 	border-style: solid;
 }
-.attach-a-link form:before {
+.aux-attachments form:before {
 	top: 18px;
 	right: -28px;
 	bottom: auto;
 	border-color: transparent transparent transparent #666;
 	border-width: 12px;
 }
-.attach-a-link form:after {
+.aux-attachments form:after {
 	top: 18px;
 	right: -22px;
 	bottom: auto;
 	border-color: transparent transparent transparent #FFF;
 	border-width: 12px;
 }
-.attach-a-link form .input-url {
+.aux-attachments form .input-content {
 	width: 100%;
 }
-.attach-a-link a {
+.aux-attachments a {
 	border: 1px solid #DCDCDC;
 	box-shadow: 0 0 1px #AAA;
-	padding: 5px 10px;
+	padding: 8px 8px 5px 8px;
 	opacity: .9;
 	cursor: pointer;
 	text-decoration: none;
@@ -227,7 +239,7 @@
 	-moz-border-radius: 2px;
 	border-radius: 2px;
 }
-.attach-a-link a:hover {
+.aux-attachments a:hover {
 	-webkit-transition: all 0.25s;
 	-moz-transition: all 0.25s;
 	-ms-transition: all 0.25s;
@@ -237,10 +249,22 @@
 	box-shadow: 0 0 2px #888;
 	opacity: 1;
 }
-.attach-a-link a:before {
+.aux-attachments a:before {
 	font-family: "fontcons";
+	font-size: 16px;
+	font-style: normal;
+}
+.aux-attachments a.attach-link:before {
 	content: "\26D3";
-	margin-right: 4px;
+}
+.aux-attachments a.attach-note:before {
+	content: "\f02a";
+}
+.aux-attachments a.attach-object:before {
+	content: "\f0c3";
+}
+.aux-attachments a.browse-files:before {
+	content: "\f07c";
 }
 .course:before {
 	content: "\f09c";
@@ -698,6 +722,13 @@ ul {
 }
 .ui-dialog .ui-dialog-buttonpane {
 	border-width: 0;
+}
+
+/* Tool tips */
+.tooltip {
+	color: #FFF;
+	padding: 4px;
+	margin-top: -5px;
 }
 
 /* Styles for popup edit pages */

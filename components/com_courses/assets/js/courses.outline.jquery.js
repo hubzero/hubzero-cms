@@ -25,6 +25,7 @@ HUB.CoursesOutline = {
 
 	initialize: function()
 	{
+		HUB.CoursesOutline.setDefaults();
 		HUB.CoursesOutline.toggleUnits();
 		HUB.CoursesOutline.showProgressIndicator();
 		HUB.CoursesOutline.makeUnitsSortable();
@@ -34,12 +35,41 @@ HUB.CoursesOutline = {
 		HUB.CoursesOutline.addNewItem();
 		HUB.CoursesOutline.makeUniform();
 		HUB.CoursesOutline.togglePublished();
-		HUB.CoursesOutline.setupUrlAttach();
+		HUB.CoursesOutline.setupAuxAttach();
 		HUB.CoursesOutline.setupFileUploader();
 		HUB.CoursesOutline.resizeFileUploader();
 		HUB.CoursesOutline.setupErrorMessage();
 		HUB.CoursesOutline.calendar();
 		HUB.CoursesOutline.preview();
+	},
+
+	setDefaults: function()
+	{
+		var $ = this.jQuery;
+
+		$.ajaxSetup({
+			statusCode: {
+				// 200 created
+				200: function (data, textStatus, jqXHR){
+					// Do nothing
+				},
+				// 201 created
+				201: function (data, textStatus, jqXHR){
+					// Do nothing
+				},
+				401: function (data, textStatus, jqXHR){
+					// Display the error message
+					HUB.CoursesOutline.errorMessage(data.responseText);
+				},
+				404: function (data, textStatus, jqXHR){
+					HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
+				},
+				500: function (data, textStatus, jqXHR){
+					// Display the error message
+					HUB.CoursesOutline.errorMessage(data.responseText);
+				}
+			}
+		});
 	},
 
 	toggleUnits: function()
@@ -685,23 +715,30 @@ HUB.CoursesOutline = {
 		});
 	},
 
-	setupUrlAttach: function() {
+	setupAuxAttach: function() {
 		var $ = this.jQuery;
 
+		// Add tooltips to attachment buttons
+		$('.aux-attachments a').tooltip();
+
 		// Add a click to show URL attach form
-		$('.unit').on('click', '.attach-a-link a', function(e) {
+		$('.unit').on('click', '.aux-attachments a:not(.browse-files)', function(e) {
 			e.preventDefault();
-			$(this).siblings('.url').fadeToggle();
+			$(this).siblings('.aux-attachments-form').find('.aux-attachments-content-label').html(e.originalEvent.target.title);
+			$(this).siblings('.aux-attachments-form').find('.input-type').val(e.originalEvent.target.className.replace(/attach-/, ""));
+			$(this).siblings('.aux-attachments-form').removeClass('attach-link attach-object attach-note browse-files').addClass(e.originalEvent.target.className);
+			$(this).siblings('.aux-attachments-form').fadeIn();
 		});
 
 		// Hide for on cancel click
-		$('.unit').on('click', '.attach-a-link .attach-link-cancel', function(e) {
+		$('.unit').on('click', '.aux-attachments .aux-attachments-cancel', function(e) {
 			e.preventDefault();
 			$(this).parents('form').fadeOut();
+			$(this).parents('form').find('.input-content').val('');
 		});
 
 		// Submit form
-		$('.unit').on('click', '.attach-a-link .attach-link-submit', function(e) {
+		$('.unit').on('click', '.aux-attachments .aux-attachments-submit', function(e) {
 			e.preventDefault();
 
 			var form       = $(this).parents('form');
@@ -722,45 +759,13 @@ HUB.CoursesOutline = {
 							// If our asset handler returns JS, we'll run that
 							eval(data.assets.js);
 						} else {
-							// If this is an empty asset group, remove the "no files" list item first
-							if(assetslist.find('li:first').hasClass('nofiles'))
-							{
-								assetslist.find('li:first').remove();
-							}
+							HUB.CoursesOutline.insertAssetInPage(data, assetslist);
 
-							// Loop through the uploaded files and add li for them
-							$.each(data.assets, function (index, asset) {
-								// Insert in our HTML (uses "underscore.js")
-								var li = _.template(HUB.CoursesOutline.Templates.asset, asset);
-								assetslist.append(li);
-
-								// Get a pointer to our new asset item
-								var newAsset = assetslist.find('.asset-item:last');
-
-								// Update a few things after adding the new asset (reset the progress bar, make them sortable, etc...)
-								newAsset.find('.uniform').uniform();
-								newAsset.find('.toggle-editable').show();
-								newAsset.find('.title-edit').hide();
-								HUB.CoursesOutline.showProgressIndicator();
-								HUB.CoursesOutline.resizeFileUploader();
-								HUB.CoursesOutline.makeAssetsSortable();
-
-								// Hide the form again
-								form.fadeOut();
+							// Hide the form again
+							form.fadeOut(function() {
+								form.find('.input-content').val('');
 							});
 						}
-
-					},
-					401: function(data){
-						// Display the error message
-						HUB.CoursesOutline.errorMessage(data.responseText);
-					},
-					404: function(data){
-						HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
-					},
-					500: function(data){
-						// Display the error message
-						HUB.CoursesOutline.errorMessage(data.responseText);
 					}
 				}
 			});
@@ -1102,7 +1107,35 @@ HUB.CoursesOutline = {
 
 		error.html(message);
 		errorBox.slideDown('fast');
+	},
 
+	insertAssetInPage: function(data, assetslist)
+	{
+		var $ = this.jQuery;
+
+		// If this is an empty asset group, remove the "no files" list item first
+		if(assetslist.find('li:first').hasClass('nofiles'))
+		{
+			assetslist.find('li:first').remove();
+		}
+
+		// Loop through the uploaded files and add li for them
+		$.each(data.assets, function (index, asset) {
+			// Insert in our HTML (uses "underscore.js")
+			var li = _.template(HUB.CoursesOutline.Templates.asset, asset);
+			assetslist.append(li);
+
+			// Get a pointer to our new asset item
+			var newAsset = assetslist.find('.asset-item:last');
+
+			// Update a few things after adding the new asset (reset the progress bar, make them sortable, etc...)
+			newAsset.find('.uniform').uniform();
+			newAsset.find('.toggle-editable').show();
+			newAsset.find('.title-edit').hide();
+			HUB.CoursesOutline.showProgressIndicator();
+			HUB.CoursesOutline.resizeFileUploader();
+			HUB.CoursesOutline.makeAssetsSortable();
+		});
 	},
 
 	Templates: {
@@ -1157,16 +1190,21 @@ HUB.CoursesOutline = {
 				'<div class="uploadfiles">',
 					'<p>Drag files here to upload</p>',
 					'<p>or</p>',
-					'<div class="attach-a-link">',
-						'<form action="/api/courses/assetnew" class="url">',
-							'<input class="uniform input-url" type="text" name="url" placeholder="URL" />',
-							'<input class="uniform attach-link-submit" type="submit" value="Add" />',
-							'<input class="uniform attach-link-cancel" type="reset" value="Cancel" />',
+					'<div class="aux-attachments">',
+						'<form action="/api/courses/assetnew" class="aux-attachments-form attach-link">',
+							'<label for"content" class="aux-attachments-content-label">Attach a link:</label>',
+							'<textarea class="uniform input-content" name="content" placeholder=""></textarea>',
+							'<input class="input-type" type="hidden" name="type" value="link" />',
+							'<input class="uniform aux-attachments-submit" type="submit" value="Add" />',
+							'<input class="uniform aux-attachments-cancel" type="reset" value="Cancel" />',
 							'<input type="hidden" name="course_id" value="<%= course_id %>" />',
 							'<input type="hidden" name="offering" value="<%= offering_alias %>" />',
 							'<input type="hidden" name="scope_id" value="<%= assetgroup_id %>" />',
 						'</form>',
-						'<a href="#" class="">Attach a link</a>',
+						'<a href="#" title="Attach a link" class="attach-link"></a>',
+						'<a href="#" title="Embed an object" class="attach-object"></a>',
+						'<a href="#" title="Include a note" class="attach-note"></a>',
+						'<a href="#" title="Browse for files" class="browse-files"></a>',
 					'</div>',
 					'<form action="/api/courses/assetnew" class="uploadfiles-form">',
 						'<input type="file" name="files[]" class="fileupload" multiple />',

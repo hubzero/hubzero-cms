@@ -37,16 +37,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<div class="uploadfiles">
 		<p>Drag files here to upload</p>
 		<p>or</p>
-		<div class="attach-a-link">
-			<form action="/api/courses/assetnew" class="url">
-				<input class="uniform input-url" type="text" name="url" placeholder="URL" />
-				<input class="uniform attach-link-submit" type="submit" value="Add" />
-				<input class="uniform attach-link-cancel" type="reset" value="Cancel" />
+		<div class="aux-attachments">
+			<form action="/api/courses/assetnew" class="aux-attachments-form attach-link">
+				<label for"content" class="aux-attachments-content-label">Attach a link:</label>
+				<textarea class="uniform input-content" name="content" placeholder=""></textarea>
+				<input class="input-type" type="hidden" name="type" value="link" />
+				<input class="uniform aux-attachments-submit" type="submit" value="Add" />
+				<input class="uniform aux-attachments-cancel" type="reset" value="Cancel" />
 				<input type="hidden" name="course_id" value="<?= $this->course->get('id') ?>" />
 				<input type="hidden" name="offering" value="<?= $this->course->offering()->get('alias') ?>" />
 				<input type="hidden" name="scope_id" value="<?= $this->ag->get('id') ?>" />
 			</form>
-			<a href="#" class="">Attach a link</a>
+			<a href="#" title="Attach a link" class="attach-link"></a>
+			<a href="#" title="Embed an object" class="attach-object"></a>
+			<a href="#" title="Include a note" class="attach-note"></a>
+			<a href="#" title="Browse for files" class="browse-files"></a>
 		</div>
 		<form action="/api/courses/assetnew" class="uploadfiles-form">
 			<input type="file" name="files[]" class="fileupload" multiple />
