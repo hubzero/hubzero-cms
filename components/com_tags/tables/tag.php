@@ -134,6 +134,16 @@ class TagsTag extends JTable
 
 		$data = new TagsTag($this->_db);
 		$data->load($this->$k);
+		$comment = '';
+		if ($data->tag)
+		{
+			$comment = new stdClass;
+			foreach ($this->getProperties() as $key => $property)
+			{
+				$comment->$key = $property;
+			}
+			$comment = json_encode($comment);
+		}
 
 		$query = 'DELETE FROM #__tags_object WHERE tagid = ' . $this->_db->Quote($this->$k);
 		$this->_db->setQuery($query);
@@ -164,7 +174,7 @@ class TagsTag extends JTable
 		{
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'log.php');
 			$log = new TagsLog($this->_db);
-			$log->log($oid, 'tag_deleted', json_encode($data));
+			$log->log($oid, 'tag_deleted', $comment);
 		}
 
 		return $result;
