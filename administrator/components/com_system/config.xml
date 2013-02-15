@@ -29,13 +29,13 @@ HUBzero is a registered trademark of Purdue University.
 
 <config>
 	<params>
-		<param name="geodb_driver" type="text" default="mysql" label="Database type" description="TIPDTATABASETYPE" />
-		<param name="geodb_host" type="text" default="localhost" label="Hostname" description="TIPDATABASEHOSTNAME" />
-		<param name="geodb_port" type="text" default="" label="Port" description="TIPDATABASEPORT" />
-		<param name="geodb_user" type="text" default="" label="Username" description="TIPDATABASEUSERNAME" />
-		<param name="geodb_password" type="password" default="" label="Password" description="TIPDATABASEPASSWORD" />
-		<param name="geodb_database" type="text" default="" label="Database" description="TIPDATABASENAME" />
-		<param name="geodb_prefix" type="text" default="" label="Database Prefix" description="TIPDATABASEPREFIX" />
+		<param name="geodb_driver" type="text" default="mysql" label="Geolocation Database type" description="TIPDTATABASETYPE" />
+		<param name="geodb_host" type="text" default="localhost" label="Geolocation DB Hostname" description="TIPDATABASEHOSTNAME" />
+		<param name="geodb_port" type="text" default="" label="Geolocation DB Port" description="TIPDATABASEPORT" />
+		<param name="geodb_user" type="text" default="" label="Geolocation DB Username" description="TIPDATABASEUSERNAME" />
+		<param name="geodb_password" type="password" default="" label="Geolocation DB Password" description="TIPDATABASEPASSWORD" />
+		<param name="geodb_database" type="text" default="" label="Geolocation DB Schema" description="TIPDATABASENAME" />
+		<param name="geodb_prefix" type="text" default="" label="Geolocation DB Table Prefix" description="TIPDATABASEPREFIX" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="ldap_primary" type="text" default="ldap://localhost" label="LDAP Primary Host URI" description="TIPPRIMARYLDAP" />
 		<param name="ldap_secondary" type="text" default="" label="LDAP Secondary Host URI" description="TIPSECONDARYLDAP" />
