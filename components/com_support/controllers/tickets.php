@@ -159,7 +159,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		$type = JRequest::getVar('type', 'submitted');
 		$this->view->type = ($type == 'automatic') ? 1 : 0;
 
-		$this->view->group = JRequest::getVar('group', '');
+		$this->view->group = JRequest::getVar('group', '_none_');
 
 		//$this->view->sort = JRequest::getVar('sort', 'name');
 
@@ -169,6 +169,7 @@ class SupportControllerTickets extends Hubzero_Controller
 
 		$year  = JRequest::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
 		$month = strftime("%m", time()+($this->offset*60*60));
+
 		/*$day   = strftime("%d", time()+($this->offset*60*60));
 		if ($day <= "9"&preg_match("#(^[1-9]{1})#",$day)) 
 		{
@@ -206,14 +207,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		// Users
 		$this->view->users = null;
 
-		if ($this->view->group) 
-		{
-			$query = "SELECT a.username, a.name, a.id"
-				. "\n FROM #__users AS a, #__xgroups AS g, #__xgroups_members AS gm"
-				. "\n WHERE g.cn='".$this->view->group."' AND g.gidNumber=gm.gidNumber AND gm.uidNumber=a.id"
-				. "\n ORDER BY a.name";
-		} 
-		else 
+		if ($this->view->group == '_none_') 
 		{
 			/*$query = "SELECT a.username, a.name, a.id"
 				. "\n FROM #__users AS a"
@@ -222,6 +216,21 @@ class SupportControllerTickets extends Hubzero_Controller
 				. "\n INNER JOIN #__core_acl_aro_groups AS g ON g.id = gm.group_id"
 				. "\n WHERE a.block = '0' AND g.id=25"
 				. "\n ORDER BY a.name";*/
+			$query = "SELECT DISTINCT a.username, a.name, a.id"
+				. "\n FROM #__users AS a"
+				. "\n INNER JOIN #__support_tickets AS s ON s.owner = a.username"	// map user to aro
+				. "\n WHERE a.block = '0' AND s.type=" . $this->view->type . " AND (s.group IS NULL OR s.group='')"
+				. "\n ORDER BY a.name";
+		} 
+		else if ($this->view->group)
+		{
+			$query = "SELECT a.username, a.name, a.id"
+				. "\n FROM #__users AS a, #__xgroups AS g, #__xgroups_members AS gm"
+				. "\n WHERE g.cn='".$this->view->group."' AND g.gidNumber=gm.gidNumber AND gm.uidNumber=a.id"
+				. "\n ORDER BY a.name";
+		} 
+		else 
+		{
 			$query = "SELECT DISTINCT a.username, a.name, a.id"
 				. "\n FROM #__users AS a"
 				. "\n INNER JOIN #__support_tickets AS s ON s.owner = a.username"	// map user to aro
@@ -264,18 +273,64 @@ class SupportControllerTickets extends Hubzero_Controller
 		$this->database->setQuery($sql);
 		$first = intval($this->database->loadResult());
 
+		$startyear  = $first;
+		$startmonth = 1;
+
+		$this->view->start = JRequest::getVar('start', $first . '-01');
+		if ($this->view->start != $first . '-01')
+		{
+			if (preg_match("/([0-9]{4})-([0-9]{2})/", $this->view->start, $regs)) 
+			{
+				$startmonth = date("m", mktime(0, 0, 0, ($regs[2]+1), 1, $regs[1]));
+				$startyear = $first = date("Y", mktime(0, 0, 0, ($regs[2]+1), 1, $regs[1]));
+				//$end = $year . '-' . $month;
+			}
+		}
+
+		$this->view->end   = JRequest::getVar('end', '');
+
+		$endmonth = $month;
+		$endyear = date("Y");
+		$endyear++;
+
+		$end = '';
+		if ($this->view->end)
+		{
+			// We need to get the NEXT month. This is so that for a time range 
+			// of 2013-01 to 2013-12 will display data for all of 2013-12. 
+			// So, the actual time range is 2013-01-01 00:00:00 to 2014-01-01 00:00:00
+			if (preg_match("/([0-9]{4})-([0-9]{2})/", $this->view->end, $regs)) 
+			{
+				$endmonth = intval($regs[2]);
+				$endyear  = intval($regs[1]);
+				$endyear++;
+
+				$month = date("m", mktime(0, 0, 0, ($endmonth+1), 1, $regs[1]));
+				$year = date("Y", mktime(0, 0, 0, ($endmonth+1), 1, $regs[1]));
+				$end = $year . '-' . $month;
+			}
+		}
+		else
+		{
+			$this->view->end = $year . '-' . $month;
+		}
+
 		// Opened tickets
 		$sql = "SELECT id, created, YEAR(created) AS `year`, MONTH(created) AS `month`, open, status, owner 
 				FROM #__support_tickets
 				WHERE report!='' 
 				AND type=" . $this->view->type; // . " AND open=1";
-		if (!$this->view->group) 
+		if ($this->view->group == '_none_') 
 		{
 			$sql .= " AND (`group`='' OR `group` IS NULL)";
 		} 
-		else 
+		else if ($this->view->group)
 		{
 			$sql .= " AND `group`='{$this->view->group}'";
+		}
+		if ($this->view->start && $end)
+		{
+			$sql .= " AND created>='" . $this->view->start . "-01 00:00:00' AND created<'" . $end . "-01 00:00:00'";
 		}
 		$sql .= " ORDER BY created ASC";
 		$this->database->setQuery($sql);
@@ -328,13 +383,17 @@ class SupportControllerTickets extends Hubzero_Controller
 				LEFT JOIN #__support_tickets AS t ON c.ticket=t.id
 				WHERE t.report!=''
 				AND type=" . $this->view->type . " AND open=0";
-		if (!$this->view->group) 
+		if ($this->view->group == '_none_') 
 		{
 			$sql .= " AND (`group`='' OR `group` IS NULL)";
 		} 
-		else 
+		else if ($this->view->group)
 		{
-			$sql .= " AND `group`=" . $this->database->Quote($this->view->group);
+			$sql .= " AND `group`='{$this->view->group}'";
+		}
+		if ($this->view->start && $end)
+		{
+			$sql .= " AND c.created>='" . $this->view->start . "-01 00:00:00' AND c.created<'" . $end . "-01 00:00:00'";
 		}
 		$sql .= " ORDER BY c.created ASC";
 		$this->database->setQuery($sql);
@@ -375,18 +434,18 @@ class SupportControllerTickets extends Hubzero_Controller
 		}
 
 		// Group data by year and gather some info for each user
-		$y = date("Y");
-		$y++;
+
 		$this->view->closedmonths = array();
 		$this->view->openedmonths = array();
-		for ($k=$first, $n=$y; $k < $n; $k++)
+
+		for ($k=$startyear, $n=$endyear; $k < $n; $k++)
 		{
 			$this->view->closedmonths[$k] = array();
 			$this->view->openedmonths[$k] = array();
 
-			for ($i = 1; $i <= 12; $i++)
+			for ($i = $startmonth; $i <= 12; $i++)
 			{
-				if ($k == $year && $i > $month)
+				if ($k == $year && $i > $endmonth)
 				{
 					break;
 				}
@@ -403,10 +462,10 @@ class SupportControllerTickets extends Hubzero_Controller
 						$user->closed[$k] = array();
 					}
 
-					if ($i <= "9"&preg_match("#(^[1-9]{1})#",$i)) 
+					/*if ($i <= "9"&preg_match("#(^[1-9]{1})#",$i)) 
 					{
 						$month = "0$i";
-					}
+					}*/
 					if ($k == $year && $i > $month)
 					{
 						$user->closed[$k][$i] = 'null';

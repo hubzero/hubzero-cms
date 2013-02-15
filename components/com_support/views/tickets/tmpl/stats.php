@@ -54,13 +54,13 @@ $sql = "SELECT resolved
 		FROM #__support_tickets
 		WHERE open=0 
 		AND type='{$this->type}' ";
-		if ($this->group)
-		{
-			$sql .= " AND `group`='{$this->group}' ";
-		}
-		else
+		if ($this->group == '_none_')
 		{
 			$sql .= " AND (`group`='' OR `group` IS NULL)";
+		}
+		else if ($this->group)
+		{
+			$sql .= " AND `group`='{$this->group}' ";
 		}
 		$sql .= " ORDER BY resolved ASC";
 $database->setQuery($sql);
@@ -83,13 +83,13 @@ foreach ($resolutions as $resolution)
 $sql = "SELECT severity
 		FROM #__support_tickets
 		WHERE type='{$this->type}' ";
-		if ($this->group)
-		{
-			$sql .= " AND `group`='{$this->group}' ";
-		}
-		else
+		if ($this->group == '_none_')
 		{
 			$sql .= " AND (`group`='' OR `group` IS NULL)";
+		}
+		else if ($this->group)
+		{
+			$sql .= " AND `group`='{$this->group}' ";
 		}
 		$sql .= " ORDER BY severity ASC";
 $database->setQuery($sql);
@@ -160,9 +160,13 @@ function getMonthName($month)
 <form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=stats'); ?>" method="get" enctype="multipart/form-data">
 	<div class="main section" id="ticket-stats">
 		<div class="two columns first">
-			<h3 class="time-range">
+			<!-- <h3 class="time-range">
 				<?php echo getMonthName(1) . ' ' . $this->first ?> - <?php echo getMonthName($this->month) . ' ' . $this->year; ?>
-			</h3>
+			</h3> -->
+			<p class="time-range">
+				<label for="start-date">From</label> <input type="text" name="start" id="start-date" value="<?php echo $this->escape($this->start); ?>" size="7" />
+				<label for="end-date">to</label> <input type="text" name="end" id="end-date" value="<?php echo $this->escape($this->end); ?>" size="7" />
+			</p>
 		</div><!-- / .two columns first -->
 		<div class="two columns second">
 			<fieldset class="support-stats-filter">
@@ -170,7 +174,8 @@ function getMonthName($month)
 					<?php echo JText::_('Show for group:'); ?>
 				</label>
 				<select name="group" id="ticket-group">
-					<option value=""<?php if (!$this->group) { echo ' selected="selected"'; } ?>><?php echo JText::_('[ none ]'); ?></option>
+					<option value=""<?php if (!$this->group) { echo ' selected="selected"'; } ?>><?php echo JText::_('[ all ]'); ?></option>
+					<option value="_none_"<?php if ($this->group == '_none_') { echo ' selected="selected"'; } ?>><?php echo JText::_('[ none ]'); ?></option>
 					<?php
 					if ($this->groups)
 					{
@@ -290,6 +295,17 @@ function getMonthName($month)
 							},
 							yaxis: { min: 0 }
 						});
+						
+						/*$('#start-date').datepicker({
+							dateFormat: "yy-mm-dd",
+							constrainInput: true//,
+							//setDate: new Date($("input#id_due_date").attr("value"))
+						});
+						$('#end-date').datepicker({
+							dateFormat: "yy-mm-dd",
+							constrainInput: true//,
+							//setDate: new Date($("input#id_due_date").attr("value"))
+						});*/
 					});
 				}
 			</script>

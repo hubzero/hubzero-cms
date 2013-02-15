@@ -795,7 +795,7 @@
 	.breakdown {
 		margin-bottom: 2em;
 	}
-	h3.time-range {
+	.time-range {
 		margin-top: 0;
 		padding-top: 0;
 	}
@@ -977,6 +977,9 @@
 	#messagebox h3 {
 		margin-top: 0;
 		padding-top: 0;
+	}
+	#ticket-group {
+		max-width: 20em;
 	}
 /* Support ticket tooltip */
 	.tooltip {
