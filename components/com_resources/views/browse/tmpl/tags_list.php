@@ -161,11 +161,11 @@ switch ($this->level)
 		$config = $this->bits['config'];
 		$authorized = $this->bits['authorized'];
 
+		$database =& JFactory::getDBO();
+
 		$statshtml = '';
 		if ($params->get('show_ranking')) {
 			$helper->getLastCitationDate();
-
-			$database =& JFactory::getDBO();
 
 			if ($resource->type == 7) {
 				$stats = new ToolStats($database, $resource->id, $resource->type, $resource->rating, $helper->citationsCount, $helper->lastCitationDate);
@@ -255,4 +255,3 @@ switch ($this->level)
 	break;
 }
 echo $html;
-?>
