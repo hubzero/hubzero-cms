@@ -34,7 +34,7 @@ $canDo = ResourcesHelper::getActions('resource');
 
 $text = ($this->task == 'edit' ? JText::_('Edit') . ' #' . $this->row->id : JText::_('New'));
 
-JToolBarHelper::title(JText::_('Resource') . ': <small><small>[ ' . $text . ' ]</small></small>', 'addedit.png');
+JToolBarHelper::title(JText::_('Resource') . ': <small><small>[ ' . $text . ' ]</small></small>', 'resources.png');
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::spacer();

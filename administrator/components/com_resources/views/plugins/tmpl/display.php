@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Resources') . '</a>: <small><small>[' . JText::_('Plugins') . ']</small></small>', 'generic.png');
+JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Resources') . '</a>: <small><small>[' . JText::_('Plugins') . ']</small></small>', 'plugin.png');
 JToolBarHelper::publishList();
 JToolBarHelper::unpublishList();
 JToolBarHelper::spacer();
