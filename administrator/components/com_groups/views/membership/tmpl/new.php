@@ -65,6 +65,14 @@ function submitbutton(pressbutton)
 	}
 	window.top.setTimeout("window.parent.location='index.php?option=<?php echo $this->option; ?>&controller=<?php echo $this->controller; ?>&gid=<?php echo $this->group->get('cn'); ?>'", 700);
 }
+
+window.addEvent('domready', function(){
+	window.addEvent('keypress', function(){
+		if (window.event.keyCode == 13) {
+			submitbutton('addusers');
+		}
+	})
+});
 </script>
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getError()); ?></p>

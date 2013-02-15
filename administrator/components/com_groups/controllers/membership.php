@@ -298,7 +298,7 @@ class GroupsControllerMembership extends Hubzero_Controller
 		$members = $this->group->get('members');
 
 		// Incoming array of users to promote
-		$mbrs = JRequest::getVar('users', array(0));
+		$mbrs = JRequest::getVar('id', array(0));
 
 		foreach ($mbrs as $mbr)
 		{
@@ -371,7 +371,7 @@ class GroupsControllerMembership extends Hubzero_Controller
 		$members = $this->group->get('members');
 
 		// Incoming array of users to promote
-		$mbrs = JRequest::getVar('users', array(0));
+		$mbrs = JRequest::getVar('id', array(0));
 
 		foreach ($mbrs as $mbr)
 		{
@@ -443,7 +443,7 @@ class GroupsControllerMembership extends Hubzero_Controller
 		$managers = $this->group->get('managers');
 
 		// Incoming array of users to promote
-		$mbrs = JRequest::getVar('users', array(0));
+		$mbrs = JRequest::getVar('id', array(0));
 
 		foreach ($mbrs as $mbr)
 		{
@@ -523,7 +523,7 @@ class GroupsControllerMembership extends Hubzero_Controller
 		$users = array();
 
 		// Incoming array of users to demote
-		$mbrs = JRequest::getVar('users', array(0));
+		$mbrs = JRequest::getVar('id', array(0));
 
 		foreach ($mbrs as $mbr)
 		{
@@ -573,7 +573,7 @@ class GroupsControllerMembership extends Hubzero_Controller
 	 *
 	 * @return void
 	 */
-	public function removeTask()
+	public function deleteTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
@@ -594,7 +594,7 @@ class GroupsControllerMembership extends Hubzero_Controller
 		$users_man = array();
 
 		// Incoming array of users to demote
-		$mbrs = JRequest::getVar('users', array(0));
+		$mbrs = JRequest::getVar('id', array(0));
 
 		foreach ($mbrs as $mbr)
 		{
@@ -670,7 +670,7 @@ class GroupsControllerMembership extends Hubzero_Controller
 		$invitees = $this->group->get('invitees');
 
 		// Incoming array of users to demote
-		$mbrs = JRequest::getVar('users', array(0));
+		$mbrs = JRequest::getVar('id', array(0));
 
 		foreach ($mbrs as $mbr)
 		{
@@ -728,7 +728,7 @@ class GroupsControllerMembership extends Hubzero_Controller
 		$users = array();
 
 		// Incoming array of users to demote
-		$mbrs = JRequest::getVar('users', array(0));
+		$mbrs = JRequest::getVar('id', array(0));
 
 		foreach ($mbrs as $mbr)
 		{

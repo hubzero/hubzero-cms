@@ -212,31 +212,31 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	{
 		case 'invitee':
 	?>
-					<a class="state publish" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=accept&amp;gid=<?php echo $this->filters['gid']; ?>&amp;users[]=<?php echo $row->uidNumber; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
+					<a class="state publish" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=accept&amp;gid=<?php echo $this->filters['gid']; ?>&amp;id[]=<?php echo $row->uidNumber; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
 						<span><?php echo JText::_('accept'); ?></span>
 					</a>
 				</td>
 				<td>
-					<a class="state unpublish" onclick="javascript:if(confirm('Cancel invintation?')){return true;}else{return false;}" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=uninvite&amp;gid=<?php echo $this->filters['gid']; ?>&amp;users[]=<?php echo $row->uidNumber; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
+					<a class="state unpublish" onclick="javascript:if(confirm('Cancel invintation?')){return true;}else{return false;}" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=uninvite&amp;gid=<?php echo $this->filters['gid']; ?>&amp;id[]=<?php echo $row->uidNumber; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
 						<span><?php echo JText::_('uninvite'); ?></span>
 					</a>
 	<?php
 		break;
 		case 'applicant':
 	?>
-					<a class="state publish" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=approve&amp;gid=<?php echo $this->filters['gid']; ?>&amp;users[]=<?php echo $row->uidNumber; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
+					<a class="state publish" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=approve&amp;gid=<?php echo $this->filters['gid']; ?>&amp;id[]=<?php echo $row->uidNumber; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
 						<span><?php echo JText::_('approve'); ?></span>
 					</a>
 				</td>
 				<td>
-					<a class="state unpublish" onclick="javascript:if(confirm('Deny membership?')){return true;}else{return false;}" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deny&amp;gid=<?php echo $this->filters['gid']; ?>&amp;users[]=<?php echo $row->uidNumber; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
+					<a class="state unpublish" onclick="javascript:if(confirm('Deny membership?')){return true;}else{return false;}" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deny&amp;gid=<?php echo $this->filters['gid']; ?>&amp;id[]=<?php echo $row->uidNumber; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
 						<span><?php echo JText::_('deny'); ?></span>
 					</a>
 	<?php
 		break;
 		case 'manager':
 	?>
-					<a class="state demote" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=demote&amp;gid=<?php echo $this->filters['gid']; ?>&amp;users[]=<?php echo $row->uidNumber; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
+					<a class="state demote" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=demote&amp;gid=<?php echo $this->filters['gid']; ?>&amp;id[]=<?php echo $row->uidNumber; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
 						<span><?php echo JText::_('demote'); ?></span>
 					</a>
 				</td>
@@ -247,12 +247,12 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		default:
 		case 'member':
 	?>
-					<a class="state promote" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=promote&amp;gid=<?php echo $this->filters['gid']; ?>&amp;users[]=<?php echo $row->uidNumber; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
+					<a class="state promote" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=promote&amp;gid=<?php echo $this->filters['gid']; ?>&amp;id[]=<?php echo $row->uidNumber; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
 						<span><?php echo JText::_('promote'); ?></span>
 					</a>
 				</td>
 				<td>
-					<a class="state trash" onclick="javascript:if(confirm('Cancel membership?')){return true;}else{return false;}" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=remove&amp;gid=<?php echo $this->filters['gid']; ?>&amp;users[]=<?php echo $row->uidNumber; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
+					<a class="state trash" onclick="javascript:if(confirm('Cancel membership?')){return true;}else{return false;}" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=delete&amp;gid=<?php echo $this->filters['gid']; ?>&amp;id[]=<?php echo $row->uidNumber; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
 						<span><?php echo JText::_('remove'); ?></span>
 					</a>
 	<?php
