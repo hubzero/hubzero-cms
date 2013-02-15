@@ -388,6 +388,10 @@ class SupportQuery extends JTable
 						}
 						$expr->val = "'" . implode("','", $g) . "'";
 					}
+					else
+					{
+						continue;
+					}
 				}
 			}
 
