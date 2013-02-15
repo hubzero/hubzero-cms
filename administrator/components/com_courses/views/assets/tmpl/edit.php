@@ -163,9 +163,9 @@ function saveAndUpdate()
 						<td colspan="3"><input type="file" name="upload" id="upload" /></td>
 					</tr> -->
 					<tr>
-						<th class="key"><label for="field-description"><?php echo JText::_('Description'); ?>:</label></th>
+						<th class="key"><label for="field-content"><?php echo JText::_('Content'); ?>:</label></th>
 						<td colspan="3">
-							<textarea name="fields[description]" id="field-description" rows="4" cols="35"><?php echo $this->escape(stripslashes($this->row->get('description'))); ?></textarea>
+							<textarea name="fields[content]" id="field-content" rows="4" cols="35"><?php echo $this->escape(stripslashes($this->row->get('content'))); ?></textarea>
 						</td>
 					</tr>
 				</tbody>

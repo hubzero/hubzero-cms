@@ -57,7 +57,7 @@ class CoursesTableAsset extends JTable
 	 * 
 	 * @var text
 	 */
-	var $description = NULL;
+	var $content = NULL;
 
 	/**
 	 * Assets type
@@ -133,7 +133,7 @@ class CoursesTableAsset extends JTable
 			return false;
 		}
 
-		if (!$this->url && $this->description)
+		if (!$this->url && $this->content)
 		{
 			$this->type = 'note';
 		}

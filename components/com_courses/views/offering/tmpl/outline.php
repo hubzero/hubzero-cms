@@ -175,7 +175,7 @@ if (!$this->course->offering()->access('view')) { ?>
 					{
 						continue;
 					}
-					echo '<p class="note">' . stripslashes($a->get('description')) . '</p>';
+					echo '<p class="note">' . stripslashes($a->get('content')) . '</p>';
 				}
 			}
 		}
