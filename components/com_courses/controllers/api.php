@@ -382,6 +382,7 @@ class CoursesApiController extends Hubzero_Api_Controller
 		elseif($contentType = JRequest::getWord('type', false))
 		{
 			// @FIXME: having this hear breaks the responder model idea
+			// The content type handlers could respond to a function that assesses the incoming data?
 			switch ($contentType)
 			{
 				case 'link':

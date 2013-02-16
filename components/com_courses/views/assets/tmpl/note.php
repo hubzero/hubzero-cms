@@ -29,5 +29,5 @@ defined('_JEXEC') or die('Restricted access');
 	<?php echo $this->escape(stripslashes($this->asset->get('title'))); ?>
 </h4>
 <p>
-	<?php echo $this->escape(stripslashes($this->asset->get('description'))); ?>
+	<?php echo $this->escape(stripslashes($this->asset->get('content'))); ?>
 </p>

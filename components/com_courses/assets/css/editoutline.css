@@ -541,6 +541,9 @@ ul {
 .link:after {
 	content: "\26D3";
 }
+.object:after {
+	content: "\f0c3";
+}
 
 .asset-group-item .checker {
 	margin-right: 0;

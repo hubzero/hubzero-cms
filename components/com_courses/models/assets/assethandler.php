@@ -105,11 +105,22 @@ class AssetHandler
 		{
 			$handler = $class;
 		}
-		else
+		elseif(isset($this->handlers[0]))
 		{
 			$handler = $this->handlers[0];
 		}
+		else
+		{
+			return array('error'=>'There is no option available to handle this filetype/content');
+		}
 
-		return $handler::create();
+		if(isset($handler) && method_exists($handler, 'create'))
+		{
+			return $handler::create();
+		}
+		else
+		{
+			return array('error'=>'This filetype/content does not have a create method');
+		}
 	}
 }

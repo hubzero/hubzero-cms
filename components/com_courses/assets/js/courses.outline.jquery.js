@@ -784,6 +784,12 @@ HUB.CoursesOutline = {
 		// Hide the file input
 		$('.uploadfiles .fileupload').hide();
 
+		// Trigger file browser on click of browse files button
+		$('.unit').on('click', '.browse-files', function(e) {
+			e.preventDefault();
+			$(this).parents('.uploadfiles').find('.fileupload').trigger('click');
+		});
+
 		// Set up file uploader on our file upload boxes
 		$('.uploadfiles').each(function(){
 			// Initialize a few variables
@@ -1202,7 +1208,7 @@ HUB.CoursesOutline = {
 							'<input type="hidden" name="scope_id" value="<%= assetgroup_id %>" />',
 						'</form>',
 						'<a href="#" title="Attach a link" class="attach-link"></a>',
-						'<a href="#" title="Embed an object" class="attach-object"></a>',
+						'<a href="#" title="Embed a Kaltura or YouTube Object" class="attach-object"></a>',
 						'<a href="#" title="Include a note" class="attach-note"></a>',
 						'<a href="#" title="Browse for files" class="browse-files"></a>',
 					'</div>',

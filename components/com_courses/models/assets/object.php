@@ -3,11 +3,11 @@
 /**
 * Url Asset handler class
 */
-class UrlAssetHandler extends AssetHandler
+class ObjectAssetHandler extends AssetHandler
 {
 	private static $info = array(
 			'action_message' => 'As a standard link',
-			'responds_to'    => array('url')
+			'responds_to'    => array('object')
 		);
 
 	public static function getMessage()
@@ -30,20 +30,19 @@ class UrlAssetHandler extends AssetHandler
 		// Create our asset table object
 		$assetObj = new CoursesTableAsset($this->db);
 
-		$url = JRequest::getVar('content');
+		$object = JRequest::getVar('content', '', 'post', 'string', JREQUEST_ALLOWRAW);
 
-		// @FIXME: slit by " " or "," or "\n" (upload multiple urls at a time) - then loop through code below
-
-		preg_match('/http[s]*\:\/\/([0-9A-Za-z\.]+)[\/]*/', $url, $matches);
-
-		if(!isset($matches[1]))
+		// Check if valid youtube or kaltura video
+		// @FIXME: we need a safer way!
+		if(!preg_match('/\<object.*name="movie" value\=\"http[s]*\:\/\/www\.youtube\.com\/.*\<embed src\=\"http[s]*\:\/\/www\.youtube\.com\//', $object)
+			&& !preg_match('/.*kaltura.*/i', $object))
 		{
-			return array('error'=>'Content did not match the pre-defined filter');
+			return array('error'=>'Content did not match the pre-defined filter for an object');
 		}
 
-		$this->asset['title']      = $matches[1];
-		$this->asset['type']       = (!empty($this->asset['type'])) ? $this->asset['type'] : 'link';
-		$this->asset['url']        = JRequest::getVar('content');
+		$this->asset['title']      = 'New embeded video';
+		$this->asset['type']       = (!empty($this->asset['type'])) ? $this->asset['type'] : 'object';
+		$this->asset['content']    = JRequest::getVar('content');
 		$this->asset['created']    = date('Y-m-d H:i:s');
 		$this->asset['created_by'] = JFactory::getApplication()->getAuthn('user_id');
 		$this->asset['course_id']  = JRequest::getInt('course_id', 0);

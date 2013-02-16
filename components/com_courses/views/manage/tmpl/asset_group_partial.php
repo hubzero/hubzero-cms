@@ -49,7 +49,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<input type="hidden" name="scope_id" value="<?= $this->ag->get('id') ?>" />
 			</form>
 			<a href="#" title="Attach a link" class="attach-link"></a>
-			<a href="#" title="Embed an object" class="attach-object"></a>
+			<a href="#" title="Embed a Kaltura or YouTube Object" class="attach-object"></a>
 			<a href="#" title="Include a note" class="attach-note"></a>
 			<a href="#" title="Browse for files" class="browse-files"></a>
 		</div>

@@ -30,7 +30,7 @@ class NoteAssetHandler extends AssetHandler
 		// Create our asset table object
 		$assetObj = new CoursesTableAsset($this->db);
 
-		$note = JRequest::getVar('content');
+		$note = JRequest::getString('content');
 
 		// @FIXME: make note safe?
 
