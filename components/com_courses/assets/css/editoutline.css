@@ -596,7 +596,7 @@ ul {
 	top: 0;
 }
 .uploadfiles-progress {
-	margin-top: 10px;
+	margin: 10px 0 0 40px;
 	position: relative;
 }
 .uploadfiles-progress:before {
@@ -608,7 +608,7 @@ ul {
 	color: #999;
 	content: "\f057";
 	position: absolute;
-	left: -21px;
+	left: -30px;
 	top: 1px;
 	bottom: 0;
 }
@@ -732,6 +732,8 @@ ul {
 	color: #FFF;
 	padding: 4px;
 	margin-top: -5px;
+	opacity: 0.7;
+	box-shadow: 1px 1px 1px #999999;
 }
 
 /* Styles for popup edit pages */

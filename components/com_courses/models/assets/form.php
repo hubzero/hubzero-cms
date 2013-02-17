@@ -89,22 +89,23 @@ class FormAssetHandler extends AssetHandler
 									assetslist.find('li:first').remove();
 								}
 								$.each(data.files, function (index, file) {
-									// Insert in our HTML (uses 'underscore.js')
-									var li = _.template(HUB.CoursesOutline.Templates.asset, file);
-									assetslist.append(li);
+									var callback = function() {
+										// Insert in our HTML (uses 'underscore.js')
+										var li = _.template(HUB.CoursesOutline.Templates.asset, file);
+										assetslist.append(li);
 
-									var newAsset = assetslist.find('.asset-item:last');
+										var newAsset = assetslist.find('.asset-item:last');
 
-									newAsset.find('.uniform').uniform();
-									newAsset.find('.toggle-editable').show();
-									newAsset.find('.title-edit').hide();
-									HUB.CoursesOutline.showProgressIndicator();
-									HUB.CoursesOutline.resizeFileUploader();
-									HUB.CoursesOutline.makeAssetsSortable();
+										newAsset.find('.uniform').uniform();
+										newAsset.find('.toggle-editable').show();
+										newAsset.find('.title-edit').hide();
+										HUB.CoursesOutline.showProgressIndicator();
+										HUB.CoursesOutline.resizeFileUploader();
+										HUB.CoursesOutline.makeAssetsSortable();
+									}
 
-									// Reset progress bar after 2 seconds
-									// @FIXME: asset_title and asset_ext are defined for forms
-									HUB.CoursesOutline.resetProgresBar(file.asset_title+'.pdf', 2000);
+									// Reset progress bar
+									HUB.CoursesOutline.resetProgresBar(file.asset_title+'.pdf', 1000, callback);
 								});
 							},
 							401: function(data){

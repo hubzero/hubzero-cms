@@ -820,6 +820,7 @@ HUB.CoursesOutline = {
 			$(this).fileupload({
 				dropZone: $(this),
 				dataType: 'json',
+				progressInterval: 200,
 				statusCode: {
 					// 201 created - this is returned by the standard asset upload
 					201: function(data, textStatus, jqXHR){
@@ -835,23 +836,25 @@ HUB.CoursesOutline = {
 
 							// Loop through the uploaded files and add li for them
 							$.each(data.assets, function (index, asset) {
-								// Insert in our HTML (uses "underscore.js")
-								var li = _.template(HUB.CoursesOutline.Templates.asset, asset);
-								assetslist.append(li);
+								var callback = function() {
+									// Insert in our HTML (uses "underscore.js")
+									var li = _.template(HUB.CoursesOutline.Templates.asset, asset);
+									assetslist.append(li);
 
-								// Get a pointer to our new asset item
-								var newAsset = assetslist.find('.asset-item:last');
+									// Get a pointer to our new asset item
+									var newAsset = assetslist.find('.asset-item:last');
 
-								// Update a few things after adding the new asset (reset the progress bar, make them sortable, etc...)
-								newAsset.find('.uniform').uniform();
-								newAsset.find('.toggle-editable').show();
-								newAsset.find('.title-edit').hide();
-								HUB.CoursesOutline.showProgressIndicator();
-								HUB.CoursesOutline.resizeFileUploader();
-								HUB.CoursesOutline.makeAssetsSortable();
+									// Update a few things after adding the new asset (reset the progress bar, make them sortable, etc...)
+									newAsset.find('.uniform').uniform();
+									newAsset.find('.toggle-editable').show();
+									newAsset.find('.title-edit').hide();
+									HUB.CoursesOutline.showProgressIndicator();
+									HUB.CoursesOutline.resizeFileUploader();
+									HUB.CoursesOutline.makeAssetsSortable();
+								};
 
-								// Reset progress bar after 2 seconds
-								HUB.CoursesOutline.resetProgresBar(asset.asset_title+'.'+asset.asset_ext, 2000);
+								// Reset progress bar
+								HUB.CoursesOutline.resetProgresBar(asset.asset_title+'.'+asset.asset_ext, 1000, callback);
 							});
 						}
 
@@ -862,7 +865,7 @@ HUB.CoursesOutline = {
 
 						// Reset progress bar
 						// @FIXME: need to return filename even with errors!
-						HUB.CoursesOutline.resetProgresBar(data.files[0].name, 0);
+						HUB.CoursesOutline.resetProgresBar(data.files[0].name, 0, function(){});
 					},
 					// 404 - this could come from a method not found, or the api not being configured at all
 					404: function(data){
@@ -870,7 +873,7 @@ HUB.CoursesOutline = {
 
 						// Reset progress bar
 						// @FIXME: need to return filename even with errors!
-						HUB.CoursesOutline.resetProgresBar(data.files[0].name, 0);
+						HUB.CoursesOutline.resetProgresBar(data.files[0].name, 0, function(){});
 					},
 					500: function(data){
 						// Display the error message
@@ -878,7 +881,7 @@ HUB.CoursesOutline = {
 
 						// Reset progress bar
 						// @FIXME: need to return filename even with errors!
-						HUB.CoursesOutline.resetProgresBar(data.files[0].name, 0);
+						HUB.CoursesOutline.resetProgresBar(data.files[0].name, 0, function(){});
 					}
 				},
 				add: function(e, data) {
@@ -936,7 +939,7 @@ HUB.CoursesOutline = {
 											});
 										data.submit();
 										// @FIXME: impliment cancel button
-										HUB.CoursesOutline.assetProgressBar(data.files[0].name, fileupload);
+										HUB.CoursesOutline.assetProgressBar(data.files[0].name, assetslist);
 
 										// Remove the ul for this file
 										$(this).parents('ul').remove();
@@ -965,7 +968,7 @@ HUB.CoursesOutline = {
 								// Submit the file upload request as normal
 								data.submit();
 								// @FIXME: impliment cancel button
-								HUB.CoursesOutline.assetProgressBar(data.files[0].name, fileupload);
+								HUB.CoursesOutline.assetProgressBar(data.files[0].name, assetslist);
 							}
 						}
 					});
@@ -975,17 +978,14 @@ HUB.CoursesOutline = {
 
 					// Show progress bars for all pending uploads
 					var progress = parseInt(data.loaded / data.total * 100, 10);
-					$(this).find("#"+id + " .bar").css(
-						'width',
-						progress + '%'
-					);
+					$('.unit').find("#"+id + " .bar").animate({'width': progress + '%'}, 200);
 
 					// If progress is 100% and extension is zip, let's add some explanation
 					if(progress == 100) {
 						var extension = data.files[0].name.split('.');
 
 						if(extension[extension.length - 1] == 'zip') {
-							$(this).find("#"+id + " .filename").html('unzipping...');
+							$('.unit').find("#"+id + " .filename").html('unzipping...');
 						}
 					}
 				}
@@ -993,7 +993,7 @@ HUB.CoursesOutline = {
 		});
 	},
 
-	assetProgressBar: function(filename, fileupload)
+	assetProgressBar: function(filename, assetslist)
 	{
 		var $ = this.jQuery;
 
@@ -1007,17 +1007,20 @@ HUB.CoursesOutline = {
 			html += '</div>';
 			html += '</div>';
 
-		fileupload.append(html);
+		assetslist.append(html);
 	},
 
-	resetProgresBar: function(filename, timeout)
+	resetProgresBar: function(filename, timeout, callback)
 	{
 		var $ = this.jQuery;
 
 		var id = filename.replace(/[. ]/g, '_') + '_progressbar';
 
 		setTimeout(function(){
-			$("#"+id).remove();
+			$("#"+id).fadeOut('slow', function() {
+				$("#"+id).remove();
+				callback();
+			});
 		},timeout);
 	},
 
@@ -1199,7 +1202,7 @@ HUB.CoursesOutline = {
 					'<div class="aux-attachments">',
 						'<form action="/api/courses/assetnew" class="aux-attachments-form attach-link">',
 							'<label for"content" class="aux-attachments-content-label">Attach a link:</label>',
-							'<textarea class="uniform input-content" name="content" placeholder=""></textarea>',
+							'<textarea class="uniform input-content" name="content" placeholder="" rows="6"></textarea>',
 							'<input class="input-type" type="hidden" name="type" value="link" />',
 							'<input class="uniform aux-attachments-submit" type="submit" value="Add" />',
 							'<input class="uniform aux-attachments-cancel" type="reset" value="Cancel" />',

@@ -40,7 +40,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<div class="aux-attachments">
 			<form action="/api/courses/assetnew" class="aux-attachments-form attach-link">
 				<label for"content" class="aux-attachments-content-label">Attach a link:</label>
-				<textarea class="uniform input-content" name="content" placeholder=""></textarea>
+				<textarea class="uniform input-content" name="content" placeholder="" rows="6"></textarea>
 				<input class="input-type" type="hidden" name="type" value="link" />
 				<input class="uniform aux-attachments-submit" type="submit" value="Add" />
 				<input class="uniform aux-attachments-cancel" type="reset" value="Cancel" />
