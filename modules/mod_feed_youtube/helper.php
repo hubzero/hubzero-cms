@@ -111,9 +111,9 @@ class modFeedYoutubeHelper extends JObject
 		if ($rssDoc != false)
 		{
 			// channel header and link
-			$this->this->feed->title        = $rssDoc->get_title();
-			$this->this->feed->link         = $rssDoc->get_link();
-			$this->this->feed->description  = $rssDoc->get_description();
+			$this->feed->title        = $rssDoc->get_title();
+			$this->feed->link         = $rssDoc->get_link();
+			$this->feed->description  = $rssDoc->get_description();
 
 			// channel image if exists
 			$this->feed->image->url   = $rssDoc->get_image_url();
