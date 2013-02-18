@@ -52,14 +52,18 @@ $filters['count'] = false;
 
 $rows = $this->offering->announcements($filters);
 $manager = $this->offering->access('manage');
+
+$base = 'index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&offering=' . $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : '') . '&active=announcements';
 ?>
 <div class="course_members">
-	<a name="members"></a>
-	<h3 class="heading"><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS'); ?></h3>
-		
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&offering=' . $this->offering->get('alias') . '&active=announcements'); ?>" method="post">
+	<h3 class="heading">
+		<a name="members"></a>
+		<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS'); ?>
+	</h3>
+
+	<form action="<?php echo JRoute::_($base); ?>" method="post">
 		<div class="subject">
-			
+
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
 				<fieldset class="entry-search">
@@ -70,13 +74,13 @@ $manager = $this->offering->access('manage');
 			</div><!-- / .container -->
 			<?php if ($manager) { ?>
 				<p class="btn-container">
-					<a class="add btn" href="<?php echo JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=announcements&action=new'); ?>">
+					<a class="add btn" href="<?php echo JRoute::_($base . '&action=new'); ?>">
 						<?php echo JText::_('New announcement'); ?>
 					</a>
 				</p>
 			<?php } ?>
 			<div class="container">
-				
+
 <?php if ($rows->total() > 0) { ?>
 	<?php foreach ($rows as $row) { ?>
 						<div class="announcement<?php if ($row->get('priority')) { echo ' high'; } ?>">
@@ -101,10 +105,10 @@ $manager = $this->offering->access('manage');
 						<?php if ($manager) { ?>
 								<dd class="entry-options">
 								<?php if ($juser->get('id') == $row->get('created_by')) { ?>
-									<a class="edit" href="<?php echo JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=announcements&action=edit&entry=' . $row->get('id')); ?>" title="<?php echo JText::_('Edit'); ?>">
+									<a class="edit" href="<?php echo JRoute::_($base . '&action=edit&entry=' . $row->get('id')); ?>" title="<?php echo JText::_('Edit'); ?>">
 										<?php echo JText::_('Edit'); ?>
 									</a>
-									<a class="delete" href="<?php echo JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=announcements&action=delete&entry=' . $row->get('id')); ?>" title="<?php echo JText::_('Delete'); ?>">
+									<a class="delete" href="<?php echo JRoute::_($base . '&action=delete&entry=' . $row->get('id')); ?>" title="<?php echo JText::_('Delete'); ?>">
 										<?php echo JText::_('Delete'); ?>
 									</a>
 								<?php } ?>
@@ -114,9 +118,9 @@ $manager = $this->offering->access('manage');
 						</div>
 	<?php } ?>
 <?php } else { ?>
-							<p><?php echo JText::_('PLG_COURSES_MEMBERS_NO_RESULTS'); ?></p>
+					<p><?php echo JText::_('PLG_COURSES_MEMBERS_NO_RESULTS'); ?></p>
 <?php } ?>
-			
+
 			<?php 
 			jimport('joomla.html.pagination');
 			$pageNav = new JPagination(
@@ -133,10 +137,9 @@ $manager = $this->offering->access('manage');
 			</div><!-- / .container -->
 		</div><!-- / .subject -->
 		<div class="clear"></div>
-	
-		
+
 		<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
-		<input type="hidden" name="offering" value="<?php echo $this->offering->get('alias'); ?>" />
+		<input type="hidden" name="offering" value="<?php echo $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : ''); ?>" />
 		<input type="hidden" name="active" value="announcements" />
 		<input type="hidden" name="option" value="<?php echo $option; ?>" />
 		<input type="hidden" name="filter" value="<?php echo $this->filter; ?>" />

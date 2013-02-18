@@ -84,7 +84,12 @@ $juser = JFactory::getUser();
 
 				<label for="field-content">
 					<?php echo JText::_('Announcement'); ?>
-					<textarea name="fields[content]" id="field-content" cols="35" rows="5"><?php echo $this->escape(stripslashes($this->model->get('content'))); ?></textarea>
+					<?php
+					ximport('Hubzero_Wiki_Editor');
+					$editor =& Hubzero_Wiki_Editor::getInstance();
+					echo $editor->display('fields[content]', 'field-content', $this->escape(stripslashes($this->model->get('content_raw'))), 'minimal no-footer', '35', '5');
+					?>
+					<!-- <textarea name="fields[content]" id="field-content" cols="35" rows="5"><?php echo $this->escape(stripslashes($this->model->get('content'))); ?></textarea> -->
 				</label>
 
 				<label for="field-priority" id="priority-label">
@@ -101,10 +106,11 @@ $juser = JFactory::getUser();
 			<input type="hidden" name="fields[id]" value="<?php echo $this->model->get('id'); ?>" />
 			<input type="hidden" name="fields[state]" value="1" />
 			<input type="hidden" name="fields[offering_id]" value="<?php echo $this->offering->get('id'); ?>" />
+			<input type="hidden" name="fields[section_id]" value="<?php echo $this->offering->section()->get('id'); ?>" />
 
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
-			<input type="hidden" name="offering" value="<?php echo $this->offering->get('alias'); ?>" />
+			<input type="hidden" name="offering" value="<?php echo $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : ''); ?>" />
 			<input type="hidden" name="active" value="announcements" />
 			<input type="hidden" name="action" value="save" />
 		</form>

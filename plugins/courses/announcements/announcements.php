@@ -293,17 +293,54 @@ class plgCoursesAnnouncements extends JPlugin
 			$model->set('priority', 0);
 		}
 
+		$wikiconfig = array(
+			'option'   => $this->option,
+			'scope'    => 'courses',
+			'pagename' => $this->offering->get('alias'),
+			'pageid'   => 0,
+			'filepath' => JPATH_ROOT . DS . 'site' . DS . 'courses' . DS . $this->course->get('id'),
+			'domain'   => '' 
+		);
+		ximport('Hubzero_Wiki_Parser');
+		$p =& Hubzero_Wiki_Parser::getInstance();
+
+		$model->set('content', $p->parse(stripslashes($model->get('content_raw'), $wikiconfig)));
+
 		// Store content
-		if (!$model->store()) 
+		if (!$model->store(true)) 
 		{
 			$this->setError($model->getError());
 			return $this->_edit($model);
 		}
 
+		// Incoming message and subject
+		/*$subject = JText::_('PLG_COURSES_ANNOUNCEMENTS_SUBJECT');
+
+		// Add a link to the course page to the bottom of the message
+		$juri =& JURI::getInstance();
+		$sef = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : '') . 'active=announcements');
+
+		$message  = $model->get('content');
+		$message .= "\r\n\r\n------------------------------------------------\r\n" . rtrim($juri->base(), DS) . DS . ltrim($sef, DS) . "\r\n";
+
+		// Build the "from" data for the e-mail
+		$from = array();
+		$from['name']  = $juser->get('name') . ' (' . JText::_(strtoupper($this->_name)) . ': ' . $this->course->get('alias') . ')';
+		$from['email'] = $juser->get('email');
+
+		// Send the message
+		JPluginHelper::importPlugin('xmessage');
+		$dispatcher =& JDispatcher::getInstance();
+		if (!$dispatcher->trigger('onSendMessage', array('course_announcement', $subject, $message, $from, $mbrs, $this->_option, null, '', $this->course->get('id')))) 
+		{
+			$this->setError(JText::_('COURSES_ERROR_EMAIL_MEMBERS_FAILED'));
+		}*/
+
 		/*$this->setRedirect(
 			JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . 'active=announcements')
 		);
 		return;*/
+
 		// Display listing
 		return $this->_list();
 	}

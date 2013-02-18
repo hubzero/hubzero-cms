@@ -497,7 +497,126 @@ class ForumPost extends JTable
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
-	
+
+	/**
+	 * Get records
+	 * 
+	 * @param      array $filters Filters to construct query from
+	 * @return     array
+	 */
+	public function getLatestPosts($filters=array())
+	{
+		$query = "SELECT c.*";
+		if (isset($filters['group']) && (int) $filters['group'] >= 0) 
+		{
+			$query .= ", g.cn AS group_alias";
+		}
+		if (!isset($filters['parent']) || $filters['parent'] == 0) 
+		{
+			$query .= ", (SELECT COUNT(*) FROM $this->_tbl AS r WHERE r.parent=c.id AND r.state<2) AS replies ";
+			//$query .= ", (SELECT d.created FROM $this->_tbl AS d WHERE d.parent=c.id ORDER BY created DESC LIMIT 1) AS last_activity ";
+			$query .= ", (CASE WHEN c.last_activity != '0000-00-00 00:00:00' THEN c.last_activity ELSE c.created END) AS activity";
+		}
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$query .= ", a.name AS access_level";
+		}
+		else 
+		{
+			$query .= ", a.title AS access_level";
+		}
+		$query  .= " FROM $this->_tbl AS c";
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$query .= " LEFT JOIN #__groups AS a ON c.access=a.id";
+		}
+		else 
+		{
+			$query .= " LEFT JOIN #__viewlevels AS a ON c.access=a.id";
+		}
+
+			$where = array();
+			
+			if (isset($filters['state'])) 
+			{
+				$where[] = "c.state=" . $this->_db->Quote(intval($filters['state']));
+			}
+			if (isset($filters['sticky']) && (int) $filters['sticky'] != 0) 
+			{
+				$where[] = "c.sticky=" . $this->_db->Quote(intval($filters['sticky']));
+			}
+			/*if (isset($filters['group']) && (int) $filters['group'] >= 0) 
+			{
+				$where[] = "(c.scope_id=" . $this->_db->Quote(intval($filters['group'])) . " AND c.scope=" . $this->_db->Quote('group') . ")";
+			}*/
+			if (isset($filters['scope']) && (string) $filters['scope']) 
+			{
+				$where[] = "c.scope=" . $this->_db->Quote(strtolower($filters['scope']));
+			}
+			if (isset($filters['scope_id']) && (int) $filters['scope_id'] >= 0) 
+			{
+				$where[] = "c.scope_id=" . $this->_db->Quote(intval($filters['scope_id']));
+			}
+			if (isset($filters['category_id']) && (int) $filters['category_id'] >= 0) 
+			{
+				$where[] = "c.category_id=" . $this->_db->Quote(intval($filters['category_id']));
+			}
+			if (isset($filters['object_id']) && (int) $filters['object_id'] >= 0) 
+			{
+				$where[] = "c.object_id=" . $this->_db->Quote(intval($filters['object_id']));
+			}
+			//if (!isset($filters['authorized']) || !$filters['authorized']) {
+			//	$query .= "c.access=0 AND ";
+			//}
+			if (isset($filters['search']) && $filters['search'] != '') 
+			{
+				$where[] = "(LOWER(c.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 
+						OR LOWER(c.comment) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
+			}
+			//if (isset($filters['parent']) && (int) $filters['parent'] >= 0) 
+			//{
+				$where[] = "c.parent>0"; //. $this->_db->Quote(intval($filters['parent']));
+			//}
+			
+			if (count($where) > 0)
+			{
+				$query .= " WHERE ";
+				$query .= implode(" AND ", $where);
+			}
+			
+			if (isset($filters['limit']) && $filters['limit'] != 0) 
+			{
+				if (isset($filters['sticky']) && $filters['sticky'] == false) 
+				{
+					if (!isset($filters['sort']) || !$filters['sort']) 
+					{
+						$filters['sort'] = 'activity DESC, c.created';
+					}
+					if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'))) 
+					{
+						$filters['sort_Dir'] = 'DESC';
+					}
+					$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+				} 
+				else 
+				{
+					if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'))) 
+					{
+						$filters['sort_Dir'] = 'DESC';
+					}
+					$query .= " ORDER BY c.sticky DESC, activity DESC, c.created " . $filters['sort_Dir'];
+				}
+			}
+
+		if ($filters['limit'] != 0) 
+		{
+			$query .= ' LIMIT ' . intval($filters['start']) . ',' . intval($filters['limit']);
+		}
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
+
 	/**
 	 * Get a list of all participants in a thread
 	 * 

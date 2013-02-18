@@ -57,6 +57,13 @@ class CoursesTableAnnouncement extends JTable
 	 * 
 	 * @var text
 	 */
+	var $content_raw = NULL;
+
+	/**
+	 * varchar(255)
+	 * 
+	 * @var text
+	 */
 	var $content = NULL;
 
 	/**
