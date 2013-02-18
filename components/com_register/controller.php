@@ -875,12 +875,16 @@ class RegisterController extends Hubzero_Controller
 							$xprofile->setParam('return', $regReturn);
 						}
 
+						// Unset password here so that change password below can be in charge of setting it initially
+						$xprofile->set('password', '');
 						$result = $xprofile->update();
 					}
 
 					if ($result) 
 					{
 						$result = Hubzero_User_Password::changePassword($xprofile->get('uidNumber'), $xregistration->get('password'));
+						// Set password back here in case anything else down the line is looking for it
+						$xprofile->set('password', $xregistration->get('password'));
 					}
 					
 					// Did we successfully create/update an account?
