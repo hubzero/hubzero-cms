@@ -65,7 +65,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 			}
 ?>
 					</caption>
-<?php if (!$this->category->closed) { ?>
+<?php if (!$this->category->closed && $this->config->get('access-create-thread')) { ?>
 					<tfoot>
 						<tr>
 							<td colspan="<?php echo ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread')) ? '5' : '4'; ?>">

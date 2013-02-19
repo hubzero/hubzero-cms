@@ -343,6 +343,10 @@ class plgGroupsForum extends Hubzero_Plugin
 		if (!$this->juser->get('guest')) 
 		{
 			$this->params->set('access-view-' . $assetType, false);
+			$this->params->set('access-create-' . $assetType, false);
+			$this->params->set('access-delete-' . $assetType, false);
+			$this->params->set('access-edit-' . $assetType, false);
+
 			if (in_array($this->juser->get('id'), $this->members))
 			{
 				$this->params->set('access-view-' . $assetType, true);
@@ -354,10 +358,11 @@ class plgGroupsForum extends Hubzero_Plugin
 					$this->params->set('access-view-' . $assetType, false);
 				}
 			}
-			
-			$this->params->set('access-create-' . $assetType, false);
-			$this->params->set('access-delete-' . $assetType, false);
-			$this->params->set('access-edit-' . $assetType, false);
+			if (!in_array($this->juser->get('id'), $this->members))
+			{
+				return;
+			}
+
 			switch ($assetType)
 			{
 				case 'thread':

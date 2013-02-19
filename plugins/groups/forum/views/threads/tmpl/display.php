@@ -180,7 +180,7 @@ ximport('Hubzero_User_Profile_Helper');
 	</div><!-- / .subject -->
 	<div class="clear"></div>
 </div><!-- / .main section -->
-
+<?php if ($this->config->get('access-create-thread')) { ?>
 <div class="below section">
 	<h3 class="post-comment-title">
 		<?php echo JText::_('PLG_GROUPS_FORUM_ADD_COMMENT'); ?>
@@ -324,3 +324,4 @@ ximport('Hubzero_User_Profile_Helper');
 	</div><!-- / .subject -->
 	<div class="clear"></div>
 </div><!-- / .below section -->
+<?php } ?>

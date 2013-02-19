@@ -257,7 +257,7 @@ if ($section->categories) {
 
 <?php 
 $params =& JComponentHelper::getParams('com_groups');
-if ($params->get('email_comment_processing'))
+if ($params->get('email_comment_processing') && $this->config->get('access-create-section'))
 { ?>
 			<form method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'); ?>" id="forum-options">
 				<fieldset>
