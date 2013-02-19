@@ -293,19 +293,6 @@ class plgCoursesAnnouncements extends JPlugin
 			$model->set('priority', 0);
 		}
 
-		$wikiconfig = array(
-			'option'   => $this->option,
-			'scope'    => 'courses',
-			'pagename' => $this->offering->get('alias'),
-			'pageid'   => 0,
-			'filepath' => JPATH_ROOT . DS . 'site' . DS . 'courses' . DS . $this->course->get('id'),
-			'domain'   => '' 
-		);
-		ximport('Hubzero_Wiki_Parser');
-		$p =& Hubzero_Wiki_Parser::getInstance();
-
-		$model->set('content', $p->parse(stripslashes($model->get('content_raw'), $wikiconfig)));
-
 		// Store content
 		if (!$model->store(true)) 
 		{

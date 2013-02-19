@@ -430,7 +430,7 @@ class CoursesModelSection extends JObject
 	public function date($scope=null, $scope_id=null)
 	{
 		if (!isset($this->_date) 
-		 || ((int) $this->_date->get('scope_id') != $scope_id && (string) $this->_date->get('scope') != $scope))
+		 || ((int) $this->_date->get('scope_id') != (int) $scope_id || (string) $this->_date->get('scope') != (string) $scope))
 		{
 			$this->_date = new CoursesModelSectionDate();
 
@@ -443,7 +443,6 @@ class CoursesModelSection extends JObject
 				}
 			}
 		}
-
 		return $this->_date; 
 	}
 
@@ -471,7 +470,7 @@ class CoursesModelSection extends JObject
 			return $tbl->count($filters);
 		}
 
-		if (!isset($this->_dates) || !is_array($this->_dates) || $clear)
+		if (!isset($this->_dates) || !is_a($this->_dates, 'CoursesModelIterator') || $clear)
 		{
 			$tbl = new CoursesTableSectionDate($this->_db);
 

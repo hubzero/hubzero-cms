@@ -248,7 +248,7 @@ class CoursesTableUnit extends JTable
 	 */
 	public function find($filters=array())
 	{
-		$query  = "SELECT cu.*, sd.publish_up, sd.publish_down";
+		$query  = "SELECT DISTINCT cu.*, sd.publish_up, sd.publish_down";
 		$query .= $this->_buildQuery($filters);
 
 		if (!empty($filters['start']) && !empty($filters['limit']))

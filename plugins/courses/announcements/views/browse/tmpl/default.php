@@ -53,6 +53,17 @@ $filters['count'] = false;
 $rows = $this->offering->announcements($filters);
 $manager = $this->offering->access('manage');
 
+$wikiconfig = array(
+	'option'   => 'com_courses',
+	'scope'    => 'courses',
+	'pagename' => $this->offering->get('alias'),
+	'pageid'   => 0,
+	'filepath' => JPATH_ROOT . DS . 'site' . DS . 'courses' . DS . $this->course->get('id'),
+	'domain'   => '' 
+);
+ximport('Hubzero_Wiki_Parser');
+$p =& Hubzero_Wiki_Parser::getInstance();
+
 $base = 'index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&offering=' . $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : '') . '&active=announcements';
 ?>
 <div class="course_members">
@@ -84,7 +95,7 @@ $base = 'index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&
 <?php if ($rows->total() > 0) { ?>
 	<?php foreach ($rows as $row) { ?>
 						<div class="announcement<?php if ($row->get('priority')) { echo ' high'; } ?>">
-							<?php echo stripslashes($row->get('content')); ?>
+							<?php echo $p->parse(stripslashes($row->get('content')), $wikiconfig); ?>
 							<dl class="entry-meta">
 								<dt class="entry-id"><?php echo $row->get('id'); ?></dt> 
 								<?php if ($manager) { ?>

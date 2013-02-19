@@ -215,9 +215,23 @@ class CoursesControllerSections extends Hubzero_Controller
 		}
 
 		$dates = JRequest::getVar('dates', array(), 'post');
-		foreach ($dates as $dt)
+
+		//$i=0;
+		//$unit_up = '';
+		//$unit_down = '';
+
+		foreach ($dates as $i => $dt)
 		{
+			/*if (!$unit_up && $i == 0)
+			{
+				$unit_up = $dt['publish_up'];
+			}
+			if (!$unit_down && $i == 0)
+			{
+				$unit_down = $dt['publish_down'];
+			}*/
 			$dt['section_id'] = $model->get('id');
+
 			$dtmodel = CoursesModelSectionDate::getInstance($dt['id']);
 			if (!$dtmodel->bind($dt))
 			{
@@ -230,6 +244,162 @@ class CoursesControllerSections extends Hubzero_Controller
 				$this->setError($dtmodel->getError());
 				continue;
 			}
+
+			if (isset($dt['asset_group']))
+			{
+				foreach ($dt['asset_group'] as $j => $ag)
+				{
+					if (!isset($ag['publish_up']) || !$ag['publish_up'])
+					{
+						$ag['publish_up'] = $dt['publish_up'];
+					}
+					/*else if ($ag['publish_up'] != $publishup)
+					{
+						$publishup = $ag['publish_up'];
+					}*/
+
+					if (!isset($ag['publish_down']) || !$ag['publish_down'])
+					{
+						$ag['publish_down'] = $dt['publish_down'];
+					}
+					/*else if ($ag['publish_down'] != $publishdown)
+					{
+						$publishdown = $ag['publish_down'];
+					}*/
+					$ag['section_id'] = $model->get('id');
+
+					$dtmodel = CoursesModelSectionDate::getInstance($ag['id']);
+					if (!$dtmodel->bind($ag))
+					{
+						$this->setError($dtmodel->getError());
+						continue;
+					}
+
+					if (!$dtmodel->store(true))
+					{
+						$this->setError($dtmodel->getError());
+						continue;
+					}
+					
+					if (isset($ag['asset_group']))
+					{
+						foreach ($ag['asset_group'] as $k => $agt)
+						{
+							if (!isset($agt['publish_up']) || !$agt['publish_up'])
+							{
+								$agt['publish_up'] = $ag['publish_up'];
+							}
+							/*else if ($agt['publish_up'] != $publishup)
+							{
+								$publishup = $agt['publish_up'];
+							}*/
+
+							if (!isset($agt['publish_down']) || !$agt['publish_down'])
+							{
+								$agt['publish_down'] = $ag['publish_down'];
+							}
+							/*else if ($ag['publish_down'] != $publishdown)
+							{
+								$publishdown = $ag['publish_down'];
+							}*/
+							$agt['section_id'] = $model->get('id');
+
+							$dtmodel = CoursesModelSectionDate::getInstance($agt['id']);
+							if (!$dtmodel->bind($agt))
+							{
+								$this->setError($dtmodel->getError());
+								continue;
+							}
+
+							if (!$dtmodel->store(true))
+							{
+								$this->setError($dtmodel->getError());
+								continue;
+							}
+							
+							if (isset($agt['asset']))
+							{
+								foreach ($agt['asset'] as $z => $a)
+								{
+									if (!isset($a['publish_up']) || !$a['publish_up'])
+									{
+										$a['publish_up'] = $agt['publish_up'];
+									}
+									/*else if ($agt['publish_up'] != $publishup)
+									{
+										$publishup = $agt['publish_up'];
+									}*/
+
+									if (!isset($a['publish_down']) || !$a['publish_down'])
+									{
+										$a['publish_down'] = $agt['publish_down'];
+									}
+									/*else if ($ag['publish_down'] != $publishdown)
+									{
+										$publishdown = $ag['publish_down'];
+									}*/
+									$a['section_id'] = $model->get('id');
+
+									$dtmodel = CoursesModelSectionDate::getInstance($a['id']);
+									if (!$dtmodel->bind($a))
+									{
+										$this->setError($dtmodel->getError());
+										continue;
+									}
+
+									if (!$dtmodel->store(true))
+									{
+										$this->setError($dtmodel->getError());
+										continue;
+									}
+									//$agt['asset'][$z] = $a;
+								}
+							}
+							//$ag['asset_group'][$k] = $agt;
+						}
+					}
+					
+					//print_r($ag);
+					//$dt['asset_group'][$j] = $ag;
+				}
+				//print_r($dt);
+				//$dates[$i] = $dt;
+			}
+
+			/*if (!$dt['publish_up'])
+			{
+				$dt['publish_up'] = $publishup;
+			}
+			else if ($dt['publish_up'] != $publishup)
+			{
+				$publishup = $dt['publish_up'];
+			}
+
+			if (!$dt['publish_down'])
+			{
+				$dt['publish_down'] = $publishdown;
+			}
+			else if ($dt['publish_down'] != $publishdown)
+			{
+				$publishdown = $dt['publish_down'];
+			}
+
+			$dt['section_id'] = $model->get('id');
+
+			$i++;
+
+			$dtmodel = CoursesModelSectionDate::getInstance($dt['id']);
+			if (!$dtmodel->bind($dt))
+			{
+				$this->setError($dtmodel->getError());
+				continue;
+			}
+
+			if (!$dtmodel->store(true))
+			{
+				$this->setError($dtmodel->getError());
+				continue;
+			}*/
 		}
 
 		if ($this->getError())

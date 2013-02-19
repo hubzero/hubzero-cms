@@ -87,7 +87,7 @@ $juser = JFactory::getUser();
 					<?php
 					ximport('Hubzero_Wiki_Editor');
 					$editor =& Hubzero_Wiki_Editor::getInstance();
-					echo $editor->display('fields[content]', 'field-content', $this->escape(stripslashes($this->model->get('content_raw'))), 'minimal no-footer', '35', '5');
+					echo $editor->display('fields[content]', 'field-content', $this->escape(stripslashes($this->model->get('content'))), 'minimal no-footer', '35', '5');
 					?>
 					<!-- <textarea name="fields[content]" id="field-content" cols="35" rows="5"><?php echo $this->escape(stripslashes($this->model->get('content'))); ?></textarea> -->
 				</label>

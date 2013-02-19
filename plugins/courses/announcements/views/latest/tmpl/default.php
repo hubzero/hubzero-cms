@@ -43,6 +43,17 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 
 $rows = $this->offering->announcements(array('limit' => $this->params->get('display_limit', 3)));
 
+$wikiconfig = array(
+	'option'   => 'com_courses',
+	'scope'    => 'courses',
+	'pagename' => $this->offering->get('alias'),
+	'pageid'   => 0,
+	'filepath' => JPATH_ROOT . DS . 'site' . DS . 'courses' . DS . $this->course->get('id'),
+	'domain'   => '' 
+);
+ximport('Hubzero_Wiki_Parser');
+$p =& Hubzero_Wiki_Parser::getInstance();
+
 if ($rows->total() > 0) 
 {
 	?>
@@ -53,7 +64,7 @@ if ($rows->total() > 0)
 		{
 			?>
 			<div class="announcement<?php if ($row->get('priority')) { echo ' high'; } ?>">
-				<?php echo stripslashes($row->get('content')); ?>
+				<?php echo $p->parse(stripslashes($row->get('content')), $wikiconfig); ?>
 				<dl class="entry-meta">
 					<dt class="entry-id"><?php echo $row->get('id'); ?></dt> 
 					<dd class="time">
