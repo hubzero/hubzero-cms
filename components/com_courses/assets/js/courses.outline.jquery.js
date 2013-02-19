@@ -48,6 +48,9 @@ HUB.CoursesOutline = {
 		var $ = this.jQuery;
 
 		$.ajaxSetup({
+			dataType: "json",
+			type: 'POST',
+			cache: false,
 			statusCode: {
 				// 200 created
 				200: function (data, textStatus, jqXHR){
@@ -193,26 +196,7 @@ HUB.CoursesOutline = {
 				// Update the asset group ordering
 				$.ajax({
 					url: '/api/courses/assetgroupreorder',
-					data: sorted,
-					dataType: "json",
-					type: 'POST',
-					cache: false,
-					statusCode: {
-						201: function(data){
-							// Report a message?
-						},
-						401: function(data){
-							// Display the error message
-							HUB.CoursesOutline.errorMessage(data.responseText);
-						},
-						404: function(data){
-							HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
-						},
-						500: function(data){
-							// Display the error message
-							HUB.CoursesOutline.errorMessage(data.responseText);
-						}
-					}
+					data: sorted
 				});
 			}
 		});
@@ -253,26 +237,7 @@ HUB.CoursesOutline = {
 				// Now actually mark the asset as deleted
 				$.ajax({
 					url: '/api/courses/assetsave',
-					data: form,
-					dataType: "json",
-					type: 'POST',
-					cache: false,
-					statusCode: {
-						201: function(data){
-							// Report a message?
-						},
-						401: function(data){
-							// Display the error message
-							HUB.CoursesOutline.errorMessage(data.responseText);
-						},
-						404: function(data){
-							HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
-						},
-						500: function(data){
-							// Display the error message
-							HUB.CoursesOutline.errorMessage(data.responseText);
-						}
-					}
+					data: form
 				});
 			},
 			update: function(){
@@ -284,26 +249,7 @@ HUB.CoursesOutline = {
 				// Update the asset group ordering
 				$.ajax({
 					url: '/api/courses/assetsreorder',
-					data: sorted+"&scope_id="+scope_id+"&scope="+scope,
-					dataType: "json",
-					type: 'POST',
-					cache: false,
-					statusCode: {
-						201: function(data){
-							// Report a message?
-						},
-						401: function(data){
-							// Display the error message
-							HUB.CoursesOutline.errorMessage(data.responseText);
-						},
-						404: function(data){
-							HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
-						},
-						500: function(data){
-							// Display the error message
-							HUB.CoursesOutline.errorMessage(data.responseText);
-						}
-					}
+					data: sorted+"&scope_id="+scope_id+"&scope="+scope
 				});
 			}
 		});
@@ -316,29 +262,26 @@ HUB.CoursesOutline = {
 		// Var to hold whether the delete tray has been locked open
 		var locked = false;
 
-		// Expand the submit button on hover (not necessary, just fun...)
-		if($.isFunction($().hoverIntent)){
-			$('.delete-tray').hoverIntent({
-				over: function(){
-					if(!locked) {
-						$('.unit').animate({'margin-left':315}, 500);
-						$('.delete-tray').animate({'margin-left':0}, 500, function() {
-							$('.delete-tray').removeClass('closed').addClass('open');
-						});
-					}
-				},
-				out: function(){
-					if(!locked) {
-						$('.unit').animate({'margin-left':30}, 500);
-						$('.delete-tray').animate({'margin-left':-285}, 500, function() {
-							$('.delete-tray').addClass('closed').removeClass('open');
-						});
-					}
-				},
-				timeout: 1000,
-				interval: 250
-			});
-		}
+		$('.delete-tray').hoverIntent({
+			over: function(){
+				if(!locked) {
+					$('.unit').animate({'margin-left':315}, 500);
+					$('.delete-tray').animate({'margin-left':0}, 500, function() {
+						$('.delete-tray').removeClass('closed').addClass('open');
+					});
+				}
+			},
+			out: function(){
+				if(!locked) {
+					$('.unit').animate({'margin-left':30}, 500);
+					$('.delete-tray').animate({'margin-left':-285}, 500, function() {
+						$('.delete-tray').addClass('closed').removeClass('open');
+					});
+				}
+			},
+			timeout: 1000,
+			interval: 250
+		});
 
 		// Make this a sortable list (even though we won't actually sort the trash), so that we can connect with the assets list
 		$('.assets-deleted').sortable({
@@ -364,9 +307,6 @@ HUB.CoursesOutline = {
 			$.ajax({
 				url: '/api/courses/assettogglepublished',
 				data: form.serializeArray(),
-				dataType: "json",
-				type: 'POST',
-				cache: false,
 				statusCode: {
 					201: function(data){
 						// Report a message?
@@ -395,17 +335,6 @@ HUB.CoursesOutline = {
 								HUB.CoursesOutline.resizeFileUploader();
 							});
 						});
-					},
-					401: function(data){
-						// Display the error message
-						HUB.CoursesOutline.errorMessage(data.responseText);
-					},
-					404: function(data){
-						HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
-					},
-					500: function(data){
-						// Display the error message
-						HUB.CoursesOutline.errorMessage(data.responseText);
 					}
 				}
 			});
@@ -465,9 +394,6 @@ HUB.CoursesOutline = {
 			$.ajax({
 				url: form.attr('action'),
 				data: form.serialize(),
-				dataType: "json",
-				type: 'POST',
-				cache: false,
 				statusCode: {
 					201: function(data){
 						parent.find('.toggle-editable:first').html(parent.find('.title-text:first').val());
@@ -475,17 +401,6 @@ HUB.CoursesOutline = {
 						// Hide inputs and show plain text
 						parent.find('.toggle-editable:first').show();
 						parent.find('.title-edit:first').hide();
-					},
-					401: function(data){
-						// Display the error message
-						HUB.CoursesOutline.errorMessage(data.responseText);
-					},
-					404: function(data){
-						HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
-					},
-					500: function(data){
-						// Display the error message
-						HUB.CoursesOutline.errorMessage(data.responseText);
 					}
 				}
 			});
@@ -513,9 +428,6 @@ HUB.CoursesOutline = {
 			$.ajax({
 				url: form.attr('action'),
 				data: form.serialize(),
-				dataType: "json",
-				type: 'POST',
-				cache: false,
 				statusCode: {
 					201: function(data){
 						if(itemClass == 'asset-group-item') {
@@ -571,17 +483,6 @@ HUB.CoursesOutline = {
 								newUnit.find('.unit-title-arrow').addClass('unit-title-arrow-active');
 							});
 						}
-					},
-					401: function(data){
-						// Display the error message
-						HUB.CoursesOutline.errorMessage(data.responseText);
-					},
-					404: function(data){
-						HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
-					},
-					500: function(data){
-						// Display the error message
-						HUB.CoursesOutline.errorMessage(data.responseText);
 					}
 				}
 			});
@@ -644,24 +545,10 @@ HUB.CoursesOutline = {
 							$.ajax({
 								url: '/api/courses/assetsave',
 								data: form.serialize()+'&url='+encodeURIComponent(distLink[1]),
-								dataType: "json",
-								type: 'POST',
-								cache: false,
 								statusCode: {
 									201: function(data){
 										// Update the link
 										assetA.attr('href', distLink[1]);
-									},
-									401: function(data){
-										// Display the error message
-										HUB.CoursesOutline.errorMessage(data.responseText);
-									},
-									404: function(data){
-										HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
-									},
-									500: function(data){
-										// Display the error message
-										HUB.CoursesOutline.errorMessage(data.responseText);
 									}
 								}
 							});
@@ -682,9 +569,6 @@ HUB.CoursesOutline = {
 				$.ajax({
 					url: form.attr('action'),
 					data: form.serialize(),
-					dataType: "json",
-					type: 'POST',
-					cache: false,
 					statusCode: {
 						201: function(data){
 							if(label.html() == 'Published') {
@@ -697,17 +581,6 @@ HUB.CoursesOutline = {
 							label.html(replacement);
 
 							HUB.CoursesOutline.showProgressIndicator();
-						},
-						401: function(data){
-							// Display the error message
-							HUB.CoursesOutline.errorMessage(data.responseText);
-						},
-						404: function(data){
-							HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
-						},
-						500: function(data){
-							// Display the error message
-							HUB.CoursesOutline.errorMessage(data.responseText);
 						}
 					}
 				});
@@ -749,9 +622,6 @@ HUB.CoursesOutline = {
 			$.ajax({
 				url: form.attr('action'),
 				data: data,
-				dataType: "json",
-				type: 'POST',
-				cache: false,
 				statusCode: {
 					// 201 created - this is returned by the standard asset upload
 					201: function(data, textStatus, jqXHR){
@@ -1061,9 +931,6 @@ HUB.CoursesOutline = {
 						$.ajax({
 							url: detailsForm.attr('action'),
 							data: detailsForm.serialize(),
-							dataType: "json",
-							type: 'POST',
-							cache: false,
 							statusCode: {
 								201: function(data){
 									$.fancybox.close();

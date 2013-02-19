@@ -30,7 +30,10 @@ jQuery(function($) {
 	});
 	// modify the box to extend from the current cursor position to its origin point
 	pages.bind('mousemove', function(evt) {
-		x = evt.pageX - basePos.left, y = evt.pageY - basePos.top;
+		// @FIXME: offset hack for iframe (i think), although could be browser-specific issue (chrome?)
+		//         offset().top not getting set correctly within iframe in chrome
+		var iframeHack = (window.location != window.parent.location) ? 20 : 0;
+		x = evt.pageX - basePos.left, y = evt.pageY - basePos.top + iframeHack;
 		if (groupBox) {
 			groupBox.css({ 'left': Math.min(x, groupOrigin.x), 'top': Math.min(y, groupOrigin.y), 'width': Math.abs(x - groupOrigin.x), 'height': Math.abs(y - groupOrigin.y)});
 		}
