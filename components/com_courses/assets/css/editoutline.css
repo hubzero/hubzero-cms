@@ -32,6 +32,7 @@
 	height: 50px;
 	border: 1px solid #AAA;
 	background: #FFF;
+	overflow: scroll;
 
 	-webkit-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
 	-moz-box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.2);
@@ -164,7 +165,7 @@
 }
 .aux-attachments {
 	position: relative;
-	margin: 5px auto 0 auto;
+	margin: 10px auto 0 auto;
 }
 .aux-attachments form {
 	display: none;
@@ -415,7 +416,7 @@ ul {
 	padding-left: 60px;
 }
 .asset-group-item:not(.add-new) {
-	min-height: 110px;
+	min-height: 115px;
 }
 .asset-group-item:before {
 	content: '\f0dc';
@@ -438,9 +439,8 @@ ul {
 	position: relative;
 	background: #FFF;
 	border: 2px dotted #AAA;
-	padding: 7px 7px 7px 27px;
+	padding: 7px;
 	margin: 10px 10px 10px 5px;
-	font-style: italic;
 	text-align: center;
 	float: right;
 
@@ -451,6 +451,9 @@ ul {
 .uploadfiles p {
 	margin: 0;
 	padding: 0;
+}
+.uploadfiles p:first-child {
+	padding: 0 0 0 20px;
 }
 .uploadfiles:before {
 	font-style: normal;

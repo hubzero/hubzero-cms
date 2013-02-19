@@ -37,7 +37,7 @@ HUB.CoursesOutline = {
 		HUB.CoursesOutline.togglePublished();
 		HUB.CoursesOutline.setupAuxAttach();
 		HUB.CoursesOutline.setupFileUploader();
-		HUB.CoursesOutline.resizeFileUploader();
+		HUB.CoursesOutline.resizeFileUploader(null, HUB.CoursesOutline.resizeDeleteTray());
 		HUB.CoursesOutline.setupErrorMessage();
 		HUB.CoursesOutline.calendar();
 		HUB.CoursesOutline.preview();
@@ -92,13 +92,17 @@ HUB.CoursesOutline = {
 		// On title click, toggle display of content
 		$('.outline-main').on('click', '.unit-title-arrow', function(){
 			if($(this).hasClass('unit-title-arrow-active')){
-				$(this).siblings('.asset-group-type-list').slideUp(500);
+				$(this).siblings('.asset-group-type-list').slideUp(500, function() {
+					HUB.CoursesOutline.resizeDeleteTray();
+				});
 				$(this).removeClass('unit-title-arrow-active');
 			} else {
 				$('.asset-group-type-list').slideUp(500);
 				$('.unit-title-arrow').removeClass('unit-title-arrow-active');
-				$(this).siblings('.asset-group-type-list').slideDown(500);
-				HUB.CoursesOutline.resizeFileUploader();
+				$(this).siblings('.asset-group-type-list').slideDown(500, function() {
+					HUB.CoursesOutline.resizeFileUploader();
+					HUB.CoursesOutline.resizeDeleteTray();
+				});
 
 				// Toggle class for arrow (active gives down arrow indicating expanded list)
 				$(this).addClass('unit-title-arrow-active');
@@ -151,11 +155,15 @@ HUB.CoursesOutline = {
 		});
 	},
 
-	resizeFileUploader: function()
+	resizeFileUploader: function(selector, callback)
 	{
 		var $ = this.jQuery;
 
-		$('.asset-group-item:not(.add-new)').each(function(){
+		// Set default
+		selector = (selector) ? selector : '.asset-group-item:not(.add-new)';
+		callback = (callback) ? callback : function(){};
+
+		$(selector).each(function(){
 			var high = $(this).height();
 				high -= $(this).children('.uploadfiles').css('margin-top').replace("px", "");
 				high -= $(this).children('.uploadfiles').css('margin-bottom').replace("px", "");
@@ -166,8 +174,14 @@ HUB.CoursesOutline = {
 			$(this).children('.uploadfiles').css('min-height', high);
 		});
 
-		// Also increase the size of the deletion tray
-		$('.delete-tray').css('height', $('.unit').height());
+		callback();
+	},
+
+	resizeDeleteTray: function()
+	{
+		var $ = this.jQuery;
+
+		$('.delete-tray').animate({'min-height': $('.unit').height()}, 500);
 	},
 
 	makeUnitsSortable: function()
@@ -423,7 +437,6 @@ HUB.CoursesOutline = {
 			var itemClass = $(this).attr('class').replace('add-new ', '');
 			var form      = $(this).find('form');
 			var text      = '';
-			var key       = itemClass.replace(/-/g, '');
 
 			$.ajax({
 				url: form.attr('action'),
@@ -444,7 +457,7 @@ HUB.CoursesOutline = {
 							newAssetGroupItem.find('.title-edit').hide();
 
 							// Set up file upload and update progress bar based on the recently added item
-							HUB.CoursesOutline.setupFileUploader();
+							HUB.CoursesOutline.attachFileUploader('#'+newAssetGroupItem.attr('id'));
 							HUB.CoursesOutline.showProgressIndicator();
 
 							// Refresh the sortable list
@@ -452,7 +465,7 @@ HUB.CoursesOutline = {
 
 							// Finally, show the new item
 							newAssetGroupItem.slideDown('fast', 'linear', function() {
-								HUB.CoursesOutline.resizeFileUploader();
+								HUB.CoursesOutline.resizeFileUploader(newAssetGroupItem);
 							});
 						}
 						else if(itemClass == 'unit-item') {
@@ -469,7 +482,7 @@ HUB.CoursesOutline = {
 							newUnit.find('.title-edit').hide();
 
 							// Set up file upload and update progress bar based on the recently added item
-							HUB.CoursesOutline.setupFileUploader();
+							HUB.CoursesOutline.attachFileUploader('#'+newUnit.attr('id'));
 							HUB.CoursesOutline.showProgressIndicator();
 
 							// Refresh the sortable list
@@ -660,8 +673,21 @@ HUB.CoursesOutline = {
 			$(this).parents('.uploadfiles').find('.fileupload').trigger('click');
 		});
 
+		HUB.CoursesOutline.attachFileUploader();
+	},
+
+	attachFileUploader: function(selector)
+	{
+		var $ = this.jQuery;
+
+		// Set a default selector
+		selector = (selector) ? selector : '.uploadfiles';
+
+		// Hide the file input
+		$(selector + ' .fileupload').hide();
+
 		// Set up file uploader on our file upload boxes
-		$('.uploadfiles').each(function(){
+		$(selector).each(function(){
 			// Initialize a few variables
 			var assetslist      = $(this).parent('.asset-group-item').find('.assets-list');
 			var form            = $(this).find('form');
@@ -735,7 +761,7 @@ HUB.CoursesOutline = {
 
 						// Reset progress bar
 						// @FIXME: need to return filename even with errors!
-						HUB.CoursesOutline.resetProgresBar(data.files[0].name, 0, function(){});
+						HUB.CoursesOutline.resetProgresBar(data.files[0].name);
 					},
 					// 404 - this could come from a method not found, or the api not being configured at all
 					404: function(data){
@@ -743,7 +769,7 @@ HUB.CoursesOutline = {
 
 						// Reset progress bar
 						// @FIXME: need to return filename even with errors!
-						HUB.CoursesOutline.resetProgresBar(data.files[0].name, 0, function(){});
+						HUB.CoursesOutline.resetProgresBar(data.files[0].name);
 					},
 					500: function(data){
 						// Display the error message
@@ -751,7 +777,7 @@ HUB.CoursesOutline = {
 
 						// Reset progress bar
 						// @FIXME: need to return filename even with errors!
-						HUB.CoursesOutline.resetProgresBar(data.files[0].name, 0, function(){});
+						HUB.CoursesOutline.resetProgresBar(data.files[0].name);
 					}
 				},
 				add: function(e, data) {
@@ -867,7 +893,8 @@ HUB.CoursesOutline = {
 	{
 		var $ = this.jQuery;
 
-		// @FIXME: come up with a better way of tracking the this div through the upload process
+		// @FIXME: come up with a better way of tracking this div through the upload process
+		//         probably should send unique id with upload request and return it back with response
 		var id = filename.replace(/[. ]/g, '_') + '_progressbar';
 		var html = '';
 			html += '<div id="' + id + '" class="uploadfiles-progress">';
@@ -883,6 +910,10 @@ HUB.CoursesOutline = {
 	resetProgresBar: function(filename, timeout, callback)
 	{
 		var $ = this.jQuery;
+
+		// Set defaults
+		callback = ($.type(callback) === 'function') ? callback : function(){};
+		timeout  = ($.type(timeout)  === 'number')   ? timeout  : 0;
 
 		var id = filename.replace(/[. ]/g, '_') + '_progressbar';
 
@@ -962,7 +993,7 @@ HUB.CoursesOutline = {
 		var $ = this.jQuery;
 
 		// Setup preview links to open in lightbox
-		$('.unit').on('click', '.asset-preview a', function(e){
+		$('.outline-main').on('click', '.asset-preview a', function(e){
 			e.preventDefault();
 
 			$.fancybox({
