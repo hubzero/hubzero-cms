@@ -283,7 +283,7 @@ class plgResourcesUsage extends JPlugin
 			return array();
 		}
 
-		$sql = "SELECT v.*, t.`datetime` 
+		$sql = "SELECT v.*, t.`processed_on` 
 				FROM #__resource_stats_tools AS t
 				LEFT JOIN #__resource_stats_tools_topvals AS v ON v.id=t.id
 				WHERE t.resid = '$id' 
@@ -408,7 +408,11 @@ class plgResourcesUsage extends JPlugin
 			$i = 0;
 			foreach ($orgs as $row)
 			{
-				$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
+				$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->processed_on));
+				if ($row->processed_on && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $row->processed_on, $regs)) 
+				{
+					$ky = $regs[1] . '/' . $regs[2] . '/01'; //mktime($regs[4], $regs[5], $regs[6], , $regs[3], );
+				}
 				if (!isset($r[$ky]))
 				{
 					$i = 0;
@@ -448,7 +452,12 @@ class plgResourcesUsage extends JPlugin
 			$i = 0;
 			foreach ($countries as $row)
 			{
-				$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
+				$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->processed_on));
+				if ($row->processed_on && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $row->processed_on, $regs)) 
+				{
+					$ky = $regs[1] . '/' . $regs[2] . '/01'; //mktime($regs[4], $regs[5], $regs[6], , $regs[3], );
+				}
+	
 				if (!isset($r[$ky]))
 				{
 					$i = 0;
@@ -479,7 +488,11 @@ class plgResourcesUsage extends JPlugin
 			$i = 0;
 			foreach ($domains as $row)
 			{
-				$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
+				$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->processed_on));
+				if ($row->processed_on && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $row->processed_on, $regs)) 
+				{
+					$ky = $regs[1] . '/' . $regs[2] . '/01'; //mktime($regs[4], $regs[5], $regs[6], , $regs[3], );
+				}
 				if (!isset($r[$ky]))
 				{
 					$i = 0;
