@@ -195,10 +195,18 @@ class Wish extends JTable
 			return false;
 		}
 
-		if (trim($this->wishlist) == '') 
+		$this->wishlist = intval($this->wishlist);
+		if (!$this->wishlist) 
 		{
 			$this->setError(JText::_('WISHLIST_ERROR_NO_LIST'));
 			return false;
+		}
+
+		if (!$this->id) 
+		{
+			$juser =& JFactory::getUser();
+			$this->proposed = date('Y-m-d H:i:s', time());  // use gmdate() ?
+			$this->proposed_by = $juser->get('id');
 		}
 
 		return true;
@@ -521,7 +529,7 @@ class Wish extends JTable
 	}
 
 	/**
-	 * Delete a record
+	 * Mark a record as deleted
 	 * 
 	 * @param      integer $wishid   Wish ID
 	 * @param      integer $withdraw Withdraw a wish
@@ -548,6 +556,63 @@ class Wish extends JTable
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * Delete a record and any associated content
+	 * 
+	 * @param      integer $oid Record ID
+	 * @return     boolean True on success
+	 */
+	public function delete($oid=null)
+	{
+		$k = $this->_tbl_key;
+		if ($oid) 
+		{
+			$this->$k = intval($oid);
+		}
+
+		// Dlete attachments
+		$this->_db->setQuery("SELECT * FROM #__wish_attachments WHERE wish=" . $this->_db->Quote($this->$k));
+		if (($attachments = $this->_db->loadObjectList()))
+		{
+			$config = JComponentHelper::getParams('com_wishlist');
+
+			$path = JPATH_ROOT . DS . trim($config->get('webpath', '/site/wishes'), DS) . DS . $oid;
+
+			jimport('joomla.filesystem.file');
+
+			foreach ($attachments as $attachment)
+			{
+				if (file_exists($path . DS . $attachment->filename) or !$attachment->filename)
+				{
+					// Attempt to delete the file
+					if (!JFile::delete($path . DS . $attachment->filename))
+					{
+						$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
+					}
+				}
+			}
+		}
+
+		// Delete the plan
+		$query = 'DELETE FROM #__wishlist_implementation WHERE wishid = ' . $this->_db->Quote($this->$k);
+		$this->_db->setQuery($query);
+		if (!$this->_db->query())
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+
+		$juser = JFactory::getUser();
+
+		// Remove all tags
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'helpers' . DS . 'tags.php');
+		$wt = new WishTags($this->_db);
+		$wt->tag_object($juser->get('id'), $oid, '', 1, 1);
+
+		// Delete the wish
+		return parent::delete($oid);
 	}
 
 	/**

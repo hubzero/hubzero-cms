@@ -200,7 +200,7 @@ function submitbutton(pressbutton)
 					<td>
 						<?php 
 						$editor = JUser::getInstance($this->row->proposed_by);
-						echo $this->escape(stripslashes($editor->get('name'))); 
+						echo ($editor) ? $this->escape(stripslashes($editor->get('name'))) : JText::_('unknown'); 
 						?>
 						<input type="hidden" name="fields[proposed_by]" id="field-proposed_by" value="<?php echo $this->row->proposed_by; ?>" />
 					</td>

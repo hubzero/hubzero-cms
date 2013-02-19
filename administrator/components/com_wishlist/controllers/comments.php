@@ -32,11 +32,12 @@
 defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Controller');
+ximport('Hubzero_Comment');
 
 /**
  * Cotnroller class for wishes
  */
-class WishlistControllerWishes extends Hubzero_Controller
+class WishlistControllerComments extends Hubzero_Controller
 {
 	/**
 	 * Display a list of entries
@@ -56,31 +57,21 @@ class WishlistControllerWishes extends Hubzero_Controller
 			'search', 
 			''
 		));
-		$this->view->filters['wishlist']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.wishlist', 
-			'wishlist', 
+		$this->view->filters['wish']         = trim($app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.wish', 
+			'wish', 
 			0,
 			'int'
 		));
-		if (!$this->view->filters['wishlist'])
+		if (!$this->view->filters['wish'])
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=lists',
-				JText::_('Missing list ID'),
+				'index.php?option=' . $this->_option,
+				JText::_('Missing wish ID'),
 				'error'
 			);
 			return;
 		}
-		$this->view->filters['filterby']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.filterby', 
-			'filterby', 
-			'all'
-		));
-		$this->view->filters['tag']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.tag', 
-			'tag', 
-			''
-		));
 		// Get sorting variables
 		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.sort', 
@@ -108,10 +99,14 @@ class WishlistControllerWishes extends Hubzero_Controller
 			'int'
 		);
 
-		$this->view->wishlist = new Wishlist($this->database);
-		$this->view->wishlist->load($this->view->filters['wishlist']);
+		//$this->view->wishlist = new Wishlist($this->database);
+		//$this->view->wishlist->load($this->view->filters['wishlist']);
 
-		$obj = new Wish($this->database);
+		$this->view->wish = new Wish($this->database);
+		$this->view->wish->load($this->view->filters['wish']);
+
+		$obj = new Hubzero_Comment($this->database);
+		$obj->getResults(array('id' => $wishid, 'category' => 'wish'));
 
 		// Get record count
 		$this->view->total = $obj->get_count($this->view->filters['wishlist'], $this->view->filters, true);
@@ -300,7 +295,7 @@ class WishlistControllerWishes extends Hubzero_Controller
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
-		$row = new Wish($this->database);
+		$row = new Hubzero_Comment($this->database);
 		if (!$row->bind($fields)) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -324,55 +319,15 @@ class WishlistControllerWishes extends Hubzero_Controller
 			return;
 		}
 
-		//$create_revision = JRequest::getInt('create_revision', 0, 'post');
-		$plan = JRequest::getVar('plan', array(), 'post');
-
-		// Initiate extended database class
-		$page = new WishlistPlan($this->database);
-		if (!$fields['id']) 
-		{
-			// New page - save it to the database
-			$old = new WishlistPlan($this->database);
-		} 
-		else 
-		{
-			// Existing page - load it up
-			$page->load($fields['id']);
-
-			// Get the revision before changes
-			$old = $page;
-		}
-
-		$page->bind($plan);
-
-		if ($plan['create_revision'] && rtrim(stripslashes($old->pagetext)) != rtrim(stripslashes($page->pagetext))) 
-		{
-			$page->version = $page->version + 1;
-			$page->id = 0;
-		}
-
-		if (!$page->store()) 
-		{
-			$this->addComponentMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
-		}
-
-		//$page->wishid     = $wishid;
-		//$page->created_by = JRequest::getInt('created_by', $juser->get('id'), 'post');
-		//$page->created    = date('Y-m-d H:i:s', time());
-		//$page->approved   = 1;
-		//$page->pagetext   = rtrim($_POST['pagetext']);
-
 		if ($redirect) 
 		{
 			// Redirect
 			$this->setRedirect(
-				'index.php?option='.$this->_option . '&controller=' . $this->_controller . '&wishlist=' . $row->wishlist,
-				JText::_('COM_WISHLIST_WISH_SAVED')
+				'index.php?option='.$this->_option . '&controller=' . $this->_controller . '&wish=' . $row->referenceid,
+				JText::_('COM_WISHLIST_COMMENT_SAVED')
 			);
 			return;
-		} 
+		}
 
 		$this->editTask($row);
 	}
@@ -388,13 +343,13 @@ class WishlistControllerWishes extends Hubzero_Controller
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$wishlist = JRequest::getInt('wishlist', 0);
+		$wish = JRequest::getInt('wish', 0);
 		$ids = JRequest::getVar('id', array());
 
 		// Do we have any IDs?
 		if (count($ids) > 0) 
 		{
-			$tbl = new Wish($this->database);
+			$tbl = new Hubzero_Comment($this->database);
 
 			// Loop through each ID
 			foreach ($ids as $id) 
@@ -411,7 +366,7 @@ class WishlistControllerWishes extends Hubzero_Controller
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&wishlist=' . $wishlist,
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&wish=' . $wish,
 			JText::_('Item(s) successfully removed')
 		);
 	}
@@ -423,11 +378,10 @@ class WishlistControllerWishes extends Hubzero_Controller
 	 */
 	public function cancelTask()
 	{
-		$wishlist = JRequest::getInt('wishlist', 0);
-
+		$wish = JRequest::getInt('wish', 0);
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&wishlist=' . $wishlist
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&wish=' . $wish
 		);
 	}
 }
