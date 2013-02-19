@@ -3764,6 +3764,16 @@ class WishlistController extends JObject
 			return;
 		}
 
+		jimport('joomla.filesystem.file');
+		$ext = strtolower(JFile::getExt($attachment->filename));
+
+		//make sure that file is acceptable type
+		if (!in_array($ext, explode(',', $this->config->get('file_ext', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz')))) 
+		{
+			JError::raiseError(404, JText::_('Unknown file type.'));
+			return;
+		}
+
 		$attachment->filename = DS . ltrim($attachment->filename, DS);
 
 		// Add JPATH_ROOT
@@ -3785,7 +3795,7 @@ class WishlistController extends JObject
 		if (!$xserver->serve()) 
 		{
 			// Should only get here on error
-			JError::raiseError(404, JText::_('COM_WISHLIST_SERVER_ERROR'));
+			JError::raiseError(500, JText::_('COM_WISHLIST_SERVER_ERROR'));
 		} 
 		else 
 		{
