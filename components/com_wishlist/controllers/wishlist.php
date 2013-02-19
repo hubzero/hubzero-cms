@@ -3636,7 +3636,7 @@ class WishlistController extends JObject
 		$ext = strtolower(JFile::getExt($file['name']));
 
 		//make sure that file is acceptable type
-		if (!in_array($ext, explode(',', $this->config->get('file_ext', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz')))) 
+		if (!in_array($ext, explode(',', $this->config->get('file_ext', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,wav,mp3,eps,ppt,pps,swf,tar,tex,gz')))) 
 		{
 			$this->setError(JText::_('ATTACHMENT: Incorrect file type.'));
 			return JText::_('ATTACHMENT: Incorrect file type.');
@@ -3768,7 +3768,7 @@ class WishlistController extends JObject
 		$ext = strtolower(JFile::getExt($attachment->filename));
 
 		//make sure that file is acceptable type
-		if (!in_array($ext, explode(',', $this->config->get('file_ext', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz')))) 
+		if (!in_array($ext, explode(',', $this->config->get('file_ext', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,wav,mp3,eps,ppt,pps,swf,tar,tex,gz')))) 
 		{
 			JError::raiseError(404, JText::_('Unknown file type.'));
 			return;
