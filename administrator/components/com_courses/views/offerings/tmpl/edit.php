@@ -112,25 +112,13 @@ function submitbutton(pressbutton)
 					<tr>
 						<td class="paramlist_key"><label for="publish_up">Offering starts:</label></th>
 						<td>
-							<?php echo JHTML::_('calendar', $this->row->get('publish_up'), 'fields[publish_up]', 'publish_up', "%Y-%m-%d", array('class' => 'inputbox')); ?>
-						</td>
-					</tr>
-					<tr>
-						<td class="paramlist_key"><label for="publish_down">Start live:</label></th>
-						<td>
-							<?php echo JHTML::_('calendar', $this->row->get('start_date'), 'fields[start_date]', 'start_date', "%Y-%m-%d", array('class' => 'inputbox')); ?>
-						</td>
-					</tr>
-					<tr>
-						<td class="paramlist_key"><label for="publish_down">Finish live:</label></th>
-						<td>
-							<?php echo JHTML::_('calendar', $this->row->get('end_date'), 'fields[end_date]', 'end_date', "%Y-%m-%d", array('class' => 'inputbox')); ?>
+							<?php echo JHTML::_('calendar', $this->row->get('publish_up'), 'fields[publish_up]', 'publish_up', "%Y-%m-%d", array('class' => 'inputbox calendar-field')); ?>
 						</td>
 					</tr>
 					<tr>
 						<td class="paramlist_key"><label for="publish_down">Offering ends:</label></th>
 						<td>
-							<?php echo JHTML::_('calendar', $this->row->get('publish_down'), 'fields[publish_down]', 'publish_down', "%Y-%m-%d", array('class' => 'inputbox')); ?>
+							<?php echo JHTML::_('calendar', $this->row->get('publish_down'), 'fields[publish_down]', 'publish_down', "%Y-%m-%d", array('class' => 'inputbox calendar-field')); ?>
 						</td>
 					</tr>
 				</tbody>

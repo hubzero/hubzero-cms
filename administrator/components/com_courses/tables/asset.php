@@ -156,6 +156,8 @@ class CoursesTableAsset extends JTable
 
 		if (!$this->id)
 		{
+			$this->state = ($this->state) ? $this->state : 1;
+
 			$juser =& JFactory::getUser();
 			$this->created = date('Y-m-d H:i:s', time());
 			$this->created_by = $juser->get('id');
@@ -179,6 +181,10 @@ class CoursesTableAsset extends JTable
 
 		$where = array();
 
+		if (isset($filters['section_id']))
+		{
+			$where[] = "sd.section_id=" . $this->_db->Quote((int) $filters['section_id']);
+		}
 		if (!empty($filters['asset_scope_id']))
 		{
 			$where[] = "cag.id=" . $this->_db->Quote((int) $filters['asset_scope_id']);
@@ -186,6 +192,10 @@ class CoursesTableAsset extends JTable
 		if (!empty($filters['asset_scope']))
 		{
 			$where[] = "caa.scope=" . $this->_db->Quote((string) $filters['asset_scope']);
+		}
+		if (isset($filters['state'])) 
+		{
+			$where[] = "ca.state=" . $this->_db->Quote($filters['state']);
 		}
 		if (!empty($filters['course_id']))
 		{
@@ -240,7 +250,7 @@ class CoursesTableAsset extends JTable
 		{
 			$filters['w'] = array();
 		}
-		$query  = "SELECT ca.*, caa.ordering, sd.publish_up, sd.publish_down";
+		$query  = "SELECT ca.*, caa.ordering, sd.publish_up, sd.publish_down, sd.section_id";
 		$query .= $this->_buildQuery($filters['w']);
 
 		if (!empty($filters['start']) && !empty($filters['limit']))
@@ -269,7 +279,7 @@ class CoursesTableAsset extends JTable
 	 */
 	public function isOrphaned()
 	{
-		if(!$this->id)
+		if (!$this->id)
 		{
 			return false;
 		}

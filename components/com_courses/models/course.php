@@ -32,20 +32,29 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'course.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
+
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
 
 /**
  * Courses model class for a course
  */
-class CoursesModelCourse extends JObject
+class CoursesModelCourse extends CoursesModelAbstract
 {
 	/**
-	 * CoursesTableCourse
+	 * JTable class name
 	 * 
-	 * @var object
+	 * @var string
 	 */
-	private $_tbl = NULL;
+	protected $_tbl_name = 'CoursesTableCourse';
+
+	/**
+	 * Object scope
+	 * 
+	 * @var string
+	 */
+	protected $_scope = 'course';
 
 	/**
 	 * CoursesModelOffering
@@ -76,20 +85,6 @@ class CoursesModelCourse extends JObject
 	private $_authorized = false;
 
 	/**
-	 * JUser
-	 * 
-	 * @var object
-	 */
-	private $_creator = NULL;
-
-	/**
-	 * JDatabase
-	 * 
-	 * @var object
-	 */
-	private $_db = NULL;
-
-	/**
 	 * List of keys that require special handling for get()
 	 *
 	 * @var array
@@ -104,22 +99,7 @@ class CoursesModelCourse extends JObject
 	 */
 	public function __construct($oid)
 	{
-		$this->_db = JFactory::getDBO();
-
-		$this->_tbl = new CoursesTableCourse($this->_db);
-
-		if (is_numeric($oid) || is_string($oid))
-		{
-			$this->_tbl->load($oid);
-		}
-		else if (is_object($oid))
-		{
-			$this->_tbl->bind($oid);
-		}
-		else if (is_array($oid))
-		{
-			$this->_tbl->bind($oid);
-		}
+		parent::__construct($oid);
 
 		$paramsClass = 'JParameter';
 		if (version_compare(JVERSION, '1.6', 'ge'))
@@ -183,51 +163,7 @@ class CoursesModelCourse extends JObject
 				}
 			}
 		}
-		if (isset($this->_tbl->$property)) 
-		{
-			return $this->_tbl->$property;
-		}
-		return $default;
-	}
-
-	/**
-	 * Modifies a property of the object, creating it if it does not already exist.
-	 *
-	 * @param     string $property The name of the property
-	 * @param     mixed  $value    The value of the property to set
-	 * @return    mixed Previous value of the property
-	 */
-	public function set($property, $value = null)
-	{
-		$previous = isset($this->_tbl->$property) ? $this->_tbl->$property : null;
-		$this->_tbl->$property = $value;
-		return $previous;
-	}
-
-	/**
-	 * Check if the course exists
-	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
-	 */
-	public function exists()
-	{
-		if ($this->get('id') && (int) $this->get('id') > 0) 
-		{
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Check if the course exists
-	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
-	 */
-	public function bind($data=null)
-	{
-		return $this->_tbl->bind($data);
+		return parent::get($property, $default);
 	}
 
 	/**
@@ -258,28 +194,6 @@ class CoursesModelCourse extends JObject
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * Get the creator of this entry
-	 * 
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire JUser object
-	 *
-	 * @return     mixed
-	 */
-	public function creator($property=null)
-	{
-		if (!isset($this->_creator) || !is_object($this->_creator))
-		{
-			$this->_creator = JUser::getInstance($this->get('created_by'));
-		}
-		if ($property && is_a($this->_creator, 'JUser'))
-		{
-			return $this->_creator->get($property);
-		}
-		return $this->_creator;
 	}
 
 	/**
@@ -682,7 +596,7 @@ class CoursesModelCourse extends JObject
 		// After SQL is done and has no errors, fire off onCourseUserEnrolledEvents 
 		// for every user added to this course
 		JPluginHelper::importPlugin('courses');
-		
+
 		$dispatcher =& JDispatcher::getInstance();
 		$dispatcher->trigger('onAfterSaveCourse', array($this, $isNew));
 
@@ -691,26 +605,13 @@ class CoursesModelCourse extends JObject
 			JPluginHelper::importPlugin('user');
 
 			//trigger the onAfterStoreCourse event
-			$dispatcher =& JDispatcher::getInstance();
+			//$dispatcher =& JDispatcher::getInstance();
 			$dispatcher->trigger('onAfterStoreCourse', array($this));
 		}
 
 		if ($isNew)
 		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'log.php');
-
-			$log = new CoursesTableLog($this->database);
-			$log->scope_id  = $this->get('id');
-			$log->scope     = 'course';
-			$log->user_id   = $juser->get('id');
-			$log->timestamp = date('Y-m-d H:i:s', time());
-			$log->action    = 'created';
-			//$log->comments  = $log;
-			$log->actor_id  = $juser->get('id');
-			if (!$log->store()) 
-			{
-				$this->setError($log->getError());
-			}
+			$this->log($this->get('id'), $this->_scope, 'create');
 		}
 
 		return true;
@@ -723,40 +624,14 @@ class CoursesModelCourse extends JObject
 	 */
 	public function delete()
 	{
-		// Get some data for the log
-		$log = json_encode($this->_tbl);
-		$scope_id = $this->get('id');
-
-		if (!$this->_tbl->delete())
-		{
-			$this->setError($this->_tbl->getError());
-			return false;
-		}
+		$value = parent::delete();
 
 		JPluginHelper::importPlugin('courses');
 
-		$dispatcher =& JDispatcher::getInstance();
-		$dispatcher->trigger('onAfterDeleteCourse', array($this));
+		//$dispatcher =& JDispatcher::getInstance();
+		JDispatcher::getInstance()->trigger('onAfterDeleteCourse', array($this));
 
-		// Log the event
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'log.php');
-
-		$juser = JFactory::getUser();
-
-		$log = new CoursesTableLog($this->_db);
-		$log->scope_id  = $scope_id;
-		$log->scope     = 'course';
-		$log->user_id   = $juser->get('id');
-		$log->timestamp = date('Y-m-d H:i:s', time());
-		$log->action    = 'deleted';
-		$log->comments  = $log;
-		$log->actor_id  = $juser->get('id');
-		if (!$log->store()) 
-		{
-			$this->setError($log->getError());
-		}
-
-		return true;
+		return $value;
 	}
 }
 

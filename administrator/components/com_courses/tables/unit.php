@@ -109,6 +109,13 @@ class CoursesTableUnit extends JTable
 	var $created_by = NULL;
 
 	/**
+	 * tinyint(2)
+	 * 
+	 * @var integer
+	 */
+	var $state = NULL;
+
+	/**
 	 * Contructor method for JTable class
 	 * 
 	 * @param  database object
@@ -138,7 +145,7 @@ class CoursesTableUnit extends JTable
 			return parent::load($oid);
 		}
 
-		$sql  = "SELECT * FROM $this->_tbl WHERE `alias`='$oid' LIMIT 1";
+		$sql  = "SELECT * FROM $this->_tbl WHERE `alias`=" . $this->_db->Quote($oid) . " LIMIT 1";
 		$this->_db->setQuery($sql);
 		if ($result = $this->_db->loadAssoc()) 
 		{
@@ -184,7 +191,9 @@ class CoursesTableUnit extends JTable
 			$this->created = date('Y-m-d H:i:s', time());
 			$this->created_by = $juser->get('id');
 
-			if(!$this->ordering)
+			$this->state = ($this->state) ? $this->state : 1;
+
+			if (!$this->ordering)
 			{
 				$this->ordering = $this->getHighestOrdering($this->offering_id);
 			}
@@ -209,6 +218,11 @@ class CoursesTableUnit extends JTable
 		if (isset($filters['offering_id']) && $filters['offering_id']) 
 		{
 			$where[] = "cu.offering_id=" . $this->_db->Quote($filters['offering_id']);
+		}
+
+		if (isset($filters['section_id']) && $filters['section_id']) 
+		{
+			$where[] = "sd.section_id=" . $this->_db->Quote($filters['section_id']);
 		}
 
 		if (isset($filters['search']) && $filters['search']) 
@@ -248,7 +262,7 @@ class CoursesTableUnit extends JTable
 	 */
 	public function find($filters=array())
 	{
-		$query  = "SELECT DISTINCT cu.*, sd.publish_up, sd.publish_down";
+		$query  = "SELECT DISTINCT cu.*, sd.publish_up, sd.publish_down, sd.section_id";
 		$query .= $this->_buildQuery($filters);
 
 		if (!empty($filters['start']) && !empty($filters['limit']))
@@ -270,7 +284,7 @@ class CoursesTableUnit extends JTable
 	 */
 	public function getHighestOrdering($offering_id)
 	{
-		$sql = "SELECT max(ordering)+1 FROM $this->_tbl WHERE offering_id=" . $this->_db->Quote(intval($offering_id));
+		$sql = "SELECT MAX(ordering)+1 FROM $this->_tbl WHERE offering_id=" . $this->_db->Quote(intval($offering_id));
 		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
 	}

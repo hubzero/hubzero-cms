@@ -219,7 +219,7 @@ class CoursesControllerOffering extends Hubzero_Controller
 
 		//$inst = JRequest::getVar('instance', '');
 		//print_r($this->course->offering()); die();
-		if (!$this->course->offering()->available())
+		if (!$this->course->offering()->isAvailable())
 		{
 			JError::raiseError(404, JText::_('COURSES_NO_COURSE_INSTANCE_FOUND'));
 			return;

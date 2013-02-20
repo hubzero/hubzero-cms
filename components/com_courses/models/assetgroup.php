@@ -32,20 +32,44 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.group.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
+
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'sectiondate.php');
 
 /**
  * Courses model class for an asset group
  */
-class CoursesModelAssetgroup extends JObject
+class CoursesModelAssetgroup extends CoursesModelAbstract
 {
+	/**
+	 * JTable class name
+	 * 
+	 * @var string
+	 */
+	protected $_tbl_name = 'CoursesTableAssetGroup';
+
+	/**
+	 * Object scope
+	 * 
+	 * @var string
+	 */
+	protected $_scope = 'asset_group';
+
 	/**
 	 * CoursesModelIterator
 	 * 
 	 * @var array
 	 */
-	public $assets = null;
+	private $_asset = null;
+
+	/**
+	 * CoursesModelAsset
+	 * 
+	 * @var array
+	 */
+	private $_assets = null;
 
 	/**
 	 * CoursesModelIterator
@@ -53,27 +77,6 @@ class CoursesModelAssetgroup extends JObject
 	 * @var array
 	 */
 	public $children = null;
-
-	/**
-	 * CoursesTableAssetGroup
-	 * 
-	 * @var object
-	 */
-	private $_tbl = NULL;
-
-	/**
-	 * JUser
-	 * 
-	 * @var object
-	 */
-	private $_creator = NULL;
-
-	/**
-	 * JDatabase
-	 * 
-	 * @var object
-	 */
-	private $_db = NULL;
 
 	/**
 	 * CoursesModelAssetGroup
@@ -98,24 +101,9 @@ class CoursesModelAssetgroup extends JObject
 	 */
 	public function __construct($oid)
 	{
+		parent::__construct($oid);
+
 		$this->children = new CoursesModelIterator(array());
-
-		$this->_db = JFactory::getDBO();
-
-		$this->_tbl = new CoursesTableAssetGroup($this->_db);
-
-		if (is_numeric($oid) || is_string($oid))
-		{
-			$this->_tbl->load($oid);
-		}
-		else if (is_object($oid))
-		{
-			$this->_tbl->bind($oid);
-		}
-		else if (is_array($oid))
-		{
-			$this->_tbl->bind($oid);
-		}
 	}
 
 	/**
@@ -128,7 +116,7 @@ class CoursesModelAssetgroup extends JObject
 	 * @param      string $scope    The page scope
 	 * @return     object WikiPage
 	 */
-	static function &getInstance($oid=null)
+	/*static function &getInstance($oid=null)
 	{
 		static $instances;
 
@@ -143,7 +131,7 @@ class CoursesModelAssetgroup extends JObject
 		}
 
 		return $instances[$oid];
-	}
+	}*/
 
 	/**
 	 * Returns a property of the object or the default value if the property is not set.
@@ -158,58 +146,17 @@ class CoursesModelAssetgroup extends JObject
 		{
 			return $this->_tbl->$property;
 		}
+		else if (in_array($property, self::$_section_keys))
+		{
+			$tbl = new CoursesTableSectionDate($this->_db);
+			$tbl->load($this->get('id'), 'asset_group', $this->get('section_id'));
+
+			$this->set('publish_up', $tbl->get('publish_up'));
+			$this->set('publish_down', $tbl->get('publish_down'));
+
+			return $tbl->get($property, $default);
+		}
 		return $default;
-	}
-
-	/**
-	 * Modifies a property of the object, creating it if it does not already exist.
-	 *
-	 * @param	string $property The name of the property
-	 * @param	mixed  $value The value of the property to set
-	 * @return	mixed Previous value of the property
-	 */
-	public function set($property, $value = null)
-	{
-		$previous = isset($this->_tbl->$property) ? $this->_tbl->$property : null;
-		$this->_tbl->$property = $value;
-		return $previous;
-	}
-
-	/**
-	 * Check if the resource exists
-	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
-	 */
-	public function exists()
-	{
-		if ($this->get('id') && (int) $this->get('id') > 0) 
-		{
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Get the creator of this entry
-	 * 
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire JUser object
-	 *
-	 * @return     mixed
-	 */
-	public function creator($property=null)
-	{
-		if (!isset($this->_creator) || !is_object($this->_creator))
-		{
-			$this->_creator = JUser::getInstance($this->get('created_by'));
-		}
-		if ($property && is_a($this->_creator, 'JUser'))
-		{
-			return $this->_creator->get($property);
-		}
-		return $this->_creator;
 	}
 
 	/**
@@ -282,21 +229,21 @@ class CoursesModelAssetgroup extends JObject
 	 */
 	public function asset($id=null)
 	{
-		if (!isset($this->asset) 
-		 || ($id !== null && (int) $this->asset->get('id') != $id))
+		if (!isset($this->_asset) 
+		 || ($id !== null && (int) $this->_asset->get('id') != (int) $id))
 		{
-			$this->asset = null;
+			$this->_asset = null;
 
 			foreach ($this->assets() as $key => $asset)
 			{
-				if ((int) $asset->get('id') == $id)
+				if ((int) $asset->get('id') == (int) $id)
 				{
-					$this->asset = $asset;
+					$this->_asset = $asset;
 					break;
 				}
 			}
 		}
-		return $this->asset;
+		return $this->_asset;
 	}
 
 	/**
@@ -308,10 +255,20 @@ class CoursesModelAssetgroup extends JObject
 	 */
 	public function assets($filters=array())
 	{
-		if (!isset($this->assets) || !is_a($this->assets, 'CoursesModelIterator'))
+		if (!isset($this->_assets) || !is_a($this->_assets, 'CoursesModelIterator'))
 		{
-			$filters['asset_scope_id'] = (int) $this->get('id');
-			$filters['asset_scope']    = 'asset_group';
+			if (!isset($filters['asset_scope_id']))
+			{
+				$filters['asset_scope_id'] = (int) $this->get('id');
+			}
+			if (!isset($filters['asset_scope']))
+			{
+				$filters['asset_scope']    = 'asset_group';
+			}
+			if (!isset($filters['section_id']))
+			{
+				$filters['section_id']     = (int) $this->get('section_id');
+			}
 
 			$tbl = new CoursesTableAsset($this->_db);
 
@@ -327,10 +284,10 @@ class CoursesModelAssetgroup extends JObject
 				$results = array();
 			}
 
-			$this->assets = new CoursesModelIterator($results);
+			$this->_assets = new CoursesModelIterator($results);
 		}
 
-		return $this->assets;
+		return $this->_assets;
 	}
 
 	/**
@@ -415,84 +372,41 @@ class CoursesModelAssetgroup extends JObject
 	}
 
 	/**
-	 * Check if the course exists
-	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
-	 */
-	public function bind($data=null)
-	{
-		return $this->_tbl->bind($data);
-	}
-
-	/**
-	 * Save data to the database
-	 *
-	 * @param     boolean $check Perform data validation before save?
-	 * @return    boolean False if errors, True on success
-	 */
-	public function store($check=true)
-	{
-		if (empty($this->_db))
-		{
-			return false;
-		}
-
-		if ($check)
-		{
-			if (!$this->_tbl->check())
-			{
-				$this->setError($this->_tbl->getError());
-				return false;
-			}
-		}
-
-		if (!$this->_tbl->store())
-		{
-			$this->setError($this->_tbl->getError());
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
 	 * Delete an entry and associated data
 	 * 
 	 * @return     boolean True on success, false on error
 	 */
 	public function delete()
 	{
-		// Get some data for the log
-		$log = json_encode($this->_tbl);
-
-		$scope_id = $this->get('id');
-
-		if (!$this->_tbl->delete())
+		// Remove all children
+		foreach ($this->children() as $child)
 		{
-			$this->setError($this->_tbl->getError());
-			return false;
+			if (!$child->delete())
+			{
+				$this->setError($child->getError());
+			}
+		}
+		// Remove all assets
+		foreach ($this->assets() as $asset)
+		{
+			if (!$asset->delete())
+			{
+				$this->setError($asset->getError());
+			}
 		}
 
-		// Log the event
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'log.php');
-
-		$juser = JFactory::getUser();
-
-		$log = new CoursesTableLog($this->_db);
-		$log->scope_id  = $scope_id;
-		$log->scope     = 'asset_group';
-		$log->user_id   = $juser->get('id');
-		$log->timestamp = date('Y-m-d H:i:s', time());
-		$log->action    = 'deleted';
-		$log->comments  = $log;
-		$log->actor_id  = $juser->get('id');
-		if (!$log->store()) 
+		$dt = new CoursesTableSectionDate($this->_db);
+		$dt->load($this->get('id'), $this->_scope, $this->get('section_id'));
+		if ($dt->id)
 		{
-			$this->setError($log->getError());
+			if (!$dt->delete())
+			{
+				$this->setError($dt->getError());
+			}
 		}
 
-		return true;
+		// Remove this record from the database and log the event
+		return parent::delete();
 	}
 }
 

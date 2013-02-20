@@ -32,39 +32,33 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
 
 /**
  * Courses model class for a course
  */
-class CoursesModelAsset extends JObject
+class CoursesModelAsset extends CoursesModelAbstract
 {
 	/**
-	 * CoursesTableAsset
+	 * JTable class name
 	 * 
-	 * @var object
+	 * @var string
 	 */
-	public $_tbl = NULL;
+	protected $_tbl_name = 'CoursesTableAsset';
 
 	/**
-	 * CoursesTableInstance
+	 * Object scope
 	 * 
-	 * @var object
+	 * @var string
 	 */
-	private $_creator = NULL;
-
-	/**
-	 * JDatabase
-	 * 
-	 * @var object
-	 */
-	private $_db = NULL;
+	protected $_scope = 'asset';
 
 	/**
 	 * Container for properties
 	 * 
 	 * @var array
 	 */
-	public $params = null;
+	protected $_params = null;
 
 	/**
 	 * Constructor
@@ -75,24 +69,9 @@ class CoursesModelAsset extends JObject
 	 */
 	public function __construct($oid)
 	{
-		$this->_db = JFactory::getDBO();
+		parent::__construct($oid);
 
-		$this->_tbl = new CoursesTableAsset($this->_db);
-
-		if (is_numeric($oid) || is_string($oid))
-		{
-			$this->_tbl->load($oid);
-		}
-		else if (is_object($oid))
-		{
-			$this->_tbl->bind($oid);
-		}
-		else if (is_array($oid))
-		{
-			$this->_tbl->bind($oid);
-		}
-
-		$this->params = JComponentHelper::getParams('com_courses');
+		$this->_params = JComponentHelper::getParams('com_courses');
 	}
 
 	/**
@@ -105,7 +84,7 @@ class CoursesModelAsset extends JObject
 	 * @param      string $scope    The page scope
 	 * @return     object WikiPage
 	 */
-	static function &getInstance($oid=null)
+	/*static function &getInstance($oid=null)
 	{
 		static $instances;
 
@@ -120,7 +99,7 @@ class CoursesModelAsset extends JObject
 		}
 
 		return $instances[$oid];
-	}
+	}*/
 
 	/**
 	 * Returns a property of the object or the default value if the property is not set.
@@ -135,36 +114,17 @@ class CoursesModelAsset extends JObject
 		{
 			return $this->_tbl->$property;
 		}
-		return $default;
-	}
-
-	/**
-	 * Modifies a property of the object, creating it if it does not already exist.
-	 *
-	 * @param	string $property The name of the property
-	 * @param	mixed  $value The value of the property to set
-	 * @return	mixed Previous value of the property
-	 */
-	public function set($property, $value = null)
-	{
-		$previous = isset($this->_tbl->$property) ? $this->_tbl->$property : null;
-		$this->_tbl->$property = $value;
-		return $previous;
-	}
-
-	/**
-	 * Check if the resource exists
-	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
-	 */
-	public function exists()
-	{
-		if ($this->get('id') && (int) $this->get('id') > 0) 
+		else if (in_array($property, self::$_section_keys))
 		{
-			return true;
+			$tbl = new CoursesTableSectionDate($this->_db);
+			$tbl->load($this->get('id'), 'asset', $this->get('section_id'));
+
+			$this->set('publish_up', $tbl->get('publish_up'));
+			$this->set('publish_down', $tbl->get('publish_down'));
+
+			return $tbl->get($property, $default);
 		}
-		return false;
+		return $default;
 	}
 
 	/**
@@ -176,20 +136,15 @@ class CoursesModelAsset extends JObject
 	public function path($course=0, $withUrl=true)
 	{
 		// /site/courses/{course ID}/{asset ID}/{asset file}
-		$path = DS . trim($this->params->get('uploadpath', '/site/courses'), DS) . DS . $course . DS . $this->get('id');
+		$path = DS . trim($this->_params->get('uploadpath', '/site/courses'), DS) . DS . $course . DS . $this->get('id');
 		if ($withUrl)
 		{
 			$path .= DS . ltrim($this->get('url'), DS);
 		}
 
 		// Override path for exam type assets
-		if($this->get('type') == 'exam')
-		{
-			$path = $this->get('url');
-		}
-
 		// Override path for url/link type assets
-		if($this->get('type') == 'link' || $this->get('type') == 'url')
+		if (in_array(strtolower($this->get('type')), array('exam', 'link', 'url')))
 		{
 			$path = $this->get('url');
 		}
@@ -207,58 +162,16 @@ class CoursesModelAsset extends JObject
 	 */
 	public function delete()
 	{
-		// Get some data for the log
-		$log = json_encode($this->_tbl);
-
-		$scope_id = $this->get('id');
-
-		if (!$this->_tbl->delete())
+		// Remove dates
+		$dt = new CoursesTableSectionDate($this->_db);
+		$dt->load($this->get('id'), $this->_scope, $this->get('section_id'));
+		if (!$dt->delete())
 		{
-			$this->setError($this->_tbl->getError());
-			return false;
+			$this->setError($dt->getError());
 		}
 
-		// Log the event
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'log.php');
-
-		$juser = JFactory::getUser();
-
-		$log = new CoursesTableLog($this->_db);
-		$log->scope_id  = $scope_id;
-		$log->scope     = 'asset';
-		$log->user_id   = $juser->get('id');
-		$log->timestamp = date('Y-m-d H:i:s', time());
-		$log->action    = 'deleted';
-		$log->comments  = $log;
-		$log->actor_id  = $juser->get('id');
-		if (!$log->store()) 
-		{
-			$this->setError($log->getError());
-		}
-
-		return true;
-	}
-
-	/**
-	 * Get the creator of this entry
-	 * 
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire JUser object
-	 *
-	 * @return     mixed
-	 */
-	public function creator($property=null)
-	{
-		if (!isset($this->_creator) || !is_object($this->_creator))
-		{
-			$this->_creator = JUser::getInstance($this->get('created_by'));
-		}
-		if ($property && is_a($this->_creator, 'JUser'))
-		{
-			return $this->_creator->get($property);
-		}
-		return $this->_creator;
+		// Remove this record from the database and log the event
+		return parent::delete();
 	}
 
 	/**
@@ -269,7 +182,7 @@ class CoursesModelAsset extends JObject
 	 */
 	public function access($action='view')
 	{
-		return $this->params->get('access-' . strtolower($action) . '-offering');
+		return $this->_params->get('access-' . strtolower($action) . '-offering');
 	}
 
 	/**

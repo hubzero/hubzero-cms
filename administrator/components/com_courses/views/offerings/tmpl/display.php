@@ -97,7 +97,6 @@ function submitbutton(pressbutton)
 				<th scope="col"><?php echo JText::_('ID'); ?></th>
 				<th scope="col"><?php echo JText::_('Title'); ?></th>
 				<th scope="col"><?php echo JText::_('Starts'); ?></th>
-				<!-- <th scope="col"><?php echo JText::_('Live'); ?></th> -->
 				<th scope="col"><?php echo JText::_('Ends'); ?></th>
 				<th scope="col"><?php echo JText::_('Managers'); ?></th>
 				<th scope="col"><?php echo JText::_('Sections'); ?></th>
@@ -145,11 +144,6 @@ foreach ($this->rows as $row)
 				<td>
 					<?php echo JHTML::_('date', $row->get('publish_up'), $dateFormat, $tz); ?>
 				</td>
-				<!-- <td>
-					<?php echo JHTML::_('date', $row->get('start_date'), $dateFormat, $tz); ?>
-					 - 
-					<?php echo JHTML::_('date', $row->get('end_date'), $dateFormat, $tz); ?>
-				</td> -->
 				<td>
 					<?php echo ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('publish_down'), $dateFormat, $tz) : JText::_('(never)'); ?>
 				</td>

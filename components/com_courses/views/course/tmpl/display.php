@@ -93,7 +93,7 @@ if ($this->course->offerings())
 					<?php echo $this->escape(stripslashes($offering->get('end_date'))); ?>
 				</td>
 				<td>
-					<?php if ($offering->available()) { ?>
+					<?php if ($offering->isAvailable()) { ?>
 					accepting
 					<?php } else { ?>
 					closed

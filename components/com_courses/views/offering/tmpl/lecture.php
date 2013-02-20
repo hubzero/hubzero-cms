@@ -162,7 +162,7 @@ if (!$this->course->offering()->access('view')) { ?>
 					// Get the alias of the next unit
 					$next = $this->course->offering()->units()->fetch('next');
 					// Make sure it's published
-					if ($next->available())
+					if ($next->isAvailable())
 					{
 						$uAlias = $next->get('alias');
 						// Does the next unit have any assetgroups?

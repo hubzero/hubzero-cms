@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Courses model class for a course
  */
-class CoursesModelIterator implements Iterator
+class CoursesModelIterator implements Countable, Iterator
 {
 	/**
 	 * Container for properties
@@ -192,6 +192,16 @@ class CoursesModelIterator implements Iterator
 	 * @return     integer
 	 */
 	public function total() 
+	{
+		return $this->_total;
+	}
+
+	/**
+	 * Return the array count
+	 *
+	 * @return     integer
+	 */
+	public function count() 
 	{
 		return $this->_total;
 	}

@@ -32,6 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'offering.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'section.php');
@@ -45,8 +46,22 @@ require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_c
 /**
  * Courses model class for a course
  */
-class CoursesModelOffering extends JObject
+class CoursesModelOffering extends CoursesModelAbstract
 {
+	/**
+	 * JTable class name
+	 * 
+	 * @var string
+	 */
+	protected $_tbl_name = 'CoursesTableOffering';
+
+	/**
+	 * Object scope
+	 * 
+	 * @var string
+	 */
+	protected $_scope = 'offering';
+
 	/**
 	 * Flag for if authorization checks have been run
 	 * 
@@ -59,7 +74,7 @@ class CoursesModelOffering extends JObject
 	 * 
 	 * @var object
 	 */
-	private $_tbl = NULL;
+	//private $_tbl = NULL;
 
 	/**
 	 * CoursesModelIterator
@@ -136,14 +151,14 @@ class CoursesModelOffering extends JObject
 	 * 
 	 * @var object
 	 */
-	private $_creator = NULL;
+	//private $_creator = NULL;
 
 	/**
 	 * JDatabase
 	 * 
 	 * @var object
 	 */
-	private $_db = NULL;
+	//private $_db = NULL;
 
 	/**
 	 * JParameter
@@ -242,159 +257,6 @@ class CoursesModelOffering extends JObject
 	}
 
 	/**
-	 * Returns a property of the object or the default value if the property is not set.
-	 *
-	 * @access	public
-	 * @param	string $property The name of the property
-	 * @param	mixed  $default The default value
-	 * @return	mixed The value of the property
-	 * @see		getProperties()
-	 * @since	1.5
- 	 */
-	public function get($property, $default=null)
-	{
-		if (isset($this->_tbl->$property)) 
-		{
-			return $this->_tbl->$property;
-		}
-		return $default;
-	}
-
-	/**
-	 * Modifies a property of the object, creating it if it does not already exist.
-	 *
-	 * @access	public
-	 * @param	string $property The name of the property
-	 * @param	mixed  $value The value of the property to set
-	 * @return	mixed Previous value of the property
-	 * @see		setProperties()
-	 * @since	1.5
-	 */
-	public function set($property, $value = null)
-	{
-		$previous = isset($this->_tbl->$property) ? $this->_tbl->$property : null;
-		$this->_tbl->$property = $value;
-		return $previous;
-	}
-
-	/**
-	 * Check if the resource exists
-	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
-	 */
-	public function exists()
-	{
-		if ($this->get('id') &&  (int) $this->get('id') > 0) 
-		{
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Check if the course exists
-	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
-	 */
-	public function bind($data=null)
-	{
-		return $this->_tbl->bind($data);
-	}
-
-	/**
-	 * Get the creator of this entry
-	 * 
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire JUser object
-	 *
-	 * @return     mixed
-	 */
-	public function creator($property=null)
-	{
-		if (!isset($this->_creator) || !is_object($this->_creator))
-		{
-			$this->_creator = JUser::getInstance($this->get('created_by'));
-		}
-		if ($property && is_a($this->_creator, 'JUser'))
-		{
-			return $this->_creator->get($property);
-		}
-		return $this->_creator;
-	}
-
-	/**
-	 * Has the offering started?
-	 * 
-	 * @return     boolean
-	 */
-	public function started()
-	{
-		if (!$this->exists()) 
-		{
-			return false;
-		}
-
-		$now = date('Y-m-d H:i:s', time());
-
-		if ($this->get('start_date') 
-		 && $this->get('start_date') != '0000-00-00 00:00:00' 
-		 && $this->get('start_date') > $now) 
-		{
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Has the offering ended?
-	 * 
-	 * @return     boolean
-	 */
-	public function ended()
-	{
-		if (!$this->exists()) 
-		{
-			return true;
-		}
-
-		$now = date('Y-m-d H:i:s', time());
-
-		if ($this->get('end_date') 
-		 && $this->get('end_date') != '0000-00-00 00:00:00' 
-		 && $this->get('end_date') <= $now) 
-		{
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Check if the offering is available
-	 * 
-	 * @return     boolean
-	 */
-	public function available()
-	{
-		if (!$this->exists())
-		{
-			return false;
-		}
-
-		// Make sure the resource is published and standalone
-		if ($this->started() && !$this->ended()) 
-		{
-			return true;
-		}
-
-		return false;
-	}
-
-/**
 	 * Method to get/set the current unit
 	 *
 	 * @param     mixed $id ID or alias of specific unit
@@ -518,6 +380,10 @@ class CoursesModelOffering extends JObject
 		if (!isset($filters['offering_id']))
 		{
 			$filters['offering_id'] = (int) $this->get('id');
+		}
+		if (!isset($filters['section_id']))
+		{
+			$filters['section_id'] = (int) $this->section()->get('id');
 		}
 
 		if (isset($filters['count']) && $filters['count'])
@@ -1037,137 +903,8 @@ class CoursesModelOffering extends JObject
 			}
 		}
 
-		$affected = 0;
+		//$affected = 0;
 
-		/*$affected = $this->_db->getAffectedRows();
-
-		foreach (self::$_list_keys as $property)
-		{
-			$query = '';
-
-			$aux_table = "#__courses_" . $property;
-
-			$list = $this->get($property);
-
-			if (!is_null($list) && !is_array($list))
-			{
-				$list = array($list);
-			}
-
-			$ulist = null;
-			$tlist = null;
-
-			foreach ($list as $value)
-			{
-				if (!is_null($ulist))
-				{
-					$ulist .= ',';
-					$tlist .= ',';
-				}
-
-				$ulist .= $this->_db->Quote($value);
-				$tlist .= '(' . $this->_db->Quote($this->get('id')) . ',' . $this->_db->Quote($value) . ')';
-			}
-
-			// @FIXME: I don't have a better solution yet. But the next refactoring of this class
-			// should eliminate the ability to read the entire member table due to problems with
-			// scale on a large (thousands of members) courses. The add function should track the members
-			// being added to a course, but would need to be verified to handle adding members
-			// already in course. *njk*
-
-			// @FIXME: Not neat, but because all course membership is resaved every time even for single additions
-			// there is no nice way to detect only *new* additions without this check. I don't want to 
-			// fire off an 'onUserCourseEnrollment' event for users unless they are really being enrolled. *drb*
-
-			if (in_array($property, array('managers')))
-			{
-				$query = "SELECT user_id FROM #__courses_$property WHERE course_id=" . $this->get('id');
-				$this->_db->setQuery($query);
-
-				// compile current list of members in this course
-				$aExistingUserMembership = array();
-
-				if (($results = $this->_db->loadAssoc()))
-				{
-					foreach ($results as $uid)
-					{
-						$aExistingUserMembership[] = $uid;
-					}
-				}
-
-				// see who is missing
-				$aNewUserCourseEnrollments = array_diff($list, $aExistingUserMembership);
-			}
-
-			$tbl = new CoursesTableMember($this->_db);
-			$aux_table = $tbl->getTableName();
-
-			$ulist = null;
-			$tlist = null;
-
-			foreach ($this->members() as $member)
-			{
-				if (!is_null($ulist))
-				{
-					$ulist .= ',';
-					$tlist .= ',';
-				}
-
-				$ulist .= $this->_db->Quote($member->get('user_id'));
-				$tlist .= '(' . $this->_db->Quote($this->get('id')) . ',' . $this->_db->Quote($member->get('user_id'))  . ',' . $this->_db->Quote($member->get('role_id')) . ',' . $this->_db->Quote($member->get('permissions')->toString()) . ')';
-			}
-
-			if (count($this->members()) > 0)
-			{
-				$query = "REPLACE INTO $aux_table (offering_id, user_id, role_id, permissions) VALUES $tlist;";
-
-				$this->_db->setQuery($query);
-
-				if ($this->_db->query())
-				{
-					$affected += $this->_db->getAffectedRows();
-				}
-			}
-
-			if (count($this->members()) == 0)
-			{
-				$query = "DELETE FROM $aux_table WHERE offering_id=" . $this->_db->Quote($this->get('id')) . ";";
-			}
-			else
-			{
-				$query = "DELETE FROM $aux_table WHERE offering_id=" . $this->_db->Quote($this->get('id')) . " AND user_id NOT IN (" . $ulist . ");";
-			}
-
-			if ($query)
-			{
-				$this->_db->setQuery($query);
-
-				if ($this->_db->query())
-				{
-					$affected += $this->_db->getAffectedRows();
-				}
-			}
-		}*/
-
-		/*if (($affected = $this->_db->getAffectedRows()))
-		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'log.php');
-
-			$juser = JFactory::getUser();
-
-			$log = new CoursesTableLog($this->_db);
-			$log->scope_id  = $this->get('id');
-			$log->scope     = 'offering';
-			$log->user_id   = $juser->get('id');
-			$log->timestamp = date('Y-m-d H:i:s', time());
-			$log->action    = (!$exists) ? 'created' : 'updated';
-			//$log->comments  = $log;
-			$log->actor_id  = $juser->get('id');
-			if (!$log->store()) 
-			{
-				$this->setError($log->getError());
-			}
-		}*/
 		JPluginHelper::importPlugin('courses');
 
 		$dispatcher =& JDispatcher::getInstance();
@@ -1202,7 +939,7 @@ class CoursesModelOffering extends JObject
 	public function delete()
 	{
 		// Get some data for the log
-		$log = json_encode($this->_tbl);
+		/*$log = json_encode($this->_tbl);
 		$scope_id = $this->get('id');
 
 		if (!$this->_tbl->delete())
@@ -1234,7 +971,15 @@ class CoursesModelOffering extends JObject
 			$this->setError($log->getError());
 		}
 
-		return true;
+		return true;*/
+		$value = parent::delete();
+		
+		JPluginHelper::importPlugin('courses');
+
+		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher->trigger('onAfterDeleteOffering', array($this));
+		
+		return $value;
 	}
 
 	/**

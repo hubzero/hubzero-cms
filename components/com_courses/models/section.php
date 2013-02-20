@@ -32,27 +32,36 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'section.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
+
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'sectiondate.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'member.php');
 
 /**
  * Courses model class for a course
  */
-class CoursesModelSection extends JObject
+class CoursesModelSection extends CoursesModelAbstract
 {
+	/**
+	 * JTable class name
+	 * 
+	 * @var string
+	 */
+	protected $_tbl_name = 'CoursesTableSection';
+
+	/**
+	 * Object scope
+	 * 
+	 * @var string
+	 */
+	protected $_scope = 'section';
+
 	/**
 	 * Flag for if authorization checks have been run
 	 * 
 	 * @var mixed
 	 */
 	private $_authorized = false;
-
-	/**
-	 * CoursesTableInstance
-	 * 
-	 * @var object
-	 */
-	private $_tbl = NULL;
 
 	/**
 	 * JUser
@@ -74,20 +83,6 @@ class CoursesModelSection extends JObject
 	 * @var object
 	 */
 	private $_member = NULL;
-
-	/**
-	 * JUser
-	 * 
-	 * @var object
-	 */
-	private $_creator = NULL;
-
-	/**
-	 * JDatabase
-	 * 
-	 * @var object
-	 */
-	private $_db = NULL;
 
 	/**
 	 * Constructor
@@ -113,8 +108,6 @@ class CoursesModelSection extends JObject
 		{
 			$this->_tbl->bind($oid);
 		}
-
-		//$this->params = JComponentHelper::getParams('com_courses');
 	}
 
 	/**
@@ -159,97 +152,13 @@ class CoursesModelSection extends JObject
 	}
 
 	/**
-	 * Returns a property of the object or the default value if the property is not set.
-	 *
-	 * @access	public
-	 * @param	string $property The name of the property
-	 * @param	mixed  $default The default value
-	 * @return	mixed The value of the property
-	 * @see		getProperties()
-	 * @since	1.5
- 	 */
-	public function get($property, $default=null)
-	{
-		if (isset($this->_tbl->$property)) 
-		{
-			return $this->_tbl->$property;
-		}
-		return $default;
-	}
-
-	/**
-	 * Modifies a property of the object, creating it if it does not already exist.
-	 *
-	 * @access	public
-	 * @param	string $property The name of the property
-	 * @param	mixed  $value The value of the property to set
-	 * @return	mixed Previous value of the property
-	 * @see		setProperties()
-	 * @since	1.5
-	 */
-	public function set($property, $value = null)
-	{
-		$previous = isset($this->_tbl->$property) ? $this->_tbl->$property : null;
-		$this->_tbl->$property = $value;
-		return $previous;
-	}
-
-	/**
-	 * Check if the resource exists
-	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
-	 */
-	public function exists()
-	{
-		if ($this->get('id') &&  (int) $this->get('id') > 0) 
-		{
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Check if the course exists
-	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
-	 */
-	public function bind($data=null)
-	{
-		return $this->_tbl->bind($data);
-	}
-
-	/**
-	 * Get the creator of this entry
-	 * 
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire JUser object
-	 *
-	 * @return     mixed
-	 */
-	public function creator($property=null)
-	{
-		if (!isset($this->_creator) || !is_object($this->_creator))
-		{
-			$this->_creator = JUser::getInstance($this->get('created_by'));
-		}
-		if ($property && is_a($this->_creator, 'JUser'))
-		{
-			return $this->_creator->get($property);
-		}
-		return $this->_creator;
-	}
-
-	/**
 	 * Has the offering started?
 	 * 
 	 * @return     boolean
 	 */
 	public function started()
 	{
-		if (!$this->exists()) 
+		if (!$this->exists() || !$this->isPublished()) 
 		{
 			return false;
 		}
@@ -273,7 +182,7 @@ class CoursesModelSection extends JObject
 	 */
 	public function ended()
 	{
-		if (!$this->exists()) 
+		if (!$this->exists() || !$this->isPublished()) 
 		{
 			return true;
 		}
@@ -283,27 +192,6 @@ class CoursesModelSection extends JObject
 		if ($this->get('end_date') 
 		 && $this->get('end_date') != '0000-00-00 00:00:00' 
 		 && $this->get('end_date') <= $now) 
-		{
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Check if the offering is available
-	 * 
-	 * @return     boolean
-	 */
-	public function available()
-	{
-		if (!$this->exists())
-		{
-			return false;
-		}
-
-		// Make sure the resource is published and standalone
-		if ($this->started() && !$this->ended()) 
 		{
 			return true;
 		}
@@ -432,7 +320,7 @@ class CoursesModelSection extends JObject
 		if (!isset($this->_date) 
 		 || ((int) $this->_date->get('scope_id') != (int) $scope_id || (string) $this->_date->get('scope') != (string) $scope))
 		{
-			$this->_date = new CoursesModelSectionDate();
+			$this->_date = new CoursesModelSectionDate(null);
 
 			foreach ($this->dates() as $dt)
 			{
@@ -693,52 +581,21 @@ class CoursesModelSection extends JObject
 	 */
 	public function store($check=true)
 	{
-		if (empty($this->_db))
-		{
-			return false;
-		}
-
 		$isNew = ($this->get('id') ? false : true);
 
-		if ($check)
-		{
-			if (!$this->_tbl->check())
-			{
-				$this->setError($this->_tbl->getError());
-				return false;
-			}
-		}
-
-		if (!$this->_tbl->store())
-		{
-			$this->setError($this->_tbl->getError());
-			return false;
-		}
+		$value = parent::store($check);
 
 		JPluginHelper::importPlugin('courses');
 
-		$dispatcher =& JDispatcher::getInstance();
-		$dispatcher->trigger('onAfterSaveSection', array($this, $isNew));
+		//$dispatcher =& JDispatcher::getInstance();
+		JDispatcher::getInstance()->trigger('onAfterSaveSection', array($this, $isNew));
 
 		if ($isNew)
 		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'log.php');
-
-			$log = new CoursesTableLog($this->database);
-			$log->scope_id  = $this->get('id');
-			$log->scope     = 'section';
-			$log->user_id   = $juser->get('id');
-			$log->timestamp = date('Y-m-d H:i:s', time());
-			$log->action    = 'created';
-			//$log->comments  = $log;
-			$log->actor_id  = $juser->get('id');
-			if (!$log->store()) 
-			{
-				$this->setError($log->getError());
-			}
+			$this->log($this->get('id'), $this->_scope, 'create');
 		}
 
-		return true;
+		return $value;
 	}
 
 	/**
@@ -750,7 +607,7 @@ class CoursesModelSection extends JObject
 	public function delete()
 	{
 		// Remove associated date data
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'section.date.php');
+		//require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'section.date.php');
 
 		$sd = new CoursesTableSectionDate($this->_db);
 		if (!$sd->deleteBySection($this->get('id')))
@@ -760,7 +617,7 @@ class CoursesModelSection extends JObject
 		}
 
 		// Remove associated member data
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.php');
+		//require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.php');
 
 		$sm = new CoursesTableMember($this->_db);
 		if (!$sm->deleteBySection($this->get('id')))
@@ -769,42 +626,14 @@ class CoursesModelSection extends JObject
 			return false;
 		}
 
-		// Get some data for the log
-		$log = json_encode($this->_tbl);
-
-		$scope_id = $this->get('id');
-
-		// Remove section
-		if (!$this->_tbl->delete())
-		{
-			$this->setError($this->_tbl->getError());
-			return false;
-		}
+		$value = parent::delete();
 
 		JPluginHelper::importPlugin('courses');
 
-		$dispatcher =& JDispatcher::getInstance();
-		$dispatcher->trigger('onAfterDeleteSection', array($this));
+		//$dispatcher =& JDispatcher::getInstance();
+		JDispatcher::getInstance()->trigger('onAfterDeleteSection', array($this));
 
-		// Log the event
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'log.php');
-
-		$juser = JFactory::getUser();
-
-		$log = new CoursesTableLog($this->_db);
-		$log->scope_id  = $scope_id;
-		$log->scope     = 'section';
-		$log->user_id   = $juser->get('id');
-		$log->timestamp = date('Y-m-d H:i:s', time());
-		$log->action    = 'deleted';
-		$log->comments  = $log;
-		$log->actor_id  = $juser->get('id');
-		if (!$log->store()) 
-		{
-			$this->setError($log->getError());
-		}
-
-		return true;
+		return $value;
 	}
 }
 

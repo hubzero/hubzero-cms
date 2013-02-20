@@ -102,6 +102,13 @@ class CoursesTableAssetGroup extends JTable
 	var $created_by = NULL;
 
 	/**
+	 * tinyint(2)
+	 * 
+	 * @var integer
+	 */
+	var $state = NULL;
+
+	/**
 	 * Contructor method for JTable class
 	 * 
 	 * @param  database object
@@ -144,6 +151,8 @@ class CoursesTableAssetGroup extends JTable
 			$high = $this->getHighestOrder($this->unit_id, $this->parent);
 			$this->ordering = ($high + 1);
 
+			$this->state = ($this->state) ? $this->state : 1;
+
 			$juser =& JFactory::getUser();
 			$this->created = date('Y-m-d H:i:s', time());
 			$this->created_by = $juser->get('id');
@@ -179,6 +188,10 @@ class CoursesTableAssetGroup extends JTable
 
 		$where = array();
 
+		if (isset($filters['section_id']) && $filters['section_id']) 
+		{
+			$where[] = "sd.section_id=" . $this->_db->Quote($filters['section_id']);
+		}
 		if (isset($filters['unit_id']) && $filters['unit_id']) 
 		{
 			$where[] = "cag.unit_id=" . $this->_db->Quote($filters['unit_id']);
@@ -190,6 +203,10 @@ class CoursesTableAssetGroup extends JTable
 		if (isset($filters['alias']) && $filters['alias']) 
 		{
 			$where[] = "cag.alias=" . $this->_db->Quote($filters['alias']);
+		}
+		if (isset($filters['state'])) 
+		{
+			$where[] = "cag.state=" . $this->_db->Quote($filters['state']);
 		}
 		if (isset($filters['search']) && $filters['search']) 
 		{
@@ -228,7 +245,7 @@ class CoursesTableAssetGroup extends JTable
 	 */
 	public function find($filters=array())
 	{
-		$query  = "SELECT cag.*, sd.publish_up, sd.publish_down";
+		$query  = "SELECT cag.*, sd.publish_up, sd.publish_down, sd.section_id";
 		$query .= $this->_buildQuery($filters['w']);
 
 		/*if (!empty($filters['w']))
@@ -256,29 +273,40 @@ class CoursesTableAssetGroup extends JTable
 	}
 
 	/**
-	 * Get an array of unique course asset group types
+	 * Delete a record and any associated content
 	 * 
-	 * @return array of unique asset group types
+	 * @param      integer $oid Record ID
+	 * @return     boolean True on success
 	 */
-	/*public function getUniqueCourseAssetGroupTypes($filters=array())
+	/*public function delete($oid=null)
 	{
-		$query  = "SELECT DISTINCT(cag.type)";
-		$query .= $this->buildquery();
-
-		if (!empty($filters['w']))
+		$k = $this->_tbl_key;
+		if ($oid) 
 		{
-			$first = true;
+			$this->$k = intval($oid);
+		}
 
-			if (!empty($filters['w']['unit_id']))
+		// Dlete attachments
+		$ids = array();
+		$this->_db->setQuery("SELECT * FROM {$this->_tbl} WHERE parent=" . $this->_db->Quote($this->$k));
+		if (($groups = $this->_db->loadObjectList()))
+		{
+			foreach ($groups as $group)
 			{
-				$query .= ($first) ? ' WHERE' : ' AND';
-				$query .= " cu.id = " . $this->_db->Quote($filters['w']['unit_id']);
-
-				$first = false;
+				$ids[] = $group->get('id');
 			}
 		}
 
+		// Delete sub groups
+		$query = "DELETE FROM #__courses_offering_section_dates WHERE scope_id = " . $this->_db->Quote($this->$k) . " ANd scope=" . $this->_db->Quote('asset_group');
 		$this->_db->setQuery($query);
-		return $this->_db->loadAssocList();
+		if (!$this->_db->query())
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+
+		// Delete the wish
+		return parent::delete($oid);
 	}*/
 }

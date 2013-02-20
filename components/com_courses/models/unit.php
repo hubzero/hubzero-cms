@@ -32,21 +32,31 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'unit.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
+
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'assetgroup.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'sectiondate.php');
 
 /**
  * Courses model class for a unit
  */
-class CoursesModelUnit extends JObject
+class CoursesModelUnit extends CoursesModelAbstract
 {
 	/**
-	 * CoursesTableUnit
+	 * JTable class name
 	 * 
-	 * @var object
+	 * @var string
 	 */
-	private $_tbl = NULL;
+	protected $_tbl_name = 'CoursesTableUnit';
+
+	/**
+	 * Object scope
+	 * 
+	 * @var string
+	 */
+	protected $_scope = 'unit';
 
 	/**
 	 * CoursesModelAssetgroup
@@ -56,25 +66,25 @@ class CoursesModelUnit extends JObject
 	public $group = NULL;
 
 	/**
-	 * CoursesTableIterator
+	 * CoursesModelIterator
 	 * 
 	 * @var object
 	 */
 	public $assetgroups = NULL;
 
 	/**
-	 * JUser
+	 * CoursesModelAsset
 	 * 
 	 * @var object
 	 */
-	private $_creator = NULL;
+	private $_asset = NULL;
 
 	/**
-	 * JDatabase
+	 * CoursesModelIterator
 	 * 
 	 * @var object
 	 */
-	private $_db = NULL;
+	private $_assets = NULL;
 
 	/**
 	 * JDatabase
@@ -82,53 +92,6 @@ class CoursesModelUnit extends JObject
 	 * @var object
 	 */
 	private $_siblings = NULL;
-
-	/**
-	 * Constructor
-	 * 
-	 * @param      integer $id  Resource ID or alias
-	 * @param      object  &$db JDatabase
-	 * @return     void
-	 */
-	public function __construct($oid)
-	{
-		$this->_db = JFactory::getDBO();
-
-		$this->_tbl = new CoursesTableUnit($this->_db);
-
-		if (is_numeric($oid) || is_string($oid))
-		{
-			$this->_tbl->load($oid);
-			/*foreach ($this->_tbl->getProperties() as $k => $v)
-			{
-				$this->set($k, $v);
-			}*/
-		}
-		else if (is_object($oid))
-		{
-			$this->_tbl->bind($oid);
-			if (isset($oid->publish_up))
-			{
-				$this->set('publish_up', $oid->publish_up);
-			}
-			if (isset($oid->publish_down))
-			{
-				$this->set('publish_down', $oid->publish_down);
-			}
-		}
-		else if (is_array($oid))
-		{
-			$this->_tbl->bind($oid);
-			if (isset($oid['publish_up']))
-			{
-				$this->set('publish_up', $oid['publish_up']);
-			}
-			if (isset($oid['publish_down']))
-			{
-				$this->set('publish_down', $oid['publish_down']);
-			}
-		}
-	}
 
 	/**
 	 * Returns a reference to a wiki page object
@@ -160,12 +123,9 @@ class CoursesModelUnit extends JObject
 	/**
 	 * Returns a property of the object or the default value if the property is not set.
 	 *
-	 * @access	public
-	 * @param	string $property The name of the property
-	 * @param	mixed  $default The default value
-	 * @return	mixed The value of the property
-	 * @see		getProperties()
-	 * @since	1.5
+	 * @param     string $property The name of the property
+	 * @param     mixed  $default The default value
+	 * @return    mixed The value of the property
  	 */
 	public function get($property, $default=null)
 	{
@@ -173,130 +133,17 @@ class CoursesModelUnit extends JObject
 		{
 			return $this->_tbl->$property;
 		}
+		else if (in_array($property, self::$_section_keys))
+		{
+			$tbl = new CoursesTableSectionDate($this->_db);
+			$tbl->load($this->get('id'), 'unit', $this->get('section_id'));
+
+			$this->set('publish_up', $tbl->get('publish_up'));
+			$this->set('publish_down', $tbl->get('publish_down'));
+
+			return $tbl->get($property, $default);
+		}
 		return $default;
-	}
-
-	/**
-	 * Modifies a property of the object, creating it if it does not already exist.
-	 *
-	 * @access	public
-	 * @param	string $property The name of the property
-	 * @param	mixed  $value The value of the property to set
-	 * @return	mixed Previous value of the property
-	 * @see		setProperties()
-	 * @since	1.5
-	 */
-	public function set($property, $value = null)
-	{
-		$previous = isset($this->_tbl->$property) ? $this->_tbl->$property : null;
-		$this->_tbl->$property = $value;
-		return $previous;
-	}
-
-	/**
-	 * Check if the resource exists
-	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
-	 */
-	public function exists()
-	{
-		if ($this->get('id') && (int) $this->get('id') > 0) 
-		{
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Get the creator of this entry
-	 * 
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire JUser object
-	 *
-	 * @return     mixed
-	 */
-	public function creator($property=null)
-	{
-		if (!isset($this->_creator) || !is_object($this->_creator))
-		{
-			$this->_creator = JUser::getInstance($this->get('created_by'));
-		}
-		if ($property && is_a($this->_creator, 'JUser'))
-		{
-			return $this->_creator->get($property);
-		}
-		return $this->_creator;
-	}
-
-	/**
-	 * Has the offering started?
-	 * 
-	 * @return     boolean
-	 */
-	public function started()
-	{
-		if (!$this->exists()) 
-		{
-			return false;
-		}
-
-		$now = date('Y-m-d H:i:s', time());
-
-		if ($this->get('publish_up') 
-		 && $this->get('publish_up') != '0000-00-00 00:00:00' 
-		 && $this->get('publish_up') > $now) 
-		{
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Has the offering ended?
-	 * 
-	 * @return     boolean
-	 */
-	public function ended()
-	{
-		if (!$this->exists()) 
-		{
-			return true;
-		}
-
-		$now = date('Y-m-d H:i:s', time());
-
-		if ($this->get('publish_down') 
-		 && $this->get('publish_down') != '0000-00-00 00:00:00' 
-		 && $this->get('publish_down') <= $now) 
-		{
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Check if the offering is available
-	 * 
-	 * @return     boolean
-	 */
-	public function available()
-	{
-		if (!$this->exists())
-		{
-			return false;
-		}
-
-		// Make sure the resource is published and standalone
-		if ($this->started() && !$this->ended()) 
-		{
-			return true;
-		}
-
-		return false;
 	}
 
 	/**
@@ -362,6 +209,10 @@ class CoursesModelUnit extends JObject
 		if (!isset($filters['unit_id']))
 		{
 			$filters['unit_id'] = (int) $this->get('id');
+		}
+		if (!isset($filters['section_id']))
+		{
+			$filters['section_id'] = (int) $this->get('section_id');
 		}
 
 		if (!isset($this->assetgroups) || !is_a($this->assetgroups, 'CoursesModelIterator'))
@@ -509,16 +360,6 @@ class CoursesModelUnit extends JObject
 	}
 
 	/**
-	 * Set cursor position to next position and return array value
-	 *
-	 * @return     mixed
-	 */
-	/*public function next() 
-	{
-		return $this->_siblings->fetch('next');
-	}*/
-
-	/**
 	 * Get a specific asset
 	 *
 	 * @param     integer $id Asset ID
@@ -526,21 +367,21 @@ class CoursesModelUnit extends JObject
 	 */
 	public function asset($id=null)
 	{
-		if (!isset($this->asset) 
-		 || ($id !== null && (int) $this->asset->get('id') != $id))
+		if (!isset($this->_asset) 
+		 || ($id !== null && (int) $this->_asset->get('id') != (int) $id))
 		{
-			$this->asset = null;
+			$this->_asset = null;
 
 			foreach ($this->assets() as $key => $asset)
 			{
-				if ((int) $asset->get('id') == $id)
+				if ((int) $asset->get('id') == (int) $id)
 				{
-					$this->asset = $asset;
+					$this->_asset = $asset;
 					break;
 				}
 			}
 		}
-		return $this->asset;
+		return $this->_asset;
 	}
 
 	/**
@@ -552,10 +393,23 @@ class CoursesModelUnit extends JObject
 	 */
 	public function assets($filters=array())
 	{
-		if (!isset($this->assets) || !is_a($this->assets, 'CoursesModelIterator'))
+		if (!isset($this->_assets) || !is_a($this->_assets, 'CoursesModelIterator'))
 		{
-			$filters['asset_scope_id'] = (int) $this->get('id');
-			$filters['asset_scope']    = 'unit';
+			//$filters['asset_scope_id'] = (isset($filters['asset_scope_id'])) ? $filters['asset_scope_id'] : (int) $this->get('id');
+			//$filters['asset_scope']    = (isset($filters['asset_scope']))    ? $filters['asset_scope']    : 'unit';
+			//$filters['section_id']     = (isset($filters['section_id']))     ? $filters['section_id']     : (int) $this->get('section_id');
+			if (!isset($filters['asset_scope_id']))
+			{
+				$filters['asset_scope_id'] = (int) $this->get('id');
+			}
+			if (!isset($filters['asset_scope']))
+			{
+				$filters['asset_scope']    = 'unit';
+			}
+			if (!isset($filters['section_id']))
+			{
+				$filters['section_id']     = (int) $this->get('section_id');
+			}
 
 			$tbl = new CoursesTableAsset($this->_db);
 
@@ -571,52 +425,47 @@ class CoursesModelUnit extends JObject
 				$results = array();
 			}
 
-			$this->assets = new CoursesModelIterator($results);
+			$this->_assets = new CoursesModelIterator($results);
 		}
 
-		return $this->assets;
+		return $this->_assets;
 	}
 
 	/**
-	 * Bind data to the this model
+	 * Delete an entry and associated data
 	 * 
-	 * @param      mixed $data Data to bind (array or object)
-	 * @return     boolean
+	 * @return     boolean True on success, false on error
 	 */
-	public function bind($data=null)
+	public function delete()
 	{
-		return $this->_tbl->bind($data);
-	}
-
-	/**
-	 * Save data to the database
-	 *
-	 * @param     boolean $check Perform data validation check?
-	 * @return    boolean False if errors, True on success
-	 */
-	public function store($check=true)
-	{
-		if (empty($this->_db))
+		// Remove all children
+		foreach ($this->assetgroups() as $group)
 		{
-			return false;
-		}
-
-		if ($check)
-		{
-			if (!$this->_tbl->check())
+			if (!$group->delete())
 			{
-				$this->setError($this->_tbl->getError());
-				return false;
+				$this->setError($child->getError());
 			}
 		}
 
-		if (!$this->_tbl->store())
+		// Remove all assets
+		foreach ($this->assets() as $asset)
 		{
-			$this->setError($this->_tbl->getError());
-			return false;
+			if (!$asset->delete())
+			{
+				$this->setError($asset->getError());
+			}
 		}
 
-		return true;
+		// Remove dates
+		$dt = new CoursesTableSectionDate($this->_db);
+		$dt->load($this->get('id'), $this->_scope, $this->get('section_id'));
+		if (!$dt->delete())
+		{
+			$this->setError($dt->getError());
+		}
+
+		// Remove this record from the database and log the event
+		return parent::delete();
 	}
 }
 

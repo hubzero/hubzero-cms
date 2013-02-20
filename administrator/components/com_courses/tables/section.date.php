@@ -130,7 +130,12 @@ class CoursesTableSectionDate extends JTable
 			return parent::load($oid);
 		}
 
-		$query = "SELECT * FROM $this->_tbl WHERE scope=" . $this->_db->Quote(trim($scope)) . " AND scope_id=" . $this->_db->Quote(intval($oid)) . " AND section_id=" . $this->_db->Quote(intval($section_id));
+		$query = "SELECT * FROM $this->_tbl WHERE scope=" . $this->_db->Quote(trim($scope)) . " AND scope_id=" . $this->_db->Quote(intval($oid));
+		if ($section_id !== null) 
+		{
+			$query .= " AND section_id=" . $this->_db->Quote(intval($section_id));
+		}
+		$query .= " LIMIT 1";
 
 		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc()) 

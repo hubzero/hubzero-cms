@@ -32,58 +32,26 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'announcement.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
 
 /**
  * Courses model class for a course
  */
-class CoursesModelAnnouncement extends JObject
+class CoursesModelAnnouncement extends CoursesModelAbstract
 {
 	/**
-	 * JUser
+	 * JTable class name
 	 * 
-	 * @var object
+	 * @var string
 	 */
-	private $_tbl = NULL;
+	protected $_tbl_name = 'CoursesTableAnnouncement';
 
 	/**
-	 * JUser
+	 * Object scope
 	 * 
-	 * @var object
+	 * @var string
 	 */
-	private $_creator = NULL;
-
-	/**
-	 * JDatabase
-	 * 
-	 * @var object
-	 */
-	private $_db = NULL;
-
-	/**
-	 * Constructor
-	 * 
-	 * @param      integer $id Course ID or alias
-	 * @return     void
-	 */
-	public function __construct($oid)
-	{
-		$this->_db = JFactory::getDBO();
-
-		$this->_tbl = new CoursesTableAnnouncement($this->_db);
-
-		if (is_numeric($oid))
-		{
-			$this->_tbl->load($oid);
-		}
-		else if (is_object($oid))
-		{
-			$this->_tbl->bind($oid);
-		}
-		else if (is_array($oid))
-		{
-			$this->_tbl->bind($oid);
-		}
-	}
+	protected $_scope = 'announcement';
 
 	/**
 	 * Returns a reference to a course model
@@ -94,7 +62,7 @@ class CoursesModelAnnouncement extends JObject
 	 * @param      integer $oid ID (int)
 	 * @return     object CoursesModelCourse
 	 */
-	static function &getInstance($oid=0)
+	/*static function &getInstance($oid=0)
 	{
 		static $instances;
 
@@ -109,150 +77,6 @@ class CoursesModelAnnouncement extends JObject
 		}
 
 		return $instances[$oid];
-	}
-
-	/**
-	 * Returns a property of the object or the default value if the property is not set.
-	 *
-	 * @param     string $property The name of the property
-	 * @param     mixed  $default  The default value
-	 * @return    mixed The value of the property
- 	 */
-	public function get($property, $default=null)
-	{
-		if (isset($this->_tbl->$property)) 
-		{
-			return $this->_tbl->$property;
-		}
-		return $default;
-	}
-
-	/**
-	 * Modifies a property of the object, creating it if it does not already exist.
-	 *
-	 * @param     string $property The name of the property
-	 * @param     mixed  $value    The value of the property to set
-	 * @return    mixed Previous value of the property
-	 */
-	public function set($property, $value = null)
-	{
-		$previous = isset($this->_tbl->$property) ? $this->_tbl->$property : null;
-		$this->_tbl->$property = $value;
-		return $previous;
-	}
-
-	/**
-	 * Check if the course exists
-	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
-	 */
-	public function exists()
-	{
-		if ($this->get('id') && (int) $this->get('id') > 0) 
-		{
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Check if the course exists
-	 * 
-	 * @param      mixed $idx Index value
-	 * @return     array
-	 */
-	public function bind($data=null)
-	{
-		return $this->_tbl->bind($data);
-	}
-
-	/**
-	 * Get the creator of this entry
-	 *
-	 * @return     object JUser
-	 */
-	public function creator()
-	{
-		if (!isset($this->_creator) || !is_object($this->_creator))
-		{
-			$this->_creator = JUser::getInstance($this->get('created_by'));
-		}
-		/*if ($property && is_a($this->_creator, 'JUser'))
-		{
-			return $this->_creator->get($property);
-		}*/
-		return $this->_creator;
-	}
-
-	/**
-	 * Store database record
-	 *
-	 * @param     boolean $check Perform data validation check?
-	 * @return    boolean True on success, false on error
-	 */
-	public function store($check=true)
-	{
-		if (empty($this->_db))
-		{
-			return false;
-		}
-
-		if ($check)
-		{
-			if (!$this->_tbl->check())
-			{
-				$this->setError($this->_tbl->getError());
-				return false;
-			}
-		}
-
-		if (!$this->_tbl->store())
-		{
-			$this->setError($this->_tbl->getError());
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Delete an entry and associated data
-	 * 
-	 * @return     boolean True on success, false on error
-	 */
-	public function delete()
-	{
-		// Get some data for the log
-		$log = json_encode($this->_tbl);
-
-		$scope_id = $this->get('id');
-
-		if (!$this->_tbl->delete())
-		{
-			$this->setError($this->_tbl->getError());
-			return false;
-		}
-
-		// Log the event
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'log.php');
-
-		$juser = JFactory::getUser();
-
-		$log = new CoursesTableLog($this->_db);
-		$log->scope_id  = $scope_id;
-		$log->scope     = 'announcement';
-		$log->user_id   = $juser->get('id');
-		$log->timestamp = date('Y-m-d H:i:s', time());
-		$log->action    = 'deleted';
-		$log->comments  = $log;
-		$log->actor_id  = $juser->get('id');
-		if (!$log->store()) 
-		{
-			$this->setError($log->getError());
-		}
-
-		return true;
-	}
+	}*/
 }
 

@@ -85,14 +85,14 @@ class CoursesTableOffering extends JTable
 	 * 
 	 * @var date
 	 */
-	var $start_date = NULL;
+	//var $start_date = NULL;
 
 	/**
 	 * End date for instance
 	 * 
 	 * @var date
 	 */
-	var $end_date = NULL;
+	//var $end_date = NULL;
 
 	/**
 	 * Start publishing date
