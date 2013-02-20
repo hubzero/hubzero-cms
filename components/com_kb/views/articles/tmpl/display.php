@@ -133,6 +133,7 @@ defined('_JEXEC') or die('Restricted access');
 			$filters['order'] = JRequest::getWord('order', 'recent');
 			$filters['category'] = 0;
 			$filters['search'] = JRequest::getVar('search','');
+			$filters['state'] = 1;
 
 			foreach ($this->categories as $row)
 			{
