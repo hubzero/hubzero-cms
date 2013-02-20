@@ -294,7 +294,11 @@ class MembersControllerProfiles extends Hubzero_Controller
 
 		// Get records
 		$this->view->rows = $c->getRecords($this->view->filters, $admin);
-
+		
+		//get newly registered members
+		$this->database->setQuery("SELECT COUNT(*) FROM #__xprofiles WHERE registerDate > '" . date("Y-m-d H:i:s", strtotime('-1 DAY')) . "'");
+		$this->view->past_day_members = $this->database->loadResult();
+		
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(

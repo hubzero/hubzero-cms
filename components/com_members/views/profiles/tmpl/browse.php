@@ -48,6 +48,29 @@ $juser =& JFactory::getUser();
 			</div><!-- / .container -->
 			
 			<div class="container">
+				<h3>Member Stats</h3>
+				<p class="starter">
+					<span class="starter-point"></span>
+					<table>
+						<tbody>
+							<tr>
+								<th>Public:</th>
+								<td><?php echo $this->total_public_members; ?></td>
+							</tr>
+							<tr>
+								<th>Private:</th>
+								<td><?php echo $this->total_members - $this->total_public_members; ?></td>
+							</tr>
+							<tr>
+								<th>New:</th>
+								<td><?php echo $this->past_day_members; ?></td>
+							</tr>
+						</tbody>
+					</table>
+				</p>
+			</div><!-- / .container -->
+			
+			<div class="container">
 				<h3>Looking for groups?</h3>
 				<p class="starter"><span class="starter-point"></span>Go to the <a href="<?php echo JRoute::_('index.php?option=com_groups'); ?>">Groups page</a>.</p>
 			</div><!-- / .container -->
