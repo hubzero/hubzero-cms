@@ -901,8 +901,13 @@ class ResourcesControllerResources extends Hubzero_Controller
 	 */
 	protected function watch()
 	{
+		$parent = $this->_id;
+		$child = JRequest::getVar('resid', '');
+		
 		//document object
 		$document =& JFactory::getDocument();
+		$database =& JFactory::getDBO();
+		$juser =& JFactory::getUser();
 
 		//add the HUBpresenter stylesheet
 		$this->_getStyles($this->_option,'hubpresenter.css');
@@ -915,6 +920,33 @@ class ResourcesControllerResources extends Hubzero_Controller
 		}
 		$document->addScript('/components/' . $this->_option . '/assets/js/hubpresenter.jquery.js');
 		$document->addScript('/components/' . $this->_option . '/assets/js/hubpresenter.plugins.jquery.js');
+		
+		//media tracking object
+		require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'media.tracking.php');
+		$mediaTracking = new ResourceMediaTracking( $database );
+		
+		//get tracking for this user for this resource
+		$tracking = $mediaTracking->getTrackingInformationForUserAndResource( $juser->get('id'), $child );
+		
+		//check to see if we already have a time query param
+		$hasTime = (JRequest::getVar('time', '') != '') ? true : false;
+		
+		//do we want to redirect user with time added to url
+		if(is_object($tracking) && !$hasTime && $tracking->current_position > 0 && $tracking->current_position != $tracking->object_duration)
+		{
+			$redirect = 'index.php?option=com_resources&amp;task=watch&amp;id='.$parent.'&amp;resid='.$child;
+			if(JRequest::getVar('tmpl', '') == 'component')
+			{
+				$redirect .= '&amp;tmpl=component';
+			}
+			
+			//append current position to redirect
+			$redirect .= "&time=" . gmdate("H:i:s", $tracking->current_position);
+			
+			//redirect
+			$app = JFactory::getApplication();
+			$app->redirect(JRoute::_($redirect), '','',false);
+		}
 		
 		//do we have javascript?
 		$js = JRequest::getVar("tmpl", "");
@@ -946,8 +978,8 @@ class ResourcesControllerResources extends Hubzero_Controller
 				$view->doc 				= $document;
 				$view->manifest 		= $manifest;
 				$view->content_folder 	= $content_folder;
-				$view->pid 				= $this->_id;
-				$view->resid 			= JRequest::getVar('resid', '');
+				$view->pid 				= $parent;
+				$view->resid 			= $child;
 				
 				// Output HTML
 				if ($this->getError()) 
@@ -1020,6 +1052,33 @@ class ResourcesControllerResources extends Hubzero_Controller
 		$video_mp4 = JFolder::files(JPATH_ROOT . DS . $path, '.mp4|.MP4');
 		$subs = JFolder::files(JPATH_ROOT . DS . $path, '.srt|.SRT');
 		
+		//media tracking object
+		require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'media.tracking.php');
+		$mediaTracking = new ResourceMediaTracking( $this->database );
+		
+		//get tracking for this user for this resource
+		$tracking = $mediaTracking->getTrackingInformationForUserAndResource( $this->juser->get('id'), $activechild->id );
+		
+		//check to see if we already have a time query param
+		$hasTime = (JRequest::getVar('time', '') != '') ? true : false;
+		
+		//do we want to redirect user with time added to url
+		if(is_object($tracking) && !$hasTime && $tracking->current_position > 0 && $tracking->current_position != $tracking->object_duration)
+		{
+			$redirect = 'index.php?option=com_resources&amp;task=video&amp;id='.$parent.'&amp;resid='.$child;
+			if(JRequest::getVar('tmpl', '') == 'component')
+			{
+				$redirect .= '&amp;tmpl=component';
+			}
+			
+			//append current position to redirect
+			$redirect .= "&time=" . gmdate("H:i:s", $tracking->current_position);
+			
+			//redirect
+			$app = JFactory::getApplication();
+			$app->redirect(JRoute::_($redirect), '','',false);
+		}
+		
 		// Instantiate a new view
 		$view = new JView(array(
 			'name'   => 'view', 
@@ -1029,6 +1088,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		$view->config   = $this->config;
 		$view->database = $this->database;
 
+		$view->resource = $activechild;
 		$view->path     = $path;
 		$view->videos   = $videos;
 		$view->mp4		= $video_mp4;

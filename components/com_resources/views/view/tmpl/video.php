@@ -35,22 +35,22 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <div id="video-container">
 	<?php if(count($this->videos) > 0) : ?>
-		<video controls="controls" id="video-player">
+		<video controls="controls" id="video-player" data-mediaid="<?php echo $this->resource->id; ?>">
 			<?php foreach($this->videos as $v) : ?>
 				<?php
 					$info = pathinfo($v);
 					$type = "";
 					switch( $info['extension'] )
 					{
-						case 'mp4': 	$type = 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"';	break;
-						case 'ogv':		$type = 'video/ogg; codecs="theora, vorbis"';			break;
-						case 'webm':	$type = 'video/webm; codecs="vp8, vorbis"';				break;
+						case 'mp4': 	$type = "video/mp4; codecs='avc1.42E01E, mp4a.40.2'";	break;
+						case 'ogv':		$type = "video/ogg; codecs='theora, vorbis'";			break;
+						case 'webm':	$type = "video/webm; codecs='vp8, vorbis'";				break;
 					}
 				?>
 				<source src="<?php echo $this->path . DS . $v; ?>" type="<?php echo $type; ?>" />
 			<?php endforeach; ?>
 		
-			<a href="<?php echo $this->path . DS . $this->mp4[0]; ?>" id="video-flowplayer" style="<?php echo "width:{$this->width}px;height:{$this->height}px;"; ?>"></a>
+			<a href="<?php echo $this->path . DS . $this->mp4[0]; ?>" id="video-flowplayer" style="<?php echo "width:{$this->width}px;height:{$this->height}px;"; ?>"  data-mediaid="<?php echo $this->resource->id; ?>"></a>
 		
 			<?php if(count($this->subs) > 0) : ?>
 				<?php foreach($this->subs as $s) : ?>
@@ -61,3 +61,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 		</video>
 	<?php endif; ?>   
 </div><!-- /#video-container -->
+
+<?php
+$document =& JFactory::getDocument();
+$document->setTitle( $this->resource->title );
+?>

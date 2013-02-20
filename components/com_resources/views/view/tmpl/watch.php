@@ -193,7 +193,7 @@ if ($author_ids && is_array($author_ids))
 		<div id="presenter-right">
 			<div id="media" class="<?php echo $cls; ?>">
 				<?php if(strtolower($presentation->type) == 'video') : ?>
-					<video id="player" preload="auto" controls="controls">
+					<video id="player" preload="auto" controls="controls" data-mediaid="<?php echo $rr->id; ?>">
 						<?php foreach($presentation->media as $source): ?>
 						   	<?php
 								switch( $source->type )
@@ -205,7 +205,7 @@ if ($author_ids && is_array($author_ids))
 							?>
 						   	<source src="<?php echo $content_folder.DS.$source->source; ?>" type='<?php echo $type; ?>'>
 						<?php endforeach; ?>
-						<a href="<?php echo $content_folder.DS.$presentation->media[0]->source; ?>" id="flowplayer"></a>
+						<a href="<?php echo $content_folder.DS.$presentation->media[0]->source; ?>" id="flowplayer" data-mediaid="<?php echo $rr->id; ?>"></a>
 							
 						<?php foreach($subs as $sub) : ?>
 							<?php $info2 = pathinfo($sub); ?>
@@ -214,7 +214,7 @@ if ($author_ids && is_array($author_ids))
 						
 					</video>
 				<?php else : ?>
-					<audio id="player" preload="auto" controls="controls">          
+					<audio id="player" preload="auto" controls="controls" data-mediaid="<?php echo $rr->id; ?>">          
 						<?php foreach($presentation->media as $source): ?>
 							<?php
 								switch( $source->type )
@@ -225,7 +225,7 @@ if ($author_ids && is_array($author_ids))
 							?>
 							<source src="<?php echo $content_folder.DS.$source->source; ?>" type="<?php echo $type; ?>" />
 						<?php endforeach; ?>
-						<a href="<?php echo $content_folder.DS.$presentation->media[0]->source; ?>" id="flowplayer" duration="<?php if($presentation->duration) { echo $presentation->duration; } ?>"></a>
+						<a href="<?php echo $content_folder.DS.$presentation->media[0]->source; ?>" id="flowplayer" duration="<?php if($presentation->duration) { echo $presentation->duration; } ?>" data-mediaid="<?php echo $rr->id; ?>"></a>
 					</audio>
 					
 					<?php if($presentation->placeholder) : ?>

@@ -17,6 +17,8 @@ HUB.Presenter = {
 		seeking = false;
 		mouseover = false;
 		track = null;
+		canSendTracking = true;
+		sendingTracking = false;
 		
 		//add class presenter to body
 		jQ("body").addClass("presenter");
@@ -113,20 +115,27 @@ HUB.Presenter = {
 	//-----
 	
 	player: function() 
-	{   
+	{
+		//start media tracking if not flash (start for flash after load)
+		if(!flash)
+		{
+			HUB.Presenter.startMediaTracking();
+		}
+		
 		if(!flash) {
 			jQ('#player').bind({
 				timeupdate: function() {
 					if(!seeking) 
+					{
 						HUB.Presenter.syncSlides();
+						HUB.Presenter.updateMediaTracking();
+					}
 				},
 				volumechange: function( e ) {
 					HUB.Presenter.syncVolume();
 				},
 				canplay: function( e ) {
 					HUB.Presenter.doneLoading();
-					
-					//seek to time if in hash
 					HUB.Presenter.locationHash();
 				},
 				seeked: function( e ) {
@@ -134,6 +143,7 @@ HUB.Presenter = {
 					var timeout = setTimeout("seeking=false;", 1000);
 				},
 				ended: function( e ) {
+					HUB.Presenter.endMediaTracking();
 					HUB.Presenter.replay();
 				},
 				error: function(e) {
@@ -156,8 +166,11 @@ HUB.Presenter = {
 					onStart: function() {
 						HUB.Presenter.doneLoading();
 						HUB.Presenter.flashSyncSlides();
+						HUB.Presenter.syncVolume();
+						HUB.Video.startMediaTracking();
 					},
 					onFinish: function() {
+						HUB.Presenter.endMediaTracking();
 						HUB.Presenter.replay();
 					}
 				});
@@ -168,9 +181,12 @@ HUB.Presenter = {
 					}, 
 					onStart: function() {
 						HUB.Presenter.doneLoading();
+						HUB.Presenter.syncVolume();
 						HUB.Presenter.flashSyncSlides();
+						HUB.Video.startMediaTracking();
 					},
 					onFinish: function() {
+						HUB.Presenter.endMediaTracking();
 						HUB.Presenter.replay();
 					}
 				});
@@ -318,7 +334,10 @@ HUB.Presenter = {
 	
 	flashSyncSlides: function() 
 	{                                                                  
-		var flashSyncSlides = setInterval("HUB.Presenter.syncSlides();", 500);
+		var flashSyncSlides = setInterval(function() {
+			HUB.Presenter.syncSlides();
+			HUB.Presenter.updateMediaTracking();
+		}, 1000);
 	},
 	     
 	
@@ -624,15 +643,23 @@ HUB.Presenter = {
 	linkVideo: function()
 	{
 		var time_hash,
-			url = window.location,
+			url = window.location.href,
 			time = HUB.Presenter.getCurrent();
-			
+		
 		//make time usable
 		time = HUB.Presenter.formatTime( time );
-		parts = time.split(":");
 		
-		//create hash based on current time and then prompt user with link
-		time_hash = "#time-" + ( (parseInt(parts[0]) * 60) + parseInt(parts[1]) ) + ":" + parts[2];
+		//create time hash
+		if(url.indexOf('?') == -1)
+		{
+			time_hash = '?time=' + time;
+		}
+		else
+		{
+			time_hash = '&time=' + time;
+		}
+		
+		//promt user with link to this spot in video
 		prompt("Link to Current Position in Presentation", url + time_hash);
 	},
 	
@@ -821,8 +848,7 @@ HUB.Presenter = {
 		});
 		
 		jQ("#replay-now").live("click", function(e) {
-			$(this).hide();
-			HUB.Presenter.doReplay();
+			HUB.Presenter.doReplay("#replay");
 			e.preventDefault();
 		});
 		
@@ -834,13 +860,24 @@ HUB.Presenter = {
 	
 	//-----
 	
-	doReplay: function()
+	doReplay: function( element )
 	{
-		jQ("#replay").fadeOut("slow", function() {
+		jQ( element ).fadeOut("slow", function() {
+			//remove replay container
 			jQ(this).remove();
+			
+			//reset video containter positioning
 			jQ("#presenter-container").css("position","static");
+			
+			//seek to beginning
 			HUB.Presenter.seek( 0 );  
 			
+			//start tracking again
+			canSendTracking = true;
+			sendingTracking = false;
+			HUB.Presenter.startMediaTracking();
+			
+			//get player and play
 			player = HUB.Presenter.getPlayer();
 			player.play();
 		});
@@ -1084,21 +1121,172 @@ HUB.Presenter = {
 	
 	locationHash: function()
 	{
-		var time, time_parts, time_min, time_sec, time_total,
-			hash = window.location.hash,
-			time_regex = /time-\d{1,}\:\d{2}/;
+		//var to hold time component
+		var timeComponent;
 		
-		//if hash is a time
-		if(hash.match(time_regex)) {
-			time = hash.substr(6);
-			time_parts = time.split(":");
-			time_min = parseInt(time_parts[0]);
-			time_sec = parseInt(time_parts[1]);
-			time_total = ( time_min * 60 ) + time_sec;
-			HUB.Presenter.seek( time_total );
+		//get the url query string and clean up
+		var urlQuery = window.location.search,
+			urlQuery = urlQuery.replace("?", ""),
+			urlQuery = urlQuery.replace(/&amp;/g, "&");
+		
+		//split query string into individual params
+		var params = urlQuery.split('&');
+		
+		for(var i = 0; i < params.length; i++)
+		{
+			if(params[i].substr(0,4) == 'time')
+			{
+				timeComponent = params[i];
+			}
+		}
+		
+		// do we have a time component (time=00:00:00 or time=00%3A00%3A00)
+		if(timeComponent != '')
+		{
+			//get the hours, minutes, seconds
+			var timeParts = timeComponent.split("=")[1].replace(/%3A/g, ':').split(':');
+			
+			//get time in seconds from hours, minutes, seconds
+			var time = (parseInt(timeParts[0]) * 60 * 60) + (parseInt(timeParts[1]) * 60) + parseInt(timeParts[2]);
+			
+			//show resume & pause video
+			HUB.Presenter.resume( HUB.Presenter.formatTime(time) );
+			
+			//seek to time
+			HUB.Presenter.seek( time );
+			HUB.Presenter.setProgress( time );
+			
+			//pause video
+			var p = HUB.Presenter.getPlayer();
+			p.pause();
 		}
 	},
 	
+	resume: function( time )
+	{
+		//video container must be position relatively 
+		jQ("#presenter-container").css('position', 'relative');
+		
+		//build replay content
+		var resume = "<div id=\"resume\"> \
+						<div id=\"resume-details\"> \
+							<h2>Resume Playback?</h2> \
+							<p>Would you like to resume video playback where you left off last time?</p> \
+							<div id=\"time\">" + time + "</div> \
+						</div> \
+						<a id=\"restart-video\" href=\"#\">Play from the Beginning</a> \
+						<a id=\"resume-video\" href=\"#\">Resume Video</a> \
+					  </div>";
+					
+		//add replay to video container
+		jQ( resume ).hide().appendTo("#presenter-container").fadeIn("slow");
+		
+		//restart video button
+		jQ("#restart-video").on('click',function(event){
+			event.preventDefault();
+			HUB.Presenter.doReplay("#resume");
+		});
+		
+		//resume video button
+		jQ("#resume-video").on('click',function(event){
+			event.preventDefault();
+			HUB.Presenter.doResume();
+		});
+		
+		//stop clicks on resume
+		jQ("#resume").on('click',function(event){
+			if(event.srcElement.id != 'restart-video' && event.srcElement.id != 'resume-video')
+			{
+				event.preventDefault();
+			}
+		})
+	},
+	
+	doResume: function() 
+	{
+		jQ("#resume").fadeOut("slow", function() {
+			//remove replay container
+			jQ(this).remove();
+			
+			//reset video containter positioning
+			jQ("#presenter-container").css("position","static");
+			
+			//play video
+			var p = HUB.Presenter.getPlayer();
+			p.play();
+		});
+	},
+	
+	//-----------------------------------------------------
+	//	Media Tracking
+	//-----------------------------------------------------
+	
+	startMediaTracking: function()
+	{
+		HUB.Presenter.mediaTrackingEvent('start');
+		
+		//start timer
+		var timer = setInterval(function() {
+			canSendTracking = true;
+		}, 5000);
+	},
+	
+	updateMediaTracking: function()
+	{
+		HUB.Presenter.mediaTrackingEvent('update');
+	},
+	
+	endMediaTracking: function()
+	{
+		canSendTracking = true;
+		sendingTracking = false;
+		HUB.Presenter.mediaTrackingEvent('ended');
+	},
+	
+	mediaTrackingEvent: function( eventType )
+	{
+		//check to make sure we can send tracking and that were not already in the progress
+		if(canSendTracking && !sendingTracking)
+		{
+			//we have started sending
+			sendingTracking = true;
+			
+			//get the resource ID and current player time
+			var resourceId, playerTime, playerDuration;
+			if(!flash)
+			{
+				resourceId = jQ(HUB.Presenter.getPlayer()).attr('data-mediaid');
+				playerTime = HUB.Presenter.getCurrent();
+				playerDuration = HUB.Presenter.getDuration();
+			}
+			else
+			{
+				resourceId = jQ("#"+HUB.Presenter.getPlayer().id()).attr('data-mediaid');
+				playerTime = HUB.Presenter.getCurrent();
+				playerDuration = HUB.Presenter.getDuration();
+			}
+				
+			//make ajax call
+			jQ.ajax({
+				type: 'POST',
+				data: { event: eventType, resourceid: resourceId, time: playerTime, duration: playerDuration },
+				url: '/index.php?option=com_resources&controller=media&task=tracking&no_html=1',
+				error: function( jqXHR, status, error )
+				{
+					console.log(error);
+				},
+				success: function( data, status, jqXHR )
+				{},
+				complete: function( jqXHR, status )
+				{
+					//we have to wait another 5 seconds to update
+					canSendTracking = false;
+					sendingTracking = false;
+				}
+			});
+			
+		}
+	},
 	
 	subtitles: function()
 	{

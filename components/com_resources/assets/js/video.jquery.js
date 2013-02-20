@@ -22,12 +22,11 @@ HUB.Video = {
 		seeking = false;
 		track = "";
 		browser = navigator.userAgent;
+		canSendTracking = true;
+		sendingTracking = false;
 		
 		//show loading graphic
 		$jQ('<div id="overlayer"></div>').appendTo(document.body);
-		
-		//wrap video with container div
-		//$jQ("#video-player").wrap('<div id="video-container" />');
 		
 		//add the control bar
 		$jQ("#video-container").append( HUB.Video.controls() );
@@ -49,10 +48,11 @@ HUB.Video = {
 			
 		if(flash) 
 		{
-			toolbar = 90;
+			toolbar = 52;
 			
 			flash_width = $jQ("#video-flowplayer").outerWidth(true);
 			flash_height = $jQ("#video-flowplayer").outerHeight(true);
+			
 			window.resizeTo(flash_width, flash_height + toolbar);
 		}
 		else
@@ -84,6 +84,11 @@ HUB.Video = {
 		
 		//handle subtitles
 		HUB.Video.subtitles();
+		
+		if(flash)
+		{
+			$jQ('#full-screen').hide();
+		}
 	},
 	
 	//-----
@@ -93,34 +98,53 @@ HUB.Video = {
 		//remove native controls from video
 		$jQ('#video-player').removeAttr("controls");
 		
+		//start media tracking if not flash (start for flash after load)
+		if(!flash)
+		{
+			HUB.Video.startMediaTracking();
+		}
+		
 		if(!flash) {
 			//player events
 			$jQ('#video-player').bind({
-				timeupdate: function() {
-					if(!seeking) 
-						HUB.Video.setProgress();
-				},
-				volumechange: function( e ) {
-					 HUB.Video.syncVolume();
-				},
 				canplay: function( e ) {
 					HUB.Video.doneLoading();
 					HUB.Video.locationHash();
 				},
+				timeupdate: function() {
+					if(!seeking) 
+					{
+						HUB.Video.setProgress();
+						HUB.Video.updateMediaTracking();
+					}
+				},
+				volumechange: function( e ) {
+					 HUB.Video.syncVolume();
+				},
 				seeked: function( e ) {
 					seeking = true;
 					var timeout = setTimeout("seeking=false;", 1000);
+				},
+				ended: function( e )
+				{
+					HUB.Video.endMediaTracking();
+					HUB.Video.replay();
 				}
 			});
 		} else {
 			
-			flowplayer("video-flowplayer", {src: "/components/com_resources/presenter/swf/flowplayer-3.2.7.swf", wmode: "transparent"}, { 
+			flowplayer("video-flowplayer", {src: "/components/com_resources/assets/swf/flowplayer-3.2.7.swf", wmode: "transparent"}, { 
 			   	plugins: { controls: null }, 
 				onStart: function() {
-					HUB.Video.setVolume(0);
 					HUB.Video.doneLoading();
 					HUB.Video.locationHash();
-					//HUB.Video.flashSyncSlides();
+					HUB.Video.syncVolume();
+					HUB.Video.startMediaTracking();
+					HUB.Video.flashSync();
+				},
+				onFinish: function() {
+					HUB.Video.endMediaTracking();
+					HUB.Video.replay();
 				}
 			});
 			
@@ -190,15 +214,15 @@ HUB.Video = {
 	
 	playPause: function( click )
 	{    
-		var paused = HUB.Video.isPaused(), 
-			player = HUB.Video.getPlayer();         
+		var paused = HUB.Video.isPaused(),
+			player = HUB.Video.getPlayer();
 	            	
 		if( paused ) {
-			$jQ("#play-pause").css('background','url(/components/com_resources/video/img/pause.png)'); 
+			$jQ("#play-pause").css('background','url(/components/com_resources/assets/img/video/pause.png)'); 
 			if( click ) 
 				player.play();
 		} else {
-			$jQ("#play-pause").css('background','url(/components/com_resources/video/img/play.png)');
+			$jQ("#play-pause").css('background','url(/components/com_resources/assets/img/video/play.png)');
 			if( click )
 				player.pause();
 		}  
@@ -284,6 +308,16 @@ HUB.Video = {
 		} else {
 			flowplayer("video-flowplayer").seek(time);
 		}
+	},
+	
+	//-----
+	
+	flashSync: function() 
+	{
+		var flashSync = setInterval(function() {
+			HUB.Video.setProgress();
+			HUB.Video.updateMediaTracking();
+		}, 1000);
 	},
 	
 	//-----
@@ -426,38 +460,270 @@ HUB.Video = {
 	linkVideo: function()
 	{
 		var time_hash,
-			url = window.location,
+			url = window.location.href,
 			time = HUB.Video.getCurrent();
-			
+		
 		//make time usable
 		time = HUB.Video.formatTime( time );
-		parts = time.split(":");
 		
-		//create hash based on current time and then prompt user with link
-		time_hash = "#time-" + ( (parseInt(parts[0]) * 60) + parseInt(parts[1]) ) + ":" + parts[2];
+		//create time hash
+		if(url.indexOf('?') == -1)
+		{
+			time_hash = '?time=' + time;
+		}
+		else
+		{
+			time_hash = '&time=' + time;
+		}
+		
+		//promt user with link to this spot in video
 		prompt("Link to Current Position in Presentation", url + time_hash);
 	},
 	
 	locationHash: function()
 	{
-		var time, time_parts, time_min, time_sec, time_total,
-			hash = window.location.hash,
-			time_regex = /time-\d{1,}\:\d{2}/;
+		//var to hold time component
+		var timeComponent;
 		
-		//if hash is a time
-		if(hash.match(time_regex)) {
-			time = hash.substr(6);
-			time_parts = time.split(":");
-			time_min = parseInt(time_parts[0]);
-			time_sec = parseInt(time_parts[1]);
-			time_total = ( time_min * 60 ) + time_sec;
-			HUB.Video.seek( time_total );
-			HUB.Video.setProgress( time_total );
+		//get the url query string and clean up
+		var urlQuery = window.location.search,
+			urlQuery = urlQuery.replace("?", ""),
+			urlQuery = urlQuery.replace(/&amp;/g, "&");
+		
+		//split query string into individual params
+		var params = urlQuery.split('&');
+		
+		for(var i = 0; i < params.length; i++)
+		{
+			if(params[i].substr(0,4) == 'time')
+			{
+				timeComponent = params[i];
+			}
+		}
+		
+		// do we have a time component (time=00:00:00 or time=00%3A00%3A00)
+		if(timeComponent != '')
+		{
+			//get the hours, minutes, seconds
+			var timeParts = timeComponent.split("=")[1].replace(/%3A/g, ':').split(':');
+			
+			//get time in seconds from hours, minutes, seconds
+			var time = (parseInt(timeParts[0]) * 60 * 60) + (parseInt(timeParts[1]) * 60) + parseInt(timeParts[2]);
+			
+			//show resume & pause video
+			HUB.Video.resume( HUB.Video.formatTime(time) );
+			
+			//seek to time
+			HUB.Video.seek( time );
+			HUB.Video.setProgress( time );
+			
+			//pause video
+			var p = HUB.Video.getPlayer();
+			p.pause();
+		}
+	},
+	
+	resume: function( time )
+	{
+		//video container must be position relatively 
+		$jQ("#video-container").css('position', 'relative');
+		
+		//build replay content
+		var resume = "<div id=\"resume\"> \
+						<div id=\"resume-details\"> \
+							<h2>Resume Playback?</h2> \
+							<p>Would you like to resume video playback where you left off last time?</p> \
+							<div id=\"time\">" + time + "</div> \
+						</div> \
+						<a id=\"restart-video\" href=\"#\">Play from the Beginning</a> \
+						<a id=\"resume-video\" href=\"#\">Resume Video</a> \
+					  </div>";
+					
+		//add replay to video container
+		$jQ( resume ).hide().appendTo("#video-container").fadeIn("slow");
+		
+		//restart video button
+		$jQ("#restart-video").on('click',function(event){
+			event.preventDefault();
+			HUB.Video.doReplay("#resume");
+		});
+		
+		//resume video button
+		$jQ("#resume-video").on('click',function(event){
+			event.preventDefault();
+			HUB.Video.doResume();
+		});
+		
+		//stop clicks on resume
+		$jQ("#resume").on('click',function(event){
+			if(event.srcElement.id != 'restart-video' && event.srcElement.id != 'resume-video')
+			{
+				event.preventDefault();
+			}
+		})
+	},
+	
+	doResume: function() 
+	{
+		$jQ("#resume").fadeOut("slow", function() {
+			//remove replay container
+			$jQ(this).remove();
+			
+			//reset video containter positioning
+			$jQ("#video-container").css("position","static");
+			
+			//play video
+			var p = HUB.Video.getPlayer();
+			p.play();
+		});
+	},
+	
+	
+	//-----------------------------------------------------
+	//	Replay
+	//-----------------------------------------------------
+	
+	replay: function()
+	{
+		//video container must be position relatively 
+		$jQ("#video-container").css('position', 'relative');
+		
+		//build replay content
+		var replay = "<div id=\"replay\"> \
+						<div id=\"replay-details\"> \
+							<div id=\"title\"></div> \
+							<div id=\"link\"> \
+								<span>Share:</span><input type=\"text\" id=\"replay-link\" value=" + window.location + " /> \
+								<a target='_blank' href=\"http://www.facebook.com/share.php?u=" + window.location + "\" id=\"facebook\" title=\"Share on Facebook\">Facebook</a> \
+								<a target='_blank' href=\"http://twitter.com/home?status=Currently Watching: " + window.location +"\" id=\"twitter\" title=\"Share on Twitter\">Twitter</a> \
+							</div> \
+						</div> \
+						<a id=\"replay-back\" href=\"#\">&laquo; Close Video</a> \
+						<a id=\"replay-now\" href=\"#\">Replay Video</a> \
+					  </div>";
+					
+		//add replay to video container
+		$jQ( replay ).hide().appendTo("#video-container").fadeIn("slow");
+		
+		//set the title
+		$jQ("#replay-details #title").html( "<span>Title:</span> " + document.title );
+		
+		//auto-select replay link
+		$jQ("#replay-link").live("click", function(e) {
+			this.select();
+			e.preventDefault();
+		});
+		
+		//replay video link
+		$jQ("#replay-now").live("click", function(e) {
+			HUB.Video.doReplay("#replay");
+			e.preventDefault();
+		});
+		
+		//close video
+		$jQ("#replay-back").live("click", function(e) {
+			window.close();
+			e.preventDefault();
+		});
+	},
+	
+	doReplay: function( element )
+	{
+		//after replay container fades out
+		$jQ( element ).fadeOut("slow", function() {
+			//remove replay container
+			$jQ(this).remove();
+			
+			//reset video containter positioning
+			$jQ("#video-container").css("position","static");
+			
+			//seek to beginning
+			HUB.Video.seek( 0 ); 
+			
+			//start tracking again
+			canSendTracking = true;
+			sendingTracking = false;
+			HUB.Video.startMediaTracking(); 
+			
+			//get player and play
+			player = HUB.Video.getPlayer();
+			player.play();
+		});
+	},
+	
+	//-----------------------------------------------------
+	//	Media Tracking
+	//-----------------------------------------------------
+	
+	startMediaTracking: function()
+	{
+		HUB.Video.mediaTrackingEvent('start');
+		
+		//start timer
+		var timer = setInterval(function() {
+			canSendTracking = true;
+		}, 5000);
+	},
+	
+	updateMediaTracking: function()
+	{
+		HUB.Video.mediaTrackingEvent('update');
+	},
+	
+	endMediaTracking: function()
+	{
+		canSendTracking = true;
+		sendingTracking = false;
+		HUB.Video.mediaTrackingEvent('ended');
+	},
+	
+	mediaTrackingEvent: function( eventType )
+	{
+		//check to make sure we can send tracking and that were not already in the progress
+		if(canSendTracking && !sendingTracking)
+		{
+			//we have started sending
+			sendingTracking = true;
+			
+			//get the resource ID and current player time
+			var resourceId, playerTime, playerDuration;
+			if(!flash)
+			{
+				resourceId = $jQ(HUB.Video.getPlayer()).attr('data-mediaid');
+				playerTime = HUB.Video.getCurrent();
+				playerDuration = HUB.Video.getDuration();
+			}
+			else
+			{
+				resourceId = $jQ("#"+HUB.Video.getPlayer().id()).attr('data-mediaid');
+				playerTime = HUB.Video.getCurrent();
+				playerDuration = HUB.Video.getDuration();
+			}
+			
+			//make ajax call
+			$jQ.ajax({
+				type: 'POST',
+				data: { event: eventType, resourceid: resourceId, time: playerTime, duration: playerDuration },
+				url: '/index.php?option=com_resources&controller=media&task=tracking&no_html=1',
+				error: function( jqXHR, status, error )
+				{
+					console.log(error);
+				},
+				success: function( data, status, jqXHR )
+				{},
+				complete: function( jqXHR, status )
+				{
+					//we have to wait another 5 seconds to update
+					canSendTracking = false;
+					sendingTracking = false;
+				}
+			});
+			
 		}
 	},
 	
 	//-----------------------------------------------------
-	//
+	//	Subtitles
 	//-----------------------------------------------------
 	
 	subtitles: function()
