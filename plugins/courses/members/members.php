@@ -127,6 +127,10 @@ class plgCoursesMembers extends JPlugin
 				return $arr;
 			}
 		}
+		else if ($areas != $this_area['name'])
+		{
+			return $arr;
+		}
 
 		// Only perform the following if this is the active tab/plugin
 		$this->config = $config;

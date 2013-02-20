@@ -103,6 +103,10 @@ class plgCoursesProgress extends JPlugin
 				return $arr;
 			}
 		}
+		else if ($areas != $this_area['name'])
+		{
+			return $arr;
+		}
 
 		$layout = ($course->offering()->access('manage')) ? 'instructor' : 'student';
 
