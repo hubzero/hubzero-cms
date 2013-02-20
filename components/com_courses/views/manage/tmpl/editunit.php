@@ -45,6 +45,7 @@ $end_date   = (!is_null($unit->get('end_date')) && $unit->get('end_date') != '00
 
 		<input type="hidden" name="id" value="<?php echo $this->scope_id; ?>" />
 		<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
+		<input type="hidden" name="offering" value="<?= $this->course->offering()->get('alias') ?>" />
 
 		<input type="submit" name="submit" value="Save" />
 	</form>

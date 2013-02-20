@@ -73,17 +73,25 @@ foreach($this->course->offering()->units() as $unit)
 					continue;
 				}
 
+				// Count total number of forms
+				$form_count = (isset($form_count)) ? ++$form_count : 1;
+
+				// Also count total forms through current unit
+				if($unit->available() || $unit->ended())
+				{
+					$form_count_current = (isset($form_count_current)) ? ++$form_count_current : 1;
+				}
+
 				// Get the form deployment based on crumb
 				$dep = PdfFormDeployment::fromCrumb($crumb);
 
 				// Loop through the results of the deployment
 				foreach($dep->getResults() as $result)
 				{
-					// Create a per unit, per student count to track total items taken (needed when calculating weekly/unit averages)
-					if(!isset($progress[$result['user_id']][$unit->get('id')]['form_count']))
+					// Create a per student form count
+					if(!isset($progress[$result['user_id']]['form_count']))
 					{
-						$progress[$result['user_id']][$unit->get('id')]['sum']        = 0;
-						$progress[$result['user_id']][$unit->get('id')]['form_count'] = 0;
+						$progress[$result['user_id']]['form_count'] = 0;
 					}
 
 					// Store the score
@@ -92,45 +100,55 @@ foreach($this->course->offering()->units() as $unit)
 					$progress[$result['user_id']][$unit->get('id')]['forms'][$dep->getId()]['title']    = $a->get('title');
 
 					// Track the sum of scores for this unit and iterate the count
-					$progress[$result['user_id']][$unit->get('id')]['sum'] += $result['score'];
-					++$progress[$result['user_id']][$unit->get('id')]['form_count'];
+					++$progress[$result['user_id']]['form_count'];
 				}
 			}
 		}
 	}
 }
 
+$current_marker = (isset($form_count_current) && isset($form_count)) ? (round(($form_count_current / $form_count)*100, 2)) : 0;
+
 ?>
 
-<table class="student-progress">
-	<caption>Student Progress</caption>
-	<thead>
-		<tr>
-			<td>Name</td>
-			<? $i = 1 ?>
-			<? foreach($this->course->offering()->units() as $unit) : ?>
-				<td class="unit">Unit <?= $i ?></td>
-				<? ++$i ?>
-			<? endforeach; ?>
-		</tr>
-	</thead>
-	<tbody>
-		<? foreach($members as $m) : ?>
-			<tr>
-				<td class="student-name"><?= JFactory::getUser($m->get('user_id'))->get('name'); ?></td>
-				<? foreach($this->course->offering()->units() as $unit) : ?>
-					<td class="unit">
-						<? if(isset($progress[$m->get('user_id')]) && isset($progress[$m->get('user_id')][$unit->get('id')])) : ?>
-							<div class="unit-progress">
-								<?= round($progress[$m->get('user_id')][$unit->get('id')]['sum'] / $progress[$m->get('user_id')][$unit->get('id')]['form_count'], 2) . '%' ?>
-							</div>
-						<? endif; ?>
-					</td>
-				<? endforeach; ?>
-			</tr>
-			<tr class="student-details">
-				<td colspan="<?= $this->course->offering()->units()->total()+1 ?>">
-					<table>
+<div class="instructor">
+	<div class="flag"><div class="flag-inner" style="left:<?= $current_marker ?>%;"></div></div>
+	<? foreach($members as $m) : ?>
+		<div class="student">
+			<div class="student-name"><?= JFactory::getUser($m->get('user_id'))->get('name'); ?></div>
+			<div class="progress-bar-container">
+				<? if(isset($progress[$m->get('user_id')])) : ?>
+					<?
+						$studentProgress = ($progress[$m->get('user_id')]['form_count'] / $form_count)*100;
+						$studentStatus   = ($studentProgress / $current_marker)*100;
+						$cls = '';
+						if($studentStatus < 60)
+						{
+							$cls = ' stop';
+						}
+						elseif($studentStatus >= 60 && $studentStatus < 70)
+						{
+							$cls = ' yield';
+						}
+						elseif($studentStatus >= 70 && $studentStatus <= 100)
+						{
+							$cls = ' go';
+						}
+					?>
+					<div class="student-progress-bar <?= $cls ?>" style="width:<?= $studentProgress ?>%;"></div>
+				<? endif; ?>
+			</div>
+			<div class="clear"></div>
+			<div class="student-details">
+				<table>
+					<thead>
+						<tr>
+							<td>Title</td>
+							<td>Score</td>
+							<td>Date</td>
+						</tr>
+					</thead>
+					<tbody>
 						<? foreach($this->course->offering()->units() as $unit) : ?>
 							<? if(isset($progress[$m->get('user_id')]) && isset($progress[$m->get('user_id')][$unit->get('id')])) : ?>
 								<? foreach($progress[$m->get('user_id')][$unit->get('id')]['forms'] as $form) : ?>
@@ -142,9 +160,10 @@ foreach($this->course->offering()->units() as $unit)
 								<? endforeach; ?>
 							<? endif; ?>
 						<? endforeach; ?>
-					</table>
-				</td>
-			</tr>
-		<? endforeach; ?>
-	</tbody>
-</table>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="clear"></div>
+	<? endforeach; ?>
+</div>

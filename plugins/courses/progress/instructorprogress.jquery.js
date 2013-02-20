@@ -30,10 +30,16 @@ HUB.Plugins.CoursesProgress = {
 
 		$('.student-details').hide();
 
-		$('.student-progress').on('click', '.student-name', function() {
-			$(this).parent('tr').next('.student-details').toggle();
-			$(this).parent('tr').next('.student-details').toggleClass('active');
-			$(this).parent('tr').toggleClass('active');
+		$('.instructor').on('click', '.student-name', function() {
+			$(this).siblings('.student-details').slideToggle('slow', function() {
+				$(this).parents('.student').toggleClass('active', 150, 'linear');
+			});
+		});
+
+		$('.instructor').on('click', '.progress-bar-container', function() {
+			$(this).siblings('.student-details').slideToggle('slow', function() {
+				$(this).parents('.student').toggleClass('active', 150, 'linear');
+			});
 		});
 	} // end initialize
 };

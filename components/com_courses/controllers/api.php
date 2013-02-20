@@ -144,6 +144,8 @@ class CoursesApiController extends Hubzero_Api_Controller
 			return;
 		}
 
+		// @FIXME: what needs to happen to set dates?
+
 		// Create a placeholder for our return object
 		$assetGroups = array();
 

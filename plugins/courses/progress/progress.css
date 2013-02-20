@@ -236,30 +236,99 @@
 }
 
 /* instructor interface styles */
+.instructor {
+	position: relative;
+	padding-top: 25px;
+	z-index: 1;
+}
+.instructor .flag {
+	margin-left: 210px;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	z-index: 2;
+}
+.instructor .flag-inner {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 15px;
+	bottom: -5px;
+	width: 2px;
+	background: #777;
+}
+.instructor .flag-inner:before {
+	position: absolute;
+	font-family: "fontcons";
+	font-size: 25px;
+	content: "\f041";
+	top: -25px;
+	left: -5px;
+}
+.instructor .student {
+	position: relative;
+	z-index: 2;
+	margin: 0 0 5px 0;
+	padding: 10px 10px 5px 10px;
+	border: 1px solid transparent;
+}
+.instructor .student:hover {
+	-webkit-transition: all 0.25s;
+	-moz-transition: all 0.25s;
+	-ms-transition: all 0.25s;
+	-o-transition: all 0.25s;
+	transition: all 0.25s;
 
-.student-progress tbody td {
-	padding: 10px 0;
+	background: #FAFAFA;
+	border: 1px dotted #CCC;
+	padding-bottom: 10px;
 }
-.student-progress .student-name {
-	width: 200px;
-	padding-left: 10px;
+.instructor .student.active {
+	background: #FAFAFA;
+	border: 1px solid #CCC;
+	padding-bottom: 10px;
 }
-.student-progress .unit {
-	text-align: center;
-	font-size: 11px;
-}
-.student-progress tbody td,
-.student-progress {
-	border-bottom: none;
-}
-.student-progress tbody .unit:not(:last-child) {
-	border-right: 1px solid #DADADA;
-}
-.student-progress tbody .unit-progress {
+.instructor .student-name {
 	display: block;
-	line-height: 18px;
-	color: #FAFAFA;
-	text-shadow: 1px 1px 0 #666;
+	float: left;
+	width: 200px;
+	overflow: scroll;
+	padding: 3px;
+}
+.instructor .student-name:hover {
+	cursor: pointer;
+}
+.instructor .progress-bar-container {
+	margin-left: 200px;
+	height: 20px;
+	padding: 3px;
+	cursor: pointer;
+
+	border: 1px solid #999;
+
+	border-radius: 5px;
+
+	box-shadow: inset 1px 1px 2px #555;
+
+	background: #F0F0F0;
+	background: -webkit-gradient(linear, left top, left bottom, from(#F0F0F0), to(#DEDEDE));
+	background: -webkit-linear-gradient(#F0F0F0, #DEDEDE);
+	background: -moz-linear-gradient(center top, #F0F0F0 0%, #DEDEDE 100%);
+	background: -moz-gradient(center top, #F0F0F0 0%, #DEDEDE 100%);
+	background: -o-linear-gradient(#F0F0F0, #DEDEDE);
+	background-image: -ms-linear-gradient(top, #F0F0F0 0%, #DEDEDE 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#F0F0F0,endColorstr=#DEDEDE);
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#F0F0F0, endColorstr=#DEDEDE)";
+}
+.instructor .student-progress-bar {
+	display: block;
+	height: 20px;
+
+	border-radius: 5px;
+
+	box-shadow: inset 1px 1px 5px #FFF;
 
 	background: #0000FF;
 	background: -webkit-gradient(linear, left top, left bottom, from(#0000FF), to(#0000BF));
@@ -271,14 +340,39 @@
 	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#0000FF,endColorstr=#0000BF);
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#0000FF, endColorstr=#0000BF)";
 }
-.student-details table {
-	margin: 10px 0;
-	border: none;
+.instructor .student-progress-bar.stop {
+	background: #FF0000;
+	background: -webkit-gradient(linear, left top, left bottom, from(#FF0000), to(#BF0000));
+	background: -webkit-linear-gradient(#FF0000, #BF0000);
+	background: -moz-linear-gradient(center top, #FF0000 0%, #BF0000 100%);
+	background: -moz-gradient(center top, #FF0000 0%, #BF0000 100%);
+	background: -o-linear-gradient(#FF0000, #BF0000);
+	background-image: -ms-linear-gradient(top, #FF0000 0%, #BF0000 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FF0000,endColorstr=#BF0000);
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FF0000, endColorstr=#BF0000)";
 }
-.student-details tbody td {
-	padding: 5px;
+.instructor .student-progress-bar.yield {
+	background: #FFEC00;
+	background: -webkit-gradient(linear, left top, left bottom, from(#FFEC00), to(#BFB100));
+	background: -webkit-linear-gradient(#FFEC00, #BFB100);
+	background: -moz-linear-gradient(center top, #FFEC00 0%, #BFB100 100%);
+	background: -moz-gradient(center top, #FFEC00 0%, #BFB100 100%);
+	background: -o-linear-gradient(#FFEC00, #BFB100);
+	background-image: -ms-linear-gradient(top, #FFEC00 0%, #BFB100 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FFEC00,endColorstr=#BFB100);
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FFEC00, endColorstr=#BFB100)";
 }
-.student-progress tbody tr.active,
-.student-details.active {
-	background: #F1F1F1;
+.instructor .student-progress-bar.go {
+	background: #59E80C;
+	background: -webkit-gradient(linear, left top, left bottom, from(#59E80C), to(#49BF0A));
+	background: -webkit-linear-gradient(#59E80C, #49BF0A);
+	background: -moz-linear-gradient(center top, #59E80C 0%, #49BF0A 100%);
+	background: -moz-gradient(center top, #59E80C 0%, #49BF0A 100%);
+	background: -o-linear-gradient(#59E80C, #49BF0A);
+	background-image: -ms-linear-gradient(top, #59E80C 0%, #49BF0A 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#59E80C,endColorstr=#49BF0A);
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#59E80C, endColorstr=#49BF0A)";
+}
+.instructor .student-details table thead {
+	font-weight: bold;
 }
