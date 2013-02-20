@@ -31,6 +31,7 @@ function submitbutton(pressbutton)
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Status', 'status', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Uses', 'uses', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Venue', 'venue_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col">Broken Containers</th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -92,6 +93,15 @@ if ($this->rows)
 				</td>
 				<td>
 					<?php echo $this->escape(stripslashes($row->venue)); ?>
+				</td>
+				<td>
+					<?php
+						$db = JFactory::getDBO();
+						$sql = "select count(*) from display where status='broken' and hostname='{$row->hostname}'";
+						$db->setQuery($sql);
+						$bc = $db->loadResult();
+						echo $bc;
+					?>
 				</td>
 			</tr>
 <?php

@@ -253,13 +253,25 @@ class ToolsControllerHosts extends Hubzero_Controller
 		}
 
 		$ht = new MwHosttype($mwdb);
-
 		$this->view->hosttypes = $ht->getRecords();
 
 		$v = new MwVenue($mwdb);
-
 		$this->view->venues = $v->getRecords();
-
+		
+		//make sure we have a hostname
+		if($this->view->row->hostname != '')
+		{
+			//get tool instance counts
+			$sql = "select appname, count(*) as count from session where exechost='" . $this->view->row->hostname . "' group by appname";
+			$this->database->setQuery($sql);
+			$this->view->toolCounts = $this->database->loadObjectList();
+			
+			//get status counts
+			$sql = "select status, count(*) as count from display where hostname='" . $this->view->row->hostname . "' group by status";
+			$this->database->setQuery($sql);
+			$this->view->statusCounts = $this->database->loadObjectList();
+		}
+		
 		// Set any errors
 		if ($this->getError())
 		{

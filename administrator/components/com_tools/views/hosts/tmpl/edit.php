@@ -87,6 +87,42 @@ function submitbutton(pressbutton)
 				</tr>
 			</tbody>
 		</table>
+		
+		<?php if(isset($this->toolCounts) && count($this->toolCounts) > 0) : ?>
+			<fieldset class="adminform">
+				<legend>
+					<span>Tool Sessions</span>
+				</legend>
+				<table class="admintable">
+					<tbody>
+						<?php foreach($this->toolCounts as $c) : ?>
+							<tr>
+								<td><?php echo $c->appname; ?></td>
+								<td><?php echo $c->count; ?></td>
+							</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+			</fieldset>
+		<?php endif; ?>
+		
+		<?php if(isset($this->statusCounts) && count($this->statusCounts) > 0) : ?>
+			<fieldset class="adminform">
+				<legend>
+					<span>Container Statuses</span>
+				</legend>
+				<table class="admintable">
+					<tbody>
+						<?php foreach($this->statusCounts as $c) : ?>
+							<tr>
+								<td><?php echo $c->status; ?></td>
+								<td><?php echo $c->count; ?></td>
+							</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+			</fieldset>
+		<?php endif; ?>
 	</div>
 	<div class="clr"></div>
 
