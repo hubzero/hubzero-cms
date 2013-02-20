@@ -716,13 +716,8 @@ class ProjectOwner extends JTable
 			$group->set('managers', $managers);	
 			$group->set('type', 2 );
 			$group->set('published', 1 );
-			$group->set('discoverability', 4 );
-			
-			/* Without this update doesn't work, scheisse */
-			$privacy = $group->get('discoverability', 4 );
-			$set_privacy = $privacy == 4 ? 1 : 4;
-			$group->set('discoverability', $set_privacy );					
-			
+			$group->set('discoverability', 1 );
+						
 			$group->update();
 		}				
 	}
