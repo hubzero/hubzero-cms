@@ -407,6 +407,9 @@ class GroupsController extends Hubzero_Controller
 
 		//get the popular groups
 		$populargroups = Hubzero_Group_Helper::getPopularGroups(3);
+		
+		//get featured groups
+		$featuredgroups = Hubzero_Group_Helper::getFeaturedGroups($this->config->get('intro_featuredgroups_list', ''));
 
 		// Output HTML
 		$view = new JView(array('name' => 'intro'));
@@ -418,6 +421,7 @@ class GroupsController extends Hubzero_Controller
 		$view->mygroups = $mygroups;
 		$view->populargroups = $populargroups;
 		$view->interestinggroups = $interestinggroups;
+		$view->featuredgroups = $featuredgroups;
 		$view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 		$view->display();
 	}

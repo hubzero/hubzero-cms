@@ -67,6 +67,7 @@ class Hubzero_Group_Helper
 				FROM #__xgroups AS g 
 				WHERE g.type=1
 				AND g.published=1
+				AND g.approved=1
 				AND g.discoverability=0
 				ORDER BY members DESC";
 		
@@ -77,6 +78,36 @@ class Hubzero_Group_Helper
 		}		
 		
 		//execute query and return result
+		$database->setQuery( $sql );
+		if(!$database->getError())
+		{
+			return $database->loadObjectList();
+		}
+	}
+	
+	public static function getFeaturedGroups( $groupList )
+	{
+		//database object
+		$database =& JFactory::getDBO();
+		
+		//parse the group list
+		$groupList = array_map('trim', array_filter(explode(',', $groupList), 'trim'));
+		
+		//make sure we have a list of groups
+		if(count($groupList) < 1)
+		{
+			return array();
+		}
+		
+		//query to get groups
+		$sql = "SELECT g.gidNumber, g.cn, g.description, g.public_desc 
+				FROM jos_xgroups AS g 
+				WHERE g.type=1 
+				AND g.published=1 
+				AND g.approved=1
+				AND g.discoverability=0
+				AND g.cn IN ('".implode("','", $groupList)."')";
+			
 		$database->setQuery( $sql );
 		if(!$database->getError())
 		{

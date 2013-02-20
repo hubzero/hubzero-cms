@@ -175,4 +175,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</div><!-- / .four columns second third fourth -->
 		</div><!-- /.clearfix -->
 	<?php endif; ?>
+	
+	<?php if($this->config->get("intro_featuredgroups", 1) && count($this->featuredgroups) > 0) : ?>
+		<div class="clearfix">
+			<div class="four columns first">
+				<h2><?php echo JText::_('COM_GROUPS_FEATURED_GROUPS'); ?></h2>
+			</div><!-- / .four columns first -->
+			<div class="four columns second third fourth">
+				<div class="clearfix top">
+					<?php echo Hubzero_Group_Helper::listGroups(JText::_('COM_GROUPS_FEATURED_GROUPS'),$this->config,$this->featuredgroups,2,true,false,150); ?>
+				</div>
+			</div><!-- / .four columns second third fourth -->
+		</div><!-- /.clearfix -->
+	<?php endif; ?>
 </div><!-- / .section -->
