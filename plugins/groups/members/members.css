@@ -92,6 +92,7 @@
 		border-bottom: none;
 		text-decoration: none;
 		position: relative;
+		text-indent: -999em;
 	}
 	.message-all a.message:hover,
 	.entries .remove-member a:hover,
@@ -118,6 +119,7 @@
 		height: 20px;
 		content: '';
 		color: #777;
+		text-indent: 0;
 	}
 	.message-all {
 		height: 20px;
