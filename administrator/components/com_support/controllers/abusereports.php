@@ -56,18 +56,23 @@ class SupportControllerAbusereports extends Hubzero_Controller
 		// Incoming
 		$this->view->filters = array();
 		$this->view->filters['limit']  = $app->getUserStateFromRequest(
-			$this->_option . '.reports.limit',
+			$this->_option . '.' . $this->_controller . '.limit',
 			'limit',
 			$config->getValue('config.list_limit'),
 			'int'
 		);
 		$this->view->filters['start']  = $app->getUserStateFromRequest(
-			$this->_option . '.reports.limitstart',
+			$this->_option . '.' . $this->_controller . '.limitstart',
 			'limitstart',
 			0,
 			'int'
 		);
-		$this->view->filters['state']  = JRequest::getInt('state', 0);
+		$this->view->filters['state']  = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.state',
+			'state',
+			0,
+			'int'
+		);
 		$this->view->filters['sortby'] = JRequest::getVar('sortby', 'a.created DESC');
 
 		$model = new ReportAbuse($this->database);
