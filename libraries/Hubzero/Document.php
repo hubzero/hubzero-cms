@@ -75,17 +75,17 @@ class Hubzero_Document
 		if (file_exists(JPATH_SITE . $templatecss)) 
 		{
 			// Chech for CSS in /templates/$template/html/$component/
-			$jdocument->addStyleSheet($templatecss . '?v=' . filemtime(JPATH_SITE . $templatecss), $type, $media, $attribs);
+			$jdocument->addStyleSheet(rtrim(JURI::getInstance()->base(true), DS) . $templatecss . '?v=' . filemtime(JPATH_SITE . $templatecss), $type, $media, $attribs);
 		}
 		else if (file_exists(JPATH_SITE . $assetcss)) 
 		{
 			// Chech for CSS in /components/$component/assets/css/
-			$jdocument->addStyleSheet($assetcss . '?v=' . filemtime(JPATH_SITE . $assetcss), $type, $media, $attribs);
+			$jdocument->addStyleSheet(rtrim(JURI::getInstance()->base(true), DS) . $assetcss . '?v=' . filemtime(JPATH_SITE . $assetcss), $type, $media, $attribs);
 		} 
 		else if (file_exists(JPATH_SITE . $componentcss)) 
 		{
 			// Chech for CSS in /components/$component/
-			$jdocument->addStyleSheet($componentcss . '?v=' . filemtime(JPATH_SITE . $componentcss), $type, $media, $attribs);
+			$jdocument->addStyleSheet(rtrim(JURI::getInstance()->base(true), DS) . $componentcss . '?v=' . filemtime(JPATH_SITE . $componentcss), $type, $media, $attribs);
 		}
 	}
 
@@ -126,11 +126,11 @@ class Hubzero_Document
 
 		if ($urlAlt && file_exists(JPATH_SITE . $urlAlt)) 
 		{
-			$jdocument->addScript($urlAlt . '?v=' . filemtime(JPATH_SITE . $urlAlt), $type, $defer, $async);
+			$jdocument->addScript(rtrim(JURI::getInstance()->base(true), DS) . $urlAlt . '?v=' . filemtime(JPATH_SITE . $urlAlt), $type, $defer, $async);
 		} 
 		else if (file_exists(JPATH_SITE . $url)) 
 		{
-			$jdocument->addScript($url . '?v=' . filemtime(JPATH_SITE . $url), $type, $defer, $async);
+			$jdocument->addScript(rtrim(JURI::getInstance()->base(true), DS) . $url . '?v=' . filemtime(JPATH_SITE . $url), $type, $defer, $async);
 		}
 	}
 
@@ -162,11 +162,11 @@ class Hubzero_Document
 
 		if (file_exists(JPATH_SITE . $templatecss)) 
 		{
-			$jdocument->addStyleSheet($templatecss . '?v=' . filemtime(JPATH_SITE . $templatecss), $type, $media, $attribs);
+			$jdocument->addStyleSheet(rtrim(JURI::getInstance()->base(true), DS) . $templatecss . '?v=' . filemtime(JPATH_SITE . $templatecss), $type, $media, $attribs);
 		} 
 		else 
 		{
-			$jdocument->addStyleSheet($systemcss . '?v=' . filemtime(JPATH_SITE . $systemcss), $type, $media, $attribs);
+			$jdocument->addStyleSheet(rtrim(JURI::getInstance()->base(true), DS) . $systemcss . '?v=' . filemtime(JPATH_SITE . $systemcss), $type, $media, $attribs);
 		}
 	}
 
@@ -206,11 +206,11 @@ class Hubzero_Document
 
 		if ($urlAlt && file_exists(JPATH_SITE . $urlAlt)) 
 		{
-			$jdocument->addScript($urlAlt . '?v=' . filemtime(JPATH_SITE . $urlAlt), $type, $defer, $async);
+			$jdocument->addScript(rtrim(JURI::getInstance()->base(true), DS) . $urlAlt . '?v=' . filemtime(JPATH_SITE . $urlAlt), $type, $defer, $async);
 		} 
 		else if (file_exists(JPATH_SITE . $url)) 
 		{
-			$jdocument->addScript($url . '?v=' . filemtime(JPATH_SITE . $url), $type, $defer, $async);
+			$jdocument->addScript(rtrim(JURI::getInstance()->base(true), DS) . $url . '?v=' . filemtime(JPATH_SITE . $url), $type, $defer, $async);
 		}
 	}
 
@@ -236,15 +236,15 @@ class Hubzero_Document
 
 		if (file_exists(JPATH_SITE . $templateimage)) 
 		{
-			return $templateimage;
+			return rtrim(JURI::getInstance()->base(true), DS) . $templateimage;
 		} 
 		else if (file_exists(JPATH_SITE . $assetimage)) 
 		{
-			return $assetimage;
+			return rtrim(JURI::getInstance()->base(true), DS) . $assetimage;
 		}
 		else 
 		{
-			return $componentimage;
+			return rtrim(JURI::getInstance()->base(true), DS) . $componentimage;
 		}
 	}
 
@@ -270,15 +270,15 @@ class Hubzero_Document
 
 		if (file_exists(JPATH_SITE . $templatecss)) 
 		{
-			return $templatecss;
+			return rtrim(JURI::getInstance()->base(true), DS) . $templatecss;
 		} 
 		else if (file_exists(JPATH_SITE . $assetcss)) 
 		{
-			return $assetcss;
+			return rtrim(JURI::getInstance()->base(true), DS) . $assetcss;
 		}
 		else 
 		{
-			return $componentcss;
+			return rtrim(JURI::getInstance()->base(true), DS) . $componentcss;
 		}
 	}
 
@@ -302,11 +302,11 @@ class Hubzero_Document
 
 		if (file_exists(JPATH_SITE . $templateimage)) 
 		{
-			return $templateimage;
+			return rtrim(JURI::getInstance()->base(true), DS) . $templateimage;
 		} 
 		else 
 		{
-			return $moduleimage;
+			return rtrim(JURI::getInstance()->base(true), DS) . $moduleimage;
 		}
 	}
 
@@ -339,11 +339,11 @@ class Hubzero_Document
 
 		if (file_exists(JPATH_SITE . $templatecss)) 
 		{
-			$jdocument->addStyleSheet($templatecss . '?v=' . filemtime(JPATH_SITE . $templatecss), $type, $media, $attribs);
+			$jdocument->addStyleSheet(rtrim(JURI::getInstance()->base(true), DS) . $templatecss . '?v=' . filemtime(JPATH_SITE . $templatecss), $type, $media, $attribs);
 		} 
 		else 
 		{
-			$jdocument->addStyleSheet($modulecss . '?v=' . filemtime(JPATH_SITE . $modulecss), $type, $media, $attribs);
+			$jdocument->addStyleSheet(rtrim(JURI::getInstance()->base(true), DS) . $modulecss . '?v=' . filemtime(JPATH_SITE . $modulecss), $type, $media, $attribs);
 		}
 	}
 	
@@ -379,11 +379,11 @@ class Hubzero_Document
 
 		if ($urlAlt && file_exists(JPATH_SITE . $urlAlt)) 
 		{
-			$jdocument->addScript($urlAlt . '?v=' . filemtime(JPATH_SITE . $urlAlt), $type, $defer, $async);
+			$jdocument->addScript(rtrim(JURI::getInstance()->base(true), DS) . $urlAlt . '?v=' . filemtime(JPATH_SITE . $urlAlt), $type, $defer, $async);
 		} 
 		else 
 		{
-			$jdocument->addScript($url . '?v=' . filemtime(JPATH_SITE . $url), $type, $defer, $async);
+			$jdocument->addScript(rtrim(JURI::getInstance()->base(true), DS) . $url . '?v=' . filemtime(JPATH_SITE . $url), $type, $defer, $async);
 		}
 	}
 
@@ -416,11 +416,11 @@ class Hubzero_Document
 
 		if (file_exists(JPATH_SITE . $templatecss)) 
 		{
-			$jdocument->addStyleSheet($templatecss . '?v=' . filemtime(JPATH_SITE . $templatecss), $type, $media, $attribs);
+			$jdocument->addStyleSheet(rtrim(JURI::getInstance()->base(true), DS) . $templatecss . '?v=' . filemtime(JPATH_SITE . $templatecss), $type, $media, $attribs);
 		} 
 		else 
 		{
-			$jdocument->addStyleSheet($plugincss . '?v=' . filemtime(JPATH_SITE . $plugincss), $type, $media, $attribs);
+			$jdocument->addStyleSheet(rtrim(JURI::getInstance()->base(true), DS) . $plugincss . '?v=' . filemtime(JPATH_SITE . $plugincss), $type, $media, $attribs);
 		}
 	}
 	
@@ -457,11 +457,11 @@ class Hubzero_Document
 
 		if ($urlAlt && file_exists(JPATH_SITE . $urlAlt)) 
 		{
-			$jdocument->addScript($urlAlt . '?v=' . filemtime(JPATH_SITE . $urlAlt), $type, $defer, $async);
+			$jdocument->addScript(rtrim(JURI::getInstance()->base(true), DS) . $urlAlt . '?v=' . filemtime(JPATH_SITE . $urlAlt), $type, $defer, $async);
 		} 
 		else 
 		{
-			$jdocument->addScript($url . '?v=' . filemtime(JPATH_SITE . $url), $type, $defer, $async);
+			$jdocument->addScript(rtrim(JURI::getInstance()->base(true), DS) . $url . '?v=' . filemtime(JPATH_SITE . $url), $type, $defer, $async);
 		}
 	}
 
@@ -572,6 +572,6 @@ class Hubzero_Document
 			}
 		}
 
-		return DS . 'cache' . DS . $cachefile;
+		return rtrim(JURI::getInstance()->base(true), DS) . DS . 'cache' . DS . $cachefile;
 	}
 }
