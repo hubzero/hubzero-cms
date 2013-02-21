@@ -124,7 +124,7 @@
 .length_3 .unit { width: 30%; }
 .length_4 .unit { width: 22.5%; }
 .length_5 .unit { width: 18%; }
-.length_6 .unit { width: 5.625%; }
+.length_6 .unit { width: 15%; }
 .length_7 .unit { width: 12.85%; }
 .length_8 .unit { width: 11.25%; }
 .length_9 .unit { width: 10%; }
@@ -243,6 +243,7 @@
 }
 .instructor .flag {
 	margin-left: 210px;
+	margin-right: 12px;
 	position: absolute;
 	left: 0;
 	right: 0;

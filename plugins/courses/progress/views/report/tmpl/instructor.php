@@ -77,7 +77,7 @@ foreach($this->course->offering()->units() as $unit)
 				$form_count = (isset($form_count)) ? ++$form_count : 1;
 
 				// Also count total forms through current unit
-				if($unit->available() || $unit->ended())
+				if($unit->isAvailable() || $unit->ended())
 				{
 					$form_count_current = (isset($form_count_current)) ? ++$form_count_current : 1;
 				}
@@ -107,6 +107,7 @@ foreach($this->course->offering()->units() as $unit)
 	}
 }
 
+$form_count     = (isset($form_count)) ? $form_count : 1;
 $current_marker = (isset($form_count_current) && isset($form_count)) ? (round(($form_count_current / $form_count)*100, 2)) : 0;
 
 ?>

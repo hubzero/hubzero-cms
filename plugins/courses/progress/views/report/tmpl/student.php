@@ -199,11 +199,11 @@ $current_score = ($current_score_i > 0) ? round(array_sum($current_score) / $cur
 
 // Get the status of the course (e.x. not started, in progress, completed, etc...)
 $section = $this->course->offering()->section();
-if(!$section->available() && !$section->ended())
+if(!$section->isAvailable() && !$section->ended())
 {
 	$h3 = JText::_('Course begins ') . date('M jS, Y', strtotime($section->get('start_date')));
 }
-elseif ($section->available())
+elseif ($section->isAvailable())
 {
 	$h3 = JText::_('Course currently in progress');
 }
@@ -228,7 +228,7 @@ foreach ($units as $unit)
 	$past    = ($unit->started()) ? ' past' : '';
 	$current = '';
 
-	if($unit->available())
+	if($unit->isAvailable())
 	{
 		$current   = ' current';
 		// Set the index for the currently available unit (this will result in the latter of the available units if multiple are available)

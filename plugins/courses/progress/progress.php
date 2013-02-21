@@ -81,7 +81,7 @@ class plgCoursesProgress extends JPlugin
 	 * @param      array   $areas      Active area(s)
 	 * @return     array
 	 */
-	public function onCourse($config, $course, $instance, $action='', $access, $areas=null)
+	public function onCourse($config, $course, $instance, $action='', $areas=null)
 	{
 		$return = 'html';
 		$active = $this->_name;
