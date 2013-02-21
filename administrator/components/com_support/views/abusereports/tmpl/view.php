@@ -65,45 +65,71 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="item-form">
-	<table class="adminlist">
-		<thead>
-			<tr>
-				<td colspan="2"><?php echo JText::_('ITEM_REPORTED_AS_ABUSIVE'); ?></td>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>
-					<h4><?php echo '<a href="'.$link.'">'.$this->escape($this->title).'</a>: ' ?></h4>
-					<p><?php echo (is_object($this->reported)) ? stripslashes($this->reported->text) : ''; ?></p>
-                    <?php if (is_object($this->reported) && isset($this->reported->subject) && $this->reported->subject!='') {
-						echo '<p>'.$this->escape(stripslashes($this->reported->subject)) .'</p>';
-					} ?>
-					<p style="color:#999;">
-						<?php echo JText::_('REPORTED_BY'); ?> <?php echo (is_object($reporter) && $reporter->get('username')) ? $reporter->get('username') : JText::_('UNKNOWN'); ?>, <?php echo JText::_('RECEIVED'); ?> <?php echo JHTML::_('date', $this->report->created, '%d %b, %Y'); ?>: 
-						<?php 
-						if ($this->report->report) {
-							echo $this->escape(stripslashes($this->report->report));
-						} else {
-							echo $this->escape(stripslashes($this->report->subject));
-						}
-						?>
-					</p>
-				</td>
-				<td >
-				<?php if ($this->report->state==0) { ?>
-					<?php echo JText::_('TAKE_ACTION'); ?>:<br />
-					<label><input type="radio" name="task" value="release" /> <?php echo JText::_('RELEASE_ITEM'); ?></label><br />
-					<label><input type="radio" name="task" value="remove" /> <?php echo JText::_('DELETE_ITEM'); ?> (Append explanation below - optional)</label><br />
-                    <label><textarea name="note" id="note" rows="5" cols="25" style="width: 100%;"></textarea></label><br />
-					<label><input type="radio" name="task" value="cancel" /> <?php echo JText::_('DECIDE_LATER'); ?></label>
-				<?php } else { ?>
-					<input type="hidden" name="task" value="view" />
-				<?php } ?>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+	<div class="col width-60 fltlft">
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('ITEM_REPORTED_AS_ABUSIVE'); ?></span></legend>
+
+			<table class="admintable">
+				<tbody>
+					<tr>
+						<td>
+							<h4><?php echo '<a href="'.$link.'">'.$this->escape($this->title).'</a>: ' ?></h4>
+							<p><?php echo (is_object($this->reported)) ? stripslashes($this->reported->text) : ''; ?></p>
+		                    <?php if (is_object($this->reported) && isset($this->reported->subject) && $this->reported->subject!='') {
+								echo '<p>'.$this->escape(stripslashes($this->reported->subject)) .'</p>';
+							} ?>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p style="color:#999;">
+								<?php echo JText::_('REPORTED_BY'); ?> <?php echo (is_object($reporter) && $reporter->get('username')) ? $reporter->get('username') : JText::_('UNKNOWN'); ?>, <?php echo JText::_('RECEIVED'); ?> <?php echo JHTML::_('date', $this->report->created, '%d %b, %Y'); ?>: 
+								<?php 
+								if ($this->report->report) {
+									echo '<br /><br />' . $this->escape(stripslashes($this->report->report));
+								} else {
+									echo '<br /><br />' . $this->escape(stripslashes($this->report->subject));
+								}
+								?>
+							</p>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</fieldset>
+	</div>
+	<div class="col width-40 fltrt">
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('TAKE_ACTION'); ?></span></legend>
+
+<?php if ($this->report->state==0) { ?>
+			<table class="admintable">
+				<tbody>
+					<tr>
+						<td>
+							<label for="field-task-release"><input type="radio" name="task" id="field-task-release" value="release" /> <?php echo JText::_('RELEASE_ITEM'); ?></label><br />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="field-task-remove"><input type="radio" name="task" id="field-task-remove" value="remove" /> <?php echo JText::_('DELETE_ITEM'); ?> <?php echo JText::_('(Append explanation below - optional)'); ?></label><br />
+							<label><textarea name="note" id="note" rows="5" cols="25" style="width: 100%;"></textarea></label><br />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="field-task-cancel"><input type="radio" name="task" value="cancel" id="field-task-cancel" checked="checked" /> <?php echo JText::_('DECIDE_LATER'); ?></label>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+<?php } else { ?>
+			<p class="warning"><?php echo JText::_('Action already taken.'); ?></p>
+			<input type="hidden" name="task" value="view" />
+<?php } ?>
+		</fieldset>
+	</div>
+	<div class="clr"></div>
 	
 	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller ?>" />

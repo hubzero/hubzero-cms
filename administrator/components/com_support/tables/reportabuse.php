@@ -128,9 +128,9 @@ class ReportAbuse extends JTable
 	{
 		$query = " FROM $this->_tbl AS a WHERE";
 
-		if (isset($filters['state']) && $filters['state'] == 1) 
+		if (isset($filters['state'])) 
 		{
-			$query .= " a.state=1";
+			$query .= " a.state=" . $filters['state'];
 		} 
 		else 
 		{

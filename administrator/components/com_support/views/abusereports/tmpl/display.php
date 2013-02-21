@@ -52,6 +52,7 @@ function submitbutton(pressbutton)
 		<select name="state" onchange="document.adminForm.submit( );">
 			<option value="0"<?php if ($this->filters['state'] == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('OUTSTANDING'); ?></option>
 			<option value="1"<?php if ($this->filters['state'] == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('RELEASED'); ?></option>
+			<option value="2"<?php if ($this->filters['state'] == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('DELETED'); ?></option>
 		</select>
 
 		<label><?php echo JText::_('SORT_BY'); ?>:</label> 
