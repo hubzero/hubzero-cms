@@ -564,6 +564,7 @@ class Hubzero_Document
 				'$1'*/
 			);
 			$contents = preg_replace($patterns, $replacements, $contents);
+			$contents = str_replace("url('/media/system/", "url('" . rtrim(JURI::getInstance()->base(true), DS) . "/media/system/", $contents);
 
 			if ($fp = fopen($cachedir . DS . $cachefile, 'wb')) 
 			{
