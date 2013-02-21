@@ -170,7 +170,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 			</div><!-- / .inner-wrap -->
 		</div><!-- / #top -->
 		<div id="wrap">
-			<div id="content" class="<?php echo $option; ?>" role="main">
+			<div id="content" class="<?php echo JRequest::getVar('option', ''); ?>" role="main">
 				<div class="inner">
 					<a name="content" id="content-anchor"></a>
 <?php if ($this->countModules('left')) : ?>

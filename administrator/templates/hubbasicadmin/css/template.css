@@ -1492,19 +1492,20 @@
 		-o-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
 		box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
 		position: relative;
+		min-height: 4.5em;
 	}
 	.toolbar-box .breadcrumb-title {
 		display: none;
 	}
-	.toolbar-box #toolbar,
-	.toolbar-box div {
+	.toolbar-box #toolbar {
 		margin: 1.5em 2.61803399em 0 0;
 		padding: 0;
 		position: absolute;
 		top: 0;
 		right: 0;
 	}
-	.toolbar-box h2,
+	
+	.toolbar-box .pagetitle,
 	.toolbar-box .header {
 		font-size: 1.5em;
 		display: inline-block;
@@ -1517,20 +1518,23 @@
 		position: relative;
 		float: none;
 		white-space: nowrap;
-	}
-	.toolbar-box .header {
+		text-align: left;
 		line-height: 1.7em;
-	}
-	.toolbar-box .header,
-	.toolbar-box .pagetitle {
 		padding-left: 48px;
 	}
-	.toolbar-box h2 span,
+	.toolbar-box .pagetitle h2 {
+		font-size: 1em;
+		margin: 0;
+		padding: 0;
+	}
+	.toolbar-box .pagetitle span,
 	.toolbar-box .header span,
-	.toolbar-box h2 small,
+	.toolbar-box .pagetitle small,
 	.toolbar-box .header small {
 		color: #999;
 	}
+	.toolbar-box .pagetitle small.fontcon-before,
+	.toolbar-box .pagetitle:before,
 	.toolbar-box .header small.fontcon-before,
 	.toolbar-box .header:before {
 		font-family: 'Fontcons';	
@@ -1554,6 +1558,8 @@
 		color: #000;
 	}
 	
+	.toolbar-box ul,
+	.toolbar-box ul li,
 	.toolbar-box table.toolbar,
 	.toolbar-box table.toolbar tr,
 	.toolbar-box table.toolbar td {
@@ -1562,11 +1568,7 @@
 		padding: 0;
 		border: none;
 	}
-	.toolbar-box ul,
-	.toolbar-box table {
-		margin: 0;
-		padding: 0;
-	}
+
 	.toolbar-box ul li {
 		margin: 0 0 0 0.5em;
 		padding: 0;
@@ -1574,6 +1576,7 @@
 		float: left;
 		text-align: center;
 		font-size: 85%;
+		display: block;
 	}
 	.toolbar-box ul li:first-child {
 		padding-right: 0em;
@@ -1591,21 +1594,21 @@
 	}
 	.toolbar-box table a span,
 	.toolbar-box li a span {
-	    z-index: 1;
-	    overflow: hidden;
-	    list-style: none;
-	    padding: 0;
-	    margin: 0 auto;
+		z-index: 1;
+		overflow: hidden;
+		list-style: none;
+		padding: 0;
+		margin: 0 auto;
 		display: block;
 		height: 24px;
 		width: 24px;
 		border: none;
 		background-repeat: no-repeat;
-	}
-	.toolbar-box table a span {
 		position: relative;
 		text-indent: 0;
 	}
+	.toolbar-box li a small.fontcon-before,
+	.toolbar-box li a span:before,
 	.toolbar-box table a small.fontcon-before,
 	.toolbar-box table a span:before {
 		font-family: 'Fontcons';	
@@ -1618,6 +1621,8 @@
 		text-decoration: none;
 		cursor: pointer;
 	}
+	.toolbar-box li a small.fontcon-after,
+	.toolbar-box li a span:after,
 	.toolbar-box table a small.fontcon-after,
 	.toolbar-box table a span:after {
 		font-size: 16px;
@@ -1647,8 +1652,10 @@
 		color: #000;
 		text-decoration: none;
 	}
+	.toolbar-box li.divider,
 	.toolbar-box table td.spacer {
-		width: 24px;
+		width: 22px;
+		border: 1px solid #fff;
 	}
 /* Pagination */
 	.pagination {
