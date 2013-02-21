@@ -94,6 +94,7 @@ HUB.CoursesOutline = {
 			if($(this).hasClass('unit-title-arrow-active')){
 				$(this).siblings('.asset-group-type-list').slideUp(500, function() {
 					HUB.CoursesOutline.resizeDeleteTray();
+					$('html, body').animate({scrollTop: $(this).parents('.unit').offset().top - 10}, 1000);
 				});
 				$(this).removeClass('unit-title-arrow-active');
 			} else {
@@ -102,6 +103,7 @@ HUB.CoursesOutline = {
 				$(this).siblings('.asset-group-type-list').slideDown(500, function() {
 					HUB.CoursesOutline.resizeFileUploader();
 					HUB.CoursesOutline.resizeDeleteTray();
+					$('html, body').animate({scrollTop: $(this).parents('li').offset().top - 10}, 1000);
 				});
 
 				// Toggle class for arrow (active gives down arrow indicating expanded list)
