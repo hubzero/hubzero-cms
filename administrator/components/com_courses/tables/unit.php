@@ -213,16 +213,16 @@ class CoursesTableUnit extends JTable
 		$query = " FROM $this->_tbl AS cu 
 					LEFT JOIN #__courses_offering_section_dates AS sd ON sd.scope='unit' AND sd.scope_id=cu.id";
 
+		if (isset($filters['section_id']) && $filters['section_id']) 
+		{
+			$query .= " AND sd.section_id=" . $this->_db->Quote($filters['section_id']);
+		}
+
 		$where = array();
 
 		if (isset($filters['offering_id']) && $filters['offering_id']) 
 		{
 			$where[] = "cu.offering_id=" . $this->_db->Quote($filters['offering_id']);
-		}
-
-		if (isset($filters['section_id']) && $filters['section_id']) 
-		{
-			$where[] = "sd.section_id=" . $this->_db->Quote($filters['section_id']);
 		}
 
 		if (isset($filters['search']) && $filters['search']) 

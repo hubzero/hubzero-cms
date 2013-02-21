@@ -432,6 +432,31 @@ class CoursesModelUnit extends CoursesModelAbstract
 	}
 
 	/**
+	 * Store changes to this offering
+	 *
+	 * @param     boolean $check Perform data validation check?
+	 * @return    boolean False if error, True on success
+	 */
+	public function store($check=true)
+	{
+		$value = parent::store($check);
+
+		if ($value && $this->get('section_id'))
+		{
+			$dt = new CoursesTableSectionDate($this->_db);
+			$dt->load($this->get('id'), $this->_scope, $this->get('section_id'));
+			$dt->set('publish_up', $this->get('publish_up'));
+			$dt->set('publish_down', $this->get('publish_down'));
+			if (!$dt->store())
+			{
+				$this->setError($dt->getError());
+			}
+		}
+
+		return $value;
+	}
+
+	/**
 	 * Delete an entry and associated data
 	 * 
 	 * @return     boolean True on success, false on error
@@ -443,7 +468,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 		{
 			if (!$group->delete())
 			{
-				$this->setError($child->getError());
+				$this->setError($group->getError());
 			}
 		}
 
@@ -457,11 +482,14 @@ class CoursesModelUnit extends CoursesModelAbstract
 		}
 
 		// Remove dates
-		$dt = new CoursesTableSectionDate($this->_db);
-		$dt->load($this->get('id'), $this->_scope, $this->get('section_id'));
-		if (!$dt->delete())
+		if ($this->get('section_id'))
 		{
-			$this->setError($dt->getError());
+			$dt = new CoursesTableSectionDate($this->_db);
+			$dt->load($this->get('id'), $this->_scope, $this->get('section_id'));
+			if (!$dt->delete())
+			{
+				$this->setError($dt->getError());
+			}
 		}
 
 		// Remove this record from the database and log the event

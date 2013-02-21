@@ -232,7 +232,7 @@ class CoursesControllerSections extends Hubzero_Controller
 			}*/
 			$dt['section_id'] = $model->get('id');
 
-			$dtmodel = CoursesModelSectionDate::getInstance($dt['id']);
+			$dtmodel = new CoursesModelSectionDate($dt['id']);
 			if (!$dtmodel->bind($dt))
 			{
 				$this->setError($dtmodel->getError());
@@ -268,7 +268,7 @@ class CoursesControllerSections extends Hubzero_Controller
 					}*/
 					$ag['section_id'] = $model->get('id');
 
-					$dtmodel = CoursesModelSectionDate::getInstance($ag['id']);
+					$dtmodel = new CoursesModelSectionDate($ag['id']);
 					if (!$dtmodel->bind($ag))
 					{
 						$this->setError($dtmodel->getError());
@@ -304,7 +304,7 @@ class CoursesControllerSections extends Hubzero_Controller
 							}*/
 							$agt['section_id'] = $model->get('id');
 
-							$dtmodel = CoursesModelSectionDate::getInstance($agt['id']);
+							$dtmodel = new CoursesModelSectionDate($agt['id']);
 							if (!$dtmodel->bind($agt))
 							{
 								$this->setError($dtmodel->getError());
@@ -340,7 +340,7 @@ class CoursesControllerSections extends Hubzero_Controller
 									}*/
 									$a['section_id'] = $model->get('id');
 
-									$dtmodel = CoursesModelSectionDate::getInstance($a['id']);
+									$dtmodel = new CoursesModelSectionDate($a['id']);
 									if (!$dtmodel->bind($a))
 									{
 										$this->setError($dtmodel->getError());

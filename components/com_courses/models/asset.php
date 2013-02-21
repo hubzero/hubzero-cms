@@ -34,6 +34,8 @@ defined('_JEXEC') or die('Restricted access');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
 
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'sectiondate.php');
+
 /**
  * Courses model class for a course
  */
@@ -153,6 +155,31 @@ class CoursesModelAsset extends CoursesModelAbstract
 	}
 
 	/**
+	 * Store changes to this offering
+	 *
+	 * @param     boolean $check Perform data validation check?
+	 * @return    boolean False if error, True on success
+	 */
+	public function store($check=true)
+	{
+		$value = parent::store($check);
+
+		if ($value && $this->get('section_id'))
+		{
+			$dt = new CoursesTableSectionDate($this->_db);
+			$dt->load($this->get('id'), $this->_scope, $this->get('section_id'));
+			$dt->set('publish_up', $this->get('publish_up'));
+			$dt->set('publish_down', $this->get('publish_down'));
+			if (!$dt->store())
+			{
+				$this->setError($dt->getError());
+			}
+		}
+
+		return $value;
+	}
+
+	/**
 	 * Delete an asset
 	 *   Deleted asset_associations until there is only one
 	 *   association left, then it deletes the association,
@@ -163,11 +190,14 @@ class CoursesModelAsset extends CoursesModelAbstract
 	public function delete()
 	{
 		// Remove dates
-		$dt = new CoursesTableSectionDate($this->_db);
-		$dt->load($this->get('id'), $this->_scope, $this->get('section_id'));
-		if (!$dt->delete())
+		if ($this->get('section_id'))
 		{
-			$this->setError($dt->getError());
+			$dt = new CoursesTableSectionDate($this->_db);
+			$dt->load($this->get('id'), $this->_scope, $this->get('section_id'));
+			if (!$dt->delete())
+			{
+				$this->setError($dt->getError());
+			}
 		}
 
 		// Remove this record from the database and log the event

@@ -372,6 +372,31 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 	}
 
 	/**
+	 * Store changes to this offering
+	 *
+	 * @param     boolean $check Perform data validation check?
+	 * @return    boolean False if error, True on success
+	 */
+	public function store($check=true)
+	{
+		$value = parent::store($check);
+
+		if ($value && $this->get('section_id'))
+		{
+			$dt = new CoursesTableSectionDate($this->_db);
+			$dt->load($this->get('id'), $this->_scope, $this->get('section_id'));
+			$dt->set('publish_up', $this->get('publish_up'));
+			$dt->set('publish_down', $this->get('publish_down'));
+			if (!$dt->store())
+			{
+				$this->setError($dt->getError());
+			}
+		}
+
+		return $value;
+	}
+
+	/**
 	 * Delete an entry and associated data
 	 * 
 	 * @return     boolean True on success, false on error
@@ -395,13 +420,16 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 			}
 		}
 
-		$dt = new CoursesTableSectionDate($this->_db);
-		$dt->load($this->get('id'), $this->_scope, $this->get('section_id'));
-		if ($dt->id)
+		if ($this->get('section_id'))
 		{
-			if (!$dt->delete())
+			$dt = new CoursesTableSectionDate($this->_db);
+			$dt->load($this->get('id'), $this->_scope, $this->get('section_id'));
+			if ($dt->id)
 			{
-				$this->setError($dt->getError());
+				if (!$dt->delete())
+				{
+					$this->setError($dt->getError());
+				}
 			}
 		}
 
