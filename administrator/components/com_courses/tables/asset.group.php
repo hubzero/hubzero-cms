@@ -184,14 +184,14 @@ class CoursesTableAssetGroup extends JTable
 	{
 		$query  = " FROM $this->_tbl AS cag";
 		$query .= " LEFT JOIN #__courses_offering_section_dates AS sd ON sd.scope='asset_group' AND sd.scope_id=cag.id";
+		if (isset($filters['section_id']) && $filters['section_id']) 
+		{
+			$query .= " AND sd.section_id=" . $this->_db->Quote($filters['section_id']);
+		}
 		$query .= " LEFT JOIN #__courses_units AS cu ON cu.id = cag.unit_id";
 
 		$where = array();
 
-		if (isset($filters['section_id']) && $filters['section_id']) 
-		{
-			$where[] = "sd.section_id=" . $this->_db->Quote($filters['section_id']);
-		}
 		if (isset($filters['unit_id']) && $filters['unit_id']) 
 		{
 			$where[] = "cag.unit_id=" . $this->_db->Quote($filters['unit_id']);
