@@ -50,7 +50,7 @@ ximport('Hubzero_User_Password');
 		<p id="errors"></p>
 	<?php } ?>
 
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->profile->get('uidNumber').'&task=changepassword'); ?>" method="post" id="hubForm">
+	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->profile->get('uidNumber').'&task=changepassword', true, true); ?>" method="post" id="hubForm">
 		<div class="explaination">
 			<p><?php echo JText::_('MEMBERS_CHANGEPASSWORD_EXPLANATION'); ?></p>
 			<p>If you don't remember your current password, you'll have to <a href="<?php echo JRoute::_('index.php?option=com_user&task=logout&return='.base64_encode('/user/reset')); ?>">reset your password</a></p>

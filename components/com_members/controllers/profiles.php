@@ -499,6 +499,12 @@ class MembersControllerProfiles extends Hubzero_Controller
 	 */
 	public function changepasswordTask()
 	{
+		if (!isset( $_SERVER['HTTPS'] ) || $_SERVER['HTTPS'] == 'off')
+		{
+			JFactory::getApplication()->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+			die('insecure connection and redirection failed');
+		}
+
 		ximport('Hubzero_User_Password');
 
 		// Set the page title

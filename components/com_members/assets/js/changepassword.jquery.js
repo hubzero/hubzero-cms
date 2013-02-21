@@ -29,6 +29,7 @@ HUB.MembersChangePassword = {
 		var password = $('#newpass');
 		var passsave = $('#password-change-save');
 
+		// Keep this disabled until API is more widely deployed
 		/*password.on('keyup', function(){
 			// Create an ajax call to check the potential password
 			$.ajax({
@@ -65,6 +66,7 @@ HUB.MembersChangePassword = {
 				type: 'POST',
 				url: form.attr("action"),
 				data: form.serialize(),
+				cache: false,
 				success: function(data, status, xhr)
 				{
 					// Parse the returned json data
@@ -111,6 +113,8 @@ HUB.MembersChangePassword = {
 				error: function(xhr, status, error)
 				{
 					console.log("An error occured while trying to save your password.");
+					// Try reloading the page for good measure
+					window.location.reload();
 				}
 			});
 		});
