@@ -55,11 +55,18 @@ class CoursesApiController extends Hubzero_Api_Controller
 		// Get a database object
 		$this->db = JFactory::getDBO();
 
-		// Switch based on task (i.e. "/api/courses/xxxxx")
+		// Switch based on entity type and action
 		switch($this->segments[0])
 		{
 			// Units
-			case 'unitsave':               $this->unitSave();                 break;
+			case 'unit':
+				switch($this->segments[1])
+				{
+					case 'save': $this->unitSave(); break;
+
+					default:     $this->unitSave(); break;
+				}
+			break;
 
 			// Asset groups
 			case 'assetgroupsave':         $this->assetGroupSave();           break;
@@ -84,7 +91,7 @@ class CoursesApiController extends Hubzero_Api_Controller
 	/**
 	 * Save a course unit
 	 * 
-	 * @return 201 created on success
+	 * @return '201 Created' on new, '200 OK' otherwise
 	 */
 	private function unitSave()
 	{
@@ -95,56 +102,60 @@ class CoursesApiController extends Hubzero_Api_Controller
 		$authorized = $this->authorize();
 		if(!$authorized['manage'])
 		{
-			$this->setMessage('You don\'t have permission to do this', 401, 'Unauthorized');
+			$this->setMessage('You don\'t have permission to do this', 401, 'Not Authorized');
 			return;
 		}
 
 		// Import needed courses JTable libraries
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'unit.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'unit.php');
 
-		$unitObj = new CoursesTableUnit($this->db);
+		// Make sure we have an incoming 'id'
+		$id = JRequest::getInt('id', null);
 
-		if($id = JRequest::getInt('id', false))
+		// Create our unit model
+		$unit =& CoursesModelUnit::getInstance($id);
+
+		// Check to make sure we have a unit object
+		if (!is_object($unit))
 		{
-			if (!$unitObj->load($id))
-			{
-				$this->setMessage("Loading unit $id failed", 500, 'Internal server error');
-				return;
-			}
+			$this->setMessage("Failed to create a unit object", 500, 'Internal server error');
+			return;
 		}
 
 		// We'll always save the title again, even if it's just to the same thing
-		$title      = (!empty($unitObj->title)) ? $unitObj->title : 'New Unit';
-		$row->title = JRequest::getString('title', $title);
-		$row->title = preg_replace("/[^a-zA-Z0-9 \-\:\.]/", "", $row->title);
-		$row->alias = strtolower(str_replace(' ', '', $row->title));
+		$title = $unit->get('title');
+		$title = (!empty($title)) ? $title : 'New Unit';
+
+		// Set our values
+		$unit->set('title', JRequest::getString('title', $title));
+		// @FIXME: do we want any sort of character restrictions on unit titles?
+		//preg_replace("/[^a-zA-Z0-9 \-\:\.]/", "", $row->title);
+		$unit->set('alias', strtolower(str_replace(' ', '', $unit->get('title'))));
 
 		// If we have dates coming in, save those
-		if($start_date = JRequest::getCmd('start_date', false))
+		if($publish_up = JRequest::getCmd('publish_up', false))
 		{
-			$row->start_date = $start_date;
+			$unit->set('publish_up', $publish_up);
 		}
-		if($end_date = JRequest::getCmd('end_date', false))
+		if($publish_down = JRequest::getCmd('publish_down', false))
 		{
-			$row->end_date = $end_date;
+			$unit->set('publish_down', $publish_down);
 		}
 
 		// When creating a new unit
 		if(!$id)
 		{
-			$row->offering_id = JRequest::getInt('offering_id', 0);
-			$row->created     = date('Y-m-d H:i:s');
-			$row->created_by  = JFactory::getApplication()->getAuthn('user_id');
+			$unit->set('offering_id', JRequest::getInt('offering_id', 0));
+			$unit->set('created', date('Y-m-d H:i:s'));
+			$unit->set('created_by', JFactory::getApplication()->getAuthn('user_id'));
 		}
 
 		// Save the unit
-		if (!$unitObj->save($row))
+		if (!$unit->store())
 		{
-			$this->setMessage("Saving unit $id failed", 500, 'Internal server error');
+			$this->setMessage("Saving unit {$id} failed ({$unit->getError()})", 500, 'Internal server error');
 			return;
 		}
-
-		// @FIXME: what needs to happen to set dates?
 
 		// Create a placeholder for our return object
 		$assetGroups = array();
@@ -154,32 +165,29 @@ class CoursesApiController extends Hubzero_Api_Controller
 		if(!$id)
 		{
 			// Get our asset group object
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.group.php');
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'assetgroup.php');
 
 			foreach (array('Lectures', 'Homework', 'Exam') as $key)
 			{
-				$assetGroupObj = new CoursesTableAssetGroup($this->db);
+				$assetGroup = new CoursesModelAssetgroup(null);
 
-				$row = new stdclass();
-
-				$row->id          = null;
-				$row->title       = $key;
-				$row->alias       = strtolower(str_replace(' ', '', $row->title));
-				$row->unit_id     = $unitObj->id;
-				$row->parent      = 0;
-				$row->created     = date('Y-m-d H:i:s');
-				$row->created_by  = JFactory::getApplication()->getAuthn('user_id');
+				$assetGroup->set('title', $key);
+				$assetGroup->set('alias', strtolower(str_replace(' ', '', $assetGroup->get('title'))));
+				$assetGroup->set('unit_id', $unit->get('id'));
+				$assetGroup->set('parent', 0);
+				$assetGroup->set('created', date('Y-m-d H:i:s'));
+				$assetGroup->set('created_by', JFactory::getApplication()->getAuthn('user_id'));
 
 				// Save the asset group
-				if (!$assetGroupObj->save($row))
+				if (!$assetGroup->store())
 				{
 					$this->setMessage("Asset group save failed", 500, 'Internal server error');
 					return;
 				}
 
 				$return = new stdclass();
-				$return->assetgroup_id      = $assetGroupObj->id;
-				$return->assetgroup_title   = $assetGroupObj->title;
+				$return->assetgroup_id      = $assetGroup->get('id');
+				$return->assetgroup_title   = $assetGroup->get('title');
 				$return->course_id          = $this->course_id;
 				$return->assetgroup_style   = '';
 
@@ -187,17 +195,21 @@ class CoursesApiController extends Hubzero_Api_Controller
 			}
 		}
 
+		// Set the status code
+		$status = ($id) ? array('code'=>200, 'text'=>'OK') : array('code'=>201, 'text'=>'Created');
+
 		// Return message
 		$this->setMessage(
 			array(
-				'unit_id'        => $unitObj->id,
-				'unit_title'     => $unitObj->title,
+				'unit_id'        => $unit->get('id'),
+				'unit_title'     => $unit->get('title'),
 				'course_id'      => $this->course_id,
 				'assetgroups'    => $assetGroups,
 				'course_alias'   => $this->course->get('alias'),
 				'offering_alias' => $this->offering_alias
 			),
-			201, 'Created');
+			$status['code'],
+			$status['text']);
 	}
 
 	//--------------------------

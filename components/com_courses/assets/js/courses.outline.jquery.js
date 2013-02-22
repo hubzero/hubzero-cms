@@ -411,7 +411,7 @@ HUB.CoursesOutline = {
 				url: form.attr('action'),
 				data: form.serialize(),
 				statusCode: {
-					201: function(data){
+					200: function (data, textStatus, jqXHR){
 						parent.find('.toggle-editable:first').html(parent.find('.title-text:first').val());
 
 						// Hide inputs and show plain text
@@ -965,22 +965,8 @@ HUB.CoursesOutline = {
 							url: detailsForm.attr('action'),
 							data: detailsForm.serialize(),
 							statusCode: {
-								201: function(data){
+								200: function(data){
 									$.fancybox.close();
-								},
-								401: function(data){
-									// Display the error message
-									HUB.CoursesOutline.errorMessage(data.responseText);
-									return false;
-								},
-								404: function(data){
-									HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
-									return false;
-								},
-								500: function(data){
-									// Display the error message
-									HUB.CoursesOutline.errorMessage(data.responseText);
-									return false;
 								}
 							}
 						});
@@ -1152,7 +1138,7 @@ HUB.CoursesOutline = {
 				'<div class="unit-title-arrow"></div>',
 				'<div class="title unit-title toggle-editable"><%= unit_title %></div>',
 				'<div class="title-edit">',
-					'<form action="/api/courses/unitsave" class="title-form">',
+					'<form action="/api/courses/unit/save" class="title-form">',
 						'<input class="uniform title-text" name="title" type="text" value="<%= unit_title %>" />',
 						'<input class="uniform title-save" type="submit" value="Save" />',
 						'<input class="uniform title-reset" type="reset" value="Cancel" />',

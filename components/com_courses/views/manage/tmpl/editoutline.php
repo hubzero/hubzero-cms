@@ -102,7 +102,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 			<div class="unit-title-arrow"></div>
 			<div class="title unit-title toggle-editable"><?php echo $unit->get('title'); ?></div>
 			<div class="title-edit">
-				<form action="/api/courses/unitsave" class="title-form">
+				<form action="/api/courses/unit/save" class="title-form">
 					<input class="uniform title-text" name="title" type="text" value="<?php echo $unit->get('title'); ?>" />
 					<input class="uniform title-save" type="submit" value="Save" />
 					<input class="uniform title-reset" type="reset" value="Cancel" />
@@ -204,7 +204,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 
 		<li class="add-new unit-item">
 			Add a new unit
-			<form action="/api/courses/unitsave">
+			<form action="/api/courses/unit/save">
 				<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
 				<input type="hidden" name="offering_id" value="<?php echo $this->course->offering()->get('id'); ?>" />
 				<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />

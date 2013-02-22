@@ -913,8 +913,9 @@ class CoursesModelOffering extends CoursesModelAbstract
 		if ($isNew)
 		{
 			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'log.php');
+			$juser = JFactory::getUser();
 
-			$log = new CoursesTableLog($this->database);
+			$log = new CoursesTableLog($this->_db);
 			$log->scope_id  = $this->get('id');
 			$log->scope     = 'course';
 			$log->user_id   = $juser->get('id');

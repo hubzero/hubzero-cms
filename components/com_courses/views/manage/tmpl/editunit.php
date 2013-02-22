@@ -31,17 +31,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$base = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias');
-
-$unit       = $this->course->offering->unit($this->scope_id);
-$start_date = (!is_null($unit->get('start_date')) && $unit->get('start_date') != '0000-00-00')? $unit->get('start_date') : '';
-$end_date   = (!is_null($unit->get('end_date')) && $unit->get('end_date') != '0000-00-00')? $unit->get('end_date') : '';
+$unit         = $this->course->offering->unit($this->scope_id);
+$publish_up   = (!is_null($unit->get('publish_up')) && $unit->get('publish_up') != '0000-00-00')? $unit->get('publish_up') : '';
+$publish_down = (!is_null($unit->get('publish_down')) && $unit->get('publish_down') != '0000-00-00')? $unit->get('publish_down') : '';
 ?>
 
 <div class="main section <?php echo $this->scope; ?>-edit">
-	<form action="/api/courses/unitsave" class="unit-details-form">
-		<input type="text" value="<?php echo $start_date; ?>" name="start_date" id="start_date" class="datepicker" placeholder="Start publishing on" />
-		<input type="text" value="<?php echo $end_date; ?>"   name="end_date"   id="end_date"   class="datepicker" placeholder="Stop publishing on" />
+	<form action="/api/courses/unit/save" class="unit-details-form">
+		<input type="text" value="<?php echo $publish_up; ?>"   name="publish_up"   id="publish_up"   class="datepicker" placeholder="Start publishing on" />
+		<input type="text" value="<?php echo $publish_down; ?>" name="publish_down" id="publish_down" class="datepicker" placeholder="Stop publishing on" />
 
 		<input type="hidden" name="id" value="<?php echo $this->scope_id; ?>" />
 		<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />

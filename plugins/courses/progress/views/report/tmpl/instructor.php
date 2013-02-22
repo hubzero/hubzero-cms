@@ -113,58 +113,62 @@ $current_marker = (isset($form_count_current) && isset($form_count)) ? (round(($
 ?>
 
 <div class="instructor">
-	<div class="flag"><div class="flag-inner" style="left:<?= $current_marker ?>%;"></div></div>
-	<? foreach($members as $m) : ?>
-		<div class="student">
-			<div class="student-name"><?= JFactory::getUser($m->get('user_id'))->get('name'); ?></div>
-			<div class="progress-bar-container">
-				<? if(isset($progress[$m->get('user_id')])) : ?>
-					<?
-						$studentProgress = ($progress[$m->get('user_id')]['form_count'] / $form_count)*100;
-						$studentStatus   = ($studentProgress / $current_marker)*100;
-						$cls = '';
-						if($studentStatus < 60)
-						{
-							$cls = ' stop';
-						}
-						elseif($studentStatus >= 60 && $studentStatus < 70)
-						{
-							$cls = ' yield';
-						}
-						elseif($studentStatus >= 70 && $studentStatus <= 100)
-						{
-							$cls = ' go';
-						}
-					?>
-					<div class="student-progress-bar <?= $cls ?>" style="width:<?= $studentProgress ?>%;"></div>
-				<? endif; ?>
+	<? if(count($members) > 0) : ?>
+		<div class="flag"><div class="flag-inner" style="left:<?= $current_marker ?>%;"></div></div>
+		<? foreach($members as $m) : ?>
+			<div class="student">
+				<div class="student-name"><?= JFactory::getUser($m->get('user_id'))->get('name'); ?></div>
+				<div class="progress-bar-container">
+					<? if(isset($progress[$m->get('user_id')])) : ?>
+						<?
+							$studentProgress = ($progress[$m->get('user_id')]['form_count'] / $form_count)*100;
+							$studentStatus   = ($studentProgress / $current_marker)*100;
+							$cls = '';
+							if($studentStatus < 60)
+							{
+								$cls = ' stop';
+							}
+							elseif($studentStatus >= 60 && $studentStatus < 70)
+							{
+								$cls = ' yield';
+							}
+							elseif($studentStatus >= 70 && $studentStatus <= 100)
+							{
+								$cls = ' go';
+							}
+						?>
+						<div class="student-progress-bar <?= $cls ?>" style="width:<?= $studentProgress ?>%;"></div>
+					<? endif; ?>
+				</div>
+				<div class="clear"></div>
+				<div class="student-details">
+					<table>
+						<thead>
+							<tr>
+								<td>Title</td>
+								<td>Score</td>
+								<td>Date</td>
+							</tr>
+						</thead>
+						<tbody>
+							<? foreach($this->course->offering()->units() as $unit) : ?>
+								<? if(isset($progress[$m->get('user_id')]) && isset($progress[$m->get('user_id')][$unit->get('id')])) : ?>
+									<? foreach($progress[$m->get('user_id')][$unit->get('id')]['forms'] as $form) : ?>
+										<tr>
+											<td><?= $form['title'] ?></td>
+											<td><?= round($form['score'], 2) . '%' ?></td>
+											<td><?= $form['finished'] ?></td>
+										</tr>
+									<? endforeach; ?>
+								<? endif; ?>
+							<? endforeach; ?>
+						</tbody>
+					</table>
+				</div>
 			</div>
 			<div class="clear"></div>
-			<div class="student-details">
-				<table>
-					<thead>
-						<tr>
-							<td>Title</td>
-							<td>Score</td>
-							<td>Date</td>
-						</tr>
-					</thead>
-					<tbody>
-						<? foreach($this->course->offering()->units() as $unit) : ?>
-							<? if(isset($progress[$m->get('user_id')]) && isset($progress[$m->get('user_id')][$unit->get('id')])) : ?>
-								<? foreach($progress[$m->get('user_id')][$unit->get('id')]['forms'] as $form) : ?>
-									<tr>
-										<td><?= $form['title'] ?></td>
-										<td><?= round($form['score'], 2) . '%' ?></td>
-										<td><?= $form['finished'] ?></td>
-									</tr>
-								<? endforeach; ?>
-							<? endif; ?>
-						<? endforeach; ?>
-					</tbody>
-				</table>
-			</div>
-		</div>
-		<div class="clear"></div>
-	<? endforeach; ?>
+		<? endforeach; ?>
+	<? else : ?>
+		<p class="info">The section does not currently have anyone enrolled</p>
+	<? endif; ?>
 </div>
