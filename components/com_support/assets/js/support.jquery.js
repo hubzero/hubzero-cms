@@ -60,7 +60,7 @@ HUB.Support = {
 		}
 
 		// Add customized tooltip (with delay so it doesn't popup when moving mouse down the screen)
-		$('.ticket-content').tooltip({
+		/*$('.ticket-content').tooltip({
 			position: 'top center',
 			effect: 'fade',
 			delay: 250,
@@ -75,7 +75,7 @@ HUB.Support = {
 					tip[0].innerHTML = '<span class="tooltip-title">' + parts[0] + '</span><span class="tooltip-text">' + parts[1] + '</span>';
 				}
 			}
-		});
+		});*/
 	},
 
 	addEditQueryEvent: function() {
