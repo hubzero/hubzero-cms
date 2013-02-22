@@ -62,15 +62,20 @@ class CoursesApiController extends Hubzero_Api_Controller
 			case 'unit':
 				switch($this->segments[1])
 				{
-					case 'save': $this->unitSave(); break;
-
-					default:     $this->unitSave(); break;
+					case 'save': $this->unitSave();         break;
+					default:     $this->method_not_found(); break;
 				}
 			break;
 
 			// Asset groups
-			case 'assetgroupsave':         $this->assetGroupSave();           break;
-			case 'assetgroupreorder':      $this->assetGroupReorder();        break;
+			case 'assetgroup':
+				switch($this->segments[1])
+				{
+					case 'save':    $this->assetGroupSave();    break;
+					case 'reorder': $this->assetGroupReorder(); break;
+					default:        $this->method_not_found();  break;
+				}
+			break;
 
 			// Assets
 			case 'assethandlers':          $this->assetHandlers();            break;
@@ -129,7 +134,7 @@ class CoursesApiController extends Hubzero_Api_Controller
 		// Set our values
 		$unit->set('title', JRequest::getString('title', $title));
 		// @FIXME: do we want any sort of character restrictions on unit titles?
-		//preg_replace("/[^a-zA-Z0-9 \-\:\.]/", "", $row->title);
+		//preg_replace("/[^a-zA-Z0-9 \-\:\.]/", "", $unit->get('title'));
 		$unit->set('alias', strtolower(str_replace(' ', '', $unit->get('title'))));
 
 		// If we have dates coming in, save those
@@ -164,11 +169,12 @@ class CoursesApiController extends Hubzero_Api_Controller
 		// Create a top level asset group for each of lectures, homework, and exam
 		if(!$id)
 		{
-			// Get our asset group object
+			// Included needed classes
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'assetgroup.php');
 
 			foreach (array('Lectures', 'Homework', 'Exam') as $key)
 			{
+				// Get our asset group object
 				$assetGroup = new CoursesModelAssetgroup(null);
 
 				$assetGroup->set('title', $key);
@@ -219,7 +225,7 @@ class CoursesApiController extends Hubzero_Api_Controller
 	/**
 	 * Save an asset group
 	 * 
-	 * @return 201 created on success
+	 * @return '201 Created' on new, '200 OK' otherwise
 	 */
 	private function assetGroupSave()
 	{
@@ -230,79 +236,80 @@ class CoursesApiController extends Hubzero_Api_Controller
 		$authorized = $this->authorize();
 		if(!$authorized['manage'])
 		{
-			$this->setMessage('You don\'t have permission to do this', 401, 'Unauthorized');
+			$this->setMessage('You don\'t have permission to do this', 401, 'Not Aauthorized');
 			return;
 		}
 
-		// Get our asset group object
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.group.php');
-		$assetGroupObj = new CoursesTableAssetGroup($this->db);
+		// Include needed classes
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'assetgroup.php');
 
-		if($id = JRequest::getInt('id', false))
+		// Check for an incoming 'id'
+		$id = JRequest::getInt('id', null);
+
+		// Create an asset group instance
+		$assetGroup = new CoursesModelAssetgroup($id);
+
+		// Check to make sure we have an asset group object
+		if (!is_object($assetGroup))
 		{
-			if (!$assetGroupObj->load($id))
-			{
-				$this->setMessage("Loading asset group $id failed", 500, 'Internal server error');
-				return;
-			}
+			$this->setMessage("Failed to create an asset group object", 500, 'Internal server error');
+			return;
 		}
 
 		// We'll always save the title again, even if it's just to the same thing
-		$title            = (!empty($assetGroupObj->title)) ? $assetGroupObj->title : 'New asset group';
-		$row->title       = JRequest::getString('title', $title);
-		$row->title       = preg_replace("/[^a-zA-Z0-9 \-\:\.]/", "", $row->title);
-		$row->alias       = strtolower(str_replace(' ', '', $row->title));
-		$row->description = '';
+		$title = $assetGroup->get('title');
+		$title = (!empty($title)) ? $title : 'New asset group';
+
+		// Set or variables
+		$assetGroup->set('title', JRequest::getString('title', $title));
+		// @FIXME: do we want any sort of character restrictions on asset group titles?
+		//preg_replace("/[^a-zA-Z0-9 \-\:\.]/", "", $assetGroup->get('title'));
+		$assetGroup->set('alias', strtolower(str_replace(' ', '', $assetGroup->get('title'))));
 
 		// When creating a new asset group
 		if(!$id)
 		{
-			$row->unit_id     = JRequest::getInt('unit_id', 0);
-			$row->parent      = JRequest::getInt('parent', 0);
-			$row->created     = date('Y-m-d H:i:s');
-			$row->created_by  = JFactory::getApplication()->getAuthn('user_id');
+			$assetGroup->set('unit_id', JRequest::getInt('unit_id', 0));
+			$assetGroup->set('parent', JRequest::getInt('parent', 0));
+			$assetGroup->set('created', date('Y-m-d H:i:s'));
+			$assetGroup->set('created_by', JFactory::getApplication()->getAuthn('user_id'));
 		}
 
 		// Save the asset group
-		if (!$assetGroupObj->save($row))
+		if (!$assetGroup->store())
 		{
 			$this->setMessage("Asset group save failed", 500, 'Internal server error');
 			return;
 		}
 
+		// Set the status code
+		$status = ($id) ? array('code'=>200, 'text'=>'OK') : array('code'=>201, 'text'=>'Created');
+
 		// Return message
 		$this->setMessage(
 			array(
-				'assetgroup_id'    => $assetGroupObj->id,
-				'assetgroup_title' => $assetGroupObj->title,
+				'assetgroup_id'    => $assetGroup->get('id'),
+				'assetgroup_title' => $assetGroup->get('title'),
 				'assetgroup_style' => 'display:none',
 				'course_id'        => $this->course_id,
-				'offering_alias'   => $this->offering_alias),
-			201, 'Created');
+				'offering_alias'   => $this->offering_alias
+			),
+			$status['code'],
+			$status['text']);
 	}
 
 	/**
 	 * Reorder assets
 	 * 
-	 * @return 201 created on success
+	 * @return 200 OK on success
 	 */
 	private function assetGroupReorder()
 	{
 		// Set the responce type
 		$this->setMessageType($this->format);
 
-		// Require authorization
-		// @FIXME: implement this!  Need to add course_id and offering_alias to form submission
-		/*$authorized = $this->authorize();
-		if(!$authorized['manage'])
-		{
-			$this->setMessage('You don\'t have permission to do this', 401, 'Unauthorized');
-			return;
-		}*/
-
-		// Get our asset group object
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.group.php');
-		$assetGroupObj = new CoursesTableAssetGroup($this->db);
+		// Include needed classes
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'assetgroup.php');
 
 		$groups = JRequest::getVar('assetgroupitem', array());
 
@@ -310,14 +317,17 @@ class CoursesApiController extends Hubzero_Api_Controller
 
 		foreach ($groups as $id)
 		{
-			if (!$assetGroupObj->load($id))
+			if (!$assetGroup = new CoursesModelAssetgroup($id))
 			{
-				$this->setMessage("Loading asset group $id failed", 500, 'Internal server error');
+				$this->setMessage("Loading asset group {$id} failed", 500, 'Internal server error');
 				return;
 			}
 
+			// Set the new order
+			$assetGroup->set('ordering', $order);
+
 			// Save the asset group
-			if (!$assetGroupObj->save(array('ordering'=>$order)))
+			if (!$assetGroup->store())
 			{
 				$this->setMessage("Asset group save failed", 500, 'Internal server error');
 				return;
@@ -328,7 +338,7 @@ class CoursesApiController extends Hubzero_Api_Controller
 
 
 		// Return message
-		$this->setMessage('New order saved', 201, 'Created');
+		$this->setMessage('New order saved', 200, 'OK');
 	}
 
 	//--------------------------

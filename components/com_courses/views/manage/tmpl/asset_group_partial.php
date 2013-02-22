@@ -63,7 +63,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<div class="asset-group-item-container">
 		<div class="asset-group-item-title title toggle-editable"><?= $this->ag->get('title') ?></div>
 		<div class="title-edit">
-			<form action="/api/courses/assetgroupsave" class="title-form">
+			<form action="/api/courses/assetgroup/save" class="title-form">
 				<input class="uniform title-text" name="title" type="text" value="<?= $this->ag->get('title') ?>" />
 				<input class="uniform title-save" type="submit" value="Save" />
 				<input class="uniform title-reset" type="reset" value="Cancel" />

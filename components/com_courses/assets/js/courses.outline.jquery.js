@@ -28,7 +28,7 @@ HUB.CoursesOutline = {
 		HUB.CoursesOutline.setDefaults();
 		HUB.CoursesOutline.toggleUnits();
 		HUB.CoursesOutline.showProgressIndicator();
-		HUB.CoursesOutline.makeUnitsSortable();
+		HUB.CoursesOutline.makeAssetGroupsSortable();
 		HUB.CoursesOutline.makeAssetsSortable();
 		HUB.CoursesOutline.makeAssetsDeletable();
 		HUB.CoursesOutline.makeTitlesEditable();
@@ -183,10 +183,10 @@ HUB.CoursesOutline = {
 	{
 		var $ = this.jQuery;
 
-		$('.delete-tray').animate({'min-height': $('.unit').height()}, 500);
+		$('.delete-tray').animate({'min-height': $('.unit').height()}, 0);
 	},
 
-	makeUnitsSortable: function()
+	makeAssetGroupsSortable: function()
 	{
 		var $ = this.jQuery;
 
@@ -211,7 +211,7 @@ HUB.CoursesOutline = {
 
 				// Update the asset group ordering
 				$.ajax({
-					url: '/api/courses/assetgroupreorder',
+					url: '/api/courses/assetgroup/reorder',
 					data: sorted
 				});
 			}
@@ -488,7 +488,7 @@ HUB.CoursesOutline = {
 							HUB.CoursesOutline.showProgressIndicator();
 
 							// Refresh the sortable list
-							HUB.CoursesOutline.makeUnitsSortable();
+							HUB.CoursesOutline.makeAssetGroupsSortable();
 
 							$('.asset-group-type-list').delay(500).slideUp(500, function(){
 								$('.unit-title-arrow').removeClass('unit-title-arrow-active');
@@ -1111,7 +1111,7 @@ HUB.CoursesOutline = {
 				'<div class="asset-group-item-container">',
 					'<div class="asset-group-item-title title toggle-editable"><%= assetgroup_title %></div>',
 					'<div class="title-edit">',
-						'<form action="/api/courses/assetgroupsave" class="title-form">',
+						'<form action="/api/courses/assetgroup/save" class="title-form">',
 							'<input class="uniform title-text" name="title" type="text" value="<%= assetgroup_title %>" />',
 							'<input class="uniform title-save" type="submit" value="Save" />',
 							'<input class="uniform title-reset" type="reset" value="Cancel" />',
@@ -1167,7 +1167,7 @@ HUB.CoursesOutline = {
 								//'<% print(_.template(HUB.CoursesOutline.Templates.assetgroupitem, assetgroup)); %>',
 								'<li class="add-new asset-group-item">',
 									'Add a new <% print(assetgroup.assetgroup_title.toLowerCase().replace(/s$/, "")) %>',
-									'<form action="/api/courses/assetgroupsave">',
+									'<form action="/api/courses/assetgroup/save">',
 										'<input type="hidden" name="course_id" value="<%= course_id %>" />',
 										'<input type="hidden" name="offering" value="<%= offering_alias %>" />',
 										'<input type="hidden" name="unit_id" value="<%= unit_id %>" />',

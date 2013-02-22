@@ -165,7 +165,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 
 						<li class="add-new asset-group-item">
 							Add a new <?php echo strtolower(rtrim($agt->get('title'), 's')); ?>
-							<form action="/api/courses/assetgroupsave">
+							<form action="/api/courses/assetgroup/save">
 								<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
 								<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias'); ?>" />
 								<input type="hidden" name="unit_id" value="<?php echo $unit->get('id'); ?>" />
