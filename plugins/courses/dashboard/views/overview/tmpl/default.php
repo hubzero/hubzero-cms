@@ -57,15 +57,16 @@ $weeklater = date('Y-m-d H:i:s', mktime(0, 0, 0, $month, $day+7, $year));
 
 $database = JFactory::getDBO();
 
-$query  = "SELECT sd.publish_up, sd.publish_down, cag.* 
-		FROM #__courses_asset_groups AS cag 
-		LEFT JOIN #__courses_offering_section_dates AS sd ON sd.scope_id=cag.id AND sd.scope='asset_group'
-		WHERE (sd.publish_up >= '" . $now . "' OR sd.publish_down <= '" . $weeklater . "') 
-		AND cag.parent>0 
+$query  = "SELECT sd.* 
+		FROM #__courses_offering_section_dates AS sd
+		WHERE sd.section_id=" . $this->offering->section()->get('id') . "
+		AND (sd.publish_up >= '" . $now . "' AND sd.publish_up <= '" . $weeklater . "') 
 		ORDER BY sd.publish_up";
 
 $database->setQuery($query);
 $rows = $database->loadObjectList();
+
+$base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias');
 ?>
 <div class="course_dashboard">
 	
@@ -75,7 +76,7 @@ $rows = $database->loadObjectList();
 	</h3>
 	
 	<div class="main section">
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=dashboard'); ?>" method="post">
+	
 		<div class="two columns first">
 			<h3>
 				Stats
@@ -114,6 +115,7 @@ $rows = $database->loadObjectList();
 					</tr>
 				</tbody>
 			</table> -->
+			
 		</div><!-- / .subject -->
 		<div class="two columns second">
 			<h3>
@@ -122,28 +124,74 @@ $rows = $database->loadObjectList();
 			<div class="timeline-start">
 				<p><?php echo JHTML::_('date', $now, $dateFormat, $tz); ?></p>
 			</div>
+		<?php if ($rows) { ?>
 			<ul class="timeline">
+			<?php foreach ($rows as $row) { ?>
 				<li>
-					Lecture 1
+					<?php 
+					switch ($row->scope)
+					{
+						case 'unit':
+							$obj = new CoursesModelUnit($row->scope_id);
+							$url = $base;
+						break;
+						case 'asset_group':
+							$obj = new CoursesModelAssetGroup($row->scope_id);
+							$url = $base;
+						break;
+						case 'asset':
+							$obj = new CoursesModelAsset($row->scope_id);
+							$url = $base . '&unit=&b=&c=';
+						break;
+					}
+				?>
+					<a href="<?php echo JRoute::_($url); ?>">
+						<?php echo $this->escape(stripslashes($obj->get('title'))); ?>
+					</a>
+					<span class="details">
+						<time datetime="<?php echo $row->publish_up; ?>"><?php echo JHTML::_('date', $row->publish_up, $dateFormat, $tz); ?></time>
+					</span>
 				</li>
-				<li>
-					Lecture 2
-				</li>
-				<li>
-					Lecture 3
-				</li>
-				<li>
-					Lecture 4
-				</li>
-				<li>
-					Lecture 5
-				</li>
+			<?php } ?>
 			</ul>
+		<?php } else { ?>
+			<ul class="timeline">
+				<li class="noresults">Nothing coming up in the next week.</li>
+			</ul>
+		<?php } ?>
 			<div class="timeline-start">
 				<p><?php echo JHTML::_('date', $weeklater, $dateFormat, $tz); ?></p>
 			</div>
 		</div><!-- / .subject -->
 		<div class="clear"></div>
+		<!-- 
+		<form action="<?php echo JRoute::_($base . '&active=dashboard'); ?>" method="post" class="full" id="hubForm">
+		<fieldset>
+			<legend>Make an announcement</legend>
+			<label for="field-content">
+				<span class="invisible"><?php echo JText::_('Announcement'); ?></span>
+				<?php
+				ximport('Hubzero_Wiki_Editor');
+				$editor =& Hubzero_Wiki_Editor::getInstance();
+				echo $editor->display('fields[content]', 'field-content', '', 'minimal no-footer', '35', '2');
+				?>
+			</label>
+
+			<label for="field-priority" id="priority-label">
+				<input class="option" type="checkbox" name="fields[priority]" id="field-priority" value="1" /> 
+				<?php echo JText::_('Mark as high priority'); ?>
+			</label>
+
+			<p class="submit">
+				<input type="submit" value="<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_SUBMIT'); ?>" />
+			</p>
+		</fieldset>
+		<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
+		<input type="hidden" name="offering" value="<?php echo $this->offering->get('alias'); ?>" />
+		<input type="hidden" name="active" value="dashboard" />
+		<input type="hidden" name="option" value="<?php echo $option; ?>" />
+		</form>
+		-->
 		<h3>
 			<a name="discussions"></a>
 			<?php echo JText::_('Recent Discussions'); ?>
@@ -179,7 +227,7 @@ $rows = $database->loadObjectList();
 			$view->config     = $this->params;
 			$view->depth      = 0;
 			$view->cls        = 'odd';
-			$view->base       = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=forum';
+			$view->base       = $base . '&active=forum';
 			$view->parser     = $p;
 			$view->wikiconfig = $wikiconfig;
 			$view->attach     = $this->attach;
@@ -189,10 +237,6 @@ $rows = $database->loadObjectList();
 		}
 			?>
 
-		<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
-		<input type="hidden" name="offering" value="<?php echo $this->offering->get('alias'); ?>" />
-		<input type="hidden" name="active" value="dashboard" />
-		<input type="hidden" name="option" value="<?php echo $option; ?>" />
-	</form>
+		
 	</div>
 </div><!--/ #course_members -->

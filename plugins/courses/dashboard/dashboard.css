@@ -87,6 +87,14 @@
 		   -moz-border-radius: 5px;
 		        border-radius: 5px;
 	}
+	.timeline li.noresults {
+		text-align: center;
+		padding: 2em;
+	}
+	.timeline li.noresults:before,
+	.timeline li.noresults:after {
+		display: none;
+	}
 	.timeline:before, /* The dot */
 	.timeline:after { /* The arrow */
 		content: " ";
