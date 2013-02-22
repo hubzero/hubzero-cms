@@ -449,7 +449,7 @@ class EventsRespondent extends JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE event_id='$event_id'");
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE event_id=" . intval($event_id));
 		return $this->_db->loadObjectList();
 	}
 }

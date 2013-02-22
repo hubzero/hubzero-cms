@@ -145,7 +145,7 @@ class KbComment extends JTable
 	 */
 	public function loadUserComment($entry_id, $user_id)
 	{
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE entry_id=" . $entry_id . " AND created_by=" . $user_id . " LIMIT 1");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE entry_id=" . $this->_db->Quote($entry_id) . " AND created_by=" . $this->_db->Quote($user_id) . " LIMIT 1");
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			return $this->bind($result);
@@ -187,7 +187,7 @@ class KbComment extends JTable
 		{
 			$sql = "SELECT c.* FROM $this->_tbl AS c ";
 		}
-		$sql .= "WHERE c.entry_id=$entry_id AND c.parent=$parent ORDER BY created ASC";
+		$sql .= "WHERE c.entry_id=" . $this->_db->Quote($entry_id) . " AND c.parent=" . $this->_db->Quote($parent) . " ORDER BY created ASC";
 
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
@@ -258,7 +258,7 @@ class KbComment extends JTable
 			$id = $this->id;
 		}
 
-		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE parent=" . $id);
+		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE parent=" . $this->_db->Quote($id));
 		$comments = $this->_db->loadObjectList();
 		if ($comments) 
 		{
@@ -271,14 +271,14 @@ class KbComment extends JTable
 					return false;
 				}*/
 				// Delete children
-				$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent=" . $row->id);
+				$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent=" . $this->_db->Quote($row->id));
 				if (!$this->_db->query()) 
 				{
 					$this->setError($this->_db->getErrorMsg());
 					return false;
 				}
 			}
-			$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent=" . $id);
+			$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent=" . $this->_db->Quote($id));
 			if (!$this->_db->query()) 
 			{
 				$this->setError($this->_db->getErrorMsg());

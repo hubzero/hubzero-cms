@@ -216,7 +216,7 @@ class EventsConfigs
 		);
 		foreach ($config as $p => $v)
 		{
-			$this->_db->setQuery("INSERT INTO $this->_tbl (param, value) VALUES ('$p', '$v')");
+			$this->_db->setQuery("INSERT INTO $this->_tbl (param, value) VALUES (" . $this->_db->Quote($p) . ", " . $this->_db->Quote($v) . ")");
 			if (!$this->_db->query()) 
 			{
 				return false;

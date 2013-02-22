@@ -195,7 +195,7 @@ class WishAttachment extends JTable
 	 */
 	public function deleteAttachment($filename, $wish)
 	{
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE filename='" . $filename . "' AND wish=" . $wish);
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE filename=" . $this->_db->Quote($filename) . " AND wish=" . $this->_db->Quote($wish));
 		if (!$this->_db->query()) 
 		{
 			return $this->_db->getErrorMsg();
@@ -220,7 +220,7 @@ class WishAttachment extends JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE filename='$filename' AND wish='$wish'");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE filename=" . $this->_db->Quote($filename) . " AND wish=" . $this->_db->Quote($wish));
 		return $this->_db->loadObject($this);
 	}
 }

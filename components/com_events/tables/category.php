@@ -194,7 +194,7 @@ class EventsCategory extends JTable
 		{
 			$oid = $this->id;
 		}
-		$this->_db->setQuery("UPDATE $this->_tbl SET count = count-1 WHERE id = '$oid'");
+		$this->_db->setQuery("UPDATE $this->_tbl SET count = count-1 WHERE id=" . $this->_db->Quote($oid));
 		$this->_db->query();
 	}
 
@@ -210,7 +210,7 @@ class EventsCategory extends JTable
 		{
 			$oid = $this->id;
 		}
-		$this->_db->setQuery("UPDATE $this->_tbl SET published=1 WHERE id=$oid");
+		$this->_db->setQuery("UPDATE $this->_tbl SET published=1 WHERE id=" . $this->_db->Quote($oid));
 		$this->_db->query();
 	}
 
@@ -226,7 +226,7 @@ class EventsCategory extends JTable
 		{
 			$oid = $this->id;
 		}
-		$this->_db->setQuery("UPDATE $this->_tbl SET published=0 WHERE id=$oid");
+		$this->_db->setQuery("UPDATE $this->_tbl SET published=0 WHERE id=" . $this->_db->Quote($oid));
 		$this->_db->query();
 	}
 
@@ -242,7 +242,7 @@ class EventsCategory extends JTable
 		{
 			$section = $this->section;
 		}
-		$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE section='$section'");
+		$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE section=" . $this->_db->Quote($section));
 		return $this->_db->loadResult();
 	}
 }

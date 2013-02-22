@@ -635,7 +635,7 @@ class Wish extends JTable
 		$sql = "SELECT ws.*, v.helpful AS vote, m.importance AS myvote_imp, m.effort AS myvote_effort, xp.name AS authorname, ";
 		if ($uid) 
 		{
-			$sql .= "\n (SELECT count(*) FROM #__wishlist_vote AS wv WHERE wv.wishid=ws.id AND wv.userid=" . $uid . ") AS ranked,";
+			$sql .= "\n (SELECT count(*) FROM #__wishlist_vote AS wv WHERE wv.wishid=ws.id AND wv.userid=" . intval($uid) . ") AS ranked,";
 		}
 		$sql .= "\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='yes' AND v.category='wish' AND v.referenceid=ws.id) AS positive, ";
 		$sql .= "\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='no' AND v.category='wish' AND v.referenceid=ws.id) AS negative, ";
@@ -663,12 +663,12 @@ class Wish extends JTable
 		$sql .= "\n FROM #__wishlist_item AS ws";
 		if ($refid && $cat) 
 		{
-			$sql .= "\n JOIN #__wishlist AS W ON W.id=ws.wishlist AND W.referenceid='$refid' AND W.category='$cat' ";
+			$sql .= "\n JOIN #__wishlist AS W ON W.id=ws.wishlist AND W.referenceid=" . $this->_db->Quote($refid) . " AND W.category=" . $this->_db->Quote($cat) . " ";
 		}
 		$sql .= "\n JOIN #__xprofiles AS xp ON xp.uidNumber=ws.proposed_by ";
-		$sql .= "\n LEFT JOIN #__vote_log AS v ON v.referenceid=ws.id AND v.category='wish' AND v.voter='" . $uid . "' ";
-		$sql .= "\n LEFT JOIN #__wishlist_vote AS m ON m.wishid=ws.id AND m.userid='" . $uid . "' ";
-		$sql .= "\n WHERE ws.id='" . $wishid . "' ";
+		$sql .= "\n LEFT JOIN #__vote_log AS v ON v.referenceid=ws.id AND v.category='wish' AND v.voter=" . $this->_db->Quote($uid) . " ";
+		$sql .= "\n LEFT JOIN #__wishlist_vote AS m ON m.wishid=ws.id AND m.userid=" . $this->_db->Quote($uid) . " ";
+		$sql .= "\n WHERE ws.id=" . $this->_db->Quote($wishid) . " ";
 		if (!$deleted) 
 		{
 			$sql .=" AND ws.status!=2";
@@ -697,7 +697,7 @@ class Wish extends JTable
 
 		$query  = "SELECT id ";
 		$query .= "FROM #__wishlist_item  ";
-		$query .= "WHERE id = '" . $wishid . "' AND wishlist='" . $listid . "' LIMIT 1";
+		$query .= "WHERE id = " . $this->_db->Quote($wishid) . " AND wishlist=" . $this->_db->Quote($listid) . " LIMIT 1";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -728,8 +728,8 @@ class Wish extends JTable
 			$query .= "\n JOIN #__tags_object AS RTA ON RTA.objectid=ws.id AND RTA.tbl='wishlist' ";
 			$query .= "\n INNER JOIN #__tags AS TA ON RTA.tagid=TA.id ";
 		}
-		$query .= "WHERE ws.wishlist='" . $listid . "' AND ";
-		$query .= ($which == 'prev')  ? "ws.id < '" . $id . "' " : "ws.id > '" . $id . "'";
+		$query .= "WHERE ws.wishlist=" . $this->_db->Quote($listid) . " AND ";
+		$query .= ($which == 'prev')  ? "ws.id < " . $this->_db->Quote($id) . " " : "ws.id > " . $this->_db->Quote($id);
 
 		if (isset($filters['filterby'])) 
 		{
@@ -810,7 +810,7 @@ class Wish extends JTable
 
 		$query  = "SELECT v.helpful ";
 		$query .= "FROM #__vote_log as v  ";
-		$query .= "WHERE v.referenceid = '" . $refid . "' AND v.category='" . $category . "' AND v.voter='" . $uid . "' LIMIT 1";
+		$query .= "WHERE v.referenceid = " . $this->_db->Quote($refid) . " AND v.category=" . $this->_db->Quote($category) . " AND v.voter=" . $this->_db->Quote($uid) . " LIMIT 1";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();

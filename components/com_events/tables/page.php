@@ -130,7 +130,8 @@ class EventsPage extends JTable
 	 */
 	public function check()
 	{
-		if (trim($this->alias) == '') 
+		$this->alias = trim($this->alias);
+		if ($this->alias == '') 
 		{
 			$this->setError(JText::_('You must enter an alias.'));
 			return false;
@@ -155,7 +156,7 @@ class EventsPage extends JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE alias='$alias' AND event_id='$event_id'");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($alias) . " AND event_id=" . intval($event_id));
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			return $this->bind($result);
@@ -179,7 +180,7 @@ class EventsPage extends JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE event_id='$event_id' ORDER BY ordering ASC LIMIT 1");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE event_id=" . intval($event_id) . " ORDER BY ordering ASC LIMIT 1");
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			return $this->bind($result);
@@ -203,7 +204,7 @@ class EventsPage extends JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery("SELECT title, alias, id FROM $this->_tbl WHERE event_id='$event_id' ORDER BY ordering ASC");
+		$this->_db->setQuery("SELECT title, alias, id FROM $this->_tbl WHERE event_id=" . intval($event_id) . " ORDER BY ordering ASC");
 		return $this->_db->loadObjectList();
 	}
 
@@ -219,7 +220,7 @@ class EventsPage extends JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE event_id='$event_id'");
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE event_id=" . intval($event_id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -240,12 +241,12 @@ class EventsPage extends JTable
 		{
 			case 'orderup':
 			case 'orderuppage':
-				$sql = "SELECT * FROM $this->_tbl WHERE event_id=" . $this->event_id . " AND ordering < " . $this->ordering . " ORDER BY ordering DESC LIMIT 1";
+				$sql = "SELECT * FROM $this->_tbl WHERE event_id=" . intval($this->event_id) . " AND ordering < " . intval($this->ordering) . " ORDER BY ordering DESC LIMIT 1";
 			break;
 
 			case 'orderdown':
 			case 'orderdownpage':
-				$sql = "SELECT * FROM $this->_tbl WHERE event_id=" . $this->event_id . " AND ordering > " . $this->ordering . " ORDER BY ordering LIMIT 1";
+				$sql = "SELECT * FROM $this->_tbl WHERE event_id=" . intval($this->event_id) . " AND ordering > " . intval($this->ordering) . " ORDER BY ordering LIMIT 1";
 			break;
 		}
 		$this->_db->setQuery($sql);
@@ -279,7 +280,7 @@ class EventsPage extends JTable
 		$query .= " FROM $this->_tbl AS t";
 		if (isset($filters['event_id']) && $filters['event_id'] != '') 
 		{
-			$query .= " WHERE t.event_id='" . $filters['event_id'] . "'";
+			$query .= " WHERE t.event_id='" . intval($filters['event_id']) . "'";
 		}
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
@@ -291,11 +292,11 @@ class EventsPage extends JTable
 			{
 				$query .= " WHERE ";
 			}
-			$query .= "LOWER(t.title) LIKE '%" . $filters['search'] . "%'";
+			$query .= "LOWER(t.title) LIKE '%" . $this->_db->getEscaped($filters['search']) . "%'";
 		}
 		if (isset($filters['limit']) && $filters['limit'] != 0) 
 		{
-			$query .= " ORDER BY t.ordering ASC LIMIT " . $filters['start'] . "," . $filters['limit'];
+			$query .= " ORDER BY t.ordering ASC LIMIT " . intval($filters['start']) . "," . intval($filters['limit']);
 		}
 
 		return $query;

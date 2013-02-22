@@ -317,8 +317,8 @@ class KbArticle extends JTable
 		{
 			return false;
 		}
-		$sql  = "SELECT * FROM $this->_tbl WHERE alias='$oid'";
-		$sql .= ($cat) ? " AND section='$cat'" : '';
+		$sql  = "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($oid);
+		$sql .= ($cat) ? " AND section=" . $this->_db->Quote($cat) : '';
 		$this->_db->setQuery($sql);
 		if ($result = $this->_db->loadAssoc()) 
 		{
@@ -347,7 +347,7 @@ class KbArticle extends JTable
 		$query = "SELECT a.id, a.title, a.created, a.created_by, a.access, a.hits, a.section, a.category, a.helpful, a.nothelpful, a.alias, c.alias AS calias"
 				. " FROM $this->_tbl AS a"
 				. " LEFT JOIN #__faq_categories AS c ON c.id = a.category"
-				. " WHERE a.section=" . $section . " AND a.category=" . $category . " AND a.state=1"
+				. " WHERE a.section=" . $this->_db->Quote($section) . " AND a.category=" . $this->_db->Quote($category) . " AND a.state=1"
 				. ($noauth ? " AND a.access<='" . $juser->get('aid') . "'" : '')
 				. " AND '" . $access . "'<='" . $juser->get('aid') . "'"
 				. " ORDER BY a.modified DESC";
@@ -392,7 +392,7 @@ class KbArticle extends JTable
 		}
 		$query = "SELECT r.id, r.section, r.category"
 				. " FROM $this->_tbl AS r"
-				. " WHERE r.section=" . $cid . " OR r.category=" . $cid;
+				. " WHERE r.section=" . $this->_db->Quote($cid) . " OR r.category=" . $this->_db->Quote($cid);
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
@@ -408,7 +408,7 @@ class KbArticle extends JTable
 	{
 		if (isset($filters['cid']) && $filters['cid']) 
 		{
-			$where = "m.section=" . $filters['cid'] . " AND m.category=" . $filters['id'];
+			$where = "m.section=" . $this->_db->Quote($filters['cid']) . " AND m.category=" . $this->_db->Quote($filters['id']);
 		} 
 		else 
 		{
@@ -443,13 +443,13 @@ class KbArticle extends JTable
 	{
 		if (isset($filters['cid']) && $filters['cid']) 
 		{
-			$where = "m.section=".$filters['cid']." AND m.category=".$filters['id'];
+			$where = "m.section=".$this->_db->Quote($filters['cid'])." AND m.category=".$this->_db->Quote($filters['id']);
 		} 
 		else 
 		{
 			if (isset($filters['id']) && $filters['id']) 
 			{
-				$where = "m.section=".$filters['id'];
+				$where = "m.section=".$this->_db->Quote($filters['id']);
 			} 
 			else 
 			{
@@ -501,7 +501,7 @@ class KbArticle extends JTable
 		{
 			$id = $this->id;
 		}
-		$this->_db->setQuery("DELETE FROM #__redirection WHERE newurl='index.php?option=" . $option . "&task=article&id=" . $id . "'");
+		$this->_db->setQuery("DELETE FROM #__redirection WHERE newurl='index.php?option=" . $this->_db->getEscaped($option) . "&task=article&id=" . intval($id) . "'");
 		if ($this->_db->query()) 
 		{
 			return true;
@@ -530,21 +530,21 @@ class KbArticle extends JTable
 		}*/
 		if (isset($filters['user_id']) && $filters['user_id'] > 0) 
 		{
-			$sql .= " LEFT JOIN #__faq_helpful_log AS v ON v.object_id=m.id AND v.user_id=" . $filters['user_id'] . " AND v.type='entry' ";
+			$sql .= " LEFT JOIN #__faq_helpful_log AS v ON v.object_id=m.id AND v.user_id=" . $this->_db->Quote($filters['user_id']) . " AND v.type='entry' ";
 		}
 
 		$w = array();
 		if (isset($filters['section']) && $filters['section']) 
 		{
-			$w[] = "m.section=" . $filters['section'];
+			$w[] = "m.section=" . $this->_db->Quote($filters['section']);
 		}
 		if (isset($filters['category']) && $filters['category']) 
 		{
-			$w[] = "m.category=" . $filters['category'];
+			$w[] = "m.category=" . $this->_db->Quote($filters['category']);
 		}
 		if (isset($filters['state'])) 
 		{
-			$w[] = "m.state=" . $filters['state'];
+			$w[] = "m.state=" . $this->_db->Quote($filters['state']);
 		}
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
@@ -555,8 +555,8 @@ class KbArticle extends JTable
 					OR t.tag LIKE '%".$filters['search']."%'
 			)";*/
 			$w[] = "(
-					m.title LIKE '%" . $filters['search'] . "%' 
-					OR m.fulltxt LIKE '%" . $filters['search'] . "%' 
+					m.title LIKE '%" . $this->_db->getEscaped($filters['search']) . "%' 
+					OR m.fulltxt LIKE '%" . $this->_db->getEscaped($filters['search']) . "%' 
 				)";
 		}
 

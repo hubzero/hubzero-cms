@@ -131,7 +131,7 @@ class KbVote extends JTable
 		{
 			$type = $this->type;
 		}
-		$this->_db->setQuery("SELECT vote FROM $this->_tbl WHERE object_id='$object_id' AND (user_id='$user_id' OR ip='$ip') AND type='$type'");
+		$this->_db->setQuery("SELECT vote FROM $this->_tbl WHERE object_id=" . $this->_db->Quote($object_id) . " AND (user_id=" . $this->_db->Quote($user_id) . " OR ip=" . $this->_db->Quote($ip) . ") AND type=" . $this->_db->Quote($type));
 		return $this->_db->loadResult();
 	}
 
@@ -161,8 +161,8 @@ class KbVote extends JTable
 			$type = $this->type;
 		}
 
-		$sql = "DELETE FROM $this->_tbl WHERE object_id='$object_id' AND type='$type'";
-		$sql .= ($user_id || $ip) ? " AND (user_id='$user_id' OR ip='$ip')" : "";
+		$sql = "DELETE FROM $this->_tbl WHERE object_id=" . $this->_db->Quote($object_id) . " AND type=" . $this->_db->Quote($type);
+		$sql .= ($user_id || $ip) ? " AND (user_id=" . $this->_db->Quote($user_id) . " OR ip=" . $this->_db->Quote($ip) . ")" : "";
 
 		$this->_db->setQuery($sql);
 		if ($this->_db->query()) 

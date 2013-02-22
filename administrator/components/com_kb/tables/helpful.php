@@ -107,7 +107,7 @@ class KbHelpful extends JTable
 		{
 			$ip = $this->ip;
 		}
-		$this->_db->setQuery("SELECT helpful FROM $this->_tbl WHERE fid =" . $fid . " AND ip='" . $ip . "'");
+		$this->_db->setQuery("SELECT helpful FROM $this->_tbl WHERE fid =" . $this->_db->Quote($fid) . " AND ip=" . $this->_db->Quote($ip));
 		return $this->_db->loadResult();
 	}
 
@@ -123,7 +123,7 @@ class KbHelpful extends JTable
 		{
 			$fid = $this->fid;
 		}
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE fid=" . $fid);
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE fid=" . $this->_db->Quote($fid));
 		if ($this->_db->query()) 
 		{
 			return true;

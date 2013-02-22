@@ -133,7 +133,7 @@ class WishlistOwnerGroup extends JTable
 		{
 			$sql = "SELECT o.groupid"
 				. "\n FROM #__wishlist_ownergroups AS o "
-				. "\n WHERE o.wishlist='" . $listid . "'";
+				. "\n WHERE o.wishlist=" . $this->_db->Quote($listid);
 
 			$this->_db->setQuery($sql);
 			$wishgroups = $this->_db->loadObjectList();
@@ -178,7 +178,7 @@ class WishlistOwnerGroup extends JTable
 		if (Hubzero_Group::exists($groupid) 
 		 && !in_array($groupid, $nativegroups, true)) 
 		{
-			$query = "DELETE FROM $this->_tbl WHERE wishlist='" . $listid . "' AND groupid='" . $groupid . "'";
+			$query = "DELETE FROM $this->_tbl WHERE wishlist=" . $this->_db->Quote($listid) . " AND groupid=" . $this->_db->Quote($groupid);
 			$this->_db->setQuery($query);
 			$this->_db->query();
 			return true;

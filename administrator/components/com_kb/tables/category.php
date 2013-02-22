@@ -203,7 +203,7 @@ class KbCategory extends JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE alias='$oid'");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($oid));
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			return $this->bind($result);
@@ -248,7 +248,7 @@ class KbCategory extends JTable
 		$query = "SELECT a.*, COUNT(b.id) AS numitems"
 				. " FROM $this->_tbl AS a"
 				. " LEFT JOIN #__faq AS b ON " . $sect . " = a.id AND b.state=1 AND b.access=0"
-				. " WHERE a.state=1 AND a.section=" . $catid
+				. " WHERE a.state=1 AND a.section=" . $this->_db->Quote($catid)
 				. ($noauth ? " AND a.access <= '" . $juser->get('aid') . "'" : '')
 				. " GROUP BY a.id"
 				. $empty
@@ -270,7 +270,7 @@ class KbCategory extends JTable
 		{
 			$id = $this->id;
 		}
-		$this->_db->setQuery("DELETE FROM #__redirection WHERE newurl='index.php?option=" . $option . "&task=category&id=" . $id . "'");
+		$this->_db->setQuery("DELETE FROM #__redirection WHERE newurl='index.php?option=" . $this->_db->getEscaped($option) . "&task=category&id=" . intval($id) . "'");
 		if ($this->_db->query()) 
 		{
 			return true;

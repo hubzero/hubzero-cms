@@ -134,7 +134,7 @@ class WishRank extends JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE userid='$oid' AND wishid='$wishid'");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE userid=" . $this->_db->Quote($oid) . " AND wishid=" . $this->_db->Quote($wishid));
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			return $this->bind($result);
@@ -163,7 +163,7 @@ class WishRank extends JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE wishid='$wishid'");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE wishid=" . $this->_db->Quote($wishid));
 		return $this->_db->loadObjectList();
 	}
 
@@ -189,10 +189,10 @@ class WishRank extends JTable
 			return false;
 		}
 
-		$query = "DELETE FROM $this->_tbl WHERE wishid='$wishid'";
+		$query = "DELETE FROM $this->_tbl WHERE wishid=" . $this->_db->Quote($wishid);
 		if ($oid) 
 		{
-			$query .= " AND userid=" . $oid;
+			$query .= " AND userid=" . $this->_db->Quote($oid);
 		}
 		$this->_db->setQuery($query);
 		if (!$this->_db->query()) 

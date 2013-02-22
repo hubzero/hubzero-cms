@@ -90,7 +90,7 @@ class WishlistOwner extends JTable
 		// cannot delete "native" owner (e.g. resource contributor)
 		if (is_object($quser) && !in_array($quser->get('id'), $nativeowners, true)) 
 		{
-			$query = "DELETE FROM $this->_tbl WHERE wishlist='" . $listid . "' AND userid='" . $uid . "'";
+			$query = "DELETE FROM $this->_tbl WHERE wishlist=" . $this->_db->Quote($listid) . " AND userid=" . $this->_db->Quote($uid);
 			$this->_db->setQuery($query);
 			$this->_db->query();
 		}
@@ -234,7 +234,7 @@ class WishlistOwner extends JTable
 		{
 			$sql = "SELECT o.userid"
 				. "\n FROM #__wishlist_owners AS o "
-				. "\n WHERE o.wishlist='" . $listid . "' AND o.type!=2";
+				. "\n WHERE o.wishlist=" . $this->_db->Quote($listid) . " AND o.type!=2";
 
 			$this->_db->setQuery($sql);
 			$results =  $this->_db->loadObjectList();
@@ -259,7 +259,7 @@ class WishlistOwner extends JTable
 		{
 			$sql = "SELECT DISTINCT o.userid"
 					. "\n FROM #__wishlist_owners AS o "
-					. "\n WHERE o.wishlist='" . $listid . "' AND o.type=2";
+					. "\n WHERE o.wishlist=" . $this->_db->Quote($listid) . " AND o.type=2";
 
 			$this->_db->setQuery($sql);
 			$results =  $this->_db->loadObjectList();
@@ -278,7 +278,7 @@ class WishlistOwner extends JTable
 			$activeowners = array();
 			$query  = "SELECT v.userid ";
 			$query .= "FROM #__wishlist_vote AS v LEFT JOIN #__wishlist_item AS i ON v.wishid = i.id ";
-			$query .= "WHERE i.wishlist = '" . $listid . "' AND v.wishid='" . $wishid . "' AND (v.userid IN ('" . implode("','", $owners) . "')) ";
+			$query .= "WHERE i.wishlist = " . $this->_db->Quote($listid) . " AND v.wishid=" . $this->_db->Quote($wishid) . " AND (v.userid IN ('" . implode("','", $owners) . "')) ";
 
 			$this->_db->setQuery($query);
 			$result = $this->_db->loadObjectList();
