@@ -409,7 +409,89 @@ function submitbutton(pressbutton)
 							}
 							$j++;
 						}
+						if ($agt->assets()->total())
+						{
+							$k = 0;
+							foreach ($agt->assets() as $a)
+							{
+								$a->set('publish_up', $this->row->date('asset', $a->get('id'))->get('publish_up'));
+								$a->set('publish_down', $this->row->date('asset', $a->get('id'))->get('publish_down'));
+								
+								if ($a->get('publish_up') == '0000-00-00 00:00:00')
+								{
+									$a->set('publish_up', $agt->get('publish_up'));
+								}
+								if ($a->get('publish_down') == '0000-00-00 00:00:00')
+								{
+									$a->set('publish_down', $agt->get('publish_down'));
+								}
+								?>
+										<tr>
+											<th class="key">
+												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="treenode">&#8970;</span> &nbsp; 
+												<?php echo $this->escape(stripslashes($a->get('title'))); ?>
+											</th>
+											<td><label for="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_asset_<?php echo $k; ?>_publish_up"><?php echo JText::_('from'); ?></label></th>
+											<td>
+												<input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset][<?php echo $k; ?>][id]" value="<?php echo $this->row->date('asset', $a->get('id'))->get('id'); ?>" />
+												<input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset][<?php echo $k; ?>][scope]" value="asset" />
+												<input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset][<?php echo $k; ?>][scope_id]" value="<?php echo $a->get('id'); ?>" />
+												<?php //echo JHTML::_('calendar', $unit->get('publish_up'), 'dates[' . $i . '][publish_up]', 'dates_' . $i . '_publish_up', "%Y-%m-%d", array('class' => 'calendar-field inputbox')); ?>
+												<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset][<?php echo $k; ?>][publish_up]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_asset_<?php echo $k; ?>_publish_up" class="datetime-field" value="<?php echo ($a->get('publish_up') == $agt->get('publish_up') ? '' : $a->get('publish_up')); ?>" />
+											</td>
+											<td><label for="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_asset_<?php echo $k; ?>_publish_up"><?php echo JText::_('to'); ?></label></th>
+											<td>
+												<?php //echo JHTML::_('calendar', $unit->get('publish_down'), 'dates[' . $i . '][publish_down]', 'dates_' . $i . '_publish_down', "%Y-%m-%d", array('class' => 'calendar-field inputbox')); ?>
+												<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset][<?php echo $k; ?>][publish_down]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_asset_<?php echo $k; ?>_publish_down" class="datetime-field" value="<?php echo ($a->get('publish_down') == $agt->get('publish_down') ? '' : $a->get('publish_down')); ?>" />
+											</td>
+										</tr>
+
+								<?php
+								$k++;
+							}
+						}
 						$z++;
+					}
+					if ($unit->assets()->total())
+					{
+						$k = 0;
+						foreach ($unit->assets() as $a)
+						{
+							$a->set('publish_up', $this->row->date('asset', $a->get('id'))->get('publish_up'));
+							$a->set('publish_down', $this->row->date('asset', $a->get('id'))->get('publish_down'));
+							
+							if ($a->get('publish_up') == '0000-00-00 00:00:00')
+							{
+								$a->set('publish_up', $unit->get('publish_up'));
+							}
+							if ($a->get('publish_down') == '0000-00-00 00:00:00')
+							{
+								$a->set('publish_down', $unit->get('publish_down'));
+							}
+							?>
+									<tr>
+										<th class="key">
+											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="treenode">&#8970;</span> &nbsp; 
+											<?php echo $this->escape(stripslashes($a->get('title'))); ?>
+										</th>
+										<td><label for="dates_<?php echo $i; ?>_asset_<?php echo $k; ?>_publish_up"><?php echo JText::_('from'); ?></label></th>
+										<td>
+											<input type="hidden" name="dates[<?php echo $i; ?>][asset][<?php echo $k; ?>][id]" value="<?php echo $this->row->date('asset', $a->get('id'))->get('id'); ?>" />
+											<input type="hidden" name="dates[<?php echo $i; ?>][asset][<?php echo $k; ?>][scope]" value="asset" />
+											<input type="hidden" name="dates[<?php echo $i; ?>][asset][<?php echo $k; ?>][scope_id]" value="<?php echo $a->get('id'); ?>" />
+											<?php //echo JHTML::_('calendar', $unit->get('publish_up'), 'dates[' . $i . '][publish_up]', 'dates_' . $i . '_publish_up', "%Y-%m-%d", array('class' => 'calendar-field inputbox')); ?>
+											<input type="text" name="dates[<?php echo $i; ?>][asset][<?php echo $k; ?>][publish_up]" id="dates_<?php echo $i; ?>_asset_<?php echo $k; ?>_publish_up" class="datetime-field" value="<?php echo ($a->get('publish_up') == $unit->get('publish_up') ? '' : $a->get('publish_up')); ?>" />
+										</td>
+										<td><label for="dates_<?php echo $i; ?>_asset_<?php echo $k; ?>_publish_up"><?php echo JText::_('to'); ?></label></th>
+										<td>
+											<?php //echo JHTML::_('calendar', $unit->get('publish_down'), 'dates[' . $i . '][publish_down]', 'dates_' . $i . '_publish_down', "%Y-%m-%d", array('class' => 'calendar-field inputbox')); ?>
+											<input type="text" name="dates[<?php echo $i; ?>][asset][<?php echo $k; ?>][publish_down]" id="dates_<?php echo $i; ?>_asset_<?php echo $k; ?>_publish_down" class="datetime-field" value="<?php echo ($a->get('publish_down') == $unit->get('publish_down') ? '' : $a->get('publish_down')); ?>" />
+										</td>
+									</tr>
+
+							<?php
+							$k++;
+						}
 					}
 					?>
 						</tbody>
