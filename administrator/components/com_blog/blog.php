@@ -33,6 +33,8 @@ defined('_JEXEC') or die('Restricted access');
 error_reporting(E_ALL);
 @ini_set('display_errors', '1');
 
+$option = 'com_blog';
+
 if (version_compare(JVERSION, '1.6', 'lt'))
 {
 	$jacl = JFactory::getACL();
@@ -59,10 +61,10 @@ else
 }
 
 // Include scripts
-require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'blog.entry.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'blog.comment.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'blog.tags.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'blog.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'blog.entry.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'blog.comment.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'blog.tags.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'blog.php');
 
 $scope = JRequest::getCmd('scope', 'site');
 $controllerName = JRequest::getCmd('controller', 'entries');
@@ -83,11 +85,11 @@ JSubMenuHelper::addEntry(
 	($controllerName == 'entries' && $scope == 'group')
 );
 
-if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'entries';
 }
-require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'BlogController' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller

@@ -32,13 +32,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 error_reporting(E_ALL);
 @ini_set('display_errors', '1');
 
+$option = 'com_forum';
+
 if (version_compare(JVERSION, '1.6', 'lt'))
 {
 	$jacl = JFactory::getACL();
 	$jacl->addACL($option, 'manage', 'users', 'super administrator');
 	$jacl->addACL($option, 'manage', 'users', 'administrator');
 	$jacl->addACL($option, 'manage', 'users', 'manager');
-	
+
 	// Authorization check
 	$user = JFactory::getUser();
 	if (!$user->authorize($option, 'manage'))
@@ -53,21 +55,21 @@ else
 	{
 		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 	}
-	
-	require_once(JPATH_COMPONENT . DS . 'models' . DS . 'section.php');
-	require_once(JPATH_COMPONENT . DS . 'models' . DS . 'category.php');
-	require_once(JPATH_COMPONENT . DS . 'models' . DS . 'thread.php');
+
+	require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'models' . DS . 'section.php');
+	require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'models' . DS . 'category.php');
+	require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'models' . DS . 'thread.php');
 }
 
-require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'attachment.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'category.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'section.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'tables' . DS . 'post.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'models' . DS . 'tags.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'forum.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'attachment.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'category.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'section.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'post.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'tags.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'forum.php');
 
 $controllerName = JRequest::getCmd('controller', 'sections');
-if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'sections';
 }
@@ -92,7 +94,7 @@ switch ($controllerName)
 		JSubMenuHelper::addEntry(JText::_('Threads'), 'index.php?option=' .  $option . '&controller=threads&category_id=-1', true);
 	break;
 }
-require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'ForumController' . ucfirst($controllerName);
 
 // initiate controller

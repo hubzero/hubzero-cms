@@ -34,6 +34,8 @@ defined('_JEXEC') or die('Restricted access');
 error_reporting(E_ALL);
 @ini_set('display_errors', '1');
 
+$option = 'com_courses';
+
 if (version_compare(JVERSION, '1.6', 'lt'))
 {
 	$jacl = JFactory::getACL();
@@ -58,11 +60,11 @@ else
 }
 
 // Include scripts
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'courses.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'log.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'courses.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'log.php');
 
 $controllerName = JRequest::getCmd('controller', 'courses');
-if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'courses';
 }
@@ -83,7 +85,7 @@ JSubMenuHelper::addEntry(
 	$controllerName == 'roles'
 );
 
-require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'CoursesController' . ucfirst($controllerName);
 
 // Instantiate controller

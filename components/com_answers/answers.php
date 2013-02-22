@@ -50,20 +50,20 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'question.php'
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'response.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'log.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'questionslog.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'economy.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'member.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'tags.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'economy.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'member.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'tags.php');
 
 ximport('Hubzero_View_Helper_Html');
 ximport('Hubzero_Filter');
 ximport('Hubzero_Comment');
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'questions'));
-if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+if (!file_exists(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'questions';
 }
-require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'AnswersController' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller

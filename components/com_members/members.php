@@ -48,19 +48,19 @@ jimport('joomla.application.component.helper');
 
 include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'profile.php');
 include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'association.php');
-include_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'imghandler.php'); 
-include_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'tags.php');
-include_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
+include_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'imghandler.php'); 
+include_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'tags.php');
+include_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'html.php');
 ximport('Hubzero_User_Profile');
 ximport('Hubzero_View_Helper_Html');
 ximport('Hubzero_Plugin_Params');
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'profiles'));
-if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+if (!file_exists(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'profiles';
 }
-require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'MembersController' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller

@@ -43,7 +43,7 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 	$jacl->addACL($option, 'manage', 'users', 'super administrator');
 	$jacl->addACL($option, 'manage', 'users', 'administrator');
 	$jacl->addACL($option, 'manage', 'users', 'manager');
-	
+
 	//add acl for importing citations - for admins and super admins
 	$jacl->addACL($option, 'import', 'users', 'super administrator');
 	$jacl->addACL($option, 'import', 'users', 'administrator');
@@ -58,15 +58,15 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'secondary.php
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'tags.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'type.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'sponsor.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'format.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'download.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'format.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'download.php');
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'citations'));
-if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+if (!file_exists(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'citations';
 }
-require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'CitationsController' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller

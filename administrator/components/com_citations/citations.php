@@ -34,6 +34,8 @@ defined('_JEXEC') or die('Restricted access');
 error_reporting(E_ALL);
 @ini_set('display_errors','1');
 
+$option = 'com_citations';
+
 if (version_compare(JVERSION, '1.6', 'lt'))
 {
 	$jacl = JFactory::getACL();
@@ -57,17 +59,17 @@ else
 	}
 }
 
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'citation.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'association.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'author.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'secondary.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'tags.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'type.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'sponsor.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'citations.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'citation.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'association.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'author.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'secondary.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'tags.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'type.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'sponsor.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'citations.php');
 
 $controllerName = JRequest::getCmd('controller', 'citations');
-if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'citations';
 }
@@ -93,7 +95,7 @@ JSubMenuHelper::addEntry(
 	$controllerName == 'sponsors'
 );
 
-require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'CitationsController' . ucfirst($controllerName);
 
 // Initiate controller

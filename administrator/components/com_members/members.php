@@ -34,13 +34,15 @@ defined('_JEXEC') or die('Restricted access');
 error_reporting(E_ALL);
 @ini_set('display_errors','1');
 
+$option = 'com_members';
+
 if (version_compare(JVERSION, '1.6', 'lt'))
 {
 	$jacl = JFactory::getACL();
 	$jacl->addACL($option, 'manage', 'users', 'super administrator');
 	$jacl->addACL($option, 'manage', 'users', 'administrator');
 	$jacl->addACL($option, 'manage', 'users', 'manager');
-	
+
 	// Authorization check
 	$user = JFactory::getUser();
 	if (!$user->authorize($option, 'manage'))
@@ -58,17 +60,17 @@ else
 }
 
 // Include scripts
-require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'imghandler.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'profile.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'association.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'password_rules.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'password_blacklist.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'members.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'imghandler.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'profile.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'association.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'password_rules.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'password_blacklist.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'members.php');
 ximport('Hubzero_View_Helper_Html');
 ximport('Hubzero_User_Profile');
 
 $controllerName = JRequest::getCmd('controller', 'members');
-if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'members';
 }
@@ -104,11 +106,11 @@ JSubMenuHelper::addEntry(
 	$controllerName == 'passwordblacklist'
 );
 
-if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'members';
 }
-require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'MembersController' . ucfirst($controllerName);
 
 // Instantiate controller

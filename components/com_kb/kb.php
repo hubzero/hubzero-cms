@@ -55,11 +55,11 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'category.php'
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'vote.php');
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'articles'));
-if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+if (!file_exists(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'articles';
 }
-require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'KbController' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller
