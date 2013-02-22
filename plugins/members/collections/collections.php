@@ -206,54 +206,6 @@ class plgMembersCollections extends JPlugin
 							}
 						break;
 					}
-					/*if ($bits[0] == 'post')
-					{
-						$this->action = 'post';
-						if (isset($bits[1]))
-						{
-							if ($bits[1] == 'new' || $bits[1] == 'save')
-							{
-								$this->action = $bits[1] . $this->action;
-							}
-							else
-							{
-								JRequest::setVar('post', $bits[1]);
-								if (isset($bits[2]))
-								{
-									if (in_array($bits[2], array('post', 'vote', 'collect', 'remove', 'move', 'comment')))
-									{
-										$this->action = $bits[2];
-									}
-									else
-									{
-										$this->action = $bits[2] . $this->action;
-									}
-								}
-							}
-						}
-					}
-					else if (in_array($bits[0], array('all', 'posts', 'followers', 'following', 'follow', 'unfollow')))
-					{
-						$this->action = $bits[0];
-					}
-					else if (in_array($bits[0], array('new', 'save')))
-					{
-						$this->action = $bits[0] . 'collection';
-						if (isset($bits[1]))
-						{
-							JRequest::setVar('unfollow', $bits[1]);
-						}
-					}
-					else
-					{
-						$this->action = 'collection';
-						JRequest::setVar('board', $bits[0]);
-
-						if (isset($bits[1]))
-						{
-							$this->action = $bits[1] . $this->action;
-						}
-					}*/
 				}
 			}
 
@@ -457,17 +409,6 @@ class plgMembersCollections extends JPlugin
 		//$filters['count'] = true;
 		$view->collections = $this->model->collections(array('count' => true));
 
-		/*$filters['count'] = false;
-		$view->rows = $this->model->collections($filters);
-
-		$view->posts = 0;
-		if ($view->rows) 
-		{
-			foreach ($view->rows as $row)
-			{
-				$view->posts += $row->get('posts');
-			}
-		}*/
 		$view->posts = $this->model->posts(array('count' => true));
 
 		$view->followers = $this->model->followers(array('count' => true));
@@ -561,8 +502,6 @@ class plgMembersCollections extends JPlugin
 		$view->followers = $this->model->followers(array('count' => true));
 
 		$view->following = $this->model->following(array('count' => true));
-
-		//$view->likes = 0; //$vote->getLikes($view->filters);
 
 		jimport('joomla.html.pagination');
 		$view->pageNav = new JPagination(
@@ -952,55 +891,17 @@ class plgMembersCollections extends JPlugin
 			$view->filters['access'] = 0;
 		}
 
-		//$filters['count'] = true;
 		$view->collections = $this->model->collections(array('count' => true));
 
-		/*$filters['count'] = false;
-		$rows = $this->model->collections($filters);
-
-		$view->posts = 0;
-		if ($rows) 
-		{
-			foreach ($rows as $row)
-			{
-				$view->posts += $row->get('posts');
-			}
-		}*/
 		$view->posts = $this->model->posts(array('count' => true));
 
 		$view->followers = $this->model->followers(array('count' => true));
 
 		$view->following = $this->model->following(array('count' => true));
 
-
-		//$view->filters['collection_id'] = $this->model->following(array(), 'collections');
-
 		$view->collection = CollectionsModelCollection::getInstance();
 
-		// Is the board restricted to logged-in users only?
-		/*if ($view->collection->get('access') != 0 && $this->juser->get('guest'))
-		{
-			return $this->_login();
-		}
-
-		// Is it a private board?
-		if ($view->collection->get('access') == 4 && $this->juser->get('id') != $this->member->get('uidNumber'))
-		{
-			JError::raiseError(403, JText::_('Your are not authorized to access this content.'));
-			return;
-		}
-		if (count($view->filters['collection_id']) <= 0)
-		{
-			$view->filters['collection_id'][] = -1;
-		}*/
-		//$filters = array();
-		//$filters['object_id']   = $this->member->get('uidNumber');
-		//$filters['object_type'] = 'member';
-		//$filters['created_by']   = $this->member->get('uidNumber');
 		$view->filters['user_id']     = $this->member->get('uidNumber');
-
-		//$view->rows = $this->model->posts();
-		//$view->total = $view->collection->posts($view->filters);
 
 		$view->rows = $view->collection->posts($view->filters);
 
@@ -1155,6 +1056,14 @@ class plgMembersCollections extends JPlugin
 
 		$view->collection = $this->model->collection(JRequest::getVar('board', 0));
 
+		$view->collections = $this->model->collections();
+		if (!$view->collections->total())
+		{
+			$view->collection->setup($this->member->get('uidNumber'), 'member');
+			$view->collections = $this->model->collections();
+			$view->collection = $this->model->collection(JRequest::getVar('board', 0));
+		}
+
 		$view->entry = $view->collection->post($id);
 		if (!$view->collection->exists() && $view->entry->exists())
 		{
@@ -1176,13 +1085,6 @@ class plgMembersCollections extends JPlugin
 		}
 		else
 		{
-			$view->collections = $this->model->collections();
-			if (!$view->collections->total())
-			{
-				$view->collection->setup($this->member->get('uidNumber'), 'member');
-				$view->collections = $this->model->collections();
-			}
-	
 			Hubzero_Document::addPluginScript('members', $this->_name);
 
 			return $view->loadTemplate();
@@ -1244,6 +1146,19 @@ class plgMembersCollections extends JPlugin
 			$post->set('item_id', $row->get('id'));
 			$post->set('original', 1);
 		}
+
+		$coltitle = JRequest::getVar('collection_title', '', 'post');
+		if (!$p['collection_id'] && $coltitle)
+		{
+			$collection = new CollectionsModelCollection();
+			$collection->set('title', $coltitle);
+			$collection->set('object_id', $this->member->get('uidNumber'));
+			$collection->set('object_type', 'member');
+			$collection->store();
+
+			$p['collection_id'] = $collection->get('id');
+		}
+
 		$post->set('collection_id', $p['collection_id']);
 		if (isset($p['description']))
 		{

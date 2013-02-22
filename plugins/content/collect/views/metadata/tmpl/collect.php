@@ -49,10 +49,12 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 	<fieldset>
 		<legend><?php echo JText::_('Collect'); ?></legend>
 
+		<div class="grid">
+		<div class="two columns first">
 		<label for="field-collection">
-			<?php echo JText::_('Collection'); ?>
+			<?php echo JText::_('Select collection'); ?>
 			<select name="collection" id="field-collection">
-				<option value="0"><?php echo JText::_('Select a collection...'); ?></option>
+				<option value="0"><?php echo JText::_('Select ...'); ?></option>
 				<optgroup label="<?php echo JText::_('My collections'); ?>">
 <?php 
 if ($this->myboards)
@@ -88,6 +90,16 @@ if ($this->groupboards)
 ?>
 			</select>
 		</label>
+		</div>
+		<p class="or">OR</p>
+		<div class="two columns second">
+			<label for="field-collection_title">
+				<?php echo JText::_('Create collection'); ?>
+				<input type="text" name="collection_title" id="field-collection_title" />
+			</label>
+		</div>
+		<div class="clear"></div>
+		</div>
 
 		<label for="field_description">
 			<?php echo JText::_('Add a description'); ?>

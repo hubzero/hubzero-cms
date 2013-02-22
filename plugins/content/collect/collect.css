@@ -42,3 +42,16 @@
 		content: "\f005";
 		font-family: "Fontcons";
 	}
+	#sbox-content #hubForm .grid {
+		position: relative;
+		border-bottom: 1px solid #ccc;
+	}
+	#sbox-content #hubForm .grid label {
+		border-bottom: none;
+	}
+	#sbox-content #hubForm .grid .or {
+		position: absolute;
+		bottom: 2em;
+		left: 50%;
+		margin-left: -0.75em;
+	}

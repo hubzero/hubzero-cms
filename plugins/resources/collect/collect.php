@@ -165,9 +165,10 @@ class plgResourcesCollect extends JPlugin
 		// Incoming
 		$item_id       = JRequest::getInt('item', 0);
 		$collection_id = JRequest::getInt('collection', 0);
+		$collection_title = JRequest::getVar('collection_title', '');
 		$no_html       = JRequest::getInt('no_html', 0);
 
-		$model = new CollectionsModel();
+		$model = new CollectionsModel('member', $this->juser->get('id'));
 		//if (!$item_id && $collection_id)
 		//{
 			$b = new CollectionsTableItem($this->database);
@@ -196,7 +197,7 @@ class plgResourcesCollect extends JPlugin
 		//}
 
 		// No board ID selected so present repost form
-		if (!$collection_id)
+		if (!$collection_id && !$collection_title)
 		{
 			ximport('Hubzero_Plugin_View');
 			$view = new Hubzero_Plugin_View(
@@ -207,6 +208,12 @@ class plgResourcesCollect extends JPlugin
 					'layout'  => 'collect'
 				)
 			);
+
+			if (!$model->collections(array('count' => true)))
+			{
+				$collection = $model->collection();
+				$collection->setup($this->juser->get('id'), 'member');
+			}
 
 			$view->myboards      = $model->mine();
 			$view->groupboards   = $model->mine('groups');
@@ -228,25 +235,42 @@ class plgResourcesCollect extends JPlugin
 			}
 		}
 
-		// Try loading the current board/bulletin to see
-		// if this has already been posted to the board (i.e., no duplicates)
-		$stick = new CollectionsTablePost($this->database);
-		$stick->loadByBoard($collection_id, $item_id);
-		if (!$stick->id)
+		if (!$collection_id)
 		{
-			// No record found -- we're OK to add one
-			$stick->item_id       = $item_id;
-			$stick->collection_id = $collection_id;
-			$stick->description   = JRequest::getVar('description', '');
-			if ($stick->check()) 
+			$collection = new CollectionsModelCollection();
+			$collection->set('title', $collection_title);
+			$collection->set('object_id', $this->juser->get('id'));
+			$collection->set('object_type', 'member');
+			if (!$collection->store())
 			{
-				// Store new content
-				if (!$stick->store()) 
+				$this->setError($collection->getError());
+			}
+			$collection_id = $collection->get('id');
+		}
+
+		if (!$this->getError())
+		{
+			// Try loading the current board/bulletin to see
+			// if this has already been posted to the board (i.e., no duplicates)
+			$stick = new CollectionsTablePost($this->database);
+			$stick->loadByBoard($collection_id, $item_id);
+			if (!$stick->id)
+			{
+				// No record found -- we're OK to add one
+				$stick->item_id       = $item_id;
+				$stick->collection_id = $collection_id;
+				$stick->description   = JRequest::getVar('description', '');
+				if ($stick->check()) 
 				{
-					$this->setError($stick->getError());
+					// Store new content
+					if (!$stick->store()) 
+					{
+						$this->setError($stick->getError());
+					}
 				}
 			}
 		}
+
 		if ($this->getError())
 		{
 			echo $this->getError();
