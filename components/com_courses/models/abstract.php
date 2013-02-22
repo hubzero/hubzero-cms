@@ -118,7 +118,7 @@ abstract class CoursesModelAbstract extends JObject
 				{
 					if (!array_key_exists($key, $properties)) // && in_array($property, self::$_section_keys))
 					{
-						$this->_tbl->set($key, $property);
+						$this->_tbl->set('__' . $key, $property);
 					}
 				}
 			}
@@ -131,7 +131,7 @@ abstract class CoursesModelAbstract extends JObject
 				{
 					if (!array_key_exists($key, $properties)) // && in_array($property, self::$_section_keys))
 					{
-						$this->_tbl->set($key, $oid[$key]);
+						$this->_tbl->set('__' . $key, $oid[$key]);
 					}
 				}
 			}
@@ -151,6 +151,10 @@ abstract class CoursesModelAbstract extends JObject
 		{
 			return $this->_tbl->$property;
 		}
+		else if (isset($this->_tbl->{'__' . $property})) 
+		{
+			return $this->_tbl->{'__' . $property};
+		}
 		return $default;
 	}
 
@@ -163,6 +167,10 @@ abstract class CoursesModelAbstract extends JObject
 	 */
 	public function set($property, $value = null)
 	{
+		if (!array_key_exists($property, $this->_tbl->getProperties()))
+		{
+			$property = '__' . $property;
+		}
 		$previous = isset($this->_tbl->$property) ? $this->_tbl->$property : null;
 		$this->_tbl->$property = $value;
 		return $previous;

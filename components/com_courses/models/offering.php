@@ -912,7 +912,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 
 		if ($isNew)
 		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'log.php');
+			/*require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'log.php');
 			$juser = JFactory::getUser();
 
 			$log = new CoursesTableLog($this->_db);
@@ -926,7 +926,8 @@ class CoursesModelOffering extends CoursesModelAbstract
 			if (!$log->store()) 
 			{
 				$this->setError($log->getError());
-			}
+			}*/
+			$this->log($this->get('id'), $this->_scope, 'create');
 		}
 
 		return true;
