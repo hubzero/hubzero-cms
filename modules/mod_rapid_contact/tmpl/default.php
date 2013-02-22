@@ -51,28 +51,28 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 			<?php echo $this->name_label; ?>
 		</label>
 		<span class="input">
-			<input type="text" id="contact-name" name="rp[name]" value="<?php echo $this->posted['name']; ?>" />
+			<input type="text" id="contact-name" name="rp[name]" value="<?php echo htmlentities($this->posted['name'], ENT_COMPAT, 'UTF-8'); ?>" />
 		</span>
 
 		<label for="contact-email">
 			<?php echo $this->email_label; ?>
 		</label>
 		<span class="input">
-			<input type="text" id="contact-email" name="rp[email]" value="<?php echo $this->posted['email']; ?>" />
+			<input type="text" id="contact-email" name="rp[email]" value="<?php echo htmlentities($this->posted['email'], ENT_COMPAT, 'UTF-8'); ?>" />
 		</span>
 
 		<label for="contact-subject">
 			<?php echo $this->subject_label; ?>
 		</label>
 		<span class="input">
-			<input type="text" id="contact-subject" name="rp[subject]" value="<?php echo $this->posted['subject']; ?>" />
+			<input type="text" id="contact-subject" name="rp[subject]" value="<?php echo htmlentities($this->posted['subject'], ENT_COMPAT, 'UTF-8'); ?>" />
 		</span>
 
 		<label for="contact-comments">
 			<?php echo $this->message_label; ?>
 		</label>
 		<span class="input">
-			<textarea name="rp[message]" id="contact-comments" cols="35" rows="10"><?php echo $this->posted['message']; ?></textarea>
+			<textarea name="rp[message]" id="contact-comments" cols="35" rows="10"><?php echo htmlentities($this->posted['message'], ENT_COMPAT, 'UTF-8'); ?></textarea>
 		</span>
 
 <?php if ($this->enable_anti_spam) { ?>

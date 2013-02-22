@@ -147,6 +147,7 @@ class modRapidContact extends JObject
 		$exact_url           = $this->params->get('exact_url', true);
 		if (!$exact_url) 
 		{
+			//$this->url = $this->_cleanXss(filter_var(JURI::current(), FILTER_SANITIZE_URL));
 			$this->url = JURI::current();
 		} 
 		else 
@@ -160,6 +161,10 @@ class modRapidContact extends JObject
 				$this->url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 			}
 		}
+
+		//$qs = str_replace(array('"', '?'), '', urldecode($_SERVER['QUERY_STRING']));
+		//$aqs = explode('?', $this->url);
+		//$this->url = $aqs[0] . '?' . urlencode($qs);
 
 		$fixed_url = $this->params->get('fixed_url', true);
 		if ($fixed_url) 
@@ -179,35 +184,36 @@ class modRapidContact extends JObject
 
 		if (isset($_POST['rp'])) 
 		{
-			$this->posted = $_POST['rp'];
+			$this->posted = JRequest::getVar('rp', array(), 'post');
 
 			if ($this->enable_anti_spam) 
 			{
-				if ($_POST['rp']['anti_spam_answer'] != $this->anti_spam_a) 
+				if ($this->posted['anti_spam_answer'] != $this->anti_spam_a) 
 				{
 					$this->error = JText::_('Wrong anti-spam answer');
 				}
 			}
-			if ($_POST['rp']['email'] === '') 
+			if ($this->posted['email'] === '') 
 			{
 				$this->error = $this->no_email;
 			}
-			if (!preg_match("#^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$#i", $_POST['rp']['email'])) 
+			if (!preg_match("#^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$#i", $this->posted['email'])) 
 			{
 				$this->error = $this->invalid_email;
 			}
+
 			if ($this->error == '') 
 			{
-				$mySubject = $_POST['rp']['subject'];
-				$myMessage = 'You received a message from '. $_POST['rp']['email'] ."\n\n". $_POST['rp']['message'];
+				$mySubject = $this->_cleanXss($this->posted['subject']);
+				$myMessage = 'You received a message from '. $this->posted['email'] ."\n\n". $this->_cleanXss($this->posted['message']);
 
-				$this->from_email = $_POST['rp']['email'];
-				$this->from_name  = (isset($_POST['rp']['name']) && $_POST['rp']['name']) ? $_POST['rp']['name'] : $_POST['rp']['email'];
+				$this->from_email = $this->posted['email'];
+				$this->from_name  = (isset($this->posted['name']) && $this->_cleanXss($this->posted['name'])) ? $this->_cleanXss($this->posted['name']) : $this->posted['email'];
 
 				$mailSender = &JFactory::getMailer();
 				$mailSender->addRecipient($this->recipient);
 				$mailSender->setSender(array($this->from_email, $this->from_name));
-				$mailSender->addReplyTo(array($_POST['rp']['email'], ''));
+				$mailSender->addReplyTo(array($this->posted['email'], ''));
 				$mailSender->setSubject($mySubject);
 				$mailSender->setBody($myMessage);
 
@@ -223,5 +229,53 @@ class modRapidContact extends JObject
 		}
 
 		require(JModuleHelper::getLayoutPath($this->module->module));
+	}
+
+	/**
+	 * Short description for 'cleanXss'
+	 * 
+	 * Long description (if any) ...
+	 * 
+	 * @param      unknown $string Parameter description (if any) ...
+	 * @return     unknown Return description (if any) ...
+	 */
+	private function _cleanXss($string)
+	{
+		// Strip out any KL_PHP, script, style, HTML comments
+		$string = preg_replace('/{kl_php}(.*?){\/kl_php}/s', '', $string);
+		$string = preg_replace("'<style[^>]*>.*?</style>'si", '', $string);
+		$string = preg_replace("'<script[^>]*>.*?</script>'si", '', $string);
+		$string = preg_replace('/<!--.+?-->/', '', $string);
+
+		$string = str_replace(
+			array('&amp;', '&lt;', '&gt;'), 
+			array('&amp;amp;', '&amp;lt;', '&amp;gt;'), 
+			$string
+		);
+		// Fix &entitiy\n;
+
+		$string = preg_replace('#(&\#*\w+)[\x00-\x20]+;#u',"$1;",$string);
+		$string = preg_replace('#(&\#x*)([0-9A-F]+);*#iu',"$1$2;",$string);
+		$string = html_entity_decode($string, ENT_COMPAT, "UTF-8");
+
+		// Remove any attribute starting with "on" or xmlns
+		//$string = preg_replace('#(<[^>]+[\x00-\x20\"\'])(on|xmlns)[^>]*>#iUu', "$1>", $string);
+		// Remove javascript: and vbscript: protocol
+		$string = preg_replace('#([a-z]*)[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*)[\\x00-\x20]*j[\x00-\x20]*a[\x00-\x20]*v[\x00-\x20]*a[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iUu', '$1=$2nojavascript...', $string);
+		$string = preg_replace('#([a-z]*)[\x00-\x20]*=([\'\"]*)[\x00-\x20]*v[\x00-\x20]*b[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iUu', '$1=$2novbscript...', $string);
+		// <span style="width: expression(alert('Ping!'));"></span> 
+		// Only works in ie...
+		$string = preg_replace('#(<[^>]+)style[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*).*expression[\x00-\x20]*\([^>]*>#iU', "$1>", $string);
+		$string = preg_replace('#(<[^>]+)style[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*).*behaviour[\x00-\x20]*\([^>]*>#iU', "$1>", $string);
+		$string = preg_replace('#(<[^>]+)style[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*).*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:*[^>]*>#iUu', "$1>", $string);
+		// Remove namespaced elements (we do not need them...)
+		$string = preg_replace('#</*\w+:\w[^>]*>#i',"",$string);
+		// Remove really unwanted tags
+		do {
+			$oldstring = $string;
+			$string = preg_replace('#</*(applet|meta|xml|blink|link|head|body|style|script|embed|object|iframe|frame|frameset|ilayer|layer|bgsound|title|base)[^>]*>#i', '', $string);
+		} while ($oldstring != $string);
+
+		return $string;
 	}
 }
