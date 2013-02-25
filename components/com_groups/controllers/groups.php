@@ -1229,13 +1229,8 @@ class GroupsController extends Hubzero_Controller
 			if ($invite) 
 			{
 				$group->add('members',array($this->juser->get('id')));
-				$group->update(); 
-
-				$log_comments = $invite['email'];
-				$update = "UPDATE `jos_course_enrollments` SET `uid`=" . $this->juser->get('id') . " WHERE MD5(`enrollment_id`)='" . $token . "'";
-				$this->database->setQuery($update);
-				$this->database->query();
-
+				$group->update();
+				
 				$sql = "DELETE FROM #__xgroups_inviteemails WHERE id=" . $this->database->quote($invite['id']);
 				$this->database->setQuery($sql);
 				$this->database->query();
@@ -1407,6 +1402,7 @@ class GroupsController extends Hubzero_Controller
 		}
 
 		// Output HTML
+		//$view = new JView(array('name' => 'group', 'layout' => 'edit'));
 		$view = new JView(array('name' => 'edit'));
 		$view->option = $this->_option;
 		$view->title  = $title;
