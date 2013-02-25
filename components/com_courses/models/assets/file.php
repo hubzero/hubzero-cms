@@ -161,16 +161,17 @@ class FileAssetHandler extends AssetHandler
 		$url   = $asset->path($this->asset['course_id']);
 
 		$return_info = array(
-			'asset_id'       => $this->assoc['asset_id'],
-			'asset_title'    => $this->asset['title'],
-			'asset_type'     => $this->asset['type'],
-			'asset_url'      => $url,
-			'course_id'      => $this->asset['course_id'],
-			'offering_alias' => JRequest::getCmd('offering', ''),
-			'scope_id'       => $this->assoc['scope_id'],
-			'asset_ext'      => $ext,
-			'upload_path'    => $uploadDirectory,
-			'target_path'    => $target_path
+			'asset_id'              => $this->assoc['asset_id'],
+			'asset_title'           => $this->asset['title'],
+			'asset_type'            => $this->asset['type'],
+			'asset_url'             => $url,
+			'asset_progress_bar_id' => JRequest::getCmd('progress_bar_id', ''),
+			'course_id'             => $this->asset['course_id'],
+			'offering_alias'        => JRequest::getCmd('offering', ''),
+			'scope_id'              => $this->assoc['scope_id'],
+			'asset_ext'             => $ext,
+			'upload_path'           => $uploadDirectory,
+			'target_path'           => $target_path
 		);
 
 		// Return info

@@ -63,13 +63,31 @@ HUB.CoursesOutline = {
 				401: function (data, textStatus, jqXHR){
 					// Display the error message
 					HUB.CoursesOutline.errorMessage(data.responseText);
+
+					if(data.progress_bar_id) {
+						// Reset progress bar
+						// @FIXME: need to return filename even with errors!
+						HUB.CoursesOutline.resetProgresBar(data.progress_bar_id);
+					}
 				},
 				404: function (data, textStatus, jqXHR){
 					HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
+
+					if(data.progress_bar_id) {
+						// Reset progress bar
+						// @FIXME: need to return filename even with errors!
+						HUB.CoursesOutline.resetProgresBar(data.progress_bar_id);
+					}
 				},
 				500: function (data, textStatus, jqXHR){
 					// Display the error message
 					HUB.CoursesOutline.errorMessage(data.responseText);
+
+					if(data.progress_bar_id) {
+						// Reset progress bar
+						// @FIXME: need to return filename even with errors!
+						HUB.CoursesOutline.resetProgresBar(data.progress_bar_id);
+					}
 				}
 			}
 		});
@@ -699,6 +717,7 @@ HUB.CoursesOutline = {
 			var targetName      = '';
 			var ulCount         = 0;
 			var counter         = 0;
+			var progressBarId   = '';
 
 			// Setup dialog message box
 			dialog.dialog({
@@ -752,34 +771,9 @@ HUB.CoursesOutline = {
 								};
 
 								// Reset progress bar
-								HUB.CoursesOutline.resetProgresBar(asset.asset_title+'.'+asset.asset_ext, 1000, callback);
+								HUB.CoursesOutline.resetProgresBar(asset.asset_progress_bar_id, 1000, callback);
 							});
 						}
-
-					},
-					401: function(data){
-						// Display the error message
-						HUB.CoursesOutline.errorMessage(data.responseText);
-
-						// Reset progress bar
-						// @FIXME: need to return filename even with errors!
-						HUB.CoursesOutline.resetProgresBar(data.files[0].name);
-					},
-					// 404 - this could come from a method not found, or the api not being configured at all
-					404: function(data){
-						HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
-
-						// Reset progress bar
-						// @FIXME: need to return filename even with errors!
-						HUB.CoursesOutline.resetProgresBar(data.files[0].name);
-					},
-					500: function(data){
-						// Display the error message
-						HUB.CoursesOutline.errorMessage(data.responseText);
-
-						// Reset progress bar
-						// @FIXME: need to return filename even with errors!
-						HUB.CoursesOutline.resetProgresBar(data.files[0].name);
 					}
 				},
 				add: function(e, data) {
@@ -800,15 +794,16 @@ HUB.CoursesOutline = {
 								HUB.CoursesOutline.errorMessage('Sorry, we don\'t know what to do with files of type "' + json.ext + '"');
 							// Check to see if there are multiple ways of handling this file type
 							} else if(json.handlers.length > 1) {
-								// Iterate counter (for uniqueness - in case someone uploads two files with the same name)
+								// Iterate counter (for uniqueness)
 								counter += 1;
+								progressBarId = 'progress-bar-'+counter;
 
 								// Handle multiple handlers for extension
 								message += '<ul class="handlers-list">';
 								message += '<p class="asset file">' + data.files[0].name + '</p>';
 								$.each(json.handlers, function(index, value){
 									message += '<li class="handler-item">';
-									message += '<a id="' + (data.files[0].name + '_' + value.classname + counter).replace(/[. ]/g, '_') + '" class="dialog-button">';
+									message += '<a id="handler-item-' + counter + '-' + value.classname + '" class="dialog-button">';
 									message += value.message;
 									message += '</a>';
 									message += '</li>';
@@ -820,7 +815,7 @@ HUB.CoursesOutline = {
 
 								// Bind click events to the message buttons
 								$.each(json.handlers, function(index, value){
-									targetName = '#'+(data.files[0].name+'_'+value.classname + counter).replace(/[. ]/g, '_');
+									targetName = '#handler-item-' + counter + '-' + value.classname;
 									dialog.on('click', targetName, function(){
 										fileupload.fileupload(
 											'option',
@@ -833,11 +828,25 @@ HUB.CoursesOutline = {
 													'value': value.classname
 												});
 
+												// Add a progress bar id
+												formData.push({
+													'name':'progress_bar_id',
+													'value': progressBarId
+												});
+
 												return formData;
-											});
-										data.submit();
+											}
+										);
+
+										// Setup the progress handler
+										fileupload.on('fileuploadprogress', function (e, data) {
+											HUB.CoursesOutline.assetProgress(data, progressBarId);
+										});
+
 										// @FIXME: impliment cancel button
-										HUB.CoursesOutline.assetProgressBar(data.files[0].name, assetslist);
+										HUB.CoursesOutline.assetProgressBar(progressBarId, data.files[0].name, assetslist);
+
+										data.submit();
 
 										// Remove the ul for this file
 										$(this).parents('ul').remove();
@@ -863,41 +872,63 @@ HUB.CoursesOutline = {
 									dialog.dialog("open");
 								}
 							} else {
+								// Iterate counter (for uniqueness)
+								counter += 1;
+								progressBarId = 'progress-bar-'+counter;
+
+								// Add an additional value for upload progress bar
+								fileupload.fileupload(
+									'option',
+									'formData',
+									function (form) {
+										var formData = form.serializeArray();
+
+										formData.push({
+											'name':'progress_bar_id',
+											'value': progressBarId
+										});
+
+										return formData;
+									});
+
+								// Setup the progress handler
+								fileupload.on('fileuploadprogress', function (e, data) {
+									HUB.CoursesOutline.assetProgress(data, progressBarId);
+								});
+
+								// @FIXME: impliment cancel button
+								HUB.CoursesOutline.assetProgressBar(progressBarId, data.files[0].name, assetslist);
+
 								// Submit the file upload request as normal
 								data.submit();
-								// @FIXME: impliment cancel button
-								HUB.CoursesOutline.assetProgressBar(data.files[0].name, assetslist);
 							}
 						}
 					});
-				},
-				progress: function (e, data) {
-					var id = data.files[0].name.replace(/[. ]/g, '_') + '_progressbar';
-
-					// Show progress bars for all pending uploads
-					var progress = parseInt(data.loaded / data.total * 100, 10);
-					$('.unit').find("#"+id + " .bar").animate({'width': progress + '%'}, 200);
-
-					// If progress is 100% and extension is zip, let's add some explanation
-					if(progress == 100) {
-						var extension = data.files[0].name.split('.');
-
-						if(extension[extension.length - 1] == 'zip') {
-							$('.unit').find("#"+id + " .filename").html('unzipping...');
-						}
-					}
 				}
 			});
 		});
 	},
 
-	assetProgressBar: function(filename, assetslist)
+	assetProgress: function(data, progressBarId)
+	{
+		// Show progress bars for all pending uploads
+		var progress = parseInt(data.loaded / data.total * 100, 10);
+		$('.unit').find("#" + progressBarId + " .bar").animate({'width': progress + '%'}, 200);
+
+		// If progress is 100% and extension is zip, let's add some explanation
+		if(progress == 100) {
+			var extension = data.files[0].name.split('.');
+
+			if(extension[extension.length - 1] == 'zip') {
+				$('.unit').find("#" + progressBarId + " .filename").html('unzipping...');
+			}
+		}
+	},
+
+	assetProgressBar: function(id, filename, assetslist)
 	{
 		var $ = this.jQuery;
 
-		// @FIXME: come up with a better way of tracking this div through the upload process
-		//         probably should send unique id with upload request and return it back with response
-		var id = filename.replace(/[. ]/g, '_') + '_progressbar';
 		var html = '';
 			html += '<div id="' + id + '" class="uploadfiles-progress">';
 			html += '<div class="bar-border">';
@@ -909,15 +940,13 @@ HUB.CoursesOutline = {
 		assetslist.append(html);
 	},
 
-	resetProgresBar: function(filename, timeout, callback)
+	resetProgresBar: function(id, timeout, callback)
 	{
 		var $ = this.jQuery;
 
 		// Set defaults
 		callback = ($.type(callback) === 'function') ? callback : function(){};
 		timeout  = ($.type(timeout)  === 'number')   ? timeout  : 0;
-
-		var id = filename.replace(/[. ]/g, '_') + '_progressbar';
 
 		setTimeout(function(){
 			$("#"+id).fadeOut('slow', function() {

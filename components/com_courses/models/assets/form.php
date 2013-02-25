@@ -112,7 +112,7 @@ class FormAssetHandler extends AssetHandler
 					// Create ajax call to change info in the database
 					$.ajax({
 						url: '/api/courses/asset/save',
-						data: form.serialize()+'&title=" . $filename . "&type=exam&url='+encodeURIComponent('/courses/form/layout/" . $id . "'),
+						data: form.serialize()+'&title=" . $filename . "&type=exam&url=/courses/form/layout/" . $id . "&progress_bar_id=" . JRequest::getCmd('progress_bar_id', '') . "',
 						dataType: 'json',
 						type: 'POST',
 						cache: false,
@@ -139,7 +139,7 @@ class FormAssetHandler extends AssetHandler
 									}
 
 									// Reset progress bar
-									HUB.CoursesOutline.resetProgresBar(file.asset_title+'.pdf', 1000, callback);
+									HUB.CoursesOutline.resetProgresBar(file.asset_progress_bar_id, 1000, callback);
 								});
 							},
 							401: function(data){

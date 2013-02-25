@@ -60,13 +60,19 @@ class ObjectAssetHandler extends ContentAssetHandler
 
 		// Check if valid youtube or kaltura video
 		// @FIXME: we need a safer way!
-		if(!preg_match('/\<object.*name="movie" value\=\"http[s]*\:\/\/www\.youtube\.com\/.*\<embed src\=\"http[s]*\:\/\/www\.youtube\.com\//', $object)
-			&& !preg_match('/.*kaltura.*/i', $object))
+		if(preg_match('/\<object.*name="movie" value\=\"http[s]*\:\/\/www\.youtube\.com\/.*\<embed src\=\"http[s]*\:\/\/www\.youtube\.com\//', $object))
+		{
+			$this->asset['title'] = 'New YouTube video';
+		}
+		elseif(preg_match('/\<script type="text\/javascript" src="http[s]*\:\/\/cdnapi\.kaltura\.com.*\<object id="kaltura_player_[0-9]+.*/is', $object))
+		{
+			$this->asset['title'] = 'New Kaltura video';
+		}
+		else
 		{
 			return array('error'=>'Content did not match the pre-defined filter for an object');
 		}
 
-		$this->asset['title']   = 'New embeded video';
 		$this->asset['type']    = (!empty($this->asset['type'])) ? $this->asset['type'] : 'object';
 		$this->asset['content'] = $object;
 
