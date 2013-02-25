@@ -103,7 +103,7 @@ class WikiPageAttachment extends JTable
 		}
 		if (is_string($oid))
 		{
-			$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE filename='$oid' ANd pageid='$pageid'");
+			$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE filename=" . $this->_db->Quote($oid) . " AND pageid=" . $this->_db->Quote($pageid));
 			if ($result = $this->_db->loadAssoc()) 
 			{
 				return $this->bind($result);
@@ -129,7 +129,7 @@ class WikiPageAttachment extends JTable
 	 */
 	public function getID($filename, $pageid)
 	{
-		$this->_db->setQuery("SELECT id, description FROM $this->_tbl WHERE filename='" . $filename . "' AND pageid=" . $pageid);
+		$this->_db->setQuery("SELECT id, description FROM $this->_tbl WHERE filename=" . $this->_db->Quote($filename) . " AND pageid=" . $this->_db->Quote($pageid));
 		return $this->_db->loadRow();
 	}
 
@@ -150,7 +150,7 @@ class WikiPageAttachment extends JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE filename='" . $filename . "' AND pageid=" . $pageid);
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE filename=" . $this->_db->Quote($filename) . " AND pageid=" . $this->_db->Quote($pageid));
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -184,7 +184,7 @@ class WikiPageAttachment extends JTable
 		$tokens = preg_split('/#/', $match);
 		$id = intval(end($tokens));
 
-		$this->_db->setQuery("SELECT filename, description FROM $this->_tbl WHERE id=" . $id);
+		$this->_db->setQuery("SELECT filename, description FROM $this->_tbl WHERE id=" . $this->_db->Quote($id));
 		$a = $this->_db->loadRow();
 
 		if (is_file(JPATH_ROOT.$this->path . DS . $this->pageid . DS . $a[0])) 
@@ -224,7 +224,7 @@ class WikiPageAttachment extends JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery("UPDATE $this->_tbl SET pageid='$newid' WHERE pageid='$oldid'");
+		$this->_db->setQuery("UPDATE $this->_tbl SET pageid=" . $this->_db->Quote($newid) . " WHERE pageid=" . $this->_db->Quote($oldid));
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());

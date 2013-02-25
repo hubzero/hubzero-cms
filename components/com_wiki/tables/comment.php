@@ -131,7 +131,7 @@ class WikiPageComment extends JTable
 	 */
 	public function getResponses()
 	{
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE parent='$this->id' AND status < 2");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE parent=" . $this->_db->Quote($this->id) . " AND status < 2");
 		return $this->_db->loadObjectList();
 	}
 
@@ -149,7 +149,7 @@ class WikiPageComment extends JTable
 			$this->$k = intval($oid);
 		}
 
-		$this->_db->setQuery("UPDATE $this->_tbl SET status=1 WHERE $this->_tbl_key = '" . $this->$k . "'");
+		$this->_db->setQuery("UPDATE $this->_tbl SET status=1 WHERE $this->_tbl_key = " . $this->_db->Quote($this->$k));
 
 		if ($this->_db->query()) 
 		{
@@ -173,7 +173,7 @@ class WikiPageComment extends JTable
 	 */
 	public function getComments($id, $parent, $ver='', $limit='')
 	{
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE pageid='" . $id . "' AND status < 2 AND parent=" . $parent . " $ver ORDER BY created DESC $limit");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE pageid=" . $this->_db->Quote($id) . " AND status < 2 AND parent=" . $this->_db->Quote($parent) . " $ver ORDER BY created DESC $limit");
 		return $this->_db->loadObjectList();
 	}
 
@@ -225,27 +225,27 @@ class WikiPageComment extends JTable
 
 		if (isset($filters['created_by']) && $filters['created_by'] != 0) 
 		{
-			$where[] = "c.created_by=" . $filters['created_by'];
+			$where[] = "c.created_by=" . $this->_db->Quote($filters['created_by']);
 		}
 		if (isset($filters['pageid']) && $filters['pageid'] != 0) 
 		{
-			$where[] = "c.pageid=" . $filters['pageid'];
+			$where[] = "c.pageid=" . $this->_db->Quote($filters['pageid']);
 		}
 		if (isset($filters['parent']) && $filters['parent'] != '') 
 		{
-			$where[] = "c.parent='" . $filters['parent'] . "'";
+			$where[] = "c.parent=" . $this->_db->Quote($filters['parent']);
 		}
 		if (isset($filters['anonymous']) && $filters['anonymous'] != '') 
 		{
-			$where[] = "c.anonymous='" . $filters['anonymous'] . "'";
+			$where[] = "c.anonymous=" . $this->_db->Quote($filters['anonymous']);
 		}
 		if (isset($filters['version']) && $filters['version'] != 0) 
 		{
-			$where[] = "c.version='" . $filters['version'] . "'";
+			$where[] = "c.version=" . $this->_db->Quote($filters['version']);
 		}
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
-			$where[] = "LOWER(c.ctext) LIKE '%" . strtolower($filters['search']) . "%'";
+			$where[] = "LOWER(c.ctext) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'";
 		}
 
 		if (count($where) > 0)

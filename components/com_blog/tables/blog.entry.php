@@ -183,7 +183,7 @@ class BlogEntry extends JTable
 					$this->setError(JText::_('Missing argument.'));
 					return false;
 				}
-				$query = "SELECT * FROM $this->_tbl WHERE alias='$oid' AND scope='$scope' AND created_by='$created_by'";
+				$query = "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($oid) . " AND scope=" . $this->_db->Quote($scope) . " AND created_by=" . $this->_db->Quote($created_by);
 			break;
 
 			case 'group':
@@ -196,11 +196,11 @@ class BlogEntry extends JTable
 					return false;
 				}
 				//$query = "SELECT * FROM $this->_tbl WHERE alias='$oid' AND scope='$scope' AND group_id='$group_id'";
-				$query = "SELECT * FROM $this->_tbl WHERE alias='$oid' AND group_id='$group_id'";
+				$query = "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($oid) . " AND group_id=" . $this->_db->Quote($group_id);
 			break;
 
 			default:
-				$query = "SELECT * FROM $this->_tbl WHERE alias='$oid' AND scope='$scope'";
+				$query = "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($oid) . " AND scope=" . $this->_db->Quote($scope);
 			break;
 		}
 		$this->_db->setQuery($query);
@@ -336,18 +336,18 @@ class BlogEntry extends JTable
 
 		$query  = "FROM $this->_tbl AS m,
 					#__xprofiles AS u  
-					WHERE m.scope='" . $filters['scope'] . "' AND m.created_by=u.uidNumber ";
+					WHERE m.scope=" . $this->_db->Quote($filters['scope']) . " AND m.created_by=u.uidNumber ";
 		if (isset($filters['created_by']) && $filters['created_by'] != 0) 
 		{
-			$query .= " AND m.created_by=" . $filters['created_by'];
+			$query .= " AND m.created_by=" . $this->_db->Quote($filters['created_by']);
 		}
 		if (isset($filters['group_id']) && $filters['group_id'] != 0) 
 		{
-			$query .= " AND m.group_id=" . $filters['group_id'];
+			$query .= " AND m.group_id=" . $this->_db->Quote($filters['group_id']);
 		}
 		if (isset($filters['scope']) && $filters['scope'] != '') 
 		{
-			$query .= " AND m.scope='" . $filters['scope'] . "'";
+			$query .= " AND m.scope=" . $this->_db->Quote($filters['scope']);
 		}
 		if (isset($filters['state']) && $filters['state'] != '') 
 		{
@@ -370,7 +370,7 @@ class BlogEntry extends JTable
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
 			$filters['search'] = strtolower(stripslashes($filters['search']));
-			$query .= " AND (LOWER(m.title) LIKE '%" . $filters['search'] . "%' OR LOWER(m.content) LIKE '%" . $filters['search'] . "%')";
+			$query .= " AND (LOWER(m.title) LIKE '%" . $this->_db->getEscaped($filters['search']) . "%' OR LOWER(m.content) LIKE '%" . $this->_db->getEscaped($filters['search']) . "%')";
 		}
 		if (isset($filters['order']) && $filters['order'] != '') 
 		{
@@ -534,7 +534,7 @@ class BlogEntry extends JTable
 
 		$bc = new BlogComment($this->_db);
 
-		$this->_db->setQuery("DELETE FROM " . $bc->getTableName() . " WHERE entry_id=$id");
+		$this->_db->setQuery("DELETE FROM " . $bc->getTableName() . " WHERE entry_id=" . $this->_db->Quote($id));
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());

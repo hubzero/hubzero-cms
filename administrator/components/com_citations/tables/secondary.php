@@ -106,21 +106,26 @@ class CitationsSecondary extends JTable
 	{
 		$query = "";
 		$ands = array();
-		if (isset($filters['cid']) && $filters['cid'] != 0) {
-			$ands[] = "r.cid='".$filters['cid']."'";
+		if (isset($filters['cid']) && $filters['cid'] != 0) 
+		{
+			$ands[] = "r.cid=" . $this->_db->Quote($filters['cid']);
 		}
-		if (isset($filters['search_string']) && $filters['search_string'] != '') {
-			$ands[] = "LOWER(r.search_string)='".strtolower($filters['search_string'])."'";
+		if (isset($filters['search_string']) && $filters['search_string'] != '') 
+		{
+			$ands[] = "LOWER(r.search_string)=" . $this->_db->Quote(strtolower($filters['search_string']));
 		}
-		if (count($ands) > 0) {
+		if (count($ands) > 0) 
+		{
 			$query .= " WHERE ";
 			$query .= implode(" AND ", $ands);
 		}
-		if (isset($filters['sort']) && $filters['sort'] != '') {
-			$query .= " ORDER BY ".$filters['sort'];
+		if (isset($filters['sort']) && $filters['sort'] != '') 
+		{
+			$query .= " ORDER BY " . $filters['sort'];
 		}
-		if (isset($filters['limit']) && $filters['limit'] != 0) {
-			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
+		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		{
+			$query .= " LIMIT " . intval($filters['start']) . "," . intval($filters['limit']);
 		}
 
 		return $query;

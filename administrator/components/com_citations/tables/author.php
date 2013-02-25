@@ -171,15 +171,15 @@ class CitationsAuthor extends JTable
 		$ands = array();
 		if (isset($filters['cid']) && $filters['cid'] != 0) 
 		{
-			$ands[] = "r.cid='" . $filters['cid'] . "'";
+			$ands[] = "r.cid=" . $this->_db->Quote($filters['cid']);
 		}
 		if (isset($filters['author_uid']) && $filters['author_uid'] != 0) 
 		{
-			$ands[] = "r.author_uid='" . $filters['author_uid'] . "'";
+			$ands[] = "r.author_uid=" . $this->_db->Quote($filters['author_uid']);
 		}
 		if (isset($filters['author']) && trim($filters['author']) != '') 
 		{
-			$ands[] = "LOWER(r.author)='" . strtolower($filters['author']) . "'";
+			$ands[] = "LOWER(r.author)=" . $this->_db->Quote(strtolower($filters['author']));
 		}
 		if (count($ands) > 0) 
 		{
@@ -192,7 +192,7 @@ class CitationsAuthor extends JTable
 		}
 		if (isset($filters['limit']) && $filters['limit'] != 0) 
 		{
-			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+			$query .= " LIMIT " . intval($filters['start']) . "," . intval($filters['limit']);
 		}
 
 		return $query;

@@ -120,23 +120,23 @@ class CitationsAssociation extends JTable
 		$ands = array();
 		if (isset($filters['cid']) && $filters['cid'] != 0) 
 		{
-			$ands[] = "r.cid='" . $filters['cid'] . "'";
+			$ands[] = "r.cid=" . $this->_db->Quote($filters['cid']);
 		}
 		if (isset($filters['oid']) && $filters['oid'] != 0) 
 		{
-			$ands[] = "r.oid='" . $filters['oid'] . "'";
+			$ands[] = "r.oid=" . $this->_db->Quote($filters['oid']);
 		}
 		if (isset($filters['type']) && $filters['type'] != '') 
 		{
-			$ands[] = "r.type='" . $filters['type'] . "'";
+			$ands[] = "r.type=" . $this->_db->Quote($filters['type']);
 		}
 		if (isset($filters['type']) && $filters['type'] != '') 
 		{
-			$ands[] = "r.type='" . $filters['type'] . "'";
+			$ands[] = "r.type=" . $this->_db->Quote($filters['type']);
 		}
 		if (isset($filters['table']) && $filters['table'] != '') 
 		{
-			$ands[] = "r.tbl='" . $filters['table'] . "'";
+			$ands[] = "r.tbl=" . $this->_db->Quote($filters['table']);
 		}
 		if (count($ands) > 0) 
 		{
@@ -150,7 +150,7 @@ class CitationsAssociation extends JTable
 		}
 		if (isset($filters['limit']) && $filters['limit'] != 0) 
 		{
-			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+			$query .= " LIMIT " . intval($filters['start']) . "," . intval($filters['limit']);
 		}
 
 		return $query;

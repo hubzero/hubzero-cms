@@ -176,11 +176,11 @@ class WikiPageRevision extends JTable
 		}
 		if ($version) 
 		{
-			$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE pageid='$pageid' AND version='$version'");
+			$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE pageid=" . $this->_db->Quote($pageid) . " AND version=" . $this->_db->Quote($version));
 		} 
 		else 
 		{
-			$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE pageid='$pageid' AND approved='1' ORDER BY version DESC LIMIT 1");
+			$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE pageid=" . $this->_db->Quote($pageid) . " AND approved=" . $this->_db->Quote('1') . " ORDER BY version DESC LIMIT 1");
 		}
 		if ($result = $this->_db->loadAssoc()) 
 		{
@@ -200,7 +200,7 @@ class WikiPageRevision extends JTable
 	 */
 	public function getContributors()
 	{
-		$this->_db->setQuery("SELECT DISTINCT created_by AS id FROM $this->_tbl WHERE pageid='$this->pageid' AND approved='1'");
+		$this->_db->setQuery("SELECT DISTINCT created_by AS id FROM $this->_tbl WHERE pageid=" . $this->_db->Quote($this->pageid) . " AND approved=" . $this->_db->Quote('1'));
 		$contributors = $this->_db->loadObjectList();
 
 		$cons = array();
@@ -221,7 +221,7 @@ class WikiPageRevision extends JTable
 	 */
 	public function getRevisionCount()
 	{
-		$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE pageid='$this->pageid' AND approved='1'");
+		$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE pageid=" . $this->_db->Quote($this->pageid) . " AND approved=" . $this->_db->Quote('1'));
 		return $this->_db->loadResult();
 	}
 
@@ -237,7 +237,7 @@ class WikiPageRevision extends JTable
 		{
 			$pageid = $this->pageid;
 		}
-		$this->_db->setQuery("SELECT DISTINCT version FROM $this->_tbl WHERE pageid='$pageid' AND approved='1' ORDER BY version DESC");
+		$this->_db->setQuery("SELECT DISTINCT version FROM $this->_tbl WHERE pageid=" . $this->_db->Quote($pageid) . " AND approved=" . $this->_db->Quote('1') . " ORDER BY version DESC");
 		return $this->_db->loadObjectList();
 	}
 

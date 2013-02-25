@@ -29,12 +29,10 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'WikiPageAuthor'
- * 
- * Long description (if any) ...
+ * Wiki table for associating authors to a page
  */
 class WikiPageAuthor extends JTable
 {
@@ -77,14 +75,20 @@ class WikiPageAuthor extends JTable
 	 */
 	public function check()
 	{
-		if (!$this->page_id) {
+		$this->page_id = intval($this->page_id);
+		if (!$this->page_id) 
+		{
 			$this->setError(JText::_('Author entry must have a page ID.'));
 			return false;
 		}
-		if (!$this->user_id) {
+
+		$this->user_id = intval($this->user_id);
+		if (!$this->user_id) 
+		{
 			$this->setError(JText::_('Author entry must have a user ID.'));
 			return false;
 		}
+
 		return true;
 	}
 
@@ -97,18 +101,24 @@ class WikiPageAuthor extends JTable
 	 */
 	public function getId($page_id=NULL, $user_id=NULL)
 	{
-		if (!$page_id) {
+		if (!$page_id) 
+		{
 			$page_id = $this->page_id;
 		}
-		if (!$user_id) {
+		if (!$user_id) 
+		{
 			$user_id = $this->user_id;
 		}
-		if (!$page_id || !$user_id) {
+
+		if (!$page_id || !$user_id) 
+		{
 			$this->setError(JText::_("Missing argument (page_id: $page_id, user_id: $user_id)."));
 			return false;
 		}
-		if (!$this->id) {
-			$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE page_id='$page_id' AND user_id='$user_id'");
+
+		if (!$this->id) 
+		{
+			$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE page_id=" . $this->_db->Quote($page_id) . " AND user_id=" . $this->_db->Quote($user_id));
 			$this->id = $this->_db->loadResult();
 		}
 		return $this->id;
@@ -124,7 +134,8 @@ class WikiPageAuthor extends JTable
 	public function isAuthor($page_id=NULL, $user_id=NULL)
 	{
 		$id = $this->getId($page_id, $user_id);
-		if ($id) {
+		if ($id) 
+		{
 			return true;
 		}
 		return false;
@@ -138,14 +149,16 @@ class WikiPageAuthor extends JTable
 	 */
 	public function getAuthorIds($page_id=NULL)
 	{
-		if (!$page_id) {
+		if (!$page_id) 
+		{
 			$page_id = $this->page_id;
 		}
-		if (!$page_id) {
+		if (!$page_id) 
+		{
 			$this->setError(JText::_('Missing page ID.'));
 			return false;
 		}
-		$this->_db->setQuery("SELECT user_id FROM $this->_tbl WHERE page_id='$page_id'");
+		$this->_db->setQuery("SELECT user_id FROM $this->_tbl WHERE page_id=" . $this->_db->Quote($page_id));
 		return $this->_db->loadResultArray();
 	}
 
@@ -157,14 +170,16 @@ class WikiPageAuthor extends JTable
 	 */
 	public function getAuthors($page_id=NULL)
 	{
-		if (!$page_id) {
+		if (!$page_id) 
+		{
 			$page_id = $this->page_id;
 		}
-		if (!$page_id) {
+		if (!$page_id) 
+		{
 			$this->setError(JText::_('Missing page ID.'));
 			return false;
 		}
-		$this->_db->setQuery("SELECT wa.user_id, u.username, u.name FROM $this->_tbl AS wa, #__users AS u WHERE wa.page_id='$page_id' AND u.id=wa.user_id");
+		$this->_db->setQuery("SELECT wa.user_id, u.username, u.name FROM $this->_tbl AS wa, #__users AS u WHERE wa.page_id=" . $this->_db->Quote($page_id) . " AND u.id=wa.user_id");
 		return $this->_db->loadObjectList();
 	}
 
@@ -177,18 +192,23 @@ class WikiPageAuthor extends JTable
 	 */
 	public function removeAuthor($page_id=NULL, $user_id=NULL)
 	{
-		if (!$page_id) {
+		if (!$page_id) 
+		{
 			$page_id = $this->page_id;
 		}
-		if (!$user_id) {
+		if (!$user_id) 
+		{
 			$user_id = $this->user_id;
 		}
-		if (!$page_id || !$user_id) {
+		if (!$page_id || !$user_id) 
+		{
 			$this->setError(JText::_("Missing argument (page_id: $page_id, user_id: $user_id)."));
 			return false;
 		}
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE page_id='$page_id' AND user_id='$user_id'");
-		if (!$this->_db->query()) {
+
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE page_id=" . $this->_db->Quote($page_id) . " AND user_id=" . $this->_db->Quote($user_id));
+		if (!$this->_db->query()) 
+		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
@@ -203,15 +223,18 @@ class WikiPageAuthor extends JTable
 	 */
 	public function removeAuthors($page_id=NULL)
 	{
-		if (!$page_id) {
+		if (!$page_id) 
+		{
 			$page_id = $this->page_id;
 		}
-		if (!$page_id) {
+		if (!$page_id) 
+		{
 			$this->setError(JText::_('Missing page ID.'));
 			return false;
 		}
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE page_id='$page_id'");
-		if (!$this->_db->query()) {
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE page_id=" . $this->_db->Quote($page_id));
+		if (!$this->_db->query()) 
+		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
@@ -227,10 +250,12 @@ class WikiPageAuthor extends JTable
 	 */
 	public function updateAuthors($authors=NULL, $page_id=NULL)
 	{
-		if (!$page_id) {
+		if (!$page_id) 
+		{
 			$page_id = $this->page_id;
 		}
-		if (!$page_id) {
+		if (!$page_id) 
+		{
 			$this->setError(JText::_("Missing argument (page_id: $page_id)."));
 			return false;
 		}
@@ -240,7 +265,8 @@ class WikiPageAuthor extends JTable
 		$auths = array();
 
 		// Turn the comma-separated string of authors into an array and loop through it
-		if ($authors) {
+		if ($authors) 
+		{
 			$authArray = explode(',', $authors);
 			$authArray = array_map('trim', $authArray);
 			foreach ($authArray as $author)
@@ -249,13 +275,15 @@ class WikiPageAuthor extends JTable
 				$targetuser =& JUser::getInstance($author);
 
 				// Ensure we found an account
-				if (!is_object($targetuser)) {
+				if (!is_object($targetuser)) 
+				{
 					// No account found for this username/ID
 					// Move on to next record
 					continue;
 				}
 				// Check if they're already an existing author
-				if (in_array($targetuser->get('id'), $ids)) {
+				if (in_array($targetuser->get('id'), $ids)) 
+				{
 					// Add them to the existing authors array
 					$auths[] = $targetuser->get('id');
 					// Move on to next record
@@ -265,13 +293,17 @@ class WikiPageAuthor extends JTable
 				$wpa = new WikiPageAuthor($this->_db);
 				$wpa->page_id = $page_id;
 				$wpa->user_id = $targetuser->get('id');
-				if ($wpa->check()) {
-					if (!$wpa->store()) {
+				if ($wpa->check()) 
+				{
+					if (!$wpa->store()) 
+					{
 						$this->setError($wpa->getError());
 					}
 					// Add them to the existing authors array
 					$auths[] = $targetuser->get('id');
-				} else {
+				} 
+				else 
+				{
 					$this->setError("Error adding page author: (page_id: $wpa->page_id, user_id: $wpa->user_id).");
 				}
 			}
@@ -280,31 +312,33 @@ class WikiPageAuthor extends JTable
 		// Remove any entries not found in the new list
 		foreach ($ids as $id)
 		{
-			if (!in_array($id, $auths)) {
+			if (!in_array($id, $auths)) 
+			{
 				$wpa = new WikiPageAuthor($this->_db);
-				if (!$wpa->removeAuthor($page_id, $id)) {
+				if (!$wpa->removeAuthor($page_id, $id)) 
+				{
 					$this->setError($wpa->getError());
 				}
 			}
 		}
-		if ($this->getError()) {
+		if ($this->getError()) 
+		{
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'transitionAuthors'
+	 * Transition old author strings to table
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True on success, false on error
 	 */
 	public function transitionAuthors()
 	{
 		$this->_db->setQuery("SELECT id, authors FROM #__wiki_page WHERE authors!='' AND authors IS NOT NULL");
 		$pages = $this->_db->loadObjectList();
-		if ($pages) {
+		if ($pages) 
+		{
 			foreach ($pages as $page)
 			{
 				$authors = explode(',', $page->authors);
@@ -314,26 +348,33 @@ class WikiPageAuthor extends JTable
 					$targetuser =& JUser::getInstance($author);
 
 					// Ensure we found an account
-					if (is_object($targetuser)) {
+					if (is_object($targetuser)) 
+					{
 						$wpa = new WikiPageAuthor($this->_db);
 						$wpa->page_id = $page->id;
 						$wpa->user_id = $targetuser->get('id');
-						if ($wpa->check()) {
+						if ($wpa->check()) 
+						{
 							$wpa->store();
-						} else {
+						} 
+						else 
+						{
 							$this->setError("Error adding page author: (page_id: $wpa->page_id, user_id: $wpa->user_id).");
 						}
 					}
 				}
 			}
 		}
-		if (!$this->getError()) {
+		if (!$this->getError()) 
+		{
 			$this->_db->setQuery("ALTER TABLE $this->_tbl DROP COLUMN `authors`");
-			if (!$this->_db->query()) {
+			if (!$this->_db->query()) 
+			{
 				$this->setError($this->_db->getErrorMsg());
 			}
 		}
-		if (!$this->getError()) {
+		if (!$this->getError()) 
+		{
 			return true;
 		}
 		return false;

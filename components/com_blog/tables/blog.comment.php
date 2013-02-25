@@ -139,7 +139,7 @@ class BlogComment extends JTable
 	 */
 	public function loadUserComment($entry_id, $user_id)
 	{
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE entry_id=$entry_id AND created_by=$user_id LIMIT 1");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE entry_id=" . $this->_db->Quote($entry_id) . " AND created_by=" . $this->_db->Quote($user_id) . " LIMIT 1");
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			return $this->bind($result);
@@ -168,7 +168,7 @@ class BlogComment extends JTable
 		{
 			$parent = 0;
 		}
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE entry_id=$entry_id AND parent=$parent ORDER BY created ASC");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE entry_id=" . $this->_db->Quote($entry_id) . " AND parent=" . $this->_db->Quote($parent) . " ORDER BY created ASC");
 		return $this->_db->loadObjectList();
 	}
 
@@ -237,21 +237,21 @@ class BlogComment extends JTable
 			$id = $this->id;
 		}
 
-		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE parent=" . $id);
+		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE parent=" . $this->_db->Quote($id));
 		$comments = $this->_db->loadObjectList();
 		if ($comments) 
 		{
 			foreach ($comments as $row)
 			{
 				// Delete children
-				$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent=" . $row->id);
+				$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent=" . $this->_db->Quote($row->id));
 				if (!$this->_db->query()) 
 				{
 					$this->setError($this->_db->getErrorMsg());
 					return false;
 				}
 			}
-			$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent=" . $id);
+			$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent=" . $this->_db->Quote($id));
 			if (!$this->_db->query()) 
 			{
 				$this->setError($this->_db->getErrorMsg());
@@ -281,7 +281,7 @@ class BlogComment extends JTable
 			return false;
 		}
 
-		$this->_db->setQuery("UPDATE $this->_tbl SET state=$state WHERE id=$oid");
+		$this->_db->setQuery("UPDATE $this->_tbl SET state=" . $this->_db->Quote($state) . " WHERE id=" . $this->_db->Quote($oid));
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());

@@ -501,6 +501,12 @@ class GroupsController extends Hubzero_Controller
 	 */
 	protected function view()
 	{
+		if (!$this->_validCn($this->gid))
+		{
+			JError::raiseError(404, JText::_('GROUPS_NO_GROUP_FOUND'));
+			return;
+		}
+
 		// Load the group page
 		$group = Hubzero_Group::getInstance($this->gid);
 
@@ -543,30 +549,30 @@ class GroupsController extends Hubzero_Controller
 			$managers = $group->get('managers');
 			$members = $group->get('members');
 			$invitees = $group->get('invitees');
-			
+
 			//get the juser object
 			$juser =& JFactory::getUser();
-			
+
 			//if user is not member, manager, or invitee deny access
-			if(!in_array($juser->get('id'), $managers) && !in_array($juser->get('id'), $members) && !in_array($juser->get('id'), $invitees))
+			if (!in_array($juser->get('id'), $managers) && !in_array($juser->get('id'), $members) && !in_array($juser->get('id'), $invitees))
 			{
 				JError::raiseError(404, JText::_('GROUPS_NO_GROUP_FOUND'));
 				return;
 			}
-			
+
 			//if user is NOT manager but member or invitee
-			if(!in_array($juser->get('id'), $managers) && (in_array($juser->get('id'), $members) || in_array($juser->get('id'), $invitees)))
+			if (!in_array($juser->get('id'), $managers) && (in_array($juser->get('id'), $members) || in_array($juser->get('id'), $invitees)))
 			{
 				//get group styles for unapproved template
 				$this->_getGroupStyles($group->get('type'));
-				
+
 				//display unapproved group template
 				$view = new JView(array('name' => 'view', 'layout' => 'unapproved'));
 				$view->group = $group;
 				$view->display();
 				return;
 			}
-			
+
 			//set notification and clear after
 			$this->setNotification( JText::_('GROUPS_STATUS_NEW_GROUP'), 'warning' );
 			$this->clearComponentMessage();
@@ -611,12 +617,12 @@ class GroupsController extends Hubzero_Controller
 		// Get the group pages if any
 		$GPages = new GroupPages($this->database);
 		$pages = $GPages->getPages($group->get('gidNumber'), true);
-		
+
 		if (in_array($tab, array_keys($pages)))
 		{
 			$wikiconfig['pagename'] .= DS . $tab;
 		}
-		
+
 		// Push some vars to the group pages
 		$GPages->parser = $p;
 		$GPages->config = $wikiconfig;

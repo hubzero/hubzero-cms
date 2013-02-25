@@ -39,6 +39,22 @@ ximport('Hubzero_Controller');
 class BlogControllerMedia extends Hubzero_Controller
 {
 	/**
+	 * Execute task
+	 * 
+	 * @return     void
+	 */
+	public function execute()
+	{
+		if (JFactory::getUser()->get('guest'))
+		{
+			JError::raiseError(403, JText::_('Access denied.'));
+			return;
+		}
+
+		parent::execute();
+	}
+
+	/**
 	 * Download a file
 	 * 
 	 * @return     void
@@ -365,7 +381,7 @@ class BlogControllerMedia extends Hubzero_Controller
 	public function listTask()
 	{
 		// Incoming
-		$scope = JRequest::getVar('scope', 'site');
+		$scope = JRequest::getWord('scope', 'site');
 		$id = JRequest::getInt('id', 0);
 
 		$path = $this->_getUploadPath($scope, $id);

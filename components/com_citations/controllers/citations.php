@@ -94,7 +94,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 		$this->view->allow_import = $this->config->get('citation_import', 1);
 		$this->view->allow_bulk_import = $this->config->get('citation_bulk_import', 1);
 		$this->view->isAdmin = false;
-		if($this->juser->authorize($this->_option, 'import'))
+		if ($this->juser->authorize($this->_option, 'import'))
 		{
 			$this->view->isAdmin = true;
 		}
@@ -117,23 +117,23 @@ class CitationsControllerCitations extends Hubzero_Controller
 		$this->view->database = $this->database;
 		$this->view->config   = $this->config;
 		$this->view->isAdmin = false;
-		if($this->juser->authorize($this->_option, 'import'))
+		if ($this->juser->authorize($this->_option, 'import'))
 		{
 			$this->view->isAdmin = true;
 		}
-		
+
 		//get the earliest year we have citations for
 		$query = "SELECT c.year FROM #__citations as c WHERE c.published=1 AND c.year <> 0 AND c.year IS NOT NULL ORDER BY c.year ASC LIMIT 1";
 		$this->view->database->setQuery( $query );
 		$earliest_year = $this->view->database->loadResult();
 		$earliest_year = ($earliest_year) ? $earliest_year : 1990;
-		
+
 		// Incoming
 		$this->view->filters = array();
 		//paging filters
 		$this->view->filters['limit']   = JRequest::getInt('limit', 50, 'request');
 		$this->view->filters['start']   = JRequest::getInt('limitstart', 0, 'get');
-		
+
 		//search/filtering params
 		$this->view->filters['tag']             = trim(JRequest::getVar('tag', '', 'request', 'none', 2));
 		$this->view->filters['search']          = $this->database->getEscaped(JRequest::getVar('search', ''));
@@ -150,12 +150,38 @@ class CitationsControllerCitations extends Hubzero_Controller
 		$this->view->filters['startuploaddate'] = JRequest::getVar('startuploaddate', 0);
 		$this->view->filters['enduploaddate']   = JRequest::getVar('enduploaddate', 0);
 
+		// Affiliation filter
+		$this->view->filter = array(
+			'all'    => JText::_('ALL'),
+			'aff'    => JText::_('AFFILIATE'),
+			'nonaff' => JText::_('NONAFFILIATE')
+		);
+		if (!in_array($this->view->filters['filter'], $this->view->filter))
+		{
+			$this->view->filters['filter'] = '';
+		}
+
+		// Sort Filter
+		$this->view->sorts = array(
+			'sec_cnt DESC' => JText::_('Cited by'),
+			'year DESC'    => JText::_('YEAR'),
+			'created DESC' => JText::_('NEWEST'),
+			'title ASC'    => JText::_('TITLE'),
+			'author ASC'   => JText::_('AUTHORS'),
+			'journal ASC'  => JText::_('JOURNAL'),
+			'created DESC' =>JText::_("Date uploaded")
+		);
+		if (!in_array($this->view->filters['sort'], $this->view->sorts))
+		{
+			$this->view->filters['sort'] = 'created DESC';
+		}
+
 		// Handling ids of the the boxes checked for download
 		$referer = (isset($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : '';
 		$session =& JFactory::getSession();
 
 		// If it's new search remove all user citation checkmarks
-		if(isset($_POST['filter']))
+		if (isset($_POST['filter']))
 		{
 			$this->view->filters['idlist'] = "";
 			$session->set('idlist', $this->view->filters['idlist']);
@@ -167,7 +193,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 		}
 
 		// Reset the filter if the user came from a different section
-		if(strpos($referer, "/citations/browse") == false)
+		if (strpos($referer, "/citations/browse") == false)
 		{
 			$this->view->filters['idlist'] = "";
 			$session->set('idlist', $this->view->filters['idlist']); 
@@ -176,16 +202,19 @@ class CitationsControllerCitations extends Hubzero_Controller
 		//Convert upload dates to correct time format
 		$this->view->filters['startuploaddate'] = strftime("%Y-%m-%d %H:%M:%S",strtotime($this->view->filters['startuploaddate']));
 		$this->view->filters['enduploaddate']   = strftime("%Y-%m-%d %H:%M:%S",strtotime($this->view->filters['enduploaddate']));
-		if($this->view->filters['enduploaddate'] == "1969-12-31 19:00:00")
+		if ($this->view->filters['enduploaddate'] == "1969-12-31 19:00:00")
 		{ 
 			$this->view->filters['enduploaddate'] = date('Y-m-d H:i:s', time());
 		}
 
 		//Make sure the end date for the upload search isn't before the start date
-		if($this->view->filters['startuploaddate'] > $this->view->filters['enduploaddate'])
+		if ($this->view->filters['startuploaddate'] > $this->view->filters['enduploaddate'])
 		{
-			$this->addComponentMessage("The end date cannot be before the start date.", "error");
-			$this->_redirect = JRoute::_('index.php?option=com_citations&task=browse');
+			$this->setRedirect(
+				JRoute::_('index.php?option=com_citations&task=browse'),
+				JText::_('The end date cannot be before the start date.'),
+				'error'
+			);
 			return; 
 		}
 
@@ -210,42 +239,24 @@ class CitationsControllerCitations extends Hubzero_Controller
 		$ct = new CitationsType($this->database);
 		$this->view->types = $ct->getType();
 
-		// Affiliation filter
-		$this->view->filter = array(
-			'all'    => JText::_('ALL'),
-			'aff'    => JText::_('AFFILIATE'),
-			'nonaff' => JText::_('NONAFFILIATE')
-		);
-
-		// Sort Filter
-		$this->view->sorts = array(
-			'sec_cnt DESC' => JText::_('Cited by'),
-			'year DESC'    => JText::_('YEAR'),
-			'created DESC' => JText::_('NEWEST'),
-			'title ASC'    => JText::_('TITLE'),
-			'author ASC'   => JText::_('AUTHORS'),
-			'journal ASC'  => JText::_('JOURNAL'),
-			'created DESC' =>JText::_("Date uploaded")
-		);
-		
 		//get the users id to make lookup
 		$users_ip = $this->getIP();
-		
+
 		//get the param for ip regex to use machine ip
 		$ip_regex = array('10.\d{2,5}.\d{2,5}.\d{2,5}'); 
-		
+
 		$use_machine_ip = false;
-		foreach($ip_regex as $ipr)
+		foreach ($ip_regex as $ipr)
 		{
-			$match = preg_match('/'.$ipr.'/i', $users_ip);
-			if($match)
+			$match = preg_match('/' . $ipr . '/i', $users_ip);
+			if ($match)
 			{
 				$use_machine_ip = true;
 			}
 		}
-		
+
 		//make url based on if were using machine ip or users
-		if($use_machine_ip)
+		if ($use_machine_ip)
 		{
 			$url = 'http://worldcatlibraries.org/registry/lookup?IP=' . $_SERVER['SERVER_ADDR'];
 		}
@@ -253,7 +264,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 		{
 			$url = 'http://worldcatlibraries.org/registry/lookup?IP=' . $users_ip;
 		}
-		
+
 		//get the resolver
 		$r = null;
 		if (function_exists('curl_init'))
@@ -272,11 +283,11 @@ class CitationsControllerCitations extends Hubzero_Controller
 			'text' => '',
 			'icon' => ''
 		);
-		
+
 		//parse the return from resolver lookup
 		$xml = simplexml_load_string($r);
 		$resolver = $xml->resolverRegistryEntry->resolver;
-		
+
 		//if we have resolver set vars for creating open urls
 		if ($resolver != null) 
 		{
@@ -379,7 +390,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 
 		// Check if admin
 		$isAdmin = false;
-		if($this->juser->authorize($this->_option, 'manage'))
+		if ($this->juser->authorize($this->_option, 'manage'))
 		{
 			$isAdmin = true;
 		}
@@ -451,7 +462,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 		$id = JRequest::getInt('id', 0);
 
 		// Non-admins can't edit citations
-		if(!$isAdmin)
+		if (!$isAdmin)
 		{
 			$id = 0;
 		}
@@ -574,7 +585,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 			$assoc = new CitationsAssociation($this->database);
 
 			//check to see if we should delete
-			if(isset($a['id']) && $a['tbl'] == '' && $a['oid'] == '')
+			if (isset($a['id']) && $a['tbl'] == '' && $a['oid'] == '')
 			{
 				// Delete the row
 				if (!$assoc->delete($a['id'])) 
@@ -584,7 +595,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 					return;
 				}
 			}
-			else if($a['tbl'] != '' || $a['oid'] != '')
+			else if ($a['tbl'] != '' || $a['oid'] != '')
 			{
 				$a['cid'] = $row->id;
 				
@@ -921,33 +932,33 @@ class CitationsControllerCitations extends Hubzero_Controller
 	{
 		echo 'format' . JRequest::getVar('format', 'apa');
 	}
-	
+
 	public function downloadimageTask()
 	{
 		// get the image we want to serve
 		$image = JRequest::getVar('image', '');
-		
+
 		// if we dont have an image were done
-		if($image == '') return;
-		
+		if ($image == '') return;
+
 		// read in file
 		$image_file = readfile($image);
-		
+
 		// file details
 		$image_details = pathinfo($image);
-		
-		switch( $image_details['extension'] )
+
+		switch ($image_details['extension'])
 		{
 			case 'gif':
-				$image_resource = imagecreatefromgif($image_file);
+				$image_resource = imagecreatefromgif ($image_file);
 				header('Content-Type: image/gif');
-				imagegif($image_resource);
+				imagegif ($image_resource);
 				break;
 			case 'jpg':
 			case 'jpeg':
 				$image_resource = imagecreatefromjpeg($image_file);
 				header('Content-Type: image/jpeg');
-				imagegif($image_resource);
+				imagegif ($image_resource);
 				break;
 			case 'png':
 				$image_resource = imagecreatefrompng($image_file);

@@ -98,7 +98,7 @@ class CitationsType extends JTable
 	 */
 	public function getType($id = '')
 	{
-		$where = ($id != '') ? "WHERE id='{$id}'" : "";
+		$where = ($id != '') ? "WHERE id=" . $this->_db->Quote($id) : "";
 
 		$sql = "SELECT * FROM {$this->_tbl} {$where} ORDER BY type";
 		$this->_db->setQuery($sql);

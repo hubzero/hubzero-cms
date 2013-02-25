@@ -29,96 +29,91 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'WikiLog'
- * 
- * Long description (if any) ...
+ * Wiki table class for logging events
  */
 class WikiLog extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id        = NULL;  // @var int(11) Primary key
+	var $id        = NULL;
 
 	/**
-	 * Description for 'pid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $pid       = NULL;  // @var int(11)
+	var $pid       = NULL;
 
 	/**
-	 * Description for 'timestamp'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $timestamp = NULL;  // @var datetime(0000-00-00 00:00:00)
+	var $timestamp = NULL;
 
 	/**
-	 * Description for 'uid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $uid       = NULL;  // @var int(11)
+	var $uid       = NULL;
 
 	/**
-	 * Description for 'action'
+	 * varchar(50)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $action    = NULL;  // @var varchar(50)
+	var $action    = NULL;
 
 	/**
-	 * Description for 'comments'
+	 * text
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $comments  = NULL;  // @var text
+	var $comments  = NULL;
 
 	/**
-	 * Description for 'actorid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $actorid   = NULL;  // @var int(11)
-
-	//-----------
+	var $actorid   = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__wiki_log', 'id', $db );
+		parent::__construct('#__wiki_log', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if valid, false if not
 	 */
 	public function check()
 	{
-		if (trim( $this->pid ) == '') {
-			$this->setError( JText::_('WIKI_LOGS_MUST_HAVE_PAGE_ID') );
+		$this->pid = intval($this->pid);
+		if (!$this->pid) 
+		{
+			$this->setError(JText::_('WIKI_LOGS_MUST_HAVE_PAGE_ID'));
 			return false;
 		}
 
-		if (trim( $this->uid ) == '') {
-			$this->setError( JText::_('WIKI_LOGS_MUST_HAVE_USER_ID') );
+		$this->uid = intval($this->uid);
+		if (!$this->uid) 
+		{
+			$this->setError(JText::_('WIKI_LOGS_MUST_HAVE_USER_ID'));
 			return false;
 		}
 
@@ -126,48 +121,50 @@ class WikiLog extends JTable
 	}
 
 	/**
-	 * Short description for 'getLogs'
+	 * Retrieve all entries for a specific page
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $pid Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $pid Page ID
+	 * @return     array
 	 */
-	public function getLogs( $pid=null )
+	public function getLogs($pid=null)
 	{
-		if (!$pid) {
+		if (!$pid) 
+		{
 			$pid = $this->pid;
 		}
-		if (!$pid) {
+		if (!$pid) 
+		{
 			return null;
 		}
 
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE pid=$pid ORDER BY `timestamp` DESC" );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE pid=" . $this->_db->Quote($pid) . " ORDER BY `timestamp` DESC");
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'deleteLogs'
+	 * Delete all entries for a specific page
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $pid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $pid Page ID
+	 * @return     boolean True on success
 	 */
-	public function deleteLogs( $pid=null )
+	public function deleteLogs($pid=null)
 	{
-		if (!$pid) {
+		if (!$pid) 
+		{
 			$pid = $this->pid;
 		}
-		if (!$pid) {
-			return null;
-		}
-
-		$this->_db->setQuery( "DELETE FROM $this->_tbl WHERE pid=".$pid );
-		if (!$this->_db->query()) {
-			$this->setError( $this->_db->getErrorMsg() );
+		if (!$pid) 
+		{
 			return false;
 		}
+
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE pid=" . $this->_db->Quote($pid));
+		if (!$this->_db->query()) 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		return true;
 	}
 }
 

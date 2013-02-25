@@ -35,18 +35,18 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<form action="index.phpindex.php?option=<?php echo $this->option; ?>&amp;tmpl=component&amp;controller=<?php echo $this->controller; ?>&amp;task=upload" id="adminForm" method="post" enctype="multipart/form-data">
 			<fieldset>
 				<div id="themanager" class="manager">
-					<iframe src="index.php?option=<?php echo $this->option; ?>&amp;tmpl=component&amp;controller=<?php echo $this->controller; ?>&amp;task=list&amp;scope=<?php echo $this->scope; ?>&amp;id=<?php echo $this->id; ?>" name="imgManager" id="imgManager" width="98%" height="180"></iframe>
+					<iframe src="index.php?option=<?php echo $this->option; ?>&amp;tmpl=component&amp;controller=<?php echo $this->controller; ?>&amp;task=list&amp;scope=<?php echo urlencode($this->scope); ?>&amp;id=<?php echo $this->id; ?>" name="imgManager" id="imgManager" width="98%" height="180"></iframe>
 				</div>
 			</fieldset>
 			<fieldset>
 				<p><input type="file" name="upload" id="upload" /></p>
 				<p><input type="submit" value="<?php echo JText::_('COM_BLOG_UPLOAD'); ?>" /></p>
 				
-				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+				<input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
+				<input type="hidden" name="controller" value="<?php echo $this->escape($this->controller); ?>" />
 				<input type="hidden" name="task" value="upload" />
-				<input type="hidden" name="scope" value="<?php echo $this->scope; ?>" />
-				<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
+				<input type="hidden" name="scope" value="<?php echo $this->escape($this->scope); ?>" />
+				<input type="hidden" name="id" value="<?php echo $this->escape($this->id); ?>" />
 				<input type="hidden" name="tmpl" value="component" />
 			</fieldset>
 		</form>

@@ -76,7 +76,7 @@ class CitationsSponsor extends JTable
 	 */
 	public function getSponsor($id = '')
 	{
-		$where = (is_numeric($id)) ? "WHERE id='{$id}'" : "";
+		$where = (is_numeric($id)) ? "WHERE id=" . $this->_db->Quote($id) : "";
 
 		$sql = "SELECT * FROM {$this->_tbl} {$where} ORDER BY sponsor";
 		$this->_db->setQuery($sql);
@@ -95,8 +95,8 @@ class CitationsSponsor extends JTable
 		{
 			return;
 		}
-		
-		$sql = "SELECT sid FROM #__citations_sponsors_assoc WHERE cid=" . $citeid;
+
+		$sql = "SELECT sid FROM #__citations_sponsors_assoc WHERE cid=" . $this->_db->Quote($citeid);
 		$this->_db->setQuery($sql);
 		return $this->_db->loadResultArray();
 	}
@@ -116,7 +116,7 @@ class CitationsSponsor extends JTable
 		}
 
 		// remove any existing associations
-		$sql = "DELETE FROM #__citations_sponsors_assoc WHERE cid=" . $citeid;
+		$sql = "DELETE FROM #__citations_sponsors_assoc WHERE cid=" . $this->_db->Quote($citeid);
 		$this->_db->setQuery($sql);
 		$this->_db->query();
 

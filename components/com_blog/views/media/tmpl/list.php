@@ -101,7 +101,7 @@ foreach ($this->folders as $k => $folder)
 							</span>
 						</td>
 						<td>
-							<a href="/index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deletefolder&amp;folder=<?php echo DS . $folder; ?>&amp;scope=<?php echo $this->scope; ?>&amp;id=<?php echo $this->id; ?>&amp;tmpl=component" target="filer" onclick="return deleteFolder('<?php echo $folder; ?>', '<?php echo $num_files; ?>');" title="<?php echo JText::_('DELETE'); ?>">
+							<a href="/index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deletefolder&amp;folder=<?php echo DS . $folder; ?>&amp;scope=<?php echo urlencode($this->scope); ?>&amp;id=<?php echo $this->id; ?>&amp;tmpl=component" target="filer" onclick="return deleteFolder('<?php echo $folder; ?>', '<?php echo $num_files; ?>');" title="<?php echo JText::_('DELETE'); ?>">
 								<img src="/components/<?php echo $this->option; ?>/assets/img/icons/trash.gif" width="15" height="15" alt="<?php echo JText::_('DELETE'); ?>" />
 							</a>
 						</td>
@@ -135,7 +135,7 @@ foreach ($this->docs as $name => $doc)
 							</span>
 						</td>
 						<td>
-							<a class="delete" href="/index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deletefile&amp;file=<?php echo $doc; ?>&amp;scope=<?php echo $this->scope; ?>&amp;id=<?php echo $this->id; ?>&amp;tmpl=component" target="filer" onclick="return deleteFile('<?php echo $doc; ?>');" title="<?php echo JText::_('DELETE'); ?>">
+							<a class="delete" href="/index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deletefile&amp;file=<?php echo $doc; ?>&amp;scope=<?php echo urlencode($this->scope); ?>&amp;id=<?php echo $this->id; ?>&amp;tmpl=component" target="filer" onclick="return deleteFile('<?php echo $doc; ?>');" title="<?php echo JText::_('DELETE'); ?>">
 								<img src="/components/<?php echo $this->option; ?>/assets/img/icons/trash.gif" width="15" height="15" alt="<?php echo JText::_('DELETE'); ?>" />
 							</a>
 						</td>

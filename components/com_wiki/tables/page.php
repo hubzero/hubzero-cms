@@ -203,7 +203,7 @@ class WikiPage extends JTable
 		if ($oid !== NULL && !is_numeric($oid)) 
 		{
 			$this->_tbl_key = 'pagename';
-			$s = "AND scope='" . $this->_db->getEscaped($scope) . "'";
+			$s = "AND scope=" . $this->_db->Quote($scope);
 		}
 		$k = $this->_tbl_key;
 		if ($oid !== NULL) 
@@ -216,7 +216,7 @@ class WikiPage extends JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE $this->_tbl_key='" . $this->_db->getEscaped($oid) . "' $s ORDER BY state ASC LIMIT 1");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE $this->_tbl_key=" . $this->_db->Quote($oid) . " $s ORDER BY state ASC LIMIT 1");
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			$res = $this->bind($result);
@@ -246,7 +246,7 @@ class WikiPage extends JTable
 		if ($oid !== NULL) // && !is_numeric($oid)) 
 		{
 			$this->_tbl_key = 'title';
-			$s = "AND scope='$scope'";
+			$s = "AND scope=" . $this->_db->Quote($scope);
 		}
 		$k = $this->_tbl_key;
 		if ($oid !== NULL) 
@@ -259,7 +259,7 @@ class WikiPage extends JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE $this->_tbl_key='$oid' $s");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE $this->_tbl_key=" . $this->_db->Quote($oid) . " $s");
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			$res = $this->bind($result);
@@ -334,7 +334,7 @@ class WikiPage extends JTable
 	 */
 	public function calculateRating()
 	{
-		$this->_db->setQuery("SELECT rating FROM #__wiki_comments WHERE pageid='$this->id' AND rating!=0");
+		$this->_db->setQuery("SELECT rating FROM #__wiki_comments WHERE pageid=" . $this->_db->Quote($this->id) . " AND rating!=0");
 		$ratings = $this->_db->loadObjectList();
 
 		$totalcount = count($ratings);
@@ -599,6 +599,7 @@ class WikiPage extends JTable
 		{
 			$id = $this->id;
 		}
+		$id = intval($id);
 		if (!$id) 
 		{
 			$this->setError(JText::_('Missing page ID'));
@@ -606,35 +607,35 @@ class WikiPage extends JTable
 		}
 
 		// Delete the page's version history
-		$this->_db->setQuery("DELETE FROM #__wiki_version WHERE pageid='" . $id . "'");
+		$this->_db->setQuery("DELETE FROM #__wiki_version WHERE pageid=" . $this->_db->Quote($id));
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		// Delete the page's tags
-		$this->_db->setQuery("DELETE FROM #__tags_object WHERE tbl='wiki' AND objectid='" . $id . "'");
+		$this->_db->setQuery("DELETE FROM #__tags_object WHERE tbl='wiki' AND objectid=" . $this->_db->Quote($id));
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		// Delete the page's comments
-		$this->_db->setQuery("DELETE FROM #__wiki_comments WHERE pageid='" . $id . "'");
+		$this->_db->setQuery("DELETE FROM #__wiki_comments WHERE pageid=" . $this->_db->Quote($id));
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		// Delete the page's attachments
-		$this->_db->setQuery("DELETE FROM #__wiki_attachments WHERE pageid='" . $id . "'");
+		$this->_db->setQuery("DELETE FROM #__wiki_attachments WHERE pageid=" . $this->_db->Quote($id));
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		// Delete the page's authors
-		$this->_db->setQuery("DELETE FROM #__wiki_page_author WHERE page_id='" . $id . "'");
+		$this->_db->setQuery("DELETE FROM #__wiki_page_author WHERE page_id=" . $this->_db->Quote($id));
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -929,7 +930,7 @@ class WikiPage extends JTable
 						}
 					}
 
-					$where[] = "(w.access!=1 OR (w.access=1 AND (w.group_cn IN ('" . implode("','", $groups) . "') OR w.created_by='" . $juser->get('id') . "')))";
+					$where[] = "(w.access!=1 OR (w.access=1 AND (w.group_cn IN ('" . implode("','", $groups) . "') OR w.created_by=" . $this->_db->Quote($juser->get('id')) . ")))";
 				}
 			} 
 			else 
@@ -993,7 +994,7 @@ class WikiPage extends JTable
 	 */
 	public function getMetrics()
 	{
-		$this->_db->setQuery("SELECT visitors, visits FROM #__wiki_page_metrics WHERE pageid = " . $this->id);
+		$this->_db->setQuery("SELECT visitors, visits FROM #__wiki_page_metrics WHERE pageid = " . $this->_db->Quote($this->id));
 		$vals = $this->_db->loadObjectList();
 		$stats = null;
 		if ($vals)
