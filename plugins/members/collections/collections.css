@@ -620,10 +620,15 @@
 	tr.collection .entry-id {
 		width: 40px;
 		height: 40px;
+		display: block;
 	}
 	tr.collection .entry-id:before {
 		content: "\f005";
 		font-size: 35px;
+		display: block;
+		width: 40px;
+		height: 40px;
+		text-indent: 0;
 	}
 	table.following tbody td:last-child {
 		text-align: right;
