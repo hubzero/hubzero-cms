@@ -252,7 +252,7 @@ HUB.CoursesOutline = {
 
 				// Now actually mark the asset as deleted
 				$.ajax({
-					url: '/api/courses/assetsave',
+					url: '/api/courses/asset/save',
 					data: form
 				});
 			},
@@ -264,7 +264,7 @@ HUB.CoursesOutline = {
 
 				// Update the asset group ordering
 				$.ajax({
-					url: '/api/courses/assetsreorder',
+					url: '/api/courses/asset/reorder',
 					data: sorted+"&scope_id="+scope_id+"&scope="+scope
 				});
 			}
@@ -321,10 +321,10 @@ HUB.CoursesOutline = {
 
 			// Now actually mark the asset as deleted
 			$.ajax({
-				url: '/api/courses/assettogglepublished',
+				url: '/api/courses/asset/togglepublished',
 				data: form.serializeArray(),
 				statusCode: {
-					201: function(data){
+					200: function(data){
 						// Report a message?
 						li.fadeOut('fast', function() {
 							var html  = li.clone();
@@ -558,10 +558,10 @@ HUB.CoursesOutline = {
 							// Update URL for asset to have proper link
 							// @FIXME: combine this call with the toggle publish call
 							$.ajax({
-								url: '/api/courses/assetsave',
+								url: '/api/courses/asset/save',
 								data: form.serialize()+'&url='+encodeURIComponent(distLink[1]),
 								statusCode: {
-									201: function(data){
+									200: function(data){
 										// Update the link
 										assetA.attr('href', distLink[1]);
 									}
@@ -585,7 +585,7 @@ HUB.CoursesOutline = {
 					url: form.attr('action'),
 					data: form.serialize(),
 					statusCode: {
-						201: function(data){
+						200: function(data){
 							if(label.html() == 'Published') {
 								replacement = 'Mark as reviewed and publish?';
 								item.removeClass('published').addClass('notpublished');
@@ -785,7 +785,7 @@ HUB.CoursesOutline = {
 				add: function(e, data) {
 					// Get asset handlers for this file type
 					$.ajax({
-						url: '/api/courses/assethandlers',
+						url: '/api/courses/asset/handlers',
 						data: 'name=' + data.files[0].name,
 						dataType: "json",
 						type: 'POST',
@@ -1039,7 +1039,7 @@ HUB.CoursesOutline = {
 				'<div class="sortable-assets-handle"></div>',
 				'<div class="asset-item-title title toggle-editable"><%= asset_title %></div>',
 				'<div class="title-edit">',
-					'<form action="/api/courses/assetsave" class="title-form">',
+					'<form action="/api/courses/asset/save" class="title-form">',
 						'<input class="uniform title-text" name="title" type="text" value="<%= asset_title %>" />',
 						'<input class="uniform title-save" type="submit" value="Save" />',
 						'<input class="uniform title-reset" type="reset" value="Cancel" />',
@@ -1051,7 +1051,7 @@ HUB.CoursesOutline = {
 				'<div class="asset-preview">',
 					'(<a class="" href="<%= asset_url %>">preview</a>)',
 				'</div>',
-				'<form action="/api/courses/assettogglepublished" class="next-step-publish">',
+				'<form action="/api/courses/asset/togglepublished" class="next-step-publish">',
 					'<span class="next-step-publish">',
 					'<label class="published-label" for="published">',
 						'<span class="published-label-text">Mark as reviewed and publish?</span>',
@@ -1086,7 +1086,7 @@ HUB.CoursesOutline = {
 					'<p>Drag files here to upload</p>',
 					'<p>or</p>',
 					'<div class="aux-attachments">',
-						'<form action="/api/courses/assetnew" class="aux-attachments-form attach-link">',
+						'<form action="/api/courses/asset/new" class="aux-attachments-form attach-link">',
 							'<label for"content" class="aux-attachments-content-label">Attach a link:</label>',
 							'<textarea class="uniform input-content" name="content" placeholder="" rows="6"></textarea>',
 							'<input class="input-type" type="hidden" name="type" value="link" />',
@@ -1101,7 +1101,7 @@ HUB.CoursesOutline = {
 						'<a href="#" title="Include a note" class="attach-note"></a>',
 						'<a href="#" title="Browse for files" class="browse-files"></a>',
 					'</div>',
-					'<form action="/api/courses/assetnew" class="uploadfiles-form">',
+					'<form action="/api/courses/asset/new" class="uploadfiles-form">',
 						'<input type="file" name="files[]" class="fileupload" multiple />',
 						'<input type="hidden" name="course_id" value="<%= course_id %>" />',
 						'<input type="hidden" name="offering" value="<%= offering_alias %>" />',

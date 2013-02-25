@@ -44,7 +44,7 @@ if ($this->a->get('type') == 'video')
 	<div class="sortable-assets-handle"></div>
 	<div class="asset-item-title title toggle-editable"><?= $this->escape(stripslashes($this->a->get('title'))) ?></div>
 	<div class="title-edit">
-		<form action="/api/courses/assetsave" class="title-form">
+		<form action="/api/courses/asset/save" class="title-form">
 			<input class="uniform title-text" name="title" type="text" value="<?= $this->a->get('title') ?>" />
 			<input class="uniform title-save" type="submit" value="Save" />
 			<input class="uniform title-reset" type="reset" value="Cancel" />
@@ -56,7 +56,7 @@ if ($this->a->get('type') == 'video')
 	<div class="asset-preview">
 		(<a class="" href="<?= $href ?>">preview</a>)
 	</div>
-	<form action="/api/courses/assettogglepublished" class="next-step-publish">
+	<form action="/api/courses/asset/togglepublished" class="next-step-publish">
 		<span class="next-step-publish">
 			<label class="published-label" for="published">
 				<span class="published-label-text"><?= ($this->a->get('state') == 0) ? 'Mark as reviewed and publish?' : 'Published' ?></span>

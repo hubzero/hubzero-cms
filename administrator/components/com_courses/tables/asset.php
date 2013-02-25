@@ -133,7 +133,7 @@ class CoursesTableAsset extends JTable
 			return false;
 		}
 
-		if (!$this->url && $this->content)
+		if (!isset($this->type) && !$this->url && $this->content)
 		{
 			$this->type = 'note';
 		}
@@ -156,7 +156,7 @@ class CoursesTableAsset extends JTable
 
 		if (!$this->id)
 		{
-			$this->state = ($this->state) ? $this->state : 1;
+			$this->state = (isset($this->state)) ? $this->state : 1;
 
 			$juser =& JFactory::getUser();
 			$this->created = date('Y-m-d H:i:s', time());

@@ -38,7 +38,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<p>Drag files here to upload</p>
 		<p>or</p>
 		<div class="aux-attachments">
-			<form action="/api/courses/assetnew" class="aux-attachments-form attach-link">
+			<form action="/api/courses/asset/new" class="aux-attachments-form attach-link">
 				<label for"content" class="aux-attachments-content-label">Attach a link:</label>
 				<textarea class="uniform input-content" name="content" placeholder="" rows="6"></textarea>
 				<input class="input-type" type="hidden" name="type" value="link" />
@@ -53,7 +53,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<a href="#" title="Include a note" class="attach-note"></a>
 			<a href="#" title="Browse for files" class="browse-files"></a>
 		</div>
-		<form action="/api/courses/assetnew" class="uploadfiles-form">
+		<form action="/api/courses/asset/new" class="uploadfiles-form">
 			<input type="file" name="files[]" class="fileupload" multiple />
 			<input type="hidden" name="course_id" value="<?= $this->course->get('id') ?>" />
 			<input type="hidden" name="offering" value="<?= $this->course->offering()->get('alias') ?>" />

@@ -78,12 +78,18 @@ class CoursesApiController extends Hubzero_Api_Controller
 			break;
 
 			// Assets
-			case 'assethandlers':          $this->assetHandlers();            break;
-			case 'assetnew':               $this->assetNew();                 break;
-			case 'assetsave':              $this->assetSave();                break;
-			case 'assetdelete':            $this->assetDelete();              break;
-			case 'assetsreorder':          $this->assetsReorder();            break;
-			case 'assettogglepublished':   $this->assetTogglePublished();     break;
+			case 'asset':
+				switch($this->segments[1])
+				{
+					case 'handlers':        $this->assetHandlers();        break;
+					case 'new':             $this->assetNew();             break;
+					case 'save':            $this->assetSave();            break;
+					case 'delete':          $this->assetDelete();          break;
+					case 'reorder':         $this->assetReorder();         break;
+					case 'togglepublished': $this->assetTogglePublished(); break;
+					default:                $this->method_not_found();     break;
+				}
+			break;
 
 			default:                       $this->method_not_found();         break;
 		}
@@ -389,7 +395,7 @@ class CoursesApiController extends Hubzero_Api_Controller
 		$authorized = $this->authorize();
 		if(!$authorized['manage'])
 		{
-			$this->setMessage('You don\'t have permission to do this', 401, 'Unauthorized');
+			$this->setMessage('You don\'t have permission to do this', 401, 'Not Authorized');
 			return;
 		}
 
@@ -405,7 +411,7 @@ class CoursesApiController extends Hubzero_Api_Controller
 		}
 		elseif($contentType = JRequest::getWord('type', false))
 		{
-			// @FIXME: having this hear breaks the responder model idea
+			// @FIXME: having this here breaks the responder model idea
 			// The content type handlers could respond to a function that assesses the incoming data?
 			switch ($contentType)
 			{
@@ -447,7 +453,7 @@ class CoursesApiController extends Hubzero_Api_Controller
 	/**
 	 * Save an asset
 	 * 
-	 * @return 201 created on success
+	 * @return '201 Created' on new, '200 OK' otherwise
 	 */
 	private function assetSave()
 	{
@@ -462,50 +468,58 @@ class CoursesApiController extends Hubzero_Api_Controller
 			return;
 		}
 
-		// Get our asset object
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
-		$assetObj = new CoursesTableAsset($this->db);
+		// Include needed file(s)
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
 
-		if($id = JRequest::getInt('id', false))
+		// Grab incoming id, if applicable
+		$id = JRequest::getInt('id', null);
+
+		// Create our object
+		$asset = new CoursesModelAsset($id);
+
+		// Check to make sure we have an asset group object
+		if (!is_object($asset))
 		{
-			if (!$assetObj->load($id))
-			{
-				$this->setMessage("Loading asset $id failed", 500, 'Internal server error');
-				return;
-			}
+			$this->setMessage("Failed to create an asset object", 500, 'Internal server error');
+			return;
 		}
 
 		// We'll always save the title again, even if it's just to the same thing
-		$title            = (!empty($assetObj->title)) ? $assetObj->title : 'New asset';
-		$row->title       = JRequest::getString('title', $title);
-		$row->title       = preg_replace("/[^a-zA-Z0-9 \_\-\:\.]/", "", $row->title);
+		$title = $asset->get('title');
+		$title = (!empty($title)) ? $title : 'New asset';
+
+		// Set or variables
+		$asset->set('title', JRequest::getString('title', $title));
+		// @FIXME: do we want any sort of character restrictions on asset group titles?
+		//preg_replace("/[^a-zA-Z0-9 \-\:\.]/", "", $asset->get('title'));
+		$asset->set('alias', strtolower(str_replace(' ', '', $asset->get('title'))));
 
 		// If we have an incoming url, update the url, otherwise, leave it alone
 		if($url = JRequest::getVar('url', false))
 		{
-			$row->url = urldecode($url);
+			$asset->set('url', urldecode($url));
 		}
 
-		// If we have an state
+		// If we have a state
 		if($state = JRequest::getInt('state', false))
 		{
-			$row->state = $state;
+			$asset->set('state', $state);
 		}
 
 		// When creating a new asset (which probably won't happen via this method, but rather the assetNew method above)
 		if(!$id)
 		{
-			$row->type        = JRequest::getWord('type', 'file');
-			$row->state       = 0;
-			$row->course_id   = JRequest::getInt('course_id', 0);
-			$row->created     = date('Y-m-d H:i:s');
-			$row->created_by  = JFactory::getApplication()->getAuthn('user_id');
+			$asset->set('type', JRequest::getWord('type', 'file'));
+			$asset->set('state', 0);
+			$asset->set('course_id', JRequest::getInt('course_id', 0));
+			$asset->set('created', date('Y-m-d H:i:s'));
+			$asset->set('created_by', JFactory::getApplication()->getAuthn('user_id'));
 		}
 
 		// Save the asset
-		if (!$assetObj->save($row))
+		if (!$asset->store())
 		{
-			$this->setMessage("Asset group save failed", 500, 'Internal server error');
+			$this->setMessage("Asset save failed", 500, 'Internal server error');
 			return;
 		}
 
@@ -519,36 +533,42 @@ class CoursesApiController extends Hubzero_Api_Controller
 			// Create asset assoc object
 			$assocObj = new CoursesTableAssetAssociation($this->db);
 
-			$row2->asset_id  = $assetObj->get('id');
-			$row2->scope     = JRequest::getCmd('scope', 'asset_group');
-			$row2->scope_id  = JRequest::getInt('scope_id', 0);
+			$row->asset_id  = $asset->get('id');
+			$row->scope     = JRequest::getCmd('scope', 'asset_group');
+			$row->scope_id  = JRequest::getInt('scope_id', 0);
 
 			// Save the asset association
-			if (!$assocObj->save($row2))
+			if (!$assocObj->save($row))
 			{
 				$this->setMessage("Asset association save failed", 500, 'Internal server error');
 				return;
 			}
 
 			$files = array(
-				'asset_id'       => $row2->asset_id,
-				'asset_title'    => $row->title,
-				'asset_type'     => $row->type,
-				'asset_url'      => $assetObj->url,
-				'scope_id'       => $row2->scope_id,
-				'course_id'      => $row->course_id,
+				'asset_id'       => $row->asset_id,
+				'asset_title'    => $asset->get('title'),
+				'asset_type'     => $asset->get('type'),
+				'asset_url'      => $asset->get('url'),
+				'scope_id'       => $row->scope_id,
+				'course_id'      => $this->course_id,
 				'offering_alias' => JRequest::getCmd('offering', '')
 			);
 		}
 
+		// Set the status code
+		$status = ($id) ? array('code'=>200, 'text'=>'OK') : array('code'=>201, 'text'=>'Created');
+
 		// Return message
 		$this->setMessage(
 			array(
-				'asset_id'    => $assetObj->id,
-				'asset_title' => $assetObj->title,
+				'asset_id'    => $asset->get('id'),
+				'asset_title' => $asset->get('title'),
 				'course_id'   => $this->course_id,
-				'files'       => array($files)),
-			201, 'Created');
+				'files'       => array($files)
+			),
+			$status['code'],
+			$status['text']
+		);
 	}
 
 	/**
@@ -659,20 +679,12 @@ class CoursesApiController extends Hubzero_Api_Controller
 	/**
 	 * Reorder assets
 	 * 
-	 * @return 201 created on success
+	 * @return 200 OK on success
 	 */
-	private function assetsReorder()
+	private function assetReorder()
 	{
 		// Set the responce type
 		$this->setMessageType($this->format);
-
-		// Require authorization
-		/*$authorized = $this->authorize();
-		if(!$authorized['manage'])
-		{
-			$this->setMessage('You don\'t have permission to do this', 401, 'Unauthorized');
-			return;
-		}*/
 
 		// Get our asset group object
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php');
@@ -704,13 +716,13 @@ class CoursesApiController extends Hubzero_Api_Controller
 
 
 		// Return message
-		$this->setMessage('New asset order saved', 201, 'Created');
+		$this->setMessage('New asset order saved', 200, 'OK');
 	}
 
 	/**
 	 * Toggle the published state of an asset
 	 * 
-	 * @return 201 created on success
+	 * @return 200 OK on success
 	 */
 	private function assetTogglePublished()
 	{
@@ -723,36 +735,46 @@ class CoursesApiController extends Hubzero_Api_Controller
 		$authorized = $this->authorize();
 		if(!$authorized['manage'])
 		{
-			$this->setMessage('You don\'t have permission to do this', 401, 'Unauthorized');
+			$this->setMessage('You don\'t have permission to do this', 401, 'Not Authorized');
 			return;
 		}
 
 		// Get the asset id
-		$id = JRequest::getInt('id', 0);
-
-		// Get our asset object
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
-		$assetObj = new CoursesTableAsset($this->db);
-
-		// Load the asset
-		if (!$assetObj->load($id))
+		if(!$id = JRequest::getInt('id', false))
 		{
-			$this->setMessage("Loading asset $id failed", 500, 'Internal server error');
+			$this->setMessage("No ID provided", 422, 'Unprocessable entity');
 			return;
 		}
 
-		$state = ($assetObj->state == 1) ? 0 : 1;
-		$state = ($assetObj->state == 2) ? 0 : $state;
+		// Get our asset object
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
+		$asset = new CoursesModelAsset($id);
 
-		// Save the asset state
-		if (!$assetObj->save(array('state'=>$state)))
+		// Make sure we have an asset model
+		if (!is_object($asset) || !$asset instanceof CoursesModelAsset)
 		{
-			$this->setMessage("Saving asset $id state failed", 500, 'Internal server error');
+			$this->setMessage("Loading asset {$id} failed", 500, 'Internal server error');
+			return;
+		}
+
+		// If the current state is 1 (published), we'll toggle to 0 (unpublished)
+		$state = ($asset->get('state') == 1) ? 0 : 1;
+		// If the current state is 2 (deleted), we should toggle to 0 (unpublished)
+		// i.e. items coming out of trash should always default to unpublished
+		$state = ($asset->get('state') == 2) ? 0 : $state;
+
+		// Set the state
+		$asset->set('state', $state);
+
+		// Save the asset
+		if (!$asset->store())
+		{
+			$this->setMessage("Saving asset {$id} state failed", 500, 'Internal server error');
 			return;
 		}
 
 		// Return message
-		$this->setMessage('Asset state successfully saved', 201, 'Created');
+		$this->setMessage('Asset state successfully saved', 200, 'OK');
 	}
 
 	//--------------------------
