@@ -33,11 +33,9 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * Password rules class
- * 
  */
 class MembersPasswordRules extends JTable
 {
-
 	/**
 	 * ID - primary key
 	 * 
@@ -102,11 +100,9 @@ class MembersPasswordRules extends JTable
 	var $value = null;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
 	public function __construct( &$db )
@@ -272,19 +268,19 @@ class MembersPasswordRules extends JTable
 		$auto_increment = $this->_db->loadResult();
 
 		// Add default content if auto_increment is 1 and there is nothing there already (sort of redundant), or if it's a manual restore
-		if((self::getCount() == 0 && $auto_increment == '1') || $restore_defaults == 1)
+		if ((self::getCount() == 0 && $auto_increment == '1') || $restore_defaults == 1)
 		{
-			if($restore_defaults)
+			if ($restore_defaults)
 			{
 				// Delete current password rules for manual restore
 				$rows = self::getRecords($filters=array('start'=>0, 'limit'=>1000));
-				foreach($rows as $row)
+				foreach ($rows as $row)
 				{
 					self::delete($row->id);
 				}
 			}
 			// Add default rules
-			foreach($default_content as $rule)
+			foreach ($default_content as $rule)
 			{
 				$row = new self($this->_db);
 				$row->save($rule);

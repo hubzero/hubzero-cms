@@ -85,7 +85,7 @@ class ToolRecent extends JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE uid=$uid ORDER BY created DESC");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE uid=" . $this->_db->Quote($uid) . " ORDER BY created DESC");
 		return $this->_db->loadObjectList();
 	}
 }

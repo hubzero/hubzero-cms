@@ -324,7 +324,7 @@ class AnswersQuestion extends JTable
 		$query  = "SELECT a.id ";
 		$query .= "FROM $this->_tbl AS a ";
 		$query .= "WHERE a.state != 2 AND ";
-		$query .= ($which == 'prev') ? "a.id < '" . $id . "' " : "a.id > '" . $id . "'";
+		$query .= ($which == 'prev') ? "a.id < " . $this->_db->Quote($id) . " " : "a.id > " . $this->_db->Quote($id);
 		$query .= ($which == 'prev') ? " ORDER BY a.id DESC "  : " ORDER BY a.id ASC ";
 		$query .= " LIMIT 1";
 

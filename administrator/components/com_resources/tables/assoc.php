@@ -99,7 +99,7 @@ class ResourcesAssoc extends JTable
 	 */
 	public function loadAssoc($pid, $cid)
 	{
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE parent_id=" . $pid . " AND child_id=" . $cid);
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE parent_id=" . $this->_db->Quote($pid) . " AND child_id=" . $this->_db->Quote($cid));
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			return $this->bind($result);
@@ -122,11 +122,11 @@ class ResourcesAssoc extends JTable
 		switch ($move)
 		{
 			case 'orderup':
-				$sql = "SELECT * FROM $this->_tbl WHERE parent_id=" . $this->parent_id . " AND ordering < " . $this->ordering . " ORDER BY ordering DESC LIMIT 1";
+				$sql = "SELECT * FROM $this->_tbl WHERE parent_id=" . $this->_db->Quote($this->parent_id) . " AND ordering < " . $this->_db->Quote($this->ordering) . " ORDER BY ordering DESC LIMIT 1";
 			break;
 
 			case 'orderdown':
-				$sql = "SELECT * FROM $this->_tbl WHERE parent_id=" . $this->parent_id . " AND ordering > " . $this->ordering . " ORDER BY ordering LIMIT 1";
+				$sql = "SELECT * FROM $this->_tbl WHERE parent_id=" . $this->_db->Quote($this->parent_id) . " AND ordering > " . $this->_db->Quote($this->ordering) . " ORDER BY ordering LIMIT 1";
 			break;
 		}
 		$this->_db->setQuery($sql);
@@ -153,7 +153,7 @@ class ResourcesAssoc extends JTable
 		{
 			$pid = $this->parent_id;
 		}
-		$this->_db->setQuery("SELECT ordering FROM $this->_tbl WHERE parent_id=" . $pid . " ORDER BY ordering DESC LIMIT 1");
+		$this->_db->setQuery("SELECT ordering FROM $this->_tbl WHERE parent_id=" . $this->_db->Quote($pid) . " ORDER BY ordering DESC LIMIT 1");
 		return $this->_db->loadResult();
 	}
 
@@ -174,7 +174,7 @@ class ResourcesAssoc extends JTable
 		{
 			$cid = $this->child_id;
 		}
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent_id=" . $pid . " AND child_id=" . $cid);
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent_id=" . $this->_db->Quote($pid) . " AND child_id=" . $this->_db->Quote($cid));
 		if ($this->_db->query()) 
 		{
 			return true;
@@ -197,7 +197,7 @@ class ResourcesAssoc extends JTable
 	{
 		if (!$new) 
 		{
-			$this->_db->setQuery("UPDATE $this->_tbl SET ordering=" . $this->ordering . ", grouping=" . $this->grouping . " WHERE child_id=" . $this->child_id . " AND parent_id=" . $this->parent_id);
+			$this->_db->setQuery("UPDATE $this->_tbl SET ordering=" . $this->_db->Quote($this->ordering) . ", grouping=" . $this->_db->Quote($this->grouping) . " WHERE child_id=" . $this->_db->Quote($this->child_id) . " AND parent_id=" . $this->_db->Quote($this->parent_id));
 			if ($this->_db->query()) 
 			{
 				$ret = true;
@@ -238,7 +238,7 @@ class ResourcesAssoc extends JTable
 		{
 			return null;
 		}
-		$this->_db->setQuery("SELECT count(*) FROM $this->_tbl WHERE parent_id=" . $pid);
+		$this->_db->setQuery("SELECT count(*) FROM $this->_tbl WHERE parent_id=" . $this->_db->Quote($pid));
 		return $this->_db->loadResult();
 	}
 }

@@ -41,6 +41,10 @@ $jconfig =& JFactory::getConfig();
 $juser =& JFactory::getUser();
 
 $dir = strtoupper(JRequest::getVar('dir', 'ASC'));
+if (!in_array($dir, array('ASC', 'DESC')))
+{
+	$dir = 'ASC';
+}
 
 $database =& JFactory::getDBO();
 
@@ -48,7 +52,7 @@ $where = '';
 $namespace = urldecode(JRequest::getVar('namespace', ''));
 if ($namespace)
 {
-	$where .= "AND LOWER(wp.pagename) LIKE '" . strtolower($namespace) . "%'";
+	$where .= "AND LOWER(wp.pagename) LIKE '" . $database->getEscaped(strtolower($namespace)) . "%'";
 }
 
 $query = "SELECT COUNT(*) 
@@ -56,7 +60,7 @@ $query = "SELECT COUNT(*)
 			INNER JOIN #__wiki_page AS wp 
 				ON wp.id = wv.pageid 
 			WHERE wv.approved = 1 
-				AND wp.scope = '{$this->page->scope}' 
+				AND wp.scope = " . $database->Quote($this->page->scope) . " 
 				AND wp.state < 2
 				$where
 				AND wv.id = (SELECT MAX(wv2.id) FROM #__wiki_version AS wv2 WHERE wv2.pageid = wv.pageid)";
@@ -69,7 +73,7 @@ $query = "SELECT wv.pageid, (CASE WHEN (wp.`title` IS NOT NULL AND wp.`title` !=
 			INNER JOIN #__wiki_page AS wp 
 				ON wp.id = wv.pageid 
 			WHERE wv.approved = 1 
-				AND wp.scope = '{$this->page->scope}' 
+				AND wp.scope = " . $database->Quote($this->page->scope) . " 
 				AND wp.state < 2
 				$where
 				AND wv.id = (SELECT MAX(wv2.id) FROM #__wiki_version AS wv2 WHERE wv2.pageid = wv.pageid)

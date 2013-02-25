@@ -89,7 +89,8 @@ class AnswersQuestionsLog extends JTable
 	 */
 	public function check()
 	{
-		if (trim($this->qid) == '') 
+		$this->qid = intval($this->qid);
+		if (!$this->qid) 
 		{
 			$this->setError(JText::_('Missing question ID'));
 			return false;
@@ -120,14 +121,14 @@ class AnswersQuestionsLog extends JTable
 
 		if ($voter !== null)
 		{
-			$and = " AND voter='" . $voter . "'";
+			$and = " AND voter=" . $this->_db->Quote($voter);
 		}
 		else
 		{
-			$and = " AND ip='" . $ip . "'";
+			$and = " AND ip=" . $this->_db->Quote($ip);
 		}
 
-		$query = "SELECT count(*) FROM $this->_tbl WHERE qid='" . $qid . "'" . $and;
+		$query = "SELECT count(*) FROM $this->_tbl WHERE qid=" . $this->_db->Quote($qid) . $and;
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();

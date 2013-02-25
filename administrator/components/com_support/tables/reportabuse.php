@@ -130,7 +130,7 @@ class ReportAbuse extends JTable
 
 		if (isset($filters['state'])) 
 		{
-			$query .= " a.state=" . $filters['state'];
+			$query .= " a.state=" . $this->_db->Quote($filters['state']);
 		} 
 		else 
 		{
@@ -138,15 +138,15 @@ class ReportAbuse extends JTable
 		}
 		if (isset($filters['id']) && $filters['id'] != '') 
 		{
-			$query .= " AND a.referenceid='" . $filters['id'] . "'";
+			$query .= " AND a.referenceid=" . $this->_db->Quote($filters['id']);
 		}
 		if (isset($filters['category']) && $filters['category'] != '') 
 		{
-			$query .= " AND a.category='" . $filters['category'] . "'";
+			$query .= " AND a.category=" . $this->_db->Quote($filters['category']);
 		}
 		if (isset($filters['sortby']) && $filters['sortby'] != '') 
 		{
-			$query .= " ORDER BY " . $filters['sortby'] . " LIMIT " . $filters['start'] . "," . $filters['limit'];
+			$query .= " ORDER BY " . $filters['sortby'] . " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 		}
 
 		return $query;

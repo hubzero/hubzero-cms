@@ -346,16 +346,17 @@ class MembersProfile extends JTable
 		$sqlsearch = "";
 		if (isset($filters['index']) && $filters['index'] != '') 
 		{
-			$sqlsearch = " ((LEFT(m.surname, 1) = '" . $filters['index'] . "') OR (LEFT(SUBSTRING_INDEX(m.name, ' ', -1), 1) = '" . $filters['index'] . "%')) ";
+			$sqlsearch = " ((LEFT(m.surname, 1) = '" . $this->_db->getEscaped($filters['index']) . "') OR (LEFT(SUBSTRING_INDEX(m.name, ' ', -1), 1) = '" . $this->_db->getEscaped($filters['index']) . "%')) ";
 		}
 
 		if (isset($filters['contributions']))
-			$sqlsearch .= ($sqlsearch ? ' AND ' : ' ') . 'cv.resource_count + cv.wiki_count >= '. $filters['contributions'];
+			$sqlsearch .= ($sqlsearch ? ' AND ' : ' ') . 'cv.resource_count + cv.wiki_count >= '. $this->_db->Quote($filters['contributions']);
 
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
 			//$show = '';
 			$words = explode(' ', $filters['search']);
+			$words = array_map('strtolower', $words);
 			if ($sqlsearch) 
 			{
 				$sqlsearch .= " AND";
@@ -367,22 +368,22 @@ class MembersProfile extends JTable
 			switch ($filters['search_field'])
 			{
 				case 'email':
-					$sqlsearch .= " m.email='" . $filters['search'] . "' ";
+					$sqlsearch .= " m.email=" . $this->_db->Quote($filters['search']) . " ";
 				break;
 
 				case 'uidNumber':
-					$sqlsearch .= " m.uidNumber='" . $filters['search'] . "' ";
+					$sqlsearch .= " m.uidNumber=" . $this->_db->Quote($filters['search']) . " ";
 				break;
 
 				case 'username':
-					$sqlsearch .= " m.username='" . $filters['search'] . "' ";
+					$sqlsearch .= " m.username=" . $this->_db->Quote($filters['search']) . " ";
 				break;
 
 				case 'giveName':
 					$sqlsearch .= " (";
 					foreach ($words as $word)
 					{
-						$sqlsearch .= " (LOWER(m.givenName) LIKE '%$word%') OR";
+						$sqlsearch .= " (LOWER(m.givenName) LIKE '%" . $this->_db->getEscaped($word) . "%') OR";
 					}
 					$sqlsearch = substr($sqlsearch, 0, -3);
 					$sqlsearch .= ") ";
@@ -392,7 +393,7 @@ class MembersProfile extends JTable
 					$sqlsearch .= " (";
 					foreach ($words as $word)
 					{
-						$sqlsearch .= " (LOWER(m.surname) LIKE '%$word%') OR";
+						$sqlsearch .= " (LOWER(m.surname) LIKE '%" . $this->_db->getEscaped($word) . "%') OR";
 					}
 					$sqlsearch = substr($sqlsearch, 0, -3);
 					$sqlsearch .= ") ";
@@ -403,7 +404,7 @@ class MembersProfile extends JTable
 					$sqlsearch .= " (";
 					foreach ($words as $word)
 					{
-						$sqlsearch .= ' MATCH (m.name) AGAINST (\'' . $word . '\' IN BOOLEAN MODE) OR'; //" (LOWER(m.givenName) LIKE '%$word%') OR (LOWER(m.surname) LIKE '%$word%') OR (LOWER(m.middleName) LIKE '%$word%') OR (LOWER(m.name) LIKE '%$word%') OR";
+						$sqlsearch .= " MATCH (m.name) AGAINST ('" . $this->_db->getEscaped($word) . "' IN BOOLEAN MODE) OR"; //" (LOWER(m.givenName) LIKE '%$word%') OR (LOWER(m.surname) LIKE '%$word%') OR (LOWER(m.middleName) LIKE '%$word%') OR (LOWER(m.name) LIKE '%$word%') OR";
 					}
 					$sqlsearch = substr($sqlsearch, 0, -3);
 					$sqlsearch .= ") ";
@@ -584,12 +585,12 @@ class MembersProfile extends JTable
 			{
 				$word = strtolower($word);
 				
-				$search[] = "(m.uidNumber='$word')";
-				$search[] = "(LOWER(m.email) LIKE '%$word%')";
-				$search[] = "(LOWER(m.username) LIKE '%$word%')";
-				$search[] = "(LOWER(m.givenName) LIKE '%$word%')";
-				$search[] = "(LOWER(m.surname) LIKE '%$word%')";
-				$search[] = "(MATCH (m.name) AGAINST ('" . $word . "' IN BOOLEAN MODE))";
+				$search[] = "(m.uidNumber='" . $this->_db->getEscaped($word) . "')";
+				$search[] = "(LOWER(m.email) LIKE '%" . $this->_db->getEscaped($word) . "%')";
+				$search[] = "(LOWER(m.username) LIKE '%" . $this->_db->getEscaped($word) . "%')";
+				$search[] = "(LOWER(m.givenName) LIKE '%" . $this->_db->getEscaped($word) . "%')";
+				$search[] = "(LOWER(m.surname) LIKE '%" . $this->_db->getEscaped($word) . "%')";
+				$search[] = "(MATCH (m.name) AGAINST ('" . $this->_db->getEscaped($word) . "' IN BOOLEAN MODE))";
 			}
 			
 			$where[] = "(" . implode(" OR ", $search) . ")";

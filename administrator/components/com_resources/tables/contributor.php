@@ -147,11 +147,11 @@ class ResourcesContributor extends JTable
 
 		if (is_numeric($authorid))
 		{
-			$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE subid=" . $subid . " AND subtable='$subtable' AND authorid=" . $authorid);
+			$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE subid=" . $this->_db->Quote($subid) . " AND subtable=" . $this->_db->Quote($subtable) . " AND authorid=" . $this->_db->Quote($authorid));
 		}
 		else 
 		{
-			$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE subid=" . $subid . " AND subtable='$subtable' AND authorid < 0 AND name='" . $authorid . "'");
+			$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE subid=" . $this->_db->Quote($subid) . " AND subtable=" . $this->_db->Quote($subtable) . " AND authorid < 0 AND name=" . $this->_db->Quote($authorid));
 		}
 		if ($result = $this->_db->loadAssoc()) 
 		{
@@ -177,7 +177,7 @@ class ResourcesContributor extends JTable
 			$id = $this->authorid;
 		}
 
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE authorid=" . $id);
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE authorid=" . $this->_db->Quote($id));
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -215,11 +215,11 @@ class ResourcesContributor extends JTable
 
 		//if (is_numeric($authorid))
 		//{
-			$query = "DELETE FROM $this->_tbl WHERE subtable='$subtable' AND subid=" . $subid . " AND authorid=" . $authorid;
+			$query = "DELETE FROM $this->_tbl WHERE subtable=" . $this->_db->Quote($subtable) . " AND subid=" . $this->_db->Quote($subid) . " AND authorid=" . $this->_db->Quote($authorid);
 		/*} 
 		else 
 		{
-			$query = "DELETE FROM $this->_tbl WHERE subtable='$subtable' AND subid=" . $subid . " AND authorid=0 AND name='" . $authorid . "'";
+			$query = "DELETE FROM $this->_tbl WHERE subtable=" . $this->_db->Quote($subtable) . " AND subid=" . $this->_db->Quote($subid) . " AND authorid=0 AND name=" . $this->_db->Quote($authorid);
 		}*/
 
 		$this->_db->setQuery($query);
@@ -239,7 +239,7 @@ class ResourcesContributor extends JTable
 	public function createAssociation()
 	{
 		$query = "INSERT INTO $this->_tbl (subtable, subid, authorid, ordering, role, name, organization) 
-					VALUES('$this->subtable', $this->subid, $this->authorid, $this->ordering, '$this->role', '$this->name', '$this->organization')";
+					VALUES(" . $this->_db->Quote($this->subtable) . ", " . $this->_db->Quote($this->subid) . ", " . $this->_db->Quote($this->authorid) . ", " . $this->_db->Quote($this->ordering) . ", " . $this->_db->Quote($this->role) . ", " . $this->_db->Quote($this->name) . ", " . $this->_db->Quote($this->organization) . ")";
 		$this->_db->setQuery($query);
 		if (!$this->_db->query()) 
 		{
@@ -257,8 +257,8 @@ class ResourcesContributor extends JTable
 	public function updateAssociation()
 	{
 		$query = "UPDATE $this->_tbl 
-					SET ordering=$this->ordering, role='$this->role', name='$this->name', organization='$this->organization' 
-					WHERE subtable='$this->subtable' AND subid=$this->subid AND authorid=$this->authorid";
+					SET ordering=" . $this->_db->Quote($this->ordering) . ", role=" . $this->_db->Quote($this->role) . ", name=" . $this->_db->Quote($this->name) . ", organization=" . $this->_db->Quote($this->organization) . " 
+					WHERE subtable=" . $this->_db->Quote($this->subtable) . " AND subid=" . $this->_db->Quote($this->subid) . " AND authorid=" . $this->_db->Quote($this->authorid);
 		$this->_db->setQuery($query);
 		if (!$this->_db->query()) 
 		{
@@ -293,7 +293,7 @@ class ResourcesContributor extends JTable
 		{
 			return null;
 		}
-		$this->_db->setQuery("SELECT count(*) FROM $this->_tbl WHERE subid=$subid AND subtable='$subtable'");
+		$this->_db->setQuery("SELECT count(*) FROM $this->_tbl WHERE subid=" . $this->_db->Quote($subid) . " AND subtable=" . $this->_db->Quote($subtable));
 		return $this->_db->loadResult();
 	}
 
@@ -322,7 +322,7 @@ class ResourcesContributor extends JTable
 		{
 			return null;
 		}
-		$this->_db->setQuery("SELECT ordering FROM $this->_tbl WHERE subid=$subid AND subtable='$subtable' ORDER BY ordering DESC LIMIT 1");
+		$this->_db->setQuery("SELECT ordering FROM $this->_tbl WHERE subid=" . $this->_db->Quote($subid) . " AND subtable=" . $this->_db->Quote($subtable) . " ORDER BY ordering DESC LIMIT 1");
 		return $this->_db->loadResult();
 	}
 
@@ -337,11 +337,11 @@ class ResourcesContributor extends JTable
 		switch ($move)
 		{
 			case 'orderup':
-				$sql = "SELECT * FROM $this->_tbl WHERE subid=$this->subid AND subtable='$this->subtable' AND ordering < $this->ordering ORDER BY ordering DESC LIMIT 1";
+				$sql = "SELECT * FROM $this->_tbl WHERE subid=" . $this->_db->Quote($this->subid) . " AND subtable=" . $this->_db->Quote($this->subtable) . " AND ordering < " . $this->_db->Quote($this->ordering) . " ORDER BY ordering DESC LIMIT 1";
 			break;
 
 			case 'orderdown':
-				$sql = "SELECT * FROM $this->_tbl WHERE subid=$this->subid AND subtable='$this->subtable' AND ordering > $this->ordering ORDER BY ordering LIMIT 1";
+				$sql = "SELECT * FROM $this->_tbl WHERE subid=" . $this->_db->Quote($this->subid) . " AND subtable=" . $this->_db->Quote($this->subtable) . " AND ordering > " . $this->_db->Quote($this->ordering) . " ORDER BY ordering LIMIT 1";
 			break;
 		}
 		$this->_db->setQuery($sql);
@@ -375,7 +375,7 @@ class ResourcesContributor extends JTable
 	 */
 	public function getUserId($name)
 	{
-		$this->_db->setQuery("SELECT authorid FROM $this->_tbl WHERE name='$name' AND authorid < 0 LIMIT 1");
+		$this->_db->setQuery("SELECT authorid FROM $this->_tbl WHERE name=" . $this->_db->Quote($name) . " AND authorid < 0 LIMIT 1");
 		$uid = $this->_db->loadResult();
 		if (!$uid || $uid > 0)
 		{
@@ -412,15 +412,15 @@ class ResourcesContributor extends JTable
 		$w[] = "m.subtable='resources'";
 		if (isset($filters['subid']) && $filters['subid']) 
 		{
-			$w[] = "m.subid=" . $filters['subid'];
+			$w[] = "m.subid=" . $this->_db->Quote($filters['subid']);
 		}
 		if (isset($filters['state'])) 
 		{
-			$w[] = "m.state=" . $filters['state'];
+			$w[] = "m.state=" . $this->_db->Quote($filters['state']);
 		}
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
-			$w[] = "m.name LIKE '%" . $filters['search'] . "%'";
+			$w[] = "m.name LIKE '%" . $this->_db->getEscaped($filters['search']) . "%'";
 		}
 
 		$sql .= (count($w) > 0) ? "WHERE " : "";
@@ -434,10 +434,14 @@ class ResourcesContributor extends JTable
 		{
 			$filters['sort_Dir'] = 'ASC';
 		}
+		if (!in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC')))
+		{
+			$filters['sort_Dir'] = 'ASC';
+		}
 		$sql .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
 		if (isset($filters['limit']) && $filters['limit'] != '') 
 		{
-			$sql .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+			$sql .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 		}
 
 		return $sql;
@@ -480,7 +484,7 @@ class ResourcesContributor extends JTable
 	 */
 	public function getRecordsForAuthor($authorid)
 	{
-		$query = "SELECT * FROM $this->_tbl WHERE authorid='" . $authorid . "'";
+		$query = "SELECT * FROM $this->_tbl WHERE authorid=" . $this->_db->Quote($authorid);
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();

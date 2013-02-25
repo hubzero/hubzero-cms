@@ -125,11 +125,11 @@ class TagsGroup extends JTable
 		switch ($move)
 		{
 			case 'orderup':
-				$sql = "SELECT * FROM $this->_tbl WHERE priority < " . $this->priority . " ORDER BY priority DESC LIMIT 1";
+				$sql = "SELECT * FROM $this->_tbl WHERE priority < " . $this->_db->Quote($this->priority) . " ORDER BY priority DESC LIMIT 1";
 			break;
 
 			case 'orderdown':
-				$sql = "SELECT * FROM $this->_tbl WHERE priority > " . $this->priority . " ORDER BY priority ASC LIMIT 1";
+				$sql = "SELECT * FROM $this->_tbl WHERE priority > " . $this->_db->Quote($this->priority) . " ORDER BY priority ASC LIMIT 1";
 			break;
 		}
 		$this->_db->setQuery($sql);

@@ -130,7 +130,7 @@ class SupportAroAco extends JTable
 			$this->setError(JText::_('Missing ARO ID'));
 			return false;
 		}
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE aro_id=$aro_id");
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE aro_id=" . $this->_db->Quote($aro_id));
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -152,7 +152,7 @@ class SupportAroAco extends JTable
 			$this->setError(JText::_('Missing ACO ID'));
 			return false;
 		}
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE aco_id=$aco_id");
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE aco_id=" . $this->_db->Quote($aco_id));
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -172,7 +172,7 @@ class SupportAroAco extends JTable
 		$query = " FROM $this->_tbl ORDER BY id";
 		if (isset($filters['limit']) && $filters['limit'] != 0) 
 		{
-			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+			$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 		}
 
 		return $query;

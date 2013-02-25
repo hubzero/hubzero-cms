@@ -164,26 +164,26 @@ class ResourceAudience extends JTable
 		$sql = "SELECT a.* ";
 		if ($getlabels) 
 		{
-			$sql .="\n, L0.title as label0, L1.title as label1, L2.title as label2, L3.title as label3, L4.title as label4 ";
+			$sql .=", L0.title as label0, L1.title as label1, L2.title as label2, L3.title as label3, L4.title as label4 ";
 			$sql .= $numlevels == 5 ? ", L5.title as label5  " : "";
-			$sql .= "\n, L0.description as desc0, L1.description as desc1, L2.description as desc2, L3.description as desc3, L4.description as desc4 ";
+			$sql .= ", L0.description as desc0, L1.description as desc1, L2.description as desc2, L3.description as desc3, L4.description as desc4 ";
 			$sql .= $numlevels == 5 ? ", L5.description as desc5  " : "";
 		}
 		$sql .= " FROM $this->_tbl AS a ";
 		if ($getlabels) 
 		{
-			$sql .= "\n JOIN #__resource_taxonomy_audience_levels AS L0 on L0.label='level0' ";
-			$sql .= "\n JOIN #__resource_taxonomy_audience_levels AS L1 on L1.label='level1' ";
-			$sql .= "\n JOIN #__resource_taxonomy_audience_levels AS L2 on L2.label='level2' ";
-			$sql .= "\n JOIN #__resource_taxonomy_audience_levels AS L3 on L3.label='level3' ";
-			$sql .= "\n JOIN #__resource_taxonomy_audience_levels AS L4 on L4.label='level4' ";
+			$sql .= " JOIN #__resource_taxonomy_audience_levels AS L0 on L0.label='level0' ";
+			$sql .= " JOIN #__resource_taxonomy_audience_levels AS L1 on L1.label='level1' ";
+			$sql .= " JOIN #__resource_taxonomy_audience_levels AS L2 on L2.label='level2' ";
+			$sql .= " JOIN #__resource_taxonomy_audience_levels AS L3 on L3.label='level3' ";
+			$sql .= " JOIN #__resource_taxonomy_audience_levels AS L4 on L4.label='level4' ";
 			if ($numlevels == 5) 
 			{
-				$sql .= "\n JOIN #__resource_taxonomy_audience_levels AS L5 on L5.label='level5' ";
+				$sql .= " JOIN #__resource_taxonomy_audience_levels AS L5 on L5.label='level5' ";
 			}
 		}
 		$sql .= " WHERE  a.rid=$rid ";
-		$sql .= $versionid ? " AND  a.versionid=$versionid " : "";
+		$sql .= $versionid ? " AND  a.versionid=" . $this->_db->Quote($versionid) : "";
 		$sql .= " LIMIT 1 ";
 
 		$this->_db->setQuery($sql);

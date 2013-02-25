@@ -209,7 +209,7 @@ class TagsSubstitute extends JTable
 			return false;
 		}
 
-		$sql = "DELETE FROM $this->_tbl WHERE tag_id='$tag_id'";
+		$sql = "DELETE FROM $this->_tbl WHERE tag_id=" . $this->_db->Quote($tag_id);
 		if (count($data) > 0)
 		{
 			$sql .= " AND tag IN ('" . implode("','", $data) . "')";
@@ -251,7 +251,7 @@ class TagsSubstitute extends JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE tag_id='$tag_id'");
+		$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE tag_id=" . $this->_db->Quote($tag_id));
 		return $this->_db->loadResult();
 	}
 
@@ -275,10 +275,10 @@ class TagsSubstitute extends JTable
 			return false;
 		}
 
-		$sql = "SELECT * FROM $this->_tbl WHERE tag_id='$tag_id' ORDER BY raw_tag ASC";
+		$sql = "SELECT * FROM $this->_tbl WHERE tag_id=" . $this->_db->Quote($tag_id) . " ORDER BY raw_tag ASC";
 		if ($limit > 0) 
 		{
-			$sql .= " LIMIT $offset, $limit";
+			$sql .= " LIMIT " . intval($offset) . ", " . intval($limit);
 		}
 
 		$this->_db->setQuery($sql);
@@ -330,10 +330,10 @@ class TagsSubstitute extends JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT tag FROM $this->_tbl WHERE tag_id='$oldtagid'");
+		$this->_db->setQuery("SELECT tag FROM $this->_tbl WHERE tag_id=" . $this->_db->Quote($oldtagid));
 		$items = $this->_db->loadResultArray();
 
-		$this->_db->setQuery("UPDATE $this->_tbl SET tag_id='$newtagid' WHERE tag_id='$oldtagid'");
+		$this->_db->setQuery("UPDATE $this->_tbl SET tag_id=" . $this->_db->Quote($newtagid) . " WHERE tag_id=" . $this->_db->Quote($oldtagid));
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -372,7 +372,7 @@ class TagsSubstitute extends JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE tag_id='$tag_id' ORDER BY id ASC");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE tag_id=" . $this->_db->Quote($tag_id) . " ORDER BY id ASC");
 
 		if (($subs = $this->_db->loadObjectList()))
 		{

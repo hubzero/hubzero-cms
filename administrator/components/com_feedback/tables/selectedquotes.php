@@ -137,7 +137,8 @@ class SelectedQuotes extends JTable
 	 */
 	public function check()
 	{
-		if (trim($this->quote) == '') 
+		$this->quote = trim($this->quote);
+		if ($this->quote == '') 
 		{
 			$this->setError(JText::_('Quote must contain text.'));
 			return false;
@@ -159,20 +160,20 @@ class SelectedQuotes extends JTable
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
 			$words = explode(' ', $filters['search']);
-			$sqlsearch = "";
+			$sqlsearch = array();
 			foreach ($words as $word)
 			{
-				$sqlsearch .= " (LOWER(fullname) LIKE '%$word%') OR";
+				$sqlsearch[] = "(LOWER(fullname) LIKE '%" . $this->_db->getEscaped(strtolower($word)) . "%')";
 			}
-			$query .= ' AND '.substr($sqlsearch, 0, -3);
+			$query .= " AND " . implode(" OR ", $sqlsearch);
 		}
 		if (isset($filters['notable_quotes']) && $filters['notable_quotes']==1) 
 		{
-			$query .= " AND notable_quotes=" . $filters['notable_quotes'];
+			$query .= " AND notable_quotes=" . $this->_db->Quote($filters['notable_quotes']);
 		}
 		if (isset($filters['flash_rotation']) && $filters['flash_rotation']==1) 
 		{
-			$query .= " AND flash_rotation=" . $filters['flash_rotation'];
+			$query .= " AND flash_rotation=" . $this->_db->Quote($filters['flash_rotation']);
 		}
 		if (isset($filters['miniquote']) && $filters['miniquote']==1) 
 		{
@@ -180,20 +181,20 @@ class SelectedQuotes extends JTable
 		}
 		if (isset($filters['id']) && $filters['id'] != 0) 
 		{
-			$query .= " AND id=" . $filters['id'];
+			$query .= " AND id=" . $this->_db->Quote($filters['id']);
 		}
 		if (empty($filters['sortby'])) 
 		{
 			$filters['sortby'] = 'date';
 		}
-		$query .= "\n ORDER BY " . $filters['sortby']." DESC";
+		$query .= " ORDER BY " . $filters['sortby'] . " DESC";
 		if (isset($filters['limit']) && $filters['limit'] != 'all' && $filters['limit'] > 0) 
 		{
 			if (!isset($filters['start'])) 
 			{
 				$filters['start'] = 0;
 			}
-			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+			$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 		}
 		return $query;
 	}
@@ -258,7 +259,7 @@ class SelectedQuotes extends JTable
 		// Build the file path
 		ximport('Hubzero_View_Helper_Html');
 		$dir  = Hubzero_View_Helper_Html::niceidformat($this->id);
-		$path = JPATH_ROOT . DS . trim($config->get('uploadpath'), DS) . DS . $dir;
+		$path = JPATH_ROOT . DS . trim($config->get('uploadpath', '/site/quotes'), DS) . DS . $dir;
 
 		if (!file_exists($path . DS . $this->picture) or !$this->picture) 
 		{

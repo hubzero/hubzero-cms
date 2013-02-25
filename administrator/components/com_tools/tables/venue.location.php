@@ -132,15 +132,15 @@ class MwVenueLocation extends JTable
 
 		if (isset($filters['location']) && $filters['location'] != '') 
 		{
-			$where[] = "c.`location`='" . $filters['location'] . "'";
+			$where[] = "c.`location`=" . $this->_db->Quote($filters['location']);
 		}
 		if (isset($filters['venue_id']) && $filters['venue_id'] != '') 
 		{
-			$where[] = "c.`venue_id`='" . $filters['venue_id'] . "'";
+			$where[] = "c.`venue_id`=" . $this->_db->Quote($filters['venue_id']);
 		}
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
-			$where[] = "(LOWER(c.location) LIKE '%" . strtolower($filters['search']) . ")";
+			$where[] = "(LOWER(c.location) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "')";
 		}
 		if (isset($filters['venue']) && $filters['venue']) 
 		{
@@ -197,7 +197,7 @@ class MwVenueLocation extends JTable
 
 		if (isset($filters['limit']) && $filters['limit'] != 0) 
 		{
-			$query .= ' LIMIT ' . $filters['start'] . ',' . $filters['limit'];
+			$query .= ' LIMIT ' . (int) $filters['start'] . ',' . (int) $filters['limit'];
 		}
 
 		$this->_db->setQuery($query);

@@ -103,17 +103,26 @@ class Vote extends JTable
 	 */
 	public function check()
 	{
-		if (trim($this->referenceid) == '') 
+		$this->referenceid = intval($this->referenceid);
+		if (!$this->referenceid) 
 		{
 			$this->setError(JText::_('Missing reference ID'));
 			return false;
 		}
 
-		if (trim($this->category) == '') 
+		$this->category = trim($this->category);
+		if (!$this->category) 
 		{
 			$this->setError(JText::_('Missing category'));
 			return false;
 		}
+
+		if (!$this->id)
+		{
+			$this->voted = ($this->voted) ? $this->voted : date('Y-m-d H:i:s', time());  // use gmdate() ?
+			$this->voter = ($this->voter) ? $this->voter : JFactory::getUser()->get('id');
+		}
+
 		return true;
 	}
 
@@ -146,7 +155,7 @@ class Vote extends JTable
 
 		$now = date('Y-m-d H:i:s', time());
 
-		$query = "SELECT count(*) FROM $this->_tbl WHERE referenceid='" . $refid . "' AND category = '" . $category . "' AND voter='" . $voter . "'";
+		$query = "SELECT count(*) FROM $this->_tbl WHERE referenceid=" . $this->_db->Quote($refid) . " AND category = " . $this->_db->Quote($category) . " AND voter=" . $this->_db->Quote($voter);
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -162,7 +171,7 @@ class Vote extends JTable
 	{
 		$query = "SELECT c.* 
 				FROM $this->_tbl AS c 
-				WHERE c.referenceid=" . $filters['id'] . " AND category='" . $filters['category'] . "' ORDER BY c.voted DESC";
+				WHERE c.referenceid=" . $this->_db->Quote($filters['id']) . " AND category=" . $this->_db->Quote($filters['category']) . " ORDER BY c.voted DESC";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();

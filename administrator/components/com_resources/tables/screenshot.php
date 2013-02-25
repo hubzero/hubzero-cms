@@ -1,91 +1,87 @@
 <?php
-	/**
-	 * HUBzero CMS
+/**
+ * HUBzero CMS
  *
-	 * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2011 Purdue University. All rights reserved.
  *
-	 * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
-	 * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
-	 * software: you can redistribute it and/or modify it under the terms of
-	 * the GNU Lesser General Public License as published by the Free Software
-	 * Foundation, either version 3 of the License, or (at your option) any
-	 * later version.
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
  *
-	 * HUBzero is distributed in the hope that it will be useful,
-	 * but WITHOUT ANY WARRANTY; without even the implied warranty of
-	 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	 * GNU Lesser General Public License for more details.
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
  *
-	 * You should have received a copy of the GNU Lesser General Public License
-	 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
-	 * HUBzero is a registered trademark of Purdue University.
+ * HUBzero is a registered trademark of Purdue University.
  *
-	 * @package   hubzero-cms
-	 * @author    Shawn Rice <zooley@purdue.edu>
-	 * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
-	 * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
-	 */
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'ResourcesAssoc'
- * 
- * Long description (if any) ...
+ * Resources table class for screenshot
  */
 class ResourcesScreenshot extends  JTable
 {
 	/**
-	 * Description for 'id'
+	 * int (primary key)
 	 * 
 	 * @var integer
 	 */
-	var $id            = NULL;  // @var int (primary key)
+	var $id            = NULL;
 
 	/**
-	 * Description for 'versionid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $versionid     = NULL;  // @var int
+	var $versionid     = NULL;
 
 	/**
-	 * Description for 'title'
-	 * 
-	 * @var unknown
-	 */
-	var $title         = NULL;  // @var string (127)
-
-	/**
-	 * Description for 'ordering'
-	 * 
-	 * @var unknown
-	 */
-	var $ordering      = NULL;  // @var int (11)
-
-	/**
-	 * Description for 'filename'
+	 * varchar (127)
 	 * 
 	 * @var string
 	 */
-	var $filename      = NULL;  // @var string (100)
+	var $title         = NULL;
 
 	/**
-	 * Description for 'resourceid'
+	 * int (11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $resourceid    = NULL;  // @var int
+	var $ordering      = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * varchar (100)
 	 * 
-	 * Long description (if any) ...
+	 * @var string
+	 */
+	var $filename      = NULL;
+
+	/**
+	 * int(11)
 	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @var integer
+	 */
+	var $resourceid    = NULL;
+
+	/**
+	 * Construct
+	 * 
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
 	public function __construct(&$db)
@@ -94,11 +90,9 @@ class ResourcesScreenshot extends  JTable
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if valid, False if not
 	 */
 	public function check()
 	{
@@ -112,14 +106,12 @@ class ResourcesScreenshot extends  JTable
 	}
 
 	/**
-	 * Short description for 'loadFromFilename'
+	 * Load a record and bind to $this based on filename and resource ID (optional version ID)
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $filename Parameter description (if any) ...
-	 * @param      string $rid Parameter description (if any) ...
-	 * @param      string $versionid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string  $filename  File name
+	 * @param      integer $rid       Resource ID
+	 * @param      integer $versionid Version ID
+	 * @return     array
 	 */
 	public function loadFromFilename($filename, $rid=NULL, $versionid=NULL)
 	{
@@ -132,10 +124,10 @@ class ResourcesScreenshot extends  JTable
 			return false;
 		}
 
-		$query = "SELECT	 * FROM $this->_tbl as s WHERE s.filename='".$filename."' AND s.resourceid= '".$rid."'";
+		$query = "SELECT * FROM $this->_tbl as s WHERE s.filename=" . $this->_db->Quote($filename) . " AND s.resourceid=" . $this->_db->Quote($rid);
 		if ($versionid) 
 		{
-			$query .= " AND s.versionid= '".$versionid."' LIMIT 1";
+			$query .= " AND s.versionid=" . $this->_db->Quote($versionid) . " LIMIT 1";
 		}
 
 		$this->_db->setQuery($query);
@@ -151,14 +143,12 @@ class ResourcesScreenshot extends  JTable
 	}
 
 	/**
-	 * Short description for 'getScreenshot'
+	 * Load records based on filename and resource ID (optional version ID)
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $filename Parameter description (if any) ...
-	 * @param      string $rid Parameter description (if any) ...
-	 * @param      string $versionid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      string  $filename  File name
+	 * @param      integer $rid       Resource ID
+	 * @param      integer $versionid Version ID
+	 * @return     array
 	 */
 	public function getScreenshot($filename, $rid=NULL, $versionid=NULL)
 	{
@@ -171,10 +161,10 @@ class ResourcesScreenshot extends  JTable
 			return false;
 		}
 
-		$query = "SELECT	 * FROM $this->_tbl as s WHERE s.filename='".$filename."' AND s.resourceid= '".$rid."'";
+		$query = "SELECT * FROM $this->_tbl as s WHERE s.filename=" . $this->_db->Quote($filename) . " AND s.resourceid=" . $this->_db->Quote($rid);
 		if ($versionid) 
 		{
-			$query.= " AND s.versionid= '".$versionid."'";
+			$query.= " AND s.versionid=" . $this->_db->Quote($versionid);
 		}
 		$query.= " LIMIT 1";
 
@@ -183,13 +173,11 @@ class ResourcesScreenshot extends  JTable
 	}
 
 	/**
-	 * Short description for 'getLastOrdering'
+	 * Get the last item in the order
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $rid Parameter description (if any) ...
-	 * @param      string $versionid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $rid       Resource ID
+	 * @param      integer $versionid Version ID
+	 * @return     mixed False on error, Integer on success
 	 */
 	public function getLastOrdering($rid=NULL, $versionid=NULL) 
 	{
@@ -197,28 +185,26 @@ class ResourcesScreenshot extends  JTable
 		{
 			return false;
 		}
-		$query = "SELECT ordering FROM $this->_tbl as s WHERE s.resourceid= '".$rid."'";
+		$query  = "SELECT ordering FROM $this->_tbl as s WHERE s.resourceid=" . $this->_db->Quote($rid);
 		if ($versionid) 
 		{
-			$query.= " AND s.versionid= '".$versionid."' ";
+			$query .= " AND s.versionid=" . $this->_db->Quote($versionid);
 		}
-		$query.= "ORDER BY s.ordering DESC LIMIT 1";
+		$query .= " ORDER BY s.ordering DESC LIMIT 1";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'saveScreenshot'
+	 * Save an entry
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $filename Parameter description (if any) ...
-	 * @param      string $rid Parameter description (if any) ...
-	 * @param      mixed $versionid Parameter description (if any) ...
-	 * @param      mixed $ordering Parameter description (if any) ...
-	 * @param      boolean $new Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string  $filename  File name
+	 * @param      integer $rid       Resource ID
+	 * @param      integer $versionid Version ID
+	 * @param      integer $ordering  Order in list
+	 * @param      boolean $new       Create a new entry?
+	 * @return     boolean True on success, False on error
 	 */
 	public function saveScreenshot($filename, $rid=NULL, $versionid=0, $ordering = 0, $new=false)
 	{
@@ -232,7 +218,7 @@ class ResourcesScreenshot extends  JTable
 		}
 		if (!$new) 
 		{
-			$this->_db->setQuery("UPDATE $this->_tbl SET ordering=".$ordering." WHERE filename='".$filename."' AND resourceid='".$rid."' AND versionid='".$versionid."'");
+			$this->_db->setQuery("UPDATE $this->_tbl SET ordering=" . $this->_db->Quote($ordering) . " WHERE filename=" . $this->_db->Quote($filename) . " AND resourceid=" . $this->_db->Quote($rid) . " AND versionid=" . $this->_db->Quote($versionid));
 			if ($this->_db->query()) 
 			{
 				$ret = true;
@@ -244,15 +230,15 @@ class ResourcesScreenshot extends  JTable
 		} 
 		else 
 		{
-			$this->ordering = $ordering;
+			$this->ordering   = $ordering;
 			$this->resourceid = $rid;
-			$this->versionid = $versionid;
-			$this->filename= $filename;
+			$this->versionid  = $versionid;
+			$this->filename   = $filename;
 			$ret = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
 		}
 		if (!$ret) 
 		{
-			$this->setError(strtolower(get_class($this)).'::store failed <br />' . $this->_db->getErrorMsg());
+			$this->setError(strtolower(get_class($this)) . '::store failed <br />' . $this->_db->getErrorMsg());
 			return false;
 		} 
 		else 
@@ -262,14 +248,12 @@ class ResourcesScreenshot extends  JTable
 	}
 
 	/**
-	 * Short description for 'deleteScreenshot'
+	 * Delete an entry
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $filename Parameter description (if any) ...
-	 * @param      string $rid Parameter description (if any) ...
-	 * @param      string $versionid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string  $filename  File name
+	 * @param      integer $rid       Resource ID
+	 * @param      integer $versionid Version ID
+	 * @return     boolean True on success, False on error
 	 */
 	public function deleteScreenshot($filename, $rid=NULL, $versionid=NULL) 
 	{
@@ -282,23 +266,27 @@ class ResourcesScreenshot extends  JTable
 			return false;
 		}
 
-		$query = "DELETE FROM $this->_tbl WHERE filename='".$filename."' AND resourceid= '".$rid."'";
+		$query = "DELETE FROM $this->_tbl WHERE filename=" . $this->_db->Quote($filename) . " AND resourceid=" . $this->_db->Quote($rid);
 		if ($versionid) 
 		{
-			$query .= " AND versionid= '".$versionid."' LIMIT 1";
+			$query .= " AND versionid=" . $this->_db->Quote($versionid) . " LIMIT 1";
 		}
 		$this->_db->setQuery($query);
-		$this->_db->query();
+		if (!$this->_db->query())
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
-	 * Short description for 'getScreenshots'
+	 * Get screenshots for a resource
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $rid Parameter description (if any) ...
-	 * @param      string $versionid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $rid       Resource ID
+	 * @param      integer $versionid Version ID
+	 * @return     array
 	 */
 	public function getScreenshots($rid=NULL, $versionid=NULL)
 	{
@@ -307,25 +295,23 @@ class ResourcesScreenshot extends  JTable
 			return false;
 		}
 
-		$query = "SELECT	 * FROM $this->_tbl as s WHERE s.resourceid= '".$rid."'";
+		$query = "SELECT * FROM $this->_tbl as s WHERE s.resourceid=" . $this->_db->Quote($rid);
 		if ($versionid) 
 		{
-			$query .= " AND s.versionid= '".$versionid."' ";
+			$query .= " AND s.versionid=" . $this->_db->Quote($versionid);
 		}
-		$query .= "ORDER BY s.ordering ASC";
+		$query .= " ORDER BY s.ordering ASC";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'getFiles'
+	 * Get filenames for a resource
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $rid Parameter description (if any) ...
-	 * @param      string $versionid Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $rid       Resource ID
+	 * @param      integer $versionid Version ID
+	 * @return     array
 	 */
 	public function getFiles($rid=NULL, $versionid=NULL)
 	{
@@ -334,27 +320,25 @@ class ResourcesScreenshot extends  JTable
 			return false;
 		}
 
-		$query = "SELECT filename FROM $this->_tbl as s WHERE s.resourceid= '".$rid."'";
+		$query = "SELECT filename FROM $this->_tbl as s WHERE s.resourceid=" . $this->_db->Quote($rid);
 		if ($versionid) 
 		{
-			$query .= " AND s.versionid= '".$versionid."' ";
+			$query .= " AND s.versionid=" . $this->_db->Quote($versionid);
 		}
-		$query .= "ORDER BY s.ordering ASC";
+		$query .= " ORDER BY s.ordering ASC";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'updateFiles'
+	 * Update all entries to a new version ID
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $rid Parameter description (if any) ...
-	 * @param      string $devid Parameter description (if any) ...
-	 * @param      string $currentid Parameter description (if any) ...
-	 * @param      integer $copy Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $rid       Resource ID
+	 * @param      integer $devid     Previous version ID
+	 * @param      integer $currentid Curent version ID
+	 * @param      integer $copy      Copy entries? 0=no, 1=yes
+	 * @return     boolean True on success, False on error
 	 */
 	public function updateFiles($rid=NULL, $devid=NULL, $currentid=NULL, $copy=0)
 	{
@@ -384,9 +368,9 @@ class ResourcesScreenshot extends  JTable
 					$newid = $this->id;
 
 					$query  = "UPDATE $this->_tbl as t1, $this->_tbl as t2 ";
-					$query .= "SET t2.versionid='".$currentid."', t2.title=t1.title, t2.filename=t1.filename, t2.ordering=t1.ordering, t2.resourceid=t1.resourceid";
-					$query .= " WHERE t1.id = '".$s->id."' ";
-					$query .= " AND t2.id ='".$newid."'";
+					$query .= "SET t2.versionid=" . $this->_db->Quote($currentid) . ", t2.title=t1.title, t2.filename=t1.filename, t2.ordering=t1.ordering, t2.resourceid=t1.resourceid";
+					$query .= " WHERE t1.id =" . $this->_db->Quote($s->id) . " ";
+					$query .= " AND t2.id =" . $this->_db->Quote($newid);
 					$this->_db->setQuery($query);
 					$this->_db->query();
 				}
@@ -394,9 +378,9 @@ class ResourcesScreenshot extends  JTable
 		}
 		else 
 		{
-			$query  = "UPDATE $this->_tbl SET versionid='".$currentid."' WHERE ";
-			$query .= " versionid = '".$devid."' ";
-			$query .= " AND resourceid='".$rid."'";
+			$query  = "UPDATE $this->_tbl SET versionid=" . $this->_db->Quote($currentid) . " WHERE ";
+			$query .= " versionid=" . $this->_db->Quote($devid) . " ";
+			$query .= " AND resourceid=" . $this->_db->Quote($rid);
 			$this->_db->setQuery($query);
 			if ($this->_db->query()) 
 			{ 
@@ -407,5 +391,6 @@ class ResourcesScreenshot extends  JTable
 				return false;
 			}
 		}
+		return true;
 	}
 }

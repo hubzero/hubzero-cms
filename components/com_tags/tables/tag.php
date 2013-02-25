@@ -216,7 +216,7 @@ class TagsTag extends JTable
 	public function checkExistence()
 	{
 		// First see if the tag exists.
-		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE tag='$this->tag' OR raw_tag='$this->raw_tag' LIMIT 1");
+		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE tag=" . $this->_db->Quote($this->tag) . " OR raw_tag=" . $this->_db->Quote($this->raw_tag) . " LIMIT 1");
 		$id = $this->_db->loadResult();
 		// We have an ID = tag exist
 		if ($id > 0) 
@@ -378,7 +378,7 @@ class TagsTag extends JTable
 		{
 			// Used to also query using unfiltered search text agains the rawtag and the tag.
 			// Figured this was safer
-			$query .= " WHERE (LOWER(t.tag) LIKE '%" . $this->normalize($filters['search']) . "%')";
+			$query .= " WHERE (LOWER(t.tag) LIKE '%" . $this->_db->getEscaped($this->normalize($filters['search'])) . "%')";
 			if ($filter) 
 			{
 				$query .= " AND $filter";
@@ -464,10 +464,10 @@ class TagsTag extends JTable
 
 		$sql  = "SELECT t.tag, t.raw_tag, t.admin, COUNT(*) as count
 				FROM $this->_tbl AS t 
-				INNER JOIN " . $tj->getTableName() . " AS rt ON (rt.tagid = t.id) AND rt.tbl='$tbl' ";
+				INNER JOIN " . $tj->getTableName() . " AS rt ON (rt.tagid = t.id) AND rt.tbl=" . $this->_db->Quote($tbl) . " ";
 		if (isset($objectid) && $objectid) 
 		{
-			$sql .= "WHERE rt.objectid='" . $objectid . "' ";
+			$sql .= "WHERE rt.objectid=" . $this->_db->Quote($objectid) . " ";
 		}
 		switch ($state)
 		{
@@ -508,7 +508,7 @@ class TagsTag extends JTable
 		{
 			$query .= " admin=0 AND";
 		}
-		$query .= " (LOWER(t.raw_tag) LIKE '" . $filters['search'] . "%' OR LOWER(s.raw_tag) LIKE '" . $filters['search'] . "%') 
+		$query .= " (LOWER(t.raw_tag) LIKE '" . $this->_db->getEscaped($filters['search']) . "%' OR LOWER(s.raw_tag) LIKE '" . $this->_db->getEscaped($filters['search']) . "%') 
 					ORDER BY t.raw_tag ASC";
 
 		$this->_db->setQuery($query);
@@ -566,7 +566,7 @@ class TagsTag extends JTable
 		$sql .= "WHERE t.id=tj.tagid AND t.admin=0 ";
 		if ($tbl) 
 		{
-			$sql .= "AND tj.tbl='" . $tbl . "' ";
+			$sql .= "AND tj.tbl=" . $this->_db->Quote($tbl) . " ";
 		} 
 		else 
 		{
@@ -611,7 +611,7 @@ class TagsTag extends JTable
 				) ";
 		}
 		$sql .= "GROUP BY raw_tag
-				ORDER BY $order LIMIT " . $limit;
+				ORDER BY $order LIMIT " . (int) $limit;
 
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
@@ -636,17 +636,17 @@ class TagsTag extends JTable
 			return null;
 		}
 
-		$this->_db->setQuery("SELECT objectid, tbl FROM #__tags_object WHERE tagid=" . $id);
+		$this->_db->setQuery("SELECT objectid, tbl FROM #__tags_object WHERE tagid=" . $this->_db->Quote($id));
 		$objs = $this->_db->loadObjectList();
 		if ($objs) 
 		{
-			$sql = "SELECT t.* FROM $this->_tbl AS t, #__tags_object AS tg WHERE t.id=tg.tagid AND tg.tagid != " . $id . " AND t.admin=0 AND (";
+			$sql = "SELECT t.* FROM $this->_tbl AS t, #__tags_object AS tg WHERE t.id=tg.tagid AND tg.tagid != " . $this->_db->Quote($id) . " AND t.admin=0 AND (";
 			$s = array();
 			foreach ($objs as $obj)
 			{
-				$s[] = "(tg.objectid=" . $obj->objectid . " AND tg.tbl='" . $obj->tbl . "')";
+				$s[] = "(tg.objectid=" . $this->_db->Quote($obj->objectid) . " AND tg.tbl=" . $this->_db->Quote($obj->tbl) . ")";
 			}
-			$sql .= implode(" OR ",$s);
+			$sql .= implode(" OR ", $s);
 			$sql .= ") GROUP BY t.id LIMIT " . $limit;
 
 			$this->_db->setQuery($sql);

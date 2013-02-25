@@ -145,27 +145,27 @@ class MwVenue extends JTable
 
 		if (isset($filters['state']) && $filters['state'] != '') 
 		{
-			$where[] = "c.`state`='" . $filters['state'] . "'";
+			$where[] = "c.`state`=" . $this->_db->Quote($filters['state']);
 		}
 		if (isset($filters['master']) && $filters['master'] != '') 
 		{
-			$where[] = "c.`master`='" . $filters['master'] . "'";
+			$where[] = "c.`master`=" . $this->_db->Quote($filters['master']);
 		}
 		if (isset($filters['venue']) && $filters['venue'] != '') 
 		{
-			$where[] = "c.`venue`='" . $filters['venue'] . "'";
+			$where[] = "c.`venue`=" . $this->_db->Quote($filters['venue']);
 		}
 
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
-			$where[] = "(LOWER(c.venue) LIKE '%" . strtolower($filters['search']) . "%' OR LOWER(c.master) LIKE '%" . strtolower($filters['search']) . "%')";
+			$where[] = "(LOWER(c.venue) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' OR LOWER(c.master) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
 		}
 
 		$query = "FROM $this->_tbl AS c";
 		if (isset($filters['location']) && $filters['location']) 
 		{
 			$query .= " JOIN venue_locations AS t ON c.id=t.venue_id";
-			$where[] = "t.location = " . $mwdb->Quote($this->view->filters['location']);
+			$where[] = "t.location = " . $this->_db->Quote($this->view->filters['location']);
 		}
 		if (count($where) > 0)
 		{
@@ -211,10 +211,10 @@ class MwVenue extends JTable
 			$filters['sort_Dir'] = 'ASC';
 		}
 		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
-		
+
 		if (isset($filters['limit']) && $filters['limit'] != 0) 
 		{
-			$query .= ' LIMIT ' . $filters['start'] . ',' . $filters['limit'];
+			$query .= ' LIMIT ' . (int) $filters['start'] . ',' . (int) $filters['limit'];
 		}
 
 		$this->_db->setQuery($query);

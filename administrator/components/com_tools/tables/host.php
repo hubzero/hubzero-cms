@@ -216,23 +216,23 @@ class MwHost extends JTable
 
 		if (isset($filters['status']) && $filters['status'] != '') 
 		{
-			$where[] = "c.`status`='" . $filters['status'] . "'";
+			$where[] = "c.`status`=" . $this->_db->Quote($filters['status']);
 		}
 		if (isset($filters['portbase']) && $filters['portbase'] != '') 
 		{
-			$where[] = "c.`portbase`='" . $filters['portbase'] . "'";
+			$where[] = "c.`portbase`=" . $this->_db->Quote($filters['portbase']);
 		}
 		if (isset($filters['uses']) && $filters['uses'] != '') 
 		{
-			$where[] = "c.`uses`='" . $filters['uses'] . "'";
+			$where[] = "c.`uses`=" . $this->_db->Quote($filters['uses']);
 		}
 		if (isset($filters['provisions']) && $filters['provisions'] != '') 
 		{
-			$where[] = "c.`provisions`='" . $filters['provisions'] . "'";
+			$where[] = "c.`provisions`=" . $this->_db->Quote($filters['provisions']);
 		}
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
-			$where[] = "(LOWER(c.hostname) LIKE '%" . strtolower($filters['search']) . "%')";
+			$where[] = "(LOWER(c.hostname) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
 		}
 
 		$query = "FROM $this->_tbl AS c";
@@ -285,11 +285,15 @@ class MwHost extends JTable
 		{
 			$filters['sort_Dir'] = 'ASC';
 		}
+		if (!in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC')))
+		{
+			$filters['sort_Dir'] = 'ASC';
+		}
 		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
 		
 		if (isset($filters['limit']) && $filters['limit'] != 0) 
 		{
-			$query .= ' LIMIT ' . $filters['start'] . ',' . $filters['limit'];
+			$query .= ' LIMIT ' . (int) $filters['start'] . ',' . (int) $filters['limit'];
 		}
 
 		$this->_db->setQuery($query);

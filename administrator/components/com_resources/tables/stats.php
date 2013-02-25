@@ -29,36 +29,33 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'ResourcesStats'
- * 
- * Long description (if any) ...
+ * Resources table class for stats
  */
 class ResourcesStats extends JTable
 {
+	/**
+	 * int(11) Primary key
+	 * 
+	 * @var integer
+	 */
+	var $id       = NULL;
 
 	/**
-	 * Description for 'id'
+	 * varchar(250)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $id       = NULL;  // @var int(11) Primary key
+	var $resid    = NULL;
 
 	/**
-	 * Description for 'resid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $resid    = NULL;  // @var varchar(250)
-
-	/**
-	 * Description for 'restype'
-	 * 
-	 * @var unknown
-	 */
-	var $restype  = NULL;  // @var int(11)
+	var $restype  = NULL;
 
 	/**
 	 * Description for 'users'
@@ -117,96 +114,93 @@ class ResourcesStats extends JTable
 	var $period   = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Construct
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__resource_stats', 'id', $db );
+		parent::__construct('#__resource_stats', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if valid, False if not
 	 */
 	public function check()
 	{
-		if (trim( $this->resid ) == '') {
-			$this->setError( JText::_('Your entry must have a resource ID.') );
+		if (trim($this->resid) == '') 
+		{
+			$this->setError(JText::_('Your entry must have a resource ID.'));
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'loadStats'
+	 * Load data for a resource and given period
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $resid Parameter description (if any) ...
-	 * @param      string $period Parameter description (if any) ...
-	 * @param      string $dthis Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $resid  Resource ID
+	 * @param      integer $period Time period
+	 * @param      string  $dthis  YYYY-MM
+	 * @return     boolean True on success, False on error
 	 */
-	public function loadStats( $resid=NULL, $period=NULL, $dthis=NULL )
+	public function loadStats($resid=NULL, $period=NULL, $dthis=NULL)
 	{
-		if ($resid == NULL) {
+		if ($resid == NULL) 
+		{
 			$resid = $this->resid;
 		}
-		if ($resid == NULL) {
+		if ($resid == NULL) 
+		{
 			return false;
 		}
 
 		$sql = "SELECT * 
 				FROM $this->_tbl
-				WHERE datetime='".$dthis."-01 00:00:00' AND period = '".$period."' AND resid = '".$resid."'";
+				WHERE datetime='" . $this->_db->getEscaped($dthis) . "-01 00:00:00' AND period=" . $this->_db->Quote($period) . " AND resid=" . $this->_db->Quote($resid);
 
-		$this->_db->setQuery( $sql );
-		//return $this->_db->loadObject( $this );
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery($sql);
+
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
 }
 
 /**
- * Short description for 'class'
- * 
- * Long description (if any) ...
+ * Resources table class for tool stats
  */
 class ResourcesStatsTools extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11) Primary key
 	 * 
 	 * @var unknown
 	 */
-	var $id       = NULL;  // @var int(11) Primary key
+	var $id       = NULL;
 
 	/**
-	 * Description for 'resid'
+	 * varchar(250)
 	 * 
 	 * @var unknown
 	 */
-	var $resid    = NULL;  // @var varchar(250)
+	var $resid    = NULL;
 
 	/**
-	 * Description for 'restype'
+	 * int(11)
 	 * 
 	 * @var unknown
 	 */
-	var $restype  = NULL;  // @var int(11)
+	var $restype  = NULL;
 
 	/**
 	 * Description for 'users'
@@ -216,18 +210,18 @@ class ResourcesStatsTools extends JTable
 	var $users    = NULL;
 
 	/**
-	 * Description for 'sessions'
+	 * int(20)
 	 * 
 	 * @var unknown
 	 */
-	var $sessions    = NULL;  // @var int(20)
+	var $sessions    = NULL;
 
 	/**
-	 * Description for 'simulations'
+	 * int(20)
 	 * 
 	 * @var unknown
 	 */
-	var $simulations = NULL;  // @var int(20)
+	var $simulations = NULL;
 
 	/**
 	 * Description for 'jobs'
@@ -307,130 +301,122 @@ class ResourcesStatsTools extends JTable
 	var $period   = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Construct
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__resource_stats_tools', 'id', $db );
+		parent::__construct('#__resource_stats_tools', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if valid, False if not
 	 */
 	public function check()
 	{
-		if (trim( $this->resid ) == '') {
-			$this->setError( JText::_('Your entry must have a resource ID.') );
+		if (trim($this->resid) == '') 
+		{
+			$this->setError(JText::_('Your entry must have a resource ID.'));
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'loadStats'
+	 * Load data for a resource and given period
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $resid Parameter description (if any) ...
-	 * @param      string $period Parameter description (if any) ...
-	 * @param      string $dthis Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $resid  Resource ID
+	 * @param      integer $period Time period
+	 * @param      string  $dthis  YYYY-MM
+	 * @return     boolean True on success, False on error
 	 */
-	public function loadStats( $resid=NULL, $period=NULL, $dthis=NULL )
+	public function loadStats($resid=NULL, $period=NULL, $dthis=NULL)
 	{
-		if ($resid == NULL) {
+		if ($resid == NULL) 
+		{
 			$resid = $this->resid;
 		}
-		if ($resid == NULL) {
+		if ($resid == NULL) 
+		{
 			return false;
 		}
 
 		$sql = "SELECT id, users, sessions, simulations, jobs, avg_wall, tot_wall, avg_cpu, tot_cpu, avg_view, tot_view, avg_wait, tot_wait, avg_cpus, tot_cpus, period, LEFT(datetime,7) as datetime 
 				FROM $this->_tbl
-				WHERE datetime='".$dthis."-00 00:00:00' AND period = '".$period."' AND resid = '".$resid."'";
+				WHERE datetime='" . $this->_db->getEscaped($dthis) . "-00 00:00:00' AND period=" . $this->_db->Quote($period) . " AND resid=" . $this->_db->Quote($resid);
 
-		$this->_db->setQuery( $sql );
-		//return $this->_db->loadObject( $this );
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery($sql);
+
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
 }
 
 /**
- * Short description for 'ResourcesStatsToolsTop'
- * 
- * Long description (if any) ...
+ * resources table class for tool top stats
  */
 class ResourcesStatsToolsTop extends JTable
 {
-
 	/**
-	 * Description for 'top'
+	 * tinyint(4) Primary key
 	 * 
 	 * @var unknown
 	 */
-	var $top    = NULL;  // @var tinyint(4) Primary key
+	var $top    = NULL;
 
 	/**
-	 * Description for 'name'
+	 * varchar(128)
 	 * 
 	 * @var unknown
 	 */
-	var $name   = NULL;  // @var varchar(128)
+	var $name   = NULL;
 
 	/**
-	 * Description for 'valfmt'
+	 * tinyint(4)
 	 * 
 	 * @var unknown
 	 */
-	var $valfmt = NULL;  // @var tinyint(4)
+	var $valfmt = NULL;
 
 	/**
-	 * Description for 'size'
+	 * tinyint(4)
 	 * 
 	 * @var unknown
 	 */
-	var $size   = NULL;  // @var tinyint(4)
-
-	//-----------
+	var $size   = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Construct
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__resource_stats_tools_tops', 'top', $db );
+		parent::__construct('#__resource_stats_tools_tops', 'top', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if valid, False if not
 	 */
 	public function check()
 	{
-		if (trim( $this->name ) == '') {
-			$this->setError( JText::_('Your entry must have a name.') );
+		if (trim($this->name) == '') 
+		{
+			$this->setError(JText::_('Your entry must have a name.'));
 			return false;
 		}
 		return true;
@@ -438,330 +424,311 @@ class ResourcesStatsToolsTop extends JTable
 }
 
 /**
- * Short description for 'class'
- * 
- * Long description (if any) ...
+ * Resources table class for tool top value stats
  */
 class ResourcesStatsToolsTopvals extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(20)
 	 * 
 	 * @var unknown
 	 */
-	var $id    = NULL;  // @var int(20)
+	var $id    = NULL;
 
 	/**
-	 * Description for 'top'
+	 * tinyint(4)
 	 * 
 	 * @var unknown
 	 */
-	var $top   = NULL;  // @var tinyint(4)
+	var $top   = NULL;
 
 	/**
-	 * Description for 'rank'
+	 * tinyint(4)
 	 * 
 	 * @var unknown
 	 */
-	var $rank  = NULL;  // @var tinyint(4)
+	var $rank  = NULL;
 
 	/**
-	 * Description for 'name'
+	 * varchar(255)
 	 * 
 	 * @var unknown
 	 */
-	var $name  = NULL;  // @var varchar(255)
+	var $name  = NULL;
 
 	/**
-	 * Description for 'value'
+	 * int(20)
 	 * 
 	 * @var unknown
 	 */
-	var $value = NULL;  // @var int(20)
-
-	//-----------
+	var $value = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Construct
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__resource_stats_tools_topvals', 'id', $db );
+		parent::__construct('#__resource_stats_tools_topvals', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if valid, False if not
 	 */
 	public function check()
 	{
-		if (trim( $this->name ) == '') {
-			$this->setError( JText::_('Your entry must have a name.') );
+		if (trim($this->name) == '') 
+		{
+			$this->setError(JText::_('Your entry must have a name.'));
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'getTopCountryRes'
+	 * Get top countries for a resource
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $id Parameter description (if any) ...
-	 * @param      string $top Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      integer $id  Resource Id
+	 * @param      integer $top Top value
+	 * @return     mixed False on error, Array on success
 	 */
-	public function getTopCountryRes( $id=NULL, $top=NULL )
+	public function getTopCountryRes($id=NULL, $top=NULL)
 	{
-		if ($id == NULL) {
+		if ($id == NULL) 
+		{
 			$id = $this->id;
 		}
-		if ($id == NULL) {
+		if ($id == NULL) 
+		{
 			return false;
 		}
-		if ($top == NULL) {
+		if ($top == NULL) 
+		{
 			$top = $this->top;
 		}
-		if ($top == NULL) {
+		if ($top == NULL) 
+		{
 			return false;
 		}
 
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE id = '".$id."' AND top = '".$top."' ORDER BY rank" );
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE id=" . $this->_db->Quote($id) . " AND top=" . $this->_db->Quote($top) . " ORDER BY rank");
 		return $this->_db->loadObjectList();
 	}
 }
 
 /**
- * Short description for 'ResourcesStatsToolsUsers'
- * 
- * Long description (if any) ...
+ * Resources table class for tool user stats
  */
 class ResourcesStatsToolsUsers extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(20) Primary key
 	 * 
 	 * @var unknown
 	 */
-	var $id          = NULL;  // @var int(20) Primary key
+	var $id          = NULL;
 
 	/**
-	 * Description for 'resid'
+	 * int(20)
 	 * 
 	 * @var unknown
 	 */
-	var $resid       = NULL;  // @var int(20)
+	var $resid       = NULL;
 
 	/**
-	 * Description for 'restype'
+	 * int(11)
 	 * 
 	 * @var unknown
 	 */
-	var $restype     = NULL;  // @var int(11)
+	var $restype     = NULL;
 
 	/**
-	 * Description for 'user'
+	 * varchar(32)
 	 * 
 	 * @var unknown
 	 */
-	var $user        = NULL;  // @var varchar(32)
+	var $user        = NULL;
 
 	/**
-	 * Description for 'sessions'
+	 * int(20)
 	 * 
 	 * @var unknown
 	 */
-	var $sessions    = NULL;  // @var int(20)
+	var $sessions    = NULL;
 
 	/**
-	 * Description for 'simulations'
+	 * int(20)
 	 * 
 	 * @var unknown
 	 */
-	var $simulations = NULL;  // @var int(20)
+	var $simulations = NULL;
 
 	/**
-	 * Description for 'jobs'
+	 * int(20)
 	 * 
 	 * @var unknown
 	 */
-	var $jobs        = NULL;  // @var int(20)
+	var $jobs        = NULL;
 
 	/**
-	 * Description for 'tot_wall'
+	 * double
 	 * 
 	 * @var unknown
 	 */
-	var $tot_wall    = NULL;  // @var double
+	var $tot_wall    = NULL;
 
 	/**
-	 * Description for 'tot_cpu'
+	 * double
 	 * 
 	 * @var unknown
 	 */
-	var $tot_cpu     = NULL;  // @var double
+	var $tot_cpu     = NULL;
 
 	/**
-	 * Description for 'tot_view'
+	 * double
 	 * 
 	 * @var unknown
 	 */
-	var $tot_view    = NULL;  // @var double
+	var $tot_view    = NULL;
 
 	/**
-	 * Description for 'datetime'
+	 * datetime(0000-00-00 00:00:00)
 	 * 
 	 * @var unknown
 	 */
-	var $datetime    = NULL;  // @var datetime(0000-00-00 00:00:00)
+	var $datetime    = NULL;
 
 	/**
-	 * Description for 'period'
+	 * tinyint(4)
 	 * 
 	 * @var unknown
 	 */
-	var $period      = NULL;  // @var tinyint(4)
-
-	//-----------
+	var $period      = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Construct
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__resource_stats_tools_users', 'id', $db );
+		parent::__construct('#__resource_stats_tools_users', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if valid, False if not
 	 */
 	public function check()
 	{
-		if (trim( $this->resid ) == '') {
-			$this->setError( JText::_('Your entry must have a resource ID.') );
+		if (trim($this->resid) == '') 
+		{
+			$this->setError(JText::_('Your entry must have a resource ID.'));
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'getTopUsersRes'
+	 * Get top users for a resource
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $resid Parameter description (if any) ...
-	 * @param      string $dthis Parameter description (if any) ...
-	 * @param      string $period Parameter description (if any) ...
-	 * @param      unknown $top Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      integer $resid  Resource ID
+	 * @param      integer $period Time period
+	 * @param      string  $dthis  YYYY-MM
+	 * @param      integer $top    Top value
+	 * @return     array
 	 */
 	public function getTopUsersRes($resid, $dthis, $period, $top)
 	{
 		$sql = "SELECT u.name, s.user, u.email, u.organization, s.jobs, s.sessions, s.simulations, s.tot_wall, s.tot_cpu, s.tot_view 
 				FROM $this->_tbl AS s, user AS u 
-				WHERE u.user = s.user AND s.datetime='".$dthis."-00' AND s.period ='".$period."' AND s.resid='".$resid."' 
+				WHERE u.user = s.user AND s.datetime='" . $this->_db->getEscaped($dthis) . "-00' AND s.period=" . $this->_db->Quote($period) . " AND s.resid=" . $this->_db->Quote($resid) . " 
 				ORDER BY s.jobs DESC limit 25";
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
 }
 
 /**
- * Short description for 'class'
- * 
- * Long description (if any) ...
+ * Resources table class for cluster stats
  */
 class ResourcesStatsClusters extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * bigint(20) Primary key
 	 * 
 	 * @var unknown
 	 */
-	var $id       		= NULL;	// @var bigint(20) Primary key
+	var $id       		= NULL;
 
 	/**
-	 * Description for 'cluster'
+	 * varchar(255)
 	 * 
 	 * @var unknown
 	 */
-	var $cluster  		= NULL;	// @var varchar(255)
+	var $cluster  		= NULL;
 
 	/**
-	 * Description for 'username'
+	 * varchar(32)
 	 * 
 	 * @var unknown
 	 */
-	var $username 		= NULL; // @var varchar(32)
+	var $username 		= NULL;
 
 	/**
-	 * Description for 'uidNumber'
+	 * int(11)
 	 * 
 	 * @var unknown
 	 */
-	var $uidNumber 		= NULL;	// @var int(11)
+	var $uidNumber 		= NULL;
 
 	/**
-	 * Description for 'toolname'
+	 * Dvarchar(80)
 	 * 
 	 * @var unknown
 	 */
-	var $toolname 		= NULL;	// @var varchar(80)
+	var $toolname 		= NULL;
 
 	/**
-	 * Description for 'resid'
+	 * int(11)
 	 * 
 	 * @var unknown
 	 */
- 	var $resid   		= NULL;	// @var int(11)
+ 	var $resid   		= NULL;
 
 	/**
-	 * Description for 'clustersize'
+	 * varchar(255)
 	 * 
 	 * @var unknown
 	 */
-	var $clustersize  	= NULL;	// @var varchar(255)
+	var $clustersize  	= NULL;
 
 	/**
-	 * Description for 'cluster_start'
+	 * datetime
 	 * 
 	 * @var unknown
 	 */
-	var $cluster_start 	= NULL;	// @var datetime
+	var $cluster_start 	= NULL;
 
 	/**
-	 * Description for 'cluster_end'
+	 * datetime
 	 * 
 	 * @var unknown
 	 */
-	var $cluster_end 	= NULL;	// @var datetime
+	var $cluster_end 	= NULL;
 
 	/**
-	 * Description for 'instituion'
+	 * varchar(255)
 	 * 
 	 * @var unknown
 	 */
-	var $instituion 	= NULL;	// @var varchar(255)
+	var $instituion 	= NULL;
 
 	/**
 	 * Description for 'users'
@@ -776,64 +743,63 @@ class ResourcesStatsClusters extends JTable
 	 * @var unknown
 	 */
 	var $classes 	= NULL;
-	//-----------
 
 	/**
-	 * Short description for '__construct'
+	 * Construct
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__resource_stats_clusters', 'id', $db );
+		parent::__construct('#__resource_stats_clusters', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if valid, False if not
 	 */
 	public function check()
 	{
-		if (trim( $this->resid ) == '') {
-			$this->setError( JText::_('Your entry must have a resource ID.') );
+		if (trim($this->resid) == '') 
+		{
+			$this->setError(JText::_('Your entry must have a resource ID.'));
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'loadStats'
+	 * Load data for a resource
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      string $resid Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $resid  Resource ID
+	 * @return     boolean True on success, False on error
 	 */
-	public function loadStats( $resid=NULL )
+	public function loadStats($resid=NULL)
 	{
-		if ($resid == NULL) {
+		if ($resid == NULL) 
+		{
 			$resid = $this->resid;
 		}
-		if ($resid == NULL) {
+		if ($resid == NULL) 
+		{
 			return false;
 		}
 
 		$sql = "SELECT COUNT(DISTINCT uidNumber, username) AS users, COUNT(DISTINCT cluster) AS classes 
 				FROM $this->_tbl
-				WHERE resid = '".$resid."'";
+				WHERE resid=" . $this->_db->Quote($resid);
 
-		$this->_db->setQuery( $sql );
-		//return $this->_db->loadObject( $this );
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			$this->setError( $this->_db->getErrorMsg() );
+		$this->_db->setQuery($sql);
+
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}

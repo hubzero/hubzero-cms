@@ -103,7 +103,7 @@ class SupportAttachment extends JTable
 	 */
 	public function getID()
 	{
-		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE filename='" . $this->filename . "' AND description='" . $this->description . "' AND ticket=" . $this->ticket);
+		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE filename=" . $this->_db->Quote($this->filename) . " AND description=" . $this->_db->Quote($this->description) . " AND ticket=" . $this->_db->Quote($this->ticket));
 		$id = $this->_db->loadResult();
 		$this->id = $id;
 	}
@@ -132,7 +132,7 @@ class SupportAttachment extends JTable
 		$tokens = explode('#', $match);
 		$id = intval(end($tokens));
 
-		$this->_db->setQuery("SELECT filename, description FROM $this->_tbl WHERE id=" . $id);
+		$this->_db->setQuery("SELECT filename, description FROM $this->_tbl WHERE id=" . $this->_db->Quote($id));
 		$a = $this->_db->loadRow();
 
 		if ($this->output != 'web') 
@@ -180,7 +180,7 @@ class SupportAttachment extends JTable
 	 */
 	public function deleteAttachment($filename, $ticket)
 	{
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE filename='" . $filename . "' AND ticket=" . $ticket);
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE filename=" . $this->_db->Quote($filename) . " AND ticket=" . $this->_db->Quote($ticket));
 		if (!$this->_db->query()) 
 		{
 			return $this->_db->getErrorMsg();
@@ -196,7 +196,7 @@ class SupportAttachment extends JTable
 	 */
 	public function deleteAllForTicket($ticket)
 	{
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE ticket=" . $ticket);
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE ticket=" . $this->_db->Quote($ticket));
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -234,7 +234,7 @@ class SupportAttachment extends JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE filename='$filename' AND ticket='$ticket'");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE filename=" . $this->_db->Quote($filename) . " AND ticket=" . $this->_db->Quote($ticket));
 		return $this->_db->loadObject($this);
 	}
 }

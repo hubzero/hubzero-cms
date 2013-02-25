@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Short description for 'Hosttype'
@@ -38,7 +38,6 @@ defined('_JEXEC') or die( 'Restricted access' );
  */
 class MwHosttype extends JTable
 {
-
 	/**
 	 * Description for 'name'
 	 * 
@@ -61,11 +60,9 @@ class MwHosttype extends JTable
 	var $description;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
 	public function __construct(&$db)
@@ -74,30 +71,28 @@ class MwHosttype extends JTable
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean False if invalid data, true on success
 	 */
 	public function check()
 	{
 
 		if (!$this->name) 
 		{
-			$this->setError( JText::_('No name provided') );
+			$this->setError(JText::_('No name provided'));
 			return false;
 		}
 
 		if (!$this->description) 
 		{
-			$this->setError( JText::_('No description provided.') );
+			$this->setError(JText::_('No description provided.'));
 			return false;
 		}
 
 		if (!$this->value) 
 		{
-			$this->setError( JText::_('No value provided.') );
+			$this->setError(JText::_('No value provided.'));
 			return false;
 		}
 
@@ -119,22 +114,22 @@ class MwHosttype extends JTable
 
 		if ($insert)
 		{
-			$ret = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key );
+			$ret = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
 		}
 		else 
 		{
-			if( $this->$k)
+			if($this->$k)
 			{
-				$ret = $this->_db->updateObject( $this->_tbl, $this, $this->_tbl_key, $updateNulls );
+				$ret = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, $updateNulls);
 			}
 			else
 			{
-				$ret = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key );
+				$ret = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
 			}
 		}
-		if( !$ret )
+		if(!$ret)
 		{
-			$this->setError(get_class( $this ).'::store failed - '.$this->_db->getErrorMsg());
+			$this->setError(get_class($this).'::store failed - '.$this->_db->getErrorMsg());
 			return false;
 		}
 		else
@@ -151,16 +146,16 @@ class MwHosttype extends JTable
 	 * @access public
 	 * @return true if successful otherwise returns and error message
 	 */
-	public function delete( $oid=null )
+	public function delete($oid=null)
 	{
 		$k = $this->_tbl_key;
 		if ($oid) {
 			$this->$k = $oid;
 		}
 
-		$query = 'DELETE FROM '.$this->_db->nameQuote( $this->_tbl ).
+		$query = 'DELETE FROM '.$this->_db->nameQuote($this->_tbl).
 				' WHERE '.$this->_tbl_key.' = '. $this->_db->Quote($this->$k);
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 
 		if ($this->_db->query())
 		{
@@ -174,12 +169,10 @@ class MwHosttype extends JTable
 	}
 
 	/**
-	 * Short description for 'buildQuery'
+	 * Construct an SQL statement based on the array of filters passed
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      array $filters Filters to build SQL from
+	 * @return     string SQL
 	 */
 	private function _buildQuery($filters=array())
 	{
@@ -187,7 +180,7 @@ class MwHosttype extends JTable
 
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
-			$where[] = "(LOWER(c.name) LIKE '%" . strtolower($filters['search']) . "%' OR LOWER(c.description) LIKE '%" . strtolower($filters['search']) . "%')";
+			$where[] = "(LOWER(c.name) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' OR LOWER(c.description) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
 		}
 
 		$query = "FROM $this->_tbl AS c";
@@ -201,12 +194,10 @@ class MwHosttype extends JTable
 	}
 
 	/**
-	 * Short description for 'getCount'
+	 * Get a record count
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build SQL from
+	 * @return     integer
 	 */
 	public function getCount($filters=array())
 	{
@@ -219,12 +210,10 @@ class MwHosttype extends JTable
 	}
 
 	/**
-	 * Short description for 'getRecords'
+	 * Get a list of records
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $filters Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      array $filters Filters to build SQL from
+	 * @return     array
 	 */
 	public function getRecords($filters=array())
 	{
@@ -238,8 +227,12 @@ class MwHosttype extends JTable
 		{
 			$filters['sort_Dir'] = 'ASC';
 		}
+		if (!in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC')))
+		{
+			$filters['sort_Dir'] = 'ASC';
+		}
 		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
-		
+
 		if (isset($filters['limit']) && $filters['limit'] != 0) 
 		{
 			$query .= ' LIMIT ' . $filters['start'] . ',' . $filters['limit'];

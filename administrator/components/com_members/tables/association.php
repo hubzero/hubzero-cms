@@ -117,7 +117,7 @@ class MembersAssociation extends JTable
 			$id = $this->authorid;
 		}
 
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE authorid='" . $id . "'");
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE authorid=" . $this->_db->Quote($id));
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());

@@ -29,42 +29,38 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'ResourcesContributorRole'
- * 
- * Long description (if any) ...
+ * Resources class for role type
  */
 class ResourcesContributorRoleType extends JTable
 {
 	/**
-	 * Description for 'subid'
+	 * int(11) Primary Key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id    = NULL;  // @var int(11) Primary Key
+	var $id    = NULL;
 
 	/**
-	 * Description for 'authorid'
+	 * int(11) Primary Key
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $role_id = NULL;  // @var int(11) Primary Key
+	var $role_id = NULL;
 
 	/**
-	 * Description for 'ordering'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $type_id = NULL;  // @var int(11)
+	var $type_id = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Construct
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
 	public function __construct(&$db)
@@ -73,11 +69,9 @@ class ResourcesContributorRoleType extends JTable
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if valid, False if not
 	 */
 	public function check()
 	{
@@ -97,12 +91,10 @@ class ResourcesContributorRoleType extends JTable
 	}
 
 	/**
-	 * Short description for 'getNeighbor'
+	 * Get all roles for a specific type
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $move Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $type_id Type ID
+	 * @return     array
 	 */
 	public function getRolesForType($type_id=null)
 	{
@@ -111,26 +103,24 @@ class ResourcesContributorRoleType extends JTable
 			$this->setError(JText::_('Missing argument'));
 			return false;
 		}
-		
+
 		$type_id = intval($type_id);
-		
+
 		$query = "SELECT r.id, r.title, r.alias 
 					FROM #__author_roles AS r
 					JOIN #__author_role_types AS rt ON r.id=rt.role_id
-					WHERE rt.type_id=$type_id
+					WHERE rt.type_id=" . $this->_db->Quote($type_id) . "
 					ORDER BY r.title ASC";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
-	
+
 	/**
-	 * Short description for 'getNeighbor'
+	 * Get all types for a specific role
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $move Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $role_id Role ID
+	 * @return     array
 	 */
 	public function getTypesForRole($role_id=null)
 	{
@@ -139,26 +129,25 @@ class ResourcesContributorRoleType extends JTable
 			$this->setError(JText::_('Missing argument'));
 			return false;
 		}
-		
+
 		$role_id = intval($role_id);
-		
+
 		$query = "SELECT r.id, r.type, r.alias 
 					FROM #__resource_types AS r
 					LEFT JOIN #__author_role_types AS rt ON r.id=rt.type_id
-					WHERE rt.role_id=$role_id
+					WHERE rt.role_id=" . $this->_db->Quote($role_id) . "
 					ORDER BY r.type ASC";
-		
+
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
-	
+
 	/**
-	 * Short description for 'getNeighbor'
+	 * Set types for a role
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $move Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $role_id Role ID
+	 * @param      array   $current List of types assigned to role
+	 * @return     boolean True on success, False on errors
 	 */
 	public function setTypesForRole($role_id=null, $current=null)
 	{
@@ -168,7 +157,7 @@ class ResourcesContributorRoleType extends JTable
 			return false;
 		}
 		$role_id = intval($role_id);
-		
+
 		// Get an array of all the previous types
 		$old = array();
 		$types = $this->getTypesForRole($role_id);
@@ -179,7 +168,7 @@ class ResourcesContributorRoleType extends JTable
 				$old[] = $item->id;
 			}
 		}
-		
+
 		// Run through the $current array and determine if 
 		// each item is new or not
 		$keep = array();
@@ -198,21 +187,21 @@ class ResourcesContributorRoleType extends JTable
 				}
 			}
 		}
-		
+
 		$remove = array_diff($old, $keep);
 
 		// Remove any types in the remove list
 		if (count($remove) > 0)
 		{
 			$remove = implode(',', $remove);
-			$this->_db->setQuery("DELETE FROM $this->_tbl WHERE role_id='$role_id' AND type_id IN ($remove)");
+			$this->_db->setQuery("DELETE FROM $this->_tbl WHERE role_id=" . $this->_db->Quote($role_id) . " AND type_id IN ($remove)");
 			if (!$this->_db->query()) 
 			{
 				$this->setError($this->_db->getErrorMsg());
 				return false;
 			}
 		}
-		
+
 		// Add any types not in the OLD list
 		if (count($add) > 0)
 		{
@@ -227,17 +216,15 @@ class ResourcesContributorRoleType extends JTable
 				}
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
-	 * Short description for 'getNeighbor'
+	 * Delete entries for a specific role
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $move Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $role_id Role ID
+	 * @return     boolean True on success, False on error
 	 */
 	public function deleteForRole($role_id=null)
 	{
@@ -245,16 +232,16 @@ class ResourcesContributorRoleType extends JTable
 		{
 			$role_id = $this->role_id;
 		}
-		
+
 		if (!$role_id) 
 		{
 			$this->setError(JText::_('Missing argument'));
 			return false;
 		}
 		$role_id = intval($role_id);
-		
+
 		// Remove any types in the remove list
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE role_id='$role_id'");
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE role_id=" . $this->_db->Quote($role_id));
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -262,14 +249,12 @@ class ResourcesContributorRoleType extends JTable
 		}
 		return true;
 	}
-	
+
 	/**
-	 * Short description for 'getNeighbor'
+	 * Delete entries for a specific type
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $move Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $type_id Type ID
+	 * @return     boolean True on success, False on error
 	 */
 	public function deleteForType($type_id=null)
 	{
@@ -277,16 +262,16 @@ class ResourcesContributorRoleType extends JTable
 		{
 			$type_id = $this->type_id;
 		}
-		
+
 		if (!$type_id) 
 		{
 			$this->setError(JText::_('Missing argument'));
 			return false;
 		}
 		$type_id = intval($type_id);
-		
+
 		// Remove any types in the remove list
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE type_id='$type_id'");
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE type_id=" . $this->_db->Quote($type_id));
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());

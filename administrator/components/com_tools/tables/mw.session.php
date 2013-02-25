@@ -137,11 +137,11 @@ class MwSession extends JTable
 			return false;
 		}
 
-		$query = "SELECT * FROM $this->_tbl WHERE sessnum='$sess'";
+		$query = "SELECT * FROM $this->_tbl WHERE sessnum=" . $this->_db->Quote($sess);
 
 		if ($username) 
 		{
-			$query .= " AND username='$username'";
+			$query .= " AND username=" . $this->_db->Quote($username);
 		}
 
 		$this->_db->setQuery($query);
@@ -180,7 +180,7 @@ class MwSession extends JTable
 		{
 			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s 
 					  ON v.sessnum = s.sessnum 
-					  WHERE v.sessnum=" . $sess . " 
+					  WHERE v.sessnum=" . $this->_db->Quote($sess) . " 
 					  LIMIT 1";
 		} 
 		else 
@@ -188,8 +188,8 @@ class MwSession extends JTable
 			$juser =& JFactory::getUser();
 			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s 
 					  ON v.sessnum = s.sessnum 
-					  WHERE v.sessnum=" . $sess . " 
-					  AND v.viewuser='" . $juser->get('username') . "'";
+					  WHERE v.sessnum=" . $this->_db->Quote($sess) . " 
+					  AND v.viewuser=" . $this->_db->Quote($juser->get('username'));
 		}
 
 		$this->_db->setQuery($query);
@@ -220,7 +220,7 @@ class MwSession extends JTable
 		{
 			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s 
 					  ON v.sessnum = s.sessnum 
-					  WHERE v.sessnum=" . $sess . " 
+					  WHERE v.sessnum=" . $this->_db->Quote($sess) . " 
 					  LIMIT 1";
 		} 
 		else 
@@ -230,9 +230,9 @@ class MwSession extends JTable
 			$juser =& JFactory::getUser();
 			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s 
 					  ON v.sessnum = s.sessnum 
-					  WHERE v.sessnum=" . $sess . " 
-					  AND s.username='" . $juser->get('username') . "'
-					  AND v.viewuser='" . $juser->get('username') . "'";
+					  WHERE v.sessnum=" . $this->_db->Quote($sess) . " 
+					  AND s.username=" . $this->_db->Quote($juser->get('username')) . "
+					  AND v.viewuser=" . $this->_db->Quote($juser->get('username'));
 		}
 
 		$this->_db->setQuery($query);
@@ -267,7 +267,7 @@ class MwSession extends JTable
 
 		$query = "SELECT COUNT(*) FROM $mv->_tbl AS v JOIN $this->_tbl AS s
 				  ON v.sessnum = s.sessnum 
-				  WHERE v.viewuser='" . $username . "' AND s.username='" . $username . "' $a
+				  WHERE v.viewuser=" . $this->_db->Quote($username) . " AND s.username=" . $this->_db->Quote($username) . " $a
 				  ORDER BY s.start";
 
 		$this->_db->setQuery($query);
@@ -296,7 +296,7 @@ class MwSession extends JTable
 		$a = "";
 		if ($appname) 
 		{
-			$a = "AND s.appname='$appname'";
+			$a = "AND s.appname=" . $this->_db->Quote($appname);
 		}
 
 		$mv = new MwViewperm($this->_db);
@@ -309,7 +309,7 @@ class MwSession extends JTable
 		{
 			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s
 					  ON v.sessnum = s.sessnum
-					  WHERE v.viewuser='" . $username . "' $a
+					  WHERE v.viewuser=" . $this->_db->Quote($username) . " $a
 					  ORDER BY s.start";
 		}
 
@@ -347,7 +347,7 @@ class MwSession extends JTable
 			LEFT JOIN $mv->_tbl AS v ON s.sessnum = v.sessnum
 			LEFT JOIN $mj->_tbl AS j ON s.sessnum = j.sessnum
 			WHERE viewid IS NULL AND jobid IS NULL
-			AND s.sessnum=" . $sess;
+			AND s.sessnum=" . $this->_db->Quote($sess);
 
 		$this->_db->setQuery($query);
 		return $mwdb->loadResult();
@@ -377,11 +377,11 @@ class MwSession extends JTable
 		$where = array();
 		if (isset($filters['username']) && $filters['username'] != '') 
 		{
-			$where[] = "v.viewuser='" . $filters['username'] . "'";
+			$where[] = "v.viewuser=" . $this->_db->Quote($filters['username']);
 		}
 		if (isset($filters['appname']) && $filters['appname'] != '') 
 		{
-			$where[] = "s.appname='" . $filters['appname'] . "'";
+			$where[] = "s.appname=" . $this->_db->Quote($filters['appname']);
 		}
 		if (count($where) > 0) 
 		{
@@ -396,11 +396,15 @@ class MwSession extends JTable
 		{
 			$filters['sort_Dir'] = 'DESC';
 		}
+		if (!in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC')))
+		{
+			$filters['sort_Dir'] = 'DESC';
+		}
 		$query .= " ORDER BY s." . $filters['sort'] . " " . $filters['sort_Dir'];
 
 		if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all') 
 		{
-			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+			$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 		}
 
 		return $query;

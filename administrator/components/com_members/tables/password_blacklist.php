@@ -33,11 +33,9 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * Password blacklist class
- * 
  */
 class MembersPasswordBlacklist extends JTable
 {
-
 	/**
 	 * ID - primary key
 	 * 
@@ -53,11 +51,9 @@ class MembersPasswordBlacklist extends JTable
 	var $word = null;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
 	public function __construct( &$db )
@@ -73,7 +69,8 @@ class MembersPasswordBlacklist extends JTable
 	public function check()
 	{
 		// Make sure they gave a word
-		if (trim($this->word) == '') {
+		if (trim($this->word) == '') 
+		{
 			$this->setError( JText::_('PASSWORD_BLACKLIST_MUST_HAVE_WORD') );
 			return false;
 		}
@@ -120,7 +117,7 @@ class MembersPasswordBlacklist extends JTable
 		$query  = "SELECT pb.*";
 		$query .= $this->buildquery($filters);
 		$query .= " ORDER BY pb.word ASC";
-		$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
+		$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();

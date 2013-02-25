@@ -133,7 +133,7 @@ class SupportComment extends JTable
 		{
 			$sqladmin = "AND access=0";
 		}
-		$sql = "SELECT * FROM $this->_tbl WHERE ticket=" . $ticket . " $sqladmin ORDER BY created ASC";
+		$sql = "SELECT * FROM $this->_tbl WHERE ticket=" . $this->_db->Quote($ticket) . " $sqladmin ORDER BY created ASC";
 
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
@@ -160,7 +160,7 @@ class SupportComment extends JTable
 		{
 			$sqladmin = "AND access=0";
 		}
-		$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE ticket=" . $ticket . " $sqladmin");
+		$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE ticket=" . $this->_db->Quote($ticket) . " $sqladmin");
 		return $this->_db->loadResult();
 	}
 
@@ -185,7 +185,7 @@ class SupportComment extends JTable
 		{
 			$sqladmin = "AND access=0";
 		}
-		$this->_db->setQuery("SELECT created FROM $this->_tbl WHERE ticket=" . $ticket . " $sqladmin ORDER BY created DESC LIMIT 1");
+		$this->_db->setQuery("SELECT created FROM $this->_tbl WHERE ticket=" . $this->_db->Quote($ticket) . " $sqladmin ORDER BY created DESC LIMIT 1");
 		return $this->_db->loadResult();
 	}
 
@@ -231,7 +231,7 @@ class SupportComment extends JTable
 		{
 			$ticket = $this->ticket;
 		}
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE ticket=" . $ticket);
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE ticket=" . $this->_db->Quote($ticket));
 		if (!$this->_db->query()) 
 		{
 			$this->setError($database->getErrorMsg());

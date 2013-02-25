@@ -530,6 +530,12 @@ class WikiPage extends JTable
 			return false;
 		}
 
+		if (!$this->_validCn($this->group_cn)) 
+		{
+			$this->setError(JText::_('Invalid group'));
+			return false;
+		}
+
 		if (!$this->id)
 		{
 			$g = WikiPage::getInstance($this->pagename, $this->scope);
@@ -549,6 +555,25 @@ class WikiPage extends JTable
 		}
 
 		return true;
+	}
+
+	/**
+	 * Check if a group alias is valid
+	 * 
+	 * @param      integer $gid Group alias
+	 * @return     boolean True if valid, false if not
+	 */
+    private function _validCn($gid)
+	{
+		if (preg_match("/^[0-9a-zA-Z]+[_0-9a-zA-Z]*$/i", $gid))
+		{
+			if (is_numeric($gid) && intval($gid) == $gid && $gid >= 0) 
+			{
+				return false;
+			} 
+			return true;
+		} 
+		return false;
 	}
 
 	/**

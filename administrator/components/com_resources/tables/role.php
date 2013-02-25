@@ -158,7 +158,7 @@ class ResourcesContributorRole extends JTable
 		}
 
 		$oid = trim($oid);
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE alias='$oid'");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($oid));
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			return $this->bind($result);
@@ -206,7 +206,7 @@ class ResourcesContributorRole extends JTable
 
 		if (isset($filters['limit']) && $filters['limit'] != 0) 
 		{
-			$query .= ' LIMIT ' . $filters['start'] . ',' . $filters['limit'];
+			$query .= ' LIMIT ' . (int) $filters['start'] . ',' . (int) $filters['limit'];
 		}
 
 		$this->_db->setQuery($query);
@@ -230,8 +230,8 @@ class ResourcesContributorRole extends JTable
 		}
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
-			$where[] = "(LOWER(r.title) LIKE '%" . strtolower($filters['search']) . "%' 
-				OR LOWER(r.alias) LIKE '%" . strtolower($filters['search']) . "%')";
+			$where[] = "(LOWER(r.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 
+				OR LOWER(r.alias) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
 		}
 
 		if (count($where) > 0)
@@ -261,7 +261,7 @@ class ResourcesContributorRole extends JTable
 
 		$query = "SELECT r.id, r.title, r.alias 
 					FROM $this->_tbl AS r
-					JOIN #__author_role_types AS rt ON r.id=rt.role_id AND rt.type_id=$type_id
+					JOIN #__author_role_types AS rt ON r.id=rt.role_id AND rt.type_id=" . $this->_db->Quote($type_id) . "
 					ORDER BY r.title ASC";
 
 		$this->_db->setQuery($query);
@@ -292,7 +292,7 @@ class ResourcesContributorRole extends JTable
 		$query = "SELECT r.id, r.type, r.alias 
 					FROM #__resource_types AS r
 					LEFT JOIN #__author_role_types AS rt ON r.id=rt.type_id
-					WHERE rt.role_id=$role_id
+					WHERE rt.role_id=" . $this->_db->Quote($role_id) . "
 					ORDER BY r.type ASC";
 
 		$this->_db->setQuery($query);

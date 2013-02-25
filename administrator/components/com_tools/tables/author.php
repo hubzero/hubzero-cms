@@ -147,7 +147,7 @@ class ToolAuthor extends  JTable
 		$sql = " SELECT f.toolname FROM #__tool as f "
 				. "JOIN #__tool_groups AS g ON f.id=g.toolid AND g.role=1 "
 				. "JOIN #__xgroups AS xg ON g.cn=xg.cn "
-				. "JOIN #__xgroups_managers AS m ON xg.gidNumber=m.gidNumber AND uidNumber='$uid'";
+				. "JOIN #__xgroups_managers AS m ON xg.gidNumber=m.gidNumber AND uidNumber=" . $this->_db->Quote($uid);
 
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
@@ -163,7 +163,7 @@ class ToolAuthor extends  JTable
 	public function getFirstAuthor($rid = 0)
 	{
 		$query  = "SELECT x.name FROM #__xprofiles x ";
-		$query .= " JOIN #__author_assoc AS aa ON x.uidNumber=aa.authorid AND aa.subid= " . $rid . " AND aa.subtable='resources' ";
+		$query .= " JOIN #__author_assoc AS aa ON x.uidNumber=aa.authorid AND aa.subid= " . $this->_db->Quote($rid) . " AND aa.subtable='resources' ";
 		$query .= " ORDER BY aa.ordering ASC LIMIT 1";
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -180,7 +180,7 @@ class ToolAuthor extends  JTable
 	public function getAuthorsDOI($rid = 0)
 	{
 		$query  = "SELECT x.name FROM #__xprofiles x ";
-		$query .= " JOIN #__author_assoc AS aa ON x.uidNumber=aa.authorid AND aa.subid= " . $rid . " AND aa.subtable='resources' ";
+		$query .= " JOIN #__author_assoc AS aa ON x.uidNumber=aa.authorid AND aa.subid= " . $this->_db->Quote($rid) . " AND aa.subtable='resources' ";
 		$query .= " ORDER BY aa.ordering ASC";
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
@@ -202,7 +202,7 @@ class ToolAuthor extends  JTable
 
 		if ($version == 'dev' && $rid) 
 		{
-			$query = "SELECT authorid as uidNumber FROM #__author_assoc WHERE subid= " . $rid . " AND subtable='resources' ORDER BY ordering";
+			$query = "SELECT authorid as uidNumber FROM #__author_assoc WHERE subid= " . $this->_db->Quote($rid) . " AND subtable='resources' ORDER BY ordering";
 			$this->_db->setQuery($query);
 			$authors = $this->_db->loadObjectList();
 		}
@@ -216,28 +216,28 @@ class ToolAuthor extends  JTable
 				$rev = $objV->getCurrentVersionProperty ($toolname, 'revision');
 				if ($rev) 
 				{
-					$query .= "JOIN #__tool_version as v ON a.toolname=v.toolname AND a.revision=v.revision WHERE a.toolname= '" . $toolname . "' AND a.revision='" . $rev . "'";
+					$query .= "JOIN #__tool_version as v ON a.toolname=v.toolname AND a.revision=v.revision WHERE a.toolname=" . $this->_db->Quote($toolname) . " AND a.revision=" . $this->_db->Quote($rev);
 				} 
 				else 
 				{
-					$query .= "JOIN #__tool_version as v ON a.toolname=v.toolname AND a.revision=v.revision WHERE a.toolname= '" . $toolname . "' AND v.state=1 ORDER BY v.revision DESC";
+					$query .= "JOIN #__tool_version as v ON a.toolname=v.toolname AND a.revision=v.revision WHERE a.toolname=" . $this->_db->Quote($toolname) . " AND v.state=1 ORDER BY v.revision DESC";
 				}
 			}
 			else if (is_numeric($version)) 
 			{
-				$query .= "WHERE a.version_id= '" . $version . "' ORDER BY a.ordering";
+				$query .= "WHERE a.version_id=" . $this->_db->Quote($version) . " ORDER BY a.ordering";
 			}
 			else if ($toolname && $revision) 
 			{
-				$query .= "WHERE a.toolname = '" . $toolname . "' AND a.revision = '" . $revision . "' ORDER BY a.ordering";
+				$query .= "WHERE a.toolname=" . $this->_db->Quote($toolname) . " AND a.revision=" . $this->_db->Quote($revision) . " ORDER BY a.ordering";
 			}
 			else if (is_object($version)) 
 			{
-				$query .= "WHERE a.version_id= '" . $version->id . "' ORDER BY a.ordering";
+				$query .= "WHERE a.version_id=" . $this->_db->Quote($version->id) . " ORDER BY a.ordering";
 			}
 			else if (is_object($version[0])) 
 			{
-				$query .= "WHERE a.version_id= '" . $version[0]->id . "' ORDER BY a.ordering";
+				$query .= "WHERE a.version_id=" . $this->_db->Quote($version[0]->id) . " ORDER BY a.ordering";
 			}
 			else
 			{
@@ -284,7 +284,7 @@ class ToolAuthor extends  JTable
 			{
 				foreach ($to_delete as $del) 
 				{
-					$query = "DELETE FROM #__author_assoc  WHERE authorid='" . $del . "' AND subid= " . $rid . " AND subtable='resources'";
+					$query = "DELETE FROM #__author_assoc  WHERE authorid=" . $this->_db->Quote($del) . " AND subid=" . $this->_db->Quote($rid) . " AND subtable='resources'";
 					$this->_db->setQuery($query);
 					$this->_db->query();
 				}
@@ -305,7 +305,7 @@ class ToolAuthor extends  JTable
 			{
 				foreach ($to_delete as $del) 
 				{
-					$query = "DELETE FROM #__author_assoc  WHERE authorid='" . $del . "' AND subid= " . $rid . " AND subtable='resources'";
+					$query = "DELETE FROM #__author_assoc  WHERE authorid=" . $this->_db->Quote($del) . " AND subid=" . $this->_db->Quote($rid) . " AND subtable='resources'";
 					$this->_db->setQuery($query);
 					$this->_db->query();
 				}
@@ -343,7 +343,7 @@ class ToolAuthor extends  JTable
 			{
 				// Do we have name/org info in previous version?
 				$query  = "SELECT name, organization FROM #__tool_authors ";
-				$query .= "WHERE toolname='" . $toolname . "' AND uid='" . $authid . "' AND revision < " . $revision;
+				$query .= "WHERE toolname=" . $this->_db->Quote($toolname) . " AND uid=" . $this->_db->Quote($authid) . " AND revision < " . $this->_db->Quote($revision);
 				$query .= " AND name IS NOT NULL AND organization IS NOT NULL ";
 				$query .= " ORDER BY revision DESC LIMIT 1";
 				$this->_db->setQuery($query);

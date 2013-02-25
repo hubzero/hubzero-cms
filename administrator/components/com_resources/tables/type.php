@@ -154,7 +154,7 @@ class ResourcesType extends JTable
 		$query = "SELECT count(*) FROM $this->_tbl";
 		if (isset($filters['category']) && $filters['category']) 
 		{
-			$query .= " WHERE category=" . $filters['category'];
+			$query .= " WHERE category=" . $this->_db->Quote($filters['category']);
 		}
 		else 
 		{
@@ -177,14 +177,14 @@ class ResourcesType extends JTable
 		$query  = "SELECT * FROM $this->_tbl ";
 		if (isset($filters['category']) && $filters['category']) 
 		{
-			$query .= "WHERE category=" . $filters['category'] . " ";
+			$query .= "WHERE category=" . $this->_db->Quote($filters['category']) . " ";
 		}
 		else 
 		{
 			$query .= "WHERE category!=0 ";
 		}
 		$query .= "ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'] . " ";
-		$query .= "LIMIT " . $filters['start'] . "," . $filters['limit'];
+		$query .= "LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
@@ -198,7 +198,7 @@ class ResourcesType extends JTable
 	 */
 	public function getTypes($cat='0')
 	{
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE category=" . $cat . " ORDER BY type");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE category=" . $this->_db->Quote($cat) . " ORDER BY type");
 		return $this->_db->loadObjectList();
 	}
 
@@ -223,7 +223,7 @@ class ResourcesType extends JTable
 
 		$r = new ResourcesResource($this->_db);
 
-		$this->_db->setQuery("SELECT count(*) FROM $r->_tbl WHERE type=" . $id . " OR logical_type=" . $id);
+		$this->_db->setQuery("SELECT count(*) FROM $r->_tbl WHERE type=" . $this->_db->Quote($id) . " OR logical_type=" . $this->_db->Quote($id));
 		return $this->_db->loadResult();
 	}
 
@@ -250,7 +250,7 @@ class ResourcesType extends JTable
 		
 		$query = "SELECT r.id, r.title, r.alias 
 					FROM #__author_roles AS r
-					JOIN #__author_role_types AS rt ON r.id=rt.role_id AND rt.type_id=$type_id
+					JOIN #__author_role_types AS rt ON r.id=rt.role_id AND rt.type_id=" . $this->_db->Quote($type_id) . "
 					ORDER BY r.title ASC";
 		
 		$this->_db->setQuery($query);

@@ -180,7 +180,7 @@ class TagsLog extends JTable
 			return null;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE `tag_id`=$tag_id ORDER BY `timestamp` DESC, id DESC");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE `tag_id`=" . $this->_db->Quote($tag_id) . " ORDER BY `timestamp` DESC, id DESC");
 		return $this->_db->loadObjectList();
 	}
 
@@ -201,7 +201,7 @@ class TagsLog extends JTable
 			return null;
 		}
 
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE `tag_id`=" . $tag_id);
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE `tag_id`=" . $this->_db->Quote($tag_id));
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -210,7 +210,7 @@ class TagsLog extends JTable
 	}
 
 	/**
-	 * Delete logs for a tag
+	 * Format a log
 	 * 
 	 * @param      object $log Database row (TagsLog)
 	 * @return     string

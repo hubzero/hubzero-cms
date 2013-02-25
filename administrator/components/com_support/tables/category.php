@@ -95,7 +95,7 @@ class SupportCategory extends JTable
 		if ($section !== NULL) 
 		{
 			$section = ($section) ? $section : 1;
-			$where = "WHERE section=$section";
+			$where = "WHERE section=" . $this->_db->Quote($section);
 		} 
 		else 
 		{
@@ -122,7 +122,7 @@ class SupportCategory extends JTable
 		}
 		if (isset($filters['limit']) && $filters['limit'] != 0) 
 		{
-			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+			$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 		}
 
 		return $query;

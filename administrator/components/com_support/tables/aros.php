@@ -107,7 +107,7 @@ class SupportAro extends JTable
 		$query = " FROM $this->_tbl ORDER BY id";
 		if (isset($filters['limit']) && $filters['limit'] != 0) 
 		{
-			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+			$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 		}
 
 		return $query;

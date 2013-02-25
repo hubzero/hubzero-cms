@@ -92,7 +92,7 @@ class AnswersLog extends JTable
 		{
 			return false;
 		}
-		$sql  = "SELECT * FROM $this->_tbl WHERE rid='" . $rid . "' AND ip='" . $ip . "' LIMIT 1";
+		$sql  = "SELECT * FROM $this->_tbl WHERE rid=" . $this->_db->Quote($rid) . " AND ip=" . $this->_db->Quote($ip) . " LIMIT 1";
 		$this->_db->setQuery($sql);
 		if ($result = $this->_db->loadAssoc()) 
 		{
@@ -138,7 +138,7 @@ class AnswersLog extends JTable
 			return false;
 		}
 
-		$query = "SELECT helpful FROM $this->_tbl WHERE rid='" . $rid . "' AND ip='" . $ip . "'";
+		$query = "SELECT helpful FROM $this->_tbl WHERE rid=" . $this->_db->Quote($rid) . " AND ip=" . $this->_db->Quote($ip);
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -161,7 +161,7 @@ class AnswersLog extends JTable
 			return false;
 		}
 
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE rid=" . $rid);
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE rid=" . $this->_db->Quote($rid));
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());

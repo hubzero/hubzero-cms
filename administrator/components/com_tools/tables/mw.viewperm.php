@@ -115,10 +115,10 @@ class MwViewperm extends JTable
 		{
 			return false;
 		}
-		$query = "SELECT * FROM $this->_tbl WHERE sessnum='$sess'";
+		$query = "SELECT * FROM $this->_tbl WHERE sessnum=" . $this->_db->Quote($sess);
 		if ($username) 
 		{
-			$query .=  " AND viewuser='" . $username . "'";
+			$query .=  " AND viewuser=" . $this->_db->Quote($username);
 		}
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
@@ -141,10 +141,10 @@ class MwViewperm extends JTable
 		{
 			return false;
 		}
-		$query = "DELETE FROM $this->_tbl WHERE sessnum='$sess'";
+		$query = "DELETE FROM $this->_tbl WHERE sessnum=" . $this->_db->Quote($sess);
 		if ($username) 
 		{
-			$query .=  " AND viewuser='" . $username . "'";
+			$query .=  " AND viewuser=" . $this->_db->Quote($username);
 		}
 		$this->_db->setQuery($query);
 		if (!$this->_db->query()) 

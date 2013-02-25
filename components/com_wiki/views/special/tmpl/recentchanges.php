@@ -56,7 +56,7 @@ $query = "SELECT COUNT(*)
 			INNER JOIN #__wiki_page AS wp 
 				ON wp.id = wv.pageid 
 			WHERE wv.approved = 1 
-				AND wp.scope = '{$this->page->scope}' 
+				AND wp.scope = " . $database->Quote($this->page->scope) . " 
 				AND wp.state < 2
 				AND wp.access != 1";
 
@@ -68,7 +68,7 @@ $query = "SELECT wv.pageid, wp.title, wp.pagename, wp.scope, wp.group_cn, wp.acc
 			INNER JOIN #__wiki_page AS wp 
 				ON wp.id = wv.pageid 
 			WHERE wv.approved = 1 
-				AND wp.scope = '{$this->page->scope}' 
+				AND wp.scope = " . $database->Quote($this->page->scope) . " 
 				AND wp.state < 2
 				AND wp.access != 1 
 			ORDER BY created DESC";

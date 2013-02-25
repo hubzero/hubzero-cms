@@ -154,13 +154,13 @@ class AnswersResponse extends JTable
 		{
 			$query  = "SELECT r.*";
 			$query .= ", (SELECT COUNT(*) FROM $ab->_tbl AS a WHERE a.category='answers' AND a.state=0 AND a.referenceid=r.id) AS reports";
-			$query .= ", l.helpful AS vote FROM $this->_tbl AS r LEFT JOIN #__answers_log AS l ON r.id=l.rid AND ip='" . $filters['ip'] . "' WHERE r.state!=2 AND r.qid=" . $qid;
+			$query .= ", l.helpful AS vote FROM $this->_tbl AS r LEFT JOIN #__answers_log AS l ON r.id=l.rid AND ip=" . $this->_db->Quote($filters['ip']) . " WHERE r.state!=2 AND r.qid=" . $this->_db->Quote($qid);
 		} 
 		else 
 		{
 			$query  = "SELECT r.*";
 			$query .= ", (SELECT COUNT(*) FROM $ab->_tbl AS a WHERE a.category='answers' AND a.state=0 AND a.referenceid=r.id) AS reports";
-			$query .= " FROM $this->_tbl AS r WHERE r.state!=2 AND r.qid=" . $qid;
+			$query .= " FROM $this->_tbl AS r WHERE r.state!=2 AND r.qid=" . $this->_db->Quote($qid);
 		}
 		$query .= " ORDER BY r.state DESC, r.created DESC";
 
@@ -185,7 +185,7 @@ class AnswersResponse extends JTable
 			return false;
 		}
 
-		$query = "SELECT id, helpful, nothelpful, state, created_by FROM $this->_tbl WHERE qid=" . $qid . " AND state!='2'";
+		$query = "SELECT id, helpful, nothelpful, state, created_by FROM $this->_tbl WHERE qid=" . $this->_db->Quote($qid) . " AND state!='2'";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
@@ -217,7 +217,7 @@ class AnswersResponse extends JTable
 			return false;
 		}
 
-		$query  = "SELECT r.*, l.helpful AS vote FROM $this->_tbl AS r LEFT JOIN #__answers_log AS l ON r.id=l.rid AND ip='" . $ip . "' WHERE r.state!=2 AND r.id=" . $id;
+		$query  = "SELECT r.*, l.helpful AS vote FROM $this->_tbl AS r LEFT JOIN #__answers_log AS l ON r.id=l.rid AND ip=" . $this->_db->Quote($ip) . " WHERE r.state!=2 AND r.id=" . $this->_db->Quote($id);
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
@@ -240,7 +240,7 @@ class AnswersResponse extends JTable
 			return false;
 		}
 
-		$query  = "UPDATE $this->_tbl SET state='2' WHERE id=" . $id;
+		$query  = "UPDATE $this->_tbl SET state=" . $this->_db->Quote(2) . " WHERE id=" . $this->_db->Quote($id);
 
 		$this->_db->setQuery($query);
 		$this->_db->query();
@@ -264,7 +264,7 @@ class AnswersResponse extends JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE qid=" . $qid);
+		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE qid=" . $this->_db->Quote($qid));
 		return $this->_db->loadObjectList();
 	}
 
@@ -326,7 +326,7 @@ class AnswersResponse extends JTable
 
 		if (isset($filters['qid']) && $filters['qid'] > 0) 
 		{
-			$query .= " AND m.qid=" . $filters['qid'];
+			$query .= " AND m.qid=" . $this->_db->Quote($filters['qid']);
 		}
 
 		if (isset($filters['sortby']) && $filters['sortby'] != '') 
@@ -335,6 +335,11 @@ class AnswersResponse extends JTable
 		} 
 		else 
 		{
+			$filters['sort_Dir'] = strtoupper($filters['sort_Dir']);
+			if (!in_array($filters['sort_Dir'], array('ASC', 'DESC')))
+			{
+				$filters['sort_Dir'] = 'DESC';
+			}
 			if (isset($filters['sort'])) 
 			{
 				$query .= " ORDER BY " . $filters['sort'] . " " .  $filters['sort_Dir'];
@@ -343,7 +348,7 @@ class AnswersResponse extends JTable
 
 		if (isset($filters['limit']) && $filters['limit'] > 0) 
 		{
-			$query .= " LIMIT " . $filters['start'] . ", " . $filters['limit'];
+			$query .= " LIMIT " . (int) $filters['start'] . ", " . (int) $filters['limit'];
 		}
 
 		return $query;

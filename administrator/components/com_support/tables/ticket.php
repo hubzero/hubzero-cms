@@ -658,7 +658,7 @@ class SupportTicket extends JTable
 		}
 		$sql .= " FROM $filter";
 		$sql .= " ORDER BY ".$filters['sort'] . ' ' . $filters['sortdir'];
-		$sql .= ($filters['limit']) ? " LIMIT " . $filters['start'] . "," . $filters['limit'] : "";
+		$sql .= ($filters['limit']) ? " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'] : "";
 
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
@@ -709,7 +709,7 @@ class SupportTicket extends JTable
 		$sql = "SELECT count(*) 
 				FROM $this->_tbl 
 				WHERE report!='' 
-				AND type='$type'";
+				AND type=" . $this->_db->Quote($type);
 		if (!$group) 
 		{
 			//$sql .= " AND (`group`='' OR `group` IS NULL)";
@@ -718,7 +718,7 @@ class SupportTicket extends JTable
 		{
 			$sql .= " AND `group`='$group'";
 		}
-		$sql .= " AND created BETWEEN '" . $year . "-" . $month . "-" . $day . " 00:00:00' AND '" . $endyear . "-" . $month . "-" . $day . " 00:00:00'";
+		$sql .= " AND created BETWEEN '" . $this->_db->getEscaped($year) . "-" . $this->_db->getEscaped($month) . "-" . $this->_db->getEscaped($day) . " 00:00:00' AND '" . $this->_db->getEscaped($endyear) . "-" . $this->_db->getEscaped($month) . "-" . $this->_db->getEscaped($day) . " 00:00:00'";
 
 		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
@@ -746,14 +746,14 @@ class SupportTicket extends JTable
 				AND f.type='$type' 
 				AND f.open=0 
 				AND k.ticket=f.id 
-				AND k.created BETWEEN '" . $year . "-" . $month . "-" . $day . " 00:00:00' AND '" . $endyear . "-" . $month . "-" . $day . " 00:00:00'";
+				AND k.created BETWEEN '" . $this->_db->getEscaped($year) . "-" . $this->_db->getEscaped($month) . "-" . $this->_db->getEscaped($day) . " 00:00:00' AND '" . $this->_db->getEscaped($endyear) . "-" . $this->_db->getEscaped($month) . "-" . $this->_db->getEscaped($day) . " 00:00:00'";
 		if (!$group) 
 		{
 			//$sql .= " AND (f.`group`='' OR f.`group` IS NULL)";
 		} 
 		else 
 		{
-			$sql .= " AND f.`group`='$group'";
+			$sql .= " AND f.`group`=" . $this->_db->Quote($group);
 		}
 		if ($username) 
 		{
@@ -770,7 +770,7 @@ class SupportTicket extends JTable
 			}
 			else
 			{
-				$sql .= " AND f.owner='" . $username . "'";
+				$sql .= " AND f.owner=" . $this->_db->Quote($username);
 			}
 		}
 
@@ -791,7 +791,7 @@ class SupportTicket extends JTable
 		$sql = "SELECT count(*) 
 				FROM $this->_tbl 
 				WHERE report!='' 
-				AND type='$type' 
+				AND type=" . $this->_db->Quote($type) . " 
 				AND open=1";
 		if (!$group) 
 		{
@@ -799,7 +799,7 @@ class SupportTicket extends JTable
 		} 
 		else 
 		{
-			$sql .= " AND `group`='$group'";
+			$sql .= " AND `group`=" . $this->_db->Quote($group);
 		}
 		if ($unassigned) 
 		{
@@ -829,22 +829,22 @@ class SupportTicket extends JTable
 		$sql = "SELECT COUNT(DISTINCT k.ticket) 
 				FROM #__support_comments AS k, $this->_tbl AS f
 				WHERE f.report!='' 
-				AND f.type='$type' 
+				AND f.type=" . $this->_db->Quote($type) . " 
 				AND f.open=0 
 				AND k.ticket=f.id 
-				AND k.created>='" . $year . "-" . $month . "-01 00:00:00' 
-				AND k.created<'" . $nextyear . "-" . $nextmonth . "-01 00:00:00'";
+				AND k.created>='" . $this->_db->getEscaped($year) . "-" . $this->_db->getEscaped($month) . "-01 00:00:00' 
+				AND k.created<'" . $this->_db->getEscaped($nextyear) . "-" . $this->_db->getEscaped($nextmonth) . "-01 00:00:00'";
 		if (!$group) 
 		{
 			//$sql .= " AND (f.`group`='' OR f.`group` IS NULL)";
 		} 
 		else 
 		{
-			$sql .= " AND f.`group`='$group'";
+			$sql .= " AND f.`group`=" . $this->_db->Quote($group);
 		}
 		if ($username) 
 		{
-			$sql .= " AND k.created_by='" . $username . "'";
+			$sql .= " AND k.created_by=" . $this->_db->Quote($username);
 		}
 
 		$this->_db->setQuery($sql);
@@ -870,9 +870,9 @@ class SupportTicket extends JTable
 		$sql = "SELECT count(*) 
 				FROM $this->_tbl 
 				WHERE report!='' 
-				AND type=" . $type . " 
-				AND created>='" . $year . "-" . $month . "-01 00:00:00' 
-				AND created<'" . $nextyear . "-" . $nextmonth . "-01 00:00:00'";
+				AND type=" . $this->_db->Quote($type) . " 
+				AND created>='" . $this->_db->getEscaped($year) . "-" . $this->_db->getEscaped($month) . "-01 00:00:00' 
+				AND created<'" . $this->_db->getEscaped($nextyear) . "-" . $this->_db->getEscaped($nextmonth) . "-01 00:00:00'";
 		if (!$group) 
 		{
 			//$sql .= " AND (`group`='' OR `group` IS NULL)";
@@ -901,17 +901,17 @@ class SupportTicket extends JTable
 		$sql = "SELECT k.ticket, UNIX_TIMESTAMP(f.created) AS t_created, UNIX_TIMESTAMP(MAX(k.created)) AS c_created
 				FROM #__support_comments AS k, $this->_tbl AS f
 				WHERE f.report!='' 
-				AND f.type='$type' 
+				AND f.type=" . $this->_db->Quote($type) . " 
 				AND f.open=0  
 				AND k.ticket=f.id 
-				AND f.created>='" . $year . "-01-01 00:00:00'";
+				AND f.created>='" . $this->_db->getEscaped($year) . "-01-01 00:00:00'";
 		if (!$group) 
 		{
 			//$sql .= " AND (f.`group`='' OR f.`group` IS NULL)";
 		} 
 		else 
 		{
-			$sql .= " AND f.`group`='$group'";
+			$sql .= " AND f.`group`=" . $this->_db->Quote($group);
 		}
 		$sql .= " GROUP BY k.ticket";
 		$this->_db->setQuery($sql);

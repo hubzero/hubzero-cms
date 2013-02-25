@@ -60,14 +60,14 @@ $where = " AND (wp.group_cn='' OR wp.group_cn IS NULL) ";
 if ($this->sub)
 {
 	$parts = explode('/', $this->page->scope);
-	$where = " AND wp.group_cn='" . trim($parts[0]) . "' ";
+	$where = " AND wp.group_cn=" . $database->Quote(trim($parts[0])) . " ";
 }
 
 $query = "SELECT COUNT(*) 
 		FROM #__wiki_attachments AS wa 
 		INNER JOIN #__wiki_page AS wp 
 			ON wp.id=wa.pageid
-		WHERE wp.scope LIKE '{$this->page->scope}%' $where";
+		WHERE wp.scope LIKE '" . $database->getEscaped($this->page->scope) . "%' $where";
 
 $database->setQuery($query);
 $total = $database->loadResult();
@@ -76,7 +76,7 @@ $query = "SELECT wa.*, wp.scope, wp.pagename
 		FROM #__wiki_attachments AS wa 
 		INNER JOIN #__wiki_page AS wp 
 			ON wp.id=wa.pageid
-		WHERE wp.scope LIKE '{$this->page->scope}%'
+		WHERE wp.scope LIKE '" . $database->getEscaped($this->page->scope) . "%'
 			$where
 		ORDER BY $sort $dir";
 if ($limit && $limit != 'all')

@@ -144,7 +144,7 @@ class ResourcesLicense extends JTable
 
 		$oid = trim($oid);
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE name='$oid'");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE name=" . $this->_db->Quote($oid));
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			return $this->bind($result);
@@ -207,8 +207,8 @@ class ResourcesLicense extends JTable
 		}
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
-			$where[] = "(LOWER(c.title) LIKE '%" . strtolower($filters['search']) . "%' 
-				OR LOWER(c.`text`) LIKE '%" . strtolower($filters['search']) . "%')";
+			$where[] = "(LOWER(c.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 
+				OR LOWER(c.`text`) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
 		}
 		
 		if (count($where) > 0)
@@ -259,7 +259,7 @@ class ResourcesLicense extends JTable
 
 		if (isset($filters['limit']) && $filters['limit'] != 0) 
 		{
-			$query .= ' LIMIT ' . $filters['start'] . ',' . $filters['limit'];
+			$query .= ' LIMIT ' . (int) $filters['start'] . ',' . (int) $filters['limit'];
 		}
 
 		$this->_db->setQuery($query);
@@ -280,6 +280,7 @@ class ResourcesLicense extends JTable
 
 		if (!is_null($id)) 
 		{
+			$id = intval($id);
 			$where[] = "name NOT LIKE 'custom%' OR name = 'custom$id'";
 		}
 		else 
@@ -301,11 +302,15 @@ class ResourcesLicense extends JTable
 		{
 			$filters['sort_Dir'] = 'DESC';
 		}
+		if (!in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC')))
+		{
+			$filters['sort_Dir'] = 'DESC';
+		}
 		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
 
 		if (isset($filters['limit']) && $filters['limit'] != 0) 
 		{
-			$query .= ' LIMIT ' . $filters['start'] . ',' . $filters['limit'];
+			$query .= ' LIMIT ' . (int) $filters['start'] . ',' . (int) $filters['limit'];
 		}
 
 		$this->_db->setQuery($query);

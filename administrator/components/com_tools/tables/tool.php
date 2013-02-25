@@ -150,7 +150,7 @@ class Tool extends JTable
 			return false;
 		}
 
-		$query = "SELECT * FROM $this->_tbl as t WHERE t.toolname= '" . $toolname . "' LIMIT 1";
+		$query = "SELECT * FROM $this->_tbl as t WHERE t.toolname=" . $this->_db->Quote($toolname) . " LIMIT 1";
 
 		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc()) 
@@ -182,7 +182,7 @@ class Tool extends JTable
 
 		switch ($filters['filterby'])
 		{
-			case 'mine':      $filter .= " AND f.registered_by='" . $juser->get('username') . "' "; break;
+			case 'mine':      $filter .= " AND f.registered_by=" . $this->_db->Quote($juser->get('username')) . " "; break;
 			case 'published': $filter .= " AND f.published='1' AND f.state!='9' ";                  break;
 			case 'dev':       $filter .= " AND f.published='0' AND f.state!='9' AND f.state!='8' "; break;
 			case 'all':       $filter .= " ";                                                       break;
@@ -192,16 +192,16 @@ class Tool extends JTable
 			$search = $filters['search'];
 			if (intval($search)) 
 			{
-				$filter .= " AND f.id='%$search%' ";
+				$filter .= " AND f.id='%" . $this->_db->getEscaped($search) . "%' ";
 			}
 			else 
 			{
-				$filter .= " AND LOWER(f.toolname) LIKE '%$search%' ";
+				$filter .= " AND LOWER(f.toolname) LIKE '%" . $this->_db->getEscaped($search) . "%' ";
 			}
 		}
 		if (!$admin) 
 		{
-			$filter .= " AND m.uidNumber='" . $juser->get('id') . "' ";
+			$filter .= " AND m.uidNumber=" . $this->_db->Quote($juser->get('id')) . " ";
 			$sortby = ($filters['sortby']) ? $filters['sortby'] : 'f.state, f.registered';
 		}
 		else 
@@ -218,7 +218,7 @@ class Tool extends JTable
 			$query .= "JOIN #__xgroups_members AS m ON xg.gidNumber=m.gidNumber ";
 		}
 		$query .= "$filter"
-				. "\n ORDER BY $sortby";
+				. " ORDER BY $sortby";
 
 		return $query;
 	}
@@ -278,7 +278,7 @@ class Tool extends JTable
 				. " FROM " . $this->buildQuery($filters, $admin);
 		if (isset($filters['start']) && isset($filters['limit'])) 
 		{
-			$sql .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+			$sql .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 		}
 
 		$this->_db->setQuery($sql);
@@ -312,7 +312,7 @@ class Tool extends JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery('SELECT ticketid FROM #__tool WHERE id="' . $toolid . '"');
+		$this->_db->setQuery("SELECT ticketid FROM #__tool WHERE id=" . $this->_db->Quote($toolid));
 		return $this->_db->loadResult();
 	}
 
@@ -330,7 +330,7 @@ class Tool extends JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery('SELECT r.id FROM #__tool as t LEFT JOIN #__resources as r ON r.alias = t.toolname WHERE t.id="' . $toolid . '"');
+		$this->_db->setQuery("SELECT r.id FROM #__tool as t LEFT JOIN #__resources as r ON r.alias = t.toolname WHERE t.id=" . $this->_db->Quote($toolid));
 		return $this->_db->loadResult();
 	}
 
@@ -350,7 +350,7 @@ class Tool extends JTable
 			return false;
 		}
 
-		$query = "SELECT v.instance FROM #__tool_version as v JOIN #__resources as r ON r.alias = v.toolname WHERE r.id='" . $rid . "'";
+		$query = "SELECT v.instance FROM #__tool_version as v JOIN #__resources as r ON r.alias = v.toolname WHERE r.id=" . $this->_db->Quote($rid);
 		if ($version=='dev') 
 		{
 			$query.= " AND v.state=3 LIMIT 1";
@@ -361,7 +361,7 @@ class Tool extends JTable
 		}
 		else 
 		{
-			$query.= " AND v.version='" . $version . "' LIMIT 1";
+			$query.= " AND v.version=" . $this->_db->Quote($version) . " LIMIT 1";
 		}
 
 		$this->_db->setQuery($query);
@@ -382,7 +382,7 @@ class Tool extends JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery('SELECT t.id FROM #__tool as t JOIN #__resources as r ON r.alias = t.toolname WHERE r.id="' . $rid . '" LIMIT 1');
+		$this->_db->setQuery("SELECT t.id FROM #__tool as t JOIN #__resources as r ON r.alias = t.toolname WHERE r.id=" . $this->_db->Quote($rid) . " LIMIT 1");
 		return $this->_db->loadResult();
 	}
 
@@ -400,7 +400,7 @@ class Tool extends JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery('SELECT t.toolname FROM #__tool as t JOIN #__resources as r ON r.alias = t.toolname WHERE r.id="' . $rid . '" LIMIT 1');
+		$this->_db->setQuery("SELECT t.toolname FROM #__tool as t JOIN #__resources as r ON r.alias = t.toolname WHERE r.id=" . $this->_db->Quote($rid) . " LIMIT 1");
 		return $this->_db->loadResult();
 	}
 
@@ -418,7 +418,7 @@ class Tool extends JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery('SELECT id FROM #__tool WHERE toolname="' . $toolname . '" LIMIT 1');
+		$this->_db->setQuery("SELECT id FROM #__tool WHERE toolname=" . $this->_db->Quote($toolname) . " LIMIT 1");
 		return $this->_db->loadResult();
 	}
 
@@ -437,7 +437,7 @@ class Tool extends JTable
 		{
 			return false;
 		}
-		$query = "UPDATE #__tool SET ticketid='" . $ticketid . "' WHERE id=" . $toolid;
+		$query = "UPDATE #__tool SET ticketid=" . $this->_db->Quote($ticketid) . " WHERE id=" . $this->_db->Quote($toolid);
 		$this->_db->setQuery($query);
 		if ($this->_db->query()) 
 		{
@@ -470,7 +470,7 @@ class Tool extends JTable
 			$query = "UPDATE #__tool SET ";
 			if ($newstate) 
 			{
-				$query.= "state='" . $newstate . "', state_changed='" . date('Y-m-d H:i:s', time()) . "'";
+				$query.= "state=" . $this->_db->Quote($newstate) . ", state_changed='" . date('Y-m-d H:i:s', time()) . "'";
 			}
 			if ($newstate && $priority) 
 			{
@@ -478,9 +478,9 @@ class Tool extends JTable
 			}
 			if ($priority) 
 			{
-				$query.= "priority='" . $priority . "'";
+				$query.= "priority=" . $this->_db->Quote($priority);
 			}
-			$query.= " WHERE id=" . $toolid;
+			$query.= " WHERE id=" . $this->_db->Quote($toolid);
 			$this->_db->setQuery($query);
 			if (!$this->_db->query()) 
 			{
@@ -516,11 +516,11 @@ class Tool extends JTable
 		$query .= "JOIN #__xgroups AS xg ON g.cn=xg.cn ";
 		if ($toolid) 
 		{
-			$query .= "WHERE t.id = '".$toolid."'";
+			$query .= "WHERE t.id = " . $this->_db->Quote($toolid);
 		}
 		else if ($toolname) 
 		{
-			$query .= "WHERE t.toolname = '".$toolname."'";
+			$query .= "WHERE t.toolname = " . $this->_db->Quote($toolname);
 		}
 
 		$this->_db->setQuery($query);
@@ -539,7 +539,7 @@ class Tool extends JTable
 	{
 		$query  = "SELECT g.cn FROM #__tool_groups AS g ";
 		$query .= "JOIN #__xgroups AS xg ON g.cn=xg.cn ";
-		$query .= "WHERE g.toolid = '" . $toolid . "' AND g.role=1 LIMIT 1";
+		$query .= "WHERE g.toolid = " . $this->_db->Quote($toolid) . " AND g.role=1 LIMIT 1";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -558,7 +558,7 @@ class Tool extends JTable
 		$query  = "SELECT m.uidNumber FROM #__tool_groups AS g ";
 		$query .= "JOIN #__xgroups AS xg ON g.cn=xg.cn ";
 		$query .= "JOIN #__xgroups_members AS m ON xg.gidNumber=m.gidNumber ";
-		$query .= "WHERE g.toolid = '" . $toolid . "' AND g.role=1 ";
+		$query .= "WHERE g.toolid = " . $this->_db->Quote($toolid) . " AND g.role=1 ";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
@@ -577,7 +577,7 @@ class Tool extends JTable
 	{
 		$query  = "SELECT DISTINCT g.cn FROM #__tool_groups AS g "; // @FIXME cn should be unique, this was a workaround for a nanohub data bug
 		$query .= "JOIN #__xgroups AS xg ON g.cn=xg.cn ";
-		$query .= "WHERE g.toolid = '" . $toolid . "' AND g.role=0 ";
+		$query .= "WHERE g.toolid = " . $this->_db->Quote($toolid) . " AND g.role=0 ";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
