@@ -503,7 +503,6 @@ class GroupsControllerManage extends Hubzero_Controller
 				$log  = JText::_('COM_GROUPS_SUBJECT_GROUP_DELETED');
 				$log .= JText::_('COM_GROUPS_TITLE') . ': ' . $group->get('description') . "\n";
 				$log .= JText::_('COM_GROUPS_ID') . ': ' . $group->get('cn') . "\n";
-				$log .= JText::_('COM_GROUPS_PRIVACY') . ': ' . $group->get('access') . "\n";
 				$log .= JText::_('COM_GROUPS_PUBLIC_TEXT') . ': ' . stripslashes($group->get('public_desc')) . "\n";
 				$log .= JText::_('COM_GROUPS_PRIVATE_TEXT') . ': ' . stripslashes($group->get('private_desc')) . "\n";
 				$log .= JText::_('COM_GROUPS_RESTRICTED_MESSAGE') . ': ' . stripslashes($group->get('restrict_msg')) . "\n";
