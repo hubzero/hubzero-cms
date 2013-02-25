@@ -118,7 +118,7 @@ class JobCategory extends JTable
 			return $default;
 		}
 
-		$query  = "SELECT category FROM $this->_tbl WHERE id='" . $id . "'";
+		$query  = "SELECT category FROM $this->_tbl WHERE id=" . $this->_db->Quote($id);
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
@@ -137,7 +137,7 @@ class JobCategory extends JTable
 			 return false;
 		}
 
-		$query  = "UPDATE $this->_tbl SET ordernum=$ordernum WHERE id=" . $id;
+		$query  = "UPDATE $this->_tbl SET ordernum=" . $this->_db->Quote($ordernum) . " WHERE id=" . $this->_db->Quote($id);
 		$this->_db->setQuery($query);
 		if (!$this->_db->query()) 
 		{

@@ -115,8 +115,8 @@ class Employer extends JTable
 		if (!$admin) 
 		{
 			$query .= "JOIN #__users_points_subscriptions AS s ON s.id=e.subscriptionid AND s.uid=e.uid ";
-			$query .= "WHERE e.uid = '" . $uid . "' AND s.status=1";
-			$query .= " AND s.expires > '" . $now . "' ";
+			$query .= "WHERE e.uid = " . $this->_db->Quote($uid) . " AND s.status=1";
+			$query .= " AND s.expires > " . $this->_db->Quote($now) . " ";
 		} 
 		else 
 		{
@@ -143,7 +143,7 @@ class Employer extends JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE uid='$uid'");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE uid=" . $this->_db->Quote($uid));
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			return $this->bind($result);
@@ -173,11 +173,11 @@ class Employer extends JTable
 		else if ($subscriptioncode) 
 		{
 			$query .= "JOIN #__users_points_subscriptions AS s ON s.id=e.subscriptionid AND s.uid=e.uid ";
-			$query .= "WHERE s.code='$subscriptioncode'";
+			$query .= "WHERE s.code=" . $this->_db->Quote($subscriptioncode);
 		} 
 		else if ($uid) 
 		{
-			$query .= "WHERE e.uid = '" . $uid . "'";
+			$query .= "WHERE e.uid = " . $this->_db->Quote($uid);
 		}
 		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();

@@ -134,7 +134,7 @@ class Resume extends JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE $this->_tbl_key='$name' AND main='1' LIMIT 1");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE $this->_tbl_key=" . $this->_db->Quote($name) . " AND main='1' LIMIT 1");
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			return $this->bind($result);
@@ -159,7 +159,7 @@ class Resume extends JTable
 			return false;
 		}
 
-		$query  = "DELETE FROM $this->_tbl WHERE id=" . $id;
+		$query  = "DELETE FROM $this->_tbl WHERE id=" . $this->_db->Quote($id);
 		$this->_db->setQuery($query);
 		if (!$this->_db->query()) 
 		{
@@ -181,9 +181,9 @@ class Resume extends JTable
 	{
 		$query  = "SELECT DISTINCT r.uid, r.filename FROM $this->_tbl AS r ";
 		$query .= "JOIN #__jobs_seekers AS s ON s.uid=r.uid ";
-		$query .= 	($pile == 'shortlisted' && $uid)  ? " JOIN #__jobs_shortlist AS W ON W.seeker=s.uid AND W.emp=" . $uid . " AND s.uid != '" . $uid . "' AND s.uid=r.uid AND W.category='resume' " : "";
+		$query .= 	($pile == 'shortlisted' && $uid)  ? " JOIN #__jobs_shortlist AS W ON W.seeker=s.uid AND W.emp=" . $this->_db->Quote($uid) . " AND s.uid != '" . $this->_db->Quote($uid) . "' AND s.uid=r.uid AND W.category='resume' " : "";
 		$uid = $admin ? 1 : $uid;
-		$query .= 	($pile == 'applied' && $uid)  ? " LEFT JOIN #__jobs_openings AS J ON J.employerid='$uid' JOIN #__jobs_applications AS A ON A.jid=J.id AND A.uid=s.uid AND A.status=1 " : "";
+		$query .= 	($pile == 'applied' && $uid)  ? " LEFT JOIN #__jobs_openings AS J ON J.employerid=" . $this->_db->Quote($uid) . " JOIN #__jobs_applications AS A ON A.jid=J.id AND A.uid=s.uid AND A.status=1 " : "";
 		$query .= "WHERE s.active=1 AND r.main=1 ";
 
 		$files = array();

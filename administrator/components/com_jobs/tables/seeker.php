@@ -156,7 +156,7 @@ class JobSeeker extends JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE $this->_tbl_key='$name' LIMIT 1");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE $this->_tbl_key=" . $this->_db->Quote($name) . " LIMIT 1");
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			return $this->bind($result);
@@ -177,7 +177,7 @@ class JobSeeker extends JTable
 			return 0;
 		}
 
-		$this->_db->setQuery("SELECT COUNT(*) FROM #__jobs_shortlist AS W WHERE W.seeker=" . $uid . "");
+		$this->_db->setQuery("SELECT COUNT(*) FROM #__jobs_shortlist AS W WHERE W.seeker=" . $this->_db->Quote($uid));
 		return $this->_db->loadResult();
 	}
 
@@ -227,9 +227,9 @@ class JobSeeker extends JTable
 		if ($uid && !$count) 
 		{
 			// shortlisted users
-			$query.= "\n , (SELECT count(*) FROM #__jobs_shortlist AS W WHERE W.seeker=s.uid AND W.emp=" . $uid . " AND s.uid != '" . $uid . "' AND s.uid=r.uid AND W.category='resume') AS shortlisted ";
+			$query.= "\n , (SELECT count(*) FROM #__jobs_shortlist AS W WHERE W.seeker=s.uid AND W.emp=" . $this->_db->Quote($uid) . " AND s.uid != " . $this->_db->Quote($uid) . " AND s.uid=r.uid AND W.category='resume') AS shortlisted ";
 			// is this my profile?
-			$query.= "\n , (SELECT count(*) FROM #__jobs_seekers AS s WHERE s.uid='" . $uid . "' AND s.uid=r.uid) AS mine ";
+			$query.= "\n , (SELECT count(*) FROM #__jobs_seekers AS s WHERE s.uid=" . $this->_db->Quote($uid) . " AND s.uid=r.uid) AS mine ";
 		}
 
 		// determine relevance to search keywords
@@ -251,7 +251,7 @@ class JobSeeker extends JTable
 				for ($i=0, $n=count($s); $i < $n; $i++)
 				{
 					$query .= "\n , (SELECT count(*) FROM #__jobs_seekers AS s WHERE s.uid=r.uid ";
-					$query .= "AND  LOWER(s.tagline) LIKE '%$s[$i]%') AS keyword$i ";
+					$query .= "AND  LOWER(s.tagline) LIKE '%" . $this->_db->getEscaped($s[$i]) . "%') AS keyword$i ";
 					$kw .= $i == ($n-1) ? 'keyword' . $i . ' + 2' : 'keyword' . $i . ' + ';
 				}
 
@@ -271,7 +271,7 @@ class JobSeeker extends JTable
 		$catquery = 'AND 1=2';
 		if ($filters['category']) 
 		{
-			$catquery = 'AND (s.sought_cid = ' . $filters['category'] . ' OR  s.sought_cid = 0) ';
+			$catquery = "AND (s.sought_cid = " . $this->_db->Quote($filters['category']) . " OR  s.sought_cid = 0) ";
 		}
 
 		$query.= "\n , (SELECT count(*) FROM #__jobs_seekers AS s WHERE s.uid=r.uid " . $catquery . ") AS category ";
@@ -280,7 +280,7 @@ class JobSeeker extends JTable
 		$typequery = 'AND 1=2';
 		if ($filters['type']) 
 		{
-			$typequery = 'AND (s.sought_type = ' . $filters['type'] . ' OR  s.sought_type = 0) ';
+			$typequery = "AND (s.sought_type = " . $this->_db->Quote($filters['type']) . " OR  s.sought_type = 0) ";
 		}
 
 		$query.= "\n , (SELECT count(*) FROM #__jobs_seekers AS s WHERE s.uid=r.uid " . $typequery . ") AS type ";
@@ -292,10 +292,10 @@ class JobSeeker extends JTable
 		$query .= "FROM #__xprofiles AS x JOIN #__jobs_seekers AS s ON s.uid=x.uidNumber JOIN #__jobs_resumes AS r ON r.uid=s.uid  ";
 
 		// Get shortlisted only
-		$query .= 	$filters['filterby'] == 'shortlisted' ? " JOIN #__jobs_shortlist AS W ON W.seeker=s.uid AND W.emp=" . $uid . " AND s.uid != '" . $uid . "' AND s.uid=r.uid AND W.category='resume' " : "";
+		$query .= 	$filters['filterby'] == 'shortlisted' ? " JOIN #__jobs_shortlist AS W ON W.seeker=s.uid AND W.emp=" . $this->_db->Quote($uid) . " AND s.uid != " . $this->_db->Quote($uid) . " AND s.uid=r.uid AND W.category='resume' " : "";
 
 		// Get applied only
-		$query .= 	$filters['filterby'] == 'applied' ? " JOIN #__jobs_openings AS J ON J.employerid='$empid' JOIN #__jobs_applications AS A ON A.jid=J.id AND A.uid=s.uid AND A.status=1  " : "";
+		$query .= 	$filters['filterby'] == 'applied' ? " JOIN #__jobs_openings AS J ON J.employerid=" . $this->_db->Quote($empid) . " JOIN #__jobs_applications AS A ON A.jid=J.id AND A.uid=s.uid AND A.status=1  " : "";
 		$query .= "WHERE s.active=1 AND r.main=1 ";
 
 		// Ordering
@@ -359,12 +359,12 @@ class JobSeeker extends JTable
 		$query .= "s.uid, s.lookingfor, s.tagline, s.sought_cid, s.sought_type, s.updated, s.linkedin, s.url ";
 		if ($eid) 
 		{
-			$query.= "\n , (SELECT count(*) FROM #__jobs_shortlist AS W WHERE W.seeker=s.uid AND W.emp=" . $eid . " AND s.uid=r.uid AND s.uid='"  .$uid . "' AND s.uid != '" . $eid . "' AND W.category='resume') AS shortlisted ";
+			$query.= "\n , (SELECT count(*) FROM #__jobs_shortlist AS W WHERE W.seeker=s.uid AND W.emp=" . $this->_db->Quote($eid) . " AND s.uid=r.uid AND s.uid="  . $this->_db->Quote($uid) . " AND s.uid != " . $this->_db->Quote($eid) . " AND W.category='resume') AS shortlisted ";
 		}
-		$query .= "\n , (SELECT count(*) FROM #__jobs_seekers AS s WHERE s.uid='" . $uid . "' AND s.uid=r.uid AND s.uid = '" . $juser->get('id') . "') AS mine ";
+		$query .= "\n , (SELECT count(*) FROM #__jobs_seekers AS s WHERE s.uid=" . $this->_db->Quote($uid) . " AND s.uid=r.uid AND s.uid = " . $this->_db->Quote($juser->get('id')) . ") AS mine ";
 		$query .= "FROM #__xprofiles AS x JOIN #__jobs_seekers AS s ON s.uid=x.uidNumber JOIN #__jobs_resumes AS r ON r.uid=s.uid  ";
 
-		$query .= "WHERE s.active=1 AND r.main=1 AND s.uid='" . $uid . "' LIMIT 1";
+		$query .= "WHERE s.active=1 AND r.main=1 AND s.uid=" . $this->_db->Quote($uid) . " LIMIT 1";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();

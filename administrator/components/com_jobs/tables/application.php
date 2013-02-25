@@ -125,7 +125,7 @@ class JobApplication extends JTable
 
 		$sql  = "SELECT a.* FROM  #__jobs_applications AS a ";
 		$sql .= "JOIN #__jobs_seekers as s ON s.uid=a.uid";
-		$sql .= "\n WHERE  a.jid='$jobid' AND s.active=1 ";
+		$sql .= " WHERE  a.jid=" . $this->_db->Quote($jobid) . " AND s.active=1 ";
 		$sql .= " ORDER BY a.applied DESC";
 
 		$this->_db->setQuery($sql);
@@ -149,8 +149,8 @@ class JobApplication extends JTable
 
 		$query  = "SELECT A.* FROM $this->_tbl as A ";
 		$query .= $jid ? "" : " JOIN #__jobs_openings as J ON J.id=A.jid ";
-		$query .= " WHERE A.uid='$uid' ";
-		$query .=  $jid ? "AND A.jid='$jid' " : "AND J.code='$jobcode' ";
+		$query .= " WHERE A.uid=" . $this->_db->Quote($uid) . " ";
+		$query .=  $jid ? "AND A.jid=" . $this->_db->Quote($jid) . " " : "AND J.code=" . $this->_db->Quote($jobcode) . " ";
 		$query .= " LIMIT 1";
 		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc()) 

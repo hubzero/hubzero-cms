@@ -261,12 +261,12 @@ class Job extends JTable
 		}
 
 		$sql  = "SELECT j.id, j.title, j.status, j.added, j.code, ";
-		$sql .= $current ? "(SELECT j.id FROM  $this->_tbl AS j WHERE j.id=$current) as current, " : "0 as current, ";
+		$sql .= $current ? "(SELECT j.id FROM $this->_tbl AS j WHERE j.id=" . $this->_db->Quote($current) . ") as current, " : "0 as current, ";
 		$sql .= "(SELECT count(*) FROM  #__jobs_applications AS a WHERE a.jid=j.id AND a.status=1) as applications ";
-		$sql .= "\n FROM $this->_tbl AS j ";
-		$sql .= "\n WHERE  j.status!=2 ";
-		$sql .= $active ? "\n AND  j.status!=3 " : "";
-		$sql .= $admin ? "\n AND j.employerid=1 " : "\n AND j.employerid='$uid' ";
+		$sql .= " FROM $this->_tbl AS j ";
+		$sql .= " WHERE  j.status!=2 ";
+		$sql .= $active ? " AND  j.status!=3 " : "";
+		$sql .= $admin ? " AND j.employerid=1 " : " AND j.employerid=" . $this->_db->Quote($uid) . " ";
 		$sql .= " ORDER BY j.status ASC";
 
 		$this->_db->setQuery($sql);
@@ -294,13 +294,13 @@ class Job extends JTable
 		$sql  = "SELECT count(*) FROM $this->_tbl AS j ";
 		if ($onlypublished) 
 		{
-			$sql .= "\n WHERE  j.status=1 ";
+			$sql .= " WHERE  j.status=1 ";
 		} 
 		else 
 		{
-			$sql .= "\n WHERE  j.status!=2 AND  j.status!=3 ";
+			$sql .= " WHERE  j.status!=2 AND  j.status!=3 ";
 		}
-		$sql .= $admin ? "\n AND j.employerid=1 " : "\n AND j.employerid='$uid' ";
+		$sql .= $admin ? " AND j.employerid=1 " : " AND j.employerid=" . $this->_db->Quote($uid) . " ";
 
 		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
@@ -364,7 +364,7 @@ class Job extends JTable
 			$sql .= $admin ? "s.expires  AS inactive,  " : ' NULL AS inactive, ';
 			if ($uid) 
 			{
-				$sql.= "\n (SELECT count(*) FROM #__jobs_admins AS B WHERE B.jid=j.id AND B.uid=" . $uid . ") AS manager,";
+				$sql.= "\n (SELECT count(*) FROM #__jobs_admins AS B WHERE B.jid=j.id AND B.uid=" . $this->_db->Quote($uid) . ") AS manager,";
 			} 
 			else 
 			{
@@ -374,8 +374,8 @@ class Job extends JTable
 			if (!$juser->get('guest')) 
 			{
 				$myid = $juser->get('id');
-				$sql .= "\n (SELECT a.applied FROM #__jobs_applications AS a WHERE a.jid=j.id AND a.uid='$myid' AND a.status=1) AS applied,";
-				$sql .= "\n (SELECT a.withdrawn FROM #__jobs_applications AS a WHERE a.jid=j.id AND a.uid='$myid' AND a.status=2) AS withdrawn,";
+				$sql .= "\n (SELECT a.applied FROM #__jobs_applications AS a WHERE a.jid=j.id AND a.uid=" . $this->_db->Quote($myid) . " AND a.status=1) AS applied,";
+				$sql .= "\n (SELECT a.withdrawn FROM #__jobs_applications AS a WHERE a.jid=j.id AND a.uid=" . $this->_db->Quote($myid) . " AND a.status=2) AS withdrawn,";
 			} 
 			else 
 			{
@@ -402,9 +402,9 @@ class Job extends JTable
 					for ($i=0, $n=count($s); $i < $n; $i++)
 					{
 						$sql .= "\n , (SELECT count(*) FROM $this->_tbl AS o WHERE o.id=j.id ";
-						$sql .= "AND  LOWER(o.title) LIKE '%$s[$i]%') AS keyword$i ";
+						$sql .= "AND  LOWER(o.title) LIKE '%" . $this->_db->getEscaped($s[$i]) . "%') AS keyword$i ";
 						$sql .= "\n , (SELECT count(*) FROM $this->_tbl AS o WHERE o.id=j.id ";
-						$sql .= "AND  LOWER(o.description) LIKE '%$s[$i]%') AS bodykeyword$i ";
+						$sql .= "AND  LOWER(o.description) LIKE '%" . $this->_db->getEscaped($s[$i]) . "%') AS bodykeyword$i ";
 						$kw .= '+ keyword' . $i . ' * 2 ';
 						$kw .= '+ bodykeyword' . $i;
 					}
@@ -430,18 +430,18 @@ class Job extends JTable
 		$sql .= "LEFT JOIN #__users_points_subscriptions AS s ON s.id=e.subscriptionid AND s.uid=e.uid ";
 		$sql .= " WHERE ";
 		// only show active ads
-		$sql .= $admin ? "\n  j.status!=2" : "\n  j.status=1 AND s.status=1 AND s.expires > '" . $now . "' ";
+		$sql .= $admin ? "\n  j.status!=2" : "\n  j.status=1 AND s.status=1 AND s.expires > " . $this->_db->Quote($now) . " ";
 
 		if ($category!='all') {
-			$sql .= "\n AND j.cid='" . $category . "'";
+			$sql .= "\n AND j.cid=" . $this->_db->Quote($category);
 		}
 		if ($subscription) 
 		{
-			$sql .= "\n AND s.code='" . $subscription . "'";
+			$sql .= "\n AND s.code=" . $this->_db->Quote($subscription);
 		}
 		if ($active) 
 		{
-			$sql .= "\n AND (j.closedate ='0000-00-00 00:00:00' OR j.closedate IS NULL OR j.closedate > '" . $now . "') ";
+			$sql .= "\n AND (j.closedate ='0000-00-00 00:00:00' OR j.closedate IS NULL OR j.closedate > " . $this->_db->Quote($now) . ") ";
 		}
 		
 		if (!$count)
@@ -471,7 +471,7 @@ class Job extends JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE code='$code' LIMIT 1");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE code=" . $this->_db->Quote($code) . " LIMIT 1");
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			return $this->bind($result);
@@ -496,7 +496,7 @@ class Job extends JTable
 			return false;
 		}
 
-		$query  = "UPDATE $this->_tbl SET status='2' WHERE id=" . $jid;
+		$query  = "UPDATE $this->_tbl SET status='2' WHERE id=" . $this->_db->Quote($jid);
 		$this->_db->setQuery($query);
 		if (!$this->_db->query()) 
 		{
@@ -531,8 +531,8 @@ class Job extends JTable
 		$sql .= "\n (SELECT count(*) FROM #__jobs_applications AS a WHERE a.jid=j.id) AS applications,";
 		if (!$juser->get('guest')) 
 		{
-			$sql .= "\n (SELECT a.applied FROM #__jobs_applications AS a WHERE a.jid=j.id AND a.uid='$myid' AND a.status=1) AS applied,";
-			$sql .= "\n (SELECT a.withdrawn FROM #__jobs_applications AS a WHERE a.jid=j.id AND a.uid='$myid' AND a.status=2) AS withdrawn,";
+			$sql .= "\n (SELECT a.applied FROM #__jobs_applications AS a WHERE a.jid=j.id AND a.uid=" . $this->_db->Quote($myid) . " AND a.status=1) AS applied,";
+			$sql .= "\n (SELECT a.withdrawn FROM #__jobs_applications AS a WHERE a.jid=j.id AND a.uid=" . $this->_db->Quote($myid) . " AND a.status=2) AS withdrawn,";
 		} 
 		else 
 		{
@@ -543,7 +543,7 @@ class Job extends JTable
 		$sql .= "\n FROM $this->_tbl AS j";
 		$sql .= $admin ? "\n LEFT JOIN #__jobs_employers AS e ON e.uid=j.employerid " : "\n JOIN #__jobs_employers AS e ON e.uid=j.employerid ";
 		$sql .= "LEFT JOIN #__users_points_subscriptions AS s ON s.id=e.subscriptionid AND s.uid=e.uid ";
-		$sql .= "AND s.status=1 AND s.expires > '" . $now . "' WHERE ";
+		$sql .= "AND s.status=1 AND s.expires > " . $this->_db->Quote($now) . " WHERE ";
 
 		if ($admin) 
 		{
@@ -551,7 +551,7 @@ class Job extends JTable
 		} 
 		else if ($uid) 
 		{
-			$sql .= "\n  (j.status=1 OR (j.status != 1 AND j.status!=2 AND j.employerid = '$uid')) ";
+			$sql .= "\n  (j.status=1 OR (j.status != 1 AND j.status!=2 AND j.employerid = " . $this->_db->Quote($uid) . ")) ";
 		} 
 		else 
 		{
@@ -559,11 +559,11 @@ class Job extends JTable
 		}
 		if ($jid) 
 		{
-			$sql .= "\n AND j.id='$jid'";
+			$sql .= "\n AND j.id=" . $this->_db->Quote($jid);
 		} 
 		else if ($jobcode) 
 		{
-			$sql .= "\n AND j.code='$jobcode'";
+			$sql .= "\n AND j.code=" . $this->_db->Quote($jobcode);
 		}
 
 		$this->_db->setQuery($sql);
