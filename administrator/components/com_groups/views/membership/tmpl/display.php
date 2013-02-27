@@ -102,6 +102,7 @@ function submitbutton(pressbutton)
 		<label for="filter-status"><?php echo JText::_('Status'); ?>:</label> 
 		<select name="status" id="filter-status">
 			<option value=""<?php echo ($this->filters['status'] == '') ? ' selected="selected"' : ''; ?>><?php echo JText::_('User status...'); ?></option>
+			<option value="member"<?php echo ($this->filters['status'] == 'member') ? ' selected="selected"' : ''; ?>>Member</option>
 			<option value="manager"<?php echo ($this->filters['status'] == 'manager') ? ' selected="selected"' : ''; ?>>Manager</option>
 			<option value="applicant"<?php echo ($this->filters['status'] == 'applicant') ? ' selected="selected"' : ''; ?>>Applicant</option>
 			<option value="invitee"<?php echo ($this->filters['status'] == 'invitee') ? ' selected="selected"' : ''; ?>>Invitee</option>
@@ -134,9 +135,10 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $k = 0;
-for ($i=0, $n=count($this->rows); $i < $n; $i++)
+$i = 0;
+foreach ($this->rows as $row)
 {
-	$row = &$this->rows[$i];
+	//$row = &$this->rows[$i];
 
 	$reason = new GroupsReason($database);
 	$reason->loadReason($row->username, $this->filters['gidNumber']);
@@ -146,7 +148,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		$reasonforjoin = '';
 	}
 	
-	$status = 'member';
+	/*$status = 'member';
 	if ($row->applicant)
 	{
 		$status = 'applicant';
@@ -158,7 +160,8 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	if ($row->manager)
 	{
 		$status = 'manager';
-	}
+	}*/
+	$status = $row->role;
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
@@ -264,6 +267,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 			</tr>
 <?php
 	$k = 1 - $k;
+	$i++;
 }
 ?>
 		</tbody>

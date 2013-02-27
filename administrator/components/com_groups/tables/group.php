@@ -194,58 +194,58 @@ class GroupsGroup extends JTable
 	 */
 	private function _buildMembersQuery($filters=array())
 	{
-		$query = " FROM #__xgroups_members AS m 
-				LEFT JOIN #__users AS u ON u.id=m.uidNumber
-				LEFT JOIN #__xgroups_managers AS mg on mg.uidNumber=m.uidNumber AND mg.gidNumber=m.gidNumber
-				LEFT JOIN #__xgroups_applicants AS ma on ma.uidNumber=m.uidNumber AND ma.gidNumber=m.gidNumber
-				LEFT JOIN #__xgroups_invitees AS mi on mi.uidNumber=m.uidNumber AND mi.gidNumber=m.gidNumber";
+		$query = "FROM (
+			(" . $this->_groupTable('invitee', 'i', $filters) . ") UNION
+			(" . $this->_groupTable('applicant', 'a', $filters) . ") UNION
+			(" . $this->_groupTable('member', 'm', $filters) . ") UNION
+			(" . $this->_groupTable('manager', 'n', $filters) . ")
+		) AS v";
 
 		$where = array();
-		if (isset($filters['gidNumber']))
-		{
-			$where[] = "m.`gidNumber`=" . $this->_db->Quote(intval($filters['gidNumber']));
-		}
-		if (isset($filters['uidNumber']))
-		{
-			$where[] = "m.`uidNumber`=" . $this->_db->Quote(intval($filters['uidNumber']));
-		}
-		if (isset($filters['status']))
-		{
-			switch ($filters['status'])
-			{
-				case 'manager':
-					$where[] = "mg.`uidNumber` > 0";
-				break;
 
-				case 'applicant':
-					$where[] = "ma.`uidNumber` > 0";
-				break;
-
-				case 'invitee':
-					$where[] = "mi.`uidNumber` > 0";
-				break;
-
-				default:
-				break;
-			}
+		if (isset($filters['status']) && $filters['status'])
+		{
+			$where[] = "v.`role`=" . $this->_db->Quote($filters['status']);
 		}
+
 		if (isset($filters['search']) && $filters['search'])
 		{
 			if (is_numeric($filters['search']))
 			{
-				$where[] = "m.`uidNumber`=" . $this->_db->Quote(intval($filters['search']));
+				$where[] = "v.`uidNumber`=" . $this->_db->Quote(intval($filters['search']));
 			}
 			else
 			{
-				$where[] = "(LOWER(u.name) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 
-						OR LOWER(u.username) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
-						OR LOWER(u.email) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
+				$where[] = "(LOWER(v.name) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 
+						OR LOWER(v.username) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
+						OR LOWER(v.email) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
 			}
 		}
 
 		if (count($where) > 0)
 		{
 			$query .= " WHERE " . implode(" AND ", $where);
+		}
+
+		return $query;
+	}
+
+	/**
+	 * Build sub-query
+	 * 
+	 * @param  string $role    Role [member, invitee, applicant, manager]
+	 * @param  string $tbl     Table alias
+	 * @param  array  $filters Filters to build query from
+	 * @return string
+	 */
+	private function _groupTable($role='member', $tbl='m', $filters=array())
+	{
+		$query = "SELECT u.name, u.username, u.email, {$tbl}.uidNumber, '{$role}' AS role 
+					FROM #__xgroups_{$role}s AS {$tbl} JOIN jos_users AS u ON {$tbl}.uidNumber=u.id";
+
+		if (isset($filters['gidNumber']))
+		{
+			$query .= " AND {$tbl}.`gidNumber`=" . $this->_db->Quote(intval($filters['gidNumber']));
 		}
 
 		return $query;
@@ -259,7 +259,7 @@ class GroupsGroup extends JTable
 	 */
 	public function countMembers($filters=array())
 	{
-		$query  = "SELECT COUNT(*) ";
+		$query  = "SELECT COUNT(DISTINCT v.username) ";
 		$query .= $this->_buildMembersQuery($filters);
 
 		$this->_db->setQuery($query);
@@ -274,7 +274,9 @@ class GroupsGroup extends JTable
 	 */
 	public function findMembers($filters=array())
 	{
-		$query  = "SELECT DISTINCT m.*, u.name, u.username, u.email, mg.uidNumber AS manager, ma.uidNumber AS applicant, mi.uidNumber AS invitee ";
+		$results = array();
+
+		$query  = "SELECT v.* ";
 		$query .= $this->_buildMembersQuery($filters);
 
 		if (!isset($filters['sort']) || !$filters['sort']) 
@@ -292,7 +294,26 @@ class GroupsGroup extends JTable
 		}
 
 		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+		$values = $this->_db->loadObjectList();
+		if ($values)
+		{
+			foreach ($values as $value)
+			{
+				if (!isset($results[$value->uidNumber]))
+				{
+					$results[$value->uidNumber] = $value;
+				}
+				else
+				{
+					if ($value->role == 'managers')
+					{
+						$results[$value->uidNumber] = $value;
+					}
+				}
+			}
+		}
+
+		return $results;
 	}
 }
 
