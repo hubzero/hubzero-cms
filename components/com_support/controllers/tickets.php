@@ -1206,6 +1206,119 @@ class SupportControllerTickets extends Hubzero_Controller
 			}
 		}
 
+		// Only do the following if a comment was posted
+		// otherwise, we're only recording a changelog
+		if ($row->owner) 
+		{
+			$jconfig =& JFactory::getConfig();
+
+			// Parse comments for attachments
+			/*$attach = new SupportAttachment($this->database);
+			$attach->webpath = $live_site . $this->config->get('webpath') . DS . $id;
+			$attach->uppath  = JPATH_ROOT . $this->config->get('webpath') . DS . $id;
+			$attach->output  = 'email';*/
+			$live_site = rtrim(JURI::base(), '/');
+
+			// Build e-mail components
+			$admin_email = $jconfig->getValue('config.mailfrom');
+
+			$subject = JText::_(strtoupper($this->_name)).', '.JText::_('TICKET').' #'.$row->id.' comment ';
+
+			$from = array();
+			$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name));
+			$from['email'] = $jconfig->getValue('config.mailfrom');
+
+			$rowc = new SupportComment($this->database);
+			$rowc->ticket     = $row->id;
+			$rowc->created    = date('Y-m-d H:i:s', time());
+			$rowc->created_by = $this->juser->get('id');
+			$rowc->access     = 1;
+
+			$message  = '----------------------------'."\r\n";
+			$message .= strtoupper(JText::_('TICKET')).': '.$row->id."\r\n";
+			$message .= strtoupper(JText::_('TICKET_DETAILS_SUMMARY')).': '.stripslashes($row->summary)."\r\n";
+			$message .= strtoupper(JText::_('TICKET_DETAILS_CREATED')).': '.$row->created."\r\n";
+			$message .= strtoupper(JText::_('TICKET_DETAILS_CREATED_BY')).': '.$row->name."\r\n";
+			$message .= strtoupper(JText::_('TICKET_FIELD_STATUS')).': '.SupportHtml::getStatus($row->status)."\r\n";
+			$message .= ($row->login) ? ' ('.$row->login.')'."\r\n" : "\r\n";
+			$message .= '----------------------------'."\r\n\r\n";
+			$message .= JText::sprintf('TICKET_EMAIL_COMMENT_POSTED',$row->id).': '.$rowc->created_by."\r\n";
+			$message .= JText::_('TICKET_EMAIL_COMMENT_CREATED').': '.$rowc->created."\r\n\r\n";
+			$message .= JText::_('TICKET_FIELD_OWNER').' '.JText::_('TICKET_SET_TO').' "'.$row->owner.'"'."\r\n\r\n";
+			//$message .= $attach->parse($comment)."\r\n\r\n";
+
+			// Prepare message to allow email responses to be parsed and added to the ticket
+			if ($this->config->get('email_processing'))
+			{
+				$ticketURL = $live_site . JRoute::_('index.php?option=' . $this->option);
+
+				$prependtext = "~!~!~!~!~!~!~!~!~!~!\r\n";
+				$prependtext .= "You can reply to this message, just include your reply text above this area\r\n" ;
+				$prependtext .= "Attachments (up to 2MB each) are permitted\r\n" ;
+				$prependtext .= "Message from " . $live_site . " / Ticket #" . $row->id . "\r\n";
+
+				$message = $prependtext . "\r\n\r\n" . $message;
+			}
+
+			$juri =& JURI::getInstance();
+			$sef = JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=ticket&id=' . $row->id);
+
+			$message .= $juri->base() . ltrim($sef, DS) . "\r\n";
+
+			// Send e-mail to admin?
+			JPluginHelper::importPlugin('xmessage');
+			$dispatcher =& JDispatcher::getInstance();
+
+			// Send e-mail to ticket owner?
+			$juser =& JUser::getInstance($row->owner);
+
+			// Only put tokens in if component is configured to allow email responses to tickets and ticket comments
+			if ($this->config->get('email_processing'))
+			{
+				$encryptor = new Hubzero_EmailToken();
+				// The reply-to address contains the token 
+				$token = $encryptor->buildEmailToken(1, 1, $juser->get('id'), $row->id);
+				$from['replytoemail'] = 'htc-' . $token;
+			}
+
+			$log = array(
+				'changes'       => array(),
+				'notifications' => array()
+			);
+
+			if (!$dispatcher->trigger('onSendMessage', array('support_reply_assigned', $subject, $message, $from, array($juser->get('id')), $this->_option))) 
+			{
+				$this->setError(JText::_('Failed to message ticket owner.'));
+			} 
+			else 
+			{
+				$log['notifications'][] = array(
+					'role'    => JText::_('COMMENT_SEND_EMAIL_OWNER'),
+					'name'    => $juser->get('name'),
+					'address' => $juser->get('email')
+				);
+			}
+
+			// Were there any changes?
+			if (count($log['notifications']) > 0) 
+			{
+				$rowc->changelog  = json_encode($log);
+
+				if (!$rowc->check()) 
+				{
+					$this->setError($rowc->getError());
+				}
+				else
+				{
+					// Save the data
+					if (!$rowc->store()) 
+					{
+						$this->setError($rowc->getError());
+					}
+				}
+			}
+		}
+
 		// Trigger any events that need to be called before session stop
 		$dispatcher->trigger('onTicketSubmission', array($row));
 

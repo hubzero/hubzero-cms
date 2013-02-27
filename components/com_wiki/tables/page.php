@@ -204,6 +204,7 @@ class WikiPage extends JTable
 		{
 			$this->_tbl_key = 'pagename';
 			$s = "AND scope=" . $this->_db->Quote($scope);
+			$oid = $this->normalize($oid);
 		}
 		$k = $this->_tbl_key;
 		if ($oid !== NULL) 

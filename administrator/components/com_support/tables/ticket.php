@@ -287,6 +287,11 @@ class SupportTicket extends JTable
 		if (!$this->id)
 		{
 			$this->status = 0;
+			// If it has an owner, force it to just open, instead of new
+			if ($this->owner)
+			{
+				$this->status = 1;
+			}
 		}
 
 		return true;

@@ -241,13 +241,13 @@ foreach ($this->revisions as $revision)
 
 		<div class="clear"></div>
 
-		<input type="hidden" name="pagename" value="<?php echo $this->page->pagename; ?>" />
-		<input type="hidden" name="scope" value="<?php echo $this->page->scope; ?>" />
-		<input type="hidden" name="pageid" value="<?php echo $this->page->id; ?>" />
-		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+		<input type="hidden" name="pagename" value="<?php echo $this->escape($this->page->pagename); ?>" />
+		<input type="hidden" name="scope" value="<?php echo $this->escape($this->page->scope); ?>" />
+		<input type="hidden" name="pageid" value="<?php echo $this->escape($this->page->id); ?>" />
+		<input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
+		<input type="hidden" name="controller" value="<?php echo $this->escape($this->controller); ?>" />
 <?php if ($this->sub) { ?>
-		<input type="hidden" name="active" value="<?php echo $this->sub; ?>" />
+		<input type="hidden" name="active" value="<?php echo $this->escape($this->sub); ?>" />
 <?php } ?>
 		<input type="hidden" name="task" value="compare" />
 	</form>

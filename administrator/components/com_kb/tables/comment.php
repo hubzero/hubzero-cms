@@ -123,16 +123,32 @@ class KbComment extends JTable
 			$this->setError(JText::_('Your comment must contain text.'));
 			return false;
 		}
+
+		$this->entry_id = intval($this->entry_id);
 		if (!$this->entry_id) 
 		{
 			$this->setError(JText::_('Missing entry ID.'));
 			return false;
 		}
+
+		$juser = JFactory::getUser();
+		if (!$this->id)
+		{
+			$this->created = date('Y-m-d H:i:s', time());
+			$this->created_by = $juser->get('id');
+		}
+
+		$this->created_by = intval($this->created_by);
 		if (!$this->created_by) 
 		{
-			$this->setError(JText::_('Missing creator ID.'));
-			return false;
+			$this->created_by = $juser->get('id');
 		}
+
+		$this->parent     = intval($this->parent);
+		$this->helpful    = intval($this->helpful);
+		$this->nothelpful = intval($this->nothelpful);
+		$this->anonymous  = intval($this->anonymous);
+
 		return true;
 	}
 

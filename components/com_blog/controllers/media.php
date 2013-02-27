@@ -171,6 +171,13 @@ class BlogControllerMedia extends Hubzero_Controller
 		// Build the file path
 		$path = $this->_getUploadPath($scope, $id);
 
+		if ($this->getError())
+		{
+			// Push through to the media view
+			$this->displayTask();
+			return;
+		}
+
 		if (!is_dir($path)) 
 		{
 			jimport('joomla.filesystem.folder');
@@ -234,6 +241,13 @@ class BlogControllerMedia extends Hubzero_Controller
 		// Build the file path
 		$path = $this->_getUploadPath($scope, $id);
 
+		if ($this->getError())
+		{
+			// Push through to the media view
+			$this->displayTask();
+			return;
+		}
+
 		$folder = $path . DS . $file;
 
 		// Delete the folder
@@ -280,6 +294,13 @@ class BlogControllerMedia extends Hubzero_Controller
 
 		// Build the file path
 		$path = $this->_getUploadPath($scope, $id);
+
+		if ($this->getError())
+		{
+			// Push through to the media view
+			$this->displayTask();
+			return;
+		}
 
 		if (!file_exists($path . DS . $file) or !$file) 
 		{
@@ -364,8 +385,12 @@ class BlogControllerMedia extends Hubzero_Controller
 			break;
 
 			case 'site':
-			default:
 				$p = $this->config->get('uploadpath', '/site/blog');
+			break;
+
+			default:
+				$this->setError(JText::_('Invalid scope'));
+				$p = '';
 			break;
 		}
 		$path .= DS . trim($p, DS);
@@ -389,7 +414,7 @@ class BlogControllerMedia extends Hubzero_Controller
 		$folders = array();
 		$docs    = array();
 
-		if (is_dir($path))
+		if (!$this->getError() && is_dir($path))
 		{
 			// Loop through all files and separate them into arrays of images, folders, and other
 			$dirIterator = new DirectoryIterator($path);
@@ -426,12 +451,12 @@ class BlogControllerMedia extends Hubzero_Controller
 
 		$this->_getStyles();
 
-		$this->view->docs = $docs;
+		$this->view->docs    = $docs;
 		$this->view->folders = $folders;
 
-		$this->view->config = $this->config;
-		$this->view->id = $id;
-		$this->view->scope = $scope;
+		$this->view->config  = $this->config;
+		$this->view->id      = $id;
+		$this->view->scope   = $scope;
 
 		if ($this->getError()) 
 		{

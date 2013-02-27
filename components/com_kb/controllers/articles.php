@@ -610,6 +610,9 @@ class KbControllerArticles extends Hubzero_Controller
 			return;
 		}
 
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// Incoming
 		$comment = JRequest::getVar('comment', array(), 'post');
 

@@ -595,7 +595,7 @@ class GroupsController extends Hubzero_Controller
 		$authorized = $this->_authorize();
 
 		// Get the active tab (section)
-		$tab = JRequest::getVar('active', 'overview');
+		$tab = JRequest::getWord('active', 'overview');
 
 		if ($tab == 'wiki') 
 		{

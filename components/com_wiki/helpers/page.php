@@ -41,8 +41,25 @@ class WikiHelperPage
 	 */
 	public static function getPage($config)
 	{
+		$tbl = new WikiPage(JFactory::getDBO());
 		$pagename = trim(JRequest::getVar('pagename', '', 'default', 'none', 2));
+		$pagename = $tbl->normalize($pagename);
+		JRequest::setVar('pagename', $pagename);
+
 		$scope = trim(JRequest::getVar('scope', ''));
+		if ($scope)
+		{
+			// Clean the scope. Since scope is built of a chain of pagenames or groups/groupname/wiki
+			// the wiki normalize() should strip any nasty stuff out
+			$bits = explode('/', $scope);
+			foreach ($bits as $i => $bit)
+			{
+				$bits[$i] = $tbl->normalize($bit);
+			}
+			$scope = implode('/', $bits);
+			JRequest::setVar('scope', $scope);
+		}
+
 		$task = trim(JRequest::getWord('task', ''));
 
 		// No page name given! Default to the home page

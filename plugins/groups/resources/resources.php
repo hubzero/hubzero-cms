@@ -186,7 +186,7 @@ class plgGroupsResources extends JPlugin
 		$rareas = $this->getResourcesAreas();
 
 		// Get the active category
-		$area = JRequest::getVar('area', 'resources');
+		$area = JRequest::getWord('area', 'resources');
 		if ($area) 
 		{
 			$activeareas = array($area);

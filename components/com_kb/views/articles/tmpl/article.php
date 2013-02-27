@@ -604,6 +604,8 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="task" value="savecomment" />
 
+				<?php echo JHTML::_('form.token'); ?>
+
 				<div class="sidenote">
 					<p>
 						<strong><?php echo JText::_('Please keep comments relevant to this entry.'); ?></strong>

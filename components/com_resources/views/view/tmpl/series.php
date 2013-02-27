@@ -261,19 +261,6 @@ $juser =& JFactory::getUser();
 		// Show course listings under 'about' tab
 		if ($this->tab == 'about' && $ccount > 0) 
 		{
-			$defaultsort = 'date';
-			$defaultsort = ($this->model->params->get('show_ranking')) ? 'ranking' : $defaultsort;
-
-			$filters = array(
-				'sortby' => JRequest::getVar('sortby', $defaultsort),
-				'limit'  => JRequest::getInt('limit', 0),
-				'start'  => JRequest::getInt('limitstart', 0),
-				'id'     => $this->model->resource->id
-			);
-
-			// Get children
-			$children = $this->model->children('standalone', $filters['limit'], $filters['start'], $filters['sortby']);
-
 			// Build the results
 			$sortbys = array(
 				'date'     => JText::_('DATE'),
@@ -285,6 +272,24 @@ $juser =& JFactory::getUser();
 			{
 				$sortbys['ranking'] = JText::_('RANKING');
 			}
+
+			$defaultsort = 'date';
+			$defaultsort = ($this->model->params->get('show_ranking')) ? 'ranking' : $defaultsort;
+
+			$filters = array(
+				'sortby' => JRequest::getWord('sortby', $defaultsort),
+				'limit'  => JRequest::getInt('limit', 0),
+				'start'  => JRequest::getInt('limitstart', 0),
+				'id'     => $this->model->resource->id
+			);
+
+			if (!isset($sortbys[$filters['sortby']]))
+			{
+				$filters['sortby'] = $defaultsort;
+			}
+
+			// Get children
+			$children = $this->model->children('standalone', $filters['limit'], $filters['start'], $filters['sortby']);
 ?>
 			<h3>
 				<a name="series"></a>

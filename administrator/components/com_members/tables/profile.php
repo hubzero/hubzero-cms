@@ -541,9 +541,9 @@ class MembersProfile extends JTable
 				break;
 			}
 		}
-		if (isset($filters['limit']) && $filters['limit'] && $filters['limit'] != 'all') 
+		if (isset($filters['limit']) && $filters['limit'] && strtolower($filters['limit']) != 'all') 
 		{
-			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+			$query .= " LIMIT " . intval($filters['start']) . "," . intval($filters['limit']);
 		}
 
 		$this->_db->setQuery($query);
