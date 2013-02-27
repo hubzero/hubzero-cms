@@ -2775,7 +2775,7 @@ class WishlistController extends JObject
 
 			// Perform some text cleaning, etc.
 			$row->comment   = $row->comment == JText::_('COM_WISHLIST_ENTER_COMMENTS') ? '' : $row->comment;
-			$row->comment   = Hubzero_View_Helper_Html::purifyText($row->comment);
+			//$row->comment   = Hubzero_View_Helper_Html::purifyText($row->comment);
 			$attachment     = $this->upload($wishid);
 			$row->comment  .= ($attachment) ? "\n" . $attachment : '';
 			//$row->comment   = nl2br($row->comment);

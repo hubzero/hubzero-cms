@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
+ * @author	Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -102,7 +102,7 @@ if (!$this->juser->get('guest')) {
 					<fieldset>
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="listid" value="<?php echo $this->listid; ?>" />
-                        <input type="hidden" name="wishid" value="<?php echo $this->wishid; ?>" />
+						<input type="hidden" name="wishid" value="<?php echo $this->wishid; ?>" />
 						<input type="hidden" name="active" value="answers" />
 						<input type="hidden" name="task" value="savereply" />
 						<input type="hidden" name="referenceid" value="<?php echo $this->refid; ?>" />
@@ -110,21 +110,25 @@ if (!$this->juser->get('guest')) {
 
 						<label>
 							<?php echo JText::_('COM_WISHLIST_ENTER_COMMENTS'); ?>
-							<textarea name="comment" rows="10" cols="50"></textarea>
+							<?php
+							ximport('Hubzero_Wiki_Editor');
+							$editor = Hubzero_Wiki_Editor::getInstance();
+							echo $editor->display('comment', 'field_comment', '', 'minimal no-footer', '50', '10');
+							?>
 						</label>
 						
 						<fieldset>
-                        	<div class="grouping">
-                        		<label>
-	                           		 <?php echo JText::_('ACTION_ATTACH_FILE'); ?>
-									<input type="file" name="upload"  />								
+							<div class="grouping">
+								<label>
+									 <?php echo JText::_('ACTION_ATTACH_FILE'); ?>
+									<input type="file" name="upload" />
 								</label>
-	                            <label>
-	                           		 <?php echo JText::_('ACTION_ATTACH_FILE_DESC'); ?>
-									<input type="text" name="description" value="" />								
+								<label>
+									 <?php echo JText::_('ACTION_ATTACH_FILE_DESC'); ?>
+									<input type="text" name="description" value="" />
 								</label>
-                        	</div>
-                        </fieldset>
+							</div>
+						</fieldset>
 
 						<label id="comment-anonymous-label">
 							<input class="option" type="checkbox" name="anonymous" value="1" id="comment-anonymous" /> 
@@ -154,7 +158,7 @@ if (!$this->juser->get('guest')) {
 							<fieldset>
 								<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 								<input type="hidden" name="listid" value="<?php echo $this->listid; ?>" />
-                                <input type="hidden" name="wishid" value="<?php echo $this->wishid; ?>" />
+								<input type="hidden" name="wishid" value="<?php echo $this->wishid; ?>" />
 								<input type="hidden" name="active" value="answers" />
 								<input type="hidden" name="task" value="savereply" />
 								<input type="hidden" name="referenceid" value="<?php echo $this->refid; ?>" />
@@ -166,17 +170,17 @@ if (!$this->juser->get('guest')) {
 								</label>
 								
 								<fieldset>
-	                            	<div class="grouping">
-	                            		<label>
-	                               			<?php echo JText::_('ACTION_ATTACH_FILE'); ?>
+									<div class="grouping">
+										<label>
+											<?php echo JText::_('ACTION_ATTACH_FILE'); ?>
 											<input type="file" name="upload"  />
 										</label>
-	                                	<label>
+										<label>
 											<?php echo JText::_('ACTION_ATTACH_FILE_DESC'); ?>
-											<input type="text" name="description" value="" />								
+											<input type="text" name="description" value="" />
 										</label>
-	                            	</div>
-	                            </fieldset>
+									</div>
+								</fieldset>
 								
 								<label class="reply-anonymous-label">
 									<input class="option" type="checkbox" name="anonymous" value="1" /> 
@@ -185,7 +189,7 @@ if (!$this->juser->get('guest')) {
 							
 								<p class="submit">
 									<input type="submit" value="<?php echo JText::_('POST_COMMENT'); ?>" /> 
-                            		<a class="closeform cancelreply" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&listid='.$this->listid.'&wishid='.$this->wishid.'#c'.$this->refid); ?>" id="close_<?php echo $this->refid; ?>"><?php echo JText::_('CANCEL'); ?></a>
+									<a class="closeform cancelreply" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&listid='.$this->listid.'&wishid='.$this->wishid.'#c'.$this->refid); ?>" id="close_<?php echo $this->refid; ?>"><?php echo JText::_('CANCEL'); ?></a>
 								</p>
 							</fieldset>
 						</form>
