@@ -57,6 +57,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</div>
 	
 	<div id="alltools" class="tab_panel">
+		<div id="filter-mytools">
+			<input type="text" placeholder="Search Tools" />
+		</div>
 		<?php 
 		$a = $this->alltools;
 		echo $this->buildList($a, 'all'); ?>

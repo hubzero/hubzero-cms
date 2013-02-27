@@ -81,6 +81,8 @@ HUB.Modules.MyTools	 = {
                 return false;
             })
 		});
+		
+		HUB.Modules.MyTools.toolSearch();
 	},
 
 	updateFavs: function() {
@@ -120,8 +122,42 @@ HUB.Modules.MyTools	 = {
 		});
 		mod.activeTitle = $(tab);
 		$(tab).addClass('active');
-	}
+	},
+	
+	toolSearch: function()
+	{
+		jQuery.expr[':'].caseInsensitiveContains = function(a,i,m) {
+			return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase())>=0; 
+		};
 		
+		if( $('#filter-mytools').length )
+		{
+			$('#filter-mytools input').on("keyup", function(event){
+				var search = $(this).val();
+				if(search != '')
+				{
+					$("#alltools ul li a:not(:caseInsensitiveContains('"+search+"'))").parent().hide();
+					$("#alltools ul li a:caseInsensitiveContains('"+search+"')").parent().show();
+					
+					//add no results node
+					if( $("#alltools ul li:visible").length == 0 )
+					{
+						$("#alltools ul").append("<li id=\"none\">Sorry No Tools Matching Your Search.</li>");
+					}
+					
+					//remove no results node if we have results
+					if( $("#alltools ul li:visible").length > 1 && $("#alltools ul #none").length == 1 )
+					{
+						$("#alltools ul #none").remove();
+					}
+				}
+				else
+				{
+					$("#alltools ul li").show();
+				}
+			});
+		}
+	}
 };
 
 jQuery(document).ready(function($){
