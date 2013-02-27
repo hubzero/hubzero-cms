@@ -37,6 +37,22 @@ $this->juser = JFactory::getUser();
 $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name;
 ?>
 
+<?php if (!$this->juser->get('guest') && !$this->params->get('access-create-item')) { ?>
+<ul id="page_options">
+	<li>
+		<?php if ($this->model->isFollowing()) { ?>
+		<a class="unfollow btn" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" href="<?php echo JRoute::_($base . '&task=unfollow'); ?>">
+			<span><?php echo JText::_('Unfollow All'); ?></span>
+		</a>
+		<?php } else { ?>
+		<a class="follow btn" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" href="<?php echo JRoute::_($base . '&task=follow'); ?>">
+			<span><?php echo JText::_('Follow All'); ?></span>
+		</a>
+		<?php } ?>
+	</li>
+</ul>
+<?php } ?>
+
 <form method="get" action="<?php echo JRoute::_($base . '&task=following'); ?>" id="collections">
 
 	<fieldset class="filters">

@@ -137,7 +137,7 @@ class CollectionsTablePost extends JTable
 
 		if (!$this->collection_id) 
 		{
-			$this->setError(JText::_('Please provide a collection ID'));
+			$this->setError(JText::_('Please provide a collection.'));
 			return false;
 		}
 

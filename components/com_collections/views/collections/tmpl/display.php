@@ -197,35 +197,21 @@ if ($this->rows->total() > 0)
 					</div><!-- / .actions -->
 				</div><!-- / .meta -->
 				<div class="convo attribution clearfix">
-					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->creator()->get('id')); ?>" title="<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" class="img-link">
+					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->creator()->get('uidNumber') . '&active=collections'); ?>" title="<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" class="img-link">
 						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($row->creator(), 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" />
 					</a>
 					<p>
-						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->creator()->get('id')); ?>">
+						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->creator()->get('uidNumber') . '&active=collections'); ?>">
 							<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
 						</a> 
 						onto 
-						<?php
-							/*switch ($row->get('object_type'))
-							{
-								case 'group':
-									$col = 'index.php?option=com_groups&gid=' . $row->get('object_id') . '&active=collections&scope=' . $row->get('collection_id');
-								break;
-								case 'member':
-									$col = 'index.php?option=com_members&id=' . $row->get('object_id') . '&active=collections&task=' . $row->get('collection_id');
-								break;
-								default:
-									$col = $base . '&controller=boards&id=' . $row->get('collection_id');
-								break;
-							}*/
-						?>
 						<a href="<?php echo JRoute::_($row->link()); ?>">
 							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 						</a>
 						<br />
 						<span class="entry-date">
-							<span class="entry-date-at">@</span> <span class="date"><?php echo JHTML::_('date', $row->get('created'), $this->timeFormat, $this->tz); ?></span> 
-							<span class="entry-date-on">on</span> <span class="time"><?php echo JHTML::_('date', $row->get('created'), $this->dateFormat, $this->tz); ?></span>
+							<span class="entry-date-at">@</span> <span class="time"><?php echo JHTML::_('date', $row->get('created'), $this->timeFormat, $this->tz); ?></span> 
+							<span class="entry-date-on">on</span> <span class="date"><?php echo JHTML::_('date', $row->get('created'), $this->dateFormat, $this->tz); ?></span>
 						</span>
 					</p>
 				</div><!-- / .attribution -->

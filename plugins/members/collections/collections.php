@@ -303,6 +303,7 @@ class plgMembersCollections extends JPlugin
 		$view->option      = $this->option;
 		$view->member      = $this->member;
 		$view->params      = $this->params;
+		$view->model       = $this->model;
 
 		Hubzero_Document::addPluginScript('members', $this->_name);
 
@@ -386,6 +387,7 @@ class plgMembersCollections extends JPlugin
 		$view->option      = $this->option;
 		$view->member      = $this->member;
 		$view->params      = $this->params;
+		$view->model       = $this->model;
 
 		Hubzero_Document::addPluginScript('members', $this->_name);
 
@@ -459,7 +461,7 @@ class plgMembersCollections extends JPlugin
 		$view->option      = $this->option;
 		$view->member      = $this->member;
 		$view->params      = $this->params;
-		$view->model = $this->model;
+		$view->model       = $this->model;
 
 		$this->jconfig = JFactory::getConfig();
 
@@ -546,6 +548,7 @@ class plgMembersCollections extends JPlugin
 		$view->dateFormat = $this->dateFormat;
 		$view->timeFormat = $this->timeFormat;
 		$view->tz         = $this->tz;
+		$view->model      = $this->model;
 
 		//Hubzero_Document::addPluginScript('members', $this->_name, 'jquery.masonry');
 		Hubzero_Document::addComponentScript('com_collections', 'assets/js/jquery.masonry');
@@ -866,6 +869,7 @@ class plgMembersCollections extends JPlugin
 		$view->dateFormat = $this->dateFormat;
 		$view->timeFormat = $this->timeFormat;
 		$view->tz         = $this->tz;
+		$view->model      = $this->model;
 
 		//Hubzero_Document::addPluginScript('members', $this->_name, 'jquery.masonry');
 		Hubzero_Document::addComponentScript('com_collections', 'assets/js/jquery.masonry');
@@ -949,6 +953,7 @@ class plgMembersCollections extends JPlugin
 		$view->dateFormat = $this->dateFormat;
 		$view->timeFormat = $this->timeFormat;
 		$view->tz         = $this->tz;
+		$view->model      = $this->model;
 
 		$post_id = JRequest::getInt('post', 0);
 
@@ -1057,12 +1062,12 @@ class plgMembersCollections extends JPlugin
 		$view->collection = $this->model->collection(JRequest::getVar('board', 0));
 
 		$view->collections = $this->model->collections();
-		if (!$view->collections->total())
+		/*if (!$view->collections->total())
 		{
 			$view->collection->setup($this->member->get('uidNumber'), 'member');
 			$view->collections = $this->model->collections();
 			$view->collection = $this->model->collection(JRequest::getVar('board', 0));
-		}
+		}*/
 
 		$view->entry = $view->collection->post($id);
 		if (!$view->collection->exists() && $view->entry->exists())

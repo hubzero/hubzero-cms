@@ -95,6 +95,7 @@ HUB.Plugins.MembersFileUpload = {
 						event.preventDefault();
 						$.get($(this).attr('href'), {}, function(data) {
 							HUB.Plugins.MembersFileUpload.updateFileList();
+							$('#ajax-uploader-list .item-asset').sortable('enable');
 						});
 					});
 			});

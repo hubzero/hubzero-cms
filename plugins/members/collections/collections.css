@@ -290,12 +290,15 @@
 	}
 	.post .description {
 		margin: 0;
-		padding: 1em 1.4em 1em 1.4em;
+		padding: 0em 1.4em 0em 1.4em;
 		overflow: hidden;
 		word-wrap: break-word;
 	}
 	.post .tags-wrap {
-		padding: 0 1.4em 1em 1.4em;
+		padding: 1em 1.4em 1em 1.4em;
+	}
+	.post .description + .tags-wrap {
+		padding-top: 0;
 	}
 	/* Actions */
 	.post .actions {
@@ -385,6 +388,9 @@
 		opacity: 1;
 		-webkit-transition: opacity 0.3s;
 		width: 100%;
+	}
+	.full .img-link img {
+		width: auto;
 	}
 	.post .img-link {
 		position: relative;
@@ -849,7 +855,34 @@
 	}
 	#hubForm .item-asset .asset-file {
 		margin-right: 4em;
-		display: block;
+		display: inline-block;
+	}
+	#hubForm .item-asset .asset-handle {
+		margin-right: 1em;
+		display: inline-block;
+		width: 16px;
+		height: 16px;
+		position: relative;
+	}
+	#hubForm .item-asset .asset-handle:after {
+		display: inline-block;
+		width: 1em;
+		height: 1em;
+		position: absolute;
+		top: 0.2em;
+		left: 0;
+		content: "\f0dc";
+		font-family: "Fontcons";
+		font-size: 16px;
+		line-height: 1;
+		color: #ccc;
+	}
+	#hubForm .item-asset:hover .asset-handle,
+	#hubForm .item-asset:hover .asset-handle:after,
+	#hubForm .item-asset .asset-handle:hover:after,
+	#hubForm .item-asset .asset-handle:after:hover {
+		cursor: move;
+		color: #333;
 	}
 	#hubForm .item-asset span.asset-description {
 		position: absolute;

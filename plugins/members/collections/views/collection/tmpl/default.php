@@ -37,6 +37,22 @@ $this->juser = JFactory::getUser();
 $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name;
 ?>
 
+<?php if (!$this->juser->get('guest') && !$this->params->get('access-create-item')) { ?>
+<ul id="page_options">
+	<li>
+		<?php if ($this->model->isFollowing()) { ?>
+		<a class="unfollow btn" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" href="<?php echo JRoute::_($base . '&task=unfollow'); ?>">
+			<span><?php echo JText::_('Unfollow All'); ?></span>
+		</a>
+		<?php } else { ?>
+		<a class="follow btn" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" href="<?php echo JRoute::_($base . '&task=follow'); ?>">
+			<span><?php echo JText::_('Follow All'); ?></span>
+		</a>
+		<?php } ?>
+	</li>
+</ul>
+<?php } ?>
+
 <form method="get" action="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias')); ?>" id="collections">
 
 	<p class="overview">
@@ -53,12 +69,12 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 		</a>
 	<?php } else { ?>
 		<?php if ($this->collection->isFollowing()) { ?>
-			<a class="unfollow btn tooltips" data-text-follow="<?php echo JText::_('Follow'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow'); ?>" title="<?php echo JText::_('Unfollow :: Unfollow this collection'); ?>" href="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias') . '/unfollow'); ?>">
-				<span><?php echo JText::_('Unfollow'); ?></span>
+			<a class="unfollow btn tooltips" data-text-follow="<?php echo JText::_('Follow this'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow this'); ?>" title="<?php echo JText::_('Unfollow :: Unfollow this collection'); ?>" href="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias') . '/unfollow'); ?>">
+				<span><?php echo JText::_('Unfollow this'); ?></span>
 			</a>
 		<?php } else { ?>
-			<a class="follow btn tooltips" data-text-follow="<?php echo JText::_('Follow'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow'); ?>" title="<?php echo JText::_('Follow :: Follow this collection'); ?>" href="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias') . '/follow'); ?>">
-				<span><?php echo JText::_('Follow'); ?></span>
+			<a class="follow btn tooltips" data-text-follow="<?php echo JText::_('Follow this'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow this'); ?>" title="<?php echo JText::_('Follow :: Follow this collection'); ?>" href="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias') . '/follow'); ?>">
+				<span><?php echo JText::_('Follow this'); ?></span>
 			</a>
 		<?php } ?>
 		<a class="repost btn tooltips" title="<?php echo JText::_('Collect :: Add this collection to one of your own'); ?>" href="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias') . '/collect'); ?>">
@@ -77,6 +93,19 @@ if ($this->rows->total() > 0)
 	<?php
 	ximport('Hubzero_User_Profile');
 	ximport('Hubzero_User_Profile_Helper');
+
+	ximport('Hubzero_Wiki_Parser');
+
+	$wikiconfig = array(
+		'option'   => $this->option,
+		'scope'    => 'collections',
+		'pagename' => 'collections',
+		'pageid'   => 0,
+		'filepath' => '',
+		'domain'   => 'collection'
+	);
+
+	$p =& Hubzero_Wiki_Parser::getInstance();
 
 	foreach ($this->rows as $row)
 	{
@@ -112,6 +141,8 @@ if ($this->rows->total() > 0)
 				$view->tz         = $this->tz;
 				$view->row        = $row;
 				$view->board      = $this->collection;
+				$view->parser     = $p;
+				$view->wikiconfig = $wikiconfig;
 				$view->display();
 			?>
 			<?php if (count($item->tags()) > 0) { ?>
@@ -210,8 +241,8 @@ if ($this->rows->total() > 0)
 						</a>
 						<br />
 						<span class="entry-date">
-							<span class="entry-date-at">@</span> <span class="date"><time datetime="<?php echo $row->get('created'); ?>"><?php echo JHTML::_('date', $row->get('created'), $this->timeFormat, $this->tz); ?></time></span> 
-							<span class="entry-date-on">on</span> <span class="time"><time datetime="<?php echo $row->get('created'); ?>"><?php echo JHTML::_('date', $row->get('created'), $this->dateFormat, $this->tz); ?></time></span>
+							<span class="entry-date-at">@</span> <span class="time"><time datetime="<?php echo $row->get('created'); ?>"><?php echo JHTML::_('date', $row->get('created'), $this->timeFormat, $this->tz); ?></time></span> 
+							<span class="entry-date-on">on</span> <span class="date"><time datetime="<?php echo $row->get('created'); ?>"><?php echo JHTML::_('date', $row->get('created'), $this->dateFormat, $this->tz); ?></time></span>
 						</span>
 					</p>
 				</div><!-- / .attribution -->

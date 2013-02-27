@@ -517,6 +517,33 @@ class CollectionsModel extends JObject
 	}
 
 	/**
+	 * Check if someone or a group is following this collection
+	 * 
+	 * @param      integer $follower_id   ID of the follower
+	 * @param      string  $follower_type Type of the follower [member, group]
+	 * @return     boolean
+	 */
+	public function isFollowed($follower_id=null, $follower_type='member')
+	{
+		if (!isset($this->_followed))
+		{
+			$this->_followed = false;
+
+			if (!$follower_id && $follower_type == 'member')
+			{
+				$follower_id = JFactory::getUser()->get('id');
+			}
+
+			$follow = new CollectionsModelFollowing($follower_id, $follower_type, $this->_object_id, $this->_object_type);
+			if ($follow->exists())
+			{
+				$this->_followed = true;
+			}
+		}
+		return $this->_followed;
+	}
+
+	/**
 	 * Unfollow this collection
 	 * 
 	 * @param      integer $follower_id   ID of the follower

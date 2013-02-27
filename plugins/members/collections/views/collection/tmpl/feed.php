@@ -81,6 +81,19 @@ if ($this->rows->total() > 0)
 	ximport('Hubzero_User_Profile');
 	ximport('Hubzero_User_Profile_Helper');
 
+	ximport('Hubzero_Wiki_Parser');
+
+	$wikiconfig = array(
+		'option'   => $this->option,
+		'scope'    => 'collections',
+		'pagename' => 'collections',
+		'pageid'   => 0,
+		'filepath' => '',
+		'domain'   => 'feed'
+	);
+
+	$p =& Hubzero_Wiki_Parser::getInstance();
+
 	foreach ($this->rows as $row)
 	{
 		$item = $row->item();
@@ -115,6 +128,8 @@ if ($this->rows->total() > 0)
 				$view->tz         = $this->tz;
 				$view->row        = $row;
 				$view->board      = $this->collection;
+				$view->parser     = $p;
+				$view->wikiconfig = $wikiconfig;
 				$view->display();
 			?>
 			<?php if (count($item->tags()) > 0) { ?>
@@ -226,8 +241,8 @@ if ($this->rows->total() > 0)
 						</a>
 						<br />
 						<span class="entry-date">
-							<span class="entry-date-at">@</span> <span class="date"><time datetime="<?php echo $row->get('created'); ?>"><?php echo JHTML::_('date', $row->get('created'), $this->timeFormat, $this->tz); ?></time></span> 
-							<span class="entry-date-on">on</span> <span class="time"><time datetime="<?php echo $row->get('created'); ?>"><?php echo JHTML::_('date', $row->get('created'), $this->dateFormat, $this->tz); ?></time></span>
+							<span class="entry-date-at">@</span> <span class="time"><time datetime="<?php echo $row->get('created'); ?>"><?php echo JHTML::_('date', $row->get('created'), $this->timeFormat, $this->tz); ?></time></span> 
+							<span class="entry-date-on">on</span> <span class="date"><time datetime="<?php echo $row->get('created'); ?>"><?php echo JHTML::_('date', $row->get('created'), $this->dateFormat, $this->tz); ?></time></span>
 						</span>
 					</p>
 				</div><!-- / .attribution -->
@@ -247,7 +262,7 @@ if ($this->rows->total() > 0)
 					<?php echo JText::_('You are not following anyone or any collections.'); ?>
 				</p> -->
 				<ol>
-					<li><?php echo JText::_('Find a member or collection you like.'); ?></li>
+					<li><?php echo JText::_('Find a member or <a href="' . JRoute::_('index.php?option=com_collections') . '">collection</a> you like.'); ?></li>
 					<li><?php echo JText::_('Click on the "follow" button.'); ?></li>
 					<li><?php echo JText::_('Come back here and see all the posts!'); ?></li>
 				</ol>
