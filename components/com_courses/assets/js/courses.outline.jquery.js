@@ -577,7 +577,7 @@ HUB.CoursesOutline = {
 							// @FIXME: combine this call with the toggle publish call
 							$.ajax({
 								url: '/api/courses/asset/save',
-								data: form.serialize()+'&url='+encodeURIComponent(distLink[1]),
+								data: form.serialize()+'&url='+distLink[1],
 								statusCode: {
 									200: function(data){
 										// Update the link

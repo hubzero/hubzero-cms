@@ -183,16 +183,16 @@
 	border-radius: 7px;
 }
 .aux-attachments form.attach-link {
-	right: 153px;
+	right: 163px;
 }
 .aux-attachments form.attach-object {
-	right: 118px;
+	right: 128px;
 }
 .aux-attachments form.attach-note {
-	right: 82px;
+	right: 92px;
 }
 .aux-attachments form.browse-files {
-	right: 46px;
+	right: 56px;
 }
 .aux-attachments form:before,
 .aux-attachments form:after {

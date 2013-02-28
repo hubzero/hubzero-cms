@@ -28,16 +28,16 @@ HUB.Plugins.CoursesProgress = {
 	initialize: function() {
 		var $ = this.jQuery;
 
-		$('.student-details').hide();
-
-		$('.instructor').on('click', '.student-name', function() {
-			$(this).siblings('.student-details').slideToggle('slow', function() {
+		$('.instructor').on('click', '.student-name', function(e) {
+			e.preventDefault();
+			$(this).parents('.student').find('.student-details').slideToggle('slow', function() {
 				$(this).parents('.student').toggleClass('active', 150, 'linear');
 			});
 		});
 
-		$('.instructor').on('click', '.progress-bar-container', function() {
-			$(this).siblings('.student-details').slideToggle('slow', function() {
+		$('.instructor').on('click', '.progress-bar-container', function(e) {
+			e.preventDefault();
+			$(this).parents('.student').find('.student-details').slideToggle('slow', function() {
 				$(this).parents('.student').toggleClass('active', 150, 'linear');
 			});
 		});

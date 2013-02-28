@@ -81,13 +81,13 @@ class PdfFormDeployment
 		return $form;
 	}
 
-	public function getRespondent() {
+	public function getRespondent($uid=NULL) {
 		// @FIXME: should this have a static instance?  this causes a problem when loading a grade book type scenario
 		static $resp;
 		if (!$resp && $this->id) {
-			$resp = new PdfFormRespondent($this->id);
+			$resp = new PdfFormRespondent($this->id, $uid);
 		}
-		return new PdfFormRespondent($this->id);
+		return new PdfFormRespondent($this->id, $uid);
 	}
 
 	public static function load($id) {

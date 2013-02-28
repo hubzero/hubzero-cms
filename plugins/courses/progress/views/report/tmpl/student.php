@@ -31,171 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$quizzes_total       = 0;
-$homeworks_total     = 0;
-$exams_total         = 0;
-$quizzes_taken       = 0;
-$homeworks_submitted = 0;
-$exams_taken         = 0;
-
-$forms           = array();
-$current_score   = array();
-$current_score_i = 0;
-
-foreach($this->course->offering()->units() as $unit)
-{
-	foreach($unit->assetgroups() as $agt)
-	{
-		foreach($agt->children() as $ag)
-		{
-			foreach($ag->assets() as $asset)
-			{
-				$increment_count_taken = false;
-				$crumb                 = false;
-
-				// Check for result for given student on form
-				preg_match('/\?crumb=([-a-zA-Z0-9]{20})/', $asset->get('url'), $matches);
-
-				if(isset($matches[1]))
-				{
-					$crumb = $matches[1];
-				}
-
-				if(!$crumb || $asset->get('state') != COURSES_STATE_PUBLISHED)
-				{
-					// Break foreach, this is not a valid form!
-					continue;
-				}
-
-				require_once(JPATH_COMPONENT . DS . 'models' . DS . 'form.php');
-				require_once(JPATH_COMPONENT . DS . 'models' . DS . 'formRespondent.php');
-				require_once(JPATH_COMPONENT . DS . 'models' . DS . 'formDeployment.php');
-
-				$dep = PdfFormDeployment::fromCrumb($crumb);
-
-				switch ($dep->getState())
-				{
-					// Form isn't available yet
-					case 'pending':
-						$forms[] = array('title'=>$asset->get('title'), 'score'=>'Not yet open', 'date'=>'N/A', 'url'=>$asset->get('url'));
-					break;
-
-					// Form availability has expired
-					case 'expired':
-						// Get whether or not we should show scores at this point
-						$results_closed = $dep->getResultsClosed();
-
-						// Grab the response
-						$resp = $dep->getRespondent();
-
-						// Form is still active and they are allowed to see their score
-						if($results_closed == 'score' || $results_closed == 'details')
-						{
-							$record          = $resp->getAnswers();
-							$score           = $record['summary']['score'];
-							$current_score[] = $score;
-							++$current_score_i;
-						}
-						else
-						{
-							// Score has been withheld by form creator
-							$score = 'Withheld';
-						}
-
-						// Get the date of the completion
-						$date = date('r', strtotime($resp->getEndTime()));
-
-						// They have completed this form, therefore set increment_count_taken equal to true
-						$increment_count_taken = true;
-
-						$forms[] = array('title'=>$asset->get('title'), 'score'=>$score, 'date'=>$date, 'url'=>$asset->get('url'));
-					break;
-
-					// Form is still active
-					case 'active':
-						$resp = $dep->getRespondent();
-
-						// Form is active and they have completed it!
-						if($resp->getEndTime() && $resp->getEndTime() != '')
-						{
-							// Get whether or not we should show scores at this point
-							$results_open = $dep->getResultsOpen();
-
-							// Form is still active and they are allowed to see their score
-							if($results_open == 'score' || $results_open == 'details')
-							{
-								$record          = $resp->getAnswers();
-								$score           = $record['summary']['score'];
-								$current_score[] = $score;
-								++$current_score_i;
-							}
-							else
-							{
-								// Score is not yet available at this point
-								$score = 'Not yet available';
-							}
-
-							// Get the date of the completion
-							$date = date('r', strtotime($resp->getEndTime()));
-
-							// They have completed this form, therefor set increment_count_taken equal to true
-							$increment_count_taken = true;
-						}
-						// Form is active and they haven't finished it yet!
-						else
-						{
-							$score = 'Not taken';
-							$date  = 'N/A';
-
-							// For sanities sake - they have NOT completed the form yet!
-							$increment_count_taken = false;
-						}
-
-						$forms[] = array('title'=>$asset->get('title'), 'score'=>$score, 'date'=>$date, 'url'=>$asset->get('url'));
-					break;
-				}
-
-				// Increment total count for this type
-				// @FIXME: probably need a better way of identifying types of form/exam assets
-				if(strpos(strtolower($asset->get('title')), 'quiz'))
-				{
-					++$quizzes_total;
-
-					// If increment is set (i.e. they completed the from), increment the taken number as well
-					if($increment_count_taken)
-					{
-						++$quizzes_taken;
-					}
-				}
-				elseif(strpos(strtolower($asset->get('title')), 'homework'))
-				{
-					++$homeworks_total;
-
-					// If increment is set (i.e. they completed the from), increment the taken number as well
-					if($increment_count_taken)
-					{
-						++$homeworks_submitted;
-					}
-				}
-				elseif(strpos(strtolower($asset->get('title')), 'exam'))
-				{
-					++$exams_total;
-
-					// If increment is set (i.e. they completed the from), increment the taken number as well
-					if($increment_count_taken)
-					{
-						++$exams_taken;
-					}
-				}
-			}
-		}
-	}
-}
-
-// @FIXME: order assets
-
-// Calculate the student's current score
-$current_score = ($current_score_i > 0) ? round(array_sum($current_score) / $current_score_i, 2) : 0;
+$base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias');
 
 // Get the status of the course (e.x. not started, in progress, completed, etc...)
 $section = $this->course->offering()->section();
@@ -249,6 +85,10 @@ $progress_timeline .= '</div>';
 ?>
 
 <div class="progress">
+	<? if($this->course->access('manage')) : ?>
+		<a href="<?= JRoute::_($base . '&active=progress') ?>" class="back btn"><?= JText::_('Back to all students') ?></a>
+	<? endif; ?>
+
 	<h3><?= $h3 ?></h3>
 	<h4><?= JText::sprintf('Unit %d of %d', $current_i, $num_units) ?></h4>
 
@@ -260,7 +100,7 @@ $progress_timeline .= '</div>';
 		<div class="current-score">
 			<div class="current-score-inner">
 				<p class="title"><?= JText::_('Your current score') ?></p>
-				<p class="score"><?= $current_score . '%' ?></p>
+				<p class="score"><?= $this->details['current_score'] . '%' ?></p>
 				<a href="#" class="toggle-grade-details toggle-grade-details-open"><?= JText::_('grade details') ?></a>
 			</div>
 		</div>
@@ -268,24 +108,24 @@ $progress_timeline .= '</div>';
 		<div class="quizzes">
 			<div class="quizzes-inner">
 				<p class="title"><?= JText::_('Quizzes taken') ?></p>
-				<p class="score"><?= $quizzes_taken ?></p>
-				<p><?= JText::sprintf('out of %d', $quizzes_total) ?></p>
+				<p class="score"><?= $this->details['quizzes_taken'] ?></p>
+				<p><?= JText::sprintf('out of %d', $this->details['quizzes_total']) ?></p>
 			</div>
 		</div>
 
 		<div class="homeworks">
 			<div class="homeworks-inner">
 				<p class="title"><?= JText::_('Homeworks submitted') ?></p>
-				<p class="score"><?= $homeworks_submitted ?></p>
-				<p><?= JText::sprintf('out of %d', $homeworks_total) ?></p>
+				<p class="score"><?= $this->details['homeworks_submitted'] ?></p>
+				<p><?= JText::sprintf('out of %d', $this->details['homeworks_total']) ?></p>
 			</div>
 		</div>
 
 		<div class="exams">
 			<div class="exams-inner">
 				<p class="title"><?= JText::_('Exams taken') ?></p>
-				<p class="score"><?= $exams_taken ?></p>
-				<p><?= JText::sprintf('out of %d', $exams_total) ?></p>
+				<p class="score"><?= $this->details['exams_taken'] ?></p>
+				<p><?= JText::sprintf('out of %d', $this->details['exams_total']) ?></p>
 			</div>
 		</div>
 
@@ -302,7 +142,7 @@ $progress_timeline .= '</div>';
 					</tr>
 				</thead>
 				<tbody>
-					<? foreach($forms as $form) : ?>
+					<? foreach($this->details['forms'] as $form) : ?>
 						<? 
 							if(is_numeric($form['score']) && $form['score'] < 60)
 							{

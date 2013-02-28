@@ -4,8 +4,8 @@ class PdfFormRespondent
 {
 	private $id, $started, $finished;
 
-	public function __construct($depId) {
-		if (!($uid = JFactory::getUser()->id)) {
+	public function __construct($depId, $uid=null) {
+		if (!$uid && !($uid = JFactory::getUser()->id)) {
 			throw new NeedLoginError;
 		}
 		$dbh = JFactory::getDBO();

@@ -24,7 +24,7 @@ if (!jq) {
 
 HUB.Plugins.CoursesProgress = {
 	jQuery: jq,
-	
+
 	initialize: function() {
 		var $ = this.jQuery;
 

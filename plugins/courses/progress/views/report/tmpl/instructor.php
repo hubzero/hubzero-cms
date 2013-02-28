@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias');
+
 // Include needed form models
 require_once(JPATH_COMPONENT . DS . 'models' . DS . 'form.php');
 require_once(JPATH_COMPONENT . DS . 'models' . DS . 'formRespondent.php');
@@ -117,53 +119,66 @@ $current_marker = (isset($form_count_current) && isset($form_count)) ? (round(($
 		<div class="flag"><div class="flag-inner" style="left:<?= $current_marker ?>%;"></div></div>
 		<? foreach($members as $m) : ?>
 			<div class="student">
-				<div class="student-name"><?= JFactory::getUser($m->get('user_id'))->get('name'); ?></div>
-				<div class="progress-bar-container">
-					<? if(isset($progress[$m->get('user_id')])) : ?>
-						<?
-							$studentProgress = ($progress[$m->get('user_id')]['form_count'] / $form_count)*100;
-							$studentStatus   = ($studentProgress / $current_marker)*100;
-							$cls = '';
-							if($studentStatus < 60)
-							{
-								$cls = ' stop';
-							}
-							elseif($studentStatus >= 60 && $studentStatus < 70)
-							{
-								$cls = ' yield';
-							}
-							elseif($studentStatus >= 70 && $studentStatus <= 100)
-							{
-								$cls = ' go';
-							}
-						?>
-						<div class="student-progress-bar <?= $cls ?>" style="width:<?= $studentProgress ?>%;"></div>
-					<? endif; ?>
-				</div>
+				<a href="<?= JRoute::_($base . '&active=progress&id=' . $m->get('user_id')) ?>">
+					<div class="student-name"><?= JFactory::getUser($m->get('user_id'))->get('name'); ?></div>
+					<div class="progress-bar-container">
+						<? if(isset($progress[$m->get('user_id')])) : ?>
+							<?
+								$studentProgress = ($progress[$m->get('user_id')]['form_count'] / $form_count)*100;
+								$studentStatus   = ($studentProgress / $current_marker)*100;
+								$cls = '';
+								if($studentStatus < 60)
+								{
+									$cls = ' stop';
+								}
+								elseif($studentStatus >= 60 && $studentStatus < 70)
+								{
+									$cls = ' yield';
+								}
+								elseif($studentStatus >= 70 && $studentStatus <= 100)
+								{
+									$cls = ' go';
+								}
+							?>
+							<div class="student-progress-bar <?= $cls ?>" style="width:<?= $studentProgress ?>%;"></div>
+						<? endif; ?>
+					</div>
+				</a>
 				<div class="clear"></div>
-				<div class="student-details">
-					<table>
-						<thead>
-							<tr>
-								<td>Title</td>
-								<td>Score</td>
-								<td>Date</td>
-							</tr>
-						</thead>
-						<tbody>
-							<? foreach($this->course->offering()->units() as $unit) : ?>
-								<? if(isset($progress[$m->get('user_id')]) && isset($progress[$m->get('user_id')][$unit->get('id')])) : ?>
-									<? foreach($progress[$m->get('user_id')][$unit->get('id')]['forms'] as $form) : ?>
-										<tr>
-											<td><?= $form['title'] ?></td>
-											<td><?= round($form['score'], 2) . '%' ?></td>
-											<td><?= $form['finished'] ?></td>
-										</tr>
-									<? endforeach; ?>
-								<? endif; ?>
-							<? endforeach; ?>
-						</tbody>
-					</table>
+				<div class="student-details grades">
+					<div class="current-score">
+						<div class="current-score-inner">
+							<p class="title"><?= JText::_('Current score') ?></p>
+							<p class="score"><?= round($studentStatus, 2) . '%' ?></p>
+							<a href="<?= JRoute::_($base . '&active=progress&id=' . $m->get('user_id')) ?>" class="toggle-grade-details">
+								<?= JText::_('grade details') ?>
+							</a>
+						</div>
+					</div>
+
+					<div class="quizzes">
+						<div class="quizzes-inner">
+							<p class="title"><?= JText::_('Quizzes taken') ?></p>
+							<p class="score"><?= round($studentStatus, 2) ?></p>
+							<p><?= JText::sprintf('out of %d', 1) ?></p>
+						</div>
+					</div>
+
+					<div class="homeworks">
+						<div class="homeworks-inner">
+							<p class="title"><?= JText::_('Homeworks submitted') ?></p>
+							<p class="score"><?= round($studentStatus, 2) ?></p>
+							<p><?= JText::sprintf('out of %d', 1) ?></p>
+						</div>
+					</div>
+
+					<div class="exams">
+						<div class="exams-inner">
+							<p class="title"><?= JText::_('Exams taken') ?></p>
+							<p class="score"><?= round($studentStatus, 2) ?></p>
+							<p><?= JText::sprintf('out of %d', 1) ?></p>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="clear"></div>
