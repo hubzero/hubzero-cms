@@ -121,6 +121,14 @@ class CollectionsModelItem extends JObject
 			{
 				$this->set('voted', ($oid->voted ? $oid->voted : 0));
 			}
+			/*$properties = $this->_tbl->getProperties();
+			foreach (get_object_vars($oid) as $key => $property)
+			{
+				if (!array_key_exists($key, $properties))
+				{
+					$this->_tbl->set('__' . $key, $property);
+				}
+			}*/
 		}
 		else if (is_array($oid))
 		{
@@ -137,6 +145,14 @@ class CollectionsModelItem extends JObject
 			{
 				$this->set('voted', $oid['voted']);
 			}
+			/*$properties = $this->_tbl->getProperties();
+			foreach (array_keys($oid) as $key)
+			{
+				if (!array_key_exists($key, $properties))
+				{
+					$this->_tbl->set('__' . $key, $oid[$key]);
+				}
+			}*/
 		}
 	}
 

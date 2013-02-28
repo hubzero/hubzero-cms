@@ -56,10 +56,10 @@ function CollectionsBuildRoute(&$query)
 		$segments[] = $query['task'];
 		unset($query['task']);
 	}
-	if (!empty($query['filename'])) 
+	if (!empty($query['file'])) 
 	{
-		$segments[] = $query['filename'];
-		unset($query['filename']);
+		$segments[] = $query['file'];
+		unset($query['file']);
 	}
 
 	return $segments;
@@ -82,26 +82,22 @@ function CollectionsParseRoute($segments)
 
 	if (isset($segments[0])) 
 	{
-		$vars['task'] = $segments[0];
-	}
-	if (isset($segments[1])) 
-	{
-		if (is_numeric($segments[1]))
+		if (is_numeric($segments[0]))
 		{
-			$vars['id'] = $segments[1];
-			if (isset($segments[2])) 
+			$vars['id'] = $segments[0];
+			if (isset($segments[1])) 
 			{
-				$vars['task'] = $segments[2];
+				$vars['task'] = $segments[1];
 			}
 		}
 		else
 		{
-			$vars['task'] = $segments[1];
+			$vars['task'] = $segments[0];
 		}
 	}
-	if (isset($segments[3])) 
+	if (isset($segments[2])) 
 	{
-		$vars['filename'] = $segments[3];
+		$vars['file'] = $segments[2];
 		$vars['controller'] = 'media';
 	}
 

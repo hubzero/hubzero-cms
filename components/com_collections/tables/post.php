@@ -211,6 +211,12 @@ class CollectionsTablePost extends JTable
 		{
 			$where[] = "p.original=" . $this->_db->Quote($filters['original']);
 		}
+		if (isset($filters['search']) && $filters['search'] != '') 
+		{
+			$where[] = "(LOWER(i.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' OR 
+						LOWER(i.description) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' OR 
+						LOWER(p.description) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
+		}
 
 		if (count($where) > 0)
 		{

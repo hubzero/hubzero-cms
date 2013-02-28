@@ -145,6 +145,32 @@ class CollectionsTableAsset extends JTable
 	}
 
 	/**
+	 * Load a record
+	 * 
+	 * @param      integer $oid     ID
+	 * @param      integer $item_id Item ID
+	 * @return     boolean True upon success, False if errors
+	 */
+	public function load($oid=null, $item_id=null)
+	{
+		if (is_numeric($oid)) 
+		{
+			return parent::load($oid);
+		}
+
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE item_id=" . $this->_db->Quote(intval($item_id)) . " AND filename=" . $this->_db->Quote($oid));
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+	}
+
+	/**
 	 * Build a query based off of filters passed
 	 * 
 	 * @param      array $filters Filters to construct query from

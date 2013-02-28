@@ -32,16 +32,17 @@
 defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Controller');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'asset.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'item.php');
+//require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'asset.php');
+//require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'item.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'post.php');
 
 /**
- * Wiki controller class for media
+ * Collections controller class for media
  */
 class CollectionsControllerMedia extends Hubzero_Controller
 {
 	/**
-	 * Download a wiki file
+	 * Download a file
 	 * 
 	 * @return     void
 	 */
@@ -51,14 +52,17 @@ class CollectionsControllerMedia extends Hubzero_Controller
 		ximport('Hubzero_Content_Server');
 
 		$file = JRequest::getVar('file', '');
+		$item = JRequest::getInt('id', 0);
+
+		$post = CollectionsModelPost::getInstance($item);
 
 		// Instantiate an attachment object
-		$asset = CollectionsModelAsset::getInstance($file);
+		$asset = CollectionsModelAsset::getInstance($file, $post->get('item_id'));
 
 		// Load the page
-		if (!$asset->get('item_id')) 
+		if (!$asset->get('id')) 
 		{
-			JError::raiseError(404, JText::_('COM_COLLECTIONS_PAGE_NOT_FOUND'));
+			JError::raiseError(404, JText::_('COM_COLLECTIONS_FILE_NOT_FOUND').'no id');
 			return;
 		}
 
@@ -67,7 +71,7 @@ class CollectionsControllerMedia extends Hubzero_Controller
 		// Ensure we have a path
 		if (!$asset->get('filename')) 
 		{
-			JError::raiseError(404, JText::_('COM_COLLECTIONS_FILE_NOT_FOUND'));
+			JError::raiseError(404, JText::_('COM_COLLECTIONS_FILE_NOT_FOUND').'no filename');
 			return;
 		}
 		if (preg_match("/^\s*http[s]{0,1}:/i", $asset->get('filename'))) 
@@ -100,10 +104,10 @@ class CollectionsControllerMedia extends Hubzero_Controller
 		}
 
 		// Get the configured upload path
-		$base_path = DS . trim($this->config->get('filepath', '/site/collections'), DS) . DS . $asset->get('item_id');
+		$filename = JPATH_ROOT . DS . trim($this->config->get('filepath', '/site/collections'), DS) . DS . $asset->get('item_id') . DS . ltrim($asset->get('filename'), DS);
 
 		// Does the path start with a slash?
-		$asset->set('filename', DS . ltrim($asset->get('filename'), DS));
+		/*$asset->set('filename', DS . ltrim($asset->get('filename'), DS));
 
 		// Does the beginning of the $attachment->path match the config path?
 		if (substr($asset->get('filename'), 0, strlen($base_path)) == $base_path) 
@@ -114,10 +118,22 @@ class CollectionsControllerMedia extends Hubzero_Controller
 		{
 			// No - append it
 			$asset->set('filename', $base_path . $asset->get('filename'));
+		}*/
+
+		jimport('joomla.filesystem.file');
+		$ext = strtolower(JFile::getExt($asset->get('filename')));
+
+		$exts = explode(',', strtolower($this->config->get('file_ext', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,wav,mp3,eps,ppt,pps,swf,tar,tex,gz')));
+
+		//make sure that file is acceptable type
+		if (!in_array($ext, $exts)) 
+		{
+			JError::raiseError(404, JText::_('Unknown file type.'));
+			return;
 		}
 
 		// Add JPATH_ROOT
-		$filename = JPATH_ROOT . $asset->get('filename');
+		//$filename = JPATH_ROOT . $asset->get('filename');
 
 		// Ensure the file exist
 		if (!file_exists($filename)) 
@@ -129,7 +145,15 @@ class CollectionsControllerMedia extends Hubzero_Controller
 		// Initiate a new content server and serve up the file
 		$xserver = new Hubzero_Content_Server();
 		$xserver->filename($filename);
-		$xserver->disposition('inline');
+		if (in_array($ext, array('jpg','jpeg','jpe','png','gif')))
+		{
+			$xserver->disposition('inline');
+		}
+		else
+		{
+			$xserver->disposition('attachment');
+		}
+		$xserver->disposition($disposition);
 		$xserver->acceptranges(false); // @TODO fix byte range support
 
 		if (!$xserver->serve()) 

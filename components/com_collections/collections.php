@@ -47,7 +47,7 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 
 ximport('Hubzero_View_Helper_Html');
 
-require_once(JPATH_COMPONENT . DS . 'models' . DS . 'collection.php');
+require_once(JPATH_COMPONENT . DS . 'models' . DS . 'collections.php');
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'collections'));
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))

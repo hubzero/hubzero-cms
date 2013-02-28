@@ -66,7 +66,7 @@ class CollectionsModelAsset extends JObject
 	 * @param      object  &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct($oid=null)
+	public function __construct($oid=null, $item_id=null)
 	{
 		$this->_db = JFactory::getDBO();
 
@@ -74,7 +74,7 @@ class CollectionsModelAsset extends JObject
 
 		if (is_numeric($oid) || is_string($oid))
 		{
-			$this->_tbl->load($oid);
+			$this->_tbl->load($oid, $item_id);
 		}
 		else if (is_object($oid))
 		{
@@ -96,7 +96,7 @@ class CollectionsModelAsset extends JObject
 	 * @param      string $scope    The page scope
 	 * @return     object WikiPage
 	 */
-	static function &getInstance($oid=null)
+	static function &getInstance($oid=null, $item_id=null)
 	{
 		static $instances;
 
@@ -107,20 +107,20 @@ class CollectionsModelAsset extends JObject
 
 		if (is_numeric($oid) || is_string($oid))
 		{
-			$key = $oid;
+			$key = $oid . '_' . $item_id;
 		}
 		else if (is_object($oid))
 		{
-			$key = $oid->id;
+			$key = $oid->id . '_' . $item_id;
 		}
 		else if (is_array($oid))
 		{
-			$key = $oid['id'];
+			$key = $oid['id'] . '_' . $item_id;
 		}
 
 		if (!isset($instances[$key])) 
 		{
-			$instances[$key] = new CollectionsModelAsset($oid);
+			$instances[$key] = new CollectionsModelAsset($oid, $item_id);
 		}
 
 		return $instances[$key];
