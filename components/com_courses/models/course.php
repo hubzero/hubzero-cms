@@ -570,7 +570,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 			{
 				if (in_array($property, array('managers')))
 				{
-					$query = "DELETE FROM $aux_table WHERE course_id=" . $this->_db->Quote($this->id) . ";";
+					$query = "DELETE FROM $aux_table WHERE course_id=" . $this->_db->Quote($this->get('id')) . ";";
 				}
 			}
 			else

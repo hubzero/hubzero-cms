@@ -181,14 +181,14 @@ class CoursesTableRole extends JTable
 		{
 			if (is_array($filters['offering_id']))
 			{
-				$filters['offering_id'] = array_map('intval', $filters['offering_id']);
-				$filters['offering_id'] = implode(',', $filters['offering_id']);
+				$offering_id = array_map('intval', $filters['offering_id']);
+				$offering_id = implode(',', $filters['offering_id']);
 			}
 			else
 			{
-				$filters['offering_id'] = intval($filters['offering_id']);
+				$offering_id = intval($filters['offering_id']);
 			}
-			$query .= " AND m.`offering_id` IN (" . $filters['offering_id'] . ")";
+			$query .= " AND m.`offering_id` IN (" . $offering_id . ")";
 		}
 		$query .= ") AS total";
 		$query .= $this->_buildquery($filters);

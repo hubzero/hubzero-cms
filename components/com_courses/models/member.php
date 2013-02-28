@@ -306,6 +306,8 @@ class CoursesModelMember extends JObject
 			$this->setError($this->_tbl->getError());
 			return false;
 		}
+
+		return true;
 	}
 
 	/**

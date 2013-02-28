@@ -70,9 +70,7 @@ function submitbutton(pressbutton)
 	}
 	
 	// form field validation
-	if ($('field-user_id').value == '') {
-		alert('<?php echo JText::_('COM_COURSES_ERROR_MISSING_INFORMATION'); ?>');
-	} else if ($('offering_id').value == '') {
+	if ($('offering_id').value == '') {
 		alert('<?php echo JText::_('COM_COURSES_ERROR_MISSING_INFORMATION'); ?>');
 	} else {
 		submitform(pressbutton);
@@ -93,6 +91,7 @@ function submitbutton(pressbutton)
 			<input type="hidden" name="offering" value="<?php echo $this->row->get('offering_id'); ?>" />
 			<input type="hidden" name="section" value="<?php echo $this->row->get('section_id'); ?>" />
 			<input type="hidden" name="fields[role_id]" value="<?php echo $this->row->get('role_id'); ?>" />
+			<input type="hidden" name="fields[user_id]" value="<?php echo $this->row->get('user_id'); ?>" />
 			
 			<table class="admintable">
 				<tbody>

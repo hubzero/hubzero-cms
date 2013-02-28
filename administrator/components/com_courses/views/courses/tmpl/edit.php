@@ -67,9 +67,9 @@ function submitbutton(pressbutton)
 	}
 	
 	// form field validation
-	if (form.description.value == '') {
+	if (form.getElementById('field-description').value == '') {
 		alert('<?php echo JText::_('COM_COURSES_ERROR_MISSING_INFORMATION'); ?>');
-	} else if (form.cn.value == '') {
+	} else if (form.getElementById('field-alias').value == '') {
 		alert('<?php echo JText::_('COM_COURSES_ERROR_MISSING_INFORMATION'); ?>');
 	} else {
 		submitform(pressbutton);
@@ -102,7 +102,7 @@ function submitbutton(pressbutton)
 						<td class="key"><label for="field-title"><?php echo JText::_('COM_COURSES_TITLE'); ?>:</label></td>
 						<td><input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" size="50" /></td>
 					</tr>
-		 			<tr>
+					<tr>
 						<td class="key" valign="top"><label for="field-description"><?php echo JText::_('Description'); ?>:</label></td>
 						<td>
 							<textarea name="fields[description]" id="field-description" cols="40" rows="15"><?php echo $this->escape(stripslashes($this->row->get('description'))); ?></textarea>

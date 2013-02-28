@@ -260,7 +260,7 @@ class CoursesControllerAssetgroups extends Hubzero_Controller
 				$id = '';
 			}
 
-			$this->view->row = CoursesModelAssetgroup::getInstance($id);
+			$this->view->row = new CoursesModelAssetgroup($id);
 		}
 
 		if (!$this->view->row->get('unit_id'))
@@ -318,7 +318,7 @@ class CoursesControllerAssetgroups extends Hubzero_Controller
 		$fields = JRequest::getVar('fields', array(), 'post');
 
 		// Instantiate an Hubzero_Course object
-		$model = CoursesModelAssetgroup::getInstance($fields['id']);
+		$model = new CoursesModelAssetgroup($fields['id']);
 
 		if (!$model->bind($fields))
 		{
@@ -339,7 +339,7 @@ class CoursesControllerAssetgroups extends Hubzero_Controller
 		// Output messsage and redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&unit=' . $model->get('unit_id'),
-			JText::_('COM_COURSES_UNIT_SAVED')
+			JText::_('COM_COURSES_ASSETGROUP_SAVED')
 		);
 	}
 
