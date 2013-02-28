@@ -139,7 +139,7 @@ WYKIWYG.converter = function() {
 					if (rel && rel[1] == 'filemacro') {
 						return '[[File(' + href[1] + (href[1] == innerHTML ? '' : ', desc="' + innerHTML + '"') + ')]]';
 					}
-					return href ? '[' + href[1] + ' ' + innerHTML + ']' : str;
+					return href ? '[' + href[1] + (href[1] == innerHTML ? '' : ' ' + innerHTML) + ']' : str;
 				}
 			},
 			{
@@ -575,7 +575,7 @@ WYKIWYG.converter = function() {
 			// Make links out of things like `http://example.com/`
 			// Must come after _DoAnchors(), otherwise declared links [http://something.com]
 			// will get converted to [<a href="http://something.com">http://something.com</a>]
-			text = _DoAutoLinks(text);
+			//text = _DoAutoLinks(text);
 			text = _EncodeAmpsAndAngles(text);
 			text = _DoItalicsAndBold(text);
 
@@ -662,7 +662,7 @@ WYKIWYG.converter = function() {
 			url = escapeCharacters(url,"*_");
 			var result = (whole_match.substr(0, 1) == ' ' ? ' ' : '') + "<a href=\"" + url + "\"";
 			
-			if (title != "") {
+			if (title != "" && title != url) {
 				title = title.replace(/"/g,"&quot;");
 				title = escapeCharacters(title,"*_");
 				result +=  " title=\"" + title + "\"";
