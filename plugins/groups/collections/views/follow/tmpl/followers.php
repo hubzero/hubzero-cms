@@ -43,8 +43,24 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 
 ximport('Hubzero_User_Profile_Helper');
 
-$base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->name;
+$base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->name;
 ?>
+
+<?php if (!$this->juser->get('guest') && !$this->params->get('access-create-item')) { ?>
+<ul id="page_options">
+	<li>
+		<?php if ($this->model->isFollowing()) { ?>
+		<a class="unfollow btn" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" href="<?php echo JRoute::_($base . '&scope=unfollow'); ?>">
+			<span><?php echo JText::_('Unfollow All'); ?></span>
+		</a>
+		<?php } else { ?>
+		<a class="follow btn" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" href="<?php echo JRoute::_($base . '&scope=follow'); ?>">
+			<span><?php echo JText::_('Follow All'); ?></span>
+		</a>
+		<?php } ?>
+	</li>
+</ul>
+<?php } ?>
 
 <form method="get" action="<?php echo JRoute::_($base . '&scope=followers'); ?>" id="collections">
 
@@ -115,9 +131,9 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') 
 				<p><?php echo JText::_('This group currently does not have anyone following it or any of its collections.'); ?></p>
 			</div><!-- / .instructions -->
 			<div class="questions">
-				<p><strong>What are followers?</strong></p>
-				<p>"Followers" are members that have decided to receive all public posts this group makes or all posts in one of this group's collections.<p>
-				<p>Followers cannot see of your private collections or posts made to private collections.<p>
+				<p><strong><?php echo JText::_('What are followers?'); ?></strong></p>
+				<p><?php echo JText::_('"Followers" are members that have decided to receive all public posts this group makes or all posts in one of this group\'s collections.'); ?><p>
+				<p><?php echo JText::_('Followers cannot see of your private collections or posts made to private collections.'); ?><p>
 			</div>
 	<?php } else { ?>
 				<p>

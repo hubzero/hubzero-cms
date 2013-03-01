@@ -40,7 +40,7 @@ if ($item->get('title')) { ?>
 <?php } 
 
 $path = DS . trim($this->params->get('filepath', '/site/collections'), DS) . DS . $item->get('id');
-$href = 'index.php?option=com_collections&task=download&id=';
+$href = 'index.php?option=com_collections&controller=media&task=download&post=';
 $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name;
 
 $assets = $item->assets();
@@ -145,20 +145,6 @@ if ($assets->total() > 0)
 <?php if ($item->get('description') || $this->row->get('description')) { ?>
 		<div class="description">
 			<?php 
-			/*ximport('Hubzero_Wiki_Parser');
-
-			$wikiconfig = array(
-				'option'   => $this->option,
-				'scope'    => 'collections',
-				'pagename' => 'collections',
-				'pageid'   => $this->row->get('id'),
-				'filepath' => '',
-				'domain'   => $this->row->get('id')
-			);
-
-			$p =& Hubzero_Wiki_Parser::getInstance();
-			//$p->parse("\n" . stripslashes($this->row->get('description')), $wikiconfig, false);
-			//*/
 			$content = ($this->row->get('description')) ? $this->row->get('description') : $item->get('description'); 
 			echo $this->parser->parse(stripslashes($content), $this->wikiconfig, false);
 			//echo ($this->row->get('description')) ? $this->escape(stripslashes($this->row->get('description'))) : $this->escape(stripslashes($item->get('description'))); 

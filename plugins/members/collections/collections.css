@@ -314,7 +314,7 @@
 	}
 	.post .actions a {
 		display: inline-block;
-		margin: 0.5em 0.4em 0 0.4em;
+		margin: 0.5em 0.3em 0 0.3em;
 		padding: 0.3em .7em;
 		-webkit-border-radius: 0.25em;
 		-moz-border-radius: 0.25em;
@@ -450,6 +450,48 @@
 	.post table span.collection:before {
 		content: "\f005";
 	}
+	
+	.post .private:before {
+		content: "\f023";
+		font-family: "Fontcons";
+		color: #666;
+		margin-right: 0.2em;
+	}
+	/*.post .access.private:before {
+		color: #fff;
+	}
+	.post .access {
+		font-weight: 700;
+		font-size: 0.85em;
+		
+		background: #999;
+		padding: .382em 1em;
+		color: white;
+		position: absolute;
+		-webkit-border-radius: 0.27em;
+		-moz-border-radius: 0.27em;
+		border-radius: 0.27em;
+		top: 1em;
+		right: -0.27em;
+		
+		-webkit-transition: all ease-in-out 0.2s;
+		-moz-transition: all ease-in-out 0.2s;
+		-o-transition: all ease-in-out 0.2s;
+		transition: all ease-in-out 0.2s;
+		-webkit-animation: pulse 1s infinite;
+		overflow: hidden;
+		width: 1em;
+		height: 1em;
+		line-height: 1;
+		white-space: nowrap;
+		padding: .5em;
+	}
+	.post .access.private {
+		background: #504545;
+		-webkit-box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.1),inset 0 0 0 4px rgba(255, 255, 255, 0.2),inset 0 0 0 2px #333;
+		-moz-box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.1),inset 0 0 0 4px rgba(255, 255, 255, 0.2),inset 0 0 0 2px #333;
+		box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.1),inset 0 0 0 4px rgba(255, 255, 255, 0.2),inset 0 0 0 2px #333;
+	}*/
 	/* Comments */
 	.convo {
 		margin: 0 -15px;
@@ -1014,4 +1056,24 @@
 	}
 	.qq-upload-list {
 		display: none;
+	}
+	
+	#sbox-content #hubForm.full fieldset {
+		margin: 0;
+	}
+	#sbox-content.fancybox-inner {
+		border: none;
+	}
+	#sbox-content #hubForm .grid {
+		position: relative;
+		border-bottom: 1px solid #ccc;
+	}
+	#sbox-content #hubForm .grid label {
+		border-bottom: none;
+	}
+	#sbox-content #hubForm .grid .or {
+		position: absolute;
+		bottom: 1em;
+		left: 50%;
+		margin-left: -0.75em;
 	}

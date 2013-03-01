@@ -46,10 +46,17 @@ function CollectionsBuildRoute(&$query)
 		//$segments[] = $query['controller'];
 		unset($query['controller']);
 	}
-	if (!empty($query['id'])) 
+	if (!empty($query['post'])) 
 	{
-		$segments[] = $query['id'];
-		unset($query['id']);
+		$segments[] = 'post';
+		$segments[] = $query['post'];
+		unset($query['post']);
+	}
+	if (!empty($query['board'])) 
+	{
+		//$segments[] = 'collection';
+		$segments[] = $query['board'];
+		unset($query['board']);
 	}
 	if (!empty($query['task'])) 
 	{
@@ -84,7 +91,8 @@ function CollectionsParseRoute($segments)
 	{
 		if (is_numeric($segments[0]))
 		{
-			$vars['id'] = $segments[0];
+			$vars['board'] = $segments[0];
+			$vars['controller'] = 'posts';
 			if (isset($segments[1])) 
 			{
 				$vars['task'] = $segments[1];
@@ -93,11 +101,23 @@ function CollectionsParseRoute($segments)
 		else
 		{
 			$vars['task'] = $segments[0];
+			if (isset($segments[1])) 
+			{
+				if (is_numeric($segments[1]))
+				{
+					$vars['post'] = $segments[1];
+					$vars['controller'] = 'posts';
+				}
+				if (isset($segments[2])) 
+				{
+					$vars['task'] = $segments[2];
+				}
+			}
 		}
 	}
-	if (isset($segments[2])) 
+	if (isset($segments[3])) 
 	{
-		$vars['file'] = $segments[2];
+		$vars['file'] = $segments[3];
 		$vars['controller'] = 'media';
 	}
 

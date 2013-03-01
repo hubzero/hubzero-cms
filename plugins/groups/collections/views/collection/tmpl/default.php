@@ -34,8 +34,24 @@ defined('_JEXEC') or die('Restricted access');
 $database = JFactory::getDBO();
 $this->juser = JFactory::getUser();
 
-$base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->name;
+$base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->name;
 ?>
+
+<?php if (!$this->juser->get('guest') && !$this->params->get('access-create-item')) { ?>
+<ul id="page_options">
+	<li>
+		<?php if ($this->model->isFollowing()) { ?>
+		<a class="unfollow btn" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" href="<?php echo JRoute::_($base . '&scope=unfollow'); ?>">
+			<span><?php echo JText::_('Unfollow All'); ?></span>
+		</a>
+		<?php } else { ?>
+		<a class="follow btn" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" href="<?php echo JRoute::_($base . '&scope=follow'); ?>">
+			<span><?php echo JText::_('Follow All'); ?></span>
+		</a>
+		<?php } ?>
+	</li>
+</ul>
+<?php } ?>
 
 <form method="get" action="<?php echo JRoute::_($base . '&scope=' . $this->collection->get('alias')); ?>" id="collections">
 
@@ -78,6 +94,19 @@ if ($this->rows->total() > 0)
 	ximport('Hubzero_User_Profile');
 	ximport('Hubzero_User_Profile_Helper');
 
+	ximport('Hubzero_Wiki_Parser');
+
+	$wikiconfig = array(
+		'option'   => $this->option,
+		'scope'    => 'collections',
+		'pagename' => 'collections',
+		'pageid'   => 0,
+		'filepath' => '',
+		'domain'   => 'collection'
+	);
+
+	$p =& Hubzero_Wiki_Parser::getInstance();
+
 	foreach ($this->rows as $row)
 	{
 		$item = $row->item();
@@ -95,11 +124,11 @@ if ($this->rows->total() > 0)
 		<div class="post <?php echo $type; ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo JRoute::_($base . '&scope=post/' . $row->get('id')); ?>" data-width="600" data-height="350">
 			<div class="content">
 			<?php
-				$type = $item->get('type');
+				/*$type = $item->get('type');
 				if (!in_array($type, array('collection', 'deleted', 'image', 'file', 'text', 'link')))
 				{
 					$type = 'link';
-				}
+				}*/
 				$view = new Hubzero_Plugin_View(
 					array(
 						'folder'  => 'groups',
@@ -116,7 +145,9 @@ if ($this->rows->total() > 0)
 				$view->timeFormat = $this->timeFormat;
 				$view->tz         = $this->tz;
 				$view->row        = $row;
-				$view->board      = $this->collection;
+				//$view->board      = $this->collection;
+				$view->parser     = $p;
+				$view->wikiconfig = $wikiconfig;
 				$view->display();
 			?>
 			<?php if (count($item->tags()) > 0) { ?>
@@ -177,8 +208,8 @@ if ($this->rows->total() > 0)
 						posted 
 						<br />
 						<span class="entry-date">
-							<span class="entry-date-at">@</span> <span class="date"><?php echo JHTML::_('date', $item->get('created'), $this->timeFormat, $this->tz); ?></span> 
-							<span class="entry-date-on">on</span> <span class="time"><?php echo JHTML::_('date', $item->get('created'), $this->dateFormat, $this->tz); ?></span>
+							<span class="entry-date-at">@</span> <span class="time"><?php echo JHTML::_('date', $item->get('created'), $this->timeFormat, $this->tz); ?></span> 
+							<span class="entry-date-on">on</span> <span class="date"><?php echo JHTML::_('date', $item->get('created'), $this->dateFormat, $this->tz); ?></span>
 						</span>
 					</p>
 				</div><!-- / .attribution -->
@@ -198,8 +229,8 @@ if ($this->rows->total() > 0)
 						</a>
 						<br />
 						<span class="entry-date">
-							<span class="entry-date-at">@</span> <span class="date"><?php echo JHTML::_('date', $row->get('created'), $this->timeFormat, $this->tz); ?></span> 
-							<span class="entry-date-on">on</span> <span class="time"><?php echo JHTML::_('date', $row->get('created'), $this->dateFormat, $this->tz); ?></span>
+							<span class="entry-date-at">@</span> <span class="time"><?php echo JHTML::_('date', $row->get('created'), $this->timeFormat, $this->tz); ?></span> 
+							<span class="entry-date-on">on</span> <span class="date"><?php echo JHTML::_('date', $row->get('created'), $this->dateFormat, $this->tz); ?></span>
 						</span>
 					</p>
 				</div><!-- / .attribution -->

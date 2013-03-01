@@ -34,10 +34,26 @@ defined('_JEXEC') or die('Restricted access');
 $database = JFactory::getDBO();
 $this->juser = JFactory::getUser();
 
-$base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->name;
+$base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->name;
 ?>
 
-<form method="get" action="<?php echo JRoute::_($base . '&task=posts'); ?>" id="collections">
+<?php if (!$this->juser->get('guest') && !$this->params->get('access-create-item')) { ?>
+<ul id="page_options">
+	<li>
+		<?php if ($this->model->isFollowing()) { ?>
+		<a class="unfollow btn" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" href="<?php echo JRoute::_($base . '&scope=unfollow'); ?>">
+			<span><?php echo JText::_('Unfollow All'); ?></span>
+		</a>
+		<?php } else { ?>
+		<a class="follow btn" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" href="<?php echo JRoute::_($base . '&scope=follow'); ?>">
+			<span><?php echo JText::_('Follow All'); ?></span>
+		</a>
+		<?php } ?>
+	</li>
+</ul>
+<?php } ?>
+
+<form method="get" action="<?php echo JRoute::_($base . '&scope=posts'); ?>" id="collections">
 
 	<fieldset class="filters">
 		<ul>
@@ -83,6 +99,19 @@ if ($this->rows->total() > 0)
 	ximport('Hubzero_User_Profile');
 	ximport('Hubzero_User_Profile_Helper');
 
+	ximport('Hubzero_Wiki_Parser');
+
+	$wikiconfig = array(
+		'option'   => $this->option,
+		'scope'    => 'collections',
+		'pagename' => 'collections',
+		'pageid'   => 0,
+		'filepath' => '',
+		'domain'   => 'posts'
+	);
+
+	$p =& Hubzero_Wiki_Parser::getInstance();
+
 	foreach ($this->rows as $row)
 	{
 		$item = $row->item();
@@ -116,7 +145,9 @@ if ($this->rows->total() > 0)
 				$view->timeFormat = $this->timeFormat;
 				$view->tz         = $this->tz;
 				$view->row        = $row;
-				$view->board      = $this->collection;
+				//$view->board      = $this->collection;
+				$view->parser     = $p;
+				$view->wikiconfig = $wikiconfig;
 				$view->display();
 			?>
 			<?php if (count($item->tags()) > 0) { ?>
@@ -202,8 +233,8 @@ if ($this->rows->total() > 0)
 						</a>
 						<br />
 						<span class="entry-date">
-							<span class="entry-date-at">@</span> <span class="date"><time datetime="<?php echo $row->get('created'); ?>"><?php echo JHTML::_('date', $row->get('created'), $this->timeFormat, $this->tz); ?></time></span> 
-							<span class="entry-date-on">on</span> <span class="time"><time datetime="<?php echo $row->get('created'); ?>"><?php echo JHTML::_('date', $row->get('created'), $this->dateFormat, $this->tz); ?></time></span>
+							<span class="entry-date-at">@</span> <span class="time"><time datetime="<?php echo $row->get('created'); ?>"><?php echo JHTML::_('date', $row->get('created'), $this->timeFormat, $this->tz); ?></time></span> 
+							<span class="entry-date-on">on</span> <span class="date"><time datetime="<?php echo $row->get('created'); ?>"><?php echo JHTML::_('date', $row->get('created'), $this->dateFormat, $this->tz); ?></time></span>
 						</span>
 					</p>
 				</div><!-- / .attribution -->
@@ -225,10 +256,10 @@ if ($this->rows->total() > 0)
 					<li><?php echo JText::_('Done!'); ?></li>
 				</ol>
 			</div><!-- / .instructions -->
-			<!-- <div class="questions">
-				<p><strong>What is the "Collect" button for?</strong></p>
-				<p>This is how you can add other content on the site to a collection. You can collect wiki pages, resources, and more. You can even collect other collections!<p>
-			</div><!- / .post-type -->
+			<div class="questions">
+				<p><strong><?php echo JText::_('What is a post?'); ?></strong></p>
+				<p><?php echo JText::_('A post starts with an image, link, or file you add to a collection. Any post can be collected (reposted onto another collection).'); ?><p>
+			</div>
 	<?php } else { ?>
 			<div class="instructions">
 				<p><?php echo JText::_('No posts available.'); ?></p>

@@ -60,6 +60,7 @@ class CollectionsControllerCollections extends Hubzero_Controller
 
 		$this->registerTask('__default', 'recent');
 		$this->registerTask('posts', 'recent');
+		$this->registerTask('all', 'collections');
 
 		parent::execute();
 	}
@@ -174,7 +175,7 @@ class CollectionsControllerCollections extends Hubzero_Controller
 
 		$model = CollectionsModel::getInstance();
 
-		$this->view->collections = $model->collections(array('count' => true));
+		$this->view->collections = $model->collections(array('count' => true, 'access' => 0));
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
@@ -221,7 +222,7 @@ class CollectionsControllerCollections extends Hubzero_Controller
 		$this->view->filters['search'] = JRequest::getVar('search', '');
 		$this->view->filters['id']     = JRequest::getInt('id', 0);
 		$this->view->filters['user_id'] = $this->juser->get('id');
-		$this->view->filters['sort']   = 'p.created';
+		//$this->view->filters['sort']   = 'p.created';
 		$this->view->filters['state']   = 1;
 		//$this->view->filters['trending'] = true;
 		//$this->view->filters['board_id'] = 0;
@@ -231,13 +232,15 @@ class CollectionsControllerCollections extends Hubzero_Controller
 		}
 		$this->view->filters['access'] = 0;
 
-		$this->view->collection = new CollectionsModelCollection();
+		$model = CollectionsModel::getInstance();
 
 		$this->view->filters['count'] = true;
-		$this->view->total = $this->view->collection->posts($this->view->filters);
+		$this->view->total = $model->collections($this->view->filters);
+
+		$this->view->posts = $model->posts($this->view->filters);
 
 		$this->view->filters['count'] = false;
-		$this->view->rows = $this->view->collection->posts($this->view->filters);
+		$this->view->rows = $model->collections($this->view->filters);
 
 		// Initiate paging
 		jimport('joomla.html.pagination');

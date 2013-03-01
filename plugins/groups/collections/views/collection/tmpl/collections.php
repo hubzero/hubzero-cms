@@ -31,8 +31,24 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->name;
+$base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->name;
 ?>
+
+<?php if (!$this->juser->get('guest') && !$this->params->get('access-create-collection')) { ?>
+<ul id="page_options">
+	<li>
+		<?php if ($this->model->isFollowing()) { ?>
+			<a class="unfollow btn" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" href="<?php echo JRoute::_($base . '&scope=unfollow'); ?>">
+				<span><?php echo JText::_('Unfollow All'); ?></span>
+			</a>
+		<?php } else { ?>
+			<a class="follow btn" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" href="<?php echo JRoute::_($base . '&scope=follow'); ?>">
+				<span><?php echo JText::_('Follow All'); ?></span>
+			</a>
+		<?php } ?>
+	</li>
+</ul>
+<?php } ?>
 
 <form method="get" action="<?php echo JRoute::_($base); ?>" id="collections">
 	<fieldset class="filters">
@@ -67,15 +83,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') 
 				<span><?php echo JText::_('New collection'); ?></span>
 			</a>
 		<?php } //else { ?>
-			<?php if ($this->model->isFollowing()) { ?>
-				<a class="unfollow btn tooltips" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" title="<?php echo JText::_('Unfollow All :: Stop following everything this user posts'); ?>" href="<?php echo JRoute::_($base . '&scope=unfollow'); ?>">
-					<span><?php echo JText::_('Unfollow All'); ?></span>
-				</a>
-			<?php } else { ?>
-				<a class="follow btn tooltips" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" title="<?php echo JText::_('Follow All :: Follow everything this user posts'); ?>" href="<?php echo JRoute::_($base . '&scope=follow'); ?>">
-					<span><?php echo JText::_('Follow All'); ?></span>
-				</a>
-			<?php } ?>
+			
 		<?php //} ?>
 		</p>
 	<?php } ?>
@@ -84,7 +92,21 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') 
 
 <?php if ($this->rows->total() > 0) { ?>
 	<div id="posts">
-	<?php foreach ($this->rows as $row) { ?>
+	<?php 
+	ximport('Hubzero_Wiki_Parser');
+
+	$wikiconfig = array(
+		'option'   => $this->option,
+		'scope'    => 'collections',
+		'pagename' => 'collections',
+		'pageid'   => 0,
+		'filepath' => '',
+		'domain'   => 'collection'
+	);
+
+	$p =& Hubzero_Wiki_Parser::getInstance();
+
+	foreach ($this->rows as $row) { ?>
 		<div class="post collection <?php echo ($row->get('access') == 4) ? 'private' : 'public'; ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>">
 			<div class="content">
 				<?php
@@ -98,6 +120,8 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') 
 						);
 						$view->row        = $row;
 						$view->collection = $row;
+						$view->parser     = $p;
+						$view->wikiconfig = $wikiconfig;
 						$view->display();
 				?>
 				<div class="meta">
@@ -152,9 +176,13 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') 
 				<ol>
 					<li><?php echo JText::_('Click on the "new collection" button.'); ?></li>
 					<li><?php echo JText::_('Add a title and maybe a description.'); ?></li>
-					<li><?php echo JText::_('Done!'); ?></li>
+					<li><?php echo JText::_('Start adding content!'); ?></li>
 				</ol>
 			</div><!-- / .instructions -->
+			<div class="questions">
+				<p><strong><?php echo JText::_('What is a collection?'); ?></strong></p>
+				<p><?php echo JText::_('A collection is where you organize posts by topic. For example, you could collect diagrams, files, resources, or wiki pages about physics for your Physics 101 collection. Collections can be private or public.'); ?><p>
+			</div>
 		<?php } else { ?>
 			<div class="instructions">
 				<p><?php echo JText::_('No collections available.'); ?></p>

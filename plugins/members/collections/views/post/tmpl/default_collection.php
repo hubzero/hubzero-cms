@@ -31,14 +31,24 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if (isset($this->collection))
+if (is_a($this->row, 'CollectionsModelCollection'))
+{
+	$collection = $this->row;
+	$content = $collection->get('description'); 
+}
+else
+{
+	$collection = CollectionsModelCollection::getInstance($this->row->item()->get('object_id'));
+	$content = ($this->row->get('description')) ? $this->row->get('description') : $collection->get('description'); 
+}
+/*if (isset($this->collection))
 {
 	$collection = $this->collection;
 }
 else
 {
 	$collection = CollectionsModelCollection::getInstance($this->row->item()->get('object_id'));
-}
+}*/
 
 switch ($collection->get('object_type'))
 {
@@ -50,23 +60,36 @@ switch ($collection->get('object_type'))
 		ximport('Hubzero_Group');
 		$group = new Hubzero_Group();
 		$group->read($collection->get('object_id'));
-		$url = 'index.php?option=com_groups&gid=' . $group->get('cn') . '&active=collections&scope=' . $collection->get('alias');
+		$url = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=collections&scope=' . $collection->get('alias');
+	break;
+
+	default:
+		$url = 'index.php?option=com_collections&task=collection&id=' . $collection->get('id');
 	break;
 }
 ?>
-		<h4>
+		<h4<?php if ($collection->get('access', 0) == 4) { echo ' class="private"'; } ?>>
 			<a href="<?php echo JRoute::_($url); ?>">
-				<?php echo ($collection->get('title')) ? $this->escape(stripslashes($collection->get('title'))) : $this->escape(stripslashes($this->row->get('title'))); ?>
+				<?php echo $this->escape(stripslashes($collection->get('title'))); //($collection->get('title')) ? $this->escape(stripslashes($collection->get('title'))) : $this->escape(stripslashes($this->row->get('title'))); ?>
 			</a>
 		</h4>
-		<p class="description">
-			<?php echo ($this->row->get('description')) ? $this->escape(stripslashes($this->row->get('description'))) : $this->escape(stripslashes($collection->get('description'))); ?>
-		</p>
-		<table summary="<?php echo JText::_('Board content counts'); ?>">
+		<div class="description">
+			<?php /*if ($collection->get('access', 0) == 4) { ?>
+			<span class="access private">
+				<?php echo JText::_('Private'); ?>
+			</span>
+			<?php }*/ ?>
+			<?php 
+			//$content = ($this->row->get('description')) ? $this->row->get('description') : $collection->get('description'); 
+			echo $this->parser->parse(stripslashes($content), $this->wikiconfig, false);
+			//echo ($this->row->get('description')) ? $this->escape(stripslashes($this->row->get('description'))) : $this->escape(stripslashes($collection->get('description'))); 
+			?>
+		</div>
+		<table summary="<?php echo JText::_('Collection content counts'); ?>">
 			<tbody>
 				<tr>
 					<!-- <td>
-						<strong><?php echo $collection->count('image'); ?></strong> <span class="post-type image">images</span>
+						<strong><?php //echo $collection->count('image'); ?></strong> <span class="post-type image">images</span>
 					</td> -->
 					<td>
 						<strong><?php echo $collection->count('file'); ?></strong> <span class="post-type file"><?php echo JText::_('files'); ?></span>

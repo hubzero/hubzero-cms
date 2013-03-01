@@ -349,7 +349,7 @@ HUB.Plugins.MembersCollections = {
 			});
 		});*/
 
-		$("#ajax-uploader-list .item-asset").sortable({
+		$("#ajax-uploader-list").sortable({
 			handle: '.asset-handle'
 		});
 	}, // end initialize

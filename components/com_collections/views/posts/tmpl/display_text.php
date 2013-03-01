@@ -38,6 +38,10 @@ $item = $this->row->item();
 			<?php echo $this->escape(stripslashes($item->get('title'))); ?>
 		</h4>
 <?php } ?>
-		<p class="description">
-			<?php echo $this->escape(stripslashes($item->get('description'))); ?>
-		</p>
+		<div class="description">
+			<?php 
+			//echo ($this->row->get('description')) ? $this->escape(stripslashes($this->row->get('description'))) : $this->escape(stripslashes($item->get('description'))); 
+			$content = ($this->row->get('description')) ? $this->row->get('description') : $item->get('description'); 
+			echo $this->parser->parse(stripslashes($content), $this->wikiconfig, false);
+			?>
+		</div>

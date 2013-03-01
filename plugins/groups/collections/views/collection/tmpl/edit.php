@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->name;
+$base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->name;
 
 if (!$this->entry->exists())
 {
@@ -69,10 +69,10 @@ else
 	<input type="hidden" name="fields[state]" value="<?php echo $this->entry->get('state'); ?>" />
 	<input type="hidden" name="fields[access]" value="<?php echo $this->params->get('access-plugin'); ?>" />
 
-	<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
+	<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="active" value="<?php echo $this->name; ?>" />
-	<input type="hidden" name="task" value="savecollection" />
+	<input type="hidden" name="action" value="savecollection" />
 		
 	<p class="submit">
 		<input type="submit" value="<?php echo JText::_('PLG_GROUPS_' . strtoupper($this->name) . '_SAVE'); ?>" />

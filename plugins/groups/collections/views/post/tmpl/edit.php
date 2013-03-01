@@ -54,7 +54,7 @@ if ($type && !in_array($type, array('file', 'image', 'text', 'link')))
 	$type = 'link';
 }
 
-$base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->name;
+$base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->name;
 
 ximport('Hubzero_Wiki_Editor');
 $editor =& Hubzero_Wiki_Editor::getInstance();
@@ -139,6 +139,8 @@ if (!$dir)
 					{
 			?>
 					<p class="item-asset">
+						<span class="asset-handle">
+						</span>
 						<span class="asset-file">
 						<?php if ($asset->get('type') == 'link') { ?>
 							<input type="text" name="assets[<?php echo $i; ?>][filename]" size="35" value="<?php echo $this->escape(stripslashes($asset->get('filename'))); ?>" placeholder="http://" />
@@ -224,23 +226,23 @@ if (!$dir)
 <?php if ($this->entry->get('original')) { ?>
 		<div class="group">
 <?php } ?>
+		<?php if ($this->collections->total() > 0) { ?>
 			<label for="post-collection_id">
-				<?php echo JText::_('Collection'); ?>
+				<?php echo JText::_('Select collection'); ?>
 				<select name="post[collection_id]" id="post-collection_id">
-<?php 
-if ($this->collections->total() > 0)
-{
-	foreach ($this->collections as $collection)
-	{
-?>
+				<?php foreach ($this->collections as $collection) { ?>
 					<option value="<?php echo $this->escape($collection->get('id')); ?>"<?php if ($this->collection->get('id') == $collection->get('id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($collection->get('title'))); ?></option>
-<?php
-	}
-}
-?>
+				<?php } ?>
 				</select>
 				<span class="hint"><?php echo JText::_('Select from the list of collections you have access to.'); ?></span>
 			</label>
+		<?php } else { ?>
+			<label for="post-collection_title">
+				<?php echo JText::_('Create collection'); ?>
+				<input type="text" name="collection_title" id="post-collection_title" value="" />
+				<span class="hint"><?php echo JText::_('Create a collection for this post to go in.'); ?></span>
+			</label>
+		<?php } ?>
 <?php if ($this->entry->get('original')) { ?>
 			<label>
 				<?php echo JText::_('PLG_GROUPS_' . strtoupper($this->name) . '_FIELD_TAGS'); ?> <!-- <span class="optional">optional</span> -->
@@ -265,10 +267,10 @@ if ($this->collections->total() > 0)
 	<input type="hidden" name="post[id]" value="<?php echo $this->entry->get('id'); ?>" />
 	<input type="hidden" name="post[item_id]" id="post-item_id" value="<?php echo $this->entry->get('item_id'); ?>" />
 
-	<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
+	<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="active" value="<?php echo $this->name; ?>" />
-	<input type="hidden" name="task" value="save" />
+	<input type="hidden" name="action" value="save" />
 		
 	<p class="submit">
 		<input type="submit" value="<?php echo JText::_('PLG_GROUPS_' . strtoupper($this->name) . '_SAVE'); ?>" />

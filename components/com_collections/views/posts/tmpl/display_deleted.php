@@ -31,6 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 ?>
-		<p class="description">
-			<?php echo JText::_('This bulletin has been deleted by the original creator.'); ?>
-		</p>
+		<div class="description">
+			<p><?php echo JText::_('This bulletin has been deleted by the original creator.'); ?></p>
+		</div>

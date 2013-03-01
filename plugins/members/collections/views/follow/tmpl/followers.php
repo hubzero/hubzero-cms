@@ -136,9 +136,9 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 				<p><?php echo JText::_('You currently do not have anyone following you or any of your collections. :('); ?></p>
 			</div><!-- / .instructions -->
 			<div class="questions">
-				<p><strong>What are followers?</strong></p>
-				<p>"Followers" are members that have decided to receive all public posts you make or all posts in one of your collections.<p>
-				<p>Followers cannot see of your private collections or posts made to private collections.<p>
+				<p><strong><?php echo JText::_('What are followers?'); ?></strong></p>
+				<p><?php echo JText::_('"Followers" are members that have decided to receive all public posts you make or all posts in one of your collections.'); ?><p>
+				<p><?php echo JText::_('Followers cannot see of your private collections or posts made to private collections.'); ?><p>
 			</div>
 	<?php } else { ?>
 				<p>

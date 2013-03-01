@@ -31,15 +31,25 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if (isset($this->collection))
+if (is_a($this->row, 'CollectionsModelCollection'))
+{
+	$collection = $this->row;
+	$content = $collection->get('description'); 
+}
+else
+{
+	$collection = CollectionsModelCollection::getInstance($this->row->item()->get('object_id'));
+	$content = ($this->row->get('description')) ? $this->row->get('description') : $collection->get('description'); 
+}
+/*if (isset($this->collection))
 {
 	$collection = $this->collection;
 }
 else
 {
 	$collection = CollectionsModelCollection::getInstance($this->row->item()->get('object_id'));
-}
-
+}*/
+//print_r($collection);
 switch ($collection->get('object_type'))
 {
 	case 'member':
@@ -52,16 +62,24 @@ switch ($collection->get('object_type'))
 		$group->read($collection->get('object_id'));
 		$url = 'index.php?option=com_groups&gid=' . $group->get('cn') . '&active=collections&scope=' . $collection->get('alias');
 	break;
+	
+	default:
+		$url = 'index.php?option=com_collections&task=collection&id=' . $collection->get('id');
+	break;
 }
 ?>
 		<h4>
 			<a href="<?php echo JRoute::_($url); ?>">
-				<?php echo ($collection->get('title')) ? $this->escape(stripslashes($collection->get('title'))) : $this->escape(stripslashes($this->row->get('title'))); ?>
+				<?php echo $this->escape(stripslashes($collection->get('title'))); //($collection->get('title')) ? $this->escape(stripslashes($collection->get('title'))) : $this->escape(stripslashes($this->row->get('title'))); ?>
 			</a>
 		</h4>
-		<p class="description">
-			<?php echo ($this->row->get('description')) ? $this->escape(stripslashes($this->row->get('description'))) : $this->escape(stripslashes($collection->get('description'))); ?>
-		</p>
+		<div class="description">
+			<?php 
+			//$content = ($this->row->get('description')) ? $this->row->get('description') : $collection->get('description'); 
+			echo $this->parser->parse(stripslashes($content), $this->wikiconfig, false);
+			//echo ($this->row->get('description')) ? $this->escape(stripslashes($this->row->get('description'))) : $this->escape(stripslashes($collection->get('description'))); 
+			?>
+		</div>
 		<table summary="Board content counts">
 			<tbody>
 				<tr>

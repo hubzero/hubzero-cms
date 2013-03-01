@@ -601,4 +601,25 @@ class CollectionsModelCollection extends JObject
 
 		return true;
 	}
+
+	/**
+	 * Get the URL for this group
+	 *
+	 * @return     string
+	 */
+	public function link()
+	{
+		switch ($this->get('object_type'))
+		{
+			case 'group':
+				$href = 'index.php?option=com_groups&gid=' . $this->get('object_id') . '&active=collections&scope=' . $this->get('alias');
+			break;
+
+			case 'member':
+			default:
+				$href = 'index.php?option=com_members&id=' . $this->get('object_id') . '&active=collections&task=' . $this->get('alias');
+			break;
+		}
+		return $href;
+	}
 }

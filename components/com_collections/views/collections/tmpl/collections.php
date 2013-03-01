@@ -60,71 +60,37 @@ $base = 'index.php?option=' . $this->option;
 	<ul>
 		<li>
 			<a class="about btn" href="<?php echo JRoute::_($base . '&task=about'); ?>">
-				<span><?php echo JText::_('About'); ?></span>
+				<span><?php echo JText::_('Getting started'); ?></span>
 			</a>
 		</li>
 	</ul>
 </div>
 
-<!-- <div id="sub-menu">
-	<ul>
-		<li<?php if ($this->task == 'popular') { echo ' class="active"'; } ?>>
-			<a href="<?php echo JRoute::_($base . '&controller=' . $this->controller . '&task=popular'); ?>">
-				<span><?php echo JText::_('Popular posts'); ?></span>
-			</a>
-		</li>
-		<li<?php if ($this->task == 'recent') { echo ' class="active"'; } ?>>
-			<a href="<?php echo JRoute::_($base . '&controller=' . $this->controller . '&task=recent'); ?>">
-				<span><?php echo JText::_('Recent posts'); ?></span>
-			</a>
-		</li>
-		<li<?php if ($this->task == 'spotlight') { echo ' class="active"'; } ?>>
-			<a href="<?php echo JRoute::_($base . '&controller=' . $this->controller . '&task=spotlight'); ?>">
-				<span><?php echo JText::_('Collection Spotlight'); ?></span>
-			</a>
-		</li>
-	</ul>
-	<div class="clear"></div>
-</div> -->
-
 <form method="get" action="<?php echo JRoute::_($base . '&controller=' . $this->controller . '&task=' . $this->task); ?>" id="collections">
 	<fieldset class="filters">
 		<div class="filters-inner">
-		<ul>
-			<li>
-				<a class="collections count" href="<?php echo JRoute::_($base . '&task=all'); ?>">
-					<span><?php echo JText::sprintf('<strong>%s</strong> collections', $this->collections); ?></span>
-				</a>
-			</li>
-			<li>
-				<a class="posts count active" href="<?php echo JRoute::_($base . '&task=posts'); ?>">
-					<span><?php echo JText::sprintf('<strong>%s</strong> posts', $this->total); ?></span>
-				</a>
-			</li>
-		</ul>
-		<div class="clear"></div>
-		<p>
-			<label for="filter-search">
-				<span><?php echo JText::_('Search'); ?></span>
-				<input type="text" name="search" id="filter-search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search for posts'); ?>" />
-			</label>
-			<input type="submit" class="filter-submit" value="<?php echo JText::_('Go'); ?>" />
-		</p>
-		</div>
+			<ul>
+				<li>
+					<a class="collections count active" href="<?php echo JRoute::_($base . '&task=all'); ?>">
+						<span><?php echo JText::sprintf('<strong>%s</strong> collections', $this->total); ?></span>
+					</a>
+				</li>
+				<li>
+					<a class="posts count" href="<?php echo JRoute::_($base . '&task=posts'); ?>">
+						<span><?php echo JText::sprintf('<strong>%s</strong> posts', $this->posts); ?></span>
+					</a>
+				</li>
+			</ul>
+			<div class="clear"></div>
+			<p>
+				<label for="filter-search">
+					<span><?php echo JText::_('Search'); ?></span>
+					<input type="text" name="search" id="filter-search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search collections'); ?>" />
+				</label>
+				<input type="submit" class="filter-submit" value="<?php echo JText::_('Go'); ?>" />
+			</p>
+		</div><!-- / .filters-inner -->
 	</fieldset>
-	<!-- <fieldset class="overview">
-		<p>
-			<span class="collections count">
-				<?php echo JText::sprintf('<strong>%s</strong> collections', $this->collections); ?>
-			</span>
-			<span class="posts count">
-				<?php echo JText::sprintf('<strong>%s</strong> posts', $this->total); ?>
-			</span>
-			<label>
-				<input type="text" name="search" value="" placeholder="Search for posts" />
-			</label>
-		</p>
-	</fieldset> -->
 
 	<div class="main section">
 		<div id="posts">
@@ -155,19 +121,15 @@ if ($this->rows->total() > 0)
 		{
 			$item->set('type', 'deleted');
 		}
+		$type = $item->get('type');
+		if (!in_array($type, array('collection', 'deleted', 'image', 'file', 'text', 'link')))
+		{
+			$type = 'link';
+		}
 ?>
-		<div class="post <?php echo $item->get('type'); ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo JRoute::_($base . '&controller=posts&id=' . $row->get('id')); ?>" data-width="600" data-height="350">
+		<div class="post <?php echo $type; ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo JRoute::_($base . '&controller=collection&id=' . $row->get('id')); ?>" data-width="600" data-height="350">
 			<div class="content">
 				<?php
-					$type = $item->get('type');
-					if (!in_array($type, array('collection', 'deleted', 'image', 'file', 'text', 'link')))
-					{
-						$type = 'link';
-					}
-					/*if (strstr($type, ':'))
-					{
-						$type = substr($type, strrpos($type, ':'));
-					}*/
 					$view = new JView(
 						array(
 							'name'    => 'posts',
@@ -180,7 +142,7 @@ if ($this->rows->total() > 0)
 					$view->timeFormat = $this->timeFormat;
 					$view->tz         = $this->tz;
 					$view->row        = $row;
-					$view->collection = $this->collection;
+					//$view->collection = $this->collection;
 					$view->parser     = $p;
 					$view->wikiconfig = $wikiconfig;
 					$view->display();
@@ -195,39 +157,39 @@ if ($this->rows->total() > 0)
 						<span class="likes">
 							<?php echo JText::sprintf('%s likes', $item->get('positive', 0)); ?>
 						</span>
-						<span class="comments">
-							<?php echo JText::sprintf('%s comments', $item->get('comments', 0)); ?>
-						</span>
 						<span class="reposts">
 							<?php echo JText::sprintf('%s reposts', $item->get('reposts', 0)); ?>
 						</span>
 					</p>
+				<?php if (!$this->juser->get('guest')) { ?>
 					<div class="actions">
-				<?php if ($row->get('created_by') == $this->juser->get('id')) { ?>
-						<a class="edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&controller=posts&id=' . $row->get('id') . '&task=edit'); ?>">
-							<span><?php echo JText::_('Edit'); ?></span>
-						</a>
-				<?php } else { ?>
-						<a class="vote <?php echo ($row->get('voted')) ? 'unlike' : 'like'; ?>" data-id="<?php echo $row->get('id'); ?>" data-text-like="<?php echo JText::_('Like'); ?>" data-text-unlike="<?php echo JText::_('Unlike'); ?>" href="<?php echo JRoute::_($base . '&controller=posts&id=' . $row->get('id') . '&task=vote'); ?>">
-							<span><?php echo ($row->get('voted')) ? JText::_('Unlike') : JText::_('Like'); ?></span>
-						</a>
-				<?php } ?>
-						<a class="comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&controller=posts&id=' . $row->get('id') . '&task=comment'); ?>">
-							<span><?php echo JText::_('Comment'); ?></span>
-						</a>
-						<a class="repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&controller=posts&id=' . $row->get('id') . '&task=repost'); ?>">
-							<span><?php echo JText::_('Repost'); ?></span>
-						</a>
-				<?php if ($row->get('original') && ($row->get('created_by') == $this->juser->get('id') || $this->config->get('access-delete-bulletin'))) { ?>
-						<a class="delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&controller=posts&id=' . $row->get('id') . '&task=delete'); ?>">
-							<span><?php echo JText::_('Delete'); ?></span>
-						</a>
-				<?php } /*else if ($row->poster == $this->juser->get('id') || $this->config->get('access-edit-bulletin')) { ?>
-						<a class="unpost" data-id="<?php echo $row->id; ?>" href="<?php echo JRoute::_($base . '&controller=posts&id=' . $row->post_id . '&task=unpost'); ?>">
-							<span><?php echo JText::_('Unpost'); ?></span>
-						</a>
-				<?php }*/ ?>
+						<?php if ($row->get('object_type') == 'member' && $row->get('object_id') == $this->juser->get('id')) { ?>
+							<?php //if ($this->juser->get('id') == $item->get('object_id')) { ?>
+								<a class="edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($row->link() . '/edit'); ?>">
+									<span><?php echo JText::_('Edit'); ?></span>
+								</a>
+							<?php //} ?>
+							<?php //if ($this->juser->get('id') == $item->get('object_id')) { ?>
+								<a class="delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($row->link() . '/delete'); ?>">
+									<span><?php echo JText::_('Delete'); ?></span>
+								</a>
+							<?php // } ?>
+						<?php } else { ?>
+								<a class="repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&controller=posts&board=' . $row->get('id') . '&task=collect'); ?>">
+									<span><?php echo JText::_('Collect'); ?></span>
+								</a>
+							<?php if ($row->isFollowing()) { ?>
+								<a class="unfollow" data-id="<?php echo $row->get('id'); ?>" data-text-follow="<?php echo JText::_('Follow'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow'); ?>" href="<?php echo JRoute::_($row->link() . '/unfollow'); ?>">
+									<span><?php echo JText::_('Unfollow'); ?></span>
+								</a>
+							<?php } else { ?>
+								<a class="follow" data-id="<?php echo $row->get('id'); ?>" data-text-follow="<?php echo JText::_('Follow'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow'); ?>" href="<?php echo JRoute::_($row->link() . '/follow'); ?>">
+									<span><?php echo JText::_('Follow'); ?></span>
+								</a>
+							<?php } ?>
+						<?php } ?>
 					</div><!-- / .actions -->
+				<?php } ?>
 				</div><!-- / .meta -->
 				<div class="convo attribution clearfix">
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->creator()->get('uidNumber') . '&active=collections'); ?>" title="<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" class="img-link">
@@ -237,10 +199,7 @@ if ($this->rows->total() > 0)
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->creator()->get('uidNumber') . '&active=collections'); ?>">
 							<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
 						</a> 
-						onto 
-						<a href="<?php echo JRoute::_($row->link()); ?>">
-							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
-						</a>
+
 						<br />
 						<span class="entry-date">
 							<span class="entry-date-at">@</span> <span class="time"><?php echo JHTML::_('date', $row->get('created'), $this->timeFormat, $this->tz); ?></span> 

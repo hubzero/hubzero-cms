@@ -25,25 +25,17 @@
 	#page_menu li .collections:before {
 		content: "\f005"; /*"\f08d";*/
 	}
+	.com_groups .clearfix {
+		line-height: inherit;
+		height: auto;
+		clear: left;
+	}
 	.com_groups #hubForm.full fieldset {
 		width: auto;
 		float: none;
 	}
 	.com_groups #hubForm.full .submit {
 		margin-right: 0;
-	}
-	/*#collections fieldset,
-	#collection fieldset {
-		background: #e1e1e1;
-		padding: 1em 20px;
-		margin: -20px -20px 20px -20px;
-	}*/
-	#posts {
-	}
-	.com_groups .clearfix {
-		line-height: inherit;
-		height: auto;
-		clear: left;
 	}
 	
 	p.overview,
@@ -64,12 +56,12 @@
 	p.overview span {
 		margin-right: 1em;
 	}
-	p.overview a span {
-		margin-right: 0;
-	}
 	p.overview a {
 		float: right;
 		margin-left: 1em;
+	}
+	p.overview a span {
+		margin-right: 0em;
 	}
 	fieldset.filters ul {
 		list-style: none;
@@ -258,7 +250,7 @@
 	.post .stats {
 		overflow: hidden;
 		border-bottom: 1px solid #d4d4d4;
-		background-color: #f0f0f0;
+		background: #f0f0f0;
 		color: #bbb;
 		padding: 0.7em 1.4em;
 		margin: 0;
@@ -298,12 +290,15 @@
 	}
 	.post .description {
 		margin: 0;
-		padding: 1em 1.4em 1em 1.4em;
+		padding: 0em 1.4em 0em 1.4em;
 		overflow: hidden;
 		word-wrap: break-word;
 	}
 	.post .tags-wrap {
-		padding: 0 1.4em 1em 1.4em;
+		padding: 1em 1.4em 1em 1.4em;
+	}
+	.post .description + .tags-wrap {
+		padding-top: 0;
 	}
 	/* Actions */
 	.post .actions {
@@ -394,6 +389,9 @@
 		-webkit-transition: opacity 0.3s;
 		width: 100%;
 	}
+	.full .img-link img {
+		width: auto;
+	}
 	.post .img-link {
 		position: relative;
 	}
@@ -452,6 +450,48 @@
 	.post table span.collection:before {
 		content: "\f005";
 	}
+	
+	.post .private:before {
+		content: "\f023";
+		font-family: "Fontcons";
+		color: #666;
+		margin-right: 0.2em;
+	}
+	/*.post .access.private:before {
+		color: #fff;
+	}
+	.post .access {
+		font-weight: 700;
+		font-size: 0.85em;
+		
+		background: #999;
+		padding: .382em 1em;
+		color: white;
+		position: absolute;
+		-webkit-border-radius: 0.27em;
+		-moz-border-radius: 0.27em;
+		border-radius: 0.27em;
+		top: 1em;
+		right: -0.27em;
+		
+		-webkit-transition: all ease-in-out 0.2s;
+		-moz-transition: all ease-in-out 0.2s;
+		-o-transition: all ease-in-out 0.2s;
+		transition: all ease-in-out 0.2s;
+		-webkit-animation: pulse 1s infinite;
+		overflow: hidden;
+		width: 1em;
+		height: 1em;
+		line-height: 1;
+		white-space: nowrap;
+		padding: .5em;
+	}
+	.post .access.private {
+		background: #504545;
+		-webkit-box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.1),inset 0 0 0 4px rgba(255, 255, 255, 0.2),inset 0 0 0 2px #333;
+		-moz-box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.1),inset 0 0 0 4px rgba(255, 255, 255, 0.2),inset 0 0 0 2px #333;
+		box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.1),inset 0 0 0 4px rgba(255, 255, 255, 0.2),inset 0 0 0 2px #333;
+	}*/
 	/* Comments */
 	.convo {
 		margin: 0 -15px;
@@ -628,10 +668,15 @@
 	tr.collection .entry-id {
 		width: 40px;
 		height: 40px;
+		display: block;
 	}
 	tr.collection .entry-id:before {
 		content: "\f005";
 		font-size: 35px;
+		display: block;
+		width: 40px;
+		height: 40px;
+		text-indent: 0;
 	}
 	table.following tbody td:last-child {
 		text-align: right;
@@ -749,6 +794,9 @@
 		padding: 1em 1.4em;
 		background-color: #f0f0f0;
 	}
+	#collection-introduction ol {
+		list-style: decimal;
+	}
 
 	/*#hubForm ul.post-type,
 	ul.post-type {
@@ -849,7 +897,34 @@
 	}
 	#hubForm .item-asset .asset-file {
 		margin-right: 4em;
-		display: block;
+		display: inline-block;
+	}
+	#hubForm .item-asset .asset-handle {
+		margin-right: 1em;
+		display: inline-block;
+		width: 16px;
+		height: 16px;
+		position: relative;
+	}
+	#hubForm .item-asset .asset-handle:after {
+		display: inline-block;
+		width: 1em;
+		height: 1em;
+		position: absolute;
+		top: 0.2em;
+		left: 0;
+		content: "\f0dc";
+		font-family: "Fontcons";
+		font-size: 16px;
+		line-height: 1;
+		color: #ccc;
+	}
+	#hubForm .item-asset:hover .asset-handle,
+	#hubForm .item-asset:hover .asset-handle:after,
+	#hubForm .item-asset .asset-handle:hover:after,
+	#hubForm .item-asset .asset-handle:after:hover {
+		cursor: move;
+		color: #333;
 	}
 	#hubForm .item-asset span.asset-description {
 		position: absolute;
@@ -981,4 +1056,24 @@
 	}
 	.qq-upload-list {
 		display: none;
+	}
+	
+	#sbox-content #hubForm.full fieldset {
+		margin: 0;
+	}
+	#sbox-content.fancybox-inner {
+		border: none;
+	}
+	#sbox-content #hubForm .grid {
+		position: relative;
+		border-bottom: 1px solid #ccc;
+	}
+	#sbox-content #hubForm .grid label {
+		border-bottom: none;
+	}
+	#sbox-content #hubForm .grid .or {
+		position: absolute;
+		bottom: 1em;
+		left: 50%;
+		margin-left: -0.75em;
 	}

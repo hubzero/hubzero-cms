@@ -39,7 +39,11 @@ $item = $this->row->item();
 			</a>
 		</p>
 <?php if ($item->get('description') || $this->row->get('description')) { ?>
-		<p class="description">
-			<?php echo ($this->row->get('description')) ? $this->escape(stripslashes($this->row->get('description'))) : $this->escape(stripslashes($item->get('description'))); ?>
-		</p>
+		<div class="description">
+			<?php 
+			//echo ($this->row->get('description')) ? $this->escape(stripslashes($this->row->get('description'))) : $this->escape(stripslashes($item->get('description'))); 
+			$content = ($this->row->get('description')) ? $this->row->get('description') : $item->get('description'); 
+			echo $this->parser->parse(stripslashes($content), $this->wikiconfig, false);
+			?>
+		</div>
 <?php } ?>

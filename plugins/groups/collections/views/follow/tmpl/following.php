@@ -34,8 +34,24 @@ defined('_JEXEC') or die('Restricted access');
 $database = JFactory::getDBO();
 $this->juser = JFactory::getUser();
 
-$base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->name;
+$base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->name;
 ?>
+
+<?php if (!$this->juser->get('guest') && !$this->params->get('access-create-item')) { ?>
+<ul id="page_options">
+	<li>
+		<?php if ($this->model->isFollowing()) { ?>
+		<a class="unfollow btn" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" href="<?php echo JRoute::_($base . '&scope=unfollow'); ?>">
+			<span><?php echo JText::_('Unfollow All'); ?></span>
+		</a>
+		<?php } else { ?>
+		<a class="follow btn" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" href="<?php echo JRoute::_($base . '&scope=follow'); ?>">
+			<span><?php echo JText::_('Follow All'); ?></span>
+		</a>
+		<?php } ?>
+	</li>
+</ul>
+<?php } ?>
 
 <form method="get" action="<?php echo JRoute::_($base . '&scope=following'); ?>" id="collections">
 
@@ -122,10 +138,10 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') 
 					</ol>
 				</div><!-- / .instructions -->
 				<div class="questions">
-					<p><strong>What is following?</strong></p>
-					<p>"Following" someone means you'll see that person's posts on this page in real time. If he/she creates a new collection, you’ll automatically follow the new collection as well.<p>
-					<p>You can follow individual collections if you're only interested in seeing posts being added to specific collections.<p>
-					<p>You can unfollow other people or collections at any time.</p>
+					<p><strong><?php echo JText::_('What is following?'); ?></strong></p>
+					<p><?php echo JText::_('"Following" someone means you\'ll see that person\'s posts on this page in real time. If he/she creates a new collection, you\'ll automatically follow the new collection as well.'); ?><p>
+					<p><?php echo JText::_('You can follow individual collections if you\'re only interested in seeing posts being added to specific collections.'); ?><p>
+					<p><?php echo JText::_('You can unfollow other people or collections at any time.'); ?></p>
 				</div>
 		<?php } else { ?>
 					<p>

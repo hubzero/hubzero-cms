@@ -124,6 +124,19 @@ if ($this->rows->total() > 0)
 	?>
 	<div id="posts">
 	<?php
+	ximport('Hubzero_Wiki_Parser');
+
+	$wikiconfig = array(
+		'option'   => $this->option,
+		'scope'    => 'collections',
+		'pagename' => 'collections',
+		'pageid'   => 0,
+		'filepath' => '',
+		'domain'   => 'collection'
+	);
+
+	$p =& Hubzero_Wiki_Parser::getInstance();
+
 	foreach ($this->rows as $row)
 	{
 ?>
@@ -140,6 +153,8 @@ if ($this->rows->total() > 0)
 						);
 						$view->row        = $row;
 						$view->collection = $row;
+						$view->parser     = $p;
+						$view->wikiconfig = $wikiconfig;
 						$view->display();
 				?>
 				<div class="meta">

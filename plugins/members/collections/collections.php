@@ -258,6 +258,13 @@ class plgMembersCollections extends JPlugin
 		$filters = array(
 			'count' => true
 		);
+
+		if (!$this->model->collections($filters))
+		{
+			$collection = $this->model->collection(0);
+			$collection->setup($this->member->get('uidNumber'), 'member');
+		}
+
 		if (!$this->params->get('access-manage-collection')) 
 		{
 			$filters['access'] = 0;
@@ -314,17 +321,21 @@ class plgMembersCollections extends JPlugin
 		$view->filters['limit']       = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
 		$view->filters['start']       = JRequest::getInt('limitstart', 0);
 
-		$filters = array();
-		$filters['user_id'] = $this->juser->get('id');
-		$filters['state']   = 1;
+		//$filters = array();
+		//$filters['user_id'] = $this->juser->get('id');
+		//$filters['state']   = 1;
 
-		$filters = array();
+		//$filters = array();
+		$count = array(
+			'count'  => true
+		);
+
 		if (!$this->params->get('access-manage-collection')) 
 		{
-			$filters['access'] = 0;
+			$count['access'] = 0;
 		}
 
-		$filters['count'] = true;
+		/*$filters['count'] = true;
 		$view->collections = $this->model->collections($filters);
 
 		$filters['count'] = false;
@@ -337,11 +348,15 @@ class plgMembersCollections extends JPlugin
 			{
 				$view->posts += $row->get('posts');
 			}
-		}
+		}*/
 
-		$view->following = $this->model->following(array('count' => true));
+		$view->collections = $this->model->collections($count);
 
-		$view->total = $this->model->followers(array('count' => true));
+		$view->posts       = $this->model->posts($count);
+
+		$view->following   = $this->model->following($count);
+
+		$view->total = $this->model->followers($count);
 
 		$view->rows = $this->model->followers($view->filters);
 
@@ -402,22 +417,27 @@ class plgMembersCollections extends JPlugin
 		$filters['user_id'] = $this->juser->get('id');
 		$filters['state']   = 1;
 
+		$count = array(
+			'count'  => true
+		);
+
 		$filters = array();
 		if (!$this->params->get('access-manage-collection')) 
 		{
 			$filters['access'] = 0;
+			$count['access'] = 0;
 		}
 
 		//$filters['count'] = true;
-		$view->collections = $this->model->collections(array('count' => true));
+		$view->collections = $this->model->collections($count);
 
-		$view->posts = $this->model->posts(array('count' => true));
+		$view->posts       = $this->model->posts($count);
 
-		$view->followers = $this->model->followers(array('count' => true));
+		$view->followers   = $this->model->followers($count);
 
-		$view->total = $this->model->followers(array('count' => true));
+		$view->total = $this->model->followers($count);
 
-		$view->rows = $this->model->following($view->filters);
+		$view->rows  = $this->model->following($view->filters);
 
 		jimport('joomla.html.pagination');
 		$view->pageNav = new JPagination(
@@ -481,16 +501,21 @@ class plgMembersCollections extends JPlugin
 		$filters['state']   = 1;
 
 		//$filters = array();
+		$count = array(
+			'count'  => true
+		);
+
 		if (!$this->params->get('access-manage-collection')) 
 		{
 			$filters['access'] = 0;
+			$count['access'] = 0;
 		}
 
 		$filters['count'] = true;
 		$view->total = $this->model->collections($filters);
 
 		$filters['count'] = false;
-		$view->rows = $this->model->collections($filters);
+		$view->rows  = $this->model->collections($filters);
 
 		$view->posts = 0;
 		if ($view->rows) 
@@ -501,9 +526,9 @@ class plgMembersCollections extends JPlugin
 			}
 		}
 
-		$view->followers = $this->model->followers(array('count' => true));
+		$view->followers = $this->model->followers($count);
 
-		$view->following = $this->model->following(array('count' => true));
+		$view->following = $this->model->following($count);
 
 		jimport('joomla.html.pagination');
 		$view->pageNav = new JPagination(
@@ -797,20 +822,21 @@ class plgMembersCollections extends JPlugin
 		$view->filters['collection_id'] = JRequest::getVar('board', '');
 
 		// Filters for returning results
-		$filters = array();
-		$filters['count'] = true;
+		$count = array(
+			'count' => true
+		);
 		if (!$this->params->get('access-manage-collection')) 
 		{
-			$filters['access'] = 0;
+			$count['access'] = 0;
 		}
 
-		$view->collections = $this->model->collections($filters);
+		$view->collections = $this->model->collections($count);
 
-		$view->posts = $this->model->posts(array('count' => true));
+		$view->posts       = $this->model->posts($count);
 
-		$view->followers = $this->model->followers(array('count' => true));
+		$view->followers   = $this->model->followers($count);
 
-		$view->following = $this->model->following(array('count' => true));
+		$view->following   = $this->model->following($count);
 
 		$view->filters['collection_id'] = $this->model->following(array(), 'collections');
 		$view->collection = CollectionsModelCollection::getInstance();
@@ -890,18 +916,23 @@ class plgMembersCollections extends JPlugin
 
 		// Filters for returning results
 		//$filters = array();
+		$count = array(
+			'count' => true
+		);
+
 		if (!$this->params->get('access-manage-collection')) 
 		{
 			$view->filters['access'] = 0;
+			$count['access'] = $view->filters['access'];
 		}
 
-		$view->collections = $this->model->collections(array('count' => true));
+		$view->collections = $this->model->collections($count);
 
-		$view->posts = $this->model->posts(array('count' => true));
+		$view->posts       = $this->model->posts($count);
 
-		$view->followers = $this->model->followers(array('count' => true));
+		$view->followers   = $this->model->followers($count);
 
-		$view->following = $this->model->following(array('count' => true));
+		$view->following   = $this->model->following($count);
 
 		$view->collection = CollectionsModelCollection::getInstance();
 
@@ -1062,12 +1093,12 @@ class plgMembersCollections extends JPlugin
 		$view->collection = $this->model->collection(JRequest::getVar('board', 0));
 
 		$view->collections = $this->model->collections();
-		/*if (!$view->collections->total())
+		if (!$view->collections->total())
 		{
 			$view->collection->setup($this->member->get('uidNumber'), 'member');
 			$view->collections = $this->model->collections();
 			$view->collection = $this->model->collection(JRequest::getVar('board', 0));
-		}*/
+		}
 
 		$view->entry = $view->collection->post($id);
 		if (!$view->collection->exists() && $view->entry->exists())

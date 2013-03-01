@@ -631,20 +631,32 @@ class CollectionsModelItem extends JObject
 
 		if ($this->get('_assets'))
 		{
+			$k = 0;
 			foreach ($this->get('_assets') as $i => $asset)
 			{
+				$k++;
+
 				$a = new CollectionsModelAsset($asset['id']);
 				if (!$a->exists())
 				{
 					continue;
 				}
+				$a->set('ordering', $k);
 				$a->set('filename', $asset['filename']);
 				//$a->set('description', $asset['description']);
-				if (!$a->store())
+				if (strtolower($a->get('filename')) == 'http://')
+				{
+					if (!$a->remove())
+					{
+						$this->setError($a->getError());
+					}
+				}
+				else if (!$a->store())
 				{
 					$this->setError($a->getError());
 				}
 			}
+			$a->reorder();
 		}
 
 		/*if ($this->get('_files'))

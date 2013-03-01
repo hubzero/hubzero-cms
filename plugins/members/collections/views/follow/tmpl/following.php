@@ -143,10 +143,10 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 					</ol>
 				</div><!-- / .instructions -->
 				<div class="questions">
-					<p><strong>What is following?</strong></p>
-					<p>"Following" someone means you'll see that person's posts on this page in real time. If he/she creates a new collection, you’ll automatically follow the new collection as well.<p>
-					<p>You can follow individual collections if you're only interested in seeing posts being added to specific collections.<p>
-					<p>You can unfollow other people or collections at any time.</p>
+					<p><strong><?php echo JText::_('What is following?'); ?></strong></p>
+					<p><?php echo JText::_('"Following" someone means you\'ll see that person\'s posts on this page in real time. If he/she creates a new collection, you\'ll automatically follow the new collection as well.'); ?><p>
+					<p><?php echo JText::_('You can follow individual collections if you\'re only interested in seeing posts being added to specific collections.'); ?><p>
+					<p><?php echo JText::_('You can unfollow other people or collections at any time.'); ?></p>
 				</div>
 		<?php } else { ?>
 					<p>

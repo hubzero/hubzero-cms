@@ -85,9 +85,9 @@ HUB.Plugins.GroupsFileUpload = {
 	
 	updateFileList: function() {
 		var $ = HUB.Plugins.GroupsFileUpload.jQuery;
-		
+
 		if ($('#ajax-uploader')) {
-			//$('.qq-upload-list').empty();
+			$('#ajax-uploader-list').sortable('enable');
 
 			$.get($('#ajax-uploader').attr('data-list') + $('#field-dir').val(), {}, function(data) {
 				$('#ajax-uploader-list').html(data);

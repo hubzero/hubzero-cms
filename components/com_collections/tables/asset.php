@@ -93,6 +93,13 @@ class CollectionsTableAsset extends JTable
 	var $type = NULL;
 
 	/**
+	 * int(3)
+	 * 
+	 * @var integer 
+	 */
+	var $ordering = NULL;
+
+	/**
 	 * Constructor
 	 *
 	 * @param      object &$db JDatabase
@@ -139,9 +146,24 @@ class CollectionsTableAsset extends JTable
 			$this->created = date('Y-m-d H:i:s', time());  // use gmdate() ?
 			$this->created_by = $juser->get('id');
 			$this->state = 1;
+
+			$this->ordering = $this->_getHighestOrdering($this->item_id) + 1;
 		}
 
 		return true;
+	}
+
+	/**
+	 * Get the last page in the ordering
+	 * 
+	 * @param      string  $gid    Group alias (cn)
+	 * @return     integer
+	 */
+	public function _getHighestOrdering($item_id)
+	{
+		$sql = "SELECT ordering from $this->_tbl WHERE item_id=" . $this->_db->Quote(intval($item_id)) . " ORDER BY ordering DESC LIMIT 1";
+		$this->_db->setQuery($sql);
+		return $this->_db->loadResult();
 	}
 
 	/**
@@ -254,7 +276,7 @@ class CollectionsTableAsset extends JTable
 
 		if (!isset($filters['sort']) || !$filters['sort']) 
 		{
-			$filters['sort'] = 'a.created';
+			$filters['sort'] = 'a.ordering';
 		}
 		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
 		{
@@ -366,4 +388,23 @@ class CollectionsTableAsset extends JTable
 
 		return parent::delete();
 	}
+
+	/**
+	 * Inserts a new row if id is zero or updates an existing row in the database table
+	 *
+	 * Can be overloaded/supplemented by the child class
+	 *
+	 * @access public
+	 * @param boolean If false, null object variables are not updated
+	 * @return null|string null if successful otherwise returns and error message
+	 */
+	/*public function store($updateNulls=false)
+	{
+		$res = parent::store($updateNulls);
+		if ($res)
+		{
+			$this->reorder("item_id=" . $this->_db->Quote(intval($this->item_id)));
+		}
+		return $res;
+	}*/
 }

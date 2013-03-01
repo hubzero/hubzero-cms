@@ -326,7 +326,7 @@ class plgGroupsCollections extends JPlugin
 	 */
 	private function _login()
 	{
-		$route = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->_name);
+		$route = JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name);
 
 		$app =& JFactory::getApplication();
 		$app->enqueueMessage(JText::_('GROUPS_LOGIN_NOTICE'), 'warning');
@@ -355,6 +355,7 @@ class plgGroupsCollections extends JPlugin
 		$view->option      = $this->option;
 		$view->group       = $this->group;
 		$view->params      = $this->params;
+		$view->model       = $this->model;
 
 		Hubzero_Document::addPluginScript('members', $this->_name);
 
@@ -365,17 +366,22 @@ class plgGroupsCollections extends JPlugin
 		$view->filters['limit']       = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
 		$view->filters['start']       = JRequest::getInt('limitstart', 0);
 
-		$filters = array();
-		$filters['user_id'] = $this->juser->get('id');
-		$filters['state']   = 1;
+		//$filters = array();
+		//$filters['user_id'] = $this->juser->get('id');
+		//$filters['state']   = 1;
 
-		$filters = array();
+		//$filters = array();
+		$count = array(
+			'count'  => true
+		);
+
 		if (!$this->params->get('access-manage-collection')) 
 		{
-			$filters['access'] = 0;
+			$count['access'] = 0;
+			$view->filters['access'] = 0;
 		}
 
-		$filters['count'] = true;
+		/*$filters['count'] = true;
 		$view->collections = $this->model->collections($filters);
 
 		$filters['count'] = false;
@@ -388,13 +394,16 @@ class plgGroupsCollections extends JPlugin
 			{
 				$view->posts += $row->get('posts');
 			}
-		}
+		}*/
+		$view->collections = $this->model->collections($count);
 
-		$view->following = $this->model->following(array('count' => true));
+		$view->posts       = $this->model->posts($count);
 
-		$view->total = $this->model->followers(array('count' => true));
+		$view->following   = $this->model->following($count);
 
-		$view->rows = $this->model->followers($view->filters);
+		$view->total = $this->model->followers($count);
+
+		$view->rows  = $this->model->followers($view->filters);
 
 		jimport('joomla.html.pagination');
 		$view->pageNav = new JPagination(
@@ -403,7 +412,7 @@ class plgGroupsCollections extends JPlugin
 			$view->filters['limit']
 		);
 
-		$view->pageNav->setAdditionalUrlParam('gid', $this->group->get('gidNumber'));
+		$view->pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
 		$view->pageNav->setAdditionalUrlParam('active', $this->_name);
 		$view->pageNav->setAdditionalUrlParam('scope', 'followers');
 
@@ -458,9 +467,14 @@ class plgGroupsCollections extends JPlugin
 		$filters['state']       = 1;
 
 		//$filters = array();
+		$count = array(
+			'count'  => true
+		);
+
 		if (!$this->params->get('access-manage-collection')) 
 		{
 			$filters['access'] = 0;
+			$count['access'] = 0;
 		}
 
 		$filters['count'] = true;
@@ -478,11 +492,11 @@ class plgGroupsCollections extends JPlugin
 			}
 		}
 
-		$view->followers = $this->model->followers(array('count' => true));
+		$view->followers = $this->model->followers($count);
 
 		if ($this->params->get('access-can-follow')) 
 		{
-			$view->following = $this->model->following(array('count' => true));
+			$view->following = $this->model->following($count);
 		}
 
 		//$view->likes = 0; //$vote->getLikes($view->filters);
@@ -494,7 +508,7 @@ class plgGroupsCollections extends JPlugin
 			$view->filters['limit']
 		);
 
-		$view->pageNav->setAdditionalUrlParam('gid', $view->group->get('cn'));
+		$view->pageNav->setAdditionalUrlParam('cn', $view->group->get('cn'));
 		$view->pageNav->setAdditionalUrlParam('active', $this->_name);
 		$view->pageNav->setAdditionalUrlParam('scope', 'all');
 
@@ -531,6 +545,7 @@ class plgGroupsCollections extends JPlugin
 		$view->dateFormat  = $this->dateFormat;
 		$view->timeFormat  = $this->timeFormat;
 		$view->tz          = $this->tz;
+		$view->model      = $this->model;
 
 		//Hubzero_Document::addPluginScript('groups', $this->_name, 'jquery.masonry');
 		Hubzero_Document::addComponentScript('com_collections', 'assets/js/jquery.masonry');
@@ -570,7 +585,7 @@ class plgGroupsCollections extends JPlugin
 			$view->filters['limit']
 		);
 
-		$view->pageNav->setAdditionalUrlParam('gid', $view->group->get('cn'));
+		$view->pageNav->setAdditionalUrlParam('cn', $view->group->get('cn'));
 		$view->pageNav->setAdditionalUrlParam('active', $this->_name);
 		$view->pageNav->setAdditionalUrlParam('scope', $view->collection->get('alias'));
 
@@ -641,7 +656,7 @@ class plgGroupsCollections extends JPlugin
 		if (JRequest::getInt('no_html', 0))
 		{
 			$response = new stdClass;
-			$response->href = JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=collections' . $sfx);
+			$response->href = JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=collections' . $sfx);
 			$response->success = true;
 			if ($this->getError())
 			{
@@ -708,7 +723,7 @@ class plgGroupsCollections extends JPlugin
 		if (JRequest::getInt('no_html', 0))
 		{
 			$response = new stdClass;
-			$response->href = JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=collections' . $sfx);
+			$response->href = JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=collections' . $sfx);
 			$response->success = true;
 			if ($this->getError())
 			{
@@ -747,6 +762,7 @@ class plgGroupsCollections extends JPlugin
 		$view->dateFormat = $this->dateFormat;
 		$view->timeFormat = $this->timeFormat;
 		$view->tz         = $this->tz;
+		$view->model      = $this->model;
 
 		Hubzero_Document::addComponentScript('com_collections', 'assets/js/jquery.masonry');
 		Hubzero_Document::addComponentScript('com_collections', 'assets/js/jquery.infinitescroll');
@@ -766,20 +782,25 @@ class plgGroupsCollections extends JPlugin
 		$view->filters['object_id']  = $this->group->get('gidNumber');
 
 		// Filters for returning results
+		$count = array(
+			'count' => true
+		);
+
 		if (!$this->params->get('access-manage-collection')) 
 		{
 			$view->filters['access'] = 0;
+			$count['access'] = $view->filters['access'];
 		}
 
-		$view->collections = $this->model->collections(array('count' => true));
+		$view->collections = $this->model->collections($count);
 
-		$view->posts = $this->model->posts(array('count' => true));
+		$view->posts       = $this->model->posts($count);
 
-		$view->followers = $this->model->followers(array('count' => true));
+		$view->followers   = $this->model->followers($count);
 
 		if ($this->params->get('access-can-follow')) 
 		{
-			$view->following = $this->model->following(array('count' => true));
+			$view->following   = $this->model->following($count);
 		}
 
 		$view->collection = CollectionsModelCollection::getInstance();
@@ -795,7 +816,7 @@ class plgGroupsCollections extends JPlugin
 			$view->filters['limit']
 		);
 
-		$view->pageNav->setAdditionalUrlParam('gid', $view->group->get('cn'));
+		$view->pageNav->setAdditionalUrlParam('cn', $view->group->get('cn'));
 		$view->pageNav->setAdditionalUrlParam('active', $this->_name);
 		$view->pageNav->setAdditionalUrlParam('scope', 'posts');
 
@@ -832,6 +853,7 @@ class plgGroupsCollections extends JPlugin
 		$view->dateFormat  = $this->dateFormat;
 		$view->timeFormat  = $this->timeFormat;
 		$view->tz          = $this->tz;
+		$view->model      = $this->model;
 
 		$post_id = JRequest::getInt('post', 0);
 
@@ -887,7 +909,7 @@ class plgGroupsCollections extends JPlugin
 		{
 			$app =& JFactory::getApplication();
 			$app->enqueueMessage(JText::_('You are not authorized to perform this action.'), 'error');
-			$app->redirect(JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->_name));
+			$app->redirect(JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name));
 			return;
 		}
 
@@ -934,6 +956,14 @@ class plgGroupsCollections extends JPlugin
 
 		$view->collection = $this->model->collection(JRequest::getVar('board', 0));
 
+		$view->collections = $this->model->collections();
+		if (!$view->collections->total())
+		{
+			$view->collection->setup($this->group->get('cn'), 'group');
+			$view->collections = $this->model->collections();
+			$view->collection = $this->model->collection(JRequest::getVar('board', 0));
+		}
+
 		$view->entry = $view->collection->post($id);
 		if (!$view->collection->exists() && $view->entry->exists())
 		{
@@ -955,13 +985,6 @@ class plgGroupsCollections extends JPlugin
 		}
 		else
 		{
-			$view->collections = $this->model->collections();
-			if (!$view->collections->total())
-			{
-				$view->collection->setup($this->group->get('cn'), 'group');
-				$view->collections = $this->model->collections();
-			}
-
 			Hubzero_Document::addPluginScript('groups', $this->_name);
 
 			return $view->loadTemplate();
@@ -1025,6 +1048,19 @@ class plgGroupsCollections extends JPlugin
 			$post->set('item_id', $row->get('id'));
 			$post->set('original', 1);
 		}
+
+		$coltitle = JRequest::getVar('collection_title', '', 'post');
+		if (!$p['collection_id'] && $coltitle)
+		{
+			$collection = new CollectionsModelCollection();
+			$collection->set('title', $coltitle);
+			$collection->set('object_id', $this->group->get('gidNumber'));
+			$collection->set('object_type', 'group');
+			$collection->store();
+
+			$p['collection_id'] = $collection->get('id');
+		}
+
 		$post->set('collection_id', $p['collection_id']);
 		if (isset($p['description']))
 		{
@@ -1042,7 +1078,7 @@ class plgGroupsCollections extends JPlugin
 		}
 
 		$app =& JFactory::getApplication();
-		$app->redirect(JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $this->model->collection($p['collection_id'])->get('alias')));
+		$app->redirect(JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $this->model->collection($p['collection_id'])->get('alias')));
 	}
 
 	/**
@@ -1188,7 +1224,7 @@ class plgGroupsCollections extends JPlugin
 			$this->setError($post->getError());
 		}
 
-		$route = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $collection->get('alias'));
+		$route = JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $collection->get('alias'));
 
 		if (($no_html = JRequest::getInt('no_html', 0)))
 		{
@@ -1228,7 +1264,7 @@ class plgGroupsCollections extends JPlugin
 			$this->setError($post->getError());
 		}
 
-		$route = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->_name);
+		$route = JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name);
 
 		if (($no_html = JRequest::getInt('no_html', 0)))
 		{
@@ -1320,7 +1356,7 @@ class plgGroupsCollections extends JPlugin
 		}
 
 		// Redirect to collection
-		$route = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $collection->get('alias'));
+		$route = JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $collection->get('alias'));
 
 		if ($no_html)
 		{
@@ -1442,7 +1478,7 @@ class plgGroupsCollections extends JPlugin
 
 		// Display the main listing
 		$app =& JFactory::getApplication();
-		$app->redirect(JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $collection->get('alias')));
+		$app->redirect(JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $collection->get('alias')));
 	}
 
 	/**
@@ -1471,7 +1507,7 @@ class plgGroupsCollections extends JPlugin
 		// Access check
 		if (!$this->params->get('access-create-collection') && !$this->params->get('access-edit-collection')) 
 		{
-			$board = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->_name);
+			$board = JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name);
 			$app =& JFactory::getApplication();
 			$app->enqueueMessage(JText::_('You are not authorized to edit this collection.'), 'error');
 			$app->redirect($board);
@@ -1559,7 +1595,7 @@ class plgGroupsCollections extends JPlugin
 
 		// Redirect to collection
 		$app =& JFactory::getApplication();
-		$app->redirect(JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $row->get('alias')));
+		$app->redirect(JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $row->get('alias')));
 	}
 
 	/**
@@ -1642,7 +1678,7 @@ class plgGroupsCollections extends JPlugin
 		}
 
 		// Redirect to main view
-		$route = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->_name);
+		$route = JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name);
 
 		if ($no_html)
 		{

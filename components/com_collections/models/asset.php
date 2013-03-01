@@ -326,5 +326,19 @@ class CollectionsModelAsset extends JObject
 
 		return true;
 	}
+
+	/**
+	 * Update ordering
+	 *
+	 * @return    boolean True on success, false if errors
+	 */
+	public function reorder($item_id=0)
+	{
+		if (!$item_id)
+		{
+			$item_id = $this->get('item_id');
+		}
+		return $this->_tbl->reorder("item_id=" . $this->_db->Quote(intval($item_id)));
+	}
 }
 

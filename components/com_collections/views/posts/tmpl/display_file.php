@@ -40,7 +40,7 @@ if ($item->get('title')) { ?>
 <?php } 
 
 $path = DS . trim($this->params->get('filepath', '/site/collections'), DS) . DS . $item->get('id');
-$href = 'index.php?option=com_collections&task=download&id=';
+$href = 'index.php?option=com_collections&controller=media&post=';
 $base = 'index.php?option=' . $this->option;
 
 $assets = $item->assets();
@@ -70,8 +70,8 @@ if ($assets->total() > 0)
 		$ratio = $originalWidth / $originalHeight;
 		?>
 			<div class="holder">
-				<a rel="lightbox" href="<?php echo JRoute::_($href . $this->row->get('id') . '&file=' . ltrim($first->get('filename'), DS)); ?>" class="img-link">
-					<img src="<?php echo JRoute::_($href . $this->row->get('id') . '&file=' . ltrim($first->get('filename'), DS)); ?>" alt="<?php echo ($first->get('description')) ? $this->escape(stripslashes($first->get('description'))) : ''; ?>" class="img" style="height: <?php echo round(300 / $ratio, 0, PHP_ROUND_HALF_UP); ?>px;" />
+				<a rel="lightbox" href="<?php echo JRoute::_($href . $this->row->get('id') . '&task=download&file=' . ltrim($first->get('filename'), DS)); ?>" class="img-link">
+					<img src="<?php echo JRoute::_($href . $this->row->get('id') . '&task=download&file=' . ltrim($first->get('filename'), DS)); ?>" alt="<?php echo ($first->get('description')) ? $this->escape(stripslashes($first->get('description'))) : ''; ?>" class="img" style="height: <?php echo round(300 / $ratio, 0, PHP_ROUND_HALF_UP); ?>px;" />
 				</a>
 			</div>
 		<?php
@@ -83,8 +83,8 @@ if ($assets->total() > 0)
 			foreach ($images as $asset)
 			{
 				?>
-				<a rel="lightbox" href="<?php echo JRoute::_($href . $this->row->get('id') . '&file=' . ltrim($asset->get('filename'), DS)); ?>" class="img-link">
-					<img src="<?php echo JRoute::_($href . $this->row->get('id') . '&file=' . ltrim($asset->get('filename'), DS)); ?>" alt="<?php echo ($asset->get('description')) ? $this->escape(stripslashes($asset->get('description'))) : ''; ?>" class="img" />
+				<a rel="lightbox" href="<?php echo JRoute::_($href . $this->row->get('id') . '&task=download&file=' . ltrim($asset->get('filename'), DS)); ?>" class="img-link">
+					<img src="<?php echo JRoute::_($href . $this->row->get('id') . '&task=download&file=' . ltrim($asset->get('filename'), DS)); ?>" alt="<?php echo ($asset->get('description')) ? $this->escape(stripslashes($asset->get('description'))) : ''; ?>" class="img" />
 				</a>
 				<?php
 			}
@@ -104,7 +104,7 @@ if ($assets->total() > 0)
 		{
 ?>
 				<li class="type-<?php echo $asset->get('type'); ?>">
-					<a href="<?php echo ($asset->get('type') == 'link') ? $asset->get('filename') : JRoute::_($href . $this->row->get('id') . '&file=' . ltrim($asset->get('filename'), DS)); ?>">
+					<a href="<?php echo ($asset->get('type') == 'link') ? $asset->get('filename') : JRoute::_($href . $this->row->get('id') . '&task=download&file=' . ltrim($asset->get('filename'), DS)); ?>">
 						<?php echo $asset->get('filename'); ?>
 					</a>
 					<span class="file-meta">

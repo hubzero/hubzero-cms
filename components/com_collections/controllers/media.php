@@ -52,7 +52,7 @@ class CollectionsControllerMedia extends Hubzero_Controller
 		ximport('Hubzero_Content_Server');
 
 		$file = JRequest::getVar('file', '');
-		$item = JRequest::getInt('id', 0);
+		$item = JRequest::getInt('post', 0);
 
 		$post = CollectionsModelPost::getInstance($item);
 

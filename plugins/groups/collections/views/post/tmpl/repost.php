@@ -45,14 +45,16 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=' . $this->name . '&scope=' . $task); ?>" method="post" id="hubForm" class="full">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->name . '&scope=' . $task); ?>" method="post" id="hubForm" class="full">
 	<fieldset>
 		<legend><?php echo JText::_('Collect'); ?></legend>
 
+		<div class="grid">
+		<div class="two columns first">
 		<label for="field-collection_id">
-			<?php echo JText::_('Collection'); ?>
+			<?php echo JText::_('Select collection'); ?>
 			<select name="collection_id" id="field-collection_id">
-				<option value="0"><?php echo JText::_('Select a collection...'); ?></option>
+				<option value="0"><?php echo JText::_('Select ...'); ?></option>
 				<optgroup label="<?php echo JText::_('My collections'); ?>">
 <?php 
 if ($this->myboards)
@@ -96,6 +98,16 @@ if ($this->groupboards)
 ?>
 			</select>
 		</label>
+		</div>
+		<p class="or">OR</p>
+		<div class="two columns second">
+			<label for="field-collection_title">
+				<?php echo JText::_('Create collection'); ?>
+				<input type="text" name="collection_title" id="field-collection_title" />
+			</label>
+		</div>
+		<div class="clear"></div>
+		</div>
 
 		<label for="field_description">
 			<?php echo JText::_('Add a description'); ?>

@@ -206,6 +206,7 @@ class CollectionsTablePost extends JTable
 		if (isset($filters['access'])) 
 		{
 			$where[] = "i.access=" . $this->_db->Quote($filters['access']);
+			$where[] = "c.access=" . $this->_db->Quote($filters['access']);
 		}
 		if (isset($filters['original'])) 
 		{

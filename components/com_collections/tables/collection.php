@@ -220,7 +220,7 @@ class CollectionsTableCollection extends JTable
 		$result = array(
 			'id'          => 0,
 			'title'       => JText::_('Favorites'),
-			'description' => JText::_('This is a default collection we set up for you. Feel free to change how you like.'),
+			'description' => JText::_('This is a default collection we set up for you. Feel free to change it how you like.'),
 			'object_id'   => $object_id,
 			'object_type' => $object_type,
 			'is_default'  => 1,
