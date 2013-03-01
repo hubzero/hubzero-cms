@@ -110,9 +110,9 @@ if ($this->newtags) {
 		if ($this->showsizes == 1) {
 			$size = $this->min_font_size + ($newtag->tcount - $this->min_qty) * $this->step;
 			$size = ($size > $this->max_font_size) ? $this->max_font_size : $size;
-			$tl[$newtag->tag] = "\t".'<li'.$class.'><span style="font-size: '. round($size,1) .'em"><a href="'.JRoute::_('index.php?option=' . $option . '&tag='.$newtag->tag).'">'.$this->escape(stripslashes($newtag->raw_tag)).' <span>' . $newtag->tcount . '</span></a></span></li>' . "\n";
+			$tl[$newtag->tag] = "\t".'<li'.$class.'><span style="font-size: '. round($size,1) .'em"><a href="'.JRoute::_('index.php?option=' . $option . '&tag='.$newtag->tag).'">'.$this->escape(stripslashes($newtag->raw_tag)). '</a></li>'."\n"; //' <span>' . $newtag->tcount . '</span></a></span></li>' . "\n";
 		} else {
-			$tl[$newtag->tag] = "\t".'<li'.$class.'><a href="'.JRoute::_('index.php?option=' . $option . '&tag='.$newtag->tag).'">'.$this->escape(stripslashes($newtag->raw_tag)).' <span>' . $newtag->tcount . '</span></a></li>'."\n";
+			$tl[$newtag->tag] = "\t".'<li'.$class.'><a href="'.JRoute::_('index.php?option=' . $option . '&tag='.$newtag->tag).'">'.$this->escape(stripslashes($newtag->raw_tag)). '</a></li>'."\n"; //' <span>' . $newtag->tcount . '</span></a></li>'."\n";
 		}
 	}
 	ksort($tl);
@@ -148,9 +148,9 @@ if ($tags) {
 		if ($this->showsizes == 1) {
 			$size = $this->min_font_size + ($tag->tcount - $this->min_qty) * $this->step;
 			$size = ($size > $this->max_font_size) ? $this->max_font_size : $size;
-			$tll[$tag->tag] = "\t".'<li'.$class.'><span style="font-size: '. round($size, 1) .'em"><a href="' . JRoute::_('index.php?option=' . $option . '&tag=' . $tag->tag) . '">' . $this->escape(stripslashes($tag->raw_tag)) . ' <span>' . $tag->tcount . '</span></a></span></li>' . "\n";
+			$tll[$tag->tag] = "\t".'<li'.$class.'><span style="font-size: '. round($size, 1) .'em"><a href="' . JRoute::_('index.php?option=' . $option . '&tag=' . $tag->tag) . '">' . $this->escape(stripslashes($tag->raw_tag)) . '</a></li>'."\n"; //' <span>' . $tag->tcount . '</span></a></span></li>' . "\n";
 		} else {
-			$tll[$tag->tag] = "\t".'<li'.$class.'><a href="'.JRoute::_('index.php?option=' . $option . '&tag=' . $tag->tag) . '">' . $this->escape(stripslashes($tag->raw_tag)) . ' <span>' . $tag->tcount . '</span></a></li>'."\n";
+			$tll[$tag->tag] = "\t".'<li'.$class.'><a href="'.JRoute::_('index.php?option=' . $option . '&tag=' . $tag->tag) . '">' . $this->escape(stripslashes($tag->raw_tag)) . '</a></li>'."\n"; //' <span>' . $tag->tcount . '</span></a></li>'."\n";
 		}
 	}
 	ksort($tll);

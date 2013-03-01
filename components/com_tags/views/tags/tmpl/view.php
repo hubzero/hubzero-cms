@@ -314,6 +314,10 @@ foreach ($this->results as $category)
 			$num = ($this->filters['start']+1).'-'.$ttl.' of ';
 		} else {
 			$ttl = ($total > ($this->filters['limit'] + $this->filters['start'])) ? ($this->filters['limit'] + $this->filters['start']) : $total;
+			if ($total && !$ttl)
+			{
+				$ttl = $total;
+			}
 			$num = ($this->filters['start']+1).'-'.$ttl.' of ';
 		}
 
@@ -403,6 +407,7 @@ if ($dopaging) {
 		$this->filters['limit']
 	);
 
+	$pageNav->setAdditionalUrlParam('task', 'view');
 	$pageNav->setAdditionalUrlParam('tag', $this->tagstring);
 	$pageNav->setAdditionalUrlParam('active', $this->active);
 	$pageNav->setAdditionalUrlParam('sort', $this->filters['sort']);
@@ -412,5 +417,6 @@ if ($dopaging) {
 		</div><!-- / .container -->
 	</div><!-- / .subject -->
 	<div class="clear"></div>
+	<input type="hidden" name="task" value="view" />
 	</form>
 </div><!-- / .main section -->
