@@ -803,7 +803,7 @@ class JPagination extends JObject
 			$data->pages[$i] = new JPaginationObject($i, $this->prefix);
 			if ($i != $this->get('pages.current') || $this->_viewall)
 			{
-				$data->pages[$i]->base = $offset;
+				$data->pages[$i]->base = ($this->_viewall) ? null : $offset;
 				$data->pages[$i]->link = JRoute::_($params . '&' . $this->prefix . 'limitstart=' . $offset);
 			}
 		}
