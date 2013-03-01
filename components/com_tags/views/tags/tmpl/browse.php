@@ -97,6 +97,10 @@ $this->filters['sort'] = '';
 				
 				<table class="entries" id="taglist" summary="<?php echo JText::_('COM_TAGS_TABLE_SUMMARY'); ?>">
 <?php
+					if (!$this->filters['limit'])
+					{
+						$this->filters['limit'] = $this->total;
+					}
 					$s = ($this->total > 0) ? $this->filters['start']+1 : $this->filters['start'];
 					$e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
 					//$e = ($this->filters['limit'] > $this->total) ? $this->filters['start'] + $this->filters['limit'] : $this->filters['start'] + $this->filters['limit'];
