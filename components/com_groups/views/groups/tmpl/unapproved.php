@@ -23,28 +23,30 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @author    Christopher Smoak <csmoak@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-$juri =& JURI::getInstance();
-
-$sef = JRoute::_('index.php?option='.$this->option.'&cn='. $this->group->get('cn').'&active=members');
-if (substr($sef,0,1) == '/') {
-	$sef = substr($sef,1,strlen($sef));
-}
-
-$message  = JText::sprintf('COM_GROUPS_EMAIL_MEMBERSHIP_ACCEPTED_DETAILS',$this->sitename)."\n\n";
-$message .= "\t".' '.JText::_('COM_GROUPS_GROUP').': '. $this->group->get('description') .' ('.$this->group->get('cn').')'."\n";
-$message .= "\t".' '.JText::_('COM_GROUPS_EMAIL_MEMBERSHIP_ACCEPTED_SUBJECT').': '."\n";
-$message .= "\t\t".$this->juser->get('name')."\n";
-$message .= "\t\t". $this->juser->get('username') .' ('. $this->juser->get('email') . ')'."\n\n";
-$message .= JText::_('COM_GROUPS_EMAIL_MEMBERSHIP_ACCEPTED_LINK')."\n";
-$message .= $juri->base().$sef."\n";
-
-echo $message;
+defined('_JEXEC') or die('Restricted access');
 ?>
+
+<div id="content-header">
+	<h2><?php echo $this->title; ?></h2>
+</div>
+
+<div class="group-unapproved">
+	<span class="name">
+		<?php echo $this->group->get('description'); ?>
+	</span>
+	<span class="description"><?php echo JText::_('COM_GROUPS_PENDING_APPROVAL_WARNING'); ?></span>
+	
+	<?php if(in_array($this->juser->get('id'), $this->group->get('invitees'))) : ?>
+		<hr />
+		<a href="<?php echo JRoute::_('index.php?option=com_groups&controller=groups&gid='.$this->group->get('cn').'&task=accept'); ?>" class="group-invited">Accept Group Invite</a>
+		<hr />
+	<?php endif; ?>
+	
+	<a class="all-groups" href="/groups">&lsaquo; Go Back to Groups</a> | <a class="my-groups" href="/members/myaccount/groups">Go to My Groups &rsaquo;</a>
+</div>

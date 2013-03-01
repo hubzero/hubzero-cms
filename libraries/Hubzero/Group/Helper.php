@@ -184,7 +184,7 @@ class Hubzero_Group_Helper
 		//check to see if we have any groups to show
 		if(!$groups)
 		{
-			return "<p class=\"info\">".JText::sprintf('COM_GROUPS_NO_'.str_replace(" ", "_",strtoupper($name)), $user->get("id"))."</p>";
+			return "<p class=\"info\">".JText::sprintf('COM_GROUPS_INTRO_NO_'.str_replace(" ", "_",strtoupper($name)), $user->get("id"))."</p>";
 		}
 		
 		//var to hold html
@@ -288,7 +288,7 @@ class Hubzero_Group_Helper
 						$d_cls = "";
 					}
 					$html .= "<div class=\"details{$d_cls}\">";
-						$html .= "<h3><a href=\"/groups/{$group->cn}\">{$hg->description}</a></h3>";
+						$html .= "<h3><a href=\"" . JRoute::_('index.php?option=com_groups&task=view&cn=' . $group->cn) . "\">{$hg->description}</a></h3>";
 						if($gdescription)
 						{
 							$html .= "<p>{$gdescription}</p>";
@@ -431,7 +431,7 @@ class Hubzero_Group_Helper
 				$access = $access_levels[$cat['name']];
 				
 				//menu link
-				$link = JRoute::_('index.php?option=com_groups&gid='.$group->get("cn").'&active='.$active);
+				$link = JRoute::_('index.php?option=com_groups&cn='.$group->get("cn").'&active='.$active);
 				
 				//Are we on the overview tab with sub group pages?
 				if($cat['name'] == 'overview' && count($group_pages) > 0)
@@ -459,7 +459,7 @@ class Hubzero_Group_Helper
 						//page vars
 						$title = $page['title'];
 						$cls = ($true_active_tab == $page['url']) ? 'active' : '';
-						$link = JRoute::_('index.php?option=com_groups&gid='.$group->get("cn").'&active='.$page['url']);
+						$link = JRoute::_('index.php?option=com_groups&cn='.$group->get("cn").'&active='.$page['url']);
 						
 						//page menu item
 						if(($page_access == 'registered' && $juser->get('guest')) || ($page_access == 'members' && !in_array($juser->get("id"), $group->get('members'))))

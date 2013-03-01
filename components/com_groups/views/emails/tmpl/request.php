@@ -33,22 +33,22 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $juri =& JURI::getInstance();
 
-$sef = JRoute::_('index.php?option='.$this->option.'&gid='. $this->group->get('cn').'&active=members');
+$sef = JRoute::_('index.php?option='.$this->option.'&cn='. $this->group->get('cn').'&active=members');
 if (substr($sef,0,1) == '/') {
 	$sef = substr($sef,1,strlen($sef));
 }
 
-$message  = JText::sprintf('GROUPS_EMAIL_MSG',$this->sitename)."\n\n";
-$message .= "\t".' '.JText::_('GROUP').': '. $this->group->get('description') .' ('.$this->group->get('cn').')'."\n";
-$message .= "\t".' '.JText::_('GROUPS_MEMBERSHIP_REQUEST').': '."\n";
+$message  = JText::sprintf('COM_GROUPS_JOIN_REQUEST_EMAIL_DETAILS',$this->sitename)."\n\n";
+$message .= "\t".' '.JText::_('COM_GROUPS_GROUP').': '. $this->group->get('description') .' ('.$this->group->get('cn').')'."\n";
+$message .= "\t".' '.JText::_('COM_GROUPS_JOIN_REQUEST').': '."\n";
 $message .= "\n".'---------------------------------------------------------------------------------------'."\n";
 $message .= "\t".$this->juser->get('name')."\n";
 $message .= "\t\t". $this->juser->get('username') .' ('. $this->juser->get('email') . ')';
 if ($this->group->get('join_policy') == 1) {
-	$message .= JText::_('GROUPS_APPROVE_PERSON_BECAUSE').' '."\r\n". stripslashes($this->row->reason);
+	$message .= "\r\n" . JText::_('COM_GROUPS_JOIN_REQUEST_APPROVE_BECAUSE').' '."\r\n". stripslashes($this->row->reason);
 }
 $message .= "\n".'---------------------------------------------------------------------------------------'."\n\n";
-$message .= JText::_('GROUPS_USE_LINK_TO_REVIEW_REQUEST')."\n";
+$message .= JText::_('COM_GROUPS_JOIN_REQUEST_LINK')."\n";
 $message .= $juri->base().$sef."\n";
 
 echo $message;

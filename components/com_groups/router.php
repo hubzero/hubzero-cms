@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
+ * @author    Christopher Smoak <csmoak@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -39,12 +39,18 @@ defined('_JEXEC') or die('Restricted access');
 function GroupsBuildRoute(&$query)
 {
 	$segments = array();
-
-	if (!empty($query['gid'])) 
+	
+	if (!empty($query['task']) && $query['task'] == 'view') 
 	{
-		$segments[] = $query['gid'];
-		unset($query['gid']);
+		unset($query['task']);
 	}
+	
+	if (!empty($query['cn'])) 
+	{
+		$segments[] = $query['cn'];
+		unset($query['cn']);
+	}
+	
 	if (!empty($query['active'])) 
 	{
 		$segments[] = $query['active'];
@@ -73,11 +79,7 @@ function GroupsBuildRoute(&$query)
 		$segments[] = $query['pagename'];
 		unset($query['pagename']);
 	}
-	if (!empty($query['roomid'])) 
-	{
-		$segments[] = $query['roomid'];
-		unset($query['roomid']);
-	}
+	
 	return $segments;
 }
 
@@ -102,29 +104,43 @@ function GroupsParseRoute($segments)
 	} 
 	else 
 	{
-		$vars['gid'] = $segments[0];
+		$vars['task'] = 'view';
+		$vars['cn'] = $segments[0];
 	}
+	
 	if (isset($segments[1])) 
 	{
 		switch ($segments[1])
 		{
 			case 'edit':
 			case 'delete':
-			case 'join':
+			case 'customize':
+				$vars['task'] = $segments[1];
+				break;
+			case 'invite':
 			case 'accept':
 			case 'cancel':
-			case 'invite':
-			case 'customize':
-			case 'managepages':
-			case 'managemodules':
-			case 'ajaxupload':
+			case 'join':
+			case 'request':
 				$vars['task'] = $segments[1];
-			break;
+				$vars['controller'] = 'membership';
+				break;
+			case 'pages':
+			case 'addpage':
+			case 'editpage':
+			case 'savepage':
+			case 'activatepage':
+			case 'deactivatepage':
+			case 'uppage':
+			case 'downpage':
+				$vars['task'] = $segments[1];
+				$vars['controller'] = 'pages';
+				break;
 			default:
 				$vars['active'] = $segments[1];
-			break;
 		}
 	}
+	
 	if (isset($segments[2])) 
 	{
 		if ($segments[1] == 'wiki') 
@@ -140,17 +156,13 @@ function GroupsParseRoute($segments)
 
 			$s = implode(DS,$segments);
 			$vars['scope'] = $s;
-		} 
-		elseif ($segments[1] == 'chat') 
-		{
-			$vars['roomid'] = $segments[2];
-		} 
+		}
 		else 
 		{
-			$vars['task'] = $segments[2];
+			$vars['action'] = $segments[2];
 		}
 	}
-
+	
 	return $vars;
 }
 

@@ -232,7 +232,7 @@ Class GroupPages extends JTable
 			if (($privacy == 'registered' && $this->juser->get('guest')) || ($privacy == 'members' && !in_array($this->juser->get('id'), $members))) 
 			{
 				$pContent = '';
-				$page = '<p class="info">You currently dont have the permissions to access this group page.</p>';
+				$page = '<p class="info">You currently don\'t have the permissions to access this group page.</p>';
 			} 
 			else 
 			{
@@ -337,7 +337,7 @@ Class GroupPages extends JTable
 		$isMember = ($this->authorized == 'manager' || $this->authorized == 'member') ? true : false;
  
 		$about  = '<div class="group-content-header">';
-			$about .= '<h3>' . JText::_('GROUPS_ABOUT_HEADING') . '</h3>';
+			$about .= '<h3>' . JText::_('COM_GROUPS_OVERVIEW_ABOUT_HEADING') . '</h3>';
 
 		if ($isMember && $this->group->get('private_desc') != '') 
 		{
@@ -370,9 +370,9 @@ Class GroupPages extends JTable
 		else 
 		{
 			$member_browser  = '<div class="group-content-header">';
-				$member_browser .= '<h3>' . JText::_('GROUPS_GROUP_MEMBERS') . '</h3>';
+				$member_browser .= '<h3>' . JText::_('COM_GROUPS_OVERVIEW_MEMBERS_HEADING') . '</h3>';
 				$member_browser .= '<div class="group-content-header-extra">';
-					$member_browser .= '<a href="' . JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=members') . '">' . JText::_('VIEW_ALL_MEMBERS') . ' &rarr;</a>';
+					$member_browser .= '<a href="' . JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members') . '">' . JText::_('COM_GROUPS_OVERVIEW_MEMBERS_BTN_TEXT') . ' &rarr;</a>';
 				$member_browser .= '</div>';
 			$member_browser .= '</div>';
 

@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $juri =& JURI::getInstance();
 
-$sef = JRoute::_('index.php?option='.$this->option.'&gid='. $this->g_cn.'&active=members');
+$sef = JRoute::_('index.php?option='.$this->option.'&cn='. $this->g_cn.'&active=members');
 if (substr($sef,0,1) == '/') {
 	$sef = substr($sef,1,strlen($sef));
 }
@@ -43,52 +43,52 @@ $message = $this->juser->get('name');
 $message .= ', ';
 $message .= '"'.$this->juser->get('username') .'" ('. $this->juser->get('email') .')'."\n";
 if ($this->isNew) {
-	$message .= JText::sprintf('GROUPS_USER_HAS_REQUESTED_GROUP', $this->sitename) .':'."\n\n";
-	$message .= JText::_('GROUPS_ID').': '. $this->g_cn ."\n";
+	$message .= JText::sprintf('COM_GROUPS_SAVE_EMAIL_REQUEST_ON', $this->sitename) .':'."\n\n";
+	$message .= JText::_('COM_GROUPS_DETAILS_FIELD_CN').': '. $this->g_cn ."\n";
 } else {
 	//$message .= JText::sprintf('GROUPS_USER_HAS_CHANGED_GROUP', $this->sitename) .':'."\n\n";
 	$message .= "\n Changed the following user group on" .  $this->sitename .':'."\n\n";
-	$message .= "\t" . JText::_('GROUPS_TITLE').': '. $this->group->get('description') ."\n";
+	$message .= "\t" . JText::_('COM_GROUPS_DETAILS_FIELD_DESCRIPTION').': '. $this->group->get('description') ."\n";
 	switch ($this->group->get('join_policy'))
 	{
-		case 3: $policy = JText::_('GROUPS_POLICY_CLOSED');   break;
-		case 2: $policy = JText::_('GROUPS_POLICY_INVITE');   break;
-		case 1: $policy = JText::_('GROUPS_POLICY_RESTRICTED'); break;
+		case 3: $policy = JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_CLOSED_SETTING');   break;
+		case 2: $policy = JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_INVITE_SETTING');   break;
+		case 1: $policy = JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING'); break;
 		case 0: 
-		default: $policy = JText::_('GROUPS_POLICY_OPEN');    break;
+		default: $policy = JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_OPEN_SETTING');    break;
 	}
-	$message .= "\t" . JText::_('GROUPS_JOIN_POLICY').': '. $policy ."\n";
+	$message .= "\t" . JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_TITLE').': '. $policy ."\n";
 	switch ($this->group->get('discoverability'))
 	{
-		case 1: $discoverability = JText::_('Hidden');   break;
+		case 1: $discoverability = JText::_('COM_GROUPS_DISCOVERABILITY_SETTINGS_HIDDEN_SETTING');   break;
 		case 0: 
-		default: $discoverability = JText::_('Visible');    break;
+		default: $discoverability = JText::_('COM_GROUPS_DISCOVERABILITY_SETTINGS_VISIBLE_SETTING');    break;
 	}
-	$message .= "\t" . JText::_('Discoverability').': '. $discoverability ."\n";
+	$message .= "\t" . JText::_('COM_GROUPS_DISCOVERABILITY_SETTINGS_LEGEND').': '. $discoverability ."\n";
 
 	$message .= "\n";
-	$message .= JText::_('GROUPS_NOW_DEFINED_AS').':'."\n\n";
+	$message .= JText::_('Now defined as').':'."\n\n";
 }
-$message .= "\t" . JText::_('GROUPS_TITLE').': '. $this->g_description ."\n";
+$message .= "\t" . JText::_('COM_GROUPS_DETAILS_FIELD_DESCRIPTION').': '. $this->g_description ."\n";
 switch ($this->g_join_policy)
 {
-	case 3: $policy = JText::_('GROUPS_POLICY_CLOSED');   break;
-	case 2: $policy = JText::_('GROUPS_POLICY_INVITE');   break;
-	case 1: $policy = JText::_('GROUPS_POLICY_RESTRICTED'); break;
+	case 3: $policy = JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_CLOSED_SETTING');   break;
+	case 2: $policy = JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_INVITE_SETTING');   break;
+	case 1: $policy = JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING'); break;
 	case 0: 
-	default: $policy = JText::_('GROUPS_POLICY_OPEN');    break;
+	default: $policy = JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_OPEN_SETTING');    break;
 }
-$message .= "\t" . JText::_('GROUPS_JOIN_POLICY').': '. $policy ."\n";
+$message .= "\t" . JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_TITLE').': '. $policy ."\n";
 switch ($this->g_discoverability)
 {
-	case 1: $discoverability = JText::_('Hidden');   break;
+	case 1: $discoverability = JText::_('COM_GROUPS_DISCOVERABILITY_SETTINGS_HIDDEN_SETTING');   break;
 	case 0: 
-	default: $discoverability = JText::_('Visible');    break;
+	default: $discoverability = JText::_('COM_GROUPS_DISCOVERABILITY_SETTINGS_VISIBLE_SETTING');    break;
 }
-$message .= "\t" . JText::_('Discoverability').': '. $discoverability ."\n";
+$message .= "\t" . JText::_('COM_GROUPS_DISCOVERABILITY_SETTINGS_LEGEND').': '. $discoverability ."\n";
 
 $message .= "\n";
-$message .= JText::_('GROUPS_USE_LINK_TO_REVIEW_GROUP')."\n";
+$message .= JText::_('COM_GROUPS_SAVE_EMAIL_GROUP_LINK')."\n";
 $message .= $juri->base().$sef."\n";
 
 echo $message;

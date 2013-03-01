@@ -33,26 +33,26 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $juri =& JURI::getInstance();
 
-$sef = JRoute::_('index.php?option='.$this->option.'&gid='. $this->group->get('cn'));
+$sef = JRoute::_('index.php?option='.$this->option.'&cn='. $this->group->get('cn'));
 if (substr($sef,0,1) == '/') {
 	$sef = substr($sef,1,strlen($sef));
 }
 
-$message  = JText::sprintf('GROUPS_USER_HAS_INVITED', $this->juser->get('name'), $this->sitename)."\n\n";
-$message .= JText::_('GROUPS_GROUP').': '.$this->group->get('description')."\n";
+$message  = JText::sprintf('COM_GROUPS_INVITE_EMAIL_INVITED_BY', $this->juser->get('name'), $this->sitename)."\n\n";
+$message .= JText::_('COM_GROUPS_GROUP').': '.$this->group->get('description')."\n";
 $message .= $juri->base().$sef."\n\n";
 if ($this->msg) {
 	$message .= '====================='."\n";
 	$message .= stripslashes($this->msg)."\n";
 	$message .= '====================='."\n\n";
 }
-$sef = JRoute::_('index.php?option='.$this->option.'&gid='. $this->group->get('cn').'&task=accept');
+$sef = JRoute::_('index.php?option='.$this->option.'&cn='. $this->group->get('cn').'&task=accept');
 if (substr($sef,0,1) == '/') {
 	$sef = substr($sef,1,strlen($sef));
 }
 $message .= $juri->base().$sef."\n\n";
-$message .= JText::_('GROUPS_PLEASE_JOIN')."\n\n";
-$message .= JText::sprintf('GROUPS_EMAIL_USER_IF_QUESTIONS', $this->juser->get('name'), $this->juser->get('email'))."\n";
+$message .= JText::_('COM_GROUPS_INVITE_EMAIL_JOIN_MESSAGE')."\n\n";
+$message .= JText::sprintf('COM_GROUPS_INVITE_EMAIL_QUESTIONS', $this->juser->get('name'), $this->juser->get('email'))."\n";
 
 echo $message;
 ?>

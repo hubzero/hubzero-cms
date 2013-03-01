@@ -291,7 +291,7 @@ HUB.Groups = {
 		var topBox = $("#top_box"),
 			bottomBox = $("#bottom_box"),
 			assetBox = $("#asset_browser"),
-			max = 0;
+			max = 0, pos = 0;
 
 		assetBox
 			.css('width', ($(assetBox.parent()).width() - 10) + 'px')
@@ -300,13 +300,18 @@ HUB.Groups = {
 		if(assetBox.length && topBox.length && bottomBox.length)
 		{
 			max = (bottomBox.position().top + bottomBox.outerHeight(true)) - assetBox.outerHeight(true);
+			pos = $(document).scrollTop() - 200;
 			
-			if( $(document).scrollTop() > 0 && $(document).scrollTop() < max)
+			if( pos > 0 && pos < max)
 			{
 				assetBox.stop().animate({
-					"top": $(document).scrollTop()
+					"top": pos
 				});
 			}
+		}
+		else
+		{
+			console.log('Missing needed DOM elements to make assest browser scroll');
 		}
 	},
 

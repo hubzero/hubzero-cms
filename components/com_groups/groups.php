@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
+ * @author    Christopher Smoak <csmoak@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -64,6 +64,9 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'log.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'reason.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'pages.php');
 
+//include abstract controller
+require_once(JPATH_COMPONENT . DS . 'controllers' . DS . 'abstract.php');
+
 //build controller path and name
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'groups'));
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
@@ -71,7 +74,7 @@ if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '
 	$controllerName = 'groups';
 }
 require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = ucfirst(strtolower($controllerName)) . 'Controller';
+$controllerName = 'GroupsController' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller and execute
 $controller = new $controllerName();
