@@ -1103,7 +1103,7 @@ class Hubzero_Group
 
 		if ($check_system)
 		{
-			if (is_numeric($group) && posix_getgrid($group))
+			if (is_numeric($group) && posix_getgrgid($group))
 			{
 				return true;
 			}
