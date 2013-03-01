@@ -160,7 +160,7 @@ class CoursesControllerForm extends Hubzero_Controller {
 		// If there were errors, jump back to the index view and display them
 		if ($pdf->hasErrors())
 		{
-			// @FIXME: get these errors back to the index view
+			$this->setView('form', 'index');
 			$this->view->errors = $pdf->getErrors();
 			$this->indexTask();
 		}

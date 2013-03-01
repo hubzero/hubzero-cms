@@ -1,3 +1,10 @@
+/**
+ * @package	 hubzero-cms
+ * @file		components/com_courses/assets/css/form.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license	 http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
 .container {
 	padding: 15px;
 }
@@ -259,7 +266,7 @@ input[type=number] {
 	border: 0;
 }
 .tablesorter.nested thead tr .headerSortDown, .tablesorter.nested thead tr .headerSortUp {
-    background: transparent;
+	background: transparent;
 }
 #time-left {
 	position: fixed;
@@ -268,6 +275,33 @@ input[type=number] {
 	padding: 6px;
 	background: #f3f3f3;
 	border: 1px dashed #ddd;
+}
+.btn.back {
+	display: block;
+	float: right;
+	padding: 0.4em 0.91em 0.4em 2.91em;
+}
+.btn.back:before {
+	background: #e3e3e3;
+	background: rgba(0, 0, 0, 0.08);
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 1em;
+	text-align: center;
+	font-size: 1.2em;
+	font-weight: normal;
+	font-family: 'Fontcons';
+	line-height: 2.1;
+	padding: 0 0.5em;
+	margin-right: 0.2em;
+	-webkit-border-radius: 0.25em 0 0 0.25em;
+	-moz-border-radius: 0.25em 0 0 0.25em;
+	-ms-border-radius: 0.25em 0 0 0.25em;
+	-o-border-radius: 0.25em 0 0 0.25em;
+	border-radius: 0.25em 0 0 0.25em;
+	content: "\2190";
 }
 /* css for timepicker https://github.com/trentrichardson/jQuery-Timepicker-Addon */
 .ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }

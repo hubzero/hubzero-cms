@@ -543,80 +543,65 @@ HUB.CoursesOutline = {
 			var item            = form.parent('.asset-item');
 
 			// If this is an Exam, we also want to set deployment info
-			// @FIXME: only do this if it isn't already deployed
-			// @FIXME: handle this with our new asset handlers
 			if(item.hasClass('exam') && item.hasClass('notpublished')){
-				// @FIXME: add a better method for getting form id (mainly because this one doesn't work once you publish the form)
 				var assetA    = item.find('.asset-preview a');
 				var assetHref = assetA.attr('href');
-				var formId    = assetHref.match(/\/courses\/form\/layout\/([0-9]+)/);
 
-				$.fancybox({
-					fitToView: false,
-					autoResize: false,
-					autoSize: false,
-					height: ($(window).height())*2/3,
-					type: 'iframe',
-					href: '/courses/form?task=deploy&formId='+formId[1]+'&tmpl=component',
-					afterShow: function() {
-						$('.fancybox-iframe').load(function() {
-							var iframeTask = $(this)[0].contentWindow.location.pathname.match(/\/courses\/form\/([a-zA-Z]+)/);
-							if(iframeTask[1] == 'showDeployment')
-							{
-								$.fancybox.close();
-							}
-						});
-					},
-					beforeClose: function() {
-						// Grab the distribution link
-						distLink = $('.fancybox-iframe').contents().find('.distribution-link a').attr('href').match(/\.org(\/.*)/);
-					},
-					afterClose: function() {
-						if(distLink[1] && distLink[1].length){
-							// Update URL for asset to have proper link
-							// @FIXME: combine this call with the toggle publish call
-							$.ajax({
-								url: '/api/courses/asset/save',
-								data: form.serialize()+'&url='+distLink[1],
-								statusCode: {
-									200: function(data){
-										// Update the link
-										assetA.attr('href', distLink[1]);
-									}
+				// Create ajax call to get the form id
+				$.ajax({
+					url: '/api/courses/asset/getformid',
+					data: [{'name':'id', 'value':form.find('.asset_id').val()}],
+					statusCode: {
+						200: function(data){
+							formId = data.form_id;
+
+							$.fancybox({
+								fitToView: false,
+								autoResize: false,
+								autoSize: false,
+								height: ($(window).height())*2/3,
+								type: 'iframe',
+								href: '/courses/form?task=deploy&formId='+formId+'&tmpl=component',
+								afterClose: function() {
+									$.ajax({
+										url: '/api/courses/asset/save',
+										data: form.serialize(),
+										statusCode: {
+											200: function(data){
+												// Update the link
+												assetA.attr('href', data.files[0].asset_url);
+												toggle();
+											}
+										}
+									});
 								}
 							});
-
-							// And toggle the published state
-							toggleState();
-						} else {
-							// @FIXME: uncheck box?
 						}
 					}
 				});
 			} else {
-				toggleState();
-			}
-
-			function toggleState() {
-				// Create ajax call to change info in the database
 				$.ajax({
 					url: form.attr('action'),
 					data: form.serialize(),
 					statusCode: {
 						200: function(data){
-							if(label.html() == 'Published') {
-								replacement = 'Mark as reviewed and publish?';
-								item.removeClass('published').addClass('notpublished');
-							} else {
-								replacement = 'Published';
-								item.removeClass('notpublished').addClass('published');
-							}
-							label.html(replacement);
-
-							HUB.CoursesOutline.showProgressIndicator();
+							toggle();
 						}
 					}
 				});
+			}
+
+			function toggle (){
+				if(label.html() == 'Published') {
+					replacement = 'Mark as reviewed and publish?';
+					item.removeClass('published').addClass('notpublished');
+				} else {
+					replacement = 'Published';
+					item.removeClass('notpublished').addClass('published');
+				}
+				label.html(replacement);
+
+				HUB.CoursesOutline.showProgressIndicator();
 			}
 		});
 	},

@@ -197,8 +197,10 @@ if (!$this->course->offering()->access('view')) { ?>
 		<div class="clear"></div>
 		<?php } ?>
 	<?php } // close foreach ?>
-<?php else: ?>
+<?php elseif($this->course->offering()->access('manage')) : ?>
 		<p class="info">Your outline is currently empty. Go to the <a href="<?php echo JRoute::_('/courses/' . $this->course->get('alias') . '/manage/' . $this->course->offering()->get('alias')); ?>">Outline Manager</a> to being creating your course outline</p>
+<?php else : ?>
+		<p class="info">There is currently no outline available for this course</p>
 <?php endif; ?>
 	</div><!-- / #course-outline -->
 

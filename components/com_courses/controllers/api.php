@@ -87,6 +87,7 @@ class CoursesApiController extends Hubzero_Api_Controller
 					case 'delete':          $this->assetDelete();          break;
 					case 'reorder':         $this->assetReorder();         break;
 					case 'togglepublished': $this->assetTogglePublished(); break;
+					case 'getformid':       $this->assetGetFormId();       break;
 					default:                $this->method_not_found();     break;
 				}
 			break;
@@ -501,9 +502,16 @@ class CoursesApiController extends Hubzero_Api_Controller
 		}
 
 		// If we have a state
-		if($state = JRequest::getInt('state', false))
+		if($published = JRequest::getWord('published', false))
 		{
-			$asset->set('state', $state);
+			$published = ($published == 'on') ? 1 : $asset->get('state');
+			$asset->set('state', $published);
+		}
+
+		// If we have content
+		if($content = JRequest::getVar('content', false))
+		{
+			$asset->set('content', $content);
 		}
 
 		// When creating a new asset (which probably won't happen via this method, but rather the assetNew method above)
@@ -543,18 +551,18 @@ class CoursesApiController extends Hubzero_Api_Controller
 				$this->setMessage("Asset association save failed", 500, 'Internal server error');
 				return;
 			}
-
-			$files = array(
-				'asset_id'              => $row->asset_id,
-				'asset_title'           => $asset->get('title'),
-				'asset_type'            => $asset->get('type'),
-				'asset_url'             => $asset->get('url'),
-				'asset_progress_bar_id' => JRequest::getCmd('progress_bar_id', ''),
-				'scope_id'              => $row->scope_id,
-				'course_id'             => $this->course_id,
-				'offering_alias'        => JRequest::getCmd('offering', '')
-			);
 		}
+
+		$files = array(
+			'asset_id'              => $asset->get('id'),
+			'asset_title'           => $asset->get('title'),
+			'asset_type'            => $asset->get('type'),
+			'asset_url'             => $asset->get('url'),
+			'asset_progress_bar_id' => JRequest::getCmd('progress_bar_id', ''),
+			'scope_id'              => (isset($row)) ? $row->scope_id : '',
+			'course_id'             => $this->course_id,
+			'offering_alias'        => JRequest::getCmd('offering', '')
+		);
 
 		// Set the status code
 		$status = ($id) ? array('code'=>200, 'text'=>'OK') : array('code'=>201, 'text'=>'Created');
@@ -776,6 +784,41 @@ class CoursesApiController extends Hubzero_Api_Controller
 
 		// Return message
 		$this->setMessage('Asset state successfully saved', 200, 'OK');
+	}
+
+	/**
+	 * Look up the form id based on the asset id
+	 * 
+	 * @return 200 OK on success
+	 */
+	private function assetGetFormId()
+	{
+		// Set the responce type
+		$this->setMessageType($this->format);
+
+		// Get the asset id
+		if(!$id = JRequest::getInt('id', false))
+		{
+			$this->setMessage("No ID provided", 422, 'Unprocessable entity');
+			return;
+		}
+
+		// Get our asset object
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
+		$asset = new CoursesModelAsset($id);
+
+		// Get the form ID from the content
+		$formId = json_decode($asset->get('content'))->form_id;
+
+		// Check
+		if (!is_numeric($formId))
+		{
+			$this->setMessage("Failed to retrieve the form ID", 500, 'Internal server error');
+			return;
+		}
+
+		// Return message
+		$this->setMessage(array('form_id' => $formId), 200, 'OK');
 	}
 
 	//--------------------------

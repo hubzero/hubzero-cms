@@ -109,10 +109,18 @@ class FormAssetHandler extends AssetHandler
 					});
 				},
 				beforeClose: function() {
+					// Build the form data
+					var data = form.serializeArray();
+					data.push({'name':'title','value':'". $filename . "'});
+					data.push({'name':'type','value':'exam'});
+					data.push({'name':'url','value':'/courses/form/layout/" . $id . "'});
+					data.push({'name':'content','value':'{\"form_id\":\"". $id . "\"}'});
+					data.push({'name':'progress_bar_id','value':'" . JRequest::getCmd('progress_bar_id', '') . "'});
+
 					// Create ajax call to change info in the database
 					$.ajax({
 						url: '/api/courses/asset/save',
-						data: form.serialize()+'&title=" . $filename . "&type=exam&url=/courses/form/layout/" . $id . "&progress_bar_id=" . JRequest::getCmd('progress_bar_id', '') . "',
+						data: data,
 						dataType: 'json',
 						type: 'POST',
 						cache: false,
@@ -141,17 +149,6 @@ class FormAssetHandler extends AssetHandler
 									// Reset progress bar
 									HUB.CoursesOutline.resetProgresBar(file.asset_progress_bar_id, 1000, callback);
 								});
-							},
-							401: function(data){
-								// Display the error message
-								HUB.CoursesOutline.errorMessage(data.responseText);
-							},
-							404: function(data){
-								HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
-							},
-							500: function(data){
-								// Display the error message
-								HUB.CoursesOutline.errorMessage(data.responseText);
 							}
 						}
 					});
