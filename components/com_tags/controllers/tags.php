@@ -47,7 +47,23 @@ class TagsControllerTags extends Hubzero_Controller
 	{
 		$this->_authorize();
 
-		$this->registerTask('feed', 'feed.rss');
+		$this->registerTask('feed.rss', 'feed');
+		$this->registerTask('feedrss', 'feed');
+
+		if (($tagstring = urldecode(trim(JRequest::getVar('tag', '', 'request', 'none', 2)))))
+		{
+			if (!JRequest::getVar('task', ''))
+			{
+				JRequest::setVar('task', 'view');
+			}
+			$tagobj = new TagsTag($this->database);
+			$tagobj->loadTag($tagstring);
+			if (!$tagobj->get('id'))
+			{
+				JError::raiseError(404, JText::_('COM_TAGS_NOT_FOUND'));
+				return;
+			}
+		}
 
 		parent::execute();
 	}
@@ -181,7 +197,7 @@ class TagsControllerTags extends Hubzero_Controller
 
 			// Load the tag
 			$tagobj = new TagsTag($this->database);
-			$tagobj->loadTag($this->database->getEscaped($tag));
+			$tagobj->loadTag($tag);
 
 			// Ensure we loaded the tag's info from the database
 			if ($tagobj->id) 

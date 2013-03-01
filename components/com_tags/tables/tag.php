@@ -98,14 +98,14 @@ class TagsTag extends JTable
 
 		$oid = $this->normalize($oid);
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE tag='$oid' LIMIT 1"); //raw_tag='$oid' OR 
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE tag=" . $this->_db->Quote($oid) . " LIMIT 1"); //raw_tag='$oid' OR 
 		if ($result = $this->_db->loadAssoc()) 
 		{
 			return $this->bind($result);
 		} 
 		else 
 		{
-			$this->_db->setQuery("SELECT t.* FROM $this->_tbl AS t JOIN #__tags_substitute AS s ON s.tag_id=t.id WHERE s.tag='$oid' LIMIT 1");
+			$this->_db->setQuery("SELECT t.* FROM $this->_tbl AS t JOIN #__tags_substitute AS s ON s.tag_id=t.id WHERE s.tag=" . $this->_db->Quote($oid) . " LIMIT 1");
 			if ($result = $this->_db->loadAssoc()) 
 			{
 				return $this->bind($result);
