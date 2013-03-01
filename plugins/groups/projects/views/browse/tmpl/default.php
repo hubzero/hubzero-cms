@@ -63,11 +63,11 @@ $juser = $this->juser;
 		<div class="entries-filters">
 			<ul class="entries-menu">
 				<li>
-					<a class="active" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->get('gidNumber').'&active=projects').'?action=all'; ?>"><?php echo JText::_('PLG_GROUPS_PROJECTS_LIST').' ('.$this->projectcount.')'; ?>
+					<a class="active" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=projects').'?action=all'; ?>"><?php echo JText::_('PLG_GROUPS_PROJECTS_LIST').' ('.$this->projectcount.')'; ?>
 					</a>
 				</li>
 				<li>
-					<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->get('gidNumber').'&active=projects').'?action=updates'; ?>"><?php echo JText::_('PLG_GROUPS_PROJECTS_UPDATES_FEED'); ?> <?php if($this->newcount) { echo '<span class="s-new">'.$this->newcount.'</span>'; } ?>
+					<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=projects').'?action=updates'; ?>"><?php echo JText::_('PLG_GROUPS_PROJECTS_UPDATES_FEED'); ?> <?php if($this->newcount) { echo '<span class="s-new">'.$this->newcount.'</span>'; } ?>
 					</a>
 				</li>
 			</ul>

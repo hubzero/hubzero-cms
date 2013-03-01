@@ -16,7 +16,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 
 <ul id="page_options">
 	<li>
-		<a class="categories btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'); ?>">
+		<a class="categories btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum'); ?>">
 			<?php echo JText::_('All categories'); ?>
 		</a>
 	</li>
@@ -26,7 +26,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	<?php foreach ($this->notifications as $notification) { ?>
 		<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
 	<?php } ?>
-		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'); ?>" method="post">
+		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum'); ?>" method="post">
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
 				<fieldset class="entry-search">
@@ -34,7 +34,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 					<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
 					<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-					<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
+					<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
 					<input type="hidden" name="active" value="forum" />
 					<input type="hidden" name="action" value="search" />
 				</fieldset>
@@ -69,7 +69,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 					<tfoot>
 						<tr>
 							<td colspan="<?php echo ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread')) ? '5' : '4'; ?>">
-								<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->filters['category'] . '/new'); ?>">
+								<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->filters['category'] . '/new'); ?>">
 									<?php echo JText::_('Add Discussion'); ?>
 								</a>
 							</td>
@@ -96,7 +96,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 								<span class="entry-id"><?php echo $this->escape($row->id); ?></span>
 							</th>
 							<td>
-								<a class="entry-title" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->filters['category'] . '/' . $row->id); ?>">
+								<a class="entry-title" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->filters['category'] . '/' . $row->id); ?>">
 									<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
 								</a>
 								<span class="entry-details">
@@ -148,12 +148,12 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 						<?php if ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread')) { ?>
 							<td class="entry-options">
 								<?php if ($row->created_by == $juser->get('id') || $this->config->get('access-edit-thread')) { ?>
-									<a class="edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->filters['category'] . '/' . $row->id . '/edit'); ?>">
+									<a class="edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->filters['category'] . '/' . $row->id . '/edit'); ?>">
 										<?php echo JText::_('PLG_GROUPS_FORUM_EDIT'); ?>
 									</a>
 								<?php } ?>
 								<?php if ($this->config->get('access-delete-thread')) { ?>
-									<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->filters['category'] . '/' . $row->id . '/delete'); ?>">
+									<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->filters['category'] . '/' . $row->id . '/delete'); ?>">
 										<?php echo JText::_('PLG_GROUPS_FORUM_DELETE'); ?>
 									</a>
 								<?php } ?>
@@ -173,7 +173,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 				</table>
 <?php 
 			if ($this->pageNav) {
-				$this->pageNav->setAdditionalUrlParam('gid', $this->group->get('cn'));
+				$this->pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
 				$this->pageNav->setAdditionalUrlParam('active', 'forum');
 				$this->pageNav->setAdditionalUrlParam('scope', $this->filters['section'] . '/' . $this->filters['category']);
 				echo $this->pageNav->getListFooter();

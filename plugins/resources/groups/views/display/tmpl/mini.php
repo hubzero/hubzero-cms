@@ -46,13 +46,13 @@ else
 	<div class="group-content">
 <?php if ($logo) { ?>
 		<p class="group-img">
-			<a href="<?php echo JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn')); ?>">
+			<a href="<?php echo JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn')); ?>">
 				<img src="<?php echo $logo; ?>" width="50" alt="<?php echo $this->escape(stripslashes($this->group->get('description'))); ?> group image" />
 			</a>
 		</p>
-		<p class="group-description group-withlogo"><?php echo JText::sprintf('This resource belongs to the %s group.', '<a href="' . JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn')) . '">' . $this->escape(stripslashes($this->group->get('description'))) . '</a>'); ?></p>
+		<p class="group-description group-withlogo"><?php echo JText::sprintf('This resource belongs to the %s group.', '<a href="' . JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->escape(stripslashes($this->group->get('description'))) . '</a>'); ?></p>
 <?php } else { ?>
-		<p class="group-description"><?php echo JText::sprintf('This resource belongs to the %s group.', '<a href="' . JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn')) . '">' . $this->escape(stripslashes($this->group->get('description'))) . '</a>'); ?></p>
+		<p class="group-description"><?php echo JText::sprintf('This resource belongs to the %s group.', '<a href="' . JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->escape(stripslashes($this->group->get('description'))) . '</a>'); ?></p>
 <?php } ?>
 	</div>
 </div>

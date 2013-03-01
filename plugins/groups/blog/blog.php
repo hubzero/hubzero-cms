@@ -395,7 +395,7 @@ class plgGroupsBlog extends JPlugin
 		//$params =& $mainframe->getParams();
 		$app =& JFactory::getApplication();
 		$params =& $app->getParams();
-		$doc->link = JRoute::_('index.php?option=' . $this->option . '&gid='.$this->group->cn . '&active=blog');
+		$doc->link = JRoute::_('index.php?option=' . $this->option . '&cn='.$this->group->cn . '&active=blog');
 
 		// Filters for returning results
 		$filters = array();
@@ -449,7 +449,7 @@ class plgGroupsBlog extends JPlugin
 				$title = html_entity_decode($title);
 
 				// URL link to article
-				$link = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->cn . '&active=blog&scope=' . JHTML::_('date', $row->publish_up, $this->yearFormat, 0) . '/' . JHTML::_('date', $row->publish_up, $this->monthFormat, 0) . '/' . $row->alias);
+				$link = JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=blog&scope=' . JHTML::_('date', $row->publish_up, $this->yearFormat, 0) . '/' . JHTML::_('date', $row->publish_up, $this->monthFormat, 0) . '/' . $row->alias);
 
 				$cuser =& JUser::getInstance($row->created_by);
 				$author = $cuser->get('name');
@@ -668,7 +668,7 @@ class plgGroupsBlog extends JPlugin
 			
 			$wikiconfig = array(
 				'option'   => $this->option,
-				'scope'    => $this->group->get('gidNumber') . DS . 'blog',
+				'scope'    => $this->group->get('cn') . DS . 'blog',
 				'pagename' => $view->row->alias,
 				'pageid'   => 0,
 				'filepath' => $path,
@@ -771,7 +771,7 @@ class plgGroupsBlog extends JPlugin
 	{
 		$juser =& JFactory::getUser();
 		$app =& JFactory::getApplication();
-		$blog = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=blog');
+		$blog = JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=blog');
 
 		if ($juser->get('guest')) 
 		{
@@ -937,7 +937,7 @@ class plgGroupsBlog extends JPlugin
 
 		//return $this->_entry();
 		$app =& JFactory::getApplication();
-		$app->redirect(JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=blog&scope=' . JHTML::_('date', $row->publish_up, $this->yearFormat, 0) . '/' . JHTML::_('date', $row->publish_up, $this->monthFormat, 0) . '/' . $row->alias));
+		$app->redirect(JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=blog&scope=' . JHTML::_('date', $row->publish_up, $this->yearFormat, 0) . '/' . JHTML::_('date', $row->publish_up, $this->monthFormat, 0) . '/' . $row->alias));
 	}
 
 	/**
@@ -1257,7 +1257,7 @@ class plgGroupsBlog extends JPlugin
 		//return $this->_settings();
 		$app =& JFactory::getApplication();
 		$app->enqueueMessage('Settings successfully saved!', 'passed');
-		$app->redirect(JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=blog&task=settings'));
+		$app->redirect(JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=blog&action=settings'));
 	}
 
 	/**

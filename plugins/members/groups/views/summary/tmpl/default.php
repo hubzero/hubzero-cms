@@ -63,28 +63,28 @@ defined('_JEXEC') or die( 'Restricted access' );
 		{
 			$status = 'manager';
 			
-			$options  = '<a class="manage tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&gid=' . $group->cn . '&active=members') .'" title="Manager Options :: Manage group membership">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_MANAGE').'</a>';
-			$options .= ' <a class="customize tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&gid=' . $group->cn . '&task=edit') .'" title="Manager Options :: Edit this group">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_EDIT').'</a>';
-			$options .= ' <a class="delete tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&gid=' . $group->cn . '&task=delete') .'" title="Manager Options :: Delete this group">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_DELETE').'</a>';
+			$options  = '<a class="manage tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $group->cn . '&active=members') .'" title="Manager Options :: Manage group membership">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_MANAGE').'</a>';
+			$options .= ' <a class="customize tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=edit') .'" title="Manager Options :: Edit this group">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_EDIT').'</a>';
+			$options .= ' <a class="delete tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=delete') .'" title="Manager Options :: Delete this group">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_DELETE').'</a>';
 		}
 		else if($group->registered && $group->regconfirmed)
 		{
 			$status = 'member';
 			
-			$options = '<a class="cancel tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&gid=' . $group->cn . '&task=cancel') .'" title="Membership Options :: Cancel membership to this group">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</a>';
+			$options = '<a class="cancel tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" title="Membership Options :: Cancel membership to this group">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</a>';
 		}
 		else if($group->registered && !$group->regconfirmed)
 		{
 			$status = 'pending';
 			
-			$options = '<a class="cancel tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&gid=' . $group->cn . '&task=cancel') .'" title="Membership Options :: Cancel membership to this group">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</a>';
+			$options = '<a class="cancel tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" title="Membership Options :: Cancel membership to this group">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</a>';
 		}
 		else if(!$group->registered && $group->regconfirmed)
 		{
 			$status = 'invitee';
 			
-			$options  = '<a class="accept tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&controller=groups&gid=' . $group->cn . '&task=accept') .'" title="Membership Options :: Accept membership to this group">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_ACCEPT').'</a>';
-			$options .= ' <a class="cancel tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&controller=groups&gid=' . $group->cn . '&task=cancel') .'" title="Membership Options :: Cancel membership to this group">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</a>';
+			$options  = '<a class="accept tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=accept') .'" title="Membership Options :: Accept membership to this group">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_ACCEPT').'</a>';
+			$options .= ' <a class="cancel tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" title="Membership Options :: Cancel membership to this group">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</a>';
 		}
 		
 		//do we have a new unpublished group
@@ -99,7 +99,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					</th>
 					<td>
 						<?php if($published) : ?>
-							<a class="entry-title" rel="<?php echo $group->gidNumber; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid='. $group->cn); ?>">
+							<a class="entry-title" rel="<?php echo $group->gidNumber; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn='. $group->cn); ?>">
 								<?php echo $this->escape(stripslashes($group->description)); ?>
 							</a><br />
 						<?php else : ?>

@@ -51,14 +51,14 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 <ul id="page_options">
 <?php if ($this->canpost) { ?>
 	<li>
-		<a class="add btn" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=new'); ?>">
+		<a class="add btn" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=blog&action=new'); ?>">
 			<?php echo JText::_('New entry'); ?>
 		</a>
 	</li>
 <?php } ?>
 <?php if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
 	<li>
-		<a class="config btn" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=settings'); ?>" title="<?php echo JText::_('Edit Settings'); ?>">
+		<a class="config btn" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=blog&action=settings'); ?>" title="<?php echo JText::_('Edit Settings'); ?>">
 			<?php echo JText::_('Settings'); ?>
 		</a>
 	</li>
@@ -66,7 +66,7 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 </ul>
 <?php } ?>
 
-<form method="get" action="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=browse'); ?>" id="blogentries">
+<form method="get" action="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=blog&action=browse'); ?>" id="blogentries">
 	<div class="aside">
 		<div class="container blog-entries-years">
 			<h4><?php echo JText::_('Entries By Year'); ?></h4>
@@ -78,7 +78,7 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 					?>
 					<?php for ($i=$now, $n=$start; $i >= $n; $i--) { ?>
 						<li>
-							<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.$i); ?>">
+							<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=blog&scope='.$i); ?>">
 								<?php echo $i; ?>
 							</a>
 							<?php if (($this->year && $i == $this->year) || (!$this->year && $i == $now)) { ?>
@@ -106,7 +106,7 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 									?>
 									<?php for ($k=0, $z=$months; $k < $z; $k++) { ?>
 										<li>
-											<a<?php if ($this->month && $this->month == ($k+1)) { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->get('cn').'&active=blog&scope='.$i.'/'.sprintf( "%02d",($k+1),1)); ?>">
+											<a<?php if ($this->month && $this->month == ($k+1)) { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=blog&scope='.$i.'/'.sprintf( "%02d",($k+1),1)); ?>">
 												<?php echo JText::_($m[$k]); ?>
 											</a>
 										</li>
@@ -125,7 +125,7 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 			<ol>
 			<?php foreach ($this->popular as $row) { ?>
 				<li>
-					<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$row->publish_up, $this->monthFormat, $this->tz).'/'.$row->alias); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$row->publish_up, $this->monthFormat, $this->tz).'/'.$row->alias); ?>">
 						<?php echo $this->escape(stripslashes($row->title)); ?>
 					</a>
 				</li>
@@ -140,7 +140,7 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 			<ol>
 			<?php foreach ($this->recent as $row) { ?>
 				<li>
-					<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date', $row->publish_up, $this->monthFormat, $this->tz).'/'.$row->alias); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date', $row->publish_up, $this->monthFormat, $this->tz).'/'.$row->alias); ?>">
 						<?php echo $this->escape(stripslashes($row->title)); ?>
 					</a>
 				</li>
@@ -183,7 +183,7 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 } ?>
 				<?php
 					if ($this->config->get('feeds_enabled', 1)) :
-						$path  = 'index.php?option='.$this->option.'&gid='.$this->group->cn.'&active=blog&scope=feed.rss';
+						$path  = 'index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=blog&scope=feed.rss';
 						$path .= ($this->year)  ? '&year=' . $this->year   : '';
 						$path .= ($this->month) ? '&month=' . $this->month : '';
 						$feed = JRoute::_($path);
@@ -247,7 +247,7 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 ?>
 				<li class="<?php echo $cls; ?>" id="e<?php echo $row->id; ?>">
 					<h4 class="entry-title">
-						<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date', $row->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $row->publish_up, $this->monthFormat, $this->tz) . '/' . $row->alias); ?>">
+						<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=blog&scope='.JHTML::_('date', $row->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $row->publish_up, $this->monthFormat, $this->tz) . '/' . $row->alias); ?>">
 							<?php echo $this->escape(stripslashes($row->title)); ?>
 						</a>
 					</h4>
@@ -274,7 +274,7 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 						</dd>
 <?php if ($row->allow_comments == 1) { ?>
 						<dd class="comments">
-							<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date', $row->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $row->publish_up, $this->monthFormat, $this->tz) . '/' . $row->alias . '#comments'); ?>">
+							<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=blog&scope='.JHTML::_('date', $row->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $row->publish_up, $this->monthFormat, $this->tz) . '/' . $row->alias . '#comments'); ?>">
 								<?php echo JText::sprintf('PLG_GROUPS_BLOG_NUM_COMMENTS', $row->comments); ?>
 							</a>
 						</dd>
@@ -292,10 +292,10 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 <?php } ?>
 						<dd class="entry-options">
 <?php if ($this->juser->get('id') == $row->created_by || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
-							<a class="edit" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=edit&entry='.$row->id); ?>" title="<?php echo JText::_('Edit'); ?>">
+							<a class="edit" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=blog&action=edit&entry='.$row->id); ?>" title="<?php echo JText::_('Edit'); ?>">
 								<?php echo JText::_('Edit'); ?>
 							</a>
-							<a class="delete" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=delete&entry='.$row->id); ?>" title="<?php echo JText::_('Delete'); ?>">
+							<a class="delete" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=blog&action=delete&entry='.$row->id); ?>" title="<?php echo JText::_('Delete'); ?>">
 								<?php echo JText::_('Delete'); ?>
 							</a>
 <?php } ?>

@@ -88,7 +88,7 @@ else {
 		<a class="add btn" href="<?php echo JRoute::_('index.php?option=com_wishlist&task=add&category='. $this->wishlist->category.'&rid='.$this->wishlist->referenceid); ?>"><?php echo JText::_('ADD_NEW_WISH'); ?></a>
 	</p>
 <?php } else { ?>
-	<?php $return = JRoute::_('index.php?option=com_groups&gid='.$this->group->get('cn').'&active=wishlist'); ?>
+	<?php $return = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=wishlist'); ?>
 	<?php if($this->juser->get('guest')) { ?>
 		<p class="warning">You must <a href="/login?return=<?php echo base64_encode($return); ?>">log in</a> and be a group member to add a wish.</p>
 	<?php } else { ?>

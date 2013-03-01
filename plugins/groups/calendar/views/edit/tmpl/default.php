@@ -64,10 +64,10 @@ if($this->event->id) {
 <?php } ?>
 
 	
-<form name="editevent" action="" method="post" id="hubForm">
+<form name="editevent" action="index.php" method="post" id="hubForm">
 	<div class="explaination">
 		<p>Here you can add events to your group calendar. These events are separate from the HUB events.</p>
-		<p><a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->get('cn').'&active=calendar'); ?>">&lsaquo; Back to Group Calendar</a></p>
+		<p><a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=calendar'); ?>">&lsaquo; Back to Group Calendar</a></p>
 	</div>
 	<fieldset>
 		<legend><?php echo $form_title; ?></legend>
@@ -89,10 +89,12 @@ if($this->event->id) {
 			<span class="cal-date-help">( Date Format mm/dd/yyyy )<br></span>
 			<input type="text" name="event[end_time]" id="event_end_time" value="<?php echo $end_time; ?>" /> ( 24 hour time ex. 17:30 for 5:30pm )
 		
-		<input type="hidden" name="event[id]" value="<?php echo $id; ?>" />
+		
 		<input type="hidden" name="option" value="com_groups" />
+		<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
 		<input type="hidden" name="active" value="calendar" />
-		<input type="hidden" name="task" value="save" />
+		<input type="hidden" name="action" value="save" />
+		<input type="hidden" name="event[id]" value="<?php echo $id; ?>" />
 	</fieldset>
 	<br class="clear" />
 	<p class="submit"><input type="submit" name="event_submit" value="<?php echo $form_btn; ?>" /></p>

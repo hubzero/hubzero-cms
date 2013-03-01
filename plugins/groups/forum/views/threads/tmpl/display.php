@@ -16,7 +16,7 @@ ximport('Hubzero_User_Profile_Helper');
 ?>
 <ul id="page_options">
 	<li>
-		<a class="comments" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias); ?>">
+		<a class="comments" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias); ?>">
 			<?php echo JText::_('All discussions'); ?>
 		</a>
 	</li>
@@ -72,7 +72,7 @@ ximport('Hubzero_User_Profile_Helper');
 			{
 				$title = ($attachment->description) ? $attachment->description : $attachment->filename;
 ?>
-				<li><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias . '/' . $attachment->parent . '/' . $attachment->post_id . '/' . $attachment->filename); ?>"><?php echo $this->escape($title); ?></a></li>
+				<li><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias . '/' . $attachment->parent . '/' . $attachment->post_id . '/' . $attachment->filename); ?>"><?php echo $this->escape($title); ?></a></li>
 <?php 		} ?>
 			</ul>
 <?php } ?>
@@ -83,7 +83,7 @@ ximport('Hubzero_User_Profile_Helper');
 		<!-- <h4 class="comments-title">
 			<?php echo JText::_('PLG_GROUPS_FORUM_COMMENTS'); ?>
 		</h4> -->
-		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias . '/' . $this->post->id); ?>" method="get">
+		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias . '/' . $this->post->id); ?>" method="get">
 		<ol class="comments">
 			<?php
 			if ($this->rows) {
@@ -117,7 +117,7 @@ ximport('Hubzero_User_Profile_Helper');
 					$comment  = $p->parse("\n" . stripslashes($row->comment), $wikiconfig, false);
 					$comment .= $this->attach->getAttachment(
 						$row->id, 
-						'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias . '/' . $this->post->id . '/' . $row->id . '/', 
+						'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias . '/' . $this->post->id . '/' . $row->id . '/', 
 						$this->config
 					);
 					
@@ -131,7 +131,7 @@ ximport('Hubzero_User_Profile_Helper');
 					<div class="comment-content">
 						<p class="comment-title">
 							<strong><?php echo $name; ?></strong> 
-							<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias . '/' . $this->post->id . '#c' . $row->id); ?>" title="<?php echo JText::_('PLG_GROUPS_FORUM_PERMALINK'); ?>"><span class="comment-date-at">@</span> 
+							<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias . '/' . $this->post->id . '#c' . $row->id); ?>" title="<?php echo JText::_('PLG_GROUPS_FORUM_PERMALINK'); ?>"><span class="comment-date-at">@</span> 
 								<span class="time"><time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $timeFormat, $tz); ?></time></span> <span class="comment-date-on"><?php echo JText::_('PLG_GROUPS_FORUM_ON'); ?></span> 
 								<span class="date"><time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?></time></span>
 								<?php if ($row->modified && $row->modified != '0000-00-00 00:00:00') { ?>
@@ -145,12 +145,12 @@ ximport('Hubzero_User_Profile_Helper');
 						<?php if ($this->config->get('access-edit-thread') || $juser->get('id') == $row->created_by) { ?>
 						<p class="comment-options">
 							<?php if ($this->config->get('access-delete-thread')) { ?>
-							<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias . '/' . $row->id . '/delete'); ?>">
+							<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias . '/' . $row->id . '/delete'); ?>">
 								<?php echo JText::_('PLG_GROUPS_FORUM_DELETE'); ?>
 							</a>
 							<?php } ?>
 							<?php if ($this->config->get('access-edit-thread')) { ?>
-							<a class="edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias . '/' . $row->id . '/edit'); ?>">
+							<a class="edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias . '/' . $row->id . '/edit'); ?>">
 								<?php echo JText::_('PLG_GROUPS_FORUM_EDIT'); ?>
 							</a>
 							<?php } ?>
@@ -170,7 +170,7 @@ ximport('Hubzero_User_Profile_Helper');
 		<?php } ?>
 		</ol>
 <?php 
-		$this->pageNav->setAdditionalUrlParam('gid', $this->group->get('cn'));
+		$this->pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
 		$this->pageNav->setAdditionalUrlParam('active', 'forum');
 		$this->pageNav->setAdditionalUrlParam('scope', $this->filters['section'] . '/' . $this->category->alias . '/' . $this->post->id);
 
@@ -221,7 +221,7 @@ ximport('Hubzero_User_Profile_Helper');
 		</table>
 	</div><!-- /.aside -->
 	<div class="subject">
-		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias . '/' . $this->post->id); ?>" method="post" id="commentform" enctype="multipart/form-data">
+		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias . '/' . $this->post->id); ?>" method="post" id="commentform" enctype="multipart/form-data">
 			<p class="comment-member-photo">
 				<a class="comment-anchor" name="commentform"></a>
 <?php
@@ -316,7 +316,7 @@ ximport('Hubzero_User_Profile_Helper');
 			<input type="hidden" name="fields[id]" value="" />
 	
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
+			<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
 			<input type="hidden" name="active" value="forum" />
 			<input type="hidden" name="action" value="savethread" />
 			<input type="hidden" name="section" value="<?php echo $this->filters['section']; ?>" />

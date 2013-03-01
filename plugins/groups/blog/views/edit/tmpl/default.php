@@ -46,7 +46,7 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 ?>
 <ul id="page_options">
 	<li>
-		<a class="archive btn" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog'); ?>" title="<?php echo JText::_('Archive'); ?>">
+		<a class="archive btn" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=blog'); ?>" title="<?php echo JText::_('Archive'); ?>">
 			<?php echo JText::_('Archive'); ?>
 		</a>
 	</li>
@@ -55,7 +55,7 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=blog'); ?>" method="post" id="hubForm" class="full">
+<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=blog'); ?>" method="post" id="hubForm" class="full">
 	<fieldset>
 		<legend><?php echo JText::_('PLG_GROUPS_BLOG_EDIT_DETAILS'); ?></legend>
 
@@ -160,7 +160,7 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 	</fieldset>
 	<div class="clear"></div>
 
-	<input type="hidden" name="gid" value="<?php echo $this->group->cn; ?>" />
+	<input type="hidden" name="cn" value="<?php echo $this->group->cn; ?>" />
 	<input type="hidden" name="entry[id]" value="<?php echo $this->entry->id; ?>" />
 	<input type="hidden" name="entry[alias]" value="<?php echo $this->entry->alias; ?>" />
 	<input type="hidden" name="entry[created]" value="<?php echo $this->entry->created; ?>" />
@@ -169,12 +169,12 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 	<input type="hidden" name="entry[group_id]" value="<?php echo $this->group->gidNumber; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="active" value="blog" />
-	<input type="hidden" name="task" value="save" />
+	<input type="hidden" name="action" value="save" />
 		
 	<p class="submit">
 		<input type="submit" value="<?php echo JText::_('PLG_GROUPS_BLOG_SAVE'); ?>" />
 		<?php if ($this->entry->id) { ?>
-			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->entry->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->entry->publish_up, '%m', 0).'/'.$this->entry->alias); ?>">Cancel</a>
+			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->entry->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->entry->publish_up, '%m', 0).'/'.$this->entry->alias); ?>">Cancel</a>
 		<?php } ?>
 	</p>
 </form>

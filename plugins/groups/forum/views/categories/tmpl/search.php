@@ -15,7 +15,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 ?>
 <ul id="page_options">
 	<li>
-		<a class="categories btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'); ?>"><?php echo JText::_('All categories'); ?></a>
+		<a class="categories btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum'); ?>"><?php echo JText::_('All categories'); ?></a>
 	</li>
 </ul>
 
@@ -33,7 +33,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 					<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="controller" value="categories" />
-					<input type="hidden" name="task" value="search" />
+					<input type="hidden" name="action" value="search" />
 				</fieldset>
 			</div><!-- / .container -->
 			
@@ -48,7 +48,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 					<tfoot>
 						<tr>
 							<td colspan="4">
-								<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->filters['category'] . '/new'); ?>">
+								<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->filters['category'] . '/new'); ?>">
 									<?php echo JText::_('Add Discussion'); ?>
 								</a>
 							</td>
@@ -77,7 +77,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 								<span class="entry-id"><?php echo $this->escape($row->id); ?></span>
 							</th>
 							<td>
-								<a class="entry-title" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $this->sections[$this->categories[$row->category_id]->section_id]->alias . '/' . $this->categories[$row->category_id]->alias . '/' . $thread); ?>">
+								<a class="entry-title" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->sections[$this->categories[$row->category_id]->section_id]->alias . '/' . $this->categories[$row->category_id]->alias . '/' . $thread); ?>">
 									<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
 								</a>
 								<span class="entry-details">
@@ -116,7 +116,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 				</table>
 <?php 
 			if ($this->pageNav) {
-				$this->pageNav->setAdditionalUrlParam('gid', $this->group->get('cn'));
+				$this->pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
 				$this->pageNav->setAdditionalUrlParam('active', 'forum');
 				$this->pageNav->setAdditionalUrlParam('scope', $this->filters['section'] . '/' . $this->filters['category']);
 				$this->pageNav->setAdditionalUrlParam('search', $this->filters['search']);

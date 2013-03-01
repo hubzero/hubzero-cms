@@ -6,7 +6,7 @@ ximport('Hubzero_User_Profile_Helper');
 ?>
 <ul id="page_options">
 	<li>
-		<a class="categories btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'); ?>">
+		<a class="categories btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum'); ?>">
 			<?php echo JText::_('All categories'); ?>
 		</a>
 	</li>
@@ -17,7 +17,7 @@ ximport('Hubzero_User_Profile_Helper');
 	<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
 <?php } ?>
 
-		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'); ?>" method="post" id="hubForm" class="full">
+		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum'); ?>" method="post" id="hubForm" class="full">
 			<fieldset>
 				<legend class="post-comment-title">
 			<?php if ($this->model->id) { ?>
@@ -78,9 +78,9 @@ ximport('Hubzero_User_Profile_Helper');
 			<input type="hidden" name="fields[scope_id]" value="<?php echo $this->group->get('gidNumber'); ?>" />
 	
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
+			<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
 			<input type="hidden" name="active" value="forum" />
-			<input type="hidden" name="task" value="savecategory" />
+			<input type="hidden" name="action" value="savecategory" />
 		</form>
 
 	<div class="clear"></div>

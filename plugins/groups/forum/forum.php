@@ -583,7 +583,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		if (!$model->bind($fields))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum')
+				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum')
 			);
 			return;
 		}
@@ -597,7 +597,7 @@ class plgGroupsForum extends Hubzero_Plugin
 
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum')
+			JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum')
 		);
 	}
 
@@ -612,7 +612,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		if ($this->juser->get('guest')) 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'))),
+				JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum'))),
 				JText::_('PLG_GROUPS_FORUM_LOGIN_NOTICE'),
 				'warning'
 			);
@@ -630,7 +630,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		if (!$model->id) 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'),
+				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum'),
 				JText::_('PLG_GROUPS_FORUM_MISSING_ID'),
 				'error'
 			);
@@ -642,7 +642,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		if (!$this->params->get('access-delete-section')) 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'),
+				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum'),
 				JText::_('PLG_GROUPS_FORUM_NOT_AUTHORIZED'),
 				'warning'
 			);
@@ -684,7 +684,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		if (!$model->store()) 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'),
+				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum'),
 				$model->getError(),
 				'error'
 			);
@@ -693,7 +693,7 @@ class plgGroupsForum extends Hubzero_Plugin
 
 		// Redirect to main listing
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'),
+			JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum'),
 			JText::_('PLG_GROUPS_FORUM_SECTION_DELETED'),
 			'passed'
 		);
@@ -904,7 +904,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		$section = JRequest::getVar('section', '');
 		if ($this->juser->get('guest')) 
 		{
-			$return = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum');
+			$return = JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum');
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_login&return=' . base64_encode($return))
 			);
@@ -935,7 +935,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		elseif ($this->view->model->created_by != $this->juser->get('id') && !$this->params->get('access-create-category')) 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum')
+				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum')
 			);
 			return;
 		}
@@ -996,7 +996,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		{
 			// Set the redirect
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum')
+				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum')
 			);
 		}
 		$model->closed = (isset($fields['closed']) && $fields['closed']) ? 1 : 0;
@@ -1016,7 +1016,7 @@ class plgGroupsForum extends Hubzero_Plugin
 
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum')
+			JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum')
 		);
 	}
 
@@ -1031,7 +1031,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		if ($this->juser->get('guest')) 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'))),
+				JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum'))),
 				JText::_('PLG_GROUPS_FORUM_LOGIN_NOTICE'),
 				'warning'
 			);
@@ -1043,7 +1043,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		if (!$category) 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'),
+				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum'),
 				JText::_('PLG_GROUPS_FORUM_MISSING_ID'),
 				'error'
 			);
@@ -1063,7 +1063,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		if (!$this->params->get('access-delete-category')) 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'),
+				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum'),
 				JText::_('PLG_GROUPS_FORUM_NOT_AUTHORIZED'),
 				'warning'
 			);
@@ -1082,7 +1082,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		if (!$model->store()) 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'),
+				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum'),
 				$model->getError(),
 				'error'
 			);
@@ -1091,7 +1091,7 @@ class plgGroupsForum extends Hubzero_Plugin
 
 		// Redirect to main listing
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'),
+			JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum'),
 			JText::_('PLG_GROUPS_FORUM_CATEGORY_DELETED'),
 			'passed'
 		);
@@ -1219,10 +1219,10 @@ class plgGroupsForum extends Hubzero_Plugin
 
 		if ($this->juser->get('guest')) 
 		{
-			$return = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category . '/new');
+			$return = JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category . '/new');
 			if ($id)
 			{
-				$return = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category . '/' . $id . '/edit');
+				$return = JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category . '/' . $id . '/edit');
 			}
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_login&return=' . base64_encode($return))
@@ -1253,7 +1253,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		}
 		elseif ($this->view->post->created_by != $this->juser->get('id') && !$this->params->get('access-edit-thread')) 
 		{
-			$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category));
+			$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category));
 			return;
 		}
 
@@ -1319,7 +1319,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		if ($this->juser->get('guest')) 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum')))
+				JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum')))
 			);
 			return;
 		}
@@ -1340,7 +1340,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		 || (!$fields['id'] && !$this->params->get('access-create-thread')))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum'),
+				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum'),
 				JText::_('You are not authorized to perform this action.'),
 				'warning'
 			);
@@ -1437,7 +1437,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		$forum_message = $prependtext . "\r\n\r\n" . $model->comment;
 
 		$juri =& JURI::getInstance();
-		$sef = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category->alias . '/' . $thread . '#c' . $model->id);
+		$sef = JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category->alias . '/' . $thread . '#c' . $model->id);
 		$forum_message .= "\r\n\r\n" . rtrim($juri->base(), DS) . DS . ltrim($sef, DS) . "\r\n";
 
 		// Translate the message wiki formatting to html
@@ -1527,7 +1527,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category->alias . '/' . $thread . '#c' . $model->id),
+			JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category->alias . '/' . $thread . '#c' . $model->id),
 			$message,
 			'passed'
 		);
@@ -1547,7 +1547,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		if ($this->juser->get('guest')) 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category),
+				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category),
 				JText::_('PLG_GROUPS_FORUM_LOGIN_NOTICE'),
 				'warning'
 			);
@@ -1565,7 +1565,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		if (!$model->id) 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category),
+				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category),
 				JText::_('PLG_GROUPS_FORUM_MISSING_ID'),
 				'error'
 			);
@@ -1577,7 +1577,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		if (!$this->params->get('access-delete-thread'))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category),
+				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category),
 				JText::_('PLG_GROUPS_FORUM_NOT_AUTHORIZED'),
 				'warning'
 			);
@@ -1598,7 +1598,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		if (!$model->store()) 
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category),
+				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category),
 				$forum->getError(),
 				'error'
 			);
@@ -1607,7 +1607,7 @@ class plgGroupsForum extends Hubzero_Plugin
 
 		// Redirect to main listing
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category),
+			JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category),
 			JText::_('PLG_GROUPS_FORUM_THREAD_DELETED'),
 			'passed'
 		);
@@ -1714,7 +1714,7 @@ class plgGroupsForum extends Hubzero_Plugin
 		// Check logged in status
 		if ($this->juser->get('guest')) 
 		{
-			$return = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category . '/' . $thread . '/' . $post . '/' . $file);
+			$return = JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category . '/' . $thread . '/' . $post . '/' . $file);
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_login&return=' . base64_encode($return))
 			);
@@ -1906,7 +1906,7 @@ class plgGroupsForum extends Hubzero_Plugin
 					$log .= 'forum.section.' . $section->id . '.category.' . $category->id . '.post' . "\n";
 
 					// Set all the categories to "deleted"
-					if (!$cModel->setStateBySection($model->id, 2))  /* 0 = unpublished, 1 = published, 2 = deleted */
+					if (!$cModel->setStateBySection($sModel->id, 2))  /* 0 = unpublished, 1 = published, 2 = deleted */
 					{
 						$this->setError($cModel->getError());
 					}

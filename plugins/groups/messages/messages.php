@@ -442,7 +442,7 @@ class plgGroupsMessages extends JPlugin
 
 		// Add a link to the group page to the bottom of the message
 		$juri =& JURI::getInstance();
-		$sef = JRoute::_('index.php?option='.$this->_option.'&gid='. $this->group->get('cn'));
+		$sef = JRoute::_('index.php?option='.$this->_option.'&cn='. $this->group->get('cn'));
 		$sef = ltrim($sef, DS);
 
 		$message .= "\r\n\r\n------------------------------------------------\r\n". $juri->base().$sef . "\r\n";

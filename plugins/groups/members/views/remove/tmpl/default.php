@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<form action="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->get('cn').'&active=members'); ?>" method="post" id="hubForm">
+<form action="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->get('cn').'&active=members'); ?>" method="post" id="hubForm">
 	<div class="explaination">
 		<p class="info"><?php echo JText::_('PLG_GROUPS_MEMBERS_REMOVE_EXPLANATION'); ?></p>
 	</div>
@@ -58,10 +58,10 @@ foreach ($this->users as $user)
 			<textarea name="reason" id="reason" rows="12" cols="50"></textarea>
 		</label>
 	</fieldset><div class="clear"></div>
-	<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
+	<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
 	<input type="hidden" name="active" value="members" />
 	<input type="hidden" name="option" value="<?php echo $option; ?>" />
-	<input type="hidden" name="task" value="confirmremove" />
+	<input type="hidden" name="action" value="confirmremove" />
 	<p class="submit">
 		<input type="submit" value="<?php echo JText::_('PLG_GROUPS_MEMBERS_SUBMIT'); ?>" />
 	</p>

@@ -36,7 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php } ?>
 
 
-<form action="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->get('cn')); ?>" method="post" id="hubForm<?php if ($this->no_html) { echo '-ajax'; }; ?>"> 
+<form action="index.php" method="post" id="hubForm<?php if ($this->no_html) { echo '-ajax'; }; ?>"> 
 	<fieldset>
 		<legend>Assign Member Role</legend>
 		<label>
@@ -66,9 +66,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</select>
 		</label>
 	</fieldset>
-	<input type="hidden" name="active" value="members" />
 	<input type="hidden" name="option" value="<?php echo $option; ?>" />
-	<input type="hidden" name="task" value="submitrole" />
+	<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
+	<input type="hidden" name="active" value="members" />
+	<input type="hidden" name="action" value="submitrole" />
 	<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
-	<p class="submit"><input type="submit" name="submit" value="Assign Role" /></p>
+	<p class="submit">
+		<input type="submit" name="submit" value="Assign Role" />
+	</p>
 </form>

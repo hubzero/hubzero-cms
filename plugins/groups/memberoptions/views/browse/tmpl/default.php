@@ -43,11 +43,11 @@ else
 
 ?>
 
-<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=memberoptions'); ?>" method="post" id="memberoptionform">
+<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=memberoptions'); ?>" method="post" id="memberoptionform">
 	
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
-	<input type="hidden" name="task" value="savememberoptions" />
+	<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
+	<input type="hidden" name="action" value="savememberoptions" />
 	<input type="hidden" name="memberoptionid" value="<?php echo $this->recvEmailOptionID;?>" />
 
 	<div class="group-content-header">

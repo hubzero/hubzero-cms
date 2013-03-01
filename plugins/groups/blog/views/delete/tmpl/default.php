@@ -34,10 +34,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->cn.'&active=blog&task=delete&entry='.$this->entry->id); ?>" method="post" id="hubForm">
+	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=blog&action=delete&entry='.$this->entry->id); ?>" method="post" id="hubForm">
 		<div class="explaination">
 <?php if ($this->authorized) { ?>
-			<p><a class="add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->cn.'&active=blog&task=new'); ?>"><?php echo JText::_('New entry'); ?></a></p>
+			<p><a class="add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=blog&action=new'); ?>"><?php echo JText::_('New entry'); ?></a></p>
 <?php } ?>
 		</div>
 		<fieldset>
@@ -52,15 +52,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 		</fieldset>
 		<div class="clear"></div>
 		
-		<input type="hidden" name="gid" value="<?php echo $this->group->cn; ?>" />
+		<input type="hidden" name="cn" value="<?php echo $this->group->cn; ?>" />
 		<input type="hidden" name="process" value="1" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="active" value="blog" />
-		<input type="hidden" name="task" value="delete" />
+		<input type="hidden" name="action" value="delete" />
 		<input type="hidden" name="entry" value="<?php echo $this->entry->id; ?>" />
 		
 		<p class="submit">
 			<input type="submit" value="<?php echo JText::_('PLG_GROUPS_BLOG_DELETE'); ?>" />
-			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->entry->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->entry->publish_up, '%m', 0).'/'.$this->entry->alias); ?>">Cancel</a>
+			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->entry->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->entry->publish_up, '%m', 0).'/'.$this->entry->alias); ?>">Cancel</a>
 		</p>
 	</form>

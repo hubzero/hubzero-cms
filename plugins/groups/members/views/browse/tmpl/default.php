@@ -65,7 +65,7 @@ if ($this->role_filter)
 	<?php if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
 		<ul id="page_options">
 			<li>
-				<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $option . '&gid=' . $this->group->get('cn') . '&task=invite'); ?>">
+				<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $option . '&cn=' . $this->group->get('cn') . '&task=invite'); ?>">
 					<?php echo JText::_('Invite Members'); ?>
 				</a>
 			</li>
@@ -87,11 +87,11 @@ if ($this->role_filter)
 						<?php foreach ($this->member_roles as $role) { ?>
 							<?php $cls = ($role['id'] == $this->role_filter) ? 'active' : ''; ?>
 							<li>
-								<a class="role <?php echo $cls; ?>" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&role_filter='.$role['id']); ?>"><?php echo $role['role']; ?></a>
+								<a class="role <?php echo $cls; ?>" href="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&role_filter='.$role['id']); ?>"><?php echo $role['role']; ?></a>
 								<?php if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
 									<?php if ($this->membership_control == 1) { ?>
 										<span class="remove-role">
-											<a href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&task=removerole&role='.$role['id']); ?>">x</a>
+											<a href="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=removerole&role='.$role['id']); ?>">x</a>
 										</span>
 									<?php } ?>	
 								<?php } ?>
@@ -106,7 +106,7 @@ if ($this->role_filter)
 			<?php if ($this->membership_control == 1) { ?>
 				<?php if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
 					<div class="container" id="addrole">
-						<form name="add-role" action="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&task=addrole'); ?>" method="post">
+						<form name="add-role" action="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=addrole'); ?>" method="post">
 							<h4>Add a Member Role</h4>
 							<input type="text" name="role">
 							<input type="submit" name="submit-role" value="Add">
@@ -117,7 +117,7 @@ if ($this->role_filter)
 			<?php } ?>
 		</div>
 		<div class="subject">
-	<form action="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&filter='.$this->filter); ?>" method="post">
+	<form action="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&filter='.$this->filter); ?>" method="post">
 		<div class="container">
 			<!-- <div class="entries-filters"> -->
 				<ul class="entries-menu filter-options">
@@ -130,7 +130,7 @@ if ($this->role_filter)
 						?>
 						<?php if ($filter != 'pending' && $filter != 'invitees' || ($this->authorized == 'admin' || $this->authorized == 'manager')) { ?>
 								<li>
-									<a class="<?php echo $filter . $active; ?>" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&filter='.$filter); ?>"><?php echo $name; ?> 
+									<a class="<?php echo $filter . $active; ?>" href="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&filter='.$filter); ?>"><?php echo $name; ?> 
 										<?php 
 											if ($filter == 'pending') {
 												echo '('.count($this->group->get('applicants')).')';
@@ -200,7 +200,7 @@ if ($this->role_filter)
 										}
 									}
 								?>
-								<a class="message tooltips" href="<?php echo JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=messages&task=new'.$append); ?>" title="Message :: <?php echo $title; ?>">Message All</a>
+								<a class="message tooltips" href="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=messages&action=new'.$append); ?>" title="Message :: <?php echo $title; ?>">Message All</a>
 								<?php } ?>
 							</span><!-- / .message-all -->
 						<?php } ?>
@@ -303,11 +303,11 @@ if ($this->role_filter)
 									if ($roles) {
 										$html .= '<strong>Member Roles:</strong> ';
 										foreach ($roles as $role) {
-											$all_roles .= ', <span><a href="'.JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=members&filter='.$this->filter.'&role_filter='.$role['id']).'">'.$role['role'].'</a>';
+											$all_roles .= ', <span><a href="'.JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=members&filter='.$this->filter.'&role_filter='.$role['id']).'">'.$role['role'].'</a>';
 
 											if ($this->authorized == 'manager' || $this->authorized == 'admin') {
 												if ($this->membership_control == 1) {
-													$all_roles .= '<span class="delete-role"><a href="'.JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=members&task=deleterole&uid='.$u->get('uidNumber').'&role='.$role['id']).'">x</a></span></span>';
+													$all_roles .= '<span class="delete-role"><a href="'.JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=members&action=deleterole&uid='.$u->get('uidNumber').'&role='.$role['id']).'">x</a></span></span>';
 												}
 											} else {
 												$all_roles .= '</span>';
@@ -318,7 +318,7 @@ if ($this->role_filter)
 
 										if ($this->authorized == 'manager' || $this->authorized == 'admin') {
 											if ($this->membership_control == 1) {
-												$html .= ', <a class="assign-role" href="'.JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=members&task=assignrole&uid='.$u->get('uidNumber')).'">Assign Role &rsaquo;</a>';
+												$html .= ', <a class="assign-role" href="'.JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=members&action=assignrole&uid='.$u->get('uidNumber')).'">Assign Role &rsaquo;</a>';
 											}
 										}
 
@@ -328,7 +328,7 @@ if ($this->role_filter)
 										if (($this->authorized == 'manager' || $this->authorized == 'admin') && !$roles) {
 											$html .= '<strong>Member Roles:</strong> ';
 											$html .= '<span class="roles-list" id="roles-list-'.$u->get('uidNumber').'"></span>';
-											$html .= ' <a class="assign-role" href="'.JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=members&task=assignrole&uid='.$u->get('uidNumber')).'">Assign Role &rsaquo;</a>';
+											$html .= ' <a class="assign-role" href="'.JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=members&action=assignrole&uid='.$u->get('uidNumber')).'">Assign Role &rsaquo;</a>';
 										}
 									}
 									$html .= '</span>';
@@ -354,17 +354,17 @@ if ($this->role_filter)
 										case 'invitees':
 											if ($this->membership_control == 1) {
 												if (!$inviteemail) {
-													$html .= "\t\t\t\t".'<td class="remove-member"><a class="cancel tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&task=cancel&users[]='.$guser.'&filter='.$this->filter).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_CANCEL_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_GROUPS_MEMBERS_CANCEL').'</a></td>'."\n";
+													$html .= "\t\t\t\t".'<td class="remove-member"><a class="cancel tooltips" href="'.JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=cancel&users[]='.$guser.'&filter='.$this->filter).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_CANCEL_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_GROUPS_MEMBERS_CANCEL').'</a></td>'."\n";
 												} else {
-													$html .= "\t\t\t\t".'<td class="remove-member"><a class="cancel tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&task=cancel&users[]='.$guser.'&filter='.$this->filter).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_CANCEL_MEMBER',htmlentities($guser,ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_GROUPS_MEMBERS_CANCEL').'</a></td>'."\n";
+													$html .= "\t\t\t\t".'<td class="remove-member"><a class="cancel tooltips" href="'.JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=cancel&users[]='.$guser.'&filter='.$this->filter).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_CANCEL_MEMBER',htmlentities($guser,ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_GROUPS_MEMBERS_CANCEL').'</a></td>'."\n";
 												}
 											}
 											$html .= "\t\t\t\t".'<td class="approve-member"> </td>'."\n";
 										break;
 										case 'pending':
 											if ($this->membership_control == 1) {
-												$html .= "\t\t\t\t".'<td class="decline-member"><a class="decline tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&task=deny&users[]='.$guser.'&filter='.$this->filter).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_DECLINE_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_GROUPS_MEMBERS_DENY').'</a></td>'."\n";
-												$html .= "\t\t\t\t".'<td class="approve-member"><a class="approve tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&task=approve&users[]='.$guser.'&filter='.$this->filter).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_APPROVE_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_GROUPS_MEMBERS_APPROVE').'</a></td>'."\n";
+												$html .= "\t\t\t\t".'<td class="decline-member"><a class="decline tooltips" href="'.JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=deny&users[]='.$guser.'&filter='.$this->filter).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_DECLINE_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_GROUPS_MEMBERS_DENY').'</a></td>'."\n";
+												$html .= "\t\t\t\t".'<td class="approve-member"><a class="approve tooltips" href="'.JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=approve&users[]='.$guser.'&filter='.$this->filter).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_APPROVE_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_GROUPS_MEMBERS_APPROVE').'</a></td>'."\n";
 											}
 										break;
 										case 'managers':
@@ -372,7 +372,7 @@ if ($this->role_filter)
 										default:
 											if ($this->membership_control == 1) {
 												if (!in_array($guser,$this->managers) || (in_array($guser,$this->managers) && count($this->managers) > 1)) {
-													$html .= "\t\t\t\t".'<td class="remove-member"><a class="remove tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&task=remove&users[]='.$guser.'&filter='.$this->filter).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_REMOVE_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_GROUPS_MEMBERS_REMOVE').'</a></td>'."\n";
+													$html .= "\t\t\t\t".'<td class="remove-member"><a class="remove tooltips" href="'.JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=remove&users[]='.$guser.'&filter='.$this->filter).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_REMOVE_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_GROUPS_MEMBERS_REMOVE').'</a></td>'."\n";
 												} else {
 													$html .= "\t\t\t\t".'<td class="remove-member"> </td>'."\n";
 												}
@@ -381,12 +381,12 @@ if ($this->role_filter)
 													//force admins to use backend to demote manager if only 1
 													//if ($this->authorized == 'admin' || count($this->managers) > 1) {
 													if (count($this->managers) > 1) {
-														$html .= "\t\t\t\t".'<td class="demote-member"><a class="demote tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&task=demote&users[]='.$guser.'&filter='.$this->filter.'&limit='.$this->limit.'&limitstart='.$this->start).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_DEMOTE_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_GROUPS_MEMBERS_DEMOTE').'</a></td>'."\n";
+														$html .= "\t\t\t\t".'<td class="demote-member"><a class="demote tooltips" href="'.JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=demote&users[]='.$guser.'&filter='.$this->filter.'&limit='.$this->limit.'&limitstart='.$this->start).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_DEMOTE_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_GROUPS_MEMBERS_DEMOTE').'</a></td>'."\n";
 													} else {
 														$html .= "\t\t\t\t".'<td class="demote-member"> </td>'."\n";
 													}
 												} else {
-													$html .= "\t\t\t\t".'<td class="promote-member"><a class="promote tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=members&task=promote&users[]='.$guser.'&filter='.$this->filter.'&limit='.$this->limit.'&limitstart='.$this->start).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_PROMOTE_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_GROUPS_MEMBERS_PROMOTE').'</a></td>'."\n";
+													$html .= "\t\t\t\t".'<td class="promote-member"><a class="promote tooltips" href="'.JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=promote&users[]='.$guser.'&filter='.$this->filter.'&limit='.$this->limit.'&limitstart='.$this->start).'" title="'.JText::sprintf('PLG_GROUPS_MEMBERS_PROMOTE_MEMBER',htmlentities($u->get('name'),ENT_COMPAT,'UTF-8')).'">'.JText::_('PLG_GROUPS_MEMBERS_PROMOTE').'</a></td>'."\n";
 												}
 											}
 										break;
@@ -399,7 +399,7 @@ if ($this->role_filter)
 									$html .= "\t\t\t\t".'<td class="message-member"> </td>'."\n";
 								} else {
 									if (!$inviteemail && ($this->authorized == 'manager' || $this->authorized == 'admin') && $this->messages_acl != 'nobody') {
-										$html .= "\t\t\t\t".'<td class="message-member"><a class="message tooltips" href="'.JRoute::_('index.php?option='.$option.'&gid='.$this->group->cn.'&active=messages&task=new&users[]='.$guser).'" title="Message :: Send a message to '.htmlentities($u->get('name'),ENT_COMPAT,'UTF-8').'">'.JText::_('PLG_GROUPS_MEMBERS_MESSAGE').'</a></td>'."\n";
+										$html .= "\t\t\t\t".'<td class="message-member"><a class="message tooltips" href="'.JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=messages&action=new&users[]='.$guser).'" title="Message :: Send a message to '.htmlentities($u->get('name'),ENT_COMPAT,'UTF-8').'">'.JText::_('PLG_GROUPS_MEMBERS_MESSAGE').'</a></td>'."\n";
 									} else {
 										$html .= "\t\t\t\t".'<td class="message-member"></td>'."\n";
 									}
@@ -420,7 +420,7 @@ if ($this->role_filter)
 					</tbody>
 				</table>
 			<?php 
-				$this->pageNav->setAdditionalUrlParam('gid', $this->group->get('cn'));
+				$this->pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
 				$this->pageNav->setAdditionalUrlParam('active', 'members');
 				$this->pageNav->setAdditionalUrlParam('filter', $this->filter);
 				$this->pageNav->setAdditionalUrlParam('q', $this->q);
@@ -433,7 +433,7 @@ if ($this->role_filter)
 		<div class="clear"></div>
 	
 		
-		<input type="hidden" name="gid" value="<?php echo $this->group->cn; ?>" />
+		<input type="hidden" name="cn" value="<?php echo $this->group->cn; ?>" />
 		<input type="hidden" name="active" value="members" />
 		<input type="hidden" name="option" value="<?php echo $option; ?>" />
 		<input type="hidden" name="filter" value="<?php echo $this->filter; ?>" />

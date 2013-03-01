@@ -41,14 +41,14 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 	<ul id="page_options">
 	<?php if ($this->canpost) { ?>
 		<li>
-			<a class="add btn" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=new'); ?>">
+			<a class="add btn" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=blog&action=new'); ?>">
 				<?php echo JText::_('New entry'); ?>
 			</a>
 		</li>
 	<?php } ?>
 	<?php if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
 		<li>
-			<a class="config btn" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=settings'); ?>" title="<?php echo JText::_('Edit Settings'); ?>">
+			<a class="config btn" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=blog&action=settings'); ?>" title="<?php echo JText::_('Edit Settings'); ?>">
 				<?php echo JText::_('Settings'); ?>
 			</a>
 		</li>
@@ -64,7 +64,7 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 				<?php if ($this->popular) { ?>
 					<?php foreach ($this->popular as $row) { ?>
 						<li>
-							<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias); ?>">
+							<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias); ?>">
 								<?php echo stripslashes($row->title); ?>
 							</a>
 						</li>
@@ -79,7 +79,7 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 				<?php if ($this->recent) { ?>
 					<?php foreach ($this->recent as $row) { ?>
 						<li>
-							<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias); ?>">
+							<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias); ?>">
 								<?php echo stripslashes($row->title); ?>
 							</a>
 						</li>
@@ -113,7 +113,7 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 				</dd>
 			<?php if ($this->row->allow_comments == 1) { ?>
 				<dd class="comments">
-					<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date', $this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date', $this->row->publish_up, $this->yearFormat, $this->tz).'/'.$this->row->alias.'#comments'); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=blog&scope='.JHTML::_('date', $this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date', $this->row->publish_up, $this->yearFormat, $this->tz).'/'.$this->row->alias.'#comments'); ?>">
 						<?php echo JText::sprintf('PLG_GROUPS_BLOG_NUM_COMMENTS', $this->comment_total); ?>
 					</a>
 				</dd>
@@ -144,10 +144,10 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 				?>
 				</dd>
 				<dd class="entry-options">
-					<a class="edit" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=edit&entry='.$this->row->id); ?>" title="<?php echo JText::_('Edit'); ?>">
+					<a class="edit" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=blog&action=edit&entry='.$this->row->id); ?>" title="<?php echo JText::_('Edit'); ?>">
 						<span><?php echo JText::_('Edit'); ?></span>
 					</a>
-					<a class="delete" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&task=delete&entry='.$this->row->id); ?>" title="<?php echo JText::_('Delete'); ?>">
+					<a class="delete" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=blog&action=delete&entry='.$this->row->id); ?>" title="<?php echo JText::_('Delete'); ?>">
 						<span><?php echo JText::_('Delete'); ?></span>
 					</a>
 				</dd>
@@ -212,7 +212,7 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 
 		<div class="aside aside-below">
 			<p>
-				<a class="add btn" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias.'#post-comment'); ?>">
+				<a class="add btn" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias.'#post-comment'); ?>">
 					<?php echo JText::_('Add a comment'); ?>
 				</a>
 			</p>
@@ -252,7 +252,7 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 							<div class="comment-content">
 								<p class="comment-title">
 									<strong><?php echo $name; ?></strong> 
-									<a class="permalink" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'#c'.$comment->id); ?>" title="<?php echo JText::_('PLG_GROUPS_BLOG_PERMALINK'); ?>">
+									<a class="permalink" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'#c'.$comment->id); ?>" title="<?php echo JText::_('PLG_GROUPS_BLOG_PERMALINK'); ?>">
 										<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, $this->timeFormat, $this->tz); ?></time></span> 
 										<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, $this->dateFormat, $this->tz); ?></time></span>
 									</a>
@@ -262,7 +262,7 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 								<?php if (!$comment->reports) { ?>
 									<p class="comment-options">
 										<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=blog&id='.$comment->id.'&parent='.$this->row->id); ?>">Report abuse</a> | 
-										<a class="reply" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'?reply='.$comment->id.'#post-comment'); ?>">Reply</a>
+										<a class="reply" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'?reply='.$comment->id.'#post-comment'); ?>">Reply</a>
 									</p>
 								<?php } ?>
 							</div>
@@ -294,7 +294,7 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 											<div class="comment-content">
 												<p class="comment-title">
 													<strong><?php echo $name; ?></strong> 
-													<a class="permalink" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'#c'.$reply->id); ?>" title="<?php echo JText::_('PLG_GROUPS_BLOG_PERMALINK'); ?>">
+													<a class="permalink" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'#c'.$reply->id); ?>" title="<?php echo JText::_('PLG_GROUPS_BLOG_PERMALINK'); ?>">
 														<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $reply->created; ?>"><?php echo JHTML::_('date', $reply->created, $this->timeFormat, $this->tz); ?></time></span> 
 														<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $reply->created; ?>"><?php echo JHTML::_('date', $reply->created, $this->dateFormat, $this->tz); ?></time></span>
 													</a>
@@ -304,7 +304,7 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 												<?php if (!$reply->reports) { ?>
 													<p class="comment-options">
 														<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=blog&id='.$reply->id.'&parent='.$this->row->id); ?>">Report abuse</a> | 
-														<a class="reply" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'?reply='.$reply->id.'#post-comment'); ?>">Reply</a>
+														<a class="reply" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'?reply='.$reply->id.'#post-comment'); ?>">Reply</a>
 													</p>
 												<?php } ?>
 											</div>
@@ -335,7 +335,7 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 															<div class="comment-content">
 																<p class="comment-title">
 																	<strong><?php echo $name; ?></strong> 
-																	<a class="permalink" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'#c'.$response->id); ?>" title="<?php echo JText::_('PLG_GROUPS_BLOG_PERMALINK'); ?>">
+																	<a class="permalink" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$this->row->publish_up, $this->monthFormat, $this->tz).'/'.$this->row->alias.'#c'.$response->id); ?>" title="<?php echo JText::_('PLG_GROUPS_BLOG_PERMALINK'); ?>">
 																		<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $response->created; ?>"><?php echo JHTML::_('date', $response->created, $this->timeFormat, $this->tz); ?></time></span> 
 																		<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $response->created; ?>"><?php echo JHTML::_('date', $response->created, $this->dateFormat, $this->tz); ?></time></span>
 																	</a>
@@ -407,7 +407,7 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 				Post a comment
 			</h3>
 			
-			<form method="post" action="<?php echo JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias); ?>" id="commentform">
+			<form method="post" action="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias); ?>" id="commentform">
 				<p class="comment-member-photo">
 					<?php
 						$jxuser = Hubzero_User_Profile::getInstance($juser->get('id'));
@@ -462,13 +462,13 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 							<input type="submit" name="submit" value="Submit" />
 						</p>
 					<?php } else { ?>
-						<?php $rtrn = JRoute::_('index.php?option=com_groups&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias.'#post-comment'); ?>
+						<?php $rtrn = JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->row->publish_up, '%Y', 0).'/'.JHTML::_('date',$this->row->publish_up, '%m', 0).'/'.$this->row->alias.'#post-comment'); ?>
 						<p class="warning">
 							You must <a href="/login?return=<?php echo base64_encode($rtrn); ?>">log in</a> to post comments.
 						</p>
 					<?php } ?>
 				
-					<input type="hidden" name="gid" value="<?php echo $this->group->cn; ?>" />
+					<input type="hidden" name="cn" value="<?php echo $this->group->cn; ?>" />
 					<input type="hidden" name="comment[id]" value="0" />
 					<input type="hidden" name="comment[entry_id]" value="<?php echo $this->row->id; ?>" />
 					<input type="hidden" name="comment[parent]" value="<?php echo $this->replyto->id; ?>" />
@@ -476,7 +476,7 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 					<input type="hidden" name="comment[created_by]" value="<?php echo $this->juser->get('id'); ?>" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="active" value="blog" />
-					<input type="hidden" name="task" value="savecomment" />
+					<input type="hidden" name="action" value="savecomment" />
 			
 					<div class="sidenote">
 						<p><strong>Please keep comments relevant to this entry.</strong></p>

@@ -3,13 +3,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 $juser = JFactory::getUser();
 
 if ($this->post->id) {
-	$action = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $this->section . '/' . $this->category->alias . '/' . $this->post->id;
+	$action = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->section . '/' . $this->category->alias . '/' . $this->post->id;
 } else {
-	$action = 'index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $this->section . '/' . $this->category->alias;
+	$action = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->section . '/' . $this->category->alias;
 }
 ?>
 <div id="content-header-extra">
-	<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=forum&scope=' . $this->section . '/' . $this->category->alias); ?>"><?php echo JText::_('&larr; All discussions'); ?></a></p>
+	<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->section . '/' . $this->category->alias); ?>"><?php echo JText::_('&larr; All discussions'); ?></a></p>
 </div>
 
 <div class="main section">
@@ -179,7 +179,7 @@ if ($this->post->id) {
 			<input type="hidden" name="fields[scope_id]" value="<?php echo $this->group->get('gidNumber'); ?>" />
 	
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
+			<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
 			<input type="hidden" name="active" value="forum" />
 			<input type="hidden" name="action" value="savethread" />
 			<input type="hidden" name="section" value="<?php echo $this->section; ?>" />

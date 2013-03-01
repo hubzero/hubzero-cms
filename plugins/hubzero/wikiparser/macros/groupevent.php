@@ -142,7 +142,7 @@ class GroupEventMacro extends WikiMacro
 			{
 				$content .= '<div class="event">';
 
-				$link = JRoute::_('index.php?option=com_groups&gid=' . $group->get('cn') . '&active=calendar&month=' . date("m", strtotime($event['start'])) . '&year=' . date("Y", strtotime($event['start'])));
+				$link = JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&month=' . date("m", strtotime($event['start'])) . '&year=' . date("Y", strtotime($event['start'])));
 				
 				$content .= '<a class="title" href="' . $link . '">' . stripslashes($event['title']) . '</a>';
 
@@ -169,7 +169,7 @@ class GroupEventMacro extends WikiMacro
 		} 
 		else 
 		{
-			$content .= '<p>Currently there are no upcoming group events. Add an event by <a href="' . JRoute::_('index.php?option=com_groups&gid=' . $group->get('cn') . '&active=calendar&task=add') . '">clicking here.</a></p>';
+			$content .= '<p>Currently there are no upcoming group events. Add an event by <a href="' . JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&task=add') . '">clicking here.</a></p>';
 		}
 
 		return $content;

@@ -31,8 +31,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $use_alias = $this->config->get('use_alias', 0);
 $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
+$cn = $this->group->get('cn');
 $gid = $this->group->get('gidNumber');
-
 ?>
 <div class="main section" id="s-projects">
 	<div class="aside">
@@ -54,11 +54,11 @@ $gid = $this->group->get('gidNumber');
 		<div class="entries-filters">
 			<ul class="entries-menu">
 				<li>
-					<a href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$gid.'&active=projects').'?action=all'; ?>"><?php echo JText::_('PLG_GROUPS_PROJECTS_LIST').' ('.$this->projectcount.')'; ?>
+					<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$cn.'&active=projects').'?action=all'; ?>"><?php echo JText::_('PLG_GROUPS_PROJECTS_LIST').' ('.$this->projectcount.')'; ?>
 					</a>
 				</li>
 				<li>
-					<a class="active" href="<?php echo JRoute::_('index.php?option=com_groups&gid='.$gid.'&active=projects').'?action=updates'; ?>"><?php echo JText::_('PLG_GROUPS_PROJECTS_UPDATES_FEED'); ?> <?php if($this->newcount) { echo '<span class="s-new">'.$this->newcount.'</span>'; } ?>
+					<a class="active" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$cn.'&active=projects').'?action=updates'; ?>"><?php echo JText::_('PLG_GROUPS_PROJECTS_UPDATES_FEED'); ?> <?php if($this->newcount) { echo '<span class="s-new">'.$this->newcount.'</span>'; } ?>
 					</a>
 				</li>
 			</ul>

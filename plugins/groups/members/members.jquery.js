@@ -28,7 +28,7 @@ HUB.Plugins.GroupsMembers = {
 	initialize: function() {
 		var $ = this.jQuery;
 		
-		$('.delete-role a').on('click', function(e) {
+		$('.remove-role a').on('click', function(e) {
 			e.preventDefault();
 			var answer = confirm('Are you sure you want to delete this member role? It will also delete any associations members have with the role.');
 			if (answer) { 
@@ -98,13 +98,7 @@ HUB.Plugins.GroupsMembers = {
 							return false;
 						}
 						$.post($(this).attr('action'), $(this).serialize(), function(returndata) {
-							role = $('#roles').find("option:selected").text();
-							old = $('#roles-list-' + uid).html();
-							if (old == '') {
-								$('#roles-list-' + uid).html(role);
-							} else {
-								$('#roles-list-' + uid).html(old + ', ' + role);
-							}
+							$('#roles-list-' + uid).load(window.location.href + ' #roles-list-'+uid+' > *');
 							$.fancybox.close();
 						});
 					});

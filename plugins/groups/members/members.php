@@ -307,7 +307,7 @@ class plgGroupsMembers extends JPlugin
 		if(count($pending) > 0)
 		{
 			$title = $this->group->get('description')." has <strong>".count($pending)."</strong> pending membership request.";
-			$link = JRoute::_('index.php?option=com_groups&gid='.$this->group->get('cn').'&active=members&filter=pending');
+			$link = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=members&filter=pending');
 			$arr['metadata']['alert'] = "<a class=\"alrt\" href=\"{$link}\"><span><h5>Member Alert</h5>{$title}</span></a>";
 		}
 
@@ -548,7 +548,7 @@ class plgGroupsMembers extends JPlugin
 		$limit = JRequest::getVar("limit", 25);
 		$filter = JRequest::getVar("filter", "members");
 
-		$this->_redirect = JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=members&filter='.$filter.'&limit='.$limit.'&limitstart='.$start);
+		$this->_redirect = JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&filter='.$filter.'&limit='.$limit.'&limitstart='.$start);
 	}
 
 	/**
@@ -651,7 +651,7 @@ class plgGroupsMembers extends JPlugin
 		$limit = JRequest::getVar("limit", 25);
 		$filter = JRequest::getVar("filter", "members");
 
-		$this->_redirect = JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=members&filter='.$filter.'&limit='.$limit.'&limitstart='.$start);
+		$this->_redirect = JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&filter='.$filter.'&limit='.$limit.'&limitstart='.$start);
 	}
 
 	/**
@@ -830,7 +830,7 @@ class plgGroupsMembers extends JPlugin
 			return false;
 		}
 
-		$app->redirect(JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&task=invite&return=members'),'','message',true);
+		$app->redirect(JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=invite&return=members'),'','message',true);
 	}
 
 	/**
@@ -1159,7 +1159,7 @@ class plgGroupsMembers extends JPlugin
 			$this->setError('An error occurred while trying to add the member role. Please try again.');
 		}
 
-		$app->redirect(JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=members'),'','message',true);
+		$app->redirect(JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members'),'','message',true);
 	}
 
 	/**
@@ -1197,7 +1197,7 @@ class plgGroupsMembers extends JPlugin
 			$this->setError('An error occurred while trying to remove the member role. Please try again.');
 		}
 
-		$app->redirect(JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=members'),'','message',true);
+		$app->redirect(JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members'),'','message',true);
 	}
 
 	/**
@@ -1291,7 +1291,7 @@ class plgGroupsMembers extends JPlugin
 
 		if ($no_html == 0) 
 		{
-			$app->redirect(JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=members'),'','message',true);
+			$app->redirect(JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members'),'','message',true);
 		}
 	}
 
@@ -1328,7 +1328,7 @@ class plgGroupsMembers extends JPlugin
 			$this->setError('An error occurred while trying to remove the members role. Please try again.');
 		}
 
-		$app->redirect(JRoute::_('index.php?option=com_groups&gid=' . $this->group->get('cn') . '&active=members'),'','message',true);
+		$app->redirect(JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members'),'','message',true);
 	}
 
 	/**
@@ -1392,7 +1392,7 @@ class plgGroupsMembers extends JPlugin
 
 		// Build the URL to attach to the message
 		$juri =& JURI::getInstance();
-		$sef = JRoute::_('index.php?option='.$this->_option.'&gid='. $this->group->get('cn'));
+		$sef = JRoute::_('index.php?option='.$this->_option.'&cn='. $this->group->get('cn'));
 		$sef = ltrim($sef, DS);
 
 		// Message
@@ -1427,7 +1427,7 @@ class plgGroupsMembers extends JPlugin
 
 		// Build the SEF referenced in the message
 		$juri =& JURI::getInstance();
-		$sef = JRoute::_('index.php?option='.$this->_option.'&gid='. $group->get('cn'));
+		$sef = JRoute::_('index.php?option='.$this->_option.'&cn='. $group->get('cn'));
 		$sef = ltrim($sef, DS);
 
 		// Get the site configuration
@@ -1538,7 +1538,7 @@ class plgGroupsMembers extends JPlugin
 
 		// Build the SEF referenced in the message
 		$juri =& JURI::getInstance();
-		$sef = JRoute::_('index.php?option='.$this->_option.'&gid='. $group->get('cn'));
+		$sef = JRoute::_('index.php?option='.$this->_option.'&cn='. $group->get('cn'));
 		$sef = ltrim($sef, DS);
 
 		// Get the site configuration

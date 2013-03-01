@@ -196,7 +196,7 @@ class plgGroupsCalendar extends JPlugin
 		if($upcoming_events > 0)
 		{
 			$title = $this->group->get('description')." has {$upcoming_events} events this month.";
-			$link = JRoute::_('index.php?option=com_groups&gid='.$this->group->get('cn').'&active=calendar');
+			$link = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=calendar');
 			$arr['metadata']['alert'] = "<a class=\"alrt\" href=\"{$link}\"><span><h5>Calendar Alert</h5>{$title}</span></a>";
 		}
 		
@@ -332,7 +332,7 @@ class plgGroupsCalendar extends JPlugin
 		$calendar .= "</form>";
 		if (in_array($this->juser->get('id'),$this->members) || $this->authorized == 'manager' || $this->authorized == 'admin') 
 		{
-			$calendar .= "<a class=\"add-event\" title=\"Add New Event\" href=\"".JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->cn.'&active=calendar&task=add')."\">".JText::_('PLG_GROUPS_CALENDAR_ADD_NEW_LINK_TEXT')."</a>";
+			$calendar .= "<a class=\"add-event\" title=\"Add New Event\" href=\"".JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=add')."\">".JText::_('PLG_GROUPS_CALENDAR_ADD_NEW_LINK_TEXT')."</a>";
 		}
 		$calendar .= "</div>";
 
@@ -415,8 +415,8 @@ class plgGroupsCalendar extends JPlugin
 					if ($this->authorized == 'admin' || $this->authorized == 'manager' || $event['actorid'] == $this->juser->get('id')) 
 					{
 						$calendar .= "<li>";
-						$calendar .= "<a class=\"edit\" href=\"".JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=calendar&task=edit&id='.$event['id'])."\">Edit</a>";
-						$calendar .= "<a class=\"delete\" href=\"".JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn').'&active=calendar&task=delete&id='.$event['id'])."\">Delete</a>";
+						$calendar .= "<a class=\"edit\" href=\"".JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=edit&id='.$event['id'])."\">Edit</a>";
+						$calendar .= "<a class=\"delete\" href=\"".JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=delete&id='.$event['id'])."\">Delete</a>";
 						$calendar .= "<br class=\"clear\" />";
 						$calendar .= "</li>";
 					}

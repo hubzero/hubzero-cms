@@ -227,7 +227,7 @@ class plgGroupsMemberOptions extends JPlugin
 		$app->enqueueMessage('You have successfully updated your email settings','Message');
 		
 		if(!$postSaveRedirect)
-			$app->redirect( JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->group->get('cn') . '&active=memberoptions&task=edit' ) );
+			$app->redirect( JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=memberoptions&action=edit' ) );
 		else
 			$app->redirect( $postSaveRedirect );
 
