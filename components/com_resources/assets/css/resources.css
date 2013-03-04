@@ -1099,6 +1099,7 @@
 		border: none;
 		color: #333;
 		position: relative;
+		*position: static; /* IE 7 and IE 8 compatibility mode go apeshit without this */
 		*background: #fff url("/components/com_resources/assets/img/arrowoff.gif") right 50% no-repeat;
 	}
 	#tagbrowser #level-1 ul a:after, 
