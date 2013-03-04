@@ -114,10 +114,10 @@ class FileMacro extends WikiMacro
 		$argues = preg_replace_callback('/[, ](left|right|top|center|bottom|[0-9]+(px|%|em)?)(?:[, ]|$)/i', array(&$this, 'parseSingleAttribute'), $content);
 		// Get quoted attribute/value pairs
 		// EX: [[Image(myimage.png, desc="My description, contains, commas")]]
-		$argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=(?:["\'])([^"]*)(?:["\'])/i', array(&$this, 'parseAttributeValuePair'), $content);
+		$argues = preg_replace_callback('/[, ](alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=(?:["\'])([^"]*)(?:["\'])/i', array(&$this, 'parseAttributeValuePair'), $content);
 		// Get non-quoted attribute/value pairs
 		// EX: [[Image(myimage.png, width=100)]]
-		$argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=([^"\',]*)(?:[, ]|$)/i', array(&$this, 'parseAttributeValuePair'), $content);
+		$argues = preg_replace_callback('/[, ](alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=([^"\',]*)(?:[, ]|$)/i', array(&$this, 'parseAttributeValuePair'), $content);
 
 		$attr = $this->attr;
 
@@ -204,7 +204,7 @@ class FileMacro extends WikiMacro
 		$val = trim($matches[2]);
 
 		$size   = '/^[0-9]+(%|px|em)?$/';
-		$attrs  = '/(alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap)=(.+)/';
+		$attrs  = '/(alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap)=(.+)/';
 		$quoted = "/(?:[\"'])(.*)(?:[\"'])$/";
 
 		// Set width if just a pixel size is given 
@@ -476,14 +476,17 @@ class FileMacro extends WikiMacro
 				 && $attr['altimage'] != ''
 				 && file_exists($this->_path($attr['altimage']))) 
 				{
-					$attr['alt']  = '<a class="attachment" rel="internal" href="' . $attr['href'] . '" title="' . htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8') . '">';
+					//$attr['href'] = (array_key_exists('althref', $attr) && $attr['althref'] != '') ? $attr['althref'] : $attr['href'];
+					$althref = (array_key_exists('althref', $attr) && $attr['althref'] != '') ? $attr['althref'] : $attr['href'];
+					$attr['alt']  = '<a class="attachment" rel="internal" href="' . $althref . '" title="' . htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8') . '">';
 					$attr['alt'] .= '<img src="' . $this->_link($attr['altimage']) . '" alt="' . htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8') . '" />';
 					$attr['alt'] .= '</a>';
 				} 
 				else 
 				{
+					$althref = (array_key_exists('althref', $attr) && $attr['althref'] != '') ? $attr['althref'] : $attr['href'];
 					$attr['alt']  = (isset($attr['alt'])) ? $attr['alt'] : '';
-					$attr['alt'] .= '<a class="attachment" rel="internal" href="' . $attr['href'] . '" title="' . htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8') . '">' . $attr['desc'] . '</a>';
+					$attr['alt'] .= '<a class="attachment" rel="internal" href="' . $althref . '" title="' . htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8') . '">' . $attr['desc'] . '</a>';
 				}
 
 				$juri = JURI::getInstance();
