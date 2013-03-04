@@ -181,11 +181,11 @@ if ($this->rows->total() > 0)
 						<a class="repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&controller=posts&post=' . $row->get('id') . '&task=collect'); ?>">
 							<span><?php echo JText::_('Collect'); ?></span>
 						</a>
-				<?php if ($row->get('original') && ($row->get('created_by') == $this->juser->get('id') || $this->config->get('access-delete-item'))) { ?>
+				<?php /*if ($row->get('original') && ($row->get('created_by') == $this->juser->get('id') || $this->config->get('access-delete-item'))) { ?>
 						<a class="delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&controller=posts&post=' . $row->get('id') . '&task=delete'); ?>">
 							<span><?php echo JText::_('Delete'); ?></span>
 						</a>
-				<?php } /*else if ($row->poster == $this->juser->get('id') || $this->config->get('access-edit-bulletin')) { ?>
+				<?php }*/ /*else if ($row->poster == $this->juser->get('id') || $this->config->get('access-edit-bulletin')) { ?>
 						<a class="unpost" data-id="<?php echo $row->id; ?>" href="<?php echo JRoute::_($base . '&controller=posts&id=' . $row->post_id . '&task=unpost'); ?>">
 							<span><?php echo JText::_('Unpost'); ?></span>
 						</a>

@@ -76,6 +76,8 @@ class CollectionsControllerPosts extends Hubzero_Controller
 	 */
 	public function displayTask()
 	{
+		$this->view->setLayout('display');
+
 		$this->_getStyles();
 
 		//$this->_getScripts('assets/js/jquery.masonry');
@@ -119,6 +121,178 @@ class CollectionsControllerPosts extends Hubzero_Controller
 			}
 		}
 		$this->view->display();
+	}
+
+	/**
+	 * Display a form for editing an entry
+	 * 
+	 * @return     string
+	 */
+	public function editTask()
+	{
+		// Login is required
+		if ($this->juser->get('guest')) 
+		{
+			return $this->loginTask();
+		}
+
+		$this->view->setLayout('edit');
+
+		$this->view->juser      = $this->juser;
+		$this->view->config     = $this->config;
+		$this->view->dateFormat = $this->dateFormat;
+		$this->view->timeFormat = $this->timeFormat;
+		$this->view->tz         = $this->tz;
+
+		// Incoming
+		$this->view->no_html = JRequest::getInt('no_html', 0);
+
+		$id = JRequest::getInt('post', 0);
+
+		$this->view->collection = $this->model->collection(JRequest::getVar('board', 0));
+
+		// Get all collections for a user
+		$this->view->collections = $this->model->collections();
+		if (!$this->view->collections->total())
+		{
+			$this->view->collection->setup($this->juser->get('id'), 'member');
+			$this->view->collections = $this->model->collections();
+			$this->view->collection  = $this->model->collection(JRequest::getVar('board', 0));
+		}
+
+		// Load the post
+		$this->view->entry = $this->view->collection->post($id);
+		if (!$this->view->collection->exists() && $this->view->entry->exists())
+		{
+			$this->view->collection = $this->model->collection($this->view->entry->get('collection_id'));
+		}
+
+		// Are we removing an asset?
+		if ($remove = JRequest::getInt('remove', 0))
+		{
+			if (!$this->view->entry->item()->removeAsset($remove))
+			{
+				$this->view->setError($this->view->entry->item()->getError());
+			}
+		}
+
+		// If not being called through AJAX
+		// push scripts and styles to document
+		if (!$this->view->no_html)
+		{
+			$this->_getStyles();
+			$this->_getScripts('assets/js/' . $this->_name);
+
+			$filters = array(
+				'count' => true,
+				'access' => 0,
+				'state' => 1,
+				'user_id' => $this->juser->get('id')
+			);
+			$this->view->counts['collections'] = $this->model->collections($filters);
+			$this->view->counts['posts'] = $this->model->posts($filters);
+		}
+
+		// Push error messages ot the view
+		if ($this->getError()) 
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
+		}
+
+		// Display
+		$this->view->display();
+	}
+
+	/**
+	 * Save an entry
+	 * 
+	 * @return     void
+	 */
+	public function saveTask()
+	{
+		// Login is required
+		if ($this->juser->get('guest')) 
+		{
+			return $this->loginTask();
+		}
+
+		// Incoming
+		$fields = JRequest::getVar('fields', array(), 'post');
+
+		// Get model
+		$row = new CollectionsModelItem();
+
+		// Bind content
+		if (!$row->bind($fields)) 
+		{
+			$this->setError($row->getError());
+			return $this->editTask($row);
+		}
+
+		// Add some data
+		//$row->set('_files', $files);
+		$row->set('_assets', JRequest::getVar('assets', array(), 'post'));
+		$row->set('_tags', trim(JRequest::getVar('tags', '')));
+		$row->set('state', 1);
+
+		// Store new content
+		if (!$row->store()) 
+		{
+			$this->setError($row->getError());
+			return $this->editTask($row);
+		}
+
+		// Create a post entry linking the item to the board
+		$p = JRequest::getVar('post', array(), 'post');
+
+		// Load a post entry
+		$post = new CollectionsModelPost($p['id']);
+		if (!$post->exists())
+		{
+			// No post existed so set some values
+			$post->set('item_id', $row->get('id'));
+			$post->set('original', 1);
+		}
+
+		// Are we creating a new collection for it?
+		$coltitle = JRequest::getVar('collection_title', '', 'post');
+		if (!$p['collection_id'] && $coltitle)
+		{
+			$collection = new CollectionsModelCollection();
+			$collection->set('title', $coltitle);
+			$collection->set('object_id', $this->juser->get('id'));
+			$collection->set('object_type', 'member');
+			$collection->store();
+
+			$p['collection_id'] = $collection->get('id');
+		}
+		$post->set('collection_id', $p['collection_id']);
+
+		// Set the description
+		if (isset($p['description']))
+		{
+			$post->set('description', $p['description']);
+		}
+
+		// Store record
+		if (!$post->store()) 
+		{
+			$this->setError($post->getError());
+		}
+
+		// Check for any errors
+		if ($this->getError())
+		{
+			return $this->editTask($row);
+		}
+
+		// Redirect to main listing
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=collections')
+		);
 	}
 
 	/**
@@ -241,11 +415,6 @@ class CollectionsControllerPosts extends Hubzero_Controller
 			exit;
 		}
 
-		// Get the collection model
-		//$model = new CollectionsModel('member', $this->juser->get('id'));
-
-		//$collection = $model->collection($post->get('collection_id'));
-
 		// Display the main listing
 		$this->setRedirect(
 			JRoute::_('index.php?option=' . $this->option . '&controller=collections&task=posts')
@@ -341,7 +510,6 @@ class CollectionsControllerPosts extends Hubzero_Controller
 		}
 
 		// Display the main listing
-		//return $this->recentTask();
 		$this->setRedirect(
 			JRoute::_('index.php?option=' . $this->option . '&controller=collections&task=posts')
 		);

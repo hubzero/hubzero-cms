@@ -143,12 +143,14 @@ HUB.Collections = {
 				afterShow: function() {
 					var el = this.element;
 					if ($('#comment-form').length > 0) {
-						$('#comment-form').on('submit', function(e) {
+						//$('#comment-form').on('submit', function(e) {
+						$('#sbox-content').on('submit', '#comment-form', function(e) {
 							e.preventDefault();
 							$.post($(this).attr('action'), $(this).serialize(), function(data) {
 								//$('#b' + $(el).attr('data-id') + ' .reposts').text(data);
 								//$.fancybox.close();
 								$('#sbox-content').html(data);
+								$.fancybox.update();
 							});
 						});
 					}
