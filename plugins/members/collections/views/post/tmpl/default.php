@@ -41,6 +41,19 @@ $this->juser = JFactory::getUser();
 
 $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name;
 
+ximport('Hubzero_Wiki_Parser');
+
+$wikiconfig = array(
+	'option'   => $this->option,
+	'scope'    => 'collections',
+	'pagename' => 'collections',
+	'pageid'   => 0,
+	'filepath' => '',
+	'domain'   => 'collection'
+);
+
+$p =& Hubzero_Wiki_Parser::getInstance();
+
 if ($item->get('state') == 2)
 {
 	$item->set('type', 'deleted');
@@ -93,7 +106,9 @@ $view->timeFormat = $this->timeFormat;
 $view->tz         = $this->tz;
 
 $view->row        = $this->post;
-$view->collection = $this->collection;
+//$view->collection = $this->collection;
+$view->parser     = $p;
+$view->wikiconfig = $wikiconfig;
 
 $view->display();
 ?>
@@ -214,15 +229,15 @@ $now = date('Y-m-d H:i:s', time());
 					</span>
 				</p>
 				<form action="<?php echo JRoute::_($base . '&task=post/' . $this->post->get('id') . '/savecomment'); ?>" method="post" enctype="multipart/form-data">
-				<fieldset>
-					<input type="hidden" name="comment[id]" value="0" />
-					<input type="hidden" name="comment[item_id]" value="<?php echo $item->get('id'); ?>" />
-					<input type="hidden" name="comment[item_type]" value="collection" />
-					<input type="hidden" name="comment[state]" value="1" />
-					
-					<textarea name="comment[content]" cols="35" rows="3"></textarea>
-					<input type="submit" value="<?php echo JText::_('Save'); ?>" />
-				</fieldset>
+					<fieldset>
+						<input type="hidden" name="comment[id]" value="0" />
+						<input type="hidden" name="comment[item_id]" value="<?php echo $item->get('id'); ?>" />
+						<input type="hidden" name="comment[item_type]" value="collection" />
+						<input type="hidden" name="comment[state]" value="1" />
+
+						<textarea name="comment[content]" cols="35" rows="3"></textarea>
+						<input type="submit" class="comment-submit" value="<?php echo JText::_('Save'); ?>" />
+					</fieldset>
 				</form>
 			</div>
 		</div>

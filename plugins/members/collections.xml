@@ -44,7 +44,7 @@ HUBzero is a registered trademark of Purdue University.
 		<language tag="en-GB">en-GB.plg_members_collections.ini</language>
 	</languages>
 	<params>
-		<param name="uploadpath" type="text" menu="hide" default="/site/groups/{{gid}}/blog" label="Upload path" description="File path for uploads" />
+		<param name="maxWidth" type="text" menu="hide" default="290" label="Max Image Width" description="Max Image Width for tile listing" />
 		<param name="posting" type="list" default="0" label="Article Posting" description="The default setting for who can post to the blog.">
 			<option value="0">All members</option>
 			<option value="1">Managers only</option>

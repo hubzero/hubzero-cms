@@ -124,7 +124,7 @@ HUB.Plugins.MembersCollections = {
 				}
 			});
 
-			$('#posts a.delete').fancybox({
+			/*$('#posts a.delete').fancybox({
 				type: 'ajax',
 				width: 300,
 				height: 'auto',
@@ -137,7 +137,7 @@ HUB.Plugins.MembersCollections = {
 				beforeLoad: function() {
 					href = $(this).attr('href');
 
-					$(this).attr('href', href.nohtml());	
+					$(this).attr('href', href.nohtml());
 				},
 				afterShow: function() {
 					var el = this.element;
@@ -147,6 +147,38 @@ HUB.Plugins.MembersCollections = {
 							$.post($(this).attr('action'), $(this).serialize(), function(data) {
 								$.fancybox.close();
 								window.location = data;
+							});
+						});
+					}
+				}
+			});*/
+
+			$('#posts a.comment').fancybox({
+				type: 'ajax',
+				width: 500,
+				height: 'auto',
+				autoSize: false,
+				fitToView: false,
+				titleShow: false,
+				tpl: {
+					wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
+				},
+				beforeLoad: function() {
+					href = $(this).attr('href');
+
+					$(this).attr('href', href.nohtml());
+				},
+				afterShow: function() {
+					var el = this.element;
+					if ($('#comment-form').length > 0) {
+						//$('#comment-form').on('submit', function(e) {
+						$('#sbox-content').on('submit', '#comment-form', function(e) {
+							e.preventDefault();
+							$.post($(this).attr('action'), $(this).serialize(), function(data) {
+								//$('#b' + $(el).attr('data-id') + ' .reposts').text(data);
+								//$.fancybox.close();
+								$('#sbox-content').html(data);
+								$.fancybox.update();
 							});
 						});
 					}

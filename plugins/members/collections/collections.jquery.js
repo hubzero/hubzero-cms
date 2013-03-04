@@ -258,7 +258,37 @@ HUB.Plugins.MembersCollections = {
 				}
 			});
 			
-			/*$('#page_content a.comment').fancybox({
+			$('#posts a.delete').fancybox({
+				type: 'ajax',
+				width: 300,
+				height: 'auto',
+				autoSize: false,
+				fitToView: false,
+				titleShow: false,
+				tpl: {
+					wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
+				},
+				beforeLoad: function() {
+					href = $(this).attr('href');
+
+					$(this).attr('href', href.nohtml());	
+				},
+				afterShow: function() {
+					var el = this.element;
+					if ($('#hubForm')) {
+						$('#hubForm').submit(function(e) {
+							e.preventDefault();
+							$.post($(this).attr('action'), $(this).serialize(), function(data) {
+								$.fancybox.close();
+								window.location = data;
+							});
+						});
+					}
+				}
+			});
+			
+			// Add collect trigger
+			$('#posts a.comment').fancybox({
 				type: 'ajax',
 				width: 500,
 				height: 'auto',
@@ -270,17 +300,25 @@ HUB.Plugins.MembersCollections = {
 				},
 				beforeLoad: function() {
 					href = $(this).attr('href');
-					if (href.indexOf('?') == -1) {
-						href += '?no_html=1';
-					} else {
-						href += '&no_html=1';
-					}
-					$(this).attr('href', href);	
+
+					$(this).attr('href', href.nohtml());
 				},
 				afterShow: function() {
-					 
+					var el = this.element;
+					if ($('#comment-form').length > 0) {
+						//$('#comment-form').on('submit', function(e) {
+						$('#sbox-content').on('submit', '#comment-form', function(e) {
+							e.preventDefault();
+							$.post($(this).attr('action'), $(this).serialize(), function(data) {
+								//$('#b' + $(el).attr('data-id') + ' .reposts').text(data);
+								//$.fancybox.close();
+								$('#sbox-content').html(data);
+								$.fancybox.update();
+							});
+						});
+					}
 				}
-			});*/
+			});
 		} // if (container.length > 0)
 
 		// Add follow/unfollow triggers
@@ -354,14 +392,14 @@ HUB.Plugins.MembersCollections = {
 		});
 	}, // end initialize
 
-	href: function(href) {
+	/*href: function(href) {
 		if (href.indexOf('?') == -1) {
 			href += '?no_html=1';
 		} else {
 			href += '&no_html=1';
 		}
 		return href;
-	},
+	},*/
 
 	formOptions: function(initEditor) {
 		var $ = this.jQuery;

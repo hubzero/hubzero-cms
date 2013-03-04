@@ -69,7 +69,7 @@ if (!$dir)
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-<form action="<?php echo JRoute::_($base . '&task=post/save'); ?>" method="post" id="hubForm" class="full" enctype="multipart/form-data">
+<form action="<?php echo JRoute::_($base . '&task=post/save' . ($this->no_html ? '&no_html=' . $this->no_html : '')); ?>" method="post" id="hubForm" class="full" enctype="multipart/form-data">
 	<fieldset>
 		<legend><?php echo $item->get('id') ? JText::_('Edit post') : JText::_('New post'); ?></legend>
 
@@ -270,6 +270,7 @@ if (!$dir)
 	<input type="hidden" name="id" value="<?php echo $this->member->get('uidNumber'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="active" value="<?php echo $this->name; ?>" />
+	<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
 	<input type="hidden" name="action" value="save" />
 
 	<p class="submit">

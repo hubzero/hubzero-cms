@@ -25,6 +25,7 @@
 	#page_menu li .collections:before {
 		content: "\f005"; /*"\f08d";*/
 	}
+	#sbox-content .clearfix,
 	.com_members .clearfix {
 		line-height: inherit;
 		height: auto;
@@ -661,7 +662,7 @@
 		color: #9c9c9c;
 		border-top: 1px solid #fafafa;
 	}
-	.comment + .comment,
+	/*.comment + .comment,*/
 	.attribution + .reposted {
 		border-top: 1px solid #d4d4d4;
 	}
@@ -1076,4 +1077,18 @@
 		bottom: 1em;
 		left: 50%;
 		margin-left: -0.75em;
+	}
+	#sbox-content .post {
+		margin: 0;
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+		-ms-box-shadow: none;
+		-o-box-shadow: none;
+		box-shadow: none;
+	}
+	#sbox-content .post .description {
+		font-size: 1.1em;
+	}
+	#sbox-content .commnts .comment-submit {
+		width: auto;
 	}

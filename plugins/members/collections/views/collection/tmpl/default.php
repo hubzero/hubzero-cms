@@ -116,7 +116,11 @@ if ($this->rows->total() > 0)
 			$item->set('type', 'deleted');
 		}
 		$type = $item->get('type');
-		if (!in_array($type, array('collection', 'deleted', 'image', 'file', 'text', 'link')))
+		if (in_array($type, array('image', 'text')))
+		{
+			$type = 'file';
+		}
+		if (!in_array($type, array('collection', 'deleted', 'file', 'link')))
 		{
 			$type = 'link';
 		}

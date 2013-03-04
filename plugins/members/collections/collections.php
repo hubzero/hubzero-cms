@@ -333,6 +333,7 @@ class plgMembersCollections extends JPlugin
 		if (!$this->params->get('access-manage-collection')) 
 		{
 			$count['access'] = 0;
+			$view->filters['access'] = 0;
 		}
 
 		/*$filters['count'] = true;
@@ -1016,7 +1017,18 @@ class plgMembersCollections extends JPlugin
 				$view->setError($error);
 			}
 		}
-		return $view->loadTemplate();
+
+		$view->no_html = JRequest::getInt('no_html', 0);
+
+		if ($view->no_html)
+		{
+			$view->display();
+			exit;
+		}
+		else
+		{
+			return $view->loadTemplate();
+		}
 	}
 
 	/**

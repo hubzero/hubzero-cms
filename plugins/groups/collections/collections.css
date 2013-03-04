@@ -314,7 +314,7 @@
 	}
 	.post .actions a {
 		display: inline-block;
-		margin: 0.5em 0.4em 0 0.4em;
+		margin: 0.5em 0.3em 0 0.3em;
 		padding: 0.3em .7em;
 		-webkit-border-radius: 0.25em;
 		-moz-border-radius: 0.25em;
@@ -661,7 +661,7 @@
 		color: #9c9c9c;
 		border-top: 1px solid #fafafa;
 	}
-	.comment + .comment,
+	/*.comment + .comment,*/
 	.attribution + .reposted {
 		border-top: 1px solid #d4d4d4;
 	}
@@ -1076,4 +1076,18 @@
 		bottom: 1em;
 		left: 50%;
 		margin-left: -0.75em;
+	}
+	#sbox-content .post {
+		margin: 0;
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+		-ms-box-shadow: none;
+		-o-box-shadow: none;
+		box-shadow: none;
+	}
+	#sbox-content .post .description {
+		font-size: 1.1em;
+	}
+	#sbox-content .commnts .comment-submit {
+		width: auto;
 	}
