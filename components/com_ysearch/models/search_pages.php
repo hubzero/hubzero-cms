@@ -83,12 +83,13 @@ class SearchPages
 	 * @param      unknown $update Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	private function link_to($update)
-	{
+	private function link_to($update) {
 		$get = array();
-		foreach (array_merge($_GET, array('limit' => $this->limit, 'limitstart' => $this->offset), $update) as $k=>$v)
-			if (!in_array($k, array('option', 'Itemid')))
+		foreach (array_merge($_GET, array('limit' => $this->limit, 'limitstart' => $this->offset), $update) as $k=>$v) {
+			if (!is_array($v) && !in_array($k, array('option', 'Itemid'))) {
 				$get[] = $k.'='.urlencode($v);
+			}
+		}
 
 		return '/'.preg_replace('/^com_/', '', $_GET['option']).'/?'.join('&amp;', $get);
 	}

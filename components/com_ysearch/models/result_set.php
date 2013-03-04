@@ -356,8 +356,9 @@ class YSearchModelResultSet extends JModel implements Iterator
 		// nested hierarchies of results in a single <li>, ie for courses that
 		// all part of the same series.
 		$this->total_list_count = $this->total_count;
-		foreach ($this->result_counts as $plugin=>$def)
+		foreach ($this->result_counts as $plugin=>$def) {
 			$this->result_counts[$plugin]['list_count'] = $this->result_counts[$plugin]['count'];
+		}
 
 		// determine section counts and adjust plugin counts to account for
 		// folded-together results
@@ -367,7 +368,7 @@ class YSearchModelResultSet extends JModel implements Iterator
 
 			$ccount = count($parent->get_children());
 			$this->total_list_count -= $ccount;
-			--$this->result_counts[$plugin]['list_count'];
+			$this->result_counts[$plugin]['list_count'] -= $ccount;
 
 			if (!array_key_exists('sections', $this->result_counts[$plugin]))
 				$this->result_counts[$plugin]['sections'] = array();
