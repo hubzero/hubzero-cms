@@ -14,6 +14,22 @@
 */
 
 /* Page curl */
+#name-inp {
+	margin-top: 0;
+	margin-left: 0;
+	padding: 0 !important;
+}
+#name-inp span {
+	display: inline-block;
+	width: 4em;
+	text-align: right;
+}
+.indented {
+	margin-left: 4em;
+}
+#questions input[type="text"] {
+	width: 400px;
+}
 	#curl {
 		position: absolute;
 		top: 0;
@@ -74,6 +90,9 @@
 		box-shadow: 10px 10px 5px #222;
 		border-radius: 15px;
 		text-align: center;
+		overflow: auto;
+		top: 20px;
+		bottom: 20px;
 	}
 	#questions strong {
 		padding-left: 17px;

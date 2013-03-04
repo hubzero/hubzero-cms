@@ -44,6 +44,27 @@ class RegisterControllerIncremental extends Hubzero_Controller
 
 	public function saveTask() {
 		$dbh =& JFactory::getDBO();
+		$dbh->execute('DELETE FROM #__incremental_registration_groups');
+		$dbh->execute('DELETE FROM #__incremental_registration_group_label_rel');
+		
+		for ($idx = 0; isset($_POST['group-hours-'.$idx]); ++$idx) {
+			if (!($hours = (int)$_POST['group-hours-'.$idx])) {
+				continue;
+			}
+			if ($_POST['group-time-unit-'.$idx] == 'week') {
+				$hours *= 24 * 7;
+			}
+			elseif ($_POST['group-time-unit-'.$idx] == 'day') {
+				$hours *= 24;
+			}
+			$dbh->execute('INSERT INTO #__incremental_registration_groups(hours) VALUES ('.$hours.')');
+			$gid = $dbh->insertid();
+			foreach ($_POST['group-cols-'.$idx] as $colKey) {
+				if (($colKey = trim($colKey))) {
+					$dbh->execute('INSERT INTO #__incremental_registration_group_label_rel(group_id, label_id) VALUES ('.$gid.', (SELECT id FROM #__incremental_registration_labels WHERE field = '.$dbh->quote($colKey).'))');	
+				}
+			}
+		}
 		if (isset($_POST['popover'])) {
 			$popoverText = stripslashes($_POST['popover']);
 			$awardPer = (int)$_POST['award-per'];

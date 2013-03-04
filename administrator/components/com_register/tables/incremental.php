@@ -47,25 +47,54 @@ class ModIncrementalRegistrationGroups
 		if (!$cols) {
 			return array();
 		}
-		self::$dbh->setQuery('SELECT coalesce((SELECT bothered_times FROM #__profile_completion_awards WHERE user_id = '.$uid.'), 0)');
+		self::$dbh->setQuery('SELECT coalesce((SELECT opted_out FROM #__profile_completion_awards WHERE user_id = '.$uid.'), 0)');
 		$times = self::$dbh->loadResult();
 		if ($times > 0) {
-			self::$dbh->setQuery('SELECT unix_timestamp(last_bothered)/60/60 > (SELECT coalesce((SELECT hours FROM #__incremental_registration_popover_recurrence WHERE idx = '.($times - 1).'), (SELECT hours FROM #__incremental_registration_popover_recurrence ORDER BY idx DESC LIMIT 1))) FROM #__profile_completion_awards WHERE user_id = '.$uid);
+			self::$dbh->setQuery('SELECT (unix_timestamp() - unix_timestamp(last_bothered))/60/60 > (SELECT coalesce((SELECT hours FROM #__incremental_registration_popover_recurrence WHERE idx = '.($times - 1).'), (SELECT hours FROM #__incremental_registration_popover_recurrence ORDER BY idx DESC LIMIT 1))) FROM #__profile_completion_awards WHERE user_id = '.$uid);
 			// opt-out period is in effect
 			if (!self::$dbh->loadResult()) {
 				return array();
 			}
 		}
 		$colNames = array();
+		$wantRace = false;
+		$wantDisability = true;
 		foreach ($cols as $col) {
+			if ($col['field'] == 'race') {
+				$wantRace = true;
+				continue;
+			}
+			if ($col['field'] == 'disability') {
+				$wantDisability = true;
+				continue;
+			}
 			$colNames[] = $col['field'];
 		}
 		self::$dbh->setQuery('SELECT '.implode(', ', $colNames).' FROM #__xprofiles WHERE uidNumber = '.$uid);
 		$profile = self::$dbh->loadAssoc();
 		$neededCols = array();
+		$nonUS = false;
 		foreach ($cols as $col) {
+			if (!isset($profile[$col['field']])) {
+				continue;
+			}
 			if (!trim($profile[$col['field']])) {
 				$neededCols[$col['field']] = $col['label'];
+			}
+		}
+		if ($wantRace) {
+			self::$dbh->setQuery('SELECT countryorigin FROM #__xprofiles WHERE uidNumber = '.$uid);
+			if (!($country = self::$dbh->loadResult()) || strtolower($country) == 'us') {
+				self::$dbh->setQuery('SELECT COUNT(*) FROM #__xprofiles_race WHERE uidNumber = '.$uid);
+				if (!self::$dbh->loadResult()) {
+					$neededCols['race'] = 'Race';
+				}
+			}
+		}
+		if ($wantDisability) {
+			self::$dbh->setQuery('SELECT 1 FROM #__xprofiles_disability WHERE uidNumber = '.$uid.' LIMIT 1');
+			if (!self::$dbh->loadResult()) {
+				$neededCols['disability'] = 'Disability';
 			}
 		}
 		return $neededCols;
@@ -136,7 +165,7 @@ class ModIncrementalRegistrationAwards
 		$this->uid = is_integer($profile) ? $profile : (int)$this->profile->get('uidNumber');
 		self::getDbh();
 		do {
-			self::$dbh->setQuery('SELECT opted_out, name, orgtype, organization, countryresident, countryorigin, gender, url, reason, race, phone, picture FROM #__profile_completion_awards WHERE user_id = '.$this->uid);
+			self::$dbh->setQuery('SELECT opted_out, name, orgtype, organization, countryresident, countryorigin, gender, url, reason, race, phone, picture, disability FROM #__profile_completion_awards WHERE user_id = '.$this->uid);
 			if (!($this->awards = self::$dbh->loadAssoc())) {
 				self::$dbh->execute('INSERT INTO #__profile_completion_awards(user_id) VALUES ('.$this->uid.')');
 			}
@@ -164,7 +193,8 @@ class ModIncrementalRegistrationAwards
 			'url'             => 'URL',
 			'reason'          => 'Reason',
 			'race'            => 'Race',
-			'phone'           => 'Phone'
+			'phone'           => 'Phone',
+			'disability'      => 'Disability'
 		);
 		$alreadyComplete = 0;
 		$eligible = array();
@@ -207,7 +237,9 @@ class ModIncrementalRegistrationAwards
 			self::$dbh->setQuery('SELECT COALESCE((SELECT balance FROM #__users_transactions WHERE uid = '.$this->uid.' AND id = (SELECT MAX(id) FROM #__users_transactions WHERE uid = '.$this->uid.')), 0)');
 			$newAmount = self::$dbh->loadResult() + $alreadyComplete;
 
-			self::$dbh->execute('INSERT INTO #__users_transactions(uid, type, description, category, amount, balance) VALUES('.$this->uid.', \'deposit\', \'Profile completion award\', \'registration\', '.$alreadyComplete.', '.$newAmount.')');
+                       ximport('Hubzero_Bank');                                                                                                                                                                                            
+                       $BTL = new Hubzero_Bank_Teller( self::$dbh, $this->uid );                                                                                                                                                           
+                       $BTL->deposit($alreadyComplete, 'Profile completion award', 'registration', 0); 
 
 		}
 		return array(
