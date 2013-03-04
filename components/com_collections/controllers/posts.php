@@ -43,10 +43,13 @@ class CollectionsControllerPosts extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	/*public function execute()
+	public function execute()
 	{
-		$this->_authorize('collection');
-		$this->_authorize('item');
+		//$this->_authorize('collection');
+		//$this->_authorize('item');
+		$this->model = CollectionsModel::getInstance();
+
+		$this->registerTask('comment', 'post');
 
 		$this->dateFormat = '%d %b %Y';
 		$this->timeFormat = '%I:%M %p';
@@ -59,16 +62,6 @@ class CollectionsControllerPosts extends Hubzero_Controller
 		}
 
 		parent::execute();
-	}*/
-
-	/**
-	 * View a post
-	 * 
-	 * @return     void
-	 */
-	public function postTask()
-	{
-		echo 'not done';
 	}
 
 	/**
@@ -76,9 +69,144 @@ class CollectionsControllerPosts extends Hubzero_Controller
 	 * 
 	 * @return     void
 	 */
-	public function commentTask()
+	/**
+	 * Display a post
+	 * 
+	 * @return     string
+	 */
+	public function displayTask()
 	{
-		echo 'not done';
+		$this->_getStyles();
+
+		//$this->_getScripts('assets/js/jquery.masonry');
+		//$this->_getScripts('assets/js/jquery.infinitescroll');
+		$this->_getScripts('assets/js/' . $this->_name);
+
+		$this->view->config     = $this->config;
+		$this->view->juser      = $this->juser;
+
+		$this->view->dateFormat = $this->dateFormat;
+		$this->view->timeFormat = $this->timeFormat;
+		$this->view->tz         = $this->tz;
+
+		$this->view->model      = $this->model;
+		$this->view->no_html    = JRequest::getInt('no_html', 0);
+
+		$post_id = JRequest::getInt('post', 0);
+
+		$this->view->post = CollectionsModelPost::getInstance($post_id);
+
+		if (!$this->view->post->exists()) 
+		{
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->option . '&controller=collections&task=posts')
+			);
+			return;
+		}
+
+		$this->view->collection = $this->model->collection($this->view->post->get('collection_id'));
+		/*if ($view->collection->get('access') == 4 // private collection
+		 && $this->juser->get('id') != $this->member->get('uidNumber')) // is user the collection owner?
+		{
+			$this->params->set('access-view-item', false);
+		}*/
+
+		if ($this->getError()) 
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
+		}
+		$this->view->display();
+	}
+
+	/**
+	 * View a post
+	 * 
+	 * @return     void
+	 */
+	/*public function commentTask()
+	{
+		$this->postTask();
+	}*/
+
+	/**
+	 * Save a comment
+	 * 
+	 * @return     string
+	 */
+	public function savecommentTask()
+	{
+		// Ensure the user is logged in
+		if ($this->juser->get('guest')) 
+		{
+			return $this->loginTask();
+		}
+
+		// Incoming
+		$comment = JRequest::getVar('comment', array(), 'post');
+
+		// Instantiate a new comment object and pass it the data
+		ximport('Hubzero_Item_Comment');
+		$row = new Hubzero_Item_Comment($this->database);
+		if (!$row->bind($comment)) 
+		{
+			$this->setError($row->getError());
+			return $this->displayTask();
+		}
+
+		// Check content
+		if (!$row->check()) 
+		{
+			$this->setError($row->getError());
+			return $this->displayTask();
+		}
+
+		// Store new content
+		if (!$row->store()) 
+		{
+			$this->setError($row->getError());
+			return $this->displayTask();
+		}
+
+		$this->displayTask();
+	}
+
+	/**
+	 * Delete a comment
+	 * 
+	 * @return     string
+	 */
+	public function deletecommentTask()
+	{
+		// Ensure the user is logged in
+		if ($this->juser->get('guest')) 
+		{
+			return $this->loginTask();
+		}
+
+		// Incoming
+		$id = JRequest::getInt('comment', 0);
+		if (!$id) 
+		{
+			return $this->displayTask();
+		}
+
+		// Initiate a whiteboard comment object
+		ximport('Hubzero_Item_Comment');
+		$comment = new Hubzero_Item_Comment($this->database);
+		$comment->load($id);
+		$comment->state = 2;
+
+		// Delete the entry itself
+		if (!$comment->store())
+		{
+			$this->setError($comment->getError());
+		}
+
+		// Return the topics list
+		return $this->displayTask();
 	}
 
 	/**
