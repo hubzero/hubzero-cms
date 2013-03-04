@@ -48,6 +48,7 @@ $rr->load( $this->resid );
 //get the parent resource
 $rh = new ResourcesHelper( $this->resid, $this->database );
 $rh->getParents();
+
 $parent = $rh->parents[0];
 
 //check to see if parent type is series
@@ -90,6 +91,7 @@ $sql = "SELECT authorid FROM #__author_assoc "
 	 . "WHERE subtable='resources' "
 	 . "AND subid=" . $parent->id . " "
 	 . "ORDER BY ordering";
+	
 $this->database->setQuery( $sql );
 $author_ids = $this->database->loadResultArray();
 
