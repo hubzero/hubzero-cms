@@ -219,7 +219,7 @@ class Hubzero_Controller extends JObject
 		// Raise an error (hopefully, this shouldn't happen)
 		else
 		{
-			return JError::raiseError(404, JText::sprintf('JLIB_APPLICATION_ERROR_TASK_NOT_FOUND', $this->_task));
+			return JError::raiseError(404, JText::sprintf('THE REQUESTED RESOURCE WAS NOT FOUND', $this->_task));
 		}
 		
 		// Attempt to parse the controller name from the class name
@@ -318,6 +318,13 @@ class Hubzero_Controller extends JObject
 	{
 		if ($this->_redirect != NULL)
 		{
+			//preserve component messages after redirect
+			if (count($this->componentMessageQueue))
+			{
+				$session =& JFactory::getSession();
+				$session->set('component.message.queue', $this->componentMessageQueue);
+			}
+			
 			$app = JFactory::getApplication();
 			$app->redirect($this->_redirect, $this->_message, $this->_messageType);
 		}
@@ -354,6 +361,16 @@ class Hubzero_Controller extends JObject
 	 */
 	public function addComponentMessage($message, $type='message')
 	{
+		if (!count($this->componentMessageQueue))
+		{
+			$session =& JFactory::getSession();
+			$componentMessage = $session->get('component.message.queue');
+			if (count($componentMessage)) {
+				$this->componentMessageQueue = $componentMessage;
+				$session->set('component.message.queue', null);
+			}
+		}
+		
 		//if message is somthing
 		if ($message != '')
 		{
@@ -363,9 +380,6 @@ class Hubzero_Controller extends JObject
 				'option' => $this->_option
 			);
 		}
-
-		$session = JFactory::getSession();
-		$session->set('component.message.queue', $this->componentMessageQueue);
 	}
 
 	/**
@@ -385,7 +399,7 @@ class Hubzero_Controller extends JObject
 				$session->set('component.message.queue', null);
 			}
 		}
-
+		
 		foreach ($this->componentMessageQueue as $k => $cmq)
 		{
 			if ($cmq['option'] != $this->_option)
