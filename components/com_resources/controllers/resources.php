@@ -1344,7 +1344,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 			//if we have no errors
 			if (count($errors) > 0) 
 			{
-				$body = PresenterHelper::errorMessage($errors);
+				$body = HUBpresenterHelper::errorMessage($errors);
 			} 
 			else 
 			{

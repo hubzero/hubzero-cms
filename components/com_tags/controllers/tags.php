@@ -644,7 +644,7 @@ class TagsControllerTags extends Hubzero_Controller
 
 				if (isset($row->data3) || isset($row->rcount)) 
 				{
-					$resourceEx = new ResourceExtended($row->id, $this->database);
+					$resourceEx = new ResourcesHelper($row->id, $this->database);
 					$resourceEx->getCitationsCount();
 					$resourceEx->getLastCitationDate();
 					$resourceEx->getContributors();
