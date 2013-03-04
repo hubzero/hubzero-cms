@@ -1,4 +1,9 @@
 <?php defined('_JEXEC') or die('Restricted access'); ?>
+<script type="text/javascript">
+if (top === self) {
+	window.location = window.location.toString().replace(/&(tmpl=component|view=medialist)/ig, '');
+}
+</script>
 <form action="index.php?option=com_media&amp;tmpl=component&amp;folder=<?php echo $this->state->folder; ?>" method="post" id="mediamanager-form" name="mediamanager-form">
 	<div class="manager">
 		<?php echo $this->loadTemplate('up'); ?>

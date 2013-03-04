@@ -44,7 +44,13 @@ class MediaViewImagesList extends JView
 		$document =& JFactory::getDocument();
 		$document->addScriptDeclaration("var ImageManager = window.parent.ImageManager;");
 
-		$this->assign('baseURL', COM_MEDIA_BASEURL);
+		$base = COM_MEDIA_BASEURL;
+		if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off')
+		{
+			$base = (substr($base, 0, strlen('https')) != 'https') ? str_replace('http://', 'https://', $base) : $base;
+		}
+
+		$this->assign('baseURL', $base);
 		$this->assignRef('images', $this->get('images'));
 		$this->assignRef('folders', $this->get('folders'));
 		$this->assignRef('state', $this->get('state'));
