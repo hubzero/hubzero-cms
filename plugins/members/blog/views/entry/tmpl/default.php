@@ -216,7 +216,7 @@ $juser =& JFactory::getUser();
 						<li class="comment <?php echo $cls; ?>" id="c<?php echo $comment->id; ?>">
 							<a name="c<?php echo $comment->id; ?>"></a>
 							<p class="comment-member-photo">
-								<img src="<?php echo BlogHelperMember::getMemberPhoto($xuser, $comment->anonymous); ?>" alt="" />
+								<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($xuser, $comment->anonymous); ?>" alt="" />
 							</p>
 							<div class="comment-content">
 								<p class="comment-title">
