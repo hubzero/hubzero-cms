@@ -481,7 +481,8 @@ class ToolsControllerSessions extends Hubzero_Controller
 		$sess     = JRequest::getVar('sess', '');
 		$username = trim(JRequest::getVar('username', ''));
 		$readonly = JRequest::getVar('readonly', '');
-
+		$no_html = JRequest::getInt('no_html', 0);
+		
 		$users = array();
 		if (strstr($username, ',')) 
 		{
@@ -603,6 +604,7 @@ class ToolsControllerSessions extends Hubzero_Controller
 		// Incoming
 		$sess = JRequest::getVar('sess', '');
 		$user = JRequest::getVar('username', '');
+		$app = JRequest::getVar('app', '');
 
 		// If a username is given, check that the user owns this session.
 		if ($user != '') 
@@ -636,7 +638,10 @@ class ToolsControllerSessions extends Hubzero_Controller
 		}
 
 		// Drop through and re-view the session...
-		$this->viewTask();
+		//$this->viewTask();
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&app=' . $app . '&task=session&sess=' . $sess )
+		);
 	}
 
 	/**
@@ -809,6 +814,10 @@ class ToolsControllerSessions extends Hubzero_Controller
 
 		// Push scripts to the document
 		$this->_getScripts('assets/js/' . $this->_controller);
+		
+		//add editable plugin
+		ximport('Hubzero_Document');
+		Hubzero_Document::addSystemScript('jquery.editable.min');
 
 		$this->view->app      = $app;
 		$this->view->config   = $this->config;

@@ -109,6 +109,10 @@
 	#app-content {
 		position: relative;
 	}
+	.readonly-warning {
+		margin:30px 30px 30px 30px;
+		top:30px;
+	}
 	#app {
 		margin: 0 0 -1px;
 		padding: 0;
@@ -648,6 +652,44 @@
 		border: none;
 		text-decoration: none;
 		background-position: 0 -24px;
+	}
+	#app-share-overlay {
+		position:absolute;
+		top:0;
+		left:0;
+		width:100%;
+		height:100%;
+		background:rgba(0,0,0,0.7);
+		box-shadow:inset 0 0 50px #333;
+		z-index:999999999999;
+	}
+	#app-share-overlay:after {
+		content:attr(data-message);
+		position:absolute;
+		top:65%;
+		left:0;
+		width:100%;
+		height:25%;
+		text-align:center;
+		font-size:30px;
+		font-weight:400;
+		color:#FFF;
+	}
+	#app-share-overlay.open:before,
+	#app-share-overlay.close:before {
+		content:"\f097";
+		position:absolute;
+		top:30%;
+		left:0;
+		width:100%;
+		height:100px;
+		text-align:center;
+		color:#FFF;
+		font-size:100px;
+		font-family:'Fontcons';
+	}
+	#app-share-overlay.close:before {
+		content:"\f098";
 	}
 /* Misc. */
 	#powered-by {

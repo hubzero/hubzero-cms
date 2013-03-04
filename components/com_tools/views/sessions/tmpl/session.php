@@ -50,6 +50,19 @@ if ($this->app->params->get('noRefresh', 0)) {
 	$cls[] = 'no-refresh';
 }
 
+//is this a share session thats read-only
+$readOnly = false;
+foreach($this->shares as $share)
+{
+	if($juser->get('username') == $share->viewuser)
+	{
+		if($share->readonly == 'Yes')
+		{
+			$readOnly = true;
+		}
+	}
+}
+
 JPluginHelper::importPlugin('mw');
 $dispatcher =& JDispatcher::getInstance();
 ?>
@@ -59,9 +72,16 @@ if (!$this->app->sess) {
 	echo '<p class="error"><strong>'.JText::_('ERROR').'</strong><br /> '.implode('<br />', $this->output).'</p>';
 } else {
 ?>
+	
+	<?php if ($readOnly) : ?>
+		<p class="warning readonly-warning">
+			This tool session has been shared with you in 'Read-Only' mode, meaning you don't have control over the session.
+		</p>
+	<?php endif; ?>
+	
 	<div id="app-wrap">
 		<div id="app-header">
-			<h2 id="session-title" class="session-title item:name id:<?php echo $this->app->sess; ?>" rel="<?php echo $this->app->sess; ?>"><?php echo $this->app->caption; ?></h2>
+			<h2 id="session-title" class="session-title item:name id:<?php echo $this->app->sess; ?> <?php if (is_object($this->app->owns)) : ?>editable<?php endif; ?>" rel="<?php echo $this->app->sess; ?>"><?php echo $this->app->caption; ?></h2>
 			<!-- <ul class="app-toolbar" id="app-options">
 				<li>
 					<a id="app-btn-about" class="about" href="<?php echo JRoute::_('index.php?option=com_resources&alias=' . $this->toolname); ?>">
@@ -84,7 +104,7 @@ if (!$this->app->sess) {
 				</li>
 			<?php } else { ?>
 				<li>
-					<a id="app-btn-close" class="terminate sessiontips" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=unshare&sess=' . $this->app->sess.'&username='.$juser->get('username').'&return='.$this->rtrn); ?>" title="Warning! :: This will end your session.">
+					<a id="app-btn-close" class="terminate sessiontips" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=unshare&sess=' . $this->app->sess.'&return='.$this->rtrn); ?>" title="Warning! :: This will end your session.">
 						<span><?php echo JText::_('Stop sharing'); ?></span>
 					</a>
 				</li>
@@ -100,14 +120,14 @@ if (!$this->app->sess) {
 		</noscript>
 		<p id="troubleshoot" class="help">If your application fails to appear within a minute, <a href="/kb/tools/troubleshoot/">troubleshoot this problem.</a></p>
 
-		<div id="app-content">
+		<div id="app-content" class="<?php if ($readOnly) { echo 'view-only'; } ?>">
 			<input type="hidden" id="app-orig-width" name="apporigwidth" value="<?php echo $this->output->width; ?>" />
 			<input type="hidden" id="app-orig-height" name="apporigheight" value="<?php echo $this->output->height; ?>" />
 			<applet id="theapp" class="thisapp<?php if (!empty($cls)) { echo ' ' . implode(' ', $cls); } ?>" code="VncViewer.class" archive="/components/com_tools/scripts/VncViewer-20110822-01.jar" width="<?php echo $this->output->width; ?>" height="<?php echo $this->output->height; ?>" MAYSCRIPT>
 				<param name="PORT" value="<?php echo $this->output->port; ?>" />
 				<param name="ENCPASSWORD" value="<?php echo $this->output->password; ?>" />
 				<param name="CONNECT" value="<?php echo $this->output->connect; ?>" />
-				<param name="View Only" value="No" />
+				<param name="View Only" value="<?php echo ($readOnly) ? 'Yes' : 'No'; ?>" />
 				<param name="trustAllVncCerts" value="Yes" />
 				<param name="Offer relogin" value="Yes" />
 				<param name="DisableSSL" value="No" />
@@ -187,9 +207,10 @@ if (!$this->app->sess) {
 		</div><!-- #app-footer -->
 	</div><!-- #app-wrap -->
 	
-	<div class="clear"></div>
+	<div class="clear share-divider"></div>
 <?php if ($this->config->get('shareable', 0)) { ?>
 	<form name="share" id="app-share" method="post" action="<?php echo JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=session&sess='.$this->app->sess); ?>">
+		<?php if (is_object($this->app->owns)) : ?>
 		<div class="three columns first second">
 			<p class="share-member-photo">
 				<a class="share-anchor" name="shareform"></a>
@@ -232,7 +253,7 @@ if (!$this->app->sess) {
 				</label>
 				
 				<p class="submit">
-					<input type="submit" value="<?php echo JText::_('Share'); ?>" />
+					<input type="submit" value="<?php echo JText::_('Share'); ?>" id="share-btn" />
 				</p>
 				
 				<div class="sidenote">
@@ -245,7 +266,8 @@ if (!$this->app->sess) {
 			<!-- <p>What does it mean to <a href="/kb/tips/share_a_simulation_session">share a session</a>?</p> -->
 			
 		</div>
-		<div class="three columns third">
+		<?php endif; ?>
+		<div class="<?php if (is_object($this->app->owns)) : ?>three columns third<?php endif; ?>">
 			<table class="entries" summary="<?php echo Jtext::_('A list of users this session is shared with'); ?>">
 				<thead>
 					<tr>
@@ -303,9 +325,11 @@ if (!$this->app->sess) {
 							</span>
 						</td>
 						<td class="entry-actions">
-							<a class="entry-remove" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=unshare&sess=' . $this->app->sess.'&username='.$row->viewuser.'&return='.$this->rtrn); ?>" title="Remove this user from sharing">
-								<span><?php echo JText::_('Remove this user from sharing'); ?></span>
-							</a>
+							<?php if (is_object($this->app->owns)) : ?>
+								<a class="entry-remove" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=unshare&sess=' . $this->app->sess.'&username='.$row->viewuser.'&return='.$this->rtrn); ?>" title="Remove this user from sharing">
+									<span><?php echo JText::_('Remove this user from sharing'); ?></span>
+								</a>
+							<?php endif; ?>
 						</td>
 					</tr>
 <?php
