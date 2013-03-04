@@ -436,6 +436,8 @@ class Hubzero_API extends JApplication
 			}
 			
 			$this->_authn['session_id'] = null;
+
+			JFactory::getSession()->set('user', new JUser($data->user_id));
 		}
 		else
 		{
