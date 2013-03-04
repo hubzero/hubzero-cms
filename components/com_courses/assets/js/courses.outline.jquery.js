@@ -63,31 +63,13 @@ HUB.CoursesOutline = {
 				401: function (data, textStatus, jqXHR){
 					// Display the error message
 					HUB.CoursesOutline.errorMessage(data.responseText);
-
-					if(data.progress_bar_id) {
-						// Reset progress bar
-						// @FIXME: need to return filename even with errors!
-						HUB.CoursesOutline.resetProgresBar(data.progress_bar_id);
-					}
 				},
 				404: function (data, textStatus, jqXHR){
 					HUB.CoursesOutline.errorMessage('Method not found. Ensure the the hub API has been configured');
-
-					if(data.progress_bar_id) {
-						// Reset progress bar
-						// @FIXME: need to return filename even with errors!
-						HUB.CoursesOutline.resetProgresBar(data.progress_bar_id);
-					}
 				},
 				500: function (data, textStatus, jqXHR){
 					// Display the error message
 					HUB.CoursesOutline.errorMessage(data.responseText);
-
-					if(data.progress_bar_id) {
-						// Reset progress bar
-						// @FIXME: need to return filename even with errors!
-						HUB.CoursesOutline.resetProgresBar(data.progress_bar_id);
-					}
 				}
 			}
 		});
@@ -477,7 +459,7 @@ HUB.CoursesOutline = {
 							newAssetGroupItem.find('.title-edit').hide();
 
 							// Set up file upload and update progress bar based on the recently added item
-							HUB.CoursesOutline.attachFileUploader('#'+newAssetGroupItem.attr('id'));
+							HUB.CoursesOutline.attachFileUploader('#'+newAssetGroupItem.attr('id')+' .uploadfiles');
 							HUB.CoursesOutline.showProgressIndicator();
 
 							// Refresh the sortable list
@@ -502,7 +484,6 @@ HUB.CoursesOutline = {
 							newUnit.find('.title-edit').hide();
 
 							// Set up file upload and update progress bar based on the recently added item
-							HUB.CoursesOutline.attachFileUploader('#'+newUnit.attr('id'));
 							HUB.CoursesOutline.showProgressIndicator();
 
 							// Refresh the sortable list
@@ -723,44 +704,6 @@ HUB.CoursesOutline = {
 				dropZone: $(this),
 				dataType: 'json',
 				progressInterval: 200,
-				statusCode: {
-					// 201 created - this is returned by the standard asset upload
-					201: function(data, textStatus, jqXHR){
-						if(data.assets.js) {
-							// If our asset handler returns JS, we'll run that
-							eval(data.assets.js);
-						} else {
-							// If this is an empty asset group, remove the "no files" list item first
-							if(assetslist.find('li:first').hasClass('nofiles'))
-							{
-								assetslist.find('li:first').remove();
-							}
-
-							// Loop through the uploaded files and add li for them
-							$.each(data.assets, function (index, asset) {
-								var callback = function() {
-									// Insert in our HTML (uses "underscore.js")
-									var li = _.template(HUB.CoursesOutline.Templates.asset, asset);
-									assetslist.append(li);
-
-									// Get a pointer to our new asset item
-									var newAsset = assetslist.find('.asset-item:last');
-
-									// Update a few things after adding the new asset (reset the progress bar, make them sortable, etc...)
-									newAsset.find('.uniform').uniform();
-									newAsset.find('.toggle-editable').show();
-									newAsset.find('.title-edit').hide();
-									HUB.CoursesOutline.showProgressIndicator();
-									HUB.CoursesOutline.resizeFileUploader();
-									HUB.CoursesOutline.makeAssetsSortable();
-								};
-
-								// Reset progress bar
-								HUB.CoursesOutline.resetProgresBar(asset.asset_progress_bar_id, 1000, callback);
-							});
-						}
-					}
-				},
 				add: function(e, data) {
 					// Get asset handlers for this file type
 					$.ajax({
@@ -813,25 +756,11 @@ HUB.CoursesOutline = {
 													'value': value.classname
 												});
 
-												// Add a progress bar id
-												formData.push({
-													'name':'progress_bar_id',
-													'value': progressBarId
-												});
-
 												return formData;
 											}
 										);
 
-										// Setup the progress handler
-										fileupload.on('fileuploadprogress', function (e, data) {
-											HUB.CoursesOutline.assetProgress(data, progressBarId);
-										});
-
-										// @FIXME: impliment cancel button
-										HUB.CoursesOutline.assetProgressBar(progressBarId, data.files[0].name, assetslist);
-
-										data.submit();
+										fileSubmit(data);
 
 										// Remove the ul for this file
 										$(this).parents('ul').remove();
@@ -857,35 +786,71 @@ HUB.CoursesOutline = {
 									dialog.dialog("open");
 								}
 							} else {
+								fileSubmit(data);
+							}
+
+							// Shared function for submitting a fileupload request (and setting appropriate callbacks)
+							function fileSubmit(data) {
 								// Iterate counter (for uniqueness)
 								counter += 1;
 								progressBarId = 'progress-bar-'+counter;
-
-								// Add an additional value for upload progress bar
-								fileupload.fileupload(
-									'option',
-									'formData',
-									function (form) {
-										var formData = form.serializeArray();
-
-										formData.push({
-											'name':'progress_bar_id',
-											'value': progressBarId
-										});
-
-										return formData;
-									});
 
 								// Setup the progress handler
 								fileupload.on('fileuploadprogress', function (e, data) {
 									HUB.CoursesOutline.assetProgress(data, progressBarId);
 								});
 
-								// @FIXME: impliment cancel button
+								// Add the progress bar
 								HUB.CoursesOutline.assetProgressBar(progressBarId, data.files[0].name, assetslist);
+
+								// Attach a cancel button
+								$("#"+progressBarId+' .cancel').click(function (e) {
+									data.jqXHR.abort();
+									HUB.CoursesOutline.resetProgresBar(progressBarId);
+								});
 
 								// Submit the file upload request as normal
 								data.submit();
+
+								// 201 created - this is returned by the standard asset upload
+								data.jqXHR.done(function (data, textStatus, jqXHR) {
+									if(data.assets.js) {
+										// If our asset handler returns JS, we'll run that
+										eval(data.assets.js);
+									} else {
+										// If this is an empty asset group, remove the "no files" list item first
+										if(assetslist.find('li:first').hasClass('nofiles'))
+										{
+											assetslist.find('li:first').remove();
+										}
+
+										// Loop through the uploaded files and add li for them
+										$.each(data.assets, function (index, asset) {
+											var callback = function() {
+												// Insert in our HTML (uses "underscore.js")
+												var li = _.template(HUB.CoursesOutline.Templates.asset, asset);
+												assetslist.append(li);
+
+												// Get a pointer to our new asset item
+												var newAsset = assetslist.find('.asset-item:last');
+
+												// Update a few things after adding the new asset (reset the progress bar, make them sortable, etc...)
+												newAsset.find('.uniform').uniform();
+												newAsset.find('.toggle-editable').show();
+												newAsset.find('.title-edit').hide();
+												HUB.CoursesOutline.showProgressIndicator();
+												HUB.CoursesOutline.resizeFileUploader();
+												HUB.CoursesOutline.makeAssetsSortable();
+											};
+
+											// Reset progress bar
+											HUB.CoursesOutline.resetProgresBar(progressBarId, 1000, callback);
+										});
+									}
+								}).fail(function (jqXHR, textStatus, errorThrown) {
+									// Reset progress bar
+									HUB.CoursesOutline.resetProgresBar(progressBarId, 1000);
+								});
 							}
 						}
 					});
@@ -898,7 +863,7 @@ HUB.CoursesOutline = {
 	{
 		// Show progress bars for all pending uploads
 		var progress = parseInt(data.loaded / data.total * 100, 10);
-		$('.unit').find("#" + progressBarId + " .bar").animate({'width': progress + '%'}, 200);
+		$('.unit').find("#" + progressBarId + " .bar").animate({'width': progress + '%'}, 100);
 
 		// If progress is 100% and extension is zip, let's add some explanation
 		if(progress == 100) {
@@ -916,6 +881,7 @@ HUB.CoursesOutline = {
 
 		var html = '';
 			html += '<div id="' + id + '" class="uploadfiles-progress">';
+			html += '<div class="cancel"></div>';
 			html += '<div class="bar-border">';
 			html += '<span class="filename">' + filename + '</span>';
 			html += '<div class="bar"></div>';

@@ -115,7 +115,6 @@ class FormAssetHandler extends AssetHandler
 					data.push({'name':'type','value':'exam'});
 					data.push({'name':'url','value':'/courses/form/layout/" . $id . "'});
 					data.push({'name':'content','value':'{\"form_id\":\"". $id . "\"}'});
-					data.push({'name':'progress_bar_id','value':'" . JRequest::getCmd('progress_bar_id', '') . "'});
 
 					// Create ajax call to change info in the database
 					$.ajax({
@@ -147,7 +146,7 @@ class FormAssetHandler extends AssetHandler
 									}
 
 									// Reset progress bar
-									HUB.CoursesOutline.resetProgresBar(file.asset_progress_bar_id, 1000, callback);
+									HUB.CoursesOutline.resetProgresBar(progressBarId, 1000, callback);
 								});
 							}
 						}

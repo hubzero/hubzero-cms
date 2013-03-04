@@ -146,32 +146,35 @@ class FileAssetHandler extends AssetHandler
 			return array('error' => 'Server error. Upload directory isn\'t writable');
 		}
 
-		// @FIXME: cleanup asset and asset association if directory creation fails
-
 		// Get the final file path
 		$target_path = $uploadDirectory . $filename . '.' . $ext;
 
 		// Move the file to the site folder
-		// FIXME: is this ok?
 		set_time_limit(60);
-		move_uploaded_file($_FILES['files']['tmp_name'][0], $target_path);
+		if(!$move = move_uploaded_file($_FILES['files']['tmp_name'][0], $target_path))
+		{
+			// Move failed, delete asset and association and return an error
+			$assetObj->delete();
+			$assocObj->delete();
+			JFolder::delete($uploadDirectory);
+			return array('error' => 'Move file failed');
+		}
 
 		// Get the url to return to the page
 		$asset = new CoursesModelAsset($this->assoc['asset_id']);
 		$url   = $asset->path($this->asset['course_id']);
 
 		$return_info = array(
-			'asset_id'              => $this->assoc['asset_id'],
-			'asset_title'           => $this->asset['title'],
-			'asset_type'            => $this->asset['type'],
-			'asset_url'             => $url,
-			'asset_progress_bar_id' => JRequest::getCmd('progress_bar_id', ''),
-			'course_id'             => $this->asset['course_id'],
-			'offering_alias'        => JRequest::getCmd('offering', ''),
-			'scope_id'              => $this->assoc['scope_id'],
-			'asset_ext'             => $ext,
-			'upload_path'           => $uploadDirectory,
-			'target_path'           => $target_path
+			'asset_id'       => $this->assoc['asset_id'],
+			'asset_title'    => $this->asset['title'],
+			'asset_type'     => $this->asset['type'],
+			'asset_url'      => $url,
+			'course_id'      => $this->asset['course_id'],
+			'offering_alias' => JRequest::getCmd('offering', ''),
+			'scope_id'       => $this->assoc['scope_id'],
+			'asset_ext'      => $ext,
+			'upload_path'    => $uploadDirectory,
+			'target_path'    => $target_path
 		);
 
 		// Return info

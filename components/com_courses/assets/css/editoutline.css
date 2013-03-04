@@ -250,6 +250,9 @@
 	box-shadow: 0 0 2px #888;
 	opacity: 1;
 }
+.aux-attachments a:active {
+	box-shadow: inset 1px 1px 2px #555;
+}
 .aux-attachments a:before {
 	font-family: "fontcons";
 	font-size: 16px;
@@ -599,10 +602,20 @@ ul {
 	top: 0;
 }
 .uploadfiles-progress {
-	margin: 10px 0 0 40px;
+	margin: 10px 0 0 0;
 	position: relative;
 }
-.uploadfiles-progress:before {
+.uploadfiles-progress .cancel {
+	display: block;
+	width: 16px;
+	height: 16px;
+	float: left;
+	margin-left: 10px;
+}
+.uploadfiles-progress .cancel:hover {
+	cursor: pointer;
+}
+.uploadfiles-progress .cancel:before {
 	font-family: "fontcons";
 	font-size: 16px;
 	font-style: normal;
@@ -610,15 +623,11 @@ ul {
 	width: 16px;
 	color: #999;
 	content: "\f057";
-	position: absolute;
-	left: -30px;
-	top: 1px;
-	bottom: 0;
 }
 .bar-border {
-	width: 100%;
 	border: 1px solid #999;
 	position: relative;
+	margin-left: 40px;
 
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;

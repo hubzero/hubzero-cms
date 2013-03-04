@@ -554,14 +554,13 @@ class CoursesApiController extends Hubzero_Api_Controller
 		}
 
 		$files = array(
-			'asset_id'              => $asset->get('id'),
-			'asset_title'           => $asset->get('title'),
-			'asset_type'            => $asset->get('type'),
-			'asset_url'             => $asset->get('url'),
-			'asset_progress_bar_id' => JRequest::getCmd('progress_bar_id', ''),
-			'scope_id'              => (isset($row)) ? $row->scope_id : '',
-			'course_id'             => $this->course_id,
-			'offering_alias'        => JRequest::getCmd('offering', '')
+			'asset_id'       => $asset->get('id'),
+			'asset_title'    => $asset->get('title'),
+			'asset_type'     => $asset->get('type'),
+			'asset_url'      => $asset->get('url'),
+			'scope_id'       => (isset($row)) ? $row->scope_id : '',
+			'course_id'      => $this->course_id,
+			'offering_alias' => JRequest::getCmd('offering', '')
 		);
 
 		// Set the status code

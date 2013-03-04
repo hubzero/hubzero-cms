@@ -62,26 +62,35 @@ class VideoFileAssetHandler extends FileAssetHandler
 		// Call the primary create method on the file asset handler
 		$return_info = parent::create();
 
-		$asset = $return_info['assets'];
-
-		// Exapand zip file if applicable - we're assuming zips are hubpresenter videos
-		if(!array_key_exists('error', $asset) && $asset['asset_ext'] == 'zip')
+		// Check for errors in response
+		if(array_key_exists('error', $return_info))
 		{
-			// Set the timout so that PHP execution doesn't run out of time
-			set_time_limit(60);
+			$this->setMessage($return_info['error'], 500, 'Internal server error');
+			return;
+		}
+		else
+		{
+			$asset = $return_info['assets'];
 
-			// Make the path shell safe
-			$escaped_file = escapeshellarg($asset['target_path']);
-
-			// Exec the command to unzip things
-			// @FIXME: check for symlinks and other potential security concerns
-			if($result = shell_exec("unzip {$escaped_file} -d {$asset['upload_path']}"))
+			// Exapand zip file if applicable - we're assuming zips are hubpresenter videos
+			if(!array_key_exists('error', $asset) && $asset['asset_ext'] == 'zip')
 			{
-				// Remove original archive
-				JFile::delete($asset['target_path']);
+				// Set the timout so that PHP execution doesn't run out of time
+				set_time_limit(60);
 
-				// Remove MACOSX dirs if there
-				JFolder::delete($asset['upload_path'] . '__MACOSX');
+				// Make the path shell safe
+				$escaped_file = escapeshellarg($asset['target_path']);
+
+				// Exec the command to unzip things
+				// @FIXME: check for symlinks and other potential security concerns
+				if($result = shell_exec("unzip {$escaped_file} -d {$asset['upload_path']}"))
+				{
+					// Remove original archive
+					JFile::delete($asset['target_path']);
+
+					// Remove MACOSX dirs if there
+					JFolder::delete($asset['upload_path'] . '__MACOSX');
+				}
 			}
 		}
 
