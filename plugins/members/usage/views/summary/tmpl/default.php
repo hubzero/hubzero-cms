@@ -123,10 +123,10 @@ $cls = 'even';
 			<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">
 				<td><?php echo $count; ?></td>
 				<td class="textual-data"><a href="<?php echo JRoute::_('index.php?option=com_resources&id='.$row->id); ?>"><?php echo $row->title; ?></a></td>
-				<td><a href="<?php echo JRoute::_('index.php?option=com_usage&task=tools&id='.$row->id.'&period=12'); ?>"><?php echo number_format(plgMembersUsage::get_usercount($row->id, 12, 7)); ?></a></td>
-				<td><a href="<?php echo JRoute::_('index.php?option=com_usage&task=tools&id='.$row->id.'&period=12'); ?>"><?php echo number_format($sim_count_12); ?></a></td>
-				<td><a href="<?php echo JRoute::_('index.php?option=com_usage&task=tools&id='.$row->id.'&period=14'); ?>"><?php echo number_format(plgMembersUsage::get_usercount($row->id, 14, 7)); ?></a></td>
-				<td><a href="<?php echo JRoute::_('index.php?option=com_usage&task=tools&id='.$row->id.'&period=14'); ?>"><?php echo number_format($sim_count_14); ?></a></td>
+				<td><a href="<?php echo JRoute::_('index.php?option=com_usage&task=tools&id='.$row->id.'&period=12'); ?>"><?php $result = plgMembersUsage::get_usercount($row->id, 12, 7); echo (is_numeric($result)) ? number_format($result) : $result; ?></a></td>
+				<td><a href="<?php echo JRoute::_('index.php?option=com_usage&task=tools&id='.$row->id.'&period=12'); ?>"><?php echo (is_numeric($sim_count_12)) ? number_format($sim_count_12) : $sim_count_12; ?></a></td>
+				<td><a href="<?php echo JRoute::_('index.php?option=com_usage&task=tools&id='.$row->id.'&period=14'); ?>"><?php $result = plgMembersUsage::get_usercount($row->id, 14, 7); echo (is_numeric($result)) ? number_format($result) : $result; ?></a></td>
+				<td><a href="<?php echo JRoute::_('index.php?option=com_usage&task=tools&id='.$row->id.'&period=14'); ?>"><?php echo (is_numeric($sim_count_14)) ? number_format($sim_count_14) : $sim_count_14; ?></a></td>
 				<td><?php echo plgMembersUsage::get_citationcount($row->id, 0); ?></td>
 				<td><?php echo $row->publish_up; ?></td>
 			</tr>

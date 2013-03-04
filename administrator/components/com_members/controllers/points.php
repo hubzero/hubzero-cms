@@ -560,6 +560,16 @@ class MembersControllerPoints extends Hubzero_Controller
 		$royaltyReviews = $MH->getRecord('', $action, 'reviews', $curyear, $rmsg);
 		$royaltyResources = $MH->getRecord('', $action, 'resources', $curyear, $resmsg);
 
+		// Include economy classes
+		if (is_file(JPATH_ROOT . DS . 'components'. DS .'com_answers' . DS . 'helpers' . DS . 'economy.php'))
+		{
+			require_once( JPATH_ROOT . DS . 'components'. DS .'com_answers' . DS . 'helpers' . DS . 'economy.php');
+		}
+		if (is_file(JPATH_ROOT . DS . 'components'. DS .'com_resources' . DS . 'helpers' . DS . 'economy.php'))
+		{
+			require_once( JPATH_ROOT . DS . 'components'. DS .'com_resources' . DS . 'helpers' . DS . 'economy.php');
+		}
+
 		$AE = new AnswersEconomy($this->database);
 		$accumulated = 0;
 

@@ -197,10 +197,10 @@ class WikiPage extends JTable
 	 * @param 	string 		$scope
 	 * @return 	boolean		True if data successfully loaded into object
 	 */
-	public function load($oid=NULL, $scope='')
+	public function load($oid=NULL, $scope=NULL)
 	{
 		$s = "";
-		if ($oid !== NULL && !is_numeric($oid)) 
+		if ($oid !== NULL && $scope !== NULL) // && !is_numeric($oid)) Allow for page names that are numeric
 		{
 			$this->_tbl_key = 'pagename';
 			$s = "AND scope=" . $this->_db->Quote($scope);
@@ -531,7 +531,7 @@ class WikiPage extends JTable
 			return false;
 		}
 
-		if (!$this->_validCn($this->group_cn)) 
+		if ($this->group_cn && !$this->_validCn($this->group_cn)) 
 		{
 			$this->setError(JText::_('Invalid group'));
 			return false;

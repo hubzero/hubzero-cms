@@ -424,10 +424,12 @@ class ResourcesDoi extends JTable
 	    </dates>
 	    <language>' . $metadata['language'].'</language>';
 
-		if (isset($metadata['typetitle']) && $metadata['typetitle'] != '') 
+		// [NANOHUB] Changes found on nanoHUB. Presuming should be in core. -- zooley
+		/*if (isset($metadata['typetitle']) && $metadata['typetitle'] != '') 
 		{
 			$xmlfile.= '<resourceType resourceTypeGeneral="Image">' . $metadata['typetitle'] . '</resourceType>';
-		}
+		}*/
+		$xmlfile.= '<resourceType resourceTypeGeneral="Software">Simulation Tool</resourceType>';
 		if (isset($metadata['version']) && $metadata['version'] != '') 
 		{
 			$xmlfile.= '<version>' . $metadata['version'] . '</version>';

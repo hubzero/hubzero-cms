@@ -115,11 +115,11 @@ Class GroupPages extends JTable
 
 		if ($active) 
 		{
-			$sql = "SELECT * FROM $this->_tbl WHERE gid='$gid' AND active=1 ORDER BY porder ASC";
+			$sql = "SELECT * FROM $this->_tbl WHERE gid=" . $this->_db->Quote($gid) . " AND active=1 ORDER BY porder ASC";
 		}
 		else 
 		{
-			$sql = "SELECT * FROM $this->_tbl WHERE gid='$gid' ORDER BY porder ASC";
+			$sql = "SELECT * FROM $this->_tbl WHERE gid=" . $this->_db->Quote($gid) . " ORDER BY porder ASC";
 		}
 
 		$this->_db->setQuery($sql);
@@ -152,7 +152,7 @@ Class GroupPages extends JTable
 	 */
 	public function getHighestPageOrder($gid)
 	{
-		$sql = "SELECT porder from $this->_tbl WHERE gid='$gid' ORDER BY porder DESC LIMIT 1";
+		$sql = "SELECT porder from $this->_tbl WHERE gid=" . $this->_db->Quote($gid) . " ORDER BY porder DESC LIMIT 1";
 		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
 	}
@@ -413,7 +413,7 @@ Class GroupPages extends JTable
 	 */
 	public function getPageContent($id)
 	{
-		$sql = "SELECT title, content FROM $this->_tbl WHERE id = '{$id}'";
+		$sql = "SELECT title, content FROM $this->_tbl WHERE id =" $this->_db->Quote($id);
 		$this->_db->setQuery($sql);
 		
 		$this->_db->query();

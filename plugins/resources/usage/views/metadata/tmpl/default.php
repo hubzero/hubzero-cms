@@ -36,13 +36,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<?php if($this->resource->type == 7) : ?>
 		<a href="<?php echo $this->url; ?>"><?php echo JText::sprintf('PLG_RESOURCES_USAGE_NUM_USERS',$this->stats->users); ?></a>
 	<?php elseif($this->stats->users) : ?>
-		<?php echo JText::sprintf('%s user(s)',$this->stats->users); ?>
+		<?php echo JText::sprintf('%s users',$this->stats->users); ?>
 	<?php endif; ?>
 </p>
 
 <?php if($this->clusters->users && $this->clusters->classes) : ?>
 	<p class="usage">
-		<?php echo JText::sprintf('%s user(s)',$clusters->users).' in '.JText::sprintf('%s class(es)',$clusters->classes); ?>
+		<?php echo JText::sprintf('%s users',$clusters->users).' in '.JText::sprintf('%s classes',$clusters->classes); ?>
 	</p>
 <?php endif; ?>
 

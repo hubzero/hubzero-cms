@@ -96,9 +96,14 @@ class StoreHtml
 			jimport('joomla.filesystem.file');
 			
 			$ext = JFile::getExt($images[$i]);
-			$tn = JFile::stripExt($images[$i]) . '-tn.' .  $ext;
-
-			//$type = explode('.', $images[$i]);
+			$tn  = JFile::stripExt($images[$i]) . '-tn.';
+			
+			if (!is_file($root . $wpath . $item . DS . $tn . $ext)) 
+			{
+				$ext = 'gif'; 
+			}
+			
+			$tn = $tn . $ext;
 
 			if (is_file($root . $wpath . $item . DS . $tn)) 
 			{

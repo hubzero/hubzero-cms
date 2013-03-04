@@ -211,7 +211,7 @@ class plgResourcesUsage extends JPlugin
 			}
 			if ($clusters->users && $clusters->classes) 
 			{
-				$arr['metadata'] .= '<p class="usage">' . JText::sprintf('%s users', $clusters->users) . ' in ' . JText::sprintf('%s class(es)', $clusters->classes) . '</p>';
+				$arr['metadata'] .= '<p class="usage">' . JText::sprintf('%s users', $clusters->users) . ' in ' . JText::sprintf('%s classes', $clusters->classes) . '</p>';
 			}
 		}
 

@@ -1365,7 +1365,7 @@ class ResourcesHtml
 			if ($resource->type == 7) 
 			{
 				// Get screenshot information for this resource
-				$ss = new ResourceScreenshot($database);
+				$ss = new ResourcesScreenshot($database);
 
 				$shots = self::screenshots($resource->id, $resource->created, $config->get('uploadpath'), $config->get('uploadpath'), $resource->versionid, $ss->getScreenshots($resource->id, $resource->versionid));
 
