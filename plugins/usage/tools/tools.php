@@ -98,6 +98,7 @@ class plgUsageTools extends JPlugin
 			foreach ($results as $row)
 			{
 				$cls = ($cls == 'even') ? 'odd' : 'even';
+				$vl = '-';
 				if ($row->rank == '0') 
 				{
 					$total = $row->value;
@@ -113,7 +114,9 @@ class plgUsageTools extends JPlugin
 					$html .= "\t\t" . '<tr class="summary">' . "\n";
 					$html .= "\t\t\t" . '<th colspan="2" class="numerical-data">' . $row->name . '</th>' . "\n";
 					$html .= "\t\t\t" . '<th class="numerical-data">' . $value . '</th>' . "\n";
-					$html .= "\t\t\t" . '<th class="numerical-data">' . number_format((($row->value/$total)*100), 2) . '%</th>' . "\n";
+					if ($total)
+						$vl = number_format((($row->value/$total)*100), 2);
+					$html .= "\t\t\t" . '<th class="numerical-data">' . $vl . '%</th>' . "\n";
 					$html .= "\t\t" . '</tr>' . "\n";
 					$html .= "\t" . '</tfoot>' . "\n";
 					$html .= "\t" . '<tbody>' . "\n";
@@ -140,7 +143,9 @@ class plgUsageTools extends JPlugin
 					$html .= "\t\t\t" . '<td>' . $row->rank . '</td>' . "\n";
 					$html .= "\t\t\t" . '<td class="textual-data"><a href="'.JRoute::_('index.php?option=com_resources&id=' . $name[0] . '&active=usage') . '">' . $name[1] . '</a></td>' . "\n";
 					$html .= "\t\t\t" . '<td>' . $value . '</td>' . "\n";
-					$html .= "\t\t\t" . '<td>' . number_format((($row->value/$total)*100) ,2) . '%</td>' . "\n";
+					if ($total)
+						$vl = number_format((($row->value/$total)*100), 2);
+					$html .= "\t\t\t" . '<td>' . $vl . '%</td>' . "\n";
 					$html .= "\t\t" . '</tr>' . "\n";
 				}
 			}
@@ -692,7 +697,7 @@ class plgUsageTools extends JPlugin
 		{
 			$html .= $this->navlinks($period, $s_top);
 		}
-		$html .= '<form method="post" action="' . JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task . '&period=' . $period) . '">' . "\n";
+		$html  = '<form method="post" action="' . JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task . '&period=' . $period) . '">' . "\n";
 		$html .= "\t" . '<fieldset class="filters">' . "\n";
 		$html .= "\t\t" . '<label>' . "\n";
 		$html .= "\t\t\t".JText::_('PLG_USAGE_SHOW_DATA_FOR') . ': ' . "\n";
