@@ -163,7 +163,7 @@ class MembersApiController extends Hubzero_Api_Controller
 		exec($cmd, $results, $status);
 		
 		//
-		$result = array();
+		$results = array();
 		foreach($sessions as $session)
 		{
 			$r = array(
@@ -171,9 +171,11 @@ class MembersApiController extends Hubzero_Api_Controller
 				'app' => $session->appname,
 				'name' => $session->sessname,
 				'started' => $session->start,
-				'accessed' => $session->accesstime
+				'accessed' => $session->accesstime,
+				'owner' => ($result->get('username') == $session->username) ? 1 : 0,
+				'ready-only' => ($session->readonly == 'No') ? 0 : 1
 			);
-			$result[] = $r;
+			$results[] = $r;
 		}
 		
 		//make sure we have an acceptable ordering
@@ -185,25 +187,25 @@ class MembersApiController extends Hubzero_Api_Controller
 				case 'id_asc':
 					break;
 				case 'id_desc':
-					usort($result, array("MembersApiController", "id_sort_desc"));
+					usort($results, array("MembersApiController", "id_sort_desc"));
 					break;
 				case 'started_asc':
 					break;
 				case 'started_desc':
-					usort($result, array("MembersApiController", "started_date_sort_desc"));
+					usort($results, array("MembersApiController", "started_date_sort_desc"));
 					break;
 				case 'accessed_asc':
-					usort($result, array("MembersApiController", "accessed_date_sort_asc"));
+					usort($results, array("MembersApiController", "accessed_date_sort_asc"));
 					break;
 				case 'accessed_desc':
-					usort($result, array("MembersApiController", "accessed_date_sort_desc"));
+					usort($results, array("MembersApiController", "accessed_date_sort_desc"));
 					break;
 			}
 		}
 		
 		//encode sessions for return
 		$object = new stdClass();
-		$object->sessions = $result;
+		$object->sessions = $results;
 
 		//set format and content
 		$this->setMessageType( $format );
@@ -262,6 +264,7 @@ class MembersApiController extends Hubzero_Api_Controller
 				AND tv.state=1
 				AND rt.uid={$result->get("uidNumber")}
 				AND rt.tool=r.alias
+				GROUP BY r.alias
 				ORDER BY rt.created DESC";
 		
 		$database->setQuery($sql);

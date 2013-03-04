@@ -19,6 +19,7 @@ class ToolsApiController extends Hubzero_Api_Controller
 			case 'invoke':		$this->invoke();			break;
 			case 'view':		$this->view();				break;
 			case 'stop':		$this->stop();				break;
+			case 'unshare':		$this->unshare();			break;
 			
 			case 'storage':		$this->storage();			break;
 			case 'purge':		$this->purge();				break;
@@ -224,8 +225,15 @@ class ToolsApiController extends Hubzero_Api_Controller
 		//make sure we have a user
 		if ($result === false)	return $this->not_found();
 		
+		//mw session lib
+		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php' );
+		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php' );
+		
 		//import HUBzero image lib
 		ximport('Hubzero_Image');
+		
+		//instantiate middleware database object
+		$mwdb =& ToolsHelperUtils::getMWDBO();
 		
 		//get any request vars
 		$type 		= JRequest::getVar('type', 'png');
@@ -249,8 +257,12 @@ class ToolsApiController extends Hubzero_Api_Controller
 			return;
 		}
 		
+		//load session
+		$ms = new MwSession($mwdb);
+		$sess = $ms->loadSession( $sessionid );
+		
 		//check to make sure we have a sessions dir
-		$home_directory = DS .'webdav' . DS . 'home' . DS . strtolower($result->get('username')) . DS . 'data' . DS . 'sessions';
+		$home_directory = DS .'webdav' . DS . 'home' . DS . strtolower($sess->username) . DS . 'data' . DS . 'sessions';
 		if(!is_dir($home_directory))
 		{
 			clearstatcache();
@@ -276,6 +288,7 @@ class ToolsApiController extends Hubzero_Api_Controller
 		
 		// check to make sure we have a screenshot
 		$screenshot = $home_directory . DS . 'screenshot.png';
+		
 		if(!file_exists($screenshot))
 		{
 			$this->errorMessage(404,'No screenshot Found.');
@@ -391,7 +404,7 @@ class ToolsApiController extends Hubzero_Api_Controller
 		}
 		
 		// Log the launch attempt
-		//$this->_recordUsage($app->toolname, $result->get('id'));
+		ToolsHelperUtils::recordToolUsage( $app->toolname, $result->get('id') );
 
 		// Get the middleware database
 		$mwdb =& ToolsHelperUtils::getMWDBO();
@@ -637,6 +650,52 @@ class ToolsApiController extends Hubzero_Api_Controller
 		{
 			$object = new stdClass();
 			$object->session = array("session" => $sessionid, "status" => "stopped", "stopped" => date("Y-m-d H:i:s"));
+			$this->setMessageType( $format );
+			$this->setMessage( $object );
+		}
+	}
+	
+	
+	/**
+	 * Method to disconnect from shared tool session
+	 *
+	 * @return     void
+	 */
+	private function unshare()
+	{
+		//get the userid and attempt to load user profile
+		$userid = JFactory::getApplication()->getAuthn('user_id');
+		$result = Hubzero_User_Profile::getInstance($userid);
+		
+		//make sure we have a user
+		if ($result === false)	return $this->not_found();
+		
+		//include needed libraries
+		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php' );
+		
+		//instantiate middleware database object
+		$mwdb =& ToolsHelperUtils::getMWDBO();
+		
+		//get request vars
+		$sessionid 	= JRequest::getVar('sessionid', '');
+		$format 	= JRequest::getVar('format', 'json');
+		
+		//check to make sure we have session id
+		if(!$sessionid)
+		{
+			$this->errorMessage(400, 'Missing session ID.');
+			return;
+		}
+		
+		// Delete the viewperm
+		$mv = new MwViewperm( $mwdb );
+		$mv->deleteViewperm( $sessionid, $result->get("username") );
+		
+		//make sure we didnt have error disconnecting
+		if(!$mv->getError())
+		{
+			$object = new stdClass();
+			$object->session = array("session" => $sessionid, "status" => "disconnected", "disconnected" => date("Y-m-d H:i:s"));
 			$this->setMessageType( $format );
 			$this->setMessage( $object );
 		}
