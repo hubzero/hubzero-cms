@@ -52,9 +52,11 @@ if (!$mode || ($mode && $mode != 'static')) {
 		'layout'    => 'authors'
 	));
 	$view->option = $this->option;
+	$view->controller = $this->controller;
 	$view->page   = $this->page;
 	$view->task   = $this->task;
 	$view->config = $this->config;
+	$view->sub    = $this->sub;
 	//$view->revision = $this->revision;
 	$view->display();
 }
