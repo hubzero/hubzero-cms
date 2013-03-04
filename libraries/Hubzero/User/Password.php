@@ -328,7 +328,6 @@ class Hubzero_User_Password
 		}
 		
 		$affected = 0;
-		
 		if (!empty($query))
 		{
 			$db->setQuery($query);
