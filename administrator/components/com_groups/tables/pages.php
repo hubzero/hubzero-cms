@@ -413,7 +413,7 @@ Class GroupPages extends JTable
 	 */
 	public function getPageContent($id)
 	{
-		$sql = "SELECT title, content FROM $this->_tbl WHERE id =" $this->_db->Quote($id);
+		$sql = "SELECT title, content FROM $this->_tbl WHERE id =" . $this->_db->Quote($id);
 		$this->_db->setQuery($sql);
 		
 		$this->_db->query();
