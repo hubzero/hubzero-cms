@@ -828,6 +828,11 @@ class plgGroupsBlog extends JPlugin
 
 		$bt = new BlogTags($this->database);
 		$view->tags = $bt->get_tag_string($view->entry->id);
+		
+		Hubzero_Document::addPluginScript('groups', 'blog');
+		Hubzero_Document::addSystemScript('jquery.timepicker');
+		Hubzero_Document::addSystemStylesheet('jquery.datepicker.css');
+		Hubzero_Document::addSystemStylesheet('jquery.timepicker.css');
 
 		return $view->loadTemplate();
 	}

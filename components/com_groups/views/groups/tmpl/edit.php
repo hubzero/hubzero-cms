@@ -152,6 +152,7 @@ else
 		</fieldset>
 		<div class="clear"></div>
 
+		<div class="explaination asset-browser-parent">&nbsp;</div>
 		<fieldset>
 			<legend><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_TITLE'); ?></legend>
 			<p><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_DESC'); ?></p>
@@ -186,6 +187,7 @@ else
 		</fieldset>
 		<div class="clear"></div>
 		
+		<div class="explaination asset-browser-parent">&nbsp;</div>
 		<fieldset <?php if(!$allowEmailResponses) { echo 'id="bottom_box"'; } ?>>
 			<legend><?php echo JText::_('COM_GROUPS_DISCOVERABILITY_SETTINGS_TITLE'); ?></legend>
 			<p>
@@ -207,6 +209,7 @@ else
 		</fieldset>
 
 		<?php if ($allowEmailResponses) : ?>
+			<div class="explaination asset-browser-parent">&nbsp;</div>
 			<fieldset id="bottom_box">
 			<legend><?php echo JText::_('COM_GROUPS_EMAIL_SETTINGS_TITLE'); ?></legend>
 			<p><?php echo JText::_('COM_GROUPS_EMAIL_SETTINGS_DESC'); ?></p>

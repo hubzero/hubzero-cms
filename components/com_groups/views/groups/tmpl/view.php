@@ -51,7 +51,7 @@ $no_html = JRequest::getInt( 'no_html', 0 );
 					$default_logo = DS.'components'.DS.$this->option.DS.'assets'.DS.'img'.DS.'group_default_logo.png';
 
 					//logo link - links to group overview page
-					$link = JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->get('cn'));
+					$link = JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn'));
 
 					//path to group uploaded logo
 					$path = '/site/groups/'.$this->group->get('gidNumber').DS.$this->group->get('logo');

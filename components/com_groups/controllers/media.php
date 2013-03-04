@@ -55,7 +55,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		$this->_getStyles();
 		
 		// push scripts
-		$this->_getScripts();
+		$this->_getScripts('assets/js/' . $this->_name);
 		
 		// get view notifications
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
@@ -127,7 +127,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		$this->_getStyles();
 		
 		// push scripts
-		$this->_getScripts();
+		$this->_getScripts('assets/js/' . $this->_name);
 		
 		$this->view->config = $this->config;
 		

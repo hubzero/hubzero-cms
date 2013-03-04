@@ -340,8 +340,12 @@ if ($this->role_filter)
 									$row = new GroupsReason($database);
 									$row->loadReason($u->get('uidNumber'), $this->group->gidNumber);
 
-									if ($row) {
-										$html .= '<span class="reason">'.stripslashes($row->reason).'</span>';
+									if ($row) 
+									{
+										$html .= '<span class="reason" data-title="Reason for Request:">';
+										$html .= '<span class="reason-reason">'.stripslashes($row->reason).'</span>';
+										$html .= '<span class="reason-date">'.date("F d, Y @ g:ia", strtotime($row->date)).'</span>';
+										$html .= '</span>';
 									}
 								} else {
 									//$html .= '<span class="activity">Activity: </span>';

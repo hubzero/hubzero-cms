@@ -150,11 +150,13 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 			<label for="field-publish_up">
 				<?php echo JText::_('PLG_GROUPS_BLOG_PUBLISH_UP'); ?>
 				<input type="text" name="entry[publish_up]" id="field-publish_up" size="35" value="<?php echo $this->escape(stripslashes($this->entry->publish_up)); ?>" />
+				<span class="hint">Date format: YYYY-MM-dd hh:mm:ss</span>
 			</label>
 
 			<label for="field-publish_down">
 				<?php echo JText::_('PLG_GROUPS_BLOG_PUBLISH_DOWN'); ?>
 				<input type="text" name="entry[publish_down]" id="field-publish_down" size="35" value="<?php echo $this->escape(stripslashes($this->entry->publish_down)); ?>" />
+				<span class="hint">Date format: YYYY-MM-dd hh:mm:ss</span>
 			</label>
 		</div>
 	</fieldset>

@@ -126,7 +126,9 @@ HUB.Plugins.GroupCalendar = {
 //----------------------------------------------------------
 
 jQuery(document).on("click", function(event) {
-	var cls = event.srcElement.className;
+	var element = (event.srcElement) ? event.srcElement : event.target,
+		cls = element.className;
+	
 	if(!cls.match(/event/gi))
 	{
 		HUB.Plugins.GroupCalendar.hideCalendarPopup();

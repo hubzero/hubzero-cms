@@ -79,7 +79,7 @@ $group = Hubzero_Group::getInstance($this->listdir);
 	<div id="file_list">
 		<form action="index.php" method="post" id="filelist">
 <?php if (count($this->images) == 0 && count($this->folders) == 0 && count($this->docs) == 0) { ?>
-			<p><?php echo JText::_('NO_FILES_FOUND'); ?></p>
+			<p><?php echo JText::_('COM_GROUPS_MEDIA_NO_FILES'); ?></p>
 <?php } else { ?>
 			<table summary="Files for this group">
 				<tbody>

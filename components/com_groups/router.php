@@ -51,6 +51,33 @@ function GroupsBuildRoute(&$query)
 		unset($query['cn']);
 	}
 	
+	if(!empty($query['gid']))
+	{
+		//get the application object
+		$application =& JFactory::getApplication();
+		
+		//check to see if we were already warned
+		$alreadyWarned = JRequest::getBOOL('warned', 0);
+		
+		//if we were already warned dont redirect again.
+		if (!$alreadyWarned)
+		{
+			//enqueue warning message of depreciated gid=
+			$application->enqueueMessage('The component you are viewing is using depreciated methods to build group URL\'s. If you are the developer please fix or contact a system administrator with help resolving the issue.', 'warning');
+			
+			//redirect back to where user was going - needeed to do this to get message to show
+			$redirect = $_SERVER['REQUEST_URI'];
+			$redirect .= (strstr($redirect, "?") === false) ? '?warned=1' : '&warned=1';
+			
+			//redirect user
+			$application->redirect( $redirect );
+			return;
+		}
+		
+		$segments[] = $query['gid'];
+		unset($query['gid']);
+	}
+	
 	if (!empty($query['active'])) 
 	{
 		$segments[] = $query['active'];

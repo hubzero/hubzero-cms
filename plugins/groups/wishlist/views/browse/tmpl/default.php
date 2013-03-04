@@ -98,7 +98,7 @@ else {
 
 <div class="section">
 		<div class="container">
-			<table class="idea entries">
+			<table class="ideas entries">
 				<caption><?php echo $title; ?></caption>
 				<tbody>
 <?php 

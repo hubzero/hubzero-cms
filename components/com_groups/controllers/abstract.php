@@ -182,9 +182,10 @@ class GroupsControllerAbstract extends Hubzero_Controller
 	/**
 	 * Override default build title
 	 *
+	 * @param		array $pages	Array of group pages, if any
 	 * @return 		void
 	 */
-	public function _buildTitle()
+	public function _buildTitle( $pages = array() )
 	{
 		$this->_title = JText::_(strtoupper($this->_option));
 
@@ -195,13 +196,23 @@ class GroupsControllerAbstract extends Hubzero_Controller
 		
 		if ($this->cn) 
 		{
-			$group = Hubzero_Group::getInstance( $this->cn);
-			$this->_title = JText::_('COM_GROUPS_GROUP') . ': ' . stripslashes($group->get('description'));
+			$group = Hubzero_Group::getInstance( $this->cn );
+			if(is_object($group))
+			{
+				$this->_title = JText::_('COM_GROUPS_GROUP') . ': ' . stripslashes($group->get('description'));
+			}
 		}
 		
 		if ($this->active)
 		{
-			$this->_title .= ' ~ ' . JText::_('COM_GROUPS_'.$this->active);
+			if (in_array($this->active, array_keys($pages)))
+			{
+				$this->_title .= ' ~ ' . JText::_($pages[$this->active]['title']);
+			}
+			else if ($this->active != 'overview')
+			{
+				$this->_title .= ' ~ ' . JText::_('COM_GROUPS_'.$this->active);
+			}
 		}
 
 		//set title of browser window
@@ -217,7 +228,7 @@ class GroupsControllerAbstract extends Hubzero_Controller
 	 * @param 		string $errorMessage	Error message
 	 * @return 		void
 	 */
-	private function _errorHandler( $errorCode, $errorMessage )
+	public function _errorHandler( $errorCode, $errorMessage )
 	{
 		$no_html = JRequest::getInt('no_html', 0);
 		

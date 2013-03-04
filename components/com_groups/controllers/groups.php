@@ -289,7 +289,6 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			
 			//set notification and clear after
 			$this->setNotification( JText::_('COM_GROUPS_PENDING_APPROVAL_WARNING'), 'warning' );
-			$this->clearComponentMessage();
 		}
 		
 		//determine params parsing class based on joomla version
@@ -414,7 +413,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 		
 		// build the title
-		$this->_buildTitle();
+		$this->_buildTitle( $this->view->pages );
 
 		// build pathway
 		$this->_buildPathway( $this->view->pages );

@@ -100,6 +100,7 @@ $levels = array(
 			</label>
 		</fieldset>
 		
+		<div class="explaination asset-browser-parent">&nbsp;</div>
 		<fieldset>
 			<legend>Group Main Content</legend>
 			<p>This is the content that appears on the main (overview tab) for each group. You can choose to use the default which is your group description and a selection of group members or you can also place custom content using wiki-syntax</p>
@@ -132,6 +133,7 @@ $levels = array(
 			</fieldset>
 		</fieldset>
 		
+		<div class="explaination asset-browser-parent">&nbsp;</div>
 		<fieldset>
 			<legend>Group Access</legend>
 			<p>Below is a list of all tabs available to groups on this HUB. You can set access permissions on a per group basis by changing the value in the dropdown corresponding with each link. If you have not previously set permissions but notice that some are pre-selected, that is because those are the defaults set until a group manager overrides them.</p>
@@ -160,6 +162,7 @@ $levels = array(
 			</fieldset>
 		</fieldset>
 		
+		<div class="explaination asset-browser-parent">&nbsp;</div>
 		<fieldset id="bottom_box">
 			<legend>Group Custom Content</legend>
 			<p>Group Custom Content includes all the group pages and any group modules at also appear on those pages. Clicking the link below will take you to a different interface where you can add, edit, reorder, turn on/off any group page or module.</p>

@@ -443,8 +443,8 @@ class WishlistController extends JObject
 				ximport('Hubzero_Group');
 				$group = Hubzero_Group::getInstance($wishlist->referenceid);
 				$pathway->addItem('Groups','index.php?option=com_groups');
-				$pathway->addItem($group->get('description'), 'index.php?option=com_groups&gid='.$group->get('cn'));
-				$pathway->addItem('Wishlist', 'index.php?option=com_groups&gid='.$group->get('cn').'&active=wishlist');
+				$pathway->addItem($group->get('description'), 'index.php?option=com_groups&cn='.$group->get('cn'));
+				$pathway->addItem('Wishlist', 'index.php?option=com_groups&cn='.$group->get('cn').'&active=wishlist');
 			} 
 			else 
 			{

@@ -27,6 +27,15 @@ HUB.Plugins.GroupsBlog = {
 	
 	initialize: function() {
 		
+		if ($("#field-publish_up").length && $("#field-publish_down").length)
+		{
+			$('#field-publish_up, #field-publish_down').datetimepicker({
+				controlType: 'slider',
+				dateFormat: 'yy-mm-dd',
+				timeFormat: 'HH:mm:ss'
+			});
+		}
+		
 	} // end initialize
 }
 

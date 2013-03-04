@@ -861,17 +861,18 @@ span.group-pending {
 	background: #fff;
 	border: 1px solid #eaeaea;
 	border-radius: 3px;
+	max-width: 100%;
 }
 #page_content .figure a {
 	border: none;
 	display: block;
+	padding:0.5em;
 } 
 #page_content .figure img {
-	margin: 0.5em;
+	display: block;
 	padding: 0;
 	background: transparent;
-	text-align: center;
-	max-width:99%;
+	max-width: 100%;
 }
 #page_content .figcaption {
 	display: block;
@@ -1376,12 +1377,20 @@ td.down a:before {
 /*===========================================
  	Group Media Browser
 ===========================================*/
-.asset-browser-parent {
-	position:relative;
-	padding:0 !important;
+#hubForm:before,
+#hubForm:after,
+#hubForm .asset-browser-parent:after {
+	display:none;
+}
+#hubForm .asset-browser-parent {
+	position: relative;
+	padding: 0 !important;
+	width: 300px !important;
+	border: none;
+	background-image: none;
 }
 #asset_browser {
-	margin-top: 7px;
+	margin-top: 0px;
 	-webkit-box-shadow: 0 0 2px #444;
 	-moz-box-shadow: 0 0 2px #444;
 	box-shadow: 0 0 2px #444;
@@ -1404,6 +1413,14 @@ td.down a:before {
 }
 #asset_browser p:first-child {
 	margin-top: 0px;
+}
+#asset_browser iframe {
+	padding: 0 !important;
+	margin: 0 !important;
+	border: none;
+}
+#imgManager {
+	border:1px solid #ccc;
 }
 p.error, 
 p.passed,
@@ -1499,9 +1516,30 @@ p.warning {
 	-o-border-radius: 3px;
 	border-radius: 3px;
 }
+.qq-upload-drop-area-placeholder {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,0.2);
+}
+.qq-upload-drop-area-placeholder span {
+	display: none;
+}
 .qq-upload-drop-area-active {
 	background: #fdfce4;
 }
+/*
+.qq-upload-drop-area-active span {
+	display: block;
+	width: 80%;
+	margin: 100px auto;
+	text-align:center;
+	font-size: 18px;
+	color: #FFF;
+}
+*/
 .qq-upload-list {
 	display: none;
 }
