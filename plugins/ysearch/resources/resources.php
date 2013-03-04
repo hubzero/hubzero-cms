@@ -275,15 +275,11 @@ class plgYSearchResources extends YSearchPlugin
 				);
 				foreach ($sql->to_associative() as $row)
 				{
-					$rows = $sql->to_associative();
-					foreach ($rows as $row)
-					{
 						if ($tag_map[$row->get('id')] > 1)
 						{
 							$row->adjust_weight($tag_map[$row->get('id')]/8, 'tag bonus for non-matching but tagged resources');
 						}
 						$id_assoc[$row->get('id')] = $row;
-					}
 				}
 			}
 		}
