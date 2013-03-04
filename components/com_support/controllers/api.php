@@ -213,6 +213,13 @@ class SupportApiController extends Hubzero_Api_Controller
 	 */
 	private function create()
 	{
+		//get the userid and attempt to load user profile
+		$userid = JFactory::getApplication()->getAuthn('user_id');
+		$result = Hubzero_User_Profile::getInstance($userid);
+		
+		//make sure we have a user
+		if ($result === false)	return $this->not_found();
+		
 		$this->setMessageType(JRequest::getVar('format', 'json'));
 
 		// Create an object for returning messages
@@ -243,10 +250,10 @@ class SupportApiController extends Hubzero_Api_Controller
 		}
 
 		// Get user data
-		$juser = JFactory::getUser();
-		$ticket->name      = $juser->get('name');
-		$ticket->email     = $juser->get('email');
-		$ticket->login     = $juser->get('username');
+		//$juser = JFactory::getUser();
+		$ticket->name      = $result->get('name');
+		$ticket->email     = $result->get('email');
+		$ticket->login     = $result->get('username');
 
 		// Set some helpful info
 		$ticket->instances = 1;
