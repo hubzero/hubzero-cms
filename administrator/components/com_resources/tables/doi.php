@@ -282,7 +282,8 @@ class ResourcesDoi extends JTable
 		}
 		else 
 		{
-			$creatorName = '';
+			$juser =& JFactory::getUser();
+			$creatorName = $juser->get('name');
 		}
 
 		// Format name
@@ -296,6 +297,7 @@ class ResourcesDoi extends JTable
 		$input .= "datacite.title: ". $metadata['title'] . "\n";
 		$input .= "datacite.publisher: " . $metadata['publisher'] . "\n";
 		$input .= "datacite.publicationyear: " . $metadata['pubYear'] . "\n";
+		$input .= "datacite.resourcetype: Software" . "\n";
 		$input .= "_profile: datacite";
 
 		$ch = curl_init();
@@ -347,7 +349,8 @@ class ResourcesDoi extends JTable
 				$input .= "datacite.title: ". $metadata['title'] . "\n";
 				$input .= "datacite.publisher: " . $metadata['publisher'] . "\n";
 				$input .= "datacite.publicationyear: " . $metadata['pubYear'] . "\n";
-				$input .= "_profile: datacite";
+				$input .= "datacite.resourcetype: Software" . "\n";
+				$input .= "_profile: datacite" . "\n";
 
 				/*colons(:),percent signs(%),line terminators(\n),carriage returns(\r) are percent encoded for given input string  */ 
 				$input  .= 'datacite: ' . strtr($xmlfile, array(":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D")) . "\n"; 
@@ -424,11 +427,6 @@ class ResourcesDoi extends JTable
 	    </dates>
 	    <language>' . $metadata['language'].'</language>';
 
-		// [NANOHUB] Changes found on nanoHUB. Presuming should be in core. -- zooley
-		/*if (isset($metadata['typetitle']) && $metadata['typetitle'] != '') 
-		{
-			$xmlfile.= '<resourceType resourceTypeGeneral="Image">' . $metadata['typetitle'] . '</resourceType>';
-		}*/
 		$xmlfile.= '<resourceType resourceTypeGeneral="Software">Simulation Tool</resourceType>';
 		if (isset($metadata['version']) && $metadata['version'] != '') 
 		{
