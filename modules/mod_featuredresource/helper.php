@@ -304,6 +304,28 @@ class modFeaturedresource extends JObject
 	}
 
 	/**
+	 * Display module contents
+	 * 
+	 * @return     void
+	 */
+	public function display()
+	{
+		$juser =& JFactory::getUser();
+
+		if (!$juser->get('guest') && intval($this->params->get('cache', 0)))
+		{
+			$cache =& JFactory::getCache('callback');
+			$cache->setCaching(1);
+			$cache->setLifeTime(intval($this->params->get('cache_time', 15)));
+			$cache->call(array($this, 'run'));
+			echo '<!-- cached ' . date('Y-m-d H:i:s', time()) . ' -->';
+			return;
+		}
+
+		$this->run();
+	}
+
+	/**
 	 * Get a resource image
 	 * 
 	 * @param      string $path Path to get resource image from
