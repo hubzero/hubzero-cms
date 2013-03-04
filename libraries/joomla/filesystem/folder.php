@@ -420,7 +420,13 @@ class JFolder
 		}
 
 		// read the source directory
-		$handle = opendir($path);
+		$handle = @opendir($path);
+
+		if ($handle === false)
+		{
+			return $arr;
+		}
+
 		while (($file = readdir($handle)) !== false)
 		{
 			if (($file != '.') && ($file != '..') && (!in_array($file, $exclude))) {
