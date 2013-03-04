@@ -64,6 +64,7 @@ $database =& JFactory::getDBO();
 			<option value="sendtoarchive"><?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_SEND_TO_ARCHIVE'); ?></option>
 			<option value="sendtotrash"><?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_SEND_TO_TRASH'); ?></option>
 		</select> 
+		<input type="hidden"name="activetab" value="inbox" />
 		<input class="option" type="submit" value="<?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_APPLY'); ?>" />
 	</div>
 	<br class="clear" />

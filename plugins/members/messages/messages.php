@@ -766,7 +766,7 @@ class plgMembersMessages extends Hubzero_Plugin
 		}
 
 		$this->addPluginMessage("You have successfully moved <b><u>" . count($mids) . "</u></b> message(s) to your archive.", "passed");
-		return $this->redirect(JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=messages&task=archive&start=' . $start . '&limit=' . $limit));
+		return $this->redirect(JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=messages&task=' . JRequest::getWord('activetab', 'archive') . '&start=' . $start . '&limit=' . $limit));
 	}
 
 	/**
@@ -799,7 +799,7 @@ class plgMembersMessages extends Hubzero_Plugin
 		}
 
 		$this->addPluginMessage("You have successfully moved <b><u>" . count($mids) . "</u></b> message(s) to your inbox.", "passed");
-		return $this->redirect(JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=messages&task=inbox&start=' . $start . '&limit=' . $limit));
+		return $this->redirect(JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=messages&task=' . JRequest::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit));
 	}
 
 	/**
@@ -845,7 +845,7 @@ class plgMembersMessages extends Hubzero_Plugin
 		}
 
 		$this->addPluginMessage("You have successfully moved <b><u>" . count($mids) . "</u></b> message(s) to your trash.", "passed");
-		return $this->redirect(JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=messages&task=trash&start=' . $start . '&limit=' . $limit));
+		return $this->redirect(JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=messages&task=' . JRequest::getWord('activetab', 'trash') . '&start=' . $start . '&limit=' . $limit));
 	}
 
 	/**
@@ -898,7 +898,7 @@ class plgMembersMessages extends Hubzero_Plugin
 		}
 
 		$this->addPluginMessage('You have successfully deleted <b><u>' . count($mids) . '</u></b> message(s).', 'passed');
-		return $this->redirect(JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=messages&task=inbox&start=' . $start . '&limit=' . $limit));
+		return $this->redirect(JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=messages&task=' . JRequest::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit));
 	}
 
 	/**
@@ -932,7 +932,7 @@ class plgMembersMessages extends Hubzero_Plugin
 		}
 
 		$this->addPluginMessage('You have successfully marked <b><u>' . count($ids) . '</u></b> message(s) as read.', 'passed');
-		return $this->redirect(JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=messages&task=inbox&start=' . $start . '&limit=' . $limit));
+		return $this->redirect(JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=messages&task=' . JRequest::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit));
 	}
 
 	/**
@@ -958,7 +958,7 @@ class plgMembersMessages extends Hubzero_Plugin
 		}
 
 		$this->addPluginMessage('You have successfully marked <b><u>' . count($ids) . '</u></b> message(s) as unread.', 'passed');
-		return $this->redirect(JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=messages&task=inbox&start=' . $start . '&limit=' . $limit));
+		return $this->redirect(JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=messages&task=' . JRequest::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit));
 	}
 
 	/**
