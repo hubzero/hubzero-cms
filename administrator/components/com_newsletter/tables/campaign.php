@@ -29,6 +29,7 @@ class NewsletterCampaign extends JTable
 		}
 		else
 		{
+			$sql .= " ORDER BY date DESC";
 			$this->_db->setQuery($sql);
 			return $this->_db->loadObjectList();
 		}
@@ -38,7 +39,7 @@ class NewsletterCampaign extends JTable
 	
 	public function getCurrentCampaign()
 	{
-		$sql = "SELECT * FROM {$this->_tbl} ORDER BY `date` LIMIT 1";
+		$sql = "SELECT * FROM {$this->_tbl} ORDER BY `date` DESC LIMIT 1";
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObject();
 	}
@@ -47,35 +48,43 @@ class NewsletterCampaign extends JTable
 	
 	public function buildNewsletter( $campaign )
 	{
-		//instantiate all objects
-		$database =& JFactory::getDBO();
-		$nt = new NewsletterTemplate( $database );
-	   // $nc = new NewsletterCampaign( $database );
-		$nps = new NewsletterPrimaryStory( $database );
-		$nss = new NewsletterSecondaryStory( $database );
-		
-		//get the campaign template
-		$nt->load($campaign['template']);
-		$template = $nt->template;
-		
-		//get and format primary stories
-		$primary_stories = "";
-		$ps = $nps->getStories($campaign['id']); 
-		foreach($ps as $p)
+		if ($campaign['content_override'] != null && $campaign['content_override'] != '')
 		{
-			$primary_stories .= "<span style=\"font-size:20px;font-weight:bold;color:#8668AE;font-family:arial;line-height:100%;\">" . $p->title . "</span>";
-			$primary_stories .= "<span style=\"font-size:12px;font-weight:normal;color:#444444;font-family:arial;\">" . $p->story . "</span>";
-			$primary_stories .= "<br /><br /><br />";
+			$template = $campaign['content_override'];
+			$primary_stories = '';
+			$secondary_stories = '';
 		}
-		
-		//get secondary stories
-		$secondary_stories = "<br /><br />";
-		$ss = $nss->getStories($campaign['id']);
-		foreach($ss as $s)
+		else
 		{
-			$secondary_stories .= "<span style=\"font-size:15px;font-weight:bold;color:#EF792F;font-family:arial;line-height:150%;\">" . $s->title . "</span><br />";
-		    $secondary_stories .= $s->story;
-			$secondary_stories .= "<br /><br />";
+			//instantiate all objects
+			$database =& JFactory::getDBO();
+			$nt = new NewsletterTemplate( $database );
+			$nps = new NewsletterPrimaryStory( $database );
+			$nss = new NewsletterSecondaryStory( $database );
+			
+			//get the campaign template
+			$nt->load($campaign['template']);
+			$template = $nt->template;
+
+			//get and format primary stories
+			$primary_stories = "";
+			$ps = $nps->getStories($campaign['id']); 
+			foreach($ps as $p)
+			{
+				$primary_stories .= "<span style=\"font-size:20px;font-weight:bold;color:#8668AE;font-family:arial;line-height:100%;\">" . $p->title . "</span>";
+				$primary_stories .= "<span style=\"font-size:12px;font-weight:normal;color:#444444;font-family:arial;\">" . $p->story . "</span>";
+				$primary_stories .= "<br /><br /><br />";
+			}
+
+			//get secondary stories
+			$secondary_stories = "<br /><br />";
+			$ss = $nss->getStories($campaign['id']);
+			foreach($ss as $s)
+			{
+				$secondary_stories .= "<span style=\"font-size:15px;font-weight:bold;color:#EF792F;font-family:arial;line-height:150%;\">" . $s->title . "</span><br />";
+			    $secondary_stories .= $s->story;
+				$secondary_stories .= "<br /><br />";
+			}
 		}
 		
 		//
