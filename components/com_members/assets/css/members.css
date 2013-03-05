@@ -527,3 +527,21 @@
 	.com_members #page_menu li .alrt {
 		*display: none;
 	}
+
+/* Members Browse Statistics */
+.com_members .aside .container table {
+	border: none;
+	margin: 1em 0 2em 0;
+}
+.com_members .aside .container table th {
+	padding-left: 0;
+	text-align: left;
+}
+.com_members .aside .container table td {
+	text-align: right;
+	padding-right: 0;
+}
+.com_members .aside .container table tr:last-child th,
+.com_members .aside .container table tr:last-child td {
+	border-bottom: none;
+}
