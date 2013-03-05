@@ -274,7 +274,7 @@ class plgResourcesUsage extends JPlugin
 	 * @param      string  $datetime Timestamp YYYY-MM-DD
 	 * @return     array
 	 */
-	public static function getTopValue($id, $top, $tid, $datetime)
+	public static function getTopValue($id, $top, $tid, $datetime, $prd=14)
 	{
 		$database =& JFactory::getDBO();
 
@@ -283,15 +283,16 @@ class plgResourcesUsage extends JPlugin
 			return array();
 		}
 
-		$sql = "SELECT v.*, t.`processed_on` 
+		$sql = "SELECT v.*, t.datetime, t.`processed_on` 
 				FROM #__resource_stats_tools AS t
 				LEFT JOIN #__resource_stats_tools_topvals AS v ON v.id=t.id
 				WHERE t.resid = '$id' 
-				AND t.period = '1'
+				AND t.period = '$prd'
 				AND t.datetime = '" . $datetime . "-00 00:00:00'
 				AND t.id = $tid
 				AND v.top = '$top'
 				ORDER BY v.id, v.rank";
+
 		$database->setQuery($sql);
 		return $database->loadObjectList();
 	}
@@ -304,11 +305,11 @@ class plgResourcesUsage extends JPlugin
 	 * @param      string  $datetime Timestamp YYYY-MM-DD
 	 * @return     array
 	 */
-	public static function getTid($id, $datetime)
+	public static function getTid($id, $datetime, $period=14)
 	{
 		$database =& JFactory::getDBO();
 
-		$sql = "SELECT t.id FROM #__resource_stats_tools AS t WHERE t.resid = '$id' AND t.period = '1' AND t.datetime = '" . $datetime . "-00 00:00:00' ORDER BY t.id LIMIT 1";
+		$sql = "SELECT t.id FROM #__resource_stats_tools AS t WHERE t.resid = '$id' AND t.period = '" . $period . "' AND t.datetime = '" . $datetime . "-00 00:00:00' ORDER BY t.id LIMIT 1";
 		$database->setQuery($sql);
 		return $database->loadResult();
 	}
@@ -372,6 +373,8 @@ class plgResourcesUsage extends JPlugin
 	 */
 	public function getTopValues($id, $datetime)
 	{
+		$period = JRequest::getInt('period', 14);
+
 		$colors = array(
 			$this->params->get('pie_chart_color1', '#7c7c7c'),
 			$this->params->get('pie_chart_color2', '#515151'),
@@ -399,9 +402,9 @@ class plgResourcesUsage extends JPlugin
 
 		$database =& JFactory::getDBO();
 
-		$tid = $this->getTid($id, $datetime);
+		$tid = $this->getTid($id, $datetime, $period);
 
-		$orgs = $this->getTopValue($id, 3, $tid, $datetime);
+		$orgs = $this->getTopValue($id, 3, $tid, $datetime, $period);
 		$r = array();
 		if ($orgs)
 		{
@@ -426,7 +429,7 @@ class plgResourcesUsage extends JPlugin
 
 				$obj = new stdClass;
 				$obj->label = $row->name;
-				$obj->data  = (int) number_format($row->value);
+				$obj->data  = (int) $row->value;
 				$obj->color = $colors[$i];
 				$obj->code  = '';
 
@@ -436,7 +439,7 @@ class plgResourcesUsage extends JPlugin
 		}
 		$json->orgs = $r;
 
-		$countries = $this->getTopValue($id, 1, $tid, $datetime);
+		$countries = $this->getTopValue($id, 1, $tid, $datetime, $period);
 		$r = array();
 		if ($countries)
 		{
@@ -471,7 +474,7 @@ class plgResourcesUsage extends JPlugin
 
 				$obj = new stdClass;
 				$obj->label = $row->name;
-				$obj->data  = (int) number_format($row->value);
+				$obj->data  = (int) $row->value;
 				$obj->color = $colors[$i];
 				$obj->code  = (isset($codes[$row->name]) ? strtolower($codes[$row->name]['code']) : '');
 
@@ -481,7 +484,7 @@ class plgResourcesUsage extends JPlugin
 		}
 		$json->countries = $r;
 
-		$domains = $this->getTopValue($id, 2, $tid, $datetime);
+		$domains = $this->getTopValue($id, 2, $tid, $datetime, $period);
 		$r = array();
 		if ($domains)
 		{
@@ -506,7 +509,7 @@ class plgResourcesUsage extends JPlugin
 
 				$obj = new stdClass;
 				$obj->label = $row->name;
-				$obj->data  = (int) number_format($row->value);
+				$obj->data  = (int) $row->value;
 				$obj->color = $colors[$i];
 				$obj->code  = '';
 
