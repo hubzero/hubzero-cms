@@ -408,8 +408,8 @@ class plgResourcesUsage extends JPlugin
 			$i = 0;
 			foreach ($orgs as $row)
 			{
-				$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->processed_on));
-				if ($row->processed_on && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $row->processed_on, $regs)) 
+				$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
+				if ($row->datetime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $row->datetime, $regs)) 
 				{
 					$ky = $regs[1] . '/' . $regs[2] . '/01'; //mktime($regs[4], $regs[5], $regs[6], , $regs[3], );
 				}
@@ -452,8 +452,8 @@ class plgResourcesUsage extends JPlugin
 			$i = 0;
 			foreach ($countries as $row)
 			{
-				$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->processed_on));
-				if ($row->processed_on && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $row->processed_on, $regs)) 
+				$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
+				if ($row->datetime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $row->datetime, $regs)) 
 				{
 					$ky = $regs[1] . '/' . $regs[2] . '/01'; //mktime($regs[4], $regs[5], $regs[6], , $regs[3], );
 				}
@@ -488,8 +488,8 @@ class plgResourcesUsage extends JPlugin
 			$i = 0;
 			foreach ($domains as $row)
 			{
-				$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->processed_on));
-				if ($row->processed_on && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $row->processed_on, $regs)) 
+				$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
+				if ($row->datetime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $row->datetime, $regs)) 
 				{
 					$ky = $regs[1] . '/' . $regs[2] . '/01'; //mktime($regs[4], $regs[5], $regs[6], , $regs[3], );
 				}

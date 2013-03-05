@@ -40,11 +40,34 @@ HUBzero is a registered trademark of Purdue University.
 		<language tag="en-GB">en-GB.plg_resources_usage.ini</language>
 	</languages>
 	<config>
-		<fields name="params">
+		<fields name="fields">
 			<fieldset name="basic">
 				<field name="period" type="text" size="5" default="15" label="Time period" description="Time period to pull data for"/>
-				<field name="chart_path" type="text" size="25" default="/site/usage/chart_resources/" label="Chart path" description="Path to the directory where charts are stored"/>
+				<field name="pie_chart_path" type="text" size="25" default="/site/usage/pie_chart_resources/" label="Chart path" description="Path to the directory where charts are stored"/>
+				<field name="@spacer" type="spacer" default="" label="" description="" />
+				<field name="defaultDataset" type="radio" default="cumulative" label="Default dataset" description="Determines the default dataset to display">
+					<option value="cumulative">cumulative</option>
+					<option value="yearly">yearly</option>
+					<option value="monthly">monthly</option>
+				</field>
+				<field name="mapZoom" type="text" size="5" default="2" label="Map Zoom" description="Map Zoom level for Google Maps"/>
+				<field name="mapLng" type="text" size="5" default="20" label="Map Longitude" description="Map Longitude for Google Maps"/>
+				<field name="mapLat" type="text" size="5" default="0" label="Map Latitude" description="Map Latitude for Google Maps"/>
 				<field name="map_path" type="text" size="25" default="/site/usage/resource_maps/" label="Map path" description="Path to the directory where map images are stored"/>
+				<field name="@spacer" type="spacer" default="" label="" description="" />
+				<field name="chart_color_line" type="text" size="15" default="#656565" label="Chart line color" description="Chart line color"/>
+				<field name="chart_color_fill" type="text" size="15" default="rgba(0, 0, 0, 0.15)" label="Chart fill color" description="Chart fill color"/>
+				<field name="chart_color_selection" type="text" size="15" default="#656565" label="Chart select color" description="Chart selection color"/>
+				<field name="pie_chart_color1" type="text" size="15" default="#7c7c7c" label="Pie Color 1" description="Chart colors"/>
+				<field name="pie_chart_color2" type="text" size="15" default="#515151" label="Pie Color 2" description="Chart colors"/>
+				<field name="pie_chart_color3" type="text" size="15" default="#d9d9d9" label="Pie Color 3" description="Chart colors"/>
+				<field name="pie_chart_color4" type="text" size="15" default="#3d3d3d" label="Pie Color 4" description="Chart colors"/>
+				<field name="pie_chart_color5" type="text" size="15" default="#797979" label="Pie Color 5" description="Chart colors"/>
+				<field name="pie_chart_color6" type="text" size="15" default="#595959" label="Pie Color 6" description="Chart colors"/>
+				<field name="pie_chart_color7" type="text" size="15" default="#e5e5e5" label="Pie Color 7" description="Chart colors"/>
+				<field name="pie_chart_color8" type="text" size="15" default="#828282" label="Pie Color 8" description="Chart colors"/>
+				<field name="pie_chart_color9" type="text" size="15" default="#404040" label="Pie Color 9" description="Chart colors"/>
+				<field name="pie_chart_color10" type="text" size="15" default="#3a3a3a" label="Pie Color 10" description="Chart colors"/>
 			</fieldset>
 		</fields>
 	</config>
