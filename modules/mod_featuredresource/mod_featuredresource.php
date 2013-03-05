@@ -30,8 +30,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-error_reporting(E_ALL);
-@ini_set('display_errors','1');
+
 // Include the logic only once
 require_once(dirname(__FILE__) . DS . 'helper.php');
 
