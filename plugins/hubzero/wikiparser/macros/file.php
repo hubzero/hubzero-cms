@@ -211,18 +211,18 @@ class FileMacro extends WikiMacro
 		// e.g., [[File(myfile.jpg, width=120px)]]
 		if (preg_match($size, $val, $matches)) 
 		{
-			if ($matches[0])
+			if ($matches[0] && in_array($key, array('width', 'height')))
 			{
-				$this->attr['style']['width'] = $val;
-				$this->attr['width'] = $val;
+				$this->attr['style'][$key] = $val;
+				$this->attr[$key] = $val;
 				return;
 			}
 		}
 
-		if (is_numeric($val))
+		if (is_numeric($val) && in_array($key, array('width', 'height')))
 		{
-			$this->attr['style']['width'] = $val . 'px';
-			$this->attr['width'] = $val;
+			$this->attr['style'][$key] = $val . 'px';
+			$this->attr[$key] = $val;
 		}
 		// Specific call to NOT link an image
 		// Links images by default
