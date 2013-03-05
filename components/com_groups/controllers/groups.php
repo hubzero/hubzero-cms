@@ -46,9 +46,9 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 	public function execute()
 	{
 		//get the cname, active tab, and action for plugins
-		$this->cn 		= JRequest::getWord('cn', '');
-		$this->active 	= JRequest::getVar('active', '');
-		$this->action 	= JRequest::getVar('action', '');
+		$this->cn 		= JRequest::getCmd('cn', '');
+		$this->active 	= JRequest::getCmd('active', '');
+		$this->action 	= JRequest::getCmd('action', '');
 		
 		//are we serving up a file
 		$uri = $_SERVER['REQUEST_URI'];
@@ -237,7 +237,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$this->view->setLayout('view');
 		
 		// validate the incoming cname
-		if (!$this->_validCn( $this->cn ))
+		if (!$this->_validCn( $this->cn, true ))
 		{
 			$this->_errorHandler( 404, JText::_('COM_GROUPS_ERROR_NOT_FOUND') );
 		}
@@ -246,7 +246,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$this->view->group = Hubzero_Group::getInstance( $this->cn );
 		
 		// check to make sure we were able to load group
-		if(!is_object($this->view->group) || !$this->view->group->get('gidNumber') || !$this->view->group->get('cn'))
+		if (!is_object($this->view->group) || !$this->view->group->get('gidNumber') || !$this->view->group->get('cn'))
 		{
 			$this->suggestNonExistingGroupTask();
 			return;
@@ -1565,12 +1565,19 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 	/**
 	 * Check if a group alias is valid
 	 * 
-	 * @param      integer $cname Group alias
-	 * @return     boolean True if valid, false if not
+	 * @param 		integer 	$cname 			Group alias
+	 * @param 		boolean		$allowDashes 	Allow dashes in cn
+	 * @return 		boolean		True if valid, false if not
 	 */
-    private function _validCn( $cn )
+    private function _validCn( $cn, $allowDashes = false )
 	{
-		if (preg_match("/^[0-9a-zA-Z]+[_0-9a-zA-Z]*$/i", $cn))
+		$regex = '/^[0-9a-zA-Z]+[_0-9a-zA-Z]*$/i';
+		if ($allowDashes)
+		{
+			$regex = '/^[0-9a-zA-Z]+[-_0-9a-zA-Z]*$/i';
+		}
+		
+		if (preg_match($regex, $cn))
 		{
 			if (is_numeric($cn) && intval($cn) == $cn && $cn >= 0) 
 			{
