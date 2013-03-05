@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+ini_set('memory_limit', '512M');
+
 ximport('Hubzero_User_Profile');
 
 /**
@@ -105,6 +107,8 @@ class FixNames extends SystemHelperScript
 
 			if ($firstname && $surname)
 			{
+				unset($xprofile);
+
 				echo "passed $name as [$firstname] [$lastname] <br />\n";
 				return;
 			}
@@ -152,12 +156,26 @@ class FixNames extends SystemHelperScript
 			}
 
 			$xprofile->set('name', $name);
-			$xprofile->set('givenName', $firstname);
-			$xprofile->set('middleName', $middlename);
-			$xprofile->set('surname', $lastname);
+			$firstname = trim($firstname);
+			if ($firstname)
+			{
+				$xprofile->set('givenName', $firstname);
+			}
+			$middlename = trim($middlename);
+			if ($middlename)
+			{
+				$xprofile->set('middleName', $middlename);
+			}
+			$lastname = trim($lastname);
+			if ($lastname)
+			{
+				$xprofile->set('surname', $lastname);
+			}
 			$xprofile->update();
 
 			echo "saved $name as [$firstname] [$middlename] [$lastname] <br />\n";
 		}
+
+		unset($xprofile);
 	}
 }
