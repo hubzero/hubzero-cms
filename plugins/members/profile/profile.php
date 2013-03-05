@@ -177,7 +177,7 @@ class plgMembersProfile extends JPlugin
 		if ($session->get('registration.incomplete'))
 		{
 			$xreg = new Hubzero_Registration();
-			$jsuer = & JFactory::getUser(); 
+			$juser = & JFactory::getUser(); 
 			$xprofile =& Hubzero_Factory::getProfile();
 
 			if (is_object($xprofile)) 
