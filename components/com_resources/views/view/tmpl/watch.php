@@ -244,7 +244,7 @@ if ($author_ids && is_array($author_ids))
 								<?php
 									//use thumb if possible
 									$thumb = $content_folder.DS.$slide->media;
-									if(file_exists(JPATH_ROOT . $content_folder.DS.$slide->thumb))
+									if($slide->thumb && file_exists(JPATH_ROOT . $content_folder.DS.$slide->thumb))
 									{
 										$thumb = $content_folder.DS.$slide->thumb;
 									}

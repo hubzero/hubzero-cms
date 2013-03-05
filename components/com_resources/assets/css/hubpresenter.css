@@ -1,7 +1,7 @@
 /*---------------------------------------------------------------
     Reset & Body
 ---------------------------------------------------------------*/
-body.presenter {
+body#component-body.presenter {
 	background:#444;
 	text-rendering:auto;
 	}
@@ -780,12 +780,14 @@ a.ui-slider-handle {
 	color:white;
 	font-weight:bold;
 	font-size:36px;
+	line-height:1em;
 	margin:2em 0 0.5em 0;
 }
 #resume-details p {
 	text-align:center;
 	color:#777;
 	font-size:18px;
+	line-height:1em;
 }
 #resume-details #time {
 	text-align:center;
