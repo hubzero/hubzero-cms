@@ -531,11 +531,11 @@ class WikiPage extends JTable
 			return false;
 		}
 
-		if ($this->group_cn && !$this->_validCn($this->group_cn)) 
+		/*if ($this->group_cn && !$this->_validCn($this->group_cn)) 
 		{
 			$this->setError(JText::_('Invalid group'));
 			return false;
-		}
+		}*/
 
 		if (!$this->id)
 		{

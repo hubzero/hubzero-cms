@@ -505,12 +505,6 @@ class GroupsController extends Hubzero_Controller
 	 */
 	protected function view()
 	{
-		if (!$this->_validCn($this->gid))
-		{
-			JError::raiseError(404, JText::_('GROUPS_NO_GROUP_FOUND'));
-			return;
-		}
-
 		// Load the group page
 		$group = Hubzero_Group::getInstance($this->gid);
 
@@ -595,7 +589,7 @@ class GroupsController extends Hubzero_Controller
 		$authorized = $this->_authorize();
 
 		// Get the active tab (section)
-		$tab = JRequest::getWord('active', 'overview');
+		$tab = JRequest::getCmd('active', 'overview');
 
 		if ($tab == 'wiki') 
 		{
