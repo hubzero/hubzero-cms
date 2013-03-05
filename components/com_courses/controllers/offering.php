@@ -457,6 +457,7 @@ class CoursesControllerOffering extends Hubzero_Controller
 	 */
 	public function editoutlineTask()
 	{
+		$this->course->access('manage');
 		if (!$this->course->offering()->access('manage'))
 		{
 			JError::raiseError(401, JText::_('Not Authorized'));
