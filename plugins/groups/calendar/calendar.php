@@ -192,7 +192,7 @@ class plgGroupsCalendar extends JPlugin
 		$arr['metadata']['count'] = $this->getAllFutureEvents();
 		
 		//get the upcoming events
-		$upcoming_events = $this->getUpcomingEvents();
+		$upcoming_events = $this->getFutureEventsThisMonth();
 		if($upcoming_events > 0)
 		{
 			$title = $this->group->get('description')." has {$upcoming_events} events this month.";
@@ -284,10 +284,10 @@ class plgGroupsCalendar extends JPlugin
 		return $db->loadResult();
 	}
 	
-	private function getUpcomingEvents()
+	private function getFutureEventsThisMonth()
 	{
 		$db =& JFactory::getDBO();
-		$sql = "SELECT COUNT(*) FROM #__xgroups_events WHERE gidNumber=".$this->group->get('gidNumber')." AND active=1 AND start >= '".date("Y-m-01 00:00:00")."' AND start <= '".date("Y-m-t 23:59:59")."'";
+		$sql = "SELECT COUNT(*) FROM #__xgroups_events WHERE gidNumber=".$this->group->get('gidNumber')." AND active=1 AND (start >= '".date("Y-m-d H:i:s")."' OR end >='".date("Y-m-d H:i:s")."') AND start <= '".date("Y-m-t 23:59:59")."'";
 		$db->setQuery($sql);
 		return $db->loadResult();
 	}
