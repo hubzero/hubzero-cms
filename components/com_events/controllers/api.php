@@ -41,8 +41,8 @@ class EventsApiController extends Hubzero_Api_Controller
 		//load up the events
 		$database =& JFactory::getDBO();
 		$query = "SELECT * FROM #__events as e 
-					WHERE publish_up <= NOW() 
-					AND publish_down >= NOW()
+					/* WHERE publish_up <= NOW() */
+					WHERE publish_down >= NOW()
 					AND state=1 
 					AND approved=1
 					LIMIT {$limit}";
