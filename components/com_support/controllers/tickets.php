@@ -131,7 +131,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		// Check authorization
 		if ($this->juser->get('guest')) 
 		{
-			$return = base64_encode(JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task), 'server'));
+			$return = base64_encode(JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false), 'server'));
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_login&return=' . $return)
 			);
@@ -545,7 +545,7 @@ class SupportControllerTickets extends Hubzero_Controller
 	{
 		if ($this->juser->get('guest')) 
 		{
-			$return = base64_encode(JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task), 'server'));
+			$return = base64_encode(JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false), 'server'));
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_login&return=' . $return)
 			);
@@ -1600,7 +1600,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		// Check authorization
 		if ($this->juser->get('guest')) 
 		{
-			$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task . '&id=' . $id));
+			$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task . '&id=' . $id, false));
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_login&return=' . $return)
 			);
@@ -1862,7 +1862,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		// Make sure we are still logged in
 		if ($this->juser->get('guest')) 
 		{
-			$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task));
+			$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false));
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_login&return=' . $return)
 			);
@@ -2614,7 +2614,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		// Check logged in status
 		if ($this->juser->get('guest')) 
 		{
-			$return = base64_encode(JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task), 'server'));
+			$return = base64_encode(JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false), 'server'));
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_login&return=' . $return)
 			);
