@@ -190,6 +190,26 @@ HUB.CoursesOutline = {
 	{
 		var $ = this.jQuery;
 
+		// Show handles and delete on hover
+		$('.asset-group-item').hoverIntent({
+			over: function(){
+				$(this).find('.sortable-handle').show('slide', 250);
+				$(this).not('.add-new').animate({"padding-left":60}, 250);
+				$(this).find('.sortable-assets-handle').show('slide', 250);
+				$(this).find('.asset:not(.nofiles)').animate({"margin-left":30}, 250);
+				$(this).find('.asset-delete').animate({"opacity":1}, 250);
+			},
+			out: function(){
+				$(this).find('.sortable-handle').hide('slide', 250);
+				$(this).not('.add-new').animate({"padding-left":10}, 250);
+				$(this).find('.sortable-assets-handle').hide('slide', 250);
+				$(this).find('.asset:not(.nofiles)').animate({"margin-left":10}, 250);
+				$(this).find('.asset-delete').animate({"opacity":0}, 250);
+			},
+			timeout: 250,
+			interval: 250
+		});
+
 		$(".sortable").sortable({
 			placeholder: "placeholder",
 			handle: '.sortable-handle',
@@ -274,6 +294,48 @@ HUB.CoursesOutline = {
 	makeAssetsDeletable: function()
 	{
 		var $ = this.jQuery;
+
+		// Delete icon/button
+		$('.unit').on('click', '.asset-delete', function() {
+			var form       = $(this).siblings('.next-step-publish').serializeArray();
+			var asset      = $(this).parent('li');
+			var assetgroup = asset.parents('ul.assets-list');
+
+			// Set the published value to 2 for deleted
+			form.push({"name":"published", "value":"2"});
+
+			$.ajax({
+				url: '/api/courses/asset/save',
+				data: form,
+				statusCode: {
+					200: function(data){
+						// Report a message?
+						asset.fadeOut('fast', function() {
+							// Clone the asset for insertion to the deleted list
+							var html  = asset.clone();
+
+							// Now remove the active asset
+							asset.remove();
+
+							// Add the asset to the deleted list and fade it in
+							$('ul.assets-deleted').append(html);
+							html.fadeIn('fast');
+
+							// Get count of assets remaining
+							var assetCount = assetgroup.find('li').length;
+
+							if(assetCount === 0) {
+								// Add an empty asset back
+								assetgroup.append(_.template(HUB.CoursesOutline.Templates.emptyasset));
+							}
+
+							// @FIXME: we should only resize the one we're currently changing
+							HUB.CoursesOutline.resizeFileUploader();
+						});
+					}
+				}
+			});
+		});
 
 		// Var to hold whether the delete tray has been locked open
 		var locked = false;
@@ -742,7 +804,7 @@ HUB.CoursesOutline = {
 								dialog.html(message);
 
 								// Bind click events to the message buttons
-								$.each(json.handlers, function(index, value){
+								$.each(json.handlers, function (index, value){
 									targetName = '#handler-item-' + counter + '-' + value.classname;
 									dialog.on('click', targetName, function(){
 										fileupload.fileupload(
@@ -1031,6 +1093,7 @@ HUB.CoursesOutline = {
 				'<div class="asset-preview">',
 					'(<a class="" href="<%= asset_url %>">preview</a>)',
 				'</div>',
+				'<div class="asset-delete"></div>',
 				'<form action="/api/courses/asset/togglepublished" class="next-step-publish">',
 					'<span class="next-step-publish">',
 					'<label class="published-label" for="published">',

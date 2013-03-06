@@ -158,6 +158,9 @@
 .delete-tray .sortable-assets-handle {
 	display: none;
 }
+.delete-tray .asset-delete {
+	display: none;
+}
 .delete-tray .restore {
 	display: block;
 	margin-top: -2px;
@@ -295,6 +298,7 @@ ul {
 	color: #555;
 }
 .sortable-handle {
+	display: none;
 	position: absolute;
 	top: 0;
 	bottom: 0;
@@ -308,11 +312,23 @@ ul {
 	cursor: move;
 	cursor: ns-resize;
 }
-.sortable-assets-handle {
+.sortable-handle:before {
 	position: absolute;
+	font-family: "fontcons";
+	content: '\f0dc';
+	font-size: 20px;
+	color: #999;
+	left: 16px;
+	top: 50%;
+	margin-top: -10px;
+}
+.sortable-assets-handle {
+	display: none;
+	position: absolute;
+	font-family: "fontcons";
 	top: 0;
 	bottom: 0;
-	left: 0;
+	left: -20px;
 	background: transparent;
 	float: left;
 	width: 30px;
@@ -370,7 +386,6 @@ ul {
 .unit-title-arrow:before,
 .uploadfiles:before,
 .asset-group-item:before,
-.sortable-assets-handle,
 .calendar:before {
 	font-family: "fontcons";
 	content: "";
@@ -416,17 +431,10 @@ ul {
 	border: 1px dotted #AAA;
 	margin: 10px 0 1px 0;
 	background: #FAFAFA;
-	padding-left: 60px;
+	padding-left: 10px;
 }
 .asset-group-item:not(.add-new) {
 	min-height: 115px;
-}
-.asset-group-item:before {
-	content: '\f0dc';
-	font-size: 20px;
-	color: #999;
-	left: 16px;
-	top: 50%;
 }
 .asset-group-item:not(.add-new):before {
 	margin-top: -10px;
@@ -497,25 +505,44 @@ ul {
 	width: 100%;
 	overflow: visible;
 }
+.asset-delete {
+	position: relative;
+	width: 14px;
+	height: 14px;
+	display: inline-block;
+	opacity: 0;
+	margin-left: 5px;
+}
+.asset-delete:hover {
+	cursor: pointer;
+}
+.asset-delete:before {
+	position: absolute;
+	top: 0;
+	left: 0;
+	font-family: "fontcons";
+	font-size: 14px;
+	content: "\f014";
+}
 
 /* Asset types */
 .asset {
 	margin-left: 10px;
 	position: relative;
-	padding-left: 70px;
+	padding-left: 40px;
 	border-bottom: 1px dotted #AAA;
 }
 .asset:before,
 .asset:after {
 	position: absolute;
 	top: 0;
-	left: 50px;
+	left: 20px;
 	font-family: "fontcons";
 	content: "";
 }
 .asset:before {
 	top: 0;
-	left: 30px;
+	left: 0;
 }
 .published:before {
 	color: #49BF0A;

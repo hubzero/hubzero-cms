@@ -544,8 +544,12 @@ class CoursesControllerForm extends Hubzero_Controller {
 		}
 		else
 		{
-			// Otherwise, a course id should be provided, and we need to make sure they are authorized
-			JError::raiseError(403, 'Not authorized');
+			// If they're not a super admin, they can only view this page if they're looking at a form associated with a course that they're authorized on
+			if(!$this->authorizeCourse())
+			{
+				// Otherwise, a course id should be provided, and we need to make sure they are authorized
+				JError::raiseError(403, 'Not authorized');
+			}
 		}
 	}
 
@@ -583,6 +587,46 @@ class CoursesControllerForm extends Hubzero_Controller {
 		}
 
 		return $pdf;
+	}
+
+	/**
+	 * Check if form is part of a course
+	 * 
+	 * @return bool
+	 */
+	public function authorizeCourse() {
+		// First, check for a form id
+		if(!$fid = JRequest::getInt('formId', false))
+		{
+			return false;
+		}
+
+		$dbh = JFactory::getDBO();
+
+		$dbh->setQuery(
+			'SELECT ca.course_id, o.id
+			FROM #__courses_assets as ca
+			INNER JOIN #__courses_asset_associations as caa ON caa.asset_id = ca.id
+			INNER JOIN #__courses_asset_groups as cag ON cag.id = caa.scope_id
+			INNER JOIN #__courses_units as u ON u.id = cag.unit_id
+			INNER JOIN #__courses_offerings as o ON o.id = u.offering_id
+			WHERE `content` LIKE ' . $dbh->Quote('%{"form_id":"'.$fid.'"}%')
+		);
+
+		if($result = $dbh->loadAssoc())
+		{
+			// Get course model
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
+			$course = CoursesModelCourse::getInstance($result['course_id']);
+			$course->offering($result['id']);
+			$course->access('manage');
+
+			return $course->offering()->access('manage');
+		}
+		else
+		{
+			return false;
+		}
 	}
 }
 

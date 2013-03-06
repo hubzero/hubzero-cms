@@ -501,11 +501,23 @@ class CoursesApiController extends Hubzero_Api_Controller
 			$asset->set('url', urldecode($url));
 		}
 
-		// If we have a state
+		// If we have a state coming in as a word
 		if($published = JRequest::getWord('published', false))
 		{
 			$published = ($published == 'on') ? 1 : $asset->get('state');
 			$asset->set('state', $published);
+		}
+
+		// If we have a state coming in as an int
+		if($published = JRequest::getInt('published', false))
+		{
+			$asset->set('state', $published);
+		}
+
+		// If we have a state coming in as an int
+		if($state = JRequest::getInt('state', false))
+		{
+			$asset->set('state', $state);
 		}
 
 		// If we have content

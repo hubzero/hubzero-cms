@@ -56,6 +56,7 @@ if ($this->a->get('type') == 'video')
 	<div class="asset-preview">
 		(<a class="" href="<?= $href ?>">preview</a>)
 	</div>
+	<div class="asset-delete"></div>
 	<form action="/api/courses/asset/togglepublished" class="next-step-publish">
 		<span class="next-step-publish">
 			<label class="published-label" for="published">

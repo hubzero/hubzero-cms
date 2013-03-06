@@ -73,6 +73,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</form>
 		</div>
 <?php
+$hasPublishedAssets = false;
+
 // Loop through the assets
 if ($this->ag->assets()->total())
 {
@@ -84,6 +86,8 @@ if ($this->ag->assets()->total())
 			// Don't put deleted assets here
 			if($a->get('state') != COURSES_STATE_DELETED)
 			{
+				$hasPublishedAssets = true;
+
 				$view = new JView(
 						array(
 							'name'      => 'manage',
@@ -96,6 +100,18 @@ if ($this->ag->assets()->total())
 				$view->a      = $a;
 				$view->display();
 			}
+		}
+
+		if(!$hasPublishedAssets) // There are assets, but none are published
+		{
+?>
+			<li class="asset-item asset missing nofiles">
+				No files
+				<span class="next-step-upload">
+					Upload files &rarr;
+				</span>
+			</li>
+<?php
 		}
 ?>
 		</ul>

@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
 * Form (exam) Asset handler class
 */
-class FormAssetHandler extends AssetHandler
+class FormAssetHandler extends ContentAssetHandler
 {
 	/**
 	 * Class info
@@ -90,69 +90,67 @@ class FormAssetHandler extends AssetHandler
 		// Grab the newly created form id
 		$id = $pdf->getId();
 
-		// Build our JavaScript to return to the view to be executed
-		$js = 
-			"// Open up forms in a lightbox
-			$.fancybox({
-				fitToView: false,
-				autoResize: false,
-				autoSize: false,
-				height: ($(window).height())*2/3,
-				type: 'iframe',
-				href: '/courses/form?task=layout&formId=" . $id . "&tmpl=component',
-				afterShow: function() {
-					// Highjack the 'done' button to close the iframe
-					$('.fancybox-iframe').contents().find('#done').bind('click', function(e) {
-						e.preventDefault();
+		// Save the actual asset
+		$this->asset['title']   = $filename;
+		$this->asset['type']    = 'exam';
+		$this->asset['url']     = '/courses/form/layout/' . $id;
+		$this->asset['content'] = json_encode(array("form_id"=>"{$id}"));
 
-						$.fancybox.close();
-					});
-				},
-				beforeClose: function() {
-					// Build the form data
-					var data = form.serializeArray();
-					data.push({'name':'title','value':'". $filename . "'});
-					data.push({'name':'type','value':'exam'});
-					data.push({'name':'url','value':'/courses/form/layout/" . $id . "'});
-					data.push({'name':'content','value':'{\"form_id\":\"". $id . "\"}'});
+		// Call the primary create method on the file asset handler
+		$return = parent::create();
 
-					// Create ajax call to change info in the database
-					$.ajax({
-						url: '/api/courses/asset/save',
-						data: data,
-						dataType: 'json',
-						type: 'POST',
-						cache: false,
-						statusCode: {
-							201: function(data){
-								if(assetslist.find('li:first').hasClass('nofiles'))
-								{
-									assetslist.find('li:first').remove();
-								}
-								$.each(data.files, function (index, file) {
-									var callback = function() {
-										// Insert in our HTML (uses 'underscore.js')
-										var li = _.template(HUB.CoursesOutline.Templates.asset, file);
-										assetslist.append(li);
+		// Check for errors in response
+		if(array_key_exists('error', $return))
+		{
+			$this->setMessage($return['error'], 500, 'Internal server error');
+			return;
+		}
+		else
+		{
+			// Build our JavaScript to return to the view to be executed
+			$js = 
+				"// Open up forms in a lightbox
+				$.fancybox({
+					fitToView: false,
+					autoResize: false,
+					autoSize: false,
+					height: ($(window).height())*2/3,
+					type: 'iframe',
+					href: '/courses/form?task=layout&formId=" . $id . "&tmpl=component',
+					afterShow: function() {
+						// Highjack the 'done' button to close the iframe
+						$('.fancybox-iframe').contents().find('#done').bind('click', function(e) {
+							e.preventDefault();
 
-										var newAsset = assetslist.find('.asset-item:last');
-
-										newAsset.find('.uniform').uniform();
-										newAsset.find('.toggle-editable').show();
-										newAsset.find('.title-edit').hide();
-										HUB.CoursesOutline.showProgressIndicator();
-										HUB.CoursesOutline.resizeFileUploader();
-										HUB.CoursesOutline.makeAssetsSortable();
-									}
-
-									// Reset progress bar
-									HUB.CoursesOutline.resetProgresBar(progressBarId, 1000, callback);
-								});
-							}
+							$.fancybox.close();
+						});
+					},
+					afterClose: function() {
+						if(assetslist.find('li:first').hasClass('nofiles'))
+						{
+							assetslist.find('li:first').remove();
 						}
-					});
-				}
-			});";
+
+						var callback = function() {
+							// Insert in our HTML (uses 'underscore.js')
+							var li = _.template(HUB.CoursesOutline.Templates.asset, " . json_encode($return['assets']) . ");
+							assetslist.append(li);
+
+							var newAsset = assetslist.find('.asset-item:last');
+
+							newAsset.find('.uniform').uniform();
+							newAsset.find('.toggle-editable').show();
+							newAsset.find('.title-edit').hide();
+							HUB.CoursesOutline.showProgressIndicator();
+							HUB.CoursesOutline.resizeFileUploader();
+							HUB.CoursesOutline.makeAssetsSortable();
+						}
+
+						// Reset progress bar
+						HUB.CoursesOutline.resetProgresBar(progressBarId, 1000, callback);
+					}
+				});";
+		}
 
 		return array('js'=>$js);
 	}
