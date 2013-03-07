@@ -91,6 +91,11 @@ class VideoFileAssetHandler extends FileAssetHandler
 					// Remove MACOSX dirs if there
 					JFolder::delete($asset['upload_path'] . '__MACOSX');
 				}
+				else
+				{
+					$this->setMessage('Unzip failed.  Ensure that it is installed.', 500, 'Internal server error');
+					return;
+				}
 			}
 		}
 

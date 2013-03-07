@@ -264,6 +264,11 @@ HUB.CoursesOutline = {
 				// @FIXME: we should only resize the one we're currently changing
 				HUB.CoursesOutline.resizeFileUploader();
 
+				// Update a few styles
+				ui.item.find('.sortable-assets-handle').css("display", "none");
+				ui.item.find('.asset-delete').css("opacity", 0);
+				ui.item.css("margin-left", 10);
+
 				// Get the form data (we're just stealing the info from another form)
 				var form = ui.item.find('.title-form').serializeArray();
 
@@ -310,7 +315,7 @@ HUB.CoursesOutline = {
 				statusCode: {
 					200: function(data){
 						// Report a message?
-						asset.fadeOut('fast', function() {
+						asset.hide('transfer', {to:'.delete-tray h4', className: "transfer-effect", easing: "easeOutCubic", duration: 750}, function() {
 							// Clone the asset for insertion to the deleted list
 							var html  = asset.clone();
 
@@ -319,6 +324,9 @@ HUB.CoursesOutline = {
 
 							// Add the asset to the deleted list and fade it in
 							$('ul.assets-deleted').append(html);
+							html.find('.sortable-assets-handle').css("display", "none");
+							html.find('.asset-delete').css("opacity", 0);
+							html.css("margin-left", 10);
 							html.fadeIn('fast');
 
 							// Get count of assets remaining
@@ -744,8 +752,7 @@ HUB.CoursesOutline = {
 			var dialog          = $("#dialog-confirm");
 			var targetName      = '';
 			var ulCount         = 0;
-			var counter         = 0;
-			var progressBarId   = '';
+			var counter         = 1;
 
 			// Setup dialog message box
 			dialog.dialog({
@@ -785,8 +792,7 @@ HUB.CoursesOutline = {
 							// Check to see if there are multiple ways of handling this file type
 							} else if(json.handlers.length > 1) {
 								// Iterate counter (for uniqueness)
-								counter += 1;
-								progressBarId = 'progress-bar-'+counter;
+								counter++;
 
 								// Handle multiple handlers for extension
 								message += '<ul class="handlers-list">';
@@ -848,14 +854,13 @@ HUB.CoursesOutline = {
 									dialog.dialog("open");
 								}
 							} else {
+								counter++;
 								fileSubmit(data);
 							}
 
 							// Shared function for submitting a fileupload request (and setting appropriate callbacks)
 							function fileSubmit(data) {
-								// Iterate counter (for uniqueness)
-								counter += 1;
-								progressBarId = 'progress-bar-'+counter;
+								var progressBarId = 'progress-bar-'+counter;
 
 								// Setup the progress handler
 								fileupload.on('fileuploadprogress', function (e, data) {
