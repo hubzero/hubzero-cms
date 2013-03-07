@@ -291,6 +291,7 @@ class plgUserXusers extends JPlugin
 			$xprofile->set('jobsAllowed', 3);
 			$xprofile->set('regIP', $_SERVER['REMOTE_ADDR']);
 			$xprofile->set('emailConfirmed', -rand(1, pow(2, 31)-1));
+			$xprofile->set('public', $params->get('privacy', 0));
 			
 			if (isset($_SERVER['REMOTE_HOST'])) {
 				$xprofile->set('regHost', $_SERVER['REMOTE_HOST']);
