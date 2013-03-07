@@ -114,7 +114,7 @@ if (!$no_html) : ?>
 						<?php //$canCancel = (($isManager && count($this->course->get("managers")) > 1) || (!$isManager && in_array($this->user->get('id'), $this->course->offering()->section()->members()))) ? true : false; ?>
 						<?php if ($this->course->offering()->access('manage', 'section')) : ?>
 						<li class="no-float">
-							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias')); ?>" class="dropdown course-<?php echo ($isManager) ? 'manager' : 'member'; ?>">
+							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias')); ?>" class="dropdown course-manager">
 								<?php echo 'Manager'; //($isManager) ? 'Manager' : 'Member'; ?>
 								<span class="caret"></span>
 							</a>

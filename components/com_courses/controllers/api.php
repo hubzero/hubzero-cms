@@ -884,9 +884,10 @@ class CoursesApiController extends Hubzero_Api_Controller
 		// Load the course page
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
 		$course = CoursesModelCourse::getInstance($this->course_id);
+		$offering = $course->offering($this->offering_alias);
 		$this->course = $course;
 
-		if ($course->access('manage') || $course->offering($this->offering_alias)->access('manage'))
+		if ($course->access('manage') || $offering->access('manage'))
 		{
 			$authorized['view']   = true;
 			$authorized['manage'] = true;

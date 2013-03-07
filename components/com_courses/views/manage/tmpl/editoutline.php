@@ -67,7 +67,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 		<ul class="assets-deleted">
 
 <?php
-			foreach ($this->course->offering->units() as $unit) :
+			foreach ($this->course->offering()->units() as $unit) :
 				foreach($unit->assetgroups() as $agt) :
 					foreach($agt->children() as $ag) :
 						if ($ag->assets()->total()) :
@@ -97,7 +97,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 
 	<ul class="unit">
 
-		<? foreach ($this->course->offering->units() as $unit) : ?>
+		<? foreach ($this->course->offering()->units() as $unit) : ?>
 		<li class="unit-item">
 			<div class="unit-title-arrow"></div>
 			<div class="title unit-title toggle-editable"><?php echo $unit->get('title'); ?></div>

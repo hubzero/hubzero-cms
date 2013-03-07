@@ -384,6 +384,16 @@ class CoursesModelPermissions extends JObject
 	{
 		$juser = JFactory::getUser();
 
+		// Check if user is an admin, and set flag appropriately
+		// Do this here (even though we also do it in courses.php), because not all calls (ex: api) go through courses.php
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$jacl = JFactory::getACL();
+			$jacl->addACL('com_courses', 'manage', 'users', 'super administrator');
+			$jacl->addACL('com_courses', 'manage', 'users', 'administrator');
+			$jacl->addACL('com_courses', 'manage', 'users', 'manager');
+		}
+
 		// If they're not logged in
 		if (!$juser->get('guest'))
 		{
@@ -484,7 +494,7 @@ class CoursesModelPermissions extends JObject
 				{
 					if (!$manager->get('permissions'))
 					{
-						foreach ($this->_actions as $action)
+						foreach ($actions as $action)
 						{
 							$this->config()->set('access-' . $action . '-section', true);
 							$this->config()->set('access-' . $action . '-offering', true);
