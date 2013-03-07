@@ -51,20 +51,25 @@ class CoursesControllerSupervisors extends Hubzero_Controller
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming member ID
-		$id = JRequest::getInt('id', 0);
+		$id = JRequest::getInt('offering', 0);
 		if (!$id) 
 		{
 			$this->setError(JText::_('COURSES_NO_ID'));
 			$this->displayTask();
 			return;
 		}
+		$section = JRequest::getInt('section', 0);
 
 		$role_id = JRequest::getInt('role', 0);
 
 		// Load the profile
 		$model = CoursesModelOffering::getInstance($id);
+		if ($section)
+		{
+			$model->section($section);
+		}
 
-		$managers = $model->members(array('role' => '!student'));
+		$managers = $model->managers(array('student' => 0));
 
 		// Incoming host
 		$m = JRequest::getVar('usernames', '', 'post');
@@ -100,10 +105,10 @@ class CoursesControllerSupervisors extends Hubzero_Controller
 		$model->add($users, $role_id);
 
 		// Save changes
-		if (!$model->store())
+		/*if (!$model->store())
 		{
 			$this->setError($model->getError());
-		}
+		}*/
 
 		// Push through to the hosts view
 		$this->displayTask($model);
@@ -120,15 +125,20 @@ class CoursesControllerSupervisors extends Hubzero_Controller
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming member ID
-		$id = JRequest::getInt('id', 0);
+		$id = JRequest::getInt('offering', 0);
 		if (!$id) 
 		{
 			$this->setError(JText::_('COURSES_NO_ID'));
 			$this->displayTask();
 			return;
 		}
+		$section = JRequest::getInt('section', 0);
 
 		$model = CoursesModelOffering::getInstance($id);
+		if ($section)
+		{
+			$model->section($section);
+		}
 
 		$managers = $model->members(array('role' => '!student'));
 
@@ -164,10 +174,10 @@ class CoursesControllerSupervisors extends Hubzero_Controller
 		$model->remove($users);
 
 		// Save changes
-		if (!$model->store())
+		/*if (!$model->store())
 		{
 			$this->setError($model->getError());
-		}
+		}*/
 
 		// Push through to the hosts view
 		$this->displayTask($model);
@@ -184,15 +194,20 @@ class CoursesControllerSupervisors extends Hubzero_Controller
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming member ID
-		$id = JRequest::getInt('id', 0);
+		$id = JRequest::getInt('offering', 0);
 		if (!$id) 
 		{
 			$this->setError(JText::_('COURSES_NO_ID'));
 			$this->displayTask();
 			return;
 		}
+		$section = JRequest::getInt('section', 0);
 
 		$model = CoursesModelOffering::getInstance($id);
+		if ($section)
+		{
+			$model->section($section);
+		}
 
 		$entries = JRequest::getVar('entries', array(0), 'post');
 
@@ -202,13 +217,13 @@ class CoursesControllerSupervisors extends Hubzero_Controller
 		{
 			// Retrieve user's account info
 			$tbl = new CoursesTableMember($this->database);
-			$tbl->load($data['user_id'], $data['offering_id']);
+			$tbl->load($data['user_id'], $data['course_id'], $data['offering_id'], $data['section_id'], 0);
 			if ($tbl->role_id == $data['role_id'])
 			{
 				continue;
 			}
 			$tbl->role_id = $data['role_id'];
-			if (!$tbl->save())
+			if (!$tbl->store())
 			{
 				$this->setError($tbl->getError());
 			}
@@ -231,9 +246,14 @@ class CoursesControllerSupervisors extends Hubzero_Controller
 		// Incoming
 		if (!$model) 
 		{
-			$id = JRequest::getInt('id', 0, 'get');
+			$id = JRequest::getInt('offering', 0, 'get');
+			$section = JRequest::getInt('section', 0);
 
 			$model = CoursesModelOffering::getInstance($id);
+			if ($section)
+			{
+				$model->section($section);
+			}
 		}
 
 		$this->view->model = $model;

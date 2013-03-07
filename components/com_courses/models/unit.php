@@ -93,6 +93,8 @@ class CoursesModelUnit extends CoursesModelAbstract
 	 */
 	private $_siblings = NULL;
 
+	//private $_section_keys = array('publish_up', 'publish_down');
+
 	/**
 	 * Returns a reference to a wiki page object
 	 *
@@ -132,6 +134,10 @@ class CoursesModelUnit extends CoursesModelAbstract
 		if (isset($this->_tbl->$property)) 
 		{
 			return $this->_tbl->$property;
+		}
+		else if (isset($this->_tbl->{'__' . $property})) 
+		{
+			return $this->_tbl->{'__' . $property};
 		}
 		else if (in_array($property, self::$_section_keys))
 		{

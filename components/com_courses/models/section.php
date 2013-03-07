@@ -227,6 +227,23 @@ class CoursesModelSection extends CoursesModelAbstract
 	}
 
 	/**
+	 * Check a user's authorization
+	 * 
+	 * @param      string $action Action to check
+	 * @return     boolean True if authorized, false if not
+	 */
+	public function access($action='view', $item='section')
+	{
+		if (!isset($this->_permissions))
+		{
+			$this->_permissions = CoursesModelPermissions::getInstance();
+			$this->_permissions->set('offering_id', $this->get('id'));
+			$this->_permissions->set('section_id', $this->get('id'));
+		}
+		return $this->_permissions->access($action, $item);
+	}
+
+	/**
 	 * Check if the current user is enrolled
 	 * 
 	 * @return     boolean
@@ -238,18 +255,6 @@ class CoursesModelSection extends CoursesModelAbstract
 		{
 			$this->_member = null;
 
-			/*if (!$user_id)
-			{
-				$user_id = JFactory::getUser()->get('id');
-			}*/
-		//$user_id = (int) $user_id;
-
-		/*$this->_db->setQuery(
-			"SELECT m.*, r.role, r.permissions AS role_permissions 
-			FROM #__courses_offering_members AS m 
-			LEFT JOIN #__courses_roles AS r ON r.id=m.role_id 
-			WHERE m.`offering_id`=" . $this->_db->Quote($this->get('id')) . " AND m.`user_id`=" . $this->_db->Quote($id)
-		);*/
 			if (isset($this->_members) && isset($this->_members[$user_id]))
 			{
 				$this->_member = $this->_members[$user_id];
@@ -258,7 +263,7 @@ class CoursesModelSection extends CoursesModelAbstract
 
 		if (!$this->_member)
 		{
-			$this->_member = CoursesModelMember::getInstance($user_id, $this->get('id'));
+			$this->_member = CoursesModelMember::getInstance($user_id, null, null, $this->get('id'));
 		}
 
 		return $this->_member; 
@@ -381,121 +386,6 @@ class CoursesModelSection extends CoursesModelAbstract
 	}
 
 	/**
-	 * Check a user's authorization
-	 * 
-	 * @param      string $action Action to check
-	 * @return     boolean True if authorized, false if not
-	 */
-	public function access($action='view', $item='offering')
-	{
-		if (!$this->_authorized)
-		{
-			// Set NOT viewable by default
-			// We need to ensure the course is published first
-			$this->params->set('access-view-offering', false);
-
-			$juser = JFactory::getUser();
-			if ($juser->get('guest'))
-			{
-				$this->_authorized = true;
-			}
-			else
-			{
-				// Anyone logged in can create a course
-				//$this->params->set('access-create-offering', true);
-
-				// Check if they're a site admin
-				if (version_compare(JVERSION, '1.6', 'lt'))
-				{
-					if ($juser->authorize('com_courses', 'manage')) 
-					{
-						$this->params->set('access-view-offering', true);
-
-						$this->params->set('access-admin-offering', true);
-						$this->params->set('access-manage-offering', true);
-						$this->params->set('access-create-offering', true);
-						$this->params->set('access-delete-offering', true);
-						$this->params->set('access-edit-offering', true);
-						$this->params->set('access-edit-state-offering', true);
-						$this->params->set('access-edit-own-offering', true);
-
-						$this->params->set('access-admin-student', true);
-						$this->params->set('access-manage-student', true);
-						$this->params->set('access-create-student', true);
-						$this->params->set('access-delete-student', true);
-						$this->params->set('access-edit-student', true);
-					}
-				}
-				else 
-				{
-					$this->params->set('access-view-offering', $juser->authorise('core.admin', $this->get('course_id')));
-					$this->params->set('access-admin-offering', $juser->authorise('core.admin', $this->get('course_id')));
-					$this->params->set('access-manage-offering', $juser->authorise('core.manage', $this->get('course_id')));
-					$this->params->set('access-create-offering', $juser->authorise('core.admin', $this->get('course_id')));
-					$this->params->set('access-delete-offering', $juser->authorise('core.manage', $this->get('course_id')));
-					$this->params->set('access-edit-offering', $juser->authorise('core.manage', $this->get('course_id')));
-					$this->params->set('access-edit-state-offering', $juser->authorise('core.manage', $this->get('course_id')));
-					$this->params->set('access-edit-own-offering', $juser->authorise('core.manage', $this->get('course_id')));
-
-					$this->params->set('access-admin-student', $juser->authorise('core.manage', $this->get('course_id')));
-					$this->params->set('access-manage-student', $juser->authorise('core.manage', $this->get('course_id')));
-					$this->params->set('access-create-student', $juser->authorise('core.manage', $this->get('course_id')));
-					$this->params->set('access-delete-student', $juser->authorise('core.manage', $this->get('course_id')));
-					$this->params->set('access-edit-student', $juser->authorise('core.manage', $this->get('course_id')));
-				}
-
-				// If they're not an admin
-				if (!$this->params->get('access-admin-offering') 
-				 && !$this->params->get('access-manage-offering'))
-				{
-					// If they're a course manager
-					if ($this->params->get('access-manage-course'))
-					{
-						// Give full access
-						$this->params->set('access-view-offering', true);
-						$this->params->set('access-manage-offering', true);
-						$this->params->set('access-create-offering', true);
-						$this->params->set('access-delete-offering', true);
-						$this->params->set('access-edit-offering', true);
-						$this->params->set('access-edit-state-offering', true);
-						$this->params->set('access-edit-own-offering', true);
-	
-						$this->params->set('access-admin-student', true);
-						$this->params->set('access-manage-student', true);
-						$this->params->set('access-create-student', true);
-						$this->params->set('access-delete-student', true);
-						$this->params->set('access-edit-student', true);
-					}
-					// Check if they're the offering creator
-					else if ($this->get('created_by') == $juser->get('id'))
-					{
-						// Give full access
-						$this->params->set('access-view-offering', true);
-						$this->params->set('access-manage-offering', true);
-						//$this->params->set('access-create-offering', true);  // Must be course manager to create offering
-						$this->params->set('access-delete-offering', true);
-						$this->params->set('access-edit-offering', true);
-						$this->params->set('access-edit-state-offering', true);
-						$this->params->set('access-edit-own-offering', true);
-					}
-					else
-					{
-						//$member = CoursesModelMember::getInstance($this->get('id'), $juser->get('id'));
-						$this->params->merge($this->member($juser->get('id'))->access());
-					}
-					/*else if (in_array($juser->get('id'), $this->get('members')))
-					{
-						$this->params->set('access-view-offering', true);
-					}*/
-				}
-
-				$this->_authorized = true;
-			}
-		}
-		return $this->params->get('access-' . strtolower($action) . '-' . $item);
-	}
-
-	/**
 	 * Add one or more user IDs or usernames to the managers list
 	 *
 	 * @param     array $value List of IDs or usernames
@@ -607,8 +497,6 @@ class CoursesModelSection extends CoursesModelAbstract
 	public function delete()
 	{
 		// Remove associated date data
-		//require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'section.date.php');
-
 		$sd = new CoursesTableSectionDate($this->_db);
 		if (!$sd->deleteBySection($this->get('id')))
 		{
@@ -617,8 +505,6 @@ class CoursesModelSection extends CoursesModelAbstract
 		}
 
 		// Remove associated member data
-		//require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.php');
-
 		$sm = new CoursesTableMember($this->_db);
 		if (!$sm->deleteBySection($this->get('id')))
 		{
@@ -629,11 +515,41 @@ class CoursesModelSection extends CoursesModelAbstract
 		$value = parent::delete();
 
 		JPluginHelper::importPlugin('courses');
-
-		//$dispatcher =& JDispatcher::getInstance();
 		JDispatcher::getInstance()->trigger('onAfterDeleteSection', array($this));
 
 		return $value;
+	}
+
+	/**
+	 * Generate a coupon code
+	 *
+	 * @return    string
+	 */
+	public function generateCode()
+	{
+		$chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'; //0123456789
+		$res = '';
+		for ($i = 0; $i < 10; $i++) 
+		{
+			$res .= $chars[mt_rand(0, strlen($chars)-1)];
+		}
+		return $res . $this->get('id');
+	}
+
+	/**
+	 * Generate coupon codes
+	 *
+	 * @param     integer $num Number of codes to generate
+	 * @return    array
+	 */
+	public function generateCodes($num=1)
+	{
+		$codes = array();
+		for ($i = 0; $i < $num; $i++) 
+		{
+			$codes[] = $this->generateCode();
+		}
+		return $codes;
 	}
 }
 

@@ -107,7 +107,7 @@ foreach ($this->rows as $row)
 {
 	$tip = '[coming soon]';
 
-	$students = $row->members(array('count' => true, 'role' => 'student'));
+	$students = $row->members(array('count' => true, 'student' => 1));
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>

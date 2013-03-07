@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$maxtextlen = 42;
+//$maxtextlen = 42;
 $juser =& JFactory::getUser();
 ?>
 <div id="content-header">
@@ -68,7 +68,7 @@ $juser =& JFactory::getUser();
 					<label for="entry-search-field">Enter keyword or phrase</label>
 					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" />
 					<input type="hidden" name="sortby" value="<?php echo $this->filters['sortby']; ?>" />
-					<input type="hidden" name="policy" value="<?php echo $this->escape($this->filters['policy']); ?>" />
+					
 					<!-- <input type="hidden" name="option" value="<?php echo $this->option; ?>" /> -->
 					<input type="hidden" name="index" value="<?php echo $this->filters['index']; ?>" />
 				</fieldset>
@@ -76,21 +76,21 @@ $juser =& JFactory::getUser();
 
 			<div class="container">
 				<ul class="entries-menu order-options">
-					<li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&index='.$this->filters['index'].'&policy='.$this->filters['policy'].'&sortby=title'); ?>" title="Sort by title">&darr; Title</a></li>
-					<li><a<?php echo ($this->filters['sortby'] == 'alias') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&index='.$this->filters['index'].'&policy='.$this->filters['policy'].'&sortby=alias'); ?>" title="Sort by alias">&darr; Alias</a></li>
+					<li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&index='.$this->filters['index'].'&sortby=title'); ?>" title="Sort by title">&darr; Title</a></li>
+					<li><a<?php echo ($this->filters['sortby'] == 'alias') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&index='.$this->filters['index'].'&sortby=alias'); ?>" title="Sort by alias">&darr; Alias</a></li>
 				</ul>
 				
-				<ul class="entries-menu filter-options">
+				<?php /* <ul class="entries-menu filter-options">
 					<li><a<?php echo ($this->filters['policy'] == '') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&index='.$this->filters['index'].'&sortby='.$this->filters['sortby']); ?>" title="Show All courses">All</a></li>
 					<li><a<?php echo ($this->filters['policy'] == 'open') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&index='.$this->filters['index'].'&policy=open&sortby='.$this->filters['sortby']); ?>" title="Show courses with an Open join policy">Open</a></li>
 					<li><a<?php echo ($this->filters['policy'] == 'restricted') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&index='.$this->filters['index'].'&policy=restricted&sortby='.$this->filters['sortby']); ?>" title="Show courses with a Restricted join policy">Restricted</a></li>
 					<li><a<?php echo ($this->filters['policy'] == 'invite') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&index='.$this->filters['index'].'&policy=invite&sortby='.$this->filters['sortby']); ?>" title="Show courses with an Invite only join policy">Invite only</a></li>
 					<li><a<?php echo ($this->filters['policy'] == 'closed') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&index='.$this->filters['index'].'&policy=closed&sortby='.$this->filters['sortby']); ?>" title="Show courses with a Closed join policy">Closed</a></li>
-				</ul>
+				</ul>*/ ?>
 
 <?php
 $qs = array();
-foreach ($this->filters as $f=>$v)
+foreach ($this->filters as $f => $v)
 {
 	$qs[] = ($v != '' && $f != 'index' && $f != 'authorized' && $f != 'type' && $f != 'fields') ? $f.'='.$v : '';
 }
@@ -100,11 +100,11 @@ $qs = implode('&amp;',$qs);
 $url  = 'index.php?option='.$this->option.'&task=browse';
 $url .= ($qs) ? '&'.$qs : '';
 
-$html  = '<a href="'.JRoute::_($url).'"';
+$html  = '<a href="' . JRoute::_($url) . '"';
 if ($this->filters['index'] == '') {
 	$html .= ' class="active-index"';
 }
-$html .= '>'.JText::_('ALL').'</a> '."\n";
+$html .= '>' . JText::_('ALL') . '</a> '."\n";
 
 $letters = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
 foreach ($letters as $letter)
@@ -112,11 +112,12 @@ foreach ($letters as $letter)
 	$url  = 'index.php?option='.$this->option.'&task=browse&index='.strtolower($letter);
 	$url .= ($qs) ? '&'.$qs : '';
 
-	$html .= "\t\t\t\t\t\t\t\t".'<a href="'.JRoute::_($url).'"';
-	if ($this->filters['index'] == strtolower($letter)) {
+	$html .= '<a href="'.JRoute::_($url).'"';
+	if ($this->filters['index'] == strtolower($letter)) 
+	{
 		$html .= ' class="active-index"';
 	}
-	$html .= '>'.$letter.'</a> '."\n";
+	$html .= '>' . $letter . '</a> '."\n";
 }
 ?>
 				<div class="clearfix"></div>
@@ -143,9 +144,9 @@ foreach ($letters as $letter)
 						<tr>
 							<th colspan="<?php echo ($this->config->get('access-admin-component')) ? '4' : '3'; ?>">
 								<span class="index-wrap">
-								        <span class="index">
-								                <?php echo $html; ?>
-								        </span>
+									<span class="index">
+										<?php echo $html; ?>
+									</span>
 								</span>
 							</th>
 						</tr>
@@ -154,6 +155,7 @@ foreach ($letters as $letter)
 <?php
 if ($this->courses) 
 {
+	ximport('Hubzero_View_Helper_Html');
 	foreach ($this->courses as $course)
 	{
 		//
@@ -185,23 +187,23 @@ if ($this->courses)
 							</th>
 							<td>
 								<a class="entry-title" href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$course->get('alias')); ?>"><?php echo $this->escape(stripslashes($course->get('title'))); ?></a><br />
-								<span class="entry-details">
+								<!-- <span class="entry-details">
 									<span class="entry-alias"><?php echo $course->get('alias'); ?></span>
-								</span>
+								</span> -->
+								<?php echo Hubzero_View_Helper_Html::shortenText($course->get('description'), 200); ?>
 							</td>
-							<td>
-								<?php
-								/*switch ($course->join_policy)
+							<?php
+							/*<td>
+								switch ($course->join_policy)
 								{
 									case 3: echo '<span class="closed join-policy">'.JText::_('Closed').'</span>'."\n"; break;
 									case 2: echo '<span class="inviteonly join-policy">'.JText::_('Invite Only').'</span>'."\n"; break;
 									case 1: echo '<span class="restricted join-policy">'.JText::_('Restricted').'</span>'."\n";  break;
 									case 0:
 									default: echo '<span class="open join-policy">'.JText::_('Open').'</span>'."\n"; break;
-								}*/
-?>
-							</td>
-<?php if ($this->config->get('access-admin-component')) { ?>
+								}
+							</td>*/ ?>
+<?php /* if ($course->access('manage')) { ?>
 							<td>
 								<span class="<?php echo $status; ?> status"><?php
 									switch ($status)
@@ -209,13 +211,11 @@ if ($this->courses)
 										case 'manager': echo JText::_('COM_COURSES_STATUS_MANAGER'); break;
 										case 'new': echo JText::_('COM_COURSES_STATUS_NEW_COURSE'); break;
 										case 'member': echo JText::_('COM_COURSES_STATUS_APPROVED'); break;
-										case 'pending': echo JText::_('COM_COURSES_STATUS_PENDING'); break;
-										case 'invitee': echo JText::_('COM_COURSES_STATUS_INVITED'); break;
 										default: break;
 									}
 								?></span>
 							</td>
-<?php } ?>
+<?php }*/ ?>
 						</tr>
 <?php 
 	} // for loop 
@@ -232,7 +232,7 @@ if ($this->courses)
 <?php
 $this->pageNav->setAdditionalUrlParam('index', $this->filters['index']);
 $this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
-$this->pageNav->setAdditionalUrlParam('policy', $this->filters['policy']);
+//$this->pageNav->setAdditionalUrlParam('policy', $this->filters['policy']);
 
 echo $this->pageNav->getListFooter();
 ?>

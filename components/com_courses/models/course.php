@@ -34,6 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'course.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
 
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'permissions.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
 
@@ -61,35 +62,35 @@ class CoursesModelCourse extends CoursesModelAbstract
 	 * 
 	 * @var object
 	 */
-	public $offering = NULL;
+	private $_offering = NULL;
 
 	/**
 	 * CoursesModelIterator
 	 * 
 	 * @var object
 	 */
-	public $offerings = NULL;
+	private $_offerings = NULL;
 
 	/**
-	 * JParameter
+	 * CoursesModelPermissions
 	 * 
 	 * @var object
 	 */
-	public $params = NULL;
+	private $_permissions = NULL;
 
 	/**
-	 * Flag for if authorization checks have been run
+	 * CoursesModelOffering
 	 * 
-	 * @var mixed
+	 * @var object
 	 */
-	private $_authorized = false;
+	private $_manager = NULL;
 
 	/**
-	 * List of keys that require special handling for get()
-	 *
-	 * @var array
+	 * CoursesModelIterator
+	 * 
+	 * @var object
 	 */
-	static $_list_keys = array('managers');
+	private $_managers = NULL;
 
 	/**
 	 * Constructor
@@ -107,8 +108,13 @@ class CoursesModelCourse extends CoursesModelAbstract
 			$paramsClass = 'JRegistry';
 		}
 
-		$this->params = JComponentHelper::getParams('com_courses');
-		$this->params->merge(new $paramsClass($this->get('params')));
+		$this->config()->merge(new $paramsClass($this->get('params')));
+
+		if (!isset($this->_permissions))
+		{
+			$this->_permissions = CoursesModelPermissions::getInstance();
+			$this->_permissions->set('course_id', $this->get('id'));
+		}
 	}
 
 	/**
@@ -138,35 +144,6 @@ class CoursesModelCourse extends CoursesModelAbstract
 	}
 
 	/**
-	 * Returns a property of the object or the default value if the property is not set.
-	 *
-	 * @param     string $property The name of the property
-	 * @param     mixed  $default  The default value
-	 * @return    mixed The value of the property
- 	 */
-	public function get($property, $default=null)
-	{
-		if (in_array($property, self::$_list_keys))
-		{
-			if (!array_key_exists($property, get_object_vars($this->_tbl)))
-			{
-				$this->_tbl->$property = array();
-
-				if (is_object($this->_db))
-				{
-					$this->_db->setQuery("SELECT user_id from #__courses_managers WHERE course_id=" . $this->_db->Quote($this->_tbl->get('id')));
-
-					if (($results = $this->_db->loadResultArray()))
-					{
-						$this->_tbl->$property = $results;
-					}
-				}
-			}
-		}
-		return parent::get($property, $default);
-	}
-
-	/**
 	 * Check if the current user has manager access
 	 * This is just a shortcut for the access check
 	 * 
@@ -176,24 +153,24 @@ class CoursesModelCourse extends CoursesModelAbstract
 	{
 		if ((int) $user_id)
 		{
-			// Check if we've already grabbed the list of managers
-			// This will save us a query if so
-			if (isset($this->_tbl->managers))
-			{
-				return in_array($user_id, $this->get('managers'));
-			}
-			else
-			{
-				// See if a manager record exist for this user
-				$this->_db->setQuery("SELECT user_id from #__courses_managers WHERE course_id=" . $this->_db->Quote($this->get('id')) . " AND user_id=" . $this->_db->Quote($user_id));
-
-				if (($result = $this->_db->loadResult()))
-				{
-					return true;
-				}
-			}
+			$this->_permissions->isManager($user_id);
 		}
-		return false;
+		return $this->_permissions->isManager();
+	}
+
+	/**
+	 * Check if the current user has manager access
+	 * This is just a shortcut for the access check
+	 * 
+	 * @return     boolean
+	 */
+	public function isStudent($user_id=0)
+	{
+		if ((int) $user_id)
+		{
+			$this->_permissions->isStudent($user_id);
+		}
+		return $this->_permissions->isStudent();
 	}
 
 	/**
@@ -205,14 +182,14 @@ class CoursesModelCourse extends CoursesModelAbstract
 	{
 		// If the current offering isn't set
 		//    OR the ID passed doesn't equal the current offering's ID or alias
-		if (!isset($this->offering) 
-		 || ($id !== null && (int) $this->offering->get('id') != $id && (string) $this->offering->get('alias') != $id))
+		if (!isset($this->_offering) 
+		 || ($id !== null && (int) $this->_offering->get('id') != $id && (string) $this->_offering->get('alias') != $id))
 		{
 			// Reset current offering
-			$this->offering = null;
+			$this->_offering = null;
 
 			// If the list of all offerings is available ...
-			if (isset($this->offerings))
+			if (isset($this->_offerings))
 			{
 				// Find an offering in the list that matches the ID passed
 				foreach ($this->offerings() as $key => $offering)
@@ -220,7 +197,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 					if ((int) $offering->get('id') == $id || (string) $offering->get('alias') == $id)
 					{
 						// Set current offering
-						$this->offering = $offering;
+						$this->_offering = $offering;
 						break;
 					}
 				}
@@ -228,11 +205,11 @@ class CoursesModelCourse extends CoursesModelAbstract
 			else
 			{
 				// Get current offering
-				$this->offering = CoursesModelOffering::getInstance($id, $this->get('id'));
+				$this->_offering = CoursesModelOffering::getInstance($id, $this->get('id'));
 			}
 		}
 		// Return current offering
-		return $this->offering;
+		return $this->_offering;
 	}
 
 	/**
@@ -258,7 +235,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 		}
 
 		// Is the data is not set OR is it not the right type?
-		if (!isset($this->offerings) || !is_a($this->offerings, 'CoursesModelIterator'))
+		if (!isset($this->_offerings) || !is_a($this->_offerings, 'CoursesModelIterator'))
 		{
 			$tbl = new CoursesTableOffering($this->_db);
 
@@ -279,11 +256,11 @@ class CoursesModelCourse extends CoursesModelAbstract
 			}
 
 			// Set the results
-			$this->offerings = new CoursesModelIterator($results);
+			$this->_offerings = new CoursesModelIterator($results);
 		}
 
 		// Return results
-		return $this->offerings;
+		return $this->_offerings;
 	}
 
 	/**
@@ -292,87 +269,104 @@ class CoursesModelCourse extends CoursesModelAbstract
 	 * @param      string $action Action to check
 	 * @return     boolean True if authorized, false if not
 	 */
-	public function access($action='view')
+	public function access($action='view', $item='course')
 	{
-		if (!$this->_authorized)
+		return $this->_permissions->access($action, $item);
+	}
+
+	/**
+	 * Check if the current user is enrolled
+	 * 
+	 * @return     boolean
+	 */
+	public function manager($user_id=null)
+	{
+		if (!isset($this->_manager) 
+		 || ($user_id !== null && (int) $this->_manager->get('user_id') != $user_id))
 		{
-			// Set NOT viewable by default
-			// We need to ensure the course is published first
-			$this->params->set('access-view-course', false);
+			$this->_manager = null;
 
-			// Does it exist and is it published?
-			if ($this->exists() && $this->get('state') == 1)
+			if (isset($this->_managers) && isset($this->_managers[$user_id]))
 			{
-				$this->params->set('access-view-course', true);
+				$this->_manager = $this->_managers[$user_id];
 			}
 
-			$juser = JFactory::getUser();
-			if ($juser->get('guest'))
+			if (!$this->_manager)
 			{
-				// Not logged in. Can't go any further.
-				$this->_authorized = true;
-			}
-			else
-			{
-				// Anyone logged in can create a course
-				$this->params->set('access-create-course', true);
-
-				// Check if they're a site admin
-				if (version_compare(JVERSION, '1.6', 'lt'))  // Joomla 1.5
-				{
-					if ($juser->authorize('com_courses', 'manage')) 
-					{
-						// Admins get full access
-						$this->params->set('access-admin-course', true);
-						$this->params->set('access-manage-course', true);
-						$this->params->set('access-delete-course', true);
-						$this->params->set('access-edit-course', true);
-						$this->params->set('access-edit-state-course', true);
-						$this->params->set('access-edit-own-course', true);
-					}
-				}
-				else  // Joomla 1.6+
-				{
-					$this->params->set('access-admin-course', $juser->authorise('core.admin', $this->get('id')));
-					$this->params->set('access-manage-course', $juser->authorise('core.manage', $this->get('id')));
-					$this->params->set('access-delete-course', $juser->authorise('core.manage', $this->get('id')));
-					$this->params->set('access-edit-course', $juser->authorise('core.manage', $this->get('id')));
-					$this->params->set('access-edit-state-course', $juser->authorise('core.manage', $this->get('id')));
-					$this->params->set('access-edit-own-course', $juser->authorise('core.manage', $this->get('id')));
-				}
-
-				// If they're not an admin
-				if (!$this->params->get('access-admin-course')    // Can't admin
-				 && !$this->params->get('access-manage-course'))  // Can't manage
-				{
-					// Does the course exist?
-					if (!$this->exists())
-					{
-						// Give editing access if the course doesn't exist
-						// i.e., it's a new course
-						$this->params->set('access-view-course', false);    // Can't view what doesn't exist
-						$this->params->set('access-delete-course', false);  // Likewise, can't delete what doesn't exist
-						$this->params->set('access-edit-course', true);     // Ah, but we need edit access for the creation form
-						$this->params->set('access-edit-state-course', true);
-						$this->params->set('access-edit-own-course', true);
-					}
-					// Check if they're the course creator or course manager
-					else if ($this->get('created_by') == $juser->get('id')  // Course creator
-						  || $this->isManager($juser->get('id')))           // Course manager //in_array($juser->get('id'), $this->get('managers'))) 
-					{
-						// Give full access
-						$this->params->set('access-manage-course', true);
-						$this->params->set('access-delete-course', true);
-						$this->params->set('access-edit-course', true);
-						$this->params->set('access-edit-state-course', true);
-						$this->params->set('access-edit-own-course', true);
-					}
-				}
-
-				$this->_authorized = true;
+				$this->_manager = CoursesModelManager::getInstance($user_id, $this->get('course_id'), 0, 0);
 			}
 		}
-		return $this->params->get('access-' . strtolower($action) . '-course');
+
+		return $this->_manager;
+	}
+
+	/**
+	 * Get a list of units for an offering
+	 *   Accepts either a numeric array index or a string [id, name]
+	 *   If index, it'll return the entry matching that index in the list
+	 *   If string, it'll return either a list of IDs or names
+	 * 
+	 * @param      array   $filters Filters to build query from
+	 * @param      boolean $clear   Force a new dataset?
+	 * @return     mixed
+	 */
+	public function managers($filters=array(), $clear=false)
+	{
+		if (!isset($filters['course_id']))
+		{
+			$filters['course_id'] = (int) $this->get('id');
+		}
+		if (!isset($filters['offering_id']))
+		{
+			$filters['offering_id'] = 0;
+		}
+		if (!isset($filters['section_id']))
+		{
+			$filters['section_id'] = 0;
+		}
+		$filters['student'] = 0;
+
+		if (isset($filters['count']) && $filters['count'])
+		{
+			$tbl = new CoursesTableMember($this->_db);
+
+			return $tbl->count($filters);
+		}
+
+		if (!isset($this->_managers) || !is_array($this->_managers) || $clear)
+		{
+			$tbl = new CoursesTableMember($this->_db);
+
+			$results = array();
+
+			if (($data = $tbl->find($filters)))
+			{
+				foreach ($data as $key => $result)
+				{
+					if (!isset($results[$result->user_id]))
+					{
+						$results[$result->user_id] = new CoursesModelManager($result, $this->get('id'));
+					}
+					else
+					{
+						// Course manager takes precedence over offering manager
+						if ($result->course_id && !$result->offering_id && !$result->section_id)
+						{
+							$results[$result->user_id] = new CoursesModelManager($result, $this->get('id'));
+						}
+						// Course offering takes precedence over section manager
+						else if ($result->course_id && $result->offering_id && !$result->section_id)
+						{
+							$results[$result->user_id] = new CoursesModelManager($result, $this->get('id'));
+						}
+					}
+				}
+			}
+
+			$this->_managers = $results; //new CoursesModelIterator($results);
+		}
+
+		return $this->_managers;
 	}
 
 	/**
@@ -381,11 +375,47 @@ class CoursesModelCourse extends CoursesModelAbstract
 	 * @param     array $value List of IDs or usernames
 	 * @return    void
 	 */
-	public function add($value = array())
+	public function add($data = null, $role_id=0)
 	{
-		$users = $this->_userIds($value);
+		$user_ids = $this->_userIds($data);
 
-		$this->set('managers', array_merge($this->get('managers'), $users));
+		foreach ($user_ids as $user_id)
+		{
+			$this->_managers[$user_id] = new CoursesModelManager($user_id, $this->get('id'));
+			$this->_managers[$user_id]->set('user_id', $user_id);
+			$this->_managers[$user_id]->set('course_id', $this->get('id'));
+			$this->_managers[$user_id]->set('role_id', $role_id);
+			$this->_managers[$user_id]->store();
+			/*print_r($this->_members[$user_id]);
+			if (!$this->_members[$user_id]->store())
+			{
+				echo $this->_members[$user_id]->getError();
+			}*/
+		}
+
+		/*if (is_array($data))
+		{
+			foreach ($data as $result)
+			{
+				$user_id = $this->_userIds($result);
+
+				$this->_members[$user_id] = new CoursesModelMember($user_id, $this->get('id'));
+				$this->_members[$user_id]->set('role_id', $role_id);
+				$this->_members[$user_id]->store();
+			}
+		}
+		else
+		{
+			$user_id = $this->_userId($data);
+
+			$this->_members[$user_id] = new CoursesModelMember($user_id, $this->get('id'));
+			$this->_members[$user_id]->set('role_id', $role_id);
+			$this->_members[$user_id]->store();
+		}*/
+		//$users = $this->_userIds($value);
+
+		//$this->set('managers', array_merge($this->get('managers'), $users));
+		//$this->managers()->add();
 	}
 
 	/**
@@ -394,11 +424,48 @@ class CoursesModelCourse extends CoursesModelAbstract
 	 * @param     array $value List of IDs or usernames
 	 * @return    void
 	 */
-	public function remove($value = array())
+	public function remove($data = null)
 	{
-		$users = $this->_userIds($value);
+		/*if (is_array($data))
+		{
+			$user_ids = $this->_userIds($data);
 
-		$this->set('managers', array_diff($this->get('managers'), $users));
+			foreach ($user_ids as $user_id)
+			{
+				if (isset($this->_members[$user_id]))
+				{
+					$this->_members[$user_id]->delete();
+					unset($this->_members[$user_id]);
+				}
+			}
+		}
+		else
+		{
+			$user_ids = $this->_userIds($data);
+
+			if (isset($this->_members[$user_id]))
+			{
+				$this->_members[$user_id]->delete();
+				unset($this->_members[$user_id]);
+			}
+		}*/
+		$user_ids = $this->_userIds($data);
+
+		if (count($user_ids) > 0)
+		{
+			$this->managers();
+
+			foreach ($user_ids as $user_id)
+			{
+				if (isset($this->_managers[$user_id]))
+				{
+					$this->_managers[$user_id]->delete();
+					unset($this->_managers[$user_id]);
+				}
+			}
+		}
+
+		//$this->set('managers', array_diff($this->get('managers'), $users));
 	}
 
 	/**
@@ -489,12 +556,8 @@ class CoursesModelCourse extends CoursesModelAbstract
 
 		$affected = $this->_db->getAffectedRows();
 
-		foreach (self::$_list_keys as $property)
+		/*foreach (self::$_list_keys as $property)
 		{
-			/*if (!in_array($property, $this->_updatedkeys))
-			{
-				continue;
-			}*/
 			$query = '';
 
 			$aux_table = "#__courses_" . $property;
@@ -591,7 +654,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 					$affected += $this->_db->getAffectedRows();
 				}
 			}
-		}
+		}*/
 
 		// After SQL is done and has no errors, fire off onCourseUserEnrolledEvents 
 		// for every user added to this course
@@ -604,8 +667,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 		{
 			JPluginHelper::importPlugin('user');
 
-			//trigger the onAfterStoreCourse event
-			//$dispatcher =& JDispatcher::getInstance();
+			// trigger the onAfterStoreCourse event
 			$dispatcher->trigger('onAfterStoreCourse', array($this));
 		}
 
@@ -627,8 +689,6 @@ class CoursesModelCourse extends CoursesModelAbstract
 		$value = parent::delete();
 
 		JPluginHelper::importPlugin('courses');
-
-		//$dispatcher =& JDispatcher::getInstance();
 		JDispatcher::getInstance()->trigger('onAfterDeleteCourse', array($this));
 
 		return $value;

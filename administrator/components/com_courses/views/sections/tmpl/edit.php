@@ -210,7 +210,7 @@ function submitbutton(pressbutton)
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Managers'); ?></span></legend>
 <?php if ($this->row->get('id')) { ?>
-			<iframe width="100%" height="390" name="managers" id="managers" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=supervisors&amp;tmpl=component&amp;id=<?php echo $this->row->get('id'); ?>"></iframe>
+			<iframe width="100%" height="390" name="managers" id="managers" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=supervisors&amp;tmpl=component&amp;offering=<?php echo $this->row->get('offering_id'); ?>&amp;section=<?php echo $this->row->get('id'); ?>; ?>"></iframe>
 <?php } else { ?>
 			<p><?php echo JText::_('Section must be saved before managers can be added.'); ?></p>
 <?php } ?>

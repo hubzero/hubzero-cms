@@ -81,11 +81,12 @@ defined('_JEXEC') or die('Restricted access');
 <?php
 		ximport('Hubzero_User_Helper');
 
-		if (count($this->course->get('managers')) > 0) 
+		$managers = $this->course->managers(array(), true);
+		if (count($managers) > 0) 
 		{
-			foreach ($this->course->get('managers') as $manager)
+			foreach ($managers as $manager)
 			{
-				$u =& JUser::getInstance($manager);
+				$u =& JUser::getInstance($manager->get('user_id'));
 				if (!is_object($u)) 
 				{
 					continue;

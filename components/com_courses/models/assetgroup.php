@@ -107,33 +107,6 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 	}
 
 	/**
-	 * Returns a reference to a wiki page object
-	 *
-	 * This method must be invoked as:
-	 *     $inst = CoursesInstance::getInstance($alias);
-	 *
-	 * @param      string $pagename The page to load
-	 * @param      string $scope    The page scope
-	 * @return     object WikiPage
-	 */
-	/*static function &getInstance($oid=null)
-	{
-		static $instances;
-
-		if (!isset($instances)) 
-		{
-			$instances = array();
-		}
-
-		if (!isset($instances[$oid])) 
-		{
-			$instances[$oid] = new CoursesModelAssetgroup($oid);
-		}
-
-		return $instances[$oid];
-	}*/
-
-	/**
 	 * Returns a property of the object or the default value if the property is not set.
 	 *
 	 * @param	string $property The name of the property
@@ -145,6 +118,10 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 		if (isset($this->_tbl->$property)) 
 		{
 			return $this->_tbl->$property;
+		}
+		else if (isset($this->_tbl->{'__' . $property})) 
+		{
+			return $this->_tbl->{'__' . $property};
 		}
 		else if (in_array($property, self::$_section_keys))
 		{

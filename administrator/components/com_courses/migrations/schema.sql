@@ -1,27 +1,7 @@
-# ************************************************************
-# Sequel Pro SQL dump
-# Version 3408
-#
-# http://www.sequelpro.com/
-# http://code.google.com/p/sequel-pro/
-#
-# Host: dev20.hubzero.org (MySQL 5.1.63-0+squeeze1)
-# Database: myhub
-# Generation Time: 2012-11-08 18:35:22 +0000
-# ************************************************************
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
-
 # Dump of table jos_courses
 # ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `jos_courses_managers`;
 
 DROP TABLE IF EXISTS `jos_courses`;
 
@@ -52,9 +32,19 @@ DROP TABLE IF EXISTS `jos_courses_announcements`;
 
 CREATE TABLE `jos_courses_announcements` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `offering_id` int(11) DEFAULT NULL,
-  `announcements` text,
-  PRIMARY KEY (`id`)
+  `offering_id` int(11) NOT NULL DEFAULT '0',
+  `content` text,
+  `priority` tinyint(2) NOT NULL DEFAULT '0',
+  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT '0',
+  `section_id` int(11) NOT NULL DEFAULT '0',
+  `state` tinyint(2) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `idx_offering_id` (`offering_id`),
+  KEY `idx_section_id` (`section_id`),
+  KEY `idx_created_by` (`created_by`),
+  KEY `idx_state` (`state`),
+  KEY `idx_priority` (`priority`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 
@@ -70,7 +60,10 @@ CREATE TABLE `jos_courses_asset_associations` (
   `scope_id` int(11) NOT NULL DEFAULT '0',
   `scope` varchar(255) NOT NULL DEFAULT 'asset_group',
   `ordering` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `idx_asset_id` (`asset_id`),
+  KEY `idx_scope_id` (`scope_id`),
+  KEY `idx_scope` (`scope`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 
@@ -104,7 +97,10 @@ CREATE TABLE `jos_courses_asset_groups` (
   `parent` int(11) NOT NULL DEFAULT '0',
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+  `state` tinyint(2) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `idx_unit_id` (`unit_id`),
+  KEY `idx_created_by` (`created_by`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 
@@ -117,12 +113,16 @@ DROP TABLE IF EXISTS `jos_courses_assets`;
 CREATE TABLE `jos_courses_assets` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL DEFAULT '',
+  `content` mediumtext,
   `type` varchar(255) NOT NULL DEFAULT '',
   `url` varchar(255) NOT NULL DEFAULT '',
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT '0',
   `state` tinyint(2) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`)
+  `course_id` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `idx_course_id` (`course_id`),
+  KEY `idx_created_by` (`created_by`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 
@@ -148,8 +148,8 @@ DROP TABLE IF EXISTS `jos_courses_email_log`;
 
 CREATE TABLE `jos_courses_email_log` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `eid` int(11) NOT NULL DEFAULT '0',
-  `evid` int(11) NOT NULL DEFAULT '0',
+  `email_id` int(11) NOT NULL DEFAULT '0',
+  `version_id` int(11) NOT NULL DEFAULT '0',
   `to` varchar(100) NOT NULL DEFAULT '',
   `sent` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `sent_by` int(11) NOT NULL DEFAULT '0',
@@ -165,7 +165,7 @@ DROP TABLE IF EXISTS `jos_courses_email_version`;
 
 CREATE TABLE `jos_courses_email_version` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `eid` int(11) NOT NULL,
+  `email_id` int(11) NOT NULL DEFAULT '0',
   `subject` varchar(255) NOT NULL DEFAULT '',
   `body` text NOT NULL,
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -252,19 +252,6 @@ CREATE TABLE `jos_courses_log` (
 
 
 
-# Dump of table jos_courses_managers
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `jos_courses_managers`;
-
-CREATE TABLE `jos_courses_managers` (
-  `course_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  PRIMARY KEY (`course_id`,`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-
-
 # Dump of table jos_courses_memberoption
 # ------------------------------------------------------------
 
@@ -281,18 +268,71 @@ CREATE TABLE `jos_courses_memberoption` (
 
 
 
-# Dump of table jos_courses_offering_members
+# Dump of table jos_courses_members
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `jos_courses_offering_members`;
+DROP TABLE IF EXISTS `jos_courses_members`;
 
-CREATE TABLE `jos_courses_offering_members` (
-  `offering_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
+CREATE TABLE `jos_courses_members` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL DEFAULT '0',
+  `course_id` int(11) NOT NULL DEFAULT '0',
+  `offering_id` int(11) NOT NULL DEFAULT '0',
+  `section_id` int(11) NOT NULL DEFAULT '0',
   `role_id` int(11) NOT NULL DEFAULT '0',
   `permissions` mediumtext NOT NULL,
-  PRIMARY KEY (`offering_id`,`user_id`)
+  `enrolled` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `student` tinyint(2) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `idx_offering_id` (`offering_id`),
+  KEY `idx_user_id` (`user_id`),
+  KEY `idx_role_id` (`role_id`),
+  KEY `idx_section_id` (`section_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table jos_courses_offering_section_dates
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `jos_courses_offering_section_dates`;
+
+CREATE TABLE `jos_courses_offering_section_dates` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `section_id` int(11) NOT NULL DEFAULT '0',
+  `scope` varchar(150) NOT NULL DEFAULT '',
+  `scope_id` int(11) NOT NULL DEFAULT '0',
+  `publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table jos_courses_offering_sections
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `jos_courses_offering_sections`;
+
+CREATE TABLE `jos_courses_offering_sections` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `offering_id` int(11) NOT NULL DEFAULT '0',
+  `alias` varchar(255) NOT NULL DEFAULT '',
+  `title` varchar(255) NOT NULL DEFAULT '',
+  `state` tinyint(2) NOT NULL DEFAULT '1',
+  `start_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `end_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `idx_offering_id` (`offering_id`),
+  KEY `idx_created_by` (`created_by`),
+  KEY `idx_state` (`state`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 
 
@@ -307,15 +347,36 @@ CREATE TABLE `jos_courses_offerings` (
   `alias` varchar(255) NOT NULL DEFAULT '',
   `title` varchar(255) NOT NULL DEFAULT '',
   `term` varchar(255) NOT NULL DEFAULT '',
-  `section` int(11) NOT NULL DEFAULT '1',
-  `start_date` date NOT NULL DEFAULT '0000-00-00',
-  `end_date` date NOT NULL DEFAULT '0000-00-00',
+  `state` tinyint(2) NOT NULL DEFAULT '1',
   `publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `idx_course_id` (`course_id`),
+  KEY `idx_state` (`state`),
+  KEY `idx_created_by` (`created_by`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+
+# Dump of table jos_courses_page_hits
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `jos_courses_page_hits`;
+
+CREATE TABLE `jos_courses_page_hits` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `offering_id` int(11) NOT NULL DEFAULT '0',
+  `page_id` int(11) NOT NULL DEFAULT '0',
+  `user_id` int(11) NOT NULL DEFAULT '0',
+  `datetime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `ip` varchar(15) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  KEY `idx_offering_id` (`offering_id`),
+  KEY `idx_page_id` (`page_id`),
+  KEY `idx_user_id` (`user_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
 
@@ -333,24 +394,8 @@ CREATE TABLE `jos_courses_pages` (
   `porder` int(11) NOT NULL DEFAULT '0',
   `active` int(11) NOT NULL DEFAULT '0',
   `privacy` varchar(10) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-
-
-# Dump of table jos_courses_page_hits
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `jos_courses_page_hits`;
-
-CREATE TABLE `jos_courses_page_hits` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `offering_id` int(11) NOT NULL DEFAULT '0',
-  `page_id` int(11) NOT NULL DEFAULT '0',
-  `user_id` int(11) NOT NULL DEFAULT '0',
-  `datetime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `ip` varchar(15) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `idx_offering_id` (`offering_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
@@ -366,7 +411,8 @@ CREATE TABLE `jos_courses_roles` (
   `alias` varchar(150) NOT NULL,
   `title` varchar(150) NOT NULL DEFAULT '',
   `permissions` mediumtext NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `idx_offering_id` (`offering_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
@@ -383,19 +429,9 @@ CREATE TABLE `jos_courses_units` (
   `title` varchar(255) NOT NULL DEFAULT '',
   `description` longtext NOT NULL,
   `ordering` int(11) NOT NULL DEFAULT '0',
-  `start_date` date NOT NULL DEFAULT '0000-00-00',
-  `end_date` date NOT NULL DEFAULT '0000-00-00',
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+  `state` tinyint(2) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `idx_offering_id` (`offering_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
-
-
-
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

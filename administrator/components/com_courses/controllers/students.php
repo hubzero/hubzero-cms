@@ -94,15 +94,15 @@ class CoursesControllerStudents extends Hubzero_Controller
 			0,
 			'int'
 		);
-		$this->view->filters['role'] = 'student';
+		//$this->view->filters['role'] = 'student';
 
 		$this->view->filters['count'] = true;
 
-		$this->view->total = $this->view->offering->members($this->view->filters);
+		$this->view->total = $this->view->offering->students($this->view->filters);
 
 		$this->view->filters['count'] = false;
 
-		$this->view->rows = $this->view->offering->members($this->view->filters);
+		$this->view->rows = $this->view->offering->students($this->view->filters);
 
 		// Initiate paging
 		jimport('joomla.html.pagination');

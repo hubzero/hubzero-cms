@@ -48,6 +48,20 @@ class CoursesTableMember extends JTable
 	 * 
 	 * @var integer
 	 */
+	var $user_id = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
+	var $course_id = NULL;
+
+	/**
+	 * int(11)
+	 * 
+	 * @var integer
+	 */
 	var $offering_id = NULL;
 
 	/**
@@ -55,7 +69,7 @@ class CoursesTableMember extends JTable
 	 * 
 	 * @var integer
 	 */
-	var $user_id = NULL;
+	var $section_id = NULL;
 
 	/**
 	 * int(11)
@@ -72,18 +86,18 @@ class CoursesTableMember extends JTable
 	var $permissions = NULL;
 
 	/**
-	 * int(11)
-	 * 
-	 * @var integer
-	 */
-	var $section_id = NULL;
-
-	/**
 	 * datetime(0000-00-00 00:00:00)
 	 * 
 	 * @var string
 	 */
 	var $enrolled = NULL;
+
+	/**
+	 * tinyint(2)
+	 * 
+	 * @var integer
+	 */
+	var $student = NULL;
 
 	/**
 	 * Contructor method for JTable class
@@ -93,7 +107,58 @@ class CoursesTableMember extends JTable
 	 */
 	public function __construct(&$db)
 	{
-		parent::__construct('#__courses_offering_members', 'id', $db);
+		parent::__construct('#__courses_members', 'id', $db);
+	}
+
+	/**
+	 * Load a record and bind to $this
+	 * 
+	 * @param      string $oid Record alias
+	 * @return     boolean True on success
+	 */
+	public function load($uid=null, $cid=NULL, $oid=NULL, $sid=NULL, $student=NULL)
+	{
+		if ($uid === NULL) 
+		{
+			return false;
+		}
+
+		if ($cid === NULL)
+		{
+			return parent::load($uid);
+		}
+
+		$query = "SELECT * 
+				FROM $this->_tbl 
+				WHERE ";
+		if ($student !== null)
+		{
+			$where[] = "`student`=" . $this->_db->Quote((int) $student);
+		}
+		$where[] = "`user_id`=" . $this->_db->Quote((int) $uid);
+		$where[] = "`course_id`=" . $this->_db->Quote((int) $cid);
+		if ($oid !== null)
+		{
+			//$where[] = "`offering_id` IN (0, " . $this->_db->Quote((int) $cid) . ")";
+			$where[] = "`offering_id`=" . $this->_db->Quote((int) $oid);
+		}
+		if ($sid !== null)
+		{
+			//$where[] = "`section_id` IN (0, " . $this->_db->Quote((int) $sid) . ")";
+			$where[] = "`section_id`=" . $this->_db->Quote((int) $sid);
+		}
+		$query .= implode(" AND ", $where) . " LIMIT 1";
+
+		$this->_db->setQuery($query);
+		if ($result = $this->_db->loadAssoc()) 
+		{
+			return $this->bind($result);
+		} 
+		else 
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
 	}
 
 	/**
@@ -157,24 +222,36 @@ class CoursesTableMember extends JTable
 	 */
 	public function check()
 	{
-		$this->offering_id = intval($this->offering_id);
-		if (!$this->offering_id)
-		{
-			$this->setError(JText::_('Missing offering ID'));
-			return false;
-		}
+		$this->student = intval($this->student);
 
-		$this->section_id = intval($this->section_id);
-		if (!$this->section_id)
+		if ($this->student)
 		{
-			$this->setError(JText::_('Missing section ID'));
-			return false;
+			$this->offering_id = intval($this->offering_id);
+			if (!$this->offering_id)
+			{
+				$this->setError(JText::_('Missing offering ID'));
+				return false;
+			}
+
+			$this->section_id = intval($this->section_id);
+			if (!$this->section_id)
+			{
+				$this->setError(JText::_('Missing section ID'));
+				return false;
+			}
 		}
 
 		$this->user_id = intval($this->user_id);
 		if (!$this->user_id)
 		{
 			$this->setError(JText::_('Missing user ID'));
+			return false;
+		}
+
+		$this->course_id = intval($this->course_id);
+		if (!$this->course_id)
+		{
+			$this->setError(JText::_('Missing course ID'));
 			return false;
 		}
 
@@ -229,11 +306,15 @@ class CoursesTableMember extends JTable
 				LEFT JOIN #__courses_roles AS r ON r.id=m.role_id";
 
 		$where = array();
-		if (isset($filters['offering_id']) && $filters['offering_id'])
+		if (isset($filters['course_id']) && $filters['course_id'])
+		{
+			$where[] = "m.`course_id`=" . $this->_db->Quote(intval($filters['course_id']));
+		}
+		if (isset($filters['offering_id']))
 		{
 			$where[] = "m.`offering_id`=" . $this->_db->Quote(intval($filters['offering_id']));
 		}
-		if (isset($filters['section_id']) && $filters['section_id'])
+		if (isset($filters['section_id']))
 		{
 			$where[] = "m.`section_id`=" . $this->_db->Quote(intval($filters['section_id']));
 		}
@@ -255,6 +336,10 @@ class CoursesTableMember extends JTable
 			{
 				$where[] = "r.`alias`=" . $this->_db->Quote($filters['role']);
 			}
+		}
+		if (isset($filters['student']))
+		{
+			$where[] = "m.`student`=" . $this->_db->Quote(intval($filters['student']));
 		}
 
 		if (count($where) > 0)
@@ -288,8 +373,8 @@ class CoursesTableMember extends JTable
 	 */
 	public function find($filters=array())
 	{
-		$query  = "SELECT m.*, r.alias AS role_alias, r.title AS role, r.permissions AS role_permissions, ";
-		if (isset($filters['offering_id']))
+		$query  = "SELECT m.*, r.alias AS role_alias, r.title AS role_title, r.permissions AS role_permissions ";
+		/*if (isset($filters['offering_id']))
 		{
 			$query .= "(SELECT cm.user_id FROM #__courses_managers AS cm JOIN #__courses_offerings AS co ON cm.course_id=co.course_id WHERE cm.user_id=m.user_id AND co.id=" . $this->_db->Quote(intval($filters['offering_id'])) . ")";
 		}
@@ -297,7 +382,7 @@ class CoursesTableMember extends JTable
 		{
 			$query .= "NULL";
 		}
-		$query .= " AS course_manager ";
+		$query .= " AS course_manager ";*/
 		$query .= $this->_buildquery($filters);
 
 		if (!empty($filters['start']) && !empty($filters['limit']))

@@ -117,9 +117,9 @@ $k = 0;
 foreach ($this->rows as $row)
 {
 	$tip = '[coming soon]';
-	$managers = $row->members(array('count' => true, 'role' => '!student'));
+	$managers = $row->members(array('count' => true, 'student' => 0));
 	$units    = $row->units(array('count' => true));
-	$students = $row->members(array('count' => true, 'role' => 'student'));
+	$students = $row->members(array('count' => true, 'student' => 1));
 	$pages    = $row->pages(array('count' => true));
 	$sections = $row->sections(array('count' => true));
 ?>

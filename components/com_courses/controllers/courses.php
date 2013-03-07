@@ -34,7 +34,6 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Controller');
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
-//require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
 
 /**
  * Courses controller class
@@ -48,9 +47,6 @@ class CoursesControllerCourses extends Hubzero_Controller
 	 */
 	public function execute()
 	{
-		$this->_authorize();
-		$this->_authorize('course');
-
 		$this->registerTask('__default', 'intro');
 
 		parent::execute();
@@ -104,22 +100,6 @@ class CoursesControllerCourses extends Hubzero_Controller
 	}
 
 	/**
-	 * Redirect to login page
-	 * 
-	 * @return     void
-	 */
-	public function loginTask($message = '')
-	{
-		$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . 'task=' . $this->_task));
-		$this->setRedirect(
-			JRoute::_('index.php?option=com_login&return=' . $return),
-			$message,
-			'warning'
-		);
-		return;
-	}
-
-	/**
 	 * Display component main page
 	 * 
 	 * @return     void
@@ -147,10 +127,10 @@ class CoursesControllerCourses extends Hubzero_Controller
 		//get the users profile
 		$profile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
 
-		if (is_object($profile))
+		/*if (is_object($profile))
 		{
 			//get users tags
-			/*include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'tags.php');
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'tags.php');
 			$mt = new MembersTags($this->database);
 			$mytags = $mt->get_tag_string($profile->get("uidNumber"));
 
@@ -161,21 +141,23 @@ class CoursesControllerCourses extends Hubzero_Controller
 			$mycourses = array_filter($mycourses);
 
 			//get courses user may be interested in
-			$interestingcourses = Hubzero_Course_Helper::getCoursesMatchingTagString($mytags, Hubzero_User_Helper::getCourses($profile->get("uidNumber")));*/
-		}
+			$interestingcourses = Hubzero_Course_Helper::getCoursesMatchingTagString($mytags, Hubzero_User_Helper::getCourses($profile->get("uidNumber")));
+		}*/
 
 		//get the popular courses
 		$popularcourses = array(); //Hubzero_Course_Helper::getPopularCourses(3);
 
 		// Output HTML
 		//$this->view->option = $this->_option;
-		$this->view->config = $this->config;
+		$this->view->config   = $this->config;
 		$this->view->database = $this->database;
-		$this->view->user = $this->juser;
-		$this->view->title = $this->_title;
+		$this->view->user     = $this->juser;
+		$this->view->title    = $this->_title;
+
 		$this->view->mycourses = $mycourses;
 		$this->view->popularcourses = $popularcourses;
 		$this->view->interestingcourses = $interestingcourses;
+
 		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
 		$this->view->display();
 	}
@@ -187,17 +169,11 @@ class CoursesControllerCourses extends Hubzero_Controller
 	 */
 	public function browseTask()
 	{
-		$jconfig = JFactory::getConfig();
+		//$jconfig = JFactory::getConfig();
 
-		// Incoming
+		// Filters 
 		$this->view->filters = array();
-		//$this->view->filters['type']   = array(1,3);
-		//$this->view->filters['authorized'] = "";
-
-		// Filters for getting a result count
-		//$this->view->filters['limit']  = 'all';
-		//$this->view->filters['fields'] = array('COUNT(*)');
-		$this->view->filters['state'] = 1;
+		$this->view->filters['state']  = 1;
 		$this->view->filters['search'] = JRequest::getVar('search', '');
 		$this->view->filters['sortby'] = strtolower(JRequest::getWord('sortby', 'title'));
 		if (!in_array($this->view->filters['sortby'], array('alias', 'title')))
@@ -205,15 +181,10 @@ class CoursesControllerCourses extends Hubzero_Controller
 			$this->view->filters['sortby'] = 'title';
 		}
 		// Filters for returning results
-		$this->view->filters['limit']  = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
+		$this->view->filters['limit']  = JRequest::getInt('limit', JFactory::getConfig()->getValue('config.list_limit'));
 		$this->view->filters['limit']  = ($this->view->filters['limit']) ? $this->view->filters['limit'] : 'all';
 		$this->view->filters['start']  = JRequest::getInt('limitstart', 0);
-		$this->view->filters['policy'] = strtolower(JRequest::getWord('policy', ''));
-		if (!in_array($this->view->filters['policy'], array('open', 'restricted', 'invite', 'closed')))
-		{
-			$this->view->filters['policy'] = '';
-		}
-		$this->view->filters['index']  = htmlentities(JRequest::getVar('index', ''));
+		$this->view->filters['index']  = JRequest::getWord('index', '');
 
 		$model = CoursesModelCourses::getInstance();
 
@@ -233,13 +204,6 @@ class CoursesControllerCourses extends Hubzero_Controller
 			$this->view->filters['limit']
 		);
 
-		// Run through the master list of courses and mark the user's status in that course
-		//$this->view->authorized = $this->_authorize();
-		/*if (!$this->juser->get('guest') && $this->view->courses) 
-		{
-			$this->view->courses = $this->_getCourses($this->view->courses);
-		}*/
-
 		// Push some styles to the template
 		$this->_getStyles($this->_option, $this->_task . '.css');
 
@@ -250,105 +214,10 @@ class CoursesControllerCourses extends Hubzero_Controller
 		$this->_buildPathway();
 
 		// Output HTML
-		$this->view->title = $this->_title;
+		$this->view->title  = $this->_title;
 		$this->view->config = $this->config;
 		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
 		$this->view->display();
-	}
-
-	/**
-	 * Short description for 'getCourses'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      array $courses Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
-	 */
-	private function _getCourses($courses)
-	{
-		if (!$this->juser->get('guest')) 
-		{
-			$profile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
-
-			$ugs = $profile->getGroups('all');
-
-			for ($i = 0; $i < count($courses); $i++)
-			{
-				if (!isset($courses[$i]->cn)) 
-				{
-					$courses[$i]->cn = '';
-				}
-				$courses[$i]->registered   = 0;
-				$courses[$i]->regconfirmed = 0;
-				$courses[$i]->manager      = 0;
-
-				if ($ugs && count($ugs) > 0) 
-				{
-					foreach ($ugs as $ug)
-					{
-						if (is_object($ug) && $ug->cn == $courses[$i]->cn) 
-						{
-							$courses[$i]->registered   = $ug->registered;
-							$courses[$i]->regconfirmed = $ug->regconfirmed;
-							$courses[$i]->manager      = $ug->manager;
-						}
-					}
-				}
-			}
-		}
-
-		return $courses;
-	}
-
-	/**
-	 * Set access permissions for a user
-	 * 
-	 * @return     void
-	 */
-	protected function _authorize($assetType='component', $assetId=null)
-	{
-		$this->config->set('access-view-' . $assetType, true);
-		$this->config->set('access-create-' . $assetType, false);
-		$this->config->set('access-manage-' . $assetType, false);
-		$this->config->set('access-admin-' . $assetType, false);
-
-		if (!$this->juser->get('guest')) 
-		{
-			if (version_compare(JVERSION, '1.6', 'ge'))
-			{
-				$asset  = $this->_option;
-				if ($assetId)
-				{
-					$asset .= ($assetType != 'component') ? '.' . $assetType : '';
-					$asset .= ($assetId) ? '.' . $assetId : '';
-				}
-
-				$at = '';
-				if ($assetType != 'component')
-				{
-					$at .= '.' . $assetType;
-				}
-
-				// Admin
-				$this->config->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
-				$this->config->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
-				// Permissions
-				$this->config->set('access-create-' . $assetType, $this->juser->authorise('core.create' . $at, $asset));
-				$this->config->set('access-delete-' . $assetType, $this->juser->authorise('core.delete' . $at, $asset));
-				$this->config->set('access-edit-' . $assetType, $this->juser->authorise('core.edit' . $at, $asset));
-				$this->config->set('access-edit-state-' . $assetType, $this->juser->authorise('core.edit.state' . $at, $asset));
-				$this->config->set('access-edit-own-' . $assetType, $this->juser->authorise('core.edit.own' . $at, $asset));
-			}
-			else 
-			{
-				$this->config->set('access-create-' . $assetType, true);
-				if ($this->juser->authorize($this->_option, 'manage')) 
-				{
-					$this->config->set('access-manage-' . $assetType, true);
-					$this->config->set('access-admin-' . $assetType, true);
-				}
-			}
-		}
 	}
 }
 

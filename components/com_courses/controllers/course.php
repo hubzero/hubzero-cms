@@ -144,7 +144,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 	 */
 	public function loginTask($message = '')
 	{
-		$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&gid=' . $this->course->get('id') . '&task=' . $this->_task));
+		$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&gid=' . $this->course->get('id') . '&task=' . $this->_task, false, true));
 		$this->setRedirect(
 			JRoute::_('index.php?option=com_login&return=' . $return),
 			$message,
@@ -180,7 +180,6 @@ class CoursesControllerCourse extends Hubzero_Controller
 
 		// Push some needed styles to the template
 		// Pass in course type to include special css for paying courses
-		//$this->_getCourseStyles($this->course->get('type'));
 		$this->_getStyles($this->_option, $this->_controller . '.css');
 
 		// Push some needed scripts to the template
@@ -315,7 +314,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 
 		// Incoming
 		$g_cn           = strtolower(trim(JRequest::getVar('cn', '', 'post')));
-		$g_description  = preg_replace('/\s+/', ' ',trim(JRequest::getVar('description', JText::_('NONE'), 'post')));
+		$g_description  = preg_replace('/\s+/', ' ', trim(JRequest::getVar('description', JText::_('NONE'), 'post')));
 		$g_privacy      = JRequest::getInt('privacy', 0, 'post');
 		$g_gidNumber    = JRequest::getInt('gidNumber', 0, 'post');
 		$g_published    = JRequest::getInt('published', 0, 'post');
@@ -324,7 +323,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		$g_restrict_msg = trim(JRequest::getVar('restrict_msg', '', 'post', 'none', 2));
 		$g_join_policy  = JRequest::getInt('join_policy', 0, 'post');
 		$tags = trim(JRequest::getVar('tags', ''));
-		$g_discussion_email_autosubscribe = JRequest::getInt('discussion_email_autosubscribe', 0, 'post');
+		//$g_discussion_email_autosubscribe = JRequest::getInt('discussion_email_autosubscribe', 0, 'post');
 		$lid = JRequest::getInt('lid', 0, 'post');
 
 		//Check authorization
@@ -356,7 +355,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		}
 
 		// Check for any missing info
-		if (!$g_cn) 
+		if (!$g_alias) 
 		{
 			$this->addComponentMessage(JText::_('COURSES_ERROR_MISSING_INFORMATION') . ': ' . JText::_('COURSES_ID'), 'error');
 		}
@@ -368,16 +367,16 @@ class CoursesControllerCourse extends Hubzero_Controller
 		// Push back into edit mode if any errors
 		if ($this->getComponentMessage()) 
 		{
-			$this->course->set('published', $g_published);
+			$this->course->set('state', $g_published);
 			$this->course->set('description', $g_description);
 			//$this->course->set('access', $g_access);
-			$this->course->set('privacy', $g_privacy);
-			$this->course->set('public_desc', $g_public_desc);
-			$this->course->set('private_desc', $g_private_desc);
-			$this->course->set('restrict_msg', $g_restrict_msg);
-			$this->course->set('join_policy', $g_join_policy);
-			$this->course->set('cn', $g_cn);
-			$this->course->set('discussion_email_autosubscribe', $g_discussion_email_autosubscribe);
+			//$this->course->set('privacy', $g_privacy);
+			//$this->course->set('public_desc', $g_public_desc);
+			//$this->course->set('private_desc', $g_private_desc);
+			//$this->course->set('restrict_msg', $g_restrict_msg);
+			//$this->course->set('join_policy', $g_join_policy);
+			$this->course->set('alias', $g_cn);
+			//$this->course->set('discussion_email_autosubscribe', $g_discussion_email_autosubscribe);
 
 			$this->lid = $lid;
 			$this->course = $course;
@@ -770,7 +769,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 	 * @param      string $id     Item ID
 	 * @return     void
 	 */
-	public function change_state($type, $status, $id)
+	/*public function change_state($type, $status, $id)
 	{
 		// Based on passed in status either activate or deactivate
 		if ($status == 'deactivate') 
@@ -800,14 +799,14 @@ class CoursesControllerCourse extends Hubzero_Controller
 		$this->setRedirect(
 			JRoute::_('index.php?option=' . $this->_option . '&gid=' . $this->_course->get('cn') . '&task=managepages')
 		);
-	}
+	}*/
 
 	/**
 	 * Set access permissions for a user
 	 * 
 	 * @return     void
 	 */
-	protected function _authorize($assetType='component', $assetId=null)
+	/*protected function _authorize($assetType='component', $assetId=null)
 	{
 		$this->config->set('access-view-' . $assetType, false);
 		if (!$this->juser->get('guest')) 
@@ -853,7 +852,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 				}
 			}
 		}
-	}
+	}*/
 
 	/**
 	 * Send an email
@@ -889,7 +888,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 	 * 
 	 * @return     void
 	 */
-	public function memberslist()
+	/*public function memberslist()
 	{
 		// Fetch results
 		$filters = array();
@@ -931,7 +930,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		}
 
 		echo '{"members":[' . implode(',', $json) . ']}';
-	}
+	}*/
 
 	/**
 	 * Check if a course alias is valid

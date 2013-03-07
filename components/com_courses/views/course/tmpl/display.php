@@ -50,7 +50,32 @@ $database =& JFactory::getDBO();
 	</ul>
 </div>
 
-<div class="main section">
+<div class="course section">
+	<div class="aside">
+<?php /*if ($this->course->isManager($tjis->juser->get('id')) || $this->course->isStudent($tjis->juser->get('id'))) { ?>
+		<p><a class="add btn">View course</a></p>
+<?php } else {*/ ?>
+		<p><a class="add btn">Add to cart</a></p>
+<?php //} ?>
+		<p>Rating distribution</p>
+		<ul>
+			<li>5 star</li>
+			<li>4 star</li>
+			<li>3 star</li>
+			<li>2 star</li>
+			<li>1 star</li>
+		</ul>
+	</div>
+	
+	<div class="subject">
+		<div id="sub-menu">
+			<ul>
+				<li id="sm-1" class="active"><a class="tab" href="#"><span>Overview</span></a></li>
+				<li id="sm-3"><a class="tab" href="#"><span>Reviews</span></a></li>
+				<li id="sm-2"><a class="tab" href="#"><span>Past Offerings</span></a></li>
+			</ul>
+		</div><!-- / #sub-menu -->
+
 <?php
 		foreach ($this->notifications as $notification) 
 		{
@@ -114,4 +139,5 @@ else
 ?>
 		</tbody>
 	</table>
+	</div>
 </div><!-- /.innerwrap -->

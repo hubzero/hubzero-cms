@@ -51,7 +51,7 @@ $total = $this->offering->announcements($filters);
 $filters['count'] = false;
 
 $rows = $this->offering->announcements($filters);
-$manager = $this->offering->access('manage');
+$manager = $this->offering->access('manage', 'section');
 
 $wikiconfig = array(
 	'option'   => 'com_courses',

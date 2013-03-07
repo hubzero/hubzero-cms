@@ -31,22 +31,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'role.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'member.php');
 
 /**
  * Courses model class for a course
  */
-class CoursesModelMember extends CoursesModelAbstract
+class CoursesModelManager extends CoursesModelMember
 {
-	/**
-	 * JTable class name
-	 * 
-	 * @var string
-	 */
-	protected $_tbl_name = 'CoursesTableMember';
-
 	/**
 	 * Object scope
 	 * 
@@ -69,7 +60,7 @@ class CoursesModelMember extends CoursesModelAbstract
 
 		if (is_numeric($uid) || is_string($uid))
 		{
-			$this->_tbl->load($uid, $cid, $oid, $sid);
+			$this->_tbl->load($uid, $cid, $oid, $sid, 0);
 		}
 		else if (is_object($uid))
 		{
@@ -78,7 +69,7 @@ class CoursesModelMember extends CoursesModelAbstract
 			$properties = $this->_tbl->getProperties();
 			foreach (get_object_vars($uid) as $key => $property)
 			{
-				if (!array_key_exists($key, $properties)) // && in_array($property, self::$_section_keys))
+				if (!array_key_exists($key, $properties))
 				{
 					$this->_tbl->set('__' . $key, $property);
 				}
@@ -91,7 +82,7 @@ class CoursesModelMember extends CoursesModelAbstract
 			$properties = $this->_tbl->getProperties();
 			foreach (array_keys($uid) as $key)
 			{
-				if (!array_key_exists($key, $properties)) // && in_array($property, self::$_section_keys))
+				if (!array_key_exists($key, $properties))
 				{
 					$this->_tbl->set('__' . $key, $uid[$key]);
 				}
@@ -104,8 +95,6 @@ class CoursesModelMember extends CoursesModelAbstract
 			$paramsClass = 'JRegistry';
 		}
 
-		//$permissions = clone(JComponentHelper::getParams('com_courses'));
-		//$permissions->merge(new $paramsClass($this->get('role_permissions')));
 		if (!$this->get('role_permissions'))
 		{
 			$result = new CoursesTableRole($this->_db);
@@ -118,16 +107,6 @@ class CoursesModelMember extends CoursesModelAbstract
 				}
 			}
 		}
-
-		//$permissions = new $paramsClass($this->get('role_permissions'));
-		//$permissions->merge(new $paramsClass($this->get('permissions')));
-
-		/*if ($this->exists())
-		{
-			$permissions->set('access-view-offering', true);
-		}*/
-
-		//$this->set('permissions', $permissions);
 	}
 
 	/**
@@ -151,37 +130,10 @@ class CoursesModelMember extends CoursesModelAbstract
 
 		if (!isset($instances[$oid . '_' . $uid])) 
 		{
-			$instances[$oid . '_' . $uid] = new CoursesModelMember($uid, $cid, $oid, $sid);
+			$instances[$oid . '_' . $uid] = new CoursesModelManager($uid, $cid, $oid, $sid);
 		}
 
 		return $instances[$oid . '_' . $uid];
-	}
-
-	/**
-	 * Delete an entry and associated data
-	 * 
-	 * @return     boolean True on success, false on error
-	 */
-	public function delete()
-	{
-		// Remove gradebook information
-
-		return parent::delete();
-	}
-
-	/**
-	 * Check a user's authorization
-	 * 
-	 * @param      string $action Action to check
-	 * @return     boolean True if authorized, false if not
-	 */
-	public function access($action='', $item='offering')
-	{
-		if (!$action)
-		{
-			return $this->get('permissions');
-		}
-		return $this->get('permissions')->get('access-' . strtolower($action) . '-' . $item);
 	}
 }
 

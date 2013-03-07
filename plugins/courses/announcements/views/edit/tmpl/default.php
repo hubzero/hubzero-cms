@@ -37,7 +37,7 @@ $juser = JFactory::getUser();
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&offering=' . $this->offering->get('alias') . '&active=announcements'); ?>" method="post" id="hubForm" class="full">
+		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=announcements'); ?>" method="post" id="hubForm" class="full">
 			<div class="explaination">
 				<table class="wiki-reference" summary="<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_WIKI_SYNTAX_REFERENCE'); ?>">
 					<caption><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_WIKI_SYNTAX_REFERENCE'); ?></caption>

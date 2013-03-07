@@ -90,6 +90,13 @@ abstract class CoursesModelAbstract extends JObject
 	);
 
 	/**
+	 * JParameter
+	 * 
+	 * @var object
+	 */
+	protected $_config = NULL;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      integer $id  Resource ID or alias
@@ -442,6 +449,31 @@ abstract class CoursesModelAbstract extends JObject
 		{
 			$this->setError($log->getError());
 		}
+	}
+
+	/**
+	 * Check a user's authorization
+	 * 
+	 * @return     boolean True if authorized, false if not
+	 */
+	public function config()
+	{
+		if (!isset($this->_config))
+		{
+			$this->_config =& JComponentHelper::getParams('com_courses');
+		}
+		return $this->_config;
+	}
+
+	/**
+	 * Check a user's authorization
+	 * 
+	 * @param      string $action Action to check
+	 * @return     boolean True if authorized, false if not
+	 */
+	public function access($action='view', $item='course')
+	{
+		return $this->config()->access($action, $item);
 	}
 }
 

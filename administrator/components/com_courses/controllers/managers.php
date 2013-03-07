@@ -62,7 +62,7 @@ class CoursesControllerManagers extends Hubzero_Controller
 		// Load the profile
 		$course = CoursesModelCourse::getInstance($id);
 
-		$managers = $course->get('managers');
+		$managers = $course->managers(); //get('managers');
 
 		// Incoming host
 		$m = JRequest::getVar('usernames', '', 'post');
@@ -70,6 +70,7 @@ class CoursesControllerManagers extends Hubzero_Controller
 
 		jimport('joomla.user.helper');
 
+		$users = array();
 		foreach ($mbrs as $mbr)
 		{
 			// Retrieve user's account info
@@ -80,7 +81,8 @@ class CoursesControllerManagers extends Hubzero_Controller
 			if ($uid)
 			{
 				// Loop through existing members and make sure the user isn't already a member
-				if (in_array($uid, $managers))
+				//if (in_array($uid, $managers))
+				if (isset($managers[$uid]))
 				{
 					$this->setError(JText::sprintf('ALREADY_A_MEMBER_OF_TABLE', $mbr));
 					continue;
@@ -98,10 +100,10 @@ class CoursesControllerManagers extends Hubzero_Controller
 		$course->add($users);
 
 		// Save changes
-		if (!$course->store())
+		/*if (!$course->store())
 		{
 			$this->setError($course->getError());
-		}
+		}*/
 
 		// Push through to the hosts view
 		$this->displayTask($course);
@@ -128,7 +130,7 @@ class CoursesControllerManagers extends Hubzero_Controller
 
 		$course = CoursesModelCourse::getInstance($id);
 
-		$managers = $course->get('managers');
+		$managers = $course->managers();
 
 		$mbrs = JRequest::getVar('users', array(0), 'post');
 
@@ -143,7 +145,7 @@ class CoursesControllerManagers extends Hubzero_Controller
 			{
 				$uid = $targetuser->get('id');
 
-				if (in_array($uid, $managers))
+				if (isset($managers[$uid]))
 				{
 					$users[] = $uid;
 				}
@@ -165,10 +167,10 @@ class CoursesControllerManagers extends Hubzero_Controller
 		}
 
 		// Save changes
-		if (!$course->store())
+		/*if (!$course->store())
 		{
 			$this->setError($course->getError());
-		}
+		}*/
 
 		// Push through to the hosts view
 		$this->displayTask($course);

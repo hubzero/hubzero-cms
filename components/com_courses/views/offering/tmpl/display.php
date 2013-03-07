@@ -110,41 +110,45 @@ if (!$no_html) : ?>
 							<?php endif; ?>
 						<?php endif;*/ ?>
 					<?php else : ?>
-						<?php $isManager = $this->course->offering()->access('manage'); ?>
-						<?php $canCancel = (($isManager && count($this->course->get("managers")) > 1) || (!$isManager && in_array($this->user->get('id'), $this->course->offering()->section()->members()))) ? true : false; ?>
+						<?php //$isManager = $this->course->offering()->access('manage'); ?>
+						<?php //$canCancel = (($isManager && count($this->course->get("managers")) > 1) || (!$isManager && in_array($this->user->get('id'), $this->course->offering()->section()->members()))) ? true : false; ?>
+						<?php if ($this->course->offering()->access('manage', 'section')) : ?>
 						<li class="no-float">
 							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias')); ?>" class="dropdown course-<?php echo ($isManager) ? 'manager' : 'member'; ?>">
-								<?php echo ($isManager) ? 'Manager' : 'Member'; ?>
+								<?php echo 'Manager'; //($isManager) ? 'Manager' : 'Member'; ?>
 								<span class="caret"></span>
 							</a>
 							<ul class="dropdown-menu pull-right">
-								<?php if ($isManager) : ?>
-									<?php if ($membership_control == 1) : ?> 
-										<li><a class="course-invite" href="/courses/<?php echo $this->course->get('alias'); ?>/invite">Invite Members</a></li>
+								<?php //if ($isManager) : ?>
+									<?php if ($this->course->offering()->access('manage', 'section')) : ?> 
+										<li><a class="course-invite" href="/courses/<?php echo $this->course->get('alias'); ?>/invite">Invite Students</a></li>
 									<?php endif; ?>
 									<!-- <li><a class="course-edit" href="/courses/<?php echo $this->course->get('alias'); ?>/edit">Edit Course Settings</a></li>
 									<li><a class="course-customize" href="/courses/<?php echo $this->course->get('alias'); ?>/customize">Customize Course</a></li> -->
+									<?php if ($this->course->offering()->access('manage')) { ?>
 									<li><a class="course-outline" href="/courses/<?php echo $this->course->get('alias'); ?>/manage/<?php echo $this->course->offering()->get('alias'); ?>">Edit Outline</a></li>
 									<li><a class="course-pages" href="/courses/<?php echo $this->course->get('alias'); ?>/managepages">Manage Pages</a></li>
-									<?php if ($membership_control == 1) : ?> 
-										<li class="divider"></li>
-									<?php endif; ?>
-								<?php endif; ?>
-								<?php if ($canCancel) : ?>
+									<?php } else if ($this->course->offering()->access('manage', 'section')) { ?>
+									<li><a class="course-outline" href="/courses/<?php echo $this->course->get('alias'); ?>/manage/<?php echo $this->course->offering()->get('alias'); ?>">Change Dates</a></li>
+									<?php } ?>
+								<?php //endif; ?>
+								<?php /*if ($canCancel) : ?>
 									<?php if($membership_control == 1) : ?> 
 										<li><a class="course-cancel" href="/courses/<?php echo $this->course->get('alias'); ?>/cancel">Cancel Membership</a></li>
 										<?php if($isManager): ?>
 											<li class="divider"></li>
 										<?php endif; ?>
 									<?php endif; ?>
-								<?php endif; ?>
-								<?php if ($isManager) : ?>
-									<?php if ($this->course->offering()->access('delete')) : ?> 
+								<?php endif;*/ ?>
+								<?php //if ($isManager) : ?>
+									<?php if ($this->course->access('manage')) : ?> 
+										<li class="divider"></li>
 										<li><a class="course-delete" href="/courses/<?php echo $this->course->get('alias'); ?>/delete">Delete Offering</a></li>
 									<?php endif; ?>
-								<?php endif; ?>
+								<?php //endif; ?>
 							</ul>
 						</li>
+						<?php endif; ?>
 					<?php endif; ?>
 				</ul><!-- /#page_options -->
 				
@@ -163,7 +167,7 @@ if (!$no_html) : ?>
 							//do we want to show category in menu?
 							if ($cat['display_menu_tab'])
 							{
-								if (!$this->course->offering()->access('manage') && isset($this->course_plugin_access[$cat['name']]) && $this->course_plugin_access[$cat['name']] == 'managers')
+								if (!$this->course->offering()->access('manage', 'section') && isset($this->course_plugin_access[$cat['name']]) && $this->course_plugin_access[$cat['name']] == 'managers')
 								{
 									continue;
 								}

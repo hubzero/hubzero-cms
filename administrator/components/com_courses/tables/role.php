@@ -176,7 +176,7 @@ class CoursesTableRole extends JTable
 	 */
 	public function find($filters=array())
 	{
-		$query  = "SELECT r.*, (SELECT COUNT(m.user_id) FROM #__courses_offering_members AS m WHERE m.role_id=r.id";
+		$query  = "SELECT r.*, (SELECT COUNT(m.user_id) FROM #__courses_members AS m WHERE m.role_id=r.id";
 		if (isset($filters['offering_id']))
 		{
 			if (is_array($filters['offering_id']))

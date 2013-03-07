@@ -96,25 +96,44 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 					</tr>
 				</tbody>
 			</table>
-			<!-- <table>
-				<tbody>
-					<tr>
-						<td>
-							<strong><?php echo $this->offering->members(array('count' => true)); ?></strong> enrolled
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<strong>158</strong> passing
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<strong>46</strong> failing
-						</td>
-					</tr>
-				</tbody>
-			</table> -->
+			
+			<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=announcements'); ?>" method="post" id="hubForm" class="full">
+				<fieldset>
+					<legend>
+						<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_NEW'); ?>
+					</legend>
+
+					<label for="field-content">
+						<?php echo JText::_('Announcement'); ?>
+						<?php
+						ximport('Hubzero_Wiki_Editor');
+						$editor =& Hubzero_Wiki_Editor::getInstance();
+						echo $editor->display('fields[content]', 'field-content', '', 'minimal no-footer', '35', '5');
+						?>
+					</label>
+
+					<label for="field-priority" id="priority-label">
+						<input class="option" type="checkbox" name="fields[priority]" id="field-priority" value="1" /> 
+						<?php echo JText::_('Mark as high priority'); ?>
+					</label>
+
+					<p class="submit">
+						<input type="submit" value="<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_SUBMIT'); ?>" />
+					</p>
+				</fieldset>
+				<div class="clear"></div>
+
+				<input type="hidden" name="fields[id]" value="" />
+				<input type="hidden" name="fields[state]" value="1" />
+				<input type="hidden" name="fields[offering_id]" value="<?php echo $this->offering->get('id'); ?>" />
+				<input type="hidden" name="fields[section_id]" value="<?php echo $this->offering->section()->get('id'); ?>" />
+
+				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+				<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
+				<input type="hidden" name="offering" value="<?php echo $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : ''); ?>" />
+				<input type="hidden" name="active" value="announcements" />
+				<input type="hidden" name="action" value="save" />
+			</form>
 			
 		</div><!-- / .subject -->
 		<div class="two columns second">
@@ -126,7 +145,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 			</div>
 		<?php if ($rows) { ?>
 			<ul class="timeline">
-			<?php foreach ($rows as $row) { ?>
+			<?php foreach ($rows as $i => $row) { ?>
 				<li>
 					<?php 
 					switch ($row->scope)
@@ -152,7 +171,12 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 						<time datetime="<?php echo $row->publish_up; ?>"><?php echo JHTML::_('date', $row->publish_up, $dateFormat, $tz); ?></time>
 					</span>
 				</li>
-			<?php } ?>
+			<?php 
+				if ($i > 0 && $row->scope == 'unit')
+				{
+					break;
+				}
+			} ?>
 			</ul>
 		<?php } else { ?>
 			<ul class="timeline">

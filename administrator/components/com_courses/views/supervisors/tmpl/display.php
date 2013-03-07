@@ -65,7 +65,8 @@ foreach ($roles as $key => $role)
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 						<input type="hidden" name="tmpl" value="component" />
-						<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
+						<input type="hidden" name="section" value="<?php echo $this->model->section()->get('id'); ?>" />
+						<input type="hidden" name="offering" value="<?php echo $this->model->get('id'); ?>" />
 						<input type="hidden" name="task" value="add" />
 
 						<input type="submit" value="<?php echo JText::_('Add'); ?>" />
@@ -84,7 +85,8 @@ foreach ($roles as $key => $role)
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 						<input type="hidden" name="tmpl" value="component" />
-						<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
+						<input type="hidden" name="section" value="<?php echo $this->model->section()->get('id'); ?>" />
+						<input type="hidden" name="offering" value="<?php echo $this->model->get('id'); ?>" />
 						<input type="hidden" name="task" id="task" value="remove" />
 						
 						<input type="submit" name="action" value="<?php echo JText::_('COM_COURSES_MEMBER_REMOVE'); ?>" />
@@ -95,7 +97,7 @@ foreach ($roles as $key => $role)
 <?php
 		ximport('Hubzero_User_Helper');
 
-		$managers = $this->model->members(array('role' => '!student'));
+		$managers = $this->model->members(array('student' => 0), true);
 
 		$i = 0;
 			foreach ($managers as $manager)
@@ -108,7 +110,9 @@ foreach ($roles as $key => $role)
 ?>
 				<tr>
 					<td>
+						<input type="hidden" name="entries[<?php echo $i; ?>][course_id]" value="<?php echo $this->model->get('course_id'); ?>" />
 						<input type="hidden" name="entries[<?php echo $i; ?>][offering_id]" value="<?php echo $this->model->get('id'); ?>" />
+						<input type="hidden" name="entries[<?php echo $i; ?>][section_id]" value="<?php echo $this->model->section()->get('id'); ?>" />
 						<input type="hidden" name="entries[<?php echo $i; ?>][user_id]" value="<?php echo $u->get('id'); ?>" />
 						<input type="checkbox" name="entries[<?php echo $i; ?>][select]" value="<?php echo $u->get('id'); ?>" />
 					</td>
