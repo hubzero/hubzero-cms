@@ -393,7 +393,7 @@ foreach ($this->results as $category)
 	$k++;
 }
 if (!$foundresults) {
-	$html .= '<p class="waring">' . JText::_('COM_TAGS_NO_RESULTS') . '</p>';
+	$html .= '<p class="warning">' . JText::_('COM_TAGS_NO_RESULTS') . '</p>';
 }
 echo $html;
 ?>
