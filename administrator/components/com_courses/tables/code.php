@@ -48,63 +48,14 @@ class CoursesTableCourse extends JTable
 	 * 
 	 * @var integer
 	 */
-	var $alias    = NULL;
+	var $section_id = NULL;
 
 	/**
-	 * int(11)
-	 * 
-	 * @var integer
-	 */
-	var $group_id = NULL;
-
-	/**
-	 * varchar(50)
+	 * varchar(10)
 	 * 
 	 * @var string
 	 */
-	var $title = NULL;
-
-	/**
-	 * text
-	 * 
-	 * @var string
-	 */
-	var $state = NULL;
-
-	/**
-	 * int(11)
-	 * 
-	 * @var integer
-	 */
-	var $type = NULL;
-
-	/**
-	 * int(11)
-	 * 
-	 * @var integer
-	 */
-	var $access = NULL;
-
-	/**
-	 * int(11)
-	 * 
-	 * @var integer
-	 */
-	var $blurb = NULL;
-
-	/**
-	 * int(11)
-	 * 
-	 * @var integer
-	 */
-	var $description = NULL;
-
-	/**
-	 * int(11)
-	 * 
-	 * @var integer
-	 */
-	var $logo = NULL;
+	var $code = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
@@ -114,18 +65,25 @@ class CoursesTableCourse extends JTable
 	var $created = NULL;
 
 	/**
-	 * datetime(0000-00-00 00:00:00)
-	 * 
-	 * @var string
-	 */
-	var $created_by = NULL;
-
-	/**
 	 * int(11)
 	 * 
 	 * @var integer
 	 */
-	var $params = NULL;
+	var $created_by = NULL;
+
+	/**
+	 * datetime(0000-00-00 00:00:00)
+	 * 
+	 * @var string
+	 */
+	var $expires = NULL;
+
+	/**
+	 * tinyint(2)
+	 * 
+	 * @var integer
+	 */
+	var $redeemed = NULL;
 
 	/**
 	 * Constructor
@@ -135,77 +93,7 @@ class CoursesTableCourse extends JTable
 	 */
 	public function __construct(&$db)
 	{
-		parent::__construct('#__courses', 'id', $db);
-	}
-
-	/**
-	 * Method to compute the default name of the asset.
-	 * The default name is in the form table_name.id
-	 * where id is the value of the primary key of the table.
-	 *
-	 * @return  string
-	 *
-	 * @since   11.1
-	 */
-	protected function _getAssetName()
-	{
-		$k = $this->_tbl_key;
-		return 'com_courses.course.' . (int) $this->$k;
-	}
-
-	/**
-	 * Method to return the title to use for the asset table.
-	 *
-	 * @return  string
-	 *
-	 * @since   11.1
-	 */
-	protected function _getAssetTitle()
-	{
-		return $this->title;
-	}
-
-	/**
-	 * Get the parent asset id for the record
-	 *
-	 * @param   JTable   $table  A JTable object for the asset parent.
-	 * @param   integer  $id     The id for the asset
-	 *
-	 * @return  integer  The id of the asset's parent
-	 *
-	 * @since   11.1
-	 */
-	protected function _getAssetParentId($table = null, $id = null)
-	{
-		// Initialise variables.
-		$assetId = null;
-		$db = $this->getDbo();
-
-		if ($assetId === null) 
-		{
-			// Build the query to get the asset id for the parent category.
-			$query	= $db->getQuery(true);
-			$query->select('id');
-			$query->from('#__assets');
-			$query->where('name = ' . $db->quote('com_courses'));
-
-			// Get the asset id from the database.
-			$db->setQuery($query);
-			if ($result = $db->loadResult()) 
-			{
-				$assetId = (int) $result;
-			}
-		}
-
-		// Return the asset id.
-		if ($assetId) 
-		{
-			return $assetId;
-		} 
-		else 
-		{
-			return parent::_getAssetParentId($table, $id);
-		}
+		parent::__construct('#__courses_offering_section_codes', 'id', $db);
 	}
 
 	/**
@@ -215,26 +103,21 @@ class CoursesTableCourse extends JTable
 	 */
 	public function check()
 	{
-		$this->title = trim($this->title);
-
-		if (!$this->title) 
+		$this->section_id = intval($this->section_id);
+		if (!$this->section_id) 
 		{
-			$this->setError(JText::_('Please provide a title.'));
+			$this->setError(JText::_('Please provide a section.'));
 			return false;
 		}
 
-		if (!$this->alias)
+		$this->code = trim($this->code);
+		if (!$this->code) 
 		{
-			$this->alias = str_replace(' ', '_', strtolower($this->title));
-		}
-		$this->alias = preg_replace("/[^a-zA-Z0-9_]/", '', $this->alias);
-		if (is_numeric($this->alias) 
-		 && intval($this->alias) == $this->alias 
-		 && $this->alias >= 0)
-		{
-			$this->setError(JText::_('Invalid alias.'));
+			$this->setError(JText::_('Please provide a code.'));
 			return false;
 		}
+
+		$this->redeemed = intval($this->redeemed);
 
 		if (!$this->id)
 		{
@@ -242,39 +125,19 @@ class CoursesTableCourse extends JTable
 			$this->created = date('Y-m-d H:i:s', time());
 			$this->created_by = $juser->get('id');
 		}
-		return true;
-	}
 
-	/**
-	 * Save changes
-	 * 
-	 * @return     boolean
-	 */
-	/*public function save()
-	{
-		$this->setError('You\'re doing it wrong!');
-		return false;
-	}
-	
-	/**
-	 * Insert or Update the object
-	 * 
-	 * @return     boolean
-	 */
-	/*public function store()
-	{
-		$this->setError('You\'re doing it wrong!');
-		return false;
+		return true;
 	}
 
 	/**
 	 * Populate the current object with a database record if found
 	 * Accepts either an alias or an ID
 	 * 
-	 * @param      mixed $oid Unique ID or alias of object to retrieve
+	 * @param      mixed   $oid        Unique ID or code to retrieve
+	 * @param      integer $section_id Unique section ID
 	 * @return     boolean True on success
 	 */
-	public function load($oid=NULL)
+	public function load($oid=NULL, $section_id=NULL)
 	{
 		if (empty($oid)) 
 		{
@@ -286,7 +149,7 @@ class CoursesTableCourse extends JTable
 			return parent::load($oid);
 		}
 
-		$sql  = "SELECT * FROM $this->_tbl WHERE `alias`=" . $this->_db->Quote($oid) . " LIMIT 1";
+		$sql  = "SELECT * FROM $this->_tbl WHERE `code`=" . $this->_db->Quote($oid) . " AND `section_id`=" . $this->_db->Quote($section_id) . " LIMIT 1";
 		$this->_db->setQuery($sql);
 		if ($result = $this->_db->loadAssoc()) 
 		{
@@ -311,15 +174,17 @@ class CoursesTableCourse extends JTable
 
 		$where = array();
 
-		if (isset($filters['state'])) 
+		if (isset($filters['section_id'])) 
 		{
-			$where[] = "c.state=" . $this->_db->Quote($filters['state']);
+			$where[] = "c.section_id=" . $this->_db->Quote($filters['section_id']);
 		}
-
+		if (isset($filters['created_by'])) 
+		{
+			$where[] = "c.created_by=" . $this->_db->Quote($filters['created_by']);
+		}
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
-			$where[] = "(LOWER(c.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 
-					OR LOWER(c.alias) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
+			$where[] = "(LOWER(c.code) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
 		}
 
 		if (count($where) > 0)
@@ -332,7 +197,7 @@ class CoursesTableCourse extends JTable
 		{
 			if (!isset($filters['sort']) || !$filters['sort']) 
 			{
-				$filters['sort'] = 'title';
+				$filters['sort'] = 'expires';
 			}
 			if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
 			{
@@ -350,7 +215,7 @@ class CoursesTableCourse extends JTable
 	 * @param      array $filters Filters to construct query from
 	 * @return     integer
 	 */
-	public function getCount($filters=array())
+	public function count($filters=array())
 	{
 		$filters['limit'] = 0;
 
@@ -366,7 +231,7 @@ class CoursesTableCourse extends JTable
 	 * @param      array $filters Filters to construct query from
 	 * @return     array
 	 */
-	public function getRecords($filters=array())
+	public function find($filters=array())
 	{
 		$query = "SELECT c.*" . $this->_buildQuery($filters);
 

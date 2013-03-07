@@ -91,11 +91,12 @@ function submitbutton(pressbutton)
 				<th scope="col"><?php echo JText::_('Starts'); ?></th>
 				<th scope="col"><?php echo JText::_('Ends'); ?></th>
 				<th scope="col"><?php echo JText::_('Students'); ?></th>
+				<th scope="col"><?php echo JText::_('Codes'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="10"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="8"><?php echo $this->pageNav->getListFooter(); ?></td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -158,6 +159,9 @@ foreach ($this->rows as $row)
 						</a>
 						<?php } ?>
 					<?php } ?>
+				</td>
+				<td>
+					0 of 0 redeemed
 				</td>
 			</tr>
 <?php

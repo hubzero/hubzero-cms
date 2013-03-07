@@ -435,3 +435,21 @@ CREATE TABLE `jos_courses_units` (
   PRIMARY KEY (`id`),
   KEY `idx_offering_id` (`offering_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+
+# Dump of table jos_courses_offering_section_codes
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `jos_courses_offering_section_codes`;
+
+CREATE TABLE `jos_courses_offering_section_codes` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `section_id` int(11) NOT NULL DEFAULT '0',
+  `code` varchar(10) NOT NULL DEFAULT '',
+  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT '0',
+  `expires` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `redeemed` tinyint(2) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
