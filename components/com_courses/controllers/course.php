@@ -166,7 +166,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 			return;
 		}
 
-		$this->view->wikiconfig = array(
+		/*$this->view->wikiconfig = array(
 			'option'   => $this->_option,
 			'scope'    => '',
 			'pagename' => $this->course->get('alias'),
@@ -176,7 +176,7 @@ class CoursesControllerCourse extends Hubzero_Controller
 		);
 
 		ximport('Hubzero_Wiki_Parser');
-		$this->view->parser = Hubzero_Wiki_Parser::getInstance();
+		$this->view->parser = Hubzero_Wiki_Parser::getInstance();*/
 
 		// Push some needed styles to the template
 		// Pass in course type to include special css for paying courses
@@ -190,6 +190,22 @@ class CoursesControllerCourse extends Hubzero_Controller
 
 		// Build pathway
 		$this->_buildPathway();
+
+		$this->view->active = JRequest::getVar('active', 'overview');
+
+		JPluginHelper::importPlugin('courses');
+		$dispatcher =& JDispatcher::getInstance();
+
+		$this->view->cats = $dispatcher->trigger('onCourseViewAreas', array(
+				$this->course
+			)
+		);
+
+		$this->view->sections = $dispatcher->trigger('onCourseView', array(
+				$this->course,
+				$this->view->active
+			)
+		);
 
 		$this->view->course        = $this->course;
 		$this->view->user          = $this->juser;

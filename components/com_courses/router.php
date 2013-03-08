@@ -166,9 +166,10 @@ function CoursesParseRoute($segments)
 		switch ($segments[1])
 		{
 			case 'overview':
-			case 'discussions':
-			case 'calendar':
-			case 'messages':
+			case 'reviews':
+			case 'offerings':
+				$vars['active'] = $segments[1];
+			/*case 'messages':
 			case 'enrollment':
 			case 'syllabus':
 				if (!isset($vars['offering']) && isset($vars['gid']))
@@ -184,7 +185,7 @@ function CoursesParseRoute($segments)
 						$vars['active'] = $segments[1];
 						$vars['controller'] = 'offering';
 					}
-				}
+				}*/
 			break;
 
 			case 'edit':

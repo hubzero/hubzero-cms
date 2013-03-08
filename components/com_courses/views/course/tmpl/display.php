@@ -57,22 +57,59 @@ $database =& JFactory::getDBO();
 <?php } else {*/ ?>
 		<p><a class="add btn">Add to cart</a></p>
 <?php //} ?>
-		<p>Rating distribution</p>
-		<ul>
-			<li>5 star</li>
-			<li>4 star</li>
-			<li>3 star</li>
-			<li>2 star</li>
-			<li>1 star</li>
-		</ul>
+		
+		<?php
+		if ($this->sections)
+		{
+			foreach ($this->sections as $section)
+			{
+				if ($section['metadata'] != '') 
+				{
+					echo $section['metadata'];
+				}
+			}
+		}
+		?>
 	</div>
 	
 	<div class="subject">
 		<div id="sub-menu">
 			<ul>
-				<li id="sm-1" class="active"><a class="tab" href="#"><span>Overview</span></a></li>
-				<li id="sm-3"><a class="tab" href="#"><span>Reviews</span></a></li>
-				<li id="sm-2"><a class="tab" href="#"><span>Past Offerings</span></a></li>
+<?php
+if ($this->cats)
+{
+	$i = 1;
+	foreach ($this->cats as $cat)
+	{
+		$name = key($cat);
+		if ($name != '') 
+		{
+			$url = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=' . $name);
+
+			if (strtolower($name) == $this->active) 
+			{
+				$app =& JFactory::getApplication();
+				$pathway =& $app->getPathway();
+				$pathway->addItem($cat[$name], $url);
+
+				if ($this->active != 'overview') 
+				{
+					$document =& JFactory::getDocument();
+					$document->setTitle($document->getTitle() . ': ' . $cat[$name]);
+				}
+			}
+?>
+				<li id="sm-<?php echo $i; ?>"<?php echo (strtolower($name) == $this->active) ? ' class="active"' : ''; ?>>
+					<a class="tab" rel="<?php echo $name; ?>" href="<?php echo $url; ?>">
+						<span><?php echo $this->escape($cat[$name]); ?></span>
+					</a>
+				</li>
+<?php
+			$i++;
+		}
+	}
+}
+?>
 			</ul>
 		</div><!-- / #sub-menu -->
 
@@ -86,8 +123,29 @@ $database =& JFactory::getDBO();
 <?php
 		//$gt = new CoursesTags($database);
 		//echo $gt->get_tag_cloud(0,0,$this->course->get('gidNumber'));
-
-		echo $this->parser->parse(stripslashes($this->course->get('description')), $this->wikiconfig);
+	if ($this->sections)
+	{
+		$k = 0;
+		foreach ($this->sections as $section)
+		{
+			if ($section['html'] != '') 
+			{
+				/*$cls  = ($c) ? $c . ' ' : '';
+				//if (key($cats[$k]) != $active) 
+				if ($this->section['area'] != $this->active)
+				{
+					$cls .= ($h) ? $h . ' ' : '';
+				}*/
+?>
+				<div class="inner-section" id="<?php echo $section['area']; ?>-section">
+					<?php echo $section['html']; ?>
+				</div>
+<?php 
+			}
+			$k++;
+		}
+	}
+		/* echo $this->parser->parse(stripslashes($this->course->get('description')), $this->wikiconfig);
 ?>
 	<table>
 		<thead>
@@ -138,6 +196,7 @@ else
 }
 ?>
 		</tbody>
-	</table>
+	</table> */ ?>
+
 	</div>
 </div><!-- /.innerwrap -->
