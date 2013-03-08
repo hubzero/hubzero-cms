@@ -34,7 +34,8 @@ defined('_JEXEC') or die('Restricted access');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'section.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'sectiondate.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'section' . DS . 'code.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'section' . DS . 'date.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'member.php');
 
 /**
@@ -521,19 +522,65 @@ class CoursesModelSection extends CoursesModelAbstract
 	}
 
 	/**
+	 * Get a list of units for an offering
+	 *   Accepts either a numeric array index or a string [id, name]
+	 *   If index, it'll return the entry matching that index in the list
+	 *   If string, it'll return either a list of IDs or names
+	 * 
+	 * @param      array   $filters Filters to build query from
+	 * @param      boolean $clear   Force a new dataset?
+	 * @return     mixed
+	 */
+	public function codes($filters=array(), $clear=false)
+	{
+		if (!isset($filters['section_id']))
+		{
+			$filters['section_id'] = (int) $this->get('id');
+		}
+
+		if (isset($filters['count']) && $filters['count'])
+		{
+			$tbl = new CoursesTableSectionCode($this->_db);
+
+			return $tbl->count($filters);
+		}
+
+		if (!isset($this->_dates) || !is_a($this->_dates, 'CoursesModelIterator') || $clear)
+		{
+			$tbl = new CoursesTableSectionCode($this->_db);
+
+			if (($results = $tbl->find($filters)))
+			{
+				foreach ($results as $key => $result)
+				{
+					$results[$key] = new CoursesModelSectionCode($result);
+				}
+			}
+			else
+			{
+				$results = array();
+			}
+
+			$this->_dates = new CoursesModelIterator($results);
+		}
+
+		return $this->_dates;
+	}
+
+	/**
 	 * Generate a coupon code
 	 *
 	 * @return    string
 	 */
 	public function generateCode()
 	{
-		$chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'; //0123456789
+		$chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 		$res = '';
 		for ($i = 0; $i < 10; $i++) 
 		{
 			$res .= $chars[mt_rand(0, strlen($chars)-1)];
 		}
-		return $res . $this->get('id');
+		return $res;
 	}
 
 	/**

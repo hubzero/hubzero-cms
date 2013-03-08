@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Courses table
  */
-class CoursesTableCourse extends JTable
+class CoursesTableSectionCode extends JTable
 {
 	/**
 	 * int(11) Primary key
@@ -79,11 +79,18 @@ class CoursesTableCourse extends JTable
 	var $expires = NULL;
 
 	/**
-	 * tinyint(2)
+	 * datetime(0000-00-00 00:00:00)
+	 * 
+	 * @var string
+	 */
+	var $redeemed = NULL;
+
+	/**
+	 * int(11)
 	 * 
 	 * @var integer
 	 */
-	var $redeemed = NULL;
+	var $redeemed_by = NULL;
 
 	/**
 	 * Constructor
@@ -174,6 +181,10 @@ class CoursesTableCourse extends JTable
 
 		$where = array();
 
+		if (isset($filters['redeemed']) && $filters['redeemed']) 
+		{
+			$where[] = "c.redeemed_by > 0";
+		}
 		if (isset($filters['section_id'])) 
 		{
 			$where[] = "c.section_id=" . $this->_db->Quote($filters['section_id']);
