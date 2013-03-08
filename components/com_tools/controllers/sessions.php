@@ -429,7 +429,13 @@ class ToolsControllerSessions extends Hubzero_Controller
 		$status = $this->middleware("start user=" . $this->juser->get('username') . " ip=" . $app->ip . " app=" . $app->name . " version=" . $app->version, $output);
 		if ($this->getError())
 		{
-			JError::raiseError(500, $this->getError());
+			//JError::raiseError(500, $this->getError());
+			//return;
+			$this->setRedirect(
+				JRoute::_($this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount')),
+				JText::_('Failed to invoke session'),
+				'error'
+			);
 			return;
 		}
 		$app->sess = $output->session;
@@ -666,7 +672,9 @@ class ToolsControllerSessions extends Hubzero_Controller
 		if (!$app->sess) 
 		{
 			$this->setRedirect(
-				JRoute::_($this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount'))
+				JRoute::_($this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount')),
+				JText::_('COM_TOOLS_ERROR_SESSION_NOT_FOUND'),
+				'error'
 			);
 			return;
 		}
