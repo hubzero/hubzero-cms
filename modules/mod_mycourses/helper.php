@@ -95,50 +95,50 @@ class modMyCourses
 		$db =& JFactory::getDBO();
 
 		// Get all groups the user is a member of
-		$query1 = "SELECT c.id, c.alias, c.title, c.created AS enrolled, NULL AS starts, NULL AS ends, 'manager' AS role, NULL AS offering_alias, NULL AS offering_title, NULL AS section_alias, NULL AS section_title
+		/*$query1 = "SELECT c.id, c.alias, c.title, c.created AS enrolled, NULL AS starts, NULL AS ends, 'manager' AS role, NULL AS offering_alias, NULL AS offering_title, NULL AS section_alias, NULL AS section_title
 					FROM #__courses AS c 
 					JOIN #__courses_managers AS m ON m.course_id=c.id
-					WHERE m.user_id=" . $uid;
+					WHERE m.user_id=" . $uid;*/
 
 		$query2 = "SELECT c.id, c.alias, c.title, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title
 					FROM #__courses AS c 
-					JOIN #__courses_offerings AS o ON o.course_id=c.id
-					JOIN #__courses_offering_sections AS s on s.offering_id=o.id
-					JOIN #__courses_offering_members AS m ON m.section_id=s.id
-					JOIN #__courses_roles AS r ON r.id=m.role_id
-					WHERE m.user_id=" . $uid . " AND s.id=m.section_id AND r.alias='manager'";
+					JOIN #__courses_members AS m ON m.course_id=c.id
+					LEFT JOIN #__courses_offerings AS o ON o.course_id=m.offering_id
+					LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
+					LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
+					WHERE m.user_id=" . $uid . " AND m.student=0 AND r.alias='manager'";
 
 		$query3 = "SELECT c.id, c.alias, c.title, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title
 					FROM #__courses AS c 
-					JOIN #__courses_offerings AS o ON o.course_id=c.id
-					JOIN #__courses_offering_sections AS s on s.offering_id=o.id
-					JOIN #__courses_offering_members AS m ON m.section_id=s.id
-					JOIN #__courses_roles AS r ON r.id=m.role_id
-					WHERE m.user_id=" . $uid . " AND s.id=m.section_id AND r.alias='instructor'";
+					JOIN #__courses_members AS m ON m.course_id=c.id
+					LEFT JOIN #__courses_offerings AS o ON o.course_id=m.offering_id
+					LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
+					LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
+					WHERE m.user_id=" . $uid . " AND m.student=0 AND r.alias='instructor'";
 
 		$query4 = "SELECT c.id, c.alias, c.title, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title
 					FROM #__courses AS c 
-					JOIN #__courses_offerings AS o ON o.course_id=c.id
-					JOIN #__courses_offering_sections AS s on s.offering_id=o.id
-					JOIN #__courses_offering_members AS m ON m.section_id=s.id
-					JOIN #__courses_roles AS r ON r.id=m.role_id
-					WHERE m.user_id=" . $uid . " AND s.id=m.section_id AND r.alias='student' AND c.state=1";
+					JOIN #__courses_members AS m ON m.course_id=c.id
+					LEFT JOIN #__courses_offerings AS o ON o.course_id=m.offering_id
+					LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
+					LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
+					WHERE m.user_id=" . $uid . " AND m.student=1 AND c.state=1";
 
 		$query5 = "SELECT c.id, c.alias, c.title, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title
 					FROM #__courses AS c 
-					JOIN #__courses_offerings AS o ON o.course_id=c.id
-					JOIN #__courses_offering_sections AS s on s.offering_id=o.id
-					JOIN #__courses_offering_members AS m ON m.section_id=s.id
-					JOIN #__courses_roles AS r ON r.id=m.role_id
-					WHERE m.user_id=" . $uid . " AND s.id=m.section_id AND r.alias='ta' AND c.state=1";
+					JOIN #__courses_members AS m ON m.course_id=c.id
+					LEFT JOIN #__courses_offerings AS o ON o.course_id=m.offering_id
+					LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
+					LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
+					WHERE m.user_id=" . $uid . " AND m.student=0 AND r.alias='ta' AND c.state=1";
 
 		switch ($type)
 		{
 			case 'all':
-				$query = "( $query1 ) UNION ( $query2 ) UNION ( $query3 ) UNION ( $query4 ) ORDER BY title ASC";
+				$query = "( $query2 ) UNION ( $query3 ) UNION ( $query4 ) ORDER BY title ASC"; //( $query1 ) UNION 
 			break;
 			case 'manager':
-				$query = "( $query1 ) UNION ( $query2 )";
+				$query = $query2; //"( $query1 ) UNION ( $query2 )";
 			break;
 			case 'instructor':
 				$query = $query3;
