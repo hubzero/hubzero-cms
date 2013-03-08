@@ -2,6 +2,26 @@ jQuery(function($) {
 	var pages = $('#pages li'),
 		tabs = $('#page-tabs li a'),
 		currentPage = $('#page-1');
+		// @FIXME: offset hack for iframe (i think), although could be browser-specific issue (chrome?)
+		//         offset().top not getting set correctly within iframe in chrome
+		var iframeHack = 0;
+
+	// Register some changes based on whether we're in an iframe or not
+	if(window.location != window.parent.location) {
+		// Move Pagination, save and done (navigation bar) if in iframe
+		$('.navbar').css({
+			'position': 'fixed',
+			'bottom': 0,
+			'left': 0,
+			'right': 0,
+			'height': 60,
+			'background': '#222'
+		});
+		$('.navbar .question-info').css('color', '#FFF');
+
+		iframeHack = 20;
+	}
+
 	// pagination
 	tabs.click(function(evt) {
 		pages.hide();
@@ -17,6 +37,7 @@ jQuery(function($) {
 	var place = $('#place-inputs'),
 		group = $('#group-inputs'),
 		basePos = currentPage.offset();
+		basePos.top -= iframeHack;
 
 	var groupBox = null, groupOrigin = {}, x, y;
 	// start drawing the box, and save one of its corners
@@ -30,10 +51,7 @@ jQuery(function($) {
 	});
 	// modify the box to extend from the current cursor position to its origin point
 	pages.bind('mousemove', function(evt) {
-		// @FIXME: offset hack for iframe (i think), although could be browser-specific issue (chrome?)
-		//         offset().top not getting set correctly within iframe in chrome
-		var iframeHack = (window.location != window.parent.location) ? 20 : 0;
-		x = evt.pageX - basePos.left, y = evt.pageY - basePos.top + iframeHack;
+		x = evt.pageX - basePos.left, y = evt.pageY - basePos.top;
 		if (groupBox) {
 			groupBox.css({ 'left': Math.min(x, groupOrigin.x), 'top': Math.min(y, groupOrigin.y), 'width': Math.abs(x - groupOrigin.x), 'height': Math.abs(y - groupOrigin.y)});
 		}
@@ -41,6 +59,11 @@ jQuery(function($) {
 
 	var remover = function(evt) {
 		evt.preventDefault();
+		// decrement question count
+		var questionsTotal = parseInt($('.questions-total').html(), 10);
+		$('.questions-total').html(--questionsTotal);
+		var questionsUnSaved = parseInt($('.questions-unsaved').html(), 10);
+		$('.questions-unsaved').html(++questionsUnSaved);
 		$(evt.target.parentNode).remove();
 	};
 
@@ -49,7 +72,7 @@ jQuery(function($) {
 		prnt.parent().children('div').removeClass('selected');
 		prnt.addClass('selected');
 	};
-	
+
 	var groupId = 0;
 	var addGroup = function(evt) {
 		var marker = $(evt.target);
@@ -109,10 +132,16 @@ jQuery(function($) {
 		var remove = $('<button class="remove">x</button>');
 		remove.click(remover);
 		marker.append(remove);
-		
+
 		// remove selection box
 		groupBox.remove();
 		groupBox = null;
+
+		// increment question count
+		var questionsTotal = parseInt($('.questions-total').html(), 10);
+		$('.questions-total').html(++questionsTotal);
+		var questionsUnSaved = parseInt($('.questions-unsaved').html(), 10);
+		$('.questions-unsaved').html(++questionsUnSaved);
 
 		marker.click(addGroup);
 	});
@@ -190,6 +219,7 @@ jQuery(function($) {
 					}, 3000);
 				}
 			}, 'JSON');
+			$('.questions-unsaved').html(0);
 		}
 	});
 });

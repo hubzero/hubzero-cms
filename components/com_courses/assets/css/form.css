@@ -18,7 +18,6 @@
 }
 #page-tabs {
 	clear: left;
-	margin-left: 0;
 }
 #page-tabs li {
 	display: inline-block;
@@ -86,13 +85,12 @@ input.placeholder {
 	position: absolute;
 }
 .selected {
-	background: #88FF70;	
+	background: #88FF70;
 }
 .error {
 	display: none;
 }
 .tablesorter button {
-	display: inline;
 	float: right;
 	font-size: x-small;
 }
@@ -102,11 +100,11 @@ input.placeholder {
 .tablesorter tr:hover td {
 	background: #f0f0f0;
 }
-.buttons {
+.navbar {
 	margin-top: 20px;
 }
-.buttons a {
-	width: 100%;
+.navbar a {
+	display: block;
 	border: 1px solid #888;
 	border-radius: 4px;
 	color: #fff;
@@ -128,15 +126,29 @@ input.placeholder {
 	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#666666,endColorstr=#333333);
 	-ms-filter:"progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#666666, endColorstr=#333333)";
 }
-.button a:hover {
+.navbar ol {
+	float: left;
+	margin: 10px;
+}
+.navbar div {
+	float: right;
+	margin: 12px 2px;
+}
+.navbar a:hover {
 	-webkit-box-shadow: inset 0 2px 7px #999;
 	-moz-box-shadow: inset 0 2px 7px #999;
 	box-shadow: inset 0 2px 7px #999;
 }
-.button a:active {
+.navbar a:active {
 	-webkit-box-shadow: inset 1px 2px 3px #111;
 	-moz-box-shadow: inset 1px 2px 3px #111;
 	box-shadow: inset 0 2px 2px #111;
+}
+.navbar .question-info {
+	margin-right: 20px;
+}
+.navbar .question-info p {
+	margin: 0.7em 0;
 }
 #saved-notification {
 	position: fixed;
@@ -235,10 +247,12 @@ input[type=number] {
 	position: static;
 }
 #page-tabs .current {
-	color: #000;
+	color: #999;
 	font-weight: bold;
 	text-decoration: none;
-	box-shadow: inset 0 0 7px #AAA;
+	box-shadow: none;
+	cursor: default;
+	background: #000;
 }
 .answer-marker {
 	position: absolute;

@@ -46,7 +46,7 @@ class VideoFileAssetHandler extends FileAssetHandler
 	 **/
 	protected static $info = array(
 			'action_message' => 'As an HTML5/HUBpresenter Video',
-			'responds_to'    => array('zip'),
+			'responds_to'    => array('zip', 'mp4', 'mov', 'm4v'),
 		);
 
 	/**
@@ -73,7 +73,7 @@ class VideoFileAssetHandler extends FileAssetHandler
 			$asset = $return_info['assets'];
 
 			// Exapand zip file if applicable - we're assuming zips are hubpresenter videos
-			if(!array_key_exists('error', $asset) && $asset['asset_ext'] == 'zip')
+			if($asset['asset_ext'] == 'zip')
 			{
 				// Set the timout so that PHP execution doesn't run out of time
 				set_time_limit(60);
