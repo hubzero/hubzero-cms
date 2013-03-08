@@ -178,7 +178,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 		{
 			foreach ($this->getErrors() as $error)
 			{
-				$this->setError($error);
+				$this->view->setError($error);
 			}
 		}
 		// Set messages to view
