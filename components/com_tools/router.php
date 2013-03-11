@@ -62,11 +62,11 @@ function toolsBuildRoute(&$query)
 		$segments[] = $query['version'];
 		unset($query['version']);
 	}
-	if (isset($query['sess'])) 
+	/*if (isset($query['sess'])) 
 	{
 		$segments[] = $query['sess'];
 		unset($query['sess']);
-	}
+	}*/
 	if (isset($query['return']) && $query['return'] == '') 
 	{
 		unset($query['return']);
