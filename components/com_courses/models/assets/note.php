@@ -56,7 +56,14 @@ class NoteAssetHandler extends ContentAssetHandler
 	 **/
 	public function create()
 	{
-		$this->asset['type'] = 'note';
+		$this->asset['title'] = JRequest::getString('title', '');
+		$this->asset['type'] = JRequest::getWord('style', 'note');
+
+		// Make sure content is provided
+		if (!JRequest::getVar('content', false))
+		{
+			return array('error' => 'Content body is required!');
+		}
 
 		// Return info
 		return parent::create();

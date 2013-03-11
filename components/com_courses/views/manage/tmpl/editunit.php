@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$unit         = $this->course->offering->unit($this->scope_id);
+$unit         = $this->course->offering()->unit($this->scope_id);
 $publish_up   = (!is_null($unit->get('publish_up')) && $unit->get('publish_up') != '0000-00-00')? $unit->get('publish_up') : '';
 $publish_down = (!is_null($unit->get('publish_down')) && $unit->get('publish_down') != '0000-00-00')? $unit->get('publish_down') : '';
 ?>

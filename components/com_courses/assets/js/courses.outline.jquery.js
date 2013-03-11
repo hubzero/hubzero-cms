@@ -659,12 +659,13 @@ HUB.CoursesOutline = {
 
 	setupAuxAttach: function() {
 		var $ = this.jQuery;
+		var contentBox = $('.content-box');
 
 		// Add tooltips to attachment buttons
 		$('.aux-attachments a').tooltip();
 
 		// Add a click to show URL attach form
-		$('.unit').on('click', '.aux-attachments a:not(.browse-files)', function(e) {
+		$('.unit').on('click', '.aux-attachments a:not(.browse-files, .attach-note)', function (e) {
 			e.preventDefault();
 			$(this).siblings('.aux-attachments-form').find('.aux-attachments-content-label').html(e.originalEvent.target.title);
 			$(this).siblings('.aux-attachments-form').find('.input-type').val(e.originalEvent.target.className.replace(/attach-/, ""));
@@ -673,10 +674,68 @@ HUB.CoursesOutline = {
 		});
 
 		// Hide for on cancel click
-		$('.unit').on('click', '.aux-attachments .aux-attachments-cancel', function(e) {
+		$('.unit').on('click', '.aux-attachments .aux-attachments-cancel', function (e) {
 			e.preventDefault();
 			$(this).parents('form').fadeOut();
 			$(this).parents('form').find('.input-content').val('');
+		});
+
+		function contentBoxClose() {
+			contentBox.hide('slide', {'direction':'down'}, 500, function() {
+				$('.content-box-overlay').fadeOut(100);
+			});
+			contentBox.find('iframe').attr('src', '');
+		}
+
+		// Add close on escape
+		$(document).bind('keydown', function (e) {
+			if(e.which == 27) {
+				contentBoxClose();
+			}
+		});
+
+		// Add close on click of close button
+		$('.content-box-close').on('click', function() {
+			contentBoxClose();
+		});
+
+		$('.unit').on('click', '.aux-attachments a.attach-note', function (e) {
+			e.preventDefault();
+
+			var form       = $(this).siblings('.aux-attachments-form');
+			var src        = '/courses/'+form.find('input[name="course_id"]').val()+'/manage/'+form.find('input[name="offering"]').val();
+				src       += '?scope=wiki&scope_id='+form.find('input[name="scope_id"]').val()+'&tmpl=component';
+
+			contentBox.show('slide', {'direction':'down'}, 500, function () {
+				$(this).siblings('.content-box-overlay').fadeIn(100);
+				$(this).find('iframe').attr('src', src);
+			});
+		});
+
+		// Attach submit and cancel buttons
+		contentBox.find('iframe').load(function() {
+			var content = $(this).contents();
+			content.find('.wiki-cancel').click(function() {
+				contentBoxClose();
+			});
+
+			content.find('.wiki-edit-form').submit(function (e) {
+				e.preventDefault();
+
+				// Create ajax call to change info in the database
+				$.ajax({
+					url: $(this).attr('action'),
+					data: $(this).serializeArray(),
+					statusCode: {
+						// 201 created - this is returned by the standard asset upload
+						201: function (data, textStatus, jqXHR){
+							// Close box
+							contentBoxClose();
+							HUB.CoursesOutline.insertAssetInPage(data, $('#assetgroupitem_'+data.assets.assets.scope_id+' .assets-list'));
+						}
+					}
+				});
+			});
 		});
 
 		// Submit form
@@ -685,12 +744,11 @@ HUB.CoursesOutline = {
 
 			var form       = $(this).parents('form');
 			var assetslist = $(this).parents('.asset-group-item').find('.assets-list');
-			var data       = form.serialize();
 
 			// Create ajax call to change info in the database
 			$.ajax({
 				url: form.attr('action'),
-				data: data,
+				data: form.serialize(),
 				statusCode: {
 					// 201 created - this is returned by the standard asset upload
 					201: function(data, textStatus, jqXHR){
