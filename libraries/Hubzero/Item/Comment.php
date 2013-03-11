@@ -142,7 +142,19 @@ class Hubzero_Item_Comment extends JTable
 	 */
 	var $_uploadDir    = '/sites/comments';
 
+	/**
+	 * array
+	 * 
+	 * @var array
+	 */
 	var $attachmentNames = NULL;
+
+	/**
+	 * decimal(2,1)
+	 * 
+	 * @var integer
+	 */
+	var $rating      = NULL;
 
 	/**
 	 * Constructor
@@ -203,10 +215,10 @@ class Hubzero_Item_Comment extends JTable
 		// Check file attachment
 		$fieldName = 'commentFile'; 
 		if (!empty($_FILES[$fieldName])) 
-		{		
+		{
 			jimport('joomla.filesystem.file');
 			jimport('joomla.filesystem.folder');
-			
+
 			//any errors the server registered on uploading
 			$fileError = $_FILES[$fieldName]['error'];
 			if ($fileError > 0) 
@@ -214,22 +226,26 @@ class Hubzero_Item_Comment extends JTable
 				switch ($fileError) 
 				{
 					case 1:
-					$this->setError(JText::_('FILE TO LARGE THAN PHP INI ALLOWS'));
-					return false;
-			 
+						$this->setError(JText::_('FILE TO LARGE THAN PHP INI ALLOWS'));
+						return false;
+					break;
+
 					case 2:
-					$this->setError(JText::_('FILE TO LARGE THAN HTML FORM ALLOWS'));
-					return false;
-			 
+						$this->setError(JText::_('FILE TO LARGE THAN HTML FORM ALLOWS'));
+						return false;
+					break;
+
 					case 3:
-					$this->setError(JText::_('ERROR PARTIAL UPLOAD'));
-					return false;
-			 
+						$this->setError(JText::_('ERROR PARTIAL UPLOAD'));
+						return false;
+					break;
+
 					case 4:
-					return true;
+						return true;
+					break;
 				}
 			}
-			
+
 			//check for filesize
 			$fileSize = $_FILES[$fieldName]['size'];
 			if ($fileSize > 2000000)
@@ -237,17 +253,17 @@ class Hubzero_Item_Comment extends JTable
 				$this->setError(JText::_('FILE BIGGER THAN 2MB'));
 				return false;
 			}
-			 
+
 			//check the file extension is ok
 			$fileName = $_FILES[$fieldName]['name'];
 			$uploadedFileNameParts = explode('.', $fileName);
 			$uploadedFileExtension = array_pop($uploadedFileNameParts);
-			 
+
 			$validFileExts = explode(',', 'jpeg,jpg,png,gif');
-			 
+
 			//assume the extension is false until we know its ok
 			$extOk = false;
-			 
+
 			//go through every ok extension, if the ok extension matches the file extension (case insensitive)
 			//then the file extension is ok
 			foreach ($validFileExts as $key => $value)
@@ -257,36 +273,36 @@ class Hubzero_Item_Comment extends JTable
 					$extOk = true;
 				}
 			}
-			 
+
 			if ($extOk == false) 
 			{
 				$this->setError(JText::_('INVALID EXTENSION'));
 				return false;
 			}
-			
+
 			//the name of the file in PHP's temp directory that we are going to move to our folder
 			$fileTemp = $_FILES[$fieldName]['tmp_name'];
-			 
+
 			//lose any special characters in the filename
 			$fileName = preg_replace("/[^A-Za-z0-9.]/i", "-", $fileName);
-			 
+
 			//always use constants when making file paths, to avoid the possibilty of remote file inclusion
 			$uploadDir = $this->getUploadDir();
-					
+
 			// check if file exists -- rename if needed
 			$fileName = $this->checkFileName($uploadDir, $fileName);
-			
-			$uploadPath = $uploadDir.DS.$fileName;
-			
+
+			$uploadPath = $uploadDir . DS . $fileName;
+
 			if (!JFile::upload($fileTemp, $uploadPath)) 
 			{
 				$this->setError(JText::_('ERROR MOVING FILE'));
 				return false;
 			}
-			
+
 			$this->attachmentNames = array($fileName);
 		}
-	
+
 		return true;
 	}
 
@@ -347,7 +363,7 @@ class Hubzero_Item_Comment extends JTable
 			{
 				// delete old attachment
 				// find old file and remove it from file system
-				$sql = "SELECT filename FROM #__item_comment_files WHERE comment_id = {$this->id}";
+				$sql = "SELECT filename FROM #__item_comment_files WHERE comment_id =" . $this->_db->Quote($this->id);
 				$this->_db->setQuery($sql);
 				$fileName = $this->_db->loadResult();
 
@@ -358,11 +374,11 @@ class Hubzero_Item_Comment extends JTable
 					unlink($uploadDir . DS . $fileName);
 				}
 
-				$sql = "DELETE FROM #__item_comment_files WHERE comment_id = {$this->id}";
+				$sql = "DELETE FROM #__item_comment_files WHERE comment_id =" . $this->_db->Quote($this->id);
 				$this->_db->setQuery($sql);
 				$this->_db->query();
 
-				$sql = "INSERT INTO #__item_comment_files SET comment_id = {$this->id}, filename = '{$nm}'";
+				$sql = "INSERT INTO #__item_comment_files SET comment_id =" . $this->_db->Quote($this->id) . ", filename =" . $this->_db->Quote($nm);
 				$this->_db->setQuery($sql);
 				$this->_db->query();
 			}
@@ -379,7 +395,6 @@ class Hubzero_Item_Comment extends JTable
 	 */
 	public function getComments($item_type=NULL, $item_id=0, $parent=0, $limit=25, $start=0)
 	{
-		
 		if (!$item_type) 
 		{
 			$item_type = $this->item_type;
@@ -406,7 +421,7 @@ class Hubzero_Item_Comment extends JTable
 			$sql  = "SELECT c.*, u.name, v.vote, (c.positive - c.negative) AS votes, f.filename FROM $this->_tbl AS c ";
 			$sql .= "LEFT JOIN #__item_comment_files AS f ON f.comment_id=c.id ";
 			$sql .= "LEFT JOIN #__users AS u ON u.id=c.created_by ";
-			$sql .= "LEFT JOIN #__item_votes AS v ON v.item_id=c.id AND v.created_by=" . $juser->get('id') . " AND v.item_type='comment' ";
+			$sql .= "LEFT JOIN #__item_votes AS v ON v.item_id=c.id AND v.created_by=" . $this->_db->Quote($juser->get('id')) . " AND v.item_type='comment' ";
 		} 
 		else 
 		{
@@ -414,12 +429,12 @@ class Hubzero_Item_Comment extends JTable
 			$sql .= "LEFT JOIN #__item_comment_files AS f ON f.comment_id=c.id ";
 			$sql .= "LEFT JOIN #__users AS u ON u.id=c.created_by ";
 		}
-		$sql .= "WHERE c.item_type='$item_type' AND c.item_id=$item_id AND c.parent=$parent AND c.state IN (1, 3) ORDER BY created ASC LIMIT $start,$limit";
-		
+		$sql .= "WHERE c.item_type=" . $this->_db->Quote($item_type) . " AND c.item_id=" . $this->_db->Quote($item_id) . " AND c.parent=" . $this->_db->Quote($parent) . " AND c.state IN (1, 3) ORDER BY created ASC LIMIT $start,$limit";
+
 		$this->_db->setQuery($sql);
-		
+
 		//echo $this->_db->_sql; die;
-		
+
 		$rows = $this->_db->loadObjectList();
 		if ($rows && count($rows) > 0)
 		{
@@ -509,7 +524,7 @@ class Hubzero_Item_Comment extends JTable
 			return false;
 		}
 
-		$this->_db->setQuery("UPDATE $this->_tbl SET state=$state WHERE id=$oid");
+		$this->_db->setQuery("UPDATE $this->_tbl SET state=" . $this->_db->Quote($state) . " WHERE id=" . $this->_db->Quote($oid));
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -545,7 +560,7 @@ class Hubzero_Item_Comment extends JTable
 			$rows = array_map('intval', $rows);
 			$id = implode(',', $rows);
 
-			$this->_db->setQuery("UPDATE $this->_tbl SET state=$state WHERE parent IN ($id)");
+			$this->_db->setQuery("UPDATE $this->_tbl SET state=" . $this->_db->Quote($state) . " WHERE parent IN ($id)");
 			if (!$this->_db->query()) 
 			{
 				$this->setError($this->_db->getErrorMsg());
@@ -595,7 +610,7 @@ class Hubzero_Item_Comment extends JTable
 
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
-			$where[] = "LOWER(c.content) LIKE '%" . strtolower($filters['search']) . "%'";
+			$where[] = "LOWER(c.content) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'";
 		}
 
 		if (count($where) > 0)
@@ -659,5 +674,173 @@ class Hubzero_Item_Comment extends JTable
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
+	}
+
+	/**
+	 * Build query method
+	 * 
+	 * @param  array $filters
+	 * @return $query database query
+	 */
+	private function _buildQuery($filters=array())
+	{
+		$query = " FROM $this->_tbl AS r LEFT JOIN #__users AS u ON u.id=r.created_by";
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$query .= " LEFT JOIN #__groups AS a ON r.access=a.id";
+		}
+		else 
+		{
+			$query .= " LEFT JOIN #__viewlevels AS a ON r.access=a.id";
+		}
+
+		$where = array();
+		if (isset($filters['item_id']))
+		{
+			$where[] = "r.`item_id`=" . $this->_db->Quote($filters['item_id']);
+		}
+		if (isset($filters['item_type']))
+		{
+			$where[] = "r.`item_type`=" . $this->_db->Quote($filters['item_type']);
+		}
+		if (isset($filters['state']))
+		{
+			$where[] = "r.`state`=" . $this->_db->Quote($filters['state']);
+		}
+		if (isset($filters['access']))
+		{
+			$where[] = "r.`access`=" . $this->_db->Quote($filters['access']);
+		}
+		if (isset($filters['parent']))
+		{
+			$where[] = "r.`parent`=" . $this->_db->Quote($filters['parent']);
+		}
+		if (isset($filters['created_by']))
+		{
+			$where[] = "r.`created_by`=" . $this->_db->Quote($filters['created_by']);
+		}
+		if (isset($filters['search']) && $filters['search'])
+		{
+			$where[] = "LOWER(r.`content`) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'";
+		}
+
+		if (count($where) > 0)
+		{
+			$query .= " WHERE " . implode(" AND ", $where);
+		}
+
+		return $query;
+	}
+
+	/**
+	 * Get an object list of course units
+	 * 
+	 * @param  array $filters
+	 * @return object Return course units
+	 */
+	public function count($filters=array())
+	{
+		$query  = "SELECT COUNT(*) ";
+		$query .= $this->_buildquery($filters);
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadResult();
+	}
+
+	/**
+	 * Get an object list of course units
+	 * 
+	 * @param  array $filters
+	 * @return object Return course units
+	 */
+	public function find($filters=array())
+	{
+		$query  = "SELECT r.*, u.name";
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$query .= ", a.name AS access_level";
+		}
+		else 
+		{
+			$query .= ", a.title AS access_level";
+		}
+		$query .= $this->_buildquery($filters);
+
+		if (!isset($filters['sort']) || !$filters['sort'])
+		{
+			$filters['sort'] = 'created';
+		}
+		if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC')))
+		{
+			$filters['sort_Dir'] = 'ASC';
+		}
+		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+		if (!empty($filters['start']) && !empty($filters['limit']))
+		{
+			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+		}
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
+
+	/**
+	 * Get an object list of course units
+	 * 
+	 * @param  array $filters
+	 * @return object Return course units
+	 */
+	public function ratings($filters=array())
+	{
+		$query  = "SELECT r.rating";
+		$query .= $this->_buildquery($filters);
+
+		/*if (isset($filters['sort']) && $filters['sort'])
+		{
+			if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC')))
+			{
+				$filters['sort_Dir'] = 'ASC';
+			}
+			$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+		}
+		if (!empty($filters['start']) && !empty($filters['limit']))
+		{
+			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+		}*/
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
+
+	/**
+	 * Get an object list of course units
+	 * 
+	 * @param  array $filters
+	 * @return object Return course units
+	 */
+	public function hasRated($item_id, $item_type, $created_by)
+	{
+		if (!$item_id || !$item_type || !$created_by)
+		{
+			return false;
+		}
+
+		$filters = array(
+			'state' => 1,
+			'created_by' => $created_by,
+			'parent' => 0,
+			'item_id' => $item_id,
+			'item_type' => $item_type
+		);
+
+		$query  = "SELECT COUNT(*) ";
+		$query .= $this->_buildquery($filters);
+
+		$this->_db->setQuery($query);
+		if (($total = $this->_db->loadResult()))
+		{
+			return true;
+		}
+		return false;
 	}
 }
