@@ -22,57 +22,49 @@ if (!jq) {
 	var jq = $;
 }
 
+String.prototype.nohtml = function () {
+	if (this.indexOf('?') == -1) {
+		return this + '?no_html=1';
+	} else {
+		return this + '&no_html=1';
+	}
+	//return this;
+};
+
 HUB.Plugins.CoursesReviews = {
 	jQuery: jq,
 	
 	initialize: function() {
 		var $ = this.jQuery;
-		
+
 		// Reply to review or comment
 		$('.reply').each(function(i, item) {
-			$(item).on('click', function(e) {
-				if ($(this).attr('href').indexOf('login') == -1) {
-					e.preventDefault();
-
-					var f = $(this).parent().parent().find('.addcomment');
-					if (f.hasClass('hide')) {
-						f.removeClass('hide');
-					} else {
-						f.addClass('hide');
-					}
-				}
-			});
-		});
-		$('.commentarea').each(function(i, item) {
-			// Clear the default text
-			$(item).on('focus', function() {
-				if ($(this).val() == 'Enter your comments...') {
-					$(this).val('');
-				}
-			});
-		});
-		$('.cancelreply').each(function(i, item) {
-			$(item).on('click', function(e) {
+			$(item).on('click', function (e) {
 				e.preventDefault();
-				$($(this).parent().parent().parent().parent()).addClass('hide');
+
+				var frm = '#' + $(this).attr('rel');
+				if ($(frm).hasClass('hide')) {
+					$(frm).removeClass('hide');
+				} else {
+					$(frm).addClass('hide');
+				}
 			});
 		});
-		
+
+		$('.cancelreply').each(function(i, item) {
+			$(item).click(function (e) {
+				e.preventDefault();
+				$(this).closest('.addcomment').addClass('hide');
+			});
+		});
+
 		// review ratings
 		$('.vote-button').each(function(i, item) {
 			if ($(item).attr('href')) {
 				$(item).on('click', function (e) {
 					e.preventDefault();
 
-					href = $(this).attr('href');
-					if (href.indexOf('?') == -1) {
-						href += '?no_html=1';
-					} else {
-						href += '&no_html=1';
-					}
-					$(this).attr('href', href);
-
-					$.get($(this).attr('href'), {}, function(data) {
+					$.get($(this).attr('href').nohtml(), {}, function(data) {
 						$(item).closest('.voting').html(data);
 					});
 				});

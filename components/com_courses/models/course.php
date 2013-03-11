@@ -370,6 +370,19 @@ class CoursesModelCourse extends CoursesModelAbstract
 	}
 
 	/**
+	 * Get a list of instructors for a course
+	 * 
+	 * @param      array   $filters Filters to build query from
+	 * @param      boolean $clear   Force a new dataset?
+	 * @return     mixed
+	 */
+	public function instructors($filters=array(), $clear=true)
+	{
+		$filters['role'] = 'instructor';
+		return $this->managers($filters, $clear);
+	}
+
+	/**
 	 * Add one or more user IDs or usernames to the managers list
 	 *
 	 * @param     array $value List of IDs or usernames

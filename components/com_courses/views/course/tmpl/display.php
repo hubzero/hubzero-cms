@@ -31,9 +31,34 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$dateformat = '%d %b %Y';
+$timeformat = '%I:%M %p';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateformat = 'd M Y';
+	$timeformat = 'H:i p';
+	$tz = true;
+}
+
 //get objects
 $config   =& JFactory::getConfig();
 $database =& JFactory::getDBO();
+
+/*if ($this->course->isStudent())
+{
+	$student = $this->course->member($this->juser->get('id'));
+}*/
+
+$offerings = $this->course->offerings(array('available' => true, 'sort' => 'publish_up'));
+if ($offerings)
+{
+	$offering = $offerings->fetch('first');
+}
+else
+{
+	$offering = new CoursesModelOffering(0, $this->course->get('id'));
+}
 ?>
 <div id="content-header">
 	<h2>
@@ -52,12 +77,37 @@ $database =& JFactory::getDBO();
 
 <div class="course section">
 	<div class="aside">
-<?php /*if ($this->course->isManager($tjis->juser->get('id')) || $this->course->isStudent($tjis->juser->get('id'))) { ?>
-		<p><a class="add btn">View course</a></p>
-<?php } else {*/ ?>
-		<p><a class="add btn">Add to cart</a></p>
-<?php //} ?>
-		
+<?php if ($offering->exists()) { ?>
+		<div class="offering-info">
+			<table>
+				<tbody>
+					<tr>
+						<th scope="row">Starts</th>
+						<td>
+							<time datetime="<?php echo $offering->get('publish_up'); ?>"><?php echo JHTML::_('date', $offering->get('publish_up'), $dateformat, $tz); ?></time>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">Ends</th>
+						<td>
+							<time datetime="<?php echo $offering->get('publish_down'); ?>"><?php echo ($offering->get('publish_down') == '0000-00-00 00:00:00') ? JText::_('(never)') : JHTML::_('date', $offering->get('publish_down'), $dateformat, $tz); ?></time>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		<?php if ($this->course->isManager() || $this->course->isStudent()) { ?>
+			<p>
+				<a class="outline btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=offering&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias')); ?>">
+					View outline
+				</a>
+			</p>
+		<?php } else { ?>
+			<p>
+				<a class="enroll btn">Enroll</a>
+			</p>
+		<?php } ?>
+		</div>
+<?php } ?>
 		<?php
 		if ($this->sections)
 		{
@@ -75,128 +125,79 @@ $database =& JFactory::getDBO();
 	<div class="subject">
 		<div id="sub-menu">
 			<ul>
-<?php
-if ($this->cats)
-{
-	$i = 1;
-	foreach ($this->cats as $cat)
+	<?php
+	if ($this->cats)
 	{
-		$name = key($cat);
-		if ($name != '') 
+		$i = 1;
+		foreach ($this->cats as $cat)
 		{
-			$url = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=' . $name);
-
-			if (strtolower($name) == $this->active) 
+			$name = key($cat);
+			if ($name != '') 
 			{
-				$app =& JFactory::getApplication();
-				$pathway =& $app->getPathway();
-				$pathway->addItem($cat[$name], $url);
+				$url = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=' . $name);
 
-				if ($this->active != 'overview') 
+				if (strtolower($name) == $this->active) 
 				{
-					$document =& JFactory::getDocument();
-					$document->setTitle($document->getTitle() . ': ' . $cat[$name]);
+					$app =& JFactory::getApplication();
+					$pathway =& $app->getPathway();
+					$pathway->addItem($cat[$name], $url);
+
+					if ($this->active != 'overview') 
+					{
+						$document =& JFactory::getDocument();
+						$document->setTitle($document->getTitle() . ': ' . $cat[$name]);
+					}
 				}
-			}
-?>
+				?>
 				<li id="sm-<?php echo $i; ?>"<?php echo (strtolower($name) == $this->active) ? ' class="active"' : ''; ?>>
 					<a class="tab" rel="<?php echo $name; ?>" href="<?php echo $url; ?>">
 						<span><?php echo $this->escape($cat[$name]); ?></span>
 					</a>
 				</li>
-<?php
-			$i++;
+				<?php
+				$i++;
+			}
 		}
 	}
-}
-?>
+	?>
 			</ul>
 		</div><!-- / #sub-menu -->
 
-<?php
+		<?php
 		foreach ($this->notifications as $notification) 
 		{
 			echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
 		}
-?>
+		?>
 
-<?php
-		//$gt = new CoursesTags($database);
-		//echo $gt->get_tag_cloud(0,0,$this->course->get('gidNumber'));
-	if ($this->sections)
-	{
-		$k = 0;
-		foreach ($this->sections as $section)
+		<?php
+		if ($this->sections)
 		{
-			if ($section['html'] != '') 
+			$k = 0;
+			foreach ($this->sections as $section)
 			{
-				/*$cls  = ($c) ? $c . ' ' : '';
-				//if (key($cats[$k]) != $active) 
-				if ($this->section['area'] != $this->active)
+				if ($section['html'] != '') 
 				{
-					$cls .= ($h) ? $h . ' ' : '';
-				}*/
-?>
-				<div class="inner-section" id="<?php echo $section['area']; ?>-section">
-					<?php echo $section['html']; ?>
-				</div>
-<?php 
+				?>
+		<div class="inner-section" id="<?php echo $section['area']; ?>-section">
+			<?php echo $section['html']; ?>
+		</div><!-- / .inner-section -->
+				<?php 
+				}
+				$k++;
 			}
-			$k++;
 		}
-	}
-		/* echo $this->parser->parse(stripslashes($this->course->get('description')), $this->wikiconfig);
-?>
-	<table>
-		<thead>
-			<tr>
-				<th>Offering</th>
-				<th>Starts</th>
-				<th>Ends</th>
-				<th>Enrollment</th>
-			</tr>
-		</thead>
-		<tbody>
-<?php
-if ($this->course->offerings())
-{
-	foreach ($this->course->offerings() as $offering)
-	{
-?>
-			<tr>
-				<th>
-					<a class="inst-title" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias')); ?>">
-						<?php echo $this->escape(stripslashes($offering->get('title'))); ?>
-					</a>
-				</th>
-				<td>
-					<?php echo $this->escape(stripslashes($offering->get('start_date'))); ?>
-				</td>
-				<td>
-					<?php echo $this->escape(stripslashes($offering->get('end_date'))); ?>
-				</td>
-				<td>
-					<?php if ($offering->isAvailable()) { ?>
-					accepting
-					<?php } else { ?>
-					closed
-					<?php } ?>
-				</td>
-			</tr>
-<?php
-	}
-}
-else
-{
-?>
-			<tr>
-				<td><?php echo JText::_('No offerings found'); ?></td>
-			</tr>
-<?php
-}
-?>
-		</tbody>
-	</table> */ ?>
+		?>
+	</div><!-- / .subject -->
+</div><!-- / .course section -->
 
-	</div>
-</div><!-- /.innerwrap -->
+<?php
+JPluginHelper::importPlugin('courses');
+$dispatcher =& JDispatcher::getInstance();
+
+$after = $dispatcher->trigger('onCourseViewAfter', array($this->course));
+if ($after && count($after) > 0) { ?>
+<div class="below course section">
+	<?php echo implode("\n", $after); ?>
+</div><!-- / .course section -->
+<?php } ?>

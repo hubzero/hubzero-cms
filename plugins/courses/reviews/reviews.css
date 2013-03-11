@@ -16,3 +16,111 @@
 	ol.comments .comment-none {
 		color: #ccc;
 	}
+	.review-title {
+		display: none;
+	}
+/* Instructions */
+	.no-reviews {
+		width: 32em;
+		margin: 3em auto;
+		background-color: #fff;
+		-webkit-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		-moz-box-shadow: 0 1px 2px rgba(25, 25, 25, 0.4);
+		-ms-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		-o-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		border: none;
+		padding: 0;
+	}
+	.no-reviews .instructions {
+		padding: 1em 1.4em;
+	}
+	.no-reviews .questions {
+		padding: 1em 1.4em;
+		background-color: #f0f0f0;
+	}
+	.no-reviews ol {
+		list-style: decimal;
+	}
+/* Star ratings */
+	#commentform .rating {
+		/*float:left;*/
+		position: relative;
+		border: none;
+		padding: 0;
+	}
+	#commentform .rating legend {
+		float: left;
+		margin: 0;
+		padding: 0.5em 0;
+	}
+	#commentform .rating label {
+		margin: 0;
+		padding: 0 0.1em;
+	}
+	.comment-body .avgrating:before,
+	.comment-body .avgrating {
+		font-size: 1.2em;
+	}
+	.comment-body .avgrating:before {
+		margin-right: 1em;
+	}
+	.rating:after {
+		content: "";
+		display: table;
+		clear: both;
+	}
+
+	/* :not(:checked) is a filter, so that browsers that don’t support :checked don’t 
+	follow these rules. Every browser that supports :checked also supports :not(), so
+	it doesn’t make the test unnecessarily selective */
+	.rating:not(:checked) > input {
+		position: absolute;
+		top: -9999px;
+		clip: rect(0,0,0,0);
+	}
+	.rating:not(:checked) > label {
+		float: right;
+		width: 1em;
+		padding: 0 .1em;
+		margin: 0;
+		overflow: hidden;
+		white-space: nowrap;
+		cursor: pointer;
+		font-size: 200%;
+		line-height: 1.2;
+		color: #ddd;
+		/*text-shadow:1px 1px #bbb, 2px 2px #666, .1em .1em .2em rgba(0,0,0,.5);*/
+	}
+	.rating:not(:checked) > label:before {
+		font-family: "Fontcons";
+		content: "\2606";
+	}
+	.rating > input:checked ~ label {
+		color: #f70;
+		/*text-shadow: 1px 1px #c60, 2px 2px #940, .1em .1em .2em rgba(0,0,0,.5);*/
+	}
+	.rating:not(:checked) > label:hover,
+	.rating:not(:checked) > label:hover ~ label {
+		color: #e3cf7a;
+		/*text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);*/
+	}
+	.rating > input:checked + label:hover,
+	.rating > input:checked + label:hover ~ label,
+	.rating > input:checked ~ label:hover,
+	.rating > input:checked ~ label:hover ~ label,
+	.rating > label:hover ~ input:checked ~ label {
+		color: #ea0;
+		/*text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);*/
+	}
+	.rating:not(:checked) > label:hover:before,
+	.rating > input:checked ~ label:before,
+	.rating label:hover:before,
+	.rating label:hover ~ label:before {
+		content: "\2605";
+	}
+	/*.rating > label:active {
+		position:relative;
+		top:2px;
+		left:2px;
+	}*/

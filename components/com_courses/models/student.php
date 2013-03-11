@@ -52,7 +52,7 @@ class CoursesModelStudent extends CoursesModelMember
 	 * @param      object  &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct($oid, $sid=null)
+	public function __construct($uid, $cid=null, $oid=null, $sid=null)
 	{
 		$this->_db = JFactory::getDBO();
 
@@ -61,23 +61,27 @@ class CoursesModelStudent extends CoursesModelMember
 			$cls = $this->_tbl_name;
 			$this->_tbl = new $cls($this->_db);
 
-			if (is_numeric($oid) || is_string($oid))
+			if (is_numeric($uid) || is_string($uid))
 			{
 				if ($sid !== null)
 				{
-					$this->_tbl->load($oid);
+					$this->_tbl->loadBySection($uid, $sid);
+				}
+				else if ($cid !== null)
+				{
+					$this->_tbl->load($uid, $cid, null, null, 1);
 				}
 				else
 				{
-					$this->_tbl->loadBySection($oid, $sid);
+					$this->_tbl->load($uid);
 				}
 			}
-			else if (is_object($oid))
+			else if (is_object($uid))
 			{
-				$this->_tbl->bind($oid);
+				$this->_tbl->bind($uid);
 
 				$properties = $this->_tbl->getProperties();
-				foreach (get_object_vars($oid) as $key => $property)
+				foreach (get_object_vars($uid) as $key => $property)
 				{
 					if (!array_key_exists($key, $properties))
 					{
@@ -85,16 +89,16 @@ class CoursesModelStudent extends CoursesModelMember
 					}
 				}
 			}
-			else if (is_array($oid))
+			else if (is_array($uid))
 			{
-				$this->_tbl->bind($oid);
+				$this->_tbl->bind($uid);
 
 				$properties = $this->_tbl->getProperties();
-				foreach (array_keys($oid) as $key)
+				foreach (array_keys($uid) as $key)
 				{
 					if (!array_key_exists($key, $properties))
 					{
-						$this->_tbl->set('__' . $key, $oid[$key]);
+						$this->_tbl->set('__' . $key, $uid[$key]);
 					}
 				}
 			}
@@ -108,7 +112,7 @@ class CoursesModelStudent extends CoursesModelMember
 	 * @param      integer $sid Section ID
 	 * @return     object CoursesModelStudent
 	 */
-	static function &getInstance($uid=null, $sid=0)
+	static function &getInstance($uid=null, $cid=0, $oid=null, $sid=null)
 	{
 		static $instances;
 
@@ -119,7 +123,7 @@ class CoursesModelStudent extends CoursesModelMember
 
 		if (!isset($instances[$sid . '_' . $uid])) 
 		{
-			$instances[$sid . '_' . $uid] = new CoursesModelStudent($uid, $sid);
+			$instances[$sid . '_' . $uid] = new CoursesModelStudent($uid, $cid, $oid, $sid);
 		}
 
 		return $instances[$sid . '_' . $uid];

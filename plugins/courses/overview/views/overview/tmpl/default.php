@@ -43,4 +43,42 @@ $wikiconfig = array(
 ximport('Hubzero_Wiki_Parser');
 $parser = Hubzero_Wiki_Parser::getInstance();
 
-echo $parser->parse(stripslashes($this->course->get('description')), $wikiconfig);
+	echo $parser->parse(stripslashes($this->course->get('description')), $wikiconfig);
+
+	$instructors = $this->course->instructors();
+	if (count($instructors) > 0) 
+	{
+?>
+		<h3><?php echo (count($instructors) > 1) ? JText::_('About the instructors') : JText::_('About the instructor'); ?></h3>
+<?php
+		ximport('Hubzero_View_Helper_Html');
+		ximport('Hubzero_User_Profile_Helper');
+
+		foreach ($instructors as $i)
+		{
+			$instructor = Hubzero_User_Profile::getInstance($i->get('user_id'));
+?>
+		<div class="course-instructor">
+			<p class="course-instructor-photo">
+				<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($instructor, 0); ?>" alt="" />
+			</p>
+			<div class="course-instructor-content">
+				<h4>
+					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $instructor->get('id')); ?>">
+						<?php echo $this->escape(stripslashes($instructor->get('name'))); ?>
+					</a>
+				</h4>
+				<p class="course-instructor-bio">
+				<?php if ($instructor->get('bio')) { ?>
+					<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($instructor->get('bio')), 300, 0); ?>
+				<?php } else { ?>
+					<em><?php echo JText::_('This instructor has yet to write their bio.'); ?></em>
+				<?php } ?>
+				</p>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+<?php
+		}
+	}
+?>

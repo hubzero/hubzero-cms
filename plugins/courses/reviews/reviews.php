@@ -40,6 +40,8 @@ include_once(JPATH_ROOT . DS . 'plugins' . DS . 'courses' . DS . 'reviews' . DS 
  */
 class plgCoursesReviews extends JPlugin
 {
+	private $_pushscripts = true;
+
 	/**
 	 * Constructor
 	 * 
@@ -74,7 +76,7 @@ class plgCoursesReviews extends JPlugin
 	 * @param      string $option Name of the component
 	 * @return     array
 	 */
-	public function onCourseRateItem($option)
+	/*public function onCourseRateItem($option)
 	{
 		$id = JRequest::getInt('rid', 0);
 
@@ -98,7 +100,7 @@ class plgCoursesReviews extends JPlugin
 		$h->execute();
 
 		return $arr;
-	}
+	}*/
 
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
@@ -119,19 +121,6 @@ class plgCoursesReviews extends JPlugin
 		$rtrn = 'html';
 
 		// Check if our area is in the array of areas we want to return results for
-		/*if (is_array($areas)) 
-		{
-			if (!array_intersect($areas, $this->onCourseViewAreas($model))
-			 && !array_intersect($areas, array_keys($this->onCourseViewAreas($model)))) 
-			{
-				$rtrn = 'metadata';
-			}
-		}*/
-		/*$area = $this->onCourseViewAreas($course);
-		if (!isset($area[$active]))
-		{
-			$rtrn = 'metadata';
-		}*/
 		if (is_array($active)) 
 		{
 			if (!in_array($arr['name'], $active)) 
@@ -165,59 +154,72 @@ class plgCoursesReviews extends JPlugin
 		// Get reviews for this resource
 		$database =& JFactory::getDBO();
 
-		$tbl = new CoursesPluginReviewTable($database);
+		ximport('Hubzero_Item_Comment');
+
+		$tbl = new Hubzero_Item_Comment($database); //
 		//$reviews = $r->getRatings($model->resource->id);
 
 		// Are we returning any HTML?
 		if ($rtrn == 'all' || $rtrn == 'html') 
 		{
 			ximport('Hubzero_Document');
-			Hubzero_Document::addPluginStylesheet('resources', 'reviews');
-			Hubzero_Document::addPluginScript('resources', 'reviews');
+			Hubzero_Document::addPluginStylesheet('courses', $this->_name);
+			Hubzero_Document::addPluginScript('courses', $this->_name);
 
-			// Did they perform an action?
-			// If so, they need to be logged in first.
-			/*if (!$h->loggedin) 
+			
+			ximport('Hubzero_Item_Vote');
+			ximport('Hubzero_Plugin_View');
+
+			$this->view = new Hubzero_Plugin_View(
+				array(
+					'folder'  => 'courses',
+					'element' => $this->_name,
+					'name'    => 'view',
+					'layout'  => 'default'
+				)
+			);
+			$this->view->database = $this->database = $database;
+			$this->view->juser    = $this->juser    = JFactory::getUser();
+			$this->view->option   = $this->option   = JRequest::getCmd('option', 'com_courses');
+			//$this->view->course   = $this->course   = $course;
+			$this->view->obj      = $this->obj      = $course;
+			$this->view->obj_type = $this->obj_type = substr($this->option, 4);
+			$this->view->url      = $this->url      = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->obj->get('alias') . '&active=' . $this->_name, false, true);
+			$this->view->depth    = 0;
+
+			$this->_authorize();
+
+			$this->view->params   = $this->params;
+
+			$this->view->task     = $this->task    = JRequest::getVar('action', '');
+
+			switch ($this->task) 
 			{
-				// Instantiate a view
-				$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $option . '&id=' . $model->resource->id . '&active=reviews'), 'server');
-				$this->_redirect = JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn));
-				return;
-			} 
-			else 
-			{
-				// Instantiate a view
-				$view = new Hubzero_Plugin_View(
-					array(
-						'folder'  => 'resources',
-						'element' => 'reviews',
-						'name'    => 'browse'
-					)
-				);
+				// Feeds
+				//case 'feed.rss': $this->_feed();   break;
+				//case 'feed':     $this->_feed();   break;
+
+				// Entries
+				case 'save':     $this->_save();   break;
+				case 'new':      $this->_view();   break;
+				case 'edit':     $this->_view();   break;
+				case 'delete':   $this->_delete(); break;
+				case 'view':     $this->_view();   break;
+				case 'vote':     $this->_vote();   break;
+
+				default:         $this->_view();   break;
 			}
 
-			// Thumbs voting CSS & JS
-			$view->voting = $this->params->get('voting', 1);
-
-			// Pass the view some info
-			$view->option   = $option;
-			$view->resource = $model->resource;
-			$view->reviews  = $reviews;
-			//$view->voting = $voting;
-			$view->h = $h;
-			$view->banking  = $this->banking;
-			$view->infolink = $this->infolink;
-			//$view->voting = $voting;
-			if ($h->getError()) 
+			if ($this->getError()) 
 			{
-				foreach ($h->getErrors() as $error)
+				foreach ($this->getErrors() as $error)
 				{
-					$view->setError($error);
+					$this->view->setError($error);
 				}
 			}
 
 			// Return the output
-			$arr['html'] = $view->loadTemplate();*/
+			$arr['html'] = $this->view->loadTemplate();
 		}
 
 		// Build the HTML meant for the "about" tab's metadata overview
@@ -243,559 +245,427 @@ class plgCoursesReviews extends JPlugin
 	}
 
 	/**
-	 * Get all replies for an item
+	 * Set permissions
 	 * 
-	 * @param      object  $item     Item to look for reports on
-	 * @param      string  $category Item type
-	 * @param      integer $level    Depth
-	 * @param      boolean $abuse    Abuse flag
-	 * @return     array
+	 * @param      string  $assetType Type of asset to set permissions for (component, section, category, thread, post)
+	 * @param      integer $assetId   Specific object to check permissions for
+	 * @return     void
 	 */
-	public function getComments($item, $category, $level, $abuse=false)
+	protected function _authorize($assetType='comment', $assetId=null)
 	{
-		$database =& JFactory::getDBO();
-
-		$level++;
-
-		$hc = new Hubzero_Comment($database);
-		$comments = $hc->getResults(array(
-			'id' => $item->id, 
-			'category' => $category
-		));
-
-		if ($comments) 
+		// Are comments public or registered members only?
+		if ($this->params->get('comments_viewable', 0) <= 0)
 		{
-			foreach ($comments as $comment)
+			// Public
+			$this->params->set('access-view-' . $assetType, true);
+		}
+
+		// Logged in?
+		if (!$this->juser->get('guest')) 
+		{
+			// Set comments to viewable
+			$this->params->set('access-view-' . $assetType, true);
+
+			$actions = array(
+				'admin', 'manage', 'edit', 'edit-own', 'create', 'delete'
+			);
+
+			// Joomla 1.6+
+			if (version_compare(JVERSION, '1.6', 'ge'))
 			{
-				$comment->replies = self::getComments($comment, 'reviewcomment', $level, $abuse);
-				if ($abuse) 
+				$yearFormat  = "Y";
+				$monthFormat = "m";
+				$dayFormat   = "d";
+				/*$asset  = $this->option;
+				if ($assetId)
 				{
-					$comment->abuse_reports = self::getAbuseReports($comment->id, 'reviewcomment');
+					$asset .= ($assetType != 'comment') ? '.' . $assetType : '';
+					$asset .= ($assetId) ? '.' . $assetId : '';
+				}
+
+				// Are they an admin?
+				$this->params->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
+				$this->params->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
+				if ($this->params->set('access-admin-' . $assetType) 
+				 || $this->params->set('access-manage-' . $assetType))
+				{
+					$this->params->set('access-create-' . $assetType, true);
+					$this->params->set('access-delete-' . $assetType, true);
+					$this->params->set('access-edit-' . $assetType, true);
+					return;
+				}*/
+			}
+			else 
+			{
+				// Joomla 1.5
+
+				$yearFormat  = "%Y";
+				$monthFormat = "%m";
+				$dayFormat   = "%d";
+
+				// Are they an admin?
+				/*if ($this->juser->authorize($this->option, 'manage'))
+				{
+					$this->params->set('access-manage-' . $assetType, true);
+					$this->params->set('access-admin-' . $assetType, true);
+					$this->params->set('access-create-' . $assetType, true);
+					$this->params->set('access-delete-' . $assetType, true);
+					$this->params->set('access-edit-' . $assetType, true);
+					return;
+				}*/
+			}
+			if ($this->obj->isManager())
+			{
+				foreach ($actions as $action)
+				{
+					$this->params->set('access-' . $action . '-' . $assetType, true);
 				}
 			}
+
+			if (!$this->obj->isStudent())
+			{
+				return;
+			}
+
+			/*if (isset($this->obj->publish_up) && $this->obj->publish_up) 
+			{
+				$d = $this->obj->publish_up;
+			}
+			else if (isset($this->obj->modified) && $this->obj->modified) 
+			{
+				$d = $this->obj->modified;
+			}
+			else 
+			{*/
+				$d = $this->obj->get('created');
+			//}
+			$year  = intval(substr($d, 0, 4));
+			$month = intval(substr($d, 5, 2));
+			$day   = intval(substr($d, 8, 2));
+
+			switch ($this->params->get('comments_close', 'never'))
+			{
+				case 'day':
+					$dt = mktime(0, 0, 0, $month, ($day+1), $year);
+				break;
+				case 'week':
+					$dt = mktime(0, 0, 0, $month, ($day+7), $year);
+				break;
+				case 'month':
+					$dt = mktime(0, 0, 0, ($month+1), $day, $year);
+				break;
+				case '6months':
+					$dt = mktime(0, 0, 0, ($month+6), $day, $year);
+				break;
+				case 'year':
+					$dt = mktime(0, 0, 0, $month, $day, ($year+1));
+				break;
+				case 'never':
+				default:
+					$dt =mktime(0, 0, 0, $month, $day, $year);
+				break;
+			}
+
+			$pdt = strftime($yearFormat, $dt) . '-' . strftime($monthFormat, $dt) . '-' . strftime($dayFormat, $dt) . ' 00:00:00';
+			$today = date('Y-m-d H:i:s', time());
+
+			// Can users create comments?
+			if ($this->params->get('comments_close', 'never') == 'never' 
+			 || ($this->params->get('comments_close', 'never') != 'now' && $today < $pdt)) 
+			{
+				$this->params->set('access-create-' . $assetType, true);
+				$this->params->set('access-review-' . $assetType, true);
+			}
+			// Can users edit comments?
+			if ($this->params->get('comments_editable', 1))
+			{
+				$this->params->set('access-edit-' . $assetType, true);
+			}
+			// Can users delete comments?
+			if ($this->params->get('comments_deletable', 0))
+			{
+				$this->params->set('access-delete-' . $assetType, true);
+			}
 		}
-		return $comments;
 	}
 
 	/**
-	 * Get abuse reports for a comment
-	 * 
-	 * @param      integer $item     Item to look for reports on
-	 * @param      string  $category Item type
-	 * @return     integer
+	 * Method to add a message to the component message que
+	 *
+	 * @param	string	$message	The message to add
+	 * @return	void
 	 */
-	public function getAbuseReports($item, $category)
+	public function redirect($url, $msg='', $msgType='')
 	{
-		$database =& JFactory::getDBO();
+		$url = ($url != '') ? $url : JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->option . '&id=' . $this->obj->get('id') . '&active=reviews'), 'server');
+		$url = str_replace('&amp;', '&', $url);
 
-		$ra = new ReportAbuse($database);
-		return $ra->getCount(array('id' => $item, 'category' => $category));
-	}
-}
+		$msg = ($msg) ? $msg : '';
+		$msgType = ($msgType) ? $msgType : 'message';
 
-/**
- * Helper class for reviews
- */
-class PlgResourcesReviewsHelper extends JObject
-{
-	/**
-	 * Container for data
-	 * 
-	 * @var array
-	 */
-	private $_data  = array();
-
-	/**
-	 * Set a property
-	 * 
-	 * @param      string $property Property name
-	 * @param      mixed  $value    Property value
-	 * @return     void
-	 */
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-
-	/**
-	 * Get a property
-	 * 
-	 * @param      unknown $property Property to set
-	 * @return     mixed
-	 */
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) 
-		{
-			return $this->_data[$property];
-		}
-	}
-
-	/**
-	 * Redirect page
-	 * 
-	 * @return     void
-	 */
-	public function redirect()
-	{
-		if ($this->_redirect != NULL) 
+		if ($url) 
 		{
 			$app =& JFactory::getApplication();
-			$app->redirect($this->_redirect, $this->_message, $this->_messageType);
+			$app->redirect($url, $msg, $msgType);
 		}
 	}
 
 	/**
-	 * Execute an action
-	 * 
-	 * @return     void
+	 * Vote on a comment
+	 *
+	 * @return    void
 	 */
-	public function execute()
+	protected function _vote() 
 	{
-		// Incoming action
-		$action = JRequest::getVar('action', '');
-
-		$this->loggedin = true;
-
-		if ($action) 
+		// Ensure the user is logged in
+		if ($this->juser->get('guest')) 
 		{
-			// Check the user's logged-in status
-			$juser =& JFactory::getUser();
-			if ($juser->get('guest')) 
-			{
-				$this->loggedin = false;
-				return;
-			}
+			$this->setError(JText::_('PLG_COURSES_REVIEWS_LOGIN_NOTICE'));
+			return $this->_login();
 		}
 
-		// Perform an action
-		switch ($action)
+		$no_html = JRequest::getInt('no_html', 0);
+
+		// Get comments on this article
+		$v = new Hubzero_Item_Vote($this->database);
+		$v->created_by = $this->juser->get('id');
+		$v->item_type  = 'comment';
+		//$v->item_id    = JRequest::getInt('comment', 0);
+		//$v->vote       = JRequest::getVar('vote', 'up');
+		if ($item_id = JRequest::getInt('voteup', 0))
 		{
-			case 'addreview':    $this->editreview();   break;
-			case 'editreview':   $this->editreview();   break;
-			case 'savereview':   $this->savereview();   break;
-			case 'deletereview': $this->deletereview(); break;
-			case 'savereply': 	 $this->savereply(); 	break;
-			case 'deletereply':  $this->deletereply();  break;
-			case 'rateitem':   	 $this->rateitem();  	break;
+			$v->vote    = 1;
+		} 
+		else if ($item_id = JRequest::getInt('votedown', 0))
+		{
+			$v->vote    = -1;
 		}
-	}
+		$v->item_id    = $item_id;
 
-	/**
-	 * Save a reply
-	 * 
-	 * @return     void
-	 */
-	private function savereply()
-	{
-		$juser =& JFactory::getUser();
-
-		// Is the user logged in?
-		if ($juser->get('guest')) 
+		// Check content
+		if (!$v->check()) 
 		{
-			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_LOGIN_NOTICE'));
-			return;
+			$this->setError($v->getError());
 		}
-
-		// Incoming
-		$id       = JRequest::getInt('referenceid', 0);
-		$rid      = JRequest::getInt('rid', 0);
-		$category = JRequest::getVar('category', '');
-		$when     = date('Y-m-d H:i:s');
-
-		// Trim and addslashes all posted items
-		$_POST = array_map('trim', $_POST);
-
-		if (!$id) 
+		else 
 		{
-			// Cannot proceed
-			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_COMMENT_ERROR_NO_REFERENCE_ID'));
-			return;
-		}
-
-		if (!$category) 
-		{
-			// Cannot proceed
-			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_COMMENT_ERROR_NO_CATEGORY'));
-			return;
-		}
-
-		$database =& JFactory::getDBO();
-		ximport('Hubzero_Comment');
-
-		$row = new Hubzero_Comment($database);
-		if (!$row->bind($_POST)) 
-		{
-			$this->setError($row->getError());
-			return;
-		}
-
-		// Perform some text cleaning, etc.
-		$row->comment   = Hubzero_View_Helper_Html::purifyText($row->comment);
-		$row->comment   = nl2br($row->comment);
-		$row->anonymous = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
-		$row->added     = $when;
-		$row->state     = 0;
-		$row->added_by  = $juser->get('id');
-
-		// Check for missing (required) fields
-		if (!$row->check()) 
-		{
-			$this->setError($row->getError());
-			return;
-		}
-		// Save the data
-		if (!$row->store()) 
-		{
-			$this->setError($row->getError());
-			return;
-		}
-	}
-
-	/**
-	 * Delete a reply
-	 * 
-	 * @return     void
-	 */
-	public function deletereply()
-	{
-		$database =& JFactory::getDBO();
-		$resource =& $this->resource;
-
-		// Incoming
-		$replyid = JRequest::getInt('refid', 0);
-
-		// Do we have a review ID?
-		if (!$replyid) 
-		{
-			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_COMMENT_ERROR_NO_REFERENCE_ID'));
-			return;
-		}
-
-		// Do we have a resource ID?
-		if (!$resource->id) 
-		{
-			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_NO_RESOURCE_ID'));
-			return;
-		}
-
-		// Delete the review
-		ximport('Hubzero_Comment');
-		$reply = new Hubzero_Comment($database);
-
-		$comments = $reply->getResults(array('id'=>$replyid, 'category'=>'reviewcomment'));
-		if (count($comments) > 0) 
-		{
-			foreach ($comments as $comment)
-			{
-				$reply->delete($comment->id);
-			}
-		}
-		$reply->delete($replyid);
-	}
-
-	/**
-	 * Rate an item
-	 * 
-	 * @return     void
-	 */
-	public function rateitem()
-	{
-		$database =& JFactory::getDBO();
-		$juser =& JFactory::getUser();
-
-		$id   = JRequest::getInt('refid', 0);
-		$ajax = JRequest::getInt('no_html', 0);
-		$cat  = JRequest::getVar('category', 'review');
-		$vote = JRequest::getVar('vote', '');
-		ximport('Hubzero_Environment');
-		$ip   = Hubzero_Environment::ipAddress();
-		$rid  = JRequest::getInt('id', 0);
-
-		if (!$id) 
-		{
-			// Cannot proceed
-			return;
-		}
-
-		// Is the user logged in?
-		if ($juser->get('guest')) 
-		{
-			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_PLEASE_LOGIN_TO_VOTE'));
-			return;
-		}
-
-		// Load answer
-		$rev = new ResourcesReview($database);
-		$rev->load($id);
-		$voted = $rev->getVote($id, $cat, $juser->get('id'));
-
-		if (!$voted && $vote) // && $rev->user_id != $juser->get('id')) 
-		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'vote.php');
-			$v = new Vote($database);
-			$v->referenceid = $id;
-			$v->category    = $cat;
-			$v->voter       = $juser->get('id');
-			$v->ip          = $ip;
-			$v->voted       = date('Y-m-d H:i:s', time());
-			$v->helpful     = $vote;
-			if (!$v->check()) 
-			{
-				$this->setError($v->getError());
-				return;
-			}
+			// Store new content
 			if (!$v->store()) 
 			{
 				$this->setError($v->getError());
-				return;
 			}
 		}
 
-		// update display
-		if ($ajax) 
+		if ($this->getError() && !$no_html) 
 		{
-			$response = $rev->getRating($id, $juser->get('id'));
-
-			$view = new Hubzero_Plugin_View(
-				array(
-					'folder'  => 'resources',
-					'element' => 'reviews',
-					'name'    => 'browse',
-					'layout'  => 'rateitem'
-				)
+			$this->redirect(
+				$this->url, 
+				$this->getError(),
+				'error'
 			);
-			$view->option = $this->_option;
-			$view->item = $response[0];
+			return;
+		}
 
-			$view->display();
-			exit();
-		} 
+		$this->view->setLayout('vote');
+
+		$this->view->item = new Hubzero_Item_Comment($this->database);
+		$this->view->item->load($v->item_id);
+		if ($v->vote == 1)
+		{
+			$this->view->item->positive++;
+		}
 		else 
 		{
-			$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&id=' . $rid . '&active=reviews');
+			$this->view->item->negative++;
+		}
+		if (!$this->view->item->store()) 
+		{
+			$this->setError($this->view->item->getError());
+		}
+		$this->view->item->vote = $v->vote;
+
+		if (!$no_html)
+		{
+			$this->redirect(
+				$this->url, 
+				JText::_('PLG_COURSES_REVIEWS_VOTE_SAVED'),
+				'message'
+			);
+			return;
+		}
+
+		if ($this->getError()) 
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
+		}
+
+		// Ugly brute force method of cleaning output
+		ob_clean();
+		echo $this->view->loadTemplate();
+		exit();
+	}
+
+	/**
+	 * Show a list of comments
+	 *
+	 * @return    void
+	 */
+	protected function _view() 
+	{
+		// Push some needed scripts and stylings to the template but ensure we do it only once
+		/*if ($this->_pushscripts) 
+		{
+			ximport('Hubzero_Document');
+			Hubzero_Document::addPluginStyleSheet('hubzero', 'comments');
+			Hubzero_Document::addPluginScript('hubzero', 'comments');
+
+			$this->_pushscripts = false;
+		}*/
+
+		// Get comments on this article
+		$hc = new Hubzero_Item_Comment($this->database);
+
+		$this->view->comments = $hc->getComments(
+			$this->obj_type, 
+			$this->obj->get('id'),
+			0,
+			$this->params->get('comments_limit', 25)
+		);
+		
+		//print_r($this->view->comments); die;
+
+		if ($this->getError()) 
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 		}
 	}
 
 	/**
-	 * Edit a review
-	 * 
-	 * @return     void
+	 * Save an entry
+	 *
+	 * @return    void
 	 */
-	public function editreview()
+	protected function _save() 
 	{
-		// Is the user logged in?
-		$juser =& JFactory::getUser();
-		if ($juser->get('guest')) 
+		// Ensure the user is logged in
+		if ($this->juser->get('guest')) 
 		{
-			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_LOGIN_NOTICE'));
-			return;
-		}
-
-		$resource =& $this->resource;
-
-		// Do we have an ID?
-		if (!$resource->id) 
-		{
-			// No - fail! Can't do anything else without an ID
-			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_NO_RESOURCE_ID'));
+			$this->redirect(
+				JRoute::_('index.php?option=com_login&return=' . base64_encode($this->url)), 
+				JText::_('PLG_COURSES_REVIEWS_LOGIN_NOTICE'),
+				'warning'
+			);
 			return;
 		}
 
 		// Incoming
-		$myr = JRequest::getInt('myrating', 0);
+		$comment = JRequest::getVar('comment', array(), 'post');
 
-		$database =& JFactory::getDBO();
-
-		$review = new ResourcesReview($database);
-		$review->loadUserReview($resource->id, $juser->get('id'));
-		if (!$review->id) {
-			// New review, get the user's ID
-			$review->user_id = $juser->get('id');
-			$review->resource_id = $resource->id;
-			$review->tags = '';
-		} 
-		else 
+		// Instantiate a new comment object and pass it the data
+		$row = new Hubzero_Item_Comment($this->database);
+		if (!$row->bind($comment)) 
 		{
-			// Editing a review, do some prep work
-			$review->comment = str_replace('<br />', '', $review->comment);
-
-			$RE = new ResourcesHelper($resource->id, $database);
-			$RE->getTagsForEditing($review->user_id);
-			$review->tags = ($RE->tagsForEditing) ? $RE->tagsForEditing : '';
+			$this->redirect(
+				$this->url, 
+				$row->getError(),
+				'error'
+			);
+			return;
 		}
-		$review->rating = ($myr) ? $myr : $review->rating;
+		$row->setUploadDir($this->params->get('comments_uploadpath', '/site/comments'));
 
-		// Store the object in our registry
-		$this->myreview = $review;
-		return;
-	}
-
-	/**
-	 * Save a review
-	 * 
-	 * @return     void
-	 */
-	public function savereview()
-	{
-		// Incoming
-		$resource_id = JRequest::getInt('resource_id', 0);
-
-		// Do we have a resource ID?
-		if (!$resource_id) 
+		if ($row->id && !$this->params->get('access-edit-comment')) 
 		{
-			// No ID - fail! Can't do anything else without an ID
-			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_NO_RESOURCE_ID'));
+			$this->redirect(
+				JRoute::_('index.php?option=com_login&return=' . base64_encode($this->url)), 
+				JText::_('PLG_COURSES_REVIEWS_NOTAUTH'),
+				'warning'
+			);
 			return;
 		}
 
-		$database =& JFactory::getDBO();
-
-		// Bind the form data to our object
-		$row = new ResourcesReview($database);
-		if (!$row->bind($_POST)) 
-		{
-			$this->setError($row->getError());
-			return;
-		}
-
-		// Perform some text cleaning, etc.
-		$row->id        = JRequest::getInt('reviewid', 0);
-		$row->comment   = Hubzero_View_Helper_Html::purifyText($row->comment);
-		$row->comment   = nl2br($row->comment);
-		$row->anonymous = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
-		$row->created   = ($row->created) ? $row->created : date("Y-m-d H:i:s");
-
-		// Check for missing (required) fields
+		// Check content
 		if (!$row->check()) 
 		{
-			$this->setError($row->getError());
+			$this->redirect(
+				$this->url, 
+				$row->getError(),
+				'error'
+			);
 			return;
 		}
-		// Save the data
+
+		// Store new content
 		if (!$row->store()) 
 		{
-			$this->setError($row->getError());
+			$this->redirect(
+				$this->url, 
+				$row->getError(),
+				'error'
+			);
 			return;
 		}
-
-		// Calculate the new average rating for the parent resource
-		$resource =& $this->resource;
-		$resource->calculateRating();
-		$resource->updateRating();
-
-		// Process tags
-		$tags = trim(JRequest::getVar('review_tags', ''));
-		if ($tags) 
-		{
-			$rt = new ResourcesTags($database);
-			$rt->tag_object($row->user_id, $resource_id, $tags, 1, 0);
-		}
-
-		// Instantiate a helper object and get all the contributor IDs
-		$helper = new ResourcesHelper($resource->id, $database);
-		$helper->getContributorIDs();
-		$users = $helper->contributorIDs;
-
-		// Get the HUB configuration
-		$jconfig =& JFactory::getConfig();
-
-		// Build the subject
-		$subject = $jconfig->getValue('config.sitename') . ' ' . JText::_('PLG_RESOURCES_REVIEWS_CONTRIBUTIONS');
-
-		// Message
-		$juser =& JFactory::getUser();
-		$eview = new Hubzero_Plugin_View(
-			array(
-				'folder'  => 'resources',
-				'element' => 'reviews',
-				'name'    => 'emails'
-			)
+		
+		$this->redirect(
+			$this->url, 
+			JText::_('PLG_COURSES_REVIEWS_SAVED'),
+			'message'
 		);
-		$eview->option   = $this->_option;
-		$eview->juser    = $juser;
-		$eview->resource = $resource;
-		$eview->review   = $row;
-		$message = $eview->loadTemplate();
-
-		// Build the "from" data for the e-mail
-		$from = array();
-		$from['name']  = $jconfig->getValue('config.sitename') . ' ' . JText::_('PLG_RESOURCES_REVIEWS_CONTRIBUTIONS');
-		$from['email'] = $jconfig->getValue('config.mailfrom');
-
-		// Send message
-		JPluginHelper::importPlugin('xmessage');
-		$dispatcher =& JDispatcher::getInstance();
-		if (!$dispatcher->trigger('onSendMessage', array('resources_new_comment', $subject, $message, $from, $users, $this->_option))) 
-		{
-			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_FAILED_TO_MESSAGE'));
-		}
 	}
 
 	/**
-	 * Delete a review
-	 * 
-	 * @return     void
+	 * Mark a comment as deleted
+	 * NOTE: Does not actually delete data. Simply marks record.
+	 *
+	 * @return    void
 	 */
-	public function deletereview()
+	protected function _delete() 
 	{
-		$database =& JFactory::getDBO();
-		$resource =& $this->resource;
+		// Ensure the user is logged in
+		if ($this->juser->get('guest')) 
+		{
+			$this->redirect(
+				JRoute::_('index.php?option=com_login&return=' . base64_encode($this->url)), 
+				JText::_('PLG_COURSES_REVIEWS_LOGIN_NOTICE'),
+				'warning'
+			);
+			return;
+		}
 
 		// Incoming
-		$reviewid = JRequest::getInt('reviewid', 0);
-
-		// Do we have a review ID?
-		if (!$reviewid) 
+		$id = JRequest::getInt('comment', 0);
+		if (!$id) 
 		{
-			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_NO_ID'));
+			return $this->_redirect();
+		}
+
+		// Initiate a blog comment object
+		$comment = new Hubzero_Item_Comment($this->database);
+		$comment->load($id);
+
+		if ($this->juser->get('id') != $comment->created_by 
+		 && !$this->params->get('access-delete-comment')) 
+		{
+			$this->redirect($this->url);
 			return;
 		}
 
-		// Do we have a resource ID?
-		if (!$resource->id) 
+		// Delete the entry itself
+		if (!$comment->setState($id, 2)) 
 		{
-			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_NO_RESOURCE_ID'));
-			return;
+			$this->setError($comment->getError());
 		}
 
-		$review = new ResourcesReview($database);
-
-		// Delete the review's comments
-		ximport('Hubzero_Comment');
-		$reply = new Hubzero_Comment($database);
-
-		$comments1 = $reply->getResults(array('id'=>$reviewid, 'category'=>'review'));
-		if (count($comments1) > 0) 
-		{
-			foreach ($comments1 as $comment1)
-			{
-				$comments2 = $reply->getResults(array('id'=>$comment1->id, 'category'=>'reviewcomment'));
-				if (count($comments2) > 0) 
-				{
-					foreach ($comments2 as $comment2)
-					{
-						$comments3 = $reply->getResults(array('id'=>$comment2->id, 'category'=>'reviewcomment'));
-						if (count($comments3) > 0) 
-						{
-							foreach ($comments3 as $comment3)
-							{
-								$reply->delete($comment3->id);
-							}
-						}
-						$reply->delete($comment2->id);
-					}
-				}
-				$reply->delete($comment1->id);
-			}
-		}
-
-		// Delete the review
-		$review->delete($reviewid);
-
-		// Recalculate the average rating for the parent resource
-		$resource->calculateRating();
-		$resource->updateRating();
+		$this->redirect(
+			$this->url, 
+			JText::_('PLG_COURSES_REVIEWS_REMOVED'),
+			'message'
+		);
 	}
 }
-

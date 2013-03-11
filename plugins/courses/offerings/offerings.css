@@ -1,0 +1,18 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/resources/reviews/reviews.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Resources Reviews plugin CSS
+	-- -- -- -- -- -- --
+
+*/
+
+	.entries tbody th {
+		text-align: left;
+	}

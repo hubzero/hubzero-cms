@@ -31,27 +31,47 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$dateFormat  = '%d %b, %Y';
-$timeFormat  = '%I:%M %p';
+ximport('Hubzero_Document');
+Hubzero_Document::addPluginStylesheet('courses', $this->name);
+//Hubzero_Document::addPluginScript('courses', $this->_name);
+
+$dateformat = '%d %b %Y';
+$timeformat = '%I:%M %p';
 $tz = 0;
 if (version_compare(JVERSION, '1.6', 'ge'))
 {
-	$dateFormat  = 'd M, Y';
-	$timeFormat  = 'h:i a';
+	$dateformat = 'd M Y';
+	$timeformat = 'H:i p';
 	$tz = true;
 }
 
-$juri =& JURI::getInstance();
-
-$sef = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=reviews');
-
-$message  = JText::_('PLG_RESOURCES_REVIEWS_SOMEONE_POSTED_REVIEW') . "\r\n\r\n";
-$message .= '----------------------------' . "\r\n";
-$message .= JText::_('Resource:') . ' #' . $this->resource->id . ' - ' . stripslashes($this->resource->title) . "\r\n";
-$message .= JText::_('Review posted on:') . ' ' . JHTML::_('date', $this->review->created, $dateFormat, $tz) . "\r\n";
-$message .= '----------------------------' . "\r\n\r\n";
-$message .= preg_replace('#<br[\s/]?>#', "\r", $this->review->comment) . "\r\n\r\n";
-$message .= JText::_('PLG_RESOURCES_REVIEWS_TO_VIEW_COMMENT') . "\r\n";
-$message .= rtrim($juri->base(), DS) . DS . ltrim($sef, DS) . "\r\n";
-
-echo $message;
+?>
+<div id="related-courses" class="after section">
+	<?php if (count($this->ids) > 1) { ?>
+	<h3>Other courses by these instructor</h3>
+	<?php } else { ?>
+	<h3>Other courses by this instructor</h3>
+	<?php } ?>
+<?php foreach ($this->courses as $course) { 
+	$course = new CoursesModelCourse($course);
+	?>
+	<div class="course-block">
+		<h4>
+			<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $course->get('alias')); ?>">
+				<?php echo $this->escape(stripslashes($course->get('title'))); ?>
+			</a>
+		</h4>
+		<div class="content">
+			<div class="description">
+				<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($course->get('blurb')), 500); ?>
+			</div>
+			<p class="action">
+				<a class="btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $course->get('alias') . '&active=overview'); ?>">
+					<?php echo JText::_('Overview'); ?>
+				</a>
+			</p>
+		</div>
+	</div>
+<?php } ?>
+	<div class="clear"></div>
+</div>

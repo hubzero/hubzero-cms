@@ -190,7 +190,7 @@ if ($this->courses)
 								<!-- <span class="entry-details">
 									<span class="entry-alias"><?php echo $course->get('alias'); ?></span>
 								</span> -->
-								<?php echo Hubzero_View_Helper_Html::shortenText($course->get('description'), 200); ?>
+								<?php echo Hubzero_View_Helper_Html::shortenText($course->get('blurb'), 200); ?>
 							</td>
 							<?php
 							/*<td>

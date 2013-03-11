@@ -254,6 +254,16 @@ class CoursesTableOffering extends JTable
 			$where[] = "c.id=" . $this->_db->Quote(intval($filters['course_id']));
 		}
 
+		if (isset($filters['available']) && $filters['available']) 
+		{
+			$now = date('Y-m-d H:i:s', time());
+
+			$where[] = "(ci.publish_up = '0000-00-00 00:00:00' OR ci.publish_up <= " . $this->_db->Quote($now) . ")";
+			$where[] = "(ci.publish_down = '0000-00-00 00:00:00' OR ci.publish_down >= " . $this->_db->Quote($now) . ")";
+
+			$filters['state'] = 1;
+		}
+
 		if (isset($filters['state'])) 
 		{
 			$where[] = "ci.state=" . $this->_db->Quote(intval($filters['state']));
@@ -299,6 +309,16 @@ class CoursesTableOffering extends JTable
 	{
 		$query  = "SELECT ci.*";
 		$query .= $this->_buildquery($filters);
+
+		if (!isset($filters['sort']) || !$filters['sort']) 
+		{
+			$filters['sort'] = 'publish_up';
+		}
+		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+		{
+			$filters['sort_Dir'] = 'DESC';
+		}
+		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
 
 		if (isset($filters['limit']) && $filters['limit'] != 0) 
 		{

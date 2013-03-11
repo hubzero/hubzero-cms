@@ -31,8 +31,22 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+ximport('Hubzero_Document');
+Hubzero_Document::addPluginStylesheet('courses', 'offerings');
+
+$dateformat = '%d %b %Y';
+$timeformat = '%I:%M %p';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateformat = 'd M Y';
+	$timeformat = 'H:i p';
+	$tz = true;
+}
+
 ?>
-<table>
+<div class="container">
+<table class="entries">
 	<thead>
 		<tr>
 			<th>Offering</th>
@@ -43,9 +57,10 @@ defined('_JEXEC') or die('Restricted access');
 	</thead>
 	<tbody>
 <?php
-if ($this->course->offerings())
+$offerings = $this->course->offerings(array('state' => 1, 'sort_Dir' => 'ASC'), true);
+if ($offerings->total() > 0)
 {
-	foreach ($this->course->offerings() as $offering)
+	foreach ($offerings as $offering)
 	{
 ?>
 		<tr>
@@ -55,10 +70,10 @@ if ($this->course->offerings())
 				</a>
 			</th>
 			<td>
-				<?php echo $this->escape(stripslashes($offering->get('start_date'))); ?>
+				<time datetime="<?php echo $offering->get('publish_up'); ?>"><?php echo JHTML::_('date', $offering->get('publish_up'), $dateformat, $tz); ?></time>
 			</td>
 			<td>
-				<?php echo $this->escape(stripslashes($offering->get('end_date'))); ?>
+				<time datetime="<?php echo $offering->get('publish_down'); ?>"><?php echo ($offering->get('publish_down') == '0000-00-00 00:00:00') ? JText::_('(never)') : JHTML::_('date', $offering->get('publish_down'), $dateformat, $tz); ?></time>
 			</td>
 			<td>
 				<?php if ($offering->isAvailable()) { ?>
@@ -82,3 +97,4 @@ else
 ?>
 	</tbody>
 </table>
+</div>

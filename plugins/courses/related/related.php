@@ -34,9 +34,9 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.plugin.plugin');
 
 /**
- * Courses Plugin class for course members
+ * Courses Plugin class for related course
  */
-class plgCoursesOfferings extends JPlugin
+class plgCoursesRelated extends JPlugin
 {
 	/**
 	 * Constructor
@@ -53,74 +53,61 @@ class plgCoursesOfferings extends JPlugin
 	}
 
 	/**
-	 * Return the alias and name for this category of content
-	 * 
-	 * @return     array
-	 */
-	public function &onCourseViewAreas($course)
-	{
-		if ($course->offerings(array('state' => 1, 'sort_Dir' => 'ASC'), true)->total() > 0)
-		{
-			$area = array(
-				'offerings' => JText::_('PLG_COURSES_' . strtoupper($this->_name)),
-			);
-			return $area;
-		}
-		return array();
-	}
-
-	/**
 	 * Return data on a course view (this will be some form of HTML)
 	 * 
 	 * @param      object  $course Current course
 	 * @param      string  $active Current active area
 	 * @return     array
 	 */
-	public function onCourseView($course, $active=null)
+	public function onCourseViewAfter($course)
 	{
-		// The output array we're returning
-		$arr = array(
-			'name'     => 'offerings',
-			'html'     => '',
-			'metadata' => ''
-		);
-
-		//$this->option = JRequest::getVar('option', 'com_courses');
-		//$this->course = $course;
-
-		// Check if our area is in the array of areas we want to return results for
-		if (is_array($active)) 
+		$instructors = $course->instructors();
+		if (count($instructors) <= 0) 
 		{
-			if (!in_array($arr['name'], $active)) 
-			{
-				return $arr;
-			}
+			return;
 		}
-		else if ($active != $arr['name'])
+		$ids = array();
+		foreach ($instructors as $instructor)
 		{
-			return $arr;
+			$ids[] = (int) $instructor->get('user_id');
 		}
 
-		//Create user object
-		//$juser =& JFactory::getUser();
+		$database =& JFactory::getDBO();
 
-		ximport('Hubzero_Plugin_View');
-		$view = new Hubzero_Plugin_View(
-			array(
-				'folder'  => 'courses',
-				'element' => $this->_name,
-				'name'    => 'overview'
-			)
-		);
-		$view->option     = JRequest::getCmd('option', 'com_courses');
-		$view->controller = JRequest::getWord('controller', 'course');
-		$view->course     = $course;
-		$view->name       = $this->_name;
+		//$now = date('Y-m-d H:i:s', time());
 
-		$arr['html'] = $view->loadTemplate();
+		$query  = "SELECT c.* 
+					FROM #__courses AS c 
+					JOIN #__courses_members AS m ON m.course_id=c.id AND m.student=0
+					LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
+					WHERE r.alias='instructor' 
+					AND m.user_id IN (" . implode(",", $ids) . ")
+					AND c.state=1
+					AND c.id !=" . $database->Quote($course->get('id'));
+	/*				AND (c.publish_up = '0000-00-00 00:00:00' OR c.publish_up <= " . $database->Quote($now) . ")
+					AND (c.publish_down = '0000-00-00 00:00:00' OR c.publish_down >= " . $database->Quote($now) . ")";*/
 
-		// Return the output
-		return $arr;
+		$database->setQuery($query);
+		if (($courses = $database->loadObjectList()))
+		{
+			ximport('Hubzero_Plugin_View');
+			$view = new Hubzero_Plugin_View(
+				array(
+					'folder'  => 'courses',
+					'element' => $this->_name,
+					'name'    => 'overview'
+				)
+			);
+			$view->option     = JRequest::getCmd('option', 'com_courses');
+			$view->controller = JRequest::getWord('controller', 'course');
+			$view->course     = $course;
+			$view->name       = $this->_name;
+			$view->courses    = $courses;
+			$view->ids        = $ids;
+
+			// Return the output
+			return $view->loadTemplate();
+		}
 	}
 }
 
