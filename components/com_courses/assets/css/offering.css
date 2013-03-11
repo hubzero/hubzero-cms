@@ -162,6 +162,7 @@
 	#page_menu li .usage:before { content: "\f080"; }
 	#page_menu li .projects:before { content: "\f03f"; }
 	#page_menu li .progress:before { content: "\f012"; } /* \f091 */
+	#page_menu li .dashboard:before { content: "\f083"; }
 
 	#page_menu li.protected {
 		background: none;
@@ -1261,12 +1262,65 @@
 /*--------------------------------------------------
 	Course Outline
 --------------------------------------------------*/
+#course-outline .clearfix {
+	display: inline-block;
+}
+.timeline {
+	height: 0px;
+	width: 8px;
+	margin: 0 34px;
+	background: #AAA;
+	display: block;
+	float: left;
+	overflow: hidden;
+}
+#course-outline h3:before,
+#course-outline h3:after {
+	content: "";
+	position: absolute;
+	border-style: solid;
+}
+#course-outline h3:before {
+	top: 8px;
+	left: -50px;
+	bottom: auto;
+	border-color: #777;
+	border-width: 12px;
+	border-radius: 12px;
+}
+#course-outline h3:after {
+	top: 12px;
+	left: -46px;
+	bottom: auto;
+	border-color: #FFF;
+	border-width: 8px;
+	border-radius: 8px;
+}
+#course-outline .unit-content:before,
+#course-outline .unit-content:after {
+	content: "";
+	position: absolute;
+	border-style: solid;
+}
+#course-outline .unit-content:after {
+	top: 8px;
+	left: -21px;
+	bottom: auto;
+	border-color: transparent #FBFBFB transparent transparent;
+	border-width: 12px;
+}
+#course-outline .unit-content:before {
+	top: 8px;
+	left: -24px;
+	bottom: auto;
+	border-color: transparent #999 transparent transparent;
+	border-width: 12px;
+}
 #course-outline {
-	width: 100%;
 	border:none;
 	border-collapse:separate;
-	border-bottom: 1px solid #999;
 	background: #fff;
+	margin-left: 76px;
 	}
 #course-outline * {
 	font-size: 1em;
@@ -1274,20 +1328,21 @@
 	}
 #course-outline h3 {
 	padding: 10px 10px;
-	border-top: dotted 1px #999999;
 	font-size: 1.3em;
 	background: #fff;
 	color: #666;
 	font-style: normal;
-	border-bottom:none;
 	}
-	#course-outline h3 span {
-		text-transform: uppercase;
-		margin-right: 1.5em;
+#course-outline h3 span {
+	text-transform: uppercase;
+	margin-right: 1.5em;
 	}
 #course-outline tr td {
 	vertical-align: middle;
 	}
+#course-outline .details {
+	width: 100%;
+}
 #course-outline .details .less {
 	color: #999;	
 	}
@@ -1311,16 +1366,18 @@
 	}
 #course-outline .unit {
 	position: relative;
+	margin-bottom: 10px;
+	border-radius: 7px;
 }
 #course-outline .status {
+	color: #555;
 	font-size: 1em;
-	border-left: 1px solid #fff;
 	margin: 0;
 	padding: 1em;
 	position: absolute;
 	top: 1px;
-	right: 0;
-	background: #fff;
+	right: 10px;
+	background: transparent;
 	}
 #course-outline td.fLink {
 	text-decoration: underline;
@@ -1348,11 +1405,23 @@
 	font-style: italic;
 	}
 #course-outline .open h3 {
-	color: #fff;
-	background: #2979b0;
-	border-top: 1px solid #2979b0;
-	border-bottom: 1px solid #fff;
+	cursor: pointer;
+	color: #555;
+	margin: 0;
+	background: #FBFBFB;
+	border: 2px solid #999;
+	border-bottom: none;
+	padding-left: 20px;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
 	}
+#course-outline .unit-availability {
+	border: 2px solid #999;
+	border-top: none;
+	background-color: #FBFBFB;
+	border-bottom-right-radius: 3px;
+	border-bottom-left-radius: 3px;
+}
 #course-outline tr.open td.status {
 	background: #eee;
 	color: #000;
@@ -1361,36 +1430,42 @@
 	border-top: 1px solid #ddd;
 	}
 #course-outline .weeksection {
-	width: 47.8%;
+	width: 45.8%;
 	padding: 1em 0 1.5em;
 	float: left;
-	margin: 0 1%;
+	margin: 0 2%;
 	}
+#course-outline .weeksectioninner {
+	border: 1px solid #BABABA;
+	background-color: #FFF;
+	border-radius: 5px;
+	box-shadow: 1px 1px 5px rgba(0,0,0,.2);
+}
 #course-outline .weeksection h4 {
-	text-transform: uppercase;
 	font-size: 1.2em;
-	border-bottom: 2px solid;
 	font-weight: bold;
-	margin: 20px 0 15px 0;
+	margin: 0 0 15px 0;
+	padding: 5px;
+	background-color: #DDD;
+	background-color: rgba(0, 0, 0, .1);
+	border: 1px solid #DDD;
+	text-align: center;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	border-bottom: 1px solid #BABABA;
 	}
 /*#course-outline .weeksection h4 {
 	margin: 0px 0 0.1em;
 	}*/
 #course-outline .weeksection ul {
-	padding: 0 0 10px 0;
-	border-bottom: 1px solid #ccc;
-	-moz-box-shadow: 0 1px 0 #fff;
-	-webkit-box-shadow: 0 1px 0 #fff;
-	box-shadow: 0 1px 0 #fff;
-	margin: 0 0 10px 0;
+	padding: 0 0 15px 0;
+	margin: 0;
 	list-style:none;
 	overflow:hidden;
 	}
 #course-outline .weeksection ul li {
 	float: left;
-	margin-right: 10px;
-	margin-top:0;
-	margin-bottom:0;
+	margin: 3px 15px 0 0;
 	}
 #course-outline .weeksection ul.nofloat li {
 	float: none;
@@ -1398,9 +1473,48 @@
 	margin:5px 0;
 	}
 #course-outline .weeksection ul li a {
-	padding: 0 0 0 10px;
-	background: url('/components/com_courses/assets/img/link.png') left no-repeat;
+	padding: 0 0 0 15px;
+	position: relative;
 	}
+#course-outline .asset-group {
+	border-bottom: 1px solid #BBB;
+	margin: 0 20px 15px 20px;
+}
+#course-outline .asset-group h5 {
+	margin: 0 0 3px 0;
+}
+.asset:before,
+.asset:after {
+	position: absolute;
+	top: 0;
+	left: 0;
+	font-family: "fontcons";
+	content: "";
+}
+.video:after {
+	content: "\f008";
+}
+.file:after {
+	content: "\f016";
+}
+.missing:after {
+	content: "\2298"
+}
+.exam:after {
+	content: "\270e";
+}
+.note:after {
+	content: "\f02a";
+}
+.link:after {
+	content: "\26D3";
+}
+.object:after {
+	content: "\f0c3";
+}
+.wiki:after {
+	content: "\f072";
+}
 
 @media screen and (min-width:1500px) {
 	#member_browser a {
