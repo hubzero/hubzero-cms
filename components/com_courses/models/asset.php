@@ -193,6 +193,25 @@ class CoursesModelAsset extends CoursesModelAbstract
 	}
 
 	/**
+	 * Track asset views
+	 *
+	 * @return    void
+	 */
+	public function logView()
+	{
+		require_once(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.views.php');
+
+		$view = new CoursesTableAssetViews($this->_db);
+		$view->asset_id  = $this->_tbl->id;
+		$view->viewed    = date('Y-m-d H:i:s', time());
+		$view->viewed_by = JFactory::getUser()->get('id');
+		if (!$view->store()) 
+		{
+			$this->setError($view->getError());
+		}
+	}
+
+	/**
 	 * Check a user's authorization
 	 * 
 	 * @param      string $action Action to check
@@ -201,6 +220,8 @@ class CoursesModelAsset extends CoursesModelAbstract
 	public function render($course=null, $option='com_courses')
 	{
 		$type = strtolower($this->get('type'));
+
+		$this->logView();
 
 		$view = new JView(array(
 			'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_courses',
