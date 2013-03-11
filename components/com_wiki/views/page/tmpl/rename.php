@@ -98,9 +98,12 @@ if ($this->page->id)
 			<input type="hidden" name="scope" value="<?php echo $this->page->scope; ?>" />
 			<input type="hidden" name="pageid" value="<?php echo $this->page->id; ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="task" value="saverename" />
+			
 <?php if ($this->sub) { ?>
 			<input type="hidden" name="active" value="<?php echo $this->sub; ?>" />
+			<input type="hidden" name="action" value="saverename" />
+<?php } else { ?>
+			<input type="hidden" name="task" value="saverename" />
 <?php } ?>
 
 		</fieldset>

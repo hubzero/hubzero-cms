@@ -95,7 +95,7 @@ if ($this->page->id) {
 			</a>
 		</li>
 		<li class="page-edit active">
-			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=edit'); ?>">
+			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=edit'); ?>">
 				<span><?php echo JText::_('WIKI_TAB_EDIT'); ?></span>
 			</a>
 		</li>
@@ -153,7 +153,7 @@ if ($this->page->id && !$this->config->get('access-modify')) {
 <?php if (!$this->sub) { ?>
 	<div class="explaination">
 	<?php if ($this->page->id && $this->config->get('access-edit')) { ?>
-		<p>To change the page name (the portion used for URLs), go <a class="page-rename" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=rename'); ?>">here</a>.</p>
+		<p>To change the page name (the portion used for URLs), go <a class="page-rename" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=rename'); ?>">here</a>.</p>
 	<?php } ?>
 		<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Help:WikiMacros#image'); ?>">[[Image(filename.jpg)]]</a> to include an image.</p>
 		<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename=Help:WikiMacros#file'); ?>">[[File(filename.pdf)]]</a> to include a file.</p>
@@ -165,7 +165,7 @@ if ($this->page->id && !$this->config->get('access-modify')) {
 	</div>
 <?php } else { ?>
 	<?php if ($this->page->id && $this->config->get('access-edit')) { ?>
-		<p>To change the page name (the portion used for URLs), go <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=rename'); ?>">here</a>.</p>
+		<p>To change the page name (the portion used for URLs), go <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=rename'); ?>">here</a>.</p>
 	<?php } ?>
 <?php } ?>
 	<fieldset>
@@ -417,11 +417,13 @@ if ($this->config->get('access-edit')) {
 		<input type="hidden" name="revision[created]" value="<?php echo $this->revision->created; ?>" />
 		
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="task" value="save" />
 
 <?php if ($this->sub) { ?>
 		<input type="hidden" name="gid" value="<?php echo $this->page->group_cn; ?>" />
 		<input type="hidden" name="active" value="<?php echo $this->sub; ?>" />
+		<input type="hidden" name="action" value="save" />
+<?php } else { ?>
+		<input type="hidden" name="task" value="save" />
 <?php } ?>
 
 		<p class="submit">
@@ -429,21 +431,4 @@ if ($this->config->get('access-edit')) {
 			<input type="submit" name="submit" value="<?php echo JText::_('SUBMIT'); ?>" />
 		</p>
 	</form>
-
-	<style>
-		#pagetext-overlay {
-			background: rgba(255, 255, 255, 0.6); position: absolute; top: 0; bottom: 0; left: 0; right: 0;
-		}
-		#pagetext-overlay span {
-			display: block;
-			width: 200px;
-			border-radius: 0.25em;
-			background: rgba(0, 0, 0, 0.8);
-			color: #fff;
-			padding: 1em;
-			text-align: center;
-			text-shadow: rgba(0, 0, 0, 0.8);
-			margin: 200px auto 100px auto;
-		}
-	</style>
 </div><!-- / .main section -->

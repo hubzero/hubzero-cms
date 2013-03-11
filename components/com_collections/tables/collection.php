@@ -226,6 +226,11 @@ class CollectionsTableCollection extends JTable
 			'is_default'  => 1,
 			'created_by'  => $object_id
 		);
+		if (!$result['created_by'])
+		{
+			$juser =& JFactory::getUser();
+			$result['created_by'] = $juser->get('id');
+		}
 		if (!$this->bind($result))
 		{
 			return false;
@@ -328,6 +333,10 @@ class CollectionsTableCollection extends JTable
 		if (isset($filters['access'])) 
 		{
 			$where[] = "b.access=" . $this->_db->Quote(intval($filters['access']));
+		}
+		if (isset($filters['is_default'])) 
+		{
+			$where[] = "b.is_default=" . $this->_db->Quote(intval($filters['is_default']));
 		}
 
 		/*if (isset($filters['object_id']) && $filters['object_id'] && isset($filters['object_type']) && $filters['object_type']) 

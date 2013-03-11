@@ -101,7 +101,7 @@ $first = end($this->revisions);
 </div><!-- / .section -->
 
 <div class="main section">
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=compare'); ?>" method="post">
+	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=compare'); ?>" method="post">
 		<p class="info">
 			This article has <?php echo count($this->revisions); ?> versions, was created on <time datetime="<?php echo $first->created; ?>"><?php echo $first->created; ?></time> and last edited on <time datetime="<?php echo $this->revisions[0]->created; ?>"><?php echo $this->revisions[0]->created; ?></time>.
 		</p>
@@ -174,13 +174,13 @@ foreach ($this->revisions as $revision)
 ?>
 								( cur )
 <?php } else { ?>
-								(<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=compare&oldid='.$revision->version.'&diff='.$cur); ?>">
+								(<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=compare&oldid='.$revision->version.'&diff='.$cur); ?>">
 									<?php echo JText::_('WIKI_HISTORY_CURRENT'); ?>
 								</a>)
 <?php } ?>
 								&nbsp;
 <?php if ($revision->version != 1) { ?>
-								(<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=compare&oldid='.($revision->version - 1).'&diff='.$revision->version); ?>">
+								(<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=compare&oldid='.($revision->version - 1).'&diff='.$revision->version); ?>">
 									<?php echo JText::_('WIKI_HISTORY_LAST'); ?>
 								</a>)
 <?php } else { ?>
@@ -220,14 +220,14 @@ foreach ($this->revisions as $revision)
 								<?php echo $this->escape($status); ?>
 					<?php if (!$revision->approved && $this->config->get('access-manage')) { ?>
 								<br />
-								<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=approve&oldid='.$revision->id); ?>">
+								<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=approve&oldid='.$revision->id); ?>">
 									<?php echo JText::_('WIKI_ACTION_APPROVED'); ?>
 								</a>
 					<?php } ?>
 							</td>
 					<?php if (($this->page->state == 1 && $this->config->get('access-manage')) || ($this->page->state != 1 && $this->config->get('access-delete'))) { ?>
 							<td>
-								<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=deleterevision&oldid='.$revision->id); ?>" title="<?php echo JText::_('WIKI_REVISION_DELETE'); ?>">
+								<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=deleterevision&oldid='.$revision->id); ?>" title="<?php echo JText::_('WIKI_REVISION_DELETE'); ?>">
 									<?php echo JText::_('DELETE'); ?>
 								</a>
 							</td>
@@ -248,7 +248,9 @@ foreach ($this->revisions as $revision)
 		<input type="hidden" name="controller" value="<?php echo $this->escape($this->controller); ?>" />
 <?php if ($this->sub) { ?>
 		<input type="hidden" name="active" value="<?php echo $this->escape($this->sub); ?>" />
-<?php } ?>
+		<input type="hidden" name="action" value="compare" />
+<?php } else { ?>
 		<input type="hidden" name="task" value="compare" />
+<?php } ?>
 	</form>
 </div><!-- / .main section -->

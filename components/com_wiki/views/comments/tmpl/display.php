@@ -82,7 +82,7 @@ if (!$mode || ($mode && $mode != 'static'))
 <?php if (!$this->sub) { ?>
 <div class="section">
 	<div class="aside">
-		<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=addcomment#commentform'); ?>" class="add btn"><?php echo JText::_('WIKI_ADD_COMMENT'); ?></a></p>
+		<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=addcomment#commentform'); ?>" class="add btn"><?php echo JText::_('WIKI_ADD_COMMENT'); ?></a></p>
 	</div><!-- / .aside -->
 	<div class="subject">
 <?php } ?>
@@ -96,7 +96,7 @@ if (!$mode || ($mode && $mode != 'static'))
 <div class="main section">
 	<?php if ($this->sub) { ?>
 	<p class="comment-add-btn">
-		<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=addcomment#commentform'); ?>" class="add btn"><?php echo JText::_('WIKI_ADD_COMMENT'); ?></a>
+		<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=addcomment#commentform'); ?>" class="add btn"><?php echo JText::_('WIKI_ADD_COMMENT'); ?></a>
 	</p>
 	<?php } ?>
 	<h3 id="commentlist-title"><?php echo JText::_('COMMENTS'); ?></h3>
@@ -145,6 +145,7 @@ if ($this->comments) {
 	$view->c = '';
 	$view->level = 1;
 	$view->config = $this->config;
+	$view->sub = $this->sub;
 	$view->display();
 } else {
 	if ($this->v) {
@@ -252,12 +253,13 @@ if ($this->comments) {
 				<input type="hidden" name="scope" value="<?php echo $this->page->scope; ?>" />
 				
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-				<input type="hidden" name="task" value="savecomment" />
 
 <?php if ($this->sub) { ?>
 				<input type="hidden" name="active" value="<?php echo $this->sub; ?>" />
+				<input type="hidden" name="action" value="savecomment" />
+<?php } else { ?>
+				<input type="hidden" name="task" value="savecomment" />
 <?php } ?>
-	
 				<label id="comment-anonymous-label">
 					<input class="option" type="checkbox" name="anonymous" id="comment-anonymous" value="1"<?php if ($this->mycomment->anonymous != 0) { echo ' checked="checked"'; } ?> />
 					<?php echo JText::_('WIKI_FIELD_ANONYMOUS'); ?>

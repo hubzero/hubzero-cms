@@ -224,7 +224,7 @@ class CollectionsControllerCollections extends Hubzero_Controller
 		$this->view->filters['user_id'] = $this->juser->get('id');
 		//$this->view->filters['sort']   = 'p.created';
 		$this->view->filters['state']   = 1;
-		//$this->view->filters['trending'] = true;
+		$this->view->filters['is_default'] = 0;
 		//$this->view->filters['board_id'] = 0;
 		if ($this->view->filters['id'])
 		{

@@ -43,7 +43,7 @@ $juser =& JFactory::getUser();
 	<div id="<?php echo ($this->sub) ? 'sub-content-header-extra' : 'content-header-extra'; ?>">
 		<ul id="<?php echo ($this->sub) ? 'page_options' : 'useroptions'; ?>">
 			<li>
-				<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&task=new'); ?>">
+				<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&' . ($this->sub ? 'action' : 'task') . '=new'); ?>">
 					<?php echo JText::_('WIKI_NEW_PAGE'); ?>
 				</a>
 			</li>

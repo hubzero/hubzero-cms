@@ -64,6 +64,11 @@ class WikiControllerComments extends Hubzero_Controller
 			$this->_group = $config['group'];
 		}
 
+		if ($this->_sub)
+		{
+			JRequest::setVar('task', JRequest::getWord('action'));
+		}
+
 		/*$this->_access = false;
 		if (isset($config['access'])) 
 		{

@@ -99,7 +99,7 @@ if (count($this->comments) > 0) {
 		}
 		$html .= "\t\t".'	<p class="comment-title">'."\n";
 		$html .= "\t\t".'		<strong>'. $author.'</strong> '."\n";
-		$html .= "\t\t".'		<a class="permalink" href="'.JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=comments#c'.$comment->id).'" title="'. JText::_('Permalink').'">';
+		$html .= "\t\t".'		<a class="permalink" href="'.JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=comments#c'.$comment->id).'" title="'. JText::_('Permalink').'">';
 		$html .= '<span class="comment-date-at">@</span> <span class="time">'. JHTML::_('date', $comment->created, $timeFormat, $tz).'</span> <span class="comment-date-on">on</span> <span class="date">'.JHTML::_('date',$comment->created, $dateFormat, $tz).'</span>';
 		if ($this->level == 1) {
 			$html .= ' to revision '.$comment->version;
@@ -116,13 +116,13 @@ if (count($this->comments) > 0) {
 
 			if ($this->config->get('access-comment-delete'))
 			{
-				$html .= "\t\t\t\t".'<a class="delete" href="'.JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=removecomment&id='.$comment->id).'" title="'.JText::_('Delete this comment').'">'.JText::_('Delete').'</a>'."\n";
+				$html .= "\t\t\t\t".'<a class="delete" href="'.JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=removecomment&id='.$comment->id).'" title="'.JText::_('Delete this comment').'">'.JText::_('Delete').'</a>'."\n";
 			}
 		if ($this->level < 3) {
-			$html .= "\t\t\t\t".'<a class="reply" href="'.JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=addcomment&parent='.$comment->id).'" title="'.JText::sprintf('WIKI_COMMENT_REPLY_TO',$author).'">'.JText::_('Reply').'</a>'."\n";
+			$html .= "\t\t\t\t".'<a class="reply" href="'.JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=addcomment&parent='.$comment->id).'" title="'.JText::sprintf('WIKI_COMMENT_REPLY_TO',$author).'">'.JText::_('Reply').'</a>'."\n";
 			
 		}
-		//$html .= t.t.t.' | <a class="abuse" href="'.JRoute::_('index.php?option='.$this->option.a.'scope='.$this->page->scope.a.'pagename='.$this->page->pagename.a.'task=reportcomment'.a.'id='.$comment->id).'">'.JText::_('WIKI_COMMENT_REPORT').'</a>';
+		//$html .= t.t.t.' | <a class="abuse" href="'.JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=reportcomment&id='.$comment->id).'">'.JText::_('WIKI_COMMENT_REPORT').'</a>';
 		//$html .= '</p><p class="actions">&nbsp;</p>'.n;
 		$html .= "\t\t\t".'</p>'."\n";
 		$html .= "\t\t".'</div><!-- .comment-content -->'."\n";

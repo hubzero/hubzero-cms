@@ -52,7 +52,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <div class="main section">
 	<p class="warning">
-		This page does not exist. Would you like to <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=new'); ?>">create it?</a>
+		This page does not exist. Would you like to <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=new'); ?>">create it?</a>
 	</p>
 <?php if ($templates = $this->page->getTemplates()) { ?>
 	<p>
@@ -65,7 +65,7 @@ if ($templates) {
 	{
 ?>
 		<li>
-			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&task=new&tplate='.stripslashes($template->pagename)); ?>">
+			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&' . ($this->sub ? 'action' : 'task') . '=new&tplate='.stripslashes($template->pagename)); ?>">
 				<?php echo stripslashes($template->pagename); ?>
 			</a>
 		</li>

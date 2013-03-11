@@ -64,6 +64,11 @@ class WikiControllerHistory extends Hubzero_Controller
 			$this->_group = $config['group'];
 		}
 
+		if ($this->_sub)
+		{
+			JRequest::setVar('task', JRequest::getWord('action'));
+		}
+
 		parent::__construct($config);
 	}
 
