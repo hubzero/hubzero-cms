@@ -64,6 +64,11 @@ jQuery(function($) {
 		$('.questions-total').html(--questionsTotal);
 		var questionsUnSaved = parseInt($('.questions-unsaved').html(), 10);
 		$('.questions-unsaved').html(++questionsUnSaved);
+		if(questionsUnSaved > 0) {
+			$('#save').addClass('unsaved');
+		} else {
+			$('#save').removeClass('unsaved');
+		}
 		$(evt.target.parentNode).remove();
 	};
 
@@ -142,6 +147,11 @@ jQuery(function($) {
 		$('.questions-total').html(++questionsTotal);
 		var questionsUnSaved = parseInt($('.questions-unsaved').html(), 10);
 		$('.questions-unsaved').html(++questionsUnSaved);
+		if(questionsUnSaved > 0) {
+			$('#save').addClass('unsaved');
+		} else {
+			$('#save').removeClass('unsaved');
+		}
 
 		marker.click(addGroup);
 	});
@@ -220,6 +230,7 @@ jQuery(function($) {
 				}
 			}, 'JSON');
 			$('.questions-unsaved').html(0);
+			$('#save').removeClass('unsaved');
 		}
 	});
 });

@@ -150,6 +150,13 @@ input.placeholder {
 .navbar .question-info p {
 	margin: 0.7em 0;
 }
+.navbar .unsaved {
+	transition: box-shadow 0.5s ease-in-out;
+	-webkit-transition: box-shadow 0.5s ease-in-out;
+	-o-transition: box-shadow 0.5s ease-in-out;
+	-moz-transition: box-shadow 0.5s ease-in-out;
+	box-shadow: 0 0 10px red;
+}
 #saved-notification {
 	position: fixed;
 	top: 0;
