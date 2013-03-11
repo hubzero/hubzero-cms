@@ -195,9 +195,15 @@ class Hubzero_Ldap
 		{
 			$query .= " WHERE u.username = " . $db->Quote($user) . " LIMIT 1;";
 		}
-	
+
 		$db->setQuery($query);
 		$dbinfo = $db->loadAssoc();
+
+		// Don't sync usernames that are negative numbers (these are auth_link temp accounts)
+		if(is_numeric($dbinfo['uid']) && $dbinfo['uid'] <= 0)
+		{
+			return false;
+		}
 		
 		if (!empty($dbinfo))
 		{
@@ -253,13 +259,13 @@ class Hubzero_Ldap
 
 			if (empty($entry['uid']) || empty($entry['cn']) || empty($entry['gidNumber']))
 			{
-				self::$errors['warning'] = "User {$dbinfo['uid']} missing one of uid, cn, or gidNumber";
+				self::$errors['warning'][] = "User {$dbinfo['uid']} missing one of uid, cn, or gidNumber";
 				return false;
 			}
 				
 			if (empty($entry['homeDirectory']) || empty($entry['uidNumber']))
 			{
-				self::$errors['warning'] = "User {$dbinfo['uid']} missing one of homeDirectory or uidNumber";
+				self::$errors['warning'][] = "User {$dbinfo['uid']} missing one of homeDirectory or uidNumber";
 				return false;
 			}
 			
