@@ -56,7 +56,7 @@ if (!$this->course->offering()->access('view')) { ?>
 	<p class="info"><?php echo JText::_('Access to the "Syllabus" section of this course is restricted to members only. You must be a member to view the content.'); ?></p>
 <?php } else { ?>
 
-	<div id="steps" class="section">
+	<!-- <div id="steps" class="section">
 		<p>
 			<?php echo $this->escape(stripslashes($unit->get('title'))); ?>
 		</p>
@@ -65,7 +65,7 @@ if (!$this->course->offering()->access('view')) { ?>
 			<li id="step-<?php echo ($key + 1); ?>"<?php echo ($assetgroup->get('id') == $lecture->get('id')) ? ' class="active"' : ($key <= $current ? ' class="completed"' : ''); ?>><?php echo $this->escape(stripslashes($assetgroup->get('title'))); ?></li>
 		<?php } ?>
 		</ol>
-	</div>
+	</div> -->
 
 	<div class="video container" style="text-align: center;">
 		<div class="video-wrap" style="margin: 0 auto; text-align: left;">

@@ -168,6 +168,7 @@ function CoursesParseRoute($segments)
 			case 'overview':
 			case 'reviews':
 			case 'offerings':
+			case 'faq':
 				$vars['active'] = $segments[1];
 			/*case 'messages':
 			case 'enrollment':
@@ -196,12 +197,18 @@ function CoursesParseRoute($segments)
 			case 'invite':
 			case 'customize':
 			case 'manage':
-				if(isset($segments[2]))
+				if (isset($segments[2]))
 				{
 					$vars['task'] = 'editoutline';
 					$vars['offering'] = $segments[2];
 				}
 				$vars['controller'] = 'offering';
+				if (isset($segments[3]))
+				{
+					$vars['task'] = 'manage';
+					$vars['controller'] = $segments[3];
+				}
+				return $vars;
 			break;
 
 			case 'editoutline':
@@ -232,7 +239,7 @@ function CoursesParseRoute($segments)
 
 	if (isset($segments[2])) 
 	{
-		if($segments[0] == 'form')
+		if ($segments[0] == 'form')
 		{
 			$vars['formId'] = $segments[2];
 			$vars['controller'] = 'form';

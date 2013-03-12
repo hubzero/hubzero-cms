@@ -37,6 +37,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models'
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'permissions.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'page.php');
 
 /**
  * Courses model class for a course
@@ -91,6 +92,20 @@ class CoursesModelCourse extends CoursesModelAbstract
 	 * @var object
 	 */
 	private $_managers = NULL;
+
+	/**
+	 * CoursesModelOffering
+	 * 
+	 * @var object
+	 */
+	private $_page = NULL;
+
+	/**
+	 * CoursesModelIterator
+	 * 
+	 * @var object
+	 */
+	private $_pages = NULL;
 
 	/**
 	 * Constructor
@@ -705,6 +720,69 @@ class CoursesModelCourse extends CoursesModelAbstract
 		JDispatcher::getInstance()->trigger('onAfterDeleteCourse', array($this));
 
 		return $value;
+	}
+
+	/**
+	 * Check if the current user is enrolled
+	 * 
+	 * @return     boolean
+	 */
+	public function page($url=null)
+	{
+		if (!isset($this->_page) 
+		 || ($url !== null && (int) $this->_page['url'] != $url))
+		{
+			$this->_page = null;
+
+			if (isset($this->_pages) && is_array($this->_pages) && isset($this->_pages[$url]))
+			{
+				$this->_page = $this->_pages[$url];
+			}
+		}
+
+		return $this->_page; 
+	}
+
+	/**
+	 * Get a list of units for an offering
+	 *   Accepts either a numeric array index or a string [id, name]
+	 *   If index, it'll return the entry matching that index in the list
+	 *   If string, it'll return either a list of IDs or names
+	 * 
+	 * @param      mixed $idx Index value
+	 * @return     array
+	 */
+	public function pages($filters=array())
+	{
+		if (!isset($filters['course_id']))
+		{
+			$filters['course_id'] = (int) $this->get('id');
+		}
+		if (!isset($filters['offering_id']))
+		{
+			$filters['offering_id'] = 0;
+		}
+
+		if (isset($filters['count']) && $filters['count'])
+		{
+			$tbl = new CoursesTablePage($this->_db);
+
+			return $tbl->count($filters);
+		}
+
+		if (!isset($this->_pages) || !is_array($this->_pages))
+		{
+			$tbl = new CoursesTablePage($this->_db);
+
+			if (!($results = $tbl->find($filters)))
+			{
+				$results = array();
+			}
+
+			$this->_pages = $results;
+		}
+
+		return $this->_pages;
 	}
 }
 
