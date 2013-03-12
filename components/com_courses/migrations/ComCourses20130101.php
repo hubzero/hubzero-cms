@@ -344,35 +344,35 @@ class ComCourses20130101 extends Migration{
 			FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `jos_plugins` WHERE `name` = 'Members - Courses');
 
 			INSERT INTO `jos_plugins` (`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`)
-			SELECT 'Courses - Syllabus','syllabus','courses',0,1,0,0,0,0,'0000-00-00 00:00:00',''),
+			SELECT 'Courses - Syllabus','syllabus','courses',0,1,0,0,0,0,'0000-00-00 00:00:00',''
 			FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `jos_plugins` WHERE `name` = 'Courses - Syllabus');
 
 			INSERT INTO `jos_plugins` (`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`)
-			SELECT 'Courses - Disucssions','forum','courses',0,2,1,0,0,0,'0000-00-00 00:00:00',''),
+			SELECT 'Courses - Disucssions','forum','courses',0,2,1,0,0,0,'0000-00-00 00:00:00',''
 			FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `jos_plugins` WHERE `name` = 'Courses - Disucssions');
 
 			INSERT INTO `jos_plugins` (`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`)
-			SELECT 'Courses - My Progress','progress','courses',0,3,1,0,0,0,'0000-00-00 00:00:00',''),
+			SELECT 'Courses - My Progress','progress','courses',0,3,1,0,0,0,'0000-00-00 00:00:00',''
 			FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `jos_plugins` WHERE `name` = 'Courses - My Progress');
 
 			INSERT INTO `jos_plugins` (`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`)
-			SELECT 'Courses - Announcements','announcements','courses',0,4,1,0,0,0,'0000-00-00 00:00:00',''),
+			SELECT 'Courses - Announcements','announcements','courses',0,4,1,0,0,0,'0000-00-00 00:00:00',''
 			FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `jos_plugins` WHERE `name` = 'Courses - Announcements');
 
 			INSERT INTO `jos_plugins` (`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`)
-			SELECT 'Courses - Dashboard','dashboard','courses',0,5,1,0,0,0,'0000-00-00 00:00:00',''),
+			SELECT 'Courses - Dashboard','dashboard','courses',0,5,1,0,0,0,'0000-00-00 00:00:00',''
 			FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `jos_plugins` WHERE `name` = 'Courses - Dashboard');
 
 			INSERT INTO `jos_plugins` (`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`)
-			SELECT 'Courses - Course Overview','overview','courses',0,6,1,0,0,0,'0000-00-00 00:00:00',''),
+			SELECT 'Courses - Course Overview','overview','courses',0,6,1,0,0,0,'0000-00-00 00:00:00',''
 			FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `jos_plugins` WHERE `name` = 'Courses - Course Overview');
 
 			INSERT INTO `jos_plugins` (`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`)
-			SELECT 'Courses - Course Reviews','reviews','courses',0,7,1,0,0,0,'0000-00-00 00:00:00',''),
+			SELECT 'Courses - Course Reviews','reviews','courses',0,7,1,0,0,0,'0000-00-00 00:00:00',''
 			FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `jos_plugins` WHERE `name` = 'Courses - Course Reviews');
 
 			INSERT INTO `jos_plugins` (`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`)
-			SELECT 'Courses - Course Offerings','offerings','courses',0,8,1,0,0,0,'0000-00-00 00:00:00','');
+			SELECT 'Courses - Course Offerings','offerings','courses',0,8,1,0,0,0,'0000-00-00 00:00:00',''
 			FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `jos_plugins` WHERE `name` = 'Courses - Course Offerings');";
 
 		$this->get('db')->exec($query);
