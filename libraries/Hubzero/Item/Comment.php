@@ -204,6 +204,7 @@ class Hubzero_Item_Comment extends JTable
 		if (!$this->id)
 		{
 			$this->created = date('Y-m-d H:i:s', time());
+			$this->state = 1;
 		}
 		else 
 		{
@@ -348,7 +349,7 @@ class Hubzero_Item_Comment extends JTable
 	}
 
 	/**
-	 * Store attachements
+	 * Store attachments
 	 * 
 	 * @return     void
 	 */
@@ -358,12 +359,35 @@ class Hubzero_Item_Comment extends JTable
 
 		if ($this->attachmentNames && count($this->attachmentNames) > 0)
 		{
+			ximport('Hubzero_Item_Comment_File');
+
 			// save the attachments
 			foreach ($this->attachmentNames as $nm) 
 			{
 				// delete old attachment
 				// find old file and remove it from file system
-				$sql = "SELECT filename FROM #__item_comment_files WHERE comment_id =" . $this->_db->Quote($this->id);
+				$file = new Hubzero_Item_Comment_File($this->_db);
+				$file->loadByComment($this->id);
+				if ($file->id)
+				{
+					if (!$file->deleteFile())
+					{
+						$this->setError($file->getError());
+						continue;
+					}
+					/*if (file_exists($uploadDir . DS . $file->filename)) 
+					{
+						unlink($uploadDir . DS . $file->filename);
+					}*/
+				}
+				$file->filename = $nm;
+				if (!$file->store())
+				{
+					$this->setError($file->getError());
+					continue;
+				}
+
+				/*$sql = "SELECT filename FROM #__item_comment_files WHERE comment_id =" . $this->_db->Quote($this->id);
 				$this->_db->setQuery($sql);
 				$fileName = $this->_db->loadResult();
 
@@ -380,7 +404,7 @@ class Hubzero_Item_Comment extends JTable
 
 				$sql = "INSERT INTO #__item_comment_files SET comment_id =" . $this->_db->Quote($this->id) . ", filename =" . $this->_db->Quote($nm);
 				$this->_db->setQuery($sql);
-				$this->_db->query();
+				$this->_db->query();*/
 			}
 		}
 	}
@@ -826,11 +850,11 @@ class Hubzero_Item_Comment extends JTable
 		}
 
 		$filters = array(
-			'state' => 1,
+			'state'      => 1,
 			'created_by' => $created_by,
-			'parent' => 0,
-			'item_id' => $item_id,
-			'item_type' => $item_type
+			'parent'     => 0,
+			'item_id'    => $item_id,
+			'item_type'  => $item_type
 		);
 
 		$query  = "SELECT COUNT(*) ";

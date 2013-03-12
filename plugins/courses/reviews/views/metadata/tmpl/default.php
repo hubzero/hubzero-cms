@@ -34,7 +34,8 @@ defined('_JEXEC') or die('Restricted access');
 $filters = array(
 	'state' => 1,
 	'item_id' => $this->course->get('id'),
-	'item_type' => 'courses'
+	'item_type' => 'courses',
+	'parent' => 0
 );
 
 $total = 0;

@@ -76,8 +76,8 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 	</h3>
 	
 	<div class="main section">
-	
-		<div class="two columns first">
+	<div class="sub-section">
+		<div class="five columns first second third">
 			<h3>
 				Stats
 			</h3>
@@ -97,14 +97,14 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 				</tbody>
 			</table>
 			
-			<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=announcements'); ?>" method="post" id="hubForm" class="full">
+			<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=announcements'); ?>" method="post" id="announcementForm" class="full">
 				<fieldset>
 					<legend>
 						<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_NEW'); ?>
 					</legend>
 
 					<label for="field-content">
-						<?php echo JText::_('Announcement'); ?>
+						<span><?php echo JText::_('Announcement'); ?></span>
 						<?php
 						ximport('Hubzero_Wiki_Editor');
 						$editor =& Hubzero_Wiki_Editor::getInstance();
@@ -136,15 +136,15 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 			</form>
 			
 		</div><!-- / .subject -->
-		<div class="two columns second">
+		<div class="five columns fourth fifth">
 			<h3>
 				In the next week
 			</h3>
-			<div class="timeline-start">
+			<div class="dashboard-timeline-start">
 				<p><?php echo JHTML::_('date', $now, $dateFormat, $tz); ?></p>
 			</div>
 		<?php if ($rows) { ?>
-			<ul class="timeline">
+			<ul class="dashboard-timeline">
 			<?php foreach ($rows as $i => $row) { ?>
 				<li>
 					<?php 
@@ -179,43 +179,18 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 			} ?>
 			</ul>
 		<?php } else { ?>
-			<ul class="timeline">
+			<ul class="dashboard-timeline">
 				<li class="noresults">Nothing coming up in the next week.</li>
 			</ul>
 		<?php } ?>
-			<div class="timeline-start">
+			<div class="dashboard-timeline-start">
 				<p><?php echo JHTML::_('date', $weeklater, $dateFormat, $tz); ?></p>
 			</div>
 		</div><!-- / .subject -->
 		<div class="clear"></div>
-		<!-- 
-		<form action="<?php echo JRoute::_($base . '&active=dashboard'); ?>" method="post" class="full" id="hubForm">
-		<fieldset>
-			<legend>Make an announcement</legend>
-			<label for="field-content">
-				<span class="invisible"><?php echo JText::_('Announcement'); ?></span>
-				<?php
-				ximport('Hubzero_Wiki_Editor');
-				$editor =& Hubzero_Wiki_Editor::getInstance();
-				echo $editor->display('fields[content]', 'field-content', '', 'minimal no-footer', '35', '2');
-				?>
-			</label>
+	</div>
 
-			<label for="field-priority" id="priority-label">
-				<input class="option" type="checkbox" name="fields[priority]" id="field-priority" value="1" /> 
-				<?php echo JText::_('Mark as high priority'); ?>
-			</label>
-
-			<p class="submit">
-				<input type="submit" value="<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_SUBMIT'); ?>" />
-			</p>
-		</fieldset>
-		<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
-		<input type="hidden" name="offering" value="<?php echo $this->offering->get('alias'); ?>" />
-		<input type="hidden" name="active" value="dashboard" />
-		<input type="hidden" name="option" value="<?php echo $option; ?>" />
-		</form>
-		-->
+		<div class="sub-section">
 		<h3>
 			<a name="discussions"></a>
 			<?php echo JText::_('Recent Discussions'); ?>
@@ -260,7 +235,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 			$view->display();
 		}
 			?>
-
+		</div>
 		
 	</div>
 </div><!--/ #course_members -->

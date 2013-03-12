@@ -133,31 +133,15 @@ class plgCoursesReviews extends JPlugin
 			$rtrn = 'metadata';
 		}
 
-		/*$ar = $this->onCourseOverviewAreas($model);
-		if (empty($ar)) 
-		{
-			$rtrn = '';
-		}
-
-		ximport('Hubzero_View_Helper_Html');
-		ximport('Hubzero_Plugin_View');
-		ximport('Hubzero_Comment');
-		ximport('Hubzero_User_Profile');
-
-		// Instantiate a helper object and perform any needed actions
-		$h = new PlgResourcesReviewsHelper();
-		$h->resource = $model->resource;
-		$h->option   = $option;
-		$h->_option  = $option;
-		$h->execute();*/
-
 		// Get reviews for this resource
 		$database =& JFactory::getDBO();
 
 		ximport('Hubzero_Item_Comment');
 
-		$tbl = new Hubzero_Item_Comment($database); //
-		//$reviews = $r->getRatings($model->resource->id);
+		$tbl = new Hubzero_Item_Comment($database);
+
+		$this->option     = JRequest::getCmd('option', 'com_courses');
+		$this->controller = JRequest::getWord('controller', 'course');
 
 		// Are we returning any HTML?
 		if ($rtrn == 'all' || $rtrn == 'html') 
@@ -166,7 +150,6 @@ class plgCoursesReviews extends JPlugin
 			Hubzero_Document::addPluginStylesheet('courses', $this->_name);
 			Hubzero_Document::addPluginScript('courses', $this->_name);
 
-			
 			ximport('Hubzero_Item_Vote');
 			ximport('Hubzero_Plugin_View');
 
@@ -180,12 +163,13 @@ class plgCoursesReviews extends JPlugin
 			);
 			$this->view->database = $this->database = $database;
 			$this->view->juser    = $this->juser    = JFactory::getUser();
-			$this->view->option   = $this->option   = JRequest::getCmd('option', 'com_courses');
-			//$this->view->course   = $this->course   = $course;
+			$this->view->option   = $this->option; //   = JRequest::getCmd('option', 'com_courses');
+			$this->view->controller = $this->controller;
 			$this->view->obj      = $this->obj      = $course;
 			$this->view->obj_type = $this->obj_type = substr($this->option, 4);
 			$this->view->url      = $this->url      = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->obj->get('alias') . '&active=' . $this->_name, false, true);
 			$this->view->depth    = 0;
+			$this->view->tbl      = $tbl;
 
 			$this->_authorize();
 
@@ -195,10 +179,6 @@ class plgCoursesReviews extends JPlugin
 
 			switch ($this->task) 
 			{
-				// Feeds
-				//case 'feed.rss': $this->_feed();   break;
-				//case 'feed':     $this->_feed();   break;
-
 				// Entries
 				case 'save':     $this->_save();   break;
 				case 'new':      $this->_view();   break;
@@ -233,10 +213,10 @@ class plgCoursesReviews extends JPlugin
 					'name'    => 'metadata'
 				)
 			);
-			$view->option = JRequest::getCmd('option', 'com_courses');
-			$view->controller = JRequest::getWord('controller', 'course');
-			$view->course = $course;
-			$view->tbl = $tbl;
+			$view->option     = $this->option; //JRequest::getCmd('option', 'com_courses');
+			$view->controller = $this->controller; //JRequest::getWord('controller', 'course');
+			$view->course     = $course;
+			$view->tbl        = $tbl;
 
 			$arr['metadata'] = $view->loadTemplate();
 		}
@@ -515,27 +495,15 @@ class plgCoursesReviews extends JPlugin
 	 */
 	protected function _view() 
 	{
-		// Push some needed scripts and stylings to the template but ensure we do it only once
-		/*if ($this->_pushscripts) 
-		{
-			ximport('Hubzero_Document');
-			Hubzero_Document::addPluginStyleSheet('hubzero', 'comments');
-			Hubzero_Document::addPluginScript('hubzero', 'comments');
-
-			$this->_pushscripts = false;
-		}*/
-
 		// Get comments on this article
-		$hc = new Hubzero_Item_Comment($this->database);
+		//$hc = new Hubzero_Item_Comment($this->database);
 
-		$this->view->comments = $hc->getComments(
+		$this->view->comments = $this->view->tbl->getComments(
 			$this->obj_type, 
 			$this->obj->get('id'),
 			0,
 			$this->params->get('comments_limit', 25)
 		);
-		
-		//print_r($this->view->comments); die;
 
 		if ($this->getError()) 
 		{

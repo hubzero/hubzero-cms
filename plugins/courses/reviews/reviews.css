@@ -70,6 +70,9 @@
 		display: table;
 		clear: both;
 	}
+	.addcomment label span {
+		display: none;
+	}
 
 	/* :not(:checked) is a filter, so that browsers that don’t support :checked don’t 
 	follow these rules. Every browser that supports :checked also supports :not(), so

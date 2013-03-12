@@ -52,8 +52,8 @@ if (!$no_html) : ?>
 	<div id="content-header-extra">
 		<ul>
 			<li>
-				<a class="browse btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=course&task=browse'); ?>">
-					<?php echo JText::_('Browse courses'); ?>
+				<a class="browse btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=course&gid=' . $this->course->get('alias')); ?>">
+					<?php echo JText::_('Course Overview'); ?>
 				</a>
 			</li>
 		</ul>

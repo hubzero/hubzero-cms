@@ -140,12 +140,12 @@ class CoursesTableMember extends JTable
 		if ($oid !== null)
 		{
 			//$where[] = "`offering_id` IN (0, " . $this->_db->Quote((int) $cid) . ")";
-			$where[] = "`offering_id`=" . $this->_db->Quote((int) $oid);
+			$where[] = "`offering_id` IN (0," . (int) $oid . ")"; //$this->_db->Quote((int) $oid);
 		}
 		if ($sid !== null)
 		{
 			//$where[] = "`section_id` IN (0, " . $this->_db->Quote((int) $sid) . ")";
-			$where[] = "`section_id`=" . $this->_db->Quote((int) $sid);
+			$where[] = "`section_id` IN (0," . (int) $sid . ")"; //$this->_db->Quote((int) $sid);
 		}
 		$query .= implode(" AND ", $where) . " LIMIT 1";
 
