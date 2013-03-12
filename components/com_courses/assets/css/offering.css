@@ -1269,32 +1269,11 @@
 	height: 0px;
 	width: 8px;
 	margin: 0 34px;
-	background: #AAA;
+	background: #999;
 	display: block;
 	float: left;
 	overflow: hidden;
-}
-#course-outline h3:before,
-#course-outline h3:after {
-	content: "";
-	position: absolute;
-	border-style: solid;
-}
-#course-outline h3:before {
-	top: 8px;
-	left: -50px;
-	bottom: auto;
-	border-color: #777;
-	border-width: 12px;
-	border-radius: 12px;
-}
-#course-outline h3:after {
-	top: 12px;
-	left: -46px;
-	bottom: auto;
-	border-color: #FFF;
-	border-width: 8px;
-	border-radius: 8px;
+	border-radius: 4px;
 }
 #course-outline .unit-content:before,
 #course-outline .unit-content:after {
@@ -1302,15 +1281,40 @@
 	position: absolute;
 	border-style: solid;
 }
+#course-outline .unit-content:before {
+	top: 9px;
+	left: -50px;
+	bottom: auto;
+	border-color: #999;
+	border-width: 12px;
+	border-radius: 12px;
+}
 #course-outline .unit-content:after {
-	top: 8px;
+	top: 13px;
+	left: -46px;
+	bottom: auto;
+	border-color: #FFF;
+	border-width: 8px;
+	border-radius: 8px;
+}
+#course-outline h3:before,
+#course-outline h3:after {
+	content: "";
+	position: absolute;
+	border-style: solid;
+}
+#course-outline h3:after {
+	top: 9px;
 	left: -21px;
 	bottom: auto;
 	border-color: transparent #FBFBFB transparent transparent;
 	border-width: 12px;
 }
-#course-outline .unit-content:before {
-	top: 8px;
+#course-outline h3:hover:after {
+	border-color: transparent #DDD transparent transparent;
+}
+#course-outline h3:before {
+	top: 9px;
 	left: -24px;
 	bottom: auto;
 	border-color: transparent #999 transparent transparent;
@@ -1415,6 +1419,9 @@
 	border-top-left-radius: 3px;
 	border-top-right-radius: 3px;
 	}
+#course-outline .open h3:hover {
+	background: #DDD;
+}
 #course-outline .unit-availability {
 	border: 2px solid #999;
 	border-top: none;

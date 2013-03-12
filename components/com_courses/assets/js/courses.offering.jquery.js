@@ -38,9 +38,10 @@ HUB.CoursesOffering =
 
 		// On title click, toggle display of content
 		$('.unit-content').on('click', 'h3', function(){
+			$('.timeline').css('height', 0);
 			if($(this).hasClass('unit-content-active')){
 				$(this).siblings('.unit-availability').find('.details').slideUp(500, function() {
-					$('.timeline').css('height', $('#course-outline').height());
+					$('.timeline').animate({'height': $('#course-outline').height()}, 250);
 					$('html, body').animate({scrollTop: $(this).parents('#content').offset().top - 10}, 1000);
 				});
 				$(this).removeClass('unit-content-active');
@@ -48,7 +49,7 @@ HUB.CoursesOffering =
 				$('.details').slideUp(500);
 				$('.unit-content h3').removeClass('unit-content-active');
 				$(this).siblings('.unit-availability').find('.details').slideDown(500, function() {
-					$('.timeline').css('height', $('#course-outline').height());
+					$('.timeline').animate({'height': $('#course-outline').height()}, 250);
 					$('html, body').animate({scrollTop: $(this).parents('.unit-content').offset().top - 10}, 1000);
 				});
 
