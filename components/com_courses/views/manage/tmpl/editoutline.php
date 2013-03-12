@@ -198,7 +198,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 <?php
 				foreach ($unit->assets() as $a)
 				{
-					$href = $a->path($this->course->get('id'));
+					$href = JRoute::_($base . '&asset=' . $a->get('id'));
 					if ($a->get('type') == 'video')
 					{
 						$href = JRoute::_($base . '&active=outline&a=' . $unit->get('alias'));

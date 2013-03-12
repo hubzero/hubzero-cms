@@ -223,6 +223,12 @@ class CoursesModelAsset extends CoursesModelAbstract
 
 		$this->logView();
 
+		// Check to see that the view template exists, otherwise, use the default
+		if(!file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'views' . DS . 'assets' . DS . 'tmpl' . DS . $type . '.php'))
+		{
+			$type = 'default';
+		}
+
 		$view = new JView(array(
 			'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_courses',
 			'name'      => 'assets',

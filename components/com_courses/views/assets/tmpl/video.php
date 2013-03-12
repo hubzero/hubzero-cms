@@ -32,15 +32,20 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-// Start by seeing if we have the necessary files to form a 'hubpresenter' video asset
-$hubpresenter = false;
+// Set a few defaults
+$type               = 'html5';
+$manifest_path_json = null;
+$manifest_path_xml  = null;
 
 // Set the path
 $path = rtrim($this->model->path($this->course->get('id'), false), DS);
 
 // Check to make sure we have a presentation document defining cuepoints, slides, and media
-$manifest_path_json = JFolder::files(JPATH_ROOT . $path, 'presentation.json', true, true);
-$manifest_path_xml  = JFolder::files(JPATH_ROOT . $path, 'presentation.xml', true, true);
+if(is_dir(JPATH_ROOT . $path))
+{
+	$manifest_path_json = JFolder::files(JPATH_ROOT . $path, 'presentation.json', true, true);
+	$manifest_path_xml  = JFolder::files(JPATH_ROOT . $path, 'presentation.xml', true, true);
+}
 
 // Check if the formatted json exists (for hubpresenter)
 if (empty($manifest_path_json))
@@ -49,7 +54,7 @@ if (empty($manifest_path_json))
 	if (empty($manifest_path_xml))
 	{
 		// This is redundant, but reinforcing that we're not trying to display a hubpresenter video
-		$hubpresenter = false;
+		$type = 'html5';
 	} 
 	else 
 	{
@@ -65,14 +70,20 @@ if (empty($manifest_path_json))
 		}
 		else
 		{
-			$hubpresenter = true;
+			$type = 'hubpresenter';
 		}
 	}
 }
 else
 {
 	// We have a formatted JSON manifest, therefore we must be doing a hubpresenter video
-	$hubpresenter = true;
+	$type = 'hubpresenter';
+}
+
+// Now check if the videos have 'content' - indicatating an embeded video
+if(!empty($this->asset->content))
+{
+	$type = 'embeded';
 }
 
 // Add Jquery to the page if the system plugin isn't enabled
@@ -85,8 +96,8 @@ if (!JPluginHelper::isEnabled('system', 'jquery'))
 	$doc->addScript("https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js");
 }
 
-// If the video type is 'hubpresenter'
-if ($hubpresenter)
+// If the video type is 'hubpresenter', perform next steps
+if ($type == 'hubpresenter')
 {
 	// Set media path
 	$media_path = rtrim($manifest_path_json[0], 'presentation.json');
@@ -163,17 +174,20 @@ if ($hubpresenter)
 	Hubzero_Document::addComponentScript($this->option, "/assets/presenter/js/flowplayer");
 	Hubzero_Document::addComponentScript($this->option, "/assets/presenter/js/app");
 }
-else // Not hubpresenter, now try standard HTML5 video
+elseif($type == 'html5') // Not hubpresenter, now try standard HTML5 video
 {
 	// Instanticate our variables
 	$videos    = array();
 	$video_mp4 = array();
 	$subs      = array();
 
-	// Look for video files and subtitle files in our path
-	$videos    = JFolder::files(JPATH_ROOT . DS . $path, '.m4v|.M4V|.mpeg|.MPEG|.mp4|.MP4|.ogv|.OGV|.webm|.WEBM');
-	$video_mp4 = JFolder::files(JPATH_ROOT . DS . $path, '.mp4|.MP4|.m4v|.M4V');
-	$subs      = JFolder::files(JPATH_ROOT . DS . $path, '.srt|.SRT');
+	if(is_dir(JPATH_ROOT . $path))
+	{
+		// Look for video files and subtitle files in our path
+		$videos    = JFolder::files(JPATH_ROOT . $path, '.m4v|.M4V|.mpeg|.MPEG|.mp4|.MP4|.ogv|.OGV|.webm|.WEBM');
+		$video_mp4 = JFolder::files(JPATH_ROOT . $path, '.mp4|.MP4|.m4v|.M4V');
+		$subs      = JFolder::files(JPATH_ROOT . $path, '.srt|.SRT');
+	}
 
 	// If there was a video, let's put it in the page
 	if (isset($videos) && !empty($videos))
@@ -190,7 +204,11 @@ else // Not hubpresenter, now try standard HTML5 video
 }
 ?>
 
-<?php if (!$hubpresenter) : ?>
+<?php if($type == 'embeded') : ?>
+	<div id="video-container" class="embeded-video">
+		<?php echo $this->asset->content; ?>
+	</div><!-- /#video-container -->
+<?php elseif($type == 'html5') : ?>
 	<div id="video-container">
 		<?php if (isset($videos) && is_array($videos) && count($videos) > 0) : ?>
 			<video controls="controls" id="video-player">
@@ -222,7 +240,7 @@ else // Not hubpresenter, now try standard HTML5 video
 			<p class="warning">There are no playable videos associated with this lecture</p>
 		<?php endif; ?>
 	</div><!-- /#video-container -->
-<?php else : ?>
+<?php elseif($type == 'hubpresenter') : ?>
 	<div id="presenter-shortcuts-box"> 
 		<h2>Keyboard Shortcuts</h2>
 		<a href="#" id="shortcuts-close">Close</a>

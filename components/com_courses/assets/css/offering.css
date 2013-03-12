@@ -1041,6 +1041,10 @@
 		margin: 0 0 0 0.4em;
 		padding: 0;
 	}
+	.embeded-video object {
+		margin: 20px auto;
+		display: block;
+	}
 	#steps {
 		margin: 0 0 1px 0;
 		padding: 30px 30px 30px 30px;

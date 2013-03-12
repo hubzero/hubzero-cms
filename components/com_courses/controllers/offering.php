@@ -526,6 +526,42 @@ class CoursesControllerOffering extends Hubzero_Controller
 	}
 
 	/**
+	 * Display an offering asset
+	 * 
+	 * @return     void
+	 */
+	public function assetTask()
+	{
+		// Check if they're logged in
+		if ($this->juser->get('guest')) 
+		{
+			$this->loginTask('You must be logged in to save course settings.');
+			return;
+		}
+
+		if (!$this->course->offering()->access('view'))
+		{
+			JError::raiseError(401, JText::_('Not Authorized'));
+			return;
+		}
+
+		$asset = new CoursesModelAsset(JRequest::getInt('asset_id', null));
+
+		if (!$this->course->offering()->access('manage') && !$asset->isAvailable())
+		{
+			// Redirect back to the course outline
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias')),
+				'This asset is not currently available.',
+				'warning'
+			);
+			return;
+		}
+
+		echo $asset->render($this->course);
+	}
+
+	/**
 	 * Save a course
 	 * 
 	 * @return     void

@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$href = $this->a->path($this->course->get('id'));
+$href = JRoute::_($this->base . '&asset=' . $this->a->get('id'));
 
 if ($this->a->get('type') == 'video')
 {

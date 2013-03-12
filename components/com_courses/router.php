@@ -74,8 +74,14 @@ function CoursesBuildRoute(&$query)
 			unset($query['task']);
 		}
 		unset($query['active']);
-	} 
-	else 
+	}
+	elseif (!empty($query['asset']))
+	{
+		$segments[] = 'asset';
+		$segments[] = $query['asset'];
+		unset($query['asset']);
+	}
+	else
 	{
 		if ((empty($query['scope']) || $query['scope'] == '') && !empty($query['task']))
 		{
@@ -243,6 +249,12 @@ function CoursesParseRoute($segments)
 		{
 			$vars['formId'] = $segments[2];
 			$vars['controller'] = 'form';
+		}
+		elseif ($segments[2] == 'asset' && isset($segments[3]) && is_numeric($segments[3]))
+		{
+			$vars['controller'] = 'offering';
+			$vars['task']       = 'asset';
+			$vars['asset_id']   = $segments[3];
 		}
 		else
 		{

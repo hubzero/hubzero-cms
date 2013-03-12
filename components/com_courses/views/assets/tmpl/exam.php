@@ -24,54 +24,13 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// no direct access
+// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-/**
-* Url Asset handler class
-*/
-class UrlAssetHandler extends ContentAssetHandler
-{
-	/**
-	 * Class info
-	 *
-	 * Action message - what the user will see if presented with multiple handlers for this extension
-	 * Responds to    - what extensions this handler responds to
-	 *
-	 * @var array
-	 **/
-	protected static $info = array(
-			'action_message' => 'As a standard link',
-			'responds_to'    => array('url')
-		);
+JFactory::getApplication()->redirect($this->model->path($this->course->get('id')));
 
-	/**
-	 * Create method for this handler
-	 *
-	 * @return array of assets created
-	 **/
-	public function create()
-	{
-		$url = JRequest::getVar('content');
-
-		// @FIXME: split by " " or "," or "\n" (upload multiple urls at a time) - then loop through code below
-
-		preg_match('/http[s]*\:\/\/([0-9A-Za-z\.]+)[\/]*/', $url, $matches);
-
-		if(!isset($matches[1]))
-		{
-			return array('error'=>'Content did not match the pre-defined filter');
-		}
-
-		$this->asset['title'] = $matches[1];
-		$this->asset['type']  = 'link';
-		$this->asset['url']   = $url;
-
-		// Return info
-		return parent::create();
-	}
-}
+?>
