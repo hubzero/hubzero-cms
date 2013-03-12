@@ -32,9 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'KbCategory'
- * 
- * Long description (if any) ...
+ * CRON table class for jobs
  */
 class CronJob extends JTable
 {
@@ -214,7 +212,7 @@ class CronJob extends JTable
 	 * @param      array $filters Parameters to build query from
 	 * @return     string SQL
 	 */
-	public function buildQuery($filters=array())
+	private function _buildQuery($filters=array())
 	{
 		$query  = "FROM $this->_tbl AS c";
 
@@ -227,7 +225,7 @@ class CronJob extends JTable
 
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
-			$where[] = "LOWER(c.title) LIKE '%" . strtolower($filters['search']) . "%'";
+			$where[] = "LOWER(c.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'";
 		}
 
 		if (count($where) > 0)
@@ -249,7 +247,7 @@ class CronJob extends JTable
 	{
 		$filters['limit'] = 0;
 
-		$query = "SELECT COUNT(*) " . $this->buildQuery($filters);
+		$query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -264,7 +262,7 @@ class CronJob extends JTable
 	public function getRecords($filters=array())
 	{
 		$query  = "SELECT c.*";
-		$query .= " " . $this->buildQuery($filters);
+		$query .= " " . $this->_buildQuery($filters);
 
 		if (!isset($filters['sort']) || !$filters['sort']) 
 		{
@@ -275,7 +273,7 @@ class CronJob extends JTable
 			$filters['sort_Dir'] = 'ASC';
 		}
 		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
-		
+
 		if (isset($filters['limit']) && $filters['limit'] != 0) 
 		{
 			$query .= ' LIMIT ' . $filters['start'] . ',' . $filters['limit'];
@@ -304,7 +302,7 @@ class CronJob extends JTable
 
 		if (isset($filters['next_run']) && $filters['next_run'] != '') 
 		{
-			$where[] = "c.next_run <= '" . $filters['next_run'] . "'";
+			$where[] = "c.next_run <= " . $this->_db->Quote($filters['next_run']);
 		}
 
 		if (count($where) > 0)
