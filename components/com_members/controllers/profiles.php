@@ -112,7 +112,7 @@ class MembersControllerProfiles extends Hubzero_Controller
 		}
 
 		$restrict = '';
-		if ($this->_authorize() !== 'admin')
+		/*if ($this->_authorize() !== 'admin')
 		{
 			$profile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
 			$xgroups = $profile->getGroups('all');
@@ -144,7 +144,7 @@ class MembersControllerProfiles extends Hubzero_Controller
 				$members = array($this->juser->get('id'));
 			}
 			$restrict = " AND (xp.public=1 OR xp.uidNumber IN (" . implode(',', $members) . "))";
-		}
+		}*/
 
 		$filters = array();
 		$filters['limit']  = 20;
@@ -158,10 +158,10 @@ class MembersControllerProfiles extends Hubzero_Controller
 				OR LOWER(u.username) LIKE '%".$filters['search']."%'
 				OR LOWER(u.email) LIKE '%".$filters['search']."%'
 				ORDER BY u.name ASC";*/
-		$query = "SELECT xp.uidNumber, xp.name, xp.username, xp.organization, xp.picture 
+		$query = "SELECT xp.uidNumber, xp.name, xp.username, xp.organization, xp.picture, xp.public 
 				FROM #__xprofiles AS xp 
 				INNER JOIN #__users u ON u.id = xp.uidNumber AND u.block = 0
-				WHERE LOWER(xp.name) LIKE '%" . $filters['search'] . "%' AND xp.emailConfirmed=1 $restrict 
+				WHERE LOWER(xp.name) LIKE '%" . $this->database->getEscaped($filters['search']) . "%' AND xp.emailConfirmed=1 $restrict 
 				ORDER BY xp.name ASC";
 
 		$this->database->setQuery($query);
@@ -183,7 +183,7 @@ class MembersControllerProfiles extends Hubzero_Controller
 				$name = str_replace("\r", '', $name);
 				$name = str_replace('\\', '', $name);
 
-				if ($row->picture)
+				if ($row->public && $row->picture)
 				{
 					$thumb  = DS . trim($this->config->get('webpath', '/site/members'), DS);
 					$thumb .= DS . Hubzero_User_Profile_Helper::niceidformat($row->uidNumber);
@@ -199,13 +199,13 @@ class MembersControllerProfiles extends Hubzero_Controller
 				$obj = array();
 				$obj['id']      = $row->uidNumber;
 				$obj['name']    = $name;
-				$obj['org']     = $row->organization;
+				$obj['org']     = ($row->public ? $row->organization : '');
 				$obj['picture'] = $picture;
 
 				$json[] = $obj;
 			}
 		}
-		
+
 		echo json_encode($json);
 	}
 
