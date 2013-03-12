@@ -127,12 +127,12 @@ function submitbutton(pressbutton)
 						$model = CoursesModelCourses::getInstance();
 						if ($model->courses()->total() > 0)
 						{
+							$j = 0;
 							foreach ($model->courses() as $course)
 							{
 					?>
 								<optgroup label="<?php echo $this->escape(stripslashes($course->get('alias'))); ?>">
 					<?php
-								$j = 0;
 								foreach ($course->offerings() as $i => $offering)
 								{
 									foreach ($offering->sections() as $section)
