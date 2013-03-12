@@ -88,6 +88,8 @@ function submitbutton(pressbutton)
 			<input type="hidden" name="task" value="save" />
 			<input type="hidden" name="offering" value="<?php echo $this->offering->get('id'); ?>" />
 			<input type="hidden" name="fields[role_id]" value="<?php echo $this->row->get('role_id', $role_id); ?>" />
+			<input type="hidden" name="fields[course_id]" value="<?php echo $this->course->get('id'); ?>" />
+			<input type="hidden" name="fields[student]" value="1" />
 			
 			<table class="admintable">
 				<tbody>
