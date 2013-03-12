@@ -1935,20 +1935,20 @@
 		padding: 0;
 	}
 
-	#content-header-extra .prev:before {
+	.btn.prev:before {
 		content: "\2190";
 		font-family: 'Fontcons';
 	}
-	#content-header-extra span.btn.next,
-	#content-header-extra .next {
+	span.btn.next,
+	.btn.next {
 		padding: 0.4em 2.91em 0.4em 0.91em;
 	}
-	#content-header-extra span.btn.next:before,
-	#content-header-extra .next:before {
+	span.btn.next:before,
+	.btn.next:before {
 		display: none;
 	}
-	#content-header-extra span.btn.next:after,
-	#content-header-extra .next:after {
+	span.btn.next:after,
+	.btn.next:after {
 		background: rgba(0, 0, 0, 0.08);
 		position: absolute;
 		top: 0;
