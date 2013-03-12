@@ -818,7 +818,7 @@ HUB.CoursesOutline = {
 				width: 450,
 				modal: true,
 				autoOpen: false,
-				title: 'How do you want to make these files available?',
+				title: 'What do you want to do with these files?',
 				buttons: {
 					Cancel: function() {
 						// Close the dialog box

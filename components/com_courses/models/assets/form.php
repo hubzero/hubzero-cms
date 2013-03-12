@@ -45,7 +45,7 @@ class FormAssetHandler extends ContentAssetHandler
 	 * @var array
 	 **/
 	protected static $info = array(
-			'action_message' => 'As a scoreable test',
+			'action_message' => 'Create a quiz/exam',
 			'responds_to'    => array('pdf')
 		);
 

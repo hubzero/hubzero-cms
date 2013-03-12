@@ -45,7 +45,7 @@ class FileAssetHandler extends AssetHandler
 	 * @var array
 	 **/
 	protected static $info = array(
-			'action_message' => 'As a standard downloadable file',
+			'action_message' => 'Post notes or slides (i.e. a downloadable file)',
 			'responds_to'    => array('txt', 'pdf'),
 		);
 
