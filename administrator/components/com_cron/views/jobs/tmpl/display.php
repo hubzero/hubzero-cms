@@ -88,8 +88,8 @@ if ($this->results)
 	for ($i=0, $n=count( $this->results ); $i < $n; $i++) 
 	{
 		$row =& $this->results[$i];
-		
-		switch ($row->state) 
+
+		switch ($row->get('state')) 
 		{
 			case '2': // Deleted
 				$task = 'publish';
@@ -112,7 +112,7 @@ if ($this->results)
 			break;
 		}
 		
-		switch ($row->active) 
+		switch ($row->get('active')) 
 		{
 			case '1': // Published
 				$img2 = 'publish_g.png';
@@ -129,25 +129,25 @@ if ($this->results)
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
 				</td>
 				<td>
-					<?php echo $row->id; ?>
+					<?php echo $row->get('id'); ?>
 				</td>
 				<td>
 <?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
-						<?php echo $this->escape(stripslashes($row->title)); ?>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>">
+						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 					</a>
 <?php } else { ?>
 					<span>
-						<?php echo $this->escape(stripslashes($row->title)); ?>
+						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 					</span>
 <?php } ?>
 				</td>
 				<td>
 <?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
+					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
 						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /><?php } else { echo $alt; } ?></span>
 					</a>
 <?php } else { ?>
@@ -158,7 +158,7 @@ if ($this->results)
 				</td>
 				<td>
 					<span class="datetime">
-						<time><?php echo $this->escape($row->last_run); ?></time>
+						<time><?php echo $this->escape($row->get('last_run')); ?></time>
 					</span>
 				</td>
 				<td>
@@ -168,12 +168,12 @@ if ($this->results)
 				</td>
 				<td>
 					<span class="datetime">
-						<time><?php echo $this->escape($row->next_run); ?></time>
+						<time><?php echo $this->escape($row->get('next_run')); ?></time>
 					</span>
 				</td>
 				<td>
 					<span class="recurrence">
-						<span><?php echo $row->recurrence; ?></span>
+						<span><?php echo $row->get('recurrence'); ?></span>
 					</span>
 				</td>
 			</tr>

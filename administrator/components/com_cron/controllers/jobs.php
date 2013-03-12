@@ -33,6 +33,11 @@ ximport('Hubzero_Controller');
 
 class CronControllerJobs extends Hubzero_Controller
 {
+	/**
+	 * Displays a form for editing an entry
+	 *
+	 * @return	void
+	 */
 	public function displayTask()
 	{
 		// Get Joomla configuration
@@ -64,13 +69,15 @@ class CronControllerJobs extends Hubzero_Controller
 			'DESC'
 		));
 
-		$model = new CronJob($this->database);
-		
+		$model = new CronModelJobs();
+
 		// Get a record count
-		$this->view->total = $model->getCount($this->view->filters);
+		$this->view->filters['count'] = true;
+		$this->view->total = $model->jobs($this->view->filters);
 
 		// Get records
-		$this->view->results = $model->getRecords($this->view->filters);
+		$this->view->filters['count'] = false;
+		$this->view->results = $model->jobs($this->view->filters);
 
 		// initiate paging
 		jimport('joomla.html.pagination');
@@ -108,7 +115,7 @@ class CronControllerJobs extends Hubzero_Controller
 	 *
 	 * @return	void
 	 */
-	public function editTask()
+	public function editTask($row=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
@@ -122,29 +129,35 @@ class CronControllerJobs extends Hubzero_Controller
 		}
 	
 		// load infor from database
-		$this->view->row = new CronJob($this->database);
-		$this->view->row->load($id);
-
-		if (!$this->view->row->id)
+		if (is_object($row))
 		{
-			$this->view->row->created = date('Y-m-d H:i:s', time());
-			$this->view->row->created_by = $this->juser->get('id');
-			
-			$this->view->row->recurrence = '';
+			$this->view->row = $row;
 		}
-		$this->view->row->minute    = '*';
-		$this->view->row->hour      = '*';
-		$this->view->row->day       = '*';
-		$this->view->row->month     = '*';
-		$this->view->row->dayofweek = '*';
-		if ($this->view->row->recurrence)
+		else
 		{
-			$bits = explode(' ', $this->view->row->recurrence);
-			$this->view->row->minute    = $bits[0];
-			$this->view->row->hour      = $bits[1];
-			$this->view->row->day       = $bits[2];
-			$this->view->row->month     = $bits[3];
-			$this->view->row->dayofweek = $bits[4];
+			$this->view->row = new CronModelJob($id);
+		}
+
+		if (!$this->view->row->get('id'))
+		{
+			$this->view->row->set('created', date('Y-m-d H:i:s', time()));
+			$this->view->row->set('created_by', $this->juser->get('id'));
+
+			$this->view->row->set('recurrence', '');
+		}
+		$this->view->row->set('minute', '*');
+		$this->view->row->set('hour', '*');
+		$this->view->row->set('day', '*');
+		$this->view->row->set('month', '*');
+		$this->view->row->set('dayofweek', '*');
+		if ($this->view->row->get('recurrence'))
+		{
+			$bits = explode(' ', $this->view->row->get('recurrence'));
+			$this->view->row->set('minute', $bits[0]);
+			$this->view->row->set('hour', $bits[1]);
+			$this->view->row->set('day', $bits[2]);
+			$this->view->row->set('month', $bits[3]);
+			$this->view->row->set('dayofweek', $bits[4]);
 		}
 
 		$defaults = array(
@@ -155,9 +168,9 @@ class CronControllerJobs extends Hubzero_Controller
 			'0 0 * * *',
 			'0 * * * *'
 		);
-		if (!in_array($this->view->row->recurrence, $defaults))
+		if (!in_array($this->view->row->get('recurrence'), $defaults))
 		{
-			$this->view->row->recurrence = 'custom';
+			$this->view->row->set('recurrence', 'custom');
 		}
 
 		$e = array();
@@ -240,7 +253,7 @@ class CronControllerJobs extends Hubzero_Controller
 		}
 
 		// Initiate extended database class
-		$row = new CronJob($this->database);
+		$row = new CronModelJob();
 		if (!$row->bind($fields)) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -249,24 +262,25 @@ class CronControllerJobs extends Hubzero_Controller
 			return;
 		}
 
-		if ($row->recurrence)
+		if ($row->get('recurrence'))
 		{
-			$cron = Cron\CronExpression::factory($row->recurrence);
+			//$cron = Cron\CronExpression::factory($row->recurrence);
 			//$row->last_run = $cron->getPreviousRunDate()->format('Y-m-d H:i:s');
-			$row->next_run = $cron->getNextRunDate()->format('Y-m-d H:i:s');
+			//$row->next_run = $cron->getNextRunDate()->format('Y-m-d H:i:s');
+			$row->set('next_run', $row->nextRun());
 		}
 
 		// Check content
-		if (!$row->check()) 
+		/*if (!$row->check()) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->view->setLayout('edit');
 			$this->editTask($row);
 			return;
-		}
+		}*/
 
 		// Store content
-		if (!$row->store()) 
+		if (!$row->store(true)) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->view->setLayout('edit');
@@ -305,7 +319,7 @@ class CronControllerJobs extends Hubzero_Controller
 			return;
 		}
 
-		$obj = new CronJob($this->database);
+		$obj = new CronTableJob($this->database);
 
 		// Loop through each ID
 		foreach ($ids as $id) 
@@ -373,9 +387,8 @@ class CronControllerJobs extends Hubzero_Controller
 		foreach ($ids as $id) 
 		{
 			// Update record(s)
-			$row = new CronJob($this->database);
-			$row->load(intval($id));
-			$row->state = $state;
+			$row = new CronModelJob($id);
+			$row->set('state', $state);
 			if (!$row->store()) 
 			{
 				$this->addComponentMessage($row->getError(), 'error');

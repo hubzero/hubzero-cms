@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * CRON table class for jobs
  */
-class CronJob extends JTable
+class CronTableJob extends JTable
 {
 	/**
 	 * int(11) Primary key
@@ -222,6 +222,10 @@ class CronJob extends JTable
 		{
 			$where[] = "c.state=" . $this->_db->Quote($filters['state']);
 		}
+		if (isset($filters['next_run']) && $filters['next_run'] != '') 
+		{
+			$where[] = "c.next_run <= " . $this->_db->Quote($filters['next_run']);
+		}
 
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
@@ -243,7 +247,7 @@ class CronJob extends JTable
 	 * @param      array $filters Parameters to build query from
 	 * @return     integer
 	 */
-	public function getCount($filters=array())
+	public function count($filters=array())
 	{
 		$filters['limit'] = 0;
 
@@ -259,7 +263,7 @@ class CronJob extends JTable
 	 * @param      array $filters Parameters to build query from
 	 * @return     array
 	 */
-	public function getRecords($filters=array())
+	public function find($filters=array())
 	{
 		$query  = "SELECT c.*";
 		$query .= " " . $this->_buildQuery($filters);
