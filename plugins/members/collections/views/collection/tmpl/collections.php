@@ -232,7 +232,7 @@ if ($this->rows->total() > 0)
 			</div><!-- / .instructions -->
 			<div class="questions">
 				<p><strong><?php echo JText::_('What is a collection?'); ?></strong></p>
-				<p><?php echo JText::_('A collection is where you organize posts by topic. For example, you could collect diagrams, files, resources, or wiki pages about physics for your Physics 101 collection. Collections can be private or public.'); ?><p>
+				<p><?php echo JText::_('A collection is where you organize posts by topic. For example, you could collect diagrams, files, resources, or wiki pages about physics for your Physics 101 collection. Collections can be private or public.'); ?></p>
 			</div>
 		<?php } else { ?>
 			<div class="instructions">

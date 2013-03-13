@@ -221,7 +221,7 @@ $now = date('Y-m-d H:i:s', time());
 						<span class="entry-date-on">on</span> <span class="date"><?php echo JHTML::_('date', $now, $this->dateFormat, $this->tz); ?></span>
 					</span>
 				</p>
-				<form action="<?php echo JRoute::_($base . '&scope=post/' . $this->post->get('id') . '/savecomment'); ?>" method="post" enctype="multipart/form-data">
+				<form action="<?php echo JRoute::_($base . '&scope=post/' . $this->post->get('id') . '/savecomment'); ?>" method="post" id="comment-form" enctype="multipart/form-data">
 					<fieldset>
 						<input type="hidden" name="comment[id]" value="0" />
 						<input type="hidden" name="comment[item_id]" value="<?php echo $item->get('id'); ?>" />

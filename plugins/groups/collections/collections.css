@@ -986,18 +986,20 @@
 	.linker-button,
 	.qq-upload-button,
 	.qq-upload-drop-area {
-		background: #f7f7f7;
-		border: 3px dashed #ddd;
-		text-align: center;
-		color: #bbb;
-		text-shadow: 0 1px 0 #FFF;
-		padding: 0;
-		-webkit-border-radius: 3px;
-		-moz-border-radius: 3px;
-		-ms-border-radius: 3px;
-		-o-border-radius: 3px;
-		border-radius: 3px;
-		font-size: 1.5em;
+		background: #f7f7f7 !important;
+		border: 3px dashed #ddd !important;
+		text-align: center !important;
+		color: #bbb !important;
+		text-shadow: 0 1px 0 #FFF !important;
+		padding: 0 !important;
+		-webkit-border-radius: 3px !important;
+		-moz-border-radius: 3px !important;
+		-ms-border-radius: 3px !important;
+		-o-border-radius: 3px !important;
+		border-radius: 3px !important;
+		font-size: 1.5em !important;
+		background-image: none !important;
+		margin: 0 !important;
 	}
 	/*.asset-uploader:hover {
 		border: 3px solid #333;
@@ -1010,13 +1012,16 @@
 	.qq-upload-button,
 	.qq-upload-drop-area {
 		text-align: center;
-		padding: 0.8em 0;
+		padding: 0.8em 0 !important;
 	}
 	.linker-button span,
 	.qq-upload-button span,
 	.qq-upload-drop-area span {
 		position: relative;
 		padding-left: 1.5em;
+	}
+	.qq-upload-button:before {
+		display: none !important;
 	}
 	.linker-button span:before,
 	.qq-upload-button span:before,
@@ -1032,7 +1037,8 @@
 		line-height: 1;
 		
 		content: "\f016";
-		left: 0;
+		left: -0.7em;
+		text-align: left !important;
 	}
 	.linker-button span:before {
 		font-size: 1.5em;
@@ -1044,9 +1050,9 @@
 	.qq-upload-drop-area:hover,
 	.qq-upload-drop-area-active {
 		/*background: #fdfce4;*/
-		border: 3px solid #333;
-		color: #333;
-		cursor: pointer;
+		border: 3px solid #333 !important;
+		color: #333 !important;
+		cursor: pointer !important;
 	}
 	.qq-upload-drop-area {
 		position: absolute;

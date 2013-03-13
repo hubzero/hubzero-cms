@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->name;
 ?>
 
-<?php if (!$this->juser->get('guest') && !$this->params->get('access-create-collection')) { ?>
+<?php if (!$this->juser->get('guest')) { // && !$this->params->get('access-create-collection')) { ?>
 <ul id="page_options">
 	<li>
 		<?php if ($this->model->isFollowing()) { ?>
@@ -181,7 +181,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 			</div><!-- / .instructions -->
 			<div class="questions">
 				<p><strong><?php echo JText::_('What is a collection?'); ?></strong></p>
-				<p><?php echo JText::_('A collection is where you organize posts by topic. For example, you could collect diagrams, files, resources, or wiki pages about physics for your Physics 101 collection. Collections can be private or public.'); ?><p>
+				<p><?php echo JText::_('A collection is where you organize posts by topic. For example, you could collect diagrams, files, resources, or wiki pages about physics for your Physics 101 collection. Collections can be private or public.'); ?></p>
 			</div>
 		<?php } else { ?>
 			<div class="instructions">

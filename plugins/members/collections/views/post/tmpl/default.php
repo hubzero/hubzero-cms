@@ -179,6 +179,7 @@ $view->display();
 			</p>
 		</div><!-- / .attribution -->
 <?php 
+
 if ($item->get('comments')) 
 { 
 	?>
@@ -228,12 +229,18 @@ $now = date('Y-m-d H:i:s', time());
 						<span class="entry-date-on">on</span> <span class="date"><?php echo JHTML::_('date', $now, $this->dateFormat, $this->tz); ?></span>
 					</span>
 				</p>
-				<form action="<?php echo JRoute::_($base . '&task=post/' . $this->post->get('id') . '/savecomment'); ?>" method="post" enctype="multipart/form-data">
+				<form action="<?php echo JRoute::_($base . '&task=post/' . $this->post->get('id') . '/savecomment'); ?>" method="post" id="comment-form" enctype="multipart/form-data">
 					<fieldset>
 						<input type="hidden" name="comment[id]" value="0" />
 						<input type="hidden" name="comment[item_id]" value="<?php echo $item->get('id'); ?>" />
 						<input type="hidden" name="comment[item_type]" value="collection" />
 						<input type="hidden" name="comment[state]" value="1" />
+
+						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+						<input type="hidden" name="id" value="<?php echo $this->member->get('uidNumber'); ?>" />
+						<input type="hidden" name="scope" value="post/<?php echo $this->post->get('id'); ?>/savecomment" />
+						<input type="hidden" name="action" value="savecomment" />
+						<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
 
 						<textarea name="comment[content]" cols="35" rows="3"></textarea>
 						<input type="submit" class="comment-submit" value="<?php echo JText::_('Save'); ?>" />
