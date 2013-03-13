@@ -387,6 +387,7 @@ class WikiParser
 		$text = preg_replace_callback("/([\s]*)[\._a-zA-Z0-9-]+@[\._a-zA-Z0-9-]+/i", array(&$this, 'linkAuto'), $text);
 
 		// Camelcase links (e.g. MyLink) 
+		$camelcase = false;
 		if ($camelcase) 
 		{
 			$UpperPtn = "[A-Z]"; //"[A-Z\xc0-\xde]";
