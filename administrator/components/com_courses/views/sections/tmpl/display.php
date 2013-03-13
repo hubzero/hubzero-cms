@@ -109,6 +109,9 @@ foreach ($this->rows as $row)
 	$tip = '[coming soon]';
 
 	$students = $row->members(array('count' => true, 'student' => 1));
+
+	$allcodes = $row->codes(array('count' => true));
+	$redeemed = $row->codes(array('count' => true, 'redeemed' => 1));
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
@@ -161,7 +164,9 @@ foreach ($this->rows as $row)
 					<?php } ?>
 				</td>
 				<td>
-					0 of 0 redeemed
+					<a class="code" href="index.php?option=<?php echo $this->option; ?>&amp;controller=codes&amp;section=<?php echo $row->get('id'); ?>">
+						<span><?php echo JText::sprintf('%s of %s redeemed', $redeemed, $allcodes); ?></span>
+					</a>
 				</td>
 			</tr>
 <?php

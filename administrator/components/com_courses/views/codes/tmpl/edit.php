@@ -82,7 +82,7 @@ function submitbutton(pressbutton)
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
 <form action="index.php" method="post" name="adminForm" id="item-form">
-	<div class="col width-40 fltlft">
+	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_COURSES_DETAILS'); ?></span></legend>
 			
@@ -95,10 +95,10 @@ function submitbutton(pressbutton)
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<th class="key"><label for="offering_id"><?php echo JText::_('Offering'); ?>:</label></th>
+						<th class="key"><label for="section_id"><?php echo JText::_('Section'); ?>:</label></th>
 						<td>
 							<select name="fields[section_id]" id="section_id">
-								<option value="-1"><?php echo JText::_('Select offering...'); ?></option>
+								<option value="-1"><?php echo JText::_('Select section...'); ?></option>
 					<?php
 						require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
 						$model = CoursesModelCourses::getInstance();
@@ -107,13 +107,22 @@ function submitbutton(pressbutton)
 							foreach ($model->courses() as $course)
 							{
 					?>
-								<optgroup label="<?php echo $this->escape(stripslashes($course->get('alias'))); ?>">
+								<optgroup label="<?php echo $this->escape(stripslashes($course->get('title'))); ?>">
 					<?php
 								$j = 0;
 								foreach ($course->offerings() as $i => $offering)
 								{
 					?>
-									<option value="<?php echo $this->escape(stripslashes($offering->get('id'))); ?>"<?php if ($offering->get('id') == $this->row->get('offering_id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($offering->get('alias'))); ?></option>
+									<optgroup label="&nbsp; &nbsp; <?php echo $this->escape(stripslashes($offering->get('title'))); ?>">
+						<?php 
+									foreach ($offering->sections() as $section)
+									{
+						?>
+										<option value="<?php echo $this->escape(stripslashes($section->get('id'))); ?>"<?php if ($section->get('id') == $this->row->get('section_id')) { echo ' selected="selected"'; } ?>>&nbsp; &nbsp; <?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
+						<?php
+									}
+						?>
+									</optgroup>
 					<?php
 								}
 					?>
@@ -182,7 +191,7 @@ function submitbutton(pressbutton)
 			</table>
 		</fieldset>
 	</div>
-	<div class="col width-60 fltrt">
+	<div class="col width-40 fltrt">
 		<table class="meta" summary="<?php echo JText::_('COM_COURSES_META_SUMMARY'); ?>">
 			<tbody>
 				<tr>
@@ -195,17 +204,25 @@ function submitbutton(pressbutton)
 					<td>
 						<?php echo $this->escape($this->row->get('created')); ?>
 					</td>
+				</tr>
 					<?php if ($this->row->get('created_by')) { ?>
+					<tr>
 						<th><?php echo JText::_('Creator'); ?></th>
 						<td><?php 
 						$creator = JUser::getInstance($this->row->get('created_by'));
 						echo $this->escape(stripslashes($creator->get('name'))); ?></td>
+					</tr>
 					<?php } ?>
 					
-				</tr>
+				
 <?php } ?>
 			</tbody>
 		</table>
+		
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('QR Code'); ?></span></legend>
+			<img src="<?php echo 'index.php?option=com_courses&controller=codes&task=qrcode&no_html=1&code=' . $this->row->get('code'); ?>" alt="QR Code" />
+		</fieldset>
 	</div>
 	<div class="clr"></div>
 

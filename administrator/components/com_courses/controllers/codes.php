@@ -322,6 +322,45 @@ class CoursesControllerCodes extends Hubzero_Controller
 	}
 
 	/**
+	 * Generate QRcode
+	 *
+	 * @return	void
+	 */
+	public function qrcodeTask()
+	{
+		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'phpqrcode' . DS . 'qrlib.php');
+
+		$no_html = JRequest::getInt('no_html', 0);
+		$code = JRequest::getVar('code');
+
+		if (!$code)
+		{
+			JError::raiseError(500, JText::_('No code provided'));
+			return;
+		}
+
+		/*$section  = CoursesModelSection::getInstance($code->get('section_id'));
+		if (!$section->exists())
+		{
+			JError::raiseError(500, JText::_('Section not found'));
+			return;
+		}
+		$offering = CoursesModelOffering::getInstance($section->get('offering_id'));
+		$course   = CoursesModelCourse::getInstance($offering->get('course_id'));*/
+		//$juri =& JURI::getInstance();
+
+		$url = rtrim(JURI::base(), '/') . '/' . ltrim(JRoute::_('index.php?option=' . $this->_option . '&controller=courses&task=redeem&code=' . $code), '/');
+
+		if ($no_html)
+		{
+			echo QRcode::png($url);
+			return;
+		}
+
+		echo QRcode::text($url);
+	}
+
+	/**
 	 * Cancel a task (redirects to default task)
 	 *
 	 * @return	void
