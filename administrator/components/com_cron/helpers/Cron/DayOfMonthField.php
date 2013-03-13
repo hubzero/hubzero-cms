@@ -25,118 +25,131 @@ use DateInterval;
  */
 class DayOfMonthField extends AbstractField
 {
-    /**
-     * Get the last day of the month
-     *
-     * @param DateTime $date Date object to check
-     *
-     * @param return int returns the last day of the month
-     */
-    public static function getLastDayOfMonth(DateTime $date)
-    {
-        $month = $date->format('n');
-        if ($month == 2) {
-            return (bool) $date->format('L') ? 29 : 28;
-        } else {
-            $dates = array(
-                1 => 31,
-                3 => 31,
-                4 => 30,
-                5 => 31,
-                6 => 30,
-                7 => 31,
-                8 => 31,
-                9 => 30,
-                10 => 31,
-                11 => 30,
-                12 => 31
-            );
+	/**
+	 * Get the last day of the month
+	 *
+	 * @param DateTime $date Date object to check
+	 *
+	 * @param return int returns the last day of the month
+	 */
+	public static function getLastDayOfMonth(DateTime $date)
+	{
+		$month = $date->format('n');
+		if ($month == 2) 
+		{
+			return (bool) $date->format('L') ? 29 : 28;
+		} 
+		else 
+		{
+			$dates = array(
+				1  => 31,
+				3  => 31,
+				4  => 30,
+				5  => 31,
+				6  => 30,
+				7  => 31,
+				8  => 31,
+				9  => 30,
+				10 => 31,
+				11 => 30,
+				12 => 31
+			);
 
-            return $dates[$month];
-        }
-    }
+			return $dates[$month];
+		}
+	}
 
-    /**
-     * Get the nearest day of the week for a given day in a month
-     *
-     * @param int $currentYear Current year
-     * @param int $currentYear Current month
-     * @param int $targetDay Target day of the month
-     *
-     * @return DateTime Returns the nearest date
-     */
-    private static function getNearestWeekday($currentYear, $currentMonth, $targetDay)
-    {
-        $tday = str_pad($targetDay, 2, '0', STR_PAD_LEFT);
-        $target = DateTime::createFromFormat('Y-m-d', "$currentYear-$currentMonth-$tday");
-        $currentWeekday = (int) $target->format('N');
+	/**
+	 * Get the nearest day of the week for a given day in a month
+	 *
+	 * @param int $currentYear Current year
+	 * @param int $currentYear Current month
+	 * @param int $targetDay Target day of the month
+	 *
+	 * @return DateTime Returns the nearest date
+	 */
+	private static function getNearestWeekday($currentYear, $currentMonth, $targetDay)
+	{
+		$tday = str_pad($targetDay, 2, '0', STR_PAD_LEFT);
+		$target = DateTime::createFromFormat('Y-m-d', "$currentYear-$currentMonth-$tday");
+		$currentWeekday = (int) $target->format('N');
 
-        if ($currentWeekday < 6) {
-            return $target;
-        }
+		if ($currentWeekday < 6) 
+		{
+			return $target;
+		}
 
-        $lastDayOfMonth = self::getLastDayOfMonth($target);
+		$lastDayOfMonth = self::getLastDayOfMonth($target);
 
-        foreach (array(-1, 1, -2, 2) as $i) {
-            $adjusted = $targetDay + $i;
-            if ($adjusted > 0 && $adjusted <= $lastDayOfMonth) {
-                $target->setDate($currentYear, $currentMonth, $adjusted);
-                if ($target->format('N') < 6 && $target->format('m') == $currentMonth) {
-                    return $target;
-                }
-            }
-        }
-    }
+		foreach (array(-1, 1, -2, 2) as $i) 
+		{
+			$adjusted = $targetDay + $i;
+			if ($adjusted > 0 && $adjusted <= $lastDayOfMonth) 
+			{
+				$target->setDate($currentYear, $currentMonth, $adjusted);
+				if ($target->format('N') < 6 && $target->format('m') == $currentMonth) 
+				{
+					return $target;
+				}
+			}
+		}
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isSatisfiedBy(DateTime $date, $value)
-    {
-        // ? states that the field value is to be skipped
-        if ($value == '?') {
-            return true;
-        }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function isSatisfiedBy(DateTime $date, $value)
+	{
+		// ? states that the field value is to be skipped
+		if ($value == '?') 
+		{
+			return true;
+		}
 
-        $fieldValue = $date->format('d');
+		$fieldValue = $date->format('d');
 
-        // Check to see if this is the last day of the month
-        if ($value == 'L') {
-            return $fieldValue == self::getLastDayOfMonth($date);
-        }
+		// Check to see if this is the last day of the month
+		if ($value == 'L') 
+		{
+			return $fieldValue == self::getLastDayOfMonth($date);
+		}
 
-        // Check to see if this is the nearest weekday to a particular value
-        if (strpos($value, 'W')) {
-            // Parse the target day
-            $targetDay = substr($value, 0, strpos($value, 'W'));
-            // Find out if the current day is the nearest day of the week
-            return $date->format('j') == self::getNearestWeekday($date->format('Y'), $date->format('m'), $targetDay)->format('j');
-        }
+		// Check to see if this is the nearest weekday to a particular value
+		if (strpos($value, 'W')) 
+		{
+			// Parse the target day
+			$targetDay = substr($value, 0, strpos($value, 'W'));
+			// Find out if the current day is the nearest day of the week
+			return $date->format('j') == self::getNearestWeekday($date->format('Y'), $date->format('m'), $targetDay)->format('j');
+		}
 
-        return $this->isSatisfied($date->format('d'), $value);
-    }
+		return $this->isSatisfied($date->format('d'), $value);
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function increment(DateTime $date, $invert = false)
-    {
-        if ($invert) {
-            $date->sub(new DateInterval('P1D'));
-            $date->setTime(23, 59, 0);
-        } else {
-            $date->add(new DateInterval('P1D'));
-            $date->setTime(0, 0, 0);
-        }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function increment(DateTime $date, $invert = false)
+	{
+		if ($invert) 
+		{
+			$date->sub(new DateInterval('P1D'));
+			$date->setTime(23, 59, 0);
+		} 
+		else 
+		{
+			$date->add(new DateInterval('P1D'));
+			$date->setTime(0, 0, 0);
+		}
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function validate($value)
-    {
-        return (bool) preg_match('/[\*,\/\-\?LW0-9A-Za-z]+/', $value);
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function validate($value)
+	{
+		return (bool) preg_match('/[\*,\/\-\?LW0-9A-Za-z]+/', $value);
+	}
 }
