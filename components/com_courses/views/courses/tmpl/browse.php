@@ -37,14 +37,14 @@ $juser =& JFactory::getUser();
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 </div>
-
-<div id="content-header-extra">
+<?php
+/*<div id="content-header-extra">
 	<ul id="useroptions">
 		<li class="last"><a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=new'); ?>"><?php echo JText::_('Create Course'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
+*/
 
-<?php
 	foreach ($this->notifications as $notification) {
 		echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
 	}
