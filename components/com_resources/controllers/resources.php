@@ -388,12 +388,13 @@ class ResourcesControllerResources extends Hubzero_Controller
 		$activetitle = '';
 		for ($i = 0; $i < count($view->types); $i++)
 		{
-			$normalized = preg_replace("/[^a-zA-Z0-9]/", "", $view->types[$i]->type);
-			$normalized = strtolower($normalized);
-			$view->types[$i]->title = $normalized;
+			//$normalized = preg_replace("/[^a-zA-Z0-9]/", "", $view->types[$i]->type);
+			//$normalized = strtolower($normalized);
+			//$view->types[$i]->title = $normalized;
 
-			if (trim($view->type) == $normalized) {
-				$activetype = $view->types[$i]->id;
+			if (trim($view->type) == $view->types[$i]->alias) 
+			{
+				$activetype  = $view->types[$i]->id;
 				$activetitle = $view->types[$i]->type;
 			}
 		}
