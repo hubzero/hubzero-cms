@@ -1173,16 +1173,14 @@ class Hubzero_Group
 		else
 		{
 			$t = implode(",", $types);
-			if ($t == 'hub')
-				$t = 1;
-			if ($t == 'project')
-				$t = 2;
-			if ($t == 'partner')
-				$t = 3;
-			if ($t == 'course')
-				$t = 4;
-			if ($t == 'system')
-				$t = 0;
+			
+			//replace group type names with group type id
+			$t = str_replace('hub', 1, $t);
+			$t = str_replace('project', 2, $t);
+			$t = str_replace('partner', 3, $t);
+			$t = str_replace('course', 4, $t);
+			$t = str_replace('system', 0, $t);
+			
 			$where_clause = 'WHERE type IN (' . $t . ')';
 		}
 
