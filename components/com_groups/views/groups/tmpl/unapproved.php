@@ -44,9 +44,9 @@ defined('_JEXEC') or die('Restricted access');
 	
 	<?php if(in_array($this->juser->get('id'), $this->group->get('invitees'))) : ?>
 		<hr />
-		<a href="<?php echo JRoute::_('index.php?option=com_groups&controller=groups&gid='.$this->group->get('cn').'&task=accept'); ?>" class="group-invited">Accept Group Invite</a>
+		<a href="<?php echo JRoute::_('index.php?option=com_groups&controller=groups&cn='.$this->group->get('cn').'&task=accept'); ?>" class="group-invited">Accept Group Invite</a>
 		<hr />
 	<?php endif; ?>
 	
-	<a class="all-groups" href="/groups">&lsaquo; Go Back to Groups</a> | <a class="my-groups" href="/members/myaccount/groups">Go to My Groups &rsaquo;</a>
+	<a class="all-groups" href="<?php echo JRoute::_('index.php?option=com_groups'); ?>">&lsaquo; Go Back to Groups</a> | <a class="my-groups" href="/members/myaccount/groups">Go to My Groups &rsaquo;</a>
 </div>
