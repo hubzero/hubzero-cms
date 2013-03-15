@@ -122,9 +122,21 @@ class JRouterSite extends JRouter
 					}
 					else // otherwise, send to profile to fill in missing info
 					{
-						$vars['option'] = 'com_members';
-						$vars['id']		= $juser->get("id");
-						$vars['active'] = 'profile';
+						$o 	= JRequest::getVar('option', '');
+						$t 	= JRequest::getVar('task', '');
+						$nh = JRequest::getInt('no_html', 0);
+						
+						//are we trying to use the tag autocompletor when forcing registration update?
+						if ($o == 'com_tags' && $t == 'autocomplete' && $nh)
+						{
+							$vars['option'] = 'com_tags';
+						}
+						else
+						{
+							$vars['option'] = 'com_members';
+							$vars['id']		= $juser->get("id");
+							$vars['active'] = 'profile';
+						}
 					}
 
 					$this->setVars($vars);

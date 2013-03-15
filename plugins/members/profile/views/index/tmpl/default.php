@@ -70,7 +70,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 	<?php if(count($update_missing) > 0) : ?>
 		<?php if(count($update_missing) == 1 && in_array("usageAgreement",array_keys($update_missing))) : ?>
 		<?php else: ?>
-			<div class="error">
+			<div class="error member-update-missing">
 				<strong>You must update your profile before continuing:</strong>
 				<ul>
 					<?php foreach($update_missing as $um) : ?>

@@ -311,7 +311,7 @@ HUB.Members.Profile = {
 		$.fancybox.close();
 		
 		//check to see if we are edit our profile or we were forced to fill in fields due to registration update
-		if(window.location.pathname.match(/\/members\/\d+\/profile/g))
+		if(window.location.pathname.match(/\/members\/\d+\/profile/g) || !$('.member-update-missing').length)
 		{
 			//show updating overlay
 			HUB.Members.Profile.editShowUpdatingOverlay(".member_profile");

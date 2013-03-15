@@ -84,14 +84,24 @@ function membersParseRoute($segments)
 	{
 		return $vars;
 	}
-
+	
 	if (isset($segments[0])) 
 	{
 		switch ($segments[0])
 		{
+			case 'myaccount':
+				$juser = JFactory::getUser();
+				if (!$juser->get('guest'))
+				{
+					$vars['id'] = $juser->get('id');
+				}
+				else
+				{
+					$vars['task'] = 'myaccount';
+				}
+				break;
 			case 'activity':
 			case 'autocomplete':
-			case 'myaccount': 
 				$vars['task'] = $segments[0];
 			break;
 			case 'vips':
