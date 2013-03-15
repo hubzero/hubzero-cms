@@ -523,8 +523,8 @@ class ToolsApiController extends Hubzero_Api_Controller
 		$app->ip 	= $ip;
 		
 		//load the session
-		$ms = new MwSession($mwdb);
-		$row = $ms->loadSession($app->sess);
+		$ms = new MwSession( $mwdb );
+		$row = $ms->loadSession( $app->sess );
 		
 		//if we didnt find a session
 		if (!is_object($row) || !$row->appname) 
@@ -577,9 +577,8 @@ class ToolsApiController extends Hubzero_Api_Controller
 		//add tool title to result
 		$output->tool = $tv->title;
 		$output->session_title = $app->caption;
-
 		$output->owner = ($row->viewuser == $row->username) ? 1 : 0;
-                $output->readonly = ($row->readonly == 'Yes') ? 1 : 0;
+		$output->readonly = ($row->readonly == 'Yes') ? 1 : 0;
 		
 		//return result
 		if($status)
