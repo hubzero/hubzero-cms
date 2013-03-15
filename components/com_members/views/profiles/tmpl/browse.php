@@ -62,8 +62,8 @@ $juser =& JFactory::getUser();
 								<td><span class="item-count"><?php echo $this->total_members - $this->total_public_members; ?></span></td>
 							</tr>
 							<tr>
-								<th>New (past 24 hours): </th>
-								<td><span class="item-count"><?php echo $this->past_day_members; ?></span></td>
+								<th>New (past month): </th>
+								<td><span class="item-count"><?php echo $this->past_month_members; ?></span></td>
 							</tr>
 						</tbody>
 					</table>

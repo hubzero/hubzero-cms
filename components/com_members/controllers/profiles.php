@@ -300,9 +300,13 @@ class MembersControllerProfiles extends Hubzero_Controller
 		// Get records
 		$this->view->rows = $c->getRecords($this->view->filters, $admin);
 		
-		//get newly registered members
+		//get newly registered members (past day)
 		$this->database->setQuery("SELECT COUNT(*) FROM #__xprofiles WHERE registerDate > '" . date("Y-m-d H:i:s", strtotime('-1 DAY')) . "'");
 		$this->view->past_day_members = $this->database->loadResult();
+		
+		//get newly registered members (past month)
+		$this->database->setQuery("SELECT COUNT(*) FROM #__xprofiles WHERE registerDate > '" . date("Y-m-d H:i:s", strtotime('-1 MONTH')) . "'");
+		$this->view->past_month_members = $this->database->loadResult();
 		
 		// Initiate paging
 		jimport('joomla.html.pagination');
@@ -1385,9 +1389,9 @@ class MembersControllerProfiles extends Hubzero_Controller
 		{
 			$profile->set('usageAgreement', $xregistration->_registration['usageAgreement']);
 		}
-
+		
 		$field_to_check = JRequest::getVar("field_to_check", array());
-
+		
 		// Check that required fields were filled in properly
 		if (!$xregistration->check('edit', $profile->get('uidNumber'), $field_to_check))
 		{
