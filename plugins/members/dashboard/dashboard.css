@@ -266,7 +266,7 @@
 		border: none;
 		position: absolute;
 		right: -7px;
-		z-index: 9999;
+		z-index: 999;
 		display: none;
 	}
 	.com_members div.draggable:hover .close {
