@@ -135,9 +135,9 @@ class plgMembersCourses extends JPlugin
 					'name'    => 'display'
 				)
 			);
-			$view->option  = $option;
-			$view->member  = $member;
-			$view->roles = $roles;
+			$view->option   = $option;
+			$view->member   = $member;
+			$view->roles    = $roles;
 			$view->hasRoles = $hasRoles;
 
 			$view->filters = array();
@@ -156,9 +156,10 @@ class plgMembersCourses extends JPlugin
 			$view->filters['task'] = JRequest::getVar('action', 'student');
 			$view->filters['sort'] = 'enrolled';
 
-			$view->total = 0;
+			$view->total   = 0;
 			$view->results = null;
-			$view->active = null;
+			$view->active  = null;
+			$view->results = null;
 
 			if ($view->hasRoles <= 1)
 			{
@@ -178,7 +179,11 @@ class plgMembersCourses extends JPlugin
 					}
 				}
 			}
-			$view->results = $this->_getData('list', $view->active->alias, $view->filters);
+
+			if(!is_null($view->active))
+			{
+				$view->results = $this->_getData('list', $view->active->alias, $view->filters);
+			}
 
 			jimport('joomla.html.pagination');
 			$view->pageNav = new JPagination(

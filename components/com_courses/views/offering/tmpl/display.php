@@ -280,11 +280,11 @@ if (!$no_html) : ?>
 						<ul>
 							<li class="info-join-policy">
 								<span class="label">Starts</span>
-								<span class="value"><?php echo JHTML::_('date', $this->course->offering()->get('start_date'), $dateFormat, $tz); ?></span>
+								<span class="value"><?php echo JHTML::_('date', $this->course->offering()->get('publish_up'), $dateFormat, $tz); ?></span>
 							</li>
 							<li class="info-created">
 								<span class="label">Ends</span>
-								<span class="value"><?php echo JHTML::_('date', $this->course->offering()->get('end_date'), $dateFormat, $tz); ?></span>
+								<span class="value"><?php echo JHTML::_('date', $this->course->offering()->get('publish_down'), $dateFormat, $tz); ?></span>
 							</li>
 						</ul>
 					</div>
