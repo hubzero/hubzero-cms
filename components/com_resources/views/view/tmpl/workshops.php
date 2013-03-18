@@ -258,7 +258,7 @@ $juser =& JFactory::getUser();
 			<div class="clear"></div>
 <?php
 		// Show course listings under 'about' tab
-		if ($tab == 'about' && $ccount > 0) 
+		if ($this->tab == 'about' && $ccount > 0)
 		{
 			$filters = array(
 				'sortby' => JRequest::getVar('sortby', 'ordering'),
