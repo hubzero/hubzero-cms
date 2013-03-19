@@ -46,7 +46,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 	public function execute()
 	{
 		//get the cname
-		$this->cn = JRequest::getWord('cn', '');
+		$this->cn = JRequest::getVar('cn', '');
 		
 		parent::execute();
 	}

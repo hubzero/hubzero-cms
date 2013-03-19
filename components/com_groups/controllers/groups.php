@@ -46,9 +46,9 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 	public function execute()
 	{
 		//get the cname, active tab, and action for plugins
-		$this->cn 		= JRequest::getCmd('cn', '');
-		$this->active 	= JRequest::getCmd('active', '');
-		$this->action 	= JRequest::getCmd('action', '');
+		$this->cn 		= JRequest::getVar('cn', '');
+		$this->active 	= JRequest::getVar('active', '');
+		$this->action 	= JRequest::getVar('action', '');
 		
 		//are we serving up a file
 		$uri = $_SERVER['REQUEST_URI'];
