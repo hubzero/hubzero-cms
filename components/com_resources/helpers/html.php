@@ -925,14 +925,14 @@ class ResourcesHtml
 		{
 			for ($i = 0; $i < count($author_array); $i++)
 			{
-				if ($author_array[$i]->surname || $author_array[$i]->givenName) 
+				if ($author_array[$i]->lastname || $author_array[$i]->firstname) 
 				{
-					$name = stripslashes($author_array[$i]->givenName) . ' ';
-					if ($author_array[$i]->middleName != NULL) 
+					$name = stripslashes($author_array[$i]->firstname) . ' ';
+					if ($author_array[$i]->middlename != NULL) 
 					{
-						$name .= stripslashes($author_array[$i]->middleName) . ' ';
+						$name .= stripslashes($author_array[$i]->middlename) . ' ';
 					}
-					$name .= stripslashes($author_array[$i]->surname);
+					$name .= stripslashes($author_array[$i]->lastname);
 				} 
 				else 
 				{
@@ -941,8 +941,8 @@ class ResourcesHtml
 
 				if ($i==0) 
 				{
-					$lastname  = $author_array[$i]->surname  ? $author_array[$i]->surname  : $author_array[$i]->name;
-					$firstname = $author_array[$i]->givenName ? $author_array[$i]->givenName : $author_array[$i]->name;
+					$lastname  = $author_array[$i]->lastname  ? $author_array[$i]->lastname  : $author_array[$i]->name;
+					$firstname = $author_array[$i]->firstname ? $author_array[$i]->firstname : $author_array[$i]->name;
 					$html .= '&amp;rft.aulast=' . urlencode($lastname) . '&amp;rft.aufirst=' . urlencode($firstname);
 				}
 			}
