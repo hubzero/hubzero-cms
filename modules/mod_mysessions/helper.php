@@ -137,70 +137,52 @@ class modMySessions
 	 */
 	public function display()
 	{
+		//include mw libraries
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.utils.php');
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.class.php');
-
-		$this->moduleclass_sfx = $this->params->get('moduleclass_sfx');
-		$this->show_storage = $this->params->get('show_storage', 1);
-
-		// Check if the user is an admin.
-		$this->authorized = false;
-
-		$xprofile =& Hubzero_Factory::getProfile();
-		if (is_object($xprofile)) 
-		{
-			if (in_array('middleware', $xprofile->get('admin'))) 
-			{
-				$this->authorized = 'admin';
-			}
-		}
-
+		
+		//get user object
+		$this->juser = JFactory::getUser();
+		
+		//get database object
+		$this->database = JFactory::getDBO();
+		
+		//Get a connection to the middleware database
+		$mwdb =& MwUtils::getMWDBO();
+		
+		//get tool paras
+		$this->toolsConfig = JComponentHelper::getParams('com_tools');
+		
+		//set ACL for com_tools
 		$jacl =& JFactory::getACL();
 		$jacl->addACL('com_tools', 'manage', 'users', 'super administrator');
 		$jacl->addACL('com_tools', 'manage', 'users', 'administrator');
 		$jacl->addACL('com_tools', 'manage', 'users', 'manager');
-
-		$juser =& JFactory::getUser();
-
-		// Get a connection to the middleware database
-		$mwdb =& MwUtils::getMWDBO();
-
-		$mconfig = JComponentHelper::getParams('com_tools');
-
+		
 		// Ensure we have a connection to the middleware
 		$this->error = false;
-		if (!$mwdb
-		 || !$mconfig->get('mw_on')
-		 || ($mconfig->get('mw_on') > 1 && !$juser->authorize('com_tools', 'manage'))) 
+		if (!$mwdb || !$this->toolsConfig->get('mw_on') || ($this->toolsConfig->get('mw_on') > 1 && !$this->juser->authorize('com_tools', 'manage'))) 
 		{
 			$this->error = true;
 			return false;
 		}
-
+		
+		//run middleware command to create screenshots
+		$cmd = "/bin/sh ". JPATH_SITE . "/components/com_tools/scripts/mw screenshot " . $this->juser->get('username') . " 2>&1 </dev/null";
+		exec($cmd, $results, $status);
+		
+		//get sessions
+		$session = new MwSession($mwdb);
+		$this->sessions = $session->getRecords( $this->juser->get('username'), '', false );
+		
 		// Push the module CSS to the template
 		ximport('Hubzero_Document');
 		Hubzero_Document::addModuleStyleSheet($this->module->module);
-
-		$ms = new MwSession($mwdb);
-		$this->sessions = $ms->getRecords($juser->get('username'), '', false);
-		if ($this->authorized) 
-		{
-			// Add the JavaScript that does the AJAX magic to the template
-			Hubzero_Document::addModuleScript($this->module->module);
-
-			$this->allsessions = $ms->getRecords($juser->get('username'), '', $this->authorized);
-		}
-
-		$rconfig = JComponentHelper::getParams('com_resources');
-		$this->supportedtag = $rconfig->get('supportedtag');
-
-		$database =& JFactory::getDBO();
-		if ($this->supportedtag) 
-		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
-			$this->rt = new ResourcesTags($database);
-		}
-
+		
+		// Add the JavaScript that does the AJAX magic to the template
+		Hubzero_Document::addModuleScript($this->module->module);
+		
+		//output module
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 }

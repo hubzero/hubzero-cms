@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        modules/mod_reportproblems/mod_reportproblems.js
+ * @file        modules/mod_mysessions/mod_mysessions.jquery.js
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -21,77 +21,75 @@ if (!jq) {
 }
 
 //----------------------------------------------------------
-// Trouble Report form
+// My Sessions Module
 //----------------------------------------------------------
 HUB.Modules.MySessions = {
-
 	jQuery: jq,
-
-	settings: { 
-		mouseOverClass:	'over',
-		titles: '#myToolsTabs ul.session_tab_titles li',
-		container: '#mySessionsTabs',
-		panels: '#mySessionsTabs .session_tab_panel'
-	},
-
+	
 	initialize: function() {
-		var mod = this,
-			$ = this.jQuery,
-			settings = this.settings;
-
-		if (!$(settings.container)) {
-			return;
-		}
-
-		$(settings.titles).each(function(i, item) {
-			$(item).click(function () {
-				$(this).removeClass(settings.mouseOverClass);
-				mod.activate($(this));
+		//session snapshots
+		HUB.Modules.MySessions.sessionSnapshots();
+		
+		//terminate confirm?
+		HUB.Modules.MySessions.confirmTerminate();
+			
+		//collapsable sessions
+		HUB.Modules.MySessions.collapsableSessions();
+	},
+	
+	sessionSnapshots: function() {
+		var $ = this.jQuery;
+		
+		//show session snapshots in lightbox
+		$('.session-snapshot a').on('click',function(event) {
+			event.preventDefault();
+			$.fancybox({
+				width: 800,
+				height: 600,
+				autoSize: false,
+				title: $(this).attr("title"),
+				content:'<img style="display:block;" src="' + $(this).attr("href") + '" />'
 			});
 		});
 	},
 	
-	activate: function(tab) {
-		var mod = this,
-			$ = this.jQuery,
-			settings = this.settings;
+	confirmTerminate: function() {
+		var $ = this.jQuery;
+		
+		//double check terminate
+		$('.session-list').on('click', '.terminate-confirm', function(event){
+			var message = $(this).attr('title') + '?';
+			if (!confirm(message))
+			{
+				event.preventDefault();
+				return;
+			}
+		});
+	},
+	
+	collapsableSessions: function() {
+		var $ = this.jQuery;
+		
+		//collapsible session list
+		$(".session-list").on('click', '.session-title-bar', function(event) {
+			//get the clicked element
+			var element = (event.srcElement) ? event.srcElement : event.target,
+				elementClass = $(element).parent().attr('class');
+			
+			//if we didnt click the quick launch button
+			if (element.tagName != 'IMG' || (element.tagName == 'IMG' && elementClass.match(/session-title-icon/gi)))
+			{
+				//stop event
+				event.preventDefault();
+				
+				//toggle class
+				$(this).parent().toggleClass('active');
 
-		var newTab = $(tab).attr('title');
-			
-		$(settings.panels).each(function(i, item) {
-			$(this).removeClass('active');
-		});
-		mod.activePanel = $('#'+newTab+'');
-		$(mod.activePanel).addClass('active');
-			
-		$(settings.titles).each(function(i, item) {
-			$(this).removeClass('active');
-		});
-		mod.activeTitle = $(tab);
-		$(tab).addClass('active');
-	},
-	
-	diskMonitor: function() {
-		var mod = this,
-			$ = this.jQuery,
-			settings = this.settings;
-			
-		if ($('#diskusage')) {
-			var holdTheInterval = setInterval(HUB.Modules.MySessions.fetch, 60000); 
-			//fetch.periodical(60000);
-		}
-	},
-	
-	fetch: function() {
-		var mod = this,
-			$ = this.jQuery,
-			settings = this.settings;
-			
-		$.get('index.php?option=com_tools&task=diskusage&no_html=1&msgs=1', {}, function(data) {
-            $('#diskusage').html(data);
+				//toggle session
+				$(this).next().slideToggle('medium');
+			}
 		});
 	}
-		
 };
 
 jQuery(document).ready(function($){

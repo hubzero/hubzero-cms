@@ -30,199 +30,139 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-$juser =& JFactory::getUser();
 ?>
-<div class="<?php echo $this->moduleclass_sfx; ?>sessionlist">
-<?php if ($this->error) { ?>
-	<p class="error"><?php echo JText::_('MOD_MYSESSIONS_NOT_CONFIGURED'); ?></p>
-<?php } else { ?>
-<?php if ($this->authorized) { ?>
-	<div id="mySessionsTabs">
-		<ul class="session_tab_titles">
-			<li title="mysessions" class="active"><?php echo JText::_('My Sessions'); ?></li>
-			<li title="allsessions"><?php echo JText::_('All Sessions'); ?></li>
-		</ul>
-		<div id="mysessions" class="session_tab_panel active">
-<?php } ?>
-	<ul class="expandedlist">
-<?php
-	// Iterate through the session list and create links for each.
-	$is_even  = 1;
-	$appcount = 0;
-	$sessions = $this->sessions;
-	if (is_array($sessions)) {
-		foreach ($sessions as $app)
-		{
-			// If we're on a specific tool page, show sessions for that tool ONLY
-			if ($this->specapp && $app->appname != $this->specapp) {
-				continue;
-			}
-			$bits = explode('_',$app->appname);
-			$bit = (count($bits) > 1) ? array_pop($bits) : '';
-			$appname = implode('_',$bits);
 
-			$cls = ($is_even) ? '' : 'even ';
+<div class="<?php echo $this->params->get('moduleclass_sfx',''); ?>session-list <?php if (!$this->params->get('show_storage', 1)) { echo 'without-storage'; } ?>">
+	<ul>
+		<?php if (count($this->sessions) > 0) : ?>
+			<?php foreach ($this->sessions as $k => $session) : ?>
+				<?php 
+					$cls = ($k == 0) ? 'active' : 'not-active'; 
+					
+					//get the appname
+					$bits = explode('_',$session->appname);
+					$bit = (count($bits) > 1) ? array_pop($bits) : '';
+					$appname = implode('_',$bits);
+				
+					//are we on the iPad
+					$isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'], 'iPad');
+				
+					//get tool params
+					$launchOnIpad = $this->toolsConfig->get('launch_ipad', 0);
+				
+					//are we launching on iPad?
+					if ($isiPad && $launchOnIpad)
+					{
+						$resumeLink = 'nanohub://tools/session/' . $session->sessnum;
+					}
+					else
+					{
+						$resumeLink = JRoute::_('index.php?option=com_tools&task=session&sess='.$session->sessnum.'&app='.$appname);
+					}
+				
+					//terminate & disconnect links 
+					$terminateLink = JRoute::_('index.php?option=com_tools&task=stop&sess='.$session->sessnum.'&app='.$appname);
+					$disconnectLink = JRoute::_('index.php?option=com_tools&task=unshare&sess='.$session->sessnum.'&app='.$appname);
+				?>
+				<li class="session <?php echo $cls; ?>">
+					<div class="session-title-bar">
+						<?php if ($this->params->get('quick_launch', 1)) : ?>
+							<a class="session-title-quicklaunch tooltips" title="Quick Launch :: <?php echo JText::_('MOD_MYSESSIONS_RESUME_TITLE'); ?>" href="<?php echo $resumeLink; ?>">
+								<img src="/api/tools/screenshot?sessionid=<?php echo $session->sessnum; ?>" />
+							</a>
+						<?php else : ?>
+							<div class="session-title-icon">
+								<img src="/api/tools/screenshot?sessionid=<?php echo $session->sessnum; ?>" />
+							</div>
+						<?php endif; ?>
+						<div class="session-title">
+							<?php echo $session->sessname; ?>
+							<span class="status"></span>
+						</div>
+					</div>
+				
+					<div class="session-details">
+						<div class="session-details-left">
+							<div class="session-snapshot">
+								<a class="session-snapshot-link" href="/api/tools/screenshot?sessionid=<?php echo $session->sessnum; ?>" title="View Session Snapshot">
+									<img src="/api/tools/screenshot?sessionid=<?php echo $session->sessnum; ?>" />
+								</a>
+							</div>
+						</div>
+						<div class="session-details-right">
+							<div class="session-accesstime">
+								<span>Last Accessed:</span>
+								<?php echo date("F d, Y @ g:ia", strtotime($session->accesstime)); ?>
+							</div>
+						
+							<div class="session-buttons">
+								<a class="btn resume" href="<?php echo $resumeLink; ?>" title="<?php echo JText::_('MOD_MYSESSIONS_RESUME_TITLE'); ?>">
+									Resume
+								</a>
+								<?php $tcls = ($this->params->get('terminate_double_check', 1)) ? 'terminate-confirm' : 'terminate'; ?>
+								<?php if($this->juser->get('username') == $session->username) : ?>
+									<a class="btn <?php echo $tcls; ?>" href="<?php echo $terminateLink; ?>" title="<?php echo JText::_('MOD_MYSESSIONS_TERMINATE_TITLE'); ?>">
+										<?php echo ucfirst( JText::_('MOD_MYSESSIONS_TERMINATE') ); ?>
+									</a>
+								<?php else : ?>
+									<a class="btn disconnect" href="<?php echo $disconnectLink; ?>" title="<?php echo JText::_('MOD_MYSESSIONS_DISCONNECT_TITLE'); ?>">
+										<?php echo ucfirst( JText::_('MOD_MYSESSIONS_DISCONNECT') ); ?>
+									</a>
+								<?php endif; ?>
+							</div>
+						</div>
+					</div>
+				</li>
+			<?php endforeach; ?>
+		<?php else : ?>
+			<li class="no-sessions">
+				<?php echo JText::_('MOD_MYSESSIONS_NONE'); ?>
+			</li>
+		<?php endif; ?>
+	</ul>
+</div>
 
-			if ($this->supportedtag) {
-				if ($this->rt->checkTagUsage( $this->supportedtag, 0, $appname )) {
-					$cls .= 'supported';
-				} else {
-					$cls .= 'session';
-				}
-			} else {
-				$cls .= 'session';
-			}
-
-			//are we on the iPad
-			$isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'], 'iPad');
-			
-			//get tool params
-			$params = JComponentHelper::getParams('com_tools');
-			$launchOnIpad = $params->get('launch_ipad', 0);
-			
-			if($isiPad && $launchOnIpad)
+<?php if ($this->params->get('show_storage', 1)) : ?>
+	<div class="session-storage">
+		<span><?php echo JText::_('MOD_MYSESSIONS_STORAGE'); ?> (<a href="<?php echo JRoute::_('index.php?option=com_tools&task=storage'); ?>"><?php echo JText::_('MOD_MYSESSIONS_MANAGE'); ?></a>)</span>
+		<?php
+			$diskUsage = MwUtils::getDiskUsage($this->juser->get('username'));
+			if (!is_array($diskUsage))
 			{
-				$href = 'nanohub://tools/session/' . $app->sessnum;
+				echo "<p class=\"error\">" . JText::_('MOD_MYSESSIONS_ERROR_RETRIEVING_STORAGE') . "</p></div>";
+				return;
 			}
 			else
 			{
-				$href = JRoute::_('index.php?option=com_tools&task=session&sess='.$app->sessnum.'&app='.$appname);
+				// Calculate the percentage of spaced used
+				bcscale(6);
+				$total 		= $diskUsage['softspace'] / 1024000000;
+				$val 		= ($diskUsage['softspace'] > 0) ? bcdiv($diskUsage['space'], $diskUsage['softspace']) : 0;
+				$percent 	= round( $val * 100 );
+				
+				// Amount can only have a max of 100 due to some display restrictions
+				$amount  	= ($percent > 100) ? 100 : $percent;
+				
+				//show different colored bar
+				$cls 		= ($percent < 50) ? 'storage-low' : 'storage-high';
 			}
-?>
-		<li class="<?php echo $cls; ?>">
-			<a href="<?php echo $href; ?>" title="<?php echo JText::_('MOD_MYSESSIONS_RESUME_TITLE'); ?>">
-				<?php
-				echo $app->sessname;
-				if ($this->authorized === 'admin') {
-					echo '<br />('.$app->username.')';
-				}
-				?>
-			</a> 
-<?php if ($juser->get('username') == $app->username || $this->authorized === 'admin') { ?>
-			<a class="closetool" href="<?php echo JRoute::_('index.php?option=com_tools&task=stop&sess='.$app->sessnum.'&app='.$appname); ?>" title="<?php echo JText::_('MOD_MYSESSIONS_TERMINATE_TITLE'); ?>"><?php echo JText::_('MOD_MYSESSIONS_TERMINATE'); ?></a>
-<?php } else { ?>
-			<a class="disconnect" href="<?php echo JRoute::_('index.php?option=com_tools&task=unshare&sess='.$app->sessnum.'&app='.$appname); ?>" title="<?php echo JText::_('MOD_MYSESSIONS_DISCONNECT_TITLE'); ?>"><?php echo JText::_('MOD_MYSESSIONS_DISCONNECT'); ?></a> <br /><?php echo JText::_('MOD_MYSESSIONS_OWNER').': '.$app->username; ?>
-<?php } ?>
-		</li>
-<?php
-			$appcount++;
-			$is_even ^= 1;
-		}
-	}
-	if ($appcount == 0) {
-		if (is_array($sessions)) {
-?>
-			<li class="session"><?php echo JText::_('MOD_MYSESSIONS_NONE'); ?></li>
-<?php
-		} else {
-?>
-			<li class="session"><?php echo JText::_('MOD_MYSESSIONS_MISSING_TABLE'); ?></li>
-<?php
-		}
-	}
-?>
-	</ul>
-<?php if ($this->authorized) { ?>
-		</div><!-- / .mysessions -->
-		<div id="allsessions" class="session_tab_panel">
-	<ul class="expandedlist">
-<?php
-	// Iterate through the session list and create links for each.
-	$is_even  = 1;
-	$appcount = 0;
-	$sessions = $this->allsessions;
-	if (is_array($sessions)) {
-		foreach ($sessions as $app)
-		{
-			// If we're on a specific tool page, show sessions for that tool ONLY
-			if ($this->specapp && $app->appname != $this->specapp) {
-				continue;
-			}
-
-			$bits = explode('_',$app->appname);
-			$bit = (count($bits) > 1) ? array_pop($bits) : '';
-			$appname = implode('_',$bits);
-?>
-		<li class="<?php echo ($is_even) ? '' : 'even '; ?>session">
-			<a href="<?php echo JRoute::_('index.php?option=com_tools&task=session&sess='.$app->sessnum.'&app='.$appname); ?>" title="<?php echo JText::_('MOD_MYSESSIONS_RESUME_TITLE'); ?>">
-				<?php
-				echo $app->sessname;
-				if ($this->authorized === 'admin') {
-					echo '<br />('.$app->username.')';
-				}
-				?>
-			</a> 
-<?php if ($juser->get('username') == $app->username || $this->authorized === 'admin') { ?>
-			<a class="closetool" href="<?php echo JRoute::_('index.php?option=com_tools&task=stop&sess='.$app->sessnum.'&app='.$appname); ?>" title="<?php echo JText::_('MOD_MYSESSIONS_TERMINATE_TITLE'); ?>"><?php echo JText::_('MOD_MYSESSIONS_TERMINATE'); ?></a>
-<?php } else { ?>
-			<a class="disconnect" href="<?php echo JRoute::_('index.php?option=com_tools&task=unshare&sess='.$app->sessnum.'&app='.$appname); ?>" title="<?php echo JText::_('MOD_MYSESSIONS_DISCONNECT_TITLE'); ?>"><?php echo JText::_('MOD_MYSESSIONS_DISCONNECT'); ?></a> <br /><?php echo JText::_('MOD_MYSESSIONS_OWNER').': '.$app->username; ?>
-<?php } ?>
-		</li>
-<?php
-			$appcount++;
-			$is_even ^= 1;
-		}
-	}
-	if ($appcount == 0) {
-		if (is_array($sessions)) {
-?>
-			<li class="session"><?php echo JText::_('MOD_MYSESSIONS_NONE'); ?></li>
-<?php
-		} else {
-?>
-			<li class="session"><?php echo JText::_('MOD_MYSESSIONS_MISSING_TABLE'); ?></li>
-<?php
-		}
-	}
-?>
-	</ul>
-		</div><!-- / .allsessions -->
-	</div><!-- / #mySessionsTabs -->
-<?php } 
-}?>
-</div><!-- / .sessionlist -->
-<?php
-	// Get the disk usage
-	if ($this->show_storage) {
-		$du = MwUtils::getDiskUsage($juser->get('username'));
-		if (count($du) <=1) {
-			// Error
-			$config = JFactory::getConfig();
-			if ($config->getValue('config.debug')) {
-?>
-<p class="error"><?php echo JText::_('MOD_MYSESSIONS_ERROR_RETRIEVING_STORAGE'); ?></p>
-<?php
-			}
-		} else {
-			// Calculate the percentage of spaced used
-			bcscale(6);
-			$total = $du['softspace'] / 1024000000;
-			$val = ($du['softspace'] > 0) ? bcdiv($du['space'], $du['softspace']) : 0;
-			$percent = round( $val * 100 );
-
-			// Amount can only have a max of 100 due to some display restrictions
-			$amount  = ($percent > 100) ? 100 : $percent;
-
-			// Add the JavaScript file that will do the AJAX magic
-			//$document =& JFactory::getDocument();
-			//$document->addScript('modules/mod_mysessions/mod_mysessions.js');
-?>
-<dl id="diskusage">
-	<dt><?php echo JText::_('MOD_MYSESSIONS_STORAGE'); ?> (<a href="<?php echo JRoute::_('index.php?option=com_tools&task=storage'); ?>"><?php echo JText::_('MOD_MYSESSIONS_MANAGE'); ?></a>)</dt>
-	<?php if ($percent < 50) { ?>
-		<dd id="du-amount" class="amount-low"><div style="width:<?php echo $amount; ?>%;"><strong></strong><span id="du-amount-low"><?php echo $amount . '% of ' . $total . 'GB'; ?></span></div></dd>
-	<?php } else { ?>
-		<dd id="du-amount" class="amount-high"><div style="width:<?php echo $amount; ?>%;"><strong></strong><span id="du-amount-high"><?php echo $amount . '% of ' . $total . 'GB'; ?></span></div></dd>
-	<?php } ?>
-<?php if ($percent == 100) { ?>
-	<dd id="du-msg"><p class="warning"><?php echo JText::_('MOD_MYSESSIONS_MAXIMUM_STORAGE'); ?></p></dd>
-<?php } ?>
-<?php if ($percent > 100) { ?>
-	<dd id="du-msg"><p class="warning"><?php echo JText::_('MOD_MYSESSIONS_EXCEEDING_STORAGE'); ?></p></dd>
-<?php } ?>
-</dl>
-<?php
-		}
-	}
-?>
+		?>
+		
+		<div class="storage-meter <?php echo $cls; ?>">
+			<span class="storage-meter-percent" style="width:<?php echo $percent; ?>%"></span>
+			<span class="storage-meter-amount"><?php echo $amount . '% of ' . $total . 'GB'; ?></span>
+		</div>
+		
+		<?php if ($percent == 100) : ?>
+			<p class="warning">
+				<?php echo JText::_('MOD_MYSESSIONS_MAXIMUM_STORAGE'); ?>
+			</p>
+		<?php endif; ?>
+		
+		<?php if ($percent > 100) : ?>
+			<p class="warning">
+				<?php echo JText::_('MOD_MYSESSIONS_EXCEEDING_STORAGE'); ?>
+			</p>
+		<?php endif; ?>
+	</div>
+<?php endif; ?>
