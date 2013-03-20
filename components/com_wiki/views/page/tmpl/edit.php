@@ -419,7 +419,7 @@ if ($this->config->get('access-edit')) {
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 
 <?php if ($this->sub) { ?>
-		<input type="hidden" name="gid" value="<?php echo $this->page->group_cn; ?>" />
+		<input type="hidden" name="cn" value="<?php echo $this->page->group_cn; ?>" />
 		<input type="hidden" name="active" value="<?php echo $this->sub; ?>" />
 		<input type="hidden" name="action" value="save" />
 <?php } else { ?>
