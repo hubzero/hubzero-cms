@@ -108,11 +108,16 @@ class plgCoursesProgress extends JPlugin
 			return $arr;
 		}
 
-		$layout = ($course->offering()->access('manage')) ? 'instructor' : 'student';
-
 		// Create user object
 		$this->juser  = JFactory::getUser();
 		$this->course = $course;
+
+		if ($action = JRequest::getWord('action', false))
+		{
+			$this->$action();
+		}
+
+		$layout = ($course->offering()->access('manage')) ? 'instructor' : 'student';
 
 		// If this is an instructor, see if they want the overall view, or an individual student
 		if($layout == 'instructor')
@@ -149,7 +154,6 @@ class plgCoursesProgress extends JPlugin
 		$view->course  = $course;
 		$view->juser   = $this->juser;
 		$view->option  = 'com_courses';
-		$view->details = $this->getGradeDetails();
 
 		$arr['html'] = $view->loadTemplate();
 
@@ -157,175 +161,46 @@ class plgCoursesProgress extends JPlugin
 		return $arr;
 	}
 
-	private function getGradeDetails()
+	/**
+	 * Refresh grades
+	 *
+	 * @return void
+	 **/
+	private function refresh()
 	{
-		$details = array();
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradebook.php');
 
-		$details['quizzes_total']       = 0;
-		$details['homeworks_total']     = 0;
-		$details['exams_total']         = 0;
-		$details['quizzes_taken']       = 0;
-		$details['homeworks_submitted'] = 0;
-		$details['exams_taken']         = 0;
-		$details['forms']               = array();
-		$current_score       = array();
-		$current_score_i     = 0;
-
-		foreach($this->course->offering()->units() as $unit)
+		// Only allow for instructors
+		if (!$this->course->offering()->access('manage'))
 		{
-			foreach($unit->assetgroups() as $agt)
-			{
-				foreach($agt->children() as $ag)
-				{
-					foreach($ag->assets() as $asset)
-					{
-						$increment_count_taken = false;
-						$crumb                 = false;
-
-						// Check for result for given student on form
-						preg_match('/\?crumb=([-a-zA-Z0-9]{20})/', $asset->get('url'), $matches);
-
-						if(isset($matches[1]))
-						{
-							$crumb = $matches[1];
-						}
-
-						if(!$crumb || $asset->get('state') != COURSES_STATE_PUBLISHED)
-						{
-							// Break foreach, this is not a valid form!
-							continue;
-						}
-
-						require_once(JPATH_COMPONENT . DS . 'models' . DS . 'form.php');
-						require_once(JPATH_COMPONENT . DS . 'models' . DS . 'formRespondent.php');
-						require_once(JPATH_COMPONENT . DS . 'models' . DS . 'formDeployment.php');
-
-						$dep = PdfFormDeployment::fromCrumb($crumb);
-
-						switch ($dep->getState())
-						{
-							// Form isn't available yet
-							case 'pending':
-								$details['forms'][] = array('title'=>$asset->get('title'), 'score'=>'Not yet open', 'date'=>'N/A', 'url'=>$asset->get('url'));
-							break;
-
-							// Form availability has expired
-							case 'expired':
-								// Get whether or not we should show scores at this point
-								$results_closed = $dep->getResultsClosed();
-
-								// Grab the response
-								$resp = $dep->getRespondent($this->juser->get('id'));
-
-								// Form is still active and they are allowed to see their score
-								if($results_closed == 'score' || $results_closed == 'details')
-								{
-									$record          = $resp->getAnswers();
-									$score           = $record['summary']['score'];
-									$current_score[] = $score;
-									++$current_score_i;
-								}
-								else
-								{
-									// Score has been withheld by form creator
-									$score = 'Withheld';
-								}
-
-								// Get the date of the completion
-								$date = date('r', strtotime($resp->getEndTime()));
-
-								// They have completed this form, therefore set increment_count_taken equal to true
-								$increment_count_taken = true;
-
-								$details['forms'][] = array('title'=>$asset->get('title'), 'score'=>$score, 'date'=>$date, 'url'=>$asset->get('url'));
-							break;
-
-							// Form is still active
-							case 'active':
-								$resp = $dep->getRespondent($this->juser->get('id'));
-
-								// Form is active and they have completed it!
-								if($resp->getEndTime() && $resp->getEndTime() != '')
-								{
-									// Get whether or not we should show scores at this point
-									$results_open = $dep->getResultsOpen();
-
-									// Form is still active and they are allowed to see their score
-									if($results_open == 'score' || $results_open == 'details')
-									{
-										$record          = $resp->getAnswers();
-										$score           = $record['summary']['score'];
-										$current_score[] = $score;
-										++$current_score_i;
-									}
-									else
-									{
-										// Score is not yet available at this point
-										$score = 'Not yet available';
-									}
-
-									// Get the date of the completion
-									$date = date('r', strtotime($resp->getEndTime()));
-
-									// They have completed this form, therefor set increment_count_taken equal to true
-									$increment_count_taken = true;
-								}
-								// Form is active and they haven't finished it yet!
-								else
-								{
-									$score = 'Not taken';
-									$date  = 'N/A';
-
-									// For sanities sake - they have NOT completed the form yet!
-									$increment_count_taken = false;
-								}
-
-								$details['forms'][] = array('title'=>$asset->get('title'), 'score'=>$score, 'date'=>$date, 'url'=>$asset->get('url'));
-							break;
-						}
-
-						// Increment total count for this type
-						// @FIXME: probably need a better way of identifying types of form/exam assets
-						if(strpos(strtolower($asset->get('title')), 'quiz'))
-						{
-							++$details['quizzes_total'];
-
-							// If increment is set (i.e. they completed the from), increment the taken number as well
-							if($increment_count_taken)
-							{
-								++$details['quizzes_taken'];
-							}
-						}
-						elseif(strpos(strtolower($asset->get('title')), 'homework'))
-						{
-							++$details['homeworks_total'];
-
-							// If increment is set (i.e. they completed the from), increment the taken number as well
-							if($increment_count_taken)
-							{
-								++$details['homeworks_submitted'];
-							}
-						}
-						elseif(strpos(strtolower($asset->get('title')), 'exam'))
-						{
-							++$details['exams_total'];
-
-							// If increment is set (i.e. they completed the from), increment the taken number as well
-							if($increment_count_taken)
-							{
-								++$details['exams_taken'];
-							}
-						}
-					}
-				}
-			}
+			// Redirect with message
+			JFactory::getApplication()->redirect(
+				JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias'), false),
+				'You don\'t have permission to do this!',
+				'warning'
+			);
+			return;
 		}
 
-		// @FIXME: order assets
+		// Get gradebook instance
+		$gradebook = new CoursesModelGradeBook(null);
+		if (!$gradebook->refresh(null, $this->course->offering()->section()->get('id')))
+		{
+			// Redirect with message
+			JFactory::getApplication()->redirect(
+				JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=progress', false),
+				'Something went wrong!',
+				'error'
+			);
+			return;
+		}
 
-		// Calculate the student's current score
-		$details['current_score'] = ($current_score_i > 0) ? round(array_sum($current_score) / $current_score_i, 2) : 0;
-
-		return $details;
+		// Redirect with message
+		JFactory::getApplication()->redirect(
+			JRoute::_('index.php?option=com_courses&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=progress', false),
+			'Student progress successfully updated!',
+			'passed'
+		);
+		return;
 	}
 }

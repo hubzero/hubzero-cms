@@ -187,6 +187,10 @@ class CoursesTableAsset extends JTable
 
 		$where = array();
 
+		if (!empty($filters['asset_id']))
+		{
+			$where[] = "ca.id=" . $this->_db->Quote((int) $filters['asset_id']);
+		}
 		if (!empty($filters['asset_scope_id']))
 		{
 			$where[] = "cag.id=" . $this->_db->Quote((int) $filters['asset_scope_id']);
@@ -252,7 +256,7 @@ class CoursesTableAsset extends JTable
 		{
 			$filters['w'] = array();
 		}
-		$query  = "SELECT ca.*, caa.ordering, sd.publish_up, sd.publish_down, sd.section_id";
+		$query  = "SELECT ca.*, caa.ordering, sd.publish_up, sd.publish_down, sd.section_id, cag.unit_id";
 		$query .= $this->_buildQuery($filters['w']);
 
 		if (!empty($filters['start']) && !empty($filters['limit']))

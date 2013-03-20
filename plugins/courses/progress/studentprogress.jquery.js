@@ -31,13 +31,12 @@ HUB.Plugins.CoursesProgress = {
 		var progress = $('.progress-timeline');
 
 		// Hide the grade details
-		$('.grade-details').hide();
-		$('.toggle-grade-details').removeClass('toggle-grade-details-open');
+		$('.unit-details').hide();
 
-		$('.toggle-grade-details').on('click', function(e) {
-			e.preventDefault();
-			$('.grade-details').slideToggle();
-			$(this).toggleClass('toggle-grade-details-open');
+		$('.unit-overview').on('click', function(e) {
+			$(this).siblings('.unit-details').slideToggle(function() {
+				$(this).parent('.unit-entry').toggleClass('unit-entry-active');
+			});
 		});
 
 		progress.find('.unit').removeClass('current');

@@ -380,7 +380,8 @@ class ComCourses20130101 extends Migration{
 
 	protected function down()
 	{
-		$query = "CREATE TABLE IF NOT EXISTS `jos_courses`;
+		$query = "
+			DROP TABLE IF EXISTS `jos_courses`;
 			DROP TABLE IF EXISTS `jos_courses_announcements`;
 			DROP TABLE IF EXISTS `jos_courses_asset_associations`;
 			DROP TABLE IF EXISTS `jos_courses_asset_group_types`;

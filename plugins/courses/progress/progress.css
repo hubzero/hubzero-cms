@@ -158,6 +158,49 @@
 .length_9 .unit { width: 10%; }
 .length_10 .unit { width: 9%; }
 
+.units {
+	margin-top: 10px;
+}
+.unit-title {
+	text-transform: uppercase;
+	display: inline-block;
+}
+.unit-entry {
+	margin-top: 5px;
+	border: 2px solid transparent;
+	border-bottom: 2px dotted #AAA;
+}
+.instructor .unit-entry:last-child {
+	border-bottom: none;
+}
+.instructor .unit-entry:nth-last-child(2) {
+	border-bottom: 2px solid #AAA;
+}
+.unit-overview {
+	padding: 5px;
+}
+.unit-overview:hover {
+	cursor: pointer;
+	background: #EEEEEE;
+}
+.unit-entry-active {
+	-webkit-transition: all 0.25s ease-in-out;
+	-moz-transition: all 0.25s ease-in-out;
+	-ms-transition: all 0.25s ease-in-out;
+	-o-transition: all 0.25s ease-in-out;
+	transition: all 0.25s ease-in-out;
+
+	border: 2px solid #CCC;
+	box-shadow: 0 0 3px #AAA;
+	border-radius: 5px;
+}
+.unit-score {
+	float: right;
+}
+.unit-details {
+	padding: 10px;
+}
+
 /* Current scores/grades */
 .grades {
 	margin-top: 20px;
@@ -199,49 +242,28 @@
 .grades .current-score .score {
 	color: blue;
 }
-.grades .toggle-grade-details {
-	position: relative;
-	padding-left: 15px;
-	border-bottom: none;
-	text-decoration: none;
-	color: #666;
-}
-.grades .toggle-grade-details:before {
-	font-family: "fontcons";
-	content: "\f0da";
-	position: absolute;
-	left: 0;
-	top: -1px;
-}
-.grades .toggle-grade-details-open:before {
-	content: "\f0d7";
-}
-.grades .grade-details table {
-	margin-top: 20px;
-}
-.grades .grade-details table caption {
-	text-align: center;
+.units .unit-details thead td {
 	text-transform: uppercase;
 }
-.grades .grade-details thead td {
-	text-transform: uppercase;
-}
-.grades .grade-details-date,
-.grades .grade-details-score {
+.units .grade-details-date,
+.units .grade-details-score {
 	text-align: center;
 	width: 200px;
 }
-.grades .go {
+.units .go {
 	background-color: #AFFFAF;
 	background-color: rgba(0, 255, 0, 0.1);
 }
-.grades .yield {
+.units .yield {
 	background-color: #FFFFAF;
 	background-color: rgba(255, 255, 0, 0.1);
 }
-.grades .stop {
+.units .stop {
 	background-color: #FFAFAF;
 	background-color: rgba(255, 0, 0, 0.1);
+}
+.units .unit-no-details {
+	text-align: center;
 }
 
 /* Badges */
@@ -286,7 +308,8 @@
 	top: 15px;
 	bottom: -5px;
 	width: 2px;
-	background: #777;
+	background-color: #777;
+	background-color: rgba(0, 0, 0, .3); 
 }
 .instructor .flag-inner:before {
 	position: absolute;
@@ -295,6 +318,8 @@
 	content: "\f041";
 	top: -25px;
 	left: -5px;
+	color: #777;
+	color: rgba(0, 0, 0, .3); 
 }
 .instructor .student {
 	position: relative;
@@ -330,10 +355,22 @@
 .instructor .student-name:hover {
 	cursor: pointer;
 }
+.instructor .grades {
+	border: none;
+	margin-top: 0;
+}
+.instructor .unit-overview:hover {
+	cursor: default;
+	background: transparent;
+}
+.instructor .more-details {
+	margin: 10px auto 0 auto;
+	display: block;
+}
 .instructor .progress-bar-container {
 	margin-left: 200px;
 	height: 20px;
-	padding: 3px;
+	padding: 0;
 	cursor: pointer;
 
 	border: 1px solid #999;
@@ -358,7 +395,7 @@
 
 	border-radius: 5px;
 
-	box-shadow: inset 1px 1px 5px #FFF;
+	box-shadow: inset 0 1px 5px #FFF;
 
 	background: #0000FF;
 	background: -webkit-gradient(linear, left top, left bottom, from(#0000FF), to(#0000BF));
@@ -408,4 +445,16 @@
 }
 .instructor .student-details table thead {
 	font-weight: bold;
+}
+.refresh {
+	margin: 30px 10px 0 10px;
+	padding: 10px;
+	overflow: hidden;
+	border: 2px solid #CCC;
+	box-shadow: 0 0 3px #AAA;
+	border-radius: 5px;
+}
+.refresh p {
+	margin: 0;
+	padding: 0;
 }

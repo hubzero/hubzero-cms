@@ -31,17 +31,22 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradebook.php');
+
 $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias');
-
-// Include needed form models
-require_once(JPATH_COMPONENT . DS . 'models' . DS . 'form.php');
-require_once(JPATH_COMPONENT . DS . 'models' . DS . 'formRespondent.php');
-require_once(JPATH_COMPONENT . DS . 'models' . DS . 'formDeployment.php');
-
-// @TODO: implement for instructors, not just managers (i.e. manager sees all, instructor only sees their section)
 
 // Get all section members
 $members = $this->course->offering()->section()->members();
+
+$member_ids = array();
+
+foreach ($members as $m)
+{
+	$member_ids[] = $m->get('user_id');
+}
+
+$gradebook = new CoursesModelGradeBook(null);
+$grades    = $gradebook->getGrades($member_ids, array('unit', 'course'));
 
 // Loop through all assets
 foreach($this->course->offering()->units() as $unit)
@@ -54,7 +59,7 @@ foreach($this->course->offering()->units() as $unit)
 			foreach($ag->assets() as $a)
 			{
 				// Only interested in forms/exams
-				if($a->get('type') != 'exam' || $a->get('state') != COURSES_STATE_PUBLISHED)
+				if($a->get('type') != 'exam' || !$a->isPublished())
 				{
 					continue;
 				}
@@ -146,39 +151,35 @@ $current_marker = (isset($form_count_current) && isset($form_count)) ? (round(($
 				</a>
 				<div class="clear"></div>
 				<div class="student-details grades">
-					<div class="current-score">
-						<div class="current-score-inner">
-							<p class="title"><?= JText::_('Current score') ?></p>
-							<p class="score"><?= round($studentStatus, 2) . '%' ?></p>
-							<a href="<?= JRoute::_($base . '&active=progress&id=' . $m->get('user_id')) ?>" class="toggle-grade-details">
-								<?= JText::_('grade details') ?>
-							</a>
-						</div>
+					<div class="units">
+						<? foreach($this->course->offering()->units() as $unit) : ?>
+							<div class="unit-entry">
+								<div class="unit-overview">
+									<div class="unit-title"><?= $unit->get('title') ?></div>
+									<div class="unit-score">
+										<?= 
+											(isset($grades[$m->get('user_id')]['units'][$unit->get('id')]))
+												? $grades[$m->get('user_id')]['units'][$unit->get('id')] . '%'
+												: '0.00%'
+										?>
+									</div>
+								</div>
+							</div>
+						<? endforeach; ?>
+							<div class="unit-entry">
+								<div class="unit-overview">
+									<div class="unit-title">Course Average</div>
+									<div class="unit-score">
+										<?= 
+											(isset($grades[$m->get('user_id')]['course'][$this->course->get('id')]))
+												? $grades[$m->get('user_id')]['course'][$this->course->get('id')] . '%'
+												: '0.00%'
+										?>
+									</div>
+								</div>
+							</div>
 					</div>
-
-					<div class="quizzes">
-						<div class="quizzes-inner">
-							<p class="title"><?= JText::_('Quizzes taken') ?></p>
-							<p class="score"><?= round($studentStatus, 2) ?></p>
-							<p><?= JText::sprintf('out of %d', 1) ?></p>
-						</div>
-					</div>
-
-					<div class="homeworks">
-						<div class="homeworks-inner">
-							<p class="title"><?= JText::_('Homeworks submitted') ?></p>
-							<p class="score"><?= round($studentStatus, 2) ?></p>
-							<p><?= JText::sprintf('out of %d', 1) ?></p>
-						</div>
-					</div>
-
-					<div class="exams">
-						<div class="exams-inner">
-							<p class="title"><?= JText::_('Exams taken') ?></p>
-							<p class="score"><?= round($studentStatus, 2) ?></p>
-							<p><?= JText::sprintf('out of %d', 1) ?></p>
-						</div>
-					</div>
+					<a class="more-details btn" href="<?= JRoute::_($base . '&active=progress&id=' . $m->get('user_id')) ?>">More details</a>
 				</div>
 			</div>
 			<div class="clear"></div>
@@ -186,4 +187,9 @@ $current_marker = (isset($form_count_current) && isset($form_count)) ? (round(($
 	<? else : ?>
 		<p class="info">The section does not currently have anyone enrolled</p>
 	<? endif; ?>
+</div>
+<div class="refresh">
+	<p>
+		Does something look incorrect above? Try <a href="<?= JRoute::_($base . '&active=progress&action=refresh') ?>">refreshing</a> the scores!
+	</p>
 </div>

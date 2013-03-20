@@ -207,18 +207,21 @@ class PdfFormDeployment
 	 *
 	 * @return array
 	 **/
-	public function getResults()
+	public function getResults($include_incompletes=false)
 	{
 		$dbh = self::getDBH();
+
+		$join_type = ($include_incompletes) ? "LEFT" : "INNER";
+
 		$dbh->setQuery(
-			'SELECT name, email, started, finished, version, u.id as user_id, count(pfa.id)*100/count(pfr2.id) AS score
+			"SELECT name, email, started, finished, version, u.id as user_id, count(pfa.id)*100/count(pfr2.id) AS score
 			FROM #__courses_form_respondents pfr 
 			INNER JOIN #__users u ON u.id = pfr.user_id 
 			LEFT JOIN #__courses_form_latest_responses_view pfr2 ON pfr2.respondent_id = pfr.id
-			INNER JOIN #__courses_form_questions pfq ON pfq.id = pfr2.question_id
+			{$join_type} JOIN #__courses_form_questions pfq ON pfq.id = pfr2.question_id
 			LEFT JOIN #__courses_form_answers pfa ON pfa.id = pfr2.answer_id AND pfa.correct
-			WHERE deployment_id = '.$this->id.' 
-			GROUP BY name, email, started, finished, version'
+			WHERE deployment_id = {$this->id}
+			GROUP BY name, email, started, finished, version"
 		);
 
 		return $dbh->loadAssocList();
