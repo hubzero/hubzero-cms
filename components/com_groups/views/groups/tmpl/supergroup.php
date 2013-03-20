@@ -108,11 +108,11 @@ echo $content;
 					<li>|</li>
 					<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&task=customize'); ?>">Customize</a></li>
 					<li>|</li>
-					<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&task=managepages'); ?>">Manage Group Pages</a></li>
+					<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&task=pages'); ?>">Manage Group Pages</a></li>
 					<li>|</li>
 					<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&task=invite'); ?>">Invite Users</a></li>
 					<li>|</li>
-					<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&task=confirmdelete'); ?>">Delete</a></li>
+					<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&task=delete'); ?>">Delete</a></li>
 				<?php else : ?>
 					<li>Welcome <?php echo $this->juser->get('name'); ?>, </li>
 				<?php endif; ?>
