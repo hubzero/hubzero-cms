@@ -222,6 +222,7 @@ if ($author_ids && is_array($author_ids))
 								switch( $source->type )
 								{
 									case 'mp3':		$type = 'audio/mp3';	break;
+									case 'ogv':
 									case 'ogg':		$type = 'audio/ogg';	break;
 								}
 							?>
