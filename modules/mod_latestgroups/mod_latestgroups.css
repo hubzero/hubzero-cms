@@ -1,0 +1,63 @@
+/**
+ * @package     hubzero-cms
+ * @file        modules/mod_lastestdiscussions/mod_lastestdiscussions.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	mod_lastestdiscussions CSS
+	-- -- -- -- -- -- --
+
+*/
+
+	#latest_discussions_module {
+	}
+
+	ul.discussions {
+		margin:0;
+		list-style:none;
+	}
+	ul.discussions li {
+		padding-left:17px;
+		margin-top:0;
+	}
+	ul.discussions h4 {
+		margin-left:-17px;
+	}
+	ul.discussions h4 a {
+		display:block;
+		border-bottom:none;
+		background: url("/components/com_answers/images/bullets_medium.gif") no-repeat 0px -272px;
+		padding-left:17px;
+	}
+	ul.discussions .discussion-author {
+		float:left;
+	}
+	ul.discussions .discussion-author a,
+	ul.discussions .discussion-location a {
+		border-bottom:0;
+	}
+	ul.discussions .discussion-author a:hover,
+	ul.discussions .discussion-location a:hover {
+		border-bottom:1px solid #afa6d4;
+	}
+	ul.discussions .discussion-location {
+		float:left;
+	}
+	ul.discussions .discussion-date {
+		display:block;
+		clear:left;
+		color:#999;
+	}
+	ul.discussions .discussion-comment {
+		display:block;
+		padding:10px 0 15px 0;
+		color:#000;
+	}
+	ul.discussions .discussion-comment:before,
+	ul.discussions .discussion-comment:after {
+		content: '"';
+	}
