@@ -74,7 +74,6 @@ if (!$this->course->offering()->access('view')) { ?>
 		// Output results
 		echo implode("\n", $results);
 	?>
-	<div class="timeline"></div>
 	<div id="course-outline">
 <?php if ($this->course->offering()->units()->total() > 0) : ?>
 	<?php foreach ($this->course->offering()->units() as $unit) { ?>

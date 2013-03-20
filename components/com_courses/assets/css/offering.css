@@ -1269,66 +1269,10 @@
 #course-outline .clearfix {
 	display: inline-block;
 }
-.timeline {
-	height: 0px;
-	width: 8px;
-	margin: 0 34px;
-	background: #999;
-	display: block;
-	float: left;
-	overflow: hidden;
-	border-radius: 4px;
-}
-#course-outline .unit-content:before,
-#course-outline .unit-content:after {
-	content: "";
-	position: absolute;
-	border-style: solid;
-}
-#course-outline .unit-content:before {
-	top: 9px;
-	left: -50px;
-	bottom: auto;
-	border-color: #999;
-	border-width: 12px;
-	border-radius: 12px;
-}
-#course-outline .unit-content:after {
-	top: 13px;
-	left: -46px;
-	bottom: auto;
-	border-color: #FFF;
-	border-width: 8px;
-	border-radius: 8px;
-}
-#course-outline h3:before,
-#course-outline h3:after {
-	content: "";
-	position: absolute;
-	border-style: solid;
-}
-#course-outline h3:after {
-	top: 9px;
-	left: -21px;
-	bottom: auto;
-	border-color: transparent #FBFBFB transparent transparent;
-	border-width: 12px;
-}
-#course-outline h3:hover:after {
-	border-color: transparent #DDD transparent transparent;
-}
-#course-outline h3:before {
-	top: 9px;
-	left: -24px;
-	bottom: auto;
-	border-color: transparent #999 transparent transparent;
-	border-width: 12px;
-}
 #course-outline {
 	border:none;
 	border-collapse:separate;
 	background: #fff;
-	margin-left: 76px;
 	}
 #course-outline * {
 	font-size: 1em;
