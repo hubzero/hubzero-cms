@@ -27,8 +27,10 @@
 	padding: 10px;
 	font-style: italic;
 	position: absolute;
-	left: 330px;
-	top: 130px;
+	left: 50%;
+	top: 50%;
+	margin-left: -20px;
+	margin-top: -20px;
 	background: #FFF;
 	z-index: 500;
 }
@@ -188,4 +190,7 @@ html>body #authentication.multiAuth #credentials-hub input[type="password"] {
 html>body #authentication.multiAuth #providers a {
 	*padding-left: 1em;
 	*width: 243px;
+}
+html.firefox3 #authentication.multiAuth #inner:before {
+	display: none;
 }

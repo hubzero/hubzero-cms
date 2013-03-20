@@ -161,3 +161,11 @@ a:active.account-group {
 #hubzero:hover {
 	background: #888;
 }
+
+/* Firefox 3 hacks */
+html.firefox3 .account-group:before {
+	display: none;
+}
+html.firefox3 #authentication #providers a {
+	padding: 0.5em 2em;
+}
