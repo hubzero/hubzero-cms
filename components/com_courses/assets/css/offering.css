@@ -20,6 +20,9 @@
 	#content { 
 		padding: 0;
 	}
+	#content-header h2 {
+		padding-left: 30px;
+	}
 	#page_container {
 		margin: 0;
 		overflow: hidden;

@@ -1,0 +1,27 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_courses/assets/css/hubpresenter.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/* Overrides of default hubpresenter.css for courses */
+
+#presenter-header {
+	display: none;
+}
+
+/* Hide the sidebar if the page is too narrow */
+@media only screen and (max-width: 1300px) {
+	#presenter-container {
+		width: 640px;
+	}
+	#presenter-right {
+		width: 640px;
+	}
+	#presenter-right #media,
+	#presenter-right #list {
+		float: left;
+		width: 320px;
+	}
+}

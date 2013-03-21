@@ -60,10 +60,10 @@ if (empty($manifest_path_json))
 	{
 		// We do have an XML file, try to convert
 		// Inlude the HUBpresenter library
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'assets' . DS . 'presenter' . DS . 'lib' . DS . 'helper.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'hubpresenter.php');
 
 		// Try to create json manifest
-		$job = PresenterHelper::createJsonManifest(rtrim($manifest_path_xml[0], 'presentation.xml'), $manifest_path_xml[0]);
+		$job = HUBpresenterHelper::createJsonManifest(rtrim($manifest_path_xml[0], 'presentation.xml'), $manifest_path_xml[0]);
 		if ($job != '') 
 		{
 			$this->setError($job);
@@ -83,6 +83,7 @@ else
 // Now check if the videos have 'content' - indicatating an embeded video
 if(!empty($this->asset->content))
 {
+	// @FIXME: do a more thorough check for embedded content
 	$type = 'embeded';
 }
 
@@ -164,15 +165,11 @@ if ($type == 'hubpresenter')
 	$presentation = $presentation->presentation;
 
 	// Add the HUBpresenter stylesheet and scripts
-	Hubzero_Document::addComponentStylesheet($this->option, "/assets/presenter/css/app.css");
+	Hubzero_Document::addComponentStylesheet('com_resources', "/assets/css/hubpresenter.css");
+	Hubzero_Document::addComponentStylesheet('com_courses', "/assets/css/hubpresenter.css");
 
-	Hubzero_Document::addComponentScript($this->option, "/assets/presenter/js/jquery.easing");
-	Hubzero_Document::addComponentScript($this->option, "/assets/presenter/js/flash.detect");
-	Hubzero_Document::addComponentScript($this->option, "/assets/presenter/js/jquery.scrollto");
-	Hubzero_Document::addComponentScript($this->option, "/assets/presenter/js/jquery.touch-punch");
-	Hubzero_Document::addComponentScript($this->option, "/assets/presenter/js/jquery.hotkeys");
-	Hubzero_Document::addComponentScript($this->option, "/assets/presenter/js/flowplayer");
-	Hubzero_Document::addComponentScript($this->option, "/assets/presenter/js/app");
+	Hubzero_Document::addComponentScript('com_resources', "assets/js/hubpresenter");
+	Hubzero_Document::addComponentScript('com_resources', "assets/js/hubpresenter.plugins");
 }
 elseif($type == 'html5') // Not hubpresenter, now try standard HTML5 video
 {
@@ -193,14 +190,46 @@ elseif($type == 'html5') // Not hubpresenter, now try standard HTML5 video
 	if (isset($videos) && !empty($videos))
 	{
 		// Add HTML5 video-specific scripts and css
-		Hubzero_Document::addComponentScript($this->option, '/assets/presenter/js/flowplayer');
-		Hubzero_Document::addComponentScript($this->option, '/assets/js/video');
-		Hubzero_Document::addComponentStylesheet($this->option, '/assets/css/video.css');
+		Hubzero_Document::addComponentStylesheet('com_resources', "/assets/css/video.css");
+
+		Hubzero_Document::addComponentScript('com_resources', "assets/js/hubpresenter");
+		Hubzero_Document::addComponentScript('com_resources', "assets/js/hubpresenter.plugins");
 
 		// @TODO: it might be nice to detect the native resolution of the video?
 		$width = 854;
 		$height = 480;
 	}
+}
+
+if ($type == 'html5' || $type == 'hubpresenter')
+{
+	// @FIXME: finish (media tracking isn't completely independent from resources)
+
+	// Media tracking object
+/*	require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'media.tracking.php');
+	$mediaTracking = new ResourceMediaTracking(JFactory::getDBO());
+
+	// Get tracking for this user for this resource
+	$tracking = $mediaTracking->getTrackingInformationForUserAndResource(JFactory::getUser()->get('id'), $this->asset->id, 'course');
+
+	// Check to see if we already have a time query param
+	$hasTime = (JRequest::getVar('time', '') != '') ? true : false;
+
+	// Do we want to redirect user with time added to url
+	if (is_object($tracking) && !$hasTime && $tracking->current_position > 0 && $tracking->current_position != $tracking->object_duration)
+	{
+		$redirect = 'index.php?option=com_resources&amp;task=video&amp;id='.$parent.'&amp;resid='.$child;
+		if (JRequest::getVar('tmpl', '') == 'component')
+		{
+			$redirect .= '&amp;tmpl=component';
+		}
+
+		// Append current position to redirect
+		$redirect .= "&time=" . gmdate("H:i:s", $tracking->current_position);
+
+		// Redirect
+		JFactory::getApplication()->redirect(JRoute::_($redirect, false), '','',false);
+	}*/
 }
 ?>
 
@@ -226,9 +255,9 @@ elseif($type == 'html5') // Not hubpresenter, now try standard HTML5 video
 					?>
 					<source src="<?php echo $path . DS . $v; ?>" type="<?php echo $type; ?>" />
 				<?php endforeach; ?>
-			
+
 				<a href="<?php echo $path . DS . $video_mp4[0]; ?>" id="video-flowplayer" style="<?php echo "width:{$width}px;height:{$height}px;"; ?>"></a>
-			
+
 				<?php if (count($subs) > 0) : ?>
 					<?php foreach ($subs as $s) : ?>
 						<?php $info2 = pathinfo($s); ?>
@@ -256,7 +285,7 @@ elseif($type == 'html5') // Not hubpresenter, now try standard HTML5 video
 
 	<div id="presenter-container">
 		<div id="presenter-header">
-			<div id="title"><?php //echo $this->lecture->get('title'); ?></div>
+			<div id="title"><?php echo $this->asset->get('title'); ?></div>
 		</div><!-- /#header -->
 
 		<div id="presenter-content">
