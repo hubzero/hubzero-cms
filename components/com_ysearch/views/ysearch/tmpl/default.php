@@ -231,7 +231,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 	<p>No results were found for '<?php echo $this->escape($raw); ?>'</p>
 	<?php 
 		# raw terms were specified but no chunks were parsed out, meaning they were all stop words, so we can give a quasi-helpful explanation of why nothing turned up
-		if (!$this->terms->any()):
+		if (!$this->terms->any() || strlen($raw) <= 3):
 	?>
 		<p><em>Note: Due to technical limitations, we are unable to search the site for very common or very short words.</em></p>
 	<?php endif; ?>
