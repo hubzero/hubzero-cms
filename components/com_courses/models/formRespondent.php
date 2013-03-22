@@ -191,7 +191,7 @@ class PdfFormRespondent
 	{
 		$dbh = JFactory::getDBO();
 		$dbh->execute('DELETE FROM #__courses_form_respondent_progress WHERE respondent_id = '.(int)$this->id.' AND question_id = '.(int)$qid);
-		$dbh->execute('INSERT INTO #__courses_form_respondent_progress(respondent_id, question_id, answer_id) VALUES ('.(int)$this->id.', '.(int)$qid.', '.(int)$aid.')');
+		$dbh->execute('INSERT INTO #__courses_form_respondent_progress(respondent_id, question_id, answer_id, submitted) VALUES ('.(int)$this->id.', '.(int)$qid.', '.(int)$aid.', '.$dbh->Quote(date("Y-m-d H:i:s")).')');
 
 		return $this;
 	}

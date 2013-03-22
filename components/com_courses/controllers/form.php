@@ -477,9 +477,12 @@ class CoursesControllerForm extends Hubzero_Controller {
 	 */
 	public function saveProgressTask()
 	{
-		if (!isset($_POST['crumb']) || !isset($_POST['question']) || !isset($_POST['answer'])) {
-			throw new UnprocessableEntityError();
+		if (!isset($_POST['crumb']) || !isset($_POST['question']) || !isset($_POST['answer']))
+		{
+			echo "Crumb, question, or answer not provided.";
+			exit();
 		}
+
 		PdfFormDeployment::fromCrumb($_POST['crumb'])->getRespondent()->saveProgress($_POST['question'], $_POST['answer']);
 
 		echo json_encode(array("result"=>"success"));

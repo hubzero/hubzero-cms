@@ -291,11 +291,26 @@ input[type=number] {
 }
 #time-left {
 	position: fixed;
-	bottom: 0;
-	right: 0;
-	padding: 6px;
-	background: #f3f3f3;
-	border: 1px dashed #ddd;
+	bottom: 10px;
+	right: 10px;
+	padding: 10px 10px 10px 35px;
+	color: #FFF;
+	border: 1px solid #AAA;
+	background-color: #619926;
+	box-shadow: 0 0 10px rgba(0, 0, 0, .5);
+	opacity: .8;
+	border-radius: 10px;
+}
+#time-left.ending-soon {
+	background-color: #BA4A3B;
+}
+#time-left:before {
+	font-family: "Fontcons";
+	content: "\f017";
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	font-size: 20px;
 }
 .btn.back {
 	display: block;

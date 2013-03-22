@@ -31,6 +31,9 @@ jQuery(function($) {
                 setInterval(function() {
                         window.timeLeft = Math.max(0, window.timeLeft - 1);
                         counter.text(timeDiff(window.timeLeft) + ' remaining');
+                        if (window.timeLeft < 60) {
+                                $('#time-left').addClass('ending-soon');
+                        }
                 }, 1000);
         }
 	$('.placeholder').change(function(evt) {
