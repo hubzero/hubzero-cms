@@ -102,11 +102,11 @@ if (!$this->course->offering()->access('view')) { ?>
 					{
 						// Was this asset already used elsewhere on the page?
 						// This should generally only happen with the video asset
-						if ($a->get('id') == $used)
+						if ($a->get('id') == $used || !$a->isPublished())
 						{
 							continue;
 						}
-						$href = $a->path($this->course->get('id'));
+						$href = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&asset=' . $a->get('id'));
 						/*if ($a->get('type') == 'video')
 						{
 							$href = JRoute::_($base . '&unit=' . $unit->get('alias') . '&b=' . $lecture->get('alias'));
