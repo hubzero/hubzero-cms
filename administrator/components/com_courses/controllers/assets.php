@@ -338,7 +338,7 @@ class CoursesControllerAssets extends Hubzero_Controller
 		$lid = $fields['lid'];
 		if ($lid != $row->get('id')) 
 		{
-			$pth = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $fields['course_id'];
+			$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $fields['course_id'];
 			if (is_dir($path . DS . $lid)) 
 			{
 				jimport('joomla.filesystem.folder');

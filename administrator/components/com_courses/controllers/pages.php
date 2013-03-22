@@ -55,22 +55,6 @@ class CoursesControllerPages extends Hubzero_Controller
 
 		// Incoming
 		$this->view->filters = array();
-		$this->view->filters['offering']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.offering',
-			'offering',
-			0
-		);
-
-		$this->view->offering = CoursesModelOffering::getInstance($this->view->filters['offering']);
-		if (!$this->view->offering->exists())
-		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=courses'
-			);
-			return;
-		}
-		$this->view->course = CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
-
 		$this->view->filters['search']  = urldecode(trim($app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.search',
 			'search',
@@ -90,7 +74,49 @@ class CoursesControllerPages extends Hubzero_Controller
 			'int'
 		);
 
-		$list = $this->view->offering->pages();
+		$this->view->filters['offering']    = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.offering',
+			'offering',
+			0
+		);
+
+		$this->view->offering = CoursesModelOffering::getInstance($this->view->filters['offering']);
+		if ($this->view->offering->exists())
+		{
+			$this->view->filters['course']    = $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.course',
+				'course',
+				$this->view->offering->get('course_id')
+			);
+		}
+		else
+		{
+			$using = 'course';
+			$this->view->filters['course']    = $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.course',
+				'course',
+				0
+			);
+		}
+
+		$this->view->course = CoursesModelCourse::getInstance($this->view->filters['course']);
+		if (!$this->view->course->exists())
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=courses'
+			);
+			return;
+		}
+
+		if ($this->view->offering->exists())
+		{
+			$list = $this->view->offering->pages();
+		}
+		else
+		{
+			
+			$list = $this->view->course->pages();
+		}
 
 		$this->view->total = count($list);
 
@@ -161,11 +187,16 @@ class CoursesControllerPages extends Hubzero_Controller
 			$this->view->row->load($id);
 		}
 
+		if (!$this->view->row->get('course_id'))
+		{
+			$this->view->row->set('course_id', JRequest::getInt('course', 0));
+		}
 		if (!$this->view->row->get('offering_id'))
 		{
 			$this->view->row->set('offering_id', JRequest::getInt('offering', 0));
 		}
 
+		$this->view->course = CoursesModelOffering::getInstance($this->view->row->get('course_id'));
 		$this->view->offering = CoursesModelOffering::getInstance($this->view->row->get('offering_id'));
 
 		// Set any errors
@@ -194,9 +225,6 @@ class CoursesControllerPages extends Hubzero_Controller
 		// load the request vars
 		$fields = JRequest::getVar('fields', array(), 'post');
 
-		// Load the course page
-		//$offering = CoursesModelOffering::getInstance($fields['offering_id']);
-
 		// instatiate course page object for saving
 		$row = new CoursesTablePage($this->database);
 
@@ -222,7 +250,7 @@ class CoursesControllerPages extends Hubzero_Controller
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $fields['offering_id']
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . $fields['course_id'] . '&offering=' . $fields['offering_id']
 		);
 	}
 
@@ -234,7 +262,7 @@ class CoursesControllerPages extends Hubzero_Controller
 	public function cancelTask()
 	{
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . JRequest::getVar('offering', '')
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . JRequest::getInt('course', 0) . '&offering=' . JRequest::getInt('offering', 0)
 		);
 	}
 }

@@ -47,6 +47,13 @@ Class CoursesTablePage extends JTable
 	 * 
 	 * @var string
 	 */
+	var $course_id = NULL;
+
+	/**
+	 * varchar(100)
+	 * 
+	 * @var string
+	 */
 	var $offering_id = NULL;
 
 	/**
@@ -148,6 +155,10 @@ Class CoursesTablePage extends JTable
 		$query = " FROM $this->_tbl AS r";
 
 		$where = array();
+		if (isset($filters['course_id']))
+		{
+			$where[] = "r.`course_id`=" . $this->_db->Quote($filters['course_id']);
+		}
 		if (isset($filters['offering_id']))
 		{
 			if (is_array($filters['offering_id']))

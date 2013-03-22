@@ -85,11 +85,12 @@ function submitbutton(pressbutton)
 				<th scope="col"><?php echo JText::_('COM_COURSES_PUBLISHED'); ?></th>
 				<th scope="col"><?php echo JText::_('Managers'); ?></th>
 				<th scope="col"><?php echo JText::_('Offerings'); ?></th>
+				<th scope="col"><?php echo JText::_('Pages'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="10"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="8"><?php echo $this->pageNav->getListFooter(); ?></td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -99,6 +100,7 @@ $k = 0;
 foreach ($this->rows as $row)
 {
 	$offerings = $row->offerings(array('count' => true));
+	$pages     = $row->pages(array('count' => true));
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
@@ -159,6 +161,21 @@ foreach ($this->rows as $row)
 						<?php if ($canDo->get('core.manage')) { ?>
 						&nbsp;
 						<a class="state add" href="index.php?option=<?php echo $this->option; ?>&amp;controller=offerings&amp;course=<?php echo $row->get('id'); ?>&amp;task=add">
+							<span><?php echo JText::_('[ + ]'); ?></span>
+						</a>
+						<?php } ?>
+					<?php } ?>
+				</td>
+				<td>
+					<?php if ($canDo->get('core.manage') && $pages > 0) { ?>
+						<a class="glyph list" href="index.php?option=<?php echo $this->option; ?>&amp;controller=pages&amp;course=<?php echo $row->get('id'); ?>&amp;offering=0">
+							<?php echo $pages; ?>
+						</a>
+					<?php } else { ?>
+						<?php echo $pages; ?>
+						<?php if ($canDo->get('core.manage')) { ?>
+						&nbsp;
+						<a class="state add" href="index.php?option=<?php echo $this->option; ?>&amp;controller=pages&amp;course=<?php echo $row->get('id'); ?>&amp;offering=0&amp;task=add">
 							<span><?php echo JText::_('[ + ]'); ?></span>
 						</a>
 						<?php } ?>

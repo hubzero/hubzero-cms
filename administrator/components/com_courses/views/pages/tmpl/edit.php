@@ -49,9 +49,11 @@ JToolBarHelper::cancel();
 
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+			<input type="hidden" name="course" value="<?php echo $this->course->get('id'); ?>" />
 			<input type="hidden" name="offering" value="<?php echo $this->offering->get('id'); ?>" />
 			<input type="hidden" name="task" value="save" />
 			<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
+			<input type="hidden" name="fields[course_id]" value="<?php echo $this->course->get('id'); ?>" />
 			<input type="hidden" name="fields[offering_id]" value="<?php echo $this->offering->get('id'); ?>" />
 
 			<table class="admintable">

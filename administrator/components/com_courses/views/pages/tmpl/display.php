@@ -67,15 +67,17 @@ function submitbutton(pressbutton)
 		<thead>
 		 	<tr>
 				<th colspan="4">
-					(<a href="index.php?option=<?php echo $this->option ?>&amp;controller=courses&amp;task=edit&amp;id[]=<?php echo $this->course->get('id'); ?>">
+					(<a href="index.php?option=<?php echo $this->option; ?>">
 						<?php echo $this->escape(stripslashes($this->course->get('alias'))); ?>
 					</a>) 
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=courses&amp;task=edit&amp;id[]=<?php echo $this->course->get('id'); ?>">
+					<a href="index.php?option=<?php echo $this->option; ?>">
 						<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
-					</a>: 
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=offerings&amp;task=edit&amp;id[]=<?php echo $this->offering->get('id'); ?>">
+					</a>:
+<?php if ($this->offering->exists()) { ?>
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=offerings&amp;course=<?php echo $this->course->get('id'); ?>">
 						<?php echo $this->escape(stripslashes($this->offering->get('title'))); ?>
 					</a>: 
+<?php } ?>
 					<?php echo JText::_('Pages'); ?>
 				</th>
 			</tr>
@@ -133,7 +135,8 @@ function submitbutton(pressbutton)
 		</tbody>
 	</table>
 
-	<input type="hidden" name="offering" value="<?php echo $this->offering->get('id'); ?>" />
+	<input type="hidden" name="course" value="<?php echo $this->filters['course']; ?>" />
+	<input type="hidden" name="offering" value="<?php echo $this->filters['offering']; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 	<input type="hidden" name="task" value="" />

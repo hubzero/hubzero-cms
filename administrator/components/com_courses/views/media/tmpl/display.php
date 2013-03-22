@@ -56,12 +56,20 @@ function goUpDir()
 		<legend>
 			<span>Files - <?php echo DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $this->course_id . DS . $this->listdir; ?> <?php echo $this->dirPath; ?></span>
 		</legend>
+		
+		<div id="ajax-uploader" data-action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=upload&amp;course=<?php echo $this->course_id; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1&amp;<?php echo JUtility::getToken(); ?>=1">
 		<table>
 			<tbody>
 				<tr>
-					<td><input type="file" name="upload" id="upload" /></td>
-					<td style="white-space:nowrap;"><input type="checkbox" name="batch" id="batch" value="1" /> <label for="batch"><?php echo JText::_('Unpack (.zip, .tar, etc)'); ?></label></td>
-					<td><input type="submit" value="<?php echo JText::_('Upload'); ?>" /></td>
+					<td>
+						<input type="file" name="upload" id="upload" />
+					</td>
+					<td style="white-space:nowrap;">
+						<input type="checkbox" name="batch" id="batch" value="1" /> <label for="batch"><?php echo JText::_('Unpack (.zip, .tar, etc)'); ?></label>
+					</td>
+					<td>
+						<input type="submit" value="<?php echo JText::_('Upload'); ?>" />
+					</td>
 				</tr>
 				<!-- <tr>
 					<td><label for="foldername"><?php echo JText::_('Create folder'); ?></label></td>
@@ -73,6 +81,121 @@ function goUpDir()
 				</tr> -->
 			</tbody>
 		</table>
+		</div>
+		<script type="text/javascript" src="/media/system/js/jquery.js"></script>
+		<script type="text/javascript" src="/media/system/js/jquery.noconflict.js"></script>
+		<script type="text/javascript" src="/media/system/js/jquery.fileuploader.js"></script>
+		<script type="text/javascript">
+		jQuery(document).ready(function(jq){
+			var $ = jq;
+			
+			if ($("#ajax-uploader").length) {
+				var uploader = new qq.FileUploader({
+					element: $("#ajax-uploader")[0],
+					action: $("#ajax-uploader").attr("data-action"), // + $('#field-dir').val()
+					//params: {listdir: $('#listdir').val()},
+					multiple: true,
+					debug: true,
+					template: '<div class="qq-uploader">' +
+								'<div class="qq-upload-button"><span>Click or drop file</span></div>' + 
+								'<div class="qq-upload-drop-area"><span>Click or drop file</span></div>' +
+								'<ul class="qq-upload-list"></ul>' + 
+							   '</div>',
+					/*onSubmit: function(id, file) {
+						//$("#ajax-upload-left").append("<div id=\"ajax-upload-uploading\" />");
+					},*/
+					onComplete: function(id, file, response) {
+						$('#imgManager').attr('src', $('#imgManager').attr('src'));
+					}
+				});
+			}
+		});
+		</script>
+		<!-- <script type="text/javascript" src="components/com_courses/assets/js/fileupload.jquery.js"></script> -->
+		<style>
+		/* Drag and drop file upload */
+			.qq-uploading {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 107px;
+				color: #fff;
+				font-size: 18px;
+				padding: 75px 0 0 0;
+				text-align: center;
+				background: rgba(0,0,0,0.75);
+			}
+			.qq-uploader {
+				position: relative;
+				margin: 0;
+				padding: 0;
+			}
+			.qq-upload-button,
+			.qq-upload-drop-area {
+				background: #f7f7f7;
+				border: 3px dashed #ddd;
+				text-align: center;
+				color: #bbb;
+				text-shadow: 0 1px 0 #FFF;
+				padding: 0;
+				-webkit-border-radius: 3px;
+				-moz-border-radius: 3px;
+				-ms-border-radius: 3px;
+				-o-border-radius: 3px;
+				border-radius: 3px;
+				font-size: 1.1em;
+				font-weight: bold;
+			}
+			/*.asset-uploader:hover {
+				border: 3px solid #333;
+			}*/
+			.asset-uploader .columns {
+				margin-top: 0;
+				padding-top: 0;
+			}
+			.qq-upload-button,
+			.qq-upload-drop-area {
+				text-align: center;
+				padding: 0.4em 0;
+			}
+			.qq-upload-button span,
+			.qq-upload-drop-area span {
+				position: relative;
+				padding-left: 1.5em;
+			}
+			.qq-upload-button span:before,
+			.qq-upload-drop-area span:before {
+				display: block;
+				position: absolute;
+				top: 0em;
+				left: -0.2em;
+				font-family: "Fontcons";
+				content: "\f08c"; /*"\f046";*/
+				font-size: 1.1em;
+				line-height: 1;
+				content: "\f016";
+				left: 0;
+				font-weight: normal;
+			}
+			.qq-upload-button:hover,
+			.qq-upload-drop-area:hover,
+			.qq-upload-drop-area-active {
+				/*background: #fdfce4;*/
+				border: 3px solid #333;
+				color: #333;
+				cursor: pointer;
+			}
+			.qq-upload-drop-area {
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+			}
+			.qq-upload-list {
+				display: none;
+			}
+		</style>
 
 		<div id="themanager" class="manager">
 			<iframe src="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=list&amp;tmpl=component&amp;listdir=<?php echo $this->listdir; ?>&amp;subdir=<?php echo $this->subdir; ?>&amp;course=<?php echo $this->course_id; ?>" name="imgManager" id="imgManager" width="98%" height="150"></iframe>

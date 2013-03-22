@@ -56,12 +56,150 @@ class CoursesControllerMedia extends Hubzero_Controller
 	}
 
 	/**
+	 * Upload a file to the wiki via AJAX
+	 * 
+	 * @return     string
+	 */
+	public function ajaxUploadTask()
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or JRequest::checkToken('get') or jexit('Invalid Token');
+
+		// Check if they're logged in
+		if ($this->juser->get('guest')) 
+		{
+			echo json_encode(array('error' => JText::_('Must be logged in.')));
+			return;
+		}
+
+		// Ensure we have an ID to work with
+		$listdir = JRequest::getVar('listdir', 0);
+		if (!$listdir) 
+		{
+			echo json_encode(array('error' => JText::_('COM_COURSES_NO_ID')));
+			return;
+		}
+
+		// Incoming sub-directory
+		$subdir = JRequest::getVar('subdir', '');
+
+		// Build the path
+		$path = $this->_buildUploadPath($listdir, $subdir);
+
+		//allowed extensions for uplaod
+		//$allowedExtensions = array("png","jpeg","jpg","gif");
+
+		//max upload size
+		$sizeLimit = $this->config->get('maxAllowed', 40000000);
+
+		// get the file
+		if (isset($_GET['qqfile']))
+		{
+			$stream = true;
+			$file = $_GET['qqfile'];
+			$size = (int) $_SERVER["CONTENT_LENGTH"];
+		}
+		elseif (isset($_FILES['qqfile']))
+		{
+			$stream = false;
+			$file = $_FILES['qqfile']['name'];
+			$size = (int) $_FILES['qqfile']['size'];
+		}
+		else
+		{
+			echo json_encode(array('error' => JText::_('File not found')));
+			return;
+		}
+
+
+		if (!is_dir($path)) 
+		{
+			jimport('joomla.filesystem.folder');
+			if (!JFolder::create($path, 0777)) 
+			{
+				echo json_encode(array('error' => JText::_('Error uploading. Unable to create path.')));
+				return;
+			}
+		}
+
+		if (!is_writable($path))
+		{
+			echo json_encode(array('error' => JText::_('Server error. Upload directory isn\'t writable.')));
+			return;
+		}
+
+		//check to make sure we have a file and its not too big
+		if ($size == 0) 
+		{
+			echo json_encode(array('error' => JText::_('File is empty')));
+			return;
+		}
+		if ($size > $sizeLimit) 
+		{
+			ximport('Hubzero_View_Helper_Html');
+			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Hubzero_View_Helper_Html::formatSize($sizeLimit));
+			echo json_encode(array('error' => JText::sprintf('File is too large. Max file upload size is %s', $max)));
+			return;
+		}
+
+		// don't overwrite previous files that were uploaded
+		$pathinfo = pathinfo($file);
+		$filename = $pathinfo['filename'];
+
+		// Make the filename safe
+		jimport('joomla.filesystem.file');
+		$filename = urldecode($filename);
+		$filename = JFile::makeSafe($filename);
+		$filename = str_replace(' ', '_', $filename);
+
+		$ext = $pathinfo['extension'];
+		while (file_exists($path . DS . $filename . '.' . $ext)) 
+		{
+			$filename .= rand(10, 99);
+		}
+
+		$file = $path . DS . $filename . '.' . $ext;
+
+		if ($stream)
+		{
+			//read the php input stream to upload file
+			$input = fopen("php://input", "r");
+			$temp = tmpfile();
+			$realSize = stream_copy_to_stream($input, $temp);
+			fclose($input);
+
+			//move from temp location to target location which is user folder
+			$target = fopen($file , "w");
+			fseek($temp, 0, SEEK_SET);
+			stream_copy_to_stream($temp, $target);
+			fclose($target);
+		}
+		else
+		{
+			move_uploaded_file($_FILES['qqfile']['tmp_name'], $file);
+		}
+
+		//echo result
+		echo json_encode(array(
+			'success'   => true, 
+			'file'      => $filename . '.' . $ext,
+			'directory' => str_replace(JPATH_ROOT, '', $path),
+			'id'        => $listdir
+		));
+	}
+
+	/**
 	 * Upload a file or create a new folder
 	 * 
 	 * @return     void
 	 */
 	public function uploadTask()
 	{
+		if (JRequest::getVar('no_html', 0))
+		{
+			return $this->ajaxUploadTask();
+		}
+
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
 
@@ -154,16 +292,7 @@ class CoursesControllerMedia extends Hubzero_Controller
 				$batch = JRequest::getInt('batch', 0, 'post');
 				if ($batch)
 				{
-					//$file_to_unzip = preg_replace('/(.+)\..*$/', '$1', $file['name']);
-
-					/*jimport('joomla.filesystem.archive');
-
-					// Extract the files
-					$ret = JArchive::extract($file['name'], $path);
-					if (!$ret) {
-						$this->setError(JText::_('Could not extract package.'));
-					}*/
-					require_once(JPATH_ROOT . DS . 'administrator' . DS . 'includes' . DS . 'pcl' . DS . 'pclzip.lib.php');
+					/*require_once(JPATH_ROOT . DS . 'administrator' . DS . 'includes' . DS . 'pcl' . DS . 'pclzip.lib.php');
 
 					if (!extension_loaded('zlib'))
 					{
@@ -181,6 +310,20 @@ class CoursesControllerMedia extends Hubzero_Controller
 						else
 						{
 							@unlink($path . DS . $file['name']);
+						}
+					}*/
+					if (!$this->getError() && $ext == 'zip')
+					{
+						set_time_limit(60);
+						$escaped_file = escapeshellarg($path . DS . $file['name']);
+						// @FIXME: check for symlinks and other potential security concerns
+						if ($result = shell_exec("unzip {$escaped_file} -d " . escapeshellarg($path . DS)))
+						{
+							// Remove original archive
+							JFile::delete($path . DS . $file['name']);
+
+							// Remove MACOSX dirs if there
+							JFolder::delete($path . DS . '__MACOSX');
 						}
 					}
 				} // if ($batch) {
