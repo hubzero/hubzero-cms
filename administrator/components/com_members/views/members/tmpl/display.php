@@ -149,6 +149,12 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 			$alt = JText::_('Yes');
 			$state = 'publish';
 			break;
+		case '3':
+			$task = 'unconfirm';
+			$img = 'publish_g.png';
+			$alt = JText::_('Domain Supplied Email');
+			$state = 'publish';
+			break;
 		default:
 			$task = 'confirm';
 			$img = 'publish_x.png';
