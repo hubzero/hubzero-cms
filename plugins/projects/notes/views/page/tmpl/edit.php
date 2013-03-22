@@ -277,7 +277,7 @@ if ($this->config->get('access-edit')) {
 		
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="action" value="save" />
-		<input type="hidden" name="gid" value="<?php echo $this->page->group_cn; ?>" />
+		<input type="hidden" name="cn" value="<?php echo $this->page->group_cn; ?>" />
 		<input type="hidden" name="active" value="notes" />
 		<input type="hidden" name="scope" value="<?php echo $scope; ?>" />
 

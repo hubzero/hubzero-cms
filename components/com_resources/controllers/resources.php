@@ -1181,15 +1181,15 @@ class ResourcesControllerResources extends Hubzero_Controller
 			);
 			$pathway->addItem(
 				stripslashes($group->get('description')),
-				JRoute::_('index.php?option=com_groups&gid=' . $this->model->resource->group_owner)
+				JRoute::_('index.php?option=com_groups&cn=' . $this->model->resource->group_owner)
 			);
 			$pathway->addItem(
 				'Resources',
-				JRoute::_('index.php?option=com_groups&gid=' . $this->model->resource->group_owner . '&active=resources')
+				JRoute::_('index.php?option=com_groups&cn=' . $this->model->resource->group_owner . '&active=resources')
 			);
 			$pathway->addItem(
 				stripslashes($this->model->type->type),
-				JRoute::_('index.php?option=com_groups&gid=' . $this->model->resource->group_owner . '&active=resources&area=' . $this->model->type->alias)
+				JRoute::_('index.php?option=com_groups&cn=' . $this->model->resource->group_owner . '&active=resources&area=' . $this->model->type->alias)
 			);
 		} 
 		else 

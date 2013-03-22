@@ -43,7 +43,7 @@ $goto  = $this->config->get('use_alias', 0) ? 'alias='.$this->project->alias : '
 		<?php } else if($this->group) { 
 		$group = Hubzero_Group::getInstance( $this->group );
 		?>
-			<p class="warning"><?php echo JText::_('COM_PROJECTS_TEAM_LEAVE_GROUP_MEMBER'); ?> <a href="<?php echo JRoute::_('index.php?option=com_groups'.a.'gid='.$group->get('gidNumber')); ?>"><?php echo $group->get('description'); ?></a> <?php echo JText::_('COM_PROJECTS_TEAM_LEAVE_GROUP_MEMBER_QUIT'); ?></p>
+			<p class="warning"><?php echo JText::_('COM_PROJECTS_TEAM_LEAVE_GROUP_MEMBER'); ?> <a href="<?php echo JRoute::_('index.php?option=com_groups'.a.'cn='.$group->get('gidNumber')); ?>"><?php echo $group->get('description'); ?></a> <?php echo JText::_('COM_PROJECTS_TEAM_LEAVE_GROUP_MEMBER_QUIT'); ?></p>
 		<?php } else { ?>
 			<p class="warning"><?php echo JText::_('COM_PROJECTS_TEAM_LEAVE_PROJECT_NOTE'); ?></p>
 			<h4><?php echo JText::_('COM_PROJECTS_TEAM_LEAVE_PROJECT'); ?></h4>

@@ -111,7 +111,7 @@ $juser =& JFactory::getUser();
 		$ghtml = array();
 		foreach ($this->model->resource->getGroups() as $allowedgroup)
 		{
-			$ghtml[] = '<a href="' . JRoute::_('index.php?option=com_groups&gid=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
+			$ghtml[] = '<a href="' . JRoute::_('index.php?option=com_groups&cn=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
 		}
 ?>
 					<p class="warning">

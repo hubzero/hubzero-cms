@@ -74,8 +74,8 @@ $c = 0;
 						} else {
 							ximport('Hubzero_Group');
 							$group = Hubzero_Group::getInstance($post->group_id);
-							$url = 'index.php?option=com_groups&gid=' . $group->get('cn') . '&active=blog&scope=' .  JHTML::_('date', $post->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $post->publish_up, $this->monthFormat, $this->tz) . '/' . $post->alias;
-							$location = '<a href="' . JRoute::_('index.php?option=com_groups&gid=' . $group->get('cn')) . '">' . stripslashes($group->get("description")) . '</a>';
+							$url = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=blog&scope=' .  JHTML::_('date', $post->publish_up, $this->yearFormat, $this->tz) . '/' . JHTML::_('date', $post->publish_up, $this->monthFormat, $this->tz) . '/' . $post->alias;
+							$location = '<a href="' . JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn')) . '">' . stripslashes($group->get("description")) . '</a>';
 						}
 					?>
 					<li>

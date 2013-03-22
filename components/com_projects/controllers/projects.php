@@ -3506,11 +3506,11 @@ class ProjectsControllerProjects extends Hubzero_Controller
 			);
 			$pathway->addItem(
 				Hubzero_View_Helper_Html::shortenText($group->get('description'), 50, 0),
-				JRoute::_('index.php?option=com_groups' . a . 'gid=' . $group->cn)
+				JRoute::_('index.php?option=com_groups' . a . 'cn=' . $group->cn)
 			);
 			$pathway->addItem(
 				JText::_('COM_PROJECTS_PROJECTS'),
-				JRoute::_('index.php?option=com_groups' . a . 'gid=' . $group->cn . a . 'active=projects')
+				JRoute::_('index.php?option=com_groups' . a . 'cn=' . $group->cn . a . 'active=projects')
 			);
 		}
 					

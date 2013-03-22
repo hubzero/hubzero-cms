@@ -209,7 +209,7 @@ switch ($this->level)
 			$allowedgroups = $resource->getGroups();
 			foreach ($allowedgroups as $allowedgroup)
 			{
-				$ghtml .= '<a href="'.JRoute::_('index.php?option=com_groups&gid='.$allowedgroup).'">'.$allowedgroup.'</a>, ';
+				$ghtml .= '<a href="'.JRoute::_('index.php?option=com_groups&cn='.$allowedgroup).'">'.$allowedgroup.'</a>, ';
 			}
 			$ghtml = substr($ghtml,0,strlen($ghtml) - 2);
 			$html .= ResourcesHtml::warning( $ghtml )."\n";

@@ -39,7 +39,7 @@ if(!empty($groups))
 	foreach ($this->groups as $g)
 	{
 		$html .= '<div class="latestGroup">';
-		$html .= '<h4><a href="' . JRoute::_('index.php?option=com_groups&gid=' . $g->gidNumber) . '">' . stripslashes($g->description) . '</a></h4>';
+		$html .= '<h4><a href="' . JRoute::_('index.php?option=com_groups&cn=' . $g->gidNumber) . '">' . stripslashes($g->description) . '</a></h4>';
 		$html .= '<p class="groupDescription">';
 		$html .= stripslashes($g->public_desc);
 		$html .= '</p>';

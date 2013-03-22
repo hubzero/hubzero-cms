@@ -55,8 +55,8 @@ $c = 0;
 						} else {
 							ximport('Hubzero_Group');
 							$group = Hubzero_Group::getInstance($post['scope_id']);
-							$url = 'index.php?option=com_groups&gid=' . $group->get('cn') . '&active=forum&scope=' .  $this->categories[$post['category_id']]->section . '/' . $this->categories[$post['category_id']]->alias . '/' . ($post['parent'] ? $post['parent'] : $post['id']);
-							$location = '<a href="' . JRoute::_('index.php?option=com_groups&gid=' . $group->get('cn')) . '">' . stripslashes($group->get("description")) . '</a>';
+							$url = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=forum&scope=' .  $this->categories[$post['category_id']]->section . '/' . $this->categories[$post['category_id']]->alias . '/' . ($post['parent'] ? $post['parent'] : $post['id']);
+							$location = '<a href="' . JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn')) . '">' . stripslashes($group->get("description")) . '</a>';
 						}
 					?>
 					<li>
