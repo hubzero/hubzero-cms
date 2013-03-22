@@ -161,7 +161,7 @@ class MembersControllerProfiles extends Hubzero_Controller
 		$query = "SELECT xp.uidNumber, xp.name, xp.username, xp.organization, xp.picture, xp.public 
 				FROM #__xprofiles AS xp 
 				INNER JOIN #__users u ON u.id = xp.uidNumber AND u.block = 0
-				WHERE LOWER(xp.name) LIKE '%" . $this->database->getEscaped($filters['search']) . "%' AND xp.emailConfirmed=1 $restrict 
+				WHERE LOWER(xp.name) LIKE '%" . $this->database->getEscaped($filters['search']) . "%' AND xp.emailConfirmed>0 $restrict 
 				ORDER BY xp.name ASC";
 
 		$this->database->setQuery($query);
