@@ -840,6 +840,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		{
 			//get all files matching  /.mp4|.webs|.ogv|.m4v|.mp3/
 			$media = JFolder::files($media_path, '.mp4|.webm|.ogv|.m4v|.mp3|.ogg', false, false);
+			$ext = array();
 			foreach ($media as $m) 
 			{
 				$ext[] = array_pop(explode('.', $m));
