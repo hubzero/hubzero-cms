@@ -1452,6 +1452,9 @@
 .video:after {
 	content: "\f008";
 }
+.video.container:after {
+	content: ""
+}
 .file:after {
 	content: "\f016";
 }
