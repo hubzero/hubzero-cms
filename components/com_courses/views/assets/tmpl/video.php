@@ -201,12 +201,11 @@ elseif($type == 'html5') // Not hubpresenter, now try standard HTML5 video
 	}
 }
 
+// Include media tracking for html5 and hubpresenter videos
 if ($type == 'html5' || $type == 'hubpresenter')
 {
-	// @FIXME: finish (media tracking isn't completely independent from resources)
-
 	// Media tracking object
-/*	require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'media.tracking.php');
+	require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'media.tracking.php');
 	$mediaTracking = new ResourceMediaTracking(JFactory::getDBO());
 
 	// Get tracking for this user for this resource
@@ -218,18 +217,16 @@ if ($type == 'html5' || $type == 'hubpresenter')
 	// Do we want to redirect user with time added to url
 	if (is_object($tracking) && !$hasTime && $tracking->current_position > 0 && $tracking->current_position != $tracking->object_duration)
 	{
-		$redirect = 'index.php?option=com_resources&amp;task=video&amp;id='.$parent.'&amp;resid='.$child;
-		if (JRequest::getVar('tmpl', '') == 'component')
-		{
-			$redirect .= '&amp;tmpl=component';
-		}
+		$redirect = JURI::current();
+
+		$delimeter = (strpos($redirect, '?') === false) ? '?' : '&';
 
 		// Append current position to redirect
-		$redirect .= "&time=" . gmdate("H:i:s", $tracking->current_position);
+		$redirect .= $delimeter . "time=" . gmdate("H:i:s", $tracking->current_position);
 
 		// Redirect
 		JFactory::getApplication()->redirect(JRoute::_($redirect, false), '','',false);
-	}*/
+	}
 }
 ?>
 
@@ -240,7 +237,7 @@ if ($type == 'html5' || $type == 'hubpresenter')
 <?php elseif($type == 'html5') : ?>
 	<div id="video-container">
 		<?php if (isset($videos) && is_array($videos) && count($videos) > 0) : ?>
-			<video controls="controls" id="video-player">
+			<video controls="controls" id="video-player" data-mediaid="<?php echo $this->asset->get('id'); ?>">
 				<?php foreach ($videos as $v) : ?>
 					<?php
 						$info = pathinfo($v);
@@ -334,7 +331,7 @@ if ($type == 'html5' || $type == 'hubpresenter')
 			<div id="presenter-right">
 				<div id="media" class="<?php echo $cls; ?>">
 					<?php if (strtolower($presentation->type) == 'video') : ?>
-						<video id="player" preload="auto" controls="controls">
+						<video id="player" preload="auto" controls="controls" data-mediaid="<?php echo $this->asset->get('id'); ?>">
 							<?php foreach ($presentation->media as $source): ?>
 							   	<?php
 									switch (strtolower($source->type))

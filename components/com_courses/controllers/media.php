@@ -39,6 +39,100 @@ ximport('Hubzero_Controller');
 class CoursesControllerMedia extends Hubzero_Controller
 {
 	/**
+	 * Track video viewing progress
+	 * 
+	 * @return     void
+	 */
+	public function trackingTask()
+	{
+		// Include need media tracking library
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'media.tracking.php');
+
+		// Instantiate objects
+		$juser    =& JFactory::getUser();
+		$database =& JFactory::getDBO();
+		$session  =& JFactory::getSession();
+
+		// Get request vars
+		$time       = JRequest::getVar('time', 0);
+		$duration   = JRequest::getVar('duration', 0);
+		$event      = JRequest::getVar('event', 'update');
+		$resourceid = JRequest::getVar('resourceid', 0);
+		$ipAddress  = $_SERVER['REMOTE_ADDR'];
+
+		// Check for asset id
+		if (!$resourceid)
+		{
+			echo 'Unable to find resource identifier.';
+			return;
+		}
+
+		// Instantiate new media tracking object
+		$mediaTracking = new ResourceMediaTracking($database);
+
+		// Load tracking information for user for this resource
+		$trackingInformation = $mediaTracking->getTrackingInformationForUserAndResource($juser->get('id'), $resourceid, 'course');
+		
+		// Are we creating a new tracking record
+		if (!is_object($trackingInformation))
+		{
+			$trackingInformation                              = new stdClass;
+			$trackingInformation->user_id                     = $juser->get('id');
+			$trackingInformation->session_id                  = $session->getId();
+			$trackingInformation->ip_address                  = $ipAddress; 
+			$trackingInformation->object_id                   = $resourceid;
+			$trackingInformation->object_type                 = 'course';
+			$trackingInformation->current_position            = $time;
+			$trackingInformation->farthest_position           = $time;
+			$trackingInformation->current_position_timestamp  = date('Y-m-d H:i:s');
+			$trackingInformation->farthest_position_timestamp = date('Y-m-d H:i:s');
+			$trackingInformation->completed                   = 0;
+			$trackingInformation->total_views                 = 1;
+		}
+		else
+		{
+			// Set the new current position
+			$trackingInformation->current_position           = $time;
+			$trackingInformation->current_position_timestamp = date('Y-m-d H:i:s');
+
+			// Set the object duration
+			if ($duration > 0)
+			{
+				$trackingInformation->object_duration = $duration;
+			}
+
+			// Check to see if we need to set a new farthest position
+			if ($trackingInformation->current_position > $trackingInformation->farthest_position)
+			{
+				$trackingInformation->farthest_position           = $time;
+				$trackingInformation->farthest_position_timestamp = date('Y-m-d H:i:s');
+			}
+
+			// If event type is start, means we need to increment view count
+			if ($event == 'start')
+			{
+				$trackingInformation->total_views++;
+			}
+
+			// If event type is end, we need to increment completed count
+			if ($event == 'ended')
+			{
+				$trackingInformation->completed++;
+			}
+		}
+
+		// Save tracking information
+		if ($mediaTracking->save($trackingInformation))
+		{
+			if (!isset($trackingInformation->id))
+			{
+				$trackingInformation->id = $mediaTracking->id;
+			}
+			echo json_encode($trackingInformation);
+		}
+	}
+
+	/**
 	 * Upload a file
 	 * 
 	 * @return     void

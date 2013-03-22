@@ -1122,7 +1122,7 @@ HUB.Presenter = {
 	locationHash: function()
 	{
 		//var to hold time component
-		var timeComponent;
+		var timeComponent = '';
 		
 		//get the url query string and clean up
 		var urlQuery = window.location.search,
@@ -1141,7 +1141,7 @@ HUB.Presenter = {
 		}
 		
 		// do we have a time component (time=00:00:00 or time=00%3A00%3A00)
-		if(typeof timeComponent != 'undefined')
+		if(timeComponent != '')
 		{
 			//get the hours, minutes, seconds
 			var timeParts = timeComponent.split("=")[1].replace(/%3A/g, ':').split(':');
@@ -1265,12 +1265,23 @@ HUB.Presenter = {
 				playerTime = HUB.Presenter.getCurrent();
 				playerDuration = HUB.Presenter.getDuration();
 			}
-				
+
+			//craft post url
+			var component = 'resources';
+			var componentSearch = window.location.href.match(/\.org\/([a-z]+)\//);
+
+			if(componentSearch && componentSearch[1].length)
+			{
+				component = componentSearch[1];
+			}
+
+			var url = '/index.php?option=com_'+component+'&controller=media&task=tracking&no_html=1';
+
 			//make ajax call
 			jQ.ajax({
 				type: 'POST',
 				data: { event: eventType, resourceid: resourceId, time: playerTime, duration: playerDuration },
-				url: '/index.php?option=com_resources&controller=media&task=tracking&no_html=1',
+				url: url,
 				error: function( jqXHR, status, error )
 				{
 					console.log(error);
