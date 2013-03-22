@@ -80,7 +80,7 @@ if (!$this->course->offering()->access('view')) { ?>
 				// Render video
 				foreach ($lecture->assets() as $a)
 				{
-					if ($a->get('type') == 'video')
+					if ($a->get('type') == 'video' && $a->isPublished())
 					{
 						$used = $a->get('id');
 						echo $a->render($this->course);
