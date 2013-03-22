@@ -7,8 +7,19 @@
 
 /* Overrides of default hubpresenter.css for courses */
 
+/* No presenter header/title */
 #presenter-header {
 	display: none;
+}
+
+/* Move the keyboard shortcuts icon */
+#shortcuts {
+	left: 50%;
+	margin-left: -75px;
+	color: #000;
+}
+.video-wrap {
+	position: relative;
 }
 
 /* Hide the sidebar if the page is too narrow */
