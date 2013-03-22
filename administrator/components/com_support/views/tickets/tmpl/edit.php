@@ -266,19 +266,23 @@ if ($this->row->id) {
 
 				$name = $this->escape(JText::_('Unknown'));
 				$cite = $name;
-				if ($comment->created_by) {
+				$useri->load($comment->created_by);
+				$anon = 1;
+				if ($comment->created_by) 
+				{
 					//$juseri =& JUser::getInstance($comment->created_by);
-					$useri->load($comment->created_by);
-					if (is_object($useri)) {
+					if (is_object($useri)) 
+					{
 						$name = '<a rel="profile" href="index.php?option=com_members&amp;task=edit&amp;id[]=' . $useri->get('uidNumber') . '">' . $this->escape(stripslashes($useri->get('name'))) . ' (' . $this->escape(stripslashes($useri->get('username'))) . ')</a>';
 						$cite = $this->escape(stripslashes($useri->get('name')));
+						$anon = 0;
 					}
 				}
 ?>
 				<li class="<?php echo $access .' comment'; ?>" id="c<?php echo $comment->id; ?>">
 					<p class="comment-member-photo">
 						<span class="comment-anchor"><a name="c<?php echo $comment->id; ?>"></a></span>
-						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($useri, 0); ?>" alt="<?php echo JText::_('profile_image'); ?>" />
+						<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($useri, $anon); ?>" alt="<?php echo JText::_('profile_image'); ?>" />
 					</p>
 					<p class="comment-head">
 						<strong>

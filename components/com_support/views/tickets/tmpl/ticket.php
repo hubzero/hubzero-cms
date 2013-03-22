@@ -259,13 +259,15 @@ ximport('Hubzero_User_Profile_Helper');
 
 			$name = JText::_('Unknown');
 			$cite = $name;
+			$juseri = Hubzero_User_Profile::getInstance($comment->created_by);
+			$anon = 1;
 			if ($comment->created_by) 
 			{
-				$juseri = Hubzero_User_Profile::getInstance($comment->created_by);
 				if (is_object($juseri) && $juseri->get('name')) 
 				{
 					$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $juseri->get('uidNumber')) . '">' . $this->escape(stripslashes($juseri->get('name'))) . '</a>';
 					$cite = $this->escape(stripslashes($juseri->get('name')));
+					$anon = 0;
 				}
 			}
 
@@ -274,7 +276,7 @@ ximport('Hubzero_User_Profile_Helper');
 			<li class="comment <?php echo $access . ' ' . $o; ?>" id="c<?php echo $comment->id; ?>">
 				<p class="comment-member-photo">
 					<span class="comment-anchor"><a name="c<?php echo $comment->id; ?>"></a></span>
-					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($juseri, 0); ?>" alt="" />
+					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($juseri, $anon); ?>" alt="" />
 				</p>
 				<div class="comment-content">
 					<p class="comment-head">
