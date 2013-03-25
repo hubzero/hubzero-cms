@@ -286,7 +286,7 @@ class SupportApiController extends Hubzero_Api_Controller
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'tags.php');
 
 			$st = new SupportTags($this->database);
-			$st->tag_object($juser->get('id'), $ticket->id, $tags, 0, true);
+			$st->tag_object($result->get('uidNumber'), $ticket->id, $tags, 0, true);
 		}
 
 		// Set the response
