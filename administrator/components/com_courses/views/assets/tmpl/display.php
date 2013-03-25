@@ -118,7 +118,7 @@ window.addEvent('domready', function() {
 		<thead>
 			<tr>
 				<th colspan="4">
-					<select name="asset">
+					<select name="asset" style="max-width: 15em;">
 						<option value="0"><?php echo JText::_('Select asset...'); ?></option>
 <?php if ($this->assets) { ?>
 	<?php 
@@ -143,7 +143,7 @@ window.addEvent('domready', function() {
 				<th scope="col"><?php echo JText::_('ID'); ?></th>
 				<th scope="col"><?php echo JText::_('Title'); ?></th>
 				<th scope="col"><?php echo JText::_('Type'); ?></th>
-				<th scope="col"><?php echo JText::_('Created'); ?></th>
+				<th scope="col"><?php echo JText::_('State'); ?></th>
 				<th scope="col" colspan="3"><?php echo JText::_('Ordering'); ?></th>
 				<th scope="col">X</th>
 			</tr>
@@ -180,8 +180,23 @@ foreach ($this->rows as $row)
 				<td>
 					<?php echo $this->escape(stripslashes($row->type)); ?>
 				</td>
-				<td>
+				<!-- <td>
 					<?php echo JHTML::_('date', $row->created, '%d %b %Y'); ?>
+				</td> -->
+				<td>
+					<?php if ($row->state == 2) { ?>
+						<span class="state delete">
+							<span class="text"><?php echo JText::_('Trashed'); ?></span>
+						</span>
+					<?php } else if ($row->state == 1) { ?>
+						<span class="state publish">
+							<span class="text"><?php echo JText::_('Published'); ?></span>
+						</span>
+					<?php } else { ?>
+						<span class="state unpublish">
+							<span class="text"><?php echo JText::_('Unpublished'); ?></span>
+						</span>
+					<?php } ?>
 				</td>
 				<td>
 					<?php 
@@ -196,8 +211,8 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 <?php if ($canDo->get('core.edit')) { ?>
-					<a class="state unpublish" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=unlink&amp;asset=<?php echo $row->id; ?>&amp;scope=<?php echo $this->filters['asset_scope']; ?>&amp;scope_id=<?php echo $this->filters['asset_scope_id']; ?>&amp;course_id=<?php echo $this->filters['course_id']; ?>&amp;tmpl=<?php echo $this->filters['tmpl']; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
-						<span><?php echo JText::_('[ x ]'); ?></span>
+					<a class="state delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=unlink&amp;asset=<?php echo $row->id; ?>&amp;scope=<?php echo $this->filters['asset_scope']; ?>&amp;scope_id=<?php echo $this->filters['asset_scope_id']; ?>&amp;course_id=<?php echo $this->filters['course_id']; ?>&amp;tmpl=<?php echo $this->filters['tmpl']; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
+						<span><img src="components/<?php echo $this->option; ?>/assets/img/trash.png" width="15" height="15" alt="<?php echo JText::_('[ x ]'); ?>" /></span>
 					</a>
 <?php } ?>
 				</td>

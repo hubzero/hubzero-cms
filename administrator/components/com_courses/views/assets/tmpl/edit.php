@@ -140,13 +140,21 @@ function saveAndUpdate()
 -->
 					<tr>
 						<th class="key"><label for="field-type"><?php echo JText::_('Type'); ?>:</label></th>
-						<td colspan="3">
+						<td>
 							<select name="fields[type]" id="field-type">
 								<option value="video"<?php if ($this->row->get('type') == 'video') { echo ' selected="selected"'; } ?>><?php echo JText::_('Video'); ?></option>
 								<option value="file"<?php if ($this->row->get('type') == 'file') { echo ' selected="selected"'; } ?>><?php echo JText::_('File'); ?></option>
 								<option value="exam"<?php if ($this->row->get('type') == 'exam') { echo ' selected="selected"'; } ?>><?php echo JText::_('Quiz/Exam'); ?></option>
 								<option value="note"<?php if ($this->row->get('type') == 'note') { echo ' selected="selected"'; } ?>><?php echo JText::_('Note'); ?></option>
 								<option value="link"<?php if ($this->row->get('type') == 'link') { echo ' selected="selected"'; } ?>><?php echo JText::_('Link'); ?></option>
+							</select>
+						</td>
+						<th class="key"><label for="field-type"><?php echo JText::_('State'); ?>:</label></th>
+						<td>
+							<select name="fields[state]" id="field-state">
+								<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Unpublished'); ?></option>
+								<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Published'); ?></option>
+								<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Trashed'); ?></option>
 							</select>
 						</td>
 					</tr>
