@@ -185,11 +185,21 @@ class CoursesControllerSections extends Hubzero_Controller
 	}
 
 	/**
+	 * Save a course and fall through to edit view
+	 *
+	 * @return void
+	 */
+	public function applyTask()
+	{
+		$this->saveTask(false);
+	}
+
+	/**
 	 * Saves changes to a course or saves a new entry if creating
 	 *
 	 * @return void
 	 */
-	public function saveTask()
+	public function saveTask($redirect=true)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -440,40 +450,6 @@ class CoursesControllerSections extends Hubzero_Controller
 					//$agt['asset'][$z] = $a;
 				}
 			}
-			/*if (!$dt['publish_up'])
-			{
-				$dt['publish_up'] = $publishup;
-			}
-			else if ($dt['publish_up'] != $publishup)
-			{
-				$publishup = $dt['publish_up'];
-			}
-
-			if (!$dt['publish_down'])
-			{
-				$dt['publish_down'] = $publishdown;
-			}
-			else if ($dt['publish_down'] != $publishdown)
-			{
-				$publishdown = $dt['publish_down'];
-			}
-
-			$dt['section_id'] = $model->get('id');
-
-			$i++;
-
-			$dtmodel = CoursesModelSectionDate::getInstance($dt['id']);
-			if (!$dtmodel->bind($dt))
-			{
-				$this->setError($dtmodel->getError());
-				continue;
-			}
-
-			if (!$dtmodel->store(true))
-			{
-				$this->setError($dtmodel->getError());
-				continue;
-			}*/
 		}
 
 		if ($this->getError())
@@ -483,11 +459,17 @@ class CoursesControllerSections extends Hubzero_Controller
 			return;
 		}
 
-		// Output messsage and redirect
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $model->get('offering_id'),
-			JText::_('COM_COURSES_SECTION_SAVED')
-		);
+		if ($redirect)
+		{
+			// Output messsage and redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $model->get('offering_id'),
+				JText::_('COM_COURSES_SECTION_SAVED')
+			);
+			return;
+		}
+
+		$this->editTask($model);
 	}
 
 	/**
@@ -515,10 +497,6 @@ class CoursesControllerSections extends Hubzero_Controller
 		// Do we have any IDs?
 		if (!empty($ids))
 		{
-			// Get plugins
-			//JPluginHelper::importPlugin('courses');
-			//$dispatcher =& JDispatcher::getInstance();
-
 			foreach ($ids as $id)
 			{
 				// Load the course page
@@ -535,19 +513,6 @@ class CoursesControllerSections extends Hubzero_Controller
 				{
 					JError::raiseError(500, JText::_('Unable to delete section'));
 					return;
-				}
-
-				// Log the course approval
-				$log = new CoursesTableLog($this->database);
-				$log->scope_id  = $course->get('id');
-				$log->scope     = 'course_section';
-				$log->user_id   = $this->juser->get('id');
-				$log->timestamp = date('Y-m-d H:i:s', time());
-				$log->action    = 'section_deleted';
-				$log->actor_id  = $this->juser->get('id');
-				if (!$log->store())
-				{
-					$this->setError($log->getError());
 				}
 
 				$num++;
@@ -568,10 +533,8 @@ class CoursesControllerSections extends Hubzero_Controller
 	 */
 	public function cancelTask()
 	{
-		$offering_id = JRequest::getInt('offering', 0);
-
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $offering_id
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . JRequest::getInt('offering', 0)
 		);
 	}
 }

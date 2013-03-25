@@ -43,7 +43,7 @@ if ($canDo->get('core.edit'))
 }
 if ($canDo->get('core.delete')) 
 {
-	JToolBarHelper::deleteList('delete', 'delete');
+	JToolBarHelper::deleteList();
 }
 ?>
 

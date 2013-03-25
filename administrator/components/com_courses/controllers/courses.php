@@ -76,17 +76,15 @@ class CoursesControllerCourses extends Hubzero_Controller
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
-		//$tbl = new CoursesTableCourse($this->database);
-
 		$model = CoursesModelCourses::getInstance();
 
 		$this->view->filters['count'] = true;
 
-		$this->view->total = $model->courses($this->view->filters); //$tbl->getCount($this->view->filters);
+		$this->view->total = $model->courses($this->view->filters);
 
 		$this->view->filters['count'] = false;
 
-		$this->view->rows  = $model->courses($this->view->filters); //$tbl->getRecords($this->view->filters);
+		$this->view->rows  = $model->courses($this->view->filters);
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
@@ -164,30 +162,21 @@ class CoursesControllerCourses extends Hubzero_Controller
 	}
 
 	/**
-	 * Recursive array_map
+	 * Save a course and fall through to edit view
 	 *
-	 * @param  $func string Function to map
-	 * @param  $arr  array  Array to process
-	 * @return array
+	 * @return void
 	 */
-	/*protected function _multiArrayMap($func, $arr)
+	public function applyTask()
 	{
-		$newArr = array();
-
-		foreach ($arr as $key => $value)
-		{
-			$newArr[$key] = (is_array($value) ? $this->_multiArrayMap($func, $value) : $func($value));
-	    }
-
-		return $newArr;
-	}*/
+		$this->saveTask(false);
+	}
 
 	/**
 	 * Saves changes to a course or saves a new entry if creating
 	 *
 	 * @return void
 	 */
-	public function saveTask()
+	public function saveTask($redirect=true)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -197,16 +186,8 @@ class CoursesControllerCourses extends Hubzero_Controller
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
-		$row = new CoursesTableCourse($this->database);
+		$row = new CoursesModelCourse(0);
 		if (!$row->bind($fields)) 
-		{
-			$this->addComponentMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
-		}
-		
-		// Check content
-		if (!$row->check()) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
@@ -214,18 +195,24 @@ class CoursesControllerCourses extends Hubzero_Controller
 		}
 
 		// Store content
-		if (!$row->store()) 
+		if (!$row->store(true)) 
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
 
-		// Output messsage and redirect
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('COM_COURSES_SAVED')
-		);
+		if ($redirect)
+		{
+			// Output messsage and redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('COM_COURSES_SAVED')
+			);
+			return;
+		}
+
+		$this->editTask($row);
 	}
 
 	/**
@@ -259,7 +246,7 @@ class CoursesControllerCourses extends Hubzero_Controller
 			foreach ($ids as $id)
 			{
 				// Load the course page
-				$course = Hubzero_Course::getInstance($id);
+				$course = CoursesModelCourse::getInstance($id);
 
 				// Ensure we found the course info
 				if (!$course->exists())
@@ -267,64 +254,11 @@ class CoursesControllerCourses extends Hubzero_Controller
 					continue;
 				}
 
-				// Get number of course members
-				/*$courseusers    = $course->get('members');
-				$coursemanagers = $course->get('managers');
-				$members = array_merge($courseusers, $coursemanagers);
-
-				// Start log
-				$log  = JText::_('COM_COURSES_SUBJECT_COURSE_DELETED');
-				$log .= JText::_('COM_COURSES_TITLE') . ': ' . $course->get('description') . "\n";
-				$log .= JText::_('COM_COURSES_ID') . ': ' . $course->get('cn') . "\n";
-				$log .= JText::_('COM_COURSES_PRIVACY') . ': ' . $course->get('access') . "\n";
-				$log .= JText::_('COM_COURSES_PUBLIC_TEXT') . ': ' . stripslashes($course->get('public_desc')) . "\n";
-				$log .= JText::_('COM_COURSES_PRIVATE_TEXT') . ': ' . stripslashes($course->get('private_desc')) . "\n";
-				$log .= JText::_('COM_COURSES_RESTRICTED_MESSAGE') . ': ' . stripslashes($course->get('restrict_msg')) . "\n";
-
-				// Log ids of course members
-				if ($courseusers)
-				{
-					$log .= JText::_('COM_COURSES_MEMBERS') . ': ';
-					foreach ($courseusers as $gu)
-					{
-						$log .= $gu . ' ';
-					}
-					$log .=  "\n";
-				}
-				$log .= JText::_('COM_COURSES_MANAGERS') . ': ';
-				foreach ($coursemanagers as $gm)
-				{
-					$log .= $gm . ' ';
-				}
-				$log .= "\n";
-
-				// Trigger the functions that delete associated content
-				// Should return logs of what was deleted
-				$logs = $dispatcher->trigger('onCourseDelete', array($course));
-				if (count($logs) > 0)
-				{
-					$log .= implode('', $logs);
-				}*/
-				
-
 				// Delete course
 				if (!$course->delete())
 				{
 					JError::raiseError(500, JText::_('Unable to delete course'));
 					return;
-				}
-
-				// Log the course approval
-				$log = new CoursesTableLog($this->database);
-				$log->scope_id  = $course->get('id');
-				$log->scope     = 'course';
-				$log->user_id   = $this->juser->get('id');
-				$log->timestamp = date('Y-m-d H:i:s', time());
-				$log->action    = 'course_deleted';
-				$log->actor_id  = $this->juser->get('id');
-				if (!$log->store())
-				{
-					$this->setError($log->getError());
 				}
 
 				$num++;
@@ -378,7 +312,7 @@ class CoursesControllerCourses extends Hubzero_Controller
 	public function stateTask($state=0)
 	{
 		// Check for request forgeries
-		//JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
 		$ids = JRequest::getVar('id', array());
@@ -414,17 +348,8 @@ class CoursesControllerCourses extends Hubzero_Controller
 				}
 
 				// Log the course approval
-				$log = new CoursesTableLog($this->database);
-				$log->scope_id  = $course->get('id');
-				$log->scope     = 'course';
-				$log->user_id   = $this->juser->get('id');
-				$log->timestamp = date('Y-m-d H:i:s', time());
-				$log->action    = $state ? 'course_published' : 'course_unpublished';
-				$log->actor_id  = $this->juser->get('id');
-				if (!$log->store())
-				{
-					$this->setError($log->getError());
-				}
+				$course->log($course->get('id'), 'course', ($state ? 'published' : 'unpublished'));
+
 				$num++;
 			}
 		}

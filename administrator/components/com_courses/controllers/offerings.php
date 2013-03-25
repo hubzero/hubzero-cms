@@ -98,24 +98,6 @@ class CoursesControllerOfferings extends Hubzero_Controller
 
 		$this->view->rows = $this->view->course->offerings($this->view->filters);
 
-		// Filters for getting a result count
-		//$this->view->filters['limit'] = 'all';
-		//$this->view->filters['fields'] = array('COUNT(*)');
-		//$this->view->filters['authorized'] = 'admin';
-
-		// Get a record count
-		//$this->view->total = Hubzero_Course::find($this->view->filters);
-
-		
-		//$this->view->filters['fields'] = array('cn', 'description', 'published', 'gidNumber', 'type');
-
-		// Get a list of all courses
-		/*$this->view->rows = null;
-		if ($this->view->total > 0)
-		{
-			$this->view->rows = Hubzero_Course::find($this->view->filters);
-		}*/
-
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
@@ -201,11 +183,21 @@ class CoursesControllerOfferings extends Hubzero_Controller
 	}
 
 	/**
+	 * Save a course and fall through to edit view
+	 *
+	 * @return void
+	 */
+	public function applyTask()
+	{
+		$this->saveTask(false);
+	}
+
+	/**
 	 * Saves changes to a course or saves a new entry if creating
 	 *
 	 * @return void
 	 */
-	public function saveTask()
+	public function saveTask($redirect=true)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -223,18 +215,24 @@ class CoursesControllerOfferings extends Hubzero_Controller
 			return;
 		}
 
-		if (!$model->store())
+		if (!$model->store(true))
 		{
 			$this->addComponentMessage($model->getError());
 			$this->editTask($model);
 			return;
 		}
 
-		// Output messsage and redirect
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('COM_COURSES_SAVED')
-		);
+		if ($redirect)
+		{
+			// Output messsage and redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . $model->get('course_id'),
+				JText::_('COM_COURSES_SAVED')
+			);
+			return;
+		}
+
+		$this->editTask($model);
 	}
 
 	/**
@@ -261,10 +259,6 @@ class CoursesControllerOfferings extends Hubzero_Controller
 		// Do we have any IDs?
 		if (!empty($ids))
 		{
-			// Get plugins
-			//JPluginHelper::importPlugin('courses');
-			//$dispatcher =& JDispatcher::getInstance();
-
 			foreach ($ids as $id)
 			{
 				// Load the course page
@@ -276,63 +270,11 @@ class CoursesControllerOfferings extends Hubzero_Controller
 					continue;
 				}
 
-				// Get number of course members
-				/*$courseusers    = $course->get('members');
-				$coursemanagers = $course->get('managers');
-				$members = array_merge($courseusers, $coursemanagers);
-
-				// Start log
-				$log  = JText::_('COM_COURSES_SUBJECT_COURSE_DELETED');
-				$log .= JText::_('COM_COURSES_TITLE') . ': ' . $course->get('description') . "\n";
-				$log .= JText::_('COM_COURSES_ID') . ': ' . $course->get('cn') . "\n";
-				$log .= JText::_('COM_COURSES_PRIVACY') . ': ' . $course->get('access') . "\n";
-				$log .= JText::_('COM_COURSES_PUBLIC_TEXT') . ': ' . stripslashes($course->get('public_desc')) . "\n";
-				$log .= JText::_('COM_COURSES_PRIVATE_TEXT') . ': ' . stripslashes($course->get('private_desc')) . "\n";
-				$log .= JText::_('COM_COURSES_RESTRICTED_MESSAGE') . ': ' . stripslashes($course->get('restrict_msg')) . "\n";
-
-				// Log ids of course members
-				if ($courseusers)
-				{
-					$log .= JText::_('COM_COURSES_MEMBERS') . ': ';
-					foreach ($courseusers as $gu)
-					{
-						$log .= $gu . ' ';
-					}
-					$log .=  "\n";
-				}
-				$log .= JText::_('COM_COURSES_MANAGERS') . ': ';
-				foreach ($coursemanagers as $gm)
-				{
-					$log .= $gm . ' ';
-				}
-				$log .= "\n";
-
-				// Trigger the functions that delete associated content
-				// Should return logs of what was deleted
-				$logs = $dispatcher->trigger('onCourseDelete', array($course));
-				if (count($logs) > 0)
-				{
-					$log .= implode('', $logs);
-				}*/
-
 				// Delete course
 				if (!$model->delete())
 				{
 					JError::raiseError(500, JText::_('Unable to delete offering'));
 					return;
-				}
-
-				// Log the course approval
-				$log = new CoursesTableLog($this->database);
-				$log->scope_id  = $course->get('id');
-				$log->scope     = 'course_offering';
-				$log->user_id   = $this->juser->get('id');
-				$log->timestamp = date('Y-m-d H:i:s', time());
-				$log->action    = 'offering_deleted';
-				$log->actor_id  = $this->juser->get('id');
-				if (!$log->store())
-				{
-					$this->setError($log->getError());
 				}
 
 				$num++;
@@ -341,20 +283,8 @@ class CoursesControllerOfferings extends Hubzero_Controller
 
 		// Redirect back to the courses page
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . JRequest::getInt('course', 0),
 			JText::sprintf('%s Item(s) removed.', $num)
-		);
-	}
-
-	/**
-	 * Cancel a task (redirects to default task)
-	 *
-	 * @return	void
-	 */
-	public function cancelTask()
-	{
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 		);
 	}
 
@@ -386,7 +316,7 @@ class CoursesControllerOfferings extends Hubzero_Controller
 	public function stateTask($state=0)
 	{
 		// Check for request forgeries
-		//JRequest::checkToken() or jexit('Invalid Token');
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
 		$ids = JRequest::getVar('id', array());
@@ -398,77 +328,63 @@ class CoursesControllerOfferings extends Hubzero_Controller
 		}
 
 		// Do we have any IDs?
+		$num = 0;
 		if (!empty($ids))
 		{
 			//foreach course id passed in
 			foreach ($ids as $id)
 			{
 				// Load the course page
-				$course = new Hubzero_Course();
-				$course->read($id);
+				$model = CoursesModelOffering::getInstance($id);
 
 				// Ensure we found the course info
-				if (!$course)
+				if (!$model->exists())
 				{
 					continue;
 				}
 
 				//set the course to be published and update
-				$course->set('published', 1);
-				$course->update();
-
-				// Log the course approval
-				$log = new XCourseLog($this->database);
-				$log->gid       = $course->get('gidNumber');
-				$log->uid       = $this->juser->get('id');
-				$log->timestamp = date('Y-m-d H:i:s', time());
-				$log->action    = 'course_published';
-				$log->actorid   = $this->juser->get('id');
-				if (!$log->store())
+				$model->set('state', $state);
+				if (!$model->store())
 				{
-					$this->setError($log->getError());
+					$this->setError(JText::_('Unable to set state for offering #' . $id . '.'));
+					continue;
 				}
 
-				// Output messsage and redirect
-				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-					JText::_('Course has been published.')
-				);
+				// Log the course approval
+				$model->log($model->get('id'), 'offering', ($state ? 'published' : 'unpublished'));
+
+				$num++;
 			}
+		}
+
+		if ($this->getErrors())
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . JRequest::getInt('course', 0),
+				implode('<br />', $this->getErrors()),
+				'error'
+			);
+		}
+		else
+		{
+			// Output messsage and redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . JRequest::getInt('course', 0),
+				($state ? JText::sprintf('%s item(s) published', $num) : JText::sprintf('%s item(s) unpublished', $num))
+			);
 		}
 	}
 
 	/**
-	 * Checks if a CN (alias) is valid
+	 * Cancel a task (redirects to default task)
 	 *
-	 * @return boolean True if CN is valid
+	 * @return	void
 	 */
-	private function _validCn($name, $type)
+	public function cancelTask()
 	{
-		if ($type == 1)
-		{
-			$admin = false;
-		}
-		else
-		{
-			$admin = true;
-		}
-
-		if (($admin && preg_match("#^[0-9a-zA-Z\-]+[_0-9a-zA-Z\-]*$#i", $name))
-		 || (!$admin && preg_match("#^[0-9a-zA-Z]+[_0-9a-zA-Z]*$#i", $name)))
-		{
-			if (is_numeric($name) && intval($name) == $name && $name >= 0)
-			{
-				return false;
-			}
-			else
-			{
-				return true;
-			}
-		}
-		else
-		{
-			return false;
-		}
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . JRequest::getInt('course', 0)
+		);
 	}
 }

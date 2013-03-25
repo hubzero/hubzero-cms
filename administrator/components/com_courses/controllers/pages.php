@@ -33,8 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 ximport('Hubzero_Controller');
 
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'page.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
+// Course model pulls in other classes we need
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
 
 /**
@@ -196,7 +195,7 @@ class CoursesControllerPages extends Hubzero_Controller
 			$this->view->row->set('offering_id', JRequest::getInt('offering', 0));
 		}
 
-		$this->view->course = CoursesModelOffering::getInstance($this->view->row->get('course_id'));
+		$this->view->course   = CoursesModelCourse::getInstance($this->view->row->get('course_id'));
 		$this->view->offering = CoursesModelOffering::getInstance($this->view->row->get('offering_id'));
 
 		// Set any errors
@@ -213,11 +212,21 @@ class CoursesControllerPages extends Hubzero_Controller
 	}
 
 	/**
+	 * Save a course page and fall through to edit view
+	 *
+	 * @return void
+	 */
+	public function applyTask()
+	{
+		$this->saveTask(false);
+	}
+
+	/**
 	 * Save a course page
 	 *
 	 * @return void
 	 */
-	public function saveTask()
+	public function saveTask($redirect=true)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -249,8 +258,74 @@ class CoursesControllerPages extends Hubzero_Controller
 			return;
 		}
 
+		if ($redirect)
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . $fields['course_id'] . '&offering=' . $fields['offering_id'],
+				JText::_('Page successfully saved')
+			);
+			return;
+		}
+
+		$this->editTask($row);
+	}
+
+	/**
+	 * Remove one or more types
+	 * 
+	 * @return     void Redirects back to main listing
+	 */
+	public function removeTask()
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming (expecting an array)
+		$ids = JRequest::getVar('id', array());
+		$rtrn = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . JRequest::getInt('course', 0) . '&offering=' . JRequest::getInt('offering', 0);
+
+		// Ensure we have an ID to work with
+		if (empty($ids))
+		{
+			// Redirect with error message
+			$this->setRedirect(
+				$rtrn,
+				JText::_('No page selected'),
+				'error'
+			);
+			return;
+		}
+
+		$tbl = new CoursesTablePage($this->database);
+
+		$i = 0;
+		foreach ($ids as $id)
+		{
+			// Delete the type
+			if (!$tbl->delete($id))
+			{
+				$this->setError($tbl->getError());
+			}
+			else
+			{
+				$i++;
+			}
+		}
+
+		// Redirect
+		if ($i)
+		{
+			$this->setRedirect(
+				$rtrn,
+				JText::sprintf('%s Page(s) successfully removed', $i)
+			);
+			return;
+		}
+
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . $fields['course_id'] . '&offering=' . $fields['offering_id']
+			$rtrn,
+			$this->getError(),
+			'error'
 		);
 	}
 

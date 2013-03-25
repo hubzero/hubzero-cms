@@ -37,7 +37,9 @@ $text = ($this->task == 'edit' ? JText::_('Edit Page') : JText::_('New Page'));
 JToolBarHelper::title(JText::_('COM_COURSES').': <small><small>[ ' . $text . ' ]</small></small>', 'courses.png');
 if ($canDo->get('core.edit')) 
 {
+	JToolBarHelper::apply();
 	JToolBarHelper::save();
+	JToolBarHelper::spacer();
 }
 JToolBarHelper::cancel();
 ?>
