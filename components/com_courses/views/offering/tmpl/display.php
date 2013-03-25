@@ -127,7 +127,7 @@ if (!$no_html) : ?>
 									<li><a class="course-customize" href="/courses/<?php echo $this->course->get('alias'); ?>/customize">Customize Course</a></li> -->
 									<?php if ($this->course->offering()->access('manage')) { ?>
 									<li><a class="course-outline" href="/courses/<?php echo $this->course->get('alias'); ?>/manage/<?php echo $this->course->offering()->get('alias'); ?>">Build Outline</a></li>
-									<li><a class="course-pages" href="/courses/<?php echo $this->course->get('alias'); ?>/managepages">Manage Pages</a></li>
+									<li><a class="course-pages" href="/courses/<?php echo $this->course->get('alias'); ?>/manage/<?php echo $this->course->offering()->get('alias'); ?>/pages">Manage Pages</a></li>
 									<?php } else if ($this->course->offering()->access('manage', 'section')) { ?>
 									<li><a class="course-outline" href="/courses/<?php echo $this->course->get('alias'); ?>/manage/<?php echo $this->course->offering()->get('alias'); ?>">Change Dates</a></li>
 									<?php } ?>
