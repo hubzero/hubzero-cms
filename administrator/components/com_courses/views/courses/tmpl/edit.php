@@ -103,9 +103,17 @@ function submitbutton(pressbutton)
 						<td><input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" size="50" /></td>
 					</tr>
 					<tr>
+						<td class="key" valign="top"><label for="field-blurb"><?php echo JText::_('Blurb'); ?>:</label></td>
+						<td>
+							<textarea name="fields[blurb]" id="field-blurb" cols="40" rows="3"><?php echo $this->escape(stripslashes($this->row->get('blurb'))); ?></textarea>
+							<span class="hint"><?php echo JText::_('This is a short sentence or two for the catalog.'); ?></span>
+						</td>
+					</tr>
+					<tr>
 						<td class="key" valign="top"><label for="field-description"><?php echo JText::_('Description'); ?>:</label></td>
 						<td>
 							<textarea name="fields[description]" id="field-description" cols="40" rows="15"><?php echo $this->escape(stripslashes($this->row->get('description'))); ?></textarea>
+							<span class="hint"><?php echo JText::_('This is a longer, detailed description of the course.'); ?></span>
 						</td>
 					</tr>
 				</tbody>
