@@ -282,7 +282,7 @@ class plgCoursesAnnouncements extends JPlugin
 		$fields = array_map('trim', $fields);
 
 		// Get the model and bind the data
-		$model = new CoursesModelAnnouncement();
+		$model = new CoursesModelAnnouncement(0);
 		if (!$model->bind($fields))
 		{
 			$this->setError($model->getError());

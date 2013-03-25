@@ -62,7 +62,7 @@ class CoursesModelAnnouncement extends CoursesModelAbstract
 	 * @param      integer $oid ID (int)
 	 * @return     object CoursesModelCourse
 	 */
-	/*static function &getInstance($oid=0)
+	static function &getInstance($oid=0)
 	{
 		static $instances;
 
@@ -77,6 +77,6 @@ class CoursesModelAnnouncement extends CoursesModelAbstract
 		}
 
 		return $instances[$oid];
-	}*/
+	}
 }
 
