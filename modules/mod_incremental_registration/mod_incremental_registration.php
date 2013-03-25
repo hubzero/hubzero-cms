@@ -81,7 +81,8 @@ class ModIncrementalRegistrationController
 	 * 
 	 * @return     unknown
 	 */
-	public function __construct() {
+	public function __construct() 
+	{
 		$user = JFactory::getUser();
 		$dbg = isset($_GET['dbg']);
 		if (!$dbg || $user->guest) {
@@ -234,9 +235,14 @@ class ModIncrementalRegistrationController
 						$dbh->setQuery('SELECT '.implode(', ', array_keys($row)).' FROM #__profile_completion_awards WHERE user_id = ' . $uid);
 						$award = 0;
 						$awarded = $dbh->loadAssoc();
-						foreach ($awarded as $v) {
-							if (!$v) {
-								$award += 15;
+						if ($awarded && is_array($awarded))
+						{
+							foreach ($awarded as $v) 
+							{
+								if (!$v) 
+								{
+									$award += 15;
+								}
 							}
 						}
 

@@ -860,15 +860,18 @@ class ResourcesControllerResources extends Hubzero_Controller
 			$slide_video = array();
 
 			//build array for checking slide video formats
-			foreach ($slides as $s) 
+			if ($slides && is_array($slides))
 			{
-				$parts = explode('.', $s);
-				$ext = array_pop($parts);
-				$name = implode('.', $parts);
-
-				if (in_array($ext, array('mp4', 'm4v', 'webm', 'ogv'))) 
+				foreach ($slides as $s) 
 				{
-					$slide_video[$name][$ext] = $name . '.' . $ext;
+					$parts = explode('.', $s);
+					$ext = array_pop($parts);
+					$name = implode('.', $parts);
+
+					if (in_array($ext, array('mp4', 'm4v', 'webm', 'ogv'))) 
+					{
+						$slide_video[$name][$ext] = $name . '.' . $ext;
+					}
 				}
 			}
 
