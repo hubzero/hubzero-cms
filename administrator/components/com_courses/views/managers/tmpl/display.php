@@ -29,6 +29,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+$roles = $this->course->offering(0)->roles(array('alias' => '!student'));
 ?>
 <?php if ($this->getError()) { ?>
 	<dl id="system-message">
@@ -48,6 +50,13 @@ defined('_JEXEC') or die('Restricted access');
 						</label>
 					</td>
 					<td>
+						<select name="role">
+<?php foreach ($roles as $role) { ?>
+							<option value="<?php echo $role->id; ?>"><?php echo $this->escape(stripslashes($role->title)); ?></option>
+<?php } ?>
+						</select>
+					</td>
+					<td>
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 						<input type="hidden" name="tmpl" value="component" />
@@ -62,16 +71,16 @@ defined('_JEXEC') or die('Restricted access');
 		
 		<?php echo JHTML::_('form.token'); ?>
 	</form>
-	<form action="index.php" method="post">
+	<form action="index.php" method="post" id="adminForm">
 		<table class="paramlist admintable">
 			<thead>
 				<tr>
-					<th colspan="3">
+					<th colspan="4">
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 						<input type="hidden" name="tmpl" value="component" />
 						<input type="hidden" name="id" value="<?php echo $this->course->get('id'); ?>" />
-						<input type="hidden" name="task" value="remove" />
+						<input type="hidden" name="task" id="task" value="remove" />
 						
 						<input type="submit" name="action" value="<?php echo JText::_('COM_COURSES_MEMBER_REMOVE'); ?>" />
 					</th>
@@ -84,6 +93,7 @@ defined('_JEXEC') or die('Restricted access');
 		$managers = $this->course->managers(array(), true);
 		if (count($managers) > 0) 
 		{
+			$i = 0;
 			foreach ($managers as $manager)
 			{
 				$u =& JUser::getInstance($manager->get('user_id'));
@@ -94,7 +104,13 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 				<tr>
 					<td>
-						<input type="checkbox" name="users[]" value="<?php echo $u->get('id'); ?>" />
+						<input type="hidden" name="entries[<?php echo $i; ?>][course_id]" value="<?php echo $manager->get('course_id'); ?>" />
+						<input type="hidden" name="entries[<?php echo $i; ?>][offering_id]" value="<?php echo $manager->get('offering_id', 0); ?>" />
+						<input type="hidden" name="entries[<?php echo $i; ?>][section_id]" value="<?php echo $manager->get('section_id', 0); ?>" />
+						<input type="hidden" name="entries[<?php echo $i; ?>][user_id]" value="<?php echo $u->get('id'); ?>" />
+						<input type="checkbox" name="entries[<?php echo $i; ?>][select]" value="<?php echo $u->get('id'); ?>" />
+
+						<!-- <input type="checkbox" name="users[]" value="<?php echo $u->get('id'); ?>" /> -->
 					</td>
 					<td class="paramlist_key">
 						<a href="index.php?option=com_members&amp;controller=members&amp;task=edit&amp;id[]=<?php echo $u->get('id'); ?>" target="_parent">
@@ -104,8 +120,16 @@ defined('_JEXEC') or die('Restricted access');
 					<td class="paramlist_value">
 						<a href="mailto:<?php echo $this->escape($u->get('email')); ?>"><?php echo $this->escape($u->get('email')); ?></a>
 					</td>
+					<td>
+						<select name="entries[<?php echo $i; ?>][role_id]" onchange="update();">
+<?php foreach ($roles as $role) { ?>
+							<option value="<?php echo $role->id; ?>"<?php if ($manager->get('role_id') == $role->id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
+<?php } ?>
+						</select>
+					</td>
 				</tr>
 <?php
+				$i++;
 			}
 		}
 ?>
@@ -113,5 +137,16 @@ defined('_JEXEC') or die('Restricted access');
 		</table>
 		
 		<?php echo JHTML::_('form.token'); ?>
+		
+		<script type="text/javascript">
+			function update() 
+			{
+				var task = document.getElementById('task');
+				task.value = 'update';
+
+				var form = document.getElementById('adminForm');
+				form.submit();
+			}
+		</script>
 	</form>
 </div>

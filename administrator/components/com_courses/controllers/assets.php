@@ -77,13 +77,6 @@ class CoursesControllerAssets extends Hubzero_Controller
 			'int'
 		);
 
-		/*
-		$this->view->filters['search']  = urldecode(trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search',
-			'search',
-			''
-		)));*/
-
 		// Filters for returning results
 		$this->view->filters['limit']  = $app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.limit',
@@ -163,7 +156,9 @@ class CoursesControllerAssets extends Hubzero_Controller
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id,
+			($this->getError() ? $this->getError() : null),
+			($this->getError() ? 'error' : 'message')
 		);
 	}
 
@@ -175,7 +170,7 @@ class CoursesControllerAssets extends Hubzero_Controller
 	public function unlinkTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or jexit('Invalid Token');
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
 		$asset_id  = JRequest::getInt('asset', 0);
@@ -184,17 +179,31 @@ class CoursesControllerAssets extends Hubzero_Controller
 		$scope_id  = JRequest::getInt('scope_id', 0);
 		$course_id = JRequest::getInt('course_id', 0);
 
-		// Get the element moving down - item 1
+		// Load association
 		$tbl = new CoursesTableAssetAssociation($this->database);
 		$tbl->loadByAssetScope($asset_id, $scope_id, $scope);
 
+		// Remove association
 		if (!$tbl->delete())
 		{
 			$this->setError($tbl->getError());
 		}
 
+		$model = new CoursesModelAsset($asset_id);
+		// Is this asset linked anywhere else?
+		if ($model->parents(array('count' => true)) <= 0)
+		{
+			// No -- Asset no longer used. Delete it.
+			if (!$model->delete())
+			{
+				$this->setError($model->delete());
+			}
+		}
+
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id,
+			($this->getError() ? $this->getError() : null),
+			($this->getError() ? 'error' : 'message')
 		);
 	}
 

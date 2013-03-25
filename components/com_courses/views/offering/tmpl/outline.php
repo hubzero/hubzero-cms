@@ -110,7 +110,7 @@ if (!$this->course->offering()->access('view')) { ?>
 												<!-- </a> -->
 											</h5>
 											<?php if ($ag->assets()->total()) { ?>
-											<ul>
+											<ul class="asset-list">
 												<?php
 												// Loop through the assets
 												foreach ($ag->assets() as $a)
@@ -132,7 +132,7 @@ if (!$this->course->offering()->access('view')) { ?>
 									<?php } ?>
 
 									<?php if ($agt->assets()->total()) { ?>
-										<ul>
+										<ul class="asset-list">
 											<?php
 											foreach ($agt->assets() as $a)
 											{
@@ -147,7 +147,7 @@ if (!$this->course->offering()->access('view')) { ?>
 													{
 														$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $agt->get('alias'));
 													}
-													echo '<li><a class="asset-type ' . $a->get('type') . '" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+													echo '<li><a class="asset ' . $a->get('type') . '" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 												}
 											}
 											?>
@@ -162,7 +162,7 @@ if (!$this->course->offering()->access('view')) { ?>
 												{
 													continue;
 												}
-												echo '<p class="note">' . stripslashes($a->get('content')) . '</p>';
+												echo '<p class="info">' . stripslashes($a->get('content')) . '</p>';
 											}
 										}
 										?>
@@ -174,7 +174,7 @@ if (!$this->course->offering()->access('view')) { ?>
 							</div><!-- / .detailsWrapper -->
 						</div><!-- / .details -->
 					<?php if ($unit->assets()->total()) { ?>
-						<ul>
+						<ul class="asset-list">
 						<?php
 						foreach ($unit->assets() as $a)
 						{
@@ -185,7 +185,7 @@ if (!$this->course->offering()->access('view')) { ?>
 								{
 									$href = JRoute::_($base . '&active=outline&a=' . $unit->get('alias'));
 								}
-								echo '<li><a class="" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+								echo '<li><a class="asset ' . $a->get('type') . '" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 							}
 						}
 						?>

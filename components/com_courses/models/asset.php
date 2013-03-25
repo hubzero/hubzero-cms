@@ -31,6 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
 
@@ -144,7 +145,11 @@ class CoursesModelAsset extends CoursesModelAbstract
 		if ($value && $this->get('section_id'))
 		{
 			$dt = new CoursesTableSectionDate($this->_db);
-			$dt->load($this->get('id'), $this->_scope, $this->get('section_id'));
+			$dt->load(
+				$this->get('id'), 
+				$this->_scope, 
+				$this->get('section_id')
+			);
 			$dt->set('publish_up', $this->get('publish_up'));
 			$dt->set('publish_down', $this->get('publish_down'));
 			if (!$dt->store())
@@ -240,6 +245,34 @@ class CoursesModelAsset extends CoursesModelAbstract
 		$view->option  = $option;
 
 		return $view->loadTemplate();
+	}
+
+	/**
+	 * Check a user's authorization
+	 * 
+	 * @param      string $action Action to check
+	 * @return     boolean True if authorized, false if not
+	 */
+	public function parents($filters=array())
+	{
+		if (!isset($filters['asset_id']))
+		{
+			$filters['asset_id'] = (int) $this->get('id');
+		}
+
+		$tbl = new CoursesTableAssetAssociation($this->_db);
+
+		if (isset($filters['count']) && $filters['count'])
+		{
+			return $tbl->count($filters);
+		}
+
+		if (!($results = $tbl->find($filters)))
+		{
+			$results = array();
+		}
+
+		return $results;
 	}
 }
 

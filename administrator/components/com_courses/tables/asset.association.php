@@ -173,6 +173,26 @@ class CoursesTableAssetAssociation extends JTable
 	{
 		$query = " FROM $this->_tbl AS caa";
 
+		$where = array();
+
+		if (isset($filters['asset_id']))
+		{
+			$where[] = "caa.asset_id=" . $this->_db->Quote((int) $filters['asset_id']);
+		}
+		if (isset($filters['scope_id']))
+		{
+			$where[] = "caa.scope_id=" . $this->_db->Quote((int) $filters['scope_id']);
+		}
+		if (isset($filters['scope']))
+		{
+			$where[] = "caa.scope=" . $this->_db->Quote((string) $filters['scope']);
+		}
+
+		if (count($where) > 0)
+		{
+			$query .= " WHERE " . implode(" AND ", $where);
+		}
+
 		return $query;
 	}
 
