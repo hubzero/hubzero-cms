@@ -126,6 +126,7 @@
 	#page_menu li .blog:before { content: "\f075"; } 
 	#page_menu li .snippet:before { content: "\f08e"; }
 	#page_menu li .courses:before { content: "\f09c"; }
+	#page_menu li .collections:before { content: "\f005"; }
 
 	#page_menu li a:hover {
 		border-bottom:none;
