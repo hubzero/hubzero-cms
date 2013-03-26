@@ -305,7 +305,7 @@ class GroupsGroup extends JTable
 				}
 				else
 				{
-					if ($value->role == 'managers')
+					if ($value->role == 'manager')
 					{
 						$results[$value->uidNumber] = $value;
 					}
