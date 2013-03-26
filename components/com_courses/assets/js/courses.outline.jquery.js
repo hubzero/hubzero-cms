@@ -793,6 +793,7 @@ HUB.CoursesOutline = {
 	attachFileUploader: function(selector)
 	{
 		var $ = this.jQuery;
+		var counter = 1;
 
 		// Set a default selector
 		selector = (selector) ? selector : '.uploadfiles';
@@ -810,7 +811,6 @@ HUB.CoursesOutline = {
 			var dialog          = $("#dialog-confirm");
 			var targetName      = '';
 			var ulCount         = 0;
-			var counter         = 1;
 
 			// Setup dialog message box
 			dialog.dialog({
