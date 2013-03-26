@@ -19,6 +19,7 @@ HUB.Presenter = {
 		track = null;
 		canSendTracking = true;
 		sendingTracking = false;
+		doneLoading = false;
 		
 		//add class presenter to body
 		jQ("body").addClass("presenter");
@@ -48,6 +49,12 @@ HUB.Presenter = {
 	
 	doneLoading: function() 
 	{
+		//make sure we didnt already run this - Firefox bug
+		if(doneLoading)
+		{
+			return;
+		}
+		
 		//remove the overlay
 		jQ('#overlayer').remove();
 		
@@ -55,7 +62,7 @@ HUB.Presenter = {
 		if(!flash) {
 			jQ('#player').get(0).play();
 		}
-		                                           
+		
 		//hide the control bar after 3 seconds
 		jQ("#control-box").delay(3000).fadeOut("slow");
 	},
@@ -1121,17 +1128,23 @@ HUB.Presenter = {
 	
 	locationHash: function()
 	{
+		//make sure we didnt already run this - Firefox bug
+		if(doneLoading)
+		{
+			return;
+		}
+		
 		//var to hold time component
 		var timeComponent = '';
-		
+
 		//get the url query string and clean up
 		var urlQuery = window.location.search,
 			urlQuery = urlQuery.replace("?", ""),
 			urlQuery = urlQuery.replace(/&amp;/g, "&");
-		
+
 		//split query string into individual params
 		var params = urlQuery.split('&');
-		
+
 		for(var i = 0; i < params.length; i++)
 		{
 			if(params[i].substr(0,4) == 'time')
@@ -1139,67 +1152,73 @@ HUB.Presenter = {
 				timeComponent = params[i];
 			}
 		}
-		
+
 		// do we have a time component (time=00:00:00 or time=00%3A00%3A00)
 		if(timeComponent != '')
 		{
 			//get the hours, minutes, seconds
 			var timeParts = timeComponent.split("=")[1].replace(/%3A/g, ':').split(':');
-			
+
 			//get time in seconds from hours, minutes, seconds
 			var time = (parseInt(timeParts[0]) * 60 * 60) + (parseInt(timeParts[1]) * 60) + parseInt(timeParts[2]);
-			
+
 			//show resume & pause video
 			HUB.Presenter.resume( HUB.Presenter.formatTime(time) );
-			
+
 			//seek to time
 			HUB.Presenter.seek( time );
 			HUB.Presenter.setProgress( time );
-			
+
 			//pause video
 			var p = HUB.Presenter.getPlayer();
 			p.pause();
+			
+			//we have handled
+			doneLoading = true;
 		}
 	},
 	
 	resume: function( time )
 	{
-		//video container must be position relatively 
-		jQ("#presenter-container").css('position', 'relative');
-		
-		//build replay content
-		var resume = "<div id=\"resume\"> \
-						<div id=\"resume-details\"> \
-							<h2>Resume Playback?</h2> \
-							<p>Would you like to resume video playback where you left off last time?</p> \
-							<div id=\"time\">" + time + "</div> \
-						</div> \
-						<a id=\"restart-video\" href=\"#\">Play from the Beginning</a> \
-						<a id=\"resume-video\" href=\"#\">Resume Video</a> \
-					  </div>";
-					
-		//add replay to video container
-		jQ( resume ).hide().appendTo("#presenter-container").fadeIn("slow");
-		
-		//restart video button
-		jQ("#restart-video").on('click',function(event){
-			event.preventDefault();
-			HUB.Presenter.doReplay("#resume");
-		});
-		
-		//resume video button
-		jQ("#resume-video").on('click',function(event){
-			event.preventDefault();
-			HUB.Presenter.doResume();
-		});
-		
-		//stop clicks on resume
-		jQ("#resume").on('click',function(event){
-			if(event.srcElement.id != 'restart-video' && event.srcElement.id != 'resume-video')
-			{
+		if (!jQ("#presenter-container #resume").length)
+		{
+			//video container must be position relatively 
+			jQ("#presenter-container").css('position', 'relative');
+
+			//build replay content
+			var resume = "<div id=\"resume\"> \
+							<div id=\"resume-details\"> \
+								<h2>Resume Playback?</h2> \
+								<p>Would you like to resume video playback where you left off last time?</p> \
+								<div id=\"time\">" + time + "</div> \
+							</div> \
+							<a id=\"restart-video\" href=\"#\">Play from the Beginning</a> \
+							<a id=\"resume-video\" href=\"#\">Resume Video</a> \
+						  </div>";
+			
+			//add replay to video container
+			jQ( resume ).hide().appendTo("#presenter-container").fadeIn("slow");
+			
+			//restart video button
+			jQ("#restart-video").on('click',function(event){
 				event.preventDefault();
-			}
-		})
+				HUB.Presenter.doReplay("#resume");
+			});
+			
+			//resume video button
+			jQ("#resume-video").on('click',function(event){
+				event.preventDefault();
+				HUB.Presenter.doResume();
+			});
+			
+			//stop clicks on resume
+			jQ("#resume").on('click',function(event){
+				if(event.srcElement.id != 'restart-video' && event.srcElement.id != 'resume-video')
+				{
+					event.preventDefault();
+				}
+			});
+		}
 	},
 	
 	doResume: function() 
