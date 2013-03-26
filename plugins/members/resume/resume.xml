@@ -34,6 +34,7 @@ HUBzero is a registered trademark of Purdue University.
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<authorEmail>alisa@purdue.edu</authorEmail>
+	<authorUrl>nanohub.org</authorUrl>
 	<version>1.5</version>
 	<description>Display user uploaded resume(s)</description>
 	<files>
@@ -45,6 +46,8 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
+				<field name="maxAllowed" type="text" menu="hide" default="40000000" label="Max upload" description="Maximum upload file size" />
+				<field name="file_ext" type="textarea" rows="10" cols="30" menu="hide" label="Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,txt,rtf,doc,docx,ppt" description="Allowed file types" />
 				<field name="limit" type="text" size="5" default="50" label="Display Limit" description="Number of items to return"/>
 			</fieldset>
 		</fields>

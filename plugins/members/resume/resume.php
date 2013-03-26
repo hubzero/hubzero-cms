@@ -491,6 +491,10 @@ class plgMembersResume extends JPlugin
 		}
 		$out .= '</div>' . "\n";
 		$out .= '<div class="subject">' . "\n";
+		if ($this->getError())
+		{
+			$out .= '<p class="error">' . implode('<br />', $this->getErrors()) . '</p>' . "\n";
+		}
 		if ($self && $file) 
 		{
 			$out .= '<div id="prefs" class="' . $class1 . '">' . "\n";
@@ -860,14 +864,21 @@ class plgMembersResume extends JPlugin
 		$file['name'] = JFile::makeSafe($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
+		$ext = strtolower(JFile::getExt($file['name']));
+		if (!in_array($ext, explode(',', $this->params->get('file_ext', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,txt,rtf,doc,docx,ppt')))) 
+		{
+			$this->setError(JText::_('Disallowed file type.'));
+			return $this->view($database, $option, $member, $emp);
+		}
+
 		$row = new Resume($database);
 
 		if (!$row->load($member->get('uidNumber'))) 
 		{
-				$row = new Resume($database);
-				$row->id   = 0;
-				$row->uid  = $member->get('uidNumber');
-				$row->main = 1;
+			$row = new Resume($database);
+			$row->id   = 0;
+			$row->uid  = $member->get('uidNumber');
+			$row->main = 1;
 		}
 		else if (file_exists($path . DS . $row->filename)) // remove prev file first
 		{

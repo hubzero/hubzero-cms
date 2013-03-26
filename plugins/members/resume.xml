@@ -43,6 +43,8 @@ HUBzero is a registered trademark of Purdue University.
 		<language tag="en-GB">en-GB.plg_members_resume.ini</language>
 	</languages>
 	<params>
+		<param name="maxAllowed" type="text" menu="hide" default="40000000" label="Max upload" description="Maximum upload file size" />
+		<param name="file_ext" type="textarea" rows="10" cols="30" menu="hide" label="Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,txt,rtf,doc,docx,ppt" description="Allowed file types" />
 		<param name="limit" type="text" size="5" default="50" label="Display Limit" description="Number of items to return"/>
 	</params>
 </install>
