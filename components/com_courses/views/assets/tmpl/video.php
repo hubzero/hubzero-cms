@@ -158,7 +158,7 @@ if ($type == 'hubpresenter')
 	$contents = file_get_contents($manifest_path_json[0]);
 
 	// Content folder
-	$content_folder = ltrim(rtrim($media_path), JPATH_ROOT);
+	$content_folder = ltrim(rtrim($media_path, DS), JPATH_ROOT);
 
 	// Decode the json formatted manifest so we can use the information
 	$presentation = json_decode($contents);
