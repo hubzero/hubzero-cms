@@ -244,7 +244,6 @@ class ForumControllerSections extends Hubzero_Controller
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$section = JRequest::getInt('section_id', 0);
 		$ids = JRequest::getVar('id', array());
 
 		// Do we have any IDs?
@@ -291,7 +290,7 @@ class ForumControllerSections extends Hubzero_Controller
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . $section,
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . JRequest::getInt('section_id', 0),
 			JText::_('Sections Successfully Removed')
 		);
 	}
