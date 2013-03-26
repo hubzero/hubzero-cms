@@ -37,14 +37,18 @@ $juser =& JFactory::getUser();
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 </div>
-<?php
-/*<div id="content-header-extra">
+
+<?php if ($this->config->get('access-create-course')) { ?>
+<div id="content-header-extra">
 	<ul id="useroptions">
-		<li class="last"><a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=new'); ?>"><?php echo JText::_('Create Course'); ?></a></li>
+		<li class="last">
+			<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=course&task=new'); ?>"><?php echo JText::_('Create Course'); ?></a>
+		</li>
 	</ul>
 </div><!-- / #content-header-extra -->
-*/
+<?php } ?>
 
+<?php
 	foreach ($this->notifications as $notification) {
 		echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
 	}
@@ -133,12 +137,12 @@ foreach ($letters as $letter)
 						}
 ?>
 						<?php echo JText::_('Courses'); ?> 
-<?php if ($this->filters['index']) { ?>
+						<?php if ($this->filters['index']) { ?>
 							<?php echo JText::_('starting with'); ?> "<?php echo strToUpper($this->filters['index']); ?>"
-<?php } ?>
-<?php if ($this->courses) { ?>
+						<?php } ?>
+					<?php if ($this->courses) { ?>
 						<span>(<?php echo $s.'-'.$e; ?> of <?php echo $this->total; ?>)</span>
-<?php } ?>
+					<?php } ?>
 					</caption>
 					<thead>
 						<tr>
@@ -158,16 +162,9 @@ if ($this->courses)
 	ximport('Hubzero_View_Helper_Html');
 	foreach ($this->courses as $course)
 	{
-		//
-		//$g = CoursesCourse::getInstance($course->id);
-		//$invitees = $course->get('invitees');
-		//$applicants = $g->get('applicants');
-		//$members = $g->get('members');
-		//$managers = $course->get('managers');
-		
 		//get status
 		$status = '';
-		
+
 		//determine course status
 		if ($course->get('state') == 1)
 		{
@@ -181,29 +178,20 @@ if ($this->courses)
 			$status = 'new';
 		}
 ?>
-						<tr<?php echo ($status) ? ' class="'.$status.'"' : ''; ?>>
+						<tr<?php echo ($status) ? ' class="' . $status . '"' : ''; ?>>
 							<th>
 								<span class="entry-id"><?php echo $course->get('id'); ?></span>
 							</th>
 							<td>
-								<a class="entry-title" href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$course->get('alias')); ?>"><?php echo $this->escape(stripslashes($course->get('title'))); ?></a><br />
+								<a class="entry-title" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $course->get('alias')); ?>">
+									<?php echo $this->escape(stripslashes($course->get('title'))); ?>
+								</a><br />
 								<!-- <span class="entry-details">
 									<span class="entry-alias"><?php echo $course->get('alias'); ?></span>
 								</span> -->
 								<?php echo Hubzero_View_Helper_Html::shortenText($course->get('blurb'), 200); ?>
 							</td>
-							<?php
-							/*<td>
-								switch ($course->join_policy)
-								{
-									case 3: echo '<span class="closed join-policy">'.JText::_('Closed').'</span>'."\n"; break;
-									case 2: echo '<span class="inviteonly join-policy">'.JText::_('Invite Only').'</span>'."\n"; break;
-									case 1: echo '<span class="restricted join-policy">'.JText::_('Restricted').'</span>'."\n";  break;
-									case 0:
-									default: echo '<span class="open join-policy">'.JText::_('Open').'</span>'."\n"; break;
-								}
-							</td>*/ ?>
-<?php /* if ($course->access('manage')) { ?>
+<?php /*if ($course->access('manage')) { ?>
 							<td>
 								<span class="<?php echo $status; ?> status"><?php
 									switch ($status)
@@ -229,13 +217,12 @@ if ($this->courses)
 <?php } ?>
 					</tbody>
 				</table>
-<?php
-$this->pageNav->setAdditionalUrlParam('index', $this->filters['index']);
-$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
-//$this->pageNav->setAdditionalUrlParam('policy', $this->filters['policy']);
+				<?php
+				$this->pageNav->setAdditionalUrlParam('index', $this->filters['index']);
+				$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
 
-echo $this->pageNav->getListFooter();
-?>
+				echo $this->pageNav->getListFooter();
+				?>
 				<div class="clearfix"></div>
 			</div><!-- / .container -->
 		</div><!-- / .subject -->

@@ -49,6 +49,8 @@ class CoursesControllerCourses extends Hubzero_Controller
 	{
 		$this->registerTask('__default', 'intro');
 
+		$this->_authorize('course');
+
 		parent::execute();
 	}
 
@@ -68,14 +70,13 @@ class CoursesControllerCourses extends Hubzero_Controller
 				JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
-
-			if ($this->_task == 'new') 
-			{
-				$pathway->addItem(
-					JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-					'index.php?option=' . $this->_option . '&task=' . $this->_task
-				);
-			}
+		}
+		if ($this->_task == 'new') 
+		{
+			$pathway->addItem(
+				JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
+				'index.php?option=' . $this->_option . '&task=' . $this->_task
+			);
 		}
 	}
 
@@ -218,6 +219,55 @@ class CoursesControllerCourses extends Hubzero_Controller
 		$this->view->config = $this->config;
 		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
 		$this->view->display();
+	}
+
+	/**
+	 * Set access permissions for a user
+	 * 
+	 * @return     void
+	 */
+	protected function _authorize($assetType='component', $assetId=null)
+	{
+		$this->config->set('access-view-' . $assetType, false);
+		if (!$this->juser->get('guest')) 
+		{
+			if (version_compare(JVERSION, '1.6', 'ge'))
+			{
+				$asset  = $this->_option;
+				if ($assetId)
+				{
+					$asset .= ($assetType != 'component') ? '.' . $assetType : '';
+					$asset .= ($assetId) ? '.' . $assetId : '';
+				}
+
+				$at = '';
+				if ($assetType != 'component')
+				{
+					$at .= '.' . $assetType;
+				}
+
+				// Admin
+				$this->config->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
+				$this->config->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
+				// Permissions
+				$this->config->set('access-create-' . $assetType, $this->juser->authorise('core.create' . $at, $asset));
+				$this->config->set('access-delete-' . $assetType, $this->juser->authorise('core.delete' . $at, $asset));
+				$this->config->set('access-edit-' . $assetType, $this->juser->authorise('core.edit' . $at, $asset));
+				$this->config->set('access-edit-state-' . $assetType, $this->juser->authorise('core.edit.state' . $at, $asset));
+				$this->config->set('access-edit-own-' . $assetType, $this->juser->authorise('core.edit.own' . $at, $asset));
+			}
+			else 
+			{
+				if ($this->juser->authorize($this->_option, 'manage'))
+				{
+					$this->config->set('access-manage-' . $assetType, true);
+					$this->config->set('access-admin-' . $assetType, true);
+					$this->config->set('access-create-' . $assetType, true);
+					$this->config->set('access-delete-' . $assetType, true);
+					$this->config->set('access-edit-' . $assetType, true);
+				}
+			}
+		}
 	}
 }
 

@@ -124,6 +124,12 @@ class plgCoursesDashboard extends JPlugin
 		$document =& JFactory::getDocument();
 		$document->setTitle($document->getTitle() . ': ' . JText::_('PLG_COURSES_' . strtoupper($this->_name)));
 
+		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway->addItem(
+			JText::_('PLG_COURSES_' . strtoupper($this->_name)), 
+			'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=' . $this->_name
+		);
+
 		//require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'announcement.php');
 
 		$action = JRequest::getWord('action', '');

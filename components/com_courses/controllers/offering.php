@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Controller');
 
 /**
- * Courses controller class
+ * Courses controller class for an offering
  */
 class CoursesControllerOffering extends Hubzero_Controller
 {
@@ -64,22 +64,15 @@ class CoursesControllerOffering extends Hubzero_Controller
 			return;
 		}
 
-		// Ensure it's an allowable course type to display
-		/*if ($this->course->get('type') != 1 && $this->course->get('type') != 3)
-		{
-			JError::raiseError(404, JText::_('COURSES_NO_COURSE_FOUND'));
-			return;
-		}*/
-
 		// Ensure the course has been published or has been approved
-		if ($this->course->get('state') != 1)
+		if (!$this->course->isAvailable())
 		{
 			JError::raiseError(404, JText::_('COURSES_NOT_PUBLISHED'));
 			return;
 		}
 
-		$this->inst = JRequest::getVar('offering', '');
-		if (!$this->inst)
+		// No offering provided
+		if (!($offering = JRequest::getVar('offering', '')))
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&controller=course&gid=' . $this->course->get('alias'))
@@ -87,37 +80,10 @@ class CoursesControllerOffering extends Hubzero_Controller
 			return;
 		}
 
-		//$this->instance = CoursesInstance::getInstance($this->inst);
-
 		// Ensure we found the course info
-		if (!$this->course->offering($this->inst)) 
+		if (!$this->course->offering($offering)) 
 		{
-			JError::raiseError(404, JText::_('COURSES_NO_COURSE_INSTANCE_FOUND'));
-			return;
-		}
-
-		// Check authorization
-		//$this->_authorize('course', $this->course->get('gidNumber'));
-		//$this->_authorize('instance', $this->course->offering()->id);
-
-		$this->active = JRequest::getVar('active', '');
-
-		if ($this->active && $this->_task) 
-		{
-			$this->action = ($this->_task == 'display') ? '' : $this->_task;
-			$this->_task = 'display';
-		}
-
-		//are we serving up a file
-		$uri = $_SERVER['REQUEST_URI'];
-		$name = substr(strrchr($uri, '/'), 1);
-
-		if (substr(strtolower($name), 0, strlen('image:')) == 'image:'
-		 || substr(strtolower($name), 0, strlen('file:')) == 'file:') 
-		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=media&task=download&file=' . $file
-			);
+			JError::raiseError(404, JText::_('COM_COURSES_NO_OFFERING_FOUND'));
 			return;
 		}
 
@@ -155,14 +121,6 @@ class CoursesControllerOffering extends Hubzero_Controller
 					stripslashes($this->course->offering()->get('title')),
 					'index.php?option=' . $this->_option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias')
 				);
-				
-				if ($this->active && $this->active != 'overview') 
-				{
-					$pathway->addItem(
-						JText::_('COURSE_' . strtoupper($this->active)), 
-						'index.php?option=' . $this->_option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=' . $this->active
-					);
-				}
 			}
 		}
 	}
@@ -199,7 +157,7 @@ class CoursesControllerOffering extends Hubzero_Controller
 	 */
 	public function loginTask($message = '')
 	{
-		$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&gid=' . $this->gid . '&instance=' . $this->instance->alias . 'task=' . $this->_task));
+		$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&gid=' . $this->gid . '&offering=' . $this->course->offering()->get('alias') . '&task=' . $this->_task, false, true));
 		$this->setRedirect(
 			JRoute::_('index.php?option=com_login&return=' . $return),
 			$message,
@@ -215,59 +173,38 @@ class CoursesControllerOffering extends Hubzero_Controller
 	 */
 	public function displayTask()
 	{
-		//$this->view->setLayout('instance');
-
-		//$inst = JRequest::getVar('instance', '');
-		//print_r($this->course->offering()); die();
+		// Check if the offering is available
 		if (!$this->course->offering()->isAvailable())
 		{
-			JError::raiseError(404, JText::_('COURSES_NO_COURSE_INSTANCE_FOUND'));
+			JError::raiseError(404, JText::_('COM_COURSES_NO_OFFERING_FOUND'));
 			return;
 		}
 
-		//$this->view->instance = CoursesInstance::getInstance($inst);
-		//$this->view->course = $this->course;
-		// Check authorization
-		//$authorized = $this->_authorize();
-
 		// Get the active tab (section)
-		$active = JRequest::getVar('active', 'outline');
+		$default = 'outline';
+		if ($this->course->offering()->access('manage', 'section'))
+		{
+			$default = 'dashboard';
+		}
+		$active = JRequest::getVar('active', $default);
 		$this->view->active = $active;
-
-		/*if ($tab == 'wiki') 
-		{
-			$path = '';
-		} 
-		else 
-		{
-			$path = DS . trim($this->config->get('uploadpath', '/site/courses'), DS);
-		}*/
-
-		// Get the course pages if any
-		//$GPages = new CoursesTablePage($this->database);
-		//$pages = $GPages->getPages($this->course->get('gidNumber'), true);
-
-		/*if (in_array($this->view->active, array_keys($this->course->offering()->pages())))
-		{
-			$wikiconfig['pagename'] .= DS . $this->view->active;
-		}*/
-
-		// Push some vars to the course pages
-		/*$GPages->parser     = $p;
-		$GPages->config     = $wikiconfig;
-		$GPages->course     = $this->course;
-		$GPages->authorized = 'manager'; //$authorized;
-		$GPages->tab        = $this->view->active;
-		$GPages->pages      = $this->course->offering()->pages();
-*/
-		// Get the content to display course pages
 
 		// Get configuration
 		$jconfig = JFactory::getConfig();
 
-		// Incoming
-		$limit = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
-		$start = JRequest::getInt('limitstart', 0);
+		// Push some needed styles to the template
+		// Pass in course type to include special css for paying courses
+		//$this->_getCourseStyles($this->course->get('type'));
+		$this->_getStyles($this->_option, $this->_controller . '.css');
+
+		// Push some needed scripts to the template
+		$this->_getScripts();
+
+		// Build the title
+		$this->_buildTitle();
+
+		// Build pathway
+		$this->_buildPathway($this->course->offering()->pages());
 
 		// Get plugins
 		JPluginHelper::importPlugin('courses');
@@ -283,65 +220,27 @@ class CoursesControllerOffering extends Hubzero_Controller
 			'display_menu_tab' => true
 		));
 
-		// Get plugin access
-		/*$course_plugin_access = Hubzero_Course_Helper::getPluginAccess($this->course);
-
-		// If active tab not overview and an not one of available tabs
-		if ($this->view->active != 'outline' && !in_array($this->view->active, array_keys($course_plugin_access))) 
-		{
-			$this->view->active = 'outline';
-		}*/
+		// Get tab access
 		foreach ($plugins as $plugin)
 		{
 			$course_plugin_access[$plugin['name']] = $plugin['default_access'];
 		}
+
+		// If active tab not outline and an not one of available tabs
 		if ($this->view->active != 'outline' && !in_array($this->view->active, array_keys($course_plugin_access))) 
 		{
 			$this->view->active = 'outline';
 		}
-
-		// Limit the records if we're on the overview page
-		/*if ($tab == 'overview') 
-		{
-			$limit = 5;
-		}
-
-		$limit = ($limit == 0) ? 'all' : $limit;*/
 
 		// Get the sections
 		$sections = $dispatcher->trigger('onCourse', array(
 				$this->config,
 				$this->course,
-				//$this->_option,
 				$this->course->offering(),
-				//$authorized,
-				//$limit,
-				//$start,
 				$this->action,
-				//$course_plugin_access,
 				array($this->view->active)
 			)
 		);
-
-		// Push some needed styles to the template
-		// Pass in course type to include special css for paying courses
-		//$this->_getCourseStyles($this->course->get('type'));
-		$this->_getStyles($this->_option, $this->_controller . '.css');
-
-		// Push some needed scripts to the template
-		$this->_getScripts();
-
-		// Add the courses JavaScript in for "special" courses
-		/*if ($this->course->get('type') == 3)
-		{
-			$this->_getScripts('assets/js/courses.jquery.js');
-		}*/
-
-		// Build the title
-		$this->_buildTitle();
-
-		// Build pathway
-		$this->_buildPathway($this->course->offering()->pages());
 
 		// Add the default "About" section to the beginning of the lists
 		if (($page = $this->course->offering()->page($active)))
@@ -359,6 +258,12 @@ class CoursesControllerOffering extends Hubzero_Controller
 			$p =& Hubzero_Wiki_Parser::getInstance();
 
 			//$layout = 'page';
+			$this->view->active = 'outline';
+			$pathway =& JFactory::getApplication()->getPathway();
+			$pathway->addItem(
+				stripslashes($page['title']), 
+				'index.php?option=' . $this->_option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=' . $this->view->active
+			);
 
 			$body = $p->parse($page['content'], $wikiconfig);
 		}
@@ -369,6 +274,7 @@ class CoursesControllerOffering extends Hubzero_Controller
 			//$doc->addScript('/components/com_courses/assets/js/plugins.js');
 
 			Hubzero_Document::addComponentScript($this->_option, 'assets/js/courses.offering');
+
 			$layout = $this->view->active;
 			if (($unit = JRequest::getVar('unit', '')))
 			{
@@ -390,13 +296,11 @@ class CoursesControllerOffering extends Hubzero_Controller
 			{
 				$view->group = $group;
 			}
-			//$view->course_overview = $GPages->displayPage();
-			//$view->tab = $GPages->tab;
+
 			$view->option     = $this->_option;
 			$view->controller = $this->_controller;
-			$view->tab        = $this->active;
+			$view->tab        = $this->view->active;
 			$view->course     = $this->course;
-			//$view->instance = $this->instance;
 			$view->database   = $this->database;
 			$view->config     = $this->config;
 
@@ -408,13 +312,19 @@ class CoursesControllerOffering extends Hubzero_Controller
 		}
 
 		// Push the overview view to the array of sections we're going to output
-		array_unshift($sections, array('html' => $body, 'metadata' => ''));
+		array_unshift(
+			$sections, 
+			array(
+				'html' => $body, 
+				'metadata' => ''
+			)
+		);
 
 		// If we are a special course load the special template
-		if ($this->course->get('type') == 3) 
+		/*if ($this->course->get('type') == 3) 
 		{
 			$this->view->setLayout('special');
-		}
+		}*/
 
 		$this->view->course               = $this->course;
 		$this->view->user                 = $this->juser;
@@ -423,8 +333,6 @@ class CoursesControllerOffering extends Hubzero_Controller
 		$this->view->course_plugin_access = $course_plugin_access;
 		$this->view->pages                = $this->course->offering()->pages();
 		$this->view->sections             = $sections;
-		//$this->view->tab                  = $tab;
-		//$this->view->authorized           = $authorized;
 		$this->view->notifications        = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
 		$this->view->display();
 	}
@@ -467,7 +375,7 @@ class CoursesControllerOffering extends Hubzero_Controller
 		}
 
 		// If we have a scope set, we're loading a specific outline piece (ex: a unit)
-		if($scope = JRequest::getWord('scope', false))
+		if ($scope = JRequest::getWord('scope', false))
 		{
 			// Setup view
 			$this->setView('manage', "edit{$scope}");
@@ -577,7 +485,7 @@ class CoursesControllerOffering extends Hubzero_Controller
 
 		// Redirect back to the course page
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('cn') . '&task=offerings')
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('alias') . '&task=offerings')
 		);
 	}
 
@@ -591,61 +499,8 @@ class CoursesControllerOffering extends Hubzero_Controller
 	public function deleteTask()
 	{
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('cn') . '&task=offerings')
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('alias') . '&task=offerings')
 		);
-	}
-
-	/**
-	 * Set access permissions for a user
-	 * 
-	 * @return     void
-	 */
-	protected function _authorize($assetType='component', $assetId=null)
-	{
-		$this->config->set('access-view-' . $assetType, false);
-		if (!$this->juser->get('guest')) 
-		{
-			if (version_compare(JVERSION, '1.6', 'ge'))
-			{
-				$asset  = $this->_option;
-				if ($assetId)
-				{
-					$asset .= ($assetType != 'component') ? '.' . $assetType : '';
-					$asset .= ($assetId) ? '.' . $assetId : '';
-				}
-
-				$at = '';
-				if ($assetType != 'component')
-				{
-					$at .= '.' . $assetType;
-				}
-
-				// Admin
-				$this->config->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
-				$this->config->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
-				// Permissions
-				$this->config->set('access-create-' . $assetType, $this->juser->authorise('core.create' . $at, $asset));
-				$this->config->set('access-delete-' . $assetType, $this->juser->authorise('core.delete' . $at, $asset));
-				$this->config->set('access-edit-' . $assetType, $this->juser->authorise('core.edit' . $at, $asset));
-				$this->config->set('access-edit-state-' . $assetType, $this->juser->authorise('core.edit.state' . $at, $asset));
-				$this->config->set('access-edit-own-' . $assetType, $this->juser->authorise('core.edit.own' . $at, $asset));
-			}
-			else 
-			{
-				if (in_array($this->juser->get('id'), $this->course->get('managers')))
-				{
-					$this->config->set('access-manage-' . $assetType, true);
-					$this->config->set('access-admin-' . $assetType, true);
-					$this->config->set('access-create-' . $assetType, true);
-					$this->config->set('access-delete-' . $assetType, true);
-					$this->config->set('access-edit-' . $assetType, true);
-				}
-				if (in_array($this->juser->get('id'), $this->course->get('members')))
-				{
-					$this->config->set('access-view-' . $assetType, true);
-				}
-			}
-		}
 	}
 }
 

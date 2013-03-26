@@ -101,7 +101,8 @@ class plgCoursesForum extends Hubzero_Plugin
 		{
 			if (!in_array($this_area['name'], $areas)) 
 			{
-				return $arr;
+				//return $arr;
+				$return = 'metadata';
 			}
 		}
 
@@ -263,6 +264,12 @@ class plgCoursesForum extends Hubzero_Plugin
 			ximport('Hubzero_Document');
 			Hubzero_Document::addPluginStylesheet('courses', $this->_name);
 			Hubzero_Document::addPluginScript('courses', $this->_name);
+
+			$pathway =& JFactory::getApplication()->getPathway();
+			$pathway->addItem(
+				JText::_('PLG_COURSES_' . strtoupper($this->_name)), 
+				'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=' . $this->_name
+			);
 
 			switch ($action)
 			{

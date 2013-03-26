@@ -41,7 +41,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$tz = true;
 }
 
-$rows = $this->offering->announcements(array('limit' => $this->params->get('display_limit', 3)));
+$rows = $this->offering->announcements(array('limit' => $this->params->get('display_limit', 1)));
 
 $wikiconfig = array(
 	'option'   => 'com_courses',
@@ -58,7 +58,7 @@ if ($rows->total() > 0)
 {
 	?>
 	<div class="announcements">
-		<h3><?php echo JText::_('Announcements'); ?></h3>
+		<!-- <h3><?php echo JText::_('Announcements'); ?></h3> -->
 		<?php
 		foreach ($rows as $row)
 		{

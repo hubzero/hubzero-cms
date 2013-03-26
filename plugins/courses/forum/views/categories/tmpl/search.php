@@ -12,16 +12,15 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$timeFormat = 'h:m a';
 	$tz = true;
 }
+
+$base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=forum';
 ?>
-<div id="content-header-extra">
-	<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum'); ?>"><?php echo JText::_('&larr; All categories'); ?></a></p>
-</div>
 <div class="main section">
 <?php foreach ($this->notifications as $notification) { ?>
 	<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
 <?php } ?>
 
-	<div class="aside">
+	<?php /*<div class="aside">
 <?php if ($this->config->get('access-create-thread')) { ?>
 		<div class="container">
 			<h3><?php echo JText::_('Start Your Own'); ?><span class="starter-point"></span></h3>
@@ -30,7 +29,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 				<?php echo JText::_('Create your own discussion where you and other users can discuss related topics.'); ?>
 			</p>
 			<p class="add">
-				<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum'); ?>"><?php echo JText::_('Add Discussion'); ?></a>
+				<a href="<?php echo JRoute::_($base . '&action=add'); ?>"><?php echo JText::_('Add Discussion'); ?></a>
 			</p>
 <?php } else { ?>
 			<p class="warning">
@@ -41,26 +40,28 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 <?php } ?>
 	</div><!-- / .aside -->
 
-	<div class="subject">
-		<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post">
+	<div class="subject"> */ ?>
+		<form action="<?php echo JRoute::_($base); ?>" method="post">
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
 				<fieldset class="entry-search">
-					<legend><?php echo JText::_('Search for articles'); ?></legend>				
+					<legend><?php echo JText::_('Search for posts'); ?></legend>
+
 					<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
 					<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" />
+
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-					<input type="hidden" name="controller" value="categories" />
-					<input type="hidden" name="task" value="search" />
+					<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
+					<input type="hidden" name="offering" value="<?php echo $this->offering->get('alias'); ?>" />
+					<input type="hidden" name="active" value="forum" />
+					<input type="hidden" name="action" value="search" />
 				</fieldset>
 			</div><!-- / .container -->
 			
 			<div class="container">
 				<table class="entries">
 					<caption>
-<?php
-					echo JText::sprintf('Search for "%s"', $this->escape($this->filters['search']));
-?>
+						<?php echo JText::sprintf('Search for "%s"', $this->escape($this->filters['search'])); ?>
 					</caption>
 					<tbody>
 <?php
@@ -84,12 +85,12 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 								<span class="entry-id"><?php echo $this->escape($row->id); ?></span>
 							</th>
 							<td>
-								<a class="entry-title" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('cn') . '&active=forum&scope=' . $this->sections[$this->categories[$row->category_id]->section_id]->alias . '/' . $this->categories[$row->category_id]->alias . '/' . $thread); ?>">
+								<a class="entry-title" href="<?php echo JRoute::_($base . '&unit=' . $this->categories[$row->category_id]->alias . '&b=' . $thread); ?>">
 									<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
 								</a>
 								<span class="entry-details">
 									<span class="entry-date">
-										<?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?>
+										<time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $dateFormat, $tz); ?></time>
 									</span>
 									<?php echo JText::_('by'); ?>
 									<span class="entry-author">
@@ -114,21 +115,20 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 				}
 			} else { ?>
 						<tr>
-							<td><?php echo JText::_('There are currently no discussions.'); ?></td>
+							<td><?php echo JText::_('No discussions found.'); ?></td>
 						</tr>
 <?php 		} ?>
 					</tbody>
 				</table>
 <?php 
-			if ($this->pageNav) {
-				// @FIXME: Nick's Fix Based on Resources View
-				$pf = $this->pageNav->getListFooter();
-				//var_dump($pf);
-				$nm = str_replace('com_', '', $this->option);
-				//$pf = str_replace($nm.'/?',$nm.'/'.$this->course->get('cn').'/'.$this->_element.'/?',$pf);
-				echo $pf;
-				//echo $this->pageNav->getListFooter();
-				// @FIXME: End Nick's Fix
+			if ($this->pageNav) 
+			{
+				$this->pageNav->setAdditionalUrlParam('gid', $this->course->get('alias'));
+				$this->pageNav->setAdditionalUrlParam('offering', $this->offering->get('alias'));
+				$this->pageNav->setAdditionalUrlParam('active', 'forum');
+				$this->pageNav->setAdditionalUrlParam('action', 'search');
+				$this->pageNav->setAdditionalUrlParam('q', $this->filters['search']);
+				echo $this->pageNav->getListFooter();
 			}
 ?>
 				<div class="clear"></div>

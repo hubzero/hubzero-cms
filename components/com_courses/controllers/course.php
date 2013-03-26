@@ -34,6 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Controller');
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'tags.php');
 
 /**
  * Courses controller class
@@ -59,56 +60,38 @@ class CoursesControllerCourse extends Hubzero_Controller
 	 * @param      array $course_pages List of roup pages
 	 * @return     void
 	 */
-	public function _buildPathway()
+	protected function _buildPathway()
 	{
 		$pathway =& JFactory::getApplication()->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0) 
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_name)),
+				JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
+		}
+		if ($this->course->exists()) 
+		{
+			$pathway->addItem(
+				stripslashes($this->course->get('title')),
+				'index.php?option=' . $this->_option . '&gid=' . $this->course->get('alias')
+			);
 
-			if ($this->course->exists()) 
+			/*if ($this->active) 
 			{
 				$pathway->addItem(
-					stripslashes($this->course->get('title')),
-					'index.php?option=' . $this->_option . '&gid=' . $this->course->get('id')
+					JText::_(strtoupper($this->_option) . '_' . strtoupper($this->active)), 
+					'index.php?option=' . $this->_option . '&gid=' . $this->course->get('alias') . '&active=' . $this->active
 				);
-
-				if ($this->_task && in_array($this->_task, array('display', 'edit', 'offerings'))) 
-				{
-					$pathway->addItem(
-						JText::_(strtoupper($this->_name) . '_' . strtoupper($this->_task)),
-						'index.php?option=' . $this->_option . '&gid=' . $this->course->get('id') . '&task=' . $this->_task
-					);
-				}
-
-				if ($this->active && $this->active != 'overview') 
-				{
-					/*if (in_array($this->active, array_keys($course_pages))) 
-					{
-						$text = JText::_($course_pages[$this->active]['title']);
-					} 
-					else 
-					{
-						$text = JText::_('COURSE_' . strtoupper($this->active));
-					}*/
-
-					$pathway->addItem(
-						JText::_('COURSE_' . strtoupper($this->active)), 
-						'index.php?option=' . $this->_option . '&gid=' . $this->course->get('id') . '&active=' . $this->active
-					);
-				}
-			}
-			else if ($this->_task == 'new') 
-			{
-				$pathway->addItem(
-					JText::_(strtoupper($this->_name) . '_' . strtoupper($this->_task)),
-					'index.php?option=' . $this->_option . '&task=' . $this->_task
-				);
-			}
+			}*/
+		}
+		else 
+		{
+			$pathway->addItem(
+				JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
+				'index.php?option=' . $this->_option . '&task=' . $this->_task
+			);
 		}
 	}
 
@@ -117,19 +100,21 @@ class CoursesControllerCourse extends Hubzero_Controller
 	 * 
 	 * @return     void
 	 */
-	public function _buildTitle()
+	protected function _buildTitle()
 	{
 		//set title used in view
-		$this->_title = JText::_(strtoupper($this->_name));
-
-		if ($this->_task && $this->_task != 'intro') 
-		{
-			$this->_title = JText::_(strtoupper($this->_name . '_' . $this->_task));
-		}
+		$this->_title = JText::_(strtoupper($this->_option));
 
 		if ($this->course->exists()) 
 		{
-			$this->_title = JText::_('COURSE') . ': ' . stripslashes($this->course->get('title'));
+			$this->_title .= ': ' . stripslashes($this->course->get('title'));
+		}
+		else
+		{
+			if ($this->_task && $this->_task != 'intro') 
+			{
+				$this->_title .= JText::_(strtoupper($this->_option . '_' . $this->_task));
+			}
 		}
 
 		//set title of browser window
@@ -165,18 +150,6 @@ class CoursesControllerCourse extends Hubzero_Controller
 			JError::raiseError(404, JText::_('COURSES_NO_COURSE_FOUND'));
 			return;
 		}
-
-		/*$this->view->wikiconfig = array(
-			'option'   => $this->_option,
-			'scope'    => '',
-			'pagename' => $this->course->get('alias'),
-			'pageid'   => $this->course->get('id'),
-			'filepath' => DS . ltrim($this->config->get('uploadpath', '/site/courses'), DS),
-			'domain'   => $this->course->get('alias')
-		);
-
-		ximport('Hubzero_Wiki_Parser');
-		$this->view->parser = Hubzero_Wiki_Parser::getInstance();*/
 
 		// Push some needed styles to the template
 		// Pass in course type to include special css for paying courses

@@ -52,7 +52,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
 				<fieldset class="entry-search">
-					<legend><?php echo JText::_('Search for articles'); ?></legend>
+					<legend><?php echo JText::_('Search for posts'); ?></legend>
 
 					<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
 					<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" />

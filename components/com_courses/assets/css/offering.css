@@ -528,6 +528,12 @@
 			color: rgba(20,208,0,1.0);
 			background: #353535;
 		}
+		#course_options a.dropdown {
+			text-align: center;
+		}
+		#course_options a.dropdown:hover {
+			color: #fff;
+		}
 
 	.caret {
 		display: inline-block;
@@ -1414,17 +1420,17 @@
 	}
 /*#course-outline .weeksection h4 {
 	margin: 0px 0 0.1em;
-	}*/
+	}
 #course-outline .weeksection ul {
 	padding: 0 0 15px 0;
 	margin: 0;
-	list-style:none;
-	overflow:hidden;
+	list-style: none;
+	overflow: hidden;
 	}
 #course-outline .weeksection ul li {
 	float: left;
 	margin: 3px 15px 0 0;
-	}
+	}*/
 #course-outline .weeksection ul.nofloat li {
 	float: none;
 	font-size: 1.2em;
@@ -1434,10 +1440,27 @@
 	padding: 0 0 0 15px;
 	position: relative;
 	}
+#course-outline .weeksection p {
+	margin: 0 20px 15px 20px;
+}
+#course-outline .asset-list {
+	margin: 0 20px 15px 20px;
+	list-style: none;
+}
 #course-outline .asset-group {
 	border-bottom: 1px solid #BBB;
 	margin: 0 20px 15px 20px;
 }
+#course-outline .asset-group .asset-list {
+	padding: 0 0 15px 0;
+	margin: 0;
+	list-style: none;
+	overflow: hidden;
+}
+#course-outline .asset-group .asset-list li {
+	float: left;
+	margin: 3px 15px 0 0;
+	}
 #course-outline .asset-group h5 {
 	margin: 0 0 3px 0;
 }

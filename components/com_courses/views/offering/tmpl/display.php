@@ -41,18 +41,18 @@ $membership_control = $this->config->get('membership_control', 1);
 //get no_html request var
 $no_html = JRequest::getInt( 'no_html', 0 );
 
+$base = 'index.php?option=' . $this->option . '&controller=course&gid=' . $this->course->get('alias');
+
 if (!$no_html) : ?>
 	<div id="content-header">
 		<h2>
-			<!-- <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=course&gid=' . $this->course->get('alias')); ?>"> -->
-				<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
-			<!-- </a> -->
+			<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
 		</h2>
 	</div>
 	<div id="content-header-extra">
 		<ul>
 			<li>
-				<a class="browse btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=course&gid=' . $this->course->get('alias')); ?>">
+				<a class="browse btn" href="<?php echo JRoute::_($base); ?>">
 					<?php echo JText::_('Course Overview'); ?>
 				</a>
 			</li>
@@ -62,96 +62,41 @@ if (!$no_html) : ?>
 	<div class="innerwrap">
 		<div id="page_container">
 			<div id="page_sidebar">
-				<?php
-					//default logo
-					//$default_logo = DS.'components'.DS.$this->option.DS.'assets'.DS.'img'.DS.'course_default_logo.png';
 
-					//logo link - links to course overview page
-					$link = JRoute::_('index.php?option='.$this->option.'&controller=course&gid='.$this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias'));
-
-					//path to course uploaded logo
-					//$path = '/site/courses/'.$this->course->get('gidNumber').DS.$this->course->get('logo');
-
-					//if logo exists and file is uploaded use that logo instead of default
-					//$src = ($this->course->get('logo') != '' && is_file(JPATH_ROOT.$path)) ? $path : $default_logo;
-				?>
 				<div id="page_identity">
-					<a href="<?php echo $link; ?>" title="<?php echo $this->escape(stripslashes($this->course->offering()->get('title'))); ?> Home">
+					<a href="<?php echo JRoute::_($base . '&offering=' . $this->course->offering()->get('alias')); ?>" title="<?php echo $this->escape(stripslashes($this->course->offering()->get('title'))); ?> Home">
 						<?php echo $this->escape(stripslashes($this->course->offering()->get('title'))); ?>
 					</a>
 				</div><!-- /#page_identity -->
-				
+			
+			<?php if ($this->course->offering()->access('view')) : ?>
 				<ul id="course_options">
-					<?php /*if (in_array($this->user->get('id'), $this->course->offering()->get('invitees'))) : ?>
-						<?php if ($membership_control == 1) : ?>
-							<li>
-								<a class="course-invited" href="/courses/<?php echo $this->course->get('alias'); ?>/accept">Accept Course Invitation</a>
-							</li>
-						<?php endif; ?>
-					<?php elseif ($this->course->get('join_policy') == 3 && !in_array($this->user->get('id'), $this->course->offering()->get('members'))) : ?>
-						<li><span class="course-closed">Course Closed</span></li>
-					<?php elseif ($this->course->get('join_policy') == 2 && !in_array($this->user->get('id'), $this->course->offering()->get('members'))) : ?>
-						<li><span class="course-inviteonly">Course is Invite Only</span></li>
-					<?php else*/
-					if (!$this->course->offering()->access('view')) : ?>
-						<?php //if ($membership_control == 1) : ?> 
-							<li>
-								<a class="course-join" href="/courses/<?php echo $this->course->get('alias'); ?>/join">Enroll</a>
-							</li>
-						<?php //endif; ?> 
-					<?php /*elseif ($this->course->get('join_policy') == 1 && !in_array($this->user->get('id'), $this->course->offering()->get('members'))) : ?>
-						<?php if($membership_control == 1) : ?>
-							<?php if(in_array($this->user->get('id'), $this->course->get("applicants"))) : ?>
-								<li><span class="course-pending">Request Waiting Approval</span></li>
-							<?php else : ?>
-								<li>
-									<a class="course-request" href="/courses/<?php echo $this->course->get('alias'); ?>/join">Request Course Membership</a>
-								</li>
-							<?php endif; ?>
-						<?php endif;*/ ?>
-					<?php else : ?>
-						<?php //$isManager = $this->course->offering()->access('manage'); ?>
-						<?php //$canCancel = (($isManager && count($this->course->get("managers")) > 1) || (!$isManager && in_array($this->user->get('id'), $this->course->offering()->section()->members()))) ? true : false; ?>
-						<?php if ($this->course->offering()->access('manage', 'section')) : ?>
+					<?php if ($this->course->offering()->access('manage', 'section')) : ?>
 						<li class="no-float">
-							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias')); ?>" class="dropdown course-manager">
+							<a href="<?php echo JRoute::_($base . '&offering=' . $this->course->offering()->get('alias')); ?>" class="dropdown course-manager">
 								<?php echo 'Manager'; //($isManager) ? 'Manager' : 'Member'; ?>
 								<span class="caret"></span>
 							</a>
 							<ul class="dropdown-menu pull-right">
-								<?php //if ($isManager) : ?>
-									<?php if ($this->course->offering()->access('manage', 'section')) : ?> 
-										<li><a class="course-invite" href="/courses/<?php echo $this->course->get('alias'); ?>/invite">Invite Students</a></li>
-									<?php endif; ?>
-									<!-- <li><a class="course-edit" href="/courses/<?php echo $this->course->get('alias'); ?>/edit">Edit Course Settings</a></li>
-									<li><a class="course-customize" href="/courses/<?php echo $this->course->get('alias'); ?>/customize">Customize Course</a></li> -->
-									<?php if ($this->course->offering()->access('manage')) { ?>
-									<li><a class="course-outline" href="/courses/<?php echo $this->course->get('alias'); ?>/manage/<?php echo $this->course->offering()->get('alias'); ?>">Build Outline</a></li>
-									<li><a class="course-pages" href="/courses/<?php echo $this->course->get('alias'); ?>/manage/<?php echo $this->course->offering()->get('alias'); ?>/pages">Manage Pages</a></li>
-									<?php } else if ($this->course->offering()->access('manage', 'section')) { ?>
-									<li><a class="course-outline" href="/courses/<?php echo $this->course->get('alias'); ?>/manage/<?php echo $this->course->offering()->get('alias'); ?>">Change Dates</a></li>
-									<?php } ?>
-								<?php //endif; ?>
-								<?php /*if ($canCancel) : ?>
-									<?php if($membership_control == 1) : ?> 
-										<li><a class="course-cancel" href="/courses/<?php echo $this->course->get('alias'); ?>/cancel">Cancel Membership</a></li>
-										<?php if($isManager): ?>
-											<li class="divider"></li>
-										<?php endif; ?>
-									<?php endif; ?>
-								<?php endif;*/ ?>
-								<?php //if ($isManager) : ?>
-									<?php if ($this->course->access('manage')) : ?> 
-										<li class="divider"></li>
-										<li><a class="course-delete" href="/courses/<?php echo $this->course->get('alias'); ?>/delete">Delete Offering</a></li>
-									<?php endif; ?>
-								<?php //endif; ?>
+						<?php if ($this->course->offering()->access('manage', 'section')) : ?> 
+								<li><a class="course-invite" href="/courses/<?php echo $this->course->get('alias'); ?>/invite">Invite Students</a></li>
+						<?php endif; ?>
+						<?php if ($this->course->offering()->access('manage')) { ?>
+								<li><a class="course-outline" href="/courses/<?php echo $this->course->get('alias'); ?>/manage/<?php echo $this->course->offering()->get('alias'); ?>">Build Outline</a></li>
+								<li><a class="course-pages" href="/courses/<?php echo $this->course->get('alias'); ?>/manage/<?php echo $this->course->offering()->get('alias'); ?>/pages">Manage Pages</a></li>
+						<?php } else if ($this->course->offering()->access('manage', 'section')) { ?>
+								<li><a class="course-outline" href="/courses/<?php echo $this->course->get('alias'); ?>/manage/<?php echo $this->course->offering()->get('alias'); ?>">Change Dates</a></li>
+						<?php } ?>
+						<?php if ($this->course->access('manage')) : ?> 
+								<li class="divider"></li>
+								<li><a class="course-delete" href="/courses/<?php echo $this->course->get('alias'); ?>/delete">Delete Offering</a></li>
+						<?php endif; ?>
 							</ul>
 						</li>
-						<?php endif; ?>
 					<?php endif; ?>
 				</ul><!-- /#page_options -->
-				
+			<?php endif; ?>
+
 				<ul id="page_menu">
 					<?php
 						//echo Hubzero_Course_Helper::displayCourseMenu($this->course, $this->course->offering(), $this->sections, $this->plugins, $this->course_plugin_access, $this->pages, $this->active);
@@ -167,7 +112,9 @@ if (!$no_html) : ?>
 							//do we want to show category in menu?
 							if ($cat['display_menu_tab'])
 							{
-								if (!$this->course->offering()->access('manage', 'section') && isset($this->course_plugin_access[$cat['name']]) && $this->course_plugin_access[$cat['name']] == 'managers')
+								if (!$this->course->offering()->access('manage', 'section') 
+								 && isset($this->course_plugin_access[$cat['name']]) 
+								 && $this->course_plugin_access[$cat['name']] == 'managers')
 								{
 									continue;
 								}
@@ -263,7 +210,7 @@ if (!$no_html) : ?>
 						echo $course_menu;
 					?>
 				</ul><!-- /#page_menu -->
-				
+
 				<div id="page_info">
 					<?php 
 						$dateFormat = '%d %b, %Y';
@@ -290,48 +237,19 @@ if (!$no_html) : ?>
 					</div>
 				</div>
 			</div><!-- /#page_sidebar --> 
-			
+
 			<div id="page_main">
-				<?php if($this->course->get('type') == 3) : ?>
-					<a href="/home" id="special-course-tab" class="" title="<?php echo $config->getValue("sitename"); ?> :: Learn more about this course page and access to more <?php echo $config->getValue("sitename"); ?> content.">
-						<?php echo $config->getValue("sitename"); ?>
-						<span></span>
-					</a>
-				<?php endif; ?>
-				
-				<!-- <div id="page_header">
-					<h2><a href="/courses/<?php echo $this->course->get('alias'); ?>"><?php echo $this->course->get('title'); ?></a></h2>
-					<span class="divider">►</span>
-					<h3>
-						<?php
-						/*	foreach($this->plugins as $cat)
-							{
-								if($this->active == $cat['name'])
-								{
-									echo $cat['title'];
-								}
-							}*/
-							echo $this->escape(stripslashes($this->course->offering()->get('title')));
-						?>
-					</h3>
-					<?php
-						/*if($this->active == 'outline') : 
-							$gt = new CoursesTags( $database );
-							echo $gt->get_tag_cloud(0,0,$this->course->get('gidNumber'));
-						endif;*/
-						//echo $this->escape(stripslashes($this->course->offering()->get('title')));
-					?>
-				</div><!-- /#page_header -->
 				<div id="page_notifications">
 					<?php
-						foreach($this->notifications as $notification) {
-							echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
+						foreach ($this->notifications as $notification) 
+						{
+							echo '<p class="' . $this->escape($notification['type']) . '">' . $this->escape($notification['message']) . '</p>';
 						}
 					?>
 				</div><!-- /#page_notifications -->
-				
+
 				<div id="page_content" class="course_<?php echo $this->active; ?>">
-					<?php endif; ?>
+<?php endif; ?>
 
 					<?php
 					for ($i=0, $n=count($this->plugins); $i < $n; $i++)
@@ -341,10 +259,9 @@ if (!$no_html) : ?>
 							echo $this->sections[$i]['html'];
 						}
 					}
-						//echo Hubzero_Course_Helper::displayCourseContent($this->sections, $this->plugins, $this->active);
 					?>
 
-					<?php if (!$no_html) : ?>
+<?php if (!$no_html) : ?>
 				</div><!-- /#page_content -->
 			</div><!-- /#page_main -->
 		</div><!-- /#page_container -->

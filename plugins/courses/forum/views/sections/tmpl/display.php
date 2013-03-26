@@ -95,7 +95,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 	</div><!-- / .aside -->
 
 	<div class="subject">
-		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=forum'); ?>" method="post">
+		<form action="<?php echo JRoute::_($base); ?>" method="post">
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
 				<fieldset class="entry-search">

@@ -45,19 +45,19 @@
 		color: #fff;
 		white-space: nowrap;
 	}
-	.courses tbody .member {
+	.courses tbody tr .member {
 		background-color: #66AA00;
 	}
-	.courses tbody .manager {
+	.courses tbody tr .manager {
 		background-color: #ff1177;
 	}
-	.courses tbody .pending {
+	.courses tbody tr .pending {
 		background-color: #AA3300;
 	}
-	.courses tbody .invitee {
+	.courses tbody tr .invitee {
 		background-color: #aaaaaa;
 	}
-	/* Table row */
+	/* Table row 
 	.courses tbody tr.pending {
 		background: #ffe url("/components/com_courses/assets/img/light-stripes.png");
 	}
@@ -69,7 +69,7 @@
 	}
 	.courses tbody tr.invitee {
 		background: #F9F9F9 url("/components/com_courses/assets/img/light-stripes.png");
-	}
+	}*/
 	/* Join Policies */
 	.courses tbody .join-policy {
 		font-size: 85%;
