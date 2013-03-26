@@ -152,6 +152,9 @@
 	-moz-border-radius: 4px;
 	border-radius: 4px;
 }
+.closed {
+	overflow: hidden;
+}
 .closed h4 {
 	display: block;
 	float: right;

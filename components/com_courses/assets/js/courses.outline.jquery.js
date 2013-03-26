@@ -218,11 +218,11 @@ HUB.CoursesOutline = {
 			tolerance: 'pointer',
 			opacity: '0.6',
 			items: 'li:not(.add-new, .asset)',
-			start: function(){
+			start: function(e, ui){
 				// Style the placeholdwer based on the size of the item grabbed
 				$(".placeholder").css({
-					'height': $(event.target).parent('asset-group-item').outerHeight(),
-					'margin': $(event.target).parent('asset-group-item').css('margin')
+					'height': ui.item.outerHeight(),
+					'margin': ui.item.css('margin')
 				});
 			},
 			update: function(){
