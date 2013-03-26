@@ -218,7 +218,7 @@ ximport('Hubzero_User_Profile_Helper');
 	</div><!-- / .subject -->
 	<div class="clear"></div>
 </div><!-- / .main section -->
-<?php if ($this->config->get('access-create-post')) { ?>
+<?php //if ($this->config->get('access-create-post')) { ?>
 <div class="below section">
 	<h3 class="post-comment-title">
 		<?php echo JText::_('COM_FORUM_ADD_COMMENT'); ?>
@@ -281,13 +281,13 @@ ximport('Hubzero_User_Profile_Helper');
 				}
 				$now = date('Y-m-d H:i:s', time());
 ?>
-				<img src="<?php echo $thumb; ?>" alt="" />
+				<img src="<?php echo $thumb; ?>" alt="<?php echo JText::_('COM_FORUM_USER_PHOTO'); ?>" />
 			</p>
 	
 			<fieldset>
 			<?php if ($juser->get('guest')) { ?>
 				<p class="warning"><?php echo JText::_('COM_FORUM_LOGIN_COMMENT_NOTICE'); ?></p>
-			<?php } else { ?>
+			<?php } else if ($this->config->get('access-create-post')) { ?>
 				<p class="comment-title">
 					<strong>
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape($juser->get('name')); ?></a>
@@ -347,6 +347,8 @@ ximport('Hubzero_User_Profile_Helper');
 				<p class="submit">
 					<input type="submit" value="<?php echo JText::_('COM_FORUM_SUBMIT'); ?>" />
 				</p>
+			<?php } else { ?>
+				<p class="warning"><?php echo JText::_('COM_FORUM_PERMISSION_DENIED'); ?></p>
 			<?php } ?>
 		
 				<div class="sidenote">
@@ -371,5 +373,5 @@ ximport('Hubzero_User_Profile_Helper');
 		</form>
 	</div><!-- / .subject -->
 	<div class="clear"></div>
-<?php } ?>
+<?php //} ?>
 </div><!-- / .below section -->
