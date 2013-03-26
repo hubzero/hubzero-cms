@@ -129,7 +129,7 @@ $base = 'index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&
 						</div>
 	<?php } ?>
 <?php } else { ?>
-					<p><?php echo JText::_('PLG_COURSES_MEMBERS_NO_RESULTS'); ?></p>
+					<p><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_NO_RESULTS'); ?></p>
 <?php } ?>
 
 			<?php 
