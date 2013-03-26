@@ -316,14 +316,14 @@ class MwSession extends JTable
 
 		if ($authorized === 'admin') 
 		{
-			$query = "SELECT * FROM $this->_tbl AS s ORDER BY s.start";
+			$query = "SELECT * FROM $this->_tbl AS s ORDER BY s.accesstime DESC";
 		} 
 		else 
 		{
 			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s
 					  ON v.sessnum = s.sessnum
 					  WHERE v.viewuser='" . $username . "' $a
-					  ORDER BY s.start";
+					  ORDER BY s.accesstime DESC";
 		}
 
 		if (empty($this->_db))

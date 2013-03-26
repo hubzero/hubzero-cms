@@ -238,6 +238,7 @@ class ToolsApiController extends Hubzero_Api_Controller
 		//get any request vars
 		$type 		= JRequest::getVar('type', 'png');
 		$sessionid 	= JRequest::getVar('sessionid', '');
+		$notFound	= JRequest::getVar('not_found', 0);
 		$format 	= JRequest::getVar('format', 'json');
 		
 		$image_type = IMAGETYPE_PNG;
@@ -291,8 +292,15 @@ class ToolsApiController extends Hubzero_Api_Controller
 		
 		if(!file_exists($screenshot))
 		{
-			$this->errorMessage(404,'No screenshot Found.');
-			return;
+			if($notFound)
+			{
+				$screenshot = JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'assets' . DS . 'img' . DS . 'screenshot-notfound.png';
+			}
+			else
+			{
+				$this->errorMessage(404,'No screenshot Found.');
+				return;	
+			}
 		}
 		
 		//load image and serve up
@@ -472,6 +480,8 @@ class ToolsApiController extends Hubzero_Api_Controller
 		//add session title to ouput
 		$output->tool = $app->title;
 		$output->session_title = $app->caption;
+		$output->owner = 1;
+		$output->readonly = 0;
 		
 		//return result
 		if( $status )

@@ -13,6 +13,15 @@
 
 */
 
+/* Handle Static Modules */
+.com_members div.draggable .emphasis .session-storage {
+	background-color:#FFF;
+	color:#555;
+}
+.com_members div.draggable .emphasis .session-storage a {
+	color:#69C;
+}
+
 .session-list {
 	border-top: none;
 	-webkit-border-bottom-right-radius: 9px;
