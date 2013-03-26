@@ -991,7 +991,7 @@ class plgMembersDashboard extends Hubzero_Plugin
 		// Get all entries that do NOT have the selected module
 		$mp = new MyhubPrefs($this->database);
 		$rows = $mp->getPrefs($module);
-
+		
 		// Did we get any results?
 		if ($rows) 
 		{
@@ -1029,9 +1029,10 @@ class plgMembersDashboard extends Hubzero_Plugin
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&plugin=dashboard',
+			'index.php?option=com_members&controller=plugins' . $this->_controller . '&task=manage&plugin=dashboard',
 			JText::_('Module successfully pushed')
 		);
+		return;
 	}
 
 	/**
