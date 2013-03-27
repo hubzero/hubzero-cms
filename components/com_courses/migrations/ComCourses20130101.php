@@ -331,7 +331,7 @@ class ComCourses20130101 extends Migration{
 				PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-			CREATE OR REPLACE ALGORITHM=UNDEFINED DEFINER=`myhub`@`localhost` SQL SECURITY DEFINER VIEW `jos_courses_form_latest_responses_view`
+			CREATE OR REPLACE ALGORITHM=UNDEFINED DEFINER=CURRENT_USER SQL SECURITY DEFINER VIEW `jos_courses_form_latest_responses_view`
 			AS SELECT
 				 `fre`.`id` AS `id`,
 				 `fre`.`respondent_id` AS `respondent_id`,
