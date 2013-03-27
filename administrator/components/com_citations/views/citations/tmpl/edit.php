@@ -88,7 +88,12 @@ function submitbutton(pressbutton)
 	//}
 }
 </script>
-
+<?php
+	if ($this->getError())
+	{
+		echo '<p class="error">' . $this->getError() . '</p>';
+	}
+?>
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-70 fltlft">
 		<fieldset class="adminform">

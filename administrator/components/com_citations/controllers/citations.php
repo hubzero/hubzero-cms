@@ -125,96 +125,122 @@ class CitationsControllerCitations extends Hubzero_Controller
 	 * 
 	 * @return     void
 	 */
-	public function editTask($row=null)
+	public function editTask()
 	{
+		//stop menu from working?
 		JRequest::setVar('hidemainmenu', 1);
-
+		
+		//force edit layout
 		$this->view->setLayout('edit');
-
-		$this->view->config = $this->config;
-
-		if (is_object($row))
-		{
-			$this->view->type = $row;
-		}
-		else 
-		{
-			// Incoming - expecting an array id[]=4232
-			$id = JRequest::getVar('id', array());
-			$id = (is_array($id) && !empty($id)) ? $id[0] : 0;
-
-			// Load the object
-			$this->view->row = new CitationsCitation($this->database);
-			$this->view->row->load($id);
-		}
-
+		
+		//get request vars - expecting an array id[]=4232
+		$id = JRequest::getVar('id', array());
+		$id = (is_array($id) && !empty($id)) ? $id[0] : 0;
+		
 		//get all citations sponsors
 		$cs = new CitationsSponsor($this->database);
 		$this->view->sponsors = $cs->getSponsor();
-
-		// Load the associations object
-		$assoc = new CitationsAssociation($this->database);
-
-		// No ID, so we're creating a new entry
-		// Set the ID of the creator
-		if (!$this->view->row->id) 
+		
+		//get all citation types
+		$ct = new CitationsType($this->database);
+		$this->view->types = $ct->getType();
+		
+		//empty citation object
+		$this->view->row = new CitationsCitation($this->database);
+		
+		//params class object
+		$paramsClass = (version_compare(JVERSION, '1.6', 'ge')) ? 'JRegistry' : 'JParameter';
+		
+		//if we have an id load that citation data
+		if (isset($id) && $id != '' && $id != 0)
 		{
-			$this->view->row->uid = $this->juser->get('id');
+			// Load the citation object
+			$this->view->row->load( $id );
+			
+			// Get the associations
+			$assoc = new CitationsAssociation($this->database);
+			$this->view->assocs = $assoc->getRecords(array('cid' => $id));
+			
+			//get sponsors for citation
+			$this->view->row_sponsors = $cs->getCitationSponsor($this->view->row->id);
+			
+			//get the citations tags
+			$sql = "SELECT t.*
+					FROM #__tags_object to1 
+					INNER JOIN #__tags t ON t.id = to1.tagid 
+					WHERE to1.tbl='citations' 
+					AND to1.objectid=" . $this->database->quote( $id ) . "
+					AND to1.label=''";
+			$this->database->setQuery($sql);
+			$this->view->tags = $this->database->loadAssocList();
 
+			//get the badges
+			$sql = "SELECT t.*
+					FROM #__tags_object to1 
+					INNER JOIN #__tags t ON t.id = to1.tagid 
+					WHERE to1.tbl='citations' 
+					AND to1.objectid=" . $this->database->quote( $id ) . "
+					AND to1.label='badge'";
+			$this->database->setQuery($sql);
+			$this->view->badges = $this->database->loadAssocList();
+			
+			//parse citation params
+			$this->view->params = new $paramsClass($this->view->row->params);
+		}
+		else
+		{
+			//set the creator
+			$this->view->row->uid = $this->juser->get('id');
+			
 			// It's new - no associations to get
 			$this->view->assocs = array();
 			
 			//array of sponsors - empty
 			$this->view->row_sponsors = array();
-		} 
-		else 
-		{
-			// Get the associations
-			$this->view->assocs = $assoc->getRecords(array('cid' => $id));
 			
-			//get sponsors for citation
-			$this->view->row_sponsors = $cs->getCitationSponsor($this->view->row->id);
+			//empty tags and badges arrays
+			$this->view->tags = array();
+			$this->view->badges = array();
+			
+			//empty params object
+			$this->view->params = new $paramsClass('');
 		}
-
-		//get the citations tags
-		$sql = "SELECT t.*
-				FROM #__tags_object to1 
-				INNER JOIN #__tags t ON t.id = to1.tagid 
-				WHERE to1.tbl='citations' 
-				AND to1.objectid={$id}
-				AND to1.label=''";
-		$this->database->setQuery($sql);
-		$this->view->tags = $this->database->loadAssocList();
-
-		//get the badges
-		$sql = "SELECT t.*
-				FROM #__tags_object to1 
-				INNER JOIN #__tags t ON t.id = to1.tagid 
-				WHERE to1.tbl='citations' 
-				AND to1.objectid={$id}
-				AND to1.label='badge'";
-		$this->database->setQuery($sql);
-		$this->view->badges = $this->database->loadAssocList();
-
-		$ct = new CitationsType($this->database);
-		$this->view->types = $ct->getType();
-
-		// Set any errors
-		if ($this->getError()) 
+		
+		//are we padding back the citation data
+		if (isset($this->row))
 		{
-			foreach ($this->getErrors() as $error)
+			$this->view->row = $this->row;
+		}
+		
+		//are we passing back the tags from edit
+		if ($this->tags != '')
+		{
+			$this->tags = explode(',', $this->tags);
+			foreach ($this->tags as $tag)
 			{
-				$this->view->setError($error);
+				$this->view->tags[]['raw_tag'] = $tag;
 			}
 		}
-
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
+		
+		//are we passing back the tags from edit
+		if ($this->badges != '')
 		{
-			$paramsClass = 'JRegistry';
+			$this->badges = explode(',', $this->badges);
+			foreach ($this->badges as $badge)
+			{
+				$this->view->badges[]['raw_tag'] = $badge;
+			}
 		}
-		$this->view->params = new $paramsClass($this->view->row->params);
-
+		
+		// Set any errors
+		if ($this->getError())
+		{
+			$this->view->setError($this->getError());
+		}
+		
+		//set vars for view
+		$this->view->config = $this->config;
+		
 		// Output the HTML
 		$this->view->display();
 	}
@@ -252,33 +278,37 @@ class CitationsControllerCitations extends Hubzero_Controller
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-
-		$citation = JRequest::getVar('citation', array(), 'post');
-		$citation = array_map('trim', $citation);
+		
+		$citation = array_map('trim', JRequest::getVar('citation', array(), 'post'));
 		$exclude = JRequest::getVar('exclude', '', 'post');
 		$rollover = JRequest::getInt("rollover", 0);
-
+		$this->tags = trim(JRequest::getVar('tags', ''));
+		$this->badges = trim(JRequest::getVar('badges', ''));
+		$this->sponsors = JRequest::getVar('sponsors', array(), 'post');
+		
 		// Bind incoming data to object
 		$row = new CitationsCitation($this->database);
 		if (!$row->bind($citation)) 
 		{
-			$this->addComponentMessage($row->getError(), 'error');
-			$this->editTask($row);
+			$this->row = $row;
+			$this->setError( $row->getError() );
+			$this->editTask();
 			return;
 		}
-
+		
+		//params class object
 		$paramsClass = 'JParameter';
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
 			$paramsClass = 'JRegistry';
 		}
-
+		
 		//set params
 		$cparams = new $paramsClass($this->_getParams($row->id));
 		$cparams->set('exclude', $exclude);
 		$cparams->set('rollover', $rollover);
 		$row->params = $cparams->toString();
-
+		
 		// New entry so set the created date
 		if (!$row->id) 
 		{
@@ -288,24 +318,24 @@ class CitationsControllerCitations extends Hubzero_Controller
 		// Check content for missing required data
 		if (!$row->check()) 
 		{
-			$this->addComponentMessage($row->getError(), 'error');
-			$this->editTask($row);
+			$this->row = $row;
+			$this->setError( $row->getError() );
+			$this->editTask();
 			return;
 		}
 
 		// Store new content
 		if (!$row->store()) 
 		{
-			$this->addComponentMessage($row->getError(), 'error');
-			$this->editTask($row);
+			$this->row = $row;
+			$this->setError( $row->getError() );
+			$this->editTask();
 			return;
 		}
 
 		// Incoming associations
 		$arr = JRequest::getVar('assocs', array(), 'post');
-
 		$ignored = array();
-
 		foreach ($arr as $a)
 		{
 			$a = array_map('trim',$a);
@@ -349,30 +379,19 @@ class CitationsControllerCitations extends Hubzero_Controller
 				}
 			}
 		}
-
+		
 		//save sponsors on citation
-		$sponsors = JRequest::getVar('sponsors', array(), 'post');
-		if($sponsors)
+		if ($this->sponsors)
 		{
 			$cs = new CitationsSponsor($this->database);
-			$cs->addSponsors($row->id, $sponsors);
+			$cs->addSponsors($row->id, $this->sponsors);
 		}
 		
-		//citation tags object
+		//add tags & badges 
 		$ct = new CitationTags($this->database);
-
-		//get the tags
-		$tags = trim(JRequest::getVar('tags', ''));
-
-		//get the badges
-		$badges = trim(JRequest::getVar('badges', ''));
-
-		//add tags
-		$ct->tag_object($this->juser->get("id"), $row->id, $tags, 1, false, "");
-
-		//add badges
-		$ct->tag_object($this->juser->get("id"), $row->id, $badges, 1, false, "badge");
-
+		$ct->tag_object($this->juser->get("id"), $row->id, $this->tags, 1, false, "");
+		$ct->tag_object($this->juser->get("id"), $row->id, $this->badges, 1, false, "badge");
+		
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
