@@ -47,7 +47,7 @@ if (JRequest::getInt('nonadmin', 0) == 1)
 
 $this->database = JFactory::getDBO();
 
-$base = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias');
+$base = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . ($this->course->offering()->section()->get('alias') != '__default' ? ':' . $this->course->offering()->section()->get('alias') : '');
 
 // Get the current time
 $now = date("Y-m-d H:i:s");

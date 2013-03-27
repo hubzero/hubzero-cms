@@ -64,7 +64,7 @@ if (!$no_html) : ?>
 			<div id="page_sidebar">
 
 				<div id="page_identity">
-					<a href="<?php echo JRoute::_($base . '&offering=' . $this->course->offering()->get('alias')); ?>" title="<?php echo $this->escape(stripslashes($this->course->offering()->get('title'))); ?> Home">
+					<a href="<?php echo JRoute::_($base . '&offering=' . $this->course->offering()->get('alias') . ($this->course->offering()->section()->get('alias') != '__default' ? ':' . $this->course->offering()->section()->get('alias') : '')); ?>" title="<?php echo $this->escape(stripslashes($this->course->offering()->get('title'))); ?> Home">
 						<?php echo $this->escape(stripslashes($this->course->offering()->get('title'))); ?>
 					</a>
 				</div><!-- /#page_identity -->
@@ -130,7 +130,7 @@ if (!$no_html) : ?>
 								//$access = $access_levels[$cat['name']];
 
 								//menu link
-								$link = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=' . $active);
+								$link = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . ($this->course->offering()->section()->get('alias') != '__default' ? ':' . $this->course->offering()->section()->get('alias') : '') . '&active=' . $active);
 
 								//Are we on the overview tab with sub course pages?
 								if ($cat['name'] == 'outline' && count($this->pages) > 0)
@@ -158,7 +158,7 @@ if (!$no_html) : ?>
 										//page vars
 										$title = $page['title'];
 										$cls = ($true_active_tab == $page['url']) ? 'active' : '';
-										$link = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=' . $page['url']);
+										$link = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . ($this->course->offering()->section()->get('alias') != '__default' ? ':' . $this->course->offering()->section()->get('alias') : '') . '&active=' . $page['url']);
 
 										//page menu item
 										if (!$this->course->offering()->access('view'))
