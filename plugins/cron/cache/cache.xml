@@ -28,16 +28,16 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension version="1.7" type="plugin" group="cron">
-	<name>Cron - Support</name>
+	<name>Cron - Cache</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2013 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>Cron events for support</description>
+	<description>Cron events for cache</description>
 	<files>
-		<filename plugin="support">support.php</filename>
+		<filename plugin="cache">cache.php</filename>
 	</files>
 	<languages>
-		<language tag="en-GB">en-GB.plg_cron_support.ini</language>
+		<language tag="en-GB">en-GB.plg_cron_cache.ini</language>
 	</languages>
 	<config>
 		<fields name="params">

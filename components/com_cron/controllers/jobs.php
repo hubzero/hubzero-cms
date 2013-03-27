@@ -111,6 +111,12 @@ class CronControllerJobs extends Hubzero_Controller
 			}
 		}
 
+		if (!JDEBUG)
+		{
+			JError::raiseError(403, JText::_('Permission denied'));
+			return;
+		}
+
 		$this->view->output = $output;
 
 		if ($this->getError()) 

@@ -20,8 +20,8 @@
 
 <install version="1.5" type="plugin" group="cron">
 	<name>Cron - Support</name>
-	<author>Shawn Rice</author>
-	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<author>HUBzero</author>
+	<copyright>Copyright 2005-2013 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
 	<description>Cron events for support</description>
 	<files>
@@ -31,6 +31,5 @@
 		<language tag="en-GB">en-GB.plg_cron_support.ini</language>
 	</languages>
 	<params>
-		<param name="display_limit" type="text" size="5" default="50" label="Display Limit" description="Number of items to return"/>
 	</params>
 </install>
