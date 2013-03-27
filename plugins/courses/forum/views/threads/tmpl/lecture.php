@@ -240,7 +240,7 @@ ximport('Hubzero_User_Profile_Helper');
 				$view->config     = $this->config;
 				$view->depth      = 0;
 				$view->cls        = 'odd';
-				$view->base       = $base;
+				$view->base       = $base . '&active=outline';
 				$view->parser     = $p;
 				$view->wikiconfig = $wikiconfig;
 				$view->attach     = $this->attach;

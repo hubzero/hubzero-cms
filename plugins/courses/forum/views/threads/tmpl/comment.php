@@ -79,7 +79,7 @@ defined('_JEXEC') or die('Restricted access');
 		
 		<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
 			<div class="comment-add hide" id="comment-form<?php echo $this->comment->id; ?>">
-				<form action="<?php echo JRoute::_($this->base); ?>" method="post" enctype="multipart/form-data">
+				<form action="<?php echo JRoute::_($this->base . '&unit=' . $this->unit . '&b=' . $this->lecture); ?>" method="post" enctype="multipart/form-data">
 					<fieldset>
 						<legend><span><?php echo JText::sprintf('PLG_COURSES_FORUM_REPLYING_TO', (!$this->comment->anonymous ? $name : JText::_('PLG_COURSES_FORUM_ANONYMOUS'))); ?></span></legend>
 
