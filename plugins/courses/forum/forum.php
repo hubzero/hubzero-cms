@@ -182,6 +182,7 @@ class plgCoursesForum extends Hubzero_Plugin
 						$cat->state = 1;
 						$cat->scope = 'course';
 						$cat->scope_id = $this->offering->get('id');
+						$cat->object_id = $unit->get('id');
 						if ($cat->check())
 						{
 							$cat->store();
@@ -423,6 +424,7 @@ class plgCoursesForum extends Hubzero_Plugin
 				$category->state       = 1;
 				$category->scope       = 'course';
 				$category->scope_id    = $course->offering()->get('id');
+				$category->object_id   = $lecture->get('unit_id');
 				if ($category->check())
 				{
 					$category->store();
