@@ -58,7 +58,7 @@ defined('_JEXEC') or die('Restricted access');
 						<span class="date"><time datetime="<?php echo $this->comment->modified; ?>"><?php echo JHTML::_('date', $this->comment->modified, $dateFormat, $tz); ?></time></span>
 					<?php } ?>
 				</a>
-			<?php if ($this->course->offering()->member($this->comment->created_by)->get('id') && !$this->course->offering()->member($this->comment->created_by)->get('student')) { ?>
+			<?php if (!$this->comment->anonymous && $this->course->offering()->member($this->comment->created_by)->get('id') && !$this->course->offering()->member($this->comment->created_by)->get('student')) { ?>
 				<span class="role <?php echo strtolower($this->course->offering()->member($this->comment->created_by)->get('role_alias')); ?>">
 					<?php echo $this->escape(stripslashes($this->course->offering()->member($this->comment->created_by)->get('role_title'))); ?>
 				</span>
@@ -84,6 +84,9 @@ defined('_JEXEC') or die('Restricted access');
 						<?php echo JText::_('PLG_COURSES_FORUM_REPLY'); ?>
 					</a>
 				<?php } ?>
+				<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=forum&id=' . $this->comment->id . '&parent=' . $this->comment->parent); ?>" rel="comment-form<?php echo $this->comment->id; ?>">
+					<?php echo JText::_('PLG_COURSES_FORUM_REPORT_ABUSE'); ?>
+				</a>
 			</p>
 		
 		<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>

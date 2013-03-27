@@ -25,7 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if ($this->comments) { ?>
+if ($this->comments && is_array($this->comments)) { ?>
 	<ol class="comments">
 <?php 
 	$cls = 'odd';

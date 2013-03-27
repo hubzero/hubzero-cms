@@ -116,6 +116,10 @@ if (!$this->course->offering()->access('view')) { ?>
 						{
 							$cls = 'edit';
 						}
+						if ($a->get('type') == 'link')
+						{
+							$cls = 'link';
+						}
 						echo '<li><a class="' . $cls . ' btn" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 					}
 				}

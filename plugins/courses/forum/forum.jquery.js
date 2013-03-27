@@ -22,6 +22,15 @@ if (!jq) {
 	var jq = $;
 }
 
+String.prototype.nohtml = function () {
+	if (this.indexOf('?') == -1) {
+		return this + '?no_html=1';
+	} else {
+		return this + '&no_html=1';
+	}
+	//return this;
+};
+
 HUB.Plugins.CoursesForum = {
 	jQuery: jq,
 	
@@ -56,6 +65,38 @@ HUB.Plugins.CoursesForum = {
 				$(this).closest('.comment-add').addClass('hide');
 			});
 		});
+		
+		if ($('#commentform').length > 0) {
+			//$('#comment-form').on('submit', function(e) {
+			$('#comments-container').on('submit', '#commentform', function(e) {
+				e.preventDefault();
+				$.post($(this).attr('action').nohtml(), $(this).serialize(), function(data) {
+					$('#comments-container ol.comments').hide().html(data).fadeIn(500);
+				});
+			});
+		}
+		
+		if ($('#comments-container').length > 0) {
+			var limit = parseInt($('#limit').val()),
+				start = 0; // + limit,
+				url = $('#comments-container').attr('data-action') + '?no_html=1&limit=0&start='; //' + limit + '
+
+			$('#comments-container .list-footer')
+				.css('display', 'none')
+				.after('<a id="loadmore" href="' + url + start + '">Show more comments</a>');
+
+			$('#loadmore').on('click', function(e){
+					e.preventDefault();
+					$('#limit').val('0');
+					//console.log('click!');
+					$.get(url + start, {}, function(data) {
+						start += limit;
+						//console.log($(data).eq(1).find('ol.comments').html());
+						$('#comments-container ol.comments').hide().html(data).fadeIn(500);
+						//$('#comments-container ol.comments').append(data);
+					});
+				});
+		}
 	} // end initialize
 }
 

@@ -418,7 +418,8 @@ class ForumPost extends JTable
 				$query .= implode(" AND ", $where);
 			}
 			
-			if (isset($filters['limit']) && $filters['limit'] != 0) 
+			//if (isset($filters['limit']) && $filters['limit'] != 0) 
+			if (!isset($filters['count']) || !$filters['count']) 
 			{
 				if (isset($filters['sticky']) && $filters['sticky'] == false) 
 				{
@@ -454,6 +455,7 @@ class ForumPost extends JTable
 	public function getCount($filters=array())
 	{
 		$filters['limit'] = 0;
+		$filters['count'] = true;
 
 		$query = "SELECT COUNT(*) " . $this->buildQuery($filters);
 

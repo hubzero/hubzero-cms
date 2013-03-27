@@ -353,9 +353,11 @@ class plgCoursesForum extends Hubzero_Plugin
 		$view->notifications = $this->getPluginMessage();
 		$view->config = $this->params;
 
+		$jconfig = JFactory::getConfig();
+
 		// Incoming
 		$view->filters = array();
-		$view->filters['limit']    = JRequest::getInt('limit', 25);
+		$view->filters['limit']    = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
 		$view->filters['start']    = JRequest::getInt('limitstart', 0);
 		$view->filters['section']  = JRequest::getVar('section', '');
 		$view->filters['category'] = JRequest::getVar('category', '');
@@ -364,6 +366,8 @@ class plgCoursesForum extends Hubzero_Plugin
 		$view->filters['scope']    = 'course';
 		$view->filters['scope_id'] = $course->offering()->get('id');
 		$view->filters['sticky'] = false;
+		$view->no_html = JRequest::getInt('no_html', 0);
+
 		$sort = JRequest::getVar('sort', 'newest');
 		switch ($sort)
 		{
@@ -520,6 +524,13 @@ class plgCoursesForum extends Hubzero_Plugin
 			{
 				$this->view->setError($error);
 			}
+		}
+
+		if ($view->no_html == 1)
+		{
+			ob_clean();
+			echo $view->loadTemplate();
+			exit();
 		}
 
 		return $view->loadTemplate();
@@ -936,10 +947,12 @@ class plgCoursesForum extends Hubzero_Plugin
 			)
 		);
 
+		$jconfig = JFactory::getConfig();
+
 		// Incoming
 		$view->filters = array();
 		$view->filters['authorized'] = 1;
-		$view->filters['limit']    = JRequest::getInt('limit', 25);
+		$view->filters['limit']    = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
 		$view->filters['start']    = JRequest::getInt('limitstart', 0);
 		$view->filters['section']  = JRequest::getVar('section', '');
 		$view->filters['category'] = JRequest::getVar('category', '');
@@ -1022,10 +1035,12 @@ class plgCoursesForum extends Hubzero_Plugin
 			)
 		);
 
+		$jconfig = JFactory::getConfig();
+
 		// Incoming
 		$this->view->filters = array();
 		$this->view->filters['authorized'] = 1;
-		$this->view->filters['limit']    = JRequest::getInt('limit', 25);
+		$this->view->filters['limit']    = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
 		$this->view->filters['start']    = JRequest::getInt('limitstart', 0);
 		$this->view->filters['search']   = JRequest::getVar('q', '');
 		$this->view->filters['scope']    = 'course';
@@ -1340,9 +1355,11 @@ class plgCoursesForum extends Hubzero_Plugin
 			)
 		);
 
+		$jconfig = JFactory::getConfig();
+
 		// Incoming
 		$view->filters = array();
-		$view->filters['limit']    = JRequest::getInt('limit', 25);
+		$view->filters['limit']    = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
 		$view->filters['start']    = JRequest::getInt('limitstart', 0);
 		$view->filters['section']  = $this->offering->get('alias'); //JRequest::getVar('section', '');
 		$view->filters['category'] = JRequest::getVar('category', '');
@@ -1753,7 +1770,7 @@ class plgCoursesForum extends Hubzero_Plugin
 					include_once(JPATH_ROOT . DS . 'plugins' . DS . 'courses' . DS . 'memberoptions' . DS . 'memberoption.class.php');
 
 					// Find the user's course settings, do they want to get email (0 or 1)?
-					$courseMemberOption = new courses_MemberOption($this->database);
+					$courseMemberOption = new Courses_MemberOption($this->database);
 					$courseMemberOption->loadRecord(
 						$this->course->get('id'), 
 						$user->id, 
@@ -1799,6 +1816,12 @@ class plgCoursesForum extends Hubzero_Plugin
 					$this->setError(JText::_('COM_COURSES_ERROR_EMAIL_MEMBERS_FAILED'));
 				}
 			}
+		}
+
+		if (JRequest::getInt('no_html', 0) == 1)
+		{
+			$unit = $this->course->offering()->unit($category->alias);
+			return $this->onCourseAfterLecture($this->course, $unit, $unit->assetgroup($model->object_id));
 		}
 
 		$rtrn = base64_decode(JRequest::getVar('return', '', 'post'));

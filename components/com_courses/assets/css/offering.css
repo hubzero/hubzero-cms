@@ -1011,9 +1011,11 @@
 		bottom: 0;
 		left: -6px;
 	}*/
+	.btn.link,
 	.btn.download {
 		padding: 0.4em 0.91em 0.4em 2.91em;
 	}
+	.btn.link:before,
 	.btn.download:before {
 		background: #e3e3e3;
 		background: rgba(0, 0, 0, 0.08);
@@ -1038,6 +1040,13 @@
 	}
 	.btn.exam:before {
 		content: "\270D";
+	}
+	.btn.link:before {
+		content: "\26D3";
+	}
+	.btn.link:after {
+		display: none;
+		content: "";
 	}
 	.lecture-assets {
 		list-style: none;

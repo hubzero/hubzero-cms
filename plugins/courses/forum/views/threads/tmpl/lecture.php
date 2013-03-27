@@ -46,7 +46,9 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias');
 
 ximport('Hubzero_User_Profile_Helper');
+if (!$this->no_html) {
 ?>
+<div id="comments-container" data-action="<?php echo JRoute::_($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias')); ?>">
 
 <div class="below section">
 	<h4 class="post-comment-title">
@@ -142,7 +144,7 @@ ximport('Hubzero_User_Profile_Helper');
 ?>
 				</label> */ ?>
 
-				<label for="field-upload">
+				<label for="field-upload" id="comment-upload">
 					<span class="label-text"><?php echo JText::_('PLG_COURSES_FORUM_LEGEND_ATTACHMENTS'); ?>:</span>
 					<input type="file" name="upload" id="field-upload" />
 				</label>
@@ -207,7 +209,7 @@ ximport('Hubzero_User_Profile_Helper');
 			<a<?php if ($this->filters['sort_Dir'] == 'DESC') { echo ' class="active"'; } ?> href="<?php echo JRoute::_($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias') . '&sort=newest'); ?>">Newest</a> | 
 			<a<?php if ($this->filters['sort_Dir'] == 'ASC') { echo ' class="active"'; } ?> href="<?php echo JRoute::_($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias') . '&sort=oldest'); ?>">Oldest</a>
 		</p>
-		
+<?php } ?>
 			<?php
 			if ($this->rows) {
 				ximport('Hubzero_User_Profile');
@@ -249,15 +251,19 @@ ximport('Hubzero_User_Profile_Helper');
 			} else { ?>
 				<p><?php echo JText::_('PLG_COURSES_FORUM_NO_REPLIES_FOUND'); ?></p>
 		<?php } ?>
+<?php if (!$this->no_html) { ?>
 		<form action="<?php echo JRoute::_($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias')); ?>" method="get">
 		<?php 
-		$this->pageNav->setAdditionalUrlParam('gid', $this->course->get('alias'));
-		$this->pageNav->setAdditionalUrlParam('offering', $this->course->offering()->get('alias'));
-		$this->pageNav->setAdditionalUrlParam('active', 'outline');
-		$this->pageNav->setAdditionalUrlParam('unit', $this->unit->get('alias'));
-		$this->pageNav->setAdditionalUrlParam('b', $this->lecture->get('alias'));
+		if ($this->pageNav->total > $this->pageNav->limit)
+		{
+			$this->pageNav->setAdditionalUrlParam('gid', $this->course->get('alias'));
+			$this->pageNav->setAdditionalUrlParam('offering', $this->course->offering()->get('alias'));
+			$this->pageNav->setAdditionalUrlParam('active', 'outline');
+			$this->pageNav->setAdditionalUrlParam('unit', $this->unit->get('alias'));
+			$this->pageNav->setAdditionalUrlParam('b', $this->lecture->get('alias'));
 
-		echo $this->pageNav->getListFooter();
+			echo $this->pageNav->getListFooter();
+		}
 		?>
 		<!-- <p>
 			<a id="loadmore" href="#">
@@ -268,3 +274,5 @@ ximport('Hubzero_User_Profile_Helper');
  	</div><!-- / .subject -->
 	<div class="clear"></div>
 </div><!-- / .main section -->
+</div>
+<?php } ?>
