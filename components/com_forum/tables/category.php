@@ -298,6 +298,7 @@ class ForumCategory extends JTable
 		{
 			$query .= " AND scope_id=" . $this->_db->Quote($scope_id) . " AND scope=" . $this->_db->Quote($scope);
 		}
+		$query .= " LIMIT 1";
 
 		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc()) 
