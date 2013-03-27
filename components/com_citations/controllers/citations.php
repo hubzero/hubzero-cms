@@ -400,7 +400,12 @@ class CitationsControllerCitations extends Hubzero_Controller
 		if ($allowImport == 0 
 		 || ($allowImport == 2 && $this->juser->get('usertype') != 'Super Administrator'))
 		{
-			$this->displayTask();
+			// Redirect
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option, false),
+				JText::_('You don\'t have permission to upload citaions on this hub.'),
+				'warning'
+			);
 			return;
 		}
 
