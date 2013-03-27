@@ -29,6 +29,10 @@ defined('_JEXEC') or die('Restricted access');
 	}
 
 	$cls = isset($this->cls) ? $this->cls : 'odd';
+	if ($this->course->offering()->member($this->comment->created_by)->get('id'))
+	{
+		$cls .= ' ' . strtolower($this->course->offering()->member($this->comment->created_by)->get('role_alias'));
+	}
 
 	$comment  = $this->parser->parse(stripslashes($this->comment->comment), $this->wikiconfig, false);
 	$comment .= $this->attach->getAttachment(
@@ -54,6 +58,11 @@ defined('_JEXEC') or die('Restricted access');
 						<span class="date"><time datetime="<?php echo $this->comment->modified; ?>"><?php echo JHTML::_('date', $this->comment->modified, $dateFormat, $tz); ?></time></span>
 					<?php } ?>
 				</a>
+			<?php if ($this->course->offering()->member($this->comment->created_by)->get('id') && !$this->course->offering()->member($this->comment->created_by)->get('student')) { ?>
+				<span class="role <?php echo strtolower($this->course->offering()->member($this->comment->created_by)->get('role_alias')); ?>">
+					<?php echo $this->escape(stripslashes($this->course->offering()->member($this->comment->created_by)->get('role_title'))); ?>
+				</span>
+			<?php } ?>
 			</p>
 			<?php echo $comment; ?>
 		

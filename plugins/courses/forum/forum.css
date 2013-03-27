@@ -1,14 +1,14 @@
 /**
  * @package     hubzero-cms
- * @file        plugins/groups/forum/forum.css
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @file        plugins/courses/forum/forum.css
+ * @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 /*
 
 	-- -- -- -- -- -- --
-	group forum CSS
+	courses forum CSS
 	-- -- -- -- -- -- --
 
 */
@@ -157,21 +157,56 @@
 	#loadmore {
 		display: block;
 	}
-/* Article Listing 
-	.main h3,
-	.below h3 {
-		font-weight: normal;
-		text-transform: uppercase;
-		letter-spacing: 1px;
-		margin: 1em 0 1em 0;
-		padding: 0.5em 0 0.5em 0;
-		border-bottom: 1px solid #efefef;
+	
+	ol.comments .manager>.comment-content {
+		border-color: #504545;
 	}
-	.main h3.thread-title,
-	.below h3.post-comment-title {
-		margin-right: 235px;
-	}*/
+	ol.comments .manager>.comment-content:before {
+		border-color: transparent #504545 transparent transparent;
+	}
+	ol.comments .instructor>.comment-content {
+		border-color: #619926;
+	}
+	ol.comments .instructor>.comment-content:before {
+		border-color: transparent #619926 transparent transparent;
+	}
 
+	ol.comments .role {
+		font-size: 0.85em;
+		background: #999;
+		padding: .382em 1em;
+		color: white;
+		font-weight: 700;
+		position: absolute;
+		-webkit-border-radius: 0.27em;
+		-moz-border-radius: 0.27em;
+		border-radius: 0.27em;
+		top: 1.236em;
+		right: -0.27em;
+		font-weight: 700;
+		-webkit-transition: all ease-in-out 0.2s;
+		-moz-transition: all ease-in-out 0.2s;
+		-o-transition: all ease-in-out 0.2s;
+		transition: all ease-in-out 0.2s;
+		-webkit-animation: pulse 1s infinite;
+	}
+	ol.comments .role.instructor {
+		background: #619926;
+		-webkit-box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.1),inset 0 0 0 4px rgba(255, 255, 255, 0.2),inset 0 0 0 2px #508815;
+		-moz-box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.1),inset 0 0 0 4px rgba(255, 255, 255, 0.2),inset 0 0 0 2px #508815;
+		box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.1),inset 0 0 0 4px rgba(255, 255, 255, 0.2),inset 0 0 0 2px #508815;
+	}
+	ol.comments .role.student {
+		display: none;
+	}
+	ol.comments .role.manager {
+		background: #504545;
+		-webkit-box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.1),inset 0 0 0 4px rgba(255, 255, 255, 0.2),inset 0 0 0 2px #333;
+		-moz-box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.1),inset 0 0 0 4px rgba(255, 255, 255, 0.2),inset 0 0 0 2px #333;
+		box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.1),inset 0 0 0 4px rgba(255, 255, 255, 0.2),inset 0 0 0 2px #333;
+	}
+
+/* Smaller windows */
 @media only screen and (max-width: 1064px) {
 	.course_forum .aside,
 	.course_forum .subject {
