@@ -398,7 +398,7 @@ class plgCoursesForum extends Hubzero_Plugin
 
 			$section = new ForumSection($database);
 			//if (!$section->loadByObject($course->offering()->get('id'), $this->offering->get('id'), 'course'))
-			if (!$section->loadByAlias($course->offering()->get('alias'), $course->offering()->get('id'), 'course'))
+			if (!$section->loadByAlias($course->offering()->get('alias'), $view->filters['scope_id'], $view->filters['scope']))
 			{
 				// Create a default section
 				$section->title    = $course->offering()->get('title');
