@@ -125,7 +125,7 @@ class SupportControllerAbuse extends Hubzero_Controller
 		));
 
 		// Check the results returned for a reported item
-		$report = null;
+		$this->view->report = null;
 		if ($results) 
 		{
 			foreach ($results as $result)
@@ -145,7 +145,7 @@ class SupportControllerAbuse extends Hubzero_Controller
 
 		// Set the page title
 		$this->_buildTitle();
-		
+
 		$this->view->title = $this->_title;
 
 		// Set the pathway

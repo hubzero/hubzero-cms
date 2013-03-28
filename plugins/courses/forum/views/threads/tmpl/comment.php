@@ -34,12 +34,19 @@ defined('_JEXEC') or die('Restricted access');
 		$cls .= ' ' . strtolower($this->course->offering()->member($this->comment->created_by)->get('role_alias'));
 	}
 
-	$comment  = $this->parser->parse(stripslashes($this->comment->comment), $this->wikiconfig, false);
-	$comment .= $this->attach->getAttachment(
-		$this->comment->id, 
-		$this->base . '&unit=' . $this->unit . '&b=' . $this->lecture . '&c=' . $this->comment->id, 
-		$this->config
-	);
+	if ($this->comment->reports)
+	{
+		$comment = '<p class="warning">' . JText::_('This comment has been reported as abusive and/or containing inappropriate content.') . '</p>';
+	}
+	else
+	{
+		$comment  = $this->parser->parse(stripslashes($this->comment->comment), $this->wikiconfig, false);
+		$comment .= $this->attach->getAttachment(
+			$this->comment->id, 
+			$this->base . '&unit=' . $this->unit . '&b=' . $this->lecture . '&c=' . $this->comment->id, 
+			$this->config
+		);
+	}
 ?>
 	<li class="comment <?php echo $cls; ?><?php if (!$this->comment->parent) { echo ' start'; } ?>" id="c<?php echo $this->comment->id; ?>">
 		<p class="comment-member-photo">
@@ -79,6 +86,7 @@ defined('_JEXEC') or die('Restricted access');
 					</a>
 				<?php } ?>
 			<?php } ?>
+			<?php if (!$this->comment->reports) { ?>
 				<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
 					<a class="reply" href="<?php echo JRoute::_($this->base . '&unit=' . $this->unit . '&b=' . $this->lecture . '&c=reply&thread=' . $this->comment->id . '#post-comment'); ?>" rel="comment-form<?php echo $this->comment->id; ?>">
 						<?php echo JText::_('PLG_COURSES_FORUM_REPLY'); ?>
@@ -87,6 +95,7 @@ defined('_JEXEC') or die('Restricted access');
 				<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=forum&id=' . $this->comment->id . '&parent=' . $this->comment->parent); ?>" rel="comment-form<?php echo $this->comment->id; ?>">
 					<?php echo JText::_('PLG_COURSES_FORUM_REPORT_ABUSE'); ?>
 				</a>
+			<?php } ?>
 			</p>
 		
 		<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>

@@ -482,6 +482,7 @@ class ForumPost extends JTable
 			//$query .= ", (SELECT d.created FROM $this->_tbl AS d WHERE d.parent=c.id ORDER BY created DESC LIMIT 1) AS last_activity ";
 			$query .= ", (CASE WHEN c.last_activity != '0000-00-00 00:00:00' THEN c.last_activity ELSE c.created END) AS activity";
 		}
+		$query .= ", (SELECT COUNT(*) FROM #__abuse_reports AS r WHERE r.category='forum' AND r.referenceid=c.id) AS reports ";
 		if (version_compare(JVERSION, '1.6', 'lt'))
 		{
 			$query .= ", a.name AS access_level";
