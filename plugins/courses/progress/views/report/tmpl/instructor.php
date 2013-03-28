@@ -31,13 +31,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+// Make sure required files are included
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradebook.php');
 
 $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias');
 
 // Get all section members
 $members = $this->course->offering()->section()->members();
-
 $member_ids = array();
 
 foreach ($members as $m)
@@ -45,72 +45,71 @@ foreach ($members as $m)
 	$member_ids[] = $m->get('user_id');
 }
 
+// Get Grades
 $gradebook = new CoursesModelGradeBook(null);
 $grades    = $gradebook->getGrades($member_ids, array('unit', 'course'));
 
+// Get the assets
+$asset  = new CoursesTableAsset(JFactory::getDBO());
+$assets = $asset->find(
+	array(
+		'w' => array(
+			'section_id' => $this->course->offering()->section()->get('id')),
+			'asset_type' => 'exam',
+			'state'      => 1
+		)
+	);
+
 // Loop through all assets
-foreach($this->course->offering()->units() as $unit)
+foreach($assets as $a)
 {
-	foreach($unit->assetgroups() as $agt)
+	// Check for result for given student on form
+	preg_match('/\?crumb=([-a-zA-Z0-9]{20})/', $a->url, $matches);
+
+	$crumb = false;
+
+	if(isset($matches[1]))
 	{
-		foreach($agt->children() as $ag)
+		$crumb = $matches[1];
+	}
+
+	if(!$crumb)
+	{
+		// Break foreach, this is not a valid form!
+		continue;
+	}
+
+	// Count total number of forms
+	$form_count = (isset($form_count)) ? ++$form_count : 1;
+
+	// Get the unit model
+	$unit = $this->course->offering()->unit($a->unit_id);
+
+	// Also count total forms through current unit
+	if($unit->isAvailable() || $unit->ended())
+	{
+		$form_count_current = (isset($form_count_current)) ? ++$form_count_current : 1;
+	}
+
+	// Get the form deployment based on crumb
+	$dep = PdfFormDeployment::fromCrumb($crumb);
+
+	// Loop through the results of the deployment
+	foreach($dep->getResults() as $result)
+	{
+		// Create a per student form count
+		if(!isset($progress[$result['user_id']]['form_count']))
 		{
-			// @FIXME: also grab assets from asset groups and units, add them to an array, and merge that in with array below to iterate over
-			foreach($ag->assets() as $a)
-			{
-				// Only interested in forms/exams
-				if($a->get('type') != 'exam' || !$a->isPublished())
-				{
-					continue;
-				}
-
-				// Check for result for given student on form
-				preg_match('/\?crumb=([-a-zA-Z0-9]{20})/', $a->get('url'), $matches);
-
-				$crumb = false;
-
-				if(isset($matches[1]))
-				{
-					$crumb = $matches[1];
-				}
-
-				if(!$crumb)
-				{
-					// Break foreach, this is not a valid form!
-					continue;
-				}
-
-				// Count total number of forms
-				$form_count = (isset($form_count)) ? ++$form_count : 1;
-
-				// Also count total forms through current unit
-				if($unit->isAvailable() || $unit->ended())
-				{
-					$form_count_current = (isset($form_count_current)) ? ++$form_count_current : 1;
-				}
-
-				// Get the form deployment based on crumb
-				$dep = PdfFormDeployment::fromCrumb($crumb);
-
-				// Loop through the results of the deployment
-				foreach($dep->getResults() as $result)
-				{
-					// Create a per student form count
-					if(!isset($progress[$result['user_id']]['form_count']))
-					{
-						$progress[$result['user_id']]['form_count'] = 0;
-					}
-
-					// Store the score
-					$progress[$result['user_id']][$unit->get('id')]['forms'][$dep->getId()]['score']    = $result['score'];
-					$progress[$result['user_id']][$unit->get('id')]['forms'][$dep->getId()]['finished'] = $result['finished'];
-					$progress[$result['user_id']][$unit->get('id')]['forms'][$dep->getId()]['title']    = $a->get('title');
-
-					// Track the sum of scores for this unit and iterate the count
-					++$progress[$result['user_id']]['form_count'];
-				}
-			}
+			$progress[$result['user_id']]['form_count'] = 0;
 		}
+
+		// Store the score
+		$progress[$result['user_id']][$unit->get('id')]['forms'][$dep->getId()]['score']    = $result['score'];
+		$progress[$result['user_id']][$unit->get('id')]['forms'][$dep->getId()]['finished'] = $result['finished'];
+		$progress[$result['user_id']][$unit->get('id')]['forms'][$dep->getId()]['title']    = $a->title;
+
+		// Track the sum of scores for this unit and iterate the count
+		++$progress[$result['user_id']]['form_count'];
 	}
 }
 
