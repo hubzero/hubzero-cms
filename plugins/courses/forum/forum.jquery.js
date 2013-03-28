@@ -36,19 +36,44 @@ HUB.Plugins.CoursesForum = {
 	
 	initialize: function() {
 		var $ = this.jQuery;
-		
-		$('a.delete').each(function(i, el) {
-			$(el).on('click', function(e) {
-				var res = confirm('Are you sure you wish to delete this item?');
-				if (!res) {
-					e.preventDefault();
-				}
-				return res;
-			});
-		});
 
-		$('.reply').each(function(i, item) {
-			$(item).click(function (e) {
+		if ($('#comments-container').length > 0) {
+			var limit = parseInt($('#limit').val()),
+				start = 0; // + limit,
+				url = $('#comments-container').attr('data-action') + '?no_html=1&limit=0&start='; //' + limit + '
+
+			if ($('#commentform').length > 0) {
+				//$('#commentform').on('submit', function(e) {  !! This line breaks the WYSIWYG editor's ability to do a final conversion before form submission
+				$('#comments-container').on('submit', '#commentform', function (e) {
+					e.preventDefault();
+					$.post($(this).attr('action').nohtml(), $(this).serialize(), function(data) {
+						if (typeof(wykiwygs) !== 'undefined') {
+							console.log('editors');
+							if (wykiwygs.length) 
+							{
+								for (i=0; i<wykiwygs.length; i++)
+								{
+									wykiwygs[i].t.value = '';
+									wykiwygs[i].e.body.innerHTML = '';
+								}
+							}
+						}
+						else
+						{
+							console.log(wykiwygs);
+						}
+						$('#comments-container ol.comments').hide().html(data).fadeIn(500);
+					});
+				});
+			}
+
+			$('#comments-container').on('submit', '.comment-add form', function (e) {
+				e.preventDefault();
+				$.post($(this).attr('action').nohtml(), $(this).serialize(), function(data) {
+					$('#comments-container ol.comments').hide().html(data).fadeIn(500);
+				});
+			});
+			$('#comments-container').on('click', '.reply', function (e) {
 				e.preventDefault();
 				var frm = '#' + $(this).attr('rel');
 				if ($(frm).hasClass('hide')) {
@@ -57,29 +82,17 @@ HUB.Plugins.CoursesForum = {
 					$(frm).addClass('hide');
 				}
 			});
-		});
-		
-		$('.cancelreply').each(function(i, item) {
-			$(item).click(function (e) {
+			$('#comments-container').on('click', '.cancelreply', function (e) {
 				e.preventDefault();
 				$(this).closest('.comment-add').addClass('hide');
 			});
-		});
-		
-		if ($('#commentform').length > 0) {
-			//$('#comment-form').on('submit', function(e) {
-			$('#comments-container').on('submit', '#commentform', function(e) {
-				e.preventDefault();
-				$.post($(this).attr('action').nohtml(), $(this).serialize(), function(data) {
-					$('#comments-container ol.comments').hide().html(data).fadeIn(500);
-				});
+			$('#comments-container').on('click', '.delete', function (e) {
+				var res = confirm('Are you sure you wish to delete this item?');
+				if (!res) {
+					e.preventDefault();
+				}
+				return res;
 			});
-		}
-		
-		if ($('#comments-container').length > 0) {
-			var limit = parseInt($('#limit').val()),
-				start = 0; // + limit,
-				url = $('#comments-container').attr('data-action') + '?no_html=1&limit=0&start='; //' + limit + '
 
 			$('#comments-container .list-footer')
 				.css('display', 'none')
@@ -96,6 +109,33 @@ HUB.Plugins.CoursesForum = {
 						//$('#comments-container ol.comments').append(data);
 					});
 				});
+		} else {
+			$('a.delete').each(function(i, el) {
+				$(el).on('click', function(e) {
+					var res = confirm('Are you sure you wish to delete this item?');
+					if (!res) {
+						e.preventDefault();
+					}
+					return res;
+				});
+			});
+			$('.reply').each(function(i, item) {
+				$(item).click(function (e) {
+					e.preventDefault();
+					var frm = '#' + $(this).attr('rel');
+					if ($(frm).hasClass('hide')) {
+						$(frm).removeClass('hide');
+					} else {
+						$(frm).addClass('hide');
+					}
+				});
+			});
+			$('.cancelreply').each(function(i, item) {
+				$(item).click(function (e) {
+					e.preventDefault();
+					$(this).closest('.comment-add').addClass('hide');
+				});
+			});
 		}
 	} // end initialize
 }

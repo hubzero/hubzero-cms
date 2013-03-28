@@ -110,10 +110,12 @@
 	}
 	/* Add comment */
 	.comment-add {
-		margin: 0 0 1em 0;
-		padding: 1em;
+		margin: 0 -1.61803399em -0.61803399em -1.61803399em;
+		padding: 1.61803399em;
 		border: 1px solid #ddd;
 		background-color: #f1f1f1;
+		border: none;
+		border-top: 1px solid #ddd;
 	}
 	.comment-add legend {
 		display: none;

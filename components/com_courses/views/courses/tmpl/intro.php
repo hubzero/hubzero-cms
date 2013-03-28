@@ -67,12 +67,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</div><!-- / .aside -->
 	<div class="subject">
 		<div class="two columns first">
-			<h3>What are courses?</h3>
-			<p>Courses are an easy way to share content and conversation, either privately or with the world. Many times, a course already exists for a specific interest or topic. If you can't find one you like, feel free to start your own.</p>
+			<h3>About courses</h3>
+			<p>When you take one of our courses, you will watch lectures taught by world-class professors, learn at your own pace, test your knowledge, and reinforce concepts through interactive exercises. Every course is created based on a syllabus and presented online using an ordered, easy-to-follow framework.</p>
 		</div>
 		<div class="two columns second">
-			<h3>How do courses work?</h3>
-			<p>Courses can either be public, restricted (users may read a brief description or overview but not view content) or completely private. Every course has a wiki, a pool for resources, and a discussion board for talking.</p>
+			<h3>How a course works</h3>
+			<p>As the course progresses, you have access to all the notes, instructor lectures and discussions you've engaged in up to that point, as well as all the course materials. And the dialogue and interaction extends beyond your classmates; For many courses, Professors are actively involved in online classroom discussions and available to answer questions.</p>
 		</div>
 		<div class="clear"></div>
 	</div><!-- / .subject -->

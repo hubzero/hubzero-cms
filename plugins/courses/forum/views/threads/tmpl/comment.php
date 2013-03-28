@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 	}
 
 	$cls = isset($this->cls) ? $this->cls : 'odd';
-	if ($this->course->offering()->member($this->comment->created_by)->get('id'))
+	if (!$this->comment->anonymous && $this->course->offering()->member($this->comment->created_by)->get('id'))
 	{
 		$cls .= ' ' . strtolower($this->course->offering()->member($this->comment->created_by)->get('role_alias'));
 	}
@@ -114,7 +114,12 @@ defined('_JEXEC') or die('Restricted access');
 
 						<label for="comment-<?php echo $this->comment->id; ?>-content">
 							<span class="label-text"><?php echo JText::_('PLG_COURSES_FORUM_FIELD_COMMENTS'); ?></span>
-							<textarea name="fields[comment]" id="comment-<?php echo $this->comment->id; ?>-content" rows="4" cols="50" placeholder="<?php echo JText::_('PLG_COURSES_FORUM_ENTER_COMMENTS'); ?>"></textarea>
+							<?php
+							ximport('Hubzero_Wiki_Editor');
+							$editor = Hubzero_Wiki_Editor::getInstance();
+							echo $editor->display('fields[comment]', 'field_' . $this->comment->id . '_comment', '', 'minimal no-footer', '35', '4');
+							?>
+							<!-- <textarea name="fields[comment]" id="comment-<?php echo $this->comment->id; ?>-content" rows="4" cols="50" placeholder="<?php echo JText::_('PLG_COURSES_FORUM_ENTER_COMMENTS'); ?>"></textarea> -->
 						</label>
 
 						<label class="upload-label" for="comment-<?php echo $this->comment->id; ?>-file">

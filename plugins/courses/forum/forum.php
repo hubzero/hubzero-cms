@@ -1623,6 +1623,8 @@ class plgCoursesForum extends Hubzero_Plugin
 		// Incoming
 		$section = JRequest::getVar('section', '');
 
+		$no_html = JRequest::getInt('no_html', 0);
+
 		$fields = JRequest::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
@@ -1654,6 +1656,12 @@ class plgCoursesForum extends Hubzero_Plugin
 		$model = new ForumPost($this->database);
 		if (!$model->bind($fields)) 
 		{
+			/*if ($no_html)
+			{
+				ob_clean();
+				echo $model->getError();
+				exit;
+			}*/
 			$this->addPluginMessage($model->getError(), 'error');
 			return $this->editthread($model);
 		}
@@ -1661,6 +1669,12 @@ class plgCoursesForum extends Hubzero_Plugin
 		// Check content
 		if (!$model->check()) 
 		{
+			/*if ($no_html)
+			{
+				ob_clean();
+				echo $model->getError();
+				exit;
+			}*/
 			$this->addPluginMessage($model->getError(), 'error');
 			return $this->editthread($model);
 		}
@@ -1668,6 +1682,12 @@ class plgCoursesForum extends Hubzero_Plugin
 		// Store new content
 		if (!$model->store()) 
 		{
+			/*if ($no_html)
+			{
+				ob_clean();
+				echo $model->getError();
+				exit;
+			}*/
 			$this->addPluginMessage($model->getError(), 'error');
 			return $this->editthread($model);
 		}
@@ -1818,7 +1838,7 @@ class plgCoursesForum extends Hubzero_Plugin
 			}
 		}
 
-		if (JRequest::getInt('no_html', 0) == 1)
+		if ($no_html == 1)
 		{
 			$unit = $this->course->offering()->unit($category->alias);
 			return $this->onCourseAfterLecture($this->course, $unit, $unit->assetgroup($model->object_id));
