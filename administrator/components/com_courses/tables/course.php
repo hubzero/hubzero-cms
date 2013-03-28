@@ -307,7 +307,16 @@ class CoursesTableCourse extends JTable
 	 */
 	protected function _buildQuery($filters=array())
 	{
-		$query  = " FROM $this->_tbl AS c";
+		if (isset($filters['tag']) && $filters['tag'] != '') 
+		{
+			$query .= " FROM #__tags_object AS rta";
+			$query .= " INNER JOIN #__tags AS t ON rta.tagid = t.id AND rta.tbl='courses'";
+			$query .= " $this->_tbl AS c ON rta.objectid=c.id";
+		} 
+		else 
+		{
+			$query  = " FROM $this->_tbl AS c";
+		}
 
 		$where = array();
 
@@ -322,10 +331,24 @@ class CoursesTableCourse extends JTable
 					OR LOWER(c.alias) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
 		}
 
+		if (isset($filters['tag']) && $filters['tag'] != '') 
+		{
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'helpers' . DS . 'tags.php');
+			$tagging = new CoursesTags($this->_db);
+			$tags = $tagging->_parse_tags($filters['tag']);
+
+			$where[] = "t.tag IN ('" . implode("','", $tags) . "')";
+		}
+
 		if (count($where) > 0)
 		{
 			$query .= " WHERE ";
 			$query .= implode(" AND ", $where);
+		}
+
+		if (isset($filters['tag']) && $filters['tag'] != '') 
+		{
+			$query .= " GROUP BY c.id HAVING uniques=" . count($tags);
 		}
 
 		if (isset($filters['limit']) && $filters['limit'] != 0) 
@@ -354,7 +377,9 @@ class CoursesTableCourse extends JTable
 	{
 		$filters['limit'] = 0;
 
-		$query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
+		$query = "SELECT COUNT(*) ";
+		$query .= (isset($filters['tag']) && $filters['tag'] != '') ? ", COUNT(DISTINCT t.tag) AS uniques " : " ";
+		$query .= $this->_buildQuery($filters);
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -368,11 +393,96 @@ class CoursesTableCourse extends JTable
 	 */
 	public function getRecords($filters=array())
 	{
-		$query = "SELECT c.*" . $this->_buildQuery($filters);
+		$query  = "SELECT c.*, (SELECT COUNT(*) FROM #__courses_members AS m WHERE m.student=1 AND m.course_id=c.id) AS students";
+		$query .= (isset($filters['tag']) && $filters['tag'] != '') ? ", t.tag, t.raw_tag, COUNT(DISTINCT t.tag) AS uniques " : " ";
+		$query .= $this->_buildQuery($filters);
 
 		if (isset($filters['limit']) && $filters['limit'] != 0) 
 		{
+			if (!isset($filters['start']))
+			{
+				$filters['start'] = 0;
+			}
 			$query .= ' LIMIT ' . intval($filters['start']) . ',' . intval($filters['limit']);
+		}
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
+
+	/**
+	 * Get groups for a user
+	 * 
+	 * @param      integer $uid  User ID
+	 * @param      string  $type Membership type to return groups for
+	 * @return     array
+	 */
+	public function getUserCourses($uid, $type='all', $limit=null, $start=0)
+	{
+		if (!$uid)
+		{
+			$this->setError(JText::_('Missing user ID.'));
+			return false;
+		}
+
+		$query2 = "SELECT c.id, c.alias, c.title, c.blurb, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title
+					FROM $this->_tbl AS c 
+					JOIN #__courses_members AS m ON m.course_id=c.id
+					LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
+					LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
+					LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
+					WHERE m.user_id=" . $this->_db->Quote($uid) . " AND m.student=0 AND r.alias='manager'";
+
+		$query3 = "SELECT c.id, c.alias, c.title, c.blurb, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title
+					FROM $this->_tbl AS c 
+					JOIN #__courses_members AS m ON m.course_id=c.id
+					LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
+					LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
+					LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
+					WHERE m.user_id=" . $this->_db->Quote($uid) . " AND m.student=0 AND r.alias='instructor'";
+
+		$query4 = "SELECT c.id, c.alias, c.title, c.blurb, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title
+					FROM $this->_tbl AS c 
+					JOIN #__courses_members AS m ON m.course_id=c.id
+					LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
+					LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
+					LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
+					WHERE m.user_id=" . $this->_db->Quote($uid) . " AND m.student=1 AND c.state=1";
+
+		$query5 = "SELECT c.id, c.alias, c.title, c.blurb, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title
+					FROM $this->_tbl AS c 
+					JOIN #__courses_members AS m ON m.course_id=c.id
+					LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
+					LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
+					LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
+					WHERE m.user_id=" . $this->_db->Quote($uid) . " AND m.student=0 AND r.alias='ta' AND c.state=1";
+
+		switch ($type)
+		{
+			case 'all':
+				$query = "( $query2 ) UNION ( $query3 ) UNION ( $query4 ) ORDER BY title ASC"; //( $query1 ) UNION 
+			break;
+			case 'manager':
+				$query = $query2; //"( $query1 ) UNION ( $query2 )";
+			break;
+			case 'instructor':
+				$query = $query3;
+			break;
+			case 'student':
+				$query = $query4;
+			break;
+			case 'ta':
+				$query = $query5;
+			break;
+		}
+
+		if (!is_null($limit) && $limit != 0) 
+		{
+			if (is_null($start))
+			{
+				$start = 0;
+			}
+			$query .= ' LIMIT ' . intval($start) . ',' . intval($limit);
 		}
 
 		$this->_db->setQuery($query);

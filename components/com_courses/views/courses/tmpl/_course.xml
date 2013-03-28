@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           components/com_courses/views/browse/tmpl/default.xml
+@file           components/com_courses/views/intro/tmpl/default.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Browse course catalog">
+	<layout title="Course partial for intro page">
 		<message>
-			<![CDATA[Browse course catalog]]>
+			<![CDATA[Course partial for intro page]]>
 		</message>
 	</layout>
 	<state>
-		<name>Browse course catalog</name>
-		<description>Browse course catalog</description>
+		<name>Course partial for intro page</name>
+		<description>Course partial for intro page</description>
 		<params>
 		</params>
 	</state>

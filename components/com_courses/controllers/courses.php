@@ -118,35 +118,41 @@ class CoursesControllerCourses extends Hubzero_Controller
 
 		// Push some needed scripts to the template
 		//$this->_getScripts();
+		$model = CoursesModelCourses::getInstance();
 
 		//vars
-		$mytags = '';
-		$mycourses = array();
-		$popularcourses = array();
-		$interestingcourses = array();
+		//$mytags = '';
+		$this->view->mycourses = array();
+		//$popularcourses = array();
+		$this->view->interestingcourses = array();
 
 		//get the users profile
-		$profile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
+		//$profile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
 
-		/*if (is_object($profile))
+		//if (is_object($profile))
+		if (!$this->juser->get('guest'))
 		{
 			//get users tags
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'tags.php');
 			$mt = new MembersTags($this->database);
-			$mytags = $mt->get_tag_string($profile->get("uidNumber"));
+			$mytags = $mt->get_tag_string($this->juser->get('id'));
 
 			//get users courses
-			$mycourses['members'] = Hubzero_User_Helper::getCourses($profile->get("uidNumber"), 'members', 1);
-			$mycourses['invitees'] = Hubzero_User_Helper::getCourses($profile->get("uidNumber"), 'invitees', 1);
-			$mycourses['applicants'] = Hubzero_User_Helper::getCourses($profile->get("uidNumber"), 'applicants', 1);
-			$mycourses = array_filter($mycourses);
+			/*$this->view->mycourses['members']    = Hubzero_User_Helper::getCourses($this->juser->get('id'), 'members', 1);
+			$this->view->mycourses['instructor'] = Hubzero_User_Helper::getCourses($this->juser->get('id'), 'invitees', 1);
+			$this->view->mycourses['students']   = Hubzero_User_Helper::getCourses($this->juser->get('id'), 'applicants', 1);
+			$this->view->mycourses = array_filter($mycourses);*/
+			$this->view->mycourses = $model->userCourses($this->juser->get('id'), 'all');
 
 			//get courses user may be interested in
-			$interestingcourses = Hubzero_Course_Helper::getCoursesMatchingTagString($mytags, Hubzero_User_Helper::getCourses($profile->get("uidNumber")));
-		}*/
+			if ($mytags)
+			{
+				$this->view->interestingcourses = $model->courses(array('tags' => $mytags, 'limit' => 10)); //Hubzero_Course_Helper::getCoursesMatchingTagString($mytags, Hubzero_User_Helper::getCourses($this->juser->get('id')));
+			}
+		}
 
 		//get the popular courses
-		$popularcourses = array(); //Hubzero_Course_Helper::getPopularCourses(3);
+		$this->view->popularcourses = $model->courses(array('limit' => 3, 'sort' => 'students'));//getPopularCourses(3);
 
 		// Output HTML
 		//$this->view->option = $this->_option;
@@ -155,9 +161,9 @@ class CoursesControllerCourses extends Hubzero_Controller
 		$this->view->user     = $this->juser;
 		$this->view->title    = $this->_title;
 
-		$this->view->mycourses = $mycourses;
-		$this->view->popularcourses = $popularcourses;
-		$this->view->interestingcourses = $interestingcourses;
+		//$this->view->mycourses = $mycourses;
+		//$this->view->popularcourses = $popularcourses;
+		//$this->view->interestingcourses = $interestingcourses;
 
 		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
 		$this->view->display();

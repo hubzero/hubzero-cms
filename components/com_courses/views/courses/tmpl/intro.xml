@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Courses Layout">
+	<layout title="Course landing page">
 		<message>
-			<![CDATA[STANDARD COURSES LAYOUT DESC]]>
+			<![CDATA[Course landing page]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Courses Layout</name>
-		<description>STANDARD COURSES LAYOUT DESC</description>
+		<name>Course landing page</name>
+		<description>Course landing page</description>
 		<params>
 		</params>
 	</state>

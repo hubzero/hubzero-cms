@@ -171,5 +171,31 @@ class CoursesModelCourses extends JObject
 
 		return $this->_courses;
 	}
+
+	/**
+	 * Get a list of courses
+	 *   Accepts an array of filters to build query from
+	 * 
+	 * @param      array $filters Filters to build query from
+	 * @return     mixed
+	 */
+	public function userCourses($uid, $type='all', $limit=null, $start=0)
+	{
+		if (($results = $this->_tbl->getUserCourses($uid, $type, $limit, $start)))
+		{
+			foreach ($results as $key => $result)
+			{
+				$results[$key] = new CoursesModelCourse($result);
+			}
+		}
+		else
+		{
+			$results = array();
+		}
+
+		$courses = new CoursesModelIterator($results);
+
+		return $courses;
+	}
 }
 

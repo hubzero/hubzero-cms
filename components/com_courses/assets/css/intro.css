@@ -21,34 +21,24 @@
 
 /* Course Listings */
 	.course-list {
-		overflow: hidden;
-		margin: 10px 0 0 0;
+		margin: 15px 0 0 45px;
+		position: relative;
 	}
-	.course-list .logo {
-		float: left;
-		max-width: 30px;
-		padding: 3px;
-	}
-	.course-list .logo img {
-		width: 100%;
-		-webkit-border-radius: 1px;
-		-moz-border-radius: 1px;
-		-ms-border-radius: 1px;
-		-o-border-radius: 1px;
-		border-radius: 1px;
-		-webkit-box-shadow: 0 0 1px #000;
-		-moz-box-shadow: 0 0 1px #000;
-		-ms-box-shadow: 0 0 1px #000;
-		-o-box-shadow: 0 0 1px #000;
-		box-shadow: 0 0 1px #000;
+	.course-list:before {
+		display: block;
+		width: 30px;
+		height: 30px;
+		content: "\f09c";
+		font-family: "Fontcons";
+		font-size: 30px;
+		position: absolute;
+		top: 0;
+		left: -45px;
+		color: #ccc;
 	}
 	.course-list .details {
 	}
-	.course-list .details-w-logo {
-		margin-left: 45px;
-	}
-	.course-list .details h3,
-	.course-list .details-w-logo h3 {
+	.course-list .details h3 {
 		margin: 0;
 	}
 	.course-list .status {
@@ -69,57 +59,4 @@
 	}
 	.course-list .manager {
 		background-color: #ff1177;
-	}
-
-	/* Course Member Invite Popup */
-	.fancybox-wrap {
-		background: #FFF;
-		border: 5px solid #000;
-	}
-	.fancybox-close {
-		right: -15px;
-		top: -15px;
-	}
-	.fancybox-inner .header {
-		background: #efefef;
-		padding: 10px;
-		border-bottom: 1px solid #ccc; 
-		border-top: 1px solid #ccc; 
-		overflow: hidden;
-	}
-	.fancybox-inner h2 {
-		margin: 0;
-		text-shadow: 0 1px 0 #FFF;
-		color: #444;
-		line-height: 1em;
-		font-size: 18px;
-		float: left;
-	}
-	.fancybox-inner p {
-		float: left;
-		border-bottom: 1px solid #efefef;
-		margin: 0;
-		font-style: italic;
-		color: #777;
-		padding: 2px 0 0 10px;
-	}
-	.fancybox-inner ul {
-		list-style: none;
-		margin: 1em;
-	}
-	.fancybox-inner ul li {
-		border-bottom: 1px solid #ccc;
-		margin: 0;
-		padding: 6px;
-	}
-	.fancybox-inner ul li:hover {
-		background: #eee;
-	}
-	.fancybox-inner ul li:last-child {
-		border-bottom: none;
-	}
-	.fancybox-inner ul li a {
-		float: right;
-		font-size: 0.9em;
-		line-height: 1.5em;
 	}
