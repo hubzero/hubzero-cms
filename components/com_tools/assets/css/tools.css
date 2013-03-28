@@ -331,9 +331,9 @@
 	.ui-resizable-handle {
 		position: absolute;
 		right: 0;
-		bottom: -32px;
+		bottom: -37px;
 		display: block;
-		height: 30px;
+		height: 35px;
 		width: 90px;
 		background-image: none;
 		border: 1px solid transparent;

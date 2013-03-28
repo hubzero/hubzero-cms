@@ -427,7 +427,7 @@ HUB.Mw = {
 		var w = app.attr('width');
 		var h = app.attr('height');
 
-		if (w < 200) { w = 200; }
+		if (w < 345) { w = 345; }
 		if (h < 200) { h = 200; }
 
 		if (w > 3900) { w = 3900; }
@@ -459,7 +459,7 @@ HUB.Mw = {
 		
 		if (!app.hasClass('no-resize')) {
 			var li = $('<li></li>');
-			$('<a class="resize" id="app-btn-resizehandle" alt="Popout" title="Popout"><span id="app-size">'+w.toString() + ' x ' + h.toString()+'</span></a>')
+			$('<a class="resize" id="app-btn-resizehandle" alt="Resize" title="Resize"><span id="app-size">'+w.toString() + ' x ' + h.toString()+'</span></a>')
 				.appendTo(li);
 			li.appendTo(footermenu);
 			
@@ -471,7 +471,7 @@ HUB.Mw = {
 			$('#app-content').resizable({
 				minHeight: 200,
 				maxHeight: 3900,
-				minWidth: 200,
+				minWidth: 345,
 				maxWidth: 3900,
 				handles: 'se',
 				resize: function(event, ui) {
@@ -492,6 +492,12 @@ HUB.Mw = {
 						}
 
 						$('#app-size').html(w.toString()+' x '+h.toString());
+
+						if (w < 513) {
+							$('.ui-resizable-handle').css('bottom', '-62px');
+						} else {
+							$('.ui-resizable-handle').css('bottom', '-37px');
+						}
 
 						$('#theapp')
 							.css('width', (w) + 'px')
