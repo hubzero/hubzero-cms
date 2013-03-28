@@ -48,79 +48,13 @@ foreach ($members as $m)
 // Get Grades
 $gradebook = new CoursesModelGradeBook(null);
 $grades    = $gradebook->getGrades($member_ids, array('unit', 'course'));
-
-// Get the assets
-$asset  = new CoursesTableAsset(JFactory::getDBO());
-$assets = $asset->find(
-	array(
-		'w' => array(
-			'section_id' => $this->course->offering()->section()->get('id')),
-			'asset_type' => 'exam',
-			'state'      => 1
-		)
-	);
-
-// Loop through all assets
-foreach($assets as $a)
-{
-	// Check for result for given student on form
-	preg_match('/\?crumb=([-a-zA-Z0-9]{20})/', $a->url, $matches);
-
-	$crumb = false;
-
-	if(isset($matches[1]))
-	{
-		$crumb = $matches[1];
-	}
-
-	if(!$crumb)
-	{
-		// Break foreach, this is not a valid form!
-		continue;
-	}
-
-	// Count total number of forms
-	$form_count = (isset($form_count)) ? ++$form_count : 1;
-
-	// Get the unit model
-	$unit = $this->course->offering()->unit($a->unit_id);
-
-	// Also count total forms through current unit
-	if($unit->isAvailable() || $unit->ended())
-	{
-		$form_count_current = (isset($form_count_current)) ? ++$form_count_current : 1;
-	}
-
-	// Get the form deployment based on crumb
-	$dep = PdfFormDeployment::fromCrumb($crumb);
-
-	// Loop through the results of the deployment
-	foreach($dep->getResults() as $result)
-	{
-		// Create a per student form count
-		if(!isset($progress[$result['user_id']]['form_count']))
-		{
-			$progress[$result['user_id']]['form_count'] = 0;
-		}
-
-		// Store the score
-		$progress[$result['user_id']][$unit->get('id')]['forms'][$dep->getId()]['score']    = $result['score'];
-		$progress[$result['user_id']][$unit->get('id')]['forms'][$dep->getId()]['finished'] = $result['finished'];
-		$progress[$result['user_id']][$unit->get('id')]['forms'][$dep->getId()]['title']    = $a->title;
-
-		// Track the sum of scores for this unit and iterate the count
-		++$progress[$result['user_id']]['form_count'];
-	}
-}
-
-$form_count     = (isset($form_count)) ? $form_count : 1;
-$current_marker = (isset($form_count_current) && isset($form_count)) ? (round(($form_count_current / $form_count)*100, 2)) : 0;
+$progress  = $gradebook->getProgress($this->course);
 
 ?>
 
 <div class="instructor">
 	<? if(count($members) > 0) : ?>
-		<div class="flag"><div class="flag-inner" style="left:<?= $current_marker ?>%;"></div></div>
+		<div class="flag"><div class="flag-inner" style="left:<?= $progress['current_marker'] ?>%;"></div></div>
 		<? foreach($members as $m) : ?>
 			<div class="student">
 				<a href="<?= JRoute::_($base . '&active=progress&id=' . $m->get('user_id')) ?>">
@@ -128,8 +62,8 @@ $current_marker = (isset($form_count_current) && isset($form_count)) ? (round(($
 					<div class="progress-bar-container">
 						<? if(isset($progress[$m->get('user_id')])) : ?>
 							<?
-								$studentProgress = ($progress[$m->get('user_id')]['form_count'] / $form_count)*100;
-								$studentStatus   = ($studentProgress / $current_marker)*100;
+								$studentProgress = ($progress[$m->get('user_id')]['form_count'] / $progress['form_count'])*100;
+								$studentStatus   = ($studentProgress / $progress['current_marker'])*100;
 								$cls = '';
 								if($studentStatus < 60)
 								{

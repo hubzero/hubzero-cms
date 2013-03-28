@@ -110,6 +110,85 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	}
 
 	/**
+	 * Get current progress
+	 * 
+	 * @param      object $course - course object
+	 * @return     array $progress
+	 */
+	public function getProgress($course)
+	{
+		// Get the assets
+		$asset  = new CoursesTableAsset(JFactory::getDBO());
+		$assets = $asset->find(
+			array(
+				'w' => array(
+					'section_id' => $course->offering()->section()->get('id'),
+					'asset_type' => 'exam',
+					'state'      => 1
+				)
+			)
+		);
+
+		// Loop through all assets
+		foreach($assets as $a)
+		{
+			// Check for result for given student on form
+			preg_match('/\?crumb=([-a-zA-Z0-9]{20})/', $a->url, $matches);
+
+			$crumb = false;
+
+			if(isset($matches[1]))
+			{
+				$crumb = $matches[1];
+			}
+
+			if(!$crumb)
+			{
+				// Break foreach, this is not a valid form!
+				continue;
+			}
+
+			// Count total number of forms
+			$form_count = (isset($form_count)) ? ++$form_count : 1;
+
+			// Get the unit model
+			$unit = $course->offering()->unit($a->unit_id);
+
+			// Also count total forms through current unit
+			if($unit->isAvailable() || $unit->ended())
+			{
+				$form_count_current = (isset($form_count_current)) ? ++$form_count_current : 1;
+			}
+
+			// Get the form deployment based on crumb
+			$dep = PdfFormDeployment::fromCrumb($crumb);
+
+			// Loop through the results of the deployment
+			foreach($dep->getResults() as $result)
+			{
+				// Create a per student form count
+				if(!isset($progress[$result['user_id']]['form_count']))
+				{
+					$progress[$result['user_id']]['form_count'] = 0;
+				}
+
+				// Store the score
+				$progress[$result['user_id']][$unit->get('id')]['forms'][$dep->getId()]['score']    = $result['score'];
+				$progress[$result['user_id']][$unit->get('id')]['forms'][$dep->getId()]['finished'] = $result['finished'];
+				$progress[$result['user_id']][$unit->get('id')]['forms'][$dep->getId()]['title']    = $a->title;
+
+				// Track the sum of scores for this unit and iterate the count
+				++$progress[$result['user_id']]['form_count'];
+			}
+		}
+
+		$progress['form_count']     = (isset($form_count)) ? $form_count : 1;
+		$progress['current_marker'] = (isset($form_count_current) && isset($form_count)) ? (round(($form_count_current / $form_count)*100, 2)) : 0;
+
+		return $progress;
+	}
+
+	/**
 	 * Resave/refresh grades for a user(s)
 	 * 
 	 * @param      int or array $user_id, user id for which to pull grades
@@ -171,13 +250,15 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 					continue;
 				}
 				// If form hasn't been completed, and time hasn't expired, skip it
-				if (is_null($result['score']) && $dep->getEndTime() > date("Y-m-d H:i:s"))
+				if (is_null($result['score'])
+					&& (is_null($dep->getEndTime()) || $dep->getEndTime() == '0000-00-00 00:00:00' || $dep->getEndTime() > date("Y-m-d H:i:s")))
 				{
 					continue;
 				}
 				// If form hasn't been completed, but time has expired, result is 0
 				elseif (is_null($result['score']) && $dep->getEndTime() < date("Y-m-d H:i:s"))
 				{
+					var_dump($dep->getEndTime());die();
 					$result['score'] = '0.00';
 				}
 
