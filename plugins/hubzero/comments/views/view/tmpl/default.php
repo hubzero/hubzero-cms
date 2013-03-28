@@ -113,7 +113,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 			</table>
 		</div><!-- / .aside -->
 		<div class="subject">
-			<form method="post" action="<?php echo JRoute::_($this->url); ?>" id="commentform">
+			<form method="post" action="<?php echo JRoute::_($this->url); ?>" id="commentform" enctype="multipart/form-data">
 				<p class="comment-member-photo">
 					<span class="comment-anchor"><a name="post-comment"></a></span>
 <?php
@@ -176,7 +176,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 					}
 				}
 ?>
-					<label>
+					<label for="comment[content]">
 						<?php echo JText::_('PLG_HUBZERO_COMMENTS_YOUR_COMMENTS'); ?>: <span class="required"><?php echo JText::_('PLG_HUBZERO_COMMENTS_REQUIRED'); ?></span>
 <?php
 					if (!$this->juser->get('guest')) 
@@ -194,6 +194,11 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 					*/
 					}
 ?>
+					</label>
+
+					<label>
+						<?php echo JText::_('PLG_HUBZERO_COMMENTS_ATTACH_FILE'); ?>:
+						<input type="file" name="commentFile" id="commentFile" />
 					</label>
 
 <?php 			//if (!$this->juser->get('guest')) { ?>

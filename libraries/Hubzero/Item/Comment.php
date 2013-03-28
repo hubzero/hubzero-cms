@@ -356,7 +356,7 @@ class Hubzero_Item_Comment extends JTable
 	public function store()
 	{
 		parent::store();
-
+		
 		if ($this->attachmentNames && count($this->attachmentNames) > 0)
 		{
 			ximport('Hubzero_Item_Comment_File');
@@ -381,6 +381,7 @@ class Hubzero_Item_Comment extends JTable
 					}*/
 				}
 				$file->filename = $nm;
+				$file->comment_id = $this->id;
 				if (!$file->store())
 				{
 					$this->setError($file->getError());

@@ -85,7 +85,7 @@ if (!$juser->get('guest')) {
 $no_html = JRequest::getInt('no_html', 0);
 
 if (!$no_html) { ?>
-<p class="comment-voting">
+<p class="voting" style="float:right">
 <?php } ?>
 	<span class="vote-like<?php echo $lcls; ?>">
 <?php if ($this->item->vote || $juser->get('id') == $this->item->created_by) { ?>

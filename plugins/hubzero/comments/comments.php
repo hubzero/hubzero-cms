@@ -383,7 +383,7 @@ class plgHubzeroComments extends JPlugin
 		if ($this->_pushscripts) 
 		{
 			ximport('Hubzero_Document');
-			Hubzero_Document::addPluginStyleSheet('hubzero', 'comments');
+			//Hubzero_Document::addPluginStyleSheet('hubzero', 'comments');
 			Hubzero_Document::addPluginScript('hubzero', 'comments');
 
 			$this->_pushscripts = false;

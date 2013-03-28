@@ -216,7 +216,21 @@ class Hubzero_Item_Comment_File extends JTable
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
-
+	
+	
+	/**
+	 * Get Attachment by Comment ID
+	 *
+	 * @param      integer $comment_id ID of parent comment
+	 * @return     boolean true if successful otherwise returns and error message
+	 */
+	public function loadByComment($comment_id=NULL)
+	{
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE comment_id=" . $this->_db->Quote((int) $comment_id));
+		return $this->_db->loadObject();
+	}
+	
+	
 	/**
 	 * Delete records by comment ID
 	 *

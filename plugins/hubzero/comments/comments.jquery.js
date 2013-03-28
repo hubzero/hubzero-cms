@@ -43,11 +43,16 @@ HUB.Plugins.HubzeroComments = {
 		$('.cancelreply').each(function(i, item) {
 			$(item).click(function (e) {
 				e.preventDefault();
-				$(this).closest('.comment-add').addClass('hide');
+				$(this).closest('.addcomment').addClass('hide');
 			});
 		});
 		
-		$('.vote-button').each(function(i, el) {
+		$('span.vote-button').click(function(event){
+			event.preventDefault();
+			alert('You cannot vote on this comment.');
+		});
+		
+		$('a.vote-button').each(function(i, el) {
 			if ($(el).attr('href')) {
 				href = $(el).attr('href');
 				if (href.indexOf('?') == -1) {

@@ -64,7 +64,7 @@ defined('_JEXEC') or die('Restricted access');
 	$xuser->load($this->comment->created_by);
 	
 	$rtrn = $this->url ? $this->url : JRequest::getVar('REQUEST_URI', 'index.php?option=' . $this->option . '&id=' . $this->obj->id . '&active=comments', 'server');
-	if (!strstr($rtrn, 'index.php'))
+	if (strstr($rtrn, '?') === false)
 	{
 		$rtrn .= '?';
 	}
@@ -107,7 +107,7 @@ defined('_JEXEC') or die('Restricted access');
 					<?php } ?>
 					</strong> 
 					<a class="permalink" href="<?php echo $this->url . '#c' . $this->comment->id; ?>" title="<?php echo JText::_('PLG_HUBZERO_COMMENTS_PERMALINK'); ?>">
-						@ <span class="time"><?php echo JHTML::_('date', $this->comment->created, $timeformat, $tz); ?></span> 
+						<span class="time"><?php echo JHTML::_('date', $this->comment->created, $timeformat, $tz); ?></span> 
 						on <span class="date"><?php echo JHTML::_('date', $this->comment->created, $dateformat, $tz); ?></span>
 					</a>
 				</p>
@@ -123,41 +123,42 @@ defined('_JEXEC') or die('Restricted access');
 				}
 				?>
 				</div><!-- / .comment-body -->
+				
+				<?php if ($this->comment->filename) : ?>
+					<div class="comment-attachment">
+						<p>Attached file: <?php echo '<a href="' . JURI::base() . 'site' . DS . 'comments' . DS . $this->comment->filename . '" target="_blank">' . $this->comment->filename . '</a>'; ?></p>
+					</div>
+				<?php endif; ?>
+				
 <?php 		if ($this->comment->state != 3) { ?>
-				<ul class="comment-options">
-					<li>
-						<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=comment&id=' . $this->comment->id . '&parent=' . $this->obj->id); ?>">
-							<span><?php echo JText::_('PLG_HUBZERO_COMMENTS_REPORT_ABUSE'); ?></span>
-						</a>
-					</li>
+				<p class="comment-options">
+					<a class="abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=comment&id=' . $this->comment->id . '&parent=' . $this->obj->id); ?>">
+						<?php echo JText::_('PLG_HUBZERO_COMMENTS_REPORT_ABUSE'); ?>
+					</a>
 <?php 			if ($this->params->get('access-create-comment') && $this->depth < $this->params->get('comments_depth', 3)) { ?>
-					<li>
-						<a class="reply" href="<?php echo JRoute::_($rtrn . 'replyto=' . $this->comment->id . '#post-comment'); ?>" rel="comment-form<?php echo $this->comment->id; ?>">
-							<span><?php echo JText::_('PLG_HUBZERO_COMMENTS_REPLY'); ?></span>
-						</a>
-					</li>
+					<a class="reply" href="<?php echo JRoute::_($rtrn . 'replyto=' . $this->comment->id . '#post-comment'); ?>" rel="comment-form<?php echo $this->comment->id; ?>">
+						<?php echo JText::_('PLG_HUBZERO_COMMENTS_REPLY'); ?>
+					</a>
 <?php 			} ?>
 <?php 			if (($this->params->get('access-edit-comment') && $this->comment->created_by == $juser->get('id')) || $this->params->get('access-manage-comment')) { ?>
-					<li>
-						<a class="edit" href="<?php echo JRoute::_($rtrn . 'editcomment=' . $this->comment->id . '#post-comment'); ?>">
-							<span><?php echo JText::_('PLG_HUBZERO_COMMENTS_EDIT'); ?></span>
-						</a>
-					</li>
+					<a class="edit" href="<?php echo JRoute::_($rtrn . 'editcomment=' . $this->comment->id . '#post-comment'); ?>">
+						<?php echo JText::_('PLG_HUBZERO_COMMENTS_EDIT'); ?></span>
+					</a>
 <?php 			} ?>
 <?php 			if (($this->params->get('access-delete-comment') && $this->comment->created_by == $juser->get('id')) || $this->params->get('access-manage-comment')) { ?>
-					<li>
-						<a class="delete" href="<?php echo JRoute::_($rtrn . 'action=delete&comment=' . $this->comment->id); ?>">
-							<span><?php echo JText::_('PLG_HUBZERO_COMMENTS_DELETE'); ?></span>
-						</a>
-					</li>
+					<a class="delete" href="<?php echo JRoute::_($rtrn . 'action=delete&comment=' . $this->comment->id); ?>">
+						<?php echo JText::_('PLG_HUBZERO_COMMENTS_DELETE'); ?>
+					</a>
 <?php 			} ?>
-				</ul><!-- / .comment-options -->
+				</p><!-- / .comment-options -->
 <?php 		} ?>
 <?php 		if ($this->params->get('access-create-comment') && $this->depth < $this->params->get('comments_depth', 3)) { ?>
-				<div class="comment-add hide" id="comment-form<?php echo $this->comment->id; ?>">
+				<div class="addcomment hide" id="comment-form<?php echo $this->comment->id; ?>">
 					<form action="<?php echo JRoute::_($this->url); ?>" method="post">
 						<fieldset>
-							<legend><span><?php echo JText::sprintf('PLG_HUBZERO_COMMENTS_REPLYING_TO', (!$this->comment->anonymous ? $this->comment->name : JText::_('PLG_HUBZERO_COMMENTS_ANONYMOUS'))); ?></span></legend>
+							<legend>
+								<span><?php echo JText::sprintf('PLG_HUBZERO_COMMENTS_REPLYING_TO', (!$this->comment->anonymous ? $this->comment->name : JText::_('PLG_HUBZERO_COMMENTS_ANONYMOUS'))); ?></span>
+							</legend>
 							
 							<input type="hidden" name="comment[id]" value="0" />
 							<input type="hidden" name="comment[item_id]" value="<?php echo $this->obj->id; ?>" />

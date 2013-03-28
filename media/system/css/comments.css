@@ -247,7 +247,9 @@
 	ol.comments .addcomment .reply-anonymous-label {
 		width: 50%;
 	}
-
+	ol.comments .addcomment span {
+		display: none;
+	}
 /* No comments found */
 	.no-comments {
 		background-color: #fafafa;
