@@ -594,8 +594,10 @@ class JApplication extends JObject
 			return false;
 		}
 
+		$message = (!empty($response->error_message)) ? $response->error_message : 'E_LOGIN_AUTHENTICATE';
+
 		// Return the error
-		return JError::raiseWarning('SOME_ERROR_CODE', JText::_('E_LOGIN_AUTHENTICATE'));
+		return JError::raiseWarning('SOME_ERROR_CODE', JText::_($message));
 	}
 
 	/**

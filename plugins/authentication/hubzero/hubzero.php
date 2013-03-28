@@ -73,27 +73,48 @@ class plgAuthenticationHubzero extends JPlugin
 		// HUBzero does not like blank passwords
 		if (empty($credentials['password'])) {
 			$response->status = JAUTHENTICATE_STATUS_FAILURE;
-			$response->error_message = 'Empty password not allowed';
+			$response->error_message = 'Empty passwords are not allowed.';
 			return false;
 		}
-		
+
 		// Initialize variables
 		$conditions = '';
-		
+
 		// Get a database object
 		$db =& JFactory::getDBO();
-		
-		$query = 'SELECT `id`, `password`, `gid`'
+
+		// Determine if attempting to log in via username or email address
+		if (strpos($credentials['username'], '@'))
+		{
+			$conditions = ' WHERE email=' . $db->Quote($credentials['username']);
+		}
+		else
+		{
+			$conditions = ' WHERE username=' . $db->Quote($credentials['username']);
+		}
+
+		$query = 'SELECT `id`, `username`, `password`, `gid`'
 				. ' FROM `#__users`'
-				. ' WHERE username=' . $db->Quote( $credentials['username'] )
-				;
-				$db->setQuery( $query );
-		
-		$result = $db->loadObject();
-		
+				. $conditions;
+
+		$db->setQuery($query);
+
+		$result = $db->loadObjectList();
+
+		if (is_array($result) && count($result) > 1)
+		{
+			$response->status = JAUTHENTICATE_STATUS_FAILURE;
+			$response->error_message = "We're unable to identify your account via email.  Please login using your username.";
+			return false;
+		}
+		elseif(is_array($result) && isset($result[0]))
+		{
+			$result = $result[0];
+		}
+
 		if ($result)
 		{	
-			if (Hubzero_User_Password::passwordMatches($credentials['username'], $credentials['password'], true)) {
+			if (Hubzero_User_Password::passwordMatches($result->username, $credentials['password'], true)) {
 				
 				$user = JUser::getInstance($result->id);
 				
@@ -107,13 +128,13 @@ class plgAuthenticationHubzero extends JPlugin
 				ximport('Hubzero_Password_Rule');
 				ximport('Hubzero_User_Password');
 				$password_rules = Hubzero_Password_Rule::getRules();
-				$msg = Hubzero_Password_Rule::validate($credentials['password'], $password_rules, $credentials['username']);
+				$msg = Hubzero_Password_Rule::validate($credentials['password'], $password_rules, $result->username);
 				if(is_array($msg) && !empty($msg[0]))
 				{
 					$session =& JFactory::getSession();
 					$session->set('badpassword', '1');
 				}
-				if(Hubzero_User_Password::isPasswordExpired($credentials['username']))
+				if(Hubzero_User_Password::isPasswordExpired($result->username))
 				{
 					$session =& JFactory::getSession();
 					$session->set('expiredpassword', '1');
@@ -121,13 +142,13 @@ class plgAuthenticationHubzero extends JPlugin
 			} else {
 				
 				$response->status = JAUTHENTICATE_STATUS_FAILURE;
-				$response->error_message = 'Invalid password';
+				$response->error_message = 'Username and password do not match or you do not have an account yet.';
 			}
 		}
 		else {
 			
 			$response->status = JAUTHENTICATE_STATUS_FAILURE;
-			$response->error_message = 'User does not exist';
+			$response->error_message = 'Username and password do not match or you do not have an account yet.';
 		}
 	}
 }

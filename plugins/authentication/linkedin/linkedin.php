@@ -231,7 +231,7 @@ class plgAuthenticationLinkedIn extends JPlugin
 		else // no authorization
 		{
 			$response->status = JAUTHENTICATE_STATUS_FAILURE;
-			$response->error_message = 'Not Authenticated.';
+			$response->error_message = 'Username and password do not match or you do not have an account yet.';
 		}
 	}
 

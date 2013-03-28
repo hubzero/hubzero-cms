@@ -68,14 +68,14 @@ if (!$this->multiAuth && JRequest::getWord('authenticator') == 'hubzero')
 				<h3><?php echo ($this->multiAuth) ? 'Your local hub account:' : 'Sign In:'; ?></h2>
 				<form action="<?php echo JRoute::_('index.php', true, true); ?>" method="post" id="login_form">
 					<div class="labelInputPair">
-						<label for="username"><?php echo JText::_('Username'); ?>:</label>
+						<label for="username"><?php echo JText::_('Username or email'); ?>:</label>
 						<a class="forgots forgot-username" href="<?php echo JRoute::_('index.php?option=com_user&view=remind'); ?>"><?php echo JText::_('Lost username?');?></a>
-						<input tabindex="1" type="text" name="username" id="username" placeholder="username<?php //echo JText::_('username'); ?>" />
+						<input tabindex="1" type="text" name="username" id="username" placeholder="email or username" />
 					</div>
 					<div class="labelInputPair">
 						<label for="password"><?php echo JText::_('Password'); ?>:</label>
 						<a class="forgots forgot-password" href="<?php echo JRoute::_('index.php?option=com_user&view=reset'); ?>"><?php echo JText::_('Forgot password?'); ?></a>
-						<input tabindex="2" type="password" name="passwd" id="password" placeholder="password<?php //echo JText::_('password'); ?>" />
+						<input tabindex="2" type="password" name="passwd" id="password" placeholder="password" />
 					</div>
 					<div class="submission">
 					<?php if(JPluginHelper::isEnabled('system', 'remember')) : ?>
