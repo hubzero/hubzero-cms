@@ -39,7 +39,7 @@ require_once(JPATH_COMPONENT . DS . 'models' . DS . 'formRespondent.php');
 require_once(JPATH_COMPONENT . DS . 'models' . DS . 'formDeployment.php');
 
 /**
- * Courses model class for a grade book
+ * Courses model class for grade book
  */
 class CoursesModelGradeBook extends CoursesModelAbstract
 {
