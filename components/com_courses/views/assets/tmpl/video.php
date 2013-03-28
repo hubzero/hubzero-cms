@@ -245,9 +245,9 @@ if ($type == 'html5' || $type == 'hubpresenter')
 						switch (strtolower($info['extension']))
 						{
 							case 'm4v':
-							case 'mp4':  $type = 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"'; break;
-							case 'ogv':  $type = 'video/ogg; codecs="theora, vorbis"';         break;
-							case 'webm': $type = 'video/webm; codecs="vp8, vorbis"';           break;
+							case 'mp4':  $type = "video/mp4;";  break;
+							case 'ogv':  $type = "video/ogg;";  break;
+							case 'webm': $type = "video/webm;"; break;
 						}
 					?>
 					<source src="<?php echo $path . DS . $v; ?>" type="<?php echo $type; ?>" />
@@ -333,12 +333,13 @@ if ($type == 'html5' || $type == 'hubpresenter')
 					<?php if (strtolower($presentation->type) == 'video') : ?>
 						<video id="player" preload="auto" controls="controls" data-mediaid="<?php echo $this->asset->get('id'); ?>">
 							<?php foreach ($presentation->media as $source): ?>
-							   	<?php
+								<?php
 									switch (strtolower($source->type))
 									{
-										case 'mp4':  $type = 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"'; break;
-										case 'ogv':  $type = 'video/ogg; codecs="theora, vorbis"';         break;
-										case 'webm': $type = 'video/webm; codecs="vp8, vorbis"';           break;
+										case 'm4v':
+										case 'mp4':  $type = "video/mp4;";  break;
+										case 'ogv':  $type = "video/ogg;";  break;
+										case 'webm': $type = "video/webm;"; break;
 									}
 								?>
 								<source src="<?php echo $content_folder . DS . $source->source; ?>" type='<?php echo $type; ?>'>
