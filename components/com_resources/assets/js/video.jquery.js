@@ -24,6 +24,7 @@ HUB.Video = {
 		browser = navigator.userAgent;
 		canSendTracking = true;
 		sendingTracking = false;
+		doneLoading = false;
 		
 		//show loading graphic
 		$jQ('<div id="overlayer"></div>').appendTo(document.body);
@@ -42,6 +43,12 @@ HUB.Video = {
 	
 	doneLoading: function()
 	{
+		//make sure we didnt already run this - Firefox bug
+		if(doneLoading)
+		{
+			return;
+		}
+		
 		//get height & width of player
 		resize_width = $jQ("#video-player").outerWidth(true);
 		resize_height = $jQ("#video-player").outerHeight(true);
@@ -482,6 +489,12 @@ HUB.Video = {
 	
 	locationHash: function()
 	{
+		//make sure we didnt already run this - Firefox bug
+		if(doneLoading)
+		{
+			return;
+		}
+		
 		//var to hold time component
 		var timeComponent;
 		
@@ -520,47 +533,53 @@ HUB.Video = {
 			//pause video
 			var p = HUB.Video.getPlayer();
 			p.pause();
+			
+			//we have handled
+			doneLoading = true;
 		}
 	},
 	
 	resume: function( time )
 	{
-		//video container must be position relatively 
-		$jQ("#video-container").css('position', 'relative');
+		if (!$jQ("#video-container #resume").length)
+		{
+			//video container must be position relatively 
+			$jQ("#video-container").css('position', 'relative');
 		
-		//build replay content
-		var resume = "<div id=\"resume\"> \
-						<div id=\"resume-details\"> \
-							<h2>Resume Playback?</h2> \
-							<p>Would you like to resume video playback where you left off last time?</p> \
-							<div id=\"time\">" + time + "</div> \
-						</div> \
-						<a id=\"restart-video\" href=\"#\">Play from the Beginning</a> \
-						<a id=\"resume-video\" href=\"#\">Resume Video</a> \
-					  </div>";
+			//build replay content
+			var resume = "<div id=\"resume\"> \
+							<div id=\"resume-details\"> \
+								<h2>Resume Playback?</h2> \
+								<p>Would you like to resume video playback where you left off last time?</p> \
+								<div id=\"time\">" + time + "</div> \
+							</div> \
+							<a id=\"restart-video\" href=\"#\">Play from the Beginning</a> \
+							<a id=\"resume-video\" href=\"#\">Resume Video</a> \
+						  </div>";
 					
-		//add replay to video container
-		$jQ( resume ).hide().appendTo("#video-container").fadeIn("slow");
+			//add replay to video container
+			$jQ( resume ).hide().appendTo("#video-container").fadeIn("slow");
 		
-		//restart video button
-		$jQ("#restart-video").on('click',function(event){
-			event.preventDefault();
-			HUB.Video.doReplay("#resume");
-		});
-		
-		//resume video button
-		$jQ("#resume-video").on('click',function(event){
-			event.preventDefault();
-			HUB.Video.doResume();
-		});
-		
-		//stop clicks on resume
-		$jQ("#resume").on('click',function(event){
-			if(event.srcElement.id != 'restart-video' && event.srcElement.id != 'resume-video')
-			{
+			//restart video button
+			$jQ("#restart-video").on('click',function(event){
 				event.preventDefault();
-			}
-		})
+				HUB.Video.doReplay("#resume");
+			});
+		
+			//resume video button
+			$jQ("#resume-video").on('click',function(event){
+				event.preventDefault();
+				HUB.Video.doResume();
+			});
+		
+			//stop clicks on resume
+			$jQ("#resume").on('click',function(event){
+				if(event.srcElement.id != 'restart-video' && event.srcElement.id != 'resume-video')
+				{
+					event.preventDefault();
+				}
+			});
+		}
 	},
 	
 	doResume: function() 

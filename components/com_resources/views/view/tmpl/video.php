@@ -42,9 +42,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 					$type = "";
 					switch( $info['extension'] )
 					{
-						case 'mp4': 	$type = "video/mp4; codecs='avc1.42E01E, mp4a.40.2'";	break;
-						case 'ogv':		$type = "video/ogg; codecs='theora, vorbis'";			break;
-						case 'webm':	$type = "video/webm; codecs='vp8, vorbis'";				break;
+						case 'mp4': 	$type = "video/mp4;";		break;
+						case 'ogv':		$type = "video/ogg;";		break;
+						case 'webm':	$type = "video/webm;";		break;
 					}
 				?>
 				<source src="<?php echo $this->path . DS . $v; ?>" type="<?php echo $type; ?>" />
