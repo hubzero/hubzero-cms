@@ -65,17 +65,22 @@ defined('_JEXEC') or die('Restricted access');
 					$disconnectLink = JRoute::_('index.php?option=com_tools&task=unshare&sess='.$session->sessnum.'&app='.$appname);
 					
 					//get snapshot
-					$snapshot = DS . 'api' . DS . 'tools' . DS . 'screenshot?sessionid=' . $session->sessnum . '&amp;not_found=1';
+					$snapshot = DS . 'api' . DS . 'tools' . DS . 'screenshot?sessionid=' . $session->sessnum . '&notfound=1';
 				?>
 				<li class="session <?php echo $cls; ?>">
 					<div class="session-title-bar">
-						<?php if ($this->params->get('quick_launch', 1)) : ?>
-							<a class="session-title-quicklaunch tooltips" title="Quick Launch :: <?php echo JText::_('MOD_MYSESSIONS_RESUME_TITLE'); ?>" href="<?php echo $resumeLink; ?>">
-								<img src="<?php echo $snapshot; ?>" />
-							</a>
+						<?php if ($this->params->get('show_screenshots', 1)) : ?>
+							<?php if ($this->params->get('quick_launch', 1)) : ?>
+								<a class="session-title-quicklaunch tooltips" title="Quick Launch :: <?php echo JText::_('MOD_MYSESSIONS_RESUME_TITLE'); ?>" href="<?php echo $resumeLink; ?>">
+									<img src="<?php echo $snapshot; ?>" />
+								</a>
+							<?php else : ?>
+								<div class="session-title-icon">
+									<img src="<?php echo $snapshot; ?>" />
+								</div>
+							<?php endif; ?>
 						<?php else : ?>
-							<div class="session-title-icon">
-								<img src="<?php echo $snapshot; ?>" />
+							<div class="session-title-noicon">
 							</div>
 						<?php endif; ?>
 						<div class="session-title">
@@ -85,13 +90,15 @@ defined('_JEXEC') or die('Restricted access');
 					</div>
 				
 					<div class="session-details">
-						<div class="session-details-left">
-							<div class="session-snapshot">
-								<a class="session-snapshot-link" href="<?php echo $snapshot; ?>" title="View Session Snapshot">
-									<img src="<?php echo $snapshot; ?>" />
-								</a>
+						<?php if ($this->params->get('show_screenshots', 1)) : ?>
+							<div class="session-details-left">
+								<div class="session-snapshot">
+									<a class="session-snapshot-link" href="<?php echo $snapshot; ?>" title="View Session Snapshot">
+										<img src="<?php echo $snapshot; ?>" />
+									</a>
+								</div>
 							</div>
-						</div>
+						<?php endif; ?>
 						<div class="session-details-right">
 							<div class="session-accesstime">
 								<span>Last Accessed:</span>

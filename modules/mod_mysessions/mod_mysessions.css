@@ -66,7 +66,7 @@ div.draggable .session-list ul {
 	border-bottom:1px solid #BBB;
 }
 .session-title-bar:after {
-	content: '\2304';
+	content: '\203A';
 	position: absolute;
 	top: 10px;
 	right: 10px;
@@ -88,7 +88,7 @@ div.draggable .session-list ul {
 	cursor: pointer;
 }
 .active .session-title-bar:after {
-	content: '\2303';
+	content: '\2304';
 	background: #efefef;
 }
 .session-title-bar a.session-title-quicklaunch,
@@ -107,6 +107,19 @@ div.draggable .session-list ul {
 .session-title-bar .session-title-icon img {
 	max-width:100%;
 	display:block;
+}
+.session-title-bar .session-title-noicon {
+	display:block;
+	width:20px;
+	float:left;
+	padding-top:1px;
+}
+.session-title-bar .session-title-noicon:after {
+	content:'\f0c2';
+	color: #888;
+	font-family: 'Fontcons';
+	font-size: 24px;
+	line-height: 18px;
 }
 .session-title-bar .session-title {
 	font-weight: 500;
@@ -149,8 +162,8 @@ div.draggable .session-list ul {
 	-o-box-shadow: inset 0 2px 1px rgba(0,0,0,0.1);
 	box-shadow: inset 0 2px 1px rgba(0,0,0,0.1);
 }
-.session-details-right {
-	margin-top: 20px;
+.session-details-left {
+	margin-bottom: 20px;
 }
 .session-snapshot {
 	display: block;
@@ -352,10 +365,10 @@ div.draggable .session-list ul {
 	.session-details-left {
 		float: left;
 		width: 125px;
+		margin-bottom:0;
 	}
 	.session-details-right {
 		float: left;
-		margin-top: 0;
 	}
 	.session-snapshot {
 		width: 100px;

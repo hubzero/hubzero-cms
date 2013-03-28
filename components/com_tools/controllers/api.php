@@ -238,7 +238,7 @@ class ToolsApiController extends Hubzero_Api_Controller
 		//get any request vars
 		$type 		= JRequest::getVar('type', 'png');
 		$sessionid 	= JRequest::getVar('sessionid', '');
-		$notFound	= JRequest::getVar('not_found', 0);
+		$notFound	= JRequest::getVar('notfound', 0);
 		$format 	= JRequest::getVar('format', 'json');
 		
 		$image_type = IMAGETYPE_PNG;
