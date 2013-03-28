@@ -514,6 +514,7 @@ class WikiControllerPage extends Hubzero_Controller
 			if ($this->_group) 
 			{
 				$this->page->group_cn = $this->_group;
+				$this->page->scope = $this->_group . DS . $this->_sub;
 			}
 
 			if ($ischild && $this->page->pagename) 
