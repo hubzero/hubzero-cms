@@ -318,7 +318,7 @@
 		background: -o-linear-gradient(#4e5052, #7f8284);
 		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#4e5052,endColorstr=#7f8284);
 		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#4e5052, endColorstr=#7f8284)";
-		border-bottom:none;
+		border-bottom: none;
 		color: #fff;
 	}
 	#app-footer ul li:last-child {
@@ -326,17 +326,22 @@
 	#app-footer ul li:first-child a {
 		-webkit-border-radius: 0 0.27em 0 0;
 		-moz-border-radius: 0 0.27em 0 0;
+		-ms-border-radius: 0 0.27em 0 0;
+		-o-border-radius: 0 0.27em 0 0;
 		border-radius: 0 0.27em 0 0;
 	}
 	.ui-resizable-handle {
 		position: absolute;
 		right: 0;
-		bottom: -37px;
+		bottom: -3.2em; /* -37px */
 		display: block;
-		height: 35px;
-		width: 90px;
+		height: 3em;
+		width: 5.3em;
+		padding: 0 0 0 30px;
 		background-image: none;
 		border: 1px solid transparent;
+		z-index: 666;
+		font-size: 12px;
 	}
 /* Disk usage */
 	#diskusage { 
@@ -446,9 +451,9 @@
 	#app-footer li a span,
 	#app-header li a,
 	#app-header li a span {
-		position:relative;
-		z-index:1;
-		overflow:hidden;
+		position: relative;
+		z-index: 1;
+		overflow: hidden;
 		padding: 0;
 		display: block;
 	}
@@ -458,16 +463,16 @@
 	}
 
 	#app-header a.terminate span {
-		background: url("/components/com_tools/assets/img/session.png") 8px -118px no-repeat;
+		background: url("/components/com_tools/assets/img/session.png") 8px -182px no-repeat;
 	}
 	#app-header a.terminate:hover span {
-		background-position: 8px -150px;
+		background-position: 8px -230px;
 	}
 	#app-header a.keep span {
-		background: url("/components/com_tools/assets/img/session.png") 8px -184px no-repeat;
+		background: url("/components/com_tools/assets/img/session.png") 8px -278px no-repeat;
 	}
 	#app-header a.keep:hover span {
-		background-position: 8px -216px;
+		background-position: 8px -326px;
 	}
 	
 	#app-header a.about span,
@@ -475,20 +480,21 @@
 	#app-footer a.popout span {
 		width: 2px;
 		padding-right: 0px;
-		text-indent: -555em;
+		text-indent: 555em;
+		white-space: nowrap;
 	}
 	#app-header a.about span {
-		background: url("/components/com_tools/assets/img/session.png") 8px -374px no-repeat;
+		background: url("/components/com_tools/assets/img/session.png") 8px -364px no-repeat;
 	}
 	#app-header ul li.active a.about span,
 	#app-header a.about:hover span {
-		background-position: 8px -406px;
+		background-position: 8px -396px;
 	}
 	#app-footer a.refresh span {
-		background: url("/components/com_tools/assets/img/session.png") 8px -54px no-repeat;
+		background: url("/components/com_tools/assets/img/session.png") 8px -86px no-repeat;
 	}
 	#app-footer a.refresh:hover span {
-		background-position: 8px -86px;
+		background-position: 8px -134px;
 	}
 	#app-footer a.resize,
 	.ui-resizable-handle {
@@ -498,13 +504,13 @@
 		background: url("/components/com_tools/assets/img/session.png") 8px 10px no-repeat;
 	}
 	#app-footer a.resize:hover span {
-		background-position: 8px -22px;
+		background-position: 8px -38px;
 	}
 	#app-footer a.popout span {
-		background: url("/components/com_tools/assets/img/session.png") 8px -246px no-repeat;
+		background: url("/components/com_tools/assets/img/session.png") 8px -374px no-repeat;
 	}
 	#app-footer a.popout:hover span {
-		background-position: 8px -278px;
+		background-position: 8px -422px;
 	}
 
 /* Share form */
