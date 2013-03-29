@@ -92,6 +92,7 @@ class JSite extends JApplication
 		$user		=& JFactory::getUser();
 		$router     =& $this->getRouter();
 		$params     =& $this->getParams();
+		$tr = array('!'=>'%21', '*'=>'%2A', "'"=>'%27', '('=>'%28', ')'=>'%29', ';'=>'%3B', '&'=>'%26', '='=>'%3D', '$'=>'%24', ','=>'%2C', '?'=>'%3F', '['=>'%5B', ']'=>'%5D');
 
 		switch($document->getType())
 		{
@@ -105,13 +106,13 @@ class JSite extends JApplication
 				}
 
 				if($router->getMode() == JROUTER_MODE_SEF) {
-					$document->setBase(JURI::current());
+					$document->setBase(strtr(JURI::current(),$tr));
 				}
 			} break;
 
 			case 'feed':
 			{
-				$document->setBase(JURI::current());
+				$document->setBase(strtr(JURI::current(),$tr));
 			} break;
 
 			default: break;
