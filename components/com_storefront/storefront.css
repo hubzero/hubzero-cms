@@ -1,0 +1,11 @@
+.selected {
+	color: #F00;
+}
+
+.available {
+	color: #000;
+}
+
+.unavailable {
+	color: #ccc;	
+}

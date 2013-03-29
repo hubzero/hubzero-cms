@@ -1,0 +1,41 @@
+#productOptions ul {
+	margin: 0;
+	padding: 0;
+}
+
+#productOptions ul li {
+	color: #000;
+	display: inline-block;
+	padding: 5px 10px;
+	margin: 1px;
+	border: 1px solid #666;
+}
+
+#productOptions ul li.selected {
+	color: #FFF;
+	background: #333;
+}
+
+#productOptions ul li.unavailable {
+	color: #999;
+	background: #E5E5E5;
+	border-color: #E5E5E5;
+}
+
+#addToCart.disabled {
+	color: #999;
+}
+
+#addToCart.enafled {
+	color: #000;
+}
+
+div.messages {
+	border: 2px solid #C60;
+	padding: 20px;
+	margin: 20px 0;
+}
+
+div.messages p {
+	margin: 0.2em 0;
+}

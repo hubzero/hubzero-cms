@@ -1,0 +1,94 @@
+.status {
+	text-transform: uppercase;
+	font-size: 0.8em;
+	margin-left: 2em;
+}
+
+.cartSection {
+	border: 2px solid #CCC;
+	padding: 1em;
+	margin: 5em 0 0 0;
+}
+
+#cartSummary, #orderSummary {
+	border: 2px solid #CCC;
+	padding: 1em;
+	margin: 3em 0;
+}
+
+.cartDiscount td, .cartItemDiscount td {
+	background: #EFEFEF;
+}
+
+.cartItemDiscount .cartDiscountName {
+	padding-left: 2em;
+}
+
+.cartDiscountName span {
+	text-transform: uppercase;
+	font-size: 0.8em;
+}
+
+.cartDiscount .cartDiscountDiscount, .cartItemDiscount .cartDiscountDiscount {
+	color: #066;	
+}
+
+.box {
+	border: 2px solid #CCC;
+	padding: 1em;
+	margin: 2em 0;
+}
+
+div.messages {
+	border: 2px solid #C60;
+	padding: 20px;
+	margin: 20px 0;
+}
+
+div.messages p {
+	margin: 0.2em 0;
+}
+
+#updateCart {
+	margin: 1em 0;
+}
+
+#cartContents {
+	margin: 1em 0;
+}
+
+#submitOverlay {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	background: #000;
+	background-image: url('../img/shattered.png');
+	top: 0;
+	left: 0;
+	z-index: 9998;
+}
+
+#overlayMessage {
+	background: #fff;
+	position: absolute;
+	width: 20em;
+	padding: 2em 6em 80px 6em;
+	left: 50%;
+	top: 50%;
+	margin: -12em 0 0 -16em;	
+	z-index: 9999;
+	text-align: center;
+	-webkit-box-shadow: 0 8px 6px -6px #666666;
+	-moz-box-shadow: 0 8px 6px -6px #666666;
+	box-shadow: 0 8px 6px -6px #666666;
+	-webkit-border-radius: 12px; 
+	-moz-border-radius: 3px; 
+  	border-radius: 3px; 
+}
+
+#spinner {
+	position: relative;
+	margin-left: -30px;
+	margin-top: 20px;
+	left: 50%;
+}
