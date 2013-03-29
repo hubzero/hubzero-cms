@@ -126,6 +126,8 @@ HUB.Modules.MyTools	 = {
 	
 	toolSearch: function()
 	{
+		var $ = this.jQuery;
+		
 		jQuery.expr[':'].caseInsensitiveContains = function(a,i,m) {
 			return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase())>=0; 
 		};
