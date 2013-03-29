@@ -289,71 +289,56 @@
 .instructor {
 	position: relative;
 	padding-top: 25px;
-	z-index: 1;
 }
-.instructor .flag {
-	margin-left: 210px;
-	margin-right: 12px;
-	position: absolute;
-	left: 0;
-	right: 0;
-	top: 0;
-	bottom: 0;
-	z-index: 2;
+.instructor .headers {
+	padding: 10px;
+	margin-bottom: 5px;
+	overflow: hidden;
 }
-.instructor .flag-inner {
-	content: "";
-	position: absolute;
-	left: 0;
-	top: 15px;
-	bottom: -5px;
-	width: 2px;
-	background-color: #777;
-	background-color: rgba(0, 0, 0, .3); 
+.instructor .headers div:not(.header-sub) {
+	display: block;
+	float: left;
+	font-size: 16px;
+	text-transform: uppercase;
+	border-bottom: 1px solid #AAA;
 }
-.instructor .flag-inner:before {
-	position: absolute;
-	font-family: "fontcons";
-	font-size: 25px;
-	content: "\f041";
-	top: -25px;
-	left: -5px;
-	color: #777;
-	color: rgba(0, 0, 0, .3); 
+.instructor .headers .header-sub {
+	margin-left: 200px;
+	display: block;
+	float: none;
+}
+.instructor .headers .header-student-name {
+	width: 190px;
+}
+.instructor .headers .header-progress {
+	width: 50%;
+}
+.instructor .header-score {
+	width: 48%;
+	margin-left: 2%;
 }
 .instructor .student {
 	position: relative;
-	z-index: 2;
 	margin: 0 0 5px 0;
 	padding: 10px 10px 5px 10px;
 	border: 1px solid transparent;
-}
-.instructor .student:hover {
-	-webkit-transition: all 0.25s;
-	-moz-transition: all 0.25s;
-	-ms-transition: all 0.25s;
-	-o-transition: all 0.25s;
-	transition: all 0.25s;
-
-	background: #FAFAFA;
-	border: 1px dotted #CCC;
-	padding-bottom: 10px;
 }
 .instructor .student.active {
 	background: #FAFAFA;
 	border: 1px solid #CCC;
 	padding-bottom: 10px;
 }
+.instructor .student:not(.active):hover {
+	background: #FAFAFA;
+	border: 1px dotted #CCC;
+}
 .instructor .student-name {
 	display: block;
 	float: left;
 	width: 200px;
 	overflow: scroll;
-	padding: 3px;
 	color: #666;
-}
-.instructor .student-name:hover {
-	cursor: pointer;
+	line-height: 30px;
 }
 .instructor .grades {
 	border: none;
@@ -363,20 +348,21 @@
 	cursor: default;
 	background: transparent;
 }
-.instructor .more-details {
-	margin: 10px auto 0 auto;
+.instructor .progress-container {
 	display: block;
+	margin-left: 200px;
+	cursor: pointer;
 }
 .instructor .progress-bar-container {
-	margin-left: 200px;
-	height: 20px;
+	height: 30px;
 	padding: 0;
-	cursor: pointer;
-
+	float: left;
+	width: 48%;
+	margin-left: 2%;
+}
+.instructor .progress-bar-inner {
 	border: 1px solid #999;
-
-	border-radius: 5px;
-
+	border-radius: 3px;
 	box-shadow: inset 1px 1px 2px #555;
 
 	background: #F0F0F0;
@@ -389,11 +375,69 @@
 	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#F0F0F0,endColorstr=#DEDEDE);
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#F0F0F0, endColorstr=#DEDEDE)";
 }
+.instructor .score-text {
+	display: none;
+	position: absolute;
+	z-index: 2;
+	top: -30px;
+	right: -16px;
+	width: 32px;
+	padding: 2px 4px;
+	height: 20px;
+	border-radius: 4px;
+	background-color: #333;
+	background-color: rgba(0, 0, 0, .4);
+	color: #FFF;
+}
+.instructor .score-text:before {
+	position: absolute;
+	top: 24px;
+	left: 16px;
+	content: "";
+	border-color: #333 transparent transparent transparent;
+	border-color: rgba(0, 0, 0, .4) transparent transparent transparent;
+	border-width: 5px;
+	border-style: solid;
+}
+.instructor .progress-bar-container:hover .score-text {
+	display: block;
+}
+.instructor .student-progress-timeline {
+	display: block;
+	float: left;
+	width: 50%;
+	height: 30px;
+}
+.instructor .student-progress-timeline-inner {
+	overflow: hidden;
+}
+.instructor .student-progress-timeline-inner .unit {
+	display: block;
+	float: left;
+	text-align: center;
+	color: #FFF;
+	line-height: 30px;
+}
+.instructor .length_1 .unit { width: 100%; }
+.instructor .length_2 .unit { width: 50%; }
+.instructor .length_3 .unit { width: 33.3%; }
+.instructor .length_4 .unit { width: 25%; }
+.instructor .length_5 .unit { width: 20%; }
+.instructor .length_6 .unit { width: 16.6%; }
+.instructor .length_7 .unit { width: 14.27%; }
+.instructor .length_8 .unit { width: 12.5%; }
+.instructor .length_9 .unit { width: 11.1%; }
+.instructor .length_10 .unit { width: 10%; }
+.instructor .unit-inner {
+	background: #AAA;
+	margin: 0 1px;
+	height: 30px;
+}
 .instructor .student-progress-bar {
 	display: block;
-	height: 20px;
-
-	border-radius: 5px;
+	border-radius: 3px;
+	height: 30px;
+	position: relative;
 
 	box-shadow: inset 0 1px 5px #FFF;
 
@@ -443,8 +487,45 @@
 .instructor .student-details {
 	display: none;
 }
-.instructor .student-details table thead {
-	font-weight: bold;
+.instructor .units {
+	margin-left: 200px;
+}
+.instructor .picture-thumb {
+	display: block;
+	float: left;
+	margin-right: 10px;
+}
+.instructor .picture-thumb img {
+	height: 30px;
+}
+.instructor .picture {
+	display: block;
+	float: left;
+	position: relative;
+}
+.instructor .picture img {
+	border: 1px solid #AAA;
+	border-radius: 5px;
+	box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+	width: 125px;
+}
+.instructor .more-details {
+	position: absolute;
+	bottom: 6px;
+	height: 20px;
+	left: 0;
+	right: 0;
+	background-color: #AAA;
+	background-color: rgba(0, 0, 0, .4);
+	color: #FFF;
+	text-align: center;
+	padding: 5px 0;
+	border-bottom-right-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+.instructor .more-details:hover {
+	background-color: #CCC;
+	background-color: rgba(0, 0, 0, .6);
 }
 .refresh {
 	margin: 30px 10px 0 10px;

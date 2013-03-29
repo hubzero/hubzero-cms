@@ -33,6 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 // Make sure required files are included
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradebook.php');
+ximport('Hubzero_User_Profile_Helper');
 
 $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias');
 
@@ -53,37 +54,79 @@ $progress  = $gradebook->getProgress($this->course);
 ?>
 
 <div class="instructor">
+	<div class="headers">
+		<div class="header-student-name">Name</div>
+		<div class="header-sub">
+			<div class="header-progress">Unit Progress</div>
+			<div class="header-score">Current Score</div>
+		</div>
+	</div>
+	<div class="clear"></div>
 	<? if(count($members) > 0) : ?>
-		<div class="flag"><div class="flag-inner" style="left:<?= $progress['current_marker'] ?>%;"></div></div>
 		<? foreach($members as $m) : ?>
 			<div class="student">
 				<a href="<?= JRoute::_($base . '&active=progress&id=' . $m->get('user_id')) ?>">
-					<div class="student-name"><?= JFactory::getUser($m->get('user_id'))->get('name'); ?></div>
-					<div class="progress-bar-container">
-						<? if(isset($progress[$m->get('user_id')])) : ?>
+					<div class="student-name">
+						<div class="picture-thumb">
 							<?
-								$studentProgress = ($progress[$m->get('user_id')]['form_count'] / $progress['form_count'])*100;
-								$studentStatus   = ($studentProgress / $progress['current_marker'])*100;
-								$cls = '';
-								if($studentStatus < 60)
-								{
-									$cls = ' stop';
-								}
-								elseif($studentStatus >= 60 && $studentStatus < 70)
-								{
-									$cls = ' yield';
-								}
-								elseif($studentStatus >= 70 && $studentStatus <= 100)
-								{
-									$cls = ' go';
-								}
+								$src = '/components/com_members/assets/img/profile.gif';
+								$src = Hubzero_User_Profile_Helper::getMemberPhoto($m->get('user_id'), 0, true);
 							?>
-							<div class="student-progress-bar <?= $cls ?>" style="width:<?= $studentProgress ?>%;"></div>
-						<? endif; ?>
+							<img src="<?= $src ?>" />
+						</div>
+						<?= JFactory::getUser($m->get('user_id'))->get('name'); ?>
+					</div>
+					<div class="progress-container">
+						<div class="student-progress-timeline">
+							<div class="student-progress-timeline-inner length_<?= count($this->course->offering()->units()) ?>">
+								<? $idx = 1 ?>
+								<? foreach($this->course->offering()->units() as $unit) : ?>
+									<div class="unit">
+										<div class="unit-inner">
+											Unit <?= $idx ?>
+											<? $idx++ ?>
+										</div>
+									</div>
+								<? endforeach; ?>
+							</div>
+						</div>
+						<div class="progress-bar-container">
+							<div class="progress-bar-inner">
+								<? if (isset($grades[$m->get('user_id')]['course'][$this->course->get('id')])) : ?>
+									<?
+										$studentStatus = $grades[$m->get('user_id')]['course'][$this->course->get('id')];
+										$cls = '';
+										if($studentStatus < 70)
+										{
+											$cls = ' stop';
+										}
+										elseif($studentStatus >= 70 && $studentStatus < 75)
+										{
+											$cls = ' yield';
+										}
+										elseif($studentStatus >= 75 && $studentStatus <= 100)
+										{
+											$cls = ' go';
+										}
+									?>
+									<div class="student-progress-bar <?= $cls ?>" style="width:<?= $studentStatus ?>%;">
+										<div class="score-text"><?= $studentStatus ?></div>
+									</div>
+								<? endif; ?>
+							</div>
+						</div>
 					</div>
 				</a>
 				<div class="clear"></div>
 				<div class="student-details grades">
+					<div class="picture">
+						<?
+							$src = '/components/com_members/assets/img/profile.gif';
+							$src = Hubzero_User_Profile_Helper::getMemberPhoto($m->get('user_id'), 0, false);
+						?>
+						<img src="<?= $src ?>" />
+						<a class="more-details" href="<?= JRoute::_($base . '&active=progress&id=' . $m->get('user_id')) ?>">More details</a>
+					</div>
 					<div class="units">
 						<? foreach($this->course->offering()->units() as $unit) : ?>
 							<div class="unit-entry">
@@ -112,7 +155,6 @@ $progress  = $gradebook->getProgress($this->course);
 								</div>
 							</div>
 					</div>
-					<a class="more-details btn" href="<?= JRoute::_($base . '&active=progress&id=' . $m->get('user_id')) ?>">More details</a>
 				</div>
 			</div>
 			<div class="clear"></div>

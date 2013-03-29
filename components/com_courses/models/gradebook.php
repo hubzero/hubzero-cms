@@ -33,6 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'grade.book.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.views.php');
 require_once(JPATH_COMPONENT . DS . 'models' . DS . 'abstract.php');
 require_once(JPATH_COMPONENT . DS . 'models' . DS . 'form.php');
 require_once(JPATH_COMPONENT . DS . 'models' . DS . 'formRespondent.php');
@@ -117,6 +118,32 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	 */
 	public function getProgress($course)
 	{
+		// Get the asset views
+		$assetViews  = new CoursesTableAssetViews(JFactory::getDBO());
+		$views = $assetViews->find(
+			array(
+				'section_id' => $course->offering()->section()->get('id')
+			)
+		);
+
+		$progress = array();
+
+		foreach($views as $v)
+		{
+			$progress[$v->user_id][$v->unit_id][$v->asset_id] = 1;
+		}
+
+		return $progress;
+	}
+
+	/**
+	 * Get current progress
+	 * 
+	 * @param      object $course - course object
+	 * @return     array $progress
+	 */
+/*	public function getProgress($course)
+	{
 		// Get the assets
 		$asset  = new CoursesTableAsset(JFactory::getDBO());
 		$assets = $asset->find(
@@ -186,7 +213,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		$progress['current_marker'] = (isset($form_count_current) && isset($form_count)) ? (round(($form_count_current / $form_count)*100, 2)) : 0;
 
 		return $progress;
-	}
+	}*/
 
 	/**
 	 * Resave/refresh grades for a user(s)
@@ -258,7 +285,6 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 				// If form hasn't been completed, but time has expired, result is 0
 				elseif (is_null($result['score']) && $dep->getEndTime() < date("Y-m-d H:i:s"))
 				{
-					var_dump($dep->getEndTime());die();
 					$result['score'] = '0.00';
 				}
 

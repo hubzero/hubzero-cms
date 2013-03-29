@@ -74,4 +74,82 @@ class CoursesTableAssetViews extends JTable
 	{
 		parent::__construct('#__courses_asset_views', 'id', $db);
 	}
+
+	/**
+	 * Build a query based off of filters passed
+	 * 
+	 * @param      array $filters Filters to construct query from
+	 * @return     string SQL
+	 */
+	protected function _buildQuery($filters=array())
+	{
+		$select = array();
+		$from   = array();
+		$where  = array();
+		$group  = array();
+
+		$from[] = "\nFROM $this->_tbl AS cav";
+
+		if (isset($filters['section_id']) && $filters['section_id'])
+		{
+			$select[] = "ca.id AS asset_id";
+			$select[] = "cav.viewed_by AS user_id";
+			$select[] = "cu.id AS unit_id";
+
+			$from[] = "LEFT JOIN #__courses_assets AS ca ON ca.id = cav.asset_id";
+			$from[] = "LEFT JOIN #__courses_asset_associations AS caa ON ca.id = caa.asset_id";
+			$from[] = "LEFT JOIN #__courses_asset_groups AS cag ON caa.scope_id = cag.id";
+			$from[] = "LEFT JOIN #__courses_units AS cu ON cag.unit_id = cu.id";
+			$from[] = "LEFT JOIN #__courses_offerings AS co ON cu.offering_id = co.id";
+			$from[] = "LEFT JOIN #__courses_offering_sections AS cos ON co.id = cos.offering_id";
+
+			$where[] = "cos.id = " . $this->_db->Quote($filters['section_id']);
+			$where[] = "ca.state = 1";
+
+			$group[] = "asset_id";
+			$group[] = "user_id";
+			$group[] = "unit_id";
+		}
+
+		$query = "SELECT ";
+
+		if (count($select) > 0)
+		{
+			$query .= implode(", ", $select);
+		}
+		else
+		{
+			$query .= "*";
+		}
+
+		$query .= implode("\n", $from);
+
+		if (count($where) > 0)
+		{
+			$query .= "\nWHERE ";
+			$query .= implode(" AND ", $where);
+		}
+
+		if (count($group) > 0)
+		{
+			$query .= "\nGROUP BY ";
+			$query .= implode(", ", $group);
+		}
+
+		return $query;
+	}
+
+	/**
+	 * Get asset view records
+	 * 
+	 * @param      array $filters Filters to construct query from
+	 * @return     array
+	 */
+	public function find($filters=array(), $key=null)
+	{
+		$query = $this->_buildQuery($filters);
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList($key);
+	}
 }

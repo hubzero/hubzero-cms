@@ -35,7 +35,7 @@ HUB.Plugins.CoursesProgress = {
 			});
 		});
 
-		$('.instructor').on('click', '.progress-bar-container', function(e) {
+		$('.instructor').on('click', '.progress-container', function(e) {
 			e.preventDefault();
 			$(this).parents('.student').find('.student-details').slideToggle('slow', function() {
 				$(this).parents('.student').toggleClass('active', 150, 'linear');
