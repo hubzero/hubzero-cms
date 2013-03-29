@@ -316,7 +316,7 @@ class Hubzero_API extends JApplication
 			$filename = JPATH_SITE . DS . 'components' . DS . 'com_'
 				. $segments[0] . DS . 'controllers' . DS . 'api.php';
 			
-			$classname = ucfirst($segments[0]) . 'ApiController';
+			$classname = ucfirst($segments[0]) . 'ControllerApi';
 			
 			if (!class_exists($classname))
 			{			
@@ -505,7 +505,7 @@ class Hubzero_API extends JApplication
 		//	return;
 		//}
 
-		$classname = ucfirst($this->_component) . 'ApiController';
+		$classname = ucfirst($this->_component) . 'ControllerApi';
 
 		if (class_exists($classname))
 		{

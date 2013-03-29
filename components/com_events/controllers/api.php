@@ -1,7 +1,7 @@
 <?php
 JLoader::import('Hubzero.Api.Controller');
 
-class EventsApiController extends Hubzero_Api_Controller
+class EventsControllerApi extends Hubzero_Api_Controller
 {
 	function execute()
 	{

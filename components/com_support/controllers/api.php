@@ -39,7 +39,7 @@ require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_s
 /**
  * API controller class for support tickets
  */
-class SupportApiController extends Hubzero_Api_Controller
+class SupportControllerApi extends Hubzero_Api_Controller
 {
 	/**
 	 * Execute a request

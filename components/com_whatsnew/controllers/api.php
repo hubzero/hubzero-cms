@@ -1,7 +1,7 @@
 <?php
 JLoader::import('Hubzero.Api.Controller');
 
-class WhatsnewApiController extends Hubzero_Api_Controller
+class WhatsnewControllerApi extends Hubzero_Api_Controller
 {
 	function execute()
 	{
@@ -113,11 +113,11 @@ class WhatsnewApiController extends Hubzero_Api_Controller
 		//order by the date created
 		if($order == 'asc')
 		{
-			usort($whatsnew, array("WhatsnewApiController", "sorter_asc"));
+			usort($whatsnew, array("WhatsnewControllerApi", "sorter_asc"));
 		}
 		else
 		{
-			usort($whatsnew, array("WhatsnewApiController", "sorter"));
+			usort($whatsnew, array("WhatsnewControllerApi", "sorter"));
 		}
 		
 		//
