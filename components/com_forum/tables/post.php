@@ -638,6 +638,7 @@ class ForumPost extends JTable
 		{
 			$where[] = "c.category_id = " . $this->_db->Quote($filters['category_id']);
 		}
+		$where[] = "c.state = " . $this->_db->Quote(1);
 		$where[] = "(c.parent = " . $this->_db->Quote($filters['parent']) . " OR c.id = " . $this->_db->Quote($filters['parent']) . ")";
 
 		$query .= implode(" AND ", $where);
@@ -663,7 +664,7 @@ class ForumPost extends JTable
 			return null;
 		}
 
-		$query = "SELECT r.* FROM $this->_tbl AS r WHERE r.parent=" . $this->_db->Quote($parent) . " ORDER BY created DESC LIMIT 1";
+		$query = "SELECT r.* FROM $this->_tbl AS r WHERE r.parent=" . $this->_db->Quote($parent) . " AND r.state=1 ORDER BY created DESC LIMIT 1";
 
 		$this->_db->setQuery($query);
 		$obj = $this->_db->loadObject();
@@ -690,6 +691,7 @@ class ForumPost extends JTable
 			$where[] = "r.scope_id=" . $this->_db->Quote($scope_id);
 		}
 		$where[] = "r.scope=" . $this->_db->Quote($scope);
+		$where[] = "r.state=" . $this->_db->Quote(1);
 		if ($category_id !== null)
 		{
 			$where[] = "r.category_id=" . $this->_db->Quote($category_id);
