@@ -33,7 +33,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
 
-<h1>Payment confirmation</h1>
+<div id="content-header">
+	<h2>Payment confirmation</h2>
+</div>
+
+<div class="section">
 
 <?php
 
@@ -59,3 +63,4 @@ if (empty($errors))
 
 ?>
 
+</div>

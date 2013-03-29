@@ -33,7 +33,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
 
-<h1>Summary</h1>
+<div id="content-header">
+	<h2>Summary</h2>
+</div>
+
+<div class="section">
 
 <?php
 
@@ -109,3 +113,4 @@ echo '</a>';
 
 ?>
 
+</div>

@@ -33,9 +33,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
 
-<h1><?php echo  JText::_('COM_STOREFRONT'); ?> homepage</h1>
+<div id="content-header">
+	<h2><?php echo  JText::_('COM_STOREFRONT'); ?> homepage</h2>
+</div>
 
-<h2>Product categories</h2>
+<div class="section">
+
+<h3>Product categories</h3>
 
 <ul>
 <?php
@@ -49,3 +53,5 @@ foreach ($this->categories as $category)
 }
 ?>
 </ul>
+
+</div>

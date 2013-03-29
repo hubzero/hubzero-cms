@@ -48,7 +48,11 @@ if (!empty($errors))
 
 ?>
 
-<h1><?php echo $this->product->pName; ?></h1>
+<div id="content-header">
+	<h2><?php echo $this->product->pName; ?></h2>
+</div>
+
+<div class="section">
 
 <?php
 	// format price/price range
@@ -148,3 +152,5 @@ if($this->inStock)
 }
 ?>
 </form>
+
+</div>

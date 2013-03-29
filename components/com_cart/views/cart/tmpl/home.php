@@ -35,190 +35,196 @@ setlocale(LC_MONETARY, 'en_US.UTF-8');
 
 ?>
 
-<h1><?php echo  JText::_('COM_CART'); ?></h1>
+<div id="content-header">
+	<h2><?php echo  JText::_('COM_CART'); ?></h2>
+</div>
 
-<?php
+<div class="section">
 
-$errors = $this->getError();
-if (!empty($errors))
-{
-	echo '<div class="messages errors">';
-		foreach ($errors as $error)
-		{
-			echo '<p>' . $error . '</p>';
-		}
-	echo '</div>';
-}
-
-?>
-
-<form name="shoppingCart" id="shoppingCart" method="post">
-<?php
-
-if (!empty($this->couponPerks['items']))
-{
-	$itemsPerks = $this->couponPerks['items'];
-}
-
-//print_r($this->cartInfo->items); die;
-
-if (!empty($this->cartInfo->items))
-{
-	echo '<table id="cartContents">';
-	echo '<tr><th>Item</th><th>Amount</th><th>Quantity</th></tr>';
-	foreach ($this->cartInfo->items as $sId => $item)
+	<?php
+	
+	$errors = $this->getError();
+	if (!empty($errors))
 	{
-		$info = $item['info'];
-		
-		if (!$item['cartInfo']->qty) {
-			continue;
-		}
-		
-		echo '<tr>';
-		
-		echo '<td>';
-		echo '<a href="';
-		echo JRoute::_('index.php?option=com_storefront/product/' . $info->pId);
-		echo '">';
-		echo $info->pName;
-		
-		if (!empty($item['options']) && count($item['options']))
-		{
-			foreach ($item['options'] as $oName)
+		echo '<div class="messages errors">';
+			foreach ($errors as $error)
 			{
-				echo ', ' . $oName;	
+				echo '<p>' . $error . '</p>';
 			}
-		}
-		
-		echo '</a>';
-		
-		// Check is there is any membership info for this item
-		if (!empty($this->membershipInfo[$sId]))
+		echo '</div>';
+	}
+	
+	?>
+	
+	<form name="shoppingCart" id="shoppingCart" method="post">
+	<?php
+	
+	if (!empty($this->couponPerks['items']))
+	{
+		$itemsPerks = $this->couponPerks['items'];
+	}
+	
+	//print_r($this->cartInfo->items); die;
+	
+	if (!empty($this->cartInfo->items))
+	{
+		echo '<table id="cartContents">';
+		echo '<tr><th>Item</th><th>Amount</th><th>Quantity</th></tr>';
+		foreach ($this->cartInfo->items as $sId => $item)
 		{
-			$str = '';
-			if (!empty($this->membershipInfo[$sId]->existingExpires))
-			{
-				$str .= 'This will extend your current subscription (ending ' . date('M j, Y', $this->membershipInfo[$sId]->existingExpires) . ') ';
-			}
-			else 
-			{
-				$str .= 'This item will be valid ';
+			$info = $item['info'];
+			
+			if (!$item['cartInfo']->qty) {
+				continue;
 			}
 			
-			//print_r($this->membershipInfo[$sId]);
-			$str .= 'until ' . date('M j, Y', $this->membershipInfo[$sId]->newExpires);
-			echo '<p class="status">' . $str . '</p>';
-		}
-		
-		echo '</td>';
-		
-		echo '<td>';
-		echo money_format('%n', $info->sPrice);
-		echo '</td>';
-		
-		echo '<td>';
-		echo '<input type="number" name="skus[' . $info->sId . ']" value="';;
-		echo $item['cartInfo']->qty;
-		echo '">';
-		echo '</td>';
-		
-		echo '</tr>';
-		
-		// Check if there is a discount for this item
-		if (!empty($itemsPerks[$sId]))
-		{
-			echo '<tr class="cartItemDiscount">';
-		
-			echo '<td class="cartDiscountName"><span>Coupon discount:</span> ';
-			echo $itemsPerks[$sId]->name;
-			echo '</td>';
+			echo '<tr>';
 			
-			echo '<td class="cartDiscountDiscount">';
-			echo money_format('-%n', $itemsPerks[$sId]->discount);
+			echo '<td>';
+			echo '<a href="';
+			echo JRoute::_('index.php?option=com_storefront/product/' . $info->pId);
+			echo '">';
+			echo $info->pName;
+			
+			if (!empty($item['options']) && count($item['options']))
+			{
+				foreach ($item['options'] as $oName)
+				{
+					echo ', ' . $oName;	
+				}
+			}
+			
+			echo '</a>';
+			
+			// Check is there is any membership info for this item
+			if (!empty($this->membershipInfo[$sId]))
+			{
+				$str = '';
+				if (!empty($this->membershipInfo[$sId]->existingExpires))
+				{
+					$str .= 'This will extend your current subscription (ending ' . date('M j, Y', $this->membershipInfo[$sId]->existingExpires) . ') ';
+				}
+				else 
+				{
+					$str .= 'This item will be valid ';
+				}
+				
+				//print_r($this->membershipInfo[$sId]);
+				$str .= 'until ' . date('M j, Y', $this->membershipInfo[$sId]->newExpires);
+				echo '<p class="status">' . $str . '</p>';
+			}
+			
 			echo '</td>';
 			
 			echo '<td>';
-			echo '&nbsp;';
+			echo money_format('%n', $info->sPrice);
 			echo '</td>';
 			
-			echo '</tr>';	
+			echo '<td>';
+			echo '<input type="number" name="skus[' . $info->sId . ']" value="';;
+			echo $item['cartInfo']->qty;
+			echo '">';
+			echo '</td>';
+			
+			echo '</tr>';
+			
+			// Check if there is a discount for this item
+			if (!empty($itemsPerks[$sId]))
+			{
+				echo '<tr class="cartItemDiscount">';
+			
+				echo '<td class="cartDiscountName"><span>Coupon discount:</span> ';
+				echo $itemsPerks[$sId]->name;
+				echo '</td>';
+				
+				echo '<td class="cartDiscountDiscount">';
+				echo money_format('-%n', $itemsPerks[$sId]->discount);
+				echo '</td>';
+				
+				echo '<td>';
+				echo '&nbsp;';
+				echo '</td>';
+				
+				echo '</tr>';	
+			}
+			
 		}
+		echo '</table>';
 		
+		echo '<input type="submit" class="btn" name="updateCart" id="updateCart" value="Update cart">';	
 	}
-	echo '</table>';
-	
-	echo '<input type="submit" class="btn" name="updateCart" id="updateCart" value="Update cart">';	
-}
-else
-{
-	echo '<p>' . JText::_('COM_CART_EMPTY') . '</p>';	
-}
-?>
-
-</form>
-
-<?php
-	if (!empty($this->cartInfo))
+	else
 	{
-		echo '<div id="cartSummary">';
-			echo '<h2>Cart summary:</h2>';
-			
-			echo '<p>Items: ' . $this->cartInfo->totalItems . '</p>';
-			echo '<p>Items subtotal: ' . money_format('%n', $this->cartInfo->totalCart) . '</p>';
-			
-			$discountsTotal = 0;
-			if (!empty($this->couponPerks['info']->itemsDiscountsTotal))
-			{
-				echo '<p>Items discounts: ' .  money_format('-%n', $this->couponPerks['info']->itemsDiscountsTotal) . '</p>';
-				$discountsTotal += $this->couponPerks['info']->itemsDiscountsTotal;
-			}
-			
-			
-			if (!empty($this->couponPerks['generic']))
-			{
-				$genericPerks = $this->couponPerks['generic'];
-				
-				foreach ($genericPerks as $perk)
-				{
-					echo '<p class="cartDiscountName"><span>Coupon discount</span>: ' . $perk->name . ': ';
-					if ($perk->discount > 0)
-					{
-						echo money_format('-%n', $perk->discount);
-					}
-					else
-					{
-						echo 'may be applied during checkout process';	
-					}
-					echo '</p>';
-					$discountsTotal +=  $perk->discount;
-				}				
-			}
-			
-			if (!empty($this->couponPerks['shipping']))
-			{
-				$shippingPerk = $this->couponPerks['shipping'];
-				
-				echo '<p class="cartDiscountName"><span>Coupon discount</span>: ' . $shippingPerk->name . ': ';
-				echo 'may be applied during checkout process';	
-				echo '</p>';				
-			}
-			
-			if ($discountsTotal)
-			{
-				echo '<p>Cart subtotal: ' . money_format('%n', $this->cartInfo->totalCart - $discountsTotal) . '</p>';	
-			}
-		
-			echo '<p><a href="index.php?option=' . JRequest::getVar('option') . '/checkout" class="btn">Checkout</a></p>';
-		echo '</div>';	
+		echo '<p>' . JText::_('COM_CART_EMPTY') . '</p>';	
 	}
-?>
-
-<div class="cartSection">
-	<h2>Do you have a promo or coupon code?</h2>
+	?>
 	
-	<form name="couponCodes" id="couponCodes" method="post">
-		<label for="couponCode">
-		<input type="text" name="couponCode" id="couponCode"></label>
-		<input type="submit" name="addCouponCode" id="addCouponCode" class="btn" value="Add code">
 	</form>
-</div>	
+	
+	<?php
+		if (!empty($this->cartInfo))
+		{
+			echo '<div id="cartSummary">';
+				echo '<h2>Cart summary:</h2>';
+				
+				echo '<p>Items: ' . $this->cartInfo->totalItems . '</p>';
+				echo '<p>Items subtotal: ' . money_format('%n', $this->cartInfo->totalCart) . '</p>';
+				
+				$discountsTotal = 0;
+				if (!empty($this->couponPerks['info']->itemsDiscountsTotal))
+				{
+					echo '<p>Items discounts: ' .  money_format('-%n', $this->couponPerks['info']->itemsDiscountsTotal) . '</p>';
+					$discountsTotal += $this->couponPerks['info']->itemsDiscountsTotal;
+				}
+				
+				
+				if (!empty($this->couponPerks['generic']))
+				{
+					$genericPerks = $this->couponPerks['generic'];
+					
+					foreach ($genericPerks as $perk)
+					{
+						echo '<p class="cartDiscountName"><span>Coupon discount</span>: ' . $perk->name . ': ';
+						if ($perk->discount > 0)
+						{
+							echo money_format('-%n', $perk->discount);
+						}
+						else
+						{
+							echo 'may be applied during checkout process';	
+						}
+						echo '</p>';
+						$discountsTotal +=  $perk->discount;
+					}				
+				}
+				
+				if (!empty($this->couponPerks['shipping']))
+				{
+					$shippingPerk = $this->couponPerks['shipping'];
+					
+					echo '<p class="cartDiscountName"><span>Coupon discount</span>: ' . $shippingPerk->name . ': ';
+					echo 'may be applied during checkout process';	
+					echo '</p>';				
+				}
+				
+				if ($discountsTotal)
+				{
+					echo '<p>Cart subtotal: ' . money_format('%n', $this->cartInfo->totalCart - $discountsTotal) . '</p>';	
+				}
+			
+				echo '<p><a href="index.php?option=' . JRequest::getVar('option') . '/checkout" class="btn">Checkout</a></p>';
+			echo '</div>';	
+		}
+	?>
+	
+	<div class="cartSection">
+		<h2>Do you have a promo or coupon code?</h2>
+		
+		<form name="couponCodes" id="couponCodes" method="post">
+			<label for="couponCode">
+			<input type="text" name="couponCode" id="couponCode"></label>
+			<input type="submit" name="addCouponCode" id="addCouponCode" class="btn" value="Add code">
+		</form>
+	</div>
+	
+</div>

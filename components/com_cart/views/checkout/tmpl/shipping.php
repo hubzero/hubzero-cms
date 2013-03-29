@@ -33,7 +33,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
 
-<h1>Checkout &ndash; shipping information</h1>
+<div id="content-header">
+	<h2>Checkout: shipping information</h2>
+</div>
+
+<div class="section">
 
 <?php
 
@@ -106,3 +110,5 @@ if (!empty($this->savedShippingAddresses))
 <input type="submit" value="next" name="submitShippingInfo" id="submitShippingInfo" class="btn" />
 
 </form>
+
+</div>

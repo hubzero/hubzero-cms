@@ -33,7 +33,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
 
-<h2>Shipping info</h2>
+<div id="content-header">
+	<h2>Shipping info</h2>
+</div>
+
+<div class="section">
 
 <?php
 
@@ -60,4 +64,4 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
 
-
+</div>
