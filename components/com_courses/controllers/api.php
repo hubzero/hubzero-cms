@@ -36,7 +36,7 @@ JLoader::import('Hubzero.Api.Controller');
 /**
  * API controller for the time component
  */
-class CoursesApiController extends Hubzero_Api_Controller
+class CoursesControllerApi extends Hubzero_Api_Controller
 {
 	/**
 	 * Execute!
