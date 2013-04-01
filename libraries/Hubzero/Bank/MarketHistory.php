@@ -127,15 +127,15 @@ class Hubzero_Bank_MarketHistory extends JTable
 		$where = array();
 		if ($itemid) 
 		{
-			$where[] = " itemid='" . $itemid . "'";
+			$where[] = "itemid=" . $this->_db->Quote($itemid);
 		}
 		if ($action) 
 		{
-			$where[] = " AND action='" . $action . "'";
+			$where[] = "action=" . $this->_db->Quote($action);
 		}
 		if ($category) 
 		{
-			$where[] = " AND category='" . $category . "'";
+			$where[] = "category=" . $this->_db->Quote($category);
 		}
 		if ($created) 
 		{
@@ -143,7 +143,7 @@ class Hubzero_Bank_MarketHistory extends JTable
 		}
 		if ($log) 
 		{
-			$where[] = "log='" . $log . "'";
+			$where[] = "log=" . $this->_db->Quote($log);
 		}
 		if (count($where) > 0)
 		{
