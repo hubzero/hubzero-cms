@@ -128,9 +128,19 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 
 		$progress = array();
 
-		foreach($views as $v)
+		// Restructure array
+		foreach ($views as $v)
 		{
 			$progress[$v->user_id][$v->unit_id][$v->asset_id] = $v->viewed;
+		}
+
+		// Calculate unit completion percentage for each student
+		foreach ($progress as $user_id=>$user)
+		{
+			foreach ($user as $unit_id=>$unit)
+			{
+				$progress[$user_id][$unit_id]['percentage_complete'] = round((array_sum($unit) / count($unit)) * 100, 2);
+			}
 		}
 
 		return $progress;

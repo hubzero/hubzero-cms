@@ -79,12 +79,15 @@ $progress  = $gradebook->getProgress($this->course);
 					<div class="progress-container">
 						<div class="student-progress-timeline">
 							<div class="student-progress-timeline-inner length_<?= count($this->course->offering()->units()) ?>">
-								<? $idx = 1 ?>
 								<? foreach($this->course->offering()->units() as $unit) : ?>
 									<div class="unit">
 										<div class="unit-inner">
-											Unit <?= $idx ?>
-											<? $idx++ ?>
+											<div class="unit-title"><?= $unit->get('title') ?></div>
+											<div class="unit-fill">
+												<? $height = $progress[$m->get('user_id')][$unit->get('id')]['percentage_complete']; ?>
+												<? $margin = 100 - $height; ?>
+												<div class="unit-fill-inner" style="height:<?= $height ?>%;margin-top:<?= $margin ?>%;"></div>
+											</div>
 										</div>
 									</div>
 								<? endforeach; ?>

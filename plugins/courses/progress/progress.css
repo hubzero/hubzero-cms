@@ -320,7 +320,7 @@
 .instructor .student {
 	position: relative;
 	margin: 0 0 5px 0;
-	padding: 10px 10px 5px 10px;
+	padding: 12px 10px 0 10px;
 	border: 1px solid transparent;
 }
 .instructor .student.active {
@@ -407,6 +407,18 @@
 	float: left;
 	width: 50%;
 	height: 30px;
+	position: relative;
+}
+.instructor .student-progress-timeline:before {
+	position: absolute;
+	content: "";
+	top: 50%;
+	margin-top: -2px;
+	left: 0;
+	right: 0;
+	height: 4px;
+	border-radius: 2px;
+	background-color: #AAA;
 }
 .instructor .student-progress-timeline-inner {
 	overflow: hidden;
@@ -430,8 +442,33 @@
 .instructor .length_10 .unit { width: 10%; }
 .instructor .unit-inner {
 	background: #AAA;
-	margin: 0 1px;
+	margin: 0 auto;
 	height: 30px;
+	width: 30px;
+	border-radius: 15px;
+	position: relative;
+}
+.instructor .unit-inner:before {
+	position: absolute;
+	content: "";
+	top: 4px;
+	bottom: 4px;
+	left: 4px;
+	right: 4px;
+	background: #FFF;
+	border-radius: 15px;
+}
+.instructor .unit-inner .unit-fill {
+	position: absolute;
+	top: 6px;
+	bottom: 6px;
+	left: 6px;
+	right: 6px;
+	border-radius: 15px;
+	overflow: hidden;
+}
+.instructor .unit-fill .unit-fill-inner {
+	background: #0000FF;
 }
 .instructor .student-progress-bar {
 	display: block;
@@ -489,6 +526,9 @@
 }
 .instructor .units {
 	margin-left: 200px;
+}
+.instructor .student-progress-timeline .unit-title {
+	display: none;
 }
 .instructor .picture-thumb {
 	display: block;

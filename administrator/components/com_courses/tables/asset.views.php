@@ -112,14 +112,14 @@ class CoursesTableAssetViews extends JTable
 			$select[] = "IF(cav.viewed IS NULL, 0, 1) as viewed";
 
 			$from = array();
-			$from[] = "\nFROM jos_courses_assets AS ca";
-			$from[] = "LEFT JOIN jos_courses_asset_associations AS caa ON ca.id = caa.asset_id";
-			$from[] = "LEFT JOIN jos_courses_asset_groups AS cag ON caa.scope_id = cag.id";
-			$from[] = "LEFT JOIN jos_courses_units AS cu ON cag.unit_id = cu.id";
-			$from[] = "LEFT JOIN jos_courses_offerings AS co ON cu.offering_id = co.id";
-			$from[] = "LEFT JOIN jos_courses_offering_sections AS cos ON co.id = cos.offering_id";
-			$from[] = "LEFT JOIN jos_courses_members AS cm ON cos.id = cm.section_id";
-			$from[] = "LEFT JOIN jos_courses_asset_views AS cav ON ca.id = cav.asset_id AND cm.user_id = cav.viewed_by";
+			$from[] = "\nFROM #__courses_assets AS ca";
+			$from[] = "LEFT JOIN #__courses_asset_associations AS caa ON ca.id = caa.asset_id";
+			$from[] = "LEFT JOIN #__courses_asset_groups AS cag ON caa.scope_id = cag.id";
+			$from[] = "LEFT JOIN #__courses_units AS cu ON cag.unit_id = cu.id";
+			$from[] = "LEFT JOIN #__courses_offerings AS co ON cu.offering_id = co.id";
+			$from[] = "LEFT JOIN #__courses_offering_sections AS cos ON co.id = cos.offering_id";
+			$from[] = "LEFT JOIN #__courses_members AS cm ON cos.id = cm.section_id";
+			$from[] = "LEFT JOIN #__courses_asset_views AS cav ON ca.id = cav.asset_id AND cm.user_id = cav.viewed_by";
 
 			$where[] = "cos.id = " . $this->_db->Quote($filters['section_id']);
 			$where[] = "cm.student = 1";
