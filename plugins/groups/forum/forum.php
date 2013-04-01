@@ -728,7 +728,32 @@ class plgGroupsForum extends Hubzero_Plugin
 		$view->filters['scope_id'] = $this->group->get('gidNumber');
 		$view->filters['state']    = 1;
 		$view->filters['parent']   = 0;
-		
+
+		$view->filters['sortby']   = JRequest::getWord('sortby', 'activity');
+		switch ($view->filters['sortby'])
+		{
+			case 'title':
+				$view->filters['sort'] = 'c.sticky DESC, c.title';
+				$view->filters['sort_Dir'] = 'ASC';
+			break;
+
+			case 'replies':
+				$view->filters['sort'] = 'c.sticky DESC, replies';
+				$view->filters['sort_Dir'] = 'DESC';
+			break;
+
+			case 'created':
+				$view->filters['sort'] = 'c.sticky DESC, c.created';
+				$view->filters['sort_Dir'] = 'DESC';
+			break;
+
+			case 'activity':
+			default:
+				$view->filters['sort'] = 'c.sticky DESC, activity';
+				$view->filters['sort_Dir'] = 'DESC';
+			break;
+		}
+
 		$view->section = new ForumSection($this->database);
 		$view->section->loadByAlias($view->filters['section'], $this->group->get('gidNumber'), 'group');
 		$view->filters['section_id'] = $view->section->id;

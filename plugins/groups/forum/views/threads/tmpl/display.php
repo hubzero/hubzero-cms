@@ -16,7 +16,7 @@ ximport('Hubzero_User_Profile_Helper');
 ?>
 <ul id="page_options">
 	<li>
-		<a class="comments" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias); ?>">
+		<a class="comments btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->alias); ?>">
 			<?php echo JText::_('All discussions'); ?>
 		</a>
 	</li>
@@ -312,7 +312,8 @@ ximport('Hubzero_User_Profile_Helper');
 			<input type="hidden" name="fields[category_id]" value="<?php echo $this->post->category_id; ?>" />
 			<input type="hidden" name="fields[parent]" value="<?php echo $this->post->id; ?>" />
 			<input type="hidden" name="fields[state]" value="1" />
-			<input type="hidden" name="fields[group_id]" value="<?php echo $this->group->get('gidNumber'); ?>" />
+			<input type="hidden" name="fields[scope]" value="group" />
+			<input type="hidden" name="fields[scope_id]" value="<?php echo $this->group->get('gidNumber'); ?>" />
 			<input type="hidden" name="fields[id]" value="" />
 	
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

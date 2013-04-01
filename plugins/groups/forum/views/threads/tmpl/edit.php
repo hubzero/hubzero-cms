@@ -8,9 +8,13 @@ if ($this->post->id) {
 	$action = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->section . '/' . $this->category->alias;
 }
 ?>
-<div id="content-header-extra">
-	<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->section . '/' . $this->category->alias); ?>"><?php echo JText::_('&larr; All discussions'); ?></a></p>
-</div>
+<ul id="page_options">
+	<li>
+		<a class="comments btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->section . '/' . $this->category->alias); ?>">
+			<?php echo JText::_('All discussions'); ?>
+		</a>
+	</li>
+</ul>
 
 <div class="main section">
 <?php foreach ($this->notifications as $notification) { ?>

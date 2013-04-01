@@ -99,13 +99,38 @@ class ForumControllerCategories extends Hubzero_Controller
 		$this->view->filters['authorized'] = 1;
 		$this->view->filters['limit']    = JRequest::getInt('limit', 25);
 		$this->view->filters['start']    = JRequest::getInt('limitstart', 0);
-		$this->view->filters['section']  = JRequest::getVar('section', '');
-		$this->view->filters['category'] = JRequest::getVar('category', '');
+		$this->view->filters['section']  = JRequest::getCmd('section', '');
+		$this->view->filters['category'] = JRequest::getCmd('category', '');
 		$this->view->filters['search']   = JRequest::getVar('q', '');
 		$this->view->filters['scope']    = 'site';
 		$this->view->filters['scope_id'] = 0;
 		$this->view->filters['state']    = 1;
 		$this->view->filters['parent']   = 0;
+
+		$this->view->filters['sortby']   = JRequest::getWord('sortby', 'activity');
+		switch ($this->view->filters['sortby'])
+		{
+			case 'title':
+				$this->view->filters['sort'] = 'c.sticky DESC, c.title';
+				$this->view->filters['sort_Dir'] = 'ASC';
+			break;
+
+			case 'replies':
+				$this->view->filters['sort'] = 'c.sticky DESC, replies';
+				$this->view->filters['sort_Dir'] = 'DESC';
+			break;
+
+			case 'created':
+				$this->view->filters['sort'] = 'c.sticky DESC, c.created';
+				$this->view->filters['sort_Dir'] = 'DESC';
+			break;
+
+			case 'activity':
+			default:
+				$this->view->filters['sort'] = 'c.sticky DESC, activity';
+				$this->view->filters['sort_Dir'] = 'DESC';
+			break;
+		}
 
 		$this->view->section = new ForumSection($this->database);
 		$this->view->section->loadByAlias($this->view->filters['section'], 0);

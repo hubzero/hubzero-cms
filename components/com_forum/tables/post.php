@@ -427,20 +427,19 @@ class ForumPost extends JTable
 					{
 						$filters['sort'] = 'activity DESC, c.created';
 					}
-					if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'))) 
-					{
-						$filters['sort_Dir'] = 'DESC';
-					}
-					$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
 				} 
 				else 
 				{
-					if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'))) 
+					if (!isset($filters['sort']) || !$filters['sort']) 
 					{
-						$filters['sort_Dir'] = 'DESC';
+						$filters['sort'] = 'c.sticky DESC, activity DESC, c.created';
 					}
-					$query .= " ORDER BY c.sticky DESC, activity DESC, c.created " . $filters['sort_Dir'];
 				}
+				if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'))) 
+				{
+					$filters['sort_Dir'] = 'DESC';
+				}
+				$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
 			}
 		}
 		return $query;

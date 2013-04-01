@@ -12,6 +12,8 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$timeFormat = 'h:m a';
 	$tz = true;
 }
+
+$base = 'index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->filters['category'];
 ?>
 
 <div id="content-header">
@@ -41,7 +43,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 			$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $lastposter->get('id')) . '">' . $this->escape(stripslashes($lastposter->get('name'))) . '</a>';
 		}
 ?>
-				<a href="<?php echo JRoute::_('index.php?option='.$this->option . '&section=' . $this->filters['section'] . '&category=' . $this->filters['category'] . '&thread=' . ($this->lastpost->parent ? $this->lastpost->parent : $this->lastpost->id)); ?>" class="entry-date">
+				<a href="<?php echo JRoute::_($base . '&thread=' . ($this->lastpost->parent ? $this->lastpost->parent : $this->lastpost->id)); ?>" class="entry-date">
 					<span class="entry-date-at">@</span>
 					<span class="time"><time datetime="<?php echo $this->lastpost->created; ?>"><?php echo JHTML::_('date', $this->lastpost->created, $timeFormat, $tz); ?></time></span> <span class="entry-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span> 
 					<span class="date"><time datetime="<?php echo $this->lastpost->created; ?>"><?php echo JHTML::_('date', $this->lastpost->created, $dateFormat, $tz); ?></time></span>
@@ -63,7 +65,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 				<?php echo JText::_('Create your own discussion where you and other users can discuss related topics.'); ?>
 			</p>
 			<p>
-				<a class="add btn" href="<?php echo JRoute::_('index.php?option='.$this->option . '&section=' . $this->filters['section'] . '&category=' . $this->filters['category'] . '&task=new'); ?>"><?php echo JText::_('Add Discussion'); ?></a>
+				<a class="add btn" href="<?php echo JRoute::_($base . '&task=new'); ?>"><?php echo JText::_('Add Discussion'); ?></a>
 			</p>
 <?php } else { ?>
 			<p class="warning">
@@ -91,6 +93,29 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 			</div><!-- / .container -->
 			
 			<div class="container">
+				<ul class="entries-menu order-options">
+					<li>
+						<a<?php echo ($this->filters['sortby'] == 'created') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($base . '&sortby=created'); ?>" title="<?php echo JText::_('Sort by created date'); ?>">
+							<?php echo JText::_('&darr; Created'); ?>
+						</a>
+					</li>
+					<li>
+						<a<?php echo ($this->filters['sortby'] == 'activity') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($base . '&sortby=activity'); ?>" title="<?php echo JText::_('Sort by activity'); ?>">
+							<?php echo JText::_('&darr; Activity'); ?>
+						</a>
+					</li>
+					<li>
+						<a<?php echo ($this->filters['sortby'] == 'replies') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($base . '&sortby=replies'); ?>" title="<?php echo JText::_('Sort by number of posts'); ?>">
+							<?php echo JText::_('&darr; # Posts'); ?>
+						</a>
+					</li>
+					<li>
+						<a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($base . '&sortby=title'); ?>" title="<?php echo JText::_('Sort by title'); ?>">
+							<?php echo JText::_('&darr; Title'); ?>
+						</a>
+					</li>
+				</ul>
+
 				<table class="entries">
 					<caption>
 <?php
@@ -125,7 +150,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 								<span class="entry-id"><?php echo $this->escape($row->id); ?></span>
 							</th>
 							<td>
-								<a class="entry-title" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->filters['category'] . '&thread=' . $row->id); ?>">
+								<a class="entry-title" href="<?php echo JRoute::_($base . '&thread=' . $row->id); ?>">
 									<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
 								</a>
 								<span class="entry-details">
@@ -177,12 +202,12 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 						<?php if ($this->config->get('access-manage-thread') || $this->config->get('access-edit-thread') || $this->config->get('access-delete-thread')) { ?>
 							<td class="entry-options">
 								<?php if ($this->config->get('access-manage-thread') || ($this->config->get('access-edit-thread') && $row->created_by == $juser->get('id'))) { ?>
-									<a class="edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->filters['category'] . '&thread=' . $row->id . '&task=edit'); ?>">
+									<a class="edit" href="<?php echo JRoute::_($base . '&thread=' . $row->id . '&task=edit'); ?>">
 										<?php echo JText::_('COM_FORUM_EDIT'); ?>
 									</a>
 								<?php } ?>
 								<?php if ($this->config->get('access-manage-thread') || ($this->config->get('access-delete-thread') && $row->created_by == $juser->get('id'))) { ?>
-									<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=' . $this->filters['section'] . '&category=' . $this->filters['category'] . '&thread=' . $row->id . '&task=delete'); ?>">
+									<a class="delete" href="<?php echo JRoute::_($base . '&thread=' . $row->id . '&task=delete'); ?>">
 										<?php echo JText::_('COM_FORUM_DELETE'); ?>
 									</a>
 								<?php } ?>
