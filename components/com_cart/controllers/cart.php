@@ -202,7 +202,7 @@ class CartControllerCart extends ComponentController
 				
 		$this->view->display();
 		
-		$cart->printCartInfo();
+		//$cart->printCartInfo();
 	}
 	
 	/**
@@ -212,36 +212,6 @@ class CartControllerCart extends ComponentController
 	 */
 	public function testgroundTask() 
 	{	
-		// CREATE COUPON
-		ximport('Hubzero_Storefront_Coupon');		
-		try 
-		{
-			// Constructor take the coupon code
-			$coupon = new Hubzero_Storefront_Coupon('couponcode3');
-			// Couponn description (shows up in the cart)
-			$coupon->setDescription('Test coupon, 100% off product with ID 1');
-			// Expiration date 
-			$coupon->setExpiration('Feb 22, 2022');
-			// Number of times coupon can be used (unlimited by default)			
-			$coupon->setUseLimit(1);
-			
-			// Product the coupon will be applied to: 
-			// first parameter: product ID
-			// second parameter [optional, unlimited by default]: max quantity of products coupon will be applied to (if buying multiple)
-			$coupon->addObject(1, 1);
-			// Action, only 'discount' for now
-			// second parameter either percentage ('10%') or absolute dollar value ('20')
-			$coupon->setAction('discount', '100%');
-			// Add coupon
-			$coupon->add();
-		}
-		catch(Exception $e) 
-		{
-			echo 'ERROR: ' . $e->getMessage();
-		}		
-		return;	
-		
-		return;
 		
 		// --------------------------------------
 		
@@ -294,6 +264,7 @@ class CartControllerCart extends ComponentController
 		$course->setName('Name of the course');
 		$course->setDescription('Short description');
 		$course->setPrice(12.00);
+		$course->addToCollection('courses');
 		// Membership model: membership duration period (must me in MySQL date format: 1 DAY, 2 MONTH, 3 YEAR...) 
 		$course->setTimeToLive('1 YEAR');
 		// Course alias id
