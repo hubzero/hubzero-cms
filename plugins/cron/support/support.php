@@ -48,19 +48,120 @@ class plgCronSupport extends JPlugin
 		$obj = new stdClass();
 		$obj->plugin = 'support';
 		$obj->events = array(
-			'onClosePending' => JText::_('Close pending tickets')
+			'onClosePending' => JText::_('Close pending tickets'),
+			'sendTicketsReminder' => JText::_('Email reminder for open tickets'),
 		);
 
 		return $obj;
 	}
-	
+
 	/**
-	 * Calculate point royalties for members
+	 * Close tickets in a pending state for a specific amount of time
 	 * 
-	 * @return     array
+	 * @return     boolean
 	 */
 	public function onClosePending()
 	{
+		return true;
+	}
+
+	/**
+	 * Send emails reminding people of their open tickets
+	 * 
+	 * @return     boolean
+	 */
+	public function sendTicketsReminder()
+	{
+		$database = JFactory::getDBO();
+		$juri =& JURI::getInstance();
+		
+		$jconfig =& JFactory::getConfig();
+		//$jconfig->getValue('config.sitename')
+		//$config = JComponentHelper::getParams('com_support');
+
+		$sql = "SELECT * FROM #__support_tickets WHERE open=1 AND status!=2 AND owner IS NOT NULL and owner !='' ORDER BY created";
+		$database->setQuery($sql);
+		if (!($results = $database->loadObjectList()))
+		{
+			return true;
+		}
+
+		ximport('Hubzero_Plugin_View');
+
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'utilities.php');
+		$severities = SupportUtilities::getSeverities();
+
+		$tickets = array();
+		foreach ($results as $result)
+		{
+			if (!isset($tickets[$result->owner]))
+			{
+				$tickets[$result->owner] = array();
+				foreach ($severities as $severity)
+				{
+					$tickets[$result->owner][$severity] = array();
+				}
+				/*$tickets[$result->owner] = array(
+					'critical' => array(),
+					'major'    => array(),
+					'normal'   => array(),
+					'minor'    => array(),
+					'trivial'  => array()
+				);*/
+			}
+			if (isset($tickets[$result->owner][$result->severity]))
+			{
+				$tickets[$result->owner][$result->severity] = $result;
+			}
+			else
+			{
+				$tickets[$result->owner]['unknown'] = $result;
+			}
+		}
+
+		foreach ($tickets as $owner => $sevs)
+		{
+			// Get the user's account
+			$juser = JUser::getInstance($owner);
+			if (!$juser->get('id'))
+			{
+				continue;
+			}
+
+			// Build the list of tickets
+			/*$msg = '';
+			foreach ($sevs as $severity => $ts)
+			{
+				if (count($ts) <= 0)
+				{
+					continue;
+				}
+				$msg .= '=== ' . $severity . ' ===' . "\r\n";
+				foreach ($ts as $t)
+				{
+					$sef = JRoute::_('index.php?option=com_support&controller=tickets&task=ticket&id='. $t->id);
+
+					$msg .= '#' . $t->id . ' (' . $t->created . ') :: ' . $juri->base() . ltrim($sef, DS) . ' :: ' . stripslashes($t->summary) . "\r\n";
+				}
+			}*/
+			$view = new Hubzero_Plugin_View(
+				array(
+					'folder'  => 'cron',
+					'element' => $this->_name,
+					'name'    => 'email'
+				)
+			);
+			$view->option   = 'com_support';
+			$view->sitename = $jconfig->getValue('config.sitename');
+			$view->severities = $sevs;
+
+			$message = $view->loadTemplate();
+			$message = str_replace("\n", "\r\n", $message);
+
+			// Send email
+			//$message;
+		}
+
 		return true;
 	}
 }
