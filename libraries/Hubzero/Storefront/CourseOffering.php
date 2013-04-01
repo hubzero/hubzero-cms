@@ -22,25 +22,47 @@
  *
  * HUBzero is a registered trademark of Purdue University.
  *
- * @package   Ilya Shunko <ishunko@purdue.edu>
+ * @package   hubzero-cms
+ * @author    Hubzero
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+ximport('Hubzero_Storefront_Sku');
 
-/**
- * Shopping cart
- */
-class Hubzero_Storefront
+class Hubzero_Storefront_CourseOffering extends Hubzero_Storefront_Sku
 {
-	// Database instance
-	var $db = NULL;
 	
 	public function __construct()
 	{
-		$this->_db =& JFactory::getDBO();			
+		parent::__construct();
+		
+		//$this->setAllowMultiple(0);
+		$this->setTrackInventory(0);
 	}
+	
+	public function setCourseId($courseId)
+	{
+		$this->data->courseId = $courseId;		
+		$this->data->meta['courseId'] = $courseId;
+	}
+	
+	public function getCourseId()
+	{
+		return $this->data->meta['courseId'];
+	}
+		
+	public function verify()
+	{
+		parent::verify();
+		
+		// Each course has to have a course ID
+		if (empty($this->data->courseId))
+		{
+			throw new Exception(JText::_('No course id'));	
+		}	
+	}
+	
 }
-

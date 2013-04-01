@@ -597,6 +597,27 @@ class Hubzero_Storefront_Warehouse
 	}
 	
 	/**
+	 * Get course by alias
+	 * 
+	 * @param	int							course ID
+	 * @return	Hubzero_Storefront_Course 	Instance of a product
+	 */
+	public function getCourseByAlias($alias)
+	{
+		$sql = "SELECT s.`sId` FROM `#__storefront_skus` s 
+				LEFT JOIN `#__storefront_sku_meta` m ON s.`sId` = m.`sId`
+				LEFT JOIN `#__storefront_products` p ON s.`pId` = p.`pId`
+				WHERE p.`ptId` = 20 
+				AND `smKey` = 'courseId' 
+				AND `smValue` = " . $this->_db->quote($alias);
+				
+		$this->_db->setQuery($sql);
+		//echo $this->_db->_sql;
+		$this->_db->query();
+		return($this->_db->loadResult());		
+	}
+	
+	/**
 	 * Get a SKU
 	 * 
 	 * @param	int							SKU ID
@@ -695,12 +716,6 @@ class Hubzero_Storefront_Warehouse
 		$this->_db->setQuery($sql);
 		//echo '<br>'; echo $this->_db->_sql; die;
 		$this->_db->query();
-		
-		// no need
-		$sql = "UPDATE `#__storefront_skus` SET `sActive` = 0 WHERE `pId` = " . $this->_db->quote($pId);
-		//$this->_db->setQuery($sql);
-		//echo '<br>'; echo $this->_db->_sql; die;
-		//$this->_db->query();
 	}
 	
 	/**
@@ -718,12 +733,12 @@ class Hubzero_Storefront_Warehouse
 		
 		// Check everything
 		
-		$product->verify();
-		
 		if (!in_array($action, $allowedActions))
 		{
 			throw new Exception(JText::_('Bad action. Why would you try to do something like that anyway?'));
 		}
+		
+		$product->verify($action);
 		
 		// check if this is a product
 		if (!($product instanceof Hubzero_Storefront_Product))
@@ -751,8 +766,7 @@ class Hubzero_Storefront_Warehouse
 			{
 				throw new Exception(JText::_('Cannot add product: product ID already exists.'));		
 			}	
-		}
-		
+		}		
 		
 		// ### Do the product
 		
