@@ -52,10 +52,7 @@ class Hubzero_Storefront_Course extends Hubzero_Storefront_SingleSkuProduct
 		
 		// Set type course
 		$this->setType('course');
-		
-		// Set collection to courses
-		$this->addToCollection(11);
-		
+				
 		// Override SKU
 		$this->setSku(new Hubzero_Storefront_CourseOffering());
 	}

@@ -109,9 +109,10 @@ class Hubzero_Storefront_Warehouse
 	 */
 	public function collectionExists($c) 
 	{
-		$sql = "SELECT cId FROM `#__storefront_collections` c WHERE c.`cId` = {$c} AND c.`cActive` = 1";
+		$sql = "SELECT cId FROM `#__storefront_collections` c WHERE c.`cId` = " . $this->_db->quote($c) . " AND c.`cActive` = 1";
 				
 		$this->_db->setQuery($sql);
+		//echo $this->_db->_sql; die;
 		$cId = $this->_db->loadResult();
 		
 		return $cId;
@@ -166,7 +167,7 @@ class Hubzero_Storefront_Warehouse
 		
 		foreach	($this->lookupCollections as $cId)
 		{
-			$sql .= " AND c.`cId` = {$cId}";
+			$sql .= " AND c.`cId` = " . $this->_db->quote($cId);
 		}
 		
 		$this->_db->setQuery($sql);
@@ -1244,6 +1245,7 @@ class Hubzero_Storefront_Warehouse
 		$sql .= " AND c.`cType` = '{$collectionType}'";
 				
 		$this->_db->setQuery($sql);
+		//echo $this->_db->_sql;
 		$res = $this->_db->loadObjectList();
 		
 		return $res;
