@@ -15,6 +15,7 @@
 	float: left;
 	max-width: 30px;
 	padding: 3px;
+	overflow: hidden;
 }
 .group-list .logo img {
 	width: 100%;

@@ -66,12 +66,16 @@
 	.container .results p.title {
 		margin-left: 0;
 	}
-	.container .results .event p.title {
-		margin-left: 4em;
+	.container .results .event .event-date {
+		margin-right: 1em;
 	}
-	.container .results .member p.title {
-		margin-left: 60px;
+	
+	.container .results .member p.photo {
+		margin-right: 1em;
+		margin-left: 0;
+		float: left;
 	}
+	
 	.com_tags .block {
 		padding: 1em;
 	}
