@@ -174,6 +174,12 @@ var Fields = {
 window.addEvent('domready', Fields.initialise);
 </script>
 
+<?php
+	foreach ($this->notifications as $notification) {
+		echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
+	}
+?>
+
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">

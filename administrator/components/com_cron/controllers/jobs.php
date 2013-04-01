@@ -209,6 +209,8 @@ class CronControllerJobs extends Hubzero_Controller
 			}
 		}
 
+		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
+
 		// Output the HTML
 		$this->view->display();
 	}

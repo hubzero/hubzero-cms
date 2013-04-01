@@ -166,7 +166,7 @@ class CronTableJob extends JTable
 		
 		$this->recurrence = preg_replace('/[\s]{2,}/', ' ', $this->recurrence);
 
-		if (preg_match('/[^-,* \\d]/', $this->recurrence) !== 0)
+		if (preg_match('/[^-,*\/ \\d]/', $this->recurrence) !== 0)
 		{
 			$this->setError(JText::_('Cron String contains invalid character.'));
 			return false;
