@@ -37,9 +37,14 @@ if (!$this->no_html) {
 	<h2><?php echo JText::_('Cron'); ?></h2>
 </div>
 
-<div class="main">
+<div class="main section">
+
 	<p>tock...</p>
-</div>
+<pre>
+<?php echo json_encode($this->output); ?>
+</pre>
+
+</div><!-- / .main section -->
 <?php
 } else {
 	echo json_encode($this->output);

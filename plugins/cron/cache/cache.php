@@ -110,6 +110,8 @@ class plgCronCache extends JPlugin
 				JFile::delete($p);
 			}
 		}
+
+		return true;
 	}
 }
 
