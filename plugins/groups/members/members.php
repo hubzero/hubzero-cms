@@ -64,7 +64,7 @@ class plgGroupsMembers extends JPlugin
 			'name' => 'members',
 			'title' => JText::_('PLG_GROUPS_MEMBERS'),
 			'default_access' => $this->params->get('plugin_access','members'),
-			'display_menu_tab' => true
+			'display_menu_tab' => $this->params->get('display_tab', 1)
 		);
 		return $area;
 	}

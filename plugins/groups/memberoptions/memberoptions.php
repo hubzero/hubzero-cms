@@ -70,7 +70,7 @@ class plgGroupsMemberOptions extends JPlugin
 			'name' => 'memberoptions',
 			'title' => JText::_('GROUP_MEMBEROPTIONS'),
 			'default_access' => 'registered', 
-			'display_menu_tab' => false
+			'display_menu_tab' => $this->params->get('display_tab', 0)
 		);
 
 		return $area;
@@ -232,6 +232,46 @@ class plgGroupsMemberOptions extends JPlugin
 			$app->redirect( $postSaveRedirect );
 
 	}
-
+	
+	public function onGroupUserEnrollment($gidNumber, $userid)
+	{
+		//get database
+		$database =& JFactory::getDBO();
+		
+		//get hubzero logger
+		$logger = &Hubzero_Factory::getLogger();
+		
+		//get group
+		$group = Hubzero_Group::getInstance( $gidNumber );
+		
+		//is auto-subscribe on for discussion forum
+		$discussion_email_autosubscribe = $group->get('discussion_email_autosubscribe');
+		
+		//log variable
+		$logger->logDebug('$discussion_email_autosubscribe' . $discussion_email_autosubscribe);
+		
+		//if were not auto-subscribed then stop
+		if (!$discussion_email_autosubscribe)
+		{
+			return;
+		}
+		
+		// see if they've already got something, they shouldn't, but you never know
+		$query = "SELECT COUNT(userid) FROM #__xgroups_memberoption WHERE gidNumber=" . $gidNumber . " AND userid=" . $userid . " AND optionname='receive-forum-email'";   
+		$database->setQuery( $query );
+		$count = $database->loadResult();
+		if ($count)
+		{
+			$query = "UPDATE #__xgroups_memberoption SET optionvalue = 1 WHERE gidNumber=" . $gidNumber . " AND userid=" . $userid . " AND optionname='receive-forum-email'";   
+			$database->setQuery($query);
+			$database->query();
+		}
+		else
+		{
+			$query = "INSERT INTO #__xgroups_memberoption(gidNumber, userid, optionname, optionvalue) VALUES('" . $gidNumber . "', '" . $userid . "', 'receive-forum-email', '1')";
+			$database->setQuery( $query );
+			$database->query();
+		}
+	}
 }
 

@@ -63,7 +63,7 @@ class plgGroupsBlog extends JPlugin
 			'name' => 'blog',
 			'title' => JText::_('PLG_GROUPS_BLOG'),
 			'default_access' => $this->params->get('plugin_access', 'members'),
-			'display_menu_tab' => true
+			'display_menu_tab' => $this->params->get('display_tab', 1)
 		);
 		return $area;
 	}
@@ -334,7 +334,7 @@ class plgGroupsBlog extends JPlugin
 			$filters['limit']
 		);
 
-		$pageNav->setAdditionalUrlParam('gid', $this->group->get('cn'));
+		$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
 		$pageNav->setAdditionalUrlParam('active', 'blog');
 		if ($filters['year'])
 		{

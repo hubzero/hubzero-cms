@@ -31,5 +31,9 @@
 		<language tag="en-GB">en-GB.plg_groups_memberoptions.ini</language>
 	</languages>
 	<params>
+		<param name="display_tab" type="list" default="0" label="Display in Menu" description="Display 'Member Options' in group menu.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
 	</params>
 </install>

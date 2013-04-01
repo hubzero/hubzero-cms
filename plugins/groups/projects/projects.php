@@ -72,8 +72,8 @@ class plgGroupsProjects extends JPlugin
 		$area = array(
 			'name' => 'projects',
 			'title' => JText::_('PLG_GROUPS_PROJECTS'),
-			'default_access' => 'members',
-			'display_menu_tab' => true
+			'default_access' => $this->params->get('plugin_access','members'),
+			'display_menu_tab' => $this->params->get('display_tab', 1)
 		);
 		return $area;
 	}
