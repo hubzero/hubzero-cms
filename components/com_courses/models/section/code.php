@@ -61,12 +61,63 @@ class CoursesModelSectionCode extends CoursesModelAbstract
 	private $_redeemer = NULL;
 
 	/**
+	 * Constructor
+	 * 
+	 * @param      integer $id Course offering ID or alias
+	 * @return     void
+	 */
+	public function __construct($oid, $section_id=null)
+	{
+		$this->_db = JFactory::getDBO();
+
+		if ($this->_tbl_name)
+		{
+			$cls = $this->_tbl_name;
+			$this->_tbl = new $cls($this->_db);
+
+			if (is_numeric($oid) || is_string($oid))
+			{
+				$this->_tbl->load($oid, $section_id);
+			}
+			else if (is_object($oid))
+			{
+				$this->_tbl->bind($oid);
+
+				$properties = $this->_tbl->getProperties();
+				foreach (get_object_vars($oid) as $key => $property)
+				{
+					if (!array_key_exists($key, $properties)) // && in_array($property, self::$_section_keys))
+					{
+						$this->_tbl->set('__' . $key, $property);
+					}
+				}
+			}
+			else if (is_array($oid))
+			{
+				$this->_tbl->bind($oid);
+
+				$properties = $this->_tbl->getProperties();
+				foreach (array_keys($oid) as $key)
+				{
+					if (!array_key_exists($key, $properties)) // && in_array($property, self::$_section_keys))
+					{
+						$this->_tbl->set('__' . $key, $oid[$key]);
+					}
+				}
+			}
+		}
+	}
+
+	/**
 	 * Returns a reference to a course offering model
 	 *
-	 * @param      mixed $oid ID (int) or code (string)
-	 * @return     object CoursesModelSectionCode
+	 * This method must be invoked as:
+	 *     $offering = CoursesModelOffering::getInstance($alias);
+	 *
+	 * @param      mixed $oid ID (int) or alias (string)
+	 * @return     object CoursesModelOffering
 	 */
-	static function &getInstance($oid=null)
+	static function &getInstance($oid=null, $section_id=null)
 	{
 		static $instances;
 
@@ -75,12 +126,27 @@ class CoursesModelSectionCode extends CoursesModelAbstract
 			$instances = array();
 		}
 
-		if (!isset($instances[$oid])) 
+		$key = 0;
+
+		if (is_numeric($oid) || is_string($oid))
 		{
-			$instances[$oid] = new CoursesModelSectionCode($oid);
+			$key = $oid . ($section_id ? '_' . $section_id : '');
+		}
+		else if (is_object($oid))
+		{
+			$key = $oid->get('id') . ($section_id ? '_' . $section_id : '');
+		}
+		else if (is_array($oid))
+		{
+			$key = $oid['id'] . ($section_id ? '_' . $section_id : '');
 		}
 
-		return $instances[$oid];
+		if (!isset($instances[$key])) 
+		{
+			$instances[$key] = new CoursesModelSectionCode($oid, $section_id);
+		}
+
+		return $instances[$key];
 	}
 
 	/**
@@ -106,17 +172,70 @@ class CoursesModelSectionCode extends CoursesModelAbstract
 	}
 
 	/**
+	 * Check if a code has expired
+	 *
+	 * @return    string
+	 */
+	public function isExpired()
+	{
+		if (!$this->exists())
+		{
+			return false;
+		}
+
+		if ($this->isRedeemed())
+		{
+			return true;
+		}
+
+		$now = date('Y-m-d H:i:s', time());
+
+		if ($this->get('expires') 
+		 && $this->get('expires') != '0000-00-00 00:00:00' 
+		 && $this->get('expires') <= $now) 
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Check if a code has been redeemed
+	 *
+	 * @return    string
+	 */
+	public function isRedeemed()
+	{
+		if (!$this->exists())
+		{
+			return false;
+		}
+		if ($this->get('redeemed_by'))
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Generate a coupon code
 	 *
 	 * @return    string
 	 */
-	public function redeem($code=null)
+	public function redeem($redeemed_by=0, $code=null)
 	{
 		if (!$code)
 		{
 			$code = $this->get('code');
 		}
-		return $this->_tbl->redeem($code);
+		if (!$redeemed_by)
+		{
+			$redeemed_by = JFactory::getUser()->get('id');
+		}
+		$this->set('redeemed_by', $redeemed_by);
+		$this->set('redeemed', date('Y-m-d H:i:s', time()));
+		return $this->store();
 	}
 }
 

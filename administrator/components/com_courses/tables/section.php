@@ -117,6 +117,13 @@ class CoursesTableSection extends JTable
 	var $created_by = NULL;
 
 	/**
+	 * tinyint(2)
+	 * 
+	 * @var integer
+	 */
+	var $enrollment = NULL;
+
+	/**
 	 * Contructor method for JTable class
 	 * 
 	 * @param  database object
@@ -246,6 +253,11 @@ class CoursesTableSection extends JTable
 		if (isset($filters['state'])) 
 		{
 			$where[] = "os.state=" . $this->_db->Quote(intval($filters['state']));
+		}
+
+		if (isset($filters['enrollment'])) 
+		{
+			$where[] = "os.enrollment=" . $this->_db->Quote(intval($filters['enrollment']));
 		}
 
 		if (isset($filters['search']) && $filters['search']) 

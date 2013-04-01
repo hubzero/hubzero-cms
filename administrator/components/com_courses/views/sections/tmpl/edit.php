@@ -133,6 +133,16 @@ function submitbutton(pressbutton)
 						<th class="key"><label for="field-title"><?php echo JText::_('COM_COURSES_TITLE'); ?>:</label></th>
 						<td><input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" size="50" /></td>
 					</tr>
+					<tr>
+						<th class="key"><label for="field-enrollment"><?php echo JText::_('Enrollment'); ?>:</label></th>
+						<td>
+							<select name="fields[enrollment]" id="field-enrollment">
+								<option value="0"<?php if ($this->row->get('enrollment') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Open (anyone can join)'); ?></option>
+								<option value="1"<?php if ($this->row->get('enrollment') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Restricted (coupon code is required)'); ?></option>
+								<option value="2"<?php if ($this->row->get('enrollment') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Closed (no new enrollment)'); ?></option>
+							</select>
+						</td>
+					</tr>
 				</tbody>
 			</table>
 		</fieldset>

@@ -77,37 +77,6 @@ else
 
 <div class="course section">
 	<div class="aside">
-<?php if ($offering->exists()) { ?>
-		<div class="offering-info">
-			<table>
-				<tbody>
-					<tr>
-						<th scope="row">Starts</th>
-						<td>
-							<time datetime="<?php echo $offering->get('publish_up'); ?>"><?php echo JHTML::_('date', $offering->get('publish_up'), $dateformat, $tz); ?></time>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row">Ends</th>
-						<td>
-							<time datetime="<?php echo $offering->get('publish_down'); ?>"><?php echo ($offering->get('publish_down') == '0000-00-00 00:00:00') ? JText::_('(never)') : JHTML::_('date', $offering->get('publish_down'), $dateformat, $tz); ?></time>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		<?php if ($this->course->isManager() || $this->course->isStudent()) { ?>
-			<p>
-				<a class="outline btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=offering&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias')); ?>">
-					View outline
-				</a>
-			</p>
-		<?php } else { ?>
-			<p>
-				<a class="enroll btn">Enroll</a>
-			</p>
-		<?php } ?>
-		</div>
-<?php } ?>
 		<?php
 		if ($this->sections)
 		{
@@ -118,6 +87,42 @@ else
 					echo $section['metadata'];
 				}
 			}
+		}
+		else
+		{
+			if ($offering->exists()) { ?>
+					<div class="offering-info">
+						<table>
+							<tbody>
+								<tr>
+									<th scope="row">Starts</th>
+									<td>
+										<time datetime="<?php echo $offering->get('publish_up'); ?>"><?php echo JHTML::_('date', $offering->get('publish_up'), $dateformat, $tz); ?></time>
+									</td>
+								</tr>
+								<tr>
+									<th scope="row">Ends</th>
+									<td>
+										<time datetime="<?php echo $offering->get('publish_down'); ?>"><?php echo ($offering->get('publish_down') == '0000-00-00 00:00:00') ? JText::_('(never)') : JHTML::_('date', $offering->get('publish_down'), $dateformat, $tz); ?></time>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					<?php if ($this->course->isManager() || $this->course->isStudent()) { ?>
+						<p>
+							<a class="outline btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=offering&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias')); ?>">
+								View outline
+							</a>
+						</p>
+					<?php } else { ?>
+						<p>
+							<a class="enroll btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=offering&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias') . '&task=enroll'); ?>">
+								Enroll
+							</a>
+						</p>
+					<?php } ?>
+					</div>
+			<?php }
 		}
 		?>
 	</div>
@@ -179,7 +184,7 @@ else
 				if ($section['html'] != '') 
 				{
 				?>
-		<div class="inner-section" id="<?php echo $section['name']; ?>-section">
+		<div class="inner-section" id="<?php echo $section['area']; ?>-section">
 			<?php echo $section['html']; ?>
 		</div><!-- / .inner-section -->
 				<?php 

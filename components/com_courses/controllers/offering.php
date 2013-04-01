@@ -160,7 +160,7 @@ class CoursesControllerOffering extends Hubzero_Controller
 		$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&gid=' . $this->gid . '&offering=' . $this->course->offering()->get('alias') . '&task=' . $this->_task, false, true));
 		$this->setRedirect(
 			JRoute::_('index.php?option=com_login&return=' . $return),
-			$message,
+			JText::_($message),
 			'warning'
 		);
 		return;
@@ -334,6 +334,153 @@ class CoursesControllerOffering extends Hubzero_Controller
 		$this->view->pages                = $this->course->offering()->pages();
 		$this->view->sections             = $sections;
 		$this->view->notifications        = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
+		$this->view->display();
+	}
+
+	/**
+	 * Display an offering asset
+	 * 
+	 * @return     void
+	 */
+	public function enrollTask()
+	{
+		// Check if they're logged in
+		if ($this->juser->get('guest')) 
+		{
+			$this->loginTask('You must be logged in to enroll in a course.');
+			return;
+		}
+
+		$offering = $this->course->offering();
+
+		// Is the user a manager or student?
+		if ($offering->isManager() || $offering->isStudent()) 
+		{
+			// Yes! Already enrolled
+			// Redirect back to the course page
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias')),
+				JText::_('You are already enrolled in this course')
+			);
+			return;
+		}
+
+		$this->view->course = $this->course;
+		$this->view->juser  = $this->juser;
+
+		// Build the title
+		$this->_buildTitle();
+
+		// Build pathway
+		$this->_buildPathway();
+
+		// Can the user enroll?
+		if (!$offering->section()->canEnroll())
+		{
+			$this->view->setLayout('enroll_closed');
+			$this->view->display();
+			return;
+		}
+
+		$enrolled = false;
+
+		// If enrollment is open OR a coupon code was posted
+		if (!$offering->section()->get('enrollment') || ($code = JRequest::getVar('code', '')))
+		{
+			$section_id = $offering->section()->get('id');
+
+			// If a coupon code was posted
+			if (isset($code))
+			{
+				// Get the coupon
+				$coupon = $offering->section()->code($code);
+				// Is it a valid code?
+				if (!$coupon->exists())
+				{
+					$this->setError(JText::sprintf('"%s" is not a valid coupon code.', $code));
+				}
+				// Has it already been redeemed?
+				if ($coupon->isRedeemed())
+				{
+					$this->setError(JText::sprintf('The code "%s" has already been redeemed.', $code));
+				}
+				else
+				{
+					// Has it expired?
+					if ($coupon->isExpired())
+					{
+						$this->setError(JText::sprintf('The code "%s" has expired.', $code));
+					}
+				}
+				if (!$this->getError())
+				{
+					// Is this a coupon for a different section?
+					if ($offering->section()->get('id') != $coupon->get('section_id'))
+					{
+						$section = CoursesModelSection::getInstance($coupon->get('section_id'));
+						if ($section->exists() && $section->get('offering_id') != $offering->get('id'))
+						{
+							$offering = CoursesModelOffering::getInstance($section->get('offering_id'));
+							if ($offering->exists() && $offering->get('course_id') != $this->course->get('id'))
+							{
+								$this->course = CoursesModelCourse::getInstance($offering->get('course_id'));
+							}
+						}
+						$this->setRedirect(
+							JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias') . ($section->get('alias') !== '__default' ? ':' . $section->get('alias') : '') . '&task=enroll&code=' . $code)
+						);
+						return;
+					}
+					// Redeem the code
+					$coupon->redeem($this->juser->get('id'));// set('redeemed_by', $this->juser->get('id'));
+					//$coupon->store();
+				}
+			}
+
+			// If no errors
+			if (!$this->getError())
+			{
+				// Add the user to the course
+				$model = new CoursesModelMember(0); //::getInstance($this->juser->get('id'), $offering->get('id'));
+				$model->set('user_id', $this->juser->get('id'));
+				$model->set('course_id', $this->course->get('id'));
+				$model->set('offering_id', $offering->get('id'));
+				$model->set('section_id', $offering->section()->get('id'));
+				if ($roles = $offering->roles())
+				{
+					foreach ($roles as $role)
+					{
+						if ($role->alias == 'student')
+						{
+							$model->set('role_id', $role->id);
+							break;
+						}
+					}
+				}
+				$model->set('student', 1);
+				if ($model->store(true))
+				{
+					$enrolled = true;
+				}
+				else
+				{
+					$this->setError($model->getError());
+				}
+			}
+		}
+
+		// If enrollment is srestricted and the user isn't enrolled yet
+		if ($offering->section()->get('enrollment') == 1 && !$enrolled)
+		{
+			// Show a form for entering a coupon code
+			$this->view->setLayout('enroll_restricted');
+		}
+
+		if ($this->getError())
+		{
+			$this->addComponentMessage($this->getError(), 'error');
+		}
+		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
 		$this->view->display();
 	}
 

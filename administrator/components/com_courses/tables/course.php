@@ -325,6 +325,11 @@ class CoursesTableCourse extends JTable
 			$where[] = "c.state=" . $this->_db->Quote($filters['state']);
 		}
 
+		if (isset($filters['index']) && $filters['index'] != '') 
+		{
+			$where[] = "LOWER(LEFT(c.title, 1)) = " . $this->_db->Quote(strtolower($filters['index']));
+		}
+
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
 			$where[] = "(LOWER(c.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 

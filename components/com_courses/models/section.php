@@ -86,6 +86,34 @@ class CoursesModelSection extends CoursesModelAbstract
 	private $_member = NULL;
 
 	/**
+	 * CoursesModelIterator
+	 * 
+	 * @var object
+	 */
+	private $_codes = NULL;
+
+	/**
+	 * CoursesModelSectionCode
+	 * 
+	 * @var object
+	 */
+	private $_code = NULL;
+
+	/**
+	 * CoursesModelIterator
+	 * 
+	 * @var object
+	 */
+	private $_dates = NULL;
+
+	/**
+	 * CoursesModelSectionDate
+	 * 
+	 * @var object
+	 */
+	private $_date = NULL;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      integer $id Course offering ID or alias
@@ -198,6 +226,26 @@ class CoursesModelSection extends CoursesModelAbstract
 		}
 
 		return false;
+	}
+
+	/**
+	 * Has the offering ended?
+	 * 
+	 * @return     boolean
+	 */
+	public function canEnroll()
+	{
+		// If it doesn't exist or isn't published
+		if (!$this->isAvailable()) 
+		{
+			return false;
+		}
+		// Is enrollment closed?
+		if ($this->get('enrollment') == 2)
+		{
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -522,6 +570,38 @@ class CoursesModelSection extends CoursesModelAbstract
 	}
 
 	/**
+	 * Check if the current user is enrolled
+	 * 
+	 * @return     boolean
+	 */
+	public function code($code=null)
+	{
+		if (!isset($this->_code) 
+		 || ($code !== null && (string) $this->_code->get('code') != $code))
+		{
+			$this->_code = null;
+
+			if (isset($this->_codes))
+			{
+				foreach ($this->_codes as $c)
+				{
+					if ($c->get('code') == $code)
+					{
+						$this->_code = $c;
+					}
+				}
+			}
+		}
+
+		if (!$this->_code)
+		{
+			$this->_code = new CoursesModelSectionCode($code, $this->get('id'));
+		}
+
+		return $this->_code; 
+	}
+
+	/**
 	 * Get a list of units for an offering
 	 *   Accepts either a numeric array index or a string [id, name]
 	 *   If index, it'll return the entry matching that index in the list
@@ -545,7 +625,7 @@ class CoursesModelSection extends CoursesModelAbstract
 			return $tbl->count($filters);
 		}
 
-		if (!isset($this->_dates) || !is_a($this->_dates, 'CoursesModelIterator') || $clear)
+		if (!isset($this->_codes) || !is_a($this->_codes, 'CoursesModelIterator') || $clear)
 		{
 			$tbl = new CoursesTableSectionCode($this->_db);
 
@@ -561,10 +641,10 @@ class CoursesModelSection extends CoursesModelAbstract
 				$results = array();
 			}
 
-			$this->_dates = new CoursesModelIterator($results);
+			$this->_codes = new CoursesModelIterator($results);
 		}
 
-		return $this->_dates;
+		return $this->_codes;
 	}
 
 	/**
@@ -574,7 +654,7 @@ class CoursesModelSection extends CoursesModelAbstract
 	 */
 	public function generateCode()
 	{
-		$chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		$chars = '023456789ABCDEFGHJKLMNOPQRSTUVWXYZ'; // no 1 or I
 		$res = '';
 		for ($i = 0; $i < 10; $i++) 
 		{

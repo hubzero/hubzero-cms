@@ -53,6 +53,40 @@ class plgCoursesStore extends JPlugin
 	}
 
 	/**
+	 * Return data on a resource view (this will be some form of HTML)
+	 * 
+	 * @param      object  $resource Current resource
+	 * @param      string  $option    Name of the component
+	 * @param      array   $areas     Active area(s)
+	 * @param      string  $rtrn      Data to be returned
+	 * @return     array
+	 */
+	public function onCourseView($course, $active=null)
+	{
+		$arr = array(
+			'name'     => $this->_name,
+			'html'     => '',
+			'metadata' => ''
+		);
+
+		ximport('Hubzero_Plugin_View');
+		$view = new Hubzero_Plugin_View(
+			array(
+				'folder'  => 'courses',
+				'element' => $this->_name,
+				'name'    => 'metadata'
+			)
+		);
+		$view->option     = JRequest::getCmd('option', 'com_courses');
+		$view->controller = JRequest::getWord('controller', 'course');
+		$view->course     = $course;
+
+		$arr['metadata'] = $view->loadTemplate();
+
+		return $arr;
+	}
+
+	/**
 	 * Actions to perform after saving a course
 	 * 
 	 * @param      object  $model CoursesModelCourse
@@ -64,6 +98,50 @@ class plgCoursesStore extends JPlugin
 		if (!$model->exists())
 		{
 			return;
+		}
+		if (JRequest::getInt('store_product', 0))
+		{
+			if ($isNew)
+			{
+				ximport('Hubzero_Storefront_Product');
+				$course = new Hubzero_Storefront_Course();
+				$course->setName($model->get('title'));
+				$course->setDescription($model->get('blurb'));
+				$course->setPrice(12.00);
+				// Membership model: membership duration period (must me in MySQL date format: 1 DAY, 2 MONTH, 3 YEAR...) 
+				$course->setTimeToLive('1 YEAR');
+				// Course alias id
+				$course->setCourseId($model->get('alias'));
+				try 
+				{
+					// Returns object with values, pId is the new product ID to link to
+					$info = $course->add();
+					//print_r($info);
+				}
+				catch(Exception $e) 
+				{
+					echo 'ERROR: ' . $e->getMessage();
+				}
+			}
+			else
+			{
+				ximport('Hubzero_Storefront_Warehouse');
+				$warehouse = new Hubzero_Storefront_Warehouse();
+				try 
+				{
+					// Get course by pID returned with $course->add() above
+					$course = $warehouse->getCourse(1023);
+					$course->setName($course->get('title'));
+					$course->setDescription($course->get('blurb'));
+					$course->setPrice(55);
+					$course->setTimeToLive('10 YEAR');
+					$course->update();
+				}
+				catch(Exception $e) 
+				{
+					echo 'ERROR: ' . $e->getMessage();
+				}
+			}
 		}
 	}
 
@@ -79,6 +157,10 @@ class plgCoursesStore extends JPlugin
 		{
 			return;
 		}
+		ximport('Hubzero_Storefront_Warehouse');
+		$warehouse = new Hubzero_Storefront_Warehouse();
+		// Delete by existing course ID (pID returned with $course->add() when the course was created)
+		$warehouse->deleteProduct(1023);
 	}
 
 	/**
@@ -137,5 +219,82 @@ class plgCoursesStore extends JPlugin
 		{
 			return;
 		}
+	}
+
+	/**
+	 * Actions to perform after deleting an offering
+	 * 
+	 * @param      object  $model CoursesModelSection
+	 * @param      boolean $isNew Is this a newly created entry?
+	 * @return     void
+	 */
+	public function onAfterSaveCoupon($model, $isNew=false)
+	{
+		if (!$model->exists())
+		{
+			return;
+		}
+		if ($isNew && JRequest::getInt('store_product', 0))
+		{
+			ximport('Hubzero_Storefront_Coupon');
+			try 
+			{
+				// Constructor take the coupon code
+				$coupon = new Hubzero_Storefront_Coupon($model->get('code'));
+				// Couponn description (shows up in the cart)
+				$coupon->setDescription(JRequest::getVar('description', 'Test coupon, 10% off product with ID 111'));
+				// Expiration date 
+				$coupon->setExpiration($model->get('created'));
+				// Number of times coupon can be used (unlimited by default)
+				$coupon->setUseLimit(1);
+
+				// Product the coupon will be applied to: 
+				// first parameter: product ID
+				// second parameter [optional, unlimited by default]: max quantity of products coupon will be applied to (if buying multiple)
+				//$section = new CorusesModelSection($model->get('section_id'));
+
+				$product = new CorusesModelStore();
+				$product->set('course_id', $model->find('course'));
+
+				$coupon->addObject($product->get('product_id'), 1);
+				// Action, only 'discount' for now
+				// second parameter either percentage ('10%') or absolute dollar value ('20')
+				$coupon->setAction('discount', '100%');
+				// Add coupon
+				$coupon->add();
+			}
+			catch (Exception $e) 
+			{
+				echo 'ERROR: ' . $e->getMessage();
+			}
+			return;
+		}
+	}
+	
+	/**
+	 * Actions to perform after deleting an offering
+	 * 
+	 * @param      object  $model CoursesModelSection
+	 * @param      boolean $isNew Is this a newly created entry?
+	 * @return     void
+	 */
+	public function onAfterDeleteCoupon($model)
+	{
+		if (!$model->exists())
+		{
+			return;
+		}
+
+		ximport('Hubzero_Storefront_Warehouse');
+		$warehouse = new Hubzero_Storefront_Warehouse();
+		try 
+		{
+			$warehouse->deleteCoupon($model->get('code'));
+		}
+		catch(Exception $e) 
+		{
+			echo 'ERROR: ' . $e->getMessage();
+		}
+		return;
 	}
 }

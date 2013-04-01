@@ -258,7 +258,14 @@ function CoursesParseRoute($segments)
 		}
 		else
 		{
-			$vars['active'] = $segments[2];
+			if ($segments[2] == 'enroll')
+			{
+				$vars['task'] = $segments[2];
+			}
+			else
+			{
+				$vars['active'] = $segments[2];
+			}
 			$vars['controller'] = 'offering';
 		}
 	}

@@ -117,17 +117,11 @@ class CoursesControllerCourses extends Hubzero_Controller
 		$this->_getStyles($this->_option, 'intro.css');
 
 		// Push some needed scripts to the template
-		//$this->_getScripts();
 		$model = CoursesModelCourses::getInstance();
 
 		//vars
-		//$mytags = '';
 		$this->view->mycourses = array();
-		//$popularcourses = array();
 		$this->view->interestingcourses = array();
-
-		//get the users profile
-		//$profile = Hubzero_User_Profile::getInstance($this->juser->get('id'));
 
 		//if (is_object($profile))
 		if (!$this->juser->get('guest'))
@@ -138,32 +132,23 @@ class CoursesControllerCourses extends Hubzero_Controller
 			$mytags = $mt->get_tag_string($this->juser->get('id'));
 
 			//get users courses
-			/*$this->view->mycourses['members']    = Hubzero_User_Helper::getCourses($this->juser->get('id'), 'members', 1);
-			$this->view->mycourses['instructor'] = Hubzero_User_Helper::getCourses($this->juser->get('id'), 'invitees', 1);
-			$this->view->mycourses['students']   = Hubzero_User_Helper::getCourses($this->juser->get('id'), 'applicants', 1);
-			$this->view->mycourses = array_filter($mycourses);*/
 			$this->view->mycourses = $model->userCourses($this->juser->get('id'), 'all');
 
 			//get courses user may be interested in
 			if ($mytags)
 			{
-				$this->view->interestingcourses = $model->courses(array('tags' => $mytags, 'limit' => 10)); //Hubzero_Course_Helper::getCoursesMatchingTagString($mytags, Hubzero_User_Helper::getCourses($this->juser->get('id')));
+				$this->view->interestingcourses = $model->courses(array('tags' => $mytags, 'limit' => 10));
 			}
 		}
 
 		//get the popular courses
-		$this->view->popularcourses = $model->courses(array('limit' => 3, 'sort' => 'students'));//getPopularCourses(3);
+		$this->view->popularcourses = $model->courses(array('limit' => 3, 'sort' => 'students'));
 
 		// Output HTML
-		//$this->view->option = $this->_option;
 		$this->view->config   = $this->config;
 		$this->view->database = $this->database;
 		$this->view->user     = $this->juser;
 		$this->view->title    = $this->_title;
-
-		//$this->view->mycourses = $mycourses;
-		//$this->view->popularcourses = $popularcourses;
-		//$this->view->interestingcourses = $interestingcourses;
 
 		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
 		$this->view->display();
@@ -176,22 +161,37 @@ class CoursesControllerCourses extends Hubzero_Controller
 	 */
 	public function browseTask()
 	{
-		//$jconfig = JFactory::getConfig();
-
 		// Filters 
 		$this->view->filters = array();
 		$this->view->filters['state']  = 1;
 		$this->view->filters['search'] = JRequest::getVar('search', '');
 		$this->view->filters['sortby'] = strtolower(JRequest::getWord('sortby', 'title'));
-		if (!in_array($this->view->filters['sortby'], array('alias', 'title')))
+		if (!in_array($this->view->filters['sortby'], array('alias', 'title', 'popularity')))
 		{
 			$this->view->filters['sortby'] = 'title';
+		}
+		switch ($this->view->filters['sortby'])
+		{
+			case 'popularity':
+				$this->view->filters['sort']  = 'students';
+				$this->view->filters['sort_Dir'] = 'DESC';
+			break;
+			case 'title':
+			case 'alias':
+			default:
+				$this->view->filters['sort']  = $this->view->filters['sortby'];
+				$this->view->filters['sort_Dir'] = 'ASC';
+			break;
 		}
 		// Filters for returning results
 		$this->view->filters['limit']  = JRequest::getInt('limit', JFactory::getConfig()->getValue('config.list_limit'));
 		$this->view->filters['limit']  = ($this->view->filters['limit']) ? $this->view->filters['limit'] : 'all';
 		$this->view->filters['start']  = JRequest::getInt('limitstart', 0);
-		$this->view->filters['index']  = JRequest::getWord('index', '');
+		$this->view->filters['index']  = strtolower(JRequest::getWord('index', ''));
+		if ($this->view->filters['index'] && !in_array($this->view->filters['index'], array('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z')))
+		{
+			$this->view->filters['index'] = '';
+		}
 
 		$model = CoursesModelCourses::getInstance();
 
