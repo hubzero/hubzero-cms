@@ -125,14 +125,14 @@ function submitbutton(pressbutton)
 			</table>
 		</fieldset>
 
-		<fieldset class="adminform">
+		<?php /* <fieldset class="adminform">
 			<legend><span><?php echo JText::_('Managers'); ?></span></legend>
 <?php if ($this->row->get('id')) { ?>
 			<iframe width="100%" height="400" name="managers" id="managers" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=supervisors&amp;tmpl=component&amp;id=<?php echo $this->row->get('id'); ?>"></iframe>
 <?php } else { ?>
 			<p><?php echo JText::_('Course must be saved before managers can be added.'); ?></p>
 <?php } ?>
-		</fieldset>
+		</fieldset> */ ?>
 	</div>
 	<div class="col width-40 fltrt">
 		<table class="meta" summary="<?php echo JText::_('COM_COURSES_META_SUMMARY'); ?>">
