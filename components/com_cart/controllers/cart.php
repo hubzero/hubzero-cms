@@ -142,9 +142,6 @@ class CartControllerCart extends ComponentController
 		{
 			// Sync cart before pontial coupons applying
 			$cart->getCartInfo(true);
-			
-			// Initialize errors array
-			$couponErrors = array();
 						
 			// Add coupon
 			try
@@ -199,10 +196,11 @@ class CartControllerCart extends ComponentController
 			$cartChanges = $cart->getCartChanges();
 			$this->view->setError($cartChanges);
 		}
-				
-		$this->view->display();
 		
-		//$cart->printCartInfo();
+		$doc =& JFactory::getDocument();
+		$doc->addScript(DS . 'components' . DS . 'com_cart' . DS . 'assets' . DS . 'js' . DS . 'cart.js');
+				
+		$this->view->display();		
 	}
 	
 	/**
@@ -220,9 +218,9 @@ class CartControllerCart extends ComponentController
 		try 
 		{
 			// Constructor take the coupon code
-			$coupon = new Hubzero_Storefront_Coupon('couponcode3');
+			$coupon = new Hubzero_Storefront_Coupon('hui');
 			// Couponn description (shows up in the cart)
-			$coupon->setDescription('Test coupon, 10% off product with ID 111');
+			$coupon->setDescription('Test coupon, 10% off product with ID 3');
 			// Expiration date 
 			$coupon->setExpiration('Feb 22, 2022');
 			// Number of times coupon can be used (unlimited by default)			
@@ -231,7 +229,7 @@ class CartControllerCart extends ComponentController
 			// Product the coupon will be applied to: 
 			// first parameter: product ID
 			// second parameter [optional, unlimited by default]: max quantity of products coupon will be applied to (if buying multiple)
-			$coupon->addObject(111, 1);
+			$coupon->addObject(3, 1);
 			// Action, only 'discount' for now
 			// second parameter either percentage ('10%') or absolute dollar value ('20')
 			$coupon->setAction('discount', '10%');

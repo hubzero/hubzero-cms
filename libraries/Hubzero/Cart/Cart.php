@@ -1054,15 +1054,15 @@ class Hubzero_Cart
 		ximport('Hubzero_Storefront_Coupons');
 		$coupons = new Hubzero_Storefront_Coupons;
 		
-		$cnId = $coupons->isValid($couponCode);
-		
 		// Get coupons
 		$this->cartCoupons = $this->getCoupons();
 		
 		// Check if coupon has already been applied
-		if($this->isCouponApplied($cnId)) {
+		if($this->isCouponApplied($couponCode)) {
 			throw new Exception(JText::_('COM_CART_COUPON_ALREADY_APPLIED'));	
 		}
+		
+		$cnId = $coupons->isValid($couponCode);
 		
 		// Apply coupon, add item to cart if needed/possible (throws exception if not applicable)
 		$this->apply($cnId);
@@ -1187,7 +1187,7 @@ class Hubzero_Cart
 	 * @param 	string		$couponCode coupon code
 	 * @return	bool		 
 	 */
-	private function isCouponApplied($cnId)
+	private function isCouponApplied($cnCode)
 	{
 		// Get coupons if needed
 		if (empty($this->cartCoupons))
@@ -1197,10 +1197,9 @@ class Hubzero_Cart
 				
 		// iterate through coupons and return true if coupon already applied		
 		foreach ($this->cartCoupons as $coupon)
-		{
-			
+		{			
 			//print_r($coupongroup); die('44');
-			if ($coupon->cnId == $cnId)
+			if ($coupon->cnCode == $cnCode)
 			{
 				return true;	
 			}

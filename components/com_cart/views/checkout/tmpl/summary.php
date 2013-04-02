@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 
 <div id="content-header">
-	<h2>Summary</h2>
+	<h2>Review your order</h2>
 </div>
 
 <div class="section">
