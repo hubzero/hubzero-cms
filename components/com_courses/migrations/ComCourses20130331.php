@@ -1,6 +1,6 @@
 <?php
 
-class ComCourses20130401 extends Migration
+class ComCourses20130331 extends Migration
 {
 	protected function up()
 	{
