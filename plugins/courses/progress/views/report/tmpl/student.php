@@ -250,7 +250,10 @@ $progress_timeline .= '</div>';
 		<a href="<?= JRoute::_($base . '&active=progress') ?>" class="back btn"><?= JText::_('Back to all students') ?></a>
 	<? endif; ?>
 
-	<h3><?= $h3 ?></h3>
+	<h3>
+		<?= ($this->juser->get('id') != JFactory::getUser()->get('id')) ? $this->juser->get('name') . ':' : '' ?>
+		<?= $h3 ?>
+	</h3>
 	<h4><?= JText::sprintf('Unit %d of %d', $current_i, $num_units) ?></h4>
 
 	<?= $progress_timeline ?>

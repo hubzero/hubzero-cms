@@ -71,6 +71,10 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 
 	/**
 	 * Get student gradebook
+	 *
+	 * Retrieve single or group of student grades from the grade book.  You could also 
+	 * provide a scope, limiting the grades to an array of items, such as unit, course, or asset.
+	 * The results will be returned as an array with student id as the uppermost key.
 	 * 
 	 * @param      int or array $user_id, user id for which to pull grades
 	 * @param      int or array $scope, scope for which to pull grades (unit, course, asset)
@@ -135,6 +139,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		}
 
 		// Calculate unit completion percentage for each student
+		// Note: this is not their score, but rather, simply how many items within the unit they have viewed
 		foreach ($progress as $user_id=>$user)
 		{
 			foreach ($user as $unit_id=>$unit)
@@ -227,7 +232,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	}
 
 	/**
-	 * Save score to grade book
+	 * Save a form score to the grade book
 	 * 
 	 * @param      decimal $score, score to save
 	 * @param      int $asset_id, asset id of item being saved
