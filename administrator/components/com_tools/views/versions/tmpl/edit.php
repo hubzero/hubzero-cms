@@ -44,7 +44,7 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr>
 						<td class="key"><label for="hostreq"><?php echo JText::_('TOOL_HOSTREQ'); ?>:</label></td>
-						<td><input type="text" name="fields[hostreq]" id="hostreq" value="<?php echo $this->escape(stripslashes(implode(',', $this->row->hostreq)));?>" size="50" /> </td>
+						<td><input type="text" name="fields[hostreq]" id="hostreq" value="<?php echo $this->escape(stripslashes(implode(', ', $this->row->hostreq)));?>" size="50" /> </td>
 					</tr>
 					<tr>
 						<td class="key"><label for="mw"><?php echo JText::_('TOOL_MIDDLEWARE'); ?>:</label></td>
