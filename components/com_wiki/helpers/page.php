@@ -43,7 +43,11 @@ class WikiHelperPage
 	{
 		$tbl = new WikiPage(JFactory::getDBO());
 		$pagename = trim(JRequest::getVar('pagename', '', 'default', 'none', 2));
-		$pagename = $tbl->normalize($pagename);
+		if (substr(strtolower($pagename), 0, strlen('image:')) != 'image:' 
+		 && substr(strtolower($pagename), 0, strlen('file:')) != 'file:')
+		{
+			$pagename = $tbl->normalize($pagename);
+		} 
 		JRequest::setVar('pagename', $pagename);
 
 		$scope = trim(JRequest::getVar('scope', ''));

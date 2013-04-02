@@ -104,6 +104,8 @@ class WikiControllerMedia extends Hubzero_Controller
 		// Get some needed libraries
 		ximport('Hubzero_Content_Server');
 
+		$this->page->pagename = trim(JRequest::getVar('pagename', '', 'default', 'none', 2));
+
 		// Instantiate an attachment object
 		$attachment = new WikiPageAttachment($this->database);
 		if (substr(strtolower($this->page->pagename), 0, strlen('image:')) == 'image:') 
