@@ -4,7 +4,7 @@ class ComCourses20130320 extends Migration{
 
 	protected function up()
 	{
-		$query = "CREATE TABLE `jos_courses_grade_book` (
+		$query = "CREATE TABLE IF NOT EXISTS `jos_courses_grade_book` (
 						`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 						`user_id` int(11) NOT NULL,
 						`score` decimal(5,2) NOT NULL DEFAULT '0.00',
