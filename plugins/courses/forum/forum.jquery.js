@@ -48,7 +48,7 @@ HUB.Plugins.CoursesForum = {
 					e.preventDefault();
 					$.post($(this).attr('action').nohtml(), $(this).serialize(), function(data) {
 						if (typeof(wykiwygs) !== 'undefined') {
-							console.log('editors');
+							//console.log('editors');
 							if (wykiwygs.length) 
 							{
 								for (i=0; i<wykiwygs.length; i++)
@@ -58,11 +58,12 @@ HUB.Plugins.CoursesForum = {
 								}
 							}
 						}
-						else
+						/*else
 						{
 							console.log(wykiwygs);
-						}
-						$('#comments-container ol.comments').hide().html(data).fadeIn(500);
+						}*/
+						//$('#comments-container ol.comments').hide().html(data).fadeIn(500);
+						$('#comments-container ol.comments').replaceWith(data);
 					});
 				});
 			}
@@ -70,7 +71,8 @@ HUB.Plugins.CoursesForum = {
 			$('#comments-container').on('submit', '.comment-add form', function (e) {
 				e.preventDefault();
 				$.post($(this).attr('action').nohtml(), $(this).serialize(), function(data) {
-					$('#comments-container ol.comments').hide().html(data).fadeIn(500);
+					//$('#comments-container ol.comments').hide().html(data).fadeIn(500);
+					$('#comments-container ol.comments').replaceWith(data);
 				});
 			});
 			$('#comments-container').on('click', '.reply', function (e) {
@@ -105,7 +107,10 @@ HUB.Plugins.CoursesForum = {
 					$.get(url + start, {}, function(data) {
 						start += limit;
 						//console.log($(data).eq(1).find('ol.comments').html());
-						$('#comments-container ol.comments').hide().html(data).fadeIn(500);
+						$('#loadmore').hide();
+						//$('#comments-container ol.comments').hide().html(data).fadeIn(500);
+						
+						$('#comments-container ol.comments').replaceWith(data); //.hide().fadeIn(500);
 						//$('#comments-container ol.comments').append(data);
 					});
 				});
