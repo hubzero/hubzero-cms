@@ -93,7 +93,7 @@ defined('_JEXEC') or die('Restricted access');
 						<?php if ($this->params->get('show_screenshots', 1)) : ?>
 							<div class="session-details-left">
 								<div class="session-snapshot">
-									<a class="session-snapshot-link" href="<?php echo $snapshot; ?>" title="View Session Snapshot">
+									<a class="session-snapshot-link" href="<?php echo $snapshot; ?>" title="<?php echo $session->sessname; ?>">
 										<img src="<?php echo $snapshot; ?>" />
 									</a>
 								</div>
@@ -107,7 +107,7 @@ defined('_JEXEC') or die('Restricted access');
 						
 							<div class="session-buttons">
 								<a class="btn resume" href="<?php echo $resumeLink; ?>" title="<?php echo JText::_('MOD_MYSESSIONS_RESUME_TITLE'); ?>">
-									Resume
+									<?php echo ucfirst( JText::_('MOD_MYSESSIONS_RESUME') ); ?>
 								</a>
 								<?php $tcls = ($this->params->get('terminate_double_check', 1)) ? 'terminate-confirm' : 'terminate'; ?>
 								<?php if($this->juser->get('username') == $session->username) : ?>
@@ -159,7 +159,9 @@ defined('_JEXEC') or die('Restricted access');
 		?>
 		
 		<div class="storage-meter <?php echo $cls; ?>">
-			<span class="storage-meter-percent" style="width:<?php echo $percent; ?>%"></span>
+			<?php if ($amount > 0) : ?>
+				<span class="storage-meter-percent" style="width:<?php echo $percent; ?>%"></span>
+			<?php endif; ?>
 			<span class="storage-meter-amount"><?php echo $amount . '% of ' . $total . 'GB'; ?></span>
 		</div>
 		

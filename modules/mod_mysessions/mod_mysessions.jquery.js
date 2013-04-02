@@ -42,13 +42,23 @@ HUB.Modules.MySessions = {
 		
 		//show session snapshots in lightbox
 		$('.session-snapshot a').on('click',function(event) {
+			
+			//get buttons
+			var buttons = $(this).parents('.session-details').find('.session-buttons').html();
+			
 			event.preventDefault();
 			$.fancybox({
 				width: 800,
 				height: 600,
 				autoSize: false,
 				title: $(this).attr("title"),
-				content:'<img style="display:block;" src="' + $(this).attr("href") + '" />'
+				content:'<div id="screenshot-popup"> \
+							<img style="display:block;" src="' + $(this).attr("href") + '" /> \
+							<div id="launchbar"> \
+								<div class="session-title">' + $(this).attr("title") + '</div> \
+								<div class="session-buttons">' + buttons + '</div> \
+							</div> \
+						</div>'
 			});
 		});
 	},
