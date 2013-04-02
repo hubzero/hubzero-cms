@@ -262,6 +262,12 @@
 		cursor: move;
 		margin: 0;
 		padding: 0;
+		font-size: 11px;
+		line-height: 22px;
+		text-align: right;
+	}
+	.jSticky-header span {
+		margin-right: 0.5em;
 	}
 	.static .jSticky-header {
 		cursor: inherit;

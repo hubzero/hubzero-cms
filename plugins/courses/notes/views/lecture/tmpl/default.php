@@ -54,6 +54,7 @@ jQuery(document).ready(function(jQuery){
 					$obj->pos_y  = $note->get('pos_y') . 'px';
 					$obj->width  = $note->get('width');
 					$obj->height = $note->get('height');
+					$obj->timestamp   = $note->get('timestamp');
 
 					$n[] = $obj;
 				}
@@ -64,18 +65,22 @@ jQuery(document).ready(function(jQuery){
 		controls: true,
 		editCallback: function(note) {
 			var id = $('#note-' + note.id).attr('data-id');
-			console.log(url + id + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height + '&txt=' + note.text);
+			//console.log(url + id + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height + '&txt=' + note.text);
 			$.getJSON(url + id + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height + '&txt=' + note.text, {}, function(data) {
 				//console.log(id + '_' + note.id);
 				if (id != note.id) {
 					$('#note-' + note.id).attr('data-id', data.id);
 				}
-				console.log(data);
+				//console.log(data);
 			});
 		},
 		createCallback: function(note) {
+			var tme = null;
+			if (typeof HUB.Presenter !== 'undefined') {
+				tme += '&time=' + HUB.Presenter.formatTime(HUB.Presenter.getCurrent());
+			}
 			//console.log(url + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height + '&txt=New%20note');
-			$.getJSON(url + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height, {}, function(data) {
+			$.getJSON(url + tme + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height, {}, function(data) {
 				//$('#note' + note.id).attr('data-id', data);
 				if (id != note.id) {
 					$('#note-' + note.id).attr('data-id', data.id);

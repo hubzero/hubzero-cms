@@ -11,11 +11,70 @@ var typewatch = (function(){
 	jQuery.fn.stickyNotes = function(options) {
 		jQuery.fn.stickyNotes.options = jQuery.extend({}, jQuery.fn.stickyNotes.defaults, options);
 		jQuery.fn.stickyNotes.prepareContainer(this);
+		/*if (typeof HUB.Presenter !== 'undefined') {
+			//start timer
+			var timer = setInterval(function() {
+				jQuery.fn.stickyNotes.checkTimes();
+			}, 5000);
+		}*/
 		jQuery.each(jQuery.fn.stickyNotes.options.notes, function(index, note){
 			jQuery.fn.stickyNotes.renderNote(note);
 			jQuery.fn.stickyNotes.notes.push(note);
 		});
 	};
+
+	jQuery.fn.stickyNotes.checkTimes = function() {
+		var tm = HUB.Presenter.formatTime(HUB.Presenter.getCurrent());
+		if (tm < '00:00:06') {
+			return;
+		}
+		
+		var oldDateObj = new Date('01/01/2011 ' + tm);
+		//Date.parse('01/01/2011 10:20:45') > Date.parse('01/01/2011 5:10:10')
+		
+		var startDateObj = new Date();
+		startDateObj.setTime(oldDateObj.getTime() - (5 * 1000));
+		//tm_start = startDateObj.getHours('HH') + ":" + startDateObj.getMinutes('MM') + ":" + startDateObj.getSeconds('SS');
+		tm_start = (startDateObj.getHours() < 10 ? '0' + startDateObj.getHours() : startDateObj.getHours()) + ":" + 
+				(startDateObj.getMinutes() < 10 ? '0' + startDateObj.getMinutes() : startDateObj.getMinutes()) + ":" + 
+				(startDateObj.getSeconds() < 10 ? '0' + startDateObj.getSeconds() : startDateObj.getSeconds());
+		/*var endDateObj = new Date();
+		endDateObj.setTime(oldDateObj.getTime() + (5 * 1000));
+		tm_end = endDateObj.getHours('HH') + ":" + startDateObj.getMinutes('MM') + ":" + startDateObj.getSeconds('SS');
+
+		var regExp = /(\d{1,2})\:(\d{1,2})\:(\d{1,2})/;
+		if (parseInt(tm.replace(regExp, "$1$2$3")) > parseInt(startTime .replace(regExp, "$1$2$3"))){
+			alert("End time is greater");
+		}*/
+
+		jQuery.each(jQuery.fn.stickyNotes.notes, function(index, note){
+			//jQuery.fn.stickyNotes.renderNote(note);
+			//jQuery.fn.stickyNotes.notes.push(note);
+			if (note.timestamp != '00:00:00') {
+				/*var oldDateObj = new Date('01/01/2011 ' + note.timestamp);
+				//Date.parse('01/01/2011 10:20:45') > Date.parse('01/01/2011 5:10:10')
+
+				var startDateObj = new Date();
+				startDateObj.setTime(oldDateObj.getTime() - (5 * 1000));
+				tm_start = startDateObj.toString('HH:MM:SS');*/
+				var tDateObj = new Date('01/01/2011 ' + note.timestamp);
+
+				var endDateObj = new Date();
+				endDateObj.setTime(tDateObj.getTime() + (5 * 1000));
+				tm_end = (endDateObj.getHours() < 10 ? '0' + endDateObj.getHours() : endDateObj.getHours()) + ":" + 
+						(endDateObj.getMinutes() < 10 ? '0' + endDateObj.getMinutes() : endDateObj.getMinutes()) + ":" + 
+						(endDateObj.getSeconds() < 10 ? '0' + endDateObj.getSeconds() : endDateObj.getSeconds());
+				
+//console.log(tm_start + ' :: ' + tm_end);
+				if (note.timestamp >= tm_start) {
+					jQuery('#note-' + note.id).fadeIn(500);
+				}
+				if (tm > tm_end) {
+					jQuery('#note-' + note.id).fadeOut(500);
+				}
+			}
+		});
+	}
 
 	jQuery.fn.stickyNotes.getNote = function(note_id) {
 		var result = null;
@@ -114,7 +173,8 @@ var typewatch = (function(){
 			"pos_x": pos_x,
 			"pos_y": pos_y,	
 			"width": jQuery(_div_wrap).width(),
-			"height": jQuery(_div_wrap).height()
+			"height": jQuery(_div_wrap).height(),
+			"timestamp": '00:00:00'
 		};
 		jQuery.fn.stickyNotes.notes.push(note);
 
@@ -152,6 +212,9 @@ var typewatch = (function(){
 		var _div_note 	= 	jQuery(document.createElement('div')).addClass('jStickyNote');
 
 		var _div_header = 	jQuery(document.createElement('div')).addClass('jSticky-header');
+		if (note.timestamp && note.timestamp != '00:00:00') {
+			_div_header.append(jQuery('<span></span>').addClass('time').text(note.timestamp));
+		}
 
 		var _note_content = jQuery(document.createElement('textarea')).val(note.text).on('keyup', function (e) {
 				typewatch(function () {
@@ -180,6 +243,10 @@ var typewatch = (function(){
 							.append(_div_header)
 							.append(_div_note)
 							.append(_div_delete);
+
+		if (note.timestamp && note.timestamp != '00:00:00') {
+			//_div_wrap.hide();
+		}
 
 		if (jQuery.fn.stickyNotes.options.resizable) {
 			_div_wrap.resizable({stop: function(event, ui) { jQuery.fn.stickyNotes.resizedNote(note.id)}});

@@ -52,6 +52,7 @@ if ($notes)
 		foreach ($results as $id => $notes)
 		{
 			$lecture = new CoursesModelAssetgroup($id);
+			$unit = CoursesModelUnit::getInstance($lecture->get('unit_id'));
 ?>
 <div class="section">
 	<h3><?php echo $this->escape(stripslashes($lecture->get('title'))); ?></h3>
@@ -60,7 +61,11 @@ if ($notes)
 			{
 	?>
 	<div class="jSticky-medium static" id="note-<?php echo $note->get('id'); ?>" data-id="<?php echo $note->get('id'); ?>">
-		<div class="jSticky-header"></div>
+		<div class="jSticky-header">
+			<?php if ($note->get('timestamp') != '00:00:00') { ?>
+				<a href="<?php echo str_replace('%3A', ':', JRoute::_('index.php?option=com_courses&controller=offering&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $lecture->get('alias') . '&time=' . $this->escape($note->get('timestamp')))); ?>" class="time"><?php echo $this->escape($note->get('timestamp')); ?></a>
+			<?php } ?>
+		</div>
 		<div class="jStickyNote">
 			<textarea name="note_<?php echo $note->get('id'); ?>"><?php echo $this->escape(stripslashes($note->get('content'))); ?></textarea>
 		</div>

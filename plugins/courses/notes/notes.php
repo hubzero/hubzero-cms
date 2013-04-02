@@ -290,6 +290,10 @@ class plgCoursesNotes extends JPlugin
 		{
 			$model->set('state', $state);
 		}
+		if ($timestamp = JRequest::getVar('time', ''))
+		{
+			$model->set('timestamp', $timestamp);
+		}
 		if ($content = JRequest::getVar('txt', ''))
 		{
 			$model->set('content', $content);

@@ -108,6 +108,13 @@ class CoursesTableMemberNote extends JTable
 	var $height = NULL;
 
 	/**
+	 * 00:00:00
+	 * 
+	 * @var integer
+	 */
+	var $timestamp = NULL;
+
+	/**
 	 * tinyint(2)
 	 * 
 	 * @var integer
