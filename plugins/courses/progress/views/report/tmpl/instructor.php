@@ -48,6 +48,8 @@ foreach ($members as $m)
 
 // Get Grades
 $gradebook = new CoursesModelGradeBook(null);
+// @FIXME: refresh grades here?
+//$gradebook->refresh(null, $this->course->offering()->section()->get('id'));
 $grades    = $gradebook->getGrades($member_ids, array('unit', 'course'));
 $progress  = $gradebook->getProgress($this->course);
 
@@ -80,13 +82,14 @@ $progress  = $gradebook->getProgress($this->course);
 						<div class="student-progress-timeline">
 							<div class="student-progress-timeline-inner length_<?= count($this->course->offering()->units()) ?>">
 								<? foreach($this->course->offering()->units() as $unit) : ?>
+									<? $height = $progress[$m->get('user_id')][$unit->get('id')]['percentage_complete']; ?>
+									<? $margin = 100 - $height; ?>
+									<? $cls    = ($height == 100) ? ' complete' : ''; ?>
 									<div class="unit">
 										<div class="unit-inner">
 											<div class="unit-title"><?= $unit->get('title') ?></div>
-											<div class="unit-fill">
-												<? $height = $progress[$m->get('user_id')][$unit->get('id')]['percentage_complete']; ?>
-												<? $margin = 100 - $height; ?>
-												<div class="unit-fill-inner" style="height:<?= $height ?>%;margin-top:<?= $margin ?>%;"></div>
+											<div class="unit-fill" title="<?= $unit->get('title') ?> (<?= $height ?>%)">
+												<div class="unit-fill-inner<?= $cls ?>" style="height:<?= $height ?>%;margin-top:<?= $margin ?>%;"></div>
 											</div>
 										</div>
 									</div>
@@ -131,6 +134,9 @@ $progress  = $gradebook->getProgress($this->course);
 						<a class="more-details" href="<?= JRoute::_($base . '&active=progress&id=' . $m->get('user_id')) ?>">More details</a>
 					</div>
 					<div class="units">
+						<div class="headers">
+							<div class="header-units">Unit Scores</div>
+						</div>
 						<? foreach($this->course->offering()->units() as $unit) : ?>
 							<div class="unit-entry">
 								<div class="unit-overview">
@@ -166,8 +172,8 @@ $progress  = $gradebook->getProgress($this->course);
 		<p class="info">The section does not currently have anyone enrolled</p>
 	<? endif; ?>
 </div>
-<div class="refresh">
+<!--<div class="refresh">
 	<p>
-		Does something look incorrect above? Try <a href="<?= JRoute::_($base . '&active=progress&action=refresh') ?>">refreshing</a> the scores!
+		Does something look incorrect above? Try <a href="<? //JRoute::_($base . '&active=progress&action=refresh') ?>">refreshing</a> the scores!
 	</p>
-</div>
+</div>-->

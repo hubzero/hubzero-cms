@@ -41,6 +41,11 @@ HUB.Plugins.CoursesProgress = {
 				$(this).parents('.student').toggleClass('active', 150, 'linear');
 			});
 		});
+
+		// Add tooltips to units
+		$('.instructor .unit-fill').tooltip({
+			predelay: 500
+		});
 	} // end initialize
 };
 

@@ -317,6 +317,13 @@
 	width: 48%;
 	margin-left: 2%;
 }
+.instructor .headers div.header-units {
+	float: none;
+	border-bottom: 2px solid #AAA;
+}
+.instructor .units .headers {
+	padding: 5px;
+}
 .instructor .student {
 	position: relative;
 	margin: 0 0 5px 0;
@@ -386,8 +393,9 @@
 	padding: 2px 4px;
 	height: 20px;
 	border-radius: 4px;
-	background-color: #333;
-	background-color: rgba(0, 0, 0, .4);
+	background: #111;
+	opacity: 0.7;
+	box-shadow: 1px 1px 1px #999999;
 	color: #FFF;
 }
 .instructor .score-text:before {
@@ -395,8 +403,7 @@
 	top: 24px;
 	left: 16px;
 	content: "";
-	border-color: #333 transparent transparent transparent;
-	border-color: rgba(0, 0, 0, .4) transparent transparent transparent;
+	border-color: #111 transparent transparent transparent;
 	border-width: 5px;
 	border-style: solid;
 }
@@ -470,6 +477,16 @@
 }
 .instructor .unit-fill .unit-fill-inner {
 	background: #0000FF;
+}
+.instructor .unit-fill .unit-fill-inner.complete:before {
+	position: absolute;
+	content: "\2714";
+	font-family: "Fontcons";
+	color: #FFF;
+	top: -7px;
+	left: 4px;
+	font-size: 10px;
+	font-weight: lighter;
 }
 .instructor .student-progress-bar {
 	display: block;
@@ -567,6 +584,14 @@
 .instructor .more-details:hover {
 	background-color: #CCC;
 	background-color: rgba(0, 0, 0, .6);
+}
+.tooltip {
+	color: #FFF;
+	padding: 4px;
+	margin-top: -10px;
+	opacity: 0.7;
+	box-shadow: 1px 1px 1px #999999;
+	background: #111;
 }
 .refresh {
 	margin: 30px 10px 0 10px;
