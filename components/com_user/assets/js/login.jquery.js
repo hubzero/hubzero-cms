@@ -68,6 +68,8 @@ HUB.User = {
 					// If there were errors
 					else if(response.error)
 					{
+						password.val('');
+						password.focus();
 						error.html(response.error.message);
 						error.slideDown('fast', function(){});
 					}
@@ -80,7 +82,7 @@ HUB.User = {
 			});
 		});
 	}
-}
+};
 
 jQuery(document).ready(function($){
 	HUB.User.initialize();
