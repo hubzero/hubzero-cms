@@ -33,14 +33,20 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 
 <div id="content-header" class="full">
-	<h2>End Single Sign-on Session</h2>
+	<h2>Would you like to completely log out of your <?php echo $this->display_name; ?> account?</h2>
 </div>
 
 <div class="main section">
 	<p>
 		Your <?php echo $this->sitename; ?> session has ended.
-		If you would like to end your <?php echo $this->display_name; ?> single sign-on session as well, click
-		<a href="<?php echo JRoute::_('index.php?option=com_user&task=logout&authenticator=' . $this->authenticator); ?>">here</a>
+	</p>
+	<p>
+		If you would like to end all <?php echo $this->display_name; ?> account shared sessions as well, you may do so now.
+	</p>
+	<p>
+		<a class="logout btn" href="<?php echo JRoute::_('index.php?option=com_user&task=logout&authenticator=' . $this->authenticator); ?>">
+			End all <?php echo $this->display_name; ?> account sessions!
+		</a>
 	</p>
 </div>
 <div class="clear"></div>

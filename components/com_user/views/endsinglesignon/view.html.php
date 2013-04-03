@@ -43,6 +43,8 @@ class UserViewEndSingleSignOn extends JView
 		// Assign variables to the view
 		$authenticator = JRequest::getWord('authenticator', false);
 
+		Hubzero_Document::addComponentStylesheet('com_user', 'login.css');
+
 		// Get the site name
 		$jconfig  =& JFactory::getConfig();
 		$sitename = $jconfig->getValue('config.sitename');
