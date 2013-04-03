@@ -327,7 +327,8 @@ video {
 #control-box #control-buttons #next,
 #control-box #control-buttons #play-pause,
 #control-box #control-buttons #switch,
-#control-box #control-buttons #link {
+#control-box #control-buttons #link,
+#control-box #control-buttons #shortcuts {
 	display:block;
 	position:absolute;
 	text-indent:-555em;
@@ -370,6 +371,13 @@ video {
 	width:16px;
 	top:15px;
 	left:390px;
+	}
+#control-box #control-buttons #shortcuts {
+	height:16px;
+	width:16px;
+	top:15px;
+	left:360px;
+	background:url("../img/hubpresenter/keyboard.png") no-repeat 0 0;
 	}
 #control-box #volume-icon {
 	position:absolute;
@@ -898,16 +906,6 @@ a.ui-slider-handle {
 /*---------------------------------------------------------------
     Keyboard Shortcuts
 ---------------------------------------------------------------*/
-#shortcuts {
-	position:absolute;
-	left:10px;
-	bottom:10px;
-	color:#fff;
-	padding:0 0 0 25px;
-	background:url("../img/hubpresenter/keyboard.png") no-repeat 0 0;      
-	display:none;
-	border-bottom:none;
-	}
 #presenter-shortcuts-box {
 	position:absolute;
 	top:25%;
