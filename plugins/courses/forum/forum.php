@@ -259,6 +259,11 @@ class plgCoursesForum extends Hubzero_Plugin
 				break;
 			}
 
+			if (JRequest::getVar('file', ''))
+			{
+				$action = 'download';
+			}
+
 			$action = JRequest::getVar('action', $action, 'post');
 
 			//push the stylesheet to the view
@@ -2030,16 +2035,16 @@ class plgCoursesForum extends Hubzero_Plugin
 	public function download()
 	{
 		// Incoming
-		$section = JRequest::getVar('section', '');
-		$category = JRequest::getVar('category', '');
-		$thread = JRequest::getInt('thread', 0);
-		$post = JRequest::getInt('post', 0);
+		//$section = JRequest::getVar('section', '');
+		$category = JRequest::getVar('unit', '');
+		$thread = JRequest::getInt('group', 0);
+		$post = JRequest::getInt('asset', 0);
 		$file = JRequest::getVar('file', '');
 
 		// Check logged in status
 		if ($this->juser->get('guest')) 
 		{
-			$return = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=forum&unit=' . $section . '&b=' . $category . '&c=' . $thread . '/' . $post . '/' . $file);
+			$return = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&controller=offering&offering=' . $this->offering->get('alias') . '&active=forum&unit=' . $category . '&b=' . $thread . '&c=' . $post . '&file=' . $file);
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_login&return=' . base64_encode($return))
 			);

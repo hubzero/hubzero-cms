@@ -34,47 +34,52 @@ String.prototype.nohtml = function () {
 HUB.Plugins.CoursesForum = {
 	jQuery: jq,
 	
+	updateComments: function(data) {
+		if (data) {
+			if (typeof(wykiwygs) !== 'undefined') {
+				if (wykiwygs.length) {
+					for (i=0; i<wykiwygs.length; i++)
+					{
+						wykiwygs[i].t.value = '';
+						wykiwygs[i].e.body.innerHTML = '';
+					}
+				}
+			}
+			$('input[type=file]').val('');
+
+			$($('#comments-container ol.comments')[0]).replaceWith(data);
+		}
+	},
+	
 	initialize: function() {
 		var $ = this.jQuery;
 
 		if ($('#comments-container').length > 0) {
 			var limit = parseInt($('#limit').val()),
 				start = 0; // + limit,
-				url = $('#comments-container').attr('data-action') + '?no_html=1&limit=0&start='; //' + limit + '
+				url = $('#comments-container').attr('data-action') + '?no_html=1&limit=0&start=';
 
 			if ($('#commentform').length > 0) {
 				//$('#commentform').on('submit', function(e) {  !! This line breaks the WYSIWYG editor's ability to do a final conversion before form submission
-				$('#comments-container').on('submit', '#commentform', function (e) {
-					e.preventDefault();
-					$.post($(this).attr('action').nohtml(), $(this).serialize(), function(data) {
-						if (typeof(wykiwygs) !== 'undefined') {
-							//console.log('editors');
-							if (wykiwygs.length) 
-							{
-								for (i=0; i<wykiwygs.length; i++)
-								{
-									wykiwygs[i].t.value = '';
-									wykiwygs[i].e.body.innerHTML = '';
-								}
-							}
-						}
-						/*else
-						{
-							console.log(wykiwygs);
-						}*/
-						//$('#comments-container ol.comments').hide().html(data).fadeIn(500);
-						$('#comments-container ol.comments').replaceWith(data);
-					});
-				});
+				$('<iframe src="about:blank?nocache=' + Math.random() + '" id="upload_target" name="upload_target" style="display:none;"></iframe>').appendTo($('#comments-container')); //width:0px;height:0px;border:0px solid #fff;
+
+				var act = $('#commentform').attr('action');
+				$('#commentform')
+					.attr('target', 'upload_target')
+					.attr('action', act.nohtml());
 			}
 
-			$('#comments-container').on('submit', '.comment-add form', function (e) {
-				e.preventDefault();
-				$.post($(this).attr('action').nohtml(), $(this).serialize(), function(data) {
-					//$('#comments-container ol.comments').hide().html(data).fadeIn(500);
-					$('#comments-container ol.comments').replaceWith(data);
-				});
+			// Attach a click event for Iframe file upload
+			$('#comments-container').on('click', 'input[type=submit]', function (e) {
+				var frm = $($(this).closest('form')),
+					id = frm.attr('id') + '-iframe';
+
+				$('<iframe src="about:blank?nocache=' + Math.random() + '" id="' + id + '" name="' + id + '" style="display:none;"></iframe>').appendTo(frm.parent());
+
+				frm.attr('target', id)
+					.attr('action', frm.attr('action').nohtml());
 			});
+
 			$('#comments-container').on('click', '.reply', function (e) {
 				e.preventDefault();
 				var frm = '#' + $(this).attr('rel');
@@ -106,12 +111,9 @@ HUB.Plugins.CoursesForum = {
 					//console.log('click!');
 					$.get(url + start, {}, function(data) {
 						start += limit;
-						//console.log($(data).eq(1).find('ol.comments').html());
+
+						$('#comments-container ol.comments').replaceWith(data);
 						$('#loadmore').hide();
-						//$('#comments-container ol.comments').hide().html(data).fadeIn(500);
-						
-						$('#comments-container ol.comments').replaceWith(data); //.hide().fadeIn(500);
-						//$('#comments-container ol.comments').append(data);
 					});
 				});
 		} else {

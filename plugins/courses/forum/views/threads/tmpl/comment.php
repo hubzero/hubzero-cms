@@ -43,7 +43,7 @@ defined('_JEXEC') or die('Restricted access');
 		$comment  = $this->parser->parse(stripslashes($this->comment->comment), $this->wikiconfig, false);
 		$comment .= $this->attach->getAttachment(
 			$this->comment->id, 
-			$this->base . '&unit=' . $this->unit . '&b=' . $this->lecture . '&c=' . $this->comment->id, 
+			str_replace('outline', 'forum', $this->base) . '&unit=' . $this->unit . '&b=' . $this->comment->category_id . '&c=' . $this->comment->id . '&file=', 
 			$this->config
 		);
 	}

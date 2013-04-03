@@ -208,15 +208,30 @@ class ForumAttachment extends JTable
 				$type = 'img';
 				$html  = '<span class="figure">';
 				$size = getimagesize($path);
+
 				if ($size[0] > 400) 
 				{
+					$ratio = $size[0] / $size[1];
+
+					$targetWidth = $targetHeight = min(400, max($size[0], $size[1]));
+
+					if ($ratio < 1) {
+					    $targetWidth = $targetHeight * $ratio;
+					} else {
+					    $targetHeight = $targetWidth / $ratio;
+					}
+
+					//$srcWidth = $originalWidth;
+					//$srcHeight = $originalHeight;
+					//$srcX = $srcY = 0;
+
 					$html .= '<a href="' . $url . '" title="'. JText::_('Click for larger version') . '">';
-					$html .= '<img src="' . $url . '" alt="' . $this->description . '" width="400" />';
+					$html .= '<img src="' . $url . '" alt="' . $this->description . '" width="' . $targetWidth . '" height="' . $targetHeight . '" />';
 					$html .= '</a>';
 				} 
 				else 
 				{
-					$html .= '<img src="' . $url . '" alt="' . $this->description . '" />';
+					$html .= '<img src="' . $url . '" alt="' . $this->description . '" width="' . $size[0] . '" height="' . $size[1] . '" />';
 				}
 				if ($this->description)
 				{

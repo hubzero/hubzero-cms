@@ -66,4 +66,9 @@ if ($this->comments && is_array($this->comments)) { ?>
 	}
 ?>
 	</ol>
+	<?php if ($this->depth == 1 && JRequest::getInt('no_html', 0) && JRequest::getVar('fields', null)) { ?>
+	<script type="text/javascript">
+	window.top.window.HUB.Plugins.CoursesForum.updateComments(document.getElementsByTagName('ol')[0]);
+	</script>
+	<?php } ?>
 <?php } ?>
