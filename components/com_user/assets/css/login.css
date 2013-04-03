@@ -179,10 +179,12 @@ p.callToAction {
 }
 
 /* logout */
-.logout.btn {
+.logout.btn,
+.home.btn {
 	padding: 0.4em 0.91em 0.4em 2.91em;
 }
-.logout.btn:before {
+.logout.btn:before,
+.home.btn:before {
 	background: #e3e3e3;
 	background: rgba(0, 0, 0, 0.08);
 	position: absolute;
@@ -203,6 +205,9 @@ p.callToAction {
 	-o-border-radius: 0.25em 0 0 0.25em;
 	border-radius: 0.25em 0 0 0.25em;
 	content: "\2716";
+}
+.home.btn:before {
+	content: "\2302";
 }
 
 /* IE 7 hacks */

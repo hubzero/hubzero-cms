@@ -32,11 +32,8 @@
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 
-<div id="content-header" class="full">
-	<h2>Would you like to completely log out of your <?php echo $this->display_name; ?> account?</h2>
-</div>
-
 <div class="main section">
+	<h3>Would you like to completely log out of your <?php echo $this->display_name; ?> account?</h2>
 	<p>
 		Your <?php echo $this->sitename; ?> session has ended.
 	</p>
@@ -46,6 +43,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<p>
 		<a class="logout btn" href="<?php echo JRoute::_('index.php?option=com_user&task=logout&authenticator=' . $this->authenticator); ?>">
 			End all <?php echo $this->display_name; ?> account sessions!
+		</a>
+	</p>
+	<p>
+		<a class="home btn" href="/">
+			Leave other <?php echo $this->display_name; ?> account sessions untouched.
 		</a>
 	</p>
 </div>
