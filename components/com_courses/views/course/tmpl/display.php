@@ -75,8 +75,165 @@ else
 	</ul>
 </div>
 
+<div class="course section intro">
+	<div class="aside">
+		<div class="offering-info">
+	<?php if ($offering->exists()) { ?>
+			<!-- <table>
+				<tbody>
+					<tr>
+						<th scope="row">Starts</th>
+						<td>
+							<time datetime="<?php echo $offering->get('publish_up'); ?>"><?php echo JHTML::_('date', $offering->get('publish_up'), $dateformat, $tz); ?></time>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">Ends</th>
+						<td>
+							<time datetime="<?php echo $offering->get('publish_down'); ?>"><?php echo ($offering->get('publish_down') == '0000-00-00 00:00:00') ? JText::_('(never)') : JHTML::_('date', $offering->get('publish_down'), $dateformat, $tz); ?></time>
+						</td>
+					</tr>
+				</tbody>
+			</table> -->
+			<table>
+				<tbody>
+					<tr>
+					<?php if ($this->course->isManager() || $this->course->isStudent()) { ?>
+						<td>
+							You are enrolled in this course.
+						</td>
+					<?php } else { 
+						switch ($offering->section()->get('enrollment'))
+						{
+							case 1:
+					?>
+						<th>
+							RESTRICTED
+						</th>
+						<td>
+							<!-- This course has restricted enrollment. --> An enrollment code may be required.
+						</td>
+					<?php
+							break;
+
+							case 0:
+							default:
+					?>
+						<th>
+							OPEN
+						</th>
+						<td>
+							This course has open enrollment.
+						</td>
+					<?php
+							break;
+						}
+						?>
+					<?php } ?>
+					</tr>
+				</tbody>
+			</table>
+		<?php if ($this->course->isManager() || $this->course->isStudent()) { ?>
+			<p>
+				<a class="outline btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=offering&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias')); ?>">
+					Start course
+				</a>
+			</p>
+		<?php } else if ($offering->section()->get('enrollment') != 2) { ?>
+			<p>
+				<a class="enroll btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=offering&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias') . '&task=enroll'); ?>">
+					Enroll in course
+				</a>
+			</p>
+		<?php } ?>
+	<?php } else { ?>
+			<p>
+				No offering available.
+			</p>
+	<?php } ?>
+		</div>
+	</div>
+	<div class="subject">
+		<p>
+			<?php echo $this->escape(stripslashes($this->course->get('blurb'))); ?>
+		</p>
+		<h4>Categories</h4>
+		<?php
+		$ct = new CoursesTags(JFactory::getDBO());
+		echo $ct->get_tag_cloud(0, 0, $this->course->get('id'));
+		?>
+
+	<?php /*if ($offering->exists()) { ?>
+		<table>
+			<caption>Current offering</caption>
+			<tbody>
+				<tr>
+					<th scope="row">Starts</th>
+					<td>
+						<time datetime="<?php echo $offering->get('publish_up'); ?>"><?php echo JHTML::_('date', $offering->get('publish_up'), $dateformat, $tz); ?></time>
+					</td>
+
+					<th scope="row">Ends</th>
+					<td>
+						<time datetime="<?php echo $offering->get('publish_down'); ?>"><?php echo ($offering->get('publish_down') == '0000-00-00 00:00:00') ? JText::_('(never)') : JHTML::_('date', $offering->get('publish_down'), $dateformat, $tz); ?></time>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	<?php }*/ ?>
+	</div>
+	<div class="clear"></div>
+</div>
+
 <div class="course section">
 	<div class="aside">
+
+		<?php
+		$instructors = $this->course->instructors();
+		if (count($instructors) > 0) 
+		{
+	?>
+		<div class="course-instructors">
+			<h3><?php echo (count($instructors) > 1) ? JText::_('About the Instructors') : JText::_('About the Instructor'); ?></h3>
+	<?php
+			ximport('Hubzero_View_Helper_Html');
+			ximport('Hubzero_User_Profile_Helper');
+
+			foreach ($instructors as $i)
+			{
+				$instructor = Hubzero_User_Profile::getInstance($i->get('user_id'));
+	?>
+			<div class="course-instructor">
+				<p class="course-instructor-photo">
+					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($instructor, 0); ?>" alt="" />
+				</p>
+				<div class="course-instructor-content">
+					<h4>
+						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $instructor->get('id')); ?>">
+							<?php echo $this->escape(stripslashes($instructor->get('name'))); ?>
+						</a>
+					</h4>
+					<p class="course-instructor-org">
+						<?php echo $this->escape(stripslashes($instructor->get('organization'))); ?>
+					</p>
+					
+					<div class="clearfix"></div>
+				</div>
+				<p class="course-instructor-bio">
+				<?php if ($instructor->get('bio')) { ?>
+					<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($instructor->get('bio')), 200, 0); ?>
+				<?php } else { ?>
+					<em><?php echo JText::_('This instructor has yet to write their bio.'); ?></em>
+				<?php } ?>
+				</p>
+			</div>
+	<?php
+			}
+		?>
+		</div>
+	<?php
+		}
+		?>
 		<?php
 		if ($this->sections)
 		{
@@ -88,7 +245,7 @@ else
 				}
 			}
 		}
-		else
+		/*else
 		{
 			if ($offering->exists()) { ?>
 					<div class="offering-info">
@@ -123,7 +280,7 @@ else
 					<?php } ?>
 					</div>
 			<?php }
-		}
+		}*/
 		?>
 	</div>
 	
@@ -194,6 +351,7 @@ else
 		}
 		?>
 	</div><!-- / .subject -->
+	<div class="clear"></div>
 </div><!-- / .course section -->
 
 <?php

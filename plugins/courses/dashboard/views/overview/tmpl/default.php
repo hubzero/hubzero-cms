@@ -103,12 +103,12 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 						<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_NEW'); ?>
 					</legend>
 
-					<label for="field-content">
+					<label for="field_content">
 						<span><?php echo JText::_('Announcement'); ?></span>
 						<?php
 						ximport('Hubzero_Wiki_Editor');
 						$editor =& Hubzero_Wiki_Editor::getInstance();
-						echo $editor->display('fields[content]', 'field-content', '', 'minimal no-footer', '35', '5');
+						echo $editor->display('fields[content]', 'field_content', '', 'minimal no-footer', '35', '5');
 						?>
 					</label>
 

@@ -10,7 +10,10 @@
 		padding: 0 30px 0 0;
 	}
 	.course .subject {
-		margin-right: 240px;
+		margin-right: 300px;
+	}
+	.course .aside {
+		width: 270px;
 	}
 	.course .aside:after {
 		display: none;
@@ -21,10 +24,36 @@
 	.course .aside:before {
 		top: 0;
 		bottom: 0;
+		right: 300px;
 	}
 	.course .inner-section {
 		padding: 0 30px 30px 30px;
 	} 
+	.course.intro {
+		background: #fff;
+		border-bottom: 1px dotted #e1e1e1;
+	}
+	.course.intro .aside:before,
+	.course.intro .aside:after {
+		display: none;
+	}
+	.course.intro .subject {
+		padding: 30px;
+	}
+	.course.intro .subject p:first-child {
+		margin-top: 0;
+		padding-top: 0;
+	}
+	.course.intro .subject table {
+		border: 1px solid #eee;
+	}
+	.course.intro .subject table caption {
+		font-weight: bold;
+	}
+	.course.intro .subject table td,
+	.course.intro .subject table th {
+		border: none;
+	}
 /* Offering info */
 	.offering-info {
 		margin: 30px 0 0 0;
@@ -74,10 +103,14 @@
 	.offering-info table tbody th {
 		border-right: 1px solid #5c5d62;
 		border-bottom: 1px solid #5c5d62;
+		font-size: 1.2em;
+		
+		vertical-align: middle;
 	}
 	.offering-info table tbody td {
 		/*border-left: 1px solid #696a6f;*/
 		border-bottom: 1px solid #5c5d62;
+		font-weight: normal;
 	}
 	.offering-info p {
 		margin: 1em;
@@ -178,6 +211,9 @@
 	.aside > div:last-child {
 		margin-bottom: 30px;
 	}
+	.intro .aside > div:last-child {
+		margin-bottom: 0px;
+	}
 	
 	.course.below {
 		border-top: 1px solid #e1e1e1;
@@ -188,10 +224,17 @@
 		margin: 0;
 	}
 /* Entry author */
+	.course-instructors {
+		margin: 0 0 4em 0;
+	}
 	.course-instructor {
-		margin: 2em 0 2em 0;
+		/*margin: 2em 0 2em 0;
 		background: #EEE;
+		padding: 0 1em;*/
+		border-radius: 0.25em;
 		font-size: 1em;
+		margin: 0;
+		border-top: 1px solid #e9e9e9;
 	}
 	.course-instructor h3 {
 		margin: 0;
@@ -200,6 +243,7 @@
 	}
 	.course-instructor h4 {
 		font-size: 1.2em;
+		line-height: 2em;
 		padding: 0;
 		margin: 0;
 	}
@@ -215,9 +259,16 @@
 		-webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
 		-moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
 		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
-		width: 50px;
-		height: 50px;
+		width: 40px;
+		height: 40px;
 		overflow: hidden;
+	}
+	p.course-instructor-org {
+		margin: 0;
+		color: #999;
+	}
+	p.course-instructor-bio {
+		margin-top: 0;
 	}
 	.course-instructor-photo img {
 		margin: 0;
@@ -226,8 +277,8 @@
 		height: 100%;
 	}
 	.course-instructor-content {
-		padding: 1em;
-		margin: 0 0 0 75px;
+		padding: 1em 0 0 0;
+		margin: 0 0 0 65px;
 		font-size: 1em;
 		color: #666;
 	}

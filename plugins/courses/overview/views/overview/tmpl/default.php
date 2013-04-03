@@ -45,7 +45,7 @@ $parser = Hubzero_Wiki_Parser::getInstance();
 
 	echo $parser->parse(stripslashes($this->course->get('description')), $wikiconfig);
 
-	$instructors = $this->course->instructors();
+	/*$instructors = $this->course->instructors();
 	if (count($instructors) > 0) 
 	{
 ?>
@@ -80,5 +80,4 @@ $parser = Hubzero_Wiki_Parser::getInstance();
 		</div>
 <?php
 		}
-	}
-?>
+	}*/
