@@ -73,7 +73,7 @@ $base = 'index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&
 	</h3>
 
 	<form action="<?php echo JRoute::_($base); ?>" method="post">
-		<div class="subject">
+
 
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
@@ -146,7 +146,7 @@ $base = 'index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&
 			?>
 				<div class="clearfix"></div>
 			</div><!-- / .container -->
-		</div><!-- / .subject -->
+
 		<div class="clear"></div>
 
 		<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
