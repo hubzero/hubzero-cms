@@ -117,12 +117,14 @@ if (!$this->course->offering()->access('view')) { ?>
 												{
 													if ($a->isAvailable())
 													{
-														$href = JRoute::_($base . '&asset=' . $a->get('id')); //$a->path($this->course->get('id'));
+														$href = JRoute::_($base . '&asset=' . $a->get('id'));
+														$target = ' target="_blank"';
 														if ($a->get('type') == 'video')
 														{
 															$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
+															$target = '';
 														}
-														echo '<li><a class="asset ' . $a->get('type') . '" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+														echo '<li><a class="asset ' . $a->get('type') . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 													}
 												}
 												?>
@@ -143,11 +145,13 @@ if (!$this->course->offering()->access('view')) { ?>
 														continue;
 													}
 													$href = JRoute::_($base . '&asset=' . $a->get('id')); //$a->path($this->course->get('id'));
+													$target = ' target="_blank"';
 													if ($a->get('type') == 'video')
 													{
 														$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $agt->get('alias'));
+														$target = '';
 													}
-													echo '<li><a class="asset ' . $a->get('type') . '" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+													echo '<li><a class="asset ' . $a->get('type') . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 												}
 											}
 											?>
@@ -181,11 +185,13 @@ if (!$this->course->offering()->access('view')) { ?>
 							if ($a->isAvailable())
 							{
 								$href = JRoute::_($base . '&asset=' . $a->get('id')); //$a->path($this->course->get('id'));
+								$target = ' target="_blank"';
 								if ($a->get('type') == 'video')
 								{
 									$href = JRoute::_($base . '&active=outline&a=' . $unit->get('alias'));
+									$target = '';
 								}
-								echo '<li><a class="asset ' . $a->get('type') . '" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+								echo '<li><a class="asset ' . $a->get('type') . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 							}
 						}
 						?>
@@ -199,7 +205,7 @@ if (!$this->course->offering()->access('view')) { ?>
 		<?php } ?>
 	<?php } // close foreach ?>
 <?php elseif($this->course->offering()->access('manage')) : ?>
-		<p class="info">Your outline is currently empty. Go to the <a href="<?php echo JRoute::_('/courses/' . $this->course->get('alias') . '/manage/' . $this->course->offering()->get('alias')); ?>">Outline Manager</a> to being creating your course outline</p>
+		<p class="info">Your outline is currently empty. Go to the <a href="<?php echo JRoute::_('/courses/' . $this->course->get('alias') . '/manage/' . $this->course->offering()->get('alias')); ?>">Outline Builder</a> to being creating your course outline</p>
 <?php else : ?>
 		<p class="info">There is currently no outline available for this course</p>
 <?php endif; ?>

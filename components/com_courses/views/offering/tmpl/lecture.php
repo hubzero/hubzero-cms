@@ -120,7 +120,7 @@ if (!$this->course->offering()->access('view')) { ?>
 						{
 							$cls = 'link';
 						}
-						echo '<li><a class="' . $cls . ' btn" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+						echo '<li><a class="' . $cls . ' btn" href="' . $href . '" target="_blank">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 					}
 				}
 				else
