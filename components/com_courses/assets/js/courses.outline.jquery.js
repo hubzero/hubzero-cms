@@ -22,6 +22,7 @@ if (!jq) {
 
 HUB.CoursesOutline = {
 	jQuery: jq,
+	counter: 1,
 
 	initialize: function()
 	{
@@ -793,7 +794,6 @@ HUB.CoursesOutline = {
 	attachFileUploader: function(selector)
 	{
 		var $ = this.jQuery;
-		var counter = 1;
 
 		// Set a default selector
 		selector = (selector) ? selector : '.uploadfiles';
@@ -850,14 +850,14 @@ HUB.CoursesOutline = {
 							// Check to see if there are multiple ways of handling this file type
 							} else if(json.handlers.length > 1) {
 								// Iterate counter (for uniqueness)
-								counter++;
+								HUB.CoursesOutline.counter++;
 
 								// Handle multiple handlers for extension
 								message += '<ul class="handlers-list">';
 								message += '<p class="asset file">' + data.files[0].name + '</p>';
 								$.each(json.handlers, function(index, value){
 									message += '<li class="handler-item">';
-									message += '<a id="handler-item-' + counter + '-' + value.classname + '" class="dialog-button">';
+									message += '<a id="handler-item-' + HUB.CoursesOutline.counter + '-' + value.classname + '" class="dialog-button">';
 									message += value.message;
 									message += '</a>';
 									message += '</li>';
@@ -869,7 +869,7 @@ HUB.CoursesOutline = {
 
 								// Bind click events to the message buttons
 								$.each(json.handlers, function (index, value){
-									targetName = '#handler-item-' + counter + '-' + value.classname;
+									targetName = '#handler-item-' + HUB.CoursesOutline.counter + '-' + value.classname;
 									dialog.on('click', targetName, function(){
 										fileupload.fileupload(
 											'option',
@@ -912,13 +912,13 @@ HUB.CoursesOutline = {
 									dialog.dialog("open");
 								}
 							} else {
-								counter++;
+								HUB.CoursesOutline.counter++;
 								fileSubmit(data);
 							}
 
 							// Shared function for submitting a fileupload request (and setting appropriate callbacks)
 							function fileSubmit(data) {
-								var progressBarId = 'progress-bar-'+counter;
+								var progressBarId = 'progress-bar-'+HUB.CoursesOutline.counter;
 
 								// Setup the progress handler
 								fileupload.on('fileuploadprogress', function (e, data) {
