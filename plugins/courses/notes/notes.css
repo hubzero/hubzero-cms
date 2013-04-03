@@ -16,8 +16,162 @@
 	#page_menu li .notes:before {
 		content: "\270D";
 	}
-	.course_notes {
+	#page_content.course_notes {
+		margin: 0;
+	}
+	.course_notes .notes-wrap {
+		padding: 20px;
+	}
 
+	.course_notes fieldset.filters ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.course_notes fieldset.filters li {
+		margin: 0;
+		padding: 0;
+		float: left;
+		display: block;
+	}
+	/*.course_notes fieldset.filters li a {
+		display: block;
+		padding: 1em 1em;
+		border: none;
+		border-left: 1px solid #e1e1e1;
+		border-right: 1px solid #e1e1e1;
+		border-top: 1px solid #e1e1e1;
+		line-height: 1;
+		color: #666666;
+	}
+	.course_notes fieldset.filters li a:hover {
+		border: none;
+		border-left: 1px solid #e9e9e9;
+		border-right: 1px solid #e9e9e9;
+		border-top: 1px solid #e9e9e9;
+		background: #e9e9e9;
+		color: #474747;
+	}
+	.course_notes fieldset.filters li a.active {
+		color: #474747;
+		border: none;
+		border-left: 1px solid #c5c5c5;
+		border-right: 1px solid #c5c5c5;
+		border-top: 1px solid #dadada;
+		text-shadow: #fff 0 1px 0;
+		background: #dbdbdb;
+		background: -webkit-gradient(linear, left top, left bottom, from(#dbdbdb), to(#f1f1f1));
+		background: -webkit-linear-gradient(#e1e1e1, #f7f7f7);
+		background: -moz-linear-gradient(center top, #dbdbdb 0%, #f1f1f1 100%);
+		background: -moz-gradient(center top, #dbdbdb 0%, #f1f1f1 100%);
+		background: -o-linear-gradient(#dbdbdb, #f1f1f1);
+		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#dbdbdb,endColorstr=#f1f1f1);
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#dbdbdb, endColorstr=#f1f1f1)";
+		-webkit-box-shadow: inset 0 0px 10px rgba(34,25,25,0.1);
+		-moz-box-shadow: inset 0 0px 10px rgba(34,25,25,0.1);
+		-ms-box-shadow: inset 0 0px 10px rgba(34,25,25,0.1);
+		-o-box-shadow: inset 0 0px 10px rgba(34,25,25,0.1);
+		box-shadow: inset 0 0px 10px rgba(34,25,25,0.1);
+	}*/
+	.course_notes fieldset.filters p {
+		float: right;
+		margin: 1em 0 0 0;
+		padding: 0;
+	}
+	
+	/*#collections fieldset,
+	#collection fieldset {
+		background: #e1e1e1;
+		padding: 1em 20px;
+		margin: 0;
+	}*/
+	.course_notes fieldset.filters {
+		overflow: hidden;
+		padding: 1em 20px;
+		margin: 0;
+		background: #e1e1e1;
+		/*background: #f7f7f7;
+		-webkit-box-shadow: 0 1px 3px rgba(34,25,25,0.4);
+		-moz-box-shadow: 0 1px 3px rgba(34,25,25,0.4);
+		-ms-box-shadow: 0 1px 3px rgba(34,25,25,0.4);
+		-o-box-shadow: 0 1px 3px rgba(34,25,25,0.4);
+		box-shadow: 0 1px 3px rgba(34,25,25,0.4);*/
+		position: relative;
+	}
+	.course_notes fieldset.filters div.filters-inner {
+		
+	}
+	.course_notes fieldset.filters p {
+		position: absolute;
+		top: 1em;
+		right: 20px;
+		display: block;
+		margin: 0;
+		padding: 0;
+	}
+	.course_notes fieldset.filters input {
+		padding: 0.35em 0.41em;
+		background: #f1f1f1;
+		margin: 0;
+		border: 1px solid #bbb;
+		display: block;
+		float: left;
+		border-right: none;
+		-webkit-border-radius: 0.25em 0 0 0.25em;
+		-moz-border-radius: 0.25em 0 0 0.25em;
+		-ms-border-radius: 0.25em 0 0 0.25em;
+		-o-border-radius: 0.25em 0 0 0.25em;
+		border-radius: 0.25em 0 0 0.25em;
+	}
+	@-moz-document url-prefix() {
+		.course_notes fieldset.filters input {
+			padding: 0.4em 0.41em;
+		}
+	}
+	.course_notes fieldset.filters input.filter-submit {
+		background: #f1f1f1;
+		-webkit-border-radius: 0 0.25em 0.25em 0;
+		-moz-border-radius: 0 0.25em 0.25em 0;
+		-ms-border-radius: 0 0.25em 0.25em 0;
+		-o-border-radius: 0 0.25em 0.25em 0;
+		border-radius: 0 0.25em 0.25em 0;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-ms-box-sizing: border-box;
+		-o-box-sizing: border-box;
+		box-sizing: border-box;
+		-webkit-background-clip: padding-box;
+		-moz-background-clip: padding-box;
+		-ms-background-clip: padding-box;
+		-o-background-clip: padding-box;
+		background-clip: padding-box;
+		font-size: 1em;
+		line-height: 1.61803399em;
+		outline: none;
+		background: #e0e0e0;
+		background: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#e0e0e0));
+		background: -webkit-linear-gradient(#FAFAFA, #e0e0e0);
+		background: -moz-linear-gradient(center top, #FAFAFA 0%, #e0e0e0 100%);
+		background: -moz-gradient(center top, #FAFAFA 0%, #e0e0e0 100%);
+		background: -ms-linear-gradient(#FAFAFA, #e0e0e0);
+		background: -o-linear-gradient(#FAFAFA, #e0e0e0);
+		background: linear-gradient(#FAFAFA, #e0e0e0);
+		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FAFAFA,endColorstr=#e0e0e0);
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FAFAFA, endColorstr=#e0e0e0)";
+		border: 1px solid #bbb;
+		color: #666;
+	}
+	@-moz-document url-prefix() {
+		.course_notes fieldset.filters input.filter-submit {
+			padding: 0.25em 0.41em;
+		}
+	}
+	.course_notes fieldset.filters p label span {
+		display: none;
+	}
+	.course_notes fieldset.filters .count strong {
+		font-size: 1.2em;
+		line-height: 2em;
 	}
 
 	#sticky-container {
@@ -139,7 +293,7 @@
 		width: 100%;
 		background-color: transparent;
 		border: none;
-		font-family: 'Comic Sans MS',Textile,cursive;
+		font-family: 'Comic Sans MS', 'Comic Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 		font-size: 14px;
 		line-height: 1.2em;
 		color: #333;
@@ -151,7 +305,7 @@
 	}
 
 	.jSticky-medium p {
-		font-family: 'Comic Sans MS',Textile,cursive;
+		font-family: 'Comic Sans MS', 'Comic Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 		font-size:14px;
 		overflow:hidden;
 		/*padding:0px;*/
@@ -162,7 +316,7 @@
 	}
 
 
-	.background {
+	/*.background {
 	    width: 100%; 
 	    height: 100%; 
 	    position: absolute; 
@@ -175,15 +329,15 @@
 	    width:100%;
 	    height:100%;
 		z-index:0;
-	}
+	}*/
 
-	/* import */
+	/* import 
 	.jSticky-large{
 		width:225px;
 		height:228px;
 		position: absolute;
 		z-index:999999;
-	}
+	}*/
 	.jSticky-medium{
 		width:160px;
 		height:162px;
@@ -305,7 +459,7 @@
 		background-size: 100% 1.2em;
 		background-position: 0 0.2em;*/
 		
-		font-family: 'Comic Sans MS',Textile,cursive;
+		font-family: 'Comic Sans MS', 'Comic Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 		font-size: 14px;
 		line-height: 1.2em;
 		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=85)"; /* IE 8 */

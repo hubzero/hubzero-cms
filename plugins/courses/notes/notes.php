@@ -134,6 +134,8 @@ class plgCoursesNotes extends JPlugin
 			$this->view->course     = $course;
 			$this->view->offering   = $offering;
 			$this->view->no_html    = JRequest::getInt('no_html', 0);
+			$this->view->filters = array();
+			$this->view->filters['search'] = JRequest::getVar('search', '');
 
 			$this->view->model = new CoursesPluginModelNote(0);
 
@@ -146,6 +148,7 @@ class plgCoursesNotes extends JPlugin
 					case 'edit':   $result = $this->_edit();   break;
 					case 'save':   $result = $this->_save();   break;
 					case 'delete': $result = $this->_delete(); break;
+					case 'download': $result = $this->_download(); break;
 
 					default: $result = $this->_list(); break;
 				}
@@ -222,6 +225,34 @@ class plgCoursesNotes extends JPlugin
 		{
 			$this->view->setLayout('default');
 		}
+	}
+
+	/**
+	 * Set redirect and message
+	 * 
+	 * @return     string
+	 */
+	public function _download()
+	{
+		$format = strtolower(JRequest::getWord('format', 'txt'));
+		if (!in_array($format, array('txt', 'csv')))
+		{
+			$format = 'txt';
+		}
+		$this->view->setLayout('download_' . $format);
+
+		@ob_end_clean();
+
+		header("Pragma: public");
+		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+		header("Expires: 0");
+
+		header("Content-Transfer-Encoding: binary");
+		header('Content-Disposition:attachment; filename="notes.' . $format . '";'); //RFC2183
+		header("Content-Type: text/plain"); // MIME type
+
+		echo $this->view->loadTemplate();
+		die();
 	}
 
 	/**
