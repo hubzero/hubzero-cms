@@ -168,8 +168,12 @@ class modMySessions
 		}
 		
 		//run middleware command to create screenshots
-		$cmd = "/bin/sh ". JPATH_SITE . "/components/com_tools/scripts/mw screenshot " . $this->juser->get('username') . " 2>&1 </dev/null";
-		exec($cmd, $results, $status);
+		//only take snapshots if screenshots are on
+		if ($this->params->get('show_screenshots'))
+		{
+			$cmd = "/bin/sh ". JPATH_SITE . "/components/com_tools/scripts/mw screenshot " . $this->juser->get('username') . " 2>&1 </dev/null";
+			exec($cmd, $results, $status);
+		}
 		
 		//get sessions
 		$session = new MwSession($mwdb);
