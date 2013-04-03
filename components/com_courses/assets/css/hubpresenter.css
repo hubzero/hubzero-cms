@@ -35,4 +35,10 @@
 		float: left;
 		width: 320px;
 	}
+	#restart-video {
+		left: 18%;
+	}
+	#resume-video {
+		right: 18%;
+	}
 }
