@@ -12,12 +12,6 @@
 	display: none;
 }
 
-/* Move the keyboard shortcuts icon */
-#shortcuts {
-	left: 50%;
-	margin-left: -75px;
-	color: #000;
-}
 .video-wrap {
 	position: relative;
 }

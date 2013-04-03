@@ -315,6 +315,7 @@ if ($type == 'html5' || $type == 'hubpresenter')
 						<a id="previous" href="#" title="Previous Slide">Previous</a>
 						<a id="play-pause" href="#" title="Play Presentation">Pause</a>
 						<a id="next" href="#" title="Next Slide">Next</a>
+						<a id="shortcuts" href="#" title="Keyboard Shortcuts">Shortcuts</a>
 						<a id="link" href="#" title="Link to this Spot in Presentation">Link</a>
 						<a id="switch" href="#" title="Switch Placement of Video and Slides">Switch</a>
 					</div>
@@ -389,6 +390,5 @@ if ($type == 'html5' || $type == 'hubpresenter')
 			</div><!-- /#right -->
 		</div><!-- /#content -->
 	</div>
-	<a href="" id="shortcuts" title="Keyboard Shortcuts">Keyboard Shortcuts</a>
 	<div id="twofinger">Use two Fingers to Scroll</div>
 <?php endif; ?>
