@@ -274,6 +274,7 @@ class CoursesControllerOffering extends Hubzero_Controller
 			//$doc->addScript('/components/com_courses/assets/js/plugins.js');
 
 			Hubzero_Document::addComponentScript($this->_option, 'assets/js/courses.offering');
+			Hubzero_Document::addSystemScript('jquery.masonry');
 
 			$layout = $this->view->active;
 			if (($unit = JRequest::getVar('unit', '')))

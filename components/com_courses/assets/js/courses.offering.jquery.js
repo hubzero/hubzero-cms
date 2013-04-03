@@ -20,7 +20,7 @@ HUB.CoursesOffering =
 {
 	jQuery: jq,
 
-	initialize: function() 
+	initialize: function()
 	{
 		HUB.CoursesOffering.setupAccordian();
 	},
@@ -30,6 +30,7 @@ HUB.CoursesOffering =
 		var $ = this.jQuery;
 
 		// Hide all of the units except for the first one
+		HUB.CoursesOffering.setupMasonry($('.details').first());
 		$('.details').not(':first').hide();
 		$('.unit-content h3:first').addClass('unit-content-active');
 
@@ -49,12 +50,25 @@ HUB.CoursesOffering =
 				$('.details').slideUp(500);
 				$('.unit-content h3').removeClass('unit-content-active');
 				$(this).siblings('.unit-availability').find('.details').slideDown(500, function() {
+					HUB.CoursesOffering.setupMasonry($(this));
 					$('.timeline').animate({'height': $('#course-outline').height()}, 250);
 					$('html, body').animate({scrollTop: $(this).parents('.unit-content').offset().top - 10}, 1000);
 				});
 
 				// Toggle class for arrow (active gives down arrow indicating expanded list)
 				$(this).addClass('unit-content-active');
+			}
+		});
+	},
+
+	setupMasonry: function(context)
+	{
+		var $ = this.jQuery;
+
+		context.masonry({
+			itemSelector: '.weeksection',
+			columnWidth: function(container) {
+				return container / 2;
 			}
 		});
 	}
