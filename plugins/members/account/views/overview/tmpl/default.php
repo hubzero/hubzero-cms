@@ -199,9 +199,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 		</div><!-- / .sub-section-content -->
 	</div><!-- / .sub-section -->
 	<div class="sub-section">
-		<h4><?php echo JText::_('PLG_MEMBERS_MANAGE_KEYS'); ?></h4>
+		<h4><?php echo JText::_('PLG_MEMBERS_LOCAL_SERVICES'); ?></h4>
 		<div class="clear"></div>
 		<div class="sub-section-content">
+			<h5><?php echo JText::_('PLG_MEMBERS_LOCAL_SERVICES_USERNAME'); ?></h5>
+			<p>
+				<?php echo JText::_('PLG_MEMBERS_LOCAL_SERVICES_USERNAME_DESC'); ?>
+				<span class="local-services-username"><?php echo JFactory::getUser()->get('username'); ?></span>
+			</p>
+			<h5><?php echo JText::_('PLG_MEMBERS_MANAGE_KEYS'); ?></h5>
 			<form action=<?php echo JRoute::_('index.php?option=' . $this->option .
 												'&id=' . $this->member->get('uidNumber') .
 												'&active=account' .

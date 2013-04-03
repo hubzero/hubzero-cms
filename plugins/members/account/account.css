@@ -79,6 +79,9 @@
 #members-account-section fieldset div.fieldset-grouping {
 	margin: 20px 50px;
 }
+#members-account-section .local-services-username {
+	font-weight: bold;
+}
 
 /* Inputs/Buttons */
 #members-account-section input[type=text],

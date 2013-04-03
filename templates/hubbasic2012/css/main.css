@@ -637,6 +637,7 @@
 		-o-border-radius: 0.25em;
 		border-radius: 0.25em;
 		background: transparent url("../images/layout/stripes.png");
+		white-space: nowrap;
 	}
 	#account #account-info:after {
 		content: "";
@@ -675,10 +676,11 @@
 		-o-border-radius: 0.25em;
 		border-radius: 0.25em;
 	}
-	#account #account-info span.account-username {
+	#account #account-info span.account-email {
 		display: block;
 		color: #bbb;
 		font-size: 85%;
+		margin-right: 3em;
 	}
 	#account #account-info ul {
 		background: rgba(0, 0, 0, 0.85);
