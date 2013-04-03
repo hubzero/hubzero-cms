@@ -47,7 +47,6 @@
 	background: transparent;
 	border: transparent;
 	border-bottom: 1px solid transparent;
-	color: #69c;
 	padding: 0;
 	cursor: pointer;
 	text-align: left;
@@ -157,6 +156,7 @@ button span {
 	text-align: center;
 	margin-left: 3em;
 	margin-right: 3em;
+	min-width: 100px;
 }
 .half {
 	width: 50%;
@@ -264,6 +264,7 @@ ol.related {
 	margin: 0;
 }
 .timeframe button {
+	margin-left: 4px !important;
 	font-size: x-small;
 }
 .timeframe li {
@@ -318,9 +319,6 @@ ol.related {
 	margin: 0;
 	margin-left: 9px;
 }
-.details .tags {
-	margin-left: -3px;
-}
 .details img {
 	clear: left;
 	float: left;
@@ -333,11 +331,8 @@ ol.related {
 	width: auto;
 }
 .aside button {
-	margin-left: 0;
+	margin-left: 2px;
 	font-size: x-small;
-}
-.expandable button {
-	margin-left: 0;
 }
 .expandable {
 	margin-left: 0 !important;
@@ -418,12 +413,14 @@ button.more {
 }
 h3 small {
 	font-size: x-small;
+	display: none;
 }
 p.clear {
 	margin: 0;
 }
 .more.related {
 	margin-top: 0;
+	margin-left: 13px;
 	font-style: italic;
 	display: none;
 }

@@ -4,6 +4,7 @@ if (!defined('HG_INLINE')) {
 }
 $tags = $req->getTags();
 $contributors = $req->getContributors();
+$group = $req->getGroup();
 $domainMap = $req->getDomainMap();
 $loggedIn = (bool)JFactory::getUser()->id;
 ?>
@@ -51,6 +52,25 @@ window.searchBase = '<?= $base ?>';
 				if (!$found):
 			?>
 				<li><button type="submit" name="tags[]" value="<?= $tag[0] ?>"><?= h($tag[1]) ?></button> <?= $tag[2] ?></li>
+			<?
+				endif;
+			endforeach; 
+			?>
+		</ol>
+		<? endif; ?>
+		<? if ($results['groups']): ?>
+		<h3>Groups <span class="sort alpha">A-Z</span><span class="sort number">#</span></h3>
+		<ol class="groups clear">
+			<? 
+			foreach ($results['groups'] as $gr):
+				$found = FALSE;
+				if ($group == $gr[0]):
+					$found = TRUE;
+					echo '<li class="selected">'.h($gr[1]).' <span>'.$gr[2].'</span></li>';
+				endif;
+				if (!$found):
+			?>
+				<li><button type="submit" name="group" value="<?= $gr[0] ?>"><?= h($gr[1]) ?></button> <?= $gr[2] ?></li>
 			<?
 				endif;
 			endforeach; 
@@ -187,7 +207,7 @@ window.searchBase = '<?= $base ?>';
 						<img src="<?= $res['img_href'] && file_exists(JPATH_BASE.$res['img_href']) ? $res['img_href'] : '/components/com_members/assets/img/profile_thumb.gif' ?>" />
 					<? endif; ?>
 				<? endif; ?>
-				<? if ($res['children']): ?>
+				<? if (isset($res['children'])): ?>
 					<ul class="children">
 						<? foreach ($res['children'] as $child): ?>
 							<? if ($child['domain'] == 'resources'): ?>

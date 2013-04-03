@@ -75,7 +75,12 @@ class HubgraphClient {
 		$query = '';
 		if ($args) {
 			foreach ($args as $k=>$v) {
-				$query .= ($query == '' ? '' : '&').$k.'='.(is_bool($v) ? ($v ? 'true' : 'false') : urlencode($v));
+				if (is_array($v)) {
+					$query .= ($query == '' ? '' : '&').$k.'='.implode(',', array_map('urlencode', $v));
+				}
+				else {
+					$query .= ($query == '' ? '' : '&').$k.'='.(is_bool($v) ? ($v ? 'true' : 'false') : urlencode($v));
+				}
 			}
 		}
 		$query .= '&count='.$count;

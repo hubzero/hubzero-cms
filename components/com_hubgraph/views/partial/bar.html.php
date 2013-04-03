@@ -19,6 +19,13 @@
 		<a class="remove" href="<?= preg_replace('/[?&]+$/', '', $base.'?'.preg_replace('/^&/', '', preg_replace('/&?domain=[^&]*/', '', $_SERVER['QUERY_STRING']))) ?>">x</a>
 	</li>
 <? endif; ?>
+<? if (($group = $req->getGroup())): ?>
+	<li class="group">
+		<input type="hidden" name="group" value="<?= a($group) ?>" />
+		<strong>Group: </strong><?= str_replace('~', ' &ndash; ', h($req->getGroupName($group))) ?>
+		<a class="remove" href="<?= preg_replace('/[?&]+$/', '', $base.'?'.preg_replace('/^&/', '', preg_replace('/&?group=[^&]*/', '', $_SERVER['QUERY_STRING']))) ?>">x</a>
+	</li>
+<? endif; ?>
 <? if (($contributors = $req->getContributors())): ?>
 	<? foreach ($contributors as $cont): ?>
 		<li class="contributor">

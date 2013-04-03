@@ -8,7 +8,7 @@ class HubgraphRequest
 		$this->form = $form;
 	}
 
-	public function getTerms($rTerms) {
+	public function getTerms() {
 		return isset($this->form['terms']) && !is_array($this->form['terms']) ? stripslashes($this->form['terms']) : '';
 	}
 
@@ -49,6 +49,30 @@ class HubgraphRequest
 		}
 		return $rv;
 	}
+	
+	public function getGroupName($gid) {
+		static $map = array();
+		if (!isset($map[$gid])) {
+			$map[$gid] = Db::scalarQuery('SELECT description FROM jos_xgroups WHERE gidNumber = ? OR cn = ?', array($gid, $gid));
+		}
+		return $map[$gid];
+	}
+
+	public function getGroup() {
+		static $group = NULL; 
+		if (!$group) {
+			if (isset($this->form['gid'])) {
+				$group = $this->form['gid'];
+			}
+			if (isset($this->form['group'])) {
+				$group = $this->form['group'];
+			}
+			if ($group) {
+				$group = Db::scalarQuery('SELECT gidNumber FROM jos_xgroups WHERE gidNumber = ? OR cn = ?', array($group, $group));
+			}
+		}
+		return $group;
+	}
 
 	private static function idList($coll) {
 		return implode(',', array_map(function($item) { return $item['id']; }, $coll));
@@ -77,7 +101,8 @@ class HubgraphRequest
 				'offset'       => isset($_GET['offset']) ? (int)$_GET['offset'] : 0,
 				'super'        => $super,
 				'uid'          => $uid,
-				'groups'       => $groups
+				'groups'       => $groups,
+				'inGroup'      => $this->getGroup()
 			);
 		}
 		return array_merge($merge, $crit);
