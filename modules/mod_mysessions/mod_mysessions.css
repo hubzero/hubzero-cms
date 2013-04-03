@@ -382,7 +382,8 @@ div.draggable .session-list ul {
 }
 
 #screenshot-popup {
-	position: relative;	
+	position: relative;
+	height: 100%;
 }
 #launchbar {
 	position: absolute;

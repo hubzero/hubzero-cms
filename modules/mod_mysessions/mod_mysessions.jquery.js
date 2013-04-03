@@ -51,6 +51,7 @@ HUB.Modules.MySessions = {
 				width: 800,
 				height: 600,
 				autoSize: false,
+				scrolling: 'no',
 				title: $(this).attr("title"),
 				content:'<div id="screenshot-popup"> \
 							<img style="display:block;" src="' + $(this).attr("href") + '" /> \
