@@ -238,6 +238,11 @@ class plgAuthenticationGoogle extends JPlugin
 			{
 				$response->username = '-' . $hzal->id;
 				$response->email    = $response->username . '@invalid';
+
+				// Also set a suggested username for their hub account
+				$sub_email    = explode('@', $user_profile['email'], 2);
+				$tmp_username = $sub_email[0];
+				JFactory::getSession()->set('auth_link.tmp_username', $tmp_username);
 			}
 
 			$hzal->update();

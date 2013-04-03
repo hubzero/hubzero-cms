@@ -534,7 +534,8 @@ class RegisterController extends Hubzero_Controller
 
 			if ($username[0] == '-' && is_object($hzal)) 
 			{
-				$xregistration->set('login',$hzal->username);
+				$tmp_username = JFactory::getSession()->get('auth_link.tmp_username', '');
+				$xregistration->set('login',$tmp_username);
 				$xregistration->set('email',$hzal->email);
 				$xregistration->set('confirmEmail',$hzal->email);
 				$force = true;

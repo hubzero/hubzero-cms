@@ -243,6 +243,9 @@ class plgAuthenticationPUCAS extends JPlugin
 			{
 				$response->username = '-' . $hzal->id; // The Open Group Base Specifications Issue 6, Section 3.426
 				$response->email    = $response->username . '@invalid'; // RFC2606, section 2
+
+				// Also set a suggested username for their hub account
+				JFactory::getSession()->set('auth_link.tmp_username', $username);
 			}
 
 			$hzal->update();
