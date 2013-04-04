@@ -114,6 +114,16 @@ class modReportProblems
 			}
 		}
 
+		// Figure out whether this is a guess or temporary account created during the auth_link registration process
+		if ($this->juser->get('guest') || (is_numeric($this->juser->get('username')) && $this->juser->get('username') < 0))
+		{
+			$this->guestOrTmpAccount = true;
+		}
+		else
+		{
+			$this->guestOrTmpAccount = false;
+		}
+
 		$this->referrer = JRequest::getVar('REQUEST_URI','','server');
 		$this->referrer = str_replace('&amp;', '&', $this->referrer);
 		$this->referrer = str_replace('&', '&amp;', $this->referrer);

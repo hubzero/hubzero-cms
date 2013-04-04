@@ -98,6 +98,7 @@ class JRouterSite extends JRouter
 
 				if ($uri->getPath() != 'legal/terms')
 				{
+					$originalVars = $vars;
 					$vars = array();
 
 					if ($juser->get('tmp_user')) // joomla tmp users
@@ -108,7 +109,13 @@ class JRouterSite extends JRouter
 					}
 					else if (substr($juser->get('email'), -8) == '@invalid') // force auth_link users to registration update page
 					{
-						if($session->get('linkaccount', true))
+						// First, allow ticket creation
+						if ($originalVars['option'] == 'com_support' && $originalVars['controller'] == 'tickets' && $originalVars['task'] == 'save')
+						{
+							// Do nothing...allow it to pass through
+							$vars = $originalVars;
+						}
+						elseif ($session->get('linkaccount', true))
 						{
 							$vars['option'] = 'com_user';
 							$vars['view']   = 'link';

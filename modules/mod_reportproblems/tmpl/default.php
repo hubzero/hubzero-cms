@@ -63,7 +63,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<fieldset class="reporter">
 						<label for="trLogin">
 							<?php echo JText::_('MOD_REPORTPROBLEMS_LABEL_LOGIN'); ?>: <span class="optional"><?php echo JText::_('MOD_REPORTPROBLEMS_OPTIONAL'); ?></span>
-<?php if (!$this->juser->get('guest')) { ?>
+<?php if (!$this->guestOrTmpAccount) { ?>
 							<input type="hidden" name="reporter[login]" id="trLogin" value="<?php echo htmlentities($this->juser->get('username'), ENT_QUOTES); ?>" /><br /><span class="info-block"><?php echo $this->juser->get('username'); ?></span>
 <?php } else { ?>
 							<input type="text" name="reporter[login]" id="trLogin" value="" />
@@ -72,7 +72,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 						<label for="trName">
 							<?php echo JText::_('MOD_REPORTPROBLEMS_LABEL_NAME'); ?>: <span class="required"><?php echo JText::_('MOD_REPORTPROBLEMS_REQUIRED'); ?></span>
-<?php if (!$this->juser->get('guest')) { ?>
+<?php if (!$this->guestOrTmpAccount) { ?>
 							<input type="hidden" name="reporter[name]" id="trName" value="<?php echo $this->juser->get('name'); ?>" /><br /><span class="info-block"><?php echo $this->juser->get('name'); ?></span>
 <?php } else { ?>
 							<input type="text" name="reporter[name]" id="trName" value="" />
@@ -81,7 +81,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 						<label for="trEmail">
 							<?php echo JText::_('MOD_REPORTPROBLEMS_LABEL_EMAIL'); ?>: <span class="required"><?php echo JText::_('MOD_REPORTPROBLEMS_REQUIRED'); ?></span>
-<?php if (!$this->juser->get('guest')) { ?>
+<?php if (!$this->guestOrTmpAccount) { ?>
 							<input type="hidden" name="reporter[email]" id="trEmail" value="<?php echo htmlspecialchars($this->juser->get('email'), ENT_QUOTES); ?>" /><br /><span class="info-block"><?php echo $this->juser->get('email'); ?></span>
 <?php } else { ?>
 							<input type="text" name="reporter[email]" id="trEmail" value="" />
