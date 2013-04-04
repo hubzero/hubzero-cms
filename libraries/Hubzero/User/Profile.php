@@ -1556,4 +1556,17 @@ class Hubzero_User_Profile extends JObject
 		
 		return $groups;
 	}
+
+	/**
+	 * Get a user's picture
+	 *
+	 * @param    integer $anonymous Is user anonymous?
+	 * @param    boolean $thumbit   Show thumbnail or full picture?
+	 * @return   string
+	 */
+	public function getPicture($anonymous=0, $thumbit=true)
+	{
+		ximport('Hubzero_User_Profile_Helper');
+		return Hubzero_User_Profile_Helper::getMemberPhoto($this, $anonymous, $thumbit);
+	}
 }
