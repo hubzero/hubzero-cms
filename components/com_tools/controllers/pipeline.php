@@ -835,11 +835,11 @@ class ToolsControllerPipeline extends Hubzero_Controller
 		{
 			$pathway->addItem(
 				JText::_('STATUS') . ' ' . JText::_('FOR') . ' ' . $status['toolname'], 
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=status&app=' . $this->_toolid
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=status&app=' . $status['toolname']
 			);
 			$pathway->addItem(
 				JText::_('TASK_EDIT_TOOL'), 
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&app=' . $this->_toolid
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&app=' . $status['toolname']
 			);
 		}
 
