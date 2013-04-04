@@ -158,21 +158,21 @@ foreach ($this->contributors as $contributor)
 				if ($this->version=='dev') 
 				{
 					if ($i > 0 || ($i+0 > 0)) {
-					    echo '<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$contributor->authorid.'&amp;task=reorder&amp;move=up" class="order up" title="'.JText::_('COM_TOOLS_MOVE_UP').'"><span>'.JText::_('COM_TOOLS_MOVE_UP').'</span></a>';
+					    echo '<a href="/index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$contributor->authorid.'&amp;task=reorder&amp;move=up" class="order up" title="'.JText::_('COM_TOOLS_MOVE_UP').'"><span>'.JText::_('COM_TOOLS_MOVE_UP').'</span></a>';
 					} else {
 					    echo '&nbsp;';
 					}
 					?></td>
 					<td class="d"><?php
 					if ($i < $n-1 || $i+0 < $n-1) {
-						echo '<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$contributor->authorid.'&amp;task=reorder&amp;move=down" class="order down" title="'.JText::_('COM_TOOLS_MOVE_DOWN').'"><span>'.JText::_('COM_TOOLS_MOVE_DOWN').'</span></a>';
+						echo '<a href="/index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$contributor->authorid.'&amp;task=reorder&amp;move=down" class="order down" title="'.JText::_('COM_TOOLS_MOVE_DOWN').'"><span>'.JText::_('COM_TOOLS_MOVE_DOWN').'</span></a>';
 					} else {
 					    echo '&nbsp;';
 					}
 				}
 					?></td>
 					<td class="t">
-						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=remove&amp;tmpl=component&amp;id=<?php echo $contributor->authorid; ?>&amp;pid=<?php echo $this->id; ?>">
+						<a href="/index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=remove&amp;tmpl=component&amp;id=<?php echo $contributor->authorid; ?>&amp;pid=<?php echo $this->id; ?>">
 							<span><img src="/components/<?php echo $this->option; ?>/assets/img/trash.gif" alt="<?php echo JText::_('DELETE'); ?>" /></span>
 						</a>
 					</td>
