@@ -73,8 +73,12 @@ $base = 'index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&
 	</h3>
 
 	<form action="<?php echo JRoute::_($base); ?>" method="post">
-
-
+	<!-- 	<div class="section">
+			<div class="aside"> -->
+				
+			<!-- 	<h3>What is this?</h3>
+			</div>
+			<div class="subject"> -->
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
 				<fieldset class="entry-search">
@@ -90,7 +94,7 @@ $base = 'index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&
 					</a>
 				</p>
 			<?php } ?>
-			<div class="container">
+			<div class="acontainer">
 
 <?php if ($rows->total() > 0) { ?>
 	<?php foreach ($rows as $row) { ?>
@@ -146,7 +150,7 @@ $base = 'index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&
 			?>
 				<div class="clearfix"></div>
 			</div><!-- / .container -->
-
+<!-- </div> -->
 		<div class="clear"></div>
 
 		<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
@@ -154,5 +158,7 @@ $base = 'index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&
 		<input type="hidden" name="active" value="announcements" />
 		<input type="hidden" name="option" value="<?php echo $option; ?>" />
 		<input type="hidden" name="filter" value="<?php echo $this->filter; ?>" />
+
+<!-- </div> -->
 	</form>
 </div><!--/ #course_members -->

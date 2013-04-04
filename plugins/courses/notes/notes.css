@@ -296,7 +296,8 @@
 		font-family: 'Comic Sans MS', 'Comic Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 		font-size: 14px;
 		line-height: 1.2em;
-		color: #333;
+		color: #80744a;
+		color: #666;
 		/*padding:0px;*/
 		padding: 1em;
 		resize: none;
@@ -371,6 +372,8 @@
 		top: 4px;
 		left: 4px;
 		/*text-indent: 5em;*/
+		background: transparent;
+		box-shadow: none;
 	}
 	.jSticky-delete:before {
 		font-family: "Fontcons";
@@ -380,7 +383,7 @@
 	}
 	a.jSticky-delete:hover,
 	.jSticky-delete:hover {
-		background-color: #fff;
+		/*background-color: #fff;*/
 		border: none;
 	}
 	.jSticky-delete:hover:before {
@@ -419,7 +422,10 @@
 		font-size: 11px;
 		line-height: 22px;
 		text-align: right;
+		background-color: transparent; /*#e9e1bc;*/
+		border-bottom: 3px double #f2d0b5;
 	}
+	.jSticky-header a,
 	.jSticky-header span {
 		margin-right: 0.5em;
 	}
@@ -458,6 +464,22 @@
 		background-image: linear-gradient(0deg, transparent 11px, #abced4 11px, #abced4 13px, transparent 13px), linear-gradient(rgba(0, 0, 0, 0.1) .05em, transparent .05em);
 		background-size: 100% 1.2em;
 		background-position: 0 0.2em;*/
+		background: #faeebc;
+		background: -webkit-gradient(linear, left top, left bottom, from(#fff7d3), to(#faeebc));
+		background: -webkit-linear-gradient(#fff7d3, #faeebc);
+		background: -moz-linear-gradient(center top, #fff7d3 0%, #faeebc 100%);
+		background: -moz-gradient(center top, #fff7d3 0%, #faeebc 100%);
+		background: -ms-linear-gradient(#fff7d3, #faeebc);
+		background: -o-linear-gradient(#fff7d3, #faeebc);
+		background: linear-gradient(#fff7d3, #faeebc);
+		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#fff7d3,endColorstr=#faeebc);
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#fff7d3, endColorstr=#faeebc)";
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		-ms-border-radius: 0.25em;
+		-o-border-radius: 0.25em;
+		border-radius: 0.25em;
+		color: #80744a;
 		
 		font-family: 'Comic Sans MS', 'Comic Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 		font-size: 14px;

@@ -92,6 +92,23 @@ $juser = JFactory::getUser();
 					<!-- <textarea name="fields[content]" id="field-content" cols="35" rows="5"><?php echo $this->escape(stripslashes($this->model->get('content'))); ?></textarea> -->
 				</label>
 
+				<fieldset>
+					<legend>Publish window <span class="optional">optional</span></legend>
+					<div class="two columns first">
+						<label for="field-publish_up" id="priority-publish_up">
+							<?php echo JText::_('Start'); ?>
+							<input class="datepicker" type="text" name="fields[publish_up]" id="field-publish_up" value="<?php echo $this->escape($this->model->get('publish_up')); ?>" /> 
+						</label>
+					</div>
+					<div class="two columns second">
+						<label for="field-publish_down" id="priority-publish_down">
+							<?php echo JText::_('End'); ?>
+							<input class="datepicker" type="text" name="fields[publish_down]" id="field-publish_down" value="<?php echo $this->escape($this->model->get('publish_down')); ?>" /> 
+						</label>
+					</div>
+					<div class="clear"></div>
+				</fieldset>
+
 				<label for="field-priority" id="priority-label">
 					<input class="option" type="checkbox" name="fields[priority]" id="field-priority" value="1"<?php if ($this->model->get('priority')) { echo ' checked="checked"'; } ?> /> 
 					<?php echo JText::_('Mark as high priority'); ?>

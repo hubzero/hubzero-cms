@@ -78,15 +78,23 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 						}
 					}
 					
-					$thread = ($row->parent) ? $row->parent : $row->id;
+					if ($row->parent)
+					{
+						$p = new ForumPost(JFactory::getDBO());
+						$thread = $p->getThread($row->parent);
+					}
+					else
+					{
+						$thread = $row;
+					}
 ?>
 						<tr<?php if ($row->sticky) { echo ' class="sticky"'; } ?>>
 							<th>
 								<span class="entry-id"><?php echo $this->escape($row->id); ?></span>
 							</th>
 							<td>
-								<a class="entry-title" href="<?php echo JRoute::_($base . '&unit=' . $this->categories[$row->category_id]->alias . '&b=' . $thread); ?>">
-									<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
+								<a class="entry-title" href="<?php echo JRoute::_($base . '&unit=' . $this->categories[$row->category_id]->alias . '&b=' . $thread->id . '#c' . $row->id); ?>">
+									<span><?php echo $this->escape(stripslashes($row->title)); ?> ...</span>
 								</a>
 								<span class="entry-details">
 									<span class="entry-date">
@@ -98,16 +106,22 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 									</span>
 								</span>
 							</td>
-							<td>
+							<!-- <td>
 								<span><?php echo JText::_('Section'); ?></span>
 								<span class="entry-details">
 									<?php echo $this->escape($this->sections[$this->categories[$row->category_id]->section_id]->title); ?>
 								</span>
-							</td>
+							</td> -->
 							<td>
 								<span><?php echo JText::_('Category'); ?></span>
 								<span class="entry-details">
 									<?php echo $this->escape($this->categories[$row->category_id]->title); ?>
+								</span>
+							</td>
+							<td>
+								<span><?php echo JText::_('Thread'); ?></span>
+								<span class="entry-details">
+									<?php echo $this->escape(stripslashes($thread->title)); ?>
 								</span>
 							</td>
 						</tr>

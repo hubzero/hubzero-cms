@@ -22,7 +22,6 @@ if (!jq) {
 
 HUB.CoursesOutline = {
 	jQuery: jq,
-	counter: 1,
 
 	initialize: function()
 	{
@@ -219,11 +218,11 @@ HUB.CoursesOutline = {
 			tolerance: 'pointer',
 			opacity: '0.6',
 			items: 'li:not(.add-new, .asset)',
-			start: function(e, ui){
+			start: function(){
 				// Style the placeholdwer based on the size of the item grabbed
 				$(".placeholder").css({
-					'height': ui.item.outerHeight(),
-					'margin': ui.item.css('margin')
+					'height': $(event.target).parent('asset-group-item').outerHeight(),
+					'margin': $(event.target).parent('asset-group-item').css('margin')
 				});
 			},
 			update: function(){
@@ -811,6 +810,7 @@ HUB.CoursesOutline = {
 			var dialog          = $("#dialog-confirm");
 			var targetName      = '';
 			var ulCount         = 0;
+			var counter         = 1;
 
 			// Setup dialog message box
 			dialog.dialog({
@@ -850,14 +850,14 @@ HUB.CoursesOutline = {
 							// Check to see if there are multiple ways of handling this file type
 							} else if(json.handlers.length > 1) {
 								// Iterate counter (for uniqueness)
-								HUB.CoursesOutline.counter++;
+								counter++;
 
 								// Handle multiple handlers for extension
 								message += '<ul class="handlers-list">';
 								message += '<p class="asset file">' + data.files[0].name + '</p>';
 								$.each(json.handlers, function(index, value){
 									message += '<li class="handler-item">';
-									message += '<a id="handler-item-' + HUB.CoursesOutline.counter + '-' + value.classname + '" class="dialog-button">';
+									message += '<a id="handler-item-' + counter + '-' + value.classname + '" class="dialog-button">';
 									message += value.message;
 									message += '</a>';
 									message += '</li>';
@@ -869,7 +869,7 @@ HUB.CoursesOutline = {
 
 								// Bind click events to the message buttons
 								$.each(json.handlers, function (index, value){
-									targetName = '#handler-item-' + HUB.CoursesOutline.counter + '-' + value.classname;
+									targetName = '#handler-item-' + counter + '-' + value.classname;
 									dialog.on('click', targetName, function(){
 										fileupload.fileupload(
 											'option',
@@ -912,13 +912,13 @@ HUB.CoursesOutline = {
 									dialog.dialog("open");
 								}
 							} else {
-								HUB.CoursesOutline.counter++;
+								counter++;
 								fileSubmit(data);
 							}
 
 							// Shared function for submitting a fileupload request (and setting appropriate callbacks)
 							function fileSubmit(data) {
-								var progressBarId = 'progress-bar-'+HUB.CoursesOutline.counter;
+								var progressBarId = 'progress-bar-'+counter;
 
 								// Setup the progress handler
 								fileupload.on('fileuploadprogress', function (e, data) {

@@ -95,6 +95,27 @@ class CoursesTableAnnouncement extends JTable
 	var $state = NULL;
 
 	/**
+	 * datetime(0000-00-00 00:00:00)
+	 * 
+	 * @var string
+	 */
+	var $publish_up = NULL;
+
+	/**
+	 * datetime(0000-00-00 00:00:00)
+	 * 
+	 * @var string
+	 */
+	var $publish_down = NULL;
+
+	/**
+	 * tinyint(2)
+	 * 
+	 * @var integer
+	 */
+	var $sticky = NULL;
+
+	/**
 	 * Constructor method for JTable class
 	 * 
 	 * @param  database object
@@ -127,6 +148,46 @@ class CoursesTableAnnouncement extends JTable
 		}
 
 		$this->priority = intval($this->priority);
+
+		if ($this->publish_up && $this->publish_up != '0000-00-00 00:00:00')
+		{
+			// Does the date have the correct format?
+			if (!preg_match("/[0-9]{4}-[0-9]{2}-[0-9]{2}[ ][0-9]{2}:[0-9]{2}:[0-9]{2}/", $this->publish_up)) 
+			{
+				// Date with no timestamp?
+				if (preg_match("/[0-9]{4}-[0-9]{2}-[0-9]{2}/", $this->publish_up)) 
+				{
+					// Add timestamp
+					$this->publish_up .= ' 00:00:00';
+				}
+				else
+				{
+					// Disregard any formats that don't match
+					$this->publish_up = null;
+				}
+			}
+		}
+
+		if ($this->publish_down && $this->publish_down != '0000-00-00 00:00:00')
+		{
+			// Does the date have the correct format?
+			if (!preg_match("/[0-9]{4}-[0-9]{2}-[0-9]{2}[ ][0-9]{2}:[0-9]{2}:[0-9]{2}/", $this->publish_down)) 
+			{
+				// Date with no timestamp?
+				if (preg_match("/[0-9]{4}-[0-9]{2}-[0-9]{2}/", $this->publish_down)) 
+				{
+					// Add timestamp
+					$this->publish_down .= ' 00:00:00';
+				}
+				else
+				{
+					// Disregard any formats that don't match
+					$this->publish_down = null;
+				}
+			}
+		}
+
+		$this->sticky = intval($this->sticky);
 
 		if (!$this->id)
 		{
@@ -170,6 +231,18 @@ class CoursesTableAnnouncement extends JTable
 		{
 			$where[] = "a.`priority` = " . $this->_db->Quote(intval($filters['priority']));
 		}
+		if (isset($filters['sticky']) && $filters['sticky'])
+		{
+			$where[] = "a.`sticky` = " . $this->_db->Quote(intval($filters['sticky']));
+		}
+
+		if (isset($filters['published']))
+		{
+			$now = date('Y-m-d H:i:s', time());
+			$where[] = "(a.`publish_up` = '0000-00-00 00:00:00' OR a.`publish_up` <= " . $this->_db->Quote($now) . ")";
+			$where[] = "(a.`publish_down` = '0000-00-00 00:00:00' OR a.`publish_down` >= " . $this->_db->Quote($now) . ")";
+		}
+
 		if (isset($filters['search']) && $filters['search'])
 		{
 			if (is_numeric($filters['search']))
@@ -216,7 +289,7 @@ class CoursesTableAnnouncement extends JTable
 		$query  = "SELECT a.*";
 		$query .= $this->_buildQuery($filters);
 
-		$query .= " ORDER BY a.created DESC";
+		$query .= " ORDER BY a.sticky DESC, a.created DESC";
 
 		if (isset($filters['limit']))
 		{

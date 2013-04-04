@@ -41,7 +41,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$tz = true;
 }
 
-$rows = $this->offering->announcements(array('limit' => $this->params->get('display_limit', 1)));
+$rows = $this->offering->announcements(array('limit' => $this->params->get('display_limit', 1), 'published' => true));
 
 $wikiconfig = array(
 	'option'   => 'com_courses',
@@ -56,11 +56,25 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 
 if ($rows->total() > 0) 
 {
-	?>
+	$announcements = array();
+
+	foreach ($rows as $row)
+	{
+		if ($this->params->get('allowClose', 1))
+		{
+			if (!($hide = JRequest::getWord('ancmnt' . $row->get('id'), '', 'cookie')))
+			{
+				$announcements[] = $row;
+			}
+		}
+	}
+
+	if (count($announcements))
+	{
+?>
 	<div class="announcements">
-		<!-- <h3><?php echo JText::_('Announcements'); ?></h3> -->
 		<?php
-		foreach ($rows as $row)
+		foreach ($announcements as $row)
 		{
 			?>
 			<div class="announcement<?php if ($row->get('priority')) { echo ' high'; } ?>">
@@ -78,10 +92,24 @@ if ($rows->total() > 0)
 						</time>
 					</dd>
 				</dl>
+				<?php 
+					$page = JRequest::getVar('REQUEST_URI', '', 'server');
+					if ($page && $this->params->get('allowClose', 1)) 
+					{
+						$page .= (strstr($page, '?')) ? '&' : '?';
+						$page .= 'ancmnt' . $row->get('id') . '=closed';
+				?>
+						<a class="close" href="<?php echo $page; ?>" data-id="<?php echo $row->get('id'); ?>" data-duration="<?php echo $this->params->get('closeDuration', 30); ?>" title="<?php echo JText::_('Close this announcement'); ?>">
+							<span><?php echo JText::_('close'); ?></span>
+						</a>
+				<?php
+					}
+				?>
 			</div>
 			<?php
 		}
 		?>
 	</div>
 	<?php
+	}
 }

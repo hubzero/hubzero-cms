@@ -160,6 +160,10 @@ class plgCoursesAnnouncements extends JPlugin
 	{
 		ximport('Hubzero_Document');
 		Hubzero_Document::addPluginStylesheet('courses', $this->_name);
+		if ($this->params->get('allowClose', 1))
+		{
+			Hubzero_Document::addPluginScript('courses', $this->_name);
+		}
 
 		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
@@ -257,7 +261,7 @@ class plgCoursesAnnouncements extends JPlugin
 
 		ximport('Hubzero_Document');
 		Hubzero_Document::addPluginStylesheet('courses', $this->_name);
-		//Hubzero_Document::addPluginScript('courses', $this->_name);
+		Hubzero_Document::addPluginScript('courses', $this->_name);
 
 		if ($this->getError()) 
 		{

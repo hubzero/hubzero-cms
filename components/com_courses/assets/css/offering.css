@@ -20,8 +20,19 @@
 	#content { 
 		padding: 0;
 	}
+	#content-header {
+		padding: 30px;
+	}
 	#content-header h2 {
-		padding-left: 30px;
+		padding: 0px;
+	}
+	#content-header p {
+		margin: 0;
+		padding: 0;
+		color: #999;
+	}
+	#content-header p span {
+		margin: 0 2em 0 1em;
 	}
 	#page_container {
 		margin: 0;
@@ -720,6 +731,20 @@
 		margin: 0 20px;
 	}
 
+	#manager_options {
+		margin: 0;
+		/*padding: 20px;
+		background: #333;
+		color: #eee;
+		-webkit-box-shadow: inset 0 0 1.97em rgba(0, 0, 0, 0.5);
+		-moz-box-shadow: inset 0 0 1.97em rgba(0, 0, 0, 0.5);
+		-ms-box-shadow: inset 0 0 1.97em rgba(0, 0, 0, 0.5);
+		-o-box-shadow: inset 0 0 1.97em rgba(0, 0, 0, 0.5);
+		box-shadow: inset 0 0 1.97em rgba(0, 0, 0, 0.5);*/
+		padding: 5px 20px;
+		background: #fff;
+		border-bottom: 1px dotted #e1e1e1;
+	}
 /* ----------------------- */ 
 	#page_content {
 		margin: 20px 20px;
@@ -1288,10 +1313,16 @@
 #course-outline .clearfix {
 	display: inline-block;
 }
+/*#page_content.course_outline {
+	margin: 0;
+}*/
 #course-outline {
 	border:none;
 	border-collapse:separate;
-	background: #fff;
+	background: #f9f9f9;
+	margin: -20px -20px -20px 50px;
+	/*padding: 20px;*/
+	border-left: 1px solid #e9e9e9;
 	}
 #course-outline * {
 	font-size: 1em;
@@ -1300,20 +1331,47 @@
 #course-outline h3 {
 	padding: 10px 10px;
 	font-size: 1.3em;
-	background: #fff;
+	background: #f1f1f1;
 	color: #666;
 	font-style: normal;
+	border-top: 1px solid #e9e9e9;
+	margin: 0;
+	/*background-color: #DDD;*/
+	background-color: rgba(0, 0, 0, .05);
 	}
 #course-outline h3 span {
 	text-transform: uppercase;
-	margin-right: 1.5em;
+	margin: -10px 1.5em 0 -10px;
+	float: left;
+	display: block;
+	background-color: rgba(0, 0, 0, .05);
+	padding: 10px;
+	white-space: nowrap;
 	}
-#course-outline tr td {
+/*#course-outline tr td {
 	vertical-align: middle;
-	}
+	}*/
+#course-outline .outline-head {
+	padding: 20px;
+}
+#course-outline .unit-availability {
+	padding: 5px 0;
+}
 #course-outline .details {
 	width: 100%;
 }
+#course-outline h3:after {
+	display: block;
+	font-family: "Fontcons";
+	content: "\f0d9";
+	position: absolute;
+	top: 10px;
+	right: 10px;
+}
+#course-outline h3.unit-content-available:after {
+	content: "\f0d7";
+}
+/*
 #course-outline .details .less {
 	color: #999;	
 	}
@@ -1334,11 +1392,39 @@
 	color: #000;
 	padding: 0 10px;
 	border-top: none;
-	}
+	}*/
 #course-outline .unit {
 	position: relative;
-	margin-bottom: 10px;
-	border-radius: 7px;
+	/*margin-bottom: 10px;
+	border-radius: 7px;*/
+}
+#course-outline .unit:before {
+	content: "";
+	display: block;
+	width: 1px;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: -35px;
+	background: #ddd;
+}
+#course-outline .unit-1:before,
+#course-outline .unit:first-child:before {
+	top: 0.5em;
+}
+#course-outline .unit:after {
+	content: "";
+	display: block;
+	width: 21px;
+	height: 21px;
+	border: 2px solid #ddd;
+	background: #fff;
+	position: absolute;
+	top: 0.5em;
+	left: -47px;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	border-radius: 50%;
 }
 #course-outline .status {
 	color: #555;
@@ -1350,7 +1436,7 @@
 	right: 10px;
 	background: transparent;
 	}
-#course-outline td.fLink {
+/*#course-outline td.fLink {
 	text-decoration: underline;
 	color: #A97122;
 	}
@@ -1402,7 +1488,7 @@
 	border-bottom: none;
 	border-left: 1px solid #fff;
 	border-top: 1px solid #ddd;
-	}
+	}*/
 #course-outline .weeksection {
 	width: 45.8%;
 	padding: 1em 0 1.5em;
@@ -1410,24 +1496,28 @@
 	margin: 0 2%;
 	}
 #course-outline .weeksectioninner {
-	border: 1px solid #BABABA;
 	background-color: #FFF;
+	/*border: 1px solid #BABABA;
 	border-radius: 5px;
-	box-shadow: 1px 1px 5px rgba(0,0,0,.2);
+	box-shadow: 1px 1px 5px rgba(0,0,0,.2);*/
+	padding-bottom: 1px;
 }
 #course-outline .weeksection h4 {
 	font-size: 1.2em;
 	font-weight: bold;
 	margin: 0 0 15px 0;
 	padding: 5px;
-	background-color: #DDD;
+	/*background-color: #DDD;
 	background-color: rgba(0, 0, 0, .1);
-	border: 1px solid #DDD;
+	border: 1px solid #DDD;*/
+	background-color: #f1f1f1;
 	text-align: center;
-	border-top-left-radius: 5px;
+	/*border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
-	border-bottom: 1px solid #BABABA;
+	border-bottom: 1px solid #BABABA;*/
 	}
+
+
 /*#course-outline .weeksection h4 {
 	margin: 0px 0 0.1em;
 	}
@@ -1531,3 +1621,107 @@
 		margin-right: 0;
 	}
 }
+
+
+#page_sidebar .course-info,
+#page_identity,
+#course_options {
+	display: none;
+}
+#page_sidebar {
+	width: 6em;
+	margin-left: -6em;
+}
+#page_container {
+	padding-left: 6em;
+	background: #FFF url("/components/com_courses/assets/img/sidebar_middle.png") -139px 0 repeat-y;
+}
+#page_menu {
+	margin: 6em 0;
+	margin: 0 0 -5000px;
+	padding: 0 0 5000px;
+	border: none;
+	background: #3a3a3a;
+}
+#page_menu li {
+	padding: 0;
+	border: none;
+}
+#page_menu li:first-child {
+	border: none;
+}
+#page_menu li ul {
+	display: none;
+}
+#page_menu li a {
+	display: block;
+	text-indent: -500em;
+	height: 6em;
+	width: 6em;
+	line-height: 6em;
+	text-align: center;
+	color: #999;
+	position: relative;
+	border-bottom: 1px solid rgba(0,0,0,0.05);
+	border-bottom: 1px solid rgba(255,255,255,0.15);
+	-webkit-transition: background 0.1s ease-in-out;
+	-moz-transition: background 0.1s ease-in-out;
+	transition: background 0.1s ease-in-out;
+}
+
+#page_menu li a:hover {
+	background: #47a3da;
+	color: #fff;
+	border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+#page_menu li a:hover:before {
+	color: #fff;
+}
+#page_menu li .meta {
+	top: 1em;
+	right: 1em;
+}
+#page_menu li .meta .count {
+	background: #777;
+	background: rgba(255, 255, 255, 0.3);
+	color: #444;
+	text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
+}
+/* class for current item */
+#page_menu li.active {
+	background: none;
+}
+#page_menu li.active:before,
+#page_menu li.active:after {
+	display: none;
+}
+#page_menu li.active a:hover,
+#page_menu li.active a {
+	background: #fff;
+	color: #47a3da;
+	border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+#page_menu li.active a:before {
+	color: #333;
+}
+
+#page_menu li a:before {
+	/*font-family: 'Fontcons';*/
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	text-indent: 0em;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	font-size: 2em;
+	-webkit-font-smoothing: antialiased;
+	/*height: 2em;
+	line-height: 1;*/
+}
+#page_menu li a.tools:before {
+	content: "\2692";
+}
+

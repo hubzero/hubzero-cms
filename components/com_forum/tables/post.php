@@ -209,7 +209,7 @@ class ForumPost extends JTable
 	{
 		return $this->title;
 	}
-	
+
 	/**
 	 * Get the parent asset id for the record
 	 *
@@ -904,5 +904,25 @@ class ForumPost extends JTable
 		{
 			return true;
 		}
+	}
+
+	/**
+	 * Get the thread starter
+	 *
+	 * @param   integer $id  Parent to look up
+	 * @return  object  ForumPost
+	 */
+	public function getThread($id = null)
+	{
+		$thread = new ForumPost($this->_db);
+		$thread->load($id);
+
+		// Return the asset id.
+		if ($thread->parent) 
+		{
+			return $this->getThread($thread->parent);
+		}
+
+		return $thread;
 	}
 }

@@ -58,12 +58,8 @@ if (!$this->course->offering()->access('view')) { ?>
 	<p class="info"><?php echo JText::_('Access to the "Syllabus" section of this course is restricted to members only. You must be a member to view the content.'); ?></p>
 <?php } else { ?>
 
-	<?php /*if ($isNowOnManager) : ?>
-		<p class="info">You're viewing this page as a course admin, <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?nonadmin=1">click</a> to view it as a student</p>
-	<?php elseif ($isManager && !$isNowOnManager) : ?>
-		<p class="info">You're viewing this page in student view, <a href="<?php echo str_replace('?nonadmin=1', '', $_SERVER['REQUEST_URI']); ?>">click</a> to view it as an admin</p>
-	<?php endif;*/ ?>
-
+	<div id="course-outline">
+	<div class="outline-head">
 	<?php
 		// Trigger event
 		$dispatcher =& JDispatcher::getInstance();
@@ -74,111 +70,117 @@ if (!$this->course->offering()->access('view')) { ?>
 		// Output results
 		echo implode("\n", $results);
 	?>
-	<div id="course-outline">
+	</div>
 <?php if ($this->course->offering()->units()->total() > 0) : ?>
-	<?php foreach ($this->course->offering()->units() as $unit) { ?>
+	<?php foreach ($this->course->offering()->units() as $i => $unit) { ?>
 		<?php if ($unit->isPublished()) { ?>
-		<div class="unit<?php echo ($i == 0) ? ' active' : ''; ?>">
+		<div class="unit<?php echo ($i == 0) ? ' active' : ''; ?> unit-<?php echo ($i + 1); ?>">
 			<div class="unit-wrap">
 				<div class="unit-content<?php echo ($unit->isAvailable()) ? ' open' : ''; ?>">
-					<h3>
+					<h3 class="unit-content-available">
 						<span><?php echo $this->escape(stripslashes($unit->get('title'))); ?></span> 
 						<?php echo $this->escape(stripslashes($unit->get('description'))); ?>
 					</h3>
 
 				<?php if (!$unit->started()) { ?>
 					<div class="unit-availability comingSoon">
-						<p class="status">Coming soon</p>
+						<!-- <p class="status">Coming soon</p> -->
+						<p class="info">
+							Content for this unit will be available starting <?php $unit->get('publish_up'); ?>.
+						</p>
 				<?php } else { ?>
 					<div class="unit-availability">
-						<p class="status posted">Posted</p>
-
 						<div class="details clearfix">
+						<!-- <p class="status posted">Posted</p> -->
+					<?php if (!$unit->assetgroups()->total() && !$unit->assets()->total()) { ?>
+							<p class="info">
+								No content found for this unit.
+							</p>
+					<?php } else { ?>
 							<div class="detailsWrapper">
-						<?php foreach ($unit->assetgroups() as $agt) { ?>
-							<?php if ($agt->isAvailable()) { ?>
-								<div class="weeksection">
-									<div class="weeksectioninner">
-										<h4>
-											<?php echo $this->escape(stripslashes($agt->get('title'))); ?>
-										</h4>
-									<?php foreach ($agt->children() as $ag) { ?>
-										<div class="asset-group">
-											<h5>
-												<!-- <a href="<?php echo JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias')); ?>"> -->
-													<?php echo $this->escape(stripslashes($ag->get('title'))); ?>
-												<!-- </a> -->
-											</h5>
-											<?php if ($ag->assets()->total()) { ?>
-											<ul class="asset-list">
+								<?php foreach ($unit->assetgroups() as $agt) { ?>
+									<?php if ($agt->isAvailable()) { ?>
+										<div class="weeksection">
+											<div class="weeksectioninner">
+												<h4>
+													<?php echo $this->escape(stripslashes($agt->get('title'))); ?>
+												</h4>
+											<?php foreach ($agt->children() as $ag) { ?>
+												<div class="asset-group">
+													<h5>
+														<!-- <a href="<?php echo JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias')); ?>"> -->
+															<?php echo $this->escape(stripslashes($ag->get('title'))); ?>
+														<!-- </a> -->
+													</h5>
+													<?php if ($ag->assets()->total()) { ?>
+													<ul class="asset-list">
+														<?php
+														// Loop through the assets
+														foreach ($ag->assets() as $a)
+														{
+															if ($a->isAvailable())
+															{
+																$href = JRoute::_($base . '&asset=' . $a->get('id'));
+																$target = ' target="_blank"';
+																if ($a->get('type') == 'video')
+																{
+																	$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
+																	$target = '';
+																}
+																echo '<li><a class="asset ' . $a->get('type') . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+															}
+														}
+														?>
+													</ul>
+													<?php } ?>
+												</div>
+											<?php } ?>
+
+											<?php if ($agt->assets()->total()) { ?>
+												<ul class="asset-list">
+													<?php
+													foreach ($agt->assets() as $a)
+													{
+														if ($a->isAvailable())
+														{
+															if ($a->get('type') == 'note')
+															{
+																continue;
+															}
+															$href = JRoute::_($base . '&asset=' . $a->get('id')); //$a->path($this->course->get('id'));
+															$target = ' target="_blank"';
+															if ($a->get('type') == 'video')
+															{
+																$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $agt->get('alias'));
+																$target = '';
+															}
+															echo '<li><a class="asset ' . $a->get('type') . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+														}
+													}
+													?>
+												</ul>
 												<?php
-												// Loop through the assets
-												foreach ($ag->assets() as $a)
+												$agt->assets()->rewind();
+												foreach ($agt->assets() as $a)
 												{
 													if ($a->isAvailable())
 													{
-														$href = JRoute::_($base . '&asset=' . $a->get('id'));
-														$target = ' target="_blank"';
-														if ($a->get('type') == 'video')
+														if ($a->get('type') != 'note')
 														{
-															$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
-															$target = '';
+															continue;
 														}
-														echo '<li><a class="asset ' . $a->get('type') . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+														echo '<p class="info">' . stripslashes($a->get('content')) . '</p>';
 													}
 												}
 												?>
-											</ul>
 											<?php } ?>
-										</div>
+											</div><!-- .weeksectioninner -->
+										</div><!-- / .weekSection -->
 									<?php } ?>
-
-									<?php if ($agt->assets()->total()) { ?>
-										<ul class="asset-list">
-											<?php
-											foreach ($agt->assets() as $a)
-											{
-												if ($a->isAvailable())
-												{
-													if ($a->get('type') == 'note')
-													{
-														continue;
-													}
-													$href = JRoute::_($base . '&asset=' . $a->get('id')); //$a->path($this->course->get('id'));
-													$target = ' target="_blank"';
-													if ($a->get('type') == 'video')
-													{
-														$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $agt->get('alias'));
-														$target = '';
-													}
-													echo '<li><a class="asset ' . $a->get('type') . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
-												}
-											}
-											?>
-										</ul>
-										<?php
-										$agt->assets()->rewind();
-										foreach ($agt->assets() as $a)
-										{
-											if ($a->isAvailable())
-											{
-												if ($a->get('type') != 'note')
-												{
-													continue;
-												}
-												echo '<p class="info">' . stripslashes($a->get('content')) . '</p>';
-											}
-										}
-										?>
-									<?php } ?>
-									</div><!-- .weeksectioninner -->
-								</div><!-- / .weekSection -->
-							<?php } ?>
-						<?php } //$i++; ?>
-							</div><!-- / .detailsWrapper -->
-						</div><!-- / .details -->
-					<?php if ($unit->assets()->total()) { ?>
-						<ul class="asset-list">
+								<?php } //$i++; ?>
+							</div>
+							<?php if ($unit->assets()->total()) { ?>
+							<ul class="asset-list">
 						<?php
 						foreach ($unit->assets() as $a)
 						{
@@ -195,8 +197,10 @@ if (!$this->course->offering()->access('view')) { ?>
 							}
 						}
 						?>
-						</ul>
+							</ul>
+							<?php } ?>
 					<?php } ?>
+						</div><!-- / .details -->
 				<?php } // close else ?>
 					</div><!-- / .unit-availability -->
 				</div><!-- / .unit-content -->

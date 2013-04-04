@@ -28,7 +28,23 @@ HUB.Plugins.CoursesAnnouncements = {
 	initialize: function() {
 		var $ = this.jQuery;
 
-		$('a.delete').each(function(i, el) {
+		$('.announcements .close').each(function(i, item) {
+			$(item).on('click', function(e) {
+				e.preventDefault();
+
+				var id = $(this).attr('data-id'),
+					days = $(this).attr('data-duration');
+
+				$($(this).parent()).slideUp();
+
+				var date = new Date();
+				date.setTime(date.getTime()+(days*24*60*60*1000));
+
+				document.cookie = 'ancmnt' + id + '=closed; expires=' + date.toGMTString() + ';';
+			});
+		});
+
+		$('.announcement a.delete').each(function(i, el) {
 			$(el).on('click', function(e) {
 				var res = confirm('Are you sure you wish to delete this item?');
 				if (!res) {
@@ -36,6 +52,10 @@ HUB.Plugins.CoursesAnnouncements = {
 				}
 				return res;
 			});
+		});
+		
+		$('.datepicker').datepicker({
+			dateFormat: 'yy-mm-dd'
 		});
 	} //end initialize
 }

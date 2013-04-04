@@ -135,31 +135,38 @@
 	dl.entry-meta dd.entry-options a.delete {
 		right: 2em;
 	}
-	/*.announcement.low {
+	/*.announcement {
 		background-color: #84A7DB;
 		color: #e8f1fe !important;
 		border-color: #6685b2;
-	}
-	.announcement.medium {
-		background-color: #cea638;
-		color: #ffffc0 !important;
-		border-color: #ac8416;
 	}*/
+	.announcement {
+		/*background-color: #cea638;
+		color: #ffffc0 !important;
+		border-color: #ac8416;*/
+		background-color: #fbf1be;
+		border-color: #e9e1bc;
+		color: #80744a;
+	}
 	.announcement.high {
 		/*background-color: #ba4a3b;
 		color: #ffd2c3 !important;
-		border-color: #982819;*/
+		border-color: #982819;
 		
 		background-color: #cea638;
 		color: #ffffc0 !important;
-		border-color: #ac8416;
+		border-color: #ac8416;*/
+		
+		background-color: #ffd3d4;
+		color: #804a4d !important;
+		border-color: #e9bcbc;
 	}
-	.announcement.high dl.entry-meta {
+	/*.announcement.high dl.entry-meta {
 		color: #ffffc0 !important;
 	}
 	.announcement.high dl.entry-meta dd a {
 		color: #fff;
-	}
+	}*/
 	.announcement:before {
 		content: "\f095";
 		position: absolute;
@@ -172,7 +179,43 @@
 		left: 0.61803399em;
 		font-family: 'Fontcons';
 	}
-
+	.announcement .close {
+		display: block;
+		position: absolute;
+		bottom: 0.41803399em;
+		right: 0.41803399em;
+		text-align: left;
+		width: 18px;
+		height: 18px;
+		font-size: 18px !important;
+		line-height: 18px !important;
+		overflow: hidden;
+		white-space: nowrap;
+		border: none !important;
+		color: #999;
+	}
+	/*.announcement .close {
+		color: #80744a !important;
+	}
+	.announcement.high .close {
+		color: #804a4d !important;
+	}*/
+	.announcement .close:hover {
+		color: #c00 !important;
+		border: none !important;
+	}
+	.announcement .close span.announcement-before,
+	.announcement .close:before {
+		font-family: 'Fontcons';
+		margin-top: -0.25em;
+		content: "\f057";
+	}
+	.announcement .close span.announcement-before {
+		margin-top: -0.5em;
+	}
+	.announcement .close {
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="announcement-before">&#xf057;&nbsp;</span>' + this.innerHTML);
+	}
 /* Entries Menu */
 	.list-footer,
 	.entries-menu {
@@ -222,6 +265,61 @@
 	}
 	.course_announcements #hubForm #priority-label {
 		width: 50%;
+	}
+
+.entry-search {
+	margin: 0;
+}
+.entry-search input {
+	width: 100%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+	-webkit-background-clip: padding-box;
+	-moz-background-clip: padding-box;
+	-ms-background-clip: padding-box;
+	-o-background-clip: padding-box;
+	background-clip: padding-box;
+	outline: none;
+}
+	.entry-search-submit {
+		background: #f1f1f1;
+		-webkit-border-radius: 0 0.25em 0.25em 0;
+		-moz-border-radius: 0 0.25em 0.25em 0;
+		-ms-border-radius: 0 0.25em 0.25em 0;
+		-o-border-radius: 0 0.25em 0.25em 0;
+		border-radius: 0 0.25em 0.25em 0;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-ms-box-sizing: border-box;
+		-o-box-sizing: border-box;
+		box-sizing: border-box;
+		-webkit-background-clip: padding-box;
+		-moz-background-clip: padding-box;
+		-ms-background-clip: padding-box;
+		-o-background-clip: padding-box;
+		background-clip: padding-box;
+		font-size: 1em;
+		padding: 5px 10px;
+		margin: 2px 0 0 0;
+		line-height: 1.61803399em;
+		outline: none;
+		background: #e0e0e0;
+		background: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#e0e0e0));
+		background: -webkit-linear-gradient(#FAFAFA, #e0e0e0);
+		background: -moz-linear-gradient(center top, #FAFAFA 0%, #e0e0e0 100%);
+		background: -moz-gradient(center top, #FAFAFA 0%, #e0e0e0 100%);
+		background: -ms-linear-gradient(#FAFAFA, #e0e0e0);
+		background: -o-linear-gradient(#FAFAFA, #e0e0e0);
+		background: linear-gradient(#FAFAFA, #e0e0e0);
+		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FAFAFA,endColorstr=#e0e0e0);
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FAFAFA, endColorstr=#e0e0e0)";
+		border: 1px solid #bbb;
+		color: #666;
+		border: 1px solid #666;
+		border-left: none;
 	}
 
 /* Hide the sidebar if the page is too narrow */

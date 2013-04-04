@@ -48,6 +48,29 @@ if (!$no_html) : ?>
 		<h2>
 			<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
 		</h2>
+		<p>
+			<strong>
+				Offering:
+			</strong>
+			<span>
+				<?php echo $this->escape(stripslashes($this->course->offering()->get('title'))); ?>
+			</span>
+			<strong>
+				Section:
+			</strong>
+			<span>
+				<?php 
+				if ($this->course->offering()->section()->get('alias') !== '__default')
+				{
+					echo $this->escape(stripslashes($this->course->offering()->section()->get('title'))); 
+				}
+				else
+				{
+					echo 'Self-paced';
+				}
+				?>
+			</span>
+		</p>
 	</div>
 	<div id="content-header-extra">
 		<ul>
@@ -58,7 +81,34 @@ if (!$no_html) : ?>
 			</li>
 		</ul>
 	</div>
-
+<?php /*if ($this->course->offering()->access('manage', 'section')) { ?>
+	<div id="manager_options">
+		<ul id="course_options">
+			<li class="no-float">
+				<a href="<?php echo JRoute::_($base . '&offering=' . $this->course->offering()->get('alias')); ?>" class="dropdown course-manager">
+					<?php echo 'Manager'; //($isManager) ? 'Manager' : 'Member'; ?>
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu pull-right">
+			<?php if ($this->course->offering()->access('manage', 'section')) : ?> 
+					<li><a class="course-invite" href="/courses/<?php echo $this->course->get('alias'); ?>/invite">Invite Students</a></li>
+			<?php endif; ?>
+			<?php if ($this->course->offering()->access('manage')) { ?>
+					<li><a class="course-outline" href="/courses/<?php echo $this->course->get('alias'); ?>/manage/<?php echo $this->course->offering()->get('alias'); ?>">Build Outline</a></li>
+					<li><a class="course-pages" href="/courses/<?php echo $this->course->get('alias'); ?>/manage/<?php echo $this->course->offering()->get('alias'); ?>/pages">Manage Pages</a></li>
+			<?php } else if ($this->course->offering()->access('manage', 'section')) { ?>
+					<li><a class="course-outline" href="/courses/<?php echo $this->course->get('alias'); ?>/manage/<?php echo $this->course->offering()->get('alias'); ?>">Change Dates</a></li>
+			<?php } ?>
+			<?php if ($this->course->access('manage')) : ?> 
+					<li class="divider"></li>
+					<li><a class="course-delete" href="/courses/<?php echo $this->course->get('alias'); ?>/delete">Delete Offering</a></li>
+			<?php endif; ?>
+				</ul>
+			</li>
+		</ul><!-- /#page_options -->
+		<p>You're viewing this page as a course admin, <a href="<?php echo $_SERVER['REQUEST_URI']; ?>?nonadmin=1">click</a> to view it as a student</p>
+	</div>
+<?php }*/ ?>
 	<div class="innerwrap">
 		<div id="page_container">
 			<div id="page_sidebar">
@@ -69,7 +119,7 @@ if (!$no_html) : ?>
 					</a>
 				</div><!-- /#page_identity -->
 			
-			<?php if ($this->course->offering()->access('view')) : ?>
+			<?php /*if ($this->course->offering()->access('view')) : ?>
 				<ul id="course_options">
 					<?php if ($this->course->offering()->access('manage', 'section')) : ?>
 						<li class="no-float">
@@ -95,7 +145,7 @@ if (!$no_html) : ?>
 						</li>
 					<?php endif; ?>
 				</ul><!-- /#page_options -->
-			<?php endif; ?>
+			<?php endif;*/ ?>
 
 				<ul id="page_menu">
 					<?php
