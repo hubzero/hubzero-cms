@@ -81,11 +81,10 @@ class ModIncrementalRegistrationController
 	 * 
 	 * @return     unknown
 	 */
-	public function __construct() 
-	{
+	public function __construct() {
 		$user = JFactory::getUser();
 		$dbg = isset($_GET['dbg']);
-		if (!$dbg || $user->guest) {
+		if ($user->guest) {
 			return;
 		}
 		$uid = (int)$user->get('id');
@@ -93,7 +92,7 @@ class ModIncrementalRegistrationController
 		$dbh = JFactory::getDBO();
 
 		require_once JPATH_BASE . '/administrator/components/com_register/tables/incremental.php';
-
+			
 		$opts = new ModIncrementalRegistrationOptions;
 		if (!$opts->isEnabled($uid)) {
 			return;
@@ -146,7 +145,7 @@ class ModIncrementalRegistrationController
 					elseif (isset($_POST['reason']) && trim($_POST['reason'])) {
 						$reason = trim($_POST['reason']);
 					}
-
+					
 					if (isset($_POST['name'])) {
 						if (!isset($POST['name']['first']) || !isset($_POST['name']['last'])) {
 							$errors['name'] = true;
@@ -235,20 +234,15 @@ class ModIncrementalRegistrationController
 						$dbh->setQuery('SELECT '.implode(', ', array_keys($row)).' FROM #__profile_completion_awards WHERE user_id = ' . $uid);
 						$award = 0;
 						$awarded = $dbh->loadAssoc();
-						if ($awarded && is_array($awarded))
-						{
-							foreach ($awarded as $v) 
-							{
-								if (!$v) 
-								{
-									$award += 15;
-								}
+						foreach ($awarded as $v) {
+							if (!$v) {
+								$award += 15;
 							}
 						}
 
 						$dbh->setQuery('SELECT COALESCE((SELECT balance FROM #__users_transactions WHERE uid = ' . $uid . ' AND id = (SELECT MAX(id) FROM #__users_transactions WHERE uid = ' . $uid . ')), 0)');
 						$new_amount = $dbh->loadResult() + $award;
-
+			
 						if ($award) {
 				                       ximport('Hubzero_Bank');
 				                       $BTL = new Hubzero_Bank_Teller( $dbh, $uid );
@@ -281,15 +275,14 @@ class ModIncrementalRegistrationController
 										}
 									break;
 									case 'no':
-										$disabilites[] = 'none';
+										$disabilities[] = 'none';
 									break;
 									case 'refused':
-										$disabilites[] = 'refused';
+										$disabilities[] = 'refused';
 								}
 								foreach ($disabilities as $disability) {
 									$dbh->execute('INSERT INTO #__xprofiles_disability(uidNumber, disability) VALUES ('.$uid.', '.$dbh->quote($disability).')');
 								}
-								continue;
 							}
 							if ($k == 'name') {
 								$dbh->execute('UPDATE #__xprofiles SET givenName = '.$dbh->quote($_POST['name']['first']).', middleName = '.$dbh->quote($_POST['name']['middle']).', surname = '.$dbh->quote($_POST['name']['last']).' jos_xprofiles WHERE uidNumber = '.$uid);
@@ -304,8 +297,8 @@ class ModIncrementalRegistrationController
 							}
 						}
 						if (!$first) {
-						$dbh->execute($xp_update . ' WHERE uidNumber = ' . $uid);
-						$dbh->execute($aw_update . ' WHERE user_id = ' . $uid);
+							$dbh->execute($xp_update . ' WHERE uidNumber = ' . $uid);
+							$dbh->execute($aw_update . ' WHERE user_id = ' . $uid);
 						}
 
 						require JPATH_BASE.$media->get('/views/thanks.php');
