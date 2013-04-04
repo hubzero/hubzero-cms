@@ -48,8 +48,11 @@ HUB.Citations = {
 		
 		//
 		HUB.Citations.rollovers();
-
-
+		
+		//
+		HUB.Citations.singleCitation();
+		//HUB.Citations.singleCitationTabs();
+		
 		// Checks the boxes of the already selected citations when the page is done loading
 		var checkList = $("input[name=idlist]").val();
 		if(checkList) {
@@ -408,6 +411,79 @@ HUB.Citations = {
 					});
 			}
 		});
+	},
+	
+	//-----
+	
+	singleCitation: function()
+	{
+		var $ = this.jQuery;
+		
+		$("#show-more-button").on('click', function(event){
+			event.preventDefault();
+			$(this).remove();
+			$('.show-more-hellip').remove();
+			$(".show-more-text").fadeIn();
+		});
+	},
+	
+	//-----
+	
+	singleCitationTabs: function()
+	{
+		var $ = this.jQuery;
+		
+		if( $("#sub-menu").length )
+		{
+			//add click event to top locate button
+			$('.locate').on('click', function(event) {
+				event.preventDefault();
+				
+				//open the locate this tab
+				openTabSection( $("#sub-menu a[rel=locate-this]") );
+			});
+			
+			//add click events to tabs
+			$("#sub-menu").find("li a").on("click", function(event) {
+				event.preventDefault();
+				
+				//open this clicked tab
+				openTabSection( $(this) );
+			});
+			
+			//handle location hash
+			var locationHash = window.location.hash.replace("#", "");
+			if(locationHash != '')
+			{
+				var tab = $("#sub-menu a[rel=" + locationHash + "]");
+				
+				//open the tab
+				openTabSection( tab );
+			}
+			
+			function openTabSection( tab )
+			{
+				//remove all active tabs
+				$("#sub-menu").find("li").removeClass('active');
+				
+				//mark the clicked tab as active
+				tab.parent().addClass('active');
+				
+				//hide all sections
+				$('.main').hide();
+				
+				//fade in requested section
+				$("#" + tab.attr("rel")).show();
+				
+				//update location without jumping to content
+				var s = $('body').scrollTop();
+				window.location.hash = tab.attr("rel");
+				$('html,body').scrollTop(s);
+				
+				//scroll body to tabs
+				$('body').animate({scrollTop:tab.offset().top - 15}, 'slow');
+			}
+		}
 	}
 }
 

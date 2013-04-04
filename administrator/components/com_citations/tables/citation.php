@@ -808,7 +808,12 @@ class CitationsCitation extends JTable
 				}
 			}
 		}
-
+		
+		if(isset($filter['id']) && $filter['id'] > 0)
+		{
+			$query .= " AND r.id=" . $filter['id'];
+		}
+		
 		//group by
 		if (isset($filter['tag']) && $filter['tag'] != '')
 		{

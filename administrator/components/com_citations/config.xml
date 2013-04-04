@@ -20,17 +20,23 @@
 
 <config>
 	<params>
-		<param name="citation_label" type="list" default="number" label="Citation Label" description="Displayed to the left of each citation.">
+		<param name="citation_single_view" type="list" default="0" label="Citations Single View" description="Citations Link to single citation view page?">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param type="spacer" /> 
+		
+		<param name="citation_label" type="list" default="number" label="Label" description="Displayed to the left of each citation in citations browse mode.">
 			<option value="number">Number</option>
 			<option value="type">Type</option>
 			<option value="both">Number and Type</option>
 			<option value="none">None</option>
 		</param>
-		<param name="citation_rollover" type="list" default="no" label="Citations Rollover" description="Display citation 'Abstract' when mousing over each citation. Can be overridden per citation.">
+		<param name="citation_rollover" type="list" default="no" label="Show Abstract" description="Display citation Abstract? Can be overridden per citation.">
 			<option value="no">No</option>
 			<option value="yes">Yes</option>
 		</param>
-		<param name="citation_sponsors" type="list" default="yes" label="Citations Sponsors" description="Display citation sponsored by in rollover.">
+		<param name="citation_sponsors" type="list" default="yes" label="Citations Sponsors" description="Display citation sponsors.">
 			<option value="no">No</option>
 			<option value="yes">Yes</option>
 		</param>

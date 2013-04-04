@@ -45,43 +45,81 @@ class plgYSearchCitations extends YSearchPlugin
 	{
 		$terms = $request->get_term_ar();
 		$weight = 'match(c.title, c.isbn, c.doi, c.abstract, c.author, c.publisher) AGAINST (\'' . join(' ', $terms['stemmed']) . '\')';
-
-		$sql = "SELECT 
-					c.title AS title,
-					c.abstract AS description,
-				 	concat('/citations/browse?search=" . join(' ', $terms['optional']) . "&year=', c.year) AS link,
-					$weight AS weight
-				FROM jos_citations c
-				WHERE 
-					c.published=1 AND $weight > 0
-				 
-				ORDER BY $weight DESC";
-
-		$results->add(new YSearchResultSQL($sql));
-
-		$sql2 = "SELECT
-					c.id as id,
-					c.title as title,
-					c.abstract as description,
-					concat('/citations/browse?search=" . join(' ', $terms['optional']) . "&year=', c.year) AS link
-				 FROM 
-					jos_citations c,
-					jos_tags as tag,
-					jos_tags_object as tago
-				WHERE
-					tago.objectid=c.id
-				AND
-					tago.tagid=tag.id
-				AND
-					tago.tbl='citations'
-				AND 
-					tago.label=''";
-
-		$sql2 .= "AND (tag.tag='" . implode("' OR tag.tag='", $terms['stemmed']) . "')";
-
+		
+		//get com_citations params
+		$citationParams = JComponentHelper::getParams('com_citations');
+		$citationSingleView = $citationParams->get('citation_single_view', 1);
+		
+		//are we linking to singe citation view
+		if ($citationSingleView)
+		{
+			$sql = "SELECT 
+						c.title AS title,
+						c.abstract AS description,
+					 	concat('/citations/view/', c.id) AS link,
+						$weight AS weight
+					FROM jos_citations c
+					WHERE 
+						c.published=1 AND $weight > 0
+					ORDER BY $weight DESC";
+					
+			$results->add(new YSearchResultSQL($sql));
+			
+			$sql2 = "SELECT
+						c.id as id,
+						c.title as title,
+						c.abstract as description,
+						concat('/citations/view/', c.id) AS link
+					 FROM 
+						jos_citations c,
+						jos_tags as tag,
+						jos_tags_object as tago
+					WHERE
+						tago.objectid=c.id
+					AND
+						tago.tagid=tag.id
+					AND
+						tago.tbl='citations'
+					AND 
+						tago.label=''";
+			$sql2 .= "AND (tag.tag='" . implode("' OR tag.tag='", $terms['stemmed']) . "')";
+		}
+		else
+		{
+			$sql = "SELECT 
+						c.title AS title,
+						c.abstract AS description,
+					 	concat('/citations/browse?search=" . join(' ', $terms['optional']) . "&year=', c.year) AS link,
+						$weight AS weight
+					FROM jos_citations c
+					WHERE 
+						c.published=1 AND $weight > 0
+					ORDER BY $weight DESC";
+			$results->add(new YSearchResultSQL($sql));
+			
+			$sql2 = "SELECT
+						c.id as id,
+						c.title as title,
+						c.abstract as description,
+						concat('/citations/browse?search=" . join(' ', $terms['optional']) . "&year=', c.year) AS link
+					 FROM 
+						jos_citations c,
+						jos_tags as tag,
+						jos_tags_object as tago
+					WHERE
+						tago.objectid=c.id
+					AND
+						tago.tagid=tag.id
+					AND
+						tago.tbl='citations'
+					AND 
+						tago.label=''";
+			$sql2 .= "AND (tag.tag='" . implode("' OR tag.tag='", $terms['stemmed']) . "')";
+		}
+		
+		//add final query to ysearch
 		$sql_result_one = "SELECT c.id as id FROM jos_citations c WHERE c.published=1 AND $weight > 0 ORDER BY $weight DESC";
 		$sql2 .= " AND c.id NOT IN(" . $sql_result_one . ")";
-
 		$results->add(new YSearchResultSQL($sql2));
 	}
 }

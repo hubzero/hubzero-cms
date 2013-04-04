@@ -113,7 +113,7 @@ class plgTagsCitations extends JPlugin
 		// Build the query
 		$e_count = "SELECT COUNT(f.id) FROM (SELECT e.id, COUNT(DISTINCT t.tagid) AS uniques";
 
-		$e_fields = "SELECT e.id, e.title, e.author, e.booktitle, e.doi, e.published, e.created, e.year, e.month, e.isbn, e.journal, e.url, 
+		$e_fields = "SELECT e.id, e.title, e.author, e.booktitle, e.doi, e.published, e.created, e.year, e.month, e.isbn, e.journal, e.url as href, 
 					'citations' AS section, COUNT(DISTINCT t.tagid) AS uniques, e.volume, e.number, e.type, e.pages, e.publisher ";
 		$e_from  = " FROM #__citations AS e, #__tags_object AS t"; //", #__users AS u";
 		$e_where = " WHERE t.objectid=e.id AND t.tbl='citations' AND t.tagid IN ($ids)"; //e.uid=u.id AND 
@@ -231,7 +231,17 @@ class plgTagsCitations extends JPlugin
 		// Start building the HTML
 		$html  = "\t" . '<li class="citation-entry">' . "\n";
 		$html .= "\t\t" . '<p class="title">';
-		$html .= '<a href="' . JRoute::_('index.php?option=com_citations&task=browse&type=' . $row->type . '&year=' . $row->year . '&search=' . Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->title)), 50, 0)) . '">';
+		
+		//are we trying wanting to direct to single citaiton view
+		$citationSingleView = $config->get('citation_single_view', 1);
+		if ($citationSingleView)
+		{
+			$html .= '<a href="' . JRoute::_('index.php?option=com_citations&task=view&id=' . $row->id) . '">';
+		}
+		else
+		{
+			$html .= '<a href="' . JRoute::_('index.php?option=com_citations&task=browse&type=' . $row->type . '&year=' . $row->year . '&search=' . Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->title)), 50, 0)) . '">';
+		}
 		$html .= Hubzero_View_Helper_Html::shortenText(Hubzero_View_Helper_Html::purifyText(stripslashes($row->title)), 200, 0);
 		$html .= '</a></p>'."\n";
 		$html .= '<p class="details '. $citations_label_class . '">' . JText::_('PLG_TAGS_CITATION');
@@ -252,7 +262,13 @@ class plgTagsCitations extends JPlugin
 			$html .= ' <span>|</span> ' . $type;
 		}
 		$html .= '</p>';
-		$html .= '<p>' . $formatter->formatCitation($row, null, $config->get("citation_coins", 1), $config) . '</p>';
+		
+		require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
+		$db = JFactory::getDBO();
+		$cc = new CitationsCitation($db);
+		$cc->load($row->id);
+		
+		$html .= '<p>' . $formatter->formatCitation($cc, null, $config->get("citation_coins", 1), $config) . '</p>';
 		$html .= "\t" . '</li>'."\n";
 
 		// Return output

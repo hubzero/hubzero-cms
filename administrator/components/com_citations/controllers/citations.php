@@ -561,9 +561,9 @@ class CitationsControllerCitations extends Hubzero_Controller
 	 * @param      integer $citation Citation ID
 	 * @return     integer
 	 */
-	private function _getParams($citation)
+	private function _getParams($citation = 0)
 	{
-		$this->database->setQuery("SELECT c.params from #__citations c WHERE id=" . $citation);
+		$this->database->setQuery("SELECT c.params from #__citations c WHERE id=" . $this->database->quote( $citation ));
 		return $this->database->loadResult();
 	}
 }

@@ -44,11 +44,13 @@ JToolBarHelper::cancel();
 $id      = null;
 $sponsor = null;
 $link    = null;
+$image   = null;
 if ($this->sponsor)
 {
 	$id      = $this->sponsor[0]['id'];
 	$sponsor = $this->escape(stripslashes($this->sponsor[0]['sponsor']));
 	$link    = $this->escape(stripslashes($this->sponsor[0]['link']));
+	$image   = $this->escape(stripslashes($this->sponsor[0]['image']));
 }
 ?>
 <script type="text/javascript">
@@ -71,6 +73,10 @@ function submitbutton(pressbutton)
 					<tr>
 						<th class="key"><?php echo JText::_('Sponsor Link'); ?></th>
 						<td><input type="text" name="sponsor[link]" value="<?php echo $link; ?>" size="50" /></td>
+					</tr>
+					<tr>
+						<th class="key"><?php echo JText::_('Sponsor Image'); ?></th>
+						<td><input type="text" name="sponsor[image]" value="<?php echo $image; ?>" size="50" /></td>
 					</tr>
 				</tbody>
 			</table>

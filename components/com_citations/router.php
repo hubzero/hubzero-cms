@@ -56,7 +56,13 @@ function CitationsBuildRoute(&$query)
 		$segments[] = $query['format'];
 		unset($query['format']);
 	}
-
+	/*
+	if (!empty($query['area'])) 
+	{
+		$segments[] = $query['area'];
+		unset($query['area']);
+	}
+	*/
 	return $segments;
 }
 
@@ -101,11 +107,16 @@ function CitationsParseRoute($segments)
 	if (isset($segments[1])) 
 	{
 		$vars['id'] = $segments[1];
+		/*
+		if (isset($segments[2])) 
+		{
+			$vars['area'] = $segments[2];
+		}
+		*/
 	}
 	if (isset($segments[2])) 
 	{
 		$vars['format'] = $segments[2];
 	}
-
 	return $vars;
 }

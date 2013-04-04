@@ -40,11 +40,15 @@ $fieldset_label = ($allow_tags == "yes" && $allow_badges == "yes") ? "Tags and B
 
 $t = array();
 $b = array();
-foreach($this->tags as $tag) {
-	$t[] = $tag->raw_tag;
+
+foreach($this->tags as $tag) 
+{
+	$t[] = $tag['raw_tag'];
 }
-foreach($this->badges as $badge) {
-	$b[] = $badge->raw_tag;
+
+foreach($this->badges as $badge) 
+{
+	$b[] = $badge['raw_tag'];
 }
 
 JPluginHelper::importPlugin('hubzero');
@@ -53,6 +57,12 @@ $dispatcher =& JDispatcher::getInstance();
 $tags_list = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags','', implode(",",$t))));
 $badges_list = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'badges', 'actags1','', implode(",",$b))));
 
+//get the referrer
+$backLink = JRoute::_('index.php?option=' . $this->option);
+if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILTER_VALIDATE_URL))
+{
+	$backLink = $_SERVER['HTTP_REFERER'];
+}
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -61,7 +71,7 @@ $badges_list = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'badg
 <div id="content-header-extra">
 	<ul>
 		<li class="last">
-			<a class="main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Main page'); ?></a>
+			<a class="browse btn" href="<?php echo $backLink ?>">Back</a>
 		</li>
 	</ul>
 </div><!-- / #content-header-extra -->

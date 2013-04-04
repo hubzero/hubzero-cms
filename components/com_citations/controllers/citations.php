@@ -47,8 +47,14 @@ class CitationsControllerCitations extends Hubzero_Controller
 	 */
 	public function execute()
 	{
+		//disable default task - stop fallback when user enters bad task
+		$this->disableDefaultTask();
+		
+		//register empty task and intro as the main display task
+		$this->registerTask('', 'display');
 		$this->registerTask('intro', 'display');
 		
+		//execute parent function
 		parent::execute();
 	}
 
@@ -135,6 +141,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 		$this->view->filters['start']   = JRequest::getInt('limitstart', 0, 'get');
 
 		//search/filtering params
+		$this->view->filters['id']				= JRequest::getInt('id', 0);
 		$this->view->filters['tag']             = trim(JRequest::getVar('tag', '', 'request', 'none', 2));
 		$this->view->filters['search']          = $this->database->getEscaped(JRequest::getVar('search', ''));
 		$this->view->filters['type']            = JRequest::getVar('type', '');
@@ -332,6 +339,144 @@ class CitationsControllerCitations extends Hubzero_Controller
 		$this->view->display();
 	}
 	
+	public function viewTask()
+	{
+		//set vars for view
+		$this->view->database = $this->database;
+		
+		// get request vars
+		$id = JRequest::getInt('id', 0);
+		
+		//make sure we have an id
+		if(!$id || $id == 0)
+		{
+			JError::raiseError(500, JText::_('No Citation ID Specified'));
+			return;
+		}
+		
+		//get the citation
+		$this->view->citation = new CitationsCitation( $this->view->database );
+		$this->view->citation->load( $id );
+		
+		//make sure we got a citation
+		if(!isset($this->view->citation->title) || $this->view->citation->title == '')
+		{
+			JError::raiseError(500, JText::_('Unable to Load a Citation with the ID Specified.'));
+			return;
+		}
+		
+		//load citation associations
+		$assoc = new CitationsAssociation($this->database);
+		$this->view->associations = $assoc->getRecords(array('cid' => $id));
+		
+		//open url stuff
+		$this->view->openUrl = $this->openUrl();
+		
+		// Push some styles to the template
+		$this->_getStyles();
+		
+		//push scripts
+		$this->_getScripts('assets/js/' . $this->_name);
+		
+		//make sure title isnt too long
+		$this->view->maxTitleLength = 50;
+		$this->view->shortenedTitle = (strlen($this->view->citation->title) > $this->view->maxTitleLength) ? substr($this->view->citation->title, 0, $this->view->maxTitleLength) . '&hellip;' : $this->view->citation->title;
+		
+		// Set the page title
+		$document =& JFactory::getDocument();
+		$document->setTitle( "Citation: " . $this->view->shortenedTitle );
+
+		// Set the pathway
+		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option=' . $this->_option);
+		$pathway->addItem( "Browse", 'index.php?option=' . $this->_option . '&task=browse');
+		$pathway->addItem( $this->view->shortenedTitle, 'index.php?option=' . $this->_option . '&task=view&id=' . $this->view->citation->id);
+		
+		//get this citation type to see if we have a template override for this type
+		$citationType = new CitationsType($this->database);
+		$type = $citationType->getType( $this->view->citation->type );
+		$typeAlias = $type[0]['type'];
+		
+		//build paths to type specific overrides
+		$application =& JFactory::getApplication();
+		$componentTypeOverride = JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'views' . DS . 'citations' . DS . 'tmpl' . DS . $typeAlias . '.php';
+		$tempalteTypeOverride = JPATH_ROOT . DS . 'templates' . DS . $application->getTemplate() . DS . 'html' . DS . 'com_citations' . DS . 'citations' . DS . $typeAlias . '.php';
+		
+		//if we found an override use it
+		if (file_exists($tempalteTypeOverride) || file_exists($componentTypeOverride))
+		{
+			$this->view->setLayout($typeAlias);
+		}
+		
+		//get any messages & display view
+		$this->view->messages = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
+		$this->view->config = $this->config;
+		$this->view->juser = $this->juser;
+		$this->view->display();
+	}
+	
+	private function openUrl()
+	{
+		//var to store open url stuff
+		$openUrl = array(
+			'link' => '',
+			'text' => '',
+			'icon' => ''
+		);
+		
+		//get the users id to make lookup
+		$userIp = $this->getIP();
+		
+		//get the param for ip regex to use machine ip
+		$ipRegex = array('10.\d{2,5}.\d{2,5}.\d{2,5}'); 
+		
+		$useMachineIp = false;
+		foreach($ipRegex as $ipr)
+		{
+			$match = preg_match('/'.$ipr.'/i', $userIp);
+			if($match)
+			{
+				$useMachineIp = true;
+			}
+		}
+		
+		//make url based on if were using machine ip or users
+		if($useMachineIp)
+		{
+			$url = 'http://worldcatlibraries.org/registry/lookup?IP=' . $_SERVER['SERVER_ADDR'];
+		}
+		else
+		{
+			$url = 'http://worldcatlibraries.org/registry/lookup?IP=' . $userIp;
+		}
+		
+		//get the resolver
+		$r = null;
+		if (function_exists('curl_init'))
+		{
+			$cURL = curl_init();
+			curl_setopt($cURL, CURLOPT_URL, $url );
+			curl_setopt($cURL, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($cURL, CURLOPT_TIMEOUT, 10);
+			$r = curl_exec($cURL);
+			curl_close($cURL);
+		}
+		
+		//parse the return from resolver lookup
+		$xml = simplexml_load_string($r);
+		$resolver = $xml->resolverRegistryEntry->resolver;
+		
+		//if we have resolver set vars for creating open urls
+		if ($resolver != null) 
+		{
+			$openUrl['link'] = $resolver->baseURL;
+			$openUrl['text'] = $resolver->linkText;
+			$openUrl['icon'] = $resolver->linkIcon;
+		}
+		
+		return $openUrl;
+	}
+	
 	private function getIP()
 	{
 		foreach (array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR') as $key) 
@@ -438,7 +583,37 @@ class CitationsControllerCitations extends Hubzero_Controller
 			'type'       => '', 
 			'type_title' => ' - Select a Type &mdash;'
 		));
+		
+		// Incoming - expecting an array id[]=4232
+		$id = JRequest::getInt('id', 0);
 
+		// Non-admins can't edit citations
+		if (!$isAdmin)
+		{
+			$id = 0;
+		}
+		
+		// Load the object
+		$this->view->row = new CitationsCitation($this->database);
+		$this->view->row->load($id);
+		
+		//make sure title isnt too long
+		$maxTitleLength = 30;
+		$shortenedTitle = (strlen($this->view->row->title) > $maxTitleLength) ? substr($this->view->row->title, 0, $maxTitleLength) . '&hellip;' : $this->view->row->title;
+		
+		// Set the pathway
+		$pathway =& JFactory::getApplication()->getPathway();
+		$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option=' . $this->_option);
+		if ($id && $id != 0)
+		{
+			$pathway->addItem( $shortenedTitle, 'index.php?option=' . $this->_option . '&task=view&id=' . $this->view->row->id);
+		}
+		$pathway->addItem( 'Edit', 'index.php?option=' . $this->_option . '&task=edit&id=' . $this->view->row->id);
+		
+		// Set the page title
+		$document =& JFactory::getDocument();
+		$document->setTitle( "Edit Citation: " . $shortenedTitle );
+		
 		//push jquery to doc
 		$document =& JFactory::getDocument();
 		if (!JPluginHelper::isEnabled('system', 'jquery'))
@@ -452,33 +627,14 @@ class CitationsControllerCitations extends Hubzero_Controller
 
 		// Push some scripts to the template
 		$this->_getScripts('assets/js/' . $this->_name);
-
-		// Set the page title
-		$this->_buildTitle();
-
-		// Set the pathway
-		$this->_buildPathway();
-
+		
 		// Instantiate a new view
 		$this->view->title  = JText::_(strtoupper($this->_name)) . ': ' . JText::_(strtoupper($this->_task));
 		$this->view->config = $this->config;
-
-		// Incoming - expecting an array id[]=4232
-		$id = JRequest::getInt('id', 0);
-
-		// Non-admins can't edit citations
-		if (!$isAdmin)
-		{
-			$id = 0;
-		}
-
-		// Load the object
-		$this->view->row = new CitationsCitation($this->database);
-		$this->view->row->load($id);
-
+		
 		// Load the associations object
 		$assoc = new CitationsAssociation($this->database);
-
+		
 		// No ID, so we're creating a new entry
 		// Set the ID of the creator
 		if (!$id) 
@@ -496,17 +652,16 @@ class CitationsControllerCitations extends Hubzero_Controller
 		{
 			// Get the associations
 			$this->view->assocs = $assoc->getRecords(array('cid' => $id), $isAdmin);
-
-			//get the citations tags and badges
-			$t = new TagsTag($this->database);
-			$this->view->tags   = $t->getCloud('citations', '', $id);
-			$this->view->badges = $t->getCloud('citations', 'badges', $id);
+			
+			//tags & badges
+			$this->view->tags = CitationFormat::citationTags($this->view->row, $this->database, false);
+			$this->view->badges = CitationFormat::citationBadges($this->view->row, $this->database, false);
 		}
-
+		
 		//get the citation types
 		$ct = new CitationsType($this->database);
 		$this->view->types = $ct->getType();
-
+		
 		// Output HTML
 		if ($this->getError()) 
 		{

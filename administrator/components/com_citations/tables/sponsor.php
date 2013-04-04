@@ -56,6 +56,13 @@ class CitationsSponsor extends JTable
 	 * @var string
 	 */
 	var $link = null;
+	
+	/**
+	 * varchar(200)
+	 * 
+	 * @var string
+	 */
+	var $image = null;
 
 	/**
 	 * Constructor
@@ -99,6 +106,21 @@ class CitationsSponsor extends JTable
 		$sql = "SELECT sid FROM #__citations_sponsors_assoc WHERE cid=" . $this->_db->Quote($citeid);
 		$this->_db->setQuery($sql);
 		return $this->_db->loadResultArray();
+	}
+	
+	public function getSponsorsForCitationWithId( $citeid )
+	{
+		if (!$citeid)
+		{
+			return;
+		}
+		
+		$sql = "SELECT s.id, s.sponsor, s.link, s.image
+				FROM #__citations_sponsors AS s, #__citations_sponsors_assoc AS sa
+				WHERE sa.cid={$citeid}
+				AND s.id=sa.sid";
+		$this->_db->setQuery($sql);
+		return $this->_db->loadObjectList();
 	}
 
 	/**

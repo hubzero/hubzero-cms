@@ -360,8 +360,13 @@ if ($label == "none") {
 								</tr>
 								<tr>
 									<td colspan="<?php if ($label == "none") { echo 2; } else { echo 3; }; ?>" class="citation-details">
-										<?php echo $formatter->citationDetails($cite, $this->database, $this->config, $this->openurl); ?>
-
+										<?php
+											$singleCitationView = $this->config->get('citation_single_view', 1);
+											if (!$singleCitationView)
+											{
+												echo $formatter->citationDetails($cite, $this->database, $this->config, $this->openurl); 
+											}
+										?>
 										<?php if ($this->config->get("citation_show_badges","no") == "yes") : ?>
 											<?php echo $formatter->citationBadges($cite, $this->database); ?>
 										<?php endif; ?>

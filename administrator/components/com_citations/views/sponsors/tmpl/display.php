@@ -58,6 +58,7 @@ function submitbutton(pressbutton)
 				<th width="5%"><?php echo JText::_('ID'); ?></th>
 				<th><?php echo JText::_('Sponsor'); ?></th>
 				<th><?php echo JText::_('Link'); ?></th>
+				<th><?php echo JText::_('Image'); ?></th>
 				<th><?php echo JText::_('Actions'); ?></th>
 			</tr>
 		</thead>
@@ -68,6 +69,7 @@ function submitbutton(pressbutton)
 						<td><?php echo $sponsor['id']; ?></td>
 						<td><?php echo $sponsor['sponsor']; ?></td>
 						<td><?php echo $sponsor['link']; ?></td>
+						<td><?php echo $sponsor['image']; ?></td>
 						<td>
 <?php if ($canDo->get('core.edit')) { ?>
 							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $sponsor['id']); ?>">Edit</a> | 

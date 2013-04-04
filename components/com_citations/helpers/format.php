@@ -226,10 +226,10 @@ class CitationFormat
 
 		//get the template
 		$template = $this->getTemplate();
-
+		
 		//get the template keys
 		$template_keys = $this->getTemplateKeys();
-
+		
 		foreach ($template_keys as $k => $v) 
 		{
 			if (!$this->keyExistsOrIsNotEmpty($k, $citation)) 
@@ -310,30 +310,35 @@ class CitationFormat
 				{
 					$url_format = $config->get("citation_url", "url");
 					$custom_url = $config->get("citation_custom_url", '');
-
+					
+					$url = $citation->url;
 					if ($url_format == 'custom' && $custom_url != '') 
 					{
  						//parse custom url to make sure we are not using any vars
-						preg_match('/\{(\w+)\}/', $custom_url, $matches);
+						preg_match_all('/\{(\w+)\}/', $custom_url, $matches, PREG_SET_ORDER);
 						if ($matches) 
 						{
-							if ($citation->$matches[1]) 
+							foreach($matches as $match)
 							{
-								$url = str_replace($matches[0], $citation->$matches[1], $custom_url);
-							} 
-							else 
-							{
-								$url = $citation->url;
+								$field = strtolower($match[1]);
+								$replace = $match[0];
+								$replaceWith = '';
+								if(property_exists($citation, $field)) 
+								{
+									if(strstr($citation->$field, 'http'))
+									{
+										$custom_url = $citation->$field;
+									}
+									else
+									{
+										$replaceWith = urlencode($citation->$field);
+										$custom_url = str_replace($replace, $replaceWith, $custom_url);
+									}
+								}
 							}
-						} 
-						else 
-						{
-							$url = $citation->url;
+							//set the citation url to be the new custom url parsed
+							$url  = $custom_url;
 						}
-					} 
-					else 
-					{
-						$url = $citation->url;
 					}
 					
 					//prepare url 
@@ -354,7 +359,15 @@ class CitationFormat
 					$title = ($url != '' && preg_match('/http:|https:/', $url)) 
 							? '<a rel="external" class="citation-title" href="' . $url . '">' . $t . '</a>' 
 							: '<span class="citation-title">' . $t . '</span>';
-
+					
+					//do we want to display single citation
+					$singleCitationView = $config->get('citation_single_view', 1);
+					if ($singleCitationView)
+					{
+						$title = '<a href="'.JRoute::_('index.php?option=com_citations&task=view&id='.$citation->id).'">' . $t . '</a>';
+					}
+					
+					//send back title to replace title placeholder ({TITLE})
 					$replace_values[$v] = '"' . $title . '"';
 					
 					//add title to coin data but fixing bad chars first
@@ -486,7 +499,7 @@ class CitationFormat
 		//if we have an open url link and we want to use open urls
 		if ($openurl['link'] && $openurls) 
 		{
-			$html .= $this->citationOpenUrl( $openurl, $citation );
+			$html .= '<span> | </span>' . $this->citationOpenUrl( $openurl, $citation );
 		}
 		
 		//citation association - to HUB resources
@@ -590,10 +603,11 @@ class CitationFormat
 			
 			//do we have an icon or just using text as the link
 			$link_text = ($icon != '') ? '<img src="' . $icon . '" />' : $text;
-			$link_text = '<img src="index.php?option=com_citations&controller=citations&task=downloadimage&image='.$icon.'" />';
+			//$link_text = '<img src="index.php?option=com_citations&controller=citations&task=downloadimage&image='.$icon.'" />';
 			
 			//final link
-			$html .= '<span> | </span><a rel="external" href="' . $link . '" title="' . $text . '">' . $link_text . '</a>';
+			//$html .= '<span> | </span><a rel="external" href="' . $link . '" title="' . $text . '">' . $link_text . '</a>';
+			$html .= '<a rel="external" href="' . $link . '" title="' . $text . '">' . $link_text . '</a>';
 		}
 		
 		return $html;
@@ -681,7 +695,7 @@ class CitationFormat
 	 * @param      object $database JDatabase
 	 * @return     string HTML
 	 */
-	public function citationBadges($citation, $database)
+	public function citationBadges($citation, $database, $includeHtml = true)
 	{
 		$html = "";
 		$badges = array();
@@ -697,15 +711,25 @@ class CitationFormat
 
 		if ($badges) 
 		{
-			$html = '<ul class="badges">';
-			foreach ($badges as $badge) 
+			if($includeHtml)
 			{
-				$html .= '<li>' . stripslashes($badge['raw_tag']) . '</li>';
+				$html = '<ul class="badges">';
+				foreach ($badges as $badge) 
+				{
+					$html .= '<li>' . stripslashes($badge['raw_tag']) . '</li>';
+				}
+				$html .= "</ul>";
+				return $html;
 			}
-			$html .= "</ul>";
+			else
+			{
+				return $badges;
+			}
 		}
-
-		return $html;
+		else
+		{
+			return ($includeHtml) ? '' : $badges;
+		}
 	}
 
 	/**
@@ -715,7 +739,7 @@ class CitationFormat
 	 * @param      object $database JDatabase
 	 * @return     string HTML
 	 */
-	public function citationTags($citation, $database)
+	public function citationTags($citation, $database, $includeHtml = true)
 	{
 		$html = '';
 		$tags = array();
@@ -731,16 +755,26 @@ class CitationFormat
 
 		if ($tags) 
 		{
-			$html  = '<ul class="tags">';
-			$html .= '<li>Tags: </li>';
-			foreach ($tags as $tag) 
+			if($includeHtml)
 			{
-				$html .= '<li><a href="' . JRoute::_('index.php?option=com_tags&tag=' . $tag['tag']) . '">' . stripslashes($tag['raw_tag']) . '</a></li>';
+				$html  = '<ul class="tags">';
+				$html .= '<li>Tags: </li>';
+				foreach ($tags as $tag) 
+				{
+					$html .= '<li><a href="' . JRoute::_('index.php?option=com_tags&tag=' . $tag['tag']) . '">' . stripslashes($tag['raw_tag']) . '</a></li>';
+				}
+				$html .= '</ul>';
+				return $html;
 			}
-			$html .= '</ul>';
+			else
+			{
+				return $tags;
+			}
 		}
-
-		return $html;
+		else
+		{
+			return ($includeHtml) ? '' : $tags;
+		}
 	}
 
 	/**
