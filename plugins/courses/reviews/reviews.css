@@ -13,6 +13,67 @@
 
 */
 
+/* Reviews */
+	.reviews-summary {
+		background: #ececec;
+		-webkit-border-radius: 0.27em;
+		-moz-border-radius: 0.27em;
+		-ms-border-radius: 0.27em;
+		-o-border-radius: 0.27em;
+		border-radius: 0.27em;
+		padding: 1em;
+		margin: 1em 0 0 0;
+	}
+	.reviews-distribution caption {
+		display: none;
+	}
+	.reviews-distribution,
+	.reviews-distribution th, 
+	.reviews-distribution td {
+		border: none;
+	}
+	.reviews-distribution th, 
+	.reviews-distribution td {
+		padding: 0.2em 0;
+		font-size: 90%;
+	}
+	.reviews-distribution th {
+		width: 5em;
+	}
+	.review-base { 
+		position: relative;
+		display: block;
+		background: #ddd;
+		margin: 0.3em 5em 0.3em 0;
+	}
+	.review-base .review-bar { 
+		display: block;
+		font-weight: normal;
+		background: #aaa; 
+		text-align: center; 
+		color: #333; 
+		height: 1em;
+	}
+	.review-base .review-bar span {
+		position: absolute;
+		right: -5em;
+		line-height: 1;
+	}
+	
+	.reviews-summary .avgrating {
+		text-align: center;
+		/*color: #febe4d;*/
+	}
+	.reviews-summary .avgrating:before {
+		font-size: 2em;
+	}
+	.reviews-summary .avgrating strong {
+		font-weight: normal;
+	}
+	.reviews-summary .avgrating span {
+		display: none;
+	}
+/* Comments */
 	ol.comments .comment-none {
 		color: #ccc;
 	}
@@ -61,6 +122,17 @@
 	.comment-body .avgrating:before,
 	.comment-body .avgrating {
 		font-size: 1.2em;
+	}
+	.comment-body .avgrating {
+		background-color: #FFF6D3;
+		/*background-color: #f1f1f1;*/
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		-ms-border-radius: 0.25em;
+		-o-border-radius: 0.25em;
+		border-radius: 0.25em;
+		text-align: center;
+		padding: 0.5em 0 0.3em 0;
 	}
 	.comment-body .avgrating:before {
 		margin-right: 1em;

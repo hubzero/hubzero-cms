@@ -44,7 +44,7 @@
 		margin-top: 0;
 		padding-top: 0;
 	}
-	.course.intro .subject table {
+	/*.course.intro .subject table {
 		border: 1px solid #eee;
 	}
 	.course.intro .subject table caption {
@@ -53,6 +53,9 @@
 	.course.intro .subject table td,
 	.course.intro .subject table th {
 		border: none;
+	}*/
+	.course.intro .tags {
+		margin-top: 2em;
 	}
 /* Offering info */
 	.offering-info {
@@ -103,12 +106,11 @@
 	.offering-info table tbody th {
 		border-right: 1px solid #5c5d62;
 		border-bottom: 1px solid #5c5d62;
-		font-size: 1.2em;
+		/*font-size: 1.2em;
 		
-		vertical-align: middle;
+		vertical-align: middle;*/
 	}
 	.offering-info table tbody td {
-		/*border-left: 1px solid #696a6f;*/
 		border-bottom: 1px solid #5c5d62;
 		font-weight: normal;
 	}
@@ -145,10 +147,9 @@
 		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#febe4d,endColorstr=#feda71);
 		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#febe4d, endColorstr=#feda71)";
 	}
-/* Reviews */
+/* Reviews 
 	.reviews-summary {
 		background: #ececec;
-		/*border: 1px solid #eaeaea;*/
 		-webkit-border-radius: 0.27em;
 		-moz-border-radius: 0.27em;
 		-ms-border-radius: 0.27em;
@@ -174,9 +175,7 @@
 		width: 5em;
 	}
 	.review-base { 
-		position: relative; /* IE is dumb */
-		/*width: 200px;*/
-		
+		position: relative;
 		display: block;
 		background: #ddd;
 		margin: 0.3em 3em 0.3em 0;
@@ -206,7 +205,7 @@
 	}
 	.reviews-summary .avgrating span {
 		display: none;
-	}
+	}*/
 	
 	.aside > div:last-child {
 		margin-bottom: 30px;

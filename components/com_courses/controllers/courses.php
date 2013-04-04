@@ -192,6 +192,7 @@ class CoursesControllerCourses extends Hubzero_Controller
 		{
 			$this->view->filters['index'] = '';
 		}
+		$this->view->filters['tag'] = JRequest::getWord('tag', '');
 
 		$model = CoursesModelCourses::getInstance();
 
@@ -221,6 +222,7 @@ class CoursesControllerCourses extends Hubzero_Controller
 		$this->_buildPathway();
 
 		// Output HTML
+		$this->view->model  = $model;
 		$this->view->title  = $this->_title;
 		$this->view->config = $this->config;
 		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();

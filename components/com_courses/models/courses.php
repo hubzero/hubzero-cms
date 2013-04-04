@@ -33,6 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'tags.php');
 
 /**
  * Courses model class for a course
@@ -196,6 +197,38 @@ class CoursesModelCourses extends JObject
 		$courses = new CoursesModelIterator($results);
 
 		return $courses;
+	}
+
+	/**
+	 * Get a list of courses
+	 *   Accepts an array of filters to build query from
+	 * 
+	 * @param      array $filters Filters to build query from
+	 * @return     mixed
+	 */
+	public function tags($what='cloud', $limit=null, $start=0)
+	{
+		$ct = new CoursesTags($this->_db);
+
+		$tags = null;
+
+		$what = strtolower(trim($what));
+		switch ($what)
+		{
+			case 'array':
+				$tags = $ct->getTags($limit, $start);
+			break;
+
+			case 'string':
+				$tags = $ct->getTagString($limit, $start);
+			break;
+
+			case 'cloud':
+				$tags = $ct->getTagCloud($limit, $start);
+			break;
+		}
+
+		return $tags;
 	}
 }
 

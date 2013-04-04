@@ -45,13 +45,8 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 $config   =& JFactory::getConfig();
 $database =& JFactory::getDBO();
 
-/*if ($this->course->isStudent())
-{
-	$student = $this->course->member($this->juser->get('id'));
-}*/
-
 $offerings = $this->course->offerings(array('available' => true, 'sort' => 'publish_up'));
-if ($offerings)
+if ($offerings->total())
 {
 	$offering = $offerings->fetch('first');
 }
@@ -79,7 +74,7 @@ else
 	<div class="aside">
 		<div class="offering-info">
 	<?php if ($offering->exists()) { ?>
-			<!-- <table>
+			<table>
 				<tbody>
 					<tr>
 						<th scope="row">Starts</th>
@@ -94,8 +89,8 @@ else
 						</td>
 					</tr>
 				</tbody>
-			</table> -->
-			<table>
+			</table>
+			<?php /* <table>
 				<tbody>
 					<tr>
 					<?php if ($this->course->isManager() || $this->course->isStudent()) { ?>
@@ -132,7 +127,7 @@ else
 					<?php } ?>
 					</tr>
 				</tbody>
-			</table>
+			</table> */ ?>
 		<?php if ($this->course->isManager() || $this->course->isStudent()) { ?>
 			<p>
 				<a class="outline btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=offering&gid=' . $this->course->get('alias') . '&offering=' . $offering->get('alias')); ?>">
@@ -157,11 +152,8 @@ else
 		<p>
 			<?php echo $this->escape(stripslashes($this->course->get('blurb'))); ?>
 		</p>
-		<h4>Categories</h4>
-		<?php
-		$ct = new CoursesTags(JFactory::getDBO());
-		echo $ct->get_tag_cloud(0, 0, $this->course->get('id'));
-		?>
+		<!-- <h4>Categories</h4> -->
+		<?php echo $this->course->tags('cloud'); ?>
 
 	<?php /*if ($offering->exists()) { ?>
 		<table>
@@ -194,10 +186,11 @@ else
 		{
 	?>
 		<div class="course-instructors">
-			<h3><?php echo (count($instructors) > 1) ? JText::_('About the Instructors') : JText::_('About the Instructor'); ?></h3>
+			<h3>
+				<?php echo (count($instructors) > 1) ? JText::_('About the Instructors') : JText::_('About the Instructor'); ?>
+			</h3>
 	<?php
 			ximport('Hubzero_View_Helper_Html');
-			ximport('Hubzero_User_Profile_Helper');
 
 			foreach ($instructors as $i)
 			{
@@ -205,7 +198,9 @@ else
 	?>
 			<div class="course-instructor">
 				<p class="course-instructor-photo">
-					<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($instructor, 0); ?>" alt="" />
+					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $instructor->get('id')); ?>">
+						<img src="<?php echo $instructor->getPicture(); ?>" alt="<?php echo JText::sprintf('%s\'s photo', $this->escape(stripslashes($instructor->get('name')))); ?>" />
+					</a>
 				</p>
 				<div class="course-instructor-content">
 					<h4>
@@ -216,7 +211,6 @@ else
 					<p class="course-instructor-org">
 						<?php echo $this->escape(stripslashes($instructor->get('organization'))); ?>
 					</p>
-					
 					<div class="clearfix"></div>
 				</div>
 				<p class="course-instructor-bio">

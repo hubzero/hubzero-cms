@@ -55,7 +55,7 @@ defined('_JEXEC') or die('Restricted access');
 	$result = $dispatcher->trigger('onGetWikiParser', array($wikiconfig, true));
 	$p = (is_array($result) && !empty($result)) ? $result[0] : null;
 
-	if ($this->obj->get('created_by') == $this->comment->created_by) 
+	if (!$this->comment->anonymous && $this->obj->get('created_by') == $this->comment->created_by) 
 	{
 		$cls .= ' author';
 	}

@@ -143,11 +143,12 @@ class plgCoursesReviews extends JPlugin
 		$this->option     = JRequest::getCmd('option', 'com_courses');
 		$this->controller = JRequest::getWord('controller', 'course');
 
+		ximport('Hubzero_Document');
+		Hubzero_Document::addPluginStylesheet('courses', $this->_name);
+
 		// Are we returning any HTML?
 		if ($rtrn == 'all' || $rtrn == 'html') 
 		{
-			ximport('Hubzero_Document');
-			Hubzero_Document::addPluginStylesheet('courses', $this->_name);
 			Hubzero_Document::addPluginScript('courses', $this->_name);
 
 			ximport('Hubzero_Item_Vote');

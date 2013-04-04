@@ -38,6 +38,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models'
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'page.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'tags.php');
 
 /**
  * Courses model class for a course
@@ -414,36 +415,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 			$this->_managers[$user_id]->set('course_id', $this->get('id'));
 			$this->_managers[$user_id]->set('role_id', $role_id);
 			$this->_managers[$user_id]->store();
-			/*print_r($this->_members[$user_id]);
-			if (!$this->_members[$user_id]->store())
-			{
-				echo $this->_members[$user_id]->getError();
-			}*/
 		}
-
-		/*if (is_array($data))
-		{
-			foreach ($data as $result)
-			{
-				$user_id = $this->_userIds($result);
-
-				$this->_members[$user_id] = new CoursesModelMember($user_id, $this->get('id'));
-				$this->_members[$user_id]->set('role_id', $role_id);
-				$this->_members[$user_id]->store();
-			}
-		}
-		else
-		{
-			$user_id = $this->_userId($data);
-
-			$this->_members[$user_id] = new CoursesModelMember($user_id, $this->get('id'));
-			$this->_members[$user_id]->set('role_id', $role_id);
-			$this->_members[$user_id]->store();
-		}*/
-		//$users = $this->_userIds($value);
-
-		//$this->set('managers', array_merge($this->get('managers'), $users));
-		//$this->managers()->add();
 	}
 
 	/**
@@ -454,29 +426,6 @@ class CoursesModelCourse extends CoursesModelAbstract
 	 */
 	public function remove($data = null)
 	{
-		/*if (is_array($data))
-		{
-			$user_ids = $this->_userIds($data);
-
-			foreach ($user_ids as $user_id)
-			{
-				if (isset($this->_members[$user_id]))
-				{
-					$this->_members[$user_id]->delete();
-					unset($this->_members[$user_id]);
-				}
-			}
-		}
-		else
-		{
-			$user_ids = $this->_userIds($data);
-
-			if (isset($this->_members[$user_id]))
-			{
-				$this->_members[$user_id]->delete();
-				unset($this->_members[$user_id]);
-			}
-		}*/
 		$user_ids = $this->_userIds($data);
 
 		if (count($user_ids) > 0)
@@ -492,8 +441,6 @@ class CoursesModelCourse extends CoursesModelAbstract
 				}
 			}
 		}
-
-		//$this->set('managers', array_diff($this->get('managers'), $users));
 	}
 
 	/**
@@ -783,6 +730,36 @@ class CoursesModelCourse extends CoursesModelAbstract
 		}
 
 		return $this->_pages;
+	}
+
+	/**
+	 * Check if the current user is enrolled
+	 * 
+	 * @return     boolean
+	 */
+	public function tags($what='cloud')
+	{
+		$ct = new CoursesTags($this->_db);
+
+		$tags = null;
+
+		$what = strtolower(trim($what));
+		switch ($what)
+		{
+			case 'array':
+				$tags = $ct->get_tags_on_object($this->get('id'), 0, 0);
+			break;
+
+			case 'string':
+				$tags = $ct->get_tag_string($this->get('id'));
+			break;
+
+			case 'cloud':
+				$tags = $ct->get_tag_cloud(0, 0, $this->get('id'));
+			break;
+		}
+
+		return $tags; 
 	}
 }
 

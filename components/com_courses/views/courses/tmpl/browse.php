@@ -60,7 +60,11 @@ $juser =& JFactory::getUser();
 			<div class="container">
 				<h3>Finding a course</h3>
 				<p>Use the sorting and filtering options to see courses listed alphabetically by title, alias, or popularity.</p>
-				<p>Use the 'Search' to find specific courses if you would like to check out their offerings.</p>
+				<p>Use the 'Search' to find specific courses by title or description if you would like to check out their offerings.</p>
+			</div><!-- / .container -->
+			<div class="container">
+				<h3>Popular Categories</h3>
+				<?php echo $this->model->tags('cloud', 20); ?>
 			</div><!-- / .container -->
 		</div><!-- / .aside -->
 		<div class="subject">
@@ -118,10 +122,15 @@ foreach ($letters as $letter)
 						$e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
 
 						if ($this->filters['search'] != '') {
-							echo 'Search for "'.$this->filters['search'].'" in ';
+							echo 'Search for "'.$this->escape($this->filters['search']).'" in ';
 						}
 ?>
 						<?php echo JText::_('Courses'); ?> 
+						<?php
+						if ($this->filters['tag'] != '') {
+							echo 'with tag "'.$this->escape($this->filters['tag']).'"';
+						}
+						?>
 						<?php if ($this->filters['index']) { ?>
 							<?php echo JText::_('starting with'); ?> "<?php echo strToUpper($this->filters['index']); ?>"
 						<?php } ?>
@@ -144,6 +153,7 @@ foreach ($letters as $letter)
 <?php
 if ($this->courses) 
 {
+	ximport('Hubzero_User_Profile_Helper');
 	ximport('Hubzero_View_Helper_Html');
 	foreach ($this->courses as $course)
 	{
@@ -171,9 +181,24 @@ if ($this->courses)
 								<a class="entry-title" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $course->get('alias')); ?>">
 									<?php echo $this->escape(stripslashes($course->get('title'))); ?>
 								</a><br />
-								<!-- <span class="entry-details">
-									<span class="entry-alias"><?php echo $course->get('alias'); ?></span>
-								</span> -->
+							<?php
+								$instructors = $course->instructors();
+								if (count($instructors) > 0) 
+								{
+									$names = array();
+									foreach ($instructors as $i)
+									{
+										$instructor = Hubzero_User_Profile::getInstance($i->get('user_id'));
+
+										$names[] = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $i->get('user_id')) . '">' . $this->escape(stripslashes($instructor->get('name'))) . '</a>';
+									}
+							?>
+								<span class="entry-details">
+									Instructors: <span class="entry-instructors"><?php echo implode(', ', $names); ?></span>
+								</span>
+							<?php
+								}
+							?>
 								<?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($course->get('blurb')), 200); ?>
 							</td>
 <?php /*if ($course->access('manage')) { ?>

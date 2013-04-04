@@ -309,9 +309,9 @@ class CoursesTableCourse extends JTable
 	{
 		if (isset($filters['tag']) && $filters['tag'] != '') 
 		{
-			$query .= " FROM #__tags_object AS rta";
+			$query  = " FROM #__tags_object AS rta";
 			$query .= " INNER JOIN #__tags AS t ON rta.tagid = t.id AND rta.tbl='courses'";
-			$query .= " $this->_tbl AS c ON rta.objectid=c.id";
+			$query .= " INNER JOIN $this->_tbl AS c ON rta.objectid=c.id";
 		} 
 		else 
 		{
@@ -338,7 +338,7 @@ class CoursesTableCourse extends JTable
 
 		if (isset($filters['tag']) && $filters['tag'] != '') 
 		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'helpers' . DS . 'tags.php');
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'tags.php');
 			$tagging = new CoursesTags($this->_db);
 			$tags = $tagging->_parse_tags($filters['tag']);
 

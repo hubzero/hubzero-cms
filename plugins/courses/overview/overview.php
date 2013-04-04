@@ -81,9 +81,6 @@ class plgCoursesOverview extends JPlugin
 			'metadata' => ''
 		);
 
-		//$this->option = JRequest::getVar('option', 'com_courses');
-		//$this->course = $course;
-
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array($active)) 
 		{
@@ -97,9 +94,6 @@ class plgCoursesOverview extends JPlugin
 			return $arr;
 		}
 
-		//Create user object
-		//$juser =& JFactory::getUser();
-
 		ximport('Hubzero_Plugin_View');
 		$view = new Hubzero_Plugin_View(
 			array(
@@ -108,9 +102,9 @@ class plgCoursesOverview extends JPlugin
 				'name'    => 'overview'
 			)
 		);
-		$view->option = JRequest::getCmd('option', 'com_courses');
+		$view->option     = JRequest::getCmd('option', 'com_courses');
 		$view->controller = JRequest::getWord('controller', 'course');
-		$view->course = $course;
+		$view->course     = $course;
 
 		$arr['html'] = $view->loadTemplate();
 

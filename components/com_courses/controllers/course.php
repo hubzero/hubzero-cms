@@ -34,7 +34,6 @@ defined('_JEXEC') or die('Restricted access');
 ximport('Hubzero_Controller');
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'tags.php');
 
 /**
  * Courses controller class

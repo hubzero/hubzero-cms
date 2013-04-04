@@ -59,14 +59,13 @@ class plgCoursesOfferings extends JPlugin
 	 */
 	public function &onCourseViewAreas($course)
 	{
+		$area = array();
 		if ($course->offerings(array('state' => 1, 'sort_Dir' => 'ASC'), true)->total() > 0)
 		{
-			$area = array(
-				'offerings' => JText::_('PLG_COURSES_' . strtoupper($this->_name)),
-			);
+			$area['offerings'] = JText::_('PLG_COURSES_' . strtoupper($this->_name));
 			return $area;
 		}
-		return array();
+		return $area;
 	}
 
 	/**
