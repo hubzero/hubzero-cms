@@ -207,7 +207,14 @@ class CitationsControllerCitations extends Hubzero_Controller
 		}
 
 		//Convert upload dates to correct time format
-		$this->view->filters['startuploaddate'] = strftime("%Y-%m-%d %H:%M:%S",strtotime($this->view->filters['startuploaddate']));
+		if ($this->view->filters['startuploaddate'] == 0 || $this->view->filters['startuploaddate'] == '' || $this->view->filters['startuploaddate'] == '0000-00-00 00:00:00')
+		{
+			$this->view->filters['startuploaddate'] = '0000-00-00 00:00:00';
+		}
+		else
+		{
+			$this->view->filters['startuploaddate'] = strftime("%Y-%m-%d %H:%M:%S",strtotime($this->view->filters['startuploaddate']));
+		}
 		$this->view->filters['enduploaddate']   = strftime("%Y-%m-%d %H:%M:%S",strtotime($this->view->filters['enduploaddate']));
 		if ($this->view->filters['enduploaddate'] == "1969-12-31 19:00:00")
 		{ 
@@ -388,7 +395,10 @@ class CitationsControllerCitations extends Hubzero_Controller
 
 		// Set the pathway
 		$pathway =& JFactory::getApplication()->getPathway();
-		$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option=' . $this->_option);
+		if (count($pathway->getPathWay()) <= 0)
+		{
+			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option=' . $this->_option);
+		}
 		$pathway->addItem( "Browse", 'index.php?option=' . $this->_option . '&task=browse');
 		$pathway->addItem( $this->view->shortenedTitle, 'index.php?option=' . $this->_option . '&task=view&id=' . $this->view->citation->id);
 		
