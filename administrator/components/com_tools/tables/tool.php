@@ -276,7 +276,7 @@ class Tool extends JTable
 	{
 		$sql = "SELECT f.id, f.toolname, f.registered, f.published, f.state_changed, f.priority, f.ticketid, f.state as state, v.title, v.version, g.cn as devgroup"
 				. " FROM " . $this->buildQuery($filters, $admin);
-		if (isset($filters['start']) && isset($filters['limit'])) 
+		if (isset($filters['start']) && isset($filters['limit']) && $filters['limit'] > 0) 
 		{
 			$sql .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 		}
