@@ -367,9 +367,10 @@ class plgGroupsMessages extends JPlugin
 		{
 			return false;
 		}
-
+		
+		//message
 		$message = JText::sprintf('PLG_GROUPS_MESSAGES_FROM_GROUP', $this->group->get('cn')); 
-
+		
 		// Incoming array of users to message
 		$mbrs = JRequest::getVar('users', array(0), 'post');
 		switch ($mbrs[0])
@@ -390,8 +391,6 @@ class plgGroupsMessages extends JPlugin
 				$group_id = $this->group->get('gidNumber');
 			break;
 			case 'all':
-				$message = JText::sprintf('PLG_GROUPS_MESSAGES_FOR_GROUP', $this->group->get('cn')); 
-
 				$mbrs = $this->group->get('members');
 				$action = 'group_members_message';
 				$group_id = $this->group->get('gidNumber');
@@ -452,9 +451,11 @@ class plgGroupsMessages extends JPlugin
 		$config =& JFactory::getConfig();
 		$from['name'] = $this->group->get('description') . " Group on " . $config->getValue("fromname");
 		$from['email'] = $config->getValue("mailfrom");
+		$from['replytoname'] = 'DO NOT REPLY TO THIS MESSAGE';
+		$from['replytoemail'] = 'do-not-reply@' . $_SERVER['HTTP_HOST'];
 		
 		//append "on behalf..." to subject
-		$subject .= " - Email sent on Behalf of " . $juser->get('name');
+		$subject .= " [Email sent on Behalf of " . $juser->get('name') . "]";
 		
 		// Send the message
 		JPluginHelper::importPlugin('xmessage');
@@ -463,7 +464,7 @@ class plgGroupsMessages extends JPlugin
 		{
 			$this->setError(JText::_('GROUPS_ERROR_EMAIL_MEMBERS_FAILED'));
 		}
-
+		
 		// Log the action
 		if ($action) 
 		{

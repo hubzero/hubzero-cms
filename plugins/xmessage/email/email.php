@@ -73,25 +73,31 @@ class plgXMessageEmail extends JPlugin
 	 */
 	public function onMessage($from, $xmessage, $user, $action)
 	{
+		//make sure were supposed to be performing this action
 		if ($this->onMessageMethods() != $action) 
 		{
 			return true;
 		}
-
+		
+		//check to make sure users account is confirmed
 		if ($user->get('emailConfirmed') <= 0) 
 		{
 			return false;
 		}
-
+		
+		//get users email
 		$email = $user->get('email');
-
+		
+		//if we dont have an email stop
 		if (!$email) 
 		{
 			return false;
 		}
-
+		
+		//get site config
 		$jconfig =& JFactory::getConfig();
-
+		
+		//if we dont have a from set the use site from name and email
 		if (!isset($from['name']) || $from['name'] == '') 
 		{
 			$from['name'] = $jconfig->getValue('config.sitename') . ' Administrator';
@@ -100,31 +106,42 @@ class plgXMessageEmail extends JPlugin
 		{
 			$from['email'] = $jconfig->getValue('config.mailfrom');
 		}
-
-		$args = "-f '" . $from['email'] . "'";
-		$headers = "MIME-Version: 1.0\n";
+		
+		//set mail headers
+		$headers  = "MIME-Version: 1.0 \n";
 		$headers .= "Content-type: text/plain; charset=utf-8\n";
+		$headers .= "X-Priority: 3\n";
+		$headers .= "X-MSMail-Priority: Normal\n";
+		$headers .= "Importance: Normal\n";
+		$headers .= "X-Mailer: PHP/" . phpversion()  . "\r\n";
+		$headers .= "X-Component: " . $xmessage->component . "\r\n";
+		$headers .= "X-Component-Object: " . $xmessage->type . "\r\n";
 		$headers .= "From: " . $from['name'] . " <" . $from['email'] . ">\n";
-
+		
 		// In case a different reply to email address is specified
 		if (array_key_exists('replytoemail', $from))
 		{
-			$headers .= "Reply-To: " . $from['name'] . " <" . $from['replytoemail'] . ">\n";
+			$replytoname = ($from['replytoname'] != '') ? $from['replytoname'] : $from['name'];
+			$headers .= "Reply-To: " . $from['replytoname'] . " <" . $from['replytoemail'] . ">\n";
 		}
 		else
 		{
 			$headers .= "Reply-To: " . $from['name'] . " <" . $from['email'] . ">\n";
 		}
-
-		$headers .= "X-Priority: 3\n";
-		$headers .= "X-MSMail-Priority: High\n";
-		$headers .= "X-Mailer: " . $from['name'] . "\n";
-
+		
+		//set mail additional args (mail return path - used for bounces)
+		$args = '-f hubmail-bounces@' . $_SERVER['HTTP_HOST'];
+		
+		//fancy email
 		if( strpos($user->get('name'), ',') )
+		{
 			$fullEmailAddress = "\"" . $user->get('name') . "\" <" . $user->get('email') . ">";
+		}
 		else
+		{
 			$fullEmailAddress = $user->get('name') . " <" . $user->get('email') . ">";
-
+		}
+		
 		// Want to add some extra headers? We put them into the from array 
 		// If none are there, this breaks nothing
         if (array_key_exists('xheaders', $from))
@@ -137,12 +154,12 @@ class plgXMessageEmail extends JPlugin
 				$headers .= $n . ": " . $v . "\n";
 			}
 		}
-
-		if (mail($fullEmailAddress, $jconfig->getValue('config.sitename').' '.$xmessage->subject, $xmessage->message, $headers, $args))
+		
+		//set mail
+		if (mail($fullEmailAddress, $jconfig->getValue('config.sitename') . ' ' . $xmessage->subject, $xmessage->message, $headers, $args))
 		{
 			return true;
 		}
-
 		return false;
 	}
 }
