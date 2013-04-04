@@ -441,7 +441,7 @@ class JRequest
 				//Redirect to login screen
 				global $mainframe;
 				$return = JRoute::_('index.php');
-;				$mainframe->redirect($return, JText::_('SESSION_EXPIRED'));
+;				$mainframe->redirect($return, JText::_('SESSION_EXPIRED'), 'error');
 				$mainframe->close();
 			} else {
 				return false;
