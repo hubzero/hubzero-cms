@@ -32,7 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 <p class="answer">
-	<?php if ($model->resource->alias) : ?>
+	<?php if ($this->resource->alias) : ?>
 		<a href="<?php echo JRoute::_('index.php?option=com_resources&alias='.$this->resource->alias.'&active=questions'); ?>">
 	<?php else : ?>
 		<a href="<?php echo JRoute::_('index.php?option=com_resources&id='.$this->resource->id.'&active=questions'); ?>">
@@ -49,7 +49,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		?>
 	</a>
 
-	<?php if ($model->resource->alias) : ?>
+	<?php if ($this->resource->alias) : ?>
 		(<a href="/answers/question/new/?tag=tool:<?php echo $this->resource->alias; ?>"><?php echo JText::_('PLG_RESOURCES_QUESTIONS_ASK_A_QUESTION'); ?></a>)
 	<?php else : ?>
 		(<a href="/answers/question/new/?tag=resource:<?php echo $this->resource->id; ?>"><?php echo JText::_('PLG_RESOURCES_QUESTIONS_ASK_A_QUESTION'); ?></a>)
