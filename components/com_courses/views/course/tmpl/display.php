@@ -335,7 +335,7 @@ else
 				if ($section['html'] != '') 
 				{
 				?>
-		<div class="inner-section" id="<?php echo $section['area']; ?>-section">
+		<div class="inner-section" id="<?php echo $section['name']; ?>-section">
 			<?php echo $section['html']; ?>
 		</div><!-- / .inner-section -->
 				<?php 
