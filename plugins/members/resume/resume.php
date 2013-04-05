@@ -896,6 +896,16 @@ class plgMembersResume extends JPlugin
 		} 
 		else 
 		{
+			$fpath = $path . DS . $file['name'];
+			exec("clamscan -i --no-summary --block-encrypted $fpath", $output, $status);
+			if ($status == 1)
+			{
+				JFile::delete($fpath);
+
+				$this->setError(JText::_('File rejected because the anti-virus scan failed.'));
+				return $this->view($database, $option, $member, $emp);
+			}
+
 			// File was uploaded, create database entry
 			$title = htmlspecialchars($title);
 			$row->created = date('Y-m-d H:i:s', time());
