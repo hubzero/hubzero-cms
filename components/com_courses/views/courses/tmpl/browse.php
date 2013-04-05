@@ -64,7 +64,7 @@ $juser =& JFactory::getUser();
 			</div><!-- / .container -->
 			<div class="container">
 				<h3>Popular Categories</h3>
-				<?php echo $this->model->tags('cloud', 20); ?>
+				<?php echo $this->model->tags('cloud', 20, $this->filters['tag']); ?>
 			</div><!-- / .container -->
 		</div><!-- / .aside -->
 		<div class="subject">
@@ -78,6 +78,31 @@ $juser =& JFactory::getUser();
 					<input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
 					<input type="hidden" name="index" value="<?php echo $this->escape($this->filters['index']); ?>" />
 				</fieldset>
+				<?php if ($this->filters['tag']) { ?>
+				<fieldset class="applied-tags">
+					<ol class="tags">
+					<?php
+					$url  = 'index.php?option=' . $this->option . '&task=browse';
+					$url .= ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
+					$url .= ($this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) : '');
+					$url .= ($this->filters['index']  ? '&index=' . $this->escape($this->filters['index']) : '');
+
+					$tags = $this->model->parseTags($this->filters['tag']);
+					foreach ($tags as $tag)
+					{
+						?>
+						<li>
+							<a href="<?php echo JRoute::_($url . '&tag=' . implode(',', $this->model->parseTags($this->filters['tag'], $tag))); ?>">
+								<?php echo $this->escape(stripslashes($tag)); ?>
+								<span class="remove">x</a>
+							</a>
+						</li>
+						<?php
+					}
+					?>
+					</ol>
+				</fieldset>
+				<?php } ?>
 			</div><!-- / .container -->
 
 			<div class="container">

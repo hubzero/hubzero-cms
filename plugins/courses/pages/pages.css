@@ -1,0 +1,172 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/courses/forum/forum.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	com_pages CSS
+	-- -- -- -- -- -- --
+
+*/
+	#page_menu li .pages:before {
+		content: "\f016"; /*"\f0c5";*/
+	}
+	#page_content.course_pages {
+		padding: 0 0 5000px 0;
+		margin: 0 0 -5000px 0;
+		overflow: hidden;
+	}
+	.course_pages .subject {
+		border: none;
+		padding: 0.7em 1em 1em 1em;
+		background: none;
+		border-bottom: 0;
+		padding: 10px 0 0 0;
+	}
+	.course_pages .pages-menu {
+		float: left;
+		width: 200px;
+		margin: 0 0 -5000px 0;
+		padding: 0 0 5000px 0;
+	}
+	.course_pages .pages-menu ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.course_pages .pages-menu li {
+		position: relative;
+		margin: 0;
+		padding: 0;
+		border-bottom: 1px solid #e9e9e9;
+	}
+	.course_pages .pages-menu li a {
+		color: #aaa;
+		position: relative;
+		display: block;
+		background: none;
+		padding: 0.5em 1em;
+		border: none;
+		border-left: 1px solid #e9e9e9;
+	}
+	.course_pages .pages-menu li a:hover {
+		color: #444;
+	}
+	.course_pages .pages-menu li a:before {
+		content: "\f016";
+		font-family: 'Fontcons';
+		color: #999;
+		margin-right: 0.5em;
+	}
+	.course_pages .pages-menu li a.active:before,
+	.course_pages .pages-menu li a:hover:before {
+		color: #444;
+	}
+	.course_pages .pages-menu li a.active {
+		color: #444;
+		background: #f9f9f9;
+	}
+	.course_pages .pages-menu li a.active:after {
+		content: "";
+		display: block;
+		position: absolute;
+		right: -2px;
+		top: 0;
+		bottom: 0px;
+		background: #f9f9f9;
+		width: 2px;
+		border: none;
+	}
+	.course_pages .pages-menu p {
+		text-align: center;
+		margin-top: 2em;
+	}
+	.course_pages .pages-wrap {
+		margin: 0 0 -5000px 201px;
+		border-left: 1px solid #e9e9e9;
+		background: #f9f9f9;
+		padding: 20px 20px 5020px 20px;
+	}
+	.course_pages .pages-content {
+		position: relative;
+	}
+
+	.course_pages .manager-options {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		position: absolute;
+		top: 0px;
+		right: 0px;
+	}
+	.course_pages .manager-options li {
+		display: block;
+		margin: 0;
+		padding: 0;
+		float: right;
+	}
+	.course_pages .manager-options a {
+		display: block;
+		font-size: 1.6em;
+		width: 1em;
+		height: 1em;
+		overflow: hidden;
+		border: none;
+		margin-left: 0.5em;
+		color: #bbb;
+	}
+	.course_pages .manager-options a:hover {
+		color: #333;
+	}
+
+	#pageform label input, 
+	#pageform label select, 
+	#pageform label textarea {
+		margin-top: 0.25em;
+		width: 100%;
+	}
+	#pageform label {
+		display: block;
+		padding: 1.5em 0 0 0;
+	}
+	#pageform legend {
+		font-weight: bold;
+		border-bottom: 1px solid #e9e9e9;
+		width: 100%;
+		display: block;
+		padding: 0 0 1em 0;
+	}
+	#pageform .wykiwyg input, 
+	#pageform .wykiwyg select {
+		width: auto;
+		margin-top: 5px;
+	}
+	#pageform .optional,
+	#pageform .required {
+		text-transform: uppercase;
+		font-size: xx-small;
+	}
+	#pageform .required {
+		color: red;
+	}
+	#pageform .optional {
+		color: #999999;
+	}
+	#pageform .hint {
+		color: #999;
+		font-size: 90%;
+	}
+	#pageform span.hint {
+		line-height: 2em;
+	}
+	#pageform .warning,
+	#pageform .error {
+		margin-top: 0;
+	}
+	#pageform .submit {
+		text-align: center;
+	}

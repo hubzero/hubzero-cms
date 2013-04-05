@@ -206,7 +206,7 @@ class CoursesModelCourses extends JObject
 	 * @param      array $filters Filters to build query from
 	 * @return     mixed
 	 */
-	public function tags($what='cloud', $limit=null, $start=0)
+	public function tags($what='cloud', $limit=null, $tagstring='')
 	{
 		$ct = new CoursesTags($this->_db);
 
@@ -216,16 +216,54 @@ class CoursesModelCourses extends JObject
 		switch ($what)
 		{
 			case 'array':
-				$tags = $ct->getTags($limit, $start);
+				$tags = $ct->getTags($limit);
 			break;
 
 			case 'string':
-				$tags = $ct->getTagString($limit, $start);
+				$tags = $ct->getTagString($limit);
 			break;
 
 			case 'cloud':
-				$tags = $ct->getTagCloud($limit, $start);
+				$tags = $ct->getTagCloud($limit, $tagstring);
 			break;
+		}
+
+		return $tags;
+	}
+
+	/**
+	 * Turn a string of tags to an array
+	 * 
+	 * @param      string $tag Tag string
+	 * @return     mixed
+	 */
+	public function parseTags($tag, $remove='')
+	{
+		if (is_array($tag))
+		{
+			$bunch = $tag;
+		}
+		else
+		{
+			$ct = new CoursesTags($this->_db);
+			$bunch = $ct->_parse_tags($tag);
+		}
+
+		$tags = array();
+		if ($remove)
+		{
+			foreach ($bunch as $t)
+			{
+				if ($remove == $t)
+				{
+					continue;
+				}
+				$tags[] = $t;
+			}
+		}
+		else
+		{
+			return $bunch;
 		}
 
 		return $tags;

@@ -242,37 +242,8 @@ class CoursesControllerOffering extends Hubzero_Controller
 			)
 		);
 
-		// Add the default "About" section to the beginning of the lists
-		if (($page = $this->course->offering()->page($active)))
+		if ($this->view->active == 'outline') 
 		{
-			$wikiconfig = array(
-				'option'   => $this->_option,
-				'scope'    => '',
-				'pagename' => DS . $this->view->active,
-				'pageid'   => $this->course->get('id'),
-				'filepath' => DS . trim($this->config->get('uploadpath', '/site/courses'), DS),
-				'domain'   => $this->course->get('alias')
-			);
-
-			ximport('Hubzero_Wiki_Parser');
-			$p =& Hubzero_Wiki_Parser::getInstance();
-
-			//$layout = 'page';
-			$this->view->active = 'outline';
-			$pathway =& JFactory::getApplication()->getPathway();
-			$pathway->addItem(
-				stripslashes($page['title']), 
-				'index.php?option=' . $this->_option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . '&active=' . $this->view->active
-			);
-
-			$body = $p->parse($page['content'], $wikiconfig);
-		}
-		else if ($this->view->active == 'outline') 
-		{
-			// Add the plugins.js
-			//$doc =& JFactory::getDocument();
-			//$doc->addScript('/components/com_courses/assets/js/plugins.js');
-
 			Hubzero_Document::addComponentScript($this->_option, 'assets/js/courses.offering');
 			Hubzero_Document::addSystemScript('jquery.masonry');
 
@@ -332,7 +303,7 @@ class CoursesControllerOffering extends Hubzero_Controller
 		$this->view->config               = $this->config;
 		$this->view->plugins              = $plugins;
 		$this->view->course_plugin_access = $course_plugin_access;
-		$this->view->pages                = $this->course->offering()->pages();
+		//$this->view->pages                = $this->course->offering()->pages();
 		$this->view->sections             = $sections;
 		$this->view->notifications        = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
 		$this->view->display();

@@ -48,7 +48,7 @@ if (!$no_html) : ?>
 		<h2>
 			<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
 		</h2>
-		<p>
+		<p id="page_identity">
 			<strong>
 				Offering:
 			</strong>
@@ -60,14 +60,25 @@ if (!$no_html) : ?>
 			</strong>
 			<span>
 				<?php 
-				if ($this->course->offering()->section()->get('alias') !== '__default')
+			/*if ($this->course->access('manage'))
+			{
+				?>
+				<select name="section">
+				<?php
+				foreach ($this->course->offering()->sections() as $section)
 				{
-					echo $this->escape(stripslashes($this->course->offering()->section()->get('title'))); 
+					?>
+					<option value="<?php echo $this->escape(stripslashes($section->get('alias'))); ?>"<?php if ($section->get('alias') == $this->course->offering()->section()->get('alias')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
+					<?php
 				}
-				else
-				{
-					echo 'Self-paced';
-				}
+				?>
+				</select>
+				<?php
+			}
+			else
+			{*/
+				echo $this->escape(stripslashes($this->course->offering()->section()->get('title'))); 
+			//}
 				?>
 			</span>
 		</p>
@@ -113,43 +124,8 @@ if (!$no_html) : ?>
 		<div id="page_container">
 			<div id="page_sidebar">
 
-				<div id="page_identity">
-					<a href="<?php echo JRoute::_($base . '&offering=' . $this->course->offering()->get('alias') . ($this->course->offering()->section()->get('alias') != '__default' ? ':' . $this->course->offering()->section()->get('alias') : '')); ?>" title="<?php echo $this->escape(stripslashes($this->course->offering()->get('title'))); ?> Home">
-						<?php echo $this->escape(stripslashes($this->course->offering()->get('title'))); ?>
-					</a>
-				</div><!-- /#page_identity -->
-			
-			<?php /*if ($this->course->offering()->access('view')) : ?>
-				<ul id="course_options">
-					<?php if ($this->course->offering()->access('manage', 'section')) : ?>
-						<li class="no-float">
-							<a href="<?php echo JRoute::_($base . '&offering=' . $this->course->offering()->get('alias')); ?>" class="dropdown course-manager">
-								<?php echo 'Manager'; //($isManager) ? 'Manager' : 'Member'; ?>
-								<span class="caret"></span>
-							</a>
-							<ul class="dropdown-menu pull-right">
-						<?php if ($this->course->offering()->access('manage', 'section')) : ?> 
-								<li><a class="course-invite" href="/courses/<?php echo $this->course->get('alias'); ?>/invite">Invite Students</a></li>
-						<?php endif; ?>
-						<?php if ($this->course->offering()->access('manage')) { ?>
-								<li><a class="course-outline" href="/courses/<?php echo $this->course->get('alias'); ?>/manage/<?php echo $this->course->offering()->get('alias'); ?>">Build Outline</a></li>
-								<li><a class="course-pages" href="/courses/<?php echo $this->course->get('alias'); ?>/manage/<?php echo $this->course->offering()->get('alias'); ?>/pages">Manage Pages</a></li>
-						<?php } else if ($this->course->offering()->access('manage', 'section')) { ?>
-								<li><a class="course-outline" href="/courses/<?php echo $this->course->get('alias'); ?>/manage/<?php echo $this->course->offering()->get('alias'); ?>">Change Dates</a></li>
-						<?php } ?>
-						<?php if ($this->course->access('manage')) : ?> 
-								<li class="divider"></li>
-								<li><a class="course-delete" href="/courses/<?php echo $this->course->get('alias'); ?>/delete">Delete Offering</a></li>
-						<?php endif; ?>
-							</ul>
-						</li>
-					<?php endif; ?>
-				</ul><!-- /#page_options -->
-			<?php endif;*/ ?>
-
 				<ul id="page_menu">
 					<?php
-						//echo Hubzero_Course_Helper::displayCourseMenu($this->course, $this->course->offering(), $this->sections, $this->plugins, $this->course_plugin_access, $this->pages, $this->active);
 						//instantiate objects
 						$juser =& JFactory::getUser();
 
@@ -183,7 +159,7 @@ if (!$no_html) : ?>
 								$link = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . ($this->course->offering()->section()->get('alias') != '__default' ? ':' . $this->course->offering()->section()->get('alias') : '') . '&active=' . $active);
 
 								//Are we on the overview tab with sub course pages?
-								if ($cat['name'] == 'outline' && count($this->pages) > 0)
+								if ($cat['name'] == 'outline') // && count($this->pages) > 0
 								{
 									$true_active_tab = JRequest::getVar('active', 'outline');
 									$li_cls = ($true_active_tab != $this->active) ? '' : $li_cls;
@@ -195,33 +171,9 @@ if (!$no_html) : ?>
 									else
 									{
 										$menu_item  = "<li class=\"{$li_cls} course-overview-tab\">";
-										$menu_item .= '<a class="outline" href="' . $link . '">Outline</a>';
+										$menu_item .= '<a class="outline" href="' . $link . '" title="' . JText::_('Outline') . '">' . JText::_('Outline') . '</a>';
 									} 
-
-									$menu_item .= "<ul>";
-
-									foreach ($this->pages as $page)
-									{
-										//page access settings
-										//$page_access = ($page['privacy'] == 'default') ? $access : $page['privacy'];
-
-										//page vars
-										$title = $page['title'];
-										$cls = ($true_active_tab == $page['url']) ? 'active' : '';
-										$link = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . ($this->course->offering()->section()->get('alias') != '__default' ? ':' . $this->course->offering()->section()->get('alias') : '') . '&active=' . $page['url']);
-
-										//page menu item
-										if (!$this->course->offering()->access('view'))
-										{
-											$menu_item .= '<li class="protected"><span class="page">' . $this->escape(stripslashes($title)) . '</span></li>';
-										}
-										else
-										{
-											$menu_item .= '<li class="' . $cls . '"><a href="' . $link . '" class="page">' . $this->escape(stripslashes($title)) . '</a></li>';
-										}
-									}
-
-									$menu_item .= '</ul>';
+									$menu_item .= '</li>';
 									$menu_item .= '</li>';
 								}
 								else
@@ -241,13 +193,13 @@ if (!$no_html) : ?>
 
 										//create menu item
 										$menu_item  = '<li class="' . $li_cls . ' course-' . $cls . '-tab">';
-										$menu_item .= '<a class="' . $cls . '" title="' . $this->escape(stripslashes($this->course->get('title'))) . '\'s ' . $this->escape(stripslashes($title)) . ' Page" href="' . $link . '">' . $title . '</a>';
-										$menu_item .= '<span class="meta">';
+										$menu_item .= '<a class="' . $cls . '" title="' . $this->escape(stripslashes($title)) . '" href="' . $link . '">' . $title . '</a>';
 										if ($meta_count)
 										{
+											$menu_item .= '<span class="meta">';
 											$menu_item .= '<span class="count">' . $meta_count . '</span>';
+											$menu_item .= '</span>';
 										}
-										$menu_item .= '</span>';
 										$menu_item .= $meta_alert;
 										$menu_item .= '</li>';
 									}
@@ -261,7 +213,7 @@ if (!$no_html) : ?>
 					?>
 				</ul><!-- /#page_menu -->
 
-				<div id="page_info">
+				<?php /* <div id="page_info">
 					<?php 
 						$dateFormat = '%d %b, %Y';
 						$timeFormat = '%I:%M %p';
@@ -285,7 +237,7 @@ if (!$no_html) : ?>
 							</li>
 						</ul>
 					</div>
-				</div>
+				</div> */ ?>
 			</div><!-- /#page_sidebar --> 
 
 			<div id="page_main">

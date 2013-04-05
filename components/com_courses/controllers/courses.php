@@ -192,7 +192,7 @@ class CoursesControllerCourses extends Hubzero_Controller
 		{
 			$this->view->filters['index'] = '';
 		}
-		$this->view->filters['tag'] = JRequest::getWord('tag', '');
+		$this->view->filters['tag'] = JRequest::getVar('tag', '');
 
 		$model = CoursesModelCourses::getInstance();
 

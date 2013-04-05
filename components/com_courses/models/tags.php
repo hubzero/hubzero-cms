@@ -59,13 +59,13 @@ class CoursesTags extends TagsHandler
 	 * @param      integer $objectid  Object ID
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function getTagCloud($limit, $start)
+	public function getTagCloud($limit, $tagstring='')
 	{
 		$t = new TagsTag($this->_db);
 		//$tags = $t->getCloud($this->_tbl, $admin, null);
 		$tags = $t->getTopTags($limit, 'courses', 'tcount DESC', 0);
 
-		return $this->buildCloud($tags, 'alpha');
+		return $this->buildCloud($tags, 'alpha', 0, $tagstring);
 	}
 
 	/**
@@ -76,7 +76,7 @@ class CoursesTags extends TagsHandler
 	 * @param      integer $objectid  Object ID
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function getTags($limit, $start)
+	public function getTags($limit)
 	{
 		$t = new TagsTag($this->_db);
 		//$tags = $t->getCloud($this->_tbl, $admin, null);
@@ -91,7 +91,7 @@ class CoursesTags extends TagsHandler
 	 * @param      integer $objectid  Object ID
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function getTagString($limit, $start)
+	public function getTagString($limit)
 	{
 		$t = new TagsTag($this->_db);
 		/*$query = "SELECT t.id, t.tag, t.raw_tag
@@ -130,12 +130,22 @@ class CoursesTags extends TagsHandler
 	 * @param      integer $showsizes Show tag size based on use?
 	 * @return     string HTML
 	 */
-	public function buildCloud($tags, $sort='alpha', $showsizes=0)
+	public function buildCloud($tags, $sort='alpha', $showsizes=0, $tagstring='')
 	{
 		$html = '';
 
 		if ($tags && count($tags) > 0) 
 		{
+			$lst = array();
+			if (is_string($tagstring))
+			{
+				$lst = $this->_parse_tags($tagstring);
+			}
+			else
+			{
+				$lst = $tagstring;
+			}
+
 			$min_font_size = 1;
 			$max_font_size = 1.8;
 
@@ -176,17 +186,29 @@ class CoursesTags extends TagsHandler
 					break;
 				}
 
+				if ($tagstring)
+				{
+					if (!in_array($tag->tag, $lst))
+					{
+						$lst[] = $tag->tag;
+					}
+				}
+				else
+				{
+					$lst = array($tag->tag);
+				}
+
 				$tag->raw_tag = stripslashes($tag->raw_tag);
 				$tag->raw_tag = str_replace('&amp;', '&', $tag->raw_tag);
 				$tag->raw_tag = str_replace('&', '&amp;', $tag->raw_tag);
 				if ($showsizes == 1) 
 				{
 					$size = $min_font_size + ($tag->count - $min_qty) * $step;
-					$tll[$tag->tag] = "\t".'<li' . $class . '><span style="font-size: ' . round($size, 1) . 'em"><a href="' . JRoute::_('index.php?option=com_courses&task=browse&tag=' . $tag->tag) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></span></li>' . "\n";
+					$tll[$tag->tag] = "\t".'<li' . $class . '><span style="font-size: ' . round($size, 1) . 'em"><a href="' . JRoute::_('index.php?option=com_courses&task=browse&tag=' . implode(',', $lst)) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></span></li>' . "\n";
 				} 
 				else 
 				{
-					$tll[$tag->tag] = "\t".'<li' . $class . '><a href="' . JRoute::_('index.php?option=com_courses&task=browse&tag=' . $tag->tag) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></li>' . "\n";
+					$tll[$tag->tag] = "\t".'<li' . $class . '><a href="' . urldecode(JRoute::_('index.php?option=com_courses&task=browse&tag=' . implode(',', $lst))) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></li>' . "\n";
 				}
 			}
 			if ($sort == 'alpha') 

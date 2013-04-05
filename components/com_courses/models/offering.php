@@ -40,8 +40,8 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models'
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'student.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'manager.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'announcement.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'page.php');
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'page.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'role.php');
 
 /**
@@ -696,9 +696,19 @@ class CoursesModelOffering extends CoursesModelAbstract
 		{
 			$this->_page = null;
 
-			if (isset($this->_pages) && is_array($this->_pages) && isset($this->_pages[$url]))
+			if (isset($this->_pages) && is_array($this->_pages))
 			{
-				$this->_page = $this->_pages[$url];
+				foreach ($this->_pages as $page)
+				{
+					if ($page->get('url') == $url)
+					{
+						$this->_page = $page;
+					}
+				}
+			}
+			if (!$this->_page)
+			{
+				$this->_page = new CoursesModelPage(0);
 			}
 		}
 
@@ -720,6 +730,10 @@ class CoursesModelOffering extends CoursesModelAbstract
 		{
 			$filters['offering_id'] = (int) $this->get('id');
 		}
+		if (!isset($filters['active']))
+		{
+			$filters['active'] = 1;
+		}
 
 		if (isset($filters['count']) && $filters['count'])
 		{
@@ -732,9 +746,14 @@ class CoursesModelOffering extends CoursesModelAbstract
 		{
 			$tbl = new CoursesTablePage($this->_db);
 
-			if (!($results = $tbl->find($filters)))
+			$results = array();
+
+			if (($data = $tbl->find($filters)))
 			{
-				$results = array();
+				foreach ($data as $key => $result)
+				{
+					$results[] = new CoursesModelPage($result);
+				}
 			}
 
 			$this->_pages = $results;
