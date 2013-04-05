@@ -258,7 +258,7 @@ class plgXMessageHandler extends JPlugin
 
 				//$user =& JUser::getInstance($uid);
 				$user = Hubzero_User_Profile::getInstance($uid);
-				if (!$user->get('username')) 
+				if (!is_object($user) || !$user->get('username')) 
 				{
 					continue;
 				}
