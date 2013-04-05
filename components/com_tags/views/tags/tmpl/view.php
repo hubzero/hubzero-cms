@@ -151,6 +151,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 		echo $html;
 		?>
+			<p>
+				<strong>Note:</strong>  <?php echo JText::_('Results do not include pending, unpublished, and some private items.'); ?>
+			</p>
 		</div>
 	</div><!-- / .aside -->
 	<div class="subject">

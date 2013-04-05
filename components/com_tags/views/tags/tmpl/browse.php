@@ -60,6 +60,9 @@ $this->filters['sort'] = '';
 				Here you will find a list of all tags currently in use. Click a tag to see the items tagged with it.
 			</p>
 <?php } ?>
+			<p>
+				<strong>Note:</strong> <?php echo JText::_('# tagged includes all usage (pending, unpublished, and private items).'); ?>
+			</p>
 		</div><!-- / .aside -->
 		<div class="subject">
 			
