@@ -261,7 +261,10 @@ class PdfForm
 			{
 				$im = new imagick($this->fname.'['.($this->pages - 1).']');
 				$im->setImageFormat('png');
-				//$im->scaleImage(1000,0);
+				$im->trimImage(0);
+				$im->scaleImage(582,0);
+				$im->sharpenImage(1,.5);
+				$im->borderImage('white', 15, 15);
 				$im->writeImage($this->base . $fid . DS . $this->pages  . '.png');
 			}
 		}
