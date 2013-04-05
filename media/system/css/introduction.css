@@ -75,12 +75,17 @@
 	#introduction li {
 		margin: 0;
 		padding: 0 0 0 5px;
+		position: relative;
 	}
 	#introduction li:before {
 		content: '›';
 		font-size: 18px;
 		line-height: 18px;
 		padding-right: 5px;
+		margin-top: -9px;
+		position: absolute;
+		left: 0;
+		top: 50%;
 	}
 	#introduction .primary {
 		display: inline-block;

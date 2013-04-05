@@ -651,15 +651,14 @@ background:url("/components/com_groups/assets/img/menu-active.png") no-repeat 0 
 	display: block;
 }
 #group_options li .dropdown.group-manager {
-	color: rgba(255,0, 198, 0.9);
+	color: #fff;
 } 
 #group_options:hover > .dropdown.group-manager,
 #group_options li .dropdown.group-manager:hover {
-	color: rgba(255,0, 198, 1.0);
 	background: #353535;
 }
 #group_options li .dropdown.group-member {
-	color: rgba(20,208,0,0.9);
+	color: #fff;
 } 
 #group_options:hover > .dropdown.group-member,
 #group_options li .dropdown.group-member:hover {
