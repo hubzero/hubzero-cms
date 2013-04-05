@@ -250,13 +250,21 @@
 		-o-box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
 		box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
 	}
-	
+	/* Student */
+	ol.comments .student>.comment-content {
+		border-color: #0fa1ca;
+	}
+	ol.comments .student>.comment-content:before {
+		border-color: transparent #0fa1ca transparent transparent;
+	}
+	/* Manager */
 	ol.comments .manager>.comment-content {
 		border-color: #504545;
 	}
 	ol.comments .manager>.comment-content:before {
 		border-color: transparent #504545 transparent transparent;
 	}
+	/* Instructor */
 	ol.comments .instructor>.comment-content {
 		border-color: #619926;
 	}
@@ -290,13 +298,35 @@
 		box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.1),inset 0 0 0 4px rgba(255, 255, 255, 0.2),inset 0 0 0 2px #508815;
 	}
 	ol.comments .role.student {
-		display: none;
+		background: #0fa1ca;
+		-webkit-box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.1),inset 0 0 0 4px rgba(255, 255, 255, 0.2),inset 0 0 0 2px rgba(15, 161, 207, 0.1);
+		-moz-box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.1),inset 0 0 0 4px rgba(255, 255, 255, 0.2),inset 0 0 0 2px rgba(15, 161, 207, 0.1);
+		box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.1),inset 0 0 0 4px rgba(255, 255, 255, 0.2),inset 0 0 0 2px rgba(15, 161, 207, 0.1);
 	}
 	ol.comments .role.manager {
 		background: #504545;
 		-webkit-box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.1),inset 0 0 0 4px rgba(255, 255, 255, 0.2),inset 0 0 0 2px #333;
 		-moz-box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.1),inset 0 0 0 4px rgba(255, 255, 255, 0.2),inset 0 0 0 2px #333;
 		box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.1),inset 0 0 0 4px rgba(255, 255, 255, 0.2),inset 0 0 0 2px #333;
+	}
+
+	ol.comments li.indent1 {
+		margin-left: 70px;
+	}
+	ol.comments li.indent2 {
+		margin-left: 140px;
+	}
+	ol.comments li.indent3 {
+		margin-left: 210px;
+	}
+	ol.comments li.indent4 {
+		margin-left: 280px;
+	}
+	ol.comments li.indent5 {
+		margin-left: 350px;
+	}
+	ol.comments li.indent6 {
+		margin-left: 420px;
 	}
 
 	.entry-search {

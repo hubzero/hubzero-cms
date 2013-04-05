@@ -38,6 +38,10 @@ if ($this->comments && is_array($this->comments)) { ?>
 
 	foreach ($this->comments as $comment) 
 	{
+		if ($comment->object_id && !$comment->parent)
+		{
+			continue;
+		}
 		//if ($comment->replies) 
 		//{
 			$view = new Hubzero_Plugin_View(

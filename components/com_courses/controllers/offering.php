@@ -204,7 +204,7 @@ class CoursesControllerOffering extends Hubzero_Controller
 		$this->_buildTitle();
 
 		// Build pathway
-		$this->_buildPathway($this->course->offering()->pages());
+		$this->_buildPathway();
 
 		// Get plugins
 		JPluginHelper::importPlugin('courses');

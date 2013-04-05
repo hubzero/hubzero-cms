@@ -30,13 +30,13 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 
 $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=forum';
 ?>
-<!-- <ul id="page_options">
+<ul>
 	<li>
-		<a class="comments" href="<?php echo JRoute::_($base . '&unit=' . $this->filters['section'] . '&b=' . $this->category->alias); ?>">
+		<a class="comments" href="<?php echo JRoute::_($base . '&unit=' . $this->category->alias); ?>">
 			<?php echo JText::_('All discussions'); ?>
 		</a>
 	</li>
-</ul> -->
+</ul>
 
 <div class="main section">
 	<h3 class="thread-title">

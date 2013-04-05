@@ -106,9 +106,11 @@ class plgCoursesPages extends Hubzero_Plugin
 			}
 		}
 
+		// Is the user a course manager?
 		$total = $offering->pages(array('count' => true));
-		if (!count($total))
+		if (!$offering->access('manage') && !$total)
 		{
+			// Don't show the tab if no pages
 			return;
 		}
 

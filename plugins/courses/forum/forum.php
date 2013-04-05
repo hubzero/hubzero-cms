@@ -1372,6 +1372,8 @@ class plgCoursesForum extends Hubzero_Plugin
 		$view->filters['state']    = 1;
 		$view->filters['scope']    = 'course';
 		$view->filters['scope_id'] = $this->offering->get('id');
+		$view->filters['sort_Dir'] = 'ASC';
+		$view->filters['sort'] = 'c.created';
 
 		$thread   = JRequest::getInt('thread', 0);
 
@@ -1411,11 +1413,31 @@ class plgCoursesForum extends Hubzero_Plugin
 		// Get reply count
 		$view->total = $view->post->getCount($view->filters);
 
-		// Get replies
-		//$view->rows = $view->post->getRecords($view->filters);
+		//$view->filters['parent']   = $view->post->id;
 		// Get replies
 		//$view->filters['parent'] = 0;
 		$rows = $view->post->getRecords($view->filters);
+
+		$children = array(
+			0 => array()
+		);
+
+		$levellimit = ($view->filters['limit'] == 0) ? 500 : $view->filters['limit'];
+		
+		foreach ($rows as $v)
+		{
+			//$children[0][] = $v;
+			//$children[$v->id] = $v->children();
+			
+			//$v->set('name', '');
+			$pt      = $v->parent;
+			$list    = @$children[$pt] ? $children[$pt] : array();
+			array_push($list, $v);
+			$children[$pt] = $list;
+		}
+		// Get replies
+		//$view->filters['parent'] = 0;
+		/*$rows = $view->post->getRecords($view->filters);
 
 		$children = array(
 			0 => array()
@@ -1426,38 +1448,32 @@ class plgCoursesForum extends Hubzero_Plugin
 		// first pass - collect children
 		foreach ($rows as $v)
 		{
-			/*$children[0][] = $v;
-			$children[$v->get('id')] = $v->children();*/
-			
-			//$v->set('name', '');
 			$pt      = $v->parent;
 			$list    = @$children[$pt] ? $children[$pt] : array();
 			array_push($list, $v);
 			$children[$pt] = $list;
 		}
-		
+
 		// second pass - get an indent list of the items
-		//$list = $this->treeRecurse(0, '', array(), $children, max(0, $levellimit-1));
 		$view->rows = array();
 		if (isset($children[$view->post->get('id')]))
 		{
 			$view->rows = $this->treeRecurse($children[$view->post->get('id')], $children);
 		}
-		/*if (!$view->rows)
-		{
-			$view->rows = array();
-		}*/
+
 		if (isset($children[0]) && !$children[0][0]->object_id)
 		{
 			array_unshift($view->rows, $children[0][0]);
-		}
-		
+		}*/
+		$list = $this->_treeRecurse(0, '', array(), $children, max(0, $levellimit-1));
+
+		$view->rows = array_slice($list, $view->filters['start'], $view->filters['limit']);
 
 		$view->filters['parent']   = $view->post->id;
 
 		// Record the hit
 		$view->participants = $view->post->getParticipants($view->filters);
-		
+
 		// Get attachments
 		$view->attach = new ForumAttachment($this->database);
 		$view->attachments = $view->attach->getAttachments($view->post->id);
@@ -1494,6 +1510,57 @@ class plgCoursesForum extends Hubzero_Plugin
 		}
 
 		return $view->loadTemplate();
+	}
+
+	/**
+	 * Recursive function to build tree
+	 * 
+	 * @param      integer $id       Parent ID
+	 * @param      string  $indent   Indent text
+	 * @param      array   $list     List of records
+	 * @param      array   $children Container for parent/children mapping
+	 * @param      integer $maxlevel Maximum levels to descend
+	 * @param      integer $level    Indention level
+	 * @param      integer $type     Indention type
+	 * @return     void
+	 */
+	public function _treeRecurse($id, $indent, $list, $children, $maxlevel=9999, $level=0, $type=1)
+	{
+		if (@$children[$id] && $level <= $maxlevel)
+		{
+			foreach ($children[$id] as $v)
+			{
+				$id = $v->id;
+
+				//if ($type) 
+				//{
+					$pre    = ' treenode';
+					$spacer = ' indent' . $level;
+				/*} 
+				else 
+				{
+					$pre    = '- ';
+					$spacer = '&nbsp;&nbsp;';
+				}*/
+
+				if ($v->parent == 0) 
+				{
+					$txt = '';
+				} 
+				else 
+				{
+					$txt = $pre;
+				}
+				$pt = $v->parent;
+
+				$list[$id] = $v;
+				$list[$id]->treename = "$indent$txt";
+				$list[$id]->children = count(@$children[$id]);
+
+				$list = $this->_treeRecurse($id, $indent . $spacer, $list, $children, $maxlevel, $level+1, $type);
+			}
+		}
+		return $list;
 	}
 
 	/**
