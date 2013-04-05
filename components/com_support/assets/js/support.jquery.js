@@ -120,7 +120,7 @@ HUB.Support = {
 						$.post($(this).attr('action'), $(this).serialize(), function(data) {
 							$('#custom-views').html(data);
 							HUB.Support.addEditQueryEvent();
-							$.fancybox().close();
+							$.fancybox.close();
 						});
 					});
 				}
