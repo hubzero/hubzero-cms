@@ -35,7 +35,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <div class="section-header-extra">
 	<ul id="page_options">
 		<li class="last hide" id="personalize">
-			<a class="dashboard" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->juser->get('id').'&active=dashboard'); ?>" title="<?php echo JText::_('PLG_MEMBERS_DASHBOARD_PERSONALIZE_TITLE'); ?>">
+			<a class="dashboard" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->juser->get('id').'&active=dashboard'); ?>">
 				<?php echo JText::_('PLG_MEMBERS_DASHBOARD_PERSONALIZE'); ?>
 			</a>
 			<div id="modules-dock">
