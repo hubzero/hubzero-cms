@@ -45,7 +45,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 
 <div class="content-box">
 	<h3 class="content-box-header">
-		Create a note
+		<span>Create a note</span>
 		<div class="content-box-close"></div>
 	</h3>
 	<div class="content-box-inner">

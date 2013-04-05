@@ -246,7 +246,7 @@
 }
 .delete-tray .assets-deleted {
 	display: none;
-	margin: 10px 5px;
+	margin: 10px;
 	list-style: none;
 	height: 100%;
 }
@@ -255,6 +255,10 @@
 }
 .delete-tray .asset {
 	padding-left: 15px;
+	display: inline-block;
+	width: 100%;
+	box-sizing: border-box;
+	margin: 0;
 }
 .delete-tray .asset:before {
 	display: none;
@@ -271,7 +275,9 @@
 .delete-tray .sortable-assets-handle {
 	display: none;
 }
-.delete-tray .asset-delete {
+.delete-tray .asset-delete,
+.delete-tray .asset-preview,
+.delete-tray .asset-edit {
 	display: none;
 }
 .delete-tray .restore {
@@ -397,8 +403,37 @@
 	float: left;
 	margin-right: 5px;
 }
-.asset-preview {
+a.asset-preview,
+a.asset-delete,
+a.asset-edit {
 	display: inline-block;
+	position: relative;
+	width: 15px;
+	height: 15px;
+	opacity: 0;
+	margin-left: 5px;
+	padding: 0;
+	text-decoration: none;
+	color: #666;
+}
+.asset-preview:before,
+.asset-delete:before,
+.asset-edit:before {
+	position: absolute;
+	top: 0;
+	left: 0;
+	font-family: "fontcons";
+	font-size: 15px;
+	content: "";
+}
+.asset-preview:before {
+	content: "\f00E";
+}
+.asset-edit:before {
+	content: "\270E";
+}
+.asset-delete:before {
+	content: "\f014";
 }
 ul {
 	list-style: none;
@@ -543,7 +578,7 @@ ul {
 	overflow: visible;
 	border: 1px dotted #AAA;
 	margin: 10px 0 1px 0;
-	background: #FAFAFA;
+	background: #F7F7F7;
 	padding-left: 10px;
 }
 .asset-group-item:not(.add-new) {
@@ -561,29 +596,15 @@ ul {
 }
 .uploadfiles {
 	position: relative;
-	background: #FFF;
-	border: 2px dotted #AAA;
-	padding: 7px;
-	margin: 10px 10px 10px 5px;
+	background: #FDFDFD;
+	border-left: 1px dotted #AAA;
+	padding: 15px;
 	text-align: center;
 	float: right;
-
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
 }
 .uploadfiles p {
 	margin: 0;
 	padding: 0;
-}
-.uploadfiles p:first-child {
-	padding: 0 0 0 20px;
-}
-.uploadfiles:before {
-	font-style: normal;
-	left: 7px;
-	top: 7px;
-	content: "\f093";
 }
 .bar {
 	height: 18px;
@@ -617,25 +638,6 @@ ul {
 .asset-group {
 	width: 100%;
 	overflow: visible;
-}
-.asset-delete {
-	position: relative;
-	width: 14px;
-	height: 14px;
-	display: inline-block;
-	opacity: 0;
-	margin-left: 5px;
-}
-.asset-delete:hover {
-	cursor: pointer;
-}
-.asset-delete:before {
-	position: absolute;
-	top: 0;
-	left: 0;
-	font-family: "fontcons";
-	font-size: 14px;
-	content: "\f014";
 }
 
 /* Asset types */
@@ -821,9 +823,11 @@ ul {
 /* Progress bar style overrides (from ui defaults) */
 .ui-progressbar {
 	height: 1em;
+	border-radius: 2px;
 }
 .stop .ui-widget-header {
 	border: 1px solid #7F0000;
+	border-radius: 2px;
 	background: #FF0000;
 	background: -webkit-gradient(linear, left top, left bottom, from(#FF0000), to(#BF0000));
 	background: -webkit-linear-gradient(#FF0000, #BF0000);
@@ -836,6 +840,7 @@ ul {
 }
 .yield .ui-widget-header {
 	border: 1px solid #7F7600;
+	border-radius: 2px;
 	background: #FFEC00;
 	background: -webkit-gradient(linear, left top, left bottom, from(#FFEC00), to(#BFB100));
 	background: -webkit-linear-gradient(#FFEC00, #BFB100);
@@ -848,6 +853,7 @@ ul {
 }
 .go .ui-widget-header {
 	border: 1px solid #317F07;
+	border-radius: 2px;
 	background: #59E80C;
 	background: -webkit-gradient(linear, left top, left bottom, from(#59E80C), to(#49BF0A));
 	background: -webkit-linear-gradient(#59E80C, #49BF0A);
@@ -898,7 +904,9 @@ ul {
 }
 .unit-edit input[type="submit"],
 .wiki-edit input[type="submit"],
-.wiki-edit input[type="button"] {
+.wiki-edit input[type="button"],
+.edit-asset input[type="submit"],
+.edit-asset input[type="button"] {
 	width: 100%;
 	border: 1px solid #888;
 	border-radius: 4px;
@@ -924,26 +932,34 @@ ul {
 }
 .unit-edit input[type="submit"]:hover,
 .wiki-edit input[type="submit"]:hover,
-.wiki-edit input[type="button"]:hover {
+.wiki-edit input[type="button"]:hover,
+.edit-asset input[type="submit"]:hover,
+.edit-asset input[type="button"]:hover {
 	-webkit-box-shadow: inset 0 2px 7px #999;
 	-moz-box-shadow: inset 0 2px 7px #999;
 	box-shadow: inset 0 2px 7px #999;
 }
 .unit-edit input[type="submit"]:active,
 .unit-edit input[type="submit"]:active,
-.wiki-edit input[type="button"]:active {
+.wiki-edit input[type="button"]:active
+.edit-asset input[type="submit"]:active,
+.edit-asset input[type="button"]:active {
 	-webkit-box-shadow: inset 1px 2px 3px #111;
 	-moz-box-shadow: inset 1px 2px 3px #111;
 	box-shadow: inset 0 2px 2px #111;
 }
-.wiki-edit {
+.wiki-edit,
+.edit-asset {
 	padding: 15px;
 }
-.wiki-edit h3 {
+.wiki-edit h3,
+.edit-asset h3 {
 	display: none;
 }
 .wiki-edit input[type="submit"],
-.wiki-edit input[type="button"] {
+.wiki-edit input[type="button"],
+.edit-asset input[type="submit"],
+.edit-asset input[type="button"] {
 	width: auto;
 }
 .wiki-edit input[type="text"] {
@@ -956,7 +972,8 @@ ul {
 	color: red;
 	font-size: 11px;
 }
-.wiki-edit label {
+.wiki-edit label,
+.edit-asset label {
 	font-size: 14px;
 	font-weight: bolder;
 }

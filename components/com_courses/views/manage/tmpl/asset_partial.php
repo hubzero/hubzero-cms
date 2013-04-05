@@ -53,10 +53,9 @@ if ($this->a->get('type') == 'video')
 			<input type="hidden" name="id" value="<?= $this->a->get('id') ?>" />
 		</form>
 	</div>
-	<div class="asset-preview">
-		(<a class="" href="<?= $href ?>">preview</a>)
-	</div>
-	<div class="asset-delete"></div>
+	<a class="asset-preview" href="<?= $href ?>" title="preview"></a>
+	<a class="asset-edit" href="#" title="edit"></a>
+	<a class="asset-delete" href="#" title="delete"></a>
 	<form action="/api/courses/asset/togglepublished" class="next-step-publish">
 		<span class="next-step-publish">
 			<label class="published-label" for="published">

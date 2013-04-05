@@ -22,6 +22,7 @@ if (!jq) {
 
 HUB.CoursesOutline = {
 	jQuery: jq,
+	counter: 1,
 
 	initialize: function()
 	{
@@ -35,6 +36,7 @@ HUB.CoursesOutline = {
 		HUB.CoursesOutline.addNewItem();
 		HUB.CoursesOutline.makeUniform();
 		HUB.CoursesOutline.togglePublished();
+		HUB.CoursesOutline.setupAssetEdit();
 		HUB.CoursesOutline.setupAuxAttach();
 		HUB.CoursesOutline.setupFileUploader();
 		HUB.CoursesOutline.resizeFileUploader(null, HUB.CoursesOutline.resizeDeleteTray());
@@ -171,7 +173,7 @@ HUB.CoursesOutline = {
 				high -= $(this).children('.uploadfiles').css('margin-bottom').replace("px", "");
 				high -= $(this).children('.uploadfiles').css('padding-bottom').replace("px", "");
 				high -= $(this).children('.uploadfiles').css('padding-top').replace("px", "");
-				high -= 4; // For borders - this is hacky
+				//high -= 4; // For borders - this is hacky
 
 			$(this).children('.uploadfiles').css('min-height', high);
 		});
@@ -197,17 +199,17 @@ HUB.CoursesOutline = {
 				$(this).not('.add-new').animate({"padding-left":60}, 250);
 				$(this).find('.sortable-assets-handle').show('slide', 250);
 				$(this).find('.asset:not(.nofiles)').animate({"margin-left":30}, 250);
-				$(this).find('.asset-delete').animate({"opacity":1}, 250);
+				$(this).find('.asset-delete, .asset-preview, .asset-edit').animate({"opacity":0.8}, 250);
 			},
 			out: function(){
 				$(this).find('.sortable-handle').hide('slide', 250);
 				$(this).not('.add-new').animate({"padding-left":10}, 250);
 				$(this).find('.sortable-assets-handle').hide('slide', 250);
 				$(this).find('.asset:not(.nofiles)').animate({"margin-left":10}, 250);
-				$(this).find('.asset-delete').animate({"opacity":0}, 250);
+				$(this).find('.asset-delete, .asset-preview, .asset-edit').animate({"opacity":0}, 250);
 			},
-			timeout: 250,
-			interval: 250
+			timeout: 150,
+			interval: 150
 		});
 
 		$(".sortable").sortable({
@@ -218,11 +220,11 @@ HUB.CoursesOutline = {
 			tolerance: 'pointer',
 			opacity: '0.6',
 			items: 'li:not(.add-new, .asset)',
-			start: function(){
+			start: function(e, ui){
 				// Style the placeholdwer based on the size of the item grabbed
 				$(".placeholder").css({
-					'height': $(event.target).parent('asset-group-item').outerHeight(),
-					'margin': $(event.target).parent('asset-group-item').css('margin')
+					'height': ui.item.outerHeight(),
+					'margin': ui.item.css('margin')
 				});
 			},
 			update: function(){
@@ -301,7 +303,9 @@ HUB.CoursesOutline = {
 		var $ = this.jQuery;
 
 		// Delete icon/button
-		$('.unit').on('click', '.asset-delete', function() {
+		$('.unit').on('click', '.asset-delete', function(e) {
+			e.preventDefault();
+
 			var form       = $(this).siblings('.next-step-publish').serializeArray();
 			var asset      = $(this).parent('li');
 			var assetgroup = asset.parents('ul.assets-list');
@@ -595,7 +599,7 @@ HUB.CoursesOutline = {
 
 			// If this is an Exam, we also want to set deployment info
 			if(item.hasClass('exam') && item.hasClass('notpublished')){
-				var assetA    = item.find('.asset-preview a');
+				var assetA    = item.find('a.asset-preview');
 				var assetHref = assetA.attr('href');
 
 				// Create ajax call to get the form id
@@ -657,7 +661,74 @@ HUB.CoursesOutline = {
 		});
 	},
 
-	setupAuxAttach: function() {
+	setupAssetEdit: function()
+	{
+		var $ = this.jQuery;
+		var contentBox = $('.content-box');
+
+		function contentBoxClose() {
+			contentBox.hide('slide', {'direction':'down'}, 500, function() {
+				$('.content-box-overlay').fadeOut(100);
+			});
+			contentBox.find('iframe').attr('src', '');
+		}
+
+		// Add close on escape
+		$(document).bind('keydown', function (e) {
+			if(e.which == 27) {
+				contentBoxClose();
+			}
+		});
+
+		// Add close on click of close button
+		$('.content-box-close').on('click', function() {
+			contentBoxClose();
+		});
+
+		$('.unit').on('click', '.asset-edit', function (e) {
+			e.preventDefault();
+
+			var form  = $(this).siblings('.next-step-publish');
+			var src   = '/courses/'+form.find('input[name="course_id"]').val()+'/manage/'+form.find('input[name="offering"]').val();
+				src  += '?scope=asset&scope_id='+form.find('input[name="scope_id"]').val()+'&asset_id='+form.find('.asset_id').val()+'&tmpl=component';
+
+			$('.content-box-header span').html('Edit Asset');
+
+			contentBox.show('slide', {'direction':'down'}, 500, function () {
+				$(this).siblings('.content-box-overlay').fadeIn(100);
+				$(this).find('iframe').attr('src', src);
+			});
+		});
+
+		// Attach submit and cancel buttons
+		contentBox.find('iframe').load(function() {
+			var content = $(this).contents();
+			content.find('.cancel').click(function() {
+				contentBoxClose();
+			});
+
+			content.find('.edit-form').submit(function (e) {
+				e.preventDefault();
+
+				// Create ajax call to change info in the database
+				$.ajax({
+					url: $(this).attr('action'),
+					data: $(this).serializeArray(),
+					statusCode: {
+						// 200 OK
+						200: function (data, textStatus, jqXHR){
+							// Close box
+							contentBoxClose();
+							HUB.CoursesOutline.updateAssetInPage(data);
+						}
+					}
+				});
+			});
+		});
+	},
+
+	setupAuxAttach: function()
+	{
 		var $ = this.jQuery;
 		var contentBox = $('.content-box');
 
@@ -705,6 +776,8 @@ HUB.CoursesOutline = {
 			var form       = $(this).siblings('.aux-attachments-form');
 			var src        = '/courses/'+form.find('input[name="course_id"]').val()+'/manage/'+form.find('input[name="offering"]').val();
 				src       += '?scope=wiki&scope_id='+form.find('input[name="scope_id"]').val()+'&tmpl=component';
+
+			$('.content-box-header span').html('Create a Note');
 
 			contentBox.show('slide', {'direction':'down'}, 500, function () {
 				$(this).siblings('.content-box-overlay').fadeIn(100);
@@ -810,7 +883,6 @@ HUB.CoursesOutline = {
 			var dialog          = $("#dialog-confirm");
 			var targetName      = '';
 			var ulCount         = 0;
-			var counter         = 1;
 
 			// Setup dialog message box
 			dialog.dialog({
@@ -850,14 +922,14 @@ HUB.CoursesOutline = {
 							// Check to see if there are multiple ways of handling this file type
 							} else if(json.handlers.length > 1) {
 								// Iterate counter (for uniqueness)
-								counter++;
+								HUB.CoursesOutline.counter++;
 
 								// Handle multiple handlers for extension
 								message += '<ul class="handlers-list">';
 								message += '<p class="asset file">' + data.files[0].name + '</p>';
 								$.each(json.handlers, function(index, value){
 									message += '<li class="handler-item">';
-									message += '<a id="handler-item-' + counter + '-' + value.classname + '" class="dialog-button">';
+									message += '<a id="handler-item-' + HUB.CoursesOutline.counter + '-' + value.classname + '" class="dialog-button">';
 									message += value.message;
 									message += '</a>';
 									message += '</li>';
@@ -869,7 +941,7 @@ HUB.CoursesOutline = {
 
 								// Bind click events to the message buttons
 								$.each(json.handlers, function (index, value){
-									targetName = '#handler-item-' + counter + '-' + value.classname;
+									targetName = '#handler-item-' + HUB.CoursesOutline.counter + '-' + value.classname;
 									dialog.on('click', targetName, function(){
 										fileupload.fileupload(
 											'option',
@@ -912,13 +984,13 @@ HUB.CoursesOutline = {
 									dialog.dialog("open");
 								}
 							} else {
-								counter++;
+								HUB.CoursesOutline.counter++;
 								fileSubmit(data);
 							}
 
 							// Shared function for submitting a fileupload request (and setting appropriate callbacks)
 							function fileSubmit(data) {
-								var progressBarId = 'progress-bar-'+counter;
+								var progressBarId = 'progress-bar-'+HUB.CoursesOutline.counter;
 
 								// Setup the progress handler
 								fileupload.on('fileuploadprogress', function (e, data) {
@@ -1086,13 +1158,14 @@ HUB.CoursesOutline = {
 		var $ = this.jQuery;
 
 		// Setup preview links to open in lightbox
-		$('.outline-main').on('click', '.asset-preview a', function(e){
+		$('.outline-main').on('click', 'a.asset-preview', function(e){
 			e.preventDefault();
 
 			$.fancybox({
 				type: 'iframe',
-				autoSize: true,
+				autoSize: false,
 				width: ($(window).width())*5/6,
+				height: ($(window).height())*5/6,
 				href: $(this).attr('href')
 			});
 		});
@@ -1138,6 +1211,30 @@ HUB.CoursesOutline = {
 		});
 	},
 
+	updateAssetInPage: function(data)
+	{
+		var $ = this.jQuery;
+
+		var asset = $('#asset_'+data.asset_id);
+
+		asset.find('.asset-item-title').html(data.asset_title);
+		asset.find('.title-text').val(data.asset_title);
+
+		// If we're moving the asset to a new scope
+		if (data.files[0].scope_id.length && asset.find('input[name="scope_id"]').val() != data.files[0].scope_id) {
+			var clone = asset.clone();
+
+			asset.remove();
+
+			clone.hide();
+			clone.find('input[name="scope_id"]').val(data.files[0].scope_id);
+
+			$('#assetgroupitem_'+data.files[0].scope_id+' .assets-list').append(clone);
+
+			clone.slideDown('fast');
+		}
+	},
+
 	Templates: {
 		asset : [
 			'<li id="asset_<%= asset_id %>" class="asset-item asset <%= asset_type %> notpublished">',
@@ -1153,10 +1250,9 @@ HUB.CoursesOutline = {
 						'<input type="hidden" name="id" value="<%= asset_id %>" />',
 					'</form>',
 				'</div>',
-				'<div class="asset-preview">',
-					'(<a class="" href="<%= asset_url %>">preview</a>)',
-				'</div>',
-				'<div class="asset-delete"></div>',
+				'<a class="asset-preview" href="<%= asset_url %>" title="preview"></a>',
+				'<a class="asset-edit" href="#" title="edit"></a>',
+				'<a class="asset-delete" href="#" title="delete"></a>',
 				'<form action="/api/courses/asset/togglepublished" class="next-step-publish">',
 					'<span class="next-step-publish">',
 					'<label class="published-label" for="published">',

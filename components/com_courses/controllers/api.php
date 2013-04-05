@@ -471,6 +471,7 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 
 		// Include needed file(s)
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php');
 
 		// Grab incoming id, if applicable
 		$id = JRequest::getInt('id', null);
@@ -548,8 +549,6 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 		// If we're creating a new asset, we should also create a new asset association
 		if(!$id)
 		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php');
-
 			// Create asset assoc object
 			$assocObj = new CoursesTableAssetAssociation($this->db);
 
@@ -562,6 +561,35 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 			{
 				$this->setMessage("Asset association save failed", 500, 'Internal server error');
 				return;
+			}
+		}
+		else
+		{
+			$scope_id          = JRequest::getInt('scope_id', null);
+			$original_scope_id = JRequest::getInt('original_scope_id', null);
+			$scope             = JRequest::getCmd('scope', 'asset_group');
+
+			// Only worry about this if scope id is changing
+			if ($scope_id != $original_scope_id)
+			{
+				// Create asset assoc object
+				$assocObj = new CoursesTableAssetAssociation($this->db);
+
+				if (!$assocObj->loadByAssetScope($asset->get('id'), $original_scope_id, $scope))
+				{
+					$this->setMessage("Failed to load asset association", 500, 'Internal server error');
+					return;
+				}
+
+				// Set new scope id
+				$row->scope_id  = $scope_id;
+
+				// Save the asset association
+				if (!$assocObj->save($row))
+				{
+					$this->setMessage("Asset association save failed", 500, 'Internal server error');
+					return;
+				}
 			}
 		}
 
