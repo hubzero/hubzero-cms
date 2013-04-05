@@ -80,6 +80,15 @@ class ToolsControllerPipeline extends Hubzero_Controller
 			);
 			return;
 		}*/
+		// Check logged in status
+		if (JFactory::getUser()->get('guest')) 
+		{
+			$return = base64_encode(JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . JRequest::getWord('task', ''), false, true), 'server'));
+			$this->setRedirect(
+				JRoute::_('index.php?option=com_login&return=' . $return)
+			);
+			return;
+		}
 
 		$this->_authorize();
 
