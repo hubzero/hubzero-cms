@@ -1611,6 +1611,14 @@ class Hubzero_Tool
 		}
 		else
 		{
+			$devs = array_map('trim', explode(',', $tool['developers']));
+			foreach ($devs as $dev)
+			{
+				if (!is_object(JFactory::getUser($dev)))
+				{
+					$err['developers'] =  JText::sprintf('ERR_TEAM_INVALID_USER', (string) $dev);
+				}
+			}
 		}
 
 		if (empty($tool['vncGeometryX']) || empty($tool['vncGeometryY']) || preg_match('#[^0-9]#' , $tool['vncGeometryX']) || preg_match('#[^0-9]#' , $tool['vncGeometryY']))
