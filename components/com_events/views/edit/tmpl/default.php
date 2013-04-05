@@ -109,7 +109,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			if (count($tf) > 0) {
 				echo $tf[0];
 			} else {
-				echo '<input type="text" name="tags" value="'. $this->lists['tags'] .'" size="38" />';
+				echo '<input type="text" name="tags" value="'. $this->escape($this->lists['tags']) .'" size="38" />';
 			}
 ?>
 			</label>
@@ -150,7 +150,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<?php echo $this->lists['state']; ?>
 			</label>
 			<?php } else { ?>
-			<input type="hidden" name="state" value="<?php echo $this->row->state; ?>" />
+			<input type="hidden" name="state" value="<?php echo $this->escape($this->row->state); ?>" />
 			<?php } ?>
 		</fieldset><div class="clear"></div>
 <?php if ($this->config->getCfg('calSimpleEventForm') != 'YES') { ?>

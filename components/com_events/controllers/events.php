@@ -2180,7 +2180,7 @@ class EventsControllerEvents extends Hubzero_Controller
 		//remove really unwanted tags
 		do {
 			$oldstring = $string;
-			$string = preg_replace('#</*(applet|meta|xml|blink|link|style|script|embed|object|iframe|frame|frameset|ilayer|layer|bgsound|title|base)[^>]*>#i', '', $string);
+			$string = preg_replace('#</*(applet|meta|xml|blink|link|style|script|embed|object|iframe|input|select|textarea|frame|frameset|ilayer|layer|bgsound|title|base)[^>]*>#i', '', $string);
 		} while ($oldstring != $string);
 
 		return $string;
