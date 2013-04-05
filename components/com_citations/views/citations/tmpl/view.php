@@ -158,7 +158,35 @@ $area = JRequest::getVar('area', 'about');
 	
 		<div class="citation-author">
 			<?php if($citation->author) : ?>
-				<span>By:</span> <?php echo $citation->author; ?>
+				<span>By:</span>
+				<?php
+					$a = array();
+					$authors = array_map('trim', explode(';', $citation->author));
+					foreach ($authors as $author)
+					{
+						preg_match('/{{(.*?)}}/s', $author, $matches);
+						if (!empty($matches))
+						{
+							if (is_numeric($matches[1])) 
+							{
+								$user =& JUser::getInstance($matches[1]);
+								if (is_object($user)) 
+								{
+									$a[] = '<a rel="external" href="' . JRoute::_('index.php?option=com_members&id=' . $matches[1]) . '">' . str_replace($matches[0], '', $author) . '</a>';
+								} 
+								else 
+								{
+									$a[] = $author;
+								}
+							}
+						}
+						else
+						{
+							$a[] = $author;
+						}
+					}
+					echo implode(", ", $a);
+				?>
 			<?php endif; ?>
 		</div>
 		
