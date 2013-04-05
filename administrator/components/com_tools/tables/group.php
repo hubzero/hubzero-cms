@@ -140,7 +140,7 @@ class ToolGroup extends  JTable
 			$group->create();
 			$group->set('type', 2);
 			$group->set('published', 1);
-			$group->set('access', 4);
+			$group->set('discoverability', 0);
 			$group->set('description', 'Dev group for tool ' . $toolid);
 			$group->set('cn', $devgroup);
 			$group->set('members', $existing_members);
