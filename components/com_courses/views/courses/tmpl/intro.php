@@ -114,7 +114,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<h2><?php echo JText::_('COM_COURSES_MY_COURSES'); ?></h2>
 				</div><!-- / .four columns first -->
 				<div class="four columns second third fourth">
-					<div class="clearfix top">
+					<div class="mycourses clearfix top">
 						<?php 
 						if (count($this->mycourses) > 0)
 						{
@@ -159,7 +159,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<h2><?php echo JText::_('COM_COURSES_INTERESTING_COURSES'); ?></h2>
 				</div><!-- / .four columns first -->
 				<div class="four columns second third fourth">
-					<div class="clearfix top">
+					<div class="interestingcourses clearfix top">
 						<?php 
 						if (count($this->interestingcourses) > 0)
 						{
@@ -203,7 +203,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<h2><?php echo JText::_('COM_COURSES_POPULAR_COURSES'); ?></h2>
 			</div><!-- / .four columns first -->
 			<div class="four columns second third fourth">
-				<div class="clearfix top">
+				<div class="popularcourses clearfix top">
 					<?php 
 					if (count($this->popularcourses) > 0)
 					{
