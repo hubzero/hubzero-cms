@@ -187,7 +187,7 @@ if ($shots) {
 					));
 					$view->option = $this->option;
 					$view->contributors = $this->model->contributors('submitter');
-					$view->badges = $this->plugin->get('badges', 0);
+					$view->badges = $this->params->get('badges', 0);
 					$view->showorgs = 1;
 					$view->display();
 					?>

@@ -152,6 +152,7 @@ class plgResourcesAbouttool extends JPlugin
 			$view->curtool  = $model->curtool;
 			$view->alltools = $model->alltools;
 			$view->revision = $model->revision;
+			$view->params   = $this->params;
 
 			// Return the output
 			$arr['html'] = $view->loadTemplate();
