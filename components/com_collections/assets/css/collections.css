@@ -21,6 +21,10 @@
 	#content-header-extra .about:before {
 		content: "\f05a";
 	}
+	#content-header-extra ul,
+	#content-header-extra li {
+		list-style: none;
+	}
 	
 	.com_collections .tagline {
 		font-size: 2em;

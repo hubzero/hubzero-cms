@@ -387,8 +387,9 @@ class CollectionsModelPost extends JObject
 		switch ($this->get('object_type'))
 		{
 			case 'group':
+				ximport('Hubzero_Group');
 				$group = Hubzero_Group::getInstance($this->get('object_id'));
-				$href = 'index.php?option=com_groups&cn=' . $group->get('alias') . '&active=collections&scope=' . $this->get('alias');
+				$href = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=collections&scope=' . $this->get('alias');
 			break;
 
 			case 'member':
