@@ -172,7 +172,8 @@ defined('_JEXEC') or die('Restricted access');
 		<?php } ?>
 		</div><!-- / .comment-content -->
 		<?php
-		if ($this->comment->replies && $this->depth < $this->config->get('comments_depth', 3)) 
+		//if ($this->comment->replies && $this->depth < $this->config->get('comments_depth', 3)) 
+		if ($this->depth < $this->config->get('comments_depth', 3)) 
 		{
 			$view = new Hubzero_Plugin_View(
 				array(
@@ -182,6 +183,7 @@ defined('_JEXEC') or die('Restricted access');
 					'layout'  => 'list'
 				)
 			);
+			$view->thread     = $this->comment->id;
 			$view->option     = $this->option;
 			$view->comments   = $this->comment->replies;
 			$view->post       = $this->post;

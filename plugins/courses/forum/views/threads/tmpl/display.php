@@ -30,18 +30,21 @@ $p =& Hubzero_Wiki_Parser::getInstance();
 
 $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=forum';
 ?>
-<ul>
-	<li>
-		<a class="comments" href="<?php echo JRoute::_($base . '&unit=' . $this->category->alias); ?>">
-			<?php echo JText::_('All discussions'); ?>
-		</a>
-	</li>
-</ul>
+<div class="filters">
+	<div class="filters-inner">
+		<p>
+				<a class="comments btn" href="<?php echo JRoute::_($base . '&unit=' . $this->category->alias); ?>">
+					<?php echo JText::_('All discussions'); ?>
+				</a>
+			</p>
+		<h3 class="thread-title">
+			<?php echo $this->escape(stripslashes($this->post->title)); ?>
+		</h3>
+	</div>
+</div>
 
 <div class="main section">
-	<h3 class="thread-title">
-		<?php echo $this->escape(stripslashes($this->post->title)); ?>
-	</h3>
+	
 
 <?php foreach ($this->notifications as $notification) { ?>
 	<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
@@ -127,6 +130,15 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 			} ?>
 			<?php
 			if ($this->rows) {
+				$last = '0000-00-00 00:00:00';
+				foreach ($this->rows as $row)
+				{
+					if ($row->created > $last)
+					{
+						$last = $row->created;
+					}
+				}
+				echo '<input type="hidden" name="lastchange" id="lastchange" value="' . $last . '" />';
 				$view = new Hubzero_Plugin_View(
 					array(
 						'folder'  => 'courses',

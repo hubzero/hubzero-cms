@@ -69,7 +69,7 @@ $base = 'index.php?option=com_courses&controller=offering&gid=' . $this->course-
 				} 
 				echo "\n";
 				echo $this->escape(stripslashes($note->get('content')));
-				echo "\n";
+				echo "\n\n";
 			}
 
 			echo "\n";

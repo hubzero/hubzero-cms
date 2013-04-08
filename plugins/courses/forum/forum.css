@@ -17,6 +17,35 @@
 		padding: 0;
 	}
 
+	.course_forum .filters h3  {
+		margin: 0 8em 0 0;
+		padding: 0.4em 0 0 0;
+		/*float: left;*/
+		display: block;
+	}
+	.course_forum .filters p {
+		float: right;
+		margin: 0;
+		padding: 0;
+	}
+	.course_forum .filters {
+		overflow: hidden;
+		padding: 1em 20px;
+		margin: -20px -20px 0 -20px;
+		background: #f9f9f9;
+		border-bottom: 1px solid #e9e9e9;
+		position: relative;
+	}
+	.course_forum .filters .filters-inner {
+	}
+
+	.course_forum .below {
+		background: #f9f9f9;
+		border-top: 1px solid #e9e9e9;
+		margin: 20px -20px -20px -20px;
+		padding: 0 20px 20px 20px;
+	}
+
 	.course_forum .entry-date-at {
 		visibility: hidden;
 	}
@@ -40,8 +69,8 @@
 		padding: 0;
 		float: right;
 	}
-	#comments-container .edit,
-	#comments-container .delete {
+	ol.comments li .edit,
+	ol.comments li .delete {
 		float: right;
 	}
 	/*#comment-upload {

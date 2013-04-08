@@ -24,10 +24,10 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-if ($this->comments && is_array($this->comments)) { ?>
-	<ol class="comments">
-<?php 
+?>
+<ol class="comments" id="t<?php echo $this->thread; ?>">
+<?php
+if ($this->comments && is_array($this->comments)) { 
 	$cls = 'odd';
 	if (isset($this->cls))
 	{
@@ -69,10 +69,10 @@ if ($this->comments && is_array($this->comments)) { ?>
 		//}
 	}
 ?>
-	</ol>
-	<?php if ($this->depth == 1 && JRequest::getInt('no_html', 0) && JRequest::getVar('fields', null)) { ?>
+	<?php /*if ($this->depth == 1 && JRequest::getInt('no_html', 0) && JRequest::getVar('fields', null)) { ?>
 	<script type="text/javascript">
 	window.top.window.HUB.Plugins.CoursesForum.updateComments(document.getElementsByTagName('ol')[0]);
 	</script>
-	<?php } ?>
+	<?php }*/ ?>
 <?php } ?>
+</ol>

@@ -212,6 +212,16 @@ if (!$this->no_html) {
 <?php } ?>
 			<?php
 			if ($this->rows) {
+				/*$last = '0000-00-00 00:00:00';
+				foreach ($this->rows as $row)
+				{
+					if ($row->created > $last)
+					{
+						$last = $row->created;
+					}
+				}*/
+				echo '<input type="hidden" name="lastchange" id="lastchange" value="' . $this->last . '" />';
+				echo '<input type="hidden" name="lastid" id="lastid" value="' . $this->last_id . '" />';
 				ximport('Hubzero_User_Profile');
 				ximport('Hubzero_Wiki_Parser');
 
@@ -234,6 +244,7 @@ if (!$this->no_html) {
 						'layout'  => 'list'
 					)
 				);
+				$view->thread     = $this->post->id;
 				$view->option     = $this->option;
 				$view->comments   = $this->rows;
 				$view->post       = $this->post;

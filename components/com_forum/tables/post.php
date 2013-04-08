@@ -621,6 +621,136 @@ class ForumPost extends JTable
 	}
 
 	/**
+	 * Build a query based off of filters passed
+	 * 
+	 * @param      array $filters Filters to construct query from
+	 * @return     string SQL
+	 */
+	private function _buildQuery($filters=array())
+	{
+		$query  = " FROM $this->_tbl AS c";
+		$query .= " LEFT JOIN #__xprofiles AS u ON u.uidNumber=c.created_by";
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$query .= " LEFT JOIN #__groups AS a ON c.access=a.id";
+		}
+		else 
+		{
+			$query .= " LEFT JOIN #__viewlevels AS a ON c.access=a.id";
+		}
+
+		$where = array();
+		
+		if (isset($filters['state'])) 
+		{
+			$where[] = "c.state=" . $this->_db->Quote(intval($filters['state']));
+		}
+		if (isset($filters['sticky']) && (int) $filters['sticky'] != 0) 
+		{
+			$where[] = "c.sticky=" . $this->_db->Quote(intval($filters['sticky']));
+		}
+		if (isset($filters['group']) && (int) $filters['group'] >= 0) 
+		{
+			$where[] = "(c.scope_id=" . $this->_db->Quote(intval($filters['group'])) . " AND c.scope=" . $this->_db->Quote('group') . ")";
+		}
+		if (isset($filters['scope']) && (string) $filters['scope']) 
+		{
+			$where[] = "c.scope=" . $this->_db->Quote(strtolower($filters['scope']));
+		}
+		if (isset($filters['scope_id']) && (int) $filters['scope_id'] >= 0) 
+		{
+			$where[] = "c.scope_id=" . $this->_db->Quote(intval($filters['scope_id']));
+		}
+		if (isset($filters['category_id']) && (int) $filters['category_id'] >= 0) 
+		{
+			$where[] = "c.category_id=" . $this->_db->Quote(intval($filters['category_id']));
+		}
+		if (isset($filters['object_id']) && (int) $filters['object_id'] >= 0) 
+		{
+			$where[] = "c.object_id=" . $this->_db->Quote(intval($filters['object_id']));
+		}
+		if (isset($filters['search']) && $filters['search'] != '') 
+		{
+			$where[] = "(LOWER(c.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 
+					OR LOWER(c.comment) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
+		}
+		if (isset($filters['parent']) && (int) $filters['parent'] >= 0) 
+		{
+			$where[] = "c.parent=" . $this->_db->Quote(intval($filters['parent']));
+		}
+		if (isset($filters['start_at']) && $filters['start_at']) 
+		{
+			$where[] = "c.created >" . $this->_db->Quote($filters['start_at']);
+		}
+
+		if (count($where) > 0)
+		{
+			$query .= " WHERE ";
+			$query .= implode(" AND ", $where);
+		}
+
+		if (!isset($filters['count']) || !$filters['count']) 
+		{
+			if (isset($filters['sticky']) && $filters['sticky'] == false) 
+			{
+				if (!isset($filters['sort']) || !$filters['sort']) 
+				{
+					$filters['sort'] = 'activity DESC, c.created';
+				}
+			} 
+			else 
+			{
+				if (!isset($filters['sort']) || !$filters['sort']) 
+				{
+					$filters['sort'] = 'c.sticky DESC, activity DESC, c.created';
+				}
+			}
+			if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'))) 
+			{
+				$filters['sort_Dir'] = 'DESC';
+			}
+			$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+		}
+
+		return $query;
+	}
+
+	/**
+	 * Get records
+	 * 
+	 * @param      array $filters Filters to construct query from
+	 * @return     array
+	 */
+	public function find($filters=array())
+	{
+		$query = "SELECT c.*, u.name, u.picture";
+		if (!isset($filters['parent']) || $filters['parent'] == 0) 
+		{
+			$query .= ", (SELECT COUNT(*) FROM $this->_tbl AS r WHERE r.parent=c.id AND r.state<2) AS replies ";
+			//$query .= ", (SELECT d.created FROM $this->_tbl AS d WHERE d.parent=c.id ORDER BY created DESC LIMIT 1) AS last_activity ";
+			$query .= ", (CASE WHEN c.last_activity != '0000-00-00 00:00:00' THEN c.last_activity ELSE c.created END) AS activity";
+		}
+		$query .= ", (SELECT COUNT(*) FROM #__abuse_reports AS r WHERE r.category='forum' AND r.referenceid=c.id) AS reports ";
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$query .= ", a.name AS access_level";
+		}
+		else 
+		{
+			$query .= ", a.title AS access_level";
+		}
+		$query .= $this->_buildQuery($filters);
+
+		if ($filters['limit'] != 0) 
+		{
+			$query .= ' LIMIT ' . intval($filters['start']) . ',' . intval($filters['limit']);
+		}
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
+	}
+
+	/**
 	 * Get a list of all participants in a thread
 	 * 
 	 * @param      array $filters Filters to build query from

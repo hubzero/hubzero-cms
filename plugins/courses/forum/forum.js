@@ -18,37 +18,34 @@ if (!HUB.Plugins) {
 //----------------------------------------------------------
 //  Forum scripts
 //----------------------------------------------------------
-HUB.Plugins.CoursesForum = {
-	initialize: function() {
-		$$('a.delete').each(function(el) {
-			el.addEvent('click', function(e) {
-				var val = confirm('Are you sure you wish to delete this item?');
-				if (!val) {
-					new Event(e).stop();
-				}
-				return val;
-			});
-		});
-		
-		$$('.reply').each(function(item) {
-			$(item).addEvent('click', function (e) {
-				new Event(e).stop();
-				var frm = $(this).getProperty('rel');
-				if ($(frm).hasClass('hide')) {
-					$(frm).removeClass('hide');
-				} else {
-					$(frm).addClass('hide');
-				}
-			});
-		});
-		
-		$$('.cancelreply').each(function(item) {
-			$(item).addEvent('click', function (e) {
-				new Event(e).stop();
-				$($(this).parentNode.parentNode.parentNode.parentNode).addClass('hide');
-			});
-		});
-	} // end initialize
-}
 
-window.addEvent('domready', HUB.Plugins.CoursesForum.initialize);
+window.addEvent('domready', function(){
+	$$('a.delete').each(function(el) {
+		el.addEvent('click', function(e) {
+			var val = confirm('Are you sure you wish to delete this item?');
+			if (!val) {
+				new Event(e).stop();
+			}
+			return val;
+		});
+	});
+	
+	$$('.reply').each(function(item) {
+		$(item).addEvent('click', function (e) {
+			new Event(e).stop();
+			var frm = $(this).getProperty('rel');
+			if ($(frm).hasClass('hide')) {
+				$(frm).removeClass('hide');
+			} else {
+				$(frm).addClass('hide');
+			}
+		});
+	});
+	
+	$$('.cancelreply').each(function(item) {
+		$(item).addEvent('click', function (e) {
+			new Event(e).stop();
+			$($(this).parentNode.parentNode.parentNode.parentNode).addClass('hide');
+		});
+	});
+});

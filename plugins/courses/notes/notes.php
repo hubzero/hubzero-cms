@@ -234,7 +234,7 @@ class plgCoursesNotes extends JPlugin
 	 */
 	public function _download()
 	{
-		$format = strtolower(JRequest::getWord('format', 'txt'));
+		$format = strtolower(JRequest::getWord('frmt', 'txt'));
 		if (!in_array($format, array('txt', 'csv')))
 		{
 			$format = 'txt';

@@ -53,9 +53,21 @@ $base = 'index.php?option=com_courses&controller=offering&gid=' . $this->course-
 		<div class="filters-inner">
 			<ul>
 				<li>
-					<a class="download btn" href="<?php echo JRoute::_($base . '&active=notes&action=download'); ?>">
+					<a class="download btn" href="<?php echo JRoute::_($base . '&active=notes&action=download&frmt=txt'); ?>">
 						<span><?php echo JText::_('Download'); ?></span>
 					</a>
+					<!-- <ul>
+						<li>
+							<a class="download" href="<?php echo JRoute::_($base . '&active=notes&action=download&frmt=txt'); ?>">
+								<span><?php echo JText::_('Text file (txt)'); ?></span>
+							</a>
+						</li>
+						<li>
+							<a class="download" href="<?php echo JRoute::_($base . '&active=notes&action=download&frmt=csv'); ?>">
+								<span><?php echo JText::_('Comma-separated values (csv)'); ?></span>
+							</a>
+						</li>
+					</ul> -->
 				</li>
 			</ul>
 			<div class="clear"></div>
