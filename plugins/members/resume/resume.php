@@ -837,7 +837,7 @@ class plgMembersResume extends JPlugin
 		if (!$path) 
 		{
 			$this->setError(JText::_('SUPPORT_NO_UPLOAD_DIRECTORY'));
-			return '';
+			return $this->view($database, $option, $member, $emp);
 		}
 
 		// Incoming file
@@ -846,7 +846,7 @@ class plgMembersResume extends JPlugin
 		if (!$file['name']) 
 		{
 			$this->setError(JText::_('SUPPORT_NO_FILE'));
-			return '';
+			return $this->view($database, $option, $member, $emp);
 		}
 
 		// Incoming
