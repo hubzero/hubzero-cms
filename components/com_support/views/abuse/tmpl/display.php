@@ -55,7 +55,8 @@ if ($this->report && !$this->getError()) {
 		<fieldset>
 			<legend><?php echo JText::_('REPORT_ABUSE'); ?></legend>
 	
-			<div class="abuseitem field-wrap">
+			<div class="field-wrap">
+			<div class="abuseitem">
 				<h4><?php 
 					echo ($this->report->href) ? '<a href="' . $this->report->href . '">': '';
 					echo ucfirst($this->cat) . ' by ';
@@ -66,6 +67,7 @@ if ($this->report && !$this->getError()) {
 				<blockquote cite="<?php echo ($this->report->anon != 0) ? JText::_('ANONYMOUS') : $name; ?>">
 					<p><?php echo $this->escape(stripslashes($this->report->text)); ?></p>
 				</blockquote>
+			</div>
 			</div>
 	
 			<p class="multiple-option">
