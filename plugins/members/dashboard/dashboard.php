@@ -1083,6 +1083,20 @@ class plgMembersDashboard extends Hubzero_Plugin
 	}
 
 	/**
+	 * Cancel a task (redirects to default task)
+	 *
+	 * @return	void
+	 */
+	public function cancelTask()
+	{
+		// Redirect
+		$this->setRedirect(
+			'index.php?option=com_members&controller=plugins' . $this->_controller . '&task=manage&plugin=dashboard'
+		);
+		return;
+	}
+
+	/**
 	 * Rebuild the "available modules" list
 	 * 
 	 * @return     void
