@@ -150,7 +150,7 @@ function submitbutton(pressbutton)
 						<td>
 							+<?php echo $this->row->helpful; ?> -<?php echo $this->row->nothelpful; ?>
 							<?php if ( $this->row->helpful > 0 || $this->row->nothelpful > 0 ) { ?>
-								<input type="button" name="reset_helpful" value="Reset Helpful" onclick="submitbutton('resethelpful');" />
+								<input type="button" name="reset_helpful" value="Reset Helpful" onclick="submitbutton('reset');" />
 							<?php } ?>
 						</td>
 					</tr>
