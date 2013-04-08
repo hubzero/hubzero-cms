@@ -90,6 +90,7 @@ CREATE TABLE `host` (
   `status` varchar(20) NOT NULL DEFAULT '',
   `uses` smallint(5) unsigned NOT NULL DEFAULT '0',
   `portbase` int(11) NOT NULL DEFAULT '0',
+  `venue_id` int(11),
   PRIMARY KEY (`hostname`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -219,6 +220,7 @@ CREATE TABLE `#__auth_link` (
   `password` varchar(255) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `username` varchar(255) DEFAULT NULL,
+  `linked_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -514,6 +516,7 @@ CREATE TABLE `#__citations_sponsors` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `sponsor` varchar(150) DEFAULT NULL,
   `link` varchar(200) DEFAULT NULL,
+  `image` varchar(200),
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -1074,6 +1077,44 @@ CREATE TABLE `#__incremental_registration_popover_recurrence` (
   `hours` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+CREATE TABLE `#__item_comments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `item_id` int(11) NOT NULL DEFAULT '0',
+  `item_type` varchar(150) NOT NULL,
+  `content` text NOT NULL,
+  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT '0',
+  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) NOT NULL DEFAULT '0',
+  `anonymous` tinyint(2) NOT NULL DEFAULT '0',
+  `parent` int(11) NOT NULL DEFAULT '0',
+  `notify` tinyint(2) NOT NULL DEFAULT '0',
+  `access` tinyint(2) NOT NULL DEFAULT '0',
+  `state` tinyint(2) NOT NULL DEFAULT '0',
+  `positive` int(11) NOT NULL DEFAULT '0',
+  `negative` int(11) NOT NULL DEFAULT '0',
+  `rating` int(2) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__item_comment_files` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `comment_id` int(11) NOT NULL DEFAULT '0',
+  `filename` varchar(100) DEFAULT NULL,
+  KEY `id` (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__item_votes` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `item_id` int(11) NOT NULL DEFAULT '0',
+  `item_type` varchar(255) DEFAULT NULL,
+  `ip` varchar(15) DEFAULT NULL,
+  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT '0',
+  `vote` tinyint(3) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 CREATE TABLE `#__jobs_admins` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `jid` int(11) NOT NULL DEFAULT '0',
@@ -1230,6 +1271,23 @@ CREATE TABLE `#__market_history` (
   `action` varchar(50) DEFAULT NULL,
   `log` text,
   `market_value` int(11) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__media_tracking` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `session_id` varchar(200) DEFAULT NULL,
+  `ip_address` varchar(100) CHARACTER SET latin1 DEFAULT NULL,
+  `object_id` int(11) DEFAULT NULL,
+  `object_type` varchar(100) CHARACTER SET latin1 DEFAULT NULL,
+  `object_duration` int(11) DEFAULT NULL,
+  `current_position` int(11) DEFAULT NULL,
+  `farthest_position` int(11) DEFAULT NULL,
+  `current_position_timestamp` datetime DEFAULT NULL,
+  `farthest_position_timestamp` datetime DEFAULT NULL,
+  `completed` int(11) DEFAULT NULL,
+  `total_views` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -2810,13 +2868,13 @@ CREATE TABLE `#__xgroups` (
   `cn` varchar(255) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   `published` tinyint(3) DEFAULT '0',
+  `approved` tinyint(3) DEFAULT '1',
   `type` tinyint(3) DEFAULT '0',
-  `access` tinyint(3) DEFAULT '0',
   `public_desc` text,
   `private_desc` text,
   `restrict_msg` text,
   `join_policy` tinyint(3) DEFAULT '0',
-  `privacy` tinyint(3) DEFAULT '0',
+  `discoverability` tinyint(3),
   `discussion_email_autosubscribe` tinyint(3) DEFAULT NULL,
   `logo` varchar(255) DEFAULT NULL,
   `overview_type` int(11) DEFAULT NULL,
@@ -3417,7 +3475,6 @@ INSERT INTO `#__plugins` VALUES ( 49,'Groups - Messages','messages','groups',0,2
 INSERT INTO `#__plugins` VALUES ( 50,'Groups - Projects','projects','groups',0,8,1,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES ( 51,'Groups - Resources','resources','groups',0,2,1,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES ( 52,'Groups - Usage','usage','groups',0,9,0,0,0,0,'0000-00-00 00:00:00','uploadpath=/site/groups/{{gid}}/blog\nposting=0\nfeeds_enabled=0\nfeed_entries=partial');
-INSERT INTO `#__plugins` VALUES ( 53,'Groups - User Group Enrollments','userenrollment','groups',0,11,1,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES ( 54,'Groups - Wiki','wiki','groups',0,1,1,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES ( 55,'Groups - Wishlist','wishlist','groups',0,7,1,0,0,0,'0000-00-00 00:00:00','limit=50');
 INSERT INTO `#__plugins` VALUES ( 56,'HUBzero - Autocompleter','autocompleter','hubzero',0,1,1,0,0,0,'0000-00-00 00:00:00','');
@@ -3524,6 +3581,7 @@ INSERT INTO `#__plugins` VALUES (156,'YSearch - Topics','wiki','ysearch',0,15,1,
 INSERT INTO `#__plugins` VALUES (157,'YSearch - Increase weight of items with contributors matching terms','weightcontributor','ysearch',0,16,1,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES (158,'YSearch - Increase relevance for tool results','weighttools','ysearch',0,17,0,0,0,0,'0000-00-00 00:00:00','');
 INSERT INTO `#__plugins` VALUES (159,'YSearch - Wishlists','wishlists','ysearch',0,18,1,0,0,0,'0000-00-00 00:00:00','');
+INSERT INTO `#__plugins` VALUES (160,'User - Constant Contact', 'constantcontact', 'user', 0, 0, 1, 0, 0, 0, '0000-00-00 00:00:00', '');
 
 INSERT INTO `#__modules` VALUES (1, 'Main Menu', '', 1, 'left', 0, '0000-00-00 00:00:00', 1, 'mod_mainmenu', 0, 0, 1, 'menutype=mainmenu\nmoduleclass_sfx=_menu\n', 1, 0, '');
 INSERT INTO `#__modules` VALUES (2, 'Login', '', 1, 'login', 0, '0000-00-00 00:00:00', 1, 'mod_login', 0, 0, 1, '', 1, 1, '');
