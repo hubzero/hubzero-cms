@@ -38,23 +38,26 @@ ximport('Hubzero_Controller');
  */
 class FeedbackControllerQuotes extends Hubzero_Controller
 {
-
 	/**
-	 * Short description for 'execute'
-	 * 
-	 * Long description (if any) ...
+	 * Execute a task
 	 * 
 	 * @return     void
 	 */
 	public function execute()
 	{
-		$this->type = JRequest::getVar('type', '', 'post');
+		$app =& JFactory::getApplication();
+		$this->type = urldecode($app->getUserStateFromRequest(
+			$this->_option . '.type',
+			'type',
+			'regular'
+		));
+		/*$this->type = JRequest::getVar('type', '', 'post');
 
 		if (!$this->type)
 		{
 			$this->type = JRequest::getVar('type', 'regular', 'get');
 		}
-		$this->type = ($this->type == 'regular') ? $this->type : 'selected';
+		$this->type = ($this->type == 'regular') ? $this->type : 'selected';*/
 
 		parent::execute();
 	}
@@ -337,7 +340,7 @@ class FeedbackControllerQuotes extends Hubzero_Controller
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->controller . 'type=' . $this->type,
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&type=' . $this->type,
 			$msg
 		);
 	}
@@ -381,7 +384,7 @@ class FeedbackControllerQuotes extends Hubzero_Controller
 
 		// Output messsage and redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->controller . 'type=' . $type,
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&type=' . $type,
 			JText::_('FEEDBACK_REMOVED')
 		);
 	}
@@ -394,7 +397,7 @@ class FeedbackControllerQuotes extends Hubzero_Controller
 	public function cancelTask()
 	{
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->controller . 'type=' . $this->type
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&type=' . $this->type
 		);
 	}
 }
