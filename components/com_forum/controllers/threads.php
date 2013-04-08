@@ -545,6 +545,10 @@ class ForumControllerThreads extends Hubzero_Controller
 			$this->editTask($model);
 			return;
 		}
+		if (!$model->anonymous)
+		{
+			$model->anonymous = 0;
+		}
 
 		// Check content
 		if (!$model->check()) 
