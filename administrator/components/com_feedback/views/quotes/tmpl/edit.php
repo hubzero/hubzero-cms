@@ -193,7 +193,7 @@ function checkState(checkboxname)
 		$file = end($pics);
 ?>
 			<input type="hidden" name="picture" value="<?php echo $this->escape($this->row->picture); ?>" />
-			<iframe width="100%" height="350" name="filer" id="filer" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;tmpl=component&amp;file=<?php echo $file; ?>&amp;id=<?php echo $this->row->userid; ?>&amp;qid=<?php echo $this->row->id; ?>"></iframe>
+			<iframe width="100%" height="350" name="filer" id="filer" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;tmpl=component&amp;file=<?php echo $file; ?>&amp;id=<?php echo $this->row->userid; ?>&amp;qid=<?php echo $this->row->id; ?>&amp;type=<?php echo $this->type ?>"></iframe>
 <?php
 	} else {
 		echo '<p class="alert">' . JText::_('FEEDBACK_MUST_BE_SAVED_BEFORE_PICTURE') . '</p>';

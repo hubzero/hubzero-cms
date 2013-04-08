@@ -114,7 +114,14 @@ class FeedbackControllerMedia extends Hubzero_Controller
 		}
 		else
 		{
-			$row = new FeedbackQuotes($this->database);
+			if ($this->type == 'regular')
+			{
+				$row = new FeedbackQuotes($this->database);
+			}
+			else
+			{
+				$row = new SelectedQuotes($this->database);
+			}
 			$row->load($qid);
 
 			// Do we have an old file we're replacing?
@@ -144,7 +151,7 @@ class FeedbackControllerMedia extends Hubzero_Controller
 		}
 
 		// Push through to the image view
-		$this->dipslayTask($file, $id, $qid);
+		$this->displayTask($file, $id, $qid);
 	}
 
 	/**
@@ -168,7 +175,14 @@ class FeedbackControllerMedia extends Hubzero_Controller
 
 		$qid = JRequest::getInt('qid', 0);
 
-		$row = new FeedbackQuotes($this->database);
+		if ($this->type == 'regular')
+		{
+			$row = new FeedbackQuotes($this->database);
+		}
+		else
+		{
+			$row = new SelectedQuotes($this->database);
+		}
 		$row->load($qid);
 
 		// Incoming file
@@ -230,7 +244,7 @@ class FeedbackControllerMedia extends Hubzero_Controller
 		$this->view->id = ($id) ? $id : JRequest::getInt('id', 0);
 
 		ximport('Hubzero_View_Helper_Html');
-		$this->view->dir = Hubzero_View_Helper_Html::niceidformat($id);
+		$this->view->dir = Hubzero_View_Helper_Html::niceidformat($this->view->id);
 
 		// Do we have a file or do we need to get one?
 		$this->view->file = ($file) ? $file : JRequest::getVar('file', '');

@@ -55,6 +55,7 @@ window.onload = passparam;
 					<input type="hidden" name="tmpl" value="component" />
 					<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
 					<input type="hidden" name="qid" value="<?php echo $this->qid; ?>" />
+					<input type="hidden" name="type" value="<?php echo $this->type; ?>" />
 					<input type="hidden" name="task" value="upload" />
 		
 					<input type="file" name="upload" id="upload" size="17" />&nbsp;&nbsp;&nbsp;
@@ -105,7 +106,7 @@ window.onload = passparam;
 			</tr>
 			<tr>
 				<td><input type="hidden" name="currentfile" value="<?php echo $this->file; ?>" /></td>
-				<td><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->cotnroller; ?>&amp;tmpl=component&amp;task=delete&amp;qid=<?php echo $this->qid; ?>&amp;id=<?php echo $this->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1">[ <?php echo JText::_('DELETE'); ?> ]</a></td>
+				<td><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->cotnroller; ?>&amp;tmpl=component&amp;task=delete&amp;qid=<?php echo $this->qid; ?>&amp;id=<?php echo $this->id; ?>&amp;type=<?php echo $this->type; ?>&amp;<?php echo JUtility::getToken(); ?>=1">[ <?php echo JText::_('DELETE'); ?> ]</a></td>
 			</tr>
 <?php } else { ?>
 			<tr>
