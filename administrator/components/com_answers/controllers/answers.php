@@ -158,6 +158,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		$this->view->setLayout('edit');
 
 		// Incoming
+		$id = 0;
 		$qid = JRequest::getInt('qid', 0);
 		$ids = JRequest::getVar('id', array());
 		if (is_array($ids) && !empty($ids))
