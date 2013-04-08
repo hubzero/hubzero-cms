@@ -238,6 +238,7 @@ class AnswersControllerAnswers extends Hubzero_Controller
 		$row->created = $row->created ? $row->created : date("Y-m-d H:i:s");
 		$row->created_by = $row->created_by ? $row->created_by : $this->juser->get('username');
 		$row->state = (isset($answer['state'])) ? 1 : 0;
+		$row->anonymous = (isset($answer['anonymous'])) ? 1 : 0;
 
 		// Check content
 		if (!$row->check())

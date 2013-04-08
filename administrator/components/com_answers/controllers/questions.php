@@ -274,6 +274,8 @@ class AnswersControllerQuestions extends Hubzero_Controller
 			$this->editTask($row);
 			return;
 		}
+		$row->email = (isset($question['email'])) ? 1 : 0;
+		$row->anonymous = (isset($question['anonymous'])) ? 1 : 0;
 
 		// Check content
 		if (!$row->check())
