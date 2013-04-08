@@ -161,6 +161,8 @@ class WishlistControllerWishes extends Hubzero_Controller
 
 		$this->view->setLayout('edit');
 
+		$this->view->wishlist = JRequest::getInt('wishlist', 0);
+
 		if (is_object($row))
 		{
 			$this->view->row = $row;
@@ -178,6 +180,14 @@ class WishlistControllerWishes extends Hubzero_Controller
 			// Load category
 			$this->view->row = new Wish($this->database);
 			$this->view->row->load($id);
+		}
+		if (!$this->view->row->id)
+		{
+			$this->view->row->wishlist = $this->view->wishlist;
+		}
+		else if (!$this->view->wishlist)
+		{
+			$this->view->wishlist = $this->view->row->wishlist;
 		}
 
 		if (version_compare(JVERSION, '1.6', 'ge'))
