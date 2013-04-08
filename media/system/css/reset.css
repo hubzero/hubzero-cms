@@ -48,6 +48,9 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+table th {
+	text-align: left;
+}
 i, em {
 	font-style: italic;
 }
