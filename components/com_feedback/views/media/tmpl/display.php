@@ -59,7 +59,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<td>
 					<img src="<?php echo $this->webpath . DS . $this->path . DS . $this->file; ?>" alt="" id="conimage" height="<?php echo $mh; ?>" width="<?php echo $mw; ?>" /> 
 				</td>
-				<td>
+				<td width="100%">
 					<input type="hidden" name="conimg" value="<?php echo $this->webpath . DS . $this->path . DS . $this->file; ?>" />
 					<input type="hidden" name="task" value="delete" />
 					<input type="hidden" name="file" id="file" value="<?php echo $this->file; ?>" />
