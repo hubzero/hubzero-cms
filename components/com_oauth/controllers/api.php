@@ -67,6 +67,9 @@ class OauthControllerApi extends Hubzero_Api_Controller
 			case 'consumer_request_test':
 				$this->consumer_request_test();
 				break;
+			case 'unsigned_request_test':
+				$this->unsigned_request_test();
+				break;
 			default:
 				$this->not_found();
 				break;
@@ -84,6 +87,11 @@ class OauthControllerApi extends Hubzero_Api_Controller
 		$this->setMessage('Consumer Request Test OK', 200, 'OK');
 	}
 
+	private function unsigned_request_test()
+	{
+		$this->setMessage('Unsigned Request Test OK', 200, 'OK');
+	}
+	
 	/**
 	 * Short description for 'token_info'
 	 * 
@@ -257,6 +265,13 @@ class OauthControllerApi extends Hubzero_Api_Controller
 	 */
 	private function access_token()
 	{
+		if (empty($this->_provider))
+		{
+			$this->_response->setResponseProvides('application/x-www-form-urlencoded,text/html;q=0.9');
+			$this->_response->setErrorMessage('oauth_problem=bad oauth provider',501,'Internal Server Error');
+			return;
+		}
+
 		JLoader::import('Hubzero.User.Password');
 		
 		$xauth_request = false;
