@@ -258,7 +258,7 @@ class Hubzero_Auth_Link
             	"," . $db->Quote($this->params) .
 				");";
 
-            $db->setQuery();
+            $db->setQuery($query);
 
             $result = $db->query();
 
