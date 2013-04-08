@@ -199,6 +199,8 @@ class WishlistControllerLists extends Hubzero_Controller
 			$this->editTask($row);
 			return;
 		}
+		$row->state  = (isset($fields['state']))  ? 1 : 0;
+		$row->public = (isset($fields['public'])) ? 1 : 0;
 
 		// Check content
 		if (!$row->check()) 
