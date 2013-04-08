@@ -564,7 +564,8 @@
 	}
 	#trail {
 		font-size: 0.85em;
-		margin: 0 30px;
+		margin: 0;
+		padding: 0 30px;
 		color: #ccc;
 		background: transparent url("../images/layout/stripes.png") left top repeat-x;
 	}

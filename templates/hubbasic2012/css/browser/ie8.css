@@ -30,6 +30,13 @@
 		z-index: 778;
 		background: transparent url("../../images/layout/stripes.png") left top repeat-x;
 	}
+	#sub-masthead {
+		min-height: 85px;
+		height: 95px;
+	}
+	#sub-masthead #trail span.pathway {
+		padding: 10px 0 5px 0;
+	}
 
 /* Search form */
 	#searchform {
