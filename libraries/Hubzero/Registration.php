@@ -589,7 +589,7 @@ class Hubzero_Registration
 	}
 
 	/**
-	 * Returns userid if a email exists
+	 * Returns userid if email exists
 	 *
 	 * @param string The email to search on
 	 * @return int The user id or 0 if not found
@@ -1222,14 +1222,16 @@ class Hubzero_Registration
 	public function checkusername($username)
 	{
 		$ret['status'] = 'error';
-		if(empty($username)) {
+		if (empty($username)) 
+		{
 			$ret['message'] = 'Please enter a username.';	
 			return $ret;
 		}
 		
 		// check the general validity
-		if(!Hubzero_Registration_Helper::validlogin($username)) {
-			$ret['message'] = 'Invalid login name. Please type at least 2 characters and use only alphanumeric characters.';	
+		if (!Hubzero_Registration_Helper::validlogin($username)) 
+		{
+			$ret['message'] = 'Invalid login name. Please type between 2 and 150 characters and use only alphanumeric characters.';	
 			return $ret;
 		}
 				
@@ -1242,7 +1244,8 @@ class Hubzero_Registration
 		
 		$num_rows = $db->getNumRows();
 		
-		if($num_rows > 0) {
+		if($num_rows > 0) 
+		{
 			$ret['message'] = 'User login name is not available. Please select another one.';
 			return $ret;
 		}
@@ -1251,5 +1254,63 @@ class Hubzero_Registration
 		$ret['message'] = 'User login name is available';		
 		return $ret;
 	}
+	
+	/**
+	 * Generates new available username based on email address
+	 *
+	 * @param 	string 		Email address
+	 * @return	string 		Generated username
+	 */
+	public function generateUsername($email)
+	{
+		$loginMaxLen = 150;
+		
+		ximport('Hubzero_Registration_Helper');
+		$email = explode('@', $email);
+		
+		$local = $email[0];
+		$domain = $email[1];
+		
+		// strip bad characters
+		$local = preg_replace("/[^A-Za-z0-9_\.]/", '', $local);
+		$domain = preg_replace("/[^A-Za-z0-9_\.]/", '', $domain);
+		
+		// Try just the local part of an address
+		$login = $local;
+		// Make sure login username is no longer than max allowed by DB
+		$login = substr($login, 0, $loginMaxLen);
+		$logincheck = Hubzero_Registration::checkusername($login);
+		if (Hubzero_Registration_Helper::validlogin($login) && $logincheck['status'] == 'ok')
+		{
+			return $login;
+		}
+		
+		// try full email address with @ replaced with '_'
+		$login = $local . '_' . $domain;
+		// Make sure login username is no longer than max allowed by DB
+		$login = substr($login, 0, $loginMaxLen);
+		$logincheck = Hubzero_Registration::checkusername($login);
+		if (Hubzero_Registration_Helper::validlogin($login) && $logincheck['status'] == 'ok')
+		{
+			return $login;
+		}
+		
+		// generate username by simply appending a sequential number to local part of an address until there is an avilable username available
+		for ($i = 1; true; $i++)
+		{
+			// Make sure login username is no longer than max allowed by DB
+			$numberLen = strlen($i);
+			
+			$login = substr($local, 0, $loginMaxLen - $numberLen) . $i;
+			$logincheck = Hubzero_Registration::checkusername($login);
+			if (Hubzero_Registration_Helper::validlogin($login) && $logincheck['status'] == 'ok')
+			{
+				return $login;
+			}
+		}
+				
+		return false;
+	}
+	
 }
 
