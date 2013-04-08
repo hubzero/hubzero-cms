@@ -183,6 +183,7 @@ class ForumControllerCategories extends Hubzero_Controller
 
 		// Incoming
 		$section = JRequest::getInt('section_id', 0);
+		$id = 0;
 		$ids = JRequest::getVar('id', array());
 		if (is_array($ids) && !empty($ids)) 
 		{
@@ -206,7 +207,8 @@ class ForumControllerCategories extends Hubzero_Controller
 		{
 			$this->view->row->created_by = $this->juser->get('id');
 			$this->view->row->section_id = $section;
-			$this->view->row->group_id = $section->group_id;
+			$this->view->row->scope      = $this->view->section->scope;
+			$this->view->row->scope_id   = $this->view->section->scope_id;
 		}
 
 		$this->view->sections = array();
