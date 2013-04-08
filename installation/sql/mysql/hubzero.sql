@@ -3341,7 +3341,7 @@ INSERT INTO `#__components` VALUES (63,'ACL','',0,57,'option=com_support&control
 INSERT INTO `#__components` VALUES (53,'Categories','option=com_kb&controller=categories',0,52,'option=com_kb&controller=categories','Categories','com_kb',1,'js/ThemeOffice/component.png',0,'',1);
 INSERT INTO `#__components` VALUES (56,'Wiki','option=com_wiki',0,0,'option=com_wiki','Wiki','com_wiki',0,'js/ThemeOffice/component.png',0,'subpage_separator=/\nhomepage=MainPage\nmax_pagename_length=100\nfilepath=/site/wiki\nmathpath=/site/wiki/math\ntmppath=/site/wiki/tmp\nmaxAllowed=40000000\nimg_ext=jpg,jpeg,jpe,bmp,tif,tiff,png,gif\nfile_ext=jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz\n\n',1);
 INSERT INTO `#__components` VALUES (64,'Abuse Reports','',0,57,'option=com_support&controller=abusereports','Abuse Reports','com_support',4,'js/ThemeOffice/component.png',0,'',1);
-INSERT INTO `#__components` VALUES (55,'Forum','option=com_forum',0,0,'','','com_forum',0,'',0,'',1);
+INSERT INTO `#__components` VALUES (55,'Forum','option=com_forum',0,0,'option=com_forum','Forum','com_forum',0,'',0,'',1);
 INSERT INTO `#__components` VALUES (71,'Roles','',0,67,'option=com_resources&controller=roles','Roles','com_resources',3,'js/ThemeOffice/component.png',0,'',1);
 INSERT INTO `#__components` VALUES (72,'Licenses','',0,67,'option=com_resources&controller=licenses','Licenses','com_resources',4,'js/ThemeOffice/component.png',0,'',1);
 INSERT INTO `#__components` VALUES (73,'Plugins','',0,67,'option=com_resources&controller=plugins','Plugins','com_resources',5,'js/ThemeOffice/component.png',0,'',1);
