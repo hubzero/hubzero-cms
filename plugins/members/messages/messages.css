@@ -231,9 +231,16 @@
 	}	
 	.settings .email {
 		background: url("/plugins/members/messages/images/compose.png") no-repeat 0 0;
+		padding-left: 20px;
 	}
 	.settings .internal {
 		background: url("/plugins/members/messages/images/inbox.png") no-repeat 0 0;
+		padding-left: 20px;
+	}
+	.settings .internal:before,
+	.settings .email:before {
+		content: "";
+		display: none;
 	}
 
 /* Compose */
