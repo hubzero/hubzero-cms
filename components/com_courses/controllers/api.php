@@ -570,7 +570,7 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 			$scope             = JRequest::getCmd('scope', 'asset_group');
 
 			// Only worry about this if scope id is changing
-			if ($scope_id != $original_scope_id)
+			if (!is_null($scope_id) && !is_null($original_scope_id) && $scope_id != $original_scope_id)
 			{
 				// Create asset assoc object
 				$assocObj = new CoursesTableAssetAssociation($this->db);

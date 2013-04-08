@@ -268,8 +268,7 @@ HUB.CoursesOutline = {
 
 				// Update a few styles
 				ui.item.find('.sortable-assets-handle').css("display", "none");
-				ui.item.find('.asset-delete').css("opacity", 0);
-				ui.item.css("margin-left", 10);
+				ui.item.css("margin-left", 0);
 
 				// Get the form data (we're just stealing the info from another form)
 				var form = ui.item.find('.title-form').serializeArray();
@@ -329,8 +328,7 @@ HUB.CoursesOutline = {
 							// Add the asset to the deleted list and fade it in
 							$('ul.assets-deleted').append(html);
 							html.find('.sortable-assets-handle').css("display", "none");
-							html.find('.asset-delete').css("opacity", 0);
-							html.css("margin-left", 10);
+							html.css("margin-left", 0);
 							html.fadeIn('fast');
 
 							// Get count of assets remaining
