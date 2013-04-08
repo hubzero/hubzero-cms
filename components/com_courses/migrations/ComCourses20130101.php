@@ -1,7 +1,7 @@
 <?php
 
-class ComCourses20130101 extends Migration{
-
+class ComCourses20130101 extends Hubzero_Migration
+{
 	protected function up()
 	{
 		$query = "CREATE TABLE IF NOT EXISTS `jos_courses` (

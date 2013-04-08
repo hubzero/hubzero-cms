@@ -1,6 +1,6 @@
 <?php
 
-class ComCourses20130329 extends Migration
+class ComCourses20130329 extends Hubzero_Migration
 {
 	protected function up()
 	{
