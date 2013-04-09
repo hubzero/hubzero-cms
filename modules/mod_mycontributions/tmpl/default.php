@@ -151,7 +151,7 @@ if (!$contributions) {
 	$html .= '</ul>'."\n";
 }
 
-$html .= "\t\t".'<ul class="module-nav"><li><a href="'.JRoute::_('index.php?option=com_resources&task=new').'">'.JText::_('MOD_MYCONTRIBUTIONS_START_NEW').'</a></li></ul>'."\n";
+$html .= "\t\t".'<ul class="module-nav"><li><a href="'.JRoute::_('index.php?option=com_resources&task=draft').'">'.JText::_('MOD_MYCONTRIBUTIONS_START_NEW').'</a></li></ul>'."\n";
 
 // Output final HTML
 echo $html;
