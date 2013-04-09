@@ -696,16 +696,16 @@ class CoursesModelOffering extends CoursesModelAbstract
 		{
 			$this->_page = null;
 
-			if (isset($this->_pages) && is_array($this->_pages))
-			{
-				foreach ($this->_pages as $page)
+			//if (isset($this->_pages) && is_array($this->_pages))
+			//{
+				foreach ($this->pages() as $page)
 				{
 					if ($page->get('url') == $url)
 					{
 						$this->_page = $page;
 					}
 				}
-			}
+			//}
 			if (!$this->_page)
 			{
 				$this->_page = new CoursesModelPage(0);

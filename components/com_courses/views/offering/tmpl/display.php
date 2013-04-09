@@ -122,6 +122,21 @@ if (!$no_html) : ?>
 <?php }*/ ?>
 	<div class="innerwrap">
 		<div id="page_container">
+<?php endif; ?>
+<?php if (!$this->course->offering()->access('view')) { ?>
+			<div id="offering-introduction">
+				<div class="instructions">
+					<p class="warning"><?php echo JText::_('You must be enrolled in this course to view the content.'); ?></p>
+				</div><!-- / .instructions -->
+				<div class="questions">
+					<p><strong><?php echo JText::_('How can I enroll?'); ?></strong></p>
+					<p><?php echo JText::sprintf('To find out if enrollment is still open and how to enroll, visit the <a href="%s">course overview page</a>', JRoute::_($base)); ?></p>
+					<p><strong><?php echo JText::_('Where can I learn more bout this course?'); ?></strong></p>
+					<p><?php echo JText::sprintf('To learn more, either visit the <a href="%s">course overview page</a> or browse the <a href="%s">course listing</a>.', JRoute::_($base), JRoute::_('index.php?option=' . $this->option . '&controller=courses&task=browse')); ?></p>
+				</div><!-- / .post-type -->
+			</div><!-- / #collection-introduction -->
+<?php } else { ?>
+	<?php if (!$no_html) : ?>
 			<div id="page_sidebar">
 
 				<ul id="page_menu">
@@ -171,7 +186,7 @@ if (!$no_html) : ?>
 									else
 									{
 										$menu_item  = "<li class=\"{$li_cls} course-overview-tab\">";
-										$menu_item .= '<a class="outline" href="' . $link . '" title="' . JText::_('Outline') . '">' . JText::_('Outline') . '</a>';
+										$menu_item .= '<a class="outline" href="' . $link . '" data-title="' . JText::_('Outline') . '">' . JText::_('Outline') . '</a>';
 									} 
 									$menu_item .= '</li>';
 									$menu_item .= '</li>';
@@ -180,7 +195,7 @@ if (!$no_html) : ?>
 								{
 									if (!$this->course->offering()->access('view'))
 									{
-										$menu_item  = '<li class="protected members-only course-' . $cls . '-tab" title="This page is restricted to course members only!">';
+										$menu_item  = '<li class="protected members-only course-' . $cls . '-tab" data-title="This page is restricted to course members only!">';
 										$menu_item .= '<span class="' . $cls . '">' . $title . '</span>';
 										$menu_item .= '</li>';
 									}
@@ -193,7 +208,7 @@ if (!$no_html) : ?>
 
 										//create menu item
 										$menu_item  = '<li class="' . $li_cls . ' course-' . $cls . '-tab">';
-										$menu_item .= '<a class="' . $cls . '" title="' . $this->escape(stripslashes($title)) . '" href="' . $link . '">' . $title . '</a>';
+										$menu_item .= '<a class="' . $cls . '" data-title="' . $this->escape(stripslashes($title)) . '" href="' . $link . '">' . $title . '</a>';
 										if ($meta_count)
 										{
 											$menu_item .= '<span class="meta">';
@@ -263,9 +278,12 @@ if (!$no_html) : ?>
 					}
 					?>
 
-<?php if (!$no_html) : ?>
+		<?php if (!$no_html) : ?>
 				</div><!-- /#page_content -->
 			</div><!-- /#page_main -->
+		<?php endif; ?>
+<?php } ?>
+	<?php if (!$no_html) : ?>
 		</div><!-- /#page_container -->
 	</div><!-- /.innerwrap -->
-<?php endif; ?>
+	<?php endif; ?>
