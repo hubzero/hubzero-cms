@@ -467,7 +467,7 @@ INSERT INTO `#__modules_menu` (`moduleid`, `menuid`) VALUES (32,74);
 INSERT INTO `#__modules_menu` (`moduleid`, `menuid`) VALUES (32,75);
 INSERT INTO `#__modules_menu` (`moduleid`, `menuid`) VALUES (32,96);
 INSERT INTO `#__modules_menu` (`moduleid`, `menuid`) VALUES (45,0);
-INSERT INTO `#__modules_menu` (`moduleid`, `menuid`) VALUES (46,12);
+INSERT INTO `#__modules_menu` (`moduleid`, `menuid`) VALUES (46,97);
 INSERT INTO `#__modules_menu` (`moduleid`, `menuid`) VALUES (47,0);
 INSERT INTO `#__modules_menu` (`moduleid`, `menuid`) VALUES (49,1);
 INSERT INTO `#__modules_menu` (`moduleid`, `menuid`) VALUES (50,95);
