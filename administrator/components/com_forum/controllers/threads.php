@@ -364,6 +364,7 @@ class ForumControllerThreads extends Hubzero_Controller
 		// Incoming
 		$ids = JRequest::getVar('id', array(0));
 		$parent = JRequest::getInt('parent', 0);
+		$this->view->parent = $parent;
 		if (is_array($ids)) 
 		{
 			$id = intval($ids[0]);
@@ -537,10 +538,10 @@ class ForumControllerThreads extends Hubzero_Controller
 		}
 
 		$msg = JText::_('Thread Successfully Saved');
-		if ($model->parent)
+		if (($parent = JRequest::getInt('parent', 0)))
 		{
 			$msg = JText::_('Post Successfully Saved');
-			$p = '&task=thread&parent=' . $model->parent;
+			$p = '&task=thread&parent=' . $parent;
 		}
 
 		// Redirect

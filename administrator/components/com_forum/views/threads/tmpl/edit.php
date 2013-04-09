@@ -252,7 +252,8 @@ function submitbutton(pressbutton)
 		<input type="hidden" name="fields[parent]" value="<?php echo $this->row->parent; ?>" />
 	<?php } ?>
 	<!-- <input type="hidden" name="fields[group_id]" value="<?php echo $this->row->group_id; ?>" /> -->
-	<input type="hidden" name="authorid" value="<?php echo $this->row->id; ?>" />
+	<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
+	<input type="hidden" name="parent" value="<?php echo $this->parent; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />

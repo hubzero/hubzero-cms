@@ -147,16 +147,18 @@ if ($this->results)
 		switch ($row->sticky) 
 		{
 			case '1':
-				$stickyTask = '1';
+				$stickyTask = '0';
 				$stickyImg = 'publish_g.png';
 				$stickyAlt = JText::_('Sticky');
+				$stickyTitle = JText::_('not sticky');
 				$scls = 'publish';
 			break;
 			case '0':
 			default:
-				$stickyTask = '0';
+				$stickyTask = '1';
 				$stickyImg = 'publish_x.png';
 				$stickyAlt = JText::_('Not sticky');
+				$stickyTitle = JText::_('sticky');
 				$scls = 'unpublish';
 			break;
 		}
@@ -215,12 +217,12 @@ if ($this->results)
 				</td>
 				<td>
 <?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $scls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;category_id=<?php echo $this->filters['category_id']; ?>&amp;task=sticky&amp;sticky=<?php echo $stickyTask; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $stickyAlt;?>">
-						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $stickyImg;?>" width="16" height="16" border="0" alt="<?php echo $stickyAlt; ?>" /><?php } else { echo $alt; } ?></span>
+					<a class="state <?php echo $scls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;category_id=<?php echo $this->filters['category_id']; ?>&amp;task=sticky&amp;sticky=<?php echo $stickyTask; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $stickyTitle;?>">
+						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $stickyImg;?>" width="16" height="16" border="0" alt="<?php echo $stickyAlt; ?>" /><?php } else { echo $stickyAlt; } ?></span>
 					</a>
 <?php } else { ?>
 					<span class="state <?php echo $scls; ?>">
-						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $stickyImg;?>" width="16" height="16" border="0" alt="<?php echo $stickyAlt; ?>" /><?php } else { echo $alt; } ?></span>
+						<span><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/<?php echo $stickyImg;?>" width="16" height="16" border="0" alt="<?php echo $stickyAlt; ?>" /><?php } else { echo $stickyAlt; } ?></span>
 					</span>
 <?php } ?>
 				</td>
