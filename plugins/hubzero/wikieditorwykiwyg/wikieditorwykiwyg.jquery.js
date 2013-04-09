@@ -113,7 +113,7 @@ WYKIWYG.converter = function() {
 			{
 				patterns: 'br',
 				type: 'void',
-				replacement: '[[br]]\n'
+				replacement: '[[br]]'
 			},
 			{
 				patterns: 'h([1-6])',
@@ -320,7 +320,7 @@ WYKIWYG.converter = function() {
 				}
 				return lis.join('\n');
 			});
-			return html.replace(/[ \t]+\n|\s+$/g, '');
+			return html; //html.replace(/[ \t]+\n|\s+$/g, '');
 		}
 
 		// Converts lists that have no child lists (of same type) first, then works it's way up
@@ -568,7 +568,7 @@ WYKIWYG.converter = function() {
 			//text = _DoSpans(text);
 			text = _EscapeSpecialCharsWithinTagAttributes(text);
 			text = _EncodeBackslashEscapes(text);
-
+			//text = text.replace(/\[\[br\]\]/gi,"<br />");
 			// Process anchor tags.
 			text = _DoAnchors(text);
 
@@ -581,7 +581,7 @@ WYKIWYG.converter = function() {
 
 			// Do hard breaks:
 			text = text.replace(/  +\n/g," <br />\n");
-			text = text.replace(/\[\[br\]\]/gi,"<br />");
+			
 
 			return text;
 		}
@@ -749,7 +749,7 @@ WYKIWYG.converter = function() {
 			// Turn Wiki div macros [[Div(start, attribute=value)]]content[[Div(end)]] into <div> tags.
 
 			// Don't forget: encode * and _
-			text = text.replace(/(?:\n\n|^)(\[\[Div\(start(.*?)\)\]\]([\s\S]*?)\[\[Div\(end\)\]\])/gi, writeDivTag);
+			text = text.replace(/(?:\n|^)(\[\[Div\(start(.*?)\)\]\]([\s\S]*?)\[\[Div\(end\)\]\])/gi, writeDivTag);
 			return text;
 		}
 
@@ -774,7 +774,8 @@ WYKIWYG.converter = function() {
 				}
 			}
 			
-			var result = '<div' + (a.length > 0 ? ' ' + a.join(' ') : '') + '>' + _RunBlockGamut(content) + '</div>';
+			//var result = '<div' + (a.length > 0 ? ' ' + a.join(' ') : '') + '>' + "\n" + _RunBlockGamut(content) + "\n" + '</div>';
+			var result = '<div' + (a.length > 0 ? ' ' + a.join(' ') : '') + '>' + "\n" + _RunBlockGamut(content) + "\n" + '</div>';
 
 			return result;
 		}
@@ -873,11 +874,18 @@ WYKIWYG.converter = function() {
 			//  ...
 			//  ====== Header 6 ======
 
-			text = text.replace(/^(\={1,6})[ \t]*(.+?)[ \t]*\=*[ \t]*[\#]*(\S*)\n+/gm,
-				function(wholeMatch,m1,m2, m3) {
-					var h_level = m1.length;
-					return hashBlock("<h" + h_level + (m3 ? ' id="'+m3+'"' : '') + ">" + _RunSpanGamut(m2) + "</h" + h_level + ">");
-				});
+			//text = text.replace(/^((\={1,6})(.+?)\=*[ \t]*[\#]*(\S*))\n+/gm,
+			for (var i = 6; i >= 1; --i)
+			{
+				var regex = new RegExp('^(={' + i + '})(.+)(={' + i + '})[ \t]*[#]*(\S*)\n*', 'gm');
+				text = text.replace(regex,
+					function(wholeMatch, m1, m2, m3, m4) {
+						//console.log('"' + wholeMatch + '" "' + m2 + '"');
+						var h_level = m1.length;
+						//console.log("<h" + h_level + (m4 ? ' id="'+m4+'"' : '') + ">" + _RunSpanGamut(m2) + "</h" + h_level + ">");
+						return hashBlock("<h" + h_level + (m4 ? ' id="'+m4+'"' : '') + ">" + _RunSpanGamut(m2.trim()) + "</h" + h_level + ">");
+					});
+			}
 
 			return text;
 		}
@@ -897,7 +905,7 @@ WYKIWYG.converter = function() {
 			var whole_list = /^(([ ]+([*#]|\d\.)[ \t]+)[^\r]+?(~0|\n{2,}(?=\S)(?![ \t]*(?:[*#]|\d\.)[ \t]+)))/gm;
 
 			if (g_list_level) {
-				console.log('list level');
+				//console.log('list level');
 				text = text.replace(whole_list,function(wholeMatch,m1,m2) {
 					var list = m1;
 					var list_type = (m2.search(/[*+\*]/g)>-1) ? "ul" : "ol";
@@ -1682,6 +1690,8 @@ WYKIWYG.converter = function() {
 
 		text = _DoCodeBlocks(text);
 
+		text = text.replace(/\[\[br\]\]/gi,"<br />");
+
 		// Turn block-level HTML blocks into hash entries
 		text = _HashHTMLBlocks(text);
 
@@ -1689,8 +1699,9 @@ WYKIWYG.converter = function() {
 		// Otherwise, the link processor would transform macro syntax.
 		// Ex: [[Macro()]] -> [<a href="Macro()">Macro()</a>]
 		text = _DoDivs(text);
+
 		text = _DoColumns(text);
-		
+
 		text = _StripMacros(text);
 
 		text = _RunBlockGamut(text);
