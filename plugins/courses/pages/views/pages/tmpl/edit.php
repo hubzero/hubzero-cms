@@ -51,7 +51,7 @@ $view->display();
 						$editor =& Hubzero_Wiki_Editor::getInstance();
 						echo $editor->display('fields[content]', 'field_content', stripslashes($this->model->get('content')), '', '50', '50');
 					?>
-					<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiFormatting'); ?>"><?php echo JText::_('Wiki formatting'); ?></a> &amp; <a class="popup" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiMacros'); ?>">Wiki Macros</a> is allowed.</span>
+					<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_topics&scope=&pagename=Help:WikiFormatting'); ?>"><?php echo JText::_('Wiki formatting'); ?></a> &amp; <a class="popup" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiMacros'); ?>">Wiki Macros</a> are allowed.</span>
 				</label>
 
 				<p class="submit">
