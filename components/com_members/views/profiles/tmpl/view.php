@@ -88,7 +88,8 @@ if (!$no_html) {
 				$link = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->profile->get('uidNumber'));
 			?>
 			<div id="page_identity">
-				<a href="<?php echo $link; ?>" id="page_identity_link" title="Go to <?php echo $this->profile->get('name'); ?>'s Profile">
+				<?php $title = ($this->profile->get('uidNumber') == $juser->get("id")) ? "Go to my Dashboard" : "Go to " . $this->profile->get('name') . "'s Profile"; ?>
+				<a href="<?php echo $link; ?>" id="page_identity_link" title="<?php echo $title; ?>">
 					<img src="<?php echo $src; ?>" />
 				</a>
 			</div><!-- /#page_identity --> 
