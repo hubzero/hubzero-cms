@@ -338,7 +338,7 @@ class plgCoursesNotes extends JPlugin
 				return $this->_edit($model);
 			}
 		}
-
+print_r($model); die();
 		if (!$this->view->no_html)
 		{
 			return $this->_list();

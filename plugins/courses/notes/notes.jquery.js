@@ -11,12 +11,18 @@ var typewatch = (function(){
 	jQuery.fn.stickyNotes = function(options) {
 		jQuery.fn.stickyNotes.options = jQuery.extend({}, jQuery.fn.stickyNotes.defaults, options);
 		jQuery.fn.stickyNotes.prepareContainer(this);
-		/*if (typeof HUB.Presenter !== 'undefined') {
-			//start timer
-			var timer = setInterval(function() {
-				jQuery.fn.stickyNotes.checkTimes();
-			}, 5000);
-		}*/
+
+		/*
+		if (jQuery('#notes-list').length) {
+			if (typeof HUB.Presenter !== 'undefined') {
+				//start timer
+				var timer = setInterval(function() {
+					jQuery.fn.stickyNotes.checkTimes();
+				}, 5 * 1000);
+			}
+		}
+		*/
+
 		jQuery.each(jQuery.fn.stickyNotes.options.notes, function(index, note){
 			jQuery.fn.stickyNotes.renderNote(note);
 			jQuery.fn.stickyNotes.notes.push(note);
@@ -132,6 +138,18 @@ var typewatch = (function(){
 		var _div_note 	= 	jQuery(document.createElement('div')).addClass('jStickyNote');
 
 		var _div_header = 	jQuery(document.createElement('div')).addClass('jSticky-header');
+		//if (note.timestamp && note.timestamp != '00:00:00') {
+			var tm = '00:00:00';
+			if (typeof HUB.Presenter !== 'undefined') {
+				var tm = HUB.Presenter.formatTime(HUB.Presenter.getCurrent());
+				console.log(tm);
+				//if (tm > '00:00:06') {
+					_div_header.append(jQuery('<span></span>').addClass('time').text(tm));
+				//}
+			}
+			
+		//}
+
 		_div_note.append(_note_content);
 		var _div_delete = 	jQuery(document.createElement('div'))
 							.addClass('jSticky-delete')
@@ -174,11 +192,20 @@ var typewatch = (function(){
 			"pos_y": pos_y,	
 			"width": jQuery(_div_wrap).width(),
 			"height": jQuery(_div_wrap).height(),
-			"timestamp": '00:00:00'
+			"timestamp": tm
 		};
 		jQuery.fn.stickyNotes.notes.push(note);
 
 		jQuery(_note_content).css('height', jQuery("#note-" + note_id).height() - 32);
+
+		if (jQuery('#notes-list').length) {
+			var _thumbnail = jQuery(document.createElement('div'))
+								.attr('id', 'note-tn-' + note_id)
+								.addClass('jSticky-medium')
+								.addClass('thumbnail')
+								.append(jQuery(document.createElement('p')));
+			jQuery('#notes-list').append(_thumbnail);
+		}
 
 		if (jQuery.fn.stickyNotes.options.createCallback) {
 			jQuery.fn.stickyNotes.options.createCallback(note);
@@ -201,6 +228,10 @@ var typewatch = (function(){
 
 		if (jQuery.fn.stickyNotes.options.deleteCallback) {
 			jQuery.fn.stickyNotes.options.deleteCallback(note);
+		}
+
+		if (jQuery('#note-tn-' + note_id).length) {
+			jQuery('#note-tn-' + note_id).remove();
 		}
 
 		jQuery.fn.stickyNotes.removeNote(note_id);

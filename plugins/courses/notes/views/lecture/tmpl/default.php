@@ -66,7 +66,7 @@ jQuery(document).ready(function(jQuery){
 		editCallback: function(note) {
 			var id = $('#note-' + note.id).attr('data-id');
 			//console.log(url + id + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height + '&txt=' + note.text);
-			$.getJSON(url + id + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height + '&txt=' + note.text, {}, function(data) {
+			$.getJSON(url + id + '&time=' + note.timestamp + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height + '&txt=' + note.text, {}, function(data) {
 				//console.log(id + '_' + note.id);
 				if (id != note.id) {
 					$('#note-' + note.id).attr('data-id', data.id);
@@ -76,10 +76,12 @@ jQuery(document).ready(function(jQuery){
 		},
 		createCallback: function(note) {
 			var tme = null;
-			if (typeof HUB.Presenter !== 'undefined') {
-				tme += '&time=' + HUB.Presenter.formatTime(HUB.Presenter.getCurrent());
+			//if (typeof HUB.Presenter !== 'undefined') {
+			if (note.timestamp && note.timestamp != '00:00:00') {
+				//console.log(note.timestamp);
+				tme += '&time=' + note.timestamp; //HUB.Presenter.formatTime(HUB.Presenter.getCurrent());
 			}
-			//console.log(url + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height + '&txt=New%20note');
+			//console.log(url + tme + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height);
 			$.getJSON(url + tme + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height, {}, function(data) {
 				//$('#note' + note.id).attr('data-id', data);
 				if (id != note.id) {
@@ -102,7 +104,7 @@ jQuery(document).ready(function(jQuery){
 		moveCallback: function(note) {
 			var id = $('#note-' + note.id).attr('data-id');
 			//console.log(url + id + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height);
-			$.getJSON(url + id + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height, {}, function(data) {
+			$.getJSON(url + id + '&time=' + note.timestamp + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height, {}, function(data) {
 				if (id != note.id) {
 					$('#note-' + note.id).attr('data-id', data.id);
 				}
@@ -111,7 +113,7 @@ jQuery(document).ready(function(jQuery){
 		},
 		resizeCallback: function(note) {
 			var id = $('#note-' + note.id).attr('data-id');
-			$.getJSON(url + id + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height, {}, function(data) {
+			$.getJSON(url + id + '&time=' + note.timestamp + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height, {}, function(data) {
 				if (id != note.id) {
 					$('#note-' + note.id).attr('data-id', data.id);
 				}
@@ -122,3 +124,19 @@ jQuery(document).ready(function(jQuery){
 	jQuery("#content").stickyNotes(options);
 });
 </script>
+<?php /*?><div id="notes-list-container">
+	<div id="notes-list">
+<?php foreach ($n as $note) { ?>
+		<div class="jSticky-medium thumbnail" id="note-tn-<?php echo $note->id; ?>">
+			<p><?php echo $note->text; ?></p>
+		</div>
+<?php } ?>
+	</div>
+
+	<p class="notes-controls">
+		<a id="all-notes" class="btn" data-text-show="<?php echo JText::_('Show all'); ?>" data-text-hide="<?php echo JText::_('Hide all'); ?>" href="<?php echo JRoute::_('index.php?option=com_courses&controller=offering&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=notes'); ?>">
+			<?php echo JText::_('Show all'); ?>
+		</a>
+	</p>
+	<div class="clear"></div>
+</div>*/
