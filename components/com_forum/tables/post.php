@@ -721,6 +721,31 @@ class ForumPost extends JTable
 	 * @param      array $filters Filters to construct query from
 	 * @return     array
 	 */
+	public function count($filters=array())
+	{
+		$filers['count'] = true;
+
+		$query = "SELECT COUNT(c.id)";
+		if (version_compare(JVERSION, '1.6', 'lt'))
+		{
+			$query .= ", a.name AS access_level";
+		}
+		else 
+		{
+			$query .= ", a.title AS access_level";
+		}
+		$query .= $this->_buildQuery($filters);
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadResult();
+	}
+
+	/**
+	 * Get records
+	 * 
+	 * @param      array $filters Filters to construct query from
+	 * @return     array
+	 */
 	public function find($filters=array())
 	{
 		$query = "SELECT c.*, u.name, u.picture";
