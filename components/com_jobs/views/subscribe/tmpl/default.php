@@ -44,7 +44,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 <div id="content-header" class="full">
 	<h2><?php echo $this->title; ?></h2>
 </div><!-- / #content-header -->
-
 <div id="content-header-extra">
     <ul id="useroptions">
     <?php if($juser->get('guest')) { ?> 
@@ -62,6 +61,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 </div><!-- / #content-header-extra -->
 
 <div class="main section">
+	<?php
+		if ($this->getError()) { ?>
+		<p class="error"><?php echo $this->getError(); ?></p>
+	<?php } ?>
 <form action="<?php echo JRoute::_('index.php?option='.$option.a.'task=confirm'); ?>" method="post" id="hubForm"  >
 	<div class="explaination">
 			<p><?php echo JText::_('SUBSCRIBE_HINT_EMPLOYER_INFO') ?></p>		

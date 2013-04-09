@@ -36,6 +36,19 @@ HUB.Jobs = {
 			});
 		}
 		
+		// Date picker
+		if ($('#startdate').length > 0) {
+			$( "#startdate" ).datepicker({
+				dateFormat: 'yy-mm-dd'
+			});
+		}
+	
+		if ($('#closedate').length > 0) {
+			$( "#closedate" ).datepicker({
+				dateFormat: 'yy-mm-dd'
+			});
+		}
+		
 		// subscription form
 		if ($('#subForm')) {
 			var frm = $('hubForm');

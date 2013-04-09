@@ -693,7 +693,17 @@ class JobsControllerJobs extends Hubzero_Controller
 		$employer->companyName     = JRequest::getVar('companyName', $profile->get('organization'));
 		$employer->companyLocation = JRequest::getVar('companyLocation', $profile->get('countryresident'));
 		$employer->companyWebsite  = JRequest::getVar('companyWebsite', $profile->get('url'));
-
+		
+		if (!$employer->companyName || !$employer->companyLocation)
+		{
+			$this->setError(JText::_('Please make sure all required fields are filled in'));
+			
+			// send to subscription page
+			$this->_task = 'newsubscribe';
+			$this->subscribe();
+			return;
+		}
+		
 		// do we have a subscription already?
 		$subscription = new Subscription($this->database);
 		if (!$subscription->load($subid)) 
@@ -838,7 +848,7 @@ class JobsControllerJobs extends Hubzero_Controller
 			JError::raiseError(500, $employer->getError());
 			return;
 		}
-
+		
 		$this->_msg = $subid ? JText::_('MSG_SUBSCRIPTION_PROCESSED') : JText::_('MSG_SUBSCRIPTION_ACCEPTED');
 		if ($units) 
 		{
@@ -1710,11 +1720,15 @@ class JobsControllerJobs extends Hubzero_Controller
 		// Push some scripts to the template
 		$this->_getScripts('assets/js/' . $this->_name);
 
-		// Get JS
+		// Push some styles to the tmeplate
 		$document =& JFactory::getDocument();
-		//$document->addScript('components' . DS . $this->_option . DS . 'js' . DS . 'calendar.rc4.js');
-		//$document->addStyleSheet('components' . DS . 'com_events' . DS . 'calendar.css');
-
+		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'calendar.css');
+		
+		if (!JPluginHelper::isEnabled('system', 'jquery'))
+		{
+			$this->_getScripts('assets/js/calendar.rc4');
+		}
+			
 		$jt = new JobType($this->database);
 		$jc = new JobCategory($this->database);
 

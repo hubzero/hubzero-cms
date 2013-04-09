@@ -736,7 +736,7 @@ class plgMembersResume extends JPlugin
 		$out .= $list ? '</a>' : '';
 		//$out .= $seeker->countryresident ? ', '.htmlentities(getcountry($seeker->countryresident)).n : '' . "\n";
 		$out .= $seeker->countryresident ? ', <span class="wherefrom">' . htmlentities($seeker->countryresident) . '</span>' . "\n" : '' . "\n";
-		$out .= '<blockquote><p>' . stripslashes($seeker->tagline) . '</p></blockquote>' . "\n";
+		$out .= $seeker->tagline ? '<blockquote><p>' . stripslashes($seeker->tagline) . '</p></blockquote>' . "\n" : '';
 		//if ($emp or $admin) {
 			// show resume link & status
 			/*

@@ -54,6 +54,8 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$closedate = ($job->closedate && $job->closedate !='0000-00-00 00:00:00') ? JHTML::_('date', $job->closedate, $dateFormat, $tz) : '';
 
 	$status = $this->task != 'addjob' ? $job->status : 4; // draft mode	
+	
+	$countries = Hubzero_Geo::getcountries();
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -112,20 +114,19 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 				<?php echo JText::_('EDITJOB_JOB_LOCATION'); ?>: <span class="required"><?php echo JText::_('REQUIRED'); ?></span>
 				<input name="companyLocation" maxlength="190" id="companyLocation" type="text" value="<?php echo $this->escape(stripslashes($job->companyLocation)); ?>" />
 			</label>
-		<?php if (!$usonly) { ?>
+		<?php if (!$usonly && !empty($countries)) { ?>
 			<label for="companyLocationCountry">
 				<?php echo JText::_('EDITJOB_COUNTRY'); ?>: <span class="required"><?php echo JText::_('REQUIRED'); ?></span>
 				<select name="companyLocationCountry" id="companyLocationCountry">
 					<option value=""><?php echo JText::_('OPTION_SELECT_FROM_LIST'); ?></option>
-				<?php 
-				$countries = Hubzero_Geo::getcountries();
+				<?php 				
 				foreach ($countries as $country) 
 				{
 					$selected = $job->companyLocationCountry ? $job->companyLocationCountry : 'United States';
 					?>
 					<option value="<?php echo $this->escape($country['name']); ?>"<?php if (strtoupper($country['name']) == strtoupper($selected)) { echo ' selected="selected"'; } ?>><?php echo $this->escape($country['name']); ?></option>
 					<?php 
-				} 
+				}				
 				?>
 				</select>
 			</label>

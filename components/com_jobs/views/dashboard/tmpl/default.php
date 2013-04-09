@@ -88,7 +88,6 @@ defined('_JEXEC') or die( 'Restricted access' );
  <?php if($this->emp && !$this->masteradmin) {  ?>
 <div id="content-header-extra">
     <ul id="useroptions">
-    	<li><span class="myjobs"><?php echo JText::_('JOBS_EMPLOYER_DASHBOARD'); ?></span></li>
         <li><a class="shortlist" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=resumes').'?filterby=shortlisted'; ?>"><?php echo JText::_('JOBS_SHORTLIST'); ?></a></li>
    </ul>
 </div><!-- / #content-header-extra -->
