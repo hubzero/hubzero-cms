@@ -461,6 +461,24 @@ class plgCoursesForum extends Hubzero_Plugin
 				$view->filters['limit'] = 0;
 				$view->filters['start'] = 0;
 			}
+
+			if (JRequest::getInt('count', 0))
+			{
+				$data = new stdClass();
+				$data->code = 0;
+				if ($this->getError())
+				{
+					$data->code = 1;
+					//$data->errors = $this->getErrors();
+				}
+				$data->count = $view->post->count($view->filters);
+				//$data->response = $rows;
+
+				ob_clean();
+				header('Content-type: text/plain');
+				echo json_encode($data);
+				exit();
+			}
 			$rows = $view->post->find($view->filters);
 			if ($rows)
 			{
@@ -524,15 +542,15 @@ class plgCoursesForum extends Hubzero_Plugin
 
 				$p =& Hubzero_Wiki_Parser::getInstance();
 
-				ximport('Hubzero_User_Profile_Helper');
+				//ximport('Hubzero_User_Profile_Helper');
 
-				$config =& JComponentHelper::getParams('com_members');
-				$dfthumb = DS . trim($config->get('defaultpic', '/components/com_members/assets/img/profile.gif'), DS);
-				$dfthumb = Hubzero_User_Profile_Helper::thumbit($dfthumb);
+				//$config =& JComponentHelper::getParams('com_members');
+				//$dfthumb = DS . trim($config->get('defaultpic', '/components/com_members/assets/img/profile.gif'), DS);
+				//$dfthumb = Hubzero_User_Profile_Helper::thumbit($dfthumb);
 
 				foreach ($rows as $key => $row)
 				{
-					if ($row->anonymous)
+					/*if ($row->anonymous)
 					{
 						$rows[$key]->picture = $dfthumb;
 						$rows[$key]->name = JText::_('PLG_COURSES_FORUM_ANONYMOUS');
@@ -561,7 +579,7 @@ class plgCoursesForum extends Hubzero_Plugin
 							$rows[$key]->picture = $dfthumb;
 						}
 					}
-					/*if ($row->reports)
+					if ($row->reports)
 					{
 						$rows[$key]->comment = '<p class="warning">' . JText::_('This comment has been reported as abusive and/or containing inappropriate content.') . '</p>';
 					}
@@ -576,7 +594,7 @@ class plgCoursesForum extends Hubzero_Plugin
 					}*/
 					$rows[$key]->replies = null;
 	
-					ximport('Hubzero_User_Profile');
+					/*ximport('Hubzero_User_Profile');
 					ximport('Hubzero_Wiki_Parser');
 
 					$wikiconfig = array(
@@ -588,7 +606,7 @@ class plgCoursesForum extends Hubzero_Plugin
 						'domain'   => $view->post->id
 					);
 
-					$p =& Hubzero_Wiki_Parser::getInstance();
+					$p =& Hubzero_Wiki_Parser::getInstance();*/
 
 					$cview = new Hubzero_Plugin_View(
 						array(
@@ -2383,7 +2401,8 @@ class plgCoursesForum extends Hubzero_Plugin
 		$this->_authorize('thread', $this->model->id);
 
 		// Ensure the user is authorized to view this file
-		if (!$this->params->get('access-view-thread')) 
+		//if (!$this->params->get('access-view-thread')) 
+		if (!$this->course->access('view'))
 		{
 			JError::raiseError(403, JText::_('PLG_COURSES_FORUM_NOT_AUTH_FILE'));
 			return;

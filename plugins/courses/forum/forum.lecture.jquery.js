@@ -65,6 +65,11 @@ HUB.Plugins.CoursesForum = {
 					}
 					last_id.val(item.id);
 
+					if ($('#c' + item.id).length) {
+						// Comment already exists!
+						continue;
+					}
+
 					if ($('#t'+item.parent).length) {
 						//$('#t'+item.parent).prepend($(phtml(item)).hide().fadeIn());
 						if (addto == 'prepend') {
@@ -193,17 +198,30 @@ HUB.Plugins.CoursesForum = {
 						}
 					});
 				});
-				
+				if (!$('#comments-new').length) {
+					$('<div></div>')
+						.attr('id', 'comments-new')
+						.text('0 new comments. Click to load.')
+						.on('click', function() {
+							console.log($('#commentform').attr('action').nohtml() + '&start_at=' + $('#lastchange').val());
+							$.getJSON($('#commentform').attr('action').nohtml() + '&start_at=' + $('#lastchange').val(), {}, function(data){
+								//console.log(data);
+								HUB.Plugins.CoursesForum.updateComments(data, 'prepend');
+								$('#comments-new').hide();
+							});
+						})
+						.hide()
+						.prependTo('.comments-wrap');
+				}
 			setInterval(function () {
 				//console.log($('#commentform').attr('action').nohtml() + '&start_at=' + $('#lastchange').val());
-				$.getJSON($('#commentform').attr('action').nohtml() + '&start_at=' + $('#lastchange').val(), {}, function(data){
+				$.getJSON($('#commentform').attr('action').nohtml() + '&count=1&start_at=' + $('#lastchange').val(), {}, function(data){
 					//console.log(data);
-					if (data.code == 0) {
-						//console.log(data);
-						HUB.Plugins.CoursesForum.updateComments(data, 'prepend');
+					if (data.code == 0 && data.count > 0) {
+						$('#comments-new').text(data.count + ' new comments. Click to load.').fadeIn();
 					}
 				});
-			}, 5 * 1000);
+			}, 15 * 1000);
 		}
 	} // end initialize
 }
