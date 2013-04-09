@@ -187,18 +187,18 @@ class MembersControllerApi extends Hubzero_Api_Controller
 				case 'id_asc':
 					break;
 				case 'id_desc':
-					usort($results, array("MembersApiController", "id_sort_desc"));
+					usort($results, array("MembersControllerApi", "id_sort_desc"));
 					break;
 				case 'started_asc':
 					break;
 				case 'started_desc':
-					usort($results, array("MembersApiController", "started_date_sort_desc"));
+					usort($results, array("MembersControllerApi", "started_date_sort_desc"));
 					break;
 				case 'accessed_asc':
-					usort($results, array("MembersApiController", "accessed_date_sort_asc"));
+					usort($results, array("MembersControllerApi", "accessed_date_sort_asc"));
 					break;
 				case 'accessed_desc':
-					usort($results, array("MembersApiController", "accessed_date_sort_desc"));
+					usort($results, array("MembersControllerApi", "accessed_date_sort_desc"));
 					break;
 			}
 		}
