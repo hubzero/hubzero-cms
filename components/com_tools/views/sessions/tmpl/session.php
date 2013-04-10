@@ -118,7 +118,7 @@ if (!$this->app->sess) {
 				Without Javascript support some operations will not work.
 			</p>
 		</noscript>
-		<p id="troubleshoot" class="help">If your application fails to appear within a minute, <a href="/kb/tools/troubleshoot/">troubleshoot this problem.</a></p>
+		<p id="troubleshoot" class="help">If your application fails to appear within a minute, <a target="_blank" href="http://www.java.com/en/download/testjava.jsp">troubleshoot this problem.</a></p>
 
 		<div id="app-content" class="<?php if ($readOnly) { echo 'view-only'; } ?>">
 			<input type="hidden" id="app-orig-width" name="apporigwidth" value="<?php echo $this->output->width; ?>" />

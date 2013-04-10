@@ -149,7 +149,7 @@ HUB.Mw = {
 				'have Java installed and enabled for your web ' +
 				'browser.  The version of the Java environment ' +
 				'must be greater than or equal to 1.4.  ' +
-				'(<a href="/kb/misc/java/">How do I do this?</a>)  ' +
+				'(<a target="_blank" href="http://www.java.com/en/download/testjava.jsp">How do I do this?</a>)  ' +
 				'Without Java support you will not be able to ' +
 				'view any applications.' +
 			'</p></div>'
