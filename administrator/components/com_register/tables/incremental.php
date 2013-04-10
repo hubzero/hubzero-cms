@@ -111,17 +111,22 @@ class ModIncrementalRegistrationOptions
 	}
 	
 	public function isEnabled($uid = NULL) {
+		$dbg = isset($_GET['dbg']);
 		if (!$uid) {
 			$uid = (int)JFactory::getUser()->get('id');
 		}
 		if (!$uid || !JModuleHelper::isEnabled('incremental_registration')) {
 			return false;
 		}
+		$dbh = JFactory::getDBO();
+		$dbh->setQuery('SELECT emailConfirmed FROM jos_xprofiles WHERE uidNumber = '.$uid);
+		if ($dbh->loadResult() < 0) {
+			return false;
+		}
 		$cur = self::getCurrent();
 		if (!$cur['test_group']) {
 			return true;
 		}
-		$dbh = JFactory::getDBO();
 		$dbh->setQuery('SELECT 1 FROM #__xgroups_members xme WHERE xme.gidNumber = '.$cur['test_group'].' AND xme.uidNumber = '.$uid.' UNION SELECT 1 FROM #__xgroups_managers xma WHERE xma.gidNumber = '.$cur['test_group'].' AND xma.uidNumber = '.$uid.' LIMIT 1');
 		return (bool)$dbh->loadResult();
 	}
