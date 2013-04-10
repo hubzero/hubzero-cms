@@ -83,7 +83,7 @@ $setup_complete = $modmyprojects->pconfig->get('confirm_step', 0) ? 3 : 2;
 <?php } ?>
 	<ul class="module-nav">
 		<li><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=projects'); ?>"><?php echo JText::_('MOD_MYPROJECTS_ALL_MY_PROJECTS'); ?></a></li>
-		<li><a href="<?php echo JRoute::_('index.php?option=com_projects'); ?>"><?php echo JText::_('MOD_MYPROJECTS_ALL_PROJECTS'); ?></a></li>
+		<li><a href="<?php echo JRoute::_('index.php?option=com_projects&task=browse'); ?>"><?php echo JText::_('MOD_MYPROJECTS_ALL_PROJECTS'); ?></a></li>
 		<li><a href="<?php echo JRoute::_('index.php?option=com_projects&task=start'); ?>"><?php echo JText::_('MOD_MYPROJECTS_NEW_PROJECT'); ?></a></li>
 	</ul>
 </div>
