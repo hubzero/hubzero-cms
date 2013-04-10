@@ -118,11 +118,9 @@ HUB.CoursesOutline = {
 	{
 		var $ = this.jQuery;
 
-		// Instantiate variables
-		var progressbar = $('.progress-indicator');
-		var unit        = $('.unit-item');
-
-		unit.each(function(){
+		function resizeProgressBar() {
+			// Instantiate variables
+			var progressbar = $('.progress-indicator');
 			var count       = 0;
 			var haveitems   = 0;
 			var percentage  = 0;
@@ -155,8 +153,9 @@ HUB.CoursesOutline = {
 			$(this).find('.progress-indicator').progressbar({
 				value: percentage
 			});
+		}
 
-		});
+		$('.unit-item').each(resizeProgressBar);
 	},
 
 	resizeFileUploader: function(selector, callback)
@@ -167,7 +166,11 @@ HUB.CoursesOutline = {
 		selector = (selector) ? selector : '.asset-group-item:not(.add-new)';
 		callback = (callback) ? callback : function(){};
 
-		$(selector).each(function(){
+		$(selector).each(resize);
+
+		callback();
+
+		function resize () {
 			var high = $(this).height();
 				high -= $(this).children('.uploadfiles').css('margin-top').replace("px", "");
 				high -= $(this).children('.uploadfiles').css('margin-bottom').replace("px", "");
@@ -176,9 +179,7 @@ HUB.CoursesOutline = {
 				//high -= 4; // For borders - this is hacky
 
 			$(this).children('.uploadfiles').css('min-height', high);
-		});
-
-		callback();
+		}
 	},
 
 	resizeDeleteTray: function()
@@ -194,20 +195,8 @@ HUB.CoursesOutline = {
 
 		// Show handles and delete on hover
 		$('.asset-group-item').hoverIntent({
-			over: function(){
-				$(this).find('.sortable-handle').show('slide', 250);
-				$(this).not('.add-new').animate({"padding-left":60}, 250);
-				$(this).find('.sortable-assets-handle').show('slide', 250);
-				$(this).find('.asset:not(.nofiles)').animate({"margin-left":30}, 250);
-				$(this).find('.asset-delete, .asset-preview, .asset-edit').animate({"opacity":0.8}, 250);
-			},
-			out: function(){
-				$(this).find('.sortable-handle').hide('slide', 250);
-				$(this).not('.add-new').animate({"padding-left":10}, 250);
-				$(this).find('.sortable-assets-handle').hide('slide', 250);
-				$(this).find('.asset:not(.nofiles)').animate({"margin-left":10}, 250);
-				$(this).find('.asset-delete, .asset-preview, .asset-edit').animate({"opacity":0}, 250);
-			},
+			over: over,
+			out: out,
 			timeout: 150,
 			interval: 150
 		});
@@ -220,24 +209,44 @@ HUB.CoursesOutline = {
 			tolerance: 'pointer',
 			opacity: '0.6',
 			items: 'li:not(.add-new, .asset)',
-			start: function(e, ui){
-				// Style the placeholdwer based on the size of the item grabbed
-				$(".placeholder").css({
-					'height': ui.item.outerHeight(),
-					'margin': ui.item.css('margin')
-				});
-			},
-			update: function(){
-				// Save new order to the database
-				var sorted = $(this).sortable('serialize');
-
-				// Update the asset group ordering
-				$.ajax({
-					url: '/api/courses/assetgroup/reorder',
-					data: sorted
-				});
-			}
+			start: start,
+			update: update
 		});
+
+		function over () {
+			$(this).find('.sortable-handle').show('slide', 250);
+			$(this).not('.add-new').animate({"padding-left":60}, 250);
+			$(this).find('.sortable-assets-handle').show('slide', 250);
+			$(this).find('.asset:not(.nofiles)').animate({"margin-left":30}, 250);
+			$(this).find('.asset-delete, .asset-preview, .asset-edit').animate({"opacity":0.8}, 250);
+		}
+
+		function out () {
+			$(this).find('.sortable-handle').hide('slide', 250);
+			$(this).not('.add-new').animate({"padding-left":10}, 250);
+			$(this).find('.sortable-assets-handle').hide('slide', 250);
+			$(this).find('.asset:not(.nofiles)').animate({"margin-left":10}, 250);
+			$(this).find('.asset-delete, .asset-preview, .asset-edit').animate({"opacity":0}, 250);
+		}
+
+		function start (e, ui) {
+			// Style the placeholdwer based on the size of the item grabbed
+			$(".placeholder").css({
+				'height': ui.item.outerHeight(),
+				'margin': ui.item.css('margin')
+			});
+		}
+
+		function update () {
+			// Save new order to the database
+			var sorted = $(this).sortable('serialize');
+
+			// Update the asset group ordering
+			$.ajax({
+				url: '/api/courses/assetgroup/reorder',
+				data: sorted
+			});
+		}
 	},
 
 	makeAssetsSortable: function()
@@ -872,7 +881,9 @@ HUB.CoursesOutline = {
 		$(selector + ' .fileupload').hide();
 
 		// Set up file uploader on our file upload boxes
-		$(selector).each(function(){
+		$(selector).each(attach);
+
+		function attach(){
 			// Initialize a few variables
 			var assetslist      = $(this).parent('.asset-group-item').find('.assets-list');
 			var form            = $(this).find('form');
@@ -1051,7 +1062,7 @@ HUB.CoursesOutline = {
 					});
 				}
 			});
-		});
+		}
 	},
 
 	assetProgress: function(data, progressBarId)

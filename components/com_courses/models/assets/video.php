@@ -65,8 +65,7 @@ class VideoFileAssetHandler extends FileAssetHandler
 		// Check for errors in response
 		if(array_key_exists('error', $return_info))
 		{
-			$this->setMessage($return_info['error'], 500, 'Internal server error');
-			return;
+			return array('error' => $return_info['error']);
 		}
 		else
 		{
@@ -93,8 +92,7 @@ class VideoFileAssetHandler extends FileAssetHandler
 				}
 				else
 				{
-					$this->setMessage('Unzip failed.  Ensure that it is installed.', 500, 'Internal server error');
-					return;
+					return array('error' => 'Unzip failed. Ensure that it is installed.');
 				}
 			}
 		}
