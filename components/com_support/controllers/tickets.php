@@ -1765,7 +1765,7 @@ class SupportControllerTickets extends Hubzero_Controller
 		for ($i=0; $i < count($this->view->comments); $i++)
 		{
 			$comment =& $this->view->comments[$i];
-			$comment->comment = stripslashes($comment->comment);
+			//$comment->comment = stripslashes($comment->comment);
 			if (!strstr($comment->comment, '</p>') && !strstr($comment->comment, '<pre class="wiki">')) 
 			{
 				$comment->comment = str_replace("<br />", '', $comment->comment);
