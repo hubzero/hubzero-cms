@@ -471,9 +471,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 		$xlog->logDebug("publish(): checkpoint 4:$result, running doi stuff");
 
 		// Register DOI handle
-		$old_doi = $this->config->get('usedoi', 0);
-		$new_doi = $this->config->get('new_doi', 0);
-		if ($result && ($old_doi || $new_doi)) 
+		if ($result && $this->config->get('new_doi', 0)) 
 		{
 			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'doi.php');
 
@@ -484,8 +482,7 @@ class ToolsControllerAdmin extends Hubzero_Controller
 
 			// Check if DOI exists for this revision
 			$objDOI = new ResourcesDoi($this->database);
-			$getFullDoi = ($new_doi) ? 1 : 0;
-			$bingo = $objDOI->getDoi($status['resourceid'], $status['revision'], '', $getFullDoi);
+			$bingo = $objDOI->getDoi($status['resourceid'], $status['revision'], '', 1);
 
 			// DOI already exists for this revision
 			if ($bingo) 
@@ -494,96 +491,33 @@ class ToolsControllerAdmin extends Hubzero_Controller
 			}
 			else 
 			{
-				$doiservice = $this->config->get('doi_service', 'http://dir1.lib.purdue.edu:8080/axis/services/CreateHandleService?wsdl');
+				// Get latest DOI label
 				$latestdoi  = $objDOI->getLatestDoi($status['resourceid']);
 				$newlabel   = ($latestdoi) ? (intval($latestdoi) + 1): 1;
-				$jconfig =& JFactory::getConfig();
-				$live_site = rtrim(JURI::base(),'/');
-				$sitename = $jconfig->getValue('config.sitename');
 				
-				$handle     = $this->config->get('doi_prefix', strtolower($sitename) . '-r') . $status['resourceid'] . '.' . $newlabel;
+				// Collect metadata
+				$metadata = array(
+					'targetURL' => $url,
+					'title'     => htmlspecialchars(stripslashes($status['title'])),
+					'version'   => $status['version'],
+					'abstract'  => htmlspecialchars(stripslashes($status['description']))
+				);
+				
+				// Get authors
+				$objA = new ToolAuthor($this->database);
+				$authors = $objA->getAuthorsDOI($status['resourceid']);
 
-				// Register with the new DOI service
-				if ($new_doi) 
+				// Register DOI
+				$doiSuccess = $objDOI->registerDOI($authors, $this->config, $metadata, $doierr);
+
+				// Save [new] DOI record
+				if ($doiSuccess) 
 				{
-					$doiSuccess = 0;
-
-					// Collect metadata
-					$metadata = array(
-						'targetURL' => $url,
-						'title'     => htmlspecialchars(stripslashes($status['title'])),
-						'version'   => $status['version'],
-						'abstract'  => htmlspecialchars(stripslashes($status['description']))
-					);
-
-					// Get authors
-					$objA = new ToolAuthor($this->database);
-					$authors = $objA->getAuthorsDOI($status['resourceid']);
-
-					// Register DOI
-					$doiSuccess = $objDOI->registerDOI($authors, $this->config, $metadata, $doierr);
-
-					// Also create a handle using the old service
-					if ($doiSuccess && $old_doi) 
+					if (!$objDOI->loadDOI($status['resourceid'], $status['revision'])) 
 					{
-						if ($objDOI->createDOIHandle($url, $handle, $doiservice, $err)) 
+						if ($objDOI->saveDOI($status['revision'], $newlabel, $status['resourceid'], $status['toolname'], 0, $doiSuccess)) 
 						{
-							$this->setMessage(JText::_('Old-style DOI handle created:') . ' ' . $handle);
-						}
-						else 
-						{
-							$this->setError(JText::_('Old-style DOI handle creation failed'));
-						}
-					}
-
-					// Save [new] DOI record
-					if ($doiSuccess) 
-					{
-						if (!$objDOI->loadDOI($status['resourceid'], $status['revision'])) 
-						{
-							if ($objDOI->saveDOI($status['revision'], $newlabel, $status['resourceid'], $status['toolname'], 0, $doiSuccess)) 
-							{
-								$this->setMessage(JText::_('SUCCESS_DOI_CREATED') . ' ' . $doiSuccess);
-							}
-							else 
-							{
-								$this->setError(JText::_('ERR_DOI_STORE_FAILED'));
-								$result = false;
-							}
-						}
-						else 
-						{
-							$this->setError(JText::_('DOI already exists: ') . $objDOI->doi);
-						}
-					}
-					else 
-					{
-						$this->setError(JText::_('ERR_DOI_STORE_FAILED'));
-						$this->setError($doierr);
-						$result = false;
-					}
-				}
-				else if ($objDOI->createDOIHandle($url, $handle, $doiservice, $err)) 
-				{
-					if ($objDOI->saveDOI($status['revision'], $newlabel, $status['resourceid'], $status['toolname'])) 
-					{
-						$this->setMessage(JText::_('SUCCESS_DOI_CREATED') . ' ' . $handle);
-					}
-					else 
-					{
-						$this->setError(JText::_('ERR_DOI_STORE_FAILED'));
-						$result = false;
-					}
-				}
-				else 
-				{
-					if (preg_match('/HANDLE ALREADY EXISTS/i', $err) && !$bingo) 
-					{
-						$this->setError(JText::_('ERR_DOI_ALREADY_EXISTS_COMPLAIN'));
-
-						if ($objDOI->saveDOI($status['revision'], $newlabel, $status['resourceid'], $status['toolname'])) 
-						{
-							$this->setMessage(JText::_('SUCCESS_DOI_FIXED') . ' ' . $handle);
+							$this->setMessage(JText::_('SUCCESS_DOI_CREATED') . ' ' . $doiSuccess);
 						}
 						else 
 						{
@@ -593,12 +527,14 @@ class ToolsControllerAdmin extends Hubzero_Controller
 					}
 					else 
 					{
-						$this->setError(JText::_('ERR_DOI_FAILED'));
-						$result = false;
+						$this->setError(JText::_('DOI already exists: ') . $objDOI->doi);
 					}
-					$this->setError(JText::_('URL') . ': ' . $url);
-					$this->setError(JText::_('HANDLE') . ': ' . $handle);
-					$this->setError($err);
+				}
+				else 
+				{
+					$this->setError(JText::_('ERR_DOI_STORE_FAILED'));
+					$this->setError($doierr);
+					$result = false;
 				}
 			}
 		}
