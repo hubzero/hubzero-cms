@@ -341,12 +341,19 @@ class SupportQuery extends JTable
 		$elen = count($condition->expressions);
 
 		$tags = array();
+		$nottags = array();
 		for ($i = 0; $i < $elen; $i++) 
 		{
 			$expr = $condition->expressions[$i];
 			if (strtolower($expr->fldval) == 'tag') 
 			{
 				$tags[] = $expr->val;
+
+				if ($expr->opval == '!=')
+				{
+					$nottags[] = $expr->val;
+				}
+				print_r($expr->opval);
 			}
 		}
 
@@ -418,7 +425,7 @@ class SupportQuery extends JTable
 		if (count($tags) > 0)
 		{
 			$e[] = '(t.' . $this->_db->nameQuote('tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ' OR t.' . $this->_db->nameQuote('raw_tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ')';
-			$having = " GROUP BY f.id HAVING uniques='" . count($tags) . "'";
+			$having = " GROUP BY f.id HAVING uniques='" . (count($tags) - count($nottags)). "'";
 		}
 
 		$n = array();
