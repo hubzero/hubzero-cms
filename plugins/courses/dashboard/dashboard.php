@@ -181,7 +181,7 @@ class plgCoursesDashboard extends JPlugin
 
 		ximport('Hubzero_Document');
 		Hubzero_Document::addPluginStylesheet('courses', $this->_name);
-		//Hubzero_Document::addPluginScript('courses', $this->_name);
+		Hubzero_Document::addPluginScript('courses', $this->_name);
 
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'category.php');
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'section.php');

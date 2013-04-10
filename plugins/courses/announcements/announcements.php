@@ -213,7 +213,7 @@ class plgCoursesAnnouncements extends JPlugin
 
 		ximport('Hubzero_Document');
 		Hubzero_Document::addPluginStylesheet('courses', $this->_name);
-		//Hubzero_Document::addPluginScript('courses', $this->_name);
+		Hubzero_Document::addPluginScript('courses', $this->_name);
 
 		if ($this->getError()) 
 		{
@@ -287,6 +287,11 @@ class plgCoursesAnnouncements extends JPlugin
 			return $this->_list();
 		}
 
+		$no_html = JRequest::getInt('no_html', 0);
+
+		$response = new stdClass;
+		$response->code = 0;
+
 		// Incoming
 		$fields = JRequest::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
@@ -307,9 +312,25 @@ class plgCoursesAnnouncements extends JPlugin
 		if (!$model->store(true)) 
 		{
 			$this->setError($model->getError());
-			return $this->_edit($model);
+			if (!$no_html)
+			{
+				return $this->_edit($model);
+			}
 		}
 
+		if ($no_html)
+		{
+			if ($this->getError())
+			{
+				$response->code = 1;
+				$response->errors = $this->getErrors();
+				$response->data = $fields;
+			}
+			ob_clean();
+			header('Content-type: text/plain');
+			echo json_encode($response);
+			exit();
+		}
 		// Incoming message and subject
 		/*$subject = JText::_('PLG_COURSES_ANNOUNCEMENTS_SUBJECT');
 

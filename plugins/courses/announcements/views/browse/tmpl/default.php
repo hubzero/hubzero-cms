@@ -157,7 +157,6 @@ $base = 'index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&
 		<input type="hidden" name="offering" value="<?php echo $this->offering->get('alias') . ($this->offering->section()->get('alias') != '__default' ? ':' . $this->offering->section()->get('alias') : ''); ?>" />
 		<input type="hidden" name="active" value="announcements" />
 		<input type="hidden" name="option" value="<?php echo $option; ?>" />
-		<input type="hidden" name="filter" value="<?php echo $this->filter; ?>" />
 
 <!-- </div> -->
 	</form>

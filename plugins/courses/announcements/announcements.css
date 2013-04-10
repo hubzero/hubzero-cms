@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        plugins/courses/members/members.css
+ * @file        plugins/courses/announcements/announcements.css
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -31,7 +31,6 @@
 		zoom: 1;
 		background: #fff;
 		border: 0.27em solid #eee;
-		/*text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);*/
 		z-index: 1;
 		*background-image: url("/media/system/images/light-stripes.png");
 		background-image: -webkit-gradient(linear, 0 0, 100% 100%,
@@ -62,17 +61,9 @@
 		-ms-border-radius: 0.27em;
 		-o-border-radius: 0.27em;
 		border-radius: 0.27em;
-		
-		/*background-color: #84A7DB;
-		color: #e8f1fe;
-		border-color: #6685b2;*/
 		background-color: #fff;
 		color: #888;
 		border-color: #ccc;
-		
-		/*background-color: #cea638;
-		color: #ffffc0 !important;
-		border-color: #ac8416;*/
 	}
 	.announcement p:first-child {
 		margin-top: 0;
@@ -135,38 +126,17 @@
 	dl.entry-meta dd.entry-options a.delete {
 		right: 2em;
 	}
-	/*.announcement {
-		background-color: #84A7DB;
-		color: #e8f1fe !important;
-		border-color: #6685b2;
-	}*/
 	.announcement {
-		/*background-color: #cea638;
-		color: #ffffc0 !important;
-		border-color: #ac8416;*/
 		background-color: #fbf1be;
 		border-color: #e9e1bc;
 		color: #80744a;
 	}
 	.announcement.high {
-		/*background-color: #ba4a3b;
-		color: #ffd2c3 !important;
-		border-color: #982819;
-		
-		background-color: #cea638;
-		color: #ffffc0 !important;
-		border-color: #ac8416;*/
-		
 		background-color: #ffd3d4;
 		color: #804a4d !important;
 		border-color: #e9bcbc;
 	}
-	/*.announcement.high dl.entry-meta {
-		color: #ffffc0 !important;
-	}
-	.announcement.high dl.entry-meta dd a {
-		color: #fff;
-	}*/
+
 	.announcement:before {
 		content: "\f095";
 		position: absolute;
@@ -194,12 +164,6 @@
 		border: none !important;
 		color: #999;
 	}
-	/*.announcement .close {
-		color: #80744a !important;
-	}
-	.announcement.high .close {
-		color: #804a4d !important;
-	}*/
 	.announcement .close:hover {
 		color: #c00 !important;
 		border: none !important;
@@ -350,9 +314,10 @@
 		padding: 0 0 1em 0;
 		border: none;
 	}
-	.course_announcements .aside:before,
-	.course_announcements .aside:after,
-	.course_announcements .subject:after {
+	.course_announcements #hubForm .explaination:before,
+	.course_announcements #hubForm .explaination:after,
+	.course_announcements #hubForm:before,
+	.course_announcements #hubForm:after {
 		display: none;
 	}
 	.course_announcements .aside {

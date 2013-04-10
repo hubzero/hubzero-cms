@@ -75,28 +75,102 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 		<?php echo JText::_('PLG_COURSES_DASHBOARD'); ?>
 	</h3>
 	
-	<div class="main section">
 	<div class="sub-section">
-		<div class="five columns first second third">
+		<div class="sub-section-overview">
 			<h3>
-				Stats
+				Overview
 			</h3>
-			<table class="breakdown">
-				<tbody>
-					<tr>
-						<td>
-							<strong><?php echo $this->offering->members(array('count' => true)); ?></strong> enrolled
-						</td>
-						<td>
-							<strong>158</strong> passing
-						</td>
-						<td>
-							<strong>46</strong> failing
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			
+			<p>This is a quick overview of how students are doing and what's coming up.</p>
+		</div>
+		<div class="sub-section-content">
+			<div class="four columns first">
+				<table class="breakdown">
+					<tbody>
+						<tr>
+							<td>
+								<span>
+									<strong><?php echo $this->offering->members(array('count' => true)); ?></strong> enrolled
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td class="gradebook-passing">
+								<span>
+									<strong>0<?php //echo $this->offering->gradebook()->passing('count'); ?></strong> passing
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td class="gradebook-failing">
+								<span>
+									<strong>0<?php //echo $this->offering->gradebook()->failing('count'); ?></strong> failing
+								</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="four columns second third fourth">
+				<div class="dashboard-timeline-start">
+					<p><?php echo JHTML::_('date', $now, $dateFormat, $tz); ?></p>
+				</div>
+			<?php if ($rows) { ?>
+				<ul class="dashboard-timeline">
+				<?php foreach ($rows as $i => $row) { ?>
+					<li>
+						<?php 
+						switch ($row->scope)
+						{
+							case 'unit':
+								$obj = new CoursesModelUnit($row->scope_id);
+								$url = $base;
+							break;
+							case 'asset_group':
+								$obj = new CoursesModelAssetGroup($row->scope_id);
+								$url = $base;
+							break;
+							case 'asset':
+								$obj = new CoursesModelAsset($row->scope_id);
+								$url = $base . '&unit=&b=&c=';
+							break;
+						}
+					?>
+						<a href="<?php echo JRoute::_($url); ?>">
+							<?php echo $this->escape(stripslashes($obj->get('title'))); ?>
+						</a>
+						<span class="details">
+							<time datetime="<?php echo $row->publish_up; ?>"><?php echo JHTML::_('date', $row->publish_up, $dateFormat, $tz); ?></time>
+						</span>
+					</li>
+				<?php 
+					if ($i > 0 && $row->scope == 'unit')
+					{
+						break;
+					}
+				} ?>
+				</ul>
+			<?php } else { ?>
+				<ul class="dashboard-timeline">
+					<li class="noresults">Nothing coming up in the next week.</li>
+				</ul>
+			<?php } ?>
+				<div class="dashboard-timeline-start">
+					<p><?php echo JHTML::_('date', $weeklater, $dateFormat, $tz); ?></p>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+	</div>
+
+	<div class="sub-section announcements">
+		<div class="sub-section-overview">
+			<h3>
+				Announcement
+			</h3>
+			<p>From here you can post a new announcement to the class.</p>
+		</div>
+		<div class="sub-section-content">
 			<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->offering->get('alias') . '&active=announcements'); ?>" method="post" id="announcementForm" class="full">
 				<fieldset>
 					<legend>
@@ -108,7 +182,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 						<?php
 						ximport('Hubzero_Wiki_Editor');
 						$editor =& Hubzero_Wiki_Editor::getInstance();
-						echo $editor->display('fields[content]', 'field_content', '', 'minimal no-footer', '35', '5');
+						echo $editor->display('fields[content]', 'field_content', '', 'minimal no-footer', '35', '3');
 						?>
 					</label>
 
@@ -134,67 +208,20 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 				<input type="hidden" name="active" value="announcements" />
 				<input type="hidden" name="action" value="save" />
 			</form>
-			
-		</div><!-- / .subject -->
-		<div class="five columns fourth fifth">
-			<h3>
-				In the next week
-			</h3>
-			<div class="dashboard-timeline-start">
-				<p><?php echo JHTML::_('date', $now, $dateFormat, $tz); ?></p>
-			</div>
-		<?php if ($rows) { ?>
-			<ul class="dashboard-timeline">
-			<?php foreach ($rows as $i => $row) { ?>
-				<li>
-					<?php 
-					switch ($row->scope)
-					{
-						case 'unit':
-							$obj = new CoursesModelUnit($row->scope_id);
-							$url = $base;
-						break;
-						case 'asset_group':
-							$obj = new CoursesModelAssetGroup($row->scope_id);
-							$url = $base;
-						break;
-						case 'asset':
-							$obj = new CoursesModelAsset($row->scope_id);
-							$url = $base . '&unit=&b=&c=';
-						break;
-					}
-				?>
-					<a href="<?php echo JRoute::_($url); ?>">
-						<?php echo $this->escape(stripslashes($obj->get('title'))); ?>
-					</a>
-					<span class="details">
-						<time datetime="<?php echo $row->publish_up; ?>"><?php echo JHTML::_('date', $row->publish_up, $dateFormat, $tz); ?></time>
-					</span>
-				</li>
-			<?php 
-				if ($i > 0 && $row->scope == 'unit')
-				{
-					break;
-				}
-			} ?>
-			</ul>
-		<?php } else { ?>
-			<ul class="dashboard-timeline">
-				<li class="noresults">Nothing coming up in the next week.</li>
-			</ul>
-		<?php } ?>
-			<div class="dashboard-timeline-start">
-				<p><?php echo JHTML::_('date', $weeklater, $dateFormat, $tz); ?></p>
-			</div>
-		</div><!-- / .subject -->
+		</div>
 		<div class="clear"></div>
 	</div>
 
-		<div class="sub-section">
-		<h3>
-			<a name="discussions"></a>
-			<?php echo JText::_('Recent Discussions'); ?>
-		</h3>
+	<div class="sub-section discussions">
+		<div class="sub-section-overview">
+			<h3>
+				<a name="discussions"></a>
+				<?php echo JText::_('Discussions'); ?>
+			</h3>
+			<p>These are the latest discussions posts, ordered newest to oldest.</p>
+		</div>
+		<div class="sub-section-content">
+		
 		<?php 
 		if ($this->comments) 
 		{ 
@@ -236,6 +263,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 		}
 			?>
 		</div>
-		
+		<div class="clear"></div>
 	</div>
+
 </div><!--/ #course_members -->

@@ -315,7 +315,7 @@
 	}
 	.jSticky-delete:before {
 		font-family: "Fontcons";
-		content: "\2716";
+		content: "\f014"; /*"\2716";*/
 		margin-right: 2em;
 		margin-left: 0.2em;
 	}
