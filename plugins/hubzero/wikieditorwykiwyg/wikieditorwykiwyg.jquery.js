@@ -1935,10 +1935,11 @@ WYKIWYG.editor = function() {
 			}
 		}
 		var wwe = this;
-		$(this.t).closest('form').bind('submit', function(){
+		$(this.t).closest('form').on('submit', function(){
 			var converter = new WYKIWYG.converter();
 			if (wwe.d) {
 				wwe.t.value = wwe.makeWiki();
+				wwe.e.body.innerHTML = '';
 			}
 		});
 	};
@@ -2083,10 +2084,18 @@ WYKIWYG.cursor = function() {
 
 var wykiwygs = [];
 
-// Init editor
-jQuery(document).ready(function($){
-	$('.wiki-toolbar-content').each(function(i, textarea) {
-		var id = $(textarea).attr('id');
+function initWykiwyg() {
+	//console.log('init wykiwyg');
+
+	jQuery('.wiki-toolbar-content').each(function(i, textarea) {
+		var id = jQuery(textarea).attr('id');
+
+		for (var i = 0; i < wykiwygs.length; i++) 
+		{
+			if (wykiwygs[i].obj.id == id) {
+				return;
+			}
+		}
 
 		var controls = [
 			'bold','italic','underline','strikethrough','|',
@@ -2097,7 +2106,7 @@ jQuery(document).ready(function($){
 			'style','|',
 			'hr','link','unlink'
 		];
-		if ($(this).hasClass('minimal')) {
+		if (jQuery(this).hasClass('minimal')) {
 			controls = [
 				'bold','italic','underline','strikethrough','|',
 				'subscript','superscript','|',
@@ -2107,7 +2116,7 @@ jQuery(document).ready(function($){
 		}
 
 		var footer = true;
-		if ($(this).hasClass('no-footer')) {
+		if (jQuery(this).hasClass('no-footer')) {
 			footer = false;
 		}
 
@@ -2123,5 +2132,10 @@ jQuery(document).ready(function($){
 
 		wykiwygs.push(edtr);
 	});
-});
+};
 
+// Init editor
+jQuery(document).ready(function($){
+	initWykiwyg();
+});
+jQuery(document).on('ajaxLoad', initWykiwyg);
