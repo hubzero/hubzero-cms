@@ -99,7 +99,7 @@ $base = 'index.php?option=com_courses&controller=offering&gid=' . $this->course-
 	?>
 	<div class="jSticky-medium static" id="note-<?php echo $note->get('id'); ?>" data-id="<?php echo $note->get('id'); ?>">
 		<div class="jSticky-header">
-			<?php if ($note->get('timestamp') != '00:00:00') { ?>
+			<?php if ($note->get('timestamp') && $note->get('timestamp') != '00:00:00') { ?>
 				<a href="<?php echo str_replace('%3A', ':', JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $lecture->get('alias') . '&time=' . $this->escape($note->get('timestamp')))); ?>" class="time"><?php echo $this->escape($note->get('timestamp')); ?></a>
 			<?php } ?>
 		</div>
@@ -143,19 +143,18 @@ jQuery(document).ready(function(jQuery){
 ?>
 <div id="notes-introduction">
 	<div class="instructions">
-		<!-- <ol>
-			<li><?php echo JText::_('Find images, files, links or text you want to share.'); ?></li>
-			<li><?php echo JText::_('Click on "New post" button.'); ?></li>
-			<li><?php echo JText::_('Add anything extra you want (tags are nice).'); ?></li>
-			<li><?php echo JText::_('Done!'); ?></li>
-		</ol> -->
-		<p><?php echo JText::_('You currently have no notes.'); ?></p>
+		<ol>
+			<li><?php echo JText::_('Start watching a lecture.'); ?></li>
+			<li><?php echo JText::_('Click on the "Add note" button.'); ?></li>
+			<li><?php echo JText::_('Type!'); ?></li>
+			<li><?php echo JText::_('Reposition and resize the note how you like.'); ?></li>
+		</ol>
 	</div><!-- / .instructions -->
 	<div class="questions">
-		<p><strong><?php echo JText::_('What are notes?'); ?></strong></p>
-		<p><?php echo JText::_('Some text here'); ?></p>
-		<p><strong><?php echo JText::_('How do I add a note?'); ?></strong></p>
-		<p><?php echo JText::_('Some text here'); ?></p>
+		<p><strong><?php echo JText::_('Where is the "Save" button?'); ?></strong></p>
+		<p><?php echo JText::_('Notes are automatically saved as you type, reposition, or resize. No need to remember to press "save".'); ?></p>
+		<p><strong><?php echo JText::_('Who can see my notes?'); ?></strong></p>
+		<p><?php echo JText::_('Just you! Notes are private to each person.'); ?></p>
 	</div><!-- / .post-type -->
 </div><!-- / #collection-introduction -->
 <?php
