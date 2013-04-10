@@ -353,7 +353,6 @@ class SupportQuery extends JTable
 				{
 					$nottags[] = $expr->val;
 				}
-				print_r($expr->opval);
 			}
 		}
 
