@@ -2112,6 +2112,7 @@ class JobsControllerJobs extends Hubzero_Controller
 		} 
 		else 
 		{
+			$this->_task = 'dashboard';
 			$this->setError(JText::_('ERROR_ARCHIVE_FAILED'));
 			$this->dashboard();
 		}
@@ -2127,18 +2128,21 @@ class JobsControllerJobs extends Hubzero_Controller
 	{
 		// Get available resume files
 		$resume = new Resume($this->database);
-		$files  = $resume->getResumeFiles($pile, $juser->get('id'), $this->_masteradmin);
+		$files  = $resume->getResumeFiles($pile, $this->juser->get('id'), $this->_masteradmin);
 		$batch  = array();
 
 		if (count($files) > 0) 
 		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'includes' . DS . 'pcl' . DS . 'pclzip.lib.php');
-			if (!extension_loaded('zlib')) 
+			if (!extension_loaded('zip')) 
 			{
 				JError::raiseError(500, JText::_('ERROR_MISSING_PHP_LIBRARY'));
 				return;
 			}
-
+			
+			// Get joomla libraries
+			jimport('joomla.filesystem.folder');
+			jimport('joomla.filesystem.file');
+			
 			// Get Members plugins
 			JPluginHelper::importPlugin('members', 'resume');
 			$dispatcher =& JDispatcher::getInstance();
@@ -2153,32 +2157,40 @@ class JobsControllerJobs extends Hubzero_Controller
 			{
 				$base_path = DS . trim($base_path, DS);
 			}
-
-			$archive = new PclZip(JPATH_ROOT . $base_path . DS . $zipname);
-			$rfiles  = '';
+			
+			$base_path .= DS . Hubzero_View_Helper_Html::niceidformat($this->juser->get('id'));
+			
 			$i = 0;
-			// Go through file names and get full paths
-			foreach ($files as $avalue => $alabel)
-			{
-				$i++;
-				$apath =  $dispatcher->trigger('build_path', array($avalue));
-				$path  = is_array($apath) ? $apath[0] : '';
-				$file = $path ? JPATH_ROOT . $path . DS . $alabel : '';
-
-				if (!is_file($file))
+						
+			$zip = new ZipArchive;	
+			if ($zip->open(JPATH_ROOT . $base_path . DS . $zipname, ZipArchive::OVERWRITE) === TRUE) 	
+			{				
+				foreach ($files as $avalue => $alabel)
 				{
-					continue;
-				}
+					$apath =  $dispatcher->trigger('build_path', array($avalue));
+					$path  = is_array($apath) ? $apath[0] : '';
+					$file = $path ? JPATH_ROOT . $path . DS . $alabel : '';
 
-				$rfiles .= $file;
-				$rfiles .= $i == count($files) ? '' : ',';
+					if (!is_file($file))
+					{
+						continue;
+					}
+					
+					$zip->addFile($file, basename($file));
+					$i++;
+				}
+				
+				$zip->close();	
+			}
+			else
+			{
+				$this->setError('ERROR_ARCHIVE_FAILED');
+				return;
 			}
 
-			$v_list = $archive->create($rfiles, PCLZIP_OPT_REMOVE_ALL_PATH);
-
-			if ($v_list == 0) 
+			if ($i == 0) 
 			{
-				JError::raiseError(500, $archive->errorInfo(true));
+				$this->setError('ERROR_ARCHIVE_FAILED');
 				return;
 			} 
 			else 
@@ -2189,6 +2201,7 @@ class JobsControllerJobs extends Hubzero_Controller
 				return $archive;
 			}
 		}
+		
 		return false;
 	}
 

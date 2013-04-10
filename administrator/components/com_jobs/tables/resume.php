@@ -181,7 +181,7 @@ class Resume extends JTable
 	{
 		$query  = "SELECT DISTINCT r.uid, r.filename FROM $this->_tbl AS r ";
 		$query .= "JOIN #__jobs_seekers AS s ON s.uid=r.uid ";
-		$query .= 	($pile == 'shortlisted' && $uid)  ? " JOIN #__jobs_shortlist AS W ON W.seeker=s.uid AND W.emp=" . $this->_db->Quote($uid) . " AND s.uid != '" . $this->_db->Quote($uid) . "' AND s.uid=r.uid AND W.category='resume' " : "";
+		$query .= 	($pile == 'shortlisted' && $uid)  ? " JOIN #__jobs_shortlist AS W ON W.seeker=s.uid AND W.emp=" . $this->_db->Quote($uid) . " AND s.uid != " . $this->_db->Quote($uid) . " AND s.uid=r.uid AND W.category='resume' " : "";
 		$uid = $admin ? 1 : $uid;
 		$query .= 	($pile == 'applied' && $uid)  ? " LEFT JOIN #__jobs_openings AS J ON J.employerid=" . $this->_db->Quote($uid) . " JOIN #__jobs_applications AS A ON A.jid=J.id AND A.uid=s.uid AND A.status=1 " : "";
 		$query .= "WHERE s.active=1 AND r.main=1 ";

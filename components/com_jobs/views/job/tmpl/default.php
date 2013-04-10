@@ -76,7 +76,7 @@ defined('_JEXEC') or die( 'Restricted access' );
         <li><a class="shortlist" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=resumes').'?filterby=shortlisted'; ?>"><?php echo JText::_('JOBS_SHORTLIST'); ?></a></li>
 		<li><a class="add" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=addjob'); ?>"><?php echo JText::_('ADD_ANOTHER_JOB'); ?></a></li>
     <?php } else if($this->admin) { ?>
-    	<li><?php echo JText::_('NOTICE_YOU_ARE_ADMIN'); ?>
+    	<li>
         	<a class="myjobs" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=dashboard'); ?>"><?php echo JText::_('JOBS_ADMIN_DASHBOARD'); ?></a></li>
 		<li><a class="add" href="<?php echo JRoute::_('index.php?option='.$option.a.'task=addjob'); ?>"><?php echo JText::_('ADD_ANOTHER_JOB'); ?></a></li>
 	<?php } else { ?>  
