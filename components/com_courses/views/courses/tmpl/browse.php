@@ -64,7 +64,13 @@ $juser =& JFactory::getUser();
 			</div><!-- / .container -->
 			<div class="container">
 				<h3>Popular Categories</h3>
-				<?php echo $this->model->tags('cloud', 20, $this->filters['tag']); ?>
+				<?php 
+				$tags = $this->model->tags('cloud', 20, $this->filters['tag']);
+				if ($tags) {
+					echo $tags;
+				} else {
+					echo '<p>No categories have been set.</p>';
+				} ?>
 			</div><!-- / .container -->
 		</div><!-- / .aside -->
 		<div class="subject">
@@ -85,7 +91,7 @@ $juser =& JFactory::getUser();
 					$url  = 'index.php?option=' . $this->option . '&task=browse';
 					$url .= ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
 					$url .= ($this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) : '');
-					$url .= ($this->filters['index']  ? '&index=' . $this->escape($this->filters['index']) : '');
+					$url .= ($this->filters['index']  ? '&index=' . $this->escape($this->filters['index'])   : '');
 
 					$tags = $this->model->parseTags($this->filters['tag']);
 					foreach ($tags as $tag)
@@ -108,7 +114,8 @@ $juser =& JFactory::getUser();
 			<div class="container">
 				<?php
 				$qs  = ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
-				$qs .= ($this->filters['index'] ? '&index=' . $this->escape($this->filters['index']) : '');
+				$qs .= ($this->filters['index']  ? '&index=' . $this->escape($this->filters['index'])   : '');
+				$qs .= ($this->filters['tag']    ? '&tag=' . $this->escape($this->filters['tag'])       : '');
 				?>
 				<ul class="entries-menu order-options">
 					<li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&sortby=title' . $qs); ?>" title="Sort by title">&darr; Title</a></li>
@@ -120,6 +127,7 @@ $juser =& JFactory::getUser();
 $url  = 'index.php?option=' . $this->option . '&task=browse';
 $url .= ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
 $url .= ($this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) : '');
+$url .= ($this->filters['tag']    ? '&tag=' . $this->escape($this->filters['tag'])       : '');
 
 $html  = '<a href="' . JRoute::_($url) . '"';
 if ($this->filters['index'] == '') {
