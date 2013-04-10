@@ -88,10 +88,11 @@ class ForumControllerApi extends Hubzero_Api_Controller
 		$filters['category'] = JRequest::getCmd('category', '');
 		//$filters['parent']   = 0; //JRequest::getInt('thread', 0);
 
-		$filters['state']    = JRequest::getInt('state', 1);
-		$filters['scope']    = JRequest::getWord('scope', '');
-		$filters['scope_id'] = JRequest::getInt('scope_id', 0);
-		$filters['sticky']   = false;
+		$filters['state']     = JRequest::getInt('state', 1);
+		$filters['scope']     = JRequest::getWord('scope', '');
+		$filters['scope_id']  = JRequest::getInt('scope_id', 0);
+		$filters['object_id'] = JRequest::getInt('object_id', 0);
+		$filters['sticky']    = false;
 
 		$filters['start_id'] = JRequest::getInt('start_id', 0);
 		$filters['start_at'] = JRequest::getVar('start_at', '');

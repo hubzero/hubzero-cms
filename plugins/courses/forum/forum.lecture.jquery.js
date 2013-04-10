@@ -215,7 +215,7 @@ HUB.Plugins.CoursesForum = {
 		// Heartbeat for checking for new posts
 		setInterval(function () {
 			//$('#commentform').attr('action').nohtml() + '&count=1&start_at=' + $('#lastchange').val()
-			$.getJSON('/api/forum/thread/?find=count&scope=' + $('#field-scope').val() + '&scope_id=' + $('#field-scope_id').val() + '&start_at=' + $('#lastchange').val(), {}, function(data){
+			$.getJSON('/api/forum/thread/?find=count&object_id=' + $('#field-object_id').val() + '&scope=' + $('#field-scope').val() + '&scope_id=' + $('#field-scope_id').val() + '&start_at=' + $('#lastchange').val(), {}, function(data){
 				if (data.code == 0 && data.count > 0) {
 					$('#comments-new').text(data.count + ' new comments. Click to load.').fadeIn();
 				}

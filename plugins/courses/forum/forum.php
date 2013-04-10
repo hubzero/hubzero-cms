@@ -711,7 +711,14 @@ class plgCoursesForum extends Hubzero_Plugin
 				$view->last_id = $v->id;
 			}
 			
-			$view->rows = $this->treeRecurse($children[$view->post->get('id')], $children);
+			if (isset($children[$view->post->get('id')]))
+			{
+				$view->rows = $this->treeRecurse($children[$view->post->get('id')], $children);
+			}
+			else
+			{
+				$view->rows = array();
+			}
 
 			/*if ($rows)
 			{

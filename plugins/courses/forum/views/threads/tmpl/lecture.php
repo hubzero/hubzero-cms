@@ -174,13 +174,13 @@ if (!$this->no_html) {
 				</p>
 			<?php } ?>
 			</fieldset>
-			<input type="hidden" name="fields[category_id]" value="<?php echo $this->post->get('category_id'); ?>" />
-			<input type="hidden" name="fields[parent]" value="<?php echo $this->post->get('id'); ?>" />
-			<input type="hidden" name="fields[state]" value="1" />
+			<input type="hidden" name="fields[category_id]" id="field-category_id" value="<?php echo $this->post->get('category_id'); ?>" />
+			<input type="hidden" name="fields[parent]" id="field-parent" value="<?php echo $this->post->get('id'); ?>" />
+			<input type="hidden" name="fields[state]" id="field-state" value="1" />
 			<input type="hidden" name="fields[scope]" id="field-scope" value="course" />
 			<input type="hidden" name="fields[scope_id]" id="field-scope_id" value="<?php echo $this->post->get('scope_id'); ?>" />
-			<input type="hidden" name="fields[id]" value="" />
-			<input type="hidden" name="fields[object_id]" value="<?php echo $this->post->get('object_id'); ?>" />
+			<input type="hidden" name="fields[id]" id="field-id" value="" />
+			<input type="hidden" name="fields[object_id]" id="field-object_id" value="<?php echo $this->post->get('object_id'); ?>" />
 	
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
