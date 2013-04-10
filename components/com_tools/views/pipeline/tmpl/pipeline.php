@@ -90,7 +90,7 @@ ximport('Hubzero_View_Helper_Html');
 				</li>
 				<li>
 					<a class="sort-name<?php if ($this->filters['sortby'] == 'f.toolname') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=pipeline&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.toolname') . '&search=' . $this->escape(urlencode($this->filters['search']))); ?>" title="<?php echo JText::_('CONTRIBTOOL_SORTBY_NAME'); ?>">
-						&darr; <?php echo JText::_('Name'); ?>
+						&darr; <?php echo JText::_('Alias'); ?>
 					</a>
 				</li>
 				<?php if ($this->admin) { ?>
