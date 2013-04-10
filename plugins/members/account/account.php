@@ -302,6 +302,7 @@ class plgMembersAccount extends Hubzero_Plugin
 		// A few more things...
 		$view->option        = $this->option;
 		$view->member        = $this->member;
+		$view->params        = $this->params;
 		$view->notifications = ($this->getPluginMessage()) ? $this->getPluginMessage() : array();
 
 		// Set any errors

@@ -198,6 +198,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php } ?>
 		</div><!-- / .sub-section-content -->
 	</div><!-- / .sub-section -->
+
+<?php if ($this->params->get('ssh_key_upload', 0)) : ?>
 	<div class="sub-section">
 		<h4><?php echo JText::_('PLG_MEMBERS_LOCAL_SERVICES'); ?></h4>
 		<div class="clear"></div>
@@ -220,5 +222,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</form>
 		</div><!-- / .sub-section-content -->
 	</div><!-- / .sub-section -->
+<?php endif; ?>
 </div><!-- / .subject -->
 <div class="clear"></div>
