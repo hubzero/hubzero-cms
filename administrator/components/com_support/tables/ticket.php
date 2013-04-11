@@ -478,7 +478,7 @@ class SupportTicket extends JTable
 			return 0;
 		}
 		$having = '';
-		if (preg_match('/GROUP BY f.id HAVING uniques=\'\d\'/i', $query, $matches))
+		if (preg_match('/GROUP BY f.id HAVING uniques=\'\d\'/i', $query, $matches) || preg_match('/GROUP BY f.id/i', $query, $matches))
 		{
 			$having = $matches[0];
 			$query = str_replace($matches[0], '', $query);

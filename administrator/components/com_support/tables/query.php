@@ -363,6 +363,7 @@ class SupportQuery extends JTable
 			$prfx = 'f';
 			if (strtolower($expr->fldval) == 'tag')
 			{
+				continue;
 				$prfx = 't';
 				if (count($tags) > 1 && strtoupper($condition->operator) == 'AND')
 				{
@@ -405,7 +406,7 @@ class SupportQuery extends JTable
 			{
 				if (strtolower($expr->fldval) == 'tag')
 				{
-					$e[] = '(' . $prfx . '.' . $this->_db->nameQuote($expr->fldval) . ' ' . str_replace('$1', $expr->val, $expr->opval) . ' OR ' . $prfx . '.' . $this->_db->nameQuote('raw_' . $expr->fldval) . ' ' . str_replace('$1', $expr->val, $expr->opval) . ')';
+					//$e[] = '(' . $prfx . '.' . $this->_db->nameQuote($expr->fldval) . ' ' . str_replace('$1', $expr->val, $expr->opval) . ' OR ' . $prfx . '.' . $this->_db->nameQuote('raw_' . $expr->fldval) . ' ' . str_replace('$1', $expr->val, $expr->opval) . ')';
 				}
 				else
 				{
@@ -423,8 +424,20 @@ class SupportQuery extends JTable
 		}
 		if (count($tags) > 0)
 		{
-			$e[] = '(t.' . $this->_db->nameQuote('tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ' OR t.' . $this->_db->nameQuote('raw_tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ')';
-			$having = " GROUP BY f.id HAVING uniques='" . (count($tags) - count($nottags)). "'";
+			if (implode("','", $tags) == implode("','", $nottags))
+			{
+				$e[] = 'f.' . $this->_db->nameQuote('id') . ' NOT IN (
+							SELECT st.' . $this->_db->nameQuote('objectid') . ' FROM #__tags_object AS st 
+							LEFT JOIN #__tags AS t ON st.' . $this->_db->nameQuote('tagid') . '=t.' . $this->_db->nameQuote('id') . ' 
+							WHERE st.' . $this->_db->nameQuote('tbl') . '=\'support\' 
+							AND (t.' . $this->_db->nameQuote('tag') . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ' OR t.' . $this->_db->nameQuote('raw_tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . '))';
+				$having = " GROUP BY f.id ";
+			}
+			else
+			{
+				$e[] = '(t.' . $this->_db->nameQuote('tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ' OR t.' . $this->_db->nameQuote('raw_tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ')';
+				$having = " GROUP BY f.id HAVING uniques='" . (count($tags) - count($nottags)). "'";
+			}
 		}
 
 		$n = array();
