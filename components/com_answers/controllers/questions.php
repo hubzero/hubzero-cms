@@ -241,6 +241,9 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		// Add the CSS to the template
 		$this->_getStyles($this->_option, 'assets/css/answers.css');
 
+		// Add the Javascript to the template
+		$this->_getScripts('assets/js/vote');
+
 		// Set the page title
 		$this->_buildTitle();
 
@@ -416,9 +419,18 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$vote    = JRequest::getVar('vote', '');
 		$ip      = Hubzero_Environment::ipAddress();
 
+		// Check for reference ID
 		if (!$id) 
 		{
 			// cannot proceed
+			if (!$no_html)
+			{
+				$this->setRedirect(
+					JRoute::_('index.php?option=' . $this->_option),
+					JText::_('No ID provided.'),
+					'error'
+				);
+			}
 			return;
 		}
 
@@ -427,11 +439,41 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		$row->load($id);
 		$qid = $row->qid;
 
+		// Can't vote for your own comment
+		if ($row->created_by == $this->juser->get('username'))
+		{
+			if (!$no_html)
+			{
+				$this->setRedirect(
+					JRoute::_('index.php?option=' . $this->_option . '&task=question&id=' . $qid),
+					JText::_('Cannot vote for your own entries.'),
+					'warning'
+				);
+			}
+			return;
+		}
+
+		// Can't vote for your own comment
+		if (!$vote)
+		{
+			if (!$no_html)
+			{
+				$this->setRedirect(
+					JRoute::_('index.php?option=' . $this->_option . '&task=question&id=' . $qid),
+					JText::_('No vote provided.'),
+					'warning'
+				);
+			}
+			return;
+		}
+
+		// Get vote log
 		$al = new AnswersLog($this->database);
 		$al->loadByIp($id, $ip);
 
-		if (!$al->helpful && $vote && $row->created_by != $this->juser->get('username')) 
+		if (!$al->id) 
 		{
+			// new vote;
 			// record if it was helpful or not
 			switch ($vote) 
 			{
@@ -441,7 +483,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 				case 1:
 					$row->helpful++;
 				break;
-	
+
 				case 'no':
 				case 'dislike':
 				case 'down':
@@ -449,54 +491,10 @@ class AnswersControllerQuestions extends Hubzero_Controller
 					$row->nothelpful++;
 				break;
 			} 
-
-			if (!$row->store()) 
-			{
-				$this->setError($row->getError());
-				return;
-			}
-
-			// Record user's vote (old way)
-			$al->rid     = $row->id;
-			$al->ip      = $ip;
-			$al->helpful = $vote;
-			if (!$al->check()) 
-			{
-				$this->setError($al->getError());
-				return;
-			}
-			if (!$al->store()) 
-			{
-				$this->setError($al->getError());
-				return;
-			}
-
-			// Record user's vote (new way)
-			if ($cat) 
-			{
-				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->_option . DS . 'vote.class.php');
-
-				$v = new Vote($this->database);
-				$v->referenceid = $row->id;
-				$v->category = $cat;
-				$v->voter = $this->juser->get('id');
-				$v->ip = $ip;
-				$v->voted = date('Y-m-d H:i:s', time());
-				$v->helpful = $vote;
-				if (!$v->check()) 
-				{
-					$this->setError($v->getError());
-					return;
-				}
-				if (!$v->store()) 
-				{
-					$this->setError($v->getError());
-					return;
-				}
-			}
 		}
 		else if ($al->helpful != $vote)
 		{
+			// changing vote;
 			// Adjust values to reflect vote change
 			switch ($vote) 
 			{
@@ -507,7 +505,7 @@ class AnswersControllerQuestions extends Hubzero_Controller
 					$row->helpful++;
 					$row->nothelpful--;
 				break;
-	
+
 				case 'no':
 				case 'dislike':
 				case 'down':
@@ -516,23 +514,53 @@ class AnswersControllerQuestions extends Hubzero_Controller
 					$row->nothelpful++;
 				break;
 			} 
+		}
+		else
+		{
+			// no vote change;
+		}
 
-			if (!$row->store()) 
+		if (!$row->store()) 
+		{
+			$this->setError($row->getError());
+			return;
+		}
+
+		// Record user's vote (old way)
+		$al->rid     = $row->id;
+		$al->ip      = $ip;
+		$al->helpful = $vote;
+		if (!$al->check()) 
+		{
+			$this->setError($al->getError());
+			return;
+		}
+		if (!$al->store()) 
+		{
+			$this->setError($al->getError());
+			return;
+		}
+
+		// Record user's vote (new way)
+		if ($cat) 
+		{
+			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->_option . DS . 'vote.class.php');
+
+			$v = new Vote($this->database);
+			$v->referenceid = $row->id;
+			$v->category = $cat;
+			$v->voter = $this->juser->get('id');
+			$v->ip = $ip;
+			$v->voted = date('Y-m-d H:i:s', time());
+			$v->helpful = $vote;
+			if (!$v->check()) 
 			{
-				$this->setError($row->getError());
+				$this->setError($v->getError());
 				return;
 			}
-
-			// Record user's vote (old way)
-			$al->helpful = $vote;
-			if (!$al->check()) 
+			if (!$v->store()) 
 			{
-				$this->setError($al->getError());
-				return;
-			}
-			if (!$al->store()) 
-			{
-				$this->setError($al->getError());
+				$this->setError($v->getError());
 				return;
 			}
 		}
@@ -555,9 +583,9 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		} 
 		else 
 		{
-			$this->setRedirect(
+			/*$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&task=question&id=' . $qid)
-			);
+			);*/
 		}
 	}
 
@@ -690,6 +718,9 @@ class AnswersControllerQuestions extends Hubzero_Controller
 
 		// Add the CSS to the template
 		$this->_getStyles();
+
+		// Add the Javascript to the template
+		$this->_getScripts('assets/js/vote');
 
 		// Set the page title
 		$this->_buildTitle();

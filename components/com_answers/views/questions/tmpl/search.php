@@ -248,7 +248,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 										<?php echo $row->helpful; ?><span> <?php echo JText::_('COM_ANSWERS_VOTE_LIKE'); ?></span>
 									</span>
 <?php } else { ?>
-									<a class="vote-button <?php echo ($row->helpful > 0) ? 'like' : 'neutral'; ?> tooltips" href="<?php echo JRoute::_('index.php?option=com_answers&task=question&id='.$row->id.'&vote=1'); ?>" title="<?php echo JText::sprintf('COM_ANSWERS_VOTE_LIKE_TITLE', $row->helpful); ?>">
+									<a class="vote-button <?php echo ($row->helpful > 0) ? 'like' : 'neutral'; ?> tooltips" href="<?php echo JRoute::_('index.php?option=com_answers&task=vote&id='.$row->id.'&vote=1'); ?>" title="<?php echo JText::sprintf('COM_ANSWERS_VOTE_LIKE_TITLE', $row->helpful); ?>">
 										<?php echo $row->helpful; ?><span> <?php echo JText::_('COM_ANSWERS_VOTE_LIKE'); ?></span>
 									</a>
 <?php } ?>
