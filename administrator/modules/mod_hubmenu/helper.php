@@ -47,6 +47,19 @@ class modHubMenuHelper
 		$canMassMail		= $user->authorize('com_massmail', 'manage');
 		$canManageUsers		= $user->authorize('com_users', 'manage');
 
+		$jdocument = JFactory::getDocument();
+
+		$template = JFactory::getApplication('admin')->getTemplate();
+		$mjs = 'templates/' . $template . '/js/menu.js';
+		if (is_file(JPATH_ADMINISTRATOR . DS . $mjs))
+		{
+			$jdocument->addScript($mjs);
+			if (substr($template, 0, strlen('hub')) != 'hub' && is_file(JPATH_ADMINISTRATOR . DS . 'templates/' . $template . '/js/index.js'))
+			{
+				$jdocument->addScript('templates/' . $template . '/js/index.js');
+			}
+		}
+
 		// Menu Types
 		require_once(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_menus' . DS . 'helpers' . DS . 'helper.php');
 		$menuTypes 	= MenusHelper::getMenuTypelist();
