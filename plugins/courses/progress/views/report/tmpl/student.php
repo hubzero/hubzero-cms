@@ -37,7 +37,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 
 $gradebook = new CoursesModelGradeBook(null);
 // @FIXME: should we refresh student grades here?
-$gradebook->refresh($this->juser->get('id'));
+$gradebook->refresh($this->course, $this->juser->get('id'));
 $grades    = $gradebook->getGrades($this->juser->get('id'));
 
 $details = array();

@@ -129,20 +129,6 @@ class CoursesTableGradeBook extends JTable
 	}
 
 	/**
-	 * Get average score
-	 * 
-	 * @param      array $filters Filters to construct query from
-	 * @return     integer
-	 */
-	public function average($filters=array())
-	{
-		$query = "SELECT AVG(score) " . $this->_buildQuery($filters);
-
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
-	}
-
-	/**
 	 * Get grade records
 	 * 
 	 * @param      array $filters Filters to construct query from
@@ -155,5 +141,93 @@ class CoursesTableGradeBook extends JTable
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList($key);
 	}
-}
 
+	/**
+	 * Get asset view records
+	 * 
+	 * @param      array $filters Filters to construct query from
+	 * @param      string $return DB query return type
+	 * @return     string/int
+	 */
+	public function calculateScore($filters=array(), $return)
+	{
+		$select = array();
+		$from   = array();
+		$where  = array();
+		$group  = array();
+		$having = array();
+
+		$from[] = "\nFROM $this->_tbl AS cgb";
+		$from[] = "LEFT JOIN #__courses_assets AS ca ON cgb.scope_id = ca.id";
+
+		if (isset($filters->select) && is_array($filters->select))
+		{
+			foreach ($filters->select as $s)
+			{
+				$select[] = $s->value;
+			}
+		}
+		if (isset($filters->from) && is_array($filters->from))
+		{
+			foreach ($filters->from as $f)
+			{
+				$from[] = $f->value;
+			}
+		}
+		if (isset($filters->where) && is_array($filters->where))
+		{
+			foreach ($filters->where as $w)
+			{
+				$where[] = $w->field . ' ' . $w->operator . ' ' . $this->_db->Quote($w->value);
+			}
+		}
+		if (isset($filters->group) && is_array($filters->group))
+		{
+			foreach ($filters->group as $g)
+			{
+				$group[] = $g->value;
+			}
+		}
+		if (isset($filters->having) && is_array($filters->having))
+		{
+			foreach ($filters->having as $h)
+			{
+				$having[] = $h->field . $h->operator . $this->_db->Quote($h->value);
+			}
+		}
+
+		$query = "SELECT ";
+
+		if (count($select) > 0)
+		{
+			$query .= implode(", ", $select);
+		}
+		else
+		{
+			$query .= "*";
+		}
+
+		$query .= implode("\n", $from);
+
+		if (count($where) > 0)
+		{
+			$query .= "\nWHERE ";
+			$query .= implode(" AND ", $where);
+		}
+
+		if (count($group) > 0)
+		{
+			$query .= "\nGROUP BY ";
+			$query .= implode(", ", $group);
+		}
+
+		if (count($having) > 0)
+		{
+			$query .= "\nHAVING ";
+			$query .= implode(" AND ", $having);
+		}
+
+		$this->_db->setQuery($query);
+		return $this->_db->$return();
+	}
+}

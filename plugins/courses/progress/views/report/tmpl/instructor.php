@@ -33,6 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 // Make sure required files are included
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradebook.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradepolicies.php');
 ximport('Hubzero_User_Profile_Helper');
 
 $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias');
@@ -49,9 +50,13 @@ foreach ($members as $m)
 // Get Grades
 $gradebook = new CoursesModelGradeBook(null);
 // @FIXME: refresh grades here?
-//$gradebook->refresh(null, $this->course->offering()->section()->get('id'));
+//$gradebook->refresh($this->course);
 $grades    = $gradebook->getGrades($member_ids, array('unit', 'course'));
 $progress  = $gradebook->getProgress($this->course);
+
+// Get the grading policy
+$gradePolicy = new CoursesModelGradePolicies($this->course->offering()->section()->get('grade_policy_id'));
+$policy = $gradePolicy->get('description');
 
 ?>
 
@@ -59,8 +64,12 @@ $progress  = $gradebook->getProgress($this->course);
 	<div class="headers">
 		<div class="header-student-name">Name</div>
 		<div class="header-sub">
-			<div class="header-progress">Unit Progress</div>
-			<div class="header-score">Current Score</div>
+			<div class="header-progress">Unit Progress
+				<span title="This reflects what students have viewed, not the actual scores that they may have received.">(details)</span>
+			</div>
+			<div class="header-score">Current Score
+				<span title="<?= $policy ?>">(details)</span>
+			</div>
 		</div>
 	</div>
 	<div class="clear"></div>
@@ -100,6 +109,7 @@ $progress  = $gradebook->getProgress($this->course);
 							<div class="progress-bar-inner">
 								<? if (isset($grades[$m->get('user_id')]['course'][$this->course->get('id')])) : ?>
 									<?
+										// @FIXME: make this based on grading policy
 										$studentStatus = $grades[$m->get('user_id')]['course'][$this->course->get('id')];
 										$cls = '';
 										if($studentStatus < 70)

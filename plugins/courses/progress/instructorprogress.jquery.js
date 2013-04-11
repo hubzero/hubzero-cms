@@ -43,8 +43,8 @@ HUB.Plugins.CoursesProgress = {
 		});
 
 		// Add tooltips to units
-		$('.instructor .unit-fill').tooltip({
-			predelay: 500
+		$('.instructor .unit-fill, .instructor .headers span').tooltip({
+			predelay: 250
 		});
 	} // end initialize
 };

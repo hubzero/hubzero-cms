@@ -184,7 +184,7 @@ class plgCoursesProgress extends JPlugin
 
 		// Get gradebook instance
 		$gradebook = new CoursesModelGradeBook(null);
-		if (!$gradebook->refresh(null, $this->course->offering()->section()->get('id')))
+		if (!$gradebook->refresh($this->course))
 		{
 			// Redirect with message
 			JFactory::getApplication()->redirect(

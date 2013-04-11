@@ -145,7 +145,7 @@ class PdfFormRespondent
 		// Sync grade to course grade book
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradebook.php');
 		$gradebook = new CoursesModelGradeBook(null);
-		$gradebook->saveScore($this->getScore(), $this->getAssetId());
+		$gradebook->saveAssetResult($this->getScore(), $this->getAssetId());
 
 		return $this;
 	}

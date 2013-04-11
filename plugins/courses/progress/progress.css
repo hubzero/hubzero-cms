@@ -324,6 +324,10 @@
 .instructor .units .headers {
 	padding: 5px;
 }
+.instructor .headers span {
+	text-transform: lowercase;
+	font-size: 14px;
+}
 .instructor .student {
 	position: relative;
 	margin: 0 0 5px 0;

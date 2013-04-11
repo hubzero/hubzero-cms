@@ -35,6 +35,7 @@ require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_c
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.views.php');
 require_once(JPATH_COMPONENT . DS . 'models' . DS . 'abstract.php');
+require_once(JPATH_COMPONENT . DS . 'models' . DS . 'gradepolicies.php');
 require_once(JPATH_COMPONENT . DS . 'models' . DS . 'form.php');
 require_once(JPATH_COMPONENT . DS . 'models' . DS . 'formRespondent.php');
 require_once(JPATH_COMPONENT . DS . 'models' . DS . 'formDeployment.php');
@@ -116,6 +117,12 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 
 	/**
 	 * Get current progress
+	 *
+	 * At this point, this method only takes into account what students have viewed.
+	 * This makes sense on a PDF download, for example, but not on a quiz.  This 
+	 * should be expanded to account for views on simpler asset types, and more complex
+	 * criteria on assets where it can be tracked (ex: videos, where we can track an
+	 * entire view, or an exam, where we know when they've actually finished it).
 	 * 
 	 * @param      object $course - course object
 	 * @return     array $progress
@@ -154,21 +161,19 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	/**
 	 * Resave/refresh grades for a user(s)
 	 * 
-	 * @param      int or array $user_id, user id for which to pull grades
+	 * This method should be used, for example, if the grading policy for a course were to change.
+	 *
+	 * @param      object $course
+	 * @param      int or array $user_id, user id for which to refresh grades
 	 * @return     boolean true on success, false otherwise
 	 */
-	public function refresh($user_id=null, $section_id=null)
+	public function refresh($course, $user_id=null)
 	{
-		if (is_null($user_id) && is_null($section_id))
-		{
-			return false;
-		}
-
 		$asset = new CoursesTableAsset(JFactory::getDBO());
 
 		$filters = array(
 			'w' => array(
-				'section_id' => $section_id,
+				'section_id' => $course->offering()->section()->get('id'),
 				'asset_type' => 'exam',
 				'state'      => 1
 			)
@@ -181,6 +186,17 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		if (!is_null($user_id) && !is_array($user_id))
 		{
 			$user_id = array($user_id);
+		}
+		elseif (is_null($user_id))
+		{
+			// Create array of users in section
+			$members = $course->offering()->section()->members();
+			$user_id = array();
+
+			foreach ($members as $m)
+			{
+				$user_id[] = $m->get('user_id');
+			}
 		}
 
 		foreach ($assets as $a)
@@ -224,10 +240,17 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 					$result['score'] = '0.00';
 				}
 
-				$this->saveScore($result['score'], $a->id, $result['user_id']);
+				$this->saveAssetResult($result['score'], $a->id, $result['user_id'], false);
 			}
 		}
 
+		// Calculate unit and course scores now
+		foreach ($user_id as $u)
+		{
+			$this->calculateScores($u, $course);
+		}
+
+		// Success
 		return true;
 	}
 
@@ -237,9 +260,10 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	 * @param      decimal $score, score to save
 	 * @param      int $asset_id, asset id of item being saved
 	 * @param      int $user_id, user id of user gradebook entry
+	 * @param      bool $calculateScores, whether or not to compute unit and course averages
 	 * @return     boolean true on success, false otherwise
 	 */
-	public function saveScore($score, $asset_id, $user_id=null)
+	public function saveAssetResult($score, $asset_id, $user_id=null, $calculateScores=true)
 	{
 		// If not user is given, assume the current user
 		if (is_null($user_id))
@@ -259,102 +283,67 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		$gradebook->set('scope_id', $asset_id);
 
 		// Save
-		if(!$gradebook->store())
+		if (!$gradebook->store())
 		{
 			return false;
 		}
 
-		// Compute unit and course averages
-		$this->unitAverage($asset_id, $user_id);
-		$this->courseAverage($asset_id, $user_id);
+		if ($calculateScores)
+		{
+			// Compute unit and course scores as well
+			$this->calculateScores($user_id, null, $asset_id);
+		}
 
 		// Success
 		return true;
 	}
 
 	/**
-	 * Calculate unit average
+	 * Calculate scores for each unit and the course as a whole
+	 *
+	 * This should be expanded to account for a scenario where only
+	 * a midterm and final count toward the grade (as an example).
 	 * 
-	 * @param      int $asset_id, id of asset that was updated
-	 * @param      int $user_id, user id of user gradebook entry
+	 * @param      int $user_id
+	 * @param      obj $course
+	 * @param      int $asset_id
 	 * @return     boolean true on success, false otherwise
 	 */
-	public function unitAverage($asset_id, $user_id=null)
+	public function calculateScores($user_id, $course=null, $asset_id=null)
 	{
-		// If not user is given, assume the current user
-		if (is_null($user_id))
-		{
-			$user_id = JFactory::getUser()->get('id');
-		}
-
-		// Figure out what unit we're in
-		$asset   = new CoursesTableAsset(JFactory::getDBO());
-		$unit    = $asset->find(array('w'=>array('asset_id'=>$asset_id), 'start'=>0, 'limit'=>1));
-		$unit_id = $unit[0]->unit_id;
-
-		// Get the asset_ids of all assets in this unit
-		$this->_db->setQuery(
-			'SELECT ca.id
-			FROM #__courses_assets as ca
-			INNER JOIN #__courses_asset_associations as caa ON caa.asset_id = ca.id
-			INNER JOIN #__courses_asset_groups as cag ON cag.id = caa.scope_id
-			INNER JOIN #__courses_units as u ON u.id = cag.unit_id
-			WHERE u.id = ' . $this->_db->Quote($unit_id)
-		);
-		$assets = $this->_db->loadResultArray();
-
-		// Get the average unit grade
-		$average = $this->_tbl->average(array('user_id'=>$user_id, 'scope'=>'asset', 'scope_id'=>$assets));
-
-		// First, check to see if a score for this asset and user already exists
-		$results = $this->_tbl->find(array('user_id'=>$user_id, 'scope_id'=>$unit_id, 'scope'=>'unit'));
-		$gb_id   = ($results) ? $results[0]->id : null;
-
-		// Save the score to the grade book
-		$gradebook = new CoursesModelGradeBook($gb_id);
-		$gradebook->set('user_id', $user_id);
-		$gradebook->set('score', round($average, 2));
-		$gradebook->set('scope', 'unit');
-		$gradebook->set('scope_id', $unit_id);
-
-		if(!$gradebook->store())
+		// We need one of $course or $asset_id
+		if (is_null($course) && is_null($asset_id))
 		{
 			return false;
 		}
 
-		return true;
-	}
-
-	/**
-	 * Calculate course average
-	 * 
-	 * @param      int $asset_id, id of asset that was updated
-	 * @param      int $user_id, user id of user gradebook entry
-	 * @return     boolean true on success, false otherwise
-	 */
-	public function courseAverage($asset_id, $user_id=null)
-	{
-		// If not user is given, assume the current user
-		if (is_null($user_id))
-		{
-			$user_id = JFactory::getUser()->get('id');
-		}
+		// Get a grade policy object
+		$policy  = $course->offering()->section()->get('grade_policy_id');
+		$gradePolicy = new CoursesModelGradePolicies($policy);
 
 		// Get the course id
-		$asset = new CoursesTableAsset(JFactory::getDBO());
-		$asset->load($asset_id);
-		$course_id = $asset->course_id;
+		if (!is_null($course) && is_object($course))
+		{
+			$course_id = $course->get('id');
+		}
+		elseif (!is_null($asset_id) && is_numeric($asset_id))
+		{
+			$asset = new CoursesTableAsset(JFactory::getDBO());
+			$asset->load($asset_id);
+			$course_id = $asset->course_id;
+		}
+		else
+		{
+			// Could not determine course id
+			return false;
+		}
 
-		// Get the asset_ids of all assets in this course
-		$this->_db->setQuery(
-			'SELECT id
-			FROM #__courses_assets
-			WHERE course_id = ' . $this->_db->Quote($course_id)
-		);
-		$assets = $this->_db->loadResultArray();
+		// Get the grading policy score criteria
+		$score_criteria = $gradePolicy->replacePlaceholders('score_criteria', array('course_id'=>$course_id, 'user_id'=>$user_id));
+		$score_criteria = json_decode($score_criteria);
 
-		// Get the average course grade
-		$average = $this->_tbl->average(array('user_id'=>$user_id, 'scope'=>'asset', 'scope_id'=>$assets));
+		// Compute course grade
+		$grade = $this->_tbl->calculateScore($score_criteria, 'loadResult');
 
 		// First, check to see if a score for this asset and user already exists
 		$results = $this->_tbl->find(array('user_id'=>$user_id, 'scope_id'=>$course_id, 'scope'=>'course'));
@@ -363,15 +352,79 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		// Save the score to the grade book
 		$gradebook = new CoursesModelGradeBook($gb_id);
 		$gradebook->set('user_id', $user_id);
-		$gradebook->set('score', round($average, 2));
+		$gradebook->set('score', round($grade, 2));
 		$gradebook->set('scope', 'course');
 		$gradebook->set('scope_id', $course_id);
 
-		if(!$gradebook->store())
+		if (!$gradebook->store())
 		{
 			return false;
 		}
 
+		// Now, get unit scores
+		$score_criteria = $gradePolicy->replacePlaceholders('score_criteria', array('course_id'=>$course_id, 'user_id'=>$user_id));
+		$score_criteria = json_decode($score_criteria);
+
+		// Add a few things to the select, from, and group by clauses to correctly calculate unit scores
+		$score_criteria->select[] = (object) array('value'=>'cag.unit_id as unit_id');
+		$score_criteria->from[]   = (object) array('value'=>'LEFT JOIN #__courses_asset_associations AS caa ON ca.id = caa.asset_id');
+		$score_criteria->from[]   = (object) array('value'=>'LEFT JOIN #__courses_asset_groups AS cag ON caa.scope_id = cag.id');
+		$score_criteria->group[]  = (object) array('value'=>'cag.unit_id');
+
+		// Compute unit grades
+		$grades = $this->_tbl->calculateScore($score_criteria, 'loadObjectList');
+
+		// Now, loop through the course units and save unit scores
+		foreach ($grades as $g)
+		{
+			// First, check to see if a score for this asset and user already exists
+			$results = $this->_tbl->find(array('user_id'=>$user_id, 'scope_id'=>$g->unit_id, 'scope'=>'unit'));
+			$gb_id   = ($results) ? $results[0]->id : null;
+
+			// Save the score to the grade book
+			$gradebook = new CoursesModelGradeBook($gb_id);
+			$gradebook->set('user_id', $user_id);
+			$gradebook->set('score', round($g->average, 2));
+			$gradebook->set('scope', 'unit');
+			$gradebook->set('scope_id', $g->unit_id);
+
+			if (!$gradebook->store())
+			{
+				return false;
+			}
+		}
+
+		// Success
 		return true;
+	}
+
+	/**
+	 * Method to check for expired exams that students did not take and add 0's to the gradebook as appropriate
+	 * This should be a lighter weight method than doing an entire refresh above.
+	 *
+	 * @return bool
+	 **/
+	public function checkForExpiredExams()
+	{
+	}
+
+	/**
+	 * Determine whether or not a student is passing
+	 *
+	 * @param      int $user_id
+	 * @return bool
+	 **/
+	public function isPassing($user_id)
+	{
+	}
+
+	/**
+	 * Get count of passing and failing
+	 *
+	 * @param      int $section_id
+	 * @return array((int)passing, (int)failing)
+	 **/
+	public function getCountPassingFailing($section_id)
+	{
 	}
 }

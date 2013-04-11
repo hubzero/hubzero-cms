@@ -280,8 +280,7 @@ class CoursesTableAsset extends JTable
 	/**
 	 * Check to see if this asset has any associations connected to it
 	 * 
-	 * @param  array $filters
-	 * @return object Return course units
+	 * @return bool
 	 */
 	public function isOrphaned()
 	{
