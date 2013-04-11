@@ -174,7 +174,7 @@ function submitbutton(pressbutton)
 			<input type="hidden" name="plan[version]" value="<?php echo $this->plan->version; ?>" />
 			<input type="hidden" name="plan[approved]" value="<?php echo $this->plan->approved; ?>" />
 			<?php if (!$this->plan->id) { ?>
-				<input type="checkbox" class="option" name="plan[create_revision]" id="plan-create_revision" value="0" />
+				<input type="hidden" name="plan[create_revision]" id="plan-create_revision" value="0" />
 			<?php } ?>
 		</fieldset>
 	</div>
