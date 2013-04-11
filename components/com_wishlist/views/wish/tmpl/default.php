@@ -218,7 +218,7 @@ if ($this->wishlist && $this->wish) {
 
 					<p class="entry-title">
 						<strong><?php echo $name; ?></strong>
-						<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&id='.$this->wishlist->id.'&ref='.$this->wish->id); ?>" title="<?php echo JText::_('COM_WISHLIST_PERMALINK'); ?>"><span class="entry-date-at">@</span> 
+						<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id); ?>" title="<?php echo JText::_('COM_WISHLIST_PERMALINK'); ?>"><span class="entry-date-at">@</span> 
 							<span class="time"><time datetime="<?php echo $this->wish->proposed; ?>"><?php echo JHTML::_('date', $this->wish->proposed, $timeformat, $tz); ?></time></span> <span class="entry-date-on">on</span> 
 							<span class="date"><time datetime="<?php echo $this->wish->proposed; ?>"><?php echo JHTML::_('date', $this->wish->proposed, $dateformat, $tz); ?></time></span>
 						</a>
@@ -267,6 +267,7 @@ if ($this->wishlist && $this->wish) {
 						//$html .= '</div>'."\n";
 						echo $html;
 						$html = '';
+					}
 ?>
 			<ul class="wish-options">
 				<?php if($this->admin && $this->admin!=3) { ?>
@@ -295,9 +296,10 @@ if ($this->wishlist && $this->wish) {
 							</a>
 						</li>	
 					<?php } ?>
-
+				<?php } ?>
+				<?php if ($this->admin || $this->juser->get('id') == $this->wish->proposed_by) { ?>
 					<li>
-						<a class="editwish" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=editwish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id); ?>">
+						<a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=editwish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id); ?>">
 							<?php echo ucfirst(JText::_('ACTION_EDIT')); ?>
 						</a>
 					</li>
@@ -309,13 +311,13 @@ if ($this->wishlist && $this->wish) {
 					</li>
 				<?php if ($this->juser->get('id') == $this->wish->proposed_by && $this->wish->status==0) { ?>
 					<li>
-						<a class="deletewish" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=delete#action'); ?>">
+						<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id.'&action=delete#action'); ?>">
 							<?php echo JText::_('ACTION_WITHDRAW_WISH'); ?>
 						</a>
 					</li>
 				<?php } ?>
 			</ul>
-							
+				<?php if ($this->admin) { ?>
 							<div class="container">
 								<form method="post" action="index.php?option=<?php echo $this->option; ?>" class="rankingform" id="rankForm">
 									<table class="wish-priority" summary="<?php echo JText::_('Wish Priority'); ?>">
