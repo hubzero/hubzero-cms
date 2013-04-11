@@ -210,16 +210,20 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<span class="local-services-username"><?php echo JFactory::getUser()->get('username'); ?></span>
 			</p>
 			<h5><?php echo JText::_('PLG_MEMBERS_MANAGE_KEYS'); ?></h5>
-			<form action=<?php echo JRoute::_('index.php?option=' . $this->option .
-												'&id=' . $this->member->get('uidNumber') .
-												'&active=account' .
-												'&task=uploadkey', true, true); ?> method="post">
-				<p><?php echo JText::_('PLG_MEMGERS_ACCOUNT_KEY_HINT'); ?>:</p>
-				<textarea name="keytext" cols="50" rows="6"><?php echo $this->key; ?></textarea>
-				<div class="clear"></div>
-				<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_SUBMIT'); ?>" />
-				<input type="reset" class="cancel" value="<?php echo JText::_('PLG_MEMBERS_CANCEL'); ?>" />
-			</form>
+			<?php if ($this->key !== false) : ?>
+				<form action=<?php echo JRoute::_('index.php?option=' . $this->option .
+													'&id=' . $this->member->get('uidNumber') .
+													'&active=account' .
+													'&task=uploadkey', true, true); ?> method="post">
+					<p><?php echo JText::_('PLG_MEMGERS_ACCOUNT_KEY_HINT'); ?>:</p>
+					<textarea name="keytext" cols="50" rows="6"><?php echo $this->key; ?></textarea>
+					<div class="clear"></div>
+					<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_SUBMIT'); ?>" />
+					<input type="reset" class="cancel" value="<?php echo JText::_('PLG_MEMBERS_CANCEL'); ?>" />
+				</form>
+			<?php else : ?>
+				<p class="error"><?php echo JText::_('PLG_MEMBERS_ACCOUNT_KEY_ERROR_ACCESSING_HOME_DIR'); ?></p>
+			<?php endif; ?>
 		</div><!-- / .sub-section-content -->
 	</div><!-- / .sub-section -->
 <?php endif; ?>

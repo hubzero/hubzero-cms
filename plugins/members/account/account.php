@@ -824,19 +824,42 @@ class plgMembersAccount extends Hubzero_Plugin
 		// First, make sure webdav is there and that the necessary folders are there
 		if(!JFolder::exists($base))
 		{
-			return $key;
+			// Not sure what to do here
+			return $key = false;
 		}
 		if(!JFolder::exists($base.$user))
 		{
-			return $key;
+			// Try to create their home directory
+			require_once(JPATH_ROOT . DS .'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.utils.php');
+			$mwUtils = new MwUtils();
+			if (!$mwUtils->createHomeDirectory($this->member->get('username')))
+			{
+				return $key = false;
+			}
 		}
 		if(!JFolder::exists($base.$user.$ssh))
 		{
-			return $key;
+			// User doesn't have an ssh directory, so try to create one (with appropriate permissions)
+			if (!JFolder::create($base.$user.$ssh, 0700))
+			{
+				return $key = false;
+			}
 		}
 		if(!JFile::exists($base.$user.$ssh.$auth))
 		{
-			return $key;
+			// Try to create their authorized keys file
+			JFile::write($base.$user.$ssh.$auth, '');
+			if (!JFile::exists($base.$user.$ssh.$auth))
+			{
+				return $key = false;
+			}
+			else
+			{
+				// Set correct permissions on authorized_keys file
+				JPath::setPermissions($base.$user.$ssh.$auth, '0600');
+
+				return $key;
+			}
 		}
 
 		// Read the file contents

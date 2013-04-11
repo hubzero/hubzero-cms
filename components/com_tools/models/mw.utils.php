@@ -129,4 +129,27 @@ class MwUtils
 		}
 		return $info;
 	}
+
+	/**
+	 * Create a user's home director (if it doesn't exist)
+	 * 
+	 * @param      string $username User for which to create home directory
+	 * @return     array
+	 */
+	public function createHomeDirectory($username)
+	{
+		$command = "createHomeDirectory -user={$username}";
+		$cmd = "/bin/sh components/com_tools/scripts/mw {$command} 2>&1 </dev/null";
+
+		//exec($cmd, $results, $status);
+
+		// Check exec status
+		if (!isset($status) || $status != 0) 
+		{
+			// Something went wrong
+			return false;
+		}
+
+		return true;
+	}
 }
