@@ -73,6 +73,7 @@ class ForumControllerSections extends Hubzero_Controller
 			$dSection->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($dSection->title));
 			$dSection->scope = 'site';
 			$dSection->scope_id = 0;
+			$dSection->state = 1;
 			if ($dSection->check())
 			{
 				$dSection->store();
@@ -86,6 +87,7 @@ class ForumControllerSections extends Hubzero_Controller
 			$dCategory->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($dCategory->title));
 			$dCategory->section_id = $dSection->id;
 			$dCategory->scope = 'site';
+			$dCategory->state = 1;
 			$dCategory->scope_id = 0;
 			if ($dCategory->check())
 			{
