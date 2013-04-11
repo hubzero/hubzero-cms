@@ -122,11 +122,13 @@
 	#filter-mytools input {
 		border-radius:20px;
 		box-shadow:inset 0 1px 2px #555;
-		width:90%;
+		width: 100%;
 		border:1px solid #DDD;
 		padding:5px 5%;
 		font-size:12px;
 		line-height:14px;
 		background:#FFF;
-		
+		-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+		-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+		box-sizing: border-box;         /* Opera/IE 8+ */	
 	}
