@@ -88,7 +88,7 @@ class Autoloader
 	 * @param   string  the path
 	 * @return  void
 	 */
-	public static function addNamespace($namespace, $path, $psr = false)
+	public static function addNamespace($namespace, $path, $psr = true)
 	{
 		static::$namespaces[$namespace] = $path;
 		if ($psr)
@@ -324,7 +324,7 @@ class Autoloader
 	 * @param   bool    $psr    Whether this is a PSR-0 compliant class
 	 * @return  string  Path for the class
 	 */
-	protected static function classToPath($class, $psr = false)
+	protected static function classToPath($class, $psr = true)
 	{
 		$file  = '';
 		if ($last_ns_pos = strripos($class, '\\'))
