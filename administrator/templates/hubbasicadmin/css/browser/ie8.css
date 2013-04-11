@@ -47,6 +47,12 @@
 	.main-navigation ul#menu li.separator span {
 		display: none;
 	}
+	.toolbar-box li a small.fontcon-before,
+	.toolbar-box li a span:before,
+	.toolbar-box table a small.fontcon-before,
+	.toolbar-box table a span:before {
+		margin-top: 8px;
+	}
 /* Support */
 	.ticket-details,
 	ol.comments .comment-changelog {
