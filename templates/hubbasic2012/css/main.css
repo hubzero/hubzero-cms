@@ -507,7 +507,7 @@
 		position: relative;
 		background: #fff;
 		height: 97px;
-		z-index: 1;
+		z-index: 777;
 		box-shadow: 0 0.25em 0.25em -15px rgba(0, 0, 0, 0.6);
 	}
 	#masthead .inner {
