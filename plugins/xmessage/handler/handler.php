@@ -62,7 +62,7 @@ class plgXMessageHandler extends JPlugin
 	 */
 	public function onTakeAction($type, $uids=array(), $component='', $element=null)
 	{
-		ximport('Hubzero_Message');
+		ximport('Hubzero_Message_Helper');
 
 		// Do we have the proper bits?
 		if (!$element || !$component || !$type) 
@@ -122,7 +122,7 @@ class plgXMessageHandler extends JPlugin
 	 */
 	public function onSendMessage($type, $subject, $message, $from=array(), $to=array(), $component='', $element=null, $description='', $group_id=0, $bypassGroupsCheck = false)
 	{
-		ximport('Hubzero_Message');
+		ximport('Hubzero_Message_Helper');
 
 		// Do we have a message?
 		if (!$message) 
