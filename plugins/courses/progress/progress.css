@@ -69,21 +69,16 @@
 	background: #EFEFEF;
 	border-top: 2px dotted #888;
 	height: 50px;
+	line-height: 60px;
 }
 .progress-timeline .start-inner,
 .progress-timeline .past {
-	border-top: 3px solid blue;
-}
-.progress-timeline .past,
-.progress-timeline .current {
-	background: #AAA;
-	color: #FFF;
-	font-style: italic;
+	border-top: 4px solid #AAA;
 }
 .progress-timeline .first, 
 .progress-timeline .unit-inner,
 .progress-timeline .end-inner {
-	border-left: 2px solid #FFF;
+	border-left: 4px solid #FFF;
 }
 .progress-timeline .start,
 .progress-timeline .end {
@@ -117,35 +112,42 @@
 	border-style: solid;
 }
 .progress-timeline .unit-inner:before {
-	top: -10px;
+	top: -18px;
 	left: 50%;
-	margin-left: -7px;
+	margin-left: -16px;
 	bottom: auto;
 	border-color: #999;
-	border-width: 8px;
-	border-radius: 8px;
+	border-width: 16px;
+	border-radius: 16px;
 }
 .progress-timeline .past:before {
-	border-color: blue;
+	border-color: #AAA;
 }
 .progress-timeline .unit-inner:after {
-	top: -8px;
+	top: -14px;
 	left: 50%;
-	margin-left: -5px;
+	margin-left: -12px;
 	bottom: auto;
 	border-color: #FFF;
-	border-width: 6px;
-	border-radius: 6px;
+	border-width: 12px;
+	border-radius: 12px;
 }
-.progress-timeline .past:after {
-	border-color: #EFEFEF;
+.progress-timeline .unit-fill {
+	content: "";
+	position: absolute;
+	top: -12px;
+	left: 50%;
+	margin-left: -10px;
+	width: 20px;
+	height: 20px;
+	border-radius: 10px;
+	z-index: 2;
+	overflow: hidden;
 }
-.progress-timeline .current .unit-inner:before {
-	border-color: #FFF;
+.progress-timeline .unit-fill-inner {
+	background: blue;
 }
-.progress-timeline .current .unit-inner:after {
-	border-color: blue;
-}
+
 /* Timeline widths (less the 5% on each side for start and end (10% total) */
 .length_1 .unit { width: 90%; }
 .length_2 .unit { width: 45%; }

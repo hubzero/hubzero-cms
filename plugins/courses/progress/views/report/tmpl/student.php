@@ -38,6 +38,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 $gradebook = new CoursesModelGradeBook(null);
 $gradebook->refresh($this->course, $this->juser->get('id'));
 $grades    = $gradebook->getGrades($this->juser->get('id'));
+$progress  = $gradebook->getProgress($this->course, $this->juser->get('id'));
 
 $details = array();
 $details['quizzes_total']       = 0;
@@ -219,10 +220,12 @@ $progress_timeline  = "<div class=\"progress-timeline length_{$num_units}\">";
 $progress_timeline .= '<div class="start"><div class="start-inner"></div></div>';
 foreach ($units as $unit)
 {
-	$first   = ($index == 1) ? ' first' : '';
-	$last    = ($index == $num_units) ? ' last' : '';
-	$past    = ($unit->started()) ? ' past' : '';
-	$current = '';
+	$first    = ($index == 1) ? ' first' : '';
+	$last     = ($index == $num_units) ? ' last' : '';
+	$past     = ($unit->started()) ? ' past' : '';
+	$complete = $progress[$this->juser->get('id')][$unit->get('id')]['percentage_complete'];
+	$margin   = 100 - $complete;
+	$current  = '';
 
 	if($unit->isAvailable())
 	{
@@ -232,7 +235,12 @@ foreach ($units as $unit)
 		$current_i = $index;
 	}
 
-	$progress_timeline .= "<div class=\"unit{$current}\"><div class=\"unit-inner{$first}{$last}{$past}\">Unit {$index}</div></div>";
+	$progress_timeline .= "<div class=\"unit{$current}\"><div class=\"unit-inner{$first}{$last}{$past}\">";
+	$progress_timeline .= "<div class=\"unit-fill\">";
+	$progress_timeline .= "<div class=\"unit-fill-inner\" style=\"height:{$complete}%;margin-top:{$margin}%;\"></div>";
+	$progress_timeline .= "</div>";
+	$progress_timeline .= "Unit {$index}";
+	$progress_timeline .= "</div></div>";
 
 	++$index;
 }

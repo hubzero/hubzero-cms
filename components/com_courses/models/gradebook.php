@@ -124,16 +124,18 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	 * criteria on assets where it can be tracked (ex: videos, where we can track an
 	 * entire view, or an exam, where we know when they've actually finished it).
 	 * 
-	 * @param      object $course - course object
+	 * @param      obj $course - course object
+	 * @param      int $user_id 
 	 * @return     array $progress
 	 */
-	public function getProgress($course)
+	public function getProgress($course, $user_id=null)
 	{
 		// Get the asset views
 		$assetViews  = new CoursesTableAssetViews(JFactory::getDBO());
 		$views = $assetViews->find(
 			array(
-				'section_id' => $course->offering()->section()->get('id')
+				'section_id' => $course->offering()->section()->get('id'),
+				'user_id'    => $user_id
 			)
 		);
 

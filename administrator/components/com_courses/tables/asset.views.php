@@ -92,20 +92,6 @@ class CoursesTableAssetViews extends JTable
 
 		if (isset($filters['section_id']) && $filters['section_id'])
 		{
-			/*
-			SELECT ca.id as asset_id, cm.user_id as user_id, cu.id as unit_id, IF(cav.viewed IS NULL, 0, 1) as viewed
-			FROM jos_courses_assets AS ca
-			LEFT JOIN jos_courses_asset_associations AS caa ON ca.id = caa.asset_id
-			LEFT JOIN jos_courses_asset_groups AS cag ON caa.scope_id = cag.id
-			LEFT JOIN jos_courses_units AS cu ON cag.unit_id = cu.id
-			LEFT JOIN jos_courses_offerings AS co ON cu.offering_id = co.id
-			LEFT JOIN jos_courses_offering_sections AS cos ON co.id = cos.offering_id
-			LEFT JOIN jos_courses_members AS cm ON cos.id = cm.section_id
-			LEFT JOIN jos_courses_asset_views AS cav ON ca.id = cav.asset_id AND cm.user_id = cav.viewed_by
-			WHERE cm.student = 1 AND ca.state = 1 AND cos.id = 7
-			GROUP BY ca.id, cm.user_id
-			*/
-
 			$select[] = "ca.id as asset_id";
 			$select[] = "cm.user_id as user_id";
 			$select[] = "cu.id as unit_id";
@@ -128,6 +114,10 @@ class CoursesTableAssetViews extends JTable
 			$group[] = "ca.id";
 			$group[] = "user_id";
 			$group[] = "cm.user_id";
+		}
+		if (isset($filters['user_id']) && $filters['user_id'])
+		{
+			$where[] = "cm.user_id = " . $this->_db->Quote($filters['user_id']);
 		}
 
 		$query = "SELECT ";
