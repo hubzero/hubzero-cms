@@ -109,7 +109,7 @@ $lid = $this->group->get('gidNumber');
 				<?php
 					ximport('Hubzero_Wiki_Editor');
 					$editor =& Hubzero_Wiki_Editor::getInstance();
-					echo $editor->display('page[content]', 'page[content]', stripslashes($content), '', '50', '15');
+					echo $editor->display('page[content]', 'page_content', stripslashes($content), '', '50', '15');
 				?>
 				<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> &amp; <a class="popup" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiMacros'); ?>">Wiki Macros</a> is allowed.</span>
 			</label>
