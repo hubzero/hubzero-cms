@@ -149,7 +149,7 @@ class CoursesTableGradeBook extends JTable
 	 * @param      string $return DB query return type
 	 * @return     string/int
 	 */
-	public function calculateScore($filters=array(), $return)
+	public function calculateScore($filters=array(), $return, $key='')
 	{
 		$select = array();
 		$from   = array();
@@ -228,7 +228,7 @@ class CoursesTableGradeBook extends JTable
 		}
 
 		$this->_db->setQuery($query);
-		return $this->_db->$return();
+		return $this->_db->$return($key);
 	}
 
 	/**

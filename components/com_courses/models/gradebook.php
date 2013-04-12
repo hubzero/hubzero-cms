@@ -160,6 +160,11 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 
 	/**
 	 * Save a form score to the grade book
+	 *
+	 * Consider marking for deprecation?
+	 * This used to be called from the save score method of the forms model.
+	 * It has been, in essence, replaced by the use of the refresh method,
+	 * which inserts scores into the grade book as needed.
 	 * 
 	 * @param      decimal $score, score to save
 	 * @param      int $asset_id, asset id of item being saved
@@ -310,7 +315,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	 *
 	 * @param      course $course
 	 * @param      int $user_id (optional)
-	 * @return bool
+	 * @return     void
 	 **/
 	public function refresh($course, $user_id=null)
 	{
@@ -334,22 +339,86 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	}
 
 	/**
-	 * Determine whether or not a student is passing
+	 * Determine whether or not a student or group of students is passing
 	 *
-	 * @param      int $user_id
-	 * @return bool
+	 * @param      object $course
+	 * @param      int $user_id (optional)
+	 * @param      bool $section only (optional)
+	 * @return     array
 	 **/
-	public function isPassing($user_id)
+	public function passing($course, $section=true, $user_id=null)
 	{
+		// Get the course id
+		if (!is_object($course))
+		{
+			return false;
+		}
+
+		// Get a grade policy object
+		$policy  = $course->offering()->section()->get('grade_policy_id');
+		$gradePolicy = new CoursesModelGradePolicies($policy);
+
+		// Get the grading policy score criteria
+		$grade_criteria = $gradePolicy->replacePlaceholders('grade_criteria', array('course_id'=>$course->get('id')));
+		$grade_criteria = json_decode($grade_criteria);
+		$grade_criteria->select[] = (object) array('value'=>'cgb.user_id AS user_id');
+
+		// If section only, add appropriate joins to limit by section
+		if ($section)
+		{
+			$grade_criteria->from[]  = (object) array('value'=>'LEFT JOIN #__courses_members AS cm ON cgb.user_id = cm.user_id');
+			$grade_criteria->where[] = (object) array('field'=>'cm.section_id','operator'=>'=','value'=>$course->offering()->section()->get('id'));
+		}
+
+		// Add the user_id to the query if it's set
+		if (!is_null($user_id) && is_numeric($user_id))
+		{
+			$grade_criteria->where[] = (object) array('field'=>'user_id','operator'=>'=','value'=>$user_id);
+		}
+
+		// Get passing data
+		$passing = $this->_tbl->calculateScore($grade_criteria, 'loadObjectList', 'user_id');
+
+		return $passing;
 	}
 
 	/**
 	 * Get count of passing and failing
 	 *
-	 * @param      int $section_id
-	 * @return array((int)passing, (int)failing)
+	 * @param      obj $course
+	 * @param      bool $section only (optional)
+	 * @return     array((int)passing, (int)failing)
 	 **/
-	public function getCountPassingFailing($section_id)
+	public function getCountPassingFailing($course, $section=true)
+	{
+		$rows = $this->passing($course, $section);
+
+		$count_passing = 0;
+		$count_failing = 0;
+
+		foreach ($rows as $row)
+		{
+			if ($row->passing)
+			{
+				$count_passing++;
+			}
+			else
+			{
+				$count_failing++;
+			}
+		}
+
+		return array('passing'=>$count_passing, 'failing'=>$count_failing);
+	}
+
+	/**
+	 * Check whether or not the student has earned a badge
+	 *
+	 * @param      obj $course
+	 * @param      int $user_id
+	 * @return     bool
+	 **/
+	public function hasEarnedBadge($course, $user_id)
 	{
 	}
 }

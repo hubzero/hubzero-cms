@@ -325,6 +325,8 @@ class PdfForm
 		$dbh = self::getDbh();
 		$dbh->execute('UPDATE #__courses_forms SET title = '.$dbh->quote(stripslashes($title)).' WHERE id = '.$this->getId());
 
+		$dbh->execute('UPDATE #__courses_assets SET title = '.$dbh->Quote(stripslashes($title)).' WHERE id = '.$this->getAssetId());
+
 		return $this;
 	}
 
@@ -339,6 +341,19 @@ class PdfForm
 		$dbh->execute('UPDATE `#__courses_forms` SET `asset_id` = ' . $dbh->quote($asset_id) . ' WHERE id = ' . $this->getId());
 
 		return $this;
+	}
+
+	/**
+	 * Get asset id
+	 *
+	 * @return object
+	 **/
+	public function getAssetId()
+	{
+		$dbh = self::getDbh();
+		$dbh->setQuery('SELECT `asset_id` FROM `#__courses_forms` WHERE id = ' . $this->getId());
+
+		return $dbh->loadResult();
 	}
 
 	/**

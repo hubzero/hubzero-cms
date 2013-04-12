@@ -52,6 +52,7 @@ $gradebook = new CoursesModelGradeBook(null);
 $gradebook->refresh($this->course);
 $grades    = $gradebook->getGrades($member_ids, array('unit', 'course'));
 $progress  = $gradebook->getProgress($this->course);
+$passing   = $gradebook->passing($this->course);
 
 // Get the grading policy
 $gradePolicy = new CoursesModelGradePolicies($this->course->offering()->section()->get('grade_policy_id'));
@@ -108,24 +109,18 @@ $policy = $gradePolicy->get('description');
 							<div class="progress-bar-inner">
 								<? if (isset($grades[$m->get('user_id')]['course'][$this->course->get('id')])) : ?>
 									<?
-										// @FIXME: make this based on grading policy
-										$studentStatus = $grades[$m->get('user_id')]['course'][$this->course->get('id')];
 										$cls = '';
-										if($studentStatus < 70)
-										{
-											$cls = ' stop';
-										}
-										elseif($studentStatus >= 70 && $studentStatus < 75)
-										{
-											$cls = ' yield';
-										}
-										elseif($studentStatus >= 75 && $studentStatus <= 100)
+										if($passing[$m->get('user_id')]->passing)
 										{
 											$cls = ' go';
 										}
+										else
+										{
+											$cls = ' stop';
+										}
 									?>
-									<div class="student-progress-bar <?= $cls ?>" style="width:<?= $studentStatus ?>%;">
-										<div class="score-text"><?= $studentStatus ?></div>
+									<div class="student-progress-bar <?= $cls ?>" style="width:<?= $grades[$m->get('user_id')]['course'][$this->course->get('id')] ?>%;">
+										<div class="score-text"><?= $grades[$m->get('user_id')]['course'][$this->course->get('id')] ?></div>
 									</div>
 								<? endif; ?>
 							</div>
