@@ -297,21 +297,24 @@ HUB.Groups = {
 			.css('width', ($(assetBox.parent()).width() - 10) + 'px')
 			.css('padding', '10px');
 
-		if(assetBox.length && topBox.length && bottomBox.length)
+		if(assetBox.length)
 		{
-			max = (bottomBox.position().top + bottomBox.outerHeight(true)) - assetBox.outerHeight(true);
-			pos = $(document).scrollTop() - 200;
-			
-			if( pos > 0 && pos < max)
+			if(topBox.length && bottomBox.length)
 			{
-				assetBox.stop().animate({
-					"top": pos
-				});
+				max = (bottomBox.position().top + bottomBox.outerHeight(true)) - assetBox.outerHeight(true);
+				pos = $(document).scrollTop() - 200;
+
+				if( pos > 0 && pos < max)
+				{
+					assetBox.stop().animate({
+						"top": pos
+					});
+				}
 			}
-		}
-		else
-		{
-			console.log('Missing needed DOM elements to make assest browser scroll');
+			else
+			{
+				console.log('Missing needed DOM elements to make assest browser scroll.');
+			}
 		}
 	},
 
