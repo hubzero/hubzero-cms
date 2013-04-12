@@ -16,7 +16,7 @@ HUB.Base = {
 			if (y >= top) {
 				// if so, ad the fixed class
 				if (!$('cloned-toolbar-box')) {
-					var menu2 = menu.clone().setStyles({
+					var menu2 = menu.clone(true,true).setStyles({
 						'position':'fixed',
 						'top': '0px',
 						'z-index': 500,
