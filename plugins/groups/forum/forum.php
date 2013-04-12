@@ -124,7 +124,7 @@ class plgGroupsForum extends Hubzero_Plugin
 			//if set to nobody make sure cant access
 			if ($group_plugin_acl == 'nobody') 
 			{
-				$arr['html'] = '<p class="info">' . JText::sprintf('COM_GROUPS_PLUGIN_OFF', ucfirst($active_real)) . '</p>';
+				$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_OFF', ucfirst($active_real)) . '</p>';
 				return $arr;
 			}
 
@@ -133,7 +133,7 @@ class plgGroupsForum extends Hubzero_Plugin
 			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')) 
 			{
 				ximport('Hubzero_Module_Helper');
-				$arr['html']  = '<p class="warning">' . JText::sprintf('COM_GROUPS_PLUGIN_REGISTERED', ucfirst($active_real)) . '</p>';
+				$arr['html']  = '<p class="warning">' . JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active_real)) . '</p>';
 				$arr['html'] .= Hubzero_Module_Helper::renderModules('force_mod');
 				return $arr;
 			}
@@ -143,7 +143,7 @@ class plgGroupsForum extends Hubzero_Plugin
 			 && $group_plugin_acl == 'members' 
 			 && $authorized != 'admin') 
 			{
-				$arr['html'] = '<p class="warning">' . JText::sprintf('COM_GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active_real)) . '</p>';
+				$arr['html'] = '<p class="warning">' . JText::sprintf('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active_real)) . '</p>';
 				return $arr;
 			}
 
@@ -1545,7 +1545,7 @@ class plgGroupsForum extends Hubzero_Plugin
 
 				if (!$dispatcher->trigger('onSendMessage', array('group_message', $subject, $forum_message, $from, array($userID), $this->option, null, '', $this->group->get('gidNumber')))) 
 				{
-					$this->setError(JText::_('COM_GROUPS_ERROR_EMAIL_MEMBERS_FAILED'));
+					$this->setError(JText::_('GROUPS_ERROR_EMAIL_MEMBERS_FAILED'));
 				}
 			}
 		}
