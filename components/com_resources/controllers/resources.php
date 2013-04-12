@@ -1329,7 +1329,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 			$cat = array();
 			$cat['play'] = JText::_('COM_RESOURCES_PLAY');
 			$cats[] = $cat;
-			$sections[] = array('html' => $body, 'metadata' => '');
+			$sections[] = array('html' => $body, 'metadata' => '', 'area' => 'play');
 			$tab = 'play';
 		} 
 		elseif ($this->_task == 'watch') 
