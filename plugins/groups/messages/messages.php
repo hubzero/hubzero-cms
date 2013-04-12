@@ -155,7 +155,7 @@ class plgGroupsMessages extends JPlugin
             Hubzero_Document::addPluginScript('groups','messages');
 
 			// Load some needed libraries
-			ximport('Hubzero_Message');
+			ximport('Hubzero_Message_Helper');
 
 			$task = strtolower(trim($action));
 

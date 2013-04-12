@@ -110,7 +110,7 @@ class plgMembersMessages extends Hubzero_Plugin
 		$database =& JFactory::getDBO();
 
 		// Load some needed libraries
-		ximport('Hubzero_Message');
+		ximport('Hubzero_Message_Helper');
 
 		// Are we returning HTML?
 		if ($returnhtml) 
