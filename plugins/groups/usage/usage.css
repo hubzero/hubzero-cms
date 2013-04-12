@@ -3,8 +3,10 @@
 .group_usage h3.heading {
 	display:none;
 	}
-.group_usage .main {
+.group_usage .main,
+.group_usage .section {
 	border:none;
+	padding:0;
 	}
 	
 #page_views {
