@@ -103,7 +103,7 @@ $doc->addStyleSheet('/administrator/components/' . $this->option . '/assets/css/
 </fieldset>
 
 <div id="metadata-cont">
-	<div class="col width-50 fltlft">
+	<div class="col width-100">
 		<form id="metadata" action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post">
 			<fieldset class="adminform">
 				<legend><span>Metadata</span></legend>
@@ -137,33 +137,6 @@ $doc->addStyleSheet('/administrator/components/' . $this->option . '/assets/css/
 						<tr>
 							<th class="key">Children:</th>
 							<td><ul id="children" class="textboxlist-holder act"></ul></td>
-						</tr>
-					</tbody>
-				</table>
-			</fieldset>
-		</form>
-	</div>
-	<div class="col width-50 fltrt">
-		<form action="index.php?option=com_tags" method="post">
-			<fieldset class="adminform">
-				<legend><span>Delete or merge</span></legend>
-				<table class="admintable">
-					<tfoot>
-						<tr>
-							<td colspan="2">
-								<input type="hidden" class="tag-id" name="tag" value="" />
-								<input type="hidden" value="delete" name="task" />
-								<button type="submit">Delete</button>
-							</td>
-						</tr>
-					</tfoot>
-					<tbody>
-						<tr>
-							<td><label for="do_merge"><input type="checkbox" name="do_merge" id="do_merge" /> Merge <span class="tag-count"></span> tagged items</label> <label for="merge-tag">into another tag:</label></td>
-							<td><input type="text" id="merge-tag" name="merge_tag" class="tag-entry" /></td>
-						</tr>
-						<tr>
-							<td colspan="2"><label><input type="checkbox" name="really" /> I understand that this operation is irreversible and I am prepared to live with its consequences</label></td>
 						</tr>
 					</tbody>
 				</table>
