@@ -104,26 +104,6 @@ class PdfFormRespondent
 	}
 
 	/**
-	 * Get respondent score
-	 *
-	 * @return float
-	 **/
-	public function getScore()
-	{
-		$dbh = JFactory::getDBO();
-		$dbh->setQuery(
-			'SELECT count(pfa.id)*100/count(pfr2.id) AS score
-			FROM #__courses_form_respondents pfr 
-			LEFT JOIN #__courses_form_latest_responses_view pfr2 ON pfr2.respondent_id = pfr.id
-			INNER JOIN #__courses_form_questions pfq ON pfq.id = pfr2.question_id
-			LEFT JOIN #__courses_form_answers pfa ON pfa.id = pfr2.answer_id AND pfa.correct
-			WHERE deployment_id = ' . $this->depId . ' AND user_id = ' . JFactory::getUser()->get('id')
-		);
-
-		return $dbh->loadResult();
-	}
-
-	/**
 	 * Save answers
 	 *
 	 * @return object
@@ -141,11 +121,6 @@ class PdfFormRespondent
 
 			$dbh->execute('INSERT INTO #__courses_form_responses(respondent_id, question_id, answer_id) VALUES ('.$this->id.', '.$qid[1].', '.(int)$val.')');
 		}
-
-		// Sync grade to course grade book
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradebook.php');
-		$gradebook = new CoursesModelGradeBook(null);
-		$gradebook->saveAssetResult($this->getScore(), $this->getAssetId());
 
 		return $this;
 	}
@@ -252,24 +227,5 @@ class PdfFormRespondent
 		JFactory::getDBO()->execute('UPDATE #__courses_form_respondents SET finished = \''.$this->started.'\' WHERE id = '.(int)$this->id);
 
 		return $this;
-	}
-
-	/**
-	 * Get asset id
-	 *
-	 * @return int
-	 **/
-	public function getAssetId()
-	{
-		$dbh = JFactory::getDBO();
-
-		$dbh->setQuery(
-			'SELECT `id`
-				FROM #__courses_assets
-				WHERE `content` 
-				LIKE CONCAT(\'%{"form_id":"\', (SELECT form_id FROM #__courses_form_deployments WHERE id = ' . $this->depId . '), \'"}%\')'
-		);
-
-		return $dbh->loadResult();
 	}
 }

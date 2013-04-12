@@ -159,102 +159,6 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	}
 
 	/**
-	 * Resave/refresh grades for a user(s)
-	 * 
-	 * This method should be used, for example, if the grading policy for a course were to change.
-	 *
-	 * @param      object $course
-	 * @param      int or array $user_id, user id for which to refresh grades
-	 * @return     boolean true on success, false otherwise
-	 */
-	public function refresh($course, $user_id=null)
-	{
-		$asset = new CoursesTableAsset(JFactory::getDBO());
-
-		$filters = array(
-			'w' => array(
-				'section_id' => $course->offering()->section()->get('id'),
-				'asset_type' => 'exam',
-				'state'      => 1
-			)
-		);
-
-		// Get published assets for this section
-		$assets = $asset->find($filters);
-
-		// If we have a user_id, make sure user_id is an array
-		if (!is_null($user_id) && !is_array($user_id))
-		{
-			$user_id = array($user_id);
-		}
-		elseif (is_null($user_id))
-		{
-			// Create array of users in section
-			$members = $course->offering()->section()->members();
-			$user_id = array();
-
-			foreach ($members as $m)
-			{
-				$user_id[] = $m->get('user_id');
-			}
-		}
-
-		foreach ($assets as $a)
-		{
-			// Check for result for given student on form
-			preg_match('/\?crumb=([-a-zA-Z0-9]{20})/', $a->url, $matches);
-
-			$crumb = false;
-
-			if(isset($matches[1]))
-			{
-				$crumb = $matches[1];
-			}
-
-			if(!$crumb)
-			{
-				// Break foreach, this is not a valid form!
-				continue;
-			}
-
-			// Get the form deployment based on crumb
-			$dep = PdfFormDeployment::fromCrumb($crumb);
-
-			// Loop through the results of the deployment
-			foreach($dep->getResults(true) as $result)
-			{
-				// If we have a user_id, only change given users
-				if (!is_null($user_id) && !in_array($result['user_id'], $user_id))
-				{
-					continue;
-				}
-				// If form hasn't been completed, and time hasn't expired, skip it
-				if (is_null($result['score'])
-					&& (is_null($dep->getEndTime()) || $dep->getEndTime() == '0000-00-00 00:00:00' || $dep->getEndTime() > date("Y-m-d H:i:s")))
-				{
-					continue;
-				}
-				// If form hasn't been completed, but time has expired, result is 0
-				elseif (is_null($result['score']) && $dep->getEndTime() < date("Y-m-d H:i:s"))
-				{
-					$result['score'] = '0.00';
-				}
-
-				$this->saveAssetResult($result['score'], $a->id, $result['user_id'], false);
-			}
-		}
-
-		// Calculate unit and course scores now
-		foreach ($user_id as $u)
-		{
-			$this->calculateScores($u, $course);
-		}
-
-		// Success
-		return true;
-	}
-
-	/**
 	 * Save a form score to the grade book
 	 * 
 	 * @param      decimal $score, score to save
@@ -317,10 +221,6 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 			return false;
 		}
 
-		// Get a grade policy object
-		$policy  = $course->offering()->section()->get('grade_policy_id');
-		$gradePolicy = new CoursesModelGradePolicies($policy);
-
 		// Get the course id
 		if (!is_null($course) && is_object($course))
 		{
@@ -331,12 +231,19 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 			$asset = new CoursesTableAsset(JFactory::getDBO());
 			$asset->load($asset_id);
 			$course_id = $asset->course_id;
+
+			// Get our course model as well (to retrieve grade policy)
+			$course = new CoursesModelCourse($course_id);
 		}
 		else
 		{
 			// Could not determine course id
 			return false;
 		}
+
+		// Get a grade policy object
+		$policy  = $course->offering()->section()->get('grade_policy_id');
+		$gradePolicy = new CoursesModelGradePolicies($policy);
 
 		// Get the grading policy score criteria
 		$score_criteria = $gradePolicy->replacePlaceholders('score_criteria', array('course_id'=>$course_id, 'user_id'=>$user_id));
@@ -400,12 +307,30 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 
 	/**
 	 * Method to check for expired exams that students did not take and add 0's to the gradebook as appropriate
-	 * This should be a lighter weight method than doing an entire refresh above.
 	 *
+	 * @param      course $course
+	 * @param      int $user_id (optional)
 	 * @return bool
 	 **/
-	public function checkForExpiredExams()
+	public function refresh($course, $user_id=null)
 	{
+		$this->_tbl->syncGrades($course->get('id'), $user_id);
+
+		// Get course section members and update their unit and course numbers
+		$members = $course->offering()->section()->members();
+
+		if (is_null($user_id))
+		{
+			foreach ($members as $m)
+			{
+				// Compute unit and course scores as well
+				$this->calculateScores($m->get('user_id'), $course);
+			}
+		}
+		else
+		{
+			$this->calculateScores($user_id, $course);
+		}
 	}
 
 	/**

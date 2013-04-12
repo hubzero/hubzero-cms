@@ -230,4 +230,38 @@ class CoursesTableGradeBook extends JTable
 		$this->_db->setQuery($query);
 		return $this->_db->$return();
 	}
+
+	/**
+	 * Query to sync exam scores with gradebook
+	 * 
+	 * @param      int $course_id
+	 * @param      int $user_id
+	 * @return     void
+	 */
+	public function syncGrades($course_id, $user_id=null)
+	{
+		$user = (!is_null($user_id)) ? "AND cfr.user_id = {$user_id}" : '';
+
+		$this->_db->execute("INSERT INTO `#__courses_grade_book` (`user_id`, `score`, `scope`, `scope_id`)
+
+			SELECT u.id as user_id,
+				CASE 
+					WHEN count(cfa.id)*100/count(cfr2.id) IS NOT NULL THEN count(cfa.id)*100/count(cfr2.id)
+					WHEN count(cfa.id)*100/count(cfr2.id) IS NULL AND cfd.end_time < NOW() THEN 0.00
+				END AS score,
+				'asset' as scope,
+				ca.id as scope_id
+			FROM `#__courses_form_respondents` cfr
+			INNER JOIN `#__users` u ON u.id = cfr.user_id 
+			LEFT JOIN `#__courses_form_latest_responses_view` cfr2 ON cfr2.respondent_id = cfr.id
+			LEFT JOIN `#__courses_form_questions` cfq ON cfq.id = cfr2.question_id
+			LEFT JOIN `#__courses_form_answers` cfa ON cfa.id = cfr2.answer_id AND cfa.correct
+			LEFT JOIN `#__courses_form_deployments` cfd ON cfr.deployment_id = cfd.id
+			LEFT JOIN `#__courses_forms` cf ON cfd.form_id = cf.id
+			LEFT JOIN `#__courses_assets` ca ON cf.asset_id = ca.id
+			WHERE ca.course_id = {$course_id} {$user}
+			GROUP BY name, email, deployment_id, version
+
+		ON DUPLICATE KEY UPDATE score = VALUES(score);");
+	}
 }

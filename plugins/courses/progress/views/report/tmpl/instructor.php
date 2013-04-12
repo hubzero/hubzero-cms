@@ -49,8 +49,7 @@ foreach ($members as $m)
 
 // Get Grades
 $gradebook = new CoursesModelGradeBook(null);
-// @FIXME: refresh grades here?
-//$gradebook->refresh($this->course);
+$gradebook->refresh($this->course);
 $grades    = $gradebook->getGrades($member_ids, array('unit', 'course'));
 $progress  = $gradebook->getProgress($this->course);
 
@@ -182,8 +181,3 @@ $policy = $gradePolicy->get('description');
 		<p class="info">The section does not currently have anyone enrolled</p>
 	<? endif; ?>
 </div>
-<!--<div class="refresh">
-	<p>
-		Does something look incorrect above? Try <a href="<? //JRoute::_($base . '&active=progress&action=refresh') ?>">refreshing</a> the scores!
-	</p>
-</div>-->

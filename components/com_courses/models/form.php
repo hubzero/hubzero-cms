@@ -329,6 +329,19 @@ class PdfForm
 	}
 
 	/**
+	 * Set asset id
+	 *
+	 * @return object
+	 **/
+	public function setAssetId($asset_id)
+	{
+		$dbh = self::getDbh();
+		$dbh->execute('UPDATE `#__courses_forms` SET `asset_id` = ' . $dbh->quote($asset_id) . ' WHERE id = ' . $this->getId());
+
+		return $this;
+	}
+
+	/**
 	 * Get form title
 	 *
 	 * @return string

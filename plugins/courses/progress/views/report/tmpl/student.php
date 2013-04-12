@@ -36,7 +36,6 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models'
 $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias');
 
 $gradebook = new CoursesModelGradeBook(null);
-// @FIXME: should we refresh student grades here?
 $gradebook->refresh($this->course, $this->juser->get('id'));
 $grades    = $gradebook->getGrades($this->juser->get('id'));
 

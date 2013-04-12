@@ -610,7 +610,7 @@ class PdfFormDeployment
 		$fid = $this->formId;
 
 		$dbh->setQuery(
-			'SELECT `id` FROM #__courses_assets WHERE `content` LIKE ' . $dbh->Quote('%{"form_id":"'.$fid.'"}%')
+			'SELECT `asset_id` FROM `#__courses_forms` WHERE `id` = ' . $dbh->Quote($fid)
 		);
 
 		if($result = $dbh->loadResult())
@@ -640,7 +640,8 @@ class PdfFormDeployment
 			INNER JOIN #__courses_asset_groups as cag ON cag.id = caa.scope_id
 			INNER JOIN #__courses_units as u ON u.id = cag.unit_id
 			INNER JOIN #__courses_offerings as o ON o.id = u.offering_id
-			WHERE `content` LIKE ' . $dbh->Quote('%{"form_id":"'.$fid.'"}%')
+			INNER JOIN #__courses_forms as cf ON ca.id = cf.asset_id
+			WHERE cf.id = ' . $dbh->Quote($fid)
 		);
 
 		if($result = $dbh->loadAssoc())

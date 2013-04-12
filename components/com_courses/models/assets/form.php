@@ -94,7 +94,6 @@ class FormAssetHandler extends ContentAssetHandler
 		$this->asset['title']   = $filename;
 		$this->asset['type']    = 'exam';
 		$this->asset['url']     = '/courses/form/layout/' . $id;
-		$this->asset['content'] = json_encode(array("form_id"=>"{$id}"));
 
 		// Call the primary create method on the file asset handler
 		$return = parent::create();
@@ -107,6 +106,9 @@ class FormAssetHandler extends ContentAssetHandler
 		}
 		else
 		{
+			// Set the asset id on the form
+			$pdf->setAssetId($return['assets']['asset_id']);
+
 			// Build our JavaScript to return to the view to be executed
 			$js = 
 				"// Open up forms in a lightbox

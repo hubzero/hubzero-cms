@@ -842,12 +842,10 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 			return;
 		}
 
-		// Get our asset object
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
-		$asset = new CoursesModelAsset($id);
+		$this->db->setQuery("SELECT `id` FROM `#__courses_forms` WHERE `asset_id` = " . $this->db->Quote($id));
 
 		// Get the form ID from the content
-		$formId = json_decode($asset->get('content'))->form_id;
+		$formId = $this->db->loadResult();
 
 		// Check
 		if (!is_numeric($formId))
