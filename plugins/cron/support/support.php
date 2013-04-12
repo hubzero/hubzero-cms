@@ -77,7 +77,7 @@ class plgCronSupport extends JPlugin
 		
 		$jconfig =& JFactory::getConfig();
 		//$jconfig->getValue('config.sitename')
-		//$config = JComponentHelper::getParams('com_support');
+		$sconfig = JComponentHelper::getParams('com_support');
 
 		$sql = "SELECT * FROM #__support_tickets WHERE open=1 AND status!=2 AND owner IS NOT NULL and owner !='' ORDER BY created";
 		$database->setQuery($sql);
@@ -89,7 +89,7 @@ class plgCronSupport extends JPlugin
 		ximport('Hubzero_Plugin_View');
 
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'utilities.php');
-		$severities = SupportUtilities::getSeverities();
+		$severities = SupportUtilities::getSeverities($sconfig->get('severities'));
 
 		$tickets = array();
 		foreach ($results as $result)
@@ -101,25 +101,51 @@ class plgCronSupport extends JPlugin
 				{
 					$tickets[$result->owner][$severity] = array();
 				}
-				/*$tickets[$result->owner] = array(
-					'critical' => array(),
-					'major'    => array(),
-					'normal'   => array(),
-					'minor'    => array(),
-					'trivial'  => array()
-				);*/
+				$tickets[$result->owner]['unknown'] = array();
 			}
 			if (isset($tickets[$result->owner][$result->severity]))
 			{
-				$tickets[$result->owner][$result->severity] = $result;
+				$tickets[$result->owner][$result->severity][] = $result;
 			}
 			else
 			{
-				$tickets[$result->owner]['unknown'] = $result;
+				$tickets[$result->owner]['unknown'][] = $result;
 			}
 		}
 
-		foreach ($tickets as $owner => $sevs)
+		$from = array();
+		$from['name']      = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_SUPPORT');
+		$from['email']     = $jconfig->getValue('config.mailfrom');
+		$from['multipart'] = md5(date('U'));
+
+		//set mail headers
+		$headers  = "MIME-Version: 1.0 \n";
+		if (array_key_exists('multipart', $from))
+		{
+			$headers .= "Content-Type: multipart/alternative;boundary=" . chr(34) . $from['multipart'] . chr(34) . "\r\n";
+		}
+		else
+		{
+			$headers .= "Content-type: text/plain; charset=utf-8\n";
+		}
+		$headers .= "X-Priority: 3\n";
+		$headers .= "X-MSMail-Priority: Normal\n";
+		$headers .= "Importance: Normal\n";
+		$headers .= "X-Mailer: PHP/" . phpversion()  . "\r\n";
+		$headers .= "X-Component: com_support\r\n";
+		$headers .= "X-Component-Object: support_ticket_reminder\r\n";
+		$headers .= "From: " . $from['name'] . " <" . $from['email'] . ">\n";
+		$headers .= "Reply-To: " . $from['name'] . " <" . $from['email'] . ">\n";
+
+		//set mail additional args (mail return path - used for bounces)
+		if ($host = JRequest::getVar('HTTP_HOST', '', 'server'))
+		{
+			$args = '-f hubmail-bounces@' . $host;
+		}
+
+		$subject = JText::_('COM_SUPPORT') . ': ' . JText::_('COM_SUPPORT_OPEN_TICKETS');
+
+		foreach ($tickets as $owner => $usertickets)
 		{
 			// Get the user's account
 			$juser = JUser::getInstance($owner);
@@ -128,38 +154,37 @@ class plgCronSupport extends JPlugin
 				continue;
 			}
 
-			// Build the list of tickets
-			/*$msg = '';
-			foreach ($sevs as $severity => $ts)
-			{
-				if (count($ts) <= 0)
-				{
-					continue;
-				}
-				$msg .= '=== ' . $severity . ' ===' . "\r\n";
-				foreach ($ts as $t)
-				{
-					$sef = JRoute::_('index.php?option=com_support&controller=tickets&task=ticket&id='. $t->id);
+			$eview = new JView(array(
+				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_support',
+				'name'      => 'emails', 
+				'layout'    => 'tickets'
+			));
+			$eview->option     = 'com_support';
+			$eview->controller = 'tickets';
+			$eview->tickets    = $tickets;
+			$eview->delimiter  = '~!~!~!~!~!~!~!~!~!~!';
+			$eview->boundary   = $from['multipart'];
+			$eview->tickets    = $usertickets;
 
-					$msg .= '#' . $t->id . ' (' . $t->created . ') :: ' . $juri->base() . ltrim($sef, DS) . ' :: ' . stripslashes($t->summary) . "\r\n";
-				}
-			}*/
-			$view = new Hubzero_Plugin_View(
-				array(
-					'folder'  => 'cron',
-					'element' => $this->_name,
-					'name'    => 'email'
-				)
-			);
-			$view->option   = 'com_support';
-			$view->sitename = $jconfig->getValue('config.sitename');
-			$view->severities = $sevs;
-
-			$message = $view->loadTemplate();
+			$message = $eview->loadTemplate();
 			$message = str_replace("\n", "\r\n", $message);
 
-			// Send email
-			//$message;
+			// email
+			if (strpos($juser->get('name'), ','))
+			{
+				$fullEmailAddress = "\"" . $juser->get('name') . "\" <" . $juser->get('email') . ">";
+			}
+			else
+			{
+				$fullEmailAddress = $juser->get('name') . " <" . $juser->get('email') . ">";
+			}
+
+			//set mail
+			if (!mail($fullEmailAddress, $jconfig->getValue('config.sitename') . ' ' . $subject, $message, $headers, $args))
+			{
+				$this->setError('Failed to mail %s', $fullEmailAddress);
+			}
+			//echo $message;
 		}
 
 		return true;
