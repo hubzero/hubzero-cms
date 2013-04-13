@@ -138,10 +138,10 @@ class MwUtils
 	 */
 	public function createHomeDirectory($username)
 	{
-		$command = "createHomeDirectory -user={$username}";
+		$command = "update_quota '{$username}' '1000000' '3000000'";
 		$cmd = "/bin/sh components/com_tools/scripts/mw {$command} 2>&1 </dev/null";
 
-		//exec($cmd, $results, $status);
+		exec($cmd, $results, $status);
 
 		// Check exec status
 		if (!isset($status) || $status != 0) 
