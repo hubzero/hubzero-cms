@@ -249,6 +249,9 @@ class Hubzero_Group_Helper
 			//are we a group manager
 			$isManager = (in_array($user->get("id"), $hg->get("managers"))) ? true : false;
 			
+			//are we publised
+			$isPublished = ($hg->get('published')) ? true : false;
+			
 			//if we have a description then strip tags, remove links, and shorten 
 			if($description != "")
 			{
@@ -297,6 +300,11 @@ class Hubzero_Group_Helper
 						{
 							$html .= "<span class=\"status manager\">Manager</span>";
 						}
+						if(!$isPublished)
+						{
+							$html .= "<span class=\"status not-published\">".JText::_('Group has been unpublished by administrator')."</span>";
+						}
+						
 						if(isset($group->matches))
 						{
 							$html .= "<ol class=\"tags\">";
