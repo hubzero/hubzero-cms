@@ -140,7 +140,7 @@ HUB.Mw = {
 		var theapp = $('#theapp');
 		if (theapp) {
 			var par = theapp.parent();
-			par.remove(theapp);
+			theapp.remove();
 		}
 
 		$('<div id="theapp"><p class="error">' +
