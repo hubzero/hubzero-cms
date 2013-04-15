@@ -153,7 +153,14 @@ class WikiControllerPage extends Hubzero_Controller
 
 		// Set the page's <title> tag
 		$document =& JFactory::getDocument();
-		$document->setTitle(JText::_(strtoupper($this->_name)) . ': ' . $this->view->title);
+		if ($this->_sub)
+		{
+			$document->setTitle($document->getTitle() . ': ' . $this->view->title);
+		}
+		else
+		{
+			$document->setTitle(($this->_sub ? JText::_('Groups') . ': ' : '') . JText::_('Wiki') . ': ' . $this->view->title);
+		}
 
 		// Set the pathway
 		$pathway =& JFactory::getApplication()->getPathway();
@@ -250,14 +257,13 @@ class WikiControllerPage extends Hubzero_Controller
 				}
 			}
 		}
-		if ($this->page->group_cn)
+		/*if ($this->page->group_cn)
 		{
 			$pathway->addItem(
 				JText::_('Wiki'),
 				'index.php?option=' . $this->_option . '&scope=' . $this->page->scope
 			);
-		}
-
+		}*/
 		$pathway->addItem(
 			$this->view->title,
 			'index.php?option=' . $this->_option . '&scope=' . $this->page->scope . '&pagename=' . $this->page->pagename
@@ -526,7 +532,7 @@ class WikiControllerPage extends Hubzero_Controller
 
 			$this->page->title = $this->page->getTitle();
 		}
-		
+
 		$this->view->tags = trim(JRequest::getVar('tags', $t, 'post'));
 		$this->view->authors = trim(JRequest::getVar('authors', $a, 'post'));
 
@@ -546,11 +552,18 @@ class WikiControllerPage extends Hubzero_Controller
 		// Prep the pagename for display 
 		// e.g. "MainPage" becomes "Main Page"
 		$this->view->title = $this->page->getTitle();
-		$this->view->title = ($this->view->title) ? $this->view->title : JText::_('NEW') . ' ' . JText::_(strtoupper($this->_name));
+		$this->view->title = ($this->view->title) ? $this->view->title : JText::_('New Page');
 
 		// Set the page's <title> tag
 		$document =& JFactory::getDocument();
-		$document->setTitle(JText::_(strtoupper($this->_name)) . ': ' . $this->view->title . ': ' . JText::_(strtoupper($this->_task)));
+		if ($this->_sub)
+		{
+			$document->setTitle($document->getTitle() . ': ' . $this->view->title);
+		}
+		else
+		{
+			$document->setTitle(JText::_(strtoupper($this->_name)) . ': ' . $this->view->title . ': ' . JText::_(strtoupper($this->_task)));
+		}
 
 		// Set the pathway
 		$pathway =& JFactory::getApplication()->getPathway();
@@ -561,14 +574,17 @@ class WikiControllerPage extends Hubzero_Controller
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 			);
 		}
-		$pathway->addItem(
-			$this->view->title,
-			'index.php?option=' . $this->_option . '&scope=' . $this->page->scope . '&pagename=' . $this->page->pagename
-		);
-		$pathway->addItem(
-			JText::_(strtoupper($this->_task)),
-			'index.php?option=' . $this->_option . '&scope=' . $this->page->scope . '&pagename=' . $this->page->pagename . '&task=' . $this->_task
-		);
+		if (!$this->_sub)
+		{
+			$pathway->addItem(
+				$this->view->title,
+				'index.php?option=' . $this->_option . '&scope=' . $this->page->scope . '&pagename=' . $this->page->pagename
+			);
+			$pathway->addItem(
+				JText::_(strtoupper($this->_task)),
+				'index.php?option=' . $this->_option . '&scope=' . $this->page->scope . '&pagename=' . $this->page->pagename . '&task=' . $this->_task
+			);
+		}
 
 		$this->view->preview = NULL;
 

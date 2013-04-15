@@ -353,6 +353,14 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$limit = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
 		$start = JRequest::getInt('limitstart', 0);
 
+		// These need to happen before plugins call as
+		// plugins push things to the title and pathway
+		// build the title
+		$this->_buildTitle( $this->view->pages );
+
+		// build pathway
+		$this->_buildPathway( $this->view->pages );
+
 		// Get plugins
 		JPluginHelper::importPlugin('groups');
 		$dispatcher =& JDispatcher::getInstance();
@@ -411,12 +419,6 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 				JRequest::setVar('tmpl', 'group');
 			}
 		}
-		
-		// build the title
-		$this->_buildTitle( $this->view->pages );
-
-		// build pathway
-		$this->_buildPathway( $this->view->pages );
 		
 		// Push some styles to the template
 		$this->_getStyles();
