@@ -31,14 +31,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradebook.php');
-
 $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias');
 
-$gradebook = new CoursesModelGradeBook(null);
-$gradebook->refresh($this->course, $this->juser->get('id'));
-$grades    = $gradebook->getGrades($this->juser->get('id'));
-$progress  = $gradebook->getProgress($this->course, $this->juser->get('id'));
+$this->course->offering()->gradebook()->refresh($this->juser->get('id'));
+$grades   = $this->course->offering()->gradebook()->grades(null, $this->juser->get('id'));
+$progress = $this->course->offering()->gradebook()->progress($this->juser->get('id'));
 
 $details = array();
 $details['quizzes_total']       = 0;

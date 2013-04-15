@@ -96,14 +96,14 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 						<tr>
 							<td class="gradebook-passing">
 								<span>
-									<strong>0<?php //echo $this->offering->gradebook()->passing('count'); ?></strong> passing
+									<strong><?php echo $this->offering->gradebook()->countPassing(); ?></strong> passing
 								</span>
 							</td>
 						</tr>
 						<tr>
 							<td class="gradebook-failing">
 								<span>
-									<strong>0<?php //echo $this->offering->gradebook()->failing('count'); ?></strong> failing
+									<strong><?php echo $this->offering->gradebook()->countFailing(); ?></strong> failing
 								</span>
 							</td>
 						</tr>

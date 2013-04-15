@@ -32,7 +32,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Make sure required files are included
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradebook.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradepolicies.php');
 ximport('Hubzero_User_Profile_Helper');
 
@@ -40,19 +39,14 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 
 // Get all section members
 $members = $this->course->offering()->section()->members();
-$member_ids = array();
 
-foreach ($members as $m)
-{
-	$member_ids[] = $m->get('user_id');
-}
+// Refresh the grades
+$this->course->offering()->gradebook()->refresh();
 
-// Get Grades
-$gradebook = new CoursesModelGradeBook(null);
-$gradebook->refresh($this->course);
-$grades    = $gradebook->getGrades($member_ids, array('unit', 'course'));
-$progress  = $gradebook->getProgress($this->course);
-$passing   = $gradebook->passing($this->course);
+// Get the grades
+$grades    = $this->course->offering()->gradebook()->grades(array('unit', 'course'));
+$progress  = $this->course->offering()->gradebook()->progress();
+$passing   = $this->course->offering()->gradebook()->passing();
 
 // Get the grading policy
 $gradePolicy = new CoursesModelGradePolicies($this->course->offering()->section()->get('grade_policy_id'));

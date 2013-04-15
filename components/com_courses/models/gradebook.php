@@ -34,11 +34,11 @@ defined('_JEXEC') or die('Restricted access');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'grade.book.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.views.php');
-require_once(JPATH_COMPONENT . DS . 'models' . DS . 'abstract.php');
-require_once(JPATH_COMPONENT . DS . 'models' . DS . 'gradepolicies.php');
-require_once(JPATH_COMPONENT . DS . 'models' . DS . 'form.php');
-require_once(JPATH_COMPONENT . DS . 'models' . DS . 'formRespondent.php');
-require_once(JPATH_COMPONENT . DS . 'models' . DS . 'formDeployment.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradepolicies.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'form.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'formRespondent.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'formDeployment.php');
 
 /**
  * Courses model class for grade book
@@ -60,33 +60,51 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	protected $_scope = 'gradebook';
 
 	/**
+	 * Course object
+	 * 
+	 * @var string
+	 */
+	protected $course = null;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      integer $id  Resource ID or alias
+	 * @param      object  $course
 	 * @return     void
 	 */
-	public function __construct($oid)
+	public function __construct($oid=null, $course=null)
 	{
+		// Save course for quick reference
+		$this->course = $course;
+
 		parent::__construct($oid);
 	}
 
 	/**
-	 * Get student gradebook
+	 * Get student grades
 	 *
 	 * Retrieve single or group of student grades from the grade book.  You could also 
 	 * provide a scope, limiting the grades to an array of items, such as unit, course, or asset.
 	 * The results will be returned as an array with student id as the uppermost key.
 	 * 
-	 * @param      int or array $user_id, user id for which to pull grades
 	 * @param      int or array $scope, scope for which to pull grades (unit, course, asset)
+	 * @param      int or array $user_id, user id for which to pull grades
 	 * @return     array $grades
 	 */
-	public function getGrades($user_id=null, $scope=null)
+	public function grades($scope=null, $user_id=null)
 	{
-		// If no user provided, use the current user
+		// If no user provided, assume section
 		if(is_null($user_id))
 		{
-			$user_id = JFactory::getUser()->get('id');
+			$members = $this->course->offering()->section()->members();
+
+			$user_id = array();
+
+			foreach ($members as $m)
+			{
+				$user_id[] = $m->get('user_id');
+			}
 		}
 
 		// Get the grades themselves
@@ -124,17 +142,16 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	 * criteria on assets where it can be tracked (ex: videos, where we can track an
 	 * entire view, or an exam, where we know when they've actually finished it).
 	 * 
-	 * @param      obj $course - course object
 	 * @param      int $user_id 
 	 * @return     array $progress
 	 */
-	public function getProgress($course, $user_id=null)
+	public function progress($user_id=null)
 	{
 		// Get the asset views
 		$assetViews  = new CoursesTableAssetViews(JFactory::getDBO());
 		$views = $assetViews->find(
 			array(
-				'section_id' => $course->offering()->section()->get('id'),
+				'section_id' => $this->course->offering()->section()->get('id'),
 				'user_id'    => $user_id
 			)
 		);
@@ -161,77 +178,29 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	}
 
 	/**
-	 * Save a form score to the grade book
-	 *
-	 * Consider marking for deprecation?
-	 * This used to be called from the save score method of the forms model.
-	 * It has been, in essence, replaced by the use of the refresh method,
-	 * which inserts scores into the grade book as needed.
-	 * 
-	 * @param      decimal $score, score to save
-	 * @param      int $asset_id, asset id of item being saved
-	 * @param      int $user_id, user id of user gradebook entry
-	 * @param      bool $calculateScores, whether or not to compute unit and course averages
-	 * @return     boolean true on success, false otherwise
-	 */
-	public function saveAssetResult($score, $asset_id, $user_id=null, $calculateScores=true)
-	{
-		// If not user is given, assume the current user
-		if (is_null($user_id))
-		{
-			$user_id = JFactory::getUser()->get('id');
-		}
-
-		// First, check to see if a score for this asset and user already exists
-		$results = $this->_tbl->find(array('user_id'=>$user_id, 'scope_id'=>$asset_id, 'scope'=>'asset'));
-		$gb_id   = ($results) ? $results[0]->id : null;
-
-		// Set values
-		$gradebook = new CoursesModelGradeBook($gb_id);
-		$gradebook->set('user_id', $user_id);
-		$gradebook->set('score', round($score, 2));
-		$gradebook->set('scope', 'asset');
-		$gradebook->set('scope_id', $asset_id);
-
-		// Save
-		if (!$gradebook->store())
-		{
-			return false;
-		}
-
-		if ($calculateScores)
-		{
-			// Compute unit and course scores as well
-			$this->calculateScores($user_id, null, $asset_id);
-		}
-
-		// Success
-		return true;
-	}
-
-	/**
 	 * Calculate scores for each unit and the course as a whole
 	 *
 	 * This should be expanded to account for a scenario where only
 	 * a midterm and final count toward the grade (as an example).
 	 * 
 	 * @param      int $user_id
-	 * @param      obj $course
 	 * @param      int $asset_id
 	 * @return     boolean true on success, false otherwise
 	 */
-	public function calculateScores($user_id, $course=null, $asset_id=null)
+	public function calculateScores($user_id, $asset_id=null)
 	{
 		// We need one of $course or $asset_id
-		if (is_null($course) && is_null($asset_id))
+		if (is_null($this->course) && is_null($asset_id))
 		{
 			return false;
 		}
 
 		// Get the course id
-		if (!is_null($course) && is_object($course))
+		if (!is_null($this->course) && is_object($this->course))
 		{
-			$course_id = $course->get('id');
+			// Get our course model as well (to retrieve grade policy)
+			$course = $this->course;
+			$course_id = $this->course->get('id');
 		}
 		elseif (!is_null($asset_id) && is_numeric($asset_id))
 		{
@@ -253,8 +222,11 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		$gradePolicy = new CoursesModelGradePolicies($policy);
 
 		// Get the grading policy score criteria
-		$score_criteria = $gradePolicy->replacePlaceholders('score_criteria', array('course_id'=>$course_id, 'user_id'=>$user_id));
-		$score_criteria = json_decode($score_criteria);
+		$score_criteria = json_decode($gradePolicy->get('score_criteria'));
+
+		// Add user and course to query
+		$score_criteria->where[] = (object) array('field'=>'user_id','operator'=>'=','value'=>$user_id);
+		$score_criteria->where[] = (object) array('field'=>'course_id','operator'=>'=','value'=>$course_id);
 
 		// Compute course grade
 		$grade = $this->_tbl->calculateScore($score_criteria, 'loadResult');
@@ -276,13 +248,14 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		}
 
 		// Now, get unit scores
-		$score_criteria = $gradePolicy->replacePlaceholders('score_criteria', array('course_id'=>$course_id, 'user_id'=>$user_id));
-		$score_criteria = json_decode($score_criteria);
+		$score_criteria = json_decode($gradePolicy->get('score_criteria'));
 
 		// Add a few things to the select, from, and group by clauses to correctly calculate unit scores
 		$score_criteria->select[] = (object) array('value'=>'cag.unit_id as unit_id');
 		$score_criteria->from[]   = (object) array('value'=>'LEFT JOIN #__courses_asset_associations AS caa ON ca.id = caa.asset_id');
 		$score_criteria->from[]   = (object) array('value'=>'LEFT JOIN #__courses_asset_groups AS cag ON caa.scope_id = cag.id');
+		$score_criteria->where[]  = (object) array('field'=>'user_id','operator'=>'=','value'=>$user_id);
+		$score_criteria->where[]  = (object) array('field'=>'course_id','operator'=>'=','value'=>$course_id);
 		$score_criteria->group[]  = (object) array('value'=>'cag.unit_id');
 
 		// Compute unit grades
@@ -315,61 +288,73 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	/**
 	 * Method to check for expired exams that students did not take and add 0's to the gradebook as appropriate
 	 *
-	 * @param      course $course
 	 * @param      int $user_id (optional)
 	 * @return     void
 	 **/
-	public function refresh($course, $user_id=null)
+	public function refresh($user_id=null)
 	{
-		$this->_tbl->syncGrades($course->get('id'), $user_id);
-
-		// Get course section members and update their unit and course numbers
-		$members = $course->offering()->section()->members();
+		$this->_tbl->syncGrades($this->course->get('id'), $user_id);
 
 		if (is_null($user_id))
 		{
+			$members = $this->course->offering()->section()->members();
+
 			foreach ($members as $m)
 			{
 				// Compute unit and course scores as well
-				$this->calculateScores($m->get('user_id'), $course);
+				$this->calculateScores($m->get('user_id'));
 			}
 		}
 		else
 		{
-			$this->calculateScores($user_id, $course);
+			$this->calculateScores($user_id);
 		}
 	}
 
 	/**
 	 * Determine whether or not a student or group of students is passing
 	 *
-	 * @param      object $course
 	 * @param      int $user_id (optional)
 	 * @param      bool $section only (optional)
+	 * @param      bool $count (optional)
+	 * @param      string $status (passing or failing)
 	 * @return     array
 	 **/
-	public function passing($course, $section=true, $user_id=null)
+	public function passing($section=true, $user_id=null, $count=false, $status=null)
 	{
 		// Get the course id
-		if (!is_object($course))
+		if (!is_object($this->course))
 		{
 			return false;
 		}
 
+		$key = 'user_id';
+
 		// Get a grade policy object
-		$policy  = $course->offering()->section()->get('grade_policy_id');
+		$policy  = $this->course->offering()->section()->get('grade_policy_id');
 		$gradePolicy = new CoursesModelGradePolicies($policy);
 
 		// Get the grading policy score criteria
-		$grade_criteria = $gradePolicy->replacePlaceholders('grade_criteria', array('course_id'=>$course->get('id')));
-		$grade_criteria = json_decode($grade_criteria);
+		$grade_criteria = json_decode($gradePolicy->get('grade_criteria'));
 		$grade_criteria->select[] = (object) array('value'=>'cgb.user_id AS user_id');
+		$grade_criteria->where[]  = (object) array('field'=>'cgb.scope_id','operator'=>'=','value'=>$this->course->get('id'));
+
+		if ($count && !is_null($status))
+		{
+			if ($status != 'passing' && $status != 'failing')
+			{
+				return false;
+			}
+			$grade_criteria->select[] = (object) array('value'=>'COUNT(*) AS count');
+			$grade_criteria->group[]  = (object) array('value'=>'passing');
+			$key = 'passing';
+		}
 
 		// If section only, add appropriate joins to limit by section
 		if ($section)
 		{
 			$grade_criteria->from[]  = (object) array('value'=>'LEFT JOIN #__courses_members AS cm ON cgb.user_id = cm.user_id');
-			$grade_criteria->where[] = (object) array('field'=>'cm.section_id','operator'=>'=','value'=>$course->offering()->section()->get('id'));
+			$grade_criteria->where[] = (object) array('field'=>'cm.section_id','operator'=>'=','value'=>$this->course->offering()->section()->get('id'));
 		}
 
 		// Add the user_id to the query if it's set
@@ -379,48 +364,44 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		}
 
 		// Get passing data
-		$passing = $this->_tbl->calculateScore($grade_criteria, 'loadObjectList', 'user_id');
+		$passing = $this->_tbl->calculateScore($grade_criteria, 'loadObjectList', $key);
 
 		return $passing;
 	}
 
 	/**
-	 * Get count of passing and failing
+	 * Get count of passing
 	 *
-	 * @param      obj $course
 	 * @param      bool $section only (optional)
-	 * @return     array((int)passing, (int)failing)
+	 * @return     object((int)passing, (int)failing)
 	 **/
-	public function getCountPassingFailing($course, $section=true)
+	public function countPassing($section=true)
 	{
-		$rows = $this->passing($course, $section);
+		$rows = $this->passing($section, null, true, 'passing');
 
-		$count_passing = 0;
-		$count_failing = 0;
+		return $rows[1]->count;
+	}
 
-		foreach ($rows as $row)
-		{
-			if ($row->passing)
-			{
-				$count_passing++;
-			}
-			else
-			{
-				$count_failing++;
-			}
-		}
+	/**
+	 * Get count of failing
+	 *
+	 * @param      bool $section only (optional)
+	 * @return     object((int)passing, (int)failing)
+	 **/
+	public function countFailing($section=true)
+	{
+		$rows = $this->passing($section, null, true, 'failing');
 
-		return array('passing'=>$count_passing, 'failing'=>$count_failing);
+		return $rows[0]->count;
 	}
 
 	/**
 	 * Check whether or not the student has earned a badge
 	 *
-	 * @param      obj $course
 	 * @param      int $user_id
 	 * @return     bool
 	 **/
-	public function hasEarnedBadge($course, $user_id)
+	public function hasEarnedBadge($user_id=null)
 	{
 	}
 }

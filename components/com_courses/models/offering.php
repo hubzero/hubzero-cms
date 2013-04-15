@@ -41,6 +41,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models'
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'manager.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'announcement.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'page.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradebook.php');
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'role.php');
 
@@ -544,6 +545,23 @@ class CoursesModelOffering extends CoursesModelAbstract
 		}
 
 		return $this->_student; 
+	}
+
+	/**
+	 * Get offering gradebook
+	 * 
+	 * @return     obj
+	 */
+	public function gradebook($oid=null)
+	{
+		if (!isset($this->_gradebook))
+		{
+			$course = new CoursesModelCourse($this->get('course_id'));
+			$course->offering($this->get('id'));
+			$this->_gradebook = new CoursesModelGradeBook($oid, $course);
+		}
+
+		return $this->_gradebook; 
 	}
 
 	/**
