@@ -29,7 +29,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+// Load some needed libraries
 ximport('Hubzero_Plugin');
+ximport('Hubzero_Message_Helper');
+ximport('Hubzero_Message_Recipient');
 
 /**
  * Members Plugin class for messages
@@ -108,9 +111,6 @@ class plgMembersMessages extends Hubzero_Plugin
 
 		// Get our database object
 		$database =& JFactory::getDBO();
-
-		// Load some needed libraries
-		ximport('Hubzero_Message_Helper');
 
 		// Are we returning HTML?
 		if ($returnhtml) 

@@ -110,6 +110,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 	if (!$juser->get('guest')) {
 		// Find the user's most recent support tickets
 		ximport('Hubzero_Message');
+		ximport('Hubzero_Message_Recipient');
 		$database =& JFactory::getDBO();
 		$recipient = new Hubzero_Message_Recipient($database);
 		$rows = $recipient->getUnreadMessages($juser->get('id'), 0);
