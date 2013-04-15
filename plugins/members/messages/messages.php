@@ -32,7 +32,6 @@ defined('_JEXEC') or die('Restricted access');
 // Load some needed libraries
 ximport('Hubzero_Plugin');
 ximport('Hubzero_Message_Helper');
-ximport('Hubzero_Message_Recipient');
 
 /**
  * Members Plugin class for messages
