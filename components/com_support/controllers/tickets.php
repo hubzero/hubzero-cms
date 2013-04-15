@@ -1911,11 +1911,19 @@ class SupportControllerTickets extends Hubzero_Controller
 			exit();
 		}
 
+
 		// Check content
 		if (!$row->check()) 
 		{
 			echo SupportHtml::alert($row->getError());
 			exit();
+		}
+
+		// If an existing ticket AND closed AND previously open
+		if ($id && !$row->open && $row->open != $old->open)
+		{
+			// Record the closing time
+			$row->closed = date('Y-m-d H:i:s', time());
 		}
 
 		// Store new content
@@ -2062,30 +2070,31 @@ class SupportControllerTickets extends Hubzero_Controller
 					$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name));
 					$from['email'] = $jconfig->getValue('config.mailfrom');
 
-					$message  = '----------------------------'."\r\n";
-					$message .= strtoupper(JText::_('TICKET')).': '.$row->id."\r\n";
-					$message .= strtoupper(JText::_('TICKET_DETAILS_SUMMARY')).': '.stripslashes($row->summary)."\r\n";
-					$message .= strtoupper(JText::_('TICKET_DETAILS_CREATED')).': '.$row->created."\r\n";
-					$message .= strtoupper(JText::_('TICKET_DETAILS_CREATED_BY')).': '.$row->name."\r\n";
-					$message .= strtoupper(JText::_('TICKET_FIELD_STATUS')).': '.SupportHtml::getStatus($row->status)."\r\n";
-					$message .= ($row->login) ? ' ('.$row->login.')'."\r\n" : "\r\n";
-					$message .= '----------------------------'."\r\n\r\n";
-					$message .= JText::sprintf('TICKET_EMAIL_COMMENT_POSTED',$row->id).': '.$rowc->created_by."\r\n";
-					$message .= JText::_('TICKET_EMAIL_COMMENT_CREATED').': '.$rowc->created."\r\n\r\n";
+					$message = array();
+					$message['plaintext']  = '----------------------------'."\r\n";
+					$message['plaintext'] .= strtoupper(JText::_('TICKET')).': '.$row->id."\r\n";
+					$message['plaintext'] .= strtoupper(JText::_('TICKET_DETAILS_SUMMARY')).': '.stripslashes($row->summary)."\r\n";
+					$message['plaintext'] .= strtoupper(JText::_('TICKET_DETAILS_CREATED')).': '.$row->created."\r\n";
+					$message['plaintext'] .= strtoupper(JText::_('TICKET_DETAILS_CREATED_BY')).': '.$row->name."\r\n";
+					$message['plaintext'] .= strtoupper(JText::_('TICKET_FIELD_STATUS')).': '.SupportHtml::getStatus($row->status)."\r\n";
+					$message['plaintext'] .= ($row->login) ? ' ('.$row->login.')'."\r\n" : "\r\n";
+					$message['plaintext'] .= '----------------------------'."\r\n\r\n";
+					$message['plaintext'] .= JText::sprintf('TICKET_EMAIL_COMMENT_POSTED',$row->id).': '.$rowc->created_by."\r\n";
+					$message['plaintext'] .= JText::_('TICKET_EMAIL_COMMENT_CREATED').': '.$rowc->created."\r\n\r\n";
 					if ($row->owner != $old->owner) 
 					{
 						if ($old->owner == '') 
 						{
-							$message .= JText::_('TICKET_FIELD_OWNER').' '.JText::_('TICKET_SET_TO').' "'.$row->owner.'"'."\r\n\r\n";
+							$message['plaintext'] .= JText::_('TICKET_FIELD_OWNER').' '.JText::_('TICKET_SET_TO').' "'.$row->owner.'"'."\r\n\r\n";
 						} 
 						else 
 						{
-							$message .= JText::_('TICKET_FIELD_OWNER').' '.JText::_('TICKET_CHANGED_FROM').' "'.$old->owner.'" to "'.$row->owner.'"'."\r\n\r\n";
+							$message['plaintext'] .= JText::_('TICKET_FIELD_OWNER').' '.JText::_('TICKET_CHANGED_FROM').' "'.$old->owner.'" to "'.$row->owner.'"'."\r\n\r\n";
 						}
 					}
-					$message .= $attach->parse($comment)."\r\n\r\n";
+					$message['plaintext'] .= $attach->parse($comment)."\r\n\r\n";
 
-                    // Prepare message to allow email responses to be parsed and added to the ticket
+					// Prepare message to allow email responses to be parsed and added to the ticket
 					if ($allowEmailResponses)
 					{
 						$ticketURL = $live_site . JRoute::_('index.php?option=' . $this->option);
@@ -2095,13 +2104,34 @@ class SupportControllerTickets extends Hubzero_Controller
 						$prependtext .= "Attachments (up to 2MB each) are permitted\r\n" ;
 						$prependtext .= "Message from " . $live_site . " / Ticket #" . $row->id . "\r\n";
 
-						$message = $prependtext . "\r\n\r\n" . $message;
+						$message['plaintext'] = $prependtext . "\r\n\r\n" . $message['plaintext'];
 					}
 
 					$juri =& JURI::getInstance();
 					$sef = JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=ticket&id=' . $row->id);
 
-					$message .= $juri->base() . ltrim($sef, DS) . "\r\n";
+					$message['plaintext'] .= $juri->base() . ltrim($sef, DS) . "\r\n";
+
+					// Html email
+					$from['multipart'] = md5(date('U'));
+
+					//$rowc->comment   = $attach->parse($rowc->comment);
+					$rowc->changelog = $log;
+
+					$eview = new JView(array(
+						'name'   => 'emails', 
+						'layout' => 'comment'
+					));
+					$eview->option     = $this->_option;
+					$eview->controller = $this->_controller;
+					$eview->comment    = $rowc;
+					$eview->ticket     = $row;
+					$eview->delimiter  = '~!~!~!~!~!~!~!~!~!~!';
+					$eview->boundary   = $from['multipart'];
+					$eview->attach     = $attach;
+
+					$message['multipart'] = $eview->loadTemplate();
+					$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
 					// An array for all the addresses to be e-mailed outside of the hub messaging system
 					$emails = array();

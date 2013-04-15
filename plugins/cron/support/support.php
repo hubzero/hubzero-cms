@@ -79,6 +79,8 @@ class plgCronSupport extends JPlugin
 		//$jconfig->getValue('config.sitename')
 		$sconfig = JComponentHelper::getParams('com_support');
 
+		JLanguage::load('com_support');
+
 		$sql = "SELECT * FROM #__support_tickets WHERE open=1 AND status!=2 AND owner IS NOT NULL and owner !='' ORDER BY created";
 		$database->setQuery($sql);
 		if (!($results = $database->loadObjectList()))

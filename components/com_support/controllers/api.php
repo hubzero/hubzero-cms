@@ -187,23 +187,185 @@ class SupportControllerApi extends Hubzero_Api_Controller
 	}
 
 	/**
+	 * Calculate time
+	 *
+	 * @param     $val string Timestamp or word [month, year, week, day]
+	 * @return    string
+	 */
+	private function _toTimestamp($val=null)
+	{
+		if ($val)
+		{
+			if (strstr($val, ','))
+			{
+				$vals = explode(',', $val);
+				foreach ($vals as $i => $v)
+				{
+					$vales[$i] = $this->_toTimestamp($v);
+				}
+				return $vals;
+			}
+			if (preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $stime, $regs))
+			{
+				//$stime = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
+			}
+			else if (preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})/", $stime, $regs))
+			{
+				$val .= ' 00:00:00';
+			}
+			else if (preg_match("/([0-9]{4})-([0-9]{2})/", $stime, $regs))
+			{
+				$val .= '-01 00:00:00';
+			}
+			else
+			{
+				switch ($val)
+				{
+					case 'year':
+						$val = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d"), date("Y")-1));
+					break;
+
+					case 'month':
+						$val = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
+					break;
+
+					case 'week':
+						$val = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")-7, date("Y")));
+					break;
+
+					case 'day':
+						$val = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")-1, date("Y")));
+					break;
+
+					default:
+						
+					break;
+				}
+			}
+		}
+
+		return $val;
+	}
+
+	/**
 	 * Displays a list of tickets
 	 *
 	 * @return    void
 	 */
 	private function tickets()
 	{
-		//get request vars
-		$format = JRequest::getVar('format', 'json');
-
-		$limit = JRequest::getInt('limit', 25);
-		$start = JRequest::getInt('limitstart', 0);
-
 		$obj = new SupportTicket($this->database);
-		$obj->tickets = null;
 
-		$this->setMessageType($format);
-		$this->setMessage($obj);
+		$filters = array(
+			'limit'      => JRequest::getInt('limit', 25),
+			'start'      => JRequest::getInt('limitstart', 0),
+			'search'     => JRequest::getVar('search', ''),
+			'group'      => JRequest::getVar('group', ''),
+			'reportedby' => JRequest::getVar('reporter', ''),
+			'owner'      => JRequest::getVar('owner', ''),
+			'type'       => JRequest::getInt('type', 0),
+			'status'     => strtolower(JRequest::getWord('status', '')),
+			'tag'        => JRequest::getWord('tag', ''),
+			'sort'       => JRequest::getWord('sort', 'created'),
+			'sortdir'    => strtoupper(JRequest::getWord('sortDir', 'DESC'))
+		);
+
+		$filters['opened'] = $this->_toTimestamp(JRequest::getVar('opened', ''));
+		$filters['closed'] = $this->_toTimestamp(JRequest::getVar('closed', ''));
+
+		$response = new stdClass;
+		$response->success = true;
+
+		/*if ($filters['closed'])
+		{
+			$sql = "SELECT c.ticket, c.created
+					FROM #__support_comments AS c 
+					LEFT JOIN #__support_tickets AS t ON c.ticket=t.id";
+
+			$where = array();
+			$where[] = "t.report != ''";
+			$where[] = $filters['type'];
+			if ($filters['group'] && $filters['group'] == '_none_') 
+			{
+				$where[] = "(t.`group`='' OR t.`group` IS NULL)";
+			} 
+			else if ($filters['group'])
+			{
+				$where[] = "t.`group`=" . $this->database->Quote($filters['group']);
+			}
+			if (is_array($filters['opened'])) 
+			{
+				$where[] = "c.`created` >= " . $this->_db->Quote($filters['closed'][0]);
+				$where[] = "c.`created` <= " . $this->_db->Quote($filters['closed'][1]);
+			}
+			else
+			{
+				$where[] = "c.`created` >= " . $this->_db->Quote($filters['closed'][0]);
+			}
+
+			$sql .= " WHERE " . implode(" AND ", $where);
+			$sql .= " ORDER BY c.created ASC";
+
+			$this->database->setQuery($sql);
+			$clsd = $this->database->loadObjectList();
+			if ($clsd)
+			{
+				$closedTickets = array();
+				foreach ($clsd as $closed)
+				{
+					if (!isset($closedTickets[$closed->ticket]))
+					{
+						$closedTickets[$closed->ticket] = $closed;
+					}
+					else
+					{
+						if ($closedTickets[$closed->ticket]->created < $closed->created)
+						{
+							$closedTickets[$closed->ticket] = $closed;
+						}
+					}
+				}
+				foreach ($closedTickets as $ticketId)
+				{
+					$filters[]
+				}
+			}
+		}*/
+
+		$response->tickets = $obj->getTickets($filters);
+
+		if (is_array($response->tickets))
+		{
+			$juri =& JURI::getInstance();
+
+			foreach ($response->tickets as $i => $ticket)
+			{
+				$owner = $ticket->owner;
+
+				$response->tickets[$i]->owner = new stdClass;
+				$response->tickets[$i]->owner->username = $owner;
+				$response->tickets[$i]->owner->name     = $ticket->owner_name;
+				$response->tickets[$i]->owner->id       = $ticket->owner_id;
+
+				//unset($response->tickets[$i]->owner);
+				unset($response->tickets[$i]->owner_name);
+				unset($response->tickets[$i]->owner_id);
+
+				$response->tickets[$i]->reporter = new stdClass;
+				$response->tickets[$i]->reporter->name     = $ticket->name;
+				$response->tickets[$i]->reporter->username = $ticket->login;
+				$response->tickets[$i]->reporter->email    = $ticket->email;
+
+				unset($response->tickets[$i]->name);
+				unset($response->tickets[$i]->login);
+				unset($response->tickets[$i]->email);
+
+				$response->tickets[$i]->url = rtrim($juri->base(), DS) . DS . ltrim(JRoute::_('index.php?option=com_support&controller=tickets&task=tickets&id=' . $response->tickets[$i]->id), DS);
+			}
+		}
+
+		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessage($response);
 	}
 
 	/**
