@@ -31,12 +31,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'Message' . DS . 'Action.php');
-include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'Message' . DS . 'Component.php');
-include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'Message' . DS . 'Message.php');
-include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'Message' . DS . 'Notify.php');
-include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'Message' . DS . 'Recipient.php');
-include_once(JPATH_ROOT . DS . 'libraries' . DS . 'Hubzero' . DS . 'Message' . DS . 'Seen.php');
+ximport('Hubzero_Message_Action');
+ximport('Hubzero_Message_Component');
+ximport('Hubzero_Message_Message');
+ximport('Hubzero_Message_Notify');
+ximport('Hubzero_Message_Recipient');
+ximport('Hubzero_Message_Seen');
 
 /**
  * Hubzero message class for handling message routing
