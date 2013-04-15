@@ -583,9 +583,9 @@ class AnswersControllerQuestions extends Hubzero_Controller
 		} 
 		else 
 		{
-			/*$this->setRedirect(
+			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&task=question&id=' . $qid)
-			);*/
+			);
 		}
 	}
 

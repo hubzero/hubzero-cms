@@ -23,17 +23,17 @@ String.prototype.nohtml = function () {
 jQuery(document).ready(function(jq){
 	var $ = jq;
 
-	$('.vote-button').each(function(i, item) {
-		if ($(item).attr('href')) {
-			$(item).bind('click', function (e) {
-				e.preventDefault();
+	$('.comments').on('click', '.vote-button', function (e) {
+		if ($(this).attr('href')) {
+			e.preventDefault();
 
-				$.get($(this).attr('href').nohtml(), {}, function(data) {
-					if (data) {
-						$(item).closest('.voting').html(data);
-						$('.tooltip').hide();
-					}
-				});
+			var item = $(this);
+
+			$.get(item.attr('href').nohtml(), {}, function(data) {
+				if (data) {
+					item.closest('.voting').html(data);
+					$('.tooltip').hide();
+				}
 			});
 		}
 	});
