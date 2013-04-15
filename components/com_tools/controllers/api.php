@@ -106,16 +106,22 @@ class ToolsControllerApi extends Hubzero_Api_Controller
 		$t = array();
 		foreach($tools as $k => $tool)
 		{
-			$t[$k]['alias']			= $tool->alias;
-			$t[$k]['title']			= $tool->title;
-			$t[$k]['description'] 	= $tool->description;
-			$t[$k]['version'] 		= $tool->revision;
-			$t[$k]['supported'] 	= (in_array($tool->alias, $supportedtagusage)) ? 1 : 0;
+			if (isset($t[$tool->alias]))
+			{
+				$t[$tool->alias]['versions'][] = $tool->revision;
+				continue;
+			}
+			
+			$t[$tool->alias]['alias']			= $tool->alias;
+			$t[$tool->alias]['title']			= $tool->title;
+			$t[$tool->alias]['description'] 	= $tool->description;
+			$t[$tool->alias]['versions'] 		= array($tool->revision);
+			$t[$tool->alias]['supported'] 	    = (in_array($tool->alias, $supportedtagusage)) ? 1 : 0;
 		}
 		
 		//encode and return result
 		$object = new stdClass();
-		$object->tools = $t;
+		$object->tools = array_values($t);
 		$this->setMessageType( $format );
 		$this->setMessage( $object );
 	}
@@ -158,7 +164,8 @@ class ToolsControllerApi extends Hubzero_Api_Controller
 				AND r.access!=4
 				AND r.alias=tv.toolname
 				AND tv.state=1
-				AND r.alias='{$tool}'";
+				AND r.alias='{$tool}'
+				ORDER BY revision DESC";
 		$database->setQuery($sql);
 		$tool_info = $database->loadObject();
 		
