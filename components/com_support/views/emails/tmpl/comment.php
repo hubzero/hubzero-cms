@@ -123,14 +123,14 @@ Content-type: text/html;charset=utf-8";
 		<table width="100%" cellpadding="0" cellspacing="0" border="0" id="background-table" style="background-color: #ffffff; min-width: 100%;" bgcolor="#ffffff">
 			<tbody>
 				<tr style="border-collapse: collapse;">
-					<td bgcolor="#ffffff" align="center" style="border-collapse: collapse; text-align: center;">
+					<td bgcolor="#ffffff" align="center" style="border-collapse: collapse;">
 
 						<!-- ====== Start Content Wrapper Table ====== -->
 						<table width="670" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
 							<tbody>
 								<tr style="border-collapse: collapse;">
 									<td bgcolor="#ffffff" width="10" style="border-collapse: collapse;"></td>
-									<td bgcolor="#ffffff" width="650" align="left" style="border-collapse: collapse; text-align: left;">
+									<td bgcolor="#ffffff" width="650" align="left" style="border-collapse: collapse;">
 
 										<!-- ====== Start Header Spacer ====== -->
 										<table  width="650" cellpadding="0" cellspacing="0" border="0">
