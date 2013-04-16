@@ -379,7 +379,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	{
 		$rows = $this->passing($section, null, true, 'passing');
 
-		return $rows[1]->count;
+		return (isset($rows) && isset($rows[1])) ? $rows[1]->count : '--';
 	}
 
 	/**
@@ -392,7 +392,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	{
 		$rows = $this->passing($section, null, true, 'failing');
 
-		return $rows[0]->count;
+		return (isset($rows) && isset($rows[0])) ? $rows[0]->count : '--';
 	}
 
 	/**
