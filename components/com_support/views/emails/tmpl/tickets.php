@@ -501,7 +501,7 @@ Content-type: text/html;charset=utf-8";
 								?>
 								<?php if ($more) { ?>
 										<!-- ====== Start Header ====== -->
-										<table width="650" cellpadding="2" cellspacing="3" border="0" style="border-collapse: collapse; border-top: 2px solid #e1e1e1;">
+										<table width="650" cellpadding="2" cellspacing="3" border="0" style="border-collapse: collapse;">
 											<tbody>
 												<tr>
 													<td align="left" valign="bottom" style="line-height: 1; padding: 5px;">
