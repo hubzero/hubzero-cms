@@ -155,7 +155,7 @@ class plgCoursesMessages extends JPlugin
             Hubzero_Document::addPluginScript('courses','messages');
 
 			// Load some needed libraries
-			ximport('Hubzero_Message');
+			ximport('Hubzero_Message_Message');
 
 			$task = strtolower(trim($action));
 
