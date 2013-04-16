@@ -230,6 +230,21 @@ class ResourcesModelResource extends JObject
 	}
 
 	/**
+	 * Check if the resource was deleted
+	 * 
+	 * @param      mixed $idx Index value
+	 * @return     array
+	 */
+	public function deleted()
+	{
+		if ($this->resource->published == 4) 
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Check if the resource is a tool or not
 	 * 
 	 * @param      mixed $idx Index value

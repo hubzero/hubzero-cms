@@ -1144,7 +1144,7 @@ class ResourcesControllerResources extends Hubzero_Controller
 		$this->model = ResourcesModelResource::getInstance(($alias ? $alias : $id));
 
 		// Make sure we got a result from the database
-		if (!$this->model->exists())
+		if (!$this->model->exists() || $this->model->deleted())
 		{
 			JError::raiseError(404, JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND'));
 			return;
