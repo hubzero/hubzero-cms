@@ -394,7 +394,18 @@ class SupportTicket extends JTable
 			}
 			else
 			{
-				$filter .= " AND f.created >= " . $this->_db->Quote($filters['opened'][0]);
+				$filter .= " AND f.created >= " . $this->_db->Quote($filters['opened']);
+			}
+		}
+		if (isset($filters['closed']) && $filters['closed']) 
+		{
+			if (is_array($filters['closed'])) 
+			{
+				$filter .= " AND (f.closed >= " . $this->_db->Quote($filters['closed'][0]) . " AND f.closed <= " . $this->_db->Quote($filters['closed'][1]) . ")";
+			}
+			else
+			{
+				$filter .= " AND f.closed >= " . $this->_db->Quote($filters['closed']);
 			}
 		}
 
@@ -423,7 +434,7 @@ class SupportTicket extends JTable
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
 			$from = "(
-						(SELECT f.id, f.summary, f.report, f.category, f.status, f.severity, f.resolved, f.owner, f.created, f.login, f.name, f.email, f.type, f.section, f.group, u.name AS owner_name, u.id AS owner_id
+						(SELECT f.id, f.summary, f.report, f.category, f.status, f.severity, f.resolved, f.owner, f.created, f.closed, f.login, f.name, f.email, f.type, f.section, f.group, u.name AS owner_name, u.id AS owner_id
 							FROM $this->_tbl AS f LEFT JOIN #__users AS u ON u.username=f.owner ";
 			if (isset($filters['tag']) && $filters['tag'] != '') 
 			{
@@ -458,7 +469,7 @@ class SupportTicket extends JTable
 				$from .= "st.objectid=f.id AND st.tbl='support' AND st.tagid=t.id AND t.tag='" . $this->_db->getEscaped($filters['tag']) . "'";
 			}
 			$from .= ") UNION (
-				SELECT g.id, g.summary, g.report, g.category, g.status, g.severity, g.resolved, g.owner, g.created, g.login, g.name, g.email, g.type, g.section, g.group, ug.name AS owner_name, ug.id AS owner_id
+				SELECT g.id, g.summary, g.report, g.category, g.status, g.severity, g.resolved, g.owner, g.created, g.closed, g.login, g.name, g.email, g.type, g.section, g.group, ug.name AS owner_name, ug.id AS owner_id
 				FROM #__support_comments AS w, $this->_tbl AS g LEFT JOIN #__users AS ug ON ug.username=g.owner
 				WHERE w.ticket=g.id";
 			if (isset($filters['search']) && $filters['search'] != '') 
@@ -677,11 +688,11 @@ class SupportTicket extends JTable
 
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
-			$sql = "SELECT DISTINCT `id`, `summary`, `report`, `category`, `open`, `status`, `severity`, `resolved`, `owner`, `created`, `login`, `name`, `email`, `group`, owner_name, owner_id";
+			$sql = "SELECT DISTINCT `id`, `summary`, `report`, `category`, `open`, `status`, `severity`, `resolved`, `owner`, `created`, `closed`, `login`, `name`, `email`, `group`, owner_name, owner_id";
 		} 
 		else 
 		{
-			$sql = "SELECT DISTINCT f.id, f.summary, f.report, f.category, f.open, f.status, f.severity, f.resolved, f.group, f.owner, f.created, f.login, f.name, f.email, u.name AS owner_name, u.id AS owner_id";
+			$sql = "SELECT DISTINCT f.id, f.summary, f.report, f.category, f.open, f.status, f.severity, f.resolved, f.group, f.owner, f.created, f.closed, f.login, f.name, f.email, u.name AS owner_name, u.id AS owner_id";
 		}
 		$sql .= " FROM $filter";
 		$sql .= " ORDER BY ".$filters['sort'] . ' ' . $filters['sortdir'];

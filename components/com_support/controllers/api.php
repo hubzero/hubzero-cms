@@ -54,8 +54,9 @@ class SupportControllerApi extends Hubzero_Api_Controller
 		$this->config = JComponentHelper::getParams('com_support');
 		$this->database = JFactory::getDBO();
 
-		//include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'acl.php');
-		//$this->acl = SupportACL::getACL();
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'acl.php');
+		$this->acl = SupportACL::getACL();
+		$this->acl->setUser(JFactory::getApplication()->getAuthn('user_id'));
 
 		switch ($this->segments[0]) 
 		{
@@ -196,51 +197,54 @@ class SupportControllerApi extends Hubzero_Api_Controller
 	{
 		if ($val)
 		{
+			$val = strtolower($val);
+
 			if (strstr($val, ','))
 			{
 				$vals = explode(',', $val);
 				foreach ($vals as $i => $v)
 				{
-					$vales[$i] = $this->_toTimestamp($v);
+					$vales[$i] = $this->_toTimestamp(trim($v));
 				}
 				return $vals;
 			}
-			if (preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $stime, $regs))
+			switch ($val)
 			{
-				//$stime = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
-			}
-			else if (preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})/", $stime, $regs))
-			{
-				$val .= ' 00:00:00';
-			}
-			else if (preg_match("/([0-9]{4})-([0-9]{2})/", $stime, $regs))
-			{
-				$val .= '-01 00:00:00';
-			}
-			else
-			{
-				switch ($val)
-				{
-					case 'year':
-						$val = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d"), date("Y")-1));
-					break;
+				case 'year':
+					$val = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d"), date("Y")-1));
+				break;
 
-					case 'month':
-						$val = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
-					break;
+				case 'month':
+					$val = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m")-1, date("d"), date("Y")));
+				break;
 
-					case 'week':
-						$val = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")-7, date("Y")));
-					break;
+				case 'week':
+					$val = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")-7, date("Y")));
+				break;
 
-					case 'day':
-						$val = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")-1, date("Y")));
-					break;
+				case 'day':
+					$val = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")-1, date("Y")));
+				break;
 
-					default:
-						
-					break;
-				}
+				default:
+					if (preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $val, $regs))
+					{
+						// Time already matches pattern so do nothing.
+						//$stime = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
+					}
+					else if (preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})/", $val, $regs))
+					{
+						$val .= ' 00:00:00';
+					}
+					else if (preg_match("/([0-9]{4})-([0-9]{2})/", $val, $regs))
+					{
+						$val .= '-01 00:00:00';
+					}
+					else
+					{
+						// Not an acceptable time
+					}
+				break;
 			}
 		}
 
@@ -254,6 +258,11 @@ class SupportControllerApi extends Hubzero_Api_Controller
 	 */
 	private function tickets()
 	{
+		if (!$this->acl->check('read', 'tickets'))
+		{
+			return $this->errorMessage(403, JText::_('Permission denied.'));
+		}
+
 		$obj = new SupportTicket($this->database);
 
 		$filters = array(
@@ -275,6 +284,8 @@ class SupportControllerApi extends Hubzero_Api_Controller
 
 		$response = new stdClass;
 		$response->success = true;
+		$response->total   = 0;
+		$response->tickets = array();
 
 		/*if ($filters['closed'])
 		{
@@ -332,10 +343,12 @@ class SupportControllerApi extends Hubzero_Api_Controller
 			}
 		}*/
 
-		$response->tickets = $obj->getTickets($filters);
+		$response->total = $obj->getTicketsCount($filters);
 
-		if (is_array($response->tickets))
+		if ($response->total)
 		{
+			$response->tickets = $obj->getTickets($filters);
+
 			$juri =& JURI::getInstance();
 
 			foreach ($response->tickets as $i => $ticket)
@@ -378,10 +391,10 @@ class SupportControllerApi extends Hubzero_Api_Controller
 		//get the userid and attempt to load user profile
 		$userid = JFactory::getApplication()->getAuthn('user_id');
 		$result = Hubzero_User_Profile::getInstance($userid);
-		
+
 		//make sure we have a user
 		if ($result === false)	return $this->not_found();
-		
+
 		$this->setMessageType(JRequest::getVar('format', 'json'));
 
 		// Create an object for returning messages
