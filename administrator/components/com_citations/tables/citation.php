@@ -469,7 +469,7 @@ class CitationsCitation extends JTable
 		
 		if (isset($filter['tag']) && $filter['tag'] != '')
 		{
-			$query  = "SELECT DISTINCT r.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string, u.username, COUNT(DISTINCT tag.tag) AS uniques 
+			$query  = "SELECT COUNT(*)
 						FROM $this->_tbl AS r 
 						LEFT JOIN #__users AS u ON u.id = r.uid
 						LEFT JOIN #__citations_secondary as CS ON r.id=CS.cid
@@ -478,7 +478,7 @@ class CitationsCitation extends JTable
 		}
 		else
 		{
-			$query  = "SELECT DISTINCT r.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string, u.username 
+			$query  = "SELECT COUNT(*)
 						FROM $this->_tbl AS r 
 						LEFT JOIN #__users AS u ON u.id = r.uid
 						LEFT JOIN #__citations_secondary as CS ON r.id=CS.cid";
@@ -517,7 +517,7 @@ class CitationsCitation extends JTable
 		$query .= $this->buildQuery($filter, $admin);
 		
 		$this->_db->setQuery($query);
-		return count($this->_db->loadObjectList());
+		return $this->_db->loadResult();
 	}
 
 	/**

@@ -178,7 +178,7 @@ class CitationsControllerCitations extends Hubzero_Controller
 			'journal ASC'  => JText::_('JOURNAL'),
 			'created DESC' =>JText::_("Date uploaded")
 		);
-		if (!in_array($this->view->filters['sort'], $this->view->sorts))
+		if (!in_array($this->view->filters['sort'], array_keys($this->view->sorts)))
 		{
 			$this->view->filters['sort'] = 'created DESC';
 		}

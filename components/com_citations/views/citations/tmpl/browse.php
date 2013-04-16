@@ -214,7 +214,6 @@ if ($label == "none") {
 					<input type="submit" name="download" class="download-endnote" value="EndNote" /> 
 					| 
 					<input type="submit" name="download" class="download-bibtex" value="BibTex" />
-					<input type="hidden" name="task" value="downloadbatch" id="download-batch-input" />
 				</fieldset>
 			<?php endif; ?>
 		</div><!-- /.aside -->
