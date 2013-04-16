@@ -97,8 +97,7 @@ class modMyMessages extends JObject
 		$limit = intval($this->params->get('limit', 10));
 
 		// Find the user's most recent support tickets
-		ximport('Hubzero_Message');
-		ximport('Hubzero_Message_Recipient');
+		ximport('Hubzero_Message_Helper');
 
 		$recipient = new Hubzero_Message_Recipient($database);
 		$this->rows = $recipient->getUnreadMessages($this->juser->get('id'), $limit);
