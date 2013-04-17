@@ -11,7 +11,7 @@ class %=class_name=% extends Hubzero_Migration
 	/**
 	 * Up
 	 **/
-	protected static function up(&$db)
+	protected static function up($db)
 	{
 		$query = "";
 
@@ -22,7 +22,7 @@ class %=class_name=% extends Hubzero_Migration
 	/**
 	 * Down
 	 **/
-	protected static function down(&$db)
+	protected static function down($db)
 	{
 		$query = "";
 

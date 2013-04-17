@@ -5,7 +5,7 @@ defined('_JEXEC') or die('Restricted access');
 
 class Migration20130415000000ComSupport extends Hubzero_Migration
 {
-	protected static function up(&$db)
+	protected static function up($db)
 	{
 		// Add a unique index on grade book and asset_id field to forms table
 		$query = "ALTER TABLE `#__support_tickets` ADD `closed` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00' AFTER `created`";
@@ -48,7 +48,7 @@ class Migration20130415000000ComSupport extends Hubzero_Migration
 		}
 	}
 
-	protected function down(&$db)
+	protected function down($db)
 	{
 		$query = "ALTER TABLE `#__support_tickets` DROP `closed`;";
 

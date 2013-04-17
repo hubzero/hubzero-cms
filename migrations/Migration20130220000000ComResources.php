@@ -24,13 +24,13 @@ class Migration20130220000000ComResources extends Hubzero_Migration
 
 	protected static $down = "DROP TABLE IF EXISTS `#__media_tracking`;";
 
-	protected static function up(&$db)
+	protected static function up($db)
 	{
 		$db->setQuery(self::$up);
 		$db->query();
 	}
 
-	protected static function down(&$db)
+	protected static function down($db)
 	{
 		$db->setQuery(self::$up);
 		$db->query();

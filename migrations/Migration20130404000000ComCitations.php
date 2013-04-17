@@ -5,7 +5,7 @@ defined('_JEXEC') or die('Restricted access');
 
 class Migration20130404000000ComCitations extends Hubzero_Migration
 {
-	protected static function up(&$db)
+	protected static function up($db)
 	{
 		$query = "ALTER TABLE `#__citations_sponsors` ADD COLUMN `image` VARCHAR(200);";
 
@@ -13,7 +13,7 @@ class Migration20130404000000ComCitations extends Hubzero_Migration
 		$db->query();
 	}
 
-	protected static function down(&$db)
+	protected static function down($db)
 	{
 		$query = "ALTER TABLE `#__citations_sponsors` DROP COLUMN `image`;";
 

@@ -5,7 +5,7 @@ defined('_JEXEC') or die('Restricted access');
 
 class Migration20130410000000Core extends Hubzero_Migration
 {
-	protected static function up(&$db)
+	protected static function up($db)
 	{
 		$query = "ALTER TABLE `#__forum_sections` ADD INDEX `idx_scoped` (`scope`, `scope_id`);
 					ALTER TABLE `#__forum_sections` ADD INDEX `idx_asset_id` (`asset_id`);

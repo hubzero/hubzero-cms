@@ -5,7 +5,7 @@ defined('_JEXEC') or die('Restricted access');
 
 class Migration20130214000000Core extends Hubzero_Migration
 {
-	protected static function up(&$db)
+	protected static function up($db)
 	{
 		$query = "ALTER TABLE `host` ADD COLUMN `venue_id` INT(11)  AFTER `portbase`;";
 
@@ -13,7 +13,7 @@ class Migration20130214000000Core extends Hubzero_Migration
 		$db->query();
 	}
 
-	protected static function down(&$db)
+	protected static function down($db)
 	{
 		$query = "ALTER TABLE `host` DROP COLUMN `venue_id`;";
 

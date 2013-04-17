@@ -5,7 +5,7 @@ defined('_JEXEC') or die('Restricted access');
 
 class Migration20130208000000ComGroups extends Hubzero_Migration
 {
-	protected static function up(&$db)
+	protected static function up($db)
 	{
 		$query = "ALTER TABLE `#__xgroups` DROP `access`;
 					ALTER TABLE `#__xgroups` CHANGE `privacy` `discoverability` TINYINT(3);
@@ -15,7 +15,7 @@ class Migration20130208000000ComGroups extends Hubzero_Migration
 		$db->query();
 	}
 
-	protected static function down(&$db)
+	protected static function down($db)
 	{
 		$query = "ALTER TABLE `#__xgroups` DROP `approved`;
 					ALTER TABLE `#__xgroups` CHANGE `discoverability` `privacy` TINYINT(3);
