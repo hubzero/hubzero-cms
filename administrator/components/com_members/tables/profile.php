@@ -417,7 +417,11 @@ class MembersProfile extends JTable
 			$select .= ", b.bio ";
 		}
 
-		$query  = $select."FROM $this->_tbl AS m ".($filters['show'] == 'contributors' ? 'INNER' : 'LEFT') . ' JOIN #__contributors_view AS cv ON m.uidNumber = cv.uidNumber';
+		$query  = $select."FROM $this->_tbl AS m ";
+		if (!isset($filters['count']) || !$filters['count'] || isset($filters['contributions']))
+		{
+			$query .= ($filters['show'] == 'contributors' ? 'INNER' : 'LEFT') . ' JOIN #__contributors_view AS cv ON m.uidNumber = cv.uidNumber';
+		}
 		//$query .= " LEFT JOIN #__users AS u ON u.id=m.uidNumber";
 		if (isset($filters['sortby']) && $filters['sortby'] == "RAND()") 
 		{

@@ -288,11 +288,16 @@ class MembersControllerProfiles extends Hubzero_Controller
 		// Initiate a contributor object
 		$c = new MembersProfile($this->database);
 
-		// Get record count of ALL members
-		$this->view->total_members = $c->getCount(array('show' => ''), true);
+		$cache =& JFactory::getCache('callback');
+		$cache->setCaching(1);
+		$cache->setLifeTime(intval($this->config->get('cache_time', 15)));
+		$stats = $cache->call(array($this, 'stats'));
 
 		// Get record count of ALL members
-		$this->view->total_public_members = $c->getCount(array('show' => '', 'authorized' => false), false);
+		$this->view->total_members = $stats->total_members; //$c->getCount(array('show' => ''), true);
+
+		// Get record count of ALL members
+		$this->view->total_public_members = $stats->total_public_members; //$c->getCount(array('show' => '', 'authorized' => false), false);
 
 		// Get record count
 		$this->view->total = $c->getCount($this->view->filters, $admin);
@@ -301,12 +306,12 @@ class MembersControllerProfiles extends Hubzero_Controller
 		$this->view->rows = $c->getRecords($this->view->filters, $admin);
 		
 		//get newly registered members (past day)
-		$this->database->setQuery("SELECT COUNT(*) FROM #__xprofiles WHERE registerDate > '" . date("Y-m-d H:i:s", strtotime('-1 DAY')) . "'");
-		$this->view->past_day_members = $this->database->loadResult();
+		//$this->database->setQuery("SELECT COUNT(*) FROM #__xprofiles WHERE registerDate > '" . date("Y-m-d H:i:s", strtotime('-1 DAY')) . "'");
+		$this->view->past_day_members = $stats->past_day_members; //$this->database->loadResult();
 		
 		//get newly registered members (past month)
-		$this->database->setQuery("SELECT COUNT(*) FROM #__xprofiles WHERE registerDate > '" . date("Y-m-d H:i:s", strtotime('-1 MONTH')) . "'");
-		$this->view->past_month_members = $this->database->loadResult();
+		//$this->database->setQuery("SELECT COUNT(*) FROM #__xprofiles WHERE registerDate > '" . date("Y-m-d H:i:s", strtotime('-1 MONTH')) . "'");
+		$this->view->past_month_members = $stats->past_month_members; //$this->database->loadResult();
 		
 		// Initiate paging
 		jimport('joomla.html.pagination');
@@ -329,6 +334,34 @@ class MembersControllerProfiles extends Hubzero_Controller
 		}
 
 		$this->view->display();
+	}
+
+	/**
+	 * Calculate stats
+	 * 
+	 * @return     object
+	 */
+	public function stats()
+	{
+		$c = new MembersProfile($this->database);
+
+		$stats = new stdClass;
+
+		// Get record count of ALL members
+		$stats->total_members = $c->getCount(array('show' => ''), true);
+
+		// Get record count of ALL members
+		$stats->total_public_members = $c->getCount(array('show' => '', 'authorized' => false), false);
+
+		//get newly registered members (past day)
+		$this->database->setQuery("SELECT COUNT(*) FROM #__xprofiles WHERE registerDate > '" . date("Y-m-d H:i:s", strtotime('-1 DAY')) . "'");
+		$stats->past_day_members = $this->database->loadResult();
+
+		//get newly registered members (past month)
+		$this->database->setQuery("SELECT COUNT(*) FROM #__xprofiles WHERE registerDate > '" . date("Y-m-d H:i:s", strtotime('-1 MONTH')) . "'");
+		$stats->past_month_members = $this->database->loadResult();
+
+		return $stats;
 	}
 
 	/**
