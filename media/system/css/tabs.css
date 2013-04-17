@@ -1,34 +1,36 @@
 /**
  * @package     hubzero-cms
- * @file        media/hubzero/css/tabs.css
- * @copyright   Copyright 2005-2012 Purdue University. All rights reserved.
+ * @file        media/system/css/tabs.css
+ * @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 /* Sub-menu */
-	#sub-menu {
-		margin: 0 0 30px 0;
-		padding: 0;
-		background: #e1e1e1;
-	}
-	#sub-menu ul {
-		height: 43px;
+	ul.sub-menu {
 		list-style: none;
-		margin: 0 0 -1px 0;
-		padding: 0 30px 0 30px;
-		position: relative;
-		border: none;
-		border-bottom: 1px solid #BABABA;
-	}
-	#sub-menu li {
-		border: none;
-		display: block;
-		float: left;
-		height: 29px;
+		padding: 1em 30px 0 30px;
 		margin: 0;
-		padding: 15px 0 0 0;
+		border-bottom: 1px solid #BABABA;
+		*zoom: 1;
 	}
-	#sub-menu li a {
+	ul.sub-menu:before,
+	ul.sub-menu:after {
+		content: "";
+		display: table;
+	}
+	ul.sub-menu:after {
+		clear: left;
+	}
+	ul.sub-menu li {
+		float: left;
+		margin: 0;
+		padding: 0;
+	}
+	ul.sub-menu li a {
+		position: relative;
+		top: 1px;
+		text-decoration: none;
+		display: block;
 		-webkit-border-radius: 0.25em 0.25em 0 0;
 		-moz-border-radius: 0.25em 0.25em 0 0;
 		-ms-border-radius: 0.25em 0.25em 0 0;
@@ -36,33 +38,22 @@
 		border-radius: 0.25em 0.25em 0 0;
 		background: #b5b5b5;
 		border: 1px solid #949494;
-		border-bottom: 1px solid #BABABA;
+		border-bottom-width: 0;
 		color: #fff;
-		display: block;
-		height: 27px;
-		margin: 0;
-		padding: 0;
+		padding: 0.5em 1em;
 		text-align: center;
+		line-height: 1;
 		text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.6);
 	}
-	#sub-menu li a span {
-		border: none;
-		cursor: pointer;
-		display: block;
-		height: 22px;
-		margin: 0;
-		padding: 5px 15px 0 15px;
-		text-align: center;
-	}
-	#sub-menu li a:hover {
+	ul.sub-menu li a:hover {
 		border-color: #616161;
 		background-color: #747474;
 		color: #fff;
 	}
-	#sub-menu li.active a,
-	#sub-menu li.active a:hover {
-		background: #f9f9f9;
-		border-bottom: 1px solid #eee;
+	ul.sub-menu li.active a,
+	ul.sub-menu li.active a:hover {
+		background-color: #f9f9f9;
 		color: #747474;
+		border-color: #BABABA;
 		text-shadow: 0 1px 1px rgba(255, 255, 255, 0.9);
 	}

@@ -149,13 +149,10 @@ function getMonthName($month)
 	</ul>
 </div><!-- / #content-header-extra -->
 
-<div id="sub-menu">
-	<ul>
+	<ul class="sub-menu">
 		<li id="sm-1"<?php if ($this->type == 0) { echo ' class="active"'; } ?>><a class="tab" rel="submitted" href="/support/stats"><span><?php echo JText::_('Submitted Tickets'); ?></span></a></li>
 		<li id="sm-2"<?php if ($this->type == 1) { echo ' class="active"'; } ?>><a class="tab" rel="automatic" href="/support/stats?type=automatic"><span><?php echo JText::_('Automatic Tickets'); ?></span></a></li>
 	</ul>
-	<div class="clear"></div>
-</div><!-- / #sub-menu -->
 
 <form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=stats'); ?>" method="get" enctype="multipart/form-data">
 	<div class="main section" id="ticket-stats">

@@ -768,8 +768,7 @@ class ResourcesHtml
 	 */
 	public function tabs($option, $id, $cats, $active='about', $alias='')
 	{
-		$html  = '<div id="sub-menu">' . "\n";
-		$html .= "\t" . '<ul>' . "\n";
+		$html  = "\t" . '<ul class="sub-menu">' . "\n";
 		$i = 1;
 		foreach ($cats as $cat)
 		{
@@ -804,7 +803,6 @@ class ResourcesHtml
 			}
 		}
 		$html .= "\t".'</ul>' . "\n";
-		$html .= '</div><!-- / #sub-menu -->' . "\n";
 
 		return $html;
 	}

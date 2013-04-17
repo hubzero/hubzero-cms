@@ -279,8 +279,8 @@ else
 	</div>
 	
 	<div class="subject">
-		<div id="sub-menu">
-			<ul>
+
+			<ul class="sub-menu">
 	<?php
 	if ($this->cats)
 	{
@@ -317,7 +317,7 @@ else
 	}
 	?>
 			</ul>
-		</div><!-- / #sub-menu -->
+
 
 		<?php
 		foreach ($this->notifications as $notification) 

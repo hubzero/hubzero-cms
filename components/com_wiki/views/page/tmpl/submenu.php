@@ -52,8 +52,8 @@ if (!$juser->get('guest')) { ?>
 	</ul>
 </div><!-- / #content-header-extra -->
 <?php } ?>
-<div id="sub-menu" class="sub-menu">
-	<ul>
+
+	<ul class="sub-menu">
 		<li class="page-text<?php if ($this->controller == 'page' && ($this->task == 'display' || !$this->task)) { echo ' active'; } ?>">
 			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename); ?>">
 				<span><?php echo JText::_('WIKI_TAB_ARTICLE'); ?></span>
@@ -102,5 +102,3 @@ if (!$juser->get('guest')) { ?>
 		</li>
 	<?php //} ?>
 	</ul>
-	<div class="clear"></div>
-</div><!-- / .page-options -->

@@ -36,8 +36,7 @@ if (!$this->no_html) { ?>
 	<h2><?php echo $this->title; ?></h2>
 </div><!-- / #content-header -->
 
-<div id="sub-menu">
-	<ul>
+	<ul class="sub-menu">
 <?php
 if ($this->cats) {
 	$i = 1;
@@ -56,8 +55,7 @@ if ($this->cats) {
 }
 ?>
 	</ul>
-	<div class="clear"></div>
-</div><!-- / #sub-menu -->
+
 <?php } ?>
 
 <?php

@@ -66,8 +66,7 @@ $base = 'index.php?option=' . $this->option;
 	</ul>
 </div> -->
 
-<div id="sub-menu">
-	<ul>
+	<ul class="sub-menu">
 		<li<?php if ($this->task == 'popular') { echo ' class="active"'; } ?>>
 			<a href="<?php echo JRoute::_($base . '&controller=' . $this->controller . '&task=popular'); ?>">
 				<span><?php echo JText::_('Popular posts'); ?></span>
@@ -84,8 +83,6 @@ $base = 'index.php?option=' . $this->option;
 			</a>
 		</li>
 	</ul>
-	<div class="clear"></div>
-</div>
 
 <form method="get" action="<?php echo JRoute::_($base . '&controller=' . $this->controller . '&task=' . $this->task); ?>" id="collections">
 	<!-- <fieldset class="filters">

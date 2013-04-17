@@ -38,13 +38,10 @@ $juser =& JFactory::getUser();
 </div><!-- / #content-header -->
 
 <?php if ($this->config->get('access-manage-session')) { ?>
-<div id="sub-menu">
-	<ul>
+	<ul class="sub-menu">
 		<li id="sm-1"<?php if ($this->active == '') { echo ' class="active"'; } ?>><a class="tab" rel="mysessions" href="<?php echo JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=quotaexceeded'); ?>"><span>My Sessions</span></a></li>
 		<li id="sm-2"<?php if ($this->active == 'all') { echo ' class="active"'; } ?>><a class="tab" rel="allsessions" href="<?php echo JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=quotaexceeded&active=all'); ?>"><span>All Sessions</span></a></li>
 	</ul>
-	<div class="clear"></div>
-</div><!-- / #sub-menu -->
 <?php } ?>
 
 <div class="main section<?php if ($this->config->get('access-manage-session') && $this->active == 'all') { echo ' hide'; } else { echo ''; }?>" id="mysessions-section">

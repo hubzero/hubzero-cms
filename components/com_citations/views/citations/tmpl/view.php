@@ -256,8 +256,7 @@ $area = JRequest::getVar('area', 'about');
 	</div>
 </div>
 
-<div id="sub-menu">
-	<ul>
+	<ul class="sub-menu">
 		<?php
 			$menu = array(
 				'about' => 'About',
@@ -283,7 +282,6 @@ $area = JRequest::getVar('area', 'about');
 			</li>
 		<?php endforeach; ?>
 	</ul>
-</div>
 
 <?php if ($area == 'about') : ?>
 	<div class="main section citation-section">

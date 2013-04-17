@@ -1180,15 +1180,15 @@
 		border-color: #d0d0d0 transparent transparent #d0d0d0;
 	}
 /* Sub-menu */
-	#sub-menu {
+	.sub-menu {
 		background: #e1e1e1 url("../images/layout/noise-lite.png");
 	}
-	#sub-menu li.active a,
-	#sub-menu li.active a:hover {
+	.sub-menu li.active a,
+	.sub-menu li.active a:hover {
 		background: #f9f9f9 url("../images/layout/noise-lite.png");
 	}
-	#page_container #sub-menu li.active a,
-	#page_container #sub-menu li.active a:hover {
+	#page_container .sub-menu li.active a,
+	#page_container .sub-menu li.active a:hover {
 		background: #fff;
 	}
 /* Pagination */

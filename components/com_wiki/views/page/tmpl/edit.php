@@ -87,8 +87,8 @@ if ($this->page->id) {
 	$view->display();
 } else {
 ?>
-<div id="sub-menu" class="sub-menu">
-	<ul>
+
+	<ul class="sub-menu">
 		<li class="page-text">
 			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename); ?>">
 				<span><?php echo JText::_('WIKI_TAB_ARTICLE'); ?></span>
@@ -114,8 +114,7 @@ if ($this->page->id) {
 		</li>
 <?php //} ?>
 	</ul>
-	<div class="clear"></div>
-</div><!-- / #sub-menu -->
+
 <?php } ?>
 
 <div class="main section">
