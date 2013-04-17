@@ -1003,7 +1003,7 @@ class JobsControllerJobs extends Hubzero_Controller
 		else 
 		{
 			// get service params like maxads
-			$this->getServiceParams(&$service);
+			$this->getServiceParams($service);
 		}
 
 		// Get current stats for dashboard
@@ -2224,7 +2224,7 @@ class JobsControllerJobs extends Hubzero_Controller
 		} 
 		else 
 		{
-			$this->getServiceParams(&$service);
+			$this->getServiceParams($service);
 			$maxads = $service->maxads > 0 ? $service->maxads : 1;
 			$activejobs = $job->countMyActiveOpenings($juser->get('id'), 1);
 			$allowed_ads = $maxads - $activejobs;
