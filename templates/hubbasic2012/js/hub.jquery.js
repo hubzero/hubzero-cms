@@ -104,13 +104,13 @@ HUB.Base = {
 			onBeforeShow: function(event, position) {
 				var tip = this.getTip(),
 					tipText = tip[0].innerHTML;
-					
+
 				if (tipText.indexOf('::') != -1) {
 					var parts = tipText.split('::');
 					tip[0].innerHTML = '<span class="tooltip-title">' + parts[0] + '</span><span class="tooltip-text">' + parts[1] + '</span>';
 				}
 			}
-		});
+		}).dynamic();
 
 		// Init fixed position DOM: tooltips
 		$('.fixedToolTip').tooltip({
