@@ -194,5 +194,6 @@ $newdir  = ($dir == 'asc') ? 'desc' : 'asc';
 		<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&active=records'); ?>">
 			<?php echo $this->pageNav; ?>
 		</form>
+		<div class="loading"></div>
 	</div>
 </div>

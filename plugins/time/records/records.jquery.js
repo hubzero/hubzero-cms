@@ -44,6 +44,9 @@ HUB.Plugins.TimeRecords = {
 			nextSelector    : '.list-footer .next a',
 			itemSelector    : '.entries tbody tr',
 			contentSelector : '.entries tbody',
+			loading         : {
+				selector : '.loading'
+			},
 			path: function(index) {
 				// Set page cound
 				pageCount = $('.list-footer .page').length;
