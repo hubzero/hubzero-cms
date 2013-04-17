@@ -5,7 +5,7 @@ defined('_JEXEC') or die('Restricted access');
 
 class Migration20130404000000ComCourses extends Hubzero_Migration
 {
-	protected static function up(&$db)
+	protected static function up($db)
 	{
 		$query = "ALTER TABLE `#__courses_announcements` 
 			ADD `publish_up` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00',
@@ -16,7 +16,7 @@ class Migration20130404000000ComCourses extends Hubzero_Migration
 		$db->query();
 	}
 
-	protected static function down(&$db)
+	protected static function down($db)
 	{
 		$query = "ALTER TABLE `#__courses_pages` DROP `publish_up`, DROP `publish_down`, DROP `sticky`;";
 

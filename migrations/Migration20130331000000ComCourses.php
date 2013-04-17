@@ -5,7 +5,7 @@ defined('_JEXEC') or die('Restricted access');
 
 class Migration20130331000000ComCourses extends Hubzero_Migration
 {
-	protected static function up(&$db)
+	protected static function up($db)
 	{
 		$query = "INSERT INTO `#__plugins` (`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`)
 			SELECT 'Courses - Course FAQ','faq','courses',0,9,1,0,0,0,'0000-00-00 00:00:00',''
@@ -23,7 +23,7 @@ class Migration20130331000000ComCourses extends Hubzero_Migration
 		$db->query();
 	}
 
-	protected static function down(&$db)
+	protected static function down($db)
 	{
 		$query = "DELETE FROM `#__plugins` WHERE `element` = 'faq' AND `folder`='courses';
 			DELETE FROM `#__plugins` WHERE `element` = 'related' AND `folder`='courses';

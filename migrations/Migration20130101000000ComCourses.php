@@ -5,7 +5,7 @@ defined('_JEXEC') or die('Restricted access');
 
 class Migration20130101000000ComCourses extends Hubzero_Migration
 {
-	protected static function up(&$db)
+	protected static function up($db)
 	{
 		$query = "CREATE TABLE IF NOT EXISTS `#__courses` (
 				`id` int(11) NOT NULL AUTO_INCREMENT,
@@ -382,7 +382,7 @@ class Migration20130101000000ComCourses extends Hubzero_Migration
 		$db->query();
 	}
 
-	protected static function down(&$db)
+	protected static function down($db)
 	{
 		$query = "
 			DROP TABLE IF EXISTS `#__courses`;
