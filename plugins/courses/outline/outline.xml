@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           components/com_courses/views/view/tmpl/overview.xml
+@file           plugins/courses/outline/outline.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -27,16 +27,28 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<metadata>
-	<layout title="Standard Courses Overview Layout">
-		<message>
-			<![CDATA[STANDARD COURSES OVERVIEW LAYOUT DESC]]>
-		</message>
-	</layout>
-	<state>
-		<name>Standard Courses Overview Layout</name>
-		<description>STANDARD COURSES OVERVIEW LAYOUT DESC</description>
-		<params>
-		</params>
-	</state>
-</metadata>
+<extension version="1.7" type="plugin" course="courses">
+	<name>Courses - outline</name>
+	<author>HUBzero</author>
+	<copyright>Copyright 2005-2013 Purdue University. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<description>Display course outline</description>
+	<files>
+		<filename plugin="outline">outline.php</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_courses_outline.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="plugin_access" type="list" default="members" label="Default Plugin Access" description="Default access level assigned to the outline plugin.">
+					<option value="anyone">Any HUB Visitor</option>
+					<option value="registered">Only Registered HUB Users</option>
+					<option value="members">Only Course Members</option>
+					<option value="nobody">Disabled/Off</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

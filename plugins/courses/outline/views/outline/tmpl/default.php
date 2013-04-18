@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Christopher Smoak <csmoak@purdue.edu>
+ * @author    Sam Wilson <samwilson@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -60,16 +60,16 @@ if (!$this->course->offering()->access('view')) { ?>
 
 	<div id="course-outline">
 	<div class="outline-head">
-	<?php
-		// Trigger event
-		$dispatcher =& JDispatcher::getInstance();
-		$results = $dispatcher->trigger('onCourseBeforeOutline', array(
-			$this->course,
-			$this->course->offering()
-		));
-		// Output results
-		echo implode("\n", $results);
-	?>
+		<?php
+			// Trigger event
+			$dispatcher =& JDispatcher::getInstance();
+			$results = $dispatcher->trigger('onCourseBeforeOutline', array(
+				$this->course,
+				$this->course->offering()
+			));
+			// Output results
+			echo implode("\n", $results);
+		?>
 	</div>
 <?php if ($this->course->offering()->units()->total() > 0) : ?>
 	<?php foreach ($this->course->offering()->units() as $i => $unit) { ?>

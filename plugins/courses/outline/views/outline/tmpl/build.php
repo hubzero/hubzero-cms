@@ -31,12 +31,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$base = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias');
+$base = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias') . ($this->course->offering()->section()->get('alias') != '__default' ? ':' . $this->course->offering()->section()->get('alias') : '');
 
 ?>
 
-<div id="content-header" class="full">
-	<h2><?php echo $this->title; ?></h2>
+<div class="header">
+	<a href="<?php echo JRoute::_($base . '&active=outline'); ?>" class="done btn">Done</a>
+	<h3><?php echo $this->title; ?></h2>
 </div>
 
 <div id="dialog-confirm" class="dialog">This is a dialog box</div>
@@ -58,20 +59,6 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 	<p class="error-message">There was an error</p>
 </div>
 
-<div id="content-header-extra">
-	<ul id="useroptions">
-		<li class="last">
-			<a class="course btn" href="<?php echo JRoute::_($base); ?>">
-				<?php echo JText::sprintf('MY_COURSE', $this->course->get('title')); ?>
-			</a>
-		</li>
-	</ul>
-</div><!-- / #content-header-extra -->
-
-<? foreach($this->notifications as $notification) : ?>
-	<p class="<?= $notification['type'] ?>"><?= $notification['message'] ?></p>
-<? endforeach; ?>
-
 <div class="outline-main">
 	<div class="delete-tray closed">
 		<div class="lock unlocked"></div>
@@ -85,11 +72,14 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 						if ($ag->assets()->total()) :
 							foreach ($ag->assets() as $a) :
 								if($a->get('state') == COURSES_STATE_DELETED) :
-									$view = new JView(
-											array(
-												'name'      => 'manage',
-												'layout'    => 'asset_partial')
-										);
+									$view = new Hubzero_Plugin_View(
+										array(
+											'folder'  => 'courses',
+											'element' => 'outline',
+											'name'    => 'outline',
+											'layout'  => 'asset_partial'
+										)
+									);
 									$view->base   = $base;
 									$view->course = $this->course;
 									$view->unit   = $unit;
@@ -124,7 +114,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 				</form>
 			</div>
 			<div class="calendar">
-				<form action="/courses/<?php echo $this->course->get('alias'); ?>/manage/<?php echo $this->course->offering()->get('alias'); ?>" class="calendar-form">
+				<form action="<?= JRoute::_($base . '&active=outline&action=build') ?>" class="calendar-form">
 					<input type="hidden" name="scope" value="unit" />
 					<input type="hidden" name="scope_id" value="<?php echo $unit->get('id'); ?>" />
 				</form>
@@ -147,11 +137,14 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 				// Loop through our asset groups
 				foreach($agt->children() as $ag)
 				{
-					$view = new JView(
-							array(
-								'name'      => 'manage',
-								'layout'    => 'asset_group_partial')
-						);
+					$view = new Hubzero_Plugin_View(
+						array(
+							'folder'  => 'courses',
+							'element' => 'outline',
+							'name'    => 'outline',
+							'layout'  => 'asset_group_partial'
+						)
+					);
 					$view->base   = $base;
 					$view->course = $this->course;
 					$view->unit   = $unit;
@@ -162,11 +155,14 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 				// Now display assets directly attached to the asset group type
 				if ($agt->assets()->total())
 				{
-					$view = new JView(
-							array(
-								'name'      => 'manage',
-								'layout'    => 'asset_group_partial')
-						);
+					$view = new Hubzero_Plugin_View(
+						array(
+							'folder'  => 'courses',
+							'element' => 'outline',
+							'name'    => 'outline',
+							'layout'  => 'asset_group_partial'
+						)
+					);
 					$view->base   = $base;
 					$view->course = $this->course;
 					$view->unit   = $unit;

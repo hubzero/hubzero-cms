@@ -26,6 +26,7 @@ HUB.CoursesOutline = {
 
 	initialize: function()
 	{
+		HUB.CoursesOutline.init();
 		HUB.CoursesOutline.setDefaults();
 		HUB.CoursesOutline.toggleUnits();
 		HUB.CoursesOutline.showProgressIndicator();
@@ -43,6 +44,13 @@ HUB.CoursesOutline = {
 		HUB.CoursesOutline.setupErrorMessage();
 		HUB.CoursesOutline.calendar();
 		HUB.CoursesOutline.preview();
+	},
+
+	init: function()
+	{
+		var $ = this.jQuery;
+
+		//$('.asset-preview, .asset-edit, .asset-delete').tooltip();
 	},
 
 	setDefaults: function()
@@ -362,7 +370,7 @@ HUB.CoursesOutline = {
 		$('.delete-tray').hoverIntent({
 			over: function(){
 				if(!locked) {
-					$('.unit').animate({'margin-left':315}, 500);
+					$('.unit').animate({'margin-left':330}, 500);
 					$('.delete-tray').animate({'margin-left':0}, 500, function() {
 						$('.delete-tray').removeClass('closed').addClass('open');
 					});
@@ -370,7 +378,7 @@ HUB.CoursesOutline = {
 			},
 			out: function(){
 				if(!locked) {
-					$('.unit').animate({'margin-left':30}, 500);
+					$('.unit').animate({'margin-left':45}, 500);
 					$('.delete-tray').animate({'margin-left':-285}, 500, function() {
 						$('.delete-tray').addClass('closed').removeClass('open');
 					});
@@ -696,8 +704,8 @@ HUB.CoursesOutline = {
 			e.preventDefault();
 
 			var form  = $(this).siblings('.next-step-publish');
-			var src   = '/courses/'+form.find('input[name="course_id"]').val()+'/manage/'+form.find('input[name="offering"]').val();
-				src  += '?scope=asset&scope_id='+form.find('input[name="scope_id"]').val()+'&asset_id='+form.find('.asset_id').val()+'&tmpl=component';
+			var src   = '/courses/'+form.find('input[name="course_id"]').val()+'/'+form.find('input[name="offering"]').val()+'/outline?action=build';
+				src  += '&scope=asset&scope_id='+form.find('input[name="scope_id"]').val()+'&asset_id='+form.find('.asset_id').val()+'&tmpl=component';
 
 			$('.content-box-header span').html('Edit Asset');
 
@@ -781,8 +789,8 @@ HUB.CoursesOutline = {
 			e.preventDefault();
 
 			var form       = $(this).siblings('.aux-attachments-form');
-			var src        = '/courses/'+form.find('input[name="course_id"]').val()+'/manage/'+form.find('input[name="offering"]').val();
-				src       += '?scope=wiki&scope_id='+form.find('input[name="scope_id"]').val()+'&tmpl=component';
+			var src        = '/courses/'+form.find('input[name="course_id"]').val()+'/'+form.find('input[name="offering"]').val()+'/outline?action=build';
+				src       += '&scope=wiki&scope_id='+form.find('input[name="scope_id"]').val()+'&tmpl=component';
 
 			$('.content-box-header span').html('Create a Note');
 
@@ -1137,7 +1145,7 @@ HUB.CoursesOutline = {
 				autoSize: false,
 				width: '305',
 				height: '190',
-				href: form.attr('action')+'?'+form.serialize()+'&tmpl=component',
+				href: form.attr('action')+'&'+form.serialize()+'&tmpl=component',
 				afterShow: function() {
 					$('.datepicker').datepicker({
 						dateFormat: 'yy-mm-dd'

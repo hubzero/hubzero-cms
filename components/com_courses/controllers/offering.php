@@ -193,8 +193,6 @@ class CoursesControllerOffering extends Hubzero_Controller
 		$jconfig = JFactory::getConfig();
 
 		// Push some needed styles to the template
-		// Pass in course type to include special css for paying courses
-		//$this->_getCourseStyles($this->course->get('type'));
 		$this->_getStyles($this->_option, $this->_controller . '.css');
 
 		// Push some needed scripts to the template
@@ -211,14 +209,7 @@ class CoursesControllerOffering extends Hubzero_Controller
 		$dispatcher =& JDispatcher::getInstance();
 
 		// Trigger the functions that return the areas we'll be using
-		// then add overview to array
 		$plugins = $dispatcher->trigger('onCourseAreas', array());
-		array_unshift($plugins, array(
-			'name'             => 'outline',
-			'title'            => JText::_('Outline'),
-			'default_access'   => 'anyone',
-			'display_menu_tab' => true
-		));
 
 		// Get tab access
 		foreach ($plugins as $plugin)
@@ -226,8 +217,8 @@ class CoursesControllerOffering extends Hubzero_Controller
 			$course_plugin_access[$plugin['name']] = $plugin['default_access'];
 		}
 
-		// If active tab not outline and an not one of available tabs
-		if ($this->view->active != 'outline' && !in_array($this->view->active, array_keys($course_plugin_access))) 
+		// If active tab is not one of available tabs
+		if (!in_array($this->view->active, array_keys($course_plugin_access))) 
 		{
 			$this->view->active = 'outline';
 		}
@@ -242,68 +233,11 @@ class CoursesControllerOffering extends Hubzero_Controller
 			)
 		);
 
-		if ($this->view->active == 'outline') 
-		{
-			Hubzero_Document::addComponentScript($this->_option, 'assets/js/courses.offering');
-			Hubzero_Document::addSystemScript('jquery.masonry');
-
-			$layout = $this->view->active;
-			if (($unit = JRequest::getVar('unit', '')))
-			{
-				$layout = 'unit';
-			}
-			if (($group = JRequest::getVar('group', '')))
-			{
-				$layout = 'lecture';
-			}
-			$view = new JView(array(
-				'name'   => $this->_controller, 
-				'layout' => $layout
-			));
-			if (isset($unit))
-			{
-				$view->unit = $unit;
-			}
-			if (isset($group))
-			{
-				$view->group = $group;
-			}
-
-			$view->option     = $this->_option;
-			$view->controller = $this->_controller;
-			$view->tab        = $this->view->active;
-			$view->course     = $this->course;
-			$view->database   = $this->database;
-			$view->config     = $this->config;
-
-			$body = $view->loadTemplate();
-		} 
-		else 
-		{
-			$body = '';
-		}
-
-		// Push the overview view to the array of sections we're going to output
-		array_unshift(
-			$sections, 
-			array(
-				'html' => $body, 
-				'metadata' => ''
-			)
-		);
-
-		// If we are a special course load the special template
-		/*if ($this->course->get('type') == 3) 
-		{
-			$this->view->setLayout('special');
-		}*/
-
 		$this->view->course               = $this->course;
 		$this->view->user                 = $this->juser;
 		$this->view->config               = $this->config;
 		$this->view->plugins              = $plugins;
 		$this->view->course_plugin_access = $course_plugin_access;
-		//$this->view->pages                = $this->course->offering()->pages();
 		$this->view->sections             = $sections;
 		$this->view->notifications        = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
 		$this->view->display();
@@ -475,79 +409,6 @@ class CoursesControllerOffering extends Hubzero_Controller
 	{
 		$this->view->setLayout('edit');
 
-		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
-		$this->view->display();
-	}
-
-	/**
-	 * Show a form for editing a coure offering outline
-	 * 
-	 * @return     void
-	 */
-	public function editoutlineTask()
-	{
-		$this->course->access('manage');
-		if (!$this->course->offering()->access('manage'))
-		{
-			JError::raiseError(401, JText::_('Not Authorized'));
-			return;
-		}
-
-		// If we have a scope set, we're loading a specific outline piece (ex: a unit)
-		if ($scope = JRequest::getWord('scope', false))
-		{
-			// Setup view
-			$this->setView('manage', "edit{$scope}");
-
-			$this->_getStyles($this->_option, $this->_task . '.css');
-
-			$this->view->title         = "Edit {$scope}";
-			$this->view->scope         = $scope;
-			$this->view->scope_id      = JRequest::getInt('scope_id');
-
-			$this->view->tab           = $this->active;
-			$this->view->course        = $this->course;
-			$this->view->database      = $this->database;
-			$this->view->config        = $this->config;
-			$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
-			$this->view->display();
-
-			return;
-		}
-
-		// Push some needed styles to the template
-		$this->_getStyles($this->_option, $this->_controller . '.css');
-		$this->_getStyles($this->_option, $this->_task . '.css');
-
-		// Add underscore
-		Hubzero_Document::addSystemScript('underscore-min');
-		Hubzero_Document::addSystemScript('jquery.hoverIntent');
-
-		// Push some needed scripts to the template
-		$this->_getScripts('/assets/js/courses.outline');
-
-		// Add 'uniform' js and css
-		Hubzero_Document::addSystemStylesheet('uniform.css');
-		Hubzero_Document::addSystemScript('jquery.uniform');
-
-		// Add file uploader JS
-		Hubzero_Document::addSystemScript('jquery.iframe.transport');
-		Hubzero_Document::addSystemScript('jquery.fileupload');
-
-		// Build the title
-		$this->_buildTitle();
-
-		// Build pathway
-		$this->_buildPathway($this->course->offering()->pages());
-
-		// Setup view
-		$this->setView('manage', 'editoutline');
-
-		$this->view->title         = 'Edit Outline';
-		$this->view->tab           = $this->active;
-		$this->view->course        = $this->course;
-		$this->view->database      = $this->database;
-		$this->view->config        = $this->config;
 		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
 		$this->view->display();
 	}

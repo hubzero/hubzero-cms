@@ -88,11 +88,14 @@ if ($this->ag->assets()->total())
 			{
 				$hasPublishedAssets = true;
 
-				$view = new JView(
-						array(
-							'name'      => 'manage',
-							'layout'    => 'asset_partial')
-					);
+				$view = new Hubzero_Plugin_View(
+					array(
+						'folder'  => 'courses',
+						'element' => 'outline',
+						'name'    => 'outline',
+						'layout'  => 'asset_partial'
+					)
+				);
 				$view->base   = $this->base;
 				$view->course = $this->course;
 				$view->unit   = $this->unit;

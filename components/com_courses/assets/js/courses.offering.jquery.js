@@ -15,19 +15,3 @@ if (!HUB) {
 if (!jq) {
 	var jq = $;
 }
-
-jQuery(document).ready(function(jq) {
-	var $ = jq;
-	
-	$('.unit-content').on('click', 'h3', function(){
-		if ($(this).hasClass('unit-content-available')) {
-			$(this).siblings('.unit-availability').find('.details').slideUp(500);
-			$(this).removeClass('unit-content-available');
-		} else {
-			$(this).siblings('.unit-availability').find('.details').slideDown(500);
-
-			// Toggle class for arrow (active gives down arrow indicating expanded list)
-			$(this).addClass('unit-content-available');
-		}
-	});
-});
