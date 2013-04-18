@@ -85,7 +85,9 @@ $policy = $gradePolicy->get('description');
 						<div class="student-progress-timeline">
 							<div class="student-progress-timeline-inner length_<?= count($this->course->offering()->units()) ?>">
 								<? foreach($this->course->offering()->units() as $unit) : ?>
-									<? $height = $progress[$m->get('user_id')][$unit->get('id')]['percentage_complete']; ?>
+									<? $height = (isset($progress[$m->get('user_id')][$unit->get('id')]['percentage_complete']))
+													? $progress[$m->get('user_id')][$unit->get('id')]['percentage_complete']
+													: 0; ?>
 									<? $margin = 100 - $height; ?>
 									<? $cls    = ($height == 100) ? ' complete' : ''; ?>
 									<div class="unit">

@@ -220,7 +220,9 @@ foreach ($units as $unit)
 	$first    = ($index == 1) ? ' first' : '';
 	$last     = ($index == $num_units) ? ' last' : '';
 	$past     = ($unit->started()) ? ' past' : '';
-	$complete = $progress[$this->juser->get('id')][$unit->get('id')]['percentage_complete'];
+	$complete = isset($progress[$this->juser->get('id')][$unit->get('id')]['percentage_complete'])
+				? $progress[$this->juser->get('id')][$unit->get('id')]['percentage_complete']
+				: 0;
 	$margin   = 100 - $complete;
 	$current  = '';
 
