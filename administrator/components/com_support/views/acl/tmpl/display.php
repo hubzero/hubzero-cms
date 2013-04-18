@@ -262,6 +262,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php 
 					$cimg = 'publish_x.png';
 					$calt = JText::_('no');
+					$cls = 'unpublish';
 					if ($data['comments']['read']) {
 						$cimg = 'publish_g.png';
 						$calt = JText::_('yes');
