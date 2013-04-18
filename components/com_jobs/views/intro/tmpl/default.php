@@ -64,11 +64,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <?php if ($this->allowsubscriptions) { ?>
 <div id="introduction" class="section">
+	<?php if ($infolink) { ?>
 	<div class="aside">
 		<h3><?php echo JText::_('JOBS_QUESTIONS_LINK'); ?></h3>
 		<p><?php echo '<a href="'.$infolink.'">'.JText::_('LEARN_MORE').'</a> '.JText::_('ABOUT_THE_PROCESS'); ?></p>
 	</div><!-- / .aside -->
+	<?php } ?>
+	<?php if ($infolink) { ?>
 	<div class="subject">
+	<?php } ?>
 		<div class="three columns first">
 			<p class="intronote"><?php echo JText::_('TIP_ENJOY_COMMUNITY_EXPOSURE').' '.$sitename.'. '.JText::_('TIP_SERVICES_FREE'); echo ' '.JText::_('TIP_EMPLOYERS_SUBSCRIPTION_REQUIRED'); ?></p>
 		</div>
@@ -90,8 +94,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<li><a href="<?php echo JRoute::_('index.php?option='.$option . '&task=addresume'); ?>"><?php echo JText::_('ACTION_POST_RESUME'); ?></a></li>
 			</ul>
 		</div>
+	<?php if ($infolink) { ?>
 		<div class="clear"></div>
 	</div><!-- / .subject -->
+	<?php } ?>
 	<div class="clear"></div>
 </div><!-- / #introduction.section -->
 <?php } ?>
