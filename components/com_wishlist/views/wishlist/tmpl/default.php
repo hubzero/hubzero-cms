@@ -289,7 +289,7 @@ if ($this->admin && !$this->getError()) {
 							<th class="<?php echo $status; ?>">
 								<span class="entry-id"><?php echo $item->id; ?></span>
 							</th>
-							<td>
+							<td<?php if (!$item->reports) { echo ' colspan="' . ($this->wishlist->banking ? '4' : '3') . '"'; } ?>>
 <?php 					if (!$item->reports) { ?>
 								<a class="entry-title" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id . $filters); ?>"><?php echo $item->subject; ?></a><br />
 								<span class="entry-details">
@@ -302,10 +302,10 @@ if ($this->admin && !$this->getError()) {
 <?php 					} else { ?>
 								<span class="warning adjust"><?php echo JText::_('NOTICE_POSTING_REPORTED'); ?></span>
 <?php 					} ?>
-							</td>			
-<?php 					if ($this->wishlist->banking) { ?>
+							</td>
+<?php 					if (!$item->reports && $this->wishlist->banking) { ?>
 							<td class="reward">
-								<span class="entry-reward">			
+								<span class="entry-reward">
 <?php 							if (isset($item->bonus) && $item->bonus > 0 && ($item->status==0 or $item->status==6)) { ?>
 									<a class="bonus tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&action=addbonus' . $filters . '#action'); ?>" title="<?php echo JText::_('WISH_ADD_BONUS').' ::'.$item->bonusgivenby.' '.JText::_('MULTIPLE_USERS').' '.JText::_('WISH_BONUS_CONTRIBUTED_TOTAL').' '.$item->bonus.' '.JText::_('POINTS').' '.JText::_('WISH_BONUS_AS_BONUS'); ?>"><?php echo $item->bonus; ?> <span><?php echo JText::_('POINTS'); ?></span></a>
 <?php 							} else if ($item->status == 0 || $item->status == 6) { ?>

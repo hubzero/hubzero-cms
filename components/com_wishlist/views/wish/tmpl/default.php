@@ -218,7 +218,7 @@ if ($this->wishlist && $this->wish) {
 
 					<p class="entry-title">
 						<strong><?php echo $name; ?></strong>
-						<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id); ?>" title="<?php echo JText::_('COM_WISHLIST_PERMALINK'); ?>"><span class="entry-date-at">@</span> 
+						<a class="permalink" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$this->wish->id); ?>" rel="bookmark" title="<?php echo JText::_('COM_WISHLIST_PERMALINK'); ?>"><span class="entry-date-at">@</span> 
 							<span class="time"><time datetime="<?php echo $this->wish->proposed; ?>"><?php echo JHTML::_('date', $this->wish->proposed, $timeformat, $tz); ?></time></span> <span class="entry-date-on">on</span> 
 							<span class="date"><time datetime="<?php echo $this->wish->proposed; ?>"><?php echo JHTML::_('date', $this->wish->proposed, $dateformat, $tz); ?></time></span>
 						</a>
