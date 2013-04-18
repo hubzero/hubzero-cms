@@ -115,8 +115,10 @@ HUB.Groups = {
 					autoSize:false,
 					width: 600,
 					height: 'auto',
-					padding:0,
 					content: content,
+					tpl: {
+						wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
+					},
 					beforeload: function() {
 						invites.toggleClass("hide");
 						requests.toggleClass("hide");

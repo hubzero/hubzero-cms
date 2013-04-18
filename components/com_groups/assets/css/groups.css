@@ -55,8 +55,42 @@
 .group-list .not-published {
 	background-color: #aaa;
 }
-
-
+#sbox-content .header {
+	margin-top: 20px;
+}
+#sbox-content .header:first-child {
+	margin-top: 0;
+}
+#sbox-content .header:first-child h2 {
+	border-top: none;
+}
+#sbox-content .header h2 {
+	margin: 0;
+	padding: 5px 10px;
+	background: #efefef;
+	font-size: 1.5em;
+	border-top: 1px solid #CCC;
+	border-bottom: 1px solid #CCC;
+}
+#sbox-content .header p {
+	margin: 0;
+	padding: 5px 10px 0 10px;
+	color: #777;
+}
+#sbox-content ul {
+	border-top: 1px solid #efefef;
+	border-bottom: 1px solid #efefef;
+	margin: 10px 20px;
+	padding: 0;
+	list-style: none;
+}
+#sbox-content ul li {
+	margin: 0;
+	padding: 5px 0;
+}
+#sbox-content ul li a {
+	float:right;
+}
 
 /*===========================================
 	Group Browse
@@ -199,7 +233,7 @@
 }
 #page_container {
 	margin: 0;
-	overflow: hidden;
+	/* overflow: hidden; */
 	padding-left: 215px;
 	background: #FFF url("/components/com_groups/assets/img/sidebar_middle.png") repeat-y 0 0;
 }

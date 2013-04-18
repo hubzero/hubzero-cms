@@ -268,6 +268,7 @@ $no_html = JRequest::getInt( 'no_html', 0 );
 					<?php if (!$no_html) : ?>
 				</div><!-- /#page_content -->
 			</div><!-- /#page_main -->
+			<br class="clear" />
 		</div><!-- /#page_container -->
 	</div><!-- /.innerwrap -->
 <?php endif; ?>
