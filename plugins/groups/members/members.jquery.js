@@ -56,8 +56,8 @@ HUB.Plugins.GroupsMembers = {
 				$(this).attr('href', href);	
 			},
 			afterShow: function() {
-				if ($('#message-ajax')) {
-					$('#message-ajax').submit(function(e) {
+				if ($('#hubForm-ajax')) {
+					$('#hubForm-ajax').submit(function(e) {
 						e.preventDefault();
 						$.post($(this).attr('action'), $(this).serialize(), function(returndata) {
 							$.fancybox.close();
