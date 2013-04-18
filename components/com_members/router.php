@@ -108,6 +108,9 @@ function membersParseRoute($segments)
 				$vars['task'] = 'browse';
 				$vars['show'] = 'vips';
 			break;
+			case 'browse':
+				$vars['task'] = 'browse';
+			break;
 			default:
 				if ($segments[0]{0} == 'n') 
 				{

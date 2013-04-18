@@ -38,7 +38,7 @@ $juser =& JFactory::getUser();
 </div><!-- / #content-header -->
 
 <div class="main section">
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>" method="post">
 		<div class="aside">
 			<div class="container">
 				<h3>Site Members</h3>
@@ -104,7 +104,7 @@ $qs = implode(a,$qs);
 
 $letters = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
 
-$url  = 'index.php?option=' . $this->option;
+$url  = 'index.php?option=' . $this->option . '&task=browse';
 $url .= ($qs != '') ? '&' . $qs : '';
 $html  = '<a href="' . JRoute::_($url) . '"';
 if ($this->filters['index'] == '') {
@@ -113,7 +113,7 @@ if ($this->filters['index'] == '') {
 $html .= '>' . JText::_('ALL') . '</a> ' . "\n";
 foreach ($letters as $letter)
 {
-	$url  = 'index.php?option=' . $this->option . '&index=' . strtolower($letter);
+	$url  = 'index.php?option=' . $this->option . '&task=browse&index=' . strtolower($letter);
 	$url .= ($qs != '') ? '&' . $qs : '';
 
 	$html .= "\t\t\t\t\t\t\t\t".'<a href="' . JRoute::_($url) . '"';

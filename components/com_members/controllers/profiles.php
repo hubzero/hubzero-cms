@@ -68,7 +68,7 @@ class MembersControllerProfiles extends Hubzero_Controller
 			return;
 		}
 
-		$this->registerTask('__default', 'browse');
+		//$this->registerTask('__default', 'browse');
 		$this->registerTask('promo-opt-out', 'incremOptOut');
 
 		parent::execute();
@@ -207,6 +207,46 @@ class MembersControllerProfiles extends Hubzero_Controller
 		}
 
 		echo json_encode($json);
+	}
+
+	/**
+	 * Display main page
+	 * 
+	 * @return     void
+	 */
+	public function displayTask()
+	{
+		// Include some needed styles and scripts
+		$this->_getStyles('', 'introduction.css', true); // component, stylesheet name, look in media system dir
+		$this->_getStyles();
+
+		$this->view->title = JText::_('MEMBERS');
+
+		// Set the page title
+		$document =& JFactory::getDocument();
+		$document->setTitle($this->view->title);
+
+		// Set the document pathway
+		$pathway =& JFactory::getApplication()->getPathway();
+		if (count($pathway->getPathWay()) <= 0) 
+		{
+			$pathway->addItem(
+				JText::_(strtoupper($this->_name)), 
+				'index.php?option=' . $this->_option
+			);
+		}
+
+		if ($this->getError()) 
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
+		}
+
+		$this->view->juser = $this->juser;
+
+		$this->view->display();
 	}
 
 	/**

@@ -5,7 +5,10 @@
  * @license	 http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-@import url("/media/system/css/fontcons.css");
+/* Intro */
+	#introduction:after {
+		content: "\f007";
+	}
 
 /* Misc */
 	iframe {
@@ -507,6 +510,64 @@
 	}
 	.com_members .entries tbody tr.me {
 		background-color: #f6f6f1;
+	}
+
+	#content.com_members .four .three {
+		border-top: none;
+	}
+	.contributor {
+		font-size: 1em;
+		margin: 0;
+	}
+	.contributor h3 {
+		margin: 0;
+		padding: 1em;
+		border-bottom: 1px solid #fff;
+	}
+	.contributor h4 {
+		font-size: 1.2em;
+		line-height: 2em;
+		padding: 0;
+		margin: 0;
+	}
+	.contributor h4 a {
+		color: #333;
+		border: none;
+	}
+	.contributor-photo {
+		margin: 1em 1em 0 0;
+		padding: 0;
+		float: left;
+		border: 5px solid #fff;
+		-webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
+		-moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
+		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
+		width: 40px;
+		height: 40px;
+		overflow: hidden;
+	}
+	p.contributor-org {
+		margin: 0;
+		color: #999;
+	}
+	p.contributor-org:before {
+		font-family: "Fontcons";
+		content: "\f062";
+	}
+	p.contributor-bio {
+		margin-top: 0;
+	}
+	.contributor-photo img {
+		margin: 0;
+		padding: 0;
+		width: 100%;
+		height: 100%;
+	}
+	.contributor-content {
+		padding: 1em 0 0 0;
+		margin: 0 0 0 65px;
+		font-size: 1em;
+		color: #666;
 	}
 
 /* Members Edit CSS */
