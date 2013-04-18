@@ -587,5 +587,25 @@ class ProjectsHelper extends JObject {
 				return $versions;
 			}
 		}
+	}
+	
+	/**
+	 * Check file for viruses
+	 * 
+	 * @param      string 	$fpath		Full path to scanned file
+	 *
+	 * @return     mixed
+	 */
+	public function virusCheck( $fpath = '' ) 
+	{
+		exec("clamscan -i --no-summary --block-encrypted $fpath", $output, $status);
+		
+		if ($status == 1)
+		{
+			unlink($fpath);
+			return true;
+		}
+		
+		return false;
 	}	
 }

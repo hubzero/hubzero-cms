@@ -758,12 +758,21 @@ class plgProjectsFiles extends JPlugin
 							$this->setError('Error: ' . $zip->errorInfo(true));
 						}
 						
-						// Expand
-						$do = $zip->extract(PCLZIP_OPT_PATH, $unzipto, PCLZIP_CB_PRE_EXTRACT, 'zipPreExtractCallBack');
-
-						if (!$do) 
+						// Do virus check
+						if (ProjectsHelper::virusCheck($archive))
 						{
-							$this->setError(JText::_('COM_PROJECT_FILES_ERROR_UNZIP_FAILED'));
+							$this->setError(JText::_('Virus detected, refusing to upload'));
+							return false;
+						}
+						else
+						{
+							// Expand
+							$do = $zip->extract(PCLZIP_OPT_PATH, $unzipto, PCLZIP_CB_PRE_EXTRACT, 'zipPreExtractCallBack');
+
+							if (!$do) 
+							{
+								$this->setError(JText::_('COM_PROJECT_FILES_ERROR_UNZIP_FAILED'));
+							}							
 						}
 										
 						// Remove archive 
@@ -826,19 +835,28 @@ class plgProjectsFiles extends JPlugin
 					}
 					else
 					{
-						$uploaded[] = $file;
-						if ($this->_task != 'saveprov') 
+						// Do virus check
+						if (ProjectsHelper::virusCheck($prefix . $path . DS . $file))
 						{
-							// Git add
-							exec($this->gitpath . ' add ' . escapeshellarg($file) . ' 2>&1', $out);
+							$this->setError(JText::_('Virus detected, refusing to upload'));
+						}
+						else
+						{
+							$uploaded[] = $file;
 
-							// Git commit
-							$commit_action = isset($updated[$file])
-								? JText::_('COM_PROJECTS_UPDATED') 
-								: JText::_('COM_PROJECTS_UPLOADED');
+							if ($this->_task != 'saveprov') 
+							{
+								// Git add
+								exec($this->gitpath . ' add ' . escapeshellarg($file) . ' 2>&1', $out);
 
-							exec($this->gitpath . ' commit -m "' . $commit_action
-								. ' file ' . escapeshellarg($file) . '" --author="' . $author . '" 2>&1', $out);	
+								// Git commit
+								$commit_action = isset($updated[$file])
+									? JText::_('COM_PROJECTS_UPDATED') 
+									: JText::_('COM_PROJECTS_UPLOADED');
+
+								exec($this->gitpath . ' commit -m "' . $commit_action
+									. ' file ' . escapeshellarg($file) . '" --author="' . $author . '" 2>&1', $out);	
+							}
 						}
 					}
 				}

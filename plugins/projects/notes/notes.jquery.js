@@ -67,8 +67,7 @@ HUB.ProjectNotes = {
 		if ($('#file-uploader-list').length > 0)
 		{
 			$('#file-uploader-list').remove();	
-		}
-		
+		}		
 	},
 	
 	checkTitle: function(title, default_title, default_temp_title) 

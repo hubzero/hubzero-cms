@@ -680,6 +680,9 @@
 	#introduction .second {
 		background: transparent url("../img/screenshots/intro.jpg") top right no-repeat;
 	}
+	#introduction .second li {
+		padding-left: 2em;
+	}
 	.myprojects {
 		margin-bottom: 3em;
 	}

@@ -32,8 +32,10 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $juser =& JFactory::getUser();
-?>
 
+$app = JRequest::getVar( 'app', '', 'request', 'object' );	
+
+?>
 	<ul class="sub-menu">
 		<li class="page-text<?php if ($this->controller == 'page' && ($this->task == 'display' || !$this->task)) { echo ' active'; } ?>">
 			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename); ?>">

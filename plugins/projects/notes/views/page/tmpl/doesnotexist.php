@@ -30,6 +30,9 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$scope   = JRequest::getVar('scope', '');
+
 ?>
 <div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>" class="full">
 	<h2><?php echo $this->escape($this->title); ?></h2>
@@ -52,7 +55,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <div class="main section">
 	<p class="warning">
-		This page does not exist. Would you like to <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&action=new'); ?>">create it?</a>
+		This page does not exist. Would you like to <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$scope.'&pagename='.$this->page->pagename.'&action=new'); ?>">create it?</a>
 	</p>
 <?php if ($templates = $this->page->getTemplates()) { ?>
 	<p>

@@ -29,17 +29,25 @@ $content = $this->content;
 $content = str_replace('projects/projects/', 
 						'projects/', 
 						$content);
+
+$app = JRequest::getVar( 'app', '', 'request', 'object' );	
+						
+//$side = ($this->task == 'view' or $this->task == 'page' or $this->task == 'wiki') ? 1 : 0;
+//$side = ($this->task == 'view' or $this->task == 'page') && !$app && $this->page ? 1 : 0;
+$side = ($this->task == 'view' or $this->task == 'page' or $this->task == 'wiki') && $this->page ? 1 : 0;
+$appOpt = $app && $app->id && ($this->task == 'view' or $this->task == 'page' or $this->task == 'wiki') ? 1 : 0;
+
 // Breadcrumbs
 $bcrumb = '';
 if ($this->parent_notes && count($this->parent_notes) > 0) {
-	foreach($this->parent_notes as $parent) {
-		$bcrumb .= ' &raquo; <span class="subheader"><a href="'.JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.a.'active=notes'.a.'scope='.$parent->scope.a.'pagename='.$parent->pagename).'">'. $parent->title.'</a></span>';
+	foreach ($this->parent_notes as $parent) {			
+		$bcrumb .= ' &raquo; <span class="subheader"><a href="'.JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.a.'active=notes'.a.'scope='.$parent->scope.a.'pagename='.$parent->pagename).'">'. $parent->title.'</a></span>';		
 	}
 }
 if($this->task == 'new') {
 	$bcrumb .= ' &raquo; <span class="subheader">'.JText::_('COM_PROJECTS_NOTES_TASK_NEW').'</span>';
 }
-else if($this->page && ($this->task != 'view' || ($this->firstnote && $this->pagename != $this->firstnote))) {
+else if($this->page && (($this->task != 'view' && !$this->app) || ($this->firstnote && $this->pagename != $this->firstnote))) {
 	$bcrumb .= ' &raquo; <span class="subheader"><a href="'.JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.a.'active=notes'.a.'scope='.$this->scope.a.'pagename='.$this->pagename).'">'. $this->page->title.'</a></span>';
 	$tasks = array( 'edit', 'history', 'comments', 'delete', 'compare', 'addcomment', 'renamepage' );
 	
@@ -79,22 +87,59 @@ if ($this->notes)
 $parentScope = $this->scope . DS . $this->pagename;
 
 ?>
+<?php if (isset($this->app) && $this->app->name) { 
+	
+	// App-only tab menu 
+	$view = new Hubzero_Plugin_View(
+		array(
+			'folder'=>'projects',
+			'element'=>'apps',
+			'name'=>'view'
+		)
+	);
+	
+	// Load plugin parameters
+	$app_plugin 	= JPluginHelper::getPlugin( 'projects', 'apps' );
+	$view->plgparams = new JParameter($app_plugin->params);
+	
+	$view->route 	= 'index.php?option=' . $this->option . a . 'alias=' . $this->project->alias . a . 'active=apps';
+	$view->url 		= JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias . a . 'active=apps');
+	$view->app 		= $this->app;
+	$view->active 	= 'wiki';
+	$view->title 	= 'Apps';
+	
+	// Get path for app thumb image
+	$projectsHelper = new ProjectsHelper( $this->database );
+	
+	$p_path 			= ProjectsHelper::getProjectPath($this->project->alias, 
+							$this->config->get('imagepath'), 1, 'images');			
+	$imagePath 			=  $p_path . DS . 'apps';
+	$view->projectPath 	= $imagePath;
+	$view->path_bc 		= $bcrumb;
+	$view->ih 			= new ProjectsImgHandler();				
+	echo $view->loadTemplate();
+	
+ } else { ?>
 <div id="plg-header">
 	<h3 class="notes"><?php if($this->task != 'view' || ($this->firstnote && $this->pagename != $this->firstnote)) { ?><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.'&active=notes'); ?>"><?php } ?><?php echo $this->title; ?><?php if($this->task != 'view' || ($this->firstnote && $this->pagename != $this->firstnote)) { ?></a><?php } ?> <?php  echo $bcrumb; ?></h3>
 </div>
-
-<div id="notes-wrap" <?php if($this->task == 'view' or $this->task == 'page') { echo 'class="withside"'; } ?>>
-	<?php if($this->task == 'view' or $this->task == 'page') { ?>
+<?php } ?>
+<div id="notes-wrap" <?php if ($side) { echo 'class="withside"'; } ?>>
+	<?php if ($side) { ?>
 	<div class="aside">
+		<?php if ($appOpt) { ?>	
+			<div class="addanote"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'scope='.$parentScope.a.'action=new'); ?>" class="addnew"><?php echo JText::_('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?></a></div>
+		<?php } ?>
+		<?php if (!$appOpt) { ?>	
 		<div class="addanote"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'scope='.$parentScope.a.'action=new'); ?>" class="addnew"><?php echo JText::_('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?></a> &nbsp; <a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.'&active=notes').'?action=new'; ?>" class=" addnew"><?php echo JText::_('COM_PROJECTS_NOTES_ADD_NOTE'); ?></a></div>
-
+		<?php } ?>
 		<div class="sidebox">
-			<h4><?php echo ucfirst(JText::_('COM_PROJECTS_NOTES_MULTI')); ?></h4>
+			<h4><?php echo $appOpt ? ucfirst(JText::_('COM_PROJECTS_NOTES_APP_WIKI_PAGES')) : ucfirst(JText::_('COM_PROJECTS_NOTES_MULTI')); ?></h4>
 			<ul>
 			<?php if($notes) { ?>
-				<?php foreach($notes as $note) { 
-					    foreach($note as $level => $parent) {
-						 foreach($parent as $entry) { ?>
+				<?php foreach ($notes as $note) { 
+					    foreach ($note as $level => $parent) {
+						 foreach ($parent as $entry) { ?>
 							<li <?php if($entry->pagename == $this->pagename) { echo 'class="active"'; } ?>>
 								<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.'&active=notes'.a.'scope='.$entry->scope.a.'pagename='.$entry->pagename); ?>" class="note wikilevel_<?php echo $level; ?>"><?php echo Hubzero_View_Helper_Html::shortenText($entry->title, 35, 0); ?></a>
 							</li>
@@ -103,7 +148,7 @@ $parentScope = $this->scope . DS . $this->pagename;
 								if(isset($thirdlevel[$entry->pagename]) && count($thirdlevel[$entry->pagename]) > 0) { 
 									foreach($thirdlevel[$entry->pagename] as $subpage) { ?>
 									<li <?php if($subpage->pagename == $this->pagename) { echo 'class="active"'; } ?>>
-										<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.'&active=notes'.a.'scope='.$subpage->scope.a.'pagename='.$subpage->pagename); ?>" class="wikipage wikilevel_3"><?php echo Hubzero_View_Helper_Html::shortenText($subpage->title, 35, 0); ?></a>
+										<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.'&active=notes'.a.'scope='.$subpage->scope.a.'pagename='.$subpage->pagename); ?>" class="note wikilevel_3"><?php echo Hubzero_View_Helper_Html::shortenText($subpage->title, 35, 0); ?></a>
 									</li>		
 							<?php	}
 							 } ?>	
@@ -120,7 +165,7 @@ $parentScope = $this->scope . DS . $this->pagename;
 		<p class="rightfloat reorder"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.'&active=notes').'?action=reorder'; ?>" class="showinbox"><?php echo JText::_('COM_PROJECTS_NOTES_REORDER'); ?></a></p>
 		<?php } */ ?>
 		<?php 
-		if ($this->templates) { ?>
+		if ($this->templates && !$appOpt) { ?>
 		 <div class="sidebox">
 			<h4><?php echo ucfirst(JText::_('COM_PROJECTS_NOTES_TEMPLATES')); ?></h4>
 			<ul>	
@@ -136,7 +181,7 @@ $parentScope = $this->scope . DS . $this->pagename;
 		<?php } ?>
 	</div>
 	<?php } ?>
-	<?php if($this->task == 'view' or $this->task == 'page') { ?>
+	<?php if ($side) { ?>
 	<div class="subject">
 	<?php } ?>
 		<div id="notes-content">

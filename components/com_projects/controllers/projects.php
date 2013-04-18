@@ -3087,6 +3087,13 @@ class ProjectsControllerProjects extends Hubzero_Controller
 		} 
 		else 
 		{
+			if (ProjectsHelper::virusCheck($path . DS . $file['name']))
+			{
+				$this->setError(JText::_('Virus detected, refusing to upload'));
+				$this->_img( '', $id, $tempid );
+				return;
+			}
+			
 			$ih = new ProjectsImgHandler();
 
 			// Instantiate a project, change some info and save

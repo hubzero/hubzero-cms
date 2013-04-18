@@ -72,8 +72,9 @@
 		font-size: 85%;
 		border-bottom: 1px solid #dde6f2;
 	}
-	.content-notes #hubForm fieldset {
-		width: 90% !important;
+	.content-notes #hubForm fieldset,
+	.content-apps #hubForm fieldset {
+		width: 98% !important;
 	}
 	.content-notes .reorder {
 		font-size: 85%;
@@ -88,11 +89,22 @@
 		font-size: 90%;
 		margin-top: -2em;
 	}
+	#notes-wrap .addanote {
+		margin-top: 0;
+	}
 	.wrongvalue {
 		border: 2px solid #dba59f;
 		padding: 0.2em;
 		background: #f5ebea;
 	}
+
+	#notes-wrap .sidebox {
+		margin-top: 3em;
+	}
+	#notes-wrap .aside {
+		margin-top: 0;
+	}
+
 	
 /* Notes - wiki content - style fixes and adjustments
 --------------------------------------------- */
@@ -100,7 +112,7 @@
 		width: 100%;
 		margin: 0;
 		padding: 0;
-		margin-top: 1em;
+		margin-top: 3em;
 	}
 	#notes-wrap .main {
 		min-width: 200px;
@@ -180,9 +192,6 @@
 		font-size: 130%;
 		color: #728490;
 	}
-	.explaination {
-		
-	}
 	.withside #notes-content .aside {
 		display: none; /* hide side content */
 		float: none;
@@ -230,7 +239,7 @@
 	#notes-wrap img {
 		max-width: 100%;
 	}
-	
+
 /* Editing 
 --------------------------------------------- */
 	#hubForm .explaination {
@@ -311,7 +320,7 @@
 	.wikipage h1, 
 	.wikipage h2, 
 	.wikipage h3 {
-		margin-left: -18px;
+		margin-left: 0;
 	}
 	.wikipage ul,
 	.wikipage ol {
@@ -405,6 +414,17 @@
 	}
 	#preview .aside p {
 		padding-left: 2em;
+	}
+	
+/* Submenu */
+
+	#notes-content ul.sub-menu li a {
+		border: 1px solid #949494;
+		border-bottom-width: 0;
+		font-size: 85%;
+	}
+	#notes-content ul.sub-menu {
+		margin-bottom: 2em;
 	}
 
 /* Misc

@@ -41,9 +41,13 @@ if ($this->page->id) {
 	$lid = JRequest::getInt( 'lid', $num, 'post' );
 }
 
-$scope = $this->page->scope ? $this->page->scope : JRequest::getVar('scope', '');
-
+// get templates
 $templates = $this->page->getTemplates();
+
+// Incoming
+$scope   = JRequest::getVar('scope', '');
+$app 	 = JRequest::getVar( 'app', '', 'request', 'object' );	
+$project = JRequest::getVar( 'project', '', 'request', 'object' );	
 
 ?>
 <div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
@@ -99,9 +103,12 @@ if ($this->page->id && !$this->config->get('access-modify')) {
 		</div><!-- / .section -->
 	</div><div class="clear"></div>
 <?php } ?>
+<?php if ($app && $app->id) { ?>
+<p class="notice"><?php echo JText::_('This is an app wiki page.'); ?></p>	
+<?php } ?>
 
 <form action="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$scope.'&pagename='.$this->page->pagename); ?>" method="post" id="hubForm"<?php echo ($this->sub) ? ' class="full"' : ''; ?>>
-<?php if (!$this->sub) { ?>
+<?php if (!$this->sub) {  ?>
 	<div class="explaination">
 	<?php if ($this->page->id && $this->config->get('access-edit')) { ?>
 		<p>To change the page name (the portion used for URLs), go <a class="page-rename" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$scope.'&pagename='.$this->page->pagename.'&action=rename'); ?>">here</a>.</p>
@@ -205,9 +212,10 @@ if ($templates) {
 		
 <?php if ($this->sub) { ?>
 	<div id="file-uploader"></div>
-		<div class="field-wrap">
-				<p><a class="wiki-macros" href="<?php echo JRoute::_('index.php?option=com_wiki&pagename=Help:WikiMacros#image'); ?>" rel="external">[[Image(filename.jpg)]]</a> to include an image.</p>
-				<p><a class="wiki-macros" href="<?php echo JRoute::_('index.php?option=com_wiki&pagename=Help:WikiMacros#file'); ?>" rel="external">[[File(filename.pdf)]]</a> to include a file.</p>
+		<div class="field-wrap mini">
+				<p><?php echo JText::_('COM_PROJECTS_NOTES_INCLUDE_FILES_EXPLAIN'); ?></p>
+				<p><a class="wiki-macros" href="<?php echo JRoute::_('index.php?option=com_wiki&pagename=Help:WikiMacros#image'); ?>" rel="external">[[Image(filename.jpg)]]</a> to include an image from your local project files.</p>
+				<p><a class="wiki-macros" href="<?php echo JRoute::_('index.php?option=com_wiki&pagename=Help:WikiMacros#file'); ?>" rel="external">[[File(filename.pdf)]]</a> to include a file from your local project files.</p>
 		</div>
 <?php } ?>
 <?php
@@ -277,7 +285,7 @@ if ($this->config->get('access-edit')) {
 		
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="action" value="save" />
-		<input type="hidden" name="cn" value="<?php echo $this->page->group_cn; ?>" />
+		<input type="hidden" name="gid" value="<?php echo $this->page->group_cn; ?>" />
 		<input type="hidden" name="active" value="notes" />
 		<input type="hidden" name="scope" value="<?php echo $scope; ?>" />
 
