@@ -108,12 +108,12 @@ function submitbutton(pressbutton)
 		<thead>
 		 	<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo JText::_('COM_GROUPS_ID'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_GROUPS_NAME'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_GROUPS_CN'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_GROUPS_TYPE'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_GROUPS_PUBLISHED'); ?></th>
-				<th scope="col"><?php echo JText::_('Approved'); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_GROUPS_ID'), 'gidNumber', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_GROUPS_NAME'), 'description', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_GROUPS_CN'), 'cn', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_GROUPS_TYPE'), 'type', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_GROUPS_PUBLISHED'), 'published', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('Approved'), 'approved', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JText::_('COM_GROUPS_MEMBERS'); ?></th>
 				<th scope="col"><?php echo JText::_('Pages'); ?></th>
 			</tr>
@@ -243,6 +243,8 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 
 	<?php echo JHTML::_('form.token'); ?>
 </form>

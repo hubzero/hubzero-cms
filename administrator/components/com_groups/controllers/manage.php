@@ -71,6 +71,17 @@ class GroupsControllerManage extends Hubzero_Controller
 			'policy',
 			''
 		));
+		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
+			$this->_option . '.browse.sort', 
+			'filter_order', 
+			'cn'
+		));
+		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
+			$this->_option . '.browse.sortdir', 
+			'filter_order_Dir', 
+			'ASC'
+		));
+		$this->view->filters['sortby'] = $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'];
 
 		// Filters for getting a result count
 		$this->view->filters['limit'] = 'all';
