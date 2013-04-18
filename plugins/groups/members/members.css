@@ -168,37 +168,31 @@
 }
 
 /* Aside */
-.aside .roles {
-	list-style: none;
-	margin: 0.5em 0;
+.roles li {
+	position: relative;
 }
-.aside .roles .role {
-	float: left;
-	border-bottom: 1px solid #F4F4ee;
+.aside a.role {
+	margin-right:0;
 }
-.aside .roles .role:hover {
-	border-bottom: 1px solid #f60;
+.remove-role {
+	position: absolute;
+	top: 7px;
+	right: 0;
+	height: 100%;
+	z-index: 334;
 }
-.aside .roles li .active {
-	color: #777;
-	font-weight: bold;
+.remove-role a {
+	display: block;
+	width: 20px;
+	height: 20px;
+	background: #efefef;
+	border-radius: 2px;
+	padding: 0 !important;
+	text-align: center;
+	color: #bd0101 !important;
 }
-.aside .roles .remove-role {
-	float: right;
-}
-.aside .roles .remove-role a {
-	background-color: transparent;
-	color: #777;
-	padding: 0 3px;
-	border: none;
-}
-.aside .roles .remove-role a:before {
-	display: none;
-}
-.aside .roles .remove-role a:hover {
-	background-color: #777;
-	color: #fff;
-	border: none;
+.remove-role a:before {
+	display: none !important;
 }
 
 /* Entries Menu */

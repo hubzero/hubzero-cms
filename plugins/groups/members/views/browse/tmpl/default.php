@@ -87,7 +87,6 @@ if ($this->role_filter)
 						<?php foreach ($this->member_roles as $role) { ?>
 							<?php $cls = ($role['id'] == $this->role_filter) ? 'active' : ''; ?>
 							<li>
-								<a class="role <?php echo $cls; ?>" href="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&role_filter='.$role['id']); ?>"><?php echo $role['role']; ?></a>
 								<?php if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
 									<?php if ($this->membership_control == 1) { ?>
 										<span class="remove-role">
@@ -95,6 +94,9 @@ if ($this->role_filter)
 										</span>
 									<?php } ?>	
 								<?php } ?>
+								<a class="role <?php echo $cls; ?>" href="<?php echo JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&role_filter='.$role['id']); ?>">
+									<?php echo $role['role']; ?>
+								</a>
 							</li>
 						<?php } ?>
 					</ul>
