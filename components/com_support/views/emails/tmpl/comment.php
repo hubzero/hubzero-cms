@@ -102,10 +102,83 @@ echo $message . "\n";
 --<?php echo $this->boundary . "\n"; ?>
 Content-type: text/html;charset=utf-8";
 
+<?php echo $this->delimiter . "\n"; ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en" style="background-color: #fff; margin: 0; padding: 0;">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<title>Support Center</title>
+		<style type="text/css">
+		/* Client-specific Styles */
+		body { width: 100% !important; font-family: 'Helvetica Neue', Helvetica, Verdana, Arial, sans-serif !important; background-color: #ffffff !important; margin: 0 !important; padding: 0 !important; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }
+		/* Prevent Webkit and Windows Mobile platforms from changing default font sizes, while not breaking desktop design. */
+		.ExternalClass { width:100%; } /* Force Hotmail to display emails at full width */
+		.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div { line-height: 100%; } /* Force Hotmail to display normal line spacing.  More on that: http://www.emailonacid.com/forum/viewthread/43/ */
+		#backgroundTable { margin:0; padding:0; width:100% !important; line-height: 100% !important; }
+		/* End reset */
+
+		/* Some sensible defaults for images
+		1. "-ms-interpolation-mode: bicubic" works to help ie properly resize images in IE. (if you are resizing them using the width and height attributes)
+		2. "border:none" removes border when linking images.
+		3. Updated the common Gmail/Hotmail image display fix: Gmail and Hotmail unwantedly adds in an extra space below images when using non IE browsers. You may not always want all of your images to be block elements. Apply the "image_fix" class to any image you need to fix.
+
+		Bring inline: Yes.
+		*/
+		img { outline: none !important; text-decoration: none !important; -ms-interpolation-mode: bicubic; }
+		a img { border: none; }
+		.image_fix { display: block !important; }
+
+		/* Yahoo paragraph fix: removes the proper spacing or the paragraph (p) tag. To correct we set the top/bottom margin to 1em in the head of the document. */
+		p { margin: 1em 0; }
+
+		/* Outlook 07, 10 Padding issue */
+		table td { border-collapse: collapse; }
+
+		/* Remove spacing around Outlook 07, 10 tables */
+		table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+
+		@media only screen and (max-device-width: 480px) {
+			/*body { -webkit-text-size-adjust: 140% !important; }*/
+			/* Step 1: Reset colors */
+			a[href^="tel"], a[href^="sms"] {
+				text-decoration: none;
+				color: #333; /* or whatever your want */
+				pointer-events: none;
+				cursor: default;
+			}
+			/* Step 2: Set colors for inteded items */
+			.mobile_link a[href^="tel"], .mobile_link a[href^="sms"] {
+				text-decoration: default;
+				color: #0fa1ca !important;
+				pointer-events: auto;
+				cursor: default;
+			}
+		}
+		@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+			/* tablets, smaller screens, etc */
+			/* Step 1a: Repeating for the iPad */
+			a[href^="tel"], a[href^="sms"] {
+				text-decoration: none;
+				color: #333;
+				pointer-events: none;
+				cursor: default;
+			}
+			.mobile_link a[href^="tel"], .mobile_link a[href^="sms"] {
+				text-decoration: default;
+				color: #0fa1ca !important;
+				pointer-events: auto;
+				cursor: default;
+			}
+		}
+		</style>
+
+		<!--[if IEMobile 7]>
+		<style type="text/css">
+		/* Targeting Windows Mobile */
+		</style>
+		<![endif]-->
+
 		<!--[if gte mso 9]>
 		<style type="text/css" >
 		/* Outlook 2007/10 List Fix */
@@ -120,7 +193,7 @@ Content-type: text/html;charset=utf-8";
 	<body style="width: 100% !important; font-family: 'Helvetica Neue', Helvetica, Verdana, Arial, sans-serif; font-size: 12px; -webkit-text-size-adjust: none; color: #616161; line-height: 1.4em; color: #666; background: #fff; text-rendering: optimizeLegibility;" bgcolor="#ffffff">
 
 		<!-- ====== Start Body Wrapper Table ====== -->
-		<table width="100%" cellpadding="0" cellspacing="0" border="0" id="background-table" style="background-color: #ffffff; min-width: 100%;" bgcolor="#ffffff">
+		<table width="100%" cellpadding="0" cellspacing="0" border="0"  id="backgroundTable" style="background-color: #ffffff; min-width: 100%;" bgcolor="#ffffff">
 			<tbody>
 				<tr style="border-collapse: collapse;">
 					<td bgcolor="#ffffff" align="center" style="border-collapse: collapse;">
@@ -335,11 +408,6 @@ Content-type: text/html;charset=utf-8";
 			</tbody>
 		</table>
 		<!-- ====== End Body Wrapper Table ====== -->
-		<style type="text/css">
-		body { width: 100% !important; font-family: 'Helvetica Neue', Helvetica, Verdana, Arial, sans-serif !important; background-color: #ffffff !important; margin: 0 !important; padding: 0 !important; }
-		img { outline: none !important; text-decoration: none !important; display: block !important; }
-		@media only screen and (min-device-width: 481px) { body { -webkit-text-size-adjust: 140% !important; } }
-		</style>
 	</body>
 </html>
 
