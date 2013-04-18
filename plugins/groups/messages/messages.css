@@ -126,4 +126,8 @@
 	.message-member a:hover {
 		border: none;
 	}
-
+	
+	.com_groups .group_messages .entries thead th {
+		text-align: left;
+		padding-left: 10px;
+	}
