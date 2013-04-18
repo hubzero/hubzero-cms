@@ -652,16 +652,16 @@ class AnswersControllerQuestions extends Hubzero_Controller
 			// What tools did this user contribute?
 			$TA = new ToolAuthor($this->database);
 			$tools = $TA->getToolContributions($this->juser->get('id'));
-			$mytooltags = '';
+			$mytooltags = array();
 			if ($tools) 
 			{
 				foreach ($tools as $tool)
 				{
-					$mytooltags .= 'tool' . $tool->toolname . ',';
+					$mytooltags[] = 'tool' . $tool->toolname;
 				}
 			}
 
-			$this->view->filters['tag'] = ($this->view->filters['tag']) ? $this->view->filters['tag'] : $mytooltags;
+			$this->view->filters['tag'] = ($this->view->filters['tag']) ? $this->view->filters['tag'] : implode(',', $mytooltags);
 
 			$this->view->filters['mine'] = 0;
 		}
