@@ -264,20 +264,23 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		// Now, loop through the course units and save unit scores
 		foreach ($grades as $g)
 		{
-			// First, check to see if a score for this asset and user already exists
-			$results = $this->_tbl->find(array('user_id'=>$user_id, 'scope_id'=>$g->unit_id, 'scope'=>'unit'));
-			$gb_id   = ($results) ? $results[0]->id : null;
-
-			// Save the score to the grade book
-			$gradebook = new CoursesModelGradeBook($gb_id);
-			$gradebook->set('user_id', $user_id);
-			$gradebook->set('score', round($g->average, 2));
-			$gradebook->set('scope', 'unit');
-			$gradebook->set('scope_id', $g->unit_id);
-
-			if (!$gradebook->store())
+			if (!is_null($g->average))
 			{
-				return false;
+				// First, check to see if a score for this asset and user already exists
+				$results = $this->_tbl->find(array('user_id'=>$user_id, 'scope_id'=>$g->unit_id, 'scope'=>'unit'));
+				$gb_id   = ($results) ? $results[0]->id : null;
+
+				// Save the score to the grade book
+				$gradebook = new CoursesModelGradeBook($gb_id);
+				$gradebook->set('user_id', $user_id);
+				$gradebook->set('score', round($g->average, 2));
+				$gradebook->set('scope', 'unit');
+				$gradebook->set('scope_id', $g->unit_id);
+
+				if (!$gradebook->store())
+				{
+					return false;
+				}
 			}
 		}
 
@@ -328,7 +331,8 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 			return false;
 		}
 
-		$key = 'user_id';
+		$key       = 'user_id';
+		$queryType = 'loadObjectList';
 
 		// Get a grade policy object
 		$policy  = $this->course->offering()->section()->get('grade_policy_id');
@@ -360,11 +364,13 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		// Add the user_id to the query if it's set
 		if (!is_null($user_id) && is_numeric($user_id))
 		{
-			$grade_criteria->where[] = (object) array('field'=>'user_id','operator'=>'=','value'=>$user_id);
+			$grade_criteria->where[] = (object) array('field'=>'cgb.user_id','operator'=>'=','value'=>$user_id);
+			$queryType = 'loadObject';
+			$key       = '';
 		}
 
 		// Get passing data
-		$passing = $this->_tbl->calculateScore($grade_criteria, 'loadObjectList', $key);
+		$passing = $this->_tbl->calculateScore($grade_criteria, $queryType, $key);
 
 		return $passing;
 	}

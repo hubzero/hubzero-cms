@@ -55,6 +55,9 @@ $policy = $gradePolicy->get('description');
 ?>
 
 <div class="instructor">
+	<div class="extra">
+
+	</div>
 	<div class="headers">
 		<div class="header-student-name">Name</div>
 		<div class="header-sub">
@@ -145,7 +148,7 @@ $policy = $gradePolicy->get('description');
 										<?= 
 											(isset($grades[$m->get('user_id')]['units'][$unit->get('id')]))
 												? $grades[$m->get('user_id')]['units'][$unit->get('id')] . '%'
-												: '0.00%'
+												: '--'
 										?>
 									</div>
 								</div>
@@ -158,7 +161,7 @@ $policy = $gradePolicy->get('description');
 										<?= 
 											(isset($grades[$m->get('user_id')]['course'][$this->course->get('id')]))
 												? $grades[$m->get('user_id')]['course'][$this->course->get('id')] . '%'
-												: '0.00%'
+												: '--'
 										?>
 									</div>
 								</div>

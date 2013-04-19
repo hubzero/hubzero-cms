@@ -36,6 +36,7 @@ $base = 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alia
 $this->course->offering()->gradebook()->refresh($this->juser->get('id'));
 $grades   = $this->course->offering()->gradebook()->grades(null, $this->juser->get('id'));
 $progress = $this->course->offering()->gradebook()->progress($this->juser->get('id'));
+$passing   = $this->course->offering()->gradebook()->passing(true, $this->juser->get('id'))->passing;
 
 $details = array();
 $details['quizzes_total']       = 0;
@@ -219,22 +220,21 @@ foreach ($units as $unit)
 {
 	$first    = ($index == 1) ? ' first' : '';
 	$last     = ($index == $num_units) ? ' last' : '';
-	$past     = ($unit->started()) ? ' past' : '';
 	$complete = isset($progress[$this->juser->get('id')][$unit->get('id')]['percentage_complete'])
 				? $progress[$this->juser->get('id')][$unit->get('id')]['percentage_complete']
 				: 0;
+	$past     = ((!is_null($unit->get('publish_up')) && $unit->started()) || $complete > 0) ? ' past' : '';
 	$margin   = 100 - $complete;
 	$current  = '';
 
-	if($unit->isAvailable())
+	if((!is_null($unit->get('publish_up')) && $unit->isAvailable()) || $complete > 0)
 	{
 		$current   = ' current';
 		// Set the index for the currently available unit (this will result in the latter of the available units if multiple are available)
-		// @FIXME: how do we handle an asynchrones course?  Current would be at spot of farthest form taken?
 		$current_i = $index;
 	}
 
-	$progress_timeline .= "<div class=\"unit{$current}\"><div class=\"unit-inner{$first}{$last}{$past}\">";
+	$progress_timeline .= "<div class=\"unit unit_{$index}{$current}\"><div class=\"unit-inner{$first}{$last}{$past}\">";
 	$progress_timeline .= "<div class=\"unit-fill\">";
 	$progress_timeline .= "<div class=\"unit-fill-inner\" style=\"height:{$complete}%;margin-top:{$margin}%;\"></div>";
 	$progress_timeline .= "</div>";
@@ -253,7 +253,9 @@ $progress_timeline .= '</div>';
 
 <div class="progress">
 	<? if($this->course->access('manage')) : ?>
-		<a href="<?= JRoute::_($base . '&active=progress') ?>" class="back btn"><?= JText::_('Back to all students') ?></a>
+		<div class="extra">
+			<a href="<?= JRoute::_($base . '&active=progress') ?>" class="back btn"><?= JText::_('Back to all students') ?></a>
+		</div>
 	<? endif; ?>
 
 	<h3>
@@ -270,7 +272,9 @@ $progress_timeline .= '</div>';
 		<div class="current-score">
 			<div class="current-score-inner">
 				<p class="title"><?= JText::_('Your current score') ?></p>
-				<p class="score"><?= $grades[$this->juser->get('id')]['course'][$this->course->get('id')] . '%' ?></p>
+				<p class="score<?= ($passing) ? ' passing' : ' failing' ?>">
+					<?= $grades[$this->juser->get('id')]['course'][$this->course->get('id')] . '%' ?>
+				</p>
 			</div>
 		</div>
 
@@ -311,7 +315,7 @@ $progress_timeline .= '</div>';
 					<?= 
 						(isset($grades[$this->juser->get('id')]['units'][$unit->get('id')]))
 							? $grades[$this->juser->get('id')]['units'][$unit->get('id')] . '%'
-							: '0.00%'
+							: '--'
 					?>
 				</div>
 			</div>

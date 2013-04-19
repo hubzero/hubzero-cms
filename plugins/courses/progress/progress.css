@@ -17,6 +17,14 @@
 	font-weight: bold;
 	margin: 0 0 1em 0;
 }
+.progress .extra {
+	display: block;
+	background: #F9F9F9;
+	overflow: hidden;
+	padding: 20px;
+	margin: -35px -35px 0 -35px;
+	border-bottom: 1px dotted #e1e1e1;
+}
 .progress .back {
 	display: block;
 	float: right;
@@ -66,13 +74,9 @@
 	bottom: 0;
 	left: 0;
 	right: 0;
-	border-top: 2px dotted #888;
+	border-top: 4px solid #AAA;
 	height: 50px;
 	line-height: 60px;
-}
-.progress-timeline .start-inner,
-.progress-timeline .past {
-	border-top: 4px solid #AAA;
 }
 .progress-timeline .start,
 .progress-timeline .end {
@@ -236,6 +240,22 @@
 }
 .grades .current-score .score {
 	color: blue;
+}
+.grades .current-score .score.passing {
+	color: green;
+}
+.grades .current-score .score.failing {
+	color: red;
+}
+.grades .current-score .score:before {
+	font-family: "Fontcons";
+	content: "\f05a";
+}
+.grades .current-score .score.passing:before {
+	content: "\f058";
+}
+.grades .current-score .score.failing:before {
+	content: "\2757";
 }
 .units .unit-details thead td {
 	text-transform: uppercase;
@@ -586,6 +606,8 @@
 .tooltip {
 	color: #FFF;
 	padding: 4px;
+	float: none;
+	font-size: 1em;
 	margin-top: -10px;
 	opacity: 0.7;
 	box-shadow: 1px 1px 1px #999999;
