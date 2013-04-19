@@ -144,6 +144,15 @@
 .progress-timeline .unit-fill-inner {
 	background: blue;
 }
+.progress-timeline .unit-fill-inner.complete:before {
+	position: absolute;
+	content: "\2714";
+	font-family: "Fontcons";
+	color: #FFF;
+	top: -20px;
+	left: 5px;
+	font-size: 12px;
+}
 
 /* Timeline widths (less the 5% on each side for start and end (10% total) */
 .length_1 .unit { width: 90%; }

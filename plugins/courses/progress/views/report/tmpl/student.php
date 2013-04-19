@@ -225,6 +225,7 @@ foreach ($units as $unit)
 				: 0;
 	$past     = ((!is_null($unit->get('publish_up')) && $unit->started()) || $complete > 0) ? ' past' : '';
 	$margin   = 100 - $complete;
+	$done     = ($complete == 100) ? ' complete' : '';
 	$current  = '';
 
 	if((!is_null($unit->get('publish_up')) && $unit->isAvailable()) || $complete > 0)
@@ -236,7 +237,7 @@ foreach ($units as $unit)
 
 	$progress_timeline .= "<div class=\"unit unit_{$index}{$current}\"><div class=\"unit-inner{$first}{$last}{$past}\">";
 	$progress_timeline .= "<div class=\"unit-fill\">";
-	$progress_timeline .= "<div class=\"unit-fill-inner\" style=\"height:{$complete}%;margin-top:{$margin}%;\"></div>";
+	$progress_timeline .= "<div class=\"unit-fill-inner{$done}\" style=\"height:{$complete}%;margin-top:{$margin}%;\"></div>";
 	$progress_timeline .= "</div>";
 	$progress_timeline .= "Unit {$index}";
 	$progress_timeline .= "</div></div>";
