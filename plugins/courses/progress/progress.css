@@ -66,7 +66,6 @@
 	bottom: 0;
 	left: 0;
 	right: 0;
-	background: #EFEFEF;
 	border-top: 2px dotted #888;
 	height: 50px;
 	line-height: 60px;
@@ -74,11 +73,6 @@
 .progress-timeline .start-inner,
 .progress-timeline .past {
 	border-top: 4px solid #AAA;
-}
-.progress-timeline .first, 
-.progress-timeline .unit-inner,
-.progress-timeline .end-inner {
-	border-left: 4px solid #FFF;
 }
 .progress-timeline .start,
 .progress-timeline .end {
@@ -97,7 +91,6 @@
 .progress-timeline .end-inner {
 	width: 100%;
 	height: 50px;
-	background: #EFEFEF;
 }
 .progress-timeline .start-inner {
 	border-bottom-left-radius: 5px;
