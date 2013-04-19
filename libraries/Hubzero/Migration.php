@@ -152,22 +152,22 @@ class Hubzero_Migration
 			return false;
 		}
 
-		// Try to figure out the last run time
+		// Try to figure out the date of the last file run
 		try
 		{
-			$this->db->setQuery('SELECT `date` FROM `migrations` WHERE `direction` = \'up\' ORDER BY `date` DESC LIMIT 1');
+			$this->db->setQuery('SELECT `file` FROM `migrations` WHERE `direction` = \'up\' ORDER BY `date` DESC LIMIT 1');
 			$rowup = $this->db->loadAssoc();
 
-			$this->db->setQuery('SELECT `date` FROM `migrations` WHERE `direction` = \'down\'ORDER BY `date` DESC LIMIT 1');
+			$this->db->setQuery('SELECT `file` FROM `migrations` WHERE `direction` = \'down\'ORDER BY `date` DESC LIMIT 1');
 			$rowdown = $this->db->loadAssoc();
 
 			if (count($rowup) > 0)
 			{
-				$this->last_run['up'] = strtotime($rowup['date']);
+				$this->last_run['up'] = substr($rowup['file'], 9, 14);
 			}
 			if (count($rowdown) > 0)
 			{
-				$this->last_run['down'] = strtotime($rowdown['date']);
+				$this->last_run['down'] = substr($rowdown['file'], 9, 14);
 			}
 		}
 		catch (PDOException $e)
@@ -405,7 +405,7 @@ class Hubzero_Migration
 				$date = substr($file, 9, 14);
 				if (is_numeric($date))
 				{
-					if (is_numeric($this->last_run[$direction]) && date("U", strtotime($date)) < $this->last_run[$direction] && !$force)
+					if (is_numeric($this->last_run[$direction]) && $date < $this->last_run[$direction] && !$force)
 					{
 						continue;
 					}
