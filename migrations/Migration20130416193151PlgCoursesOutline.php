@@ -17,8 +17,11 @@ class Migration20130416193151PlgCoursesOutline extends Hubzero_Migration
 					SELECT 'Courses - Outline', 'outline', 'courses', 0, 2, 1, 0, 0, 0, '0000-00-00 00:00:00', ''
 					FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__plugins` WHERE `name` = 'Courses - Outline');";
 
-		$db->setQuery($query);
-		$db->query();
+		if (!empty($query))
+		{
+			$db->setQuery($query);
+			$db->query();
+		}
 	}
 
 	/**
@@ -28,7 +31,10 @@ class Migration20130416193151PlgCoursesOutline extends Hubzero_Migration
 	{
 		$query = "DELETE FROM `#__plugins` WHERE `element` = 'outline' AND `folder`='courses'";
 
-		$db->setQuery($query);
-		$db->query();
+		if (!empty($query))
+		{
+			$db->setQuery($query);
+			$db->query();
+		}
 	}
 }

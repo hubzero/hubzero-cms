@@ -7,17 +7,23 @@ class Migration20130412000000ComCourses extends Hubzero_Migration
 {
 	protected static function up($db)
 	{
-		$query = "ALTER TABLE `#__courses_offering_sections` ADD `grade_policy_id` INT(11)  NOT NULL  DEFAULT '1'  AFTER `enrollment`;";
+		if (!$db->tableHasField('#__courses_offering_sections', 'grade_policy_id'))
+		{
+			$query = "ALTER TABLE `#__courses_offering_sections` ADD `grade_policy_id` INT(11)  NOT NULL  DEFAULT '1'  AFTER `enrollment`;";
 
-		$db->setQuery($query);
-		$db->query();
+			$db->setQuery($query);
+			$db->query();
+		}
 	}
 
 	protected static function down($db)
 	{
-		$query = "ALTER TABLE `#__courses_offering_sections` DROP `grade_policy_id`;";
+		if ($db->tableHasField('#__courses_offering_sections', 'grade_policy_id'))
+		{
+			$query = "ALTER TABLE `#__courses_offering_sections` DROP `grade_policy_id`;";
 
-		$db->setQuery($query);
-		$db->query();
+			$db->setQuery($query);
+			$db->query();
+		}
 	}
 }

@@ -7,17 +7,33 @@ class Migration20130403000000ComCourses extends Hubzero_Migration
 {
 	protected static function up($db)
 	{
-		$query = "ALTER TABLE `#__courses_pages` ADD `course_id` INT(11)  NOT NULL  DEFAULT '0'  AFTER `id`;";
+		$query = '';
 
-		$db->setQuery($query);
-		$db->query();
+		if (!$db->tableHasField('#__courses_pages', 'course_id'))
+		{
+			$query .= "ALTER TABLE `#__courses_pages` ADD `course_id` INT(11)  NOT NULL  DEFAULT '0'  AFTER `id`;";
+		}
+
+		if (!empty($query))
+		{
+			$db->setQuery($query);
+			$db->query();
+		}
 	}
 
 	protected static function down($db)
 	{
-		$query = "ALTER TABLE `#__courses_pages` DROP `course_id`;";
+		$query = '';
 
-		$db->setQuery($query);
-		$db->query();
+		if ($db->tableHasField('#__courses_pages', 'course_id'))
+		{
+			$query .= "ALTER TABLE `#__courses_pages` DROP `course_id`;";
+		}
+
+		if (!empty($query))
+		{
+			$db->setQuery($query);
+			$db->query();
+		}
 	}
 }
