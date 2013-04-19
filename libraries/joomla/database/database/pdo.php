@@ -703,4 +703,51 @@ class JDatabasePDO extends JDatabase
 
 		return $result;
 	}
+
+	/**
+	 * Check for the existance of a table
+	 *
+	 * @access	public
+	 * @param 	string $table - table we're looking for
+	 * @return 	bool
+	 */
+	function tableExists( $table )
+	{
+		$this->setQuery( 'SHOW TABLES LIKE ' . str_replace('#__', $this->_table_prefix, $this->Quote($table)) );
+		$this->query();
+
+		return ($this->getAffectedRows() > 0) ? true : false;
+	}
+
+	/**
+	 * Returns whether or not the given table has a given field
+	 *
+	 * @access	public
+	 * @param 	string $table - A table name
+	 * @param	string $field - A field name
+	 * @return	bool          - true if table has field, false otherwise
+	 */
+	function tableHasField( $table, $field )
+	{
+		$this->setQuery( 'SHOW FIELDS FROM ' . $table );
+		$fields = $this->loadObjectList('Field');
+
+		return (in_array($field, array_keys($fields))) ? true : false;
+	}
+
+	/**
+	 * Returns whether or not the given table has a given key
+	 *
+	 * @access	public
+	 * @param 	string $table - A table name
+	 * @param	string $key   - A key name
+	 * @return	bool          - true if table has key, false otherwise
+	 */
+	function tableHaskey( $table, $key )
+	{
+		$this->setQuery( 'SHOW KEYS FROM ' . $table );
+		$keys = $this->loadObjectList('Key_name');
+
+		return (in_array($key, array_keys($keys))) ? true : false;
+	}
 }
