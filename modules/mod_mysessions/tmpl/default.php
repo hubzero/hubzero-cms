@@ -104,6 +104,16 @@ defined('_JEXEC') or die('Restricted access');
 								<span>Last Accessed:</span>
 								<?php echo date("F d, Y @ g:ia", strtotime($session->accesstime)); ?>
 							</div>
+							
+							<?php if($this->juser->get('username') != $session->username) : ?>
+								<div class="session-sharing">
+									<span>Session Owner:</span>
+									<?php
+										$user = JUser::getInstance($session->username);
+										echo '<a href="/members/' . $user->get('id') . '" title="Go to ' . $user->get('name') . '\'s Profile">' . $user->get('name') . '</a>';
+									?>
+								</div>
+							<?php endif; ?>
 						
 							<div class="session-buttons">
 								<a class="btn resume" href="<?php echo $resumeLink; ?>" title="<?php echo JText::_('MOD_MYSESSIONS_RESUME_TITLE'); ?>">

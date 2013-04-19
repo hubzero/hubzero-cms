@@ -213,13 +213,15 @@ div.draggable .session-list ul {
 .not-active .session-details {
 	display:none;
 }
-.session-accesstime {
+.session-accesstime,
+.session-sharing {
 	color: #555;
 	font-size: 12px;
 	line-height: 14px;
 	margin: 4px 0 10px 0;
 }
-.session-accesstime span {
+.session-accesstime span,
+.session-sharing span {
 	display:block;
 	color: #aaa;
 	font-size: 11px;
