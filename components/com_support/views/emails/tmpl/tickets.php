@@ -366,7 +366,7 @@ Content-type: text/html;charset=utf-8";
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Created:</th>
 																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $ticket->created; ?></td>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Last activity:</th>
-																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo '0000-00-00 00:00:00'; ?></td>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo '--'; ?></td>
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Creator:</th>

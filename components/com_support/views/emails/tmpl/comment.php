@@ -34,6 +34,16 @@ defined('_JEXEC') or die('Restricted access');
 $juri =& JURI::getInstance();
 $jconfig =& JFactory::getConfig();
 
+$dateFormat = '%d %b, %Y';
+$timeFormat = '%I:%M %p';
+$tz = 0;
+if (version_compare(JVERSION, '1.6', 'ge'))
+{
+	$dateFormat = 'd M Y';
+	$timeFormat = 'h:i a';
+	$tz = true;
+}
+
 $sef = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=' . $this->ticket->id);
 $link = rtrim($juri->base(), DS) . DS . trim($sef, DS);
 
@@ -102,7 +112,6 @@ echo $message . "\n";
 --<?php echo $this->boundary . "\n"; ?>
 Content-type: text/html;charset=utf-8";
 
-<?php echo $this->delimiter . "\n"; ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en" style="background-color: #fff; margin: 0; padding: 0;">
 	<head>
@@ -283,7 +292,7 @@ Content-type: text/html;charset=utf-8";
 															<tbody>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Created:</th>
-																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->ticket->created; ?></td>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left">@ <?php echo JHTML::_('date', $this->ticket->created, $timeFormat, $tz); ?> on <?php echo JHTML::_('date', $this->ticket->created, $dateFormat, $tz); ?></td>
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Creator:</th>
@@ -312,7 +321,7 @@ Content-type: text/html;charset=utf-8";
 											<tbody>
 												<tr>
 													<th style="text-align: left;" align="left"><?php echo $this->commentor->get('name'); ?> (<?php echo $this->commentor->get('username'); ?>)</th>
-													<th class="timestamp" style="color: #999; text-align: right;" align="right"><?php echo $this->comment->created; ?></th>
+													<th class="timestamp" style="color: #999; text-align: right;" align="right">@ <?php echo JHTML::_('date', $this->comment->created, $timeFormat, $tz); ?> on <?php echo JHTML::_('date', $this->comment->created, $dateFormat, $tz); ?></th>
 												</tr>
 												<tr>
 													<td colspan="2" style="padding: 0 2em;">
