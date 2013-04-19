@@ -132,6 +132,20 @@ class WikiParser
 	var $pres;
 
 	/**
+	 * Log all links in a page
+	 * 
+	 * @var array
+	 */
+	var $_linkLog;
+
+	/**
+	 * Log links?
+	 * 
+	 * @var boolean
+	 */
+	var $loglinks;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      string  $option   Parameter description (if any) ...
@@ -142,7 +156,7 @@ class WikiParser
 	 * @param      string  $domain   Parameter description (if any) ...
 	 * @return     void
 	 */
-	public function __construct($option='', $scope='', $pagename='', $pageid=0, $filepath='', $domain=null)
+	public function __construct($option='', $scope='', $pagename='', $pageid=0, $filepath='', $domain=null, $loglinks=null)
 	{
 		// We need this info for links that may get generated
 		$this->option   = $option;
@@ -151,6 +165,7 @@ class WikiParser
 		$this->pageid   = $pageid;
 		$this->filepath = $filepath;
 		$this->domain   = $domain;
+		$this->loglinks = $loglinks;
 
 		$this->mUniqPrefix = "\x07UNIQ" . $this->getRandomString();
 
@@ -201,6 +216,8 @@ class WikiParser
 	 */
 	public function parse($text, $fullparse=true, $linestart=0, $camelcase=1)
 	{
+		$this->_linkLog = array();
+
 		$this->fullparse = $fullparse;
 
 		if (!$this->fullparse) 
@@ -332,8 +349,45 @@ class WikiParser
 			$text = $this->toc($text);
 		}
 
+		if ($fullparse && $this->pageid && $this->loglinks)
+		{
+			if (!class_exists('WikiLink') && is_file(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'link.php')) 
+			{
+				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'link.php');
+			}
+
+			$links = new WikiLink(JFactory::getDBO());
+			//$links->deleteByPage($this->pageid);
+			$links->updateLinks($this->pageid, $this->_linkLog);
+		}
+
 		return $text;
 	}
+
+	/**
+	 * Convert wiki links to HTML links
+	 * 
+	 * @return     boolean
+	 */
+	/*public function logLinks()
+	{
+		if ($this->pageid) 
+		{
+			if (!class_exists('WikiLink') && is_file(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'link.php')) 
+			{
+				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'link.php');
+			}
+
+			$links = new WikiLink(JFactory::getDBO());
+			$links->deleteByPage($this->pageid);
+			$links->addLinks($this->_linkLog)
+			if (!$links->addLinks($this->_linkLog))
+			{
+				return false;
+			}
+		}
+		return true;
+	}*/
 
 	/**
 	 * Convert wiki links to HTML links
@@ -471,6 +525,13 @@ class WikiParser
 			$txt
 		) . $pc;
 		array_push($this->alinks, $pfx . $l);
+		$this->_linkLog[] = array(
+			'link'     => $matches[0], 
+			'url'      => $href, 
+			'page_id'  => $this->pageid,
+			'scope'    => 'external',
+			'scope_id' => 0
+		);
 		return '<alink></alink>';
 	}
 
@@ -721,6 +782,13 @@ class WikiParser
 
 		$l = '<a class="' . $cls . '" href="' . $href . '">' . trim($title) . '</a>';
 		array_push($this->links, $l);
+		$this->_linkLog[] = array(
+			'link'     => $matches[0], 
+			'url'      => $href, 
+			'page_id'  => $this->pageid,
+			'scope'    => 'internal',
+			'scope_id' => $p->id
+		);
 		return '<link></link>';
 	}
 
@@ -783,6 +851,13 @@ class WikiParser
 			trim($title)
 		);
 		array_push($this->links, $l);
+		$this->_linkLog[] = array(
+			'link'     => $matches[0], 
+			'url'      => $href, 
+			'page_id'  => $this->pageid,
+			'scope'    => 'external',
+			'scope_id' => 0
+		);
 		return '<link></link>';
 	}
 
@@ -840,7 +915,13 @@ class WikiParser
 		}
 
 		$link = JRoute::_('index.php?option=' . $this->option . '&scope=' . $scope . '&pagename=' . $pagename);
-
+		$this->_linkLog[] = array(
+			'link'     => $name, 
+			'url'      => $link, 
+			'page_id'  => $this->pageid,
+			'scope'    => 'internal',
+			'scope_id' => $p->id
+		);
 		return '<a href="' . $link . '" class="' . $cls . '">' . $name . $append . '</a>';
 	}
 
@@ -1602,6 +1683,10 @@ class WikiParser
 			// Push contents to a container -- we'll retrieve this later
 			// This is done to prevent any further wiki parsing of contents macro may return
 			array_push($this->macros, $macro->render());
+			if (count($macro->linkLog) > 0)
+			{
+				array_push($this->_linkLog, $macro->linkLog);
+			}
 			return 'MACRO' . $this->mUniqPrefix;
 		}
 	}

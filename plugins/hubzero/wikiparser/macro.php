@@ -73,6 +73,13 @@ class WikiMacro
 	public $allowPartial = false;
 
 	/**
+	 * Allow macro in partial parsing?
+	 * 
+	 * @var string
+	 */
+	public $linkLog = array();
+
+	/**
 	 * Instance of a macro
 	 * 
 	 * @var object

@@ -63,6 +63,8 @@ class ResourceMacro extends WikiMacro
 	 */
 	public function render()
 	{
+		$this->linkLog = array();
+
 		$et = $this->args;
 
 		if (!$et) 
@@ -127,6 +129,14 @@ class ResourceMacro extends WikiMacro
 			{
 				$link = 'index.php?option=com_resources&amp;id=' . $id;
 			}
+
+			$this->linkLog[] = array(
+				'link'     => '[[Resource(' . $et . ')]]', 
+				'url'      => $link, 
+				'page_id'  => $this->pageid,
+				'scope'    => 'resource',
+				'scope_id' => $r[0]
+			);
 
 			if ($nolink) 
 			{

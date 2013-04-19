@@ -879,7 +879,8 @@ class WikiControllerPage extends Hubzero_Controller
 				'pagename' => $this->page->pagename,
 				'pageid'   => $this->page->id,
 				'filepath' => '',
-				'domain'   => $this->_group
+				'domain'   => $this->_group,
+				'loglinks' => true
 			);
 			ximport('Hubzero_Wiki_Parser');
 			$p =& Hubzero_Wiki_Parser::getInstance();

@@ -84,8 +84,9 @@ class plgHubzeroWikiparser extends JPlugin
 			$pageid   = (isset($config['pageid']))   ? $config['pageid']   : 0;
 			$filepath = (isset($config['filepath'])) ? $config['filepath'] : '';
 			$domain   = (isset($config['domain']))   ? $config['domain']   : null;
+			$loglinks = (isset($config['loglinks'])) ? $config['loglinks'] : null;
 
-			$this->parser = new WikiParser($option, $scope, $pagename, $pageid, $filepath, $domain);
+			$this->parser = new WikiParser($option, $scope, $pagename, $pageid, $filepath, $domain, $loglinks);
 		}
 		return $this->parser;
 	}
