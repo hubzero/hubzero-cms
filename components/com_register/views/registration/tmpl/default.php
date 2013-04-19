@@ -718,7 +718,7 @@ defined('_JEXEC') or die('Restricted access');
 			$fieldclass = ($message) ? ' class="fieldsWithErrors"' : '';
 
 			if (!$this->registration['countryresident']) {
-				if (!$userCountry) {
+				if (!isset($userCountry) || !$userCountry) {
 					$userCountry = Hubzero_Geo::ipcountry(Hubzero_Environment::ipAddress());
 				}
 				$this->registration['countryresident'] = $userCountry;
@@ -747,7 +747,7 @@ defined('_JEXEC') or die('Restricted access');
 				$html .= "\t\t\t\t\t".'<option value="">'.JText::_('COM_REGISTER_FORM_SELECT_FROM_LIST').'</option>'."\n";
 			}
 
-			if (!$countries) {
+			if (!isset($countries) || !$countries) {
 				$countries = Hubzero_Geo::getcountries();
 			}
 			if ($countries) {
