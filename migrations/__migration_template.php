@@ -15,8 +15,11 @@ class %=class_name=% extends Hubzero_Migration
 	{
 		$query = "";
 
-		$db->setQuery($query);
-		$db->query();
+		if (!empty($query))
+		{
+			$db->setQuery($query);
+			$db->query();
+		}
 	}
 
 	/**
@@ -26,7 +29,10 @@ class %=class_name=% extends Hubzero_Migration
 	{
 		$query = "";
 
-		$db->setQuery($query);
-		$db->query();
+		if (!empty($query))
+		{
+			$db->setQuery($query);
+			$db->query();
+		}
 	}
 }
