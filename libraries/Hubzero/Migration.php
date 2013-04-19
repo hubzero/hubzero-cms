@@ -405,7 +405,7 @@ class Hubzero_Migration
 				$date = substr($file, 9, 14);
 				if (is_numeric($date))
 				{
-					if (is_numeric($this->last_run[$direction]) && $date < $this->last_run[$direction] && !$force)
+					if (is_numeric($this->last_run[$direction]) && $date <= $this->last_run[$direction] && !$force)
 					{
 						continue;
 					}
