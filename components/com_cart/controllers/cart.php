@@ -328,7 +328,53 @@ class CartControllerCart extends ComponentController
 	}
 	
 	public function postTask() 
-	{		
+	{	
+	
+		$curl_result = '';
+		$curl_err = '';
+		
+		//$url = ('https://dev26.hubzero.org/api/courses/premisRegister');
+		$url = 'https://dev.purduehub-u.purdue.edu/api/courses/premisRegister';
+		
+		// !! $value = urlencode(stripslashes($value));
+		
+		$data['fName'] = 'Mr.';
+		$data['lName'] = 'Dusik';
+		$data['email'] = 'ilya@zuki.com';
+		//$data['premisId'] = 'zero0';
+		$data['casId'] = 'ishunko';
+		//$data['password'] = '';
+		
+		$data['addRegistration'] = 'one, two, three$%^!_nice';
+		$data['dropRegistration'] = 'two';
+		
+		$req = 'ss=VezefruchASpEdruvE_RAmE4pesWep!A';
+		
+		foreach ($data as $key => $value) 
+		{
+			$value = urlencode(stripslashes($value));
+			$req .= "&$key=$value";
+		}
+				
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $req);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/x-www-form-urlencoded", "Content-Length: " . strlen($req)));
+		curl_setopt($ch, CURLOPT_HEADER, 0);   
+		curl_setopt($ch, CURLOPT_VERBOSE, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		
+		$curl_result = @curl_exec($ch);
+		$curl_err = curl_error($ch);
+		curl_close($ch);
+	
+		print_r(json_decode($curl_result));
+		//print_r($curl_result);
+		die('+');
+		
 		$doc =& JFactory::getDocument();
 		$doc->addScript(DS . 'components' . DS . 'com_cart' . DS . 'assets' . DS . 'js' . DS . 'test.js');
 		

@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+setlocale(LC_MONETARY, 'en_US.UTF-8');
+
 ?>
 
 <div id="content-header">
@@ -62,6 +64,33 @@ if (!empty($this->transactionInfo->tiMeta))
 $view = new JView(array('name'=>'shared', 'layout' => 'messages'));
 $view->setError($this->getError());
 $view->display();
+
+?>
+
+<div id="cartInfo">
+
+<?php
+
+if (!empty($this->transactionInfo))
+{
+	$orderTotal = $this->transactionInfo->tiSubtotal + $this->transactionInfo->tiShipping - $this->transactionInfo->tiDiscounts - $this->transactionInfo->tiShippingDiscount;
+	
+	echo '<div id="orderSummary">';
+		echo '<h2>Order summary:</h2>';
+		
+		echo '<p>Order subtotal: ' . money_format('%n', $this->transactionInfo->tiSubtotal) . '</p>';
+		echo '<p>Shipping: ' . money_format('%n', $this->transactionInfo->tiShipping) . '</p>';
+		echo '<p>Discounts: ' . money_format('%n', $this->transactionInfo->tiDiscounts + $this->transactionInfo->tiShippingDiscount) . '</p>';
+		
+		echo '<p>Order total: ' . money_format('%n', $orderTotal) . '</p>';		
+	echo '</div>';	
+}
+
+?>
+
+</div>
+
+<?php
 
 if (in_array('shipping', $this->transactionInfo->steps))
 {
