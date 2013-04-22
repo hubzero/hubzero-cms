@@ -171,6 +171,7 @@ class Hubzero_Storefront_Warehouse
 		}
 		
 		$this->_db->setQuery($sql);
+		//echo $this->_db->_sql; die;
 		$products = $this->_db->loadObjectList();
 		
 		return $products;
