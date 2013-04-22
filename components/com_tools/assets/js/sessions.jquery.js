@@ -307,6 +307,7 @@ HUB.Mw = {
 	},
 	
 	sessionSharing: function() {
+		var $ = this.jQuery;
 		if (!$('#share-btn').length)
 		{
 			return;
@@ -376,6 +377,7 @@ HUB.Mw = {
 	},
 	
 	removeSessionSharing: function() {
+		var $ = this.jQuery;
 		$(".entries").on('click', '.entry-remove', function(event) {
 			event.preventDefault();
 			
