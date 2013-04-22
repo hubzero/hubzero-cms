@@ -1258,7 +1258,7 @@ class Hubzero_Registration
 	/**
 	 * Generates new available username based on email address
 	 *
-	 * @param 	string 		Email address
+	 * @param 	string 		Email address or preferrd username
 	 * @return	string 		Generated username
 	 */
 	public function generateUsername($email)
@@ -1269,7 +1269,11 @@ class Hubzero_Registration
 		$email = explode('@', $email);
 		
 		$local = $email[0];
-		$domain = $email[1];
+		$domain = '';
+		if (!empty($email[1]))
+		{
+			$domain = $email[1];
+		}
 		
 		// strip bad characters
 		$local = preg_replace("/[^A-Za-z0-9_\.]/", '', $local);
@@ -1286,7 +1290,10 @@ class Hubzero_Registration
 		}
 		
 		// try full email address with @ replaced with '_'
-		$login = $local . '_' . $domain;
+		if (!empty($domain))
+		{
+			$login = $local . '_' . $domain;
+		}
 		// Make sure login username is no longer than max allowed by DB
 		$login = substr($login, 0, $loginMaxLen);
 		$logincheck = Hubzero_Registration::checkusername($login);
