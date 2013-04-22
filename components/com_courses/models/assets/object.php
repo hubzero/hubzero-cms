@@ -64,7 +64,7 @@ class ObjectAssetHandler extends ContentAssetHandler
 		{
 			$this->asset['title'] = 'New YouTube video';
 		}
-		elseif(preg_match('/\<script type="text\/javascript" src="http[s]*\:\/\/cdnapi\.kaltura\.com.*\<object id="kaltura_player_[0-9]+.*/is', $object))
+		elseif(preg_match('/\<script src="http[s]*\:\/\/cdnapisec\.kaltura\.com.*/is', $object))
 		{
 			$this->asset['title'] = 'New Kaltura video';
 		}
