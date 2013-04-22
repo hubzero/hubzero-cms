@@ -94,7 +94,7 @@ class JAuthorization extends gacl_api
 		$this->addACL( 'com_cache', 'manage', 'users', 'administrator' );
 
 		$this->addACL( 'com_config', 'manage', 'users', 'super administrator' );
-		//$this->addACL( 'com_config', 'manage', 'users', 'administrator' );
+		$this->addACL( 'com_config', 'manage_component', 'users', 'administrator' );
 
 		$this->addACL( 'com_contact', 'manage', 'users', 'super administrator' );
 		$this->addACL( 'com_contact', 'manage', 'users', 'administrator' );
