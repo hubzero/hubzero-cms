@@ -17,7 +17,7 @@
 }
 
 /* Hide the sidebar if the page is too narrow */
-@media only screen and (max-width: 1300px) {
+@media only screen and (max-width: 1200px) {
 	#presenter-container {
 		width: 640px;
 	}
