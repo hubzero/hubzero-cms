@@ -84,7 +84,6 @@ function addtag(tag)
 	   <th style="width: 15px;"> </th>
 	   <th>Raw Tag</th>
 	   <th>Tag</th>
-	   <th>Alias</th>
 	   <th>Admin</th>
 	  </tr>
 	 </thead>
@@ -104,7 +103,6 @@ for ($i=0, $n=count($this->tags); $i < $n; $i++)
 	   <td><input type="checkbox" name="tgs[]" id="cb<?php echo $i;?>" <?php if (in_array($thistag->tag,$this->mytagarray)) { echo 'checked="checked"'; } ?> value="<?php echo stripslashes($thistag->tag); ?>" /></td>
 	   <td><a href="#" onclick="addtag('<?php echo stripslashes($thistag->tag); ?>');"><?php echo stripslashes($thistag->raw_tag); ?></a></td>
 	   <td><a href="#" onclick="addtag('<?php echo stripslashes($thistag->tag); ?>');"><?php echo stripslashes($thistag->tag); ?></a></td>
-	   <td><a href="#" onclick="addtag('<?php echo stripslashes($thistag->tag); ?>');"><?php echo stripslashes($thistag->alias); ?></a></td>
 	   <td><?php echo $check; ?></td>
 	  </tr>
 <?php

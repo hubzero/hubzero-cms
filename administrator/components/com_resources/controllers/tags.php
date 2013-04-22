@@ -52,7 +52,7 @@ class ResourcesControllerTags extends Hubzero_Controller
 		$this->view->row->load($this->view->id);
 
 		// Get all tags
-		$query  = "SELECT id, tag, raw_tag, alias, admin FROM #__tags ORDER BY raw_tag ASC";
+		$query  = "SELECT id, tag, raw_tag, admin FROM #__tags ORDER BY raw_tag ASC";
 		$this->database->setQuery($query);
 		$this->view->tags = $this->database->loadObjectList();
 		if ($this->database->getErrorNum())
