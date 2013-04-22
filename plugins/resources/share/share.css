@@ -121,6 +121,10 @@ html>body .shareinfo.active dd  {
 	border: none !important;
 	}
 
+.share .popup {
+	text-decoration: none;
+}
+
 /* Share Icons */
 .share_facebook,
 .aside li .share_facebook:hover {
@@ -176,6 +180,8 @@ html>body .shareinfo.active dd  {
 	padding-top: 0.1em; 
 	padding-left: 14px;
 	}
+	
+
 
 /* IE 7 hacks */
 

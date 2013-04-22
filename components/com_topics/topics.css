@@ -767,42 +767,7 @@
 	div.admon-warning { 
 		background-image: url("/components/com_wiki/assets/img/admon-warning.png"); 
 	}
-/* Introduction page */
-	#introduction {
-		margin: 0 -15px 3em -15px;
-		padding: 25px 15px 25px 120px;
-		background: #fbf8ea url("/components/com_wiki/assets/img/topics-large.gif") 30px 25px no-repeat;
-		border-top: 2px solid #e7dac4;
-		border-bottom: 2px solid #e7dac4;
-		color: #7c7266;
-	}
-	#introduction .aside,
-	#introduction .subject {
-		margin-top: 0;
-		margin-bottom: 0;
-		padding-top: 0;
-		padding-bottom: 0;
-		background: transparent;
-		border: none;
-	}
-	#introduction h3 {
-		margin-top: 0;
-		color: #7c7266;
-	}
-	#introduction .columns {
-		border: none;
-	}
-	#introduction ul,
-	#introduction li {
-		list-style: none;
-		margin: 1em 0;
-		padding: 0;
-	}
-	#introduction li {
-		margin: 0;
-		padding: 0 0 0 15px;
-		background: transparent url("/components/com_wiki/assets/img/bullets/arrow.gif") 0 50% no-repeat;
-	}
+
 /* Four Columns */
 	.com_topics .four {
 		border-top: 1px solid #e0e0d7;

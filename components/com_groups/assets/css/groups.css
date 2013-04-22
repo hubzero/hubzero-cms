@@ -9,7 +9,7 @@
 }
 .group-list {
 	overflow: hidden;
-	margin: 10px 0 0 0;
+	margin: 10px 0;
 }
 .group-list .logo {
 	float: left;
@@ -31,10 +31,7 @@
 .group-list .details-w-logo {
 	margin-left: 45px;
 }
-.group-list .details h3,
-.group-list .details-w-logo h3 {
-	margin: 5px 0 0 0 !important;
-}
+
 .group-list .status {
 	font-size: 10px;
 	line-height: 10px;
@@ -1473,9 +1470,6 @@ p.warning {
 	border: none;
 	margin: 0;
 	padding: 0;
-}
-#file_list {
-	background-color: #fff;
 }
 #file_list table {
 	border: 0px;

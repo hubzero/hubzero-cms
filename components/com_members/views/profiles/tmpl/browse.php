@@ -49,27 +49,23 @@ $juser =& JFactory::getUser();
 			
 			<div class="container">
 				<h3>Member Stats</h3>
-				<p class="starter">
-					<span class="starter-point"></span>
-					<table>
-						<tbody>
-							<tr>
-								<th>Total Members:</th>
-								<td><span class="item-count"><?php echo $this->total_members; ?></span></td>
-							</tr>
-							<tr>
-								<th>Private Profiles:</th>
-								<td><span class="item-count"><?php echo $this->total_members - $this->total_public_members; ?></span></td>
-							</tr>
-							<tr>
-								<th>New (past month): </th>
-								<td><span class="item-count"><?php echo $this->past_month_members; ?></span></td>
-							</tr>
-						</tbody>
-					</table>
-					<p class="align-right">
-						<a href="/usage#tot">All Member Usage &raquo;</a>
-					</p>
+
+				<ul class="sub-nav">
+					<li>
+						Total Members:
+						<span class="item-count"><?php echo $this->total_members; ?></span>							
+					</li>
+					<li>
+						Private Profiles:
+						<span class="item-count"><?php echo $this->total_members - $this->total_public_members; ?></span>
+					</li>
+					<li>
+						New (past month):
+						<span class="item-count"><?php echo $this->past_month_members; ?></span>
+					</li>
+				</ul>
+				<p>
+					<a href="/usage#tot">All Member Usage &raquo;</a>
 				</p>
 			</div><!-- / .container -->
 			
@@ -383,7 +379,6 @@ if (count($this->rows) > 0)
 	$this->pageNav->setAdditionalUrlParam('show', $this->filters['show']);
 	echo $this->pageNav->getListFooter();
 ?>
-				<div class="clearfix"></div>
 			</div><!-- / .container -->
 		</div><!-- / .subject -->
 		<div class="clear"></div>

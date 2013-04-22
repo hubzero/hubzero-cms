@@ -155,7 +155,8 @@
 	.aside .container ol li,
 	.aside .container ul li {
 		margin: 0;
-		padding: 0;
+		position: relative;
+		padding: 0.2em 0;
 	}
 	.aside .container ol ol,
 	.aside .container ul ul {
@@ -163,7 +164,7 @@
 		margin-left: 2em;
 	}
 	.aside .container a {
-		position: relative;
+		position: static;
 	}
 	.aside .container .item-count {
 		display: inline-block;
@@ -182,8 +183,9 @@
 		display: block;
 		position: absolute;
 		right: 0;
-		top: 0.65em;
+		top: 0.2em;
 	}
+
 	.aside .container .item-count:before,
 	.aside .container .item-count:after {
 		display: none;
@@ -365,6 +367,9 @@
 		-ms-border-radius: 0.25em;
 		-o-border-radius: 0.25em;
 		border-radius: 0.25em;
+		width: 50px;
+		overflow: hidden;
+		display: block;
 	}
 	.entries .entry-id {
 		display: block;

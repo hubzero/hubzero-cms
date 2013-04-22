@@ -128,14 +128,12 @@ defined('_JEXEC') or die('Restricted access');
 			</form>
 		</div><!-- / .two columns first -->
 		<div class="two columns second">
-			<div class="browse">
-				<p>
-					<a class="group-intro-browse" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>">
-						<?php echo JText::_('COM_GROUPS_INTRO_FIND_GROUP_BROWSE_BUTTON_TEXT'); ?>
-					</a>
-				</p>
-				<p><?php echo JText::_('COM_GROUPS_INTRO_FIND_GROUP_BROWSE_HELP'); ?></p>
-			</div><!-- / .browse -->
+            <p class="browse">
+                <a class="group-intro-browse" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>">
+                    <?php echo JText::_('COM_GROUPS_INTRO_FIND_GROUP_BROWSE_BUTTON_TEXT'); ?>
+                </a>
+            </p>
+            <p><?php echo JText::_('COM_GROUPS_INTRO_FIND_GROUP_BROWSE_HELP'); ?></p>
 		</div><!-- / .two columns second -->
 	</div><!-- / .four columns second third fourth -->
 	<div class="clear"></div>

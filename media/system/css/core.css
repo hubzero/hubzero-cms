@@ -1,0 +1,831 @@
+/* Core classes */
+.on,
+.show {
+	display: block;
+}
+.off,
+.hide {
+	display: none;
+}
+.invisible {
+	visibility: hidden;
+}
+.visible {
+	visibility: visible;
+}
+.clear {
+	clear: both;
+}
+.nowrap {
+	white-space: nowrap;
+}
+.highlight {
+	background-color: #FFFF99;
+}
+.align-right {
+	text-align: right;
+}
+.align-left {
+	text-align: left;
+}
+.align-center {
+	text-align: center;
+}
+img.align-right {
+	float: right;
+	margin: 0 0 1em 1em;
+}
+img.align-left {
+	float: left;
+	margin: 0 1em 1em 0;
+}
+
+/* Typography */
+
+h1, h2, h3, h4, h5, h6 {
+	font-weight: normal;
+	line-height: 1.2em;
+	margin: 0 0 0.5em 0;
+}
+
+h1, #content-header h2, .content-header h2, .componentheading h2 {
+	font-size: 2.18em;
+}
+
+h2 {
+	font-size: 1.64em;
+}
+
+h3 {
+	font-size: 1.45em;
+}
+
+h4 {
+	font-size: 1.18em;
+}
+
+.below {
+	margin: 2em 0 0 0;
+	padding-top: 1em;
+}
+/* Subjects (with right aside) */
+.subject {
+	margin: 0;
+	margin-right: 235px;
+}
+.main .subject {
+	border: none;
+	background: transparent;
+	padding: 0;
+}
+/* Asides (right side) */
+.aside {
+	float: right;
+	width: 214px;
+}
+.aside h4,
+.aside p {
+	color: #999;
+}
+.aside h4 {
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+
+.aside li strong, .aside li a, .aside li span.member {
+   /*  display: block; */
+}
+
+/* Fieldsets */
+.aside fieldset {
+	margin: 1em 0;
+	padding: 1em;
+	background: #ECECEC;
+	border-radius: 0.25em 0.25em 0.25em 0.25em;
+}
+.aside>fieldset { margin-top: 0;}
+.aside fieldset label {
+	display: block;
+	margin-bottom: 0.5em;
+}
+.aside fieldset label input, 
+.aside fieldset label select, 
+.aside fieldset label textarea {
+	width: 100%;
+}
+.aside fieldset label input.option {
+	width: auto;
+}
+.aside fieldset legend {
+	display: none;
+}
+.aside fieldset fieldset legend {
+	display: block;
+	font-weight: bold;
+	padding: 0 0 1em 0;
+}
+.aside fieldset fieldset {
+	margin: 1em 0 1em 0;
+	padding: 0em 1em 0.5em 1em;
+	border: 1px solid #DEE4CD;
+}
+
+/* Overlay */
+#lbOverlay,
+#overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	background: #000;
+	z-index:998;
+}
+#initializing {
+	position: absolute;
+	margin-left: -45px;
+	padding: 0;
+	top: 80px;
+	left: 50%;
+	width: 90px;
+	height: 90px;
+	z-index: 888;
+	text-align: center;
+	display: none;
+}
+/* Lightbox */
+#lbCenter, 
+#lbBottomContainer {
+	position: absolute;
+	left: 50%;
+	overflow: hidden;
+	background-color: #fff;
+	z-index:999;
+}
+.lbLoading {
+	background: #fff url("../images/anim/loading.gif") no-repeat center;
+}
+#lbImage {
+	position: absolute;
+	left: 0;
+	top: 0;
+	border: 10px solid #fff;
+	background-repeat: no-repeat;
+}
+#lbPrevLink, 
+#lbNextLink {
+	display: block;
+	position: absolute;
+	top: 0;
+	width: 50%;
+	outline: none;
+}
+#lbPrevLink {
+	left: 0;
+}
+#lbPrevLink:hover {
+	background: transparent url("../images/prevlabel.gif") no-repeat 0% 15%;
+}
+#lbNextLink {
+	right: 0;
+}
+#lbNextLink:hover {
+	background: transparent url("../images/nextlabel.gif") no-repeat 100% 15%;
+}
+#lbBottom {
+	font-family: Helvetica, Verdana, Arial, Geneva, sans-serif;
+	font-size: 10px;
+	color: #666;
+	line-height: 1.4em;
+	text-align: left;
+	border: 10px solid #fff;
+	border-top-style: none;
+}
+#lbCloseLink {
+	display: block;
+	float: right;
+	width: 66px;
+	height: 22px;
+	background: transparent url("../images/closelabel.gif") no-repeat center;
+	margin: 5px 0;
+	border: none;
+}
+#lbCaption, #lbNumber {
+	margin-right: 71px;
+}
+#lbCaption {
+	font-weight: bold;
+}
+/* Squeezebox */
+.body-overlayed embed, 
+.body-overlayed object, 
+.body-overlayed select {
+	visibility: hidden;
+}
+#sbox-window embed, 
+#sbox-window object, 
+#sbox-window select {
+	visibility:	visible;
+}
+#sbox-overlay {
+	position: absolute;
+	background-color: #000;
+}
+#sbox-window {
+	position: absolute;
+	background-color: #000;
+	text-align: left;
+	overflow: visible;
+	padding: 10px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	-o-border-radius: 3px;
+	border-radius: 3px;
+}
+#sbox-btn-close {
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	right: -15px;
+	top: -15px;
+	background: url("../images/closebox.png") no-repeat top left;
+	border: none;
+}
+#sbox-resizehandle {
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	right: -15px;
+	bottom: -15px;
+	background: url("../images/resizebox.png") no-repeat top left;
+	border: none;
+	cursor: se-resize;
+}
+#sbox-newwindow {
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	right: 25px;
+	bottom: -15px;
+	background: url("../images/newwindowbox.png") no-repeat top left;
+	border: none;
+	cursor: pointer;
+}
+.sbox-loading #sbox-content {
+	background-image: url("../images/anim/spinner.gif");
+	background-repeat: no-repeat;
+	background-position: center;
+}
+#sbox-content {
+	clear: both;
+	overflow: auto;
+	background-color: #fff;
+	height:	100%;
+	width: 100%;
+}
+.sbox-content-image#sbox-content {
+	overflow: visible;
+}
+#sbox-image {
+	display: block;
+}
+.sbox-content-image img {
+	display: block;
+}
+.sbox-content-iframe#sbox-content {
+	overflow: visible;
+}
+/* AJAX message box */
+#sbox-content {
+	background-color: #f0f0f0;
+}
+#sbox-content #content-header,
+#sbox-content .explaination,
+#sbox-content .aside {
+	display: none;
+}
+#sbox-content .main,
+#sbox-content .subject,
+#sbox-content .mian .subject,
+#sbox-content .withleft,
+#sbox-content form#hubForm {
+	margin: 0;
+	padding: 0;
+	border: none;
+	height: auto;
+	overflow: hidden;
+}
+#sbox-content fieldset {
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	border: none;
+	background-color: transparent;
+}
+#sbox-content fieldset h3,
+#sbox-content .full fieldset h3 {
+	margin: 0;
+	padding: 0.5em 1em;
+	width: auto;
+	position: inherit;
+	display: block;
+	border-bottom: 1px solid #757575;
+	color: #555;
+	text-shadow: 0px 1px 0px #e5e5ee;
+	background: #a2a2a2;
+	background: -webkit-gradient(linear, left top, left bottom, from(#c4c4c4), to(#a2a2a2));
+	background: -webkit-linear-gradient(#c4c4c4, #a2a2a2);
+	background: -moz-linear-gradient(top, #c4c4c4, #a2a2a2);
+	background: -moz-gradient(center top, #c4c4c4 0%, #a2a2a2 100%);
+	background: -o-linear-gradient(#c4c4c4, #a2a2a2);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c4c4c4', endColorstr='#a2a2a2');
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#c4c4c4, endColorstr=#a2a2a2)";
+}
+#sbox-content fieldset label {
+	margin: 0;
+	padding: 0.5em 1em;
+	border-bottom: 1px solid #ccc;
+	display: block;
+}
+#sbox-content fieldset input, 
+#sbox-content fieldset select, 
+#sbox-content fieldset textarea {
+	margin-top: 0.25em;
+	width: 100%;
+}
+#sbox-content fieldset label textarea#msg-message {
+	margin-bottom: 0.5em;
+	height: 175px;
+}
+#sbox-content .submit {
+	margin: 0;
+	padding: 0.5em 1em;
+	text-align: center;
+}
+#fancybox-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 997;
+	background:#000;
+}
+.fancybox-wrap {
+	z-index:998;
+}
+.fancybox-image {
+	width: 100%; /* Keeps large images from overflowing content area */
+}
+.fancybox-close {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	width: 30px;
+	height: 30px;
+	background: transparent url('../images/fancybox.png') -40px 0px;
+	cursor: pointer;
+	z-index: 999;
+}
+/* Tagcloud */
+.tags {
+	margin: 0;
+	padding: 0;
+}
+.tags li {
+	margin: 0 3px 3px 0;
+	display: block;
+	float: left;
+}	
+.tags a,
+.tags li a {
+	padding: 1px 3px;
+	line-height: 100%;
+	background: #FFF6D3;
+	-webkit-border-radius: 6px; 
+	-moz-border-radius: 6px; 
+	-o-border-radius: 6px; 
+	border-radius: 6px; 
+}
+.tags a span {
+	display: none;
+}
+.tags li a {
+	padding: 3px 5px;
+	float: left;
+}
+.tags a.admin,
+.tags li.admin a { 
+	background: #FFF2EF;
+	border: 1px solid #efccc2;
+}	
+.tags a:hover {
+	text-decoration: none;
+	background: #F0EBD6;
+}
+/* Comment Types */	
+.plaincomment {
+	background: url("../images/comment.gif") right top no-repeat;
+}
+.authorcomment {
+	background: url("../images/author.gif") right top no-repeat;
+}
+.privatecomment {
+	background: url("../images/private.gif") right top no-repeat;
+}
+.publiccomment {
+	background: url("../images/public.gif") right top no-repeat;
+}
+/* 5 star Reviews */
+.avgrating {
+	padding-left: 0;
+}
+.avgrating span {
+	padding-left: 1em;
+}
+.avgrating:before {
+	font-family: 'Fontcons';
+	font-size: 12px;
+	line-height: 12px;
+}
+.no-stars:before        { content: "\2606\2606\2606\2606\2606"; }
+.half-stars:before      { content: "\f089\2606\2606\2606\2606"; }
+.one-stars:before       { content: "\2605\2606\2606\2606\2606"; }
+.onehalf-stars:before   { content: "\2605\f089\2606\2606\2606"; }
+.two-stars:before       { content: "\2605\2605\2606\2606\2606"; }
+.twohalf-stars:before   { content: "\2605\2605\f089\2606\2606"; }
+.three-stars:before     { content: "\2605\2605\2605\2606\2606"; }
+.threehalf-stars:before { content: "\2605\2605\2605\f089\2606"; }
+.four-stars:before      { content: "\2605\2605\2605\2605\2606"; }
+.fourhalf-stars:before  { content: "\2605\2605\2605\2605\f089"; }
+.five-stars:before      { content: "\2605\2605\2605\2605\2605"; }
+
+/* Tooltips */
+.img-tip, .tooltip, .tool-tip, .tip {
+    background: -moz-linear-gradient(center top , #333333 0%, #111111 100%) repeat scroll 0 0 transparent;
+    border-radius: 0.25em 0.25em 0.25em 0.25em;
+    float: left;
+    max-width: 400px;
+    min-width: 50px;
+    padding: 0;
+    z-index: 50;
+}
+.img-tip:after, .tooltip:after, .tool-tip:after, .tip:after {
+    border-color: #111111 transparent transparent;
+    border-style: solid dashed dashed;
+    border-width: 4px 4px 0;
+    bottom: -4px;
+    content: "";
+    display: block;
+    height: 0;
+    left: 50%;
+    margin-left: -4px;
+    overflow: hidden;
+    position: absolute;
+    width: 0;
+}
+.tooltip .tooltip-text, .tool-tip .tool-text, .tip-text {
+    background: none repeat scroll 0 0 transparent;
+    color: #EEEEEE;
+    display: block;
+    font-size: 0.85em;
+    margin: 0;
+    padding: 0.5em 1em;
+}
+.tooltip .tooltip-text table.wiki-reference tbody td, .tool-tip .tool-text table.wiki-reference tbody td, .tip-text table.wiki-reference tbody td {
+    border-color: #000000;
+}
+.tooltip .tooltip-title, .tool-tip .tool-title, .tip-title {
+    display: none;
+}
+.tooltip img, .tool-tip img {
+    border-radius: 0.25em 0.25em 0.25em 0.25em;
+}
+
+/* Tables */
+table, .contentpaneopen table {
+    text-align: left;
+    width: 100%;
+}
+
+table th, table td, .contentpaneopen table th, .contentpaneopen table td {
+    border-bottom: 1px solid #DADADA;
+    line-height: 1.6em;
+    padding: 0.404509em 0.618034em;
+    vertical-align: top;
+	text-align: left;
+}
+table tr.odd, .contentpaneopen table tr.odd {
+    background-color: #F9F9F9;
+}
+table tr.even, .contentpaneopen table tr.even {
+    background-color: #FFFFFF;
+}
+table th, .contentpaneopen table th {
+    font-weight: bold;
+}
+table th, table td {
+	vertical-align: top;
+}
+
+table,
+.contentpaneopen table {
+	text-align: left;
+	border-collapse: collapse;
+}
+table caption, .contentpaneopen table caption {
+	padding: 0.3em 1em;
+	text-align: left;
+}
+/* /Tables */
+
+/* Forms */
+input[type="text"], input[type="password"], input[type="email"], textarea {
+    -webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+#hubForm {
+    position: relative;
+}
+
+#hubForm fieldset {
+    border: 1px solid #E5E5E5;
+    margin: 0.7em 270px 1.7em 0;
+    padding: 1em 2em;
+}
+
+#hubForm .explaination h4 {
+    font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+    font-weight: bold;
+}
+#hubForm legend {
+	padding: 0 1em;
+	margin-left: -1em;
+	font-size: 1.6em;
+}
+#hubForm legend:after {
+    clear: both;
+    content: ".";
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+#hubForm label {
+    display: block;
+	margin-top: 0.6em;
+}
+#hubForm input, #hubForm select, #hubForm textarea {
+    margin-top: 0.25em;
+    width: 100%;
+}
+#hubForm.full fieldset {
+    margin: 0.7em 0 1.7em;
+}
+#hubForm.full:before, #hubForm.full:after {
+    display: none;
+}
+#hubForm.full fieldset fieldset, #hubForm fieldset fieldset {
+    border: 1px solid #E5E5E5;
+    float: none;
+    margin: 1.5em auto;
+    width: auto;
+}
+
+#hubForm fieldset fieldset legend {
+    font-size: 1em;
+}
+#hubForm.full fieldset fieldset fieldset, #hubForm fieldset fieldset fieldset {
+    border: medium none;
+    float: none;
+    margin: 0;
+    padding: 0;
+    width: auto;
+}
+#hubForm fieldset fieldset fieldset label {
+    margin-left: 1.75em;
+}
+#hubForm fieldset fieldset fieldset legend label {
+    margin-left: 0;
+}
+#hubForm .options label, #hubForm .options input, #hubForm .option {
+    display: inline;
+    margin: 0 0.25em 0 0 !important;
+    width: auto;
+}
+#hubForm .indent {
+    margin-left: 1.75em;
+}
+#hubForm .field-wrap {
+    display: block;
+}
+
+#hubForm .field-wrap, #hubForm p {
+    display: block;
+    margin: 1.5em 0;
+}
+
+#hubForm legend + .group label {
+    padding-top: 0.5em;
+}
+#hubForm legend + .group p {
+    margin-top: 0.5em;
+}
+#hubForm label + input {
+    margin-left: 2em;
+    margin-right: 2em;
+    width: 92.5%;
+}
+#hubForm .group label, #hubForm .group p {
+    float: left;
+    margin-left: 5%;
+    padding-left: 0;
+    padding-right: 0;
+    width: 47.5%;
+}
+#hubForm .group p {
+    margin-right: 0;
+}
+#hubForm .group label:first-child {
+    margin-left: 0;
+}
+#hubForm .threeup label {
+    width: 30%;
+}
+#hubForm .group:after {
+    clear: both;
+    content: ".";
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+#hubForm .group .options label {
+    display: inline;
+    float: none;
+    width: auto;
+}
+#hubForm label em {
+    color: #AAAA99;
+    display: block;
+    font: inherit;
+    margin: -1.5em 0 0 10em;
+    text-align: right;
+}
+#hubForm .submit {
+    margin-right: 30%;
+    padding: 1em 0 0;
+    text-align: center;
+}
+#hubForm.full .submit {
+    margin-right: 0;
+}
+#hubForm .submit input {
+    display: inline;
+    width: auto;
+}
+#hubForm .inactive {
+    color: #AAAA99;
+}
+#hubForm .explaination {
+    float: right;
+    min-height: 10px;
+    width: 214px;
+}
+#hubForm .explaination a:hover {
+    color: #222222;
+}
+
+#hubForm .explaination h2 {
+    border: medium none;
+    margin: 1.5em 0 0.5em;
+    padding: 0;
+    position: relative;
+    width: 100%;
+}
+#hubForm .explaination ul {
+    color: #5577BB;
+    list-style: none outside none;
+    position: relative;
+}
+#hubForm .optional, #hubForm .required {
+    font-size: xx-small;
+    text-transform: uppercase;
+}
+#hubForm .required {
+    color: red;
+}
+#hubForm .optional {
+    color: #999999;
+}
+#hubForm .hint {
+    color: #999999;
+    font-size: 90%;
+}
+#hubForm span.hint {
+    line-height: 2em;
+}
+#hubForm .warning, #hubForm .error {
+    margin-top: 0;
+}
+#hubForm fieldset .error, #hubForm fieldset .warning, #hubForm fieldset .information, #hubForm fieldset .help {
+    margin: 1em 2em;
+}
+#hubForm ul {
+    margin: 1em 2em;
+}
+#hubForm ul li {
+    margin-left: 2em;
+}
+#hubForm ul li.error {
+    margin-left: 0;
+}
+#hubForm span.warning, #hubForm span.information, #hubForm span.help, #hubForm span.error {
+    display: inline-block;
+    margin: 0.5em 0 0;
+}
+#hubForm .error p, #hubForm .warning p, #hubForm .information p, #hubForm .help p {
+    margin: 1em 0;
+}
+#hubForm table {
+    border-color: #DEE4CD;
+    border-top: 2px solid #DEE4CD;
+    margin: 1em 0;
+}
+#hubForm table td, #hubForm table th {
+    border-color: #DEE4CD;
+}
+#hubForm table input, #hubForm table select {
+    width: auto;
+}
+#hubForm fieldset fieldset.fieldsWithErrors, #hubForm .fieldsWithErrors {
+    border: 1px solid #CC0000;
+}
+#hubForm fieldset fieldset.fieldsWithErrors legend, #hubForm .fieldWithErrors {
+    color: #CC0000;
+    font-weight: bold;
+}
+#hubForm .fieldWithErrors input, #hubForm .fieldWithErrors select, #hubForm .fieldWithErrors textarea {
+    background-color: #F8E5E5;
+}
+#hubForm .fieldWithErrors .required, #hubForm .fieldWithErrors .optional {
+    font-weight: normal;
+}
+#hubForm table input, #hubForm table select {
+    width: auto;
+}
+.com_content .subject #hubForm fieldset {
+    margin-bottom: 1em;
+    padding-bottom: 1em;
+}
+.com_content .edit-form #hubForm {
+    border-color: #FFFFFF;
+}
+.subject #hubForm fieldset fieldset {
+    margin-top: 1em;
+    padding: 0 1em 1em;
+}
+.subject #hubForm .submit {
+    margin-right: 0;
+}
+/* Forms */
+
+.theclearfix:before, .theclearfix:after { content: ""; display: table; }
+.theclearfix:after { clear: both; }
+.theclearfix { *zoom: 1; height: auto; }
+
+
+@media only screen and (min-width: 1200px) {
+	
+	.subject {
+		margin-right: 330px;
+	}
+	.aside {
+		width: 300px;
+	}
+	
+	#hubForm .explaination {
+		width: 300px;
+	}
+	
+	#hubForm fieldset {
+		margin-right: 330px;
+	}
+
+}
+
+@media only screen and (max-width: 800px) {
+	
+	.subject {
+		margin-right: 0px;
+	}
+	.aside {
+		display: none;
+	}
+	
+	.columns {
+		float: none;
+		width: 100% !important;
+	}
+
+}
