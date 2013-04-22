@@ -82,7 +82,7 @@ $policy = $gradePolicy->get('description');
 							?>
 							<img src="<?= $src ?>" />
 						</div>
-						<?= JFactory::getUser($m->get('user_id'))->get('name'); ?>
+						<?= JFactory::getUser($m->get('user_id'))->get('name') ?>
 					</div>
 					<div class="progress-container">
 						<div class="student-progress-timeline">
@@ -128,13 +128,21 @@ $policy = $gradePolicy->get('description');
 				</a>
 				<div class="clear"></div>
 				<div class="student-details grades">
-					<div class="picture">
-						<?
-							$src = '/components/com_members/assets/img/profile.gif';
-							$src = Hubzero_User_Profile_Helper::getMemberPhoto($m->get('user_id'), 0, false);
-						?>
-						<img src="<?= $src ?>" />
-						<a class="more-details" href="<?= JRoute::_($base . '&active=progress&id=' . $m->get('user_id')) ?>">More details</a>
+					<div class="extended-info">
+						<div class="picture">
+							<?
+								$src = '/components/com_members/assets/img/profile.gif';
+								$src = Hubzero_User_Profile_Helper::getMemberPhoto($m->get('user_id'), 0, false);
+							?>
+							<img src="<?= $src ?>" />
+							<a class="more-details" href="<?= JRoute::_($base . '&active=progress&id=' . $m->get('user_id')) ?>">More details</a>
+						</div>
+						<div class="extended-info-extra">
+							<h6>Joined Course</h6>
+							<p><?= date('M j, Y', strtotime($m->get('enrolled'))) ?></p>
+							<h6>Last Visit</h6>
+							<p><?= date('M j, Y', strtotime(JFactory::getUser($m->get('user_id'))->get('lastvisitDate'))) ?></p>
+						</div>
 					</div>
 					<div class="units">
 						<div class="headers">

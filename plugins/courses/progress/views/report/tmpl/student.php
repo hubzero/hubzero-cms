@@ -38,6 +38,8 @@ $grades   = $this->course->offering()->gradebook()->grades(null, $this->juser->g
 $progress = $this->course->offering()->gradebook()->progress($this->juser->get('id'));
 $passing   = $this->course->offering()->gradebook()->passing(true, $this->juser->get('id'))->passing;
 
+$gradePolicy = new CoursesModelGradePolicies($this->course->offering()->section()->get('grade_policy_id'));
+
 $details = array();
 $details['quizzes_total']       = 0;
 $details['homeworks_total']     = 0;
@@ -272,6 +274,7 @@ $progress_timeline .= '</div>';
 	<div class="grades">
 		<div class="current-score">
 			<div class="current-score-inner">
+				<p class="grading-policy"><?= JText::_('grading policy') ?></p>
 				<p class="title"><?= JText::_('Your current score') ?></p>
 				<p class="score<?= ($passing) ? ' passing' : ' failing' ?>">
 					<?= $grades[$this->juser->get('id')]['course'][$this->course->get('id')] . '%' ?>
@@ -305,6 +308,10 @@ $progress_timeline .= '</div>';
 	</div>
 
 	<div class="clear"></div>
+
+	<p class="info grading-policy-explanation">
+		<?= $gradePolicy->get('description') ?>
+	</p>
 
 	<div class="units">
 	<? foreach($this->course->offering()->units() as $unit) : ?>

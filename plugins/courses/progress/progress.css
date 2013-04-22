@@ -239,6 +239,26 @@
 .grades p {
 	margin: 0;
 }
+.grades .grading-policy {
+	background: #F5F5F5;
+	display: block;
+	float: right;
+	padding: 5px;
+	border-radius: 5px;
+	margin: 20px;
+	border: 1px solid #C9C9C9;
+	box-shadow: 0 0 2px #DDD;
+}
+.grades .grading-policy:hover {
+	border: 1px solid #BBB;
+	box-shadow: 0 0 6px #CCC;
+	cursor: pointer;
+}
+.grades .grading-policy.active {
+	border: 1px solid #999;
+	background: #EEEEEE;
+	box-shadow: inset 0 0 2px #555;
+}
 .grades .title {
 	text-transform: uppercase;
 	padding-bottom: 7px;
@@ -582,6 +602,20 @@
 }
 .instructor .picture-thumb img {
 	height: 30px;
+}
+.instructor .extended-info {
+	float: left;
+	width: 100px;
+}
+.instructor .extended-info .extended-info-extra {
+	display: block;
+	float: left;
+	width: 125px;
+	text-align: center;
+}
+.instructor .extended-info-extra h6 {
+	text-decoration: underline;
+	margin: 1em 0 0 0;
 }
 .instructor .picture {
 	display: block;

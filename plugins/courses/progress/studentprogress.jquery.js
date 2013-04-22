@@ -32,6 +32,12 @@ HUB.Plugins.CoursesProgress = {
 
 		// Hide the grade details
 		$('.unit-details').hide();
+		$('.grading-policy-explanation').hide();
+
+		$('.grading-policy').on('click', function(e) {
+			$('.grading-policy-explanation').slideToggle('fast');
+			$(this).toggleClass('active');
+		});
 
 		$('.unit-overview').on('click', function(e) {
 			$(this).siblings('.unit-details').slideToggle(function() {
