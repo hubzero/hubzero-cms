@@ -2412,7 +2412,7 @@ class ResourcesHtml
 			$view->show_edit = $show_edit;
 
 			// Set the display date
-			switch ($show_date)
+			switch ($params->get('show_date'))
 			{
 				case 0: $view->thedate = ''; break;
 				case 1: $view->thedate = JHTML::_('date', $line->created, $dateFormat, $tz);    break;

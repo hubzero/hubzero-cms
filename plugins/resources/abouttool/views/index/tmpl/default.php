@@ -135,13 +135,16 @@ if ($shots) {
 }
 ?>
 	<div class="resource">
+<?php if ($thedate) { ?>
 		<div class="two columns first">
+<?php } ?>
 			<h4><?php echo JText::_('Category'); ?></h4>
 			<p class="resource-content">
 				<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $this->model->type->alias); ?>">
 					<?php echo $this->escape(stripslashes($this->model->type->type)); ?>
 				</a>
-			</tp>
+			</p>
+<?php if ($thedate) { ?>
 		</div>
 		<div class="two columns second">
 			<h4><?php echo JText::_('Published on'); ?></h4>
@@ -150,7 +153,7 @@ if ($shots) {
 			</p>
 		</div>
 		<div class="clearfix"></div>
-
+<?php } ?>
 <?php if ($this->model->resource->revision == 'dev' or !$this->model->resource->toolpublished) { ?>
 			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_ABSTRACT'); ?></h4>
 			<div class="resource-content">

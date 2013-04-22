@@ -94,13 +94,16 @@ $maintext = str_replace('</blink>', '', $maintext);
 ?>
 <div class="subject abouttab">
 	<div class="resource">
+<?php if ($thedate) { ?>
 		<div class="two columns first">
+<?php } ?>
 			<h4><?php echo JText::_('Category'); ?></h4>
 			<p class="resource-content">
 				<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $this->model->type->alias); ?>">
 					<?php echo $this->escape(stripslashes($this->model->type->type)); ?>
 				</a>
-			</tp>
+			</p>
+<?php if ($thedate) { ?>
 		</div>
 		<div class="two columns second">
 			<h4><?php echo JText::_('Published on'); ?></h4>
@@ -109,6 +112,7 @@ $maintext = str_replace('</blink>', '', $maintext);
 			</p>
 		</div>
 		<div class="clearfix"></div>
+<?php } ?>
 <?php
 // Check how much we can display
 if (!$this->model->access('view-all')) {

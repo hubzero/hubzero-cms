@@ -96,7 +96,7 @@ class plgResourcesSponsors extends Hubzero_Plugin
 				'layout'  => 'mini'
 			)
 		);
-		
+
 		if ($miniview) 
 		{
 			$this->view->setLayout('mini');
@@ -107,66 +107,27 @@ class plgResourcesSponsors extends Hubzero_Plugin
 		$this->view->resource = $resource;
 		$this->view->params   = $this->params;
 		$this->view->data     = '';
-		
-		/*require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'type.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'html.php');
-		
-		// Parse for <nb: > tags
-		$type = new ResourcesType($this->database);
-		$type->load($resource->type);
 
-		$fields = array();
-		if (trim($type->customFields) != '') 
-		{
-			$fs = explode("\n", trim($type->customFields));
-			foreach ($fs as $f)
-			{
-				$fields[] = explode('=', $f);
-			}
-		}
-		
-		$names = array('sponsor', 'sponsors', 'sponsordata', 'sponsorsdata', 'sponsoredby');
-
-		$maintext  = ($resource->fulltxt)
-				   ? stripslashes($resource->fulltxt)
-				   : stripslashes($resource->introtext);
-
-		if (!empty($fields)) 
-		{
-			for ($i=0, $n=count($fields); $i < $n; $i++)
-			{
-				// Clean the original text of any matches
-				if (in_array($fields[$i][0], $names))
-				{
-					$this->view->data = ResourcesHtml::parseTag($maintext, $fields[$i][0]);
-					$maintext = str_replace('<nb:' . $fields[$i][0] . '>' . end($fields[$i]) . '</nb:' . $fields[$i][0] . '>', '', $maintext);
-				}
-			}
-			$resource->fulltxt = trim($maintext);
-		}*/
 		require_once(JPATH_ROOT . DS . 'plugins' . DS . 'resources' . DS . 'sponsors' . DS . 'tables' . DS . 'sponsor.php');
-		//$format = $this->params->get('format', '{journal}@{sponsor}');
-		
+
 		$this->sponsors = array();
-		
+
 		$model = new ResourcesSponsor($this->database);
 		$records = $model->getRecords(array('state' => 1));
 		if (!$records)
 		{
 			return $arr;
 		}
-		
+
 		foreach ($records As $record)
 		{
 			$this->sponsors[$record->alias] = $record;
 		}
-		
-		//$helper = new ResourcesHelper($resource->id, $this->database);
-		//$tags = $helper->getTags();
+
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
 		$rt = new ResourcesTags($this->database);
-		$tags = $rt->getTags($resource->id);
-		
+		$tags = $rt->getTags($resource->id, 0, 0, 1);
+
 		if ($tags)
 		{
 			foreach ($tags as $tag)
@@ -189,29 +150,47 @@ class plgResourcesSponsors extends Hubzero_Plugin
 
 		return $arr;
 	}
-	
+
+	/**
+	 * Return plugin name if this plugin has an admin interface
+	 *
+	 * @return	string
+	 */
 	public function onCanManage()
 	{
 		return $this->_name;
 	}
-	
+
+	/**
+	 * Determine task and execute it
+	 *
+	 * @param     string $option     Component name
+	 * @param     string $controller Controller name
+	 * @param     string $task       Task to perform
+	 * @return    void
+	 */
 	public function onManage($option, $controller='plugins', $task='default')
 	{
 		$task = ($task) ?  $task : 'default';
-		
+
 		ximport('Hubzero_Plugin_View');
 		require_once(JPATH_ROOT . DS . 'plugins' . DS . 'resources' . DS . 'sponsors' . DS . 'tables' . DS . 'sponsor.php');
-		
-		$this->_option = $option;
+
+		$this->_option     = $option;
 		$this->_controller = $controller;
-		$this->_task = $task;
-		$this->database = JFactory::getDBO();
+		$this->_task       = $task;
+		$this->database    = JFactory::getDBO();
 
 		$method = strtolower($task) . 'Task';
-		
+
 		return $this->$method();
 	}
-	
+
+	/**
+	 * Display a list of sponsors
+	 *
+	 * @return	void
+	 */
 	public function defaultTask()
 	{
 		// Instantiate a view
@@ -346,7 +325,7 @@ class plgResourcesSponsors extends Hubzero_Plugin
 		// Initiate extended database class
 		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
 		$fields = array_map('trim', $fields);
-		
+
 		$row = new ResourcesSponsor($this->database);
 		if (!$row->bind($fields)) 
 		{
@@ -367,9 +346,9 @@ class plgResourcesSponsors extends Hubzero_Plugin
 			$this->setError($row->getError());
 			return $this->editTask($row);
 		}
-		
+
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'tag.php');
-		
+
 		$t = new TagsTag($this->database);
 		$t->loadTag($row->alias);
 		if (!$t->id) 
@@ -419,20 +398,6 @@ class plgResourcesSponsors extends Hubzero_Plugin
 
 		foreach ($ids as $id)
 		{
-			// Check if the type is being used
-			/*$total = $rt->checkUsage($id);
-
-			if ($total > 0) 
-			{
-				// Redirect with error message
-				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&plugin=sponsors',
-					JText::sprintf('There are resources with sponsor %s. Please reassign them before deleting this sponsor.', $id),
-					'error'
-				);
-				return;
-			}*/
-
 			// Delete the type
 			$rt->delete($id);
 		}
@@ -443,7 +408,7 @@ class plgResourcesSponsors extends Hubzero_Plugin
 			JText::_('Type successfully saved')
 		);
 	}
-	
+
 	/**
 	 * Calls stateTask to publish entries
 	 * 
@@ -453,7 +418,7 @@ class plgResourcesSponsors extends Hubzero_Plugin
 	{
 		$this->stateTask(1);
 	}
-	
+
 	/**
 	 * Calls stateTask to unpublish entries
 	 * 
@@ -463,7 +428,7 @@ class plgResourcesSponsors extends Hubzero_Plugin
 	{
 		$this->stateTask(0);
 	}
-	
+
 	/**
 	 * Sets the state of one or more entries
 	 * 
@@ -474,7 +439,7 @@ class plgResourcesSponsors extends Hubzero_Plugin
 	{
 		// Check for request forgeries
 		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		// Incoming
 		$ids = JRequest::getVar('id', array());
 
@@ -519,7 +484,7 @@ class plgResourcesSponsors extends Hubzero_Plugin
 			$message
 		);
 	}
-	
+
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
@@ -531,7 +496,7 @@ class plgResourcesSponsors extends Hubzero_Plugin
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&plugin=sponsors'
 		);
 	}
-	
+
 	/**
 	 * Redirect
 	 *
