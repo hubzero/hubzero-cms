@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 $juri =& JURI::getInstance();
 $jconfig =& JFactory::getConfig();
 
-$dateFormat = '%d %b, %Y';
+$dateFormat = '%d %b %Y';
 $timeFormat = '%I:%M %p';
 $tz = 0;
 if (version_compare(JVERSION, '1.6', 'ge'))
@@ -44,8 +44,17 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$tz = true;
 }
 
-$sef = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=' . $this->ticket->id);
-$link = rtrim($juri->base(), DS) . DS . trim($sef, DS);
+$base = rtrim($juri->base(), DS);
+if (substr($base, -13) == 'administrator')
+{
+	$base = substr($base, 0, strlen($base)-13);
+	$sef = 'support/ticket/' . $this->ticket->id;
+}
+else
+{
+	$sef = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=' . $this->ticket->id);
+}
+$link = rtrim($base, DS) . DS . trim($sef, DS);
 
 switch ($this->ticket->severity)
 {
@@ -400,9 +409,11 @@ Content-type: text/html;charset=utf-8";
 
 										<!-- ====== Start Footer Spacer ====== -->
 										<table  width="650" cellpadding="0" cellspacing="0" border="0">
-											<tr style="border-collapse: collapse;">
-												<td height="30" style="border-collapse: collapse;"></td>
-											</tr>
+											<tbody>
+												<tr style="border-collapse: collapse;">
+													<td height="30" style="border-collapse: collapse; height: 30px;"></td>
+												</tr>
+											</tbody>
 										</table>
 										<!-- ====== End Footer Spacer ====== -->
 

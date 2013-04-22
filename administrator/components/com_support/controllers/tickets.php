@@ -563,28 +563,29 @@ class SupportControllerTickets extends Hubzero_Controller
 					$from['name']  = $jconfig->getValue('config.sitename') . ' ' . ucfirst($this->_name);
 					$from['email'] = $jconfig->getValue('config.mailfrom');
 
-					$message  = '----------------------------'."\r\n";
-					$message .= strtoupper(JText::_('TICKET')).': '.$row->id."\r\n";
-					$message .= strtoupper(JText::_('TICKET_DETAILS_SUMMARY')).': '.stripslashes($row->summary)."\r\n";
-					$message .= strtoupper(JText::_('TICKET_DETAILS_CREATED')).': '.$row->created."\r\n";
-					$message .= strtoupper(JText::_('TICKET_DETAILS_CREATED_BY')).': '.$row->name;
-					$message .= ($row->login) ? ' ('.$row->login.')'."\r\n" : "\r\n";
-					$message .= strtoupper(JText::_('TICKET_FIELD_STATUS')).': '.SupportHtml::getStatus($row->status)."\r\n";
-					$message .= '----------------------------'."\r\n\r\n";
-					$message .= JText::sprintf('TICKET_EMAIL_COMMENT_POSTED',$row->id).': '.$rowc->created_by."\r\n";
-					$message .= JText::_('TICKET_EMAIL_COMMENT_CREATED').': '.$rowc->created."\r\n\r\n";
+					$message = array();
+					$message['plaintext']  = '----------------------------'."\r\n";
+					$message['plaintext'] .= strtoupper(JText::_('TICKET')).': '.$row->id."\r\n";
+					$message['plaintext'] .= strtoupper(JText::_('TICKET_DETAILS_SUMMARY')).': '.stripslashes($row->summary)."\r\n";
+					$message['plaintext'] .= strtoupper(JText::_('TICKET_DETAILS_CREATED')).': '.$row->created."\r\n";
+					$message['plaintext'] .= strtoupper(JText::_('TICKET_DETAILS_CREATED_BY')).': '.$row->name;
+					$message['plaintext'] .= ($row->login) ? ' ('.$row->login.')'."\r\n" : "\r\n";
+					$message['plaintext'] .= strtoupper(JText::_('TICKET_FIELD_STATUS')).': '.SupportHtml::getStatus($row->status)."\r\n";
+					$message['plaintext'] .= '----------------------------'."\r\n\r\n";
+					$message['plaintext'] .= JText::sprintf('TICKET_EMAIL_COMMENT_POSTED',$row->id).': '.$rowc->created_by."\r\n";
+					$message['plaintext'] .= JText::_('TICKET_EMAIL_COMMENT_CREATED').': '.$rowc->created."\r\n\r\n";
 					if ($row->owner != $old->owner)
 					{
 						if ($old->owner == '')
 						{
-							$message .= JText::_('TICKET_FIELD_OWNER').' '.JText::_('TICKET_SET_TO').' "'.$row->owner.'"'."\r\n\r\n";
+							$message['plaintext'] .= JText::_('TICKET_FIELD_OWNER').' '.JText::_('TICKET_SET_TO').' "'.$row->owner.'"'."\r\n\r\n";
 						}
 						else
 						{
-							$message .= JText::_('TICKET_FIELD_OWNER').' '.JText::_('TICKET_CHANGED_FROM').' "'.$old->owner.'" to "'.$row->owner.'"'."\r\n\r\n";
+							$message['plaintext'] .= JText::_('TICKET_FIELD_OWNER').' '.JText::_('TICKET_CHANGED_FROM').' "'.$old->owner.'" to "'.$row->owner.'"'."\r\n\r\n";
 						}
 					}
-					$message .= $attach->parse($comment) . "\r\n\r\n";
+					$message['plaintext'] .= $attach->parse($comment) . "\r\n\r\n";
 
                     // Prepare message to allow email responses to be parsed and added to the ticket
 					if ($allowEmailResponses)
@@ -598,7 +599,7 @@ class SupportControllerTickets extends Hubzero_Controller
 						$prependtext .= "Attachments (up to 2MB each) are permitted\r\n" ;
 						$prependtext .= "Message from " . $live_site . " / Ticket #" . $row->id . "\r\n";
 
-						$message = $prependtext . "\r\n\r\n" . $message;
+						$message['plaintext'] = $prependtext . "\r\n\r\n" . $message['plaintext'];
 					}
 
 					// Build the link to the ticket
@@ -606,11 +607,29 @@ class SupportControllerTickets extends Hubzero_Controller
 					//   and it would return only the script name and querystring (index.php?option=...)
 					//   We need nice URLs that can be clicked.
 					$sef = $this->_name . '/ticket/' . $row->id;
-					if (substr($sef, 0, 1) == '/')
-					{
-						$sef = substr($sef, 1, strlen($sef));
-					}
-					$message .= $base . $sef . "\r\n";
+					$message['plaintext'] .= rtrim($base, DS) . DS . ltrim($sef, DS) . "\r\n";
+
+					// Html email
+					$from['multipart'] = md5(date('U'));
+
+					//$rowc->comment   = $attach->parse($rowc->comment);
+					$rowc->changelog = $log;
+
+					$eview = new JView(array(
+						'base_path' => JPATH_ROOT . DS . 'components' . DS . $this->_option,
+						'name'      => 'emails',
+						'layout'    => 'comment'
+					));
+					$eview->option     = $this->_option;
+					$eview->controller = $this->_controller;
+					$eview->comment    = $rowc;
+					$eview->ticket     = $row;
+					$eview->delimiter  = '~!~!~!~!~!~!~!~!~!~!';
+					$eview->boundary   = $from['multipart'];
+					$eview->attach     = $attach;
+
+					$message['multipart'] = $eview->loadTemplate();
+					$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
 					// An array for all the addresses to be e-mailed
 					$emails = array();
