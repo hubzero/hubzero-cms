@@ -50,5 +50,42 @@ class WishTags extends TagsHandler
 		$this->_db  = $db;
 		$this->_tbl = 'wishlist';
 	}
+
+	/**
+	 * Turn a string of tags to an array
+	 * 
+	 * @param      string $tag Tag string
+	 * @return     mixed
+	 */
+	public function parseTags($tag, $remove='')
+	{
+		if (is_array($tag))
+		{
+			$bunch = $tag;
+		}
+		else
+		{
+			$bunch = $this->_parse_tags($tag);
+		}
+
+		$tags = array();
+		if ($remove)
+		{
+			foreach ($bunch as $t)
+			{
+				if ($remove == $t)
+				{
+					continue;
+				}
+				$tags[] = $t;
+			}
+		}
+		else
+		{
+			return $bunch;
+		}
+
+		return $tags;
+	}
 }
 
