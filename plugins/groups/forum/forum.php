@@ -1386,7 +1386,10 @@ class plgGroupsForum extends Hubzero_Plugin
 			$this->addPluginMessage($model->getError(), 'error');
 			return $this->editthread($model);
 		}
-		
+		if (!$model->anonymous)
+		{
+			$model->anonymous = 0;
+		}
 		// Check content
 		if (!$model->check()) 
 		{
