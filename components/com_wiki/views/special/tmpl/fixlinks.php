@@ -71,7 +71,7 @@ $pageNav = new JPagination(
 	$limit
 );
 ?>
-<form method="get" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:FixVersion'); ?>">
+<form method="get" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->scope . '&pagename=Special:FixLinks'); ?>">
 	<p>
 		This special page updates the link log for every page.
 	</p>
@@ -148,7 +148,7 @@ else
 		</table>
 		<?php
 		$pageNav->setAdditionalUrlParam('scope', $this->page->scope);
-		$pageNav->setAdditionalUrlParam('pagename', $this->page->pagename);
+		$pageNav->setAdditionalUrlParam('pagename', 'Special:' . $this->page->pagename);
 
 		echo $pageNav->getListFooter();
 		?>

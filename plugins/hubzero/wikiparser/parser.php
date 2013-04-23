@@ -1685,7 +1685,10 @@ class WikiParser
 			array_push($this->macros, $macro->render());
 			if (count($macro->linkLog) > 0)
 			{
-				array_push($this->_linkLog, $macro->linkLog);
+				foreach ($macro->linkLog as $linkLog)
+				{
+					array_push($this->_linkLog, $linkLog);
+				}
 			}
 			return 'MACRO' . $this->mUniqPrefix;
 		}
