@@ -59,6 +59,11 @@ else
 	<h2>
 		<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
 	</h2>
+	<?php if ($this->course->get('logo')) { ?>
+	<p class="course-identity">
+		<img src="/site/courses/<?php echo $this->course->get('id'); ?>/<?php echo $this->course->get('logo'); ?>" alt="<?php echo JText::_('Course logo'); ?>" />
+	</p>
+	<?php } ?>
 </div>
 <div id="content-header-extra">
 	<ul>
