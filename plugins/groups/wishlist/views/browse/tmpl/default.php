@@ -190,7 +190,7 @@ else {
 						<td class="voting">
 <?php
 							$view = new JView( array('name'=>'rateitem', 'base_path' => JPATH_ROOT.DS.'components'.DS.'com_wishlist') );
-							$view->option = $this->option;
+							$view->option = 'com_wishlist';
 							$view->item = $item;
 							$view->listid = $this->wishlist->id;
 							$view->plugin = 0;
