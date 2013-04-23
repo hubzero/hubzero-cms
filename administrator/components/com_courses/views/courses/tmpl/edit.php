@@ -177,6 +177,23 @@ function submitbutton(pressbutton)
 				</tbody>
 			</table>
 		</fieldset>
+		
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('IMAGE'); ?></span></legend>
+			
+			<?php
+			if ($this->row->exists()) {
+				$pics = stripslashes($this->row->get('logo'));
+				$pics = explode(DS, $pics);
+				$file = end($pics);
+			?>
+			<iframe width="100%" height="350" name="filer" id="filer" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=logo&amp;tmpl=component&amp;file=<?php echo $file; ?>&amp;id=<?php echo $this->row->get('id'); ?>"></iframe>
+			<?php
+			} else {
+				echo '<p class="warning">'.JText::_('COM_COURSES_PICTURE_ADDED_LATER').'</p>';
+			}
+			?>
+		</fieldset>
 	</div>
 	<div class="clr"></div>
 
