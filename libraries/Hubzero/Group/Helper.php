@@ -293,7 +293,15 @@ class Hubzero_Group_Helper
 						$d_cls = "";
 					}
 					$html .= "<div class=\"details{$d_cls}\">";
-						$html .= "<h3><a href=\"" . JRoute::_('index.php?option=com_groups&task=view&cn=' . $group->cn) . "\">{$hg->description}</a></h3>";
+						if(!$isPublished)
+						{
+							$html .= "<h3>{$hg->description}</h3>";
+						}
+						else
+						{
+							$html .= "<h3><a href=\"" . JRoute::_('index.php?option=com_groups&task=view&cn=' . $group->cn) . "\">{$hg->description}</a></h3>";
+						}
+						
 						if($gdescription)
 						{
 							$html .= "<p>{$gdescription}</p>";
