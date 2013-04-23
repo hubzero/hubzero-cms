@@ -91,6 +91,11 @@
 		-o-border-radius: 1px;
 		border-radius: 1px;
 	}
+	.entry-search ul.token-input-list-act, 
+	.entry-search ul.token-input-list-acg, 
+	.entry-search ul.token-input-list-acm {
+		border: 1px solid #666;
+	}
 
 /* Field - focus */
 	ul.token-input-list-focus-act,

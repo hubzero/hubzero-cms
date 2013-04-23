@@ -2668,20 +2668,38 @@ System styles
 	.data-entry {
 		background: #666 url("../images/layout/noise.png");
 	}
+	.entry-search input[type="text"],
 	.entry-search input {
 		background: #fff url("../images/layout/input-search.png") 5px 50% no-repeat;
-		padding: 5px 5px 5px 20px;
+		padding-left: 20px;
 	}
 	.entry-search ul.textboxlist-holder,
 	.entry-search ul.token-input-list-act {
 		background: #fff url("../images/layout/input-tags.png") 5px 50% no-repeat;
 		padding-left: 23px;
 	}
+	.entry-search ul.token-input-list-act li input[type="text"],
 	.entry-search ul.token-input-list-act li input,
 	.entry-search ul.textboxlist-holder li input {
-		padding: 5px;
-		background: #fff
+		background: #fff;
+		border: none !important;
+		padding-bottom: 6px;
 	}
+	/* [!] Target Opera */
+	html.opera .entry-search ul.token-input-list-act li input[type="text"],
+	html.opera .entry-search ul.token-input-list-act li input,
+	html.opera .entry-search ul.textboxlist-holder li input {
+		padding-bottom: 8px;
+	}
+	/* [!] Target Firefox */
+	@-moz-document url-prefix() {
+		.entry-search ul.token-input-list-act li input[type="text"],
+		.entry-search ul.token-input-list-act li input,
+		.entry-search ul.textboxlist-holder li input {
+			padding-bottom: 8px;
+		}
+	}
+
 	.aside .container h3,
 	.aside .container h4 {
 		color: #333;
@@ -2708,6 +2726,13 @@ System styles
 	.aside .container ol ol li,
 	.aside .container ul ul li {
 		padding-left: 1.618em;
+	}
+	.aside .container .tags {
+		padding-left: 10px;
+	}
+	.aside .container .tags li {
+		background: transparent;
+		padding: 0;
 	}
 	ol.comments .addcomment {
 		background: #eee url("../images/layout/noise-lite.png");

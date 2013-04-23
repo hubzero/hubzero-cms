@@ -115,16 +115,98 @@
 	.entry-search label {
 		display: none;
 	}
+	.entry-search input[type="text"],
 	.entry-search input {
-		width: 95%;
-		border: 1px solid #A8A8A8;
-		background: #fff;
+		width: 100%;
+		border: 1px solid #666;
+		background-color: #fff;
 		padding: 5px;
+		margin: 0;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-ms-box-sizing: border-box;
+		-o-box-sizing: border-box;
+		box-sizing: border-box;
+		-webkit-background-clip: padding-box;
+		-moz-background-clip: padding-box;
+		-ms-background-clip: padding-box;
+		-o-background-clip: padding-box;
+		background-clip: padding-box;
+		outline: none;
+		display: inline-block;
+		*display: inline;
 	}
-	.entry-search-submit {
+	.data-entry input.entry-search-submit {
 		width: auto;
 		float: right;
-		margin: 3px 0 0 10px;
+		background: #f1f1f1;
+		-webkit-border-radius: 0 0.25em 0.25em 0;
+		-moz-border-radius: 0 0.25em 0.25em 0;
+		-ms-border-radius: 0 0.25em 0.25em 0;
+		-o-border-radius: 0 0.25em 0.25em 0;
+		border-radius: 0 0.25em 0.25em 0;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-ms-box-sizing: border-box;
+		-o-box-sizing: border-box;
+		box-sizing: border-box;
+		-webkit-background-clip: padding-box;
+		-moz-background-clip: padding-box;
+		-ms-background-clip: padding-box;
+		-o-background-clip: padding-box;
+		background-clip: padding-box;
+		font-size: 1em;
+		padding: 5px 10px;
+		margin: 0;
+		display: inline-block;
+		*display: inline; /* [!] IE 7- */
+		line-height: 1.61803399em;
+		outline: none;
+		background: #e0e0e0;
+		background: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#e0e0e0));
+		background: -webkit-linear-gradient(#FAFAFA, #e0e0e0);
+		background: -moz-linear-gradient(center top, #FAFAFA 0%, #e0e0e0 100%);
+		background: -moz-gradient(center top, #FAFAFA 0%, #e0e0e0 100%);
+		background: -ms-linear-gradient(#FAFAFA, #e0e0e0);
+		background: -o-linear-gradient(#FAFAFA, #e0e0e0);
+		background: linear-gradient(#FAFAFA, #e0e0e0);
+		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FAFAFA,endColorstr=#e0e0e0);
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FAFAFA, endColorstr=#e0e0e0)";
+		color: #666;
+		border: 1px solid #666;
+		border-left: none;
+	}
+	.data-entry .applied-tags {
+		margin-top: 0px;
+		padding: 0.5em 1em;
+		background-color: rgba(255, 255, 255, 0.2);
+		-webkit-border-radius: 0 0 0.25em 0.25em;
+		-moz-border-radius: 0 0 0.25em 0.25em;
+		-ms-border-radius: 0 0 0.25em 0.25em;
+		-o-border-radius: 0 0 0.25em 0.25em;
+		border-radius: 0 0 0.25em 0.25em;
+	}
+	/* [!] Target Opera */
+	html.opera .data-entry input.entry-search-submit {
+		padding-top: 7px;
+		padding-bottom: 7px;
+	}
+	html.opera .entry-search input[type="text"],
+	html.opera .entry-search input {
+		padding-top: 7px;
+		padding-bottom: 7px;
+	}
+	/* [!] Target Firefox */
+	@-moz-document url-prefix() {
+		.data-entry input.entry-search-submit {
+			padding-top: 6px;
+			padding-bottom: 6px;
+		}
+		.entry-search input[type="text"],
+		.entry-search input {
+			padding-top: 7px;
+			padding-bottom: 7px;
+		}
 	}
 /* Aside */
 	.aside .container {

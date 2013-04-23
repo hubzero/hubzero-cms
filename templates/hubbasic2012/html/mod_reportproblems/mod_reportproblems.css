@@ -39,6 +39,41 @@
 	color: rgba(255, 255, 255, 0.8);
 }
 #tab {
+	display: block;
+	position: absolute;
+	top: 76px;
+	right: 30px;
+	width: 5em;
+	height: 3em;
+	text-align: right;
+	margin: 0;
+	line-height: 1.2em;
+	font-size: 90%;
+}
+#tab.active {
+	background: #000;
+}
+#tab a { 
+	padding: 0;
+	color: #fff;
+	height: 3em;
+	display: block;
+	border: none;
+}
+#tab a span { 
+	color: #fff;
+	height: 2em;
+	display: block;
+	border: none;
+}
+#tab a:hover {
+	color: #d7c2ef;
+	background: #616161;
+}
+#tab a:hover span {
+	color: #d7c2ef;
+}
+#tab {
 	padding: 0;
 	margin: 0;
 	top: 0;
