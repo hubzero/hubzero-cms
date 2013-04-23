@@ -64,7 +64,7 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 				<?php if ($this->popular) { ?>
 					<?php foreach ($this->popular as $row) { ?>
 						<li>
-							<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias); ?>">
+							<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$row->publish_up, $this->monthFormat, $this->tz).'/'.$row->alias); ?>">
 								<?php echo stripslashes($row->title); ?>
 							</a>
 						</li>
@@ -79,7 +79,7 @@ $editor =& Hubzero_Wiki_Editor::getInstance();
 				<?php if ($this->recent) { ?>
 					<?php foreach ($this->recent as $row) { ?>
 						<li>
-							<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$row->publish_up, '%Y', 0).'/'.JHTML::_('date',$row->publish_up, '%m', 0).'/'.$row->alias); ?>">
+							<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$row->publish_up, $this->yearFormat, $this->tz).'/'.JHTML::_('date',$row->publish_up, $this->monthFormat, $this->tz).'/'.$row->alias); ?>">
 								<?php echo stripslashes($row->title); ?>
 							</a>
 						</li>

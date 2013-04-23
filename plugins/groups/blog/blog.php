@@ -168,7 +168,7 @@ class plgGroupsBlog extends JPlugin
 
 			$this->dateFormat  = '%d %b, %Y';
 			$this->timeFormat  = '%I:%M %p';
-			$this->monthFormat = '%b';
+			$this->monthFormat = '%m';
 			$this->yearFormat  = '%Y';
 			$this->dayFormat   = '%d';
 			$this->tz = 0;
@@ -176,7 +176,7 @@ class plgGroupsBlog extends JPlugin
 			{
 				$this->dateFormat  = 'd M, Y';
 				$this->timeFormat  = 'h:i a';
-				$this->monthFormat = 'b';
+				$this->monthFormat = 'm';
 				$this->yearFormat  = 'Y';
 				$this->dayFormat   = 'd';
 				$this->tz = true;
@@ -767,7 +767,7 @@ class plgGroupsBlog extends JPlugin
 	 * 
 	 * @return     string
 	 */
-	private function _edit()
+	private function _edit($row=null)
 	{
 		$juser =& JFactory::getUser();
 		$app =& JFactory::getApplication();
@@ -815,19 +815,34 @@ class plgGroupsBlog extends JPlugin
 
 		$id = JRequest::getInt('entry', 0);
 
-		$view->entry = new BlogEntry($this->database);
-		$view->entry->load($id, 'member');
-		if (!$view->entry->id) 
+		if (is_object($row))
 		{
-			$view->entry->allow_comments = 1;
-			$view->entry->state = 0;
-			$view->entry->scope = 'group';
-			$view->entry->created_by = $juser->get('id');
-			$view->entry->group_id = $this->group->get('gidNumber');
+			$view->entry = $row;
+		}
+		else
+		{
+			$view->entry = new BlogEntry($this->database);
+			$view->entry->load($id, 'member');
+			if (!$view->entry->id) 
+			{
+				$view->entry->allow_comments = 1;
+				$view->entry->state = 0;
+				$view->entry->scope = 'group';
+				$view->entry->created_by = $juser->get('id');
+				$view->entry->group_id = $this->group->get('gidNumber');
+			}
 		}
 
 		$bt = new BlogTags($this->database);
 		$view->tags = $bt->get_tag_string($view->entry->id);
+		
+		if ($this->getError()) 
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$view->setError($error);
+			}
+		}
 		
 		Hubzero_Document::addPluginScript('groups', 'blog');
 		Hubzero_Document::addSystemScript('jquery.timepicker');
@@ -902,7 +917,7 @@ class plgGroupsBlog extends JPlugin
 		if (!$row->bind($entry)) 
 		{
 			$this->setError($row->getError());
-			return $this->_edit();
+			return $this->_edit($row);
 		}
 
 		//$row->id = JRequest::getInt('entry_id', 0);
@@ -912,6 +927,14 @@ class plgGroupsBlog extends JPlugin
 			$row->alias = $this->_normalizeTitle($row->title);
 			$row->created = date('Y-m-d H:i:s', time());  // use gmdate() ?
 			$row->publish_up = date('Y-m-d H:i:s', time());
+
+			$item = new BlogEntry($this->database);
+			$item->loadAlias($row->alias, 'group', 0, $this->group->get('gidNumber'));
+			if ($item->id)
+			{
+				$this->setError(JText::_('An entry with the alias generated from this title already exists. Please modify the title.'));
+				return $this->_edit($row);
+			}
 		}
 
 		if (!$row->publish_up || $row->publish_up == '0000-00-00 00:00:00') 
@@ -923,14 +946,14 @@ class plgGroupsBlog extends JPlugin
 		if (!$row->check()) 
 		{
 			$this->setError($row->getError());
-			return $this->_edit();
+			return $this->_edit($row);
 		}
 
 		// Store new content
 		if (!$row->store()) 
 		{
 			$this->setError($row->getError());
-			return $this->_edit();
+			return $this->_edit($row);
 		}
 
 		// Process tags
