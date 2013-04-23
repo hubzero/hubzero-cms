@@ -464,9 +464,11 @@ class BlogEntry extends JTable
 		} 
 		else 
 		{
-			$query .= "AND (m.publish_up = " . $this->_db->Quote($nullDate) . " OR m.publish_up <= " . $this->_db->Quote($now) . ") 
-					AND (m.publish_down = " . $this->_db->Quote($nullDate) . " OR m.publish_down >= " . $this->_db->Quote($now) . ")";
+			$query .= "AND (m.publish_up = " . $this->_db->Quote($nullDate) . " OR m.publish_up <= " . $this->_db->Quote($now) . ")";
+					//AND (m.publish_down = " . $this->_db->Quote($nullDate) . " OR m.publish_down >= " . $this->_db->Quote($now) . ")";
 		}
+		$query .= "AND (m.publish_down = " . $this->_db->Quote($nullDate) . " OR m.publish_down >= " . $this->_db->Quote($now) . ")";
+
 		if (isset($filters['created_by']) && (int) $filters['created_by'] != 0) 
 		{
 			$query .= " AND m.created_by=" . $this->_db->Quote(intval($filters['created_by']));
