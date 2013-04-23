@@ -893,6 +893,7 @@ span.group-pending {
 }
 #page_content .figure {
 	display: inline-block;
+	*display: inline;
 	background: #fff;
 	border: 1px solid #eaeaea;
 	border-radius: 3px;
@@ -901,13 +902,13 @@ span.group-pending {
 #page_content .figure a {
 	border: none;
 	display: block;
-	padding:0.5em;
+	padding: 0.5em;
 } 
 #page_content .figure img {
 	display: block;
 	padding: 0;
 	background: transparent;
-	max-width: 100%;
+	/*max-width: 100%;*/
 }
 #page_content .figcaption {
 	display: block;
