@@ -1304,6 +1304,9 @@ td.activate a {
 	height: 18px;
 	text-align: center;
 	border-bottom:none;
+	overflow: hidden;
+	text-indent: 5em;
+	white-space: nowrap;
 }
 a.quick-view:before,
 td.order a:before,
@@ -1322,6 +1325,7 @@ td.activate a:before {
 	left: 0;
 	width: 18px;
 	height: 18px;
+	text-indent: 0;
 }
 a.quick-view:hover,
 td.order a:hover,
@@ -1331,6 +1335,15 @@ td.editpage a:hover,
 td.deactivate a:hover,
 td.activate a:hover {
 	border: none;
+}
+a.quick-view:hover:before,
+td.order a:hover:before,
+td.up a:hover:before,
+td.down a:hover:before,
+td.editpage a:hover:before,
+td.deactivate a:hover:before,
+td.activate a:hover:before {
+	color: #333;
 }
 td.deactivate a:before {
 	content: '\f057';
