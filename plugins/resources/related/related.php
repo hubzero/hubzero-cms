@@ -86,9 +86,11 @@ class plgResourcesRelated extends JPlugin
 
 		// Build the query that checks topic pages
 		$sql1 = "SELECT v.id, v.pageid, MAX(v.version) AS version, w.title, w.pagename AS alias, v.pagetext AS introtext, NULL AS type, NULL AS published, NULL AS publish_up, w.scope, w.rating, w.times_rated, w.ranking, 'Topic' AS section, w.`group_cn`  
-				FROM #__wiki_page AS w, #__wiki_version AS v
-				WHERE w.id=v.pageid AND v.approved=1 AND (v.pagetext LIKE '%[[Resource(".$resource->id . ")]]%' OR v.pagetext LIKE '%[[Resource(" . $resource->id . ",%' OR v.pagetext LIKE '%[/resources/" . $resource->id . " %'";
-		$sql1 .= ($resource->alias) ? " OR v.pagetext LIKE '%[[Resource(" . $resource->alias . "%') " : ") ";
+				FROM #__wiki_page AS w 
+				JOIN #__wiki_version AS v ON w.id=v.pageid
+				JOIN #__wiki_page_links AS wl ON wl.page_id=w.id
+				WHERE v.approved=1 AND wl.scope='resource' AND wl.scope_id=". $database->Quote($resource->id);
+
 		$juser =& JFactory::getUser();
 		if (!$juser->get('guest')) 
 		{
