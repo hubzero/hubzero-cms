@@ -1,0 +1,37 @@
+.whosonline-summary {
+	background: #FFF;
+	border-top: 1px solid #DFDFDF;
+	border-left: 1px solid #DFDFDF;
+	border-bottom: 1px solid #DFDFDF;
+	margin-bottom: 20px !important;
+}
+.whosonline-summary thead th {
+	color: #AAA;
+	font-weight: normal;
+	border-left: 1px solid #DFDFDF;
+	border-right: 1px solid #DFDFDF;
+	border-bottom: none;
+}
+.whosonline-summary thead th:last-child {
+	border-left: none;
+}
+.whosonline-summary tbody td {
+	border-right: 1px solid #DFDFDF;
+}
+
+.whosonline-summary .front-end,
+.whosonline-summary .back-end {
+	font-size: 2.5em;
+	font-weight: normal;
+}
+.whosonline-summary .back-end {
+	color: #999;
+}
+.whosonline-list thead td {
+	border-bottom: 1px solid #efefef;
+	border-right: 1px solid #efefef;
+}
+
+.whosonline-list .view-all {
+	text-align: center;
+}

@@ -543,6 +543,39 @@ class MembersControllerMembers extends Hubzero_Controller
 			JText::_('MEMBERS_CONFIRMATION_CHANGED')
 		);
 	}
+	
+	public function whosOnlineTask()
+	{
+		// hides Administrator or Super Administrator from list depending on usertype
+		$and = '';
+		if ( $this->juser->get('gid') == 24 )
+		{
+			$and = ' AND gid != "25"';
+		}
+		
+		// manager check
+		if ( $this->juser->get('gid') == 23 )
+		{
+			$and = ' AND gid != "25"';
+			$and .= ' AND gid != "24"';
+		}
+		
+		//get users online
+		$query = 'SELECT username, MAX(time) as time, userid, usertype, client_id'
+		. ' FROM #__session'
+		. ' WHERE userid != 0'
+		. $and
+		. ' GROUP BY userid, client_id'
+		. ' ORDER BY time DESC';
+		$this->database->setQuery( $query );
+		$this->view->rows = $this->database->loadObjectList();
+		
+		//
+		$this->view->juser = $this->juser;
+		
+		// Output the HTML
+		$this->view->display();
+	}
 
 	/**
 	 * Cancel a task (redirects to default task)

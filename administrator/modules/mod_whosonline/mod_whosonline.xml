@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="module">
+	<name>Show Online Users</name>
+	<author>Christopher Smoak</author>
+	<creationDate>January 2005</creationDate>
+	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<authorEmail>csmoak@purdue.edu</authorEmail>
+	<authorUrl>https://hubzero.org</authorUrl>
+	<version>1.0.0</version>
+	<description>This module shows a list of the currently logged in users</description>
+	<files>
+		<filename module="mod_whosonline">mod_whosonline.php</filename>
+	</files>
+	<params>
+		<param name="display_limit" type="text" default="25" label="Display Limit" description="Number of people to display in module." />
+	</params>
+</install>
+
