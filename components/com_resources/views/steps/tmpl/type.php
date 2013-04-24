@@ -161,7 +161,7 @@ $jconfig =& JFactory::getConfig();
 				</div>
 				<div class="entry-content">
 					<h4><a name="submission"></a>What happens after submission?</h4>
-					<p>After submitting your contribution, it will be reviewed for completeness. If all appears satisfactory, the contribution will beapproved and immediately appear in the <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>">resources listing</a>.</p>
+					<p>After submitting your contribution, it will be reviewed for completeness. If all appears satisfactory, the contribution will be approved and immediately appear in the <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>">resources listing</a>.</p>
 				</div>
 				<div class="entry-content">
 					<h4><a name="retract"></a>Ooops! I missed something and/or submitted too early!</h4>
