@@ -187,7 +187,7 @@ class plgXMessageHandler extends JPlugin
 
 		// Store the message in the database
 		$xmessage->subject    = $subject;
-		$xmessage->message    = $message;
+		$xmessage->message    = (is_array($message) && isset($message['plaintext'])) ? $message['plaintext'] : $message;
 		$xmessage->created    = date('Y-m-d H:i:s', time());
 		$xmessage->created_by = $juser->get('id');
 		$xmessage->component  = $component;
@@ -199,6 +199,10 @@ class plgXMessageHandler extends JPlugin
 			return $xmessage->getError();
 		}
 
+		if (is_array($message))
+		{
+			$xmessage->message = $message;
+		}
 		// Does this message require an action?
 		/* [zooley] Phasing out action items
 		$action = new Hubzero_Message_Action($database);
