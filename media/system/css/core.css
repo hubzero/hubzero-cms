@@ -81,7 +81,7 @@ img.align-left {
 h1, h2, h3, h4, h5, h6 {
 	font-weight: normal;
 	line-height: 1.2em;
-	margin: 1em 0;
+	margin: 0 0 0.5em 0;
 }
 
 h1, #content-header h2, .content-header h2, .componentheading h2 {

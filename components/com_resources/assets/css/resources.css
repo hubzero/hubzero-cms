@@ -55,7 +55,7 @@
 		display: block;
 		position: absolute;
 		left: 0;
-		top: 1em;
+		top: 0.8em;
 		width: 1.6em;
 		height: 1.6em;
 		font-size: 1.6em;
@@ -72,6 +72,7 @@
 	}
 	.com_resources .four .columns div {
 		padding-left: 2em;
+		padding-top: 1em;
 	}
 	.extracontent .topicpage:before,
 	.extracontent .wiki:before,
