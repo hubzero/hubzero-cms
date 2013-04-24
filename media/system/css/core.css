@@ -344,7 +344,42 @@ h4 {
 	cursor: pointer;
 	z-index: 999;
 }
-
+/* Tagcloud */
+.tags {
+	margin: 0;
+	padding: 0;
+}
+.tags li {
+	margin: 0 3px 3px 0;
+	display: block;
+	float: left;
+}	
+.tags a,
+.tags li a {
+	padding: 1px 3px;
+	line-height: 100%;
+	background: #FFF6D3;
+	-webkit-border-radius: 6px; 
+	-moz-border-radius: 6px; 
+	-o-border-radius: 6px; 
+	border-radius: 6px; 
+}
+.tags a span {
+	display: none;
+}
+.tags li a {
+	padding: 3px 5px;
+	float: left;
+}
+.tags a.admin,
+.tags li.admin a { 
+	background: #FFF2EF;
+	border: 1px solid #efccc2;
+}	
+.tags a:hover {
+	text-decoration: none;
+	background: #F0EBD6;
+}
 /* Comment Types */	
 .plaincomment {
 	background: url("../images/comment.gif") right top no-repeat;
@@ -381,6 +416,48 @@ h4 {
 .four-stars:before      { content: "\2605\2605\2605\2605\2606"; }
 .fourhalf-stars:before  { content: "\2605\2605\2605\2605\f089"; }
 .five-stars:before      { content: "\2605\2605\2605\2605\2605"; }
+
+/* Tooltips */
+.img-tip, .tooltip, .tool-tip, .tip {
+    background: -moz-linear-gradient(center top , #333333 0%, #111111 100%) repeat scroll 0 0 transparent;
+    border-radius: 0.25em 0.25em 0.25em 0.25em;
+    float: left;
+    max-width: 400px;
+    min-width: 50px;
+    padding: 0;
+    z-index: 50;
+}
+.img-tip:after, .tooltip:after, .tool-tip:after, .tip:after {
+    border-color: #111111 transparent transparent;
+    border-style: solid dashed dashed;
+    border-width: 4px 4px 0;
+    bottom: -4px;
+    content: "";
+    display: block;
+    height: 0;
+    left: 50%;
+    margin-left: -4px;
+    overflow: hidden;
+    position: absolute;
+    width: 0;
+}
+.tooltip .tooltip-text, .tool-tip .tool-text, .tip-text {
+    background: none repeat scroll 0 0 transparent;
+    color: #EEEEEE;
+    display: block;
+    font-size: 0.85em;
+    margin: 0;
+    padding: 0.5em 1em;
+}
+.tooltip .tooltip-text table.wiki-reference tbody td, .tool-tip .tool-text table.wiki-reference tbody td, .tip-text table.wiki-reference tbody td {
+    border-color: #000000;
+}
+.tooltip .tooltip-title, .tool-tip .tool-title, .tip-title {
+    display: none;
+}
+.tooltip img, .tool-tip img {
+    border-radius: 0.25em 0.25em 0.25em 0.25em;
+}
 
 /* Tables */
 table, .contentpaneopen table {

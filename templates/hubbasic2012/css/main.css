@@ -96,7 +96,7 @@
 		-webkit-overflow-scrolling: touch;
 	}
 	p {
-		margin: 0 0 1em 0;
+		margin: 1em 0;
 	}
 	strong {
 		font-weight: bold;
@@ -130,7 +130,7 @@
 		font-weight: 600;
 		font-weight: normal;
 		color: #484848;
-		margin: 0 0 1em 0;
+		margin: 1em 0;
 	}
 	#droppables h1,
 	#droppables h2,
@@ -1341,18 +1341,10 @@
 	}
 /* Subjects (with right aside) */
 	.subject {
-		margin-right: -270px;
-		width: 100%;
-		float: left;
+		margin: 0;
+		padding: 0;
+		margin-right: 270px;
 	}
-	
-	.subjectWrap {
-		margin-right: 269px;
-		float: none;
-		width: auto;
-		position: static;
-	}
-	
 	/* Side fade bottom cap */
 	.subject small.subject-before,
 	.subject:before {
@@ -1386,12 +1378,10 @@
 	}
 /* Asides (right side) */
 	.aside {
+		float: right;
 		width: 210px;
 		padding: 0 0 0 30px;
-		float: right;
-		position: static;
 	}
-
 	/* Side fade (darker/left to lighter/right) */
 	.aside small.aside-before,
 	.aside:before {
