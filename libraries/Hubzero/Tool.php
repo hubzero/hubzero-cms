@@ -1619,6 +1619,13 @@ class Hubzero_Tool
 					$err['developers'] =  JText::sprintf('ERR_TEAM_INVALID_USER', (string) $dev);
 				}
 			}
+
+			// Finally, make sure that the current user is either in the apps group, or on the dev team
+			// If the user were neither in apps, nor on the dev team, they would immediately lose access to the tool after saving
+			if (!JComponentHelper::getParams('com_tools')->get('access-manage-component') && !in_array(JFactory::getUser()->get('username'), $devs))
+			{
+				$err['developers'] =  JText::_('ERR_TEAM_CREATER_NOT_DEVELOPER');
+			}
 		}
 
 		if (empty($tool['vncGeometryX']) || empty($tool['vncGeometryY']) || preg_match('#[^0-9]#' , $tool['vncGeometryX']) || preg_match('#[^0-9]#' , $tool['vncGeometryY']))
