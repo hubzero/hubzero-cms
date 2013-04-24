@@ -69,6 +69,7 @@ defined('_JEXEC') or die('Restricted access');
 						<label for="rsearch"><?php echo JText::_('Keyword or phrase:'); ?></label>
 						<input type="text" name="terms" id="rsearch" value="" />
 						<input type="hidden" name="domains[]" value="resources" />
+						<input type="hidden" name="section" value="resources" />
 						<input type="submit" value="<?php echo JText::_('Search'); ?>" />
 					</p>
 				</fieldset>
