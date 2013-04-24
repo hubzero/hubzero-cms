@@ -55,7 +55,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<?php if(count($this->subs) > 0) : ?>
 				<?php foreach($this->subs as $s) : ?>
 					<?php $info2 = pathinfo($s); ?>
-					<div data-type="subtitle" data-lang="<?php echo $info2['filename']; ?>" data-src="<?php echo $this->path . DS . $s; ?>"></div>
+					<div data-type="subtitle" data-lang="<?php echo $info2['filename']; ?>" data-src="<?php echo $this->path . DS . $s; ?>?v=<?php echo filemtime( JPATH_ROOT . $this->path . DS . $s ); ?>"></div>
 				<?php endforeach; ?>
 			<?php endif; ?>
 		</video>
