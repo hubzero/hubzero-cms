@@ -226,7 +226,7 @@ Content-type: text/html;charset=utf-8";
 										<!-- ====== Start Header Spacer ====== -->
 										<table  width="650" cellpadding="0" cellspacing="0" border="0">
 											<tr style="border-collapse: collapse;">
-												<td height="30" style="border-collapse: collapse;"></td>
+												<td height="30" style="border-collapse: collapse; color: #fff;"><?php echo $this->delimiter; ?></td>
 											</tr>
 										</table>
 										<!-- ====== End Header Spacer ====== -->
