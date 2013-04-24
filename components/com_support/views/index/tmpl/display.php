@@ -37,7 +37,19 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<h2><?php echo $this->title; ?></h2>
 </div>
 
-<div id="introduction" class="section">
+<div id="introduction" class="section theclearfix">
+	<div class="subject">
+		<div class="subjectWrap">
+			<div class="two columns first">
+				<h3>Getting Help</h3>
+				<p>We offer several ways of finding content and encourage exploring our knowledge base and engaging the community for support.</p>
+			</div><!-- / .two columns first -->
+			<div class="two columns second">
+				<h3>When All Else Fails</h3>
+				<p>Report problems to us directly and track their progress. We will try our best to answer your questions and work with you to resolve any issues you may have.</p>
+			</div><!-- / .two columns second -->
+		</div><!-- / .subjectWrap -->
+	</div><!-- / .subject -->
 	<div class="aside">
 		<h3>Quick Links</h3>
 		<ul>
@@ -46,17 +58,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<li><a href="<?php echo JRoute::_('index.php?option=com_support&task=tickets'); ?>">Track Tickets</a></li>
 		</ul>
 	</div><!-- / .aside -->
-	<div class="subject">
-		<div class="two columns first">
-			<h3>Getting Help</h3>
-			<p>We offer several ways of finding content and encourage exploring our knowledge base and engaging the community for support.</p>
-		</div><!-- / .two columns first -->
-		<div class="two columns second">
-			<h3>When All Else Fails</h3>
-			<p>Report problems to us directly and track their progress. We will try our best to answer your questions and work with you to resolve any issues you may have.</p>
-		</div><!-- / .two columns second -->
-		<div class="clear"></div>
-	</div><!-- / .subject -->
 	<div class="clear"></div>
 </div><!-- / #introduction.section -->
 

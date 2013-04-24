@@ -54,8 +54,33 @@ $sortbys['title'] = JText::_('COM_RESOURCES_TITLE');
 	</p>
 </div><!-- / #content-header -->
 
-<div class="main section">
+<div class="main section theclearfix">
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>" id="resourcesform" method="post">
+		<div class="subject">
+			<div class="subjectWrap">
+<?php
+if ($this->results) {
+	switch ($this->filters['sortby'])
+	{
+		case 'date_created': $show_date = 1; break;
+		case 'date_modified': $show_date = 2; break;
+		case 'date':
+		default: $show_date = 3; break;
+	}
+	echo ResourcesHtml::writeResults($database, $this->results, $this->authorized, $show_date);
+	echo '<div class="clear"></div>';
+} else { ?>
+			<p class="warning"><?php echo JText::_('COM_RESOURCES_NO_RESULTS'); ?></p>
+<?php }
+
+$this->pageNav->setAdditionalUrlParam('tag', $this->filters['tag']);
+$this->pageNav->setAdditionalUrlParam('type', $this->filters['type']);
+$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
+
+echo $this->pageNav->getListFooter();
+?>
+			</div><!-- / .subjectWrap -->
+		</div><!-- / .subject -->
 		<div class="aside">
 
 			<fieldset>
@@ -111,29 +136,5 @@ $sortbys['title'] = JText::_('COM_RESOURCES_TITLE');
 				</p>
 			</fieldset>
 		</div><!-- / .aside -->
-		<div class="subject">
-<?php
-if ($this->results) {
-	switch ($this->filters['sortby'])
-	{
-		case 'date_created': $show_date = 1; break;
-		case 'date_modified': $show_date = 2; break;
-		case 'date':
-		default: $show_date = 3; break;
-	}
-	echo ResourcesHtml::writeResults($database, $this->results, $this->authorized, $show_date);
-	echo '<div class="clear"></div>';
-} else { ?>
-			<p class="warning"><?php echo JText::_('COM_RESOURCES_NO_RESULTS'); ?></p>
-<?php }
-
-$this->pageNav->setAdditionalUrlParam('tag', $this->filters['tag']);
-$this->pageNav->setAdditionalUrlParam('type', $this->filters['type']);
-$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
-
-echo $this->pageNav->getListFooter();
-?>
-		</div><!-- / .subject -->
-		<div class="clear"></div>
 	</form>
 </div><!-- / .main section -->
