@@ -253,7 +253,8 @@ defined('_JEXEC') or die('Restricted access');
     
     echo $this->pageNav->getListFooter();
     ?>
-                </div><!-- / .container -->
+                	<div class="clearfix"></div>
+				</div><!-- / .container -->
 			</div><!-- / .subjectWrap -->
         </div><!-- / .subject -->
         <div class="aside">
