@@ -67,6 +67,13 @@ class CoursesTableAsset extends JTable
 	var $type = NULL;
 
 	/**
+	 * Assets subtype
+	 * 
+	 * @var varchar(255)
+	 */
+	var $subtype = NULL;
+
+	/**
 	 * Association url (basically an alternative to [associated_id + scope])
 	 * 
 	 * @var string
@@ -135,23 +142,8 @@ class CoursesTableAsset extends JTable
 
 		if (!isset($this->type) && !$this->url && $this->content)
 		{
-			$this->type = 'note';
-		}
-		else
-		{
-			/*$ext = '';
-			switch ($ext)
-			{
-				case 'm4v':
-				case 'avi':
-				case 'qt':
-					$this->type = 'video';
-				break;
-
-				default:
-					$this->type = 'file';
-				break;
-			}*/
+			$this->type    = 'text';
+			$this->subtype = 'note';
 		}
 
 		if (!$this->id)
@@ -210,6 +202,10 @@ class CoursesTableAsset extends JTable
 		if (!empty($filters['asset_type']))
 		{
 			$where[] = "ca.type=" . $this->_db->Quote((string) $filters['asset_type']);
+		}
+		if (!empty($filters['asset_subtype']))
+		{
+			$where[] = "ca.subtype=" . $this->_db->Quote((string) $filters['asset_subtype']);
 		}
 		if (isset($filters['search']) && $filters['search']) 
 		{

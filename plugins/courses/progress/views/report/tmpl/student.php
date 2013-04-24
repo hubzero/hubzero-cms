@@ -55,7 +55,7 @@ $assets = $asset->find(
 	array(
 		'w' => array(
 			'section_id' => $this->course->offering()->section()->get('id'),
-			'asset_type' => 'exam',
+			'asset_type' => 'form',
 			'state'      => 1
 		)
 	)
@@ -161,8 +161,7 @@ foreach($assets as $asset)
 	}
 
 	// Increment total count for this type
-	// @FIXME: probably need a better way of identifying types of form/exam assets
-	if(strpos(strtolower($title), 'quiz') !== false)
+	if($asset->subtype == 'quiz')
 	{
 		++$details['quizzes_total'];
 
@@ -172,7 +171,7 @@ foreach($assets as $asset)
 			++$details['quizzes_taken'];
 		}
 	}
-	elseif(strpos(strtolower($title), 'homework') !== false)
+	elseif($asset->subtype == 'homework')
 	{
 		++$details['homeworks_total'];
 
@@ -182,7 +181,7 @@ foreach($assets as $asset)
 			++$details['homeworks_submitted'];
 		}
 	}
-	elseif(strpos(strtolower($title), 'exam') !== false)
+	elseif($asset->subtype == 'exam')
 	{
 		++$details['exams_total'];
 

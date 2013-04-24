@@ -40,7 +40,7 @@ if ($this->a->get('type') == 'video')
 
 ?>
 
-<li id="asset_<?= $this->a->get('id') ?>" class="asset-item asset <?= $this->a->get('type') ?> <?= ($this->a->get('state') == 0) ? ' notpublished' : ' published' ?>">
+<li id="asset_<?= $this->a->get('id') ?>" class="asset-item asset <?= $this->a->get('type') ?> <?= $this->a->get('subtype') ?> <?= ($this->a->get('state') == 0) ? ' notpublished' : ' published' ?>">
 	<div class="sortable-assets-handle"></div>
 	<div class="asset-item-title title toggle-editable"><?= $this->escape(stripslashes($this->a->get('title'))) ?></div>
 	<div class="title-edit">

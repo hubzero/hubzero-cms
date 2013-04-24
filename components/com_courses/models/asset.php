@@ -124,7 +124,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 
 		// Override path for exam type assets
 		// Override path for url/link type assets
-		if (in_array(strtolower($this->get('type')), array('exam', 'link', 'url')))
+		if (in_array(strtolower($this->get('type')), array('form', 'link', 'url')))
 		{
 			$path = $this->get('url');
 		}
@@ -225,19 +225,25 @@ class CoursesModelAsset extends CoursesModelAbstract
 	public function render($course=null, $option='com_courses')
 	{
 		$type = strtolower($this->get('type'));
+		$subtype = strtolower($this->get('subtype'));
+		$layout = 'default';
 
 		$this->logView();
 
 		// Check to see that the view template exists, otherwise, use the default
-		if(!file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'views' . DS . 'assets' . DS . 'tmpl' . DS . $type . '.php'))
+		if (file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'views' . DS . 'assets' . DS . 'tmpl' . DS . $type . '_' . $subtype . '.php'))
 		{
-			$type = 'default';
+			$layout = $type . '_' . $subtype;
+		}
+		elseif (file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'views' . DS . 'assets' . DS . 'tmpl' . DS . $type . '.php'))
+		{
+			$layout = $type;
 		}
 
 		$view = new JView(array(
 			'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_courses',
 			'name'      => 'assets',
-			'layout'    => $type
+			'layout'    => $layout
 		));
 		$view->asset   = $this->_tbl;
 		$view->model   = $this;

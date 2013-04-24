@@ -80,13 +80,6 @@ else
 	$type = 'hubpresenter';
 }
 
-// Now check if the videos have 'content' - indicatating an embeded video
-if(!empty($this->asset->content))
-{
-	// @FIXME: do a more thorough check for embedded content
-	$type = 'embeded';
-}
-
 // Add Jquery to the page if the system plugin isn't enabled
 if (!JPluginHelper::isEnabled('system', 'jquery'))
 {
@@ -230,11 +223,7 @@ if ($type == 'html5' || $type == 'hubpresenter')
 }
 ?>
 
-<?php if($type == 'embeded') : ?>
-	<div id="video-container" class="embeded-video">
-		<?php echo $this->asset->content; ?>
-	</div><!-- /#video-container -->
-<?php elseif($type == 'html5') : ?>
+<?php if($type == 'html5') : ?>
 	<div id="video-container">
 		<?php if (isset($videos) && is_array($videos) && count($videos) > 0) : ?>
 			<video controls="controls" id="video-player" data-mediaid="<?php echo $this->asset->get('id'); ?>">

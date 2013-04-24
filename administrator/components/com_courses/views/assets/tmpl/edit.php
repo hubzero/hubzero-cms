@@ -144,12 +144,25 @@ function saveAndUpdate()
 							<select name="fields[type]" id="field-type">
 								<option value="video"<?php if ($this->row->get('type') == 'video') { echo ' selected="selected"'; } ?>><?php echo JText::_('Video'); ?></option>
 								<option value="file"<?php if ($this->row->get('type') == 'file') { echo ' selected="selected"'; } ?>><?php echo JText::_('File'); ?></option>
-								<option value="exam"<?php if ($this->row->get('type') == 'exam') { echo ' selected="selected"'; } ?>><?php echo JText::_('Quiz/Exam'); ?></option>
-								<option value="note"<?php if ($this->row->get('type') == 'note') { echo ' selected="selected"'; } ?>><?php echo JText::_('Note'); ?></option>
-								<option value="link"<?php if ($this->row->get('type') == 'link') { echo ' selected="selected"'; } ?>><?php echo JText::_('Link'); ?></option>
+								<option value="form"<?php if ($this->row->get('type') == 'form') { echo ' selected="selected"'; } ?>><?php echo JText::_('Form'); ?></option>
+								<option value="text"<?php if ($this->row->get('type') == 'text') { echo ' selected="selected"'; } ?>><?php echo JText::_('Text'); ?></option>
+								<option value="url"<?php if ($this->row->get('type') == 'url') { echo ' selected="selected"'; } ?>><?php echo JText::_('URL'); ?></option>
 							</select>
 						</td>
-						<th class="key"><label for="field-type"><?php echo JText::_('State'); ?>:</label></th>
+						<th class="key"><label for="field-subtype"><?php echo JText::_('Subtype'); ?>:</label></th>
+						<td>
+							<select name="fields[subtype]" id="field-subtype">
+								<option value="video"<?php if ($this->row->get('subtype') == 'video') { echo ' selected="selected"'; } ?>><?php echo JText::_('Video'); ?></option>
+								<option value="embedded"<?php if ($this->row->get('subtype') == 'embedded') { echo ' selected="selected"'; } ?>><?php echo JText::_('Embedded'); ?></option>
+								<option value="file"<?php if ($this->row->get('subtype') == 'file') { echo ' selected="selected"'; } ?>><?php echo JText::_('File'); ?></option>
+								<option value="exam"<?php if ($this->row->get('subtype') == 'exam') { echo ' selected="selected"'; } ?>><?php echo JText::_('Exam'); ?></option>
+								<option value="quiz"<?php if ($this->row->get('subtype') == 'quiz') { echo ' selected="selected"'; } ?>><?php echo JText::_('Quiz'); ?></option>
+								<option value="homework"<?php if ($this->row->get('subtype') == 'homework') { echo ' selected="selected"'; } ?>><?php echo JText::_('Homework'); ?></option>
+								<option value="note"<?php if ($this->row->get('subtype') == 'note') { echo ' selected="selected"'; } ?>><?php echo JText::_('Note'); ?></option>
+								<option value="wiki"<?php if ($this->row->get('subtype') == 'wiki') { echo ' selected="selected"'; } ?>><?php echo JText::_('Wiki'); ?></option>
+							</select>
+						</td>
+						<th class="key"><label for="field-state"><?php echo JText::_('State'); ?>:</label></th>
 						<td>
 							<select name="fields[state]" id="field-state">
 								<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Unpublished'); ?></option>

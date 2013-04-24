@@ -59,6 +59,7 @@ class AssetHandler
 			'title'      => '',
 			'url'        => '',
 			'type'       => '',
+			'subtype'    => '',
 			'created'    => '',
 			'created_by' => '',
 			'state'      => 0, // upublished

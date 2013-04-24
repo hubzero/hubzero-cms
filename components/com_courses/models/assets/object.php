@@ -73,9 +73,8 @@ class ObjectAssetHandler extends ContentAssetHandler
 			return array('error'=>'Content did not match the pre-defined filter for an object');
 		}
 
-		//$this->asset['type']    = (!empty($this->asset['type'])) ? $this->asset['type'] : 'object';
-		// Set type to 'video' -> this means 'type' indicates how the asset will be handled, not what it is?
 		$this->asset['type']    = (!empty($this->asset['type'])) ? $this->asset['type'] : 'video';
+		$this->asset['subtype'] = (!empty($this->asset['subtype'])) ? $this->asset['subtype'] : 'embedded';
 		$this->asset['content'] = $object;
 
 		// Return info

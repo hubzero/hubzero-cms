@@ -70,7 +70,8 @@ class ContentAssetHandler extends AssetHandler
 		// Get everything ready to store
 		// Check if vars are already set (i.e. by a sub class), before setting them here
 		$this->asset['title']      = (!empty($this->asset['title']))   ? $this->asset['title']   : substr($content, 0, 25);
-		$this->asset['type']       = (!empty($this->asset['type']))    ? $this->asset['type']    : 'content';
+		$this->asset['type']       = (!empty($this->asset['type']))    ? $this->asset['type']    : 'text';
+		$this->asset['subtype']    = (!empty($this->asset['subtype'])) ? $this->asset['subtype'] : 'content';
 		$this->asset['content']    = (!empty($this->asset['content'])) ? $this->asset['content'] : $content;
 		$this->asset['created']    = date('Y-m-d H:i:s');
 		$this->asset['created_by'] = JFactory::getApplication()->getAuthn('user_id');
@@ -103,6 +104,7 @@ class ContentAssetHandler extends AssetHandler
 			'asset_id'       => $this->assoc['asset_id'],
 			'asset_title'    => $this->asset['title'],
 			'asset_type'     => $this->asset['type'],
+			'asset_subtype'  => $this->asset['subtype'],
 			'asset_url'      => $url,
 			'course_id'      => $this->asset['course_id'],
 			'offering_alias' => JRequest::getCmd('offering', ''),

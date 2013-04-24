@@ -90,9 +90,21 @@ class FormAssetHandler extends ContentAssetHandler
 		// Grab the newly created form id
 		$id = $pdf->getId();
 
+		$subtype = 'quiz';
+
+		if (strstr($filename, 'exam') !== false)
+		{
+			$subtype = 'exam';
+		}
+		elseif (strstr($filename, 'homework') !== false)
+		{
+			$subtype = 'homework';
+		}
+
 		// Save the actual asset
 		$this->asset['title']   = $filename;
-		$this->asset['type']    = 'exam';
+		$this->asset['type']    = 'form';
+		$this->asset['subtype'] = $subtype;
 		$this->asset['url']     = '/courses/form/layout/' . $id;
 
 		// Call the primary create method on the file asset handler

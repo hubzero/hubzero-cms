@@ -57,7 +57,10 @@ class VideoFileAssetHandler extends FileAssetHandler
 	public function create()
 	{
 		// Set the asset type to video
-		$this->asset['type'] = 'video';
+		$this->asset['type']    = 'video';
+		$this->asset['subtype'] = 'video';
+
+		// @FIXME: if extension is .zip, go ahead and set subtype (html5/hubpresenter) accordingly
 
 		// Call the primary create method on the file asset handler
 		$return_info = parent::create();

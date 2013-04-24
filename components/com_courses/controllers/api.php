@@ -531,6 +531,7 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 		if(!$id)
 		{
 			$asset->set('type', JRequest::getWord('type', 'file'));
+			$asset->set('subtype', JRequest::getWord('subtype', 'file'));
 			$asset->set('state', 0);
 			$asset->set('course_id', JRequest::getInt('course_id', 0));
 			$asset->set('created', date('Y-m-d H:i:s'));
@@ -597,6 +598,7 @@ class CoursesControllerApi extends Hubzero_Api_Controller
 			'asset_id'       => $asset->get('id'),
 			'asset_title'    => $asset->get('title'),
 			'asset_type'     => $asset->get('type'),
+			'asset_subtype'  => $asset->get('subtype'),
 			'asset_url'      => $asset->get('url'),
 			'scope_id'       => (isset($row)) ? $row->scope_id : '',
 			'course_id'      => $this->course_id,

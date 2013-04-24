@@ -127,7 +127,7 @@ if (!$this->course->offering()->access('view')) { ?>
 																	$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
 																	$target = '';
 																}
-																echo '<li><a class="asset ' . $a->get('type') . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+																echo '<li><a class="asset ' . $a->get('subtype') . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 															}
 														}
 														?>
@@ -143,7 +143,7 @@ if (!$this->course->offering()->access('view')) { ?>
 													{
 														if ($a->isAvailable())
 														{
-															if ($a->get('type') == 'note')
+															if ($a->get('subtype') == 'note')
 															{
 																continue;
 															}
@@ -154,7 +154,7 @@ if (!$this->course->offering()->access('view')) { ?>
 																$href = JRoute::_($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $agt->get('alias'));
 																$target = '';
 															}
-															echo '<li><a class="asset ' . $a->get('type') . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+															echo '<li><a class="asset ' . $a->get('subtype') . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 														}
 													}
 													?>
@@ -165,7 +165,7 @@ if (!$this->course->offering()->access('view')) { ?>
 												{
 													if ($a->isAvailable())
 													{
-														if ($a->get('type') != 'note')
+														if ($a->get('subtype') != 'note')
 														{
 															continue;
 														}
@@ -193,7 +193,7 @@ if (!$this->course->offering()->access('view')) { ?>
 									$href = JRoute::_($base . '&active=outline&a=' . $unit->get('alias'));
 									$target = '';
 								}
-								echo '<li><a class="asset ' . $a->get('type') . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+								echo '<li><a class="asset ' . $a->get('subtype') . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 							}
 						}
 						?>

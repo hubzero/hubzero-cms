@@ -67,9 +67,10 @@ class UrlAssetHandler extends ContentAssetHandler
 			return array('error'=>'Content did not match the pre-defined filter');
 		}
 
-		$this->asset['title'] = $matches[1];
-		$this->asset['type']  = 'link';
-		$this->asset['url']   = $url;
+		$this->asset['title']   = $matches[1];
+		$this->asset['type']    = 'url';
+		$this->asset['subtype'] = 'link';
+		$this->asset['url']     = $url;
 
 		// Return info
 		return parent::create();

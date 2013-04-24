@@ -668,7 +668,8 @@ ul {
 	color: #BF0000;
 	content: "\2757";
 }
-.video:after {
+.video:after,
+.embedded:after {
 	content: "\f008";
 }
 .file:after {
@@ -677,7 +678,10 @@ ul {
 .missing:after {
 	content: "\2298"
 }
-.exam:after {
+.form:after,
+.exam:after,
+.quiz:after,
+.homework:after {
 	content: "\270e";
 }
 .note:after {

@@ -613,7 +613,7 @@ HUB.CoursesOutline = {
 			var item            = form.parent('.asset-item');
 
 			// If this is an Exam, we also want to set deployment info
-			if(item.hasClass('exam') && item.hasClass('notpublished')){
+			if(item.hasClass('form') && item.hasClass('notpublished')){
 				var assetA    = item.find('a.asset-preview');
 				var assetHref = assetA.attr('href');
 
@@ -1240,6 +1240,7 @@ HUB.CoursesOutline = {
 		// If we're moving the asset to a new scope
 		if (data.files[0].scope_id.length && asset.find('input[name="scope_id"]').val() != data.files[0].scope_id) {
 			var clone = asset.clone();
+			var assetGroupItem = asset.parents('.asset-group-item');
 
 			asset.remove();
 
@@ -1248,13 +1249,16 @@ HUB.CoursesOutline = {
 
 			$('#assetgroupitem_'+data.files[0].scope_id+' .assets-list').append(clone);
 
-			clone.slideDown('fast');
+			clone.slideDown('fast', function() {
+				HUB.CoursesOutline.resizeFileUploader(clone.parents('.asset-group-item'));
+				HUB.CoursesOutline.resizeFileUploader(assetGroupItem);
+			});
 		}
 	},
 
 	Templates: {
 		asset : [
-			'<li id="asset_<%= asset_id %>" class="asset-item asset <%= asset_type %> notpublished">',
+			'<li id="asset_<%= asset_id %>" class="asset-item asset <%= asset_type %> <%= asset_subtype %> notpublished">',
 				'<div class="sortable-assets-handle"></div>',
 				'<div class="asset-item-title title toggle-editable"><%= asset_title %></div>',
 				'<div class="title-edit">',

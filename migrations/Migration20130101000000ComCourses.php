@@ -343,7 +343,7 @@ class Migration20130101000000ComCourses extends Hubzero_Migration
 			FROM `#__courses_form_responses` `fre` where ((select count(0) from `#__courses_form_responses` `frei` where ((`frei`.`respondent_id` = `fre`.`respondent_id`) and (`frei`.`id` > `fre`.`id`))) < (select count(distinct `frei`.`question_id`) from `#__courses_form_responses` `frei` where (`frei`.`respondent_id` = `fre`.`respondent_id`)));
 
 			INSERT INTO `#__plugins` (`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`)
-			SELECT 'Members - Courses','courses','members',0,16,1,0,0,0,'0000-00-00 00:00:00',''
+			SELECT 'Members - Courses','courses','members',0,16,0,0,0,0,'0000-00-00 00:00:00',''
 			FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__plugins` WHERE `name` = 'Members - Courses');
 
 			INSERT INTO `#__plugins` (`name`, `element`, `folder`, `access`, `ordering`, `published`, `iscore`, `client_id`, `checked_out`, `checked_out_time`, `params`)
