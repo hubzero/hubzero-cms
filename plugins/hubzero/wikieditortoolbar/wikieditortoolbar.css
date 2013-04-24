@@ -9,33 +9,42 @@
 	.wiki-toolbar {
 		margin: 0 !important;
 		padding: 0 !important;
-		border: 1px solid #ddd;
-		background-color: #eee;
-		height: 25px;
+		border: 1px solid #ddd !important;
+		background-color: #eee !important;
+		min-height: 32px !important;
+		background: url("images/header-bg.png") !important;
+	}
+	.wiki-toolbar:after {
+		content: "";
+		display: table;
+		clear: left;
+		line-height: 0;
 	}
 	.wiki-toolbar li { 
-		display: block;
-		width: 22px;
-		height: 23px;
-		float: left;
+		display: block !important;
+		width: 34px !important;
+		height: 33px !important;
+		float: left !important;
 		margin: 0 !important;
 		padding: 0 !important;
-		background: none;
+		background: none !important;
+		clear: none !important;
 	}
 	.wiki-toolbar a {
-		margin: 0;
-		padding: 0;
-		display: block;
-		cursor: pointer;
-		width: 22px;
-		height: 23px;
-		border: 1px solid #ddd;
-		text-indent: -55em;
-		overflow: hidden;
+		margin: 1px 0 1px 0 !important;
+		padding: 0 !important;
+		display: block !important;
+		cursor: pointer !important;
+		width: 34px !important;
+		height: 30px !important;
+		text-indent: -55em !important;
+		overflow: hidden !important;
+		border: none !important;
 	}
 	.wiki-toolbar a:hover { 
-		border-color: #000;
-		background-color: #fff;
+		border: none !important;
+		text-decoration: none !important;
+		background-color: #fff !important;
 	}
 /* Buttons */
 	.wiki-button-bold {

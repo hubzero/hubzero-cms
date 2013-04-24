@@ -90,7 +90,7 @@ class plgHubzeroWikiEditorToolbar extends JPlugin
 	public function onDisplayEditor($name, $id, $content, $cls='wiki-toolbar-content', $col=10, $row=35)
 	{
 		$cls = ($cls) ? 'wiki-toolbar-content ' . $cls : 'wiki-toolbar-content';
-		$editor  = '<ul id="wiki-toolbar-' . $id . '" class="wiki-toolbar hidden"></ul>' . "\n";
+		$editor  = '<ul id="wiki-toolbar-' . $id . '" class="wiki-toolbar hide"></ul>' . "\n";
 		$editor .= '<textarea id="' . $id . '" name="' . $name . '" cols="' . $col . '" rows="' . $row . '" class="' . $cls . '">' . $content . '</textarea>' . "\n";
 
 		return $editor;
