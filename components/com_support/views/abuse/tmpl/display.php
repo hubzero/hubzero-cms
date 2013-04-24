@@ -37,7 +37,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <div class="main section">
 <?php
-if ($this->report && !$this->getError()) {
+if ($this->report) {
 	$name = JText::_('ANONYMOUS');
 	if ($this->report->anon == 0) {
 		$juser =& JUser::getInstance($this->report->author);
@@ -47,6 +47,9 @@ if ($this->report && !$this->getError()) {
 		}
 	}
 ?>
+<?php if ($this->getError()) { ?>
+	<p class="error"><?php echo $this->getError(); ?></p>
+<?php } ?>
 	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=reportabuse'); ?>" method="post" id="hubForm">
 		<div class="explaination">
 			<p><?php echo JText::_('REPORT_ABUSE_EXPLANATION'); ?></p>

@@ -202,7 +202,7 @@ class SupportControllerAbuse extends Hubzero_Controller
 		// Check content
 		if (!$row->check()) 
 		{
-			JRequest::setVar('referenceid', $this->view->refid);
+			JRequest::setVar('id', $this->view->refid);
 			$this->setError($row->getError());
 			$this->displayTask();
 			return;
@@ -211,7 +211,7 @@ class SupportControllerAbuse extends Hubzero_Controller
 		// Store new content
 		if (!$row->store()) 
 		{
-			JRequest::setVar('referenceid', $this->view->refid);
+			JRequest::setVar('id', $this->view->refid);
 			$this->setError($row->getError());
 			$this->displayTask();
 			return;
