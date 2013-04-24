@@ -1352,7 +1352,7 @@
 		width: auto;
 		position: static;
 	}
-	
+		
 	/* Side fade bottom cap */
 	.subject small.subject-before,
 	.subject:before {
@@ -1391,7 +1391,7 @@
 		float: right;
 		position: static;
 	}
-
+	
 	/* Side fade (darker/left to lighter/right) */
 	.aside small.aside-before,
 	.aside:before {
@@ -1542,9 +1542,16 @@
 	}
 /* Subjects (with left aside) */
 	.withleft .subject {
+		float: right;
 		margin-right: 0;
-		margin-left: 270px;
+		margin-left: -270px;
+		width: 100%;
+	}	
+	.withleft .subjectWrap {
+		margin-right: 0;
+		margin-left: 269px;
 	}
+		
 /* Asides (left side) */
 	.withleft .aside {
 		float: left;

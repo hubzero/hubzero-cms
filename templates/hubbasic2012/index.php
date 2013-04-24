@@ -174,27 +174,36 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 				<div class="inner">
 					<a name="content" id="content-anchor"></a>
 <?php if ($this->countModules('left')) : ?>
-					<div class="main section withleft">
+					<div class="main section withleft theclearfix">
+						<div class="subject">
+							<div class="subjectWrap">
+<?php endif; ?>
+<?php if ($this->countModules('right')) : ?>
+					<div class="main section theclearfix">
+						<div class="subject">
+							<div class="subjectWrap">
+<?php endif; ?>
+								<!-- start component output -->
+								<jdoc:include type="component" />
+								<!-- end component output -->
+<?php if ($this->countModules('left')) : ?>
+							</div><!-- / .subjectWrap  -->
+						</div><!-- / .subject -->
 						<div class="aside">
 							<jdoc:include type="modules" name="left" />
 						</div><!-- / #column-left -->
-						<div class="subject">
-<?php endif; ?>
+					</div><!-- / .main section -->
+<?php endif; ?>	
+				
 <?php if ($this->countModules('right')) : ?>
-					<div class="main section">
+							</div><!-- / .subjectWrap  -->
+						</div><!-- / .subject -->
 						<div class="aside">
 							<jdoc:include type="modules" name="right" />
-						</div><!-- / .aside -->
-						<div class="subject">
-<?php endif; ?>
-							<!-- start component output -->
-							<jdoc:include type="component" />
-							<!-- end component output -->
-<?php if ($this->countModules('left or right')) : ?>
-						</div><!-- / .subject -->
-						<div class="clear"></div>
+						</div><!-- / #column-left -->
 					</div><!-- / .main section -->
-<?php endif; ?>
+<?php endif; ?>	
+
 				</div><!-- / .inner -->
 			</div><!-- / #content -->
 		</div><!-- / #wrap -->
