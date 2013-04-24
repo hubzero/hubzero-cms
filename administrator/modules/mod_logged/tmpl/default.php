@@ -17,7 +17,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					<strong><?php echo JText::_( 'Group' ); ?></strong>
 				</td>
 				<td class="title">
-					<strong><?php echo JText::_( 'Client' ); ?></strong>
+					<strong><?php echo JText::_( 'Location' ); ?></strong>
 				</td>
 				<td class="title">
 					<strong><?php echo JText::_( 'Last Activity' ); ?></strong>
@@ -53,7 +53,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					<?php echo $row->usertype;?>
 				</td>
 				<td>
-					<?php echo $clientInfo->name;?>
+					<?php echo ucfirst($clientInfo->name); ?>
 				</td>
 				<td>
 					<?php echo JText::sprintf( 'activity hours', ($now - $row->time)/3600.0 );?>

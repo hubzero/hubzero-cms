@@ -52,6 +52,7 @@ $query = 'SELECT username, time, userid, usertype, client_id'
 . ' FROM #__session'
 . ' WHERE userid != 0'
 . $and
+. ' GROUP BY userid, client_id'
 . ' ORDER BY usertype, username'
 ;
 $db->setQuery( $query );
