@@ -54,6 +54,18 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 
 <div id="introduction" class="section">
+	<div class="subject">
+		<div class="subjectWrap theclearfix">
+			<div class="two columns first">
+				<h3><?php echo JText::_('COM_GROUPS_INTRO_WHAT_ARE_GROUPS_TITLE'); ?></h3>
+				<p><?php echo JText::_('COM_GROUPS_INTRO_WHAT_ARE_GROUPS_DESC'); ?></p>
+			</div>
+			<div class="two columns second">
+				<h3><?php echo JText::_('COM_GROUPS_INTRO_HOW_DO_GROUPS_WORK_TITLE'); ?></h3>
+				<p><?php echo JText::_('COM_GROUPS_INTRO_HOW_DO_GROUPS_WORK_DESC'); ?></p>
+			</div>
+		</div><!-- / .subjectWrap -->
+	</div><!-- / .subject -->
 	<div class="aside">
 		<h3>Questions?</h3>
 		<ul>
@@ -65,17 +77,6 @@ defined('_JEXEC') or die('Restricted access');
 			</li>
 		</ul>
 	</div><!-- / .aside -->
-	<div class="subject">
-		<div class="two columns first">
-			<h3><?php echo JText::_('COM_GROUPS_INTRO_WHAT_ARE_GROUPS_TITLE'); ?></h3>
-			<p><?php echo JText::_('COM_GROUPS_INTRO_WHAT_ARE_GROUPS_DESC'); ?></p>
-		</div>
-		<div class="two columns second">
-			<h3><?php echo JText::_('COM_GROUPS_INTRO_HOW_DO_GROUPS_WORK_TITLE'); ?></h3>
-			<p><?php echo JText::_('COM_GROUPS_INTRO_HOW_DO_GROUPS_WORK_DESC'); ?></p>
-		</div>
-		<div class="clear"></div>
-	</div><!-- / .subject -->
 	<div class="clear"></div>
 </div><!-- / #introduction.section -->
 

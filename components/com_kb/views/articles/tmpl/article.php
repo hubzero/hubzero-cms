@@ -55,11 +55,65 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 		<a class="main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('Main page'); ?></a>
 	</p>
 </div>
-<div class="main section">
+<div class="main section theclearfix">
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode("\n", $this->getErrors()); ?></p>
 <?php } ?>
-	<div class="aside">
+	<div class="subject">
+    	<div class="subjectWrap">
+            <div class="container" id="entry-<?php echo $this->article->id; ?>">
+                <div class="container-block">
+                    <h3><?php echo $this->escape(stripslashes($this->article->title)); ?></h3>
+                    <div class="entry-content">
+                        <?php echo stripslashes($this->article->fulltxt); ?>
+                    </div>
+    <?php 
+            if (count($this->tags) > 0) {
+    ?>
+                    <div class="entry-tags">
+                        <p>Tags:</p>
+                        <ol class="tags">
+    <?php
+                        foreach ($this->tags as $tag)
+                        {
+                            $tag['raw_tag'] = str_replace('&amp;', '&', $tag['raw_tag']);
+                            $tag['raw_tag'] = str_replace('&', '&amp;', $tag['raw_tag']);
+    
+                            echo "\t\t\t\t\t\t".'<li><a href="'.JRoute::_('index.php?option=com_tags&tag='.$tag['tag']).'" rel="tag">'.$this->escape(stripslashes($tag['raw_tag'])).'</a></li>'."\n";
+                        }
+    ?>
+                        </ol>
+                    </div><!-- / .entry-tags -->
+    <?php 
+            }
+    ?>			
+                    <p class="voting">
+    <?php 
+        $view = new JView(array(
+            'name' => $this->controller,
+            'layout' => 'vote'
+        ));
+        $view->option = $this->option;
+        $view->item = $this->article;
+        $view->type = 'entry';
+        $view->vote = $this->vote;
+        $view->id = $this->article->id;
+        $view->display();
+    ?>
+                    </p>
+                
+                    <p class="entry-details">
+                        Last updated @ 
+                        <span class="entry-time"><?php echo JHTML::_('date', $this->article->modified, $timeformat, $tz); ?></span> on 
+                        <span class="entry-date"><?php echo JHTML::_('date', $this->article->modified, $dateformat, $tz); ?></span>
+                    </p>
+                    
+                    <div class="clearfix"></div>
+                </div><!-- / .container-block -->
+            </div><!-- / .container -->
+    	</div><!-- / .subjectWrap -->
+	</div><!-- / .subject -->
+    <div class="aside">
 		<div class="container">
 			<h3><?php echo JText::_('Categories'); ?></h3>
 			<ul class="categories">
@@ -102,58 +156,6 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 			</ul>
 		</div><!-- / .container -->
 	</div><!-- / .aside -->
-	<div class="subject">
-		<div class="container" id="entry-<?php echo $this->article->id; ?>">
-			<div class="container-block">
-				<h3><?php echo $this->escape(stripslashes($this->article->title)); ?></h3>
-				<div class="entry-content">
-					<?php echo stripslashes($this->article->fulltxt); ?>
-				</div>
-<?php 
-		if (count($this->tags) > 0) {
-?>
-				<div class="entry-tags">
-					<p>Tags:</p>
-					<ol class="tags">
-<?php
-					foreach ($this->tags as $tag)
-					{
-						$tag['raw_tag'] = str_replace('&amp;', '&', $tag['raw_tag']);
-						$tag['raw_tag'] = str_replace('&', '&amp;', $tag['raw_tag']);
-
-						echo "\t\t\t\t\t\t".'<li><a href="'.JRoute::_('index.php?option=com_tags&tag='.$tag['tag']).'" rel="tag">'.$this->escape(stripslashes($tag['raw_tag'])).'</a></li>'."\n";
-					}
-?>
-					</ol>
-				</div><!-- / .entry-tags -->
-<?php 
-		}
-?>			
-				<p class="voting">
-<?php 
-	$view = new JView(array(
-		'name' => $this->controller,
-		'layout' => 'vote'
-	));
-	$view->option = $this->option;
-	$view->item = $this->article;
-	$view->type = 'entry';
-	$view->vote = $this->vote;
-	$view->id = $this->article->id;
-	$view->display();
-?>
-				</p>
-			
-				<p class="entry-details">
-					Last updated @ 
-					<span class="entry-time"><?php echo JHTML::_('date', $this->article->modified, $timeformat, $tz); ?></span> on 
-					<span class="entry-date"><?php echo JHTML::_('date', $this->article->modified, $dateformat, $tz); ?></span>
-				</p>
-				
-				<div class="clearfix"></div>
-			</div><!-- / .container-block -->
-		</div><!-- / .container -->
-	</div><!-- / .subject -->
 </div><!-- / .main section -->
 
 <?php 
@@ -189,7 +191,7 @@ if ($this->config->get('allow_comments')) {
 	$pdt = strftime($yearFormat, $dt) . '-' . strftime($monthFormat, $dt) . '-' . strftime($dayFormat, $dt) . ' 00:00:00';
 	$today = date('Y-m-d H:i:s', time());
 ?>		
-<div class="below section">
+<div class="below section theclearfix">
 	<h3 class="comments-title">
 		<a name="comments"></a>
 		Comments on this entry
@@ -212,14 +214,9 @@ if ($this->config->get('feeds_enabled')) {
 }
 ?>
 	</h3>
-	<div class="aside">
-<?php if ($this->config->get('close_comments') == 'never' || ($this->config->get('close_comments') != 'now' && $today < $pdt)) { ?>
-		<p>
-			<a class="add btn" href="#post-comment"><?php echo JText::_('Add a comment'); ?></a>
-		</p>
-<?php } ?>
-	</div>
+	
 	<div class="subject">
+    	<div class="subjectWrap">
 <?php 
 ximport('Hubzero_User_Profile');
 ximport('Hubzero_User_Profile_Helper');
@@ -472,15 +469,126 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 <?php
 }
 ?>
+		</div><!-- / .subjectWrap -->
 	</div><!-- / .subject -->
-	<div class="clear"></div>
+	<div class="aside">
+<?php if ($this->config->get('close_comments') == 'never' || ($this->config->get('close_comments') != 'now' && $today < $pdt)) { ?>
+		<p>
+			<a class="add btn" href="#post-comment"><?php echo JText::_('Add a comment'); ?></a>
+		</p>
+<?php } ?>
+	</div>
 </div><!-- / .below -->
 
-<div class="below section">
+<div class="below section theclearfix">
 	<h3 class="post-comment-title">
 		<?php echo JText::_('Post a comment'); ?>
 	</h3>
-	<div class="aside">
+	<div class="subject">
+    	<div class="subjectWrap">
+            <form method="post" action="<?php echo JRoute::_('index.php?option='.$this->option.'&section='.$this->section->alias.'&category='.$this->category->alias.'&alias='.$this->article->alias); ?>" id="commentform">
+                <p class="comment-member-photo">
+                    <span class="comment-anchor"><a name="post-comment"></a></span>
+    <?php
+                    if (!$this->juser->get('guest')) {
+                        $jxuser = new Hubzero_User_Profile();
+                        $jxuser->load($this->juser->get('id'));
+                        $thumb = Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, 0);
+                    } else {
+                        $config =& JComponentHelper::getParams('com_members');
+                        $thumb = $config->get('defaultpic');
+                        if (substr($thumb, 0, 1) != DS) {
+                            $thumb = DS.$dfthumb;
+                        }
+                        $thumb = Hubzero_User_Profile_Helper::thumbit($thumb);
+                    }
+    ?>
+                    <img src="<?php echo $thumb; ?>" alt="" />
+                </p>
+                <fieldset>
+    <?php
+                if (!$this->juser->get('guest')) {
+                    if ($this->replyto->id) {
+                        ximport('Hubzero_View_Helper_Html');
+                        $name = JText::_('COM_KB_ANONYMOUS');
+                        $xuser = Hubzero_User_Profile::getInstance($this->replyto->created_by);
+                        if (!$this->replyto->anonymous) {
+                            //$xuser =& JUser::getInstance($reply->created_by);
+                            if (is_object($xuser) && $xuser->get('name')) {
+                                $name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$this->replyto->created_by).'">'.stripslashes($xuser->get('name')).'</a>';
+                            }
+                        }
+    ?>
+                    <blockquote cite="c<?php echo $this->replyto->id ?>">
+                        <p>
+                            <strong><?php echo $name; ?></strong> 
+                            <span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $this->replyto->created; ?>"><?php echo JHTML::_('date', $this->replyto->created, $timeformat, $tz); ?></time></span> 
+                            <span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $this->replyto->created; ?>"><?php echo JHTML::_('date', $this->replyto->created, $dateformat, $tz); ?></time></span>
+                        </p>
+                        <p><?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($this->replyto->content), 300, 0); ?></p>
+                    </blockquote>
+    <?php
+                    }
+                }
+    
+                if ($this->config->get('close_comments') == 'never' || ($this->config->get('close_comments') != 'now' && $today < $pdt)) {
+    ?>
+                    <label>
+                        Your <?php echo ($this->replyto->id) ? 'reply' : 'comments'; ?>: <span class="required">required</span>
+    <?php
+                    if (!$this->juser->get('guest')) {
+                        ximport('Hubzero_Wiki_Editor');
+                        $editor =& Hubzero_Wiki_Editor::getInstance();
+                        echo $editor->display('comment[content]', 'commentcontent', '', 'minimal', '40', '15');
+                    } else {
+                        $rtrn = JRoute::_('index.php?option='.$this->option.'&section='.$this->section->alias.'&category='.$this->category->alias.'&alias='.$this->article->alias.'#post-comment');
+    ?>
+                        <p class="warning">
+                            You must <a href="/login?return=<?php echo base64_encode($rtrn); ?>">log in</a> to post comments.
+                        </p>
+    <?php
+                    }
+    ?>
+                    </label>
+    
+    <?php 			if (!$this->juser->get('guest')) { ?>
+                    <label id="comment-anonymous-label">
+                        <input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
+                        Post anonymously
+                    </label>
+    
+                    <p class="submit">
+                        <input type="submit" name="submit" value="Submit" />
+                    </p>
+    <?php 			} ?>
+    <?php 		} else { ?>
+        <p class="warning">
+            <?php echo JText::_('Comments are closed on this entry.'); ?>
+        </p>
+    <?php 		} ?>
+                    <input type="hidden" name="comment[id]" value="0" />
+                    <input type="hidden" name="comment[entry_id]" value="<?php echo $this->article->id; ?>" />
+                    <input type="hidden" name="comment[parent]" value="<?php echo $this->replyto->id; ?>" />
+                    <input type="hidden" name="comment[created]" value="" />
+                    <input type="hidden" name="comment[created_by]" value="<?php echo $this->juser->get('id'); ?>" />
+                    <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+                    <input type="hidden" name="task" value="savecomment" />
+    
+                    <?php echo JHTML::_('form.token'); ?>
+    
+                    <div class="sidenote">
+                        <p>
+                            <strong><?php echo JText::_('Please keep comments relevant to this entry.'); ?></strong>
+                        </p>
+                        <p>
+                            Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="<?php echo JRoute::_('index.php?option=com_wiki&pagename=Help:WikiFormatting'); ?>" class="popup">Wiki syntax</a> is supported.
+                        </p>
+                    </div>
+                </fieldset>
+            </form>
+    	</div><!-- / .subjectWrap -->
+	</div><!-- / .subject -->
+    <div class="aside">
 		<table class="wiki-reference" summary="Wiki Syntax Reference">
 			<caption>Wiki Syntax Reference</caption>
 			<tbody>
@@ -515,108 +623,6 @@ if ($this->config->get('close_comments') == 'never' || ($this->config->get('clos
 			</tbody>
 		</table>
 	</div><!-- / .aside -->
-	<div class="subject">
-		<form method="post" action="<?php echo JRoute::_('index.php?option='.$this->option.'&section='.$this->section->alias.'&category='.$this->category->alias.'&alias='.$this->article->alias); ?>" id="commentform">
-			<p class="comment-member-photo">
-				<span class="comment-anchor"><a name="post-comment"></a></span>
-<?php
-				if (!$this->juser->get('guest')) {
-					$jxuser = new Hubzero_User_Profile();
-					$jxuser->load($this->juser->get('id'));
-					$thumb = Hubzero_User_Profile_Helper::getMemberPhoto($jxuser, 0);
-				} else {
-					$config =& JComponentHelper::getParams('com_members');
-					$thumb = $config->get('defaultpic');
-					if (substr($thumb, 0, 1) != DS) {
-						$thumb = DS.$dfthumb;
-					}
-					$thumb = Hubzero_User_Profile_Helper::thumbit($thumb);
-				}
-?>
-				<img src="<?php echo $thumb; ?>" alt="" />
-			</p>
-			<fieldset>
-<?php
-			if (!$this->juser->get('guest')) {
-				if ($this->replyto->id) {
-					ximport('Hubzero_View_Helper_Html');
-					$name = JText::_('COM_KB_ANONYMOUS');
-					$xuser = Hubzero_User_Profile::getInstance($this->replyto->created_by);
-					if (!$this->replyto->anonymous) {
-						//$xuser =& JUser::getInstance($reply->created_by);
-						if (is_object($xuser) && $xuser->get('name')) {
-							$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$this->replyto->created_by).'">'.stripslashes($xuser->get('name')).'</a>';
-						}
-					}
-?>
-				<blockquote cite="c<?php echo $this->replyto->id ?>">
-					<p>
-						<strong><?php echo $name; ?></strong> 
-						<span class="comment-date-at">@</span> <span class="time"><time datetime="<?php echo $this->replyto->created; ?>"><?php echo JHTML::_('date', $this->replyto->created, $timeformat, $tz); ?></time></span> 
-						<span class="comment-date-on">on</span> <span class="date"><time datetime="<?php echo $this->replyto->created; ?>"><?php echo JHTML::_('date', $this->replyto->created, $dateformat, $tz); ?></time></span>
-					</p>
-					<p><?php echo Hubzero_View_Helper_Html::shortenText(stripslashes($this->replyto->content), 300, 0); ?></p>
-				</blockquote>
-<?php
-				}
-			}
-
-			if ($this->config->get('close_comments') == 'never' || ($this->config->get('close_comments') != 'now' && $today < $pdt)) {
-?>
-				<label>
-					Your <?php echo ($this->replyto->id) ? 'reply' : 'comments'; ?>: <span class="required">required</span>
-<?php
-				if (!$this->juser->get('guest')) {
-					ximport('Hubzero_Wiki_Editor');
-					$editor =& Hubzero_Wiki_Editor::getInstance();
-					echo $editor->display('comment[content]', 'commentcontent', '', 'minimal', '40', '15');
-				} else {
-					$rtrn = JRoute::_('index.php?option='.$this->option.'&section='.$this->section->alias.'&category='.$this->category->alias.'&alias='.$this->article->alias.'#post-comment');
-?>
-					<p class="warning">
-						You must <a href="/login?return=<?php echo base64_encode($rtrn); ?>">log in</a> to post comments.
-					</p>
-<?php
-				}
-?>
-				</label>
-
-<?php 			if (!$this->juser->get('guest')) { ?>
-				<label id="comment-anonymous-label">
-					<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
-					Post anonymously
-				</label>
-
-				<p class="submit">
-					<input type="submit" name="submit" value="Submit" />
-				</p>
-<?php 			} ?>
-<?php 		} else { ?>
-	<p class="warning">
-		<?php echo JText::_('Comments are closed on this entry.'); ?>
-	</p>
-<?php 		} ?>
-				<input type="hidden" name="comment[id]" value="0" />
-				<input type="hidden" name="comment[entry_id]" value="<?php echo $this->article->id; ?>" />
-				<input type="hidden" name="comment[parent]" value="<?php echo $this->replyto->id; ?>" />
-				<input type="hidden" name="comment[created]" value="" />
-				<input type="hidden" name="comment[created_by]" value="<?php echo $this->juser->get('id'); ?>" />
-				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-				<input type="hidden" name="task" value="savecomment" />
-
-				<?php echo JHTML::_('form.token'); ?>
-
-				<div class="sidenote">
-					<p>
-						<strong><?php echo JText::_('Please keep comments relevant to this entry.'); ?></strong>
-					</p>
-					<p>
-						Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="<?php echo JRoute::_('index.php?option=com_wiki&pagename=Help:WikiFormatting'); ?>" class="popup">Wiki syntax</a> is supported.
-					</p>
-				</div>
-			</fieldset>
-		</form>
-	</div><!-- / .subject -->
 </div><!-- / .below -->
 <?php //} else { ?>
 

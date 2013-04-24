@@ -1589,3 +1589,17 @@ p.warning {
 .qq-upload-list {
 	display: none;
 }
+
+@media only screen and (max-width: 800px) {
+
+	#hubForm .asset-browser-parent {
+		position: relative;
+		width: auto !important;
+	}
+
+	#asset_browser {
+		position: static;
+		width: auto;
+	}
+	
+}

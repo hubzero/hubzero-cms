@@ -45,6 +45,20 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php } ?>
 
 <div id="introduction" class="section">
+
+	<div class="subject">
+		<div class="subjectWrap">
+			<div class="two columns first theclearfix">
+				<h3>Why be a member?</h3>
+				<p>Groups are an easy way to share content and conversation, either privately or with the world. Many times, a group already exists for a specific interest or topic. If you can't find one you like, feel free to start your own.</p>
+			</div>
+			<div class="two columns second">
+				<h3>How do I become a member?</h3>
+				<p>Groups can either be public, restricted (users may read a brief description or overview but not view content) or completely private. Every group has a wiki, a pool for resources, and a discussion board for talking.</p>
+			</div>
+		</div><!-- / .subjectWrap -->
+	</div><!-- / .subject -->
+	
 	<div class="aside">
 		<ul>
 			<li>
@@ -58,17 +72,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</li>
 		</ul>
 	</div><!-- / .aside -->
-	<div class="subject">
-		<div class="two columns first">
-			<h3>Why be a member?</h3>
-			<p>Groups are an easy way to share content and conversation, either privately or with the world. Many times, a group already exists for a specific interest or topic. If you can't find one you like, feel free to start your own.</p>
-		</div>
-		<div class="two columns second">
-			<h3>How do I become a member?</h3>
-			<p>Groups can either be public, restricted (users may read a brief description or overview but not view content) or completely private. Every group has a wiki, a pool for resources, and a discussion board for talking.</p>
-		</div>
-		<div class="clear"></div>
-	</div><!-- / .subject -->
 	<div class="clear"></div>
 </div><!-- / #introduction.section -->
 

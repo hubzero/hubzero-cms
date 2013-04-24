@@ -41,8 +41,20 @@ defined('_JEXEC') or die( 'Restricted access');
 	}
 ?>
 
-<div id="introduction" class="section">
-	<div class="aside">
+<div id="introduction" class="section theclearfix">
+	<div class="subject theclearfix">
+    	<div class="subjectWrap">
+            <div class="two columns first">
+                <h3>What are citations?</h3>
+                <p>The following are works that have cited or referenced this site or some piece of site content. Each citation links to the piece of content it references and is downloadable in either BibTex or EndNote format.</p>
+            </div>
+            <div class="two columns second">
+                <h3>Can I submit a citation?</h3>
+                <p>Yes! You can submit a citation for a piece of work that has referenced site content by <a href="<?php echo JRoute::_('index.php?option='.$option.'&task=add'); ?>">clicking here</a>. However, please search or browse the existing citations to ensure no duplicate entries.</p>
+            </div>
+    	</div><!-- / .subjectWrap -->
+	</div><!-- / .subject -->
+    <div class="aside">
 		<h3>Help</h3>
 		<ul>
 			<?php if ($this->allow_import == 1 || ($this->allow_import == 2 && $this->isAdmin)) : ?>
@@ -53,18 +65,7 @@ defined('_JEXEC') or die( 'Restricted access');
 			<?php endif; ?>	
 		</ul>
 	</div><!-- / .aside -->
-	<div class="subject">
-		<div class="two columns first">
-			<h3>What are citations?</h3>
-			<p>The following are works that have cited or referenced this site or some piece of site content. Each citation links to the piece of content it references and is downloadable in either BibTex or EndNote format.</p>
-		</div>
-		<div class="two columns second">
-			<h3>Can I submit a citation?</h3>
-			<p>Yes! You can submit a citation for a piece of work that has referenced site content by <a href="<?php echo JRoute::_('index.php?option='.$option.'&task=add'); ?>">clicking here</a>. However, please search or browse the existing citations to ensure no duplicate entries.</p>
-		</div>
-		<div class="clear"></div>
-	</div><!-- / .subject -->
-	<div class="clear"></div>
+    <div class="clear"></div>
 </div><!-- / #introduction.section -->
 
 <div class="section">

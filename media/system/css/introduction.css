@@ -30,6 +30,24 @@
 		left: 30px;
 		z-index: 100;
 	}
+	
+	@media only screen and (max-width: 800px) {
+		#introduction small.intro-before,
+		#introduction small.intro-after,
+		#introduction:before,
+		#introduction:after {
+			display: none;
+		}
+		
+		#introduction {
+			margin: 0 0 3em 0;
+			padding: 25px 15px;
+			background: #eee;
+			color: #666;
+			position: relative;
+		}
+	}
+	
 	#introduction small.intro-before,
 	#introduction:before {
 		width: 69px;
@@ -66,7 +84,12 @@
 	#introduction .columns {
 		border: none;
 	}
-	#introduction ul,
+	
+	#introduction ul {
+		list-style: none;
+		padding: 0;
+	}
+	
 	#introduction li {
 		list-style: none;
 		margin: 1em 0;

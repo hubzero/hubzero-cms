@@ -34,19 +34,8 @@ $juri =& JURI::getInstance();
 </div>
 
 <div id="introduction" class="section">
-	<div class="aside">
-		<h3>Help</h3>
-		<ul>
-<?php
-$juser =& JFactory::getUser();
-if ($juser->get('guest')) {
-?>
-			<li><a href="/register">Sign up for free!</a></li>
-<?php } ?>
-			<li><a href="http://subversion.tigris.org/" rel="external">Learn about Subversion</a></li>
-		</ul>
-	</div><!-- / .aside -->
 	<div class="subject">
+    	<div class="subjectWrap">
 			<h3>Tool Development</h3>
 			<p>
 				Welcome to <?php echo $this->escape($this->forgeName); ?>, the tool
@@ -58,7 +47,20 @@ if ($juser->get('guest')) {
 		        a restricted development team has access to the code.  See each
 		        tool page for details.
 			</p>
+     	</div><!-- / .subjectWrap -->
 	</div><!-- / .subject -->
+    <div class="aside">
+		<h3>Help</h3>
+		<ul>
+<?php
+$juser =& JFactory::getUser();
+if ($juser->get('guest')) {
+?>
+			<li><a href="/register">Sign up for free!</a></li>
+<?php } ?>
+			<li><a href="http://subversion.tigris.org/" rel="external">Learn about Subversion</a></li>
+		</ul>
+	</div><!-- / .aside -->
 	<div class="clear"></div>
 </div><!-- / #introduction.section -->
 

@@ -10,10 +10,8 @@
 		display: none;
 	}
 	.container fieldset #terms {
-		width: 85%;
-		border: 1px solid #A8A8A8;
 		background: #fff url("/components/com_ysearch/assets/img/search.png") 5px 50% no-repeat;
-		padding: 5px 5px 5px 23px;
+		padding-left: 23px;
 	}
 	.container fieldset p {
 		margin: 0;
@@ -80,8 +78,14 @@
 	.results .url {
 		clear: left; 
 		margin: 0;
-		padding: 0 0 0.5em 1em; 
+		padding: 0 0 0.5em 0; 
 		font-size: 85%;
+		-ms-word-break: break-all;
+		word-break: break-all;
+		word-break: break-word;
+		-webkit-hyphens: auto;
+		-moz-hyphens: auto;
+		hyphens: auto;
 	}
 	.results .url a {
 		color: green;
@@ -92,7 +96,6 @@
 	}
 	.results .summary {
 		position: relative;
-		padding-left: 1em;
 		display: inline-block;
 	}
 	.results .summary .details span {

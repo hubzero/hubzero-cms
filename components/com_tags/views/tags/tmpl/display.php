@@ -35,24 +35,26 @@ defined('_JEXEC') or die('Restricted access');
 	<h2><?php echo $this->title; ?></h2>
 </div>
 
-<div id="introduction" class="section">
-	<div class="aside">
+<div id="introduction" class="section theclearfix">
+	
+	<div class="subject theclearfix">
+    	<div class="subjectWrap">
+            <div class="two columns first">
+                <h3><?php echo JText::_('COM_TAGS_WHAT_ARE_TAGS'); ?></h3>
+                <p><?php echo JText::_('COM_TAGS_WHAT_ARE_TAGS_EXPLANATION'); ?></p>
+            </div>
+            <div class="two columns second">
+                <h3><?php echo JText::_('COM_TAGS_HOW_DO_TAGS_WORK'); ?></h3>
+                <p><?php echo JText::_('COM_TAGS_HOW_DO_TAGS_WORK_EXPLANATION'); ?></p>
+            </div>
+    	</div><!-- / .subjectWrap -->
+	</div><!-- / .subject -->
+    <div class="aside">
 		<h3><?php echo JText::_('COM_TAGS_QUESTIONS'); ?></h3>
 		<ul>
 			<li><a href="/kb/tags/faq"><?php echo JText::_('COM_TAGS_FAQ'); ?></a></li>
 		</ul>
 	</div><!-- / .aside -->
-	<div class="subject">
-		<div class="two columns first">
-			<h3><?php echo JText::_('COM_TAGS_WHAT_ARE_TAGS'); ?></h3>
-			<p><?php echo JText::_('COM_TAGS_WHAT_ARE_TAGS_EXPLANATION'); ?></p>
-		</div>
-		<div class="two columns second">
-			<h3><?php echo JText::_('COM_TAGS_HOW_DO_TAGS_WORK'); ?></h3>
-			<p><?php echo JText::_('COM_TAGS_HOW_DO_TAGS_WORK_EXPLANATION'); ?></p>
-		</div>
-		<div class="clear"></div>
-	</div><!-- / .subject -->
 	<div class="clear"></div>
 </div><!-- / #introduction.section -->
 
