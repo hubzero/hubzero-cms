@@ -40,18 +40,19 @@
 		margin-left: 215px;
 	}
 	.com_support .four div {
-		padding-left: 2em;
+		padding-left: 25px;
 		*padding-left: 0;  /* [!] HACKS - IE 7 and older */
+		padding-top: 1em;
 	}
 	.com_support .four div:before {
 		content: "";
 		display: block;
 		position: absolute;
 		left: 0;
-		top: 1em;
-		width: 1.6em;
-		height: 1.6em;
-		font-size: 1.6em;
+		top: 0.8em;
+		width: 20px;
+		height: 20px;
+		font-size: 20px;
 		font-family: 'Fontcons';
 		color: #aaa;
 	}
