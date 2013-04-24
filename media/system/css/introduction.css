@@ -74,7 +74,7 @@
 	}
 	#introduction li {
 		margin: 0;
-		padding: 0 0 0 15px;
+		padding: 0 0 0 5px;
 		position: relative;
 	}
 	#introduction li:before {
@@ -166,13 +166,13 @@
 	}
 	#content .four h3 { 
 		color: #000; 
+		margin-top: 1em; 
+		padding-top: 0em;
 	}
-	/*
 	#content .four h3 a { 
 		color: #000; 
 		border-bottom: none; 
 	}
-	*/
 	#content .four ul {
 		margin: 1em 0;
 	}
@@ -204,7 +204,7 @@
 	#content form.search,
 	#content .browse {
 		position: relative;
-		padding: 1em 0 1em 25px;;
+		padding-left: 25px;
 	}
 	#content .browse:before,
 	#content form.search:before {
@@ -222,5 +222,5 @@
 	}
 	#content .browse:before {
 		content: "\f00b";
-		top: 0.75em;
+		top: 0;
 	}

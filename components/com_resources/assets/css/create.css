@@ -300,7 +300,9 @@
 	}
 	#steps li#start a,
 	#steps li#trash a { 
+		font-size: 0.8em;
 		color: #999;
+		text-transform: uppercase;
 	}
 	#steps li#trash {
 		float: right;

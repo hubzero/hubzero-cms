@@ -168,23 +168,28 @@ Hubzero_Document::addComponentStylesheet($this->option, 'assets/css/conditions.c
 							<a class="sort-age<?php if ($this->filters['sort'] == 'created') { echo ' active ' . strtolower($this->filters['sortdir']); } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=created&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0'); ?>" title="Click to sort by this column">
 								<?php echo JText::_('SUPPORT_COL_AGE'); ?>
 							</a>
-						
+						</th>
+						<th scope="col">
 							<a class="sort-status<?php if ($this->filters['sort'] == 'status') { echo ' active ' . strtolower($this->filters['sortdir']); } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=status&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0'); ?>" title="Click to sort by this column">
 								<?php echo JText::_('SUPPORT_COL_STATUS'); ?>
 							</a>
-						
+						</th>
+						<th scope="col">
 							<a class="sort-severity<?php if ($this->filters['sort'] == 'severity') { echo ' active ' . strtolower($this->filters['sortdir']); } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=severity&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0'); ?>" title="Click to sort by this column">
 								<?php echo JText::_('SUPPORT_COL_SEVERITY'); ?>
 							</a>
-						
+						</th>
+						<th scope="col">
 							<a class="sort-summary<?php if ($this->filters['sort'] == 'summary') { echo ' active ' . strtolower($this->filters['sortdir']); } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=summary&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0'); ?>" title="Click to sort by this column">
 								<?php echo JText::_('SUPPORT_COL_SUMMARY'); ?>
 							</a>
-						
+						</th>
+						<th scope="col">
 							<a class="sort-group<?php if ($this->filters['sort'] == 'group') { echo ' active ' . strtolower($this->filters['sortdir']); } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=group&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0'); ?>" title="Click to sort by this column">
 								<?php echo JText::_('SUPPORT_COL_GROUP'); ?>
 							</a>
-						
+						</th>
+						<th scope="col">
 							<a class="sort-owner<?php if ($this->filters['sort'] == 'owner') { echo ' active ' . strtolower($this->filters['sortdir']); } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=owner&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0'); ?>" title="Click to sort by this column">
 								<?php echo JText::_('SUPPORT_COL_OWNER'); ?>
 							</a>
@@ -196,7 +201,7 @@ Hubzero_Document::addComponentStylesheet($this->option, 'assets/css/conditions.c
 				</thead>
 				<tfoot>
 					<tr>
-						<td colspan="3">
+						<td colspan="8">
 							<?php
 							$this->pageNav->setAdditionalUrlParam('show', $this->filters['show']);
 							$this->pageNav->setAdditionalUrlParam('search', $this->filters['search']);
@@ -324,7 +329,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 								<?php echo $status; echo ($row->open == 0) ? ' (' . $this->escape($row->resolved) . ')' : ''; ?>
 							</span>
 						</td>
-						<td>
+						<td colspan="6">
 							<p>
 								<span class="ticket-author">
 									<?php echo $this->escape($row->name); echo ($lnk) ? ' (<a href="' . $lnk . '">' . $this->escape($row->login) . '</a>)' : ''; ?>

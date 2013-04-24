@@ -297,7 +297,7 @@ HUB.Groups = {
 
 		assetBox
 			.css('width', ($(assetBox.parent()).width() - 10) + 'px')
-			.css('padding', '5px');
+			.css('padding', '10px');
 
 		if(assetBox.length)
 		{

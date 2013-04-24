@@ -41,15 +41,3 @@
 	.list-footer .prev {
 		display: none;
 	}
-	
-@media only screen and (max-width: 800px) {
-	
-	.list-footer .counter {
-		float: none;
-	}
-	
-	.list-footer .limit {
-		float: none;
-		padding: 0;
-	}
-}
