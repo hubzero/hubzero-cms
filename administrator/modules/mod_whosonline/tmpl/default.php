@@ -119,7 +119,7 @@ foreach ($this->rows as $row)
 				<?php endforeach; ?>
 				<tr>
 					<td colspan="4" class="view-all">
-						<a href="index.php?option=com_members&amp;controller=members&amp;task=whosonline">&lsaquo; View all &rsaquo;</a>
+						<a href="index.php?option=com_members&amp;controller=whosonline">&lsaquo; View all &rsaquo;</a>
 					</td>
 				</tr>
 			<?php else : ?>

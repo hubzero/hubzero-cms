@@ -81,6 +81,11 @@ JSubMenuHelper::addEntry(
 	$controllerName == 'members'
 );
 JSubMenuHelper::addEntry(
+	JText::_('Who\'s Online'),
+	'index.php?option=com_members&controller=whosonline',
+	$controllerName == 'whosonline'
+);
+JSubMenuHelper::addEntry(
 	JText::_('Messaging'),
 	'index.php?option=com_members&controller=messages',
 	$controllerName == 'messages'
@@ -105,11 +110,7 @@ JSubMenuHelper::addEntry(
 	'index.php?option=com_members&controller=passwordblacklist',
 	$controllerName == 'passwordblacklist'
 );
-JSubMenuHelper::addEntry(
-	JText::_('Who\'s Online'),
-	'index.php?option=com_members&controller=members&task=whosonline',
-	$controllerName == 'members'
-);
+
 
 if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
 {
