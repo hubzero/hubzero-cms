@@ -12,6 +12,12 @@ if (!HUB) {
 	var HUB = {};
 }
 
+var alertFallback = true;
+if (typeof console === "undefined" || typeof console.log === "undefined") {
+	console = {};
+	console.log = function() {};
+}
+
 //-----------------------------------------------------------
 //  Various functions - encapsulated in HUB namespace
 //-----------------------------------------------------------
