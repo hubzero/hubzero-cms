@@ -55,22 +55,21 @@ if (!$juser->get('guest')) {
 	<h2><?php echo $this->title; ?></h2>
 </div><!-- / #content-header -->
 
-<div id="introduction" class="contribute section theclearfix">
-	<div class="subject">
-		<div class="subjectWrap theclearfix">
-			<div class="two columns first">
-				<h3>Present your work!</h3>
-				<p>Become a contributor and share your work with the community! Contributing content is easy. Our step-by-step forms will guide you through the process.</p>
-			</div>
-			<div class="two columns second">
-				<h3>What do I need?</h3>
-				<p>The submission process will guide you through step-by-step, but for more detailed instructions on what can be submitted and how, please see the list of submission types below.</p>
-			</div>
-		</div><!-- / .subjectWrap -->
-	</div><!-- / .subject -->
+<div id="introduction" class="contribute section">
 	<div class="aside">
 		<p id="getstarted"><a href="<?php echo JRoute::_('index.php?option='.$option.'&task=draft'); ?>">Get Started &rsaquo;</a></p>
 	</div><!-- / .aside -->
+	<div class="subject">
+		<div class="two columns first">
+			<h3>Present your work!</h3>
+			<p>Become a contributor and share your work with the community! Contributing content is easy. Our step-by-step forms will guide you through the process.</p>
+		</div>
+		<div class="two columns second">
+			<h3>What do I need?</h3>
+			<p>The submission process will guide you through step-by-step, but for more detailed instructions on what can be submitted and how, please see the list of submission types below.</p>
+		</div>
+		<div class="clear"></div>
+	</div><!-- / .subject -->
 	<div class="clear"></div>
 </div><!-- / #introduction.section -->
 

@@ -91,7 +91,7 @@ if ($this->resource->id)
 	</table>
 </div>
 
-<ol id="steps" class="theclearfix">
+<ol id="steps">
 	<li id="start">
 		<a href="<?php echo ($this->progress['submitted'] == 1) ? JRoute::_('index.php?option=com_resources&id=' . $this->id) : JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">
 			<?php echo JText::_('COM_CONTRIBUTE_START'); ?>

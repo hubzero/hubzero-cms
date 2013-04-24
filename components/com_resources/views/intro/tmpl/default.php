@@ -35,25 +35,24 @@ defined('_JEXEC') or die('Restricted access');
 	<h2><?php echo $this->title; ?></h2>
 </div><!-- / #content-header -->
 
-<div id="introduction" class="section theclearfix">
-	<div class="subject">
-		<div class="subjectWrap theclearfix">
-			<div class="two columns first">
-				<h3><?php echo JText::_('What are resources?'); ?></h3>
-				<p><?php echo JText::_('Resources are user-submitted pieces of content that range from video presentations to publications to simulation tools.'); ?></p>
-			</div>
-			<div class="two columns second">
-				<h3><?php echo JText::_('Who can submit a resource?'); ?></h3>
-				<p><?php echo JText::_('Anyone can submit a resource! Resources must be relevant to the community and may undergo a short approval process to ensure all appropriate files and information are included.'); ?></p>
-			</div>
-		</div><!-- / .subjectWrap -->
-	</div><!-- / .subject -->
+<div id="introduction" class="section">
 	<div class="aside">
 		<p id="getstarted"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>"><?php echo JText::_('Submit a resource'); ?></a></p>
 		<ul>
 			<li><a href="/kb/resources/faq"><?php echo JText::_('Resources FAQ'); ?></a></li>
 		</ul>
 	</div><!-- / .aside -->
+	<div class="subject">
+		<div class="two columns first">
+			<h3><?php echo JText::_('What are resources?'); ?></h3>
+			<p><?php echo JText::_('Resources are user-submitted pieces of content that range from video presentations to publications to simulation tools.'); ?></p>
+		</div>
+		<div class="two columns second">
+			<h3><?php echo JText::_('Who can submit a resource?'); ?></h3>
+			<p><?php echo JText::_('Anyone can submit a resource! Resources must be relevant to the community and may undergo a short approval process to ensure all appropriate files and information are included.'); ?></p>
+		</div>
+		<div class="clear"></div>
+	</div><!-- / .subject -->
 	<div class="clear"></div>
 </div><!-- / #introduction.section -->
 
